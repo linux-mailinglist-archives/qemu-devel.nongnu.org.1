@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F2EAC3C80
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 11:18:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 984F8AC3C9B
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 11:23:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJTxX-0007oU-2G; Mon, 26 May 2025 05:17:27 -0400
+	id 1uJU37-0002I5-67; Mon, 26 May 2025 05:23:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uJTxK-0007mE-UB
- for qemu-devel@nongnu.org; Mon, 26 May 2025 05:17:15 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uJU35-0002Hv-Bj
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 05:23:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uJTxI-0002HS-Ui
- for qemu-devel@nongnu.org; Mon, 26 May 2025 05:17:14 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uJU32-0003Fe-Ar
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 05:23:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748251030;
+ s=mimecast20190719; t=1748251385;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vrgnwX+XpO3oZxobtIJdJoGMB7i4IfflekNRWvQhTmg=;
- b=eQ9xRXhmkiyihGB8mbtcnzIkBH2Ye6iCd9SUUpDdup1PHrSuwZfNCjuBJKmrSHKU9AiQ+V
- IXNCOdXyXI0TjN7X8HHdYX7Gg2uGB+fX6tR4c1jpdTUyk8FXEVCxbTreVRSAiiziFPDFNC
- ogYlevcegwV9PI3w2SVIyvSclwyFxRw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=phTdJj0KAJyBPbCCmlZgtPAAFKe+8e9lUlf5Yjatomc=;
+ b=JL5PftdvCD7/efD0x2f/5XX7Nyg6/9Wu3ulAYIOl7z9Q9nU+2+tfGI66I04dlQd/rGv+JD
+ KCugjp389R7udtXwE0J7f9LTyGnVj0IsGqSm2v3F9dSjeya4ce4cx/5LVdzkTrwpnOuz7j
+ XIpD6USjUDdewKi34jQSPPSC/sXH2uw=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-rA-3IRVlMz2WV3eVn8n8lA-1; Mon, 26 May 2025 05:17:08 -0400
-X-MC-Unique: rA-3IRVlMz2WV3eVn8n8lA-1
-X-Mimecast-MFC-AGG-ID: rA-3IRVlMz2WV3eVn8n8lA_1748251027
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43d0830c3f7so15525415e9.2
- for <qemu-devel@nongnu.org>; Mon, 26 May 2025 02:17:08 -0700 (PDT)
+ us-mta-426-R81_1an7O9C4HUHZeb1www-1; Mon, 26 May 2025 05:23:02 -0400
+X-MC-Unique: R81_1an7O9C4HUHZeb1www-1
+X-Mimecast-MFC-AGG-ID: R81_1an7O9C4HUHZeb1www_1748251382
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a4cfda0ab8so517925f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 26 May 2025 02:23:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748251027; x=1748855827;
+ d=1e100.net; s=20230601; t=1748251381; x=1748856181;
  h=content-transfer-encoding:in-reply-to:organization:autocrypt
  :content-language:from:references:cc:to:subject:user-agent
  :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
  :date:message-id:reply-to;
- bh=vrgnwX+XpO3oZxobtIJdJoGMB7i4IfflekNRWvQhTmg=;
- b=abWx50Nqu2+YXZYqacLWRXkzKUb+RDcKVmw8YB0EuzAhnfyWSJLk9L9jMf5Ibis6oa
- 88kBnPu1mwPnWmyT61U/tsawl6MsMz1x3Crpqn+uCSvdmUk8Zd6wNYVIiAE+3pEuUaCO
- IwB81lsLbdS4mKfIUhULdgzuFMylhmhyfj1ff+v8YnfWfo9uOnczOKsfzaAqOVX6Sh2W
- Zek5QnruOrbWuYjaSLMjZArHXmOErw16+R4oH2y3NWa/RmHMkAAitM/wR3EYshM2elzm
- v5yXPUYyfSNnGq+CWSQ4qGPAbkoqCsrK5jcQOdb24s6BsIfkrAFczDZ0jbR5LtJ7nfUZ
- TwMg==
-X-Gm-Message-State: AOJu0Yz4XXDh0A000MwVmBduqMs2abCle4TP+/1PPVnvDiqQ3A/0JnHN
- AmMSeBkN/3u5Qpgcoz6VkQXtObjCQHpI6j0i9mTwNvIKcGxJi7QjyZ+S3KMnqoVoaXxhCxRXBtj
- AtmkELAB4GltJRf8dgXE2xV5fGl/zp+ROpWGG668hQ4fzJW+TqRBWrzj+
-X-Gm-Gg: ASbGncvzzbdq0THJRbLdXoV5PDaC/31xAsFUKlOnTGT6sWiMVvTkBxBXJyzz1aoiWNh
- +0QJi4Lnc1tl9yBU+3G5+WUHoiO06eAB5E2d6q4KjzRd7vlPLXj0L40nUI6Fc8FLiYPiJ0iJF0X
- N8RX7Fh74ceoCQq+/SlcPhJSpW4fPLh3//hidf/RW5DGSxXwh3dd4HiZNCiEizSe5oGJbkckUeM
- DtrtdY4RhnXByuGWK5yDQfzNQsVFqwlYP/CUhqEnOhm1bBRkWrz6VPAFfYW79eCUb7iYqKP47b4
- 6+0K2LJUHu13grUs4BhVGrG9CtveRalPGt0HPpzfh8Ey1s4AU+NMrKkzlnfxIk3u97uHt77zz5e
- WArtJhMfnL/SwL3e0MudiNGrettCyrwe6TUzO9oI=
-X-Received: by 2002:a05:6000:40ce:b0:3a4:dd02:f566 with SMTP id
- ffacd0b85a97d-3a4dd02f6admr831238f8f.22.1748251027289; 
- Mon, 26 May 2025 02:17:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGAitxi3kXFt+sI/5NwSXKjBu+jB+tHOfkfiw7eNaviG6loQkSMcXUPVMmhcpMahbRnI5Nisg==
-X-Received: by 2002:a05:6000:40ce:b0:3a4:dd02:f566 with SMTP id
- ffacd0b85a97d-3a4dd02f6admr831214f8f.22.1748251026872; 
- Mon, 26 May 2025 02:17:06 -0700 (PDT)
+ bh=phTdJj0KAJyBPbCCmlZgtPAAFKe+8e9lUlf5Yjatomc=;
+ b=MjuvyJjjYN2Joui18N1okvlhnZbnCvhk+o6eCHvgsZMEkZHUcpat9Dckb+c2Hkzhqt
+ a1tM4xCrScVUu7i18b3ScJflCETOeBkG2BySrOfuLQhtA0i9UR3WcB9fzxpjEmuftush
+ PrIgSJCzI3KCa3n/2uA3tQ8WhPTUfl/fvUwxVTHbZp3Tp79vmmjV7KqabYP4TwIbjlA8
+ 4GZ3g93n8SW1yw0KNaqBUMJomwpXSTWUXpeKR2y49IT8lqXzxyvR6cCGyWdodTE95Sc3
+ wnaToJl1ZM1GV1a6/LvEBDPjeF29TU5muhRCbIqYizQzAAOoAfQEcj2lVUBvOjz/7/vo
+ r9FQ==
+X-Gm-Message-State: AOJu0YwV1eEyfEUsXwRI0fmGqUwK0lCTCstmPMQ9/vQgStUBoVyW69HU
+ /RGBPCzOs4fSqMBweYvjJ9qwtK+vfBBuWEpvqxwzZarDG5PtjwnUwwEDz+DE8/3vwukUIHEbtBo
+ b8Y6m6kkmSBJJAPYnzSUwhyV+nP3+8mtYZ9uCZBG+GZ7Z/5yhn/JkWYPC
+X-Gm-Gg: ASbGncsNuPF59wyotOShBd92DxuCmgq7UTCKzr5GQ2RsBflWgcVK4Co5vG2Pumr0pSs
+ VhLp6rm576/FtoP8RNIhpuqnxwTW02+9iMliM3TiTWoAniHyeRd7xS4DPMjSByCCR1Ayb9fiFDf
+ UNnuowPbda2LaBd4LAA6eoZnqmHSpzmqbL4p0yeA6peNGX0VBd6Qqma/s4RIoEpFlnwaNnssXwT
+ s6sFz+DtW0lF9GiBv+pDjWK6EwO4iAgOo0iYxQbdwJXOVKJVic+oSQQNOET9EV3ehE2TAJV2N28
+ 98Ad1utTmRQWyKuaTuWJVDbmgDQrI+9zvOZ2FAS7sKh6n0Ty0Qi1OWu8behlqh5s2QlKfUsvElz
+ J7Z5IIOTp4OxO80rgvTjH03j4BIPLjH+ey6botCs=
+X-Received: by 2002:a05:6000:2082:b0:3a1:f68b:57c9 with SMTP id
+ ffacd0b85a97d-3a4cb407b33mr5416597f8f.6.1748251381646; 
+ Mon, 26 May 2025 02:23:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF0Iy+mETN512dlt1DljBDoAYB1upu7FTX113bm5Gtwq9OByr75EkOWODGpn6zZkGn10wi9vg==
+X-Received: by 2002:a05:6000:2082:b0:3a1:f68b:57c9 with SMTP id
+ ffacd0b85a97d-3a4cb407b33mr5416576f8f.6.1748251381293; 
+ Mon, 26 May 2025 02:23:01 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f19:6500:e1c1:8216:4c25:efe4?
  (p200300d82f196500e1c182164c25efe4.dip0.t-ipconnect.de.
  [2003:d8:2f19:6500:e1c1:8216:4c25:efe4])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4dc1172ecsm1414743f8f.48.2025.05.26.02.17.05
+ ffacd0b85a97d-3a4cdde6415sm6767370f8f.60.2025.05.26.02.23.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 May 2025 02:17:06 -0700 (PDT)
-Message-ID: <6b5957fa-8036-40b6-b79d-db5babb5f7b9@redhat.com>
-Date: Mon, 26 May 2025 11:17:05 +0200
+ Mon, 26 May 2025 02:23:00 -0700 (PDT)
+Message-ID: <ccb81d9b-1c89-45e4-86b0-1d30a8e94930@redhat.com>
+Date: Mon, 26 May 2025 11:22:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/10] ram-block-attribute: Add more error handling
- during state changes
+Subject: Re: [PATCH v5 09/10] KVM: Introduce RamDiscardListener for attribute
+ changes during memory conversions
 To: Chenyi Qiang <chenyi.qiang@intel.com>, Alexey Kardashevskiy
  <aik@amd.com>, Peter Xu <peterx@redhat.com>,
  Gupta Pankaj <pankaj.gupta@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -87,7 +87,7 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Baolu Lu <baolu.lu@linux.intel.com>, Gao Chao <chao.gao@intel.com>,
  Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
 References: <20250520102856.132417-1-chenyi.qiang@intel.com>
- <20250520102856.132417-11-chenyi.qiang@intel.com>
+ <20250520102856.132417-10-chenyi.qiang@intel.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -135,7 +135,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20250520102856.132417-11-chenyi.qiang@intel.com>
+In-Reply-To: <20250520102856.132417-10-chenyi.qiang@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
@@ -164,198 +164,51 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20.05.25 12:28, Chenyi Qiang wrote:
-> The current error handling is simple with the following assumption:
-> - QEMU will quit instead of resuming the guest if kvm_convert_memory()
->    fails, thus no need to do rollback.
-> - The convert range is required to be in the desired state. It is not
->    allowed to handle the mixture case.
-> - The conversion from shared to private is a non-failure operation.
+> With the introduction of the RamBlockAttribute object to manage
+> RAMBlocks with guest_memfd, it is more elegant to move KVM set attribute
+> into a RamDiscardListener.
 > 
-> This is sufficient for now as complext error handling is not required.
-> For future extension, add some potential error handling.
-> - For private to shared conversion, do the rollback operation if
->    ram_block_attribute_notify_to_populated() fails.
-> - For shared to private conversion, still assert it as a non-failure
->    operation for now. It could be an easy fail path with in-place
->    conversion, which will likely have to retry the conversion until it
->    works in the future.
-> - For mixture case, process individual blocks for ease of rollback.
+> The KVM attribute change RamDiscardListener is registered/unregistered
+> for each memory region section during kvm_region_add/del(). The listener
+> handler performs attribute change upon receiving notifications from
+> ram_block_attribute_state_change() calls. After this change, the
+> operations in kvm_convert_memory() can be removed.
+> 
+> Note that, errors can be returned in
+> ram_block_attribute_notify_to_discard() by KVM attribute changes,
+> although it is currently unlikely to happen. With in-place conversion
+> guest_memfd in the future, it would be more likely to encounter errors
+> and require error handling. For now, simply return the result, and
+> kvm_convert_memory() will cause QEMU to quit if any issue arises.
 > 
 > Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 > ---
->   system/ram-block-attribute.c | 116 +++++++++++++++++++++++++++--------
->   1 file changed, 90 insertions(+), 26 deletions(-)
-> 
-> diff --git a/system/ram-block-attribute.c b/system/ram-block-attribute.c
-> index 387501b569..0af3396aa4 100644
-> --- a/system/ram-block-attribute.c
-> +++ b/system/ram-block-attribute.c
-> @@ -289,7 +289,12 @@ static int ram_block_attribute_notify_to_discard(RamBlockAttribute *attr,
->           }
->           ret = rdl->notify_discard(rdl, &tmp);
->           if (ret) {
-> -            break;
-> +            /*
-> +             * The current to_private listeners (VFIO dma_unmap and
-> +             * KVM set_attribute_private) are non-failing operations.
-> +             * TODO: add rollback operations if it is allowed to fail.
-> +             */
-> +            g_assert(ret);
->           }
+
+[...]
+
+>   static void kvm_region_commit(MemoryListener *listener)
+> @@ -3077,15 +3140,6 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+>           goto out_unref;
 >       }
 >   
-
-If it's not allowed to fail for now, then patch #8 does not make sense 
-and should be dropped :)
-
-The implementations (vfio) should likely exit() instead on unexpected 
-errors when discarding.
-
-
-
-Why not squash all the below into the corresponding patch? Looks mostly 
-like handling partial conversions correctly (as discussed previously)?
-
-> @@ -300,7 +305,7 @@ static int
->   ram_block_attribute_notify_to_populated(RamBlockAttribute *attr,
->                                           uint64_t offset, uint64_t size)
->   {
-> -    RamDiscardListener *rdl;
-> +    RamDiscardListener *rdl, *rdl2;
->       int ret = 0;
->   
->       QLIST_FOREACH(rdl, &attr->rdl_list, next) {
-> @@ -315,6 +320,20 @@ ram_block_attribute_notify_to_populated(RamBlockAttribute *attr,
->           }
->       }
->   
-> +    if (ret) {
-> +        /* Notify all already-notified listeners. */
-> +        QLIST_FOREACH(rdl2, &attr->rdl_list, next) {
-> +            MemoryRegionSection tmp = *rdl2->section;
-> +
-> +            if (rdl == rdl2) {
-> +                break;
-> +            }
-> +            if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-> +                continue;
-> +            }
-> +            rdl2->notify_discard(rdl2, &tmp);
-> +        }
-> +    }
->       return ret;
->   }
->   
-> @@ -353,6 +372,9 @@ int ram_block_attribute_state_change(RamBlockAttribute *attr, uint64_t offset,
->       const int block_size = ram_block_attribute_get_block_size(attr);
->       const unsigned long first_bit = offset / block_size;
->       const unsigned long nbits = size / block_size;
-> +    const uint64_t end = offset + size;
-> +    unsigned long bit;
-> +    uint64_t cur;
->       int ret = 0;
->   
->       if (!ram_block_attribute_is_valid_range(attr, offset, size)) {
-> @@ -361,32 +383,74 @@ int ram_block_attribute_state_change(RamBlockAttribute *attr, uint64_t offset,
->           return -1;
->       }
->   
-> -    /* Already discard/populated */
-> -    if ((ram_block_attribute_is_range_discard(attr, offset, size) &&
-> -         to_private) ||
-> -        (ram_block_attribute_is_range_populated(attr, offset, size) &&
-> -         !to_private)) {
-> -        return 0;
+> -    if (to_private) {
+> -        ret = kvm_set_memory_attributes_private(start, size);
+> -    } else {
+> -        ret = kvm_set_memory_attributes_shared(start, size);
+> -    }
+> -    if (ret) {
+> -        goto out_unref;
 > -    }
 > -
-> -    /* Unexpected mixture */
-> -    if ((!ram_block_attribute_is_range_populated(attr, offset, size) &&
-> -         to_private) ||
-> -        (!ram_block_attribute_is_range_discard(attr, offset, size) &&
-> -         !to_private)) {
-> -        error_report("%s, the range is not all in the desired state: "
-> -                     "(offset 0x%lx, size 0x%lx), %s",
-> -                     __func__, offset, size,
-> -                     to_private ? "private" : "shared");
-> -        return -1;
-> -    }
-> -
->       if (to_private) {
-> -        bitmap_clear(attr->bitmap, first_bit, nbits);
-> -        ret = ram_block_attribute_notify_to_discard(attr, offset, size);
-> +        if (ram_block_attribute_is_range_discard(attr, offset, size)) {
-> +            /* Already private */
-> +        } else if (!ram_block_attribute_is_range_populated(attr, offset,
-> +                                                           size)) {
-> +            /* Unexpected mixture: process individual blocks */
-> +            for (cur = offset; cur < end; cur += block_size) {
-> +                bit = cur / block_size;
-> +                if (!test_bit(bit, attr->bitmap)) {
-> +                    continue;
-> +                }
-> +                clear_bit(bit, attr->bitmap);
-> +                ram_block_attribute_notify_to_discard(attr, cur, block_size);
-> +            }
-> +        } else {
-> +            /* Completely shared */
-> +            bitmap_clear(attr->bitmap, first_bit, nbits);
-> +            ram_block_attribute_notify_to_discard(attr, offset, size);
-> +        }
->       } else {
-> -        bitmap_set(attr->bitmap, first_bit, nbits);
-> -        ret = ram_block_attribute_notify_to_populated(attr, offset, size);
-> +        if (ram_block_attribute_is_range_populated(attr, offset, size)) {
-> +            /* Already shared */
-> +        } else if (!ram_block_attribute_is_range_discard(attr, offset, size)) {
-> +            /* Unexpected mixture: process individual blocks */
-> +            unsigned long *modified_bitmap = bitmap_new(nbits);
-> +
-> +            for (cur = offset; cur < end; cur += block_size) {
-> +                bit = cur / block_size;
-> +                if (test_bit(bit, attr->bitmap)) {
-> +                    continue;
-> +                }
-> +                set_bit(bit, attr->bitmap);
-> +                ret = ram_block_attribute_notify_to_populated(attr, cur,
-> +                                                           block_size);
-> +                if (!ret) {
-> +                    set_bit(bit - first_bit, modified_bitmap);
-> +                    continue;
-> +                }
-> +                clear_bit(bit, attr->bitmap);
-> +                break;
-> +            }
-> +
-> +            if (ret) {
-> +                /*
-> +                 * Very unexpected: something went wrong. Revert to the old
-> +                 * state, marking only the blocks as private that we converted
-> +                 * to shared.
-> +                 */
-> +                for (cur = offset; cur < end; cur += block_size) {
-> +                    bit = cur / block_size;
-> +                    if (!test_bit(bit - first_bit, modified_bitmap)) {
-> +                        continue;
-> +                    }
-> +                    assert(test_bit(bit, attr->bitmap));
-> +                    clear_bit(bit, attr->bitmap);
-> +                    ram_block_attribute_notify_to_discard(attr, cur,
-> +                                                          block_size);
-> +                }
-> +            }
-> +            g_free(modified_bitmap);
-> +        } else {
-> +            /* Complete private */
-> +            bitmap_set(attr->bitmap, first_bit, nbits);
-> +            ret = ram_block_attribute_notify_to_populated(attr, offset, size);
-> +            if (ret) {
-> +                bitmap_clear(attr->bitmap, first_bit, nbits);
-> +            }
-> +        }
->       }
->   
->       return ret;
 
+I wonder if it's best to leave that out for now. With in-place 
+conversion it will all get a bit more tricky, because we'd need to call 
+in different orders ...
+
+e.g., do private -> shared before mapping to vfio, but to shared 
+->private after unmapping from vfio.
+
+That can be easier handled when doing the calls from KVM code directly.
 
 -- 
 Cheers,
