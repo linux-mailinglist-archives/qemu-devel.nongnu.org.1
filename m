@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4327AC3BE1
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 10:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CB4AC3BE3
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 10:42:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJTOV-0008HX-Qr; Mon, 26 May 2025 04:41:15 -0400
+	id 1uJTPS-0000cQ-Kq; Mon, 26 May 2025 04:42:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uJTOR-0008HG-3O
- for qemu-devel@nongnu.org; Mon, 26 May 2025 04:41:11 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uJTPP-0000W9-Cy
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 04:42:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uJTOO-0006QE-GS
- for qemu-devel@nongnu.org; Mon, 26 May 2025 04:41:10 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uJTPN-0006VN-FC
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 04:42:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748248865;
+ s=mimecast20190719; t=1748248927;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ZpcUBhTst15dsBOEnXLvH1gi6TvxGnz3SV2jdOZSxv0=;
- b=OGRRCOBcTWPdDzRIkKFt4N7FpSuyKlqXD20KdUCrRYhkC8vbvww7lKYeNn2iOTE7mfFH+L
- 3rdzJ5GKSkHBIROGZ3pv2w0bTkWHfRTCmpv933EghU2MOmNduwsV3e4RZod/Nu6FpIInDw
- t5njbvsIONw9XfzD32FhM76Nz8tHYx8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=97kbZtlgIExA4qKYGRP1ynOk/EWcY3gmjZBtZIIcE1E=;
+ b=WiBe1lCrkENIHDOAWeMkvWrzbGPEZNujyO7CXH2D4LpaStBbLbC6NJJ5AFjrqJ4BRLuNYY
+ AXNjmCdN05BY/yXJQ6imUCFrf6XfMLwdNeDvK4XvkPa+VPiH8HJRyfAqhf14D8Po97mqiU
+ kk9kU1eEd6d86oEq9p4KgCuHpd7Vf9I=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-oqdXwL7DOF6Cudr8XE_F4A-1; Mon, 26 May 2025 04:41:01 -0400
-X-MC-Unique: oqdXwL7DOF6Cudr8XE_F4A-1
-X-Mimecast-MFC-AGG-ID: oqdXwL7DOF6Cudr8XE_F4A_1748248860
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-442fda1cba7so9281525e9.1
- for <qemu-devel@nongnu.org>; Mon, 26 May 2025 01:41:01 -0700 (PDT)
+ us-mta-621-5zn6jXVxMDeYclz89g1tdw-1; Mon, 26 May 2025 04:42:05 -0400
+X-MC-Unique: 5zn6jXVxMDeYclz89g1tdw-1
+X-Mimecast-MFC-AGG-ID: 5zn6jXVxMDeYclz89g1tdw_1748248925
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43d209dc2d3so11950595e9.3
+ for <qemu-devel@nongnu.org>; Mon, 26 May 2025 01:42:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748248860; x=1748853660;
+ d=1e100.net; s=20230601; t=1748248925; x=1748853725;
  h=content-transfer-encoding:in-reply-to:organization:autocrypt
  :content-language:from:references:cc:to:subject:user-agent
  :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
  :date:message-id:reply-to;
- bh=ZpcUBhTst15dsBOEnXLvH1gi6TvxGnz3SV2jdOZSxv0=;
- b=JvViM+iFD+N/MakDpIjdx+kLAOS8FiHktjFLqBCg+8dJnLW3aThP4PBC+HmGQ6fwAP
- auaR/vJmv5LAopyzoK9jda4MzcEeISGQ3FdApEhZm0E5nfo+9p4voWIfq/9cZIUUPhYi
- 2XOQm29/rTjzXOLp3Zn4lL7dRfGmhJPj7gXLFRUKM/SWIfN2TaSKFNJvsthVdnnP0YEW
- Gpi9rfwnXPqoe7izPpkj++IqWu3dnvzkJsKwtofOSi0RzZIFKfJrTmPtO2DDNesTFUok
- JcPoMUkLtsDvKHoFLyOEYFdM0awqY9v6v2lMyWoDiB4z8zQEcAe/xUnxoBLbQgl3+0k6
- +9bQ==
-X-Gm-Message-State: AOJu0Yzs08TBfNhFgfXuWZnQL/4Hgf/dVy1Oc/2tqgmBHlPm1Ka+hH8k
- WHP9UjwUC06JAskXvsCwdwGSpcsS30bdmlFq517f4Bl7ejUhvavCgaXMGDhFpqXKbCOe42GGr1h
- +5oSJydgutSk/R4D87h0Nd+7H5YqDogV76mXeqVS3d7GiIQZePtRpuXYF
-X-Gm-Gg: ASbGncuytLNndfvSVJ0ZpFN+8JvsVp5KurxWujxJzCvB/pEADeOv4GaAQJyTpSjkkUG
- PRvhZ619s9afpoyX6MEY5hxo62qAoQMsHC8fQ/Xa5FMem0VzBQy4/asg9BfvYo8UfaV0dX781m6
- 4z9APM+Rajiu0qCfo1pmLbQbiVT5VdneUmkvl8+gpog/qcCwBrbdY4DbBZCSh0l4A0hE/bWYiY+
- /DvavRJf+YGxU/i4rCAhLueIn4pkEzg4RNsmPaW68r84GF+hzqU3F0hsppQk9YbTZL7Z+XBz8MO
- m9QrM4SezLKSEfjQDCt64DBMdIaiA7Y2pq97lcpYTqxQ9mktQRupEZVEc9BhpAzks3IXnzx/Nn2
- YwfXL/ShnhQmSKGH8wThNZAFXFkUgumZ/w/UvueM=
-X-Received: by 2002:a05:6000:430c:b0:3a4:de13:2a25 with SMTP id
- ffacd0b85a97d-3a4de132a86mr410807f8f.45.1748248860486; 
- Mon, 26 May 2025 01:41:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOT0PRDQkw2BbtqS6ln5FEsK4w1cAtNG/jx5p3gGTCCdC12E+iPVZbLd1eljg2uUrCLTNfHg==
-X-Received: by 2002:a05:6000:430c:b0:3a4:de13:2a25 with SMTP id
- ffacd0b85a97d-3a4de132a86mr410776f8f.45.1748248860127; 
- Mon, 26 May 2025 01:41:00 -0700 (PDT)
+ bh=97kbZtlgIExA4qKYGRP1ynOk/EWcY3gmjZBtZIIcE1E=;
+ b=dzuzputTI0dY+e/fajcuKgo4wfrdjuf1WqKoCy/BA40tD7MoWshoD5n3VV9+qpiKVJ
+ bJRzQQr8fLs3YyXCNn+WKxcdxNUWNKInbOee4tDD+ByA5GBESltwXuzyboFO6opiDVoY
+ Yjzd9vK4e5aGFdu/TTT0oJSlTf5TLbXOamfcDGMwIWt8ICR4KaYGi6YYQGPcJyhy/xvt
+ ZH0ERk9MqeH2utz26Pq+umAcLaZJwGKMs2ouSXaeI5kgKTcdVfhAeRpF6Bje34XpqKFO
+ QHtMgr0KPm8g7rzVV+RHR3Zl27e7nqIIuWAE6LKIHm5EvfclUuBUn9cm9e2eClOAj1AW
+ Vg2Q==
+X-Gm-Message-State: AOJu0YxfAAK8a3Nz5ef3xTgJ5VYIG5FxBfxRPvVmjMvC4lW09LAhFt0V
+ 6GKO6W6pc1kZ3PXFS6TKOJvQwcFTgRJ1M66AnQSgjKYBjJUT8a4szNI3bWbbsEJDIYZFrhG5tHF
+ Hoj0V521mngDLe8vtKDO/mSszzJARe87QxsEx/XtbtPdC3dVRnSJMUPPl
+X-Gm-Gg: ASbGnctt8eD8wJEIaAtEWMjAEWZ/jzHwMuKsxn6mIB1T4uYPgMPcUdpH/Fm842FOu4I
+ lppIBlDndKr2w3qjI59e18WfFhNnNUNZBrRNUqflwZZK9H0DNRaSxtir4mGG74flJ/uyr6MEf6T
+ IfH8LNChdJt+gemsQbs7tlqkZoiUKoXOS0aP7tWO1bZkGvIBZpuIkc1hUcYF4MhxjIgj6oBHn38
+ 8z/bOvrJPW1wsSSY3+gK+SC0s7jfIML/MOdOd7FUO7Cr9RiZBRw9PjRs6nXimI19ea8zi68r6GJ
+ rgOuABiDiUSsANEODq0NqaXc7fh8L2lhAWcZEpOv0FeFQREhxJlUSLf5xPd5a3Kn0+fV15aAaZL
+ Ual3EDytlcYiimSIFrDRrzpk2LxIPr8B2fMqgbMc=
+X-Received: by 2002:a05:600c:3c84:b0:442:f4d4:53a with SMTP id
+ 5b1f17b1804b1-44c9151293fmr82089755e9.2.1748248924820; 
+ Mon, 26 May 2025 01:42:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+4zjh0O/r8X0NQKFOR2Y6GHPZFlzGjvoXiENYfVluXT0XK1FAhn8FH2HkNN46fQhcZ46RPQ==
+X-Received: by 2002:a05:600c:3c84:b0:442:f4d4:53a with SMTP id
+ 5b1f17b1804b1-44c9151293fmr82089345e9.2.1748248924369; 
+ Mon, 26 May 2025 01:42:04 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f19:6500:e1c1:8216:4c25:efe4?
  (p200300d82f196500e1c182164c25efe4.dip0.t-ipconnect.de.
  [2003:d8:2f19:6500:e1c1:8216:4c25:efe4])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4d7a5d224sm2962324f8f.41.2025.05.26.01.40.59
+ 5b1f17b1804b1-447f3dd9c21sm234863005e9.38.2025.05.26.01.42.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 May 2025 01:40:59 -0700 (PDT)
-Message-ID: <87d5e6c8-01c8-4981-98e5-f92e29157240@redhat.com>
-Date: Mon, 26 May 2025 10:40:58 +0200
+ Mon, 26 May 2025 01:42:04 -0700 (PDT)
+Message-ID: <7f10e5e8-9585-4323-96d5-760e6652db1b@redhat.com>
+Date: Mon, 26 May 2025 10:42:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/10] memory: Change
- memory_region_set_ram_discard_manager() to return the result
+Subject: Re: [PATCH v5 03/10] memory: Unify the definiton of
+ ReplayRamPopulate() and ReplayRamDiscard()
 To: Chenyi Qiang <chenyi.qiang@intel.com>, Alexey Kardashevskiy
  <aik@amd.com>, Peter Xu <peterx@redhat.com>,
  Gupta Pankaj <pankaj.gupta@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -87,7 +87,7 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Baolu Lu <baolu.lu@linux.intel.com>, Gao Chao <chao.gao@intel.com>,
  Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
 References: <20250520102856.132417-1-chenyi.qiang@intel.com>
- <20250520102856.132417-3-chenyi.qiang@intel.com>
+ <20250520102856.132417-4-chenyi.qiang@intel.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -135,7 +135,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20250520102856.132417-3-chenyi.qiang@intel.com>
+In-Reply-To: <20250520102856.132417-4-chenyi.qiang@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
@@ -164,21 +164,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20.05.25 12:28, Chenyi Qiang wrote:
-> Modify memory_region_set_ram_discard_manager() to return -EBUSY if a
-> RamDiscardManager is already set in the MemoryRegion. The caller must
-> handle this failure, such as having virtio-mem undo its actions and fail
-> the realize() process. Opportunistically move the call earlier to avoid
-> complex error handling.
+> Update ReplayRamDiscard() function to return the result and unify the
+> ReplayRamPopulate() and ReplayRamDiscard() to ReplayRamDiscardState() at
+> the same time due to their identical definitions. This unification
+> simplifies related structures, such as VirtIOMEMReplayData, which makes
+> it cleaner.
 > 
-> This change is beneficial when introducing a new RamDiscardManager
-> instance besides virtio-mem. After
-> ram_block_coordinated_discard_require(true) unlocks all
-> RamDiscardManager instances, only one instance is allowed to be set for
-> one MemoryRegion at present.
-> 
-> Suggested-by: David Hildenbrand <david@redhat.com>
 > Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> ---
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
 
