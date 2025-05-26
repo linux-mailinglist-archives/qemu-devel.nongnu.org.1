@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA5BAC40B8
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 15:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 437BAAC40CA
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 15:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJYFP-0002LP-9M; Mon, 26 May 2025 09:52:11 -0400
+	id 1uJYKq-0004mO-0a; Mon, 26 May 2025 09:57:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uJYFN-0002L1-HK
- for qemu-devel@nongnu.org; Mon, 26 May 2025 09:52:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uJYFL-00044L-T8
- for qemu-devel@nongnu.org; Mon, 26 May 2025 09:52:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748267527;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jU1pPQJIISNWMRhHnJ3cVHgdqW5TSEcB01tiZUkxClU=;
- b=cHba9Q7nGhLw9hnMsHNs8yC9d8FiDZdxs61dcfmxOcHeBVmu47dlheLNqrE78YoZAAr+tF
- puLnNCmUjE6i0lESvVcOojlmDpOn+FfpfAyOt27UhbMTpcCU+waCLjq2ENKyQvYyDb9JlD
- 3MfD8TGTyAdYt4kYUWYN8NFb51ael7Y=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-jis5M2PuOv6TEyWSVYGUMQ-1; Mon, 26 May 2025 09:52:05 -0400
-X-MC-Unique: jis5M2PuOv6TEyWSVYGUMQ-1
-X-Mimecast-MFC-AGG-ID: jis5M2PuOv6TEyWSVYGUMQ_1748267525
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-6f2b50a75d8so28691446d6.0
- for <qemu-devel@nongnu.org>; Mon, 26 May 2025 06:52:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uJYKn-0004m4-4t
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 09:57:45 -0400
+Received: from mail-vk1-xa41.google.com ([2607:f8b0:4864:20::a41])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uJYKl-0004YK-1T
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 09:57:44 -0400
+Received: by mail-vk1-xa41.google.com with SMTP id
+ 71dfb90a1353d-52dc131419cso399347e0c.2
+ for <qemu-devel@nongnu.org>; Mon, 26 May 2025 06:57:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1748267861; x=1748872661; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=f4SqwSGApR646YlGwX9quEAS77jmoLnsqlENyfssXGc=;
+ b=S9zOcBZhjcf5gRnRbaEXPC9F3tC5n9HoypFHRTRpJa07u/0DZ4SqZU/TF/ubwZKYWj
+ 4tTj2Is5jC4LljsEWf+acPvrNlkXuBejJwrIB1uTMOKPkNLSROv25DjFqGk+hefuf7Ak
+ Dmu0bxPsUysHWKRfTIEsLrw3uvNBkQB60e2JSQlqB9R51JKcelAMpychsop20+IZJApG
+ ElgdqaFbLZnHLb+bwXts1egsr18XCr8Ozbm33Ha8gh30zCM+hp+pHyWlBbVPYLu2kQ+T
+ AYY+2ji9h5+sS4HbjxKFzEA0q6EESLWjyz5G9Eelf+zrEVBWG/AIcfGGsZJVyWoupcpN
+ 4J3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748267525; x=1748872325;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jU1pPQJIISNWMRhHnJ3cVHgdqW5TSEcB01tiZUkxClU=;
- b=EvU4sP99NVhJ9eQNMWRwAgnGH7MdQ0k1laj6wJDkWoP+yxzXUkfd3tdEud9S5VnMr4
- xbQtQmGAoMFyT7NgF/4QCj1pCuBLzKK7UCURz+zykk2tSEBU9xukfbCwEfWiC2l3vIv9
- 5DUy68HCEoCS6v7p46kaXmpZ5xgJ57WnsK6N+itl5E+VU3Oo3JmmSzvHnwOpMZ5VddX6
- c6qN3n4pxZwU29DXNxoCEIuya0q9P+BflMpOzUnxI+CkWEh37r04BPGyFrsPnMNpidZm
- g8X+mHIA0gKyX3T/OwxUdbacuKbWv7ZTnjt7UaOhB9rxqLddP6XpNSlPeDZdxOJ018gh
- SHDg==
-X-Gm-Message-State: AOJu0YyYHizP79Zhfe6JpsRtwhrxIdvM+OjkWeDWRimIBuIeWxijls8C
- sFZlcPTw5hd8135bGV4BDdlp7F0EWgv741jrN7HKEA1aNRgEyxIsPK9Zz2wCS6clAkQ1Gabg8YJ
- PKmvRh9gPTxeL4mila4IN6GfzFEFC1RwHqDP2/oyVhlBKvo1nvLJb/1HA
-X-Gm-Gg: ASbGnctSo37F+Acrdxl4ZcOYRqL9KpWHgw8CaqFlkFbN75Z8hus4Ivnrvd4SpMek9jY
- pKyYtmPi0YKkO2shiSm3uhjA2pz9l7Zi8SuexIUkN6Rhc3GT0qsj3CbQ6EMzgnqDYWjvUdYAqha
- L2fOsoAjfOmzeoUdlquldQIu4oBoPMStcQmj81wUsnzlbHqB3qaoj7eq8N5BfcrEBGIfHlJMHcc
- N/I3gd5i+BnZs/WrnKb6kR1M4eXcWbNuk9/DY6NsPDK/YqYD5JSXFsbZzX9nE8CIP2B+o3kH6wi
- 7sE=
-X-Received: by 2002:ad4:5c8f:0:b0:6fa:9c1d:91d4 with SMTP id
- 6a1803df08f44-6fa9d152c62mr144694016d6.10.1748267524985; 
- Mon, 26 May 2025 06:52:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGOC9K/Ss/p5xlZVn6mEnsANzmV0K3nZTWHV9KEqyNCjLEw5thjJ4Bq5Euwsg+YRcEiW4nZew==
-X-Received: by 2002:ad4:5c8f:0:b0:6fa:9c1d:91d4 with SMTP id
- 6a1803df08f44-6fa9d152c62mr144693686d6.10.1748267524634; 
- Mon, 26 May 2025 06:52:04 -0700 (PDT)
-Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6fa9e29af4fsm34130636d6.3.2025.05.26.06.52.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 May 2025 06:52:04 -0700 (PDT)
-Date: Mon, 26 May 2025 09:52:01 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH v2 3/4] tests/functional: Test with
- scripts/vmstate-static-checker.py
-Message-ID: <aDRyAal_jXSrsNjO@x1.local>
-References: <20250522133756.259194-1-thuth@redhat.com>
- <20250522133756.259194-4-thuth@redhat.com>
- <aC820hzwtrFBV9oq@x1.local>
- <2f83dee7-6bfc-435e-8392-2236b98cbcfe@redhat.com>
+ d=1e100.net; s=20230601; t=1748267861; x=1748872661;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=f4SqwSGApR646YlGwX9quEAS77jmoLnsqlENyfssXGc=;
+ b=VsN7J+YZ7P00xvXj83LHRgFEuaXEzyEXDcZ+OdhugBB+Edsx8BcP5YgsyfhLdOtHj+
+ z2yIwslYwCCaVcE5UFL8FcOTO88LCQixy8EFAbVQGFCUG2JisfE3BvCLxD5HWMfGAied
+ vY2QH9fxl9MXk66HUxSnUUzyvS/LaHipBKz65NY7FfqUFnj1iJ60Qnxs/nHUrUbyYXGe
+ 7c2FiKy33ErdwobiXcfGS2N5aX6Nl6cOAZWsmP7DQDOgfM+tl4UIM3DbPpBqFE1j8/J0
+ 21ow4ZZkOxkmKxyoSB5KSDbprP9w7HAuXHa/2lt0PpVMtLt8VjhJuCPU8XuDnqcdNqKz
+ VzeA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXOPTlIOpLp702pktOwEsU7tbnhnH+a5loLFVZTrNrR1VoOit3XPKMjqCXZw+2jo3hYDdb/g9UC1fee@nongnu.org
+X-Gm-Message-State: AOJu0YwykXLpD24BnxlFiekSrqseFnzy9ZO2V8Zxp5LZew4fDVHHLRKX
+ OpEFBA4LKF7x/50RNybxr2uj+Yx0RUgriSJpunzCvq/TSdvqrU/g3st3A4T1/LNs+sE=
+X-Gm-Gg: ASbGncs5CiDoEJ2VvcPy1B/evEyxkYZtA/ELuhzWzF6Cr/6bKjoSEWA3wHqOjPfJzCZ
+ ymSp2H0dSTii6AyAWrW8ojsPH0m2kx5QhsSJbqx449Pijl07ydxNICLRFNAxZhuQAqsjeWkVgbc
+ OeEpt/LMIF+G+iEazg1grgrn0EuEnj2yU1WS8ofBTlW6pOIYtQhi7sGTfxnaYZNY4HwCQNJlsvk
+ ugur/TavYbGzdW3l6L1DHAugmWZsfpiXkplEDU6RQqsQ9cPDABlPLrITCGYmYltNi+nPYoKsin+
+ 4ktQAHMTyaFj+ykK7kd9GQyGigbMV4LhGm4xmwL5REgWazeXXP34H0XmkC5RX0se+YlxJbBdS6x
+ 9QythWKBFpu1uJzWXle+CRqBrxj1pQw==
+X-Google-Smtp-Source: AGHT+IECYSd1WD78IJWVxygsQmnXFf29sME0AuswPLdcC4ygeHS0nxxtVwopMIvzze7igi+k6px11Q==
+X-Received: by 2002:a05:6122:6183:b0:52f:47de:3700 with SMTP id
+ 71dfb90a1353d-52f47de37a2mr788192e0c.5.1748267861584; 
+ Mon, 26 May 2025 06:57:41 -0700 (PDT)
+Received: from ?IPV6:2804:7f0:b402:6ba2:d081:510e:25da:56a5?
+ ([2804:7f0:b402:6ba2:d081:510e:25da:56a5])
+ by smtp.gmail.com with ESMTPSA id
+ 71dfb90a1353d-52dba910d62sm17610961e0c.10.2025.05.26.06.57.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 May 2025 06:57:41 -0700 (PDT)
+Message-ID: <bf0fca88-f113-4dfd-b217-8f9863e3a13c@linaro.org>
+Date: Mon, 26 May 2025 10:56:36 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2f83dee7-6bfc-435e-8392-2236b98cbcfe@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.903,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/22] ACPI PCI Hotplug support on ARM
+To: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
+ anisinha@redhat.com, mst@redhat.com, shannon.zhaosl@gmail.com
+Cc: pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org
+References: <20250514170431.2786231-1-eric.auger@redhat.com>
+ <6b7b0e20-546b-4b72-9489-4468fafb76ba@linaro.org>
+ <2fe04c2b-d631-4ea5-9703-d44e50e13016@redhat.com>
+Content-Language: en-US
+From: Gustavo Romero <gustavo.romero@linaro.org>
+In-Reply-To: <2fe04c2b-d631-4ea5-9703-d44e50e13016@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a41;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-vk1-xa41.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,69 +106,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 22, 2025 at 08:08:44PM +0200, Thomas Huth wrote:
-> On 22/05/2025 16.38, Peter Xu wrote:
-> > On Thu, May 22, 2025 at 03:37:55PM +0200, Thomas Huth wrote:
-> > 
-> > [...]
-> > 
-> > > +    def test_vmstate(self):
-> > > +        target_machine = {
-> > > +            'aarch64': 'virt-7.2',
-> > > +            'm68k': 'virt-7.2',
-> > > +            'ppc64': 'pseries-7.2',
-> > > +            's390x': 's390-ccw-virtio-7.2',
-> > > +            'x86_64': 'pc-q35-7.2',
-> > > +        }
-> > > +        self.set_machine(target_machine[self.arch])
-> > > +
-> > > +        # Run QEMU to get the current vmstate json file:
-> > > +        dst_json = self.scratch_file('dest.json')
-> > > +        self.log.info('Dumping vmstate from ' + self.qemu_bin)
-> > > +        cp = subprocess.run([self.qemu_bin, '-nodefaults',
-> > > +                             '-M', target_machine[self.arch],
-> > > +                             '-dump-vmstate', dst_json],
-> > > +                            stdout=subprocess.PIPE,
-> > > +                            stderr=subprocess.STDOUT,
-> > > +                            text=True)
-> > > +        if cp.returncode != 0:
-> > > +            self.fail('Running QEMU failed:\n' + cp.stdout)
-> > > +        if cp.stdout:
-> > > +            self.log.info('QEMU output: ' + cp.stdout)
-> > > +
-> > > +        # Check whether the old vmstate json file is still compatible:
-> > > +        src_json = self.data_file('..', 'data', 'vmstate-static-checker',
-> > > +                                  self.arch,
-> > > +                                  target_machine[self.arch] + '.json')
-> > > +        self.log.info('Comparing vmstate with ' + src_json)
-> > > +        cp = self.run_vmstate_checker(src_json, dst_json)
-> > > +        if cp.returncode != 0:
-> > > +            self.fail('Running vmstate-static-checker failed:\n' + cp.stdout)
-> > 
-> > Would false positives happen here?  Would it fail "make check" and CI, even
-> > if the change was intended?
+Hi Eric,
+
+On 5/26/25 07:21, Eric Auger wrote:
+> Hi Gustavo,
 > 
-> Yes. In that case, the quick fix is to remove the problematic piece from the
-> 7.2 json files. Or we could try to improve the vmstate-static-checker
-> script. At least we now notice it immediately, not only after a long delay
-> until someone runs the script manually again.
-
-Yes, the thing is I worry it'll almost always be false positives (from
-statistical POV.. unfortunately).  Then in that case it's actually better
-to be found later because otherwise it means we're adding overhead to every
-developer who might cause the false positive and each of them doing this
-work with no real gain.. :(
-
+> On 5/26/25 7:55 AM, Gustavo Romero wrote:
+>> Hi Eric,
+>>
+>> On 5/14/25 14:00, Eric Auger wrote:
+>>> This series enables ACPI PCI hotplug/hotunplug on ARM
+>>> and makes it default for 10.1 machine type. This aligns with
+>>> x86 q35 machine. Expected benefits should be similar to
+>>> those listed in [1].
+>>>
+>>> It is still possible to disable it using a virt machine
+>>> option: virt,acpi-pcihp=off and restore the legacy behavior.
+>>>
+>>> The infrastructure used in x86 is heavily reused and a
+>>> huge part of the series consists in moving code from
+>>> hw/i386/acpi-build.c to a generic place and slightly
+>>> adapting it to make it usable on ARM. The DSDT table is
+>>> augmented to support ACPI PCI hotplug elements.
+>>>
+>>> On ARM we use use a GED event to notify the OS about
+>>> hotplug events.
+>>>
+>>> I have not noticed any tests/qtest/bios-tables-test failures
+>>> neither on x86 nor ARM. x86 DSDT table has not changed.
+>>> ARM DSDT table definitively has but there are no tests
+>>> impacted. ARM misses hotplug tests that do exist on x86. This
+>>> most probably should be considered in the future.
+>>
+>> I've just posted a v1 for a acpi-pcihp=on test:
+>>
+>> https://mail.gnu.org/archive/html/qemu-devel/2025-05/msg05824.html
+>>
+>> The odd thing is that I noticed failures in the existing aarch64
+>> acpi tests in tests/qtest/bios-tables-test. At least the rename
+>> of the variable 'CTRL' to 'Local0' in the _OSC method should cause
+>> a mismatch against the current base DSDT? So I had to handle it
+>> via patches 1/5, 2/5, and 3/5. The diff is in the 3/5 commit body.
 > 
-> But yes, this can be confusing for the who runs into this problem for the
-> first time. I guess I should at least add some friendly words here with
-> instructions what has to be done?
+> Thank you for contributing those tests.
+> 
+> Hum I think my mistake was to have executed the existing tests in KVM
+> acceleration mode only using
+> QTEST_QEMU_BINARY=qemu-system-aarch64 tests/qtest/bios-tables-test
+> direct execution.
+> 
+> The failing tests belong to the TCG category I think.
+> 
+> I will review your tests and if you allow me I may need to include
+> patches 1 and 3 in my series to prevent existing tests from failing, of
+> course with all your credits.
 
-Some instructions would be helpful for sure.  Though do we have easy way to
-whitelist any false positives?  As this test compares the dumps so there's
-no diff to fix or work around.
+Yeah, absolutely!
 
--- 
-Peter Xu
+I left some comments on you comments in 3/5 in [0] about the organization
+and sequence of the patches, but I think we're in sync :)
+
+[0] https://mail.gnu.org/archive/html/qemu-devel/2025-05/msg05824.html
+
+
+> Thank you again for reporting the issue!
+
+Np! Glad to help :)
+
+
+Cheers,
+Gustavo
+  
+> Eric
+> 
+> 
+> 
+> 
+>>
+>> Cheers,
+>> Gustavo
+>>
+>>> Best Regards
+>>>
+>>> Eric
+>>>
+>>> This series can be found at:
+>>> https://github.com/eauger/qemu/tree/arm-acpi-pcihp-v1
+>>>
+>>> previous RFC:
+>>> https://github.com/eauger/qemu/tree/arm-acpi-pcihp-rfc
+>>>
+>>> History:
+>>> RFC -> v1:
+>>> - First 3 trivial patches were pulled separately
+>>> - Fix of the register region size (0x18), ie. ACPI_PCIHP_SIZE
+>>> - addition of aml_pci_edsm which was not called in RFC
+>>> - acpi-index feature is now fixed. vms->bus was not set on
+>>>     acpi_pcihp_init. The init sequence is still hacky though. Suggestions
+>>>     appreciated.
+>>>
+>>> [1] [PATCH v6 0/6] Use ACPI PCI hot-plug for Q35
+>>> https://lore.kernel.org/all/20210713004205.775386-1-jusual@redhat.com/
+>>>
+>>>
+>>> Eric Auger (22):
+>>>     hw/i386/acpi-build: Make aml_pci_device_dsm() static
+>>>     hw/arm/virt: Introduce machine state acpi pcihp flags and props
+>>>     hw/acpi: Rename and move build_x86_acpi_pci_hotplug to pcihp
+>>>     hw/pci-host/gpex-acpi: Add native_pci_hotplug arg to
+>>>       acpi_dsdt_add_pci_osc
+>>>     hw/pci-host/gpex-acpi: Split host bridge OSC and DSM generation
+>>>     hw/pci-host/gpex-acpi: Propagate hotplug type info from virt machine
+>>>       downto gpex
+>>>     hw/i386/acpi-build: Turn build_q35_osc_method into a generic method
+>>>     hw/pci-host/gpex-acpi: Use build_pci_host_bridge_osc_method
+>>>     hw/i386/acpi-build: Introduce build_append_pcihp_resources() helper
+>>>     hw/acpi/pcihp: Add an AmlRegionSpace arg to build_acpi_pci_hotplug
+>>>     hw/i386/acpi-build: Move build_append_notification_callback to pcihp
+>>>     hw/i386/acpi-build: Move build_append_pci_bus_devices/pcihp_slots to
+>>>       pcihp
+>>>     hw/i386/acpi-build: Introduce and use acpi_get_pci_host
+>>>     hw/i386/acpi-build: Move aml_pci_edsm to a generic place
+>>>     hw/arm/virt-acpi-build: Modify the DSDT ACPI table to enable ACPI PCI
+>>>       hotplug
+>>>     hw/acpi/ged: Prepare the device to react to PCI hotplug events
+>>>     hw/acpi/ged: Call pcihp plug callbacks in hotplug handler
+>>>       implementation
+>>>     hw/acpi/ged: Support migration of AcpiPciHpState
+>>>     hw/core/sysbus: Introduce sysbus_mmio_map_name() helper
+>>>     hw/arm/virt: Let virt support pci hotplug/unplug GED event
+>>>     hw/arm/virt: Plug pcihp hotplug/hotunplug callbacks
+>>>     hw/arm/virt: Use ACPI PCI hotplug by default
+>>>
+>>>    hw/i386/acpi-build.h                   |   4 -
+>>>    include/hw/acpi/aml-build.h            |   2 +
+>>>    include/hw/acpi/generic_event_device.h |   5 +
+>>>    include/hw/acpi/pci.h                  |   4 +-
+>>>    include/hw/acpi/pcihp.h                |  19 +-
+>>>    include/hw/arm/virt.h                  |   4 +
+>>>    include/hw/pci-host/gpex.h             |   1 +
+>>>    include/hw/sysbus.h                    |   1 +
+>>>    hw/acpi/aml-build.c                    |  50 +++
+>>>    hw/acpi/generic_event_device.c         |  55 +++
+>>>    hw/acpi/pci.c                          |  20 +
+>>>    hw/acpi/pcihp.c                        | 482 ++++++++++++++++++++-
+>>>    hw/arm/virt-acpi-build.c               |  27 ++
+>>>    hw/arm/virt.c                          | 107 ++++-
+>>>    hw/core/sysbus.c                       |  11 +
+>>>    hw/i386/acpi-build.c                   | 552 +------------------------
+>>>    hw/pci-host/gpex-acpi.c                |  75 +---
+>>>    hw/arm/Kconfig                         |   2 +
+>>>    18 files changed, 806 insertions(+), 615 deletions(-)
+>>>
+>>
+> 
 
 
