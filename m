@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93BAAC404C
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E43EAC404B
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 15:27:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJXmM-00008O-Fu; Mon, 26 May 2025 09:22:10 -0400
+	id 1uJXnf-0001vW-Hw; Mon, 26 May 2025 09:23:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uJXm8-0008TR-OI; Mon, 26 May 2025 09:21:56 -0400
+ id 1uJXmf-0000KG-5G; Mon, 26 May 2025 09:22:30 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uJXm5-0000IC-18; Mon, 26 May 2025 09:21:55 -0400
+ id 1uJXmW-0000K1-0x; Mon, 26 May 2025 09:22:25 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id A7143445A1;
- Mon, 26 May 2025 15:21:46 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 91D034454B;
+ Mon, 26 May 2025 15:21:50 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
@@ -26,10 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v3 07/24] block: mark bdrv_child_change_aio_context()
- GRAPH_RDLOCK
-Date: Mon, 26 May 2025 15:21:23 +0200
-Message-Id: <20250526132140.1641377-8-f.ebner@proxmox.com>
+Subject: [PATCH v3 08/24] block: move drain outside of
+ bdrv_change_aio_context() and mark GRAPH_RDLOCK
+Date: Mon, 26 May 2025 15:21:24 +0200
+Message-Id: <20250526132140.1641377-9-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250526132140.1641377-1-f.ebner@proxmox.com>
 References: <20250526132140.1641377-1-f.ebner@proxmox.com>
@@ -58,39 +58,264 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a small step in preparation to mark bdrv_drained_begin() as
-GRAPH_UNLOCKED. More concretely, it is in preparation to move the
-drain out of bdrv_change_aio_context() and marking that function as
-GRAPH_RDLOCK.
+This is in preparation to mark bdrv_drained_begin() as GRAPH_UNLOCKED.
 
+Note that even if bdrv_drained_begin() were already marked as
+GRAPH_UNLOCKED, TSA would not complain about the instance in
+bdrv_change_aio_context() before this change, because it is preceded
+by a bdrv_graph_rdunlock_main_loop() call. It is not correct to
+release the lock here, and in case the caller holds a write lock, it
+wouldn't actually release the lock.
+
+In combination with block-stream, there is a deadlock that can happen
+because of this [0]. In particular, it can happen that
+main thread              IO thread
+1. acquires write lock
+                         in blk_co_do_preadv_part():
+                         2. have non-zero blk->in_flight
+                         3. try to acquire read lock
+4. begin drain
+
+Steps 3 and 4 might be switched. Draining will poll and get stuck,
+because it will see the non-zero in_flight counter. But the IO thread
+will not make any progress either, because it cannot acquire the read
+lock.
+
+After this change, all paths to bdrv_change_aio_context() drain:
+bdrv_change_aio_context() is called by:
+1. bdrv_child_cb_change_aio_ctx() which is only called via the
+   change_aio_ctx() callback, see below.
+2. bdrv_child_change_aio_context(), see below.
+3. bdrv_try_change_aio_context(), where a drained section is
+   introduced.
+
+The change_aio_ctx() callback is called by:
+1. bdrv_attach_child_common_abort(), where a drained section is
+   introduced.
+2. bdrv_attach_child_common(), where a drained section is introduced.
+3. bdrv_parent_change_aio_context(), see below.
+
+bdrv_child_change_aio_context() is called by:
+1. bdrv_change_aio_context(), i.e. recursive, so being in a drained
+   section is invariant.
+2. child_job_change_aio_ctx(), which is only called via the
+   change_aio_ctx() callback, see above.
+
+bdrv_parent_change_aio_context() is called by:
+1. bdrv_change_aio_context(), i.e. recursive, so being in a drained
+   section is invariant.
+
+This resolves all code paths. Note that bdrv_attach_child_common()
+and bdrv_attach_child_common_abort() hold the graph write lock and
+callers of bdrv_try_change_aio_context() might too, so they are not
+actually allowed to drain either. This will be addressed in the
+following commits.
+
+More granular draining is not trivially possible, because
+bdrv_change_aio_context() can recursively call itself e.g. via
+bdrv_child_change_aio_context().
+
+[0]: https://lore.kernel.org/qemu-devel/73839c04-7616-407e-b057-80ca69e63f51@virtuozzo.com/
+
+Reported-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 ---
 
 Changes in v3:
-* Fix typo in commit message.
+* Extend drained section in bdrv_try_change_aio_context() until after
+  the transaction is finalized.
+* Also mark definition of static bdrv_change_aio_context() as
+  GRAPH_RDLOCK, not only the declaration.
+* Add comments for bdrv_{child,parent}_change_aio_context() and
+  change_aio_ctx().
+* Improve language in commit message.
 
- include/block/block-global-state.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ block.c                          | 57 +++++++++++++++++++++++---------
+ include/block/block_int-common.h | 12 +++++++
+ 2 files changed, 53 insertions(+), 16 deletions(-)
 
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index 9be34b3c99..aad160956a 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -274,9 +274,10 @@ int bdrv_debug_remove_breakpoint(BlockDriverState *bs, const char *tag);
- int bdrv_debug_resume(BlockDriverState *bs, const char *tag);
- bool bdrv_debug_is_suspended(BlockDriverState *bs, const char *tag);
+diff --git a/block.c b/block.c
+index 01144c895e..6f42c0f1ab 100644
+--- a/block.c
++++ b/block.c
+@@ -106,9 +106,9 @@ static void bdrv_reopen_abort(BDRVReopenState *reopen_state);
  
--bool bdrv_child_change_aio_context(BdrvChild *c, AioContext *ctx,
--                                   GHashTable *visited, Transaction *tran,
--                                   Error **errp);
-+bool GRAPH_RDLOCK
-+bdrv_child_change_aio_context(BdrvChild *c, AioContext *ctx,
-+                              GHashTable *visited, Transaction *tran,
-+                              Error **errp);
- int bdrv_try_change_aio_context(BlockDriverState *bs, AioContext *ctx,
-                                 BdrvChild *ignore_child, Error **errp);
+ static bool bdrv_backing_overridden(BlockDriverState *bs);
  
+-static bool bdrv_change_aio_context(BlockDriverState *bs, AioContext *ctx,
+-                                    GHashTable *visited, Transaction *tran,
+-                                    Error **errp);
++static bool GRAPH_RDLOCK
++bdrv_change_aio_context(BlockDriverState *bs, AioContext *ctx,
++                        GHashTable *visited, Transaction *tran, Error **errp);
+ 
+ /* If non-zero, use only whitelisted block drivers */
+ static int use_bdrv_whitelist;
+@@ -3040,8 +3040,10 @@ static void GRAPH_WRLOCK bdrv_attach_child_common_abort(void *opaque)
+ 
+         /* No need to visit `child`, because it has been detached already */
+         visited = g_hash_table_new(NULL, NULL);
++        bdrv_drain_all_begin();
+         ret = s->child->klass->change_aio_ctx(s->child, s->old_parent_ctx,
+                                               visited, tran, &error_abort);
++        bdrv_drain_all_end();
+         g_hash_table_destroy(visited);
+ 
+         /* transaction is supposed to always succeed */
+@@ -3122,9 +3124,11 @@ bdrv_attach_child_common(BlockDriverState *child_bs,
+             bool ret_child;
+ 
+             g_hash_table_add(visited, new_child);
++            bdrv_drain_all_begin();
+             ret_child = child_class->change_aio_ctx(new_child, child_ctx,
+                                                     visited, aio_ctx_tran,
+                                                     NULL);
++            bdrv_drain_all_end();
+             if (ret_child == true) {
+                 error_free(local_err);
+                 ret = 0;
+@@ -7576,6 +7580,17 @@ typedef struct BdrvStateSetAioContext {
+     BlockDriverState *bs;
+ } BdrvStateSetAioContext;
+ 
++/*
++ * Changes the AioContext of @child to @ctx and recursively for the associated
++ * block nodes and all their children and parents. Returns true if the change is
++ * possible and the transaction @tran can be continued. Returns false and sets
++ * @errp if not and the transaction must be aborted.
++ *
++ * @visited will accumulate all visited BdrvChild objects. The caller is
++ * responsible for freeing the list afterwards.
++ *
++ * Must be called with the affected block nodes drained.
++ */
+ static bool GRAPH_RDLOCK
+ bdrv_parent_change_aio_context(BdrvChild *c, AioContext *ctx,
+                                GHashTable *visited, Transaction *tran,
+@@ -7604,6 +7619,17 @@ bdrv_parent_change_aio_context(BdrvChild *c, AioContext *ctx,
+     return true;
+ }
+ 
++/*
++ * Changes the AioContext of @c->bs to @ctx and recursively for all its children
++ * and parents. Returns true if the change is possible and the transaction @tran
++ * can be continued. Returns false and sets @errp if not and the transaction
++ * must be aborted.
++ *
++ * @visited will accumulate all visited BdrvChild objects. The caller is
++ * responsible for freeing the list afterwards.
++ *
++ * Must be called with the affected block nodes drained.
++ */
+ bool bdrv_child_change_aio_context(BdrvChild *c, AioContext *ctx,
+                                    GHashTable *visited, Transaction *tran,
+                                    Error **errp)
+@@ -7619,10 +7645,6 @@ bool bdrv_child_change_aio_context(BdrvChild *c, AioContext *ctx,
+ static void bdrv_set_aio_context_clean(void *opaque)
+ {
+     BdrvStateSetAioContext *state = (BdrvStateSetAioContext *) opaque;
+-    BlockDriverState *bs = (BlockDriverState *) state->bs;
+-
+-    /* Paired with bdrv_drained_begin in bdrv_change_aio_context() */
+-    bdrv_drained_end(bs);
+ 
+     g_free(state);
+ }
+@@ -7650,10 +7672,12 @@ static TransactionActionDrv set_aio_context = {
+  *
+  * @visited will accumulate all visited BdrvChild objects. The caller is
+  * responsible for freeing the list afterwards.
++ *
++ * @bs must be drained.
+  */
+-static bool bdrv_change_aio_context(BlockDriverState *bs, AioContext *ctx,
+-                                    GHashTable *visited, Transaction *tran,
+-                                    Error **errp)
++static bool GRAPH_RDLOCK
++bdrv_change_aio_context(BlockDriverState *bs, AioContext *ctx,
++                        GHashTable *visited, Transaction *tran, Error **errp)
+ {
+     BdrvChild *c;
+     BdrvStateSetAioContext *state;
+@@ -7664,21 +7688,17 @@ static bool bdrv_change_aio_context(BlockDriverState *bs, AioContext *ctx,
+         return true;
+     }
+ 
+-    bdrv_graph_rdlock_main_loop();
+     QLIST_FOREACH(c, &bs->parents, next_parent) {
+         if (!bdrv_parent_change_aio_context(c, ctx, visited, tran, errp)) {
+-            bdrv_graph_rdunlock_main_loop();
+             return false;
+         }
+     }
+ 
+     QLIST_FOREACH(c, &bs->children, next) {
+         if (!bdrv_child_change_aio_context(c, ctx, visited, tran, errp)) {
+-            bdrv_graph_rdunlock_main_loop();
+             return false;
+         }
+     }
+-    bdrv_graph_rdunlock_main_loop();
+ 
+     state = g_new(BdrvStateSetAioContext, 1);
+     *state = (BdrvStateSetAioContext) {
+@@ -7686,8 +7706,7 @@ static bool bdrv_change_aio_context(BlockDriverState *bs, AioContext *ctx,
+         .bs = bs,
+     };
+ 
+-    /* Paired with bdrv_drained_end in bdrv_set_aio_context_clean() */
+-    bdrv_drained_begin(bs);
++    assert(bs->quiesce_counter > 0);
+ 
+     tran_add(tran, &set_aio_context, state);
+ 
+@@ -7720,6 +7739,8 @@ int bdrv_try_change_aio_context(BlockDriverState *bs, AioContext *ctx,
+     if (ignore_child) {
+         g_hash_table_add(visited, ignore_child);
+     }
++    bdrv_drain_all_begin();
++    bdrv_graph_rdlock_main_loop();
+     ret = bdrv_change_aio_context(bs, ctx, visited, tran, errp);
+     g_hash_table_destroy(visited);
+ 
+@@ -7733,10 +7754,14 @@ int bdrv_try_change_aio_context(BlockDriverState *bs, AioContext *ctx,
+     if (!ret) {
+         /* Just run clean() callbacks. No AioContext changed. */
+         tran_abort(tran);
++        bdrv_graph_rdunlock_main_loop();
++        bdrv_drain_all_end();
+         return -EPERM;
+     }
+ 
+     tran_commit(tran);
++    bdrv_graph_rdunlock_main_loop();
++    bdrv_drain_all_end();
+     return 0;
+ }
+ 
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 37466c7841..168f703fa1 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -983,6 +983,18 @@ struct BdrvChildClass {
+                            bool backing_mask_protocol,
+                            Error **errp);
+ 
++    /*
++     * Notifies the parent that the child is trying to change its AioContext.
++     * The parent may in turn change the AioContext of other nodes in the same
++     * transaction. Returns true if the change is possible and the transaction
++     * can be continued. Returns false and sets @errp if not and the transaction
++     * must be aborted.
++     *
++     * @visited will accumulate all visited BdrvChild objects. The caller is
++     * responsible for freeing the list afterwards.
++     *
++     * Must be called with the affected block nodes drained.
++     */
+     bool GRAPH_RDLOCK_PTR (*change_aio_ctx)(BdrvChild *child, AioContext *ctx,
+                                             GHashTable *visited,
+                                             Transaction *tran, Error **errp);
 -- 
 2.39.5
 
