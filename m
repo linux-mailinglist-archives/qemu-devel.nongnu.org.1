@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C03BAC4056
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 15:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C309DAC4053
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 15:27:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJXnL-0001Qd-2X; Mon, 26 May 2025 09:23:11 -0400
+	id 1uJXnV-0001qw-QH; Mon, 26 May 2025 09:23:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uJXmc-0000G4-2N; Mon, 26 May 2025 09:22:26 -0400
+ id 1uJXmf-0000KH-Gx; Mon, 26 May 2025 09:22:30 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uJXmV-0000Jx-VC; Mon, 26 May 2025 09:22:25 -0400
+ id 1uJXmV-0000KL-VV; Mon, 26 May 2025 09:22:27 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id B751D445CA;
- Mon, 26 May 2025 15:21:49 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 96C8D445A2;
+ Mon, 26 May 2025 15:21:50 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
@@ -26,10 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v3 22/24] block/io: remove duplicate GLOBAL_STATE_CODE() in
- bdrv_do_drained_end()
-Date: Mon, 26 May 2025 15:21:38 +0200
-Message-Id: <20250526132140.1641377-23-f.ebner@proxmox.com>
+Subject: [PATCH v3 23/24] block: never use atomics to access
+ bs->quiesce_counter
+Date: Mon, 26 May 2025 15:21:39 +0200
+Message-Id: <20250526132140.1641377-24-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250526132140.1641377-1-f.ebner@proxmox.com>
 References: <20250526132140.1641377-1-f.ebner@proxmox.com>
@@ -58,32 +58,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both commit ab61335025 ("block: drain from main loop thread in
-bdrv_co_yield_to_drain()") and commit d05ab380db ("block: Mark drain
-related functions GRAPH_RDLOCK") introduced a GLOBAL_STATE_CODE()
-macro in bdrv_do_drained_end(). The assertion of being in the main
-thread cannot change here, so keep only the earlier instance.
+All accesses of bs->quiesce_counter are in the main thread, either
+after a GLOBAL_STATE_CODE() macro or in a function with GRAPH_WRLOCK
+annotation.
+
+This is essentially a revert of 414c2ec358 ("block: access
+quiesce_counter with atomic ops"). At that time, neither the
+GLOBAL_STATE_CODE() macro nor the GRAPH_WRLOCK annotation existed.
+Even if the field was only accessed in the main thread back then (did
+not check if that is actually the case), it wouldn't have been easy to
+verify.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
 
 No changes in v3.
 
- block/io.c | 1 -
- 1 file changed, 1 deletion(-)
+ block/io.c                       | 7 ++-----
+ include/block/block_int-common.h | 2 +-
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/block/io.c b/block/io.c
-index 4fd7768f9c..ac5c7174f6 100644
+index ac5c7174f6..9bd8ba8431 100644
 --- a/block/io.c
 +++ b/block/io.c
-@@ -413,7 +413,6 @@ static void bdrv_do_drained_end(BlockDriverState *bs, BdrvChild *parent)
-     /* At this point, we should be always running in the main loop. */
+@@ -361,7 +361,7 @@ static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
      GLOBAL_STATE_CODE();
+ 
+     /* Stop things in parent-to-child order */
+-    if (qatomic_fetch_inc(&bs->quiesce_counter) == 0) {
++    if (bs->quiesce_counter++ == 0) {
+         GRAPH_RDLOCK_GUARD_MAINLOOP();
+         bdrv_parent_drained_begin(bs, parent);
+         if (bs->drv && bs->drv->bdrv_drain_begin) {
+@@ -401,8 +401,6 @@ bdrv_drained_begin(BlockDriverState *bs)
+  */
+ static void bdrv_do_drained_end(BlockDriverState *bs, BdrvChild *parent)
+ {
+-    int old_quiesce_counter;
+-
+     IO_OR_GS_CODE();
+ 
+     if (qemu_in_coroutine()) {
+@@ -415,8 +413,7 @@ static void bdrv_do_drained_end(BlockDriverState *bs, BdrvChild *parent)
      assert(bs->quiesce_counter > 0);
--    GLOBAL_STATE_CODE();
  
      /* Re-enable things in child-to-parent order */
-     old_quiesce_counter = qatomic_fetch_dec(&bs->quiesce_counter);
+-    old_quiesce_counter = qatomic_fetch_dec(&bs->quiesce_counter);
+-    if (old_quiesce_counter == 1) {
++    if (--bs->quiesce_counter == 0) {
+         GRAPH_RDLOCK_GUARD_MAINLOOP();
+         if (bs->drv && bs->drv->bdrv_drain_end) {
+             bs->drv->bdrv_drain_end(bs);
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 168f703fa1..ea846aff03 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -1239,7 +1239,7 @@ struct BlockDriverState {
+     /* do we need to tell the quest if we have a volatile write cache? */
+     int enable_write_cache;
+ 
+-    /* Accessed with atomic ops.  */
++    /* Accessed only in the main thread. */
+     int quiesce_counter;
+ 
+     unsigned int write_gen;               /* Current data generation */
 -- 
 2.39.5
 
