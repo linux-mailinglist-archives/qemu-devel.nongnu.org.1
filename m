@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C13AC392E
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 07:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C59AC392B
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 07:30:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJQPF-000727-MH; Mon, 26 May 2025 01:29:49 -0400
+	id 1uJQPF-000723-4O; Mon, 26 May 2025 01:29:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uJQP4-000708-9S
- for qemu-devel@nongnu.org; Mon, 26 May 2025 01:29:40 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1uJQP9-000711-Cd
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 01:29:43 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uJQP2-0001xr-AP
- for qemu-devel@nongnu.org; Mon, 26 May 2025 01:29:37 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-2346765d5b0so4064535ad.2
- for <qemu-devel@nongnu.org>; Sun, 25 May 2025 22:29:35 -0700 (PDT)
+ id 1uJQP7-0001yC-8z
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 01:29:43 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-b1396171fb1so825779a12.2
+ for <qemu-devel@nongnu.org>; Sun, 25 May 2025 22:29:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748237374; x=1748842174;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748237379; x=1748842179;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ylcfQZWNhdn6C7MJjX4V0g4UDPBlgC/24CBbOFlS6Js=;
- b=rsNM/6FZzcqGEXVdaOyEhLFtXqf42OuO29VMiIIhzl1awW3RrvpwJeBJfmB6nDbwpz
- OBWarzgZYEcppRAG+fO9Evb/DiOkE1Fzlkh0e7+LInnxWUj87QTneczuflG87oHT/rfc
- pDcUTcikKKzrLIqB+kliCV/lQvTRMJI8IJO/SjJaJnG70GwLTFzmZ6E3EF9sPIpZuahw
- W2EYrSg9/B4Whsw9E1JNzUps4+o5pGAyqgRq89zy5/+dvxzEmRp1agIqUoN4sFp2U+8f
- k91j7QCBPQO7PT/41/gJ5QDKPlg1d2346rg/ecPkL6cfQdxKhwgRgGFEIb+XDa7mGLUU
- X/xA==
+ :reply-to; bh=HaTVJl5X/iMHZrzBG8WLsBUCVEErv5uxJdxFT0AP/9o=;
+ b=BgtiJlcOjpn6aLN2WW86qQbjmQjZBUsBEY7gUiXHi3Y5COWVzzWezO/zogXhQSOwgA
+ YHZ6YSitxkIctiMvX04ZPyFMCZN2VZnGAK5+9+niAL14Pta3ZfdpXAWF40MzWxYOzybi
+ WHCAqxVRp0c1tR5BvUkBteHjs8oIOcaSAhh8z/ttwXdJ8DfjeUKBjbwTCpV/259pjkUv
+ 7K56yx5VKy//glrv8cPX0DZnPBbZ02tk5owzEkl5FBHKRsDlx2HbBrl/vtFqyO2UfAkL
+ IisVvUrZHXaGecQc6yRHixfkpf2+34tgq53lvdoKKRbndff2ooocGaIMj0LY4dsfYBy0
+ l+fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748237374; x=1748842174;
+ d=1e100.net; s=20230601; t=1748237379; x=1748842179;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ylcfQZWNhdn6C7MJjX4V0g4UDPBlgC/24CBbOFlS6Js=;
- b=D7FJRulAc88anUYL3nPExUjuW9obObql5nTwOUnIwvVrKPJEneyeh14Pk3CXa7sYLb
- tn9Zygdo4DcQHqcs1QkLwl+0ZIN76SeYyLYoNCHSiXiZRD8ocMxs6jyrLtxvcJwELLi5
- vvRzzyZMDAynyf19vC1AjrDmgsN9padZFzKWmAFCmRJ9E2TzekYLmpLocHD4SXKCzTid
- Fb3T7OhOv6c+naGZZrUwvVwJz0dwZBgidQc7QIpsPBBpzH0alIN0ofafh+CRpIf87yPR
- PehBPwyr+o8VJjgGMZkB3XmLvOrR4J6S2j9m8tRbndfetNPM7C2u/80dxOZLiRV0mOCj
- Vf7Q==
+ bh=HaTVJl5X/iMHZrzBG8WLsBUCVEErv5uxJdxFT0AP/9o=;
+ b=OIcpDPbIKeEoahMZ7Sfa10IRAQaUsjAZ3OM/kV5SJWrGgxBuy7NKiZr++CzZHfQJ0i
+ c3M7pCG57cM5TNZv0YOJ54mn+Xod4lYIVENCcp6ZIIhM4cDaEtZ8Iq7k6DKtTpKVEHMu
+ FffBUKHA2JL9lX5VdPQW3zpHUZMku0Ct9R2oFTgudVLB1KMrXR40awCOkAMf/vQzUfMH
+ d8f/uiphJ8umY9hP5+z93QCW1ikMa4Nd2VjeMoUsF9YAyr/7X2uLWYRWCMuvoZi3XWLA
+ aweFTgBoStP2RlmGtl+INCqTi2YydRy/UG6tgkw0IJ+XnT1S96BGUCqq3NNr/565U6Xu
+ 8T+A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVclUlEDa5dkXduclvu8hv++nSJzwNyD1SlWnMaFEmmiDMcZRG5wM8Uh8d/Uy/yr5UzgYglHXyLdr7d@nongnu.org
-X-Gm-Message-State: AOJu0YywYwpoOSGKAp6v+rIFRCTabzLagcgsAojjYY7R6RUtCsg/4Wc0
- HMgjCmYgfezP3OhrDIpNUKIQ0oeo/2uxxwy4r+/9RYuGApI3jGgnYWW8s+DvfHowCv7Qx6hd9C3
- uLxZU
-X-Gm-Gg: ASbGncsG/q6Uc4BPQB0wlF5rMStgVRznaZTUCAJGu1FSIBVSeIrWez6Dg5kMIKzaAre
- yflOBKrPfyocJE3HFqlHY3vdt8vl45ISmUxOd0m9mDJkwEPEQ//bmGOGXD9PWUgjXX9jCWw9zAQ
- ElgWv6zMrhZDV12EL3U/Lj1dM6K/HGekV1qDawkdv4x71PUMLpoMUZawpth+IbfUPcEqE9Aslbh
- Cu4rVBUNdhrpX9IbrdV+cSwhQt2E1ckkfgzNfdF5diJFyIXRJRBswgLD67Jd06MDgXZ1vhOwjHc
- 4SSgZyPTP+eVTuKUycvrgIa0JQQZPeMNxyIlWMlyb5yTKVilkVWT
-X-Google-Smtp-Source: AGHT+IEdD0Ly+wv0LIoFBAJn7ydVZgF7NMPPSAGo1KhepTrmdYF3uSBcF/J0LJuA+Mgb8VpGG8EPQA==
-X-Received: by 2002:a17:903:244a:b0:220:e362:9b1a with SMTP id
- d9443c01a7336-23414f66af8mr119065675ad.25.1748237374487; 
- Sun, 25 May 2025 22:29:34 -0700 (PDT)
+ AJvYcCWedI36aYERfr68Wu6D/xL1hn3Gff4CuMRVLLYVJ7pk4Q0lmc+z6XKWohWck9vjZeskEJD7y5ocUAmn@nongnu.org
+X-Gm-Message-State: AOJu0YzIPUHuI43Vd4HGhftEQkU9D7izFVhWSYZ4c6ZNwC+4cTEa8YgN
+ vYp8eXzUk9aJDNwMjVszqiaonHXJCP2KTo1cEromk2ZxI6V6CjxfV1CBPZWZniU19jIimnsZIiU
+ kqARd
+X-Gm-Gg: ASbGnctnck2IcsvZqkY5Xzg6r/JclOUHCITxXSQE4ttz72kzMrLzxvpq6+qM9Fl5kTl
+ 2UGoKA1I/Vg6spUn9mRp4gkwt1t/u+a5q9/nxXlZBnR0bT+5rrp90Lg3uuBoFtwLMJKL1eyHxgz
+ lL096KrXncsT1PrtBOhBKHG+zMy5oJOipWx9SKgOKiUoQOLQoF0yO9aXx1fZEI935i8xpMfsU5f
+ YKtn5NLaFkJs29qd5ZMw9ODy8p8WZGgeVlWpffV420ioee8PKepuT6yeduAqC+afgKCntTvhrBw
+ ILVdd+o5SUN/JnWmQdg0FZxB739/sQReeO3Z7gkM01suh5nT2Qhl
+X-Google-Smtp-Source: AGHT+IH03++i2pmBxdfeS59pJcyBNoHbez51/FuB8e50sXU/AfQ63FMq6wGaB5wsS6XToYgKVo/g7g==
+X-Received: by 2002:a17:90b:3c90:b0:2ef:31a9:95c6 with SMTP id
+ 98e67ed59e1d1-3110f30f0d6mr14311900a91.14.1748237379145; 
+ Sun, 25 May 2025 22:29:39 -0700 (PDT)
 Received: from localhost ([157.82.128.1]) by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-2340c0e72fasm39210075ad.239.2025.05.25.22.29.31
+ 98e67ed59e1d1-3111f4647dasm3379133a91.48.2025.05.25.22.29.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 May 2025 22:29:34 -0700 (PDT)
+ Sun, 25 May 2025 22:29:38 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 26 May 2025 14:29:14 +0900
-Subject: [PATCH v4 04/11] qemu-thread: Replace __linux__ with CONFIG_LINUX
+Date: Mon, 26 May 2025 14:29:15 +0900
+Subject: [PATCH v4 05/11] qemu-thread: Avoid futex abstraction for
+ non-Linux
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250526-event-v4-4-5b784cc8e1de@daynix.com>
+Message-Id: <20250526-event-v4-5-5b784cc8e1de@daynix.com>
 References: <20250526-event-v4-0-5b784cc8e1de@daynix.com>
 In-Reply-To: <20250526-event-v4-0-5b784cc8e1de@daynix.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>, 
@@ -82,8 +83,8 @@ Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,59 +106,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-scripts/checkpatch.pl warns for __linux__ saying "architecture specific
-defines should be avoided".
+qemu-thread used to abstract pthread primitives into futex for the
+QemuEvent implementation of POSIX systems other than Linux. However,
+this abstraction has one key difference: unlike futex, pthread
+primitives require an explicit destruction, and it must be ordered after
+wait and wake operations.
+
+It would be easier to perform destruction if a wait operation ensures
+the corresponding wake operation finishes as POSIX semaphore does, but
+that requires to protect state accesses in qemu_event_set() and
+qemu_event_wait() with a mutex. On the other hand, real futex does not
+need such a protection but needs complex barrier and atomic operations
+to ensure ordering between the two functions.
+
+Add special implementations of qemu_event_set() and qemu_event_wait()
+using pthread primitives. qemu_event_wait() will ensure qemu_event_set()
+finishes, and these functions will avoid complex barrier and atomic
+operations to ensure ordering between them.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Tested-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Reviewed-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- include/qemu/thread-posix.h | 2 +-
- util/qemu-thread-posix.c    | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ util/qemu-thread-posix.c | 41 ++++++++++++++++-------------------------
+ 1 file changed, 16 insertions(+), 25 deletions(-)
 
-diff --git a/include/qemu/thread-posix.h b/include/qemu/thread-posix.h
-index 5f2f3d1386bc..c412623a9143 100644
---- a/include/qemu/thread-posix.h
-+++ b/include/qemu/thread-posix.h
-@@ -33,7 +33,7 @@ struct QemuSemaphore {
- };
- 
- struct QemuEvent {
--#ifndef __linux__
-+#ifndef CONFIG_LINUX
-     pthread_mutex_t lock;
-     pthread_cond_t cond;
- #endif
 diff --git a/util/qemu-thread-posix.c b/util/qemu-thread-posix.c
-index a1b592d358c3..0d6344f4d216 100644
+index 0d6344f4d216..be7f25f9b31d 100644
 --- a/util/qemu-thread-posix.c
 +++ b/util/qemu-thread-posix.c
-@@ -317,7 +317,7 @@ void qemu_sem_wait(QemuSemaphore *sem)
-     qemu_mutex_unlock(&sem->mutex);
- }
+@@ -319,28 +319,6 @@ void qemu_sem_wait(QemuSemaphore *sem)
  
--#ifdef __linux__
-+#ifdef CONFIG_LINUX
+ #ifdef CONFIG_LINUX
  #include "qemu/futex.h"
- #else
- static inline void qemu_futex_wake(QemuEvent *ev, int n)
-@@ -363,7 +363,7 @@ static inline void qemu_futex_wait(QemuEvent *ev, unsigned val)
- 
- void qemu_event_init(QemuEvent *ev, bool init)
- {
--#ifndef __linux__
-+#ifndef CONFIG_LINUX
-     pthread_mutex_init(&ev->lock, NULL);
-     pthread_cond_init(&ev->cond, NULL);
+-#else
+-static inline void qemu_futex_wake(QemuEvent *ev, int n)
+-{
+-    assert(ev->initialized);
+-    pthread_mutex_lock(&ev->lock);
+-    if (n == 1) {
+-        pthread_cond_signal(&ev->cond);
+-    } else {
+-        pthread_cond_broadcast(&ev->cond);
+-    }
+-    pthread_mutex_unlock(&ev->lock);
+-}
+-
+-static inline void qemu_futex_wait(QemuEvent *ev, unsigned val)
+-{
+-    assert(ev->initialized);
+-    pthread_mutex_lock(&ev->lock);
+-    if (ev->value == val) {
+-        pthread_cond_wait(&ev->cond, &ev->lock);
+-    }
+-    pthread_mutex_unlock(&ev->lock);
+-}
  #endif
-@@ -376,7 +376,7 @@ void qemu_event_destroy(QemuEvent *ev)
+ 
+ /* Valid transitions:
+@@ -386,10 +364,17 @@ void qemu_event_set(QemuEvent *ev)
  {
      assert(ev->initialized);
-     ev->initialized = false;
--#ifndef __linux__
-+#ifndef CONFIG_LINUX
-     pthread_mutex_destroy(&ev->lock);
-     pthread_cond_destroy(&ev->cond);
- #endif
+ 
++#ifdef CONFIG_LINUX
+     if (qatomic_xchg(&ev->value, EV_SET) == EV_BUSY) {
+         /* There were waiters, wake them up.  */
+         qemu_futex_wake_all(ev);
+     }
++#else
++    pthread_mutex_lock(&ev->lock);
++    qatomic_store_release(&ev->value, EV_SET);
++    pthread_cond_broadcast(&ev->cond);
++    pthread_mutex_unlock(&ev->lock);
++#endif
+ }
+ 
+ void qemu_event_reset(QemuEvent *ev)
+@@ -411,17 +396,16 @@ void qemu_event_reset(QemuEvent *ev)
+ 
+ void qemu_event_wait(QemuEvent *ev)
+ {
+-    unsigned value;
+-
+     assert(ev->initialized);
+ 
++#ifdef CONFIG_LINUX
+     while (true) {
+         /*
+          * qemu_event_wait must synchronize with qemu_event_set even if it does
+          * not go down the slow path, so this load-acquire is needed that
+          * synchronizes with the store-release in qemu_event_set().
+          */
+-        value = qatomic_load_acquire(&ev->value);
++        unsigned value = qatomic_load_acquire(&ev->value);
+         if (value == EV_SET) {
+             break;
+         }
+@@ -445,6 +429,13 @@ void qemu_event_wait(QemuEvent *ev)
+ 
+         qemu_futex_wait(ev, EV_BUSY);
+     }
++#else
++    pthread_mutex_lock(&ev->lock);
++    while (qatomic_read(&ev->value) != EV_SET) {
++        pthread_cond_wait(&ev->cond, &ev->lock);
++    }
++    pthread_mutex_unlock(&ev->lock);
++#endif
+ }
+ 
+ static __thread NotifierList thread_exit;
 
 -- 
 2.49.0
