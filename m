@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A6DAC4000
+	by mail.lfdr.de (Postfix) with ESMTPS id 685F8AC4001
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 15:01:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJXRU-0007iO-Vl; Mon, 26 May 2025 09:00:37 -0400
+	id 1uJXRV-0007kM-OE; Mon, 26 May 2025 09:00:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJXRB-0007ds-GY
- for qemu-devel@nongnu.org; Mon, 26 May 2025 09:00:25 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJXRH-0007g1-Jy
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 09:00:26 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJXR9-0005Rd-K0
- for qemu-devel@nongnu.org; Mon, 26 May 2025 09:00:17 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3a36e950e41so1380080f8f.0
- for <qemu-devel@nongnu.org>; Mon, 26 May 2025 06:00:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJXRF-0005Ui-Lc
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 09:00:23 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3a4dd5f69e7so366970f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 26 May 2025 06:00:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748264410; x=1748869210; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uoJkKz5SKNxJHBStudSV9HJCiU/biJN0vBgIQNTr+JI=;
- b=UG+2Ocf3E+BedvbR6ardCTAnPejuJnOutSoTrxvA63j8arv0RRw82P9YP73P8PwLfz
- sTGd2t2lksMocOuDL5eZc/CH+unRBlKM6m2ENN5vxrY1zJlQ5oN87mNsr1SapUM5hPTd
- CsOKwXy6OCAvjfsjRo1mLieiIuKefnnXGf6tSpVnQmIoxrnLZ3DR5NF1JusFWiuTt1Mv
- h0SHSOZAQ+WixRIQ/pLY2kZ1TwKm+qhyY77NPbfnJ//uE3kD+VbEd2JNvcw1VXzuyC3X
- L6dOyrkuxdRgqNtxUBsJZ9QQE6RLXJ0VcNJgLTHLcY+0r087eVw7NzeyfLsNBRXqzzYN
- u6bA==
+ d=linaro.org; s=google; t=1748264417; x=1748869217; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PQBQ//7O5VH+AZrfuLAW9/nheUoZW+EJtwdyA0eqKvI=;
+ b=tloeQC16MzLDnbpq75WaiiZ0GlcRNNspfxqQ5V4py64ssjJEAtKrv7TliLfOv6FkjU
+ SYltLnZWNoVkOdc10rUzaSi9CUrhQRZLlG/XCg0PZDGVmUpZeiIeC1RHNMdWkSeWHS/2
+ BM2drPb1QjkenfKJwkhY3TY0/2jA/xXaxf5CjDfi4G9CcP4XtEMd+FXi560iqWNGMQq2
+ ke4UKvkM/BJkfMRhfkBFbqee549XsOsmGrmPFpusJO2sQH/9mb6nQzOofYqmfnJ80TPr
+ 1ip4pw2aH3TznH+szNasckZOZj6NsY4Nzs7rxsbJc11/N4nhxU04Iq+K+M1IXTmxDHn4
+ 0IwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748264410; x=1748869210;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uoJkKz5SKNxJHBStudSV9HJCiU/biJN0vBgIQNTr+JI=;
- b=tTa7LW8zxuF3jkAgjNmXnexfmtZgDmj6iakG/hLi/f+p8hnEwJt5SgDRCvPnDo43x2
- 0CpF0LACqHQr9fpXfzD2OgCGj+OHqllWjdyKgCpOgV3p8NYeajNx8jcR7nmDp257D6UN
- Msv1uS5Oexm0YAJox68JyYLB0nnAfgkDK71IoMar/rvDaEYlMAx9FDAuMirHiO+mNMDA
- r16KUJJqJIVa3sHbU6gQHZVekc7XE5Ci3bR1Ht3eqY9Qsva2ndOkaykkmfPa4nXa0LyI
- 0eF+RmTg77f8G1AKyusEa591c0E5IyuNw/y/fhnqIPs886JQXiFRKNqBASTnmhz4jrGp
- LaDg==
-X-Gm-Message-State: AOJu0YzB5B2HW02ayGGqQPwaLw37AicFLRDED/Hb8+mVhuMk7CbUpJ86
- du3xdJWKzwTvweA7ZJjixNKG96iQF6ZPv7mKk+gU3GVNyeUrO/UC6p8nxy8l+3SM/FAP821PCgY
- 8ZproNQffbQ==
-X-Gm-Gg: ASbGncuglpzYpeylFSq7a7x3AM696Zm2sst8ej5ncgUUg2z7TWTo7A/6NrMX7jJ9kJG
- Wp4det1Aui6KCSu22mMFzcYGLo31HLK0lvQneeP7TB21D5OfkkeirfnU0v2zJ3vcNZOsITW+swh
- WXZWEmIn85bwQTgStk03aH0E7kEab2Cyxj9VIQdqtYpln18bghCRtcfXrAmhKXIq4mqHF3qqPTL
- ealDl4nP8u8DiC1GsvIVNqyobcjBUI9DTPhlik0iskc9NdovMkvSzEyQyxG3wRkH8pbLnpTQ2Kh
- YEL0UFP1N76yR7th4hk1ZvtUIGD0BS1VqbmCPf9s61J2LcZ/64uPU4hKVAeypBi59xAKKsZnXuR
- CREPYRE7Tbt3I+OGbWc3Lzg==
-X-Google-Smtp-Source: AGHT+IHdrbNPP+M/hhkxJkcrR9gCBUsa5bsdHB5DuxilLFlafkH7Zy265NRZexSDrXHG3fGZEX/Exg==
-X-Received: by 2002:a05:6000:40cd:b0:3a4:d939:62f8 with SMTP id
- ffacd0b85a97d-3a4d9396603mr2362814f8f.32.1748264410211; 
- Mon, 26 May 2025 06:00:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748264417; x=1748869217;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=PQBQ//7O5VH+AZrfuLAW9/nheUoZW+EJtwdyA0eqKvI=;
+ b=MCAfC0ZtfozzH028sy1mmTUjeUV0i4uxncpoWsmCU+WDUFPNv5MZ/Xj6V9hzVKTxSp
+ +p4lpmn1irirOYhEN3yEMyq6rc/Bt4oFEA0tgy7W37uyF3seo0C7WY69J8Nl5xxhc3Js
+ NoLCYAqCn3UPU3gdf7Tud0BCPXj9dQ7ryIsBczUx3tcRGVE1YZfvTDMg5YAPkc5Smxpl
+ FvkM0S4RFnwWjfwcWrM3+NY0j+n1VrgTab5rnqFXTT2gvFdYIpH3y99H3Xq3bkhS9q4u
+ YWHR97LOkWJoduOuB+3bZYEjcNQVsAN20eoybtwfIDu2HRx64t4a9bt+KXprMk9RmwpG
+ MFWA==
+X-Gm-Message-State: AOJu0YzwiZDJuzj9kbx7UPFuDd+0qDyGui7aJ9F73qK1LiNszxp22nkR
+ D6T3HGEB+PbBlKLu1Hgopn+xHU7/zE/rgAtOjpkmzwz4MSp6OXxhow0WvYR48pvE1/YuR4kyqrt
+ RxJSuT9c1yw==
+X-Gm-Gg: ASbGncvBvF1oJP7RPMfTmtAUNuWgPAIhxHamdwz+olst64RiS5Pg6nkOQPjIjLTNTbB
+ eFoYPQ4y61vfWuKQsPsWX/NN9JdoZ4PbdiqqSalL6PLYqdSEWoGbhJk/GKgTLRkprJuUV72VoXc
+ TNcBM6Z6MCJ/x46Uj8HzPIdNpiUtWQeQXNSShcaaViOkHIqaSxI0DmjvHJPXq/dJ6XCcnNW0JZf
+ TTK5rx3YelvvM+f2Sw+iY32ynMq1YxS5crGhb+4f6TEOglK7p0TRMoP2xAAouT77VlqXndoyHbz
+ RHwX4+42Oh9PbI6otIE6XO+AmJSlSR6o8OMHmJnL5i/LdfajZ7bHQxcce4+urglSpWGGVR1eRkm
+ h6t+RWluYzGwJs420GHwk+plPW1ko73xh
+X-Google-Smtp-Source: AGHT+IGC3Qkv4uBJ7dgkYFHe1ymMGaxpCuUuJhqXMnPZee84iIyqo1NWyQnDwl2hM7BuZQmh849HzA==
+X-Received: by 2002:adf:ec4d:0:b0:3a4:cf40:ff2d with SMTP id
+ ffacd0b85a97d-3a4cf41007bmr4701214f8f.21.1748264417154; 
+ Mon, 26 May 2025 06:00:17 -0700 (PDT)
 Received: from localhost.localdomain (44.87.95.79.rev.sfr.net. [79.95.87.44])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4d90912d4sm2938178f8f.47.2025.05.26.06.00.07
+ 5b1f17b1804b1-447f182538fsm245226775e9.7.2025.05.26.06.00.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 May 2025 06:00:09 -0700 (PDT)
+ Mon, 26 May 2025 06:00:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -73,15 +74,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH 0/3] hw/boards: Remove MachineState::usb_disabled field
-Date: Mon, 26 May 2025 15:00:03 +0200
-Message-ID: <20250526130006.49817-1-philmd@linaro.org>
+Subject: [PATCH 1/3] hw/ppc/spapr: Only create default devices when requested
+Date: Mon, 26 May 2025 15:00:04 +0200
+Message-ID: <20250526130006.49817-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250526130006.49817-1-philmd@linaro.org>
+References: <20250526130006.49817-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,23 +107,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only add default devices checking defaults_enabled().
-Remove the unused usb_disabled field in MachineState.
+Only create default devices when requested, avoid have the
+machine implementation to modify the generic 'usb' boolean
+set from command line.
 
-Based-on: <20250526112346.48744-1-philmd@linaro.org>
-          "hw/ppc: Fix --without-default-devices build"
+Fixes: 4ee9ced979e ("hw/ppc/spapr: simplify usb controller creation logic")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/ppc/spapr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Philippe Mathieu-Daudé (3):
-  hw/ppc/spapr: Only create default devices when requested
-  hw/ppc/mac_newworld: Only create default devices when requested
-  hw/boards: Remove MachineState::usb_disabled field
-
- include/hw/boards.h   | 1 -
- hw/core/machine.c     | 1 -
- hw/ppc/mac_newworld.c | 3 +--
- hw/ppc/spapr.c        | 3 +--
- 4 files changed, 2 insertions(+), 6 deletions(-)
-
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 702f774cda9..bbcb4695d4c 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -3032,7 +3032,6 @@ static void spapr_machine_init(MachineState *machine)
+     has_vga = spapr_vga_init(phb->bus, &error_fatal);
+     if (has_vga) {
+         spapr->want_stdout_path = !machine->enable_graphics;
+-        machine->usb |= defaults_enabled() && !machine->usb_disabled;
+     } else {
+         spapr->want_stdout_path = true;
+     }
+@@ -3040,7 +3039,7 @@ static void spapr_machine_init(MachineState *machine)
+     if (machine->usb) {
+         pci_create_simple(phb->bus, -1, "nec-usb-xhci");
+ 
+-        if (has_vga) {
++        if (has_vga && defaults_enabled()) {
+             USBBus *usb_bus;
+ 
+             usb_bus = USB_BUS(object_resolve_type_unambiguous(TYPE_USB_BUS,
 -- 
 2.47.1
 
