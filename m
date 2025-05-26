@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EFC2AC3B21
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 10:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D1FAC3B2C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 10:09:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJSqW-0004jF-Mp; Mon, 26 May 2025 04:06:08 -0400
+	id 1uJSt7-0002R6-Q6; Mon, 26 May 2025 04:08:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uJSqO-0004XH-4D
- for qemu-devel@nongnu.org; Mon, 26 May 2025 04:06:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uJSqM-0002J1-Hk
- for qemu-devel@nongnu.org; Mon, 26 May 2025 04:05:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748246757;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HWuKDU1l3/MIRoRXixZsuU9PRyWkBtBq/fLKRMnsGQ0=;
- b=aIy1JWUxUAaQTT8zHUjJPAzdLgdn3G7KJBS5EvegZQt7H4FKS+WWVU8AbvdRYPtom9Dv18
- bFYNvGTuZOqblEmj3ZQYPlTa7EVQREXl5hbtnQERoYpLzw14yEm8GAIzndze3HZoDJsZwN
- bVfK8NVD48w0ts8nF5vQE6l1cqFajBY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-249-IX0pJxcENy-rZDP16Rs5eQ-1; Mon,
- 26 May 2025 04:05:46 -0400
-X-MC-Unique: IX0pJxcENy-rZDP16Rs5eQ-1
-X-Mimecast-MFC-AGG-ID: IX0pJxcENy-rZDP16Rs5eQ_1748246746
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DC57D195606E; Mon, 26 May 2025 08:05:45 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.45.224.49])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 442C118003FD; Mon, 26 May 2025 08:05:44 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 09/39] hw/misc/aspeed_hace: Extract non-accumulation hash
- execution into helper function
-Date: Mon, 26 May 2025 10:04:42 +0200
-Message-ID: <20250526080512.1697528-10-clg@redhat.com>
-In-Reply-To: <20250526080512.1697528-1-clg@redhat.com>
-References: <20250526080512.1697528-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uJSt0-0002H5-2v
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 04:08:42 -0400
+Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uJSsy-0002d4-39
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 04:08:41 -0400
+Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id CA1C117FA4E
+ for <qemu-devel@nongnu.org>; Mon, 26 May 2025 10:08:21 +0200 (CEST)
+Received: (qmail 18846 invoked by uid 990); 26 May 2025 08:08:21 -0000
+Authentication-Results: skiff.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+ by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
+ Mon, 26 May 2025 10:08:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Date: Mon, 26 May 2025 08:08:16 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Julian Ganz" <neither@nut.email>
+Message-ID: <ec6f71c19f2f000844e0767e6742e7de3213e023@nut.email>
+TLS-Required: No
+Subject: Re: [PATCH v5 03/25] plugins: add hooks for new discontinuity
+ related callbacks
+To: "Richard Henderson" <richard.henderson@linaro.org>
+Cc: "Pierrick Bouvier" <pierrick.bouvier@linaro.org>,
+ "=?utf-8?B?QWxleCBCZW5uw6ll?=" <alex.bennee@linaro.org>, "Alexandre
+ Iooss" <erdnaxe@crans.org>, "Mahmoud Mandour" <ma.mandourr@gmail.com>,
+ qemu-devel@nongnu.org
+In-Reply-To: <20250525205645.4366-1-neither@nut.email>
+References: <cover.1747666625.git.neither@nut.email>
+ <70c5a0d487731b08e803240061a97bfc110bfbcb.1747666625.git.neither@nut.email>
+ <edf78ed0-7ada-467e-86de-47e2515588bc@linaro.org>
+ <20250525205645.4366-1-neither@nut.email>
+X-Rspamd-Bar: -
+X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-2.967172) MIME_GOOD(-0.1)
+X-Rspamd-Score: -1.567172
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
+ h=from:to:cc:subject:date;
+ bh=byvEIwHH+LL0d171JjrxH80XMie19ZFmlJaeQ0BmJVQ=;
+ b=vJUX/JN54yZiLvtDWpoC8ZIE+ARnqUY+opj9AXawK2AnQ5JfcoHqtEQFRoT1xc8ZkTjvH0/zLA
+ 79Li5n0ANt3jRIY9uxnCFApoO7OrHwvV4/V9N3NQcZSWyKNjRmIdjl1l315QmtZdWwQok6CHod/c
+ WJMAN8dTpFS1urE2NHSsVLrvny/N+kHDFTp/e742dL4mBy74z793frCa2GKGn45ovSS0HXa5CtrG
+ oN/I7KMNzvlBjw62UhiyZvofQdQBqmAj0V9PRUs4KPKs830oQAlNHewQekqiBjDKcaOolV2tRwfR
+ grmFd8kU6JpxZWAUR6I4Rjd9LI/bFTTmLChcoOIObJEfyhLwsluSST+VqvGAqDq3Dd0YHfQHCUsQ
+ gjtSUwFmnS4nV4K8livN/2xL7jNjtEHiE9QDit9wV2x5wb6USZaERQK9Y4BZfHXpoIAnoCThl5M+
+ zAMtrjfPt6BHBek7kD25tz6I+Jvy8E4I2W4Wtg0F0AVH6R1r9HggoYnzPSB/a1AEs9NfkffAQHHb
+ 4s92KVdc71rk5FnjMukL92a7GCuk57clomXpsoJe/zQ7UJmjggtBMF2u4c7Ccrp7usmBFYeEWp30
+ RGjdSwmn8PK+JNHCYpHD2CVQS9745Iqdly2kuHth2WxiSzoPfhUlcUy4P1RduHnTqxEqdfDkK8/z
+ M=
+Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
+ envelope-from=neither@nut.email; helo=mailgate02.uberspace.is
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,75 +83,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+May 25, 2025 at 10:56 PM, "Julian Ganz" wrote:
+> Richard Henderson wrote:
+> > On 5/19/25 16:19, Julian Ganz wrote:
+> >  +QEMU_DISABLE_CFI
+> >  +static void plugin_vcpu_cb__discon(CPUState *cpu,
+> >  + enum qemu_plugin_discon_type type,
+> >  + uint64_t from)
+> >  +{
+> >  + struct qemu_plugin_cb *cb, *next;
+> >  + enum qemu_plugin_event ev;
+> >  + uint64_t to =3D cpu->cc->get_pc(cpu);
+> >  +
+> >  + if (cpu->cpu_index < plugin.num_vcpus) {
+> >  + switch (type) {
+> >  + case QEMU_PLUGIN_DISCON_INTERRUPT:
+> >  + ev =3D QEMU_PLUGIN_EV_VCPU_INTERRUPT;
+> >  + break;
+> >  + case QEMU_PLUGIN_DISCON_EXCEPTION:
+> >  + ev =3D QEMU_PLUGIN_EV_VCPU_EXCEPTION;
+> >  + break;
+> >  + case QEMU_PLUGIN_DISCON_HOSTCALL:
+> >  + ev =3D QEMU_PLUGIN_EV_VCPU_HOSTCALL;
+> >  + break;
+> >=20=20
+>=20>  No point passing in QEMU_PLUGIN_DISCON_* only to covert it to QEMU=
+_PLUGIN_EV_*.
+> >=20
+>=20It easily looks that way, and I myself stubled upon this at least one=
+ or two
+> times, but `type` is the enum we pass to the callback a few lines down =
+and part
+> of the public plugin API. `ev` on the other hand is the offset in the `=
+cb_list`.
+> So some translation is neccessary, unfortunately.
 
-To improve code readability and maintainability of do_hash_operation(), this
-commit introduces a new helper function: hash_execute_non_acc_mode().
+I just realized that you probably meant that we should pass ev as a
+parameter to plugin_vcpu_cb__discon. This we can obviously do.
 
-The helper encapsulate the hashing logic for non-accumulation mode.
-
-No functional changes are introduced.
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250515081008.583578-8-jamin_lin@aspeedtech.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/misc/aspeed_hace.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
-
-diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index 7da781f8649e..c50e228cdf95 100644
---- a/hw/misc/aspeed_hace.c
-+++ b/hw/misc/aspeed_hace.c
-@@ -248,6 +248,25 @@ static void hash_write_digest_and_unmap_iov(AspeedHACEState *s,
-     }
- }
- 
-+static void hash_execute_non_acc_mode(AspeedHACEState *s, int algo,
-+                                      struct iovec *iov, int iov_idx)
-+{
-+    g_autofree uint8_t *digest_buf = NULL;
-+    Error *local_err = NULL;
-+    size_t digest_len = 0;
-+
-+    if (qcrypto_hash_bytesv(algo, iov, iov_idx, &digest_buf,
-+                            &digest_len, &local_err) < 0) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: qcrypto hash bytesv failed : %s",
-+                      __func__, error_get_pretty(local_err));
-+        error_free(local_err);
-+        return;
-+    }
-+
-+    hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf, digest_len);
-+}
-+
- static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-                               bool acc_mode)
- {
-@@ -304,15 +323,12 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-             s->hash_ctx = NULL;
-             s->total_req_len = 0;
-         }
--    } else if (qcrypto_hash_bytesv(algo, iov, iov_idx, &digest_buf,
--                                   &digest_len, &local_err) < 0) {
--        qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash bytesv failed : %s",
--                      error_get_pretty(local_err));
--        error_free(local_err);
--        return;
--    }
- 
--    hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf, digest_len);
-+        hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf,
-+                                        digest_len);
-+    } else {
-+        hash_execute_non_acc_mode(s, algo, iov, iov_idx);
-+    }
- }
- 
- static uint64_t aspeed_hace_read(void *opaque, hwaddr addr, unsigned int size)
--- 
-2.49.0
-
+Regards,
+Julian
 
