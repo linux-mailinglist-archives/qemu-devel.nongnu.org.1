@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8072DAC439B
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 20:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D04AC439F
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 20:11:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJcDh-0003H1-M7; Mon, 26 May 2025 14:06:42 -0400
+	id 1uJcHv-0006D7-Kl; Mon, 26 May 2025 14:11:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJcDF-00036e-Eg
- for qemu-devel@nongnu.org; Mon, 26 May 2025 14:06:14 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJcHu-0006CJ-1Y
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 14:11:02 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJcDD-0004pq-I6
- for qemu-devel@nongnu.org; Mon, 26 May 2025 14:06:13 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43cfba466b2so33095665e9.3
- for <qemu-devel@nongnu.org>; Mon, 26 May 2025 11:06:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJcHs-0005f6-Aw
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 14:11:01 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-442f5b3c710so23848105e9.1
+ for <qemu-devel@nongnu.org>; Mon, 26 May 2025 11:10:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748282770; x=1748887570; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PK/3BMMw+rPIcEuLbLBqAtKj1UfFQt8uO08FuIUDDYU=;
- b=WX5uySL2yP1hyPrlTDYUz2KpXgw21GQ4jBsaaxabLmSsZOvAFzqNZvL9AemyKnuiIg
- rLrR39zpaFma5+pq93atf6qZPOTc4G/5hSm2LqW9timAoZ2WBPafNz12w20/i4QGJeg1
- LWLNyPBnFfPtHoM6h+vo2GsMLDffqho3Qj5Tbe79tIeK9PWB/BIw0dK40YDirhs4WBOu
- DiicblP6t0h+1DxGyWOVBr7TTPU9gZFVohO2Huv5sqrgCn9KHDcYIxGd0rX8/9AVBPAV
- Ldc+ioinmZ4IMrA5XXHX7fLbWGebH3+wY6O9M9kPJEJ4VK5Z2i3uI8pvouPicEHOaO3V
- NJ0w==
+ d=linaro.org; s=google; t=1748283058; x=1748887858; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=4hX3H0nQ/uRGryOBXGKaAFz/GEsqKixCKRGKQGRw0Nw=;
+ b=nT81NrpGXVdccROxwdR8gos0NNTFq/bs4zKeNjJOswOV67wZTP6RIL8/VlK1fOdTI2
+ tlKSMolL+MvkNOjHYsqAWfYf6xcv8CJjDi5y9BpLL2XPstjylyevyxET5+TBTWCbJcNo
+ gOWzW0xrVcvtOXnQaByleuTx0ZlbUlm5G3dHlvjDqgvs3pbMXUdSgG6ua4qrxvf13h9J
+ ws1K139Q29fyhh816CacIkXpbEb4JkxkEEBlAlAXxKey5fcZ4nSxxNNpQMH0qBiMCerv
+ 1jwIzNPKGcbFkZ7iyB1Fr2x+izP+gygQrwC3OOdj6KwtnwKOThySl8LSYcGmFo9iP7zm
+ b8SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748282770; x=1748887570;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PK/3BMMw+rPIcEuLbLBqAtKj1UfFQt8uO08FuIUDDYU=;
- b=aBZWL1GkGr3VD/4IbrMCCIn1iVv57ev7RQ9HlmekAgk9cse7FW4fw4x3GXC7H2X+xt
- C/Ys7UxBgS1HmAqt3shZLYJMn8XphIphWSnYFEyeyoQdJxo2XRliyvcHfUaUYSUg27CW
- k9sAYQJnluRfaExSOlJVMBkwX1NC0LhpxZXQJTRgVNdAYSHNCbcLF0TDN6sNmee7ijEt
- +6c3B8YlP8WHIWHi1UCVxI6tcSqKhohnHuSTDnErqEujYOQ0IzaOlYJ7BCiAYfnXzHlB
- uaFPeWF0EcttzMy56e1ISfHbwN09cZ5N4hoFJcCGLB/OHZV6WBmGB92CP3q5g2uEUabA
- N2FA==
-X-Gm-Message-State: AOJu0Yy17OSIbQq1UXB/7zqH0Y6W76c50DPho4HelDSeWgqMFSGHnx6x
- Eej2sr0m4MM8g8qfmpNXX6Y6CopjLLHOm1f7rnKKaUoxFqi1ncdEWje4shi5Vkl1XRXgqGpAVYM
- UzgHwdxQ=
-X-Gm-Gg: ASbGnctdJhd0zv67JQ+2WPkWFnLRo8jwTVEEFF+Fy3EqhF0Rj9JL+O7iSbKoFOFISf5
- XyrnIxaX+/9zDGa51KIZjbXLXBCMcyjFhmqw5KsXkCa7sNNwWTYeylDhFdFn09EY4WOAUO90CiZ
- xnJwadgYiLGuOBOs+U2eRM6W7WulZ61h5R73IHGOF/6cy8obt+EfjBRYjC0aYJXSmdMhpGeFBMM
- z5xD1DCG5mAuQKMjyiSArxkoVcjBfuiOTsnuX89wCAG5irPyaDIey1fIPIvhhYxXp5QchMmkfFN
- 23jY6MfHcbszcLDTUjbS/AQiWeD5KI4xYjlNy46Risms5Xz2Ygy0aM1YHXLcgI8jFgEQcHSKIeL
- XvBPWe93zHAA1QDeIWkjk5aJs1RGGZWc=
-X-Google-Smtp-Source: AGHT+IEct3U0VqUxCmKQNa7qLZzBiVK1+v0jtdEL0TFxPrlTrutfbCQicw8/ql0Dt31GE8hxRz2aig==
-X-Received: by 2002:a05:600c:4fd6:b0:43d:b85:1831 with SMTP id
- 5b1f17b1804b1-44c91bce747mr94158155e9.0.1748282769815; 
- Mon, 26 May 2025 11:06:09 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1748283058; x=1748887858;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4hX3H0nQ/uRGryOBXGKaAFz/GEsqKixCKRGKQGRw0Nw=;
+ b=DFru7ajbwvbQJnOUGtkV9TCzDpy+KVUQCFfAQY6QqdRXjMTfHEbECSIPotPizYGUqp
+ /vkDDGoN3LZ0S+n655MEq9v6sRV/VTpDWAZClmkh23LTCdOcyYdfgh2feQYrDqyCwoxa
+ A+TMp7fllPfSg5jOv4v+QrBcydOOsdJ72R8N9sLQokvRmxScqgbdD/oiRoUYH6tTgye5
+ P2+aYqsyistC97x2zpXlK9RFAtq6qMNXff1Veycl1GcaT/swtvv3T6zLGpzOeVhRvSsp
+ 2W7Sz8hoaTQU6kJ83s5cnjFdC5moDX924n0yWdB8kSiOAym/jvMXTg+ZedZ2jBJ/Ka/c
+ E+kg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWQZWKj+I25/376Rs94W0qpPELjKYAemXDGx0cREEOi3AAzmix5lOz0VwPlrwixITgaocpT7rI9Uwu3@nongnu.org
+X-Gm-Message-State: AOJu0YxkuWrrugauMLATSx2cEW1HoE07RP3S1Z1EK1OGtDQKy4VScrpO
+ GXg/Gx5ivcpoJs1/AsBkbsdc+gO3q/7epMOEtvg3rXun0L3NYyE3XMyymLN0qh1Apz3/bEhXwrv
+ 0GmzSsb0=
+X-Gm-Gg: ASbGnctKrQXLCWbohawEX9rxFmYoEpFlOjwnKn6C1Mcd9CMUnd8DcSegDRL84wjWwR6
+ xJV8MyNSnd9smz4o8waHaCUs3qcyW8PXGj6XuvqYjRGE2E1ot1pwsyXjh5lqF8qrhmdKH2Ouq+o
+ tz3kTeLpRAHB9qem676jyrlxR93gHD5U39NkDF8DEQqqwvRfucKRoxrDDgWt9V3XyUvqC1tlW0t
+ gHUBLuo4bgByvpKnYPSm2YvNS+MnFxtcNw82/x3NAug2ILVON9qENDSRqsWNH3v3z2x/u0B3Gef
+ dAeB0yXvFXs2jiz+Gt1VPfS/LWxK5DPBQzGaQGEZv3UzfNvRpwTcMCYOPsnI/8Fy8fM0jGjD3Kc
+ j884xjKtxtSeZvnFqnicqkYBF
+X-Google-Smtp-Source: AGHT+IFFgr/ne1qcBJDMbJQAu1YEVf6uq+N/Ex3btwBHU7LvVD1MvYujkqcNtnDbggk9BtKqdPocFQ==
+X-Received: by 2002:a05:600c:3849:b0:439:6118:c188 with SMTP id
+ 5b1f17b1804b1-44c91dd166bmr82436095e9.19.1748283058397; 
+ Mon, 26 May 2025 11:10:58 -0700 (PDT)
+Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4dc1172ecsm2684499f8f.48.2025.05.26.11.06.08
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 May 2025 11:06:09 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Laurent Vivier <lvivier@redhat.com>,
- qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 2/2] hw/ide/ahci: Delay a bit before completing reset
-Date: Mon, 26 May 2025 20:05:58 +0200
-Message-ID: <20250526180558.65613-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250526180558.65613-1-philmd@linaro.org>
-References: <20250526180558.65613-1-philmd@linaro.org>
+ 5b1f17b1804b1-447f38142f1sm243665085e9.31.2025.05.26.11.10.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 May 2025 11:10:57 -0700 (PDT)
+Message-ID: <3a7386f9-a4ba-4268-a3fe-45c18360d878@linaro.org>
+Date: Mon, 26 May 2025 20:10:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/xen: Fix trace_xs_node_read() params
+To: Liam Merwick <liam.merwick@oracle.com>, dwmw@amazon.co.uk,
+ anthony.perard@vates.tech, roger.pau@citrix.com,
+ xen-devel@lists.xenproject.org, qemu-devel@nongnu.org
+References: <20250523160134.218997-1-liam.merwick@oracle.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250523160134.218997-1-liam.merwick@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,165 +101,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Give few milliseconds to (emulated) hardware to complete
-its reset sequence.
+On 23/5/25 18:01, Liam Merwick wrote:
+> When the '--enable-trace-backends=syslog' build option is configured,
+> the following compilation error is encountered.
+> 
+> In file included from /usr/include/sys/syslog.h:207,
+>                   from /usr/include/syslog.h:1,
+>                   from ./trace/trace-hw_xen.h:224,
+>                   from ../hw/xen/trace.h:1,
+>                   from ../hw/xen/xen-bus-helper.c:13:
+> In function ‘syslog’,
+>      inlined from ‘_nocheck__trace_xs_node_read’ at ../hw/xen/trace-events:41:9,
+>      inlined from ‘trace_xs_node_read’ at trace/trace-hw_xen.h:903:9,
+>      inlined from ‘xs_node_read’ at ../hw/xen/xen-bus-helper.c:154:5:
+> /usr/include/bits/syslog.h:45:3: error: ‘%s’ directive argument is null [-Werror=format-overflow=]
+>     45 |   __syslog_chk (__pri, __USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ());
+>        |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> Add a check that 'value' is not null before passing it to trace_xs_node_read().
+> 
+> Fixes: e6cdeee95990 ("hw/xen: Add xs_node_read() helper function")
+> Signed-off-by: Liam Merwick <liam.merwick@oracle.com>
+> ---
+>   hw/xen/xen-bus-helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/xen/xen-bus-helper.c b/hw/xen/xen-bus-helper.c
+> index 288fad422be3..1087a585cc71 100644
+> --- a/hw/xen/xen-bus-helper.c
+> +++ b/hw/xen/xen-bus-helper.c
+> @@ -151,7 +151,7 @@ char *xs_node_read(struct qemu_xs_handle *h, xs_transaction_t tid,
+>       va_end(ap);
+>   
+>       value = qemu_xen_xs_read(h, tid, path, len);
+> -    trace_xs_node_read(path, value);
+> +    trace_xs_node_read(path, value ? value : "<null>");
+>       if (!value) {
+>           error_setg_errno(errp, errno, "failed to read from '%s'", path);
+>       }
 
-The intent is to have this model better match hardware,
-reducing firmware bugs "works in QEMU but not in real
-world" such https://github.com/FlyGoat/csmwrap/issues/14.
+Alternatively, since this is an error path:
 
-Reported-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+-- >8 --
+diff --git a/hw/xen/xen-bus-helper.c b/hw/xen/xen-bus-helper.c
+index 288fad422be..1e49e60e147 100644
+--- a/hw/xen/xen-bus-helper.c
++++ b/hw/xen/xen-bus-helper.c
+@@ -143,7 +143,8 @@ char *xs_node_read(struct qemu_xs_handle *h, 
+xs_transaction_t tid,
+                     unsigned int *len, Error **errp,
+                     const char *path_fmt, ...)
+  {
+-    char *path, *value;
++    g_autofree char *value;
++    char *path;
+      va_list ap;
+
+      va_start(ap, path_fmt);
+@@ -151,12 +152,11 @@ char *xs_node_read(struct qemu_xs_handle *h, 
+xs_transaction_t tid,
+      va_end(ap);
+
+      value = qemu_xen_xs_read(h, tid, path, len);
+-    trace_xs_node_read(path, value);
+      if (!value) {
+          error_setg_errno(errp, errno, "failed to read from '%s'", path);
++        return NULL;
+      }
+-
+-    g_free(path);
++    trace_xs_node_read(path, value);
+
+      return value;
+  }
 ---
- include/hw/ide/ahci.h   |  1 +
- hw/ide/ahci.c           | 39 +++++++++++++++++++++++++++++++++++++--
- tests/qtest/ahci-test.c |  4 ++++
- 3 files changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/ide/ahci.h b/include/hw/ide/ahci.h
-index cd07b87811b..82617835195 100644
---- a/include/hw/ide/ahci.h
-+++ b/include/hw/ide/ahci.h
-@@ -46,6 +46,7 @@ typedef struct AHCIState {
-     uint32_t ports;
-     qemu_irq irq;
-     AddressSpace *as;
-+    QEMUTimer *reset_timer;
- } AHCIState;
- 
- 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 7e586c7a0a4..cf1c5d3f3db 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -28,6 +28,7 @@
- #include "qemu/error-report.h"
- #include "qemu/log.h"
- #include "qemu/main-loop.h"
-+#include "qemu/timer.h"
- #include "system/block-backend.h"
- #include "system/dma.h"
- #include "ahci-internal.h"
-@@ -47,6 +48,7 @@ static bool ahci_map_fis_address(AHCIDevice *ad);
- static void ahci_unmap_clb_address(AHCIDevice *ad);
- static void ahci_unmap_fis_address(AHCIDevice *ad);
- static void ahci_reset_delayed(AHCIState *s, bool immediate);
-+static void ahci_reset_complete(void *opaque);
- 
- static const char *AHCIHostReg_lookup[AHCI_HOST_REG__COUNT] = {
-     [AHCI_HOST_REG_CAP]        = "CAP",
-@@ -459,7 +461,7 @@ static void ahci_mem_write(void *opaque, hwaddr addr,
-             break;
-         case AHCI_HOST_REG_CTL: /* R/W */
-             if (val & HOST_CTL_RESET) {
--                ahci_reset(s);
-+                ahci_reset_delayed(s, true);
-             } else {
-                 s->control_regs.ghc = (val & 0x3) | HOST_CTL_AHCI_EN;
-                 ahci_check_irq(s);
-@@ -1591,6 +1593,7 @@ void ahci_realize(AHCIState *s, DeviceState *qdev, AddressSpace *as)
-     s->as = as;
-     assert(s->ports > 0);
-     s->dev = g_new0(AHCIDevice, s->ports);
-+    s->reset_timer = timer_new_ms(QEMU_CLOCK_VIRTUAL, ahci_reset_complete, s);
-     ahci_reg_init(s);
-     irqs = qemu_allocate_irqs(ahci_irq_set, s, s->ports);
-     for (i = 0; i < s->ports; i++) {
-@@ -1622,8 +1625,12 @@ void ahci_uninit(AHCIState *s)
-     }
- 
-     g_free(s->dev);
-+
-+    timer_free(s->reset_timer);
- }
- 
-+#define AHCI_RESET_DELAY_MS     69  /* Arbitrary value less than 500 ms */
-+
- static void ahci_reset_complete(void *opaque)
- {
-     AHCIState *s = opaque;
-@@ -1667,7 +1674,11 @@ static void ahci_reset_delayed(AHCIState *s, bool immediate)
-     }
- 
-     if (immediate) {
-+        timer_del(s->reset_timer);
-         ahci_reset_complete(s);
-+    } else if (!timer_pending(s->reset_timer)) {
-+        timer_mod(s->reset_timer,
-+                  qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL) + AHCI_RESET_DELAY_MS);
-     }
- }
- 
-@@ -1676,6 +1687,24 @@ void ahci_reset(AHCIState *s)
-     ahci_reset_delayed(s, false);
- }
- 
-+static bool ahci_timer_needed(void *opaque)
-+{
-+    AHCIState *s = opaque;
-+
-+    return timer_pending(s->reset_timer);
-+}
-+
-+static const VMStateDescription vmstate_ahci_timer = {
-+    .name = "ahci/reset_timer",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = ahci_timer_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_TIMER_PTR(reset_timer, AHCIState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static const VMStateDescription vmstate_ncq_tfs = {
-     .name = "ncq state",
-     .version_id = 1,
-@@ -1734,7 +1763,9 @@ static int ahci_state_post_load(void *opaque, int version_id)
-         ad = &s->dev[i];
-         pr = &ad->port_regs;
- 
--        if (!(pr->cmd & PORT_CMD_START) && (pr->cmd & PORT_CMD_LIST_ON)) {
-+        if (timer_pending(s->reset_timer)) {
-+            /* Reset in progress */
-+        } else if (!(pr->cmd & PORT_CMD_START) && (pr->cmd & PORT_CMD_LIST_ON)) {
-             error_report("AHCI: DMA engine should be off, but status bit "
-                          "indicates it is still running.");
-             return -1;
-@@ -1823,6 +1854,10 @@ const VMStateDescription vmstate_ahci = {
-         VMSTATE_UINT32_EQUAL(ports, AHCIState, NULL),
-         VMSTATE_END_OF_LIST()
-     },
-+    .subsections = (const VMStateDescription * const []) {
-+        &vmstate_ahci_timer,
-+        NULL
-+    }
- };
- 
- void ahci_ide_create_devs(AHCIState *ahci, DriveInfo **hd)
-diff --git a/tests/qtest/ahci-test.c b/tests/qtest/ahci-test.c
-index e8aabfc13f5..4389aaa7f70 100644
---- a/tests/qtest/ahci-test.c
-+++ b/tests/qtest/ahci-test.c
-@@ -40,6 +40,8 @@
- #define TEST_IMAGE_SIZE_MB_LARGE (200 * 1024)
- #define TEST_IMAGE_SIZE_MB_SMALL 64
- 
-+#define AHCI_RESET_TIMEOUT_NS   (500 * 1000 * 1000)
-+
- /*** Globals ***/
- static char *tmp_path;
- static char *debug_path;
-@@ -483,6 +485,8 @@ static void ahci_test_hba_spec(AHCIQState *ahci)
- 
-     g_assert(ahci != NULL);
- 
-+    qtest_clock_step(ahci->parent->qts, AHCI_RESET_TIMEOUT_NS);
-+
-     /*
-      * Note that the AHCI spec does expect the BIOS to set up a few things:
-      * CAP.SSS    - Support for staggered spin-up            (t/f)
--- 
-2.47.1
+But your patch isn't wrong, so:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
