@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5002DAC393B
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 07:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E2AAC3937
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 07:32:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJQRp-0003Rb-86; Mon, 26 May 2025 01:32:29 -0400
+	id 1uJQRp-0003VS-Tq; Mon, 26 May 2025 01:32:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uJQRa-0002ry-Tb
+ id 1uJQRb-0002sP-57
  for qemu-devel@nongnu.org; Mon, 26 May 2025 01:32:16 -0400
-Received: from mail-ua1-x942.google.com ([2607:f8b0:4864:20::942])
+Received: from mail-vs1-xe35.google.com ([2607:f8b0:4864:20::e35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uJQRL-0002Ir-C0
- for qemu-devel@nongnu.org; Mon, 26 May 2025 01:32:02 -0400
-Received: by mail-ua1-x942.google.com with SMTP id
- a1e0cc1a2514c-87ded588c8eso282540241.2
- for <qemu-devel@nongnu.org>; Sun, 25 May 2025 22:31:57 -0700 (PDT)
+ id 1uJQRN-0002J4-S1
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 01:32:03 -0400
+Received: by mail-vs1-xe35.google.com with SMTP id
+ ada2fe7eead31-4e130b8b9acso519961137.3
+ for <qemu-devel@nongnu.org>; Sun, 25 May 2025 22:32:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748237516; x=1748842316; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FE5dwy+2bD4ehEe2dm4zv+l8JLivF5Ay29z8XQyry8Q=;
- b=d6d03jFj+3r9Z04B/k+TfFpjiA9U/SiXnAiuI0FzSQM0a7a1dt8z6bPuoo5aL4O06n
- CHwDZH331zTKOPVIav5Mq8uLnClNRHiWUkAxWuLSiPsL3iPG/zEhwWpXliaoXaEeMj1n
- s+zRFlLfNr0XIpMt895sekSpY2mEm/ynbt+uW042xX9Zkc1KiOK2LMopSvepQWUq77vJ
- O4IxTCEavRISitHKXPo2pFTX4XF9OEJJwUj243oEplsBdICHCC3r7y/qISM3NG1vQYJi
- 7cedBC5CSv0E7mgwcRHZmOBiP4fiNSwr5WHxAfzAV6RpSwaVLOTY7r+W7JIQMCZA9222
- 6UiQ==
+ d=linaro.org; s=google; t=1748237520; x=1748842320; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=K5vADRSpaCj/9JLSnM/LCtAoOlQ6L/Ad7qAHo51qFbY=;
+ b=R/fIvjEKvMbZfea3G10PL5sEknrHStq6EagxbUJN58xTUyjVwYE7kttFmpgJDDIRVJ
+ Gd4nsuciaxonWimrk3WLw3xo1HeqoGRlSV4KTm/loZ6avBSlzB8QWg9o+ootzjsvlv3U
+ aICCOneAbpOfwFrARljaNVHYOXRlr78rzdiigg3IMkYVoysYTDE0R1Y1fC85DYLHslRC
+ D3IHuqTzHB+EI+yhXLqZ8LzTCiqobqtzKx1ktcwu1pw7Lr5RMFNyxhelpqpIDLu13kfO
+ 7PQHQFyxuv8JPbY551eO8Vnhx8Z/xMUmYwHXiQHnnk3O7wCs+gW0I2LJpGSKhrIHNYAr
+ OPKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748237516; x=1748842316;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FE5dwy+2bD4ehEe2dm4zv+l8JLivF5Ay29z8XQyry8Q=;
- b=BuM/sBbkdPkB+pArM9DJe5zkHWfpeFUnVk7uI8ucyWmp6eFwsZLRrLIDUiiH3EyZ7X
- iJo8S1L1YKf0b9gevyiDSLR8w6AahPCHn5sjhMP71H4KeiAtOCnG0Iw752Jz/ayJyrwn
- idBni316o1CK9ylYt9iu2Sp54ourl52oPsHOWkKNs/KQggjilOipnAp02EpTlgQXuq/S
- +cIoIHQv8aKE18N7e+3YV+vL7ovDvXExbsNKuQeM5IdqPGevSKVROgR5MjFSchzRNlu+
- U0nXE0u7EZkwTwxp6cKsnsRiFToJGh+nsJlv1J0nNaqW15kaj0NdkXK7Gtzk8wVVHUBl
- 34qQ==
-X-Gm-Message-State: AOJu0YwXu0RhYlQVSYwhCD4rFNeGes4NubWOIvzkWGxlqdlLfc/OfOcM
- IEPCYeSeZsC7Gkc/vpe4V6PYwWJQ7PFnuACrRfIaZ3NIb+XcLKxoiJoJThDeD46zL5fzHF3A+72
- xMTo8JQv+gA==
-X-Gm-Gg: ASbGnct1GVc4EuiAK6+BcOCzSuYz8Bq49ZHEZzkBH+/ULFOkMOL1v7dmCqx+u3GVmTc
- nRsgbCdfgGzBfhhhiL1kALs8q59823Sb/qFwsco0Ktd+AyWR/omJ+iQeLfbctKPj22Z22/eXQOd
- 3FwQHhOiGvg3zIjVOGPWvP78/yrFvvWBK5PHue+wawBh8jd+7p+lqNX2GdQ0cFgMr+F1qzkK55S
- J9xfoDhQp8h+RU5VQ/BcwTUFLInHN7tX5kgiHGtQsSfg/rI5mUuG+RO/dxmnm7Csh1m1W7MmmK3
- BQ7A6dn9Yojhyx2RjHImp0suux8NWosJFPUJ0pApYiMRVcavAGqJEgPfv6jXx7I+mD+XPivRBJ3
- grRYLBOc/MM9mWUNdL7LwHg==
-X-Google-Smtp-Source: AGHT+IEuzcldqamOeAR6LQXYBr14vf8YjBhYIx3aqSXtNgpAd6Y6dkvNOFB6PufFOJQVFM9bvb0C0Q==
-X-Received: by 2002:a05:6102:3e95:b0:4e2:82b9:b377 with SMTP id
- ada2fe7eead31-4e4241609ecmr5559911137.18.1748237516382; 
- Sun, 25 May 2025 22:31:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748237520; x=1748842320;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=K5vADRSpaCj/9JLSnM/LCtAoOlQ6L/Ad7qAHo51qFbY=;
+ b=COy/MUCtVsydi25ep8t6umaSCzv/xRZ5K1DCGEmdp4Y5Bq5f3eK01PQpmss+KFQHxk
+ fddI1yTSahilk6EzYsD48aBvgBYqlQ9RJaFxTHtvUewQOwbWiugX3S7o9pQZYTgcm8/9
+ 6l5o9dLLidzgzupjTatF7RNle6CrW8ziBE0628cysxdHEuyRUtWcmEwf7UBaFuIYJ4XF
+ TjDiMAYAIAVyZ+SbvvujfXoi6XjiQzhwzNvdayh/BnktDv9n5g7rKlneL1uQzbk2EpK3
+ E6Gp8d8eeEfOo4g95sA5otauKFkHUsLDV9M7bhmMwi29jv95rLh/2VIDpjnbgT0tJoC9
+ nY7g==
+X-Gm-Message-State: AOJu0Yw8bQ5xUb/Nyk31W1tiLumfBATp15gaB2egRJDKeFD6PJeOQQWy
+ zuMxruH1ccIZYaFw3Lf0Ie9ZZT8F0TpAyCI3CtNkXamDmTZ7XZZW0Zfu4s1o6k9KETkEZOWfaSp
+ ZlHAwUJc=
+X-Gm-Gg: ASbGnctuqmPdKQaiklhgopncDibL72ORI2/bHMmYoEjTPaKhT6Spa9Wy1FefV7X9Sg/
+ QGDeFqMAHQfnB58jcyYwiXhoOxmuLQxiEJbLQHFguzBKjW5CVQBqCPT/SVsIdDf/xqfAjB3qvBN
+ euEkximq6UaNKUM59BZ1RZqpxG7vXhlqEGmgvHBo0EnwevY0zk8aTpPcDZYh4O6p/FABEfjKj/l
+ p7gch3cI7iaYKVvyOdJyxsmY07b+r4TdtWJXUU1quOFd8Bk3ieuBUPU6uJR54lkAfy28akWRRl7
+ Exp0KbBRbOBtnjb2iVrLb8GBCpggHLTLNWtbabC/7yCFVDWsLNoEi/gg5QzNG8rxwqe4sSZczk4
+ vEEDji3P92rI9S1uksR5PeQ==
+X-Google-Smtp-Source: AGHT+IFDV5nITDE+AAk4SA10CIGkWS8aapNvx5WzwccXba2SmPusZwhwjuTrqZfc1r3CMBUfZfbUGg==
+X-Received: by 2002:a05:6102:6e8a:b0:4e4:3c36:9336 with SMTP id
+ ada2fe7eead31-4e43c36952fmr3179463137.9.1748237519935; 
+ Sun, 25 May 2025 22:31:59 -0700 (PDT)
 Received: from gromero0.. (200-100-75-183.dial-up.telesp.net.br.
  [200.100.75.183]) by smtp.gmail.com with ESMTPSA id
- ada2fe7eead31-4e454da4378sm784310137.17.2025.05.25.22.31.52
+ ada2fe7eead31-4e454da4378sm784310137.17.2025.05.25.22.31.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 May 2025 22:31:55 -0700 (PDT)
+ Sun, 25 May 2025 22:31:58 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org,
 	eric.auger@redhat.com
 Cc: qemu-arm@nongnu.org, thuth@redhat.com, gustavo.romero@linaro.org,
  alex.bennee@linaro.org, mst@redhat.com, imammedo@redhat.com
-Subject: [PATCH 0/5] ACPI tests for PCI Hotplug on ARM
-Date: Mon, 26 May 2025 05:31:18 +0000
-Message-Id: <20250526053123.1434204-1-gustavo.romero@linaro.org>
+Subject: [PATCH 1/5] tests/qtest/bios-tables-test: Prepare for changes in the
+ ACPI tables
+Date: Mon, 26 May 2025 05:31:19 +0000
+Message-Id: <20250526053123.1434204-2-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250526053123.1434204-1-gustavo.romero@linaro.org>
+References: <20250526053123.1434204-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::942;
- envelope-from=gustavo.romero@linaro.org; helo=mail-ua1-x942.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e35;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-vs1-xe35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,42 +101,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series updates the existing ACPI tests to work with the new support
-for ACPI PCI hotplug on aarch64, which is now enabled by default in the
-'virt' machine. Because ACPI PCI hotplug is now enabled by default it's
-necessary to disable it (acpi-pcihp=off) for the existing tests, because
-they use the native PCI hotplug mechanism.
+This commit adds to the allow list the ACPI blob related to the base
+aarch64 'virt' machine and all of its variants, in preparation to adding
+the ACPI PCI hotplug feature, which changes the _OSC method, the GED
+device, and adds a couple of new methods, like the PDSM.
 
-It also introduces a new test variant, .acpipcihp, to test the ACPI
-tables and the AML code necessary to make the ACP PCI hotplug/unplug
-work, so in essence it tests the ACPI when 'acpi-pcihp=on'.
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+---
+ tests/qtest/bios-tables-test-allowed-diff.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-This series should not be merged before the "ACPI PCI Hotplug support on
-ARM" [0] series (under review) is in the master branch.
-
-
-Cheers,
-Gustavo
-
-[0] https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg03487.html
-
-Gustavo Romero (5):
-  tests/qtest/bios-tables-test: Prepare for changes in the ACPI tables
-  tests/qtest/bios-tables-test: Keep ACPI PCI hotplug off
-  tests/qtest/bios-tables-test: Update changed ACPI blobs
-  tests/qtest/bios-tables-test: Add aarch64 ACPI PCI hotplug test
-  qtest/bios-tables-test: Update aarch64/virt 'acpipcihp' variant blob
-
- tests/data/acpi/aarch64/virt/DSDT             | Bin 5196 -> 5178 bytes
- .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5282 -> 5264 bytes
- tests/data/acpi/aarch64/virt/DSDT.acpipcihp   | Bin 0 -> 5993 bytes
- tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6557 -> 6539 bytes
- tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7679 -> 7635 bytes
- tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5398 -> 5380 bytes
- tests/qtest/bios-tables-test.c                |  42 ++++++++++++++++--
- 7 files changed, 39 insertions(+), 3 deletions(-)
- create mode 100644 tests/data/acpi/aarch64/virt/DSDT.acpipcihp
-
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..abe00ad4ee 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,6 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/DSDT",
++"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
++"tests/data/acpi/aarch64/virt/DSDT.memhp",
++"tests/data/acpi/aarch64/virt/DSDT.pxb",
++"tests/data/acpi/aarch64/virt/DSDT.topology",
 -- 
 2.34.1
 
