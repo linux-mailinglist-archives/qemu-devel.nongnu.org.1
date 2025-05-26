@@ -2,89 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68CB6AC3BFE
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 10:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A64AAC3BE0
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 10:42:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJTXQ-00036A-GQ; Mon, 26 May 2025 04:50:28 -0400
+	id 1uJTOR-0008Gs-8s; Mon, 26 May 2025 04:41:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1uJTXN-00035r-2J
- for qemu-devel@nongnu.org; Mon, 26 May 2025 04:50:25 -0400
-Received: from mx1.zhaoxin.com ([210.0.225.12])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uJTOM-0008GO-CD
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 04:41:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1uJTXI-0007RG-Om
- for qemu-devel@nongnu.org; Mon, 26 May 2025 04:50:24 -0400
-X-ASG-Debug-ID: 1748249404-086e236c19149820001-jgbH7p
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by
- mx1.zhaoxin.com with ESMTP id 91fihcvXfPo7Av6h (version=TLSv1.2
- cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Mon, 26 May 2025 16:50:04 +0800 (CST)
-X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Mon, 26 May
- 2025 16:50:04 +0800
-Received: from ZXSHMBX1.zhaoxin.com ([::1]) by ZXSHMBX1.zhaoxin.com
- ([fe80::2c07:394e:4919:4dc1%7]) with mapi id 15.01.2507.044; Mon, 26 May 2025
- 16:50:04 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from [192.168.31.91] (10.28.66.62) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Mon, 26 May
- 2025 16:35:54 +0800
-Message-ID: <fa16f7a8-4917-4731-9d9f-7d4c10977168@zhaoxin.com>
-Date: Mon, 26 May 2025 16:35:52 +0800
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uJTOF-0006Po-QJ
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 04:41:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748248857;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=2gk8J4qdN+7/WzVTYDJmsbzuW+AyW4oYejYE3RoeY7U=;
+ b=isxOQ+OGpMtDRzalHCSY60JIHA9YQ/+LtA0pF5151PRDW0xOFXKxIbpqkkJQhxgoFOv0L4
+ ZVdN13wignw7n2unvYUzNhuzKZB3tE09sWLGEGTDuFR/h4hBHudXMRYrB3RqAQ4Duqg56v
+ dF8A3sh+uKr0MzO9Vgb8fbqqv3N+GpY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-wzDNOZWaNqeFZRDwymy0mg-1; Mon, 26 May 2025 04:40:55 -0400
+X-MC-Unique: wzDNOZWaNqeFZRDwymy0mg-1
+X-Mimecast-MFC-AGG-ID: wzDNOZWaNqeFZRDwymy0mg_1748248855
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-441c122fa56so9385395e9.2
+ for <qemu-devel@nongnu.org>; Mon, 26 May 2025 01:40:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748248854; x=1748853654;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2gk8J4qdN+7/WzVTYDJmsbzuW+AyW4oYejYE3RoeY7U=;
+ b=BL/pmwgBtBeZDsafAMCitiHJM4fUl1PpUmWENsHEP4PjDxpkj5QfgHJLJBiVrBiJmy
+ zAO8g2hAOebyghHZGEkGmt8sBV3NAs4d71ttrGaVezim6VEYr9TrQkd6xVvT5BmEmEzq
+ SsaQKvLK7sA+IbOPB/YIAvvSgnHBZjTmuuOTUxJx3bVc9aEO8mAJzmbBShCHWAI7pFc4
+ rbkQu23T0iUeT5VkZ8Ty/zMqx/VXrLx+5nGsc43cKuTBjkyvQkS74WNc/ILJZldkN5he
+ vY+WjEKT4LcLYBzQl4+MdBkU/1CqvYTy8pC4B3WLMW9fZuhG6ZLV+omOuAsl7BHW3myD
+ NhRg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVuQLfEElL58N17Xm6QfE3zvua9n6sJ0zk6WaEuFe3KyHCPV7Z+DGOQU3HWO/ojXDulE9CcCvLZ6jDR@nongnu.org
+X-Gm-Message-State: AOJu0YwjqAERXd7xm7vRj9EVIkDlDEMXDpiQh3p27XiydP7agJNFlq52
+ SFamRgtBvSl+gFnW1DS38z+UUikWHCJlBAO3OVKAIbTBF/aZnHL9b/l/iS/IoAJ4yLkDHxroBsi
+ jx8RVsN4AeF/T+K9cIHNxJRl0savGWJYnWqs8MRcQ8iqLZXUqNdo0SkF5
+X-Gm-Gg: ASbGncvXi8pKW2lA/CoTG6+D87o2dwfoywMbFxnxxcR3JozItD4crztkwmkSinMxFw4
+ 4xHxGu4cfza12sg9llEtxneEZP2matD+HqBRTu81xcn4MjIB6DxJIv+zogvDzNSBaCiQfwzx57r
+ BCNQ0B+9uSNYX5i3mRRJMJdhUCQSMfAscX5BETxUg085N22pi9Y4c5Tv2GjXfYUoJJ4oOdI0UK8
+ a/y7cCNbrLIDMenhyB5Rebq/9DbHYR/6wBR511aI6pHRJiyEnodsAZdp3JSRUXYzmFFsljhiqNo
+ q/mbeKYN2W9XZdzNtxZ+w84Ru6vU60UKylluhC5oPF274Q0PTA==
+X-Received: by 2002:a05:600c:1c8b:b0:44a:ac77:26d5 with SMTP id
+ 5b1f17b1804b1-44c919e1873mr72295655e9.14.1748248854611; 
+ Mon, 26 May 2025 01:40:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IElZTB/8NdBCXa+noVoBZEvRB3aPhx5ktQrwbM31b9TCTQt73Ii0tDgsygGfyu/Z8K7g/Y4Iw==
+X-Received: by 2002:a05:600c:1c8b:b0:44a:ac77:26d5 with SMTP id
+ 5b1f17b1804b1-44c919e1873mr72295395e9.14.1748248854225; 
+ Mon, 26 May 2025 01:40:54 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-447f78b2f19sm224943065e9.32.2025.05.26.01.40.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 May 2025 01:40:53 -0700 (PDT)
+Message-ID: <66ad7451-b7a6-4112-8f20-1af06d5b482a@redhat.com>
+Date: Mon, 26 May 2025 10:40:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for Intel
-To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-X-ASG-Orig-Subj: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved
- for Intel
-CC: Babu Moger <babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>, "Tejus
- GK" <tejus.gk@nutanix.com>, Jason Zeng <jason.zeng@intel.com>,
- Manish Mishra <manish.mishra@nutanix.com>, Tao Su <tao1.su@intel.com>,
- <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>
-References: <20250423114702.1529340-1-zhao1.liu@intel.com>
- <20250423114702.1529340-2-zhao1.liu@intel.com>
-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-In-Reply-To: <20250423114702.1529340-2-zhao1.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [RFC PATCH v11 3/4] hw/vfio/ap: Storing event information for an
+ AP configuration change event
+To: Rorie Reyes <rreyes@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, thuth@redhat.com, akrowiak@linux.ibm.com
+References: <20250523160338.41896-1-rreyes@linux.ibm.com>
+ <20250523160338.41896-4-rreyes@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250523160338.41896-4-rreyes@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.28.66.62]
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Moderation-Data: 5/26/2025 4:50:02 PM
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1748249404
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 8731
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No,
- SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
- QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.141939
- Rule breakdown below
- pts rule name              description
- ---- ---------------------- --------------------------------------------------
-Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
- helo=mx1.zhaoxin.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -59
+X-Spam_score: -6.0
+X-Spam_bar: ------
+X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,234 +157,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 4/23/25 7:46 PM, Zhao Liu wrote:
+On 5/23/25 18:03, Rorie Reyes wrote:
+> These functions can be invoked by the function that handles interception
+> of the CHSC SEI instruction for requests indicating the accessibility of
+> one or more adjunct processors has changed.
 > 
-> Per SDM, 0x80000005 leaf is reserved for Intel CPU, and its current
-> "assert" check blocks adding new cache model for non-AMD CPUs.
-> 
-> Therefore, check the vendor and encode this leaf as all-0 for Intel
-> CPU. And since Zhaoxin mostly follows Intel behavior, apply the vendor
-> check for Zhaoxin as well.
-> 
-> Note, for !vendor_cpuid_only case, non-AMD CPU would get the wrong
-> information, i.e., get AMD's cache model for Intel or Zhaoxin CPUs.
-> For this case, there is no need to tweak for non-AMD CPUs, because
-> vendor_cpuid_only has been turned on by default since PC machine v6.1.
-> 
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
 > ---
->   target/i386/cpu.c | 16 ++++++++++++++--
->   1 file changed, 14 insertions(+), 2 deletions(-)
+>   hw/vfio/ap.c                 | 53 ++++++++++++++++++++++++++++++++++++
+>   include/hw/s390x/ap-bridge.h | 39 ++++++++++++++++++++++++++
+>   2 files changed, 92 insertions(+)
 > 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 1b64ceaaba46..8fdafa8aedaf 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -7248,11 +7248,23 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->           *edx = env->cpuid_model[(index - 0x80000002) * 4 + 3];
->           break;
->       case 0x80000005:
-> -        /* cache info (L1 cache) */
-> -        if (cpu->cache_info_passthrough) {
-> +        /*
-> +         * cache info (L1 cache)
-> +         *
-> +         * For !vendor_cpuid_only case, non-AMD CPU would get the wrong
-> +         * information, i.e., get AMD's cache model. It doesn't matter,
-> +         * vendor_cpuid_only has been turned on by default since
-> +         * PC machine v6.1.
-> +         */
-> +        if (cpu->vendor_cpuid_only &&
-> +            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-> +            *eax = *ebx = *ecx = *edx = 0;
-> +            break;
-> +        } else if (cpu->cache_info_passthrough) {
->               x86_cpu_get_cache_cpuid(index, 0, eax, ebx, ecx, edx);
->               break;
->           }
+> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+> index fc435f5c5b..97a42a575a 100644
+> --- a/hw/vfio/ap.c
+> +++ b/hw/vfio/ap.c
+> @@ -10,6 +10,7 @@
+>    * directory.
+>    */
+>   
+> +#include <stdbool.h>
+>   #include "qemu/osdep.h"
+>   #include CONFIG_DEVICES /* CONFIG_IOMMUFD */
+>   #include <linux/vfio.h>
+> @@ -48,6 +49,8 @@ typedef struct APConfigChgEvent {
+>   static QTAILQ_HEAD(, APConfigChgEvent) cfg_chg_events =
+>       QTAILQ_HEAD_INITIALIZER(cfg_chg_events);
+>   
+> +static QemuMutex cfg_chg_events_lock;
 > +
->           *eax = (L1_DTLB_2M_ASSOC << 24) | (L1_DTLB_2M_ENTRIES << 16) |
->                  (L1_ITLB_2M_ASSOC <<  8) | (L1_ITLB_2M_ENTRIES);
->           *ebx = (L1_DTLB_4K_ASSOC << 24) | (L1_DTLB_4K_ENTRIES << 16) |
+>   OBJECT_DECLARE_SIMPLE_TYPE(VFIOAPDevice, VFIO_AP_DEVICE)
+>   
+>   static void vfio_ap_compute_needs_reset(VFIODevice *vdev)
+> @@ -96,6 +99,49 @@ static void vfio_ap_cfg_chg_notifier_handler(void *opaque)
+>   
+>   }
+>   
+> +int ap_chsc_sei_nt0_get_event(void *res)
+> +{
+> +    ChscSeiNt0Res *nt0_res  = (ChscSeiNt0Res *)res;
+> +    APConfigChgEvent *cfg_chg_event;
+> +
+> +    qemu_mutex_lock(&cfg_chg_events_lock);
 
-I've reviewed the cache-related CPUID path and noticed an oddity: every AMD vCPU 
-model still reports identical hard-coded values for the L1 ITLB and L1 DTLB 
-fields in leaf 0x8000_0005. Your patch fixes this for Intel(and Zhaoxin), but 
-all AMD models continue to receive the same constants in EAX/EBX.
+please consider using WITH_QEMU_LOCK_GUARD()
 
-Do you know the reason for this choice? Is the guest expected to ignore those L1 
-TLB numbers? If so, I'll prepare a patch that adjusts only the Zhaoxin defaults 
-in leaf 0x8000_0005 like below, matching real YongFeng behaviour in ecx and edx, 
-but keep eax and ebx following AMD's behaviour.
+> +    if (!ap_chsc_sei_nt0_have_event()) {
+> +        qemu_mutex_unlock(&cfg_chg_events_lock);
+> +        return EVENT_INFORMATION_NOT_STORED;
+> +    }
+> +
+> +    cfg_chg_event = QTAILQ_FIRST(&cfg_chg_events);
+> +    QTAILQ_REMOVE(&cfg_chg_events, cfg_chg_event, next);
+> +
+> +    qemu_mutex_unlock(&cfg_chg_events_lock);
+> +
+> +    memset(nt0_res, 0, sizeof(*nt0_res));
+> +    g_free(cfg_chg_event);
+> +
+> +    /*
+> +     * If there are any AP configuration change events in the queue,
+> +     * indicate to the caller that there is pending event info in
+> +     * the response block
+> +     */
+> +    if (ap_chsc_sei_nt0_have_event()) {
+> +        nt0_res->flags |= PENDING_EVENT_INFO_BITMASK;
+> +    }
+> +
+> +    nt0_res->length = sizeof(ChscSeiNt0Res);
+> +    nt0_res->code = NT0_RES_RESPONSE_CODE;
+> +    nt0_res->nt = NT0_RES_NT_DEFAULT;
+> +    nt0_res->rs = NT0_RES_RS_AP_CHANGE;
+> +    nt0_res->cc = NT0_RES_CC_AP_CHANGE;
+> +
+> +    return EVENT_INFORMATION_STORED;
+> +}
+> +
+> +bool ap_chsc_sei_nt0_have_event(void)
 
-## Notes
-1. Changes tied to "-machine smp-cache xxx" (mainly 
-x86_cpu_update_smp_cache_topo()) are not included here.
-2. Do you think I need Zhaoxin-specific legacy_l1d/l1i/l2/l3_cache helpers? If 
-yes, I'll add them with YongFeng sillicon topology data.
+hmm, no locking ?
 
---- patch prototype start ---
+> +{
+> +    return !QTAILQ_EMPTY(&cfg_chg_events);
+> +}
+> +
+>   static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+>                                             unsigned int irq, Error **errp)
+>   {
+> @@ -192,6 +238,13 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+>       VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
+>       VFIODevice *vbasedev = &vapdev->vdev;
+>   
+> +    static bool lock_initialized;
+> +
+> +    if (!lock_initialized) {
+> +        qemu_mutex_init(&cfg_chg_events_lock);
+> +        lock_initialized = true;
+> +    }
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 7b223642ba..8a17e5ffe9 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -2726,6 +2726,66 @@ static const CPUCaches xeon_srf_cache_info = {
-      },
-  };
+this could be replaced with a constructor routine. See hyperv.
 
-+static const CPUCaches yongfeng_cache_info = {
-+    .l1d_cache = &(CPUCacheInfo) {
-+        .type = DATA_CACHE,
-+        .level = 1,
-+        .size = 32 * KiB,
-+        .line_size = 64,
-+        .associativity = 8,
-+        .partitions = 1,
-+        .sets = 64,
-+        .lines_per_tag = 1,
-+        .inclusive = false,
-+        .self_init = true,
-+        .no_invd_sharing = false,
-+        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-+    },
-+    .l1i_cache = &(CPUCacheInfo) {
-+        .type = INSTRUCTION_CACHE,
-+        .level = 1,
-+        .size = 64 * KiB,
-+        .line_size = 64,
-+        .associativity = 16,
-+        .partitions = 1,
-+        .sets = 64,
-+        .lines_per_tag = 1,
-+        .inclusive = false,
-+        .self_init = true,
-+        .no_invd_sharing = false,
-+        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-+    },
-+    .l2_cache = &(CPUCacheInfo) {
-+        .type = UNIFIED_CACHE,
-+        .level = 2,
-+        .size = 256 * KiB,
-+        .line_size = 64,
-+        .associativity = 8,
-+        .partitions = 1,
-+        .sets = 512,
-+        .lines_per_tag = 1,
-+        .inclusive = true,
-+        .self_init = true,
-+        .no_invd_sharing = false,
-+        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-+    },
-+    .l3_cache = &(CPUCacheInfo) {
-+        .type = UNIFIED_CACHE,
-+        .level = 3,
-+        .size = 8 * MiB,
-+        .line_size = 64,
-+        .associativity = 16,
-+        .partitions = 1,
-+        .sets = 8192,
-+        .lines_per_tag = 1,
-+        .self_init = true,
-+        .inclusive = true,
-+        .no_invd_sharing = true,
-+        .complex_indexing = false,
-+        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
-+    },
-+};
-+
-  /* The following VMX features are not supported by KVM and are left out in the
-   * CPU definitions:
-   *
-@@ -5928,6 +5988,15 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-                      { /* end of list */ }
-                  }
-              },
-+            {
-+                .version = 3,
-+                .note = "wiith the correct model number and cache info",
-+                .props = (PropValue[]) {
-+                    { "model", "0x5b" },
-+                    { /* end of list */ }
-+                },
-+                .cache_info = &yongfeng_cache_info
-+            },
-              { /* end of list */ }
-          }
-      },
-@@ -7565,8 +7634,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, 
-uint32_t count,
-           * vendor_cpuid_only has been turned on by default since
-           * PC machine v6.1.
-           */
--        if (cpu->vendor_cpuid_only &&
--            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-+        if (cpu->vendor_cpuid_only && IS_INTEL_CPU(env)) {
-              *eax = *ebx = *ecx = *edx = 0;
-              break;
-          } else if (cpu->cache_info_passthrough) {
-@@ -7578,8 +7646,21 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, 
-uint32_t count,
-                 (L1_ITLB_2M_ASSOC <<  8) | (L1_ITLB_2M_ENTRIES);
-          *ebx = (L1_DTLB_4K_ASSOC << 24) | (L1_DTLB_4K_ENTRIES << 16) |
-                 (L1_ITLB_4K_ASSOC <<  8) | (L1_ITLB_4K_ENTRIES);
--        *ecx = encode_cache_cpuid80000005(env->cache_info_amd.l1d_cache);
--        *edx = encode_cache_cpuid80000005(env->cache_info_amd.l1i_cache);
-+
-+        if (IS_AMD_CPU(env)) {
-+            *ecx = encode_cache_cpuid80000005(env->cache_info_amd.l1d_cache);
-+            *edx = encode_cache_cpuid80000005(env->cache_info_amd.l1i_cache);
-+            break;
-+        }
-+        /* Zhaoxin follows AMD behaviour on leaf 0x8000_0005 */
-+        if (IS_ZHAOXIN_CPU(env)) {
-+            *ecx = encode_cache_cpuid80000005(env->cache_info_zhaoxin.l1d_cache);
-+            *edx = encode_cache_cpuid80000005(env->cache_info_zhaoxin.l1i_cache);
-+            break;
-+        }
-+
-+        /* Other vendors */
-+        *eax = *ebx = *ecx = *edx = 0;
-          break;
-      case 0x80000006:
-          /* cache info (L2 cache) */
-@@ -8638,7 +8719,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-              return;
-          }
-          env->cache_info_cpuid2 = env->cache_info_cpuid4 = env->cache_info_amd =
--            *cache_info;
-+            env->cache_info_zhaoxin = *cache_info;
-      } else {
-          /* Build legacy cache information */
-          env->cache_info_cpuid2.l1d_cache = &legacy_l1d_cache;
-@@ -8655,6 +8736,11 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-          env->cache_info_amd.l1i_cache = &legacy_l1i_cache_amd;
-          env->cache_info_amd.l2_cache = &legacy_l2_cache_amd;
-          env->cache_info_amd.l3_cache = &legacy_l3_cache;
-+
-+        env->cache_info_zhaoxin.l1d_cache = &legacy_l1d_cache;
-+        env->cache_info_zhaoxin.l1i_cache = &legacy_l1i_cache;
-+        env->cache_info_zhaoxin.l2_cache = &legacy_l2_cache;
-+        env->cache_info_zhaoxin.l3_cache = &legacy_l3_cache;
-      }
 
-  #ifndef CONFIG_USER_ONLY
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index d98c9ba282..46bfd6f6b0 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2062,6 +2062,7 @@ typedef struct CPUArchState {
-       * with old QEMU versions.
-       */
-      CPUCaches cache_info_cpuid2, cache_info_cpuid4, cache_info_amd;
-+    CPUCaches cache_info_zhaoxin;
+Thanks,
 
-      /* MTRRs */
-      uint64_t mtrr_fixed[11];
+C.
 
 
 
+>       if (!vfio_device_get_name(vbasedev, errp)) {
+>           return;
+>       }
+> diff --git a/include/hw/s390x/ap-bridge.h b/include/hw/s390x/ap-bridge.h
+> index 470e439a98..7efc52928d 100644
+> --- a/include/hw/s390x/ap-bridge.h
+> +++ b/include/hw/s390x/ap-bridge.h
+> @@ -16,4 +16,43 @@
+>   
+>   void s390_init_ap(void);
+>   
+> +typedef struct ChscSeiNt0Res {
+> +    uint16_t length;
+> +    uint16_t code;
+> +    uint8_t reserved1;
+> +    uint16_t reserved2;
+> +    uint8_t nt;
+> +#define PENDING_EVENT_INFO_BITMASK 0x80;
+> +    uint8_t flags;
+> +    uint8_t reserved3;
+> +    uint8_t rs;
+> +    uint8_t cc;
+> +} QEMU_PACKED ChscSeiNt0Res;
+> +
+> +#define NT0_RES_RESPONSE_CODE 1
+> +#define NT0_RES_NT_DEFAULT    0
+> +#define NT0_RES_RS_AP_CHANGE  5
+> +#define NT0_RES_CC_AP_CHANGE  3
+> +
+> +#define EVENT_INFORMATION_NOT_STORED 1
+> +#define EVENT_INFORMATION_STORED     0
+> +
+> +/**
+> + * ap_chsc_sei_nt0_get_event - Retrieve the next pending AP config
+> + * change event
+> + * @res: Pointer to a ChscSeiNt0Res struct to be filled with event
+> + * data
+> + *
+> + * This function checks for any pending AP config change events and,
+> + * if present, populates the provided response structure with the
+> + * appropriate SEI NT0 fields.
+> + *
+> + * Return:
+> + *   EVENT_INFORMATION_STORED - An event was available and written to @res
+> + *   EVENT_INFORMATION_NOT_STORED - No event was available
+> + */
+> +int ap_chsc_sei_nt0_get_event(void *res);
+> +
+> +bool ap_chsc_sei_nt0_have_event(void);
+> +>   #endif
 
 
