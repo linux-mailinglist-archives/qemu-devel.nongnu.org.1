@@ -2,72 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC577AC5A91
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 21:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED926AC59DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 20:07:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJzpW-0003wh-OQ; Tue, 27 May 2025 15:19:18 -0400
+	id 1uJygD-0004pA-KU; Tue, 27 May 2025 14:05:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <elisey.konstantinov@icloud.com>)
- id 1uJxH1-0005jh-Mn
- for qemu-devel@nongnu.org; Tue, 27 May 2025 12:35:32 -0400
-Received: from p-east3-cluster7-host7-snip4-10.eps.apple.com ([57.103.84.201]
- helo=outbound.qs.icloud.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <elisey.konstantinov@icloud.com>)
- id 1uJxGr-0002IC-Mz
- for qemu-devel@nongnu.org; Tue, 27 May 2025 12:35:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
- s=1a1hai; bh=Kgc1eFLA775ubmbKqhaqEzJUCp1tDihVnBuMpuR064g=;
- h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To:x-icloud-hme;
- b=zyqQTGB6p8SYq4h4NQb31K+2mQhwZ4VVCNY9fH/Wu5C4sDLxrhXNGws29JKxTu3Fm
- juBmYmaQLVYN4z4mLiXVnaDe1rgnaQhQI1ui5VxbrbQSrZYNCYni0zH4XMApo5To0t
- cShFOP6B1sDGL7olJLKPLvzLpZibtmL+Dw8ptRsVXs3wJcbYEt6Yg4UETZ5HycX1QM
- ffO3NSrN+C6Xe34IdBf2ISMEBFHRlebM8wSg6vKbyaPUuSiOHHp+0CopJuRUxqFK+g
- xy0F9N+/fWeAkaQfDxpsY8hxDA/utQnfG/sLn/1RJPtV9CfGCmnWP0qavf88R8oiza
- A85dbds0tBWRg==
-Received: from outbound.qs.icloud.com (localhost [127.0.0.1])
- by outbound.qs.icloud.com (Postfix) with ESMTPS id 1CB1C1800418;
- Tue, 27 May 2025 16:35:11 +0000 (UTC)
-Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com
- [17.57.155.37])
- by outbound.qs.icloud.com (Postfix) with ESMTPSA id 7379F180051E;
- Tue, 27 May 2025 16:10:59 +0000 (UTC)
-From: elisey.konstantinov@icloud.com
-Content-Type: text/plain;
-	charset=us-ascii
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1uJyfr-0004oh-Ms
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 14:05:16 -0400
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1uJyfq-0006Kh-1O
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 14:05:15 -0400
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-4769f3e19a9so20620781cf.0
+ for <qemu-devel@nongnu.org>; Tue, 27 May 2025 11:05:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1748369112; x=1748973912; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=E+2k/8Znizkb8hgO2S4nj+hwaYXmmgyB//kiTkJb/As=;
+ b=mvSS27lsjANsYBVVsP6x8LuFY7lo4WlDlLJxsYAB8z1MO92bLzpkANPBiAlaftbtO6
+ 91EYU6QHBNjdAKJ5xBN4O+mQRg+wK+zLpLrorFFsIb1v7OVmf85QnnTMSq+FzFVWsnW/
+ apJPZAus+M5a0zoERlWC7mzA2jRr+gFmjmiZtq+035Wd/eZ0WMuRAgPLTnwlHEEFNWLn
+ qOKkcny6rU85CzsglYOTxK71ciujzWDgcijE4VgvRVaaD72JmvYT+FcNzh4+uvtW8k3D
+ s12nFgOP3JyNiRvGko4H7iaDyHfFbCzewJNdJJkkRHVntjRC6ShGmFh1bVMwWh2xsMJP
+ BGTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748369112; x=1748973912;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=E+2k/8Znizkb8hgO2S4nj+hwaYXmmgyB//kiTkJb/As=;
+ b=vbq7hRWluzcoEJPI/R2uhDhTrK8EiJOP3OsFkvuN3zrEhj+lyqAg2pSLGWWduPBD/a
+ 9dqwIA3Hf207Yw+gglOZH7gbuOVLm96Ub+IcfGJQjvjMZUuTXC/8QLhAIo28fiGFq3hS
+ Cut41bxUZKt7623u0jx/mIdOuHvo8CPvdqvWYYuJwaaPz+QWY3yUCbYIPTKnXyz9ONFl
+ UUJOXsDIdlP2jLmT+R/oAueSjd4cKFZeVQNs3RSc/f3fFHpUE0zggPdUxCse1NYLmRmy
+ unk8RGF0gYZLj6Tu9bwN3inLntXuwjk/RD4cvam1RBFFc1LodzEJcXPAcnCUoT54hhgp
+ hMNg==
+X-Gm-Message-State: AOJu0Yz6OVvx4BYYg0j3jRozqEujyURJePOfjsmrQ7SfxSPvzqTNPceG
+ uEmLfxWBUmmcron6upU2PXW3KrKRxlkQr3J0nuW0/wehPW+ljKlbnmCWteTIUeDUfuTbL/5gQoc
+ A03Uyg2zB4Bi+6/3NirjZmEh6ck+5UFQYixjZ34jLxw==
+X-Gm-Gg: ASbGncsulHMhMImKNDSOmT0eSJquTtx2Fefd91Du8d+XRfV7HVJIkKaaoSNCp29kQvL
+ NVZVb/mMWz370Mqy7kfVm2C1Kb/c1yhPWYj4+/gCG0BNgHmtCjoJbzNCO8JZb7GXDCv4u9J7/yY
+ hH0AgmYxa1190Um4c0YYld/+LvLbeyXTidAMY=
+X-Google-Smtp-Source: AGHT+IE3ELvHrvD+3R35QJdJtReyV7xoqA66rLg72KZne2LwnUzDhxAe3KVd7Lc20uKWMshcpHmpmK3+SwX636ZRaYE=
+X-Received: by 2002:a05:622a:4c83:b0:476:a949:ceb6 with SMTP id
+ d75a77b69052e-49f480c8ea6mr259663301cf.44.1748369111812; Tue, 27 May 2025
+ 11:05:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250521151616.3951178-1-jmarcin@redhat.com>
+In-Reply-To: <20250521151616.3951178-1-jmarcin@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 27 May 2025 20:04:46 +0200
+X-Gm-Features: AX0GCFtoG1BbnlbSC9b7P4JpaIa81ngp1o2qGv4pAXvHlexvLRbXsEkQIDkXdXA
+Message-ID: <CAJ+F1C+wEgf8dVF40wJqBWN0vGCNYBv6wx=F3MkF4ua7WTBnbQ@mail.gmail.com>
+Subject: Re: [PATCH] ui/vnc: Update display update interval when VM state
+ changes to RUNNING
+To: Juraj Marcin <jmarcin@redhat.com>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, kraxel@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: [PATCH] Revert "i386/cpu: Set up CPUID_HT in
- x86_cpu_expand_features() instead of cpu_x86_cpuid()"
-Message-Id: <0C532D10-33ED-41F5-BBA7-13C64AA0633D@icloud.com>
-Date: Tue, 27 May 2025 19:10:27 +0300
-Cc: elisey.konstantinov@icloud.com, pbonzini@redhat.com, zhao1.liu@intel.com
-To: qemu-devel@nongnu.org
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-Proofpoint-ORIG-GUID: Tx6S_xx93UKT5yZdXuEzfVQzEkCnmZB0
-X-Proofpoint-GUID: Tx6S_xx93UKT5yZdXuEzfVQzEkCnmZB0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-27_08,2025-05-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- bulkscore=0 clxscore=1011 malwarescore=0
- spamscore=0 phishscore=0
- suspectscore=0 mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2503310001 definitions=main-2505270136
-Received-SPF: pass client-ip=57.103.84.201;
- envelope-from=elisey.konstantinov@icloud.com; helo=outbound.qs.icloud.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 27 May 2025 15:19:15 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,67 +92,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=46rom e2f3eab60e9b9787c5c8f87bea5d1bd7079d982e Mon Sep 17 00:00:00 2001
-From: Elisey <elisey.konstantinov@icloud.com>
-Date: Tue, 27 May 2025 17:17:35 +0300
-Subject: [PATCH] Revert "i386/cpu: Set up CPUID_HT in =
-x86_cpu_expand_features() instead of cpu_x86_cpuid()"
+On Wed, May 21, 2025 at 5:18=E2=80=AFPM Juraj Marcin <jmarcin@redhat.com> w=
+rote:
+>
+> From: Juraj Marcin <jmarcin@redhat.com>
+>
+> If a virtual machine is paused for an extended period time, for example,
+> due to an incoming migration, there are also no changes on the screen.
+> VNC in such case increases the display update interval by
+> VNC_REFRESH_INTERVAL_INC (50 ms). The update interval can then grow up
+> to VNC_REFRESH_INTERVAL_MAX (3000 ms).
+>
+> When the machine resumes, it can then take up to 3 seconds for the first
+> display update. Furthermore, the update interval is then halved with
+> each display update with changes on the screen. If there are moving
+> elements on the screen, such as a video, this can be perceived as
+> freezing and stuttering for few seconds before the movement is smooth
+> again.
+>
+> This patch resolves this issue, by adding a listener to VM state changes
+> and changing the update interval when the VM state changes to RUNNING.
+> The update_displaychangelistener() function updates the internal timer,
+> and the display is refreshed immediately if the timer is expired.
+>
+> Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
 
-This reverts commit c6bd2dd634208ca717b6dc010064fe34d1359080.
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-The original change caused a regression where macOS guests (XNU kernel)
-would panic during boot with a divide error (type=3D0) when using SMP
-configuration. This affects multiple macOS versions from 10.6 to 10.14
-and possibly others.
+> ---
+>  ui/vnc.c | 12 ++++++++++++
+>  ui/vnc.h |  2 ++
+>  2 files changed, 14 insertions(+)
+>
+> diff --git a/ui/vnc.c b/ui/vnc.c
+> index 9e097dc4b4..32f8bfd1f9 100644
+> --- a/ui/vnc.c
+> +++ b/ui/vnc.c
+> @@ -3384,6 +3384,16 @@ static const DisplayChangeListenerOps dcl_ops =3D =
+{
+>      .dpy_cursor_define    =3D vnc_dpy_cursor_define,
+>  };
+>
+> +static void vmstate_change_handler(void *opaque, bool running, RunState =
+state)
+> +{
+> +    VncDisplay *vd =3D opaque;
+> +
+> +    if (state !=3D RUN_STATE_RUNNING) {
+> +        return;
+> +    }
+> +    update_displaychangelistener(&vd->dcl, VNC_REFRESH_INTERVAL_BASE);
+> +}
+> +
+>  void vnc_display_init(const char *id, Error **errp)
+>  {
+>      VncDisplay *vd;
+> @@ -3420,6 +3430,8 @@ void vnc_display_init(const char *id, Error **errp)
+>      vd->dcl.ops =3D &dcl_ops;
+>      register_displaychangelistener(&vd->dcl);
+>      vd->kbd =3D qkbd_state_init(vd->dcl.con);
+> +    vd->vmstate_handler_entry =3D qemu_add_vm_change_state_handler(
+> +        &vmstate_change_handler, vd);
+>  }
+>
+>
+> diff --git a/ui/vnc.h b/ui/vnc.h
+> index acc53a2cc1..3bb23acd34 100644
+> --- a/ui/vnc.h
+> +++ b/ui/vnc.h
+> @@ -185,6 +185,8 @@ struct VncDisplay
+>  #endif
+>
+>      AudioState *audio_state;
+> +
+> +    VMChangeStateEntry *vmstate_handler_entry;
+>  };
+>
+>  typedef struct VncTight {
+> --
+> 2.49.0
+>
+>
 
-The issue occurs during kernel TSC initialization and can be worked
-around by using single-core configuration (-smp 1), but reverting this
-change restores proper multi-core functionality.
 
-Buglink: https://gitlab.com/qemu-project/qemu/-/issues/2933
-Tested-by: Elisey Konstantinov <elisey.konstantinov@icloud.com>
-Signed-off-by: Elisey Konstantinov <elisey.konstantinov@icloud.com>
----
-target/i386/cpu.c | 15 +--------------
-1 file changed, 1 insertion(+), 14 deletions(-)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 9689f6374e..c648a1cf04 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6859,6 +6859,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t =
-index, uint32_t count,
-        *edx =3D env->features[FEAT_1_EDX];
-        if (threads_per_pkg > 1) {
-            *ebx |=3D threads_per_pkg << 16;
-+            *edx |=3D CPUID_HT;
-        }
-        if (!cpu->enable_pmu) {
-            *ecx &=3D ~CPUID_EXT_PDCM;
-@@ -7838,20 +7839,6 @@ void x86_cpu_expand_features(X86CPU *cpu, Error =
-**errp)
-        }
-    }
-
--    if (x86_threads_per_pkg(&env->topo_info) > 1) {
--        env->features[FEAT_1_EDX] |=3D CPUID_HT;
--
--        /*
--         * The Linux kernel checks for the CMPLegacy bit and
--         * discards multiple thread information if it is set.
--         * So don't set it here for Intel (and other processors
--         * following Intel's behavior) to make Linux guests happy.
--         */
--        if (!IS_INTEL_CPU(env) && !IS_ZHAOXIN_CPU(env)) {
--            env->features[FEAT_8000_0001_ECX] |=3D CPUID_EXT3_CMP_LEG;
--        }
--    }
--
-    for (i =3D 0; i < ARRAY_SIZE(feature_dependencies); i++) {
-        FeatureDep *d =3D &feature_dependencies[i];
-        if (!(env->features[d->from.index] & d->from.mask)) {
 --=20
-2.39.5 (Apple Git-154)
-
-
+Marc-Andr=C3=A9 Lureau
 
