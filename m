@@ -2,93 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FBAAC5467
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 19:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFD0AC54DD
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 19:04:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJxdo-0003zV-4x; Tue, 27 May 2025 12:59:04 -0400
+	id 1uJxiw-0005eF-Nl; Tue, 27 May 2025 13:04:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uJxdk-0003zH-8Z
- for qemu-devel@nongnu.org; Tue, 27 May 2025 12:59:00 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uJxdf-000618-Ec
- for qemu-devel@nongnu.org; Tue, 27 May 2025 12:59:00 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-742c5f3456fso2844611b3a.0
- for <qemu-devel@nongnu.org>; Tue, 27 May 2025 09:58:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748365132; x=1748969932; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/rKPl9LWifiTL6pGI69wn+0j1kiKwupMKerKcEWDrw8=;
- b=qBhTYwSLW4McnniDXAXr0kNlGjOJW/p+d4eSGiU/zPoVyTMNPNjKrBdfV76C3iMh9f
- Cw1qVOdVdvHeVQmO4CvDj5qShOvBO+6ygguAshkyiGPC6SjKiu3CXzQ9GFRBxi0jEnin
- 8qL6X197Zu8VG9PgP/c88ZlQIVb9AlnvOO1p7sIqiOSzPq+ho0XUnN+Y1//g5o8TQURV
- TndEN+jkr++oy5A4BUM2XZrU8spEaPViguB90mrTQsBPfy/J9/LnhKYzKyu/ih74fe7Q
- y2KQyG8zeDOY+7MtFdEMh9JeLwy2OCTNlWPWpAFDV/CbtxtBV6NQcFyE2s2qqfsS0vAT
- R7dQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uJxit-0005dA-C1
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 13:04:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uJxim-0006fn-Re
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 13:04:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748365450;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+bQUtrj+W7/yWWbiG+VwobJE5SaWcMWQz69Z0fjaNGw=;
+ b=Bw1DXiPbaXEgMUYyrUlUIoBwPgpXTxEiX10CW5lA9KoiG0xmYNribGXiW+H0N1u9J0bhZo
+ dKBpDFZeWS6hwFmCx4S3tyE85gCmfX3vucXhI8clf/Ycaazuo/G6N7UXPkBb475Z/seQYR
+ uVJd/f6l8iJt5hXl5KJYbSQ5vXQvl18=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-455-IIfqHFz-OJ2abhKWvCGUJw-1; Tue, 27 May 2025 13:04:08 -0400
+X-MC-Unique: IIfqHFz-OJ2abhKWvCGUJw-1
+X-Mimecast-MFC-AGG-ID: IIfqHFz-OJ2abhKWvCGUJw_1748365447
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-ad86c281f42so279032666b.3
+ for <qemu-devel@nongnu.org>; Tue, 27 May 2025 10:04:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748365132; x=1748969932;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/rKPl9LWifiTL6pGI69wn+0j1kiKwupMKerKcEWDrw8=;
- b=MLcJKs2KCTfDQ04ECGlH28flefbA3Pg0rC7HHItkM7yvCmwB3F7FJtm3bF6q+LKc56
- l0LMxzi80naYk8CsuuLWIdDC8LKf7cAgrOGaX1n5B+jMbuY8RZE7tEnqHojhGwGUhfmj
- 6r5vmpAgVH2CaQabYdA697efJbTEewahwdliEUW7QmflcxQ6OEyYkOCOaAFYMPW1GNvy
- E/e+ehwauKkUsfnXJfa+bukT8OJaP3T16M7fmHuBRKRWiF5teBHmVLDCvsXSCGutRv2I
- LtrCSSFQoZc4xw4wr4Dll6q7xRzoa1LbUYZ/oCoryO5u9vZGhIhZoQvRahtZcytG3hCW
- MhBg==
-X-Gm-Message-State: AOJu0Yxm6+dn2b4q0xfqQTXRyWlaKTqhFOvUGFq7AeAIg5aAHk0calrb
- /YtTg28qznzu13bh3TAPpElLc+nt1O23A7kNlJHBja5OOEpvomcBtVcAGFh6m18r190=
-X-Gm-Gg: ASbGncvNzJSbDm+ra4mR+4eO9ecOnfVVn9VfsVON3Lu8ROb65D1/UsDACid5xFqjIql
- 26WH99Nyn2FrEiLzDKVwFw4Mv40Uh2QHvjl6iy7hqKMBoqYMR7u1c6l3tD6hzN/ArICYCun1+vN
- F1YbiK5E6ycP4Dx9j4wtlEJuT/W1aBtSgDfytclNsOMRl9ZUcje2wozW1asSkmG1/DNMPCEV5+d
- uhKyaQHIY4OtK4CXq8kll1JL3Ar8XyeChmKgofbgSooC/CCA7Lfm3ZUMv5fhHoMFQn0je++MjiO
- hLqln0PBhYzXEVkrVznnnngEOd2ibYVKftizTKs0Jc97/EAIzAenUjftprEc4G1Ns2Q2SzCmbrM
- =
-X-Google-Smtp-Source: AGHT+IFtIq5IPRBUrd/zcpMiygya0/OFtrum6isUOaCwEQ6vBBD50ohcJtU1wcU/I02fiRZGB1ErIg==
-X-Received: by 2002:a05:6a00:2443:b0:73e:23be:11fc with SMTP id
- d2e1a72fcca58-745fe05accamr17030891b3a.22.1748365132655; 
- Tue, 27 May 2025 09:58:52 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
+ d=1e100.net; s=20230601; t=1748365446; x=1748970246;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+bQUtrj+W7/yWWbiG+VwobJE5SaWcMWQz69Z0fjaNGw=;
+ b=cUH/42kXfmGYyvA4+OqI1IKvbZwNTkzAf7yc4FZIA6gTY8QjaFNd7oCqSkygynXAAM
+ OOLBrPXk4cBcoT5N/AW8A3VsHx/pjZm/TxhFnmZHH+5gKlT7QCO8ycTdbEUpCuWRk5lq
+ HmzyBfrgEMZhi8wctJUU+875K7PZSIWMjLSWEJzzYmJtgVwrLVt28uQZRj3ToCeYyNdw
+ t3Nc4rhmXbBFViYbuhA8bA2G1Q+JP/wPN7XjGPgZNyqIn6auywV4cmSb+atq+Uw0eZy5
+ 8yxqBJ2vaYuk+s0Mvk/6h+QWWFxhxeHiFFL0ncsg982Rfro4XSHjjPfyXRSS6Iah56u1
+ 5M4A==
+X-Gm-Message-State: AOJu0YyZk00dKAaRWQEGdMJPPnuYMk6Nd5LdwQ27wbQgo053VFg1lcY9
+ s8QOXxpwsqGYKFljsTBFvpEulBS3PWVOgKW2gWEVrxeg5xTvVNEcJlezyPCzXMYt/F3R8f0bAix
+ gMM/km0xaJF3oK2vu+5czTCooF3VuFZbrxtpxDK4aM4ptFNtkxYs+1ThmNIb3f+hlqTG+BtTyzu
+ TvefaAQYKV75YX0OXiNNFcy19tv8xmM1juAvTU1x4t
+X-Gm-Gg: ASbGnct9Bq+yKLdb5duzjK+ZiwfbfX1sco2se1gO0EcVcl5TAs4NkDh6jh4FEvZO6yD
+ m/uE4FhzWcuYnf6EqUdJvvLliE2EcMWA9AjyHaZA1Diqu5vs44LdrZCou59jSxA/dUvEdIYB73n
+ heQ1vTVgKhmXwpCXBMRto6ACrpO7dA1P8Zz8ipoaPvEk2TItyyaXV+l6Bx3Bnink9brEj+tEmnS
+ ElBciOWzUH7g5q0ACg+1iCIgScGcvC0bH0JSFR2FxPBesyMoEUmPRhI0J+imutOLWItZuqCzyV+
+ oTIRgt5oo1+J2A==
+X-Received: by 2002:a17:907:7207:b0:ad8:9428:6a35 with SMTP id
+ a640c23a62f3a-ad894286cc0mr238406566b.7.1748365446342; 
+ Tue, 27 May 2025 10:04:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHr1la6R4qetkiI4EyZincW6nFrFxeMC0AvMwEURCq1x5KT7VBiS94H1KZeoBmetl0ZxoF/YQ==
+X-Received: by 2002:a17:907:7207:b0:ad8:9428:6a35 with SMTP id
+ a640c23a62f3a-ad894286cc0mr238400066b.7.1748365445782; 
+ Tue, 27 May 2025 10:04:05 -0700 (PDT)
+Received: from [192.168.122.1] ([151.95.46.79])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7462c99ebf2sm938953b3a.25.2025.05.27.09.58.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 May 2025 09:58:52 -0700 (PDT)
-Message-ID: <5e069cf6-0494-4ddb-98b1-be895b1b464e@linaro.org>
-Date: Tue, 27 May 2025 09:58:51 -0700
+ a640c23a62f3a-ad5b192cb0asm1097532966b.170.2025.05.27.10.04.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 May 2025 10:04:05 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org
+Subject: [PATCH 0/6] rust: update build system for Meson 1.8.1
+Date: Tue, 27 May 2025 19:03:58 +0200
+Message-ID: <20250527170404.1580482-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 15/15] qapi/misc-i386: move errors to their own
- documentation section
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, michael.roth@amd.com, thuth@redhat.com,
- pbonzini@redhat.com, richard.henderson@linaro.org, peter.maydell@linaro.org,
- berrange@redhat.com, philmd@linaro.org
-References: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
- <20250522190542.588267-16-pierrick.bouvier@linaro.org>
- <87msayqoz1.fsf@pond.sub.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <87msayqoz1.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,13 +103,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/27/25 4:20 AM, Markus Armbruster wrote:
-> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
-> 
->> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> 
-> My comment on the previous patch applies.
-> 
+Meson 1.7.0 and 1.8.0 include improved support for Rust, namely:
+* support for "objects" in Rust executables
+* support for doctest targets
+* invoking clippy and rustdoc
 
-I'm not sure to which comment exactly you refer to.
+Use it to remove BQL-related hacks, fix --enable-modules --enable-rust
+and also simplify the Meson logic for building the qemu-api crate
+(which may help splitting the crate, too).
+
+Note that this does *not* yet require 1.8.1 for all of QEMU; the
+requirement is only there if Rust is enabled.
+
+Paolo
+
+Supersedes: <20250405100603.253421-1-pbonzini@redhat.com>
+
+
+
+Paolo Bonzini (6):
+  meson: update to version 1.8.1
+  rust: use "objects" for Rust executables as well
+  build, dockerfiles: add support for detecting rustdoc
+  rust: add qemu-api doctests to "meson test"
+  rust: cell: remove support for running doctests with "cargo test
+    --doc"
+  rust: use native Meson support for clippy and rustdoc
+
+ docs/devel/rust.rst                           |  12 ++++---
+ configure                                     |  16 +++++++++
+ meson.build                                   |   4 ++-
+ .gitlab-ci.d/buildtest-template.yml           |   3 +-
+ .gitlab-ci.d/buildtest.yml                    |  11 ++-----
+ rust/clippy.toml => clippy.toml               |   0
+ python/scripts/vendor.py                      |   4 +--
+ python/wheels/meson-1.5.0-py3-none-any.whl    | Bin 959846 -> 0 bytes
+ python/wheels/meson-1.8.1-py3-none-any.whl    | Bin 0 -> 1013001 bytes
+ pythondeps.toml                               |   2 +-
+ rust/Cargo.toml                               |   1 -
+ rust/meson.build                              |  14 ++------
+ rust/qemu-api/meson.build                     |  31 +++++++-----------
+ rust/qemu-api/src/cell.rs                     |  22 +++++--------
+ scripts/rust/rustc_args.py                    |   5 +--
+ .../dockerfiles/fedora-rust-nightly.docker    |   2 ++
+ tests/docker/dockerfiles/ubuntu2204.docker    |   1 +
+ tests/lcitool/mappings.yml                    |   6 +++-
+ tests/lcitool/refresh                         |   3 ++
+ 19 files changed, 69 insertions(+), 68 deletions(-)
+ rename rust/clippy.toml => clippy.toml (100%)
+ delete mode 100644 python/wheels/meson-1.5.0-py3-none-any.whl
+ create mode 100644 python/wheels/meson-1.8.1-py3-none-any.whl
+
+-- 
+2.49.0
+
 
