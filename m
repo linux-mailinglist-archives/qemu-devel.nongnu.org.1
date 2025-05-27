@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D896CAC5DB2
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 01:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48750AC5DAF
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 01:15:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uK3Tv-0003Jj-QB; Tue, 27 May 2025 19:13:15 -0400
+	id 1uK3Tu-0003JN-O5; Tue, 27 May 2025 19:13:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK3Ts-0003Ib-SL
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK3Ts-0003Ig-Vi
  for qemu-devel@nongnu.org; Tue, 27 May 2025 19:13:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK3Tq-0001Dv-UC
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK3Tr-0001E7-GB
  for qemu-devel@nongnu.org; Tue, 27 May 2025 19:13:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748387590;
+ s=mimecast20190719; t=1748387591;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L8xxihyV1kwj1WX+SgxHrTlMY975PGImx8ozXT5u7mk=;
- b=M9GpP/B6Aszmg4shXrGyXElJXh+HHngMHdHJsKQxFsL93RQ4W6JcgktGebmOziC4PSXB+z
- XDWln+SQIPr+jIIqslaIuEmLz74vcfH8z7B2xRcSNnfWFvcsurDsBMTZU2iFdW+8AIjrsU
- f809ogBFKuIfPWOyBXY/Kp4j+Cztlh0=
+ bh=e0bhbecsmzeOLXe9dkL8LSOz4qm8m26wuFzD/NSoKEY=;
+ b=Mej4WPp7j9hKCyM4+GM0eJd+8lbUgfP9umRirYyw5qY3nuKkFFlY7fOSL6yMqPeGQDfcKh
+ dDIZhLYctLWtEH5Xoj+p50MNHt7YQlA+rfrx2af3UKWQBJHtEx3v6Yeee/UYcHPQCO9a5G
+ 1WTZQQgM7Y/SAG6ufwkPj9kgS1z+1Tg=
 Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
  [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-Iu4NqknGN2OjgOOIh0dbAw-1; Tue, 27 May 2025 19:13:08 -0400
-X-MC-Unique: Iu4NqknGN2OjgOOIh0dbAw-1
-X-Mimecast-MFC-AGG-ID: Iu4NqknGN2OjgOOIh0dbAw_1748387588
+ us-mta-76-J9W93IK8Pdy-O3yLCUTJww-1; Tue, 27 May 2025 19:13:09 -0400
+X-MC-Unique: J9W93IK8Pdy-O3yLCUTJww-1
+X-Mimecast-MFC-AGG-ID: J9W93IK8Pdy-O3yLCUTJww_1748387589
 Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-478f78ff9beso116118981cf.1
- for <qemu-devel@nongnu.org>; Tue, 27 May 2025 16:13:08 -0700 (PDT)
+ d75a77b69052e-4768d63b1dcso5496611cf.1
+ for <qemu-devel@nongnu.org>; Tue, 27 May 2025 16:13:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748387587; x=1748992387;
+ d=1e100.net; s=20230601; t=1748387589; x=1748992389;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L8xxihyV1kwj1WX+SgxHrTlMY975PGImx8ozXT5u7mk=;
- b=ubGXlD7LxVYwimoUVCI+OAjvc/WYbHEoUVpwG4lKnd/djQhXXWpioGvdb5e6T3DbHS
- jBK0GAW7wDI38bVu1agO91hTslq/Z52JvYdk9WQsSdOmAySSTe8fRIWjnqoSzP5f9RRu
- f3gVw0KpGZSL6f835qQZRSbpgho3+/RNJtuGmsl2M71nvKT6QNQS3VKGmT9YQL84lVVJ
- CuCq+I79sO4sOpLit/cIRC/m5Kwn9AagSWSXZFGK6yg+DATaVrCIjX0X8ca+vp2vxX1N
- 4QyGjuhg1ZWgKF293FKTI4mxmWrOLTCt55aDZSy1fq9o1PM7ZN5Ei/BheMku22KKEWDX
- r4QQ==
-X-Gm-Message-State: AOJu0YzQ1Yo8NzcosjRJMfkqasbOx2imSyc60WvZRFHOmXmY7WuioAV1
- R6yAwHFRl0KTylvkdgM/KG4SNJ8aN5NZMw90tlKaxQuNL6p95OgeORHsiarr4o9BYUn/VMBjyc3
- Ua8Hxlrr/NjJPMoFOCNeFlyeWKncRAIc4ieVTKJIR8ye5u9caFebdXOP+3lMvqCVCEJqb+58IF9
- fknG5zaRuyJx2uUDA1xpBdXKY2+EejU3IFLrR2CA==
-X-Gm-Gg: ASbGncsEKJHZObhzsCd20ZG2uZWU46nuJyRp8ib5BW18Fl/g/U8w/W3c5vDgqFEpOoN
- r+y+bT7DsE3zlXlBjR005PYvoGrdyCDKP02QeHG0Gyv3jJzr7Xv5QOPqwcKs3KejxNuvhAq/uGY
- MOrlxObKchfNHEhV4tB7mN3KsNCNmN0qUEq/ub6PfU8PhbQ4S9fGn2nLvGt3V9I5BnmlQ8yZSv4
- AN0NMRq458TF1EezW6u/fbcF4OUVS/UMjygwpxgzMEWVPTgb9tgNfEXCmqnSgnyEyANeQUYZfKv
-X-Received: by 2002:a05:622a:4c0e:b0:48d:7c95:4878 with SMTP id
- d75a77b69052e-49f46e3b379mr236342641cf.29.1748387587549; 
- Tue, 27 May 2025 16:13:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE1sxba2rgi/DbE8hy//0giKNyhhtBIrget6BSYEYRHm6fbQONqdiKkdz2qg3Okp6dp6mXDog==
-X-Received: by 2002:a05:622a:4c0e:b0:48d:7c95:4878 with SMTP id
- d75a77b69052e-49f46e3b379mr236342301cf.29.1748387587183; 
- Tue, 27 May 2025 16:13:07 -0700 (PDT)
+ bh=e0bhbecsmzeOLXe9dkL8LSOz4qm8m26wuFzD/NSoKEY=;
+ b=U/5mdQQTS0JgwhR/pAs3p8eYBTCyas3ruXFqX0w60NlvZd9vkFCwlAdRcKgCBWrXhB
+ iRtnoXwa36BQL8AWDINfRQU83vS+oV8wQabFOK+haiqEl/rNJYRGMjkF7i5Tn4BTlqyI
+ 75cfgMh8fbMCAbT3yUZqvIXRU/4FZzhtP6+z8x+xlM8gKB0pcPjBWUeOmF5tLcSDu4qJ
+ 8zBBZaX1RzxlX4Eihiwg0mrhgWxaHVIYlXQJTNuhLFbBpol0VQPUmaNc7qbsApbuxCSz
+ aHe20gCvGo0u49+/p8jJSGxzUrXUUvbyCl4z5cf5O+YvucAEERA8VSiJk1I00wYhuB+u
+ JGVA==
+X-Gm-Message-State: AOJu0YzTB0fnzpVHJ9ZKLDUBfgkVx5DQhUjIf2vVmrWmywno2jOYP2op
+ sZOjUd+8jM/ChndqEr0nPztMwoGlf635Ie2G7U6XxTcX7Rnc1J4FcDz63//77URpNzYU5s7eeFo
+ RvWgchyDlvXS/Fukn8kaNqPOVsoWgf40mTS0otEbAvCOJRss9k/A0KkzAN9CEWH7Ty4ToDzsbXb
+ yCuJDZ44kE6fOcqEOqOI05Up6fALAjsL0csPqnRw==
+X-Gm-Gg: ASbGnct76ujHvoeUXeI0Hz9EekXimuhCMyY7Zr07ve4/aHZv/shzXrn0afBycRywnN9
+ uIwk0tPtBADbtMqSYIEDCW6fDNUByt/G62d8tYdynsk5XhsbvPPm9B+w3eyN7uTLWZournz/3uo
+ 1f0X60SjHmO9v91MB7MwO/qPYdPxvAynHveJ0801iyxGWNApMf6xsEV+efOEG3GFeTqZev9BRgu
+ w3S3Flfsx/lHtbSp6agWHjiwp1bydMp6q46NIwS9XwVkdcBbhh8+Yfi25EgDvLerAhYDset1zab
+X-Received: by 2002:a05:622a:244c:b0:48d:66ee:662a with SMTP id
+ d75a77b69052e-4a2f52fcd28mr42988451cf.26.1748387589025; 
+ Tue, 27 May 2025 16:13:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLs72MzepzXmA3vk1RLSkqhrEba0KURDIVug8ClPX+AubGrlpgj3ljrU4tUmG7AiE6XDWKow==
+X-Received: by 2002:a05:622a:244c:b0:48d:66ee:662a with SMTP id
+ d75a77b69052e-4a2f52fcd28mr42988001cf.26.1748387588640; 
+ Tue, 27 May 2025 16:13:08 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4a2f939cad3sm1984441cf.79.2025.05.27.16.13.04
+ d75a77b69052e-4a2f939cad3sm1984441cf.79.2025.05.27.16.13.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 May 2025 16:13:05 -0700 (PDT)
+ Tue, 27 May 2025 16:13:07 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Dr . David Alan Gilbert" <dave@treblig.org>, peterx@redhat.com,
  Alexey Perevalov <a.perevalov@samsung.com>,
- Fabiano Rosas <farosas@suse.de>, Juraj Marcin <jmarcin@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH 08/13] migration/postcopy: Report fault latencies in blocktime
-Date: Tue, 27 May 2025 19:12:43 -0400
-Message-ID: <20250527231248.1279174-9-peterx@redhat.com>
+ Fabiano Rosas <farosas@suse.de>, Juraj Marcin <jmarcin@redhat.com>
+Subject: [PATCH 09/13] migration/postcopy: Initialize blocktime context only
+ until listen
+Date: Tue, 27 May 2025 19:12:44 -0400
+Message-ID: <20250527231248.1279174-10-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527231248.1279174-1-peterx@redhat.com>
 References: <20250527231248.1279174-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -105,243 +105,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Blocktime so far only cares about the time one vcpu (or the whole system)
-got blocked.  It would be also be helpful if it can also report the latency
-of page requests, which could be very sensitive during postcopy.
+Before this patch, the blocktime context can be created very early, because
+postcopy_ram_supported_by_host() <- migrate_caps_check() can happen during
+migration object init.
 
-Blocktime itself is sometimes not very important, especially when one
-thinks about KVM async PF support, which means vCPUs are literally almost
-not blocked at all because the guest OS is smart enough to switch to
-another task when a remote fault is needed.
+The trick here is the blocktime context needs system vCPU information,
+which seems to be possible to change after that point.  I didn't verify it,
+but it doesn't sound right.
 
-However, latency is still sensitive and important because even if the guest
-vCPU is running on threads that do not need a remote fault, the workload
-that accesses some missing page is still affected.
+Now move it out and initialize the context only when postcopy listen
+starts.  That is already during a migration so it should be guaranteed the
+vCPU topology can never change on both sides.
 
-Add two entries to the report, showing how long it takes to resolve a
-remote fault.  Mention in the QAPI doc that this is not the real average
-fault latency, but only the ones that was requested for a remote fault.
+While at it, assert that the ctx isn't created instead this time; the old
+"if" trick isn't needed when we're sure it will only happen once now.
 
-Unwrap get_vcpu_blocktime_list() so we don't need to walk the list twice,
-meanwhile add the entry checks in qtests for all postcopy tests.
-
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: Dr. David Alan Gilbert <dave@treblig.org>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- qapi/migration.json                   | 13 +++++
- migration/migration-hmp-cmds.c        | 70 ++++++++++++++++++---------
- migration/postcopy-ram.c              | 48 ++++++++++++------
- tests/qtest/migration/migration-qmp.c |  3 ++
- 4 files changed, 97 insertions(+), 37 deletions(-)
+ migration/postcopy-ram.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8b9c53595c..8b13cea169 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -236,6 +236,17 @@
- #     This is only present when the postcopy-blocktime migration
- #     capability is enabled.  (Since 3.0)
- #
-+# @postcopy-latency: average remote page fault latency (in us).  Note that
-+#     this doesn't include all faults, but only the ones that require a
-+#     remote page request.  So it should be always bigger than the real
-+#     average page fault latency. This is only present when the
-+#     postcopy-blocktime migration capability is enabled.  (Since 10.1)
-+#
-+# @postcopy-vcpu-latency: average remote page fault latency per vCPU (in
-+#     us).  It has the same definition of @postcopy-latency, but instead
-+#     this is the per-vCPU statistics. This is only present when the
-+#     postcopy-blocktime migration capability is enabled.  (Since 10.1)
-+#
- # @socket-address: Only used for tcp, to know what the real port is
- #     (Since 4.0)
- #
-@@ -275,6 +286,8 @@
-            '*blocked-reasons': ['str'],
-            '*postcopy-blocktime': 'uint32',
-            '*postcopy-vcpu-blocktime': ['uint32'],
-+           '*postcopy-latency': 'uint64',
-+           '*postcopy-vcpu-latency': ['uint64'],
-            '*socket-address': ['SocketAddress'],
-            '*dirty-limit-throttle-time-per-round': 'uint64',
-            '*dirty-limit-ring-full-time': 'uint64'} }
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 3cf890b887..a18049a7e8 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -52,6 +52,53 @@ static void migration_global_dump(Monitor *mon)
-                    ms->clear_bitmap_shift);
- }
- 
-+static void migration_dump_blocktime(Monitor *mon, MigrationInfo *info)
-+{
-+    if (info->has_postcopy_blocktime) {
-+        monitor_printf(mon, "Postcopy Blocktime (ms): %" PRIu32 "\n",
-+                       info->postcopy_blocktime);
-+    }
-+
-+    if (info->has_postcopy_vcpu_blocktime) {
-+        uint32List *item = info->postcopy_vcpu_blocktime;
-+        int count = 0;
-+
-+        monitor_printf(mon, "Postcopy vCPU Blocktime (ms): \n [");
-+
-+        while (item) {
-+            monitor_printf(mon, "%"PRIu32", ", item->value);
-+            item = item->next;
-+            /* Each line 10 vcpu results, newline if there's more */
-+            if ((++count % 10 == 0) && item) {
-+                monitor_printf(mon, "\n  ");
-+            }
-+        }
-+        monitor_printf(mon, "\b\b]\n");
-+    }
-+
-+    if (info->has_postcopy_latency) {
-+        monitor_printf(mon, "Postcopy Latency (us): %" PRIu64 "\n",
-+                       info->postcopy_latency);
-+    }
-+
-+    if (info->has_postcopy_vcpu_latency) {
-+        uint64List *item = info->postcopy_vcpu_latency;
-+        int count = 0;
-+
-+        monitor_printf(mon, "Postcopy vCPU Latencies (us): \n [");
-+
-+        while (item) {
-+            monitor_printf(mon, "%"PRIu64", ", item->value);
-+            item = item->next;
-+            /* Each line 10 vcpu results, newline if there's more */
-+            if ((++count % 10 == 0) && item) {
-+                monitor_printf(mon, "\n  ");
-+            }
-+        }
-+        monitor_printf(mon, "\b\b]\n");
-+    }
-+}
-+
- void hmp_info_migrate(Monitor *mon, const QDict *qdict)
- {
-     bool show_all = qdict_get_try_bool(qdict, "all", false);
-@@ -202,28 +249,7 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
-                        info->dirty_limit_ring_full_time);
-     }
- 
--    if (info->has_postcopy_blocktime) {
--        monitor_printf(mon, "Postcopy Blocktime (ms): %" PRIu32 "\n",
--                       info->postcopy_blocktime);
--    }
--
--    if (info->has_postcopy_vcpu_blocktime) {
--        uint32List *item = info->postcopy_vcpu_blocktime;
--        int count = 0;
--
--        monitor_printf(mon, "Postcopy vCPU Blocktime (ms): \n [");
--
--        while (item) {
--            monitor_printf(mon, "%"PRIu32", ", item->value);
--            item = item->next;
--            /* Each line 10 vcpu results, newline if there's more */
--            if ((++count % 10 == 0) && item) {
--                monitor_printf(mon, "\n  ");
--            }
--        }
--        monitor_printf(mon, "\b\b]\n");
--    }
--
-+    migration_dump_blocktime(mon, info);
- out:
-     qapi_free_MigrationInfo(info);
- }
 diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 46a8fdb6c2..2aca41b3d7 100644
+index 2aca41b3d7..e73f5d1cc7 100644
 --- a/migration/postcopy-ram.c
 +++ b/migration/postcopy-ram.c
-@@ -166,20 +166,6 @@ static struct PostcopyBlocktimeContext *blocktime_context_new(void)
-     return ctx;
- }
- 
--static uint32List *get_vcpu_blocktime_list(PostcopyBlocktimeContext *ctx)
--{
--    MachineState *ms = MACHINE(qdev_get_machine());
--    uint32List *list = NULL;
--    int i;
--
--    for (i = ms->smp.cpus - 1; i >= 0; i--) {
--        QAPI_LIST_PREPEND(
--            list, (uint32_t)(ctx->vcpu_blocktime_total[i] / 1000));
--    }
--
--    return list;
--}
--
- /*
-  * This function just populates MigrationInfo from postcopy's
-  * blocktime context. It will not populate MigrationInfo,
-@@ -191,15 +177,47 @@ void fill_destination_postcopy_migration_info(MigrationInfo *info)
- {
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     PostcopyBlocktimeContext *bc = mis->blocktime_ctx;
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    uint64_t latency_total = 0, faults = 0;
-+    uint32List *list_blocktime = NULL;
-+    uint64List *list_latency = NULL;
-+    int i;
- 
-     if (!bc) {
-         return;
+@@ -324,13 +324,13 @@ static bool ufd_check_and_apply(int ufd, MigrationIncomingState *mis,
      }
  
-+    for (i = ms->smp.cpus - 1; i >= 0; i--) {
-+        uint64_t latency, total, count;
-+
-+        /* This is in milliseconds */
-+        QAPI_LIST_PREPEND(list_blocktime,
-+                          (uint32_t)(bc->vcpu_blocktime_total[i] / 1000));
-+
-+        /* The rest in microseconds */
-+        total = bc->vcpu_blocktime_total[i];
-+        latency_total += total;
-+        count = bc->vcpu_faults_count[i];
-+        faults += count;
-+
-+        if (count) {
-+            latency = total / count;
-+        } else {
-+            /* No fault detected */
-+            latency = 0;
-+        }
-+
-+        QAPI_LIST_PREPEND(list_latency, latency);
+ #ifdef UFFD_FEATURE_THREAD_ID
++    /*
++     * Postcopy blocktime conditionally needs THREAD_ID feature (introduced
++     * to Linux in 2017). Always try to enable it when QEMU is compiled
++     * with such environment.
++     */
+     if (UFFD_FEATURE_THREAD_ID & supported_features) {
+         asked_features |= UFFD_FEATURE_THREAD_ID;
+-        if (migrate_postcopy_blocktime()) {
+-            if (!mis->blocktime_ctx) {
+-                mis->blocktime_ctx = blocktime_context_new();
+-            }
+-        }
+     }
+ #endif
+ 
+@@ -1238,6 +1238,11 @@ int postcopy_ram_incoming_setup(MigrationIncomingState *mis)
+         return -1;
+     }
+ 
++    if (migrate_postcopy_blocktime()) {
++        assert(mis->blocktime_ctx == NULL);
++        mis->blocktime_ctx = blocktime_context_new();
 +    }
 +
-     info->has_postcopy_blocktime = true;
-     info->postcopy_blocktime = (uint32_t)(bc->total_blocktime / 1000);
-     info->has_postcopy_vcpu_blocktime = true;
--    info->postcopy_vcpu_blocktime = get_vcpu_blocktime_list(bc);
-+    info->postcopy_vcpu_blocktime = list_blocktime;
-+    info->has_postcopy_latency = true;
-+    info->postcopy_latency = faults ? (latency_total / faults) : 0;
-+    info->has_postcopy_vcpu_latency = true;
-+    info->postcopy_vcpu_latency = list_latency;
- }
- 
- static uint64_t get_postcopy_total_blocktime(void)
-diff --git a/tests/qtest/migration/migration-qmp.c b/tests/qtest/migration/migration-qmp.c
-index fb59741b2c..1a5ab2d229 100644
---- a/tests/qtest/migration/migration-qmp.c
-+++ b/tests/qtest/migration/migration-qmp.c
-@@ -358,6 +358,9 @@ void read_blocktime(QTestState *who)
- 
-     rsp_return = migrate_query_not_failed(who);
-     g_assert(qdict_haskey(rsp_return, "postcopy-blocktime"));
-+    g_assert(qdict_haskey(rsp_return, "postcopy-vcpu-blocktime"));
-+    g_assert(qdict_haskey(rsp_return, "postcopy-latency"));
-+    g_assert(qdict_haskey(rsp_return, "postcopy-vcpu-latency"));
-     qobject_unref(rsp_return);
- }
- 
+     /* Now an eventfd we use to tell the fault-thread to quit */
+     mis->userfault_event_fd = eventfd(0, EFD_CLOEXEC);
+     if (mis->userfault_event_fd == -1) {
 -- 
 2.49.0
 
