@@ -2,62 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40792AC4E29
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 14:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB58AC4D8F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 13:34:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJt1z-0003eK-14; Tue, 27 May 2025 08:03:43 -0400
+	id 1uJsS5-0007Pf-4h; Tue, 27 May 2025 07:26:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1uJt1u-0003dW-8z; Tue, 27 May 2025 08:03:38 -0400
-Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJsRt-0007P7-7k
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 07:26:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1uJt1m-00057z-0l; Tue, 27 May 2025 08:03:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
- Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=yima1nGxODtmOyU6SbGTW9h9zw+/b2Gwa6neFo8mOxg=; b=afPSkjfWnOsNWuivbpN6o6WTyB
- 3Bb0lG9AsZEcVcab+TXasSs9NDgs4ZQQf/9NHK+yakpyE2u13OkKuMkWtZTcHDrfEMKLh5PNfKkaY
- ODe/uOU4ZUt/ToA14R3dG2JfaoUsRPPP7b+C1obtd9LV28+4wi5OSB2dX1Sa3RBZrKRsxEZg7PuZx
- xpEto3j+ZV4RPPOwuv82Ck/dZmUuD5fYKLwTfDjNVCbPOTvedpr8uhvd9xXc72P0JcPkamCUSvYZk
- nnH0kyuXwtHeRCDBxxCwJ0Uiw6MbGGeQ3FzThZFzWk5zv6h6jVS63Hsi7/mZeNqYaA3HOW+LcbYtv
- ewpZakAg==;
-Received: from [167.98.27.226] (helo=rainbowdash)
- by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1uJsQ9-002w7a-NH; Tue, 27 May 2025 12:24:38 +0100
-Received: from ben by rainbowdash with local (Exim 4.98.2)
- (envelope-from <ben@rainbowdash>) id 1uJsQA-00000001DqM-1GQC;
- Tue, 27 May 2025 12:24:38 +0100
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-To: nazar.kazakov@codethink.co.uk, joseph.baker@codethink.co.uk,
- fran.redondo@codethink.co.uk, lawrence.hunter@codethink.co.uk,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org
-Cc: ben.dooks@codethink.co.uk,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 3/3] hw/riscv: set cva6 to use TYPE_RISCV_CPU_CVA6
-Date: Tue, 27 May 2025 12:24:37 +0100
-Message-Id: <20250527112437.291445-4-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.37.2.352.g3c44437643
-In-Reply-To: <20250527112437.291445-1-ben.dooks@codethink.co.uk>
-References: <20250527112437.291445-1-ben.dooks@codethink.co.uk>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJsRq-0000fr-Cn
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 07:26:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748345179;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=keouVtNDLt3Vrg6EA9R6TxBKEn3jgNstk9s8BTzlCS0=;
+ b=Vrak63MEiPmuy6OUh0KmSuB7bBRocyIjVA8MPgTWAtQ4MNkaFItrqVilS1REG/tuTd7ozf
+ KfF1rFg9TBckt1CTysirNx6TJi17MzUenPKjjRLFZEdk2flJlfJMP6nY/KOmUb2RWoF+md
+ q6t0Mfvtg06DArNMu/02jh1r7C9d5ws=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-Ptw3IMF8OqO4kSpfHSK2aQ-1; Tue,
+ 27 May 2025 07:26:18 -0400
+X-MC-Unique: Ptw3IMF8OqO4kSpfHSK2aQ-1
+X-Mimecast-MFC-AGG-ID: Ptw3IMF8OqO4kSpfHSK2aQ_1748345177
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D44EC180035C; Tue, 27 May 2025 11:26:16 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.2])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6F53E180049D; Tue, 27 May 2025 11:26:16 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id BFC2C21E675E; Tue, 27 May 2025 13:26:13 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org,  michael.roth@amd.com,  thuth@redhat.com,
+ pbonzini@redhat.com,  richard.henderson@linaro.org,
+ peter.maydell@linaro.org,  berrange@redhat.com,  philmd@linaro.org
+Subject: Re: [PATCH v4 02/15] qapi: expand docs for SEV commands
+In-Reply-To: <20250522190542.588267-3-pierrick.bouvier@linaro.org> (Pierrick
+ Bouvier's message of "Thu, 22 May 2025 12:05:29 -0700")
+References: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
+ <20250522190542.588267-3-pierrick.bouvier@linaro.org>
+Date: Tue, 27 May 2025 13:26:13 +0200
+Message-ID: <87h616qoq2.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=188.40.203.114;
- envelope-from=srv_ts003@codethink.com; helo=imap4.hz.codethink.co.uk
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,28 +87,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change to using TYPE_RISCV_CPU_CVA6 once this is merged.
+Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
----
- hw/riscv/cva6.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> From: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>
+> This gives some more context about the behaviour of the commands in
+> unsupported guest configuration or platform scenarios.
+>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>  qapi/misc-target.json | 43 ++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 36 insertions(+), 7 deletions(-)
+>
+> diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+> index c5f9f6be7e1..6b857efc1cc 100644
+> --- a/qapi/misc-target.json
+> +++ b/qapi/misc-target.json
+> @@ -110,7 +110,11 @@
+>  ##
+>  # @query-sev:
+>  #
+> -# Returns information about SEV
+> +# Returns information about SEV/SEV-ES/SEV-SNP.
+> +#
+> +# If unavailable due to an incompatible configuration the
+> +# returned @enabled field will be set to 'false' and the
+> +# state of all other fields is undefined.
+>  #
+>  # Returns: @SevInfo
+>  #
+> @@ -141,7 +145,16 @@
+>  ##
+>  # @query-sev-launch-measure:
+>  #
+> -# Query the SEV guest launch information.
+> +# Query the SEV/SEV-ES guest launch information.
+> +#
+> +# This is only valid on x86 machines configured with KVM and the
+> +# 'sev-guest' confidential virtualization object. The launch
 
-diff --git a/hw/riscv/cva6.c b/hw/riscv/cva6.c
-index 3adfa8b5cc..e6fd0ebafc 100644
---- a/hw/riscv/cva6.c
-+++ b/hw/riscv/cva6.c
-@@ -83,8 +83,7 @@ static void cva6_machine_class_init(ObjectClass *oc, const void *data)
-     mc->init = cva6_machine_init;
-     mc->max_cpus = 1;
-     mc->default_ram_id = "cva6.ram";
--    /* start with "max" cpu type until we sort out CVA6 type */
--    mc->default_cpu_type = TYPE_RISCV_CPU_MAX;
-+    mc->default_cpu_type = TYPE_RISCV_CPU_CVA6;
-     mc->default_ram_size = cva6_memmap[CVA6_DRAM].size;
- };
- 
--- 
-2.37.2.352.g3c44437643
+Humor me, please: separate sentences with two spaces for consistency.
+
+> +# measurement for SEV-SNP guests is only available within
+> +# the guest.
+> +#
+> +# This will return an error if the launch measurement is
+> +# unavailable, either due to an invalid guest configuration
+> +# or if the guest has not reached the required SEV state.
+>  #
+>  # Returns: The @SevLaunchMeasureInfo for the guest
+>  #
+> @@ -185,8 +198,9 @@
+>  ##
+>  # @query-sev-capabilities:
+>  #
+> -# This command is used to get the SEV capabilities, and is supported
+> -# on AMD X86 platforms only.
+> +# This command is used to get the SEV capabilities, and is only
+> +# supported on AMD X86 platforms with KVM enabled. If SEV is not
+> +# available on the platform an error will be returned.
+>  #
+>  # Returns: SevCapability objects.
+>  #
+> @@ -205,7 +219,15 @@
+>  ##
+>  # @sev-inject-launch-secret:
+>  #
+> -# This command injects a secret blob into memory of SEV guest.
+> +# This command injects a secret blob into memory of a SEV/SEV-ES guest.
+> +#
+> +# This is only valid on x86 machines configured with KVM and the
+> +# 'sev-guest' confidential virtualization object. SEV-SNP guests
+> +# do not support launch secret injection
+
+Missing period at the end of sentence.
+
+> +#
+> +# This will return an error if launch secret injection is not possible,
+> +# either due to an invalid guest configuration, or if the guest has not
+> +# reached the required SEV state.
+
+Slightly long lines.  docs/devel/qapi-code-gen.rst:
+
+    For legibility, wrap text paragraphs so every line is at most 70
+    characters long.
+
+>  #
+>  # @packet-header: the launch secret packet header encoded in base64
+>  #
+> @@ -236,8 +258,15 @@
+>  ##
+>  # @query-sev-attestation-report:
+>  #
+> -# This command is used to get the SEV attestation report, and is
+> -# supported on AMD X86 platforms only.
+> +# This command is used to get the SEV attestation report.
+> +#
+> +# This is only valid on x86 machines configured with KVM and the
+> +# 'sev-guest' confidential virtualization object. The attestation
+> +# report for SEV-SNP guests is only available within the guest.
+> +#
+> +# This will return an error if the attestation report is
+> +# unavailable, either due to an invalid guest configuration
+> +# or if the guest has not reached the required SEV state.
+>  #
+>  # @mnonce: a random 16 bytes value encoded in base64 (it will be
+>  #     included in report)
 
 
