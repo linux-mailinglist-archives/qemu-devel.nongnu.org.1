@@ -2,67 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0627AC5C65
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 23:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06885AC5CB8
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 00:01:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uK27o-0001Id-MU; Tue, 27 May 2025 17:46:20 -0400
+	id 1uK2K7-0004hJ-2R; Tue, 27 May 2025 17:59:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uK27n-0001IM-LN
- for qemu-devel@nongnu.org; Tue, 27 May 2025 17:46:19 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK2K5-0004gs-9H
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 17:59:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uK27m-0006ge-5z
- for qemu-devel@nongnu.org; Tue, 27 May 2025 17:46:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID;
- bh=WQxExaAzIIDN1D3YOjeRqRgj8jTMXSxBSNMEL4Vz93I=; b=t8EUyUdxPTGTuVXcwwsN/3olAb
- N4f5n8hA1buMdvKrm5LQhtBRo+oD2+jDUpDZtpcEoJCb14gIH34+AEihjeSbaY9NSZTDYSgneXwnM
- FwS0ov/9HvCwbFSqcvNnO2MEJkkMjGtOnIF0DbAc+xoej74jzN8ru4NMCRpaPpim+MWoo/9/CL8BU
- HIJwbpsFcPdlckNT9intRIef9rj0gU3PLG438YyLBo1790KeFRuHbMrFB3Z/LFni4q6QB57BR/oQg
- GNTZWa4jc+89vCuWM80a8F0kx+ssVIcfUHcf1h00cwOC63tennYYMJDq8wwtl9zToGEL5MKyhy0bt
- 0Q30q22G6LCbRkIpw2io9H5xZFtXVMB1tGGyyKckOg9uNAwr02sW1K+aK+4cJJJUUASNCD/T19l/y
- Db/7OdWXy+vAeGjRmv2zWhGRW9nrXsJSbgNv5MhKwpY1PsBfc4EpU+djCqIyGCD/4tkV2990KSUBB
- FJihRto+IxWDkvPk6dwXy9f5Elw+OkWv5TJ3P7R4+xbl1tNd9pwg40VspGDgUPglBJOxB+SKuIelO
- pkgc//7SnVasd0NF7sHmnRSpEHaFzBae/ODZBybdkPfMZ0ZnJHhSJP0KKBczyqhAxw3SF0Vy0JOx/
- dU1MzU3hIfA0ziXMNnBaG4gnlyYkhb0z9s4IpaPh4=;
-Received: from [2a02:8012:2f01:0:7607:4cc5:5176:1da8]
- (helo=localhost.localdomain)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1uK26P-0002hf-Do
- for qemu-devel@nongnu.org; Tue, 27 May 2025 22:44:54 +0100
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK2K1-00085s-Rp
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 17:59:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748383136;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=SzjMwRn1rvI6Q4SnN2ASTrwfZT8jwIWDMFe811+Mqqw=;
+ b=NhfmkiAeHLm1xNNfKQ1shrxYDtRE9jZOfYPpaM+GFgbbnkZMixVeUofsHCnSg8GF4BlWC0
+ YJ2oeHsC6Tli0hVXl44uku/t0VZnuG+yUoRVH5qH6AmGOMh2WA/W5mOhfFEWGjt4VJYCDW
+ s+6xFMy5bLfaSSLz4sEg2O27NKrwg8A=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-ceLBQOMrOAukz1--Ry3n8w-1; Tue, 27 May 2025 17:58:55 -0400
+X-MC-Unique: ceLBQOMrOAukz1--Ry3n8w-1
+X-Mimecast-MFC-AGG-ID: ceLBQOMrOAukz1--Ry3n8w_1748383134
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6faa9ffe50fso40636566d6.3
+ for <qemu-devel@nongnu.org>; Tue, 27 May 2025 14:58:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748383134; x=1748987934;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SzjMwRn1rvI6Q4SnN2ASTrwfZT8jwIWDMFe811+Mqqw=;
+ b=BKWIERNdMCWVZx77d1NccN3BGA+4huJxSsAfq8pYKGAuy8ubJWJVMTZcfz1fZ0MYe4
+ Xu4nCpz1C7ElqDE0S2XKhbSoeEdz9xsCKVXIdydPi6WS8B3AzjKVDWKwZGFnJmvmwddW
+ B+hWJlevCV1F/L+fxIVT2Ud6asKY3mYn/Y36084IMmjRfxO/fwDC7ZvrSdksWkoYBUUX
+ A5CWUOE/Fb55WOtMXFIfjHTAXvTehlKPHWQYLzuWKRsiYOCQ7SvfekMuV1iaOhirufBy
+ K5CXf7/uV8tS27fuilFCHfeLQKDUmAu3ZF1vbLRPWNFh/0AYZEZ4CXjyYyzvU/apH8Kv
+ gZMg==
+X-Gm-Message-State: AOJu0YyRNgaXXS2zDCacVJ1O074dzuPVhmrjyBj2B8qXHaLH0VjFvfE/
+ RrkJJn8UPT0UAEnS9vor+5GZ2FZ2+g1wgBrnufeb5TEKvPZQN/WLGEtsnKikmTFeP/Y0Y/NxY8a
+ TOVrGIKAqCe4FEHddOaHDW+rxrzaFJWeVElAhNbf4KOA2cDfhF/0eV+jNkQ8pVz9MlMI+r97pZC
+ Kh31NwYH6Ft+CldVNz0DiwktBGQRP2B08KmUJxHA==
+X-Gm-Gg: ASbGncs0OLBXWH8HmZr8eTmdojP96eSt0MDB3BD2YL9AdY/V38ISEnECgDhuAUu0h3B
+ panBGR4hUpzSOckEueZujw3psQAgJcknafR/nYNV2k1ZuDDh1DSebsQUUGhMuts9DEKsczO+8t2
+ C8i/bd8GOG2MgOrgBmCRfaGcYSYUo56B2FbvrdnA4ZO7AgqWg6vGxxdCuObNawQegY3Rz0BCxtq
+ EMEs/RSf6s22wWj6iGeQNIADDWTGMaxkRVUcNi/P7ro81xFm1s3hZxv0jjdL0chmKckbdeAx0yX
+X-Received: by 2002:ad4:5bad:0:b0:6e8:f4e2:26e1 with SMTP id
+ 6a1803df08f44-6fa9d1533b1mr219451696d6.20.1748383134245; 
+ Tue, 27 May 2025 14:58:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGeaCABUqaf5MVlesW1vYIdCLtoyAjhVHecMAIk9t8tVQpMbO8JK4QI2QvzkrXF/qdbavxSxQ==
+X-Received: by 2002:ad4:5bad:0:b0:6e8:f4e2:26e1 with SMTP id
+ 6a1803df08f44-6fa9d1533b1mr219451386d6.20.1748383133845; 
+ Tue, 27 May 2025 14:58:53 -0700 (PDT)
+Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6fabe4f27cdsm914516d6.49.2025.05.27.14.58.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 May 2025 14:58:53 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
-Date: Tue, 27 May 2025 22:46:05 +0100
-Message-Id: <20250527214605.350903-2-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250527214605.350903-1-mark.cave-ayland@ilande.co.uk>
-References: <20250527214605.350903-1-mark.cave-ayland@ilande.co.uk>
+Cc: Juraj Marcin <jmarcin@redhat.com>, peterx@redhat.com,
+ Fabiano Rosas <farosas@suse.de>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>
+Subject: [PATCH 00/11] migration: Some enhancements and cleanups for 10.1
+Date: Tue, 27 May 2025 17:58:39 -0400
+Message-ID: <20250527215850.1271072-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.49.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a02:8012:2f01:0:7607:4cc5:5176:1da8
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 1/1] target/sparc: don't set FSR_NVA when comparing unordered
- floats
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,38 +102,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Chigot <chigot@adacore.com>
+The series is based on a small patch from Yanfei Xu here:
 
-FSR_NVA should be set when one of the operands is a signaling NaN or
-when using FCMPEx instructions. But those cases are already handled
-within check_ieee_exception or floatxx_compare functions.
-Otherwise, it should be left untouched.
+Based-on: <20250514115827.3216082-1-yanfei.xu@bytedance.com>
+https://lore.kernel.org/r/20250514115827.3216082-1-yanfei.xu@bytedance.com
 
-FTR, this was detected by inf-compare-[5678] tests within gcc
-testsuites.
+This is a series that collected many of either enhancements or cleanups I
+got for QEMU 10.1, which almost came from when working on the last patch.
 
-Signed-off-by: Clément Chigot <chigot@adacore.com>
-Message-Id: <20250425093513.863289-1-chigot@adacore.com>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- target/sparc/fop_helper.c | 1 -
- 1 file changed, 1 deletion(-)
+The last patch, which is a oneliner, can further reduce 10% postcopy page
+fault latency with preempt mode enabled.
 
-diff --git a/target/sparc/fop_helper.c b/target/sparc/fop_helper.c
-index a49334150d..29fd166438 100644
---- a/target/sparc/fop_helper.c
-+++ b/target/sparc/fop_helper.c
-@@ -445,7 +445,6 @@ static uint32_t finish_fcmp(CPUSPARCState *env, FloatRelation r, uintptr_t ra)
-     case float_relation_greater:
-         return 2;
-     case float_relation_unordered:
--        env->fsr |= FSR_NVA;
-         return 3;
-     }
-     g_assert_not_reached();
+      Before: 268.00us (+-1.87%)
+      After:  232.67us (+-2.01%)
+
+The patch layout is as following:
+
+Patch 1:         A follow up of HMP change for "info migrate", per
+                 suggestion from Dave
+Patch 2:         Yet another HMP fix for blocktime displays
+Patch 3-10:      Cleanups everywhere, especially please take a look at
+                 patch 10 which changes the core switchover decision logic
+Patch 11:        The one-liner optimization
+
+Comments welcomed, thanks.
+
+Peter Xu (11):
+  migration/hmp: Reorg "info migrate" once more
+  migration/hmp: Fix postcopy-blocktime per-vCPU results
+  migration/docs: Move docs for postcopy blocktime feature
+  migration/bg-snapshot: Do not check for SKIP in iterator
+  migration: Drop save_live_complete_postcopy hook
+  migration: Rename save_live_complete_precopy to save_complete
+  migration: qemu_savevm_complete*() helpers
+  migration/ram: One less indent for ram_find_and_save_block()
+  migration/ram: Add tracepoints for ram_save_complete()
+  migration: Rewrite the migration complete detect logic
+  migration/postcopy: Avoid clearing dirty bitmap for postcopy too
+
+ docs/devel/migration/postcopy.rst | 36 +++++++-------
+ include/migration/register.h      | 26 ++++------
+ hw/ppc/spapr.c                    |  2 +-
+ hw/s390x/s390-stattrib.c          |  2 +-
+ hw/vfio/migration.c               |  2 +-
+ migration/block-dirty-bitmap.c    |  3 +-
+ migration/migration-hmp-cmds.c    | 82 ++++++++++++++++--------------
+ migration/migration.c             | 61 ++++++++++++++++-------
+ migration/ram.c                   | 32 +++++++-----
+ migration/savevm.c                | 83 +++++++++++++++++--------------
+ migration/trace-events            |  1 +
+ 11 files changed, 185 insertions(+), 145 deletions(-)
+
 -- 
-2.39.5
+2.49.0
 
 
