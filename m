@@ -2,65 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6F5AC5211
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 17:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E07C0AC5246
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 17:44:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJwFW-0001gX-NA; Tue, 27 May 2025 11:29:54 -0400
+	id 1uJwS4-0006Ee-0W; Tue, 27 May 2025 11:42:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uJwFU-0001g1-8S
- for qemu-devel@nongnu.org; Tue, 27 May 2025 11:29:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uJwS0-0006EO-Jn
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 11:42:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uJwFQ-0001O1-PA
- for qemu-devel@nongnu.org; Tue, 27 May 2025 11:29:52 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uJwRu-00039A-I6
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 11:42:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748359786;
+ s=mimecast20190719; t=1748360559;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CCvPT9Qh8N6WBHksbMF8yPY2VPhwxxJPUp9k1VX1H90=;
- b=a1Wb30k4hSw6S539Y9mdI1YFha+FEfVj6romVy3Uu64J80/qWK66iWC6kIZ+wi5aJWVg54
- jPCsC07lAhnOWbZRE7T87Y49J1sUW1aQflIL9edjaqm3yU27YIfmpEES9HGJtfViwAW5zd
- QYtw4XqSgzOlhJVFv32QSopSEGKXdq8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-25-XMg1hHCNMzWg-4xzvzttnw-1; Tue,
- 27 May 2025 11:29:42 -0400
-X-MC-Unique: XMg1hHCNMzWg-4xzvzttnw-1
-X-Mimecast-MFC-AGG-ID: XMg1hHCNMzWg-4xzvzttnw_1748359781
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0E2AF1954236; Tue, 27 May 2025 15:29:40 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.34.20])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B4BF430001B0; Tue, 27 May 2025 15:29:34 +0000 (UTC)
-Date: Tue, 27 May 2025 17:29:31 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, den@virtuozzo.com,
- andrey.drobyshev@virtuozzo.com, hreitz@redhat.com,
- stefanha@redhat.com, eblake@redhat.com, jsnow@redhat.com,
- vsementsov@yandex-team.ru, xiechanglong.d@gmail.com,
- wencongyang2@huawei.com, berto@igalia.com, fam@euphon.net, ari@tuxera.com
-Subject: Re: [PATCH v3 11/24] block: move drain outside of
- bdrv_set_backing_hd_drained()
-Message-ID: <aDXaW_Xr5etQejUd@redhat.com>
-References: <20250526132140.1641377-1-f.ebner@proxmox.com>
- <20250526132140.1641377-12-f.ebner@proxmox.com>
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=GYjzf1at/wubZxWng6gwod5nngx9YBoemHxwSWxJDjU=;
+ b=fyWLGxtnjYV7jXDdIRUyDYUmxGwMa7DwUuw3RsGHMtTDN3ZN4xqbFpYCVaVYGMs3NmQfVr
+ VsTanfIASwcZGMOmkotRlHxm95esp5/txvQ95K0Bw481ohrWMH4sj57qnPEAJsWfgP7wIs
+ zUQd1o+9Pt9doOJ8eKMVHi5SQd/+gYg=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-142-rIjJkSklNyW72pZ_acNO_w-1; Tue, 27 May 2025 11:42:37 -0400
+X-MC-Unique: rIjJkSklNyW72pZ_acNO_w-1
+X-Mimecast-MFC-AGG-ID: rIjJkSklNyW72pZ_acNO_w_1748360557
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-6049c728b24so1699066a12.3
+ for <qemu-devel@nongnu.org>; Tue, 27 May 2025 08:42:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748360557; x=1748965357;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GYjzf1at/wubZxWng6gwod5nngx9YBoemHxwSWxJDjU=;
+ b=r4KSA9FtJcUJwBGL/38BH7MPykLjzYAd78ubAH8ORyD9JqDPAxXNRiCggKhYxJPh9x
+ 4/cnnZ847LhiAa2Mdat1pwy2oWxkT6G395XQ8uZ0QcLDgs+IxBVBJNeBVQs3kjsTQO+v
+ K7w6O3Q4HBmgFtE0OHQqJqBwmgt8GetYqyRB1FDW4JdF9+lYCKrN17ARGhY9N6/XO59U
+ MguhLK0u1a8ryEeHS6biKaV7XxJmg8Vhef1qptn0Q3KPtCJWgXGxEMYepeLB8Lww12+B
+ 3J/fovQvQ02BOrqtUh13lb6f2589erlcXPULyL2JXnaxfHSe5O4CMuZVQV9HyX8nGTjV
+ 2QFQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVu7xig8AUvS+syMt55J/eeGOp3Htpr7gv8CzcMHGHB6WFVAEaNrVsbV6KmkV+aUmVGUkws5gQukAjR@nongnu.org
+X-Gm-Message-State: AOJu0YyKOOhjKiE7cXk7J93BItf5vPE2n4ZEaMrb0t0bihyFHZ8fcSUG
+ pdePhJjgpNN9GdK97NPyNRUvxKZLf2geMvgvS/lU+OEH2/GHhsgZt7vhs9p5nZ48E3bZic3+UZx
+ V3A8oTEb+ymFH0fx+CcFKZGbWgU++l7xySbmS9Ifd/plXtWrCe0b15f99
+X-Gm-Gg: ASbGnctmbt0hzduvSABDPRTIEVxtIo+gTRJWAmt/uXO5pEMcWGCnGAanVDPTfIkY4zU
+ 1orOpYcxaIWjbQHvP8KDPzEPk8KIWNqRqjjcfkNuy36l9TAuOZGXTBu6NEo8E6LvCyC+wLLXYTB
+ VvMYHyDrtM9TkDmAHb7/uywDE7rElq9cjYeaoI8hHMSa9DUjfvsGCPITIeenhqxcOABqITg2BLz
+ 4dT97OBAe/FwSItY4zdeROUjpsZVQUf7Nb3ktK/QQK4MNfs3r3vHtUGaVZb2Pudgj5qQIhBQorn
+ GHm3ugC7M3l04Q==
+X-Received: by 2002:a05:6402:26c1:b0:601:d9f4:eac6 with SMTP id
+ 4fb4d7f45d1cf-602da407b05mr9682384a12.21.1748360556424; 
+ Tue, 27 May 2025 08:42:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEegxgAG/pZUT5UobRfnKytKcy4UOj5G7CA/Z5+y7WjCTMgwf4Db1IDF2kQYfIv6uzrtVUh/A==
+X-Received: by 2002:a05:6402:26c1:b0:601:d9f4:eac6 with SMTP id
+ 4fb4d7f45d1cf-602da407b05mr9682369a12.21.1748360556004; 
+ Tue, 27 May 2025 08:42:36 -0700 (PDT)
+Received: from [192.168.10.27] ([151.95.46.79])
+ by smtp.googlemail.com with ESMTPSA id
+ 4fb4d7f45d1cf-6045b95d2d1sm4498742a12.24.2025.05.27.08.42.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 May 2025 08:42:35 -0700 (PDT)
+Message-ID: <1a5cfe89-f7e2-4e3a-862b-5d5f761e145d@redhat.com>
+Date: Tue, 27 May 2025 17:42:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250526132140.1641377-12-f.ebner@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/6] target/i386: Update EPYC CPU models for Cache
+ property, RAS, SVM feature and add EPYC-Turin CPU model
+To: Babu Moger <babu.moger@amd.com>
+Cc: zhao1.liu@intel.com, qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ davydov-max@yandex-team.ru
+References: <cover.1746734284.git.babu.moger@amd.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <cover.1746734284.git.babu.moger@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -85,70 +147,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 26.05.2025 um 15:21 hat Fiona Ebner geschrieben:
-> This is part of resolving the deadlock mentioned in commit "block:
-> move draining out of bdrv_change_aio_context() and mark GRAPH_RDLOCK".
+On 5/8/25 21:57, Babu Moger wrote:
 > 
-> The function bdrv_set_backing_hd_drained() holds the graph lock, so it
-> is not allowed to drain. It is called by:
-> 1. bdrv_set_backing_hd(), where a drained section is introduced,
->    replacing the previously present bs-specific drains.
-> 2. stream_prepare(), where a drained section is introduced replacing
->    the previously present bs-specific drains.
+> Following changes are implemented in this series.
 > 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> 1. Fixed the cache(L2,L3) property details in all the EPYC models.
+> 2. Add RAS feature bits (SUCCOR, McaOverflowRecov) on all EPYC models
+> 3. Add missing SVM feature bits required for nested guests on all EPYC models
+> 4. Add the missing feature bit fs-gs-base-ns(WRMSR to {FS,GS,KERNEL_G}S_BASE is
+>     non-serializing). This bit is added in EPYC-Genoa and EPYC-Turin models.
+> 5. Add RAS, SVM, fs-gs-base-ns and perfmon-v2 on EPYC-Genoa and EPYC-Turin models.
+> 6. Add support for EPYC-Turin.
+>     (Add all the above feature bits and few additional bits movdiri, movdir64b,
+>      avx512-vp2intersect, avx-vnni, prefetchi, sbpb, ibpb-brtype, srso-user-kernel-no).
+
+Queued, thanks.
+
+Paolo
+
+> Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
+> Link: https://www.amd.com/content/dam/amd/en/documents/corporate/cr/speculative-return-stack-overflow-whitepaper.pdf
 > ---
+> v7: Rebased on top latest 57b6f8d07f14 (upstream/master) Merge tag 'pull-target-arm-20250506'
+>      Added new feature bit PREFETCHI. KVM support for the bit is added recently.
+>      https://github.com/kvm-x86/linux/commit/d88bb2ded2ef
+>      Paolo, These patches have been pending for a while. Please consider merging when you get a chance.
 > 
-> No changes in v3.
+> v6: Initialized the boolean feature bits to true where applicable.
+>      Added Reviewed-by tag from Zhao.
 > 
->  block.c        | 6 ++----
->  block/stream.c | 6 ++----
->  2 files changed, 4 insertions(+), 8 deletions(-)
+> v5: Add EPYC-Turin CPU model
+>      Dropped ERAPS and RAPSIZE bits from EPYC-Turin models as kernel support for
+>      these bits are not done yet. Users can still use the options +eraps,+rapsize
+>      to test these featers.
+>      Add Reviewed-by tag from Maksim for the patches already reviewed.
 > 
-> diff --git a/block.c b/block.c
-> index 64db71e38d..75322789b5 100644
-> --- a/block.c
-> +++ b/block.c
-> @@ -3569,7 +3569,6 @@ int bdrv_set_backing_hd_drained(BlockDriverState *bs,
->          assert(bs->backing->bs->quiesce_counter > 0);
->      }
->  
-> -    bdrv_drain_all_begin();
->      ret = bdrv_set_file_or_backing_noperm(bs, backing_hd, true, tran, errp);
->      if (ret < 0) {
->          goto out;
-> @@ -3578,7 +3577,6 @@ int bdrv_set_backing_hd_drained(BlockDriverState *bs,
->      ret = bdrv_refresh_perms(bs, tran, errp);
->  out:
->      tran_finalize(tran, ret);
-> -    bdrv_drain_all_end();
->      return ret;
->  }
-
-Do we need to update the comment for bdrv_set_backing_hd_drained()?
-
- * If a backing child is already present (i.e. we're detaching a node), that
- * child node must be drained.
-
-Same as in the previous patch, this is now probably all nodes.
-
-> @@ -3594,11 +3592,11 @@ int bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
->      bdrv_graph_rdunlock_main_loop();
->  
->      bdrv_ref(drain_bs);
-> -    bdrv_drained_begin(drain_bs);
-> +    bdrv_drain_all_begin();
->      bdrv_graph_wrlock();
->      ret = bdrv_set_backing_hd_drained(bs, backing_hd, errp);
->      bdrv_graph_wrunlock();
-> -    bdrv_drained_end(drain_bs);
-> +    bdrv_drain_all_end();
->      bdrv_unref(drain_bs);
-
-The only thing we do with drain_bs now is finding it, bdrv_ref() and
-immediately bdrv_unref(). I don't think it should exist any more after
-the change to drain_all.
-
-Kevin
+> v4: Some of the patches in v3 are already merged. Posting the rest of the patches.
+>      Dropped EPYC-Turin model for now. Will post them later.
+>      Added SVM feature bit as discussed in
+>      https://lore.kernel.org/kvm/b4b7abae-669a-4a86-81d3-d1f677a82929@redhat.com/
+>      Fixed the cache property details as discussed in
+>      https://lore.kernel.org/kvm/20230504205313.225073-8-babu.moger@amd.com/
+>      Thanks to Maksim and Paolo for their feedback.
+> 
+> v3: Added SBPB, IBPB_BRTYPE, SRSO_USER_KERNEL_NO, ERAPS and RAPSIZE bits
+>      to EPYC-Turin.
+>      Added new patch(1) to fix a minor typo.
+> 
+> v2: Fixed couple of typos.
+>      Added Reviewed-by tag from Zhao.
+>      Rebased on top of 6d00c6f98256 ("Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging")
+> 
+> Previous revisions:
+> v6: https://lore.kernel.org/kvm/cover.1740766026.git.babu.moger@amd.com/
+> v5: https://lore.kernel.org/kvm/cover.1738869208.git.babu.moger@amd.com/
+> v4: https://lore.kernel.org/kvm/cover.1731616198.git.babu.moger@amd.com/
+> v3: https://lore.kernel.org/kvm/cover.1729807947.git.babu.moger@amd.com/
+> v2: https://lore.kernel.org/kvm/cover.1723068946.git.babu.moger@amd.com/
+> v1: https://lore.kernel.org/qemu-devel/cover.1718218999.git.babu.moger@amd.com/
+> 
+> Babu Moger (6):
+>    target/i386: Update EPYC CPU model for Cache property, RAS, SVM
+>      feature bits
+>    target/i386: Update EPYC-Rome CPU model for Cache property, RAS, SVM
+>      feature bits
+>    target/i386: Update EPYC-Milan CPU model for Cache property, RAS, SVM
+>      feature bits
+>    target/i386: Add couple of feature bits in CPUID_Fn80000021_EAX
+>    target/i386: Update EPYC-Genoa for Cache property, perfmon-v2, RAS and
+>      SVM feature bits
+>    target/i386: Add support for EPYC-Turin model
+> 
+>   target/i386/cpu.c | 439 +++++++++++++++++++++++++++++++++++++++++++++-
+>   target/i386/cpu.h |   4 +
+>   2 files changed, 441 insertions(+), 2 deletions(-)
+> 
 
 
