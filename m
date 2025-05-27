@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DE2AC4966
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 423BBAC496C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:41:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJouP-00042z-WB; Tue, 27 May 2025 03:39:38 -0400
+	id 1uJouz-0004TO-3G; Tue, 27 May 2025 03:40:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouN-00042h-NH
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:39:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1uJouw-0004QI-JG; Tue, 27 May 2025 03:40:10 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouG-0007rJ-00
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:39:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748331566;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qrDcnLrJ6Z/aeSPv+l0h0ci1a4RbB5w1MR8NynMtX2Y=;
- b=ABLJZz9nnWfuHiMs5xSNvyRp1VEzyZ6N04mxM/kUS7YsjmqoRQwrfPLQkS6x1qkZuS5Cy9
- NgIBQ7eeCS0SJ6TDsUgy2uFW3hatvDC7eM5bNXLUI+SoHdsD2B56ZiVCUG3PjMfNBxXeQS
- rNP4jB64lCCpItOjnIQvrkMB08QzIhI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-Zi8q4mb-Pu-_LqGHEkx2VA-1; Tue,
- 27 May 2025 03:39:23 -0400
-X-MC-Unique: Zi8q4mb-Pu-_LqGHEkx2VA-1
-X-Mimecast-MFC-AGG-ID: Zi8q4mb-Pu-_LqGHEkx2VA_1748331563
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E4FEA180087A; Tue, 27 May 2025 07:39:22 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.2])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9DCA519560AB; Tue, 27 May 2025 07:39:22 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 54B1D21E6540; Tue, 27 May 2025 09:39:16 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: eblake@redhat.com, kwolf@redhat.com, jsnow@redhat.com,
- vsementsov@yandex-team.ru, qemu-block@nongnu.org
-Subject: [PATCH 13/13] qapi: Improve documentation around job state @concluded
-Date: Tue, 27 May 2025 09:39:16 +0200
-Message-ID: <20250527073916.1243024-14-armbru@redhat.com>
-In-Reply-To: <20250527073916.1243024-1-armbru@redhat.com>
-References: <20250527073916.1243024-1-armbru@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ (Exim 4.90_1) (envelope-from <maz@kernel.org>)
+ id 1uJout-00080u-Ta; Tue, 27 May 2025 03:40:10 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 790055C0598;
+ Tue, 27 May 2025 07:37:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD77C4CEE9;
+ Tue, 27 May 2025 07:39:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1748331597;
+ bh=CK7B+DLHTo9Tt6vVecvTlPWhG2Uet410/kYVZcNVpdA=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=r19i3bnfhXEIGnONmw+mwq8DwGvuRcbIcMWiLwa6Wj+ye6/TPEAih0I9GPXXAKaIh
+ oTGkWZ0Y1z/c98c9xqeqNwFQv7mNZDSepoNTow/G1x5uTU32bYIAuT2qY7o3tm+Etu
+ lwd/6Oxb1hGCS8EWrIq/hdI+EtOuLPvL6dRS+M2XQ4EQY+K+xYw7sZlsMzdS4yXPWK
+ NbesYdPiFOWB3bMkUbTt7GgKDLk840xdW4qOQcS5jsw+LZB9a6EQO+31B0tHMePZMm
+ APaGOcXRHPa8xhzgnsUcKibxsqUvn3r2a2p6nLz7LUnwfd+SwSkLUdlQm3OLo1vAgH
+ iy5VFtmPLQ+mQ==
+Received: from sofa.misterjones.org ([185.219.108.64]
+ helo=goblin-girl.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.95)
+ (envelope-from <maz@kernel.org>) id 1uJoug-000nrv-0C;
+ Tue, 27 May 2025 08:39:54 +0100
+Date: Tue, 27 May 2025 08:39:53 +0100
+Message-ID: <86msayec3a.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ miguel.luis@oracle.com, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, gkulkarni@amperecomputing.com,
+ gankulkarni@os.amperecomputing.com
+Subject: Re: [PATCH v5 0/5] ARM Nested Virt Support
+In-Reply-To: <20250527062534.1186004-1-eric.auger@redhat.com>
+References: <20250527062534.1186004-1-eric.auger@redhat.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: eric.auger@redhat.com, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, miguel.luis@oracle.com,
+ peter.maydell@linaro.org, richard.henderson@linaro.org,
+ gkulkarni@amperecomputing.com, gankulkarni@os.amperecomputing.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=maz@kernel.org; helo=dfw.source.kernel.org
 X-Spam_score_int: -49
 X-Spam_score: -5.0
 X-Spam_bar: -----
 X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.903,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,106 +84,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We use "the query list" in a few places.  It's not entirely obvious
-what that means.  It's actually the output of query-jobs or
-query-block-jobs.
+Hi Eric,
 
-Documentation of @auto-dismiss talks about the job disappearing from
-the query list when it reaches state @concluded.  This is less than
-precise.  The job doesn't merely disappear from the query list, it
-disappears, period.
+On Tue, 27 May 2025 07:24:32 +0100,
+Eric Auger <eric.auger@redhat.com> wrote:
+> 
+> Now that ARM nested virt has landed in kvm/next, let's turn the series
+> into a PATCH series. The linux header update was made against kvm/next.
+> 
+> For gaining virt functionality in KVM accelerated L1, The host needs to
+> be booted with "kvm-arm.mode=nested" option and qemu needs to be invoked
+> with: -machine virt,virtualization=on.
 
-Documentation of JobStatus @concluded explains "the job will remain in
-the query list until it is dismissed".  Again less than precise.  It
-remains in state @concluded until dismissed.
+Thanks for respinning this series.
 
-Rephrase without use of "the query list" for clarity and precision.
+Do you have any plan to support the non-VHE version of the NV support
+(as advertised by KVM_CAP_ARM_EL2_E2H0)? It would allow running lesser
+hypervisors (such as *cough* Xen *cough*), which completely rely on
+HCR_EL2.E2H being 0?
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- qapi/block-core.json | 19 +++++++------------
- qapi/job.json        |  2 +-
- 2 files changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index da390f85ac..1df6644f0d 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -1417,8 +1417,8 @@
- # @auto-finalize: Job will finalize itself when PENDING, moving to the
- #     CONCLUDED state.  (since 2.12)
- #
--# @auto-dismiss: Job will dismiss itself when CONCLUDED, moving to the
--#     NULL state and disappearing from the query list.  (since 2.12)
-+# @auto-dismiss: Job will dismiss itself when CONCLUDED, and
-+#     disappear.  (since 2.12)
- #
- # @error: Error information if the job did not complete successfully.
- #     Not set if the job completed successfully.  (since 2.12.1)
-@@ -1614,8 +1614,7 @@
- # @auto-dismiss: When false, this job will wait in a CONCLUDED state
- #     after it has completely ceased all work, and awaits
- #     @job-dismiss.  When true, this job will automatically disappear
--#     from the query list without user intervention.  Defaults to
--#     true.  (Since 2.12)
-+#     without user intervention.  Defaults to true.  (Since 2.12)
- #
- # @filter-node-name: the node name that should be assigned to the
- #     filter driver that the backup job inserts into the graph above
-@@ -1855,8 +1854,7 @@
- # @auto-dismiss: When false, this job will wait in a CONCLUDED state
- #     after it has completely ceased all work, and awaits
- #     @job-dismiss.  When true, this job will automatically disappear
--#     from the query list without user intervention.  Defaults to
--#     true.  (Since 3.1)
-+#     without user intervention.  Defaults to true.  (Since 3.1)
- #
- # Features:
- #
-@@ -2219,8 +2217,7 @@
- # @auto-dismiss: When false, this job will wait in a CONCLUDED state
- #     after it has completely ceased all work, and awaits
- #     @job-dismiss.  When true, this job will automatically disappear
--#     from the query list without user intervention.  Defaults to
--#     true.  (Since 3.1)
-+#     without user intervention.  Defaults to true.  (Since 3.1)
- #
- # Since: 1.3
- ##
-@@ -2538,8 +2535,7 @@
- # @auto-dismiss: When false, this job will wait in a CONCLUDED state
- #     after it has completely ceased all work, and awaits
- #     @job-dismiss.  When true, this job will automatically disappear
--#     from the query list without user intervention.  Defaults to
--#     true.  (Since 3.1)
-+#     without user intervention.  Defaults to true.  (Since 3.1)
- #
- # @target-is-zero: Assume the destination reads as all zeroes before
- #     the mirror started.  Setting this to true can speed up the
-@@ -2866,8 +2862,7 @@
- # @auto-dismiss: When false, this job will wait in a CONCLUDED state
- #     after it has completely ceased all work, and awaits
- #     @job-dismiss.  When true, this job will automatically disappear
--#     from the query list without user intervention.  Defaults to
--#     true.  (Since 3.1)
-+#     without user intervention.  Defaults to true.  (Since 3.1)
- #
- # Errors:
- #     - If @device does not exist, DeviceNotFound.
-diff --git a/qapi/job.json b/qapi/job.json
-index 441cd7772b..126fa5ce60 100644
---- a/qapi/job.json
-+++ b/qapi/job.json
-@@ -74,7 +74,7 @@
- #     process.
- #
- # @concluded: The job has finished all work.  If auto-dismiss was set
--#     to false, the job will remain in the query list until it is
-+#     to false, the job will remain in this state until it is
- #     dismissed via @job-dismiss.
- #
- # @null: The job is in the process of being dismantled.  This state
+Thanks,
+
+	M.
+
 -- 
-2.48.1
-
+Without deviation from the norm, progress is not possible.
 
