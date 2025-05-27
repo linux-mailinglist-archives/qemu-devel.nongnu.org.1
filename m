@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A12AC504C
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 15:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3408AC505D
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 15:58:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJuln-00085X-4g; Tue, 27 May 2025 09:55:07 -0400
+	id 1uJunr-0001UK-FN; Tue, 27 May 2025 09:57:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJulj-000809-TI
- for qemu-devel@nongnu.org; Tue, 27 May 2025 09:55:04 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJuni-0001TG-Io
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 09:57:06 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJulg-0005C0-Qq
- for qemu-devel@nongnu.org; Tue, 27 May 2025 09:55:03 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3a3771c0f8cso2484985f8f.3
- for <qemu-devel@nongnu.org>; Tue, 27 May 2025 06:54:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJund-0005V2-Ns
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 09:57:06 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3a36e0d22c1so2282932f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 27 May 2025 06:57:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748354098; x=1748958898; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748354219; x=1748959019; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=r6ZctTBKUtkldfATLLgyIzJAwy/mVXtBwYa5MuXZLtY=;
- b=tcuJ2C+B4kdfmb7PLrzZUFc/1DAlKjgwQfXdTVLKRbOXQI++xmlFlNKjxwOkOOYKDk
- lzrlT09KVTxoQyvHmGa/iacbr2pfxMWo2zthdiBjba2I8d5Mn+1H0KkMWaR7ghBKae/s
- 4E0UcpACCk4C7ijAHzRA1c4HwFHgkF1PRMFA2PD9qR+p/sTu0tOq/z/HX00Zx9ADSLlt
- mRrK6XnL61FhUKoSr0nxgyWXsgHSDUsl6Vgk6golXU7unhPdTeRBG1vFNVgiGSWHHVIf
- jl7e68hqhMHF4MBZSMHDVGa2TOZThVcvnnZ4rEfe8fb8VpvaPXjWklsVuuiUbktGTPqB
- IaOw==
+ bh=RdXZjGyQyGHTnmuMa8B9RY4a5JMFFnrMACzLLOKREOI=;
+ b=xybSM1+uixnzdDPuzquxwtP7Hxukm7+m+Xu+qwHpeSJG5xVmuIzKiYZucFMDdppAWB
+ /0HJUBXfRu3zTmC71QBO9AGcQC7G4UDLKLaNYudDavs+u6MxRL4k7YdX9966046z7ren
+ KXwEMRvuH2+yL8mY9Xx4dOtj3eKLs/obaw8xJLgs7ZfMmaRpDij4geFRjq01mATZfCCz
+ Cmp/t+mSrEBC3FJ/a5LjIu9zsBTMaNKu8IH0TBWpSd0rcWjHosLxXddGvExt7T15x5Fr
+ lpMPx1TRZfJefdPewx4e4UyylCIfPmW7pN4kTFgeibNJCBK+MkbOrg418vfkFkgUn5yV
+ Pk7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748354098; x=1748958898;
+ d=1e100.net; s=20230601; t=1748354219; x=1748959019;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=r6ZctTBKUtkldfATLLgyIzJAwy/mVXtBwYa5MuXZLtY=;
- b=VNRDNEqW0bNgxaQNdPq4mxoGIBdrXCbdMl/fnla6aB+VP7SgpAF+483nwsy4mpJCqm
- 4loBVEtjOBrPqfQexqnGxD65pN2nt3N0vgL7k17iIdNQccJhoiOwwsqg9WQE1EJd/rzd
- ikTZlEA8ikTQqFg4lW2ilf1hRy0Aahq3ued6AUeq+zuSMv3tn3vtSSIKIRVDiDIF9K46
- F2h8yJiP16AMyiYr6pUGOgSaHNah8OmdGX00+NL+yuW/nOHsrz90EeZ/h5yWKli/KnAQ
- xBSq2LKThqVrKp073PWdXf0DhlaxZzx1NhuHkUQuxj2gGAvdqkJw9DKLGK9bY92q0hzI
- yDcw==
+ bh=RdXZjGyQyGHTnmuMa8B9RY4a5JMFFnrMACzLLOKREOI=;
+ b=m55a6QzKlBrw8C4F3cv5t2weWOrOszjGDyhdVSLQotsOncW7naEVl7jXMaQ3H25/gF
+ 8Dcg/zvrjcQMjtSDVbZwnv5APl62NGYlBMwN2PYw9hcFXVO2ac0AdsdCymcJIiMNltWE
+ WbRg/G8bO2OsLo/TZKe15rjEsEBMbJ7fTrtxSB4pBAefoF0Dn4fc7ewU9G/P6mYwF/yh
+ AFc9cJE6JvHrcBEt+fqTJirnRsBY5MsROA6xwrhHRhZ2tZXsr9xC6nSrGhOivFO06YcL
+ AlDAESZaRSpo103qXQYj7wwIjNInhNAqyF5g+GU60f8ftvJxhEHrjT/9OxJtR7ZCHcaK
+ FxgA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXYzMuudySHKEy9esLT6z9VkHvW2Lw3y2CbrukcvqIPtNBrLs0tPcuyCYVLSCOMR2QSP9hFkNidkAAY@nongnu.org
-X-Gm-Message-State: AOJu0YxowR5Bcktd7jC93fV8RDIVQ0+vXODcOJ5uTIEumEEadfiFi8hL
- NukGKnyJxftf5nRHXbDaJHNVeLsrzVUbzwHz4lUl7KuhfvFbUKYG/XQ36MFk95MZbQc=
-X-Gm-Gg: ASbGncvjkL6D/VsGbIEjvm4kvIuguomnYObA6IP3aFAyktezf5SE5dBQygFoZ/iPaRM
- 3pNOSrjWXWXSDseUIBttEIUqGP23bFFHtuWluKYdp2PIbsMI7cKz95XfBECYL6XUpk9qPf+gRS/
- YB4SJCj/UYsQ4JBkdcuC+DlhXUl71ZDmIUChRRAOlJP8Ivs3ceIgPJiMF1NngI1pANQHUzrvGqB
- qhO2tBZj3OTVtRtcqf01RP6PC4wS6U3WtofaAAvwbjfJWbAmUl0pZFIIzaW8uFE08LtkIrGAoDN
- 2hJqFZnWFMUQVdjW803NS1M4zessvnVHDi0wVBLv0njxYZkxm254l1vb6O11zkx8BznqGeADJIJ
- S93CJMBruK8KsuKn/dWk+HJV5
-X-Google-Smtp-Source: AGHT+IGv6xP2sMMLvB22M943qizNmDwk+ymzTmuechgMJfOxbl97xhUgQ/M3lbF6SH+bdi/Wj9+3Jg==
-X-Received: by 2002:a5d:58f1:0:b0:3a4:ce5c:5e98 with SMTP id
- ffacd0b85a97d-3a4ce5c6528mr8594951f8f.39.1748354097982; 
- Tue, 27 May 2025 06:54:57 -0700 (PDT)
+ AJvYcCX4JN6xynPVE15ujGe4rSnawP20b8a1DblcHzOCTPqjTO2oqeRglJxQoJYawby1faKHiv+DYQp0P8Yr@nongnu.org
+X-Gm-Message-State: AOJu0Yxz5RTLT8PrKaknHmzJdco+d9DdiHm77HA092P7kj6NOdSViwZc
+ 6q/pjBVObixsyyGzVqpszvo2Z0t0nbIq8xrHYB7g+yu/ILJWRJ228qliVtV8vJUOBT0=
+X-Gm-Gg: ASbGncsKmKvD1FpzFpyliHpHfxAf7/6J+KvUv+ARHpzDlgm07fBhhiErDwvfhwM0TQu
+ PPn3/aEf5SJYF+h8GlnfQOWIpSCzDVQB7117XO9eu0l1nCMJCigIh8ci67rMDtV4QaBoy7tVwiW
+ +usacSNFxns/tPiPx6jmvvSBui/vJRekZX7EemH+AXroyx2JHVZrsqa4edkT6XSCUzaPXgXHES6
+ Al3PLTxkF29W8SisrXjPKkq5ZJWXuHvya1iBlJvlranZcqymAeUFa3wyt7gshii3JDuw5VCCk7B
+ gRBe755EC/lHQP2ZSESkaEI0ejn2DpOp2iYAXW/sDkbQUBzAHHEtR1Lf6iH2QyoEhx2xTDbT9X9
+ aXonH1SQ/9BQJfzgBnIEr0+WC
+X-Google-Smtp-Source: AGHT+IEIT2R68u5kDYyMEVLz9eitfQ9nWIacFWei25DVtcVfn0Gr+QOXn+laqIajFLBUvn6BycQZtg==
+X-Received: by 2002:a5d:4102:0:b0:3a4:cddc:d3da with SMTP id
+ ffacd0b85a97d-3a4cddcd4f1mr8992596f8f.36.1748354219502; 
+ Tue, 27 May 2025 06:56:59 -0700 (PDT)
 Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4ce65342fsm10133853f8f.6.2025.05.27.06.54.57
+ ffacd0b85a97d-3a37fb452e5sm20345153f8f.20.2025.05.27.06.56.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 May 2025 06:54:57 -0700 (PDT)
-Message-ID: <0e6a115c-8af4-4867-8ffc-aca5b0167143@linaro.org>
-Date: Tue, 27 May 2025 15:54:56 +0200
+ Tue, 27 May 2025 06:56:59 -0700 (PDT)
+Message-ID: <dd7689b5-edfb-4f2b-9aab-ef5f92472040@linaro.org>
+Date: Tue, 27 May 2025 15:56:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] tests/functional: Test both microblaze s3adsp1800
- endianness variants
+Subject: Re: [PATCH 1/4] hw/microblaze: Add endianness property to the
+ petalogix_s3adsp1800 machine
 To: Thomas Huth <thuth@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair@alistair23.me>,
  Peter Maydell <peter.maydell@linaro.org>
 References: <20250515132019.569365-1-thuth@redhat.com>
- <20250515132019.569365-3-thuth@redhat.com>
+ <20250515132019.569365-2-thuth@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250515132019.569365-3-thuth@redhat.com>
+In-Reply-To: <20250515132019.569365-2-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,38 +106,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 15/5/25 15:20, Thomas Huth wrote:
 > From: Thomas Huth <thuth@redhat.com>
 > 
-> Now that the endianness of the petalogix-s3adsp1800 can be configured,
-> we should test that the cross-endianness also works as expected, thus
-> test the big endian variant on the little endian target and vice versa.
-> (based on an original idea from Philippe Mathieu-Daudé)
+> Since the microblaze target can now handle both endianness, big and
+> little, we should provide a config knob for the user to select the
+> desired endianness.
 > 
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   tests/functional/test_microblaze_s3adsp1800.py  | 17 ++++++++++++-----
->   .../functional/test_microblazeel_s3adsp1800.py  |  5 ++++-
->   2 files changed, 16 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/functional/test_microblaze_s3adsp1800.py b/tests/functional/test_microblaze_s3adsp1800.py
-> index c93fa14232b..c5e60b555c6 100755
-> --- a/tests/functional/test_microblaze_s3adsp1800.py
-> +++ b/tests/functional/test_microblaze_s3adsp1800.py
-> @@ -25,12 +25,14 @@ class MicroblazeMachine(QemuSystemTest):
->           ('http://www.qemu-advent-calendar.org/2023/download/day13.tar.gz'),
->           'b9b3d43c5dd79db88ada495cc6e0d1f591153fe41355e925d791fbf44de50c22')
->   
-> -    def do_ballerina_be_test(self, machine):
-> -        self.set_machine(machine)
-> +    def do_ballerina_be_test(self, force_endianness=False):
-> +        self.set_machine('petalogix-s3adsp1800')
->           self.archive_extract(self.ASSET_IMAGE_BE)
->           self.vm.set_console()
->           self.vm.add_args('-kernel',
->                            self.scratch_file('day17', 'ballerina.bin'))
-> +        if force_endianness:
-> +            self.vm.add_args('-M', 'endianness=big')
-
-This 'force_endianness' is a bit confusing, I'd simply always set
-the endianness, anyhow:
+>   hw/microblaze/petalogix_s3adsp1800_mmu.c | 41 +++++++++++++++++++++---
+>   1 file changed, 36 insertions(+), 5 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
