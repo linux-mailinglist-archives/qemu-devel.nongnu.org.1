@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EA6AC4E25
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 14:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 219D9AC4EDC
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 14:46:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJt1M-0002wI-CB; Tue, 27 May 2025 08:03:07 -0400
+	id 1uJtfm-0005ru-RL; Tue, 27 May 2025 08:44:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maz@kernel.org>)
- id 1uJt1F-0002s5-R1; Tue, 27 May 2025 08:02:57 -0400
-Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+ (Exim 4.90_1) (envelope-from <dancer@netfort.gr.jp>)
+ id 1uJnj7-0006qA-Ov
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 02:23:53 -0400
+Received: from mx2.netfort.gr.jp ([153.126.132.118])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maz@kernel.org>)
- id 1uJt18-00055L-BZ; Tue, 27 May 2025 08:02:52 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 8428149F73;
- Tue, 27 May 2025 12:02:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6239EC4CEEB;
- Tue, 27 May 2025 12:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1748347364;
- bh=Ui0aXYvfGfPsz+T1F+p5UBbskki77yIqRyr0snwyzVI=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=kyuSkRnqJH9Vhe85ViSyTM/N2JGDqkFS3s1iDHdggYGgmkxBhiiK9ymem4BNlk6rV
- iJSTUfer4SBKgZ/eIxoILcaxQkaT51kzCwKvshePtGDZuHPjEFqyR6NFXtQkySCeuT
- dkEMStC9v/XuGQ/AO0U0trSV29OcqQ6UxQYRO8CaE1xjY0bEOOVrdMBrrmAVrp36ry
- dFCC66K1MURp3wun+CCDyB7VOoUS4bt1fzOzL/iHJK8MjVVLRWL0lrOPA3aVwAI4My
- MWQza+cfz27bofU9LsL6tSuLDiHY71edZaZrG7Uryd9QgZXTqu212Nd9BZEEA3WR5L
- nzeejnQbyzOBQ==
-Received: from sofa.misterjones.org ([185.219.108.64]
- helo=goblin-girl.misterjones.org)
- by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.95)
- (envelope-from <maz@kernel.org>) id 1uJt10-000ruQ-54;
- Tue, 27 May 2025 13:02:42 +0100
-Date: Tue, 27 May 2025 13:02:41 +0100
-Message-ID: <86jz62dzxa.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Miguel Luis <miguel.luis@oracle.com>
-Cc: Eric Auger <eric.auger@redhat.com>, "eric.auger.pro@gmail.com"
- <eric.auger.pro@gmail.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "gkulkarni@amperecomputing.com"
- <gkulkarni@amperecomputing.com>, "gankulkarni@os.amperecomputing.com"
- <gankulkarni@os.amperecomputing.com>
-Subject: Re: [PATCH v5 0/5] ARM Nested Virt Support
-In-Reply-To: <63FE2592-DF4D-4CCF-BC76-D8656C9EFA0A@oracle.com>
-References: <20250527062534.1186004-1-eric.auger@redhat.com>
- <86msayec3a.wl-maz@kernel.org>
- <63FE2592-DF4D-4CCF-BC76-D8656C9EFA0A@oracle.com>
+ (Exim 4.90_1) (envelope-from <dancer@netfort.gr.jp>)
+ id 1uJnj3-0005LH-Gl
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 02:23:53 -0400
+Received: from zen.netfort.gr.jp (localhost [IPv6:::1])
+ by mx2.netfort.gr.jp (Postfix) with ESMTP id C921A5FAD5;
+ Tue, 27 May 2025 15:23:36 +0900 (JST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfort.gr.jp;
+ s=selector1; t=1748327017;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6iNEbd+HAwzuNGwpKU4J/9K2iT1KrIlcm1U9kNUjI0w=;
+ b=ZoBZH1RIusm0SNKot56Mx8PqYvQlSI4/M7Kq8CKVWwgMW0/SxiTQpMzOKPjSeRXy79dknE
+ UoYUtl5hua2ShypukST8wiy6zpzpbYhOlIvHS9aWSY1FuosszU5635ZrrXHt7UMpaitctr
+ g+MWjD/qxeHQ0CxIOverLGY3W9iGZig=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=netfort.gr.jp; 
+ s=selector1; t=1748327017;
+ h=from:from:sender:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=6iNEbd+HAwzuNGwpKU4J/9K2iT1KrIlcm1U9kNUjI0w=;
+ b=MaDoX4y8QbyYfcXQDwmz5ib1QKYyJQN5DiRipg2Rh2Wu4rWryHszf3z+lcmFL7+v9vzG2C
+ SSWqtL7mQoREkTtD/bVV+qYmtOtx12jn7tCwf37mytIngATaRuo2sI2d466a7oJgwQd3If
+ qzAccb+Feu3GC9HljUSMgG/CFxUiyEc=
+ARC-Authentication-Results: i=1;
+	mx2.netfort.gr.jp;
+	none
+ARC-Seal: i=1; s=selector1; d=netfort.gr.jp; t=1748327017; a=rsa-sha256;
+ cv=none;
+ b=vX8sQedGdYvsiNuqpr73j/i/4ayWlVXV5Dv+/PlieNZUhyffTZ938JFU0HW9oK3TTaV/jc
+ P7E7kBizDjANR1/QWFU8DgIx4vWNo8t7nkpDRQUttcWN3Mvlfx4FjesCERDthK9ttm5BYS
+ MO/rDcSZrahaMmf+bgOZm/QmJ7N5aaY=
+Date: Tue, 27 May 2025 15:23:36 +0900
+Message-ID: <87bjrea7x3.dancerj-dancer@netfort.gr.jp>
+From: Junichi Uekawa <dancer@netfort.gr.jp>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: dancer@debian.org, mst@redhat.com, qemu-devel@nongnu.org,
+ adelva@google.com, uekawa@chromium.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH] Fix comment for virtio-9p
+In-Reply-To: <2636618a-5000-449a-bc2d-f7bf253bf26d@tls.msk.ru>
+References: <20250527041123.840063-1-dancer@debian.org>
+ <2636618a-5000-449a-bc2d-f7bf253bf26d@tls.msk.ru>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: miguel.luis@oracle.com, eric.auger@redhat.com,
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- peter.maydell@linaro.org, richard.henderson@linaro.org,
- gkulkarni@amperecomputing.com, gankulkarni@os.amperecomputing.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
- SAEximRunCond expanded to false
-Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
- envelope-from=maz@kernel.org; helo=sea.source.kernel.org
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=153.126.132.118;
+ envelope-from=dancer@netfort.gr.jp; helo=mx2.netfort.gr.jp
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 27 May 2025 08:44:44 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,40 +90,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 May 2025 12:40:35 +0100,
-Miguel Luis <miguel.luis@oracle.com> wrote:
+On Tue, 27 May 2025 15:11:36 +0900,
+Michael Tokarev wrote:
 > 
-> Hi Marc,
+> 27.05.2025 07:11, dancer@debian.org wrote:
+> > From: Junichi Uekawa <uekawa@chromium.org>
+> > 
+> > virtio-9p is not a console protocol, it's a file sharing protocol. Seems
+> > like an artifact of old copy-and-paste error.
 > 
-> > On 27 May 2025, at 07:39, Marc Zyngier <maz@kernel.org> wrote:
-> > 
-> > Hi Eric,
-> > 
-> > On Tue, 27 May 2025 07:24:32 +0100,
-> > Eric Auger <eric.auger@redhat.com> wrote:
-> >> 
-> >> Now that ARM nested virt has landed in kvm/next, let's turn the series
-> >> into a PATCH series. The linux header update was made against kvm/next.
-> >> 
-> >> For gaining virt functionality in KVM accelerated L1, The host needs to
-> >> be booted with "kvm-arm.mode=nested" option and qemu needs to be invoked
-> >> with: -machine virt,virtualization=on.
-> > 
-> > Thanks for respinning this series.
-> > 
-> > Do you have any plan to support the non-VHE version of the NV support
-> > (as advertised by KVM_CAP_ARM_EL2_E2H0)? It would allow running lesser
-> > hypervisors (such as *cough* Xen *cough*), which completely rely on
-> > HCR_EL2.E2H being 0?
-> > 
+> > -#define VIRTIO_ID_9P			9 /* 9p virtio console */
+> > +#define VIRTIO_ID_9P			9 /* virtio 9p */
 > 
-> Something that pops up is early_kvm_mode_cfg trying to handle nested mode
-> while KVM_ARM_VCPU_HAS_EL2_E2H0 is set.
+> While the old one was obviously wrong, I don't think the new
+> wording makes much sense, since it merely repeats the name of
+> the constant :)
+> 
+> How about "virtio 9p file sharing protocol" instead ? :)
 
-Care to elaborate?
+Sounds better!
 
-	M.
+I also found another case, added to the follow-up.
 
--- 
-Without deviation from the norm, progress is not possible.
+
+
 
