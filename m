@@ -2,75 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B69AC4DC3
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 13:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18659AC4E2B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 14:05:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJsN2-0005PA-C6; Tue, 27 May 2025 07:21:24 -0400
+	id 1uJt2Y-00044t-JA; Tue, 27 May 2025 08:04:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJsMu-0005MU-TO
- for qemu-devel@nongnu.org; Tue, 27 May 2025 07:21:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
+ id 1uJt2C-0003o3-Mh; Tue, 27 May 2025 08:04:00 -0400
+Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJsMl-0008SG-NS
- for qemu-devel@nongnu.org; Tue, 27 May 2025 07:21:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748344860;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=KQ1hNWm/3fn/E7uoCFILTn7RMIJCtW1yDfZiP9KfHjA=;
- b=LcpY0tQR77gdmnSS61xmDwJx/47XxqEDalCPoLgeGHoWlQ3IehpbwzEftBdz3vnYj1+Xa1
- yzHbEOt1KTwt0CadQKlfESffv62HteLtAAJ9iKhZ/RVUwdixgQ8HnIYaweui/f/KC+eqHX
- 1PA6dlTG4D44Xd14nTqx1L196xhvaxw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-31-fkjrusFpOT-Y-W5wcq68nA-1; Tue,
- 27 May 2025 07:20:54 -0400
-X-MC-Unique: fkjrusFpOT-Y-W5wcq68nA-1
-X-Mimecast-MFC-AGG-ID: fkjrusFpOT-Y-W5wcq68nA_1748344853
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 61575195609F; Tue, 27 May 2025 11:20:53 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.2])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E43061955F21; Tue, 27 May 2025 11:20:52 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 56C2D21E675E; Tue, 27 May 2025 13:20:50 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  michael.roth@amd.com,  thuth@redhat.com,
- pbonzini@redhat.com,  richard.henderson@linaro.org,
- peter.maydell@linaro.org,  berrange@redhat.com,  philmd@linaro.org
-Subject: Re: [PATCH v4 15/15] qapi/misc-i386: move errors to their own
- documentation section
-In-Reply-To: <20250522190542.588267-16-pierrick.bouvier@linaro.org> (Pierrick
- Bouvier's message of "Thu, 22 May 2025 12:05:42 -0700")
-References: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
- <20250522190542.588267-16-pierrick.bouvier@linaro.org>
-Date: Tue, 27 May 2025 13:20:50 +0200
-Message-ID: <87msayqoz1.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
+ id 1uJt28-00059k-Bp; Tue, 27 May 2025 08:03:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=6g+z7h1BI3Q3nVBJKSxYxj9wOsOlY/F6nZVLQbnQBLE=; b=UL9H8GAQSlGKYhLplA+dKU4dO0
+ D+RDSobmxzxCIPzmQn8Tb9NAmfnt85TAOI4UjKytQMzwUewJdtxAQGo+c8AqQNZ9WgLM57AUERMoH
+ UfgdeeLZAu5SAnOSF78Iesc9hp/s+gKHC3p8D/AYJUqvqRdstubbp8ws2kWs6VqS2DZfXBFoW10v+
+ WvO6ThPuqMHrptIy6qPaLWjmHP7qa5KN44oDdqyyftg2pNumDO7hzJW+k7e3KugQDChgRyDKeGS4u
+ U90TighUUC/ORku6Isvt/Wa3Tb+v0qyqbWi5AH3dSAvpwHt5qhaa86p/3OeMPQD7HKyl2+YmGeWE8
+ J2U3F69A==;
+Received: from [167.98.27.226] (helo=rainbowdash)
+ by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+ id 1uJsQ9-002w7Y-Hk; Tue, 27 May 2025 12:24:38 +0100
+Received: from ben by rainbowdash with local (Exim 4.98.2)
+ (envelope-from <ben@rainbowdash>) id 1uJsQA-00000001DqB-0v9M;
+ Tue, 27 May 2025 12:24:38 +0100
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+To: nazar.kazakov@codethink.co.uk, joseph.baker@codethink.co.uk,
+ fran.redondo@codethink.co.uk, lawrence.hunter@codethink.co.uk,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org
+Cc: ben.dooks@codethink.co.uk,
+	qemu-devel@nongnu.org
+Subject: Add initial CVA6 implementaiton
+Date: Tue, 27 May 2025 12:24:34 +0100
+Message-Id: <20250527112437.291445-1-ben.dooks@codethink.co.uk>
+X-Mailer: git-send-email 2.37.2.352.g3c44437643
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=188.40.203.114;
+ envelope-from=srv_ts003@codethink.com; helo=imap4.hz.codethink.co.uk
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,10 +71,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+This implements the CVA6 (the corev_apu from the fpga) model.
 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+v2:
+- fixed whitespace and rebased patches
 
-My comment on the previous patch applies.
 
 
