@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B50AC5CB2
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 00:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19BADAC5CB4
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 00:00:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uK2KC-0004iN-0X; Tue, 27 May 2025 17:59:08 -0400
+	id 1uK2KH-0004j5-Pr; Tue, 27 May 2025 17:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK2K7-0004hz-Ro
- for qemu-devel@nongnu.org; Tue, 27 May 2025 17:59:03 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK2KA-0004ic-32
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 17:59:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK2K6-00086X-Hk
- for qemu-devel@nongnu.org; Tue, 27 May 2025 17:59:03 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uK2K8-00086u-9m
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 17:59:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748383141;
+ s=mimecast20190719; t=1748383143;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oBPJYh4awj1/1POQMjqRYxwnju5UeXUDjsTRvIqFEdk=;
- b=U61/7GmXyhR7rP0S31tjw4u7SrWojHvq5J6wfMk65jFnZHSly6COgefNt7iJFo74cVk56B
- r/ujdq+8xW8S4TyrvqKwVwYHbqxcj2BvZAohekKeCjw18vQ5Jefgac0f9Wejt7m1u7stIw
- ZNPttNMA5/TNUMb3iHYephgVeJQuCyI=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yIlAgqOWKOqSEUzDQT/GOunQvqeaHzoRg1BUuH85Fug=;
+ b=SPpKQ/nOn6sU1pwJL/vULcoqB0UdOTZhpjNchGU5TIbEHxNHe4vksJWJ3xkOFtAJt9XHtp
+ cVttbhcFwSX97hHA84gUwvz592BfSYMXO34OJlUpDDqn+pd1fB0vINFIVn7OHY4U23tger
+ WMqOEl/MMN0TS6ZEGpsx0ujRRffc2lM=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-ou4VulYHMlOdX4DZRZI3gw-1; Tue, 27 May 2025 17:59:00 -0400
-X-MC-Unique: ou4VulYHMlOdX4DZRZI3gw-1
-X-Mimecast-MFC-AGG-ID: ou4VulYHMlOdX4DZRZI3gw_1748383140
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6f0e2d30ab4so66377326d6.1
- for <qemu-devel@nongnu.org>; Tue, 27 May 2025 14:59:00 -0700 (PDT)
+ us-mta-635-NZXDOMC3MnSH6DmW4n2-0w-1; Tue, 27 May 2025 17:59:02 -0400
+X-MC-Unique: NZXDOMC3MnSH6DmW4n2-0w-1
+X-Mimecast-MFC-AGG-ID: NZXDOMC3MnSH6DmW4n2-0w_1748383142
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4767e6b4596so64825991cf.2
+ for <qemu-devel@nongnu.org>; Tue, 27 May 2025 14:59:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748383140; x=1748987940;
+ d=1e100.net; s=20230601; t=1748383141; x=1748987941;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oBPJYh4awj1/1POQMjqRYxwnju5UeXUDjsTRvIqFEdk=;
- b=J7Ynsucknqf2FHYqANIxvxc4PlY00BMWS2xF3QghAsuAdxeN5TQRFMWZjkCC8tWfQ3
- eenqW4fhC7NwhczrqfB/KIS4bUSZjPj7zLDKjE3l1iongWgYBH5wdvAMySQFr07dYrN4
- 9hpclmdG+V+ft89jq21drnpiA4biM4wWzjA6RWy0GNjM16jqeh8MK3bncJg1LWmzMSQB
- TcnMxPHIdEkp4x+rSFkZlqLQzdZ3hR2BAYYs8J8UwLOnq2MKQxmIJFdTiJTV7ZJpGBaI
- tS2bbnHZtINASHCpPszgxuhwJ7FRuKhwn2jiPIYTrOZqZdR+srtUzQbcQYGnDOFqLs+O
- Z+bg==
-X-Gm-Message-State: AOJu0Yw+6+0f3nl7D8mm4AWvfiz2Le9ZfWHD2LrZPeftHk53w5k0QQFC
- +yXKuMhGc/MmtasfP7wDHgqbsStMzcNaLUiAEsRvD6wEfQBbtFu9d9utvznrVys+NzwiTfm/3US
- vzqTD6Elq2yJd7ZWxZb36e1NJzoKnE/foHyjAvy/dZCSrzIeMWd1FOEkhcGrdEdisxcDxb7qbjk
- j5rnGIzVBfmPHtdknKjbqTZR9I9SDZRLaU03ZsjQ==
-X-Gm-Gg: ASbGnct5/VUsHtSl7Y1XvcLZi0NU9UWMC0a8zVAHXDjG60EtDmNzkJ4CegF5pj57H1D
- Y+2OrYGBdz9I1SVlfviUu44+lTNNLoILEKWP6h90ZRmHWaVazhcLjE0PqqDTq12SGJb4qpHctYD
- E8PHg4VaxKvsj5wRzyrrMQEoADfYlMVPqIcJtVf63sXjdAujQwVvIijGbjSl9KqTT09bcmDKBbx
- 9jPJ4tbtV3TZ3fK2qzVj8bAhj9/10xVS1a0rSJ3xIoktv9HJddBA6x37rvvSLH2/gO06hdGYaph
-X-Received: by 2002:a05:6214:401b:b0:6f5:4214:774a with SMTP id
- 6a1803df08f44-6fa9d29d04cmr236353816d6.41.1748383139844; 
- Tue, 27 May 2025 14:58:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEdBLAP9+XbvCDFi2G91SWkxCE6UJmzNXjFE1YF7NK6Tqpmyw5An+o9qlrZH2SkofZANoRiDQ==
-X-Received: by 2002:a05:6214:401b:b0:6f5:4214:774a with SMTP id
- 6a1803df08f44-6fa9d29d04cmr236353576d6.41.1748383139542; 
- Tue, 27 May 2025 14:58:59 -0700 (PDT)
+ bh=yIlAgqOWKOqSEUzDQT/GOunQvqeaHzoRg1BUuH85Fug=;
+ b=fjZDuz7/mE9Xc5523jjbVDf5Bk9XI7rlqJYextPQ9H5RMG8TpjcyhmdRACr5u6D4bE
+ y3t13Y7S8ejsruDPFxKmwDggI3gX57SvQWhW3AKFDhLRftKCQT/Va0M1Zag1drsugIfD
+ fRQwOwWnF9DW2RDkY1l53xNkxkYuByWT+CwyLH6YaAo2Ixx0YtgTgjNZ3mzhKyWbDyoJ
+ GsV66Q8AyuWjM4tyIaI7yf6FVwTcy2P+lw/gUaX/LwH9Xw0wo8mjn7ZcyHH+q4xUyxvY
+ MXtS05puBdz4DgoOpZZu5Lm0ygNAeK0EPxDgH2w/YKYUNhL5fTtQaUO+QUdcl18Nm3XN
+ OX3g==
+X-Gm-Message-State: AOJu0YxJ5RMcQBvPUP7PL4rtcASBZaBT+PlJv1tmvBxMtv1XiLswcYd4
+ dPb5P0gUMK6OFz8/+2yaF71XDgdddaJbZjoveBGjWKCKmzGGCgjBVuXEI5rhDu4Pgcv8ACPFMyt
+ r2w+Q0w97az1W4FxLG8U8Q4O2lwRqrKqP3IkZ3TgperJu9f/1xbJdc+jfK+25FYrMmulhgjjq6u
+ z7f0nHWidL2qPY0Yw+n3h0095KcCvGlYIS4UaHlg==
+X-Gm-Gg: ASbGncuCV9/HRvbJRgHZHE9jvdP8plMJl7okmLsLEDoTC0pLBX7mDStQ30TWvf7RHXl
+ sB2+5xE571Yjs1EOtbfGvxiFGaSmWo1MLKvF7Jbo8mOUezHlczOLy4PvdDEDTvUkONv21u2c1Vp
+ 4l+uJqQtFhWYTemFxTgQpnvAwGtpoV4utIVxloumJSuw2wL3GQTa+gMLmd/yMXt47JIEOdNsYDn
+ 2rAR/DHynoUxbrY0TQQ+Fy60TcloReYHEBH8c29SuLYMi70oCB+8sjYwFYFcpY+ldOIW9V+8dZM
+X-Received: by 2002:a05:622a:4a0e:b0:477:e4e:9186 with SMTP id
+ d75a77b69052e-49f46056ff6mr286997351cf.11.1748383141279; 
+ Tue, 27 May 2025 14:59:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvzgMi9lDKAaWu3e72Hl5Q1R15+d2Avli3uTMykXtQcTjXBk33uup36pkQFIxdUb8SZnZcWw==
+X-Received: by 2002:a05:622a:4a0e:b0:477:e4e:9186 with SMTP id
+ d75a77b69052e-49f46056ff6mr286996941cf.11.1748383140813; 
+ Tue, 27 May 2025 14:59:00 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6fabe4f27cdsm914516d6.49.2025.05.27.14.58.58
+ 6a1803df08f44-6fabe4f27cdsm914516d6.49.2025.05.27.14.58.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 May 2025 14:58:58 -0700 (PDT)
+ Tue, 27 May 2025 14:59:00 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Juraj Marcin <jmarcin@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>,
  "Dr . David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH 04/11] migration/bg-snapshot: Do not check for SKIP in iterator
-Date: Tue, 27 May 2025 17:58:43 -0400
-Message-ID: <20250527215850.1271072-5-peterx@redhat.com>
+Subject: [PATCH 05/11] migration: Drop save_live_complete_postcopy hook
+Date: Tue, 27 May 2025 17:58:44 -0400
+Message-ID: <20250527215850.1271072-6-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527215850.1271072-1-peterx@redhat.com>
 References: <20250527215850.1271072-1-peterx@redhat.com>
@@ -104,29 +104,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's not possible to happen in bg-snapshot case.
+The hook is only defined in two vmstate users ("ram" and "block dirty
+bitmap"), meanwhile both of them define the hook exactly the same as the
+precopy version.  Hence, this postcopy version isn't needed.
+
+No functional change intended.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/migration/register.h   | 24 ++++++++----------------
+ migration/block-dirty-bitmap.c |  1 -
+ migration/ram.c                |  1 -
+ migration/savevm.c             |  9 ++++-----
+ 4 files changed, 12 insertions(+), 23 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 4697732bef..7bd78dd524 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -3890,9 +3890,8 @@ static void *bg_migration_thread(void *opaque)
+diff --git a/include/migration/register.h b/include/migration/register.h
+index b79dc81b8d..e022195785 100644
+--- a/include/migration/register.h
++++ b/include/migration/register.h
+@@ -77,26 +77,18 @@ typedef struct SaveVMHandlers {
+      */
+     void (*save_cleanup)(void *opaque);
  
-     while (migration_is_active()) {
-         MigIterateState iter_state = bg_migration_iteration_run(s);
--        if (iter_state == MIG_ITERATE_SKIP) {
--            continue;
--        } else if (iter_state == MIG_ITERATE_BREAK) {
-+
-+        if (iter_state == MIG_ITERATE_BREAK) {
-             break;
+-    /**
+-     * @save_live_complete_postcopy
+-     *
+-     * Called at the end of postcopy for all postcopyable devices.
+-     *
+-     * @f: QEMUFile where to send the data
+-     * @opaque: data pointer passed to register_savevm_live()
+-     *
+-     * Returns zero to indicate success and negative for error
+-     */
+-    int (*save_live_complete_postcopy)(QEMUFile *f, void *opaque);
+-
+     /**
+      * @save_live_complete_precopy
+      *
+      * Transmits the last section for the device containing any
+-     * remaining data at the end of a precopy phase. When postcopy is
+-     * enabled, devices that support postcopy will skip this step,
+-     * where the final data will be flushed at the end of postcopy via
+-     * @save_live_complete_postcopy instead.
++     * remaining data at the end phase of migration.
++     *
++     * For precopy, this will be invoked _during_ the switchover phase
++     * after source VM is stopped.
++     *
++     * For postcopy, this will be invoked _after_ the switchover phase
++     * (except some very unusual cases, like PMEM ramblocks), while
++     * destination VM can be running.
+      *
+      * @f: QEMUFile where to send the data
+      * @opaque: data pointer passed to register_savevm_live()
+diff --git a/migration/block-dirty-bitmap.c b/migration/block-dirty-bitmap.c
+index f2c352d4a7..6ee3c32a76 100644
+--- a/migration/block-dirty-bitmap.c
++++ b/migration/block-dirty-bitmap.c
+@@ -1248,7 +1248,6 @@ static bool dirty_bitmap_has_postcopy(void *opaque)
+ 
+ static SaveVMHandlers savevm_dirty_bitmap_handlers = {
+     .save_setup = dirty_bitmap_save_setup,
+-    .save_live_complete_postcopy = dirty_bitmap_save_complete,
+     .save_live_complete_precopy = dirty_bitmap_save_complete,
+     .has_postcopy = dirty_bitmap_has_postcopy,
+     .state_pending_exact = dirty_bitmap_state_pending,
+diff --git a/migration/ram.c b/migration/ram.c
+index fd8d83b63c..8b43b9e1e8 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -4545,7 +4545,6 @@ void postcopy_preempt_shutdown_file(MigrationState *s)
+ static SaveVMHandlers savevm_ram_handlers = {
+     .save_setup = ram_save_setup,
+     .save_live_iterate = ram_save_iterate,
+-    .save_live_complete_postcopy = ram_save_complete,
+     .save_live_complete_precopy = ram_save_complete,
+     .has_postcopy = ram_has_postcopy,
+     .state_pending_exact = ram_state_pending_exact,
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 006514c3e3..26d32eb5a7 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1485,9 +1485,8 @@ bool should_send_vmdesc(void)
+ }
+ 
+ /*
+- * Calls the save_live_complete_postcopy methods
+- * causing the last few pages to be sent immediately and doing any associated
+- * cleanup.
++ * Complete saving any postcopy-able devices.
++ *
+  * Note postcopy also calls qemu_savevm_state_complete_precopy to complete
+  * all the other devices, but that happens at the point we switch to postcopy.
+  */
+@@ -1497,7 +1496,7 @@ void qemu_savevm_state_complete_postcopy(QEMUFile *f)
+     int ret;
+ 
+     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+-        if (!se->ops || !se->ops->save_live_complete_postcopy) {
++        if (!se->ops || !se->ops->save_live_complete_precopy) {
+             continue;
          }
+         if (se->ops->is_active) {
+@@ -1510,7 +1509,7 @@ void qemu_savevm_state_complete_postcopy(QEMUFile *f)
+         qemu_put_byte(f, QEMU_VM_SECTION_END);
+         qemu_put_be32(f, se->section_id);
  
+-        ret = se->ops->save_live_complete_postcopy(f, se->opaque);
++        ret = se->ops->save_live_complete_precopy(f, se->opaque);
+         trace_savevm_section_end(se->idstr, se->section_id, ret);
+         save_section_footer(f, se);
+         if (ret < 0) {
 -- 
 2.49.0
 
