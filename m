@@ -2,74 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1881AC5921
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 19:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 045E1AC5A90
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 21:19:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJyTZ-0008KV-P6; Tue, 27 May 2025 13:52:33 -0400
+	id 1uJzpW-0003wn-Ob; Tue, 27 May 2025 15:19:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uJyTX-0008JZ-Fg
- for qemu-devel@nongnu.org; Tue, 27 May 2025 13:52:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uJyTV-0004Ei-KZ
- for qemu-devel@nongnu.org; Tue, 27 May 2025 13:52:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748368348;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=UGtT7XQUxJvwZsRHG0Z/aopUzjU2NEnI6PxokTXGqrw=;
- b=SMdw5x6oquU9y/NuvpZ8/5Q9uVZP06EjpcA+ASr/huL5QY2r0Zf962A45EfYvZ3lWunNJd
- 8Al+zNDEITxWnRrWJErKsiR0QvBs3StyoJvVE7iO7TI5tXAhbCJYT/XZ2MR6JJHFFbw+Pd
- 2GgNd3gPhICgbCWrkrPwh+oyg3KHFsM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-wxdy9hpcPnWd0BZMqqtKlg-1; Tue,
- 27 May 2025 13:52:25 -0400
-X-MC-Unique: wxdy9hpcPnWd0BZMqqtKlg-1
-X-Mimecast-MFC-AGG-ID: wxdy9hpcPnWd0BZMqqtKlg_1748368343
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7B2971800373; Tue, 27 May 2025 17:52:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.34.20])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A83001955F1B; Tue, 27 May 2025 17:52:16 +0000 (UTC)
-Date: Tue, 27 May 2025 19:52:13 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, den@virtuozzo.com,
- andrey.drobyshev@virtuozzo.com, hreitz@redhat.com,
- stefanha@redhat.com, eblake@redhat.com, jsnow@redhat.com,
- vsementsov@yandex-team.ru, xiechanglong.d@gmail.com,
- wencongyang2@huawei.com, berto@igalia.com, fam@euphon.net, ari@tuxera.com
-Subject: Re: [PATCH v3 16/24] block: move drain outside of quorum_del_child()
-Message-ID: <aDX7zTjkSvbcu4kX@redhat.com>
-References: <20250526132140.1641377-1-f.ebner@proxmox.com>
- <20250526132140.1641377-17-f.ebner@proxmox.com>
+ (Exim 4.90_1) (envelope-from <elisey@Eliseys-PC.local>)
+ id 1uJxSx-0007sz-Gu
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 12:47:51 -0400
+Received: from [212.28.69.22] (helo=Eliseys-PC.local)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <elisey@Eliseys-PC.local>) id 1uJxSu-00041h-EA
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 12:47:51 -0400
+Received: by Eliseys-PC.local (Postfix, from userid 501)
+ id 120B51BA47E; Tue, 27 May 2025 17:29:19 +0300 (EEST)
+To: qemu-devel@nongnu.org
+Cc: Elisey <elisey.konstantinov@icloud.com>
+Subject: [PATCH 1/1] Revert "i386/cpu: Set up CPUID_HT in
+ x86_cpu_expand_features() instead of cpu_x86_cpuid()"
+Date: Tue, 27 May 2025 17:29:14 +0300
+Message-Id: <20250527142914.19334-1-elisey.konstantinov@icloud.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250526132140.1641377-17-f.ebner@proxmox.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 212.28.69.22 (failed)
+Received-SPF: none client-ip=212.28.69.22;
+ envelope-from=elisey@Eliseys-PC.local; helo=Eliseys-PC.local
+X-Spam_score_int: 22
+X-Spam_score: 2.2
+X-Spam_bar: ++
+X-Spam_report: (2.2 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+ NO_DNS_FOR_FROM=0.001, RCVD_IN_PBL=3.335,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_NONE=0.001, SPOOFED_FREEMAIL=0.001,
+ SPOOFED_FREEMAIL_NO_RDNS=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 27 May 2025 15:19:15 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,27 +53,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Elisey <elisey.konstantinov@icloud.com>
+From:  Elisey via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 26.05.2025 um 15:21 hat Fiona Ebner geschrieben:
-> The quorum_del_child() callback runs under the graph lock, so it is
-> not allowed to drain. It is only called as the .bdrv_del_child()
-> callback, which is only called in the bdrv_del_child() function, which
-> also runs under the graph lock.
-> 
-> The bdrv_del_child() function is called by qmp_x_blockdev_change().
-> A drained section was already introduced there by commit "block: move
-> drain out of quorum_add_child()".
-> 
-> This finally finishes moving out the drain to places that are not
-> under the graph lock started in "block: move draining out of
-> bdrv_change_aio_context() and mark GRAPH_RDLOCK".
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+This reverts commit c6bd2dd634208ca717b6dc010064fe34d1359080.
+---
+ target/i386/cpu.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-With the usual comments added:
-
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 9689f6374e..c648a1cf04 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6859,6 +6859,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         *edx = env->features[FEAT_1_EDX];
+         if (threads_per_pkg > 1) {
+             *ebx |= threads_per_pkg << 16;
++            *edx |= CPUID_HT;
+         }
+         if (!cpu->enable_pmu) {
+             *ecx &= ~CPUID_EXT_PDCM;
+@@ -7838,20 +7839,6 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+         }
+     }
+ 
+-    if (x86_threads_per_pkg(&env->topo_info) > 1) {
+-        env->features[FEAT_1_EDX] |= CPUID_HT;
+-
+-        /*
+-         * The Linux kernel checks for the CMPLegacy bit and
+-         * discards multiple thread information if it is set.
+-         * So don't set it here for Intel (and other processors
+-         * following Intel's behavior) to make Linux guests happy.
+-         */
+-        if (!IS_INTEL_CPU(env) && !IS_ZHAOXIN_CPU(env)) {
+-            env->features[FEAT_8000_0001_ECX] |= CPUID_EXT3_CMP_LEG;
+-        }
+-    }
+-
+     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
+         FeatureDep *d = &feature_dependencies[i];
+         if (!(env->features[d->from.index] & d->from.mask)) {
+-- 
+2.39.5 (Apple Git-154)
 
 
