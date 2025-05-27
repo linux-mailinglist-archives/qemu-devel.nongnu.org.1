@@ -2,106 +2,174 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C7AAC489D
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 08:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4B9AC48D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 08:58:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJo5d-0008C1-BT; Tue, 27 May 2025 02:47:09 -0400
+	id 1uJoFC-0002Bj-On; Tue, 27 May 2025 02:57:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uJo5V-0008BW-MY
- for qemu-devel@nongnu.org; Tue, 27 May 2025 02:47:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Alexey.Kardashevskiy@amd.com>)
+ id 1uJoF7-000271-VW
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 02:56:59 -0400
+Received: from mail-bn7nam10on2061a.outbound.protection.outlook.com
+ ([2a01:111:f403:2009::61a]
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uJo5O-00009q-Jo
- for qemu-devel@nongnu.org; Tue, 27 May 2025 02:47:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748328411;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZKcUKj/LlKENAraKAjOyxIlLxLJFH0ua2ybc/69QUec=;
- b=eL0D7x/W1dlkyfTeMl7eIZnn744CgRqx1+WUJ4QLi/rgk6igkh/Q+QDlqz2bH9Ozyvp4mg
- tZQxlwD+ck3747uBMWfWzEb6omc2eMSpMtdvW/01NBNIR7RBgkP28394G0cO27x0bJmeuy
- TImTCV4rPwl9ZCCkhWs7mhszQIzxETg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-yoAFzHnIPausWOrA-jjohw-1; Tue, 27 May 2025 02:46:50 -0400
-X-MC-Unique: yoAFzHnIPausWOrA-jjohw-1
-X-Mimecast-MFC-AGG-ID: yoAFzHnIPausWOrA-jjohw_1748328409
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43cf172ff63so16925295e9.3
- for <qemu-devel@nongnu.org>; Mon, 26 May 2025 23:46:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748328409; x=1748933209;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZKcUKj/LlKENAraKAjOyxIlLxLJFH0ua2ybc/69QUec=;
- b=tFSzJWlAd134urXVt6XWvrko+dWL84fziUsV99rdgoaOMJ+Rp8ksNmqo3pNIf3spqi
- QyolpNM0HGqWkF42k4EQu25YUaqJzrItHN6yrkvmzWff7AcPsv4BV+DQAzxh70sLg4Dn
- bcPAWQmvaiXijf1pGzxBWF5gUJtDoDHxk7cC3no5hG7fiKI1IZju/8a1IBm6JBaEQGNX
- lKqqWmjhyay5Pesb6BcuylEcnVfhB6vrXzrRgkOeVt0CUycu1tRQ+0JwV9PpMrsRmCKy
- ypmYuQbMGIQ4j23YXSz56Lh1Cxa4qL97QuNwDp/ajxHNHzWYAbEZLhcAdh0hvFsMQef9
- xXEw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWHGrDntY8Yt8h5n0rEJ3DIT9DS42noertQz7mZQhwZSJS2IucaMX9wCuYcCfroLixVVnf4tmdW+RTJ@nongnu.org
-X-Gm-Message-State: AOJu0YzS2U3B7rBDZeVO+He2+y+mG+JLVmflyg/yA/m21USSF5nJWSgs
- ZNaCvPoFjEfCUMMWtB/hjNTPfUxcibX8PYrEy758oM/an6cQHqVWmjr0iQyyw9awHUI1ssKcWgx
- 6DMUE6HjC4AUIlurr5DJoAR/fEw9i75d0RchN5GrULWgLh1PXtrz5yzuo
-X-Gm-Gg: ASbGncs8To3LIKwBy6o0ZEwB7EXOGPzK6Mu+pqbKvGB53qJWT8oOZUnKF8uXzZ9QBdz
- F7cBr5eU3kVOhI6nt5h56p1wdcZ0GF2YPczyLD7OrVPKb51MizLfs2J4dedBHb70W0IKjmfULtG
- iOX/AYZjsYgM/pIT9c2v2qIJ70XKMH5SLy/us1wkmuUfiBhrq5TcvqapQ9ShVTvg0x6u9ScLLG9
- rQjA92MGJNe28KAH+7MGVGI4KZyNMDSTvHVNZWmqpyHTmL2hFELnqe+ncMVSCkKrqv55hm5DW7u
- TqdTZANLPEyjg0m/Ugoet42KcHOVobdV93vs0DDoXsUojq+Q3DBy7OXn4uk=
-X-Received: by 2002:a05:600c:4fc9:b0:43c:ec4c:25b4 with SMTP id
- 5b1f17b1804b1-44c91ad70d0mr133060635e9.10.1748328408740; 
- Mon, 26 May 2025 23:46:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgeaJ2BLqWogyzXrlL0xyf9fbddk7yc4wxPjPU3t39H9OGnvkOfldAtfu7GNwNJZSvgouWjw==
-X-Received: by 2002:a05:600c:4fc9:b0:43c:ec4c:25b4 with SMTP id
- 5b1f17b1804b1-44c91ad70d0mr133060355e9.10.1748328408358; 
- Mon, 26 May 2025 23:46:48 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-447f6f0552esm255876705e9.11.2025.05.26.23.46.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 May 2025 23:46:47 -0700 (PDT)
-Message-ID: <cdf2bcaa-ca41-4af2-9eaa-408f81f891fd@redhat.com>
-Date: Tue, 27 May 2025 08:46:46 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] tests/qtest/bios-tables-test: Keep ACPI PCI hotplug
- off
+ (Exim 4.90_1) (envelope-from <Alexey.Kardashevskiy@amd.com>)
+ id 1uJoF4-0001Jx-4I
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 02:56:57 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zJjjJvBnCNeIHFfNybUnOde25Zx0j1QHjkIaTnv2afP5zklrn070ukTm8BifiJc2BPJER6XsmaPLysBb0y0+eYEAIr432ARPnr35Mo4Wyj5opWL8Zqsr0G4lOTUNp8PHYcYAN1TMBhvN6adnkyIr5oqiAWws5LHJmW2Nti41OFMXhXEElFKHV18vuptJ/+qFK5qPzMfmkGI9QW4YAJ1kVLWjGcrfWn6arCyB3AQzxf4ZtGk2cHDkdzjMzE0WCvvSccgkqob9qAjLNdyfQzk8MrhKBzmvYwdb2HD0cftoJEttZ2HXkjCcToDBplXhFlEUe6WI8BsRGV7xQ+vafkDBUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZnhkSXswu0GTWmjjModNh7vTl5d/zmdDcLB3scCHfAc=;
+ b=PIKta1RqEFOmTbXulBCFW2+1mq9zuPA+eIBczTd7akSq4U2b97jAwKxUoOJPfqkicr1otVcjJXF9q+CN9t1BvTbNuMvPE354mgdTEdEP6i0h4dCZrwj6NPYo2M5eVNgjWdSgYzgabk+cr0Dy2Kj1xf+T4XXgx1qRCXzygZB0egQgKKss9p9aIuVswcnxKr6FLsQUaMYKCFLGYUeholSvU9fTKE9jV1gcX7A9m4PRrD4K8iOQhNSJMF8V5mCV6LYj7JXdzqszyF3TjZ4aFt2DfLmsCgDt6Hvgydbl+v5THV8SRbakHlwpYVTy/s8HQdlTtTpQnKctud6OVl3GMgimjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZnhkSXswu0GTWmjjModNh7vTl5d/zmdDcLB3scCHfAc=;
+ b=26qTIZR8GmxASJZN5sV4EPE99vQvpn8GH8U67QpWiVahZaacqZDoSqGwU74N7ceY84YX429G2PD/xGILugiP53NEgHjLI7jsQWoYVYw4Ojtb2tPasEti+JPiRbWmvrUedv9hWdHz2qIS9NIDqUSQsdWmBqP51afyFpk7Iz6WYko=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by SA1PR12MB6752.namprd12.prod.outlook.com (2603:10b6:806:259::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.30; Tue, 27 May
+ 2025 06:56:45 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8769.022; Tue, 27 May 2025
+ 06:56:44 +0000
+Message-ID: <001c8e69-4a12-416a-8c47-4112cd18ff06@amd.com>
+Date: Tue, 27 May 2025 16:56:36 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v5 03/10] memory: Unify the definiton of
+ ReplayRamPopulate() and ReplayRamDiscard()
+To: Chenyi Qiang <chenyi.qiang@intel.com>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Gupta Pankaj <pankaj.gupta@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Williams Dan J <dan.j.williams@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Baolu Lu <baolu.lu@linux.intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
+References: <20250520102856.132417-1-chenyi.qiang@intel.com>
+ <20250520102856.132417-4-chenyi.qiang@intel.com>
 Content-Language: en-US
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, thuth@redhat.com, alex.bennee@linaro.org,
- mst@redhat.com, imammedo@redhat.com
-References: <20250526053123.1434204-1-gustavo.romero@linaro.org>
- <20250526053123.1434204-3-gustavo.romero@linaro.org>
- <a9a8d55f-7409-4dd6-97f6-a373de9870df@redhat.com>
- <d86cd26f-c43d-4a99-bd9e-573d3d7cf8bd@linaro.org>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <d86cd26f-c43d-4a99-bd9e-573d3d7cf8bd@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20250520102856.132417-4-chenyi.qiang@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY6PR01CA0087.ausprd01.prod.outlook.com
+ (2603:10c6:10:110::20) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SA1PR12MB6752:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e33b9fa-783d-4317-e570-08dd9ceba441
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|366016|7416014|1800799024|7053199007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RENoc2UrbTBoM1VNNW9xUUk0WlB4cG40dHVyOFpFQjhTYmZ1VVhlVHdkWE9Z?=
+ =?utf-8?B?UzVJSmVTWWw0aDRKUjM0RUhXcWpwTkJRUWl0UDlXYmdDS2s3S1RPVXlpd2R0?=
+ =?utf-8?B?enNKM1VHalBRbmpTRVU3UmNUTS9xc1Q2Q1NvdGUzT0phaTNjZzNXT1BVdnQy?=
+ =?utf-8?B?YU0xOG9ENThPUjA2ckFteXJmZTNzU1ExVFZ3cGwzN1lxQUpFRFJ4aExpNHhV?=
+ =?utf-8?B?OVVZcS9jeVFnbWJzVGN2M3VIR3ZkdHF5NFRoK0VjLzJRazRndEZzRUt6Vkgr?=
+ =?utf-8?B?eWlJcW5yL2x4UzNTSDlSbStEaldad0VvV3p4WUtoQ2thOWowSVdJdVAxWlJq?=
+ =?utf-8?B?VE4yd0pGdEdZOGUxc0VZTGtkbTFlMHVVR0dLMG03MzR6QlM1WTlXQ3plTkNP?=
+ =?utf-8?B?SFd6blQ3VVUzK3VzeUtsQXdjai8rdjV4ZU50S3VFdHNHbHd5eHp5N1F1WW1K?=
+ =?utf-8?B?MzFTQlRxUG1nS2FJcUhOYmJuTEx5YWZmZWlkNm5WSlJWMjI3OS93SXJpVENx?=
+ =?utf-8?B?Q2dCbzFRL3BDdkVkektiSVVkNFc1NmxLY3hQYTZpTXNPaEgyTzVZcDF1TWtl?=
+ =?utf-8?B?eWRGR0Z2VEYrMFFYOHhFZzFLTytYSkhWT3ozN2pvbGZ6WE9RYWZZeHkxS09y?=
+ =?utf-8?B?aDRYNjRGeHY2bzRlcldSL3BhVDdPVTR1SDcvaDhadjFYYnB5SmpycEUyV0U0?=
+ =?utf-8?B?WW1lLzQ3N2dTQjNuVURvNWxFeFdpc3o5cjc5a3JSbDhTZmxVQURoN09WVXFO?=
+ =?utf-8?B?QkxidkJmS0dzL1ptSkhjWXBCYzdLK0pVWFJMbDVKb1pWWmUxUW1PczZtaVdX?=
+ =?utf-8?B?VDcyS3FTUVB1Zk5ERWE1OSszeXNwblJ3V2pCakdSZlNoRWFzT25yYzczbXZH?=
+ =?utf-8?B?eFZ2eVNWY1R5ajk5MXhVMnpydnVBVUhlQWk5bDA2eENQUnBVNXduRFlQNmpY?=
+ =?utf-8?B?MHFxamxiUFVTTGIwUkRwMVE5aFJzd3pFeDFOTk05NUt0aUFidVlCMWE0THFy?=
+ =?utf-8?B?SlV0V1h4ZDlyQnFSVE5zWlQ5THAxN3I1dk9KSHowNDZDQ3M2ejlxcG13ck1G?=
+ =?utf-8?B?aHRnbCtyZm5JM2htc2pndWZnMUE3V2tUVTd1WkhjdEp2STNWTU03MXl3WW4x?=
+ =?utf-8?B?QWoyVjN3ZS90RTUza3BaODVzZUlhTFRCUzVKYWF0WWdiV3gzajBNbTZyMVBz?=
+ =?utf-8?B?OC9Yc0hqcGwvZXFtSFkxSmgxeHNXcGcwS2NwVjBXdHlMNG4yM0l4NU5XK1Y3?=
+ =?utf-8?B?cC9jb2VuTkVIbFhXSWRPemtXY3hUUCt4c1ZZTW5vbGw4c1FBRW1JL2tVMi9P?=
+ =?utf-8?B?Z3BTK2pQbkdZK1JodE5hc2hnQnMwYnU4SldJUERNb1NnMExzbGVLcDVBK3FY?=
+ =?utf-8?B?Y29kNDJLSWJLSExrbU54WHlOejNHOG8rbmVoeEQ5YjNhdnRIVTBuTWMwWDlP?=
+ =?utf-8?B?UkJBMFpmUzZlSzcraHRxdGpPTXZBOGExck1sMEd1dnp3bXJUdFhzYXdBaEUw?=
+ =?utf-8?B?aUJzQ0oxdDhOWXZtMGN6cXh0Qm52OEZSV2JqcnJKa25xMzdnc2RRbmRrVndr?=
+ =?utf-8?B?N1lEWTlpNjlhR1hiNHFrb0t5clRhcjdyWGFCcSs0ekhqK1dFYTZ6RTg0ZTlz?=
+ =?utf-8?B?YXVLZWRYWUVwN1hsOUcweExzeXd0bVNrYnp0NzBHT0pSeGd0RU1heGlYWnA3?=
+ =?utf-8?B?MkJzdmg5cTBjSmpNK1BxRisvNEo4Z2ZuNktXdWZseTZZZ2VYVWEveTRQSnVZ?=
+ =?utf-8?B?Z0MvamtIMzd0bzlUM2h0Wi9ObUNDZnJFbURxY3lvSXVpV3BERmtFKzhiemVr?=
+ =?utf-8?B?TWdUd3Vlak9ncjZsbWVPdm42THVFSEkvN1hMdFJMVmJyQ0x4MEtBVkZxSkp3?=
+ =?utf-8?B?SHpJYkJac1oyY1EwYzVQQWx1M0JXL0FrRzZSN2ZaYk9kVnJDR3NxSHNOME95?=
+ =?utf-8?Q?xh9tRiLYIhU=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR12MB9194.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(7416014)(1800799024)(7053199007); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c3NnVGRMMXpXMVVzN0p1UXJ0YlZLOUg1YUhUbitoOTkzeXR3L3haT2dTcHIv?=
+ =?utf-8?B?N0xZUnlNRUk1b0tDN1RKcG9kY2plY1lvWk42SlVWZHp5bUl2dU4xdDhUNTVP?=
+ =?utf-8?B?SE5DeXpxY29ZUXNvdy9KNTRQMzhNUzVLYzhWNElJM2NocUZhYkZnekM2dFVh?=
+ =?utf-8?B?bGNUTHJiQkx0MDhQOWlYSko1d3VPL1hsK1M3cXQvaXhCeVNMUzhKWkhSTUR6?=
+ =?utf-8?B?V0ROcmxMYnV5bWRJcE9Ob3JXZVdac0hWZllhQTI5RVd5cVU4blFqVlZkWnh1?=
+ =?utf-8?B?bGY4WlIweWMxb0lXSE1STGFMYzRxTnVRQk5wM0FGZW5tNnN2UzNsZjVPdk4x?=
+ =?utf-8?B?c2FPai9kVzlXZjJLQlF2bEtsTUpMSjRQZEpiTHF6eFpDRnZUZE1kcUdZeUFz?=
+ =?utf-8?B?SHArWUJjSG1lUmEyNndVK2ZoWTNIWU9sbG0rSHBFLzZ2cjBrYWVwVDRQT1lP?=
+ =?utf-8?B?Y1d2RHRXNnB4T2tsWXFJeXdEalNYRjVUUjBJYktoMGN5dHYyU092RHZsck1o?=
+ =?utf-8?B?RVJHMktLZGxYUGN2MGNZODNuaEZrWHp0Q05XV05XN1hwT2JmdFFPN3lVSVlZ?=
+ =?utf-8?B?U3hKK0xjeitMdW9Mem5hSXZ2aTI0WXVUeE92bmtzNThDeEtCc2ZnSlYvWnJD?=
+ =?utf-8?B?WThFSjkvUHNoNmhVU1huclRzWml1V2FQcWxhOWdvYmZTRjBGUFA5VTh5SDl0?=
+ =?utf-8?B?QTZrUTJsREFaQ0lZeE5sQ3BtR3hVbkNIcG9PVnNQWDJuWkNpdDNLT3VvL1gr?=
+ =?utf-8?B?d1RDMjdRQlNPN0FEdlRuSGkvbFordHRsY2hlNHRDM29YOVJzWGswdSsrbWVv?=
+ =?utf-8?B?VXE3R2lLU0NMOHZaSEhnOEU3S281VmlLQnhkUlFBMjVCNWVhbzl2SjZSNC8y?=
+ =?utf-8?B?a1lrNDRydHdFUzBqeUFZbXNhcTRSVkE3U1pPaWxGZ1RZYU9ucjFRbTRUL1ZD?=
+ =?utf-8?B?OWtvSWJ5bUFjdzQxeG9Bb3ZhdW53cGRwTjY2eE5yQ1g4MVhUanlBS25zbmE3?=
+ =?utf-8?B?bmwyVi93eFJOc3o5TWZyN0M5QXBEUTFKSjl1TDN0RmpCc2xYb1g4Z3B2aXV4?=
+ =?utf-8?B?TGRzbXZJaUpkUEJUenlNMjRDbzBucnZ4YmJKWHFGV21BTXR0emdRSXBPT1pn?=
+ =?utf-8?B?NU40dGRhWGQxQytMT1B1TTZYUjlFM1lOYUxBR0h4RXcyRGJRTGszL3Q3bVNO?=
+ =?utf-8?B?V0cySXluamZaS3ZSWG4rcHF0U24rMU40WXpJRzJrSEZUN0N5SDl1aXhFUjgw?=
+ =?utf-8?B?TitKZkJ5ZFNSeDVnazR3bjNhTVRHejI0K3ozUUNEVmtUM244QnBCZFJtcFl6?=
+ =?utf-8?B?Qk9YVEpDNHloenFiQmZGRnNEeUtzN1F4bENJQzI2WnppZWtOVy9ZMmJncGVU?=
+ =?utf-8?B?dm1mVEg3OVduelRheGlmd0tHeEdXREh2d09QanJqNmI5NnFsY3hqdy9qTnZP?=
+ =?utf-8?B?Q0t3bkRuUlRVWThhd01vRm5kZUFFSEZsUmJCNm1tWWVja1BBaFcyOUpIWVY2?=
+ =?utf-8?B?K1ZGR2ZXMTl4ay9sY1BmR1JMVW5SaWgxRDhBLytneEV3SXhMS3dtc1NEdjBZ?=
+ =?utf-8?B?cDlEaEpzVndsMGFOOFJtaTNkS25mcXBOeHFvaUtLT0lUMzRCQlRPR3JtcTVv?=
+ =?utf-8?B?YzdBMTMwdUE4aVFBUVlnRmltejUzdFlIaHJlSmdtSTJQeS9kaFEwZFVyTW1R?=
+ =?utf-8?B?K1RucFcyWCtUcmpETWN1aVdnMHVSRW5wcGxOQkdKMzJUWHh5ck80dUdEVzZV?=
+ =?utf-8?B?RHI3a0dWMmNsN1RGUi9oWUFGaVN0eXFmd1NOemxmd2ozL1lXTEVqc2RCUUJC?=
+ =?utf-8?B?S0lQYitvUWllVXk5NmlaaGNlMUpLMmlKOVN5dmtjZ3FoaU5NeGxlcGo1eUla?=
+ =?utf-8?B?V2puc1JGaEh5NS80SDlkYXRtdUlaUkMrL3pVWmlZQjhIblFXN3JPQkxBRzZw?=
+ =?utf-8?B?NWwvOXI3MHJia2s0YUswUzRzWmlGeEIwWjB6aUV2RFVqTHBDMmJDYVRVVVNz?=
+ =?utf-8?B?b1NyL1RTTllvdjc4d0RIM21Ka21Ic0sxN3M4Sms1OGdKbWtHL25yTXptaGFw?=
+ =?utf-8?B?TGl5WUNuWGlHakdwWjV0S2trZHlTcndCRnpxQ1JjT1lKNmdJWjFQYzlZUEhz?=
+ =?utf-8?Q?bxM5g7qVzcbXZR4k5ZdIYvixl?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e33b9fa-783d-4317-e570-08dd9ceba441
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2025 06:56:44.8024 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dvAbO00u375MhmE/wyLEvmQicvjCgRDcBN+XgUAR9X4zo6bFYE3fs/rt+PT33mYti9EcV0JjTamFzrh4FYDB2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6752
+Received-SPF: permerror client-ip=2a01:111:f403:2009::61a;
+ envelope-from=Alexey.Kardashevskiy@amd.com;
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
 X-Spam_bar: -----
 X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.903,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,124 +182,242 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Gustavo,
 
-On 5/26/25 6:09 PM, Gustavo Romero wrote:
-> Hi Eric,
->
-> On 5/26/25 12:28, Eric Auger wrote:
->> Hi Gustavo,
->>
->> On 5/26/25 7:31 AM, Gustavo Romero wrote:
->>> ACPI PCI hotplug is now turned on by default so we need to change the
->>> existing tests to keep it off. However, even setting the ACPI PCI
->>> hotplug off in the existing tests, there will be changes in the ACPI
->>> tables because the _OSC method was modified, hence in the next patch of
->>> this series the blobs are updated accordingly.
->>>
->>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->>> ---
->>>   tests/qtest/bios-tables-test.c | 10 +++++++---
->>>   1 file changed, 7 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/tests/qtest/bios-tables-test.c
->>> b/tests/qtest/bios-tables-test.c
->>> index 0a333ec435..216941dbb5 100644
->>> --- a/tests/qtest/bios-tables-test.c
->>> +++ b/tests/qtest/bios-tables-test.c
->>> @@ -1626,7 +1626,7 @@ static void
->>> test_acpi_aarch64_virt_tcg_memhp(void)
->>>       };
->>>         data.variant = ".memhp";
->>> -    test_acpi_one(" -machine nvdimm=on"
->>> +    test_acpi_one(" -machine nvdimm=on,acpi-pcihp=off"
->>>                     " -cpu cortex-a57"
->>>                     " -m 256M,slots=3,maxmem=1G"
->>>                     " -object memory-backend-ram,id=ram0,size=128M"
->>> @@ -1775,7 +1775,8 @@ static void test_acpi_aarch64_virt_tcg_pxb(void)
->>>        * to solve the conflicts.
->>>        */
->>>       data.variant = ".pxb";
->>> -    test_acpi_one(" -device pcie-root-port,chassis=1,id=pci.1"
->>> +    test_acpi_one(" -machine acpi-pcihp=off"
->>> +                  " -device pcie-root-port,chassis=1,id=pci.1"
->>>                     " -device virtio-scsi-pci,id=scsi0,bus=pci.1"
->>>                     " -drive file="
->>>                    
->>> "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2,"
->>> @@ -1846,7 +1847,7 @@ static void
->>> test_acpi_aarch64_virt_tcg_acpi_hmat(void)
->>>         data.variant = ".acpihmatvirt";
->>>   -    test_acpi_one(" -machine hmat=on"
->>> +    test_acpi_one(" -machine hmat=on,acpi-pcihp=off"
->>>                     " -cpu cortex-a57"
->>>                     " -smp 4,sockets=2"
->>>                     " -m 384M"
->>> @@ -2123,6 +2124,7 @@ static void test_acpi_aarch64_virt_tcg(void)
->>>       data.smbios_cpu_max_speed = 2900;
->>>       data.smbios_cpu_curr_speed = 2700;
->>>       test_acpi_one("-cpu cortex-a57 "
->>> +                  "-machine acpi-pcihp=off "
->>>                     "-smbios
->>> type=4,max-speed=2900,current-speed=2700", &data);
->>>       free_test_data(&data);
->> On my end I also need to add -machine acpi-pcihp=off in
->> test_acpi_aarch64_virt_tcg_numamem
->
-> Yeah, by reading the code I'm pretty sure this is required by the
-> numamem variant
-> as well but I don't see a failure here :( I have _no clue_ why the
-> failure doesn't
-> happen on my env. Are you running simply "make check V=2"? arm64 host?
-on my end I am running on x86 host with TCG aarch64 configured qemu
-make -j 128 tests/qtest/bios-tables-test
-cd build
-QTEST_QEMU_BINARY=./qemu-system-aarch64 tests/qtest/bios-tables-test
->
->
->> with that fixed,
->>
->> Reviewed-by: Eric Auger <eric.auger@redhat.com>
->
-> Thanks for the review! I'm sending a v2 with numamem variant fixed.
->
-> BTW, I'm sending soon also a functional test variant for acpi-pcihp=off.
-OK thanks!
 
-Cheers
+On 20/5/25 20:28, Chenyi Qiang wrote:
+> Update ReplayRamDiscard() function to return the result and unify the
+> ReplayRamPopulate() and ReplayRamDiscard() to ReplayRamDiscardState() at
+> the same time due to their identical definitions. This unification
+> simplifies related structures, such as VirtIOMEMReplayData, which makes
+> it cleaner.
+> 
+> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 
-Eric
->
->
-> Cheers,
-> Gustavo
->  
->>
->> Thanks
->>
->> Eric
->>>   }
->>> @@ -2142,6 +2144,7 @@ static void
->>> test_acpi_aarch64_virt_tcg_topology(void)
->>>       };
->>>         test_acpi_one("-cpu cortex-a57 "
->>> +                  "-machine acpi-pcihp=off "
->>>                     "-smp sockets=1,clusters=2,cores=2,threads=2",
->>> &data);
->>>       free_test_data(&data);
->>>   }
->>> @@ -2227,6 +2230,7 @@ static void test_acpi_aarch64_virt_viot(void)
->>>       };
->>>         test_acpi_one("-cpu cortex-a57 "
->>> +                  "-machine acpi-pcihp=off "
->>>                     "-device virtio-iommu-pci", &data);
->>>       free_test_data(&data);
->>>   }
->>
->
+Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
+
+> ---
+> Changes in v5:
+>      - Rename ReplayRamStateChange to ReplayRamDiscardState (David)
+>      - return data->fn(s, data->opaque) instead of 0 in
+>        virtio_mem_rdm_replay_discarded_cb(). (Alexey)
+> 
+> Changes in v4:
+>      - Modify the commit message. We won't use Replay() operation when
+>        doing the attribute change like v3.
+> 
+> Changes in v3:
+>      - Newly added.
+> ---
+>   hw/virtio/virtio-mem.c  | 21 ++++++++++-----------
+>   include/system/memory.h | 36 +++++++++++++++++++-----------------
+>   migration/ram.c         |  5 +++--
+>   system/memory.c         | 12 ++++++------
+>   4 files changed, 38 insertions(+), 36 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+> index 2e491e8c44..c46f6f9c3e 100644
+> --- a/hw/virtio/virtio-mem.c
+> +++ b/hw/virtio/virtio-mem.c
+> @@ -1732,7 +1732,7 @@ static bool virtio_mem_rdm_is_populated(const RamDiscardManager *rdm,
+>   }
+>   
+>   struct VirtIOMEMReplayData {
+> -    void *fn;
+> +    ReplayRamDiscardState fn;
+>       void *opaque;
+>   };
+>   
+> @@ -1740,12 +1740,12 @@ static int virtio_mem_rdm_replay_populated_cb(MemoryRegionSection *s, void *arg)
+>   {
+>       struct VirtIOMEMReplayData *data = arg;
+>   
+> -    return ((ReplayRamPopulate)data->fn)(s, data->opaque);
+> +    return data->fn(s, data->opaque);
+>   }
+>   
+>   static int virtio_mem_rdm_replay_populated(const RamDiscardManager *rdm,
+>                                              MemoryRegionSection *s,
+> -                                           ReplayRamPopulate replay_fn,
+> +                                           ReplayRamDiscardState replay_fn,
+>                                              void *opaque)
+>   {
+>       const VirtIOMEM *vmem = VIRTIO_MEM(rdm);
+> @@ -1764,14 +1764,13 @@ static int virtio_mem_rdm_replay_discarded_cb(MemoryRegionSection *s,
+>   {
+>       struct VirtIOMEMReplayData *data = arg;
+>   
+> -    ((ReplayRamDiscard)data->fn)(s, data->opaque);
+> -    return 0;
+> +    return data->fn(s, data->opaque);
+>   }
+>   
+> -static void virtio_mem_rdm_replay_discarded(const RamDiscardManager *rdm,
+> -                                            MemoryRegionSection *s,
+> -                                            ReplayRamDiscard replay_fn,
+> -                                            void *opaque)
+> +static int virtio_mem_rdm_replay_discarded(const RamDiscardManager *rdm,
+> +                                           MemoryRegionSection *s,
+> +                                           ReplayRamDiscardState replay_fn,
+> +                                           void *opaque)
+>   {
+>       const VirtIOMEM *vmem = VIRTIO_MEM(rdm);
+>       struct VirtIOMEMReplayData data = {
+> @@ -1780,8 +1779,8 @@ static void virtio_mem_rdm_replay_discarded(const RamDiscardManager *rdm,
+>       };
+>   
+>       g_assert(s->mr == &vmem->memdev->mr);
+> -    virtio_mem_for_each_unplugged_section(vmem, s, &data,
+> -                                          virtio_mem_rdm_replay_discarded_cb);
+> +    return virtio_mem_for_each_unplugged_section(vmem, s, &data,
+> +                                                 virtio_mem_rdm_replay_discarded_cb);
+>   }
+>   
+>   static void virtio_mem_rdm_register_listener(RamDiscardManager *rdm,
+> diff --git a/include/system/memory.h b/include/system/memory.h
+> index 896948deb1..83b28551c4 100644
+> --- a/include/system/memory.h
+> +++ b/include/system/memory.h
+> @@ -575,8 +575,8 @@ static inline void ram_discard_listener_init(RamDiscardListener *rdl,
+>       rdl->double_discard_supported = double_discard_supported;
+>   }
+>   
+> -typedef int (*ReplayRamPopulate)(MemoryRegionSection *section, void *opaque);
+> -typedef void (*ReplayRamDiscard)(MemoryRegionSection *section, void *opaque);
+> +typedef int (*ReplayRamDiscardState)(MemoryRegionSection *section,
+> +                                     void *opaque);
+>   
+>   /*
+>    * RamDiscardManagerClass:
+> @@ -650,36 +650,38 @@ struct RamDiscardManagerClass {
+>       /**
+>        * @replay_populated:
+>        *
+> -     * Call the #ReplayRamPopulate callback for all populated parts within the
+> -     * #MemoryRegionSection via the #RamDiscardManager.
+> +     * Call the #ReplayRamDiscardState callback for all populated parts within
+> +     * the #MemoryRegionSection via the #RamDiscardManager.
+>        *
+>        * In case any call fails, no further calls are made.
+>        *
+>        * @rdm: the #RamDiscardManager
+>        * @section: the #MemoryRegionSection
+> -     * @replay_fn: the #ReplayRamPopulate callback
+> +     * @replay_fn: the #ReplayRamDiscardState callback
+>        * @opaque: pointer to forward to the callback
+>        *
+>        * Returns 0 on success, or a negative error if any notification failed.
+>        */
+>       int (*replay_populated)(const RamDiscardManager *rdm,
+>                               MemoryRegionSection *section,
+> -                            ReplayRamPopulate replay_fn, void *opaque);
+> +                            ReplayRamDiscardState replay_fn, void *opaque);
+>   
+>       /**
+>        * @replay_discarded:
+>        *
+> -     * Call the #ReplayRamDiscard callback for all discarded parts within the
+> -     * #MemoryRegionSection via the #RamDiscardManager.
+> +     * Call the #ReplayRamDiscardState callback for all discarded parts within
+> +     * the #MemoryRegionSection via the #RamDiscardManager.
+>        *
+>        * @rdm: the #RamDiscardManager
+>        * @section: the #MemoryRegionSection
+> -     * @replay_fn: the #ReplayRamDiscard callback
+> +     * @replay_fn: the #ReplayRamDiscardState callback
+>        * @opaque: pointer to forward to the callback
+> +     *
+> +     * Returns 0 on success, or a negative error if any notification failed.
+>        */
+> -    void (*replay_discarded)(const RamDiscardManager *rdm,
+> -                             MemoryRegionSection *section,
+> -                             ReplayRamDiscard replay_fn, void *opaque);
+> +    int (*replay_discarded)(const RamDiscardManager *rdm,
+> +                            MemoryRegionSection *section,
+> +                            ReplayRamDiscardState replay_fn, void *opaque);
+>   
+>       /**
+>        * @register_listener:
+> @@ -722,13 +724,13 @@ bool ram_discard_manager_is_populated(const RamDiscardManager *rdm,
+>   
+>   int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
+>                                            MemoryRegionSection *section,
+> -                                         ReplayRamPopulate replay_fn,
+> +                                         ReplayRamDiscardState replay_fn,
+>                                            void *opaque);
+>   
+> -void ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
+> -                                          MemoryRegionSection *section,
+> -                                          ReplayRamDiscard replay_fn,
+> -                                          void *opaque);
+> +int ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
+> +                                         MemoryRegionSection *section,
+> +                                         ReplayRamDiscardState replay_fn,
+> +                                         void *opaque);
+>   
+>   void ram_discard_manager_register_listener(RamDiscardManager *rdm,
+>                                              RamDiscardListener *rdl,
+> diff --git a/migration/ram.c b/migration/ram.c
+> index e12913b43e..c004f37060 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -848,8 +848,8 @@ static inline bool migration_bitmap_clear_dirty(RAMState *rs,
+>       return ret;
+>   }
+>   
+> -static void dirty_bitmap_clear_section(MemoryRegionSection *section,
+> -                                       void *opaque)
+> +static int dirty_bitmap_clear_section(MemoryRegionSection *section,
+> +                                      void *opaque)
+>   {
+>       const hwaddr offset = section->offset_within_region;
+>       const hwaddr size = int128_get64(section->size);
+> @@ -868,6 +868,7 @@ static void dirty_bitmap_clear_section(MemoryRegionSection *section,
+>       }
+>       *cleared_bits += bitmap_count_one_with_offset(rb->bmap, start, npages);
+>       bitmap_clear(rb->bmap, start, npages);
+> +    return 0;
+>   }
+>   
+>   /*
+> diff --git a/system/memory.c b/system/memory.c
+> index b45b508dce..de45fbdd3f 100644
+> --- a/system/memory.c
+> +++ b/system/memory.c
+> @@ -2138,7 +2138,7 @@ bool ram_discard_manager_is_populated(const RamDiscardManager *rdm,
+>   
+>   int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
+>                                            MemoryRegionSection *section,
+> -                                         ReplayRamPopulate replay_fn,
+> +                                         ReplayRamDiscardState replay_fn,
+>                                            void *opaque)
+>   {
+>       RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_GET_CLASS(rdm);
+> @@ -2147,15 +2147,15 @@ int ram_discard_manager_replay_populated(const RamDiscardManager *rdm,
+>       return rdmc->replay_populated(rdm, section, replay_fn, opaque);
+>   }
+>   
+> -void ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
+> -                                          MemoryRegionSection *section,
+> -                                          ReplayRamDiscard replay_fn,
+> -                                          void *opaque)
+> +int ram_discard_manager_replay_discarded(const RamDiscardManager *rdm,
+> +                                         MemoryRegionSection *section,
+> +                                         ReplayRamDiscardState replay_fn,
+> +                                         void *opaque)
+>   {
+>       RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_GET_CLASS(rdm);
+>   
+>       g_assert(rdmc->replay_discarded);
+> -    rdmc->replay_discarded(rdm, section, replay_fn, opaque);
+> +    return rdmc->replay_discarded(rdm, section, replay_fn, opaque);
+>   }
+>   
+>   void ram_discard_manager_register_listener(RamDiscardManager *rdm,
+
+-- 
+Alexey
 
 
