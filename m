@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04563AC518A
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BC1AC518C
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 17:04:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJvpS-0005Rr-Ng; Tue, 27 May 2025 11:02:58 -0400
+	id 1uJvpT-0005Sz-Au; Tue, 27 May 2025 11:02:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uJvpO-0005R6-9c
- for qemu-devel@nongnu.org; Tue, 27 May 2025 11:02:54 -0400
-Received: from mail-qk1-x742.google.com ([2607:f8b0:4864:20::742])
+ id 1uJvpQ-0005RI-AM
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 11:02:56 -0400
+Received: from mail-vs1-xe41.google.com ([2607:f8b0:4864:20::e41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uJvpK-0006Df-8L
- for qemu-devel@nongnu.org; Tue, 27 May 2025 11:02:53 -0400
-Received: by mail-qk1-x742.google.com with SMTP id
- af79cd13be357-7c5e1b40f68so356908185a.1
- for <qemu-devel@nongnu.org>; Tue, 27 May 2025 08:02:48 -0700 (PDT)
+ id 1uJvpN-0006E1-5e
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 11:02:55 -0400
+Received: by mail-vs1-xe41.google.com with SMTP id
+ ada2fe7eead31-4dfa2aeec86so1251686137.1
+ for <qemu-devel@nongnu.org>; Tue, 27 May 2025 08:02:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748358167; x=1748962967; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VQWVqvC08Xp7zGQnvxpeyUf1DukXF9QgCrg60idivA0=;
- b=C6A/piYsUUuVdCxtuWk1bxnCYX+u6qrGgJd3I+SjYloA65Pkzz3OR/K0OGRJgSeQRq
- bmTI2Rlofsxpukb0/4eX02IFUNQosmRdhF1X2d1LGhW1ucJIle84v8ZxzS3f+DgowDO3
- 1D6B5QdJlR+nzYL/yrfBKSh+NzecvUJcS1ZSFE6rZAasX74dQpiU3XWqbKtV9gqbHrep
- kHKdydkybJIzNMhIs1AB4OqLJs1Ds2R9X2l+rCbPA+EE88XH19CMTgPaSKM17L38XCqT
- 7DnDi5yxJ69imCfh3zIuSuKZURAGeTGOFlka8QaVlZjTAKQFMK3RySKOk+G05/Glruu+
- qAFQ==
+ d=linaro.org; s=google; t=1748358170; x=1748962970; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=agFWYYCKCVq6mVFbehNZ8ax/fZ1A0ibvbnP/23upHzI=;
+ b=BAYeOfEGgjcNJXZq59AfBetmjGF5pmV7TEwOXXtMk194ISMz8htOnu3cbea7FAnbp8
+ TpRP8hm/ZywfBM9eBoCxiVbVA/ZoIr2Il1gLepj2E9qlNqsiUY5Mlw/Zz3BOdfxo/+FL
+ yO2jzNZC/DgRs1d9q+kl++HDj/FrqDRugzToH6fE/AfWUR1wzoHvNQ07U0UaSHwalYVV
+ 404gvr2XhSM09IUO4Q48AEJfYCXa3qxsuvHYs62BHPFWZ5cEPIRG69AiwB8is+FoXrvo
+ D/4QVV903G75hyAwxMSmO4LKkvjINYX+WGC/oOKXf1MWcNOgGHWjBpVmnN0gdQgeM4ru
+ Z8xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748358167; x=1748962967;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VQWVqvC08Xp7zGQnvxpeyUf1DukXF9QgCrg60idivA0=;
- b=aJZipou1imJyIAkExcK3ZXp6a34LPf13qbQtjrmUcruucqjNBbbSqHSq1tN4WYZpdN
- w/5iaxH+8Z80EZTlPrOSWIoqPNS1f1WWKUlJ9n4Cq+6mSTwdx9ElCqc6alTHj6C8qhXy
- /dnqKD7WOxlIi7cWhkVZTWFE6f6SSzph+0vtbScNEXRSgvVP8V5vVZNTDIMGMqDR2Fg/
- zc4QLIbSj5FnseCA9yVC+dLNw9DktRj264TtTfts0qH8CE8h4fvWE3APoyr7P36CY084
- YrMG46sT1LeTuqVEP4qnSGdsZmIycOUMNVWGlEbYEzK93KkqUbLzsrmg6g/eZC3BdJlh
- ZBaQ==
-X-Gm-Message-State: AOJu0YyfFf4PCENXzDfO0xa5c8qMtySXQdjm0iGMO8E43fW7BpjlL4m7
- 8wQjXBwJMzQhXzqiyhDNsAR5+h6nen9qKUIGxDHB/kOvOPR1ajyldkbockeL1MP9Dq0YMhXarGq
- jNy5Z5jrcwg==
-X-Gm-Gg: ASbGncvNBEOxvWPvRNWm+ScJMQyHzlbop0lkqvuuiVVKuL81CObQEEkudSgPk7VZn3n
- kMxRnxGdf68LSAPO2uYreFHHoQ8tVzqZjnzJb/TW0pMbX/x9Ssq91LQ3mRMQrkSg200BTp86lfC
- OTM/6HoU2k+uHkLLwaG3YTGkLleC5ohwJe1BBHR3q4YKuGykEMxuiEgCFmmcjKV8EOIfsfmrpT/
- b0olVve2RtuqBbCoLGHu4fL88M2dxnP5ZGxO80lGxZvuxzpiieVGkEPl5cWA8dbe2pwdR6TLhcL
- Y+TbIev6XFLGGXM9OOu6ywfU3mY8AcB+nQxGkU2T80GUcA2lbRgSEj3E1xbkPMwVeDBSHik0VE+
- drnIeGlHTMDq3VolGGka/5g==
-X-Google-Smtp-Source: AGHT+IH7yldyN879XztzSQmAwIGYPh3TLazr8AFzJHZErAgZJ3c2KXqGc8JALi00JgIokb/BxFkSfg==
-X-Received: by 2002:a05:620a:2615:b0:7cc:b4cc:115b with SMTP id
- af79cd13be357-7ceecbd8348mr1786940685a.32.1748358167002; 
- Tue, 27 May 2025 08:02:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748358170; x=1748962970;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=agFWYYCKCVq6mVFbehNZ8ax/fZ1A0ibvbnP/23upHzI=;
+ b=je5+5mZbrhiIDWOX6ZdZylO6Somzl7zpMqMa1wPU8sspSRqr3pd7qfMhsVF4a42ct+
+ gO1eSelIhb/Hmp4Bu6pBKEZ8soNeVm7nB4YxFSPt6pN6n9uuGEOPAPe2Qv5MyX5KYN2J
+ pj0pwH6aZSF0qoJmMB72aiWu7/lcLP3AsZm3B5T5mB+igalr2uK+E2tR5k/AXir5nEhn
+ Ylfs/aHnTbCvlc1RIqVWvxUZb7oLq2IE7/naje0PVCjm3LFzgMGV+ylFD9mHTOlLss0D
+ Dd1Tmtnp5nQafGoMOVJDSgqZ0oi4jCoYg17F9xaV9FDt9UAWQi8nwMZRlQxmSkHilCQB
+ f+pg==
+X-Gm-Message-State: AOJu0Yy2u53H20OnjVYxfKVck8G1aTjbGe3xH2NUnUV6OeJi0RlWM3Na
+ 6vR5p03VdZmtr5r8mL4AjIJ74jNjTb9gHNkKa07rVY9bWYuKVNL6OsF0UNyT1eBW9IsnWvuJqrI
+ aVzTa1zXtSA==
+X-Gm-Gg: ASbGncsm1ReKJG7LJ6EWx00K2yXql2TnlTvM81ScT1kvNeohiua4PajcqX2uXko6hAH
+ s8RBH4o6aAPRVBRHeL4G5T8Z9jnEGrgEMOSoFcOlwzJhOHwr+kl/Znny5IF6bbzHV6L5sanLnId
+ AAA736+awRvSf8kfnMzBKiFIIUpMig/qZdw1+fQEviSEJW+uAo2WX70v9KTb/DPgFkqm1MfO1lO
+ a4/h+PNMjdLAIS+8InsPsfhrKwmJjdaSMotnDuiJh9BdNwWzhWohnL78q2wjI3ryOMBANyfJoLJ
+ d7/okztDpQB2DfnXSuhgwrGsIs8ZnTLqUb0VLMmx/MmqUCX9b/s3JO3whhwAtgz7zauluA4zmNy
+ nfgBvy0KpBPZjvqFe7DBZrg==
+X-Google-Smtp-Source: AGHT+IFZ72oGyj6zqgb1m6S3CDOn0dykaUi1s3nbhFSi839o4SCP7fdLWsZJM+ZNdDJjfzgl9obcHg==
+X-Received: by 2002:a05:6102:370b:b0:4af:c519:4e7f with SMTP id
+ ada2fe7eead31-4e4241af472mr9779721137.18.1748358169635; 
+ Tue, 27 May 2025 08:02:49 -0700 (PDT)
 Received: from gromero0.. (200-100-75-183.dial-up.telesp.net.br.
  [200.100.75.183]) by smtp.gmail.com with ESMTPSA id
- ada2fe7eead31-4e51e94c9c2sm2189649137.23.2025.05.27.08.02.44
+ ada2fe7eead31-4e51e94c9c2sm2189649137.23.2025.05.27.08.02.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 May 2025 08:02:46 -0700 (PDT)
+ Tue, 27 May 2025 08:02:48 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org,
 	eric.auger@redhat.com
 Cc: qemu-arm@nongnu.org, thuth@redhat.com, gustavo.romero@linaro.org,
  alex.bennee@linaro.org
-Subject: [PATCH 0/2] Add functional test for ACPI PCI hotplug
-Date: Tue, 27 May 2025 15:02:27 +0000
-Message-Id: <20250527150229.1617074-1-gustavo.romero@linaro.org>
+Subject: [PATCH 1/2] tests/functional/test_aarch64_hotplug_pci: Update SHA
+Date: Tue, 27 May 2025 15:02:28 +0000
+Message-Id: <20250527150229.1617074-2-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250527150229.1617074-1-gustavo.romero@linaro.org>
+References: <20250527150229.1617074-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::742;
- envelope-from=gustavo.romero@linaro.org; helo=mail-qk1-x742.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e41;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-vs1-xe41.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,30 +100,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series update the current functional test for PCI hotplug to
-support testing the ACPI PCI hotplug.
+Update SHA for 'linux' and 'initrd.gz' images.
 
-The SHAs for the linux and initrd images are also update, but probably
-we need to point them to immutable images instead of updating the SHAs.
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+---
+ tests/functional/test_aarch64_hotplug_pci.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This series must be applied on top of the ACPI PCI hotplug for ARM64
-series (yet under review):
-
-https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg03487.html
-
-
-Cheers,
-Gustavo
-
-
-Gustavo Romero (2):
-  tests/functional/test_aarch64_hotplug_pci: Update SHA
-  tests/functional/test_aarch64_hotplug_pci: Add test for ACPI PCI
-    hotplug
-
- tests/functional/test_aarch64_hotplug_pci.py | 28 +++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
-
+diff --git a/tests/functional/test_aarch64_hotplug_pci.py b/tests/functional/test_aarch64_hotplug_pci.py
+index fa1bb62c8f..bb2c121503 100755
+--- a/tests/functional/test_aarch64_hotplug_pci.py
++++ b/tests/functional/test_aarch64_hotplug_pci.py
+@@ -20,12 +20,12 @@ class HotplugPCI(LinuxKernelTest):
+     ASSET_KERNEL = Asset(
+         ('https://ftp.debian.org/debian/dists/stable/main/installer-arm64/'
+          'current/images/netboot/debian-installer/arm64/linux'),
+-        '3821d4db56d42c6a4eac62f31846e35465940afd87746b4cfcdf5c9eca3117b2')
++         'd92a60392ce1e379ca198a1a820899f8f0d39a62d047c41ab79492f81541a9d9')
+ 
+     ASSET_INITRD = Asset(
+         ('https://ftp.debian.org/debian/dists/stable/main/installer-arm64/'
+          'current/images/netboot/debian-installer/arm64/initrd.gz'),
+-        '2583ec22b45265ad69e82f198674f53d4cd85be124fe012eedc2fd91156bc4b4')
++        '9f817f76951f3237bca8216bee35267bfb826815687f4b2fcdd5e6c2a917790c')
+ 
+     def test_hotplug_pci(self):
+ 
 -- 
 2.34.1
 
