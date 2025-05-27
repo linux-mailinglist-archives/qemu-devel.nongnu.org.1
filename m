@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2DEAC4971
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 950D7AC496F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:43:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJouq-0004KL-R8; Tue, 27 May 2025 03:40:04 -0400
+	id 1uJouZ-00047P-4s; Tue, 27 May 2025 03:39:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouo-0004IG-RB
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:40:02 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouX-00046F-CT
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 03:39:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouF-0007rT-Jd
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:40:02 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouH-0007rx-HQ
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 03:39:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748331566;
+ s=mimecast20190719; t=1748331568;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DGOsfpsk52O3wqXAESwuXuJAkLAyRIx13EMBIFUWd/o=;
- b=JZBOu9MllTgLXLnARVbsjfeFT4aATH2Yd4k2Bag9u0cUHJufGYmI4bwy8l6XmPkF6ljTCP
- nsx9giBpFbyFHEhXYynz3yN+xIFa/QXtGaDC0dv47HcA0GdPev9ZuSzX/gmv+qpqIyaEIv
- XoYTUfMMzaRQuvO8TRNO31bO5ZPFXjs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=jF99J4y6jM7ZxvBaq9IKKPf+tY8Mtd93SXvbXcK4vOA=;
+ b=SIrg/AFMtMQqHJF0FiqCYcL7M4Pyz/12F+kyRRrwpI5jQGcCYISdVRowYaM+hDFJGM3R0k
+ q8qydtxl7dHZdB7Yfq6avxVg9rAP/BQW34MmjJrdrExdA/0/eYrP5nB+Iz0pSzwgeBUPfH
+ 9BoXXqvQCOKcks+MNESOk0YRKImUo74=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-150-ANsZygg2Pl6Vjd3VSJZyFQ-1; Tue,
- 27 May 2025 03:39:23 -0400
-X-MC-Unique: ANsZygg2Pl6Vjd3VSJZyFQ-1
-X-Mimecast-MFC-AGG-ID: ANsZygg2Pl6Vjd3VSJZyFQ_1748331563
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-150-iofl4D6XN6qjrjGIgFNVDg-1; Tue,
+ 27 May 2025 03:39:24 -0400
+X-MC-Unique: iofl4D6XN6qjrjGIgFNVDg-1
+X-Mimecast-MFC-AGG-ID: iofl4D6XN6qjrjGIgFNVDg_1748331563
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E0CD019560AD; Tue, 27 May 2025 07:39:22 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CED471800773; Tue, 27 May 2025 07:39:22 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.2])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 97A0518004A7; Tue, 27 May 2025 07:39:22 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 86A1D19560A3; Tue, 27 May 2025 07:39:22 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4CC1921E65FD; Tue, 27 May 2025 09:39:16 +0200 (CEST)
+ id 50C3A21E65FE; Tue, 27 May 2025 09:39:16 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: eblake@redhat.com, kwolf@redhat.com, jsnow@redhat.com,
  vsementsov@yandex-team.ru, qemu-block@nongnu.org
-Subject: [PATCH 11/13] qapi: Mention both job-cancel and block-job-cancel in
- doc comments
-Date: Tue, 27 May 2025 09:39:14 +0200
-Message-ID: <20250527073916.1243024-12-armbru@redhat.com>
+Subject: [PATCH 12/13] qapi: Tidy up references to job state CONCLUDED
+Date: Tue, 27 May 2025 09:39:15 +0200
+Message-ID: <20250527073916.1243024-13-armbru@redhat.com>
 In-Reply-To: <20250527073916.1243024-1-armbru@redhat.com>
 References: <20250527073916.1243024-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
@@ -67,7 +66,7 @@ X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.903,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,53 +82,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Several doc comments mention block-job-cancel where the more generic
-job-cancel would also work.  Adjust them to mention both.
+When talking about the job state machine, we refer to the states like
+READY, ABORTING, CONCLUDED, and so forth.  Except in two places, where
+we use JOB_STATUS_CONCLUDED.  Replace by CONCLUDED for consistency.
+
+We should arguably use the JobStatus enum values instead.  Left for
+another day.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/block-core.json | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ qapi/block-core.json | 6 +++---
+ qapi/job.json        | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 6e5b90d5df..ad6de151c8 100644
+index ad6de151c8..da390f85ac 100644
 --- a/qapi/block-core.json
 +++ b/qapi/block-core.json
-@@ -1894,7 +1894,7 @@
- # The status of ongoing drive-backup operations can be checked with
- # query-block-jobs where the BlockJobInfo.type field has the value
- # 'backup'.  The operation can be stopped before it has completed
--# using the block-job-cancel command.
-+# using the job-cancel or block-job-cancel command.
- #
- # Features:
- #
-@@ -1925,7 +1925,7 @@
- # The status of ongoing blockdev-backup operations can be checked with
- # query-block-jobs where the BlockJobInfo.type field has the value
- # 'backup'.  The operation can be stopped before it has completed
--# using the block-job-cancel command.
-+# using the job-cancel or block-job-cancel command.
- #
- # Errors:
- #     - If @device is not a valid block device, DeviceNotFound
-@@ -2788,7 +2788,7 @@
- # immediately once streaming has started.  The status of ongoing block
- # streaming operations can be checked with query-block-jobs.  The
- # operation can be stopped before it has completed using the
--# block-job-cancel command.
-+# job-cancel or block-job-cancel command.
- #
- # The node that receives the data is called the top image, can be
- # located in any part of the chain (but always above the base image;
-@@ -3075,8 +3075,8 @@
+@@ -3074,9 +3074,9 @@
+ # jobs.
  #
  # This command will refuse to operate on any job that has not yet
- # reached its terminal state, JOB_STATUS_CONCLUDED.  For jobs that
--# make use of the BLOCK_JOB_READY event, block-job-cancel or
--# job-complete will still need to be used as appropriate.
-+# make use of the BLOCK_JOB_READY event, job-cancel, block-job-cancel
-+# or job-complete will still need to be used as appropriate.
+-# reached its terminal state, JOB_STATUS_CONCLUDED.  For jobs that
+-# make use of the BLOCK_JOB_READY event, job-cancel, block-job-cancel
+-# or job-complete will still need to be used as appropriate.
++# reached its terminal state, CONCLUDED.  For jobs that make use of
++# the BLOCK_JOB_READY event, job-cancel, block-job-cancel or
++# job-complete will still need to be used as appropriate.
+ #
+ # @id: The job identifier.
+ #
+diff --git a/qapi/job.json b/qapi/job.json
+index 9ddba537db..441cd7772b 100644
+--- a/qapi/job.json
++++ b/qapi/job.json
+@@ -223,9 +223,9 @@
+ # jobs.
+ #
+ # This command will refuse to operate on any job that has not yet
+-# reached its terminal state, JOB_STATUS_CONCLUDED.  For jobs that
+-# make use of JOB_READY event, job-cancel or job-complete will still
+-# need to be used as appropriate.
++# reached its terminal state, CONCLUDED.  For jobs that make use of
++# the JOB_READY event, job-cancel or job-complete will still need to
++# be used as appropriate.
  #
  # @id: The job identifier.
  #
