@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157E3AC49A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B3EAC4980
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:46:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJp1L-0007YI-35; Tue, 27 May 2025 03:46:47 -0400
+	id 1uJp12-0005dq-MT; Tue, 27 May 2025 03:46:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uJozG-0002kv-3g
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:44:39 -0400
+ id 1uJozK-0002r5-Qm
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 03:44:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uJozE-0000S1-6w
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:44:37 -0400
+ id 1uJozI-0000Sf-Ra
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 03:44:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748331875;
+ s=mimecast20190719; t=1748331880;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zdU5cY/SULLwyXpxxEZqK8ZNb0hepj4gkwMPt3FqJ10=;
- b=M4Jd7/+AV928nAWxLbFaKy/AmCxUXRZ7+2FKDEpS+G4NN+nFWDIbfvDCp9Cx0GLJyiu/PF
- 3h9Uqszp2+56fOdtPAZr8sM4bA4ij/c1PdUGZzvZ28I4jQ3cqlgL6SIMqPLUuNGF6HaqEH
- 0UYvU2cjI25l6473sLlcSoteZA+SZrY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=NjrLUtJ/wTeOeGDQFHs3hbhXToVFKVogEjfIEHIOlwI=;
+ b=VNxZ7HBYnApWwvMpGpdCWCxgMet5S4K36peX3MnWR+Mo8FmZAE+5QvqLXMJNOkjIExQsbc
+ m15c8hfze1WezID3zRF7QkWGKq0FMnGIgJQIql23PgiPhoNTWXwqwkhkaych4VomWE77BO
+ xZ97Rm0QjvzJEJlmjDaFnEhsmblhv4c=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-376-otcXCW75Ntqxe4srdlj3OQ-1; Tue,
- 27 May 2025 03:44:31 -0400
-X-MC-Unique: otcXCW75Ntqxe4srdlj3OQ-1
-X-Mimecast-MFC-AGG-ID: otcXCW75Ntqxe4srdlj3OQ_1748331870
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-166-sZS2cBcbO5mCSNgA5ZM2Ug-1; Tue,
+ 27 May 2025 03:44:36 -0400
+X-MC-Unique: sZS2cBcbO5mCSNgA5ZM2Ug-1
+X-Mimecast-MFC-AGG-ID: sZS2cBcbO5mCSNgA5ZM2Ug_1748331874
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE2BA1956094; Tue, 27 May 2025 07:44:29 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9618D1800115; Tue, 27 May 2025 07:44:34 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.45.224.201])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 131CE19560AA; Tue, 27 May 2025 07:44:24 +0000 (UTC)
+ id 3C91019560AA; Tue, 27 May 2025 07:44:29 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -52,9 +52,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  shannon.zhaosl@gmail.com
 Cc: pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org,
  alex.bennee@linaro.org
-Subject: [PATCH v2 23/25] hw/arm/virt: Plug pcihp hotplug/hotunplug callbacks
-Date: Tue, 27 May 2025 09:40:25 +0200
-Message-ID: <20250527074224.1197793-24-eric.auger@redhat.com>
+Subject: [PATCH v2 24/25] tests/qtest/bios-tables-test: Keep ACPI PCI hotplug
+ off
+Date: Tue, 27 May 2025 09:40:26 +0200
+Message-ID: <20250527074224.1197793-25-eric.auger@redhat.com>
 In-Reply-To: <20250527074224.1197793-1-eric.auger@redhat.com>
 References: <20250527074224.1197793-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -85,98 +86,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
----
- hw/arm/virt.c | 37 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index cdcff0a984..adb9422e14 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -87,6 +87,7 @@
- #include "hw/virtio/virtio-iommu.h"
- #include "hw/char/pl011.h"
- #include "qemu/guest-random.h"
-+#include "hw/acpi/pcihp.h"
+ACPI PCI hotplug is now turned on by default so we need to change the
+existing tests to keep it off. However, even setting the ACPI PCI
+hotplug off in the existing tests, there will be changes in the ACPI
+tables because the _OSC method was modified, hence in the next patch of
+this series the blobs are updated accordingly.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+
+---
+
+[Eric] also added acpi-pcihp=off to test_acpi_aarch64_virt_tcg_numamem
+---
+ tests/qtest/bios-tables-test.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 0a333ec435..6379dba714 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -1626,7 +1626,7 @@ static void test_acpi_aarch64_virt_tcg_memhp(void)
+     };
  
- static GlobalProperty arm_virt_compat[] = {
-     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "48" },
-@@ -2973,6 +2974,11 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-         qlist_append_str(reserved_regions, resv_prop_str);
-         qdev_prop_set_array(dev, "reserved-regions", reserved_regions);
-         g_free(resv_prop_str);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
-+        if (vms->acpi_pcihp) {
-+            acpi_pcihp_device_pre_plug_cb(HOTPLUG_HANDLER(vms->acpi_dev),
-+                                          dev, errp);
-+        }
-     }
+     data.variant = ".memhp";
+-    test_acpi_one(" -machine nvdimm=on"
++    test_acpi_one(" -machine nvdimm=on,acpi-pcihp=off"
+                   " -cpu cortex-a57"
+                   " -m 256M,slots=3,maxmem=1G"
+                   " -object memory-backend-ram,id=ram0,size=128M"
+@@ -1747,7 +1747,8 @@ static void test_acpi_aarch64_virt_tcg_numamem(void)
+     };
+ 
+     data.variant = ".numamem";
+-    test_acpi_one(" -cpu cortex-a57"
++    test_acpi_one(" -machine acpi-pcihp=off"
++                  " -cpu cortex-a57"
+                   " -object memory-backend-ram,id=ram0,size=128M"
+                   " -numa node,memdev=ram0",
+                   &data);
+@@ -1775,7 +1776,8 @@ static void test_acpi_aarch64_virt_tcg_pxb(void)
+      * to solve the conflicts.
+      */
+     data.variant = ".pxb";
+-    test_acpi_one(" -device pcie-root-port,chassis=1,id=pci.1"
++    test_acpi_one(" -machine acpi-pcihp=off"
++                  " -device pcie-root-port,chassis=1,id=pci.1"
+                   " -device virtio-scsi-pci,id=scsi0,bus=pci.1"
+                   " -drive file="
+                   "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2,"
+@@ -1846,7 +1848,7 @@ static void test_acpi_aarch64_virt_tcg_acpi_hmat(void)
+ 
+     data.variant = ".acpihmatvirt";
+ 
+-    test_acpi_one(" -machine hmat=on"
++    test_acpi_one(" -machine hmat=on,acpi-pcihp=off"
+                   " -cpu cortex-a57"
+                   " -smp 4,sockets=2"
+                   " -m 384M"
+@@ -2123,6 +2125,7 @@ static void test_acpi_aarch64_virt_tcg(void)
+     data.smbios_cpu_max_speed = 2900;
+     data.smbios_cpu_curr_speed = 2700;
+     test_acpi_one("-cpu cortex-a57 "
++                  "-machine acpi-pcihp=off "
+                   "-smbios type=4,max-speed=2900,current-speed=2700", &data);
+     free_test_data(&data);
  }
+@@ -2142,6 +2145,7 @@ static void test_acpi_aarch64_virt_tcg_topology(void)
+     };
  
-@@ -3002,6 +3008,14 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-         vms->iommu = VIRT_IOMMU_VIRTIO;
-         vms->virtio_iommu_bdf = pci_get_bdf(pdev);
-         create_virtio_iommu_dt_bindings(vms);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
-+        AcpiGedState *acpi_ged_state = ACPI_GED(vms->acpi_dev);
-+        AcpiPciHpState *acpi_pci_hotplug = &acpi_ged_state->pcihp_state;
-+
-+        if (vms->acpi_pcihp) {
-+            acpi_pcihp_device_plug_cb(HOTPLUG_HANDLER(vms->acpi_dev),
-+                                      acpi_pci_hotplug, dev, errp);
-+        }
-     }
+     test_acpi_one("-cpu cortex-a57 "
++                  "-machine acpi-pcihp=off "
+                   "-smp sockets=1,clusters=2,cores=2,threads=2", &data);
+     free_test_data(&data);
  }
+@@ -2227,6 +2231,7 @@ static void test_acpi_aarch64_virt_viot(void)
+     };
  
-@@ -3051,6 +3065,15 @@ static void virt_machine_device_unplug_request_cb(HotplugHandler *hotplug_dev,
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-         virtio_md_pci_unplug_request(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev),
-                                      errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
-+        VirtMachineState *vms = VIRT_MACHINE(hotplug_dev);
-+        AcpiGedState *acpi_ged_state = ACPI_GED(vms->acpi_dev);
-+        AcpiPciHpState *acpi_pci_hotplug = &acpi_ged_state->pcihp_state;
-+
-+        if (vms->acpi_pcihp) {
-+            acpi_pcihp_device_unplug_request_cb(HOTPLUG_HANDLER(vms->acpi_dev),
-+                                                acpi_pci_hotplug, dev, errp);
-+        }
-     } else {
-         error_setg(errp, "device unplug request for unsupported device"
-                    " type: %s", object_get_typename(OBJECT(dev)));
-@@ -3064,6 +3087,15 @@ static void virt_machine_device_unplug_cb(HotplugHandler *hotplug_dev,
-         virt_dimm_unplug(hotplug_dev, dev, errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-         virtio_md_pci_unplug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
-+        VirtMachineState *vms = VIRT_MACHINE(hotplug_dev);
-+        AcpiGedState *acpi_ged_state = ACPI_GED(vms->acpi_dev);
-+        AcpiPciHpState *acpi_pci_hotplug = &acpi_ged_state->pcihp_state;
-+
-+        if (vms->acpi_pcihp) {
-+            acpi_pcihp_device_unplug_cb(HOTPLUG_HANDLER(vms->acpi_dev),
-+                                        acpi_pci_hotplug, dev, errp);
-+        }
-     } else {
-         error_setg(errp, "virt: device unplug for unsupported device"
-                    " type: %s", object_get_typename(OBJECT(dev)));
-@@ -3074,11 +3106,14 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
-                                                         DeviceState *dev)
- {
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-+    VirtMachineState *vms = VIRT_MACHINE(machine);
- 
-     if (device_is_dynamic_sysbus(mc, dev) ||
-         object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) ||
-         object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI) ||
--        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-+        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI) ||
-+        (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE) &&
-+                             vms->acpi_pcihp)) {
-         return HOTPLUG_HANDLER(machine);
-     }
-     return NULL;
+     test_acpi_one("-cpu cortex-a57 "
++                  "-machine acpi-pcihp=off "
+                   "-device virtio-iommu-pci", &data);
+     free_test_data(&data);
+ }
 -- 
 2.49.0
 
