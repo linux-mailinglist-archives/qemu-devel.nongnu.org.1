@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88280AC49AF
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC89AC49A8
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:53:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJp0a-0003ob-51; Tue, 27 May 2025 03:46:00 -0400
+	id 1uJp10-0005TU-I0; Tue, 27 May 2025 03:46:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uJoyl-000294-Q6
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:44:08 -0400
+ id 1uJoyq-0002IS-Oh
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 03:44:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uJoyj-0000Ny-1B
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:44:07 -0400
+ id 1uJoyn-0000Ox-TZ
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 03:44:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748331843;
+ s=mimecast20190719; t=1748331848;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1eVB/3yTM8t3rU6zRyP8dyAWqxoevMw86hNW+Tlbtnw=;
- b=bTW4ZzpqqYJaikGUz5WP21idRAZBzvhfuba5wiVs6fIYe2iXaIaGS5MYRb/ZYQgcyHWr1u
- wtLV0+EWVZ0ccsnFXO3SHXLL+kRCsicUWdaBk+c/MDKnUIK6KuX7ql9msgraPTa0WTE3VU
- 9m6/Xyf1FNh/LRJGov/QVPpIDwmapLI=
+ bh=IFhqWhBFjPenL8cIKlsppJlVb9XVWvtWT9w2gOpDYII=;
+ b=EGqt3WPgBA+RFOM0yOww98jfmvG4puBQTg/3KypHM80PFZuBtXm8znPl5jPzojH2QvD1XJ
+ dt7C4RRZM87UOYtwPz//85CL4owzS5TbZVCU3Bz2xxiMNrRXQKVqiW02ct83ImvS6yjTwl
+ 5AzACBBni0prsLGllQyZG5epn8wOXH8=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-nZhXOfc-OpyNSiYgaQFN2w-1; Tue,
- 27 May 2025 03:44:00 -0400
-X-MC-Unique: nZhXOfc-OpyNSiYgaQFN2w-1
-X-Mimecast-MFC-AGG-ID: nZhXOfc-OpyNSiYgaQFN2w_1748331839
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-806enJsmP5S2L0eJbxViUw-1; Tue,
+ 27 May 2025 03:44:05 -0400
+X-MC-Unique: 806enJsmP5S2L0eJbxViUw-1
+X-Mimecast-MFC-AGG-ID: 806enJsmP5S2L0eJbxViUw_1748331843
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D660D18002A5; Tue, 27 May 2025 07:43:58 +0000 (UTC)
+ id C9A461800366; Tue, 27 May 2025 07:44:03 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.45.224.201])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 79DA11944DFF; Tue, 27 May 2025 07:43:54 +0000 (UTC)
+ id 61F0D19560AA; Tue, 27 May 2025 07:43:59 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -52,10 +52,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  shannon.zhaosl@gmail.com
 Cc: pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org,
  alex.bennee@linaro.org
-Subject: [PATCH v2 17/25] hw/arm/virt-acpi-build: Modify the DSDT ACPI table
- to enable ACPI PCI hotplug
-Date: Tue, 27 May 2025 09:40:19 +0200
-Message-ID: <20250527074224.1197793-18-eric.auger@redhat.com>
+Subject: [PATCH v2 18/25] hw/acpi/ged: Prepare the device to react to PCI
+ hotplug events
+Date: Tue, 27 May 2025 09:40:20 +0200
+Message-ID: <20250527074224.1197793-19-eric.auger@redhat.com>
 In-Reply-To: <20250527074224.1197793-1-eric.auger@redhat.com>
 References: <20250527074224.1197793-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -86,99 +86,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Modify the DSDT ACPI table to enable ACPI PCI hotplug.
+QEMU will notify the OS about PCI hotplug/hotunplug events through
+GED interrupts. Let the GED device handle a new PCI hotplug event.
+On its occurrence it calls the \\_SB.PCI0.PCNT method with the BLCK
+mutex held.
+
+The GED device uses a dedicated MMIO region that will be mapped
+by the machine code.
+
+At this point the GED still does not support PCI device hotplug in
+its TYPE_HOTPLUG_HANDLER implementation. This will come in a
+subsequent patch.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
----
- include/hw/arm/virt.h    |  1 +
- hw/arm/virt-acpi-build.c | 21 +++++++++++++++++++++
- hw/arm/virt.c            |  1 +
- hw/arm/Kconfig           |  2 ++
- 4 files changed, 25 insertions(+)
 
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 10ea581f06..1b2e2e1284 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -79,6 +79,7 @@ enum {
-     VIRT_ACPI_GED,
-     VIRT_NVDIMM_ACPI,
-     VIRT_PVTIME,
-+    VIRT_ACPI_PCIHP,
-     VIRT_LOWMEMMAP_LAST,
- };
+---
+
+v1 -> v2:
+- Introduce ACPI_PCIHP_REGION_NAME
+---
+ include/hw/acpi/generic_event_device.h |  7 +++++++
+ include/hw/acpi/pcihp.h                |  2 ++
+ hw/acpi/generic_event_device.c         | 14 ++++++++++++++
+ hw/acpi/pcihp.c                        |  1 -
+ 4 files changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index d2dac87b4a..9042448f77 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -63,6 +63,7 @@
+ #include "hw/acpi/memory_hotplug.h"
+ #include "hw/acpi/ghes.h"
+ #include "hw/acpi/cpu.h"
++#include "hw/acpi/pcihp.h"
+ #include "qom/object.h"
  
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index be5e00a56e..9d88ffc318 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -34,6 +34,7 @@
- #include "hw/core/cpu.h"
- #include "hw/acpi/acpi-defs.h"
+ #define ACPI_POWER_BUTTON_DEVICE "PWRB"
+@@ -101,6 +102,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+ #define ACPI_GED_PWR_DOWN_EVT      0x2
+ #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
+ #define ACPI_GED_CPU_HOTPLUG_EVT    0x8
++#define ACPI_GED_PCI_HOTPLUG_EVT    0x10
+ 
+ typedef struct GEDState {
+     MemoryRegion evt;
+@@ -108,12 +110,17 @@ typedef struct GEDState {
+     uint32_t     sel;
+ } GEDState;
+ 
++#define ACPI_PCIHP_REGION_NAME "pcihp container"
++
+ struct AcpiGedState {
+     SysBusDevice parent_obj;
+     MemHotplugState memhp_state;
+     MemoryRegion container_memhp;
+     CPUHotplugState cpuhp_state;
+     MemoryRegion container_cpuhp;
++    AcpiPciHpState pcihp_state;
++    MemoryRegion container_pcihp;
++
+     GEDState ged_state;
+     uint32_t ged_event_bitmap;
+     qemu_irq irq;
+diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
+index f2c3558654..6191b81ef2 100644
+--- a/include/hw/acpi/pcihp.h
++++ b/include/hw/acpi/pcihp.h
+@@ -38,6 +38,8 @@
+ #define ACPI_PCIHP_SEJ_BASE 0x8
+ #define ACPI_PCIHP_BNMR_BASE 0x10
+ 
++#define ACPI_PCIHP_SIZE 0x0018
++
+ typedef struct AcpiPciHpPciStatus {
+     uint32_t up;
+     uint32_t down;
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index 7a62f8d5bc..f84216a85f 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -12,6 +12,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
  #include "hw/acpi/acpi.h"
 +#include "hw/acpi/pcihp.h"
- #include "hw/nvram/fw_cfg_acpi.h"
- #include "hw/acpi/bios-linker-loader.h"
- #include "hw/acpi/aml-build.h"
-@@ -836,6 +837,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-                          (irqmap[VIRT_MMIO] + ARM_SPI_BASE),
-                          0, NUM_VIRTIO_TRANSPORTS);
-     acpi_dsdt_add_pci(scope, memmap, irqmap[VIRT_PCIE] + ARM_SPI_BASE, vms);
-+
-     if (vms->acpi_dev) {
-         build_ged_aml(scope, "\\_SB."GED_DEVICE,
-                       HOTPLUG_HANDLER(vms->acpi_dev),
-@@ -864,6 +866,25 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+ #include "hw/acpi/generic_event_device.h"
+ #include "hw/irq.h"
+ #include "hw/mem/pc-dimm.h"
+@@ -26,6 +27,7 @@ static const uint32_t ged_supported_events[] = {
+     ACPI_GED_PWR_DOWN_EVT,
+     ACPI_GED_NVDIMM_HOTPLUG_EVT,
+     ACPI_GED_CPU_HOTPLUG_EVT,
++    ACPI_GED_PCI_HOTPLUG_EVT,
+ };
  
-     aml_append(dsdt, scope);
+ /*
+@@ -121,6 +123,12 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
+                            aml_notify(aml_name("\\_SB.NVDR"),
+                                       aml_int(0x80)));
+                 break;
++            case ACPI_GED_PCI_HOTPLUG_EVT:
++                aml_append(if_ctx,
++                           aml_acquire(aml_name("\\_SB.PCI0.BLCK"), 0xFFFF));
++                aml_append(if_ctx, aml_call0("\\_SB.PCI0.PCNT"));
++                aml_append(if_ctx, aml_release(aml_name("\\_SB.PCI0.BLCK")));
++                break;
+             default:
+                 /*
+                  * Please make sure all the events in ged_supported_events[]
+@@ -299,6 +307,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+         sel = ACPI_GED_NVDIMM_HOTPLUG_EVT;
+     } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
+         sel = ACPI_GED_CPU_HOTPLUG_EVT;
++    } else if (ev & ACPI_PCI_HOTPLUG_STATUS) {
++        sel = ACPI_GED_PCI_HOTPLUG_EVT;
+     } else {
+         /* Unknown event. Return without generating interrupt. */
+         warn_report("GED: Unsupported event %d. No irq injected", ev);
+@@ -428,6 +438,10 @@ static void acpi_ged_realize(DeviceState *dev, Error **errp)
+             cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
+                                 &s->cpuhp_state, 0);
+             break;
++        case ACPI_GED_PCI_HOTPLUG_EVT:
++            memory_region_init(&s->container_pcihp, OBJECT(dev),
++                               ACPI_PCIHP_REGION_NAME, ACPI_PCIHP_SIZE);
++            sysbus_init_mmio(sbd, &s->container_pcihp);
+         }
+         ged_events--;
+     }
+diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
+index 57fe8938b1..e87846a1fa 100644
+--- a/hw/acpi/pcihp.c
++++ b/hw/acpi/pcihp.c
+@@ -44,7 +44,6 @@
+ #include "qobject/qnum.h"
+ #include "trace.h"
  
-+    if (vms->acpi_pcihp) {
-+        Aml *pci0_scope = aml_scope("\\_SB.PCI0");
-+
-+        aml_append(pci0_scope, aml_pci_edsm());
-+        build_acpi_pci_hotplug(dsdt, AML_SYSTEM_MEMORY,
-+                               memmap[VIRT_ACPI_PCIHP].base);
-+        build_append_pcihp_resources(pci0_scope,
-+                                     memmap[VIRT_ACPI_PCIHP].base,
-+                                     memmap[VIRT_ACPI_PCIHP].size);
-+
-+        /* Scan all PCI buses. Generate tables to support hotplug. */
-+        build_append_pci_bus_devices(pci0_scope, vms->bus);
-+        if (object_property_find(OBJECT(vms->bus), ACPI_PCIHP_PROP_BSEL)) {
-+            build_append_pcihp_slots(pci0_scope, vms->bus);
-+        }
-+        build_append_notification_callback(pci0_scope, vms->bus);
-+        aml_append(dsdt, pci0_scope);
-+    }
-+
-     /* copy AML table into ACPI tables blob */
-     g_array_append_vals(table_data, dsdt->buf->data, dsdt->buf->len);
- 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index a0deeaf2b3..4aa40c8e8b 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -183,6 +183,7 @@ static const MemMapEntry base_memmap[] = {
-     [VIRT_NVDIMM_ACPI] =        { 0x09090000, NVDIMM_ACPI_IO_LEN},
-     [VIRT_PVTIME] =             { 0x090a0000, 0x00010000 },
-     [VIRT_SECURE_GPIO] =        { 0x090b0000, 0x00001000 },
-+    [VIRT_ACPI_PCIHP] =         { 0x090c0000, 0x00001000 },
-     [VIRT_MMIO] =               { 0x0a000000, 0x00000200 },
-     /* ...repeating for a total of NUM_VIRTIO_TRANSPORTS, each of that size */
-     [VIRT_PLATFORM_BUS] =       { 0x0c000000, 0x02000000 },
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index a55b44d7bd..572b4dabd5 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -34,6 +34,8 @@ config ARM_VIRT
-     select ACPI_HW_REDUCED
-     select ACPI_APEI
-     select ACPI_VIOT
-+    select ACPI_PCIHP
-+    select ACPI_PCI_BRIDGE
-     select VIRTIO_MEM_SUPPORTED
-     select ACPI_CXL
-     select ACPI_HMAT
+-#define ACPI_PCIHP_SIZE 0x0018
+ #define PCI_UP_BASE 0x0000
+ #define PCI_DOWN_BASE 0x0004
+ #define PCI_EJ_BASE 0x0008
 -- 
 2.49.0
 
