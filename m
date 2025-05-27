@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC86AC5500
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 19:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDC0AC54F8
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 19:05:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJxiu-0005dP-Jl; Tue, 27 May 2025 13:04:20 -0400
+	id 1uJxiy-0005gS-JA; Tue, 27 May 2025 13:04:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uJxir-0005cQ-2k
- for qemu-devel@nongnu.org; Tue, 27 May 2025 13:04:17 -0400
+ id 1uJxiu-0005eG-Ql
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 13:04:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uJxim-0006fv-RI
- for qemu-devel@nongnu.org; Tue, 27 May 2025 13:04:16 -0400
+ id 1uJxip-0006gA-SB
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 13:04:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748365451;
+ s=mimecast20190719; t=1748365454;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V4aZkVQe1X/Spfd9+OxNGkT/25sWGd8bXwBhMt/jceI=;
- b=hdUVFvmhojavaqhx4XkCf5MDpxsbvBELuAEW3cY3w4k1dcWO4z2WVJCEJljXoF8SGJxrfr
- DLRkirMQ+SpLgvIjAiVCTtyKJQiIC1d8h0/+gpNfS1tEo2cHLQM0CP8dANzXvKS0kefmHo
- ZhjsmLEC3VASTMJn8V/v84filr4QI80=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=whk0bx3S6iDRVW9awl3GtYiXbZ6tm1mvhJAdBgRVaBk=;
+ b=EOzF6tU1Ysj5R6MuQCvszLgl57bqETjLi3F3Xh/knhEKJSQZbVoRRCXleOZAwe7OCE0y0A
+ Sm+/MKZ1u0r43A/zdlywdqZr1FxBbNd0eIdc3AGzpBFcyDUJmrXAcM9jbkqiRJFEfjGXeA
+ ktL/C2xMdbOGGyJyuRPMm2ItjlKnpgk=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-157-RMLwduUZNyaQ_qGidiggBw-1; Tue, 27 May 2025 13:04:09 -0400
-X-MC-Unique: RMLwduUZNyaQ_qGidiggBw-1
-X-Mimecast-MFC-AGG-ID: RMLwduUZNyaQ_qGidiggBw_1748365448
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-6045875e52fso2205767a12.2
- for <qemu-devel@nongnu.org>; Tue, 27 May 2025 10:04:09 -0700 (PDT)
+ us-mta-569-CaRueN9hPHO2gUp7e6QFVQ-1; Tue, 27 May 2025 13:04:12 -0400
+X-MC-Unique: CaRueN9hPHO2gUp7e6QFVQ-1
+X-Mimecast-MFC-AGG-ID: CaRueN9hPHO2gUp7e6QFVQ_1748365452
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-acf16746a74so271739766b.0
+ for <qemu-devel@nongnu.org>; Tue, 27 May 2025 10:04:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748365447; x=1748970247;
+ d=1e100.net; s=20230601; t=1748365451; x=1748970251;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V4aZkVQe1X/Spfd9+OxNGkT/25sWGd8bXwBhMt/jceI=;
- b=D2k787cDL4Y+/Z+GBVRzauRe88WRjR6yJgOiVAkO6IUv3i9oPkSSu+T1Af12lvrmRp
- KWhu+pTEs0xLxUgBDbF7H716OhsLxZ2vVIS2RgFHKnFsb5sE5LMjmlvYiH7Gs11GnvZX
- 1XXV9fZ+M3cmKYtjsZVw5SlB1YDVb1CAUBQZlER7rrqkZzxb/VGHwmkFki5YuTnXUlWc
- WN1jDA8mN18KqbRChZCp+CO0uk1WVkOdR7RvgjOl7x2ZpfTAybDxOWL9kVNFAROxutS/
- 9HhcqsrsIkd3MPVD3NP6rUoFGPfbYscPzL7PlAYKqz7NlgrCJkeghZhoSjQdRW5x0ykt
- HoYQ==
-X-Gm-Message-State: AOJu0Yy60DdlXlmncGUG1ja4Jlu2LUrXPr7QrGjhzYfyOzNpvALyecua
- upJ72Pp+3xeFCcz0+E0pXfnfialgGqeX8hZX+t1ID9Qtk1cewBah2ifsc4PB0dSaVKm7HFoipAq
- Djk1Uaz76jVzviwHxwpnc+xXOcGgHxLMVFXwhZkZjwHWCLtiikcD1Wi1prDfzZ7oUm10XTDsGGH
- C2J7gNUYZHDZWTNdRS0u6il/CqqPfRUvVxza3ow6iV
-X-Gm-Gg: ASbGncukvmIxCgVBDx6ux2WErU9mCA6Tf4SlVpZ++xZYl7DjFvZhwDy54SoJiaFkJR1
- 3Xabq9GqoLBdhtFwouL5QEUjCepG0H/4Bmv3y6lg24fjxDM8kfztH/VrmAwjaqf/9UF+hYFoAZj
- N6R/ZXRil4X083wiYI2TRui4mPm+9AcXuMpyS2xX8RisgSJ68ZfZchJQ/zcqLjtN8xZo4paE3Wf
- lZCWMXzL0sRpQf6PfAqzMnvAQHYlWl3Nk72oIJ15e+SNupOOQLAe2Ra/Qk6Mw3o3VCJgIsR85Wo
- T41jUmsy85g4bw==
-X-Received: by 2002:a05:6402:34c1:b0:5fb:ad3c:cee9 with SMTP id
- 4fb4d7f45d1cf-602da8dde73mr11271226a12.28.1748365447540; 
- Tue, 27 May 2025 10:04:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF4LoKixDs5J+EI0OHKMItBHRlzlXmw17NtWfbttHNL5Snhm9R4B2QVYPR7W+KOFFeLnT+0Ow==
-X-Received: by 2002:a05:6402:34c1:b0:5fb:ad3c:cee9 with SMTP id
- 4fb4d7f45d1cf-602da8dde73mr11271170a12.28.1748365447044; 
- Tue, 27 May 2025 10:04:07 -0700 (PDT)
+ bh=whk0bx3S6iDRVW9awl3GtYiXbZ6tm1mvhJAdBgRVaBk=;
+ b=AVvMpvZnoGh6hoyzgzjzR7u2y5MUolBJZdlq6HN/zijeQKCSvsO6MHjpAJR1Q6o0tC
+ Ycm4vZun6Ub5jX1WuYKLGxRFqj4PFFMqmpf9KlL/wi5Y8v75jwdJF2oE3p3NmDvoWnWz
+ IRl0KjAYPJJwxczbzgrzw2LXo6hSSBtxd3/FsRqKht9rpHWVgM7ebD049lE30VqJ3onm
+ k8zIYz4S257hyTQTezQlnEsIHjuSMzaVfdfiUvoc4y41tG5I7+VRjj+RvVQwmveAXYtt
+ zywu29CuWsrdr1TKBg0pUlLx3n3wlOxUyzNSJAzeYzolUYyE/ABZmXdy7oW6yvjqz0dS
+ C4aA==
+X-Gm-Message-State: AOJu0Yyxg6YWb3rAx9DR1bOBykF2ycoHSFZL1uitvNthJptd82MgocHL
+ 5LcG9Bp0J/jqAfOh7WlfsXrOGfFUdAeQiGhEyWJnkf9DMQW0QkbK4yEhQ7aRqWTSGdAfn25UFxF
+ KvHNvf2yUr8T1tn+UMNKusLfev5HmlHwHyDNH5DUS8htc0kPQyqodHz3vMS80SMaK7JHHi2Bvtz
+ mz5OPTdQCRmgJ/o/5cvLNfjtw+IxmqfAcwiyZ1Ll+t
+X-Gm-Gg: ASbGncv0ClBzxVPRXnlaycjuK7VzCoS6VxdTtLqqGcib5oe+Ay1AiLugYBBH0xYy68j
+ s0C9BHWOn66aJ/Qq0VsIRKTmhDy9PGLUo9dHJXIKEP8QF4R/Aj3eFFM3/OO18Qal4HstVETkCut
+ oxtkKTc0ZbPqf3UHvA4ryWlofFvitahxoHS0P1NKZeliBo+lMZdpFJYDazqOmeL2IQHa1KKJ/Fv
+ RbKKoWzrToLCCfzsfVMh5+yeETjoU+jsrnLPZagPMvCBgY6YUIVO7y+8mclOiawC0ruRSVlMRBV
+ JOcvOhxIBcRPWw==
+X-Received: by 2002:a17:907:2cc4:b0:ad8:55d8:38bc with SMTP id
+ a640c23a62f3a-ad85b1de6cbmr1289910566b.43.1748365450131; 
+ Tue, 27 May 2025 10:04:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEsNB5QXYe1gwRsd/Ukk5FK+oKo9Mz5rtW28Ni4fmUZWVVgGswW1pT3vFqZmUOqTGH6DTbXcg==
+X-Received: by 2002:a17:907:2cc4:b0:ad8:55d8:38bc with SMTP id
+ a640c23a62f3a-ad85b1de6cbmr1289903366b.43.1748365449548; 
+ Tue, 27 May 2025 10:04:09 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.46.79])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-6004d4f1be3sm18224012a12.5.2025.05.27.10.04.06
+ a640c23a62f3a-ad52d4c9e62sm1867452766b.155.2025.05.27.10.04.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 May 2025 10:04:06 -0700 (PDT)
+ Tue, 27 May 2025 10:04:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org
-Subject: [PATCH 1/6] meson: update to version 1.8.1
-Date: Tue, 27 May 2025 19:03:59 +0200
-Message-ID: <20250527170404.1580482-2-pbonzini@redhat.com>
+Cc: qemu-rust@nongnu.org,
+	Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH 2/6] rust: use "objects" for Rust executables as well
+Date: Tue, 27 May 2025 19:04:00 +0200
+Message-ID: <20250527170404.1580482-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527170404.1580482-1-pbonzini@redhat.com>
 References: <20250527170404.1580482-1-pbonzini@redhat.com>
@@ -90,7 +91,7 @@ X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,97 +107,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds several improvements to Rust support, including
-native clippy and rustdoc targets, the "objects" keyword,
-and running doctests.
+libqemuutil is not meant be linked as a whole; if modules are enabled, doing
+so results in undefined symbols (corresponding to QMP commands) in
+rust/qemu-api/rust-qemu-api-integration.
 
-Require it only when Rust support is requested, to avoid
-putting a strict requirement on all build platforms for the
-sake of an experimental feature.
+Support for "objects" in Rust executables is available in Meson 1.8.0; use it
+to switching to the same dependencies that C targets use: link_with for
+libqemuutil, and objects for everything else.
 
+Reported-by: Bernhard Beschow <shentey@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                                  |   8 ++++++++
- python/scripts/vendor.py                   |   4 ++--
- python/wheels/meson-1.5.0-py3-none-any.whl | Bin 959846 -> 0 bytes
- python/wheels/meson-1.8.1-py3-none-any.whl | Bin 0 -> 1013001 bytes
- pythondeps.toml                            |   2 +-
- tests/lcitool/mappings.yml                 |   6 +++++-
- 6 files changed, 16 insertions(+), 4 deletions(-)
- delete mode 100644 python/wheels/meson-1.5.0-py3-none-any.whl
- create mode 100644 python/wheels/meson-1.8.1-py3-none-any.whl
+ docs/devel/rust.rst       |  2 --
+ rust/meson.build          |  2 ++
+ rust/qemu-api/meson.build | 24 +++---------------------
+ 3 files changed, 5 insertions(+), 23 deletions(-)
 
-diff --git a/configure b/configure
-index 2ce8d29fac2..74b3865e51e 100755
---- a/configure
-+++ b/configure
-@@ -1178,6 +1178,14 @@ fi
- ##########################################
- # detect rust triple
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index 171d908e0b0..11328c05b45 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -66,8 +66,6 @@ be run via ``meson test`` or ``make``::
  
-+meson_version=$($meson --version)
-+if test "$rust" != disabled && ! version_ge "$meson_version" 1.8.1; then
-+  if test "$rust" = enabled; then
-+    error_exit "Rust support needs Meson 1.8.1 or newer"
-+  fi
-+  echo "Rust needs Meson 1.8.1, disabling" 2>&1
-+  rust=disabled
-+fi
- if test "$rust" != disabled && has "$rustc" && $rustc -vV > "${TMPDIR1}/${TMPB}.out"; then
-   rust_host_triple=$(sed -n 's/^host: //p' "${TMPDIR1}/${TMPB}.out")
- else
-diff --git a/python/scripts/vendor.py b/python/scripts/vendor.py
-index 0405e910b48..b47db00743a 100755
---- a/python/scripts/vendor.py
-+++ b/python/scripts/vendor.py
-@@ -41,8 +41,8 @@ def main() -> int:
-     parser.parse_args()
+    make check-rust
  
-     packages = {
--        "meson==1.5.0":
--        "52b34f4903b882df52ad0d533146d4b992c018ea77399f825579737672ae7b20",
-+        "meson==1.8.1":
-+        "374bbf71247e629475fc10b0bd2ef66fc418c2d8f4890572f74de0f97d0d42da",
-     }
+-Building Rust code with ``--enable-modules`` is not supported yet.
+-
+ Supported tools
+ '''''''''''''''
  
-     vendor_dir = Path(__file__, "..", "..", "wheels").resolve()
-diff --git a/pythondeps.toml b/pythondeps.toml
-index 7eaaa0fed10..7884ab521d1 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -19,7 +19,7 @@
+diff --git a/rust/meson.build b/rust/meson.build
+index 1f0dcce7d04..801f4374dfa 100644
+--- a/rust/meson.build
++++ b/rust/meson.build
+@@ -14,6 +14,8 @@ quote_rs_native = dependency('quote-1-rs', native: true)
+ syn_rs_native = dependency('syn-2-rs', native: true)
+ proc_macro2_rs_native = dependency('proc-macro2-1-rs', native: true)
  
- [meson]
- # The install key should match the version in python/wheels/
--meson = { accepted = ">=1.5.0", installed = "1.5.0", canary = "meson" }
-+meson = { accepted = ">=1.5.0", installed = "1.8.1", canary = "meson" }
- pycotap = { accepted = ">=1.1.0", installed = "1.3.1" }
++qemuutil_rs = qemuutil.partial_dependency(link_args: true, links: true)
++
+ subdir('qemu-api-macros')
+ subdir('qemu-api')
  
- [docs]
-diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
-index 673baf39367..8f0e95e1c56 100644
---- a/tests/lcitool/mappings.yml
-+++ b/tests/lcitool/mappings.yml
-@@ -8,6 +8,10 @@ mappings:
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 1ea86b8bbf1..c647493f712 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -41,26 +41,8 @@ _qemu_api_rs = static_library(
+ rust.test('rust-qemu-api-tests', _qemu_api_rs,
+           suite: ['unit', 'rust'])
  
-   meson:
-     OpenSUSELeap15:
-+    # Use Meson from PyPI wherever Rust is enabled
-+    Debian:
-+    Fedora:
-+    Ubuntu:
+-qemu_api = declare_dependency(link_with: _qemu_api_rs)
+-
+-# Rust executables do not support objects, so add an intermediate step.
+-rust_qemu_api_objs = static_library(
+-    'rust_qemu_api_objs',
+-    objects: [libqom.extract_all_objects(recursive: false),
+-              libhwcore.extract_all_objects(recursive: false),
+-              libchardev.extract_all_objects(recursive: false),
+-              libcrypto.extract_all_objects(recursive: false),
+-              libauthz.extract_all_objects(recursive: false),
+-              libio.extract_all_objects(recursive: false),
+-              libmigration.extract_all_objects(recursive: false)])
+-rust_qemu_api_deps = declare_dependency(
+-    dependencies: [
+-      qom_ss.dependencies(),
+-      chardev_ss.dependencies(),
+-      crypto_ss.dependencies(),
+-      authz_ss.dependencies(),
+-      io_ss.dependencies()],
+-    link_whole: [rust_qemu_api_objs, libqemuutil])
++qemu_api = declare_dependency(link_with: [_qemu_api_rs],
++  dependencies: [qemuutil_rs, qemu_api_macros, qom, hwcore, chardev, migration])
  
-   python3:
-     OpenSUSELeap15: python311-base
-@@ -72,7 +76,7 @@ mappings:
- pypi_mappings:
-   # Request more recent version
-   meson:
--    default: meson==1.5.0
-+    default: meson==1.8.1
- 
-   # Drop packages that need devel headers
-   python3-numpy:
+ test('rust-qemu-api-integration',
+     executable(
+@@ -69,7 +51,7 @@ test('rust-qemu-api-integration',
+         override_options: ['rust_std=2021', 'build.rust_std=2021'],
+         rust_args: ['--test'],
+         install: false,
+-        dependencies: [qemu_api, qemu_api_macros, rust_qemu_api_deps]),
++        dependencies: qemu_api),
+     args: [
+         '--test', '--test-threads', '1',
+         '--format', 'pretty',
 -- 
 2.49.0
 
