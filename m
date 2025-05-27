@@ -2,58 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD7CAC4970
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3B4AC496A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 May 2025 09:41:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJouK-00041F-Mb; Tue, 27 May 2025 03:39:32 -0400
+	id 1uJouQ-00043W-Ql; Tue, 27 May 2025 03:39:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouJ-00040l-J8
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:39:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouN-00042o-Uk
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 03:39:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouE-0007qb-I6
- for qemu-devel@nongnu.org; Tue, 27 May 2025 03:39:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uJouF-0007qK-7w
+ for qemu-devel@nongnu.org; Tue, 27 May 2025 03:39:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748331564;
+ s=mimecast20190719; t=1748331563;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=ZH2d/wmxjAQQZTsjpESYYe87VW9cqu1V2G2bGVuG0ps=;
- b=L0MtnXo5NEe4+zOFdRPpz2SsuLZZY+HYU1g5h+cgKhWKcVWm5KfLQkky2NC1UR0SuWe50A
- fXu+uajfWR4HT6QmZcWOfbdGoLvLFrr4Ypc7rJLVtx+ti05A9FQ5ozO60NIVaFrOIJS27A
- AFUTZbpYS4J6UM+/IgmnP49uyDatWsM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=sbXa98tSi8Y9IpY28Hy3Ua0GXrYdUNTTC3TBLWtcgPI=;
+ b=Fj5g3rZeDDOfJjQPLHQtRIpMFmadQf/NoOuNdi+sPZ1fgFXtIejwufGu0TYMcfidDU7+Wz
+ Kp7Ch7ISoupl85bv6K38AyTBuOuZYedWuspH/tH1437I2o17ntYDJlHfRuj2wE5TZXCgzz
+ nKC8JQtDjrl0Jk2b1WWc/sprvDAA1fw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-459-Z8NSRKO-OASf-awTR-IYmw-1; Tue,
- 27 May 2025 03:39:20 -0400
-X-MC-Unique: Z8NSRKO-OASf-awTR-IYmw-1
-X-Mimecast-MFC-AGG-ID: Z8NSRKO-OASf-awTR-IYmw_1748331559
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-lsqV7grHM5WJKb12_kZCDw-1; Tue,
+ 27 May 2025 03:39:21 -0400
+X-MC-Unique: lsqV7grHM5WJKb12_kZCDw-1
+X-Mimecast-MFC-AGG-ID: lsqV7grHM5WJKb12_kZCDw_1748331560
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4136E1956053; Tue, 27 May 2025 07:39:19 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F36AB1800981; Tue, 27 May 2025 07:39:19 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.2])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E26AE18004A7; Tue, 27 May 2025 07:39:18 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 039AF180010A; Tue, 27 May 2025 07:39:18 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2002721E66C3; Tue, 27 May 2025 09:39:16 +0200 (CEST)
+ id 2439721E66C5; Tue, 27 May 2025 09:39:16 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: eblake@redhat.com, kwolf@redhat.com, jsnow@redhat.com,
  vsementsov@yandex-team.ru, qemu-block@nongnu.org
-Subject: [PATCH 00/13] qapi: Doc fixes and improvements
-Date: Tue, 27 May 2025 09:39:03 +0200
-Message-ID: <20250527073916.1243024-1-armbru@redhat.com>
+Subject: [PATCH 01/13] qapi: Tidy up run-together sentences in doc comments
+Date: Tue, 27 May 2025 09:39:04 +0200
+Message-ID: <20250527073916.1243024-2-armbru@redhat.com>
+In-Reply-To: <20250527073916.1243024-1-armbru@redhat.com>
+References: <20250527073916.1243024-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
@@ -79,45 +82,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster (13):
-  qapi: Tidy up run-together sentences in doc comments
-  qapi: Tidy up whitespace in doc comments
-  qapi: Move (since X.Y) to end of description
-  qapi: Avoid breaking lines within (since X.Y)
-  qapi: Drop a problematic (Since: 2.11) from query-hotpluggable-cpus
-  qapi: Correct spelling of QEMU in doc comments
-  qapi: Fix capitalization in doc comments
-  qapi: Use proper markup instead of CAPS for emphasis in doc comments
-  qapi: Spell JSON null correctly in blockdev-reopen documentation
-  qapi: Refer to job-FOO instead of deprecated block-job-FOO in docs
-  qapi: Mention both job-cancel and block-job-cancel in doc comments
-  qapi: Tidy up references to job state CONCLUDED
-  qapi: Improve documentation around job state @concluded
+Fixes: a937b6aa739f (qapi: Reformat doc comments to conform to current conventions)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ qapi/acpi.json       |  2 +-
+ qapi/block-core.json | 14 +++++++-------
+ qapi/crypto.json     | 18 +++++++++---------
+ qapi/machine.json    |  4 ++--
+ qapi/migration.json  | 18 +++++++++---------
+ 5 files changed, 28 insertions(+), 28 deletions(-)
 
- qapi/acpi.json         |   2 +-
- qapi/audio.json        |   8 +-
- qapi/block-core.json   | 184 ++++++++++++++++++++---------------------
- qapi/block-export.json |   6 +-
- qapi/block.json        |   2 +-
- qapi/char.json         |   8 +-
- qapi/crypto.json       |  21 ++---
- qapi/cryptodev.json    |   2 +-
- qapi/cxl.json          |   2 +-
- qapi/dump.json         |   6 +-
- qapi/introspect.json   |   8 +-
- qapi/job.json          |  28 +++----
- qapi/machine.json      |  14 ++--
- qapi/migration.json    | 100 +++++++++++-----------
- qapi/misc-target.json  |   2 +-
- qapi/misc.json         |   4 +-
- qapi/net.json          |  18 ++--
- qapi/qom.json          |   2 +-
- qapi/run-state.json    |  12 +--
- qapi/transaction.json  |   4 +-
- qapi/uefi.json         |   2 +-
- qapi/ui.json           |   8 +-
- 22 files changed, 219 insertions(+), 224 deletions(-)
-
+diff --git a/qapi/acpi.json b/qapi/acpi.json
+index 045dab6228..2d53b82365 100644
+--- a/qapi/acpi.json
++++ b/qapi/acpi.json
+@@ -80,7 +80,7 @@
+ ##
+ # @ACPIOSTInfo:
+ #
+-# OSPM Status Indication for a device For description of possible
++# OSPM Status Indication for a device.  For description of possible
+ # values of @source and @status fields see "_OST (OSPM Status
+ # Indication)" chapter of ACPI5.0 spec.
+ #
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index b4115113d4..29d7c1c2c9 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -2667,7 +2667,7 @@
+ # @iops-total-max: I/O operations burst
+ #
+ # @iops-total-max-length: length of the iops-total-max burst period,
+-#     in seconds It must only be set if @iops-total-max is set as
++#     in seconds.  It must only be set if @iops-total-max is set as
+ #     well.
+ #
+ # @iops-read: limit read operations per second
+@@ -2675,14 +2675,14 @@
+ # @iops-read-max: I/O operations read burst
+ #
+ # @iops-read-max-length: length of the iops-read-max burst period, in
+-#     seconds It must only be set if @iops-read-max is set as well.
++#     seconds.  It must only be set if @iops-read-max is set as well.
+ #
+ # @iops-write: limit write operations per second
+ #
+ # @iops-write-max: I/O operations write burst
+ #
+ # @iops-write-max-length: length of the iops-write-max burst period,
+-#     in seconds It must only be set if @iops-write-max is set as
++#     in seconds.  It must only be set if @iops-write-max is set as
+ #     well.
+ #
+ # @bps-total: limit total bytes per second
+@@ -2697,14 +2697,14 @@
+ # @bps-read-max: total bytes read burst
+ #
+ # @bps-read-max-length: length of the bps-read-max burst period, in
+-#     seconds It must only be set if @bps-read-max is set as well.
++#     seconds.  It must only be set if @bps-read-max is set as well.
+ #
+ # @bps-write: limit write bytes per second
+ #
+ # @bps-write-max: total bytes write burst
+ #
+ # @bps-write-max-length: length of the bps-write-max burst period, in
+-#     seconds It must only be set if @bps-write-max is set as well.
++#     seconds.  It must only be set if @bps-write-max is set as well.
+ #
+ # @iops-size: when limiting by iops max size of an I/O in bytes
+ #
+@@ -5580,7 +5580,7 @@
+ # @x-blockdev-amend:
+ #
+ # Starts a job to amend format specific options of an existing open
+-# block device The job is automatically finalized, but a manual
++# block device.  The job is automatically finalized, but a manual
+ # job-dismiss is required.
+ #
+ # @job-id: Identifier for the newly created job.
+@@ -5589,7 +5589,7 @@
+ #
+ # @options: Options (driver specific)
+ #
+-# @force: Allow unsafe operations, format specific For luks that
++# @force: Allow unsafe operations, format specific.  For luks that
+ #     allows erase of the last active keyslot (permanent loss of
+ #     data), and replacement of an active keyslot (possible loss of
+ #     data if IO error happens)
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index c9d967d782..fc7e294966 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -202,19 +202,19 @@
+ #
+ # The options that apply to LUKS encryption format initialization
+ #
+-# @cipher-alg: the cipher algorithm for data encryption Currently
++# @cipher-alg: the cipher algorithm for data encryption.  Currently
+ #     defaults to 'aes-256'.
+ #
+-# @cipher-mode: the cipher mode for data encryption Currently defaults
+-#     to 'xts'
++# @cipher-mode: the cipher mode for data encryption.  Currently
++#     defaults to 'xts'
+ #
+-# @ivgen-alg: the initialization vector generator Currently defaults
++# @ivgen-alg: the initialization vector generator.  Currently defaults
+ #     to 'plain64'
+ #
+-# @ivgen-hash-alg: the initialization vector generator hash Currently
+-#     defaults to 'sha256'
++# @ivgen-hash-alg: the initialization vector generator hash.
++#     Currently defaults to 'sha256'
+ #
+-# @hash-alg: the master key hash algorithm Currently defaults to
++# @hash-alg: the master key hash algorithm.  Currently defaults to
+ #     'sha256'
+ #
+ # @iter-time: number of milliseconds to spend in PBKDF passphrase
+@@ -370,11 +370,11 @@
+ # @new-secret: The ID of a QCryptoSecret object providing the password
+ #     to be written into added active keyslots
+ #
+-# @old-secret: Optional (for deactivation only) If given will
++# @old-secret: Optional (for deactivation only).  If given will
+ #     deactivate all keyslots that match password located in
+ #     QCryptoSecret with this ID
+ #
+-# @iter-time: Optional (for activation only) Number of milliseconds to
++# @iter-time: Optional (for activation only).  Number of milliseconds to
+ #     spend in PBKDF passphrase processing for the newly activated
+ #     keyslot.  Currently defaults to 2000.
+ #
+diff --git a/qapi/machine.json b/qapi/machine.json
+index c8feb9fe17..0c5c85d014 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1160,7 +1160,7 @@
+ #
+ # Information about the guest balloon device.
+ #
+-# @actual: the logical size of the VM in bytes Formula used:
++# @actual: the logical size of the VM in bytes.  Formula used:
+ #     logical_vm_size = vm_ram_size - balloon_size
+ #
+ # Since: 0.14
+@@ -1199,7 +1199,7 @@
+ # is equivalent to the @actual field return by the 'query-balloon'
+ # command
+ #
+-# @actual: the logical size of the VM in bytes Formula used:
++# @actual: the logical size of the VM in bytes.  Formula used:
+ #     logical_vm_size = vm_ram_size - balloon_size
+ #
+ # .. note:: This event is rate-limited.
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 8b9c53595c..beebc2a6f8 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -760,9 +760,9 @@
+ #     auto-converge detects that migration is not making progress.
+ #     The default value is 10.  (Since 2.7)
+ #
+-# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage At
+-#     the tail stage of throttling, the Guest is very sensitive to CPU
+-#     percentage while the @cpu-throttle -increment is excessive
++# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage.
++#     At the tail stage of throttling, the Guest is very sensitive to
++#     CPU percentage while the @cpu-throttle -increment is excessive
+ #     usually at tail stage.  If this parameter is true, we will
+ #     compute the ideal CPU percentage used by the Guest, which may
+ #     exactly make the dirty rate match the dirty rate threshold.
+@@ -941,9 +941,9 @@
+ #     auto-converge detects that migration is not making progress.
+ #     The default value is 10.  (Since 2.7)
+ #
+-# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage At
+-#     the tail stage of throttling, the Guest is very sensitive to CPU
+-#     percentage while the @cpu-throttle -increment is excessive
++# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage.
++#     At the tail stage of throttling, the Guest is very sensitive to
++#     CPU percentage while the @cpu-throttle -increment is excessive
+ #     usually at tail stage.  If this parameter is true, we will
+ #     compute the ideal CPU percentage used by the Guest, which may
+ #     exactly make the dirty rate match the dirty rate threshold.
+@@ -1155,9 +1155,9 @@
+ #     auto-converge detects that migration is not making progress.
+ #     (Since 2.7)
+ #
+-# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage At
+-#     the tail stage of throttling, the Guest is very sensitive to CPU
+-#     percentage while the @cpu-throttle -increment is excessive
++# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage.
++#     At the tail stage of throttling, the Guest is very sensitive to
++#     CPU percentage while the @cpu-throttle -increment is excessive
+ #     usually at tail stage.  If this parameter is true, we will
+ #     compute the ideal CPU percentage used by the Guest, which may
+ #     exactly make the dirty rate match the dirty rate threshold.
 -- 
 2.48.1
 
