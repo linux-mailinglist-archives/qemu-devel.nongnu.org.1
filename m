@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E63AC640B
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E67AAAC63F0
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:16:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKBwz-0000II-7a; Wed, 28 May 2025 04:15:49 -0400
+	id 1uKBx1-0000YP-RD; Wed, 28 May 2025 04:15:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvj-0007w6-IC
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:31 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1uKBvn-0007wk-EC
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:36 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvh-0005FR-VS
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:31 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-442fda876a6so39615345e9.0
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:29 -0700 (PDT)
+ id 1uKBvk-0005Fp-O8
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:34 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43cec5cd73bso33409265e9.3
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748420068; x=1749024868; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748420069; x=1749024869; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mpLbuX6w3ui4OqkcJtXbZ2uIaATf5Ym/Qv+poSMA20U=;
- b=FDl5QbRJANd50sGwPMyzSQYkQDA4d3oiWA+jNSzXyt3ZXl9vfG4/BpbPi0oqdfOeMv
- SnV7rWG8cf2GeobDwqb/NbCk4/LmxcIltXkmvvBB7gIUabwZLR/3vvkt1Ve6Xo3VZ34n
- xTn2CAQoO40BRmp6e+6WftO5CtUn433+Vcnc4QF7rsED0xzk9y0HAYCRss2iBjB+12/X
- e6BEksHrAyXQjSNttg2A8YnF+8WYOhR+qCjDf/Bxpij5exVMgiSRz5X6pV8Lz62equi5
- GmXFKMvqAUjh6qK4HSK5d78apnHGyPgDKMludiu8haa43BjnJkVgqYyIrfj0Gn+nIKDO
- dErw==
+ bh=NpxUd17c3m77ey9D/1drD1plUrvJ4iXwsNR9pLccurE=;
+ b=dBBZbx8Awrpf0rIIvubizVtTY7VVptc97iVUO9ct2lY55IHJcaBW8XNN1e706vwLwy
+ VkeHy67MJHGmqqMcJfZc3sNuMK+1Bl+CY7WhzVxylW++g9HgqYWyriCHWpMKh6XHdCyh
+ guTqxlzOaQmCHybCvROXxQG7AT8sE3zO97tY/swfu9xBSDWZFP3G7hGVzqUOFFPd2abE
+ Mh8Z8+WdugevH7p92S61PyfJDCtwVvjQFgTakEHiIa8m02L2Y5rbTNUC1G+xougokSsn
+ 6sC7opVvy+nkj5F7TvPFXptQ1uPx24jcufx9Zr2zBqGqgSROeGJAERVO/mcwePbeRk2d
+ LykA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748420068; x=1749024868;
+ d=1e100.net; s=20230601; t=1748420069; x=1749024869;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mpLbuX6w3ui4OqkcJtXbZ2uIaATf5Ym/Qv+poSMA20U=;
- b=pKb7CZ/3oNS7NM7t0Lkhrftxbn3YCRviSH2K+Tz7A0dEfIS+/8yjOIFS4EL7K0g7Ze
- LTnGI3XxrWr1v54UHllMeovgTauXgqJNCRlzWMNtE/0i84/0z2VqLBfXRlKnqXODKo/7
- 1FboAKVcX27xm8GNVsw/mJ3oxfEnjjH2TIxWMGZNvKnb3glLXJ2tnLQEB+Up64l5lcnY
- SOsA5Sfpt4ypbPtdvO7j5q0jbiz7jM6Pv08AO/uwIngbnq57ilObeYh/7aPxCGcrrK+v
- /fQ1shg9Uwb3SOf5KkL9mweZVEgZm0VO7TrTsW25SnOacMxbtWRYHF0Mmf4y/7CdPN9e
- tppw==
-X-Gm-Message-State: AOJu0YwQIMcvzRO76ZCDBHekFCFflWGWtlEmSV5+4wE8cYrFcU29By4f
- rW6qyXSDtSiSig15RyMywMvQXc0RMrSgE74cIYcB69ExzzRMbvNHas1L/roYwHYu8pL347nhmpE
- s0hgCjq5U0Q==
-X-Gm-Gg: ASbGncu2YPZ3Fd7v/xnCuEYGl1GQOnU7hy3e4nr9SrQQq16HPFxDhFDrb8HNMRYodI9
- 3YE5qflmqbuI+LZPB2AUPRTXY+gddNTcSE9FUvNepXK8ldkpyyVWbA2WPvcCKQGsEIxxgW6cJ1I
- 2dyH6lYWxM621dZ3lsjYk4Rldb1dL9p4MMn4Nj7yF9bxhuVGSP7drKEVCzdrsWRY4qexeoFdmjN
- sItFaOWgVALgaWOhmpOdi9fDI3LHJcJihXFYYHXJqRtHQ6HUAlaytE9S7RgLabauAoaFXRpyK1i
- YhAdMj56WrwTVTo8kRYeul0AgKMAkzre2A3vTZcDCAO6U+GwYsDrAsH/vbEgwNxgptU=
-X-Google-Smtp-Source: AGHT+IF7FAN6iJHUetgK8qAjC4cGoCe7dEZfTyttsPJvzYDJOKHvbgUYes7BdxzKGvNkasjDqnzZsg==
-X-Received: by 2002:a05:600c:c0c1:b0:450:c9e3:995c with SMTP id
- 5b1f17b1804b1-450c9e39ce5mr5302325e9.12.1748420068503; 
- Wed, 28 May 2025 01:14:28 -0700 (PDT)
+ bh=NpxUd17c3m77ey9D/1drD1plUrvJ4iXwsNR9pLccurE=;
+ b=Weqa1DCl9qZ18M2znhQiEz8M45+c7fsylKp2Jk0jYhmpwp623D2EKFu3okuEZAz6aB
+ Sf3D4ZgqBNnXAY/sBWCg/mQSO7aX+BKBgzlgG5rXpZOzUn9NybgTE8BfJodEwKZrqzg8
+ IRGv6Zvc7luNaMlki7397ZUlezzFKxQ4pZYYqOc0KdSzTc9Sl4m0CoE5h0DUR/oSykQR
+ mbiS5hqLZ6SpYcCA3+nULFu8W8Tz+cGg/I5UMQOSKwj1wChop1gUzQuDpTgW5A0YcAcO
+ vlxPvh+VhwEVx+TxjbOmaZf1uVZFyKj0Usxkb64Y9mwsODQ6glOmS25j6VWi5+IZO7hq
+ tBlw==
+X-Gm-Message-State: AOJu0Yz+jSyBNQPRJ0LSksv1w6a5ZYIj6YSkI5mCtaqSUg1+Jkk2V0fX
+ /bC8f+XQEGmC13ZuLLcnYWu3iBAfuEkX+uXsxFN18MYkss8D9ogwQkT7APdLPqnpoH3wZ1SAccP
+ BLPobbMCNsQ==
+X-Gm-Gg: ASbGnctP11qIxIEPY0pfxGyuyuV+p9nBsOtu0orZMWoLlA2Vw6K6ZSUeSCZM8eNJqED
+ Y+3/gLsRUqHLoS0va4eAgPhHRlNZTDLpH66VPO+Uh4sWUrfAoGtWy50VVrKDTBIxwM/Ng0H2qan
+ nAxnNJ4K34lq3hC382+SBsQQD+bcOakTwZDXRLJMs4RugPeubOUOl0V/OKaTI5f8SXx9ULFA5W4
+ pl2usZFjTOjAattVPlxKHPYZIEqCpy86eVrw1FOpC86mjTaXwz1FM5L36PNVCbSoV4xkCf/bfhY
+ DnGyhOhs/OGBq5x2XubqESWk8tVxEZFyhFlniOmwyyP38DGSTUqAEOxjy9RRs/GyDO0=
+X-Google-Smtp-Source: AGHT+IEpSh9fNapISHmkVCos9ZhjoYIWbfSdsiJkY+kIV+5oTk2q2kgVFvjrwSwssBRSBHVFQ1NuDg==
+X-Received: by 2002:a05:600c:46cb:b0:43d:94:2d1e with SMTP id
+ 5b1f17b1804b1-44c919e16a8mr134054495e9.13.1748420069536; 
+ Wed, 28 May 2025 01:14:29 -0700 (PDT)
 Received: from stoup.. ([195.53.115.74]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.27
+ 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 May 2025 01:14:27 -0700 (PDT)
+ Wed, 28 May 2025 01:14:29 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E . Iglesias" <edgar.iglesias@amd.com>
-Subject: [PULL 11/28] target/microblaze: Use TARGET_LONG_BITS == 32 for system
- mode
-Date: Wed, 28 May 2025 09:13:53 +0100
-Message-ID: <20250528081410.157251-12-richard.henderson@linaro.org>
+Subject: [PULL 12/28] target/microblaze: Drop DisasContext.r0
+Date: Wed, 28 May 2025 09:13:54 +0100
+Message-ID: <20250528081410.157251-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250528081410.157251-1-richard.henderson@linaro.org>
 References: <20250528081410.157251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -1
 X-Spam_score: -0.2
 X-Spam_bar: /
@@ -96,40 +95,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the extended address instructions are handled separately
-from virtual addresses, we can narrow the emulation to 32-bit.
+Return a constant 0 from reg_for_read, and a new
+temporary from reg_for_write.
 
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- configs/targets/microblaze-softmmu.mak   | 4 +---
- configs/targets/microblazeel-softmmu.mak | 4 +---
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ target/microblaze/translate.c | 24 ++----------------------
+ 1 file changed, 2 insertions(+), 22 deletions(-)
 
-diff --git a/configs/targets/microblaze-softmmu.mak b/configs/targets/microblaze-softmmu.mak
-index 23457d0ae6..bab7b498c2 100644
---- a/configs/targets/microblaze-softmmu.mak
-+++ b/configs/targets/microblaze-softmmu.mak
-@@ -3,6 +3,4 @@ TARGET_BIG_ENDIAN=y
- # needed by boot.c
- TARGET_NEED_FDT=y
- TARGET_XML_FILES=gdb-xml/microblaze-core.xml gdb-xml/microblaze-stack-protect.xml
--# System mode can address up to 64 bits via lea/sea instructions.
--# TODO: These bypass the mmu, so we could emulate these differently.
--TARGET_LONG_BITS=64
-+TARGET_LONG_BITS=32
-diff --git a/configs/targets/microblazeel-softmmu.mak b/configs/targets/microblazeel-softmmu.mak
-index c82c509623..8aee7ebc5c 100644
---- a/configs/targets/microblazeel-softmmu.mak
-+++ b/configs/targets/microblazeel-softmmu.mak
-@@ -2,6 +2,4 @@ TARGET_ARCH=microblaze
- # needed by boot.c
- TARGET_NEED_FDT=y
- TARGET_XML_FILES=gdb-xml/microblaze-core.xml gdb-xml/microblaze-stack-protect.xml
--# System mode can address up to 64 bits via lea/sea instructions.
--# TODO: These bypass the mmu, so we could emulate these differently.
--TARGET_LONG_BITS=64
-+TARGET_LONG_BITS=32
+diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+index dc597b36e6..047d97e2c5 100644
+--- a/target/microblaze/translate.c
++++ b/target/microblaze/translate.c
+@@ -63,9 +63,6 @@ typedef struct DisasContext {
+     DisasContextBase base;
+     const MicroBlazeCPUConfig *cfg;
+ 
+-    TCGv_i32 r0;
+-    bool r0_set;
+-
+     /* Decoder.  */
+     uint32_t ext_imm;
+     unsigned int tb_flags;
+@@ -179,14 +176,7 @@ static TCGv_i32 reg_for_read(DisasContext *dc, int reg)
+     if (likely(reg != 0)) {
+         return cpu_R[reg];
+     }
+-    if (!dc->r0_set) {
+-        if (dc->r0 == NULL) {
+-            dc->r0 = tcg_temp_new_i32();
+-        }
+-        tcg_gen_movi_i32(dc->r0, 0);
+-        dc->r0_set = true;
+-    }
+-    return dc->r0;
++    return tcg_constant_i32(0);
+ }
+ 
+ static TCGv_i32 reg_for_write(DisasContext *dc, int reg)
+@@ -194,10 +184,7 @@ static TCGv_i32 reg_for_write(DisasContext *dc, int reg)
+     if (likely(reg != 0)) {
+         return cpu_R[reg];
+     }
+-    if (dc->r0 == NULL) {
+-        dc->r0 = tcg_temp_new_i32();
+-    }
+-    return dc->r0;
++    return tcg_temp_new_i32();
+ }
+ 
+ static bool do_typea(DisasContext *dc, arg_typea *arg, bool side_effects,
+@@ -1635,8 +1622,6 @@ static void mb_tr_init_disas_context(DisasContextBase *dcb, CPUState *cs)
+     dc->cfg = &cpu->cfg;
+     dc->tb_flags = dc->base.tb->flags;
+     dc->ext_imm = dc->base.tb->cs_base;
+-    dc->r0 = NULL;
+-    dc->r0_set = false;
+     dc->mem_index = cpu_mmu_index(cs, false);
+     dc->jmp_cond = dc->tb_flags & D_FLAG ? TCG_COND_ALWAYS : TCG_COND_NEVER;
+     dc->jmp_dest = -1;
+@@ -1675,11 +1660,6 @@ static void mb_tr_translate_insn(DisasContextBase *dcb, CPUState *cs)
+         trap_illegal(dc, true);
+     }
+ 
+-    if (dc->r0) {
+-        dc->r0 = NULL;
+-        dc->r0_set = false;
+-    }
+-
+     /* Discard the imm global when its contents cannot be used. */
+     if ((dc->tb_flags & ~dc->tb_flags_to_set) & IMM_FLAG) {
+         tcg_gen_discard_i32(cpu_imm);
 -- 
 2.43.0
 
