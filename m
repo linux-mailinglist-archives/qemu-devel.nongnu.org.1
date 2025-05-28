@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8ACAC66BF
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78586AC66C1
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:11:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDgR-0004os-Ag; Wed, 28 May 2025 06:06:51 -0400
+	id 1uKDgb-0005U4-DP; Wed, 28 May 2025 06:07:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg2-0004K3-Pa
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg4-0004KM-3i
  for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfz-0007GW-Ov
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg2-0007H7-Ht
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426783;
+ s=mimecast20190719; t=1748426785;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uMATuWWm+srIs5nFJ3klsWb/Ek9p4aFq+16UijVU0pY=;
- b=CdjoJvcByKGZTI471GGWgCRYP+/fB78HSM+ov5TiDXhsQ3H8TWSri51qn7loZla8MW6CO9
- sDRhFvn0h2wdYPlwLBu1o+2iAy8oq6DfItmlccEiZcXmxNpCZ+GTZr26wKdR3vJks61Fut
- SeQYMZEZ9G//gZC5XdN14/40sdHP5IU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=OHCI9bUlMc1zhmH226iMPrisn8+fAxn1VK6cPkHMjcY=;
+ b=FYWQSGxWUaLfJPupBYWNj20dUQHzv3LR8DLB8NYdl5d6Y/6j6jqto5XPRy91tA5Z9M4v1s
+ NqLyQlfK6/W8ecg+9bmPV9nICE/tT/OgdRVyPZUwvIAwzqeTMOZsWocfeYUhXkx6CCNOrm
+ NdK/rW14YiE4OZxl5s9NpZ3Y4afPgrk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-l7YzJmGPM_K3FOBJ5Jl1KQ-1; Wed,
- 28 May 2025 06:06:19 -0400
-X-MC-Unique: l7YzJmGPM_K3FOBJ5Jl1KQ-1
-X-Mimecast-MFC-AGG-ID: l7YzJmGPM_K3FOBJ5Jl1KQ_1748426778
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-318-qcGn4wf2MW2qnEhokEun_Q-1; Wed,
+ 28 May 2025 06:06:23 -0400
+X-MC-Unique: qcGn4wf2MW2qnEhokEun_Q-1
+X-Mimecast-MFC-AGG-ID: qcGn4wf2MW2qnEhokEun_Q_1748426782
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9D3A7194510B; Wed, 28 May 2025 10:06:18 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B367318007E1; Wed, 28 May 2025 10:06:22 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0C6D3180049D; Wed, 28 May 2025 10:06:15 +0000 (UTC)
+ id 56CAC180049D; Wed, 28 May 2025 10:06:19 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 20/27] hw/core/machine: Remove hw_compat_2_5[] array
-Date: Wed, 28 May 2025 12:05:00 +0200
-Message-ID: <20250528100507.313906-21-thuth@redhat.com>
+Subject: [PULL 21/27] hw/scsi/vmw_pvscsi: Remove
+ PVSCSI_COMPAT_OLD_PCI_CONFIGURATION definition
+Date: Wed, 28 May 2025 12:05:01 +0200
+Message-ID: <20250528100507.313906-22-thuth@redhat.com>
 In-Reply-To: <20250528100507.313906-1-thuth@redhat.com>
 References: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,52 +86,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The hw_compat_2_5[] array was only used by the pc-q35-2.5 and
-pc-i440fx-2.5 machines, which got removed. Remove it.
+PVSCSI_COMPAT_OLD_PCI_CONFIGURATION was only used by the
+hw_compat_2_5[] array, via the 'x-old-pci-configuration=on'
+property. We removed all machines using that array, lets remove
+all the code around PVSCSI_COMPAT_OLD_PCI_CONFIGURATION.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20250512083948.39294-13-philmd@linaro.org>
+Message-ID: <20250512083948.39294-15-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/boards.h | 3 ---
- hw/core/machine.c   | 9 ---------
- 2 files changed, 12 deletions(-)
+ hw/scsi/vmw_pvscsi.c | 26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index ab900dacabc..f424b2b5058 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -862,7 +862,4 @@ extern const size_t hw_compat_2_7_len;
- extern GlobalProperty hw_compat_2_6[];
- extern const size_t hw_compat_2_6_len;
+diff --git a/hw/scsi/vmw_pvscsi.c b/hw/scsi/vmw_pvscsi.c
+index d5825b67868..34de59a7cf6 100644
+--- a/hw/scsi/vmw_pvscsi.c
++++ b/hw/scsi/vmw_pvscsi.c
+@@ -69,17 +69,11 @@ OBJECT_DECLARE_TYPE(PVSCSIState, PVSCSIClass, PVSCSI)
  
--extern GlobalProperty hw_compat_2_5[];
--extern const size_t hw_compat_2_5_len;
--
- #endif
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 15cd2bc3c40..e869821b224 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -285,15 +285,6 @@ GlobalProperty hw_compat_2_6[] = {
+ 
+ /* Compatibility flags for migration */
+-#define PVSCSI_COMPAT_OLD_PCI_CONFIGURATION_BIT 0
+-#define PVSCSI_COMPAT_OLD_PCI_CONFIGURATION \
+-    (1 << PVSCSI_COMPAT_OLD_PCI_CONFIGURATION_BIT)
+ #define PVSCSI_COMPAT_DISABLE_PCIE_BIT 1
+ #define PVSCSI_COMPAT_DISABLE_PCIE \
+     (1 << PVSCSI_COMPAT_DISABLE_PCIE_BIT)
+ 
+-#define PVSCSI_USE_OLD_PCI_CONFIGURATION(s) \
+-    ((s)->compat_flags & PVSCSI_COMPAT_OLD_PCI_CONFIGURATION)
+-#define PVSCSI_MSI_OFFSET(s) \
+-    (PVSCSI_USE_OLD_PCI_CONFIGURATION(s) ? 0x50 : 0x7c)
++#define PVSCSI_MSI_OFFSET    (0x7c)
+ #define PVSCSI_EXP_EP_OFFSET (0x40)
+ 
+ typedef struct PVSCSIRingInfo {
+@@ -1110,7 +1104,7 @@ pvscsi_init_msi(PVSCSIState *s)
+     int res;
+     PCIDevice *d = PCI_DEVICE(s);
+ 
+-    res = msi_init(d, PVSCSI_MSI_OFFSET(s), PVSCSI_MSIX_NUM_VECTORS,
++    res = msi_init(d, PVSCSI_MSI_OFFSET, PVSCSI_MSIX_NUM_VECTORS,
+                    PVSCSI_USE_64BIT, PVSCSI_PER_VECTOR_MASK, NULL);
+     if (res < 0) {
+         trace_pvscsi_init_msi_fail(res);
+@@ -1158,15 +1152,11 @@ pvscsi_realizefn(PCIDevice *pci_dev, Error **errp)
+     trace_pvscsi_state("init");
+ 
+     /* PCI subsystem ID, subsystem vendor ID, revision */
+-    if (PVSCSI_USE_OLD_PCI_CONFIGURATION(s)) {
+-        pci_set_word(pci_dev->config + PCI_SUBSYSTEM_ID, 0x1000);
+-    } else {
+-        pci_set_word(pci_dev->config + PCI_SUBSYSTEM_VENDOR_ID,
+-                     PCI_VENDOR_ID_VMWARE);
+-        pci_set_word(pci_dev->config + PCI_SUBSYSTEM_ID,
+-                     PCI_DEVICE_ID_VMWARE_PVSCSI);
+-        pci_config_set_revision(pci_dev->config, 0x2);
+-    }
++    pci_set_word(pci_dev->config + PCI_SUBSYSTEM_VENDOR_ID,
++                 PCI_VENDOR_ID_VMWARE);
++    pci_set_word(pci_dev->config + PCI_SUBSYSTEM_ID,
++                 PCI_DEVICE_ID_VMWARE_PVSCSI);
++    pci_config_set_revision(pci_dev->config, 0x2);
+ 
+     /* PCI latency timer = 255 */
+     pci_dev->config[PCI_LATENCY_TIMER] = 0xff;
+@@ -1298,8 +1288,6 @@ static const VMStateDescription vmstate_pvscsi = {
+ 
+ static const Property pvscsi_properties[] = {
+     DEFINE_PROP_UINT8("use_msg", PVSCSIState, use_msg, 1),
+-    DEFINE_PROP_BIT("x-old-pci-configuration", PVSCSIState, compat_flags,
+-                    PVSCSI_COMPAT_OLD_PCI_CONFIGURATION_BIT, false),
+     DEFINE_PROP_BIT("x-disable-pcie", PVSCSIState, compat_flags,
+                     PVSCSI_COMPAT_DISABLE_PCIE_BIT, false),
  };
- const size_t hw_compat_2_6_len = G_N_ELEMENTS(hw_compat_2_6);
- 
--GlobalProperty hw_compat_2_5[] = {
--    { "isa-fdc", "fallback", "144" },
--    { "pvscsi", "x-old-pci-configuration", "on" },
--    { "pvscsi", "x-disable-pcie", "on" },
--    { "vmxnet3", "x-old-msi-offsets", "on" },
--    { "vmxnet3", "x-disable-pcie", "on" },
--};
--const size_t hw_compat_2_5_len = G_N_ELEMENTS(hw_compat_2_5);
--
- MachineState *current_machine;
- 
- static char *machine_get_kernel(Object *obj, Error **errp)
 -- 
 2.49.0
 
