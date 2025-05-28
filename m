@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2CCAC6926
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 080C5AC695F
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:35:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKFk5-00060u-6N; Wed, 28 May 2025 08:18:45 -0400
+	id 1uKFzC-0003wL-AF; Wed, 28 May 2025 08:34:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFji-0005xP-QG
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:18:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFyt-0003pi-Qg
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:34:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFjf-0004G0-HA
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:18:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFyr-0006Xd-6M
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:34:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748434697;
+ s=mimecast20190719; t=1748435637;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sO4Tv0mQVhPZX+Q4JcE3C3FL0Yv3t6jZpx5FpNpy500=;
- b=Kl5npw4hAlTiCz2k0rh7EHMKUn3tjIA+1Qkj3QXUoBa13fkgXUs0RfmB432Q5LC2kbj2lC
- ZsQ5FI4LylyohfHQsiWqJ7a/GWV9ZyEc5H9VA7y8XDkQx6BBTch6lKa3V63bVwSfFo6dGS
- Kx7Cj4RcB1EpKwnj9MpC9p/zvTJA2BY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=BbV18E4aMISl1yjTK1F2SwsHUP74MmOPlj2EWDtSWjY=;
+ b=M5NQ8ZjvkKPh4+j9TB6lRetlyPwXciHq45KPGScFa2gFAcmdn2leu3Qe0ks60eX8fzHa6Q
+ +51AejgdycxkAQR/nR+Nnh436dHC3NJG8DUEF5I3CIS4YwM216tPSka8dNCxIOqyycDONB
+ Ry8KVqqkQlrX7kg46kav4QO6z4LusOo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-CfipY_YeN4GJu-2kAffhmQ-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-uR62UVymPoCEOlJeW7TiKA-1; Wed,
  28 May 2025 08:18:16 -0400
-X-MC-Unique: CfipY_YeN4GJu-2kAffhmQ-1
-X-Mimecast-MFC-AGG-ID: CfipY_YeN4GJu-2kAffhmQ_1748434695
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+X-MC-Unique: uR62UVymPoCEOlJeW7TiKA-1
+X-Mimecast-MFC-AGG-ID: uR62UVymPoCEOlJeW7TiKA_1748434695
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D750E180045B
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 12:18:15 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AC3C11800373; Wed, 28 May 2025 12:18:15 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8FA04195608D
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 12:18:15 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 576A430001B0; Wed, 28 May 2025 12:18:15 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DBCC921E66AB; Wed, 28 May 2025 14:11:43 +0200 (CEST)
+ id E03F621E66BB; Wed, 28 May 2025 14:11:43 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com
-Subject: [PULL 1/4] docs/about: Belatedly document tightening of QMP
- device_add checking
-Date: Wed, 28 May 2025 14:11:40 +0200
-Message-ID: <20250528121143.2208075-2-armbru@redhat.com>
+Cc: stefanha@redhat.com, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Peter Krempa <pkrempa@redhat.com>
+Subject: [PULL 2/4] qapi/migration: Deprecate migrate argument @detach
+Date: Wed, 28 May 2025 14:11:41 +0200
+Message-ID: <20250528121143.2208075-3-armbru@redhat.com>
 In-Reply-To: <20250528121143.2208075-1-armbru@redhat.com>
 References: <20250528121143.2208075-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -84,66 +82,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 4d8b0f0a9536 (v6.2.0) deprecated incorrectly typed device_add
-arguments.  Commit be93fd53723c (qdev-monitor: avoid QemuOpts in QMP
-device_add) fixed them for v9.2.0, but neglected to update
-documentation.  Do that now.
+Argument @detach has always been ignored.  Start the clock to get rid
+of it.
 
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250521063711.29840-2-armbru@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-[Commit message typo corrected]
+Message-ID: <20250521063711.29840-3-armbru@redhat.com>
+ACKed-by: Peter Krempa <pkrempa@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- docs/about/deprecated.rst       | 14 --------------
- docs/about/removed-features.rst |  9 +++++++++
- 2 files changed, 9 insertions(+), 14 deletions(-)
+ docs/about/deprecated.rst |  5 +++++
+ qapi/migration.json       | 18 +++++++++---------
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 44d3427e98..9665bc6fcf 100644
+index 9665bc6fcf..ef4ea84e69 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -187,20 +187,6 @@ threads (for example, it only reports source side of multifd threads,
- without reporting any destination threads, or non-multifd source threads).
- For debugging purpose, please use ``-name $VM,debug-threads=on`` instead.
+@@ -179,6 +179,11 @@ Use ``job-dismiss`` instead.
  
--Incorrectly typed ``device_add`` arguments (since 6.2)
--''''''''''''''''''''''''''''''''''''''''''''''''''''''
--
--Due to shortcomings in the internal implementation of ``device_add``, QEMU
--incorrectly accepts certain invalid arguments: Any object or list arguments are
--silently ignored. Other argument types are not checked, but an implicit
--conversion happens, so that e.g. string values can be assigned to integer
--device properties or vice versa.
--
--This is a bug in QEMU that will be fixed in the future so that previously
--accepted incorrect commands will return an error. Users should make sure that
--all arguments passed to ``device_add`` are consistent with the documented
--property types.
--
- Host Architectures
- ------------------
+ Use ``job-finalize`` instead.
  
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 063284d4f8..92b5ba6218 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -722,6 +722,15 @@ Use ``multifd-channels`` instead.
- 
- Use ``multifd-compression`` instead.
- 
-+Incorrectly typed ``device_add`` arguments (since 9.2)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''
++``migrate`` argument ``detach`` (since 10.1)
++''''''''''''''''''''''''''''''''''''''''''''
 +
-+Due to shortcomings in the internal implementation of ``device_add``,
-+QEMU used to incorrectly accept certain invalid arguments. Any object
-+or list arguments were silently ignored. Other argument types were not
-+checked, but an implicit conversion happened, so that e.g. string
-+values could be assigned to integer device properties or vice versa.
++This argument has always been ignored.
 +
- QEMU Machine Protocol (QMP) events
- ----------------------------------
+ ``query-migrationthreads`` (since 9.2)
+ ''''''''''''''''''''''''''''''''''''''
  
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 8b9c53595c..ecd266f98e 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -1660,6 +1660,10 @@
+ #
+ # @resume: resume one paused migration, default "off".  (since 3.0)
+ #
++# Features:
++#
++# @deprecated: Argument @detach is deprecated.
++#
+ # Since: 0.14
+ #
+ # .. admonition:: Notes
+@@ -1668,19 +1672,14 @@
+ #        migration's progress and final result (this information is
+ #        provided by the 'status' member).
+ #
+-#     2. All boolean arguments default to false.
+-#
+-#     3. The user Monitor's "detach" argument is invalid in QMP and
+-#        should not be used.
+-#
+-#     4. The uri argument should have the Uniform Resource Identifier
++#     2. The uri argument should have the Uniform Resource Identifier
+ #        of default destination VM.  This connection will be bound to
+ #        default network.
+ #
+-#     5. For now, number of migration streams is restricted to one,
++#     3. For now, number of migration streams is restricted to one,
+ #        i.e. number of items in 'channels' list is just 1.
+ #
+-#     6. The 'uri' and 'channels' arguments are mutually exclusive;
++#     4. The 'uri' and 'channels' arguments are mutually exclusive;
+ #        exactly one of the two should be present.
+ #
+ # .. qmp-example::
+@@ -1724,7 +1723,8 @@
+ { 'command': 'migrate',
+   'data': {'*uri': 'str',
+            '*channels': [ 'MigrationChannel' ],
+-           '*detach': 'bool', '*resume': 'bool' } }
++           '*detach': { 'type': 'bool', 'features': [ 'deprecated' ] },
++           '*resume': 'bool' } }
+ 
+ ##
+ # @migrate-incoming:
 -- 
 2.48.1
 
