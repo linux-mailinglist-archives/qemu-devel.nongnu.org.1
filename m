@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DDCAC669C
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D918DAC669D
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:06:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDfS-0003j6-Ta; Wed, 28 May 2025 06:05:50 -0400
+	id 1uKDfU-0003jc-Pv; Wed, 28 May 2025 06:05:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfN-0003hP-UJ
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:05:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfQ-0003iM-P1
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:05:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfM-0007Df-9j
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:05:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfO-0007Dm-Am
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:05:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426743;
+ s=mimecast20190719; t=1748426745;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1RB+zViEFHGrU/67PhbRLcWmgiYOEsMhUSk4cTJVDvQ=;
- b=GGNtdDHgifSxke0g1K8cicyhCeaF2XMAT9HgTASxHgyjUuJgNBXjFgmhapEgU1koSoXDWv
- jXkKgyNvwNCVVDHUXG8T2+U+QQMwhz0u6vlEmH9vApzoCR1pqpBwlXzlL+nCdJpMsH4pwY
- 9U/uxGuj7WAxLi68ob3upOS+TtJi7g0=
+ bh=P4BcFeHZdhTzXIhCu3ar2uLEb5iCDSRwkE8Rgxvkcgk=;
+ b=gLOEN6F0nB8h8yaxacxGwD/3+i14WrCFnsavqVFRORjkNpjKdiPOqQ4bAN9HBZhmMZkcVA
+ Nf0VSo4BBvtYRK3rM2lLwXE2tPHEt824Xd6XcL2tZcoG8nP270GDk5oT2urzJsQopaA4KL
+ pkktEsbpUcutEdf619gABM7ftTfGECo=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-e6QBhjJiO2W8e2npM3c4Qw-1; Wed,
- 28 May 2025 06:05:40 -0400
-X-MC-Unique: e6QBhjJiO2W8e2npM3c4Qw-1
-X-Mimecast-MFC-AGG-ID: e6QBhjJiO2W8e2npM3c4Qw_1748426739
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-160-pMATDg3INvygN3Hne6Dhmw-1; Wed,
+ 28 May 2025 06:05:44 -0400
+X-MC-Unique: pMATDg3INvygN3Hne6Dhmw-1
+X-Mimecast-MFC-AGG-ID: pMATDg3INvygN3Hne6Dhmw_1748426743
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9169218004AD; Wed, 28 May 2025 10:05:39 +0000 (UTC)
+ id C4D8E1800373; Wed, 28 May 2025 10:05:42 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5A9AC180049D; Wed, 28 May 2025 10:05:36 +0000 (UTC)
+ id 30970180049D; Wed, 28 May 2025 10:05:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/27] docs: Deprecate the qemu-system-microblazeel binary
-Date: Wed, 28 May 2025 12:04:49 +0200
-Message-ID: <20250528100507.313906-10-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 10/27] hw/i386/pc: Remove deprecated pc-q35-2.4 and
+ pc-i440fx-2.4 machines
+Date: Wed, 28 May 2025 12:04:50 +0200
+Message-ID: <20250528100507.313906-11-thuth@redhat.com>
 In-Reply-To: <20250528100507.313906-1-thuth@redhat.com>
 References: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,46 +84,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The (former big-endian only) binary qemu-system-microblaze can
-handle both endiannesses nowadays, so we don't need the separate
-qemu-system-microblazeel binary for little endian anymore. Let's
-deprecate it to avoid unnecessary compilation and test time in
-the future.
+These machines has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") they can now be removed.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Remove the qtest in test-x86-cpuid-compat.c file.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Message-ID: <20250512083948.39294-2-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250515132019.569365-5-thuth@redhat.com>
 ---
- docs/about/deprecated.rst | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ hw/i386/pc_piix.c                   | 13 -------------
+ hw/i386/pc_q35.c                    | 13 -------------
+ tests/qtest/test-x86-cpuid-compat.c | 14 --------------
+ 3 files changed, 40 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index f3bf02d8b88..891f8dedc90 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -354,6 +354,19 @@ machine must ensure that they're setting the ``spike`` machine in the
- command line (``-M spike``).
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 0dce512f184..04213b45b44 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -791,19 +791,6 @@ static void pc_i440fx_machine_2_5_options(MachineClass *m)
  
+ DEFINE_I440FX_MACHINE(2, 5);
  
-+System emulator binaries
-+------------------------
-+
-+``qemu-system-microblazeel`` (since 10.1)
-+'''''''''''''''''''''''''''''''''''''''''
-+
-+The ``qemu-system-microblaze`` binary can emulate little-endian machines
-+now, too, so the separate binary ``qemu-system-microblazeel`` (with the
-+``el`` suffix) for little-endian targets is not required anymore. The
-+``petalogix-s3adsp1800`` machine can now be switched to little endian by
-+setting its ``endianness`` property to ``little``.
-+
-+
- Backend options
- ---------------
+-static void pc_i440fx_machine_2_4_options(MachineClass *m)
+-{
+-    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-
+-    pc_i440fx_machine_2_5_options(m);
+-    m->hw_version = "2.4.0";
+-    pcmc->broken_reserved_end = true;
+-    compat_props_add(m->compat_props, hw_compat_2_4, hw_compat_2_4_len);
+-    compat_props_add(m->compat_props, pc_compat_2_4, pc_compat_2_4_len);
+-}
+-
+-DEFINE_I440FX_MACHINE(2, 4);
+-
+ #ifdef CONFIG_ISAPC
+ static void isapc_machine_options(MachineClass *m)
+ {
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index c538b3d05b4..47e12602413 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -685,16 +685,3 @@ static void pc_q35_machine_2_5_options(MachineClass *m)
+ }
  
+ DEFINE_Q35_MACHINE(2, 5);
+-
+-static void pc_q35_machine_2_4_options(MachineClass *m)
+-{
+-    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-
+-    pc_q35_machine_2_5_options(m);
+-    m->hw_version = "2.4.0";
+-    pcmc->broken_reserved_end = true;
+-    compat_props_add(m->compat_props, hw_compat_2_4, hw_compat_2_4_len);
+-    compat_props_add(m->compat_props, pc_compat_2_4, pc_compat_2_4_len);
+-}
+-
+-DEFINE_Q35_MACHINE(2, 4);
+diff --git a/tests/qtest/test-x86-cpuid-compat.c b/tests/qtest/test-x86-cpuid-compat.c
+index c9de47bb269..456e2af6657 100644
+--- a/tests/qtest/test-x86-cpuid-compat.c
++++ b/tests/qtest/test-x86-cpuid-compat.c
+@@ -365,20 +365,6 @@ int main(int argc, char **argv)
+                        "level", 10);
+     }
+ 
+-    /*
+-     * xlevel doesn't have any feature that triggers auto-level
+-     * code on old machine-types.  Just check that the compat code
+-     * is working correctly:
+-     */
+-    if (qtest_has_machine("pc-i440fx-2.4")) {
+-        add_cpuid_test("x86/cpuid/xlevel-compat/pc-i440fx-2.4/npt-off",
+-                       "SandyBridge", NULL, "pc-i440fx-2.4",
+-                       "xlevel", 0x80000008);
+-        add_cpuid_test("x86/cpuid/xlevel-compat/pc-i440fx-2.4/npt-on",
+-                       "SandyBridge", "svm=on,npt=on", "pc-i440fx-2.4",
+-                       "xlevel", 0x80000008);
+-    }
+-
+     /* Test feature parsing */
+     add_feature_test("x86/cpuid/features/plus",
+                      "486", "+arat",
 -- 
 2.49.0
 
