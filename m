@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67AAAC63F0
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE420AC6435
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:22:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKBx1-0000YP-RD; Wed, 28 May 2025 04:15:52 -0400
+	id 1uKByI-00023U-LR; Wed, 28 May 2025 04:17:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvn-0007wk-EC
+ id 1uKBvn-0007wj-E3
  for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:36 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvk-0005Fp-O8
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:34 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43cec5cd73bso33409265e9.3
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:31 -0700 (PDT)
+ id 1uKBvk-0005Fx-Df
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:33 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43cfebc343dso32661645e9.2
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748420069; x=1749024869; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748420071; x=1749024871; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NpxUd17c3m77ey9D/1drD1plUrvJ4iXwsNR9pLccurE=;
- b=dBBZbx8Awrpf0rIIvubizVtTY7VVptc97iVUO9ct2lY55IHJcaBW8XNN1e706vwLwy
- VkeHy67MJHGmqqMcJfZc3sNuMK+1Bl+CY7WhzVxylW++g9HgqYWyriCHWpMKh6XHdCyh
- guTqxlzOaQmCHybCvROXxQG7AT8sE3zO97tY/swfu9xBSDWZFP3G7hGVzqUOFFPd2abE
- Mh8Z8+WdugevH7p92S61PyfJDCtwVvjQFgTakEHiIa8m02L2Y5rbTNUC1G+xougokSsn
- 6sC7opVvy+nkj5F7TvPFXptQ1uPx24jcufx9Zr2zBqGqgSROeGJAERVO/mcwePbeRk2d
- LykA==
+ bh=24Z9qZttVNWxMs/+PWywvUHFCg2sjBAovcSVb5esy8U=;
+ b=R36klxvD2FkOwrAc0N6f0F53E8zPZqSwkw4CeVIoQF37Cz0zbMFMpm3GwsQt0kJ6AW
+ NCR7auWyKsXo3ulbYSZm61ySBdnYvAJLRNj1HlBKm1P9yJ0wQJlRMZLxOrH5qr48S1Q5
+ DYW+6wtgq94OxlfBsq9HSssbin4Vr8HX/EkvE6WFaANF8gcqVeZe2nUrA+wzoRiCgF/e
+ Ypai9vwl+6Bdm0cWcOG6adVvsle8swkSeVl4i9Y5H1okSd45/qu3AhRs4OwxQXsqJAEj
+ u4bOUNgUiELlrKYr23LxGxOUurFuzpKilhfZhzQxN4aprPuYDbhAYxw81/3ZT6KiFEBt
+ cRjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748420069; x=1749024869;
+ d=1e100.net; s=20230601; t=1748420071; x=1749024871;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NpxUd17c3m77ey9D/1drD1plUrvJ4iXwsNR9pLccurE=;
- b=Weqa1DCl9qZ18M2znhQiEz8M45+c7fsylKp2Jk0jYhmpwp623D2EKFu3okuEZAz6aB
- Sf3D4ZgqBNnXAY/sBWCg/mQSO7aX+BKBgzlgG5rXpZOzUn9NybgTE8BfJodEwKZrqzg8
- IRGv6Zvc7luNaMlki7397ZUlezzFKxQ4pZYYqOc0KdSzTc9Sl4m0CoE5h0DUR/oSykQR
- mbiS5hqLZ6SpYcCA3+nULFu8W8Tz+cGg/I5UMQOSKwj1wChop1gUzQuDpTgW5A0YcAcO
- vlxPvh+VhwEVx+TxjbOmaZf1uVZFyKj0Usxkb64Y9mwsODQ6glOmS25j6VWi5+IZO7hq
- tBlw==
-X-Gm-Message-State: AOJu0Yz+jSyBNQPRJ0LSksv1w6a5ZYIj6YSkI5mCtaqSUg1+Jkk2V0fX
- /bC8f+XQEGmC13ZuLLcnYWu3iBAfuEkX+uXsxFN18MYkss8D9ogwQkT7APdLPqnpoH3wZ1SAccP
- BLPobbMCNsQ==
-X-Gm-Gg: ASbGnctP11qIxIEPY0pfxGyuyuV+p9nBsOtu0orZMWoLlA2Vw6K6ZSUeSCZM8eNJqED
- Y+3/gLsRUqHLoS0va4eAgPhHRlNZTDLpH66VPO+Uh4sWUrfAoGtWy50VVrKDTBIxwM/Ng0H2qan
- nAxnNJ4K34lq3hC382+SBsQQD+bcOakTwZDXRLJMs4RugPeubOUOl0V/OKaTI5f8SXx9ULFA5W4
- pl2usZFjTOjAattVPlxKHPYZIEqCpy86eVrw1FOpC86mjTaXwz1FM5L36PNVCbSoV4xkCf/bfhY
- DnGyhOhs/OGBq5x2XubqESWk8tVxEZFyhFlniOmwyyP38DGSTUqAEOxjy9RRs/GyDO0=
-X-Google-Smtp-Source: AGHT+IEpSh9fNapISHmkVCos9ZhjoYIWbfSdsiJkY+kIV+5oTk2q2kgVFvjrwSwssBRSBHVFQ1NuDg==
-X-Received: by 2002:a05:600c:46cb:b0:43d:94:2d1e with SMTP id
- 5b1f17b1804b1-44c919e16a8mr134054495e9.13.1748420069536; 
- Wed, 28 May 2025 01:14:29 -0700 (PDT)
+ bh=24Z9qZttVNWxMs/+PWywvUHFCg2sjBAovcSVb5esy8U=;
+ b=bXrGq/BgHONhRgw8t/nA2CFpHShCkCjhN6F88Mrd1y0qi/h4wQoLiyx4V7lPF8pdXi
+ UV+rlG/MMWFkicor2iq8Fl+nqK+sx1LbIjbJIgOJQnVQBvRproY8n+g/3JDjS5tDExVB
+ UVgLZNVd/Ull2JYeq31Gz12gl4QqkDPTCsknX7AVEukLOUQQ38aEOGNwnpwrwB1ltDv7
+ OvHAdrMPkoRKYKZceROc1kCG0HXhLfkscFZCnc7AoQ1wSzZCc0ZEjuVoSExeaIA5Fu80
+ 8foA3UYzE9V2ogouWULrhQCE9Qa5Vfl2wax12PafN4eQrIeJHOhbqSqGwT0faZqSY98e
+ LDgg==
+X-Gm-Message-State: AOJu0Yz3fgxRsKiOMcVmbBE/2Ed26BVGlTBGztw362O3GvZVHCGmxgY9
+ Qi6oRYkc1+hA+K9qMFQL7anyYXpnUoGmfVFwUlwd/+yxsSFDWApwrGHWCXrIdxnwg529L9LE+MC
+ aF3tMOb/1uw==
+X-Gm-Gg: ASbGncsezQDy5on3ZhTpamwJB3fkJRSHGK9bTypfdAJhTAmxPUP12QgugTaC9yz5sPs
+ IgZAtNfAUIllc0wIMzYRna8PDwPo3NfVYnllZfs7NpvlEYvYErwQ/nLPkeC4DaBML5MTjxCaTP1
+ HN/4UjWPiacVNxmLO3nEqwIa88Sjt6l0K0VUyNzviW9oOWV8g0ELw2jADG6V//kK8X2WgvkFV1F
+ EFVwrhFBbBK24dHLzIwk/vZ4oUFK2CWjmO/+7XqpRIlM6pKOLC8pFPPL/y4OL7i+UBakMEalw/7
+ LpdyaIvkm4T5z3szUwfGUXK9hecg8S+CZOcy2HpJUBQVSxU9u1NLIAkd/syVTs+gq5M=
+X-Google-Smtp-Source: AGHT+IHfSL94IlArbaXryosStBTGtaQkIY1D+QQsOcGEVMTtuKmrA+SfD6EplGL9A8vh3pKtuh+2xA==
+X-Received: by 2002:a05:600c:1d15:b0:43c:fe90:1282 with SMTP id
+ 5b1f17b1804b1-450725458d3mr8625225e9.7.1748420070554; 
+ Wed, 28 May 2025 01:14:30 -0700 (PDT)
 Received: from stoup.. ([195.53.115.74]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.28
+ 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 May 2025 01:14:29 -0700 (PDT)
+ Wed, 28 May 2025 01:14:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E . Iglesias" <edgar.iglesias@amd.com>
-Subject: [PULL 12/28] target/microblaze: Drop DisasContext.r0
-Date: Wed, 28 May 2025 09:13:54 +0100
-Message-ID: <20250528081410.157251-13-richard.henderson@linaro.org>
+Subject: [PULL 13/28] target/microblaze: Simplify compute_ldst_addr_type{a,b}
+Date: Wed, 28 May 2025 09:13:55 +0100
+Message-ID: <20250528081410.157251-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250528081410.157251-1-richard.henderson@linaro.org>
 References: <20250528081410.157251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -1
 X-Spam_score: -0.2
 X-Spam_bar: /
@@ -95,78 +95,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Return a constant 0 from reg_for_read, and a new
-temporary from reg_for_write.
+Require TCGv_i32 and TCGv be identical, so drop
+the extensions.  Return constants when possible
+instead of a mov into a temporary.  Return register
+inputs unchanged when possible.
 
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/microblaze/translate.c | 24 ++----------------------
- 1 file changed, 2 insertions(+), 22 deletions(-)
+ target/microblaze/translate.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index dc597b36e6..047d97e2c5 100644
+index 047d97e2c5..5098a1db4d 100644
 --- a/target/microblaze/translate.c
 +++ b/target/microblaze/translate.c
-@@ -63,9 +63,6 @@ typedef struct DisasContext {
-     DisasContextBase base;
-     const MicroBlazeCPUConfig *cfg;
+@@ -606,19 +606,18 @@ DO_TYPEBI(xori, false, tcg_gen_xori_i32)
  
--    TCGv_i32 r0;
--    bool r0_set;
--
-     /* Decoder.  */
-     uint32_t ext_imm;
-     unsigned int tb_flags;
-@@ -179,14 +176,7 @@ static TCGv_i32 reg_for_read(DisasContext *dc, int reg)
-     if (likely(reg != 0)) {
-         return cpu_R[reg];
-     }
--    if (!dc->r0_set) {
--        if (dc->r0 == NULL) {
--            dc->r0 = tcg_temp_new_i32();
--        }
--        tcg_gen_movi_i32(dc->r0, 0);
--        dc->r0_set = true;
--    }
--    return dc->r0;
-+    return tcg_constant_i32(0);
- }
+ static TCGv compute_ldst_addr_typea(DisasContext *dc, int ra, int rb)
+ {
+-    TCGv ret = tcg_temp_new();
++    TCGv ret;
  
- static TCGv_i32 reg_for_write(DisasContext *dc, int reg)
-@@ -194,10 +184,7 @@ static TCGv_i32 reg_for_write(DisasContext *dc, int reg)
-     if (likely(reg != 0)) {
-         return cpu_R[reg];
-     }
--    if (dc->r0 == NULL) {
--        dc->r0 = tcg_temp_new_i32();
--    }
--    return dc->r0;
-+    return tcg_temp_new_i32();
- }
- 
- static bool do_typea(DisasContext *dc, arg_typea *arg, bool side_effects,
-@@ -1635,8 +1622,6 @@ static void mb_tr_init_disas_context(DisasContextBase *dcb, CPUState *cs)
-     dc->cfg = &cpu->cfg;
-     dc->tb_flags = dc->base.tb->flags;
-     dc->ext_imm = dc->base.tb->cs_base;
--    dc->r0 = NULL;
--    dc->r0_set = false;
-     dc->mem_index = cpu_mmu_index(cs, false);
-     dc->jmp_cond = dc->tb_flags & D_FLAG ? TCG_COND_ALWAYS : TCG_COND_NEVER;
-     dc->jmp_dest = -1;
-@@ -1675,11 +1660,6 @@ static void mb_tr_translate_insn(DisasContextBase *dcb, CPUState *cs)
-         trap_illegal(dc, true);
+     /* If any of the regs is r0, set t to the value of the other reg.  */
+     if (ra && rb) {
+-        TCGv_i32 tmp = tcg_temp_new_i32();
+-        tcg_gen_add_i32(tmp, cpu_R[ra], cpu_R[rb]);
+-        tcg_gen_extu_i32_tl(ret, tmp);
++        ret = tcg_temp_new_i32();
++        tcg_gen_add_i32(ret, cpu_R[ra], cpu_R[rb]);
+     } else if (ra) {
+-        tcg_gen_extu_i32_tl(ret, cpu_R[ra]);
++        ret = cpu_R[ra];
+     } else if (rb) {
+-        tcg_gen_extu_i32_tl(ret, cpu_R[rb]);
++        ret = cpu_R[rb];
+     } else {
+-        tcg_gen_movi_tl(ret, 0);
++        ret = tcg_constant_i32(0);
      }
  
--    if (dc->r0) {
--        dc->r0 = NULL;
--        dc->r0_set = false;
--    }
--
-     /* Discard the imm global when its contents cannot be used. */
-     if ((dc->tb_flags & ~dc->tb_flags_to_set) & IMM_FLAG) {
-         tcg_gen_discard_i32(cpu_imm);
+     if ((ra == 1 || rb == 1) && dc->cfg->stackprot) {
+@@ -629,15 +628,16 @@ static TCGv compute_ldst_addr_typea(DisasContext *dc, int ra, int rb)
+ 
+ static TCGv compute_ldst_addr_typeb(DisasContext *dc, int ra, int imm)
+ {
+-    TCGv ret = tcg_temp_new();
++    TCGv ret;
+ 
+     /* If any of the regs is r0, set t to the value of the other reg.  */
+-    if (ra) {
+-        TCGv_i32 tmp = tcg_temp_new_i32();
+-        tcg_gen_addi_i32(tmp, cpu_R[ra], imm);
+-        tcg_gen_extu_i32_tl(ret, tmp);
++    if (ra && imm) {
++        ret = tcg_temp_new_i32();
++        tcg_gen_addi_i32(ret, cpu_R[ra], imm);
++    } else if (ra) {
++        ret = cpu_R[ra];
+     } else {
+-        tcg_gen_movi_tl(ret, (uint32_t)imm);
++        ret = tcg_constant_i32(imm);
+     }
+ 
+     if (ra == 1 && dc->cfg->stackprot) {
 -- 
 2.43.0
 
