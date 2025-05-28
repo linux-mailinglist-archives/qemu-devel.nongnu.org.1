@@ -2,100 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95ECDAC6E3D
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 18:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F41AC6E6D
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 18:53:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKJs2-00085Z-Qu; Wed, 28 May 2025 12:43:14 -0400
+	id 1uKK0H-0003Uy-LV; Wed, 28 May 2025 12:51:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1uKJrV-0007zH-VE
- for qemu-devel@nongnu.org; Wed, 28 May 2025 12:42:42 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uKK0A-0003Ue-TC
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 12:51:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1uKJrS-0007i3-U8
- for qemu-devel@nongnu.org; Wed, 28 May 2025 12:42:41 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54SCq7ok028826;
- Wed, 28 May 2025 16:42:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=n+NWh
- LpU+WnA7qzz2cX4k7PhKZJW81YslIcvFwxtCWE=; b=ZiDnVfsJCkyMg9koUoH7J
- RsC6i1joMdYV0MU9Pwx0egDrIvgafBFSJkf+4vWeyrvPcsNkL2ZKOuWAqjOAfVcX
- ncZCUWszTBKigJBcwXMCDnyZiiWDYK63JSljZ9LJ//TqvN4ZerBllmav5BGi/cXc
- ryGqX+dH2K4fqEF9K4ZMriSBmTdLmiFtzqi77WchAqrh5dOiTSXGtffuzyxGgECM
- azbVq1MRn/EomniaHZEaamrgog4T8tEC7h/j2Q1O7J1Ed8odntYTf0cOwAuaU2Lz
- hQAvVvZvTmPsQjT65fcYqrLedQaeS/yWpeNoJmj+S4JEyAyPV5HCmXdcYitBEfYB
- A==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v21s6aan-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 28 May 2025 16:42:30 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54SFi0kq027795; Wed, 28 May 2025 16:42:29 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46u4janrmt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 28 May 2025 16:42:29 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54SGgStd025769;
- Wed, 28 May 2025 16:42:28 GMT
-Received: from localhost.localdomain (dhcp-10-43-12-51.usdhcp.oraclecorp.com
- [10.43.12.51])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 46u4janrk1-1; Wed, 28 May 2025 16:42:28 +0000
-From: Annie Li <annie.li@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: dave@treblig.org, mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, zhao1.liu@intel.com, pbonzini@redhat.com,
- richard.henderson@linaro.org, slp@redhat.com, eblake@redhat.com,
- armbru@redhat.com, annie.li@oracle.com, miguel.luis@oracle.com
-Subject: [PATCH 13/13] acpi: hmp/qmp: Add hmp/qmp support for system_sleep
-Date: Wed, 28 May 2025 12:42:18 -0400
-Message-ID: <20250528164219.2247-1-annie.li@oracle.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20250528163545.2143-1-annie.li@oracle.com>
-References: <20250528163545.2143-1-annie.li@oracle.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uKK08-0000F1-D0
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 12:51:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748451094;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=k5VZagvfLSiQsGu/T8LCazDrj1as7y9CALFlWSRvbrM=;
+ b=IfjH4hIHpqjZlE18yk6Fom6eOTs8Jmqz/xGBYdJZ84hONm31mgQvpK8X4wfLmWa3qLdouw
+ ZSwltpaBDBEw9KdVhHvW0N9wMQneKPLvVc2q0kwKDuyoSyiK7xpNV3pr/LCbBfHguQdref
+ kUQv7ITcMrIP91f0C1PPVbEm/87Zmgg=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-262-j3Vunx0jNkGnGmHG2MJ_vg-1; Wed, 28 May 2025 12:51:33 -0400
+X-MC-Unique: j3Vunx0jNkGnGmHG2MJ_vg-1
+X-Mimecast-MFC-AGG-ID: j3Vunx0jNkGnGmHG2MJ_vg_1748451092
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6fab3aaa03fso1406406d6.0
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 09:51:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748451092; x=1749055892;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=k5VZagvfLSiQsGu/T8LCazDrj1as7y9CALFlWSRvbrM=;
+ b=d06Q99ErJFvTylKEr3hAG47gwfPqPUizDVDoayM9KO8OmPzkB4xkxRd4xZek4eHFKB
+ F+8EZCQbblyh+wjWLrkMn8U+xd3M0s2AeRAkSGM/OCAa0/eOTIjt2wTvmqsYVNuRxWMU
+ AEA86LDW5PtfcG9B3GoPTpNd53FltW6weSARrmkG7wv5XR6iIYjoqFKkOnxRA2eFlmo8
+ u3itVGSGnwt62wQZ73XlUaLFESTno+x2sxFbBmGib7Du8Z6zAcifHoXJ+j8UYt7Ispbu
+ SsSIN8vyzW7Kg2+9Tjqi4q7zZiL++Shs6plrMFMpFuRZAO2TuIo6hMmY8MY2WElGArrZ
+ utQg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXJWBUDEQNZcVnFXWzxq7CrjcpJWUYGT/wnEUwUIxzzDUtd9x/OAePBNyXZvQ0jsRajxUwXxnlHp6r+@nongnu.org
+X-Gm-Message-State: AOJu0YyrYI7eWRlaQnKXzasKY6i7oEITvY+Kd2H7d4RZdv1nz/Se3wJc
+ 2wBDNYbfA/Iou0sVW7c8iU3yUwtqBJywRqGkSKSonAjVy4ET/JgK6lumFD+VmmRPQk1PzeZDQhF
+ /a84wo3wogdkZhqT4FG2ZsTT603IsIKqVD7HxsT1tbJYSNKp/x9u0Ldou
+X-Gm-Gg: ASbGncuo3G/udJVtHmxjpZ3nK2HE6B/FS5cj6DvZOuRP1iBpYUZa/tre9Rip3Nrfj2J
+ tKpfmfKYq75ghfgVeY0Ogm/DNjx58vcxJV5a4CNR+A8+Z9CpD6NOHVvwcVuFc9kR+Pgwgv09a9V
+ 4yLpczl+GK0QjprU7Oqo9sQqnHPIDP8UsbVNB33rovefAkiSFjRAth34zA6qnEUAEGcPJ4ffnB+
+ g88ZZQTpqxrbLvLAqEzZUL3B4iE/YlUHN++HQeOs0CcGeDi14hTGDB9dEILDumL5ZQlFrgipNvZ
+ TrQ=
+X-Received: by 2002:ad4:5748:0:b0:6fa:acc1:f077 with SMTP id
+ 6a1803df08f44-6fabf328d52mr40834456d6.35.1748451092509; 
+ Wed, 28 May 2025 09:51:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7N2S2uQSa5N1V9Gi+VwBZ/JfylNuvYqjHmoxte2ew0im/E2AOOdsw9V6YFb/NErj09kTaKw==
+X-Received: by 2002:ad4:5748:0:b0:6fa:acc1:f077 with SMTP id
+ 6a1803df08f44-6fabf328d52mr40834256d6.35.1748451092170; 
+ Wed, 28 May 2025 09:51:32 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6fac0bb99d8sm8427296d6.86.2025.05.28.09.51.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 May 2025 09:51:31 -0700 (PDT)
+Date: Wed, 28 May 2025 12:51:28 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Dr. David Alan Gilbert" <dave@treblig.org>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ Juraj Marcin <jmarcin@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alexey Perevalov <a.perevalov@samsung.com>
+Subject: Re: [PATCH 02/11] migration/hmp: Fix postcopy-blocktime per-vCPU
+ results
+Message-ID: <aDc_ELugLDXPgRhr@x1.local>
+References: <20250527215850.1271072-1-peterx@redhat.com>
+ <20250527215850.1271072-3-peterx@redhat.com>
+ <878qmhjlma.fsf@pond.sub.org> <aDcm9turgPlQ75BO@gallifrey>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-28_08,2025-05-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- phishscore=0 suspectscore=0
- adultscore=0 malwarescore=0 bulkscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2505280145
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI4MDE0NSBTYWx0ZWRfXy4LbvNrR8GNP
- 2fPapbSiebRVfwk+uLYjVK+BTc/y+4iw+9o4U+YDSga19BYNObuklJ2kdECboHpUPf5NfYFYOaI
- fKHsjEuLf0/FiL85A5aFKbVAe9l148fQUAvhxe012GVcreis3eXgfU36PeTK10GKKb0dDEA1JlH
- 6TaguWLhDYfcvj6en2PCwMxEelxQGDwOcd83ErpbhSLdhtWMP8svW0vNJgyf70oFxEs698+/EKi
- W3O1Lkdi2bvbmKMFLmfzSibJDl1RJ0gFGMqZjXajP/lqJxEwfC3kZ23JyEbrSbFRfxCEWkK4giQ
- CGpKlq5iPwx3XsaYv6eiR+i8B/HCOkIoncBhy8hEKezumu+AymqZlrZZFZ2BJWhL7ktc8VyxKX8
- KKX0CCEuy0Hion0Hy4PiOzP8mChq/V0i5M4dzSsbEDCWq9XNfctYiPkSGZlxrAuqj9Hh2XWD
-X-Proofpoint-GUID: YTwYKirBBRnriAFzzrgZusBWv-r5YXBY
-X-Authority-Analysis: v=2.4 cv=UvhjN/wB c=1 sm=1 tr=0 ts=68373cf6 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=chHaGow_Xe9aAjHtMDoA:9
-X-Proofpoint-ORIG-GUID: YTwYKirBBRnriAFzzrgZusBWv-r5YXBY
-Received-SPF: pass client-ip=205.220.177.32; envelope-from=annie.li@oracle.com;
- helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.498,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aDcm9turgPlQ75BO@gallifrey>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -113,154 +108,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following hmp/qmp commands are implemented for pressing virtual
-sleep button,
+On Wed, May 28, 2025 at 03:08:38PM +0000, Dr. David Alan Gilbert wrote:
+> * Markus Armbruster (armbru@redhat.com) wrote:
+> > Peter Xu <peterx@redhat.com> writes:
+> > 
+> > > Unfortunately, it was never correctly shown..
+> > >
+> > > This is only found when I started to look into making the blocktime feature
+> > > more useful (so as to avoid using bpftrace, even though I'm not sure which
+> > > one will be harder to use..).
+> > >
+> > > So the old dump would look like this:
+> > >
+> > >   Postcopy vCPU Blocktime: 0-1,4,10,21,33,46,48,59
+> > >
+> > > Even though there're actually 40 vcpus, and the string will merge same
+> > > elements and also sort them.
+> > >
+> > > To fix it, simply loop over the uint32List manually.  Now it looks like:
+> > >
+> > >   Postcopy vCPU Blocktime (ms):
+> > >    [15, 0, 0, 43, 29, 34, 36, 29, 37, 41,
+> > >     33, 37, 45, 52, 50, 38, 40, 37, 40, 49,
+> > >     40, 35, 35, 35, 81, 19, 18, 19, 18, 30,
+> > >     22, 3, 0, 0, 0, 0, 0, 0, 0, 0]
+> > >
+> > > Cc: Dr. David Alan Gilbert <dave@treblig.org>
+> > > Cc: Alexey Perevalov <a.perevalov@samsung.com>
+> > > Cc: Markus Armbruster <armbru@redhat.com>
+> > > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > > ---
+> > >  migration/migration-hmp-cmds.c | 23 ++++++++++++++---------
+> > >  1 file changed, 14 insertions(+), 9 deletions(-)
+> > >
+> > > diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+> > > index 367ff6037f..3cf890b887 100644
+> > > --- a/migration/migration-hmp-cmds.c
+> > > +++ b/migration/migration-hmp-cmds.c
+> > > @@ -208,15 +208,20 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+> > >      }
+> > >  
+> > >      if (info->has_postcopy_vcpu_blocktime) {
+> > > -        Visitor *v;
+> > > -        char *str;
+> > > -        v = string_output_visitor_new(false, &str);
+> > > -        visit_type_uint32List(v, NULL, &info->postcopy_vcpu_blocktime,
+> > > -                              &error_abort);
+> > > -        visit_complete(v, &str);
+> > > -        monitor_printf(mon, "Postcopy vCPU Blocktime: %s\n", str);
+> > > -        g_free(str);
+> > > -        visit_free(v);
+> > > +        uint32List *item = info->postcopy_vcpu_blocktime;
+> > > +        int count = 0;
+> > > +
+> > > +        monitor_printf(mon, "Postcopy vCPU Blocktime (ms): \n [");
+> > > +
+> > > +        while (item) {
+> > > +            monitor_printf(mon, "%"PRIu32", ", item->value);
+> > > +            item = item->next;
+> > > +            /* Each line 10 vcpu results, newline if there's more */
+> > 
+> > The list can be arbitrarily long?
+> 
+> One per vCPU, so a small arbitrary.
+> 
+> > > +            if ((++count % 10 == 0) && item) {
+> > > +                monitor_printf(mon, "\n  ");
+> > > +            }
+> > > +        }
+> > > +        monitor_printf(mon, "\b\b]\n");
+> > 
+> > Uh, backspace?
+> 
+> Agreed!
 
-hmp: system_sleep
-qmp: { "execute": "system_sleep" }
+Agreed on.. using backspace? :)
 
-These commands put the guest into suspend or other power states
-depending on the power settings inside the guest.
+> 
+> Dave
+> 
+> > I usually do something like
+> > 
+> >     sep = "";
+> >     for (...) {
+> >         printf("%s...", sep, ...);
+> >         sep = ", "
+> >     }
+> > 
+> > To add line breaks, I'd use something like
+> > 
+> >         sep = ... ? ", " : ",\n";
 
-These hmp/qmp command are in '*_*' format, it is intended to do
-so to align to existing 'system_*' commands.
+Thanks for the suggestion!  Definitely better..
 
-Signed-off-by: Annie Li <annie.li@oracle.com>
----
- hmp-commands.hx            | 14 ++++++++++++++
- hw/core/machine-hmp-cmds.c |  5 +++++
- hw/core/machine-qmp-cmds.c | 11 +++++++++++
- include/monitor/hmp.h      |  1 +
- qapi/machine.json          | 20 ++++++++++++++++++++
- qapi/pragma.json           |  1 +
- 6 files changed, 52 insertions(+)
+I'll squash below into this patch when repost, comments on top always
+welcomed.
 
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index 06746f0afc..12f08f3444 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -639,6 +639,20 @@ SRST
-   whether profiling is on or off.
- ERST
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 3cf890b887..6c36e202a0 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -209,19 +209,18 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
  
-+    {
-+        .name       = "system_sleep",
-+        .args_type  = "",
-+        .params     = "",
-+        .help       = "send system sleep event",
-+        .cmd = hmp_system_sleep,
-+    },
-+
-+SRST
-+``system_sleep``
-+  Push the virtual sleep button; if supported, the system will enter
-+  an ACPI sleep state.
-+ERST
-+
-     {
-         .name       = "system_reset",
-         .args_type  = "",
-diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
-index c6325cdcaa..f8a7c1de88 100644
---- a/hw/core/machine-hmp-cmds.c
-+++ b/hw/core/machine-hmp-cmds.c
-@@ -189,6 +189,11 @@ void hmp_system_reset(Monitor *mon, const QDict *qdict)
-     qmp_system_reset(NULL);
- }
+     if (info->has_postcopy_vcpu_blocktime) {
+         uint32List *item = info->postcopy_vcpu_blocktime;
++        const char *sep = "";
+         int count = 0;
  
-+void hmp_system_sleep(Monitor *mon, const QDict *qdict)
-+{
-+    qmp_system_sleep(NULL);
-+}
-+
- void hmp_system_powerdown(Monitor *mon, const QDict *qdict)
- {
-     qmp_system_powerdown(NULL);
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 1bc21b84a4..80b877d8cd 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -12,6 +12,7 @@
- #include "hw/boards.h"
- #include "hw/intc/intc.h"
- #include "hw/mem/memory-device.h"
-+#include "hw/acpi/acpi.h"
- #include "qapi/error.h"
- #include "qapi/qapi-builtin-visit.h"
- #include "qapi/qapi-commands-machine.h"
-@@ -277,6 +278,16 @@ void qmp_system_reset(Error **errp)
-     qemu_system_reset_request(SHUTDOWN_CAUSE_HOST_QMP_SYSTEM_RESET);
- }
+         monitor_printf(mon, "Postcopy vCPU Blocktime (ms): \n [");
  
-+void qmp_system_sleep(Error **errp)
-+{
-+    if (!qemu_wakeup_suspend_enabled()) {
-+        error_setg(errp,
-+                   "suspend from running is not supported by this machine");
-+        return;
-+    }
-+    acpi_send_sleep_event();
-+}
-+
- void qmp_system_powerdown(Error **errp)
- {
-     qemu_system_powerdown_request();
-diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
-index ae116d9804..e543eec109 100644
---- a/include/monitor/hmp.h
-+++ b/include/monitor/hmp.h
-@@ -43,6 +43,7 @@ void hmp_quit(Monitor *mon, const QDict *qdict);
- void hmp_stop(Monitor *mon, const QDict *qdict);
- void hmp_sync_profile(Monitor *mon, const QDict *qdict);
- void hmp_system_reset(Monitor *mon, const QDict *qdict);
-+void hmp_system_sleep(Monitor *mon, const QDict *qdict);
- void hmp_system_powerdown(Monitor *mon, const QDict *qdict);
- void hmp_exit_preconfig(Monitor *mon, const QDict *qdict);
- void hmp_announce_self(Monitor *mon, const QDict *qdict);
-diff --git a/qapi/machine.json b/qapi/machine.json
-index a6b8795b09..3efaf82f7d 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -361,6 +361,26 @@
- ##
- { 'command': 'system_reset' }
- 
-+##
-+# @system_sleep:
-+#
-+# Requests that the guest perform a ACPI sleep transition by pushing
-+# the virtual sleep button.
-+#
-+# Since:10.0
-+#
-+# .. note:: A guest may or may not respond to this command.  This
-+#        command returning does not indicate that a guest has
-+#        accepted the request or that it has gone to sleep.
-+#
-+# .. qmp-example::
-+#
-+# -> { "execute": "system_sleep" }
-+# <- { "return": {} }
-+#
-+##
-+{ 'command': 'system_sleep' }
-+
- ##
- # @system_powerdown:
- #
-diff --git a/qapi/pragma.json b/qapi/pragma.json
-index 023a2ef7bc..285ce82e9b 100644
---- a/qapi/pragma.json
-+++ b/qapi/pragma.json
-@@ -23,6 +23,7 @@
-         'set_password',
-         'system_powerdown',
-         'system_reset',
-+        'system_sleep',
-         'system_wakeup' ],
-     # Commands allowed to return a non-dictionary
-     'command-returns-exceptions': [
+         while (item) {
+-            monitor_printf(mon, "%"PRIu32", ", item->value);
++            monitor_printf(mon, "%s%"PRIu32, sep, item->value);
+             item = item->next;
+             /* Each line 10 vcpu results, newline if there's more */
+-            if ((++count % 10 == 0) && item) {
+-                monitor_printf(mon, "\n  ");
+-            }
++            sep = ((++count % 10 == 0) && item) ? ",\n  " : ", ";
+         }
+-        monitor_printf(mon, "\b\b]\n");
++        monitor_printf(mon, "]\n");
+     }
+
 -- 
-2.43.5
+Peter Xu
 
 
