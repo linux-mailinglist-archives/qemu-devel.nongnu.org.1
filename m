@@ -2,62 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080C5AC695F
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFFE2AC6924
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:20:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKFzC-0003wL-AF; Wed, 28 May 2025 08:34:22 -0400
+	id 1uKFk2-0005ya-WB; Wed, 28 May 2025 08:18:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFyt-0003pi-Qg
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:34:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFji-0005xO-Pj
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:18:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFyr-0006Xd-6M
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:34:03 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFjg-0004G5-Jt
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:18:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748435637;
+ s=mimecast20190719; t=1748434698;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BbV18E4aMISl1yjTK1F2SwsHUP74MmOPlj2EWDtSWjY=;
- b=M5NQ8ZjvkKPh4+j9TB6lRetlyPwXciHq45KPGScFa2gFAcmdn2leu3Qe0ks60eX8fzHa6Q
- +51AejgdycxkAQR/nR+Nnh436dHC3NJG8DUEF5I3CIS4YwM216tPSka8dNCxIOqyycDONB
- Ry8KVqqkQlrX7kg46kav4QO6z4LusOo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=yNuSBB0XraEWSQxV+ug97HcFpXcJ0HipQ+tXza15LqA=;
+ b=DBM4eLWl38GPZwAu8Esc2RkFxEY1gM5kYYl91VybDPYVOP0dCiWYkB7oFHy3Ey2XR10UYG
+ D4PTS0G0QAXgycMaUIMnhOq803ptoPUPo3KZGCBNX2tDxbDpI8FY2N3k443tbcS93VJK8U
+ skiHd88azkN2Fu9BUXyly03bDvmS8gs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-uR62UVymPoCEOlJeW7TiKA-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-207-uLVWvuzeP7Ctfn4nkOHGnA-1; Wed,
  28 May 2025 08:18:16 -0400
-X-MC-Unique: uR62UVymPoCEOlJeW7TiKA-1
-X-Mimecast-MFC-AGG-ID: uR62UVymPoCEOlJeW7TiKA_1748434695
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+X-MC-Unique: uLVWvuzeP7Ctfn4nkOHGnA-1
+X-Mimecast-MFC-AGG-ID: uLVWvuzeP7Ctfn4nkOHGnA_1748434696
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AC3C11800373; Wed, 28 May 2025 12:18:15 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0BD691800263
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 12:18:16 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 576A430001B0; Wed, 28 May 2025 12:18:15 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B5D58180047F
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 12:18:15 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E03F621E66BB; Wed, 28 May 2025 14:11:43 +0200 (CEST)
+ id E419521E66BC; Wed, 28 May 2025 14:11:43 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Peter Krempa <pkrempa@redhat.com>
-Subject: [PULL 2/4] qapi/migration: Deprecate migrate argument @detach
-Date: Wed, 28 May 2025 14:11:41 +0200
-Message-ID: <20250528121143.2208075-3-armbru@redhat.com>
+Cc: stefanha@redhat.com,
+	Eric Blake <eblake@redhat.com>
+Subject: [PULL 3/4] docs/about/deprecated: Move deprecation notes to tidy up
+ order
+Date: Wed, 28 May 2025 14:11:42 +0200
+Message-ID: <20250528121143.2208075-4-armbru@redhat.com>
 In-Reply-To: <20250528121143.2208075-1-armbru@redhat.com>
 References: <20250528121143.2208075-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -82,85 +85,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Argument @detach has always been ignored.  Start the clock to get rid
-of it.
+The deprecation notes within a section are mostly in version order.
+Move the few that aren't so they are.
 
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250521063711.29840-3-armbru@redhat.com>
-ACKed-by: Peter Krempa <pkrempa@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-ID: <20250521063711.29840-4-armbru@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- docs/about/deprecated.rst |  5 +++++
- qapi/migration.json       | 18 +++++++++---------
- 2 files changed, 14 insertions(+), 9 deletions(-)
+ docs/about/deprecated.rst | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 9665bc6fcf..ef4ea84e69 100644
+index ef4ea84e69..4715d1ede5 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -179,6 +179,11 @@ Use ``job-dismiss`` instead.
+@@ -148,6 +148,14 @@ options are removed in favor of using explicit ``blockdev-create`` and
+ ``blockdev-add`` calls. See :doc:`/interop/live-block-operations` for
+ details.
  
- Use ``job-finalize`` instead.
- 
-+``migrate`` argument ``detach`` (since 10.1)
-+''''''''''''''''''''''''''''''''''''''''''''
++``query-migrationthreads`` (since 9.2)
++''''''''''''''''''''''''''''''''''''''
 +
-+This argument has always been ignored.
++To be removed with no replacement, as it reports only a limited set of
++threads (for example, it only reports source side of multifd threads,
++without reporting any destination threads, or non-multifd source threads).
++For debugging purpose, please use ``-name $VM,debug-threads=on`` instead.
 +
- ``query-migrationthreads`` (since 9.2)
- ''''''''''''''''''''''''''''''''''''''
+ ``block-job-pause`` (since 10.1)
+ ''''''''''''''''''''''''''''''''
  
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8b9c53595c..ecd266f98e 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1660,6 +1660,10 @@
- #
- # @resume: resume one paused migration, default "off".  (since 3.0)
- #
-+# Features:
-+#
-+# @deprecated: Argument @detach is deprecated.
-+#
- # Since: 0.14
- #
- # .. admonition:: Notes
-@@ -1668,19 +1672,14 @@
- #        migration's progress and final result (this information is
- #        provided by the 'status' member).
- #
--#     2. All boolean arguments default to false.
--#
--#     3. The user Monitor's "detach" argument is invalid in QMP and
--#        should not be used.
--#
--#     4. The uri argument should have the Uniform Resource Identifier
-+#     2. The uri argument should have the Uniform Resource Identifier
- #        of default destination VM.  This connection will be bound to
- #        default network.
- #
--#     5. For now, number of migration streams is restricted to one,
-+#     3. For now, number of migration streams is restricted to one,
- #        i.e. number of items in 'channels' list is just 1.
- #
--#     6. The 'uri' and 'channels' arguments are mutually exclusive;
-+#     4. The 'uri' and 'channels' arguments are mutually exclusive;
- #        exactly one of the two should be present.
- #
- # .. qmp-example::
-@@ -1724,7 +1723,8 @@
- { 'command': 'migrate',
-   'data': {'*uri': 'str',
-            '*channels': [ 'MigrationChannel' ],
--           '*detach': 'bool', '*resume': 'bool' } }
-+           '*detach': { 'type': 'bool', 'features': [ 'deprecated' ] },
-+           '*resume': 'bool' } }
+@@ -184,14 +192,6 @@ Use ``job-finalize`` instead.
  
- ##
- # @migrate-incoming:
+ This argument has always been ignored.
+ 
+-``query-migrationthreads`` (since 9.2)
+-''''''''''''''''''''''''''''''''''''''
+-
+-To be removed with no replacement, as it reports only a limited set of
+-threads (for example, it only reports source side of multifd threads,
+-without reporting any destination threads, or non-multifd source threads).
+-For debugging purpose, please use ``-name $VM,debug-threads=on`` instead.
+-
+ Host Architectures
+ ------------------
+ 
+@@ -522,14 +522,6 @@ PCIe passthrough shall be the mainline solution.
+ CPU device properties
+ '''''''''''''''''''''
+ 
+-``pcommit`` on x86 (since 9.1)
+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-
+-The PCOMMIT instruction was never included in any physical processor.
+-It was implemented as a no-op instruction in TCG up to QEMU 9.0, but
+-only with ``-cpu max`` (which does not guarantee migration compatibility
+-across versions).
+-
+ ``pmu-num=n`` on RISC-V CPUs (since 8.2)
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+@@ -539,6 +531,14 @@ be calculated with ``((2 ^ n) - 1) << 3``. The least significant three bits
+ must be left clear.
+ 
+ 
++``pcommit`` on x86 (since 9.1)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++The PCOMMIT instruction was never included in any physical processor.
++It was implemented as a no-op instruction in TCG up to QEMU 9.0, but
++only with ``-cpu max`` (which does not guarantee migration compatibility
++across versions).
++
+ Backwards compatibility
+ -----------------------
+ 
 -- 
 2.48.1
 
