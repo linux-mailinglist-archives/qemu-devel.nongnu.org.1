@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B21AC66F9
+	by mail.lfdr.de (Postfix) with ESMTPS id 70181AC66FA
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:30:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKE2M-0000A8-1C; Wed, 28 May 2025 06:29:30 -0400
+	id 1uKE2p-0000Fj-V5; Wed, 28 May 2025 06:30:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uKE2H-00009n-V4
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:29:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uKE2Y-0000DE-88
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:29:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uKE2G-0003lU-C4
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:29:25 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uKE2W-0003mR-BU
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:29:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748428162;
+ s=mimecast20190719; t=1748428178;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=mG69xIgvJ60HR3lKZeJAmws9Bo7R52FZ9wjYFKqxlHs=;
- b=XnRU3JcvFhwo3JDc0CDmcH8AcOygmo+fhBXYwWKx6gKCcsjD+jl+ivz+qE0lXXhViyL+Z8
- cCL8O3l22inSCphn9vjbWouW+rYdL9myWkZzfoD5sjxX6zY9alOFpFimvx6Dfg8zdRC8GZ
- ckOCqsLd5L7MTb86f0EAWCJX6Lcw2NI=
+ bh=6XySOKcmzpuDeocTZCzwcBJmiRipM17W39oQ/yo7VNw=;
+ b=djdic07Ky8GJtNNUDmk2DR+jlcHaNqInmgAfDUS6/dptNM/kxZjLyOHZS3iXl6Ppd3r99Y
+ eyeTomYwOeGkOQjqFefRaoN6y8E2MF1DkD6uDhPHvJL/6DNwKaYhhP40uNHRjU8eQ2bAp3
+ NSa8DkY+ouNJ/94XadOVFtZ0C3a8rQg=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-YDfWDTmcNvmeCctQ8-JAXw-1; Wed, 28 May 2025 06:29:20 -0400
-X-MC-Unique: YDfWDTmcNvmeCctQ8-JAXw-1
-X-Mimecast-MFC-AGG-ID: YDfWDTmcNvmeCctQ8-JAXw_1748428159
+ us-mta-141-GB4XLBSYMeGq7Uk5K-DQMw-1; Wed, 28 May 2025 06:29:37 -0400
+X-MC-Unique: GB4XLBSYMeGq7Uk5K-DQMw-1
+X-Mimecast-MFC-AGG-ID: GB4XLBSYMeGq7Uk5K-DQMw_1748428177
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43eea5a5d80so27413585e9.1
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 03:29:20 -0700 (PDT)
+ 5b1f17b1804b1-43eea5a5d80so27415005e9.1
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 03:29:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748428159; x=1749032959;
+ d=1e100.net; s=20230601; t=1748428176; x=1749032976;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mG69xIgvJ60HR3lKZeJAmws9Bo7R52FZ9wjYFKqxlHs=;
- b=LnFBE0VuCdt+1kluGkzQmaPrF303yEEiNoPi15BqkPPitobkTgcZlDkCcZVKFa1ZJS
- jJ7BQi2TEz80/OuCGQjrfwdEK4+XaUa9uFyrju+2OLVQvEqW0qMTwtD1P+gmsixvOYzX
- KxM8b0gSlSdXF1z7C1neQHCAZxjEmFr4j/g5S5XZSxwj+JxpqjT26xPTvBu552FONBil
- 8bWuNh3DczOg4PuMVqW7WFQ5X3OFIUXPHUKRq0GBCoiunlQBNsXpSZRAmxuVlhndUPpa
- sviadzgWzAZSaB0E7QX7pvkJmrs1a+zZscpBhvfZQYixAJmAZlQDse+ZYG/yr99tXHfI
- wnlA==
+ bh=6XySOKcmzpuDeocTZCzwcBJmiRipM17W39oQ/yo7VNw=;
+ b=P2VwDIItBPgF1tLnI6o0JDMxTVCDMEb05ygvBHoVhDNCfkOygOg2tF2Hqjrq7ZLp8w
+ p+q0ojiEu8oRmeIJfFvHtxIOY5MwISxoaGox/qpjA6Y1kUw+CjmT28f+1bwgjZv7a3hh
+ 6Gdq577a5dI7KZBFb+OAt1lDts3teG0Fqk6UnyESVqLa1z97WUZdpf6xlZ1KIaEd0Nfx
+ bor9LlAIc8h0iFWroJB7OhRvHiauySypzX9ExvHGVHFV5UyFG2s99KNE8sMRclqT52iN
+ h4W0MB472vbmX83pikIp48uvNTmw28cOaYBqH3X04xP+mIOMMjG+Qqd6WSTjRPAYGj5V
+ QWPQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUlx7DuPccPxfXxZiXKTd6u8LJ7bWT4+L9dnUmEtIp5cgM3ZH/82QkAbt750oM5C2FKvTFmGU5zLJJc@nongnu.org
-X-Gm-Message-State: AOJu0YyKOyTVvph2bCz2wP4ZIdEpJMAynPG797HYRHXlKO1igfikOGX+
- NsT0xSeCpWCMSya5EacO/w+hAmwVvQ0JSeEpAeXhEjcXhubteQDDd2gc3mVG8d1S+6x/EDXVsas
- swL9VXlVWVOIQiMQjIz6KvVP3jRPg2rEMcyWu/VHpw0SKmfOOEOZ/dUwS
-X-Gm-Gg: ASbGncucfPpffQKbVF/akRLeRLuDFe992qDDLe0V2QsCiALw0FV9H2Zv/97Ydy2uO3R
- Xzg9erC3ryolbsGPk4Vujuikvl6hK8692DIXWgCpGFBoi0KezkzKjDSoD1C74BVCZF0qrF/Ecua
- Gd26c7irs5A8gmKYQeBp7o45Rn6R+4/BOV89zlvZl1YMQXg+YfbZYs1yYgmI5PINFJ99sJ5ZyYZ
- dIZWgnc2EifxocC0Zpgw90Wxdl1voQ99vh+QAt//OT07t8gc8Qu6HgZhVYMER6tUO2BsUXMHAZk
- cfaLDQ==
-X-Received: by 2002:a05:6000:288a:b0:3a4:dde7:ee12 with SMTP id
- ffacd0b85a97d-3a4dde7efbbmr7678675f8f.53.1748428159390; 
- Wed, 28 May 2025 03:29:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEpYN0jiFpGTG4nJZfTE/SyzN1CLNypHh/k+Eg1eagttPZSF7QEP6HBDzAvpEJnGR7chi+vgw==
-X-Received: by 2002:a05:6000:288a:b0:3a4:dde7:ee12 with SMTP id
- ffacd0b85a97d-3a4dde7efbbmr7678655f8f.53.1748428159020; 
- Wed, 28 May 2025 03:29:19 -0700 (PDT)
+ AJvYcCUYPCYQqeDfwB47/JeqKFAtSQKGCBkqRFcxlAKt2Ov/W0KIjQqSWhgkdJZ2KqWXVzgK8Rt7AwbFz/e2@nongnu.org
+X-Gm-Message-State: AOJu0YzGboDIgu5sLle4Oe5Zo7njH/PAQIm2FvCm/aaA+exwxhcxBTX1
+ ee4/NunumviTZEKgTr+FGEWX9nD6SiaCOw9/JrLUb/f2cBd9V7xFGcnEpIEeTx0dCVbDdsdEla6
+ jKFAe78cEjhcvhny0tMM3YrKEWIKhPB8zpahEN3Dy38+cDsSnDr2J4ASy
+X-Gm-Gg: ASbGncvQRt8rgThQCsYJS00Xg2rGmUA6Ds96lRQ4WrSl7kdf7aOVzKGHq8+/ozGhMFf
+ l+rv9oXO4BGwHGrzyR8M2rWIux2nCJCkfMeyJrskD4ZguDKXfzod9RT2625bQpC/3x2hQ8VoHl8
+ 4Ahk+3Mx1xsVh2sVNQAE55YtCFH3euwMFVE8VkQHgY2BttX3Ao07rsAzP+Rv8OfW9MsUe7L7APO
+ CQU3hmYF5PDux7OQ3Laa9SK6NHNP6c2RZWA8MMHj3lg7NY5iA9qvYZLVlfgDGTuQVPyJN0M/Bl1
+ ApvJVQ==
+X-Received: by 2002:a05:600c:444f:b0:440:9b1a:cd78 with SMTP id
+ 5b1f17b1804b1-44c935dca8emr190866015e9.10.1748428176586; 
+ Wed, 28 May 2025 03:29:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFZJkjyUtZ9bH3g9RprGC4nhQQrTn/qMr6z7zMLuIAsCvvPuxVUZhMqb2kZ3C7wGiKZ+5gPDA==
+X-Received: by 2002:a05:600c:444f:b0:440:9b1a:cd78 with SMTP id
+ 5b1f17b1804b1-44c935dca8emr190865765e9.10.1748428176169; 
+ Wed, 28 May 2025 03:29:36 -0700 (PDT)
 Received: from [10.0.5.211] ([91.126.222.130])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4eace388asm1083814f8f.93.2025.05.28.03.29.17
+ ffacd0b85a97d-3a4eac7e96esm1102636f8f.38.2025.05.28.03.29.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 May 2025 03:29:18 -0700 (PDT)
-Message-ID: <df71763c-908c-4524-9055-81087dca4b01@redhat.com>
-Date: Wed, 28 May 2025 12:29:17 +0200
+ Wed, 28 May 2025 03:29:35 -0700 (PDT)
+Message-ID: <a1947f0c-2c48-40a4-922c-05cb7d1f5bba@redhat.com>
+Date: Wed, 28 May 2025 12:29:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/6] vfio/iommufd: Initialize iommufd specific members
- in HostIOMMUDeviceIOMMUFD
+Subject: Re: [PATCH v1 4/6] vfio/iommufd: Implement [at|de]tach_hwpt handlers
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
@@ -83,7 +82,7 @@ Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com
 References: <20250528060409.3710008-1-zhenzhong.duan@intel.com>
- <20250528060409.3710008-4-zhenzhong.duan@intel.com>
+ <20250528060409.3710008-5-zhenzhong.duan@intel.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -129,10 +128,10 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250528060409.3710008-4-zhenzhong.duan@intel.com>
+In-Reply-To: <20250528060409.3710008-5-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -158,10 +157,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/28/25 08:04, Zhenzhong Duan wrote:
-> There are three iommufd specific members in HostIOMMUDeviceIOMMUFD
-> that need to be initialized after attachment, they will all be used
-> by vIOMMU.
+> Implement [at|de]tach_hwpt handlers in VFIO subsystem. vIOMMU
+> utilizes them to attach to or detach from hwpt on host side.
 > 
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
 
@@ -173,32 +172,52 @@ C.
 
 
 > ---
->   hw/vfio/iommufd.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+>   hw/vfio/iommufd.c | 22 ++++++++++++++++++++++
+>   1 file changed, 22 insertions(+)
 > 
 > diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-> index af1c7ab10a..5fde2b633a 100644
+> index 5fde2b633a..d661737c17 100644
 > --- a/hw/vfio/iommufd.c
 > +++ b/hw/vfio/iommufd.c
-> @@ -814,6 +814,7 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+> @@ -810,6 +810,24 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, const void *data)
+>       vioc->query_dirty_bitmap = iommufd_query_dirty_bitmap;
+>   };
+>   
+> +static bool
+> +host_iommu_device_iommufd_vfio_attach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
+> +                                           uint32_t hwpt_id, Error **errp)
+> +{
+> +    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
+> +
+> +    return !iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt_id, errp);
+> +}
+> +
+> +static bool
+> +host_iommu_device_iommufd_vfio_detach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
+> +                                           Error **errp)
+> +{
+> +    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
+> +
+> +    return iommufd_cdev_detach_ioas_hwpt(vbasedev, errp);
+> +}
+> +
+>   static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
 >                                         Error **errp)
 >   {
->       VFIODevice *vdev = opaque;
-> +    HostIOMMUDeviceIOMMUFD *idev;
->       HostIOMMUDeviceCaps *caps = &hiod->caps;
->       enum iommu_hw_info_type type;
->       union {
-> @@ -833,6 +834,11 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
->       caps->type = type;
->       caps->hw_caps = hw_caps;
+> @@ -864,10 +882,14 @@ hiod_iommufd_vfio_get_page_size_mask(HostIOMMUDevice *hiod)
+>   static void hiod_iommufd_vfio_class_init(ObjectClass *oc, const void *data)
+>   {
+>       HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_CLASS(oc);
+> +    HostIOMMUDeviceIOMMUFDClass *idevc = HOST_IOMMU_DEVICE_IOMMUFD_CLASS(oc);
 >   
-> +    idev = HOST_IOMMU_DEVICE_IOMMUFD(hiod);
-> +    idev->iommufd = vdev->iommufd;
-> +    idev->devid = vdev->devid;
-> +    idev->hwpt_id = vdev->hwpt->hwpt_id;
+>       hiodc->realize = hiod_iommufd_vfio_realize;
+>       hiodc->get_iova_ranges = hiod_iommufd_vfio_get_iova_ranges;
+>       hiodc->get_page_size_mask = hiod_iommufd_vfio_get_page_size_mask;
 > +
->       return true;
->   }
+> +    idevc->attach_hwpt = host_iommu_device_iommufd_vfio_attach_hwpt;
+> +    idevc->detach_hwpt = host_iommu_device_iommufd_vfio_detach_hwpt;
+>   };
 >   
+>   static const TypeInfo types[] = {
 
 
