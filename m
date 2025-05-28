@@ -2,72 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F11AC66D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFD9AC669A
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:04:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDn0-0002Zr-9u; Wed, 28 May 2025 06:13:38 -0400
+	id 1uKDeQ-0002vZ-Ia; Wed, 28 May 2025 06:04:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1uKDmx-0002Zj-8P
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:13:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1uKDeK-0002tj-Mm
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:04:40 -0400
+Received: from fhigh-a6-smtp.messagingengine.com ([103.168.172.157])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1uKDay-0006SW-Pt
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:01:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426472;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Dxkn4qLxCfduF+Ckn9JcjV37FeKi59jt7wAnZKjHoMM=;
- b=IUj/u1E2uRG6NWGgDsHlPw175P0ESK5/ziLHPJ++r0ta0G5Q/7xEKesKf5F4sPW/rzEIi5
- SInNmzq3szYLkVsOWh5bjIxEOaZbE5iDJv3l+mw04pH1YX9SHmhSuLD3vb9N6b9cCpt5uy
- 9NWdOH65tkjrDEzVeaISd94pI2Id+Tw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-2Zthm1B9P2OxX2rA2hXFdQ-1; Wed,
- 28 May 2025 06:01:08 -0400
-X-MC-Unique: 2Zthm1B9P2OxX2rA2hXFdQ-1
-X-Mimecast-MFC-AGG-ID: 2Zthm1B9P2OxX2rA2hXFdQ_1748426467
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3ECA4180098D; Wed, 28 May 2025 10:01:07 +0000 (UTC)
-Received: from gshan-thinkpadx1nanogen2.rmtau.csb (unknown [10.64.136.65])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C873919560AF; Wed, 28 May 2025 10:01:01 +0000 (UTC)
-From: Gavin Shan <gshan@redhat.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com,
- mchehab+huawei@kernel.org, mst@redhat.com, imammedo@redhat.com,
- anisinha@redhat.com, gengdongjiu1@gmail.com, peter.maydell@linaro.org,
- pbonzini@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v2 3/3] target/arm/kvm: Support multiple memory CPERs injection
-Date: Wed, 28 May 2025 20:00:33 +1000
-Message-ID: <20250528100033.159576-4-gshan@redhat.com>
-In-Reply-To: <20250528100033.159576-1-gshan@redhat.com>
-References: <20250528100033.159576-1-gshan@redhat.com>
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1uKDeI-0006kX-Qx
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:04:40 -0400
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal
+ [10.202.2.46])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id EE2521140119;
+ Wed, 28 May 2025 06:04:34 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+ by phl-compute-06.internal (MEProxy); Wed, 28 May 2025 06:04:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm2; t=1748426674;
+ x=1748513074; bh=n1PjCzJbRqMmKmrT5Xf405DSGFhgs1F5DNO5tqJqYCI=; b=
+ nf0j7z98Zy0yAEBXDFBr62JJEDOIjU1GcOEkrtIF2i8kCnYk1RU4d/2FSYn0Zg+r
+ i9BbhuTVywtWpBJbPDNNbE61ZAzNgpfQLQYoIRSaCJp5xxIZ+7QH0Ico//YpmMyQ
+ PYYfVN7Mc/EDuUm3Eb3CE9VnXM243DGzEsP3G2SDPzy9RU0UBVDCM0SYX+ki4JYQ
+ i6mvC94JdbwEOEO4+uVrfdmSqWiDOuagZGTNBRbjtaXkzeWUpkYtC53MTebDTqMV
+ NbAd0f+gQC6mSp7D/UH0zBEprbXh6Pi2bfrKl87pC2aEjwwIbgST3g76/FmLm6uD
+ z6Bzr6juU65hkA8gmzsc4w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1748426674; x=
+ 1748513074; bh=n1PjCzJbRqMmKmrT5Xf405DSGFhgs1F5DNO5tqJqYCI=; b=W
+ Bb/wVgfjCXxWWCCo5avZYVVxRqRf3HQXfTgPI//770QVdcd5RI4OBYAsaJ3BFq6o
+ o+sanKfe0USqakTxuw8UiyMmhGr19HBwlgBPO258ghm/qokbW/SO/wFYBkqDRiH4
+ 7s+s/fZBwyFQcJPyuA4EBKw0YjNGRSOZ5sPCfoC7axzX8++b6tOHCYrgp1Jo9OU/
+ KpIq9bmuLpVv/dFEbRiaUoCNssQAWYWhUxTOdV5zPovy9EbpALT0rbsmf8pxWLOI
+ bcz3jlC7J+h9qdQPScxcMWW4glhmC8f32P5o0nDpdQH94VgvO8ck023I8qJZXuQg
+ HBVs84IO+TCwZ2/d1SDdg==
+X-ME-Sender: <xms:st82aHrqkGIVhigTJ25Y0WTtLrZzlGB3cMQE4wWNY6hQUFN99U43qw>
+ <xme:st82aBqOy2YJdKEeQJI9ZMOqxhogp9uMKmq3UhiE5rfjIuOgqgAbRCHq1vfbqg7fV
+ Mdv0e1Sx9X23AvGMwo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvvdelkeculddtuddrgeefvddrtd
+ dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
+ fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
+ dtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefk
+ jghfufgtgfesthhqredtredtjeenucfhrhhomhepfdflihgrgihunhcujggrnhhgfdcuoe
+ hjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhn
+ peejheefuddvtdfggfdvffekteehhfelgfdvvedvkeeuffefkeehheegvefhveetjeenuc
+ evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihu
+ nhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhopeefpdhmohguvg
+ epshhmthhpohhuthdprhgtphhtthhopegthhgvnhhhuhgrtggriheskhgvrhhnvghlrdho
+ rhhgpdhrtghpthhtohepphhhihhlmhgusehlihhnrghrohdrohhrghdprhgtphhtthhope
+ hqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhg
+X-ME-Proxy: <xmx:st82aEM1ryky6_K5b6QEkUjj4PL_OC7pINrB7I8Czsw38fJ7yK7Jeg>
+ <xmx:st82aK5LG6LsUA92Cs24eX3G7bSlYYiaku3HGF8RX0y8UYvbWdqTzg>
+ <xmx:st82aG5RSXBlWB1pGg7vcPTkkCbEb0Ind2wg1m9EpVFawjA2nmj51A>
+ <xmx:st82aCgcr6Q3i_WFcfCIalALPTlW9tS2N967a0ZzLv74z_plBx-cDA>
+ <xmx:st82aENHvRPID1Dp4vvDFCqTuTh2SYbhVDH6ssnLjczpkJ7D8cZoH30P>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+ id A135B2CE005F; Wed, 28 May 2025 06:04:34 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) DKIMWL_WL_HIGH=-2.907, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-ThreadId: T86cbbd2d33d83f19
+Date: Wed, 28 May 2025 11:04:13 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "QEMU devel" <qemu-devel@nongnu.org>
+Cc: "Huacai Chen" <chenhuacai@kernel.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Message-Id: <71237b8f-bd04-44dd-8d60-b09f7882721d@app.fastmail.com>
+In-Reply-To: <20250508-bonito-v1-0-4f9f27733028@flygoat.com>
+References: <20250508-bonito-v1-0-4f9f27733028@flygoat.com>
+Subject: Re: [PATCH 0/5] hw/pci-host/bonito: Improve various emulation
+ functions
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=103.168.172.157;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-a6-smtp.messagingengine.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,104 +111,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the combination of 64KB host and 4KB guest, a problematic host page
-affects 16x guest pages. In this specific case, it's reasonable to
-push 16 consecutive memory CPERs. Otherwise, QEMU can run into core
-dump due to the current error can't be delivered as the previous error
-isn't acknoledges. It's caused by the nature the host page can be
-accessed in parallel due to the mismatched host and guest page sizes.
 
-Imporve push_ghes_memory_errors() to push 16x consecutive memory CPERs
-for this specific case. The maximal error block size is bumped to 4KB,
-providing enough storage space for those 16x memory CPERs.
 
-Signed-off-by: Gavin Shan <gshan@redhat.com>
----
- hw/acpi/ghes.c   |  2 +-
- target/arm/kvm.c | 46 +++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 46 insertions(+), 2 deletions(-)
+=E5=9C=A82025=E5=B9=B45=E6=9C=888=E6=97=A5=E5=91=A8=E5=9B=9B =E4=B8=8B=E5=
+=8D=883:46=EF=BC=8CJiaxun Yang=E5=86=99=E9=81=93=EF=BC=9A
+> Hi all,
+>
+> This series addressed a couple of missing Bonito functionalities
+> I found when I was trying to test NetBSD against QEMU.
 
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index 34ff682048..43d52f5e2e 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -33,7 +33,7 @@
- #define ACPI_HEST_ADDR_FW_CFG_FILE          "etc/acpi_table_hest_addr"
- 
- /* The max size in bytes for one error block */
--#define ACPI_GHES_MAX_RAW_DATA_LENGTH   (1 * KiB)
-+#define ACPI_GHES_MAX_RAW_DATA_LENGTH   (4 * KiB)
- 
- /* Generic Hardware Error Source version 2 */
- #define ACPI_GHES_SOURCE_GENERIC_ERROR_V2   10
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index e31fcde797..c346bd7b49 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -11,6 +11,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/units.h"
- #include <sys/ioctl.h>
- 
- #include <linux/kvm.h>
-@@ -2337,10 +2338,53 @@ static void push_ghes_memory_errors(CPUState *c, AcpiGhesState *ags,
-                                     uint64_t paddr)
- {
-     GArray *addresses = g_array_new(false, false, sizeof(paddr));
-+    uint64_t val, start, end, guest_pgsz, host_pgsz;
-     int ret;
- 
-     kvm_cpu_synchronize_state(c);
--    g_array_append_vals(addresses, &paddr, 1);
-+
-+    /*
-+     * Sort out the guest page size from TCR_EL1, which can be modified
-+     * by the guest from time to time. So we have to sort it out dynamically.
-+     */
-+    ret = read_sys_reg64(c->kvm_fd, &val, ARM64_SYS_REG(3, 0, 2, 0, 2));
-+    if (ret) {
-+        goto error;
-+    }
-+
-+    switch (extract64(val, 14, 2)) {
-+    case 0:
-+        guest_pgsz = 4 * KiB;
-+        break;
-+    case 1:
-+        guest_pgsz = 64 * KiB;
-+        break;
-+    case 2:
-+        guest_pgsz = 16 * KiB;
-+        break;
-+    default:
-+        error_report("unknown page size from TCR_EL1 (0x%" PRIx64 ")", val);
-+        goto error;
-+    }
-+
-+    host_pgsz = qemu_real_host_page_size();
-+    start = paddr & ~(host_pgsz - 1);
-+    end = start + host_pgsz;
-+    while (start < end) {
-+        /*
-+         * The precise physical address is provided for the affected
-+         * guest page that contains @paddr. Otherwise, the starting
-+         * address of the guest page is provided.
-+         */
-+        if (paddr >= start && paddr < (start + guest_pgsz)) {
-+            g_array_append_vals(addresses, &paddr, 1);
-+        } else {
-+            g_array_append_vals(addresses, &start, 1);
-+        }
-+
-+        start += guest_pgsz;
-+    }
-+
-     ret = acpi_ghes_memory_errors(ags, ACPI_HEST_SRC_ID_SYNC, addresses);
-     if (ret) {
-         goto error;
--- 
-2.49.0
+Hi Philippe,
 
+A gentle ping :-)
+
+Do you have bandwidth on MIPS recently?
+
+I'm planning to respin my CPS SMP series as well.
+
+Thanks
+Jiaxun
+
+>
+> Please review.
+>
+> Thanks
+> Jiaxun
+>
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+> Jiaxun Yang (5):
+>       hw/pci-host/bonito: Implement ICU
+>       hw/pci-host/bonito: Implement PCIMAP register
+>       hw/pci-host/bonito: Implement DMA address translation
+>       hw/pci-host/bonito: Rework PCI config space accessor
+>       hw/pci-host/bonito: Add comments about documentation
+>
+>  hw/pci-host/bonito.c     | 453 +++++++++++++++++++++++++++++---------=
+---------
+>  hw/pci-host/trace-events |   3 -
+>  2 files changed, 284 insertions(+), 172 deletions(-)
+> ---
+> base-commit: c5e2c4042e3c50b96cc5eaa9683325c5a96913b0
+> change-id: 20250507-bonito-482759b2b52f
+>
+> Best regards,
+> --=20
+> Jiaxun Yang <jiaxun.yang@flygoat.com>
+
+--=20
+- Jiaxun
 
