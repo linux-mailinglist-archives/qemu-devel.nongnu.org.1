@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCB9AC66AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB64AC66BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:11:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDgV-00058p-N2; Wed, 28 May 2025 06:06:55 -0400
+	id 1uKDge-0005p8-If; Wed, 28 May 2025 06:07:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg9-0004P2-AD
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDgO-0004rG-Iz
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg7-0007I6-EH
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDgI-0007Iy-Ni
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426790;
+ s=mimecast20190719; t=1748426795;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w56H/ZiBqfsqtT6hrO28JZqCjilGvXll/+3BUcPwYmU=;
- b=AHW5URdj0+G3fJYSc9Lv3+uKQjw+nBwg8wRxZt68w+6NEh8pLH8du9NwMy8sR3mzBY2dwI
- vy/Cvn3nSom8pZowc3zuik4OpaQdp9XOienm1lWtWlUfQMRnfWgSksAk3/57E/6wCM+av+
- CaH/PC1sWWKAnIKoJ40bDy6EzKYUgwo=
+ bh=0LUMQ2s0adqb0824GaQ5lu0r6aD3qTFWNdBDBR5nDao=;
+ b=ac4xDmL2+iDgtmGiRwklVyzFapuQ2+YzfY88fEdaoFWtM4/JanmNuEWDSZHhFmwYPZmXU0
+ BBc589xBBldk110keZa8B9uP8uiK41Dse4ZkhvAudspX+AYQJgH4NXoefyzcaxGF8452Qn
+ r8Y8ueNQd6Bwex4VYlFnypK1WK0tNaE=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-474-klHbmcc2OD6FpRWcgaWWfQ-1; Wed,
- 28 May 2025 06:06:27 -0400
-X-MC-Unique: klHbmcc2OD6FpRWcgaWWfQ-1
-X-Mimecast-MFC-AGG-ID: klHbmcc2OD6FpRWcgaWWfQ_1748426786
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-LWuLtyb_N0y3oYho6EwZVg-1; Wed,
+ 28 May 2025 06:06:31 -0400
+X-MC-Unique: LWuLtyb_N0y3oYho6EwZVg-1
+X-Mimecast-MFC-AGG-ID: LWuLtyb_N0y3oYho6EwZVg_1748426790
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4AE671800446; Wed, 28 May 2025 10:06:26 +0000 (UTC)
+ id E38551800258; Wed, 28 May 2025 10:06:29 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5F5CC180049D; Wed, 28 May 2025 10:06:23 +0000 (UTC)
+ id D6EB7180049D; Wed, 28 May 2025 10:06:26 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 22/27] hw/scsi/vmw_pvscsi: Remove
- PVSCSI_COMPAT_DISABLE_PCIE_BIT definition
-Date: Wed, 28 May 2025 12:05:02 +0200
-Message-ID: <20250528100507.313906-23-thuth@redhat.com>
+Subject: [PULL 23/27] hw/scsi/vmw_pvscsi: Convert DeviceRealize -> InstanceInit
+Date: Wed, 28 May 2025 12:05:03 +0200
+Message-ID: <20250528100507.313906-24-thuth@redhat.com>
 In-Reply-To: <20250528100507.313906-1-thuth@redhat.com>
 References: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,101 +85,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-PVSCSI_COMPAT_DISABLE_PCIE_BIT was only used by the
-hw_compat_2_5[] array, via the 'x-disable-pcie=on' property.
-We removed all machines using that array, lets remove all the
-code around PVSCSI_COMPAT_DISABLE_PCIE_BIT, including the now
-unused PVSCSIState::compat_flags field.
+Simplify replacing pvscsi_realize() by pvscsi_instance_init(),
+removing the need for device_class_set_parent_realize().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20250512083948.39294-16-philmd@linaro.org>
+Message-ID: <20250512083948.39294-17-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/scsi/vmw_pvscsi.c | 30 +-----------------------------
- 1 file changed, 1 insertion(+), 29 deletions(-)
+ hw/scsi/vmw_pvscsi.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/hw/scsi/vmw_pvscsi.c b/hw/scsi/vmw_pvscsi.c
-index 34de59a7cf6..e163023d14c 100644
+index e163023d14c..7c98b1b8ea6 100644
 --- a/hw/scsi/vmw_pvscsi.c
 +++ b/hw/scsi/vmw_pvscsi.c
-@@ -68,11 +68,6 @@ struct PVSCSIClass {
- OBJECT_DECLARE_TYPE(PVSCSIState, PVSCSIClass, PVSCSI)
- 
- 
--/* Compatibility flags for migration */
--#define PVSCSI_COMPAT_DISABLE_PCIE_BIT 1
--#define PVSCSI_COMPAT_DISABLE_PCIE \
--    (1 << PVSCSI_COMPAT_DISABLE_PCIE_BIT)
--
- #define PVSCSI_MSI_OFFSET    (0x7c)
- #define PVSCSI_EXP_EP_OFFSET (0x40)
- 
-@@ -123,8 +118,6 @@ struct PVSCSIState {
-     uint8_t msi_used;                    /* For migration compatibility      */
-     PVSCSIRingInfo rings;                /* Data transfer rings manager      */
-     uint32_t resetting;                  /* Reset in progress                */
--
--    uint32_t compat_flags;
- };
- 
- typedef struct PVSCSIRequest {
-@@ -1224,21 +1217,8 @@ pvscsi_post_load(void *opaque, int version_id)
-     return 0;
- }
- 
--static bool pvscsi_vmstate_need_pcie_device(void *opaque)
--{
--    PVSCSIState *s = PVSCSI(opaque);
--
--    return !(s->compat_flags & PVSCSI_COMPAT_DISABLE_PCIE);
--}
--
--static bool pvscsi_vmstate_test_pci_device(void *opaque, int version_id)
--{
--    return !pvscsi_vmstate_need_pcie_device(opaque);
--}
--
- static const VMStateDescription vmstate_pvscsi_pcie_device = {
-     .name = "pvscsi/pcie",
--    .needed = pvscsi_vmstate_need_pcie_device,
-     .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, PVSCSIState),
-         VMSTATE_END_OF_LIST()
-@@ -1252,9 +1232,6 @@ static const VMStateDescription vmstate_pvscsi = {
-     .pre_save = pvscsi_pre_save,
-     .post_load = pvscsi_post_load,
-     .fields = (const VMStateField[]) {
--        VMSTATE_STRUCT_TEST(parent_obj, PVSCSIState,
--                            pvscsi_vmstate_test_pci_device, 0,
--                            vmstate_pci_device, PCIDevice),
-         VMSTATE_UINT8(msi_used, PVSCSIState),
-         VMSTATE_UINT32(resetting, PVSCSIState),
-         VMSTATE_UINT64(reg_interrupt_status, PVSCSIState),
-@@ -1288,19 +1265,14 @@ static const VMStateDescription vmstate_pvscsi = {
- 
- static const Property pvscsi_properties[] = {
+@@ -1267,21 +1267,15 @@ static const Property pvscsi_properties[] = {
      DEFINE_PROP_UINT8("use_msg", PVSCSIState, use_msg, 1),
--    DEFINE_PROP_BIT("x-disable-pcie", PVSCSIState, compat_flags,
--                    PVSCSI_COMPAT_DISABLE_PCIE_BIT, false),
  };
  
- static void pvscsi_realize(DeviceState *qdev, Error **errp)
+-static void pvscsi_realize(DeviceState *qdev, Error **errp)
++static void pvscsi_instance_init(Object *obj)
  {
-     PVSCSIClass *pvs_c = PVSCSI_GET_CLASS(qdev);
-     PCIDevice *pci_dev = PCI_DEVICE(qdev);
--    PVSCSIState *s = PVSCSI(qdev);
- 
--    if (!(s->compat_flags & PVSCSI_COMPAT_DISABLE_PCIE)) {
--        pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
--    }
-+    pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
- 
-     pvs_c->parent_dc_realize(qdev, errp);
+-    PVSCSIClass *pvs_c = PVSCSI_GET_CLASS(qdev);
+-    PCIDevice *pci_dev = PCI_DEVICE(qdev);
+-
+-    pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
+-
+-    pvs_c->parent_dc_realize(qdev, errp);
++    PCI_DEVICE(obj)->cap_present |= QEMU_PCI_CAP_EXPRESS;
  }
+ 
+ static void pvscsi_class_init(ObjectClass *klass, const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+-    PVSCSIClass *pvs_k = PVSCSI_CLASS(klass);
+     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(klass);
+ 
+     k->realize = pvscsi_realizefn;
+@@ -1290,8 +1284,6 @@ static void pvscsi_class_init(ObjectClass *klass, const void *data)
+     k->device_id = PCI_DEVICE_ID_VMWARE_PVSCSI;
+     k->class_id = PCI_CLASS_STORAGE_SCSI;
+     k->subsystem_id = 0x1000;
+-    device_class_set_parent_realize(dc, pvscsi_realize,
+-                                    &pvs_k->parent_dc_realize);
+     device_class_set_legacy_reset(dc, pvscsi_reset);
+     dc->vmsd = &vmstate_pvscsi;
+     device_class_set_props(dc, pvscsi_properties);
+@@ -1306,6 +1298,7 @@ static const TypeInfo pvscsi_info = {
+     .class_size    = sizeof(PVSCSIClass),
+     .instance_size = sizeof(PVSCSIState),
+     .class_init    = pvscsi_class_init,
++    .instance_init = pvscsi_instance_init,
+     .interfaces = (const InterfaceInfo[]) {
+         { TYPE_HOTPLUG_HANDLER },
+         { INTERFACE_PCIE_DEVICE },
 -- 
 2.49.0
 
