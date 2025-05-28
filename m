@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3A8AC63EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED0BAC6400
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:18:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKBwa-0008Bd-3t; Wed, 28 May 2025 04:15:24 -0400
+	id 1uKBw8-0007wm-TE; Wed, 28 May 2025 04:14:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvh-0007vj-P1
+ id 1uKBvh-0007vk-Vj
  for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:30 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvf-0005Ev-TM
+ id 1uKBvg-0005FD-EW
  for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:29 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-441ab63a415so49804165e9.3
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:27 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43cfa7e7f54so4681065e9.1
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748420065; x=1749024865; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748420067; x=1749024867; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AMIpWcZTPgWgvLSAk3E+1RCgQesYjH9TPdAax6aWXxk=;
- b=rnJ9WADOM5QaQW2OaJBWnz23AQBcwcBrnDtly5gV48vz0zAbsikaV7zRdy6UKaHTBT
- 87X2hn49GNcNJHBdke/MdIasZgELm2S97C+CRh3Ix8DI56PgBfhXsCBpFbciuQUGq/ze
- rXmQ4VxMqGVuA7sKhGSlzvIx9kKlsqHYyn3/bI6gpmeoXvQ2AQno7p43lWEtIRmw/xIm
- MiSZg5rH4Y/XTWaIRWY5hQWA0kOQ4o0HlhhdpFz5wcF5LfSUbweticYK6o7E/ylKi0hU
- yFaAfqTuAuPBTzLXZtMsX6pGvldA7uC+AV5galEOAeCoPH56ltVJzienOyNKbgfYky39
- 1ebQ==
+ bh=BFcQXvhrY8QQZwNg9G2ZE2INjIMXFDjOrUvxWYd5pvw=;
+ b=ObgE5/SHQWwL+O+IkZsUUAQYtlBT6Az5y+DyfzpVUj2aQU/6xoIeygPbGwT+NvQ3iV
+ eqtSOgDuYC94A++AkZuW+xmr9OvZuRvbvXeXw93+rT3yGFughKNfuD1kQiMNNJha0vbL
+ 7ziIcJVRXv0u+Qu0edYsJVVvkV4lOjYoz0yc5H5vDaV94nr+glHMNK02QHVBdW/ZdocG
+ kZ3cYvzar2IHmoTSEe7jVDt1ie5FDrRsc5/PHY4V88nd/xezAsLidgArHBnepcIVbFzb
+ UOfSQcLXmgD6Jpj6U5PkRgUo8cCCuE79pH09scTFKiAnRsz+OuBr1w5ZMZ8DcBH/xRJ0
+ CYGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748420065; x=1749024865;
+ d=1e100.net; s=20230601; t=1748420067; x=1749024867;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AMIpWcZTPgWgvLSAk3E+1RCgQesYjH9TPdAax6aWXxk=;
- b=gYLhYh0kE0aQyKKVpToiHxVa74gA2oCU3VueOxUgf77f8Q/aX+/Brtaaj87pOwPANs
- AXAFUOcmFfg1dqRmeOAjXjzENt7T3rEZuVfCtAkpBj0JhQMuiJzCef4Sgf7JBzvF6EWG
- 6MNR1gKeUrpwr03aWVNs/Evx4yzy11eIiCOvRm040VsMdJyS2Dw7rTRUYTIromhb6pBY
- BXhz5qobW4mI87RFFNco+skaCHCax21yPoBVGPv9wc2PvJLVdQq/UhHoCuO2A+jb0TCL
- V3cptuIgabxvPBif1wqUfQaBKtKKpIF+JLAIUxUDUGPRjDstY9TlhYLOWhp/qAaNtaQr
- 2RRw==
-X-Gm-Message-State: AOJu0Yz3Qoul51VOSxr4ayHqOoJfm2wFWPb62diq3iV7+JmmD5fy5/58
- 5mek1Lt0HGYzsGgrqS5dk5wOQKRevN0WbQwDLDPCv94f8RjZ+gDF+RHStzuEFXSPDWfN+m+Q8M7
- V25xfIZ39KA==
-X-Gm-Gg: ASbGncsj+l0wjpTKgJyeL/zS2Ma47nG59d+AhCd5ZULMQ62Vce33tzQh1F1fNwl/rCc
- zo3OeClF/gH79Gd77mgDlM0TG14kqYUmj9W9C2mmBI0eja67vy2v3gzmBt3G/GDnhYRmNYXN8A3
- 9Y3xN/z1WYoI4j1zWMREGAdzeSZZXlqIZzJl3gVMzN7NsHhdumZ2DaWYu4JM4Lropxg8G2tCDa7
- oXOmxW9YogSzVooktHyHqnXGcOQdzo8h4qT0M95SrG30n8a4I7nTig1cYmRpbBH4lzGB7OzOgGp
- Ookg5Eje1tTsbH/DYGfTmV8DQUCDh9bi5iTTIWMXQM1tvW7Pc/vuk978
-X-Google-Smtp-Source: AGHT+IFHXKmcxmn+3mvlUNwZqsXwOCBrMzNCU7dpupYnK+wGUEHf6uroLQHULQcV/fV80Qg0tYZzng==
-X-Received: by 2002:a05:600c:6297:b0:43c:fc04:6d35 with SMTP id
- 5b1f17b1804b1-44c91ad6b51mr164802105e9.4.1748420065213; 
- Wed, 28 May 2025 01:14:25 -0700 (PDT)
+ bh=BFcQXvhrY8QQZwNg9G2ZE2INjIMXFDjOrUvxWYd5pvw=;
+ b=ntit8tOoFIYh6lXuMk1PkFZVTv71WsmS7YMbrTjHT1z0qdxAbf8rBxigSvhzYG5T0X
+ KEiKpAS/bKjXSuDVQQaKrR5iRd2J8PH51Q65UPxARyk4rRcjMI/PYX71Mh1T/llDJfLB
+ WXZ9Pv0ScZW6ALUhPMVPTLDnnYcu6lLnrB0iuFCHSY4QydIta3qevO3+m/ZVxeQDjzUZ
+ D3pZpyplj4SFr79FGtTHY+JF40LyOJpgIC3C/hihklWeuGp4xWaVEZ9h2gMBtCA2QzLa
+ s1nkCUc7/3XCo10xesU1TeMo/7iEpad5GJ3TlaIg1SLGeM39Gkokhsu7KwH0IE+LEEgf
+ HRJA==
+X-Gm-Message-State: AOJu0YxHp2CbN54MWI5jyy1CDCx/de4H7b4hH6L4byMyrxmDeVSqzkw6
+ XLfuen9LtaSKv+zqwTKE+WZrf7WoTpqi2FVcKt1f6X/3aJ1r/Z2m/nLWO5ajGlMcpgLSfypNlCH
+ C+TRAq3bkog==
+X-Gm-Gg: ASbGncsao3cQxcuI4X3plLG/fGYIUUW5foGh0BO5itZH+fn9xv72kBN6yr2JCSIxLCJ
+ 0Tm0iQECmJpPF7lqyQCDys/Jd7E3+yGgfKTu1jWypGYVujbYIH2H7AgA0YPu0NltsxfBcH2Be1d
+ L93ih6WwF67dd9WPizIgGkjC+nW/84WTSrkc/2BbnhPjjhtPolOTqFzL3374/pu68EZpaRgffVp
+ wTBzMqi8RRGsYScW5tMfAgSByYQ7i63LWFYAb6xl4Fyb7M3jNZsxHxB8GbwgfxzD3Zo98/Y4RoC
+ twebvID+QMCCPgOr1YbLtyt2qWvSWN+wAU+0yGtpePLo/6H4UpXQlsmj
+X-Google-Smtp-Source: AGHT+IGSV2prD7w2M51QG0UEvGz33AwPW5PzmfcmF4234TR4lWje/1GBYt876l8Fo3ZpSBj6jmpPTQ==
+X-Received: by 2002:a05:600c:4455:b0:448:d54a:ca23 with SMTP id
+ 5b1f17b1804b1-44fd1a2db25mr33182935e9.8.1748420066988; 
+ Wed, 28 May 2025 01:14:26 -0700 (PDT)
 Received: from stoup.. ([195.53.115.74]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.23
+ 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 May 2025 01:14:24 -0700 (PDT)
+ Wed, 28 May 2025 01:14:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E . Iglesias" <edgar.iglesias@amd.com>
-Subject: [PULL 09/28] target/microblaze: Use TCGv_i64 for compute_ldst_addr_ea
-Date: Wed, 28 May 2025 09:13:51 +0100
-Message-ID: <20250528081410.157251-10-richard.henderson@linaro.org>
+Subject: [PULL 10/28] target/microblaze: Fix printf format in mmu_translate
+Date: Wed, 28 May 2025 09:13:52 +0100
+Message-ID: <20250528081410.157251-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250528081410.157251-1-richard.henderson@linaro.org>
 References: <20250528081410.157251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -1
 X-Spam_score: -0.2
 X-Spam_bar: /
@@ -95,102 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use an explicit 64-bit type for extended addresses.
+Use TARGET_FMT_lx to match the target_ulong type of vaddr.
 
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/microblaze/translate.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ target/microblaze/mmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index b1fc9e5624..dc597b36e6 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -660,23 +660,23 @@ static TCGv compute_ldst_addr_typeb(DisasContext *dc, int ra, int imm)
+diff --git a/target/microblaze/mmu.c b/target/microblaze/mmu.c
+index 95a12e16f8..8703ff5c65 100644
+--- a/target/microblaze/mmu.c
++++ b/target/microblaze/mmu.c
+@@ -172,7 +172,8 @@ unsigned int mmu_translate(MicroBlazeCPU *cpu, MicroBlazeMMULookup *lu,
+     }
+ done:
+     qemu_log_mask(CPU_LOG_MMU,
+-                  "MMU vaddr=%" PRIx64 " rw=%d tlb_wr=%d tlb_ex=%d hit=%d\n",
++                  "MMU vaddr=0x" TARGET_FMT_lx
++                  " rw=%d tlb_wr=%d tlb_ex=%d hit=%d\n",
+                   vaddr, rw, tlb_wr, tlb_ex, hit);
+     return hit;
  }
- 
- #ifndef CONFIG_USER_ONLY
--static TCGv compute_ldst_addr_ea(DisasContext *dc, int ra, int rb)
-+static TCGv_i64 compute_ldst_addr_ea(DisasContext *dc, int ra, int rb)
- {
-     int addr_size = dc->cfg->addr_size;
--    TCGv ret = tcg_temp_new();
-+    TCGv_i64 ret = tcg_temp_new_i64();
- 
-     if (addr_size == 32 || ra == 0) {
-         if (rb) {
--            tcg_gen_extu_i32_tl(ret, cpu_R[rb]);
-+            tcg_gen_extu_i32_i64(ret, cpu_R[rb]);
-         } else {
--            tcg_gen_movi_tl(ret, 0);
-+            return tcg_constant_i64(0);
-         }
-     } else {
-         if (rb) {
-             tcg_gen_concat_i32_i64(ret, cpu_R[rb], cpu_R[ra]);
-         } else {
--            tcg_gen_extu_i32_tl(ret, cpu_R[ra]);
--            tcg_gen_shli_tl(ret, ret, 32);
-+            tcg_gen_extu_i32_i64(ret, cpu_R[ra]);
-+            tcg_gen_shli_i64(ret, ret, 32);
-         }
-         if (addr_size < 64) {
-             /* Mask off out of range bits.  */
-@@ -781,7 +781,7 @@ static bool trans_lbuea(DisasContext *dc, arg_typea *arg)
- #ifdef CONFIG_USER_ONLY
-     g_assert_not_reached();
- #else
--    TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-+    TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_helper_lbuea(reg_for_write(dc, arg->rd), tcg_env, addr);
-     return true;
- #endif
-@@ -813,7 +813,7 @@ static bool trans_lhuea(DisasContext *dc, arg_typea *arg)
- #ifdef CONFIG_USER_ONLY
-     g_assert_not_reached();
- #else
--    TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-+    TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_alignment_check_ea(dc, addr, arg->rb, arg->rd, MO_16, false);
-     (mo_endian(dc) == MO_BE ? gen_helper_lhuea_be : gen_helper_lhuea_le)
-         (reg_for_write(dc, arg->rd), tcg_env, addr);
-@@ -847,7 +847,7 @@ static bool trans_lwea(DisasContext *dc, arg_typea *arg)
- #ifdef CONFIG_USER_ONLY
-     g_assert_not_reached();
- #else
--    TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-+    TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_alignment_check_ea(dc, addr, arg->rb, arg->rd, MO_32, false);
-     (mo_endian(dc) == MO_BE ? gen_helper_lwea_be : gen_helper_lwea_le)
-         (reg_for_write(dc, arg->rd), tcg_env, addr);
-@@ -941,7 +941,7 @@ static bool trans_sbea(DisasContext *dc, arg_typea *arg)
- #ifdef CONFIG_USER_ONLY
-     g_assert_not_reached();
- #else
--    TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-+    TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_helper_sbea(tcg_env, reg_for_read(dc, arg->rd), addr);
-     return true;
- #endif
-@@ -973,7 +973,7 @@ static bool trans_shea(DisasContext *dc, arg_typea *arg)
- #ifdef CONFIG_USER_ONLY
-     g_assert_not_reached();
- #else
--    TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-+    TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_alignment_check_ea(dc, addr, arg->rb, arg->rd, MO_16, true);
-     (mo_endian(dc) == MO_BE ? gen_helper_shea_be : gen_helper_shea_le)
-         (tcg_env, reg_for_read(dc, arg->rd), addr);
-@@ -1007,7 +1007,7 @@ static bool trans_swea(DisasContext *dc, arg_typea *arg)
- #ifdef CONFIG_USER_ONLY
-     g_assert_not_reached();
- #else
--    TCGv addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-+    TCGv_i64 addr = compute_ldst_addr_ea(dc, arg->ra, arg->rb);
-     gen_alignment_check_ea(dc, addr, arg->rb, arg->rd, MO_32, true);
-     (mo_endian(dc) == MO_BE ? gen_helper_swea_be : gen_helper_swea_le)
-         (tcg_env, reg_for_read(dc, arg->rd), addr);
 -- 
 2.43.0
 
