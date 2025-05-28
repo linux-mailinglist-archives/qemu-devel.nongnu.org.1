@@ -2,65 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37ACAC6927
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:21:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B09AC68CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:08:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKFk4-00060o-Gc; Wed, 28 May 2025 08:18:44 -0400
+	id 1uKFZR-00075X-M0; Wed, 28 May 2025 08:07:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFjk-0005y3-7f
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:18:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKFY5-0006vA-9C
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:06:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFji-0004GW-3U
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:18:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKFY0-0002l0-5m
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:06:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748434700;
+ s=mimecast20190719; t=1748433973;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qj9KEmirnuj+sZ6UtqJaXfrOYpemcFw1pKx7/jaLFSc=;
- b=DGSIu5xv8hGvTEkGATthhEGmdAr3+YaHtLTyPEGQooww2Ijo4dVtfk/nGbdO+WOTiznzxd
- jUjdjthrJwDg/13OYhNoeVjzlYkws7iJwPjo8YEmqtnDLtlXcrq8uVXQSs4uE6/nMr+UbK
- u32JBb0wvGC3k+AGWM08+KR5QLcDGyg=
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=wywy1r5/shqGjmArQROn8t/MzzxS6MG/JPjvxiphm48=;
+ b=Zny3nVTPvV3YmMZTdlW1Kj8mHyaZKP5CyBvhRzQHEBxaWpnNw7HXRWNEiVqZwfqTSywsh2
+ Dx4ilNIu9XMczdzhkgXN1dlBt6KJVgZmTDuvj04YMd3tIQGxE6eU2PLFdkWIe5FnwF+fo6
+ Y8lUBgjykkxHnTU5vsuQAySr3JpC7LQ=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-GD3w6yFxP9Wsl1r1GurI3g-1; Wed,
- 28 May 2025 08:18:19 -0400
-X-MC-Unique: GD3w6yFxP9Wsl1r1GurI3g-1
-X-Mimecast-MFC-AGG-ID: GD3w6yFxP9Wsl1r1GurI3g_1748434698
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-xpKPEW1zN66LVe7RTY6ttA-1; Wed,
+ 28 May 2025 07:59:23 -0400
+X-MC-Unique: xpKPEW1zN66LVe7RTY6ttA-1
+X-Mimecast-MFC-AGG-ID: xpKPEW1zN66LVe7RTY6ttA_1748433563
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9249F194510D; Wed, 28 May 2025 12:18:18 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4A37230001B0; Wed, 28 May 2025 12:18:18 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1F92421E675E; Wed, 28 May 2025 13:39:25 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Kevin
- Wolf <kwolf@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org (open list:Block layer core)
-Subject: Re: [PULL 13/14] tests: Add iotest mirror-sparse for recent patches
-In-Reply-To: <20250515022904.575509-29-eblake@redhat.com> (Eric Blake's
- message of "Wed, 14 May 2025 21:28:56 -0500")
-References: <20250515022904.575509-16-eblake@redhat.com>
- <20250515022904.575509-29-eblake@redhat.com>
-Date: Wed, 28 May 2025 13:39:25 +0200
-Message-ID: <874ix5ezgy.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ id EA16519560AA; Wed, 28 May 2025 11:59:22 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 37D1E180049D; Wed, 28 May 2025 11:59:20 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PATCH v3 0/4] tests/functional: Test with
+ scripts/vmstate-static-checker.py
+Date: Wed, 28 May 2025 13:59:10 +0200
+Message-ID: <20250528115914.330994-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -85,63 +77,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Eric Blake <eblake@redhat.com> writes:
+This set of patches adds an automatic test of the vmstate via the
+scripts/vmstate-static-checker.py script. For this we need some
+reference files from an older version of QEMU. I chose to use QEMU 7.2
+for the reference files since this is a long term support release that
+is still actively being maintained, so we certainly want to make sure
+that we don't break migration from that version to the latest one.
 
-> Prove that blockdev-mirror can now result in sparse raw destination
-> files, regardless of whether the source is raw or qcow2.  By making
-> this a separate test, it was possible to test effects of individual
-> patches for the various pieces that all have to work together for a
-> sparse mirror to be successful.
->
-> Note that ./check -file produces different job lengths than ./check
-> -qcow2 (the test uses a filter to normalize); that's because when
-> deciding how much of the image to be mirrored, the code looks at how
-> much of the source image was allocated (for qcow2, this is only the
-> written clusters; for raw, it is the entire file).  But the important
-> part is that the destination file ends up smaller than 3M, rather than
-> the 20M it used to be before this patch series.
->
-> Signed-off-by: Eric Blake <eblake@redhat.com>
-> Message-ID: <20250509204341.3553601-28-eblake@redhat.com>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+There are also some files available in tests/vmstate-static-checker-data/
+which were used in the past to verify the functionality of the checker
+script. Move them to tests/data/vmstate-static-checker now and add an
+automated test for this task, too.
 
-Fails for me:
+Since the checker script can report false positives in certain cases,
+the tests are marked with the "skipFlakyTests" decorator, i.e. they
+are only run if the user set the QEMU_TEST_FLAKY_TESTS environment
+variable before starting the tests.
 
-    TAP version 13
-    # QEMU          -- "/work/armbru/qemu/bld/qemu-system-x86_64" -nodefaults -display none -accel qtest
-    # QEMU_IMG      -- "/work/armbru/qemu/bld/qemu-img" 
-    # QEMU_IO       -- "/work/armbru/qemu/bld/qemu-io" --cache writeback --aio threads -f qcow2
-    # QEMU_NBD      -- "/work/armbru/qemu/bld/qemu-nbd" 
-    # IMGFMT        -- qcow2
-    # IMGPROTO      -- file
-    # PLATFORM      -- Linux/x86_64 dusky 6.12.7-200.fc41.x86_64
-    # TEST_DIR      -- /work/armbru/qemu/bld-x86/scratch
-    # SOCK_DIR      -- /tmp/qemu-iotests-nqettsyq
-    # GDB_OPTIONS   -- 
-    # VALGRIND_QEMU -- 
-    # PRINT_QEMU_OUTPUT -- 
-    # 
-    1..1
-    # running qcow2 mirror-sparse
-    not ok qcow2 mirror-sparse
-    --- /work/armbru/qemu/tests/qemu-iotests/tests/mirror-sparse.out
-    +++ /work/armbru/qemu/bld-x86/scratch/qcow2-file-mirror-sparse/mirror-sparse.out.bad
-    @@ -140,7 +140,7 @@
-     {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-     {"return": {}}
-     Images are identical.
-    -Destination is sparse; expected sparse
-    +Destination is unknown; expected sparse
+v3:
+- Do not run the tests by default, only if QEMU_TEST_FLAKY_TESTS has
+  been set
+- Add some hints what to do in case the test detects an error
 
-     === Testing creation=off discard=unmap zeroes=off ===
+v2:
+- Dropped the patch that is already upstream
+- Don't remove the old dump files, rather test for the expected
+  output of the checker script with them
 
-    @@ -184,7 +184,7 @@
-     {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-     {"return": {}}
-     Images are identical.
-    -Destination is sparse; expected sparse
-    +Destination is unknown; expected sparse
+Thomas Huth (4):
+  tests: Move the old vmstate-static-checker files to tests/data/
+  tests/data/vmstate-static-checker: Add dump files from QEMU 7.2.17
+  tests/functional: Test with scripts/vmstate-static-checker.py
+  tests/functional/test_vmstate: Test whether the checker script works
+    as expected
 
-     === Testing creation=off discard=unmap zeroes=unmap ===
+ MAINTAINERS                                   |    3 +-
+ .../aarch64/virt-7.2.json                     | 2571 +++++++++++++
+ .../vmstate-static-checker}/dump1.json        |    0
+ .../vmstate-static-checker}/dump2.json        |    0
+ .../vmstate-static-checker/m68k/virt-7.2.json | 2936 +++++++++++++++
+ .../ppc64/pseries-7.2.json                    | 1068 ++++++
+ .../s390x/s390-ccw-virtio-7.2.json            |  475 +++
+ .../x86_64/pc-q35-7.2.json                    | 3297 +++++++++++++++++
+ tests/functional/meson.build                  |   13 +-
+ tests/functional/test_vmstate.py              |  103 +
+ 10 files changed, 10464 insertions(+), 2 deletions(-)
+ create mode 100644 tests/data/vmstate-static-checker/aarch64/virt-7.2.json
+ rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump1.json (100%)
+ rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump2.json (100%)
+ create mode 100644 tests/data/vmstate-static-checker/m68k/virt-7.2.json
+ create mode 100644 tests/data/vmstate-static-checker/ppc64/pseries-7.2.json
+ create mode 100644 tests/data/vmstate-static-checker/s390x/s390-ccw-virtio-7.2.json
+ create mode 100644 tests/data/vmstate-static-checker/x86_64/pc-q35-7.2.json
+ create mode 100755 tests/functional/test_vmstate.py
+
+-- 
+2.49.0
 
 
