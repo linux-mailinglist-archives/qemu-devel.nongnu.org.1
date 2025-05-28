@@ -2,63 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC13AC7102
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA51AC710F
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:38:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKLZp-0002eT-RL; Wed, 28 May 2025 14:32:33 -0400
+	id 1uKLfT-000433-Ly; Wed, 28 May 2025 14:38:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uKLZZ-0002N0-MK
- for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:24 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLfQ-00042c-IP
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 14:38:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uKLZW-00074T-Em
- for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:17 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLfN-00082g-Rn
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 14:38:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748457133;
+ s=mimecast20190719; t=1748457496;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ZAQHHYSTahT/ZSYmxAJ4lSFVlOA739QiZJB9QotBUpw=;
- b=OOYIl9WpJ15qJtDeyJeB0tEMx6Haw2rED3Q70feQ0/IOIWzcQYyRGYnVDzXUIaEuQG+4ik
- FXm84XWe3tkN7DO/APS2fsrSIDQjyMNZqJG2hQj1U5sUvnF7/tHtbKHrb3xPJDoZ09MQ6u
- E5uBkZkLX9WTClnQ3q84pq3V9f9hdBk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=o0nOf++Ny/GkzikIxTRBsQ/5cIA2/bDGkDpZQUCz8Ds=;
+ b=R0FnsI8V0Wri2McZ786ewqEtTUMdzqoqERtMsGjaW1JnIOr7CqNnQHBW0Lli/PFqH/VREZ
+ DpwgrID0aQxzGmFkIj09/Xedk24wVuhgHPbFhAEvrLd0uIXCqyfS4SPzAtbvHbe0b4GLra
+ 0AIugE9Ui6FqTK+Kaop9Jt9ZalAo2Mw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-573-Asd_5fNoPgmEr0jzgG_mWA-1; Wed,
- 28 May 2025 14:32:10 -0400
-X-MC-Unique: Asd_5fNoPgmEr0jzgG_mWA-1
-X-Mimecast-MFC-AGG-ID: Asd_5fNoPgmEr0jzgG_mWA_1748457129
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-491-r-lLiWPcP4yr89d3eVf3NQ-1; Wed,
+ 28 May 2025 14:38:12 -0400
+X-MC-Unique: r-lLiWPcP4yr89d3eVf3NQ-1
+X-Mimecast-MFC-AGG-ID: r-lLiWPcP4yr89d3eVf3NQ_1748457490
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D045B19560A3; Wed, 28 May 2025 18:32:08 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.48])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CA7AA1956095; Wed, 28 May 2025 18:32:06 +0000 (UTC)
-Date: Wed, 28 May 2025 13:32:04 -0500
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, f.ebner@proxmox.com, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v2 2/3] iotests: Improve mirror-sparse on ext4
-Message-ID: <zv3gucwyoogzcamqvzskfodvzbbxlg64radbut2sq53avi5qud@w6n4pxekypzc>
-References: <20250523163041.2548675-5-eblake@redhat.com>
- <20250523163041.2548675-7-eblake@redhat.com>
- <ibn5a3mq4co2h5rpslkq42hir4ka4dz5fsgcbmuwqnoiwarhmf@5qlu3ssskquc>
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 047A11800570; Wed, 28 May 2025 18:38:09 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 39D2319560A3; Wed, 28 May 2025 18:38:07 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A0FCA21E6768; Wed, 28 May 2025 20:38:04 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Fan Ni <fan.ni@samsung.com>,  Zhao Liu
+ <zhao1.liu@intel.com>,  Kashyap Chamarthy <kchamart@redhat.com>,  "Michael
+ S. Tsirkin" <mst@redhat.com>,  Vladimir Sementsov-Ogievskiy
+ <vsementsov@yandex-team.ru>,  qemu-block@nongnu.org,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  Jonathan Cameron
+ <jonathan.cameron@huawei.com>,  Ani Sinha <anisinha@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  =?utf-8?Q?Marc-Andr?=
+ =?utf-8?Q?=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Zhenwei Pi <pizhenwei@bytedance.com>,
+ Jason Wang <jasowang@redhat.com>,  Peter Maydell
+ <peter.maydell@linaro.org>,  Fabiano Rosas <farosas@suse.de>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Alex Williamson
+ <alex.williamson@redhat.com>,  Stefan Hajnoczi <stefanha@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,  Jiri Pirko <jiri@resnulli.us>,  Igor
+ Mammedov <imammedo@redhat.com>,  "Gonglei (Arei)"
+ <arei.gonglei@huawei.com>,  Eric Blake <eblake@redhat.com>,  Gerd Hoffmann
+ <kraxel@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Michael Roth
+ <michael.roth@amd.com>,  Yanan Wang <wangyanan55@huawei.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Lukas Straub
+ <lukasstraub2@web.de>,
+ Stefano Garzarella <sgarzare@redhat.com>,  Stefan Berger
+ <stefanb@linux.vnet.ibm.com>,  Mads Ynddal <mads@ynddal.dk>,  Konstantin
+ Kostiuk <kkostiuk@redhat.com>,  Peter Xu <peterx@redhat.com>,  Eduardo
+ Habkost <eduardo@habkost.net>,  Kevin Wolf <kwolf@redhat.com>,  Cleber
+ Rosa <crosa@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Subject: Re: [PATCH 1/3] docs: fix errors formatting in test-good
+In-Reply-To: <20250522170219.58058-2-jsnow@redhat.com> (John Snow's message of
+ "Thu, 22 May 2025 13:02:17 -0400")
+References: <20250522170219.58058-1-jsnow@redhat.com>
+ <20250522170219.58058-2-jsnow@redhat.com>
+Date: Wed, 28 May 2025 20:38:04 +0200
+Message-ID: <87iklkvawj.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ibn5a3mq4co2h5rpslkq42hir4ka4dz5fsgcbmuwqnoiwarhmf@5qlu3ssskquc>
-User-Agent: NeoMutt/20250404
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -83,66 +109,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 28, 2025 at 10:45:35AM -0500, Eric Blake wrote:
-> On Fri, May 23, 2025 at 11:27:22AM -0500, Eric Blake wrote:
-> > Fiona reported that an ext4 filesystem on top of LVM can sometimes
-> > report over-allocation to du (based on the hueristics the filesystem
-> > is making while observing the contents being mirrored); even though
-> > the contents and actual size matched, about 50% of the time the size
-> > reported by disk_usage was too large by 4k, failing the test.  In
-> > auditing other iotests, this is a common problem we've had to deal
-> > with.
-> > 
-> > Reported-by: Fiona Ebner <f.ebner@proxmox.com>
-> > Fixes: c0ddcb2c ("tests: Add iotest mirror-sparse for recent patches")
-> > Signed-off-by: Eric Blake <eblake@redhat.com>
-> > Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
-> > Tested-by: Fiona Ebner <f.ebner@proxmox.com>
-> > 
-> > ---
-> > v2: Drop sync for ZFS
-> > ---
-> >  tests/qemu-iotests/tests/mirror-sparse | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> Squashing this in since Markus is reporting failures even with this
-> patch applied, and I'm lacking enough context to see what else might
-> be interfering:
-> 
-> diff --git i/tests/qemu-iotests/tests/mirror-sparse w/tests/qemu-iotests/tests/mirror-sparse
-> index 39e3196c811..a30e52de41d 100755
-> --- i/tests/qemu-iotests/tests/mirror-sparse
-> +++ w/tests/qemu-iotests/tests/mirror-sparse
-> @@ -105,7 +105,7 @@ if test $result -lt $((3*1024*1024)); then
->  elif test $result -gt $((19*1024*1024)); then
->      actual=full
->  else
-> -    actual=unknown
-> +    actual="unexpected size ($result)"
+John Snow <jsnow@redhat.com> writes:
 
-I reproduced Markus' situation on XFS (since XFS is easier than ZFS to
-install on Fedora) - it turns out that XFS rounds disk usage in terms
-of allocation groups which default to a size of 1M; so I need to treat
-exactly 3M as sparse, not unknown.  I'm also squashing in:
+> If we remove the legacy parser, this formulation begins to fail because
+> the body text is appended directly after the field list entry, which is
+> invalid rST syntax.
+>
+> Markus: suggest where the new Exception(s) should go, if anywhere, and
+> how to update the tests? I'm assuming deeply you'll want to.
 
-diff --git i/tests/qemu-iotests/tests/mirror-sparse w/tests/qemu-iotests/tests/mirror-sparse
-index a30e52de41d..cfcaa600ab4 100755
---- i/tests/qemu-iotests/tests/mirror-sparse
-+++ w/tests/qemu-iotests/tests/mirror-sparse
-@@ -100,7 +100,7 @@ $QEMU_IMG compare -U -f $IMGFMT -F raw $TEST_IMG.base $TEST_IMG
- # Some filesystems can fudge allocations for various reasons; rather
- # than expecting precise 2M and 20M images, it is better to allow for slop.
- result=$(disk_usage $TEST_IMG)
--if test $result -lt $((3*1024*1024)); then
-+if test $result -lt $((4*1024*1024)); then
-     actual=sparse
- elif test $result -gt $((19*1024*1024)); then
-     actual=full
+I'm confused and out of time for the week.  Can you give me a bit more
+context?
 
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  tests/qapi-schema/doc-good.json | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/qapi-schema/doc-good.json b/tests/qapi-schema/doc-good.json
+> index 14b808f9090..6dcde8fd7e8 100644
+> --- a/tests/qapi-schema/doc-good.json
+> +++ b/tests/qapi-schema/doc-good.json
+> @@ -165,7 +165,8 @@
+>  #
+>  # Returns: @Object
+>  #
+> -# Errors: some
+> +# Errors:
+> +#     - some
+>  #
+>  # TODO: frobnicate
+>  #
 
 
