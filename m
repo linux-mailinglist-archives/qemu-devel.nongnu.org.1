@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4735CAC642A
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D50AC6413
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:20:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKByq-0002rF-Nm; Wed, 28 May 2025 04:17:46 -0400
+	id 1uKBxg-0001MM-Sc; Wed, 28 May 2025 04:16:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvy-00080Q-2Q
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:47 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1uKBwE-0008Aj-Uk
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:15:03 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvq-0005H3-LM
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:43 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-442eb5d143eso44903745e9.0
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:38 -0700 (PDT)
+ id 1uKBvw-0005HU-8q
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:15:01 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43cfa7e7f54so4682375e9.1
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748420077; x=1749024877; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748420078; x=1749024878; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZxuMsIzIEBcwEqybHWtHbk2A32P89CJB8Yk1LV8pWNM=;
- b=L46IYmd6ood/PHyZPBgeccjZSqytJgJbguXLYE3vvAdDhEad7wLGoEOdHAKsG5K6KM
- cv1mML63/xWqTE0Y7rbQ1TjRCFdGqRat/0MSK3EevjKKCjz+XUESXAxqVwHdmUib7yV4
- FFp+rrY4lx4XXdCfF3mlcC9Q6Ks5swfzybuvMef3hKnTsMVrzRatESCZ2YHoNBD0tw7x
- RkFEScUO4kXteS0GtOw1t+6yuDNBANAP7y5qDPjGHNhFOfOdRdnVT0AZn/g79k/EXob8
- ATHxDtMw1kAAWGXMGci/oGAVNtPcXA7OPa3mPYOua5Ex6/Z7AKskyoj4l0YT7fyr66G+
- 3wNg==
+ bh=8qFWFQgm7tp2FoeXZowsVaEILXqBgZTLSVkJ211wbIE=;
+ b=KwDUiyUvPBaD/B2te2z9PjC0NOXP94vdPhR2TnsNBMwJFRHSNcOAF8pVBF8pAy2Jw7
+ VJNtMJzaEWi4adVzyWYu3N/tKSHRlmrs5eqZOEhdbvodQ1zom8ZkoRq1W3VG4ZLODegf
+ soDYgajwewmPMIh2uaEt0adix6pMtplkMcyOKV/dlJ+WXiTMCtbqsRHctyrrwQCemQsZ
+ jvGJSr+ZCtzVBLMpOSma2OLptXhaA1Iypc+BIjqwcjIsKy6BIOrLS4cOa8a81okndYNI
+ yUgeHsCBGy+34UMY/s4eeTu4VL1EviNYs+a8NddQkenKpJmdipMac48Hf32uQb6HjymA
+ zVtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748420077; x=1749024877;
+ d=1e100.net; s=20230601; t=1748420078; x=1749024878;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZxuMsIzIEBcwEqybHWtHbk2A32P89CJB8Yk1LV8pWNM=;
- b=eoLERiigxgk6gBnSWockOncxo3sLG2eBr7HQFQs2l3A1tvNXI2JOBqz2L/DRFeDxGx
- Szw2h6zUCso6nqPmNAvIJiEquw7m5LHhylYI0bRM1EH//XwVQF5R/CHMcdCvWjHArQAm
- IvsLlCTxmIMchecHrzl+6YucOCI2QuvzrJ2ZcNUU1lfNLXt25K6AIg2fHZ77gSdJcl8Q
- hpbTc3dcvwY9nDmjejhYMG1UZ1hdQud5X50b8/EdUbgV88tKHtMwoORTCzzczFXYKt6j
- XgnTiGoXb49PdpcO0SnnZB5uADFTl16J2OPiShJJW44w44ZahvF75QArbJ7m5FiA/sm3
- IiIw==
-X-Gm-Message-State: AOJu0YzJw/BRASWE+RSP+ty2sLtkIdmoU1PGPSdOn8U3QKkahiNQPPOs
- PbGAcpfHQoqquu6Nt4SPPkfiAEOTVS/ylymKOm1HSt6cHEYwRd/E/QW9I9EB5wk7BssHKYfhdL2
- E46wH5tI87g==
-X-Gm-Gg: ASbGncsFJo+ufXS19pBNobI7NszKXRQA4TJ9DbhJs5+BeliSMXKvnJ4yvI4AbgmCDBr
- 4ltp7SYwoLqRenldliF5E3N56Y79lzc57rdFE6xRemGK1Mi+nEqzgFFAJl1FwDVdYo15/Yf3wnF
- BwvfFUaKWyACtH6/uvHd0L2SaWQpvt0r8jTh3ME8ZRWgScXemOTBJ/itGrpkSP29AdHjLDlyuvb
- 4Wz0d1sO0Tk28J/lPq5dmAVlgbmk9mEDOImZ2BW28HNuF5JizTS78MmyCskm14NOKit+eYhEVOJ
- lv1y2Wee8xLOMT4WeqQa8asRrkCz1uqvK5hJ+/+4HmNEquzy+FUsEFvI
-X-Google-Smtp-Source: AGHT+IEGRCGLJM3ZliT4LicglMJe4isWYSBQNM14ri3eGsImGDrLnR3TbWf0pBMXKrLXw0c57N9MlQ==
-X-Received: by 2002:a05:600c:8012:b0:43d:45a:8fbb with SMTP id
- 5b1f17b1804b1-44c92d3516cmr140974815e9.22.1748420076629; 
- Wed, 28 May 2025 01:14:36 -0700 (PDT)
+ bh=8qFWFQgm7tp2FoeXZowsVaEILXqBgZTLSVkJ211wbIE=;
+ b=ZtMtYQCnc9ASUHwH/33zDFyY+xHMh05XOVbiQEdfWQa9Gy+/szpL78SmjaT1j0tCkV
+ jWQxECRiZNTQ3Za8aNApqMW0elHfl6wVGpY6L27lu4jtGQ14UXEhJvljS3MW+CpEWhyN
+ asef1aYmpLfJWARlWH4/HtflQQB2QWerC1PO+57VQtIhqI3sj3ZsMO11pP6F8QTvJZjk
+ /a/5dWrUeBJDFTuskmEnn0GRHffJ7aFiWUwKNNDXYxLBwSkN2WKBN6is4uxUzTQimkfz
+ MSUtKyxMqSnmgYfBAwyXy1vIyY/iC5m5SsQnEkgioabP92HONaW5UbJmKKntxQ5blRAW
+ TU3g==
+X-Gm-Message-State: AOJu0Yye7iFpHxQYScmJdZYoDQM/Ieso0z+9hpF28paAzW9QWPjVqpP7
+ SRj1NjBSnw9zy9tTSW5uB6n6m9fwaLJO/8/vuLeruMxNDGoGYOCL5/8zgRdduzlardBBqz82ZwM
+ XmS43cXuC1w==
+X-Gm-Gg: ASbGncsp3ST+0DfbSpeztVM/ggJdQb85zhD9tWm6xIcQCbck2s/m/15UemPq5M9Ir6F
+ CqUK1NiiSADpooTM1XJwkG2RbsZiNBjopPrjnIoZX9EjRfk8DC7eKnGKDdbXpoGE9ZkNCAREALE
+ pClYZ46JOaQ5bmpCOyHI6+RcNB+nvzU64tvRYo8Osd83HpsjWyiMCfdpNjhlgJZMdiBeBDqtoOU
+ VZuEa9X58clPNhbwHypiFm+RGfnPUiWHCk7hZr4rnAPPiCbdjUTGV/16crs7T/PdGcyevGEuG0l
+ PQQHVp+By5HOqeJndEvixbYdFNMhHi4Coo3Y8m251UnUACt21+VjpS6nIvrNvGcrQgU=
+X-Google-Smtp-Source: AGHT+IHy+1pxeCFW/oKFm0z4uhwhluiRDAyqoKqnn/u6x5VkkxYvE94VkYUC1yZCNZaNFr5/SNXESA==
+X-Received: by 2002:a05:600c:c059:20b0:43c:ed33:a500 with SMTP id
+ 5b1f17b1804b1-44fd1a5bb56mr22270445e9.10.1748420078241; 
+ Wed, 28 May 2025 01:14:38 -0700 (PDT)
 Received: from stoup.. ([195.53.115.74]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.35
+ 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 May 2025 01:14:36 -0700 (PDT)
+ Wed, 28 May 2025 01:14:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/28] target: Use cpu_pointer_wrap_notreached for strict align
- targets
-Date: Wed, 28 May 2025 09:14:00 +0100
-Message-ID: <20250528081410.157251-19-richard.henderson@linaro.org>
+Cc: Michael Rolnik <mrolnik@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
+ Stafford Horne <shorne@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@amd.com>
+Subject: [PULL 19/28] target: Use cpu_pointer_wrap_uint32 for 32-bit targets
+Date: Wed, 28 May 2025 09:14:01 +0100
+Message-ID: <20250528081410.157251-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250528081410.157251-1-richard.henderson@linaro.org>
 References: <20250528081410.157251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -1
 X-Spam_score: -0.2
 X-Spam_bar: /
@@ -98,93 +102,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alpha, HPPA, and SH4 always use aligned addresses,
-and therefore never produce accesses that cross pages.
+M68K, MicroBlaze, OpenRISC, RX, TriCore and Xtensa are
+all 32-bit targets.  AVR is more complicated, but using
+a 32-bit wrap preserves current behaviour.
 
-Cc: Helge Deller <deller@gmx.de>
+Cc: Michael Rolnik <mrolnik@gmail.com>
+Cc: Laurent Vivier <laurent@vivier.eu>
+Cc: Stafford Horne <shorne@gmail.com>
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Tested-by Bastian Koppelmann <kbastian@mail.uni-paderborn.de> (tricore)
+Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/accel/tcg/cpu-ops.h |  5 +++++
- accel/tcg/cputlb.c          | 13 +++++++++++++
- target/alpha/cpu.c          |  1 +
- target/hppa/cpu.c           |  1 +
- target/sh4/cpu.c            |  1 +
- 5 files changed, 21 insertions(+)
+ include/accel/tcg/cpu-ops.h | 1 +
+ accel/tcg/cputlb.c          | 6 ++++++
+ target/avr/cpu.c            | 6 ++++++
+ target/m68k/cpu.c           | 1 +
+ target/microblaze/cpu.c     | 1 +
+ target/openrisc/cpu.c       | 1 +
+ target/rx/cpu.c             | 1 +
+ target/tricore/cpu.c        | 1 +
+ target/xtensa/cpu.c         | 1 +
+ 9 files changed, 19 insertions(+)
 
 diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
-index 83b2c2c864..4f3b4fd3bc 100644
+index 4f3b4fd3bc..dd8ea30016 100644
 --- a/include/accel/tcg/cpu-ops.h
 +++ b/include/accel/tcg/cpu-ops.h
-@@ -322,6 +322,11 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
+@@ -326,6 +326,7 @@ int cpu_watchpoint_address_matches(CPUState *cpu, vaddr addr, vaddr len);
+  * Common pointer_wrap implementations.
   */
- int cpu_watchpoint_address_matches(CPUState *cpu, vaddr addr, vaddr len);
+ vaddr cpu_pointer_wrap_notreached(CPUState *, int, vaddr, vaddr);
++vaddr cpu_pointer_wrap_uint32(CPUState *, int, vaddr, vaddr);
  
-+/*
-+ * Common pointer_wrap implementations.
-+ */
-+vaddr cpu_pointer_wrap_notreached(CPUState *, int, vaddr, vaddr);
-+
  #endif
  
- #endif /* TCG_CPU_OPS_H */
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 81ff725cbc..49ec3ee5dc 100644
+index 49ec3ee5dc..a734859396 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -2933,3 +2933,16 @@ uint64_t cpu_ldq_code_mmu(CPUArchState *env, vaddr addr,
+@@ -2946,3 +2946,9 @@ vaddr cpu_pointer_wrap_notreached(CPUState *cs, int idx, vaddr res, vaddr base)
  {
-     return do_ld8_mmu(env_cpu(env), addr, oi, retaddr, MMU_INST_FETCH);
+     g_assert_not_reached();
  }
 +
-+/*
-+ * Common pointer_wrap implementations.
-+ */
-+
-+/*
-+ * To be used for strict alignment targets.
-+ * Because no accesses are unaligned, no accesses wrap either.
-+ */
-+vaddr cpu_pointer_wrap_notreached(CPUState *cs, int idx, vaddr res, vaddr base)
++/* To be used for strict 32-bit targets. */
++vaddr cpu_pointer_wrap_uint32(CPUState *cs, int idx, vaddr res, vaddr base)
 +{
-+    g_assert_not_reached();
++    return (uint32_t)res;
 +}
-diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index 890b84c032..2082db45ea 100644
---- a/target/alpha/cpu.c
-+++ b/target/alpha/cpu.c
-@@ -261,6 +261,7 @@ static const TCGCPUOps alpha_tcg_ops = {
-     .record_sigbus = alpha_cpu_record_sigbus,
- #else
-     .tlb_fill = alpha_cpu_tlb_fill,
-+    .pointer_wrap = cpu_pointer_wrap_notreached,
-     .cpu_exec_interrupt = alpha_cpu_exec_interrupt,
-     .cpu_exec_halt = alpha_cpu_has_work,
+diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+index 250241541b..6995de6a12 100644
+--- a/target/avr/cpu.c
++++ b/target/avr/cpu.c
+@@ -250,6 +250,12 @@ static const TCGCPUOps avr_tcg_ops = {
      .cpu_exec_reset = cpu_reset,
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 6465181543..24777727e6 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -269,6 +269,7 @@ static const TCGCPUOps hppa_tcg_ops = {
+     .tlb_fill = avr_cpu_tlb_fill,
+     .do_interrupt = avr_cpu_do_interrupt,
++    /*
++     * TODO: code and data wrapping are different, but for the most part
++     * AVR only references bytes or aligned code fetches.  But we use
++     * non-aligned MO_16 accesses for stack push/pop.
++     */
++    .pointer_wrap = cpu_pointer_wrap_uint32,
+ };
+ 
+ static void avr_cpu_class_init(ObjectClass *oc, const void *data)
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index c5196a612e..6a09db3a6f 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -619,6 +619,7 @@ static const TCGCPUOps m68k_tcg_ops = {
  
  #ifndef CONFIG_USER_ONLY
-     .tlb_fill_align = hppa_cpu_tlb_fill_align,
-+    .pointer_wrap = cpu_pointer_wrap_notreached,
-     .cpu_exec_interrupt = hppa_cpu_exec_interrupt,
-     .cpu_exec_halt = hppa_cpu_has_work,
+     .tlb_fill = m68k_cpu_tlb_fill,
++    .pointer_wrap = cpu_pointer_wrap_uint32,
+     .cpu_exec_interrupt = m68k_cpu_exec_interrupt,
+     .cpu_exec_halt = m68k_cpu_has_work,
      .cpu_exec_reset = cpu_reset,
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index b35f18e250..4f561e8c91 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -296,6 +296,7 @@ static const TCGCPUOps superh_tcg_ops = {
+diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+index 615a959200..ee0a869a94 100644
+--- a/target/microblaze/cpu.c
++++ b/target/microblaze/cpu.c
+@@ -447,6 +447,7 @@ static const TCGCPUOps mb_tcg_ops = {
  
  #ifndef CONFIG_USER_ONLY
-     .tlb_fill = superh_cpu_tlb_fill,
-+    .pointer_wrap = cpu_pointer_wrap_notreached,
-     .cpu_exec_interrupt = superh_cpu_exec_interrupt,
-     .cpu_exec_halt = superh_cpu_has_work,
+     .tlb_fill = mb_cpu_tlb_fill,
++    .pointer_wrap = cpu_pointer_wrap_uint32,
+     .cpu_exec_interrupt = mb_cpu_exec_interrupt,
+     .cpu_exec_halt = mb_cpu_has_work,
+     .cpu_exec_reset = cpu_reset,
+diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
+index 054ad33360..dfbb2df643 100644
+--- a/target/openrisc/cpu.c
++++ b/target/openrisc/cpu.c
+@@ -265,6 +265,7 @@ static const TCGCPUOps openrisc_tcg_ops = {
+ 
+ #ifndef CONFIG_USER_ONLY
+     .tlb_fill = openrisc_cpu_tlb_fill,
++    .pointer_wrap = cpu_pointer_wrap_uint32,
+     .cpu_exec_interrupt = openrisc_cpu_exec_interrupt,
+     .cpu_exec_halt = openrisc_cpu_has_work,
+     .cpu_exec_reset = cpu_reset,
+diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+index 36eba75545..c6dd5d6f83 100644
+--- a/target/rx/cpu.c
++++ b/target/rx/cpu.c
+@@ -225,6 +225,7 @@ static const TCGCPUOps rx_tcg_ops = {
+     .restore_state_to_opc = rx_restore_state_to_opc,
+     .mmu_index = rx_cpu_mmu_index,
+     .tlb_fill = rx_cpu_tlb_fill,
++    .pointer_wrap = cpu_pointer_wrap_uint32,
+ 
+     .cpu_exec_interrupt = rx_cpu_exec_interrupt,
+     .cpu_exec_halt = rx_cpu_has_work,
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index e56f90fde9..4f035b6f76 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -190,6 +190,7 @@ static const TCGCPUOps tricore_tcg_ops = {
+     .restore_state_to_opc = tricore_restore_state_to_opc,
+     .mmu_index = tricore_cpu_mmu_index,
+     .tlb_fill = tricore_cpu_tlb_fill,
++    .pointer_wrap = cpu_pointer_wrap_uint32,
+     .cpu_exec_interrupt = tricore_cpu_exec_interrupt,
+     .cpu_exec_halt = tricore_cpu_has_work,
+     .cpu_exec_reset = cpu_reset,
+diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
+index 91b71b6caa..ea9b6df3aa 100644
+--- a/target/xtensa/cpu.c
++++ b/target/xtensa/cpu.c
+@@ -318,6 +318,7 @@ static const TCGCPUOps xtensa_tcg_ops = {
+ 
+ #ifndef CONFIG_USER_ONLY
+     .tlb_fill = xtensa_cpu_tlb_fill,
++    .pointer_wrap = cpu_pointer_wrap_uint32,
+     .cpu_exec_interrupt = xtensa_cpu_exec_interrupt,
+     .cpu_exec_halt = xtensa_cpu_has_work,
      .cpu_exec_reset = cpu_reset,
 -- 
 2.43.0
