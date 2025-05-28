@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EDCAC7103
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5B0AC70F5
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:32:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKLZo-0002dI-PI; Wed, 28 May 2025 14:32:32 -0400
+	id 1uKLZm-0002d6-Aw; Wed, 28 May 2025 14:32:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZV-0002MD-TU
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZV-0002MC-Tc
  for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZP-00072W-Hg
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZR-00072f-Dl
  for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748457122;
+ s=mimecast20190719; t=1748457123;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9r8Of7xYH1J89v6IaADSjy6QMDkayHuOqdn5lJMJqYk=;
- b=cBzXPO3GV4NPpldvm1ROMUcKQsPWH3vtRcDPHrx6QZFAWk8i3aca/WFU5XodPolTJb5RYi
- uIAPhXVJ+S2gRlM3+G3qGKza609/wrKKmbVwkt2mJPqC1HXrC5cdSkDC/EQDmSGC4TX6Z3
- aDOGTm1cpKyMJvXOSSHDQp8XAA1+Ugc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=bzGbDPuPtKL3+PVyexgER43w1lPw+++eS9Pps+0kaZA=;
+ b=cRX4tn1Ak7WpywVMjlfeGPMMZ27l8O72XlYaE5vT+eA4povNgY+bh/X/m7iYqOWTii0NLj
+ GIqOsUwlRNNLNJM1oYOnUcgFtfwBmsiTrwRRKaVGlEls2MrxISFfBAiRMv1dnR9K6cbRDT
+ q/Awzj/lJlgz3n66NMKBo4vAsgxSVH4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-96-N8FDF0atOmiGqxvd5Kjypw-1; Wed,
- 28 May 2025 14:31:58 -0400
-X-MC-Unique: N8FDF0atOmiGqxvd5Kjypw-1
-X-Mimecast-MFC-AGG-ID: N8FDF0atOmiGqxvd5Kjypw_1748457117
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-156-vMXuYm5kOryv72DEcEFobA-1; Wed,
+ 28 May 2025 14:31:59 -0400
+X-MC-Unique: vMXuYm5kOryv72DEcEFobA-1
+X-Mimecast-MFC-AGG-ID: vMXuYm5kOryv72DEcEFobA_1748457118
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D35301956094; Wed, 28 May 2025 18:31:57 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8329E1955D93; Wed, 28 May 2025 18:31:58 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8A24C18001DB; Wed, 28 May 2025 18:31:57 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 38B9619560B0; Wed, 28 May 2025 18:31:58 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A7D0121E65E0; Wed, 28 May 2025 20:31:51 +0200 (CEST)
+ id AC38621E65E7; Wed, 28 May 2025 20:31:51 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 07/13] qapi: remove the misc-target.json file
-Date: Wed, 28 May 2025 20:31:45 +0200
-Message-ID: <20250528183151.2839034-8-armbru@redhat.com>
+Subject: [PULL 08/13] qapi: Make CpuModelExpansionInfo::deprecated-props
+ optional and generic
+Date: Wed, 28 May 2025 20:31:46 +0200
+Message-ID: <20250528183151.2839034-9-armbru@redhat.com>
 In-Reply-To: <20250528183151.2839034-1-armbru@redhat.com>
 References: <20250528183151.2839034-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
@@ -85,84 +86,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-This file is now empty and can thus be removed.
+We'd like to have some unified QAPI schema. Having a structure field
+conditional to a target being built in is not very practical.
 
-Observe the pre-existing bug with s390-skeys.c and target/i386/monitor.c
-both including qapi-commands-misc-target.h despite not requiring it.
+While @deprecated-props is only used by s390x target, it is generic
+enough and could be used by other targets (assuming we expand
+CpuModelExpansionType enum values).
+
+Let's always include this field, regardless of the target, but make it
+optional. This is not a compatibility break only because the field
+remains present always on S390x.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20250522190542.588267-8-pierrick.bouvier@linaro.org>
+Message-ID: <20250522190542.588267-9-pierrick.bouvier@linaro.org>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/misc-target.json | 3 ---
- qapi/qapi-schema.json | 1 -
- hw/s390x/s390-skeys.c | 1 -
- target/i386/monitor.c | 1 -
- qapi/meson.build      | 1 -
- 5 files changed, 7 deletions(-)
- delete mode 100644 qapi/misc-target.json
+ qapi/machine-target.json | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-deleted file mode 100644
-index c9ea1ab23e..0000000000
---- a/qapi/misc-target.json
-+++ /dev/null
-@@ -1,3 +0,0 @@
--# -*- Mode: Python -*-
--# vim: filetype=python
--#
-diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-index e96bff8d38..d8eb79cfda 100644
---- a/qapi/qapi-schema.json
-+++ b/qapi/qapi-schema.json
-@@ -63,7 +63,6 @@
- { 'include': 'misc.json' }
- { 'include': 'misc-arm.json' }
- { 'include': 'misc-i386.json' }
--{ 'include': 'misc-target.json' }
- { 'include': 'audio.json' }
- { 'include': 'acpi.json' }
- { 'include': 'pci.json' }
-diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
-index aedb62b2d3..8eeecfd58f 100644
---- a/hw/s390x/s390-skeys.c
-+++ b/hw/s390x/s390-skeys.c
-@@ -17,7 +17,6 @@
- #include "hw/s390x/storage-keys.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-machine.h"
--#include "qapi/qapi-commands-misc-target.h"
- #include "qobject/qdict.h"
- #include "qemu/error-report.h"
- #include "system/memory_mapping.h"
-diff --git a/target/i386/monitor.c b/target/i386/monitor.c
-index 3ea92b066e..3c9b6ca62f 100644
---- a/target/i386/monitor.c
-+++ b/target/i386/monitor.c
-@@ -29,7 +29,6 @@
- #include "monitor/hmp.h"
- #include "qobject/qdict.h"
- #include "qapi/error.h"
--#include "qapi/qapi-commands-misc-target.h"
- #include "qapi/qapi-commands-misc.h"
- 
- /* Perform linear address sign extension */
-diff --git a/qapi/meson.build b/qapi/meson.build
-index 5e93e6b8cf..ffe44f9e0b 100644
---- a/qapi/meson.build
-+++ b/qapi/meson.build
-@@ -42,7 +42,6 @@ qapi_all_modules = [
-   'machine-target',
-   'migration',
-   'misc',
--  'misc-target',
-   'net',
-   'pragma',
-   'qom',
+diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+index 426ce4ee82..d8dbda4b50 100644
+--- a/qapi/machine-target.json
++++ b/qapi/machine-target.json
+@@ -244,19 +244,18 @@
+ #
+ # @model: the expanded CpuModelInfo.
+ #
+-# @deprecated-props: a list of properties that are flagged as
++# @deprecated-props: an optional list of properties that are flagged as
+ #     deprecated by the CPU vendor.  The list depends on the
+ #     CpuModelExpansionType: "static" properties are a subset of the
+ #     enabled-properties for the expanded model; "full" properties are
+ #     a set of properties that are deprecated across all models for
+-#     the architecture.  (since: 9.1).
++#     the architecture.  (since: 10.1 -- since 9.1 on s390x --).
+ #
+ # Since: 2.8
+ ##
+ { 'struct': 'CpuModelExpansionInfo',
+   'data': { 'model': 'CpuModelInfo',
+-            'deprecated-props' : { 'type': ['str'],
+-                                   'if': 'TARGET_S390X' } },
++            '*deprecated-props' : ['str'] },
+   'if': { 'any': [ 'TARGET_S390X',
+                    'TARGET_I386',
+                    'TARGET_ARM',
 -- 
 2.48.1
 
