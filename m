@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659B1AC66CC
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB83AC66B4
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:09:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDgX-0005K6-8l; Wed, 28 May 2025 06:06:57 -0400
+	id 1uKDgS-0004uD-OR; Wed, 28 May 2025 06:06:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg2-0004K1-61
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:28 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg6-0004LN-IC
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfy-0007GE-B2
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg4-0007HT-E2
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426781;
+ s=mimecast20190719; t=1748426787;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pKqHGGEtL2ZC5OKb/YBObl5/3Ty09dzGQ/zzRLpA4Ns=;
- b=hyhOTHBlWjP+2vu56HQohM8HDongKDSm3S0bbNkKcNxkqU9hH75D2gC4nkU7DZoSPkQ0z1
- oUoOHfMfR2QHckfoev/DdkS9m6kBqcjBQdH8Ca83kvAqgFGxwL+SMqeH1gb65jmUHpO/2M
- ckiWjtUiMJMqCzA3CPd7BYN8kIukRgE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Rt3bHuCxCuBXdn4uoTDU3Fdy2gUlNffEYdVpuhW8WkE=;
+ b=EtMKFRSbYVTpwVySr3ArOepc2bCJDP/l+O4RDIfsHPlwwUj6tej9M5OmpUFJFDbg7dOUGx
+ qUJZ+6sPEnaJvn+A0CnM3jfjIGLIQ9ATSwfDCQ3CYVakEd851KQkdTRFTHPFdPC7T8G7JU
+ UhbWPL/62p/MquFDylCRxg8FV1oEIRA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-Qg0-SfDFNFibQ4OdK7SZPg-1; Wed,
- 28 May 2025 06:05:18 -0400
-X-MC-Unique: Qg0-SfDFNFibQ4OdK7SZPg-1
-X-Mimecast-MFC-AGG-ID: Qg0-SfDFNFibQ4OdK7SZPg_1748426717
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-88-yPtv79oZM9qUJSneKt9oYA-1; Wed,
+ 28 May 2025 06:05:22 -0400
+X-MC-Unique: yPtv79oZM9qUJSneKt9oYA-1
+X-Mimecast-MFC-AGG-ID: yPtv79oZM9qUJSneKt9oYA_1748426721
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 740AF19560B1; Wed, 28 May 2025 10:05:17 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 222961800875; Wed, 28 May 2025 10:05:21 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1A397180049D; Wed, 28 May 2025 10:05:14 +0000 (UTC)
+ id 1587E180049D; Wed, 28 May 2025 10:05:17 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/27] tests/functional/test_mips_malta: Re-enable the check
- for the PCI host bridge
-Date: Wed, 28 May 2025 12:04:42 +0200
-Message-ID: <20250528100507.313906-3-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 03/27] tests/functional/test_mem_addr_space: Use set_machine()
+ to select the machine
+Date: Wed, 28 May 2025 12:04:43 +0200
+Message-ID: <20250528100507.313906-4-thuth@redhat.com>
 In-Reply-To: <20250528100507.313906-1-thuth@redhat.com>
 References: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,35 +85,197 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The problem with the PCI bridge has been fixed in commit e5894fd6f411c1
-("hw/pci-host/gt64120: Fix endianness handling"), so we can enable the
-corresponding test again.
+By using self.set_machine() the tests get properly skipped in case
+the machine has not been compiled into the QEMU binary, e.g. when
+"configure" has been run with "--without-default-devices".
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250522080208.205489-1-thuth@redhat.com>
+Message-ID: <20250521143732.140711-1-thuth@redhat.com>
 ---
- tests/functional/test_mips_malta.py | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tests/functional/test_mem_addr_space.py | 63 +++++++++++++------------
+ 1 file changed, 32 insertions(+), 31 deletions(-)
 
-diff --git a/tests/functional/test_mips_malta.py b/tests/functional/test_mips_malta.py
-index 89b9556f30d..30279f0ff21 100755
---- a/tests/functional/test_mips_malta.py
-+++ b/tests/functional/test_mips_malta.py
-@@ -80,10 +80,8 @@ def mips_check_wheezy(test, kernel_path, image_path, kernel_command_line,
-     exec_command_and_wait_for_pattern(test, 'cat /proc/devices', 'usb')
-     exec_command_and_wait_for_pattern(test, 'cat /proc/ioports',
-                                       ' : piix4_smbus')
--    # lspci for the host bridge does not work on big endian targets:
--    # https://gitlab.com/qemu-project/qemu/-/issues/2826
--    # exec_command_and_wait_for_pattern(test, 'lspci -d 11ab:4620',
--    #                                   'GT-64120')
-+    exec_command_and_wait_for_pattern(test, 'lspci -d 11ab:4620',
-+                                      'GT-64120')
-     exec_command_and_wait_for_pattern(test,
-                                       'cat /sys/bus/i2c/devices/i2c-0/name',
-                                       'SMBus PIIX4 adapter')
+diff --git a/tests/functional/test_mem_addr_space.py b/tests/functional/test_mem_addr_space.py
+index 2d9d31efb59..61b4a190b41 100755
+--- a/tests/functional/test_mem_addr_space.py
++++ b/tests/functional/test_mem_addr_space.py
+@@ -58,8 +58,8 @@ def test_phybits_low_pse36(self):
+         should start fine.
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-S', '-machine', 'q35', '-m',
+-                         '512,slots=1,maxmem=59.6G',
++        self.set_machine('q35')
++        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=59.6G',
+                          '-cpu', 'pentium,pse36=on', '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -76,8 +76,8 @@ def test_phybits_low_pae(self):
+         with pse36 above.
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-S', '-machine', 'q35', '-m',
+-                         '512,slots=1,maxmem=59.6G',
++        self.set_machine('q35')
++        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=59.6G',
+                          '-cpu', 'pentium,pae=on', '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -93,8 +93,8 @@ def test_phybits_ok_pentium_pse36(self):
+         same options as the failing case above with pse36 cpu feature.
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-machine', 'q35', '-m',
+-                         '512,slots=1,maxmem=59.5G',
++        self.set_machine('q35')
++        self.vm.add_args('-m', '512,slots=1,maxmem=59.5G',
+                          '-cpu', 'pentium,pse36=on', '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -111,8 +111,8 @@ def test_phybits_ok_pentium_pae(self):
+         with the same options as the case above.
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-machine', 'q35', '-m',
+-                         '512,slots=1,maxmem=59.5G',
++        self.set_machine('q35')
++        self.vm.add_args('-m', '512,slots=1,maxmem=59.5G',
+                          '-cpu', 'pentium,pae=on', '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -128,8 +128,8 @@ def test_phybits_ok_pentium2(self):
+         with pse36 ON.
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-machine', 'q35', '-m',
+-                         '512,slots=1,maxmem=59.5G',
++        self.set_machine('q35')
++        self.vm.add_args('-m', '512,slots=1,maxmem=59.5G',
+                          '-cpu', 'pentium2', '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -148,8 +148,8 @@ def test_phybits_low_nonpse36(self):
+         above 4 GiB due to the PCI hole and simplicity.
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-S', '-machine', 'q35', '-m',
+-                         '512,slots=1,maxmem=4G',
++        self.set_machine('q35')
++        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=4G',
+                          '-cpu', 'pentium', '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -176,8 +176,8 @@ def test_phybits_low_tcg_q35_70_amd(self):
+         make QEMU fail with the error message.
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-S', '-machine', 'pc-q35-7.0', '-m',
+-                         '512,slots=1,maxmem=988G',
++        self.set_machine('pc-q35-7.0')
++        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=988G',
+                          '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -197,8 +197,8 @@ def test_phybits_low_tcg_q35_71_amd(self):
+         than 988 GiB).
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-S', '-machine', 'pc-q35-7.1', '-m',
+-                         '512,slots=1,maxmem=976G',
++        self.set_machine('pc-q35-7.1')
++        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=976G',
+                          '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -214,8 +214,8 @@ def test_phybits_ok_tcg_q35_70_amd(self):
+         successfully start when maxmem is < 988G.
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-S', '-machine', 'pc-q35-7.0', '-m',
+-                         '512,slots=1,maxmem=987.5G',
++        self.set_machine('pc-q35-7.0')
++        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=987.5G',
+                          '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -231,8 +231,8 @@ def test_phybits_ok_tcg_q35_71_amd(self):
+         successfully start when maxmem is < 976G.
+         """
+         self.ensure_64bit_binary()
+-        self.vm.add_args('-S', '-machine', 'pc-q35-7.1', '-m',
+-                         '512,slots=1,maxmem=975.5G',
++        self.set_machine('pc-q35-7.1')
++        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=975.5G',
+                          '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -249,9 +249,9 @@ def test_phybits_ok_tcg_q35_71_intel(self):
+         "above_4G" memory starts at 4G.
+         """
+         self.ensure_64bit_binary()
++        self.set_machine('pc-q35-7.1')
+         self.vm.add_args('-S', '-cpu', 'Skylake-Server',
+-                         '-machine', 'pc-q35-7.1', '-m',
+-                         '512,slots=1,maxmem=976G',
++                         '-m', '512,slots=1,maxmem=976G',
+                          '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -274,9 +274,9 @@ def test_phybits_low_tcg_q35_71_amd_41bits(self):
+         fail to start.
+         """
+         self.ensure_64bit_binary()
++        self.set_machine('pc-q35-7.1')
+         self.vm.add_args('-S', '-cpu', 'EPYC-v4,phys-bits=41',
+-                         '-machine', 'pc-q35-7.1', '-m',
+-                         '512,slots=1,maxmem=992G',
++                         '-m', '512,slots=1,maxmem=992G',
+                          '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -293,9 +293,9 @@ def test_phybits_ok_tcg_q35_71_amd_41bits(self):
+         QEMU should start fine.
+         """
+         self.ensure_64bit_binary()
++        self.set_machine('pc-q35-7.1')
+         self.vm.add_args('-S', '-cpu', 'EPYC-v4,phys-bits=41',
+-                         '-machine', 'pc-q35-7.1', '-m',
+-                         '512,slots=1,maxmem=990G',
++                         '-m', '512,slots=1,maxmem=990G',
+                          '-display', 'none',
+                          '-object', 'memory-backend-ram,id=mem1,size=1G',
+                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
+@@ -314,12 +314,12 @@ def test_phybits_low_tcg_q35_intel_cxl(self):
+         alignment constraints with 40 bits (1 TiB) of processor physical bits.
+         """
+         self.ensure_64bit_binary()
++        self.set_machine('q35')
+         self.vm.add_args('-S', '-cpu', 'Skylake-Server,phys-bits=40',
+-                         '-machine', 'q35,cxl=on', '-m',
+-                         '512,slots=1,maxmem=987G',
++                         '-m', '512,slots=1,maxmem=987G',
+                          '-display', 'none',
+                          '-device', 'pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1',
+-                         '-M', 'cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=1G')
++                         '-M', 'cxl=on,cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=1G')
+         self.vm.set_qmp_monitor(enabled=False)
+         self.vm.launch()
+         self.vm.wait()
+@@ -333,9 +333,10 @@ def test_phybits_ok_tcg_q35_intel_cxl(self):
+         with cxl enabled.
+         """
+         self.ensure_64bit_binary()
++        self.set_machine('q35')
+         self.vm.add_args('-S', '-cpu', 'Skylake-Server,phys-bits=40',
+-                         '-machine', 'q35,cxl=on', '-m',
+-                         '512,slots=1,maxmem=987G',
++                         '-machine', 'cxl=on',
++                         '-m', '512,slots=1,maxmem=987G',
+                          '-display', 'none',
+                          '-device', 'pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1')
+         self.vm.set_qmp_monitor(enabled=False)
 -- 
 2.49.0
 
