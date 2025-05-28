@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFDDAC5EF4
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 03:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1A1AC5EF2
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 03:59:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uK63z-0001V6-PG; Tue, 27 May 2025 21:58:39 -0400
+	id 1uK64P-0001ak-GD; Tue, 27 May 2025 21:59:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uK63w-0001Um-GL; Tue, 27 May 2025 21:58:36 -0400
+ id 1uK64M-0001Zr-QY; Tue, 27 May 2025 21:59:02 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uK63u-0003LP-GB; Tue, 27 May 2025 21:58:35 -0400
+ id 1uK64L-0003OA-2i; Tue, 27 May 2025 21:59:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748397514; x=1779933514;
+ t=1748397541; x=1779933541;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=ABxWJqdEbyv+3KaRIM+Gvy3SjNs4T/SGxSCoCjLKWtM=;
- b=k/M4gEMHlw9Mr249A3T9ceTtMSbb0QGtsmPPKmduEuJDqpeBhyBt16fk
- 5un3RcO7GaodfqY4iGrGbUfUZOmFalJfDYCwTnCJ6OpO+l2QxBvhlMIFA
- MiwC8jheZ24lDKxNJGAKxZW3tSBVUdWkcPh69xFbR3b6HBEtb+/mK1Hzx
- cosECIXYxt9GfcIbdRGf0Eo4RBkT+pQYgyXEEgRNoDBMd6mGVQROL9Qed
- 75Vgg2Sr8DcrO64m4xZ00HFovtz3lcSsNytsPwNSHp9lMbn6pay+xlFkv
- knOQrKGVfE1/KowGVK2Kqe7XCMMNb6A25Isy1prY4l9Q0NLO73fS59Ulr Q==;
-X-CSE-ConnectionGUID: NlO5LtSzQICBkfxNm7zYQQ==
-X-CSE-MsgGUID: vHjwqwXmQNartVKO5KJg1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="50563641"
-X-IronPort-AV: E=Sophos;i="6.15,319,1739865600"; d="scan'208";a="50563641"
+ bh=1StEo5nRA8GudZGw+dnXrMLvUWF7ItYI6wYOliwE1PA=;
+ b=WOcYX7M6Gq0uy6F6RBp4FSz8ccC3WB8mgPt1hF2VXbFL5dSI3VRe/5vJ
+ C6Q1lNAo3KVEdZbGkS8NzbWhjt6AOO2DFkKkBPZS0lVrNzLF+mdeOlslv
+ JJhZBzjxu/3/HxtLbuwQAlc23Az+mnjoFd/yZsyhyQ8AOUFOfT3xVR8B+
+ 9bAyjbzKV7j/Tk4bpDrXiT9St/zoOAMtA2NNyhcJHKYo83PutJzcEQZtF
+ hLBypTuRjenGKSvQu5ds62XJ7fygplf8pA+qrKZbGlGtnfITuNq0i7WO9
+ GVKtQDcukiKTd3dUOC/vhJ1xtebXl5ZbOoTb/yZP/c2eRhvST/Iuuy+Ol g==;
+X-CSE-ConnectionGUID: 7sMn37+KQwyf1M4J+f4hdw==
+X-CSE-MsgGUID: TAWE+1PzQ2KkJkX93nghCQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="50563667"
+X-IronPort-AV: E=Sophos;i="6.15,319,1739865600"; d="scan'208";a="50563667"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2025 18:58:32 -0700
-X-CSE-ConnectionGUID: N0x/dOhGR8a7Lr2yQ51COA==
-X-CSE-MsgGUID: FhldETG3Q/Ccl92d3P9sRQ==
+ 27 May 2025 18:58:59 -0700
+X-CSE-ConnectionGUID: 2jqltp5rQrmEgMzQFS7rCg==
+X-CSE-MsgGUID: 6FPpUK/kScWBz5TqruZd4Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,319,1739865600"; d="scan'208";a="143404309"
+X-IronPort-AV: E=Sophos;i="6.15,319,1739865600"; d="scan'208";a="143404351"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
  ([10.124.247.1])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2025 18:58:16 -0700
-Message-ID: <96020763-36b1-465b-843c-e2257489e9dc@intel.com>
-Date: Wed, 28 May 2025 09:58:11 +0800
+ 27 May 2025 18:58:54 -0700
+Message-ID: <cb34e13d-2920-461d-8509-8b529d69d599@intel.com>
+Date: Wed, 28 May 2025 09:58:51 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/19] hw/i386/pc: Remove deprecated pc-q35-2.4 and
- pc-i440fx-2.4 machines
+Subject: Re: [PATCH v4 02/19] hw/i386/pc: Remove
+ PCMachineClass::broken_reserved_end field
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Yanan Wang <wangyanan55@huawei.com>, Kevin Wolf <kwolf@redhat.com>,
@@ -64,10 +64,10 @@ Cc: Yanan Wang <wangyanan55@huawei.com>, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>
 References: <20250512083948.39294-1-philmd@linaro.org>
- <20250512083948.39294-2-philmd@linaro.org>
+ <20250512083948.39294-3-philmd@linaro.org>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250512083948.39294-2-philmd@linaro.org>
+In-Reply-To: <20250512083948.39294-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.15; envelope-from=xiaoyao.li@intel.com;
@@ -96,12 +96,9 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/12/2025 4:39 PM, Philippe Mathieu-Daudé wrote:
-> These machines has been supported for a period of more than 6 years.
-> According to our versioned machine support policy (see commit
-> ce80c4fa6ff "docs: document special exception for machine type
-> deprecation & removal") they can now be removed.
-> 
-> Remove the qtest in test-x86-cpuid-compat.c file.
+> The PCMachineClass::broken_reserved_end field was only used
+> by the pc-q35-2.4 and pc-i440fx-2.4 machines, which got removed.
+> Remove it and simplify pc_memory_init().
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
@@ -111,80 +108,55 @@ On 5/12/2025 4:39 PM, Philippe Mathieu-Daudé wrote:
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
 > ---
->   hw/i386/pc_piix.c                   | 13 -------------
->   hw/i386/pc_q35.c                    | 13 -------------
->   tests/qtest/test-x86-cpuid-compat.c | 14 --------------
->   3 files changed, 40 deletions(-)
+>   include/hw/i386/pc.h |  1 -
+>   hw/i386/pc.c         | 13 +++++--------
+>   2 files changed, 5 insertions(+), 9 deletions(-)
 > 
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index 0dce512f184..04213b45b44 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -791,19 +791,6 @@ static void pc_i440fx_machine_2_5_options(MachineClass *m)
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index 9563674e2da..f4a874b17fc 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -107,7 +107,6 @@ struct PCMachineClass {
+>       /* RAM / address space compat: */
+>       bool gigabyte_align;
+>       bool has_reserved_memory;
+> -    bool broken_reserved_end;
+>       bool enforce_amd_1tb_hole;
+>       bool isa_bios_alias;
 >   
->   DEFINE_I440FX_MACHINE(2, 5);
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 70656157ca0..c8bb4a3ee47 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -999,14 +999,13 @@ void pc_memory_init(PCMachineState *pcms,
 >   
-> -static void pc_i440fx_machine_2_4_options(MachineClass *m)
-> -{
-> -    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+>       if (machine->device_memory) {
+>           uint64_t *val = g_malloc(sizeof(*val));
+> -        uint64_t res_mem_end = machine->device_memory->base;
 > -
-> -    pc_i440fx_machine_2_5_options(m);
-> -    m->hw_version = "2.4.0";
-> -    pcmc->broken_reserved_end = true;
-> -    compat_props_add(m->compat_props, hw_compat_2_4, hw_compat_2_4_len);
-> -    compat_props_add(m->compat_props, pc_compat_2_4, pc_compat_2_4_len);
-> -}
-> -
-> -DEFINE_I440FX_MACHINE(2, 4);
-> -
->   #ifdef CONFIG_ISAPC
->   static void isapc_machine_options(MachineClass *m)
->   {
-> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index c538b3d05b4..47e12602413 100644
-> --- a/hw/i386/pc_q35.c
-> +++ b/hw/i386/pc_q35.c
-> @@ -685,16 +685,3 @@ static void pc_q35_machine_2_5_options(MachineClass *m)
->   }
+> -        if (!pcmc->broken_reserved_end) {
+> -            res_mem_end += memory_region_size(&machine->device_memory->mr);
+> -        }
+> +        uint64_t res_mem_end;
 >   
->   DEFINE_Q35_MACHINE(2, 5);
-> -
-> -static void pc_q35_machine_2_4_options(MachineClass *m)
-> -{
-> -    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-> -
-> -    pc_q35_machine_2_5_options(m);
-> -    m->hw_version = "2.4.0";
-> -    pcmc->broken_reserved_end = true;
-> -    compat_props_add(m->compat_props, hw_compat_2_4, hw_compat_2_4_len);
-> -    compat_props_add(m->compat_props, pc_compat_2_4, pc_compat_2_4_len);
-> -}
-> -
-> -DEFINE_Q35_MACHINE(2, 4);
-> diff --git a/tests/qtest/test-x86-cpuid-compat.c b/tests/qtest/test-x86-cpuid-compat.c
-> index c9de47bb269..456e2af6657 100644
-> --- a/tests/qtest/test-x86-cpuid-compat.c
-> +++ b/tests/qtest/test-x86-cpuid-compat.c
-> @@ -365,20 +365,6 @@ int main(int argc, char **argv)
->                          "level", 10);
+>           if (pcms->cxl_devices_state.is_enabled) {
+>               res_mem_end = cxl_resv_end;
+> +        } else {
+> +            res_mem_end = machine->device_memory->base
+> +                          + memory_region_size(&machine->device_memory->mr);
+>           }
+>           *val = cpu_to_le64(ROUND_UP(res_mem_end, 1 * GiB));
+>           fw_cfg_add_file(fw_cfg, "etc/reserved-memory-end", val, sizeof(*val));
+> @@ -1044,9 +1043,7 @@ uint64_t pc_pci_hole64_start(void)
+>           hole64_start = pc_get_cxl_range_end(pcms);
+>       } else if (pcmc->has_reserved_memory && (ms->ram_size < ms->maxram_size)) {
+>           pc_get_device_memory_range(pcms, &hole64_start, &size);
+> -        if (!pcmc->broken_reserved_end) {
+> -            hole64_start += size;
+> -        }
+> +        hole64_start += size;
+>       } else {
+>           hole64_start = pc_above_4g_end(pcms);
 >       }
->   
-> -    /*
-> -     * xlevel doesn't have any feature that triggers auto-level
-> -     * code on old machine-types.  Just check that the compat code
-> -     * is working correctly:
-> -     */
-> -    if (qtest_has_machine("pc-i440fx-2.4")) {
-> -        add_cpuid_test("x86/cpuid/xlevel-compat/pc-i440fx-2.4/npt-off",
-> -                       "SandyBridge", NULL, "pc-i440fx-2.4",
-> -                       "xlevel", 0x80000008);
-> -        add_cpuid_test("x86/cpuid/xlevel-compat/pc-i440fx-2.4/npt-on",
-> -                       "SandyBridge", "svm=on,npt=on", "pc-i440fx-2.4",
-> -                       "xlevel", 0x80000008);
-> -    }
-> -
->       /* Test feature parsing */
->       add_feature_test("x86/cpuid/features/plus",
->                        "486", "+arat",
 
 
