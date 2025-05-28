@@ -2,67 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA0AAC6961
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9E3AC695E
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:35:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKG0G-0005fg-VE; Wed, 28 May 2025 08:35:29 -0400
+	id 1uKFyK-0003h6-Jy; Wed, 28 May 2025 08:33:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uKG0B-0005Yw-4w
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:35:23 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uKG05-0006J9-Tn
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:35:22 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b6pfv1vtgz6L5Gp;
- Wed, 28 May 2025 20:27:35 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id B04791402F1;
- Wed, 28 May 2025 20:31:08 +0800 (CST)
-Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 28 May
- 2025 14:31:08 +0200
-Date: Wed, 28 May 2025 13:31:06 +0100
-To: Arpit Kumar <arpit1.kumar@samsung.com>
-CC: "Michael S. Tsirkin" <mst@redhat.com>, <linux-cxl@vger.kernel.org>,
- <qemu-devel@nongnu.org>, <linuxarm@huawei.com>, <fan.ni@samsung.com>, Yuquan
- Wang <wangyuquan1236@phytium.com.cn>, Sweta Kumari <s5.kumari@samsung.com>,
- Vinayak Holikatti <vinayak.kh@samsung.com>, Davidlohr Bueso
- <dave@stgolabs.net>, Ajay Joshi <ajay.opensrc@micron.com>, <cpgs@samsung.com>
-Subject: Re: [PATCH qemu 7/8] hw/cxl/cxl-mailbox-utils: Added support for
- Get Log Capabilities (Opcode 0402h)
-Message-ID: <20250528133106.000003c8@huawei.com>
-In-Reply-To: <1983025922.01747408682214.JavaMail.epsvc@epcpadp2new>
-References: <20250305092501.191929-1-Jonathan.Cameron@huawei.com>
- <20250305092501.191929-8-Jonathan.Cameron@huawei.com>
- <20250512043011-mutt-send-email-mst@kernel.org>
- <20250512093638-mutt-send-email-mst@kernel.org>
- <20250512174038.00000beb@huawei.com>
- <CGME20250516134255epcas5p378dda7fbda7db62fe73cc6163c5e7043@epcas5p3.samsung.com>
- <1983025922.01747408682214.JavaMail.epsvc@epcpadp2new>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1uKFy6-0003gm-Uo
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:33:17 -0400
+Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1uKFy4-0006Sv-6d
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:33:14 -0400
+Received: by mail-il1-x136.google.com with SMTP id
+ e9e14a558f8ab-3dca2473129so29058655ab.2
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 05:33:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1748435588; x=1749040388; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3j3/o5BoYowqUJs4XPYD0SZrczS7NCeXUBn7+U+nn8o=;
+ b=oYKhzh5IJL3I4ylC8sr+OApRcDG3rGf/I4/3LkREf7Q+LmOmoZ81RMdm3llnxtM4kF
+ qz1og1vOJsV1ggf498PkKoBA4gXqLmo454wlSnhMyLyxKaktus8b80mQQmupgYhGOjIT
+ oZKr/H3zq1csDl3r2oghWSk3zM1d1stPiJuWg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748435588; x=1749040388;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3j3/o5BoYowqUJs4XPYD0SZrczS7NCeXUBn7+U+nn8o=;
+ b=AZ8+N4Lo2yKau+WS8QlefncZ1ev4IK6H1XRtH8o6Npui4x8haSeC9MkCdMOi8zDnCh
+ DHJ0OZRgsS7K4V2coXUCVcHdjnjVmfm0KTFdh55BQD6UPQn83SWNFDfVn78QGKYg0u1o
+ 6UDeDI51vtsBqOCf+jU66QubmJwTNSAdMvprNzU6G18ztW5zrXX/QCDgJruRG+n5NCK6
+ UGlOydKyPNB70fo0D8MhSJKlvqCIzV+ZVRQBZ8cgFKG2jKYWdBaFCkGuJ53VmFQruT8j
+ ao986IFhois7+/hFhSk4wsZBIMPErZaR/p5m8AIWGC9kR+XZVSTsLF0a1iOAS63vbYL1
+ UK0Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV9/mV8qyUft4AwFIngvaN6lJs9MNZvbmzoBusMCtPrEvf4CttDsVw9KBZt9xDnufuqzgK24DQBVlFn@nongnu.org
+X-Gm-Message-State: AOJu0YxbeiGEMKnXAJUT/L7DalNl29rXYKrQGc0iD2LPYg1guDSvgWEV
+ TTxPl06SeOF5Nsado9CnEj8+TekKhdx17Jjjo9PjZy2Wn1hfkivpx+SHeEEiu7i48A==
+X-Gm-Gg: ASbGncsWh97RlkQSjR23snvx7A0s9vUO9I/D+Nnwwzdy6siJNgnGRpf03lsYtslXeMQ
+ DAaq8XwXPxnperzUwNt8CKigD0BJm2uG4Ed5bciWnS1vjEzoUfplco7IiRaxaVfJG+8Kpa+6iHv
+ tprCqWxtGjHRLgjRZdO03g3iTTbcQip++ccm2wwnkUfnbsgdF8bj3tyDoec57c7qs1A7ADB6eNK
+ sqK2d2QuPeg8kqoYKgIILafxZ/eofRny15hVCOuhc2ry13+KVHj2F/pnE3l8raROGR/4kJzf7vd
+ FsOs3pM2h9qqis4fkFLjKMnL740NOhS9x6AFAeUduzVXVEOXo1C/BYUbfkVL9rVeQHJGXmCxzdU
+ q6R76SkNVlkIT
+X-Google-Smtp-Source: AGHT+IHtUUFfM0J24Pjg8sebM6hcF7WXtmSETRamzUx4UXP2gOaAuoMhyYWBdGHDydYaACWcR/1rPQ==
+X-Received: by 2002:a05:6e02:5:b0:3dc:8058:ddfc with SMTP id
+ e9e14a558f8ab-3dc9b6f650amr178836845ab.11.1748435588531; 
+ Wed, 28 May 2025 05:33:08 -0700 (PDT)
+Received: from chromium.org (c-73-203-119-151.hsd1.co.comcast.net.
+ [73.203.119.151]) by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-4fdbd4bb408sm205972173.58.2025.05.28.05.33.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 May 2025 05:33:07 -0700 (PDT)
+From: Simon Glass <sjg@chromium.org>
+To: U-Boot Mailing List <u-boot@lists.denx.de>
+Cc: =?UTF-8?q?Fran=C3=A7ois=20Ozog?= <francois.ozog@linaro.org>,
+ Tom Rini <trini@konsulko.com>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Bill Mills <bill.mills@linaro.org>, Raymond Mao <raymond.mao@linaro.org>,
+ Heinrich Schuchardt <xypron.glpk@gmx.de>,
+ Andrew Phelps <andrew.phelps@canonical.com>,
+ Simon Glass <sjg@chromium.org>, Alexander Graf <agraf@csgraf.de>,
+ Boyan Karatotev <boyan.karatotev@arm.com>,
+ Evgeny Bachinin <EABachinin@salutedevices.com>,
+ Fabio Estevam <festevam@gmail.com>,
+ Harrison Mutai <harrison.mutai@arm.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Liviu Dudau <liviu.dudau@foss.arm.com>, Liya Huang <1425075683@qq.com>,
+ =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+ =?UTF-8?q?Marek=20Moj=C3=ADk?= <marek.mojik@nic.cz>,
+ Marek Vasut <marex@denx.de>, Matthias Brugger <mbrugger@suse.com>,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ Nathan Barrett-Morrison <nathan.morrison@timesys.com>,
+ Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
+ Patrick Delaunay <patrick.delaunay@foss.st.com>,
+ Patrick Rudolph <patrick.rudolph@9elements.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Rasmus Villemoes <ravi@prevas.dk>,
+ Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>,
+ Sean Anderson <seanga2@gmail.com>, Stefan Roese <sr@denx.de>,
+ Stefano Babic <sbabic@nabladev.com>,
+ Sughosh Ganu <sughosh.ganu@linaro.org>,
+ Svyatoslav Ryhel <clamor95@gmail.com>,
+ Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>,
+ =?UTF-8?q?Vincent=20Stehl=C3=A9?= <vincent.stehle@arm.com>,
+ Xu Zhang <423756212@qq.com>, qemu-devel@nongnu.org
+Subject: [PATCH v5 00/25] passage: Define a standard for firmware data flow
+Date: Wed, 28 May 2025 06:32:02 -0600
+Message-ID: <20250528123236.1138632-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::136;
+ envelope-from=sjg@chromium.org; helo=mail-il1-x136.google.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,291 +118,223 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 16 May 2025 19:12:45 +0530
-Arpit Kumar <arpit1.kumar@samsung.com> wrote:
 
-> On 12/05/25 05:40PM, Jonathan Cameron wrote:
-> >On Mon, 12 May 2025 09:37:07 -0400
-> >"Michael S. Tsirkin" <mst@redhat.com> wrote:
-> > =20
-> >> On Mon, May 12, 2025 at 04:42:41AM -0400, Michael S. Tsirkin wrote: =20
-> >> > On Wed, Mar 05, 2025 at 09:24:58AM +0000, Jonathan Cameron wrote: =20
-> >> > > From: Arpit Kumar <arpit1.kumar@samsung.com>
-> >> > >
-> >> > > CXL spec 3.2 section 8.2.10.5.3 describes Get Log Capabilities.
-> >> > > It provides log capabilities supported by specified log.
-> >> > >
-> >> > > Signed-off-by: Arpit Kumar <arpit1.kumar@samsung.com>
-> >> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >> > > ---
-> >> > >  include/hw/cxl/cxl_device.h  | 20 ++++++++++++++++
-> >> > >  include/hw/cxl/cxl_mailbox.h |  5 ++++
-> >> > >  hw/cxl/cxl-mailbox-utils.c   | 45 +++++++++++++++++++++++++++++++=
-+++++
-> >> > >  3 files changed, 70 insertions(+)
-> >> > >
-> >> > > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_devi=
-ce.h
-> >> > > index ed6cd50c67..87a376c982 100644
-> >> > > --- a/include/hw/cxl/cxl_device.h
-> >> > > +++ b/include/hw/cxl/cxl_device.h
-> >> > > @@ -133,6 +133,18 @@ typedef enum {
-> >> > >      CXL_MBOX_MAX =3D 0x20
-> >> > >  } CXLRetCode;
-> >> > >
-> >> > > +/* types of logs */
-> >> > > +typedef enum {
-> >> > > +    CXL_LOG_COMMAND_EFFECT,
-> >> > > +    CXL_LOG_VENDOR_DEBUG,
-> >> > > +    CXL_LOG_COMPONENT_STATE_DUMP,
-> >> > > +    CXL_LOG_ERROR_CHECK_SCRUB,
-> >> > > +    CXL_LOG_MEDIA_TEST_CAPABILITY,
-> >> > > +    CXL_LOG_MEDIA_TEST_RESULTS_SHORT,
-> >> > > +    CXL_LOG_MEDIA_TEST_RESULTS_LONG,
-> >> > > +    MAX_LOG_TYPE
-> >> > > +} CXLLogType;
-> >> > > +
-> >> > >  typedef struct CXLCCI CXLCCI;
-> >> > >  typedef struct cxl_device_state CXLDeviceState;
-> >> > >  struct cxl_cmd;
-> >> > > @@ -163,6 +175,11 @@ typedef struct CXLEventLog {
-> >> > >      QSIMPLEQ_HEAD(, CXLEvent) events;
-> >> > >  } CXLEventLog;
-> >> > >
-> >> > > +typedef struct CXLLogCapabilities {
-> >> > > +    uint32_t param_flags;
-> >> > > +    QemuUUID uuid;
-> >> > > +} CXLLogCapabilities;
-> >> > > +
-> >> > >  typedef struct CXLCCI {
-> >> > >      struct cxl_cmd cxl_cmd_set[256][256];
-> >> > >      struct cel_log {
-> >> > > @@ -171,6 +188,9 @@ typedef struct CXLCCI {
-> >> > >      } cel_log[1 << 16];
-> >> > >      size_t cel_size;
-> >> > >
-> >> > > +    /* get log capabilities */
-> >> > > +    const CXLLogCapabilities *supported_log_cap;
-> >> > > +
-> >> > >      /* background command handling (times in ms) */
-> >> > >      struct {
-> >> > >          uint16_t opcode;
-> >> > > diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mai=
-lbox.h
-> >> > > index 9008402d1c..8e1c7c5f15 100644
-> >> > > --- a/include/hw/cxl/cxl_mailbox.h
-> >> > > +++ b/include/hw/cxl/cxl_mailbox.h
-> >> > > @@ -16,4 +16,9 @@
-> >> > >  #define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
-> >> > >  #define CXL_MBOX_BACKGROUND_OPERATION_ABORT (1 << 7)
-> >> > >
-> >> > > +#define CXL_LOG_CAP_CLEAR_SUPPORTED (1 << 0)
-> >> > > +#define CXL_LOG_CAP_POPULATE_SUPPORTED (1 << 1)
-> >> > > +#define CXL_LOG_CAP_AUTO_POPULATE_SUPPORTED (1 << 2)
-> >> > > +#define CXL_LOG_CAP_PERSISTENT_COLD_RESET_SUPPORTED (1 << 3)
-> >> > > +
-> >> > >  #endif
-> >> > > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils=
-.c
-> >> > > index 299f232f26..f35fc4f112 100644
-> >> > > --- a/hw/cxl/cxl-mailbox-utils.c
-> >> > > +++ b/hw/cxl/cxl-mailbox-utils.c
-> >> > > @@ -81,6 +81,7 @@ enum {
-> >> > >      LOGS        =3D 0x04,
-> >> > >          #define GET_SUPPORTED 0x0
-> >> > >          #define GET_LOG       0x1
-> >> > > +        #define GET_LOG_CAPABILITIES   0x2
-> >> > >      FEATURES    =3D 0x05,
-> >> > >          #define GET_SUPPORTED 0x0
-> >> > >          #define GET_FEATURE   0x1
-> >> > > @@ -1068,6 +1069,43 @@ static CXLRetCode cmd_logs_get_log(const st=
-ruct cxl_cmd *cmd,
-> >> > >      return CXL_MBOX_SUCCESS;
-> >> > >  }
-> >> > >
-> >> > > +static const struct CXLLogCapabilities *find_log_index(QemuUUID *=
-uuid, CXLCCI *cci)
-> >> > > +{
-> >> > > +    for (int i =3D CXL_LOG_COMMAND_EFFECT; i < MAX_LOG_TYPE; i++)=
- {
-> >> > > +        if (qemu_uuid_is_equal(uuid,
-> >> > > +            &cci->supported_log_cap[i].uuid)) {
-> >> > > +                return &cci->supported_log_cap[i];
-> >> > > +        }
-> >> > > +    }
-> >> > > +    return NULL;
-> >> > > +}
-> >> > > +
-> >> > > +/* CXL r3.2 Section 8.2.10.5.3: Get Log Capabilities (Opcode 0402=
-h) */
-> >> > > +static CXLRetCode cmd_logs_get_log_capabilities(const struct cxl_=
-cmd *cmd,
-> >> > > +                                                uint8_t *payload_=
-in,
-> >> > > +                                                size_t len_in,
-> >> > > +                                                uint8_t *payload_=
-out,
-> >> > > +                                                size_t *len_out,
-> >> > > +                                                CXLCCI *cci)
-> >> > > +{
-> >> > > +    const CXLLogCapabilities *cap;
-> >> > > +    struct {
-> >> > > +        QemuUUID uuid;
-> >> > > +    } QEMU_PACKED QEMU_ALIGNED(8) *get_log_capabilities_in =3D (v=
-oid *)payload_in;
-> >> > > +
-> >> > > +    uint32_t *get_log_capabilities_out =3D (uint32_t *)payload_ou=
-t;
-> >> > > +
-> >> > > +    cap =3D find_log_index(&get_log_capabilities_in->uuid, cci);
-> >> > > +    if (!cap) {
-> >> > > +        return CXL_MBOX_INVALID_LOG;
-> >> > > +    }
-> >> > > +
-> >> > > +    memcpy(get_log_capabilities_out, &cap->param_flags,
-> >> > > +           sizeof(cap->param_flags));
-> >> > > +    *len_out =3D sizeof(*get_log_capabilities_out);
-> >> > > +    return CXL_MBOX_SUCCESS;
-> >> > > +}
-> >> > > +
-> >> > >  /* CXL r3.1 section 8.2.9.6: Features */
-> >> > >  /*
-> >> > >   * Get Supported Features output payload
-> >> > > @@ -3253,6 +3291,8 @@ static const struct cxl_cmd cxl_cmd_set[256]=
-[256] =3D {
-> >> > >      [LOGS][GET_SUPPORTED] =3D { "LOGS_GET_SUPPORTED", cmd_logs_ge=
-t_supported,
-> >> > >                                0, 0 },
-> >> > >      [LOGS][GET_LOG] =3D { "LOGS_GET_LOG", cmd_logs_get_log, 0x18,=
- 0 },
-> >> > > +    [LOGS][GET_LOG_CAPABILITIES] =3D { "LOGS_GET_LOG_CAPABILITIES=
-",
-> >> > > +                                     cmd_logs_get_log_capabilitie=
-s, 0x10, 0 },
-> >> > >      [FEATURES][GET_SUPPORTED] =3D { "FEATURES_GET_SUPPORTED",
-> >> > >                                    cmd_features_get_supported, 0x8=
-, 0 },
-> >> > >      [FEATURES][GET_FEATURE] =3D { "FEATURES_GET_FEATURE",
-> >> > > @@ -3512,10 +3552,15 @@ static void cxl_rebuild_cel(CXLCCI *cci)
-> >> > >      }
-> >> > >  }
-> >> > >
-> >> > > +static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TY=
-PE] =3D {
-> >> > > +    [CXL_LOG_COMMAND_EFFECT] =3D { .param_flags =3D 0, .uuid =3D =
-cel_uuid },
-> >> > > +};
-> >> > > + =20
-> >> >
-> >> >
-> >> > causes ci build failures:
-> >> >
-> >> > https://gitlab.com/mstredhat/qemu/-/jobs/9999980051
-> >> >
-> >> > ../hw/cxl/cxl-mailbox-utils.c:3556:60: error: initializer element is=
- not constant
-> >> >      [CXL_LOG_COMMAND_EFFECT] =3D { .param_flags =3D 0, .uuid =3D ce=
-l_uuid },
-> >> >                                                             ^~~~~~~~
-> >> > ../hw/cxl/cxl-mailbox-utils.c:3556:60: note: (near initialization fo=
-r =E2=80=98cxl_get_log_cap[0].uuid=E2=80=99)
-> >> >
-> >> >
-> >> > Fixed it up like this:
-> >> >
-> >> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> >> > index f35fc4f112..13d26e391b 100644
-> >> > --- a/hw/cxl/cxl-mailbox-utils.c
-> >> > +++ b/hw/cxl/cxl-mailbox-utils.c
-> >> > @@ -992,9 +992,10 @@ static CXLRetCode cmd_timestamp_set(const struc=
-t cxl_cmd *cmd,
-> >> >  }
-> >> >
-> >> >  /* CXL r3.1 Section 8.2.9.5.2.1: Command Effects Log (CEL) */
-> >> > -static const QemuUUID cel_uuid =3D {
-> >> > -    .data =3D UUID(0x0da9c0b5, 0xbf41, 0x4b78, 0x8f, 0x79,
-> >> > +#define CEL_UUID UUID(0x0da9c0b5, 0xbf41, 0x4b78, 0x8f, 0x79, \
-> >> >                   0x96, 0xb1, 0x62, 0x3b, 0x3f, 0x17)
-> >> > +static const QemuUUID cel_uuid =3D {
-> >> > +    .data =3D CEL_UUID
-> >> >  };
-> >> >
-> >> >  /* CXL r3.1 Section 8.2.9.5.1: Get Supported Logs (Opcode 0400h) */
-> >> > @@ -3553,7 +3554,7 @@ static void cxl_rebuild_cel(CXLCCI *cci)
-> >> >  }
-> >> >
-> >> >  static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TYPE=
-] =3D {
-> >> > -    [CXL_LOG_COMMAND_EFFECT] =3D { .param_flags =3D 0, .uuid =3D ce=
-l_uuid },
-> >> > +    [CXL_LOG_COMMAND_EFFECT] =3D { .param_flags =3D 0, .uuid =3D CE=
-L_UUID },
-> >> >  };
-> >> >
-> >> >  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-> >> > =20
-> >>
-> >>
-> >> Actually no, does not help either. Dropped for now.
-> >> Next patch does not depend on this one, right? =20
-> >
-> >Indeed. Unrelated.
-> >
-> >Thanks,
-> >
-> >J =20
->=20
-> Thanks for pointing this out. The code builds successfully on my setup
-> with gcc version: 11.4.0. However, it fails to compile on gcc 7.5.0
-> "cc (SUSE Linux) 7.5.0" as used by Michael. This could be a compiler
-> issue as per the link:
-> https://stackoverflow.com/questions/54135942/why-initializer-
-> element-is-not-a-constant-is-not-working-anymore.
->=20
-> My setup doesn't allow me to regenerate the error using lower version
-> of compiler. A probable fix to it would be
-> type casting cel_uuid as: [CXL_LOG_COMMAND_EFFECT] =3D
-> { .param_flags =3D 0,.uuid =3D (QemuUUID)cel_uuid }. It will be helpful
-> if you could test the same.
+This series adds a standard way of passing information between different
+firmware phases. This already exists in U-Boot at a very basic level, in
+the form of a bloblist containing an spl_handoff structure, but the intent
+here is to define something useful across projects.
 
-I wonder if we are better off just filling it in in cxl_init_cci()
-So change the type of the element in struct CXLCCI to
-CXLLogCapabiliites supported_log_cap[MAX_LOGS];
+The need for this is growing as firmware fragments into multiple binaries
+each with its own purpose. Without any run-time connection, we must rely
+on build-time settings which are brittle and painful to keep in sync.
 
-then assign the elements at runtime.
+This feature is named 'standard passage' since the name is more unique
+than many others that could be chosen, it is a passage in the sense that
+information is flowing from one place to another and it is standard,
+because that is what we want to create.
 
-That should avoid any issues with whether it is const or not at the
-cost of a little more code.
+The implementation is mostly a pointer to a bloblist in a register, with
+an extra register to point to a devicetree, for more complex data. This
+should cover all cases (small memory footprint as well as complex data
+flow) and be easy enough to implement on all architectures.
 
->=20
-> Also, In the existing code,
-> function: cmd_logs_get_supported(), cel_uuid(const) is assigned to a
-> non-const variable but I am unsure of why it is not throwing an error.
+The emphasis is on enabling open communcation between binaries, not
+enabling passage of secret, undocumented data, although this is possible
+in a private environment.
 
-Isn't it just copying the content which should be fine?
+To try this out:
 
->=20
-> Thanks,
-> Arpit
-> >> =20
-> >> > >  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-> >> > >  {
-> >> > >      cci->payload_max =3D payload_max;
-> >> > >      cxl_rebuild_cel(cci);
-> >> > > +    cci->supported_log_cap =3D cxl_get_log_cap;
-> >> > >
-> >> > >      cci->bg.complete_pct =3D 0;
-> >> > >      cci->bg.starttime =3D 0;
-> >> > > --
-> >> > > 2.43.0 =20
-> >>
-> >> =20
-> > =20
->=20
+$ ./scripts/build-qemu -a arm -rsx
 
+This will build and run QEMU for arm64 and you should see the standdard
+passage working:
+
+   Core:  49 devices, 13 uclasses, devicetree: passage
+
+This series is available at u-boot-dm/pass-working
+
+Changes in v5:
+- Add RFC for test script
+- Add new patch to drop bloblist_maybe_init()
+- Enable the test for any board which uses OF_PASSAGE
+- Use OF_PASSAGE here instead of OF_BLOBLIST
+
+Changes in v4:
+- Add new patch to update vexpress_fvp to use the new Kconfig options
+- Drop now-unused label
+- Fix 'to' typo
+- Update commit message to indicate this can only be for ARM at present
+- Update commit message to mention why save_boot_params() is not used
+
+Changes in v3:
+- Add a build for aarch64 as well
+- Add conditions to avoid enaling the test on qemu_arm_sbsa
+- Add mention of QEMU_MANUAL_DTB in doc/
+- Add new patch to adjust how the bloblist is received from stdpass
+- Add new patch to redo how a devicetree is set up
+- Add passage_valid() to decide if stdpass was provided
+- Add support for a 64-bit test also
+- Add support for aarch64 also
+- Add test for aarch64
+- Add tests for azure
+- Drop common.h
+- Fix 'that' typo
+- Fix 'usiing' typo
+- Make the global_data fields present only when needed
+- Move arch_passage_entry() into this patch
+- Move passage.h into this patch
+- Rebase to -master
+- Refresh the U-Boot output in the documentation
+- Update docs for the various code changes
+- Update registers to match the Firmware Handoff protocol
+- Use bootph tags
+
+Changes in v2:
+- Add a devicetree for qemu-arm so that qemu_arm_spl can work
+- Add a new QEMU-specific Kconfig instead
+- Add comments about how to pass standard passage to EFI
+- Add comments about passing a bloblist to Linux
+- Add detailed arch-specific information
+- Add new patch with the arm-specific standard passage implementation
+- Fix 'it' typo
+- Make the stdpass calling standard arch-specific
+- Move patch into the standard-passage series
+- Rebase on -master
+- Rebase to master
+- Rebase to master (dropping bloblist patches already applied)
+- Rework global_data for new stdpass convention
+- Split the jump_to_image_no_args() change into its own patch
+- Update the commit message to mention the long lines
+- Use three registers instead of two for the entry
+
+Simon Glass (25):
+  RFC: scripts: Add scripts for running QEMU
+  RFC: scripts: build-qemu: Support xPL with ARM
+  emulation: fdt: Allow using U-Boot's device tree with QEMU
+  spl: Tidy up the header includes
+  x86: Move Intel GNVS file into the common include directory
+  spl: Rename jump_to_image_no_args()
+  passage: Support an incoming passage
+  fdt: Redo devicetree setup
+  fdt: Support reading FDT from standard passage
+  bloblist: Adjust how the bloblist is received from passage
+  bloblist: Drop bloblist_maybe_init()
+  passage: arm: Accept a passage from the previous phase
+  passage: spl: Support adding the dtb to the passage bloblist
+  passage: spl: Support passing the passage to U-Boot
+  passage: arm: Add the arch-specific standard passage impl
+  vexpress_fvp: Update to use the new Kconfig options
+  arm: qemu: Add an SPL build
+  arm: qemu: Add a 64-bit SPL build
+  xferlist: Drop old xferlist code
+  passage: Add a qemu test for ARM
+  sandbox: Add a way of checking structs for standard passage
+  passage: Add documentation
+  passage: Add docs for spl_handoff
+  passage: Add checks for pre-existing blobs
+  CI: Add tests for gitlab and azure
+
+ .azure-pipelines.yml                          |   6 +
+ .gitlab-ci.yml                                |  12 +
+ MAINTAINERS                                   |  10 +
+ Makefile                                      |   2 +-
+ arch/arm/Kconfig                              |   2 +-
+ arch/arm/cpu/armv7/cpu.c                      |  18 +
+ arch/arm/cpu/armv7/start.S                    |  10 +-
+ arch/arm/cpu/armv8/cpu.c                      |  19 +
+ arch/arm/cpu/armv8/start.S                    |  12 +
+ arch/arm/dts/qemu-arm-u-boot.dtsi             |  22 +
+ arch/arm/dts/qemu-arm.dts                     | 393 +++++++++++++++-
+ arch/arm/dts/qemu-arm64-u-boot.dtsi           |  29 ++
+ arch/arm/dts/qemu-arm64.dts                   | 387 +++++++++++++++-
+ arch/arm/lib/Makefile                         |   1 -
+ arch/arm/lib/crt0.S                           |   6 +
+ arch/arm/lib/crt0_64.S                        |   6 +
+ arch/arm/lib/xferlist.c                       |  23 -
+ arch/arm/lib/xferlist.h                       |  19 -
+ arch/arm/mach-imx/imx8ulp/soc.c               |   2 +-
+ arch/arm/mach-imx/spl.c                       |   2 +-
+ arch/arm/mach-omap2/boot-common.c             |   2 +-
+ arch/arm/mach-qemu/Kconfig                    |  20 +-
+ arch/arm/mach-tegra/spl.c                     |   2 +-
+ arch/mips/lib/spl.c                           |   2 +-
+ arch/riscv/lib/spl.c                          |   2 +-
+ arch/sandbox/cpu/spl.c                        |   4 +-
+ arch/x86/cpu/apollolake/acpi.c                |   2 +-
+ arch/x86/cpu/intel_common/acpi.c              |   2 +-
+ .../include/asm/arch-apollolake/global_nvs.h  |   2 +-
+ arch/x86/lib/spl.c                            |   2 +-
+ arch/x86/lib/tpl.c                            |   2 +-
+ board/emulation/common/Kconfig                |  12 +
+ board/emulation/qemu-arm/Kconfig              |  29 +-
+ board/emulation/qemu-arm/MAINTAINERS          |  14 +-
+ board/emulation/qemu-arm/Makefile             |   1 +
+ board/emulation/qemu-arm/qemu-arm.c           |   3 +
+ board/emulation/qemu-arm/spl.c                |  26 ++
+ board/freescale/common/fsl_chain_of_trust.c   |   2 +-
+ board/google/chromebook_coral/coral.c         |   2 +-
+ board/renesas/common/rcar64-spl.c             |   2 +-
+ board/sandbox/Makefile                        |   3 +-
+ board/sandbox/stdpass_check.c                 | 104 +++++
+ common/Kconfig                                |  58 ++-
+ common/bloblist.c                             | 116 ++---
+ common/board_f.c                              |  17 +-
+ common/spl/spl.c                              | 112 +++--
+ configs/qemu_arm64_spl_defconfig              |  95 ++++
+ configs/qemu_arm_spl_defconfig                |  88 ++++
+ configs/vexpress_fvp_bloblist_defconfig       |   4 +-
+ doc/board/armltd/vexpress64.rst               |   2 +-
+ doc/board/emulation/qemu-arm.rst              |  84 ++++
+ doc/develop/bloblist.rst                      |   4 +-
+ doc/develop/devicetree/dt_qemu.rst            |   8 +
+ doc/develop/index.rst                         |   1 +
+ doc/develop/std_passage.rst                   | 384 ++++++++++++++++
+ drivers/usb/gadget/f_sdp.c                    |   2 +-
+ dts/Kconfig                                   |  17 +-
+ env/common.c                                  |   2 +-
+ include/asm-generic/global_data.h             |  37 ++
+ include/bloblist.h                            |  42 +-
+ include/fdtdec.h                              |   4 +-
+ include/handoff.h                             |  10 +-
+ .../x86/include/asm => include}/intel_gnvs.h  |   0
+ include/passage.h                             |  53 +++
+ include/spl.h                                 |   4 +-
+ include/stdpass/README                        |   4 +
+ include/stdpass/tpm2_eventlog.h               |  42 ++
+ include/stdpass/vboot_ctx.h                   | 267 +++++++++++
+ lib/asm-offsets.c                             |   8 +
+ lib/fdtdec.c                                  |  43 +-
+ scripts/Makefile.xpl                          |   2 +-
+ scripts/build-efi                             | 173 +++++++
+ scripts/build-qemu                            | 424 ++++++++++++++++++
+ scripts/build_helper.py                       | 126 ++++++
+ test/py/tests/test_passage.py                 |  11 +
+ 75 files changed, 3179 insertions(+), 286 deletions(-)
+ create mode 100644 arch/arm/dts/qemu-arm-u-boot.dtsi
+ create mode 100644 arch/arm/dts/qemu-arm64-u-boot.dtsi
+ delete mode 100644 arch/arm/lib/xferlist.c
+ delete mode 100644 arch/arm/lib/xferlist.h
+ create mode 100644 board/emulation/qemu-arm/spl.c
+ create mode 100644 board/sandbox/stdpass_check.c
+ create mode 100644 configs/qemu_arm64_spl_defconfig
+ create mode 100644 configs/qemu_arm_spl_defconfig
+ create mode 100644 doc/develop/std_passage.rst
+ rename {arch/x86/include/asm => include}/intel_gnvs.h (100%)
+ create mode 100644 include/passage.h
+ create mode 100644 include/stdpass/README
+ create mode 100644 include/stdpass/tpm2_eventlog.h
+ create mode 100644 include/stdpass/vboot_ctx.h
+ create mode 100755 scripts/build-efi
+ create mode 100755 scripts/build-qemu
+ create mode 100644 scripts/build_helper.py
+ create mode 100644 test/py/tests/test_passage.py
+
+-- 
+2.43.0
+
+base-commit: 2f3766949bbea7aa5a472157561d387fd94205d2
+branch: pass5
 
