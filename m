@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEDCAC6415
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC42AC642B
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:21:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKBxQ-0000pz-0h; Wed, 28 May 2025 04:16:17 -0400
+	id 1uKBz2-00032g-AM; Wed, 28 May 2025 04:17:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvw-00080P-IC
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:46 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1uKBwC-000877-BI
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:15:02 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvn-0005GW-Kc
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:39 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-442ed8a275fso55593365e9.2
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:35 -0700 (PDT)
+ id 1uKBvq-0005Gp-LF
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:45 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-441d1ed82dbso48162275e9.0
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748420074; x=1749024874; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748420075; x=1749024875; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ODczWVFhugZyrfXTTAs5E9r1pVIS+LEQMKc+n0efkhM=;
- b=kQcqn/XnCKXuEeguocT4CnxMsF8/7A4IhSCjMzdzqi+yUvbTSwVTwXqkw64HqzwCgY
- Os9x+MoRfTniHKvDILWa/QwREjmwCcc1Pv8U/ey5of1Ex7EQ1EPXNrNVKBsyCEU4yxPQ
- 2+ShDWwgyjVTP4tGQ/Q/2iq37no4hzf3KluVmaZzl7IvhUMnArs4sdPootg3Jk8qAIW5
- EiGtojo6wGfCrtmN666ygXYTUKXZ+9UIpIidOO+bCZllStcGmKrYgubqiKMh0q0O1b1R
- JySKgKJ7hXCGMgUYbX92BA/I79rMu5kRKNJDtKHWJ9V6rJvJMEcqE8HWsYTwlBwRf3Ts
- HYAA==
+ bh=4yxK7itilT3E8IopdplzU4z6K9yD5rCY6HX2ZBd1VtI=;
+ b=ryQECT1m0cGU7opE+bp8DRO2m0GzEAlVTle/rK9ujRKcie7/WJZi3QfOz/ykI3DuBF
+ 3zrnsqAya753SOsG20Csx3+MN775VgLKfNqkXLVmR3c8S9WkI1LtXsswHjStDbpthONg
+ k43g0Yzmqt+BMquJzp7yIvbyxZ6bgSgDkZYven2tMoYJHbn1uJ7RuEJkmC9ndUmqM1Vf
+ Jv5JiuO1cMNlYCIrCU9npOagDJzsUAPTM3fsinD7sk6DVHwjiEJlpKgGz2TA/mejan5l
+ aHmDirOEkjJK1cD/UbjaxfZmgiMSBKcRtNcw0Vgc4vI1iEfEjqi9ZDfCcgwDB8ScrHKC
+ 3kdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748420074; x=1749024874;
+ d=1e100.net; s=20230601; t=1748420075; x=1749024875;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ODczWVFhugZyrfXTTAs5E9r1pVIS+LEQMKc+n0efkhM=;
- b=Ce9cbK5WC4MFe5vkauockQFdKIlbof/ENZV9zPVmgZpfucWfMwQX01pp2YTtwvjyXk
- R6DUmmrVhmmX/B/TDimU0s2Q2qpCpWtgQJk7Kjk/D+74BNOz/JXK1AoiGWt560bt9uHn
- InO+9UXqIWKFKRn14D8RuEQfQ4Xwy61b3TMU4V2Ygm0MfzmWU6jmrxdsyE6Yn6vgEFb5
- bNe+6snoiLo2t3axEuRFPRtzra3QO4G/9TWV+3il1YhwlVuU34a6ixzIQnTR17Cq3uNb
- ozk9ZtmWkQTpUBM6Hx2VExVOoG84WGenxs8mWV334LJPa+EOLifMzhZAeyiD5RZNMU64
- 50jA==
-X-Gm-Message-State: AOJu0Yz403ZCvSH67ly/OnUrYRa6rN8rCDkjEJt1AdYCjmWxLrtdfiBC
- MoTP7PrGyQKbaFYlsS8jLc/i2eUjjmksuP2xaBmmA1SzeNs15Dos1L4lUk9F+mKDqnTdjoVVZfT
- UjAmY8NauEQ==
-X-Gm-Gg: ASbGncvpZeeVGDx4rtz6vxNiooCT+NLOqwv3ze1GmpI0obzBA8K+rSpnYZdvEldA+8t
- eO4CGRZlj62X3qbOTuZECG1WqkUuX6X9HWVYKb+r1678m42HOnuix/WE2lK8PAY+cj9EZRGjnv7
- izcirePM6s4/pgLjd/4RH2BZB8C1I9/noli9PAxwxWgXUazplpPqJXHPaI3Z/esJ6GedhBoYemh
- Tzf0qkOxmzUhE2Jl7EZpi868bnoDLDCwNBUXFhhvDyYM03Lu4DvmaXF0hkFBjYPzRH71j6MGv1Z
- ls/tRTCreI/ZOsN0f3IFPXNZQsJVfWQjFTguaNXd5XF/Ftq42uoFrlTZ
-X-Google-Smtp-Source: AGHT+IEzfcHS6WWiJ2+ul4XXuWeJI51WBtKspp8e4mjc9r/fNA1XnXZE1nEgzHnmYamLV38ulwykjw==
-X-Received: by 2002:a5d:64e7:0:b0:3a4:ea40:4d64 with SMTP id
- ffacd0b85a97d-3a4ea404fcamr849888f8f.8.1748420073947; 
- Wed, 28 May 2025 01:14:33 -0700 (PDT)
+ bh=4yxK7itilT3E8IopdplzU4z6K9yD5rCY6HX2ZBd1VtI=;
+ b=KwDR5N9eFMp8TlqSaU1TWau5YTVZHJWaqscZ4PnVeN3gc46insnJsgnT16h3S0XwUr
+ Uw5ZiO0iR4ivAjfp35e5RMykuQflSy42GtWNM+CIzwUz+wL3jDTDsCSDSDX3m42J588u
+ 3MjbzejPDF9GhwUEjxIv2Q+PPA+yIKKU+BAo3AgNWa+TW1KS1qO7Awe2rPcy97KU7i+u
+ MjPryU/lFYoAn0YG9RzeNVGVj15MSt3KqD+Tfv0SClrUrUQsAblIMPQ/mCbu7dBTYOz/
+ xsLa0tRrAXDeCmVbJppTLsrkte5tf0pMyT3pxn28STtzlDbE9sGFiTywPqxiar4eYDLr
+ SolA==
+X-Gm-Message-State: AOJu0YwPGHYmGOubtQBop+Zm4QshtSh8iaJPat9Y4UBgNTjkaY5hJOyC
+ dp7wFPXDbPqeKlDAAuCMXZhrA3H0gPgGljFLAtdxuDTlSSrWE1aij//zwy3y4jLAlWwQMxPz7t4
+ muH+KmzqHAQ==
+X-Gm-Gg: ASbGncur84ph9mPZP2iB0K9D0NxlEsILMh1ddAXOh8XI3tDRPlOAACJ/Ss+UJF16JEQ
+ Ggxn7ZSoNbCQ22obdpWn5b5Td52+0BKtoxdNb1iY7+RI30YJBB4FCBkJyW+LjLUwjS2eOquGxJx
+ SkCucLeZ2G81Xd2Xswv5TrVFNCGIQ5gXj5OgSlENi7CeRGCCyZHvB29CJv5ZpbnO7jkgtamHeYk
+ Kad/olhUeWgtWDjVM/7tsFY3474GRpYsnbL++yx+6oRr2XtAaz2lTbudwXQZavzWn8pfkrvKN9B
+ 6C+l13maeYsV2+KmRAZx+Apmfz84yfEbfUMXx193Ssp3R4iAgCI826Cj
+X-Google-Smtp-Source: AGHT+IH3zMt3Dl8EYQHCB/IclC65udXelNeZ7YbKbdbANnLm0CTbXO9DlRN2j5O7xrzmEwDCbnvpjA==
+X-Received: by 2002:a05:600c:c1c8:10b0:43d:4686:5cfb with SMTP id
+ 5b1f17b1804b1-44cc0725a12mr80596445e9.27.1748420075199; 
+ Wed, 28 May 2025 01:14:35 -0700 (PDT)
 Received: from stoup.. ([195.53.115.74]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.33
+ 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 May 2025 01:14:33 -0700 (PDT)
+ Wed, 28 May 2025 01:14:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/28] target/sh4: Use MO_ALIGN for system UNALIGN()
-Date: Wed, 28 May 2025 09:13:58 +0100
-Message-ID: <20250528081410.157251-17-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 17/28] accel/tcg: Add TCGCPUOps.pointer_wrap
+Date: Wed, 28 May 2025 09:13:59 +0100
+Message-ID: <20250528081410.157251-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250528081410.157251-1-richard.henderson@linaro.org>
 References: <20250528081410.157251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -1
 X-Spam_score: -0.2
 X-Spam_bar: /
@@ -97,30 +96,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This should have been done before removing TARGET_ALIGNED_ONLY,
-as we did for hppa and alpha.
-
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Fixes: 8244189419f9 ("target/sh4: Remove TARGET_ALIGNED_ONLY")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sh4/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/accel/tcg/cpu-ops.h | 7 +++++++
+ accel/tcg/cputlb.c          | 6 ++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index bf8828fce8..70fd13aa3f 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -54,7 +54,7 @@ typedef struct DisasContext {
- #define UNALIGN(C)   (ctx->tbflags & TB_FLAG_UNALIGN ? MO_UNALN : MO_ALIGN)
- #else
- #define IS_USER(ctx) (!(ctx->tbflags & (1u << SR_MD)))
--#define UNALIGN(C)   0
-+#define UNALIGN(C)   MO_ALIGN
- #endif
+diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
+index cd22e5d5b9..83b2c2c864 100644
+--- a/include/accel/tcg/cpu-ops.h
++++ b/include/accel/tcg/cpu-ops.h
+@@ -222,6 +222,13 @@ struct TCGCPUOps {
+     bool (*tlb_fill)(CPUState *cpu, vaddr address, int size,
+                      MMUAccessType access_type, int mmu_idx,
+                      bool probe, uintptr_t retaddr);
++    /**
++     * @pointer_wrap:
++     *
++     * We have incremented @base to @result, resulting in a page change.
++     * For the current cpu state, adjust @result for possible overflow.
++     */
++    vaddr (*pointer_wrap)(CPUState *cpu, int mmu_idx, vaddr result, vaddr base);
+     /**
+      * @do_transaction_failed: Callback for handling failed memory transactions
+      * (ie bus faults or external aborts; not MMU faults)
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 86d0deb08c..81ff725cbc 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1773,6 +1773,12 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+         l->page[1].size = l->page[0].size - size0;
+         l->page[0].size = size0;
  
- /* Target-specific values for ctx->base.is_jmp.  */
++        if (cpu->cc->tcg_ops->pointer_wrap) {
++            l->page[1].addr = cpu->cc->tcg_ops->pointer_wrap(cpu, l->mmu_idx,
++                                                             l->page[1].addr,
++                                                             addr);
++        }
++
+         /*
+          * Lookup both pages, recognizing exceptions from either.  If the
+          * second lookup potentially resized, refresh first CPUTLBEntryFull.
 -- 
 2.43.0
 
