@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FABFAC7100
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E6AAC7109
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:35:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKLZl-0002a3-0g; Wed, 28 May 2025 14:32:29 -0400
+	id 1uKLZq-0002fA-OP; Wed, 28 May 2025 14:32:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZV-0002MF-Ua
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZV-0002ME-TW
  for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZL-000721-NL
- for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:10 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZR-00072M-EK
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748457120;
+ s=mimecast20190719; t=1748457122;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jbbKO/8e9ELPl17p7WOwGUUuLPNMmBDMz+pvKTsft84=;
- b=Er/qDjLRT0D2iqa0+NLOEATYxacjYm2Y2RdlstHBV8FYRLlg9VGUu1wgwQVm5epcWhNebh
- JPj3jmn1ZhAXA5Tw3NWpoa4PhkM2faitZCqNRDB090HMRDZUCMds4Mc8lLcpHsXS4ns01P
- 4Fr88INo4JhxFC81LQaMjLPg6zafVME=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=FTS2Y+wU+Xs4KfeT9aobMkZD6kSP2Ljeaav42ei1A4w=;
+ b=DhTvNVlKqLHbNkQDT5Jjc6EOlEvHC2eJP037gxhBy8tvwAz95Cy2c6mbUE4o+Pr5GoYiXc
+ fjRlqUrEXA8S7VH11GFxmkSPUYH4ASYhxd25oSFotYF1+4EULvDq89iPoqrr3hzfWz27lj
+ 636WPKvDrJdCBvEMnGe2tXuU/J5pT9U=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-489-KJDIAnvGOA-KrxDndgeuVQ-1; Wed,
- 28 May 2025 14:31:59 -0400
-X-MC-Unique: KJDIAnvGOA-KrxDndgeuVQ-1
-X-Mimecast-MFC-AGG-ID: KJDIAnvGOA-KrxDndgeuVQ_1748457118
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-7rlswJc2M1KROQyxyw1rMQ-1; Wed,
+ 28 May 2025 14:32:00 -0400
+X-MC-Unique: 7rlswJc2M1KROQyxyw1rMQ-1
+X-Mimecast-MFC-AGG-ID: 7rlswJc2M1KROQyxyw1rMQ_1748457119
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 468CA19560BC; Wed, 28 May 2025 18:31:58 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 73ECE180048E; Wed, 28 May 2025 18:31:59 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EDC1919560AA; Wed, 28 May 2025 18:31:57 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 282AA1956096; Wed, 28 May 2025 18:31:59 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B966B21E65FD; Wed, 28 May 2025 20:31:51 +0200 (CEST)
+ id BD41921E65FE; Wed, 28 May 2025 20:31:51 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 11/13] qapi: remove qapi_specific_outputs from meson.build
-Date: Wed, 28 May 2025 20:31:49 +0200
-Message-ID: <20250528183151.2839034-12-armbru@redhat.com>
+Cc: stefanha@redhat.com,
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 12/13] qapi: make all generated files common
+Date: Wed, 28 May 2025 20:31:50 +0200
+Message-ID: <20250528183151.2839034-13-armbru@redhat.com>
 In-Reply-To: <20250528183151.2839034-1-armbru@redhat.com>
 References: <20250528183151.2839034-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -86,59 +84,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-There is no more QAPI files that need to be compiled per target, so we
-can remove this. qapi_specific_outputs is now empty, so we can remove
-the associated logic in meson.
+Monolithic files (qapi_nonmodule_outputs) can now be compiled just
+once, so we can remove qapi_util_outputs logic.
+This removes the need for any specific_ss file.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20250522190542.588267-12-pierrick.bouvier@linaro.org>
+Message-ID: <20250522190542.588267-13-pierrick.bouvier@linaro.org>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/meson.build | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ qapi/meson.build | 23 ++++-------------------
+ 1 file changed, 4 insertions(+), 19 deletions(-)
 
 diff --git a/qapi/meson.build b/qapi/meson.build
-index e038b636c9..7582c2b5bc 100644
+index 7582c2b5bc..3b035aea33 100644
 --- a/qapi/meson.build
 +++ b/qapi/meson.build
-@@ -92,7 +92,6 @@ qapi_util_outputs = [
+@@ -85,8 +85,7 @@ qapi_nonmodule_outputs = [
+   'qapi-emit-events.c', 'qapi-emit-events.h',
  ]
  
- qapi_inputs = []
--qapi_specific_outputs = []
- foreach module : qapi_all_modules
-   qapi_inputs += [ files(module + '.json') ]
-   qapi_module_outputs = [
-@@ -110,15 +109,11 @@ foreach module : qapi_all_modules
+-# First build all sources
+-qapi_util_outputs = [
++qapi_outputs = qapi_nonmodule_outputs + [
+   'qapi-builtin-types.c', 'qapi-builtin-visit.c',
+   'qapi-builtin-types.h', 'qapi-builtin-visit.h',
+ ]
+@@ -109,20 +108,17 @@ foreach module : qapi_all_modules
        'qapi-commands-@0@.trace-events'.format(module),
      ]
    endif
--  if module.endswith('-target')
--    qapi_specific_outputs += qapi_module_outputs
--  else
--    qapi_util_outputs += qapi_module_outputs
--  endif
-+  qapi_util_outputs += qapi_module_outputs
+-  qapi_util_outputs += qapi_module_outputs
++  qapi_outputs += qapi_module_outputs
  endforeach
  
  qapi_files = custom_target('shared QAPI source files',
--  output: qapi_util_outputs + qapi_specific_outputs + qapi_nonmodule_outputs,
-+  output: qapi_util_outputs + qapi_nonmodule_outputs,
+-  output: qapi_util_outputs + qapi_nonmodule_outputs,
++  output: qapi_outputs,
    input: [ files('qapi-schema.json') ],
    command: [ qapi_gen, '-o', 'qapi', '-b', '@INPUT0@' ],
    depend_files: [ qapi_inputs, qapi_gen_depends ])
-@@ -138,7 +133,7 @@ foreach output : qapi_util_outputs
-   i = i + 1
- endforeach
  
--foreach output : qapi_specific_outputs + qapi_nonmodule_outputs
-+foreach output : qapi_nonmodule_outputs
+-# Now go through all the outputs and add them to the right sourceset.
+-# These loops must be synchronized with the output of the above custom target.
+-
+ i = 0
+-foreach output : qapi_util_outputs
++foreach output : qapi_outputs
    if output.endswith('.h')
      genh += qapi_files[i]
    endif
+@@ -132,14 +128,3 @@ foreach output : qapi_util_outputs
+   util_ss.add(qapi_files[i])
+   i = i + 1
+ endforeach
+-
+-foreach output : qapi_nonmodule_outputs
+-  if output.endswith('.h')
+-    genh += qapi_files[i]
+-  endif
+-  if output.endswith('.trace-events')
+-    qapi_trace_events += qapi_files[i]
+-  endif
+-  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
+-  i = i + 1
+-endforeach
 -- 
 2.48.1
 
