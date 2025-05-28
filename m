@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30470AC7242
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 22:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00496AC71F0
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 22:11:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKNSE-0001nb-RG; Wed, 28 May 2025 16:32:51 -0400
+	id 1uKN5X-0001pN-DG; Wed, 28 May 2025 16:09:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uKNRw-0001k9-DQ
- for qemu-devel@nongnu.org; Wed, 28 May 2025 16:32:39 -0400
-Received: from mail-qv1-xf34.google.com ([2607:f8b0:4864:20::f34])
+ id 1uKN5R-0001nk-S5
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 16:09:17 -0400
+Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uKNRm-0001tm-BF
- for qemu-devel@nongnu.org; Wed, 28 May 2025 16:32:30 -0400
-Received: by mail-qv1-xf34.google.com with SMTP id
- 6a1803df08f44-6fa956f0f16so3287926d6.3
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 13:32:21 -0700 (PDT)
+ id 1uKN5N-0006NI-4D
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 16:09:17 -0400
+Received: by mail-yw1-x1129.google.com with SMTP id
+ 00721157ae682-70e5d953c0bso3526127b3.1
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 13:09:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1748464340; x=1749069140; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1748462951; x=1749067751; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1YismayB4SIJR2QTxoRpMlz0MW7faH8SO3fEZ+tMWWY=;
- b=KlB2SPvfRxa7UXfCTRFAw/yUaZaVpDRzpM/M2l87RWfyUtqESLcO6SfkG4zhlcjrVk
- 2ZflOZLx87L5gzqEcCd6YS2401S5iTACnTc0Ga187kuAHMpbD9CszTNn96PItkSdZr+4
- 4StGSnYg4CkNbx2GlLocvHvJzBdgh/FwSwU/F20QkYOwFPmm1tALvAs+UCeAITz9WuIo
- z8eWLj5Jzt2oB6N4VVCPLqR23QQF2WlDRWOy2Iga1zE9UrEXiN1K4VubEy5UXveuCA99
- pn0xumOvPIYYEELnJ2JJHngpNnQw1xLKVU5imFAY9R9OWFf6GQY8NadBrYrXTwiAquKg
- 8gCg==
+ bh=Q75wCLLWuB7OvinkOcqG/BYvN2MthuDZnMoql8kakbM=;
+ b=S0xar/gerRZo4bn05X/CODS38KzIrTrX6Gg7TRe9XSPtylCveaZCqAh9cEEDP1KZy9
+ 0gn3oIKeY6owpmpEjOb0fvj19zPbgibeLaHNPcg1sV0ZGgIx/DgSfzSza5bGmYisSPWu
+ jvX2PjSUVNsX0hm1MM4LZKrhRcILOkyyDfHrJfID0MtuZ74rg4Xr/j9k924kHU+zibm6
+ X/wzRRuRl+gPCosK6leeqqZvOaR0FI5Xk/LuzLdNK/N+cvSqOqfC/8kUKsCixQAJurb+
+ 1zqcnmCsddGp98WgnxANzy6i1LMtU8qGvo8AO3jcPKSfesTIJPeV60Ssf8bIZZM1XTF2
+ 1jkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748464340; x=1749069140;
+ d=1e100.net; s=20230601; t=1748462951; x=1749067751;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1YismayB4SIJR2QTxoRpMlz0MW7faH8SO3fEZ+tMWWY=;
- b=kUmPSpaSt0xg3BKHlCVKC8z9hwxJs56HH+RYFxK0ZhXekbRMMLYBgc7jG01cMQCTuC
- YjN1jNve5hC1F9Fohri4hT/d12lyNHNgKY6gpgGkBAuf5QLZBLbaalONisLum/BFB4TP
- Axx4g7X7Ngkj8t7+SC/OaVhAl5Q5jBngCaS7FJTUGbHPfwuJeYh8xOPioCGyLG/mx7lm
- U5tNR7WYrk8DgUdSCw16MXfMZyBLUEJVw9aEuDGYs+DWjWz97U9sCxZT9gkapiTAwypt
- E69Xa2OkKEHG4/W4donf/M7eBDTSUrXdJR/nXp+Ibyj9XyyepZBVfvS7zW7UuSxHE6bC
- xswA==
-X-Gm-Message-State: AOJu0YwDf2C4GHYDK3UN8i63IJ8sMJFhWBzp/692yH77z2GgBFbv3NAD
- lECV38mXcnNoXtcj9MHrESu5Ju7288lwSWsU+KrlyTN17HpU++NFqxkD/H8tUbNDeZQdFN6oz4w
- 0mlXN
-X-Gm-Gg: ASbGncuVneNfNyezYj8Q3AUGqn03v1gbWFpGLbYBBWV5xm7TQ7UK2k10eoQlrx47qTk
- UJkMm2PTPWRdcctP1TSD0m7BdglI84HZZpYt41F4YHlODDwI5l/OuvBESUduiOjv+MXuex4SgpC
- BdxlVqaWOsPgOwxaOPLbJXKFOH6c5aeR7LXt7hV1ECPOMP/+RDh7Cm1v2ybnILi1trZTq3b0j7j
- lIczi48mbGZ3cm3o4NM/le1oISG20i0hQM8RVlPOEh2d7tOOTeWUojUme4Oq/kfFfzNizOJhW2G
- MgqIKJYA1+35usMvIxhp/yCO99HXWuFTdvw0eXLm+p7WAHwgDCaIqo9bURNYudead8pUtQTojqJ
- UO0U=
-X-Google-Smtp-Source: AGHT+IEamB1HaY/n+6OTkUesbtkkbClAPzjOE5WGp30xeCumaYwhwWDMjhqeN7S0DtEZv5Rr1ffOxw==
-X-Received: by 2002:a05:6102:2912:b0:4e5:a83a:3cee with SMTP id
- ada2fe7eead31-4e5a83a402dmr2679193137.14.1748462506598; 
- Wed, 28 May 2025 13:01:46 -0700 (PDT)
+ bh=Q75wCLLWuB7OvinkOcqG/BYvN2MthuDZnMoql8kakbM=;
+ b=F9TM9msjmp6tIJlmyF9DDL2oh6KXmeUuEkNLhvCx2CP3y2ZtGAi3/WZ9Mb1dnz9MLd
+ s1lVI9IBOX++m1ufHKazhm10BTmlxHzbLfN9EZj7a9NOdwlBmBBmgX5Azi+QK5CsZI/E
+ qtf112LOWD7P17hRayeO7lE9FIrjynTAWrAhhhcW6kGRl6Wea5RfnIagvGwA6yZytNJ5
+ ZpCCMEdh3hI2lkjS94EBBlS8TXPw0rqLhp+vLldoTUKQcQ8c8jHhyYwjZDl1MIQfmV2V
+ vjGRTM2yDab8CE9qDT9SZKQQe4amkQwPf5olptn6zXcmNSYtY1Cz4TpC0BO1Fufi0a2w
+ wnNQ==
+X-Gm-Message-State: AOJu0YxR/UtEjDQ7h00nJup3F/G/nAqTe1lsH1D2mCdQ6P6ZyYt1ZDar
+ ccbgfJxTfcjxGOuuV2Ks6T29pyoYBl93QVbJtpH8IIMDYdund48KOA4mscBXHNVyincKo0MdW1L
+ osh8M
+X-Gm-Gg: ASbGncvukqdTNM7N2rMlVB9/FDM+yGZ+Y7rFuFE1FKzqoL/kLHDXtZTJcbTvsLNHrOD
+ NY21A7lG6J1zgoLhacfO72iyfwjoGAcVp92Kt9BB7RnTHOTG7w1jxqIGaRdKE2nu/lL2VMSe0wv
+ 9jhufUfpSnCm5izibTwbmwi+7ZP02g6WO7f9MFdNaZlood+4JiJ7B2GORia/ggsn9gSXPwb+Xvg
+ uYUROSVxvJtjOmENEExhob657R/WATgJgQfSKw4ZtvaQMolkjbnbdooVAc0nJEq6NX25qj25Zls
+ 4YA8si8wrNktDYXekH3WkbN2yqEXtRF2CIcqIBip0JJX+Y8xD2EAx7q8mrnVkix9orm2j2FJ+lA
+ U5bUCRxccIdXaEg==
+X-Google-Smtp-Source: AGHT+IGluCsb2Vs7swpWUN18rUbgPCDEsX3yvQtgG8cJoAHquuW8ReHmLnmm6r98YJYpfUaLaBYmyw==
+X-Received: by 2002:a05:6102:3a08:b0:4de:d08f:672a with SMTP id
+ ada2fe7eead31-4e4240bc571mr14731267137.15.1748462509531; 
+ Wed, 28 May 2025 13:01:49 -0700 (PDT)
 Received: from grind.dc1.ventanamicro.com ([191.255.35.190])
  by smtp.gmail.com with ESMTPSA id
- ada2fe7eead31-4e59fc11a95sm1393736137.3.2025.05.28.13.01.44
+ ada2fe7eead31-4e59fc11a95sm1393736137.3.2025.05.28.13.01.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 May 2025 13:01:46 -0700 (PDT)
+ Wed, 28 May 2025 13:01:49 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
  zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, ajones@ventanamicro.com,
+ Fei Wu <wu.fei9@sanechips.com.cn>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v3 1/4] target/riscv/cpu.c: remove 'bare' condition for
- .profile
-Date: Wed, 28 May 2025 17:01:26 -0300
-Message-ID: <20250528200129.1548259-2-dbarboza@ventanamicro.com>
+Subject: [PATCH v3 2/4] target/riscv: Add server platform reference cpu
+Date: Wed, 28 May 2025 17:01:27 -0300
+Message-ID: <20250528200129.1548259-3-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250528200129.1548259-1-dbarboza@ventanamicro.com>
 References: <20250528200129.1548259-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f34;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-qv1-xf34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x1129.google.com
 X-Spam_score_int: -1
 X-Spam_score: -0.2
 X-Spam_bar: /
@@ -100,31 +100,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to configure other CPU types to use profiles as an alternative
-to adding every profile extension explicitly, i.e. a profile is nothing
-more than an extension bundle.
+From: Fei Wu <wu.fei9@sanechips.com.cn>
 
-This means that a vendor CPU can set .profile=rva23s64 while having the
-same handling as any other vendor CPU. Same thing with all other CPU
-types.
+The harts requirements of RISC-V server platform [1] require RVA23 ISA
+profile support, plus Sv48, Svadu, H, Sscofmpf etc. This patch provides
+a virt CPU type (rvsp-ref) as compliant as possible.
 
+[1] https://github.com/riscv-non-isa/riscv-server-platform/blob/main/server_platform_requirements.adoc
+
+Signed-off-by: Fei Wu <fei2.wu@intel.com>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/riscv/cpu-qom.h |  1 +
+ target/riscv/cpu.c     | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
 
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index 1ee05eb393..70978fd53c 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -55,6 +55,7 @@
+ #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
+ #define TYPE_RISCV_CPU_TT_ASCALON       RISCV_CPU_TYPE_NAME("tt-ascalon")
+ #define TYPE_RISCV_CPU_XIANGSHAN_NANHU  RISCV_CPU_TYPE_NAME("xiangshan-nanhu")
++#define TYPE_RISCV_CPU_RVSP_REF         RISCV_CPU_TYPE_NAME("rvsp-ref")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+ 
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index fe21e0fb44..4a30cf8444 100644
+index 4a30cf8444..ec2fbc0e78 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -2713,7 +2713,6 @@ static void riscv_cpu_class_base_init(ObjectClass *c, const void *data)
-         mcc->def->bare |= def->bare;
-         if (def->profile) {
-             assert(profile_extends(def->profile, mcc->def->profile));
--            assert(mcc->def->bare);
-             mcc->def->profile = def->profile;
-         }
-         if (def->misa_mxl_max) {
+@@ -3166,6 +3166,17 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.max_satp_mode = VM_1_10_SV39,
+     ),
+ 
++    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_RVSP_REF, TYPE_RISCV_VENDOR_CPU,
++        .misa_mxl_max = MXL_RV64,
++        .profile = &RVA23S64,
++
++        /* ISA extensions */
++        .cfg.ext_zkr = true,
++        .cfg.ext_svadu = true,
++
++        .cfg.max_satp_mode = VM_1_10_SV57,
++    ),
++
+ #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE128, TYPE_RISCV_DYNAMIC_CPU,
+         .cfg.max_satp_mode = VM_1_10_SV57,
 -- 
 2.49.0
 
