@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6C2AC6E22
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 18:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA930AC6E3E
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 18:44:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKJlt-0001dJ-Im; Wed, 28 May 2025 12:36:53 -0400
+	id 1uKJsm-0001HM-L9; Wed, 28 May 2025 12:44:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1uKJlr-0001dB-A3
- for qemu-devel@nongnu.org; Wed, 28 May 2025 12:36:51 -0400
+ id 1uKJsl-0001HD-DP
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 12:43:59 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1uKJlo-0006yf-Q8
- for qemu-devel@nongnu.org; Wed, 28 May 2025 12:36:51 -0400
+ id 1uKJsj-0007kq-Nx
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 12:43:59 -0400
 Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54SCq4TZ028786;
- Wed, 28 May 2025 16:36:36 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54SCq5pp028798;
+ Wed, 28 May 2025 16:38:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=corp-2025-04-25; bh=3CjW4ZC7IgcpAD5/1225Un0CjqLxP
- EItLdT1pXc99NE=; b=XcdYP6/YOIX1Y9S0h27lqrV9S7S19up3m9YDXSucLxBF0
- CucnTgFqEfJHJO7eRyUsw00RSg9Vt3xnhMSpvgoW+xK0eqRdDFSc6xgDWqR5rR/6
- qJzAfyWpK7+7xxdsZzlqin11Dv4yEdqFf4e+3GtIzVJRhEJXFUNqDLUFJ9SMF7XZ
- toEL76l/zpL5PKj01KSX2Khlh6j+Z6L3Dr04ckEpbRejlAhMbZ1oPuaqlRzdHWgf
- rFDrBX/b2N/GCN31dWQRGoYYk4X6gyzZgQJMe9cChxiRgECWQgRy1G6FcbeUMFwh
- SKG3RJwBH5TY5Vb5hkKyK0SuWqxeoLEtesXWn8mCg==
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=ac6kO
+ eH89eYR2GEbVsxCjN4yoWwGYSLrITsjZygt6+Q=; b=HBRLKlhENkjZvuZQfwUpM
+ zdtguW8N5z6r6pJu6ZuebwWsZAjkQecHVCzAXsXuG3E1Dxai0H3kXsIfVKjBOua1
+ fO2bmlULBXVDYuZqK9Xnj/1JHVhLsE8EK//lsIeUkCndN32Np9xWTmll99vTL22O
+ /JawlNTTC+BCtlbuWm4raDFgLT1+xrVGndgsw71fpBEYqvThbn4ZEVnrulN2FfGp
+ Dc+cjhrHc4uW9IaP1290PASkmj0IQMwO8Um3kkK+Jenq2Bvx3fyyp/m1peUU/DsO
+ 1dUD9EYQKRv0/oy1RIA+SeAAEZNXrt9xzFoI1LVwxTH9jOuRZDq4/vw4tdFqB0Kv
+ A==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v21s69yg-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v21s6a29-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 28 May 2025 16:36:36 +0000 (GMT)
+ Wed, 28 May 2025 16:38:47 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54SGK717027782; Wed, 28 May 2025 16:36:35 GMT
+ with ESMTP id 54SFa7VR028607; Wed, 28 May 2025 16:38:46 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46u4janjkc-1
+ 46u4janmrx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 28 May 2025 16:36:35 +0000
+ Wed, 28 May 2025 16:38:46 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54SGaYQS006110;
- Wed, 28 May 2025 16:36:34 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54SGZv1U004464;
+ Wed, 28 May 2025 16:38:46 GMT
 Received: from localhost.localdomain (dhcp-10-43-12-51.usdhcp.oraclecorp.com
  [10.43.12.51])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 46u4janjhs-1; Wed, 28 May 2025 16:36:34 +0000
+ 46u4janmp6-1; Wed, 28 May 2025 16:38:46 +0000
 From: Annie Li <annie.li@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: dave@treblig.org, mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
@@ -59,10 +60,12 @@ Cc: dave@treblig.org, mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
  wangyanan55@huawei.com, zhao1.liu@intel.com, pbonzini@redhat.com,
  richard.henderson@linaro.org, slp@redhat.com, eblake@redhat.com,
  armbru@redhat.com, annie.li@oracle.com, miguel.luis@oracle.com
-Subject: [PATCH 00/13] Support ACPI Control Method Sleep button
-Date: Wed, 28 May 2025 12:35:45 -0400
-Message-ID: <20250528163545.2143-1-annie.li@oracle.com>
+Subject: [PATCH 01/13] acpi: Implement control method sleep button
+Date: Wed, 28 May 2025 12:38:34 -0400
+Message-ID: <20250528163835.2151-1-annie.li@oracle.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20250528163545.2143-1-annie.li@oracle.com>
+References: <20250528163545.2143-1-annie.li@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
@@ -73,20 +76,18 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  adultscore=0 malwarescore=0 bulkscore=0 mlxscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2505280145
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI4MDE0NCBTYWx0ZWRfX2PjZdU7HhkTe
- LTW/w3JkyfWqMJE9VTAMLtWbKVUtG37o5Qcqr+ZsBUOfKcZhXBX2R5tVsCHuf14pE6VjG/CwhOT
- Yq2xYHm2dtHqf+3Ds5+GyKb53eybkHE4VCwH/Wk1pdw+3y14vF1lqxK0p2uOzzAk/z1/g8IqR21
- rfcYIG5pa2CMvRCbIpB79WJF7zAV6IeAlII1WyTss3kfIapj1MSB4U6S+jyQdii7QBHlYJlBAb8
- 03e/UOhmzsRtRDlEx4t+oEhsvVJZEZFJHufq10A+U26NE7M1V6ltMJ0JeDvT2uUrh2nV9qiV7Sa
- T9X3Okim8Z0yPbTuliNWhkEOjNLKIIkZ8G9Xq5ghDAwTWsOyB020E1lssTt49QOjO3tl4nfnou7
- vexKkuJjM0E0D9scvGCfbi0dZTeQg4N1Pfg+EIn7JCqZIgrVEmiYfigiIiwypUnUn5eDCxwm
-X-Proofpoint-GUID: Mc_abSRr97VQtEguFpg0x4k1e5NQSq-p
-X-Authority-Analysis: v=2.4 cv=UvhjN/wB c=1 sm=1 tr=0 ts=68373b94 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI4MDE0NSBTYWx0ZWRfX5scameJKD5tx
+ 5aoroJRMymBLqrCGswZlLPLnzI9QicKOqN098Ojbi3dmkl07erSuCkjFnH98dZUUc2sld7SXpmp
+ 7uBU48PCfF/y6iOMWuujmPYpZK14gPw1NBCpUiLkYxEyVHR8f0Cu0JXoS5H1ygcrHgQFJ5QA27g
+ nn2/q1GFEk/JH1zgZtlnRcgB4tZYdYtH4zeBgp8cB/OEJMYEiwXBiHPN5oRCW7VtdIu25Cx3wBG
+ 8lv4nuJn2pawGnO/kJPh/yOjNWHz/O7m139ZHVJR+6O17be0/YNU6KUAiOhFqViclyvCnxlTTJX
+ 4/x2wieyh76iumLLpzC5ZXT4zhuQfni3ZTzSkuWbiwUgfThYA7Mov5lItjBf/mhp3dB1Q9FAhqC
+ 4DNhkJ0DzbjQv1r9Rz+dCoorFjdwqoGUtUppuvZO2zXRV9hpn5I9Fs3CWFoTYQatnRb9W8lW
+X-Proofpoint-GUID: sy7Wn9zCBmnBPc57lhvd_wRE6vG1RRRO
+X-Authority-Analysis: v=2.4 cv=UvhjN/wB c=1 sm=1 tr=0 ts=68373c17 cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=dt9VzEwgFbYA:10 a=mDV3o1hIAAAA:8 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8
- a=yPCof4ZbAAAA:8 a=blgLcFuWBmpAZbwxDM4A:9
- a=WPp7wK2zvv8A:10
-X-Proofpoint-ORIG-GUID: Mc_abSRr97VQtEguFpg0x4k1e5NQSq-p
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=sPl2G_jGVtvQ9U5vArsA:9
+X-Proofpoint-ORIG-GUID: sy7Wn9zCBmnBPc57lhvd_wRE6vG1RRRO
 Received-SPF: pass client-ip=205.220.177.32; envelope-from=annie.li@oracle.com;
  helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -32
@@ -112,134 +113,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ACPI sleep button can be implemented as a fixed hardware button
-or Control Method Sleep button.
+The fixed hardware sleep button isn't appropriate for hardware
+reduced platform. This patch implements the control method sleep
+button in a separate source file so that the button can be added
+for various platforms.
 
-The patch of implementing a fixed hardware sleep button was posted
-here 1). More discussions can be found here 2). Essentially, the
-discussion mainly focuses on whether the sleep button is implemented
-as a fixed hardware button or Control Method Sleep button. The latter
-benefits various architectures since the code can be shared among
-them.
+Co-developed-by: Miguel Luis <miguel.luis@oracle.com>
+Signed-off-by: Annie Li <annie.li@oracle.com>
+---
+ hw/acpi/control_method_device.c         | 38 +++++++++++++++++++++++++
+ hw/acpi/meson.build                     |  1 +
+ include/hw/acpi/control_method_device.h | 21 ++++++++++++++
+ 3 files changed, 60 insertions(+)
 
-This patch set implements Control Method Sleep button for both x86
-and microvm. The RFC V1 patch set was posted previously here 3). We
-rebase all the patches on QEMU9.1.0 and re-post RFC V2 here 4). The
-RFC V3 patch is based on QEMU 10.0.0-rc3 at 5). This patch set here
-is rebased on QEMU 10.0.1. The sleep button support for microvm is
-added, however, its support for ARM platform in V2 is removed due to
-lower interests of it and more efforts in the firmware.
-
-For x86, a sleep button GPE event handler is implemented, so a GPE
-event is triggered to indicate the OSPM the sleep button is pressed.
-Tests have been done for Linux guest, and Windows Server guest,
-this sleep button works as expected.
-
-For microvm, a GED event is triggered to notify the OSPM. This GED
-event is also applicable for ARM platform, as mentioned earlier, the
-implementation for ARM platform has been removed since RFC V3 patch
-set. Tests have been run for Linux microvm guests.
-
-System_wakeup doesn't work for microvm for now due to the missing
-support of it. This patch set only covers system_sleep, not the
-wakeup part.
-
-
-1) https://lists.gnu.org/archive/html/qemu-devel/2017-07/msg06478.html
-2) https://lore.kernel.org/all/20210920095316.2dd133be@redhat.com/T/#mfe24f89778020deeacfe45083f3eea3cf9f55961
-3) https://lore.kernel.org/all/20231205002143.562-1-annie.li@oracle.com/T/
-4) https://patchwork.kernel.org/project/qemu-devel/cover/20240927183906.1248-1-annie.li@oracle.com/
-5) https://lore.kernel.org/all/20250411201912.2872-1-annie.li@oracle.com/
-
-----Changes from RFC V3----
-Improve source code and comment based on comments on RFC V3
----------------------------
-
-Annie Li (12):
-  acpi: Implement control method sleep button
-  test/acpi: allow DSDT table changes for x86 platform
-  acpi: Support Control Method sleep button for x86
-  tests/qtest/bios-table-tests: Update ACPI table binaries for x86
-  acpi: Send the GPE event of sleep for x86
-  test/acpi: allow DSDT table changes for microvm
-  microvm: Add ACPI Control Method Sleep Button
-  microvm: enable sleep GED event
-  tests/qtest/bios-table-tests: Update ACPI table binaries for microvm
-  microvm: suspend the system as requested
-  microvm: enable suspend
-  acpi: hmp/qmp: Add hmp/qmp support for system_sleep
-
-Miguel Luis (1):
-  hw/acpi: Add ACPI GED support for the sleep event
-
- hmp-commands.hx                               |  14 +++++++
- hw/acpi/control_method_device.c               |  38 ++++++++++++++++++
- hw/acpi/core.c                                |  12 ++++++
- hw/acpi/generic_event_device.c                |  12 ++++++
- hw/acpi/meson.build                           |   1 +
- hw/core/machine-hmp-cmds.c                    |   5 +++
- hw/core/machine-qmp-cmds.c                    |  11 +++++
- hw/i386/acpi-build.c                          |  24 ++++++++++-
- hw/i386/acpi-microvm.c                        |  13 +++++-
- hw/i386/microvm.c                             |   4 +-
- include/hw/acpi/acpi.h                        |   1 +
- include/hw/acpi/acpi_dev_interface.h          |   1 +
- include/hw/acpi/control_method_device.h       |  21 ++++++++++
- include/hw/acpi/generic_event_device.h        |   2 +
- include/monitor/hmp.h                         |   1 +
- qapi/machine.json                             |  20 +++++++++
- qapi/pragma.json                              |   1 +
- tests/data/acpi/x86/microvm/DSDT              | Bin 365 -> 442 bytes
- tests/data/acpi/x86/microvm/DSDT.ioapic2      | Bin 365 -> 442 bytes
- tests/data/acpi/x86/microvm/DSDT.pcie         | Bin 3023 -> 3100 bytes
- tests/data/acpi/x86/microvm/DSDT.rtc          | Bin 404 -> 481 bytes
- tests/data/acpi/x86/microvm/DSDT.usb          | Bin 414 -> 491 bytes
- tests/data/acpi/x86/pc/DSDT                   | Bin 8611 -> 8721 bytes
- tests/data/acpi/x86/pc/DSDT.acpierst          | Bin 8522 -> 8632 bytes
- tests/data/acpi/x86/pc/DSDT.acpihmat          | Bin 9936 -> 10046 bytes
- tests/data/acpi/x86/pc/DSDT.bridge            | Bin 15482 -> 15592 bytes
- tests/data/acpi/x86/pc/DSDT.cphp              | Bin 9075 -> 9185 bytes
- tests/data/acpi/x86/pc/DSDT.dimmpxm           | Bin 10265 -> 10375 bytes
- tests/data/acpi/x86/pc/DSDT.hpbridge          | Bin 8562 -> 8672 bytes
- tests/data/acpi/x86/pc/DSDT.hpbrroot          | Bin 5100 -> 5210 bytes
- tests/data/acpi/x86/pc/DSDT.ipmikcs           | Bin 8683 -> 8793 bytes
- tests/data/acpi/x86/pc/DSDT.memhp             | Bin 9970 -> 10080 bytes
- tests/data/acpi/x86/pc/DSDT.nohpet            | Bin 8469 -> 8579 bytes
- tests/data/acpi/x86/pc/DSDT.numamem           | Bin 8617 -> 8727 bytes
- tests/data/acpi/x86/pc/DSDT.roothp            | Bin 12404 -> 12514 bytes
- tests/data/acpi/x86/q35/DSDT                  | Bin 8440 -> 8550 bytes
- tests/data/acpi/x86/q35/DSDT.acpierst         | Bin 8457 -> 8567 bytes
- tests/data/acpi/x86/q35/DSDT.acpihmat         | Bin 9765 -> 9875 bytes
- .../data/acpi/x86/q35/DSDT.acpihmat-generic-x | Bin 12650 -> 12760 bytes
- .../acpi/x86/q35/DSDT.acpihmat-noinitiator    | Bin 8719 -> 8829 bytes
- tests/data/acpi/x86/q35/DSDT.applesmc         | Bin 8486 -> 8596 bytes
- tests/data/acpi/x86/q35/DSDT.bridge           | Bin 12053 -> 12163 bytes
- tests/data/acpi/x86/q35/DSDT.core-count       | Bin 12998 -> 13108 bytes
- tests/data/acpi/x86/q35/DSDT.core-count2      | Bin 33855 -> 33965 bytes
- tests/data/acpi/x86/q35/DSDT.cphp             | Bin 8904 -> 9014 bytes
- tests/data/acpi/x86/q35/DSDT.cxl              | Bin 13231 -> 13341 bytes
- tests/data/acpi/x86/q35/DSDT.dimmpxm          | Bin 10094 -> 10204 bytes
- tests/data/acpi/x86/q35/DSDT.ipmibt           | Bin 8515 -> 8625 bytes
- tests/data/acpi/x86/q35/DSDT.ipmismbus        | Bin 8528 -> 8638 bytes
- tests/data/acpi/x86/q35/DSDT.ivrs             | Bin 8457 -> 8567 bytes
- tests/data/acpi/x86/q35/DSDT.memhp            | Bin 9799 -> 9909 bytes
- tests/data/acpi/x86/q35/DSDT.mmio64           | Bin 9570 -> 9680 bytes
- tests/data/acpi/x86/q35/DSDT.multi-bridge     | Bin 13293 -> 13403 bytes
- tests/data/acpi/x86/q35/DSDT.noacpihp         | Bin 8302 -> 8412 bytes
- tests/data/acpi/x86/q35/DSDT.nohpet           | Bin 8298 -> 8408 bytes
- tests/data/acpi/x86/q35/DSDT.numamem          | Bin 8446 -> 8556 bytes
- tests/data/acpi/x86/q35/DSDT.pvpanic-isa      | Bin 8541 -> 8651 bytes
- tests/data/acpi/x86/q35/DSDT.thread-count     | Bin 12998 -> 13108 bytes
- tests/data/acpi/x86/q35/DSDT.thread-count2    | Bin 33855 -> 33965 bytes
- tests/data/acpi/x86/q35/DSDT.tis.tpm12        | Bin 9046 -> 9156 bytes
- tests/data/acpi/x86/q35/DSDT.tis.tpm2         | Bin 9072 -> 9182 bytes
- tests/data/acpi/x86/q35/DSDT.type4-count      | Bin 18674 -> 18784 bytes
- tests/data/acpi/x86/q35/DSDT.viot             | Bin 14697 -> 14807 bytes
- tests/data/acpi/x86/q35/DSDT.xapic            | Bin 35803 -> 35913 bytes
- 64 files changed, 178 insertions(+), 3 deletions(-)
- create mode 100644 hw/acpi/control_method_device.c
- create mode 100644 include/hw/acpi/control_method_device.h
-
+diff --git a/hw/acpi/control_method_device.c b/hw/acpi/control_method_device.c
+new file mode 100644
+index 0000000000..f8d691ee04
+--- /dev/null
++++ b/hw/acpi/control_method_device.c
+@@ -0,0 +1,38 @@
++/*
++ * Control Method Device
++ *
++ * Copyright (c) 2023 Oracle and/or its affiliates.
++ *
++ *
++ * Authors:
++ *     Annie Li <annie.li@oracle.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "hw/acpi/control_method_device.h"
++#include "hw/acpi/aml-build.h"
++
++/*
++ * The control method sleep button[ACPI v6.5 Section 4.8.2.2.2.2]
++ * resides in generic hardware address spaces. The sleep button
++ * is defined as _HID("PNP0C0E") that associates with device "SLPB".
++ */
++void acpi_dsdt_add_sleep_button(Aml *scope)
++{
++    Aml *dev = aml_device(ACPI_SLEEP_BUTTON_DEVICE);
++    aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0C0E")));
++    /*
++     * No _PRW, the sleep button device is always tied to GPE L07
++     * event handler for x86 platform, or a GED event for other
++     * platforms such as virt, ARM, microvm, etc.
++     */
++    aml_append(dev, aml_operation_region("\\SLP", AML_SYSTEM_IO,
++                                         aml_int(0x201), 0x1));
++    Aml *field = aml_field("\\SLP", AML_BYTE_ACC, AML_NOLOCK,
++                           AML_WRITE_AS_ZEROS);
++    aml_append(field, aml_named_field("SBP", 1));
++    aml_append(dev, field);
++    aml_append(scope, dev);
++}
+diff --git a/hw/acpi/meson.build b/hw/acpi/meson.build
+index 73f02b9691..a62e625cef 100644
+--- a/hw/acpi/meson.build
++++ b/hw/acpi/meson.build
+@@ -17,6 +17,7 @@ acpi_ss.add(when: 'CONFIG_ACPI_CXL', if_true: files('cxl.c'), if_false: files('c
+ acpi_ss.add(when: 'CONFIG_ACPI_VMGENID', if_true: files('vmgenid.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_VMCLOCK', if_true: files('vmclock.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('generic_event_device.c'))
++acpi_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('control_method_device.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_HMAT', if_true: files('hmat.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_APEI', if_true: files('ghes.c'), if_false: files('ghes-stub.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_PIIX4', if_true: files('piix4.c'))
+diff --git a/include/hw/acpi/control_method_device.h b/include/hw/acpi/control_method_device.h
+new file mode 100644
+index 0000000000..079f1a74dd
+--- /dev/null
++++ b/include/hw/acpi/control_method_device.h
+@@ -0,0 +1,21 @@
++/*
++ * Control Method Device
++ *
++ * Copyright (c) 2023 Oracle and/or its affiliates.
++ *
++ *
++ * Authors:
++ *     Annie Li <annie.li@oracle.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++
++#ifndef HW_ACPI_CONTROL_METHOD_DEVICE_H
++#define HW_ACPI_CONTROL_NETHOD_DEVICE_H
++
++#define ACPI_SLEEP_BUTTON_DEVICE "SLPB"
++
++void acpi_dsdt_add_sleep_button(Aml *scope);
++
++#endif
 -- 
 2.43.5
 
