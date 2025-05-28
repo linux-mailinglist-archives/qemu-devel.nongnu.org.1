@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED0BAC6400
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E63AC640B
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:20:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKBw8-0007wm-TE; Wed, 28 May 2025 04:14:57 -0400
+	id 1uKBwz-0000II-7a; Wed, 28 May 2025 04:15:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvh-0007vk-Vj
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:30 -0400
+ id 1uKBvj-0007w6-IC
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:31 -0400
 Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvg-0005FD-EW
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:29 -0400
+ id 1uKBvh-0005FR-VS
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:31 -0400
 Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-43cfa7e7f54so4681065e9.1
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:28 -0700 (PDT)
+ 5b1f17b1804b1-442fda876a6so39615345e9.0
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748420067; x=1749024867; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748420068; x=1749024868; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BFcQXvhrY8QQZwNg9G2ZE2INjIMXFDjOrUvxWYd5pvw=;
- b=ObgE5/SHQWwL+O+IkZsUUAQYtlBT6Az5y+DyfzpVUj2aQU/6xoIeygPbGwT+NvQ3iV
- eqtSOgDuYC94A++AkZuW+xmr9OvZuRvbvXeXw93+rT3yGFughKNfuD1kQiMNNJha0vbL
- 7ziIcJVRXv0u+Qu0edYsJVVvkV4lOjYoz0yc5H5vDaV94nr+glHMNK02QHVBdW/ZdocG
- kZ3cYvzar2IHmoTSEe7jVDt1ie5FDrRsc5/PHY4V88nd/xezAsLidgArHBnepcIVbFzb
- UOfSQcLXmgD6Jpj6U5PkRgUo8cCCuE79pH09scTFKiAnRsz+OuBr1w5ZMZ8DcBH/xRJ0
- CYGA==
+ bh=mpLbuX6w3ui4OqkcJtXbZ2uIaATf5Ym/Qv+poSMA20U=;
+ b=FDl5QbRJANd50sGwPMyzSQYkQDA4d3oiWA+jNSzXyt3ZXl9vfG4/BpbPi0oqdfOeMv
+ SnV7rWG8cf2GeobDwqb/NbCk4/LmxcIltXkmvvBB7gIUabwZLR/3vvkt1Ve6Xo3VZ34n
+ xTn2CAQoO40BRmp6e+6WftO5CtUn433+Vcnc4QF7rsED0xzk9y0HAYCRss2iBjB+12/X
+ e6BEksHrAyXQjSNttg2A8YnF+8WYOhR+qCjDf/Bxpij5exVMgiSRz5X6pV8Lz62equi5
+ GmXFKMvqAUjh6qK4HSK5d78apnHGyPgDKMludiu8haa43BjnJkVgqYyIrfj0Gn+nIKDO
+ dErw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748420067; x=1749024867;
+ d=1e100.net; s=20230601; t=1748420068; x=1749024868;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BFcQXvhrY8QQZwNg9G2ZE2INjIMXFDjOrUvxWYd5pvw=;
- b=ntit8tOoFIYh6lXuMk1PkFZVTv71WsmS7YMbrTjHT1z0qdxAbf8rBxigSvhzYG5T0X
- KEiKpAS/bKjXSuDVQQaKrR5iRd2J8PH51Q65UPxARyk4rRcjMI/PYX71Mh1T/llDJfLB
- WXZ9Pv0ScZW6ALUhPMVPTLDnnYcu6lLnrB0iuFCHSY4QydIta3qevO3+m/ZVxeQDjzUZ
- D3pZpyplj4SFr79FGtTHY+JF40LyOJpgIC3C/hihklWeuGp4xWaVEZ9h2gMBtCA2QzLa
- s1nkCUc7/3XCo10xesU1TeMo/7iEpad5GJ3TlaIg1SLGeM39Gkokhsu7KwH0IE+LEEgf
- HRJA==
-X-Gm-Message-State: AOJu0YxHp2CbN54MWI5jyy1CDCx/de4H7b4hH6L4byMyrxmDeVSqzkw6
- XLfuen9LtaSKv+zqwTKE+WZrf7WoTpqi2FVcKt1f6X/3aJ1r/Z2m/nLWO5ajGlMcpgLSfypNlCH
- C+TRAq3bkog==
-X-Gm-Gg: ASbGncsao3cQxcuI4X3plLG/fGYIUUW5foGh0BO5itZH+fn9xv72kBN6yr2JCSIxLCJ
- 0Tm0iQECmJpPF7lqyQCDys/Jd7E3+yGgfKTu1jWypGYVujbYIH2H7AgA0YPu0NltsxfBcH2Be1d
- L93ih6WwF67dd9WPizIgGkjC+nW/84WTSrkc/2BbnhPjjhtPolOTqFzL3374/pu68EZpaRgffVp
- wTBzMqi8RRGsYScW5tMfAgSByYQ7i63LWFYAb6xl4Fyb7M3jNZsxHxB8GbwgfxzD3Zo98/Y4RoC
- twebvID+QMCCPgOr1YbLtyt2qWvSWN+wAU+0yGtpePLo/6H4UpXQlsmj
-X-Google-Smtp-Source: AGHT+IGSV2prD7w2M51QG0UEvGz33AwPW5PzmfcmF4234TR4lWje/1GBYt876l8Fo3ZpSBj6jmpPTQ==
-X-Received: by 2002:a05:600c:4455:b0:448:d54a:ca23 with SMTP id
- 5b1f17b1804b1-44fd1a2db25mr33182935e9.8.1748420066988; 
- Wed, 28 May 2025 01:14:26 -0700 (PDT)
+ bh=mpLbuX6w3ui4OqkcJtXbZ2uIaATf5Ym/Qv+poSMA20U=;
+ b=pKb7CZ/3oNS7NM7t0Lkhrftxbn3YCRviSH2K+Tz7A0dEfIS+/8yjOIFS4EL7K0g7Ze
+ LTnGI3XxrWr1v54UHllMeovgTauXgqJNCRlzWMNtE/0i84/0z2VqLBfXRlKnqXODKo/7
+ 1FboAKVcX27xm8GNVsw/mJ3oxfEnjjH2TIxWMGZNvKnb3glLXJ2tnLQEB+Up64l5lcnY
+ SOsA5Sfpt4ypbPtdvO7j5q0jbiz7jM6Pv08AO/uwIngbnq57ilObeYh/7aPxCGcrrK+v
+ /fQ1shg9Uwb3SOf5KkL9mweZVEgZm0VO7TrTsW25SnOacMxbtWRYHF0Mmf4y/7CdPN9e
+ tppw==
+X-Gm-Message-State: AOJu0YwQIMcvzRO76ZCDBHekFCFflWGWtlEmSV5+4wE8cYrFcU29By4f
+ rW6qyXSDtSiSig15RyMywMvQXc0RMrSgE74cIYcB69ExzzRMbvNHas1L/roYwHYu8pL347nhmpE
+ s0hgCjq5U0Q==
+X-Gm-Gg: ASbGncu2YPZ3Fd7v/xnCuEYGl1GQOnU7hy3e4nr9SrQQq16HPFxDhFDrb8HNMRYodI9
+ 3YE5qflmqbuI+LZPB2AUPRTXY+gddNTcSE9FUvNepXK8ldkpyyVWbA2WPvcCKQGsEIxxgW6cJ1I
+ 2dyH6lYWxM621dZ3lsjYk4Rldb1dL9p4MMn4Nj7yF9bxhuVGSP7drKEVCzdrsWRY4qexeoFdmjN
+ sItFaOWgVALgaWOhmpOdi9fDI3LHJcJihXFYYHXJqRtHQ6HUAlaytE9S7RgLabauAoaFXRpyK1i
+ YhAdMj56WrwTVTo8kRYeul0AgKMAkzre2A3vTZcDCAO6U+GwYsDrAsH/vbEgwNxgptU=
+X-Google-Smtp-Source: AGHT+IF7FAN6iJHUetgK8qAjC4cGoCe7dEZfTyttsPJvzYDJOKHvbgUYes7BdxzKGvNkasjDqnzZsg==
+X-Received: by 2002:a05:600c:c0c1:b0:450:c9e3:995c with SMTP id
+ 5b1f17b1804b1-450c9e39ce5mr5302325e9.12.1748420068503; 
+ Wed, 28 May 2025 01:14:28 -0700 (PDT)
 Received: from stoup.. ([195.53.115.74]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.25
+ 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 May 2025 01:14:26 -0700 (PDT)
+ Wed, 28 May 2025 01:14:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E . Iglesias" <edgar.iglesias@amd.com>
-Subject: [PULL 10/28] target/microblaze: Fix printf format in mmu_translate
-Date: Wed, 28 May 2025 09:13:52 +0100
-Message-ID: <20250528081410.157251-11-richard.henderson@linaro.org>
+Subject: [PULL 11/28] target/microblaze: Use TARGET_LONG_BITS == 32 for system
+ mode
+Date: Wed, 28 May 2025 09:13:53 +0100
+Message-ID: <20250528081410.157251-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250528081410.157251-1-richard.henderson@linaro.org>
 References: <20250528081410.157251-1-richard.henderson@linaro.org>
@@ -95,28 +96,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use TARGET_FMT_lx to match the target_ulong type of vaddr.
+Now that the extended address instructions are handled separately
+from virtual addresses, we can narrow the emulation to 32-bit.
 
 Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/microblaze/mmu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ configs/targets/microblaze-softmmu.mak   | 4 +---
+ configs/targets/microblazeel-softmmu.mak | 4 +---
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/target/microblaze/mmu.c b/target/microblaze/mmu.c
-index 95a12e16f8..8703ff5c65 100644
---- a/target/microblaze/mmu.c
-+++ b/target/microblaze/mmu.c
-@@ -172,7 +172,8 @@ unsigned int mmu_translate(MicroBlazeCPU *cpu, MicroBlazeMMULookup *lu,
-     }
- done:
-     qemu_log_mask(CPU_LOG_MMU,
--                  "MMU vaddr=%" PRIx64 " rw=%d tlb_wr=%d tlb_ex=%d hit=%d\n",
-+                  "MMU vaddr=0x" TARGET_FMT_lx
-+                  " rw=%d tlb_wr=%d tlb_ex=%d hit=%d\n",
-                   vaddr, rw, tlb_wr, tlb_ex, hit);
-     return hit;
- }
+diff --git a/configs/targets/microblaze-softmmu.mak b/configs/targets/microblaze-softmmu.mak
+index 23457d0ae6..bab7b498c2 100644
+--- a/configs/targets/microblaze-softmmu.mak
++++ b/configs/targets/microblaze-softmmu.mak
+@@ -3,6 +3,4 @@ TARGET_BIG_ENDIAN=y
+ # needed by boot.c
+ TARGET_NEED_FDT=y
+ TARGET_XML_FILES=gdb-xml/microblaze-core.xml gdb-xml/microblaze-stack-protect.xml
+-# System mode can address up to 64 bits via lea/sea instructions.
+-# TODO: These bypass the mmu, so we could emulate these differently.
+-TARGET_LONG_BITS=64
++TARGET_LONG_BITS=32
+diff --git a/configs/targets/microblazeel-softmmu.mak b/configs/targets/microblazeel-softmmu.mak
+index c82c509623..8aee7ebc5c 100644
+--- a/configs/targets/microblazeel-softmmu.mak
++++ b/configs/targets/microblazeel-softmmu.mak
+@@ -2,6 +2,4 @@ TARGET_ARCH=microblaze
+ # needed by boot.c
+ TARGET_NEED_FDT=y
+ TARGET_XML_FILES=gdb-xml/microblaze-core.xml gdb-xml/microblaze-stack-protect.xml
+-# System mode can address up to 64 bits via lea/sea instructions.
+-# TODO: These bypass the mmu, so we could emulate these differently.
+-TARGET_LONG_BITS=64
++TARGET_LONG_BITS=32
 -- 
 2.43.0
 
