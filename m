@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8C4AC66BA
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 659B1AC66CC
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:12:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDgO-0004dK-Pf; Wed, 28 May 2025 06:06:48 -0400
+	id 1uKDgX-0005K6-8l; Wed, 28 May 2025 06:06:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg0-0004C6-1B
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg2-0004K1-61
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfw-0007FU-Nn
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfy-0007GE-B2
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426779;
+ s=mimecast20190719; t=1748426781;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9oxiy6QyXCRbn4OaTPJfAU7LRxuueKmzLgzP08rUVe4=;
- b=MxklaE0TNr/Tw/SUz4I9IpgFoljVOxXl8gD51hnptePn+aIf7BS0YzAf+0r+UwuDYSuM4S
- 6i59zgTpZEToRnCs42FHnvMOxrxSzArqdrYM5KcxK8KMaeOcsgDt65MjmD4IOVeJc3kZq+
- yBqnvIClcrRnmsA2rz8gF6kHhuF5yTQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=pKqHGGEtL2ZC5OKb/YBObl5/3Ty09dzGQ/zzRLpA4Ns=;
+ b=hyhOTHBlWjP+2vu56HQohM8HDongKDSm3S0bbNkKcNxkqU9hH75D2gC4nkU7DZoSPkQ0z1
+ oUoOHfMfR2QHckfoev/DdkS9m6kBqcjBQdH8Ca83kvAqgFGxwL+SMqeH1gb65jmUHpO/2M
+ ckiWjtUiMJMqCzA3CPd7BYN8kIukRgE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-167-3a330jvCMGOMq6nfsJqVyQ-1; Wed,
- 28 May 2025 06:05:15 -0400
-X-MC-Unique: 3a330jvCMGOMq6nfsJqVyQ-1
-X-Mimecast-MFC-AGG-ID: 3a330jvCMGOMq6nfsJqVyQ_1748426714
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-Qg0-SfDFNFibQ4OdK7SZPg-1; Wed,
+ 28 May 2025 06:05:18 -0400
+X-MC-Unique: Qg0-SfDFNFibQ4OdK7SZPg-1
+X-Mimecast-MFC-AGG-ID: Qg0-SfDFNFibQ4OdK7SZPg_1748426717
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 48556180036E; Wed, 28 May 2025 10:05:14 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 740AF19560B1; Wed, 28 May 2025 10:05:17 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 285C9180049D; Wed, 28 May 2025 10:05:11 +0000 (UTC)
+ id 1A397180049D; Wed, 28 May 2025 10:05:14 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 01/27] tests/functional/test_sparc64_tuxrun: Explicitly set the
- 'sun4u' machine
-Date: Wed, 28 May 2025 12:04:41 +0200
-Message-ID: <20250528100507.313906-2-thuth@redhat.com>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 02/27] tests/functional/test_mips_malta: Re-enable the check
+ for the PCI host bridge
+Date: Wed, 28 May 2025 12:04:42 +0200
+Message-ID: <20250528100507.313906-3-thuth@redhat.com>
 In-Reply-To: <20250528100507.313906-1-thuth@redhat.com>
 References: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -84,30 +85,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Use self.set_machine() to set the machine instead of relying on the
-default machine of the binary. This way the test can be skipped in
-case the machine has not been compiled into the QEMU binary.
+The problem with the PCI bridge has been fixed in commit e5894fd6f411c1
+("hw/pci-host/gt64120: Fix endianness handling"), so we can enable the
+corresponding test again.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250521145112.142222-1-thuth@redhat.com>
+Message-ID: <20250522080208.205489-1-thuth@redhat.com>
 ---
- tests/functional/test_sparc64_tuxrun.py | 1 +
- 1 file changed, 1 insertion(+)
+ tests/functional/test_mips_malta.py | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/test_sparc64_tuxrun.py b/tests/functional/test_sparc64_tuxrun.py
-index 3be08d6102b..0d7b43dd74c 100755
---- a/tests/functional/test_sparc64_tuxrun.py
-+++ b/tests/functional/test_sparc64_tuxrun.py
-@@ -24,6 +24,7 @@ class TuxRunSparc64Test(TuxRunBaselineTest):
-         '479c3dc104c82b68be55e2c0c5c38cd473d0b37ad4badccde4775bb88ce34611')
- 
-     def test_sparc64(self):
-+        self.set_machine('sun4u')
-         self.root='sda'
-         self.wait_for_shutdown=False
-         self.common_tuxrun(kernel_asset=self.ASSET_SPARC64_KERNEL,
+diff --git a/tests/functional/test_mips_malta.py b/tests/functional/test_mips_malta.py
+index 89b9556f30d..30279f0ff21 100755
+--- a/tests/functional/test_mips_malta.py
++++ b/tests/functional/test_mips_malta.py
+@@ -80,10 +80,8 @@ def mips_check_wheezy(test, kernel_path, image_path, kernel_command_line,
+     exec_command_and_wait_for_pattern(test, 'cat /proc/devices', 'usb')
+     exec_command_and_wait_for_pattern(test, 'cat /proc/ioports',
+                                       ' : piix4_smbus')
+-    # lspci for the host bridge does not work on big endian targets:
+-    # https://gitlab.com/qemu-project/qemu/-/issues/2826
+-    # exec_command_and_wait_for_pattern(test, 'lspci -d 11ab:4620',
+-    #                                   'GT-64120')
++    exec_command_and_wait_for_pattern(test, 'lspci -d 11ab:4620',
++                                      'GT-64120')
+     exec_command_and_wait_for_pattern(test,
+                                       'cat /sys/bus/i2c/devices/i2c-0/name',
+                                       'SMBus PIIX4 adapter')
 -- 
 2.49.0
 
