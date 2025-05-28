@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91881AC6186
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 08:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BECAC619B
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 08:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uK9rf-0005s7-3A; Wed, 28 May 2025 02:02:11 -0400
+	id 1uK9xP-0007Uk-5A; Wed, 28 May 2025 02:08:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uK9rb-0005rg-4y
- for qemu-devel@nongnu.org; Wed, 28 May 2025 02:02:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uK9xN-0007UF-6K
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 02:08:05 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uK9rY-0008NR-Sc
- for qemu-devel@nongnu.org; Wed, 28 May 2025 02:02:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748412122;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=kkYpDK8nKrthR9ENytDWZIF6JEpVfNYGuhYw+orPvNw=;
- b=MjxDrykWHDFg2RPvynsSGOGWmfKOhMz9IWyFFge7CQKPo42SIQZ3Ob4f2j3WJE7kqhQRc/
- H/0UJQ9lvy3u07KSjIqTsMYOShB3hOT8HmNTNzSWEC7SZi2xh8vRtMmlGrjM3aGeyNN1lD
- piLIGOxKjNIRGxCce4Tno+2jhqiL0bk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-20-iT0Iwj4bPzCNycpYBiBDIw-1; Wed,
- 28 May 2025 02:01:58 -0400
-X-MC-Unique: iT0Iwj4bPzCNycpYBiBDIw-1
-X-Mimecast-MFC-AGG-ID: iT0Iwj4bPzCNycpYBiBDIw_1748412117
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3A663180087B; Wed, 28 May 2025 06:01:57 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.2])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B94F719560A3; Wed, 28 May 2025 06:01:56 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1D47521E6757; Wed, 28 May 2025 08:01:54 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  michael.roth@amd.com,  thuth@redhat.com,
- pbonzini@redhat.com,  richard.henderson@linaro.org,
- peter.maydell@linaro.org,  berrange@redhat.com,  philmd@linaro.org
-Subject: Re: [PATCH v4 02/15] qapi: expand docs for SEV commands
-In-Reply-To: <7510ffa1-e84d-4d59-8733-86f913e91799@linaro.org> (Pierrick
- Bouvier's message of "Tue, 27 May 2025 09:54:49 -0700")
-References: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
- <20250522190542.588267-3-pierrick.bouvier@linaro.org>
- <87h616qoq2.fsf@pond.sub.org>
- <7510ffa1-e84d-4d59-8733-86f913e91799@linaro.org>
-Date: Wed, 28 May 2025 08:01:54 +0200
-Message-ID: <87iklljmst.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uK9xK-0000lT-8T
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 02:08:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1748412483; x=1779948483;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=QQNY7Zmj/hAgVuMHUbKHogpM6GBKiUiPk4IwJ5nZIRs=;
+ b=fpwTcMx8jLPKrQAabRPpahcQSn+0I2BRcn/ncbM4b2l4/iNzxZz9e3Ia
+ tkCQlJv2z6BRDtsiSi8VPkmdK5d10halNQ2JIRGLGV8duFCuiFP6u/Y0l
+ e4DEAo5Ygb3wOx2PEnbtcociT0opHVGZTfJfihDuAPKefhfN/dCQXor31
+ DqmQkZeYtDmLqu5asUWb4XxMs2tVSXuwTDZt4vSxnH1slU/xDTsmvmGCL
+ qoDCx5/gwhMaF5mk4vh9ez3FwRR/cXiwdtYROa6vem3xuHcFrkoImptDC
+ lkoIcLspzE7nTXkQWPIFpimNRYv4sYqK5qgQfp9hBP4BzfgsAW+sNMBes w==;
+X-CSE-ConnectionGUID: i4ZZDBj9QSq/5gkS0NRICA==
+X-CSE-MsgGUID: VmITQ5JGQL+Pp1bFydmciQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="60678950"
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="60678950"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2025 23:07:59 -0700
+X-CSE-ConnectionGUID: euYsKqzOStGCYQw2SckKzg==
+X-CSE-MsgGUID: 7dzYej+XTtGkxjkZkJsZSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="143164889"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2025 23:07:54 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com,
+ jgg@nvidia.com, nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
+ joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v1 0/6] VFIO and IOMMU prerequisite stuff for IOMMU nesting
+ support
+Date: Wed, 28 May 2025 14:04:03 +0800
+Message-Id: <20250528060409.3710008-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.11;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -72
+X-Spam_score: -7.3
+X-Spam_bar: -------
+X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,36 +85,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+Hi,
 
-> On 5/27/25 4:26 AM, Markus Armbruster wrote:
+The first 6 patches of [1] are all VFIO or IOMMUFD related additions.
+Split them out per Cédric and seek for quick acceptance.
 
-[...]
-
-> All good for me.
-> The only question that crossed my mind when you asked for those changes previously was: "Why does QAPI has it's own style, and not simply following the QEMU official style?"
-
-Fair question!  It's down to the difference between code and
-documentation text.
-
-Humans tend to have trouble following long lines with their eyes (I sure
-do).  Typographic manuals suggest to limit columns to roughly 60
-characters for exactly that reason[*].
-
-For code, four levels of indentation plus 60 characters of actual text
-yields 76.  However, code lines can be awkward to break, and going over
-80 can be less bad than an awkward line break.  Use your judgement.
-
-Documentation text, however, tends to be indented much less: 6-10
-characters of indentation plus 60 of actual text yields 66-70.  When I
-reflowed the entire QAPI schema documentation to stay within that limit
-(commit a937b6aa739), not a single line break was awkward.
-
-> In the end, you choose which rules apply to this subsystem, and I have no strong opinion on whether it should be 70, 72 or 80 characters on the line, or if we prefer tabs to spaces (to make some analogy). I just think it's surprising to have a different coding style only here for arbitrary reasons.
-
-I hope you understand my reasons better now :)
+I didn't copy changelog from [1] as it's a mix of the whole nesting series.
+Compared to rfcv3 in [1], changed to save raw data in VendorCaps, so we can
+keep all vendor structure decoding inside the backend and VFIO wouldn't need
+to care about types nor what's inside the data.
 
 
-[*] https://en.wikipedia.org/wiki/Column_(typography)#Typographic_style
+Test done:
+- VFIO devices hotplug/unplug
+- build test on Windows
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2025-05/msg05002.html
+
+Thanks
+Zhenzhong
+
+Zhenzhong Duan (6):
+  backends/iommufd: Add a helper to invalidate user-managed HWPT
+  vfio/iommufd: Add properties and handlers to
+    TYPE_HOST_IOMMU_DEVICE_IOMMUFD
+  vfio/iommufd: Initialize iommufd specific members in
+    HostIOMMUDeviceIOMMUFD
+  vfio/iommufd: Implement [at|de]tach_hwpt handlers
+  vfio/iommufd: Save vendor specific device info
+  iommufd: Implement query of host VTD IOMMU's capability
+
+ hw/i386/intel_iommu_internal.h     |  1 +
+ include/system/host_iommu_device.h | 18 ++++++
+ include/system/iommufd.h           | 54 +++++++++++++++++
+ backends/iommufd.c                 | 94 +++++++++++++++++++++++++++++-
+ hw/vfio/iommufd.c                  | 36 ++++++++++--
+ backends/trace-events              |  1 +
+ 6 files changed, 197 insertions(+), 7 deletions(-)
+
+-- 
+2.34.1
 
 
