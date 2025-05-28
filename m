@@ -2,74 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305C6AC691E
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA0AAC6961
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 14:35:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKFk6-00061v-AQ; Wed, 28 May 2025 08:18:46 -0400
+	id 1uKG0G-0005fg-VE; Wed, 28 May 2025 08:35:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFjr-0005zK-KW
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:18:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uKG0B-0005Yw-4w
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:35:23 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKFjm-0004Hr-1Y
- for qemu-devel@nongnu.org; Wed, 28 May 2025 08:18:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748434703;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=08Dh8+UmaAiJdKjXS+VrGv9k35UuoIVpyAK3XgTRfBE=;
- b=NhVdi6M+tQtcbmM7vsxvj7GFFOlrPhb25LIxFi3DNiCodqRpwRKYhexGOZ7+qIZn/4fXsH
- 6LZjRHXUQfzlZkQHJwgIzMYU1rKrsfq8TUgBl4H2LdZfv2q3lVjmbITNmsFiUp0oHx3nWt
- 1H5gdnsSq91pCokqcvRJzK7hsiIrcaA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-107-fzyDV7gjPU-b9C5H_bm3lg-1; Wed,
- 28 May 2025 08:18:16 -0400
-X-MC-Unique: fzyDV7gjPU-b9C5H_bm3lg-1
-X-Mimecast-MFC-AGG-ID: fzyDV7gjPU-b9C5H_bm3lg_1748434696
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3C79019560AA
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 12:18:16 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 78BDF1956095
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 12:18:15 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E829C21E65DF; Wed, 28 May 2025 14:11:43 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
-	Eric Blake <eblake@redhat.com>
-Subject: [PULL 4/4] docs/about/removed-features: Move removal notes to tidy up
- order
-Date: Wed, 28 May 2025 14:11:43 +0200
-Message-ID: <20250528121143.2208075-5-armbru@redhat.com>
-In-Reply-To: <20250528121143.2208075-1-armbru@redhat.com>
-References: <20250528121143.2208075-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uKG05-0006J9-Tn
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 08:35:22 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b6pfv1vtgz6L5Gp;
+ Wed, 28 May 2025 20:27:35 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id B04791402F1;
+ Wed, 28 May 2025 20:31:08 +0800 (CST)
+Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 28 May
+ 2025 14:31:08 +0200
+Date: Wed, 28 May 2025 13:31:06 +0100
+To: Arpit Kumar <arpit1.kumar@samsung.com>
+CC: "Michael S. Tsirkin" <mst@redhat.com>, <linux-cxl@vger.kernel.org>,
+ <qemu-devel@nongnu.org>, <linuxarm@huawei.com>, <fan.ni@samsung.com>, Yuquan
+ Wang <wangyuquan1236@phytium.com.cn>, Sweta Kumari <s5.kumari@samsung.com>,
+ Vinayak Holikatti <vinayak.kh@samsung.com>, Davidlohr Bueso
+ <dave@stgolabs.net>, Ajay Joshi <ajay.opensrc@micron.com>, <cpgs@samsung.com>
+Subject: Re: [PATCH qemu 7/8] hw/cxl/cxl-mailbox-utils: Added support for
+ Get Log Capabilities (Opcode 0402h)
+Message-ID: <20250528133106.000003c8@huawei.com>
+In-Reply-To: <1983025922.01747408682214.JavaMail.epsvc@epcpadp2new>
+References: <20250305092501.191929-1-Jonathan.Cameron@huawei.com>
+ <20250305092501.191929-8-Jonathan.Cameron@huawei.com>
+ <20250512043011-mutt-send-email-mst@kernel.org>
+ <20250512093638-mutt-send-email-mst@kernel.org>
+ <20250512174038.00000beb@huawei.com>
+ <CGME20250516134255epcas5p378dda7fbda7db62fe73cc6163c5e7043@epcas5p3.samsung.com>
+ <1983025922.01747408682214.JavaMail.epsvc@epcpadp2new>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,139 +76,291 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The removal notes within a section are mostly in version order.  Move
-the few that aren't so they are.
+On Fri, 16 May 2025 19:12:45 +0530
+Arpit Kumar <arpit1.kumar@samsung.com> wrote:
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250521063711.29840-5-armbru@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
----
- docs/about/removed-features.rst | 60 ++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+> On 12/05/25 05:40PM, Jonathan Cameron wrote:
+> >On Mon, 12 May 2025 09:37:07 -0400
+> >"Michael S. Tsirkin" <mst@redhat.com> wrote:
+> > =20
+> >> On Mon, May 12, 2025 at 04:42:41AM -0400, Michael S. Tsirkin wrote: =20
+> >> > On Wed, Mar 05, 2025 at 09:24:58AM +0000, Jonathan Cameron wrote: =20
+> >> > > From: Arpit Kumar <arpit1.kumar@samsung.com>
+> >> > >
+> >> > > CXL spec 3.2 section 8.2.10.5.3 describes Get Log Capabilities.
+> >> > > It provides log capabilities supported by specified log.
+> >> > >
+> >> > > Signed-off-by: Arpit Kumar <arpit1.kumar@samsung.com>
+> >> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >> > > ---
+> >> > >  include/hw/cxl/cxl_device.h  | 20 ++++++++++++++++
+> >> > >  include/hw/cxl/cxl_mailbox.h |  5 ++++
+> >> > >  hw/cxl/cxl-mailbox-utils.c   | 45 +++++++++++++++++++++++++++++++=
++++++
+> >> > >  3 files changed, 70 insertions(+)
+> >> > >
+> >> > > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_devi=
+ce.h
+> >> > > index ed6cd50c67..87a376c982 100644
+> >> > > --- a/include/hw/cxl/cxl_device.h
+> >> > > +++ b/include/hw/cxl/cxl_device.h
+> >> > > @@ -133,6 +133,18 @@ typedef enum {
+> >> > >      CXL_MBOX_MAX =3D 0x20
+> >> > >  } CXLRetCode;
+> >> > >
+> >> > > +/* types of logs */
+> >> > > +typedef enum {
+> >> > > +    CXL_LOG_COMMAND_EFFECT,
+> >> > > +    CXL_LOG_VENDOR_DEBUG,
+> >> > > +    CXL_LOG_COMPONENT_STATE_DUMP,
+> >> > > +    CXL_LOG_ERROR_CHECK_SCRUB,
+> >> > > +    CXL_LOG_MEDIA_TEST_CAPABILITY,
+> >> > > +    CXL_LOG_MEDIA_TEST_RESULTS_SHORT,
+> >> > > +    CXL_LOG_MEDIA_TEST_RESULTS_LONG,
+> >> > > +    MAX_LOG_TYPE
+> >> > > +} CXLLogType;
+> >> > > +
+> >> > >  typedef struct CXLCCI CXLCCI;
+> >> > >  typedef struct cxl_device_state CXLDeviceState;
+> >> > >  struct cxl_cmd;
+> >> > > @@ -163,6 +175,11 @@ typedef struct CXLEventLog {
+> >> > >      QSIMPLEQ_HEAD(, CXLEvent) events;
+> >> > >  } CXLEventLog;
+> >> > >
+> >> > > +typedef struct CXLLogCapabilities {
+> >> > > +    uint32_t param_flags;
+> >> > > +    QemuUUID uuid;
+> >> > > +} CXLLogCapabilities;
+> >> > > +
+> >> > >  typedef struct CXLCCI {
+> >> > >      struct cxl_cmd cxl_cmd_set[256][256];
+> >> > >      struct cel_log {
+> >> > > @@ -171,6 +188,9 @@ typedef struct CXLCCI {
+> >> > >      } cel_log[1 << 16];
+> >> > >      size_t cel_size;
+> >> > >
+> >> > > +    /* get log capabilities */
+> >> > > +    const CXLLogCapabilities *supported_log_cap;
+> >> > > +
+> >> > >      /* background command handling (times in ms) */
+> >> > >      struct {
+> >> > >          uint16_t opcode;
+> >> > > diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mai=
+lbox.h
+> >> > > index 9008402d1c..8e1c7c5f15 100644
+> >> > > --- a/include/hw/cxl/cxl_mailbox.h
+> >> > > +++ b/include/hw/cxl/cxl_mailbox.h
+> >> > > @@ -16,4 +16,9 @@
+> >> > >  #define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
+> >> > >  #define CXL_MBOX_BACKGROUND_OPERATION_ABORT (1 << 7)
+> >> > >
+> >> > > +#define CXL_LOG_CAP_CLEAR_SUPPORTED (1 << 0)
+> >> > > +#define CXL_LOG_CAP_POPULATE_SUPPORTED (1 << 1)
+> >> > > +#define CXL_LOG_CAP_AUTO_POPULATE_SUPPORTED (1 << 2)
+> >> > > +#define CXL_LOG_CAP_PERSISTENT_COLD_RESET_SUPPORTED (1 << 3)
+> >> > > +
+> >> > >  #endif
+> >> > > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils=
+.c
+> >> > > index 299f232f26..f35fc4f112 100644
+> >> > > --- a/hw/cxl/cxl-mailbox-utils.c
+> >> > > +++ b/hw/cxl/cxl-mailbox-utils.c
+> >> > > @@ -81,6 +81,7 @@ enum {
+> >> > >      LOGS        =3D 0x04,
+> >> > >          #define GET_SUPPORTED 0x0
+> >> > >          #define GET_LOG       0x1
+> >> > > +        #define GET_LOG_CAPABILITIES   0x2
+> >> > >      FEATURES    =3D 0x05,
+> >> > >          #define GET_SUPPORTED 0x0
+> >> > >          #define GET_FEATURE   0x1
+> >> > > @@ -1068,6 +1069,43 @@ static CXLRetCode cmd_logs_get_log(const st=
+ruct cxl_cmd *cmd,
+> >> > >      return CXL_MBOX_SUCCESS;
+> >> > >  }
+> >> > >
+> >> > > +static const struct CXLLogCapabilities *find_log_index(QemuUUID *=
+uuid, CXLCCI *cci)
+> >> > > +{
+> >> > > +    for (int i =3D CXL_LOG_COMMAND_EFFECT; i < MAX_LOG_TYPE; i++)=
+ {
+> >> > > +        if (qemu_uuid_is_equal(uuid,
+> >> > > +            &cci->supported_log_cap[i].uuid)) {
+> >> > > +                return &cci->supported_log_cap[i];
+> >> > > +        }
+> >> > > +    }
+> >> > > +    return NULL;
+> >> > > +}
+> >> > > +
+> >> > > +/* CXL r3.2 Section 8.2.10.5.3: Get Log Capabilities (Opcode 0402=
+h) */
+> >> > > +static CXLRetCode cmd_logs_get_log_capabilities(const struct cxl_=
+cmd *cmd,
+> >> > > +                                                uint8_t *payload_=
+in,
+> >> > > +                                                size_t len_in,
+> >> > > +                                                uint8_t *payload_=
+out,
+> >> > > +                                                size_t *len_out,
+> >> > > +                                                CXLCCI *cci)
+> >> > > +{
+> >> > > +    const CXLLogCapabilities *cap;
+> >> > > +    struct {
+> >> > > +        QemuUUID uuid;
+> >> > > +    } QEMU_PACKED QEMU_ALIGNED(8) *get_log_capabilities_in =3D (v=
+oid *)payload_in;
+> >> > > +
+> >> > > +    uint32_t *get_log_capabilities_out =3D (uint32_t *)payload_ou=
+t;
+> >> > > +
+> >> > > +    cap =3D find_log_index(&get_log_capabilities_in->uuid, cci);
+> >> > > +    if (!cap) {
+> >> > > +        return CXL_MBOX_INVALID_LOG;
+> >> > > +    }
+> >> > > +
+> >> > > +    memcpy(get_log_capabilities_out, &cap->param_flags,
+> >> > > +           sizeof(cap->param_flags));
+> >> > > +    *len_out =3D sizeof(*get_log_capabilities_out);
+> >> > > +    return CXL_MBOX_SUCCESS;
+> >> > > +}
+> >> > > +
+> >> > >  /* CXL r3.1 section 8.2.9.6: Features */
+> >> > >  /*
+> >> > >   * Get Supported Features output payload
+> >> > > @@ -3253,6 +3291,8 @@ static const struct cxl_cmd cxl_cmd_set[256]=
+[256] =3D {
+> >> > >      [LOGS][GET_SUPPORTED] =3D { "LOGS_GET_SUPPORTED", cmd_logs_ge=
+t_supported,
+> >> > >                                0, 0 },
+> >> > >      [LOGS][GET_LOG] =3D { "LOGS_GET_LOG", cmd_logs_get_log, 0x18,=
+ 0 },
+> >> > > +    [LOGS][GET_LOG_CAPABILITIES] =3D { "LOGS_GET_LOG_CAPABILITIES=
+",
+> >> > > +                                     cmd_logs_get_log_capabilitie=
+s, 0x10, 0 },
+> >> > >      [FEATURES][GET_SUPPORTED] =3D { "FEATURES_GET_SUPPORTED",
+> >> > >                                    cmd_features_get_supported, 0x8=
+, 0 },
+> >> > >      [FEATURES][GET_FEATURE] =3D { "FEATURES_GET_FEATURE",
+> >> > > @@ -3512,10 +3552,15 @@ static void cxl_rebuild_cel(CXLCCI *cci)
+> >> > >      }
+> >> > >  }
+> >> > >
+> >> > > +static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TY=
+PE] =3D {
+> >> > > +    [CXL_LOG_COMMAND_EFFECT] =3D { .param_flags =3D 0, .uuid =3D =
+cel_uuid },
+> >> > > +};
+> >> > > + =20
+> >> >
+> >> >
+> >> > causes ci build failures:
+> >> >
+> >> > https://gitlab.com/mstredhat/qemu/-/jobs/9999980051
+> >> >
+> >> > ../hw/cxl/cxl-mailbox-utils.c:3556:60: error: initializer element is=
+ not constant
+> >> >      [CXL_LOG_COMMAND_EFFECT] =3D { .param_flags =3D 0, .uuid =3D ce=
+l_uuid },
+> >> >                                                             ^~~~~~~~
+> >> > ../hw/cxl/cxl-mailbox-utils.c:3556:60: note: (near initialization fo=
+r =E2=80=98cxl_get_log_cap[0].uuid=E2=80=99)
+> >> >
+> >> >
+> >> > Fixed it up like this:
+> >> >
+> >> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> >> > index f35fc4f112..13d26e391b 100644
+> >> > --- a/hw/cxl/cxl-mailbox-utils.c
+> >> > +++ b/hw/cxl/cxl-mailbox-utils.c
+> >> > @@ -992,9 +992,10 @@ static CXLRetCode cmd_timestamp_set(const struc=
+t cxl_cmd *cmd,
+> >> >  }
+> >> >
+> >> >  /* CXL r3.1 Section 8.2.9.5.2.1: Command Effects Log (CEL) */
+> >> > -static const QemuUUID cel_uuid =3D {
+> >> > -    .data =3D UUID(0x0da9c0b5, 0xbf41, 0x4b78, 0x8f, 0x79,
+> >> > +#define CEL_UUID UUID(0x0da9c0b5, 0xbf41, 0x4b78, 0x8f, 0x79, \
+> >> >                   0x96, 0xb1, 0x62, 0x3b, 0x3f, 0x17)
+> >> > +static const QemuUUID cel_uuid =3D {
+> >> > +    .data =3D CEL_UUID
+> >> >  };
+> >> >
+> >> >  /* CXL r3.1 Section 8.2.9.5.1: Get Supported Logs (Opcode 0400h) */
+> >> > @@ -3553,7 +3554,7 @@ static void cxl_rebuild_cel(CXLCCI *cci)
+> >> >  }
+> >> >
+> >> >  static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TYPE=
+] =3D {
+> >> > -    [CXL_LOG_COMMAND_EFFECT] =3D { .param_flags =3D 0, .uuid =3D ce=
+l_uuid },
+> >> > +    [CXL_LOG_COMMAND_EFFECT] =3D { .param_flags =3D 0, .uuid =3D CE=
+L_UUID },
+> >> >  };
+> >> >
+> >> >  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+> >> > =20
+> >>
+> >>
+> >> Actually no, does not help either. Dropped for now.
+> >> Next patch does not depend on this one, right? =20
+> >
+> >Indeed. Unrelated.
+> >
+> >Thanks,
+> >
+> >J =20
+>=20
+> Thanks for pointing this out. The code builds successfully on my setup
+> with gcc version: 11.4.0. However, it fails to compile on gcc 7.5.0
+> "cc (SUSE Linux) 7.5.0" as used by Michael. This could be a compiler
+> issue as per the link:
+> https://stackoverflow.com/questions/54135942/why-initializer-
+> element-is-not-a-constant-is-not-working-anymore.
+>=20
+> My setup doesn't allow me to regenerate the error using lower version
+> of compiler. A probable fix to it would be
+> type casting cel_uuid as: [CXL_LOG_COMMAND_EFFECT] =3D
+> { .param_flags =3D 0,.uuid =3D (QemuUUID)cel_uuid }. It will be helpful
+> if you could test the same.
 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 92b5ba6218..4819cb4665 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -162,6 +162,12 @@ specified with ``-mem-path`` can actually provide the guest RAM configured with
- The ``name`` parameter of the ``-net`` option was a synonym
- for the ``id`` parameter, which should now be used instead.
- 
-+RISC-V firmware not booted by default (removed in 5.1)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+QEMU 5.1 changes the default behaviour from ``-bios none`` to ``-bios default``
-+for the RISC-V ``virt`` machine and ``sifive_u`` machine.
-+
- ``-numa node,mem=...`` (removed in 5.1)
- '''''''''''''''''''''''''''''''''''''''
- 
-@@ -324,12 +330,6 @@ devices.  Drives the board doesn't pick up can no longer be used with
- This option was undocumented and not used in the field.
- Use ``-device usb-ccid`` instead.
- 
--RISC-V firmware not booted by default (removed in 5.1)
--''''''''''''''''''''''''''''''''''''''''''''''''''''''
--
--QEMU 5.1 changes the default behaviour from ``-bios none`` to ``-bios default``
--for the RISC-V ``virt`` machine and ``sifive_u`` machine.
--
- ``-no-quit`` (removed in 7.0)
- '''''''''''''''''''''''''''''
- 
-@@ -911,14 +911,6 @@ The RISC-V no MMU cpus have been removed. The two CPUs: ``rv32imacu-nommu`` and
- ``rv64imacu-nommu`` can no longer be used. Instead the MMU status can be specified
- via the CPU ``mmu`` option when using the ``rv32`` or ``rv64`` CPUs.
- 
--RISC-V 'any' CPU type ``-cpu any`` (removed in 9.2)
--'''''''''''''''''''''''''''''''''''''''''''''''''''
--
--The 'any' CPU type was introduced back in 2018 and was around since the
--initial RISC-V QEMU port. Its usage was always been unclear: users don't know
--what to expect from a CPU called 'any', and in fact the CPU does not do anything
--special that isn't already done by the default CPUs rv32/rv64.
--
- ``compat`` property of server class POWER CPUs (removed in 6.0)
- '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
- 
-@@ -965,6 +957,14 @@ The CRIS architecture was pulled from Linux in 4.17 and the compiler
- was no longer packaged in any distro making it harder to run the
- ``check-tcg`` tests.
- 
-+RISC-V 'any' CPU type ``-cpu any`` (removed in 9.2)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+The 'any' CPU type was introduced back in 2018 and was around since the
-+initial RISC-V QEMU port. Its usage was always been unclear: users don't know
-+what to expect from a CPU called 'any', and in fact the CPU does not do anything
-+special that isn't already done by the default CPUs rv32/rv64.
-+
- System accelerators
- -------------------
- 
-@@ -975,18 +975,18 @@ Userspace local APIC with KVM (x86, removed in 8.0)
- a local APIC.  The ``split`` setting is supported, as is using ``-M
- kernel-irqchip=off`` when the CPU does not have a local APIC.
- 
--HAXM (``-accel hax``) (removed in 8.2)
--''''''''''''''''''''''''''''''''''''''
--
--The HAXM project has been retired (see https://github.com/intel/haxm#status).
--Use "whpx" (on Windows) or "hvf" (on macOS) instead.
--
- MIPS "Trap-and-Emulate" KVM support (removed in 8.0)
- ''''''''''''''''''''''''''''''''''''''''''''''''''''
- 
- The MIPS "Trap-and-Emulate" KVM host and guest support was removed
- from Linux in 2021, and is not supported anymore by QEMU either.
- 
-+HAXM (``-accel hax``) (removed in 8.2)
-+''''''''''''''''''''''''''''''''''''''
-+
-+The HAXM project has been retired (see https://github.com/intel/haxm#status).
-+Use "whpx" (on Windows) or "hvf" (on macOS) instead.
-+
- System emulator machines
- ------------------------
- 
-@@ -1044,16 +1044,6 @@ Aspeed ``swift-bmc`` machine (removed in 7.0)
- This machine was removed because it was unused. Alternative AST2500 based
- OpenPOWER machines are ``witherspoon-bmc`` and ``romulus-bmc``.
- 
--Aspeed ``tacoma-bmc`` machine (removed in 10.0)
--'''''''''''''''''''''''''''''''''''''''''''''''
--
--The ``tacoma-bmc`` machine was removed because it didn't bring much
--compared to the ``rainier-bmc`` machine. Also, the ``tacoma-bmc`` was
--a board used for bring up of the AST2600 SoC that never left the
--labs. It can be easily replaced by the ``rainier-bmc`` machine, which
--was the actual final product, or by the ``ast2600-evb`` with some
--tweaks.
--
- ppc ``taihu`` machine (removed in 7.2)
- '''''''''''''''''''''''''''''''''''''''''''''
- 
-@@ -1084,6 +1074,16 @@ for all machine types using the PXA2xx and OMAP2 SoCs. We are also
- dropping the ``cheetah`` OMAP1 board, because we don't have any
- test images for it and don't know of anybody who does.
- 
-+Aspeed ``tacoma-bmc`` machine (removed in 10.0)
-+'''''''''''''''''''''''''''''''''''''''''''''''
-+
-+The ``tacoma-bmc`` machine was removed because it didn't bring much
-+compared to the ``rainier-bmc`` machine. Also, the ``tacoma-bmc`` was
-+a board used for bring up of the AST2600 SoC that never left the
-+labs. It can be easily replaced by the ``rainier-bmc`` machine, which
-+was the actual final product, or by the ``ast2600-evb`` with some
-+tweaks.
-+
- ppc ``ref405ep`` machine (removed in 10.0)
- ''''''''''''''''''''''''''''''''''''''''''
- 
--- 
-2.48.1
+I wonder if we are better off just filling it in in cxl_init_cci()
+So change the type of the element in struct CXLCCI to
+CXLLogCapabiliites supported_log_cap[MAX_LOGS];
+
+then assign the elements at runtime.
+
+That should avoid any issues with whether it is const or not at the
+cost of a little more code.
+
+>=20
+> Also, In the existing code,
+> function: cmd_logs_get_supported(), cel_uuid(const) is assigned to a
+> non-const variable but I am unsure of why it is not throwing an error.
+
+Isn't it just copying the content which should be fine?
+
+>=20
+> Thanks,
+> Arpit
+> >> =20
+> >> > >  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+> >> > >  {
+> >> > >      cci->payload_max =3D payload_max;
+> >> > >      cxl_rebuild_cel(cci);
+> >> > > +    cci->supported_log_cap =3D cxl_get_log_cap;
+> >> > >
+> >> > >      cci->bg.complete_pct =3D 0;
+> >> > >      cci->bg.starttime =3D 0;
+> >> > > --
+> >> > > 2.43.0 =20
+> >>
+> >> =20
+> > =20
+>=20
 
 
