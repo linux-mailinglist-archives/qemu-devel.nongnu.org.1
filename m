@@ -2,100 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFD9AC669A
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE5A8AC66A8
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:08:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDeQ-0002vZ-Ia; Wed, 28 May 2025 06:04:46 -0400
+	id 1uKDgj-0006Id-2V; Wed, 28 May 2025 06:07:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1uKDeK-0002tj-Mm
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:04:40 -0400
-Received: from fhigh-a6-smtp.messagingengine.com ([103.168.172.157])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDgO-0004sB-TI
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1uKDeI-0006kX-Qx
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:04:40 -0400
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfhigh.phl.internal (Postfix) with ESMTP id EE2521140119;
- Wed, 28 May 2025 06:04:34 -0400 (EDT)
-Received: from phl-imap-08 ([10.202.2.84])
- by phl-compute-06.internal (MEProxy); Wed, 28 May 2025 06:04:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm2; t=1748426674;
- x=1748513074; bh=n1PjCzJbRqMmKmrT5Xf405DSGFhgs1F5DNO5tqJqYCI=; b=
- nf0j7z98Zy0yAEBXDFBr62JJEDOIjU1GcOEkrtIF2i8kCnYk1RU4d/2FSYn0Zg+r
- i9BbhuTVywtWpBJbPDNNbE61ZAzNgpfQLQYoIRSaCJp5xxIZ+7QH0Ico//YpmMyQ
- PYYfVN7Mc/EDuUm3Eb3CE9VnXM243DGzEsP3G2SDPzy9RU0UBVDCM0SYX+ki4JYQ
- i6mvC94JdbwEOEO4+uVrfdmSqWiDOuagZGTNBRbjtaXkzeWUpkYtC53MTebDTqMV
- NbAd0f+gQC6mSp7D/UH0zBEprbXh6Pi2bfrKl87pC2aEjwwIbgST3g76/FmLm6uD
- z6Bzr6juU65hkA8gmzsc4w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1748426674; x=
- 1748513074; bh=n1PjCzJbRqMmKmrT5Xf405DSGFhgs1F5DNO5tqJqYCI=; b=W
- Bb/wVgfjCXxWWCCo5avZYVVxRqRf3HQXfTgPI//770QVdcd5RI4OBYAsaJ3BFq6o
- o+sanKfe0USqakTxuw8UiyMmhGr19HBwlgBPO258ghm/qokbW/SO/wFYBkqDRiH4
- 7s+s/fZBwyFQcJPyuA4EBKw0YjNGRSOZ5sPCfoC7axzX8++b6tOHCYrgp1Jo9OU/
- KpIq9bmuLpVv/dFEbRiaUoCNssQAWYWhUxTOdV5zPovy9EbpALT0rbsmf8pxWLOI
- bcz3jlC7J+h9qdQPScxcMWW4glhmC8f32P5o0nDpdQH94VgvO8ck023I8qJZXuQg
- HBVs84IO+TCwZ2/d1SDdg==
-X-ME-Sender: <xms:st82aHrqkGIVhigTJ25Y0WTtLrZzlGB3cMQE4wWNY6hQUFN99U43qw>
- <xme:st82aBqOy2YJdKEeQJI9ZMOqxhogp9uMKmq3UhiE5rfjIuOgqgAbRCHq1vfbqg7fV
- Mdv0e1Sx9X23AvGMwo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvvdelkeculddtuddrgeefvddrtd
- dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
- fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
- dtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefk
- jghfufgtgfesthhqredtredtjeenucfhrhhomhepfdflihgrgihunhcujggrnhhgfdcuoe
- hjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhn
- peejheefuddvtdfggfdvffekteehhfelgfdvvedvkeeuffefkeehheegvefhveetjeenuc
- evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihu
- nhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhopeefpdhmohguvg
- epshhmthhpohhuthdprhgtphhtthhopegthhgvnhhhuhgrtggriheskhgvrhhnvghlrdho
- rhhgpdhrtghpthhtohepphhhihhlmhgusehlihhnrghrohdrohhrghdprhgtphhtthhope
- hqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhg
-X-ME-Proxy: <xmx:st82aEM1ryky6_K5b6QEkUjj4PL_OC7pINrB7I8Czsw38fJ7yK7Jeg>
- <xmx:st82aK5LG6LsUA92Cs24eX3G7bSlYYiaku3HGF8RX0y8UYvbWdqTzg>
- <xmx:st82aG5RSXBlWB1pGg7vcPTkkCbEb0Ind2wg1m9EpVFawjA2nmj51A>
- <xmx:st82aCgcr6Q3i_WFcfCIalALPTlW9tS2N967a0ZzLv74z_plBx-cDA>
- <xmx:st82aENHvRPID1Dp4vvDFCqTuTh2SYbhVDH6ssnLjczpkJ7D8cZoH30P>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
- id A135B2CE005F; Wed, 28 May 2025 06:04:34 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDgL-0007J8-9W
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748426796;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=CwiQ9+rI03ALRl6vMNbiq7w9FI72pW4D0SVMDjr9o7E=;
+ b=PdR5qqJpvHJQ+l7CV/jrC7th9smoxBh8Wv9swC18dJI7i3iga+ICzmQbQJMmdsVriHaxSP
+ Pg/1ww77RsuQfJWxuOI8nlhodsrrqLEfUrJDrVibuSMBfGCAFTYHBVSMXu847Wu7RaIAzg
+ AOgwkOpDGnbyOXHN5EVXJifDnb7oecc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-260-ZmW0wPuqNgiUG4O_8waYqw-1; Wed,
+ 28 May 2025 06:05:12 -0400
+X-MC-Unique: ZmW0wPuqNgiUG4O_8waYqw-1
+X-Mimecast-MFC-AGG-ID: ZmW0wPuqNgiUG4O_8waYqw_1748426711
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6C7B9180034A
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 10:05:11 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B29F7180049D; Wed, 28 May 2025 10:05:09 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 00/27] Functional tests, Microblaze endianness & pc/q35 cleanups
+Date: Wed, 28 May 2025 12:04:40 +0200
+Message-ID: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
-X-ThreadId: T86cbbd2d33d83f19
-Date: Wed, 28 May 2025 11:04:13 +0100
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: "QEMU devel" <qemu-devel@nongnu.org>
-Cc: "Huacai Chen" <chenhuacai@kernel.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Message-Id: <71237b8f-bd04-44dd-8d60-b09f7882721d@app.fastmail.com>
-In-Reply-To: <20250508-bonito-v1-0-4f9f27733028@flygoat.com>
-References: <20250508-bonito-v1-0-4f9f27733028@flygoat.com>
-Subject: Re: [PATCH 0/5] hw/pci-host/bonito: Improve various emulation
- functions
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=103.168.172.157;
- envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-a6-smtp.messagingengine.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) DKIMWL_WL_HIGH=-2.907, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,53 +78,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+ Hi!
 
+The following changes since commit 80db93b2b88f9b3ed8927ae7ac74ca30e643a83e:
 
-=E5=9C=A82025=E5=B9=B45=E6=9C=888=E6=97=A5=E5=91=A8=E5=9B=9B =E4=B8=8B=E5=
-=8D=883:46=EF=BC=8CJiaxun Yang=E5=86=99=E9=81=93=EF=BC=9A
-> Hi all,
->
-> This series addressed a couple of missing Bonito functionalities
-> I found when I was trying to test NetBSD against QEMU.
+  Merge tag 'pull-aspeed-20250526' of https://github.com/legoater/qemu into staging (2025-05-26 10:16:59 -0400)
 
-Hi Philippe,
+are available in the Git repository at:
 
-A gentle ping :-)
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-05-28
 
-Do you have bandwidth on MIPS recently?
+for you to fetch changes up to 9c2da02e184fddfa7cd7d7813455c2306daae99a:
 
-I'm planning to respin my CPS SMP series as well.
+  tests/unit/test-util-sockets: fix mem-leak on error object (2025-05-28 11:59:47 +0200)
 
-Thanks
-Jiaxun
+----------------------------------------------------------------
+* Functional tests improvements
+* Endianness improvements/clean-ups for the Microblaze machines
+* Remove obsolete -2.4 and -2.5 i440fx and q35 machine types and related code
 
->
-> Please review.
->
-> Thanks
-> Jiaxun
->
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
-> Jiaxun Yang (5):
->       hw/pci-host/bonito: Implement ICU
->       hw/pci-host/bonito: Implement PCIMAP register
->       hw/pci-host/bonito: Implement DMA address translation
->       hw/pci-host/bonito: Rework PCI config space accessor
->       hw/pci-host/bonito: Add comments about documentation
->
->  hw/pci-host/bonito.c     | 453 +++++++++++++++++++++++++++++---------=
----------
->  hw/pci-host/trace-events |   3 -
->  2 files changed, 284 insertions(+), 172 deletions(-)
-> ---
-> base-commit: c5e2c4042e3c50b96cc5eaa9683325c5a96913b0
-> change-id: 20250507-bonito-482759b2b52f
->
-> Best regards,
-> --=20
-> Jiaxun Yang <jiaxun.yang@flygoat.com>
+----------------------------------------------------------------
+Alexandr Moshkov (2):
+      tests/functional: add skipLockedMemoryTest decorator
+      tests/functional: add memlock tests
 
---=20
-- Jiaxun
+Matheus Tavares Bernardino (1):
+      tests/unit/test-util-sockets: fix mem-leak on error object
+
+Philippe Mathieu-Daudé (17):
+      hw/i386/pc: Remove deprecated pc-q35-2.4 and pc-i440fx-2.4 machines
+      hw/i386/pc: Remove PCMachineClass::broken_reserved_end field
+      hw/i386/pc: Remove pc_compat_2_4[] array
+      hw/core/machine: Remove hw_compat_2_4[] array
+      hw/net/e1000: Remove unused E1000_FLAG_MAC flag
+      hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_MIGRATE_EXTRA definition
+      hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_DISABLE_PCIE definition
+      hw/i386/pc: Remove deprecated pc-q35-2.5 and pc-i440fx-2.5 machines
+      hw/i386/x86: Remove X86MachineClass::save_tsc_khz field
+      hw/nvram/fw_cfg: Remove legacy FW_CFG_ORDER_OVERRIDE
+      hw/core/machine: Remove hw_compat_2_5[] array
+      hw/scsi/vmw_pvscsi: Remove PVSCSI_COMPAT_OLD_PCI_CONFIGURATION definition
+      hw/scsi/vmw_pvscsi: Remove PVSCSI_COMPAT_DISABLE_PCIE_BIT definition
+      hw/scsi/vmw_pvscsi: Convert DeviceRealize -> InstanceInit
+      hw/net/vmxnet3: Remove VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS definition
+      hw/net/vmxnet3: Remove VMXNET3_COMPAT_FLAG_DISABLE_PCIE definition
+      hw/net/vmxnet3: Merge DeviceRealize in InstanceInit
+
+Thomas Huth (7):
+      tests/functional/test_sparc64_tuxrun: Explicitly set the 'sun4u' machine
+      tests/functional/test_mips_malta: Re-enable the check for the PCI host bridge
+      tests/functional/test_mem_addr_space: Use set_machine() to select the machine
+      hw/microblaze: Add endianness property to the petalogix_s3adsp1800 machine
+      tests/functional: Test both microblaze s3adsp1800 endianness variants
+      hw/microblaze: Remove the big-endian variants of ml605 and xlnx-zynqmp-pmu
+      docs: Deprecate the qemu-system-microblazeel binary
+
+ docs/about/deprecated.rst                        |  19 ++--
+ docs/about/removed-features.rst                  |   9 ++
+ include/hw/boards.h                              |   9 +-
+ include/hw/i386/pc.h                             |   7 --
+ include/hw/i386/x86.h                            |   5 --
+ include/hw/loader.h                              |   2 -
+ include/hw/nvram/fw_cfg.h                        |  10 ---
+ include/hw/virtio/virtio-pci.h                   |   8 --
+ hw/core/loader.c                                 |  14 ---
+ hw/core/machine.c                                |  18 ----
+ hw/i386/pc.c                                     |  42 ++-------
+ hw/i386/pc_piix.c                                |  26 ------
+ hw/i386/pc_q35.c                                 |  26 ------
+ hw/i386/x86.c                                    |   1 -
+ hw/microblaze/petalogix_ml605_mmu.c              |  15 +---
+ hw/microblaze/petalogix_s3adsp1800_mmu.c         |  41 +++++++--
+ hw/microblaze/xlnx-zynqmp-pmu.c                  |   7 +-
+ hw/net/e1000.c                                   |  95 +++++++++-----------
+ hw/net/vmxnet3.c                                 |  44 ++-------
+ hw/nvram/fw_cfg.c                                | 110 ++---------------------
+ hw/scsi/vmw_pvscsi.c                             |  67 +++-----------
+ hw/virtio/virtio-pci.c                           |  11 +--
+ system/vl.c                                      |   5 --
+ target/i386/machine.c                            |   5 +-
+ tests/qtest/test-x86-cpuid-compat.c              |  14 ---
+ tests/unit/test-util-sockets.c                   |   4 +
+ tests/functional/meson.build                     |   1 +
+ tests/functional/qemu_test/__init__.py           |   2 +-
+ tests/functional/qemu_test/decorators.py         |  18 ++++
+ tests/functional/test_mem_addr_space.py          |  63 ++++++-------
+ tests/functional/test_memlock.py                 |  79 ++++++++++++++++
+ tests/functional/test_microblaze_s3adsp1800.py   |  18 ++--
+ tests/functional/test_microblazeel_s3adsp1800.py |   6 +-
+ tests/functional/test_mips_malta.py              |   6 +-
+ tests/functional/test_sparc64_tuxrun.py          |   1 +
+ 35 files changed, 296 insertions(+), 512 deletions(-)
+ create mode 100755 tests/functional/test_memlock.py
+
 
