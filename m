@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A3AAC70F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0EDCAC7103
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:35:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKLZk-0002Xm-CJ; Wed, 28 May 2025 14:32:28 -0400
+	id 1uKLZo-0002dI-PI; Wed, 28 May 2025 14:32:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZZ-0002Mx-8P
- for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZV-0002MD-TU
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZS-00072Y-Do
- for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:16 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZP-00072W-Hg
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1748457122;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B944UzMo0Zm3NmK1XW/Gb8bjvYch8+htIamGlcn9Lyo=;
- b=El2Wv4j9sFe+7YiU1cB4/Jxs7ZQR1Mwrkum0eFnqBmdMsnxPhoXzXHP7L8YO5+hafb1OXz
- IQE1WHatbjih340dfW9jby9vt13GhOH2j8qwzpGxLXmlVIQHbyN/iqUeLSju3VJ+L3NVxp
- FMlMU6t68Prx9rVpCOT7VR6XskktfCE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=9r8Of7xYH1J89v6IaADSjy6QMDkayHuOqdn5lJMJqYk=;
+ b=cBzXPO3GV4NPpldvm1ROMUcKQsPWH3vtRcDPHrx6QZFAWk8i3aca/WFU5XodPolTJb5RYi
+ uIAPhXVJ+S2gRlM3+G3qGKza609/wrKKmbVwkt2mJPqC1HXrC5cdSkDC/EQDmSGC4TX6Z3
+ aDOGTm1cpKyMJvXOSSHDQp8XAA1+Ugc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-393-CBJhMVhbMEqZuPXzsuUqoA-1; Wed,
- 28 May 2025 14:31:59 -0400
-X-MC-Unique: CBJhMVhbMEqZuPXzsuUqoA-1
-X-Mimecast-MFC-AGG-ID: CBJhMVhbMEqZuPXzsuUqoA_1748457118
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-96-N8FDF0atOmiGqxvd5Kjypw-1; Wed,
+ 28 May 2025 14:31:58 -0400
+X-MC-Unique: N8FDF0atOmiGqxvd5Kjypw-1
+X-Mimecast-MFC-AGG-ID: N8FDF0atOmiGqxvd5Kjypw_1748457117
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2BAD019560A0; Wed, 28 May 2025 18:31:58 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D35301956094; Wed, 28 May 2025 18:31:57 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9931F19560B0; Wed, 28 May 2025 18:31:57 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8A24C18001DB; Wed, 28 May 2025 18:31:57 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A3E0B21E66BC; Wed, 28 May 2025 20:31:51 +0200 (CEST)
+ id A7D0121E65E0; Wed, 28 May 2025 20:31:51 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- David Woodhouse <dwmw@amazon.co.uk>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 06/13] qapi: make Xen event commands unconditionally available
-Date: Wed, 28 May 2025 20:31:44 +0200
-Message-ID: <20250528183151.2839034-7-armbru@redhat.com>
+Subject: [PULL 07/13] qapi: remove the misc-target.json file
+Date: Wed, 28 May 2025 20:31:45 +0200
+Message-ID: <20250528183151.2839034-8-armbru@redhat.com>
 In-Reply-To: <20250528183151.2839034-1-armbru@redhat.com>
 References: <20250528183151.2839034-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -88,335 +87,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This removes the TARGET_I386 condition from the Xen event channel
-commands, moving them to the recently introduced misc-i386.json
-QAPI file, given they are inherantly i386 specific commands.
+This file is now empty and can thus be removed.
+
+Observe the pre-existing bug with s390-skeys.c and target/i386/monitor.c
+both including qapi-commands-misc-target.h despite not requiring it.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Acked-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20250522190542.588267-7-pierrick.bouvier@linaro.org>
+Message-ID: <20250522190542.588267-8-pierrick.bouvier@linaro.org>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/misc-i386.json      | 107 +++++++++++++++++++++++++++++++++++++
- qapi/misc-target.json    | 111 ---------------------------------------
- hw/i386/kvm/xen-stubs.c  |  13 -----
- hw/i386/kvm/xen_evtchn.c |   2 +-
- stubs/monitor-i386-xen.c |  16 ++++++
- stubs/meson.build        |   1 +
- 6 files changed, 125 insertions(+), 125 deletions(-)
- create mode 100644 stubs/monitor-i386-xen.c
+ qapi/misc-target.json | 3 ---
+ qapi/qapi-schema.json | 1 -
+ hw/s390x/s390-skeys.c | 1 -
+ target/i386/monitor.c | 1 -
+ qapi/meson.build      | 1 -
+ 5 files changed, 7 deletions(-)
+ delete mode 100644 qapi/misc-target.json
 
-diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
-index d5d1af55a4..3f88a5b28e 100644
---- a/qapi/misc-i386.json
-+++ b/qapi/misc-i386.json
-@@ -377,3 +377,110 @@
- #                      {"node": 1, "size": 29360128}]} }
- ##
- { 'command': 'query-sgx-capabilities', 'returns': 'SgxInfo' }
-+
-+##
-+# @EvtchnPortType:
-+#
-+# An enumeration of Xen event channel port types.
-+#
-+# @closed: The port is unused.
-+#
-+# @unbound: The port is allocated and ready to be bound.
-+#
-+# @interdomain: The port is connected as an interdomain interrupt.
-+#
-+# @pirq: The port is bound to a physical IRQ (PIRQ).
-+#
-+# @virq: The port is bound to a virtual IRQ (VIRQ).
-+#
-+# @ipi: The post is an inter-processor interrupt (IPI).
-+#
-+# Since: 8.0
-+##
-+{ 'enum': 'EvtchnPortType',
-+  'data': ['closed', 'unbound', 'interdomain', 'pirq', 'virq', 'ipi'] }
-+
-+##
-+# @EvtchnInfo:
-+#
-+# Information about a Xen event channel port
-+#
-+# @port: the port number
-+#
-+# @vcpu: target vCPU for this port
-+#
-+# @type: the port type
-+#
-+# @remote-domain: remote domain for interdomain ports
-+#
-+# @target: remote port ID, or virq/pirq number
-+#
-+# @pending: port is currently active pending delivery
-+#
-+# @masked: port is masked
-+#
-+# Since: 8.0
-+##
-+{ 'struct': 'EvtchnInfo',
-+  'data': {'port': 'uint16',
-+           'vcpu': 'uint32',
-+           'type': 'EvtchnPortType',
-+           'remote-domain': 'str',
-+           'target': 'uint16',
-+           'pending': 'bool',
-+           'masked': 'bool'} }
-+
-+
-+##
-+# @xen-event-list:
-+#
-+# Query the Xen event channels opened by the guest.
-+#
-+# Returns: list of open event channel ports.
-+#
-+# Since: 8.0
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "xen-event-list" }
-+#     <- { "return": [
-+#             {
-+#                 "pending": false,
-+#                 "port": 1,
-+#                 "vcpu": 1,
-+#                 "remote-domain": "qemu",
-+#                 "masked": false,
-+#                 "type": "interdomain",
-+#                 "target": 1
-+#             },
-+#             {
-+#                 "pending": false,
-+#                 "port": 2,
-+#                 "vcpu": 0,
-+#                 "remote-domain": "",
-+#                 "masked": false,
-+#                 "type": "virq",
-+#                 "target": 0
-+#             }
-+#          ]
-+#        }
-+##
-+{ 'command': 'xen-event-list',
-+  'returns': ['EvtchnInfo'] }
-+
-+##
-+# @xen-event-inject:
-+#
-+# Inject a Xen event channel port (interrupt) to the guest.
-+#
-+# @port: The port number
-+#
-+# Since: 8.0
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "xen-event-inject", "arguments": { "port": 1 } }
-+#     <- { "return": { } }
-+##
-+{ 'command': 'xen-event-inject',
-+  'data': { 'port': 'uint32' } }
 diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index d62db37d7c..c9ea1ab23e 100644
+deleted file mode 100644
+index c9ea1ab23e..0000000000
 --- a/qapi/misc-target.json
-+++ b/qapi/misc-target.json
-@@ -1,114 +1,3 @@
- # -*- Mode: Python -*-
- # vim: filetype=python
- #
--
--##
--# @EvtchnPortType:
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# -*- Mode: Python -*-
+-# vim: filetype=python
 -#
--# An enumeration of Xen event channel port types.
--#
--# @closed: The port is unused.
--#
--# @unbound: The port is allocated and ready to be bound.
--#
--# @interdomain: The port is connected as an interdomain interrupt.
--#
--# @pirq: The port is bound to a physical IRQ (PIRQ).
--#
--# @virq: The port is bound to a virtual IRQ (VIRQ).
--#
--# @ipi: The post is an inter-processor interrupt (IPI).
--#
--# Since: 8.0
--##
--{ 'enum': 'EvtchnPortType',
--  'data': ['closed', 'unbound', 'interdomain', 'pirq', 'virq', 'ipi'],
--  'if': 'TARGET_I386' }
--
--##
--# @EvtchnInfo:
--#
--# Information about a Xen event channel port
--#
--# @port: the port number
--#
--# @vcpu: target vCPU for this port
--#
--# @type: the port type
--#
--# @remote-domain: remote domain for interdomain ports
--#
--# @target: remote port ID, or virq/pirq number
--#
--# @pending: port is currently active pending delivery
--#
--# @masked: port is masked
--#
--# Since: 8.0
--##
--{ 'struct': 'EvtchnInfo',
--  'data': {'port': 'uint16',
--           'vcpu': 'uint32',
--           'type': 'EvtchnPortType',
--           'remote-domain': 'str',
--           'target': 'uint16',
--           'pending': 'bool',
--           'masked': 'bool'},
--  'if': 'TARGET_I386' }
--
--
--##
--# @xen-event-list:
--#
--# Query the Xen event channels opened by the guest.
--#
--# Returns: list of open event channel ports.
--#
--# Since: 8.0
--#
--# .. qmp-example::
--#
--#     -> { "execute": "xen-event-list" }
--#     <- { "return": [
--#             {
--#                 "pending": false,
--#                 "port": 1,
--#                 "vcpu": 1,
--#                 "remote-domain": "qemu",
--#                 "masked": false,
--#                 "type": "interdomain",
--#                 "target": 1
--#             },
--#             {
--#                 "pending": false,
--#                 "port": 2,
--#                 "vcpu": 0,
--#                 "remote-domain": "",
--#                 "masked": false,
--#                 "type": "virq",
--#                 "target": 0
--#             }
--#          ]
--#        }
--##
--{ 'command': 'xen-event-list',
--  'returns': ['EvtchnInfo'],
--  'if': 'TARGET_I386' }
--
--##
--# @xen-event-inject:
--#
--# Inject a Xen event channel port (interrupt) to the guest.
--#
--# @port: The port number
--#
--# Since: 8.0
--#
--# .. qmp-example::
--#
--#     -> { "execute": "xen-event-inject", "arguments": { "port": 1 } }
--#     <- { "return": { } }
--##
--{ 'command': 'xen-event-inject',
--  'data': { 'port': 'uint32' },
--  'if': 'TARGET_I386' }
-diff --git a/hw/i386/kvm/xen-stubs.c b/hw/i386/kvm/xen-stubs.c
-index d03131e686..ce73119ee7 100644
---- a/hw/i386/kvm/xen-stubs.c
-+++ b/hw/i386/kvm/xen-stubs.c
-@@ -12,7 +12,6 @@
- #include "qemu/osdep.h"
- 
+diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+index e96bff8d38..d8eb79cfda 100644
+--- a/qapi/qapi-schema.json
++++ b/qapi/qapi-schema.json
+@@ -63,7 +63,6 @@
+ { 'include': 'misc.json' }
+ { 'include': 'misc-arm.json' }
+ { 'include': 'misc-i386.json' }
+-{ 'include': 'misc-target.json' }
+ { 'include': 'audio.json' }
+ { 'include': 'acpi.json' }
+ { 'include': 'pci.json' }
+diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
+index aedb62b2d3..8eeecfd58f 100644
+--- a/hw/s390x/s390-skeys.c
++++ b/hw/s390x/s390-skeys.c
+@@ -17,7 +17,6 @@
+ #include "hw/s390x/storage-keys.h"
  #include "qapi/error.h"
+ #include "qapi/qapi-commands-machine.h"
 -#include "qapi/qapi-commands-misc-target.h"
- 
- #include "xen_evtchn.h"
- #include "xen_primary_console.h"
-@@ -38,15 +37,3 @@ void xen_primary_console_create(void)
- void xen_primary_console_set_be_port(uint16_t port)
- {
- }
--#ifdef TARGET_I386
--EvtchnInfoList *qmp_xen_event_list(Error **errp)
--{
--    error_setg(errp, "Xen event channel emulation not enabled");
--    return NULL;
--}
--
--void qmp_xen_event_inject(uint32_t port, Error **errp)
--{
--    error_setg(errp, "Xen event channel emulation not enabled");
--}
--#endif
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index b5190549a8..dd566c4967 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -19,7 +19,7 @@
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
- #include "qapi/error.h"
--#include "qapi/qapi-commands-misc-target.h"
-+#include "qapi/qapi-commands-misc-i386.h"
  #include "qobject/qdict.h"
- #include "qom/object.h"
- #include "exec/target_page.h"
-diff --git a/stubs/monitor-i386-xen.c b/stubs/monitor-i386-xen.c
-new file mode 100644
-index 0000000000..95b826f979
---- /dev/null
-+++ b/stubs/monitor-i386-xen.c
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qapi/qapi-commands-misc-i386.h"
-+
-+EvtchnInfoList *qmp_xen_event_list(Error **errp)
-+{
-+    error_setg(errp, "Xen event channel emulation not enabled");
-+    return NULL;
-+}
-+
-+void qmp_xen_event_inject(uint32_t port, Error **errp)
-+{
-+    error_setg(errp, "Xen event channel emulation not enabled");
-+}
-diff --git a/stubs/meson.build b/stubs/meson.build
-index f2eb488018..0ef11976a2 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -81,6 +81,7 @@ if have_system
-   stub_ss.add(files('monitor-i386-rtc.c'))
-   stub_ss.add(files('monitor-i386-sev.c'))
-   stub_ss.add(files('monitor-i386-sgx.c'))
-+  stub_ss.add(files('monitor-i386-xen.c'))
- endif
+ #include "qemu/error-report.h"
+ #include "system/memory_mapping.h"
+diff --git a/target/i386/monitor.c b/target/i386/monitor.c
+index 3ea92b066e..3c9b6ca62f 100644
+--- a/target/i386/monitor.c
++++ b/target/i386/monitor.c
+@@ -29,7 +29,6 @@
+ #include "monitor/hmp.h"
+ #include "qobject/qdict.h"
+ #include "qapi/error.h"
+-#include "qapi/qapi-commands-misc-target.h"
+ #include "qapi/qapi-commands-misc.h"
  
- if have_system or have_user
+ /* Perform linear address sign extension */
+diff --git a/qapi/meson.build b/qapi/meson.build
+index 5e93e6b8cf..ffe44f9e0b 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -42,7 +42,6 @@ qapi_all_modules = [
+   'machine-target',
+   'migration',
+   'misc',
+-  'misc-target',
+   'net',
+   'pragma',
+   'qom',
 -- 
 2.48.1
 
