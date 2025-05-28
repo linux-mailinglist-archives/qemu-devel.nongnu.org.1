@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD55BAC66A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95497AC66B3
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:09:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDgL-0004Jr-9l; Wed, 28 May 2025 06:06:45 -0400
+	id 1uKDgU-00056b-72; Wed, 28 May 2025 06:06:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfv-00045C-Bo
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg0-0004C7-2u
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDft-0007Et-LO
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:18 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDft-0007Ez-MK
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426768;
+ s=mimecast20190719; t=1748426771;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=r4CRIfygZP0HnBH0FX1cjWd/jykjn/umfziO5ttUVTw=;
- b=IMJZyiFhitC99OQ5KIAkppZ7NUWbF5YkhcmTRKSDYpYkHqFnhVBFhZdZ9r0lFV8YECu5VA
- pE3Tz6pSfD9Pjk+NPmpKMAAGSUtv94X0yrqJvaiYvaC123wOVFxj2UH5Sg9WHa1/WlLztU
- F+Vb4eZokQrOaGKZ9i7I/2cq04UtI+I=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=2a7awnVBSjhEnf2yZXL6q25QAaoWfsYKy4VNpBfBk6I=;
+ b=GEk5R78DHzHPCdT3zH62oL6NlduIAsBUntj46PBl89eHZIpIBeoPF6VaErPTfyndiY1PRA
+ oeNG4zWE2siEalQDgmO6iOFZvVcCxekrIprDL9gwePbU6Hl/RZlp4KV0EJu+7BgnALOroh
+ pwbYCmeNleWPUzV4e4ohOwXf9jRmu2s=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-mwy9T-8hNeaa_nk0yAgZNg-1; Wed,
- 28 May 2025 06:06:04 -0400
-X-MC-Unique: mwy9T-8hNeaa_nk0yAgZNg-1
-X-Mimecast-MFC-AGG-ID: mwy9T-8hNeaa_nk0yAgZNg_1748426763
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-ZSxy-bqpN6eBDSDtHK4cGg-1; Wed,
+ 28 May 2025 06:06:08 -0400
+X-MC-Unique: ZSxy-bqpN6eBDSDtHK4cGg-1
+X-Mimecast-MFC-AGG-ID: ZSxy-bqpN6eBDSDtHK4cGg_1748426767
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BE41D1800373; Wed, 28 May 2025 10:06:03 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 764481956086; Wed, 28 May 2025 10:06:07 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EF10A180049D; Wed, 28 May 2025 10:06:00 +0000 (UTC)
+ id 6696118004A7; Wed, 28 May 2025 10:06:04 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 16/27] hw/virtio/virtio-pci: Remove
- VIRTIO_PCI_FLAG_DISABLE_PCIE definition
-Date: Wed, 28 May 2025 12:04:56 +0200
-Message-ID: <20250528100507.313906-17-thuth@redhat.com>
+Subject: [PULL 17/27] hw/i386/pc: Remove deprecated pc-q35-2.5 and
+ pc-i440fx-2.5 machines
+Date: Wed, 28 May 2025 12:04:57 +0200
+Message-ID: <20250528100507.313906-18-thuth@redhat.com>
 In-Reply-To: <20250528100507.313906-1-thuth@redhat.com>
 References: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,69 +86,99 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-VIRTIO_PCI_FLAG_DISABLE_PCIE was only used by the hw_compat_2_4[]
-array, via the 'x-disable-pcie=false' property. We removed all
-machines using that array, lets remove all the code around
-VIRTIO_PCI_FLAG_DISABLE_PCIE (see commit 9a4c0e220d8 for similar
-VIRTIO_PCI_FLAG_* enum removal).
+These machines has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") they can now be removed.
+
+Remove the now unused empty pc_compat_2_5[] array.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20250512083948.39294-9-philmd@linaro.org>
+Message-ID: <20250512083948.39294-10-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/virtio/virtio-pci.h | 4 ----
- hw/virtio/virtio-pci.c         | 5 +----
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ include/hw/i386/pc.h |  3 ---
+ hw/i386/pc.c         |  3 ---
+ hw/i386/pc_piix.c    | 13 -------------
+ hw/i386/pc_q35.c     | 13 -------------
+ 4 files changed, 32 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index eb22ed0a1d9..eab5394898d 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -33,7 +33,6 @@ enum {
-     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT,
-     VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT,
-     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT,
--    VIRTIO_PCI_FLAG_DISABLE_PCIE_BIT,
-     VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT,
-     VIRTIO_PCI_FLAG_ATS_BIT,
-     VIRTIO_PCI_FLAG_INIT_DEVERR_BIT,
-@@ -53,9 +52,6 @@ enum {
-  * vcpu thread using ioeventfd for some devices. */
- #define VIRTIO_PCI_FLAG_USE_IOEVENTFD   (1 << VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT)
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index b34aa25fdce..79b72c54dd3 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -298,9 +298,6 @@ extern const size_t pc_compat_2_7_len;
+ extern GlobalProperty pc_compat_2_6[];
+ extern const size_t pc_compat_2_6_len;
  
--/* virtio version flags */
--#define VIRTIO_PCI_FLAG_DISABLE_PCIE (1 << VIRTIO_PCI_FLAG_DISABLE_PCIE_BIT)
+-extern GlobalProperty pc_compat_2_5[];
+-extern const size_t pc_compat_2_5_len;
 -
- /* have pio notification for modern device ? */
- #define VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY \
-     (1 << VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT)
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index f52fac663c2..e62ae1e5e07 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -2363,8 +2363,6 @@ static const Property virtio_pci_properties[] = {
-                     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT, false),
-     DEFINE_PROP_BIT("modern-pio-notify", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT, false),
--    DEFINE_PROP_BIT("x-disable-pcie", VirtIOPCIProxy, flags,
--                    VIRTIO_PCI_FLAG_DISABLE_PCIE_BIT, false),
-     DEFINE_PROP_BIT("page-per-vq", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT, false),
-     DEFINE_PROP_BOOL("x-ignore-backend-features", VirtIOPCIProxy,
-@@ -2393,8 +2391,7 @@ static void virtio_pci_dc_realize(DeviceState *qdev, Error **errp)
-     VirtIOPCIProxy *proxy = VIRTIO_PCI(qdev);
-     PCIDevice *pci_dev = &proxy->pci_dev;
+ #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+     static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
+                                                  const void *data) \
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 2b46714a5ac..cb375aabdc5 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -259,9 +259,6 @@ GlobalProperty pc_compat_2_6[] = {
+ };
+ const size_t pc_compat_2_6_len = G_N_ELEMENTS(pc_compat_2_6);
  
--    if (!(proxy->flags & VIRTIO_PCI_FLAG_DISABLE_PCIE) &&
--        virtio_pci_modern(proxy)) {
-+    if (virtio_pci_modern(proxy)) {
-         pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
-     }
+-GlobalProperty pc_compat_2_5[] = {};
+-const size_t pc_compat_2_5_len = G_N_ELEMENTS(pc_compat_2_5);
+-
+ /*
+  * @PC_FW_DATA:
+  * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 04213b45b44..7a62bb06500 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -778,19 +778,6 @@ static void pc_i440fx_machine_2_6_options(MachineClass *m)
  
+ DEFINE_I440FX_MACHINE(2, 6);
+ 
+-static void pc_i440fx_machine_2_5_options(MachineClass *m)
+-{
+-    X86MachineClass *x86mc = X86_MACHINE_CLASS(m);
+-
+-    pc_i440fx_machine_2_6_options(m);
+-    x86mc->save_tsc_khz = false;
+-    m->legacy_fw_cfg_order = 1;
+-    compat_props_add(m->compat_props, hw_compat_2_5, hw_compat_2_5_len);
+-    compat_props_add(m->compat_props, pc_compat_2_5, pc_compat_2_5_len);
+-}
+-
+-DEFINE_I440FX_MACHINE(2, 5);
+-
+ #ifdef CONFIG_ISAPC
+ static void isapc_machine_options(MachineClass *m)
+ {
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 47e12602413..33211b1876f 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -672,16 +672,3 @@ static void pc_q35_machine_2_6_options(MachineClass *m)
+ }
+ 
+ DEFINE_Q35_MACHINE(2, 6);
+-
+-static void pc_q35_machine_2_5_options(MachineClass *m)
+-{
+-    X86MachineClass *x86mc = X86_MACHINE_CLASS(m);
+-
+-    pc_q35_machine_2_6_options(m);
+-    x86mc->save_tsc_khz = false;
+-    m->legacy_fw_cfg_order = 1;
+-    compat_props_add(m->compat_props, hw_compat_2_5, hw_compat_2_5_len);
+-    compat_props_add(m->compat_props, pc_compat_2_5, pc_compat_2_5_len);
+-}
+-
+-DEFINE_Q35_MACHINE(2, 5);
 -- 
 2.49.0
 
