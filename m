@@ -2,151 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212BCAC63CA
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9321AC63F1
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:16:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKBt2-00074p-Cn; Wed, 28 May 2025 04:11:44 -0400
+	id 1uKBx4-0000a3-77; Wed, 28 May 2025 04:15:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKBsz-00074O-Qq
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:11:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKBsp-0004gt-VK
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:11:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748419888;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ZfuZIxJifr6GsTZe5HReQfo7a+bt/GT06vAE5L+324E=;
- b=MASng7nvJhZ5j0LW21HUt4UIDaDoSw7osdVKcbOxhIBvD1VnGOtKvLz/9MjiFbQ1uvPvCR
- P/8IhSE92uH8zHWnJozZ0R74deE6g58w9BSEz4CPzAI0r4+06CfpFAvW5ZM9PEImsnucIc
- XzXYJ2frMRBDP1ag+G06uot0vY4pmw0=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-d6RExHelNCO9Cy2RvvqDWQ-1; Wed, 28 May 2025 04:11:26 -0400
-X-MC-Unique: d6RExHelNCO9Cy2RvvqDWQ-1
-X-Mimecast-MFC-AGG-ID: d6RExHelNCO9Cy2RvvqDWQ_1748419885
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-602e863492cso5156153a12.3
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:11:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uKBvb-0007u3-WD
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:24 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uKBvY-0005Ch-Nd
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:23 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43edb40f357so36106195e9.0
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1748420053; x=1749024853; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Zn2kS2/blDmE/dhNRdfZMHqO89DPMTyDSFgQ1HTtnak=;
+ b=duMuhJQLic3gu0YK9MkXRGZ7sb+EXSMpkLuflfGtwDqyDtYVuVZttj3tyt5YHkpdyE
+ ndbA8h1SFmcGO+lXehafc8jqBN89UWS/YiSIF2yWfqR30drWoKJviVctZ0hr96Egu3Fn
+ BraRBR0erVmnUXUsKUzvGZX9paQcyqg0yQDAg7KSWOs23abqYCLfntEpaOZLaRiCkTeN
+ +9ORgWJLjtpLk8CNF3Yk3uLZUtb3iy6IndlERMAr3f+pBhkCsrLd+bUTIkYtT0JXGdCY
+ s1qF6O37T33+a4Ulbic6nBm9gwqhfJm5qKP6ve2yq5P0U93Ed3kjDAModm15OXPtZZlf
+ p4Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748419885; x=1749024685;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZfuZIxJifr6GsTZe5HReQfo7a+bt/GT06vAE5L+324E=;
- b=Lj6g0ybwRkweCARVq/51yecw96HTkEYc5YO19hh/YPWa8kXpfap3YNENJpMajUR6bz
- vSaIUgt+CRy/sGdA7afODqKIzvNAC4BiqrTHwDrHUXVrUlhIPvKM/zYdsgIhg8o7Sdog
- jOZsorRF7yKJ84Fg5X3ExgaQk5Ph7R7QuHMDC3OmbOQjQyVEvtTEE5ZZxMct09NIkvUn
- epDBCDdCpFCwijkFgjq6qtZWXdSJNA29udjLXeKw9y+JXGJpItM3QJHMf/DUjS7/TcCS
- UzbjerIBekj0IeK6aK7JG7vzhBJbiP180lNbyqxL2i81zsjw+7AGZLMCTsVRNciBRDOd
- jUKw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW+CC04y55+GA5g1DsI47OLfug27DQFee2riPAkcZSn0apzzHLtX22FJr8BkQLiT94O5SpYlbXU7YUw@nongnu.org
-X-Gm-Message-State: AOJu0YyMBNt4sv+/OJYA8hNj4HG6Dknr9mmYq02h63nBJKzH0HXMZhdX
- qrBZsCioZuwN9/9Wp7hohbyH6UtTZ+yuHx3BQfeCi7VmrDQM8j7j4hLRQwdR61GeLIm+b98EPFL
- Oqw0lqJzmlYCVdDyOwnQC6kfoo/JT8+hnVAGUu43gMo8gsob8w+flzY2m
-X-Gm-Gg: ASbGncufSD/Bmqrf75bGhD6HY51R14C+c0ZqVdWK1W+xVT0rsB8d+u/OayihyIPZnox
- dIjq5E760CJPdUtSOZVT9ut0/rWKdnoR5MmvzrQohprI358Bst4rWMCYiiTala6RjL3OiCci63u
- O7HQnAOOq9a9DhOE7bFbJUCfiYtGoq6URiZnh2Mohy1/8k4LJMk+KWMCWmAhfCPMPeOb82x/rsf
- k/bKOygs/jB7opK3c8d0dPLcocnRe0MzNPFPP5w2w7DjBkQSiN8F7AJ6rl+xOuwa6a7om2+bvjY
- hAAl7OlqxpZs9NNCkEiyngjqklG+0UpG0CKwdPKF3+MuQ+uAwz3R
-X-Received: by 2002:a05:6402:5112:b0:604:e74d:3615 with SMTP id
- 4fb4d7f45d1cf-604e74d367bmr6110001a12.26.1748419884977; 
- Wed, 28 May 2025 01:11:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXB01BRkZZ8i7b/n6JYWKefRz+EF+BQ2MKyZ2zB+X2xMt/rd05NmleNjA/Zr9QQHjfyZFgIw==
-X-Received: by 2002:a05:6402:5112:b0:604:e74d:3615 with SMTP id
- 4fb4d7f45d1cf-604e74d367bmr6109972a12.26.1748419884537; 
- Wed, 28 May 2025 01:11:24 -0700 (PDT)
-Received: from [192.168.0.7] (ltea-047-064-112-237.pools.arcor-ip.net.
- [47.64.112.237]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-6051d608cd8sm422996a12.38.2025.05.28.01.11.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 May 2025 01:11:24 -0700 (PDT)
-Message-ID: <60beed5e-2cf3-4b4a-b717-7ccae1df1fa7@redhat.com>
-Date: Wed, 28 May 2025 10:11:22 +0200
+ d=1e100.net; s=20230601; t=1748420053; x=1749024853;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Zn2kS2/blDmE/dhNRdfZMHqO89DPMTyDSFgQ1HTtnak=;
+ b=HiJLei9e8Ucp1UbyEr/uYk7Z9rz51sIRb1Ul0lX5hcMK9sfdXq8PWf6Aztf4Q/805w
+ jzX9cM5Ga1Fmq/FDavkLhPf2IWI72Xc06jHXesDRRhzYlDV8O7H/L4hcSG5pRW8dl/8r
+ cqJ3lGob3FyGJrYRRVgIP23WGOcMP27gAB53lycNx5f5ntrf2rh3hjIuZyNEzlkmkFI/
+ fpmh9qQ0U4QfgRQ5bIdbzKlaXwQfb4w63VPfHrD5eTcZaVF19cyPdhnGyScW0eTh63V0
+ 3tNNriy5IlvMXA8SZQAwnqj68V0Ym//mLXoTbVSvwkNqNPY7xZ5ZVNufGqwAsTE9ddIA
+ DEJA==
+X-Gm-Message-State: AOJu0YyVnb7Dj40loIDZOC9PiZrCtcstzQ5PfzqSJCOqwK2ktqdKou0i
+ PGI1shQWImbE+16jV34cM75Ei1DsXPt+5Z9vOHWIn0y9QO7aoUL1+flkJRRnQGF7I5XT+AAGSTF
+ NI5kGAQv9yw==
+X-Gm-Gg: ASbGnctfiQfDkHiy8Yhse12ri1lWBM5KnvaEhZt2dcZ63dWpPZpTfe/NyRNpXul3vCI
+ RScENQK60Fhjs2Zy+0cd14mWPy8Cx79Z7qLePdorGmodl7+KRfflhXFljTRT8xsJuVp4w2qGHwJ
+ 7e9M2O6he4g2kp5QcnjHrX4srNmrGHxK8HsCA/CFYy+dSf0qzC2bYkCVOOr1yZVwJLs+Dzbmvfn
+ i2F42kFgkOgJhknxLWTaEKlV+t0nzCQe4t11LQ+ksNvbRKZxQCQofjsVT0lNkyyZMfzGeo6c5gl
+ lOPOISxpBiZn/YDd9jBeTEf3YUQla95JuvF7XS6GAyk3n6qyir7VPQX3
+X-Google-Smtp-Source: AGHT+IHcK70+Ev+ABmgQGTBjIR4NywN+T6ZGeJWYoN5HP1qBxv3su/cs+hzdoux9fDcFJRZ9fUn7Xg==
+X-Received: by 2002:a05:600c:4e0e:b0:43c:e70d:4504 with SMTP id
+ 5b1f17b1804b1-44c91dcc114mr128685215e9.19.1748420053007; 
+ Wed, 28 May 2025 01:14:13 -0700 (PDT)
+Received: from stoup.. ([195.53.115.74]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.12
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 May 2025 01:14:12 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/28] tcg patch queue
+Date: Wed, 28 May 2025 09:13:42 +0100
+Message-ID: <20250528081410.157251-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/19] hw/i386/pc: Remove deprecated 2.4 and 2.5 PC
- machines
-To: Xiaoyao Li <xiaoyao.li@intel.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Yanan Wang <wangyanan55@huawei.com>, Kevin Wolf <kwolf@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, Fam Zheng <fam@euphon.net>,
- Jason Wang <jasowang@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Hanna Reitz <hreitz@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, John Snow <jsnow@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20250512083948.39294-1-philmd@linaro.org>
- <5a9ec134-d4cb-49d5-8747-437616e3c36a@intel.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <5a9ec134-d4cb-49d5-8747-437616e3c36a@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) DKIMWL_WL_HIGH=-2.907, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -1
+X-Spam_score: -0.2
+X-Spam_bar: /
+X-Spam_report: (-0.2 / 5.0 requ) DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -163,53 +92,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/05/2025 05.01, Xiaoyao Li wrote:
-> On 5/12/2025 4:39 PM, Philippe Mathieu-Daudé wrote:
->> (series reviewed)
->>
->> Since v3:
->> - Fixed 2 issues noticed by Thomas (floppy fallback, e1000)
->>
->> Since v2:
->> - Removed qtest in test-x86-cpuid-compat.c
->>
->> Since v1:
->> - Fixed issues noticed by Thomas
->>
->> The versioned 'pc' and 'q35' machines up to 2.12 been marked
->> as deprecated two releases ago, and are older than 6 years,
->> so according to our support policy we can remove them.
->>
->> This series only includes the 2.4 and 2.5 machines removal,
->> as it is a big enough number of LoC removed. Rest will
->> follow. Highlight is the legacy fw_cfg API removal :)
-> 
-> Overall it looks good to me, except the below 4 patches
->>    target/i386/cpu: Remove X86CPU::check_cpuid field
-> 
-> This one gets hard NAK because it changes the default behavior of QEMU.
-> 
->>    hw/net/e1000: Remove unused E1000_FLAG_MAC flag
->>    hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_MIGRATE_EXTRA definition
->>    hw/block/fdc-isa: Remove 'fallback' property
-> 
-> I'm not sure about the three. Because Unlike other properties removed by 
-> this series, the property name removed by above three patches don't have a 
-> 'x-' prefix.
-> 
-> It should be OK to remove properties with 'x-' prefix, but I'm not sure 
-> about the ones without it. There might be user using them explicitly. If so, 
-> remove them needs to go through standard deprecation process.
+The following changes since commit 80db93b2b88f9b3ed8927ae7ac74ca30e643a83e:
 
-As discussed in another thread, we have a lot of properties that are meant 
-for internal use, though they are exposed to the user (and "x-" was 
-originally meant for experimental properties, not for internal ones). I 
-assume these properties here are such internal ones, so I think it should be 
-ok to remove them now without explicit deprecation. We did this in the past 
-already for the older pc machine types, too, and so far nobody ever 
-complained AFAIK. So I suggest to remove them now, and if someone comlains, 
-we can still revert the corresponding patch.
+  Merge tag 'pull-aspeed-20250526' of https://github.com/legoater/qemu into staging (2025-05-26 10:16:59 -0400)
 
-  Thomas
+are available in the Git repository at:
 
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20250528
+
+for you to fetch changes up to 5c2891601ccdaa41427187ef95bc25c828b355e4:
+
+  accel/tcg: Assert TCGCPUOps.pointer_wrap is set (2025-05-28 08:08:48 +0100)
+
+----------------------------------------------------------------
+accel/tcg: Fix atomic_mmu_lookup vs TLB_FORCE_SLOW
+linux-user: implement pgid field of /proc/self/stat
+target/sh4: Use MO_ALIGN for system UNALIGN()
+target/microblaze: Use TARGET_LONG_BITS == 32 for system mode
+accel/tcg: Add TCGCPUOps.pointer_wrap
+target/*: Populate TCGCPUOps.pointer_wrap
+
+----------------------------------------------------------------
+Andreas Schwab (1):
+      linux-user: implement pgid field of /proc/self/stat
+
+Pierrick Bouvier (1):
+      system/main: comment lock rationale
+
+Richard Henderson (26):
+      accel/tcg: Fix atomic_mmu_lookup vs TLB_FORCE_SLOW
+      target/microblaze: Split out mb_unaligned_access_internal
+      target/microblaze: Introduce helper_unaligned_access
+      target/microblaze: Split out mb_transaction_failed_internal
+      target/microblaze: Implement extended address load/store out of line
+      target/microblaze: Use uint64_t for CPUMBState.ear
+      target/microblaze: Use TCGv_i64 for compute_ldst_addr_ea
+      target/microblaze: Fix printf format in mmu_translate
+      target/microblaze: Use TARGET_LONG_BITS == 32 for system mode
+      target/microblaze: Drop DisasContext.r0
+      target/microblaze: Simplify compute_ldst_addr_type{a,b}
+      tcg: Drop TCGContext.tlb_dyn_max_bits
+      tcg: Drop TCGContext.page_{mask,bits}
+      target/sh4: Use MO_ALIGN for system UNALIGN()
+      accel/tcg: Add TCGCPUOps.pointer_wrap
+      target: Use cpu_pointer_wrap_notreached for strict align targets
+      target: Use cpu_pointer_wrap_uint32 for 32-bit targets
+      target/arm: Fill in TCGCPUOps.pointer_wrap
+      target/i386: Fill in TCGCPUOps.pointer_wrap
+      target/loongarch: Fill in TCGCPUOps.pointer_wrap
+      target/mips: Fill in TCGCPUOps.pointer_wrap
+      target/ppc: Fill in TCGCPUOps.pointer_wrap
+      target/riscv: Fill in TCGCPUOps.pointer_wrap
+      target/s390x: Fill in TCGCPUOps.pointer_wrap
+      target/sparc: Fill in TCGCPUOps.pointer_wrap
+      accel/tcg: Assert TCGCPUOps.pointer_wrap is set
+
+ include/accel/tcg/cpu-ops.h              |  13 ++++
+ include/tcg/tcg.h                        |   4 -
+ target/microblaze/cpu.h                  |   2 +-
+ target/microblaze/helper.h               |  22 ++++--
+ accel/tcg/cpu-exec.c                     |   1 +
+ accel/tcg/cputlb.c                       |  37 +++++++--
+ accel/tcg/translate-all.c                |   6 --
+ linux-user/syscall.c                     |   3 +
+ system/main.c                            |  13 ++++
+ target/alpha/cpu.c                       |   1 +
+ target/arm/cpu.c                         |  24 ++++++
+ target/arm/tcg/cpu-v7m.c                 |   1 +
+ target/avr/cpu.c                         |   6 ++
+ target/hppa/cpu.c                        |   1 +
+ target/i386/tcg/tcg-cpu.c                |   7 ++
+ target/loongarch/cpu.c                   |   7 ++
+ target/m68k/cpu.c                        |   1 +
+ target/microblaze/cpu.c                  |   1 +
+ target/microblaze/helper.c               |  71 ++++++++++-------
+ target/microblaze/mmu.c                  |   3 +-
+ target/microblaze/op_helper.c            | 110 +++++++++++++++++++-------
+ target/microblaze/translate.c            | 128 ++++++++++++++++---------------
+ target/mips/cpu.c                        |   9 +++
+ target/openrisc/cpu.c                    |   1 +
+ target/ppc/cpu_init.c                    |   7 ++
+ target/riscv/tcg/tcg-cpu.c               |  26 +++++++
+ target/rx/cpu.c                          |   1 +
+ target/s390x/cpu.c                       |   9 +++
+ target/sh4/cpu.c                         |   1 +
+ target/sh4/translate.c                   |   2 +-
+ target/sparc/cpu.c                       |  13 ++++
+ target/tricore/cpu.c                     |   1 +
+ target/xtensa/cpu.c                      |   1 +
+ tcg/perf.c                               |   2 +-
+ tcg/tcg-op-ldst.c                        |   3 +-
+ tcg/tcg.c                                |   1 +
+ configs/targets/microblaze-softmmu.mak   |   4 +-
+ configs/targets/microblazeel-softmmu.mak |   4 +-
+ tcg/aarch64/tcg-target.c.inc             |  10 +--
+ tcg/arm/tcg-target.c.inc                 |  10 +--
+ tcg/i386/tcg-target.c.inc                |  10 +--
+ tcg/loongarch64/tcg-target.c.inc         |   4 +-
+ tcg/mips/tcg-target.c.inc                |   6 +-
+ tcg/ppc/tcg-target.c.inc                 |  14 ++--
+ tcg/riscv/tcg-target.c.inc               |   4 +-
+ tcg/s390x/tcg-target.c.inc               |   4 +-
+ tcg/sparc64/tcg-target.c.inc             |   4 +-
+ 47 files changed, 427 insertions(+), 186 deletions(-)
 
