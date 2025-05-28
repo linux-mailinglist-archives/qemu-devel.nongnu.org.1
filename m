@@ -2,63 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB83AC66B4
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3C9AC66A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:07:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDgS-0004uD-OR; Wed, 28 May 2025 06:06:53 -0400
+	id 1uKDgW-0005Cc-RZ; Wed, 28 May 2025 06:06:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg6-0004LN-IC
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg7-0004NX-Ka
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg4-0007HT-E2
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg4-0007Hi-QF
  for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426787;
+ s=mimecast20190719; t=1748426788;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Rt3bHuCxCuBXdn4uoTDU3Fdy2gUlNffEYdVpuhW8WkE=;
- b=EtMKFRSbYVTpwVySr3ArOepc2bCJDP/l+O4RDIfsHPlwwUj6tej9M5OmpUFJFDbg7dOUGx
- qUJZ+6sPEnaJvn+A0CnM3jfjIGLIQ9ATSwfDCQ3CYVakEd851KQkdTRFTHPFdPC7T8G7JU
- UhbWPL/62p/MquFDylCRxg8FV1oEIRA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Pf7eRMwbNhYu/vYXTk3pybu82UDncmTgawPC3/buBs4=;
+ b=N5qwh14JWRj1V3PbnehYUTCHZdwEqzWd6IMVfaa4e8kXF+grjKguCcZ3J3wum31xIehBWW
+ 3Aab0vBjjBn0otgDlVMWCebyCP+xO2Zv87YZ9h8nN+gj4hTZ9i1J+vdqjmNa292HXxPzeP
+ b0/4nL65LspzwPU9L2MK7zSdmUzuPcE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-88-yPtv79oZM9qUJSneKt9oYA-1; Wed,
- 28 May 2025 06:05:22 -0400
-X-MC-Unique: yPtv79oZM9qUJSneKt9oYA-1
-X-Mimecast-MFC-AGG-ID: yPtv79oZM9qUJSneKt9oYA_1748426721
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-332-M_X-YES_O7ij0uuAvfCTOw-1; Wed,
+ 28 May 2025 06:05:24 -0400
+X-MC-Unique: M_X-YES_O7ij0uuAvfCTOw-1
+X-Mimecast-MFC-AGG-ID: M_X-YES_O7ij0uuAvfCTOw_1748426724
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 222961800875; Wed, 28 May 2025 10:05:21 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CDADC195609E; Wed, 28 May 2025 10:05:23 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1587E180049D; Wed, 28 May 2025 10:05:17 +0000 (UTC)
+ id B683318004A7; Wed, 28 May 2025 10:05:21 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 03/27] tests/functional/test_mem_addr_space: Use set_machine()
- to select the machine
-Date: Wed, 28 May 2025 12:04:43 +0200
-Message-ID: <20250528100507.313906-4-thuth@redhat.com>
+ Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Subject: [PULL 04/27] tests/functional: add skipLockedMemoryTest decorator
+Date: Wed, 28 May 2025 12:04:44 +0200
+Message-ID: <20250528100507.313906-5-thuth@redhat.com>
 In-Reply-To: <20250528100507.313906-1-thuth@redhat.com>
 References: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -83,199 +80,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
 
-By using self.set_machine() the tests get properly skipped in case
-the machine has not been compiled into the QEMU binary, e.g. when
-"configure" has been run with "--without-default-devices".
+Used in future commit to skipping execution of a tests if the system's
+locked memory limit is below the required threshold.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250525070737.54267-2-dtalexundeer@yandex-team.ru>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250521143732.140711-1-thuth@redhat.com>
 ---
- tests/functional/test_mem_addr_space.py | 63 +++++++++++++------------
- 1 file changed, 32 insertions(+), 31 deletions(-)
+ tests/functional/qemu_test/__init__.py   |  2 +-
+ tests/functional/qemu_test/decorators.py | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/tests/functional/test_mem_addr_space.py b/tests/functional/test_mem_addr_space.py
-index 2d9d31efb59..61b4a190b41 100755
---- a/tests/functional/test_mem_addr_space.py
-+++ b/tests/functional/test_mem_addr_space.py
-@@ -58,8 +58,8 @@ def test_phybits_low_pse36(self):
-         should start fine.
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-S', '-machine', 'q35', '-m',
--                         '512,slots=1,maxmem=59.6G',
-+        self.set_machine('q35')
-+        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=59.6G',
-                          '-cpu', 'pentium,pse36=on', '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -76,8 +76,8 @@ def test_phybits_low_pae(self):
-         with pse36 above.
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-S', '-machine', 'q35', '-m',
--                         '512,slots=1,maxmem=59.6G',
-+        self.set_machine('q35')
-+        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=59.6G',
-                          '-cpu', 'pentium,pae=on', '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -93,8 +93,8 @@ def test_phybits_ok_pentium_pse36(self):
-         same options as the failing case above with pse36 cpu feature.
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-machine', 'q35', '-m',
--                         '512,slots=1,maxmem=59.5G',
-+        self.set_machine('q35')
-+        self.vm.add_args('-m', '512,slots=1,maxmem=59.5G',
-                          '-cpu', 'pentium,pse36=on', '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -111,8 +111,8 @@ def test_phybits_ok_pentium_pae(self):
-         with the same options as the case above.
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-machine', 'q35', '-m',
--                         '512,slots=1,maxmem=59.5G',
-+        self.set_machine('q35')
-+        self.vm.add_args('-m', '512,slots=1,maxmem=59.5G',
-                          '-cpu', 'pentium,pae=on', '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -128,8 +128,8 @@ def test_phybits_ok_pentium2(self):
-         with pse36 ON.
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-machine', 'q35', '-m',
--                         '512,slots=1,maxmem=59.5G',
-+        self.set_machine('q35')
-+        self.vm.add_args('-m', '512,slots=1,maxmem=59.5G',
-                          '-cpu', 'pentium2', '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -148,8 +148,8 @@ def test_phybits_low_nonpse36(self):
-         above 4 GiB due to the PCI hole and simplicity.
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-S', '-machine', 'q35', '-m',
--                         '512,slots=1,maxmem=4G',
-+        self.set_machine('q35')
-+        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=4G',
-                          '-cpu', 'pentium', '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -176,8 +176,8 @@ def test_phybits_low_tcg_q35_70_amd(self):
-         make QEMU fail with the error message.
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-S', '-machine', 'pc-q35-7.0', '-m',
--                         '512,slots=1,maxmem=988G',
-+        self.set_machine('pc-q35-7.0')
-+        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=988G',
-                          '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -197,8 +197,8 @@ def test_phybits_low_tcg_q35_71_amd(self):
-         than 988 GiB).
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-S', '-machine', 'pc-q35-7.1', '-m',
--                         '512,slots=1,maxmem=976G',
-+        self.set_machine('pc-q35-7.1')
-+        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=976G',
-                          '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -214,8 +214,8 @@ def test_phybits_ok_tcg_q35_70_amd(self):
-         successfully start when maxmem is < 988G.
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-S', '-machine', 'pc-q35-7.0', '-m',
--                         '512,slots=1,maxmem=987.5G',
-+        self.set_machine('pc-q35-7.0')
-+        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=987.5G',
-                          '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -231,8 +231,8 @@ def test_phybits_ok_tcg_q35_71_amd(self):
-         successfully start when maxmem is < 976G.
-         """
-         self.ensure_64bit_binary()
--        self.vm.add_args('-S', '-machine', 'pc-q35-7.1', '-m',
--                         '512,slots=1,maxmem=975.5G',
-+        self.set_machine('pc-q35-7.1')
-+        self.vm.add_args('-S', '-m', '512,slots=1,maxmem=975.5G',
-                          '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -249,9 +249,9 @@ def test_phybits_ok_tcg_q35_71_intel(self):
-         "above_4G" memory starts at 4G.
-         """
-         self.ensure_64bit_binary()
-+        self.set_machine('pc-q35-7.1')
-         self.vm.add_args('-S', '-cpu', 'Skylake-Server',
--                         '-machine', 'pc-q35-7.1', '-m',
--                         '512,slots=1,maxmem=976G',
-+                         '-m', '512,slots=1,maxmem=976G',
-                          '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -274,9 +274,9 @@ def test_phybits_low_tcg_q35_71_amd_41bits(self):
-         fail to start.
-         """
-         self.ensure_64bit_binary()
-+        self.set_machine('pc-q35-7.1')
-         self.vm.add_args('-S', '-cpu', 'EPYC-v4,phys-bits=41',
--                         '-machine', 'pc-q35-7.1', '-m',
--                         '512,slots=1,maxmem=992G',
-+                         '-m', '512,slots=1,maxmem=992G',
-                          '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -293,9 +293,9 @@ def test_phybits_ok_tcg_q35_71_amd_41bits(self):
-         QEMU should start fine.
-         """
-         self.ensure_64bit_binary()
-+        self.set_machine('pc-q35-7.1')
-         self.vm.add_args('-S', '-cpu', 'EPYC-v4,phys-bits=41',
--                         '-machine', 'pc-q35-7.1', '-m',
--                         '512,slots=1,maxmem=990G',
-+                         '-m', '512,slots=1,maxmem=990G',
-                          '-display', 'none',
-                          '-object', 'memory-backend-ram,id=mem1,size=1G',
-                          '-device', 'pc-dimm,id=vm0,memdev=mem1')
-@@ -314,12 +314,12 @@ def test_phybits_low_tcg_q35_intel_cxl(self):
-         alignment constraints with 40 bits (1 TiB) of processor physical bits.
-         """
-         self.ensure_64bit_binary()
-+        self.set_machine('q35')
-         self.vm.add_args('-S', '-cpu', 'Skylake-Server,phys-bits=40',
--                         '-machine', 'q35,cxl=on', '-m',
--                         '512,slots=1,maxmem=987G',
-+                         '-m', '512,slots=1,maxmem=987G',
-                          '-display', 'none',
-                          '-device', 'pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1',
--                         '-M', 'cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=1G')
-+                         '-M', 'cxl=on,cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=1G')
-         self.vm.set_qmp_monitor(enabled=False)
-         self.vm.launch()
-         self.vm.wait()
-@@ -333,9 +333,10 @@ def test_phybits_ok_tcg_q35_intel_cxl(self):
-         with cxl enabled.
-         """
-         self.ensure_64bit_binary()
-+        self.set_machine('q35')
-         self.vm.add_args('-S', '-cpu', 'Skylake-Server,phys-bits=40',
--                         '-machine', 'q35,cxl=on', '-m',
--                         '512,slots=1,maxmem=987G',
-+                         '-machine', 'cxl=on',
-+                         '-m', '512,slots=1,maxmem=987G',
-                          '-display', 'none',
-                          '-device', 'pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1')
-         self.vm.set_qmp_monitor(enabled=False)
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index af41c2c6a22..6e666a059fc 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -15,6 +15,6 @@
+ from .linuxkernel import LinuxKernelTest
+ from .decorators import skipIfMissingCommands, skipIfNotMachine, \
+     skipFlakyTest, skipUntrustedTest, skipBigDataTest, skipSlowTest, \
+-    skipIfMissingImports, skipIfOperatingSystem
++    skipIfMissingImports, skipIfOperatingSystem, skipLockedMemoryTest
+ from .archive import archive_extract
+ from .uncompress import uncompress
+diff --git a/tests/functional/qemu_test/decorators.py b/tests/functional/qemu_test/decorators.py
+index 50d29de533d..c0d1567b142 100644
+--- a/tests/functional/qemu_test/decorators.py
++++ b/tests/functional/qemu_test/decorators.py
+@@ -5,6 +5,7 @@
+ import importlib
+ import os
+ import platform
++import resource
+ from unittest import skipIf, skipUnless
+ 
+ from .cmd import which
+@@ -131,3 +132,20 @@ def skipIfMissingImports(*args):
+ 
+     return skipUnless(has_imports, 'required import(s) "%s" not installed' %
+                                    ", ".join(args))
++
++'''
++Decorator to skip execution of a test if the system's
++locked memory limit is below the required threshold.
++Takes required locked memory threshold in kB.
++Example:
++
++  @skipLockedMemoryTest(2_097_152)
++'''
++def skipLockedMemoryTest(locked_memory):
++    # get memlock hard limit in bytes
++    _, ulimit_memory = resource.getrlimit(resource.RLIMIT_MEMLOCK)
++
++    return skipUnless(
++        ulimit_memory == resource.RLIM_INFINITY or ulimit_memory >= locked_memory * 1024,
++        f'Test required {locked_memory} kB of available locked memory',
++    )
 -- 
 2.49.0
 
