@@ -2,60 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060ABAC70F8
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B882AAC70F6
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 20:32:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKLZl-0002bI-Ja; Wed, 28 May 2025 14:32:29 -0400
+	id 1uKLZk-0002Xi-4n; Wed, 28 May 2025 14:32:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZV-0002MB-TG
- for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZL-0002Kv-Vc
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZL-00071q-OP
- for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:10 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uKLZI-00071h-7W
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 14:32:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748457119;
+ s=mimecast20190719; t=1748457117;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=jbyjZxxaAUVh41vjvoPNgeKxdedSNQw+vJHgyay37to=;
- b=ZRCQkCY0GjtBS8i1xGN2BTioHX1mmB8dJCnFRSPFhNP+AO6w1Be2VqWJH2Mk3ha1cMOoIY
- yt30MUou9f1JGIXtI8LwkCwn4wCIIygyMnHWsxmUUBtOVA5ejYTE223cr1WumZhFQB5bXD
- bRP5VhIQBDGPDeW6BarJEwwJHxKbdYo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=80wZ/s8m3zUueLH7jE6HGmoyo19iX2Ws2kj+M32N7UA=;
+ b=BiqZqEih1sOSGQ0gea1etrkTJ8LG0djHKVASzqcSqzO+VbbwH3VSTEVHihVFSF8SU4JhFS
+ hAoLHMwHwuhhXPKgKl6nvem8mfyy0yToSLs9U0rX9b29G6tVKbFkhZ+Q438jUWybAK6GU6
+ TDLUtqC3fKtoYEl0uOHVpe7GQtW3oWc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-191-o5sT6JhaOLCURXK4pio2vw-1; Wed,
- 28 May 2025 14:31:56 -0400
-X-MC-Unique: o5sT6JhaOLCURXK4pio2vw-1
-X-Mimecast-MFC-AGG-ID: o5sT6JhaOLCURXK4pio2vw_1748457114
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-83-WdH1I-RmNGSOGWJrbJbLRA-1; Wed,
+ 28 May 2025 14:31:55 -0400
+X-MC-Unique: WdH1I-RmNGSOGWJrbJbLRA-1
+X-Mimecast-MFC-AGG-ID: WdH1I-RmNGSOGWJrbJbLRA_1748457115
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8FF351956089
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 18:31:54 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 13A3318004AD; Wed, 28 May 2025 18:31:55 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4690D19560B3
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 18:31:54 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 540131956094; Wed, 28 May 2025 18:31:54 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8CB7C21E6768; Wed, 28 May 2025 20:31:51 +0200 (CEST)
+ id 8F69E21E66C5; Wed, 28 May 2025 20:31:51 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com
-Subject: [PULL 00/13] QAPI patches patches for 2025-05-28
-Date: Wed, 28 May 2025 20:31:38 +0200
-Message-ID: <20250528183151.2839034-1-armbru@redhat.com>
+Cc: stefanha@redhat.com,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 01/13] qapi: expose rtc-reset-reinjection command
+ unconditionally
+Date: Wed, 28 May 2025 20:31:39 +0200
+Message-ID: <20250528183151.2839034-2-armbru@redhat.com>
+In-Reply-To: <20250528183151.2839034-1-armbru@redhat.com>
+References: <20250528183151.2839034-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
@@ -81,102 +86,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 80db93b2b88f9b3ed8927ae7ac74ca30e643a83e:
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-  Merge tag 'pull-aspeed-20250526' of https://github.com/legoater/qemu into staging (2025-05-26 10:16:59 -0400)
+This removes the TARGET_I386 condition from the rtc-reset-reinjection
+command. This requires providing a QMP command stub for non-i386 target.
+This in turn requires moving the command out of misc-target.json, since
+that will trigger symbol poisoning errors when built from target
+independent code.
 
-are available in the Git repository at:
+Rather than putting the command into misc.json, it is proposed to create
+misc-$TARGET.json files to hold commands whose impl is conceptually
+only applicable to a single target. This gives an obvious docs hint to
+consumers that the command is only useful in relation a specific target,
+while misc.json is for commands applicable to 2 or more targets.
 
-  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2025-05-28
+The current impl of qmp_rtc_reset_reinject() is a no-op if the i386
+RTC is disabled in Kconfig, or if the running machine type lack any
+RTC device.
 
-for you to fetch changes up to e1a80c3241631ee0e7a687a54f71407b6d3828b7:
+The stub impl for non-i386 targets retains this no-op behaviour.
+However, it is now reporting an Error mentioning this command is not
+available for current target.
 
-  qapi: use imperative style in documentation (2025-05-28 18:59:12 +0200)
-
-----------------------------------------------------------------
-QAPI patches patches for 2025-05-28
-
-----------------------------------------------------------------
-Daniel P. Berrangé (9):
-      qapi: expose rtc-reset-reinjection command unconditionally
-      qapi: expand docs for SEV commands
-      qapi: make SEV commands unconditionally available
-      qapi: expose query-gic-capability command unconditionally
-      qapi: make SGX commands unconditionally available
-      qapi: make Xen event commands unconditionally available
-      qapi: remove the misc-target.json file
-      qapi: make most CPU commands unconditionally available
-      qapi: make s390x specific CPU commands unconditionally available
-
-Philippe Mathieu-Daudé (1):
-      qapi: Make CpuModelExpansionInfo::deprecated-props optional and generic
-
-Pierrick Bouvier (3):
-      qapi: remove qapi_specific_outputs from meson.build
-      qapi: make all generated files common
-      qapi: use imperative style in documentation
-
- MAINTAINERS                               |   1 -
- qapi/audio.json                           |   2 +-
- qapi/block.json                           |   2 +-
- qapi/char.json                            |   4 +-
- qapi/control.json                         |   2 +-
- qapi/cryptodev.json                       |   2 +-
- qapi/dump.json                            |   2 +-
- qapi/machine-s390x.json                   | 121 +++++++
- qapi/machine-target.json                  | 523 ------------------------------
- qapi/machine.json                         | 371 ++++++++++++++++++++-
- qapi/migration.json                       |  10 +-
- qapi/misc-arm.json                        |  49 +++
- qapi/{misc-target.json => misc-i386.json} | 165 ++++------
- qapi/misc.json                            |   2 +-
- qapi/qapi-schema.json                     |   5 +-
- qapi/ui.json                              |  10 +-
- qapi/virtio.json                          |   2 +-
- include/hw/s390x/cpu-topology.h           |   2 +-
- hw/i386/kvm/xen-stubs.c                   |  13 -
- hw/i386/kvm/xen_evtchn.c                  |   2 +-
- hw/i386/monitor.c                         |   2 +-
- hw/i386/sgx-stub.c                        |   2 +-
- hw/i386/sgx.c                             |   2 +-
- hw/s390x/cpu-topology.c                   |   4 +-
- hw/s390x/s390-skeys.c                     |   1 -
- stubs/monitor-arm-gic.c                   |  12 +
- stubs/monitor-cpu-s390x-kvm.c             |  22 ++
- stubs/monitor-cpu-s390x.c                 |  23 ++
- stubs/monitor-cpu.c                       |  21 ++
- stubs/monitor-i386-rtc.c                  |  12 +
- stubs/monitor-i386-sev.c                  |  36 ++
- stubs/monitor-i386-sgx.c                  |  17 +
- stubs/monitor-i386-xen.c                  |  16 +
- target/arm/arm-qmp-cmds.c                 |   4 +-
- target/i386/cpu-system.c                  |   2 +-
- target/i386/cpu.c                         |   2 +-
- target/i386/monitor.c                     |   1 -
- target/i386/sev-system-stub.c             |  32 --
- target/i386/sev.c                         |   2 +-
- target/loongarch/loongarch-qmp-cmds.c     |   2 +-
- target/mips/system/mips-qmp-cmds.c        |  12 +-
- target/ppc/ppc-qmp-cmds.c                 |  12 +-
- target/riscv/riscv-qmp-cmds.c             |   2 +-
- target/s390x/cpu_models_system.c          |   2 +-
- tests/qtest/qmp-cmd-test.c                |   1 +
- qapi/meson.build                          |  33 +-
- stubs/meson.build                         |   8 +
- 47 files changed, 842 insertions(+), 733 deletions(-)
- create mode 100644 qapi/machine-s390x.json
- delete mode 100644 qapi/machine-target.json
- create mode 100644 qapi/misc-arm.json
- rename qapi/{misc-target.json => misc-i386.json} (75%)
- create mode 100644 stubs/monitor-arm-gic.c
- create mode 100644 stubs/monitor-cpu-s390x-kvm.c
- create mode 100644 stubs/monitor-cpu-s390x.c
- create mode 100644 stubs/monitor-cpu.c
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-ID: <20250522190542.588267-2-pierrick.bouvier@linaro.org>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+---
+ qapi/misc-i386.json      | 24 ++++++++++++++++++++++++
+ qapi/misc-target.json    | 17 -----------------
+ qapi/qapi-schema.json    |  1 +
+ hw/i386/monitor.c        |  2 +-
+ stubs/monitor-i386-rtc.c | 12 ++++++++++++
+ qapi/meson.build         |  1 +
+ stubs/meson.build        |  1 +
+ 7 files changed, 40 insertions(+), 18 deletions(-)
+ create mode 100644 qapi/misc-i386.json
  create mode 100644 stubs/monitor-i386-rtc.c
- create mode 100644 stubs/monitor-i386-sev.c
- create mode 100644 stubs/monitor-i386-sgx.c
- create mode 100644 stubs/monitor-i386-xen.c
 
+diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
+new file mode 100644
+index 0000000000..d5bfd91405
+--- /dev/null
++++ b/qapi/misc-i386.json
+@@ -0,0 +1,24 @@
++# -*- Mode: Python -*-
++# vim: filetype=python
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++##
++# @rtc-reset-reinjection:
++#
++# This command will reset the RTC interrupt reinjection backlog.  Can
++# be used if another mechanism to synchronize guest time is in effect,
++# for example QEMU guest agent's guest-set-time command.
++#
++# Use of this command is only applicable for x86 machines with an RTC,
++# and on other machines will silently return without performing any
++# action.
++#
++# Since: 2.1
++#
++# .. qmp-example::
++#
++#     -> { "execute": "rtc-reset-reinjection" }
++#     <- { "return": {} }
++##
++{ 'command': 'rtc-reset-reinjection' }
+diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+index f7ec695caa..c5f9f6be7e 100644
+--- a/qapi/misc-target.json
++++ b/qapi/misc-target.json
+@@ -2,23 +2,6 @@
+ # vim: filetype=python
+ #
+ 
+-##
+-# @rtc-reset-reinjection:
+-#
+-# This command will reset the RTC interrupt reinjection backlog.  Can
+-# be used if another mechanism to synchronize guest time is in effect,
+-# for example QEMU guest agent's guest-set-time command.
+-#
+-# Since: 2.1
+-#
+-# .. qmp-example::
+-#
+-#     -> { "execute": "rtc-reset-reinjection" }
+-#     <- { "return": {} }
+-##
+-{ 'command': 'rtc-reset-reinjection',
+-  'if': 'TARGET_I386' }
+-
+ ##
+ # @SevState:
+ #
+diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+index 7bc600bb76..96f6aa4413 100644
+--- a/qapi/qapi-schema.json
++++ b/qapi/qapi-schema.json
+@@ -61,6 +61,7 @@
+ { 'include': 'replay.json' }
+ { 'include': 'yank.json' }
+ { 'include': 'misc.json' }
++{ 'include': 'misc-i386.json' }
+ { 'include': 'misc-target.json' }
+ { 'include': 'audio.json' }
+ { 'include': 'acpi.json' }
+diff --git a/hw/i386/monitor.c b/hw/i386/monitor.c
+index 1921e4d52e..79df96562f 100644
+--- a/hw/i386/monitor.c
++++ b/hw/i386/monitor.c
+@@ -26,7 +26,7 @@
+ #include "monitor/monitor.h"
+ #include "qobject/qdict.h"
+ #include "qapi/error.h"
+-#include "qapi/qapi-commands-misc-target.h"
++#include "qapi/qapi-commands-misc-i386.h"
+ #include "hw/i386/x86.h"
+ #include "hw/rtc/mc146818rtc.h"
+ 
+diff --git a/stubs/monitor-i386-rtc.c b/stubs/monitor-i386-rtc.c
+new file mode 100644
+index 0000000000..8420d7c93c
+--- /dev/null
++++ b/stubs/monitor-i386-rtc.c
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "qapi/qapi-commands-misc-i386.h"
++
++void qmp_rtc_reset_reinjection(Error **errp)
++{
++    error_setg(errp,
++               "RTC interrupt reinjection backlog reset is not available for"
++               "this machine");
++}
+diff --git a/qapi/meson.build b/qapi/meson.build
+index eadde4db30..3a9bd06104 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -64,6 +64,7 @@ if have_system
+     'qdev',
+     'pci',
+     'rocker',
++    'misc-i386',
+     'tpm',
+     'uefi',
+   ]
+diff --git a/stubs/meson.build b/stubs/meson.build
+index 63392f5e78..9907b54c1e 100644
+--- a/stubs/meson.build
++++ b/stubs/meson.build
+@@ -77,6 +77,7 @@ if have_system
+   stub_ss.add(files('target-monitor-defs.c'))
+   stub_ss.add(files('win32-kbd-hook.c'))
+   stub_ss.add(files('xen-hw-stub.c'))
++  stub_ss.add(files('monitor-i386-rtc.c'))
+ endif
+ 
+ if have_system or have_user
 -- 
 2.48.1
 
