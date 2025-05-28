@@ -2,58 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5A8AC66A8
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B8C4AC66BA
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:10:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDgj-0006Id-2V; Wed, 28 May 2025 06:07:09 -0400
+	id 1uKDgO-0004dK-Pf; Wed, 28 May 2025 06:06:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDgO-0004sB-TI
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDg0-0004C6-1B
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDgL-0007J8-9W
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:48 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDfw-0007FU-Nn
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426796;
+ s=mimecast20190719; t=1748426779;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=CwiQ9+rI03ALRl6vMNbiq7w9FI72pW4D0SVMDjr9o7E=;
- b=PdR5qqJpvHJQ+l7CV/jrC7th9smoxBh8Wv9swC18dJI7i3iga+ICzmQbQJMmdsVriHaxSP
- Pg/1ww77RsuQfJWxuOI8nlhodsrrqLEfUrJDrVibuSMBfGCAFTYHBVSMXu847Wu7RaIAzg
- AOgwkOpDGnbyOXHN5EVXJifDnb7oecc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9oxiy6QyXCRbn4OaTPJfAU7LRxuueKmzLgzP08rUVe4=;
+ b=MxklaE0TNr/Tw/SUz4I9IpgFoljVOxXl8gD51hnptePn+aIf7BS0YzAf+0r+UwuDYSuM4S
+ 6i59zgTpZEToRnCs42FHnvMOxrxSzArqdrYM5KcxK8KMaeOcsgDt65MjmD4IOVeJc3kZq+
+ yBqnvIClcrRnmsA2rz8gF6kHhuF5yTQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-260-ZmW0wPuqNgiUG4O_8waYqw-1; Wed,
- 28 May 2025 06:05:12 -0400
-X-MC-Unique: ZmW0wPuqNgiUG4O_8waYqw-1
-X-Mimecast-MFC-AGG-ID: ZmW0wPuqNgiUG4O_8waYqw_1748426711
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-167-3a330jvCMGOMq6nfsJqVyQ-1; Wed,
+ 28 May 2025 06:05:15 -0400
+X-MC-Unique: 3a330jvCMGOMq6nfsJqVyQ-1
+X-Mimecast-MFC-AGG-ID: 3a330jvCMGOMq6nfsJqVyQ_1748426714
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6C7B9180034A
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 10:05:11 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 48556180036E; Wed, 28 May 2025 10:05:14 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B29F7180049D; Wed, 28 May 2025 10:05:09 +0000 (UTC)
+ id 285C9180049D; Wed, 28 May 2025 10:05:11 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 00/27] Functional tests, Microblaze endianness & pc/q35 cleanups
-Date: Wed, 28 May 2025 12:04:40 +0200
-Message-ID: <20250528100507.313906-1-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 01/27] tests/functional/test_sparc64_tuxrun: Explicitly set the
+ 'sun4u' machine
+Date: Wed, 28 May 2025 12:04:41 +0200
+Message-ID: <20250528100507.313906-2-thuth@redhat.com>
+In-Reply-To: <20250528100507.313906-1-thuth@redhat.com>
+References: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -78,97 +82,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi!
+From: Thomas Huth <thuth@redhat.com>
 
-The following changes since commit 80db93b2b88f9b3ed8927ae7ac74ca30e643a83e:
+Use self.set_machine() to set the machine instead of relying on the
+default machine of the binary. This way the test can be skipped in
+case the machine has not been compiled into the QEMU binary.
 
-  Merge tag 'pull-aspeed-20250526' of https://github.com/legoater/qemu into staging (2025-05-26 10:16:59 -0400)
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250521145112.142222-1-thuth@redhat.com>
+---
+ tests/functional/test_sparc64_tuxrun.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-are available in the Git repository at:
-
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-05-28
-
-for you to fetch changes up to 9c2da02e184fddfa7cd7d7813455c2306daae99a:
-
-  tests/unit/test-util-sockets: fix mem-leak on error object (2025-05-28 11:59:47 +0200)
-
-----------------------------------------------------------------
-* Functional tests improvements
-* Endianness improvements/clean-ups for the Microblaze machines
-* Remove obsolete -2.4 and -2.5 i440fx and q35 machine types and related code
-
-----------------------------------------------------------------
-Alexandr Moshkov (2):
-      tests/functional: add skipLockedMemoryTest decorator
-      tests/functional: add memlock tests
-
-Matheus Tavares Bernardino (1):
-      tests/unit/test-util-sockets: fix mem-leak on error object
-
-Philippe Mathieu-Daudé (17):
-      hw/i386/pc: Remove deprecated pc-q35-2.4 and pc-i440fx-2.4 machines
-      hw/i386/pc: Remove PCMachineClass::broken_reserved_end field
-      hw/i386/pc: Remove pc_compat_2_4[] array
-      hw/core/machine: Remove hw_compat_2_4[] array
-      hw/net/e1000: Remove unused E1000_FLAG_MAC flag
-      hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_MIGRATE_EXTRA definition
-      hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_DISABLE_PCIE definition
-      hw/i386/pc: Remove deprecated pc-q35-2.5 and pc-i440fx-2.5 machines
-      hw/i386/x86: Remove X86MachineClass::save_tsc_khz field
-      hw/nvram/fw_cfg: Remove legacy FW_CFG_ORDER_OVERRIDE
-      hw/core/machine: Remove hw_compat_2_5[] array
-      hw/scsi/vmw_pvscsi: Remove PVSCSI_COMPAT_OLD_PCI_CONFIGURATION definition
-      hw/scsi/vmw_pvscsi: Remove PVSCSI_COMPAT_DISABLE_PCIE_BIT definition
-      hw/scsi/vmw_pvscsi: Convert DeviceRealize -> InstanceInit
-      hw/net/vmxnet3: Remove VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS definition
-      hw/net/vmxnet3: Remove VMXNET3_COMPAT_FLAG_DISABLE_PCIE definition
-      hw/net/vmxnet3: Merge DeviceRealize in InstanceInit
-
-Thomas Huth (7):
-      tests/functional/test_sparc64_tuxrun: Explicitly set the 'sun4u' machine
-      tests/functional/test_mips_malta: Re-enable the check for the PCI host bridge
-      tests/functional/test_mem_addr_space: Use set_machine() to select the machine
-      hw/microblaze: Add endianness property to the petalogix_s3adsp1800 machine
-      tests/functional: Test both microblaze s3adsp1800 endianness variants
-      hw/microblaze: Remove the big-endian variants of ml605 and xlnx-zynqmp-pmu
-      docs: Deprecate the qemu-system-microblazeel binary
-
- docs/about/deprecated.rst                        |  19 ++--
- docs/about/removed-features.rst                  |   9 ++
- include/hw/boards.h                              |   9 +-
- include/hw/i386/pc.h                             |   7 --
- include/hw/i386/x86.h                            |   5 --
- include/hw/loader.h                              |   2 -
- include/hw/nvram/fw_cfg.h                        |  10 ---
- include/hw/virtio/virtio-pci.h                   |   8 --
- hw/core/loader.c                                 |  14 ---
- hw/core/machine.c                                |  18 ----
- hw/i386/pc.c                                     |  42 ++-------
- hw/i386/pc_piix.c                                |  26 ------
- hw/i386/pc_q35.c                                 |  26 ------
- hw/i386/x86.c                                    |   1 -
- hw/microblaze/petalogix_ml605_mmu.c              |  15 +---
- hw/microblaze/petalogix_s3adsp1800_mmu.c         |  41 +++++++--
- hw/microblaze/xlnx-zynqmp-pmu.c                  |   7 +-
- hw/net/e1000.c                                   |  95 +++++++++-----------
- hw/net/vmxnet3.c                                 |  44 ++-------
- hw/nvram/fw_cfg.c                                | 110 ++---------------------
- hw/scsi/vmw_pvscsi.c                             |  67 +++-----------
- hw/virtio/virtio-pci.c                           |  11 +--
- system/vl.c                                      |   5 --
- target/i386/machine.c                            |   5 +-
- tests/qtest/test-x86-cpuid-compat.c              |  14 ---
- tests/unit/test-util-sockets.c                   |   4 +
- tests/functional/meson.build                     |   1 +
- tests/functional/qemu_test/__init__.py           |   2 +-
- tests/functional/qemu_test/decorators.py         |  18 ++++
- tests/functional/test_mem_addr_space.py          |  63 ++++++-------
- tests/functional/test_memlock.py                 |  79 ++++++++++++++++
- tests/functional/test_microblaze_s3adsp1800.py   |  18 ++--
- tests/functional/test_microblazeel_s3adsp1800.py |   6 +-
- tests/functional/test_mips_malta.py              |   6 +-
- tests/functional/test_sparc64_tuxrun.py          |   1 +
- 35 files changed, 296 insertions(+), 512 deletions(-)
- create mode 100755 tests/functional/test_memlock.py
+diff --git a/tests/functional/test_sparc64_tuxrun.py b/tests/functional/test_sparc64_tuxrun.py
+index 3be08d6102b..0d7b43dd74c 100755
+--- a/tests/functional/test_sparc64_tuxrun.py
++++ b/tests/functional/test_sparc64_tuxrun.py
+@@ -24,6 +24,7 @@ class TuxRunSparc64Test(TuxRunBaselineTest):
+         '479c3dc104c82b68be55e2c0c5c38cd473d0b37ad4badccde4775bb88ce34611')
+ 
+     def test_sparc64(self):
++        self.set_machine('sun4u')
+         self.root='sda'
+         self.wait_for_shutdown=False
+         self.common_tuxrun(kernel_asset=self.ASSET_SPARC64_KERNEL,
+-- 
+2.49.0
 
 
