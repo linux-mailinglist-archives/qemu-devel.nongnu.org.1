@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE420AC6435
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58069AC63FF
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:18:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKByI-00023U-LR; Wed, 28 May 2025 04:17:12 -0400
+	id 1uKBxj-0001Oo-0U; Wed, 28 May 2025 04:16:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvn-0007wj-E3
+ id 1uKBvn-0007wl-Ek
  for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:36 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvk-0005Fx-Df
- for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:33 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43cfebc343dso32661645e9.2
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:32 -0700 (PDT)
+ id 1uKBvl-0005G9-FA
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 04:14:35 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-441c99459e9so27414225e9.3
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748420071; x=1749024871; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748420072; x=1749024872; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=24Z9qZttVNWxMs/+PWywvUHFCg2sjBAovcSVb5esy8U=;
- b=R36klxvD2FkOwrAc0N6f0F53E8zPZqSwkw4CeVIoQF37Cz0zbMFMpm3GwsQt0kJ6AW
- NCR7auWyKsXo3ulbYSZm61ySBdnYvAJLRNj1HlBKm1P9yJ0wQJlRMZLxOrH5qr48S1Q5
- DYW+6wtgq94OxlfBsq9HSssbin4Vr8HX/EkvE6WFaANF8gcqVeZe2nUrA+wzoRiCgF/e
- Ypai9vwl+6Bdm0cWcOG6adVvsle8swkSeVl4i9Y5H1okSd45/qu3AhRs4OwxQXsqJAEj
- u4bOUNgUiELlrKYr23LxGxOUurFuzpKilhfZhzQxN4aprPuYDbhAYxw81/3ZT6KiFEBt
- cRjw==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=sZ6vIxBu6FW/KD0BR1BtFe96Giz9M9xn+TA9iSEi6Lo=;
+ b=kiiJxqYP9YTY+tEduQniU+a6gffEfYwQwW4WFL2/9nbLQFV54SKZ6z1AaKG+8gxkSj
+ 5WM+K9x+5DB/9y+9j5ixeyBCX3EL+Uqls5oUJ7+cg0cMUICndAhWw6Y+Q+J6tiKnewf+
+ MtJ1DnPoR+yKvwk60RRcdAYYghhEmDoAItULBX21LC3MAuVwzaCkXPjg5V5vjE6cSP2P
+ IKUY8QSFhV/5ehL0nlTau2teH6mgSTiYp+n61dB3vc11oeSviCKCmkrjTTP1w0ZS/2zV
+ gSC6N5FZ29fnhBB2VKt7lVWToNtJEQJbtwbP+HIXoX7s3YFFZxGRS8diMYLE+gMrszD9
+ rTsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748420071; x=1749024871;
+ d=1e100.net; s=20230601; t=1748420072; x=1749024872;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=24Z9qZttVNWxMs/+PWywvUHFCg2sjBAovcSVb5esy8U=;
- b=bXrGq/BgHONhRgw8t/nA2CFpHShCkCjhN6F88Mrd1y0qi/h4wQoLiyx4V7lPF8pdXi
- UV+rlG/MMWFkicor2iq8Fl+nqK+sx1LbIjbJIgOJQnVQBvRproY8n+g/3JDjS5tDExVB
- UVgLZNVd/Ull2JYeq31Gz12gl4QqkDPTCsknX7AVEukLOUQQ38aEOGNwnpwrwB1ltDv7
- OvHAdrMPkoRKYKZceROc1kCG0HXhLfkscFZCnc7AoQ1wSzZCc0ZEjuVoSExeaIA5Fu80
- 8foA3UYzE9V2ogouWULrhQCE9Qa5Vfl2wax12PafN4eQrIeJHOhbqSqGwT0faZqSY98e
- LDgg==
-X-Gm-Message-State: AOJu0Yz3fgxRsKiOMcVmbBE/2Ed26BVGlTBGztw362O3GvZVHCGmxgY9
- Qi6oRYkc1+hA+K9qMFQL7anyYXpnUoGmfVFwUlwd/+yxsSFDWApwrGHWCXrIdxnwg529L9LE+MC
- aF3tMOb/1uw==
-X-Gm-Gg: ASbGncsezQDy5on3ZhTpamwJB3fkJRSHGK9bTypfdAJhTAmxPUP12QgugTaC9yz5sPs
- IgZAtNfAUIllc0wIMzYRna8PDwPo3NfVYnllZfs7NpvlEYvYErwQ/nLPkeC4DaBML5MTjxCaTP1
- HN/4UjWPiacVNxmLO3nEqwIa88Sjt6l0K0VUyNzviW9oOWV8g0ELw2jADG6V//kK8X2WgvkFV1F
- EFVwrhFBbBK24dHLzIwk/vZ4oUFK2CWjmO/+7XqpRIlM6pKOLC8pFPPL/y4OL7i+UBakMEalw/7
- LpdyaIvkm4T5z3szUwfGUXK9hecg8S+CZOcy2HpJUBQVSxU9u1NLIAkd/syVTs+gq5M=
-X-Google-Smtp-Source: AGHT+IHfSL94IlArbaXryosStBTGtaQkIY1D+QQsOcGEVMTtuKmrA+SfD6EplGL9A8vh3pKtuh+2xA==
+ bh=sZ6vIxBu6FW/KD0BR1BtFe96Giz9M9xn+TA9iSEi6Lo=;
+ b=lMKIRG3RucRH9BXZy2i7D05GZ50scpWDYDGcz9HQ/xcMlX2aC8Ch0ibW8A803IzOKY
+ vRjS2CjXE3Utt+bUbbwX2uKBST43mG3HAFocGrvQjAiYTvXJi/Yz33F0LWB8/3WLD2zl
+ 0aFiOvfbokq58VIp02hG4Y/lU/rwZXCCc7hMiuZwHUx/7Cns1kAyIdURWvU28CAXgJC9
+ EFQSku7i56RH3x5fyPqQz1r2y5AHrqMjvBw1LnmEUj1abiAjEdu7YzjoTJ0x0Erwkibv
+ Nn1IofqlFpkTfUYmjuraBZuMjDHs6E+KVf6vvIIsYkb+idHDHGZLCZ47TdEa/TzHRjy8
+ UAWQ==
+X-Gm-Message-State: AOJu0YzD66kLGXHJCL5e+R82gQivX9Lr+CxQfZiUBLMOZzWPm3K1jbxt
+ TBLCZ2/zo6hjEoJ1EPfCLI5csZWpDEfO8Zifip8R8tLvAluy6cqGsBU2c6Z/xkyZpTZEFRePc4q
+ LWGRFUuZIsw==
+X-Gm-Gg: ASbGnctoxfE6M6Qjgu6EbvLBNn78rxNoPNbKQphoJ+itXxLGvCVF6LbqrzyRKNRv7MO
+ TvMw/MMjTFff5rA4y1toXVJ/nWhDwk9wTXYLRTAVT3VgdkM+qNKCQBCffTZX+2CyhquPB4QzuRM
+ c/LkuL2/ZbAosrzANGgbKdYpl6F6xzdtKjYM/QKS3H9oo105MYTXb9IZtAF2qHoXeMxp/dnkwCM
+ ETPOa/hxVtd/Vutsb9DYL9CWpMrXx/gzgSIXUNBBQYLYJJ2IDwH74CVvXEMbamoXYI3uAMd3GnX
+ lYtXfEsinGyrn+6mY7BD+1kmQC5Hz8ZCs7D82n7Ml81Drh6x19SB0mPm
+X-Google-Smtp-Source: AGHT+IGtqbcS/sBD1oun10YafHHDwyXTqhjySXP78345dQDxv1VJUgwienYJTXBBgttNUaVMDlQEag==
 X-Received: by 2002:a05:600c:1d15:b0:43c:fe90:1282 with SMTP id
- 5b1f17b1804b1-450725458d3mr8625225e9.7.1748420070554; 
- Wed, 28 May 2025 01:14:30 -0700 (PDT)
+ 5b1f17b1804b1-450725458d3mr8625985e9.7.1748420071807; 
+ Wed, 28 May 2025 01:14:31 -0700 (PDT)
 Received: from stoup.. ([195.53.115.74]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.29
+ 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.30
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 May 2025 01:14:30 -0700 (PDT)
+ Wed, 28 May 2025 01:14:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Edgar E . Iglesias" <edgar.iglesias@amd.com>
-Subject: [PULL 13/28] target/microblaze: Simplify compute_ldst_addr_type{a,b}
-Date: Wed, 28 May 2025 09:13:55 +0100
-Message-ID: <20250528081410.157251-14-richard.henderson@linaro.org>
+Subject: [PULL 14/28] tcg: Drop TCGContext.tlb_dyn_max_bits
+Date: Wed, 28 May 2025 09:13:56 +0100
+Message-ID: <20250528081410.157251-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250528081410.157251-1-richard.henderson@linaro.org>
 References: <20250528081410.157251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -1
 X-Spam_score: -0.2
 X-Spam_bar: /
@@ -95,70 +94,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Require TCGv_i32 and TCGv be identical, so drop
-the extensions.  Return constants when possible
-instead of a mov into a temporary.  Return register
-inputs unchanged when possible.
+This was an extremely minor optimization for aarch64
+and x86_64, to use a 32-bit AND instruction when the
+guest softmmu tlb maximum was sufficiently small.
+Both hosts can simply use a 64-bit AND insn instead.
 
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/microblaze/translate.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ include/tcg/tcg.h            | 1 -
+ accel/tcg/translate-all.c    | 2 --
+ tcg/aarch64/tcg-target.c.inc | 6 +-----
+ tcg/i386/tcg-target.c.inc    | 6 ++----
+ 4 files changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 047d97e2c5..5098a1db4d 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -606,19 +606,18 @@ DO_TYPEBI(xori, false, tcg_gen_xori_i32)
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 3fa5a7aed2..e440c889c8 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -368,7 +368,6 @@ struct TCGContext {
  
- static TCGv compute_ldst_addr_typea(DisasContext *dc, int ra, int rb)
- {
--    TCGv ret = tcg_temp_new();
-+    TCGv ret;
+     int page_mask;
+     uint8_t page_bits;
+-    uint8_t tlb_dyn_max_bits;
+     TCGBar guest_mo;
  
-     /* If any of the regs is r0, set t to the value of the other reg.  */
-     if (ra && rb) {
--        TCGv_i32 tmp = tcg_temp_new_i32();
--        tcg_gen_add_i32(tmp, cpu_R[ra], cpu_R[rb]);
--        tcg_gen_extu_i32_tl(ret, tmp);
-+        ret = tcg_temp_new_i32();
-+        tcg_gen_add_i32(ret, cpu_R[ra], cpu_R[rb]);
-     } else if (ra) {
--        tcg_gen_extu_i32_tl(ret, cpu_R[ra]);
-+        ret = cpu_R[ra];
-     } else if (rb) {
--        tcg_gen_extu_i32_tl(ret, cpu_R[rb]);
-+        ret = cpu_R[rb];
-     } else {
--        tcg_gen_movi_tl(ret, 0);
-+        ret = tcg_constant_i32(0);
-     }
+     TCGRegSet reserved_regs;
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 451b383aa8..6735a40ade 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -24,7 +24,6 @@
+ #include "tcg/tcg.h"
+ #include "exec/mmap-lock.h"
+ #include "tb-internal.h"
+-#include "tlb-bounds.h"
+ #include "exec/tb-flush.h"
+ #include "qemu/cacheinfo.h"
+ #include "qemu/target-info.h"
+@@ -316,7 +315,6 @@ TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
+ #ifdef CONFIG_SOFTMMU
+     tcg_ctx->page_bits = TARGET_PAGE_BITS;
+     tcg_ctx->page_mask = TARGET_PAGE_MASK;
+-    tcg_ctx->tlb_dyn_max_bits = CPU_TLB_DYN_MAX_BITS;
+ #endif
+     tcg_ctx->guest_mo = cpu->cc->tcg_ops->guest_default_memory_order;
  
-     if ((ra == 1 || rb == 1) && dc->cfg->stackprot) {
-@@ -629,15 +628,16 @@ static TCGv compute_ldst_addr_typea(DisasContext *dc, int ra, int rb)
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index 4cb647cb34..6356a81c2a 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -1661,7 +1661,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+         unsigned s_mask = (1u << s_bits) - 1;
+         unsigned mem_index = get_mmuidx(oi);
+         TCGReg addr_adj;
+-        TCGType mask_type;
+         uint64_t compare_mask;
  
- static TCGv compute_ldst_addr_typeb(DisasContext *dc, int ra, int imm)
- {
--    TCGv ret = tcg_temp_new();
-+    TCGv ret;
+         ldst = new_ldst_label(s);
+@@ -1669,9 +1668,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+         ldst->oi = oi;
+         ldst->addr_reg = addr_reg;
  
-     /* If any of the regs is r0, set t to the value of the other reg.  */
--    if (ra) {
--        TCGv_i32 tmp = tcg_temp_new_i32();
--        tcg_gen_addi_i32(tmp, cpu_R[ra], imm);
--        tcg_gen_extu_i32_tl(ret, tmp);
-+    if (ra && imm) {
-+        ret = tcg_temp_new_i32();
-+        tcg_gen_addi_i32(ret, cpu_R[ra], imm);
-+    } else if (ra) {
-+        ret = cpu_R[ra];
-     } else {
--        tcg_gen_movi_tl(ret, (uint32_t)imm);
-+        ret = tcg_constant_i32(imm);
-     }
+-        mask_type = (s->page_bits + s->tlb_dyn_max_bits > 32
+-                     ? TCG_TYPE_I64 : TCG_TYPE_I32);
+-
+         /* Load cpu->neg.tlb.f[mmu_idx].{mask,table} into {tmp0,tmp1}. */
+         QEMU_BUILD_BUG_ON(offsetof(CPUTLBDescFast, mask) != 0);
+         QEMU_BUILD_BUG_ON(offsetof(CPUTLBDescFast, table) != 8);
+@@ -1679,7 +1675,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+                      tlb_mask_table_ofs(s, mem_index), 1, 0);
  
-     if (ra == 1 && dc->cfg->stackprot) {
+         /* Extract the TLB index from the address into X0.  */
+-        tcg_out_insn(s, 3502S, AND_LSR, mask_type == TCG_TYPE_I64,
++        tcg_out_insn(s, 3502S, AND_LSR, TCG_TYPE_I64,
+                      TCG_REG_TMP0, TCG_REG_TMP0, addr_reg,
+                      s->page_bits - CPU_TLB_ENTRY_BITS);
+ 
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index 09fce27b06..2990912080 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -2199,10 +2199,8 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+             trexw = (ttype == TCG_TYPE_I32 ? 0 : P_REXW);
+             if (TCG_TYPE_PTR == TCG_TYPE_I64) {
+                 hrexw = P_REXW;
+-                if (s->page_bits + s->tlb_dyn_max_bits > 32) {
+-                    tlbtype = TCG_TYPE_I64;
+-                    tlbrexw = P_REXW;
+-                }
++                tlbtype = TCG_TYPE_I64;
++                tlbrexw = P_REXW;
+             }
+         }
+ 
 -- 
 2.43.0
 
