@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D5DAC68AC
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 13:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F43FAC68AD
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 13:58:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKFOj-0001LD-I4; Wed, 28 May 2025 07:56:41 -0400
+	id 1uKFOe-0001J4-Gg; Wed, 28 May 2025 07:56:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7BZW=YM=cmp.felk.cvut.cz=pisa@fel.cvut.cz>)
- id 1uKFOf-0001KI-G0
- for qemu-devel@nongnu.org; Wed, 28 May 2025 07:56:37 -0400
+ id 1uKFOa-0001In-Vh
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 07:56:33 -0400
 Received: from smtpx1.feld.cvut.cz ([147.32.210.191])
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_CHACHA20_POLY1305:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7BZW=YM=cmp.felk.cvut.cz=pisa@fel.cvut.cz>)
- id 1uKFOW-0000ZL-1Q
- for qemu-devel@nongnu.org; Wed, 28 May 2025 07:56:37 -0400
+ id 1uKFOX-0000ZN-Aq
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 07:56:31 -0400
 Received: from smtpx.fel.cvut.cz (smtpx.feld.cvut.cz [147.32.210.153])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
  (No client certificate requested)
- by smtpx1.feld.cvut.cz (Postfix) with ESMTPS id 58C2E267D0;
+ by smtpx1.feld.cvut.cz (Postfix) with ESMTPS id 5DB312691C;
  Wed, 28 May 2025 13:50:50 +0200 (CEST)
 Received: from localhost (unknown [192.168.200.27])
- by smtpx.fel.cvut.cz (Postfix) with ESMTP id 4FE012D51A;
+ by smtpx.fel.cvut.cz (Postfix) with ESMTP id 53E9E2D331;
  Wed, 28 May 2025 13:50:50 +0200 (CEST)
 X-Virus-Scanned: IMAP STYX AMAVIS
 Received: from smtpx.fel.cvut.cz ([192.168.200.2])
  by localhost (cerokez-250.feld.cvut.cz [192.168.200.27]) (amavis, port 10060)
- with ESMTP id enCUi0by8Tzj; Wed, 28 May 2025 13:50:48 +0200 (CEST)
+ with ESMTP id S2Yhmy3VvUoM; Wed, 28 May 2025 13:50:48 +0200 (CEST)
 Received: from fel.cvut.cz (unknown [147.32.86.213])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: pisa)
- by smtpx.fel.cvut.cz (Postfix) with ESMTPSA id 1392B2D1D3;
- Wed, 28 May 2025 13:39:11 +0200 (CEST)
+ by smtpx.fel.cvut.cz (Postfix) with ESMTPSA id 180AA2D0C7;
+ Wed, 28 May 2025 13:39:16 +0200 (CEST)
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Gustavo Romero <gustavo.romero@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Oliver Hartkopp <socketcan@hartkopp.net>,
  Ondrej Ille <ondrej.ille@gmail.com>, Jiri Novak <jnovak@fel.cvut.cz>,
  Pavel Pisa <pisa@cmp.felk.cvut.cz>
-Subject: [PATCH v1 2/3] hw/net/can: CTU CAN FD IP platform bus mapping enabled
- for Xilinx Zynq
-Date: Wed, 28 May 2025 13:39:29 +0200
-Message-Id: <bf8501a8e1165de70e2adb50cf79947b24e9cbf3.1748432169.git.pisa@cmp.felk.cvut.cz>
+Subject: [PATCH v1 3/3] hw/net/can: CTU CAN FD IP mapping enabled for
+ Microchip PolarFire SoC Icicle Kit
+Date: Wed, 28 May 2025 13:39:30 +0200
+Message-Id: <c611b12d907089f748b1d162655ec379f13c7e9e.1748432169.git.pisa@cmp.felk.cvut.cz>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <cover.1748432169.git.pisa@cmp.felk.cvut.cz>
 References: <cover.1748432169.git.pisa@cmp.felk.cvut.cz>
@@ -82,21 +82,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
 ---
- hw/arm/xilinx_zynq.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/riscv/microchip_pfsoc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 0372cd0ac4..e3b4bf6104 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -473,6 +473,7 @@ static void zynq_machine_class_init(ObjectClass *oc, const void *data)
-                                           "Supported boot modes:"
-                                           " jtag qspi sd nor");
-     object_property_set_default_str(prop, "qspi");
-+    machine_class_allow_dynamic_sysbus_dev(mc, "ctucan_mm");
- }
+diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+index 2e74783fce..f87bdc300d 100644
+--- a/hw/riscv/microchip_pfsoc.c
++++ b/hw/riscv/microchip_pfsoc.c
+@@ -718,6 +718,8 @@ static void microchip_icicle_kit_machine_class_init(ObjectClass *oc,
+     mc->default_ram_id = "microchip.icicle.kit.ram";
+     mc->auto_create_sdcard = true;
  
- static const TypeInfo zynq_machine_type = {
++    machine_class_allow_dynamic_sysbus_dev(mc, "ctucan_mm");
++
+     /*
+      * Map 513 MiB high memory, the minimum required high memory size, because
+      * HSS will do memory test against the high memory address range regardless
 -- 
 2.39.5
 
