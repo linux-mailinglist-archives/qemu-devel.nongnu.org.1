@@ -2,61 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E1BAC7151
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 21:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F4EAC7160
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 21:12:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKM9b-0006xc-LS; Wed, 28 May 2025 15:09:31 -0400
+	id 1uKM9d-0006zq-W7; Wed, 28 May 2025 15:09:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uKM9V-0006wO-M9
- for qemu-devel@nongnu.org; Wed, 28 May 2025 15:09:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uKM9Y-0006xH-Vs
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 15:09:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uKM9T-0004DS-5C
- for qemu-devel@nongnu.org; Wed, 28 May 2025 15:09:24 -0400
+ id 1uKM9W-0004Dd-78
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 15:09:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748459361;
+ s=mimecast20190719; t=1748459364;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=iD8wBt9WieeMEs9yrEtl+kC+UcMchGOWI0bzzK8AXEw=;
- b=N36/3Pggnn5IERGpR2HR/H3WK0N3tzBLhuG+9EvrP2b6EKjrgUEIbnwZs3R2kIYYEGJ6VH
- VE+SfN2FRNhyG3g0JI/X63ztbzmLjRyfWanVH4NhkYhq3GXbjtLumxasQk49niTvXXgYQr
- +zg3ycXYcmdQ7/GdeB23JIhOoXkB9u4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lcKMKuZuA6GGvogpVIY1T+1EE1dq2JvS5NCdHWK07UI=;
+ b=F7xsr8L6fbiYruyIWlkXWyHTElanmDvj1HC7Iyh8h5IHjbIIRlG1CVjUakxAYRaOr9Iphv
+ zf+MclI2CxUBaV6myQQHc1LcUcXZKqyu6Dl8UMGnUFSCpRZg7Wv+xkW6RXB3fSSerGC9pY
+ gpEjk4Ib2wi5GZ3f5M1Tfyx0fgx2Gf4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-weVGtFUsMtGcRxS3tHTZxQ-1; Wed,
- 28 May 2025 15:09:19 -0400
-X-MC-Unique: weVGtFUsMtGcRxS3tHTZxQ-1
-X-Mimecast-MFC-AGG-ID: weVGtFUsMtGcRxS3tHTZxQ_1748459359
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-96-6MeAmVKhNeq5JgpF-kvFww-1; Wed,
+ 28 May 2025 15:09:22 -0400
+X-MC-Unique: 6MeAmVKhNeq5JgpF-kvFww-1
+X-Mimecast-MFC-AGG-ID: 6MeAmVKhNeq5JgpF-kvFww_1748459360
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CC27F1955E79; Wed, 28 May 2025 19:09:18 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A10101956095; Wed, 28 May 2025 19:09:20 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.178])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EF3CF180049D; Wed, 28 May 2025 19:09:17 +0000 (UTC)
+ id 04FC3180049D; Wed, 28 May 2025 19:09:19 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
  hibriansong@gmail.com, Kevin Wolf <kwolf@redhat.com>,
  Hanna Czenczek <hreitz@redhat.com>
-Subject: [RFC 00/11] aio: add the aio_add_sqe() io_uring API
-Date: Wed, 28 May 2025 15:09:05 -0400
-Message-ID: <20250528190916.35864-1-stefanha@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [RFC 01/11] aio-posix: fix polling mode with fdmon-io_uring
+Date: Wed, 28 May 2025 15:09:06 -0400
+Message-ID: <20250528190916.35864-2-stefanha@redhat.com>
+In-Reply-To: <20250528190916.35864-1-stefanha@redhat.com>
+References: <20250528190916.35864-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -81,99 +83,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series contains io_uring improvements:
+The io_uring(7) file descriptor monitor cannot enter polling mode
+because it needs to submit a POLL_ADD SQE every time a file descriptor
+becomes active. Submitting SQEs only happens in FDMonOps->wait() outside
+of polling mode.
 
-1. Support the glib event loop in fdmon-io_uring.
-   - aio-posix: fix polling mode with fdmon-io_uring
-   - aio-posix: keep polling enabled with fdmon-io_uring.c
-   - tests/unit: skip test-nested-aio-poll with io_uring
-   - aio-posix: integrate fdmon into glib event loop
+Fix this using the multi-shot mechanism introduced in Linux 5.13 and
+liburing 2.1. Stable and enterprise Linux distros ship 5.14+ as of March
+2025, so it is safe to require this. Note that fdmon-io_uring is
+currently not enabled at runtime and is not essential, so QEMU can still
+be built without it on older hosts.
 
-2. Enable fdmon-io_uring on hosts where io_uring is available at runtime.
-   Otherwise continue using ppoll(2) or epoll(7).
-   - aio: remove aio_context_use_g_source()
+In multi-shot mode, a POLL_ADD SQE remains active until canceled with
+POLL_REMOVE. This avoids the need to submit a new SQE every time a file
+descriptor becomes active.
 
-3. Add the new aio_add_sqe() API for submitting io_uring requests in the QEMU
-   event loop.
-   - aio: free AioContext when aio_context_new() fails
-   - aio: add errp argument to aio_context_setup()
-   - aio-posix: gracefully handle io_uring_queue_init() failure
-   - aio-posix: add aio_add_sqe() API for user-defined io_uring requests
-   - aio-posix: avoid EventNotifier for cqe_handler_bh
+When POLL_REMOVE is processed by the host kernel, the multi-shot
+POLL_ADD operation completes with -ECANCELED. Adjust the code slightly
+to take this into account.
 
-4. Use aio_add_sqe() in block/io_uring.c instead of creating a dedicated
-   io_uring context for --blockdev aio=io_uring. This simplifies the code,
-   reduces the number of file descriptors, and demonstrates the aio_add_sqe()
-   API.
-   - block/io_uring: use aio_add_sqe()
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ meson.build           |  2 +-
+ util/fdmon-io_uring.c | 34 +++++++++++++++++++++-------------
+ 2 files changed, 22 insertions(+), 14 deletions(-)
 
-The highlight is aio_add_sqe(), which is needed for the FUSE-over-io_uring
-Google Summer of Code project and other future QEMU features that natively use
-Linux io_uring functionality.
-
-I'm not happy with performance yet. This is why I've marked the series as
-Request For Comments:
-rw        bs iodepth aio    iothread before after  diff
-randread  4k       1 native        0  76281 79707  +4.5%
-randread  4k      64 native        0 255078 247293 -3.1%
-randwrite 4k       1 native        0 132706 123337 -7.1%
-randwrite 4k      64 native        0 275589 245192 -11%
-randread  4k       1 io_uring      0  75284 78023  +3.5%
-randread  4k      64 io_uring      0 254637 248222 -2.5%
-randwrite 4k       1 io_uring      0 126519 128641 +1.7%
-randwrite 4k      64 io_uring      0 258967 249266 -3.7%
-randread  4k       1 native        1  90557 88436  -2.3%
-randread  4k      64 native        1 290673 280456 -3.5%
-randwrite 4k       1 native        1 183015 169106 -7.6%
-randwrite 4k      64 native        1 281316 280078 -0.4%
-randread  4k       1 io_uring      1  92479 86983  -5.9%
-randread  4k      64 io_uring      1 304229 257730 -15.3%
-randwrite 4k       1 io_uring      1 183983 157425 -14.4%
-randwrite 4k      64 io_uring      1 299979 264156 -11.9%
-
-Overall the performance decreases, so I need to continue profiling the
-iodepth=64 cases with aio=native and aio=io_uring.
-
-This series replaces the following older series that were held off from merging
-until the QEMU 10.1 development window opened and the performance results were
-collected:
-- "[PATCH 0/3] [RESEND] block: unify block and fdmon io_uring"
-- "[PATCH 0/4] aio-posix: integrate fdmon into glib event loop"
-
-Stefan Hajnoczi (11):
-  aio-posix: fix polling mode with fdmon-io_uring
-  aio-posix: keep polling enabled with fdmon-io_uring.c
-  tests/unit: skip test-nested-aio-poll with io_uring
-  aio-posix: integrate fdmon into glib event loop
-  aio: remove aio_context_use_g_source()
-  aio: free AioContext when aio_context_new() fails
-  aio: add errp argument to aio_context_setup()
-  aio-posix: gracefully handle io_uring_queue_init() failure
-  aio-posix: add aio_add_sqe() API for user-defined io_uring requests
-  aio-posix: avoid EventNotifier for cqe_handler_bh
-  block/io_uring: use aio_add_sqe()
-
- meson.build                       |   2 +-
- include/block/aio.h               | 134 +++++++-
- include/block/raw-aio.h           |   5 -
- util/aio-posix.h                  |  18 +-
- block/file-posix.c                |  38 +--
- block/io_uring.c                  | 489 +++++++-----------------------
- stubs/io_uring.c                  |  32 --
- tests/unit/test-aio.c             |   7 +-
- tests/unit/test-nested-aio-poll.c |  13 +-
- util/aio-posix.c                  | 134 ++++----
- util/aio-win32.c                  |   6 +-
- util/async.c                      |  53 +---
- util/fdmon-epoll.c                |  52 +++-
- util/fdmon-io_uring.c             | 218 ++++++++++---
- util/fdmon-poll.c                 |  88 +++++-
- block/trace-events                |  12 +-
- stubs/meson.build                 |   3 -
- util/trace-events                 |   4 +
- 18 files changed, 668 insertions(+), 640 deletions(-)
- delete mode 100644 stubs/io_uring.c
-
+diff --git a/meson.build b/meson.build
+index fdad3fb528..6a362b9209 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1157,7 +1157,7 @@ linux_io_uring_test = '''
+ 
+ linux_io_uring = not_found
+ if not get_option('linux_io_uring').auto() or have_block
+-  linux_io_uring = dependency('liburing', version: '>=0.3',
++  linux_io_uring = dependency('liburing', version: '>=2.1',
+                               required: get_option('linux_io_uring'),
+                               method: 'pkg-config')
+   if not cc.links(linux_io_uring_test)
+diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
+index b0d68bdc44..6cd665e565 100644
+--- a/util/fdmon-io_uring.c
++++ b/util/fdmon-io_uring.c
+@@ -124,8 +124,7 @@ static AioHandler *dequeue(AioHandlerSList *head, unsigned *flags)
+     /*
+      * Don't clear FDMON_IO_URING_REMOVE.  It's sticky so it can serve two
+      * purposes: telling fill_sq_ring() to submit IORING_OP_POLL_REMOVE and
+-     * telling process_cqe() to delete the AioHandler when its
+-     * IORING_OP_POLL_ADD completes.
++     * telling process_cqe() to ignore IORING_OP_POLL_ADD completions.
+      */
+     *flags = qatomic_fetch_and(&node->flags, ~(FDMON_IO_URING_PENDING |
+                                               FDMON_IO_URING_ADD));
+@@ -166,12 +165,12 @@ static void fdmon_io_uring_update(AioContext *ctx,
+     }
+ }
+ 
+-static void add_poll_add_sqe(AioContext *ctx, AioHandler *node)
++static void add_poll_multishot_sqe(AioContext *ctx, AioHandler *node)
+ {
+     struct io_uring_sqe *sqe = get_sqe(ctx);
+     int events = poll_events_from_pfd(node->pfd.events);
+ 
+-    io_uring_prep_poll_add(sqe, node->pfd.fd, events);
++    io_uring_prep_poll_multishot(sqe, node->pfd.fd, events);
+     io_uring_sqe_set_data(sqe, node);
+ }
+ 
+@@ -213,7 +212,7 @@ static void fill_sq_ring(AioContext *ctx)
+     while ((node = dequeue(&submit_list, &flags))) {
+         /* Order matters, just in case both flags were set */
+         if (flags & FDMON_IO_URING_ADD) {
+-            add_poll_add_sqe(ctx, node);
++            add_poll_multishot_sqe(ctx, node);
+         }
+         if (flags & FDMON_IO_URING_REMOVE) {
+             add_poll_remove_sqe(ctx, node);
+@@ -234,21 +233,30 @@ static bool process_cqe(AioContext *ctx,
+         return false;
+     }
+ 
++    flags = qatomic_read(&node->flags);
++
+     /*
+-     * Deletion can only happen when IORING_OP_POLL_ADD completes.  If we race
+-     * with enqueue() here then we can safely clear the FDMON_IO_URING_REMOVE
+-     * bit before IORING_OP_POLL_REMOVE is submitted.
++     * poll_multishot cancelled by poll_remove? Or completed early because fd
++     * was closed before poll_remove finished?
+      */
+-    flags = qatomic_fetch_and(&node->flags, ~FDMON_IO_URING_REMOVE);
+-    if (flags & FDMON_IO_URING_REMOVE) {
++    if (cqe->res == -ECANCELED || cqe->res == -EBADF) {
++        assert(!(cqe->flags & IORING_CQE_F_MORE));
++        assert(flags & FDMON_IO_URING_REMOVE);
+         QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_deleted);
+         return false;
+     }
+ 
+-    aio_add_ready_handler(ready_list, node, pfd_events_from_poll(cqe->res));
++    /* Ignore if it becomes ready during removal */
++    if (flags & FDMON_IO_URING_REMOVE) {
++        return false;
++    }
+ 
+-    /* IORING_OP_POLL_ADD is one-shot so we must re-arm it */
+-    add_poll_add_sqe(ctx, node);
++    /* Multi-shot can stop at any time, so re-arm if necessary */
++    if (!(cqe->flags & IORING_CQE_F_MORE)) {
++        add_poll_multishot_sqe(ctx, node);
++    }
++
++    aio_add_ready_handler(ready_list, node, pfd_events_from_poll(cqe->res));
+     return true;
+ }
+ 
 -- 
 2.49.0
 
