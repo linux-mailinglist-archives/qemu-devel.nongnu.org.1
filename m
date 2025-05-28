@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F53AC66BC
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D886AC66AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 12:08:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKDgb-0005cW-Pl; Wed, 28 May 2025 06:07:01 -0400
+	id 1uKDhq-0000a1-Fw; Wed, 28 May 2025 06:08:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDgO-0004rF-ID
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDhV-0000H7-9n
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:08:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDgM-0007Ju-Qq
- for qemu-devel@nongnu.org; Wed, 28 May 2025 06:06:48 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKDhR-0007QT-Vj
+ for qemu-devel@nongnu.org; Wed, 28 May 2025 06:07:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748426806;
+ s=mimecast20190719; t=1748426872;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=boKqtfV5mjhcV+igiCQ1wF54BVqNnBj3nxcXDBLUNjM=;
- b=Qpw3PSwgkDsN91Ev1lqVjVQ+yxAsUJuZc/oVrbnn319TWkn+d6x3b3Uv3YHNq2NjMKiX9S
- Et6Nbi66j77TsTrEdTM/Gn5Wq/JCmyAo1jmsVUGSdgmMoOazALze2BUEu5aBVuwEub5EAR
- goIOT8r9SJoHuwtRCDgg91b4USwg/vc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=syN9efIB0hNvD8iCymDl24Tj7OZV+bCEsnzxf8NWRq8=;
+ b=ITmfqU2hqIk7mIBxbyEdYWfeHIztR+qjcoX+pO6ZbefGPHwjirAMBbw8i6YNypwaVCajEk
+ vzUlmva9RpMQCnaudjnzLtwjVozLNy4O22Gj+cvDv8vBOc/cD8zYOad6kmCP63QyF06eWJ
+ xcYF1X/uprPzr7JLPEDM0rT8ZtBnL8s=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-tWPM_ZkvMBCK34un7kEI_w-1; Wed,
- 28 May 2025 06:06:42 -0400
-X-MC-Unique: tWPM_ZkvMBCK34un7kEI_w-1
-X-Mimecast-MFC-AGG-ID: tWPM_ZkvMBCK34un7kEI_w_1748426801
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-29m2Hoe8PBSBrOA6R8DIyA-1; Wed,
+ 28 May 2025 06:06:45 -0400
+X-MC-Unique: 29m2Hoe8PBSBrOA6R8DIyA-1
+X-Mimecast-MFC-AGG-ID: 29m2Hoe8PBSBrOA6R8DIyA_1748426805
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A5DB0195608B; Wed, 28 May 2025 10:06:41 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F37C41800446; Wed, 28 May 2025 10:06:44 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.34.110])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C5E6F180049D; Wed, 28 May 2025 10:06:38 +0000 (UTC)
+ id 2C775180049D; Wed, 28 May 2025 10:06:41 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 26/27] hw/net/vmxnet3: Merge DeviceRealize in InstanceInit
-Date: Wed, 28 May 2025 12:05:06 +0200
-Message-ID: <20250528100507.313906-27-thuth@redhat.com>
+ Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>,
+ Juraj Marcin <jmarcin@redhat.com>
+Subject: [PULL 27/27] tests/unit/test-util-sockets: fix mem-leak on error
+ object
+Date: Wed, 28 May 2025 12:05:07 +0200
+Message-ID: <20250528100507.313906-28-thuth@redhat.com>
 In-Reply-To: <20250528100507.313906-1-thuth@redhat.com>
 References: <20250528100507.313906-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -83,65 +82,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>
 
-Simplify merging vmxnet3_realize() within vmxnet3_instance_init(),
-removing the need for device_class_set_parent_realize().
+The test fails with --enable-asan as the error struct is never freed.
+In the case where the test expects a success but it fails, let's also
+report the error for debugging (it will be freed internally).
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20250512083948.39294-20-philmd@linaro.org>
+Fixes 316e8ee8d6 ("util/qemu-sockets: Refactor inet_parse() to use QemuOpts")
+
+Signed-off-by: Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>
+Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+Message-ID: <518d94c7db20060b2a086cf55ee9bffab992a907.1748280011.git.matheus.bernardino@oss.qualcomm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/net/vmxnet3.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ tests/unit/test-util-sockets.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
-index d080fe9b38a..7c0ca56b7c0 100644
---- a/hw/net/vmxnet3.c
-+++ b/hw/net/vmxnet3.c
-@@ -2238,6 +2238,7 @@ static void vmxnet3_instance_init(Object *obj)
-     device_add_bootindex_property(obj, &s->conf.bootindex,
-                                   "bootindex", "/ethernet-phy@0",
-                                   DEVICE(obj));
-+    PCI_DEVICE(obj)->cap_present |= QEMU_PCI_CAP_EXPRESS;
- }
+diff --git a/tests/unit/test-util-sockets.c b/tests/unit/test-util-sockets.c
+index 8492f4d68f2..ee66d727c38 100644
+--- a/tests/unit/test-util-sockets.c
++++ b/tests/unit/test-util-sockets.c
+@@ -341,8 +341,12 @@ static void inet_parse_test_helper(const char *str,
+     int rc = inet_parse(&addr, str, &error);
  
- static void vmxnet3_pci_uninit(PCIDevice *pci_dev)
-@@ -2463,22 +2464,10 @@ static const Property vmxnet3_properties[] = {
-     DEFINE_NIC_PROPERTIES(VMXNET3State, conf),
- };
- 
--static void vmxnet3_realize(DeviceState *qdev, Error **errp)
--{
--    VMXNET3Class *vc = VMXNET3_DEVICE_GET_CLASS(qdev);
--    PCIDevice *pci_dev = PCI_DEVICE(qdev);
--    VMXNET3State *s = VMXNET3(qdev);
--
--    pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
--
--    vc->parent_dc_realize(qdev, errp);
--}
--
- static void vmxnet3_class_init(ObjectClass *class, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(class);
-     PCIDeviceClass *c = PCI_DEVICE_CLASS(class);
--    VMXNET3Class *vc = VMXNET3_DEVICE_CLASS(class);
- 
-     c->realize = vmxnet3_pci_realize;
-     c->exit = vmxnet3_pci_uninit;
-@@ -2489,8 +2478,6 @@ static void vmxnet3_class_init(ObjectClass *class, const void *data)
-     c->class_id = PCI_CLASS_NETWORK_ETHERNET;
-     c->subsystem_vendor_id = PCI_VENDOR_ID_VMWARE;
-     c->subsystem_id = PCI_DEVICE_ID_VMWARE_VMXNET3;
--    device_class_set_parent_realize(dc, vmxnet3_realize,
--                                    &vc->parent_dc_realize);
-     dc->desc = "VMWare Paravirtualized Ethernet v3";
-     device_class_set_legacy_reset(dc, vmxnet3_qdev_reset);
-     dc->vmsd = &vmstate_vmxnet3;
+     if (success) {
++        if (error) {
++            error_report_err(error);
++        }
+         g_assert_cmpint(rc, ==, 0);
+     } else {
++        error_free(error);
+         g_assert_cmpint(rc, <, 0);
+     }
+     if (exp_addr != NULL) {
 -- 
 2.49.0
 
