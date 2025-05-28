@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8A5AC63FC
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5C0AC6430
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 May 2025 10:21:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKBx1-0000WT-Qs; Wed, 28 May 2025 04:15:52 -0400
+	id 1uKBz4-0003S3-OZ; Wed, 28 May 2025 04:17:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBwF-0008Aq-0M
+ id 1uKBwE-0008Ap-Vy
  for qemu-devel@nongnu.org; Wed, 28 May 2025 04:15:03 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uKBvw-0005Hi-9K
+ id 1uKBvw-0005Ht-Cj
  for qemu-devel@nongnu.org; Wed, 28 May 2025 04:15:00 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-442ccf0e1b3so54554035e9.3
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:40 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-442ccf0e1b3so54554315e9.3
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 01:14:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748420080; x=1749024880; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748420081; x=1749024881; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ax++RLEDlRrY1JJjLtw31k8EuTvopwPDgXmRKqROuTI=;
- b=CqMzu0b+DaVmgylJZgizMflka3+gdP+BWu5PajuTwgK6BUyXxqw9noG9RJjB3Ra4aq
- 5QC4YFxaBxL98RDD4UIAiyiVhz46q/OnwyvVgauwObra7tZkC/HkURESGKPd+/+5HoNY
- 2h1lKbxopkxA4tD6qZKVp+8+bqyfSVKx6mpINFA4suoaW3jxTNtdK+3LA3xSKAW+3Wjh
- 3er7VJDB191V5xNBHPsjPTV3rwtoT2pltdhBQj4wcfqkg+ZxKZaZ9TqOlFx9RRvOrN1P
- mu56OB1ZKXxARn7FJ9NtoJJCOQelX2OAG9CU7HeTqDT+WJtc6zml2dlHTscJCM1JJN9X
- j6gw==
+ bh=jbzs8SSpnFWUH8ateP0v1HSUtugL3UmRKi3x5SHm6hE=;
+ b=k1qmjGVI5Sg/eYW765x51qW6d1Gp2DyD9S13cGT1kqzBY47iqYn9ObeeFofBCmGmd9
+ 91Vt8lGMlh2KXYzeelPL/wmixZpAmiqpUSaR6qeLzY+HeTxhovJj0rpXqdrW0O8nvRcX
+ ZCjOdES7OZzOgdK7GrRnRIz7XyTgLHFJ+MkhwOb++NgHljpF71uNJAtzfMYyU8V9iz9q
+ ApvxwY3SVzHD+55N6TBb0bcOK3rPi97KZhs2JrewqLMDAYTCRq6p2Cxf9n/w1NW0SNuR
+ MCQXpWTN5Rj4xS+4CdbGPSFIVAcyebViJpBC9f7HRGOs5GsJ+zUrCyHSWbGJJJ6ESDU9
+ Qm/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748420080; x=1749024880;
+ d=1e100.net; s=20230601; t=1748420081; x=1749024881;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ax++RLEDlRrY1JJjLtw31k8EuTvopwPDgXmRKqROuTI=;
- b=BrAvVdKanQFVnuXMUwO+fw2HYDS22MEz12iNJa4KmgM+weEWOpSWDbdWTM8ld1xkCR
- R+OnsHFhWrJb/rJScR42i+/hi6rTNCW4ZRzKJMsbch4uKZXm8UY6KUyf8z/xFux7nm8i
- Uo0TLBOBZTUTHOA1yN74AfLmnybIdCW1jFQfQ/AGCMg0JcBu3miqr1PuM8igz7XBLxMJ
- r2bqK8igeqv/gsaj0cWNF56lB6VZHz+2IMMVnnX/tqXKpKT4SeOkQ6ij0CC6FIoJMd+M
- l/1vDyZForz0z7SR2A1mIxbltW1shmZXepixg1y95XsJspM80NydsQTMzhTQ1EAmD1l2
- QbbA==
-X-Gm-Message-State: AOJu0Yw/+w5s8Qt819Mmx/uHg6ymNlHg0AnWPHvSu4CzphpLfIHbbx6B
- Saa9zDNmWDJC4fgHUyUnCkGo59SO/JDyhfAYsQ8yYxvFrxOURErDPRahm6xQyHSdNL7CfKR7kbi
- A83SxYa0UNg==
-X-Gm-Gg: ASbGncvG0XAcFvm4B5qlau4v71tPJHlIOBRiZrk/TJ15K2ruRARGiSD89C0PmLYuoyH
- HePgEt944T9hWBHHX511ESSx+km2dYhF9AjYeboR+jy1HxtjHVPCgrjB9DfGzzWnBaW8KjDRdzu
- TWSleUt94xkGEjIjrCCN6UL7NKH9qhH6Sn7gQJMEMtuf7U6EjwEdqX+dLM6P6DZDZt/TYNHkRtj
- AzrXnRYp4hpu8+/24Yb7dnRBYE+acX1msnMgovA9MKn3AmiUgjlVJGOMmUXyR0mCF5B4t66dxxg
- b3fbAtCyMl4AAHi2dCR27AfRFKnQQqRsUccqylJ6tNY6V0pHt0/pObDz
-X-Google-Smtp-Source: AGHT+IEJ0IRtGgkd+PHdiVJNb2Q9qeUY63nP40JBnFHSo9M8yVvaJ16/JNM0cqJtUCNHEE/pFmAk0g==
-X-Received: by 2002:a05:600c:6285:b0:43c:ea1a:720c with SMTP id
- 5b1f17b1804b1-44c91dd127bmr146750765e9.18.1748420079588; 
- Wed, 28 May 2025 01:14:39 -0700 (PDT)
+ bh=jbzs8SSpnFWUH8ateP0v1HSUtugL3UmRKi3x5SHm6hE=;
+ b=TwWxoDzkEBUE8kwLBcyhHkAh8D3VdN593QxxwDY0rnXcK5upPq7Cpqe/Z7dyyImW4W
+ iZTHHRCzKn4In0hUbXA72kmnUJbQJ48vdyOAiOMp71KZV/mdJRhmgv4C0ifFKlYyCZ3v
+ V/6ccSd94x9tcHBdf7dxYbK5z/QKtyKz9ARL9KGr2ir3uyLGpXJFFc0nsR+oZF/+oJyj
+ rZU5dHIxMMVggSIzLvgu72UyoEkPUNEvEtSOzRN1aGxLj+QiPih7iV4cypZ4h3Jm4dhs
+ 8aIEB5uMcZ9PBOLAAg4UehP85eRcdjpydrqtoBDxOmcQCNwnDNQ/O/Ef73+aQjnJIXiS
+ B51w==
+X-Gm-Message-State: AOJu0Yx3b7t9g3PdEfHoiR3C8h3xA5VJukZMixrXgClhMTyIpYTMRvr4
+ DKJ+rKYgFeLtW83UwMTbUg0ik9W1k2liSJFj+waLIYoNIl4Xlc+ZE7OJcZsUA9OnrxtUUCC8ZSH
+ pNJYlZ/1b+g==
+X-Gm-Gg: ASbGncub8x86eMdnCmcA8ocOYZRzJji6ppSqXnyN55AnpdHOnCiJjKCIzaRtdIN8eB7
+ HA1PzDBdFO1ST//pg9fHeSBJm4Eo6+NmARmh3NqHvTtRK8zcJKvtgtI4ht+KzszmX5Vv5box/AK
+ 6zQZbavO5ZGPOb49Q1a+J0uZVrN7AzTjCbrusnLKVfXYuYvA/BHakyWx3Mv7OmrjiSuM4v1S4s0
+ xVheyaJlA9cAhoNOQeYcR8vk/Kf7I8bX98vsiICHTuSBagKfO234cfNGrQAAE0LGFl+Azcs+xDq
+ XF/VhC68FIpb/9s/imVq94pNuMi3jdQYInDe+oAJET/a+tu4bc7n9pMGO4J81u71PIg=
+X-Google-Smtp-Source: AGHT+IH6Kk0axK9C0k5YiZSc4cP+/78DrUeLhh+1dpTU0MacUpZrdUAJ/FHLgjqUOQJTTg7ywaGYwQ==
+X-Received: by 2002:a05:6000:178b:b0:3a4:dcb0:a4c with SMTP id
+ ffacd0b85a97d-3a4dcb00b65mr7501920f8f.12.1748420081556; 
+ Wed, 28 May 2025 01:14:41 -0700 (PDT)
 Received: from stoup.. ([195.53.115.74]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.38
+ 5b1f17b1804b1-4500e1d85b5sm13178645e9.32.2025.05.28.01.14.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 May 2025 01:14:39 -0700 (PDT)
+ Wed, 28 May 2025 01:14:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PULL 20/28] target/arm: Fill in TCGCPUOps.pointer_wrap
-Date: Wed, 28 May 2025 09:14:02 +0100
-Message-ID: <20250528081410.157251-21-richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 21/28] target/i386: Fill in TCGCPUOps.pointer_wrap
+Date: Wed, 28 May 2025 09:14:03 +0100
+Message-ID: <20250528081410.157251-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250528081410.157251-1-richard.henderson@linaro.org>
 References: <20250528081410.157251-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -1
 X-Spam_score: -0.2
 X-Spam_bar: /
@@ -95,70 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For a-profile, check A32 vs A64 state.
-For m-profile, use cpu_pointer_wrap_uint32.
+Check 32 vs 64-bit state.
 
-Cc: qemu-arm@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.c         | 24 ++++++++++++++++++++++++
- target/arm/tcg/cpu-v7m.c |  1 +
- 2 files changed, 25 insertions(+)
+ target/i386/tcg/tcg-cpu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index ca5ed7892e..e025e241ed 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2703,6 +2703,29 @@ static const struct SysemuCPUOps arm_sysemu_ops = {
+diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+index 179dfdf064..6f5dc06b3b 100644
+--- a/target/i386/tcg/tcg-cpu.c
++++ b/target/i386/tcg/tcg-cpu.c
+@@ -149,6 +149,12 @@ static void x86_cpu_exec_reset(CPUState *cs)
+     do_cpu_init(env_archcpu(env));
+     cs->exception_index = EXCP_HALTED;
+ }
++
++static vaddr x86_pointer_wrap(CPUState *cs, int mmu_idx,
++                              vaddr result, vaddr base)
++{
++    return cpu_env(cs)->hflags & HF_CS64_MASK ? result : (uint32_t)result;
++}
  #endif
  
- #ifdef CONFIG_TCG
-+#ifndef CONFIG_USER_ONLY
-+static vaddr aprofile_pointer_wrap(CPUState *cs, int mmu_idx,
-+                                   vaddr result, vaddr base)
-+{
-+    /*
-+     * The Stage2 and Phys indexes are only used for ptw on arm32,
-+     * and all pte's are aligned, so we never produce a wrap for these.
-+     * Double check that we're not truncating a 40-bit physical address.
-+     */
-+    assert((unsigned)mmu_idx < (ARMMMUIdx_Stage2_S & ARM_MMU_IDX_COREIDX_MASK));
-+
-+    if (!is_a64(cpu_env(cs))) {
-+        return (uint32_t)result;
-+    }
-+
-+    /*
-+     * TODO: For FEAT_CPA2, decide how to we want to resolve
-+     * Unpredictable_CPACHECK in AddressIncrement.
-+     */
-+    return result;
-+}
-+#endif /* !CONFIG_USER_ONLY */
-+
- static const TCGCPUOps arm_tcg_ops = {
-     .mttcg_supported = true,
-     /* ARM processors have a weak memory model */
-@@ -2722,6 +2745,7 @@ static const TCGCPUOps arm_tcg_ops = {
-     .untagged_addr = aarch64_untagged_addr,
+ const TCGCPUOps x86_tcg_ops = {
+@@ -172,6 +178,7 @@ const TCGCPUOps x86_tcg_ops = {
+     .record_sigbus = x86_cpu_record_sigbus,
  #else
-     .tlb_fill_align = arm_cpu_tlb_fill_align,
-+    .pointer_wrap = aprofile_pointer_wrap,
-     .cpu_exec_interrupt = arm_cpu_exec_interrupt,
-     .cpu_exec_halt = arm_cpu_exec_halt,
-     .cpu_exec_reset = cpu_reset,
-diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
-index 95b23d9b55..8e1a083b91 100644
---- a/target/arm/tcg/cpu-v7m.c
-+++ b/target/arm/tcg/cpu-v7m.c
-@@ -249,6 +249,7 @@ static const TCGCPUOps arm_v7m_tcg_ops = {
-     .record_sigbus = arm_cpu_record_sigbus,
- #else
-     .tlb_fill_align = arm_cpu_tlb_fill_align,
-+    .pointer_wrap = cpu_pointer_wrap_uint32,
-     .cpu_exec_interrupt = arm_v7m_cpu_exec_interrupt,
-     .cpu_exec_halt = arm_cpu_exec_halt,
-     .cpu_exec_reset = cpu_reset,
+     .tlb_fill = x86_cpu_tlb_fill,
++    .pointer_wrap = x86_pointer_wrap,
+     .do_interrupt = x86_cpu_do_interrupt,
+     .cpu_exec_halt = x86_cpu_exec_halt,
+     .cpu_exec_interrupt = x86_cpu_exec_interrupt,
 -- 
 2.43.0
 
