@@ -2,67 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA181AC7A02
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 10:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BF9AC7A11
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 10:14:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKYAI-0005M2-AV; Thu, 29 May 2025 03:59:02 -0400
+	id 1uKYNO-0002Eb-Hd; Thu, 29 May 2025 04:12:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uKYA9-0005FH-KF; Thu, 29 May 2025 03:58:54 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uKYA2-0000F6-Kj; Thu, 29 May 2025 03:58:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748505527; x=1780041527;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=DGGoseyG1muW2Pj2PQZN4Acck6K2Ob22b9R4grP7w6c=;
- b=aGPNdHwUbmdfpVW2YQlr2eUbH9u/aAPbfx4aChs2nUDgoC6D1H1DHfxz
- CqzwIfQHpQkkijEX63IkawrgP6rB/FeqCSuh0Sn17FEDZ8jDlvo4g2QSe
- vFzefmR4PW2LI+Cre4tVgcAoe8ORmbq0qz/WetFgLncntkMyg5tsaDYzD
- jdQd40K4tI42oCccp0qFsYs8Ep1GeHLO3apEe3S/iXH5fNnbEGXtZxG5N
- Kpr+gCmPNkEsZQcbyG/9YdV55TidVo+O9F/IF8fcw5/p2UqydLywNAgST
- H5WrBfWjHsVF48orQlJsIcyC9JNKMoop+VL7YMzOn+r75JKNzjBi+bSZI w==;
-X-CSE-ConnectionGUID: NkWiLABDRpeSl/yw8m58TQ==
-X-CSE-MsgGUID: jtIuvCGeT/6QA/6C48VZNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="61188322"
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="61188322"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2025 00:52:33 -0700
-X-CSE-ConnectionGUID: 3Be/HnOJQmCBwmnZntQYcg==
-X-CSE-MsgGUID: 0L1BrizuTpSkbvv2OMBb0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="144125229"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 29 May 2025 00:52:31 -0700
-Date: Thu, 29 May 2025 16:13:41 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, qemu-rust@nongnu.org
-Subject: Re: [PATCH 03/12] subprojects: add the foreign crate
-Message-ID: <aDgXNWvh9xCI653S@intel.com>
-References: <20250526142254.1061009-1-pbonzini@redhat.com>
- <20250526142455.1061519-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1uKYNL-0002ER-QF
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 04:12:31 -0400
+Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1uKYNJ-0002JX-Ku
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 04:12:31 -0400
+Received: by mail-qt1-x836.google.com with SMTP id
+ d75a77b69052e-4947635914aso7041181cf.3
+ for <qemu-devel@nongnu.org>; Thu, 29 May 2025 01:12:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748506348; x=1749111148;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rnM/Z8H2fHXMXVyQJKbHOTYSPT700wIA+x6GI3WO/rk=;
+ b=B8lvqWz6d1AodP1JKi8m58uuhUGM7+dAg6ZqQ6zDt0FikjrzNfxxh2pHbnCLia1UUh
+ mRNng0hLmKGL2XMAqexidfRChep4tMsaqgWaRJXDJ8K2kriUR2vK8WYyKjVJ0pno0Osi
+ 84MkJ5MhLf8aUoKdb4nuUWAVw4h16QOSOrtZAx5iEcdy7+KWt1Aol3L83VuN/vRpwoqc
+ y7bmjXujlyiN4NHfRmwJCawrHownZ8JueszO+gYAIyFk1Cnv13nWQXMV17TBYFVnurbp
+ Lql/i6ueq1BxieJBq97FoOnipeuuE36jaWtmWxdLSwudE8kWFbVZPqIFMJFPtAtP5mUG
+ zdkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748506348; x=1749111148;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rnM/Z8H2fHXMXVyQJKbHOTYSPT700wIA+x6GI3WO/rk=;
+ b=C0q0dSHxBU/0kSvB8Fym10ukQriaDSrdHksqreqJ7DwhoFVmKS1YFyF3f1eGsPmyfe
+ V7W7pEoiZ4fnfcCTF6npUivKR9G4r5RoXD/JgzRomW64Alq0PNYlq9uPk+S4lfOLZfZS
+ tr5NEPhoiYOku+1TlS/peZbuO0KOxweKwmB/bFSJKezrocFFcWhCDERRB5paFuQMkKxE
+ q8KEPIDGHytk817edXBfDmaipj/N9OZSJGe2dEpxk8T6T5q+ltdjF6l1fE7z7YVjXziG
+ lISSUfSyDRzXCcmcyvclj/vKTGFC3qbHZnHlE/ovpeKnMEeQ10JFDVNFBr+aNbUDRNmP
+ +0Mg==
+X-Gm-Message-State: AOJu0YygtTTfVNPLvjTvIC8ie5rr85i1FYd1HBCif5r5Ab1d2OPfyaed
+ qj2tMXA5mkgBnza/TD7h0sdY8zwHKxtqM4QOYeQgjzXuVmnmFgtQfD7BMoNc5s17pQ/bb9aNuAQ
+ k98WdOGI8E4G7M6l5E35YPGRTdAiqLPFNzjhJPiTmFAC4FWfP9JlyENk=
+X-Gm-Gg: ASbGnctpQGO4By9slsd5WNZP8ZVVnJmm6NHTbyhvZuqDhoqaPARH64k1Yx6gAdhpxiK
+ ygDEHALz8lhMbi6EkQAGXkt/qjsji9gVwizL8zN42q0reCFlzKgRILfE3nLSCXzPBgS/0orLVH8
+ 4+oYnWINGe7tQQxaOOCkXJut8UlhgN2E0t0JBkp7rEPc9JjrPgQPV8e+fyY04hH/Aayb8=
+X-Google-Smtp-Source: AGHT+IEm1RfNtZd0HEZexQHgLMUyI2hmGLQ1MaMXhBneUz3hQNZLGnJ/W4I7CroK46bp2gFIUi4CZojem+dyQELfrr4=
+X-Received: by 2002:a05:622a:4cc4:b0:494:9fce:28f7 with SMTP id
+ d75a77b69052e-4a4370eeb90mr17143621cf.17.1748506347804; Thu, 29 May 2025
+ 01:12:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250526142455.1061519-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -72
-X-Spam_score: -7.3
-X-Spam_bar: -------
-X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20250515063237.808293-1-yuri.benditovich@daynix.com>
+In-Reply-To: <20250515063237.808293-1-yuri.benditovich@daynix.com>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+Date: Thu, 29 May 2025 11:12:17 +0300
+X-Gm-Features: AX0GCFumf1MgKzM0I8a9p0Qq-GbNlmwQYCAOwtleKymyOiN_kVIj8xPDyM91lkg
+Message-ID: <CAOEp5OegzUevfFit=qHzhjzSq9FPWq45kYjEgriFB0W111aAtw@mail.gmail.com>
+Subject: Re: [PATCH] virtio: check for validity of indirect descriptors
+To: qemu-devel@nongnu.org, mst@redhat.com
+Cc: devel@daynix.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-qt1-x836.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,44 +91,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 26, 2025 at 04:24:46PM +0200, Paolo Bonzini wrote:
-> Date: Mon, 26 May 2025 16:24:46 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 03/12] subprojects: add the foreign crate
-> X-Mailer: git-send-email 2.49.0
-> 
-> This is a cleaned up and separated version of the patches at
-> https://lore.kernel.org/all/20240701145853.1394967-4-pbonzini@redhat.com/
-> https://lore.kernel.org/all/20240701145853.1394967-5-pbonzini@redhat.com/
+ping
+
+
+On Thu, May 15, 2025 at 9:32=E2=80=AFAM Yuri Benditovich
+<yuri.benditovich@daynix.com> wrote:
 >
-> Its first user will be the Error bindings; for example a QEMU Error ** can be
-> converted to a Rust Option using
-> 
->      unsafe { Option::<Error>::from_foreign(c_error) }
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> virtio processes indirect descriptors even if the respected
+> feature VIRTIO_RING_F_INDIRECT_DESC was not negotiated.
+> If qemu is used with reduced set of features to emulate the
+> hardware device that does not support indirect descriptors,
+> the will probably trigger problematic flows on the hardware
+> setup but do not reveal the  mistake on qemu.
+> Add LOG_GUEST_ERROR for such case. This will issue logs with
+> '-d guest_errors' in the command line
+>
+> Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
 > ---
->  subprojects/.gitignore                        |  1 +
->  subprojects/foreign-0.2-rs.wrap               |  7 +++++
-
-It seems you've already released v0.3.0.
-
->  .../packagefiles/foreign-0.2-rs/meson.build   | 26 +++++++++++++++++++
->  3 files changed, 34 insertions(+)
->  create mode 100644 subprojects/foreign-0.2-rs.wrap
->  create mode 100644 subprojects/packagefiles/foreign-0.2-rs/meson.build
-
-I went through foreign crate and it was really helpful (and there are also
-missing changes as anyhow crate patch). With nits fixed,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
-
-Maybe off topic, it seems the Owned<T> wrapper is very similar to
-OwnedPointer<T>. Is it possible to integrate the two? i.e., build
-Owned<T: ObjectType> based on OwnedPointer<T: FreeForeign>?
-
-Thanks,
-Zhao
-
+>  hw/virtio/virtio.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+> index 480c2e5036..8d185f282a 100644
+> --- a/hw/virtio/virtio.c
+> +++ b/hw/virtio/virtio.c
+> @@ -205,6 +205,15 @@ static const char *virtio_id_to_name(uint16_t device=
+_id)
+>      return name;
+>  }
+>
+> +static void virtio_check_indirect_feature(VirtIODevice *vdev)
+> +{
+> +    if (!virtio_vdev_has_feature(vdev, VIRTIO_RING_F_INDIRECT_DESC)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "Device %s: indirect_desc was not negotiated!\n",
+> +                      vdev->name);
+> +    }
+> +}
+> +
+>  /* Called within call_rcu().  */
+>  static void virtio_free_region_cache(VRingMemoryRegionCaches *caches)
+>  {
+> @@ -1733,6 +1742,7 @@ static void *virtqueue_split_pop(VirtQueue *vq, siz=
+e_t sz)
+>              virtio_error(vdev, "Invalid size for indirect buffer table")=
+;
+>              goto done;
+>          }
+> +        virtio_check_indirect_feature(vdev);
+>
+>          /* loop over the indirect descriptor table */
+>          len =3D address_space_cache_init(&indirect_desc_cache, vdev->dma=
+_as,
+> @@ -1870,6 +1880,7 @@ static void *virtqueue_packed_pop(VirtQueue *vq, si=
+ze_t sz)
+>              virtio_error(vdev, "Invalid size for indirect buffer table")=
+;
+>              goto done;
+>          }
+> +        virtio_check_indirect_feature(vdev);
+>
+>          /* loop over the indirect descriptor table */
+>          len =3D address_space_cache_init(&indirect_desc_cache, vdev->dma=
+_as,
+> --
+> 2.40.1
+>
 
