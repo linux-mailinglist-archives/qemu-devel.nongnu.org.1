@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EC9AC82A0
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 21:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51024AC82AA
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 21:28:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKisx-0004cl-79; Thu, 29 May 2025 15:25:52 -0400
+	id 1uKit0-0004mC-PK; Thu, 29 May 2025 15:25:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uKisW-0004FI-0D
- for qemu-devel@nongnu.org; Thu, 29 May 2025 15:25:25 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1uKisM-0004AU-0D
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 15:25:15 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uKisT-0000Rn-Jw
- for qemu-devel@nongnu.org; Thu, 29 May 2025 15:25:23 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54TGfuul022092;
- Thu, 29 May 2025 19:25:08 GMT
+ id 1uKisJ-0000SI-PE
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 15:25:13 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54TGfpx8022094;
+ Thu, 29 May 2025 19:25:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=RAS+UZC/WGBW5cnJMIdMxQqfQASxRnZ2idO9jx4/bnU=; b=
- SsVi6vc76FREQQYBCCAl240IYGq3AdxD/x/ln2qSaxUtSsrhFssL3ZnJvy9+sANB
- BSYBa+ZWD8ZKX4+6c+0yc+HSHDXeudxKfH7Fl5XaHpAxg5qGUm7vuBT4gA7F4bTD
- /bho1Q41KCBkuLphQXTeF0uA50GK5S6enLYnuDHTGst8DQY91HmAeRdXwKqBGTdR
- 7GcRLHZXaH2LmQEfF5Nr0RJ4IilAQ3OsdPV3A7wWheWh9zqNzCdXZ/jPaU3Gp6wK
- hvX2bHxHIWYUSzCtoIMb/zxR016LYG7yFFQliAIKwHOO5ax5JdRn+ycQKcKM+/tx
- qGxxAwEJLsZoJbHg9JoBWQ==
+ corp-2025-04-25; bh=gXScG2GfqwtY0oCJVKlKfstIhPSAjyCPQfL6S2SQFTc=; b=
+ I5baR1G2DiDxsR/A4/CatiPyOszFnkG5l3adBe2Kmf5Bxg6cbdx2sHwuMsrSPtPx
+ w2Om0HaIpKjclNoEFHQ1Yh/shfrgG+6OnHb7/LdtSs/Ji7+psdN6BCvaP3nrL8pY
+ H3Oas2KAem3SErnKDJb+tc2tihM+Z1ajykqQXAOT16tznwoCQWcyYwjuyQYZPdN6
+ rutEAq1EUAZm13Dttd8hy2lHS59bGhTLYW9mT/VMLxmUG9gNih8GMppbQR0HRruL
+ AxVXviLreU86Aoj8tgf40YI2EuQ8cz8uhQjsqP9YRC1+q6Hz1rXn26wA0bNPtLpl
+ 3e6TqPrqwXUXrWb+JvjUEQ==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v0ym12k9-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v0g2h189-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 May 2025 19:25:08 +0000 (GMT)
+ Thu, 29 May 2025 19:25:09 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54THgPjx020337; Thu, 29 May 2025 19:25:07 GMT
+ with ESMTP id 54TJLKIp020341; Thu, 29 May 2025 19:25:08 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46u4jc4w3p-1
+ 46u4jc4w47-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 May 2025 19:25:07 +0000
+ Thu, 29 May 2025 19:25:08 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54TJOeRp022158;
- Thu, 29 May 2025 19:25:06 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54TJOeRr022158;
+ Thu, 29 May 2025 19:25:07 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 46u4jc4vjq-33; Thu, 29 May 2025 19:25:06 +0000
+ ESMTP id 46u4jc4vjq-34; Thu, 29 May 2025 19:25:07 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V4 32/43] vfio/iommufd: invariant device name
-Date: Thu, 29 May 2025 12:24:28 -0700
-Message-Id: <1748546679-154091-33-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V4 33/43] vfio/iommufd: add vfio_device_free_name
+Date: Thu, 29 May 2025 12:24:29 -0700
+Message-Id: <1748546679-154091-34-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1748546679-154091-1-git-send-email-steven.sistare@oracle.com>
 References: <1748546679-154091-1-git-send-email-steven.sistare@oracle.com>
@@ -75,20 +75,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  adultscore=0 malwarescore=0 bulkscore=0 mlxscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2505290189
-X-Proofpoint-GUID: jkLymqR4VJId90nizxDALZIEQo08jTq9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDE4OSBTYWx0ZWRfX/HTHR1zQQZCd
- u6vkim5jbZrTAtVmoPUuEk2MFOEsnkke0ckOMMdOZm+Vm5fnxAYiX00ORFZci+698dIOWsZkDqj
- lsdQqg5DwHTW5cJfHnB3R4uFicA6wP70+6OL9LKsWM3KE6EWfpuKSvH4PQXpL9bVg/aO2Ja/2/N
- 0XgsxNojwXfe6/TQUzaT6mz4hEJXTLB//vdhi3euS773BH3fz3C5kdyR05ZhZkfpvRt82oBbfYC
- vewM8AuHn44FiECsDFWHMaKWTPRj2mjw8pJqhWIWucVW5XnBxgA+sklQXFayV3TDx8jpfsctCD3
- fC5lyAJk9krLRUaFDaZ/tVdIKqcX2t4dq0zhHWZMRssSjBqiuknipRMnIy9xowoD55/y1Nx5EyP
- wL2/aJJ4U+GvVg0Ro+9Ez9UQBidT4LrECkJVDbQ2lQHzVcXmXmDIpT+IwbWLJK4svPwauBAm
-X-Proofpoint-ORIG-GUID: jkLymqR4VJId90nizxDALZIEQo08jTq9
-X-Authority-Analysis: v=2.4 cv=N7MpF39B c=1 sm=1 tr=0 ts=6838b494 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDE4OSBTYWx0ZWRfX0CwcqfkkfaAy
+ XfJrm7rhkSk3lEbrd3oVbkgKB1am6lGv0di/LVODgrrWgOQ2XE2IhwlaVNtopta3znpulyFHATv
+ oicEnJ1r8OGsLdmfK6SqdBezUpcxRMnwnrn9a5rumgB1L5VIwDmuc0deUnd3rUKHKN4Eyh3ptOx
+ Fjt2UhYNAtdz3CzaAa9g1W9QjbW4m9D/qGwMRmj24kdcvqKxmfO/mT/77ZO255Da9C+gXQg9nEL
+ G3rlwyZi3Y4eJlDIgkHM3WD/0jzixMbayPiTZrxWfckXfNmfn+HVR6mGzu/ROhtemg5lIyzpwMZ
+ MdSeW5KXdoF6efPKNRloEfrUdXurLGeqj4YGz+AgAB1/j7sB1M0MCUI33ZxdyW0TsIquT9fxnUJ
+ Cparkz7UNeom7b7VHk9h6ypQ9wYTGlqu+TrTRHly/frL8ujAF+0FvR+4zj/hebYSqabHdEFK
+X-Authority-Analysis: v=2.4 cv=NJLV+16g c=1 sm=1 tr=0 ts=6838b495 cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=3QIz5wLK-XFPp17kOLYA:9
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=cF8GLI2TDnzqfzOqKfcA:9
+X-Proofpoint-ORIG-GUID: DxQl4LquLIZhFN5CuAr1A7rL0mVl3kkr
+X-Proofpoint-GUID: DxQl4LquLIZhFN5CuAr1A7rL0mVl3kkr
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -112,48 +112,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpr-transfer will use the device name as a key to find the value
-of the device descriptor in new QEMU.  However, if the descriptor
-number is specified by a command-line fd parameter, then
-vfio_device_get_name creates a name that includes the fd number.
-This causes a chicken-and-egg problem: new QEMU must know the fd
-number to construct a name to find the fd number.
-
-To fix, create an invariant name based on the id command-line parameter,
-if id is defined.  The user will need to provide such an id to use CPR.
+Define vfio_device_free_name to free the name created by
+vfio_device_get_name.  A subsequent patch will do more there.
+No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/device.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ include/hw/vfio/vfio-device.h | 1 +
+ hw/vfio/ap.c                  | 2 +-
+ hw/vfio/ccw.c                 | 2 +-
+ hw/vfio/device.c              | 5 +++++
+ hw/vfio/pci.c                 | 2 +-
+ hw/vfio/platform.c            | 2 +-
+ 6 files changed, 10 insertions(+), 4 deletions(-)
 
+diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+index 6eb6f21..321b442 100644
+--- a/include/hw/vfio/vfio-device.h
++++ b/include/hw/vfio/vfio-device.h
+@@ -227,6 +227,7 @@ int vfio_device_get_irq_info(VFIODevice *vbasedev, int index,
+ 
+ /* Returns 0 on success, or a negative errno. */
+ bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
++void vfio_device_free_name(VFIODevice *vbasedev);
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp);
+ void vfio_device_init(VFIODevice *vbasedev, int type, VFIODeviceOps *ops,
+                       DeviceState *dev, bool ram_discard);
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index 785c0a0..013bd59 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -180,7 +180,7 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+ 
+ error:
+     error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
+-    g_free(vbasedev->name);
++    vfio_device_free_name(vbasedev);
+ }
+ 
+ static void vfio_ap_unrealize(DeviceState *dev)
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index cea9d6e..903b8b0 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -619,7 +619,7 @@ out_io_notifier_err:
+ out_region_err:
+     vfio_device_detach(vbasedev);
+ out_attach_dev_err:
+-    g_free(vbasedev->name);
++    vfio_device_free_name(vbasedev);
+ out_unrealize:
+     if (cdc->unrealize) {
+         cdc->unrealize(cdev);
 diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 9fba2c7..71fa9f4 100644
+index 71fa9f4..151c618 100644
 --- a/hw/vfio/device.c
 +++ b/hw/vfio/device.c
-@@ -300,12 +300,17 @@ bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
-             error_setg(errp, "Use FD passing only with iommufd backend");
-             return false;
-         }
--        /*
--         * Give a name with fd so any function printing out vbasedev->name
--         * will not break.
--         */
-         if (!vbasedev->name) {
--            vbasedev->name = g_strdup_printf("VFIO_FD%d", vbasedev->fd);
-+
-+            if (vbasedev->dev->id) {
-+                vbasedev->name = g_strdup(vbasedev->dev->id);
-+                return true;
-+            } else {
-+                /*
-+                 * Assign a name so any function printing it will not break.
-+                 */
-+                vbasedev->name = g_strdup_printf("VFIO_FD%d", vbasedev->fd);
-+            }
-         }
-     }
+@@ -317,6 +317,11 @@ bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+     return true;
+ }
  
++void vfio_device_free_name(VFIODevice *vbasedev)
++{
++    g_free(vbasedev->name);
++}
++
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
+ {
+     ERRP_GUARD();
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index c8d6ee0..7da7a9c 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2949,7 +2949,7 @@ static void vfio_pci_put_device(VFIOPCIDevice *vdev)
+ {
+     vfio_device_detach(&vdev->vbasedev);
+ 
+-    g_free(vdev->vbasedev.name);
++    vfio_device_free_name(&vdev->vbasedev);
+     g_free(vdev->msix);
+ }
+ 
+diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+index 9a21f2e..5c1795a 100644
+--- a/hw/vfio/platform.c
++++ b/hw/vfio/platform.c
+@@ -530,7 +530,7 @@ static bool vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
+ {
+     /* @fd takes precedence over @sysfsdev which takes precedence over @host */
+     if (vbasedev->fd < 0 && vbasedev->sysfsdev) {
+-        g_free(vbasedev->name);
++        vfio_device_free_name(vbasedev);
+         vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
+     } else if (vbasedev->fd < 0) {
+         if (!vbasedev->name || strchr(vbasedev->name, '/')) {
 -- 
 1.8.3.1
 
