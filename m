@@ -2,75 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0DDAC7791
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 07:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F261AC777D
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 07:15:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKVcv-0007zF-TO; Thu, 29 May 2025 01:16:28 -0400
+	id 1uKVab-00070L-43; Thu, 29 May 2025 01:14:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1uKVck-0007xQ-MS
- for qemu-devel@nongnu.org; Thu, 29 May 2025 01:16:15 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
+ id 1uKVaY-00070A-It
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 01:13:58 -0400
+Received: from out-178.mta0.migadu.com ([91.218.175.178])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1uKVci-0008GJ-0E
- for qemu-devel@nongnu.org; Thu, 29 May 2025 01:16:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748495772; x=1780031772;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=cxAatodOAORzZ95kPaQtugcUFXjQS+idcd+I3ZMbUoI=;
- b=axZ7UMVvlgtUbpWqF4AFT8L+GCfsjpV/BUcgGQ2G18lIZ/wpvXMrRAYu
- hMCMi+PyVJMjB2zaQ1xg9eUMPu0CaWSmMh/ElTG7FoY5ULF36OVm0cj+m
- uLn7PBWtvAfxTAbcsxZyPTsGdhJtr1pgN0otoyL1gmTFTee26AOgCpcIW
- GPFC18AzV7HHdHbSlKM9wBLyzh3IFwNcuZAUApJWgG6nCZrgykzD0UG6i
- Jz//D5vmLGRrIEnf+tr/soft2PpZpxWuchGaS4wtw+fZEILyvfOK41fYD
- iq6a/9zz2goGcZqd2yqGVZVEDYN4BwVR9Sq9eJ0fL1M3B6xfiy7JlxCq2 A==;
-X-CSE-ConnectionGUID: oT4qYxZaTWKD4T+a1asieg==
-X-CSE-MsgGUID: Od/0aaYTSnuaCM9ZKU2E6w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="50241913"
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="50241913"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2025 22:15:27 -0700
-X-CSE-ConnectionGUID: A91srPbvSLeJwLUQxkZsBQ==
-X-CSE-MsgGUID: wh7Vo0hxR2GYXoXXa20tvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="174455354"
-Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2025 22:15:27 -0700
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
-To: qemu-devel@nongnu.org
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>,
- Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-Subject: [PATCH v5 7/7] ui/spice: Blit the scanout texture if its memory
- layout is not linear
-Date: Wed, 28 May 2025 22:11:18 -0700
-Message-ID: <20250529051352.1409904-8-vivek.kasireddy@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250529051352.1409904-1-vivek.kasireddy@intel.com>
-References: <20250529051352.1409904-1-vivek.kasireddy@intel.com>
+ (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
+ id 1uKVaP-0007ut-UJ
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 01:13:58 -0400
+Date: Thu, 29 May 2025 14:13:30 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1748495620;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ft5agwKDm8mVsjeLDhOw5RT0PS9jra2LFUmmBHo9PzE=;
+ b=YMikC+Lt8WyYOzjn3zlw0vWqHTGW1zCE2G6beXc++FC/N1ZK4RytW87EtTmHQp/9ZefJNv
+ 8GSKMe+uPmC1wWA7cxxXzjWUYUgdB+fQVzJpWzGGXOTRporoy0vxi/emfirt/H7r1NINB3
+ +qtBmZG7Q1tuZKXF4bP4EAuRQYUbZpo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+From: Itaru Kitayama <itaru.kitayama@linux.dev>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, Fan Ni <fan.ni@samsung.com>,
+ Peter Maydell <peter.maydell@linaro.org>, mst@redhat.com,
+ linuxarm@huawei.com, linux-cxl@vger.kernel.org, qemu-arm@nongnu.org,
+ Yuquan Wang <wangyuquan1236@phytium.com.cn>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>
+Subject: Re: [PATCH v14 0/5] arm/virt: CXL support via pxb_cxl
+Message-ID: <aDfs+gIkK5ekKBXx@vm4>
+References: <20250528110726.226389-1-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.20;
- envelope-from=vivek.kasireddy@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -72
-X-Spam_score: -7.3
-X-Spam_bar: -------
-X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250528110726.226389-1-Jonathan.Cameron@huawei.com>
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=91.218.175.178;
+ envelope-from=itaru.kitayama@linux.dev; helo=out-178.mta0.migadu.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,160 +71,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In cases where the scanout buffer is provided as a texture (e.g. Virgl)
-we need to check to see if it has a linear memory layout or not. If
-it doesn't have a linear layout, then blitting it onto the texture
-associated with the display surface (which already has a linear layout)
-seems to ensure that there is no corruption seen regardless of which
-encoder or decoder is used.
+On Wed, May 28, 2025 at 12:07:21PM +0100, Jonathan Cameron wrote:
+> v14: Simplifications suggeseted by Itaru (and some extra simplifications
+>      that became apparent) and gather tags.
+>      See individual patches for more information.
+> 
+> Updated cover letter
+> 
+> Richard Henderson has posted a pull request with a fix for the TCG TLB
+> issue which will hopefully merge shortly (Thanks Richard!).
+> 
+> Back in 2022, this series stalled on the absence of a solution to device
+> tree support for PCI Expander Bridges (PXB) and we ended up only having
+> x86 support upstream. I've been carrying the arm64 support out of tree
+> since then, with occasional nasty surprises (e.g. UNIMP + DT issue seen
+> a few weeks ago) and a fair number of fiddly rebases.
+> gitlab.com/jic23/qemu cxl-<latest date>.  Will update shortly with this
+> series.
+> 
+> A recent discussion with Peter Maydell indicated that there are various
+> other ACPI only features now, so in general he might be more relaxed
+> about DT support being necessary. The upcoming vSMMUv3 support would
+> run into this problem as well.
+> 
+> I presented the background to the PXB issue at Linaro connect 2022. In
+> short the issue is that PXBs steal MMIO space from the main PCI root
+> bridge. The challenge is knowing how much to steal.
+> 
+> On ACPI platforms, we can rely on EDK2 to perform an enumeration and
+> configuration of the PCI topology and QEMU can update the ACPI tables
+> after EDK2 has done this when it can simply read the space used by the
+> root ports. On device tree, there is no entity to figure out that
+> enumeration so we don't know how to size the stolen region.
+> 
+> Three approaches were discussed:
+> 1) Enumerating in QEMU. Horribly complex and the last thing we want is a
+>    3rd enumeration implementation that ends up out of sync with EDK2 and
+>    the kernel (there are frequent issues because of how those existing
+>    implementations differ.
+> 2) Figure out how to enumerate in kernel. I never put a huge amount of work
+>    into this, but it seemed likely to involve a nasty dance with similar
+>    very specific code to that EDK2 is carrying and would very challenging
+>    to upstream (given the lack of clarity on real use cases for PXBs and
+>    DT).
+> 3) Hack it based on the control we have which is bus numbers.
+>    No one liked this but it worked :)
+> 
+> The other little wrinkle would be the need to define full bindings for CXL
+> on DT + implement a fairly complex kernel stack as equivalent in ACPI
+> involves a static table, CEDT, new runtime queries via _DSM and a description
+> of various components. Doable, but so far there is no interest on physical
+> platforms. Worth noting that for now, the QEMU CXL emulation is all about
+> testing and developing the OS stack, not about virtualization (performance
+> is terrible except in some very contrived situations!)
+> 
+> There is only a very simple test in here, because my intent is not to
+> duplicate what we have on x86, but just to do a smoke test that everything
+> is hooked up.  In general we need much more comprehensive end to end CXL
+> tests but that requires a reaonsably stable guest software stack. A few
+> people have expressed interest in working on that, but we aren't there yet.
+> 
+> Note that this series has a very different use case to that in the proposed
+> SBSA-ref support:
+> https://lore.kernel.org/qemu-devel/20250117034343.26356-1-wangyuquan1236@phytium.com.cn/
+> 
+> SBSA-ref is a good choice if you want a relatively simple mostly fixed
+> configuration.  That works well with the limited host system
+> discoverability etc as EDK2 can be build against a known configuration.
+> 
+> My interest with this support in arm/virt is support host software stack
+> development (we have a wide range of contributors, most of whom are working
+> on emulation + the kernel support). I care about the weird corners. As such
+> I need to be able to bring up variable numbers of host bridges, multiple CXL
+> Fixed Memory Windows with varying characteristics (interleave etc), complex
+> NUMA topologies with wierd performance characteristics etc. We can do that
+> on x86 upstream today, or my gitlab tree. Note that we need arm support
+> for some arch specific features in the near future (cache flushing).
+> Doing kernel development with this need for flexibility on SBSA-ref is not
+> currently practical. SBSA-ref CXL support is an excellent thing, just
+> not much use to me for this work.
+> 
+> Also, we are kicking off some work on DCD virtualization, particularly to
+> support inter-host shared memory being presented up into a VM. That
+> will need upstream support on arm64 as it is built on top of the existing
+> CXL emulation to avoid the need for a separate guest software stack.
+> 
+> Note this is TCG only - it is possible to support limited use with KVM but
+> that needs additional patches not yet ready for upstream.  The challenge
+> is interleave - and the solution is don't interleave if you want to run
+> with KVM.
 
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Frediano Ziglio <freddy77@gmail.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Cc: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
----
- include/ui/spice-display.h |  3 ++
- ui/spice-display.c         | 81 +++++++++++++++++++++++++++++++++++---
- 2 files changed, 78 insertions(+), 6 deletions(-)
+Series applied cleanly on top of today's QEMU. And I confirm that
+qtest-aarch64/cxl-test passes the test as it should and ndctl cxl test
+suite ran fine 11 out of 12 (1 SKIP) on this series again this time tracing
+subsystem enabled as Alison suggested. Used the Intel folk cxl/next
+kernel.
 
-diff --git a/include/ui/spice-display.h b/include/ui/spice-display.h
-index 9bdde78266..690ece7380 100644
---- a/include/ui/spice-display.h
-+++ b/include/ui/spice-display.h
-@@ -132,6 +132,9 @@ struct SimpleSpiceDisplay {
-     egl_fb guest_fb;
-     egl_fb blit_fb;
-     egl_fb cursor_fb;
-+    bool backing_y_0_top;
-+    bool blit_scanout_texture;
-+    bool new_scanout_texture;
-     bool have_hot;
- #endif
- };
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 854a97c198..9ce622cefc 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -1086,7 +1086,7 @@ static void qemu_spice_gl_scanout_texture(DisplayChangeListener *dcl,
- {
-     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
-     EGLint offset[DMABUF_MAX_PLANES], stride[DMABUF_MAX_PLANES], fourcc = 0;
--    int fd[DMABUF_MAX_PLANES], num_planes;
-+    int fd[DMABUF_MAX_PLANES], num_planes, i;
-     uint64_t modifier;
- 
-     assert(tex_id);
-@@ -1098,11 +1098,26 @@ static void qemu_spice_gl_scanout_texture(DisplayChangeListener *dcl,
- 
-     trace_qemu_spice_gl_scanout_texture(ssd->qxl.id, w, h, fourcc);
- 
--    /* note: spice server will close the fd */
--    spice_server_gl_scanout(&ssd->qxl, fd, backing_width, backing_height,
--                            (uint32_t *)offset, (uint32_t *)stride, num_planes,
--                            fourcc, modifier, y_0_top);
--    qemu_spice_gl_monitor_config(ssd, x, y, w, h);
-+    if (spice_remote_client && modifier != DRM_FORMAT_MOD_LINEAR) {
-+        egl_fb_destroy(&ssd->guest_fb);
-+        egl_fb_setup_for_tex(&ssd->guest_fb,
-+                             backing_width, backing_height,
-+                             tex_id, false);
-+        ssd->backing_y_0_top = y_0_top;
-+        ssd->blit_scanout_texture = true;
-+        ssd->new_scanout_texture = true;
-+
-+        for (i = 0; i < num_planes; i++) {
-+            close(fd[i]);
-+        }
-+    } else {
-+        /* note: spice server will close the fd */
-+        spice_server_gl_scanout(&ssd->qxl, fd, backing_width, backing_height,
-+                                (uint32_t *)offset, (uint32_t *)stride,
-+                                num_planes, fourcc, modifier, y_0_top);
-+        qemu_spice_gl_monitor_config(ssd, x, y, w, h);
-+    }
-+
-     ssd->have_surface = false;
-     ssd->have_scanout = true;
- }
-@@ -1168,6 +1183,50 @@ static void qemu_spice_gl_release_dmabuf(DisplayChangeListener *dcl,
-     egl_dmabuf_release_texture(dmabuf);
- }
- 
-+static bool spice_gl_blit_scanout_texture(SimpleSpiceDisplay *ssd,
-+                                          egl_fb *scanout_tex_fb)
-+{
-+    uint32_t offsets[DMABUF_MAX_PLANES], strides[DMABUF_MAX_PLANES];
-+    int fds[DMABUF_MAX_PLANES], num_planes, fourcc;
-+    uint64_t modifier;
-+    bool ret;
-+
-+    egl_fb_destroy(scanout_tex_fb);
-+    egl_fb_setup_for_tex(scanout_tex_fb,
-+                         surface_width(ssd->ds), surface_height(ssd->ds),
-+                         ssd->ds->texture, false);
-+    egl_fb_blit(scanout_tex_fb, &ssd->guest_fb, false);
-+    glFlush();
-+
-+    if (!ssd->new_scanout_texture) {
-+        return true;
-+    }
-+
-+    ret = egl_dmabuf_export_texture(ssd->ds->texture,
-+                                    fds,
-+                                    (EGLint *)offsets,
-+                                    (EGLint *)strides,
-+                                    &fourcc,
-+                                    &num_planes,
-+                                    &modifier);
-+    if (!ret) {
-+        error_report("spice: failed to get fd for texture");
-+        return false;
-+    }
-+
-+    spice_server_gl_scanout(&ssd->qxl, fds,
-+                            surface_width(ssd->ds),
-+                            surface_height(ssd->ds),
-+                            (uint32_t *)offsets, (uint32_t *)strides,
-+                            num_planes, fourcc, modifier,
-+                            ssd->backing_y_0_top);
-+    qemu_spice_gl_monitor_config(ssd, 0, 0,
-+                                 surface_width(ssd->ds),
-+                                 surface_height(ssd->ds));
-+    ssd->new_scanout_texture = false;
-+    return true;
-+}
-+
- static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-                                  uint32_t x, uint32_t y, uint32_t w, uint32_t h)
- {
-@@ -1175,6 +1234,7 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-     EGLint fourcc = 0;
-     bool render_cursor = false;
-     bool y_0_top = false; /* FIXME */
-+    bool ret;
-     uint32_t width, height, texture;
- 
-     if (!ssd->have_scanout) {
-@@ -1269,6 +1329,15 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
-         glFlush();
-     }
- 
-+    if (spice_remote_client && ssd->blit_scanout_texture) {
-+        egl_fb scanout_tex_fb;
-+
-+        ret = spice_gl_blit_scanout_texture(ssd, &scanout_tex_fb);
-+        if (!ret) {
-+            return;
-+        }
-+    }
-+
-     trace_qemu_spice_gl_update(ssd->qxl.id, w, h, x, y);
-     qemu_spice_gl_block(ssd, true);
-     glFlush();
--- 
-2.49.0
+Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
 
+Thanks,
+Itaru.
+
+> 
+> Jonathan Cameron (5):
+>   hw/cxl-host: Add an index field to CXLFixedMemoryWindow
+>   hw/cxl: Make the CXL fixed memory windows devices.
+>   hw/cxl-host: Allow split of establishing memory address and mmio
+>     setup.
+>   hw/arm/virt: Basic CXL enablement on pci_expander_bridge instances
+>     pxb-cxl
+>   qtest/cxl: Add aarch64 virt test for CXL
+> 
+>  include/hw/arm/virt.h     |   4 +
+>  include/hw/cxl/cxl.h      |   4 +
+>  include/hw/cxl/cxl_host.h |   6 +-
+>  hw/acpi/cxl.c             |  76 +++++++--------
+>  hw/arm/virt-acpi-build.c  |  34 +++++++
+>  hw/arm/virt.c             |  29 ++++++
+>  hw/cxl/cxl-host-stubs.c   |   8 +-
+>  hw/cxl/cxl-host.c         | 190 ++++++++++++++++++++++++++++++++------
+>  hw/i386/pc.c              |  51 +++++-----
+>  tests/qtest/cxl-test.c    |  59 +++++++++---
+>  tests/qtest/meson.build   |   1 +
+>  11 files changed, 353 insertions(+), 109 deletions(-)
+> 
+> -- 
+> 2.48.1
+> 
 
