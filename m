@@ -2,90 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C127AC8330
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 22:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1179BAC8348
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 22:33:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKjmr-00047m-9N; Thu, 29 May 2025 16:23:37 -0400
+	id 1uKjvC-0001bI-LI; Thu, 29 May 2025 16:32:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uKjmn-00046V-Vf
- for qemu-devel@nongnu.org; Thu, 29 May 2025 16:23:34 -0400
-Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uKjmm-000679-87
- for qemu-devel@nongnu.org; Thu, 29 May 2025 16:23:33 -0400
-Received: by mail-vs1-xe36.google.com with SMTP id
- ada2fe7eead31-4c6cf5e4cd5so859836137.2
- for <qemu-devel@nongnu.org>; Thu, 29 May 2025 13:23:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1748550210; x=1749155010; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BNlbZtbtSL7iYylNYXYC2+eeOLfQcdGt27SfxMLdp4k=;
- b=m/0xac08O3PxiV7gpHnoVWtXhuL6ed0CRDNqc3hDsxhFB8AQGFllhtsDFVe6WGk7yQ
- N4VBp9dm6yreoggyLHrL5+3vvwEFlvuh+hVYd2+TEqd8rmg4wTxe0nmycR+ySsKcC9B/
- /HXTtR7bi+buf/X9jOZGKUVqZZED6Y/imn9A8Kxnj228KyncGYzX9TduFp/fHjQvCm1S
- EA3DR0lkhIjqX9SkexNy1fn9tm12fLyPafUVcC+GlN4POhFEBbM0dqNvssKhg4NCtlz/
- WoBp7RUMRRSXHt0E2pm9Zb2ffj5Uidn7sXgMYSPQPmKP4U43FoPUqiuQ9sefHWcYPjSk
- X46g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748550210; x=1749155010;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BNlbZtbtSL7iYylNYXYC2+eeOLfQcdGt27SfxMLdp4k=;
- b=iJ5aqeNrfpg7c2DB6B+EJDTdUvv9Y+z8dwomtjp0PYCMTkfcSMot23ghUoRg/atosC
- lCTFGd0eStyPaHm0qYFzeexWieGJKchLCxSD3qyw6MKrzm1VYnpTIJ3eIeUvVuZO1eDr
- ki/80/P3/SGGX1uXU/nIXJh22+cMbTxuZkeF9yJfWDzo09wKCF7D66yLBAehZrmvXKvh
- ej4eqSJS/mENdchq0+UUD2e0EtPUOFfvLZ7QZMu5cm4/XlK+DstBjkM/hH964QFeeDSq
- p2kc8t8vYD65l2zPhe0TlmRZGarLJgiyAbCwxlRDqIwfBqnY/GUwAY1HfpB1n5pfLpPw
- XQYQ==
-X-Gm-Message-State: AOJu0YxxJ5Uvr/mEEh6hXMEM7GsBMZtTPTz7eQQ6bFJ8TcPcguegVMdt
- vFwkdIl/8YxOnoqYO4klcTr1SAjRVe3FVV3xQX6iy7ulcmVAJXhek4oOw7PHSlmpSzDJpBGsuTO
- ZELYV
-X-Gm-Gg: ASbGnctx3BN9z5T5Tumnzu0ZLxT2qDBAcKz4r7uR/kpOoyhdSexxXV3nFCsyw7KiQ/g
- WA5wuzhnTkzvLp66ik0rQaB/5K1M5zbXgA1u/e+OD6FEJjm87CEg01JCOr++3JWIAb7TbGWqUcc
- WTSYNK1Fnx6H8aa7aIuf9vzF3Uq39XctmIX1030m06gEZ1xML8zBdYjixiHV1uutMOPOhZgeEya
- O8Vc4X5TFrbtZil8pfPMTa7ZN6Hm71jNfxE5YQ30SforaBwGhkJ8zBud6wKe286ff7uoE0t59rD
- Mb+07jlyIVPphptdLKorcCNR5HWXYZ8LpGS7IwQI/zZMVg2qlVGJfk8XuEvJvlA9Pr+WB8VFf0L
- 4TTw=
-X-Google-Smtp-Source: AGHT+IHPgUqaSTaLxsIkMjy0Ud2gogbx62ROefjsg4Rr9DFh48WFhektb0YazKe7J4SAz1K01y/4rg==
-X-Received: by 2002:a05:6102:304f:b0:4bf:fb80:9429 with SMTP id
- ada2fe7eead31-4e6e40d93a4mr1349890137.4.1748550210325; 
- Thu, 29 May 2025 13:23:30 -0700 (PDT)
-Received: from grind.dc1.ventanamicro.com ([191.255.35.190])
- by smtp.gmail.com with ESMTPSA id
- a1e0cc1a2514c-87e2a2c774asm1647137241.20.2025.05.29.13.23.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 May 2025 13:23:29 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uKjuu-0001UR-QQ
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 16:31:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uKjus-0007Js-Ho
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 16:31:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748550711;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=MxOJ4h3pUMmqgV7CKY77KaqirCaFqgVGuPZZhzJfid8=;
+ b=W7ejHInr4jhOrjauew4x3YAA0AX64KJhTdV1Qhrq9V7vYwdWaZicOuInPgMDZghrBZqGkU
+ wiot1S9g/uViQWRHUfNf+ch2qlr2J6tMfbBfHCsrDjDDrhc7c46L37K222ZkVTNns4mdwc
+ br02mAfLSW9uQLE7RQnwkL/O9dLeWtk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-gQ1SAAonNraiA5H47pSnBQ-1; Thu,
+ 29 May 2025 16:31:50 -0400
+X-MC-Unique: gQ1SAAonNraiA5H47pSnBQ-1
+X-Mimecast-MFC-AGG-ID: gQ1SAAonNraiA5H47pSnBQ_1748550709
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6EC7B1800256; Thu, 29 May 2025 20:31:49 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.100])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id B85A719560B7; Thu, 29 May 2025 20:31:48 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [qemu PATCH 3/3] target/riscv/cpu.c: do better with 'named features'
- doc
-Date: Thu, 29 May 2025 17:23:15 -0300
-Message-ID: <20250529202315.1684198-4-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250529202315.1684198-1-dbarboza@ventanamicro.com>
-References: <20250529202315.1684198-1-dbarboza@ventanamicro.com>
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH] iotests: fix 240
+Date: Thu, 29 May 2025 16:31:47 -0400
+Message-ID: <20250529203147.180338-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e36;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-vs1-xe36.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.902,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,45 +80,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most of the named features are added directly in isa_edata_arr[], some
-of them are also added in riscv_cpu_named_features(). There is a reason
-for that, and the existing docs can do better explaining it.
+Commit 2e8e18c2e463 ("virtio-scsi: add iothread-vq-mapping parameter")
+removed the limitation that virtio-scsi devices must successfully set
+the AioContext on their BlockBackends. This was made possible thanks to
+the QEMU multi-queue block layer.
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+This change broke qemu-iotests 240, which checks that adding a
+virtio-scsi device with a drive that is already in another AioContext
+will fail.
+
+Update the test to take the relaxed behavior into account. I considered
+removing this test case entirely, but the code coverage still seems
+valuable.
+
+Fixes: 2e8e18c2e463 ("virtio-scsi: add iothread-vq-mapping parameter")
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- target/riscv/cpu.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ tests/qemu-iotests/240     | 2 --
+ tests/qemu-iotests/240.out | 4 +---
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index cd0b159ed5..fdf2eb2b1c 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1377,13 +1377,23 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-  * 'Named features' is the name we give to extensions that we
-  * don't want to expose to users. They are either immutable
-  * (always enabled/disable) or they'll vary depending on
-- * the resulting CPU state. They have riscv,isa strings
-- * and priv_ver like regular extensions.
-+ * the resulting CPU state.
-+ *
-+ * Some of them are always enabled depending on priv version
-+ * of the CPU and are declared directly in isa_edata_arr[].
-+ * The ones listed here have special checks during finalize()
-+ * time and require their own flags like regular extensions.
-+ * See riscv_cpu_update_named_features() for more info.
-  */
- const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
-     MULTI_EXT_CFG_BOOL("zic64b", ext_zic64b, true),
-     MULTI_EXT_CFG_BOOL("ssstateen", ext_ssstateen, true),
-     MULTI_EXT_CFG_BOOL("sha", ext_sha, true),
-+
-+    /*
-+     * 'ziccrse' has its own flag because the KVM driver
-+     * wants to enable/disable it on its own accord.
-+     */
-     MULTI_EXT_CFG_BOOL("ziccrse", ext_ziccrse, true),
+diff --git a/tests/qemu-iotests/240 b/tests/qemu-iotests/240
+index 9b281e1dc0..f8af9ff648 100755
+--- a/tests/qemu-iotests/240
++++ b/tests/qemu-iotests/240
+@@ -81,8 +81,6 @@ class TestCase(iotests.QMPTestCase):
  
-     { },
+         self.vm.qmp_log('device_del', id='scsi-hd0')
+         self.vm.event_wait('DEVICE_DELETED')
+-        self.vm.qmp_log('device_add', id='scsi-hd1', driver='scsi-hd', drive='hd0', bus="scsi1.0")
+-
+         self.vm.qmp_log('device_del', id='scsi-hd1')
+         self.vm.event_wait('DEVICE_DELETED')
+         self.vm.qmp_log('blockdev-del', node_name='hd0')
+diff --git a/tests/qemu-iotests/240.out b/tests/qemu-iotests/240.out
+index 89ed25e506..10dcc42e06 100644
+--- a/tests/qemu-iotests/240.out
++++ b/tests/qemu-iotests/240.out
+@@ -46,10 +46,8 @@
+ {"execute": "device_add", "arguments": {"bus": "scsi0.0", "drive": "hd0", "driver": "scsi-hd", "id": "scsi-hd0"}}
+ {"return": {}}
+ {"execute": "device_add", "arguments": {"bus": "scsi1.0", "drive": "hd0", "driver": "scsi-hd", "id": "scsi-hd1"}}
+-{"error": {"class": "GenericError", "desc": "Cannot change iothread of active block backend"}}
+-{"execute": "device_del", "arguments": {"id": "scsi-hd0"}}
+ {"return": {}}
+-{"execute": "device_add", "arguments": {"bus": "scsi1.0", "drive": "hd0", "driver": "scsi-hd", "id": "scsi-hd1"}}
++{"execute": "device_del", "arguments": {"id": "scsi-hd0"}}
+ {"return": {}}
+ {"execute": "device_del", "arguments": {"id": "scsi-hd1"}}
+ {"return": {}}
 -- 
 2.49.0
 
