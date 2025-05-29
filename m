@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA03FAC7822
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0B1AC7821
 	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 07:48:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKW6M-000373-Io; Thu, 29 May 2025 01:46:51 -0400
+	id 1uKW6Q-000381-MT; Thu, 29 May 2025 01:46:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uKW6B-00034F-6u
- for qemu-devel@nongnu.org; Thu, 29 May 2025 01:46:39 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1uKW6F-00035Z-3H
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 01:46:46 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uKW69-0003Dm-9B
- for qemu-devel@nongnu.org; Thu, 29 May 2025 01:46:38 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-310cf8f7301so434224a91.1
- for <qemu-devel@nongnu.org>; Wed, 28 May 2025 22:46:36 -0700 (PDT)
+ id 1uKW6C-0003E0-Ql
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 01:46:42 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-23035b3edf1so5205035ad.3
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 22:46:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748497596; x=1749102396;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748497599; x=1749102399;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zcXBpjTHPNeeSaV+SDkbnQDyNsA4TkuiYdbQXIhIDo8=;
- b=LWFHFdLsz5ReaFxoPA1qg9I4Kvn++JDmXk0CtbecPvpfXIN6hmBagL9KtWj1GCx+My
- Dksg2ddO7TbI00naJ5zDOJvEwGD9cYTy7/7Ztsf90s9kZXUNwlcfn0Bt33BKFmOs4LGN
- qiRlGS7TDRk3LBkTa4cprXHBGXOu//PG0xeb8+igWSR7YzAjH/lVN+tmCJLxkDc5OEvM
- HuVrw/WQVplbbWRDbGqj04ijVtWedLmVojutEllCSmkFphzxDDyEpJEPlTKWOXS4F76N
- IhPl0/3nTW0iwqAR09RDaJr0UrfZpwL6CctjGcjQBO3J9W4NCr+lzSaB4crnAlaB8d2M
- IEnw==
+ :reply-to; bh=FcEa4ndMyii+7LB2M35RVE9s5452FNapzNXg78hJqtg=;
+ b=UlsPQmlGnTiqb8+jAzpeP4QOBaI3W5RrXmDQCgyO49rCnRM1Wx0BIa0fdVsaCd+wNy
+ qaRphVa+/anWYgSA3IQw3/BWBCwfVw7kc6GgT5fD1ULlu2p85dk3SW9Ig18Es2b6qFev
+ cB3BJ/TfHedYGwljEKpXL3NcQRfL3cxEP2rYU7QvU/s5PSzSYLyd8l6wWbIsTNiqWFOp
+ BuQugQW2fkVhiAceCS30/oJoUTdL+uCjbDopSRZSDYGSASc5IPbrJgTG6KbP5CLyaMdZ
+ LCKSP7fJdA9uMyXlrariKmL2rg0onUJ8gfFBQMcjEbpE0RWYRkpega7S/BrXH+wQHoYy
+ u+xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748497596; x=1749102396;
+ d=1e100.net; s=20230601; t=1748497599; x=1749102399;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zcXBpjTHPNeeSaV+SDkbnQDyNsA4TkuiYdbQXIhIDo8=;
- b=Qg+EduiWj4PudDcbUokZx8W56mBIC4GY4L8uAeeAxP9u1JVSu673BKAoBrF+v/99F7
- F79SdeY58P5yPnVUK0XU1LW56NSr2ABfFwQ4CAooW5qT5EqTW+zPUIj9Y8G4PKJtONz7
- 0e7ntDoRf4Gxyl4+mb9jDP+44W72gXelqwh2+L0J+5c+0Lc4F/q5nfQQsbPNx2ItKNVB
- Fxi5DdVSm1rbrTY+41lgUNsm1k5I+dT7xq552mUYCxbPM9+jCbkr/zkUEonbQhquoOZC
- zWBEQ/Nx3jpTBZqVp8isma/vA2A4gIUxvCGlTkhHY+Xa3yrCA7PxUHKnTNvgMOrFo3KM
- uXfg==
+ bh=FcEa4ndMyii+7LB2M35RVE9s5452FNapzNXg78hJqtg=;
+ b=q56CQg0IimKiZusEFU2Cr89iz566Y0t/Fa72mmyjD+OkNWsVlE/HF8j+gR/7K6bzNR
+ xCus73WBT7v4bHgRiBp6zegzknHnwNc7fyZEBh7OpVuqBuV/ybR68Ou5M0acbtMv33k+
+ RAVuh0liOh2Krn+rKqFkjUy3r0ijjJBgMuh6c2do23VcIYlNM9K4QQnGoTzURiZL80m5
+ 3xxUSFXZ0E2OK008IlQFLCSMn7moMoTllHUQdZZs36xcDGS8wg9fDsRkNgOyzpAuzJzd
+ 7niKTxUIrt9ul8aMVvEmv1iWT/bgwovhFF7P75UsleEjJFyyq2gGq40qF8ebORfOvA5K
+ 7BUw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXWpx56SeRp43mgwOib6dhb0KxbW8Hr/KcLxKt0njlFuXP1yYE8Qy/ns5prqp9kl8WhVHyAhZ4lJcEp@nongnu.org
-X-Gm-Message-State: AOJu0YyRDsN+MFm75J93FUqBVtJ7mWnxJAU2X/xVOHYFYYWhp3WJnbuA
- YCpXISUI0/DKALzttKXW3qt601329ZhxAh8j76j6ykRtyTW/1AcfPP5AOUJKerjg6dw=
-X-Gm-Gg: ASbGncuqbdC41HgxfQfP2SMg+wn4Te1e7OTLtNDRWjfUyJ1pX75OWv89cDYJfa0Gj6C
- /v+aRYU72eeNgYPqs6i/CgSpUwfHPI/uHFzQ696bEygFU4g3SoPmFTSgUjD6oqvUI+fEt1oVYFN
- gU+24KxMj9Z+BN2aey4x/ftjMXsgnp03zi2nXo8X93TawX27GTt0f0/6EkvCJsF5kAKyRmNkkWH
- 0e3rhgbMjTID/2jDyx5MgZX64xbh5FAdBM4LyrQp0EMreSOAr0/nwdZ1C0dbk4RkB0U+3GydRw5
- uI5nuA+sM3xBzZcyFAlC1XgjVECOoUXIlW2lOG8hYtURYpFsxXrh
-X-Google-Smtp-Source: AGHT+IEfbEv7t24Tj9e6sN3FwDLlIg19PxaHiqPP1FnX+c3EPYstUl4tFFykwY2pmoQc9GRETOlkCg==
-X-Received: by 2002:a17:90b:2e04:b0:2fa:562c:c1cf with SMTP id
- 98e67ed59e1d1-31214e1228dmr3591766a91.1.1748497595494; 
- Wed, 28 May 2025 22:46:35 -0700 (PDT)
+ AJvYcCUsUNgMFMtJmJj7Ye51HVhSLW4/AfSG84MdENpFEV81wPcbU4sMO+I2XnBh2JP3pXR2Tg0gNzVd2ke1@nongnu.org
+X-Gm-Message-State: AOJu0YzcI0rDCCYAoHix28bUwsLHC9lRKVgmetokW1XbkW6iSG+6eifK
+ lAIa+ypTJmPxBF4KYqlJmm6+cy/0TEBIb2CenOVD29UvDeKYCUjFzDecmX+EnBN2pyUMAIvE0iU
+ iNtKz
+X-Gm-Gg: ASbGnctOPgBCXKJJMkjLMENBFo05p/wAD62aHCZxxbRTHkYUVXPW86RzN55THZUxSaa
+ BTU22qIWUs4tlCTEBootDrAMGjX27rXipsQRBKRYnymodMqPg+t2xO/+fzLk/oySmI4+GcaZBka
+ NNMOwhRH/mBriqKngCT4pj3ZD+vR3iKSn7V2Sa6Ls4DwuDIMgLzwX25FZ70paWrbj6KKfc40C8F
+ gJBd5a3T5uzE5lZNkwNQ8u+GQ8qjHTtmeN3W9mgs2AR5+9xI4lP8uWlT6Y1QpJzGwBC9eK7VyfS
+ ZkvwLC9ikb1HBtB9lvBeNZR60iJx4QvKpi4eN6M7tawwUiYWcqPSe7bDtCXCkeg=
+X-Google-Smtp-Source: AGHT+IGrejCONCdvVLxo+X//pJFVNA2Y2WK6y6ZF1UUdGJOU5fAEPpmGjMOH4BHUtuq9JSeePHwSAw==
+X-Received: by 2002:a17:902:ce0a:b0:234:9375:e07c with SMTP id
+ d9443c01a7336-234d2c4aa60mr80984545ad.46.1748497598762; 
+ Wed, 28 May 2025 22:46:38 -0700 (PDT)
 Received: from localhost ([157.82.128.1]) by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-3121ba3e4f9sm597141a91.42.2025.05.28.22.46.33
+ d9443c01a7336-23506bc8695sm5088325ad.34.2025.05.28.22.46.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 May 2025 22:46:35 -0700 (PDT)
+ Wed, 28 May 2025 22:46:38 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 29 May 2025 14:46:01 +0900
-Subject: [PATCH v5 12/13] qemu-thread: Document QemuEvent
+Date: Thu, 29 May 2025 14:46:02 +0900
+Subject: [PATCH v5 13/13] qemu-thread: Document QemuEvent memory ordering
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250529-event-v5-12-53b285203794@daynix.com>
+Message-Id: <20250529-event-v5-13-53b285203794@daynix.com>
 References: <20250529-event-v5-0-53b285203794@daynix.com>
 In-Reply-To: <20250529-event-v5-0-53b285203794@daynix.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>, 
@@ -81,8 +82,8 @@ Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -104,35 +105,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Document QemuEvent to help choose an appropriate synchronization
-primitive.
+Background
+----------
+
+I added a variant of QemuEvent for platforms without futex and
+refactored qemu_event_set() to find it is difficult to show the
+correctness of these changes.
+
+Analyzing the code, I found there are three different levels of memory
+ordering constraints:
+
+1. The requirement of QemuEvent users.
+2. The constraints that needs to be imposed on memory operations to
+   satisfy 1.
+3. The actual constraints imposed on memory operations.
+
+Distinguishing these levels make it easier to show the correctness of
+the mentioned changes. Constraint 1 is not affected by the mentioned
+changes, so we only need to focus on contraint 2 and 3. It also allows
+sharing constraints 1 and 2 for the variants of QemuEvent
+implementations.
+
+Change description
+------------------
+
+The code already included some documentation of memory ordering as
+inline comments. This change splits the documentation into the three
+levels, and place them to appropriate places. Each of the documentations
+of constraint 2 and 3 includes references to one of its higher level.
+
+Constraint 1 is now documented in include/qemu/thread.h so that the
+users of QemuEvent can refer to it without reading the implementation.
+
+Constraint 2 follows the documentation of the state transitions in
+util/event.c.
+
+The inline comments describe constraint 3. The documentation of memory
+operations already describe the memory ordering of them well, so they
+usually contain only references to constraint 2, which memory operations
+are intended to satisfy.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/qemu/thread.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/qemu/thread.h | 19 ++++++++++++
+ util/event.c          | 84 ++++++++++++++++++++++++++++-----------------------
+ 2 files changed, 66 insertions(+), 37 deletions(-)
 
 diff --git a/include/qemu/thread.h b/include/qemu/thread.h
-index 573f8c9ede20..f0302ed01fdb 100644
+index f0302ed01fdb..8fafff73de7d 100644
 --- a/include/qemu/thread.h
 +++ b/include/qemu/thread.h
-@@ -10,6 +10,16 @@ typedef struct QemuSemaphore QemuSemaphore;
- typedef struct QemuLockCnt QemuLockCnt;
- typedef struct QemuThread QemuThread;
- 
-+/*
-+ * QemuEvent
-+ * =========
+@@ -19,6 +19,25 @@ typedef struct QemuThread QemuThread;
+  * https://learn.microsoft.com/en-us/windows/win32/sync/using-event-objects
+  *
+  * QemuEvent is more lightweight than QemuSemaphore when HAVE_FUTEX is defined.
 + *
-+ * QemuEvent is an implementation of Win32 manual-reset event object.
-+ * For details, refer to:
-+ * https://learn.microsoft.com/en-us/windows/win32/sync/using-event-objects
++ * Memory ordering
++ * ---------------
 + *
-+ * QemuEvent is more lightweight than QemuSemaphore when HAVE_FUTEX is defined.
-+ */
++ * The documentation of Win32 manual-reset event objects do not specify
++ * memory ordering. Below describes the memory ordering QemuEvent establishes.
++ *
++ * Assume each of the following two orders is specified in a different thread:
++ * - X -> qemu_event_set()
++ * - qemu_event_reset() or qemu_event_wait() -> Y
++ *
++ * X -> Y will be ensured for the two threads if any of the following is
++ * satisfied:
++ * - qemu_event_set() happens before qemu_event_reset().
++ * - qemu_event_set() happens before qemu_event_wait().
++ * - qemu_event_wait() waits for qemu_event_set().
++ *
++ * Note that this is true even when the value is already set before
++ * qemu_event_set().
+  */
  typedef struct QemuEvent {
  #ifndef HAVE_FUTEX
-     pthread_mutex_t lock;
+diff --git a/util/event.c b/util/event.c
+index df6d60836041..d0dc6ebc00ff 100644
+--- a/util/event.c
++++ b/util/event.c
+@@ -5,24 +5,33 @@
+ 
+ /*
+  * Valid transitions:
+- * - free->set, when setting the event
+- * - busy->set, when setting the event
+- * - set->free, when resetting the event
+- * - free->busy, when waiting
++ * - FREE -> SET (qemu_event_set)
++ * - BUSY -> SET (qemu_event_set)
++ * - SET -> FREE (qemu_event_reset)
++ * - FREE -> BUSY (qemu_event_wait)
+  *
+- * With futex, the waking and blocking operations follow busy->set and
+- * free->busy, respectively.
++ * With futex, the waking and blocking operations follow
++ * BUSY -> SET and FREE -> BUSY, respectively.
+  *
+- * Without futex, busy->set and free->busy never happen. Instead, the waking
+- * operation follows free->set and the blocking operation will happen when
+- * waiting if the event is not set.
++ * Without futex, BUSY -> SET and FREE -> BUSY never happen. Instead, the waking
++ * operation follows FREE -> SET and the blocking operation will happen in
++ * qemu_event_wait() if the event is not SET.
+  *
+- * set->busy does not happen (it can be observed from the outside but
+- * it really is set->free->busy).
++ * The following orders specified in a thread are preserved for any other thread
++ * accessing the event value:
++ * 1. qemu_event_set: X -> store SET
++ * 2. qemu_event_reset: store FREE -> X
++ * 3. qemu_event_wait: load SET -> X
++ * 4. qemu_event_set: store SET -> wake
+  *
+- * busy->free provably cannot happen; to enforce it, the set->free transition
+- * is done with an OR, which becomes a no-op if the event has concurrently
+- * transitioned to free or busy.
++ * Different combinations of orders 1, 2, 3, and 4 establish the order visible
++ * to the users of QemuEvent in different situations:
++ * When qemu_event_set() happens before qemu_event_reset(): orders 1 and 2
++ * When qemu_event_set() happens before qemu_event_wait(): orders 1 and 3
++ * when qemu_event_wait() waits for qemu_event_set(): orders 1 and 3
++ *
++ * Order 4 ensures that qemu_event_set() wakes qemu_event_wait() if it is
++ * blocked.
+  */
+ 
+ #define EV_SET         0
+@@ -55,12 +64,23 @@ void qemu_event_set(QemuEvent *ev)
+     assert(ev->initialized);
+ 
+ #ifdef HAVE_FUTEX
++    /*
++     * Transitions:
++     * - FREE -> SET
++     * - BUSY -> SET
++     *
++     * Order 1. X -> store SET
++     */
+     if (qatomic_xchg(&ev->value, EV_SET) == EV_BUSY) {
+-        /* There were waiters, wake them up.  */
++        /* Order 4. store SET -> wake  */
+         qemu_futex_wake_all(ev);
+     }
+ #else
+     pthread_mutex_lock(&ev->lock);
++    /*
++     * Transition FREE -> SET
++     * Order 1. X -> store SET
++     */
+     qatomic_store_release(&ev->value, EV_SET);
+     pthread_cond_broadcast(&ev->cond);
+     pthread_mutex_unlock(&ev->lock);
+@@ -72,15 +92,14 @@ void qemu_event_reset(QemuEvent *ev)
+     assert(ev->initialized);
+ 
+     /*
+-     * If there was a concurrent reset (or even reset+wait),
+-     * do nothing.  Otherwise change EV_SET->EV_FREE.
++     * Transition SET -> FREE
++     *
++     * Ensure that BUSY -> FREE never happens with an OR, which becomes a no-op
++     * if the event has concurrently transitioned to FREE or BUSY.
+      */
+     qatomic_or(&ev->value, EV_FREE);
+ 
+-    /*
+-     * Order reset before checking the condition in the caller.
+-     * Pairs with the store-release in qemu_event_set().
+-     */
++    /* Order 2. store FREE -> X */
+     smp_mb__after_rmw();
+ }
+ 
+@@ -90,28 +109,14 @@ void qemu_event_wait(QemuEvent *ev)
+ 
+ #ifdef HAVE_FUTEX
+     while (true) {
+-        /*
+-         * qemu_event_wait must synchronize with qemu_event_set even if it does
+-         * not go down the slow path, so this load-acquire is needed that
+-         * synchronizes with the store-release in qemu_event_set().
+-         */
++        /* Order 3. load SET -> X */
+         unsigned value = qatomic_load_acquire(&ev->value);
+         if (value == EV_SET) {
+             break;
+         }
+ 
+         if (value == EV_FREE) {
+-            /*
+-             * Leave the event reset and tell qemu_event_set that there are
+-             * waiters.  No need to retry, because there cannot be a concurrent
+-             * busy->free transition.  After the CAS, the event will be either
+-             * set or busy.
+-             *
+-             * This cmpxchg doesn't have particular ordering requirements if it
+-             * succeeds (moving the store earlier can only cause
+-             * qemu_event_set() to issue _more_ wakeups), the failing case needs
+-             * acquire semantics like the load above.
+-             */
++            /* Order 3. load SET -> X */
+             if (qatomic_cmpxchg(&ev->value, EV_FREE, EV_BUSY) == EV_SET) {
+                 break;
+             }
+@@ -120,6 +125,11 @@ void qemu_event_wait(QemuEvent *ev)
+         qemu_futex_wait(ev, EV_BUSY);
+     }
+ #else
++    /*
++     * Order 3. load SET -> X
++     *
++     * qatomic_read() loads SET. ev->lock ensures the order.
++     */
+     pthread_mutex_lock(&ev->lock);
+     while (qatomic_read(&ev->value) != EV_SET) {
+         pthread_cond_wait(&ev->cond, &ev->lock);
 
 -- 
 2.49.0
