@@ -2,168 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BC6AC77A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 07:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB83AC781E
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 07:47:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKVn1-0005tK-9d; Thu, 29 May 2025 01:26:51 -0400
+	id 1uKW5o-0002wW-HE; Thu, 29 May 2025 01:46:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
- id 1uKVmz-0005t7-Hr
- for qemu-devel@nongnu.org; Thu, 29 May 2025 01:26:49 -0400
-Received: from mail-bn8nam11on2061e.outbound.protection.outlook.com
- ([2a01:111:f403:2414::61e]
- helo=NAM11-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
- id 1uKVmx-00017b-7O
- for qemu-devel@nongnu.org; Thu, 29 May 2025 01:26:49 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j3iqgvLS73XOu1Yvg/xDScd5EhXT13QNPdcB3cBYfCgl0fWMf/iU8vWdTNdT5gjDf2QCe5RpVty/7+6RfUvN3CKrmMUl983XgM6TEaTdmDg21hxGhgaJNsgloGd9DflFBBbzFMtWYWKS29bZR4dIsPkzGmXuuqYFNYhiUf7u4o8zeBQVRN9c2sPncj9Yv9u1J3xn5TzeftqEk167LUeplRaWfGarhKKKpnThVqu4m53BJwBjzqn7iifBVY//3kW7oWHy0OKnrS02lzQwuXoeA8hwqGltW8IilYQ703w2M89cTtwKPIVECPpQbZYCirqi/Iq2x1gQuiPNHkL+pw8Dbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VuFONq5DqoI/p8MLkXJmQyX1MuEIIla83QxmRgjL9i0=;
- b=ICz7A0J4U3zejpjRS53fC0OxLJ+mOmHLvg9V+9PQbG4aTVukYAoNyBQj2B+F50Dk2dIvIdbtWT9rW8OvuinrUDeUXBhSMt6o8jSytl/mUeO9CXwxqry3EkEbv9/+CK61aSgM7GSbM7fo5QCKY/ioPBsy0gWLvG7jfjyMnqUlbjzN4ZVHdFMeturY/d3NX4QO6+QXJGA7dkUALFXXpcz3SltxoOoJXPZd8ul7ovKYUIRAIyCFY7f7dhWxxmrt6AJh9RA0z9zeRlB7J0moOGMFITOj2K9CO1y8wC/kLpqyVOV/KKPHTr0i+/raTSQrhk/7dCpYcfG3P/qfbw9aLGg5bw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VuFONq5DqoI/p8MLkXJmQyX1MuEIIla83QxmRgjL9i0=;
- b=BK91RUjqPOPvePgC9yOfOo2o5JhP+NNhg5lVa/g044jODY2u7nuAc8fsGuwBCWt+8hsg3OwAKEXmCg96Imrv9JipPB2oMiigPMeVkRBkQ0whu8sNUsSNQQ2pBXnCv5zXLxGKnBslQPzwCpgl6oTBR9VRSEzgf1QCPbkw5PhcNqQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
- DS5PPF5FAA0E762.namprd12.prod.outlook.com (2603:10b6:f:fc00::651)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Thu, 29 May
- 2025 05:26:42 +0000
-Received: from DS7PR12MB6048.namprd12.prod.outlook.com
- ([fe80::6318:26e5:357a:74a5]) by DS7PR12MB6048.namprd12.prod.outlook.com
- ([fe80::6318:26e5:357a:74a5%5]) with mapi id 15.20.8769.025; Thu, 29 May 2025
- 05:26:42 +0000
-Message-ID: <573444be-8ca2-43b4-b732-dc35648a5940@amd.com>
-Date: Thu, 29 May 2025 10:56:34 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/7] amd_iommu: Fixes to align with AMDVi specification
-To: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, qemu-devel@nongnu.org
-Cc: mst@redhat.com, pbonzini@redhat.com, mjt@tls.msk.ru,
- marcel.apfelbaum@gmail.com, richard.henderson@linaro.org,
- eduardo@habkost.net, suravee.suthikulpanit@amd.com, santosh.shukla@amd.com,
- sarunkod@amd.com, joao.m.martins@oracle.com, boris.ostrovsky@oracle.com
-References: <20250528221725.3554040-1-alejandro.j.jimenez@oracle.com>
-Content-Language: en-US
-From: Vasant Hegde <vasant.hegde@amd.com>
-In-Reply-To: <20250528221725.3554040-1-alejandro.j.jimenez@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0025.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:97::9) To DS7PR12MB6048.namprd12.prod.outlook.com
- (2603:10b6:8:9f::5)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1uKW5g-0002ve-Fg
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 01:46:08 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1uKW5a-00039B-L0
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 01:46:08 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-74264d1832eso477466b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 22:46:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748497560; x=1749102360;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=5MQNLV1SbvkmWGBHZePeaWM00yWHooS2WBWQz3++P/w=;
+ b=u5zTzJrvPXyfHiYab2I9VEy3rvshFT43h7fq///nbfthcgkmRe7yanwjuIPUcZ6yE8
+ LnT9qvkomKHd2xLIRT8RGuO95SBHzEIgqkEbWRysZrfItrHBARBsPAkWI5zSLT/8J5+S
+ kcnETDsNa8t8U+8puWy43lG+erPRpi3GU0fjL752HNCaQLEP1VVEWuYpF2pMS6n5EJ8o
+ M/6d/FWLOovI6j0As+rYG7Sre1zw0Z/hkuL4m/xNc2OgNSHlPLb/5NANchlrtuiENFWs
+ FaOS4xGW2KmEOMsUELEp6CT3Xw7RmcFySmnrJ9F1rzYpaDVMx/k6XSxPxWoEj63m2mOF
+ 2CXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748497560; x=1749102360;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5MQNLV1SbvkmWGBHZePeaWM00yWHooS2WBWQz3++P/w=;
+ b=BWh1bK03sBR2xYDRJ0Lb9aNacRhzsIPqz+V+JpcA/n7qMkMUO2B0AD73hjDdn9xzU+
+ CVZauBcN1l7bzc3N8Hg9LQGEKt2w+MpHLjgc/T9PV0XSNe8O/vL5t9+yyYU2gteZkyK5
+ yoJJhP9aTtuxDFClqjIlCNCbZk1SzL4LpxCxOWAv0Dg05TlspQwap94mGYBpBGowCG6x
+ yi9NRqxYWaLzFEW6dKB8gwJcLy0ze5LLjcI0pkr8/t9MpNiG8jOhFP4IMqRAnfXIw6oC
+ SgiBDMzoGIxuZJD7xwkBlobLg3ChibeNjphs0QxNiHgG8IrLK1nwuy39wulLkdDn8Fgw
+ khGQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWNkhre1JAfQRtYV/PKrxuZC3dqq0m9XTV1CRzTmq+zjphvnviA9yMNnI5hzfgrNHY6VpYWYSi8lTY2@nongnu.org
+X-Gm-Message-State: AOJu0YxuWOygWUJkKkQyka2Mo6wup7SYiFarOWNRFsV0Xa+otNY0SNbL
+ mBvEo/MXEyYiHzl5nr6sV1w1TQC/r/5+CxNhhi3ZmN2XWLZDAqf204MOqjW1NAicubg=
+X-Gm-Gg: ASbGncvHeeH3mjW2fHnGH76XXcOvjVeMClq5m2j8yaFy8QgAjqSS8oqiEv+MWfH8gwy
+ 7NeglJ+2ELGwBrJwR7v7OVrIWR/6qn9WPaxStHerdKCxeAPAgJg7J+z1YmAA1v769PJCpZZcaYp
+ 0LaSHmpzwskGOAeqPpouxsDcS8eiYOp93Oaaf4n76UR3UC0xsMr0EEC2Am/dEyvFk5Hg2ZQMA+s
+ 12JDnOI62L0peMQdEQaAT5VNTQ+bFoAJxV24vksxYcC//Y5LMEcOAX7Uq+gs631ZuflpVGWwWVn
+ LQU4hNK3bqjNITM2+h0XR8KojIWNdOZ5IBP/i1elWQCRVKdTICLWtfC4Wl/2EBI=
+X-Google-Smtp-Source: AGHT+IEBkCYof5DYaP7xucctYbxZ0dc6PMoubeh+39P2PJNSXBb9Ipbu/Klo8uZPwzqA2lFHinZJ4A==
+X-Received: by 2002:a05:6a00:2443:b0:742:b3a6:db16 with SMTP id
+ d2e1a72fcca58-745fe058d5amr29426870b3a.20.1748497559910; 
+ Wed, 28 May 2025 22:45:59 -0700 (PDT)
+Received: from localhost ([157.82.128.1]) by smtp.gmail.com with UTF8SMTPSA id
+ d2e1a72fcca58-747afff73fbsm544998b3a.162.2025.05.28.22.45.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 May 2025 22:45:59 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v5 00/13] Improve futex usage
+Date: Thu, 29 May 2025 14:45:49 +0900
+Message-Id: <20250529-event-v5-0-53b285203794@daynix.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|DS5PPF5FAA0E762:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8f406c3f-5643-4f3a-f19b-08dd9e716542
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|7416014|1800799024|376014|7053199007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZWZsL2JZQy94SGVhK3lOV3huVnNxZldHai9ZeVdlN2pYdTBOOFdwOHFMQzhv?=
- =?utf-8?B?cUFiY3lhRE9peGNjMTFJaWhBd2tldS9uQ1FaNWdtT3lrU0dYRFR4Um15emhE?=
- =?utf-8?B?Wko3eSs0Uk1BUC9vaDcvNFRmcm5CVE5FNHkwdG9UWXBzNHVZZFpNM0JCWFdV?=
- =?utf-8?B?eWJJbWlwZmlGai82Q3V6RGZlMloxS2NXNzFYaTVBNkpnZlNNYW9xOFNxY1ZQ?=
- =?utf-8?B?YmxqNXZlM1VyVTFwSG9ET2pRcDFLbHNITzVTWDF0Z2daWHlQN2J2b1IvNzRl?=
- =?utf-8?B?MGhwRDI3UEdpdTVnb0ViaytOVEh0MlBYNHpGR1NnSDJEbURkaXh1cGVVOXZ1?=
- =?utf-8?B?UlVkSSszMkQ3QjliWWxoRCtyU1ExM2w2TUpEbU5UVjlhdW9BQWFwMmZGMHUr?=
- =?utf-8?B?bVB6N3dZSGpjRk1qNVI0b1NKQzZlMkt3ODN0bTlncjdVNUYwcUJNcm1wUGJ2?=
- =?utf-8?B?WEJ4bVA3RlhwcjNaLytxUjNRK0c1NndYbk5qbTVhZXdIdUlrYUNHRURES1Fw?=
- =?utf-8?B?WjM1YzZTMnN3SHh0bzZGMkhoa2w2V0NsL3ZvcGhaTzhVYm5iSmFEV2hPcWJ4?=
- =?utf-8?B?WThrMTl5eHdIZUdDR0w5eER3SHlmYVl0YUVvT2J1VFZUL0IvYnlxSndGRUZE?=
- =?utf-8?B?K014eGluWlFXclVwQmZrT2ZmcWdzdG5nRFFaTlhDQnRFRTdHeW9uRTJjNXdI?=
- =?utf-8?B?UnljN2ZUUW13NzNWb1FGM09nbm8zWE5ybHIyTTV4OFc5Um9vbmZIM2NaRDl4?=
- =?utf-8?B?UFZXZkp0VFdnNGlKaEw0ekF1TVdON0F0TGJOdTNoekZ2L0Z2dFhVZnJvUVA5?=
- =?utf-8?B?cU5aREZZc0lqSW1odFZ4NWVnQXBNNmVLTEl1VWJHUWdqZmZDeURFK2Y5ejdi?=
- =?utf-8?B?NXFBUmZaSVh2Y2lTZDZCSk95ZUtOQUNDR3p1SzhjZzVOdVo3bldhYU9XV3dD?=
- =?utf-8?B?Ri9FZjBnS0EyZDltY0FiZzBPS2N6cmFHS1ZBZkx2QlUrZUx5OEtVdWJOSWlz?=
- =?utf-8?B?WWFTZk5hMEdWWW51WlF3S0xxY202RERIWmdzcW5IQ2JjTWJKVnlObEVTbyt0?=
- =?utf-8?B?SktZc0hwTVoxWW9xOC9YNFU1c2RtSkJBcGxYMk5CUnZCUWY4d2oweWVnSXl5?=
- =?utf-8?B?N1BKS3BPUkE1OXNPb2Z6UzV3dDN2dCs0SUFoaCtWZmUyZyswSUtudXVCcHQw?=
- =?utf-8?B?YXBGZjlWZDNnelFGc04ybEc1YUV0VW51bXFUa0c3Wi9kY1pWdFpLeGJGek9R?=
- =?utf-8?B?UDhlVkdmS1MrZEpDVXkwajZWTzhoSkNwZS9nMG1tK2wrclZvMjdxa0RUZlY2?=
- =?utf-8?B?UFduNzl6S1Z1YjlIT3oxN2NNenRLT1pZYi9VRWE0bDc5b0gxTERudmpaZ2RB?=
- =?utf-8?B?K0RoKzFIK1pUWnovYmtYZmNyeVFvdU92WTg3RUdpbmF1U1cza0ViZjhTQWNh?=
- =?utf-8?B?SXEwd05Ob2kwVUNQeGExTGVyWjJBQ2xxVm9JN0V0bnA5Ti81bzFHWUpsN0Vs?=
- =?utf-8?B?d3FQanQ5NGZlSVNLVXg3ai9yOE04c1crVTNFNEpqOHBoYVVKMGFPSGgwWTdm?=
- =?utf-8?B?UjlwSXVCM3U1Sm5sZ0RKOFY5NU5uUElmd1VySGMraVc0SlFmMjJ1R1p2Mkgw?=
- =?utf-8?B?a0lRQ0FyTFZtU003cFpoZXJNdzlDV1JYTHBCenhQUkdZUnNMcS9sTk05czF2?=
- =?utf-8?B?UzVKYy92dnY2ZEtjYzF1UWJJS215Wm1JR01FR0dYTmVtditKTXNVcHBublU2?=
- =?utf-8?B?ZFdEdVN1VGdhSEhUa0FCV0xGV3hpOEw5cDVLNmN5MzJjWVhyNFVoY0VtRjNz?=
- =?utf-8?B?Q1dtZlJ1VkVwWjNxQStaU1AvQTJLMjRmaWJNMlJvYnQvMS9rMmRmMS9HVXVF?=
- =?utf-8?B?dk5sQWFRRmtXRnBvZEJKQUFKRFlDcVI4V2YyNzdhODA5TUJ0ekdUeW9YR1pI?=
- =?utf-8?Q?JpXgNUKSfAwenYr2iJkzFOs/PX/miu2b?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS7PR12MB6048.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(7416014)(1800799024)(376014)(7053199007); DIR:OUT;
- SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a05LNEZweXpMemJTaFhkVm5QTmR2Qi9JYlNHaW5GdENPK2pZckVMWEhCajdE?=
- =?utf-8?B?R3IvZllBMFhpd05rTWRra2VDU2NScGFQSUEwTWs4RFJoQVRlYS8yWW1Hd2Fq?=
- =?utf-8?B?OHpMbDZhU3A3TGl4ODEwR00rRllkV1g1NUt0WlZCNGsraWcwdTgxbzhMU0xn?=
- =?utf-8?B?TnhoWTJkbzB4eG1VbUZWNkJ1dXBJdWhMNFZNQlFHcXJmdVZMSVhhMHhtUlc1?=
- =?utf-8?B?eTN3SHlOV3Z4MndZQWZJMHpwc01URkp3eFI5VXo2SkhKbnc5d1k1V3F2Qkwr?=
- =?utf-8?B?NDJmVkJ3TEpCZFhkSVcyNkF1QkpwOW9Kc1FsYmVyL3dqV3Nwa0ErNjBidEFa?=
- =?utf-8?B?OTZKYmU2ZmtlOHh4bVZsSGI0d3MwU2hxdWRyWWJFWDRDNWgvbEFUSGpCazR2?=
- =?utf-8?B?Y0hodURPdDdJcjVSSXZTejNTcTBlNXI5QjBuN2ozLzdrSmF1ZmxMRHJCSkFD?=
- =?utf-8?B?NG5GV2c5dVRlZ01zYXJyUDZ5WStQelhrMmxxelBvc1ZjRHJHdk16V2NsRjhY?=
- =?utf-8?B?alN0TVBLWjlZNE5rZDJ2OGI4SGxTVEpldFFFb2JRMnMzdnN4M00zUCt2YUg5?=
- =?utf-8?B?bWlTZlJ4eE5aSzRJWFpaWUwzaEtpekpTS2oyZ3V0MlpQL1hwT2FKZzFuT00r?=
- =?utf-8?B?Y2N1RW5ZZlZWYkZ4dXgvaElkUS90cHNVVVFQQW03cXpkTjFQVXBUK21hcTdM?=
- =?utf-8?B?YVRCTWNGZnlnSkYvcnhvWmUzeWVNUW9JbG5GYU1LSGJDVDFoRkxsb0dIWHJB?=
- =?utf-8?B?RlhlOTZXNW15SWwzWVdYYVFic0xMK0RZMm9TWEJ4M28wTTJjcERsRDd2Zi9C?=
- =?utf-8?B?QlhZRlVNMUpQb2VmeE5xRGNQcmV0dXBmUUtYdXI1dnJZdkZ5MTgxSGdBMEJu?=
- =?utf-8?B?dTZuNnRZZXZvOCs3U3Q2Q2s0bGhtTFp1WGwzbXNzRlJJVmFVRllabTlnQzMw?=
- =?utf-8?B?QklYcVZsWlEreXozNHFiMTdmalllc1R6Q2FNaFpRM0g0YzBYWlN5YTdwcC80?=
- =?utf-8?B?S1FSdHlZVUd6QWN3eTRNQ0VhUndPRHpEbXlwR0JtVUVFK0NDdjRkaE43YTYy?=
- =?utf-8?B?aTJoWXp6WEtmMnYzY2hIdWUxSnZXN1kyM3cvYW1aSzJKVFQ3M3FnY1lOeHlQ?=
- =?utf-8?B?MmdnVHBpV25pNlVlVUFXa1ljaXNKQlJUeTB4a3R6WkIvOVIxYjFPd1VDUm9z?=
- =?utf-8?B?amY0SHkrbndGSVF5MlgrT3g0bkNiSzVpOVVCTnBCZWt4d3YxUm9Xd1g2SGFM?=
- =?utf-8?B?dTdKMGpmZlBtYkpOOHRKWm50L2duSDRCbTBMK3RJT0RsTUloSnRhSHNHdmRl?=
- =?utf-8?B?a08yZmhuZjFVWFJpbCtFa1ZUdThRNFE1TzlkT253U2NKdEwvZFY2TmNWa1Ru?=
- =?utf-8?B?UHEwb3JFWVFXaklPdEQ1TlFYZVkrdVJzSDJTeDhoQkhxbU5rRGV4TFVSS3dU?=
- =?utf-8?B?WGdEcm05aWpGZFgyY1BOdWRGWXBoSXY4OVBsU2hGb2hSU2M3SXAzaUJmTkN1?=
- =?utf-8?B?YXA2dk0zMGJJTk44NDJ0NTRwdXhQQWVKd3kyVWdFT1pTYis1TVBOTFJENWNE?=
- =?utf-8?B?dnVBOHRBdmZFZVhRb2FyUXlmdDRlelBxc1ZQTXZoRjhuWTc2QngvSytoQ1JR?=
- =?utf-8?B?T1lMTE5KbjJUYnI5TVM0djBqc2NGRTQ3N24vQnBBYlRCQUVJWDZucTJCbFZv?=
- =?utf-8?B?cjFOeHh4N1lVRzJRUk9TMGxPd1owbVMwUXlFUyt0dlVDaUZLaDYxa3QxMmlt?=
- =?utf-8?B?dTlSQlh3OGlkZ0tNNlpEUG8xdHZxWVUrblQ2ZElBSGhSRlFWNVFiR1hzVjl6?=
- =?utf-8?B?MU8yeHFmQUl3T0U5U3VoeFd2T25abWVQb2Ura2hyZ1gvSnh5ZG9mbzNtUnNY?=
- =?utf-8?B?N0Y1eWw2cTF3Vy9VY3Q4Z1h2eGF5NXVKcFJQME9YZDFQU3c2UkFKb0sxbHhw?=
- =?utf-8?B?OTAwZ2N5UDRaU20yYjBabEtUdTlFUk1JYjA5RmRjWnVLUzVaSGlWbDRURUFG?=
- =?utf-8?B?Ujl6RjJzWHRUZDc4clY2bmZnTU1aMG50ODNydEV5K292cjJRSzJPV2JKejkr?=
- =?utf-8?B?Q2JjR2lQT2xGVkRZa2pqQ3lEVzlyL2tZbTA0M3drKzkrU3htendleEZuTUpi?=
- =?utf-8?Q?sUq0qQdjhtySm7gQeiTanYqU9?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f406c3f-5643-4f3a-f19b-08dd9e716542
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 05:26:42.7661 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HY78d1TEIunfUvbRlOUpCUmhXX0reL5ZbzdVg5lES+AuXUMVBFtxwA6G2k0hq7kTObhWJzJFLobhVzTlgcFefA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF5FAA0E762
-Received-SPF: permerror client-ip=2a01:111:f403:2414::61e;
- envelope-from=Vasant.Hegde@amd.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI30N2gC/2XQTQ7CIBAF4KsY1mJggIKuvIdxQWGqLGyVVlJje
+ nfxh6Smy0fme5nhSXqMAXuyWz1JxBT60LU5qPWKuLNtT0iDz5kAA8mZ4BQTtgPVRllomPdWWpJ
+ nrxGbMH56Dsecz6Efuvj41Cb+fv02AKhfQ+KUUauMM74SWGu29/bRhnHjugt5VyQoTDHFWWGQm
+ d4qwbV2yGuzYGLOyr5JZNboptqC1F4wsWByxqAqTGamam2kcwa5xz82fQ+PeLvnfxt+10/TCy6
+ YkDJVAQAA
+X-Change-ID: 20241031-event-785a2f0dda4a
+To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>, 
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Hailiang Zhang <zhanghailiang@xfusion.com>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org, 
+ devel@daynix.com, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.15-dev-edae6
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -179,64 +108,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+In a recent discussion, Phil Dennis-Jordan pointed out a quirk in
+QemuEvent destruction due to futex-like abstraction, which prevented
+the usage of QemuEvent in new and existing code[1]. With some more
+thoughts after this discussion, I also found other problem and room
+of improvement in futex usage. Here is a stack of patches to resolve
+them.
 
-On 5/29/2025 3:47 AM, Alejandro Jimenez wrote:
-> Correct mistakes in bitmasks, offsets, decoding of fields, and behavior that
-> do not match the latest AMD I/O Virtualization Technology (IOMMU)
-> Specification. These bugs do not trigger problems today in the limited mode
-> of operation supported by the AMD vIOMMU (passthrough), but upcoming
-> functionality and tests will require them (and additional fixes).
-> 
-> These are all minor and hopefully not controversial fixes, so I am sending
-> them separately rather than including them on the DMA remap support
-> series[0].
+Patch "futex: Check value after qemu_futex_wait()" ensures
+qemu_futex_wait() is used in loops as suggested in the man page.
 
-Thanks a lot Alejandro. These are very useful/important cleanup/fixes.
-We have some more cleanup/fixes. We will base it on top of this series.
+Patch "futex: Support Windows" implements futex functions for Windows.
 
--Vasant
+Patch "qemu-thread: Avoid futex abstraction for non-Linux" and
+"qemu-thread: Use futex for QemuEvent on Windows" enable destroying
+QemuEvent immediately after qemu_event_wait().
 
+Patch "qemu-thread: Use futex for QemuEvent on Windows" and
+"qemu-thread: Use futex if available for QemuLockCnt" make the use of
+futex functions added for Windows.
 
+Patches "migration: Replace QemuSemaphore with QemuEvent",
+"migration/colo: Replace QemuSemaphore with QemuEvent",
+"migration/postcopy: Replace QemuSemaphore with QemuEvent", and
+"hw/display/apple-gfx: Replace QemuSemaphore with QemuEvent" replace
+some QemuSemaphores with QemuEvents, which can utilize futex. Some of
+them rely on that QemuEvent can be destroyed immediately after
+qemu_event_wait().
 
-> 
-> It is unclear how relevant these changes will be to stable releases
-> considering the state of the AMD vIOMMU, but the fixes on this series should
-> be simple enough to apply, so I Cc'd stable for consideration.
-> 
-> Changes since v1[1]:
-> - Added R-b's from Vasant on PATCH 1-3, 5.
-> - P3: Match the spec, although vIOMMU case does not use DTE[3] (Vasant)
-> - P4: Fix more definitions using GENMASK64 for consistency. (Sairaj, Vasant)
-> - Dropped PATCH 6 from v1 and included it in DMA remap series[0] (Vasant: I
-> didn't want to assume approval so I dropped your R-b for this patch when
-> moving it to the other series).
-> - Fix issue with mask that retrieves the IRT pointer from DTE.
-> - Remove duplicated code. Although trivial, I didn't want to sneak this into
-> other unrelated commits.
-> 
-> Tested booting guest with AMD vIOMMU and guest kernel in passthrough mode.
-> 
-> Thank you,
-> Alejandro
-> 
-> [0] https://lore.kernel.org/qemu-devel/20250502021605.1795985-20-alejandro.j.jimenez@oracle.com/
-> [1] https://lore.kernel.org/all/20250311152446.45086-1-alejandro.j.jimenez@oracle.com/
-> 
-> Alejandro Jimenez (7):
->   amd_iommu: Fix Miscellanous Information Register 0 offsets
->   amd_iommu: Fix Device ID decoding for INVALIDATE_IOTLB_PAGES command
->   amd_iommu: Update bitmasks representing DTE reserved fields
->   amd_iommu: Fix masks for various IOMMU MMIO Registers
->   amd_iommu: Fix mask to retrieve Interrupt Table Root Pointer from DTE
->   amd_iommu: Fix the calculation for Device Table size
->   amd_iommu: Remove duplicated definitions
-> 
->  hw/i386/amd_iommu.c | 15 ++++++------
->  hw/i386/amd_iommu.h | 59 ++++++++++++++++++++++-----------------------
->  2 files changed, 37 insertions(+), 37 deletions(-)
-> 
-> 
-> base-commit: 80db93b2b88f9b3ed8927ae7ac74ca30e643a83e
+[1]: https://lore.kernel.org/r/CAAibmn3HZeDeK8FrYhHa1GGwc+N8rBuB2VvMRm7LCt0mUGmsYQ@mail.gmail.com
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v5:
+- Updated the documentation of the state transitions for the non-futex
+  variant.
+- Placed patch "qemu-thread: Remove qatomic_read() in qemu_event_set()"
+  after all other code changes.
+- Added patches "qemu-thread: Document QemuEvent" and
+  "qemu-thread: Document QemuEvent memory ordering".
+- Link to v4: https://lore.kernel.org/qemu-devel/20250526-event-v4-0-5b784cc8e1de@daynix.com
+
+Changes in v4:
+- Added patch "qemu-thread: Remove qatomic_read() in qemu_event_set()".
+- Renamed patch "futex: Replace __linux__ with CONFIG_LINUX" to
+  "qemu-thread: Replace __linux__ with CONFIG_LINUX".
+- Reverted changes to convert rp_pong_acks to QemuEvent.
+- Link to v3: https://lore.kernel.org/qemu-devel/20250511-event-v3-0-f7f69247d303@daynix.com
+
+Changes in v3:
+- Fixed race between qemu_event_reset() and qemu_event_set().
+- Prepared for spurious pthread_cond_wait() wakeups.
+- Added patch "futex: Replace __linux__ with CONFIG_LINUX".
+- Link to v2: https://lore.kernel.org/qemu-devel/20250510-event-v2-0-7953177ce1b8@daynix.com
+
+Changes in v2:
+- Rebased.
+- Added patch
+  "hw/display/apple-gfx: Replace QemuSemaphore with QemuEvent".
+- Link to v1: https://lore.kernel.org/r/20241225-event-v1-0-a58c8d63eb70@daynix.com
+
+---
+Akihiko Odaki (13):
+      futex: Check value after qemu_futex_wait()
+      futex: Support Windows
+      qemu-thread: Replace __linux__ with CONFIG_LINUX
+      qemu-thread: Avoid futex abstraction for non-Linux
+      qemu-thread: Use futex for QemuEvent on Windows
+      qemu-thread: Use futex if available for QemuLockCnt
+      migration: Replace QemuSemaphore with QemuEvent
+      migration/colo: Replace QemuSemaphore with QemuEvent
+      migration/postcopy: Replace QemuSemaphore with QemuEvent
+      hw/display/apple-gfx: Replace QemuSemaphore with QemuEvent
+      qemu-thread: Remove qatomic_read() in qemu_event_set()
+      qemu-thread: Document QemuEvent
+      qemu-thread: Document QemuEvent memory ordering
+
+ meson.build                       |   2 +
+ include/qemu/futex.h              |  44 +++++++++++-
+ include/qemu/lockcnt.h            |   2 +-
+ include/qemu/thread-posix.h       |   9 ---
+ include/qemu/thread-win32.h       |   6 --
+ include/qemu/thread.h             |  40 ++++++++++-
+ migration/migration.h             |  12 ++--
+ migration/colo.c                  |  20 +++---
+ migration/migration.c             |  21 +++---
+ migration/postcopy-ram.c          |  10 +--
+ migration/savevm.c                |   2 +-
+ tests/unit/test-aio-multithread.c |   6 +-
+ util/event.c                      | 139 +++++++++++++++++++++++++++++++++++
+ util/lockcnt.c                    |   9 +--
+ util/qemu-thread-posix.c          | 148 --------------------------------------
+ util/qemu-thread-win32.c          | 129 ---------------------------------
+ hw/display/apple-gfx.m            |  10 +--
+ util/meson.build                  |   3 +-
+ 18 files changed, 269 insertions(+), 343 deletions(-)
+---
+base-commit: f0737158b483e7ec2b2512145aeab888b85cc1f7
+change-id: 20241031-event-785a2f0dda4a
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
