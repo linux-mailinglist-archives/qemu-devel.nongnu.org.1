@@ -2,72 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B18AC7DCA
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 14:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E232AC7F14
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 15:50:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKcUE-0000W4-5a; Thu, 29 May 2025 08:35:54 -0400
+	id 1uKdcs-00006y-LB; Thu, 29 May 2025 09:48:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uKcUC-0000Vd-98
- for qemu-devel@nongnu.org; Thu, 29 May 2025 08:35:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uKdcq-00006W-1u
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 09:48:52 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uKcUA-0007cq-Mk
- for qemu-devel@nongnu.org; Thu, 29 May 2025 08:35:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748522150;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=zTk4QVZMX4gmEb/VS74XUtdgfFkQupGiT/Z7pfNI6tA=;
- b=ecAsU1wdsbP0B4CRh0lojr+1kNf1tYL4hOi0XjDkN3+WbUu1fUvuBygpMjVOeIH7EVYRzm
- 73Y9uWqxyKK2Iaf0t3/yUsrWySgEqX13llXNGe7IxzxLd5UG+PhxAuMMP3rp9ir936y/kA
- LQAwLP3dJmsep1irYu694UEypnZdEXQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-536-xgRf824HPHKuRcwH9vBlsw-1; Thu,
- 29 May 2025 08:35:48 -0400
-X-MC-Unique: xgRf824HPHKuRcwH9vBlsw-1
-X-Mimecast-MFC-AGG-ID: xgRf824HPHKuRcwH9vBlsw_1748522147
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6E46B19560A7
- for <qemu-devel@nongnu.org>; Thu, 29 May 2025 12:35:47 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.100])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B1B2919560AF; Thu, 29 May 2025 12:35:46 +0000 (UTC)
-Date: Thu, 29 May 2025 08:35:45 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, stefanha@redhat.com
-Subject: Re: [PULL 0/4] Miscellaneous patches for 2025-05-28
-Message-ID: <20250529123545.GA55826@fedora>
-References: <20250528121143.2208075-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uKdcn-0007RJ-64
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 09:48:51 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b7SKd0qckz6L5cG;
+ Thu, 29 May 2025 21:44:53 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id E3C821402FE;
+ Thu, 29 May 2025 21:48:29 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 29 May 2025 15:48:29 +0200
+To: <qemu-devel@nongnu.org>, <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>
+CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>
+Subject: [PATCH qemu] hw/cxl: Fix register block locator size
+Date: Thu, 29 May 2025 14:48:28 +0100
+Message-ID: <20250529134828.403049-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="2/qZbsKeXLJn7UIc"
-Content-Disposition: inline
-In-Reply-To: <20250528121143.2208075-1-armbru@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.902,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,33 +63,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This has been wrong from day 1.  For now we only have
+two entries (component and device registers).
 
---2/qZbsKeXLJn7UIc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The wrong size could lead to arbitrary data off the stack being presented
+in PCIe config space.
 
-Applied, thanks.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ include/hw/cxl/cxl_pci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
-
---2/qZbsKeXLJn7UIc
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmg4VKEACgkQnKSrs4Gr
-c8iCdQgAvNWUd56e3COZSshFfjiuXDuJ1D70lGEnuLAT8QmA2KfRz/lmjP6scWxe
-1qzDEkFUmyzjnaFr6/VVEkwq93EK99fuOsMe+T739UN0v8qOFa0E0ptwyQyIpIYF
-XRMdgHp8rnFTFxBH393aJV5u+WYaB5EMhFVso5uk5IJPV6I+sjBqFhyHnxHuxnXk
-rYoRrcfVDP3XaA0nLCrCl9OXicM+BmnrOMwPiMv8sQt43t2/DeP4ZBlhLjwV0V7s
-+/gnboYFmVt6dlRpmiQ7Urc0Ink1jeo0tC2Lu3+g3s7jsuEC9h3xvvCDEVqn8PnZ
-fN5ODmKpQ+9uif4r2HhVU5c4CnleDQ==
-=GPmN
------END PGP SIGNATURE-----
-
---2/qZbsKeXLJn7UIc--
+diff --git a/include/hw/cxl/cxl_pci.h b/include/hw/cxl/cxl_pci.h
+index d0855ed78b..3bb882ce89 100644
+--- a/include/hw/cxl/cxl_pci.h
++++ b/include/hw/cxl/cxl_pci.h
+@@ -31,7 +31,7 @@
+ #define PCIE_CXL3_FLEXBUS_PORT_DVSEC_LENGTH 0x20
+ #define PCIE_CXL3_FLEXBUS_PORT_DVSEC_REVID  2
+ 
+-#define REG_LOC_DVSEC_LENGTH 0x24
++#define REG_LOC_DVSEC_LENGTH 0x1C
+ #define REG_LOC_DVSEC_REVID  0
+ 
+ enum {
+-- 
+2.48.1
 
 
