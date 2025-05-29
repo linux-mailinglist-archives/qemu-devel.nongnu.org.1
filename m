@@ -2,61 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E85AC837B
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 23:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E03FAC83DC
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 00:03:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKkZi-0006RC-GX; Thu, 29 May 2025 17:14:06 -0400
+	id 1uKlKk-0005VX-So; Thu, 29 May 2025 18:02:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uKkZg-0006Qf-Qn
- for qemu-devel@nongnu.org; Thu, 29 May 2025 17:14:04 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uKlKi-0005VG-Io
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 18:02:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uKkZf-0004yA-FY
- for qemu-devel@nongnu.org; Thu, 29 May 2025 17:14:04 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uKlKg-0002Ye-A5
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 18:02:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748553242;
+ s=mimecast20190719; t=1748556154;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1eciExN+SEUePgb1+Fe6TEcezsfA8dek2Tob4bfSBUE=;
- b=PljFCXjQwCNUciQGd8PbSQYZIwcdBWgnSeqkok8fpNNqoFN2kG+1hgpwA4P8I5OEoIi7YC
- fTRq9T/RUZgbSigw6v5WcRBwoEJaUWRYuvPFfcvL7ayHerX/qGov26nj/s01G8MSOZM6I/
- OFkkvb+7XDl725TFgR+kBWX3ipcRqfg=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=lNx50CKo93bIop0qsxJcDyG4nfode3KKeWXnCSJ7vI0=;
+ b=K8rXCfki6XXvB8ngnEo9gm008JvXkwNNyzIXuxg6x3uy9K132XGilPKsedsGmX/8bVR5DT
+ J5aK5A7CM9EziFq/GaX1XDjC6pPJkT72KNaxIi5kItxcV24RhAmByeUNVqjhn22wlGnE5h
+ mDipD9/1sFTqKZCNZD1yuXjxuciH/38=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-25-8q5t1UE4Oq-UMHsPKy3mrw-1; Thu,
- 29 May 2025 17:13:59 -0400
-X-MC-Unique: 8q5t1UE4Oq-UMHsPKy3mrw-1
-X-Mimecast-MFC-AGG-ID: 8q5t1UE4Oq-UMHsPKy3mrw_1748553238
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-CAsvgaR3O2i2DMTJc3Oa_A-1; Thu,
+ 29 May 2025 18:02:32 -0400
+X-MC-Unique: CAsvgaR3O2i2DMTJc3Oa_A-1
+X-Mimecast-MFC-AGG-ID: CAsvgaR3O2i2DMTJc3Oa_A_1748556152
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 73EFC1956089; Thu, 29 May 2025 21:13:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.48])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 704BA1954185; Thu, 29 May 2025 21:13:56 +0000 (UTC)
-Date: Thu, 29 May 2025 16:13:53 -0500
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EE5A11955E7A
+ for <qemu-devel@nongnu.org>; Thu, 29 May 2025 22:02:31 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.48])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 671CF19560A7
+ for <qemu-devel@nongnu.org>; Thu, 29 May 2025 22:02:31 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH] iotests: fix 240
-Message-ID: <nzzp3vvg2ev6m3dc3wgg4hpgcog5pvwxrtafnvo5ybe35yyvh3@xsxbjwydngpd>
-References: <20250529203147.180338-1-stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/6] NBD patches through 2025-05-29
+Date: Thu, 29 May 2025 17:02:07 -0500
+Message-ID: <20250529220228.1187563-8-eblake@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250529203147.180338-1-stefanha@redhat.com>
-User-Agent: NeoMutt/20250404
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
@@ -66,7 +62,7 @@ X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.902,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,36 +78,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 29, 2025 at 04:31:47PM -0400, Stefan Hajnoczi wrote:
-> Commit 2e8e18c2e463 ("virtio-scsi: add iothread-vq-mapping parameter")
-> removed the limitation that virtio-scsi devices must successfully set
-> the AioContext on their BlockBackends. This was made possible thanks to
-> the QEMU multi-queue block layer.
-> 
-> This change broke qemu-iotests 240, which checks that adding a
-> virtio-scsi device with a drive that is already in another AioContext
-> will fail.
-> 
-> Update the test to take the relaxed behavior into account. I considered
-> removing this test case entirely, but the code coverage still seems
-> valuable.
-> 
-> Fixes: 2e8e18c2e463 ("virtio-scsi: add iothread-vq-mapping parameter")
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->  tests/qemu-iotests/240     | 2 --
->  tests/qemu-iotests/240.out | 4 +---
->  2 files changed, 1 insertion(+), 5 deletions(-)
+The following changes since commit d2e9b78162e31b1eaf20f3a4f563da82da56908d:
 
-This one has been annoying me - thanks!
+  Merge tag 'pull-qapi-2025-05-28' of https://repo.or.cz/qemu/armbru into staging (2025-05-29 08:36:01 -0400)
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Tested-by: Eric Blake <eblake@redhat.com>
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2025-05-29
+
+for you to fetch changes up to c49dda7254d43d9e1d4da59c55f02055ba7c4c1b:
+
+  iotests: Filter out ZFS in several tests (2025-05-29 16:40:00 -0500)
+
+----------------------------------------------------------------
+NBD patches for 2025-05-29
+
+- Nir Soffer: Allow for larger Unix socket buffers in NBD
+- Eric Blake: clean up mirror-sparse iotest issues
+
+----------------------------------------------------------------
+Eric Blake (3):
+      iotests: Use disk_usage in more places
+      iotests: Improve mirror-sparse on ext4 and xfs
+      iotests: Filter out ZFS in several tests
+
+Nir Soffer (3):
+      io: Add helper for setting socket send buffer size
+      nbd: Set unix socket send buffer on macOS
+      nbd: Set unix socket send buffer on Linux
+
+ include/io/channel-socket.h                 | 13 +++++++++++++
+ nbd/nbd-internal.h                          |  5 +++++
+ io/channel-socket.c                         | 11 +++++++++++
+ nbd/client-connection.c                     |  3 +++
+ nbd/common.c                                | 26 +++++++++++++++++++++++++
+ nbd/server.c                                |  2 ++
+ tests/qemu-iotests/common.rc                | 30 +++++++++++++++++++++++++++++
+ tests/qemu-iotests/106                      |  1 +
+ tests/qemu-iotests/125                      |  2 +-
+ tests/qemu-iotests/175                      |  1 +
+ tests/qemu-iotests/221                      |  1 +
+ tests/qemu-iotests/253                      |  1 +
+ tests/qemu-iotests/308                      |  5 +++--
+ tests/qemu-iotests/tests/mirror-sparse      |  9 ++++++---
+ tests/qemu-iotests/tests/write-zeroes-unmap |  1 +
+ 15 files changed, 105 insertions(+), 6 deletions(-)
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.49.0
 
 
