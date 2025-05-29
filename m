@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3430AC82C5
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 21:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29168AC82BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 21:31:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKixg-0001VG-4b; Thu, 29 May 2025 15:30:44 -0400
+	id 1uKixq-0001rT-EF; Thu, 29 May 2025 15:30:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uKixZ-0001Nk-S3
+ id 1uKixZ-0001Mv-NP
  for qemu-devel@nongnu.org; Thu, 29 May 2025 15:30:38 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uKixV-0001F1-Bf
- for qemu-devel@nongnu.org; Thu, 29 May 2025 15:30:34 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54TGftHF009747;
+ id 1uKixU-0001Ei-ES
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 15:30:35 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54TGfx59003915;
  Thu, 29 May 2025 19:30:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=+IzyZ
- We4Dth+7UIPZZsjEeVCKcuiOXMbHTkTOc62ePE=; b=gBPiM9yikeh8joGmq7AT2
- AXU62bNvMBduEwpZwgl8m3LWufumlvuyfr0qlb/+mDaBPP2nzbMaDUzSKAL1Jcfv
- ykMMEvjYtjmZLSDiDyO48wYVJK3IC+ouE+9j9/9P7Qut2hzC3/y7Y7LxqdRBpK1a
- qHGYxUeRlTHfIHueKgmWu63GKlrBUp2jlwUQK3CNkfLbPG6S3wKdDuLoluMyJXRn
- NmS2w4y5sby/0fMvbOtpJqbD92PqrmPNSjdC5FYfH4XWXml4k5JeH6cwPA3AX2uS
- Nxb0s0cxXVXOIwWeC2brwoNBc30f2rsU5FqL0nxonMqqwzP2rReqkJdw3TLGanS7
- Q==
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=6w8lc
+ 8uwVkcsZ44yUBLqPwjDfl/iXA+3yeIb/VWXrIo=; b=STDhsQi8rw+sMZgGylA/3
+ nhjT6tSMWDJqnhITszTRn/hMrT+E+9Syyajio6U6Ai/WaKbDaNZmei+M9ZKCxJL7
+ 1Jt6sOXZnUst7d2+VvwD/fTcYJWb2vFg1pv5dFLQPF6pBB22Xcq7wjcWItUxSKtJ
+ kXajEGIKabWiBF6ofUgRoFAUyC1KK6edrLA912jP+ctG96nTZRSxT9JJ/2itPVfb
+ bMmwaU0PIlxhGQ4D3WFY3Qb2zIzmMZpCaX9TGuiaOTFFDCeWpVJsaH/mAYK8bNfY
+ mbKgYfU6ik6ggckvWdDDtO1O1d+kF/zc25ydcCoZqIPY6SUSYjzD71s7X7LB1LCs
+ g==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v46u105s-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v2pf0nbu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 29 May 2025 19:30:27 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54TJLtB3019193; Thu, 29 May 2025 19:30:25 GMT
+ with ESMTP id 54THeh1G019225; Thu, 29 May 2025 19:30:26 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 46u4jccryq-1
+ 46u4jccs0d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 May 2025 19:30:25 +0000
+ Thu, 29 May 2025 19:30:26 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54TJUOV7005039;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54TJUOV9005039;
  Thu, 29 May 2025 19:30:25 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 46u4jccrx6-2; Thu, 29 May 2025 19:30:25 +0000
+ 46u4jccrx6-3; Thu, 29 May 2025 19:30:25 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, pbonzini@redhat.com, mjt@tls.msk.ru,
@@ -62,10 +62,10 @@ Cc: mst@redhat.com, pbonzini@redhat.com, mjt@tls.msk.ru,
  suravee.suthikulpanit@amd.com, santosh.shukla@amd.com,
  sarunkod@amd.com, brijesh.singh@amd.com, joao.m.martins@oracle.com,
  boris.ostrovsky@oracle.com, alejandro.j.jimenez@oracle.com
-Subject: [PATCH v3 1/7] amd_iommu: Fix Miscellaneous Information Register 0
- offsets
-Date: Thu, 29 May 2025 19:30:17 +0000
-Message-ID: <20250529193023.3590780-2-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH v3 2/7] amd_iommu: Fix Device ID decoding for
+ INVALIDATE_IOTLB_PAGES command
+Date: Thu, 29 May 2025 19:30:18 +0000
+Message-ID: <20250529193023.3590780-3-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250529193023.3590780-1-alejandro.j.jimenez@oracle.com>
 References: <20250529193023.3590780-1-alejandro.j.jimenez@oracle.com>
@@ -79,22 +79,22 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2505290190
-X-Proofpoint-GUID: UiCQWzVts88gES5hyksAcODjlhHOfx5S
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDE5MCBTYWx0ZWRfX9hGCxTMGzR2j
- Q0HV9BBFgtKsM14aaqqOdIZF/x+y6H4ybeb5+U/2w33iu7w9jjn0hum3Yq+PkI0xaH4hfujMPKu
- 5WqjABgtIl5504nd5OWIctKpGNb60U7by79ucnsb+/0hYdJ6WQvOUkLbTdouYHYXAEKMPpBKsDi
- sctKE3G+b5uZnh5KM3dJtVX0SH3NCOq0bdN8NSX1e1vtibMPPRCf88AOoPQXJ8kTw6vz29/t1w6
- +pm9wiNGEvopQjXb2r+xkY5haMA6+56cEghaTCuMIBSm/gq9A9q5rM2MdJovSDFK8F/sHv8/6uZ
- hHrzVW/hH+VUFUP94s4zQhK2F/xzr2hOyuTTiu31WIf9QBrFUseRwP50PoaDZf3k7j2IeEZoSY2
- yPhoK3JFhTMTbZ8//U3oCPuPvJEni9v3wKIv4LfMx3JR478Afhg3dNt/L58FNfjB/Ay/glTK
-X-Authority-Analysis: v=2.4 cv=VskjA/2n c=1 sm=1 tr=0 ts=6838b5d3 b=1 cx=c_pps
+X-Proofpoint-ORIG-GUID: cNGxpxmsXuo-A7v9nCfPLGS1q_TvxGXG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDE5MCBTYWx0ZWRfX9/YThrV3Lxaa
+ Om8r5wGIZ1H1DwD+gmOWvTU5tiaXkFsj4bu5rA8sLe3gwf+OFeMrNK8egl/8b8+V7NBQtVRg1w9
+ L6kEriO5z3vrDGNk2H8KAi3ETZCuXdv0bTrl9K3ZAJitsvfJGNm1IOgntKhCoH9FttAW5OnuNhd
+ 5ZbMYX/OHhZc9CA+Fi1mDZZlj6m2yJslt9ssT9899e2qDsuVCZUg/4QXWdYOUp9gYndeVn3zIqU
+ obRhWDVphsg57UZwlI+ewgN8QFMaEG453okDtRx73gFXX3IDQ+Jxonx0xdRnQbHkVOCvIo0Uy39
+ pRxNH5ZGSvK9LkhovkwT5FYuAGi1K7xmJuPhQfD2RUTnHFBrdLniRzirIqX/A55wsjOKg9spnNe
+ 1Nl3KZe5VeXUlwPX97Edgza9F/szn3pKT/MTKv0mTvd7RsOs57RWYjmPVB/L0zKued2up4fg
+X-Proofpoint-GUID: cNGxpxmsXuo-A7v9nCfPLGS1q_TvxGXG
+X-Authority-Analysis: v=2.4 cv=TdeWtQQh c=1 sm=1 tr=0 ts=6838b5d3 b=1 cx=c_pps
  a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
  a=dt9VzEwgFbYA:10 a=69wJf7TsAAAA:8 a=yPCof4ZbAAAA:8 a=zd2uoN0lAAAA:8
- a=wxXrq957UH6JcMcBEt4A:9
+ a=r9zmrm_j51NoiylAmAIA:9
  a=Fg1AiH1G6rFz08G2ETeA:22 cc=ntf awl=host:13206
-X-Proofpoint-ORIG-GUID: UiCQWzVts88gES5hyksAcODjlhHOfx5S
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -118,35 +118,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The definitions encoding the maximum Virtual, Physical, and Guest Virtual
-Address sizes supported by the IOMMU are using incorrect offsets i.e. the
-VASize and GVASize offsets are switched.
+The DeviceID bits are extracted using an incorrect offset in the call to
+amdvi_iotlb_remove_page(). This field is read (correctly) earlier, so use
+the value already retrieved for devid.
 
 Cc: qemu-stable@nongnu.org
 Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 ---
- hw/i386/amd_iommu.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/i386/amd_iommu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 5672bdef89071..75a01eff468f5 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -196,9 +196,9 @@
- #define AMDVI_PAGE_SHIFT_4K 12
- #define AMDVI_PAGE_MASK_4K  (~((1ULL << AMDVI_PAGE_SHIFT_4K) - 1))
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 0775c8f3bba8f..55202eb9ef7d6 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -508,7 +508,7 @@ static void amdvi_inval_inttable(AMDVIState *s, uint64_t *cmd)
+ static void iommu_inval_iotlb(AMDVIState *s, uint64_t *cmd)
+ {
  
--#define AMDVI_MAX_VA_ADDR          (48UL << 5)
--#define AMDVI_MAX_PH_ADDR          (40UL << 8)
--#define AMDVI_MAX_GVA_ADDR         (48UL << 15)
-+#define AMDVI_MAX_GVA_ADDR      (48UL << 5)
-+#define AMDVI_MAX_PH_ADDR       (40UL << 8)
-+#define AMDVI_MAX_VA_ADDR       (48UL << 15)
- 
- /* Completion Wait data size */
- #define AMDVI_COMPLETION_DATA_SIZE    8
+-    uint16_t devid = extract64(cmd[0], 0, 16);
++    uint16_t devid = cpu_to_le16(extract64(cmd[0], 0, 16));
+     if (extract64(cmd[1], 1, 1) || extract64(cmd[1], 3, 1) ||
+         extract64(cmd[1], 6, 6)) {
+         amdvi_log_illegalcom_error(s, extract64(cmd[0], 60, 4),
+@@ -521,7 +521,7 @@ static void iommu_inval_iotlb(AMDVIState *s, uint64_t *cmd)
+                                     &devid);
+     } else {
+         amdvi_iotlb_remove_page(s, cpu_to_le64(extract64(cmd[1], 12, 52)) << 12,
+-                                cpu_to_le16(extract64(cmd[1], 0, 16)));
++                                devid);
+     }
+     trace_amdvi_iotlb_inval();
+ }
 -- 
 2.43.5
 
