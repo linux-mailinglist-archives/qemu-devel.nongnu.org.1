@@ -2,170 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4FAAC772B
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 06:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5552BAC772C
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 06:32:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKUtI-0007aJ-AP; Thu, 29 May 2025 00:29:16 -0400
+	id 1uKUv9-0008BA-6Q; Thu, 29 May 2025 00:31:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
- id 1uKUtF-0007a1-Ks
- for qemu-devel@nongnu.org; Thu, 29 May 2025 00:29:13 -0400
-Received: from mail-bn1nam02on20602.outbound.protection.outlook.com
- ([2a01:111:f403:2407::602]
- helo=NAM02-BN1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
- id 1uKUtA-0002zQ-1j
- for qemu-devel@nongnu.org; Thu, 29 May 2025 00:29:13 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gJ4va22NNN3Nf2pO9fmDQGXN1AMiVTsmacxJ4xp1iul6Y2B40sM9iVEjSVUiocNF4OUsARgEi/O5QebrnGC4skx0GXz0UgjxGP+tf56C5nLVa70S8wxcw1cNUBWhyhlMrM5CwHJY3QNX5C+EWKThMWuooYj+h1tVw2pWOM1xiXfYbpwbeOcB4VGSTntGJwe0n2Q8zJGXQttcjRzi7MTbux6nx6w0UidAgSaMAeNVvZrKp8C/nvQog4E7aQkRggFD7r3CwdZGrRq4ytzXz5eQfJMEiAU38fOT4m94+H9y6ZzCJF+/wbVeRTy0w1fjAAAaaEt0em6VYA8S8saLRU+zrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hpSmaXyXtTznlw1x2HIUkOSgkhaYv/6D3upObTOAp0c=;
- b=kHLsSRNQRGqjyxYxIbxbpd3cJ9FucHkroRanHSNz9JjtG+YkEIw4KPwxawOlmLhEkSluVrK0RNvWH2KY/4UA2hdI6gI2bUhmGdl8WcB8hQPPEj2dqXGCuq1v0KlzRZQeqbz+/jrmLMJ+4sLtrq1x7oB1e0voFe0MLJ5L4YbL/hF5wk4mW7z24naBGGamByudCredPzqf0bHJplheUTbDXWYeeiM7Cjegst1aKvYX0Hd0265pzY0JfhoNH7/N6ReXCin0X+kJ/xjg6BxMBbGkM/Yc0lZiJ1/WDG1aVXCfLF0Ntmde+LF7DFQBKLNpkfD42wo4NudjXCq/lvuSg+i+xA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hpSmaXyXtTznlw1x2HIUkOSgkhaYv/6D3upObTOAp0c=;
- b=yn+xUzFP9c5vkzdtQrIiuGN4kRlMYn0Th8Sl+YgmI/3IytaEwkglOCAC3U5/H5Ed+S9s+/qQzN3NIoq9qsjQ3PcXpfZhaA9t4fPGS/bbxIsTko0GLG0gDgtoCSpwNxxGtYLGlYX/Nhzak/u1b9rs//tKhxKRnbZX+xr8EwQG/qE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
- PH8PR12MB6673.namprd12.prod.outlook.com (2603:10b6:510:1c0::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.29; Thu, 29 May
- 2025 04:28:58 +0000
-Received: from DS7PR12MB6048.namprd12.prod.outlook.com
- ([fe80::6318:26e5:357a:74a5]) by DS7PR12MB6048.namprd12.prod.outlook.com
- ([fe80::6318:26e5:357a:74a5%5]) with mapi id 15.20.8769.025; Thu, 29 May 2025
- 04:28:57 +0000
-Message-ID: <6fedd32a-b8b6-4124-ad33-27c9986991d1@amd.com>
-Date: Thu, 29 May 2025 09:58:48 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/7] amd_iommu: Fix mask to retrive Interrupt Table
- Root Pointer from DTE
-To: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, qemu-devel@nongnu.org
-Cc: mst@redhat.com, pbonzini@redhat.com, mjt@tls.msk.ru,
- marcel.apfelbaum@gmail.com, richard.henderson@linaro.org,
- eduardo@habkost.net, suravee.suthikulpanit@amd.com, santosh.shukla@amd.com,
- sarunkod@amd.com, joao.m.martins@oracle.com, boris.ostrovsky@oracle.com
-References: <20250528221725.3554040-1-alejandro.j.jimenez@oracle.com>
- <20250528221725.3554040-7-alejandro.j.jimenez@oracle.com>
-Content-Language: en-US
-From: Vasant Hegde <vasant.hegde@amd.com>
-In-Reply-To: <20250528221725.3554040-7-alejandro.j.jimenez@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN4P287CA0129.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:2b1::11) To DS7PR12MB6048.namprd12.prod.outlook.com
- (2603:10b6:8:9f::5)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1uKUuw-0008AU-Vd
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 00:30:59 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1uKUut-0003Ij-Dw
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 00:30:58 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-af548cb1f83so447300a12.3
+ for <qemu-devel@nongnu.org>; Wed, 28 May 2025 21:30:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748493051; x=1749097851;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JKZiHC5LL9HFEfkfheH93l8WWb0G46WNBXOgweuqW8g=;
+ b=yWGCa/zqA+uexBdWhJSw0Lz2lVtlqGvIJMWufrGySJSJvK9RuLR5VyT0hSiYgm5nOs
+ l1nX3ifYQxqOZYUEJCXEbpfNu7GwYrVdkCEto0LGuNQluskf2VbKXrctXMB+hgHm+f46
+ zulE9ZacS+bYbdUSGg+kJnd5TcoSvqWeVCl7Kmq1w5MInncV/G3iZ+Qouthd3EkcaPF6
+ kTSbyt0wQTlaoQVT4rtw44Y7az9l0R0gPbufeXzEFQ1y3ahhpTII3O9Fax9xAGbkR52n
+ R1Chm7HImxjizAKNHIiKU2XflzyN3VZowTTj0QpUXVv4kLHtCHBaxuEwq0ai8la4+b7e
+ 0LrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748493051; x=1749097851;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JKZiHC5LL9HFEfkfheH93l8WWb0G46WNBXOgweuqW8g=;
+ b=IMw9MwSa+NvqrvKMqes5G6saCjXTPLGzPP4FvYRVJaE+OHRXNV+uWBWeY19oFftHUg
+ ezomdMz1bw6iR1/Vq1W4AI8c/E0ZjS0QpYR93l4cmSlM15Ay2fPtgCA/L4jS7AtysB6A
+ YRju9jP71TmWN4CdkMHb4MBOIvWXJZcbirZvWHBONBhLwd64Ffbkdvi682A9JLoU8rsn
+ iCv9PRDX79PNruTvH3h28JH9lCXgHbq93v1HwIURxGRWjSYYy1GDaDXbE0q+/cOBvWHo
+ H8Lcbj6Jghnol0EtYSFJxOEo9v5XoH+bynAPCC5FZgCt8qfJr23IAekgnS0K0rE/MgtI
+ eBhA==
+X-Gm-Message-State: AOJu0YyPwsEkrKwP4Z/7Izv/rjpEKtz5ndonPLRYquXfQQ+MZi2MY/8g
+ iw36KtMBECGF/t+LszdWkf9Ss0mpS4nBp7+OUko/oAWb8YcZzQFQ59k6PD12fkIYSoU=
+X-Gm-Gg: ASbGnctS/RfRBlXLaIFlRbSbBwhtQDd7iJ2Tq0+eJKYA0Z12u4ZE0dUhdvsVs5fNYIy
+ 9rRJzkzf35cupAXQQA4UUXyyzfDl74FAdXhgv4MX5P9uR+HlRSuIHYcspx0A9De5sGy4WW0B0Yy
+ 2ULa+xo/LO2nFZm+qQSq7cFguBtsc0nxNVl5y3pCZ1MJ+J8u0r5JKQrlVNO4LUk99r9V/s69UCB
+ eyW6bx8NXbQTtOg6adkQlVi24He2p0a2mgRx0/yAKoNXV/wpWsG0lfNZ3EhjdDDoDsxBnwwuQZm
+ odpUszUgR7Bo6pX+t24M0TiLoPJN1EaMqgevItUwfshdAKu34PLnLW9CwTMmYg==
+X-Google-Smtp-Source: AGHT+IGPeBZNqHRqlItsIj05Qbz5wr57ECbi7O3TNMSc64FUTHNMpYBAbFjp6A8wrjhIQHm1DY52Qw==
+X-Received: by 2002:a17:903:18b:b0:234:c2e7:a0d0 with SMTP id
+ d9443c01a7336-234c2e7a293mr94213815ad.5.1748493051498; 
+ Wed, 28 May 2025 21:30:51 -0700 (PDT)
+Received: from [10.100.116.185] ([157.82.128.1])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23506be2622sm3990945ad.102.2025.05.28.21.30.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 May 2025 21:30:51 -0700 (PDT)
+Message-ID: <e2ce1dd8-ca37-4aa8-9d72-29d9ea3f3793@daynix.com>
+Date: Thu, 29 May 2025 13:30:49 +0900
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|PH8PR12MB6673:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ef55a7b-c551-454f-3e49-08dd9e6953af
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|7416014|7053199007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?S0xxbjIyd0YrTWdXakZIM3lyZnBVaSswUTJXMGdjbDAyUWxvMG0wbzdncnAw?=
- =?utf-8?B?clN1SXMvSWEvQ1ByU1pCQVcrWVBtajN0TW9BSjRReU40b1VYcndhbENIYWQv?=
- =?utf-8?B?dUU5OTExdkk4cFlHMTlUNGdsMW54ZUc0VDBDbElUM04wbDExV3hnTzFJQmxE?=
- =?utf-8?B?bzF5SytyTC92Q1Z1NnpVNzJjSEpkM0YzdFBTeDM0WTRGZ0tONzh6VExxU254?=
- =?utf-8?B?Y293M2VCV1paZ3RmU3p0dkpUV3Y4K3lPRTRoU0E2a2dZN1RBeXdtUDIvY3lw?=
- =?utf-8?B?cXh4UVZtcEZtVThBRGg0Ny94bm0vTWlzd3R6d3FLWFROd0ZrMVNPa3V4b2dp?=
- =?utf-8?B?S2ljTlJXWDRpQk1YRGxJZkZuV282dGl1bGphWG5BVjVYbkRINmpyOUlISWhM?=
- =?utf-8?B?RkdXSjBXUGNnNEVDQjFxdHV1US9XNFVBRGFwTDdpenY0ajlvWjBJTWk3SmNj?=
- =?utf-8?B?d2FqZXpBMXNUd2oyVTRpQThPZGZVcXNuSDM2YVdqRGw4Y09YNGxSV01weWsv?=
- =?utf-8?B?YlJwZ2hrNDY1cjB4cEZDK2dsczNGcUJMdzQxL01TR2JIa2dzSzBQdFNEcVdG?=
- =?utf-8?B?OWZtVXhBR3V1NkVZdFRqYWQ5Yi9TRHdMVnFoK3hQUit0MjdNUGt0cStianho?=
- =?utf-8?B?am1jb0llRUVqY1R5OVkyRWZXUGpoTG83Qy94MFp5cCs1bS9KSjRobWVUbXgy?=
- =?utf-8?B?Q3ltaGZWeEtlVHJlQUZCdVFyeUg2RUdESXIvcGJQNTlrb1RsSHFtQ2Q2OHkx?=
- =?utf-8?B?R1JGTHdLQ2Vtb0thdmFEUlozRTJVb0FUZGJwYUhjMzFNOEdPMUtmUDlRNk9X?=
- =?utf-8?B?eGdHbW05TmYxRHg3RWZtdmVOYmlScFQ1YUIxOWQ1aWVTb1EwamluOEFlQ2ts?=
- =?utf-8?B?M0ltMnMrOXhybXpXSHJPZkFZWlF1SjBJYnRZRnZTTHR0OUhheG0xb0lVOUc2?=
- =?utf-8?B?cWQzZmUxbS84MFJIUEpOKzNCZDJJNEs3QS94QnJaR1ZJRWFwUEJVdjBEN2NJ?=
- =?utf-8?B?ZGt0L1NBYjU2UVFDcFNtWFd5VG9RSTJEWHVoME5oL0pwUy8xTlBzTlIybDhS?=
- =?utf-8?B?OFErOXgvUFdJdzRCS0QxOXUrMzN1Z0JPQWFoNkRVV21GZExmWmhJWFd1cVlJ?=
- =?utf-8?B?T1JBdGZzK3lzRzBGT0NNekFSTEFkYUN5b1pVVEJ4RzZmRjJiNFFWY0RCRnRq?=
- =?utf-8?B?MXdWbFEzcEVZUUlvNWQzQUp1eUhseVdUeW1jL1dkc2JjYW1MYzdySlhuclJK?=
- =?utf-8?B?cDVHaTh2S2QvZXhvclZDVlBBWk9OQWRyazRFMHdtaWlJQjVmdmdLRVR4S0R2?=
- =?utf-8?B?bW52dW5wblNZTFU2OE5HK0M2TlE1K0tzc2dMeXFXdFgzTGlCRi85SndRdUlU?=
- =?utf-8?B?SlFrSEJuU3lpS1d2WWd5TU16SU01RXBQVkQ1WVF1bWxEdERzSFNMVHl2SklK?=
- =?utf-8?B?TStkcG5BY1RTbU93WWJBZ25yMk5HdVEzTXRFeEUzYmdtNE9vOWpETFhzVytv?=
- =?utf-8?B?WjlhcjVmK29YK1QwOEZEYnh2WkZYRWU4N3BWKzFJOHArblgvaTN5TEczeEVm?=
- =?utf-8?B?bHZDVk5KMXloemN0WTV2VUdydVpsS0ErcUEva1ZYUUluc0JMYmhJQVQ2SURF?=
- =?utf-8?B?MVdiak1mTEdRbVR0S3BVcFJoTnBBZU9XNzVCNk1jeDh4UUtyclkyMTBPUlRR?=
- =?utf-8?B?cndaNnZ6d0xVd0lHT2VmeEprb1AxbVkzejlGM24xV2hYZytLbVZMRkNGUlUw?=
- =?utf-8?B?Y0l2ZTM4cXBMMFpQSEVscy9JRnRKMzlNZWl4UjYvcElZR1RlOWZSQ1EvN3VP?=
- =?utf-8?B?azBIMm1OVVpiQVNiWTBaMVdWWFl3eWoxNFEvdlJ4V2NkMU5QVndVeFdZWmtZ?=
- =?utf-8?B?YzZuVnN6d2w1Vm9rVHF1V1BtSXNZL1pKSDZFVE5pL2RaMkNYT1VuU3BNa0dB?=
- =?utf-8?Q?C2iBaCnj2eo=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS7PR12MB6048.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007); DIR:OUT;
- SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c0lKUkk2UmxWcVNicmg3bDEvS2YwQmdyMWUyZ3oyeWs2TndaUkZoNm9JSEt4?=
- =?utf-8?B?eThrVlo1MkRaQm9GUFlDTnpIL0dpWGtnemMzQWtHdTdQMytyZjJTWXBUZFZ2?=
- =?utf-8?B?ZGV2Vkc5bmprTGI1anJBYnc0ZGU3L1pSVVZVeTNaM09QZFpEaUNLZmdYdzd6?=
- =?utf-8?B?NDVtMzZmbWN0WkpId0s2N0V5U0RSc3I0L3IxVzF5VktBS254N1QxcC8rTlZK?=
- =?utf-8?B?ajZSYVlRMDRZbW1oM2RlQkhXQUQ2dEdnSC82SmZ3UVVmZ2xpZGJNUk9ZVUpn?=
- =?utf-8?B?WWlOdXE2RzZVTVVseHFFdGNCN2FadVIzdXJXTFUyVll0dFROVW96ejlYOWF2?=
- =?utf-8?B?eFoxdWIvMlRKcFZQODM4aC9YY2JqVnFBRlVEWEp6a0FzR252ZGRRWWg4SEY0?=
- =?utf-8?B?Qk9NOWxKQ3ljM2NuVnRZU2orckZpKyt5Q1Mzekd2Rk5jRUtHRW5TVDFLRjNq?=
- =?utf-8?B?ekNpeEN1Z3NDY0Q4R0RTWTE3VEM2bVJwMHBLaGNiTklSVnY0eWlYQVl3b01I?=
- =?utf-8?B?MDc3QllmMHhhMmYyOGY0bFlrQjQrcUFjY0dsVUlHbitsVHVwR2Z5ZytGZnIr?=
- =?utf-8?B?dXpCQ1JIUDRvWVk0Ymg2b3Q5bUN0cjhmTTY5SEQrUkdRaERJb2IrNC9kaDJR?=
- =?utf-8?B?SEYvK255V3JZc2hhS0VMWk9oei9BUXYxZ244bDhQZVYzSCtENjJhSm8ydDZk?=
- =?utf-8?B?dURCQUVQK01oaWJCaTFOK1U2Y2xjcVFxbG9vMjFhMTN5ZVZZMjdQVG8wVmwv?=
- =?utf-8?B?THRmRzlXY3loQkNLc1JiZ1BHZlBaeHZyVjRaSjlNSHhWOERVL2k1THl5S25v?=
- =?utf-8?B?YzVLR1d4WU9sa3B4Qlc0ZEVBcUd2UmVuMlNpcDRWQ3E1NDY4WFYwZys0NWRw?=
- =?utf-8?B?a3FwY2cvbkxKb0YrckNHL0o5YWU5bUcvcEpZd0h2aFRJL3c2Mlpya3lqd29i?=
- =?utf-8?B?b2E0bEZEeWdzQTlxS0tiaitDdEJNNWlUR1BaUnh0eFQraTZ5ZUE1Ym8xaXhE?=
- =?utf-8?B?cm5ObVprMnlIYnBlQThIMWVHZnpXZDhEblEwVC9RK1VpLzVVNjVRQlZVTUNF?=
- =?utf-8?B?MFA1YjB1d3VrbEE2MllXcFBMMkE4Uk1DRk1hWmZGRXpjVjdURlk3cE84Ujdk?=
- =?utf-8?B?Rlg0RjNnMWlIa2p0ekEyUHNHV2daRGlXeThDeG5QZEhoZkdESlczWjVrczlT?=
- =?utf-8?B?clRyZkZjdXdGTitVVHhiNlJSRHg2N2lsRzRkSmFaM2VnNlpkbWRJK0l2M3dl?=
- =?utf-8?B?ZjZZTkwzeVVFL2MvWWMxRmpjcksvajhwSlkvakhBMFAwMzg4bk83VHVueGN6?=
- =?utf-8?B?dFZZemZUekptbG1OWWoyOG8wdWt5eFJrMFdUck1hK3VTa3M2cTErSXhlbEc3?=
- =?utf-8?B?S2lDaWlSNTVEL3JuNzJKcHlOZlV6aTRORHlBdmpjaWFScC96QWlTTkU1MUdx?=
- =?utf-8?B?Nkt3NDFZaE93emhVNVBPeTlydmJicjg2OTlteFdZVWNpTisxQWIwTlRTWDRG?=
- =?utf-8?B?RkJrZUUwWEZ4c3Y4TTFKaUFDSEJUeWtJZGU4MzhLTlVJSmV0MHlHVW9ob05q?=
- =?utf-8?B?UlIvVzdONFBKc0lIeVdNNDBmNHp5cjYxVzdVbGFKWFo4MjUxczAyS0h6YUtU?=
- =?utf-8?B?TVJCODRhdnVvNDZUT1h2dWltWldxUHppNEptbExvc0krcnI5c1lINTJqb1Zn?=
- =?utf-8?B?ZGFFaFFnaFhGbXZDSDMva0p3VHRjbW5RVkt4RFgxZGx6TDhlcGRtN3lOdXVr?=
- =?utf-8?B?bHJGL3U0QnZ3VmVyc3B4TTFpb0d6WFBsKzRiNTM3emRqclNsVHFjcTdiNGNI?=
- =?utf-8?B?ck5DRkxmTHBTTjQ1R3JOd1I4WDF2Y3R0RGxFdDJNMmdiMjhEME5VaktlZWt5?=
- =?utf-8?B?QUd1L3lRZTBJT25mdWZIbENtaXF1WW1JdCtTWEVMajI1d1VmRVl6cm9lUUtC?=
- =?utf-8?B?ZCtzL0pjQ1RkelEwbnRObzlxakM2YWxsZFlWcUlQa1ZCSTVzbkxpRGR6bnhw?=
- =?utf-8?B?WWZhUm0yZmppc1pHZ1drWnpHMXFSUDhPdktQWENlTytXbGNWWkprbjYvZGRX?=
- =?utf-8?B?MXl3OTNIZjJhVnYwc0VEcHM4RE1zeis5TzlIdUo5bTRFNjUySEpDYU8weHo5?=
- =?utf-8?Q?tXkKKphptiHyLnApfjWxKv+Nr?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ef55a7b-c551-454f-3e49-08dd9e6953af
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 04:28:57.3126 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SEV5CSdw6UFlF+XTZK34j1GUSw2w2r00cUwH1yPTgFVksEwbKlQ1bvz5/il6KB1aQTv0nLCJ81IKFQQ1Z28RXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6673
-Received-SPF: permerror client-ip=2a01:111:f403:2407::602;
- envelope-from=Vasant.Hegde@amd.com;
- helo=NAM02-BN1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] file-posix: Tolerate unaligned hole at middle
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org, devel@daynix.com
+References: <20250528-dio-v1-1-633066a71b8c@daynix.com>
+ <wh5wbm4cfu6jxt3lchkktqnduxyxctpn7byeilmvdt7li4jllp@ol7geqo2t76q>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <wh5wbm4cfu6jxt3lchkktqnduxyxctpn7byeilmvdt7li4jllp@ol7geqo2t76q>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -181,22 +100,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 5/29/2025 3:47 AM, Alejandro Jimenez wrote:
-> Fix an off-by-one error in the definition of AMDVI_IR_PHYS_ADDR_MASK. The
-> current definition masks off the most significant bit of the Interrupt Table
-> Root ptr i.e. it only generates a mask with bits [50:6] set. See the AMD I/O
-> Virtualization Technology (IOMMU) Specification for the Interrupt Table
-> Root Pointer[51:6] field in the Device Table Entry format.
+On 2025/05/28 22:00, 'Eric Blake' via devel wrote:
+> On Wed, May 28, 2025 at 08:30:05PM +0900, Akihiko Odaki wrote:
+>> file-posix used to assume that existing holes satisfy the requested
+>> alignment, which equals to the estimated direct I/O alignment
+>> requirement if direct I/O is requested, and assert the assumption
+>> unless it is at EOF.
+>>
+>> However, the estimation of direct I/O alignment requirement is sometimes
+>> inexact and can be overly strict. For example, I observed that QEMU
+>> estimated the alignment requirement as 16K while the real requirement
+>> is 4K when Btrfs is used on Linux 6.14.6 and the host page size is 16K.
+>>
+>> For direct I/O alignment, open(2) sugguests as follows:
+>>> Since Linux 6.1, O_DIRECT support and alignment restrictions for a
+>>> file can be queried using statx(2), using the STATX_DIOALIGN flag.
+>>> Support for STATX_DIOALIGN varies by filesystem; see statx(2).
 > 
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+> We really should be using statx() in the block/ subdirectory (even
+> though we aren't yet) - over time, more and more filesystems WILL
+> support it, and it is a more precise answer than anything else.
 
-I found this issue last week when I was going through the code!Thanks for fixing.
+I found the following patch searching qemu-devel:
+https://lore.kernel.org/qemu-devel/20221103183609.363027-3-stefanha@redhat.com/
 
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+> 
+>>>
+>>> Some filesystems provide their own interfaces for querying O_DIRECT
+>>> alignment restrictions, for example the XFS_IOC_DIOINFO operation in
+>>> xfsctl(3). STATX_DIOALIGN should be used instead when it is available.
+>>>
+>>> If none of the above is available, then direct I/O support and
+>>> alignment restrictions can only be assumed from known characteristics
+>>> of the filesystem, the individual file, the underlying storage
+>>> device(s), and the kernel version. In Linux 2.4, most filesystems
+>>> based on block devices require that the file offset and the length and
+>>> memory address of all I/O segments be multiples of the filesystem
+>>> block size (typically 4096 bytes). In Linux 2.6.0, this was relaxed to
+>>> the logical block size of the block device (typically 512 bytes). A
+>>> block device's logical block size can be determined using the ioctl(2)
+>>> BLKSSZGET operation or from the shell using the command:
+>>
+>> Apparently Btrfs doesn't support STATX_DIOALIGN nor provide its own
+>> interface for querying the requirement. Using BLKSSZGET brings another
+>> problem to determine the underlying block device, which also involves
+>> heuristics.
+>>
+>> Moreover, even if we could figure out the direct I/O alignment
+>> requirement, I could not find a documentation saying it will exactly
+>> matche with the alignment of holes.
+> 
+> s/matche/match/
 
--Vasant
+I'll fix it with the next version.
 
+> 
+>>
+>> So stop asserting the assumption on the holes and tolerate them being
+>> unaligned.
+> 
+> Tolerating unaligned holes is wise, even if we can improve our probing
+> to be more accurate in other patches.  That said...
+> 
+>>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   block/file-posix.c | 19 +++++++++----------
+>>   1 file changed, 9 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/block/file-posix.c b/block/file-posix.c
+>> index ec95b748696b..7b686ce6817d 100644
+>> --- a/block/file-posix.c
+>> +++ b/block/file-posix.c
+>> @@ -3307,22 +3307,21 @@ static int coroutine_fn raw_co_block_status(BlockDriverState *bs,
+>>           *pnum = bytes;
+>>           ret = BDRV_BLOCK_DATA;
+>>       } else if (data == offset) {
+>> -        /* On a data extent, compute bytes to the end of the extent,
+>> -         * possibly including a partial sector at EOF. */
+>> +        /* On a data extent, compute bytes to the end of the extent. */
+>>           *pnum = hole - offset;
+>>   
+>>           /*
+>> +         * We may have allocation unaligned with the requested alignment due to
+>> +         * the following reaons:
+>> +         * - unaligned file size
+>> +         * - inexact direct I/O alignment requirement estimation
+>> +         * - mismatches between the allocation size and
+>> +         *   direct I/O alignment requirement.
+>> +         *
+>>            * We are not allowed to return partial sectors, though, so
+>>            * round up if necessary.
+>>            */
+>> -        if (!QEMU_IS_ALIGNED(*pnum, bs->bl.request_alignment)) {
+>> -            int64_t file_length = raw_getlength(bs);
+>> -            if (file_length > 0) {
+>> -                /* Ignore errors, this is just a safeguard */
+>> -                assert(hole == file_length);
+>> -            }
+>> -            *pnum = ROUND_UP(*pnum, bs->bl.request_alignment);
+>> -        }
+>> +        *pnum = ROUND_UP(*pnum, bs->bl.request_alignment);
+>>   
+>>           ret = BDRV_BLOCK_DATA;
+> 
+> ...rounding data extent sizes up to the alignment that the rest of the
+> block layer sees is always safe.  But I would expect some symmetry -
+> anywhere we are rounding up to report data instead of hole, there
+> either needs to be counterpart code on the holes or else a good reason
+> why the holes don't need matching code, where unaligned holes are
+> rounded down to alignment boundaries (and if that rounds down to 0,
+> report data instead).  That way, you can't get different answers based
+> on where in the sector you are asking the question.  We do know that
+> the block layer is supposed to only be asking the question at the
+> start of an alignment boundary (even when our alignment boundaries are
+> too large, such as your mention of 16k alignment when the filesystem
+> supports 4k holes).  At best, it may just be a matter of adding
+> comments to document why we are safe, but I'm not sure that is
+> sufficient for this patch.
+> 
+> Restated visually, if we have | at 16k boundaries (what qemu picked as
+> the dio alignment), + at 4k boundaries (the granularity of holes that
+> the fs supports), and the following file structure with Data and Holes
+> marked:
+> 
+> |+++|+++|+++|+++|+++|
+> DDDDDHHHHDDHDDDDHHHH
+> 
+> Then the claim is that the block layer will only ever ask for status
+> at the | points (and not at the +), and the results that it should see
+> after rounding are as follows (where lowercase respresents changed
+> results due to rounding to alignment):
+> 
+> |+++|+++|+++|+++|+++|
+> DDDDDHHHHDDHDDDDHHHH
+> DDDDDddddDDdDDDDHHHH
+>          ^
+> 
+> But the important question I don't see in your patch is whether you
+> handle a block_status query at the point of ^ correctly (it lands in a
+> hole, but since there is data also present in that alignment boundary,
+> you have to report the entire 16k as data).
+
+Thank you for a detailed explanation. I will ensure that offset + *pnum 
+will be aligned with bs->bl.request_alignment with the next version, 
+which I think semantically makes sense.
 
