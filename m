@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA957AC829B
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 21:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD348AC828F
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 21:25:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKisg-0004HV-9C; Thu, 29 May 2025 15:25:34 -0400
+	id 1uKisc-0004G9-D4; Thu, 29 May 2025 15:25:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uKisJ-00047y-Ce
- for qemu-devel@nongnu.org; Thu, 29 May 2025 15:25:11 -0400
+ id 1uKisM-0004AR-0C
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 15:25:15 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uKisH-0000EL-0q
- for qemu-devel@nongnu.org; Thu, 29 May 2025 15:25:10 -0400
+ id 1uKisJ-0000EQ-27
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 15:25:12 -0400
 Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54TGfuuj022092;
- Thu, 29 May 2025 19:24:56 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54TGfxVb022106;
+ Thu, 29 May 2025 19:24:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=AlnXPvm/lUsAWx8Z/IXoqo8l8UtBVR3FTtkGwhwtQyc=; b=
- qNwcKAU58uns8ZtVr6/eDs4F5wGpDZZpyhycS2dZgCIAXU2eS8HvTnkYgh7CpjVo
- 4SxVUmUfJKpiuBMcqzeoNbyoUpkzlynB9Cop9HLkq/xm5DOmKGEzpqoYZ6KH/DOW
- 7EpyIto3gsIa4FUSiAvSnOqjqlUvqLplWHvA3QbZDayLvc5nixKvNW03RK9L8PqY
- 5nRfBcdoBjyBKfQXK3gavrOQi+6UCD3/95xBhtfKrKbXf2crUpoDvjp32QycAhw7
- Bn2xJZ6dU0YpP8FGrs1EyerUxAy5KHt12ZLuJ1/oeue3TKMyLSMi/gjlCmzPZKdN
- OYw5i7AdAtgirzNBymRa/g==
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=Mdiw2Hmq13Tvdz+wLyP1vonQZ1uTyX1ok2W1flR3fx4=; b=
+ exIGu8WcXSPm7KYFnU6glN8qyPf2DRK6RvmVR9RHu73pP7uNDUeEWushpIE7Jm18
+ IYYbc+6Mr9DY3NZUXUc8skfOKmxmhx1ZoAZeUUMGs3h7MbQ24ItK6eVU0JZsEPer
+ gNpznqoCQ2DyiTOwSuySz5YAxCXspQQ+BW3Mn94Q8iIXxfmYQLHUfrU7r/pEc+0H
+ xeFlsdHU2/uan1TybqIF7a8Q8nEgmavtXFK0LT26sL1NcYksFhKf60nRGfkwcvII
+ zhFErGecEE+WP04QGuAmxGsk8sBMQPpF+H9ilPE+cufZjp6wgo+Tst5+9t3OXxcZ
+ HBdPGjQnC8bl5jp74SIocA==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v0ym12jf-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v0ym12jh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 May 2025 19:24:56 +0000 (GMT)
+ Thu, 29 May 2025 19:24:57 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54TJOd5q020578; Thu, 29 May 2025 19:24:56 GMT
+ with ESMTP id 54THg2ax020361; Thu, 29 May 2025 19:24:56 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46u4jc4vtw-1
+ 46u4jc4vua-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 29 May 2025 19:24:56 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54TJOeRN022158;
- Thu, 29 May 2025 19:24:55 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54TJOeRP022158;
+ Thu, 29 May 2025 19:24:56 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 46u4jc4vjq-19; Thu, 29 May 2025 19:24:55 +0000
+ ESMTP id 46u4jc4vjq-20; Thu, 29 May 2025 19:24:56 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,12 +62,15 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V4 18/43] vfio/pci: vfio_pci_vector_init
-Date: Thu, 29 May 2025 12:24:14 -0700
-Message-Id: <1748546679-154091-19-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V4 19/43] vfio/pci: vfio_notifier_init
+Date: Thu, 29 May 2025 12:24:15 -0700
+Message-Id: <1748546679-154091-20-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1748546679-154091-1-git-send-email-steven.sistare@oracle.com>
 References: <1748546679-154091-1-git-send-email-steven.sistare@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-29_09,2025-05-29_01,2025-03-28_01
@@ -75,18 +79,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  adultscore=0 malwarescore=0 bulkscore=0 mlxscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2505290189
-X-Proofpoint-GUID: FS0QQtf8wpb3e80nbGtPoGIndiyMwBih
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDE4OSBTYWx0ZWRfX3ytN6uJDgGhP
- ZclF5HdXZcO8ThNK8EPNwxmISvUJZ0K1aoCu7Mve07WWc6c3iuxxImpZ6v71DULNNxpo+fZJvQ7
- 7PSdpySreJxC3EJ1FHjA8UEayJQ2eXXq5hJzMubQbqp9whFNDFj/wzUbqm7KhrZ3LBD6aaVCY5G
- e54SoGt7oSxnQV8ySJTtGKPZoHX3q1sb6w8SH2BkLUvuwVV4DNtONjfkh9N5YKwMDR7TdfIrNIi
- gjL72K9l4IqAZhJ/f3+Z68ltbcYM98h4AT3+wlsZ7rDPTNRIMj4EQoRLR/M+PvsHVEkkun7oE31
- cZTMY6DqIH1O1ZL6n5+P3yaLUHpLv2+uczBbLpkyRz2bTEbbDjXClAoPAWftZdYJPAECBi1cy5J
- fJyz0i79pr8ewTb/YmP4ACrhe9nbYyd1l+uBHCtA430AwNrQ7vcscy5IZ58zkGjyyewlkGOX
-X-Proofpoint-ORIG-GUID: FS0QQtf8wpb3e80nbGtPoGIndiyMwBih
-X-Authority-Analysis: v=2.4 cv=N7MpF39B c=1 sm=1 tr=0 ts=6838b488 cx=c_pps
+X-Proofpoint-GUID: vZCWqtPHQiuS7DbAVzz14PoeMtt5eq_e
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDE4OSBTYWx0ZWRfX/GSaZlE0l4oU
+ 5nGkIz5+I1VckCUiHq3n++/L/mQs42drHuddNIjL5O1c7oDj37dkWmqa7uci3irYQbplq/EXfq8
+ XBy0pdIiNnonPMn6SbpQh2XDwcEh8OVZN1vNL9Do/j9hPi3KVhP34CzxGpD+fBjydBk7e6SmTdU
+ 2LaKjn40JcxeVoIeKcFBEQgLY8rhBwhtWk3vbHEjOw9gEVPb1EWVZ9R9QkxBezS3G8FxtlYjhCj
+ XyxInD73vI6uexTPj17BJkMxgcSuEZKp1n97ktIUtsZ73Qsplp1HNFdMUMyVnBNk08cJyUvnCRx
+ ov/RWP9kV37SfOweIs8qyuAc0XbKOg59J6vE3NKdr6dEFS+Uq2qiAzBl14H2yxZpGR//wmoBY5j
+ GFDHssZZ4RrR9y+jxqC0CQ0ebGd659DNd0KZUdml4ZMwEAjjVLTgyT2OI/HQmytsR5XyzvWg
+X-Proofpoint-ORIG-GUID: vZCWqtPHQiuS7DbAVzz14PoeMtt5eq_e
+X-Authority-Analysis: v=2.4 cv=N7MpF39B c=1 sm=1 tr=0 ts=6838b489 cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=Nwf4nMGaJ49SaRlp1S0A:9
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8
+ a=w3t5z44oxExOTv3jo9sA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -32
@@ -112,55 +118,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract a subroutine vfio_pci_vector_init.  No functional change.
+Move event_notifier_init calls to a helper vfio_notifier_init.
+This version is trivial, but it will be expanded to support CPR
+in subsequent patches.  No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ hw/vfio/pci.c | 40 +++++++++++++++++++++++++---------------
+ 1 file changed, 25 insertions(+), 15 deletions(-)
 
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 840590c..2d6dc54 100644
+index 2d6dc54..12386a8 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -512,6 +512,22 @@ static void vfio_update_kvm_msi_virq(VFIOMSIVector *vector, MSIMessage msg,
-     kvm_irqchip_commit_routes(kvm_state);
- }
+@@ -57,6 +57,16 @@ static void vfio_disable_interrupts(VFIOPCIDevice *vdev);
+ static void vfio_mmap_set_enabled(VFIOPCIDevice *vdev, bool enabled);
+ static void vfio_msi_disable_common(VFIOPCIDevice *vdev);
  
-+static void vfio_pci_vector_init(VFIOPCIDevice *vdev, int nr)
++static bool vfio_notifier_init(EventNotifier *e, const char *name, Error **errp)
 +{
-+    VFIOMSIVector *vector = &vdev->msi_vectors[nr];
-+    PCIDevice *pdev = &vdev->pdev;
++    int ret = event_notifier_init(e, 0);
 +
-+    vector->vdev = vdev;
-+    vector->virq = -1;
-+    if (event_notifier_init(&vector->interrupt, 0)) {
-+        error_report("vfio: Error: event_notifier_init failed");
++    if (ret) {
++        error_setg_errno(errp, -ret, "vfio_notifier_init %s failed", name);
 +    }
-+    vector->use = true;
-+    if (vdev->interrupt == VFIO_INT_MSIX) {
-+        msix_vector_use(pdev, nr);
-+    }
++    return !ret;
 +}
 +
- static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-                                    MSIMessage *msg, IOHandler *handler)
- {
-@@ -525,13 +541,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-     vector = &vdev->msi_vectors[nr];
+ /*
+  * Disabling BAR mmaping can be slow, but toggling it around INTx can
+  * also be a huge overhead.  We try to get the best of both worlds by
+@@ -137,8 +147,7 @@ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+     pci_irq_deassert(&vdev->pdev);
  
-     if (!vector->use) {
--        vector->vdev = vdev;
--        vector->virq = -1;
--        if (event_notifier_init(&vector->interrupt, 0)) {
--            error_report("vfio: Error: event_notifier_init failed");
--        }
--        vector->use = true;
--        msix_vector_use(pdev, nr);
-+        vfio_pci_vector_init(vdev, nr);
+     /* Get an eventfd for resample/unmask */
+-    if (event_notifier_init(&vdev->intx.unmask, 0)) {
+-        error_setg(errp, "event_notifier_init failed eoi");
++    if (!vfio_notifier_init(&vdev->intx.unmask, "intx-unmask", errp)) {
+         goto fail;
      }
  
-     qemu_set_fd_handler(event_notifier_get_fd(&vector->interrupt),
+@@ -269,7 +278,6 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+     uint8_t pin = vfio_pci_read_config(&vdev->pdev, PCI_INTERRUPT_PIN, 1);
+     Error *err = NULL;
+     int32_t fd;
+-    int ret;
+ 
+ 
+     if (!pin) {
+@@ -292,9 +300,7 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+     }
+ #endif
+ 
+-    ret = event_notifier_init(&vdev->intx.interrupt, 0);
+-    if (ret) {
+-        error_setg_errno(errp, -ret, "event_notifier_init failed");
++    if (!vfio_notifier_init(&vdev->intx.interrupt, "intx-interrupt", errp)) {
+         return false;
+     }
+     fd = event_notifier_get_fd(&vdev->intx.interrupt);
+@@ -474,11 +480,13 @@ static void vfio_add_kvm_msi_virq(VFIOPCIDevice *vdev, VFIOMSIVector *vector,
+ 
+ static void vfio_connect_kvm_msi_virq(VFIOMSIVector *vector)
+ {
++    const char *name = "kvm_interrupt";
++
+     if (vector->virq < 0) {
+         return;
+     }
+ 
+-    if (event_notifier_init(&vector->kvm_interrupt, 0)) {
++    if (!vfio_notifier_init(&vector->kvm_interrupt, name, NULL)) {
+         goto fail_notifier;
+     }
+ 
+@@ -516,11 +524,12 @@ static void vfio_pci_vector_init(VFIOPCIDevice *vdev, int nr)
+ {
+     VFIOMSIVector *vector = &vdev->msi_vectors[nr];
+     PCIDevice *pdev = &vdev->pdev;
++    Error *err = NULL;
+ 
+     vector->vdev = vdev;
+     vector->virq = -1;
+-    if (event_notifier_init(&vector->interrupt, 0)) {
+-        error_report("vfio: Error: event_notifier_init failed");
++    if (!vfio_notifier_init(&vector->interrupt, "interrupt", &err)) {
++        error_report_err(err);
+     }
+     vector->use = true;
+     if (vdev->interrupt == VFIO_INT_MSIX) {
+@@ -750,13 +759,14 @@ retry:
+ 
+     for (i = 0; i < vdev->nr_vectors; i++) {
+         VFIOMSIVector *vector = &vdev->msi_vectors[i];
++        Error *err = NULL;
+ 
+         vector->vdev = vdev;
+         vector->virq = -1;
+         vector->use = true;
+ 
+-        if (event_notifier_init(&vector->interrupt, 0)) {
+-            error_report("vfio: Error: event_notifier_init failed");
++        if (!vfio_notifier_init(&vector->interrupt, "interrupt", &err)) {
++            error_report_err(err);
+         }
+ 
+         qemu_set_fd_handler(event_notifier_get_fd(&vector->interrupt),
+@@ -2908,8 +2918,8 @@ static void vfio_register_err_notifier(VFIOPCIDevice *vdev)
+         return;
+     }
+ 
+-    if (event_notifier_init(&vdev->err_notifier, 0)) {
+-        error_report("vfio: Unable to init event notifier for error detection");
++    if (!vfio_notifier_init(&vdev->err_notifier, "err_notifier", &err)) {
++        error_report_err(err);
+         vdev->pci_aer = false;
+         return;
+     }
+@@ -2975,8 +2985,8 @@ static void vfio_register_req_notifier(VFIOPCIDevice *vdev)
+         return;
+     }
+ 
+-    if (event_notifier_init(&vdev->req_notifier, 0)) {
+-        error_report("vfio: Unable to init event notifier for device request");
++    if (!vfio_notifier_init(&vdev->req_notifier, "req_notifier", &err)) {
++        error_report_err(err);
+         return;
+     }
+ 
 -- 
 1.8.3.1
 
