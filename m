@@ -2,91 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB967AC7A7C
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 10:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44953AC7AC1
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 11:10:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKZ3x-0004GQ-HT; Thu, 29 May 2025 04:56:33 -0400
+	id 1uKZGE-0000aX-F7; Thu, 29 May 2025 05:09:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKZ3n-0004FJ-Cd
- for qemu-devel@nongnu.org; Thu, 29 May 2025 04:56:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uKZG9-0000aE-UH; Thu, 29 May 2025 05:09:09 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKZ3l-0007Cv-NX
- for qemu-devel@nongnu.org; Thu, 29 May 2025 04:56:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748508979;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BNNeFqUlcByu+PWkrGlLojjnEQaxP9V/jLSabAJZVkc=;
- b=L+gsKy42hlT2P41fs1AWj4k/VyCwMKkcI8j85U5v5NAk3sybSLMqhJIskJSrCkxCTwB/so
- 0BJY//b08su+BrAYwfH6eYkOYT3InRDXnfFVpovvcNtTFwkGpv4X/OW/944MWThMpZVjDP
- nke1CvyFO+QX6mU4Y3Xpq5S0zvHjaZk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-Qa9OqHBsMxmZ76rau8H6Cw-1; Thu, 29 May 2025 04:56:17 -0400
-X-MC-Unique: Qa9OqHBsMxmZ76rau8H6Cw-1
-X-Mimecast-MFC-AGG-ID: Qa9OqHBsMxmZ76rau8H6Cw_1748508977
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a364394fa8so231604f8f.0
- for <qemu-devel@nongnu.org>; Thu, 29 May 2025 01:56:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748508976; x=1749113776;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BNNeFqUlcByu+PWkrGlLojjnEQaxP9V/jLSabAJZVkc=;
- b=GJOw+1I+4VS0Elqi5eFlcmO2RwFuujt5IpAPwsonNvsXmeflNq31EvQexDFhtGhtxD
- hgbQZYR4pGeKYuaAb9h/8wwe6lsrjhmVVl+pQkLa9mnxwvrag868Aivhf2gphefBfa5H
- 7lIPMDRpE6D94v1kpU5QJyENZfoCH4+ajjIo1+vNZQoElgWiw9IO3EmTiB6vXrm+sPn8
- iNRO45wD5869zDBCOe/V7HQVX+5hPKdvgwRb66WIUmBv2sAxaRu6Urlv3mYviMO3yyVp
- pCPkjFGB+FtFTAizUdscsnJvSC4ie3/dFwVJZlrCj3EG+K3Hx/dzgU/9PDdllBTjWBkw
- V1DA==
-X-Gm-Message-State: AOJu0YwfXYLXoE5psbkNtDxsJ17cs/LR0Wqt/qC5PG6Jd6iqZqblKVfF
- a4DHtfE97r0foaoKH9kv9UannLX69I/FlJaaBJ/PFUsorICVAPYciG5JymuMALuOQ9GFGe6mBtB
- rPRGNg7fXOXhBzaJttY9UpxWwAaW0pFbnfXKqShaSgBVpos/+SNjepNAlhAdlEq1vpQkoWYXZZl
- EhBiWp12rdPfItCa81FndNaw60U1b5qu+IH6hgaAemEg==
-X-Gm-Gg: ASbGncsVR2FtCX8iJxAQpXEafrDUz453T4zLjif3HZ/8b9ZxNv/8q+L+MwQABCJv1BT
- D1F1/dZKf6KI1/wWBta4PTIn8zjXZTO/3V+79E6JpSOyp/UdJFtUrJ8PM0PcRIzNZQ/dL
-X-Received: by 2002:a05:6000:290c:b0:3a3:5833:c900 with SMTP id
- ffacd0b85a97d-3a4cb461464mr15322450f8f.8.1748508976215; 
- Thu, 29 May 2025 01:56:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxNc39dZZW+GHRjljY+le8r2EQsQQW/cHk3ceeZuz6e70JSUJXIoJZdVLrxfvnifZKrN8FV+qTnU0INMUYFHc=
-X-Received: by 2002:a05:6000:290c:b0:3a3:5833:c900 with SMTP id
- ffacd0b85a97d-3a4cb461464mr15322438f8f.8.1748508975878; Thu, 29 May 2025
- 01:56:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uKZG5-0008Sp-2V; Thu, 29 May 2025 05:09:09 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b7L744C7kz6L5Zt;
+ Thu, 29 May 2025 17:05:20 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id EB21B14022E;
+ Thu, 29 May 2025 17:08:54 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 29 May
+ 2025 11:08:54 +0200
+Date: Thu, 29 May 2025 10:08:53 +0100
+To: Itaru Kitayama <itaru.kitayama@linux.dev>
+CC: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>, Peter Maydell
+ <peter.maydell@linaro.org>, <mst@redhat.com>, <linuxarm@huawei.com>,
+ <linux-cxl@vger.kernel.org>, <qemu-arm@nongnu.org>, Yuquan Wang
+ <wangyuquan1236@phytium.com.cn>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, Alireza Sanaee <alireza.sanaee@huawei.com>, "Zhijian Li
+ (Fujitsu)" <lizhijian@fujitsu.com>
+Subject: Re: [PATCH v14 0/5] arm/virt: CXL support via pxb_cxl
+Message-ID: <20250529100853.00000a0d@huawei.com>
+In-Reply-To: <aDeGyRM7qVYkHZrl@vm4>
+References: <20250528110726.226389-1-Jonathan.Cameron@huawei.com>
+ <aDeGyRM7qVYkHZrl@vm4>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20250526142254.1061009-1-pbonzini@redhat.com>
- <20250526142455.1061519-11-pbonzini@redhat.com>
- <aDglrxH6o6spPC2v@intel.com>
-In-Reply-To: <aDglrxH6o6spPC2v@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 29 May 2025 10:56:00 +0200
-X-Gm-Features: AX0GCFsHkGLWb93F_i-jHjE3WhpQk7dLboBtx7h4u07UTrQUn3cB0VAdebO_cKk
-Message-ID: <CABgObfbsM=-P4pS+oE+XkAfW28fP2Uq+oTYE5qMgKWRq8Qvttw@mail.gmail.com>
-Subject: Re: [PATCH 11/12] rust/hpet: return errors from realize if properties
- are incorrect
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, qemu-rust@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,23 +69,148 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 29, 2025 at 10:54=E2=80=AFAM Zhao Liu <zhao1.liu@intel.com> wro=
-te:
-> >          if self.int_route_cap =3D=3D 0 {
-> > -            // TODO: Add error binding: warn_report()
-> > -            println!("Hpet's hpet-intcap property not initialized");
-> > +            Err("hpet.hpet-intcap property not initialized")?;
-> >          }
->
-> Though here we don't need print warning...do we still need to provide
-> the warn_report() binding? Or println!() is enough in Rust side?
+On Thu, 29 May 2025 06:57:29 +0900
+Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
 
-I think it will be enough to have Error ** and
-LOG_GUEST_ERROR/LOG_UNIMP... but we'll see.
+> Hi Jonathan,
+> 
+> On Wed, May 28, 2025 at 12:07:21PM +0100, Jonathan Cameron wrote:
+> > v14: Simplifications suggeseted by Itaru (and some extra simplifications
+> >      that became apparent) and gather tags.
+> >      See individual patches for more information.  
+> 
+> I think the suggestion was made by Zhi jian or Fan? who enaged in the
+> rewview of your proposed series v13.
 
-Paolo
+Ah. You are absolutely correct!  It was Zhijian Li (with some additional
+comments on the comments from Fan)
+
+Sorry about that and thanks for pointing out my mistake.
+
+I also failed to +CC Zhijian. Again my apologies. 
+
+Jonathan
+
+
+> 
+> Itaru.
+> 
+> > 
+> > Updated cover letter
+> > 
+> > Richard Henderson has posted a pull request with a fix for the TCG TLB
+> > issue which will hopefully merge shortly (Thanks Richard!).
+> > 
+> > Back in 2022, this series stalled on the absence of a solution to device
+> > tree support for PCI Expander Bridges (PXB) and we ended up only having
+> > x86 support upstream. I've been carrying the arm64 support out of tree
+> > since then, with occasional nasty surprises (e.g. UNIMP + DT issue seen
+> > a few weeks ago) and a fair number of fiddly rebases.
+> > gitlab.com/jic23/qemu cxl-<latest date>.  Will update shortly with this
+> > series.
+> > 
+> > A recent discussion with Peter Maydell indicated that there are various
+> > other ACPI only features now, so in general he might be more relaxed
+> > about DT support being necessary. The upcoming vSMMUv3 support would
+> > run into this problem as well.
+> > 
+> > I presented the background to the PXB issue at Linaro connect 2022. In
+> > short the issue is that PXBs steal MMIO space from the main PCI root
+> > bridge. The challenge is knowing how much to steal.
+> > 
+> > On ACPI platforms, we can rely on EDK2 to perform an enumeration and
+> > configuration of the PCI topology and QEMU can update the ACPI tables
+> > after EDK2 has done this when it can simply read the space used by the
+> > root ports. On device tree, there is no entity to figure out that
+> > enumeration so we don't know how to size the stolen region.
+> > 
+> > Three approaches were discussed:
+> > 1) Enumerating in QEMU. Horribly complex and the last thing we want is a
+> >    3rd enumeration implementation that ends up out of sync with EDK2 and
+> >    the kernel (there are frequent issues because of how those existing
+> >    implementations differ.
+> > 2) Figure out how to enumerate in kernel. I never put a huge amount of work
+> >    into this, but it seemed likely to involve a nasty dance with similar
+> >    very specific code to that EDK2 is carrying and would very challenging
+> >    to upstream (given the lack of clarity on real use cases for PXBs and
+> >    DT).
+> > 3) Hack it based on the control we have which is bus numbers.
+> >    No one liked this but it worked :)
+> > 
+> > The other little wrinkle would be the need to define full bindings for CXL
+> > on DT + implement a fairly complex kernel stack as equivalent in ACPI
+> > involves a static table, CEDT, new runtime queries via _DSM and a description
+> > of various components. Doable, but so far there is no interest on physical
+> > platforms. Worth noting that for now, the QEMU CXL emulation is all about
+> > testing and developing the OS stack, not about virtualization (performance
+> > is terrible except in some very contrived situations!)
+> > 
+> > There is only a very simple test in here, because my intent is not to
+> > duplicate what we have on x86, but just to do a smoke test that everything
+> > is hooked up.  In general we need much more comprehensive end to end CXL
+> > tests but that requires a reaonsably stable guest software stack. A few
+> > people have expressed interest in working on that, but we aren't there yet.
+> > 
+> > Note that this series has a very different use case to that in the proposed
+> > SBSA-ref support:
+> > https://lore.kernel.org/qemu-devel/20250117034343.26356-1-wangyuquan1236@phytium.com.cn/
+> > 
+> > SBSA-ref is a good choice if you want a relatively simple mostly fixed
+> > configuration.  That works well with the limited host system
+> > discoverability etc as EDK2 can be build against a known configuration.
+> > 
+> > My interest with this support in arm/virt is support host software stack
+> > development (we have a wide range of contributors, most of whom are working
+> > on emulation + the kernel support). I care about the weird corners. As such
+> > I need to be able to bring up variable numbers of host bridges, multiple CXL
+> > Fixed Memory Windows with varying characteristics (interleave etc), complex
+> > NUMA topologies with wierd performance characteristics etc. We can do that
+> > on x86 upstream today, or my gitlab tree. Note that we need arm support
+> > for some arch specific features in the near future (cache flushing).
+> > Doing kernel development with this need for flexibility on SBSA-ref is not
+> > currently practical. SBSA-ref CXL support is an excellent thing, just
+> > not much use to me for this work.
+> > 
+> > Also, we are kicking off some work on DCD virtualization, particularly to
+> > support inter-host shared memory being presented up into a VM. That
+> > will need upstream support on arm64 as it is built on top of the existing
+> > CXL emulation to avoid the need for a separate guest software stack.
+> > 
+> > Note this is TCG only - it is possible to support limited use with KVM but
+> > that needs additional patches not yet ready for upstream.  The challenge
+> > is interleave - and the solution is don't interleave if you want to run
+> > with KVM.
+> > 
+> > Jonathan Cameron (5):
+> >   hw/cxl-host: Add an index field to CXLFixedMemoryWindow
+> >   hw/cxl: Make the CXL fixed memory windows devices.
+> >   hw/cxl-host: Allow split of establishing memory address and mmio
+> >     setup.
+> >   hw/arm/virt: Basic CXL enablement on pci_expander_bridge instances
+> >     pxb-cxl
+> >   qtest/cxl: Add aarch64 virt test for CXL
+> > 
+> >  include/hw/arm/virt.h     |   4 +
+> >  include/hw/cxl/cxl.h      |   4 +
+> >  include/hw/cxl/cxl_host.h |   6 +-
+> >  hw/acpi/cxl.c             |  76 +++++++--------
+> >  hw/arm/virt-acpi-build.c  |  34 +++++++
+> >  hw/arm/virt.c             |  29 ++++++
+> >  hw/cxl/cxl-host-stubs.c   |   8 +-
+> >  hw/cxl/cxl-host.c         | 190 ++++++++++++++++++++++++++++++++------
+> >  hw/i386/pc.c              |  51 +++++-----
+> >  tests/qtest/cxl-test.c    |  59 +++++++++---
+> >  tests/qtest/meson.build   |   1 +
+> >  11 files changed, 353 insertions(+), 109 deletions(-)
+> > 
+> > -- 
+> > 2.48.1
+> > 
+> >   
 
 
