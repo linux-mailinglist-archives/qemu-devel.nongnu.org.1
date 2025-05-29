@@ -2,112 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD34AC82B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 21:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6F5AC82BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 May 2025 21:31:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKiwb-0003hA-Pk; Thu, 29 May 2025 15:29:38 -0400
+	id 1uKixq-0001rN-6P; Thu, 29 May 2025 15:30:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uKiw6-00034t-67; Thu, 29 May 2025 15:29:16 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
+ id 1uKixZ-0001Mb-JD
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 15:30:38 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uKiw2-0000ie-Ad; Thu, 29 May 2025 15:29:05 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54TCcVgk002036;
- Thu, 29 May 2025 19:29:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Rg5jUy
- P8alS4V9q3WytclRClQTCPpEcWIgh5+DFQQOs=; b=Bo0s2/gNALyNO2KoQyAE+8
- fFq1W+rGte3Ir2TYey/u3dYk1GzkgBPXav2Xl5+au6zRn1ATE6hL7QZcDcyG8gbE
- DOBqOIM/iilcm53j1knVBNKGn4G5DqoOrSLaRN3QAhOoVm1dxHZI6eXOe9pJAaL7
- u7VKqcGnlgGZLfNtYO0CqyxDIGfbaGQwxYTyn0u9mcF19uXC9osgjNL1gXZrRyho
- djmpnchiFrO1N6nh9saWJca0TCwhtQe/NGNYDZn7tOdrnmylTql3lCjGKxfuMv44
- XWSv2nsZzFYVb38mIrJUhywk/hFFE9xPZTA5ZScy0be9GgvhiEaBepfXy7HvOAzg
- ==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46x40gqjk4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 May 2025 19:29:00 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54THYvaK029562;
- Thu, 29 May 2025 19:28:59 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46usxn5whj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 May 2025 19:28:59 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54TJSwnA4522564
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 May 2025 19:28:58 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 019595805D;
- Thu, 29 May 2025 19:28:58 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36D6358052;
- Thu, 29 May 2025 19:28:57 +0000 (GMT)
-Received: from [9.61.85.78] (unknown [9.61.85.78])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 29 May 2025 19:28:57 +0000 (GMT)
-Message-ID: <2cf5fa7f-1756-4639-b3a3-87104493d9d5@linux.ibm.com>
-Date: Thu, 29 May 2025 15:28:56 -0400
+ (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
+ id 1uKixU-0001En-Eb
+ for qemu-devel@nongnu.org; Thu, 29 May 2025 15:30:35 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54TGfsbY028801;
+ Thu, 29 May 2025 19:30:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2025-04-25; bh=mYS068UBWcZqwke51ll5PH+5wr7OO
+ nGFQ4vmK8X2Nt8=; b=CFDbLdROEOAG9Y2fn5gO8ojyIbvuFCj+k/cO57LpATce3
+ LQbQpcJfBhWuZPdilyhEYMLdkg7I5byEDbxBir/DZehmIoeHq6rGiy8TiuwD1xls
+ 8kvYin8xLmv9ZaWmws09WiCZWGXmo2OtfTMkQ8BNmIqVYV/HFOvO1WDk5LX6m4WY
+ dSVtRNALtXNYeJQoS5NXywUV9ijA766S/G84i0zdf1ZmoH0NUZgFgtAzMdyBi76s
+ MivVbi5rePd8dPsk9oh1sld7Xt4dkMwv1ehWlm1caJKMmlfVdjqvZjrBVAsIStZ1
+ eEJR4qJ3YMRN0O3KCmEWxZ+hHGGvm0KcVXKqHkdCw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46v3pd8r7n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 May 2025 19:30:26 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 54TJSsCK019346; Thu, 29 May 2025 19:30:25 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 46u4jccry7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 May 2025 19:30:25 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54TJUOV5005039;
+ Thu, 29 May 2025 19:30:24 GMT
+Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
+ (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
+ [100.100.254.235])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 46u4jccrx6-1; Thu, 29 May 2025 19:30:24 +0000
+From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, pbonzini@redhat.com, mjt@tls.msk.ru,
+ marcel.apfelbaum@gmail.com, richard.henderson@linaro.org,
+ eduardo@habkost.net, vasant.hegde@amd.com,
+ suravee.suthikulpanit@amd.com, santosh.shukla@amd.com,
+ sarunkod@amd.com, brijesh.singh@amd.com, joao.m.martins@oracle.com,
+ boris.ostrovsky@oracle.com, alejandro.j.jimenez@oracle.com
+Subject: [PATCH v3 0/7] amd_iommu: Fixes to align with AMDVi specification
+Date: Thu, 29 May 2025 19:30:16 +0000
+Message-ID: <20250529193023.3590780-1-alejandro.j.jimenez@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 17/25] pc-bios/s390-ccw: Add signature verification for
- secure IPL in audit mode
-To: Thomas Huth <thuth@redhat.com>, richard.henderson@linaro.org,
- david@redhat.com, pbonzini@redhat.com
-Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, jrossi@linux.ibm.com,
- fiuczy@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- farman@linux.ibm.com, iii@linux.ibm.com, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org
-References: <20250508225042.313672-1-zycai@linux.ibm.com>
- <20250508225042.313672-18-zycai@linux.ibm.com>
- <53616ccd-3fb5-41e9-bd6a-0a0243b1a392@redhat.com>
-Content-Language: en-US
-From: Zhuoying Cai <zycai@linux.ibm.com>
-In-Reply-To: <53616ccd-3fb5-41e9-bd6a-0a0243b1a392@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=avmyCTZV c=1 sm=1 tr=0 ts=6838b57c cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=f-wdDlZkA8hqA7SaI3YA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDE4NSBTYWx0ZWRfX9h2gWJv4w5r0
- fVSV3FdqCgh9u0j8IviwOxxrULS9daCOO63q28woqkr0/1FmT4nNl3wTpwUxi9S/6pgkt+S+q0y
- 1KNfaq0ATCflPkfwG0ZSmUvms1+g0N+oxka9ILTt01r1NzmAMUkJtHTYP/8bSlpVAJBSnyyYZzN
- 9lgrdo3R9liVUYFKVeqK3Ngo4pqGhzrCjIFeruDgnAQjbQEqrRl2kT6ASYuByxZ8W3cPE3+DU8P
- ozHjiRXi2qBU5Zc8RPE2Ugl1+sMoYp6xul1nFN3kgfzhViz739DF1L77dTVzhT+BzT0sdvzPFT6
- 55ctSEclQyOwCTMu1/L7ZcVLiWsI7ejc7jQH9QxZjROj/xnTHsQm7sZRGLn3Dxrk32ghZ4qYnHP
- rSrN6tj299lYVruPID6AJgP4I5OWiqu4Tvw8nboQH9WSghbHkuOivq0KErUB7e9rDiQeZHd9
-X-Proofpoint-GUID: N4ozhC6ZzGg9eETvkqmzsFldlq51Bfyy
-X-Proofpoint-ORIG-GUID: N4ozhC6ZzGg9eETvkqmzsFldlq51Bfyy
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-29_08,2025-05-29_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0
- malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505290185
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=zycai@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ definitions=2025-05-29_09,2025-05-29_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ adultscore=0 spamscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2505290190
+X-Proofpoint-ORIG-GUID: GkA5CQPi9FAYpJDhTcayO4PLJPkhjnqM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDE5MCBTYWx0ZWRfX5rs2M7HSY1b3
+ bx7BfNYBhNXwiPrnR5wVdUmT/r6BCsjFfd86r+/U5nNZV7+FlRq0YOiLD17/vdRjmw0nVKPkwpb
+ 3oZHGxz1JGg+CDqd4my9IjskUa5xzT/mA98Y+/0IZWEmvLIhZ7000xY0QFHNcz3rpLA4nCJvUAs
+ X/0KVZ0zb6vU3Go6iasyMjKey0MLk4OBfw2pKfhrv/hRwJDogBgm2FVnzBbVM8FfS7CvPEMhcnE
+ EHvT9QG9Ey/lotrXi+9kpkOKlvJDWzsnUDQhMuLl3B60m801sGgQtOVJhWhIQWEMrBkpwI+Carp
+ EAtzjXWCe2Hgc8zMFZVwygOjIPfkF4cPW03PQQ3PUVxyyAWhdl+CK0BS3jkoZI5uzS7dKWZdpeC
+ yvhkb3aLeXEQ14vOQJGzxpGJvxtFlpAOCwqMk1sFtQFFylDHPbBzcvhIa8QlhIqfK/+c36iW
+X-Authority-Analysis: v=2.4 cv=UZNRSLSN c=1 sm=1 tr=0 ts=6838b5d2 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=Xi8gk91kliggzhbz9PoA:9
+ cc=ntf awl=host:13206
+X-Proofpoint-GUID: GkA5CQPi9FAYpJDhTcayO4PLJPkhjnqM
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.499,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -125,150 +113,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The main reason for sending this new revision so soon is that v2 included a
+duplicated [PATCH 5/7]. I fixed a typo in the commit subject and missed
+removing the old patch. Apologies for the mistake.
 
-On 5/20/25 6:25 AM, Thomas Huth wrote:
-> On 09/05/2025 00.50, Zhuoying Cai wrote:
->> Enable secure IPL in audit mode, which performs signature verification,
->> but any error does not terminate the boot process. Only warnings will be
->> logged to the console instead.
->>
->> Add a comp_len variable to store the length of a segment in
->> zipl_load_segment. comp_len variable is necessary to store the
->> calculated segment length and is used during signature verification.
->> Return the length on success, or a negative return code on failure.
->>
->> Secure IPL in audit mode requires at least one certificate provided in
->> the key store along with necessary facilities (Secure IPL Facility,
->> Certificate Store Facility and secure IPL extension support).
->>
->> Note: Secure IPL in audit mode is implemented for the SCSI scheme of
->> virtio-blk/virtio-scsi devices.
->>
->> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
->> ---
->>   pc-bios/s390-ccw/Makefile     |   3 +-
->>   pc-bios/s390-ccw/bootmap.c    | 192 +++++++++++++++++++++++++++++++++-
->>   pc-bios/s390-ccw/bootmap.h    |   9 ++
->>   pc-bios/s390-ccw/main.c       |   9 ++
->>   pc-bios/s390-ccw/s390-ccw.h   |  14 +++
->>   pc-bios/s390-ccw/sclp.c       |  44 ++++++++
->>   pc-bios/s390-ccw/sclp.h       |   6 ++
->>   pc-bios/s390-ccw/secure-ipl.c | 175 +++++++++++++++++++++++++++++++
->>   pc-bios/s390-ccw/secure-ipl.h | 109 +++++++++++++++++++
->>   9 files changed, 558 insertions(+), 3 deletions(-)
->>   create mode 100644 pc-bios/s390-ccw/secure-ipl.c
->>   create mode 100644 pc-bios/s390-ccw/secure-ipl.h
->>
->> diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
->> index dc69dd484f..fedb89a387 100644
->> --- a/pc-bios/s390-ccw/Makefile
->> +++ b/pc-bios/s390-ccw/Makefile
->> @@ -34,7 +34,8 @@ QEMU_DGFLAGS = -MMD -MP -MT $@ -MF $(@D)/$(*F).d
->>   .PHONY : all clean build-all distclean
->>   
->>   OBJECTS = start.o main.o bootmap.o jump2ipl.o sclp.o menu.o netmain.o \
->> -	  virtio.o virtio-net.o virtio-scsi.o virtio-blkdev.o cio.o dasd-ipl.o
->> +	  virtio.o virtio-net.o virtio-scsi.o virtio-blkdev.o cio.o dasd-ipl.o \
->> +	  secure-ipl.o
->>   
->>   SLOF_DIR := $(SRC_PATH)/../../roms/SLOF
->>   
->> diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
->> index 3dd09fda7e..06cea0929a 100644
->> --- a/pc-bios/s390-ccw/bootmap.c
->> +++ b/pc-bios/s390-ccw/bootmap.c
->> @@ -15,6 +15,7 @@
->>   #include "bootmap.h"
->>   #include "virtio.h"
->>   #include "bswap.h"
->> +#include "secure-ipl.h"
->>   
->>   #ifdef DEBUG
->>   /* #define DEBUG_FALLBACK */
->> @@ -34,6 +35,13 @@ static uint8_t sec[MAX_SECTOR_SIZE*4] __attribute__((__aligned__(PAGE_SIZE)));
->>   const uint8_t el_torito_magic[] = "EL TORITO SPECIFICATION"
->>                                     "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
->>   
->> +/* sector for storing certificates */
->> +static uint8_t certs_sec[CERT_MAX_SIZE * MAX_CERTIFICATES];
-> 
-> If I calculated correctly, that's a buffer of 512 kB... That's quite huge 
-> already. Would it be possible to malloc() it only if we really need this 
-> instead of statically allocating it?
-> 
->> +/* sector for storing signatures */
->> +static uint8_t sig_sec[MAX_SECTOR_SIZE] __attribute__((__aligned__(PAGE_SIZE)));
->> +
->> +ipl_print_func_t zipl_secure_print_func;
->> +
->>   /*
->>    * Match two CCWs located after PSW and eight filler bytes.
->>    * From libmagic and arch/s390/kernel/head.S.
->> @@ -676,6 +684,155 @@ static int zipl_load_segment(ComponentEntry *entry, uint64_t address)
->>       return comp_len;
->>   }
->>   
->> +static uint32_t zipl_handle_sig_entry(ComponentEntry *entry)
->> +{
->> +    uint32_t sig_len;
->> +
->> +    if (zipl_load_segment(entry, (uint64_t)sig_sec) < 0) {
->> +        return -1;
->> +    }
->> +
->> +    if (entry->compdat.sig_info.format != DER_SIGNATURE_FORMAT) {
->> +        puts("Signature is not in DER format");
->> +        return -1;
->> +    }
->> +    sig_len = entry->compdat.sig_info.sig_len;
->> +
->> +    return sig_len;
->> +}
->> +
->> +static int handle_certificate(int *cert_table, uint64_t **cert,
->> +                             uint64_t cert_len, uint8_t cert_idx,
->> +                             IplSignatureCertificateList *certs, int cert_index)
->> +{
->> +    bool unused;
->> +
->> +    unused = cert_table[cert_idx] == -1;
->> +    if (unused) {
->> +        if (zipl_secure_request_certificate(*cert, cert_idx)) {
->> +            zipl_secure_cert_list_add(certs, cert_index, *cert, cert_len);
->> +            cert_table[cert_idx] = cert_index;
->> +            *cert += cert_len;
-> 
-> So zipl_secure_cert_list_add() checks for the index not going beyond 
-> MAX_CERTIFICATES, but here you ignore that error and update cert_table and 
-> *cert anyway? Sounds like a potential bug to me.
-> 
+Additional changes in v3:
+- Fixed typo on [PATCH 1/7] subject line (s/Miscellanous/Miscellaneous/).
+- Added 'Fixes:' tag to [PATCH 5/7].
+- Added Vasant's R-b to patches 4,5,7.
 
-If zipl_secure_request_certificate() successfully retrieves a
-certificate from the S390 certificate store, updating the corresponding
-entry in cert_table should not pose any issues. This is because we
-strictly limit the number of certificates to MAX_CERTIFICATES, and
-cert_idx is guaranteed to be within the range [0, 63].
+Thank you,
+Alejandro
 
-The size of cert_table and the memory allocated for *cert are both
-defined based on MAX_CERTIFICATES and MAX_CERT_SIZE, so as long as the
-request is successful, the update is safe.
+v2:
+https://lore.kernel.org/qemu-devel/20250528221725.3554040-1-alejandro.j.jimenez@oracle.com/
 
-The index check in zipl_secure_cert_list_add() ensures that the IIRB
-cert list does not exceed the valid range defined by MAX_CERTIFICATES,
-preventing out-of-bound memory overwrites.
+v1:
+https://lore.kernel.org/all/20250311152446.45086-1-alejandro.j.jimenez@oracle.com/
 
->> +        } else {
->> +            puts("Could not get certificate");
->> +            return -1;
->> +        }
->> +
->> +        /* increment cert_index for the next cert entry */
->> +        return ++cert_index;
->> +    }
->> +
->> +    return cert_index;
->> +}
->> +
 
-[...]
+Alejandro Jimenez (7):
+  amd_iommu: Fix Miscellaneous Information Register 0 offsets
+  amd_iommu: Fix Device ID decoding for INVALIDATE_IOTLB_PAGES command
+  amd_iommu: Update bitmasks representing DTE reserved fields
+  amd_iommu: Fix masks for various IOMMU MMIO Registers
+  amd_iommu: Fix mask to retrieve Interrupt Table Root Pointer from DTE
+  amd_iommu: Fix the calculation for Device Table size
+  amd_iommu: Remove duplicated definitions
+
+ hw/i386/amd_iommu.c | 15 ++++++------
+ hw/i386/amd_iommu.h | 59 ++++++++++++++++++++++-----------------------
+ 2 files changed, 37 insertions(+), 37 deletions(-)
+
+
+base-commit: 80db93b2b88f9b3ed8927ae7ac74ca30e643a83e
+-- 
+2.43.5
+
 
