@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E44AC88DA
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4DFAC889B
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:16:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtxc-0003VP-4S; Fri, 30 May 2025 03:15:26 -0400
+	id 1uKtxB-0002gl-Hf; Fri, 30 May 2025 03:14:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtwa-00029u-99
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:21 -0400
+ id 1uKtwd-0002CK-Be
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtwY-0006xS-0z
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:19 -0400
+ id 1uKtwb-0006xi-ES
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589257;
+ s=mimecast20190719; t=1748589260;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kM+Uqzrg6CsjANhD+NLptDhZgNxBcAj170NDbmnTAFY=;
- b=Kvo74HqGsMaZbjn48j9FcfaiNZ1U6z57HKQRx/KRux7aVGlYtZ5czkg7aANdtE/omLeqKk
- JA5KOZNnOO7qnATU5qUXQO1ebw8d/l4x39459lKEEIPxJiDrir4bpRkona4XWxhm2AQNqk
- +HJJPbovaPG0LS5lcarKkVTYSWRXKtQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bFNqds/UL6o/sc+RM/Lxf3HEKhC7nuldQTtlYjlAx38=;
+ b=XKc5BM4uSZjVBjRH/c7Ijawx74o6d+ygbRci+mkHq968Gx7r8j3WR2pyfnjhafa1KaS3kM
+ iYtI+UQKmOggo77iVOO8TXglXc8qGbQcrYrFKf3SfYeJbhP93VH79IKi8VLpzYo6YDFBdd
+ 1yUUqo9cX9YoIRPREdE79L5UjtKzapQ=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-372-oxueP_PUMlerlW59aUPINQ-1; Fri, 30 May 2025 03:14:16 -0400
-X-MC-Unique: oxueP_PUMlerlW59aUPINQ-1
-X-Mimecast-MFC-AGG-ID: oxueP_PUMlerlW59aUPINQ_1748589255
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ad556f5f1a9so128180666b.3
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:15 -0700 (PDT)
+ us-mta-544-qf2RhehQNy-97jsvkz9zBQ-1; Fri, 30 May 2025 03:14:19 -0400
+X-MC-Unique: qf2RhehQNy-97jsvkz9zBQ-1
+X-Mimecast-MFC-AGG-ID: qf2RhehQNy-97jsvkz9zBQ_1748589258
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-acb66d17be4so123602166b.2
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589254; x=1749194054;
+ d=1e100.net; s=20230601; t=1748589256; x=1749194056;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kM+Uqzrg6CsjANhD+NLptDhZgNxBcAj170NDbmnTAFY=;
- b=IyKFP9OTzkjK5TUPA3+HoxhRZLxkJQ2/n2ESVqVTtZKsoF6SZWKi3t7yIq0dVI3ft7
- f/eWJphHpugu3thPNbHL7f5uLr1PyNB12UCjyOYUh/f5VTENI2I4iFKDDbCPZpdyHh0j
- ePDCdCYp62Qe7MJ42/eCZ1F86NdPaM/WqLUhDUi2/xPqsTpftflnM6SCu/plEFH7jxQV
- mvOAVayOwQSwSFtXJ29210fq0VKX9xO/BP/dxsW3JYeLJ0r1OQfMuNP+9/nvb+2qPFfQ
- fTAuf5qsMhjHBkU9Dt958ZHL02JlKo9xNHrJe5KfzH/WT4fL2o9RjG4IRfJVNE+UYoKz
- d7GA==
-X-Gm-Message-State: AOJu0Yx1T4+4+vQHi1lFfXm3MFfWuXUq5rHh8e5ut94Or+UyJLKJ40ZC
- aPxBrS1RgvYYEkRNlujvolZ0yQrXdVZCtWVfkClcl+26i4MnYsqTVhCTObSQcJ19OCjTJbrK6sn
- zGAVZ/alUGNJr+E2vfpdPgAi7kc/x/YlqDgoex8DuKBE3GwekMsxeRWPvzHsdNn7vaLC+FTPuSl
- AVcW0sTkEDPsFTIVZi2yMMTuBnXVn+89fGJy9JTGF5
-X-Gm-Gg: ASbGnctuENQWSdoOiyJY5waa1lAkTNlPJUimTajuf1rZdLLMciTJchlZ7FkTOWqqUFs
- 6lx+4F4rQZmK79w3CEDQaDhd5m8c58Wm0aOjK5QUeJDyTd5K7V/jJPzic0TuO8V34Xy8UFy24fe
- JdM+6f4raxAN2qj71cU1J9KjvwoG329MQ95engD+bBVe+kf/h6+8u0b7FICYQ8TgXYaEGns1eFf
- P7P033Z/0cnK44HD3jV0eMt6bQYgumYtcvGUbbzWEVrwQ29yk1T6IRuYfDF3cMttWFYUzyTWfgn
- 1FarvR4DJHIIig==
-X-Received: by 2002:a17:907:7f89:b0:ad8:89f8:3f66 with SMTP id
- a640c23a62f3a-adb3228d803mr210221066b.21.1748589253993; 
- Fri, 30 May 2025 00:14:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEf0imaox/m4B9O0OoDOlTi8wQUw/G32fmoNYstLV1iJxlkLvnh9R36kY3gYTh/5lSLoPwwQw==
-X-Received: by 2002:a17:907:7f89:b0:ad8:89f8:3f66 with SMTP id
- a640c23a62f3a-adb3228d803mr210219066b.21.1748589253532; 
- Fri, 30 May 2025 00:14:13 -0700 (PDT)
+ bh=bFNqds/UL6o/sc+RM/Lxf3HEKhC7nuldQTtlYjlAx38=;
+ b=Xv5A1mh0VgR+oZ6LrPIoiajNhJ5fCzZOgKNkMbFgAQUzaOaPK+VEirJFhq1LFxYvsW
+ UHNu8aWu0TjTuNGzKzns+PW3X9AHUr/iW6XZ5ls+xGrsq8pesvYPkJifHNvDHm9T9OIH
+ omXW53NgOJRuAxHbNgRVuh+L1t7t4j83w50PsNCB58FbL4YeiCXHRlIwuLxHmR5Faf9a
+ m/gzLfoBZcovp+ZAYKCow/FM2HEeh8bDW4AaldK4+ji8s5sjtDmu1ZF9CgWUtvR+3zpg
+ Xs/NnAw9g/vI2gUpObt+qlICItT2zJZqDtQKLwYf9QHhCDkdKiCrIFNKYmWhFTtX/f84
+ xzWA==
+X-Gm-Message-State: AOJu0YzUyBFCR8xkyiUCXsr/Up2OOdpWkNJHheghp72P6yU4EB6lGfKq
+ ufUO6pWZtWYs1sNly4S1PyQNrsNt2XHznR+GuBIyJHjU47qx/TwfgH1jwAolYNa1AHzajzezkEN
+ iI0fJjyzeQzzSys2Jo05TsH6mWSh1HXwfMV4e6Ek9m93nLKJ+Eed/lXivDY0wFB1LLJwKj/iH51
+ eH1Vl/uXCPalS7v2eCc15w3iO3k7JUjeayf7cw08Gc
+X-Gm-Gg: ASbGncsopRRKgxGIxGK98ePuIG7EI7wiRSzUQf6vJ7fj45aSpLsZlDR9OFPJFXfJljl
+ WvJWq1qkl1re95LqHEk3nZk2aSuW2nHqY6GqOdgAwOp4qlqemYLwCLEQLLq9F+4uDwXvDffwsHZ
+ uiCR2n1vxwUzpW3/PW7RBY/2A21uFipS3+w8ZQXJSvwWT8XvG32oozA6deMs/TE/cmxZCZUhKRS
+ 0jvjZXKQjIokJklQGl+E8zHrw28u6vyma/x16tf0+FDSluSHd63RR5hBiBHGo+pwWSc+azjsI88
+ W3+SaHhHlycSfIOS3nskLzVw
+X-Received: by 2002:a17:906:99c2:b0:ad6:53a8:32ad with SMTP id
+ a640c23a62f3a-adb32598a6fmr204809566b.57.1748589256388; 
+ Fri, 30 May 2025 00:14:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE30DC3tbQsNEyueaF9CFIlspmLG0SiJIK5c0RsrbBotwjdeh4u0hV/T17HQ9ZR7lSpFaI4VQ==
+X-Received: by 2002:a17:906:99c2:b0:ad6:53a8:32ad with SMTP id
+ a640c23a62f3a-adb32598a6fmr204805666b.57.1748589255670; 
+ Fri, 30 May 2025 00:14:15 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d84e75fsm274611166b.81.2025.05.30.00.14.12
+ a640c23a62f3a-ada5d7fed3dsm281109366b.12.2025.05.30.00.14.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:14:12 -0700 (PDT)
+ Fri, 30 May 2025 00:14:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 33/77] i386/tdx: Track RAM entries for TDX VM
-Date: Fri, 30 May 2025 09:12:03 +0200
-Message-ID: <20250530071250.2050910-34-pbonzini@redhat.com>
+Subject: [PULL 34/77] headers: Add definitions from UEFI spec for volumes,
+ resources, etc...
+Date: Fri, 30 May 2025 09:12:04 +0200
+Message-ID: <20250530071250.2050910-35-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
@@ -109,211 +110,220 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-The RAM of TDX VM can be classified into two types:
+Add UEFI definitions for literals, enums, structs, GUIDs, etc... that
+will be used by TDX to build the UEFI Hand-Off Block (HOB) that is passed
+to the Trusted Domain Virtual Firmware (TDVF).
 
- - TDX_RAM_UNACCEPTED: default type of TDX memory, which needs to be
-   accepted by TDX guest before it can be used and will be all-zeros
-   after being accepted.
+All values come from the UEFI specification [1], PI spec [2] and TDVF
+design guide[3].
 
- - TDX_RAM_ADDED: the RAM that is ADD'ed to TD guest before running, and
-   can be used directly. E.g., TD HOB and TEMP MEM that needed by TDVF.
-
-Maintain TdxRamEntries[] which grabs the initial RAM info from e820 table
-and mark each RAM range as default type TDX_RAM_UNACCEPTED.
-
-Then turn the range of TD HOB and TEMP MEM to TDX_RAM_ADDED since these
-ranges will be ADD'ed before TD runs and no need to be accepted runtime.
-
-The TdxRamEntries[] are later used to setup the memory TD resource HOB
-that passes memory info from QEMU to TDVF.
+[1] UEFI Specification v2.1.0 https://uefi.org/sites/default/files/resources/UEFI_Spec_2_10_Aug29.pdf
+[2] UEFI PI spec v1.8 https://uefi.org/sites/default/files/resources/UEFI_PI_Spec_1_8_March3.pdf
+[3] https://software.intel.com/content/dam/develop/external/us/en/documents/tdx-virtual-firmware-design-guide-rev-1.pdf
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-22-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-23-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/tdx.h |  14 ++++++
- target/i386/kvm/tdx.c | 109 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 123 insertions(+)
+ include/standard-headers/uefi/uefi.h | 187 +++++++++++++++++++++++++++
+ 1 file changed, 187 insertions(+)
+ create mode 100644 include/standard-headers/uefi/uefi.h
 
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index 28a03c2a7b8..36a7400e748 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -20,6 +20,17 @@ typedef struct TdxGuestClass {
- /* TDX requires bus frequency 25MHz */
- #define TDX_APIC_BUS_CYCLES_NS 40
- 
-+enum TdxRamType {
-+    TDX_RAM_UNACCEPTED,
-+    TDX_RAM_ADDED,
-+};
+diff --git a/include/standard-headers/uefi/uefi.h b/include/standard-headers/uefi/uefi.h
+new file mode 100644
+index 00000000000..5256349ec0b
+--- /dev/null
++++ b/include/standard-headers/uefi/uefi.h
+@@ -0,0 +1,187 @@
++/*
++ * Copyright (C) 2025 Intel Corporation
++ *
++ * Author: Isaku Yamahata <isaku.yamahata at gmail.com>
++ *                        <isaku.yamahata at intel.com>
++ *         Xiaoyao Li <xiaoyao.li@intel.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-+typedef struct TdxRamEntry {
-+    uint64_t address;
-+    uint64_t length;
-+    enum TdxRamType type;
-+} TdxRamEntry;
++#ifndef HW_I386_UEFI_H
++#define HW_I386_UEFI_H
 +
- typedef struct TdxGuest {
-     X86ConfidentialGuest parent_obj;
- 
-@@ -34,6 +45,9 @@ typedef struct TdxGuest {
- 
-     MemoryRegion *tdvf_mr;
-     TdxFirmware tdvf;
++/***************************************************************************/
++/*
++ * basic EFI definitions
++ * supplemented with UEFI Specification Version 2.8 (Errata A)
++ * released February 2020
++ */
++/* UEFI integer is little endian */
 +
-+    uint32_t nr_ram_entries;
-+    TdxRamEntry *ram_entries;
- } TdxGuest;
- 
- #ifdef CONFIG_TDX
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index bfdae4f1c0c..e06f5d0bd43 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -18,6 +18,7 @@
- #include "crypto/hash.h"
- #include "system/system.h"
- 
-+#include "hw/i386/e820_memory_layout.h"
- #include "hw/i386/tdvf.h"
- #include "hw/i386/x86.h"
- #include "kvm_i386.h"
-@@ -146,11 +147,110 @@ void tdx_set_tdvf_region(MemoryRegion *tdvf_mr)
-     tdx_guest->tdvf_mr = tdvf_mr;
- }
- 
-+static void tdx_add_ram_entry(uint64_t address, uint64_t length,
-+                              enum TdxRamType type)
-+{
-+    uint32_t nr_entries = tdx_guest->nr_ram_entries;
-+    tdx_guest->ram_entries = g_renew(TdxRamEntry, tdx_guest->ram_entries,
-+                                     nr_entries + 1);
++typedef struct {
++    uint32_t Data1;
++    uint16_t Data2;
++    uint16_t Data3;
++    uint8_t Data4[8];
++} EFI_GUID;
 +
-+    tdx_guest->ram_entries[nr_entries].address = address;
-+    tdx_guest->ram_entries[nr_entries].length = length;
-+    tdx_guest->ram_entries[nr_entries].type = type;
-+    tdx_guest->nr_ram_entries++;
-+}
++typedef enum {
++    EfiReservedMemoryType,
++    EfiLoaderCode,
++    EfiLoaderData,
++    EfiBootServicesCode,
++    EfiBootServicesData,
++    EfiRuntimeServicesCode,
++    EfiRuntimeServicesData,
++    EfiConventionalMemory,
++    EfiUnusableMemory,
++    EfiACPIReclaimMemory,
++    EfiACPIMemoryNVS,
++    EfiMemoryMappedIO,
++    EfiMemoryMappedIOPortSpace,
++    EfiPalCode,
++    EfiPersistentMemory,
++    EfiUnacceptedMemoryType,
++    EfiMaxMemoryType
++} EFI_MEMORY_TYPE;
 +
-+static int tdx_accept_ram_range(uint64_t address, uint64_t length)
-+{
-+    uint64_t head_start, tail_start, head_length, tail_length;
-+    uint64_t tmp_address, tmp_length;
-+    TdxRamEntry *e;
-+    int i = 0;
++#define EFI_HOB_HANDOFF_TABLE_VERSION 0x0009
 +
-+    do {
-+        if (i == tdx_guest->nr_ram_entries) {
-+            return -1;
-+        }
++#define EFI_HOB_TYPE_HANDOFF              0x0001
++#define EFI_HOB_TYPE_MEMORY_ALLOCATION    0x0002
++#define EFI_HOB_TYPE_RESOURCE_DESCRIPTOR  0x0003
++#define EFI_HOB_TYPE_GUID_EXTENSION       0x0004
++#define EFI_HOB_TYPE_FV                   0x0005
++#define EFI_HOB_TYPE_CPU                  0x0006
++#define EFI_HOB_TYPE_MEMORY_POOL          0x0007
++#define EFI_HOB_TYPE_FV2                  0x0009
++#define EFI_HOB_TYPE_LOAD_PEIM_UNUSED     0x000A
++#define EFI_HOB_TYPE_UEFI_CAPSULE         0x000B
++#define EFI_HOB_TYPE_FV3                  0x000C
++#define EFI_HOB_TYPE_UNUSED               0xFFFE
++#define EFI_HOB_TYPE_END_OF_HOB_LIST      0xFFFF
 +
-+        e = &tdx_guest->ram_entries[i++];
-+    } while (address + length <= e->address || address >= e->address + e->length);
++typedef struct {
++    uint16_t HobType;
++    uint16_t HobLength;
++    uint32_t Reserved;
++} EFI_HOB_GENERIC_HEADER;
 +
-+    /*
-+     * The to-be-accepted ram range must be fully contained by one
-+     * RAM entry.
-+     */
-+    if (e->address > address ||
-+        e->address + e->length < address + length) {
-+        return -1;
-+    }
++typedef uint64_t EFI_PHYSICAL_ADDRESS;
++typedef uint32_t EFI_BOOT_MODE;
 +
-+    if (e->type == TDX_RAM_ADDED) {
-+        return 0;
-+    }
++typedef struct {
++    EFI_HOB_GENERIC_HEADER Header;
++    uint32_t Version;
++    EFI_BOOT_MODE BootMode;
++    EFI_PHYSICAL_ADDRESS EfiMemoryTop;
++    EFI_PHYSICAL_ADDRESS EfiMemoryBottom;
++    EFI_PHYSICAL_ADDRESS EfiFreeMemoryTop;
++    EFI_PHYSICAL_ADDRESS EfiFreeMemoryBottom;
++    EFI_PHYSICAL_ADDRESS EfiEndOfHobList;
++} EFI_HOB_HANDOFF_INFO_TABLE;
 +
-+    tmp_address = e->address;
-+    tmp_length = e->length;
++#define EFI_RESOURCE_SYSTEM_MEMORY          0x00000000
++#define EFI_RESOURCE_MEMORY_MAPPED_IO       0x00000001
++#define EFI_RESOURCE_IO                     0x00000002
++#define EFI_RESOURCE_FIRMWARE_DEVICE        0x00000003
++#define EFI_RESOURCE_MEMORY_MAPPED_IO_PORT  0x00000004
++#define EFI_RESOURCE_MEMORY_RESERVED        0x00000005
++#define EFI_RESOURCE_IO_RESERVED            0x00000006
++#define EFI_RESOURCE_MEMORY_UNACCEPTED      0x00000007
++#define EFI_RESOURCE_MAX_MEMORY_TYPE        0x00000008
 +
-+    e->address = address;
-+    e->length = length;
-+    e->type = TDX_RAM_ADDED;
++#define EFI_RESOURCE_ATTRIBUTE_PRESENT                  0x00000001
++#define EFI_RESOURCE_ATTRIBUTE_INITIALIZED              0x00000002
++#define EFI_RESOURCE_ATTRIBUTE_TESTED                   0x00000004
++#define EFI_RESOURCE_ATTRIBUTE_SINGLE_BIT_ECC           0x00000008
++#define EFI_RESOURCE_ATTRIBUTE_MULTIPLE_BIT_ECC         0x00000010
++#define EFI_RESOURCE_ATTRIBUTE_ECC_RESERVED_1           0x00000020
++#define EFI_RESOURCE_ATTRIBUTE_ECC_RESERVED_2           0x00000040
++#define EFI_RESOURCE_ATTRIBUTE_READ_PROTECTED           0x00000080
++#define EFI_RESOURCE_ATTRIBUTE_WRITE_PROTECTED          0x00000100
++#define EFI_RESOURCE_ATTRIBUTE_EXECUTION_PROTECTED      0x00000200
++#define EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE              0x00000400
++#define EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE        0x00000800
++#define EFI_RESOURCE_ATTRIBUTE_WRITE_THROUGH_CACHEABLE  0x00001000
++#define EFI_RESOURCE_ATTRIBUTE_WRITE_BACK_CACHEABLE     0x00002000
++#define EFI_RESOURCE_ATTRIBUTE_16_BIT_IO                0x00004000
++#define EFI_RESOURCE_ATTRIBUTE_32_BIT_IO                0x00008000
++#define EFI_RESOURCE_ATTRIBUTE_64_BIT_IO                0x00010000
++#define EFI_RESOURCE_ATTRIBUTE_UNCACHED_EXPORTED        0x00020000
++#define EFI_RESOURCE_ATTRIBUTE_READ_ONLY_PROTECTED      0x00040000
++#define EFI_RESOURCE_ATTRIBUTE_READ_ONLY_PROTECTABLE    0x00080000
++#define EFI_RESOURCE_ATTRIBUTE_READ_PROTECTABLE         0x00100000
++#define EFI_RESOURCE_ATTRIBUTE_WRITE_PROTECTABLE        0x00200000
++#define EFI_RESOURCE_ATTRIBUTE_EXECUTION_PROTECTABLE    0x00400000
++#define EFI_RESOURCE_ATTRIBUTE_PERSISTENT               0x00800000
++#define EFI_RESOURCE_ATTRIBUTE_PERSISTABLE              0x01000000
++#define EFI_RESOURCE_ATTRIBUTE_MORE_RELIABLE            0x02000000
 +
-+    head_length = address - tmp_address;
-+    if (head_length > 0) {
-+        head_start = tmp_address;
-+        tdx_add_ram_entry(head_start, head_length, TDX_RAM_UNACCEPTED);
-+    }
++typedef uint32_t EFI_RESOURCE_TYPE;
++typedef uint32_t EFI_RESOURCE_ATTRIBUTE_TYPE;
 +
-+    tail_start = address + length;
-+    if (tail_start < tmp_address + tmp_length) {
-+        tail_length = tmp_address + tmp_length - tail_start;
-+        tdx_add_ram_entry(tail_start, tail_length, TDX_RAM_UNACCEPTED);
-+    }
++typedef struct {
++    EFI_HOB_GENERIC_HEADER Header;
++    EFI_GUID Owner;
++    EFI_RESOURCE_TYPE ResourceType;
++    EFI_RESOURCE_ATTRIBUTE_TYPE ResourceAttribute;
++    EFI_PHYSICAL_ADDRESS PhysicalStart;
++    uint64_t ResourceLength;
++} EFI_HOB_RESOURCE_DESCRIPTOR;
 +
-+    return 0;
-+}
++typedef struct {
++    EFI_HOB_GENERIC_HEADER Header;
++    EFI_GUID Name;
 +
-+static int tdx_ram_entry_compare(const void *lhs_, const void* rhs_)
-+{
-+    const TdxRamEntry *lhs = lhs_;
-+    const TdxRamEntry *rhs = rhs_;
++    /* guid specific data follows */
++} EFI_HOB_GUID_TYPE;
 +
-+    if (lhs->address == rhs->address) {
-+        return 0;
-+    }
-+    if (le64_to_cpu(lhs->address) > le64_to_cpu(rhs->address)) {
-+        return 1;
-+    }
-+    return -1;
-+}
++typedef struct {
++    EFI_HOB_GENERIC_HEADER Header;
++    EFI_PHYSICAL_ADDRESS BaseAddress;
++    uint64_t Length;
++} EFI_HOB_FIRMWARE_VOLUME;
 +
-+static void tdx_init_ram_entries(void)
-+{
-+    unsigned i, j, nr_e820_entries;
++typedef struct {
++    EFI_HOB_GENERIC_HEADER Header;
++    EFI_PHYSICAL_ADDRESS BaseAddress;
++    uint64_t Length;
++    EFI_GUID FvName;
++    EFI_GUID FileName;
++} EFI_HOB_FIRMWARE_VOLUME2;
 +
-+    nr_e820_entries = e820_get_table(NULL);
-+    tdx_guest->ram_entries = g_new(TdxRamEntry, nr_e820_entries);
++typedef struct {
++    EFI_HOB_GENERIC_HEADER Header;
++    EFI_PHYSICAL_ADDRESS BaseAddress;
++    uint64_t Length;
++    uint32_t AuthenticationStatus;
++    bool ExtractedFv;
++    EFI_GUID FvName;
++    EFI_GUID FileName;
++} EFI_HOB_FIRMWARE_VOLUME3;
 +
-+    for (i = 0, j = 0; i < nr_e820_entries; i++) {
-+        uint64_t addr, len;
++typedef struct {
++    EFI_HOB_GENERIC_HEADER Header;
++    uint8_t SizeOfMemorySpace;
++    uint8_t SizeOfIoSpace;
++    uint8_t Reserved[6];
++} EFI_HOB_CPU;
 +
-+        if (e820_get_entry(i, E820_RAM, &addr, &len)) {
-+            tdx_guest->ram_entries[j].address = addr;
-+            tdx_guest->ram_entries[j].length = len;
-+            tdx_guest->ram_entries[j].type = TDX_RAM_UNACCEPTED;
-+            j++;
-+        }
-+    }
-+    tdx_guest->nr_ram_entries = j;
-+}
++typedef struct {
++    EFI_HOB_GENERIC_HEADER Header;
++} EFI_HOB_MEMORY_POOL;
 +
- static void tdx_finalize_vm(Notifier *notifier, void *unused)
- {
-     TdxFirmware *tdvf = &tdx_guest->tdvf;
-     TdxFirmwareEntry *entry;
- 
-+    tdx_init_ram_entries();
++typedef struct {
++    EFI_HOB_GENERIC_HEADER Header;
 +
-     for_each_tdx_fw_entry(tdvf, entry) {
-         switch (entry->type) {
-         case TDVF_SECTION_TYPE_BFV:
-@@ -166,12 +266,21 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
-                              entry->type);
-                 exit(1);
-             }
-+            if (tdx_accept_ram_range(entry->address, entry->size)) {
-+                error_report("Failed to accept memory for TDVF section %d",
-+                             entry->type);
-+                qemu_ram_munmap(-1, entry->mem_ptr, entry->size);
-+                exit(1);
-+            }
-             break;
-         default:
-             error_report("Unsupported TDVF section %d", entry->type);
-             exit(1);
-         }
-     }
++    EFI_PHYSICAL_ADDRESS BaseAddress;
++    uint64_t Length;
++} EFI_HOB_UEFI_CAPSULE;
 +
-+    qsort(tdx_guest->ram_entries, tdx_guest->nr_ram_entries,
-+          sizeof(TdxRamEntry), &tdx_ram_entry_compare);
- }
- 
- static Notifier tdx_machine_done_notify = {
++#define EFI_HOB_OWNER_ZERO                                      \
++    ((EFI_GUID){ 0x00000000, 0x0000, 0x0000,                    \
++        { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } })
++
++#endif
 -- 
 2.49.0
 
