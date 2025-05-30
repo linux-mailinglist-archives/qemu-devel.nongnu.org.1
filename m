@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10720AC9276
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61ADFAC9265
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:18:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1PI-0003e1-M1; Fri, 30 May 2025 11:12:28 -0400
+	id 1uL1PH-0003YJ-TD; Fri, 30 May 2025 11:12:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1P9-0003Dq-Rk; Fri, 30 May 2025 11:12:19 -0400
+ id 1uL1P9-0003Dp-Rc; Fri, 30 May 2025 11:12:19 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1P6-0002GW-96; Fri, 30 May 2025 11:12:18 -0400
+ id 1uL1P6-0002GV-8g; Fri, 30 May 2025 11:12:18 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 0875944AB0;
- Fri, 30 May 2025 17:11:44 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id F328544A81;
+ Fri, 30 May 2025 17:11:43 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
@@ -26,10 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 19/48] block: mark bdrv_drained_begin() and friends as
- GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:10:56 +0200
-Message-Id: <20250530151125.955508-20-f.ebner@proxmox.com>
+Subject: [PATCH v4 20/48] iotests/graph-changes-while-io: remove image file
+ after test
+Date: Fri, 30 May 2025 17:10:57 +0200
+Message-Id: <20250530151125.955508-21-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -58,47 +58,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All of bdrv_drain_all_begin(), bdrv_drain_all() and
-bdrv_drained_begin() poll and are not allowed to be called with the
-block graph lock held. Mark the function as such.
-
 Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- include/block/block-global-state.h | 4 ++--
- include/block/block-io.h           | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tests/qemu-iotests/tests/graph-changes-while-io | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index 91f249b5ad..84a2a4ecd5 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -192,10 +192,10 @@ int bdrv_inactivate_all(void);
+diff --git a/tests/qemu-iotests/tests/graph-changes-while-io b/tests/qemu-iotests/tests/graph-changes-while-io
+index 194fda500e..35489e3b5e 100755
+--- a/tests/qemu-iotests/tests/graph-changes-while-io
++++ b/tests/qemu-iotests/tests/graph-changes-while-io
+@@ -57,6 +57,7 @@ class TestGraphChangesWhileIO(QMPTestCase):
  
- int bdrv_flush_all(void);
- void bdrv_close_all(void);
--void bdrv_drain_all_begin(void);
-+void GRAPH_UNLOCKED bdrv_drain_all_begin(void);
- void bdrv_drain_all_begin_nopoll(void);
- void bdrv_drain_all_end(void);
--void bdrv_drain_all(void);
-+void GRAPH_UNLOCKED bdrv_drain_all(void);
+     def tearDown(self) -> None:
+         self.qsd.stop()
++        os.remove(top)
  
- void bdrv_aio_cancel(BlockAIOCB *acb);
- 
-diff --git a/include/block/block-io.h b/include/block/block-io.h
-index b99cc98d26..4cf83fb367 100644
---- a/include/block/block-io.h
-+++ b/include/block/block-io.h
-@@ -431,7 +431,7 @@ bdrv_drain_poll(BlockDriverState *bs, BdrvChild *ignore_parent,
-  *
-  * This function can be recursive.
-  */
--void bdrv_drained_begin(BlockDriverState *bs);
-+void GRAPH_UNLOCKED bdrv_drained_begin(BlockDriverState *bs);
- 
- /**
-  * bdrv_do_drained_begin_quiesce:
+     def test_blockdev_add_while_io(self) -> None:
+         # Run qemu-img bench in the background
 -- 
 2.39.5
 
