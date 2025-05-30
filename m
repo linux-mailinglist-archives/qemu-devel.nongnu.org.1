@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DBD9AC9274
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1C9AC9239
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:13:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Pf-0004iO-UM; Fri, 30 May 2025 11:12:51 -0400
+	id 1uL1Pk-0004yC-22; Fri, 30 May 2025 11:12:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1Pb-0004Wx-GT; Fri, 30 May 2025 11:12:47 -0400
+ id 1uL1PY-0004RD-Om; Fri, 30 May 2025 11:12:44 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PY-0002N1-Vw; Fri, 30 May 2025 11:12:47 -0400
+ id 1uL1PV-0002Ko-GV; Fri, 30 May 2025 11:12:44 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 228B04481B;
- Fri, 30 May 2025 17:11:49 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 8407444AC3;
+ Fri, 30 May 2025 17:11:48 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
@@ -26,9 +26,9 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 41/48] block: mark bdrv_new() as GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:11:18 +0200
-Message-Id: <20250530151125.955508-42-f.ebner@proxmox.com>
+Subject: [PATCH v4 42/48] block: mark bdrv_replace_child_bs() as GRAPH_UNLOCKED
+Date: Fri, 30 May 2025 17:11:19 +0200
+Message-Id: <20250530151125.955508-43-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -57,61 +57,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function bdrv_new() calls bdrv_drained_begin(), which must be
-called with the graph unlocked.
-
-Marking bdrv_new() as GRAPH_UNLOCKED requires making the locked
-section in bdrv_open_inherit() shorter.
+The function bdrv_replace_child_bs() calls bdrv_drained_begin() which
+must be called with the graph unlocked.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
+ include/block/block-global-state.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I'm not sure if the TODO comment is only intended for the
-lower half of the function, i.e. is moving it like this okay?
-
- block.c                            | 7 ++++---
- include/block/block-global-state.h | 2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/block.c b/block.c
-index 6f470aac2f..1b9c99dda9 100644
---- a/block.c
-+++ b/block.c
-@@ -3995,10 +3995,8 @@ bdrv_open_inherit(const char *filename, const char *reference, QDict *options,
-     GLOBAL_STATE_CODE();
-     assert(!qemu_in_coroutine());
- 
--    /* TODO We'll eventually have to take a writer lock in this function */
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
--
-     if (reference) {
-+        GRAPH_RDLOCK_GUARD_MAINLOOP();
-         bool options_non_empty = options ? qdict_size(options) : false;
-         qobject_unref(options);
- 
-@@ -4019,6 +4017,9 @@ bdrv_open_inherit(const char *filename, const char *reference, QDict *options,
- 
-     bs = bdrv_new();
- 
-+    /* TODO We'll eventually have to take a writer lock in this function */
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-     /* NULL means an empty set of options */
-     if (options == NULL) {
-         options = qdict_new();
 diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index eec92a98da..b1f826dca6 100644
+index b1f826dca6..dfdf5e187f 100644
 --- a/include/block/block-global-state.h
 +++ b/include/block/block-global-state.h
-@@ -67,7 +67,7 @@ int co_wrapper bdrv_create(BlockDriver *drv, const char *filename,
- int coroutine_fn GRAPH_UNLOCKED
- bdrv_co_create_file(const char *filename, QemuOpts *opts, Error **errp);
+@@ -74,8 +74,8 @@ int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
+ int GRAPH_WRLOCK
+ bdrv_replace_node(BlockDriverState *from, BlockDriverState *to, Error **errp);
  
--BlockDriverState *bdrv_new(void);
-+BlockDriverState * GRAPH_UNLOCKED bdrv_new(void);
- int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
-                 Error **errp);
- 
+-int bdrv_replace_child_bs(BdrvChild *child, BlockDriverState *new_bs,
+-                          Error **errp);
++int GRAPH_UNLOCKED
++bdrv_replace_child_bs(BdrvChild *child, BlockDriverState *new_bs, Error **errp);
+ BlockDriverState *bdrv_insert_node(BlockDriverState *bs, QDict *node_options,
+                                    int flags, Error **errp);
+ int bdrv_drop_filter(BlockDriverState *bs, Error **errp);
 -- 
 2.39.5
 
