@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3818AAC923B
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F299AC925F
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:18:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1PQ-00043V-Qc; Fri, 30 May 2025 11:12:36 -0400
+	id 1uL1PP-00040m-K9; Fri, 30 May 2025 11:12:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PB-0003LA-Oh; Fri, 30 May 2025 11:12:22 -0400
+ id 1uL1PD-0003Pe-8X; Fri, 30 May 2025 11:12:23 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1P8-0002Hu-Qc; Fri, 30 May 2025 11:12:21 -0400
+ id 1uL1P8-0002Ht-R7; Fri, 30 May 2025 11:12:22 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 31ACF44B18;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 2758244B15;
  Fri, 30 May 2025 17:11:46 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
@@ -26,10 +26,9 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 27/48] block: call bdrv_set_backing_hd() while unlocked in
- bdrv_open_backing_file()
-Date: Fri, 30 May 2025 17:11:04 +0200
-Message-Id: <20250530151125.955508-28-f.ebner@proxmox.com>
+Subject: [PATCH v4 28/48] block: mark bdrv_set_backing_hd() as GRAPH_UNLOCKED
+Date: Fri, 30 May 2025 17:11:05 +0200
+Message-Id: <20250530151125.955508-29-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -58,49 +57,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is in preparation to mark bdrv_set_backing_hd() as
-GRAPH_UNLOCKED.
+The function bdrv_set_backing_hd() calls bdrv_drain_all_begin(), which
+must be called with the graph unlocked.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- block.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/block/block-global-state.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/block.c b/block.c
-index 1da10d55f0..ca3b67b233 100644
---- a/block.c
-+++ b/block.c
-@@ -3632,7 +3632,8 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
-     Error *local_err = NULL;
+diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
+index 84a2a4ecd5..009b9ac946 100644
+--- a/include/block/block-global-state.h
++++ b/include/block/block-global-state.h
+@@ -100,8 +100,9 @@ bdrv_open_blockdev_ref(BlockdevRef *ref, Error **errp);
+ BlockDriverState * coroutine_fn no_co_wrapper
+ bdrv_co_open_blockdev_ref(BlockdevRef *ref, Error **errp);
  
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-+    bdrv_graph_rdlock_main_loop();
- 
-     if (bs->backing != NULL) {
-         goto free_exit;
-@@ -3711,9 +3712,12 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
-                 backing_hd->filename);
-     }
- 
-+
-     /* Hook up the backing file link; drop our reference, bs owns the
-      * backing_hd reference now */
-+    bdrv_graph_rdunlock_main_loop();
-     ret = bdrv_set_backing_hd(bs, backing_hd, errp);
-+    bdrv_graph_rdlock_main_loop();
-     bdrv_unref(backing_hd);
- 
-     if (ret < 0) {
-@@ -3725,6 +3729,7 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
- free_exit:
-     g_free(backing_filename);
-     qobject_unref(tmp_parent_options);
-+    bdrv_graph_rdunlock_main_loop();
-     return ret;
- }
- 
+-int bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
+-                        Error **errp);
++int GRAPH_UNLOCKED
++bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
++                    Error **errp);
+ int GRAPH_WRLOCK
+ bdrv_set_backing_hd_drained(BlockDriverState *bs, BlockDriverState *backing_hd,
+                             Error **errp);
 -- 
 2.39.5
 
