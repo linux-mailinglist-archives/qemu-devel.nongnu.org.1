@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72189AC9266
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 534BDAC9270
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:19:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Pb-0004Uj-UA; Fri, 30 May 2025 11:12:47 -0400
+	id 1uL1Pd-0004ao-Dp; Fri, 30 May 2025 11:12:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PX-0004Lw-3e; Fri, 30 May 2025 11:12:43 -0400
+ id 1uL1Pa-0004VH-ES; Fri, 30 May 2025 11:12:46 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PV-0002Ke-B5; Fri, 30 May 2025 11:12:42 -0400
+ id 1uL1PX-0002M3-A7; Fri, 30 May 2025 11:12:45 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id ED56944B94;
- Fri, 30 May 2025 17:11:47 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D17D044AAC;
+ Fri, 30 May 2025 17:11:48 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
@@ -26,9 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 33/48] block/stream: mark stream_prepare() as GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:11:10 +0200
-Message-Id: <20250530151125.955508-34-f.ebner@proxmox.com>
+Subject: [PATCH v4 34/48] block: mark bdrv_reopen_queue() and
+ bdrv_reopen_multiple() as GRAPH_UNLOCKED
+Date: Fri, 30 May 2025 17:11:11 +0200
+Message-Id: <20250530151125.955508-35-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -57,44 +58,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function stream_prepare() calls bdrv_drain_all_begin(), which
+The function bdrv_reopen_queue() can call bdrv_drain_all_begin(),
+which must be called with the graph unlocked.
+
+The function bdrv_reopen_multiple() calls bdrv_reopen_prepare() which
 must be called with the graph unlocked.
 
-Also mark the JobDriver's prepare() callback as GRAPH_UNLOCKED_PTR,
-because that is the callback via which stream_prepare() is reached.
+To mark bdrv_reopen_queue() as GRAPH_UNLOCKED, it is necessary to make
+the locked section in reopen_backing_file() shorter.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- block/stream.c     | 2 +-
- include/qemu/job.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ block/replication.c                | 3 ++-
+ include/block/block-global-state.h | 9 +++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/block/stream.c b/block/stream.c
-index 17e240460c..c0616b69e2 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -51,7 +51,7 @@ static int coroutine_fn stream_populate(BlockBackend *blk,
-     return blk_co_preadv(blk, offset, bytes, NULL, BDRV_REQ_PREFETCH);
- }
+diff --git a/block/replication.c b/block/replication.c
+index 83978b61f5..3a431e908c 100644
+--- a/block/replication.c
++++ b/block/replication.c
+@@ -364,14 +364,15 @@ static void reopen_backing_file(BlockDriverState *bs, bool writable,
+     BlockReopenQueue *reopen_queue = NULL;
  
--static int stream_prepare(Job *job)
-+static int GRAPH_UNLOCKED stream_prepare(Job *job)
- {
-     StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
-     BlockDriverState *unfiltered_bs;
-diff --git a/include/qemu/job.h b/include/qemu/job.h
-index a5a04155ea..bb8ee766ef 100644
---- a/include/qemu/job.h
-+++ b/include/qemu/job.h
-@@ -263,7 +263,7 @@ struct JobDriver {
-      * This callback will not be invoked if the job has already failed.
-      * If it fails, abort and then clean will be called.
+     GLOBAL_STATE_CODE();
+-    GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
++    bdrv_graph_rdlock_main_loop();
+     /*
+      * s->hidden_disk and s->secondary_disk may not be set yet, as they will
+      * only be set after the children are writable.
       */
--    int (*prepare)(Job *job);
-+    int GRAPH_UNLOCKED_PTR (*prepare)(Job *job);
+     hidden_disk = bs->file->bs->backing;
+     secondary_disk = hidden_disk->bs->backing;
++    bdrv_graph_rdunlock_main_loop();
  
-     /**
-      * If the callback is not NULL, it will be invoked when all the jobs
+     if (writable) {
+         s->orig_hidden_read_only = bdrv_is_read_only(hidden_disk->bs);
+diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
+index bcbb624a7b..f25c65c1b4 100644
+--- a/include/block/block-global-state.h
++++ b/include/block/block-global-state.h
+@@ -121,11 +121,12 @@ BlockDriverState *bdrv_new_open_driver_opts(BlockDriver *drv,
+                                             Error **errp);
+ BlockDriverState *bdrv_new_open_driver(BlockDriver *drv, const char *node_name,
+                                        int flags, Error **errp);
+-BlockReopenQueue *bdrv_reopen_queue(BlockReopenQueue *bs_queue,
+-                                    BlockDriverState *bs, QDict *options,
+-                                    bool keep_old_opts);
++BlockReopenQueue * GRAPH_UNLOCKED
++bdrv_reopen_queue(BlockReopenQueue *bs_queue, BlockDriverState *bs,
++                  QDict *options, bool keep_old_opts);
+ void bdrv_reopen_queue_free(BlockReopenQueue *bs_queue);
+-int bdrv_reopen_multiple(BlockReopenQueue *bs_queue, Error **errp);
++int GRAPH_UNLOCKED
++bdrv_reopen_multiple(BlockReopenQueue *bs_queue, Error **errp);
+ int bdrv_reopen(BlockDriverState *bs, QDict *opts, bool keep_old_opts,
+                 Error **errp);
+ int bdrv_reopen_set_read_only(BlockDriverState *bs, bool read_only,
 -- 
 2.39.5
 
