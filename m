@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD789AC88A1
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 734F4AC88DE
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:26:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtvV-0008F0-Qd; Fri, 30 May 2025 03:13:14 -0400
+	id 1uKtvZ-0008GH-V3; Fri, 30 May 2025 03:13:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvQ-0008Eh-3B
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uKtvS-0008FY-UQ
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvO-0006oA-Cf
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:07 -0400
+ id 1uKtvQ-0006oS-Ug
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589185;
+ s=mimecast20190719; t=1748589188;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rt0eddSET8TsQkzt6gddNyhEsfEq4B60hTzxAZmgf9w=;
- b=Z5np2JR/RX6PvxaH2EcIOGM4j40fLBuIKcTYcBeok0BdESp8v0jpv6Uaa+LrYkV7EzpcHQ
- eB9rFDcB0bbownLBG6v7JwHi4ulMyzMDdP9DQC+qKg1PRIacC6ufWWAoxABxsg4hdCf7og
- pqXO1Q3hAuzNM58NTvgR133Mobh+rGE=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eTt+ijUG9kBQToPAyx24wWv7Og7qKej64dv1M2DfvhE=;
+ b=giwndl0bRcen3IU0dLMklWeRFlkF7a0y4X57CN/N3cscSQXvelbyglNHHwpBv3ltI450ON
+ t2SoRCkLtoRBxhqzqRp9C/N1ZURi6VVL3r6S3VEk7zQ77dIT22sUSf0Ifse9i3CwrWk08R
+ dKhiz6EOFPdDHnViJFcIXKLUK/iC3Uo=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-VM40-wheNuOTXrT1UxptbQ-1; Fri, 30 May 2025 03:13:03 -0400
-X-MC-Unique: VM40-wheNuOTXrT1UxptbQ-1
-X-Mimecast-MFC-AGG-ID: VM40-wheNuOTXrT1UxptbQ_1748589183
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-ad9a8a5ecc6so186260066b.2
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:03 -0700 (PDT)
+ us-mta-98-3QIkPAbJMuWIJPeenv9wEA-1; Fri, 30 May 2025 03:13:06 -0400
+X-MC-Unique: 3QIkPAbJMuWIJPeenv9wEA-1
+X-Mimecast-MFC-AGG-ID: 3QIkPAbJMuWIJPeenv9wEA_1748589186
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-60498322443so1674249a12.2
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589182; x=1749193982;
+ d=1e100.net; s=20230601; t=1748589185; x=1749193985;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rt0eddSET8TsQkzt6gddNyhEsfEq4B60hTzxAZmgf9w=;
- b=Kxet+FNf0sLehT8Q+9osBCz7hNY+B8RW5x/kEqjnKl2W9MnNWs5b3QnbID/UcIqRqK
- eOaAE535/ou0K3FDt3Gdk9RBwXtOFipm5G36Br3Fm9jibpMJQkS6DKNuYgFUbXscQZEU
- RvqPvudblQvpP1dVrkIgV2gptUFBmc58YaZ1hFcgsvHb+af8nRkTkXNNHBn9wpFG0J50
- qdjiQwUugvQxuhZuz05P1PfAyZcnI2z2/RKUVGcij+p8vkqyFImjkUSi7f+mXbwB1EtD
- aScnDSMfWogvpo8RE4xEEszYWSEmcsgTxkjLxB3aJQmSeYXF62VEvIEbHzMVGhADb5d5
- JqNA==
-X-Gm-Message-State: AOJu0Yx0lKTaBITzEgVUTL+Z6PO4bjpU92IiVmokyiUBMTRhkiivz6L0
- 96CHZYT6NKqidAyO9CqrSl83kV2mYLsnI2MO4JaL2e3lTerv4T4VtSph7hqZd5+XZRXfWjmtQvL
- 2EOTevpGP0wwNh5jFMo1dvAt584OUBLrVsYmS0M1HKzajhcXCHpqxxVPvyASw6dWhwX/ZMeXzeo
- RQ+cr8cXn3k/3RrNTsIY5MAY26414KTXVTh+ZMiqX8
-X-Gm-Gg: ASbGncvVophqsYAg/PgZbQmYX4BnHpkYEBV2m+Sy6Qy5DUBnQDlQF4GRl/lU1tRyKWU
- IMEgSzDPLRmbxM7uiCCSxvbwANrby5LGiQfxg7YhCkAJojGlxa8Q/bHFNzcEHWU6tfQQ8T0TE98
- AxDrAf78oC66ytT0iwlBAtFm0/ZscXv4mcyBiA75+gZMn+Szmlm+vOvWh9a2AZ+ZvCDOnI8C1M3
- 4MxB6GZRwfNCsW8bRFrYv8qXByCe7M5mSm1M7OegxesyqACm3/PCXsbYqwGkw9G7B8e8PqTkCfy
- 7hzkCuxob3qn7Q==
-X-Received: by 2002:a17:907:3d9f:b0:ad5:6928:1492 with SMTP id
- a640c23a62f3a-adb3242f4e5mr193474366b.45.1748589182304; 
- Fri, 30 May 2025 00:13:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHnpWZkG/TAdsFZ54tO0tl39CZunnjAO9caz6k9BTQkVhgdMDsGAu/HT/GYiT+jabx54+6ZiA==
-X-Received: by 2002:a17:907:3d9f:b0:ad5:6928:1492 with SMTP id
- a640c23a62f3a-adb3242f4e5mr193472066b.45.1748589181852; 
- Fri, 30 May 2025 00:13:01 -0700 (PDT)
+ bh=eTt+ijUG9kBQToPAyx24wWv7Og7qKej64dv1M2DfvhE=;
+ b=MPnqGBk/Ra02ZYHEqmitr+C2M7+60ejXiEI6KuJ9IhrD4HgKsaRH6XsoIaMyFajhV8
+ TWOnWKrU0JnsoJ74d8jvQJZT4j1pn0CE9kkjtAw0EzWgtR+EUyAnra2hQXVC5JJBh67o
+ Do5CDTqlt8vf0MB6IgTeCPAylmjPF3V/7+veM3jNFgrYzELrvcOXDJt0HOiz8CZoOAwt
+ LvY1vnt4VJOObZgUFGqTXT6jp0jcQntH4AP7Q4yyBlJXRj8PTdUx6szdRg8DOwMC11ca
+ 4XOB5IEf1MEGzYSZ0nMXqqsBgutYalkwFqxJal0MBN6zyBFyap5leOIK90az4gBJMFyu
+ JR1w==
+X-Gm-Message-State: AOJu0Yyn4Y5DPh/amjvM9PDNHWXvVsrz7Yt6E3zFDp/w1Ur4XV4Y4tA5
+ ZJAIoDlioe5V97FVGnov3Oa++ELCOKVy0lB+YQ0okWxn+qnC5/TJ4PjIgcs2zBUdWTrAIO+7UAb
+ y8mIrotkscyTX9MFV16cJOsWRbZSgnpIzGe07BL26CsWtnVGehbYTWddUTktK+kw5ZUGLfORUjn
+ c6QQ+CsFKbtXuRGauq4wBnUM7ma6+01iocpZUXN1mz
+X-Gm-Gg: ASbGncsV3lPGEt6ivWEiH4BZ92CuLmFKVo+jU93hVitCrNNHcdKRL6iTx7PUamXnPLf
+ Uw4N0JzKqb/4Nm8hkxyFOzBHtUvVqCs3YKN16tGPLmqeammnFTnUSZZ6ibVMoecd349t+5B2iHl
+ wTwT47RC/qGCi5EDPG9+xrcmT75yGTG1PDevTpDQnTeF4z4Gm/3mBMVwoF6sYdx/Dnx2YFKXfmh
+ ZSHkRycaFLDiQN2r2rvBIQRyOwnY7ttEa6NqKm1FNpf2gzR3+ZrDN/uXztAJc7NNU+aIrGkwyBR
+ pyZIauyMiFCNkw==
+X-Received: by 2002:a05:6402:280d:b0:5fc:bff8:c60a with SMTP id
+ 4fb4d7f45d1cf-6056e15e00cmr1835967a12.26.1748589184817; 
+ Fri, 30 May 2025 00:13:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3dsOSWerJOHUIIpjiP3mxeAc8cev0PzOink8HHo5XoHQdAQVDzLtsJMJ5zRpNiCCf/CfuHA==
+X-Received: by 2002:a05:6402:280d:b0:5fc:bff8:c60a with SMTP id
+ 4fb4d7f45d1cf-6056e15e00cmr1835936a12.26.1748589184323; 
+ Fri, 30 May 2025 00:13:04 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d7fee13sm274322966b.26.2025.05.30.00.13.00
+ 4fb4d7f45d1cf-60566c756f5sm1216983a12.45.2025.05.30.00.13.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:13:00 -0700 (PDT)
+ Fri, 30 May 2025 00:13:02 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 04/77] meson: apply target config for picking files from
- lib{system, user}
-Date: Fri, 30 May 2025 09:11:34 +0200
-Message-ID: <20250530071250.2050910-5-pbonzini@redhat.com>
+Subject: [PULL 05/77] meson: merge lib{system, user}_ss with {system, user}_ss
+Date: Fri, 30 May 2025 09:11:35 +0200
+Message-ID: <20250530071250.2050910-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -112,75 +110,147 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-semihosting code needs to be included only if CONFIG_SEMIHOSTING is set.
-However, this is a target configuration, so we need to apply it to the
-lib{system, user}_ss.
+Now that target configuration can be applied to lib{system, user}_ss,
+there is no reason to keep that separate from the existing {system,
+user}_ss.
+The only difference is that we'll now compile those files with
+-DCOMPILING_SYSTEM_VS_USER, which removes poison for
+CONFIG_USER_ONLY and CONFIG_SOFTMMU, without any other side effect.
 
-As well, this prepares merging lib{system, user}_ss with
-{system, user}_ss.
+We extract existing system/user code common common libraries to
+lib{system, user}.
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+To not break existing meson files, we alias libsystem_ss to system_ss
+and libuser_ss to user_ss, so we can do the cleanup in next commit.
+
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20250521223414.248276-5-pierrick.bouvier@linaro.org
+Link: https://lore.kernel.org/r/20250521223414.248276-6-pierrick.bouvier@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ meson.build | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index cbb22f60d1f..79d123c50ee 100644
+index 79d123c50ee..ea54d15f4a6 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -4081,27 +4081,19 @@ common_ss.add(qom, qemuutil)
- common_ss.add_all(when: 'CONFIG_SYSTEM_ONLY', if_true: [system_ss])
- common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
+@@ -3694,14 +3694,14 @@ io_ss = ss.source_set()
+ qmp_ss = ss.source_set()
+ qom_ss = ss.source_set()
+ system_ss = ss.source_set()
+-libsystem_ss = ss.source_set()
++libsystem_ss = system_ss
+ specific_fuzz_ss = ss.source_set()
+ specific_ss = ss.source_set()
+ rust_devices_ss = ss.source_set()
+ stub_ss = ss.source_set()
+ trace_ss = ss.source_set()
+ user_ss = ss.source_set()
+-libuser_ss = ss.source_set()
++libuser_ss = user_ss
+ util_ss = ss.source_set()
  
--libuser_ss = libuser_ss.apply({})
+ # accel modules
+@@ -4078,21 +4078,19 @@ common_ss.add(hwcore)
+ system_ss.add(authz, blockdev, chardev, crypto, io, qmp)
+ common_ss.add(qom, qemuutil)
+ 
+-common_ss.add_all(when: 'CONFIG_SYSTEM_ONLY', if_true: [system_ss])
+-common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
+-
  libuser = static_library('user',
--                         libuser_ss.sources() + genh,
-+                         libuser_ss.all_sources() + genh,
+-                         libuser_ss.all_sources() + genh,
++                         user_ss.all_sources() + genh,
                           c_args: ['-DCONFIG_USER_ONLY',
                                    '-DCOMPILING_SYSTEM_VS_USER'],
--                         dependencies: libuser_ss.dependencies(),
-+                         dependencies: libuser_ss.all_dependencies(),
+-                         dependencies: libuser_ss.all_dependencies(),
++                         include_directories: common_user_inc,
++                         dependencies: user_ss.all_dependencies(),
                           build_by_default: false)
--libuser = declare_dependency(objects: libuser.extract_all_objects(recursive: false),
--                             dependencies: libuser_ss.dependencies())
--common_ss.add(when: 'CONFIG_USER_ONLY', if_true: libuser)
  
--libsystem_ss = libsystem_ss.apply({})
  libsystem = static_library('system',
--                           libsystem_ss.sources() + genh,
-+                           libsystem_ss.all_sources() + genh,
+-                           libsystem_ss.all_sources() + genh,
++                           system_ss.all_sources() + genh,
                             c_args: ['-DCONFIG_SOFTMMU',
                                      '-DCOMPILING_SYSTEM_VS_USER'],
--                           dependencies: libsystem_ss.dependencies(),
-+                           dependencies: libsystem_ss.all_dependencies(),
+-                           dependencies: libsystem_ss.all_dependencies(),
++                           dependencies: system_ss.all_dependencies(),
                             build_by_default: false)
--libsystem = declare_dependency(objects: libsystem.extract_all_objects(recursive: false),
--                               dependencies: libsystem_ss.dependencies())
--common_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: libsystem)
  
  # Note that this library is never used directly (only through extract_objects)
- # and is not built by default; therefore, source files not used by the build
-@@ -4343,6 +4335,16 @@ foreach target : target_dirs
-     objects += lib.extract_objects(src.sources())
+@@ -4101,7 +4099,6 @@ libsystem = static_library('system',
+ common_all = static_library('common',
+                             build_by_default: false,
+                             sources: common_ss.all_sources() + genh,
+-                            include_directories: common_user_inc,
+                             implicit_include_directories: false,
+                             dependencies: common_ss.all_dependencies())
+ 
+@@ -4115,10 +4112,20 @@ foreach target_base_arch, config_base_arch : config_base_arch_mak
+   inc = [common_user_inc + target_inc]
+ 
+   target_common = common_ss.apply(config_target, strict: false)
++  target_system = system_ss.apply(config_target, strict: false)
++  target_user = user_ss.apply(config_target, strict: false)
+   common_deps = []
++  system_deps = []
++  user_deps = []
+   foreach dep: target_common.dependencies()
+     common_deps += dep.partial_dependency(compile_args: true, includes: true)
+   endforeach
++  foreach dep: target_system.dependencies()
++    system_deps += dep.partial_dependency(compile_args: true, includes: true)
++  endforeach
++  foreach dep: target_user.dependencies()
++    user_deps += dep.partial_dependency(compile_args: true, includes: true)
++  endforeach
+ 
+   # prevent common code to access cpu compile time definition,
+   # but still allow access to cpu.h
+@@ -4133,7 +4140,7 @@ foreach target_base_arch, config_base_arch : config_base_arch_mak
+       sources: src.all_sources() + genh,
+       include_directories: inc,
+       c_args: target_system_c_args,
+-      dependencies: src.all_dependencies() + common_deps)
++      dependencies: src.all_dependencies() + common_deps + system_deps)
+     hw_common_arch_libs += {target_base_arch: lib}
+   endif
+ 
+@@ -4145,7 +4152,8 @@ foreach target_base_arch, config_base_arch : config_base_arch_mak
+       sources: src.all_sources() + genh,
+       include_directories: inc,
+       c_args: target_c_args,
+-      dependencies: src.all_dependencies() + common_deps)
++      dependencies: src.all_dependencies() + common_deps +
++                    system_deps + user_deps)
+     target_common_arch_libs += {target_base_arch: lib}
+   endif
+ 
+@@ -4157,7 +4165,7 @@ foreach target_base_arch, config_base_arch : config_base_arch_mak
+       sources: src.all_sources() + genh,
+       include_directories: inc,
+       c_args: target_system_c_args,
+-      dependencies: src.all_dependencies() + common_deps)
++      dependencies: src.all_dependencies() + common_deps + system_deps)
+     target_common_system_arch_libs += {target_base_arch: lib}
+   endif
+ endforeach
+@@ -4336,12 +4344,12 @@ foreach target : target_dirs
      arch_deps += src.dependencies()
    endif
-+  if target_type == 'system'
-+    src = libsystem_ss.apply(config_target, strict: false)
-+    objects += libsystem.extract_objects(src.sources())
-+    arch_deps += src.dependencies()
-+  endif
-+  if target_type == 'user'
-+    src = libuser_ss.apply(config_target, strict: false)
-+    objects += libuser.extract_objects(src.sources())
-+    arch_deps += src.dependencies()
-+  endif
-   if target_type == 'system' and target_base_arch in hw_common_arch_libs
-     src = hw_common_arch[target_base_arch].apply(config_target, strict: false)
-     lib = hw_common_arch_libs[target_base_arch]
+   if target_type == 'system'
+-    src = libsystem_ss.apply(config_target, strict: false)
++    src = system_ss.apply(config_target, strict: false)
+     objects += libsystem.extract_objects(src.sources())
+     arch_deps += src.dependencies()
+   endif
+   if target_type == 'user'
+-    src = libuser_ss.apply(config_target, strict: false)
++    src = user_ss.apply(config_target, strict: false)
+     objects += libuser.extract_objects(src.sources())
+     arch_deps += src.dependencies()
+   endif
 -- 
 2.49.0
 
