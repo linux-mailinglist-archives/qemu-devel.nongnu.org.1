@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA095AC88CF
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDC6AC88AB
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:18:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtwQ-0001XP-QC; Fri, 30 May 2025 03:14:10 -0400
+	id 1uKtwT-0001lX-4a; Fri, 30 May 2025 03:14:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtwG-0001NL-3z
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uKtwH-0001QE-64
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtwE-0006v7-2x
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:59 -0400
+ id 1uKtwF-0006vS-EK
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589236;
+ s=mimecast20190719; t=1748589238;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UmlnASzT6uLp8Nbxl99fMI929DWjn8v4QS2tMXfKp4U=;
- b=CDKjcz2yaTxyftUkkSRg1NSJgVL4O2BvrVqPvODYLPiaBAV+YM1bKZT/ugddZRiaEpCUBE
- Sj6V7LAwzV/Piq2+XjX/UXC7oNVA3SFxbXdwq6nMVruq4C9H/qaXEbB7wSL6OE1D0XjBkL
- 6R4xuo/kG9AHvjEnRvCpLZatgDp9nes=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=w9xJhpuzXINKl3LZpWge4QLi33eUyTvHiKnQt0qRGfg=;
+ b=F9WBJig1yOWveqv0QFPEsnD85hRwN7Uaz39SBp3xfHbQ9Gc/L/npqfqLIWDqHMJQSBXEF0
+ tcsqvZSLAEJlII78nyMQpWzwT92WFm05LRDerX1Vo8+aAjhn4ppGrBBaURxy9Oo59uhvQy
+ 1DO/5I7zEKR3j4vfpAuY2Bwie1vpRgU=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-KudR8q1NONWShev_0Jq2HQ-1; Fri, 30 May 2025 03:13:55 -0400
-X-MC-Unique: KudR8q1NONWShev_0Jq2HQ-1
-X-Mimecast-MFC-AGG-ID: KudR8q1NONWShev_0Jq2HQ_1748589234
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ad212166df4so130926666b.0
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:55 -0700 (PDT)
+ us-mta-74-2WXk8fS0PoaNExRkv6Yigg-1; Fri, 30 May 2025 03:13:57 -0400
+X-MC-Unique: 2WXk8fS0PoaNExRkv6Yigg-1
+X-Mimecast-MFC-AGG-ID: 2WXk8fS0PoaNExRkv6Yigg_1748589236
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-ac79e4764e5so176600466b.0
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589233; x=1749194033;
+ d=1e100.net; s=20230601; t=1748589236; x=1749194036;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UmlnASzT6uLp8Nbxl99fMI929DWjn8v4QS2tMXfKp4U=;
- b=G8o9L9YqmNjJFv8ZeMfXMZjUaRZkW2lb9H+7Xk6h3DDVs4TudYm3SdAnwP8eLFuYzq
- 9HO0seTyj+u64gxUcVPQzXnUuV6sN28k7vwQ5DO5B47R9ABsPjgV6KVhDPbi4OwEckvF
- z70fVX0rBFhQzpVg3oNM2F+4Ui7d4QYGqxhILzKrz81U9lnQAhmiThpwHMZ7jY3Z1fKS
- hF5HjKJHaRz/XYq+4leUmmMVw8L87qnGBOirtbv7eLBHVoS5YH6/HNv7qTVBjbZT0k5q
- lWV8SstFLB0YV7Bic3G4NDkluCtRUPfVTq0c0lZ50JILIjdwoTIFF7oSd9plq1g/Odvq
- evDA==
-X-Gm-Message-State: AOJu0Yw8SdnT2ahnNzi2GCpDviZASuGYH7j7Ucpy/IqkyFmmmcr4AC2/
- LaGYn1KEzsf1SytUSxJOrS/lbh2jrRL0pli2kv8BYjBUUAZiZVcy6LRHXQPWxEkLHE83S7SD4Rd
- TgtDFkqx5ZNfK9XUjN0LCmaZ517SZ6EhcINwSb/Dwps+O307nBqCxhtQ63V1zjVmqr20QHurJos
- hRxMM/uLsVXF8rpA4nh40N66kgL9h8c1Iq428eXc76
-X-Gm-Gg: ASbGncuQacpxhw4NT/KBbhX4WdKhg0MSOgNRX2GJAleXBDyG9dLtyE3LA4lfFRjUxAx
- irEtT523GKWGzCF2c7o3yn5OQBLMkN381iiwZexgmrnSWjyG0Z00veIVpPOHMPZvhJpOBCwRXqF
- aSeWhpbQSuZJfexAG7oAA7Bk2/SDmfZ4nubtX0nMq1w2ROQlkwEn6u8HoB88IkniMxuDxiMALwk
- Ybh6BouO3Xnjq9aT6BnysFweQ3GnIDVXZ/vKSdomZFDWcApK+mzoVFaNpC090CC1jxrIL6VhTAr
- NlLm+ADVsUGSSg==
-X-Received: by 2002:a17:907:9801:b0:ad1:e4e9:6b4f with SMTP id
- a640c23a62f3a-adb322b2c9cmr206675866b.36.1748589233294; 
- Fri, 30 May 2025 00:13:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWo/qg0Z0qi2XNXq2IH2GCfA63o1nfMQdqL9tPj+Cs59B8OYnZ88SX8dnQr0cvzzxpi1/xAw==
-X-Received: by 2002:a17:907:9801:b0:ad1:e4e9:6b4f with SMTP id
- a640c23a62f3a-adb322b2c9cmr206673066b.36.1748589232845; 
- Fri, 30 May 2025 00:13:52 -0700 (PDT)
+ bh=w9xJhpuzXINKl3LZpWge4QLi33eUyTvHiKnQt0qRGfg=;
+ b=iSg874SVUakl3HLI1O0CHryink99O/0+fhqPHEWqV5GP4xKCI0CKB+9ZFpHOht+Bvj
+ ww8hqV3fVU/ELNwJ7kDSyoXvFXbYtbFolAeS4l9xuQIo4MCWMuHJPRQ+qqgCb5sld/GA
+ 5819U0fe+FBpyMJsf0b3oJdJ1GV6i6GH0mXGsz4xdhRf92HgWNEEpOMy3r6tgHt1c2l7
+ IoAGbvcqH34OUdG23QysJnVd1jvyoyaWuiRKnrJ2xjtvNH1cXXZs2xGygspJX/oCpzxO
+ WzZZ/C08nh2oMQWgRxnvqHSb7T//N9dgx613QoNfuV4GgpBXBnijzpMCELhjmAvRe/a1
+ euxQ==
+X-Gm-Message-State: AOJu0YwUtS8qJWUkgeYNQPD5vAIyG7TZ4ZbjaW6zFPPaFLaH4h89WJk9
+ gipfxx8bfKpPTdww3r1wBB/jEIIIbUCmRKAz4kMWzj8B29fEhX+oSI4/K7HF0hcd8cJ4lbEG6jK
+ Wwfhl10ySAXyLH2oPrKJPSlMfutgcza0UU6t1NDi9YFZ4IA2AiwtiVrc2INaa0IETkvg0mx+GmT
+ F5326NgN0LBu3VgoodKXBZTj000hq2IZEIsI+qp5rf
+X-Gm-Gg: ASbGncvUuCZzTAtO0Zw41UE6H/qF1tmc3qVdzJjMqt4CE8W6pd5aZu61mLee8dPB6Nw
+ O/vmdFMAoBKq2IQ1EdMmJvnJHzmeNoe4wdrVB+DDeBaIXmrJAOxGG6botXyRcJv6qgBoK9HI4fA
+ 9NThv129d1fnQyopGggkTjQv3CWHYIHiKc3ffoUjkMKqOvTNK4zVZNEdkWwGjI5OPsvGNmQbHDI
+ 8uJJQKSGq3AQ9wuMuY3BcSSCgyFs5UuGyWu4v1j5J6nIvx3XP9kJHDCUXYnmtBkC6H9x/ih+mDD
+ NOIyUWVLtvkWRw==
+X-Received: by 2002:a17:906:c143:b0:ad8:9428:6a3b with SMTP id
+ a640c23a62f3a-adb36b05316mr105412466b.5.1748589235735; 
+ Fri, 30 May 2025 00:13:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGDU/OvWQ+LeP/oaX6fosAlEG6akHJT5Aiv9+wMCyGhbG7aJsJA9LXFjewVZkjQYwcMu/xRGA==
+X-Received: by 2002:a17:906:c143:b0:ad8:9428:6a3b with SMTP id
+ a640c23a62f3a-adb36b05316mr105409966b.5.1748589235358; 
+ Fri, 30 May 2025 00:13:55 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5eb54d24sm274588666b.123.2025.05.30.00.13.51
+ a640c23a62f3a-adb318db274sm119163566b.162.2025.05.30.00.13.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:13:51 -0700 (PDT)
+ Fri, 30 May 2025 00:13:54 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Isaku Yamahata <isaku.yamahata@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Markus Armbruster <armbru@redhat.com>,
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 25/77] i386/tdx: Support user configurable
- mrconfigid/mrowner/mrownerconfig
-Date: Fri, 30 May 2025 09:11:55 +0200
-Message-ID: <20250530071250.2050910-26-pbonzini@redhat.com>
+Subject: [PULL 26/77] i386/tdx: Set APIC bus rate to match with what TDX
+ module enforces
+Date: Fri, 30 May 2025 09:11:56 +0200
+Message-ID: <20250530071250.2050910-27-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -110,215 +110,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Three sha384 hash values, mrconfigid, mrowner and mrownerconfig, of a TD
-can be provided for TDX attestation. Detailed meaning of them can be
-found: https://lore.kernel.org/qemu-devel/31d6dbc1-f453-4cef-ab08-4813f4e0ff92@intel.com/
+TDX advertises core crystal clock with cpuid[0x15] as 25MHz for TD
+guests and it's unchangeable from VMM. As a result, TDX guest reads
+the APIC timer at the same frequency, 25MHz.
 
-Allow user to specify those values via property mrconfigid, mrowner and
-mrownerconfig. They are all in base64 format.
+While KVM's default emulated frequency for APIC bus is 1GHz, set the
+APIC bus rate to match with TDX explicitly to ensure KVM provide correct
+emulated APIC timer for TD guest.
 
-example
--object tdx-guest, \
-  mrconfigid=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v,\
-  mrowner=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v,\
-  mrownerconfig=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-14-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-15-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qapi/qom.json         | 16 +++++++-
- target/i386/kvm/tdx.h |  3 ++
- target/i386/kvm/tdx.c | 95 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 113 insertions(+), 1 deletion(-)
+ target/i386/kvm/tdx.h |  3 +++
+ target/i386/kvm/tdx.c | 13 +++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 5a88d364236..45cd47508b0 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -1060,11 +1060,25 @@
- #     pages.  Some guest OS (e.g., Linux TD guest) may require this to
- #     be set, otherwise they refuse to boot.
- #
-+# @mrconfigid: ID for non-owner-defined configuration of the guest TD,
-+#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
-+#     Defaults to all zeros.
-+#
-+# @mrowner: ID for the guest TD’s owner (base64 encoded SHA384 digest).
-+#     Defaults to all zeros.
-+#
-+# @mrownerconfig: ID for owner-defined configuration of the guest TD,
-+#     e.g., specific to the workload rather than the run-time or OS
-+#     (base64 encoded SHA384 digest).  Defaults to all zeros.
-+#
- # Since: 10.1
- ##
- { 'struct': 'TdxGuestProperties',
-   'data': { '*attributes': 'uint64',
--            '*sept-ve-disable': 'bool' } }
-+            '*sept-ve-disable': 'bool',
-+            '*mrconfigid': 'str',
-+            '*mrowner': 'str',
-+            '*mrownerconfig': 'str' } }
- 
- ##
- # @ThreadContextProperties:
 diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index 4e2b5c61ff5..e472b11fb0d 100644
+index e472b11fb0d..d39e733d9fc 100644
 --- a/target/i386/kvm/tdx.h
 +++ b/target/i386/kvm/tdx.h
-@@ -24,6 +24,9 @@ typedef struct TdxGuest {
-     bool initialized;
-     uint64_t attributes;    /* TD attributes */
-     uint64_t xfam;
-+    char *mrconfigid;       /* base64 encoded sha348 digest */
-+    char *mrowner;          /* base64 encoded sha348 digest */
-+    char *mrownerconfig;    /* base64 encoded sha348 digest */
- } TdxGuest;
+@@ -16,6 +16,9 @@ typedef struct TdxGuestClass {
+     X86ConfidentialGuestClass parent_class;
+ } TdxGuestClass;
  
- #ifdef CONFIG_TDX
++/* TDX requires bus frequency 25MHz */
++#define TDX_APIC_BUS_CYCLES_NS 40
++
+ typedef struct TdxGuest {
+     X86ConfidentialGuest parent_obj;
+ 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index c78a0e8b5ed..671f23d910a 100644
+index 671f23d910a..58983edd80a 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -11,8 +11,10 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
-+#include "qemu/base64.h"
- #include "qapi/error.h"
- #include "qom/object_interfaces.h"
-+#include "crypto/hash.h"
- 
- #include "hw/i386/x86.h"
- #include "kvm_i386.h"
-@@ -240,6 +242,7 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-     CPUX86State *env = &x86cpu->env;
-     g_autofree struct kvm_tdx_init_vm *init_vm = NULL;
-     Error *local_err = NULL;
-+    size_t data_len;
-     int retry = 10000;
-     int r = 0;
- 
-@@ -251,6 +254,45 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+@@ -254,6 +254,19 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
      init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
                          sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
  
-+    if (tdx_guest->mrconfigid) {
-+        g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrconfigid,
-+                              strlen(tdx_guest->mrconfigid), &data_len, errp);
-+        if (!data) {
-+            return -1;
-+        }
-+        if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
-+            error_setg(errp, "TDX: failed to decode mrconfigid");
-+            return -1;
-+        }
-+        memcpy(init_vm->mrconfigid, data, data_len);
++    if (!kvm_check_extension(kvm_state, KVM_CAP_X86_APIC_BUS_CYCLES_NS)) {
++        error_setg(errp, "KVM doesn't support KVM_CAP_X86_APIC_BUS_CYCLES_NS");
++        return -EOPNOTSUPP;
 +    }
 +
-+    if (tdx_guest->mrowner) {
-+        g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrowner,
-+                              strlen(tdx_guest->mrowner), &data_len, errp);
-+        if (!data) {
-+            return -1;
-+        }
-+        if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
-+            error_setg(errp, "TDX: failed to decode mrowner");
-+            return -1;
-+        }
-+        memcpy(init_vm->mrowner, data, data_len);
++    r = kvm_vm_enable_cap(kvm_state, KVM_CAP_X86_APIC_BUS_CYCLES_NS,
++                          0, TDX_APIC_BUS_CYCLES_NS);
++    if (r < 0) {
++        error_setg_errno(errp, -r,
++                         "Unable to set core crystal clock frequency to 25MHz");
++        return r;
 +    }
 +
-+    if (tdx_guest->mrownerconfig) {
-+        g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrownerconfig,
-+                            strlen(tdx_guest->mrownerconfig), &data_len, errp);
-+        if (!data) {
-+            return -1;
-+        }
-+        if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
-+            error_setg(errp, "TDX: failed to decode mrownerconfig");
-+            return -1;
-+        }
-+        memcpy(init_vm->mrownerconfig, data, data_len);
-+    }
-+
-     r = setup_td_guest_attributes(x86cpu, errp);
-     if (r) {
-         return r;
-@@ -314,6 +356,51 @@ static void tdx_guest_set_sept_ve_disable(Object *obj, bool value, Error **errp)
-     }
- }
- 
-+static char *tdx_guest_get_mrconfigid(Object *obj, Error **errp)
-+{
-+    TdxGuest *tdx = TDX_GUEST(obj);
-+
-+    return g_strdup(tdx->mrconfigid);
-+}
-+
-+static void tdx_guest_set_mrconfigid(Object *obj, const char *value, Error **errp)
-+{
-+    TdxGuest *tdx = TDX_GUEST(obj);
-+
-+    g_free(tdx->mrconfigid);
-+    tdx->mrconfigid = g_strdup(value);
-+}
-+
-+static char *tdx_guest_get_mrowner(Object *obj, Error **errp)
-+{
-+    TdxGuest *tdx = TDX_GUEST(obj);
-+
-+    return g_strdup(tdx->mrowner);
-+}
-+
-+static void tdx_guest_set_mrowner(Object *obj, const char *value, Error **errp)
-+{
-+    TdxGuest *tdx = TDX_GUEST(obj);
-+
-+    g_free(tdx->mrowner);
-+    tdx->mrowner = g_strdup(value);
-+}
-+
-+static char *tdx_guest_get_mrownerconfig(Object *obj, Error **errp)
-+{
-+    TdxGuest *tdx = TDX_GUEST(obj);
-+
-+    return g_strdup(tdx->mrownerconfig);
-+}
-+
-+static void tdx_guest_set_mrownerconfig(Object *obj, const char *value, Error **errp)
-+{
-+    TdxGuest *tdx = TDX_GUEST(obj);
-+
-+    g_free(tdx->mrownerconfig);
-+    tdx->mrownerconfig = g_strdup(value);
-+}
-+
- /* tdx guest */
- OBJECT_DEFINE_TYPE_WITH_INTERFACES(TdxGuest,
-                                    tdx_guest,
-@@ -337,6 +424,14 @@ static void tdx_guest_init(Object *obj)
-     object_property_add_bool(obj, "sept-ve-disable",
-                              tdx_guest_get_sept_ve_disable,
-                              tdx_guest_set_sept_ve_disable);
-+    object_property_add_str(obj, "mrconfigid",
-+                            tdx_guest_get_mrconfigid,
-+                            tdx_guest_set_mrconfigid);
-+    object_property_add_str(obj, "mrowner",
-+                            tdx_guest_get_mrowner, tdx_guest_set_mrowner);
-+    object_property_add_str(obj, "mrownerconfig",
-+                            tdx_guest_get_mrownerconfig,
-+                            tdx_guest_set_mrownerconfig);
- }
- 
- static void tdx_guest_finalize(Object *obj)
+     if (tdx_guest->mrconfigid) {
+         g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrconfigid,
+                               strlen(tdx_guest->mrconfigid), &data_len, errp);
 -- 
 2.49.0
 
