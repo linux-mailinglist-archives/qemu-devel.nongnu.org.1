@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB0BAC88B4
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2001AC88A0
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:16:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtyj-0005Lm-Ec; Fri, 30 May 2025 03:16:33 -0400
+	id 1uKtyh-000523-8z; Fri, 30 May 2025 03:16:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtxD-0003EX-LW
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uKtxG-0003Ki-VD
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtxC-00071A-0H
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:59 -0400
+ id 1uKtxF-00071f-BX
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589297;
+ s=mimecast20190719; t=1748589300;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LreXCX5lf0B8e68ccMZZleAOkfyyuU+H/pIa6hQpwkY=;
- b=ZcUw3tX2OCY7vls0/e93GY7fcGWdsCIQ2xKwDG+FviBTAxIwYt/4KeGhCf1c91LtNjpta8
- ozjfD1FJz6kr+nWWlMu08LdKfi6D7A3VQ3wi4BJeB9NaboapXV7W5YGCiQDAH5Nupsjbd5
- sBQFDkCKLlfkTxZhiO8tglxc5HnO1wU=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iKROBqFzDqb8Z3AvlDVZqDNrOLnDrsPoxhuWJmG10r4=;
+ b=chdLzyW4m0v6rSgLrhEQ8t6KurFiv/VkHMSha3JarvDgHUTHQm715bh2nwzlq7zuFXOV9J
+ eWA/+Re6xWc6K7/qVX7sEa4zVoP3OqtkUeD5dmxaYm3XZOYl14h+aGCotMBPFxzIt+PSv3
+ h6l38CNFAEHC+GBeUAQXaM7yXulhJXI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-LEKY_5MROqW-69yW3V9cVQ-1; Fri, 30 May 2025 03:14:56 -0400
-X-MC-Unique: LEKY_5MROqW-69yW3V9cVQ-1
-X-Mimecast-MFC-AGG-ID: LEKY_5MROqW-69yW3V9cVQ_1748589295
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-602e863492cso1828365a12.3
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:55 -0700 (PDT)
+ us-mta-513-QWD_DiBCPtq4VW0jEu948Q-1; Fri, 30 May 2025 03:14:59 -0400
+X-MC-Unique: QWD_DiBCPtq4VW0jEu948Q-1
+X-Mimecast-MFC-AGG-ID: QWD_DiBCPtq4VW0jEu948Q_1748589298
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-6021b8b2ab1so1623329a12.2
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589294; x=1749194094;
+ d=1e100.net; s=20230601; t=1748589297; x=1749194097;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LreXCX5lf0B8e68ccMZZleAOkfyyuU+H/pIa6hQpwkY=;
- b=I0W5vpZ6zwTnKDpZ98ogtB0oIX41axD/cE29jp8UQDf2fSK6+DrHhdrBSEF8EQI7RO
- Nn5H3VOBejN5kuBLx0xA95IIpznDLa6Majb30S9WvBm8duKgvyadMe2KnLpQF/M0cMpK
- vLghBeqZS4gtYlUHQjgmRz+Av78+Fv0o7S2G3YiPtnmKehPSLt+B8P3CyC9rv603ppUJ
- SQu+DETBiN2FUuWFctwI6et+xuM/c7g8sKmWVEiqH48dP340eq2TR9hPOE5GlTWi9bHK
- 9hiRPVVWK53nA3CqYboRZA0W6bj6bLsaODdqq1VW8nFKCuGhORdBa87tDbi2yf95Vq/c
- QFmw==
-X-Gm-Message-State: AOJu0Yx9Oqllvx8/htBlnPsUKgOoe4tKuib+7l/nFYFWRr3TX+YI53IS
- Ahum5HnqtyWsCskpZV/tS7BCteMjuGluVj4sC/HahJUdEbbnuyzUQ7kqPagLvj0gkPRQeXoU+gB
- yi+f1sMnKJfHbQRlR8YxAFenrOL4OFpV73gi8YzBlmmiz3pGWfG/dr20iaDOb5P0O4XfolQfkDo
- IhU2Iag5qrMoMn93xZnyel42BTogKzCZlFeznwiCH5
-X-Gm-Gg: ASbGnctmTCTxNBzSdO4jYzqSX+IlSoOZWdmfaB62ah4iZaf9FCd/+ifiVh7jICpMJhX
- MsA0sL3ghqC4HxXMcZym4dchf2XlU3RyCRWVD8P+DU3eGX4v0GzS8Hgoo0uoPbWityIjP0ib9e0
- F4vgj/yM8R9TYJElRIuiWnI1tUY7o+D37EAiO+NgtCjK1Eety4p9FQVJOMj2EONGAdMHg7sm5tq
- 5Z7gfcLcFjB0NqN1yCV6blRuUYu+MjseijqSKdPgrezEbTVcbFf8uzvz3JPdsrd+Nqu8kOxljrg
- f5U9FVSUYmY9TA==
-X-Received: by 2002:a05:6402:518f:b0:602:1d01:2883 with SMTP id
- 4fb4d7f45d1cf-6057c1a5032mr974069a12.1.1748589294363; 
- Fri, 30 May 2025 00:14:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHekAEAtg5DkGoaT0QOix2+QF3Od5JF+JwDssgHPaNKpXwMv7LU+1J3gkB3Z113ETz+ZKs4ZA==
-X-Received: by 2002:a05:6402:518f:b0:602:1d01:2883 with SMTP id
- 4fb4d7f45d1cf-6057c1a5032mr974052a12.1.1748589293887; 
- Fri, 30 May 2025 00:14:53 -0700 (PDT)
+ bh=iKROBqFzDqb8Z3AvlDVZqDNrOLnDrsPoxhuWJmG10r4=;
+ b=YsDDf5e3etlUSO6jxoF5xlDh6xfK+ORquoHRzZOgFfGrNUOXAENZhXx2s+eQzITP8O
+ uujZkwYK6J4jHCXS7w15pQZmzmxhWsWiqlhkEPK7tj7d2WBXoIQdpfO51yxLSdrMEXgK
+ PnwEvS7Ct7Et/yAH8PksoX0ZonJn/hv6oeYMBjv8EXPlzZ2KdLWpKxMyotIl3M0eLCzd
+ RGd8kNr5Koncaqb6BjTKwwd3yhqW4Qg5aAqpjbUYvZSgFv7selPcYeIzbqZqsJNo77mM
+ 7IWggQTZwI9n4Tascf34Vk6sb2ZQ7Yf547ST+Bmmf+Fi2TIkAG8GnZ4NcDq77DbzRzqz
+ 7euQ==
+X-Gm-Message-State: AOJu0Ywag/jAPFjC1phPKxIfHTjTy7hnmqhjToh9Dv56Dnpxi0wtdUMN
+ pZa2gUH3IMQ8NZP1S++NIrukN36BEH8eqdrL86GhdzDGkuvpXKT9zqj6HWx/2z39i7lp8FQ3FPJ
+ 7yC2iRtMybtAKoXxt3MbASsZm8utarzlVC4eDevEjUVWeCJLAcYe+/Qhe/sE7q9f2SNHT1GYbK8
+ kNdkBoLCXW3h70trr4BSBJ3pAi/XKGWFh2TU5tAjtN
+X-Gm-Gg: ASbGnctYwOVmuqJ1YTn632XkyKHu1wEsSf7pRXCZA4pAG01hb90+7KiSmBVBwEFZ5BP
+ abWWCDyK44Y2G+ocH2HZMospPvjbCR6D7DQAwZBXst+Ua/grLVqG8exNP6XvazrAv/QHajnq3Ov
+ WJ9IIkYdJBctKpeuuZgSKohf/Z8BP96YACikuZSk4qrTTLHrtYSh5vIatngPiV/9e9mouemGP4x
+ MS3h5jxlzwhkw2BlZ0JnLfS9m4woP5hYvy79GYYw5I8sXr+8BuziPaVp8ZsncSr2Jsy9TNi0uSX
+ tuvPLPwA/g6TFEvSagt+wWIG
+X-Received: by 2002:a05:6402:2353:b0:5f8:504a:88d5 with SMTP id
+ 4fb4d7f45d1cf-6056db0ec69mr1978497a12.7.1748589297156; 
+ Fri, 30 May 2025 00:14:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYOgHaMtG6sO+2ua4J7orUgKtsF2mPnRId40CUtBT2VYdcXkGsAF7+e9NN87RzVrBuK3B2JQ==
+X-Received: by 2002:a05:6402:2353:b0:5f8:504a:88d5 with SMTP id
+ 4fb4d7f45d1cf-6056db0ec69mr1978470a12.7.1748589296734; 
+ Fri, 30 May 2025 00:14:56 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60567169d14sm1167317a12.74.2025.05.30.00.14.52
+ 4fb4d7f45d1cf-60566c5a758sm1191241a12.19.2025.05.30.00.14.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:14:52 -0700 (PDT)
+ Fri, 30 May 2025 00:14:56 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 49/77] i386/tdx: Disable PIC for TDX VMs
-Date: Fri, 30 May 2025 09:12:19 +0200
-Message-ID: <20250530071250.2050910-50-pbonzini@redhat.com>
+Subject: [PULL 50/77] i386/tdx: Set and check kernel_irqchip mode for TDX
+Date: Fri, 30 May 2025 09:12:20 +0200
+Message-ID: <20250530071250.2050910-51-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -111,35 +111,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Legacy PIC (8259) cannot be supported for TDX VMs since TDX module
-doesn't allow directly interrupt injection.  Using posted interrupts
-for the PIC is not a viable option as the guest BIOS/kernel will not
-do EOI for PIC IRQs, i.e. will leave the vIRR bit set.
+KVM mandates kernel_irqchip to be split mode.
 
-Hence disable PIC for TDX VMs and error out if user wants PIC.
+Set it to split mode automatically when users don't provide an explicit
+value, otherwise check it to be the split mode.
 
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-38-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-39-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/tdx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ target/i386/kvm/tdx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 87c5bf04960..32c3f3795d0 100644
+index 32c3f3795d0..68ed3b9f987 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -381,6 +381,13 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+@@ -16,6 +16,7 @@
+ #include "qapi/error.h"
+ #include "qom/object_interfaces.h"
+ #include "crypto/hash.h"
++#include "system/kvm_int.h"
+ #include "system/runstate.h"
+ #include "system/system.h"
+ #include "system/ramblock.h"
+@@ -388,6 +389,13 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
          return -EINVAL;
      }
  
-+    if (x86ms->pic == ON_OFF_AUTO_AUTO) {
-+        x86ms->pic = ON_OFF_AUTO_OFF;
-+    } else if (x86ms->pic == ON_OFF_AUTO_ON) {
-+        error_setg(errp, "TDX VM doesn't support PIC");
++    if (kvm_state->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
++        kvm_state->kernel_irqchip_split = ON_OFF_AUTO_ON;
++    } else if (kvm_state->kernel_irqchip_split != ON_OFF_AUTO_ON) {
++        error_setg(errp, "TDX VM requires kernel_irqchip to be split");
 +        return -EINVAL;
 +    }
 +
