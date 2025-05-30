@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1C9AC9239
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E62AC924E
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:16:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Pk-0004yC-22; Fri, 30 May 2025 11:12:56 -0400
+	id 1uL1Pj-0004vR-79; Fri, 30 May 2025 11:12:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PY-0004RD-Om; Fri, 30 May 2025 11:12:44 -0400
+ id 1uL1Pa-0004Vu-Qn; Fri, 30 May 2025 11:12:46 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PV-0002Ko-GV; Fri, 30 May 2025 11:12:44 -0400
+ id 1uL1PX-0002Md-Q7; Fri, 30 May 2025 11:12:46 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 8407444AC3;
- Fri, 30 May 2025 17:11:48 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 1DD4244460;
+ Fri, 30 May 2025 17:11:49 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
@@ -26,9 +26,9 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 42/48] block: mark bdrv_replace_child_bs() as GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:11:19 +0200
-Message-Id: <20250530151125.955508-43-f.ebner@proxmox.com>
+Subject: [PATCH v4 43/48] block: mark bdrv_insert_node() as GRAPH_UNLOCKED
+Date: Fri, 30 May 2025 17:11:20 +0200
+Message-Id: <20250530151125.955508-44-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -57,29 +57,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function bdrv_replace_child_bs() calls bdrv_drained_begin() which
-must be called with the graph unlocked.
+The function bdrv_insert_node() calls bdrv_drained_begin() which must
+be called with the graph unlocked.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- include/block/block-global-state.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/block/block-global-state.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index b1f826dca6..dfdf5e187f 100644
+index dfdf5e187f..55f84c1f8f 100644
 --- a/include/block/block-global-state.h
 +++ b/include/block/block-global-state.h
-@@ -74,8 +74,8 @@ int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
- int GRAPH_WRLOCK
- bdrv_replace_node(BlockDriverState *from, BlockDriverState *to, Error **errp);
+@@ -76,8 +76,9 @@ bdrv_replace_node(BlockDriverState *from, BlockDriverState *to, Error **errp);
  
--int bdrv_replace_child_bs(BdrvChild *child, BlockDriverState *new_bs,
--                          Error **errp);
-+int GRAPH_UNLOCKED
-+bdrv_replace_child_bs(BdrvChild *child, BlockDriverState *new_bs, Error **errp);
- BlockDriverState *bdrv_insert_node(BlockDriverState *bs, QDict *node_options,
-                                    int flags, Error **errp);
+ int GRAPH_UNLOCKED
+ bdrv_replace_child_bs(BdrvChild *child, BlockDriverState *new_bs, Error **errp);
+-BlockDriverState *bdrv_insert_node(BlockDriverState *bs, QDict *node_options,
+-                                   int flags, Error **errp);
++BlockDriverState * GRAPH_UNLOCKED
++bdrv_insert_node(BlockDriverState *bs, QDict *node_options, int flags,
++                 Error **errp);
  int bdrv_drop_filter(BlockDriverState *bs, Error **errp);
+ 
+ BdrvChild * no_coroutine_fn
 -- 
 2.39.5
 
