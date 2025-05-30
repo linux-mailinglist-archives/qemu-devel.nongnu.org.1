@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBACDAC88AA
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED75AC88C2
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:22:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKu0S-0000Be-RV; Fri, 30 May 2025 03:18:22 -0400
+	id 1uKtzC-0007H0-S2; Fri, 30 May 2025 03:17:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtxm-0004Ah-3V
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:35 -0400
+ id 1uKtxo-0004G0-I9
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtxk-0007FQ-Fn
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:33 -0400
+ id 1uKtxm-0007Fe-Ud
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589331;
+ s=mimecast20190719; t=1748589334;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ibN3OHGr1sUQmWMu64gMhIByGJ03ScPUHoMcbrYl78I=;
- b=HxqKqn/9CJRtuVcJkFFkKeXrdh2QhixoJvHtN58WLfjmxtG1rdiikoHNr7XBE2OlygH4aS
- nNhkiZWyKcvICKh3cH6fPL+m92fJvg6XAezxlIQFOQiH/1Z64ZLoggDU5lqD/YVc10vvRx
- sSDqO+WymPiD/fWGw0RwMGlTJzDAYLg=
+ bh=j99FLrHZ8/z3mkKY9xpHPyH24ekACWxNaTSxClfAH/w=;
+ b=I6HFJ3dqtqrFQ1amceEN+JUGt9Knu01amszjabG1fSKyFu9nWH/0gq1oJZEwKQlu7C0rQY
+ EIeeFURNW2bQtV19cKhCAr/yAozpmK8UaqJEM/GP+objC1OqAJl4wHRkG8s6lvrSiANWvD
+ PyF6ZrTDNd6CsjqtdycEQ0HaWZ1kYUQ=
 Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
  [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-4oeidW4eMZeRXyCrV9XVtA-1; Fri, 30 May 2025 03:15:29 -0400
-X-MC-Unique: 4oeidW4eMZeRXyCrV9XVtA-1
-X-Mimecast-MFC-AGG-ID: 4oeidW4eMZeRXyCrV9XVtA_1748589329
+ us-mta-141-Nb1DhgMAP_ySx3vacYJgWA-1; Fri, 30 May 2025 03:15:32 -0400
+X-MC-Unique: Nb1DhgMAP_ySx3vacYJgWA-1
+X-Mimecast-MFC-AGG-ID: Nb1DhgMAP_ySx3vacYJgWA_1748589331
 Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-acbbb0009aeso130699466b.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:15:29 -0700 (PDT)
+ a640c23a62f3a-acf16746a74so116092966b.0
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:15:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589328; x=1749194128;
+ d=1e100.net; s=20230601; t=1748589331; x=1749194131;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ibN3OHGr1sUQmWMu64gMhIByGJ03ScPUHoMcbrYl78I=;
- b=CdkpcmqIf3i6Wx558ebIbffQ20OkKJaWsHYPLKksXU6mmIZ7fXpaEyxyKQP3CVCsrg
- Zz9aJYYnY4e7hJDH/5RG5uuhcb9FcCZsR1MTFBvoq/Luh9VLHxOAM5SP3u6/8lHNTYpp
- 1AUUpKpqI9FSVMCaT/+NPNY9CLWxMHJIMgALE7RYkJ3xJ3LiBmviQJdhKOmNUOJSfe/5
- omdlWElCHcdRKBFmo97b+qaaNO77JPpvzI/ReGxJgwQn8JV7iRjKP5I9n/+5klQokViW
- TKRv9NWqWWLVB4p8yH6i4xbCSP2H3v7JKl28Q2Frf9y+kMzWWIh+vX8EFe7kczISenjZ
- /plw==
-X-Gm-Message-State: AOJu0YzKHuA3cDyK+n1aXOCZkm150WwY61bckZ5D3jUmD6Z7up0yTNnR
- N1/cja7gaqQVLdgu1YoAUdnW8t3ulbCZbjGzrU7xKW0kux89FC5D6bCnpXIgm1+AFDdrblKLzef
- NigxNhsCXfJJDDTZSVs/bLe4v5ZSQwK2jxNWiwIys2PvJRRLQDSsK16bmZXqKvy51BT4PCye4ko
- S6Ebj0/bZtrtwkNphhZS6kDT9RzC15H7XAzQkWtn5l
-X-Gm-Gg: ASbGnctx9kOgcBPPR5UKmPi88zOoDhzfOBsjWGeiF35IdM5rFXZvCgXYj69rnTlMUdC
- VTYWzTzHL8LmR2GE1KmNDYtbRhULlpXu4d9uwmr/b6EAfU7N5L3QQM70igxyqcYjPppI/Ry7yXb
- 9xNgWgci4v2UCqZg8zXeA89KG8UsfMd/FL2UBkqZvIRctY/V2snVjSAUusbs4qWNNxbswszkgmM
- n1W5TlV4IMKPTuWZOXV1i9i6/m7wDg+Sf/sE46LttByR46IHq2RsZjKkWOvbAQF6kwbvVW8AJze
- WFppIvPPKYY5qw==
-X-Received: by 2002:a17:907:9411:b0:ad8:93a3:29b7 with SMTP id
- a640c23a62f3a-adb32265462mr203536366b.18.1748589328211; 
- Fri, 30 May 2025 00:15:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8DdsWjDYqSpFKB7Wqw4IcsllGhpCXK8jwHEaReUrpjw+JtoFhpXeJIDVhog7kEwlx0aOLnw==
-X-Received: by 2002:a17:907:9411:b0:ad8:93a3:29b7 with SMTP id
- a640c23a62f3a-adb32265462mr203532966b.18.1748589327714; 
- Fri, 30 May 2025 00:15:27 -0700 (PDT)
+ bh=j99FLrHZ8/z3mkKY9xpHPyH24ekACWxNaTSxClfAH/w=;
+ b=VdqAwopN/0+17TBu27g5TZPnQh1uWbLNkwEzI/GvWrlMHwAEoanoQXZoI8WfEx3daP
+ TyBm+hws1sdvlkwH2kNbV0tCIaV6uN/6Kah7GVm5BOW3Hyv6M6L9qV1tFW75FU+wiE4d
+ HsdI3NSlG0j7kt5ecXqfPBA22qZn1xyfvCG1ynCmD4JKyu6So0sQrwEs61eBWeMFKOto
+ ydVEZa3RenXrWuLkgNAmQxON+GPUbGNQmm0z1JK8PedU40puguf2QFsQdUfq8mnXg8bs
+ VEbtD5XG45LW87U7hxO5s4NPar0E8gvPXVlSTqrLtE4XmqvErJzIz2a6eXrq/DyBOmdP
+ bt9w==
+X-Gm-Message-State: AOJu0YyIY4SopPfTGwfE0iKrMOXfL8wBJ9Gz9oP7SrYmDHkMkYFj9Y1f
+ WMXqbUIM/2rphw8G9hpvOdqAkZup73VcONP8LWwPqQ1J4RFD/4DlCS5zqfbxvvne1w5sQJytHUr
+ WPkU6xsIL04MKLZ564U1I2E8BunzkBLY/+5crxnEbg3DNsfRSZemQRxm2jyJCjBAsVD+R90oBqW
+ hZIoGKsmdgyReRtnW0qDMOGP6w8a+bKiwjiot3jd96
+X-Gm-Gg: ASbGnctCI8TQ526QoPwFUDlaehP6yZnhDm+npLkZXAj58xggf1L7wJI8gfZaVqu77sm
+ yaYucFpED2yGuN66nORQWxOEF6R0q9e8XyjylBbnsmhr0PyoZO4FiPNgUaQmJdTdfrMcPqBnt2d
+ +kCDcmjJ8ERYWltgFBAU4z2DETok7NpcFagzDPl0KTVGEjJLKc9M8j8OdYI6BJ9af8bt96uIdO3
+ qX8bEIiQR2nRn+ZAUYYi8AAIVShPt3Gyl50RCbxIcs9PSAE3D7Q6MgW19z9SguJY2HV57OW3ycS
+ iSMN2tlR/zUR2Q==
+X-Received: by 2002:a17:906:6a21:b0:ad8:9c97:c2e9 with SMTP id
+ a640c23a62f3a-adb3224582dmr238591766b.1.1748589330693; 
+ Fri, 30 May 2025 00:15:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDg3ySrYTKo/ofdiHRIDm2X7ooj5PdIQJhFiTGUb5P3izQO4E3C6DMzSWGQwpg6QvhKBt86Q==
+X-Received: by 2002:a17:906:6a21:b0:ad8:9c97:c2e9 with SMTP id
+ a640c23a62f3a-adb3224582dmr238588166b.1.1748589330207; 
+ Fri, 30 May 2025 00:15:30 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d82becbsm277514466b.39.2025.05.30.00.15.25
+ a640c23a62f3a-ada5d82e846sm274443966b.70.2025.05.30.00.15.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:15:25 -0700 (PDT)
+ Fri, 30 May 2025 00:15:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 62/77] i386/cgs: Introduce
- x86_confidential_guest_check_features()
-Date: Fri, 30 May 2025 09:12:32 +0200
-Message-ID: <20250530071250.2050910-63-pbonzini@redhat.com>
+Cc: Lei Wang <lei4.wang@intel.com>, Igor Mammedov <imammedo@redhat.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 63/77] i386: Remove unused parameter "uint32_t bit" in
+ feature_word_description()
+Date: Fri, 30 May 2025 09:12:33 +0200
+Message-ID: <20250530071250.2050910-64-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
@@ -108,69 +108,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Lei Wang <lei4.wang@intel.com>
 
-To do cgs specific feature checking. Note the feature checking in
-x86_cpu_filter_features() is valid for non-cgs VMs. For cgs VMs like
-TDX, what features can be supported has more restrictions.
+Parameter "uint32_t bit" is not used in function feature_word_description(),
+so remove it.
 
+Signed-off-by: Lei Wang <lei4.wang@intel.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-51-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20241217123932.948789-2-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/confidential-guest.h | 13 +++++++++++++
- target/i386/kvm/kvm.c            |  8 ++++++++
- 2 files changed, 21 insertions(+)
+ target/i386/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
-index 777d43cc968..48b88dbd313 100644
---- a/target/i386/confidential-guest.h
-+++ b/target/i386/confidential-guest.h
-@@ -42,6 +42,7 @@ struct X86ConfidentialGuestClass {
-     void (*cpu_instance_init)(X86ConfidentialGuest *cg, CPUState *cpu);
-     uint32_t (*adjust_cpuid_features)(X86ConfidentialGuest *cg, uint32_t feature,
-                                       uint32_t index, int reg, uint32_t value);
-+    int (*check_features)(X86ConfidentialGuest *cg, CPUState *cs);
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 383c0b35d48..6258027ab15 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5771,7 +5771,7 @@ static const TypeInfo max_x86_cpu_type_info = {
+     .class_init = max_x86_cpu_class_init,
  };
  
- /**
-@@ -91,4 +92,16 @@ static inline int x86_confidential_guest_adjust_cpuid_features(X86ConfidentialGu
-     }
- }
+-static char *feature_word_description(FeatureWordInfo *f, uint32_t bit)
++static char *feature_word_description(FeatureWordInfo *f)
+ {
+     assert(f->type == CPUID_FEATURE_WORD || f->type == MSR_FEATURE_WORD);
  
-+static inline int x86_confidential_guest_check_features(X86ConfidentialGuest *cg,
-+                                                        CPUState *cs)
-+{
-+    X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
-+
-+    if (klass->check_features) {
-+        return klass->check_features(cg, cs);
-+    }
-+
-+    return 0;
-+}
-+
- #endif
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index cd87f5502a3..a6bc089d020 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2093,6 +2093,14 @@ int kvm_arch_init_vcpu(CPUState *cs)
-     int r;
-     Error *local_err = NULL;
+@@ -5810,6 +5810,7 @@ static void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
+     CPUX86State *env = &cpu->env;
+     FeatureWordInfo *f = &feature_word_info[w];
+     int i;
++    g_autofree char *feat_word_str = feature_word_description(f);
  
-+    if (current_machine->cgs) {
-+        r = x86_confidential_guest_check_features(
-+                X86_CONFIDENTIAL_GUEST(current_machine->cgs), cs);
-+        if (r < 0) {
-+            return r;
-+        }
-+    }
-+
-     memset(&cpuid_data, 0, sizeof(cpuid_data));
+     if (!cpu->force_features) {
+         env->features[w] &= ~mask;
+@@ -5822,7 +5823,6 @@ static void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
  
-     cpuid_i = 0;
+     for (i = 0; i < 64; ++i) {
+         if ((1ULL << i) & mask) {
+-            g_autofree char *feat_word_str = feature_word_description(f, i);
+             warn_report("%s: %s%s%s [bit %d]",
+                         verbose_prefix,
+                         feat_word_str,
 -- 
 2.49.0
 
