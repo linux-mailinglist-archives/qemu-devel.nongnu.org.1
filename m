@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB25AC8759
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 06:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29FF9AC875B
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 06:40:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKrWg-0006r4-3r; Fri, 30 May 2025 00:39:26 -0400
+	id 1uKrWi-0006si-KB; Fri, 30 May 2025 00:39:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uKrWb-0006qQ-5f
- for qemu-devel@nongnu.org; Fri, 30 May 2025 00:39:21 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1uKrWe-0006r5-5Y
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 00:39:25 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uKrWZ-0006q9-7h
- for qemu-devel@nongnu.org; Fri, 30 May 2025 00:39:20 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-73972a54919so1409640b3a.3
- for <qemu-devel@nongnu.org>; Thu, 29 May 2025 21:39:18 -0700 (PDT)
+ id 1uKrWb-0006qb-If
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 00:39:23 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-b26c5fd40a9so2170036a12.1
+ for <qemu-devel@nongnu.org>; Thu, 29 May 2025 21:39:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748579958; x=1749184758;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748579960; x=1749184760;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tQBzKuduCWcv6douWsbSGAxa5Fec63h7Sr3QTsoSHc4=;
- b=O+5tXOPE6PlpmoiS6qAIqgs8fSpwxH3nLWUsSj20tMExgZoL9KSFb5V7+J+WMOheob
- B4S26hfUyNU5fJYJF8Mk2EaT1xH27Xfv4+65c3iJXVSYs4Vvr82wbLxdMNowwtZ+EUGu
- uyAGUWEjnE4Wx/Lfuz48erPVlTuwh+1LNf1sdduSLTDuCM0AHiDn06/Rt8Lv4PxrmRFG
- 8yIjyJQ2Uk4KXaY20TXQDlR76oWfD73YVIdvQMytW5RghAHYwO2eAYqejuQViEWRqEyh
- 4NjBG9EsUMFudjUM01HmAHeJxAfLGjSfaanV8hSkb3NQarSUJAdovg2O7fXIAXIzIH71
- 4AiQ==
+ :reply-to; bh=v9JDnq6XeGtOR9OFG+ek3d5CCEoi428rIOkuRtKIBFc=;
+ b=bPtWgWbq21TVEqzRVc3YvP4fIYoCI7VDohRYTEDVcVPqtTTsHZg3cf6gnPpeANwT38
+ QVYFhU0fhFWT6UbMYXOrZyXjYlD03f+BUUrkOkfWR1QRlnPsQt/i9cgqo95zpcA9Kapv
+ v891lZum/EBekSBGVnrLxm8t705JhgH27p2kBYfAAB8D2hRM01XC0IvMc0okMX9rnxdQ
+ o5Dt4rJhi0TOT/Yamsl/Q1WAlBvvp1P+8Yn26o18m1CR+5e5ZK1oyZ9Yd71HtNX218hx
+ zHOWi4o9M0fRgON/5DsKkSTp3A9li2LYlCCgdhdx8kaQbfgHhbZVTasnr87odjzyXuBO
+ He6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748579958; x=1749184758;
+ d=1e100.net; s=20230601; t=1748579960; x=1749184760;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tQBzKuduCWcv6douWsbSGAxa5Fec63h7Sr3QTsoSHc4=;
- b=XPYPHA43pisQPYSwCcXYEwou51qyjSRvzRsx6bnbV4xOYuCs8aLnVh2eGzSCdZFpvz
- 2LYQcx0HyxWH2JwIgES/Lx4ODlWd8aOkaB/lH+vWGKC6ht4lO/EthCw2yMgOyI7EoPhD
- dTVuj5egOhScS6NxyAqjxA8f7pJgEG096Zqx1v1Qu0gR/uL7ypFdcru03TmF2N34ilxQ
- 9zVOzYpYSNv0CDncJYNZvRpubhpClJgeKzSLkEG7enH/TIa8MqPnTuyzxFspC33OU+0S
- C4cncNitYl79hQKj63SK3ne/YGoBzpgi5o2KP2jG3QPxo5r6iPAE1p8xW+xWW5LjFyX8
- s9DQ==
-X-Gm-Message-State: AOJu0YxBc2KUEBE1ZWF7kijRdDSN+NDt2zoh9SmV3jub+0w2eoaDEnED
- 1F6sCmtXWA1+sKBtimQjN2qMw4JeLPPD1q0nF++lWZzVi43RefZQtrmQ5tU4KFcQedw=
-X-Gm-Gg: ASbGncsY/sl6jQx7frmUeaH+NAfnDYXUJBrSHBqRly2cNnA87L/fao7GptPELkLsyAo
- HjcCiwvaQBEgvmaXbAwh3nc56dwaajp3g3XkfXS3bWZLJ5l43C80r+2OYCbf+gDzVYmjbFaPFDe
- AzihmPBTdeESvBAm80YWj8awIIOMvrrSpWIO7gsUJecyEstQFHJk+KCaWK4vsGYmAffU3wtKFvC
- hdiV3t81R1Y+13IiSxBIeSvsCkaNrDVJt67sDUHBP8CELahRffcxs5Ee2CKJ7usL7czb+CJYnn+
- WyB1R+5wYothIy7PCf/nwH36vXq4U55OvxeV0L4N3eQvlkn4oySB
-X-Google-Smtp-Source: AGHT+IHqRAmp46ed22bvl6PfckJl/SS19VJhqfp+c8yVJteQJydudop/co7IlYAXsvRSdgOAbKJ2cg==
-X-Received: by 2002:a05:6a00:3a24:b0:742:da7c:3f28 with SMTP id
- d2e1a72fcca58-747bda19b11mr2731167b3a.21.1748579957661; 
- Thu, 29 May 2025 21:39:17 -0700 (PDT)
+ bh=v9JDnq6XeGtOR9OFG+ek3d5CCEoi428rIOkuRtKIBFc=;
+ b=EnblMshBTLjruopI3f6yKGSXxpN6MF9WQ2x6vAR73VHQihJltPE2ZJCja4kHaeumwH
+ fmbSS0nvw+rLCjTCRQa8c5Qn/3GZhAj7XlT4hjKku5Im2NA8ZhPLsAe3Q19m0Encxj2Z
+ /MdKw6Cwgg2JW/aCC2n+P1L2kBWxBXcUJ9EJaDLc3q5v4dW/z0Wwtpv+DSpsPixR84yg
+ TTVA7BtNm9ixtjtDKLa4V9m/uhDKI3A3a0+aOnbCJJ5tA2AdgsoP6NJx55znSBhqAdgI
+ TK+gvTNj5gxykXNhpgZ3ihhcSkOSlW7PXamWdTf2dvVQTwXPHrZNnPfbHaaTJxcwmaxq
+ sq0w==
+X-Gm-Message-State: AOJu0YzxkMD3Q3mqkZYJI/btA1zvTbWeRqrjOkQTVp8m7uV32oXgggk1
+ oapRcrmDyk1h+BJrq9uqcygu5n2Rb+jg3jD5SNE0nilgEzU7WNH5/sp8UuR0y9+e0u5ErxMqGOW
+ 4zmxd
+X-Gm-Gg: ASbGncuRPzAOq6Khfx5gYWSVK443L6VyohNcE8Fo1AqXSX+qSxiK8SoLjrPyox0Dp1O
+ ZEBwW1BT2CVwqfo1nUCkhM3pQML5tSN7IMC6cSOs3aDKSLSE+hI2nc6LbwJOBOzvI6oJhYQVPn/
+ 1Jvo5+em0wNg2q7Jw0RmPL0x4CF9TBeNUWta8tmY6KkOTyAkRPE8S8Rw+c3zrgDG86Kum1/EM/E
+ IlONEqM5wMVKs+38QVsIH2l4ULsGXXZbXjRoITjx46fLKfR9RbyMT+jORneVuX+exiIsJ171ojh
+ 18D8M4kMzEzqkQE71QsnajsLCJKLv1uSYjDJSbpc2dkJFQ982Zce
+X-Google-Smtp-Source: AGHT+IFs5vC5Nq3LNSNzI9RojaD2Dz2a5p6cDsBfBOey3yt76JwcBgP7aWW2aXcKVpLgbIbusYRF5w==
+X-Received: by 2002:a17:90b:2f03:b0:30a:9feb:1e15 with SMTP id
+ 98e67ed59e1d1-31214e2efabmr10456036a91.8.1748579960146; 
+ Thu, 29 May 2025 21:39:20 -0700 (PDT)
 Received: from localhost ([157.82.128.1]) by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-747afe96474sm2166809b3a.22.2025.05.29.21.39.16
+ 98e67ed59e1d1-3124e30cbe6sm358543a91.39.2025.05.29.21.39.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 May 2025 21:39:17 -0700 (PDT)
+ Thu, 29 May 2025 21:39:19 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 30 May 2025 13:39:10 +0900
-Subject: [PATCH RFC v5 2/5] virtio-net: Offload hashing to peer
+Date: Fri, 30 May 2025 13:39:11 +0900
+Subject: [PATCH RFC v5 3/5] virtio-net: Offload hashing without vhost
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250530-hash-v5-2-343d7d7a8200@daynix.com>
+Message-Id: <20250530-hash-v5-3-343d7d7a8200@daynix.com>
 References: <20250530-hash-v5-0-343d7d7a8200@daynix.com>
 In-Reply-To: <20250530-hash-v5-0-343d7d7a8200@daynix.com>
 To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
@@ -75,8 +76,8 @@ To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Paolo Abeni <pabeni@redhat.com>, devel@daynix.com
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,102 +99,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows offloading hash reporting and RSS to tap.
+This is necessary to offload hashing to tap.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/virtio-net.c | 69 +++++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 56 insertions(+), 13 deletions(-)
+ hw/net/virtio-net.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 52fe404b3431..0a333d560d7b 100644
+index 0a333d560d7b..3469c211b13a 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -1213,20 +1213,58 @@ static void virtio_net_detach_ebpf_rss(VirtIONet *n)
- 
- static void virtio_net_commit_rss_config(VirtIONet *n)
- {
--    if (n->rss_data.peer_hash_available) {
--        return;
--    }
--
-     if (n->rss_data.enabled) {
--        n->rss_data.enabled_software_rss = n->rss_data.populate_hash;
--        if (n->rss_data.populate_hash) {
--            virtio_net_detach_ebpf_rss(n);
--        } else if (!virtio_net_attach_ebpf_rss(n)) {
--            if (get_vhost_net(qemu_get_queue(n->nic)->peer)) {
--                warn_report("Can't load eBPF RSS for vhost");
-+        if (n->rss_data.peer_hash_available &&
-+            (n->rss_data.peer_hash_types & n->rss_data.runtime_hash_types) ==
-+            n->rss_data.runtime_hash_types) {
-+            if (n->rss_data.redirect) {
-+                size_t indirection_table_size =
-+                    n->rss_data.indirections_len *
-+                    sizeof(*n->rss_data.indirections_table);
-+
-+                size_t hash_size = sizeof(NetVnetRss) +
-+                                   indirection_table_size +
-+                                   sizeof(n->rss_data.key);
-+
-+                g_autofree struct {
-+                    NetVnetRss hdr;
-+                    uint8_t footer[];
-+                } *rss = g_malloc(hash_size);
-+
-+                rss->hdr.hash_types = n->rss_data.runtime_hash_types;
-+                rss->hdr.indirection_table_mask =
-+                    n->rss_data.indirections_len - 1;
-+                rss->hdr.unclassified_queue = n->rss_data.default_queue;
-+
-+                memcpy(rss->footer, n->rss_data.indirections_table,
-+                       indirection_table_size);
-+
-+                memcpy(rss->footer + indirection_table_size, n->rss_data.key,
-+                       sizeof(n->rss_data.key));
-+
-+                qemu_set_vnet_rss(qemu_get_queue(n->nic)->peer, &rss->hdr,
-+                                  n->rss_data.populate_hash);
-             } else {
--                warn_report("Can't load eBPF RSS - fallback to software RSS");
--                n->rss_data.enabled_software_rss = true;
-+                qemu_set_vnet_automq(qemu_get_queue(n->nic)->peer,
-+                                     n->rss_data.runtime_hash_types);
-+            }
-+
-+            n->rss_data.enabled_software_rss = false;
-+        } else {
-+            if (n->rss_data.peer_hash_available) {
-+                qemu_set_vnet_automq(qemu_get_queue(n->nic)->peer, 0);
-+            }
-+
-+            n->rss_data.enabled_software_rss = n->rss_data.populate_hash;
-+            if (n->rss_data.populate_hash) {
-+                virtio_net_detach_ebpf_rss(n);
-+            } else if (!virtio_net_attach_ebpf_rss(n)) {
-+                if (get_vhost_net(qemu_get_queue(n->nic)->peer)) {
-+                    warn_report("Can't load eBPF RSS for vhost");
-+                } else {
-+                    warn_report("Can't load eBPF RSS - fallback to software RSS");
-+                    n->rss_data.enabled_software_rss = true;
-+                }
+@@ -1968,7 +1968,8 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
              }
+ 
+             receive_header(n, sg, elem->in_num, buf, size);
+-            if (n->rss_data.populate_hash) {
++            if (n->rss_data.enabled_software_rss &&
++                n->rss_data.populate_hash) {
+                 offset = offsetof(typeof(extra_hdr), hash_value);
+                 iov_from_buf(sg, elem->in_num, offset,
+                              (char *)&extra_hdr + offset,
+@@ -3099,11 +3100,13 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
+     }
+ 
+     if (!get_vhost_net(nc->peer)) {
+-        if (!use_own_hash) {
+-            virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
+-            virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
+-        } else if (virtio_has_feature(features, VIRTIO_NET_F_RSS)) {
+-            virtio_net_load_ebpf(n, errp);
++        if (!use_peer_hash) {
++            if (!use_own_hash) {
++                virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
++                virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
++            } else if (virtio_has_feature(features, VIRTIO_NET_F_RSS)) {
++                virtio_net_load_ebpf(n, errp);
++            }
          }
  
-@@ -1235,7 +1273,12 @@ static void virtio_net_commit_rss_config(VirtIONet *n)
-                                     n->rss_data.indirections_len,
-                                     sizeof(n->rss_data.key));
-     } else {
--        virtio_net_detach_ebpf_rss(n);
-+        if (n->rss_data.peer_hash_available) {
-+            qemu_set_vnet_automq(qemu_get_queue(n->nic)->peer, 0);
-+        } else {
-+            virtio_net_detach_ebpf_rss(n);
-+        }
-+
-         trace_virtio_net_rss_disable(n);
-     }
- }
+         return features;
 
 -- 
 2.49.0
