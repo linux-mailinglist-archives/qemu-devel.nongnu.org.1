@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB885AC89A6
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1244AC89A8
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:05:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKui2-0002NF-Nz; Fri, 30 May 2025 04:03:22 -0400
+	id 1uKui4-0002OL-7B; Fri, 30 May 2025 04:03:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKuhz-0002MX-1H
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:19 -0400
+ id 1uKui0-0002NE-OS
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKuhv-0004X2-Ml
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:18 -0400
+ id 1uKuhw-0004XZ-Br
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748592192;
+ s=mimecast20190719; t=1748592195;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=jYPBYGUmXs2yG4vRr7M+ICdJJUaeQpgp3Q+Sw8SSdRk=;
- b=FlpbwYMJpWQGaHnQl8HX2hTMnHKZnS786cZIqcVPhus8v8aOqhmnGXkPuSTfCukVGXSB9N
- AzjXsaJ6YTp3tuR5uGRnUP8TrVzUjxDjl8N78p9oO0vYH0Ju6nd0NngAz9PPxITMYkh2JJ
- SsY1ewjXj9XrOAm56RLLfILQo93yA2E=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=M6QoYP5WCSbSMFCMhfRa9ReIhHpAzUDchEI+NzMVEms=;
+ b=P23FgdZ3cKqZ+sKBZx7bgpJhQ1Z0TV0Kgqjeeknmzn2DQ+erObr7npr+gVfYVphKD16Y8V
+ rEpv95CfPZmcY7nklmE/mI4R7fjRc5IxE+0SaS+id3BFzsynH4Eni0q+Rt7lt4bXi7aZPD
+ naZMCHWOsGsOM0Zg95RlH7K5SV0Tqls=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-D-9nu3yZOk-Wr-yEH_j1tQ-1; Fri, 30 May 2025 04:03:11 -0400
-X-MC-Unique: D-9nu3yZOk-Wr-yEH_j1tQ-1
-X-Mimecast-MFC-AGG-ID: D-9nu3yZOk-Wr-yEH_j1tQ_1748592190
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-604e82a5d37so1912386a12.0
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:11 -0700 (PDT)
+ us-mta-620-IIEwYzgzNeCLZU2VUzy92Q-1; Fri, 30 May 2025 04:03:13 -0400
+X-MC-Unique: IIEwYzgzNeCLZU2VUzy92Q-1
+X-Mimecast-MFC-AGG-ID: IIEwYzgzNeCLZU2VUzy92Q_1748592192
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-601f3f35b88so1710070a12.1
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748592189; x=1749196989;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jYPBYGUmXs2yG4vRr7M+ICdJJUaeQpgp3Q+Sw8SSdRk=;
- b=m29QOmK7LQEbHz6l1Uv0s1nGOJgQis2ZF4PP2KxayUzaEm7RqZNP5ANZIgbDbNg8Tm
- PKOyjyLYAk+n6hr1BXUJJTh00aHPktFwSrdSUAtMIuJ9zAi0p68VMhStuzruB4cPwC4y
- n4E0F3K8uNMMsoWEzfLKuFSZ3pE9XP/Ix7XrbZV1MsGQGbiiWRb/VtoW3rPdBHBeC2fu
- 5sI5OAGBZZqSv1BV6Mnd2o9PpsphTZm8yvJKKGcKOAJ43xe/+8cGNR/MScwRBqMJVcJ6
- Wz1hli0YxrrmTIj9hDp1G9VqQHUO6xM2zsMmIHHkFVXGNy2Bx9DRVkP7j0/UVPKprujY
- Im6g==
-X-Gm-Message-State: AOJu0Yxh6nin9ZziMDRJ3zY76/UWmdtBm3qeFWGCXvwIOgRXoe20DyU/
- VAQFheFPyk1F7QWFdWy9as5RpipwnF5cDGirb4mGNysShbbLsm7SsDu8KiMbMlCbTTC0HR9P1Cw
- M25EaHLWwPMNGNsGAhFkP/L1I01ugHCXxz+2pszEOKh+CrUEss6PSS0nXQnkCkqiA/0OFV2KUGg
- zfd0wfo0Q24Ijw2jI0jIFpWUE9YXa0I2wBWExLQbU+
-X-Gm-Gg: ASbGncskyXCB1DpYe3InDV0LYSWn3Z6GpVWDgMBhPX12HvyZvHMxi2vLmJeXQeTBIgb
- PvLXhQkgZBrlhratBZorb0n2ICHkflgJHKrVET0f88kUA1FkCODdKfL6ZSkEOLSha0oU3S2Juvp
- wS2AsIQGZDHh2/uI+oshSjNwjFDzFss67c3RrrTET64p2v7CcGujuijhT+oJeglT6eupYHf+21i
- H55fZJh9ls+aDDOZFEUUp/h6DgKroFk7t9a77d9/B2tVxavb2H037KC+9zm92ueQSeUyU1HguKI
- LXvgubTiOUdXXWdIILCRHXVj
-X-Received: by 2002:a05:6402:430a:b0:604:6149:1c66 with SMTP id
- 4fb4d7f45d1cf-6056f4de1e7mr2066513a12.33.1748592189522; 
- Fri, 30 May 2025 01:03:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHNId5c6WLNYf2ktXWr3gSo4GlzSPFuzWO57kTgzdMLJzVAzn6Ho8z5Hxy2o7U5Gxoz+6cwTA==
-X-Received: by 2002:a05:6402:430a:b0:604:6149:1c66 with SMTP id
- 4fb4d7f45d1cf-6056f4de1e7mr2066478a12.33.1748592189036; 
- Fri, 30 May 2025 01:03:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748592192; x=1749196992;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=M6QoYP5WCSbSMFCMhfRa9ReIhHpAzUDchEI+NzMVEms=;
+ b=NSQiFXZr8N6ZoREUeg0hPFEKXZUDZ59wuiN1GYfNCES5EuRnAdZ6+y9QLAFwxWyuqg
+ dx8s21JoTqSp3w73WXqDgNnQl3nLQ8upjZZVMBk7Vx6hFSjCdjTJ3sgMlT910HbYJWA6
+ ivz4V2NEHqfEb7J5xsmipMY6qNzl/4MriZzswLIWbCO68drj5e5nAV1bXTLH+r9xm8oh
+ t3riZu+MyIEmQS6bnqJEMj7ystssRYxhliBFoAZ4HT3P0GYIb+t8jGcLzqhaqUa6d+uL
+ Yc/Q8AN94OvCBQs6M2MSoP8eiEe/+6T0ezSckZvnT0gL/R1NUPeJbXG1GdVAAShQVcXQ
+ Prqw==
+X-Gm-Message-State: AOJu0Yx+mRA5JZFw4mkfUI+fcmXB+rGOYpEM67JBjy7rGxiJvkc+ODy7
+ 8r1Tdtub71B4xXv1aLwEFoUD/OABexsC+hu8lVpH1CKqigMLMxJDOdg75vw3mPohIPNWT7/5Gjz
+ sS7XuIvX0fwEPFV4HD7CkRfdToJdcVnTSFRc04W6YuJXGoW795E2/YRKDTYAkKC/BTnfuKhDx3R
+ vIlgJzh14X13xtER1ulQ67upjpOvEHBfVOh+EFsTgo
+X-Gm-Gg: ASbGncsrPbhA91KqtxJyXbTMHASxCAMonLUwWfemTOQiaORPV2gQYFpgEHqc1zvUXWs
+ 1ncQXWFO7o0XGF0GeJSwy7GogAE+iZVCRDlo8N6VQR3q4jZ9FjY7SqA8lLwoJ4wx6KYw7w5fvRa
+ 21S0/rbwBxK1KKoNLvBsqGfH1W4YaV9HPJiQ51xsEjbpySoYr7FipAekhCSf61H8hhq4PkfJztt
+ f9iAXbg6tPAkWx20RMCUUnfLlMymZPV1W/jdIJCYGPxKDhFeMgggDtJ8UA77v3dCk19dthU46B9
+ 12Raa62NYjkdfQ==
+X-Received: by 2002:a05:6402:34d0:b0:602:3e4:54de with SMTP id
+ 4fb4d7f45d1cf-6056db31fdfmr2252486a12.10.1748592191648; 
+ Fri, 30 May 2025 01:03:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGTV+NBOEZUNPTidm/yHYmvPTkjQLR5Zjaf7PHW0R7WQSmI2kZJjbN4co+1imMPkaADl0Nnew==
+X-Received: by 2002:a05:6402:34d0:b0:602:3e4:54de with SMTP id
+ 4fb4d7f45d1cf-6056db31fdfmr2252451a12.10.1748592191179; 
+ Fri, 30 May 2025 01:03:11 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60567168300sm1242455a12.69.2025.05.30.01.03.08
+ 4fb4d7f45d1cf-60566c59f81sm1252212a12.18.2025.05.30.01.03.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 01:03:08 -0700 (PDT)
+ Fri, 30 May 2025 01:03:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org
-Subject: [PATCH v2 00/14] rust: bindings for Error
-Date: Fri, 30 May 2025 10:02:52 +0200
-Message-ID: <20250530080307.2055502-1-pbonzini@redhat.com>
+Cc: qemu-rust@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 01/14] subprojects: add the anyhow crate
+Date: Fri, 30 May 2025 10:02:53 +0200
+Message-ID: <20250530080307.2055502-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250530080307.2055502-1-pbonzini@redhat.com>
+References: <20250530080307.2055502-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -87,7 +91,7 @@ X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.902,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,87 +107,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As explained for v1, the impetus for this series is to remove BqlCell<>
-from HPETState::num_timers.  However, it's also an important step for QAPI:
-error propagation is pretty central for example to QMP, and the series
-is also a first example of two-way conversion between C and native-Rust
-structs (i.e. not using bindgen-generated structs or their opaque wrappers).
+This is a standard replacement for Box<dyn Error> which is more efficient (it only
+occcupies one word) and provides a backtrace of the error.  This could be plumbed
+into &error_abort in the future.
 
-As an aside, support for NUL-terminated file is now scheduled for
-inclusion in Rust as "panic::Location::file_with_nul()", but it will be
-quite a while before QEMU can use it.  For more information, see
-https://github.com/rust-lang/rust/issues/141727.
-
-Paolo
-
-v1->v2:
-- patch "rust: make declaration of dependent crates more consistent" merged
-- change dependency name for anyhow to anyhow-1-rs
-- update scripts/archive-source.sh and scripts/make-release [Zhao]
-- update foreign to 0.3.1 instead of 0.2.0
-- use %.*s to print non-NUL-terminated err->src [Markus]
-- make err->src_len an int instead of a size_t [Markus]
-- add doc comment for error module
-- remove #[derive(Default)] for Error [Markus]
-- rewrite ok_or_propagate in functional style [Markus]
-- clarify "validity" of Error** [Markus]
-- clarify that err_or_unit/err_or_else free the Error* [Markus]
-
-new patches:
-- hpet: adjust VMState for consistency with Rust version [Zhao]
-- rust: qemu-api: add tests for Error bindings
-- docs: update Rust module status
-
-
-Paolo Bonzini (13):
-  subprojects: add the anyhow crate
-  subprojects: add the foreign crate
-  util/error: expose Error definition to Rust code
-  util/error: allow non-NUL-terminated err->src
-  util/error: make func optional
-  rust: qemu-api: add bindings to Error
-  rust: qemu-api: add tests for Error bindings
-  rust: qdev: support returning errors from realize
-  rust/hpet: change type of num_timers to usize
-  hpet: adjust VMState for consistency with Rust version
-  hpet: return errors from realize if properties are incorrect
-  rust/hpet: return errors from realize if properties are incorrect
-  docs: update Rust module status
-
-Zhao Liu (1):
-  rust/hpet: Drop BqlCell wrapper for num_timers
-
- docs/devel/rust.rst                           |   2 +-
- include/qapi/error-internal.h                 |  27 ++
- rust/wrapper.h                                |   1 +
- hw/timer/hpet.c                               |  21 +-
- util/error.c                                  |  20 +-
- rust/Cargo.lock                               |  17 +
- rust/Cargo.toml                               |   1 +
- rust/hw/char/pl011/src/device.rs              |   5 +-
- rust/hw/timer/hpet/src/device.rs              |  62 ++-
- rust/hw/timer/hpet/src/fw_cfg.rs              |   7 +-
- rust/meson.build                              |   4 +
- rust/qemu-api/Cargo.toml                      |   2 +
- rust/qemu-api/meson.build                     |   3 +-
- rust/qemu-api/src/error.rs                    | 403 ++++++++++++++++++
- rust/qemu-api/src/lib.rs                      |   3 +
- rust/qemu-api/src/qdev.rs                     |  10 +-
- scripts/archive-source.sh                     |   5 +-
- scripts/make-release                          |   5 +-
- subprojects/.gitignore                        |   2 +
- subprojects/anyhow-1-rs.wrap                  |   7 +
- subprojects/foreign-0.3-rs.wrap               |   7 +
- .../packagefiles/anyhow-1.0-rs/meson.build    |  33 ++
- .../packagefiles/foreign-0.3-rs/meson.build   |  26 ++
- 23 files changed, 602 insertions(+), 71 deletions(-)
- create mode 100644 include/qapi/error-internal.h
- create mode 100644 rust/qemu-api/src/error.rs
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ rust/meson.build                              |  2 ++
+ rust/qemu-api/meson.build                     |  2 +-
+ scripts/archive-source.sh                     |  2 +-
+ scripts/make-release                          |  2 +-
+ subprojects/.gitignore                        |  1 +
+ subprojects/anyhow-1-rs.wrap                  |  7 ++++
+ .../packagefiles/anyhow-1.0-rs/meson.build    | 33 +++++++++++++++++++
+ 7 files changed, 46 insertions(+), 3 deletions(-)
  create mode 100644 subprojects/anyhow-1-rs.wrap
- create mode 100644 subprojects/foreign-0.3-rs.wrap
  create mode 100644 subprojects/packagefiles/anyhow-1.0-rs/meson.build
- create mode 100644 subprojects/packagefiles/foreign-0.3-rs/meson.build
 
+diff --git a/rust/meson.build b/rust/meson.build
+index afce62f4772..6227e01f32a 100644
+--- a/rust/meson.build
++++ b/rust/meson.build
+@@ -1,7 +1,9 @@
++subproject('anyhow-1-rs', required: true)
+ subproject('bilge-0.2-rs', required: true)
+ subproject('bilge-impl-0.2-rs', required: true)
+ subproject('libc-0.2-rs', required: true)
+ 
++anyhow_rs = dependency('anyhow-1-rs')
+ bilge_rs = dependency('bilge-0.2-rs')
+ bilge_impl_rs = dependency('bilge-impl-0.2-rs')
+ libc_rs = dependency('libc-0.2-rs')
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index d19f52af4da..181ceca9536 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -35,7 +35,7 @@ _qemu_api_rs = static_library(
+   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
+   rust_args: _qemu_api_cfg,
+-  dependencies: [libc_rs, qemu_api_macros, qemuutil_rs,
++  dependencies: [anyhow_rs, libc_rs, qemu_api_macros, qemuutil_rs,
+                  qom, hwcore, chardev, migration],
+ )
+ 
+diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
+index e461c1531ed..816062fee94 100755
+--- a/scripts/archive-source.sh
++++ b/scripts/archive-source.sh
+@@ -27,7 +27,7 @@ sub_file="${sub_tdir}/submodule.tar"
+ # in their checkout, because the build environment is completely
+ # different to the host OS.
+ subprojects="keycodemapdb libvfio-user berkeley-softfloat-3
+-  berkeley-testfloat-3 arbitrary-int-1-rs bilge-0.2-rs
++  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
+   bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
+   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
+   syn-2-rs unicode-ident-1-rs"
+diff --git a/scripts/make-release b/scripts/make-release
+index 8c3594a1a47..ea65bdcc0cf 100755
+--- a/scripts/make-release
++++ b/scripts/make-release
+@@ -40,7 +40,7 @@ fi
+ 
+ # Only include wraps that are invoked with subproject()
+ SUBPROJECTS="libvfio-user keycodemapdb berkeley-softfloat-3
+-  berkeley-testfloat-3 arbitrary-int-1-rs bilge-0.2-rs
++  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
+   bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
+   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
+   syn-2-rs unicode-ident-1-rs"
+diff --git a/subprojects/.gitignore b/subprojects/.gitignore
+index d12d34618cc..b9ae507b85a 100644
+--- a/subprojects/.gitignore
++++ b/subprojects/.gitignore
+@@ -6,6 +6,7 @@
+ /keycodemapdb
+ /libvfio-user
+ /slirp
++/anyhow-1.0.98
+ /arbitrary-int-1.2.7
+ /bilge-0.2.0
+ /bilge-impl-0.2.0
+diff --git a/subprojects/anyhow-1-rs.wrap b/subprojects/anyhow-1-rs.wrap
+new file mode 100644
+index 00000000000..a69a3645b49
+--- /dev/null
++++ b/subprojects/anyhow-1-rs.wrap
+@@ -0,0 +1,7 @@
++[wrap-file]
++directory = anyhow-1.0.98
++source_url = https://crates.io/api/v1/crates/anyhow/1.0.98/download
++source_filename = anyhow-1.0.98.tar.gz
++source_hash = e16d2d3311acee920a9eb8d33b8cbc1787ce4a264e85f964c2404b969bdcd487
++#method = cargo
++patch_directory = anyhow-1-rs
+diff --git a/subprojects/packagefiles/anyhow-1.0-rs/meson.build b/subprojects/packagefiles/anyhow-1.0-rs/meson.build
+new file mode 100644
+index 00000000000..348bab98b9f
+--- /dev/null
++++ b/subprojects/packagefiles/anyhow-1.0-rs/meson.build
+@@ -0,0 +1,33 @@
++project('anyhow-1-rs', 'rust',
++  meson_version: '>=1.5.0',
++  version: '1.0.98',
++  license: 'MIT OR Apache-2.0',
++  default_options: [])
++
++rustc = meson.get_compiler('rust')
++
++rust_args = ['--cap-lints', 'allow']
++rust_args += ['--cfg', 'feature="std"']
++if rustc.version().version_compare('<1.65.0')
++  error('rustc version ' + rustc.version() + ' is unsupported. Please upgrade to at least 1.65.0')
++endif
++rust_args += [ '--cfg', 'std_backtrace' ] # >= 1.65.0
++if rustc.version().version_compare('<1.81.0')
++  rust_args += [ '--cfg', 'anyhow_no_core_error' ]
++endif
++
++_anyhow_rs = static_library(
++  'anyhow',
++  files('src/lib.rs'),
++  gnu_symbol_visibility: 'hidden',
++  override_options: ['rust_std=2018', 'build.rust_std=2018'],
++  rust_abi: 'rust',
++  rust_args: rust_args,
++  dependencies: [],
++)
++
++anyhow_dep = declare_dependency(
++  link_with: _anyhow_rs,
++)
++
++meson.override_dependency('anyhow-1-rs', anyhow_dep)
 -- 
 2.49.0
 
