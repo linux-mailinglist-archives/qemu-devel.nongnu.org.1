@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1244AC89A8
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:05:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A45AC89AC
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:05:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKui4-0002OL-7B; Fri, 30 May 2025 04:03:24 -0400
+	id 1uKuiM-0002W7-JW; Fri, 30 May 2025 04:03:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKui0-0002NE-OS
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uKui8-0002Ug-FZ
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKuhw-0004XZ-Br
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:20 -0400
+ id 1uKui6-0004am-S5
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748592195;
+ s=mimecast20190719; t=1748592206;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=M6QoYP5WCSbSMFCMhfRa9ReIhHpAzUDchEI+NzMVEms=;
- b=P23FgdZ3cKqZ+sKBZx7bgpJhQ1Z0TV0Kgqjeeknmzn2DQ+erObr7npr+gVfYVphKD16Y8V
- rEpv95CfPZmcY7nklmE/mI4R7fjRc5IxE+0SaS+id3BFzsynH4Eni0q+Rt7lt4bXi7aZPD
- naZMCHWOsGsOM0Zg95RlH7K5SV0Tqls=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ucBnDbok7v6Mu7KPseGvFTjV3duwh5RlIILFahRdtRA=;
+ b=VHNz+WniFEagXQB2cLfCCroUCFHgByqhLhcAkKTmgs21oVfDvRTPw7/cDk/9vx47Wwhmbg
+ xGWHHJtq3FyXwxdQo4VrArBNgEUf2IYGf4zEDgg61TlHh95vPhUcOy/ySFRezjSGXI/1h6
+ kJnG7zfqcZm+j/AkTlot9jyA+QsVjwQ=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-IIEwYzgzNeCLZU2VUzy92Q-1; Fri, 30 May 2025 04:03:13 -0400
-X-MC-Unique: IIEwYzgzNeCLZU2VUzy92Q-1
-X-Mimecast-MFC-AGG-ID: IIEwYzgzNeCLZU2VUzy92Q_1748592192
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-601f3f35b88so1710070a12.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:13 -0700 (PDT)
+ us-mta-561-uFPu5UrRM6yVn8KMI1MiNw-1; Fri, 30 May 2025 04:03:20 -0400
+X-MC-Unique: uFPu5UrRM6yVn8KMI1MiNw-1
+X-Mimecast-MFC-AGG-ID: uFPu5UrRM6yVn8KMI1MiNw_1748592199
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-ad56c5412f2so153907066b.1
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748592192; x=1749196992;
+ d=1e100.net; s=20230601; t=1748592196; x=1749196996;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M6QoYP5WCSbSMFCMhfRa9ReIhHpAzUDchEI+NzMVEms=;
- b=NSQiFXZr8N6ZoREUeg0hPFEKXZUDZ59wuiN1GYfNCES5EuRnAdZ6+y9QLAFwxWyuqg
- dx8s21JoTqSp3w73WXqDgNnQl3nLQ8upjZZVMBk7Vx6hFSjCdjTJ3sgMlT910HbYJWA6
- ivz4V2NEHqfEb7J5xsmipMY6qNzl/4MriZzswLIWbCO68drj5e5nAV1bXTLH+r9xm8oh
- t3riZu+MyIEmQS6bnqJEMj7ystssRYxhliBFoAZ4HT3P0GYIb+t8jGcLzqhaqUa6d+uL
- Yc/Q8AN94OvCBQs6M2MSoP8eiEe/+6T0ezSckZvnT0gL/R1NUPeJbXG1GdVAAShQVcXQ
- Prqw==
-X-Gm-Message-State: AOJu0Yx+mRA5JZFw4mkfUI+fcmXB+rGOYpEM67JBjy7rGxiJvkc+ODy7
- 8r1Tdtub71B4xXv1aLwEFoUD/OABexsC+hu8lVpH1CKqigMLMxJDOdg75vw3mPohIPNWT7/5Gjz
- sS7XuIvX0fwEPFV4HD7CkRfdToJdcVnTSFRc04W6YuJXGoW795E2/YRKDTYAkKC/BTnfuKhDx3R
- vIlgJzh14X13xtER1ulQ67upjpOvEHBfVOh+EFsTgo
-X-Gm-Gg: ASbGncsrPbhA91KqtxJyXbTMHASxCAMonLUwWfemTOQiaORPV2gQYFpgEHqc1zvUXWs
- 1ncQXWFO7o0XGF0GeJSwy7GogAE+iZVCRDlo8N6VQR3q4jZ9FjY7SqA8lLwoJ4wx6KYw7w5fvRa
- 21S0/rbwBxK1KKoNLvBsqGfH1W4YaV9HPJiQ51xsEjbpySoYr7FipAekhCSf61H8hhq4PkfJztt
- f9iAXbg6tPAkWx20RMCUUnfLlMymZPV1W/jdIJCYGPxKDhFeMgggDtJ8UA77v3dCk19dthU46B9
- 12Raa62NYjkdfQ==
-X-Received: by 2002:a05:6402:34d0:b0:602:3e4:54de with SMTP id
- 4fb4d7f45d1cf-6056db31fdfmr2252486a12.10.1748592191648; 
- Fri, 30 May 2025 01:03:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTV+NBOEZUNPTidm/yHYmvPTkjQLR5Zjaf7PHW0R7WQSmI2kZJjbN4co+1imMPkaADl0Nnew==
-X-Received: by 2002:a05:6402:34d0:b0:602:3e4:54de with SMTP id
- 4fb4d7f45d1cf-6056db31fdfmr2252451a12.10.1748592191179; 
- Fri, 30 May 2025 01:03:11 -0700 (PDT)
+ bh=ucBnDbok7v6Mu7KPseGvFTjV3duwh5RlIILFahRdtRA=;
+ b=OfnkbbSDpO0vOQS5kTQjYleIioiAVCraGY0MjqG7569uxn6kXwuINwAFOIUoGSzwea
+ MM2tPHbDJ6ZW0q73UvilstjDKhZRFk35vdYtvOYUsMHihfw198OpCm9eTM7e1dnSdQ8Z
+ 9Zhw4stWx7OoRklQLFdmSLcx2sau2vAsxwSkZyjKGFG9EjPdsjCcUEEmaKxq3n257JZE
+ sQJ8VTIeMgobVxjgfYfQ0ZhnY975Uk9cjcD3lVA78WbM1DfWsHVPuiS+ceGXukob7i+/
+ ruzHmIxFXPfIVJ66dpcwsBYTRMGSe0Fbez0RTQqyTOTm97kdT5qq9lswMwYPxEP6ViAT
+ msEA==
+X-Gm-Message-State: AOJu0YxkabdetOCfZ+sy5F4VcLmsX28yy8otsbI1f9ZX0RTzH8KPKp16
+ HnQGLyy9Yq58TNIvwZ3LjjHT6vSVmcQT15xG3FCkB6l8GjaHZogZrAl0jwCEihqpxSoX3BNdPq4
+ EvIEFGIpUdwpcmZT6sfUb5fzZO4BGJbZ0WEwx1ytyLigBOD2ca+iivHQQGItYcGwnIOT03qBYLn
+ SWBCNDirszzUQRz4r3Qa+jykC7nDa+chO8eldB3zAf
+X-Gm-Gg: ASbGncsnBhWFS5lDgRSCqk6doTCsaq0jjcJCVfFuendYZr920JcfCd+6xtajhQkgZTw
+ z43mrEU4E5+lvMXASgG89OQd+FKqXuAAODyfg2eydtZf6OgZ+7g1Hje7Y8F3NrU30FFsBbDPjj7
+ Shohi+pWe6z4/kZ2cwnElrD1DWS1IgXxcDNwhRQsEAhcZ+bbuo5GsK6kjNaVIWppPP8L/qKkfRP
+ 03sbGaPu8RzYvzTaBsX6UM7CrQKRs/TH7a117h0MiPkv5fTLKFLMu/HKJCddHzwEGqZzvLsofW8
+ XEwlDPz8fRrF+OxtGj9Qxzn2
+X-Received: by 2002:a17:907:3d90:b0:ad8:9257:571c with SMTP id
+ a640c23a62f3a-adb36b4cdd9mr134316966b.20.1748592196338; 
+ Fri, 30 May 2025 01:03:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEoaUH0pu+T1ZgUEPTJlRucO+jfglmnp6UDpzApsFnlT+8QhhfYXnmbuNXg/a34e/1wNM6Fhg==
+X-Received: by 2002:a17:907:3d90:b0:ad8:9257:571c with SMTP id
+ a640c23a62f3a-adb36b4cdd9mr134313666b.20.1748592195840; 
+ Fri, 30 May 2025 01:03:15 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60566c59f81sm1252212a12.18.2025.05.30.01.03.10
+ a640c23a62f3a-adb32e347fasm111858866b.168.2025.05.30.01.03.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 01:03:10 -0700 (PDT)
+ Fri, 30 May 2025 01:03:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 01/14] subprojects: add the anyhow crate
-Date: Fri, 30 May 2025 10:02:53 +0200
-Message-ID: <20250530080307.2055502-2-pbonzini@redhat.com>
+Cc: qemu-rust@nongnu.org
+Subject: [PATCH 03/14] util/error: expose Error definition to Rust code
+Date: Fri, 30 May 2025 10:02:55 +0200
+Message-ID: <20250530080307.2055502-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530080307.2055502-1-pbonzini@redhat.com>
 References: <20250530080307.2055502-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -107,141 +106,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a standard replacement for Box<dyn Error> which is more efficient (it only
-occcupies one word) and provides a backtrace of the error.  This could be plumbed
-into &error_abort in the future.
+This is used to preserve the file and line in a roundtrip from
+C Error to Rust and back to C.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/meson.build                              |  2 ++
- rust/qemu-api/meson.build                     |  2 +-
- scripts/archive-source.sh                     |  2 +-
- scripts/make-release                          |  2 +-
- subprojects/.gitignore                        |  1 +
- subprojects/anyhow-1-rs.wrap                  |  7 ++++
- .../packagefiles/anyhow-1.0-rs/meson.build    | 33 +++++++++++++++++++
- 7 files changed, 46 insertions(+), 3 deletions(-)
- create mode 100644 subprojects/anyhow-1-rs.wrap
- create mode 100644 subprojects/packagefiles/anyhow-1.0-rs/meson.build
+ include/qapi/error-internal.h | 26 ++++++++++++++++++++++++++
+ rust/wrapper.h                |  1 +
+ util/error.c                  | 10 +---------
+ 3 files changed, 28 insertions(+), 9 deletions(-)
+ create mode 100644 include/qapi/error-internal.h
 
-diff --git a/rust/meson.build b/rust/meson.build
-index afce62f4772..6227e01f32a 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -1,7 +1,9 @@
-+subproject('anyhow-1-rs', required: true)
- subproject('bilge-0.2-rs', required: true)
- subproject('bilge-impl-0.2-rs', required: true)
- subproject('libc-0.2-rs', required: true)
- 
-+anyhow_rs = dependency('anyhow-1-rs')
- bilge_rs = dependency('bilge-0.2-rs')
- bilge_impl_rs = dependency('bilge-impl-0.2-rs')
- libc_rs = dependency('libc-0.2-rs')
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index d19f52af4da..181ceca9536 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -35,7 +35,7 @@ _qemu_api_rs = static_library(
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
-   rust_args: _qemu_api_cfg,
--  dependencies: [libc_rs, qemu_api_macros, qemuutil_rs,
-+  dependencies: [anyhow_rs, libc_rs, qemu_api_macros, qemuutil_rs,
-                  qom, hwcore, chardev, migration],
- )
- 
-diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
-index e461c1531ed..816062fee94 100755
---- a/scripts/archive-source.sh
-+++ b/scripts/archive-source.sh
-@@ -27,7 +27,7 @@ sub_file="${sub_tdir}/submodule.tar"
- # in their checkout, because the build environment is completely
- # different to the host OS.
- subprojects="keycodemapdb libvfio-user berkeley-softfloat-3
--  berkeley-testfloat-3 arbitrary-int-1-rs bilge-0.2-rs
-+  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
-   bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
-   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
-   syn-2-rs unicode-ident-1-rs"
-diff --git a/scripts/make-release b/scripts/make-release
-index 8c3594a1a47..ea65bdcc0cf 100755
---- a/scripts/make-release
-+++ b/scripts/make-release
-@@ -40,7 +40,7 @@ fi
- 
- # Only include wraps that are invoked with subproject()
- SUBPROJECTS="libvfio-user keycodemapdb berkeley-softfloat-3
--  berkeley-testfloat-3 arbitrary-int-1-rs bilge-0.2-rs
-+  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
-   bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
-   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
-   syn-2-rs unicode-ident-1-rs"
-diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index d12d34618cc..b9ae507b85a 100644
---- a/subprojects/.gitignore
-+++ b/subprojects/.gitignore
-@@ -6,6 +6,7 @@
- /keycodemapdb
- /libvfio-user
- /slirp
-+/anyhow-1.0.98
- /arbitrary-int-1.2.7
- /bilge-0.2.0
- /bilge-impl-0.2.0
-diff --git a/subprojects/anyhow-1-rs.wrap b/subprojects/anyhow-1-rs.wrap
+diff --git a/include/qapi/error-internal.h b/include/qapi/error-internal.h
 new file mode 100644
-index 00000000000..a69a3645b49
+index 00000000000..d5c3904adec
 --- /dev/null
-+++ b/subprojects/anyhow-1-rs.wrap
-@@ -0,0 +1,7 @@
-+[wrap-file]
-+directory = anyhow-1.0.98
-+source_url = https://crates.io/api/v1/crates/anyhow/1.0.98/download
-+source_filename = anyhow-1.0.98.tar.gz
-+source_hash = e16d2d3311acee920a9eb8d33b8cbc1787ce4a264e85f964c2404b969bdcd487
-+#method = cargo
-+patch_directory = anyhow-1-rs
-diff --git a/subprojects/packagefiles/anyhow-1.0-rs/meson.build b/subprojects/packagefiles/anyhow-1.0-rs/meson.build
-new file mode 100644
-index 00000000000..348bab98b9f
---- /dev/null
-+++ b/subprojects/packagefiles/anyhow-1.0-rs/meson.build
-@@ -0,0 +1,33 @@
-+project('anyhow-1-rs', 'rust',
-+  meson_version: '>=1.5.0',
-+  version: '1.0.98',
-+  license: 'MIT OR Apache-2.0',
-+  default_options: [])
++++ b/include/qapi/error-internal.h
+@@ -0,0 +1,26 @@
++/*
++ * QEMU Error Objects - struct definition
++ *
++ * Copyright IBM, Corp. 2011
++ * Copyright (C) 2011-2015 Red Hat, Inc.
++ *
++ * Authors:
++ *  Anthony Liguori   <aliguori@us.ibm.com>
++ *  Markus Armbruster <armbru@redhat.com>,
++ *
++ * This work is licensed under the terms of the GNU LGPL, version 2.  See
++ * the COPYING.LIB file in the top-level directory.
++ */
 +
-+rustc = meson.get_compiler('rust')
++#ifndef QAPI_ERROR_INTERNAL_H
 +
-+rust_args = ['--cap-lints', 'allow']
-+rust_args += ['--cfg', 'feature="std"']
-+if rustc.version().version_compare('<1.65.0')
-+  error('rustc version ' + rustc.version() + ' is unsupported. Please upgrade to at least 1.65.0')
-+endif
-+rust_args += [ '--cfg', 'std_backtrace' ] # >= 1.65.0
-+if rustc.version().version_compare('<1.81.0')
-+  rust_args += [ '--cfg', 'anyhow_no_core_error' ]
-+endif
++struct Error
++{
++    char *msg;
++    ErrorClass err_class;
++    const char *src, *func;
++    int line;
++    GString *hint;
++};
 +
-+_anyhow_rs = static_library(
-+  'anyhow',
-+  files('src/lib.rs'),
-+  gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2018', 'build.rust_std=2018'],
-+  rust_abi: 'rust',
-+  rust_args: rust_args,
-+  dependencies: [],
-+)
-+
-+anyhow_dep = declare_dependency(
-+  link_with: _anyhow_rs,
-+)
-+
-+meson.override_dependency('anyhow-1-rs', anyhow_dep)
++#endif
+diff --git a/rust/wrapper.h b/rust/wrapper.h
+index beddd9aab2f..6060d3ba1ab 100644
+--- a/rust/wrapper.h
++++ b/rust/wrapper.h
+@@ -60,6 +60,7 @@ typedef enum memory_order {
+ #include "hw/qdev-properties-system.h"
+ #include "hw/irq.h"
+ #include "qapi/error.h"
++#include "qapi/error-internal.h"
+ #include "migration/vmstate.h"
+ #include "chardev/char-serial.h"
+ #include "exec/memattrs.h"
+diff --git a/util/error.c b/util/error.c
+index 673011b89e9..e5bcb7c0225 100644
+--- a/util/error.c
++++ b/util/error.c
+@@ -15,15 +15,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+-
+-struct Error
+-{
+-    char *msg;
+-    ErrorClass err_class;
+-    const char *src, *func;
+-    int line;
+-    GString *hint;
+-};
++#include "qapi/error-internal.h"
+ 
+ Error *error_abort;
+ Error *error_fatal;
 -- 
 2.49.0
 
