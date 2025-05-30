@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F299AC925F
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3E6AC925C
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:18:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1PP-00040m-K9; Fri, 30 May 2025 11:12:35 -0400
+	id 1uL1PY-0004Mn-Iz; Fri, 30 May 2025 11:12:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PD-0003Pe-8X; Fri, 30 May 2025 11:12:23 -0400
+ id 1uL1PU-0004Fz-UD; Fri, 30 May 2025 11:12:40 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1P8-0002Ht-R7; Fri, 30 May 2025 11:12:22 -0400
+ id 1uL1PT-0002Jy-A6; Fri, 30 May 2025 11:12:40 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 2758244B15;
- Fri, 30 May 2025 17:11:46 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 98D1C44B90;
+ Fri, 30 May 2025 17:11:47 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
@@ -26,9 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 28/48] block: mark bdrv_set_backing_hd() as GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:11:05 +0200
-Message-Id: <20250530151125.955508-29-f.ebner@proxmox.com>
+Subject: [PATCH v4 29/48] blockdev: avoid locking and draining multiple times
+ in external_snapshot_abort()
+Date: Fri, 30 May 2025 17:11:06 +0200
+Message-Id: <20250530151125.955508-30-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -57,30 +58,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function bdrv_set_backing_hd() calls bdrv_drain_all_begin(), which
-must be called with the graph unlocked.
+By using the appropriate variants bdrv_set_backing_hd_drained() and
+bdrv_try_change_aio_context_locked(), there only needs to be a single
+drained and write-locked section in external_snapshot_abort().
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- include/block/block-global-state.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index 84a2a4ecd5..009b9ac946 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -100,8 +100,9 @@ bdrv_open_blockdev_ref(BlockdevRef *ref, Error **errp);
- BlockDriverState * coroutine_fn no_co_wrapper
- bdrv_co_open_blockdev_ref(BlockdevRef *ref, Error **errp);
+The assumption in the added code comment about the reference is AFAIU
+it. Is this correct?
+
+And unrelated, but I'm wondering, isn't this dead code? It's only
+executed if state->overlay_appended is set, which happens at the very
+end of external_snapshot_action(). How can the transaction still be
+aborted after that?
+
+ blockdev.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
+
+diff --git a/blockdev.c b/blockdev.c
+index e625534925..3c53472a23 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -1580,11 +1580,19 @@ static void external_snapshot_abort(void *opaque)
+             AioContext *tmp_context;
+             int ret;
  
--int bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
--                        Error **errp);
-+int GRAPH_UNLOCKED
-+bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
-+                    Error **errp);
- int GRAPH_WRLOCK
- bdrv_set_backing_hd_drained(BlockDriverState *bs, BlockDriverState *backing_hd,
-                             Error **errp);
++            bdrv_graph_wrlock_drained();
++
+             aio_context = bdrv_get_aio_context(state->old_bs);
+ 
+-            bdrv_ref(state->old_bs);   /* we can't let bdrv_set_backind_hd()
+-                                          close state->old_bs; we need it */
+-            bdrv_set_backing_hd(state->new_bs, NULL, &error_abort);
++            /*
++             * Note that state->old_bs would not disappear during the
++             * write-locked section, because the unref from
++             * bdrv_set_backing_hd_drained() only happens at the end of the
++             * write-locked section. However, just be explicit about keeping a
++             * reference and don't rely on that implicit detail.
++             */
++            bdrv_ref(state->old_bs);
++            bdrv_set_backing_hd_drained(state->new_bs, NULL, &error_abort);
+ 
+             /*
+              * The call to bdrv_set_backing_hd() above returns state->old_bs to
+@@ -1593,16 +1601,14 @@ static void external_snapshot_abort(void *opaque)
+              */
+             tmp_context = bdrv_get_aio_context(state->old_bs);
+             if (aio_context != tmp_context) {
+-                ret = bdrv_try_change_aio_context(state->old_bs,
+-                                                  aio_context, NULL, NULL);
++                ret = bdrv_try_change_aio_context_locked(state->old_bs,
++                                                         aio_context, NULL,
++                                                         NULL);
+                 assert(ret == 0);
+             }
+ 
+-            bdrv_drained_begin(state->new_bs);
+-            bdrv_graph_wrlock();
+             bdrv_replace_node(state->new_bs, state->old_bs, &error_abort);
+             bdrv_graph_wrunlock();
+-            bdrv_drained_end(state->new_bs);
+ 
+             bdrv_unref(state->old_bs); /* bdrv_replace_node() ref'ed old_bs */
+         }
 -- 
 2.39.5
 
