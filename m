@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432ECAC8E99
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 14:53:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 726CAAC8E71
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 14:51:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKzBd-00021k-SW; Fri, 30 May 2025 08:50:13 -0400
+	id 1uKzBe-00021t-1W; Fri, 30 May 2025 08:50:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uKzBV-000205-DH
- for qemu-devel@nongnu.org; Fri, 30 May 2025 08:50:05 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1uKzBX-00020V-9K
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 08:50:07 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uKzBR-0001cq-Cr
- for qemu-devel@nongnu.org; Fri, 30 May 2025 08:50:04 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3a4d877dfb3so2086911f8f.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 05:50:00 -0700 (PDT)
+ id 1uKzBS-0001cv-Nq
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 08:50:06 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-441ab63a415so21592355e9.3
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 05:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748609399; x=1749214199; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748609401; x=1749214201; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fywE7uB7Y+/c+09WkhDdIvIW4vWTk+pJlIWyo8/Hgk0=;
- b=WLOZNS/eh8ZNiugN36/OYmTTcEoXcSqezqtnJfn+gZpPA82kIn71r0ZJ+YXuah3+1I
- 2JVdG8VqZxs9u3IN0Ypa4YdbtSDkRJ2btN9AHWYPzecefGUPk5Oviq7kpYaNh5kxAyQ/
- t1tDyi+WVTmFTFx2c1L84Eo58vJsCxc6FXeAXgxyzgAXfBlIII+ubvkGcc1X81+efAB2
- SuAHyDzvAC5h19+Q2zH11n62CmJFqVOngdxazkcw3G+JmXXaFEn5iFH5Yqx6uN9I1VHj
- EWfCTZb3BMbaWC5hJ97o5Xxb8g7cxj6oHO/fwhcZiFtHsURuMey80sYsGs97nM9LxXte
- 9V+g==
+ :reply-to; bh=76US8ZNo4guZn7iQ4NXyIXoYHD/B5ALXS2oPgYy7SVQ=;
+ b=mj0WDmu7E2bbi7lXTkn/tGHyC/7j2uUw7McXgvgCcVjv8iawvadgPIcDt7rJA7DL1y
+ ohYceNVmFRl44pjgeUOhpNIhXDniBbCfdbQoRxOWgKWGJM8YjHvwzSN4vByhF7feuU4Q
+ 3TCc0jGR3fDdDb9wOPmT6bj3RVu+ND7aAoGhBUHYfATIpolhgwKS2E0mnuolm0u6Q60q
+ Mt3bMWJrub+CgjoV56AzK/It6U5YzdyO8uZmz5gerG8j6y/OdoEYS7uCSMkzctzbW9ST
+ SkcEhfd6kqiELRtdXm30UWKp5wXqnXV76sPGzVFVn3GM0yL/8BjoNcmp8MwVjAPWy+oU
+ 9zBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748609399; x=1749214199;
+ d=1e100.net; s=20230601; t=1748609401; x=1749214201;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fywE7uB7Y+/c+09WkhDdIvIW4vWTk+pJlIWyo8/Hgk0=;
- b=uw6qi9UWBdFgHNfGhcrLIbeuCw1nL+1xe/S3Sr9NvMs+Sjhv/j1Ks0c2HsfUCwmw/3
- E9nuOksLkcyXZ2GPtubVW7jHD3oLAU0lWRb77DYYhOF6wYtcRyqj8SKb0El6W7n+C2G1
- L2JeTKuewDfcYNNzbSp1PGybXXwpI1bXHlQfAPmI9NZS7Y0nkcHH7ULoF9AQQMUM7PfN
- IqT1vooXjUgnLO9HzvhY2JxznI2PHuLrUaoeRLhkPWv1R+KrRbKo4Pc5oJoE/Q0wUnva
- TsYrUhSQ/SRudGIlvpkwmGW2hCOKlGyR5tfxaSs8pjddpqGP9aaMOyd8mgNYg6jVLybY
- gk1Q==
-X-Gm-Message-State: AOJu0YzZ7g7Na0HfuMmmM0tWgTimDXUvRGRNJQ5Yxp0aNmh2jelCl42u
- 0Ix56LAuu4gQpBmibxbbxeKF1tpF1mRg5ice3fo7ksx8Co2S4JppzUUYnuVYWPVQ/2p9kMFFr2l
- K39F2
-X-Gm-Gg: ASbGncujO/cDhlJ9IxB+7MYgRoQ7qzu9F6zxany/fFr64KGTz/L+HHgfFYWxI2EbsAp
- 9lKgehjYzMVPKQioRKDAgDD+E08YJ6t7S90Txf1SDhiA6Nbo8i5XIoOiOyOgLMB3nMBMJp7tTQS
- CizGuD1TH3wBQ5SrtnxdhKnEh5rZY7OiF1WMhmZ0CBwt+MrGJuUXc67R+FzPKNsa6APPDiBFHqI
- c9W5PTZ5rs+kqh/sbOIJbRD5PH/YWvWT2ojTCkMECB5G+yf/+JHpGBT9aTTHdUFzcB6CTPUMRn9
- oE+bMYR0g2GUoK8h0ufDIhVyAKfwmZUIcF4LtH8FamMTeeukVWOLFTkQ4Q==
-X-Google-Smtp-Source: AGHT+IF6opmCea7f2IiANeYjHOZ35oFGXUzK+82s3BFt+ObBmRla7hmxV5RTLmMAevESwe78iT4BSA==
-X-Received: by 2002:a05:6000:26c6:b0:3a4:f73d:53de with SMTP id
- ffacd0b85a97d-3a4f7a4b79cmr2503148f8f.17.1748609399340; 
- Fri, 30 May 2025 05:49:59 -0700 (PDT)
+ bh=76US8ZNo4guZn7iQ4NXyIXoYHD/B5ALXS2oPgYy7SVQ=;
+ b=i0R1Tr7a8Ik2q7+Gs8vAhwVnBZobi8x/MzVZ+tFJrctmXlunqsggi3mHfPE+JXwvQL
+ B5nQBcieKFG3jMItGRfE7SzOvIBVY6tIb8d54bau7wztHSj2iHR8OBjHirIr8Xz0Cjvv
+ lmjqUZHWZHxSnfUSlr6yXIEBiyHDf/Ycl3NsUnZxT8jLDh3K1fT19t4yPwbfvYg6piD6
+ YdgEwH2h0xDH91HXw+YcAeSLgLcxNQqz0xJeGTg9/P639VgdDycHCa7eQZVzy7UgE+TR
+ 6FPZS7Y4okGTs8z8BlOUGQH+eCHt1mjWXyY12hjnEul60WR97aOnuUB2mcbylJCiSpey
+ TwnA==
+X-Gm-Message-State: AOJu0YyTBO2SodYSAY+FZv4LdE3aclRupWHuL8pfQZ5PQC9CyTYV7rjW
+ X2DQI8KsRaADeUsf5xq6QeUT+2g45kT4Zh4bd6THLzkWnnBA7XDwlW5rKDGWNezyEJqdaShvssj
+ X161f
+X-Gm-Gg: ASbGncvy30Hp1zSAmzHJMGtunLf7A37pyOSfYS4T6OkxtWuWaAN9uYbUKst9iiXPDVq
+ hzxOWBnnePx2JbbBYAlBN+eoEC2nCoFTRNdbjwA5vSbYEg1lfZbDk8qydzN9wnpS7zxAptnQDoF
+ Uk0GnJgOiOKllGBAtBBGL0yq8FuDDRc7iPlYyVmA5+H6i8GAbuDnaxMouZezMwR+AoHPJW02l8E
+ VhXPRT8RJfmO/1oobR2uiozjYrzJ5X4AwVuRGxLcoHPud+8/AauW6adWNOOuL5B47iD4EwKFtLq
+ Ci1gLGyjZ7ROOOdBrKb8jqtL1U/G52A7Ux9EO4EHMsKdvTpLG3gJwn1muw==
+X-Google-Smtp-Source: AGHT+IF6xkCKO/das6Uvo9JC/rPj0Vk3e7ShKez74/LkOMGiPSq+KB7n0/j7Yf2WNeeIz7+kvB56LQ==
+X-Received: by 2002:a05:600c:348c:b0:43d:745a:5a50 with SMTP id
+ 5b1f17b1804b1-450d654b5bemr29079615e9.19.1748609401100; 
+ Fri, 30 May 2025 05:50:01 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d7fb7dafsm17235195e9.25.2025.05.30.05.49.58
+ 5b1f17b1804b1-450d7fb7dafsm17235195e9.25.2025.05.30.05.49.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 05:49:58 -0700 (PDT)
+ Fri, 30 May 2025 05:49:59 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/15] tests/qtest: Migrate GMAC test from 7xx to 8xx
-Date: Fri, 30 May 2025 13:49:39 +0100
-Message-ID: <20250530124953.383687-3-peter.maydell@linaro.org>
+Subject: [PULL 03/15] hw/arm: Add missing psci_conduit to NPCM8XX SoC boot info
+Date: Fri, 30 May 2025 13:49:40 +0100
+Message-ID: <20250530124953.383687-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250530124953.383687-1-peter.maydell@linaro.org>
 References: <20250530124953.383687-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,182 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan <nabihestefan@google.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-For upstreaming we migrated this test to 7xx (since that was already
-upstream) move it back to 8xx where it can check the 4 GMACs since that
-is the board this test was originally created for.
+Without psci_conduit, the Linux kernel crashes almost immediately.
 
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-Message-id: 20250508220718.735415-3-nabihestefan@google.com
-Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
+    psci: probing for conduit method from DT.
+    Internal error: Oops - Undefined instruction: 0000000002000000 [#1] PREEMPT SMP
+
+Fixes: ae0c4d1a1290 ("hw/arm: Add NPCM8XX SoC")
+Cc: qemu-stable@nongnu.org
+Cc: Hao Wu <wuhaotsh@google.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Message-id: 20250315142050.3642741-1-linux@roeck-us.net
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/npcm_gmac-test.c | 85 ++++++++++++++++++++++++++++++++++--
- tests/qtest/meson.build      |  6 ++-
- 2 files changed, 86 insertions(+), 5 deletions(-)
+ hw/arm/npcm8xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/npcm_gmac-test.c b/tests/qtest/npcm_gmac-test.c
-index c28b471ab20..1317da2cd7c 100644
---- a/tests/qtest/npcm_gmac-test.c
-+++ b/tests/qtest/npcm_gmac-test.c
-@@ -36,7 +36,7 @@ typedef struct TestData {
-     const GMACModule *module;
- } TestData;
- 
--/* Values extracted from hw/arm/npcm7xx.c */
-+/* Values extracted from hw/arm/npcm8xx.c */
- static const GMACModule gmac_module_list[] = {
-     {
-         .irq        = 14,
-@@ -46,6 +46,14 @@ static const GMACModule gmac_module_list[] = {
-         .irq        = 15,
-         .base_addr  = 0xf0804000
-     },
-+    {
-+        .irq        = 16,
-+        .base_addr  = 0xf0806000
-+    },
-+    {
-+        .irq        = 17,
-+        .base_addr  = 0xf0808000
-+    }
+diff --git a/hw/arm/npcm8xx.c b/hw/arm/npcm8xx.c
+index d14bf55cd71..a276fea6985 100644
+--- a/hw/arm/npcm8xx.c
++++ b/hw/arm/npcm8xx.c
+@@ -365,6 +365,7 @@ static struct arm_boot_info npcm8xx_binfo = {
+     .secure_boot            = false,
+     .board_id               = -1,
+     .board_setup_addr       = NPCM8XX_BOARD_SETUP_ADDR,
++    .psci_conduit           = QEMU_PSCI_CONDUIT_SMC,
  };
  
- /* Returns the index of the GMAC module. */
-@@ -174,18 +182,32 @@ static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-     return qtest_readl(qts, mod->base_addr + regno);
- }
- 
-+static uint16_t pcs_read(QTestState *qts, const GMACModule *mod,
-+                          NPCMRegister regno)
-+{
-+    uint32_t write_value = (regno & 0x3ffe00) >> 9;
-+    qtest_writel(qts, PCS_BASE_ADDRESS + NPCM_PCS_IND_AC_BA, write_value);
-+    uint32_t read_offset = regno & 0x1ff;
-+    return qtest_readl(qts, PCS_BASE_ADDRESS + read_offset);
-+}
-+
- /* Check that GMAC registers are reset to default value */
- static void test_init(gconstpointer test_data)
- {
-     const TestData *td = test_data;
-     const GMACModule *mod = td->module;
--    QTestState *qts = qtest_init("-machine npcm750-evb");
-+    QTestState *qts = qtest_init("-machine npcm845-evb");
- 
- #define CHECK_REG32(regno, value) \
-     do { \
-         g_assert_cmphex(gmac_read(qts, mod, (regno)), ==, (value)); \
-     } while (0)
- 
-+#define CHECK_REG_PCS(regno, value) \
-+    do { \
-+        g_assert_cmphex(pcs_read(qts, mod, (regno)), ==, (value)); \
-+    } while (0)
-+
-     CHECK_REG32(NPCM_DMA_BUS_MODE, 0x00020100);
-     CHECK_REG32(NPCM_DMA_XMT_POLL_DEMAND, 0);
-     CHECK_REG32(NPCM_DMA_RCV_POLL_DEMAND, 0);
-@@ -235,6 +257,63 @@ static void test_init(gconstpointer test_data)
-     CHECK_REG32(NPCM_GMAC_PTP_TAR, 0);
-     CHECK_REG32(NPCM_GMAC_PTP_TTSR, 0);
- 
-+    if (mod->base_addr == 0xf0802000) {
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID1, 0x699e);
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID2, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_STS, 0x8000);
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_CTRL, 0x1140);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_STS, 0x0109);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID1, 0x699e);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID2, 0x0ced0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_ADV, 0x0020);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_LP_BABL, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_EXPN, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_EXT_STS, 0xc000);
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_ABL, 0x0003);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR, 0x0038);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR, 0x0038);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR, 0x0058);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR, 0x0048);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR, 0);
-+
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MMD_DIG_CTRL1, 0x2400);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_CTRL, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_INTR_STS, 0x000a);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_TC, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DBG_CTRL, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL0, 0x899c);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_TXTIMER, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_RXTIMER, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_LINK_TIMER_CTRL, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL1, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_STS, 0x0010);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_ICG_ERRCNT1, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MISC_STS, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_RX_LSTS, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_BSTCTRL0, 0x00a);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_LVLCTRL0, 0x007f);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL0, 0x0001);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL1, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_STS, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL0, 0x0100);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL1, 0x1100);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0, 0x000e);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL0, 0x0100);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL1, 0x0032);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_STS, 0x0001);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL2, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_LVL_CTRL, 0x0019);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL0, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL1, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_CTRL2, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_ERRCNT_SEL, 0);
-+    }
-+
-     qtest_quit(qts);
- }
- 
-@@ -242,7 +321,7 @@ static void gmac_add_test(const char *name, const TestData* td,
-                           GTestDataFunc fn)
- {
-     g_autofree char *full_name = g_strdup_printf(
--            "npcm7xx_gmac/gmac[%d]/%s", gmac_module_index(td->module), name);
-+            "npcm8xx_gmac/gmac[%d]/%s", gmac_module_index(td->module), name);
-     qtest_add_data_func(full_name, td, fn);
- }
- 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 43e5a86699d..8ad849054fe 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -208,9 +208,10 @@ qtests_npcm7xx = \
-    'npcm7xx_sdhci-test',
-    'npcm7xx_smbus-test',
-    'npcm7xx_timer-test',
--   'npcm7xx_watchdog_timer-test',
--   'npcm_gmac-test'] + \
-+   'npcm7xx_watchdog_timer-test'] + \
-    (slirp.found() ? ['npcm7xx_emc-test'] : [])
-+qtests_npcm8xx = \
-+  ['npcm_gmac-test']
- qtests_aspeed = \
-   ['aspeed_gpio-test',
-    'aspeed_hace-test',
-@@ -259,6 +260,7 @@ qtests_aarch64 = \
-   (config_all_accel.has_key('CONFIG_TCG') and                                            \
-    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed64 : []) + \
-+  (config_all_devices.has_key('CONFIG_NPCM8XX') ? qtests_npcm8xx : []) + \
-   ['arm-cpu-features',
-    'numa-test',
-    'boot-serial-test',
+ void npcm8xx_load_kernel(MachineState *machine, NPCM8xxState *soc)
 -- 
 2.43.0
 
