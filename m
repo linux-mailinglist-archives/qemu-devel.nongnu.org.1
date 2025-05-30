@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DBBAC88DD
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 742D2AC889A
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:15:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtvq-0008Ti-1j; Fri, 30 May 2025 03:13:34 -0400
+	id 1uKtvs-0000KU-I0; Fri, 30 May 2025 03:13:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvk-0008R1-8Q
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uKtvm-0008Td-5x
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvg-0006pc-JR
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:26 -0400
+ id 1uKtvk-0006pi-01
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589203;
+ s=mimecast20190719; t=1748589205;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AnmrsWO7Zf4jQvqc7hdOgurbp4085MGT48vgTwbmGno=;
- b=YdYwPJRIQ5+S7NqhNsFXYaX2MDJhk2Up9BaTGZRdzPO5bq4qGPfMJ2/5O1Pc6K28lBNO52
- D0DHm6UG6+o1+hwB9xv7Su7D3FFM/UgP4X8NFgvGR6AI/C/yGkhM2YziWTrEzAjsQlOFm+
- MEAnkmsVzcEwm29xJWzr3ytwWsv5S3A=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iOdyiM5i52fELrIv/W1T+k3teEGSvJpSoU6puuRxHmI=;
+ b=JdkevJCsqr9nKPG+GLq7RVsZ67ge1g9WpzrHybM8Bg3HZD6L+RW0P0K50+WO7bC9wcpA49
+ x87kSbykGv9o4bI0PKWcm0c/nwDJhNSob+f59AakHn2fm3/tRjs9SjG+V/Z48G0JVm/mZJ
+ m9iPghOTKDhlSz6c6E/G3QHU40TF9WA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-4kDa0ze_NauIyNhtlImWaQ-1; Fri, 30 May 2025 03:13:22 -0400
-X-MC-Unique: 4kDa0ze_NauIyNhtlImWaQ-1
-X-Mimecast-MFC-AGG-ID: 4kDa0ze_NauIyNhtlImWaQ_1748589201
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-604793191acso1592358a12.0
+ us-mta-618-CYwN916-OxmxKZB-SCV8EQ-1; Fri, 30 May 2025 03:13:23 -0400
+X-MC-Unique: CYwN916-OxmxKZB-SCV8EQ-1
+X-Mimecast-MFC-AGG-ID: CYwN916-OxmxKZB-SCV8EQ_1748589202
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ad89da57be0so148824266b.3
  for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1748589201; x=1749194001;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AnmrsWO7Zf4jQvqc7hdOgurbp4085MGT48vgTwbmGno=;
- b=KEN1KUfrRXOzr6Qf8bsn7ehjjxrkrq/zlPzC6uYg3m9a4YPOlPqkZj/0fD8Ou5s1a2
- 3dcRbNApzWu1qtVjYcQOnycyvFyp14dDt0GDsXdLwH/I+8Uwhdhu4+5OKgPq+zVWx+8K
- aB28OBPwkAPFybjz4OTKwy6+wEngDJ86BofLZtm+huexUScX3GT8A7lFkp6G2izgJxPd
- fv/h37Sf+pGHA7MmwnVR73jnH/lpof4ddmw/d1H/ehHx0efZ11fuNlS/C7zwNzIfTtqa
- r0mQbnZ22ie4/3ib8tSzXL9YE2p945V9KyHre+DjZWwBrzhAp0HtbqvdxjzcVXeRIT3o
- tDKw==
-X-Gm-Message-State: AOJu0YydZaQYBMnentq95zHct8Sj0OjaWkR8Q/4zbGvjMPogsbswVD9p
- IBIH4K07eC7+xHEPfMgR6FDkhcHcWMcvXCoO7xBl9OGVbYe+5+fgEsovu2ydVnenes6dCu/qsWL
- Zv0bykubo2EO1Ps9zkFAwHU6nzBBHUXvHBs3YTi4fvf2s6Jx66ejIXj5rUNTt3d8XPRgWO/7dcx
- 0SoVJkmTSd9lw86OOA/q5JSSgx7NSPEGzStqb5PLC8
-X-Gm-Gg: ASbGnctPptROxekrBBQQnU8WnP+x+CdNwUfsbO8kYptZkPPLzlac759sJHKCRL573ZW
- AnjYUzwhcQmB/W8Mclmfu5UthKG0kLIuOpru0SZYi5Xk0VLe6X0bXQEIyI9gd3jpMHZeVo9X8PO
- uNWqzqaunZ8FK2IONt6cQSFG256tSXBaesEhlTdd1U93KNGT098GUZMbcy6js5UzjQS5P7LZDfk
- yO0wZTDxuexbOJPEgAsrXOv2YpmeNKcELUPt0midLOaGXFf/srTN4/2QEzKu7cBPG4skoVaV5Ry
- zJI1X5M5zbF+qw==
-X-Received: by 2002:a05:6402:5c9:b0:602:cef9:a63e with SMTP id
- 4fb4d7f45d1cf-6056e9156d0mr1698172a12.30.1748589200553; 
+ bh=iOdyiM5i52fELrIv/W1T+k3teEGSvJpSoU6puuRxHmI=;
+ b=Sf4Vnx3jVcvDDV1bVbL2oWreyiUytWcwvk9m/AvlVQ8mwd1mjttpOMafRQT0702D2M
+ m5cyotdEW7hY4HfUKMNphEnxbvwak7IRFwO4I/RFlkrDZsWlVEddiz3p6DELzcfNu7+W
+ aYpJQr10cTYTeSC2w0YMi6X8zzFEAudfSOPLX3SMoLuZOm8jyu8piIUMUuyzfb2CmQVJ
+ y/Gl7vKJfQRGy4JOF+EvsdiAdzMlgAgv2dPz1QikNoB1qUif73H3DS5hM9KwUvUCKUGi
+ MJ21Gi3nNNZJbuengniU4IyoX+jbsHfnBO6oMgaPQlow8ROJurOOJMdBrcrB5fqFKt7c
+ B+OQ==
+X-Gm-Message-State: AOJu0YwjKbhHb1KOuFgxcg9jlkgoyTiEMb+urETozEkWCPu+6OBuP3/g
+ xp3114bfjKNiHEjJ3mMJOWVQDYdPwHla3IAoPmOe8EdSSfAMHvnub+V8d8X1NVUcvPsAg/A/MHS
+ 1dEnK5GlV+AVYQG/4bwm15u2ilL2q0QPbNfPgwxcxoesFfWvZ7Nqe6OUBLJ5Mzb9oFt9VncVgYN
+ Gpl9Ppew3XdJ70QPWW0lZkYhlO8NKUSz1mbVITvRhw
+X-Gm-Gg: ASbGncsTr+ORpRoPMfF7Dpe+SLAr0Yt1ce6eIewNaEQIOn6oaGCv0nvSgu4RVJgW0hR
+ 7mHhOkVsDHWfTxAv5gZuUUH7GKigW5AXPLKTgiOU8fkf/BVc5NHl3gKoZuraLu72nv77ZkbJRZe
+ 42W0GwKaTRx69caw0fRIpj98VVVZI/XF11PGDtWSw46r+/Dp0dkADjoUSV24D2LsVOR2wgzskap
+ F4LsWW5pqu3MKTHw/7Lmd9Uhlap292vLgv5WHga/1c+iyY38JS281zSSYGdd25OeCZzVIIvDzd2
+ PdYdWU4q7aDZlA==
+X-Received: by 2002:a17:907:7249:b0:ad8:9844:1424 with SMTP id
+ a640c23a62f3a-adb36c08a69mr92047166b.61.1748589201331; 
+ Fri, 30 May 2025 00:13:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrBmd8zLXX0sXa1HD8GXPXreS8gwNSYrx2e9HZU5aJ8m2rf55FXpCmP7Txix4YpOqy+fRiyA==
+X-Received: by 2002:a17:907:7249:b0:ad8:9844:1424 with SMTP id
+ a640c23a62f3a-adb36c08a69mr92044866b.61.1748589200838; 
  Fri, 30 May 2025 00:13:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECshrReUbZW3wM9qIgHa3z/qCRiIcSBiiwQvyo34jPzeZ6DQw1zU9Y9YQMRHWY8Q/uRtuKDA==
-X-Received: by 2002:a05:6402:5c9:b0:602:cef9:a63e with SMTP id
- 4fb4d7f45d1cf-6056e9156d0mr1698098a12.30.1748589199362; 
- Fri, 30 May 2025 00:13:19 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60567143860sm1177565a12.57.2025.05.30.00.13.17
+ a640c23a62f3a-ada5d7fec86sm276403866b.7.2025.05.30.00.13.20
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:13:17 -0700 (PDT)
+ Fri, 30 May 2025 00:13:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 11/77] rust: hpet: rename hpet module to "device"
-Date: Fri, 30 May 2025 09:11:41 +0200
-Message-ID: <20250530071250.2050910-12-pbonzini@redhat.com>
+Subject: [PULL 12/77] target/i386/emulate: more lflags cleanups
+Date: Fri, 30 May 2025 09:11:42 +0200
+Message-ID: <20250530071250.2050910-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -106,33 +106,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Follow a similar convention as pl011.
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/timer/hpet/src/{hpet.rs => device.rs} | 0
- rust/hw/timer/hpet/src/lib.rs                 | 2 +-
- 2 files changed, 1 insertion(+), 1 deletion(-)
- rename rust/hw/timer/hpet/src/{hpet.rs => device.rs} (100%)
+ target/i386/emulate/x86_flags.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/device.rs
-similarity index 100%
-rename from rust/hw/timer/hpet/src/hpet.rs
-rename to rust/hw/timer/hpet/src/device.rs
-diff --git a/rust/hw/timer/hpet/src/lib.rs b/rust/hw/timer/hpet/src/lib.rs
-index 141aae229d4..a95cf14ac98 100644
---- a/rust/hw/timer/hpet/src/lib.rs
-+++ b/rust/hw/timer/hpet/src/lib.rs
-@@ -7,7 +7,7 @@
- //! This library implements a device model for the IA-PC HPET (High
- //! Precision Event Timers) device in QEMU.
+diff --git a/target/i386/emulate/x86_flags.c b/target/i386/emulate/x86_flags.c
+index 47bc19778c2..cc138c77494 100644
+--- a/target/i386/emulate/x86_flags.c
++++ b/target/i386/emulate/x86_flags.c
+@@ -255,19 +255,19 @@ void lflags_to_rflags(CPUX86State *env)
  
-+pub mod device;
- pub mod fw_cfg;
--pub mod hpet;
+ void rflags_to_lflags(CPUX86State *env)
+ {
+-    target_ulong cf_xor_of;
++    target_ulong cf_af, cf_xor_of;
  
- pub const TYPE_HPET: &::std::ffi::CStr = c"hpet";
++    /* Leave the low byte zero so that parity is always even...  */
++    env->cc_dst = !(env->eflags & CC_Z) << 8;
++
++    /* ... and therefore cc_src always uses opposite polarity.  */
+     env->cc_src = CC_P;
+     env->cc_src ^= env->eflags & (CC_S | CC_P);
+ 
+     /* rotate right by one to move CF and AF into the carry-out positions */
+-    env->cc_src |= (
+-        (env->eflags >> 1) |
+-        (env->eflags << (TARGET_LONG_BITS - 1))) & (CC_C | CC_A);
++    cf_af = env->eflags & (CC_C | CC_A);
++    env->cc_src |= ((cf_af >> 1) | (cf_af << (TARGET_LONG_BITS - 1)));
+ 
+-    cf_xor_of = (env->eflags & (CC_C | CC_O)) + (CC_O - CC_C);
++    cf_xor_of = ((env->eflags & (CC_C | CC_O)) + (CC_O - CC_C)) & CC_O;
+     env->cc_src |= -cf_xor_of & LF_MASK_PO;
+-
+-    /* Leave the low byte zero so that parity is not affected.  */
+-    env->cc_dst = !(env->eflags & CC_Z) << 8;
+ }
 -- 
 2.49.0
 
