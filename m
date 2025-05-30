@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384D1AC88E9
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B5CAC88CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:23:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKu21-00039d-Jt; Fri, 30 May 2025 03:19:59 -0400
+	id 1uKu2b-0004C7-3A; Fri, 30 May 2025 03:20:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKty8-0004xZ-Fh
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uKtyA-00058Y-Kk
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:16:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKty6-0007HR-I3
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:56 -0400
+ id 1uKty8-0007Hf-PF
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589353;
+ s=mimecast20190719; t=1748589356;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4BoHJxeyPF/p6KVBQExhHB1PAVhko9FK31Y7draEtl4=;
- b=hEUilJQagf5jefgwoiNKJ1fHBtXYpilEM7HQD90YSY1S4RWfnqN2eECFaDLVeYnBAwzWX6
- DUjJImJ9b9bocLvK8wXukM7Rs9MK0O2nKAXSkZST0mQjuVnccT10eobOG8gfJUszAOnzbo
- 58pf+nOr3v7J/c1a6TRQfn2YoBsf9cs=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/grfrfmdw2VEW3aEhItmlhKzpNrlDj8dmnxLAFAR78I=;
+ b=fmLpRzgaNlfcczBTZg0qAhe28eMNvHA+bx8N5nHJu2/HByC1D23X5rBCTMzygAe1ranGDk
+ 9QlETOYZcKBTeTM1Fw/oHC14X3end8cIEk/7MXGMy2wIxUv54KILwbcLoTSEvi2aD2grYm
+ egdWpXGvdifTTwK2Vh/AvgvHJHuuB2Q=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-69hpClfgP1K4SjUIx6Aggw-1; Fri, 30 May 2025 03:15:52 -0400
-X-MC-Unique: 69hpClfgP1K4SjUIx6Aggw-1
-X-Mimecast-MFC-AGG-ID: 69hpClfgP1K4SjUIx6Aggw_1748589351
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-603f71f6432so1479852a12.3
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:15:52 -0700 (PDT)
+ us-mta-610-9khYwaPbNyCvMdvedqHcNg-1; Fri, 30 May 2025 03:15:54 -0400
+X-MC-Unique: 9khYwaPbNyCvMdvedqHcNg-1
+X-Mimecast-MFC-AGG-ID: 9khYwaPbNyCvMdvedqHcNg_1748589353
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-acb8f9f58ebso125420866b.2
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:15:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589350; x=1749194150;
+ d=1e100.net; s=20230601; t=1748589353; x=1749194153;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4BoHJxeyPF/p6KVBQExhHB1PAVhko9FK31Y7draEtl4=;
- b=KbtxwKzCagiquFUlBYvtYoTljuaTxaFfok2/O3XHqIeZZdGoat0vTD7+UbWsrVTDMS
- EGcfx9HIUnTLJ+qit5oCcslknoNRuzBZ18bdK4IQILh9qYOmXmve76DXpwglXtzW+s7m
- R1CVvxggtN/36XWTwmoytawodI3tKCWqaYgnjU+GVb+Wq9ruTKFCiO9JatCgJI2RPyS1
- vxuyeavzSyu+jLzheJfwa3Q7AyVq0fJkomgkj0Ei5LEJAMu/ZkKK+0a9g1C26iBJqGgG
- i5liO7DOT49lnSgTK7taL83Ds2dMFQEmOPJyqxPixKhYVbFI4xbjbFqSRC4S0MVfVx0s
- InUg==
-X-Gm-Message-State: AOJu0YzqLaxsbQdvted5Jb8orxEOegSu2wpdgmxNWbSkszPkgt4kDnHN
- GNdgJslZ1gTjLdqVhvPOYgAW3GzPUvkDlVLn7aWSEXSSH9dzgmx4Wtp3QXHPAYba/VlyVznyLts
- 8VvXUfgkk+MUeiITMlyCmKCOSpbDVTmQeluasWcNST+wOVablmVelOXA0AhBg7mlzGkpLzMkzUc
- 79NYCGuRAm0Ff7ScnQ51XGWDvurp62a71/hel9pqBR
-X-Gm-Gg: ASbGncuqTKK8ewJ27OPcV1WKkLu9Utf/lyEIFtJAK95gqoIDn2/3iWF/ypAm0DibxxH
- 3M8XOO4Knwpjmr+fzLS/iFqt8yhdN53qWqLL9i4Giz0aIhT411lmT4nflHD/AutFtYrZZfygWTC
- uFf0CGDlf/TiCO/a8f5YGUrp/rXgOvczRqfy5ayazaBN1Jdkpg+kxMJ6R1S1XOOpYKKhzJkZ0Ph
- bnHD9C5aUNCvgQkrzd2yxe6VYABHuKL75T7pqBsorCexZP49bhjhrm8MNZkMrl3KfKOivK+aBzk
- C7J9Jlq9GgwT8A==
-X-Received: by 2002:a05:6402:278c:b0:5f8:e6e5:54ac with SMTP id
- 4fb4d7f45d1cf-6057c1c36bfmr1047861a12.14.1748589349864; 
- Fri, 30 May 2025 00:15:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYRSuxSbIUU89YQbn/wpePAYq+ofUbe5PWe2kCpQRSlxMmtbLB8JFZydgOseQtCrNqWQ6Htw==
-X-Received: by 2002:a05:6402:278c:b0:5f8:e6e5:54ac with SMTP id
- 4fb4d7f45d1cf-6057c1c36bfmr1047839a12.14.1748589349402; 
- Fri, 30 May 2025 00:15:49 -0700 (PDT)
+ bh=/grfrfmdw2VEW3aEhItmlhKzpNrlDj8dmnxLAFAR78I=;
+ b=t1hVza3uxHLKC+085/sTdObS94ylUdmCBJ1Mv9FOtZ+F/ZrV+N2BcoXbWcPlQiZ3gM
+ eeIo4BWd2OP75Pj76n2sHw1Crt0eG2o8FR2Gb38+9KP1xEMZhK4299+6BUfTrcWRauEu
+ kHPUKPYBkEq+lgHDbEjACFA9lDz2NCJdgDrRPuPK3Fi3cAlU0o/QhZSJnJj44b7ar3zk
+ wMKW/L9WfVTWNMeuewLji1q2Ug2y1dPkeHDfDSwg4hL4uPgQVxa4fmOsourV06hieyOv
+ RR//CdLJJ/qXmBA1Riv47CckXLpAxreBgm7rkOb+8ijI+79r0AeypMOxbJnISF8zmuEL
+ AYiw==
+X-Gm-Message-State: AOJu0YzuAfToHo620i/sZXBVyzk38hU05E9eMmVUvARFgjq4HKE174Fz
+ fnsYfMp9UnUpDAroyGZdfrs/fMrLrGn2hqeZXKEvFssW9d/oPtUMsWnUOR5ZNb7Pg4pyfbikYNC
+ pXZfCZXhRI9D9pnVeAMVDIbG4UYTqmG8BdUfdakiYgbqRd6RKEKEQmKGwPyc4MLYlMzpPUoIF06
+ oyjSIBI1NAZ2Zed6TStmcg28FbGeI5AhqiSyo5jUzq
+X-Gm-Gg: ASbGncvAfDibIowqfwgOmQFQVmnpQ+2jMmthgqzRNkCC5vODGtLQdI1u1aRsBDuPa0+
+ sfeUVTB5q61XNw1IuSoQBzXg8sZfXLrQCnWReeRjW0PIks7QtLd4wcXoiAzU1Fg5L+yaworIItt
+ 02IEYdsDqFEocJ8B4tavqKGp1rJdJhHJDnOZQX1PF5fsdTrAwvvPh8tvapQDK8+tzXFZBkMYS67
+ bwa7e+0wDkjnR/s7mbqiZeIeiOwjJ3Dy7SyM1nzpaJQw8dhdZ+zWbyqm0Nj3TJmfi08ek2tw78x
+ YgaZlm2lMdzVDA==
+X-Received: by 2002:a17:907:3d87:b0:ad5:6ca3:c795 with SMTP id
+ a640c23a62f3a-adb322ad496mr196345866b.33.1748589352891; 
+ Fri, 30 May 2025 00:15:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEYeg74yLesoSJ0WsXwylZPHmzfC0b1zHYI2cpXSTl9Cj1WYbO1woNWk2rrz93NzpZH3xTl4g==
+X-Received: by 2002:a17:907:3d87:b0:ad5:6ca3:c795 with SMTP id
+ a640c23a62f3a-adb322ad496mr196343366b.33.1748589352313; 
+ Fri, 30 May 2025 00:15:52 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60566c2b301sm1229337a12.15.2025.05.30.00.15.47
+ a640c23a62f3a-ada6ad394e5sm274193666b.137.2025.05.30.00.15.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:15:47 -0700 (PDT)
+ Fri, 30 May 2025 00:15:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Babu Moger <babu.moger@amd.com>,
  Maksim Davydov <davydov-max@yandex-team.ru>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 71/77] target/i386: Update EPYC CPU model for Cache property,
- RAS, SVM feature bits
-Date: Fri, 30 May 2025 09:12:41 +0200
-Message-ID: <20250530071250.2050910-72-pbonzini@redhat.com>
+Subject: [PULL 72/77] target/i386: Update EPYC-Rome CPU model for Cache
+ property, RAS, SVM feature bits
+Date: Fri, 30 May 2025 09:12:42 +0200
+Message-ID: <20250530071250.2050910-73-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -121,10 +121,10 @@ L2.inclusive should be true.
 L3.inclusive should not be true.
 L3.no_invd_sharing should be true.
 
-Fix the cache properties.
+Fix these cache properties.
 
-Also add the missing RAS and SVM features bits on AMD
-EPYC CPU models. The SVM feature bits are used in nested guests.
+Also add the missing RAS and SVM features bits on AMD EPYC-Rome. The SVM
+feature bits are used in nested guests.
 
 succor		: Software uncorrectable error containment and recovery capability.
 overflow-recov	: MCA overflow recovery support.
@@ -140,21 +140,21 @@ vgif		: Virtualized GIF
 Signed-off-by: Babu Moger <babu.moger@amd.com>
 Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/515941861700d7066186c9600bc5d96a1741ef0c.1746734284.git.babu.moger@amd.com
+Link: https://lore.kernel.org/r/8265af72057b84c99ac3a02a5487e32759cc69b1.1746734284.git.babu.moger@amd.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
  target/i386/cpu.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 73 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 34364cf96ae..b6c63b892e3 100644
+index b6c63b892e3..5b5324a35cb 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -2211,6 +2211,60 @@ static CPUCaches epyc_v4_cache_info = {
+@@ -2373,6 +2373,60 @@ static const CPUCaches epyc_rome_v3_cache_info = {
      },
  };
  
-+static CPUCaches epyc_v5_cache_info = {
++static const CPUCaches epyc_rome_v5_cache_info = {
 +    .l1d_cache = &(CPUCacheInfo) {
 +        .type = DATA_CACHE,
 +        .level = 1,
@@ -170,11 +170,11 @@ index 34364cf96ae..b6c63b892e3 100644
 +    .l1i_cache = &(CPUCacheInfo) {
 +        .type = INSTRUCTION_CACHE,
 +        .level = 1,
-+        .size = 64 * KiB,
++        .size = 32 * KiB,
 +        .line_size = 64,
-+        .associativity = 4,
++        .associativity = 8,
 +        .partitions = 1,
-+        .sets = 256,
++        .sets = 64,
 +        .lines_per_tag = 1,
 +        .self_init = true,
 +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
@@ -195,11 +195,11 @@ index 34364cf96ae..b6c63b892e3 100644
 +    .l3_cache = &(CPUCacheInfo) {
 +        .type = UNIFIED_CACHE,
 +        .level = 3,
-+        .size = 8 * MiB,
++        .size = 16 * MiB,
 +        .line_size = 64,
 +        .associativity = 16,
 +        .partitions = 1,
-+        .sets = 8192,
++        .sets = 16384,
 +        .lines_per_tag = 1,
 +        .self_init = true,
 +        .no_invd_sharing = true,
@@ -208,12 +208,12 @@ index 34364cf96ae..b6c63b892e3 100644
 +    },
 +};
 +
- static const CPUCaches epyc_rome_cache_info = {
+ static const CPUCaches epyc_milan_cache_info = {
      .l1d_cache = &(CPUCacheInfo) {
          .type = DATA_CACHE,
-@@ -5238,6 +5292,25 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+@@ -5449,6 +5503,25 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+                     { /* end of list */ }
                  },
-                 .cache_info = &epyc_v4_cache_info
              },
 +            {
 +                .version = 5,
@@ -229,10 +229,10 @@ index 34364cf96ae..b6c63b892e3 100644
 +                    { "v-vmsave-vmload", "on" },
 +                    { "vgif", "on" },
 +                    { "model-id",
-+                      "AMD EPYC-v5 Processor" },
++                      "AMD EPYC-Rome-v5 Processor" },
 +                    { /* end of list */ }
 +                },
-+                .cache_info = &epyc_v5_cache_info
++                .cache_info = &epyc_rome_v5_cache_info
 +            },
              { /* end of list */ }
          }
