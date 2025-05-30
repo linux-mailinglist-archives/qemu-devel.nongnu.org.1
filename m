@@ -2,61 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35725AC8B78
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 11:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93857AC8B1D
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 11:40:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKwNh-0005oG-4i; Fri, 30 May 2025 05:50:29 -0400
+	id 1uKwCm-00082c-Pi; Fri, 30 May 2025 05:39:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uKwNe-0005nf-CC; Fri, 30 May 2025 05:50:26 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uKwCk-00081L-63
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 05:39:10 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uKwNb-0007HR-4q; Fri, 30 May 2025 05:50:26 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b7yZw2pKmz6GFDR;
- Fri, 30 May 2025 17:28:08 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id B2A0A140516;
- Fri, 30 May 2025 17:28:13 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 30 May
- 2025 11:28:13 +0200
-Date: Fri, 30 May 2025 10:28:11 +0100
-To: Eric Auger <eric.auger@redhat.com>
-CC: <eric.auger.pro@gmail.com>, <qemu-devel@nongnu.org>,
- <qemu-arm@nongnu.org>, <peter.maydell@linaro.org>, <imammedo@redhat.com>,
- <gustavo.romero@linaro.org>, <anisinha@redhat.com>, <mst@redhat.com>,
- <shannon.zhaosl@gmail.com>, <pbonzini@redhat.com>, <philmd@linaro.org>,
- <alex.bennee@linaro.org>
-Subject: Re: [PATCH v2 04/25] hw/pci-host/gpex-acpi: Add native_pci_hotplug
- arg to acpi_dsdt_add_pci_osc
-Message-ID: <20250530102811.0000648d@huawei.com>
-In-Reply-To: <20250530102711.000034eb@huawei.com>
-References: <20250527074224.1197793-1-eric.auger@redhat.com>
- <20250527074224.1197793-5-eric.auger@redhat.com>
- <20250530102711.000034eb@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uKwCh-0006Dc-HB
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 05:39:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1748597947; x=1780133947;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BUQpfBSWoJsxOYXgwZnxl4hPlpvhSJClrxyEEENJjTU=;
+ b=KLlMwxBj+rK0BYolxbYYKm2nhDohR6PSt0D9a9nR59e4oIQ10hhRZNi6
+ CrIFppVyGlUoD30lXBZJGMUVckU6a0mz3lrFdswJA/r5FwsCAFlgcRV/A
+ aaI06b46sLrgZf6YdJPzy/6pZ8kPgutlpLfBPMwi76cdykw0IcNxx0t8b
+ CBM3oaSsh9VvJwThW2eCD20Aph5XU3s/QKC8Tayi+owlHb6SBFhGQ4QLb
+ 4UdKML2bedI243xAvTY5WTnTAnVvjEJMTOgH/M4QeMB93MfDzr6AgeNYe
+ u6a2C1R2hz01Rhztxd0W+gcFFKh1UDsEhqcOn9qf/z9YNAFlgwba6K/i6 g==;
+X-CSE-ConnectionGUID: +ax2N563QcCrvtvBn6X6gA==
+X-CSE-MsgGUID: biG6ihbnTsq58L7koaAlqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="60942042"
+X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; d="scan'208";a="60942042"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2025 02:39:02 -0700
+X-CSE-ConnectionGUID: SZ/2Os9jTDGcjPYYbZFQWw==
+X-CSE-MsgGUID: nTEUdngCQuWIaCqM9H3kVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; d="scan'208";a="143788729"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2025 02:38:58 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com,
+ jgg@nvidia.com, nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
+ joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v2 0/4] VFIO and IOMMU prerequisite stuff for IOMMU nesting
+ support
+Date: Fri, 30 May 2025 17:35:08 +0800
+Message-Id: <20250530093512.3959484-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.11;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -72
+X-Spam_score: -7.3
+X-Spam_bar: -------
+X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.902,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,109 +82,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 30 May 2025 10:27:11 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+Hi,
 
-> On Tue, 27 May 2025 09:40:06 +0200
-> Eric Auger <eric.auger@redhat.com> wrote:
-> 
-> > Add a new argument to acpi_dsdt_add_pci_osc to be able to disable
-> > native pci hotplug.
-> > 
-> > Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> > Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>  
-> 
-> Hi Eric,
-> 
-> Makes me wonder what we should do for CXL - I was expecting
-> a very similar change.  Currently seems like those always
-> allow native hotplug (__build_cxl_osc_method()) on x86 and
-> arm64 (patches on list).
-> 
-> Maybe that has only been working because the kernel is reading
-> the PCI _OSC first. Or it's always been doing native hotplug
-> an no one noticed.  A quick look at logs shows the kernel
-> first gets told no, then yes as it queries the two different
-> _OSC types. 
-> 
-> Looks like I should fix that _OSC then it should be carried
-> over to this as well (or if you don't mind adding a trivial
-> patch to replicate this  patch for the CXL _OSC, even better!)
-> 
-> Other than that, this patch looks fine to me though I do wonder
-> if we could unify this with build_q35_osc_method()?
-> I'm not the best at reading AML generation code but whilst
-> they are written quite differently they seem to be functionally
-> very similar, more so after this patch.
-> 
-I should have read on... Sorry for the noise!
+The first 6 patches of [1] are all VFIO or IOMMUFD related additions.
+Split them out per Cédric and seek for quick acceptance.
 
-J
-> > 
-> > ---
-> > 
-> > rfc -> v1:
-> > - updated the "Allow OS control for all 5 features" comment
-> > ---
-> >  hw/pci-host/gpex-acpi.c | 15 ++++++++-------
-> >  1 file changed, 8 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-> > index 0aba47c71c..f34b7cf25e 100644
-> > --- a/hw/pci-host/gpex-acpi.c
-> > +++ b/hw/pci-host/gpex-acpi.c
-> > @@ -50,7 +50,7 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
-> >      }
-> >  }
-> >  
-> > -static void acpi_dsdt_add_pci_osc(Aml *dev)
-> > +static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
-> >  {
-> >      Aml *method, *UUID, *ifctx, *ifctx1, *elsectx, *buf;
-> >  
-> > @@ -77,11 +77,12 @@ static void acpi_dsdt_add_pci_osc(Aml *dev)
-> >      aml_append(ifctx, aml_store(aml_name("CDW3"), aml_name("CTRL")));
-> >  
-> >      /*
-> > -     * Allow OS control for all 5 features:
-> > -     * PCIeHotplug SHPCHotplug PME AER PCIeCapability.
-> > +     * Allow OS control for SHPCHotplug, PME, AER, PCIeCapability,
-> > +     * and PCIeHotplug depending on enable_native_pcie_hotplug
-> >       */
-> > -    aml_append(ifctx, aml_and(aml_name("CTRL"), aml_int(0x1F),
-> > -                              aml_name("CTRL")));
-> > +    aml_append(ifctx, aml_and(aml_name("CTRL"),
-> > +               aml_int(0x1E | (enable_native_pcie_hotplug ? 0x1 : 0x0)),
-> > +               aml_name("CTRL")));
-> >  
-> >      ifctx1 = aml_if(aml_lnot(aml_equal(aml_arg(1), aml_int(0x1))));
-> >      aml_append(ifctx1, aml_or(aml_name("CDW1"), aml_int(0x08),
-> > @@ -192,7 +193,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-> >              if (is_cxl) {
-> >                  build_cxl_osc_method(dev);  
-> 
-> This was the path I was expecting to change as well.
-> 
-> >              } else {
-> > -                acpi_dsdt_add_pci_osc(dev);
-> > +                acpi_dsdt_add_pci_osc(dev, true);
-> >              }
-> >  
-> >              aml_append(scope, dev);
-> > @@ -267,7 +268,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-> >      }
-> >      aml_append(dev, aml_name_decl("_CRS", rbuf));
-> >  
-> > -    acpi_dsdt_add_pci_osc(dev);
-> > +    acpi_dsdt_add_pci_osc(dev, true);
-> >  
-> >      Aml *dev_res0 = aml_device("%s", "RES0");
-> >      aml_append(dev_res0, aml_name_decl("_HID", aml_string("PNP0C02")));  
-> 
+I didn't copy changelog from [1] as it's a mix of the whole nesting series.
+
+For who want a quick view of the whole nesting series [2].
+
+Test done:
+- VFIO devices hotplug/unplug
+- build test on Windows
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2025-05/msg05002.html
+[2] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting.v1.wip
+
+Thanks
+Zhenzhong
+
+Changelog:
+v2:
+- report kernel BUG as error instead of assert (Cédric)
+- merge patch2 and patch3 (Cédric)
+- handle vendor cap check directly from vtd_check_hiod, so patch6 removed (Cédric)
+- s/data_ptr/data (Cédric)
+- s/totally/total (Donald)
+
+v1:
+- changed to save raw data in VendorCaps, so we can keep all vendor structure
+  decoding inside the backend and VFIO wouldn't need to care about types nor
+  what's inside the data.
+
+
+Zhenzhong Duan (4):
+  backends/iommufd: Add a helper to invalidate user-managed HWPT
+  vfio/iommufd: Add properties and handlers to
+    TYPE_HOST_IOMMU_DEVICE_IOMMUFD
+  vfio/iommufd: Implement [at|de]tach_hwpt handlers
+  vfio/iommufd: Save vendor specific device info
+
+ include/system/host_iommu_device.h | 11 ++++++
+ include/system/iommufd.h           | 54 ++++++++++++++++++++++++++++
+ backends/iommufd.c                 | 58 ++++++++++++++++++++++++++++++
+ hw/vfio/iommufd.c                  | 36 ++++++++++++++++---
+ backends/trace-events              |  1 +
+ 5 files changed, 155 insertions(+), 5 deletions(-)
+
+-- 
+2.34.1
 
 
