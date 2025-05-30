@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEBD5AC88C7
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B2CAC88B3
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:20:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKu34-0004zp-8t; Fri, 30 May 2025 03:21:06 -0400
+	id 1uKu1W-0001zu-KA; Fri, 30 May 2025 03:19:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtyI-0005KV-TS
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:16:10 -0400
+ id 1uKtyJ-0005Lu-9D
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:16:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtyE-0007I2-9W
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:16:03 -0400
+ id 1uKtyH-0007IN-4z
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:16:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589361;
+ s=mimecast20190719; t=1748589364;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=k6rnhF8ccsOc0IyQOQ+kTTtn6LraXj7NKQVTXhIToBM=;
- b=PjibNmhoZHq3k73SMEyhF+W7G5ktKd0NM/lqssegsWC9mlD+EZe2pcG+yxgxJTDJ1YRkR2
- 39oAiQjteI7TIyhNgcRxWwOzs8hkXpzauQabrwF+ifUpnqnMc+O54P4e+gCeage1PsnED1
- QQEHjYA4mr9+JYxRAN1PMj0LbHGO9BE=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uPHHwWFMg9KR06NH/phG5RTEPKnr+d5BDSxP/nyMYWM=;
+ b=bJon4fxgHmvxelX40Cg9bNc0O6YJa/vo1GtOKNPkaJ6r/bd+F69bleGgjYTs2axry1onmK
+ pYVa2Mtai/HB+geSdpfjQ1XYBhYjmehSIyhe9hYQXTzhcjEzLhPM8R6IzQh1KZhO7xdzh3
+ LfemUlULe9VDr4j2RciBypSl9+3v0h4=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-ZrLWcXsSM4OU7OpKQaQDOA-1; Fri, 30 May 2025 03:16:00 -0400
-X-MC-Unique: ZrLWcXsSM4OU7OpKQaQDOA-1
-X-Mimecast-MFC-AGG-ID: ZrLWcXsSM4OU7OpKQaQDOA_1748589359
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-604e837c1deso1448168a12.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:16:00 -0700 (PDT)
+ us-mta-310-aSoNcbc1MX-HeD7r9-bV4g-1; Fri, 30 May 2025 03:16:02 -0400
+X-MC-Unique: aSoNcbc1MX-HeD7r9-bV4g-1
+X-Mimecast-MFC-AGG-ID: aSoNcbc1MX-HeD7r9-bV4g_1748589362
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-601f3f35b88so1671306a12.1
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:16:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589358; x=1749194158;
+ d=1e100.net; s=20230601; t=1748589361; x=1749194161;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k6rnhF8ccsOc0IyQOQ+kTTtn6LraXj7NKQVTXhIToBM=;
- b=PZGtlRoCL0XsrIsSu0Ql5JhUKN1tSOumlcJm5puJ8OcUvMTkFsO1eAemAlgjXxQEtN
- YOAHY5GGzIdVJklQL/Yiia2xfUuLBz4dcHMxiKCNukZS/C2uB7NWeLALP1+9XN4+sjj/
- OW8mdDd5XMk/kDMVuavOSK8U9qOxlquZDLiy1dGlbgk+LQc/1iQnWaZZawjrPKbfaUAh
- XlC8tkZLCAZVxBGa6t2xYO+C7K8dXnWNXeUny0xjODBxzfKGLxKKZxlajo/eDICAt8t6
- a1RFVEc9QavF4HSDSMg9oAIXkxBABpMyYyZjeg6FThjzybUL8Al2mvIcGXLAxkTL2xVR
- q+QA==
-X-Gm-Message-State: AOJu0YyQioEdW+ojakVGmUl73T4UCBQFEtqAlZKauIxhcf+OJHn1vuwh
- cqozbL6K2HzM5ZLHfdz6/W9hSQcdPcgPOAf6xIOoLf4adiu4U65Di9AXw9Koa9pKe1P3X5RDhN2
- HQIIDrS/JcSJqEiWQHxErUW25wamKZfc++enDCzR0zwslmK/04VIC37+Z8erlNt/prQPiAMjETs
- HUwJhz7wvJbctuAwVKqPh2VpS+Nymq4LdRVb1nRMWy
-X-Gm-Gg: ASbGncs5ZY9J9Vzpktwq+n4BKjRHWeijVnCHjfvGEp5YGIjbulEoi3JqJKTLPMlO9hm
- L0cJnOr8SzvWefmYbSH8gfiDKu5ds2eE3sj/mx64PPvk5Gs1jW/UBmVOYekRJmW1W2h0zjc28Sc
- oX7kskdg7b9VZ/Jvma8DMu2HPrAIQN2FSu8CUFknGyYwr5CoWWl4zexLObYHmAFgIRd33Ju3qnv
- m3JmwneU3FMMULM63Wy8AZHOaSRao4/eXzIlVHvf4aGpB3S7abHnxZUequFg0AK91AiM4g3Kpa+
- 8eeM849NLDCTdw==
-X-Received: by 2002:a17:906:36d9:b0:adb:3509:b459 with SMTP id
- a640c23a62f3a-adb3509b66bmr95755266b.19.1748589358280; 
- Fri, 30 May 2025 00:15:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+TFC6Oz/9zd5Gy/05edUDG01AbUyet40d1cdAwasS+2wxVbEN7jmo6+R7BK9+MtMMeMNx/Q==
-X-Received: by 2002:a17:906:36d9:b0:adb:3509:b459 with SMTP id
- a640c23a62f3a-adb3509b66bmr95752666b.19.1748589357752; 
- Fri, 30 May 2025 00:15:57 -0700 (PDT)
+ bh=uPHHwWFMg9KR06NH/phG5RTEPKnr+d5BDSxP/nyMYWM=;
+ b=avPe4TVdF3+4rXjsSDGdrxUiaHrsX9KuvTJ+TAwMIlSTDm1uKMFUHUjusCvgviJ36c
+ 81/biU9RidTz8GOZ1dHJXMdcLMJirSFbTx404KwJ+B3HOpoePKesU2eLm4RGA37zojHe
+ B8hCSdffoI35mqvrK1Dqml/9uL8qu6csXiMQH80ddI2ojYgx8SbeFgR/zTJt76ErP8eG
+ nnuUXe23byl+3JDWhRrxGMxjX1Vimu+IwYyvKqUr3CA5gMfIr98uIfVsbCShKLoMGQRO
+ pkLlznwSd2B/T2XseJLPphgZiF+oHCyzXL0bjT3Eifz6ocWXz5WbwZ0U2YhfN0Isswyi
+ vdOA==
+X-Gm-Message-State: AOJu0YxWaHEZsZ97w7Ok2cXCQqxhE+CJR1E7npd1rs+hT2ljhGQ3n4h7
+ 5SjuHG1PBw/kLwyDDcQ0LoUbE/nWFSAbDSwWMjHvx5zGgT9VpNOd80rQM0u7nw5uZTZiCSOo0hB
+ vgtbyz/csjWod5xRkdM/KVVtAh0sxbyYqQw2FPPvn5DGowhHlSxpkmTttfLNIbHlEFo+qdrTval
+ mtV/bQIgCV3ka9MI6rX8WQL9GgwPhnwEsjCZciFODA
+X-Gm-Gg: ASbGnctWoLGycgv4kadpRYer1+F8R8KjDixaSIq9jh/44X9vfXVz9dlXzrKgRy8qUP2
+ ERuJBJsNMSNhElGG4ULiUF4Vh4nL0lpP6qy14TryHnea27eEETfXVx5Ta5HX2zoxeAuWRQm9vrx
+ 7IvItGllHhXKlscmfemT+6leP0qTk0ukqLGbnqNnFB0T3+R4vAcqokcnlTjyyABpvNDuZh2hJR9
+ b+wLu+0JEL/bt25P77ImfJ+EFNqlfdyTe5RhFBdwuWcXzteHKUwGOStl0COSJyt8AN2zCODDeV3
+ FLWxL8X4f1ulrQ==
+X-Received: by 2002:a05:6402:270f:b0:5f7:f55a:e5c8 with SMTP id
+ 4fb4d7f45d1cf-6056e15de23mr1704469a12.21.1748589360727; 
+ Fri, 30 May 2025 00:16:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBG9ym8+uDeRuCNm7Itfxp+njPDY9fPtaKPXX9nhEFMF0tAXYxkwVyBU8mRnsucE38umMvqQ==
+X-Received: by 2002:a05:6402:270f:b0:5f7:f55a:e5c8 with SMTP id
+ 4fb4d7f45d1cf-6056e15de23mr1704445a12.21.1748589360250; 
+ Fri, 30 May 2025 00:16:00 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d7fef58sm275090866b.22.2025.05.30.00.15.55
+ 4fb4d7f45d1cf-60566c5c222sm1189289a12.27.2025.05.30.00.15.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:15:56 -0700 (PDT)
+ Fri, 30 May 2025 00:15:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Babu Moger <babu.moger@amd.com>,
  Maksim Davydov <davydov-max@yandex-team.ru>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 74/77] target/i386: Add couple of feature bits in
- CPUID_Fn80000021_EAX
-Date: Fri, 30 May 2025 09:12:44 +0200
-Message-ID: <20250530071250.2050910-75-pbonzini@redhat.com>
+Subject: [PULL 75/77] target/i386: Update EPYC-Genoa for Cache property,
+ perfmon-v2, RAS and SVM feature bits
+Date: Fri, 30 May 2025 09:12:45 +0200
+Message-ID: <20250530071250.2050910-76-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
@@ -110,67 +110,144 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Babu Moger <babu.moger@amd.com>
 
-Add CPUID bit indicates that a WRMSR to MSR_FS_BASE, MSR_GS_BASE, or
-MSR_KERNEL_GS_BASE is non-serializing amd PREFETCHI that the indicates
-support for IC prefetch.
+Found that some of the cache properties are not set correctly for EPYC models.
+l1d_cache.no_invd_sharing should not be true.
+l1i_cache.no_invd_sharing should not be true.
 
-CPUID_Fn80000021_EAX
-Bit    Feature description
-20     Indicates support for IC prefetch.
-1      FsGsKernelGsBaseNonSerializing.
-       WRMSR to FS_BASE, GS_BASE and KernelGSbase are non-serializing.
+L2.self_init should be true.
+L2.inclusive should be true.
 
-Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
+L3.inclusive should not be true.
+L3.no_invd_sharing should be true.
+
+Fix these cache properties.
+
+Also add the missing RAS and SVM features bits on AMD EPYC-Genoa model.
+The SVM feature bits are used in nested guests.
+
+perfmon-v2     : Allow guests to make use of the PerfMonV2 features.
+succor         : Software uncorrectable error containment and recovery capability.
+overflow-recov : MCA overflow recovery support.
+lbrv           : LBR virtualization
+tsc-scale      : MSR based TSC rate control
+vmcb-clean     : VMCB clean bits
+flushbyasid    : Flush by ASID
+pause-filter   : Pause intercept filter
+pfthreshold    : PAUSE filter threshold
+v-vmsave-vmload: Virtualized VMLOAD and VMSAVE
+vgif           : Virtualized GIF
+fs-gs-base-ns  : WRMSR to {FS,GS,KERNEL_GS}_BASE is non-serializing
+
+The feature details are available in APM listed below [1].
+[1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
+Publication # 24593 Revision 3.41.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
 Signed-off-by: Babu Moger <babu.moger@amd.com>
 Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/a5f6283a59579b09ac345b3f21ecb3b3b2d92451.1746734284.git.babu.moger@amd.com
+Link: https://lore.kernel.org/r/afe3f05d4116124fd5795f28fc23d7b396140313.1746734284.git.babu.moger@amd.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h | 4 ++++
- target/i386/cpu.c | 4 ++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ target/i386/cpu.c | 78 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 22e82444aec..1146465c8c6 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1092,12 +1092,16 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- 
- /* Processor ignores nested data breakpoints */
- #define CPUID_8000_0021_EAX_NO_NESTED_DATA_BP            (1U << 0)
-+/* WRMSR to FS_BASE, GS_BASE, or KERNEL_GS_BASE is non-serializing */
-+#define CPUID_8000_0021_EAX_FS_GS_BASE_NS                (1U << 1)
- /* LFENCE is always serializing */
- #define CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING    (1U << 2)
- /* Null Selector Clears Base */
- #define CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE            (1U << 6)
- /* Automatic IBRS */
- #define CPUID_8000_0021_EAX_AUTO_IBRS                    (1U << 8)
-+/* Indicates support for IC prefetch */
-+#define CPUID_8000_0021_EAX_PREFETCHI                    (1U << 20)
- /* Enhanced Return Address Predictor Scurity */
- #define CPUID_8000_0021_EAX_ERAPS                        (1U << 24)
- /* Selective Branch Predictor Barrier */
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index d01a808e3a3..0d1b9077788 100644
+index 0d1b9077788..a656b3c664e 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1253,12 +1253,12 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-     [FEAT_8000_0021_EAX] = {
-         .type = CPUID_FEATURE_WORD,
-         .feat_names = {
--            "no-nested-data-bp", NULL, "lfence-always-serializing", NULL,
-+            "no-nested-data-bp", "fs-gs-base-ns", "lfence-always-serializing", NULL,
-             NULL, NULL, "null-sel-clr-base", NULL,
-             "auto-ibrs", NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
--            NULL, NULL, NULL, NULL,
-+            "prefetchi", NULL, NULL, NULL,
-             "eraps", NULL, NULL, "sbpb",
-             "ibpb-brtype", "srso-no", "srso-user-kernel-no", NULL,
-         },
+@@ -2643,6 +2643,59 @@ static const CPUCaches epyc_genoa_cache_info = {
+     },
+ };
+ 
++static const CPUCaches epyc_genoa_v2_cache_info = {
++    .l1d_cache = &(CPUCacheInfo) {
++        .type = DATA_CACHE,
++        .level = 1,
++        .size = 32 * KiB,
++        .line_size = 64,
++        .associativity = 8,
++        .partitions = 1,
++        .sets = 64,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l1i_cache = &(CPUCacheInfo) {
++        .type = INSTRUCTION_CACHE,
++        .level = 1,
++        .size = 32 * KiB,
++        .line_size = 64,
++        .associativity = 8,
++        .partitions = 1,
++        .sets = 64,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l2_cache = &(CPUCacheInfo) {
++        .type = UNIFIED_CACHE,
++        .level = 2,
++        .size = 1 * MiB,
++        .line_size = 64,
++        .associativity = 8,
++        .partitions = 1,
++        .sets = 2048,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .inclusive = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l3_cache = &(CPUCacheInfo) {
++        .type = UNIFIED_CACHE,
++        .level = 3,
++        .size = 32 * MiB,
++        .line_size = 64,
++        .associativity = 16,
++        .partitions = 1,
++        .sets = 32768,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .no_invd_sharing = true,
++        .complex_indexing = false,
++        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
++    },
++};
+ /* The following VMX features are not supported by KVM and are left out in the
+  * CPU definitions:
+  *
+@@ -5744,6 +5797,31 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+         .xlevel = 0x80000022,
+         .model_id = "AMD EPYC-Genoa Processor",
+         .cache_info = &epyc_genoa_cache_info,
++        .versions = (X86CPUVersionDefinition[]) {
++            { .version = 1 },
++            {
++                .version = 2,
++                .props = (PropValue[]) {
++                    { "overflow-recov", "on" },
++                    { "succor", "on" },
++                    { "lbrv", "on" },
++                    { "tsc-scale", "on" },
++                    { "vmcb-clean", "on" },
++                    { "flushbyasid", "on" },
++                    { "pause-filter", "on" },
++                    { "pfthreshold", "on" },
++                    { "v-vmsave-vmload", "on" },
++                    { "vgif", "on" },
++                    { "fs-gs-base-ns", "on" },
++                    { "perfmon-v2", "on" },
++                    { "model-id",
++                      "AMD EPYC-Genoa-v2 Processor" },
++                    { /* end of list */ }
++                },
++                .cache_info = &epyc_genoa_v2_cache_info
++            },
++            { /* end of list */ }
++        }
+     },
+     {
+         .name = "YongFeng",
 -- 
 2.49.0
 
