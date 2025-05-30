@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F64AC8754
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 06:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF78AC8755
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 06:35:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKrRg-0001hL-0h; Fri, 30 May 2025 00:34:16 -0400
+	id 1uKrRh-0001jv-V0; Fri, 30 May 2025 00:34:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uKrRM-0001NA-A5
+ id 1uKrRM-0001NG-V1
  for qemu-devel@nongnu.org; Fri, 30 May 2025 00:33:59 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uKrR6-0005NV-I1
- for qemu-devel@nongnu.org; Fri, 30 May 2025 00:33:55 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-23228b9d684so18509865ad.1
- for <qemu-devel@nongnu.org>; Thu, 29 May 2025 21:33:40 -0700 (PDT)
+ id 1uKrR9-0005Oz-3X
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 00:33:56 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-23526264386so6825985ad.2
+ for <qemu-devel@nongnu.org>; Thu, 29 May 2025 21:33:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748579619; x=1749184419;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748579621; x=1749184421;
  darn=nongnu.org; 
  h=to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=AZ7GhEwjBgkQdcPHsHCxJ1Vfs4exel6ROH4bH1WKn9M=;
- b=IOk9nMN/tyCo6EdzPkjWL/OsSJWzf6i1lBsbBEzeSM3C8t7UhiOCdyS3Ha84VeV2TD
- Tj5DUMIl4QMCd7n/Lj5EHHbqkK2eEgEoRI+Qo6gmkOinvXsYh2X9O8j0zsdxD5QRUJej
- JrJ67FBoz2n0VUEgDiVIA/sC4vZs91R2aUdrEZrB1iis5KKfgHjRvbP/Z7pRm9RWGcI1
- gKs1KPyocw9T+eEXR0JXqwF/c6M63w6mZcp7hymTAScb8D0JYDcPbmyk0kjOhKcznrPX
- Yh3aD5n4i7XI4QdqY7YAEWCaDb5IuBSd9ZU85YWNTJ+qSdYmL/kgkpUr2lKWEnTc36W1
- watQ==
+ :reply-to; bh=PzspMOXBN18eh+XrNUrzXep8Qjkld4nXnkxOhOiGHWE=;
+ b=tinI5KiEdDNc/fHo2hoELeRoqUk8vU1ejVkhQPceGhk1VUOZUXpcB62qdwWS0PzEzy
+ LGlgSc9iRKf9v8h20zaXq6yB7oPVPFK6ZfLDV5ivg6TzITSQEkuVv0hZLkvnMibZi9b3
+ QIWo1uQS5O67tkGMk/asDVctiDS32sBM0ekmi3KnftANq61wWbOwL6zg+sYcmKqoGO7Y
+ 2dxzERzOnLWU9I0qiMpmgy2LERGvnyozYOZdkQ0KRPMqgjlQzM5lkSqYlzmbOrvKGsR1
+ 5bv9dMIMfRlPzf1UphJFotkjDEQ4wqQmq/Qfo6uURLU7Tl73MJbu3/hIw5QZfzmS/CSP
+ +CVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748579619; x=1749184419;
+ d=1e100.net; s=20230601; t=1748579621; x=1749184421;
  h=to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AZ7GhEwjBgkQdcPHsHCxJ1Vfs4exel6ROH4bH1WKn9M=;
- b=GGfzagkGp+D2A1gX5sP0hKoWFxOoVkckRAGCnjOE/21QPsNNDvWROTDzx9QlTnx7zk
- CJRTD2onctN6+/ff1arUwdzyvpr13p3/4BVNN6zqGiGz2zqi9gRmzDuafc8MaLn+y7ly
- BvvcLTd+6FuTUclhGAxqlwaEYJcd7W1c8P78i186ZVm+K+iEajKqf1fAOaRlTlomC93w
- W56VJwGGVC+J5T6PdpBa8odP0W4zVABvzq3weJOXo28y3BDCvtROmhJgK2B1q3eCzVgX
- tizrXRBHU2pn8kETymPHAbzSmQHsEmxpVA+GYUx4EMXMgt1RF0cGjRamYbILk7/SCNf9
- S93w==
-X-Gm-Message-State: AOJu0YwCt+imf35XbU2vML/QbTEGT0ucA94gFi6uwXe1M7Rk+pnkPVrb
- ouaqOeCR475/Q2xJlh7/v44AcG1L1x+Z8G+QVRF6TMXAU04r3HyhsdPnAAwHxME7FxGxuMyBWDM
- ZxLYj
-X-Gm-Gg: ASbGncvwd2XGR5vrD0iXT+OvXCoPOzHT5LWbRWJm05ISHHpSXiz+mvA8WGv6CnWDLMw
- gc0qdbqx9TbZ/wQpavo0akuDmYUH6qNBBKG/KPMHHEHPy1j2zhJ5h5rfRrwrxf6QuqsXv3WRiTR
- +hepb5bSNCrLkh458AazkW9IsfUseb9Me7uKMzem+89+eoCmyAyMim04j21JRd0qMtPx9/T/teG
- EsKPUBbVanCHuiUQctvwWbHPhWgE8Aefx/cYGTY5aVIKJRZSo5TEUD7dEYmWddM5DUqcDiC+LOC
- zYCjj4ENoOTSSpJweaHPpdEhNIL9MLBO7oXvIyzDkUWV2htweS/iXv8XBNz9FZk=
-X-Google-Smtp-Source: AGHT+IH9RBdYB7c8M93CuIwdStKvJKfkFSqu05PwiIw/KD8onNVHw0gHlgy4IR/W3oexgq7yle2YhA==
-X-Received: by 2002:a17:903:2381:b0:235:a9b:21e0 with SMTP id
- d9443c01a7336-2353855c95emr13673435ad.0.1748579618903; 
- Thu, 29 May 2025 21:33:38 -0700 (PDT)
+ bh=PzspMOXBN18eh+XrNUrzXep8Qjkld4nXnkxOhOiGHWE=;
+ b=V9X/jJNzemsQ7LstpewSVdLGAg2om1vVrO4E9zS2nryXm1/JX2eNBJT+1IR1Jm+AGb
+ 8a4cGbHE5j2DLaO4hbf3CD4d2qlPQqNd+QOx1nbU1YMhwOIWrL45ckg/Hs9NzDtJ4G9t
+ lKfSaKMnDB3LzsE2sZ9K27zA54x0m+HaQckbILWqe6YyW0XJEoJw8/XLiuGdJ5BtFzQu
+ 7n8+dVscjf+N7J564DrjAeuWICv7Ig/BAF80nh9Ri6uzyzK4BjEOjdKF+dCxgV68pN7H
+ D7GWi51e3fb+pL962I/uS8U2av9wiu+c2bbhuMGwS2sm/BDzDmcha7UoqPjPmBk49inj
+ rogA==
+X-Gm-Message-State: AOJu0YzTjsLWa+Iir+vu4PigwOd0+BVB2wAkQr3PGPfHyeib3Hw2df51
+ a7o1nAgtrY7PTva8fmf83GdmSaFcekEE6CmbfBOGvcfFivzdKKdguwBeSyzsvUjwG2wXlhLEh8E
+ uLfrN
+X-Gm-Gg: ASbGncv2Vo6hO7BP5GoLLGGEUOk2HStWeTDiHIhP1EYT68KPLAUP358zuQjIHmiJH4R
+ 5z/rbZzTkfCA6PLdlsasMApa1iRO09UmStP3CVDcqNSclelqOLT/r2707RTYx4Ug5oyp26x8T4+
+ liJzNhVuO10HQC+n0qzDlxZ5XsQMT6rOMVnNynIPJYT+oFljj9RZKsxA/g10arrq99Od7ww/z3E
+ LYGH4U5ktfF7/JIOrpoq/P6y1FJI1F2DYRrySx2w8Q9Rersn68hKSqRUCl9ZQ/0HNRTZSaWOZIh
+ 2/6nLfOO3iXz1sff7rPnqjmdSkIySSb7bv8gQ4bT0COmwbWPwDI8qNbkNmt1yDo=
+X-Google-Smtp-Source: AGHT+IEaxA8Lq0B1laCaHcOAnqBoXnkQajj1gzeNhidp1lDH2ysWr3Z4JGktRcIikctO2CosWX5uMw==
+X-Received: by 2002:a17:903:2f90:b0:234:f580:a15 with SMTP id
+ d9443c01a7336-23529203bdfmr34360395ad.14.1748579621512; 
+ Thu, 29 May 2025 21:33:41 -0700 (PDT)
 Received: from localhost ([157.82.128.1]) by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-3124e3c13ffsm342528a91.41.2025.05.29.21.33.37
+ d9443c01a7336-23506d14702sm19809485ad.214.2025.05.29.21.33.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 May 2025 21:33:38 -0700 (PDT)
+ Thu, 29 May 2025 21:33:41 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 30 May 2025 13:33:20 +0900
-Subject: [PATCH 5/6] net/vhost-vdpa: Remove dummy SetSteeringEBPF
+Date: Fri, 30 May 2025 13:33:21 +0900
+Subject: [PATCH 6/6] virtio-net: Add hash type options
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250530-vdpa-v1-5-5af4109b1c19@daynix.com>
+Message-Id: <20250530-vdpa-v1-6-5af4109b1c19@daynix.com>
 References: <20250530-vdpa-v1-0-5af4109b1c19@daynix.com>
 In-Reply-To: <20250530-vdpa-v1-0-5af4109b1c19@daynix.com>
 To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
@@ -76,8 +76,8 @@ To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Paolo Abeni <pabeni@redhat.com>, devel@daynix.com, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,46 +99,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer used.
+By default, virtio-net limits the hash types that will be advertised to
+the guest so that all hash types are covered by the offloading
+capability the client provides. This change allows to override this
+behavior and to advertise hash types that require user-space hash
+calculation by specifying "on" for the corresponding properties.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- net/vhost-vdpa.c | 8 --------
- 1 file changed, 8 deletions(-)
+ include/hw/virtio/virtio-net.h |  1 +
+ hw/net/virtio-net.c            | 45 ++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 4f63ded40d47..149c0f7f1766 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -238,12 +238,6 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
-     g_free(s->vhost_vdpa.shared);
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index c4957c44c06e..73fdefc0dcb8 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -148,6 +148,7 @@ typedef struct VirtioNetRssData {
+     uint32_t runtime_hash_types;
+     uint32_t supported_hash_types;
+     uint32_t peer_hash_types;
++    OnOffAutoBit64 specified_hash_types;
+     uint8_t key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
+     uint16_t indirections_len;
+     uint16_t *indirections_table;
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index cd5a632596b1..52fe404b3431 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3959,9 +3959,14 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+     if (qemu_get_vnet_hash_supported_types(qemu_get_queue(n->nic)->peer,
+                                            &n->rss_data.peer_hash_types)) {
+         n->rss_data.peer_hash_available = true;
+-        n->rss_data.supported_hash_types = n->rss_data.peer_hash_types;
++        n->rss_data.supported_hash_types =
++            n->rss_data.specified_hash_types.on_bits |
++            (n->rss_data.specified_hash_types.auto_bits &
++             n->rss_data.peer_hash_types);
+     } else {
+-        n->rss_data.supported_hash_types = VIRTIO_NET_RSS_SUPPORTED_HASHES;
++        n->rss_data.supported_hash_types =
++            n->rss_data.specified_hash_types.on_bits |
++            n->rss_data.specified_hash_types.auto_bits;
+     }
  }
  
--/** Dummy SetSteeringEBPF to support RSS for vhost-vdpa backend  */
--static bool vhost_vdpa_set_steering_ebpf(NetClientState *nc, int prog_fd)
--{
--    return true;
--}
--
- static bool vhost_vdpa_has_vnet_hdr(NetClientState *nc)
- {
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
-@@ -470,7 +464,6 @@ static NetClientInfo net_vhost_vdpa_info = {
-         .has_ufo = vhost_vdpa_has_ufo,
-         .set_vnet_le = vhost_vdpa_set_vnet_le,
-         .check_peer_type = vhost_vdpa_check_peer_type,
--        .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
+@@ -4178,6 +4183,42 @@ static const Property virtio_net_properties[] = {
+                       VIRTIO_NET_F_GUEST_USO6, true),
+     DEFINE_PROP_BIT64("host_uso", VirtIONet, host_features,
+                       VIRTIO_NET_F_HOST_USO, true),
++    DEFINE_PROP_ON_OFF_AUTO_BIT64("hash-ipv4", VirtIONet,
++                                  rss_data.specified_hash_types,
++                                  VIRTIO_NET_HASH_REPORT_IPv4 - 1,
++                                  ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO_BIT64("hash-tcp4", VirtIONet,
++                                  rss_data.specified_hash_types,
++                                  VIRTIO_NET_HASH_REPORT_TCPv4 - 1,
++                                  ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO_BIT64("hash-udp4", VirtIONet,
++                                  rss_data.specified_hash_types,
++                                  VIRTIO_NET_HASH_REPORT_UDPv4 - 1,
++                                  ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO_BIT64("hash-ipv6", VirtIONet,
++                                  rss_data.specified_hash_types,
++                                  VIRTIO_NET_HASH_REPORT_IPv6 - 1,
++                                  ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO_BIT64("hash-tcp6", VirtIONet,
++                                  rss_data.specified_hash_types,
++                                  VIRTIO_NET_HASH_REPORT_TCPv6 - 1,
++                                  ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO_BIT64("hash-udp6", VirtIONet,
++                                  rss_data.specified_hash_types,
++                                  VIRTIO_NET_HASH_REPORT_UDPv6 - 1,
++                                  ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO_BIT64("hash-ipv6ex", VirtIONet,
++                                  rss_data.specified_hash_types,
++                                  VIRTIO_NET_HASH_REPORT_IPv6_EX - 1,
++                                  ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO_BIT64("hash-tcp6ex", VirtIONet,
++                                  rss_data.specified_hash_types,
++                                  VIRTIO_NET_HASH_REPORT_TCPv6_EX - 1,
++                                  ON_OFF_AUTO_AUTO),
++    DEFINE_PROP_ON_OFF_AUTO_BIT64("hash-udp6ex", VirtIONet,
++                                  rss_data.specified_hash_types,
++                                  VIRTIO_NET_HASH_REPORT_UDPv6_EX - 1,
++                                  ON_OFF_AUTO_AUTO),
  };
  
- static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index,
-@@ -1344,7 +1337,6 @@ static NetClientInfo net_vhost_vdpa_cvq_info = {
-     .get_vnet_hash_supported_types = vhost_vdpa_get_vnet_hash_supported_types,
-     .has_ufo = vhost_vdpa_has_ufo,
-     .check_peer_type = vhost_vdpa_check_peer_type,
--    .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
- };
- 
- /*
+ static void virtio_net_class_init(ObjectClass *klass, const void *data)
 
 -- 
 2.49.0
