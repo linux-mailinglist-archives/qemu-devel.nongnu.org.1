@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDC8AC924C
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72189AC9266
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:18:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Pa-0004Ro-1s; Fri, 30 May 2025 11:12:46 -0400
+	id 1uL1Pb-0004Uj-UA; Fri, 30 May 2025 11:12:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PX-0004M9-70; Fri, 30 May 2025 11:12:43 -0400
+ id 1uL1PX-0004Lw-3e; Fri, 30 May 2025 11:12:43 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PV-0002Kb-EB; Fri, 30 May 2025 11:12:42 -0400
+ id 1uL1PV-0002Ke-B5; Fri, 30 May 2025 11:12:42 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id BE7BF44979;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id ED56944B94;
  Fri, 30 May 2025 17:11:47 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
@@ -26,10 +26,9 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 32/48] block/snapshot: mark bdrv_all_delete_snapshot() as
- GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:11:09 +0200
-Message-Id: <20250530151125.955508-33-f.ebner@proxmox.com>
+Subject: [PATCH v4 33/48] block/stream: mark stream_prepare() as GRAPH_UNLOCKED
+Date: Fri, 30 May 2025 17:11:10 +0200
+Message-Id: <20250530151125.955508-34-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -58,31 +57,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function bdrv_all_delete_snapshot() calls bdrv_drain_all_begin(),
-which must be called with the graph unlocked.
+The function stream_prepare() calls bdrv_drain_all_begin(), which
+must be called with the graph unlocked.
+
+Also mark the JobDriver's prepare() callback as GRAPH_UNLOCKED_PTR,
+because that is the callback via which stream_prepare() is reached.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- include/block/snapshot.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ block/stream.c     | 2 +-
+ include/qemu/job.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/block/snapshot.h b/include/block/snapshot.h
-index 304cc6ea61..2316a43e26 100644
---- a/include/block/snapshot.h
-+++ b/include/block/snapshot.h
-@@ -90,9 +90,9 @@ int bdrv_snapshot_load_tmp_by_id_or_name(BlockDriverState *bs,
+diff --git a/block/stream.c b/block/stream.c
+index 17e240460c..c0616b69e2 100644
+--- a/block/stream.c
++++ b/block/stream.c
+@@ -51,7 +51,7 @@ static int coroutine_fn stream_populate(BlockBackend *blk,
+     return blk_co_preadv(blk, offset, bytes, NULL, BDRV_REQ_PREFETCH);
+ }
  
- bool bdrv_all_can_snapshot(bool has_devices, strList *devices,
-                            Error **errp);
--int bdrv_all_delete_snapshot(const char *name,
--                             bool has_devices, strList *devices,
--                             Error **errp);
-+int GRAPH_UNLOCKED
-+bdrv_all_delete_snapshot(const char *name, bool has_devices, strList *devices,
-+                         Error **errp);
- int bdrv_all_goto_snapshot(const char *name,
-                            bool has_devices, strList *devices,
-                            Error **errp);
+-static int stream_prepare(Job *job)
++static int GRAPH_UNLOCKED stream_prepare(Job *job)
+ {
+     StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
+     BlockDriverState *unfiltered_bs;
+diff --git a/include/qemu/job.h b/include/qemu/job.h
+index a5a04155ea..bb8ee766ef 100644
+--- a/include/qemu/job.h
++++ b/include/qemu/job.h
+@@ -263,7 +263,7 @@ struct JobDriver {
+      * This callback will not be invoked if the job has already failed.
+      * If it fails, abort and then clean will be called.
+      */
+-    int (*prepare)(Job *job);
++    int GRAPH_UNLOCKED_PTR (*prepare)(Job *job);
+ 
+     /**
+      * If the callback is not NULL, it will be invoked when all the jobs
 -- 
 2.39.5
 
