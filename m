@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5870AC870A
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 05:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F18D5AC8753
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 06:35:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKqhz-00073y-Ii; Thu, 29 May 2025 23:47:03 -0400
+	id 1uKrRg-0001hy-Ez; Fri, 30 May 2025 00:34:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uKqhx-00073h-6t
- for qemu-devel@nongnu.org; Thu, 29 May 2025 23:47:01 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1uKrRK-0001MM-8S
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 00:33:55 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uKqhu-0007rj-U7
- for qemu-devel@nongnu.org; Thu, 29 May 2025 23:47:00 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-742c9907967so1661251b3a.1
- for <qemu-devel@nongnu.org>; Thu, 29 May 2025 20:46:58 -0700 (PDT)
+ id 1uKrQt-0005Ef-Q5
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 00:33:53 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2349282084bso20788525ad.1
+ for <qemu-devel@nongnu.org>; Thu, 29 May 2025 21:33:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748576817; x=1749181617;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1748579606; x=1749184406;
  darn=nongnu.org; 
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SmHrKAIG3latrlQVZf4f4pjdfsqMll3J1YItE/z3El4=;
- b=1l4kLNorZEgcDaU08gyYqn9yeOLk3fndEVxxFdqi0bKEmBBsAWQwSDQEwZWTDXBb3U
- uYGgtkIu94kAptOepvnGexvpdEzKSt1G+T3uKDStGBB5wYalVRRTTCUN+2JRoocT+LMT
- Q3UjgVB7fMnQ6p/b45IY72/SOyWC/VO0PfRsSITZ9cQiNOc63z9fAFz6kmHR4VZKOAJn
- cL0Qys5p9XVwHqpalNbPHYcZSfpO5ht/S2qaDlgK949Tl+IubVImifqI9tfrmnT/GVp2
- zrW0ju03GL2shXrYU6RD1h9FutMaF6wWBsITUb6kGf9YoPfzLLeqDCgN1ctSzl6g8onS
- RrmQ==
+ h=to:content-transfer-encoding:mime-version:message-id:date:subject
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Uy+jpdZkiM+wA4w5PLJ603fVcPXKreCwswysQTAstdI=;
+ b=abvPJrmu7k2VmOXlUwj9XbdH07o6yU/s/b3HuFMZRf4Xj8k/LK+niB8OaBO/sq4oEt
+ bJN3RVYm/uqDs6pfd+67u04APB6I6DyvPc4AM6BbOthcJosyWruSozUlObv9cveUoww2
+ HxeUdu1E6xWjNhSXSW7Jl6sn18cICC9n+cOfamPZlWBFbyMiIiNjzTFALUW3l2I1NJTd
+ WeLI9x0Y+mFH+EFYRwA3xASUjFJHzXk34nLC2k/PC0pinmeSpnwvJ0knMJzkGUb9e7SI
+ NEUiotuvrgNB8cVSjwBfUg/t0/UYQE2eD/cvrRPp4HDLxj6Ffca54f9ed2c6oi7hBjJp
+ Ms0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748576817; x=1749181617;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SmHrKAIG3latrlQVZf4f4pjdfsqMll3J1YItE/z3El4=;
- b=wZNaL+FYuB8cxKRcwwnHkFAVo+3f9VZhP5g3I0G3rndL4tFaF/MFgAQP+SUY7w9jjH
- I0bdHZfJI3Bxys6cSBuDJ8F15hVl9bQQdiFgXltqYW+4ZvRkXXBTJW51zulEml81+XmD
- 05PhydBouS6uilewYK/ylZPRqD6qjz/IFWesWJSTIGbOVG18cqtkl4EyyBd2arYoFA1f
- BhdtwnZJIdhGGcqgWs4iXbZozFA+hRjdukc+/YBg+7UH7w0qNuQRknhnfmeSCp+Jdx3s
- AltSEWfi4jS60h0IKgK7uI+e2NnRZa/j4q4zihr0WeZSZyu22PMAuUWaCE3mWNnNA3S8
- Avfw==
-X-Gm-Message-State: AOJu0Yzk4+5t2htx6ukTIWq+bdP6Po0/tEVDCMCwifW6Bt8mkP4OM50T
- I981di+Q3Vxbljv6ucIO9quvzedXKE+KWjbj64AupDG0EbClITpHA2NzG2JoN0hOy0A=
-X-Gm-Gg: ASbGncuKrhTBmXvvNLUydOlNfiRLJzckp1REqo+io3xlWN2QcIROhUFyvXg+SY3w38c
- aq0qUuVkJUoJYJz0B4mAA2BhMA/9tXRyVBHO77cGljlDFOIx9Mhf6twmaTpc592+DHpRHeNwjiK
- ZEba2F+28x2L5Hzia5B1v7XOArOjSdZIv8deXEG6LwiNcsRuMkYI365OzGEQNIlTY9nwVt72Dvn
- Vw8x26gXVyxE+kmm8F8zbPObXKiY8QluPjs55xizd7WZpopafzmKDZFXUz/4Fvhll4TFDfx3dyp
- PTbHkjwXUA4nELj6Do/kxX5SBG+xQyLoPTruOWoPVkaGM0glUqBE
-X-Google-Smtp-Source: AGHT+IHWdc57MR0e9L2kxv877vEbjlWCD6yKaGkq3L0En3CZlsIDHzM3Q/H1SqvXTZJ48t0Q5kmoEw==
-X-Received: by 2002:a05:6a00:1949:b0:730:95a6:3761 with SMTP id
- d2e1a72fcca58-747bd94c5d8mr3052541b3a.3.1748576816791; 
- Thu, 29 May 2025 20:46:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748579606; x=1749184406;
+ h=to:content-transfer-encoding:mime-version:message-id:date:subject
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Uy+jpdZkiM+wA4w5PLJ603fVcPXKreCwswysQTAstdI=;
+ b=eSYIKDYFhA3gpr4MhX6+NVhnwJC0VWcre+aqdivYYAaOZfo9xgNP3X4WjEURgpypcX
+ lHKa//D8nifKL+IEni67SKw4r1hhJaMEw7AT9KCBmIBIE/P/k8Qbfbd8dTDe+vxy7vWX
+ t77dwRB8j8z/FNjq3OQyft1kykQx9So762nNIwABYML+npOhT6cXkxH+L7RY36KEkLqV
+ U/4ich38gagpboXQ9HSC3MpK6bty6M+FQDmB5X5Vzn4ttJNyal22M1f5cMGMXCG3tTp+
+ xignxPq+Ki79jo1Y9vKo/RA6RpmaKPJAGauzuzPSBoTpGcyE1RBPZPSjMGjfSICK0rel
+ yo+Q==
+X-Gm-Message-State: AOJu0YxjD33vu98v04LjQGzsdkDFWQGGACCg72FH9G83CAepeW6Mix/4
+ h9k/qHCtBw2SnbvSRnHGUmnPCkgsyNCkir4X3fAmfyajCQ7SbXKtZb+UCpI1W1Gbh/IE4DtVn6J
+ kOdAX
+X-Gm-Gg: ASbGnct5fBrbYkFoZYdnIgh57QVdK1eW8/KsZzW4smQf5NLE0+3qy2oTT5+E80gnshZ
+ bayGtTgkyXT2qtDDLWaWioFoU57qlHVjQyaSBoCuCGN2UW8/RQ6o3qCF8FhTA6B6MdV9bVpz0FB
+ D+F1BQEiTdgAgbvAvrVUQCymb/kMqFuTflLnITyeajG1NRBBJ0PcutOGB5ivNwJI8ysREBmwQMa
+ n8iJ73V7f4aVGt5udUGebElAotF5kN4ZFg53BOK88hO61NEyTE0guIyX4VytXUSpnJTwwOAzieA
+ tO4YO//wut0npM1Wp3BAwsqROkplj0wXvVX1a4lnHzXWlmv28AEpykK5+QHa8ZaXg7D4jT7c1A=
+ =
+X-Google-Smtp-Source: AGHT+IG8pPIGKd0RmKY6MG125etllVWlMK6d8t8A+DXzvTHB9NptLrwzWm0ShhwZTFk31vPSHyit0A==
+X-Received: by 2002:a17:903:234b:b0:234:a139:1208 with SMTP id
+ d9443c01a7336-23528ef783fmr31174625ad.16.1748579605870; 
+ Thu, 29 May 2025 21:33:25 -0700 (PDT)
 Received: from localhost ([157.82.128.1]) by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-747affafb44sm2147252b3a.107.2025.05.29.20.46.55
+ d9443c01a7336-23506bf330dsm19944735ad.105.2025.05.29.21.33.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 May 2025 20:46:56 -0700 (PDT)
+ Thu, 29 May 2025 21:33:25 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 30 May 2025 12:46:53 +0900
-Subject: [PATCH v2] file-posix: Tolerate unaligned hole at middle
+Subject: [PATCH 0/6] net/vhost-vdpa: Report hashing capability
+Date: Fri, 30 May 2025 13:33:15 +0900
+Message-Id: <20250530-vdpa-v1-0-5af4109b1c19@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250530-dio-v2-1-5830b56f781c@daynix.com>
-X-B4-Tracking: v=1; b=H4sIACwqOWgC/1WMwQ6DIBAFf8XsudsAKiU9+R+NBwRa91BooCEaw
- 7+L3jzOy5vZILlILsGz2SC6TImCryBuDZhZ+49DspVBMNGzXii0FNBOrNNS6ofqFNTnL7o3LWf
- lNVaeKf1DXM9o5sd69TNHjrJt2dHgkzKD1aun5W7CF8ZSyg66J4rplwAAAA==
-X-Change-ID: 20250528-dio-db04a66a7848
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- qemu-block@nongnu.org, devel@daynix.com, 
+X-B4-Tracking: v=1; b=H4sIAAs1OWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDU2MD3bKUgkRdo2QTC8NkM5PkVBNTJaDSgqLUtMwKsDHRsbW1ABB+fSR
+ WAAAA
+X-Change-ID: 20250530-vdpa-2c481c64ce45
+To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Paolo Abeni <pabeni@redhat.com>, devel@daynix.com, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,167 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-file-posix used to assume that existing holes satisfy the requested
-alignment, which equals to the estimated direct I/O alignment
-requirement if direct I/O is requested, and assert the assumption
-unless it is at EOF.
+This patch series was extracted from:
+https://lore.kernel.org/qemu-devel/20250313-hash-v4-0-c75c494b495e@daynix.com/
+("[PATCH RFC v4 00/11] virtio-net: Offload hashing without eBPF")
 
-However, the estimation of direct I/O alignment requirement is sometimes
-inexact and can be overly strict. For example, I observed that QEMU
-estimated the alignment requirement as 16K while the real requirement
-is 4K when Btrfs is used on Linux 6.14.6 and the host page size is 16K.
+According to the specification, virtio-net devices with VIRTIO_NET_F_RSS
+or VIRTIO_NET_F_HASH_REPORT can report supported hash types:
+https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-2230004
 
-For direct I/O alignment, open(2) sugguests as follows:
-> Since Linux 6.1, O_DIRECT support and alignment restrictions for a
-> file can be queried using statx(2), using the STATX_DIOALIGN flag.
-> Support for STATX_DIOALIGN varies by filesystem; see statx(2).
->
-> Some filesystems provide their own interfaces for querying O_DIRECT
-> alignment restrictions, for example the XFS_IOC_DIOINFO operation in
-> xfsctl(3). STATX_DIOALIGN should be used instead when it is available.
->
-> If none of the above is available, then direct I/O support and
-> alignment restrictions can only be assumed from known characteristics
-> of the filesystem, the individual file, the underlying storage
-> device(s), and the kernel version. In Linux 2.4, most filesystems
-> based on block devices require that the file offset and the length and
-> memory address of all I/O segments be multiples of the filesystem
-> block size (typically 4096 bytes). In Linux 2.6.0, this was relaxed to
-> the logical block size of the block device (typically 512 bytes). A
-> block device's logical block size can be determined using the ioctl(2)
-> BLKSSZGET operation or from the shell using the command:
-
-Apparently Btrfs doesn't support STATX_DIOALIGN nor provide its own
-interface for querying the requirement. Using BLKSSZGET brings another
-problem to determine the underlying block device, which also involves
-heuristics.
-
-Moreover, even if we could figure out the direct I/O alignment
-requirement, I could not find a documentation saying it will exactly
-match with the alignment of holes.
-
-So stop asserting the assumption on the holes and handle unaligned holes
-properly.
+vDPA also implements the same functionality, but QEMU currently does not
+respect it. Ensure that the vDPA device satisfies the requirements of
+the VM by checking the supported hash types. This also helps add another
+hashing mechanism proposed by the patch series mentioned earlier.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Changes in v2:
-- Changed to round the number also when the specified offset in a hole.
-- Changed to iterate until finding an aligned location.
-- Link to v1: https://lore.kernel.org/qemu-devel/20250528-dio-v1-1-633066a71b8c@daynix.com
----
- block/file-posix.c | 83 ++++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 53 insertions(+), 30 deletions(-)
+Akihiko Odaki (6):
+      qdev-properties: Add DEFINE_PROP_ON_OFF_AUTO_BIT64()
+      net/vhost-vdpa: Report hashing capability
+      virtio-net: Move virtio_net_get_features() down
+      virtio-net: Retrieve peer hashing capability
+      net/vhost-vdpa: Remove dummy SetSteeringEBPF
+      virtio-net: Add hash type options
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index ec95b748696b..d3c598d96895 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -3280,6 +3280,7 @@ static int coroutine_fn raw_co_block_status(BlockDriverState *bs,
-                                             BlockDriverState **file)
- {
-     off_t data = 0, hole = 0;
-+    bool has_data = false;
-     int ret;
- 
-     assert(QEMU_IS_ALIGNED(offset | bytes, bs->bl.request_alignment));
-@@ -3297,40 +3298,62 @@ static int coroutine_fn raw_co_block_status(BlockDriverState *bs,
-         return BDRV_BLOCK_DATA | BDRV_BLOCK_OFFSET_VALID;
-     }
- 
--    ret = find_allocation(bs, offset, &data, &hole);
--    if (ret == -ENXIO) {
--        /* Trailing hole */
--        *pnum = bytes;
--        ret = BDRV_BLOCK_ZERO;
--    } else if (ret < 0) {
--        /* No info available, so pretend there are no holes */
--        *pnum = bytes;
--        ret = BDRV_BLOCK_DATA;
--    } else if (data == offset) {
--        /* On a data extent, compute bytes to the end of the extent,
--         * possibly including a partial sector at EOF. */
--        *pnum = hole - offset;
-+    /*
-+     * We may have allocation unaligned with the requested alignment
-+     * due to the following reaons:
-+     * - unaligned file size
-+     * - inexact direct I/O alignment requirement estimation
-+     * - mismatch between the allocation size and
-+     *   direct I/O alignment requirement
-+     *
-+     * We are not allowed to return partial sectors, though, so iterate
-+     * until finding an aligned location in or at a border of a hole.
-+     */
-+    *pnum = 0;
-+    do {
-+        ret = find_allocation(bs, offset + *pnum, &data, &hole);
-+        if (ret == -ENXIO) {
-+            /* Trailing hole */
-+            if (!has_data) {
-+                *pnum = bytes;
-+            }
-+            break;
-+        }
- 
--        /*
--         * We are not allowed to return partial sectors, though, so
--         * round up if necessary.
--         */
--        if (!QEMU_IS_ALIGNED(*pnum, bs->bl.request_alignment)) {
--            int64_t file_length = raw_getlength(bs);
--            if (file_length > 0) {
--                /* Ignore errors, this is just a safeguard */
--                assert(hole == file_length);
-+        if (ret < 0) {
-+            /* No info available, so pretend there are no holes */
-+            *pnum = bytes;
-+            has_data = true;
-+            break;
-+        }
-+
-+        data -= offset;
-+        hole -= offset;
-+
-+        if (data == *pnum) {
-+            /* Return the end of a data extent if aligned. */
-+            has_data = true;
-+            *pnum = ROUND_UP(hole, bs->bl.request_alignment);
-+            if (*pnum == hole) {
-+                break;
-+            }
-+        } else {
-+            /* Round down the end of a hole. */
-+            assert(hole == *pnum);
-+
-+            if (data - *pnum >= bs->bl.request_alignment) {
-+                if (!has_data) {
-+                    *pnum = ROUND_DOWN(data, bs->bl.request_alignment);
-+                }
-+                break;
-             }
--            *pnum = ROUND_UP(*pnum, bs->bl.request_alignment);
-+
-+            has_data = true;
-+            *pnum += bs->bl.request_alignment;
-         }
- 
--        ret = BDRV_BLOCK_DATA;
--    } else {
--        /* On a hole, compute bytes to the beginning of the next extent.  */
--        assert(hole == offset);
--        *pnum = data - offset;
--        ret = BDRV_BLOCK_ZERO;
--    }
-+    } while (*pnum < bytes);
-+    ret = has_data ? BDRV_BLOCK_DATA : BDRV_BLOCK_ZERO;
-     *map = offset;
-     *file = bs;
-     return ret | BDRV_BLOCK_OFFSET_VALID;
-
+ include/hw/qdev-properties.h   |  18 +++
+ include/hw/virtio/virtio-net.h |   6 +-
+ include/net/net.h              |   3 +
+ hw/core/qdev-properties.c      |  67 ++++++++++-
+ hw/net/virtio-net.c            | 254 +++++++++++++++++++++++++++--------------
+ net/net.c                      |   9 ++
+ net/vhost-vdpa.c               |  34 ++++--
+ 7 files changed, 298 insertions(+), 93 deletions(-)
 ---
-base-commit: f0737158b483e7ec2b2512145aeab888b85cc1f7
-change-id: 20250528-dio-db04a66a7848
+base-commit: 5f90d272553ca0d18ac2457a993febdba9e840e3
+change-id: 20250530-vdpa-2c481c64ce45
 
 Best regards,
 -- 
