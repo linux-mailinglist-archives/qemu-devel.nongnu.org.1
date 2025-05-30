@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9628FAC922C
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 478DCAC9244
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:14:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Os-0002vm-W0; Fri, 30 May 2025 11:12:03 -0400
+	id 1uL1Oq-0002ux-UD; Fri, 30 May 2025 11:12:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1On-0002sq-Iv; Fri, 30 May 2025 11:11:57 -0400
+ id 1uL1On-0002sm-7G; Fri, 30 May 2025 11:11:57 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1Ol-0002GJ-Pb; Fri, 30 May 2025 11:11:57 -0400
+ id 1uL1Ok-0002Fr-Uf; Fri, 30 May 2025 11:11:56 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D844D44AA4;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id A0A6244A8C;
  Fri, 30 May 2025 17:11:43 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
@@ -26,10 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 17/48] blockdev: drain while unlocked in
- internal_snapshot_action()
-Date: Fri, 30 May 2025 17:10:54 +0200
-Message-Id: <20250530151125.955508-18-f.ebner@proxmox.com>
+Subject: [PATCH v4 18/48] blockdev: drain while unlocked in
+ external_snapshot_action()
+Date: Fri, 30 May 2025 17:10:55 +0200
+Message-Id: <20250530151125.955508-19-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -62,61 +62,51 @@ This is in preparation to mark bdrv_drained_begin() as GRAPH_UNLOCKED.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- blockdev.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ blockdev.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/blockdev.c b/blockdev.c
-index bd5ca77619..506755bef1 100644
+index 506755bef1..2e7fda6780 100644
 --- a/blockdev.c
 +++ b/blockdev.c
-@@ -1208,7 +1208,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
-     Error *local_err = NULL;
-     const char *device;
-     const char *name;
--    BlockDriverState *bs;
-+    BlockDriverState *bs, *check_bs;
-     QEMUSnapshotInfo old_sn, *sn;
-     bool ret;
-     int64_t rt;
-@@ -1216,7 +1216,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
-     int ret1;
+@@ -1377,9 +1377,10 @@ static void external_snapshot_action(TransactionAction *action,
+     const char *new_image_file;
+     ExternalSnapshotState *state = g_new0(ExternalSnapshotState, 1);
+     uint64_t perm, shared;
++    BlockDriverState *check_bs;
  
-     GLOBAL_STATE_CODE();
+     /* TODO We'll eventually have to take a writer lock in this function */
 -    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +    bdrv_graph_rdlock_main_loop();
  
-     tran_add(tran, &internal_snapshot_drv, state);
+     tran_add(tran, &external_snapshot_drv, state);
  
-@@ -1225,14 +1225,29 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+@@ -1412,11 +1413,25 @@ static void external_snapshot_action(TransactionAction *action,
  
-     bs = qmp_get_root_bs(device, errp);
-     if (!bs) {
+     state->old_bs = bdrv_lookup_bs(device, node_name, errp);
+     if (!state->old_bs) {
 +        bdrv_graph_rdunlock_main_loop();
          return;
      }
  
-     state->bs = bs;
- 
 +    /* Need to drain while unlocked. */
 +    bdrv_graph_rdunlock_main_loop();
      /* Paired with .clean() */
-     bdrv_drained_begin(bs);
- 
+     bdrv_drained_begin(state->old_bs);
 +    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +
-+    /* Make sure the root bs did not change with the drain. */
-+    check_bs = qmp_get_root_bs(device, errp);
-+    if (bs != check_bs) {
++    /* Make sure the associated bs did not change with the drain. */
++    check_bs = bdrv_lookup_bs(device, node_name, errp);
++    if (state->old_bs != check_bs) {
 +        if (check_bs) {
 +            error_setg(errp, "Block node of device '%s' unexpectedly changed",
 +                       device);
 +        } /* else errp is already set */
 +        return;
 +    }
-+
-     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_INTERNAL_SNAPSHOT, errp)) {
-         return;
-     }
+ 
+     if (!bdrv_is_inserted(state->old_bs)) {
+         error_setg(errp, "Device '%s' has no medium",
 -- 
 2.39.5
 
