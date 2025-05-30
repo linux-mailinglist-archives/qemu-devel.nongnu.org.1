@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D880AC88A4
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14404AC88A8
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:18:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtyF-0004cr-PQ; Fri, 30 May 2025 03:16:04 -0400
+	id 1uKtyF-0004cs-PA; Fri, 30 May 2025 03:16:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtwz-0002pV-NA
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:47 -0400
+ id 1uKtx2-0002sN-3x
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtwy-0006zz-2u
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:45 -0400
+ id 1uKtx0-00070B-Ib
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589283;
+ s=mimecast20190719; t=1748589285;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PwZVoCOHIB/52C9EF+XqubWfnZl+ifPa0w9UOgqMjCQ=;
- b=LO3zniNIqkqgULCGX2Ye9/XNIXa7wFTaUvKEr2+w6iZQ8RNd6MpfuOfooz0hHzUgRImjI4
- dN6IuAbAoWSpr4KcX5kt+WF+2QR74y1bTU3nPn60j9cnEXE2mSzERu5VuwXux/IU4io+sK
- bI0sntTDkSzn9hAPslvPZ9GM1lsOwNk=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jtjtyiGUQyegn1vBqOHyPoYR0tR2vu4Qq0YAIOE+sa8=;
+ b=Kor52M3zw/Og8i8A7JnCyLGfEtZePxkyOoG72uAHVohNaxEKw75vI3Gfqv3njrVXxhWEol
+ BgMOmAaoEK0zBOXzFNCuklk/v9SM0/RYhmm2DrZRa1RrqEa6uNazUZIZkf0aYSW4ZOthz5
+ XEO6jxr4DNqoU6N4m+z4v+6lGtkZ95U=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-367-uhdKweS0NhOWDu7NyKwCcg-1; Fri, 30 May 2025 03:14:42 -0400
-X-MC-Unique: uhdKweS0NhOWDu7NyKwCcg-1
-X-Mimecast-MFC-AGG-ID: uhdKweS0NhOWDu7NyKwCcg_1748589281
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-603f71f6432so1478169a12.3
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:41 -0700 (PDT)
+ us-mta-99-s0yAQ31FPF-Av8K7Hus_Fw-1; Fri, 30 May 2025 03:14:44 -0400
+X-MC-Unique: s0yAQ31FPF-Av8K7Hus_Fw-1
+X-Mimecast-MFC-AGG-ID: s0yAQ31FPF-Av8K7Hus_Fw_1748589283
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ad56a52edc5so177934966b.0
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589280; x=1749194080;
+ d=1e100.net; s=20230601; t=1748589282; x=1749194082;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PwZVoCOHIB/52C9EF+XqubWfnZl+ifPa0w9UOgqMjCQ=;
- b=ZRgRRnBuiB9ZhFYcmQSNqUVgyk3eSlTpZegp+TVfDxsoIcnkRwiHLotOo6ljl49fn8
- oDHj8Cefjxr0/XpEOy/0/oOmqfshyLog+Vrc/1Y/8bYkCZi7Y6EpTICuKG9MC8N3SqPX
- gIwS5wIxC48FqwCvjdJuM1B2DRVBnMQh9cdcNHo5lGdTQXiDmpw1idyAWfn9QhDpz4+t
- l3UTY24mWVIe3mDtEU0gokp9wh4x1mile+fjYhBGynGQ+e5Dz6ymtyUHGm73R6yAaZ7F
- MUglKp8jZxl8tc35P3LO5xG0sBwr9Q55j+unRbn7VlHeKTx/Rxgvjm37++a3bleIJAWZ
- Xb5Q==
-X-Gm-Message-State: AOJu0YxI+a+oBexFHuOaD7Rvceo1IpDvX6jqdmMYCDl9XC9ioVm7Noas
- qTHUEpmdlKppm/tvuokyursmOtGvqxSGVXeeA0J7jNq70PtwFoZo8yefE8ApGRhS6sIrb5hPZj7
- ken/JmT04+PtRukctimdM07u22jBreebGAmA3aIFMyAwA11NUCfLYcw1mhqDbJe3NVPA4lKY2ER
- XiFEVbqIjxCMzyjAgjsSCD39FyasGv1+GPE36wW8mG
-X-Gm-Gg: ASbGnctqCbUNYSv2UY4ztB6FcJbyMBZ00ZipQEYQ05lm6b/MDxzQUk/47PAwILdEnN/
- fBUrazdiknCGDt9IoUPexmIY7gON5ftIX3xAdexNstf0jT12M7WQtTYM0WIFb5C74v8b5l/IZE+
- RCh0KHmKlKDE/7YEVxMoPUhfIvKRNW3Bn7EqGBOLCocUNZ8aQQ0kRcJIq3oK1oFBzD6+f2OIoJA
- QPluNSxvEFI9yNV++U/j1rjfJSQsM6wxe/veC3DlalLLEEjB07JSRLMVp4EHdA+7+vMBYJq9TZQ
- 9zEmLTjQZHTuV/xifFAnUyBJ
-X-Received: by 2002:a17:907:3e05:b0:ad8:9ff4:c02f with SMTP id
- a640c23a62f3a-adb36b2377bmr106449666b.19.1748589279930; 
- Fri, 30 May 2025 00:14:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEqhohebExsT4I9eo0WN/53RLQXCP/BwHmngV95FKmTdLu/qlNvyd++YM3FRvq0uk5YShCWJg==
-X-Received: by 2002:a17:907:3e05:b0:ad8:9ff4:c02f with SMTP id
- a640c23a62f3a-adb36b2377bmr106447866b.19.1748589279491; 
- Fri, 30 May 2025 00:14:39 -0700 (PDT)
+ bh=jtjtyiGUQyegn1vBqOHyPoYR0tR2vu4Qq0YAIOE+sa8=;
+ b=Pq6qnNHkARTW/YlYtoo1gOHbo2dOCUQOCcji5xpe9IsBRttRJSLU2qcwnR5nnNF81z
+ vPjNBwJvTA4B7y7I0B9ojGh4IFgG/LJSGHn2nEcLfxHAoK89YoBoVaN1Qk1k1UvQoXfo
+ a1Dlu7dXlunhfq8wc8mXKHcJb9lqWVKooHsk6EBc6siBPsoHaRhXHDyAIFF2393ilYJ1
+ i74Rna/byq/iYPqxPD3gxfEFhQr73O7OQHQyztvHGRB/76lbgr3/hrCf4eI2GA5Uacwq
+ 6aB7TztRNCiwy6ojyV8JzUXXItN1MvASr4rZnzzoDXSWlmhXWAAR8k+7NQqkGvZt1aee
+ 1fvQ==
+X-Gm-Message-State: AOJu0Yw9lGyn2PAhKGYMuInbNhElP3X2PJioV1cr4KCZ3YTeF6gpZK9J
+ rbKCDgOLaORg/+DCyI/Maz/vG6Efmlco5FdJpPMvCXQXVJM5830iplqzCqkBYZoBOvcS/eWawcV
+ pnhSyPYTfYLhUYbTegQjaZLQXnYagUMUKB/EhP5EtaELwj8n62K6oZ9TRbCPzJ7MWEpYeacc1IG
+ Y1+Ka8H2rhf2TaXdvFwrEVXCgl2J7vmQ/xvlhjGKTy
+X-Gm-Gg: ASbGncuAZe8Thc0UyU1pOE8BMhE3nDr5Js93fnVqGsI0rkGMvDQJ8SVGIFQ5XAq5f3H
+ JoN8wfats5RaXIdzEz81fJ5vYulSO24MvfegN4SVmQ+VVasCF5wKn6pW+rsfpnLyo3R1c9mnk+I
+ m9B6Xq4+MZQZnsDzD3P7ZrTUyBUe5q0Md77eN2JqYvvaXZYEOVYTuhRhtewBFfhUZ61fYR3sVg0
+ Insuro12cwL04gT52rfWXmWAXtpZt60I8KL7JGmizJuMRMvX+w0BOoWGm/OLlHFvycB1qVg8Yd9
+ fVyTkNniR5nc0A==
+X-Received: by 2002:a17:907:9691:b0:ad9:db54:ba40 with SMTP id
+ a640c23a62f3a-adb322a3634mr219350566b.32.1748589282412; 
+ Fri, 30 May 2025 00:14:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEEgwxKO/uDBT2hnXDqfMTETHdI+73aw/G9FVM6AWn4tkqKmKrza71M8YRF9nI/lcFhSiVSDA==
+X-Received: by 2002:a17:907:9691:b0:ad9:db54:ba40 with SMTP id
+ a640c23a62f3a-adb322a3634mr219347666b.32.1748589281961; 
+ Fri, 30 May 2025 00:14:41 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d7fece0sm277015166b.3.2025.05.30.00.14.38
+ a640c23a62f3a-ada5d84f9e0sm275402966b.85.2025.05.30.00.14.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:14:38 -0700 (PDT)
+ Fri, 30 May 2025 00:14:40 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 43/77] i386/cpu: introduce
- x86_confidential_guest_cpu_instance_init()
-Date: Fri, 30 May 2025 09:12:13 +0200
-Message-ID: <20250530071250.2050910-44-pbonzini@redhat.com>
+Subject: [PULL 44/77] i386/tdx: implement tdx_cpu_instance_init()
+Date: Fri, 30 May 2025 09:12:14 +0200
+Message-ID: <20250530071250.2050910-45-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
@@ -110,72 +109,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-To allow execute confidential guest specific cpu init operations.
+Currently, pmu is not supported for TDX by KVM.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-32-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-33-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/confidential-guest.h | 11 +++++++++++
- target/i386/cpu.c                |  8 ++++++++
- 2 files changed, 19 insertions(+)
+ target/i386/kvm/tdx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
-index 164be7633a2..a86c42a4755 100644
---- a/target/i386/confidential-guest.h
-+++ b/target/i386/confidential-guest.h
-@@ -39,6 +39,7 @@ struct X86ConfidentialGuestClass {
- 
-     /* <public> */
-     int (*kvm_type)(X86ConfidentialGuest *cg);
-+    void (*cpu_instance_init)(X86ConfidentialGuest *cg, CPUState *cpu);
-     uint32_t (*mask_cpuid_features)(X86ConfidentialGuest *cg, uint32_t feature, uint32_t index,
-                                     int reg, uint32_t value);
- };
-@@ -59,6 +60,16 @@ static inline int x86_confidential_guest_kvm_type(X86ConfidentialGuest *cg)
-     }
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index ae3740a2305..7c5e59c5591 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -398,6 +398,11 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
+     return KVM_X86_TDX_VM;
  }
  
-+static inline void x86_confidential_guest_cpu_instance_init(X86ConfidentialGuest *cg,
-+                                                            CPUState *cpu)
++static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
 +{
-+    X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
-+
-+    if (klass->cpu_instance_init) {
-+        klass->cpu_instance_init(cg, cpu);
-+    }
++    object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
 +}
 +
- /**
-  * x86_confidential_guest_mask_cpuid_features:
-  *
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 9689f6374e6..4a7c319bb9a 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -37,6 +37,7 @@
- #include "hw/i386/topology.h"
- #include "exec/watchpoint.h"
- #ifndef CONFIG_USER_ONLY
-+#include "confidential-guest.h"
- #include "system/reset.h"
- #include "qapi/qapi-commands-machine-target.h"
- #include "system/address-spaces.h"
-@@ -8543,6 +8544,13 @@ static void x86_cpu_post_initfn(Object *obj)
-     }
+ static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
+ {
+     if ((tdx->attributes & ~tdx_caps->supported_attrs)) {
+@@ -791,4 +796,5 @@ static void tdx_guest_class_init(ObjectClass *oc, const void *data)
  
-     accel_cpu_instance_init(CPU(obj));
-+
-+#ifndef CONFIG_USER_ONLY
-+    if (current_machine && current_machine->cgs) {
-+        x86_confidential_guest_cpu_instance_init(
-+            X86_CONFIDENTIAL_GUEST(current_machine->cgs), (CPU(obj)));
-+    }
-+#endif
+     klass->kvm_init = tdx_kvm_init;
+     x86_klass->kvm_type = tdx_kvm_type;
++    x86_klass->cpu_instance_init = tdx_cpu_instance_init;
  }
- 
- static void x86_cpu_init_default_topo(X86CPU *cpu)
 -- 
 2.49.0
 
