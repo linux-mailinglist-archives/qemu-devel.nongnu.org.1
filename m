@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7133AC925A
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3818AAC923B
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:13:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1PY-0004NC-Ik; Fri, 30 May 2025 11:12:44 -0400
+	id 1uL1PQ-00043V-Qc; Fri, 30 May 2025 11:12:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PV-0004GX-Oe; Fri, 30 May 2025 11:12:42 -0400
+ id 1uL1PB-0003LA-Oh; Fri, 30 May 2025 11:12:22 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PT-0002Jz-Uw; Fri, 30 May 2025 11:12:41 -0400
+ id 1uL1P8-0002Hu-Qc; Fri, 30 May 2025 11:12:21 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id CC67244B79;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 31ACF44B18;
  Fri, 30 May 2025 17:11:46 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
@@ -26,10 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 26/48] block/commit: switch to
- bdrv_set_backing_hd_drained() variant
-Date: Fri, 30 May 2025 17:11:03 +0200
-Message-Id: <20250530151125.955508-27-f.ebner@proxmox.com>
+Subject: [PATCH v4 27/48] block: call bdrv_set_backing_hd() while unlocked in
+ bdrv_open_backing_file()
+Date: Fri, 30 May 2025 17:11:04 +0200
+Message-Id: <20250530151125.955508-28-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -61,99 +61,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 This is in preparation to mark bdrv_set_backing_hd() as
 GRAPH_UNLOCKED.
 
-Switch to using the bdrv_set_backing_hd_drained() variant. For the
-first pair of calls to avoid draining and locking twice in a row
-within the individual calls. For the third call, so that the drained
-and locked section can also cover bdrv_cow_bs().
-
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- block/commit.c | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ block.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/block/commit.c b/block/commit.c
-index dc1942483b..c9690a5da0 100644
---- a/block/commit.c
-+++ b/block/commit.c
-@@ -514,28 +514,32 @@ int bdrv_commit(BlockDriverState *bs)
+diff --git a/block.c b/block.c
+index 1da10d55f0..ca3b67b233 100644
+--- a/block.c
++++ b/block.c
+@@ -3632,7 +3632,8 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
      Error *local_err = NULL;
  
      GLOBAL_STATE_CODE();
 -    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (!drv)
-         return -ENOMEDIUM;
- 
-+    bdrv_graph_rdlock_main_loop();
 +
-     backing_file_bs = bdrv_cow_bs(bs);
++    bdrv_graph_rdlock_main_loop();
  
-     if (!backing_file_bs) {
--        return -ENOTSUP;
-+        ret = -ENOTSUP;
-+        goto out;
+     if (bs->backing != NULL) {
+         goto free_exit;
+@@ -3711,9 +3712,12 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
+                 backing_hd->filename);
      }
  
-     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_COMMIT_SOURCE, NULL) ||
-         bdrv_op_is_blocked(backing_file_bs, BLOCK_OP_TYPE_COMMIT_TARGET, NULL))
-     {
--        return -EBUSY;
-+        ret = -EBUSY;
-+        goto out;
-     }
- 
-     ro = bdrv_is_read_only(backing_file_bs);
- 
-     if (ro) {
-         if (bdrv_reopen_set_read_only(backing_file_bs, false, NULL)) {
--            return -EACCES;
-+            ret = -EACCES;
-+            goto out;
-         }
-     }
- 
-@@ -559,8 +563,14 @@ int bdrv_commit(BlockDriverState *bs)
-         goto ro_cleanup;
-     }
- 
--    bdrv_set_backing_hd(commit_top_bs, backing_file_bs, &error_abort);
--    bdrv_set_backing_hd(bs, commit_top_bs, &error_abort);
++
+     /* Hook up the backing file link; drop our reference, bs owns the
+      * backing_hd reference now */
 +    bdrv_graph_rdunlock_main_loop();
-+
-+    bdrv_graph_wrlock_drained();
-+    bdrv_set_backing_hd_drained(commit_top_bs, backing_file_bs, &error_abort);
-+    bdrv_set_backing_hd_drained(bs, commit_top_bs, &error_abort);
-+    bdrv_graph_wrunlock();
-+
+     ret = bdrv_set_backing_hd(bs, backing_hd, errp);
 +    bdrv_graph_rdlock_main_loop();
+     bdrv_unref(backing_hd);
  
-     ret = blk_insert_bs(backing, backing_file_bs, &local_err);
      if (ret < 0) {
-@@ -635,9 +645,14 @@ int bdrv_commit(BlockDriverState *bs)
-     ret = 0;
- ro_cleanup:
-     blk_unref(backing);
-+
+@@ -3725,6 +3729,7 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
+ free_exit:
+     g_free(backing_filename);
+     qobject_unref(tmp_parent_options);
 +    bdrv_graph_rdunlock_main_loop();
-+    bdrv_graph_wrlock_drained();
-     if (bdrv_cow_bs(bs) != backing_file_bs) {
--        bdrv_set_backing_hd(bs, backing_file_bs, &error_abort);
-+        bdrv_set_backing_hd_drained(bs, backing_file_bs, &error_abort);
-     }
-+    bdrv_graph_wrunlock();
-+    bdrv_graph_rdlock_main_loop();
-     bdrv_unref(commit_top_bs);
-     blk_unref(src);
- 
-@@ -646,5 +661,8 @@ ro_cleanup:
-         bdrv_reopen_set_read_only(backing_file_bs, true, NULL);
-     }
- 
-+out:
-+    bdrv_graph_rdunlock_main_loop();
-+
      return ret;
  }
+ 
 -- 
 2.39.5
 
