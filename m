@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CCDAC88D6
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2554AC88C3
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:22:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtyr-0005w2-2W; Fri, 30 May 2025 03:16:41 -0400
+	id 1uKtxw-00045C-Mn; Fri, 30 May 2025 03:15:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtx9-0003Ar-DD
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:57 -0400
+ id 1uKtxA-0003Bt-Nk
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtx7-00070h-QP
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:55 -0400
+ id 1uKtx9-00070t-6Z
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589292;
+ s=mimecast20190719; t=1748589294;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MAEXlDz/nyqiodlRnx4Z6LTprHwVep0Eypq0CTqZZG0=;
- b=F2FDS6EkvDTc/W8CqO2QKy/H5AKuSAijof8euiV7YNmSGeE8uxj2vULOHCsfkEi+hTgJTp
- 0Xs96a4WrWPqrUGiKAzONoLIJdxyB/e7C2uLoLBpEJlwFOuxvDgW1Mw9hEzwkjjZ95Ko/h
- OnxfHeMZJdMXQf6irLt5ZpwwU6DLnRI=
+ bh=q5KwiWwDCABdi5Dx/KPC7sBiQWwz9fnlUmiiw8lL6j4=;
+ b=eifJZEIAXiLAd1YZ6zEjY4Dm83U+7vT8RYCHrHjy+RaAbP/vwtFVMoDrIJA/AK4hM6E+MN
+ F1PSniFO+9aKMlqxgipyULJrZ97ONGr+/jMLSIQSSg2isuxAmeI9PKh/i8lVU9021htrek
+ i+bHo+sM/6KonXYI+jIH1LpLwFV90ig=
 Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
  [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-jGEphESwPLmA1OQZd9sq-A-1; Fri, 30 May 2025 03:14:51 -0400
-X-MC-Unique: jGEphESwPLmA1OQZd9sq-A-1
-X-Mimecast-MFC-AGG-ID: jGEphESwPLmA1OQZd9sq-A_1748589290
+ us-mta-518-jfVxP3toMJaqV56bMC87jg-1; Fri, 30 May 2025 03:14:53 -0400
+X-MC-Unique: jfVxP3toMJaqV56bMC87jg-1
+X-Mimecast-MFC-AGG-ID: jfVxP3toMJaqV56bMC87jg_1748589292
 Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-6044cb24c07so1766885a12.2
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:51 -0700 (PDT)
+ 4fb4d7f45d1cf-6045c7d93edso1359574a12.1
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589290; x=1749194090;
+ d=1e100.net; s=20230601; t=1748589292; x=1749194092;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MAEXlDz/nyqiodlRnx4Z6LTprHwVep0Eypq0CTqZZG0=;
- b=kp6+/LUhxx/EpJZHLS3zC0aVRM6v3kC06Et+HrkaP0jSCvA6lNHHnDGQGS27KHLUtJ
- E8MAc3yPBPxrCUEcICWqPsbYieFe1s++6J3s8QT+N7jK05w46teOUkZnC2MQgu1R5CO7
- JMWAqLaig59dBByYw37iQQInLovadEZCPUqaSaO2bEF45nIYzwXGEsyYmqlt0jeoSaJ5
- +MYAGR1N+aqQdRbWLuJJ7Mtvk8YNsqKsMi8CyuVqDB67dGTy/0xNzw75lNv7vG50i0nc
- aZe61RCZPJTe83RB+FZ5guxInlsqmk4PSk9Dugnc7Da1is79C8ALOelrxoXGnOdwOHpz
- EBAg==
-X-Gm-Message-State: AOJu0YwVbrumDjohYB9ZgCISnJ+6BZGrIcVOFy0fc/nsLAnxDf4+4sg9
- so1yh1hmW6gdNxdOuEa6R2feqlfTErjyexgFbKijpZknTISkjZ7tZg2EFraR5cYMsZXDmU3TWUS
- PYm9O4oy7DT+QtHqLeoMIrrSB34uLdGnSWiNzk6u/cHY93F75XwmJVYmrTBMXetzmZ4/HWiwaGl
- x9hkcRXN88C8XRpEjEAYtkocy54ZyPNri0UOMJ0E+n
-X-Gm-Gg: ASbGncuCm+5oRzN/5bH15lvYAEiIkJQpvOn5ORk9Nbfx1Zq2GZO6RaTdvzDNqSziiRj
- hhBJyrmx9c+EwLzbUBRSH6aLMIJeZsNdW20d6CLz0dN0aDTO/XfhSRkl54Ya5aa0Wnklgw2gES7
- 5x+szaY18YS2gQIeBc0p+k7FjfeEKAp8jaiUVFedmf2YbUTrB3S88x8n/2mPwfYU0Rby5+8ZuWB
- U7k1AHRcXpeLMd7ExMoqeDR3VaZVFQfrX3QuAFTSIThIuHsn1dYwWIUQfPfvbTqhnmdp2TBq2AU
- y5wItFjAdX5imw==
-X-Received: by 2002:aa7:d901:0:b0:605:7f67:5148 with SMTP id
- 4fb4d7f45d1cf-6057f675189mr737422a12.28.1748589289892; 
- Fri, 30 May 2025 00:14:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE1G/T5/jflLfxnHWN5OvFdkllSxpUwgLtSaZ7oXLkjFreKJ+JUQ4P4Yytm5Hsmtwg+HnOufg==
-X-Received: by 2002:aa7:d901:0:b0:605:7f67:5148 with SMTP id
- 4fb4d7f45d1cf-6057f675189mr737397a12.28.1748589289465; 
- Fri, 30 May 2025 00:14:49 -0700 (PDT)
+ bh=q5KwiWwDCABdi5Dx/KPC7sBiQWwz9fnlUmiiw8lL6j4=;
+ b=TXBVSzkpuTcsmS7y9flfT+EHAeiWkuJuqI61MuvWZQeVxZpGEnRh/kr6E+psoZ/70h
+ oVVD94HJS66VjSLcUe9lIJYwolwGogoHTR2oiQDgwDV4Wx/T9J/Wk9FcCRIReNDgxgXH
+ gmJoTE3QlhubXsCF3r3eW460G8AzX5aXCMVZ1/hQyWiNhnVOOGyJneX3RegvlfJNK5c7
+ P/AX4E044+AuTkYX3lD9tYFdtKzv9YpJP16rEQcxHlYtZkEwzOV7QjbFsl2O7Sw8HN8d
+ tvvxKrA5V0qbBTwFL7hxSN/3Ds3QB2bFLpYPfqo9X11kaVo8Z21Onc5DGVLxZ2q6OeE0
+ sb0w==
+X-Gm-Message-State: AOJu0YwwkzrsEBAnA/Cxcyus4v4Feb92gTALka0vz5KZTEc5qgbZ/m0M
+ yCA81D+EGLvElQJ/hlY6DBP60e6lxANCdXgKYjpYMFozAXsVjZM9yXlRjkSAQsS+Oue61nN6+kp
+ I4DzD1ITgkqqDaCGyfS5L9xvQAtGoQXbTKVbH4xT1Ma6bBAUB2drL+as2dsbUwPLwm91VV7n+zv
+ 9bhr8KWbWYEyAvdyO2kqYSvjMFfUvh1MRd7NLmBVSP
+X-Gm-Gg: ASbGnct/9kMqmOYRYwCinhklM1xMAHIuaqnwAiBoMn6PNKIgz4l3/idIx8jJV1VdfgO
+ 8NqLxmUtHMSElGfcgzwJIMRYV8NmfsoHVhDlC3bTM/ATslB4kN+kma17cE55KOdIjE0hA1XcwkG
+ dPimW+9JHBNAhPRF+a/fbnscZfYAOMQGz4qjZ/A5+7JNxq5PJdTp6Lba5WiyzKzuSxlMlcmoE3S
+ hxygqj2lKJaEIxx29HIKv7p6UkIN/RYwLDURfc4pWp2YCmrKcO6b1G6CghTncUYda4nvQ4BfAUC
+ 6UOa9QEYEB5mPw==
+X-Received: by 2002:a17:907:9285:b0:ad8:a41a:3cbf with SMTP id
+ a640c23a62f3a-adb32264ce0mr191449966b.13.1748589291810; 
+ Fri, 30 May 2025 00:14:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxLU5H4Ouye0SPQSlV0eKkR3lY7REBT3lkarEU8Dxg9bA+IKixbZjRN5wR3N08wJkWtIajRQ==
+X-Received: by 2002:a17:907:9285:b0:ad8:a41a:3cbf with SMTP id
+ a640c23a62f3a-adb32264ce0mr191447566b.13.1748589291307; 
+ Fri, 30 May 2025 00:14:51 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60566c5b6e9sm1198971a12.23.2025.05.30.00.14.47
+ a640c23a62f3a-ada5e2bf051sm273882566b.122.2025.05.30.00.14.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:14:47 -0700 (PDT)
+ Fri, 30 May 2025 00:14:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 47/77] i386/tdx: Set kvm_readonly_mem_enabled to false for TDX
- VM
-Date: Fri, 30 May 2025 09:12:17 +0200
-Message-ID: <20250530071250.2050910-48-pbonzini@redhat.com>
+Subject: [PULL 48/77] i386/tdx: Disable SMM for TDX VMs
+Date: Fri, 30 May 2025 09:12:18 +0200
+Message-ID: <20250530071250.2050910-49-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -110,41 +111,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-TDX only supports readonly for shared memory but not for private memory.
+TDX doesn't support SMM and VMM cannot emulate SMM for TDX VMs because
+VMM cannot manipulate TDX VM's memory.
 
-In the view of QEMU, it has no idea whether a memslot is used as shared
-memory of private. Thus just mark kvm_readonly_mem_enabled to false to
-TDX VM for simplicity.
+Disable SMM for TDX VMs and error out if user requests to enable SMM.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-36-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-37-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
  target/i386/kvm/tdx.c | 9 +++++++++
  1 file changed, 9 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index accaefb4011..344e560b4b8 100644
+index 344e560b4b8..87c5bf04960 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -384,6 +384,15 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-         return -EOPNOTSUPP;
-     }
+@@ -367,11 +367,20 @@ static Notifier tdx_machine_done_notify = {
  
-+    /*
-+     * Set kvm_readonly_mem_allowed to false, because TDX only supports readonly
-+     * memory for shared memory but not for private memory. Besides, whether a
-+     * memslot is private or shared is not determined by QEMU.
-+     *
-+     * Thus, just mark readonly memory not supported for simplicity.
-+     */
-+    kvm_readonly_mem_allowed = false;
+ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ {
++    MachineState *ms = MACHINE(qdev_get_machine());
++    X86MachineState *x86ms = X86_MACHINE(ms);
+     TdxGuest *tdx = TDX_GUEST(cgs);
+     int r = 0;
+ 
+     kvm_mark_guest_state_protected();
+ 
++    if (x86ms->smm == ON_OFF_AUTO_AUTO) {
++        x86ms->smm = ON_OFF_AUTO_OFF;
++    } else if (x86ms->smm == ON_OFF_AUTO_ON) {
++        error_setg(errp, "TDX VM doesn't support SMM");
++        return -EINVAL;
++    }
 +
-     qemu_add_machine_init_done_notifier(&tdx_machine_done_notify);
- 
-     tdx_guest = tdx;
+     if (!tdx_caps) {
+         r = get_tdx_capabilities(errp);
+         if (r) {
 -- 
 2.49.0
 
