@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4756AC88BA
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4E4AC88E0
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:26:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtyq-0005lF-Rg; Fri, 30 May 2025 03:16:40 -0400
+	id 1uKu0I-0007yb-2q; Fri, 30 May 2025 03:18:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtxM-0003Ur-Du
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uKtxP-0003b9-LV
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtxK-0007Cy-8W
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:07 -0400
+ id 1uKtxN-0007DO-Bz
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589305;
+ s=mimecast20190719; t=1748589308;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=U7M87aC0AY1SYkZv1rKx3sSxTQzGh6ckfYlzcvYgk4I=;
- b=PN2jMUygRwgBaSEpDkwtEPfLNm3wP4FF2CwXQFEAUIVQnT8YSvqFtGMC+WSYLwJpIO3W6X
- y5YXltP++idWR7pawe4uGd6a1eKtFM/F2rl9jDVXFMk24DDwLHsLVVkRwTVgWjwssdRl6J
- WSPuFSxlhfBiW6b+wit9pURLGY6Y7tc=
+ bh=IUwkvJnnoJf5EHLcKjTdm0AouYHJQp5bSzHJz7cc/Fw=;
+ b=EvEOHUn9Cb4de1X9yntigKYg+N3PuiNSB6Cr2OiGcQHXUMN5aGOopS2/ykPy1yGLLHIgiJ
+ VsPd/bIC7PyqBc8xInI1wSNyVoCTpdOX0H3hQMOh48ufNRfd3It4yVQM06dgytJiO5gDY3
+ 6XcgqSjzBeTJ0+gBJEsDFz6bUzLo4C0=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-OJrGX2VgPp65i-wtMNcbpQ-1; Fri, 30 May 2025 03:15:04 -0400
-X-MC-Unique: OJrGX2VgPp65i-wtMNcbpQ-1
-X-Mimecast-MFC-AGG-ID: OJrGX2VgPp65i-wtMNcbpQ_1748589303
+ us-mta-473-vO3q-LCKOcSyZ5m3IaMdzw-1; Fri, 30 May 2025 03:15:07 -0400
+X-MC-Unique: vO3q-LCKOcSyZ5m3IaMdzw-1
+X-Mimecast-MFC-AGG-ID: vO3q-LCKOcSyZ5m3IaMdzw_1748589306
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ad88ac202c0so142542066b.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:15:04 -0700 (PDT)
+ a640c23a62f3a-ad8a2dc92ddso124165366b.1
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:15:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589302; x=1749194102;
+ d=1e100.net; s=20230601; t=1748589305; x=1749194105;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U7M87aC0AY1SYkZv1rKx3sSxTQzGh6ckfYlzcvYgk4I=;
- b=QdJXQQThq21YGus51OPjvOzFT8VQ80GSiYzj/LLRnT9+QaBCBsKMm6DPTI6XGQ7od4
- a2yf9mTikEYC6x2RJsNgFsLhsCC825TR/a0ZI4MwPioV+1vjg4B6R8LdRuYQcq+JFeoj
- wLtpXJw/ugMx969KKiXLEYqyCFgscHR4/VA/rZDIPkGlk4hbpgGjiUW8VHTXd64HUAz1
- 6ztfMLT4w65saBezqqOM10TqQUWOpaylXZPl76siz9sdV6EJZlWZSbdhkqwrAtk5C1ty
- P9S6TIKJOud1Z7WPD72gUydcDY2+NFkoccnZL9ISQLoHUcGoBrU6VRB2Nv6jYCZGKmiB
- L3hg==
-X-Gm-Message-State: AOJu0Yy3m1j1OcuROV/FLKfLp3rhirN4fbtmvFGwIGb3eu7jnqwGJWH3
- gJI2rKTythrT6SjeeBvpBKvvUAc6MipSexGYpAsLnHIX2xlrEbzp3LTNm/a5vNOBzCf6oK3ZL0L
- NN9Uj55PnruksqwDsjZz97zFDzidmZctJ6aeJ/z9VVXhSCzboQyka8Db1nRMTpaTK6zOPTa1cHR
- T3wvzMuHZG2QMDfepHp5lP3BTtXRxhyL1sqvQx5atQ
-X-Gm-Gg: ASbGncv5U6QdC+K1CiNxtnJDZuRkJa2diuzfqc8HwKs97CVm5X+crO8hr5KBeC2VX3v
- stjyTUYlAo7/kbjZh/qBTzJWZYR2escr3HLY3Dob8ilkQ52wMV+QuOZhrJe2WBY1VTcaIuWImbW
- Pc45m6UpIaBRieDh+XwA9FJutUVxwZR7iGjmswUg4Ny8a2XmlKp+66J+G4k6p07qFqsXIsb5M4Y
- O0BDe3cy8z0SVEJiXU7r9xupHPfYCALXgJ1pM1a5XcKt/V5fwMG2UG5q+Cjy+gF+Hc2kMGltYwC
- QES5OgfZD6UJwA==
-X-Received: by 2002:a17:907:7e8a:b0:adb:2f9b:e16f with SMTP id
- a640c23a62f3a-adb3295e9a5mr214291366b.16.1748589302264; 
- Fri, 30 May 2025 00:15:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxDAd/Mj5U434BVHo5LDlKzTjfnahRzB3HpbbqXCFdlqza4INEOV3h9Y4xFqXhmsTEMMDwbQ==
-X-Received: by 2002:a17:907:7e8a:b0:adb:2f9b:e16f with SMTP id
- a640c23a62f3a-adb3295e9a5mr214288566b.16.1748589301796; 
- Fri, 30 May 2025 00:15:01 -0700 (PDT)
+ bh=IUwkvJnnoJf5EHLcKjTdm0AouYHJQp5bSzHJz7cc/Fw=;
+ b=ATjepQI6Hml2+FmP6mGEdLjC2+Pd/qOUsNVDN+qd6Rv9HM99agICdCKazptBzD1RWC
+ TswRUKBhFcmLsrhd1chF9NBLIF7KqSN1VaaiS9EtXJshi7R+IdLmuoBeKX7mXd/EAQbr
+ Dtfj6wQUjflfuhCqM5/qxD2+0w3jOksMvqKkMJpR2ZG+Xg+HOFRED/S1VyX/1jgLqGOq
+ Q0mXvsXPv2oBIMMo+hy76Uxr0nx2u0lnq71JjbzK1mZXjc+jXj7owGaM1SyvoZcW1OG9
+ sm6Y9fe6IRyO2kUtLdk3TiM2j2lh0dbVpLVMIQ8h0iPlVY7tfEzG6x5b1kQZxW0jUU3Y
+ hxrQ==
+X-Gm-Message-State: AOJu0YyIknjtI9OVlmqLdX+UWlP0IZxB6d8cgJtmNdobRKXPefuIfwqL
+ rFTwcNCeEt4/PO9xf0csb7iog40jWufIhLaf1X4mON7G8JBgvFaZtUzkw8K4jAQZGynh4qEpEfb
+ Y4nNESgJPpueCCeXgr8Co1b1Kt7EYvAX97CMkAfHaGEh+BJWB6uK6c6ZPcEJgTi/jezEHfVNp7s
+ BCSOig33nysRpKCTdczXTLWhrn1CktfBJgzNjFc2zA
+X-Gm-Gg: ASbGncsRbO9XufAJn621wg31ZzOK8OtRGGlkj5QeDtyiYdaKQOHiv50OdkG5kuFo4Jb
+ 4GTQzqlCJ3N4Peotnb/L5ktjxAbH1QgyGQYzb1+D4MEQxvITWh2dTJNwzUS5Ktd/OhOUXal4hfE
+ l2PsMU5iHBvtTh30rzIvfFdjP59+Q1Od5wb/X7VmacSyfPyaa0XoVtKtiVdu+WAEhFWHfeJuLDj
+ UcZJKNYoT3D7EzaJzvjGJZwIgWWDybqWLEKUyANpYOfO+VtFUTU1YzKvBFkwE55i3k7RuUl9tmB
+ 6856Ax2Ny/0bCg==
+X-Received: by 2002:a17:907:3f09:b0:ad8:8d3c:8a73 with SMTP id
+ a640c23a62f3a-adb3228d6aemr204216666b.17.1748589304834; 
+ Fri, 30 May 2025 00:15:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAz9rQscQf7LBC9xtlARklz58FsrvLFoS4YiflZDixr11eSBQMYPMai5eDSzZmM4j9ylNxUA==
+X-Received: by 2002:a17:907:3f09:b0:ad8:8d3c:8a73 with SMTP id
+ a640c23a62f3a-adb3228d6aemr204213766b.17.1748589304283; 
+ Fri, 30 May 2025 00:15:04 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada6ad6ac07sm278294566b.177.2025.05.30.00.15.00
+ a640c23a62f3a-ada5dd043d5sm275869966b.121.2025.05.30.00.15.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:15:00 -0700 (PDT)
+ Fri, 30 May 2025 00:15:02 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 52/77] i386/tdx: Only configure MSR_IA32_UCODE_REV in
- kvm_init_msrs() for TDs
-Date: Fri, 30 May 2025 09:12:22 +0200
-Message-ID: <20250530071250.2050910-53-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 53/77] i386/apic: Skip kvm_apic_put() for TDX
+Date: Fri, 30 May 2025 09:12:23 +0200
+Message-ID: <20250530071250.2050910-54-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -110,78 +109,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-For TDs, only MSR_IA32_UCODE_REV in kvm_init_msrs() can be configured
-by VMM, while the features enumerated/controlled by other MSRs except
-MSR_IA32_UCODE_REV in kvm_init_msrs() are not under control of VMM.
+KVM neithers allow writing to MSR_IA32_APICBASE for TDs, nor allow for
+KVM_SET_LAPIC[*].
 
-Only configure MSR_IA32_UCODE_REV for TDs.
+Note, KVM_GET_LAPIC is also disallowed for TDX. It is called in the path
+
+  do_kvm_cpu_synchronize_state()
+  -> kvm_arch_get_registers()
+     -> kvm_get_apic()
+
+and it's already disllowed for confidential guest through
+guest_state_protected.
+
+[*] https://lore.kernel.org/all/Z3w4Ku4Jq0CrtXne@google.com/
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-41-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-42-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c | 40 +++++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 19 deletions(-)
+ hw/i386/kvm/apic.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4fc37cc370d..90a0dac4a1e 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -3864,32 +3864,34 @@ static void kvm_init_msrs(X86CPU *cpu)
-     CPUX86State *env = &cpu->env;
+diff --git a/hw/i386/kvm/apic.c b/hw/i386/kvm/apic.c
+index 39035db0422..1be9bfe36e9 100644
+--- a/hw/i386/kvm/apic.c
++++ b/hw/i386/kvm/apic.c
+@@ -17,6 +17,7 @@
+ #include "system/hw_accel.h"
+ #include "system/kvm.h"
+ #include "kvm/kvm_i386.h"
++#include "kvm/tdx.h"
  
-     kvm_msr_buf_reset(cpu);
--    if (has_msr_arch_capabs) {
--        kvm_msr_entry_add(cpu, MSR_IA32_ARCH_CAPABILITIES,
--                          env->features[FEAT_ARCH_CAPABILITIES]);
--    }
+ static inline void kvm_apic_set_reg(struct kvm_lapic_state *kapic,
+                                     int reg_id, uint32_t val)
+@@ -141,6 +142,10 @@ static void kvm_apic_put(CPUState *cs, run_on_cpu_data data)
+     struct kvm_lapic_state kapic;
+     int ret;
  
--    if (has_msr_core_capabs) {
--        kvm_msr_entry_add(cpu, MSR_IA32_CORE_CAPABILITY,
--                          env->features[FEAT_CORE_CAPABILITY]);
--    }
-+    if (!is_tdx_vm()) {
-+        if (has_msr_arch_capabs) {
-+            kvm_msr_entry_add(cpu, MSR_IA32_ARCH_CAPABILITIES,
-+                                env->features[FEAT_ARCH_CAPABILITIES]);
-+        }
- 
--    if (has_msr_perf_capabs && cpu->enable_pmu) {
--        kvm_msr_entry_add_perf(cpu, env->features);
-+        if (has_msr_core_capabs) {
-+            kvm_msr_entry_add(cpu, MSR_IA32_CORE_CAPABILITY,
-+                                env->features[FEAT_CORE_CAPABILITY]);
-+        }
++    if (is_tdx_vm()) {
++        return;
++    }
 +
-+        if (has_msr_perf_capabs && cpu->enable_pmu) {
-+            kvm_msr_entry_add_perf(cpu, env->features);
-+        }
-+
-+        /*
-+         * Older kernels do not include VMX MSRs in KVM_GET_MSR_INDEX_LIST, but
-+         * all kernels with MSR features should have them.
-+         */
-+        if (kvm_feature_msrs && cpu_has_vmx(env)) {
-+            kvm_msr_entry_add_vmx(cpu, env->features);
-+        }
-     }
- 
-     if (has_msr_ucode_rev) {
-         kvm_msr_entry_add(cpu, MSR_IA32_UCODE_REV, cpu->ucode_rev);
-     }
--
--    /*
--     * Older kernels do not include VMX MSRs in KVM_GET_MSR_INDEX_LIST, but
--     * all kernels with MSR features should have them.
--     */
--    if (kvm_feature_msrs && cpu_has_vmx(env)) {
--        kvm_msr_entry_add_vmx(cpu, env->features);
--    }
--
-     assert(kvm_buf_set_msrs(cpu) == 0);
- }
+     kvm_put_apicbase(s->cpu, s->apicbase);
+     kvm_put_apic_state(s, &kapic);
  
 -- 
 2.49.0
