@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A45AC89AC
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 708D0AC89AA
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:05:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKuiM-0002W7-JW; Fri, 30 May 2025 04:03:44 -0400
+	id 1uKuiA-0002UE-OJ; Fri, 30 May 2025 04:03:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKui8-0002Ug-FZ
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uKui5-0002Ry-G1
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKui6-0004am-S5
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:28 -0400
+ id 1uKui3-0004ZI-So
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748592206;
+ s=mimecast20190719; t=1748592202;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ucBnDbok7v6Mu7KPseGvFTjV3duwh5RlIILFahRdtRA=;
- b=VHNz+WniFEagXQB2cLfCCroUCFHgByqhLhcAkKTmgs21oVfDvRTPw7/cDk/9vx47Wwhmbg
- xGWHHJtq3FyXwxdQo4VrArBNgEUf2IYGf4zEDgg61TlHh95vPhUcOy/ySFRezjSGXI/1h6
- kJnG7zfqcZm+j/AkTlot9jyA+QsVjwQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XCq8tY2fAXF+N+KSLu0bH/nomQD4+3xw+ZZePK8BKis=;
+ b=bau0pGnRHB/9f4tdskmoA8en18Nvxb7qH/xvKBNqNg2g2wtiT+cDGKsDaCTKk/WwAKcLaQ
+ C5/X2k2nZBoA6M5NxOkNbAdkHKXjUMG1hCN9+8RUC61AgRjtbrEbJO7E0aQoTO3vbuTnJt
+ vkrjRccs6TFcea1T6qQ7DHevHLnazmw=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-uFPu5UrRM6yVn8KMI1MiNw-1; Fri, 30 May 2025 04:03:20 -0400
-X-MC-Unique: uFPu5UrRM6yVn8KMI1MiNw-1
-X-Mimecast-MFC-AGG-ID: uFPu5UrRM6yVn8KMI1MiNw_1748592199
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ad56c5412f2so153907066b.1
+ us-mta-358-zLbCjBSPP2qW_n44XIdVlg-1; Fri, 30 May 2025 04:03:20 -0400
+X-MC-Unique: zLbCjBSPP2qW_n44XIdVlg-1
+X-Mimecast-MFC-AGG-ID: zLbCjBSPP2qW_n44XIdVlg_1748592200
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ac3e0c1336dso108176566b.3
  for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748592196; x=1749196996;
+ d=1e100.net; s=20230601; t=1748592199; x=1749196999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ucBnDbok7v6Mu7KPseGvFTjV3duwh5RlIILFahRdtRA=;
- b=OfnkbbSDpO0vOQS5kTQjYleIioiAVCraGY0MjqG7569uxn6kXwuINwAFOIUoGSzwea
- MM2tPHbDJ6ZW0q73UvilstjDKhZRFk35vdYtvOYUsMHihfw198OpCm9eTM7e1dnSdQ8Z
- 9Zhw4stWx7OoRklQLFdmSLcx2sau2vAsxwSkZyjKGFG9EjPdsjCcUEEmaKxq3n257JZE
- sQJ8VTIeMgobVxjgfYfQ0ZhnY975Uk9cjcD3lVA78WbM1DfWsHVPuiS+ceGXukob7i+/
- ruzHmIxFXPfIVJ66dpcwsBYTRMGSe0Fbez0RTQqyTOTm97kdT5qq9lswMwYPxEP6ViAT
- msEA==
-X-Gm-Message-State: AOJu0YxkabdetOCfZ+sy5F4VcLmsX28yy8otsbI1f9ZX0RTzH8KPKp16
- HnQGLyy9Yq58TNIvwZ3LjjHT6vSVmcQT15xG3FCkB6l8GjaHZogZrAl0jwCEihqpxSoX3BNdPq4
- EvIEFGIpUdwpcmZT6sfUb5fzZO4BGJbZ0WEwx1ytyLigBOD2ca+iivHQQGItYcGwnIOT03qBYLn
- SWBCNDirszzUQRz4r3Qa+jykC7nDa+chO8eldB3zAf
-X-Gm-Gg: ASbGncsnBhWFS5lDgRSCqk6doTCsaq0jjcJCVfFuendYZr920JcfCd+6xtajhQkgZTw
- z43mrEU4E5+lvMXASgG89OQd+FKqXuAAODyfg2eydtZf6OgZ+7g1Hje7Y8F3NrU30FFsBbDPjj7
- Shohi+pWe6z4/kZ2cwnElrD1DWS1IgXxcDNwhRQsEAhcZ+bbuo5GsK6kjNaVIWppPP8L/qKkfRP
- 03sbGaPu8RzYvzTaBsX6UM7CrQKRs/TH7a117h0MiPkv5fTLKFLMu/HKJCddHzwEGqZzvLsofW8
- XEwlDPz8fRrF+OxtGj9Qxzn2
-X-Received: by 2002:a17:907:3d90:b0:ad8:9257:571c with SMTP id
- a640c23a62f3a-adb36b4cdd9mr134316966b.20.1748592196338; 
- Fri, 30 May 2025 01:03:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEoaUH0pu+T1ZgUEPTJlRucO+jfglmnp6UDpzApsFnlT+8QhhfYXnmbuNXg/a34e/1wNM6Fhg==
-X-Received: by 2002:a17:907:3d90:b0:ad8:9257:571c with SMTP id
- a640c23a62f3a-adb36b4cdd9mr134313666b.20.1748592195840; 
- Fri, 30 May 2025 01:03:15 -0700 (PDT)
+ bh=XCq8tY2fAXF+N+KSLu0bH/nomQD4+3xw+ZZePK8BKis=;
+ b=RzQY+P7BCni4UkteUGhevwM7tx0/aADuyuXd6KKovmbKXx1P78HBJOM3lJAmOyH27A
+ 1UEaZspHqKGRtu9A4uSkMyHtp8I4spSusN8Vjtz8gKnfDrKkfdTLtBFOxiwQNb7HX1L7
+ W+2qb27pgFX7oMdouhe1SrtiOqg6gPPe9sDJC0OSQNpfd4VuFeFTphpYrdTkKBsUyDqW
+ /rQxrKkHGAK/Dgbh6xlI5o7qUGwxBoipsSR5ZqerjKTwgmodlmUPeD7IxsBCkn1uNYto
+ d74TTNiD239sOVaBgZl4PyuHR5GrBUzpl6lztbxGzC3lRcb6TyTnQgIChYeIcf3pL/Bs
+ kKmg==
+X-Gm-Message-State: AOJu0YxYsC/rX0DGJ2QwSbad36lWUjIFtJleWLL54WYL4J2w6fIs8ECj
+ Y2T7rDzT1sg//Fj/gDh/BYTfkEzqO7cQGxG03dganhGqGwxptMnH58vPFGYRT+RCFH/suSnYknh
+ pittBZCY8KXJpBRG510PRKXVYBJ7E+LBZhpDP0rRt/fONQor4aWwkHa+lj6xyQ+cVQulvynqtYP
+ 24AY9eb7VwYyWUNAEaIodimKUxDKx9cHSizeJwxFJJ
+X-Gm-Gg: ASbGnctUI3nzmQdIMusxcKp5sj07XBrUsHUpDnwcvb7WsBvJcB4l27p7BGouqKLju7G
+ TMuc7Fus1221rN8ojmt4wy2UhE8+hzO88qOsLhUvPOkWi7sG4xg5y850b4vVHL4vMFPWWKjJsNK
+ 9kA0D48FguhXf4Q9+qZQbR/fkMhikfK6a8o8OnP4wPMSVzei3UFMtt+4rLgL8iNYoz3AQjU/gy9
+ NbKL9unWATt8fld2Vm7PQJqDgyH8U5wYYBe7hlftZjEVvgRTh/C3Qw8899gGYYgvuS+vt6+pX/A
+ lK3pBB93uZ3sqQ==
+X-Received: by 2002:a17:907:3fa1:b0:ad8:8efe:3205 with SMTP id
+ a640c23a62f3a-adb36c28fccmr117420666b.55.1748592199309; 
+ Fri, 30 May 2025 01:03:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEEQo5YG2tBnLVZRsKJ1asxjNl5WUXpmCn1//UgZx80NcLLRq98xU2Qn9nIuErLvCzhcSS9LA==
+X-Received: by 2002:a17:907:3fa1:b0:ad8:8efe:3205 with SMTP id
+ a640c23a62f3a-adb36c28fccmr117416966b.55.1748592198752; 
+ Fri, 30 May 2025 01:03:18 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-adb32e347fasm111858866b.168.2025.05.30.01.03.14
+ a640c23a62f3a-ada5d82d6fdsm282107766b.49.2025.05.30.01.03.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 01:03:14 -0700 (PDT)
+ Fri, 30 May 2025 01:03:16 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 03/14] util/error: expose Error definition to Rust code
-Date: Fri, 30 May 2025 10:02:55 +0200
-Message-ID: <20250530080307.2055502-4-pbonzini@redhat.com>
+Subject: [PATCH 04/14] util/error: allow non-NUL-terminated err->src
+Date: Fri, 30 May 2025 10:02:56 +0200
+Message-ID: <20250530080307.2055502-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530080307.2055502-1-pbonzini@redhat.com>
 References: <20250530080307.2055502-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -106,82 +106,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is used to preserve the file and line in a roundtrip from
-C Error to Rust and back to C.
+Rust makes the current file available as a statically-allocated string,
+but without a NUL terminator.  Allow this by storing an optional maximum
+length in the Error.
+
+Note that for portability I am not relying on fprintf's precision
+specifier not accessing memory beyond what will be printed.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qapi/error-internal.h | 26 ++++++++++++++++++++++++++
- rust/wrapper.h                |  1 +
- util/error.c                  | 10 +---------
- 3 files changed, 28 insertions(+), 9 deletions(-)
- create mode 100644 include/qapi/error-internal.h
+ include/qapi/error-internal.h | 1 +
+ util/error.c                  | 5 +++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/include/qapi/error-internal.h b/include/qapi/error-internal.h
-new file mode 100644
-index 00000000000..d5c3904adec
---- /dev/null
+index d5c3904adec..f5eb8ad2379 100644
+--- a/include/qapi/error-internal.h
 +++ b/include/qapi/error-internal.h
-@@ -0,0 +1,26 @@
-+/*
-+ * QEMU Error Objects - struct definition
-+ *
-+ * Copyright IBM, Corp. 2011
-+ * Copyright (C) 2011-2015 Red Hat, Inc.
-+ *
-+ * Authors:
-+ *  Anthony Liguori   <aliguori@us.ibm.com>
-+ *  Markus Armbruster <armbru@redhat.com>,
-+ *
-+ * This work is licensed under the terms of the GNU LGPL, version 2.  See
-+ * the COPYING.LIB file in the top-level directory.
-+ */
-+
-+#ifndef QAPI_ERROR_INTERNAL_H
-+
-+struct Error
-+{
-+    char *msg;
-+    ErrorClass err_class;
-+    const char *src, *func;
-+    int line;
-+    GString *hint;
-+};
-+
-+#endif
-diff --git a/rust/wrapper.h b/rust/wrapper.h
-index beddd9aab2f..6060d3ba1ab 100644
---- a/rust/wrapper.h
-+++ b/rust/wrapper.h
-@@ -60,6 +60,7 @@ typedef enum memory_order {
- #include "hw/qdev-properties-system.h"
- #include "hw/irq.h"
- #include "qapi/error.h"
-+#include "qapi/error-internal.h"
- #include "migration/vmstate.h"
- #include "chardev/char-serial.h"
- #include "exec/memattrs.h"
+@@ -19,6 +19,7 @@ struct Error
+     char *msg;
+     ErrorClass err_class;
+     const char *src, *func;
++    int src_len;
+     int line;
+     GString *hint;
+ };
 diff --git a/util/error.c b/util/error.c
-index 673011b89e9..e5bcb7c0225 100644
+index e5bcb7c0225..3449ecc0b92 100644
 --- a/util/error.c
 +++ b/util/error.c
-@@ -15,15 +15,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
--
--struct Error
--{
--    char *msg;
--    ErrorClass err_class;
--    const char *src, *func;
--    int line;
--    GString *hint;
--};
-+#include "qapi/error-internal.h"
- 
- Error *error_abort;
- Error *error_fatal;
+@@ -24,8 +24,8 @@ Error *error_warn;
+ static void error_handle(Error **errp, Error *err)
+ {
+     if (errp == &error_abort) {
+-        fprintf(stderr, "Unexpected error in %s() at %s:%d:\n",
+-                err->func, err->src, err->line);
++        fprintf(stderr, "Unexpected error in %s() at %.*s:%d:\n",
++                err->func, err->src_len, err->src, err->line);
+         error_report("%s", error_get_pretty(err));
+         if (err->hint) {
+             error_printf("%s", err->hint->str);
+@@ -67,6 +67,7 @@ static void error_setv(Error **errp,
+         g_free(msg);
+     }
+     err->err_class = err_class;
++    err->src_len = -1;
+     err->src = src;
+     err->line = line;
+     err->func = func;
 -- 
 2.49.0
 
