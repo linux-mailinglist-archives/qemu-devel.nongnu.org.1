@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F65AC8C2F
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E82AC8C2E
 	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 12:35:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKx3l-0004jk-1Q; Fri, 30 May 2025 06:33:57 -0400
+	id 1uKx3l-0004jV-Qi; Fri, 30 May 2025 06:33:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1uKx3h-0004iw-TP
+ id 1uKx3h-0004io-Go
  for qemu-devel@nongnu.org; Fri, 30 May 2025 06:33:53 -0400
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangyuquan1236@phytium.com.cn>) id 1uKx3f-0003FV-EB
+ (envelope-from <wangyuquan1236@phytium.com.cn>) id 1uKx3c-0003F8-Q9
  for qemu-devel@nongnu.org; Fri, 30 May 2025 06:33:53 -0400
 Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwBHzRSBiTloQXbZAg--.22163S2;
- Fri, 30 May 2025 18:33:37 +0800 (CST)
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwDX3xeEiTlofHfZAg--.21870S2;
+ Fri, 30 May 2025 18:33:40 +0800 (CST)
 Received: from phytium.com.cn (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwD3iyWAiTlo1VtFAA--.9604S3;
- Fri, 30 May 2025 18:33:36 +0800 (CST)
+ by mail (Coremail) with SMTP id AQAAfwD3iyWAiTlo1VtFAA--.9604S4;
+ Fri, 30 May 2025 18:33:39 +0800 (CST)
 From: wangyuquan <wangyuquan1236@phytium.com.cn>
 To: jonathan.cameron@huawei.com, fan.ni@samsung.com, mst@redhat.com,
  marcel.apfelbaum@gmail.com
 Cc: chenbaozi@phytium.com.cn, qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
  wangyuquan <wangyuquan1236@phytium.com.cn>
-Subject: [RFC PATCH v2 0/2] cxl: Support creation of a new CXL Host Bridge
-Date: Fri, 30 May 2025 18:33:18 +0800
-Message-Id: <20250530103320.534173-1-wangyuquan1236@phytium.com.cn>
+Subject: [RFC PATCH v2 1/2] hw/pxb-cxl: Rename the pxb cxl host bridge
+Date: Fri, 30 May 2025 18:33:19 +0800
+Message-Id: <20250530103320.534173-2-wangyuquan1236@phytium.com.cn>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250530103320.534173-1-wangyuquan1236@phytium.com.cn>
+References: <20250530103320.534173-1-wangyuquan1236@phytium.com.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwD3iyWAiTlo1VtFAA--.9604S3
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAGAWg4uXAE3gAFsA
+X-CM-TRANSID: AQAAfwD3iyWAiTlo1VtFAA--.9604S4
+X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAGAWg4uXAFmgAAsA
 Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=wangyuquan
  1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoW7tw15AF47XF15tF1Uury8Krg_yoW8AFWUp3
- WqgryfAr4kKry2ya1fA3y7JF4rArs5Wa15CF1xuw10yryUtF4DJrn7Ca1YvFyUCayUZr13
- J3Z8JF1kW3WUZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+X-Coremail-Antispam: 1Uk129KBjvJXoW7ZF1UWr4ktw45Xw45WrW7Jwb_yoW8uryUpF
+ yFg3W5tr1DJFWjkw4fCa4kXFyUC3Z7GrWrZFs7Gwn2kF1xWFyYqrsFka4IvF1UJFW0kFyj
+ va1jvFW8uw4fAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
  DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
  UUUUU
-Received-SPF: pass client-ip=129.150.39.64;
+Received-SPF: pass client-ip=209.97.181.73;
  envelope-from=wangyuquan1236@phytium.com.cn;
- helo=sgoci-sdnproxy-4.icoremail.net
+ helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,50 +70,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1 -> v2:
-- Move the code of new bridge to hw/pci-host/cxl.c
-- Fix and simplify some logic on handling the different bridge types
+This renames some descriptions and definitions of pxb cxl host
+bridge, since the original names can be confusing.
 
-Background
-==========
-Currently the base CXL support for arm platforms is only on Jonathan's
-patches[1]. Some platform like SBSA-REF can be more like a real machine,
-thus the support of cxl could be meaningful. However, the pxb-cxl-host
-realization on this platform seems not satisfying their requirements[2].
+Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+---
+ hw/pci-bridge/pci_expander_bridge.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-New CXL HOST design
-===================
-This work defines a new cxl host bridge type (TYPE_CXL_HOST). This
-could be considered as a prototype of an independent cxl host bridge
-which combines gpex features (ecam, mmio windows & irq) and CXL features.
-
-The root bus path of CXL_HOST is "0001:00", that would not affect the
-original pcie host topology. In the previous, the pxb-cxl-host with
-any cxl root ports and cxl endpoint devices would occupy the BDF
-number of the original pcie domain. This new type provide a solution
-to resolve the problem.
-
-Remaining problems
-==================
-I tried to use 'object_resolve_path' but it could not work in
-'cxl_fmws_link_targets', so I used 'TYPE_DEVICE' to match that.
-
-Yuquan Wang (2):
-  hw/pxb-cxl: Rename the pxb cxl host bridge
-  pci-host/cxl: Support creation of a new CXL Host Bridge
-
- hw/cxl/cxl-host-stubs.c               |   2 +
- hw/cxl/cxl-host.c                     |  66 +++++++++---
- hw/pci-bridge/pci_expander_bridge.c   |   8 +-
- hw/pci-host/cxl.c                     | 145 ++++++++++++++++++++++++++
- hw/pci-host/meson.build               |   1 +
- include/hw/cxl/cxl.h                  |   7 +-
- include/hw/cxl/cxl_host.h             |   2 +
- include/hw/pci-host/cxl_host_bridge.h |  25 +++++
- 8 files changed, 234 insertions(+), 22 deletions(-)
- create mode 100644 hw/pci-host/cxl.c
- create mode 100644 include/hw/pci-host/cxl_host_bridge.h
-
+diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
+index 3a29dfefc2..bd637786d0 100644
+--- a/hw/pci-bridge/pci_expander_bridge.c
++++ b/hw/pci-bridge/pci_expander_bridge.c
+@@ -201,7 +201,7 @@ static void pxb_cxl_realize(DeviceState *dev, Error **errp)
+ }
+ 
+ /*
+- * Host bridge realization has no means of knowning state associated
++ * PXB Host bridge realization has no means of knowning state associated
+  * with a particular machine. As such, it is nececssary to delay
+  * final setup of the host bridge register space until later in the
+  * machine bring up.
+@@ -240,7 +240,7 @@ static void pxb_cxl_host_class_init(ObjectClass *class, const void *data)
+  * This is a device to handle the MMIO for a CXL host bridge. It does nothing
+  * else.
+  */
+-static const TypeInfo cxl_host_info = {
++static const TypeInfo pxb_cxl_host_info = {
+     .name          = TYPE_PXB_CXL_HOST,
+     .parent        = TYPE_PCI_HOST_BRIDGE,
+     .instance_size = sizeof(CXLHost),
+@@ -522,7 +522,7 @@ static void pxb_cxl_dev_class_init(ObjectClass *klass, const void *data)
+      * vendor, device, class, etc. ids are intentionally left out.
+      */
+ 
+-    dc->desc = "CXL Host Bridge";
++    dc->desc = "PXB CXL Host Bridge";
+     device_class_set_props(dc, pxb_cxl_dev_properties);
+     set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
+ 
+@@ -549,7 +549,7 @@ static void pxb_register_types(void)
+     type_register_static(&pxb_pcie_bus_info);
+     type_register_static(&pxb_cxl_bus_info);
+     type_register_static(&pxb_host_info);
+-    type_register_static(&cxl_host_info);
++    type_register_static(&pxb_cxl_host_info);
+     type_register_static(&pxb_dev_info);
+     type_register_static(&pxb_pcie_dev_info);
+     type_register_static(&pxb_cxl_dev_info);
 -- 
 2.34.1
 
