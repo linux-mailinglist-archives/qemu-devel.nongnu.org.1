@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EEBAC9242
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0312BAC926F
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:19:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Pe-0004cS-H1; Fri, 30 May 2025 11:12:50 -0400
+	id 1uL1Ph-0004lw-4o; Fri, 30 May 2025 11:12:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PZ-0004TP-MY; Fri, 30 May 2025 11:12:45 -0400
+ id 1uL1Pa-0004VI-ER; Fri, 30 May 2025 11:12:46 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PW-0002Lb-Ep; Fri, 30 May 2025 11:12:45 -0400
+ id 1uL1PX-0002M6-9j; Fri, 30 May 2025 11:12:45 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id A64E244BA0;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id ED2BD4496F;
  Fri, 30 May 2025 17:11:48 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
@@ -26,10 +26,9 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 39/48] block-backend: mark blk_io_limits_disable() as
- GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:11:16 +0200
-Message-Id: <20250530151125.955508-40-f.ebner@proxmox.com>
+Subject: [PATCH v4 40/48] block/commit: mark commit_abort() as GRAPH_UNLOCKED
+Date: Fri, 30 May 2025 17:11:17 +0200
+Message-Id: <20250530151125.955508-41-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -58,27 +57,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function blk_io_limits_disable() calls bdrv_drained_begin(), which
-must be called with the graph unlocked.
+The function commit_abort() calls bdrv_drained_begin(), which must be
+called with the graph unlocked.
+
+Also mark the JobDriver's abort() callback as GRAPH_UNLOCKED_PTR,
+because that is the callback via which commit_abort() is reached.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- include/system/block-backend-global-state.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/commit.c     | 2 +-
+ include/qemu/job.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
-index f6ec1174e6..c3849640df 100644
---- a/include/system/block-backend-global-state.h
-+++ b/include/system/block-backend-global-state.h
-@@ -109,7 +109,7 @@ int blk_probe_blocksizes(BlockBackend *blk, BlockSizes *bsz);
- int blk_probe_geometry(BlockBackend *blk, HDGeometry *geo);
+diff --git a/block/commit.c b/block/commit.c
+index 7496cf732e..0d9e1a16d7 100644
+--- a/block/commit.c
++++ b/block/commit.c
+@@ -68,7 +68,7 @@ static int commit_prepare(Job *job)
+                                   s->backing_mask_protocol);
+ }
  
- void blk_set_io_limits(BlockBackend *blk, ThrottleConfig *cfg);
--void blk_io_limits_disable(BlockBackend *blk);
-+void GRAPH_UNLOCKED blk_io_limits_disable(BlockBackend *blk);
- void blk_io_limits_enable(BlockBackend *blk, const char *group);
- void blk_io_limits_update_group(BlockBackend *blk, const char *group);
- void blk_set_force_allow_inactivate(BlockBackend *blk);
+-static void commit_abort(Job *job)
++static void GRAPH_UNLOCKED commit_abort(Job *job)
+ {
+     CommitBlockJob *s = container_of(job, CommitBlockJob, common.job);
+     BlockDriverState *top_bs = blk_bs(s->top);
+diff --git a/include/qemu/job.h b/include/qemu/job.h
+index bb8ee766ef..ead31578d3 100644
+--- a/include/qemu/job.h
++++ b/include/qemu/job.h
+@@ -283,7 +283,7 @@ struct JobDriver {
+      * All jobs will complete with a call to either .commit() or .abort() but
+      * never both.
+      */
+-    void (*abort)(Job *job);
++    void GRAPH_UNLOCKED_PTR (*abort)(Job *job);
+ 
+     /**
+      * If the callback is not NULL, it will be invoked after a call to either
 -- 
 2.39.5
 
