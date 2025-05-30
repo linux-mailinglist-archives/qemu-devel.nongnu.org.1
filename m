@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63AE6AC8E6E
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 14:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA77AC8E78
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 14:51:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKzBc-00020j-Ci; Fri, 30 May 2025 08:50:12 -0400
+	id 1uKzBc-00020s-UF; Fri, 30 May 2025 08:50:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uKzBV-000204-Bl
- for qemu-devel@nongnu.org; Fri, 30 May 2025 08:50:05 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1uKzBX-00020U-A2
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 08:50:07 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uKzBP-0001cY-RW
- for qemu-devel@nongnu.org; Fri, 30 May 2025 08:50:02 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43cec5cd73bso13367105e9.3
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 05:49:58 -0700 (PDT)
+ id 1uKzBR-0001cj-FO
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 08:50:05 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-442f4a3a4d6so12632245e9.0
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 05:49:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748609397; x=1749214197; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=iDO/Sk/FrFvktM+vX34n7V0ace0NdUC/wDYRVqTbEPk=;
- b=QybOJeDM0nMTp3P5YeIPIWvIo4ysR+cMgNIk0YexMM/ITV1RmRfYE2poaPaGm2LC5Q
- B17j4dVc98nq076spzB094snIQ1WhnKSeZbhHZoBqfjdkAuAJuLRIjLCRxZm35l8xRWq
- QiZ4fJJuyDk17ACtV5Ey1EkE5cVG2C2bbOKTP8c5YxYbxuPmdZrgB7vpv+Uf6jUR55z/
- tBIocMsKCh03uIbijoJRpXqjUOA3NMIfRolI4SlMxIkM+Yvh5RqaJX3o/ZxHnJ6/Kjfq
- EEBPFmOfElathTYDFdnoDkQIkVYbzkbpZzbsmO5JkL/pJ5srE2p6ARbBdt7s2dH5y6tl
- VJEA==
+ d=linaro.org; s=google; t=1748609398; x=1749214198; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=C0W1BuPIUQgNPV7dMFC8ap0qCTYM2rhxKm0rzwEBiDM=;
+ b=yXBq1yMWCCw8PjQV+KIzdYL9zpymXeQNsxeg2l0z5XzvUZc95OjsP4CzemE9oZwn/J
+ LfdpSZNSp7b5FH3gCMb+SLQqTWbLA8mfiJBv9wEzW2n85IRklTk2PAvyTX5TPLEvBj9c
+ ZESfcE1WFAECZGMoeS5JHp2jvhwl7afArKMpMnBDaubfrbgyY1F3bFBK48IfbCMuhj+f
+ B5L+TiOLAdgxofN+gsKvWXmVlzUYiD41jDeFH1W0rtMPwUFYjrn9SuQdYXKHFlxTmP2y
+ nYd8v8ujAaA27D2bGL6lD1yL1J8FXCalK9x62KphH65aUnMlHJJ4b+5/a+Kw5sTSXTRa
+ tlHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748609397; x=1749214197;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iDO/Sk/FrFvktM+vX34n7V0ace0NdUC/wDYRVqTbEPk=;
- b=EdlZdWKr8bsM6//UM/eU4v8HsAPhUWkReDFQ6U4Wn555o7ZwCIM8SbdcMZMR54fZz+
- MaOOBUMx3+9Dj1iYVyAWaRefR9gxz46N3btaVATRoup1E8M8RVsigf/0DrDu/UY9iaaA
- 2IU+C7SvkJ5Mbymgh3/AjzI0WB1++umWnA7hOVxpmpw4eW03NV+tGuJOk/shI0Z5QLc1
- svfy19IJaIsGgKskj0AkOpKRHHSyjElGjH2KTs79En9iLpRiqu41p1s3rQkZLfcUYuxU
- yLa6peHvAE/8kOua6Vl4ghpz5Ksy0Is8H/9+q8Pf5+M4ghWQOM8COqC90HFaD7wAIVnV
- DaLw==
-X-Gm-Message-State: AOJu0Yyaj2jh2vhJI5hU+o0RvmngPLYCgEohcKZ9AfvTFjl/lv0BMR/1
- kf0lha2URjpctr30+MaCkIys9QEwDCYJ8RB/k25QkA3KH7LJptFheI1Hzi59IX8kKfWCngArfzG
- 8Oyry
-X-Gm-Gg: ASbGncvwNv+m5YVAKJY8MU5E/6UeCjF5FpBeWbLl3FctNcCjl6HFV8eQPx8NUXWk7p7
- j7q86XF16ve8LYx4ItKyipzxccNYMZpQ/89RaWhoZsUrDY0zVrVy2E5q9ebfhiTsZrOsCbe2OCq
- fo3l+RUkI0hoj5jUxMicjMC6M7uV5miPTwwQtoGuVOH1ibpOek6CpY3fj8c24d0xmLktXHRVxJm
- IuaFbF5UAs7rUGDG3lLOErPUFw7ChtmK8jaY38L6IJqug7uReatYyh5V3S5835eF6wIuKA8CKrT
- 0A2FnBQWXxT90cNYF6utQ++OV/yZhHoN3feFbg9scZkCzxJeCr+qDDcVNw==
-X-Google-Smtp-Source: AGHT+IHHxJ8Wd01aMcAXOTTDK9gkiZQMkgpo/BEr9FrqJ8VOJ2NsSHsd1/AbS/T/N1rcP0E9YTz+wg==
-X-Received: by 2002:a05:600c:a087:b0:442:f44f:65b with SMTP id
- 5b1f17b1804b1-450d6561627mr28462475e9.32.1748609396683; 
- Fri, 30 May 2025 05:49:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748609398; x=1749214198;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=C0W1BuPIUQgNPV7dMFC8ap0qCTYM2rhxKm0rzwEBiDM=;
+ b=awHwCSAPoNMuoPMWprtMeEGR60S86af5sH/dlFHMM1hqvuAGdc8JK6azly3wft3pYr
+ A6vhisqf3BsMGIMkmJ2db6W/OjpPE4VzMAowCV8e+z4SjmK0QkhDB/xJfOQYe7h+YJ1B
+ nAX083bAw6bhueqerjcGaIMQCBef1vNOr+wi3uMBxBT2RZgzPaIv4w5BGt5WBnqgSOYt
+ WG4NFLUwCgiMkb5TjD7CP5T4hs0ekLORTFJdRUIiKa6K1+dW5yuIQaLFLm0S+7ZctqkL
+ P7PgQfRpN6gOdPrCW9P6eCxWvOCE0kkGkTyNfaNuhC+oQD7wuclmrSmOTtt0IWC1PCgs
+ x+Lg==
+X-Gm-Message-State: AOJu0YwRJQjdi57QAt29HfHC6FAKtcfd7h2K/Hlb6/EE/TMtlQVhSAsn
+ ///72wv2IJUwKZ7R1XMsJeK/iLw0iVR3jjtsB+DvOHhqFgiXhhHJYr29TvIJeBQuFUwZhZYuW39
+ Zt3J6
+X-Gm-Gg: ASbGncvvijcTc1shSU9wh8fR8WXfTWCzB2RRycI64phmXPCqO5x1If/PR35ZcVTOR0U
+ 9He4l4pkOXLpTAKGV4aM/uh9baJA5DcTPeLVx8eansOcSWNMbVLmwRIsvx4HUdYaYSO/EL+jZZT
+ t0qQRqVg94TP5PIY8lBNLWLdc8m0/khH3694m5Z9hrpss5ssni9O7lPff/JJO8my4iBCQy2Hbcd
+ cUDT0iZkXocf/jRm0ca9YGN2zp0bNCBjC+sPkYG67GFcSNMypjINIrUfE4Yn83+u0r84u5o1rIb
+ R1R5X47wVktVHhPMt4hHkVkE29L0h8vnTf46QqEYlj3XSRMyhXkO0SR5ug==
+X-Google-Smtp-Source: AGHT+IGAt5DrntpUNuLFywSCCJ9ZQKav4fMM1eK4U60IdnZKWvlq4AiuUjzpk0qta1mqBTQBlhCNuA==
+X-Received: by 2002:a05:600c:6992:b0:44a:b468:87b1 with SMTP id
+ 5b1f17b1804b1-450d6b3ed5amr28999525e9.4.1748609398361; 
+ Fri, 30 May 2025 05:49:58 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d7fb7dafsm17235195e9.25.2025.05.30.05.49.54
+ 5b1f17b1804b1-450d7fb7dafsm17235195e9.25.2025.05.30.05.49.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 05:49:55 -0700 (PDT)
+ Fri, 30 May 2025 05:49:57 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/15] target-arm queue
-Date: Fri, 30 May 2025 13:49:37 +0100
-Message-ID: <20250530124953.383687-1-peter.maydell@linaro.org>
+Subject: [PULL 01/15] hw/arm: Add GMAC devices to NPCM8XX SoC
+Date: Fri, 30 May 2025 13:49:38 +0100
+Message-ID: <20250530124953.383687-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250530124953.383687-1-peter.maydell@linaro.org>
+References: <20250530124953.383687-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,91 +96,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Hao Wu <wuhaotsh@google.com>
 
-Hi; here's a target-arm pull; mostly refactoring and other small stuff.
+The GMAC was originally created for the 8xx machine. During upstreaming
+both the GMAC and the 8XX we removed it so they would not depend on each
+other for the process, that connection should be added back in.
 
-thanks
--- PMM
+Signed-off-by: Hao Wu <wuhaotsh@google.com>
+Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+Message-id: 20250508220718.735415-2-nabihestefan@google.com
+Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ include/hw/arm/npcm8xx.h |  5 +++-
+ hw/arm/npcm8xx.c         | 54 ++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 53 insertions(+), 6 deletions(-)
 
-The following changes since commit d2e9b78162e31b1eaf20f3a4f563da82da56908d:
+diff --git a/include/hw/arm/npcm8xx.h b/include/hw/arm/npcm8xx.h
+index 3436abff998..a8377db4905 100644
+--- a/include/hw/arm/npcm8xx.h
++++ b/include/hw/arm/npcm8xx.h
+@@ -28,7 +28,8 @@
+ #include "hw/misc/npcm7xx_mft.h"
+ #include "hw/misc/npcm7xx_pwm.h"
+ #include "hw/misc/npcm7xx_rng.h"
+-#include "hw/net/npcm7xx_emc.h"
++#include "hw/net/npcm_gmac.h"
++#include "hw/net/npcm_pcs.h"
+ #include "hw/nvram/npcm7xx_otp.h"
+ #include "hw/sd/npcm7xx_sdhci.h"
+ #include "hw/timer/npcm7xx_timer.h"
+@@ -99,6 +100,8 @@ struct NPCM8xxState {
+     EHCISysBusState     ehci[2];
+     OHCISysBusState     ohci[2];
+     NPCM7xxFIUState     fiu[3];
++    NPCMGMACState       gmac[4];
++    NPCMPCSState        pcs;
+     NPCM7xxSDHCIState   mmc;
+     NPCMPSPIState       pspi;
+ };
+diff --git a/hw/arm/npcm8xx.c b/hw/arm/npcm8xx.c
+index d7ee306de7a..d14bf55cd71 100644
+--- a/hw/arm/npcm8xx.c
++++ b/hw/arm/npcm8xx.c
+@@ -67,6 +67,9 @@
+ /* SDHCI Modules */
+ #define NPCM8XX_MMC_BA          0xf0842000
+ 
++/* PCS Module */
++#define NPCM8XX_PCS_BA          0xf0780000
++
+ /* PSPI Modules */
+ #define NPCM8XX_PSPI_BA         0xf0201000
+ 
+@@ -85,6 +88,10 @@ enum NPCM8xxInterrupt {
+     NPCM8XX_ADC_IRQ             = 0,
+     NPCM8XX_PECI_IRQ            = 6,
+     NPCM8XX_KCS_HIB_IRQ         = 9,
++    NPCM8XX_GMAC1_IRQ           = 14,
++    NPCM8XX_GMAC2_IRQ,
++    NPCM8XX_GMAC3_IRQ,
++    NPCM8XX_GMAC4_IRQ,
+     NPCM8XX_MMC_IRQ             = 26,
+     NPCM8XX_PSPI_IRQ            = 28,
+     NPCM8XX_TIMER0_IRQ          = 32,   /* Timer Module 0 */
+@@ -260,6 +267,14 @@ static const hwaddr npcm8xx_smbus_addr[] = {
+     0xfff0a000,
+ };
+ 
++/* Register base address for each GMAC Module */
++static const hwaddr npcm8xx_gmac_addr[] = {
++    0xf0802000,
++    0xf0804000,
++    0xf0806000,
++    0xf0808000,
++};
++
+ /* Register base address for each USB host EHCI registers */
+ static const hwaddr npcm8xx_ehci_addr[] = {
+     0xf0828100,
+@@ -444,6 +459,11 @@ static void npcm8xx_init(Object *obj)
+         object_initialize_child(obj, "mft[*]", &s->mft[i], TYPE_NPCM7XX_MFT);
+     }
+ 
++    for (i = 0; i < ARRAY_SIZE(s->gmac); i++) {
++        object_initialize_child(obj, "gmac[*]", &s->gmac[i], TYPE_NPCM_GMAC);
++    }
++    object_initialize_child(obj, "pcs", &s->pcs, TYPE_NPCM_PCS);
++
+     object_initialize_child(obj, "mmc", &s->mmc, TYPE_NPCM7XX_SDHCI);
+     object_initialize_child(obj, "pspi", &s->pspi, TYPE_NPCM_PSPI);
+ }
+@@ -668,6 +688,35 @@ static void npcm8xx_realize(DeviceState *dev, Error **errp)
+         sysbus_connect_irq(sbd, 0, npcm8xx_irq(s, NPCM8XX_MFT0_IRQ + i));
+     }
+ 
++    /*
++     * GMAC Modules. Cannot fail.
++     */
++    QEMU_BUILD_BUG_ON(ARRAY_SIZE(npcm8xx_gmac_addr) != ARRAY_SIZE(s->gmac));
++    for (i = 0; i < ARRAY_SIZE(s->gmac); i++) {
++        SysBusDevice *sbd = SYS_BUS_DEVICE(&s->gmac[i]);
++
++        /* This is used to make sure that the NIC can create the device */
++        qemu_configure_nic_device(DEVICE(sbd), false, NULL);
++
++        /*
++         * The device exists regardless of whether it's connected to a QEMU
++         * netdev backend. So always instantiate it even if there is no
++         * backend.
++         */
++        sysbus_realize(sbd, &error_abort);
++        sysbus_mmio_map(sbd, 0, npcm8xx_gmac_addr[i]);
++        /*
++         * N.B. The values for the second argument sysbus_connect_irq are
++         * chosen to match the registration order in npcm7xx_emc_realize.
++         */
++        sysbus_connect_irq(sbd, 0, npcm8xx_irq(s, NPCM8XX_GMAC1_IRQ + i));
++    }
++    /*
++     * GMAC Physical Coding Sublayer(PCS) Module. Cannot fail.
++     */
++    sysbus_realize(SYS_BUS_DEVICE(&s->pcs), &error_abort);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->pcs), 0, NPCM8XX_PCS_BA);
++
+     /*
+      * Flash Interface Unit (FIU). Can fail if incorrect number of chip selects
+      * specified, but this is a programming error.
+@@ -741,12 +790,7 @@ static void npcm8xx_realize(DeviceState *dev, Error **errp)
+     create_unimplemented_device("npcm8xx.ahbpci",       0xf0400000,   1 * MiB);
+     create_unimplemented_device("npcm8xx.dap",          0xf0500000, 960 * KiB);
+     create_unimplemented_device("npcm8xx.mcphy",        0xf05f0000,  64 * KiB);
+-    create_unimplemented_device("npcm8xx.pcs",          0xf0780000, 256 * KiB);
+     create_unimplemented_device("npcm8xx.tsgen",        0xf07fc000,   8 * KiB);
+-    create_unimplemented_device("npcm8xx.gmac1",        0xf0802000,   8 * KiB);
+-    create_unimplemented_device("npcm8xx.gmac2",        0xf0804000,   8 * KiB);
+-    create_unimplemented_device("npcm8xx.gmac3",        0xf0806000,   8 * KiB);
+-    create_unimplemented_device("npcm8xx.gmac4",        0xf0808000,   8 * KiB);
+     create_unimplemented_device("npcm8xx.copctl",       0xf080c000,   4 * KiB);
+     create_unimplemented_device("npcm8xx.tipctl",       0xf080d000,   4 * KiB);
+     create_unimplemented_device("npcm8xx.rst",          0xf080e000,   4 * KiB);
+-- 
+2.43.0
 
-  Merge tag 'pull-qapi-2025-05-28' of https://repo.or.cz/qemu/armbru into staging (2025-05-29 08:36:01 -0400)
-
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20250530-2
-
-for you to fetch changes up to e86c1f967a323165d13bcadfad4b92d0d34cdb08:
-
-  hw/block: Drop unused nand.c (2025-05-29 17:45:13 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * hw/arm: Add GMAC devices to NPCM8XX SoC
- * hw/arm: Add missing psci_conduit to NPCM8XX SoC boot info
- * docs/interop: convert text files to restructuredText
- * target/arm: Some minor refactorings
- * tests/functional: Add a test for the Stellaris arm machines
- * hw/block: Drop unused nand.c
-
-----------------------------------------------------------------
-Guenter Roeck (1):
-      hw/arm: Add missing psci_conduit to NPCM8XX SoC boot info
-
-Hao Wu (1):
-      hw/arm: Add GMAC devices to NPCM8XX SoC
-
-Nabih Estefan (1):
-      tests/qtest: Migrate GMAC test from 7xx to 8xx
-
-Peter Maydell (1):
-      hw/block: Drop unused nand.c
-
-Philippe Mathieu-Daudé (9):
-      target/arm/tcg-stubs: compile file once (system)
-      target/arm/hvf_arm: Avoid using poisoned CONFIG_HVF definition
-      target/arm: Only link with zlib when TCG is enabled
-      target/arm/cpregs: Include missing 'target/arm/cpu.h' header
-      hw/arm/boot: Include missing 'system/memory.h' header
-      target/arm/cpu-features: Include missing 'cpu.h' header
-      target/arm/qmp: Include missing 'cpu.h' header
-      target/arm/kvm: Include missing 'cpu-qom.h' header
-      target/arm/hvf: Include missing 'cpu-qom.h' header
-
-Souleymane Conte (1):
-      docs/interop: convert text files to restructuredText
-
-Thomas Huth (1):
-      tests/functional: Add a test for the Stellaris arm machines
-
- MAINTAINERS                            |   4 +-
- docs/interop/bitmaps.rst               |   2 +-
- docs/interop/index.rst                 |   1 +
- docs/interop/{qcow2.txt => qcow2.rst}  | 187 +++++---
- docs/qcow2-cache.txt                   |   2 +-
- include/hw/arm/npcm8xx.h               |   5 +-
- include/hw/block/flash.h               |  18 -
- target/arm/cpregs.h                    |   1 +
- target/arm/cpu-features.h              |   1 +
- target/arm/hvf_arm.h                   |  18 +-
- target/arm/kvm_arm.h                   |   1 +
- hw/arm/boot.c                          |   1 +
- hw/arm/npcm8xx.c                       |  55 ++-
- hw/block/nand.c                        | 835 ---------------------------------
- target/arm/arm-qmp-cmds.c              |   1 +
- target/arm/hvf-stub.c                  |  20 +
- tests/qtest/npcm_gmac-test.c           |  85 +++-
- hw/arm/Kconfig                         |   1 -
- hw/block/Kconfig                       |   3 -
- hw/block/meson.build                   |   1 -
- target/arm/meson.build                 |   4 +-
- target/arm/tcg/meson.build             |   2 +
- tests/functional/meson.build           |   1 +
- tests/functional/test_arm_stellaris.py |  48 ++
- tests/qtest/meson.build                |   6 +-
- 25 files changed, 334 insertions(+), 969 deletions(-)
- rename docs/interop/{qcow2.txt => qcow2.rst} (89%)
- delete mode 100644 hw/block/nand.c
- create mode 100644 target/arm/hvf-stub.c
- create mode 100755 tests/functional/test_arm_stellaris.py
 
