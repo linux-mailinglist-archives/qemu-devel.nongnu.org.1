@@ -2,60 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C534BAC8C2D
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 12:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D14AC8C5D
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 12:46:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKx3l-0004kI-Ny; Fri, 30 May 2025 06:33:57 -0400
+	id 1uKxEj-00088J-Bi; Fri, 30 May 2025 06:45:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1uKx3i-0004jL-ST
- for qemu-devel@nongnu.org; Fri, 30 May 2025 06:33:54 -0400
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangyuquan1236@phytium.com.cn>) id 1uKx3d-0003FG-Hv
- for qemu-devel@nongnu.org; Fri, 30 May 2025 06:33:54 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwAXHaGGiTlobGMMDw--.1111S2;
- Fri, 30 May 2025 18:33:42 +0800 (CST)
-Received: from phytium.com.cn (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwD3iyWAiTlo1VtFAA--.9604S5;
- Fri, 30 May 2025 18:33:42 +0800 (CST)
-From: wangyuquan <wangyuquan1236@phytium.com.cn>
-To: jonathan.cameron@huawei.com, fan.ni@samsung.com, mst@redhat.com,
- marcel.apfelbaum@gmail.com
-Cc: chenbaozi@phytium.com.cn, qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
- Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Subject: [RFC PATCH v2 2/2] pci-host/cxl: Support creation of a new CXL Host
- Bridge
-Date: Fri, 30 May 2025 18:33:20 +0800
-Message-Id: <20250530103320.534173-3-wangyuquan1236@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250530103320.534173-1-wangyuquan1236@phytium.com.cn>
-References: <20250530103320.534173-1-wangyuquan1236@phytium.com.cn>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uKxEf-00087m-67
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 06:45:13 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uKxEd-0004RI-8U
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 06:45:12 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 6C4A212676C;
+ Fri, 30 May 2025 13:44:55 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 199F621B1FD;
+ Fri, 30 May 2025 13:44:57 +0300 (MSK)
+Message-ID: <03e1c9b2-aa67-412d-9238-de8f3a7b3c61@tls.msk.ru>
+Date: Fri, 30 May 2025 13:44:57 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwD3iyWAiTlo1VtFAA--.9604S5
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAGAWg4uXAFnAAAsG
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=wangyuquan
- 1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvAXoW3KFyDKFyfGw4DJF47Kr4kZwb_yoW8JF47to
- Waqa4UZr48Gr4fAFyvkwnak3y7CrWxKr4rXF4FkFWqk3W7Gw4DJw18Kws3Aay3GF1fJrn8
- WrWfCryak397Jr18n29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXasCq-sGcSsGvf
- J3UbIjqfuFe4nvWSU8nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_UU
- UUUUUUU==
-Received-SPF: pass client-ip=162.243.164.118;
- envelope-from=wangyuquan1236@phytium.com.cn;
- helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/9] ui: Improve scale handling
+To: Weifeng Liu <weifeng.liu.z@gmail.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Dongwon Kim <dongwon.kim@intel.com>
+References: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
+ <19542757-ecc0-4eb5-b26c-4a06f7f800c3@tls.msk.ru>
+ <0790819eab97fbc5728f583b6ec90e338c2819e0.camel@gmail.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsFNBGYpLkcBEACsajkUXU2lngbm6RyZuCljo19q/XjZTMikctzMoJnBGVSmFV66kylUghxs
+ HDQQF2YZJbnhSVt/mP6+V7gG6MKR5gYXYxLmypgu2lJdqelrtGf1XtMrobG6kuKFiD8OqV6l
+ 2M5iyOZT3ydIFOUX0WB/B9Lz9WcQ6zYO9Ohm92tiWWORCqhAnwZy4ua/nMZW3RgO7bM6GZKt
+ /SFIorK9rVqzv40D6KNnSyeWfqf4WN3EvEOozMfWrXbEqA7kvd6ShjJoe1FzCEQ71Fj9dQHL
+ DZG+44QXvN650DqEtQ4RW9ozFk3Du9u8lbrXC5cqaCIO4dx4E3zxIddqf6xFfu4Oa5cotCM6
+ /4dgxDoF9udvmC36qYta+zuDsnAXrYSrut5RBb0moez/AR8HD/cs/dS360CLMrl67dpmA+XD
+ 7KKF+6g0RH46CD4cbj9c2egfoBOc+N5XYyr+6ejzeZNf40yjMZ9SFLrcWp4yQ7cpLsSz08lk
+ a0RBKTpNWJdblviPQaLW5gair3tyJR+J1ER1UWRmKErm+Uq0VgLDBDQoFd9eqfJjCwuWZECp
+ z2JUO+zBuGoKDzrDIZH2ErdcPx3oSlVC2VYOk6H4cH1CWr9Ri8i91ClivRAyVTbs67ha295B
+ y4XnxIVaZU+jJzNgLvrXrkI1fTg4FJSQfN4W5BLCxT4sq8BDtwARAQABzSBNaWNoYWVsIFRv
+ a2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLBlAQTAQoAPhYhBJ2L4U4/Kp3XkZko8WGtPZjs3yyO
+ BQJmKS5HAhsDBQkSzAMABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGGtPZjs3yyOZSAP
+ /ibilK1gbHqEI2zR2J59Dc0tjtbByVmQ8IMh0SYU3j1jeUoku2UCgdnGKpwvLXtwZINgdl6Q
+ cEaDBRX6drHLJFAi/sdgwVgdnDxaWVJO/ZIN/uJI0Tx7+FSAk8CWSa4IWUOzPNmtrDfb4z6v
+ G36rppY8bTNKbX6nWFXuv2LXQr7g6+kKnbwv4QFpD+UFF1CrLm3byMq4ikdBXpZx030qBL61
+ b7PrfXcBLao0357kWGH6C2Zu4wBnDUJwGi68pI5rzSRAFyAQsE89sjLdR1yFoBH8NiFnAQXP
+ LA8Am9FMsC7D/bi/kwKTJdcZvzdGU1HG6tJvXLWC+nqGpJNBzRdDpjqtxNuL76vVd/JbsFMS
+ JchLN+01fNQ5FHglvkd6md7vO+ULq+r9An5hMiDoRbYVUOBN8uiYNk+qKbdgSfbhsgPURqHi
+ 1bXkgMeMasqWbGMe7iBW/YH2ePfZ6HuKLNQDCkiWZYPQZvyXHvQHjuJJ5+US81tkqM+Q6Snq
+ 0L/O/LD0qLlbinHrcx0abg06VXBoYmGICJpf/3hhWQM4f+B/5w4vpl8q0B6Osz01pBUBfYak
+ CiYCNHMWWVZkW9ZnY7FWiiPOu8iE1s5oPYqBljk3FNUk04SDKMF5TxL87I2nMBnVnvp0ZAuY
+ k9ojiLqlhaKnZ1+zwmwmPmXzFSwlyMczPUMSzsFNBGYpLkcBEAC0mxV2j5M1x7GiXqxNVyWy
+ OnlWqJkbkoyMlWFSErf+RUYlC9qVGwUihgsgEhQMg0nJiSISmU3vsNEx5j0T13pTEyWXWBdS
+ XtZpNEW1lZ2DptoGg+6unpvxd2wn+dqzJqlpr4AY3vc95q4Za/NptWtSCsyJebZ7DxCCkzET
+ tzbbnCjW1souCETrMy+G916w1gJkz4V1jLlRMEEoJHLrr1XKDdJRk/34AqXPKOzILlWRFK6s
+ zOWa80/FNQV5cvjc2eN1HsTMFY5hjG3zOZb60WqwTisJwArjQbWKF49NLHp/6MpiSXIxF/FU
+ jcVYrEk9sKHN+pERnLqIjHA8023whDWvJide7f1V9lrVcFt0zRIhZOp0IAE86E3stSJhZRhY
+ xyIAx4dpDrw7EURLOhu+IXLeEJbtW89tp2Ydm7TVAt5iqBubpHpGTWV7hwPRQX2w2MBq1hCn
+ K5Xx79omukJisbLqG5xUCR1RZBUfBlYnArssIZSOpdJ9wWMK+fl5gn54cs+yziUYU3Tgk0fJ
+ t0DzQsgfd2JkxOEzJACjJWti2Gh3szmdgdoPEJH1Og7KeqbOu2mVCJm+2PrNlzCybOZuHOV5
+ +vSarkb69qg9nU+4ZGX1m+EFLDqVUt1g0SjY6QmM5yjGBA46G3dwTEV0/u5Wh7idNT0mRg8R
+ eP/62iTL55AM6QARAQABwsF8BBgBCgAmFiEEnYvhTj8qndeRmSjxYa09mOzfLI4FAmYpLkcC
+ GwwFCRLMAwAACgkQYa09mOzfLI53ag/+ITb3WW9iqvbjDueV1ZHwUXYvebUEyQV7BFofaJbJ
+ Sr7ek46iYdV4Jdosvq1FW+mzuzrhT+QzadEfYmLKrQV4EK7oYTyQ5hcch55eX00o+hyBHqM2
+ RR/B5HGLYsuyQNv7a08dAUmmi9eAktQ29IfJi+2Y+S1okAEkWFxCUs4EE8YinCrVergB/MG5
+ S7lN3XxITIaW00faKbqGtNqij3vNxua7UenN8NHNXTkrCgA+65clqYI3MGwpqkPnXIpTLGl+
+ wBI5S540sIjhgrmWB0trjtUNxe9QcTGHoHtLeGX9QV5KgzNKoUNZsyqh++CPXHyvcN3OFJXm
+ VUNRs/O3/b1capLdrVu+LPd6Zi7KAyWUqByPkK18+kwNUZvGsAt8WuVQF5telJ6TutfO8xqT
+ FUzuTAHE+IaRU8DEnBpqv0LJ4wqqQ2MeEtodT1icXQ/5EDtM7OTH231lJCR5JxXOnWPuG6el
+ YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
+ ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
+ 3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
+In-Reply-To: <0790819eab97fbc5728f583b6ec90e338c2819e0.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,400 +108,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+Hi!
 
-This work defines a new cxl host bridge type (TYPE_CXL_HOST). This
-could be considered as a prototype of an independent cxl host bridge
-which combines gpex features (ecam, mmio windows & irq) and CHBCR
-at meanwhile.
+Thank you for your attention!
 
-The root bus path of CXL_HOST is "0001:00", that would not affect the
-original pcie host topology. In the previous, the pxb-cxl-host with
-any cxl root ports and cxl endpoint devices would occupy the BDF
-number of the original pcie domain. This new type provide a solution
-to resolve the problem.
+On 30.05.2025 09:39, Weifeng Liu wrote:
+> On Thu, 2025-05-29 at 10:23 +0300, Michael Tokarev wrote:
+>> Is there anything here which should be picked up for qemu-stable
+>> (current active branches: 7.2 and 10.0)?
+>>
+> 
+> I think the first five patches are good candidates for backporting to
+> the stable branches, as they only address bugs without altering
+> existing behavior. I was able to apply them cleanly to stable-10.0, but
+> porting them to 7.2 will require some additional effort. I'll send out
+> a new patch set once the backporting work is complete.
 
-CXLFixedWindow struct adds a new member 'target_chb' to record the
-target list of CXLHostBridge and adjusts the logic of
-'cxl_cfmws_find_device' and 'cxl_fmws_link_targets' to allow different
-types of cxl host bridge.
+Please don't, - just forget about it in 7.2.  It's been here for quite
+long already, and there was no complaints.  Let's keep it this way.
+I'll apply it to 10.0.x series though.
 
-Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
----
- hw/cxl/cxl-host-stubs.c               |   2 +
- hw/cxl/cxl-host.c                     |  66 +++++++++---
- hw/pci-host/cxl.c                     | 145 ++++++++++++++++++++++++++
- hw/pci-host/meson.build               |   1 +
- include/hw/cxl/cxl.h                  |   7 +-
- include/hw/cxl/cxl_host.h             |   2 +
- include/hw/pci-host/cxl_host_bridge.h |  25 +++++
- 7 files changed, 230 insertions(+), 18 deletions(-)
- create mode 100644 hw/pci-host/cxl.c
- create mode 100644 include/hw/pci-host/cxl_host_bridge.h
+Thank you!
 
-diff --git a/hw/cxl/cxl-host-stubs.c b/hw/cxl/cxl-host-stubs.c
-index cae4afcdde..aea94933ba 100644
---- a/hw/cxl/cxl-host-stubs.c
-+++ b/hw/cxl/cxl-host-stubs.c
-@@ -11,5 +11,7 @@
- void cxl_fmws_link_targets(CXLState *stat, Error **errp) {};
- void cxl_machine_init(Object *obj, CXLState *state) {};
- void cxl_hook_up_pxb_registers(PCIBus *bus, CXLState *state, Error **errp) {};
-+void cxl_fixed_memory_window_config(CXLState *cxl_state,
-+                        CXLFixedMemoryWindowOptions *object, Error **errp) {};
- 
- const MemoryRegionOps cfmws_ops;
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index e010163174..183bc19a4b 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -16,15 +16,17 @@
- #include "qapi/qapi-visit-machine.h"
- #include "hw/cxl/cxl.h"
- #include "hw/cxl/cxl_host.h"
-+#include "hw/irq.h"
- #include "hw/pci/pci_bus.h"
- #include "hw/pci/pci_bridge.h"
- #include "hw/pci/pci_host.h"
- #include "hw/pci/pcie_port.h"
- #include "hw/pci-bridge/pci_expander_bridge.h"
-+#include "hw/pci-host/cxl_host_bridge.h"
- 
--static void cxl_fixed_memory_window_config(CXLState *cxl_state,
--                                           CXLFixedMemoryWindowOptions *object,
--                                           Error **errp)
-+void cxl_fixed_memory_window_config(CXLState *cxl_state,
-+                                    CXLFixedMemoryWindowOptions *object,
-+                                    Error **errp)
- {
-     ERRP_GUARD();
-     g_autofree CXLFixedWindow *fw = g_malloc0(sizeof(*fw));
-@@ -83,14 +85,16 @@ void cxl_fmws_link_targets(CXLState *cxl_state, Error **errp)
-                 bool ambig;
- 
-                 o = object_resolve_path_type(fw->targets[i],
--                                             TYPE_PXB_CXL_DEV,
--                                             &ambig);
--                if (!o) {
-+                    TYPE_DEVICE, &ambig);
-+
-+                if (object_dynamic_cast(o, TYPE_PXB_CXL_DEV) ||
-+                    object_dynamic_cast(o, TYPE_CXL_HOST)) {
-+                    fw->target_hbs[i] = o;
-+                } else {
-                     error_setg(errp, "Could not resolve CXLFM target %s",
--                               fw->targets[i]);
-+                        fw->targets[i]);
-                     return;
-                 }
--                fw->target_hbs[i] = PXB_CXL_DEV(o);
-             }
-         }
-     }
-@@ -153,6 +157,7 @@ static bool cxl_hdm_find_target(uint32_t *cache_mem, hwaddr addr,
- static PCIDevice *cxl_cfmws_find_device(CXLFixedWindow *fw, hwaddr addr)
- {
-     CXLComponentState *hb_cstate, *usp_cstate;
-+    CXLHostBridge *cxlhost;
-     PCIHostState *hb;
-     CXLUpstreamPort *usp;
-     int rb_index;
-@@ -160,23 +165,50 @@ static PCIDevice *cxl_cfmws_find_device(CXLFixedWindow *fw, hwaddr addr)
-     uint8_t target;
-     bool target_found;
-     PCIDevice *rp, *d;
-+    Object *o;
- 
-     /* Address is relative to memory region. Convert to HPA */
-     addr += fw->base;
- 
-     rb_index = (addr / cxl_decode_ig(fw->enc_int_gran)) % fw->num_targets;
--    hb = PCI_HOST_BRIDGE(fw->target_hbs[rb_index]->cxl_host_bridge);
--    if (!hb || !hb->bus || !pci_bus_is_cxl(hb->bus)) {
--        return NULL;
--    }
--
--    if (cxl_get_hb_passthrough(hb)) {
--        rp = pcie_find_port_first(hb->bus);
--        if (!rp) {
-+    o = fw->target_hbs[rb_index];
-+    if (object_dynamic_cast(o, TYPE_PXB_CXL_DEV)) {
-+        hb = PCI_HOST_BRIDGE(PXB_CXL_DEV(o)->cxl_host_bridge);
-+        if (!hb || !hb->bus || !pci_bus_is_cxl(hb->bus)) {
-             return NULL;
-         }
-+
-+        if (cxl_get_hb_passthrough(hb)) {
-+            rp = pcie_find_port_first(hb->bus);
-+            if (!rp) {
-+                return NULL;
-+            }
-+        } else {
-+            hb_cstate = cxl_get_hb_cstate(hb);
-+            if (!hb_cstate) {
-+                return NULL;
-+            }
-+
-+            cache_mem = hb_cstate->crb.cache_mem_registers;
-+
-+            target_found = cxl_hdm_find_target(cache_mem, addr, &target);
-+            if (!target_found) {
-+                return NULL;
-+            }
-+
-+            rp = pcie_find_port_by_pn(hb->bus, target);
-+            if (!rp) {
-+                return NULL;
-+            }
-+        }
-     } else {
--        hb_cstate = cxl_get_hb_cstate(hb);
-+        hb = PCI_HOST_BRIDGE(o);
-+        if (!hb || !hb->bus || !pci_bus_is_cxl(hb->bus)) {
-+            return NULL;
-+        }
-+
-+        cxlhost = CXL_HOST(hb);
-+        hb_cstate = &cxlhost->cxl_cstate;
-         if (!hb_cstate) {
-             return NULL;
-         }
-diff --git a/hw/pci-host/cxl.c b/hw/pci-host/cxl.c
-new file mode 100644
-index 0000000000..8323456864
---- /dev/null
-+++ b/hw/pci-host/cxl.c
-@@ -0,0 +1,145 @@
-+#include "qemu/osdep.h"
-+#include "hw/pci/pci_bus.h"
-+#include "hw/pci-host/cxl_host_bridge.h"
-+
-+static void cxl_host_set_irq(void *opaque, int irq_num, int level)
-+{
-+    CXLHostBridge *host = opaque;
-+
-+    qemu_set_irq(host->irq[irq_num], level);
-+}
-+
-+int cxl_host_set_irq_num(CXLHostBridge *host, int index, int gsi)
-+{
-+    if (index >= CXL_HOST_NUM_IRQS) {
-+        return -EINVAL;
-+    }
-+
-+    host->irq_num[index] = gsi;
-+    return 0;
-+}
-+
-+static PCIINTxRoute cxl_host_route_intx_pin_to_irq(void *opaque, int pin)
-+{
-+    PCIINTxRoute route;
-+    CXLHostBridge *host = opaque;
-+    int gsi = host->irq_num[pin];
-+
-+    route.irq = gsi;
-+    if (gsi < 0) {
-+        route.mode = PCI_INTX_DISABLED;
-+    } else {
-+        route.mode = PCI_INTX_ENABLED;
-+    }
-+
-+    return route;
-+}
-+
-+static const char *cxl_host_root_bus_path(PCIHostState *host_bridge,
-+                                          PCIBus *rootbus)
-+{
-+    return "0001:00";
-+}
-+
-+void cxl_host_hook_up_registers(CXLState *cxl_state, CXLHostBridge *host)
-+{
-+    CXLComponentState *cxl_cstate = &host->cxl_cstate;
-+    struct MemoryRegion *mr = &cxl_cstate->crb.component_registers;
-+
-+    memory_region_add_subregion(&cxl_state->host_mr, 0, mr);
-+}
-+
-+static void cxl_host_reset(CXLHostBridge *host)
-+{
-+    CXLComponentState *cxl_cstate = &host->cxl_cstate;
-+    uint32_t *reg_state = cxl_cstate->crb.cache_mem_registers;
-+    uint32_t *write_msk = cxl_cstate->crb.cache_mem_regs_write_mask;
-+
-+    cxl_component_register_init_common(reg_state, write_msk, CXL2_RC);
-+
-+    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, TARGET_COUNT,
-+                     8);
-+}
-+
-+static void cxl_host_realize(DeviceState *dev, Error **errp)
-+{
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+    CXLHostBridge *host = CXL_HOST(dev);
-+    CXLComponentState *cxl_cstate = &host->cxl_cstate;
-+    struct MemoryRegion *mr = &cxl_cstate->crb.component_registers;
-+    PCIBus *cxlbus;
-+    PCIHostState *pci = PCI_HOST_BRIDGE(dev);
-+    PCIExpressHost *pex = PCIE_HOST_BRIDGE(dev);
-+    int i;
-+
-+    /* CHBCR MMIO init */
-+    cxl_host_reset(host);
-+    cxl_component_register_block_init(OBJECT(dev), cxl_cstate, TYPE_CXL_HOST);
-+    sysbus_init_mmio(sbd, mr);
-+
-+    /* MMFG window init */
-+    pcie_host_mmcfg_init(pex, PCIE_MMCFG_SIZE_MAX);
-+    sysbus_init_mmio(sbd, &pex->mmio);
-+
-+    /* mmio window init */
-+    memory_region_init(&host->io_mmio, OBJECT(host), "cxl_host_mmio",
-+                        UINT64_MAX);
-+
-+    memory_region_init_io(&host->io_mmio_window, OBJECT(host),
-+                              &unassigned_io_ops, OBJECT(host),
-+                              "cxl_host_mmio_window", UINT64_MAX);
-+
-+    memory_region_add_subregion(&host->io_mmio_window, 0, &host->io_mmio);
-+    sysbus_init_mmio(sbd, &host->io_mmio_window);
-+
-+    /* ioport window init, 64K is the legacy size in x86 */
-+    memory_region_init(&host->io_ioport, OBJECT(host), "cxl_host_ioport",
-+                        64 * 1024);
-+
-+    memory_region_init_io(&host->io_ioport_window, OBJECT(host),
-+                              &unassigned_io_ops, OBJECT(host),
-+                              "cxl_host_ioport_window", 64 * 1024);
-+
-+    memory_region_add_subregion(&host->io_ioport_window, 0, &host->io_ioport);
-+    sysbus_init_mmio(sbd, &host->io_ioport_window);
-+
-+    /* PCIe host bridge use 4 legacy IRQ lines */
-+    for (i = 0; i < CXL_HOST_NUM_IRQS; i++) {
-+        sysbus_init_irq(sbd, &host->irq[i]);
-+        host->irq_num[i] = -1;
-+    }
-+
-+    pci->bus = pci_register_root_bus(dev, "cxlhost.0", cxl_host_set_irq,
-+                                 pci_swizzle_map_irq_fn, host, &host->io_mmio,
-+                                 &host->io_ioport, 0, 4, TYPE_CXL_BUS);
-+    cxlbus = pci->bus;
-+    cxlbus->flags |= PCI_BUS_CXL;
-+
-+    pci_bus_set_route_irq_fn(pci->bus, cxl_host_route_intx_pin_to_irq);
-+}
-+
-+static void cxl_host_class_init(ObjectClass *class, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(class);
-+    PCIHostBridgeClass *hc = PCI_HOST_BRIDGE_CLASS(class);
-+
-+    hc->root_bus_path = cxl_host_root_bus_path;
-+    dc->realize = cxl_host_realize;
-+    dc->desc = "CXL Host Bridge";
-+    set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
-+    dc->fw_name = "cxl";
-+}
-+
-+static const TypeInfo cxl_host_info = {
-+    .name          = TYPE_CXL_HOST,
-+    .parent        = TYPE_PCIE_HOST_BRIDGE,
-+    .instance_size = sizeof(CXLHostBridge),
-+    .class_init    = cxl_host_class_init,
-+};
-+
-+static void cxl_host_register(void)
-+{
-+    type_register_static(&cxl_host_info);
-+}
-+
-+type_init(cxl_host_register)
-diff --git a/hw/pci-host/meson.build b/hw/pci-host/meson.build
-index 937a0f72ac..a00995068b 100644
---- a/hw/pci-host/meson.build
-+++ b/hw/pci-host/meson.build
-@@ -4,6 +4,7 @@ pci_ss.add(when: 'CONFIG_PCI_BONITO', if_true: files('bonito.c'))
- pci_ss.add(when: 'CONFIG_GT64120', if_true: files('gt64120.c'))
- pci_ss.add(when: 'CONFIG_PCI_EXPRESS_DESIGNWARE', if_true: files('designware.c'))
- pci_ss.add(when: 'CONFIG_PCI_EXPRESS_GENERIC_BRIDGE', if_true: files('gpex.c'))
-+pci_ss.add(when: 'CONFIG_PCI_EXPRESS_GENERIC_BRIDGE', if_true: files('cxl.c'))
- pci_ss.add(when: ['CONFIG_PCI_EXPRESS_GENERIC_BRIDGE', 'CONFIG_ACPI'], if_true: files('gpex-acpi.c'))
- pci_ss.add(when: 'CONFIG_PCI_EXPRESS_Q35', if_true: files('q35.c'))
- pci_ss.add(when: 'CONFIG_PCI_EXPRESS_XILINX', if_true: files('xilinx-pcie.c'))
-diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
-index 75e47b6864..346a7b58ad 100644
---- a/include/hw/cxl/cxl.h
-+++ b/include/hw/cxl/cxl.h
-@@ -26,10 +26,12 @@
- 
- typedef struct PXBCXLDev PXBCXLDev;
- 
-+typedef struct CXLHostBridge CXLHostBridge;
-+
- typedef struct CXLFixedWindow {
-     uint64_t size;
-     char **targets;
--    PXBCXLDev *target_hbs[16];
-+    Object *target_hbs[16];
-     uint8_t num_targets;
-     uint8_t enc_int_ways;
-     uint8_t enc_int_gran;
-@@ -56,6 +58,9 @@ struct CXLHost {
- #define TYPE_PXB_CXL_HOST "pxb-cxl-host"
- OBJECT_DECLARE_SIMPLE_TYPE(CXLHost, PXB_CXL_HOST)
- 
-+#define TYPE_CXL_HOST "cxl-host"
-+OBJECT_DECLARE_SIMPLE_TYPE(CXLHostBridge, CXL_HOST)
-+
- #define TYPE_CXL_USP "cxl-upstream"
- 
- typedef struct CXLUpstreamPort CXLUpstreamPort;
-diff --git a/include/hw/cxl/cxl_host.h b/include/hw/cxl/cxl_host.h
-index c9bc9c7c50..f3184733aa 100644
---- a/include/hw/cxl/cxl_host.h
-+++ b/include/hw/cxl/cxl_host.h
-@@ -16,6 +16,8 @@
- void cxl_machine_init(Object *obj, CXLState *state);
- void cxl_fmws_link_targets(CXLState *stat, Error **errp);
- void cxl_hook_up_pxb_registers(PCIBus *bus, CXLState *state, Error **errp);
-+void cxl_fixed_memory_window_config(CXLState *cxl_state,
-+                        CXLFixedMemoryWindowOptions *object, Error **errp);
- 
- extern const MemoryRegionOps cfmws_ops;
- 
-diff --git a/include/hw/pci-host/cxl_host_bridge.h b/include/hw/pci-host/cxl_host_bridge.h
-new file mode 100644
-index 0000000000..f6830dab83
---- /dev/null
-+++ b/include/hw/pci-host/cxl_host_bridge.h
-@@ -0,0 +1,25 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "hw/cxl/cxl.h"
-+#include "hw/irq.h"
-+#include "hw/pci/pcie_host.h"
-+
-+#define CXL_HOST_NUM_IRQS 4
-+
-+typedef struct CXLHostBridge {
-+    PCIExpressHost parent_obj;
-+
-+    CXLComponentState cxl_cstate;
-+
-+    MemoryRegion io_ioport;
-+    MemoryRegion io_mmio;
-+    MemoryRegion io_ioport_window;
-+    MemoryRegion io_mmio_window;
-+    qemu_irq irq[CXL_HOST_NUM_IRQS];
-+    int irq_num[CXL_HOST_NUM_IRQS];
-+} CXLHostBridge;
-+
-+int cxl_host_set_irq_num(CXLHostBridge *host, int index, int gsi);
-+void cxl_host_hook_up_registers(CXLState *cxl_state, CXLHostBridge *host);
--- 
-2.34.1
-
+/mjt
 
