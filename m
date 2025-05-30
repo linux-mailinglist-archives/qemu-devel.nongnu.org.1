@@ -2,79 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14072AC9038
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 15:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89307AC8FAB
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 15:18:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKznQ-0002rs-Ur; Fri, 30 May 2025 09:29:17 -0400
+	id 1uKzbp-0008WG-Tc; Fri, 30 May 2025 09:17:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jdenemar@redhat.com>)
- id 1uKznN-0002rR-HQ
- for qemu-devel@nongnu.org; Fri, 30 May 2025 09:29:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uKzbl-0008Vz-Uv
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 09:17:13 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jdenemar@redhat.com>)
- id 1uKznK-0006p0-PO
- for qemu-devel@nongnu.org; Fri, 30 May 2025 09:29:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748611749;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
- references:references; bh=k7+vNYkmh8xMqGnP6sqw6gcj5eQE9oT5wjid3JxXRwY=;
- b=hyASPFcfMZPVLkX8HNIeb97U5w98pl6FoM52WixNasCz6pRQvZUDOQRj92V2iMlEQQGIxE
- NaQS7EUee7DyCiYiqMFTDxxrRLCKYFahKFf8xTND4EB/Fs1X3JJ5Y/rPVMH8kUMusgGreh
- wvEtC/dZAGReyRWErQBe/BXFK5DOdKk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-5-ASLT5ajcNq6IrmvEQ7sMLg-1; Fri,
- 30 May 2025 09:27:59 -0400
-X-MC-Unique: ASLT5ajcNq6IrmvEQ7sMLg-1
-X-Mimecast-MFC-AGG-ID: ASLT5ajcNq6IrmvEQ7sMLg_1748611679
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B0E3619560A1; Fri, 30 May 2025 13:27:58 +0000 (UTC)
-Received: from orkuz (unknown [10.45.224.197])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2E2B8180049D; Fri, 30 May 2025 13:27:57 +0000 (UTC)
-Resent-From: Jiri Denemark <jdenemar@redhat.com>
-Resent-Date: Fri, 30 May 2025 15:27:56 +0200
-Resent-Message-ID: <aDmyXG9-Fkef8T4O@orkuz.int.mamuti.net>
-Resent-To: qemu-devel@nongnu.org, devel@lists.libvirt.org
-Date: Fri, 30 May 2025 14:50:15 +0200
-From: Jiri Denemark <jdenemar@redhat.com>
-To: Peter Krempa <pkrempa@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v4 00/27] hw/i386/pc: Remove deprecated 2.6 and 2.7 PC
- machines
-Message-ID: <aDmphSY1MSxu7L9R@orkuz.int.mamuti.net>
-References: <20250508133550.81391-1-philmd@linaro.org>
- <20250513132338.4089736b@imammedo.users.ipa.redhat.com>
- <20250530073524-mutt-send-email-mst@kernel.org>
- <aDmfuVLXmfvJB0tX@angien.pipo.sk>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uKzbj-0005E4-8L
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 09:17:13 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b83fw4PB4z6M4hH;
+ Fri, 30 May 2025 21:16:56 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 3BF0214027A;
+ Fri, 30 May 2025 21:17:02 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 30 May
+ 2025 15:17:01 +0200
+Date: Fri, 30 May 2025 14:17:00 +0100
+To: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "mst@redhat.com"
+ <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>, "linux-cxl@vger.kernel.org"
+ <linux-cxl@vger.kernel.org>, "linuxarm@huawei.com" <linuxarm@huawei.com>
+Subject: Re: [PATCH qemu] hw/cxl: Fix register block locator size
+Message-ID: <20250530141700.00005619@huawei.com>
+In-Reply-To: <e7050a05-3349-46c6-9ac5-60b621f54a0b@fujitsu.com>
+References: <20250529134828.403049-1-Jonathan.Cameron@huawei.com>
+ <e7050a05-3349-46c6-9ac5-60b621f54a0b@fujitsu.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aDmfuVLXmfvJB0tX@angien.pipo.sk>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jdenemar@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.907,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,22 +68,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 30, 2025 at 14:08:25 +0200, Peter Krempa wrote:
-> The rest are CPU properties
-> 
->  DEFINE_PROP_BOOL("cpuid-0xb", X86CPU, enable_cpuid_0xb, true),
->  DEFINE_PROP_BOOL("fill-mtrr-mask", X86CPU, fill_mtrr_mask, true),
->  DEFINE_PROP_BOOL("full-cpuid-auto-level", X86CPU, full_cpuid_auto_level, true),
-> 
-> which appear in our cpu test data but I'm not 100% sure how they are
-> used. Jirka, can you please comment?
+On Fri, 30 May 2025 02:59:40 +0000
+"Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com> wrote:
 
-None of these properties is directly used by libvirt for anything. They
-can be removed anytime.
+> On 29/05/2025 21:48, Jonathan Cameron via wrote:
+> > This has been wrong from day 1.  For now we only have
+> > two entries (component and device registers).  
+> 
+> Wow, I finally understood this.
+> 
+> 
+> > 
+> > The wrong size could lead to arbitrary data off the stack being presented
+> > in PCIe config space.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >   include/hw/cxl/cxl_pci.h | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/include/hw/cxl/cxl_pci.h b/include/hw/cxl/cxl_pci.h
+> > index d0855ed78b..3bb882ce89 100644
+> > --- a/include/hw/cxl/cxl_pci.h
+> > +++ b/include/hw/cxl/cxl_pci.h
+> > @@ -31,7 +31,7 @@
+> >   #define PCIE_CXL3_FLEXBUS_PORT_DVSEC_LENGTH 0x20
+> >   #define PCIE_CXL3_FLEXBUS_PORT_DVSEC_REVID  2
+> >   
+> > -#define REG_LOC_DVSEC_LENGTH 0x24
+> > +#define REG_LOC_DVSEC_LENGTH 0x1C  
+> 
+> IMHO, REG_LOC_DVSEC_LENGTH is device specific, that mean we shouldn't put it in
+> a general header with a general name
+> 
+> try:
+> $ git grep REG_LOC_DVSEC_LENGTH
+> 
+> we got another REG_LOC_DVSEC_LENGTH, shouldn't its value (0x1C - 0x8)?
+> 
+> 
+>   51     regloc_dvsec = &(CXLDVSECRegisterLocator) {
+>   52         .rsvd         = 0,
+>   53         .reg0_base_lo = RBI_CXL_DEVICE_REG | 0,
+>   54         .reg0_base_hi = 0,
+>   55     };
+>   56     cxl_component_create_dvsec(cxl_cstate, CXL3_SWITCH_MAILBOX_CCI,
+>   57                                REG_LOC_DVSEC_LENGTH, REG_LOC_DVSEC,
+>   58                                REG_LOC_DVSEC_REVID, (uint8_t *)regloc_dvsec);
+> 
+Ah.  This isn't a bug at all.  I clearly needed more caffeine.
 
-Jirka
+We are fine because at least in 3.2 the register block identifier of 0 is reserved and
+I misread the code completely.  It is odd to have empty entries but not a bug.
+
+Jonathan
+
+> 
+> Thanks
+> Zhijian
+> 
+> 
+> 
+> >   #define REG_LOC_DVSEC_REVID  0
+> >   
+> >   enum   
 
 
