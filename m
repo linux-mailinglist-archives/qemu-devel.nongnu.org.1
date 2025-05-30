@@ -2,130 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E5F6AC88F5
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:33:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7045AC89A5
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:04:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKuEY-0002WS-Gm; Fri, 30 May 2025 03:32:54 -0400
+	id 1uKui5-0002Ou-25; Fri, 30 May 2025 04:03:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKuEW-0002Vv-0F
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:32:52 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uKui0-0002NC-Np
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uKuEU-0000eu-56
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:32:51 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uKuhy-0004Xy-9R
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748590368;
+ s=mimecast20190719; t=1748592197;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=CLsoL0HK4AavaKwNDPWsVsKSwNjh/+hLW0DrcH8zfoQ=;
- b=CqXDBr4TWzy85UHvx32a1wjf3myD9pTKeN5qYMuKQp+rnNuKtdw2ToCbFM54AfZuQmaZ9k
- E3UE7YfPafN4dCfgCt9TiP5PhZTyvTte0Y1w/vh0ARjq7183++KWPmgidwYsykpqtkUCdv
- 673D1EAPn1tLLW6Ek5DwUuuWPt0y5WM=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=UUj6q6B+e336ffq5s6Zk0rCKpR7Qm0AOx4IF/wqWtHg=;
+ b=BuzoIo0GoYJ7OKAYRjooTYF579eNkmBPbdc524YVBxi5ZABfpfvpT9jKUdWRtKyWhcQqcf
+ 9Bf0ZEyPbINyNEPyJr++xpFiTfKRMOdPpdg+v2/h9ATOyZ8DfN8XGOCR3xHXxZsr/XXOBu
+ Cg1gPA3DuKqGTu7tu/dRFSkkGI4zm5s=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-331-dbWJWoNeN8mp7NvJ_-lQVg-1; Fri, 30 May 2025 03:32:46 -0400
-X-MC-Unique: dbWJWoNeN8mp7NvJ_-lQVg-1
-X-Mimecast-MFC-AGG-ID: dbWJWoNeN8mp7NvJ_-lQVg_1748590365
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ad5271a051eso149963666b.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:32:46 -0700 (PDT)
+ us-mta-513-TjJSTUJPN-Kpf1L1BBwoZA-1; Fri, 30 May 2025 04:03:15 -0400
+X-MC-Unique: TjJSTUJPN-Kpf1L1BBwoZA-1
+X-Mimecast-MFC-AGG-ID: TjJSTUJPN-Kpf1L1BBwoZA_1748592195
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-adb32dbf60bso67157166b.1
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748590365; x=1749195165;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CLsoL0HK4AavaKwNDPWsVsKSwNjh/+hLW0DrcH8zfoQ=;
- b=LmV8X0dpLixDEe5+QkXupw2hZNhaLbySnnIzKSGZ/Sh4UVSWv/Mq605mwywmTS38ha
- lrcBACHpC/vN3t8JcmTkydfQXI/1V4+bokZZMeqxM8+GVFRapGC7hIpMeJOd6oDCD6UR
- 2j8+4JvxFosBG3zauJBgaDCkde82swO4FtUWYOVW1SzhGdoyV2StbG2z2/QYZn06X/ra
- D+UCdNMoHZlDuOHcPVx3WZmpc6SToAkuygwbJvcOaDIaLfaTQlPwremxOAggSg8uf+Zb
- OgoCpERevqBOitjmCFQX7Uazr8y36tOTu8eWhIbG+1T/0e37WQn8nCkwNY4vCd8aOHn0
- MMLQ==
-X-Gm-Message-State: AOJu0YzuONB2K9E22hEYfkL667DIBbPW9PerYnKjrQIaIpTddpLbo+he
- ofIlDhCTM70+wdljSTx0pj7TMLaTcGqaiLcO9vLUzwGXzTy7ziCsY1AePMIwcq/Wm8PE8Q7iv+I
- qxS9mVlofqnpl7hfqfoCvC39eUQXB5fuCt9rBzfXC6LH1C+hVn0Zg06ttQdMua9Z8omw=
-X-Gm-Gg: ASbGncsWQFsiQeWghQdhJ0oYAQKUz53AdSTRSP/J0CKhxkkon+2J8L66V6AU586S6ts
- 9DGKpfE2EwssNnhyspIkon0O/W++Q7fQnDQNznxni5dVUpmyoRv9BL8AsZrBk+Jbr1j9xgxesLA
- UPnar19FAorGdKBlBzj7o9eoJU1WzT5uTc/uWezB5Fa1RivrANVDhi4Rt0NCCr0YTcQUL9ZR1ew
- ox0mX0cnDC9hbrB9GNuYu2xn9ctvA9f1vdp9f+KDCy6aBK+C8AeOYJ2xrtPIE3sEm/LwHxIyshT
- cJrrqmQh81w/dGiAD9J0BraaZrFhJbSenwPqdEeguCJ5yWqvQVuP
-X-Received: by 2002:a17:907:971d:b0:ad8:9b5d:2c2f with SMTP id
- a640c23a62f3a-adb322b357emr220273166b.4.1748590364389; 
- Fri, 30 May 2025 00:32:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/gEIeT6o39zOHO+RkLWYWgTX/G51yfGsqDt4+zcA14708+7XvaFbyJx/RFsk/QsV4HCIFvA==
-X-Received: by 2002:a17:907:971d:b0:ad8:9b5d:2c2f with SMTP id
- a640c23a62f3a-adb322b357emr220271966b.4.1748590363976; 
- Fri, 30 May 2025 00:32:43 -0700 (PDT)
-Received: from [192.168.0.7] (ltea-047-064-112-237.pools.arcor-ip.net.
- [47.64.112.237]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d82becbsm279932566b.39.2025.05.30.00.32.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 May 2025 00:32:43 -0700 (PDT)
-Message-ID: <8770ba4d-31c8-4b44-b6c6-4829b5963705@redhat.com>
-Date: Fri, 30 May 2025 09:32:42 +0200
+ d=1e100.net; s=20230601; t=1748592194; x=1749196994;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=UUj6q6B+e336ffq5s6Zk0rCKpR7Qm0AOx4IF/wqWtHg=;
+ b=pGcYymaHyI1JusKvcYjLND3MmmqPXh58kAbNff/+aSgoj7VttwNUNK7AscaxV2btTA
+ CyaP2JAUY+fHqxFZY7TRyWDhZQS1+xMyTqUbSWtOsRWcVOWNtohqLngM9fFSxSd7IFT9
+ hk3e6QlF34SfQQo3eB37RleL9eWyG8vzpHe7k8LBpVu+7NUSgv7aKtgdApIwmis5edJi
+ uL2a79q7PbataFmVMWFQiWpcXVuep7tD4Jfh74V5haFlXWNHq1RQJAJ5qIpYmYtFwFf1
+ 6WnPxNyHGAfn2AdjtUayFuolo054XRv1xidS8V3adhvXmwNO6Ggq/7h4iNfXGRm+GQCv
+ 6NaA==
+X-Gm-Message-State: AOJu0YzQXXnIawZ0cGdiy+3ZYX8dqJ7M3AsY8xKCe+uAaV2e6SQq3r6g
+ hKde6B3mghu1NHmhhq2cE1e9Yve+qou3acP5GcYOKOmJJUyS7LLGh1WTIkWn11jHF2vjVCJtkOS
+ O5Pz5YWIXaHCXdjz9UJhEWc0wM1JckzXwzPLOYhTTa5aPGlR7cyuOSjm+XlpybuV0uHedScTbru
+ WhDVSmbCAdN1w006n3Mdv+haxTXCkUnW8PzmVn+UBf
+X-Gm-Gg: ASbGnctSkoMVFjXb9/DkEesHFPAc44NUNkxWD89Np8BawfUvdienhUFaCQHOk4/2ut4
+ fTdPEkF3aT5eDKb3XSIQBpgo/kbZfvsET1xd5ZTS9eY40tob9yXfiadZqtgJjQGC9gpAPEKUq3R
+ haWUT2BOVZd1EPWYSbSWo9iYAmtNScQsBNn4FgdTC2KSf9UmPATHJRDdLuwpiMWvlhMurwyaFTY
+ qGbLF6nHFQwwqa6swBXou9FpcCEocjyvLYXaAPGFHYJ1o1fZClOobtsu+DHkGMYqeyWF5pYRzA7
+ kBq3cysdGMqqsw==
+X-Received: by 2002:a17:907:1ca3:b0:ad2:4b0c:ee8c with SMTP id
+ a640c23a62f3a-adb322a519amr196938866b.35.1748592193817; 
+ Fri, 30 May 2025 01:03:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEo1Hw4sjBjsj+Yc+BNtiU9OxmVUqqSMVhs3xXzI7t163AFUQEsY+/ECdsA3TBUxA2FYIjjnA==
+X-Received: by 2002:a17:907:1ca3:b0:ad2:4b0c:ee8c with SMTP id
+ a640c23a62f3a-adb322a519amr196935766b.35.1748592193362; 
+ Fri, 30 May 2025 01:03:13 -0700 (PDT)
+Received: from [192.168.122.1] ([151.49.64.79])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ada6ad3a6d7sm282708266b.155.2025.05.30.01.03.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 30 May 2025 01:03:12 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 02/14] subprojects: add the foreign crate
+Date: Fri, 30 May 2025 10:02:54 +0200
+Message-ID: <20250530080307.2055502-3-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250530080307.2055502-1-pbonzini@redhat.com>
+References: <20250530080307.2055502-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL v2 00/25] Functional tests, Microblaze endianness & pc/q35
- cleanups
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20250528202442.18315-1-thuth@redhat.com>
- <20250529152658.GA62516@fedora>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250529152658.GA62516@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -150,58 +107,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/05/2025 17.26, Stefan Hajnoczi wrote:
-> On Wed, May 28, 2025 at 10:24:42PM +0200, Thomas Huth wrote:
->>   Hi Stefan!
->>
->> The following changes since commit 80db93b2b88f9b3ed8927ae7ac74ca30e643a83e:
->>
->>    Merge tag 'pull-aspeed-20250526' of https://github.com/legoater/qemu into staging (2025-05-26 10:16:59 -0400)
->>
->> are available in the Git repository at:
->>
->>    https://gitlab.com/thuth/qemu.git tags/pull-request-2025-05-28v2
->>
->> for you to fetch changes up to 51c214b7c27096e3516aedf6befd69dc6d75b4ac:
->>
->>    tests/unit/test-util-sockets: fix mem-leak on error object (2025-05-28 22:16:26 +0200)
->>
->> ----------------------------------------------------------------
->> * Functional tests improvements
->> * Endianness improvements/clean-ups for the Microblaze machines
->> * Remove obsolete -2.4 and -2.5 i440fx and q35 machine types and related code
->>
->> v2: Dropped the memlock test patches
-> 
-> Please take a look at the following CI failure:
-> 
-> ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 QTEST_QEMU_BINARY=./qemu-system-microblaze QTEST_QEMU_IMG=./qemu-img UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 G_TEST_DBUS_DAEMON=/home/gitlab-runner/builds/E8PpwMky/0/qemu-project/qemu/tests/dbus-vmstate-daemon.sh MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 RUST_BACKTRACE=1 QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon PYTHON=/home/gitlab-runner/builds/E8PpwMky/0/qemu-project/qemu/build/pyvenv/bin/python3 MALLOC_PERTURB_=57 MESON_TEST_ITERATION=1 /home/gitlab-runner/builds/E8PpwMky/0/qemu-project/qemu/build/tests/qtest/test-netfilter --tap -k
-> ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
-> stderr:
-> munmap_chunk(): invalid pointer
-> ../tests/qtest/libqtest.c:208: kill_qemu() detected QEMU death from signal 6 (Aborted) (core dumped)
-> (test program exited with status code -6)
-> 
-> More info here:
-> https://gitlab.com/qemu-project/qemu/-/jobs/10190886460#L5038
+This is a cleaned up and separated version of the patches at
+https://lore.kernel.org/all/20240701145853.1394967-4-pbonzini@redhat.com/
+https://lore.kernel.org/all/20240701145853.1394967-5-pbonzini@redhat.com/
 
-Drat, I think I missed:
+Its first user will be the Error bindings; for example a QEMU Error ** can be
+converted to a Rust Option using
 
-diff --git a/hw/microblaze/petalogix_s3adsp1800_mmu.c 
-b/hw/microblaze/petalogix_s3adsp1800_mmu.c
---- a/hw/microblaze/petalogix_s3adsp1800_mmu.c
-+++ b/hw/microblaze/petalogix_s3adsp1800_mmu.c
-@@ -187,6 +187,7 @@ static const TypeInfo 
-petalogix_s3adsp1800_machine_types[] = {
-          .name           = TYPE_PETALOGIX_S3ADSP1800_MACHINE,
-          .parent         = TYPE_MACHINE,
-          .class_init     = petalogix_s3adsp1800_machine_class_init,
-+        .instance_size  = sizeof(S3Adsp1800MachineState),
-      },
-  };
+     unsafe { Option::<Error>::from_foreign(c_error) }
 
-... I'll respin the PR with that fix included.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ rust/meson.build                              |  2 ++
+ rust/qemu-api/meson.build                     |  2 +-
+ scripts/archive-source.sh                     |  3 ++-
+ scripts/make-release                          |  3 ++-
+ subprojects/.gitignore                        |  1 +
+ subprojects/foreign-0.3-rs.wrap               |  7 +++++
+ .../packagefiles/foreign-0.3-rs/meson.build   | 26 +++++++++++++++++++
+ 7 files changed, 41 insertions(+), 3 deletions(-)
+ create mode 100644 subprojects/foreign-0.3-rs.wrap
+ create mode 100644 subprojects/packagefiles/foreign-0.3-rs/meson.build
 
-  Thomas
+diff --git a/rust/meson.build b/rust/meson.build
+index 6227e01f32a..59c7ed2736b 100644
+--- a/rust/meson.build
++++ b/rust/meson.build
+@@ -1,11 +1,13 @@
+ subproject('anyhow-1-rs', required: true)
+ subproject('bilge-0.2-rs', required: true)
+ subproject('bilge-impl-0.2-rs', required: true)
++subproject('foreign-0.3-rs', required: true)
+ subproject('libc-0.2-rs', required: true)
+ 
+ anyhow_rs = dependency('anyhow-1-rs')
+ bilge_rs = dependency('bilge-0.2-rs')
+ bilge_impl_rs = dependency('bilge-impl-0.2-rs')
++foreign_rs = dependency('foreign-0.3-rs')
+ libc_rs = dependency('libc-0.2-rs')
+ 
+ subproject('proc-macro2-1-rs', required: true)
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 181ceca9536..aa22252866d 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -35,7 +35,7 @@ _qemu_api_rs = static_library(
+   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
+   rust_args: _qemu_api_cfg,
+-  dependencies: [anyhow_rs, libc_rs, qemu_api_macros, qemuutil_rs,
++  dependencies: [anyhow_rs, foreign_rs, libc_rs, qemu_api_macros, qemuutil_rs,
+                  qom, hwcore, chardev, migration],
+ )
+ 
+diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
+index 816062fee94..035828c532e 100755
+--- a/scripts/archive-source.sh
++++ b/scripts/archive-source.sh
+@@ -28,7 +28,8 @@ sub_file="${sub_tdir}/submodule.tar"
+ # different to the host OS.
+ subprojects="keycodemapdb libvfio-user berkeley-softfloat-3
+   berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
+-  bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
++  bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
++  libc-0.2-rs proc-macro2-1-rs
+   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
+   syn-2-rs unicode-ident-1-rs"
+ sub_deinit=""
+diff --git a/scripts/make-release b/scripts/make-release
+index ea65bdcc0cf..4509a9fabf5 100755
+--- a/scripts/make-release
++++ b/scripts/make-release
+@@ -41,7 +41,8 @@ fi
+ # Only include wraps that are invoked with subproject()
+ SUBPROJECTS="libvfio-user keycodemapdb berkeley-softfloat-3
+   berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
+-  bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
++  bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
++  libc-0.2-rs proc-macro2-1-rs
+   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
+   syn-2-rs unicode-ident-1-rs"
+ 
+diff --git a/subprojects/.gitignore b/subprojects/.gitignore
+index b9ae507b85a..f4281934ce1 100644
+--- a/subprojects/.gitignore
++++ b/subprojects/.gitignore
+@@ -11,6 +11,7 @@
+ /bilge-0.2.0
+ /bilge-impl-0.2.0
+ /either-1.12.0
++/foreign-0.3.1
+ /itertools-0.11.0
+ /libc-0.2.162
+ /proc-macro-error-1.0.4
+diff --git a/subprojects/foreign-0.3-rs.wrap b/subprojects/foreign-0.3-rs.wrap
+new file mode 100644
+index 00000000000..0d218ec2c25
+--- /dev/null
++++ b/subprojects/foreign-0.3-rs.wrap
+@@ -0,0 +1,7 @@
++[wrap-file]
++directory = foreign-0.3.1
++source_url = https://crates.io/api/v1/crates/foreign/0.3.1/download
++source_filename = foreign-0.3.1.tar.gz
++source_hash = 17ca1b5be8c9d320daf386f1809c7acc0cb09accbae795c2001953fa50585846
++#method = cargo
++patch_directory = foreign-0.3-rs
+diff --git a/subprojects/packagefiles/foreign-0.3-rs/meson.build b/subprojects/packagefiles/foreign-0.3-rs/meson.build
+new file mode 100644
+index 00000000000..0901c02c527
+--- /dev/null
++++ b/subprojects/packagefiles/foreign-0.3-rs/meson.build
+@@ -0,0 +1,26 @@
++project('foreign-0.3-rs', 'rust',
++  meson_version: '>=1.5.0',
++  version: '0.2.0',
++  license: 'MIT OR Apache-2.0',
++  default_options: [])
++
++subproject('libc-0.2-rs', required: true)
++libc_rs = dependency('libc-0.2-rs')
++
++_foreign_rs = static_library(
++  'foreign',
++  files('src/lib.rs'),
++  gnu_symbol_visibility: 'hidden',
++  override_options: ['rust_std=2021', 'build.rust_std=2021'],
++  rust_abi: 'rust',
++  rust_args: [
++    '--cap-lints', 'allow',
++  ],
++  dependencies: [libc_rs],
++)
++
++foreign_dep = declare_dependency(
++  link_with: _foreign_rs,
++)
++
++meson.override_dependency('foreign-0.3-rs', foreign_dep)
+-- 
+2.49.0
 
 
