@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F8AAC9271
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36EEBAC9242
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:14:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Pg-0004lB-Qp; Fri, 30 May 2025 11:12:52 -0400
+	id 1uL1Pe-0004cS-H1; Fri, 30 May 2025 11:12:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PY-0004RG-SF; Fri, 30 May 2025 11:12:44 -0400
+ id 1uL1PZ-0004TP-MY; Fri, 30 May 2025 11:12:45 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PV-0002Kl-Iw; Fri, 30 May 2025 11:12:44 -0400
+ id 1uL1PW-0002Lb-Ep; Fri, 30 May 2025 11:12:45 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 1D25E44B9B;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id A64E244BA0;
  Fri, 30 May 2025 17:11:48 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
@@ -26,9 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 38/48] block: mark blk_drain() as GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:11:15 +0200
-Message-Id: <20250530151125.955508-39-f.ebner@proxmox.com>
+Subject: [PATCH v4 39/48] block-backend: mark blk_io_limits_disable() as
+ GRAPH_UNLOCKED
+Date: Fri, 30 May 2025 17:11:16 +0200
+Message-Id: <20250530151125.955508-40-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -57,8 +58,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function blk_drain() calls bdrv_drained_begin(), which must be
-called with the graph unlocked.
+The function blk_io_limits_disable() calls bdrv_drained_begin(), which
+must be called with the graph unlocked.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
@@ -66,18 +67,18 @@ Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
-index 1a134083b7..f6ec1174e6 100644
+index f6ec1174e6..c3849640df 100644
 --- a/include/system/block-backend-global-state.h
 +++ b/include/system/block-backend-global-state.h
-@@ -78,7 +78,7 @@ int blk_make_zero(BlockBackend *blk, BdrvRequestFlags flags);
- void blk_aio_cancel(BlockAIOCB *acb);
- int blk_commit_all(void);
- bool blk_in_drain(BlockBackend *blk);
--void blk_drain(BlockBackend *blk);
-+void GRAPH_UNLOCKED blk_drain(BlockBackend *blk);
- void GRAPH_UNLOCKED blk_drain_all(void);
- void blk_set_on_error(BlockBackend *blk, BlockdevOnError on_read_error,
-                       BlockdevOnError on_write_error);
+@@ -109,7 +109,7 @@ int blk_probe_blocksizes(BlockBackend *blk, BlockSizes *bsz);
+ int blk_probe_geometry(BlockBackend *blk, HDGeometry *geo);
+ 
+ void blk_set_io_limits(BlockBackend *blk, ThrottleConfig *cfg);
+-void blk_io_limits_disable(BlockBackend *blk);
++void GRAPH_UNLOCKED blk_io_limits_disable(BlockBackend *blk);
+ void blk_io_limits_enable(BlockBackend *blk, const char *group);
+ void blk_io_limits_update_group(BlockBackend *blk, const char *group);
+ void blk_set_force_allow_inactivate(BlockBackend *blk);
 -- 
 2.39.5
 
