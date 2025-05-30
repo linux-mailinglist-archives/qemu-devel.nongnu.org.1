@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5CD6AC922D
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1D6AC9229
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:12:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Ot-0002w9-Jl; Fri, 30 May 2025 11:12:04 -0400
+	id 1uL1Or-0002ve-Up; Fri, 30 May 2025 11:12:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1Om-0002rc-6c; Fri, 30 May 2025 11:11:56 -0400
+ id 1uL1On-0002so-7Q; Fri, 30 May 2025 11:11:57 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1Ok-0002Er-4b; Fri, 30 May 2025 11:11:55 -0400
+ id 1uL1Ok-0002Fq-TG; Fri, 30 May 2025 11:11:56 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 4258F44996;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id E0D8844A80;
  Fri, 30 May 2025 17:11:41 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
@@ -26,10 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 05/48] block: mark bdrv_parent_change_aio_context()
- GRAPH_RDLOCK
-Date: Fri, 30 May 2025 17:10:42 +0200
-Message-Id: <20250530151125.955508-6-f.ebner@proxmox.com>
+Subject: [PATCH v4 06/48] block: mark change_aio_ctx() callback and instances
+ as GRAPH_RDLOCK(_PTR)
+Date: Fri, 30 May 2025 17:10:43 +0200
+Message-Id: <20250530151125.955508-7-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -59,34 +59,88 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This is a small step in preparation to mark bdrv_drained_begin() as
-GRAPH_UNLOCKED. More concretely, it allows marking the
-change_aio_ctx() callback GRAPH_RDLOCK_PTR, which is the next step.
+GRAPH_UNLOCKED. More concretely, it is in preparation to move the
+drain out of bdrv_change_aio_context() and marking that function as
+GRAPH_RDLOCK.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ block.c                          | 7 ++++---
+ block/block-backend.c            | 6 +++---
+ blockjob.c                       | 6 +++---
+ include/block/block_int-common.h | 6 +++---
+ 4 files changed, 13 insertions(+), 12 deletions(-)
 
 diff --git a/block.c b/block.c
-index fa55dfba68..7207978e53 100644
+index 7207978e53..01144c895e 100644
 --- a/block.c
 +++ b/block.c
-@@ -7575,10 +7575,10 @@ typedef struct BdrvStateSetAioContext {
-     BlockDriverState *bs;
- } BdrvStateSetAioContext;
+@@ -1226,9 +1226,10 @@ static int bdrv_child_cb_inactivate(BdrvChild *child)
+     return 0;
+ }
  
--static bool bdrv_parent_change_aio_context(BdrvChild *c, AioContext *ctx,
--                                           GHashTable *visited,
--                                           Transaction *tran,
--                                           Error **errp)
+-static bool bdrv_child_cb_change_aio_ctx(BdrvChild *child, AioContext *ctx,
+-                                         GHashTable *visited, Transaction *tran,
+-                                         Error **errp)
 +static bool GRAPH_RDLOCK
-+bdrv_parent_change_aio_context(BdrvChild *c, AioContext *ctx,
-+                               GHashTable *visited, Transaction *tran,
-+                               Error **errp)
++bdrv_child_cb_change_aio_ctx(BdrvChild *child, AioContext *ctx,
++                             GHashTable *visited, Transaction *tran,
++                             Error **errp)
  {
-     GLOBAL_STATE_CODE();
-     if (g_hash_table_contains(visited, c)) {
+     BlockDriverState *bs = child->opaque;
+     return bdrv_change_aio_context(bs, ctx, visited, tran, errp);
+diff --git a/block/block-backend.c b/block/block-backend.c
+index a402db13f2..6a6949edeb 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -136,9 +136,9 @@ static void blk_root_drained_end(BdrvChild *child);
+ static void blk_root_change_media(BdrvChild *child, bool load);
+ static void blk_root_resize(BdrvChild *child);
+ 
+-static bool blk_root_change_aio_ctx(BdrvChild *child, AioContext *ctx,
+-                                    GHashTable *visited, Transaction *tran,
+-                                    Error **errp);
++static bool GRAPH_RDLOCK
++blk_root_change_aio_ctx(BdrvChild *child, AioContext *ctx, GHashTable *visited,
++                        Transaction *tran, Error **errp);
+ 
+ static char *blk_root_get_parent_desc(BdrvChild *child)
+ {
+diff --git a/blockjob.c b/blockjob.c
+index 32007f31a9..34185d7715 100644
+--- a/blockjob.c
++++ b/blockjob.c
+@@ -144,9 +144,9 @@ static TransactionActionDrv change_child_job_context = {
+     .clean = g_free,
+ };
+ 
+-static bool child_job_change_aio_ctx(BdrvChild *c, AioContext *ctx,
+-                                     GHashTable *visited, Transaction *tran,
+-                                     Error **errp)
++static bool GRAPH_RDLOCK
++child_job_change_aio_ctx(BdrvChild *c, AioContext *ctx, GHashTable *visited,
++                         Transaction *tran, Error **errp)
+ {
+     BlockJob *job = c->opaque;
+     BdrvStateChildJobContext *s;
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 2982dd3118..37466c7841 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -983,9 +983,9 @@ struct BdrvChildClass {
+                            bool backing_mask_protocol,
+                            Error **errp);
+ 
+-    bool (*change_aio_ctx)(BdrvChild *child, AioContext *ctx,
+-                           GHashTable *visited, Transaction *tran,
+-                           Error **errp);
++    bool GRAPH_RDLOCK_PTR (*change_aio_ctx)(BdrvChild *child, AioContext *ctx,
++                                            GHashTable *visited,
++                                            Transaction *tran, Error **errp);
+ 
+     /*
+      * I/O API functions. These functions are thread-safe.
 -- 
 2.39.5
 
