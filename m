@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFA1AC8A4E
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 11:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32401AC8A74
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 11:08:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKva9-0001Sm-Ph; Fri, 30 May 2025 04:59:17 -0400
+	id 1uKvhw-0003WM-Ta; Fri, 30 May 2025 05:07:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uKvZZ-0001PE-1C; Fri, 30 May 2025 04:58:47 -0400
+ id 1uKvhj-0003TK-0C; Fri, 30 May 2025 05:07:09 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uKvZP-0002Jz-VD; Fri, 30 May 2025 04:58:35 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b7xtx1pS6z6L54t;
- Fri, 30 May 2025 16:56:57 +0800 (CST)
+ id 1uKvhg-000317-6l; Fri, 30 May 2025 05:07:06 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b7y296L0Xz6K619;
+ Fri, 30 May 2025 17:03:13 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 2D5A21404FC;
- Fri, 30 May 2025 16:58:15 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 693401402FC;
+ Fri, 30 May 2025 17:06:53 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 30 May
- 2025 10:58:14 +0200
-Date: Fri, 30 May 2025 09:58:13 +0100
+ 2025 11:06:52 +0200
+Date: Fri, 30 May 2025 10:06:51 +0100
 To: Eric Auger <eric.auger@redhat.com>
 CC: <eric.auger.pro@gmail.com>, <qemu-devel@nongnu.org>,
  <qemu-arm@nongnu.org>, <peter.maydell@linaro.org>, <imammedo@redhat.com>,
  <gustavo.romero@linaro.org>, <anisinha@redhat.com>, <mst@redhat.com>,
  <shannon.zhaosl@gmail.com>, <pbonzini@redhat.com>, <philmd@linaro.org>,
  <alex.bennee@linaro.org>
-Subject: Re: [PATCH v2 02/25] hw/arm/virt: Introduce machine state acpi
- pcihp flags and props
-Message-ID: <20250530095813.00004984@huawei.com>
-In-Reply-To: <20250527074224.1197793-3-eric.auger@redhat.com>
+Subject: Re: [PATCH v2 03/25] hw/acpi: Rename and move
+ build_x86_acpi_pci_hotplug to pcihp
+Message-ID: <20250530100651.000042bb@huawei.com>
+In-Reply-To: <20250527074224.1197793-4-eric.auger@redhat.com>
 References: <20250527074224.1197793-1-eric.auger@redhat.com>
- <20250527074224.1197793-3-eric.auger@redhat.com>
+ <20250527074224.1197793-4-eric.auger@redhat.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -74,28 +74,21 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 May 2025 09:40:04 +0200
+On Tue, 27 May 2025 09:40:05 +0200
 Eric Auger <eric.auger@redhat.com> wrote:
 
-> acpi_pcihp VirtMachineClass state flag will allow
-> to opt in for acpi pci hotplug. This is guarded by a
-> class no_acpi_pcihp flag to manage compats (<= 10.0
-> machine types will not support ACPI PCI hotplug).
+> We plan to reuse build_x86_acpi_pci_hotplug() implementation
+> for ARM so let's move the code to generic pcihp.
 > 
-> Machine state acpi_pcihp flag must be set before the creation
-> of the GED device which will use it.
+> Associated static aml_pci_pdsm() helper is also moved along.
+> build_x86_acpi_pci_hotplug is renamed into build_acpi_pci_hotplug().
 > 
-> Currently the ACPI PCI HP is turned off by default. This will
-> change later on for 10.1 machine type.
+> No code change intended.
 > 
-> We also introduce properties to allow disabling it.
+> Also fix the reference to acpi_pci_hotplug.rst documentation
 > 
 > Signed-off-by: Eric Auger <eric.auger@redhat.com>
 > Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-
-Seems fine though I'm not sure on the default for 10.1
-I don't feel that strongly about it though.
-
+Indeed moves the code as described...
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
 
