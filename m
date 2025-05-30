@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FF8AC925E
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F8AAC9271
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:20:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Pc-0004Zk-JM; Fri, 30 May 2025 11:12:48 -0400
+	id 1uL1Pg-0004lB-Qp; Fri, 30 May 2025 11:12:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PX-0004MN-FL; Fri, 30 May 2025 11:12:43 -0400
+ id 1uL1PY-0004RG-SF; Fri, 30 May 2025 11:12:44 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PV-0002Kn-D9; Fri, 30 May 2025 11:12:43 -0400
+ id 1uL1PV-0002Kl-Iw; Fri, 30 May 2025 11:12:44 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 9791744B62;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 1D25E44B9B;
  Fri, 30 May 2025 17:11:48 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
@@ -26,9 +26,9 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 37/48] block: mark blk_remove_bs() as GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:11:14 +0200
-Message-Id: <20250530151125.955508-38-f.ebner@proxmox.com>
+Subject: [PATCH v4 38/48] block: mark blk_drain() as GRAPH_UNLOCKED
+Date: Fri, 30 May 2025 17:11:15 +0200
+Message-Id: <20250530151125.955508-39-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -57,91 +57,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function blk_remove_bs() calls bdrv_graph_wrlock_drained() and can
-also call bdrv_drained_begin(), both of which which must be called with
-the graph unlocked.
-
-Marking blk_remove_bs() as GRAPH_UNLOCKED requires temporarily
-unlocking in hmp_drive_del().
+The function blk_drain() calls bdrv_drained_begin(), which must be
+called with the graph unlocked.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- block/monitor/block-hmp-cmds.c              | 15 ++++++++++-----
- include/system/block-backend-global-state.h |  2 +-
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ include/system/block-backend-global-state.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
-index 6919a49bf5..282d1c386e 100644
---- a/block/monitor/block-hmp-cmds.c
-+++ b/block/monitor/block-hmp-cmds.c
-@@ -144,7 +144,7 @@ void hmp_drive_del(Monitor *mon, const QDict *qdict)
-     Error *local_err = NULL;
- 
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+    bdrv_graph_rdlock_main_loop();
- 
-     bs = bdrv_find_node(id);
-     if (bs) {
-@@ -152,29 +152,31 @@ void hmp_drive_del(Monitor *mon, const QDict *qdict)
-         if (local_err) {
-             error_report_err(local_err);
-         }
--        return;
-+        goto unlock;
-     }
- 
-     blk = blk_by_name(id);
-     if (!blk) {
-         error_report("Device '%s' not found", id);
--        return;
-+        goto unlock;
-     }
- 
-     if (!blk_legacy_dinfo(blk)) {
-         error_report("Deleting device added with blockdev-add"
-                      " is not supported");
--        return;
-+        goto unlock;
-     }
- 
-     bs = blk_bs(blk);
-     if (bs) {
-         if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_DRIVE_DEL, &local_err)) {
-             error_report_err(local_err);
--            return;
-+            goto unlock;
-         }
- 
-+        bdrv_graph_rdunlock_main_loop();
-         blk_remove_bs(blk);
-+        bdrv_graph_rdlock_main_loop();
-     }
- 
-     /* Make the BlockBackend and the attached BlockDriverState anonymous */
-@@ -191,6 +193,9 @@ void hmp_drive_del(Monitor *mon, const QDict *qdict)
-     } else {
-         blk_unref(blk);
-     }
-+
-+unlock:
-+    bdrv_graph_rdunlock_main_loop();
- }
- 
- void hmp_commit(Monitor *mon, const QDict *qdict)
 diff --git a/include/system/block-backend-global-state.h b/include/system/block-backend-global-state.h
-index a62dbdf0dc..1a134083b7 100644
+index 1a134083b7..f6ec1174e6 100644
 --- a/include/system/block-backend-global-state.h
 +++ b/include/system/block-backend-global-state.h
-@@ -55,7 +55,7 @@ void monitor_remove_blk(BlockBackend *blk);
- 
- BlockBackendPublic *blk_get_public(BlockBackend *blk);
- 
--void blk_remove_bs(BlockBackend *blk);
-+void GRAPH_UNLOCKED blk_remove_bs(BlockBackend *blk);
- int blk_insert_bs(BlockBackend *blk, BlockDriverState *bs, Error **errp);
- int blk_replace_bs(BlockBackend *blk, BlockDriverState *new_bs, Error **errp);
- bool GRAPH_RDLOCK bdrv_has_blk(BlockDriverState *bs);
+@@ -78,7 +78,7 @@ int blk_make_zero(BlockBackend *blk, BdrvRequestFlags flags);
+ void blk_aio_cancel(BlockAIOCB *acb);
+ int blk_commit_all(void);
+ bool blk_in_drain(BlockBackend *blk);
+-void blk_drain(BlockBackend *blk);
++void GRAPH_UNLOCKED blk_drain(BlockBackend *blk);
+ void GRAPH_UNLOCKED blk_drain_all(void);
+ void blk_set_on_error(BlockBackend *blk, BlockdevOnError on_read_error,
+                       BlockdevOnError on_write_error);
 -- 
 2.39.5
 
