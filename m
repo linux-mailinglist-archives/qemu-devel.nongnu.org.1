@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5BEAC88B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0448DAC88D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:25:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtwd-0001xc-0r; Fri, 30 May 2025 03:14:25 -0400
+	id 1uKtza-0007py-Hs; Fri, 30 May 2025 03:17:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtwR-0001jO-Gl
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:12 -0400
+ id 1uKtwV-000288-Mh
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtwP-0006wd-NP
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:11 -0400
+ id 1uKtwT-0006x5-Sc
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589249;
+ s=mimecast20190719; t=1748589253;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zD5uJ8jFUB+v/sY8GNGoG42jUP/hPHeJqHlrZl8Wgb8=;
- b=Am2Q9Ylx63Ar/oNTRdMW0gDbLqtflvKl9jAQZLB5JJsl8CEiQOfA9PJX8xgA/EOC7Tb97Z
- M8ietuPhZS8dkNIeUb61ryNrs3pkpr6RIprBDBSV/YTZOd3vgksHhKzgFVarouq4G9PUAr
- ngaB40sj+6uBerElou3cELpOTzQsi1w=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yQ/BwSgwmbub3MAbN+Z00asSvuJ0Grx4VxYgqtnMhH4=;
+ b=Uaa1CpZt6ifkx0IXzAvsAGB0xIUAytdLf4nWPgbD4gmxykd9b77AlVsbJziNeW4y+BKoj9
+ NhQMcOL1UC+bk1FivifPmkf8u1QHYGNyjD41mnhT41xfFj8aPB9cQbPxyVpju5GCr3evuL
+ hmvupDjXCaTuphHWRi06kxLwKSG5Kg4=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-416-mrt-k4WvOV-ri5NVayR8eA-1; Fri, 30 May 2025 03:14:07 -0400
-X-MC-Unique: mrt-k4WvOV-ri5NVayR8eA-1
-X-Mimecast-MFC-AGG-ID: mrt-k4WvOV-ri5NVayR8eA_1748589246
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-602df3e7adcso1875991a12.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:07 -0700 (PDT)
+ us-mta-658-AfvGXiPcOu--4zqrlpv_Xw-1; Fri, 30 May 2025 03:14:10 -0400
+X-MC-Unique: AfvGXiPcOu--4zqrlpv_Xw-1
+X-Mimecast-MFC-AGG-ID: AfvGXiPcOu--4zqrlpv_Xw_1748589250
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-acf16746a74so115999166b.0
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589245; x=1749194045;
+ d=1e100.net; s=20230601; t=1748589249; x=1749194049;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zD5uJ8jFUB+v/sY8GNGoG42jUP/hPHeJqHlrZl8Wgb8=;
- b=ZhVuFVZv45Rs/gN/RFszJEyVvMV4SCM6MD2GihgHSV3t/C+Ahnqe1bWtDCxfcUAqr1
- UGse6xM3UaxFwpH6HheP4WkXoGBw0KUQX5FKQGnei48X4u6iFcw0P93nBLhbkABtr1q3
- UZBeozsxLOGo6n2wp7TAejccaYOzX0tQWBaCFxfGmA2Ps7SW9e2Ijfdd0CWqRJ+dKciX
- 57mciuv7VYaioPnWTgjchiZRP7JjdJlt+9jue5GJ+e+j7g6PyomgBwUEfMULIFyLBJ3A
- YhHn80aEsz+1PdNJ3LUhfCt1ZbxJ38BYQVzwR6hHXBQwtYxkQQAA0/cCo3BmL3NQcvm/
- SuyA==
-X-Gm-Message-State: AOJu0YwILfZmR6knjSxDYcrIIEGZAe9Ef5QEdiky7txLy+dc5jKj5AMz
- RFVxqQk9Cy2/dn5Qb93nAwh9m8gcbkd2sLY7byPJCCjeGY2nVCn0bei6YjnUF/sq8NYYxb10wuc
- uoVqd4FrYvTH4uzOo25zUL8nW3rrFGqvmIQ6qj5OhuI9tLB0kL0fJhIAabiAaqaD4TV462nyzYD
- tFXyMlp+6PiGad+uXCfy3Sixcchc1l1LB7C5f5vZzl
-X-Gm-Gg: ASbGncsnzovOeMxx+XwZgHyHCyok6cT4EottYiKy/WAyNoNKeZMnFVr2vcWGX3aG0CE
- HdRFNivqmQFRuXwIASVCRWUvN+ilUEqVuERNDSoaqmwHFSp900KRpHWHwWE895aiVM8KIvYQafw
- vjE0OTaZomxzFSpEZCiyqrdEp6uZ5ZUCsv1r1nf7PrG/s0OFvYmfYobYPALUUCpIrr6KPRZA1Wl
- 9mX5KKea3zNO4b0IZPSiqETeOuUII1a8TeiBHFNHsCXdb4YiG/kK0wo0bHEDMlJs1JrS6g2fjEU
- pajHPcPeqUMuAw==
-X-Received: by 2002:a05:6402:4408:b0:5fd:1972:7fac with SMTP id
- 4fb4d7f45d1cf-6057c1a509bmr1032598a12.3.1748589245305; 
- Fri, 30 May 2025 00:14:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFO1eMPREg3fiDQfV5uOr4zPYxdC4zR10d4Igiom1WhdVHQ6eZmfWaRwi7kAxAx8ZuKdtKMOQ==
-X-Received: by 2002:a05:6402:4408:b0:5fd:1972:7fac with SMTP id
- 4fb4d7f45d1cf-6057c1a509bmr1032573a12.3.1748589244925; 
- Fri, 30 May 2025 00:14:04 -0700 (PDT)
+ bh=yQ/BwSgwmbub3MAbN+Z00asSvuJ0Grx4VxYgqtnMhH4=;
+ b=qbkIwvVp2cPX5IoeD73QSw1jJyajMe8DwCYjmn8OkAstU/aJ6ja+mlbg6SeNbCvTSW
+ BKM/lhAJYCWJPq5YTZDWJVlZ4/J1Wxo5rMf5wmaJMSrfyKY8zuy2eEj9FyhagHmffnBl
+ i1J0jWOXCWlNc3IafJBJZraa2jmOo3JBlbx2J7JcG2r/tU7vrzc4/cA+pEFU1JCf49e3
+ 0bvDSU/eZjjO/+u5vwmBy2ig+4/7Mv2HuVWdberMqDPNeji/PtrTJ7sWsanwhEjVkxnk
+ D+zB5uB6mM0cwyEBmhHO8ePgeRIkZ1erqlxAZvXIPfPyrj8MMts8YMJvNxlKxMjUUVjc
+ mm5A==
+X-Gm-Message-State: AOJu0YyUkh4BJmoaLMDoaLUgqHulb5KkbZ1NA9fOMtVzq/tLNgpiInu1
+ gtziIFgj8h0bnxCYzPKrObuPgWwPCeYt6RU/HI0tnc03bQuI04cHaRl3JA1XJ6J0AJrlI1MB0IO
+ 1ybuxHf5iQMUNNLbcnNunXvBzjuJzkT1ykqPMt4tAiB5MA3XrnX/HQfOKJ/7CmXjkzfveXd4S7D
+ WL+6aPQqyeM2zadtXLPOYruMDy7Xm4gMiL4xBsQ56+
+X-Gm-Gg: ASbGnct67D+Zu2KLcNQU5BNjoVaSN6nLm6qdhQ6Nou08rGYOZJP0YeTAvQ0ycvJc3Oo
+ iGQhv7bP1Nnf3q7skmRIJvVZkXkaqGxnkhdmtLWQECQHaFCToFz8xvhM3S1cELb31/z5nMjP6dY
+ HdtyKT5mV5cmZYL1+h22WD3rrb4lzA3+mmhqC6JbFpMKQTOWRb6BCm3UETpTg6N1igDYND3zC3F
+ HjmnFwyr0tR/tKH59+/5rcLpf4hSSmuWQUAgTzCHSCk0Ns2z0IXCJmab6tj84WwAP7lkxX+35Xo
+ X6YbPNCY70ogH0UfC2d219hK
+X-Received: by 2002:a17:907:2d10:b0:adb:7f8:9ecf with SMTP id
+ a640c23a62f3a-adb32301978mr201455066b.45.1748589249183; 
+ Fri, 30 May 2025 00:14:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrfdR58BsX73JAnqKhJP+JgvXt6woRvEY8Sd3tviy3ZJau0xYb1tWFwIiPqozjsOzyzr5h/A==
+X-Received: by 2002:a17:907:2d10:b0:adb:7f8:9ecf with SMTP id
+ a640c23a62f3a-adb32301978mr201452266b.45.1748589248761; 
+ Fri, 30 May 2025 00:14:08 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60566c74ee7sm1222976a12.47.2025.05.30.00.14.03
+ a640c23a62f3a-ada5d82e88csm279235766b.62.2025.05.30.00.14.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:14:03 -0700 (PDT)
+ Fri, 30 May 2025 00:14:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 30/77] i386/tdx: Parse TDVF metadata for TDX VM
-Date: Fri, 30 May 2025 09:12:00 +0200
-Message-ID: <20250530071250.2050910-31-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 31/77] i386/tdx: Don't initialize pc.rom for TDX VMs
+Date: Fri, 30 May 2025 09:12:01 +0200
+Message-ID: <20250530071250.2050910-32-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -111,101 +109,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-After TDVF is loaded to bios MemoryRegion, it needs parse TDVF metadata.
+For TDX, the address below 1MB are entirely general RAM. No need to
+initialize pc.rom memory region for TDs.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-19-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-20-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/tdx.h      | 3 +++
- hw/i386/pc_sysfw.c         | 7 +++++++
- target/i386/kvm/tdx-stub.c | 5 +++++
- target/i386/kvm/tdx.c      | 5 +++++
- 4 files changed, 20 insertions(+)
+ hw/i386/pc.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index b73461b8d8a..28a03c2a7b8 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -8,6 +8,7 @@
- #endif
- 
- #include "confidential-guest.h"
-+#include "hw/i386/tdvf.h"
- 
- #define TYPE_TDX_GUEST "tdx-guest"
- #define TDX_GUEST(obj)  OBJECT_CHECK(TdxGuest, (obj), TYPE_TDX_GUEST)
-@@ -32,6 +33,7 @@ typedef struct TdxGuest {
-     char *mrownerconfig;    /* base64 encoded sha348 digest */
- 
-     MemoryRegion *tdvf_mr;
-+    TdxFirmware tdvf;
- } TdxGuest;
- 
- #ifdef CONFIG_TDX
-@@ -42,5 +44,6 @@ bool is_tdx_vm(void);
- 
- int tdx_pre_create_vcpu(CPUState *cpu, Error **errp);
- void tdx_set_tdvf_region(MemoryRegion *tdvf_mr);
-+int tdx_parse_tdvf(void *flash_ptr, int size);
- 
- #endif /* QEMU_I386_TDX_H */
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index 1eeb58ab37f..821396c16e9 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -37,6 +37,7 @@
- #include "hw/block/flash.h"
- #include "system/kvm.h"
- #include "target/i386/sev.h"
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 70656157ca0..a403987a642 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -44,6 +44,7 @@
+ #include "system/xen.h"
+ #include "system/reset.h"
+ #include "kvm/kvm_i386.h"
 +#include "kvm/tdx.h"
+ #include "hw/xen/xen.h"
+ #include "qobject/qlist.h"
+ #include "qemu/error-report.h"
+@@ -976,21 +977,23 @@ void pc_memory_init(PCMachineState *pcms,
+     /* Initialize PC system firmware */
+     pc_system_firmware_init(pcms, rom_memory);
  
- #define FLASH_SECTOR_SIZE 4096
- 
-@@ -280,5 +281,11 @@ void x86_firmware_configure(hwaddr gpa, void *ptr, int size)
+-    option_rom_mr = g_malloc(sizeof(*option_rom_mr));
+-    if (machine_require_guest_memfd(machine)) {
+-        memory_region_init_ram_guest_memfd(option_rom_mr, NULL, "pc.rom",
+-                                           PC_ROM_SIZE, &error_fatal);
+-    } else {
+-        memory_region_init_ram(option_rom_mr, NULL, "pc.rom", PC_ROM_SIZE,
+-                               &error_fatal);
+-        if (pcmc->pci_enabled) {
+-            memory_region_set_readonly(option_rom_mr, true);
++    if (!is_tdx_vm()) {
++        option_rom_mr = g_malloc(sizeof(*option_rom_mr));
++        if (machine_require_guest_memfd(machine)) {
++            memory_region_init_ram_guest_memfd(option_rom_mr, NULL, "pc.rom",
++                                            PC_ROM_SIZE, &error_fatal);
++        } else {
++            memory_region_init_ram(option_rom_mr, NULL, "pc.rom", PC_ROM_SIZE,
++                                &error_fatal);
++            if (pcmc->pci_enabled) {
++                memory_region_set_readonly(option_rom_mr, true);
++            }
          }
- 
-         sev_encrypt_flash(gpa, ptr, size, &error_fatal);
-+    } else if (is_tdx_vm()) {
-+        ret = tdx_parse_tdvf(ptr, size);
-+        if (ret) {
-+            error_report("failed to parse TDVF for TDX VM");
-+            exit(1);
-+        }
++        memory_region_add_subregion_overlap(rom_memory,
++                                            PC_ROM_MIN_VGA,
++                                            option_rom_mr,
++                                            1);
      }
- }
-diff --git a/target/i386/kvm/tdx-stub.c b/target/i386/kvm/tdx-stub.c
-index 2344433594e..7748b6d0a44 100644
---- a/target/i386/kvm/tdx-stub.c
-+++ b/target/i386/kvm/tdx-stub.c
-@@ -8,3 +8,8 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
- {
-     return -EINVAL;
- }
-+
-+int tdx_parse_tdvf(void *flash_ptr, int size)
-+{
-+    return -EINVAL;
-+}
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 0f5acbf980b..18beba2f5c3 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -382,6 +382,11 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-     return 0;
- }
+-    memory_region_add_subregion_overlap(rom_memory,
+-                                        PC_ROM_MIN_VGA,
+-                                        option_rom_mr,
+-                                        1);
  
-+int tdx_parse_tdvf(void *flash_ptr, int size)
-+{
-+    return tdvf_parse_metadata(&tdx_guest->tdvf, flash_ptr, size);
-+}
-+
- static bool tdx_guest_get_sept_ve_disable(Object *obj, Error **errp)
- {
-     TdxGuest *tdx = TDX_GUEST(obj);
+     fw_cfg = fw_cfg_arch_create(machine,
+                                 x86ms->boot_cpus, x86ms->apic_id_limit);
 -- 
 2.49.0
 
