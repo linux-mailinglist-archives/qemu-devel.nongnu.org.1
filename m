@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38137AC88D5
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4ECAAC88A2
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:16:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtwA-0000yq-G9; Fri, 30 May 2025 03:13:54 -0400
+	id 1uKtwR-0001ZE-23; Fri, 30 May 2025 03:14:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtw8-0000yL-4Y
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:52 -0400
+ id 1uKtwE-0001Mz-Ez
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtw6-0006t3-L8
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:51 -0400
+ id 1uKtw8-0006tP-Oz
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589230;
+ s=mimecast20190719; t=1748589232;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AfP7gKVErJOlig7HlJ7HLKaFhaDV2c2A57Y5ud1kn9s=;
- b=cJpSNSvXPOm4iqQgMCfykBfujnWt+QUCv4xnNfPDEzfLaf1ODaXI2fxOhlaeIXf9ui0nVS
- 26q+fZvFACLuc7tdrVG6b/H5/7G902KWJoZSF+gUEa7Up0i0RHtmcUu9U8JjgovVYAohnB
- 5SZRfr0+FI9OELTMYWQxO+D+bgV202o=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0PMZx8CW/ZJ5L6YF0n/BoS9VKERI3wcezul0GBrsyAg=;
+ b=I8Wo01iV/VgJjf8pr8mPpPDiK89nU9mS8MIwqYnXpY0WKYVpD+bVMdkYDM5i2QY0LB4TbX
+ fH0B6g3afdMXT3apQ3q51nnjGdrNi/goU1KY4ogm7S/P7N3kfyFJZu5XVQQk8EtB2CR1sT
+ 0SnJI413TNlPCBrqg7hONF21tm4+XZo=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-hIxxBnZPNWuDvQ2Txim6SA-1; Fri, 30 May 2025 03:13:48 -0400
-X-MC-Unique: hIxxBnZPNWuDvQ2Txim6SA-1
-X-Mimecast-MFC-AGG-ID: hIxxBnZPNWuDvQ2Txim6SA_1748589227
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ab68fbe53a4so87600766b.2
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:48 -0700 (PDT)
+ us-mta-94-hYtXLY4LNy6yxDyg5NEGKA-1; Fri, 30 May 2025 03:13:50 -0400
+X-MC-Unique: hYtXLY4LNy6yxDyg5NEGKA-1
+X-Mimecast-MFC-AGG-ID: hYtXLY4LNy6yxDyg5NEGKA_1748589230
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-604fe4c3130so1406475a12.3
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589226; x=1749194026;
+ d=1e100.net; s=20230601; t=1748589229; x=1749194029;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AfP7gKVErJOlig7HlJ7HLKaFhaDV2c2A57Y5ud1kn9s=;
- b=a0xwG5mOh0H8m+5QRPO1bWIormUdYF3jgkWyP7sne0RMu6ByvLKEvIsIg+f5/liR8b
- 0+8C9VWGWcpB7/aBRHWReAYpTWpkAUrbf021YgzXNHduADr8it9UPaBVhJM8MoqpDV9N
- NR0s4mLwWQSULAztOxzPc8a4Gix4Y3ADufbJAK7wFPTNRBCnK3gkwP08sqmXXB0nBtHk
- E/aNZOlJSRWH9FHtMIUi2Fs2OubxgDJ4qUSs5hkMjqP5GtG4QzFInmWlged/eXGzDFCp
- 9B2Je5lcNDyaDIr+wq3MpmLUxJTh0RKPbG3HgRVj3TNoJBSIsdGP5J7LXkFkEt586AR4
- FKwA==
-X-Gm-Message-State: AOJu0YxWzkgqb7XtpKn3PrBriNlLdWoK4DGRHoAu1uH/EPzsqCPfY6b0
- 4xUDdgKMsVVr5GGBJeANqCj49pd9vy3Y4RO1MojYP3TpXoj9VJK1TG3zACd3NAaRX8VKHd2PaSL
- GvONLINIWgViO0hleTWPGHM5wswLcvwV1wEHd0l8gpr6c53M4rzD4mo4nKCUtewoNTc1qoixUKT
- 7BOwX2OOs3r6RnaseZ/6g7Fuac4IG8t1VbHBu3TQcq
-X-Gm-Gg: ASbGnctTMWFGwsf+g0VBeVJHwmOkj59AkaD4AN/mE1Tl5WzIjbDFlJhYy+TNX/RQvFn
- 0fgLfJzSWjAxKptgP8zHhF5mJzjsqk5tBsiXLBnn/75ETZ+laGFVUC6yCZ3pe0ylxIa3yVILtXl
- iNmemtR5+N/aNugnv7UeayQeLO6o8GVpu+gBsjwRDu3u5Qc0hDUx0PYsErXEpUvhsGaP7CBKGNq
- xciRpZvaHq84EFlaJCBX4sUAr/4fbmxquxJLJJBwWu2YyYAuYlCJ0xDig1IP5WCZOIFXZbWaaN4
- 1VrpjqsJpM+Yng==
-X-Received: by 2002:a17:906:7314:b0:ad8:a2cf:76f2 with SMTP id
- a640c23a62f3a-adb36bfb56fmr90142866b.48.1748589226518; 
- Fri, 30 May 2025 00:13:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyd4QPhL0FAlyQL2Io9GMJJeKJvq+ot5VIn7SFgHyUs25QBhk1OTrDEguWbciwsQsqdVFv9A==
-X-Received: by 2002:a17:906:7314:b0:ad8:a2cf:76f2 with SMTP id
- a640c23a62f3a-adb36bfb56fmr90140366b.48.1748589225946; 
- Fri, 30 May 2025 00:13:45 -0700 (PDT)
+ bh=0PMZx8CW/ZJ5L6YF0n/BoS9VKERI3wcezul0GBrsyAg=;
+ b=ZbayWZV9P9SIEnMdIuBz9g6UgT+kGkmb60pHBFbQYa+SkWpTe83fkNqhmAMKUPolbo
+ Femw+fF0jqmb3bbrUnEC6v28vu259zSzd5Heeq3izFn/Y310RHuOYLZZMBbpoI7KWbOM
+ Il1MCmSO6TlZmzFoEJuC7YOHnfjV/fTHEppC9kfvrQ7X2U4XKT4JPNt/oV7HjUMCnNbS
+ eEMlSnm1CmsWXWntxHna9NRXriJrKznfquLdzmkA71ssoOk2iGYbJ/mLbSUQtX6/BRxz
+ W0MO5P+Lz7XHWNvJUeASkhsExxZEW2tlkJg0/c8p1d7UAn1loMGZePQu4pDCQ6/idzfH
+ Se3Q==
+X-Gm-Message-State: AOJu0YzMFqL1GwNSLDw+EJTmX1ifvpfWnd1nvCkjSV9PWV4u2KC0H4mw
+ 3g4zmyHfs9F3l/IwZghs+RFuJcreTD7eN4PX4zrGMFKjJ4f7GIU+Bq3I22TJhn2ZjB7KYmNSOHz
+ vni04Cr/glFvza2/iUF2zr11bZ/BgLr2lZVaJL57A4NPeI69IyBP8XPfsk9XKFUFn1hEBJ7lX2Z
+ ePF9xnGpSeAfIPbMmbjDeEYIaNYH9x9Daq7OmQNbTW
+X-Gm-Gg: ASbGncsL0mNos/10HkL0x1OvXsQ7sof1vM9vkK61+Q1faerOs7G2VW8dmQnxV14Phrg
+ lOT1LavpKNubDtXohjOMvdZf5FPA3gGTlbuIlcxkf/wc3fcheJU1iUAVlwf3loKLW6sS/EI5Bkc
+ JN5UTrUADZrYQDaXeTrz/n9pEUBaJmWjjZjOb7T/bEbCqaPfFx0lp9T9c9N56mgRUJaOwbIPzB/
+ AJYEvrS2bzOC2up4HRrNq0Ekz2fh+FdaC/Q7+ux7DSc+l3/8v8eVkcRGuDMZMsIj0DrSD5KrhSX
+ y30G4YH4YZLqhw==
+X-Received: by 2002:a05:6402:34c9:b0:602:4405:776f with SMTP id
+ 4fb4d7f45d1cf-6056ef01f87mr1598575a12.31.1748589228749; 
+ Fri, 30 May 2025 00:13:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvQ6kRYPtUhMR1aU8nvg7p8dowMTarXA2vm2wAe0kaINJx9TtVI5A6NZdeH+GQCpM4Gb7eMg==
+X-Received: by 2002:a05:6402:34c9:b0:602:4405:776f with SMTP id
+ 4fb4d7f45d1cf-6056ef01f87mr1598549a12.31.1748589228245; 
+ Fri, 30 May 2025 00:13:48 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-adb2fb63cdasm133502266b.120.2025.05.30.00.13.44
+ 4fb4d7f45d1cf-60566c74ee7sm1222629a12.47.2025.05.30.00.13.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:13:44 -0700 (PDT)
+ Fri, 30 May 2025 00:13:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Isaku Yamahata <isaku.yamahata@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>,
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 22/77] i386/tdx: Make sept_ve_disable set by default
-Date: Fri, 30 May 2025 09:11:52 +0200
-Message-ID: <20250530071250.2050910-23-pbonzini@redhat.com>
+Subject: [PULL 23/77] i386/tdx: Wire CPU features up with attributes of TD
+ guest
+Date: Fri, 30 May 2025 09:11:53 +0200
+Message-ID: <20250530071250.2050910-24-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
@@ -110,35 +110,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-For TDX KVM use case, Linux guest is the most major one.  It requires
-sept_ve_disable set.  Make it default for the main use case.  For other use
-case, it can be enabled/disabled via qemu command line.
+For QEMU VMs,
+  - PKS is configured via CPUID_7_0_ECX_PKS, e.g., -cpu xxx,+pks  and
+  - PMU is configured by x86cpu->enable_pmu, e.g., -cpu xxx,pmu=on
 
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+While the bit 30 (PKS) and bit 63 (PERFMON) of TD's attributes are also
+used to configure the PKS and PERFMON/PMU of TD, reuse the existing
+configuration interfaces of 'cpu' for TD's attributes.
+
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-11-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-12-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/tdx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/kvm/tdx.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 32ba3982ff1..a30731b1a3b 100644
+index a30731b1a3b..22d66bdb14f 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -288,7 +288,7 @@ static void tdx_guest_init(Object *obj)
-     qemu_mutex_init(&tdx->lock);
+@@ -19,6 +19,8 @@
+ #include "tdx.h"
  
-     cgs->require_guest_memfd = true;
--    tdx->attributes = 0;
-+    tdx->attributes = TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE;
+ #define TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE   BIT_ULL(28)
++#define TDX_TD_ATTRIBUTES_PKS               BIT_ULL(30)
++#define TDX_TD_ATTRIBUTES_PERFMON           BIT_ULL(63)
  
-     object_property_add_uint64_ptr(obj, "attributes", &tdx->attributes,
-                                    OBJ_PROP_FLAG_READWRITE);
+ static TdxGuest *tdx_guest;
+ 
+@@ -151,6 +153,15 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
+     return KVM_X86_TDX_VM;
+ }
+ 
++static void setup_td_guest_attributes(X86CPU *x86cpu)
++{
++    CPUX86State *env = &x86cpu->env;
++
++    tdx_guest->attributes |= (env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS) ?
++                             TDX_TD_ATTRIBUTES_PKS : 0;
++    tdx_guest->attributes |= x86cpu->enable_pmu ? TDX_TD_ATTRIBUTES_PERFMON : 0;
++}
++
+ static int setup_td_xfam(X86CPU *x86cpu, Error **errp)
+ {
+     CPUX86State *env = &x86cpu->env;
+@@ -214,6 +225,8 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+     init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
+                         sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
+ 
++    setup_td_guest_attributes(x86cpu);
++
+     r = setup_td_xfam(x86cpu, errp);
+     if (r) {
+         return r;
 -- 
 2.49.0
 
