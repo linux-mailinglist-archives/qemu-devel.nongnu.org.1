@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149EDAC89A7
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FA1AC89AD
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:05:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKuiF-0002Vs-Gp; Fri, 30 May 2025 04:03:37 -0400
+	id 1uKuiT-0002Y8-Cp; Fri, 30 May 2025 04:03:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKui6-0002Tz-U8
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uKuiD-0002Wn-U8
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKui5-0004aR-H1
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:26 -0400
+ id 1uKuiA-0004bk-BY
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748592204;
+ s=mimecast20190719; t=1748592209;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=myOvVFZKA+ce91dh+2uxifrByBNZxhGHP7Vbe62GjBw=;
- b=WC1Q50b3Vq7rnv00hjhZL7dGR95lt7biFl9HX0iMVIm1j245cIgO4bIK+uO+P+X1YL601d
- IV3K5KdOCWVLP4TVfAcOC4TuD4R0MuBDBIt+tMhyevAnyEUItJI0B0DcH3+V/ZPWS0dW1v
- 7pua9AF9AseRW+cFRsR6880789E5FvU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1iO/8dhA6WpfMpyaQHb2m/rin5HTfnhVCocpzfrKwgI=;
+ b=IF2j4iavN37If3GcI+OJDZPAU3xoSsV2xgWozBBvvSE59Zo5zFmZZlkzueBSQ8lbj/BoAJ
+ utvhHdDJVS67Wo1YshvghjudiYNih+BXoUl8MKKWkY6IiFIiNgLed9fZiZxc9eVEbIF64z
+ RGA51I0KqrxMJ+ujhA5GzObppeMC5go=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-C2pr7AM5P02nwvMsW2CE5A-1; Fri, 30 May 2025 04:03:23 -0400
-X-MC-Unique: C2pr7AM5P02nwvMsW2CE5A-1
-X-Mimecast-MFC-AGG-ID: C2pr7AM5P02nwvMsW2CE5A_1748592202
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-acb94dbd01fso162788666b.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:23 -0700 (PDT)
+ us-mta-197-eAAom6RlPMenz7mZif1_lw-1; Fri, 30 May 2025 04:03:28 -0400
+X-MC-Unique: eAAom6RlPMenz7mZif1_lw-1
+X-Mimecast-MFC-AGG-ID: eAAom6RlPMenz7mZif1_lw_1748592207
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ad8816c50e1so125200766b.0
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748592202; x=1749197002;
+ d=1e100.net; s=20230601; t=1748592206; x=1749197006;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=myOvVFZKA+ce91dh+2uxifrByBNZxhGHP7Vbe62GjBw=;
- b=adMEpoAip6H01eOSLqQoGwvn82n49GeWlFBl8W51R23g0hzOb3+27OMBIXsU2UqdSM
- TbTmjGI5WScBShmltDu+xA6lCirbt0Gt3fDlAyOl+BTWYSKEEy8NZn/9Ir3tWiCUddRA
- CuW3krnDSvCyFJnWQwumg7BveaiqeyPWwIv8bhZMlB91b1hzUtFB4bC8yqk7QczlPfF5
- Fb/agnDXDFDPIUpycEqmbpAZBZ+vzBKDpFU+QswbAEzK087ZctC/wtRh9wJzzQpabN2i
- SABZETjmkdq0flxLbSySHWyQbxcewrQaWTsyxLAt81kfpyqxQsb8gGd7/bqHyzTi3lo+
- DGCg==
-X-Gm-Message-State: AOJu0Yw58hyQZZ8640KKOEg/cQbSER5OLqgvKMdGncyg6D7DuHNFQ6Pr
- R1woINR92r/YPi2Vp9a3AMCVVOirRA0LNje4rEsmhZf/Y+K+7dmOPneHWXhsW0oXnnYbUwdycnj
- Be/UzuLGkZQTzheoERUJHAvC8MvwW2ecy99djc/KqS4o+HRsHuonE5r1CWxger0hRdcjFgcSxOx
- Emjed7eM0PWRwk9OsPUvvSB4lB0yQVP5thZwAHtLg/
-X-Gm-Gg: ASbGncsgvlaQtJnih9cbPWTtY9T97gBMMVDoRcRmPUQ9DWbrwqDPOK/9gRRZk9FiPXH
- 0ZSESzO0DJd+eYAlLb0ZZXjv4aCEXaojfOXYF8XRPaOoFfZeTRQCY64UPDTmUcQnOgogSq+0RxO
- lOSRA5kdv/ZK2WmjqBdFP1lQOq84GCTIQ2X/IxNZj0onWtBH6XpD6RM2Pv7aRGMWlu3Lo9cXGyS
- 1esr1vTEEOH2tQIKp/Ypk0VpGa+9TmO95kI42LTU58PrweQQVF4c1CfuLymaMNkjhwyRJcLKyNO
- hJ7qWyzlo52T7g==
-X-Received: by 2002:a17:906:478d:b0:ace:5461:81dd with SMTP id
- a640c23a62f3a-adb36b05802mr118174266b.3.1748592201662; 
- Fri, 30 May 2025 01:03:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGudTLYnNAM1SlXn1/5qLjhSkUub+t2LTPYnLarw/rLSgeYw9bvLuyVa3Da0r88P1XO23KT/A==
-X-Received: by 2002:a17:906:478d:b0:ace:5461:81dd with SMTP id
- a640c23a62f3a-adb36b05802mr118166766b.3.1748592200534; 
- Fri, 30 May 2025 01:03:20 -0700 (PDT)
+ bh=1iO/8dhA6WpfMpyaQHb2m/rin5HTfnhVCocpzfrKwgI=;
+ b=fTS+mbHydhcNj46DThGy3fjx5DzXHQ9Srw0vgcvX7kCX1YJK4CLpnl3eqqNs/CRVZH
+ DT5brDubddECw45Fnb0NhP7CLPxI63YM0yFXjMWb+dsZpPjiGklO9DT1NXKXZLRQDGLx
+ WXwxXRQCdCVZ82v2/6fL8rfI9zDfrt9+hQ/i9rLd4TH+ek0WkcS94B/aVu0u9hAGIyun
+ Qw+RN4mrie6KVmMs+0MNmD5X+P1aaOkupsZKbXYvv4b8NLnxwnHv8hEBlQTtF8uH6xCQ
+ kQlzAkNf8/leu+m+G8x2+DrDXhpZas3UxVX6h0Ei68O6BTcWsKpkuKva6Y6ohhhd8gtp
+ CNLA==
+X-Gm-Message-State: AOJu0YytUBNo4CUjAUJD4oD9tW2gp/U1c0wo8c5MPQQDS728tEa+FEx7
+ gDGTMzZPkUmQC+yiw6y8X+/aofIJYI1mtOymdGIZ8USAjc/0d/9v4Fl8mla4co1P3tijVK9GKTb
+ hYD/EfFajitC73K6R1tjQdtjp7bys8/+Ksa+47sLaWf6oCsTMX4hWcy3kyuYuJf8lzqph9UudpN
+ Hn3YFdm1jLK6U6FAtrofPO9ibQKM3I3TVKrR989sNf
+X-Gm-Gg: ASbGnctdQZH8//WJ6GLS7pDxXZWhFY+JdUyImEAMd85Gc2HzwYRnDgENsDIL8P/3uta
+ xZeFLkrX+oWyhIA4nMQFDablSN/nTCUoOneYT+QlYGtQChOkqD13EZM9rxB9gD5JG84nadjBCy6
+ XPtVVxb3rqsnsSfqbNLL4IzdCNAAq0RY/g08+wjPQVw5U1cBciOn0R0iuf7jpvvP3n1Am1nCfwA
+ mgRzE0uKrFd1+UJ+Wzw08BYsyDPt8wNz2KjQBBk/TDxYtdD8eH6uUB99yEdEyg3pb0ULvjXGBrf
+ CdaeSd0Dp3YDrVY40T870gW0
+X-Received: by 2002:a17:907:971e:b0:ad8:81c2:64e9 with SMTP id
+ a640c23a62f3a-adb322b3326mr182221766b.8.1748592205717; 
+ Fri, 30 May 2025 01:03:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPxF5qdEz3NKmDsuaFYI9b4VZqJVJYtzQtdLrNKwmuV5jFnsqnu8IIE1GfTQcpkdq3mSSH/g==
+X-Received: by 2002:a17:907:971e:b0:ad8:81c2:64e9 with SMTP id
+ a640c23a62f3a-adb322b3326mr182218966b.8.1748592205171; 
+ Fri, 30 May 2025 01:03:25 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada6ad3a6ccsm279233966b.156.2025.05.30.01.03.19
+ a640c23a62f3a-adb2fb63cdasm140343566b.120.2025.05.30.01.03.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 01:03:20 -0700 (PDT)
+ Fri, 30 May 2025 01:03:24 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 05/14] util/error: make func optional
-Date: Fri, 30 May 2025 10:02:57 +0200
-Message-ID: <20250530080307.2055502-6-pbonzini@redhat.com>
+Cc: qemu-rust@nongnu.org
+Subject: [PATCH 07/14] rust: qemu-api: add tests for Error bindings
+Date: Fri, 30 May 2025 10:02:59 +0200
+Message-ID: <20250530080307.2055502-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530080307.2055502-1-pbonzini@redhat.com>
 References: <20250530080307.2055502-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -107,34 +106,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function name is not available in Rust, so make it optional.
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- util/error.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ rust/qemu-api/src/error.rs | 104 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
-diff --git a/util/error.c b/util/error.c
-index 3449ecc0b92..daea2142f30 100644
---- a/util/error.c
-+++ b/util/error.c
-@@ -24,8 +24,13 @@ Error *error_warn;
- static void error_handle(Error **errp, Error *err)
- {
-     if (errp == &error_abort) {
--        fprintf(stderr, "Unexpected error in %s() at %.*s:%d:\n",
--                err->func, err->src_len, err->src, err->line);
-+        if (err->func) {
-+            fprintf(stderr, "Unexpected error in %s() at %.*s:%d:\n",
-+                    err->func, err->src_len, err->src, err->line);
-+        } else {
-+            fprintf(stderr, "Unexpected error at %.*s:%d:\n",
-+		    err->src_len, err->src, err->line);
+diff --git a/rust/qemu-api/src/error.rs b/rust/qemu-api/src/error.rs
+index 0bdd413a0a2..a91ce6fefaf 100644
+--- a/rust/qemu-api/src/error.rs
++++ b/rust/qemu-api/src/error.rs
+@@ -297,3 +297,107 @@ unsafe fn cloned_from_foreign(c_error: *const bindings::Error) -> Self {
+         }
+     }
+ }
++
++#[cfg(test)]
++mod tests {
++    use std::ffi::CStr;
++
++    use anyhow::anyhow;
++    use foreign::OwnedPointer;
++
++    use super::*;
++    use crate::{assert_match, bindings};
++
++    #[track_caller]
++    fn error_for_test(msg: &CStr) -> OwnedPointer<Error> {
++        // SAFETY: all arguments are controlled by this function
++        let location = panic::Location::caller();
++        unsafe {
++            let err: *mut c_void = libc::malloc(std::mem::size_of::<bindings::Error>());
++            let err: &mut bindings::Error = &mut *err.cast();
++            *err = bindings::Error {
++                msg: msg.clone_to_foreign_ptr(),
++                err_class: bindings::ERROR_CLASS_GENERIC_ERROR,
++                src_len: location.file().len() as c_int,
++                src: location.file().as_ptr().cast::<c_char>(),
++                line: location.line() as c_int,
++                func: ptr::null_mut(),
++                hint: ptr::null_mut(),
++            };
++            OwnedPointer::new(err)
 +        }
-         error_report("%s", error_get_pretty(err));
-         if (err->hint) {
-             error_printf("%s", err->hint->str);
++    }
++
++    unsafe fn error_get_pretty<'a>(local_err: *mut bindings::Error) -> &'a CStr {
++        unsafe { CStr::from_ptr(bindings::error_get_pretty(local_err)) }
++    }
++
++    #[test]
++    #[allow(deprecated)]
++    fn test_description() {
++        use std::error::Error;
++
++        assert_eq!(super::Error::from("msg").description(), "msg");
++        assert_eq!(super::Error::from("msg".to_owned()).description(), "msg");
++    }
++
++    #[test]
++    fn test_display() {
++        assert_eq!(&*format!("{}", Error::from("msg")), "msg");
++        assert_eq!(&*format!("{}", Error::from("msg".to_owned())), "msg");
++        assert_eq!(&*format!("{}", Error::from(anyhow!("msg"))), "msg");
++
++        assert_eq!(
++            &*format!("{}", Error::with_error("msg", anyhow!("cause"))),
++            "msg: cause"
++        );
++    }
++
++    #[test]
++    fn test_bool_or_propagate() {
++        unsafe {
++            let mut local_err: *mut bindings::Error = ptr::null_mut();
++
++            assert!(Error::bool_or_propagate(Ok(()), &mut local_err));
++            assert_eq!(local_err, ptr::null_mut());
++
++            let my_err = Error::from("msg");
++            assert!(!Error::bool_or_propagate(Err(my_err), &mut local_err));
++            assert_ne!(local_err, ptr::null_mut());
++            assert_eq!(error_get_pretty(local_err), c"msg");
++            bindings::error_free(local_err);
++        }
++    }
++
++    #[test]
++    fn test_ptr_or_propagate() {
++        unsafe {
++            let mut local_err: *mut bindings::Error = ptr::null_mut();
++
++            let ret = Error::ptr_or_propagate(Ok("abc".to_owned()), &mut local_err);
++            assert_eq!(String::from_foreign(ret), "abc");
++            assert_eq!(local_err, ptr::null_mut());
++
++            let my_err = Error::from("msg");
++            assert_eq!(
++                Error::ptr_or_propagate(Err::<String, _>(my_err), &mut local_err),
++                ptr::null_mut()
++            );
++            assert_ne!(local_err, ptr::null_mut());
++            assert_eq!(error_get_pretty(local_err), c"msg");
++            bindings::error_free(local_err);
++        }
++    }
++
++    #[test]
++    fn test_err_or_unit() {
++        unsafe {
++            let result = Error::err_or_unit(ptr::null_mut());
++            assert_match!(result, Ok(()));
++
++            let err = error_for_test(c"msg");
++            let err = Error::err_or_unit(err.into_inner()).unwrap_err();
++            assert_eq!(&*format!("{err}"), "msg");
++        }
++    }
++}
 -- 
 2.49.0
 
