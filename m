@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7045AC89A5
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE6BAC89A4
 	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 10:04:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKui5-0002Ou-25; Fri, 30 May 2025 04:03:25 -0400
+	id 1uKuiU-0002b9-8Z; Fri, 30 May 2025 04:03:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKui0-0002NC-Np
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:21 -0400
+ id 1uKuiD-0002Wm-U0
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKuhy-0004Xy-9R
- for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:20 -0400
+ id 1uKui9-0004bO-GV
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 04:03:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748592197;
+ s=mimecast20190719; t=1748592208;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UUj6q6B+e336ffq5s6Zk0rCKpR7Qm0AOx4IF/wqWtHg=;
- b=BuzoIo0GoYJ7OKAYRjooTYF579eNkmBPbdc524YVBxi5ZABfpfvpT9jKUdWRtKyWhcQqcf
- 9Bf0ZEyPbINyNEPyJr++xpFiTfKRMOdPpdg+v2/h9ATOyZ8DfN8XGOCR3xHXxZsr/XXOBu
- Cg1gPA3DuKqGTu7tu/dRFSkkGI4zm5s=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1azCmbJZuAfWQgPSVyPr6AsyjXwV0of9HtRemDDmemU=;
+ b=DSjEiKHopEmnNkz2D7+7XMWXWPIcWw4XfdV2K7LfrZhOxylUjcTtMwR7wk9kUXT4CrHjFs
+ C4YCvGxmHBkzy6eHn7BOmgmJ3hl6f/g43AZZdjLV5a5rw4MIV/j4E7TllMcLlb8bqIqTxm
+ lxi7ra7NpZECpLQ3ZJ25HP2GUOxPViw=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-TjJSTUJPN-Kpf1L1BBwoZA-1; Fri, 30 May 2025 04:03:15 -0400
-X-MC-Unique: TjJSTUJPN-Kpf1L1BBwoZA-1
-X-Mimecast-MFC-AGG-ID: TjJSTUJPN-Kpf1L1BBwoZA_1748592195
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-adb32dbf60bso67157166b.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:15 -0700 (PDT)
+ us-mta-473-Y21pxoK2OG2PZD9WWpDsUg-1; Fri, 30 May 2025 04:03:26 -0400
+X-MC-Unique: Y21pxoK2OG2PZD9WWpDsUg-1
+X-Mimecast-MFC-AGG-ID: Y21pxoK2OG2PZD9WWpDsUg_1748592206
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-acb61452b27so137795066b.2
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 01:03:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748592194; x=1749196994;
+ d=1e100.net; s=20230601; t=1748592204; x=1749197004;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UUj6q6B+e336ffq5s6Zk0rCKpR7Qm0AOx4IF/wqWtHg=;
- b=pGcYymaHyI1JusKvcYjLND3MmmqPXh58kAbNff/+aSgoj7VttwNUNK7AscaxV2btTA
- CyaP2JAUY+fHqxFZY7TRyWDhZQS1+xMyTqUbSWtOsRWcVOWNtohqLngM9fFSxSd7IFT9
- hk3e6QlF34SfQQo3eB37RleL9eWyG8vzpHe7k8LBpVu+7NUSgv7aKtgdApIwmis5edJi
- uL2a79q7PbataFmVMWFQiWpcXVuep7tD4Jfh74V5haFlXWNHq1RQJAJ5qIpYmYtFwFf1
- 6WnPxNyHGAfn2AdjtUayFuolo054XRv1xidS8V3adhvXmwNO6Ggq/7h4iNfXGRm+GQCv
- 6NaA==
-X-Gm-Message-State: AOJu0YzQXXnIawZ0cGdiy+3ZYX8dqJ7M3AsY8xKCe+uAaV2e6SQq3r6g
- hKde6B3mghu1NHmhhq2cE1e9Yve+qou3acP5GcYOKOmJJUyS7LLGh1WTIkWn11jHF2vjVCJtkOS
- O5Pz5YWIXaHCXdjz9UJhEWc0wM1JckzXwzPLOYhTTa5aPGlR7cyuOSjm+XlpybuV0uHedScTbru
- WhDVSmbCAdN1w006n3Mdv+haxTXCkUnW8PzmVn+UBf
-X-Gm-Gg: ASbGnctSkoMVFjXb9/DkEesHFPAc44NUNkxWD89Np8BawfUvdienhUFaCQHOk4/2ut4
- fTdPEkF3aT5eDKb3XSIQBpgo/kbZfvsET1xd5ZTS9eY40tob9yXfiadZqtgJjQGC9gpAPEKUq3R
- haWUT2BOVZd1EPWYSbSWo9iYAmtNScQsBNn4FgdTC2KSf9UmPATHJRDdLuwpiMWvlhMurwyaFTY
- qGbLF6nHFQwwqa6swBXou9FpcCEocjyvLYXaAPGFHYJ1o1fZClOobtsu+DHkGMYqeyWF5pYRzA7
- kBq3cysdGMqqsw==
-X-Received: by 2002:a17:907:1ca3:b0:ad2:4b0c:ee8c with SMTP id
- a640c23a62f3a-adb322a519amr196938866b.35.1748592193817; 
- Fri, 30 May 2025 01:03:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEo1Hw4sjBjsj+Yc+BNtiU9OxmVUqqSMVhs3xXzI7t163AFUQEsY+/ECdsA3TBUxA2FYIjjnA==
-X-Received: by 2002:a17:907:1ca3:b0:ad2:4b0c:ee8c with SMTP id
- a640c23a62f3a-adb322a519amr196935766b.35.1748592193362; 
- Fri, 30 May 2025 01:03:13 -0700 (PDT)
+ bh=1azCmbJZuAfWQgPSVyPr6AsyjXwV0of9HtRemDDmemU=;
+ b=YBeYRbn//fiZ6lEvoiYwNBxLZonvC2lrLy9Wew1tlYx1XxlNUzgeOlDKlmthR/CspF
+ myLhuK/r+dMEVLHdYY7xqnR+5ZSHicrAdd6ICH90gjGaBVNA7L0ltyPJNES+xBAQCPNR
+ SfIA5wfUumEpDwPqwIyO4BLg5vjljWP2tiR9iY0Q66aRWQhi7atobyYtOzoLzocWdLT4
+ gLgFQfx809F+4IgAomYC3cwvRHs08RN+R/UkwoTjmYHQhAAwDyJYPl5i0CArdsYAXsNk
+ ejZE86jWqXxK09J6rkSaRuS3asviYxM+NjNfVRJUHYHT7oc/Jw9THExqfMO0arkUNDAe
+ b47g==
+X-Gm-Message-State: AOJu0Yxfh5ahwVZo0fZHPrNq0kQhNoutRcj57PRRWM4HtkbMwS/wa5NW
+ NlE6Oak5+AtoxdIQGF07sUZsRM3dMMMxEPX0jhFsLkSsKHAqJlH06b+MIHDGex2jJTAkoPuOM13
+ i6eHDW9QIjkFNlWMvjRAKp/BbuBfnBCjXxzMauVaGlB6jGRsLkNNnphHzF/sMCV46xtwj5xce9y
+ /dZHM5B4AavGz9RezZqmRn5+r1/bZngD9XBjCGHeLW
+X-Gm-Gg: ASbGncsLAcymU0MYX3ELmuhMAU8ibJofosG4y7UMM4l1Di0QzleLPP6ShQrNNZqTOI5
+ hEw9Rv6ZrGhXP8wZYP0I/m/ggJv4EF3/YwZO0BkAS9hjq9hSde81dieWnQQiSxVM4brgHAiIC10
+ gcz93XVmjPBis6txxRexHo3opEGxPkyYVnZTIecTT5evlweX5XYZSCtr2D7MuhvNLnC+pO7Jp+S
+ 7XJ5//VOC5bhtzY2fEfWN0kBQG44JEVav0g1axVP8fvHPLV0E4NxBwvXjVRN3zv5meea7aVX/Bh
+ qakEx/VH0yfcdA==
+X-Received: by 2002:a17:907:1c8c:b0:ad5:2d77:7ca7 with SMTP id
+ a640c23a62f3a-adb3230513fmr221919066b.43.1748592204167; 
+ Fri, 30 May 2025 01:03:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFEObLGVlMkxoHvdK//Zs9TBV2/VXjAaS4OCBscamgFKTe2ucV1UnEPBC0YVEAf3+nrdgH5OA==
+X-Received: by 2002:a17:907:1c8c:b0:ad5:2d77:7ca7 with SMTP id
+ a640c23a62f3a-adb3230513fmr221916066b.43.1748592203646; 
+ Fri, 30 May 2025 01:03:23 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada6ad3a6d7sm282708266b.155.2025.05.30.01.03.12
+ a640c23a62f3a-ada6ad395dfsm281759766b.127.2025.05.30.01.03.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 01:03:12 -0700 (PDT)
+ Fri, 30 May 2025 01:03:22 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 02/14] subprojects: add the foreign crate
-Date: Fri, 30 May 2025 10:02:54 +0200
-Message-ID: <20250530080307.2055502-3-pbonzini@redhat.com>
+Cc: qemu-rust@nongnu.org
+Subject: [PATCH 06/14] rust: qemu-api: add bindings to Error
+Date: Fri, 30 May 2025 10:02:58 +0200
+Message-ID: <20250530080307.2055502-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530080307.2055502-1-pbonzini@redhat.com>
 References: <20250530080307.2055502-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -91,7 +91,8 @@ X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.902,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_FILL_THIS_FORM_SHORT=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,145 +108,428 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a cleaned up and separated version of the patches at
-https://lore.kernel.org/all/20240701145853.1394967-4-pbonzini@redhat.com/
-https://lore.kernel.org/all/20240701145853.1394967-5-pbonzini@redhat.com/
+Provide an implementation of std::error::Error that bridges the Rust
+anyhow::Error and std::panic::Location types with QEMU's Error*.
+It also has several utility methods, analogous to error_propagate(),
+that convert a Result into a return value + Error** pair.
 
-Its first user will be the Error bindings; for example a QEMU Error ** can be
-converted to a Rust Option using
-
-     unsafe { Option::<Error>::from_foreign(c_error) }
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/meson.build                              |  2 ++
- rust/qemu-api/meson.build                     |  2 +-
- scripts/archive-source.sh                     |  3 ++-
- scripts/make-release                          |  3 ++-
- subprojects/.gitignore                        |  1 +
- subprojects/foreign-0.3-rs.wrap               |  7 +++++
- .../packagefiles/foreign-0.3-rs/meson.build   | 26 +++++++++++++++++++
- 7 files changed, 41 insertions(+), 3 deletions(-)
- create mode 100644 subprojects/foreign-0.3-rs.wrap
- create mode 100644 subprojects/packagefiles/foreign-0.3-rs/meson.build
+ rust/Cargo.lock            |  17 +++
+ rust/Cargo.toml            |   1 +
+ rust/qemu-api/Cargo.toml   |   2 +
+ rust/qemu-api/meson.build  |   1 +
+ rust/qemu-api/src/error.rs | 299 +++++++++++++++++++++++++++++++++++++
+ rust/qemu-api/src/lib.rs   |   3 +
+ 6 files changed, 323 insertions(+)
+ create mode 100644 rust/qemu-api/src/error.rs
 
-diff --git a/rust/meson.build b/rust/meson.build
-index 6227e01f32a..59c7ed2736b 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -1,11 +1,13 @@
- subproject('anyhow-1-rs', required: true)
- subproject('bilge-0.2-rs', required: true)
- subproject('bilge-impl-0.2-rs', required: true)
-+subproject('foreign-0.3-rs', required: true)
- subproject('libc-0.2-rs', required: true)
+diff --git a/rust/Cargo.lock b/rust/Cargo.lock
+index 13d580c693b..961005bb513 100644
+--- a/rust/Cargo.lock
++++ b/rust/Cargo.lock
+@@ -2,6 +2,12 @@
+ # It is not intended for manual editing.
+ version = 3
  
- anyhow_rs = dependency('anyhow-1-rs')
- bilge_rs = dependency('bilge-0.2-rs')
- bilge_impl_rs = dependency('bilge-impl-0.2-rs')
-+foreign_rs = dependency('foreign-0.3-rs')
- libc_rs = dependency('libc-0.2-rs')
++[[package]]
++name = "anyhow"
++version = "1.0.98"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "e16d2d3311acee920a9eb8d33b8cbc1787ce4a264e85f964c2404b969bdcd487"
++
+ [[package]]
+ name = "arbitrary-int"
+ version = "1.2.7"
+@@ -37,6 +43,15 @@ version = "1.12.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "3dca9240753cf90908d7e4aac30f630662b02aebaa1b58a3cadabdb23385b58b"
  
- subproject('proc-macro2-1-rs', required: true)
++[[package]]
++name = "foreign"
++version = "0.3.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "17ca1b5be8c9d320daf386f1809c7acc0cb09accbae795c2001953fa50585846"
++dependencies = [
++ "libc",
++]
++
+ [[package]]
+ name = "hpet"
+ version = "0.1.0"
+@@ -106,6 +121,8 @@ dependencies = [
+ name = "qemu_api"
+ version = "0.1.0"
+ dependencies = [
++ "anyhow",
++ "foreign",
+  "libc",
+  "qemu_api_macros",
+ ]
+diff --git a/rust/Cargo.toml b/rust/Cargo.toml
+index a00b8ad0bcd..26f3ec09d3d 100644
+--- a/rust/Cargo.toml
++++ b/rust/Cargo.toml
+@@ -66,6 +66,7 @@ missing_safety_doc = "deny"
+ mut_mut = "deny"
+ needless_bitwise_bool = "deny"
+ needless_pass_by_ref_mut = "deny"
++needless_update = "deny"
+ no_effect_underscore_binding = "deny"
+ option_option = "deny"
+ or_fun_call = "deny"
+diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
+index c96cf50e7a1..db7000dee44 100644
+--- a/rust/qemu-api/Cargo.toml
++++ b/rust/qemu-api/Cargo.toml
+@@ -15,7 +15,9 @@ rust-version.workspace = true
+ 
+ [dependencies]
+ qemu_api_macros = { path = "../qemu-api-macros" }
++anyhow = "~1.0"
+ libc = "0.2.162"
++foreign = "~0.3.1"
+ 
+ [features]
+ default = ["debug_cell"]
 diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index 181ceca9536..aa22252866d 100644
+index aa22252866d..ef0de51266b 100644
 --- a/rust/qemu-api/meson.build
 +++ b/rust/qemu-api/meson.build
-@@ -35,7 +35,7 @@ _qemu_api_rs = static_library(
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
-   rust_args: _qemu_api_cfg,
--  dependencies: [anyhow_rs, libc_rs, qemu_api_macros, qemuutil_rs,
-+  dependencies: [anyhow_rs, foreign_rs, libc_rs, qemu_api_macros, qemuutil_rs,
-                  qom, hwcore, chardev, migration],
- )
- 
-diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
-index 816062fee94..035828c532e 100755
---- a/scripts/archive-source.sh
-+++ b/scripts/archive-source.sh
-@@ -28,7 +28,8 @@ sub_file="${sub_tdir}/submodule.tar"
- # different to the host OS.
- subprojects="keycodemapdb libvfio-user berkeley-softfloat-3
-   berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
--  bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
-+  bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
-+  libc-0.2-rs proc-macro2-1-rs
-   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
-   syn-2-rs unicode-ident-1-rs"
- sub_deinit=""
-diff --git a/scripts/make-release b/scripts/make-release
-index ea65bdcc0cf..4509a9fabf5 100755
---- a/scripts/make-release
-+++ b/scripts/make-release
-@@ -41,7 +41,8 @@ fi
- # Only include wraps that are invoked with subproject()
- SUBPROJECTS="libvfio-user keycodemapdb berkeley-softfloat-3
-   berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
--  bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
-+  bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
-+  libc-0.2-rs proc-macro2-1-rs
-   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
-   syn-2-rs unicode-ident-1-rs"
- 
-diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index b9ae507b85a..f4281934ce1 100644
---- a/subprojects/.gitignore
-+++ b/subprojects/.gitignore
-@@ -11,6 +11,7 @@
- /bilge-0.2.0
- /bilge-impl-0.2.0
- /either-1.12.0
-+/foreign-0.3.1
- /itertools-0.11.0
- /libc-0.2.162
- /proc-macro-error-1.0.4
-diff --git a/subprojects/foreign-0.3-rs.wrap b/subprojects/foreign-0.3-rs.wrap
+@@ -19,6 +19,7 @@ _qemu_api_rs = static_library(
+       'src/cell.rs',
+       'src/chardev.rs',
+       'src/errno.rs',
++      'src/error.rs',
+       'src/irq.rs',
+       'src/memory.rs',
+       'src/module.rs',
+diff --git a/rust/qemu-api/src/error.rs b/rust/qemu-api/src/error.rs
 new file mode 100644
-index 00000000000..0d218ec2c25
+index 00000000000..0bdd413a0a2
 --- /dev/null
-+++ b/subprojects/foreign-0.3-rs.wrap
-@@ -0,0 +1,7 @@
-+[wrap-file]
-+directory = foreign-0.3.1
-+source_url = https://crates.io/api/v1/crates/foreign/0.3.1/download
-+source_filename = foreign-0.3.1.tar.gz
-+source_hash = 17ca1b5be8c9d320daf386f1809c7acc0cb09accbae795c2001953fa50585846
-+#method = cargo
-+patch_directory = foreign-0.3-rs
-diff --git a/subprojects/packagefiles/foreign-0.3-rs/meson.build b/subprojects/packagefiles/foreign-0.3-rs/meson.build
-new file mode 100644
-index 00000000000..0901c02c527
---- /dev/null
-+++ b/subprojects/packagefiles/foreign-0.3-rs/meson.build
-@@ -0,0 +1,26 @@
-+project('foreign-0.3-rs', 'rust',
-+  meson_version: '>=1.5.0',
-+  version: '0.2.0',
-+  license: 'MIT OR Apache-2.0',
-+  default_options: [])
++++ b/rust/qemu-api/src/error.rs
+@@ -0,0 +1,299 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +
-+subproject('libc-0.2-rs', required: true)
-+libc_rs = dependency('libc-0.2-rs')
++//! Error propagation for QEMU Rust code
++//!
++//! In QEMU, an `Error` usually consists of a message and an errno value.
++//! In this wrapper, the errno value is replaced by an [`anyhow::Error`]
++//! so that it is easy to pass any other Rust error type up to C code.
++//! Note that the backtrace that is provided by `anyhow` is not used yet,
++//! only the message ends up in the QEMU `Error*`.
++//!
++//! The message part can be used to clarify the inner error, similar to
++//! `error_prepend`, and of course to describe an erroneous condition that
++//! does not come from another [`Error`](std::error::Error) (for example an
++//! invalid argument).
++//!
++//! On top of implementing [`std::error::Error`], [`Error`] provides functions
++//! to simplify conversion between [`Result<>`](std::result::Result) and
++//! C `Error**` conventions.  In particular:
++//!
++//! * [`ok_or_propagate`](qemu_api::Error::ok_or_propagate),
++//!   [`bool_or_propagate`](qemu_api::Error::bool_or_propagate),
++//!   [`ptr_or_propagate`](qemu_api::Error::ptr_or_propagate) can be used to
++//!   build a C return value while also propagating an error condition
++//!
++//! * [`err_or_else`](qemu_api::Error::err_or_else) and
++//!   [`err_or_unit`](qemu_api::Error::err_or_unit) can be used to build a
++//!   `Result`
++//!
++//! While these facilities are useful at the boundary between C and Rust code,
++//! other Rust code need not care about the existence of this module; it can
++//! just use the [`qemu_api::Result`] type alias and rely on the `?` operator as
++//! usual.
++//!
++//! @author Paolo Bonzini
 +
-+_foreign_rs = static_library(
-+  'foreign',
-+  files('src/lib.rs'),
-+  gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-+  rust_abi: 'rust',
-+  rust_args: [
-+    '--cap-lints', 'allow',
-+  ],
-+  dependencies: [libc_rs],
-+)
++use std::{
++    borrow::Cow,
++    ffi::{c_char, c_int, c_void, CStr},
++    fmt::{self, Display},
++    panic, ptr,
++};
 +
-+foreign_dep = declare_dependency(
-+  link_with: _foreign_rs,
-+)
++use foreign::{prelude::*, OwnedPointer};
 +
-+meson.override_dependency('foreign-0.3-rs', foreign_dep)
++use crate::bindings;
++
++pub type Result<T> = std::result::Result<T, Error>;
++
++#[derive(Debug)]
++pub struct Error {
++    msg: Option<Cow<'static, str>>,
++    /// Appends the print string of the error to the msg if not None
++    cause: Option<anyhow::Error>,
++    file: &'static str,
++    line: u32,
++}
++
++impl std::error::Error for Error {
++    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
++        self.cause.as_ref().map(AsRef::as_ref)
++    }
++
++    #[allow(deprecated)]
++    fn description(&self) -> &str {
++        self.msg
++            .as_deref()
++            .or_else(|| self.cause.as_deref().map(std::error::Error::description))
++            .unwrap_or("unknown error")
++    }
++}
++
++impl Display for Error {
++    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
++        let mut prefix = "";
++        if let Some(ref msg) = self.msg {
++            write!(f, "{msg}")?;
++            prefix = ": ";
++        }
++        if let Some(ref cause) = self.cause {
++            write!(f, "{prefix}{cause}")?;
++        } else if prefix.is_empty() {
++            f.write_str("unknown error")?;
++        }
++        Ok(())
++    }
++}
++
++impl From<String> for Error {
++    #[track_caller]
++    fn from(msg: String) -> Self {
++        let location = panic::Location::caller();
++        Error {
++            msg: Some(Cow::Owned(msg)),
++            cause: None,
++            file: location.file(),
++            line: location.line(),
++        }
++    }
++}
++
++impl From<&'static str> for Error {
++    #[track_caller]
++    fn from(msg: &'static str) -> Self {
++        let location = panic::Location::caller();
++        Error {
++            msg: Some(Cow::Borrowed(msg)),
++            cause: None,
++            file: location.file(),
++            line: location.line(),
++        }
++    }
++}
++
++impl From<anyhow::Error> for Error {
++    #[track_caller]
++    fn from(error: anyhow::Error) -> Self {
++        let location = panic::Location::caller();
++        Error {
++            msg: None,
++            cause: Some(error),
++            file: location.file(),
++            line: location.line(),
++        }
++    }
++}
++
++impl Error {
++    /// Create a new error, prepending `msg` to the
++    /// description of `cause`
++    #[track_caller]
++    pub fn with_error(msg: impl Into<Cow<'static, str>>, cause: impl Into<anyhow::Error>) -> Self {
++        let location = panic::Location::caller();
++        Error {
++            msg: Some(msg.into()),
++            cause: Some(cause.into()),
++            file: location.file(),
++            line: location.line(),
++        }
++    }
++
++    /// Consume a result, returning `false` if it is an error and
++    /// `true` if it is successful.  The error is propagated into
++    /// `errp` like the C API `error_propagate` would do.
++    ///
++    /// # Safety
++    ///
++    /// `errp` must be a valid argument to `error_propagate`;
++    /// typically it is received from C code and need not be
++    /// checked further at the Rust↔C boundary.
++    pub unsafe fn bool_or_propagate(result: Result<()>, errp: *mut *mut bindings::Error) -> bool {
++        // SAFETY: caller guarantees errp is valid
++        unsafe { Self::ok_or_propagate(result, errp) }.is_some()
++    }
++
++    /// Consume a result, returning a `NULL` pointer if it is an
++    /// error and a C representation of the contents if it is
++    /// successful.  The error is propagated into `errp` like
++    /// the C API `error_propagate` would do.
++    ///
++    /// # Safety
++    ///
++    /// `errp` must be a valid argument to `error_propagate`;
++    /// typically it is received from C code and need not be
++    /// checked further at the Rust↔C boundary.
++    #[must_use]
++    pub unsafe fn ptr_or_propagate<T: CloneToForeign>(
++        result: Result<T>,
++        errp: *mut *mut bindings::Error,
++    ) -> *mut T::Foreign {
++        // SAFETY: caller guarantees errp is valid
++        unsafe { Self::ok_or_propagate(result, errp) }.clone_to_foreign_ptr()
++    }
++
++    /// Consume a result in the same way as `self.ok()`, but also propagate
++    /// a possible error into `errp`, like the C API `error_propagate`
++    /// would do.
++    ///
++    /// # Safety
++    ///
++    /// `errp` must be a valid argument to `error_propagate`;
++    /// typically it is received from C code and need not be
++    /// checked further at the Rust↔C boundary.
++    pub unsafe fn ok_or_propagate<T>(
++        result: Result<T>,
++        errp: *mut *mut bindings::Error,
++    ) -> Option<T> {
++        result.map_err(|err| unsafe { err.propagate(errp) }).ok()
++    }
++
++    /// Equivalent of the C function `error_propagate`.  Fill `*errp`
++    /// with the information container in `self` if `errp` is not NULL;
++    /// then consume it.
++    ///
++    /// # Safety
++    ///
++    /// `errp` must be a valid argument to `error_propagate`;
++    /// typically it is received from C code and need not be
++    /// checked further at the Rust↔C boundary.
++    pub unsafe fn propagate(self, errp: *mut *mut bindings::Error) {
++        if errp.is_null() {
++            return;
++        }
++
++        let err = self.clone_to_foreign_ptr();
++
++        // SAFETY: caller guarantees errp is valid
++        unsafe {
++            errp.write(err);
++        }
++    }
++
++    /// Convert a C `Error*` into a Rust `Result`, using
++    /// `Ok(())` if `c_error` is NULL.  Free the `Error*`.
++    ///
++    /// # Safety
++    ///
++    /// `c_error` must be `NULL` or valid; typically it was initialized
++    /// with `ptr::null_mut()` and passed by reference to a C function.
++    pub unsafe fn err_or_unit(c_error: *mut bindings::Error) -> Result<()> {
++        // SAFETY: caller guarantees c_error is valid
++        unsafe { Self::err_or_else(c_error, || ()) }
++    }
++
++    /// Convert a C `Error*` into a Rust `Result`, calling `f()` to
++    /// obtain an `Ok` value if `c_error` is NULL.  Free the `Error*`.
++    ///
++    /// # Safety
++    ///
++    /// `c_error` must be `NULL` or valid; typically it was initialized
++    /// with `ptr::null_mut()` and passed by reference to a C function.
++    pub unsafe fn err_or_else<T, F: FnOnce() -> T>(
++        c_error: *mut bindings::Error,
++        f: F,
++    ) -> Result<T> {
++        // SAFETY: caller guarantees c_error is valid
++        let err = unsafe { Option::<Self>::from_foreign(c_error) };
++        match err {
++            None => Ok(f()),
++            Some(err) => Err(err),
++        }
++    }
++}
++
++impl FreeForeign for Error {
++    type Foreign = bindings::Error;
++
++    unsafe fn free_foreign(p: *mut bindings::Error) {
++        // SAFETY: caller guarantees p is valid
++        unsafe {
++            bindings::error_free(p);
++        }
++    }
++}
++
++impl CloneToForeign for Error {
++    fn clone_to_foreign(&self) -> OwnedPointer<Self> {
++        // SAFETY: all arguments are controlled by this function
++        unsafe {
++            let err: *mut c_void = libc::malloc(std::mem::size_of::<bindings::Error>());
++            let err: &mut bindings::Error = &mut *err.cast();
++            *err = bindings::Error {
++                msg: format!("{self}").clone_to_foreign_ptr(),
++                err_class: bindings::ERROR_CLASS_GENERIC_ERROR,
++                src_len: self.file.len() as c_int,
++                src: self.file.as_ptr().cast::<c_char>(),
++                line: self.line as c_int,
++                func: ptr::null_mut(),
++                hint: ptr::null_mut(),
++            };
++            OwnedPointer::new(err)
++        }
++    }
++}
++
++impl FromForeign for Error {
++    unsafe fn cloned_from_foreign(c_error: *const bindings::Error) -> Self {
++        // SAFETY: caller guarantees c_error is valid
++        unsafe {
++            let error = &*c_error;
++            let file = if error.src_len < 0 {
++                // NUL-terminated
++                CStr::from_ptr(error.src).to_str()
++            } else {
++                // Can become str::from_utf8 with Rust 1.87.0
++                std::str::from_utf8(std::slice::from_raw_parts(
++                    &*error.src.cast::<u8>(),
++                    error.src_len as usize,
++                ))
++            };
++
++            Error {
++                msg: FromForeign::cloned_from_foreign(error.msg),
++                cause: None,
++                file: file.unwrap(),
++                line: error.line as u32,
++            }
++        }
++    }
++}
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 234a94e3c29..93902fc94bc 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -19,6 +19,7 @@
+ pub mod cell;
+ pub mod chardev;
+ pub mod errno;
++pub mod error;
+ pub mod irq;
+ pub mod memory;
+ pub mod module;
+@@ -34,6 +35,8 @@
+     ffi::c_void,
+ };
+ 
++pub use error::{Error, Result};
++
+ #[cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)]
+ extern "C" {
+     fn g_aligned_alloc0(
 -- 
 2.49.0
 
