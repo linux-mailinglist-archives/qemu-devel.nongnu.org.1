@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D5AAC88E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 084D0AC88E8
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:27:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtw1-0000qV-75; Fri, 30 May 2025 03:13:45 -0400
+	id 1uKtw1-0000t8-SC; Fri, 30 May 2025 03:13:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvx-0000hb-89
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uKtvz-0000ne-N1
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvv-0006rf-LY
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:41 -0400
+ id 1uKtvx-0006s1-RQ
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589219;
+ s=mimecast20190719; t=1748589221;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ETgaVTmCx5fvIvSkf0BgFyORR9OTAp95aERHyUfqGHI=;
- b=GAiw19csjoL2iCp3vXi1/HO8odS6+QakeNYeQVVKysuM87Q+spkfgAiYjTfYb1bkoh1oeY
- fYNKc55o95ImNCFk3gxg9onwC+2Fy3hl58JgiHfPZPfPHkOZgQJjpCJSz3qinSmE9HMj3N
- r9LuRPQGC8Ks5pQxG/ndn2ktzdyZS0Q=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=doRJyOV8AutyhhZgEY/vOvD1MJZqBWNu1U5QaUUdXKk=;
+ b=DEovMjAmod+zjPxxK2Qegj0ha9WWLKp8aq5iSWMm9chkxA0MY9ngqtoVx6OWj9wDly7OPE
+ /cS/tJmCZ2jqMNzlpmdz2ysrJnqor2r+5X1qrbnsvrYJIpfeP7a9WlLsd0j+2A5WbJFaOj
+ Hr4RpI8X+tMDmtko8ExnIqu8WUOKPyE=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-422-rnZB1vMhMjWvI6rq6FGNlw-1; Fri, 30 May 2025 03:13:37 -0400
-X-MC-Unique: rnZB1vMhMjWvI6rq6FGNlw-1
-X-Mimecast-MFC-AGG-ID: rnZB1vMhMjWvI6rq6FGNlw_1748589216
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ad891713195so120115466b.0
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:37 -0700 (PDT)
+ us-mta-357-1tCYav-aMm-Wh8RQg5cQRg-1; Fri, 30 May 2025 03:13:39 -0400
+X-MC-Unique: 1tCYav-aMm-Wh8RQg5cQRg-1
+X-Mimecast-MFC-AGG-ID: 1tCYav-aMm-Wh8RQg5cQRg_1748589219
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-ad89da57be0so148841166b.3
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589215; x=1749194015;
+ d=1e100.net; s=20230601; t=1748589218; x=1749194018;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ETgaVTmCx5fvIvSkf0BgFyORR9OTAp95aERHyUfqGHI=;
- b=qqVtJCfaQtTUkCX3hly8i/jZlk+1cRKLZyvb34r2LdBl6vhMYFP7TK652KsrfNbKBc
- 0cnGkwncK+LALiDL63yeeOC/pLbL0/CyEqZDdV4jBJcbssUgyDNzJ4qcyMilxcsQSyYA
- x9LAjEigefFpT564fAFz+FvWGEDPE0ILe32H56Qd6Lmljgrk1t1qrBb0Pbbxfv/FOVGd
- ZjIxJYowcs9I01hilJ60bD1bREAr6nBk483Da7CBm0cvbeeR884WIfUY0nMK3xF1VppM
- 3NBFu69Yxv6maK9g9iYaHRAdpG7x/KNr/Vcox61oh+kQRCpzLoTSCBsJSHzjEeotmSyc
- ZiDA==
-X-Gm-Message-State: AOJu0YycnghXyahKef5RxBilvGwvECDyOgLWblGRYN96tfwj75N8pfIg
- u3rML05PLirSVrU0iMW0kgF+Q093tqXyphJeAG8s75L/G4PRnV20DfE9n2f1wHDveMHUiYVvzDu
- saB97Shc4qlwTZlQhta6Yzz995pO/wV2pQHBD9qgoTMo7Snfun3UkNSg5U1633b/WDRYg+4PbFg
- f+hm0A292LJ95SM3C+NOlwwrHGUdOqij/MJ0M9nVhj
-X-Gm-Gg: ASbGncvVM3ipd0xd19LJrj7nxeFftXggICJ2jvnkcaOq7+mLLVs6cJOz1bvxj9O9aDr
- qF1a/hW6XBn065A2sJhjiZAYZz07vZ1z2GbRCVGf9p5pmunq4Ivs2E0bkA1trzBtiiVz8wHNGGN
- zroIMxcgUxkQauPvK9uPkdbp1rmF/+cwxW/xUxYu0d8/N+PVifdbYZeVw/SS1q6SsLTg8gTmznA
- QvVRmuO//jsBEbOF5nz8oY8vFHVhbGT3wkOmZB/bTHB4BfOrnsxwNxZf4CCBUTYrSv2FGTHwKqx
- dLmgJG8BqlxcHw==
-X-Received: by 2002:a17:907:d88:b0:ad5:557b:c369 with SMTP id
- a640c23a62f3a-adb322fcf4dmr209494366b.33.1748589215625; 
- Fri, 30 May 2025 00:13:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFunbXpR8GW1D/l1U14L7O1B4DV7TLTxHwwod8xNRhWOKYyHc7Ti+YtrVASMG0XsOwaP7yolg==
-X-Received: by 2002:a17:907:d88:b0:ad5:557b:c369 with SMTP id
- a640c23a62f3a-adb322fcf4dmr209490766b.33.1748589215140; 
- Fri, 30 May 2025 00:13:35 -0700 (PDT)
+ bh=doRJyOV8AutyhhZgEY/vOvD1MJZqBWNu1U5QaUUdXKk=;
+ b=GAT5i6PkXHrjtJZOgCZ+XLBSnNHjd9Q1tHTguu+ezX1Wtvqvq2VybxezU3ZexDfXs6
+ 0A3HVn5hfhN2clFP/1AQyHwAQtZdS70I8I8zD4EXHN0LA/F2PE4vy2+vXHnxtcseS4a3
+ 1JP0Wf7mvWDlOLg39Q/pArxpEprt5nbVJCslzZuWgL//KtKroT91lnzQR1jJUTf6lvE3
+ LjMeXYE86ANuo3mwMMyxE+8O+EMjefmZqDNo9KdCzCpQZinK2C0ETwd85nlM/3Uur2IN
+ o9wGiD4mJKf56+Ynq8u1lyz1LW3YIMVZmB/7zi8gYjdcWYxiSgsoJu7x//+SjaLO2BLX
+ x7XA==
+X-Gm-Message-State: AOJu0Yw3WmbONlAjfqSyk4noyduSCdfJ5cj8EUy8nVJTQ4o5cRxnuLFF
+ 9s3dircmvtf6l1fzEF6sD1evZh+HLa/WTMjH8pv0k9xFDl4mWquZXphEDfw+aBZJb4qM7kGolHt
+ 7lBQ0+Jmll45r1YAnui/RFcIkgIf8BcUUN9DrstNdojhalwt5gZNkyIOLpbpliddIqPYRNY81Nl
+ ZqkcrehY17TRwkep4/1jrdbxyRUgLHQvOagxoZp9A3
+X-Gm-Gg: ASbGnctfK6qJWpRNKQM1nJL8yF+IHt1zYUdU2nybCub6HrNlfogTBNT0aj/W+mL1SlP
+ e5b0LQn6b+eESD6dJm4uMO5TQNpZr8AW7rMlixWro/YVnzD0rNkXW+ybeA24c/FM2wbgi4kK7/9
+ 5Vg6J22gQHwPllVOV5yamQTjia8huz2UUEy3CHdgQGJixo6/8IDpXNZn8+5fSqiTXFMoUYQAoVb
+ sfmwz+a5yer2PDvtsBUi0fICILxQZl1cbTE9jJfmScfAPyjjvvSyLw+VGMoixQ36QtPhkPtvbng
+ KWcMtQDaXqgPzg==
+X-Received: by 2002:a17:907:7203:b0:ad5:8594:652e with SMTP id
+ a640c23a62f3a-adb36ba4b75mr91480966b.35.1748589218007; 
+ Fri, 30 May 2025 00:13:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGPBgM0CZPRSGDRT9KDmcuHIIl6zmlTOavLAL/DvRI8Wzp43R8yGxdjJFomWlNypFVerQ8gZg==
+X-Received: by 2002:a17:907:7203:b0:ad5:8594:652e with SMTP id
+ a640c23a62f3a-adb36ba4b75mr91472866b.35.1748589217250; 
+ Fri, 30 May 2025 00:13:37 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d82d75bsm277061366b.56.2025.05.30.00.13.33
+ a640c23a62f3a-ada5dd043c2sm275945466b.102.2025.05.30.00.13.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:13:34 -0700 (PDT)
+ Fri, 30 May 2025 00:13:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 18/77] i386/tdx: Introduce is_tdx_vm() helper and cache
- tdx_guest object
-Date: Fri, 30 May 2025 09:11:48 +0200
-Message-ID: <20250530071250.2050910-19-pbonzini@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 19/77] kvm: Introduce kvm_arch_pre_create_vcpu()
+Date: Fri, 30 May 2025 09:11:49 +0200
+Message-ID: <20250530071250.2050910-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -110,91 +111,170 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-It will need special handling for TDX VMs all around the QEMU.
-Introduce is_tdx_vm() helper to query if it's a TDX VM.
+Introduce kvm_arch_pre_create_vcpu(), to perform arch-dependent
+work prior to create any vcpu. This is for i386 TDX because it needs
+call TDX_INIT_VM before creating any vcpu.
 
-Cache tdx_guest object thus no need to cast from ms->cgs every time.
+The specific implementation for i386 will be added in the future patch.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-7-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-8-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/tdx.h | 10 ++++++++++
- target/i386/kvm/tdx.c | 15 ++++++++++++++-
- 2 files changed, 24 insertions(+), 1 deletion(-)
+ include/system/kvm.h       | 1 +
+ accel/kvm/kvm-all.c        | 5 +++++
+ target/arm/kvm.c           | 5 +++++
+ target/i386/kvm/kvm.c      | 5 +++++
+ target/loongarch/kvm/kvm.c | 4 ++++
+ target/mips/kvm.c          | 5 +++++
+ target/ppc/kvm.c           | 5 +++++
+ target/riscv/kvm/kvm-cpu.c | 5 +++++
+ target/s390x/kvm/kvm.c     | 5 +++++
+ 9 files changed, 40 insertions(+)
 
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index f3b72533616..de8ae919616 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -3,6 +3,10 @@
- #ifndef QEMU_I386_TDX_H
- #define QEMU_I386_TDX_H
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index b690dda1370..62ec131d4d8 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -376,6 +376,7 @@ int kvm_arch_get_default_type(MachineState *ms);
  
-+#ifndef CONFIG_USER_ONLY
-+#include CONFIG_DEVICES /* CONFIG_TDX */
-+#endif
+ int kvm_arch_init(MachineState *ms, KVMState *s);
+ 
++int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp);
+ int kvm_arch_init_vcpu(CPUState *cpu);
+ int kvm_arch_destroy_vcpu(CPUState *cpu);
+ 
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 278a50690c9..42d239cf8f2 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -545,6 +545,11 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+ 
+     trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+ 
++    ret = kvm_arch_pre_create_vcpu(cpu, errp);
++    if (ret < 0) {
++        goto err;
++    }
 +
- #include "confidential-guest.h"
+     ret = kvm_create_vcpu(cpu);
+     if (ret < 0) {
+         error_setg_errno(errp, -ret,
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index a2791aa866f..74fda8b8090 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -1846,6 +1846,11 @@ static int kvm_arm_sve_set_vls(ARMCPU *cpu)
  
- #define TYPE_TDX_GUEST "tdx-guest"
-@@ -18,4 +22,10 @@ typedef struct TdxGuest {
-     uint64_t attributes;    /* TD attributes */
- } TdxGuest;
+ #define ARM_CPU_ID_MPIDR       3, 0, 0, 0, 5
  
-+#ifdef CONFIG_TDX
-+bool is_tdx_vm(void);
-+#else
-+#define is_tdx_vm() 0
-+#endif /* CONFIG_TDX */
-+
- #endif /* QEMU_I386_TDX_H */
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index f8ec4fa217e..3750889453d 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -18,8 +18,16 @@
- #include "kvm_i386.h"
- #include "tdx.h"
- 
-+static TdxGuest *tdx_guest;
-+
- static struct kvm_tdx_capabilities *tdx_caps;
- 
-+/* Valid after kvm_arch_init()->confidential_guest_kvm_init()->tdx_kvm_init() */
-+bool is_tdx_vm(void)
++int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
 +{
-+    return !!tdx_guest;
++    return 0;
 +}
 +
- enum tdx_ioctl_level {
-     TDX_VM_IOCTL,
-     TDX_VCPU_IOCTL,
-@@ -117,15 +125,20 @@ static int get_tdx_capabilities(Error **errp)
- 
- static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ int kvm_arch_init_vcpu(CPUState *cs)
  {
-+    TdxGuest *tdx = TDX_GUEST(cgs);
-     int r = 0;
- 
-     kvm_mark_guest_state_protected();
- 
-     if (!tdx_caps) {
-         r = get_tdx_capabilities(errp);
-+        if (r) {
-+            return r;
-+        }
-     }
- 
--    return r;
-+    tdx_guest = tdx;
-+    return 0;
+     int ret;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 6d88495d476..446f0600d4e 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2051,6 +2051,11 @@ full:
+     abort();
  }
  
- static int tdx_kvm_type(X86ConfidentialGuest *cg)
++int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
++{
++    return 0;
++}
++
+ int kvm_arch_init_vcpu(CPUState *cs)
+ {
+     struct {
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index 1bda570482c..c66bdd5302a 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -1071,7 +1071,11 @@ static int kvm_cpu_check_pv_features(CPUState *cs, Error **errp)
+             env->pv_features |= BIT(KVM_FEATURE_VIRT_EXTIOI);
+         }
+     }
++    return 0;
++}
+ 
++int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
++{
+     return 0;
+ }
+ 
+diff --git a/target/mips/kvm.c b/target/mips/kvm.c
+index d67b7c1a8ec..ec53acb51a1 100644
+--- a/target/mips/kvm.c
++++ b/target/mips/kvm.c
+@@ -61,6 +61,11 @@ int kvm_arch_irqchip_create(KVMState *s)
+     return 0;
+ }
+ 
++int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
++{
++    return 0;
++}
++
+ int kvm_arch_init_vcpu(CPUState *cs)
+ {
+     CPUMIPSState *env = cpu_env(cs);
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 8a957c3c7d4..015658049e6 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -479,6 +479,11 @@ static void kvmppc_hw_debug_points_init(CPUPPCState *cenv)
+     }
+ }
+ 
++int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
++{
++    return 0;
++}
++
+ int kvm_arch_init_vcpu(CPUState *cs)
+ {
+     PowerPCCPU *cpu = POWERPC_CPU(cs);
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index efb41fac53e..e1a04be20fe 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1472,6 +1472,11 @@ static int kvm_vcpu_enable_sbi_dbcn(RISCVCPU *cpu, CPUState *cs)
+     return kvm_set_one_reg(cs, kvm_sbi_dbcn.kvm_reg_id, &reg);
+ }
+ 
++int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
++{
++    return 0;
++}
++
+ int kvm_arch_init_vcpu(CPUState *cs)
+ {
+     int ret = 0;
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index 6cd2ebc5f1f..67d9a1977c0 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -398,6 +398,11 @@ unsigned long kvm_arch_vcpu_id(CPUState *cpu)
+     return cpu->cpu_index;
+ }
+ 
++int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
++{
++    return 0;
++}
++
+ int kvm_arch_init_vcpu(CPUState *cs)
+ {
+     unsigned int max_cpus = MACHINE(qdev_get_machine())->smp.max_cpus;
 -- 
 2.49.0
 
