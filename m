@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43065AC8897
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0981AAC887F
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:14:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtve-0008Hd-CC; Fri, 30 May 2025 03:13:22 -0400
+	id 1uKtvj-0008Na-FK; Fri, 30 May 2025 03:13:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvc-0008H9-M2
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:20 -0400
+ id 1uKtve-0008Hi-Iq
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvZ-0006p3-39
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:19 -0400
+ id 1uKtvb-0006pA-1w
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589196;
+ s=mimecast20190719; t=1748589198;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8R2NDNeKdof1XYmLpuB33fJuNAIe3X76vJDwEfHawrU=;
- b=GzmSu+jAxuk90xkPtBqngM2j+vazT3siCvhrJqtnMzGcKzE1nIlzDQUgBIHivkYFHPC8CH
- TjV1QHc9Lxty+HQmaPzMSSK3KrLVQnt1xahXAuYtKFppmQrW4xMxjVulobVlwmR3PYgtOp
- VIJB+8wXI9QdgrvMMDTc0K9vzwzvrbY=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MmCqGv2PLULpIzliwAI2nsyTkhSfdekcaFoTKA8oFL8=;
+ b=Yb+rAql9fFlkZlNb+8IHIsooZFr9vBkjT/DQC3WpJTK/+mQW4AWfZln+dJ4gRKyvm1tOXD
+ 76FxoVBgIuF1LcYYPYE7PUwlrIAYnmJic/lE3FTKTPnjYm8MY6kmCM00RQKaVbGF1J7z42
+ We2yOrAque+2MkAxbattSUSQL5Sxd10=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-WZ3JeAUSMD2DO-HqWILQgg-1; Fri, 30 May 2025 03:13:14 -0400
-X-MC-Unique: WZ3JeAUSMD2DO-HqWILQgg-1
-X-Mimecast-MFC-AGG-ID: WZ3JeAUSMD2DO-HqWILQgg_1748589193
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ad88ac202c0so142382966b.1
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:14 -0700 (PDT)
+ us-mta-586-_lr_WY2GPRy1V5xJOuJNEg-1; Fri, 30 May 2025 03:13:17 -0400
+X-MC-Unique: _lr_WY2GPRy1V5xJOuJNEg-1
+X-Mimecast-MFC-AGG-ID: _lr_WY2GPRy1V5xJOuJNEg_1748589196
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-ad8816c50e1so121137666b.0
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589193; x=1749193993;
+ d=1e100.net; s=20230601; t=1748589195; x=1749193995;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8R2NDNeKdof1XYmLpuB33fJuNAIe3X76vJDwEfHawrU=;
- b=AU04XzyCcMg+O0loBxttkhf94PbkkEeh6eJ1HxqF9HJIvt4zyR1V9Nvu9jDvzlYaSd
- iF+c5Bpr2z15xds7uw0QdqguL91r3VbBLaKZzKRkN15wEg3qsOvSX6DTdLuoTqKs8wLd
- GJpRb8gbmnzW/tk2Gsn+hgeAgVK3f0F/b7JNK8s7i4Cf6snI3kMMT1UltGTKRXmNve5N
- sXWVyaKmaH7M8JSptnkuX+sbU16stTZ0lRT6RVzOdf6SbhJ0X5fn4EcDnfUJgQJD2t7m
- /xQIRTFc747GD8g1QzdWIuoyBhZBMtmray1MpuJi7CWTER/84mpizbyVk+ueei5icMqQ
- wBYQ==
-X-Gm-Message-State: AOJu0YzMgdMIu4YPNBi8Kwvag6yHPlkKksUmEVxnCj1eqyOLogU6qyAK
- Ms9cG95nBfEmampx6I7MFD0txdMLl8ApUFNs4rvyUOfK2ODBHYH4HiI7o0QU8RDuxoRzsMvK5ly
- 6HzpGk34m/h9QoScYyPH6yd1M7/j7N8annsdeF4jrr5NywH47qnensD1lNuzoEurZ0uaKmOuwR0
- gA19qu+56LIha9BzmJWdi81btsTY4+J1l4x76wYtRo
-X-Gm-Gg: ASbGncv292GOTbop7IMNbto97CRC1PumAdxEKzv8e8v0apUhNwLJDNavF0YPlW6NtaQ
- 7Q+Jt/yy0YiYCtOuXdabi6vErP+914XfoVNJfY/AaMkxCLvsR47UZq7M5u4DfID7V6YmExcFMEH
- x2u/0Y7GzfqyKcF5EDfhgGqEhPPNcZ341/snzo7NGvhFQ+jCjJHhTcqWrm+9VeUyDxC7U7zJOKS
- RTwsVi61DkXhePc7eyPOKyBjLo3Z3I35L0Xy/vihTm2BonSKQh5HgVutBidmd8mUbCD1E2TTACr
- scH4ZZh/cV4riA==
-X-Received: by 2002:a17:907:7f04:b0:ad8:adf3:7d6d with SMTP id
- a640c23a62f3a-adb32c9fd0amr181181966b.21.1748589192847; 
- Fri, 30 May 2025 00:13:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEwT5A/COwu5Lb1/RKPZsYfB4c1A7e5TIhfZ3yjF1E0NGfxt1HzWCF9/muaE+lX0k210Q91pQ==
-X-Received: by 2002:a17:907:7f04:b0:ad8:adf3:7d6d with SMTP id
- a640c23a62f3a-adb32c9fd0amr181179966b.21.1748589192357; 
- Fri, 30 May 2025 00:13:12 -0700 (PDT)
+ bh=MmCqGv2PLULpIzliwAI2nsyTkhSfdekcaFoTKA8oFL8=;
+ b=lJtnA3IG+T5nPYWuTipBGZEOPZzSc2KFIXXERWY+a8GIlcJRx1q6JV/qN2ef9bdo30
+ sia9AJ87a7fZ2u+QJdtRu8M5Y2pEmsRhC41aL63wlQdDfobdNMtfpyN4cJ34jKldHRlw
+ q8wXiIdPoM5CLfYhvrQSr65HvddtTtUWI53YiMmNvx+lyKclIR3vb248VsAosUGW+//J
+ wUFVYngf+eV2mWXZhDOW0veTO4J5fbYJgUS4AcTu0kzv624lNPW3jCZncpjJ6JhKxOF0
+ wWVWtnqzMh5RpqFzIW2qkPq0fprTudg5V7HF424ZrufjFw3VpILVG0gUkPy7IPyqNidU
+ Q/ww==
+X-Gm-Message-State: AOJu0YyBO4ER2vgfMdjRSrCkXCJVt9QK1KEdP72eWb2S51FCOTFFvgLH
+ SWnsW/PmYvG3jmudq6zTDTdulpfga7kqx1c3fwJEPWNsPav/bnHGdWnNzC+cjv+hX+4lIQc0XeL
+ yEmV6LyUl8KDH5ZFzGqYeIBU70IX7oLWiLSRUb2qGwLOSFhmX/mErb6OztUYtwowPrM3WmwpdCw
+ Ev3LwHQ3YLtvRDHHpf5+plW2gVwqNML8Sq9MrKU40C
+X-Gm-Gg: ASbGncsyAravzW0wmjvjobnTrSfJ1hPVx/ZeMSLcwMtMbswt84Zk7x0k2nruQJwZlcv
+ JU0cKYDFj5FfkiP3AC1fg0tPj2+lKPv0cIQtzjhgb+izZ6fCoptjTnTPgzxWVNyQ0dmzxJmuqW1
+ 9jNG6udZwj2yQ0E5xzJOsZ6ReNwk1sWqsdjc5ykUdDE0V8zjVeWB11jn1vUEFb/U6jmFni3hRVC
+ xpp7kbMxRFoWNREtmJRFd9CEtu/YdX8ub2XMXiNXw5OVUAuoyx3L3GV8w3dtFumB1P9M8JX19ay
+ jqVaXNZReOd4mw==
+X-Received: by 2002:a17:906:36d9:b0:adb:3509:b459 with SMTP id
+ a640c23a62f3a-adb3509b66bmr95106466b.19.1748589194995; 
+ Fri, 30 May 2025 00:13:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiH1tT4H+jMeLRwMsO8hoa/9WyExHTmd8OqM7kxPpX55unrESa4fEfTGa8ONh0xDlPT9sr+A==
+X-Received: by 2002:a17:906:36d9:b0:adb:3509:b459 with SMTP id
+ a640c23a62f3a-adb3509b66bmr95103566b.19.1748589194517; 
+ Fri, 30 May 2025 00:13:14 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-adb2efaacfasm142171166b.116.2025.05.30.00.13.10
+ a640c23a62f3a-ada6ad3a6b6sm277715266b.142.2025.05.30.00.13.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:13:10 -0700 (PDT)
+ Fri, 30 May 2025 00:13:13 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 08/77] hw/timer/hpet: Reorganize register decoding
-Date: Fri, 30 May 2025 09:11:38 +0200
-Message-ID: <20250530071250.2050910-9-pbonzini@redhat.com>
+Subject: [PULL 09/77] rust: Fix Zhao's email address
+Date: Fri, 30 May 2025 09:11:39 +0200
+Message-ID: <20250530071250.2050910-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
@@ -108,223 +108,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-For Rust HPET, since the commit 519088b7cf6d ("rust: hpet: decode HPET
-registers into enums"), it decodes register address by checking if the
-register belongs to global register space. And for C HPET, it checks
-timer register space first.
-
-While both approaches are fine, it's best to be as consistent as
-possible.
-
-Synchronize changes from the rust side to C side.
+No one could find Zhao Liu via zhai1.liu@intel.com.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250520152750.2542612-2-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250520152750.2542612-5-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/timer/hpet.c | 166 ++++++++++++++++++++++++------------------------
- 1 file changed, 84 insertions(+), 82 deletions(-)
+ rust/hw/timer/hpet/src/fw_cfg.rs     | 2 +-
+ rust/hw/timer/hpet/src/hpet.rs       | 2 +-
+ rust/hw/timer/hpet/src/lib.rs        | 2 +-
+ rust/qemu-api/src/bitops.rs          | 2 +-
+ rust/qemu-api/src/timer.rs           | 2 +-
+ rust/qemu-api/tests/vmstate_tests.rs | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index d1b7bc52b7b..0fd1337a156 100644
---- a/hw/timer/hpet.c
-+++ b/hw/timer/hpet.c
-@@ -426,30 +426,11 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
-     uint64_t cur_tick;
+diff --git a/rust/hw/timer/hpet/src/fw_cfg.rs b/rust/hw/timer/hpet/src/fw_cfg.rs
+index aa08d283519..6c10316104c 100644
+--- a/rust/hw/timer/hpet/src/fw_cfg.rs
++++ b/rust/hw/timer/hpet/src/fw_cfg.rs
+@@ -1,5 +1,5 @@
+ // Copyright (C) 2024 Intel Corporation.
+-// Author(s): Zhao Liu <zhai1.liu@intel.com>
++// Author(s): Zhao Liu <zhao1.liu@intel.com>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
-     trace_hpet_ram_read(addr);
-+    addr &= ~4;
+ use std::ptr::addr_of_mut;
+diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+index 779681d6509..e3ba62b2875 100644
+--- a/rust/hw/timer/hpet/src/hpet.rs
++++ b/rust/hw/timer/hpet/src/hpet.rs
+@@ -1,5 +1,5 @@
+ // Copyright (C) 2024 Intel Corporation.
+-// Author(s): Zhao Liu <zhai1.liu@intel.com>
++// Author(s): Zhao Liu <zhao1.liu@intel.com>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
--    /*address range of all TN regs*/
--    if (addr >= 0x100 && addr <= 0x3ff) {
--        uint8_t timer_id = (addr - 0x100) / 0x20;
--        HPETTimer *timer = &s->timer[timer_id];
--
--        if (timer_id > s->num_timers) {
--            trace_hpet_timer_id_out_of_range(timer_id);
--            return 0;
--        }
--
--        switch (addr & 0x18) {
--        case HPET_TN_CFG: // including interrupt capabilities
--            return timer->config >> shift;
--        case HPET_TN_CMP: // comparator register
--            return timer->cmp >> shift;
--        case HPET_TN_ROUTE:
--            return timer->fsb >> shift;
--        default:
--            trace_hpet_ram_read_invalid();
--            break;
--        }
--    } else {
--        switch (addr & ~4) {
-+    /*address range of all global regs*/
-+    if (addr <= 0xff) {
-+        switch (addr) {
-         case HPET_ID: // including HPET_PERIOD
-             return s->capability >> shift;
-         case HPET_CFG:
-@@ -468,6 +449,26 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
-             trace_hpet_ram_read_invalid();
-             break;
-         }
-+    } else {
-+        uint8_t timer_id = (addr - 0x100) / 0x20;
-+        HPETTimer *timer = &s->timer[timer_id];
-+
-+        if (timer_id > s->num_timers) {
-+            trace_hpet_timer_id_out_of_range(timer_id);
-+            return 0;
-+        }
-+
-+        switch (addr & 0x1f) {
-+        case HPET_TN_CFG: // including interrupt capabilities
-+            return timer->config >> shift;
-+        case HPET_TN_CMP: // comparator register
-+            return timer->cmp >> shift;
-+        case HPET_TN_ROUTE:
-+            return timer->fsb >> shift;
-+        default:
-+            trace_hpet_ram_read_invalid();
-+            break;
-+        }
-     }
-     return 0;
- }
-@@ -482,9 +483,67 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-     uint64_t old_val, new_val, cleared;
+ use std::{
+diff --git a/rust/hw/timer/hpet/src/lib.rs b/rust/hw/timer/hpet/src/lib.rs
+index 1954584a87e..141aae229d4 100644
+--- a/rust/hw/timer/hpet/src/lib.rs
++++ b/rust/hw/timer/hpet/src/lib.rs
+@@ -1,5 +1,5 @@
+ // Copyright (C) 2024 Intel Corporation.
+-// Author(s): Zhao Liu <zhai1.liu@intel.com>
++// Author(s): Zhao Liu <zhao1.liu@intel.com>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
-     trace_hpet_ram_write(addr, value);
-+    addr &= ~4;
+ //! # HPET QEMU Device Model
+diff --git a/rust/qemu-api/src/bitops.rs b/rust/qemu-api/src/bitops.rs
+index 023ec1a9983..b1e3a530ab5 100644
+--- a/rust/qemu-api/src/bitops.rs
++++ b/rust/qemu-api/src/bitops.rs
+@@ -1,5 +1,5 @@
+ // Copyright (C) 2024 Intel Corporation.
+-// Author(s): Zhao Liu <zhai1.liu@intel.com>
++// Author(s): Zhao Liu <zhao1.liu@intel.com>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
--    /*address range of all TN regs*/
--    if (addr >= 0x100 && addr <= 0x3ff) {
-+    /*address range of all global regs*/
-+    if (addr <= 0xff) {
-+        switch (addr) {
-+        case HPET_ID:
-+            return;
-+        case HPET_CFG:
-+            old_val = s->config;
-+            new_val = deposit64(old_val, shift, len, value);
-+            new_val = hpet_fixup_reg(new_val, old_val, HPET_CFG_WRITE_MASK);
-+            s->config = new_val;
-+            if (activating_bit(old_val, new_val, HPET_CFG_ENABLE)) {
-+                /* Enable main counter and interrupt generation. */
-+                s->hpet_offset =
-+                    ticks_to_ns(s->hpet_counter) - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+                for (i = 0; i < s->num_timers; i++) {
-+                    if (timer_enabled(&s->timer[i]) && (s->isr & (1 << i))) {
-+                        update_irq(&s->timer[i], 1);
-+                    }
-+                    hpet_set_timer(&s->timer[i]);
-+                }
-+            } else if (deactivating_bit(old_val, new_val, HPET_CFG_ENABLE)) {
-+                /* Halt main counter and disable interrupt generation. */
-+                s->hpet_counter = hpet_get_ticks(s);
-+                for (i = 0; i < s->num_timers; i++) {
-+                    hpet_del_timer(&s->timer[i]);
-+                }
-+            }
-+            /* i8254 and RTC output pins are disabled
-+             * when HPET is in legacy mode */
-+            if (activating_bit(old_val, new_val, HPET_CFG_LEGACY)) {
-+                qemu_set_irq(s->pit_enabled, 0);
-+                qemu_irq_lower(s->irqs[0]);
-+                qemu_irq_lower(s->irqs[RTC_ISA_IRQ]);
-+            } else if (deactivating_bit(old_val, new_val, HPET_CFG_LEGACY)) {
-+                qemu_irq_lower(s->irqs[0]);
-+                qemu_set_irq(s->pit_enabled, 1);
-+                qemu_set_irq(s->irqs[RTC_ISA_IRQ], s->rtc_irq_level);
-+            }
-+            break;
-+        case HPET_STATUS:
-+            new_val = value << shift;
-+            cleared = new_val & s->isr;
-+            for (i = 0; i < s->num_timers; i++) {
-+                if (cleared & (1 << i)) {
-+                    update_irq(&s->timer[i], 0);
-+                }
-+            }
-+            break;
-+        case HPET_COUNTER:
-+            if (hpet_enabled(s)) {
-+                trace_hpet_ram_write_counter_write_while_enabled();
-+            }
-+            s->hpet_counter = deposit64(s->hpet_counter, shift, len, value);
-+            break;
-+        default:
-+            trace_hpet_ram_write_invalid();
-+            break;
-+        }
-+    } else {
-         uint8_t timer_id = (addr - 0x100) / 0x20;
-         HPETTimer *timer = &s->timer[timer_id];
+ //! This module provides bit operation extensions to integer types.
+diff --git a/rust/qemu-api/src/timer.rs b/rust/qemu-api/src/timer.rs
+index 868bd88575f..0a2d111d490 100644
+--- a/rust/qemu-api/src/timer.rs
++++ b/rust/qemu-api/src/timer.rs
+@@ -1,5 +1,5 @@
+ // Copyright (C) 2024 Intel Corporation.
+-// Author(s): Zhao Liu <zhai1.liu@intel.com>
++// Author(s): Zhao Liu <zhao1.liu@intel.com>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
-@@ -550,63 +609,6 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-             break;
-         }
-         return;
--    } else {
--        switch (addr & ~4) {
--        case HPET_ID:
--            return;
--        case HPET_CFG:
--            old_val = s->config;
--            new_val = deposit64(old_val, shift, len, value);
--            new_val = hpet_fixup_reg(new_val, old_val, HPET_CFG_WRITE_MASK);
--            s->config = new_val;
--            if (activating_bit(old_val, new_val, HPET_CFG_ENABLE)) {
--                /* Enable main counter and interrupt generation. */
--                s->hpet_offset =
--                    ticks_to_ns(s->hpet_counter) - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--                for (i = 0; i < s->num_timers; i++) {
--                    if (timer_enabled(&s->timer[i]) && (s->isr & (1 << i))) {
--                        update_irq(&s->timer[i], 1);
--                    }
--                    hpet_set_timer(&s->timer[i]);
--                }
--            } else if (deactivating_bit(old_val, new_val, HPET_CFG_ENABLE)) {
--                /* Halt main counter and disable interrupt generation. */
--                s->hpet_counter = hpet_get_ticks(s);
--                for (i = 0; i < s->num_timers; i++) {
--                    hpet_del_timer(&s->timer[i]);
--                }
--            }
--            /* i8254 and RTC output pins are disabled
--             * when HPET is in legacy mode */
--            if (activating_bit(old_val, new_val, HPET_CFG_LEGACY)) {
--                qemu_set_irq(s->pit_enabled, 0);
--                qemu_irq_lower(s->irqs[0]);
--                qemu_irq_lower(s->irqs[RTC_ISA_IRQ]);
--            } else if (deactivating_bit(old_val, new_val, HPET_CFG_LEGACY)) {
--                qemu_irq_lower(s->irqs[0]);
--                qemu_set_irq(s->pit_enabled, 1);
--                qemu_set_irq(s->irqs[RTC_ISA_IRQ], s->rtc_irq_level);
--            }
--            break;
--        case HPET_STATUS:
--            new_val = value << shift;
--            cleared = new_val & s->isr;
--            for (i = 0; i < s->num_timers; i++) {
--                if (cleared & (1 << i)) {
--                    update_irq(&s->timer[i], 0);
--                }
--            }
--            break;
--        case HPET_COUNTER:
--            if (hpet_enabled(s)) {
--                trace_hpet_ram_write_counter_write_while_enabled();
--            }
--            s->hpet_counter = deposit64(s->hpet_counter, shift, len, value);
--            break;
--        default:
--            trace_hpet_ram_write_invalid();
--            break;
--        }
-     }
- }
+ use std::{
+diff --git a/rust/qemu-api/tests/vmstate_tests.rs b/rust/qemu-api/tests/vmstate_tests.rs
+index ad0fc5cd5dd..bded836eb60 100644
+--- a/rust/qemu-api/tests/vmstate_tests.rs
++++ b/rust/qemu-api/tests/vmstate_tests.rs
+@@ -1,5 +1,5 @@
+ // Copyright (C) 2025 Intel Corporation.
+-// Author(s): Zhao Liu <zhai1.liu@intel.com>
++// Author(s): Zhao Liu <zhao1.liu@intel.com>
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
+ use std::{
 -- 
 2.49.0
 
