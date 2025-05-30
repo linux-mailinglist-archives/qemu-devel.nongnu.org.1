@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C40AAC88BC
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CCDAC88D6
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:25:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKty9-0004ZP-Eg; Fri, 30 May 2025 03:15:57 -0400
+	id 1uKtyr-0005w2-2W; Fri, 30 May 2025 03:16:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtx8-00033L-2H
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uKtx9-0003Ar-DD
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtx6-00070d-Aq
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:53 -0400
+ id 1uKtx7-00070h-QP
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:14:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589291;
+ s=mimecast20190719; t=1748589292;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kmrfjHuadJffKlB3WUc28akcDQBFWMBFqmg2KxsvDI8=;
- b=D3anL0PA7UtQwObpvLG0CS6cybpIEVbeE3Eppz+8qUJNKzkd3uj10kAzJx+PBf2EFOg2HQ
- 1q0jSO33AtQt89D1/HDQF+As2XPZ/c+nFCJSjj28X5H76aRVI/Y9GqgKcNjYjGAdFv3Xyh
- mxfpFffuigiS0PymWW6Poisn42t3Luk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MAEXlDz/nyqiodlRnx4Z6LTprHwVep0Eypq0CTqZZG0=;
+ b=F2FDS6EkvDTc/W8CqO2QKy/H5AKuSAijof8euiV7YNmSGeE8uxj2vULOHCsfkEi+hTgJTp
+ 0Xs96a4WrWPqrUGiKAzONoLIJdxyB/e7C2uLoLBpEJlwFOuxvDgW1Mw9hEzwkjjZ95Ko/h
+ OnxfHeMZJdMXQf6irLt5ZpwwU6DLnRI=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-75-HHuqoBL6Mt2Fp7z2qqpjJA-1; Fri, 30 May 2025 03:14:49 -0400
-X-MC-Unique: HHuqoBL6Mt2Fp7z2qqpjJA-1
-X-Mimecast-MFC-AGG-ID: HHuqoBL6Mt2Fp7z2qqpjJA_1748589288
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-ad89c32a8a6so161715166b.3
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:49 -0700 (PDT)
+ us-mta-618-jGEphESwPLmA1OQZd9sq-A-1; Fri, 30 May 2025 03:14:51 -0400
+X-MC-Unique: jGEphESwPLmA1OQZd9sq-A-1
+X-Mimecast-MFC-AGG-ID: jGEphESwPLmA1OQZd9sq-A_1748589290
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-6044cb24c07so1766885a12.2
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:14:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589287; x=1749194087;
+ d=1e100.net; s=20230601; t=1748589290; x=1749194090;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kmrfjHuadJffKlB3WUc28akcDQBFWMBFqmg2KxsvDI8=;
- b=qwxG6zMdz1aycSMJRdnxF8MR3Hq2Idv5C/nhAQ32I/QXq+Y+Xiiny11SGMOiWTvqzt
- a0l6E5vW6aOAMRRjPplM4DxJJJtitt70Uw1krVjj+7usAy6SAmyhvO8NcYpX3Llb29Mz
- +Xw9Lr9b+h+Sq86Uy0jIOKMuI2Brlz7AsKsaeGPXSYfdcnN5nYcEbFkAuCb9Pq6NMXRp
- +O//iqLQvIQvADDOkGhpItzw1W8lkvYGZ0+cvHc84Nk/hVgJCFAZjOJy56gHRQ7czhpD
- cZ3gSSsmbzwzWpEp0Zu1PGWqnWL0PRQGTvOJvwMpaZ3rGd11oRncTZn09X6b0xIqqbfR
- ISXg==
-X-Gm-Message-State: AOJu0Yy7+Jg4d+yW3XVWPfiPSp6X/1zJA30GSEiDjnRY0Cf0cbNYkBaI
- 4UppvjWZgo6/BKEiB5CZDlywugtenhquqkH3jvZPJpssVFN0QmCRC1MqnrxswJaYfatZHrcFKsc
- GJkuG4Op1z71J3cvxfHy5I5FOhPPQJUN9KRu2tOXs5Iq9kzwz41QDkCOLJuHu+5bEL5ITsuk8j5
- zpfwpZ0GTMFCz45lkzXtf0DyHo2oso0oRvZqPczmw9
-X-Gm-Gg: ASbGnctC2I/V/xBXArGZ49z+kLAc8D/p5iVRTruaDTxJIRbVyUdTqbFk6g7PfOyfDKV
- mhZr53J0quop9465CnqkCnHQeDZ4TYpaamxkDirw289I3vg+lJeH9Iu1jHgqh9VNvRik/NHvdZI
- fz0IrnOwHqQJBbT4ry8FEgGQoEabjwkaIounJViJnRDII/gO9c2X27T6baOYxPr3rg8I3ITfB2V
- PaSBmPrq0Vh+pU7Pa3XTG5ILK84hqflrf1lhZ3bVbwqRgiIFyLjBBawXFEecVHG5eiok7QFNIpT
- zyEhqsO2u7AR1A==
-X-Received: by 2002:a17:907:7ea4:b0:ad8:9909:20a3 with SMTP id
- a640c23a62f3a-adb3242f4f0mr201360966b.43.1748589287471; 
- Fri, 30 May 2025 00:14:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFq+Bn/AxoOTQylFdy5QiEyhYOeSYXC+FgyROa8mwLp7RFDG/d1kLHxEp2gytfxVxmJacp6xQ==
-X-Received: by 2002:a17:907:7ea4:b0:ad8:9909:20a3 with SMTP id
- a640c23a62f3a-adb3242f4f0mr201359066b.43.1748589287018; 
- Fri, 30 May 2025 00:14:47 -0700 (PDT)
+ bh=MAEXlDz/nyqiodlRnx4Z6LTprHwVep0Eypq0CTqZZG0=;
+ b=kp6+/LUhxx/EpJZHLS3zC0aVRM6v3kC06Et+HrkaP0jSCvA6lNHHnDGQGS27KHLUtJ
+ E8MAc3yPBPxrCUEcICWqPsbYieFe1s++6J3s8QT+N7jK05w46teOUkZnC2MQgu1R5CO7
+ JMWAqLaig59dBByYw37iQQInLovadEZCPUqaSaO2bEF45nIYzwXGEsyYmqlt0jeoSaJ5
+ +MYAGR1N+aqQdRbWLuJJ7Mtvk8YNsqKsMi8CyuVqDB67dGTy/0xNzw75lNv7vG50i0nc
+ aZe61RCZPJTe83RB+FZ5guxInlsqmk4PSk9Dugnc7Da1is79C8ALOelrxoXGnOdwOHpz
+ EBAg==
+X-Gm-Message-State: AOJu0YwVbrumDjohYB9ZgCISnJ+6BZGrIcVOFy0fc/nsLAnxDf4+4sg9
+ so1yh1hmW6gdNxdOuEa6R2feqlfTErjyexgFbKijpZknTISkjZ7tZg2EFraR5cYMsZXDmU3TWUS
+ PYm9O4oy7DT+QtHqLeoMIrrSB34uLdGnSWiNzk6u/cHY93F75XwmJVYmrTBMXetzmZ4/HWiwaGl
+ x9hkcRXN88C8XRpEjEAYtkocy54ZyPNri0UOMJ0E+n
+X-Gm-Gg: ASbGncuCm+5oRzN/5bH15lvYAEiIkJQpvOn5ORk9Nbfx1Zq2GZO6RaTdvzDNqSziiRj
+ hhBJyrmx9c+EwLzbUBRSH6aLMIJeZsNdW20d6CLz0dN0aDTO/XfhSRkl54Ya5aa0Wnklgw2gES7
+ 5x+szaY18YS2gQIeBc0p+k7FjfeEKAp8jaiUVFedmf2YbUTrB3S88x8n/2mPwfYU0Rby5+8ZuWB
+ U7k1AHRcXpeLMd7ExMoqeDR3VaZVFQfrX3QuAFTSIThIuHsn1dYwWIUQfPfvbTqhnmdp2TBq2AU
+ y5wItFjAdX5imw==
+X-Received: by 2002:aa7:d901:0:b0:605:7f67:5148 with SMTP id
+ 4fb4d7f45d1cf-6057f675189mr737422a12.28.1748589289892; 
+ Fri, 30 May 2025 00:14:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1G/T5/jflLfxnHWN5OvFdkllSxpUwgLtSaZ7oXLkjFreKJ+JUQ4P4Yytm5Hsmtwg+HnOufg==
+X-Received: by 2002:aa7:d901:0:b0:605:7f67:5148 with SMTP id
+ 4fb4d7f45d1cf-6057f675189mr737397a12.28.1748589289465; 
+ Fri, 30 May 2025 00:14:49 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5e2bf045sm277803266b.108.2025.05.30.00.14.45
+ 4fb4d7f45d1cf-60566c5b6e9sm1198971a12.23.2025.05.30.00.14.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:14:45 -0700 (PDT)
+ Fri, 30 May 2025 00:14:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 46/77] i386/tdx: Force exposing CPUID 0x1f
-Date: Fri, 30 May 2025 09:12:16 +0200
-Message-ID: <20250530071250.2050910-47-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 47/77] i386/tdx: Set kvm_readonly_mem_enabled to false for TDX
+ VM
+Date: Fri, 30 May 2025 09:12:17 +0200
+Message-ID: <20250530071250.2050910-48-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -109,33 +110,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-TDX uses CPUID 0x1f to configure TD guest's CPU topology. So set
-enable_cpuid_0x1f for TDs.
+TDX only supports readonly for shared memory but not for private memory.
+
+In the view of QEMU, it has no idea whether a memslot is used as shared
+memory of private. Thus just mark kvm_readonly_mem_enabled to false to
+TDX VM for simplicity.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250508150002.689633-35-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250508150002.689633-36-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/tdx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/i386/kvm/tdx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 7c5e59c5591..accaefb4011 100644
+index accaefb4011..344e560b4b8 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -400,7 +400,11 @@ static int tdx_kvm_type(X86ConfidentialGuest *cg)
+@@ -384,6 +384,15 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+         return -EOPNOTSUPP;
+     }
  
- static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
- {
-+    X86CPU *x86cpu = X86_CPU(cpu);
++    /*
++     * Set kvm_readonly_mem_allowed to false, because TDX only supports readonly
++     * memory for shared memory but not for private memory. Besides, whether a
++     * memslot is private or shared is not determined by QEMU.
++     *
++     * Thus, just mark readonly memory not supported for simplicity.
++     */
++    kvm_readonly_mem_allowed = false;
 +
-     object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
-+
-+    x86cpu->enable_cpuid_0x1f = true;
- }
+     qemu_add_machine_init_done_notifier(&tdx_machine_done_notify);
  
- static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
+     tdx_guest = tdx;
 -- 
 2.49.0
 
