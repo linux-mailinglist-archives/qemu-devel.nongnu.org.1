@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10389AC8880
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 265CAAC8883
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:14:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtvr-0000EZ-2Y; Fri, 30 May 2025 03:13:35 -0400
+	id 1uKtvu-0000P3-1D; Fri, 30 May 2025 03:13:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvm-0008Tc-5H
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uKtvo-0000AT-K3
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvj-0006pq-WB
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:29 -0400
+ id 1uKtvl-0006qC-Ub
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589207;
+ s=mimecast20190719; t=1748589209;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YhfwxdinJJdCY8Yy+StoCvJ5t74Fb+rUvLYPnVRdjZk=;
- b=TJzqvwgSilwvziP4xsOkWE+SQgAlC6ZcClXTgqAv3EypyDMkvcL6U3FpGQFSOsG/M2AHBr
- ncCO+7WQ97A4HWMCLWlF4YWbUjn25WQn+/Y6HJ2fqP4hdpkxIq3u9ZJT7wM1rjeae3tnGk
- 4/9zLE2E2w0VxILmOwoyCnxFN0DmNY8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=R7J/PKsdjyO75T/ahNYZnTAukxtHL/1y+JI/M/+zeKQ=;
+ b=ggi8xOoznHniQIr1hJoitevqJau6cgTlTfj0llv8X3AVe+23w8hxKDyr8AIfvgHULn7CK2
+ dqNImylqKBIEnkvMd+62+su8V/1NXSzI0Rh2w4KeliJDhKw3Y26aJ9mwtCSPO/piYveoNl
+ P3FLgt47gR8MrHTuVtwxJ46JuBd34lo=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-UQIT1rUVND6WrPvO0sPBSg-1; Fri, 30 May 2025 03:13:25 -0400
-X-MC-Unique: UQIT1rUVND6WrPvO0sPBSg-1
-X-Mimecast-MFC-AGG-ID: UQIT1rUVND6WrPvO0sPBSg_1748589204
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-adb33457610so59442666b.3
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:25 -0700 (PDT)
+ us-mta-671-rAidFBXZO0qiw0rL2B_WNg-1; Fri, 30 May 2025 03:13:27 -0400
+X-MC-Unique: rAidFBXZO0qiw0rL2B_WNg-1
+X-Mimecast-MFC-AGG-ID: rAidFBXZO0qiw0rL2B_WNg_1748589206
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-acbbb0009aeso130569166b.1
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589204; x=1749194004;
+ d=1e100.net; s=20230601; t=1748589206; x=1749194006;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YhfwxdinJJdCY8Yy+StoCvJ5t74Fb+rUvLYPnVRdjZk=;
- b=bGpqc0aJf+JWIMvMUbWIOqfb5CrjK2ivvwrHE76Fc2l8hLAbwZ0yO0+MGEdzMFWuRp
- MR2liWd18lFVptQjdXnuHLNiQUd+EsHUByvfC5NGlwc4zyf5hah1i/JXEdQ4cZAY6FGA
- H5bbxsqUdI28+H/zrwOCRmC9QE3eI4qaOIup5Yd0xPmoRrH4mrLQjXSUI4US6b/IS4+r
- QbcxNncoGSB7VN8AmdOY4MMXgi6xHdUQnPm1eIkpxCMPITbcqL6sL++woyhQ0RNMmZDE
- ecgFDNmKPHSX1Fv/t/r5923cVACLSDNaTpTXS5RgQ1VZA87RhPiN/gm/54qks89wNBPO
- X4WQ==
-X-Gm-Message-State: AOJu0YwVJs8DIzzYB4gsc7AZMDnBUoiNZFuNI9K0TFIQ5LvCla7PE2Ap
- femMujzLI8U8PLyHhKEe+3k23L5Y/DbyF6+RF6BBd44f6LvjvLrnPHjTlXVYtO3LqTuZycDYq5M
- 5n0aTHSew6btVXXGYePZMC9msgW6GHHgVPnP+u/oC/KEbmV2SsC4odti1scfLotyVkEn2K538nT
- FKwVlgqTUVFrgGxrTnxUnZN2tuduXIUWwlqOAsM8Yu
-X-Gm-Gg: ASbGnct0cHaTGk6Y9b0c+PTX0hhN0iOxHvTfFb+vH8N78NqO9K8qgzjHTi8+HEOSOZ4
- 6vIHfIwwG20v/NkOT989PRJ4S5wOpMfurgKGFyb2c5peEqPfEoY6UTor+1CDzpeKpk7VD0w7xeL
- rbrCrBB5hVpZM/GeQYRrZGj5ex/grCm22PPUfzv9p6zI3ifl7MoVGm5ksjOzM8UQ+XmZem2vyr9
- AHc2AdmIM/DSXuNVOjfZL+eybOQwBTYjiL7cIX1f4lLttsbKiJK9jbLqeaMJcITPRT4cPhRN59/
- fz62ojginK/rKw==
-X-Received: by 2002:a17:907:944d:b0:adb:2462:d921 with SMTP id
- a640c23a62f3a-adb322b3598mr219028966b.5.1748589203588; 
- Fri, 30 May 2025 00:13:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEpEV8waias0nHPMABUee2GDULcgj7LSFT5OxJa3mnBIi0IAo9Ml3A05sz1O6NeKwvPJYr8hA==
-X-Received: by 2002:a17:907:944d:b0:adb:2462:d921 with SMTP id
- a640c23a62f3a-adb322b3598mr219025666b.5.1748589203006; 
- Fri, 30 May 2025 00:13:23 -0700 (PDT)
+ bh=R7J/PKsdjyO75T/ahNYZnTAukxtHL/1y+JI/M/+zeKQ=;
+ b=IYbmifEUh6BMaZgOKn41RWo6LPuVJsOSBj2j/3V/Tx0hrqkd2EWjNJGtxUQcyUMR2I
+ vixfWeCtH6HFx8//tiUS1/7snj6oBSV5+iNr0ED2BWypqWlS2dPKCiW6+TBg/HK/TT02
+ OcCq8jpt/F83Ui0tX5wLC1Pw+erfvbgxXUl/jJpcVOcPLW8c8YfonMNONf/GiYlwh3kF
+ 01s33VXmkm4OXl4ILtoCePTNsufL+nuum0Z2Zi+HMTNTEblTvimuAXRz9hp49V7NvRQ6
+ xAj5TyV9fLBb8n4SuJK8CAWv5PiktJGK0DSATFNF30p/OeHYl7sESSOLrgKshiPPbJ7R
+ o2QQ==
+X-Gm-Message-State: AOJu0YwGKDoBygZaqO9vo7M/8Osz7T5TOsY++h6aHYhdB8oze7O21I+h
+ jJwhrIjugjrmhICPD7JBg3ABx+HldmI0M89OTZ8qPVEskL+cughZiBHWbWwu3Si/mhMlrEEg+pF
+ nRj5Z+QIAoFwacMNNNJ9wZfSKJlXS9kI1OXu4Beaaa08nS1MVXqRAGy6fYgY8bKmS0jnUHhm3jM
+ WDoH1U86GC/6d6B9/U+nFdN9Yugw7FemplCdW7b8pJ
+X-Gm-Gg: ASbGncttJiPqqNrbBHALDTyzlOe1wqsmOO7bTtSL06sXjlIMqfnHsLvydI2UVYiaIoj
+ Lv2cTRoTNmd0/XMq8/mpDNbiBixn9JvH6ApitCA45cdsgMPyWExuy1c8JW9qt55T+mQBuUM55da
+ G3r3Sqoll3AwLAO4/EWJHNKzqqOFLp7URR06kFVxg0zkdDejajyYYEpBGYhmmNkkec6tUc6FTPl
+ y7yWKIWOsFzv6yzAHNUY77g43bUfy2De+Q5vl3h0MVZte7zdsfdZZC6qqNEu06su9xAHXRlaQG6
+ mquy2mB5V+2Fiz0gGkU+1Cji
+X-Received: by 2002:a17:907:2d10:b0:adb:7f8:9ecf with SMTP id
+ a640c23a62f3a-adb32301978mr201230366b.45.1748589205453; 
+ Fri, 30 May 2025 00:13:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFbeDxfmsjJ49OrrqGMQCVowujdXZ7NQpIqjgaIYZJqMak5sjF+jQEYgnCy1xZ7+s+RNwOvkA==
+X-Received: by 2002:a17:907:2d10:b0:adb:7f8:9ecf with SMTP id
+ a640c23a62f3a-adb32301978mr201227466b.45.1748589204976; 
+ Fri, 30 May 2025 00:13:24 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d7fec86sm276407466b.7.2025.05.30.00.13.22
- for <qemu-devel@nongnu.org>
+ a640c23a62f3a-ada5dd04537sm277865566b.92.2025.05.30.00.13.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:13:22 -0700 (PDT)
+ Fri, 30 May 2025 00:13:24 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/77] rocker: do not pollute the namespace
-Date: Fri, 30 May 2025 09:11:43 +0200
-Message-ID: <20250530071250.2050910-14-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 14/77] i386: Introduce tdx-guest object
+Date: Fri, 30 May 2025 09:11:44 +0200
+Message-ID: <20250530071250.2050910-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -106,229 +110,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not leave the __le* macros defined, in fact do not use them at all.  Fixes a
-build failure on Alpine with the TDX patches:
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-In file included from ../hw/net/rocker/rocker_of_dpa.c:25:
-../hw/net/rocker/rocker_hw.h:14:16: error: conflicting types for 'uint64_t'; have '__u64' {aka 'long long unsigned int'}
-   14 | #define __le64 uint64_t
-      |                ^~~~~~~~
-In file included from /usr/include/stdint.h:20,
-                 from ../include/qemu/osdep.h:111,
-                 from ../hw/net/rocker/rocker_of_dpa.c:17:
-/usr/include/bits/alltypes.h:136:25: note: previous declaration of 'uint64_t' with type 'uint64_t' {aka 'long unsigned int'}
-  136 | typedef unsigned _Int64 uint64_t;
-      |                         ^~~~~~~~
+Introduce tdx-guest object which inherits X86_CONFIDENTIAL_GUEST,
+and will be used to create TDX VMs (TDs) by
 
-because the Linux headers include a typedef of __leNN.
+  qemu -machine ...,confidential-guest-support=tdx0	\
+       -object tdx-guest,id=tdx0
 
+It has one QAPI member 'attributes' defined, which allows user to set
+TD's attributes directly.
+
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20250508150002.689633-3-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/net/rocker/rocker.h        | 14 +++---------
- hw/net/rocker/rocker_hw.h     | 20 +++++++-----------
- hw/net/rocker/rocker_of_dpa.c | 40 +++++++++++++++++------------------
- 3 files changed, 31 insertions(+), 43 deletions(-)
+ configs/devices/i386-softmmu/default.mak |  1 +
+ qapi/qom.json                            | 15 +++++++++
+ target/i386/kvm/tdx.h                    | 21 ++++++++++++
+ target/i386/kvm/tdx.c                    | 43 ++++++++++++++++++++++++
+ hw/i386/Kconfig                          |  5 +++
+ target/i386/kvm/meson.build              |  2 ++
+ 6 files changed, 87 insertions(+)
+ create mode 100644 target/i386/kvm/tdx.h
+ create mode 100644 target/i386/kvm/tdx.c
 
-diff --git a/hw/net/rocker/rocker.h b/hw/net/rocker/rocker.h
-index 6e0962f47a8..ae06c1c72af 100644
---- a/hw/net/rocker/rocker.h
-+++ b/hw/net/rocker/rocker.h
-@@ -36,15 +36,7 @@ static inline G_GNUC_PRINTF(1, 2) int DPRINTF(const char *fmt, ...)
- }
- #endif
+diff --git a/configs/devices/i386-softmmu/default.mak b/configs/devices/i386-softmmu/default.mak
+index 4faf2f0315e..bc0479a7e0a 100644
+--- a/configs/devices/i386-softmmu/default.mak
++++ b/configs/devices/i386-softmmu/default.mak
+@@ -18,6 +18,7 @@
+ #CONFIG_QXL=n
+ #CONFIG_SEV=n
+ #CONFIG_SGA=n
++#CONFIG_TDX=n
+ #CONFIG_TEST_DEVICES=n
+ #CONFIG_TPM_CRB=n
+ #CONFIG_TPM_TIS_ISA=n
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 04c118e4d61..3d7e11efc38 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -1047,6 +1047,19 @@
+             '*host-data': 'str',
+             '*vcek-disabled': 'bool' } }
  
--#define __le16 uint16_t
--#define __le32 uint32_t
--#define __le64 uint64_t
--
--#define __be16 uint16_t
--#define __be32 uint32_t
--#define __be64 uint64_t
--
--static inline bool ipv4_addr_is_multicast(__be32 addr)
-+static inline bool ipv4_addr_is_multicast(uint32_t addr)
- {
-     return (addr & htonl(0xf0000000)) == htonl(0xe0000000);
- }
-@@ -52,8 +44,8 @@ static inline bool ipv4_addr_is_multicast(__be32 addr)
- typedef struct ipv6_addr {
-     union {
-         uint8_t addr8[16];
--        __be16 addr16[8];
--        __be32 addr32[4];
-+        uint16_t addr16[8];
-+        uint32_t addr32[4];
-     };
- } Ipv6Addr;
++##
++# @TdxGuestProperties:
++#
++# Properties for tdx-guest objects.
++#
++# @attributes: The 'attributes' of a TD guest that is passed to
++#     KVM_TDX_INIT_VM
++#
++# Since: 10.1
++##
++{ 'struct': 'TdxGuestProperties',
++  'data': { '*attributes': 'uint64' } }
++
+ ##
+ # @ThreadContextProperties:
+ #
+@@ -1132,6 +1145,7 @@
+     'sev-snp-guest',
+     'thread-context',
+     's390-pv-guest',
++    'tdx-guest',
+     'throttle-group',
+     'tls-creds-anon',
+     'tls-creds-psk',
+@@ -1204,6 +1218,7 @@
+                                       'if': 'CONFIG_SECRET_KEYRING' },
+       'sev-guest':                  'SevGuestProperties',
+       'sev-snp-guest':              'SevSnpGuestProperties',
++      'tdx-guest':                  'TdxGuestProperties',
+       'thread-context':             'ThreadContextProperties',
+       'throttle-group':             'ThrottleGroupProperties',
+       'tls-creds-anon':             'TlsCredsAnonProperties',
+diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
+new file mode 100644
+index 00000000000..f3b72533616
+--- /dev/null
++++ b/target/i386/kvm/tdx.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#ifndef QEMU_I386_TDX_H
++#define QEMU_I386_TDX_H
++
++#include "confidential-guest.h"
++
++#define TYPE_TDX_GUEST "tdx-guest"
++#define TDX_GUEST(obj)  OBJECT_CHECK(TdxGuest, (obj), TYPE_TDX_GUEST)
++
++typedef struct TdxGuestClass {
++    X86ConfidentialGuestClass parent_class;
++} TdxGuestClass;
++
++typedef struct TdxGuest {
++    X86ConfidentialGuest parent_obj;
++
++    uint64_t attributes;    /* TD attributes */
++} TdxGuest;
++
++#endif /* QEMU_I386_TDX_H */
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+new file mode 100644
+index 00000000000..ab70566c7df
+--- /dev/null
++++ b/target/i386/kvm/tdx.c
+@@ -0,0 +1,43 @@
++/*
++ * QEMU TDX support
++ *
++ * Copyright (c) 2025 Intel Corporation
++ *
++ * Author:
++ *      Xiaoyao Li <xiaoyao.li@intel.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qom/object_interfaces.h"
++
++#include "tdx.h"
++
++/* tdx guest */
++OBJECT_DEFINE_TYPE_WITH_INTERFACES(TdxGuest,
++                                   tdx_guest,
++                                   TDX_GUEST,
++                                   X86_CONFIDENTIAL_GUEST,
++                                   { TYPE_USER_CREATABLE },
++                                   { NULL })
++
++static void tdx_guest_init(Object *obj)
++{
++    ConfidentialGuestSupport *cgs = CONFIDENTIAL_GUEST_SUPPORT(obj);
++    TdxGuest *tdx = TDX_GUEST(obj);
++
++    cgs->require_guest_memfd = true;
++    tdx->attributes = 0;
++
++    object_property_add_uint64_ptr(obj, "attributes", &tdx->attributes,
++                                   OBJ_PROP_FLAG_READWRITE);
++}
++
++static void tdx_guest_finalize(Object *obj)
++{
++}
++
++static void tdx_guest_class_init(ObjectClass *oc, const void *data)
++{
++}
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index d34ce07b215..cce9521ba93 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -10,6 +10,10 @@ config SGX
+     bool
+     depends on KVM
  
-diff --git a/hw/net/rocker/rocker_hw.h b/hw/net/rocker/rocker_hw.h
-index 1786323fa4a..7ec6bfbcb92 100644
---- a/hw/net/rocker/rocker_hw.h
-+++ b/hw/net/rocker/rocker_hw.h
-@@ -9,10 +9,6 @@
- #ifndef ROCKER_HW_H
- #define ROCKER_HW_H
++config TDX
++    bool
++    depends on KVM
++
+ config PC
+     bool
+     imply APPLESMC
+@@ -26,6 +30,7 @@ config PC
+     imply QXL
+     imply SEV
+     imply SGX
++    imply TDX
+     imply TEST_DEVICES
+     imply TPM_CRB
+     imply TPM_TIS_ISA
+diff --git a/target/i386/kvm/meson.build b/target/i386/kvm/meson.build
+index 3996cafaf29..466bccb9cb1 100644
+--- a/target/i386/kvm/meson.build
++++ b/target/i386/kvm/meson.build
+@@ -8,6 +8,8 @@ i386_kvm_ss.add(files(
  
--#define __le16 uint16_t
--#define __le32 uint32_t
--#define __le64 uint64_t
--
- /*
-  * Return codes
-  */
-@@ -124,12 +120,12 @@ enum {
-  */
+ i386_kvm_ss.add(when: 'CONFIG_XEN_EMU', if_true: files('xen-emu.c'))
  
- typedef struct rocker_desc {
--    __le64 buf_addr;
-+    uint64_t buf_addr;
-     uint64_t cookie;
--    __le16 buf_size;
--    __le16 tlv_size;
--    __le16 rsvd[5];   /* pad to 32 bytes */
--    __le16 comp_err;
-+    uint16_t buf_size;
-+    uint16_t tlv_size;
-+    uint16_t rsvd[5];   /* pad to 32 bytes */
-+    uint16_t comp_err;
- } __attribute__((packed, aligned(8))) RockerDesc;
++i386_kvm_ss.add(when: 'CONFIG_TDX', if_true: files('tdx.c'))
++
+ i386_system_ss.add(when: 'CONFIG_HYPERV', if_true: files('hyperv.c'), if_false: files('hyperv-stub.c'))
  
- /*
-@@ -137,9 +133,9 @@ typedef struct rocker_desc {
-  */
- 
- typedef struct rocker_tlv {
--    __le32 type;
--    __le16 len;
--    __le16 rsvd;
-+    uint32_t type;
-+    uint16_t len;
-+    uint16_t rsvd;
- } __attribute__((packed, aligned(8))) RockerTlv;
- 
- /* cmd msg */
-diff --git a/hw/net/rocker/rocker_of_dpa.c b/hw/net/rocker/rocker_of_dpa.c
-index 3378f63110b..4aed1787566 100644
---- a/hw/net/rocker/rocker_of_dpa.c
-+++ b/hw/net/rocker/rocker_of_dpa.c
-@@ -52,10 +52,10 @@ typedef struct of_dpa_flow_key {
-     uint32_t tunnel_id;              /* overlay tunnel id */
-     uint32_t tbl_id;                 /* table id */
-     struct {
--        __be16 vlan_id;              /* 0 if no VLAN */
-+        uint16_t vlan_id;              /* 0 if no VLAN */
-         MACAddr src;                 /* ethernet source address */
-         MACAddr dst;                 /* ethernet destination address */
--        __be16 type;                 /* ethernet frame type */
-+        uint16_t type;                 /* ethernet frame type */
-     } eth;
-     struct {
-         uint8_t proto;               /* IP protocol or ARP opcode */
-@@ -66,14 +66,14 @@ typedef struct of_dpa_flow_key {
-     union {
-         struct {
-             struct {
--                __be32 src;          /* IP source address */
--                __be32 dst;          /* IP destination address */
-+                uint32_t src;          /* IP source address */
-+                uint32_t dst;          /* IP destination address */
-             } addr;
-             union {
-                 struct {
--                    __be16 src;      /* TCP/UDP/SCTP source port */
--                    __be16 dst;      /* TCP/UDP/SCTP destination port */
--                    __be16 flags;    /* TCP flags */
-+                    uint16_t src;      /* TCP/UDP/SCTP source port */
-+                    uint16_t dst;      /* TCP/UDP/SCTP destination port */
-+                    uint16_t flags;    /* TCP flags */
-                 } tp;
-                 struct {
-                     MACAddr sha;     /* ARP source hardware address */
-@@ -86,11 +86,11 @@ typedef struct of_dpa_flow_key {
-                 Ipv6Addr src;       /* IPv6 source address */
-                 Ipv6Addr dst;       /* IPv6 destination address */
-             } addr;
--            __be32 label;            /* IPv6 flow label */
-+            uint32_t label;            /* IPv6 flow label */
-             struct {
--                __be16 src;          /* TCP/UDP/SCTP source port */
--                __be16 dst;          /* TCP/UDP/SCTP destination port */
--                __be16 flags;        /* TCP flags */
-+                uint16_t src;          /* TCP/UDP/SCTP source port */
-+                uint16_t dst;          /* TCP/UDP/SCTP destination port */
-+                uint16_t flags;        /* TCP flags */
-             } tp;
-             struct {
-                 Ipv6Addr target;    /* ND target address */
-@@ -112,13 +112,13 @@ typedef struct of_dpa_flow_action {
-     struct {
-         uint32_t group_id;
-         uint32_t tun_log_lport;
--        __be16 vlan_id;
-+        uint16_t vlan_id;
-     } write;
-     struct {
--        __be16 new_vlan_id;
-+        uint16_t new_vlan_id;
-         uint32_t out_pport;
-         uint8_t copy_to_cpu;
--        __be16 vlan_id;
-+        uint16_t vlan_id;
-     } apply;
- } OfDpaFlowAction;
- 
-@@ -143,7 +143,7 @@ typedef struct of_dpa_flow {
- typedef struct of_dpa_flow_pkt_fields {
-     uint32_t tunnel_id;
-     struct eth_header *ethhdr;
--    __be16 *h_proto;
-+    uint16_t *h_proto;
-     struct vlan_header *vlanhdr;
-     struct ip_header *ipv4hdr;
-     struct ip6_header *ipv6hdr;
-@@ -180,7 +180,7 @@ typedef struct of_dpa_group {
-             uint32_t group_id;
-             MACAddr src_mac;
-             MACAddr dst_mac;
--            __be16 vlan_id;
-+            uint16_t vlan_id;
-         } l2_rewrite;
-         struct {
-             uint16_t group_count;
-@@ -190,13 +190,13 @@ typedef struct of_dpa_group {
-             uint32_t group_id;
-             MACAddr src_mac;
-             MACAddr dst_mac;
--            __be16 vlan_id;
-+            uint16_t vlan_id;
-             uint8_t ttl_check;
-         } l3_unicast;
-     };
- } OfDpaGroup;
- 
--static int of_dpa_mask2prefix(__be32 mask)
-+static int of_dpa_mask2prefix(uint32_t mask)
- {
-     int i;
-     int count = 32;
-@@ -451,7 +451,7 @@ static void of_dpa_flow_pkt_parse(OfDpaFlowContext *fc,
-     fc->iovcnt = iovcnt + 2;
- }
- 
--static void of_dpa_flow_pkt_insert_vlan(OfDpaFlowContext *fc, __be16 vlan_id)
-+static void of_dpa_flow_pkt_insert_vlan(OfDpaFlowContext *fc, uint16_t vlan_id)
- {
-     OfDpaFlowPktFields *fields = &fc->fields;
-     uint16_t h_proto = fields->ethhdr->h_proto;
-@@ -486,7 +486,7 @@ static void of_dpa_flow_pkt_strip_vlan(OfDpaFlowContext *fc)
- 
- static void of_dpa_flow_pkt_hdr_rewrite(OfDpaFlowContext *fc,
-                                         uint8_t *src_mac, uint8_t *dst_mac,
--                                        __be16 vlan_id)
-+                                        uint16_t vlan_id)
- {
-     OfDpaFlowPktFields *fields = &fc->fields;
- 
+ i386_system_ss.add_all(when: 'CONFIG_KVM', if_true: i386_kvm_ss)
 -- 
 2.49.0
 
