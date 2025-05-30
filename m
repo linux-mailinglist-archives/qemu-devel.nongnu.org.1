@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CE9AC9254
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE5DAC9256
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:16:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1Pi-0004pi-1R; Fri, 30 May 2025 11:12:54 -0400
+	id 1uL1Pe-0004d9-Vw; Fri, 30 May 2025 11:12:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1Pc-0004an-LN; Fri, 30 May 2025 11:12:48 -0400
+ id 1uL1Pb-0004X0-H7; Fri, 30 May 2025 11:12:47 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1PX-0002Mc-PX; Fri, 30 May 2025 11:12:48 -0400
+ id 1uL1PX-0002M2-WE; Fri, 30 May 2025 11:12:46 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 05D7444B4A;
- Fri, 30 May 2025 17:11:49 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id B0410447D1;
+ Fri, 30 May 2025 17:11:48 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
@@ -26,10 +26,9 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 44/48] block: mark bdrv_drop_intermediate() as
- GRAPH_UNLOCKED
-Date: Fri, 30 May 2025 17:11:21 +0200
-Message-Id: <20250530151125.955508-45-f.ebner@proxmox.com>
+Subject: [PATCH v4 45/48] block: mark bdrv_close_all() as GRAPH_UNLOCKED
+Date: Fri, 30 May 2025 17:11:22 +0200
+Message-Id: <20250530151125.955508-46-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -58,32 +57,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function bdrv_drop_intermediate() calls bdrv_drained_begin(),
-which must be called with the graph unlocked.
+The function bdrv_close_all() calls bdrv_drain_all(), which must be
+called with the graph unlocked.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- include/block/block-global-state.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/block/block-global-state.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index 55f84c1f8f..ad78fa6498 100644
+index ad78fa6498..fb3bb6f707 100644
 --- a/include/block/block-global-state.h
 +++ b/include/block/block-global-state.h
-@@ -143,9 +143,10 @@ int bdrv_commit(BlockDriverState *bs);
- int GRAPH_RDLOCK bdrv_make_empty(BdrvChild *c, Error **errp);
+@@ -192,7 +192,7 @@ void bdrv_activate_all(Error **errp);
+ int GRAPH_UNLOCKED bdrv_inactivate_all(void);
  
- void bdrv_register(BlockDriver *bdrv);
--int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
--                           const char *backing_file_str,
--                           bool backing_mask_protocol);
-+int GRAPH_UNLOCKED
-+bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
-+                       const char *backing_file_str,
-+                       bool backing_mask_protocol);
- 
- BlockDriverState * GRAPH_RDLOCK
- bdrv_find_overlay(BlockDriverState *active, BlockDriverState *bs);
+ int bdrv_flush_all(void);
+-void bdrv_close_all(void);
++void GRAPH_UNLOCKED bdrv_close_all(void);
+ void GRAPH_UNLOCKED bdrv_drain_all_begin(void);
+ void bdrv_drain_all_begin_nopoll(void);
+ void bdrv_drain_all_end(void);
 -- 
 2.39.5
 
