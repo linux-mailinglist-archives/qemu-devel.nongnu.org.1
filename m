@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A42FAC9235
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9628FAC922C
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 17:12:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uL1PF-0003US-W5; Fri, 30 May 2025 11:12:26 -0400
+	id 1uL1Os-0002vm-W0; Fri, 30 May 2025 11:12:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1P9-0003Dr-Rv; Fri, 30 May 2025 11:12:19 -0400
+ id 1uL1On-0002sq-Iv; Fri, 30 May 2025 11:11:57 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uL1P7-0002HA-KP; Fri, 30 May 2025 11:12:19 -0400
+ id 1uL1Ol-0002GJ-Pb; Fri, 30 May 2025 11:11:57 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 0B82B44766;
- Fri, 30 May 2025 17:11:44 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D844D44AA4;
+ Fri, 30 May 2025 17:11:43 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
@@ -26,9 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v4 16/48] block: move drain outside of quorum_del_child()
-Date: Fri, 30 May 2025 17:10:53 +0200
-Message-Id: <20250530151125.955508-17-f.ebner@proxmox.com>
+Subject: [PATCH v4 17/48] blockdev: drain while unlocked in
+ internal_snapshot_action()
+Date: Fri, 30 May 2025 17:10:54 +0200
+Message-Id: <20250530151125.955508-18-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530151125.955508-1-f.ebner@proxmox.com>
 References: <20250530151125.955508-1-f.ebner@proxmox.com>
@@ -57,77 +58,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The quorum_del_child() callback runs under the graph lock, so it is
-not allowed to drain. It is only called as the .bdrv_del_child()
-callback, which is only called in the bdrv_del_child() function, which
-also runs under the graph lock.
-
-The bdrv_del_child() function is called by qmp_x_blockdev_change().
-A drained section was already introduced there by commit "block: move
-drain out of quorum_add_child()".
-
-This finally finishes moving out the drain to places that are not
-under the graph lock started in "block: move draining out of
-bdrv_change_aio_context() and mark GRAPH_RDLOCK".
+This is in preparation to mark bdrv_drained_begin() as GRAPH_UNLOCKED.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
+ blockdev.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-Changes in v4:
-* Document requirement that all nodes need to be drained for
-  bdrv_del_child() wrapper and callback.
-* Add function comment for bdrv_del_child() callback.
-
- block.c                          | 2 ++
- block/quorum.c                   | 2 --
- include/block/block_int-common.h | 7 +++++++
- 3 files changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/block.c b/block.c
-index 15a8ccb822..bfd4340b24 100644
---- a/block.c
-+++ b/block.c
-@@ -8276,6 +8276,8 @@ void bdrv_add_child(BlockDriverState *parent_bs, BlockDriverState *child_bs,
- /*
-  * Hot remove a BDS's child. Used in combination with bdrv_add_child, so the
-  * user can take a child offline when it is broken and take a new child online.
-+ *
-+ * All block nodes must be drained.
-  */
- void bdrv_del_child(BlockDriverState *parent_bs, BdrvChild *child, Error **errp)
- {
-diff --git a/block/quorum.c b/block/quorum.c
-index 81407a38ee..cc3bc5f4e7 100644
---- a/block/quorum.c
-+++ b/block/quorum.c
-@@ -1147,9 +1147,7 @@ quorum_del_child(BlockDriverState *bs, BdrvChild *child, Error **errp)
-             (s->num_children - i - 1) * sizeof(BdrvChild *));
-     s->children = g_renew(BdrvChild *, s->children, --s->num_children);
+diff --git a/blockdev.c b/blockdev.c
+index bd5ca77619..506755bef1 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -1208,7 +1208,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+     Error *local_err = NULL;
+     const char *device;
+     const char *name;
+-    BlockDriverState *bs;
++    BlockDriverState *bs, *check_bs;
+     QEMUSnapshotInfo old_sn, *sn;
+     bool ret;
+     int64_t rt;
+@@ -1216,7 +1216,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+     int ret1;
  
--    bdrv_drain_all_begin();
-     bdrv_unref_child(bs, child);
--    bdrv_drain_all_end();
+     GLOBAL_STATE_CODE();
+-    GRAPH_RDLOCK_GUARD_MAINLOOP();
++    bdrv_graph_rdlock_main_loop();
  
-     quorum_refresh_flags(bs);
- }
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index f9e742f812..925a3e7353 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -406,6 +406,13 @@ struct BlockDriver {
-     void GRAPH_WRLOCK_PTR (*bdrv_add_child)(
-         BlockDriverState *parent, BlockDriverState *child, Error **errp);
+     tran_add(tran, &internal_snapshot_drv, state);
  
-+    /**
-+     * Hot remove a BDS's child. Used in combination with bdrv_add_child, so the
-+     * user can take a child offline when it is broken and take a new child
-+     * online.
-+     *
-+     * All block nodes must be drained.
-+     */
-     void GRAPH_WRLOCK_PTR (*bdrv_del_child)(
-         BlockDriverState *parent, BdrvChild *child, Error **errp);
+@@ -1225,14 +1225,29 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
  
+     bs = qmp_get_root_bs(device, errp);
+     if (!bs) {
++        bdrv_graph_rdunlock_main_loop();
+         return;
+     }
+ 
+     state->bs = bs;
+ 
++    /* Need to drain while unlocked. */
++    bdrv_graph_rdunlock_main_loop();
+     /* Paired with .clean() */
+     bdrv_drained_begin(bs);
+ 
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
++
++    /* Make sure the root bs did not change with the drain. */
++    check_bs = qmp_get_root_bs(device, errp);
++    if (bs != check_bs) {
++        if (check_bs) {
++            error_setg(errp, "Block node of device '%s' unexpectedly changed",
++                       device);
++        } /* else errp is already set */
++        return;
++    }
++
+     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_INTERNAL_SNAPSHOT, errp)) {
+         return;
+     }
 -- 
 2.39.5
 
