@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5F0AC88C5
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:22:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 384D1AC88E9
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:27:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKu25-00039e-Db; Fri, 30 May 2025 03:20:03 -0400
+	id 1uKu21-00039d-Jt; Fri, 30 May 2025 03:19:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKty6-0004ef-GO
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uKty8-0004xZ-Fh
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKty3-0007HE-5h
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:53 -0400
+ id 1uKty6-0007HR-I3
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:15:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589350;
+ s=mimecast20190719; t=1748589353;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+cB7P9QdWDifQJVlY/SOJM17ntxZIz8n12yO/nrNn5c=;
- b=O8FOp4kyTVD21YDkqETvw7B3AXsmh4UMP108si/pRp3MseJDoaxbOpP7I5PPFFW5RLqwLR
- Q/UTUiriUnjwn6QSvvtOMHE9zya0Tqma+w/wDhRN7/2uz2m/1xn1lrOg50hmYFmFnEe1TW
- /kELvLE+YYTXSmks6niJDbNGB1deT5M=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4BoHJxeyPF/p6KVBQExhHB1PAVhko9FK31Y7draEtl4=;
+ b=hEUilJQagf5jefgwoiNKJ1fHBtXYpilEM7HQD90YSY1S4RWfnqN2eECFaDLVeYnBAwzWX6
+ DUjJImJ9b9bocLvK8wXukM7Rs9MK0O2nKAXSkZST0mQjuVnccT10eobOG8gfJUszAOnzbo
+ 58pf+nOr3v7J/c1a6TRQfn2YoBsf9cs=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-kzq-wcY-P8i0ITl10x3nnQ-1; Fri, 30 May 2025 03:15:49 -0400
-X-MC-Unique: kzq-wcY-P8i0ITl10x3nnQ-1
-X-Mimecast-MFC-AGG-ID: kzq-wcY-P8i0ITl10x3nnQ_1748589348
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ad556f5f1a9so128316266b.3
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:15:49 -0700 (PDT)
+ us-mta-605-69hpClfgP1K4SjUIx6Aggw-1; Fri, 30 May 2025 03:15:52 -0400
+X-MC-Unique: 69hpClfgP1K4SjUIx6Aggw-1
+X-Mimecast-MFC-AGG-ID: 69hpClfgP1K4SjUIx6Aggw_1748589351
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-603f71f6432so1479852a12.3
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:15:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589347; x=1749194147;
+ d=1e100.net; s=20230601; t=1748589350; x=1749194150;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+cB7P9QdWDifQJVlY/SOJM17ntxZIz8n12yO/nrNn5c=;
- b=NeCgo4lbb8gRBGKuISbmP/oDTuHlBkmN7JAV2sTI05UJYkXUudZo0quOf2+LKwXz9W
- zol7obo8iIzF9ZAVxN1PBDr300QCArY85cS9n1Z1VFT0Iho/iil3gfUlPaVu1LXnLDyU
- pnOb9NCl0zeVgoGahxrPm3iaBF5/qiXS3fGXwWSJ7ReHjGSS60wbKiu1mpsBvJFEDC/n
- RI5QynwkNsIQAddOL/b4wBInNtwG+wzQFG1gtHhrD1vRpN8yQ2UJJsKTS+mieoPGHHfw
- L3bJMAmDS8Tz4Sggc6tQmfyi1EHI7wDDaWNlOvqIO0OIYNoz1eQXZDKaZ9/FcQ6hRlqy
- ZFGA==
-X-Gm-Message-State: AOJu0YzVvLnuWoTGEhBNetAZdPNJAL2zTM9Wxh+9f6QCBxpCstGcAd0f
- OhQaak6lqXp1maluH+XEYrPZv6Cv6o/ufyD0oZcYhFfXV8VNh8QZzPQByEyMVBGF0LqFR5Vdbgj
- 8uhqpBQAQiPUAtB1ZQiVsbTEBE8RivVnb03qYpt4wxT1oSro2gWvCeywnWu/GbB+vFlGBEc+c8E
- 64aDhOqylSSRwbgJYJfUs8PaFf+tB2TDp5RRa4vCCO
-X-Gm-Gg: ASbGncs0SgZciUvOx6v59RPRcPOKAjJ4YJWSqKCW0Dld+tNnXeHlQO6zzNA+sHn9JvX
- 81IoeqLgn6aJp/7oTOswwi47v3bTq827n1C34zYH7fpDtfIOYr+vwcBoYteyszWt2VlUjInvlCK
- Wfo9Av0WXh/B+P24+zsNMDJTH2ntX5pttm0a3vdRwQCJjivBZvCiRWTxWzVw7n1XY0Mj5cADmJA
- 9BwZRzFVMflfHzwQODrUKxv8aoie58JZ5jSu8KT5f3s5HUF6OSDFmB9mKzyOlO8ruaeCS/2BQcf
- 4w68fchhbNA21A==
-X-Received: by 2002:a17:907:60ca:b0:ad8:a2a8:23d1 with SMTP id
- a640c23a62f3a-adb3244b75cmr207244866b.49.1748589347279; 
- Fri, 30 May 2025 00:15:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQGB+BwNmBLJ9ZJd5Og1UabAY7GPVKGls5cl2oxkwMjEiD86I5U5crm5gbvHbhf1L9SKC2Sw==
-X-Received: by 2002:a17:907:60ca:b0:ad8:a2a8:23d1 with SMTP id
- a640c23a62f3a-adb3244b75cmr207242566b.49.1748589346811; 
- Fri, 30 May 2025 00:15:46 -0700 (PDT)
+ bh=4BoHJxeyPF/p6KVBQExhHB1PAVhko9FK31Y7draEtl4=;
+ b=KbtxwKzCagiquFUlBYvtYoTljuaTxaFfok2/O3XHqIeZZdGoat0vTD7+UbWsrVTDMS
+ EGcfx9HIUnTLJ+qit5oCcslknoNRuzBZ18bdK4IQILh9qYOmXmve76DXpwglXtzW+s7m
+ R1CVvxggtN/36XWTwmoytawodI3tKCWqaYgnjU+GVb+Wq9ruTKFCiO9JatCgJI2RPyS1
+ vxuyeavzSyu+jLzheJfwa3Q7AyVq0fJkomgkj0Ei5LEJAMu/ZkKK+0a9g1C26iBJqGgG
+ i5liO7DOT49lnSgTK7taL83Ds2dMFQEmOPJyqxPixKhYVbFI4xbjbFqSRC4S0MVfVx0s
+ InUg==
+X-Gm-Message-State: AOJu0YzqLaxsbQdvted5Jb8orxEOegSu2wpdgmxNWbSkszPkgt4kDnHN
+ GNdgJslZ1gTjLdqVhvPOYgAW3GzPUvkDlVLn7aWSEXSSH9dzgmx4Wtp3QXHPAYba/VlyVznyLts
+ 8VvXUfgkk+MUeiITMlyCmKCOSpbDVTmQeluasWcNST+wOVablmVelOXA0AhBg7mlzGkpLzMkzUc
+ 79NYCGuRAm0Ff7ScnQ51XGWDvurp62a71/hel9pqBR
+X-Gm-Gg: ASbGncuqTKK8ewJ27OPcV1WKkLu9Utf/lyEIFtJAK95gqoIDn2/3iWF/ypAm0DibxxH
+ 3M8XOO4Knwpjmr+fzLS/iFqt8yhdN53qWqLL9i4Giz0aIhT411lmT4nflHD/AutFtYrZZfygWTC
+ uFf0CGDlf/TiCO/a8f5YGUrp/rXgOvczRqfy5ayazaBN1Jdkpg+kxMJ6R1S1XOOpYKKhzJkZ0Ph
+ bnHD9C5aUNCvgQkrzd2yxe6VYABHuKL75T7pqBsorCexZP49bhjhrm8MNZkMrl3KfKOivK+aBzk
+ C7J9Jlq9GgwT8A==
+X-Received: by 2002:a05:6402:278c:b0:5f8:e6e5:54ac with SMTP id
+ 4fb4d7f45d1cf-6057c1c36bfmr1047861a12.14.1748589349864; 
+ Fri, 30 May 2025 00:15:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYRSuxSbIUU89YQbn/wpePAYq+ofUbe5PWe2kCpQRSlxMmtbLB8JFZydgOseQtCrNqWQ6Htw==
+X-Received: by 2002:a05:6402:278c:b0:5f8:e6e5:54ac with SMTP id
+ 4fb4d7f45d1cf-6057c1c36bfmr1047839a12.14.1748589349402; 
+ Fri, 30 May 2025 00:15:49 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada6ad3a6d7sm276138566b.155.2025.05.30.00.15.44
+ 4fb4d7f45d1cf-60566c2b301sm1229337a12.15.2025.05.30.00.15.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:15:44 -0700 (PDT)
+ Fri, 30 May 2025 00:15:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 70/77] rust: make declaration of dependent crates more
- consistent
-Date: Fri, 30 May 2025 09:12:40 +0200
-Message-ID: <20250530071250.2050910-71-pbonzini@redhat.com>
+Cc: Babu Moger <babu.moger@amd.com>,
+ Maksim Davydov <davydov-max@yandex-team.ru>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 71/77] target/i386: Update EPYC CPU model for Cache property,
+ RAS, SVM feature bits
+Date: Fri, 30 May 2025 09:12:41 +0200
+Message-ID: <20250530071250.2050910-72-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
@@ -107,128 +108,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Crates like "bilge" and "libc" can be shared by more than one directory,
-so declare them directly in rust/meson.build.  While at it, make their
-variable names end with "_rs" and always add a subproject() statement
-(as that pinpoints the error better if the subproject is missing and
-cannot be downloaded).
+From: Babu Moger <babu.moger@amd.com>
 
+Found that some of the cache properties are not set correctly for EPYC models.
+
+l1d_cache.no_invd_sharing should not be true.
+l1i_cache.no_invd_sharing should not be true.
+
+L2.self_init should be true.
+L2.inclusive should be true.
+
+L3.inclusive should not be true.
+L3.no_invd_sharing should be true.
+
+Fix the cache properties.
+
+Also add the missing RAS and SVM features bits on AMD
+EPYC CPU models. The SVM feature bits are used in nested guests.
+
+succor		: Software uncorrectable error containment and recovery capability.
+overflow-recov	: MCA overflow recovery support.
+lbrv		: LBR virtualization
+tsc-scale	: MSR based TSC rate control
+vmcb-clean	: VMCB clean bits
+flushbyasid	: Flush by ASID
+pause-filter	: Pause intercept filter
+pfthreshold	: PAUSE filter threshold
+v-vmsave-vmload	: Virtualized VMLOAD and VMSAVE
+vgif		: Virtualized GIF
+
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/515941861700d7066186c9600bc5d96a1741ef0c.1746734284.git.babu.moger@amd.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/meson.build   | 12 +++---------
- rust/meson.build                 | 16 ++++++++++++++++
- rust/qemu-api-macros/meson.build | 14 +++-----------
- rust/qemu-api/meson.build        |  4 +---
- 4 files changed, 23 insertions(+), 23 deletions(-)
+ target/i386/cpu.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
-diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.build
-index 547cca5a96f..494b6c123cc 100644
---- a/rust/hw/char/pl011/meson.build
-+++ b/rust/hw/char/pl011/meson.build
-@@ -1,17 +1,11 @@
--subproject('bilge-0.2-rs', required: true)
--subproject('bilge-impl-0.2-rs', required: true)
--
--bilge_dep = dependency('bilge-0.2-rs')
--bilge_impl_dep = dependency('bilge-impl-0.2-rs')
--
- _libpl011_rs = static_library(
-   'pl011',
-   files('src/lib.rs'),
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
-   dependencies: [
--    bilge_dep,
--    bilge_impl_dep,
-+    bilge_rs,
-+    bilge_impl_rs,
-     qemu_api,
-     qemu_api_macros,
-   ],
-@@ -21,6 +15,6 @@ rust_devices_ss.add(when: 'CONFIG_X_PL011_RUST', if_true: [declare_dependency(
-   link_whole: [_libpl011_rs],
-   # Putting proc macro crates in `dependencies` is necessary for Meson to find
-   # them when compiling the root per-target static rust lib.
--  dependencies: [bilge_impl_dep, qemu_api_macros],
-+  dependencies: [bilge_impl_rs, qemu_api_macros],
-   variables: {'crate': 'pl011'},
- )])
-diff --git a/rust/meson.build b/rust/meson.build
-index 91e52b8fb8e..1f0dcce7d04 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -1,3 +1,19 @@
-+subproject('bilge-0.2-rs', required: true)
-+subproject('bilge-impl-0.2-rs', required: true)
-+subproject('libc-0.2-rs', required: true)
-+
-+bilge_rs = dependency('bilge-0.2-rs')
-+bilge_impl_rs = dependency('bilge-impl-0.2-rs')
-+libc_rs = dependency('libc-0.2-rs')
-+
-+subproject('proc-macro2-1-rs', required: true)
-+subproject('quote-1-rs', required: true)
-+subproject('syn-2-rs', required: true)
-+
-+quote_rs_native = dependency('quote-1-rs', native: true)
-+syn_rs_native = dependency('syn-2-rs', native: true)
-+proc_macro2_rs_native = dependency('proc-macro2-1-rs', native: true)
-+
- subdir('qemu-api-macros')
- subdir('qemu-api')
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 34364cf96ae..b6c63b892e3 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -2211,6 +2211,60 @@ static CPUCaches epyc_v4_cache_info = {
+     },
+ };
  
-diff --git a/rust/qemu-api-macros/meson.build b/rust/qemu-api-macros/meson.build
-index 6f94a4bb3c2..8610ce1c844 100644
---- a/rust/qemu-api-macros/meson.build
-+++ b/rust/qemu-api-macros/meson.build
-@@ -1,11 +1,3 @@
--subproject('proc-macro2-1-rs', required: true)
--subproject('quote-1-rs', required: true)
--subproject('syn-2-rs', required: true)
--
--quote_dep = dependency('quote-1-rs', native: true)
--syn_dep = dependency('syn-2-rs', native: true)
--proc_macro2_dep = dependency('proc-macro2-1-rs', native: true)
--
- _qemu_api_macros_rs = rust.proc_macro(
-   'qemu_api_macros',
-   files('src/lib.rs'),
-@@ -16,9 +8,9 @@ _qemu_api_macros_rs = rust.proc_macro(
-     '--cfg', 'feature="proc-macro"',
-   ],
-   dependencies: [
--    proc_macro2_dep,
--    quote_dep,
--    syn_dep,
-+    proc_macro2_rs_native,
-+    quote_rs_native,
-+    syn_rs_native,
-   ],
- )
- 
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index 1696df705bf..1ea86b8bbf1 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -2,8 +2,6 @@ _qemu_api_cfg = run_command(rustc_args,
-   '--config-headers', config_host_h, '--features', files('Cargo.toml'),
-   capture: true, check: true).stdout().strip().splitlines()
- 
--libc_dep = dependency('libc-0.2-rs')
--
- # _qemu_api_cfg += ['--cfg', 'feature="allocator"']
- if get_option('debug_mutex')
-   _qemu_api_cfg += ['--cfg', 'feature="debug_cell"']
-@@ -37,7 +35,7 @@ _qemu_api_rs = static_library(
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
-   rust_args: _qemu_api_cfg,
--  dependencies: [libc_dep, qemu_api_macros],
-+  dependencies: [libc_rs, qemu_api_macros],
- )
- 
- rust.test('rust-qemu-api-tests', _qemu_api_rs,
++static CPUCaches epyc_v5_cache_info = {
++    .l1d_cache = &(CPUCacheInfo) {
++        .type = DATA_CACHE,
++        .level = 1,
++        .size = 32 * KiB,
++        .line_size = 64,
++        .associativity = 8,
++        .partitions = 1,
++        .sets = 64,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l1i_cache = &(CPUCacheInfo) {
++        .type = INSTRUCTION_CACHE,
++        .level = 1,
++        .size = 64 * KiB,
++        .line_size = 64,
++        .associativity = 4,
++        .partitions = 1,
++        .sets = 256,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l2_cache = &(CPUCacheInfo) {
++        .type = UNIFIED_CACHE,
++        .level = 2,
++        .size = 512 * KiB,
++        .line_size = 64,
++        .associativity = 8,
++        .partitions = 1,
++        .sets = 1024,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .inclusive = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l3_cache = &(CPUCacheInfo) {
++        .type = UNIFIED_CACHE,
++        .level = 3,
++        .size = 8 * MiB,
++        .line_size = 64,
++        .associativity = 16,
++        .partitions = 1,
++        .sets = 8192,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .no_invd_sharing = true,
++        .complex_indexing = false,
++        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
++    },
++};
++
+ static const CPUCaches epyc_rome_cache_info = {
+     .l1d_cache = &(CPUCacheInfo) {
+         .type = DATA_CACHE,
+@@ -5238,6 +5292,25 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+                 },
+                 .cache_info = &epyc_v4_cache_info
+             },
++            {
++                .version = 5,
++                .props = (PropValue[]) {
++                    { "overflow-recov", "on" },
++                    { "succor", "on" },
++                    { "lbrv", "on" },
++                    { "tsc-scale", "on" },
++                    { "vmcb-clean", "on" },
++                    { "flushbyasid", "on" },
++                    { "pause-filter", "on" },
++                    { "pfthreshold", "on" },
++                    { "v-vmsave-vmload", "on" },
++                    { "vgif", "on" },
++                    { "model-id",
++                      "AMD EPYC-v5 Processor" },
++                    { /* end of list */ }
++                },
++                .cache_info = &epyc_v5_cache_info
++            },
+             { /* end of list */ }
+         }
+     },
 -- 
 2.49.0
 
