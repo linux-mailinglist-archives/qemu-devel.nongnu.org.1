@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0981AAC887F
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 219C5AC88B2
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 May 2025 09:20:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uKtvj-0008Na-FK; Fri, 30 May 2025 03:13:27 -0400
+	id 1uKtvk-0008Oo-Eo; Fri, 30 May 2025 03:13:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtve-0008Hi-Iq
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:23 -0400
+ id 1uKtvi-0008Ld-CL
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uKtvb-0006pA-1w
- for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:21 -0400
+ id 1uKtve-0006pU-Lo
+ for qemu-devel@nongnu.org; Fri, 30 May 2025 03:13:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748589198;
+ s=mimecast20190719; t=1748589202;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MmCqGv2PLULpIzliwAI2nsyTkhSfdekcaFoTKA8oFL8=;
- b=Yb+rAql9fFlkZlNb+8IHIsooZFr9vBkjT/DQC3WpJTK/+mQW4AWfZln+dJ4gRKyvm1tOXD
- 76FxoVBgIuF1LcYYPYE7PUwlrIAYnmJic/lE3FTKTPnjYm8MY6kmCM00RQKaVbGF1J7z42
- We2yOrAque+2MkAxbattSUSQL5Sxd10=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tIm4zByOF5S6L9LJ/pZcViAbpqMTge38cNVlo2XDp78=;
+ b=Cz8BJRVon6I5Bbdgm4lZF/UFeClAT4tMnrQJhU8qH4bRYYmAAw8ZFQPXBQLU2c14wa4jnu
+ 5oWvkyzkgOBni1Qzpar8Wf/YBWwdEs+ten62Tyk5by+wngWEcf2j/kNKGvptQjYviLwH3S
+ 9TESfArxzHwzd5ZTUGuBmGtAhqLswUI=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-_lr_WY2GPRy1V5xJOuJNEg-1; Fri, 30 May 2025 03:13:17 -0400
-X-MC-Unique: _lr_WY2GPRy1V5xJOuJNEg-1
-X-Mimecast-MFC-AGG-ID: _lr_WY2GPRy1V5xJOuJNEg_1748589196
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-ad8816c50e1so121137666b.0
- for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:16 -0700 (PDT)
+ us-mta-610-i-Se55d5MRez3UjE0Lrs-Q-1; Fri, 30 May 2025 03:13:19 -0400
+X-MC-Unique: i-Se55d5MRez3UjE0Lrs-Q-1
+X-Mimecast-MFC-AGG-ID: i-Se55d5MRez3UjE0Lrs-Q_1748589198
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-acb61452b27so134522366b.2
+ for <qemu-devel@nongnu.org>; Fri, 30 May 2025 00:13:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748589195; x=1749193995;
+ d=1e100.net; s=20230601; t=1748589198; x=1749193998;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MmCqGv2PLULpIzliwAI2nsyTkhSfdekcaFoTKA8oFL8=;
- b=lJtnA3IG+T5nPYWuTipBGZEOPZzSc2KFIXXERWY+a8GIlcJRx1q6JV/qN2ef9bdo30
- sia9AJ87a7fZ2u+QJdtRu8M5Y2pEmsRhC41aL63wlQdDfobdNMtfpyN4cJ34jKldHRlw
- q8wXiIdPoM5CLfYhvrQSr65HvddtTtUWI53YiMmNvx+lyKclIR3vb248VsAosUGW+//J
- wUFVYngf+eV2mWXZhDOW0veTO4J5fbYJgUS4AcTu0kzv624lNPW3jCZncpjJ6JhKxOF0
- wWVWtnqzMh5RpqFzIW2qkPq0fprTudg5V7HF424ZrufjFw3VpILVG0gUkPy7IPyqNidU
- Q/ww==
-X-Gm-Message-State: AOJu0YyBO4ER2vgfMdjRSrCkXCJVt9QK1KEdP72eWb2S51FCOTFFvgLH
- SWnsW/PmYvG3jmudq6zTDTdulpfga7kqx1c3fwJEPWNsPav/bnHGdWnNzC+cjv+hX+4lIQc0XeL
- yEmV6LyUl8KDH5ZFzGqYeIBU70IX7oLWiLSRUb2qGwLOSFhmX/mErb6OztUYtwowPrM3WmwpdCw
- Ev3LwHQ3YLtvRDHHpf5+plW2gVwqNML8Sq9MrKU40C
-X-Gm-Gg: ASbGncsyAravzW0wmjvjobnTrSfJ1hPVx/ZeMSLcwMtMbswt84Zk7x0k2nruQJwZlcv
- JU0cKYDFj5FfkiP3AC1fg0tPj2+lKPv0cIQtzjhgb+izZ6fCoptjTnTPgzxWVNyQ0dmzxJmuqW1
- 9jNG6udZwj2yQ0E5xzJOsZ6ReNwk1sWqsdjc5ykUdDE0V8zjVeWB11jn1vUEFb/U6jmFni3hRVC
- xpp7kbMxRFoWNREtmJRFd9CEtu/YdX8ub2XMXiNXw5OVUAuoyx3L3GV8w3dtFumB1P9M8JX19ay
- jqVaXNZReOd4mw==
-X-Received: by 2002:a17:906:36d9:b0:adb:3509:b459 with SMTP id
- a640c23a62f3a-adb3509b66bmr95106466b.19.1748589194995; 
- Fri, 30 May 2025 00:13:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEiH1tT4H+jMeLRwMsO8hoa/9WyExHTmd8OqM7kxPpX55unrESa4fEfTGa8ONh0xDlPT9sr+A==
-X-Received: by 2002:a17:906:36d9:b0:adb:3509:b459 with SMTP id
- a640c23a62f3a-adb3509b66bmr95103566b.19.1748589194517; 
- Fri, 30 May 2025 00:13:14 -0700 (PDT)
+ bh=tIm4zByOF5S6L9LJ/pZcViAbpqMTge38cNVlo2XDp78=;
+ b=G6VXBwrAxAm4xFk6oA7s7Cc5AaNqNq2DEoSp60DjzoorJ1WW2l5HlZTDAO8YBf1D6z
+ DmY0gJ5pqVWBaWn3iGT4VsCfxWsVQPTzre+iKE6I8CT1/wTEfDWguUj2sodHXy1whg0t
+ Ai2he0fEWKye2tlbDEQQH7BF8z8KJs3C5sYg8IyseMECUM4zv/yVXg8dScpb+tEwS5EY
+ Eut0/wmghzIREqSvva33kjuA3QCmLCqbE9/+uHn2/YRtxcoGfgL/R9+MAcTV6vyQVf2I
+ OIsXEMKSMlTM11E7QIsyl6SIV5wo2t8ecS2ca1cYb8u0Gu/n1ZNM6Bm99dtcwmZArxdA
+ 4dxA==
+X-Gm-Message-State: AOJu0YznBPrSQXI1mo9Fbqzb/M2/EdBex1tfAJY2Kk1WfTEiByS1RbM9
+ 44CLzGT3q5KNVcaWv4uSTq7egeqAuK1APlOqvll2dSGf/ms3fuffS5PqHyAyYpCrozjjhW5X7Lg
+ eMYeGF7WSSP1jugmZ0FwYlhOWjowLZxGg16L02vfuxgUrzgQT+KD2wA66WPJ+GDDo6K3w6kjU4Z
+ OKK9iR/TqgDpSQ1EMGFO2nPqdJYqxOUXnGe3CtXOiF
+X-Gm-Gg: ASbGnct7dTh4Kez6otjVr37zG2rkvnaC4jXyA8BMrgm+fp7uIgtSjFsIdRKCKUc0ZCD
+ lJl2qjv9m0SxgYscdBE1EzgHr2Teqm/d5TQmysYMAfB64nV/WkPOjcVZ63pHghIjJHFqpxwLSYk
+ WFj2CMZ0sk5nUiI8yYwy5JOph8iJPiY/DUtQHStZCLvjvBCwlH+nbGtxaVjp++Ow2oUO1NERnj7
+ 6u2icceboefDA/K1RnEZ0QGeMhcxIiQZuTjnqEsEr8e2tacJCWYVrjuAF5igsXuPGZ49XcwLkhU
+ qOvl35bjrRlhdg==
+X-Received: by 2002:a17:907:9282:b0:aca:d4f6:440d with SMTP id
+ a640c23a62f3a-adb322860ecmr213004766b.17.1748589197643; 
+ Fri, 30 May 2025 00:13:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFz64ITCYW6TVW9zQt46ZW48RZFPXh9v8mY7nH6dWfwITUYYvcmyHIxZc4HHEMgUgii7cRuaw==
+X-Received: by 2002:a17:907:9282:b0:aca:d4f6:440d with SMTP id
+ a640c23a62f3a-adb322860ecmr213002366b.17.1748589197052; 
+ Fri, 30 May 2025 00:13:17 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada6ad3a6b6sm277715266b.142.2025.05.30.00.13.13
+ a640c23a62f3a-ada6ad6aa17sm278798066b.175.2025.05.30.00.13.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 May 2025 00:13:13 -0700 (PDT)
+ Fri, 30 May 2025 00:13:15 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 09/77] rust: Fix Zhao's email address
-Date: Fri, 30 May 2025 09:11:39 +0200
-Message-ID: <20250530071250.2050910-10-pbonzini@redhat.com>
+Subject: [PULL 10/77] rust: Fix the typos in doc
+Date: Fri, 30 May 2025 09:11:40 +0200
+Message-ID: <20250530071250.2050910-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250530071250.2050910-1-pbonzini@redhat.com>
 References: <20250530071250.2050910-1-pbonzini@redhat.com>
@@ -108,86 +108,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-No one could find Zhao Liu via zhai1.liu@intel.com.
+These typos are found by "cargo spellcheck". Though it outputs a lot of
+noise and false positives, there still are some real typos.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250520152750.2542612-5-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250520152750.2542612-6-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/timer/hpet/src/fw_cfg.rs     | 2 +-
- rust/hw/timer/hpet/src/hpet.rs       | 2 +-
- rust/hw/timer/hpet/src/lib.rs        | 2 +-
- rust/qemu-api/src/bitops.rs          | 2 +-
- rust/qemu-api/src/timer.rs           | 2 +-
- rust/qemu-api/tests/vmstate_tests.rs | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 4 ++--
+ rust/qemu-api/src/qom.rs         | 4 ++--
+ rust/qemu-api/src/vmstate.rs     | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/rust/hw/timer/hpet/src/fw_cfg.rs b/rust/hw/timer/hpet/src/fw_cfg.rs
-index aa08d283519..6c10316104c 100644
---- a/rust/hw/timer/hpet/src/fw_cfg.rs
-+++ b/rust/hw/timer/hpet/src/fw_cfg.rs
-@@ -1,5 +1,5 @@
- // Copyright (C) 2024 Intel Corporation.
--// Author(s): Zhao Liu <zhai1.liu@intel.com>
-+// Author(s): Zhao Liu <zhao1.liu@intel.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index bde3be65c5b..bd5cee04647 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -480,13 +480,13 @@ pub fn post_load(&mut self) -> Result<(), ()> {
+ }
  
- use std::ptr::addr_of_mut;
-diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
-index 779681d6509..e3ba62b2875 100644
---- a/rust/hw/timer/hpet/src/hpet.rs
-+++ b/rust/hw/timer/hpet/src/hpet.rs
-@@ -1,5 +1,5 @@
- // Copyright (C) 2024 Intel Corporation.
--// Author(s): Zhao Liu <zhai1.liu@intel.com>
-+// Author(s): Zhao Liu <zhao1.liu@intel.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
+ impl PL011State {
+-    /// Initializes a pre-allocated, unitialized instance of `PL011State`.
++    /// Initializes a pre-allocated, uninitialized instance of `PL011State`.
+     ///
+     /// # Safety
+     ///
+     /// `self` must point to a correctly sized and aligned location for the
+     /// `PL011State` type. It must not be called more than once on the same
+-    /// location/instance. All its fields are expected to hold unitialized
++    /// location/instance. All its fields are expected to hold uninitialized
+     /// values with the sole exception of `parent_obj`.
+     unsafe fn init(&mut self) {
+         static PL011_OPS: MemoryRegionOps<PL011State> = MemoryRegionOpsBuilder::<PL011State>::new()
+diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
+index 41e5a5e29a8..14f98fee60a 100644
+--- a/rust/qemu-api/src/qom.rs
++++ b/rust/qemu-api/src/qom.rs
+@@ -291,7 +291,7 @@ fn as_object(&self) -> &Object {
+     }
  
- use std::{
-diff --git a/rust/hw/timer/hpet/src/lib.rs b/rust/hw/timer/hpet/src/lib.rs
-index 1954584a87e..141aae229d4 100644
---- a/rust/hw/timer/hpet/src/lib.rs
-+++ b/rust/hw/timer/hpet/src/lib.rs
-@@ -1,5 +1,5 @@
- // Copyright (C) 2024 Intel Corporation.
--// Author(s): Zhao Liu <zhai1.liu@intel.com>
-+// Author(s): Zhao Liu <zhao1.liu@intel.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
+     /// Return the receiver as a const raw pointer to Object.
+-    /// This is preferrable to `as_object_mut_ptr()` if a C
++    /// This is preferable to `as_object_mut_ptr()` if a C
+     /// function only needs a `const Object *`.
+     fn as_object_ptr(&self) -> *const bindings::Object {
+         self.as_object().as_ptr()
+@@ -485,7 +485,7 @@ pub trait ObjectImpl: ObjectType + IsA<Object> {
+     /// `INSTANCE_INIT` functions have been called.
+     const INSTANCE_POST_INIT: Option<fn(&Self)> = None;
  
- //! # HPET QEMU Device Model
-diff --git a/rust/qemu-api/src/bitops.rs b/rust/qemu-api/src/bitops.rs
-index 023ec1a9983..b1e3a530ab5 100644
---- a/rust/qemu-api/src/bitops.rs
-+++ b/rust/qemu-api/src/bitops.rs
-@@ -1,5 +1,5 @@
- // Copyright (C) 2024 Intel Corporation.
--// Author(s): Zhao Liu <zhai1.liu@intel.com>
-+// Author(s): Zhao Liu <zhao1.liu@intel.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
- //! This module provides bit operation extensions to integer types.
-diff --git a/rust/qemu-api/src/timer.rs b/rust/qemu-api/src/timer.rs
-index 868bd88575f..0a2d111d490 100644
---- a/rust/qemu-api/src/timer.rs
-+++ b/rust/qemu-api/src/timer.rs
-@@ -1,5 +1,5 @@
- // Copyright (C) 2024 Intel Corporation.
--// Author(s): Zhao Liu <zhai1.liu@intel.com>
-+// Author(s): Zhao Liu <zhao1.liu@intel.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
- use std::{
-diff --git a/rust/qemu-api/tests/vmstate_tests.rs b/rust/qemu-api/tests/vmstate_tests.rs
-index ad0fc5cd5dd..bded836eb60 100644
---- a/rust/qemu-api/tests/vmstate_tests.rs
-+++ b/rust/qemu-api/tests/vmstate_tests.rs
-@@ -1,5 +1,5 @@
- // Copyright (C) 2025 Intel Corporation.
--// Author(s): Zhao Liu <zhai1.liu@intel.com>
-+// Author(s): Zhao Liu <zhao1.liu@intel.com>
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
- use std::{
+-    /// Called on descendent classes after all parent class initialization
++    /// Called on descendant classes after all parent class initialization
+     /// has occurred, but before the class itself is initialized.  This
+     /// is only useful if a class is not a leaf, and can be used to undo
+     /// the effects of copying the contents of the parent's class struct
+diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+index 9c8b2398e9d..812f390d780 100644
+--- a/rust/qemu-api/src/vmstate.rs
++++ b/rust/qemu-api/src/vmstate.rs
+@@ -9,7 +9,7 @@
+ //! * [`vmstate_unused!`](crate::vmstate_unused) and
+ //!   [`vmstate_of!`](crate::vmstate_of), which are used to express the
+ //!   migration format for a struct.  This is based on the [`VMState`] trait,
+-//!   which is defined by all migrateable types.
++//!   which is defined by all migratable types.
+ //!
+ //! * [`impl_vmstate_forward`](crate::impl_vmstate_forward) and
+ //!   [`impl_vmstate_bitsized`](crate::impl_vmstate_bitsized), which help with
 -- 
 2.49.0
 
