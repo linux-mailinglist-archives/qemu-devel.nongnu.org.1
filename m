@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D781FAC9BF9
-	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FF8AC9BFD
+	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:22:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLPs4-0005DL-U4; Sat, 31 May 2025 13:19:49 -0400
+	id 1uLPsl-0007oP-WD; Sat, 31 May 2025 13:20:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPqY-0002ga-BE; Sat, 31 May 2025 13:18:16 -0400
+ id 1uLPqs-0003ju-Uc; Sat, 31 May 2025 13:18:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPqV-0001DS-Vu; Sat, 31 May 2025 13:18:14 -0400
+ id 1uLPqq-0001DU-2y; Sat, 31 May 2025 13:18:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CB2DD126B4A;
+ by isrv.corpit.ru (Postfix) with ESMTP id E14DF126B4B;
  Sat, 31 May 2025 20:16:06 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A20F521BA4D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id AD2FF21BA4E;
  Sat, 31 May 2025 20:16:10 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 26/27] qemu-img: implement short --help,
- remove global help() function
-Date: Sat, 31 May 2025 20:16:08 +0300
-Message-Id: <20250531171609.197078-27-mjt@tls.msk.ru>
+Subject: [PATCH 27/27] qemu-img: extend cvtnum() and use it in more places
+Date: Sat, 31 May 2025 20:16:09 +0300
+Message-Id: <20250531171609.197078-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250531171609.197078-1-mjt@tls.msk.ru>
 References: <20250531171609.197078-1-mjt@tls.msk.ru>
@@ -59,304 +58,344 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-now once all individual subcommands has --help support, remove
-the large unreadable help() thing and replace it with small
-global --help, which refers to individual command --help for
-more info.
+cvtnum() expects input string to specify some sort of size
+(optionally with KMG... suffix).  However, there are a lot
+of other number conversions in there (using qemu_strtol &Co),
+also, not all conversions which use cvtnum, actually expects
+size, - like dd count=nn.
 
-While at it, also line-wrap list of formats after 75 chars.
+Add bool issize argument to cvtnum() to specify if it should
+treat the argument as a size or something else, - this changes
+conversion routine in use and error text.
 
-Since missing_argument() and unrecognized_option() are now unused,
-remove them.
+Use the new cvtnum() in more places (like where strtol were used),
+since it never return negative number in successful conversion.
+When it makes sense, also specify upper or lower bounds at the
+same time.  This simplifies option processing in multiple places,
+removing the need of local temporary variables and longer error
+reporting code.
+
+While at it, fix errors, like depth in measure must be >= 1,
+while the previous code allowed it to be 0.
+
+In a few places, change unsigned variables (like of type size_t)
+to be signed instead, - to avoid the need of temporary conversion
+variable.  All these variables are okay to be signed, we never
+assign <0 value to them except of the cases of conversion error,
+where we return immediately.
+
+While at it, remove allowed size suffixes from the error message
+as it makes no sense most of the time (should be in help instead).
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qemu-img.c | 210 ++++++++++++++++++-----------------------------------
- 1 file changed, 72 insertions(+), 138 deletions(-)
+ qemu-img.c                 | 111 +++++++++++++------------------------
+ tests/qemu-iotests/049.out |   9 +--
+ 2 files changed, 40 insertions(+), 80 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 44212de3f6..18f7ba07c9 100644
+index 18f7ba07c9..8925e14ba6 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -61,6 +61,7 @@
- typedef struct img_cmd_t {
-     const char *name;
-     int (*handler)(const struct img_cmd_t *ccmd, int argc, char **argv);
-+    const char *description;
- } img_cmd_t;
- 
- enum {
-@@ -94,11 +95,6 @@ typedef enum OutputFormat {
- /* Default to cache=writeback as data integrity is not important for qemu-img */
- #define BDRV_DEFAULT_CACHE "writeback"
- 
--static void format_print(void *opaque, const char *name)
--{
--    printf(" %s", name);
--}
--
- static G_NORETURN
- void tryhelp(const char *argv0)
- {
-@@ -118,18 +114,6 @@ void error_exit(const char *argv0, const char *fmt, ...)
-     tryhelp(argv0);
+@@ -399,18 +399,16 @@ static int add_old_style_options(const char *fmt, QemuOpts *opts,
+     return 0;
  }
  
--static G_NORETURN
--void missing_argument(const char *option)
--{
--    error_exit("qemu-img", "missing argument for option '%s'", option);
--}
--
--static G_NORETURN
--void unrecognized_option(const char *option)
--{
--    error_exit("qemu-img", "unrecognized option '%s'", option);
--}
--
- /*
-  * Print --help output for a command and exit.
-  * @syntax and @description are multi-line with trailing EOL
-@@ -144,6 +128,7 @@ void cmd_help(const img_cmd_t *ccmd,
+-static int64_t cvtnum_full(const char *name, const char *value, int64_t min,
+-                           int64_t max)
++static int64_t cvtnum_full(const char *name, const char *value,
++                           bool issize, int64_t min, int64_t max)
  {
-     printf(
- "Usage:\n"
-+"%s.  Usage:\n"
- "\n"
- "  %s %s %s"
- "\n"
-@@ -151,7 +136,7 @@ void cmd_help(const img_cmd_t *ccmd,
- "  -h, --help\n"
- "     print this help and exit\n"
- "%s\n",
--           "qemu-img", ccmd->name,
-+           ccmd->description, "qemu-img", ccmd->name,
-            syntax, arguments);
-     exit(EXIT_SUCCESS);
- }
-@@ -167,114 +152,6 @@ static OutputFormat parse_output_format(const char *argv0, const char *arg)
+     int err;
+     uint64_t res;
+ 
+-    err = qemu_strtosz(value, NULL, &res);
++    err = issize ? qemu_strtosz(value, NULL, &res) :
++                   qemu_strtou64(value, NULL, 0, &res);
+     if (err < 0 && err != -ERANGE) {
+-        error_report("Invalid %s specified. You may use "
+-                     "k, M, G, T, P or E suffixes for", name);
+-        error_report("kilobytes, megabytes, gigabytes, terabytes, "
+-                     "petabytes and exabytes.");
++        error_report("Invalid %s specified: '%s'.", name, value);
+         return err;
      }
+     if (err == -ERANGE || res > max || res < min) {
+@@ -421,9 +419,9 @@ static int64_t cvtnum_full(const char *name, const char *value, int64_t min,
+     return res;
  }
  
--/* Please keep in synch with docs/tools/qemu-img.rst */
--static G_NORETURN
--void help(void)
--{
--    const char *help_msg =
--           QEMU_IMG_VERSION
--           "usage: qemu-img [standard options] command [command options]\n"
--           "QEMU disk image utility\n"
--           "\n"
--           "    '-h', '--help'       display this help and exit\n"
--           "    '-V', '--version'    output version information and exit\n"
--           "    '-T', '--trace'      [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
--           "                         specify tracing options\n"
--           "\n"
--           "Command syntax:\n"
--#define DEF(option, callback, arg_string)        \
--           "  " arg_string "\n"
--#include "qemu-img-cmds.h"
--#undef DEF
--           "\n"
--           "Command parameters:\n"
--           "  'filename' is a disk image filename\n"
--           "  'objectdef' is a QEMU user creatable object definition. See the qemu(1)\n"
--           "    manual page for a description of the object properties. The most common\n"
--           "    object type is a 'secret', which is used to supply passwords and/or\n"
--           "    encryption keys.\n"
--           "  'fmt' is the disk image format. It is guessed automatically in most cases\n"
--           "  'cache' is the cache mode used to write the output disk image, the valid\n"
--           "    options are: 'none', 'writeback' (default, except for convert), 'writethrough',\n"
--           "    'directsync' and 'unsafe' (default for convert)\n"
--           "  'src_cache' is the cache mode used to read input disk images, the valid\n"
--           "    options are the same as for the 'cache' option\n"
--           "  'size' is the disk image size in bytes. Optional suffixes\n"
--           "    'k' or 'K' (kilobyte, 1024), 'M' (megabyte, 1024k), 'G' (gigabyte, 1024M),\n"
--           "    'T' (terabyte, 1024G), 'P' (petabyte, 1024T) and 'E' (exabyte, 1024P)  are\n"
--           "    supported. 'b' is ignored.\n"
--           "  'output_filename' is the destination disk image filename\n"
--           "  'output_fmt' is the destination format\n"
--           "  'options' is a comma separated list of format specific options in a\n"
--           "    name=value format. Use -o help for an overview of the options supported by\n"
--           "    the used format\n"
--           "  'snapshot_param' is param used for internal snapshot, format\n"
--           "    is 'snapshot.id=[ID],snapshot.name=[NAME]', or\n"
--           "    '[ID_OR_NAME]'\n"
--           "  '-c' indicates that target image must be compressed (qcow format only)\n"
--           "  '-u' allows unsafe backing chains. For rebasing, it is assumed that old and\n"
--           "       new backing file match exactly. The image doesn't need a working\n"
--           "       backing file before rebasing in this case (useful for renaming the\n"
--           "       backing file). For image creation, allow creating without attempting\n"
--           "       to open the backing file.\n"
--           "  '-h' with or without a command shows this help and lists the supported formats\n"
--           "  '-p' show progress of command (only certain commands)\n"
--           "  '-q' use Quiet mode - do not print any output (except errors)\n"
--           "  '-S' indicates the consecutive number of bytes (defaults to 4k) that must\n"
--           "       contain only zeros for qemu-img to create a sparse image during\n"
--           "       conversion. If the number of bytes is 0, the source will not be scanned for\n"
--           "       unallocated or zero sectors, and the destination image will always be\n"
--           "       fully allocated\n"
--           "  '--output' takes the format in which the output must be done (human or json)\n"
--           "  '-n' skips the target volume creation (useful if the volume is created\n"
--           "       prior to running qemu-img)\n"
--           "\n"
--           "Parameters to bitmap subcommand:\n"
--           "  'bitmap' is the name of the bitmap to manipulate, through one or more\n"
--           "       actions from '--add', '--remove', '--clear', '--enable', '--disable',\n"
--           "       or '--merge source'\n"
--           "  '-g granularity' sets the granularity for '--add' actions\n"
--           "  '-b source' and '-F src_fmt' tell '--merge' actions to find the source\n"
--           "       bitmaps from an alternative file\n"
--           "\n"
--           "Parameters to check subcommand:\n"
--           "  '-r' tries to repair any inconsistencies that are found during the check.\n"
--           "       '-r leaks' repairs only cluster leaks, whereas '-r all' fixes all\n"
--           "       kinds of errors, with a higher risk of choosing the wrong fix or\n"
--           "       hiding corruption that has already occurred.\n"
--           "\n"
--           "Parameters to convert subcommand:\n"
--           "  '--bitmaps' copies all top-level persistent bitmaps to destination\n"
--           "  '-m' specifies how many coroutines work in parallel during the convert\n"
--           "       process (defaults to 8)\n"
--           "  '-W' allow to write to the target out of order rather than sequential\n"
--           "\n"
--           "Parameters to snapshot subcommand:\n"
--           "  'snapshot' is the name of the snapshot to create, apply or delete\n"
--           "  '-a' applies a snapshot (revert disk to saved state)\n"
--           "  '-c' creates a snapshot\n"
--           "  '-d' deletes a snapshot\n"
--           "  '-l' lists all snapshots in the given image\n"
--           "\n"
--           "Parameters to compare subcommand:\n"
--           "  '-f' first image format\n"
--           "  '-F' second image format\n"
--           "  '-s' run in Strict mode - fail on different image size or sector allocation\n"
--           "\n"
--           "Parameters to dd subcommand:\n"
--           "  'bs=BYTES' read and write up to BYTES bytes at a time "
--           "(default: 512)\n"
--           "  'count=N' copy only N input blocks\n"
--           "  'if=FILE' read from FILE\n"
--           "  'of=FILE' write to FILE\n"
--           "  'skip=N' skip N bs-sized blocks at the start of input\n";
--
--    printf("%s\nSupported formats:", help_msg);
--    bdrv_iterate_format(format_print, NULL, false);
--    printf("\n\n" QEMU_HELP_BOTTOM "\n");
--    exit(EXIT_SUCCESS);
--}
--
- /*
-  * Is @list safe for accumulate_options()?
-  * It is when multiple of them can be joined together separated by ','.
-@@ -5994,13 +5871,49 @@ out:
- }
- 
- static const img_cmd_t img_cmds[] = {
--#define DEF(option, callback, arg_string)        \
--    { option, callback },
--#include "qemu-img-cmds.h"
--#undef DEF
-+    { "amend", img_amend,
-+      "Update format-specific options of the image" },
-+    { "bench", img_bench,
-+      "Run simple image benchmark" },
-+    { "bitmap", img_bitmap,
-+      "Perform modifications of the persistent bitmap in the image" },
-+    { "check", img_check,
-+      "Check basic image integrity" },
-+    { "commit", img_commit,
-+      "Commit image to its backing file" },
-+    { "compare", img_compare,
-+      "Check if two images have the same contents" },
-+    { "convert", img_convert,
-+      "Copy one image to another with optional format conversion" },
-+    { "create", img_create,
-+      "Create and format new image file" },
-+    { "dd", img_dd,
-+      "Copy input to output with optional format conversion" },
-+    { "info", img_info,
-+      "Display information about image" },
-+    { "map", img_map,
-+      "Dump image metadata" },
-+    { "measure", img_measure,
-+      "Calculate file size requred for a new image" },
-+    { "rebase", img_rebase,
-+      "Change backing file of the image" },
-+    { "resize", img_resize,
-+      "Resize the image to the new size" },
-+    { "snapshot", img_snapshot,
-+      "List or manipulate snapshots within image" },
-     { NULL, NULL, },
- };
- 
-+static void format_print(void *opaque, const char *name)
-+{
-+    int *np = opaque;
-+    if (*np + strlen(name) > 75) {
-+        printf("\n ");
-+        *np = 1;
-+    }
-+    *np += printf(" %s", name);
-+}
-+
- int main(int argc, char **argv)
+-static int64_t cvtnum(const char *name, const char *value)
++static int64_t cvtnum(const char *name, const char *value, bool issize)
  {
-     const img_cmd_t *cmd;
-@@ -6032,16 +5945,35 @@ int main(int argc, char **argv)
-     qemu_add_opts(&qemu_source_opts);
-     qemu_add_opts(&qemu_trace_opts);
+-    return cvtnum_full(name, value, 0, INT64_MAX);
++    return cvtnum_full(name, value, issize, 0, INT64_MAX);
+ }
  
--    while ((c = getopt_long(argc, argv, "+:hVT:", long_options, NULL)) != -1) {
-+    while ((c = getopt_long(argc, argv, "+hVT:", long_options, NULL)) != -1) {
-         switch (c) {
--        case ':':
--            missing_argument(argv[optind - 1]);
--            return 0;
--        case '?':
--            unrecognized_option(argv[optind - 1]);
--            return 0;
-         case 'h':
--            help();
-+            printf(
-+QEMU_IMG_VERSION
-+"QEMU disk image utility.  Usage:\n"
-+"\n"
-+"  qemu-img [standard options] COMMAND [--help | command options]\n"
-+"\n"
-+"Standard options:\n"
-+"  -h, --help\n"
-+"     display this help and exit\n"
-+"  -V, --version\n"
-+"     display version info and exit\n"
-+"  -T,--trace TRACE\n"
-+"     specify tracing options:\n"
-+"        [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
-+"\n"
-+"Recognized commands (run qemu-img COMMAND --help for command-specific help):\n\n");
-+            for (cmd = img_cmds; cmd->name != NULL; cmd++) {
-+                printf("  %s - %s\n", cmd->name, cmd->description);
-+            }
-+            printf("\nSupported image formats:\n");
-+            c = 99; /* force a newline */
-+            bdrv_iterate_format(format_print, &c, false);
-+            if (c) {
-+                printf("\n");
-+            }
-+            printf("\n" QEMU_HELP_BOTTOM "\n");
-             return 0;
-         case 'V':
-             printf(QEMU_IMG_VERSION);
-@@ -6049,6 +5981,8 @@ int main(int argc, char **argv)
-         case 'T':
-             trace_opt_parse(optarg);
-             break;
-+        default:
-+            tryhelp(argv[0]);
+ static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -526,7 +524,7 @@ static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
+ 
+     /* Get image size, if specified */
+     if (optind < argc) {
+-        img_size = cvtnum("image size", argv[optind++]);
++        img_size = cvtnum("image size", argv[optind++], true);
+         if (img_size < 0) {
+             goto fail;
          }
-     }
+@@ -985,7 +983,7 @@ static int img_commit(const img_cmd_t *ccmd, int argc, char **argv)
+             drop = true;
+             break;
+         case 'r':
+-            rate_limit = cvtnum("rate limit", optarg);
++            rate_limit = cvtnum("rate limit", optarg, true);
+             if (rate_limit < 0) {
+                 return 1;
+             }
+@@ -2426,7 +2424,7 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
+         {
+             int64_t sval;
  
+-            sval = cvtnum("buffer size for sparse output", optarg);
++            sval = cvtnum("buffer size for sparse output", optarg, true);
+             if (sval < 0) {
+                 goto fail_getopt;
+             } else if (!QEMU_IS_ALIGNED(sval, BDRV_SECTOR_SIZE) ||
+@@ -2460,16 +2458,15 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
+             force_share = true;
+             break;
+         case 'r':
+-            rate_limit = cvtnum("rate limit", optarg);
++            rate_limit = cvtnum("rate limit", optarg, true);
+             if (rate_limit < 0) {
+                 goto fail_getopt;
+             }
+             break;
+         case 'm':
+-            if (qemu_strtol(optarg, NULL, 0, &s.num_coroutines) ||
+-                s.num_coroutines < 1 || s.num_coroutines > MAX_COROUTINES) {
+-                error_report("Invalid number of coroutines. Allowed number of"
+-                             " coroutines is between 1 and %d", MAX_COROUTINES);
++            s.num_coroutines = cvtnum_full("number of coroutines", optarg,
++                                           false, 1, MAX_COROUTINES);
++            if (s.num_coroutines < 0) {
+                 goto fail_getopt;
+             }
+             break;
+@@ -3374,13 +3371,13 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
+             image_opts = true;
+             break;
+         case 's':
+-            start_offset = cvtnum("start offset", optarg);
++            start_offset = cvtnum("start offset", optarg, true);
+             if (start_offset < 0) {
+                 return 1;
+             }
+             break;
+         case 'l':
+-            max_length = cvtnum("max length", optarg);
++            max_length = cvtnum("max length", optarg, true);
+             if (max_length < 0) {
+                 return 1;
+             }
+@@ -4717,9 +4714,9 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
+     int count = 75000;
+     int depth = 64;
+     int64_t offset = 0;
+-    size_t bufsize = 4096;
++    ssize_t bufsize = 4096;
+     int pattern = 0;
+-    size_t step = 0;
++    ssize_t step = 0;
+     int flush_interval = 0;
+     bool drain_on_flush = true;
+     int64_t image_size;
+@@ -4824,27 +4821,17 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
+             }
+             break;
+         case 'c':
+-        {
+-            unsigned long res;
+-
+-            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > INT_MAX) {
+-                error_report("Invalid request count specified");
++            count = cvtnum_full("request count", optarg, false, 1, INT_MAX);
++            if (count < 0) {
+                 return 1;
+             }
+-            count = res;
+             break;
+-        }
+         case 'd':
+-        {
+-            unsigned long res;
+-
+-            if (qemu_strtoul(optarg, NULL, 0, &res) <= 0 || res > INT_MAX) {
+-                error_report("Invalid queue depth specified");
++            depth = cvtnum_full("queue depth", optarg, false, 1, INT_MAX);
++            if (depth < 0) {
+                 return 1;
+             }
+-            depth = res;
+             break;
+-        }
+         case 'n':
+             flags |= BDRV_O_NATIVE_AIO;
+             break;
+@@ -4857,64 +4844,40 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
+             }
+             break;
+         case 'o':
+-        {
+-            offset = cvtnum("offset", optarg);
++            offset = cvtnum("offset", optarg, true);
+             if (offset < 0) {
+                 return 1;
+             }
+             break;
+-        }
+-            break;
+         case 's':
+-        {
+-            int64_t sval;
+-
+-            sval = cvtnum_full("buffer size", optarg, 0, INT_MAX);
+-            if (sval < 0) {
++            bufsize = cvtnum_full("buffer size", optarg, true, 1, INT_MAX);
++            if (bufsize < 0) {
+                 return 1;
+             }
+-
+-            bufsize = sval;
+             break;
+-        }
+         case 'S':
+-        {
+-            int64_t sval;
+-
+-            sval = cvtnum_full("step_size", optarg, 0, INT_MAX);
+-            if (sval < 0) {
++            step = cvtnum_full("step size", optarg, true, 0, INT_MAX);
++            if (step < 0) {
+                 return 1;
+             }
+-
+-            step = sval;
+             break;
+-        }
+         case 'w':
+             flags |= BDRV_O_RDWR;
+             is_write = true;
+             break;
+         case OPTION_PATTERN:
+-        {
+-            unsigned long res;
+-
+-            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > 0xff) {
+-                error_report("Invalid pattern byte specified");
++            pattern = cvtnum_full("pattern byte", optarg, false, 0, 0xff);
++            if (pattern < 0) {
+                 return 1;
+             }
+-            pattern = res;
+             break;
+-        }
+         case OPTION_FLUSH_INTERVAL:
+-        {
+-            unsigned long res;
+-
+-            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > INT_MAX) {
+-                error_report("Invalid flush interval specified");
++            flush_interval = cvtnum_full("flush interval", optarg,
++                                         false, 0, INT_MAX);
++            if (flush_interval < 0) {
+                 return 1;
+             }
+-            flush_interval = res;
+             break;
+-        }
+         case OPTION_NO_DRAIN:
+             drain_on_flush = false;
+             break;
+@@ -5126,7 +5089,7 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
+             add = true;
+             break;
+         case 'g':
+-            granularity = cvtnum("granularity", optarg);
++            granularity = cvtnum("granularity", optarg, true);
+             if (granularity < 0) {
+                 return 1;
+             }
+@@ -5311,7 +5274,7 @@ static int img_dd_bs(const char *arg,
+ {
+     int64_t res;
+ 
+-    res = cvtnum_full("bs", arg, 1, INT_MAX);
++    res = cvtnum_full("bs", arg, true, 1, INT_MAX);
+ 
+     if (res < 0) {
+         return 1;
+@@ -5325,7 +5288,7 @@ static int img_dd_count(const char *arg,
+                         struct DdIo *in, struct DdIo *out,
+                         struct DdInfo *dd)
+ {
+-    dd->count = cvtnum("count", arg);
++    dd->count = cvtnum("count", arg, false);
+ 
+     if (dd->count < 0) {
+         return 1;
+@@ -5356,7 +5319,7 @@ static int img_dd_skip(const char *arg,
+                        struct DdIo *in, struct DdIo *out,
+                        struct DdInfo *dd)
+ {
+-    in->offset = cvtnum("skip", arg);
++    in->offset = cvtnum("skip", arg, false);
+ 
+     if (in->offset < 0) {
+         return 1;
+@@ -5764,7 +5727,7 @@ static int img_measure(const img_cmd_t *ccmd, int argc, char **argv)
+             user_creatable_process_cmdline(optarg);
+             break;
+         case 's':
+-            img_size = cvtnum("image size", optarg);
++            img_size = cvtnum("image size", optarg, true);
+             if (img_size < 0) {
+                 goto out;
+             }
+diff --git a/tests/qemu-iotests/049.out b/tests/qemu-iotests/049.out
+index 34e1b452e6..a7a7d5a96e 100644
+--- a/tests/qemu-iotests/049.out
++++ b/tests/qemu-iotests/049.out
+@@ -98,8 +98,7 @@ qemu-img create -f qcow2 -o size=-1024 TEST_DIR/t.qcow2
+ qemu-img: TEST_DIR/t.qcow2: Value '-1024' is out of range for parameter 'size'
+ 
+ qemu-img create -f qcow2 TEST_DIR/t.qcow2 -- -1k
+-qemu-img: Invalid image size specified. You may use k, M, G, T, P or E suffixes for
+-qemu-img: kilobytes, megabytes, gigabytes, terabytes, petabytes and exabytes.
++qemu-img: Invalid image size specified: '-1k'.
+ 
+ qemu-img create -f qcow2 -o size=-1k TEST_DIR/t.qcow2
+ qemu-img: TEST_DIR/t.qcow2: Parameter 'size' expects a non-negative number below 2^64
+@@ -107,8 +106,7 @@ Optional suffix k, M, G, T, P or E means kilo-, mega-, giga-, tera-, peta-
+ and exabytes, respectively.
+ 
+ qemu-img create -f qcow2 TEST_DIR/t.qcow2 -- 1kilobyte
+-qemu-img: Invalid image size specified. You may use k, M, G, T, P or E suffixes for
+-qemu-img: kilobytes, megabytes, gigabytes, terabytes, petabytes and exabytes.
++qemu-img: Invalid image size specified: '1kilobyte'.
+ 
+ qemu-img create -f qcow2 -o size=1kilobyte TEST_DIR/t.qcow2
+ qemu-img: TEST_DIR/t.qcow2: Parameter 'size' expects a non-negative number below 2^64
+@@ -116,8 +114,7 @@ Optional suffix k, M, G, T, P or E means kilo-, mega-, giga-, tera-, peta-
+ and exabytes, respectively.
+ 
+ qemu-img create -f qcow2 TEST_DIR/t.qcow2 -- foobar
+-qemu-img: Invalid image size specified. You may use k, M, G, T, P or E suffixes for
+-qemu-img: kilobytes, megabytes, gigabytes, terabytes, petabytes and exabytes.
++qemu-img: Invalid image size specified: 'foobar'.
+ 
+ qemu-img create -f qcow2 -o size=foobar TEST_DIR/t.qcow2
+ qemu-img: TEST_DIR/t.qcow2: Parameter 'size' expects a non-negative number below 2^64
 -- 
 2.39.5
 
