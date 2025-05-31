@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A529EAC9BE9
-	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D2FAC9BEF
+	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:19:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLPpO-0001K9-SC; Sat, 31 May 2025 13:17:03 -0400
+	id 1uLPpS-0001Q5-8g; Sat, 31 May 2025 13:17:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPoz-0001B7-5o; Sat, 31 May 2025 13:16:40 -0400
+ id 1uLPp5-0001Bn-0B; Sat, 31 May 2025 13:16:46 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPov-00013t-3X; Sat, 31 May 2025 13:16:36 -0400
+ id 1uLPoz-000148-8n; Sat, 31 May 2025 13:16:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 27865126B3A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2F1A7126B3B;
  Sat, 31 May 2025 20:16:06 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id EB19621BA3D;
- Sat, 31 May 2025 20:16:09 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0852F21BA3E;
+ Sat, 31 May 2025 20:16:10 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 10/27] qemu-img: compare: use helper function for --object
-Date: Sat, 31 May 2025 20:15:52 +0300
-Message-Id: <20250531171609.197078-11-mjt@tls.msk.ru>
+Subject: [PATCH 11/27] qemu-img: compare: refresh options/--help
+Date: Sat, 31 May 2025 20:15:53 +0300
+Message-Id: <20250531171609.197078-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250531171609.197078-1-mjt@tls.msk.ru>
 References: <20250531171609.197078-1-mjt@tls.msk.ru>
@@ -57,41 +57,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the same function to parse --object as used by all
-other qemu-img subcommands.
+Add long options, add help, reorder options for consistency.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ qemu-img.c | 64 +++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 46 insertions(+), 18 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 5e651e8089..c24e1fb455 100644
+index c24e1fb455..70573b79b5 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -1529,20 +1529,8 @@ static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
-             force_share = true;
+@@ -1487,25 +1487,51 @@ static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
+     for (;;) {
+         static const struct option long_options[] = {
+             {"help", no_argument, 0, 'h'},
+-            {"object", required_argument, 0, OPTION_OBJECT},
++            {"a-format", required_argument, 0, 'f'},
++            {"b-format", required_argument, 0, 'F'},
+             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
++            {"strict", no_argument, 0, 's'},
++            {"cache", required_argument, 0, 'T'},
+             {"force-share", no_argument, 0, 'U'},
++            {"progress", no_argument, 0, 'p'},
++            {"quiet", no_argument, 0, 'q'},
++            {"object", required_argument, 0, OPTION_OBJECT},
+             {0, 0, 0, 0}
+         };
+-        c = getopt_long(argc, argv, ":hf:F:T:pqsU",
++        c = getopt_long(argc, argv, "hf:F:sT:Upq",
+                         long_options, NULL);
+         if (c == -1) {
              break;
-         case OPTION_OBJECT:
--            {
--                Error *local_err = NULL;
--
--                if (!user_creatable_add_from_str(optarg, &local_err)) {
--                    if (local_err) {
--                        error_report_err(local_err);
--                        exit(2);
--                    } else {
--                        /* Help was printed */
--                        exit(EXIT_SUCCESS);
--                    }
--                }
--                break;
--            }
-+            user_creatable_process_cmdline(optarg);
+         }
+         switch (c) {
+-        case ':':
+-            missing_argument(argv[optind - 1]);
+-            break;
+-        case '?':
+-            unrecognized_option(argv[optind - 1]);
+-            break;
+         case 'h':
+-            help();
++            cmd_help(ccmd,
++"[[-f FMT] [-F FMT] | --image-opts] [-s] [-T CACHE]\n"
++"        [-U] [-p] [-q] [--object OBJDEF] FILE1 FILE2\n"
++,
++"  -f, --a-format FMT\n"
++"     specify FILE1 image format explicitly (default: probing is used)\n"
++"  -F, --b-format FMT\n"
++"     specify FILE2 image format explicitly (default: probing is used)\n"
++"  --image-opts\n"
++"     treat FILE1 and FILE2 as option strings (key=value,..), not file names\n"
++"     (incompatible with -f|--a-format and -F|--b-format)\n"
++"  -s, --strict\n"
++"     strict mode, also check if sizes are equal\n"
++"  -T, --cache CACHE_MODE\n"
++"     images caching mode (default: " BDRV_DEFAULT_CACHE ")\n"
++"  -U, --force-share\n"
++"     open images in shared mode for concurrent access\n"
++"  -p, --progress\n"
++"     display progress information\n"
++"  -q, --quiet\n"
++"     quiet mode (produce only error messages if any)\n"
++"  --object OBJDEF\n"
++"     defines QEMU user-creatable object\n"
++"  FILE1, FILE2\n"
++"     names of the image files, or option strings (key=value,..)\n"
++"     with --image-opts, to compare\n"
++);
+             break;
+         case 'f':
+             fmt1 = optarg;
+@@ -1513,27 +1539,29 @@ static int img_compare(const img_cmd_t *ccmd, int argc, char **argv)
+         case 'F':
+             fmt2 = optarg;
+             break;
++        case OPTION_IMAGE_OPTS:
++            image_opts = true;
 +            break;
-         case OPTION_IMAGE_OPTS:
-             image_opts = true;
++        case 's':
++            strict = true;
++            break;
+         case 'T':
+             cache = optarg;
              break;
++        case 'U':
++            force_share = true;
++            break;
+         case 'p':
+             progress = true;
+             break;
+         case 'q':
+             quiet = true;
+             break;
+-        case 's':
+-            strict = true;
+-            break;
+-        case 'U':
+-            force_share = true;
+-            break;
+         case OPTION_OBJECT:
+             user_creatable_process_cmdline(optarg);
+             break;
+-        case OPTION_IMAGE_OPTS:
+-            image_opts = true;
+-            break;
++        default:
++            tryhelp(argv[0]);
+         }
+     }
+ 
 -- 
 2.39.5
 
