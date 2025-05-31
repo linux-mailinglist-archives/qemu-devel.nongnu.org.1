@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4AFAC9C05
-	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D26BDAC9BF1
+	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:19:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLPqr-00036I-2g; Sat, 31 May 2025 13:18:33 -0400
+	id 1uLPrh-0004RN-1q; Sat, 31 May 2025 13:19:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPpw-000222-Sj; Sat, 31 May 2025 13:17:41 -0400
+ id 1uLPpz-00023O-H5; Sat, 31 May 2025 13:17:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPpu-00017X-Mp; Sat, 31 May 2025 13:17:36 -0400
+ id 1uLPpw-00017p-Om; Sat, 31 May 2025 13:17:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7C0BD126B43;
+ by isrv.corpit.ru (Postfix) with ESMTP id 83897126B44;
  Sat, 31 May 2025 20:16:06 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5513821BA46;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5CC6921BA47;
  Sat, 31 May 2025 20:16:10 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 19/27] qemu-img: resize: do not always eat last argument
-Date: Sat, 31 May 2025 20:16:01 +0300
-Message-Id: <20250531171609.197078-20-mjt@tls.msk.ru>
+Subject: [PATCH 20/27] qemu-img: resize: refresh options/--help
+Date: Sat, 31 May 2025 20:16:02 +0300
+Message-Id: <20250531171609.197078-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250531171609.197078-1-mjt@tls.msk.ru>
 References: <20250531171609.197078-1-mjt@tls.msk.ru>
@@ -57,105 +57,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'qemu-img resize --help' does not work, since it wants more
-arguments.  Also -size is only recognized as a very last
-argument, but it is common for tools to handle other options
-after positional arguments too.
-
-Tell getopt_long() to return non-options together with options,
-and process filename and size in the loop, and check if there's
-an argument right after filename which looks like -N (number),
-and treat it as size (decrement).  This way we can handle --help,
-and we can also have options after filename and size, and `--'
-will be handled fine too.
-
-The only case which is not handled right is when there's an option
-between filename and size, and size is given as decrement, - in
-this case -size will be treated as option, not as size.
+Add missing long options and --help output,
+reorder options for consistency.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 41 +++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+ qemu-img.c | 52 ++++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 36 insertions(+), 16 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 08b37ed486..f655c301af 100644
+index f655c301af..3dbfce527b 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -4297,7 +4297,7 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
- {
-     Error *err = NULL;
-     int c, ret, relative;
--    const char *filename, *fmt, *size;
-+    const char *filename = NULL, *fmt = NULL, *size = NULL;
-     int64_t n, total_size, current_size;
-     bool quiet = false;
-     BlockBackend *blk = NULL;
-@@ -4320,17 +4320,7 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
-     bool image_opts = false;
-     bool shrink = false;
- 
--    /* Remove size from argv manually so that negative numbers are not treated
--     * as options by getopt. */
--    if (argc < 3) {
--        error_exit(argv[0], "Not enough arguments");
--        return 1;
--    }
--
--    size = argv[--argc];
--
-     /* Parse getopt arguments */
--    fmt = NULL;
+@@ -4324,36 +4324,48 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
      for(;;) {
          static const struct option long_options[] = {
              {"help", no_argument, 0, 'h'},
-@@ -4340,7 +4330,7 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+-            {"object", required_argument, 0, OPTION_OBJECT},
++            {"format", required_argument, 0, 'f'},
+             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
+             {"preallocation", required_argument, 0, OPTION_PREALLOCATION},
              {"shrink", no_argument, 0, OPTION_SHRINK},
++            {"quiet", no_argument, 0, 'q'},
++            {"object", required_argument, 0, OPTION_OBJECT},
              {0, 0, 0, 0}
          };
--        c = getopt_long(argc, argv, ":f:hq",
-+        c = getopt_long(argc, argv, "-:f:hq",
+-        c = getopt_long(argc, argv, "-:f:hq",
++        c = getopt_long(argc, argv, "-hf:q",
                          long_options, NULL);
          if (c == -1) {
              break;
-@@ -4378,12 +4368,35 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+         }
+         switch(c) {
+-        case ':':
+-            missing_argument(argv[optind - 1]);
+-            break;
+-        case '?':
+-            unrecognized_option(argv[optind - 1]);
+-            break;
+         case 'h':
+-            help();
+-            break;
++            cmd_help(ccmd, "[-f FMT | --image-opts] [--preallocation PREALLOC] [--shrink]\n"
++"        [-q] [--object OBJDEF] FILE [+-]SIZE[bkKMGTPE]\n"
++,
++"  -f, --format FMT\n"
++"     specify FILE format explicitly (default: probing is used)\n"
++"  --image-opts\n"
++"     treat FILE as an option string (key=value,...), not a file name\n"
++"     (incompatible with -f|--format)\n"
++"  --shrink\n"
++"     allow operation when the new size is smaller than the original\n"
++"  --preallocation PREALLOC\n"
++"     specify FMT-specific preallocation type for the new areas\n"
++"  -q, --quiet\n"
++"     quiet mode (produce only error messages if any)\n"
++"  --object OBJDEF\n"
++"     defines QEMU user-creatable object\n"
++"  FILE\n"
++"     name of the image file, or option string (key=value,..)\n"
++"     with --image-opts, to operate on\n"
++"  [+-]SIZE[bkKMGTPE]\n"
++"     new image size or amount by which to shrink (-)/grow (+),\n"
++"     with optional multiplier suffix (powers of 1024, default is bytes)\n"
++);
++            return 0;
+         case 'f':
+             fmt = optarg;
+             break;
+-        case 'q':
+-            quiet = true;
+-            break;
+-        case OPTION_OBJECT:
+-            user_creatable_process_cmdline(optarg);
+-            break;
+         case OPTION_IMAGE_OPTS:
+             image_opts = true;
+             break;
+@@ -4368,6 +4380,12 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
          case OPTION_SHRINK:
              shrink = true;
              break;
-+        case 1: /* a non-optional argument */
-+            if (!filename) {
-+                filename = optarg;
-+                /* see if we have -size (number) next to filename */
-+                if (optind < argc) {
-+                    size = argv[optind];
-+                    if (size[0] == '-' && size[1] >= '0' && size[1] <= '9') {
-+                        ++optind;
-+                    } else {
-+                        size = NULL;
-+                    }
-+                }
-+            } else if (!size) {
-+                size = optarg;
-+            } else {
-+                error_exit(argv[0], "Extra argument(s) in command line");
-+            }
++        case 'q':
++            quiet = true;
 +            break;
++        case OPTION_OBJECT:
++            user_creatable_process_cmdline(optarg);
++            break;
+         case 1: /* a non-optional argument */
+             if (!filename) {
+                 filename = optarg;
+@@ -4386,6 +4404,8 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+                 error_exit(argv[0], "Extra argument(s) in command line");
+             }
+             break;
++        default:
++            tryhelp(argv[0]);
          }
      }
--    if (optind != argc - 1) {
-+    if (!filename && optind < argc) {
-+        filename = argv[optind++];
-+    }
-+    if (!size && optind < argc) {
-+        size = argv[optind++];
-+    }
-+    if (!filename || !size || optind < argc) {
-         error_exit(argv[0], "Expecting image file name and size");
-     }
--    filename = argv[optind++];
- 
-     /* Choose grow, shrink, or absolute resize mode */
-     switch (size[0]) {
+     if (!filename && optind < argc) {
 -- 
 2.39.5
 
