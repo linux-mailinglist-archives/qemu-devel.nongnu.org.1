@@ -2,34 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EBDDAC9BE5
-	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30274AC9BEE
+	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:19:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLPoj-00016A-FQ; Sat, 31 May 2025 13:16:22 -0400
+	id 1uLPp8-00018A-SP; Sat, 31 May 2025 13:16:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPod-00015T-Rj; Sat, 31 May 2025 13:16:16 -0400
+ id 1uLPod-00015U-SZ; Sat, 31 May 2025 13:16:16 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPob-000116-RC; Sat, 31 May 2025 13:16:15 -0400
+ id 1uLPob-000117-R9; Sat, 31 May 2025 13:16:15 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B1794126B30;
+ by isrv.corpit.ru (Postfix) with ESMTP id B31AD126B31;
  Sat, 31 May 2025 20:16:05 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 83B2B21BA33;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8B4FE21BA34;
  Sat, 31 May 2025 20:16:09 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v4 00/27] refresh qemu-img options handling
-Date: Sat, 31 May 2025 20:15:42 +0300
-Message-Id: <20250531171609.197078-1-mjt@tls.msk.ru>
+Subject: [PATCH 01/27] qemu-img: measure: convert img_size to signed,
+ simplify handling
+Date: Sat, 31 May 2025 20:15:43 +0300
+Message-Id: <20250531171609.197078-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250531171609.197078-1-mjt@tls.msk.ru>
+References: <20250531171609.197078-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,72 +59,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is another iteration of this patch series, which tries
-to add missing command-line options, --help output, make it
-all more or less consistent, etc.
+qemu_opt_set_number() expects signed int64_t.
 
-I addressed (hopefully) all comments so far, mostly by Kevin.
-I ended up (so far) with a bit different wording somewhere.
+Use int64_t instead of uint64_t for img_size, use -1 as "unset"
+value instead of UINT64_MAX, and do not require temporary sval
+for conversion from string.
 
-The manpage (and the separate documentation) hasn't changed
-much, but I intend to use the same wording there as in --help
-output.   An example of the separate documentation change is
-provided with "create" subcommand only, as a PoC.
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+---
+ qemu-img.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-I tried to rename a few existing options to make them more
-consistent.  This is an RFC, so to say, - I'd love to make
-more changes but it isn't really possible because the names
-I want to use are already used for different purpose.  All
-such changes (3 in total) are marked with "(short option change)"
-suffix in the patch subject.  In particular, I tried to use
--b for backing-file, and -B for backing-format, in all places.
-Maybe it's too late to change that though.
-
-All subcommands now have --object option.  I wonder why we
-haven't done it in common place, before a subcommand.  Maybe
-it's a good idea (and I think it is) to add it to the common
-(before-subcomman) place, document it there, and remove the
---object mentions from individual commands --help output.
-
-Thanks,
-
-/mjt
-
-Michael Tokarev (27):
-  qemu-img: measure: convert img_size to signed, simplify handling
-  qemu-img: create: convert img_size to signed, simplify handling
-  qemu-img: global option processing and error printing
-  qemu-img: pass current cmd info into command handlers
-  qemu-img: create: refresh options/--help (short option change)
-  qemu-img: factor out parse_output_format() and use it in the code
-  qemu-img: check: refresh options/--help
-  qemu-img: simplify --repair error message
-  qemu-img: commit: refresh options/--help
-  qemu-img: compare: use helper function for --object
-  qemu-img: compare: refresh options/--help
-  qemu-img: convert: refresh options/--help (short option change)
-  qemu-img: info: refresh options/--help
-  qemu-img: map: refresh options/--help
-  qemu-img: snapshot: allow specifying -f fmt
-  qemu-img: snapshot: make -l (list) the default, simplify option handling
-  qemu-img: snapshot: refresh options/--help
-  qemu-img: rebase: refresh options/--help (short option change)
-  qemu-img: resize: do not always eat last argument
-  qemu-img: resize: refresh options/--help
-  qemu-img: amend: refresh options/--help
-  qemu-img: bench: refresh options/--help
-  qemu-img: bitmap: refresh options/--help
-  qemu-img: dd: refresh options/--help
-  qemu-img: measure: refresh options/--help
-  qemu-img: implement short --help, remove global help() function
-  qemu-img: extend cvtnum() and use it in more places
-
- docs/tools/qemu-img.rst    |   18 +-
- qemu-img-cmds.hx           |    4 +-
- qemu-img.c                 | 1782 +++++++++++++++++++++---------------
- tests/qemu-iotests/049.out |    9 +-
- 4 files changed, 1082 insertions(+), 731 deletions(-)
-
+diff --git a/qemu-img.c b/qemu-img.c
+index 139eeb5039..ec0f1152df 100644
+--- a/qemu-img.c
++++ b/qemu-img.c
+@@ -5368,7 +5368,7 @@ static int img_measure(int argc, char **argv)
+     QemuOpts *sn_opts = NULL;
+     QemuOptsList *create_opts = NULL;
+     bool image_opts = false;
+-    uint64_t img_size = UINT64_MAX;
++    int64_t img_size = -1;
+     BlockMeasureInfo *info = NULL;
+     Error *local_err = NULL;
+     int ret = 1;
+@@ -5426,16 +5426,11 @@ static int img_measure(int argc, char **argv)
+             }
+             break;
+         case OPTION_SIZE:
+-        {
+-            int64_t sval;
+-
+-            sval = cvtnum("image size", optarg);
+-            if (sval < 0) {
++            img_size = cvtnum("image size", optarg);
++            if (img_size < 0) {
+                 goto out;
+             }
+-            img_size = (uint64_t)sval;
+-        }
+-        break;
++            break;
+         }
+     }
+ 
+@@ -5450,11 +5445,11 @@ static int img_measure(int argc, char **argv)
+         error_report("--image-opts, -f, and -l require a filename argument.");
+         goto out;
+     }
+-    if (filename && img_size != UINT64_MAX) {
++    if (filename && img_size != -1) {
+         error_report("--size N cannot be used together with a filename.");
+         goto out;
+     }
+-    if (!filename && img_size == UINT64_MAX) {
++    if (!filename && img_size == -1) {
+         error_report("Either --size N or one filename must be specified.");
+         goto out;
+     }
+@@ -5502,7 +5497,7 @@ static int img_measure(int argc, char **argv)
+             goto out;
+         }
+     }
+-    if (img_size != UINT64_MAX) {
++    if (img_size != -1) {
+         qemu_opt_set_number(opts, BLOCK_OPT_SIZE, img_size, &error_abort);
+     }
+ 
 -- 
 2.39.5
 
