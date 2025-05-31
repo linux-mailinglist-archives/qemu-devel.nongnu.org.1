@@ -2,39 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FF8AC9BFD
-	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5593FAC9C0E
+	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:35:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLPsl-0007oP-WD; Sat, 31 May 2025 13:20:32 -0400
+	id 1uLQ5w-0004cV-OZ; Sat, 31 May 2025 13:34:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPqs-0003ju-Uc; Sat, 31 May 2025 13:18:36 -0400
+ id 1uLQ5t-0004c4-4O; Sat, 31 May 2025 13:34:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPqq-0001DU-2y; Sat, 31 May 2025 13:18:34 -0400
+ id 1uLQ5r-00031P-JU; Sat, 31 May 2025 13:34:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E14DF126B4B;
- Sat, 31 May 2025 20:16:06 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id AD2FF21BA4E;
- Sat, 31 May 2025 20:16:10 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org,
-	qemu-block@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 27/27] qemu-img: extend cvtnum() and use it in more places
-Date: Sat, 31 May 2025 20:16:09 +0300
-Message-Id: <20250531171609.197078-28-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250531171609.197078-1-mjt@tls.msk.ru>
-References: <20250531171609.197078-1-mjt@tls.msk.ru>
+ by isrv.corpit.ru (Postfix) with ESMTP id 1478A126B55;
+ Sat, 31 May 2025 20:33:56 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9FFFA21BA5B;
+ Sat, 31 May 2025 20:33:59 +0300 (MSK)
+Message-ID: <d594a44b-a2fd-4c58-8738-8a02cef4e7d4@tls.msk.ru>
+Date: Sat, 31 May 2025 20:33:59 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] qapi: add auto-generated return docs
+To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Jiri Pirko <jiri@resnulli.us>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Lukas Straub <lukasstraub2@web.de>, Peter Xu <peterx@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Jason Wang <jasowang@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
+ qemu-trivial@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-block@nongnu.org, Mads Ynddal <mads@ynddal.dk>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Fabiano Rosas <farosas@suse.de>, Zhao Liu <zhao1.liu@intel.com>,
+ Zhenwei Pi <pizhenwei@bytedance.com>, Ani Sinha <anisinha@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Laurent Vivier <laurent@vivier.eu>
+References: <20250523182442.54469-1-jsnow@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20250523182442.54469-1-jsnow@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -58,345 +121,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cvtnum() expects input string to specify some sort of size
-(optionally with KMG... suffix).  However, there are a lot
-of other number conversions in there (using qemu_strtol &Co),
-also, not all conversions which use cvtnum, actually expects
-size, - like dd count=nn.
+On 23.05.2025 21:24, John Snow wrote:
+> v3: rebased on top of python-qapi-linting (v4) pull request;
+>      removed commits that are no longer needed.
+>      Markus: I forget where we left off... shall we refresh?
+> 
+> v2: fix multi-return-sections bug :(
+> 
+> John Snow (4):
+>    docs/qapi-domain: add return-nodesc
+>    docs, qapi: generate undocumented return sections
+>    qapi: remove trivial "Returns:" sections
+>    qapi: rephrase return docs to avoid type name
 
-Add bool issize argument to cvtnum() to specify if it should
-treat the argument as a size or something else, - this changes
-conversion routine in use and error text.
+I've applied the first 2 patches to the trivial-patches tree.
 
-Use the new cvtnum() in more places (like where strtol were used),
-since it never return negative number in successful conversion.
-When it makes sense, also specify upper or lower bounds at the
-same time.  This simplifies option processing in multiple places,
-removing the need of local temporary variables and longer error
-reporting code.
+But the remaining 2 does not apply anymore due to reorg of
+the json files for single-binary.
 
-While at it, fix errors, like depth in measure must be >= 1,
-while the previous code allowed it to be 0.
+I tried to fiddle with the patches a bit, but it looks like
+it'd be better if the original author will do that, to avoid
+my mistakes :)
 
-In a few places, change unsigned variables (like of type size_t)
-to be signed instead, - to avoid the need of temporary conversion
-variable.  All these variables are okay to be signed, we never
-assign <0 value to them except of the cases of conversion error,
-where we return immediately.
+Thanks,
 
-While at it, remove allowed size suffixes from the error message
-as it makes no sense most of the time (should be in help instead).
-
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
----
- qemu-img.c                 | 111 +++++++++++++------------------------
- tests/qemu-iotests/049.out |   9 +--
- 2 files changed, 40 insertions(+), 80 deletions(-)
-
-diff --git a/qemu-img.c b/qemu-img.c
-index 18f7ba07c9..8925e14ba6 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -399,18 +399,16 @@ static int add_old_style_options(const char *fmt, QemuOpts *opts,
-     return 0;
- }
- 
--static int64_t cvtnum_full(const char *name, const char *value, int64_t min,
--                           int64_t max)
-+static int64_t cvtnum_full(const char *name, const char *value,
-+                           bool issize, int64_t min, int64_t max)
- {
-     int err;
-     uint64_t res;
- 
--    err = qemu_strtosz(value, NULL, &res);
-+    err = issize ? qemu_strtosz(value, NULL, &res) :
-+                   qemu_strtou64(value, NULL, 0, &res);
-     if (err < 0 && err != -ERANGE) {
--        error_report("Invalid %s specified. You may use "
--                     "k, M, G, T, P or E suffixes for", name);
--        error_report("kilobytes, megabytes, gigabytes, terabytes, "
--                     "petabytes and exabytes.");
-+        error_report("Invalid %s specified: '%s'.", name, value);
-         return err;
-     }
-     if (err == -ERANGE || res > max || res < min) {
-@@ -421,9 +419,9 @@ static int64_t cvtnum_full(const char *name, const char *value, int64_t min,
-     return res;
- }
- 
--static int64_t cvtnum(const char *name, const char *value)
-+static int64_t cvtnum(const char *name, const char *value, bool issize)
- {
--    return cvtnum_full(name, value, 0, INT64_MAX);
-+    return cvtnum_full(name, value, issize, 0, INT64_MAX);
- }
- 
- static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
-@@ -526,7 +524,7 @@ static int img_create(const img_cmd_t *ccmd, int argc, char **argv)
- 
-     /* Get image size, if specified */
-     if (optind < argc) {
--        img_size = cvtnum("image size", argv[optind++]);
-+        img_size = cvtnum("image size", argv[optind++], true);
-         if (img_size < 0) {
-             goto fail;
-         }
-@@ -985,7 +983,7 @@ static int img_commit(const img_cmd_t *ccmd, int argc, char **argv)
-             drop = true;
-             break;
-         case 'r':
--            rate_limit = cvtnum("rate limit", optarg);
-+            rate_limit = cvtnum("rate limit", optarg, true);
-             if (rate_limit < 0) {
-                 return 1;
-             }
-@@ -2426,7 +2424,7 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
-         {
-             int64_t sval;
- 
--            sval = cvtnum("buffer size for sparse output", optarg);
-+            sval = cvtnum("buffer size for sparse output", optarg, true);
-             if (sval < 0) {
-                 goto fail_getopt;
-             } else if (!QEMU_IS_ALIGNED(sval, BDRV_SECTOR_SIZE) ||
-@@ -2460,16 +2458,15 @@ static int img_convert(const img_cmd_t *ccmd, int argc, char **argv)
-             force_share = true;
-             break;
-         case 'r':
--            rate_limit = cvtnum("rate limit", optarg);
-+            rate_limit = cvtnum("rate limit", optarg, true);
-             if (rate_limit < 0) {
-                 goto fail_getopt;
-             }
-             break;
-         case 'm':
--            if (qemu_strtol(optarg, NULL, 0, &s.num_coroutines) ||
--                s.num_coroutines < 1 || s.num_coroutines > MAX_COROUTINES) {
--                error_report("Invalid number of coroutines. Allowed number of"
--                             " coroutines is between 1 and %d", MAX_COROUTINES);
-+            s.num_coroutines = cvtnum_full("number of coroutines", optarg,
-+                                           false, 1, MAX_COROUTINES);
-+            if (s.num_coroutines < 0) {
-                 goto fail_getopt;
-             }
-             break;
-@@ -3374,13 +3371,13 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
-             image_opts = true;
-             break;
-         case 's':
--            start_offset = cvtnum("start offset", optarg);
-+            start_offset = cvtnum("start offset", optarg, true);
-             if (start_offset < 0) {
-                 return 1;
-             }
-             break;
-         case 'l':
--            max_length = cvtnum("max length", optarg);
-+            max_length = cvtnum("max length", optarg, true);
-             if (max_length < 0) {
-                 return 1;
-             }
-@@ -4717,9 +4714,9 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
-     int count = 75000;
-     int depth = 64;
-     int64_t offset = 0;
--    size_t bufsize = 4096;
-+    ssize_t bufsize = 4096;
-     int pattern = 0;
--    size_t step = 0;
-+    ssize_t step = 0;
-     int flush_interval = 0;
-     bool drain_on_flush = true;
-     int64_t image_size;
-@@ -4824,27 +4821,17 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
-             }
-             break;
-         case 'c':
--        {
--            unsigned long res;
--
--            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > INT_MAX) {
--                error_report("Invalid request count specified");
-+            count = cvtnum_full("request count", optarg, false, 1, INT_MAX);
-+            if (count < 0) {
-                 return 1;
-             }
--            count = res;
-             break;
--        }
-         case 'd':
--        {
--            unsigned long res;
--
--            if (qemu_strtoul(optarg, NULL, 0, &res) <= 0 || res > INT_MAX) {
--                error_report("Invalid queue depth specified");
-+            depth = cvtnum_full("queue depth", optarg, false, 1, INT_MAX);
-+            if (depth < 0) {
-                 return 1;
-             }
--            depth = res;
-             break;
--        }
-         case 'n':
-             flags |= BDRV_O_NATIVE_AIO;
-             break;
-@@ -4857,64 +4844,40 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
-             }
-             break;
-         case 'o':
--        {
--            offset = cvtnum("offset", optarg);
-+            offset = cvtnum("offset", optarg, true);
-             if (offset < 0) {
-                 return 1;
-             }
-             break;
--        }
--            break;
-         case 's':
--        {
--            int64_t sval;
--
--            sval = cvtnum_full("buffer size", optarg, 0, INT_MAX);
--            if (sval < 0) {
-+            bufsize = cvtnum_full("buffer size", optarg, true, 1, INT_MAX);
-+            if (bufsize < 0) {
-                 return 1;
-             }
--
--            bufsize = sval;
-             break;
--        }
-         case 'S':
--        {
--            int64_t sval;
--
--            sval = cvtnum_full("step_size", optarg, 0, INT_MAX);
--            if (sval < 0) {
-+            step = cvtnum_full("step size", optarg, true, 0, INT_MAX);
-+            if (step < 0) {
-                 return 1;
-             }
--
--            step = sval;
-             break;
--        }
-         case 'w':
-             flags |= BDRV_O_RDWR;
-             is_write = true;
-             break;
-         case OPTION_PATTERN:
--        {
--            unsigned long res;
--
--            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > 0xff) {
--                error_report("Invalid pattern byte specified");
-+            pattern = cvtnum_full("pattern byte", optarg, false, 0, 0xff);
-+            if (pattern < 0) {
-                 return 1;
-             }
--            pattern = res;
-             break;
--        }
-         case OPTION_FLUSH_INTERVAL:
--        {
--            unsigned long res;
--
--            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > INT_MAX) {
--                error_report("Invalid flush interval specified");
-+            flush_interval = cvtnum_full("flush interval", optarg,
-+                                         false, 0, INT_MAX);
-+            if (flush_interval < 0) {
-                 return 1;
-             }
--            flush_interval = res;
-             break;
--        }
-         case OPTION_NO_DRAIN:
-             drain_on_flush = false;
-             break;
-@@ -5126,7 +5089,7 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
-             add = true;
-             break;
-         case 'g':
--            granularity = cvtnum("granularity", optarg);
-+            granularity = cvtnum("granularity", optarg, true);
-             if (granularity < 0) {
-                 return 1;
-             }
-@@ -5311,7 +5274,7 @@ static int img_dd_bs(const char *arg,
- {
-     int64_t res;
- 
--    res = cvtnum_full("bs", arg, 1, INT_MAX);
-+    res = cvtnum_full("bs", arg, true, 1, INT_MAX);
- 
-     if (res < 0) {
-         return 1;
-@@ -5325,7 +5288,7 @@ static int img_dd_count(const char *arg,
-                         struct DdIo *in, struct DdIo *out,
-                         struct DdInfo *dd)
- {
--    dd->count = cvtnum("count", arg);
-+    dd->count = cvtnum("count", arg, false);
- 
-     if (dd->count < 0) {
-         return 1;
-@@ -5356,7 +5319,7 @@ static int img_dd_skip(const char *arg,
-                        struct DdIo *in, struct DdIo *out,
-                        struct DdInfo *dd)
- {
--    in->offset = cvtnum("skip", arg);
-+    in->offset = cvtnum("skip", arg, false);
- 
-     if (in->offset < 0) {
-         return 1;
-@@ -5764,7 +5727,7 @@ static int img_measure(const img_cmd_t *ccmd, int argc, char **argv)
-             user_creatable_process_cmdline(optarg);
-             break;
-         case 's':
--            img_size = cvtnum("image size", optarg);
-+            img_size = cvtnum("image size", optarg, true);
-             if (img_size < 0) {
-                 goto out;
-             }
-diff --git a/tests/qemu-iotests/049.out b/tests/qemu-iotests/049.out
-index 34e1b452e6..a7a7d5a96e 100644
---- a/tests/qemu-iotests/049.out
-+++ b/tests/qemu-iotests/049.out
-@@ -98,8 +98,7 @@ qemu-img create -f qcow2 -o size=-1024 TEST_DIR/t.qcow2
- qemu-img: TEST_DIR/t.qcow2: Value '-1024' is out of range for parameter 'size'
- 
- qemu-img create -f qcow2 TEST_DIR/t.qcow2 -- -1k
--qemu-img: Invalid image size specified. You may use k, M, G, T, P or E suffixes for
--qemu-img: kilobytes, megabytes, gigabytes, terabytes, petabytes and exabytes.
-+qemu-img: Invalid image size specified: '-1k'.
- 
- qemu-img create -f qcow2 -o size=-1k TEST_DIR/t.qcow2
- qemu-img: TEST_DIR/t.qcow2: Parameter 'size' expects a non-negative number below 2^64
-@@ -107,8 +106,7 @@ Optional suffix k, M, G, T, P or E means kilo-, mega-, giga-, tera-, peta-
- and exabytes, respectively.
- 
- qemu-img create -f qcow2 TEST_DIR/t.qcow2 -- 1kilobyte
--qemu-img: Invalid image size specified. You may use k, M, G, T, P or E suffixes for
--qemu-img: kilobytes, megabytes, gigabytes, terabytes, petabytes and exabytes.
-+qemu-img: Invalid image size specified: '1kilobyte'.
- 
- qemu-img create -f qcow2 -o size=1kilobyte TEST_DIR/t.qcow2
- qemu-img: TEST_DIR/t.qcow2: Parameter 'size' expects a non-negative number below 2^64
-@@ -116,8 +114,7 @@ Optional suffix k, M, G, T, P or E means kilo-, mega-, giga-, tera-, peta-
- and exabytes, respectively.
- 
- qemu-img create -f qcow2 TEST_DIR/t.qcow2 -- foobar
--qemu-img: Invalid image size specified. You may use k, M, G, T, P or E suffixes for
--qemu-img: kilobytes, megabytes, gigabytes, terabytes, petabytes and exabytes.
-+qemu-img: Invalid image size specified: 'foobar'.
- 
- qemu-img create -f qcow2 -o size=foobar TEST_DIR/t.qcow2
- qemu-img: TEST_DIR/t.qcow2: Parameter 'size' expects a non-negative number below 2^64
--- 
-2.39.5
+/mjt
 
 
