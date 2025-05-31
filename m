@@ -2,61 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3720FAC9B5C
-	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 16:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4509AC9BCC
+	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 18:52:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLN5L-0002kx-JS; Sat, 31 May 2025 10:21:19 -0400
+	id 1uLPQn-00057W-7b; Sat, 31 May 2025 12:51:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uLN5G-0002kD-C2
- for qemu-devel@nongnu.org; Sat, 31 May 2025 10:21:15 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uLPQc-00056t-AO; Sat, 31 May 2025 12:51:27 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uLN5D-0007nM-Bj
- for qemu-devel@nongnu.org; Sat, 31 May 2025 10:21:14 -0400
-Received: from [192.168.10.111] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 54VEKrPa069146
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Sat, 31 May 2025 23:20:59 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=0TzJO7aszXohfGSpFv6MxysdZXOeS4wdCSQFZAFq2lQ=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1748701259; v=1;
- b=Csh1visLiz9H3y8aldDZuQvfugmyShs906h96UGZGV3WTbxkNMD88UOFnxlLWZim
- BoZ8MiIuwbeR5OT+j8V/kQdBztWpy0qx//9C3A2V+ODZhG23wem1hI6VMDg264Bo
- a3vXTKnDNvbJiJ0ppZgB1WcR7oZ8Tr0n7d/UEAPCjR+I6p0CbxfZRxTOOOdkLQOa
- N5IFWDulrbFwVHxHJBA5s3S9fs9Mu8BgbcwRrYvZWF4jfTBFv533rNTqxJ13eii+
- E0+KL8TahXLUDbpoFkwkKzKC7bAYChWt6QIhJMuSgR6xY9HbAWbWuVQgEFquAwSX
- x3tgy+Ha3vZ0zdlwkUJrGA==
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 31 May 2025 23:20:42 +0900
-Subject: [PATCH v2 2/2] ui/vnc: Do not copy z_stream
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uLPQa-0007L9-Et; Sat, 31 May 2025 12:51:26 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 03466126B2A;
+ Sat, 31 May 2025 19:51:07 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id BD82321BA15;
+ Sat, 31 May 2025 19:51:10 +0300 (MSK)
+Message-ID: <09003bdd-8d2c-4f75-80e4-1ca812ba0bdf@tls.msk.ru>
+Date: Sat, 31 May 2025 19:51:10 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250531-zlib-v2-2-b75c4b4769e1@rsg.ci.i.u-tokyo.ac.jp>
-References: <20250531-zlib-v2-0-b75c4b4769e1@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250531-zlib-v2-0-b75c4b4769e1@rsg.ci.i.u-tokyo.ac.jp>
-To: qemu-devel@nongnu.org
-Cc: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- devel@daynix.com, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/27] qemu-img: check: refresh options/--help
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
+References: <20240927061121.573271-1-mjt@tls.msk.ru>
+ <20240927061121.573271-8-mjt@tls.msk.ru> <aCNrThMpezno1o1Z@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <aCNrThMpezno1o1Z@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,153 +102,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vnc_worker_thread_loop() copies z_stream stored in its local VncState to
-the persistent VncState, and the copied one is freed with deflateEnd()
-later. However, deflateEnd() refuses to operate with a copied z_stream
-and returns Z_STREAM_ERROR, leaking the allocated memory.
+On 13.05.2025 18:54, Kevin Wolf wrote:
+> Am 27.09.2024 um 08:11 hat Michael Tokarev geschrieben:
+>> Add missing long options and --help output.
+...
+>> +"  --image-opts\n"
+>> +"     indicates that FILENAME is a complete image specification\n"
+>> +"     instead of a file name (incompatible with --format)\n"
+> 
+> The man page has:
+> 
+>    Indicates that the source *FILENAME* parameter is to be interpreted as a
+>    full option string, not a plain filename. This parameter is mutually
+>    exclusive with the *-f* parameter.
+> 
+> A possible adaptation for qemu-img check specially:
+> 
+>    indicates that FILENAME is a full option string, not a plain filename
+>    (incompatible with --format)
 
-Avoid copying the zlib state to fix the memory leak.
+What I ended up now is:
 
-Fixes: bd023f953e5e ("vnc: threaded VNC server")
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- ui/vnc.h          |  2 +-
- ui/vnc-enc-zlib.c | 30 +++++++++++++++---------------
- ui/vnc-jobs.c     |  2 --
- ui/vnc.c          |  2 +-
- 4 files changed, 17 insertions(+), 19 deletions(-)
+   --image-opts
+      treat FILE as an option string (key=value,..), not a file name
+      (incompatible with -f|--format)
 
-diff --git a/ui/vnc.h b/ui/vnc.h
-index 1dc76c270c35..78a5fdfdc0d0 100644
---- a/ui/vnc.h
-+++ b/ui/vnc.h
-@@ -265,6 +265,7 @@ typedef struct VncWorker {
-     uint8_t lossy_rect[VNC_STAT_ROWS][VNC_STAT_COLS];
- 
-     VncTight tight;
-+    VncZlib zlib;
-     VncZrle zrle;
- } VncWorker;
- 
-@@ -345,7 +346,6 @@ struct VncState
-     /* Encoding specific, if you add something here, don't forget to
-      *  update vnc_async_encoding_start()
-      */
--    VncZlib zlib;
-     VncHextile hextile;
-     VncZywrle zywrle;
- 
-diff --git a/ui/vnc-enc-zlib.c b/ui/vnc-enc-zlib.c
-index 605030730a44..d8b4cf038b02 100644
---- a/ui/vnc-enc-zlib.c
-+++ b/ui/vnc-enc-zlib.c
-@@ -48,21 +48,21 @@ void vnc_zlib_zfree(void *x, void *addr)
- 
- static void vnc_zlib_start(VncState *vs)
- {
--    buffer_reset(&vs->zlib.zlib);
-+    buffer_reset(&vs->worker->zlib.zlib);
- 
-     // make the output buffer be the zlib buffer, so we can compress it later
--    vs->zlib.tmp = vs->output;
--    vs->output = vs->zlib.zlib;
-+    vs->worker->zlib.tmp = vs->output;
-+    vs->output = vs->worker->zlib.zlib;
- }
- 
- static int vnc_zlib_stop(VncState *vs)
- {
--    z_streamp zstream = &vs->zlib.stream;
-+    z_streamp zstream = &vs->worker->zlib.stream;
-     int previous_out;
- 
-     // switch back to normal output/zlib buffers
--    vs->zlib.zlib = vs->output;
--    vs->output = vs->zlib.tmp;
-+    vs->worker->zlib.zlib = vs->output;
-+    vs->output = vs->worker->zlib.tmp;
- 
-     // compress the zlib buffer
- 
-@@ -85,24 +85,24 @@ static int vnc_zlib_stop(VncState *vs)
-             return -1;
-         }
- 
--        vs->zlib.level = vs->worker->tight.compression;
-+        vs->worker->zlib.level = vs->worker->tight.compression;
-         zstream->opaque = vs;
-     }
- 
--    if (vs->worker->tight.compression != vs->zlib.level) {
-+    if (vs->worker->tight.compression != vs->worker->zlib.level) {
-         if (deflateParams(zstream, vs->worker->tight.compression,
-                           Z_DEFAULT_STRATEGY) != Z_OK) {
-             return -1;
-         }
--        vs->zlib.level = vs->worker->tight.compression;
-+        vs->worker->zlib.level = vs->worker->tight.compression;
-     }
- 
-     // reserve memory in output buffer
--    buffer_reserve(&vs->output, vs->zlib.zlib.offset + 64);
-+    buffer_reserve(&vs->output, vs->worker->zlib.zlib.offset + 64);
- 
-     // set pointers
--    zstream->next_in = vs->zlib.zlib.buffer;
--    zstream->avail_in = vs->zlib.zlib.offset;
-+    zstream->next_in = vs->worker->zlib.zlib.buffer;
-+    zstream->avail_in = vs->worker->zlib.zlib.offset;
-     zstream->next_out = vs->output.buffer + vs->output.offset;
-     zstream->avail_out = vs->output.capacity - vs->output.offset;
-     previous_out = zstream->avail_out;
-@@ -147,8 +147,8 @@ int vnc_zlib_send_framebuffer_update(VncState *vs, int x, int y, int w, int h)
- 
- void vnc_zlib_clear(VncState *vs)
- {
--    if (vs->zlib.stream.opaque) {
--        deflateEnd(&vs->zlib.stream);
-+    if (vs->worker->zlib.stream.opaque) {
-+        deflateEnd(&vs->worker->zlib.stream);
-     }
--    buffer_free(&vs->zlib.zlib);
-+    buffer_free(&vs->worker->zlib.zlib);
- }
-diff --git a/ui/vnc-jobs.c b/ui/vnc-jobs.c
-index d019d88536b7..dbbf62212c79 100644
---- a/ui/vnc-jobs.c
-+++ b/ui/vnc-jobs.c
-@@ -189,7 +189,6 @@ static void vnc_async_encoding_start(VncState *orig, VncState *local)
-     local->write_pixels = orig->write_pixels;
-     local->client_pf = orig->client_pf;
-     local->client_be = orig->client_be;
--    local->zlib = orig->zlib;
-     local->hextile = orig->hextile;
-     local->client_width = orig->client_width;
-     local->client_height = orig->client_height;
-@@ -198,7 +197,6 @@ static void vnc_async_encoding_start(VncState *orig, VncState *local)
- static void vnc_async_encoding_end(VncState *orig, VncState *local)
- {
-     buffer_free(&local->output);
--    orig->zlib = local->zlib;
-     orig->hextile = local->hextile;
- }
- 
-diff --git a/ui/vnc.c b/ui/vnc.c
-index 17fcf377d7f8..b55d80b9b003 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -3258,7 +3258,7 @@ static void vnc_connect(VncDisplay *vd, QIOChannelSocket *sioc,
- #ifdef CONFIG_PNG
-     buffer_init(&vs->worker->tight.png,      "vnc-tight-png/%p", sioc);
- #endif
--    buffer_init(&vs->zlib.zlib,              "vnc-zlib/%p", sioc);
-+    buffer_init(&vs->worker->zlib.zlib,      "vnc-zlib/%p", sioc);
-     buffer_init(&vs->worker->zrle.zrle,      "vnc-zrle/%p", sioc);
-     buffer_init(&vs->worker->zrle.fb,        "vnc-zrle-fb/%p", sioc);
-     buffer_init(&vs->worker->zrle.zlib,      "vnc-zrle-zlib/%p", sioc);
+Note I used short "FILE" everywhere, while in the manpage we see
+longer FILENAME - my plan is to get the manpage to use the same
+FILE too, in the next step (I can probably do it together with
+each individual commit in this series too).
 
--- 
-2.49.0
+Maybe it's better to use IMAGE instead of FILE, because:
 
+   FILE
+      name of the image file, or an option string (key=value,..)
+      with --image-opts, to operate on
+
+(this is another common idiom I used in all the changes).
+
+
+>> +"  --object OBJDEF\n"
+>> +"     QEMU user-creatable object (eg encryption key)\n"
+> 
+> "e.g."
+
+it is also different from the manpage (where OBJECTDEF is used).
+I ended up with just:
+
+   --object OBJDEF
+      defines QEMU user-creatable object
+
+Since --object can be used with any command, maybe it's a good
+idea to have it in common options string, before a subcommand.
+
+Thanks,
+
+/mjt
 
