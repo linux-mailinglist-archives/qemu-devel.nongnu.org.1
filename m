@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F36AC9BF0
-	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A068AC9C02
+	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:23:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLPrJ-0003z0-Ac; Sat, 31 May 2025 13:19:03 -0400
+	id 1uLPs6-0005EQ-6N; Sat, 31 May 2025 13:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPq1-00026a-BF; Sat, 31 May 2025 13:17:43 -0400
+ id 1uLPqN-0002R0-U1; Sat, 31 May 2025 13:18:04 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPpy-00018C-8Z; Sat, 31 May 2025 13:17:40 -0400
+ id 1uLPqL-00018d-Eo; Sat, 31 May 2025 13:18:03 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8B0B4126B45;
+ by isrv.corpit.ru (Postfix) with ESMTP id 93A76126B46;
  Sat, 31 May 2025 20:16:06 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6422021BA48;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6BC9F21BA49;
  Sat, 31 May 2025 20:16:10 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 21/27] qemu-img: amend: refresh options/--help
-Date: Sat, 31 May 2025 20:16:03 +0300
-Message-Id: <20250531171609.197078-22-mjt@tls.msk.ru>
+Subject: [PATCH 22/27] qemu-img: bench: refresh options/--help
+Date: Sat, 31 May 2025 20:16:04 +0300
+Message-Id: <20250531171609.197078-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250531171609.197078-1-mjt@tls.msk.ru>
 References: <20250531171609.197078-1-mjt@tls.msk.ru>
@@ -60,33 +60,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Add missing long options and --help output,
 reorder options for consistency.
 
+Add missing --object option.
+
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 54 +++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 39 insertions(+), 15 deletions(-)
+ qemu-img.c | 112 +++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 84 insertions(+), 28 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 3dbfce527b..0d4bdc5df5 100644
+index 0d4bdc5df5..5011ec5fce 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -4559,26 +4559,48 @@ static int img_amend(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -4859,28 +4859,93 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
      for (;;) {
          static const struct option long_options[] = {
              {"help", no_argument, 0, 'h'},
--            {"object", required_argument, 0, OPTION_OBJECT},
-+            {"options", required_argument, 0, 'o'},
+-            {"flush-interval", required_argument, 0, OPTION_FLUSH_INTERVAL},
 +            {"format", required_argument, 0, 'f'},
              {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
 +            {"cache", required_argument, 0, 't'},
-             {"force", no_argument, 0, OPTION_FORCE},
-+            {"progress", no_argument, 0, 'p'},
++            {"count", required_argument, 0, 'c'},
++            {"depth", required_argument, 0, 'd'},
++            {"offset", required_argument, 0, 'o'},
++            {"buffer-size", required_argument, 0, 's'},
++            {"step-size", required_argument, 0, 'S'},
++            {"write", no_argument, 0, 'w'},
+             {"pattern", required_argument, 0, OPTION_PATTERN},
++            {"flush-interval", required_argument, 0, OPTION_FLUSH_INTERVAL},
+             {"no-drain", no_argument, 0, OPTION_NO_DRAIN},
++            {"aio", required_argument, 0, 'i'},
++            {"native", no_argument, 0, 'n'},
+             {"force-share", no_argument, 0, 'U'},
 +            {"quiet", no_argument, 0, 'q'},
 +            {"object", required_argument, 0, OPTION_OBJECT},
              {0, 0, 0, 0}
          };
--        c = getopt_long(argc, argv, ":ho:f:t:pq",
-+        c = getopt_long(argc, argv, "ho:f:t:pq",
-                         long_options, NULL);
+-        c = getopt_long(argc, argv, ":hc:d:f:ni:o:qs:S:t:wU", long_options,
+-                        NULL);
++        c = getopt_long(argc, argv, "hf:t:c:d:o:s:S:wi:nUq",
++                        long_options, NULL);
          if (c == -1) {
              break;
          }
@@ -94,28 +106,45 @@ index 3dbfce527b..0d4bdc5df5 100644
          switch (c) {
 -        case ':':
 -            missing_argument(argv[optind - 1]);
--            break;
--        case '?':
--            unrecognized_option(argv[optind - 1]);
--            break;
-         case 'h':
--            help();
-+            cmd_help(ccmd, "-o FMT_OPTS [-f FMT | --image-opts]\n"
-+"        [-t CACHE] [--force] [-p] [-q] [--object OBJDEF] FILE\n"
++        case 'h':
++            cmd_help(ccmd, "[-f FMT | --image-opts] [-t CACHE]\n"
++"        [-c COUNT] [-d DEPTH] [-o OFFSET] [-s BUFFER_SIZE] [-S STEP_SIZE]\n"
++"        [-w [--pattern PATTERN] [--flush-interval INTERVAL [--no-drain]]]\n"
++"        [-i AIO] [-n] [-U] [-q] FILE\n"
 +,
-+"  -o, --options FMT_OPTS\n"
-+"     FMT-specfic format options (required)\n"
 +"  -f, --format FMT\n"
-+"     specify FILE format explicitly (default: probing is used)\n"
++"     specify FILE format explicitly\n"
 +"  --image-opts\n"
-+"     treat FILE as an option string (key=value,..), not a file name\n"
-+"     (incompatible with -f|--format)\n"
++"     indicates that FILE is a complete image specification\n"
++"     instead of a file name (incompatible with --format)\n"
 +"  -t, --cache CACHE\n"
 +"     cache mode for FILE (default: " BDRV_DEFAULT_CACHE ")\n"
-+"  --force\n"
-+"     allow certain unsafe operations\n"
-+"  -p, --progres\n"
-+"     show operation progress\n"
++"  -c, --count COUNT\n"
++"     number of I/O requests to perform\n"
++"  -d, --depth DEPTH\n"
++"     number of requests to perform in parallel\n"
++"  -o, --offset OFFSET\n"
++"     start first request at this OFFSET\n"
++"  -s, --buffer-size BUFFER_SIZE[bkKMGTPE]\n"
++"     size of each I/O request, with optional multiplier suffix\n"
++"     (powers of 1024, default is 4K)\n"
++"  -S, --step-size STEP_SIZE[bkKMGTPE]\n"
++"     each next request offset increment, with optional multiplier suffix\n"
++"     (powers of 1024, default is the same as BUFFER_SIZE)\n"
++"  -w, --write\n"
++"     perform write test (default is read)\n"
++"  --pattern PATTERN\n"
++"     write this pattern byte instead of zero\n"
++"  --flush-interval FLUSH_INTERVAL\n"
++"     issue flush after this number of requests\n"
++"  --no-drain\n"
++"     do not wait when flushing pending requests\n"
++"  -i, --aio AIO\n"
++"     async-io backend (threads, native, io_uring)\n"
++"  -n, --native\n"
++"     use native AIO backend if possible\n"
++"  -U, --force-share\n"
++"     open images in shared mode for concurrent access\n"
 +"  -q, --quiet\n"
 +"     quiet mode (produce only error messages if any)\n"
 +"  --object OBJDEF\n"
@@ -125,34 +154,83 @@ index 3dbfce527b..0d4bdc5df5 100644
 +"     with --image-opts, to operate on\n"
 +);
              break;
-         case 'o':
-             if (accumulate_options(&options, optarg) < 0) {
-@@ -4589,9 +4611,15 @@ static int img_amend(const img_cmd_t *ccmd, int argc, char **argv)
-         case 'f':
-             fmt = optarg;
+-        case '?':
+-            unrecognized_option(argv[optind - 1]);
++        case 'f':
++            fmt = optarg;
              break;
+-        case 'h':
+-            help();
 +        case OPTION_IMAGE_OPTS:
 +            image_opts = true;
 +            break;
-         case 't':
-             cache = optarg;
++        case 't':
++            ret = bdrv_parse_cache_mode(optarg, &flags, &writethrough);
++            if (ret < 0) {
++                error_report("Invalid cache mode");
++                ret = -1;
++                goto out;
++            }
              break;
-+        case OPTION_FORCE:
-+            force = true;
-+            break;
-         case 'p':
-             progress = true;
+         case 'c':
+         {
+@@ -4904,9 +4969,6 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
+             depth = res;
              break;
-@@ -4601,12 +4629,8 @@ static int img_amend(const img_cmd_t *ccmd, int argc, char **argv)
-         case OPTION_OBJECT:
-             user_creatable_process_cmdline(optarg);
+         }
+-        case 'f':
+-            fmt = optarg;
+-            break;
+         case 'n':
+             flags |= BDRV_O_NATIVE_AIO;
+             break;
+@@ -4927,9 +4989,6 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
+             break;
+         }
+             break;
+-        case 'q':
+-            quiet = true;
+-            break;
+         case 's':
+         {
+             int64_t sval;
+@@ -4954,21 +5013,10 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
+             step = sval;
+             break;
+         }
+-        case 't':
+-            ret = bdrv_parse_cache_mode(optarg, &flags, &writethrough);
+-            if (ret < 0) {
+-                error_report("Invalid cache mode");
+-                ret = -1;
+-                goto out;
+-            }
+-            break;
+         case 'w':
+             flags |= BDRV_O_RDWR;
+             is_write = true;
+             break;
+-        case 'U':
+-            force_share = true;
+-            break;
+         case OPTION_PATTERN:
+         {
+             unsigned long res;
+@@ -4994,9 +5042,17 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
+         case OPTION_NO_DRAIN:
+             drain_on_flush = false;
              break;
 -        case OPTION_IMAGE_OPTS:
 -            image_opts = true;
--            break;
--        case OPTION_FORCE:
--            force = true;
--            break;
++        case 'U':
++            force_share = true;
+             break;
++        case 'q':
++            quiet = true;
++            break;
++        case OPTION_OBJECT:
++            user_creatable_process_cmdline(optarg);
++            break;
 +        default:
 +            tryhelp(argv[0]);
          }
