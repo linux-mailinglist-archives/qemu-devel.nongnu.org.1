@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04757AC9BFF
-	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4FEAC9BF2
+	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:20:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLPsE-00063T-7A; Sat, 31 May 2025 13:19:58 -0400
+	id 1uLPsc-0007La-Kt; Sat, 31 May 2025 13:20:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPqO-0002TD-OU; Sat, 31 May 2025 13:18:06 -0400
+ id 1uLPqU-0002Z6-Kp; Sat, 31 May 2025 13:18:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPqM-00018r-PQ; Sat, 31 May 2025 13:18:04 -0400
+ id 1uLPqP-0001CV-Ca; Sat, 31 May 2025 13:18:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A6840126B47;
+ by isrv.corpit.ru (Postfix) with ESMTP id ADCD3126B48;
  Sat, 31 May 2025 20:16:06 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7464021BA4A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 86F6921BA4B;
  Sat, 31 May 2025 20:16:10 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 23/27] qemu-img: bitmap: refresh options/--help
-Date: Sat, 31 May 2025 20:16:05 +0300
-Message-Id: <20250531171609.197078-24-mjt@tls.msk.ru>
+Subject: [PATCH 24/27] qemu-img: dd: refresh options/--help
+Date: Sat, 31 May 2025 20:16:06 +0300
+Message-Id: <20250531171609.197078-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250531171609.197078-1-mjt@tls.msk.ru>
 References: <20250531171609.197078-1-mjt@tls.msk.ru>
@@ -62,127 +62,80 @@ reorder options for consistency.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 80 ++++++++++++++++++++++++++++++++++++++----------------
- 1 file changed, 56 insertions(+), 24 deletions(-)
+ qemu-img.c | 50 ++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 36 insertions(+), 14 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 5011ec5fce..97ce51a1c3 100644
+index 97ce51a1c3..3220c95e3c 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -5179,48 +5179,69 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
-     for (;;) {
-         static const struct option long_options[] = {
-             {"help", no_argument, 0, 'h'},
--            {"object", required_argument, 0, OPTION_OBJECT},
-+            {"format", required_argument, 0, 'f'},
-             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-             {"add", no_argument, 0, OPTION_ADD},
-+            {"granularity", required_argument, 0, 'g'},
-             {"remove", no_argument, 0, OPTION_REMOVE},
-             {"clear", no_argument, 0, OPTION_CLEAR},
-             {"enable", no_argument, 0, OPTION_ENABLE},
-             {"disable", no_argument, 0, OPTION_DISABLE},
-             {"merge", required_argument, 0, OPTION_MERGE},
--            {"granularity", required_argument, 0, 'g'},
-             {"source-file", required_argument, 0, 'b'},
-             {"source-format", required_argument, 0, 'F'},
-+            {"object", required_argument, 0, OPTION_OBJECT},
-             {0, 0, 0, 0}
-         };
--        c = getopt_long(argc, argv, ":b:f:F:g:h", long_options, NULL);
-+        c = getopt_long(argc, argv, "hf:g:b:F:",
-+                        long_options, NULL);
-         if (c == -1) {
+@@ -5533,31 +5533,54 @@ static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
+     };
+     const struct option long_options[] = {
+         { "help", no_argument, 0, 'h'},
+-        { "object", required_argument, 0, OPTION_OBJECT},
++        { "format", required_argument, 0, 'f'},
+         { "image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
++        { "output-format", required_argument, 0, 'O'},
+         { "force-share", no_argument, 0, 'U'},
++        { "object", required_argument, 0, OPTION_OBJECT},
+         { 0, 0, 0, 0 }
+     };
+ 
+-    while ((c = getopt_long(argc, argv, ":hf:O:U", long_options, NULL))) {
++    while ((c = getopt_long(argc, argv, "hf:O:U", long_options, NULL))) {
+         if (c == EOF) {
              break;
          }
- 
          switch (c) {
--        case ':':
--            missing_argument(argv[optind - 1]);
--            break;
--        case '?':
--            unrecognized_option(argv[optind - 1]);
--            break;
-         case 'h':
--            help();
--            break;
--        case 'b':
--            src_filename = optarg;
-+            cmd_help(ccmd, "[-f FMT | --image-opts]\n"
-+"        ( --add [-g SIZE] | --remove | --clear | --enable | --disable |\n"
-+"          --merge SOURCE [-b SRC_FILE [-F SRC_FMT]] )..\n"
-+"        [--object OBJDEF] FILE BITMAP\n"
+-        case 'O':
+-            out_fmt = optarg;
++        case 'h':
++            cmd_help(ccmd, "[-f FMT|--image-opts] [-O OUTPUT_FMT] [-U]\n"
++"        [--object OBJDEF] [bs=BLOCK_SIZE] [count=BLOCKS] if=INPUT of=OUTPUT\n"
 +,
 +"  -f, --format FMT\n"
-+"     specify FILE format explicitly (default: probing is used)\n"
++"     specify format for INPUT explicitly (default: probing is used)\n"
 +"  --image-opts\n"
-+"     treat FILE as an option string (key=value,..), not a file name\n"
++"     treat INPUT as an option string (key=value,..), not a file name\n"
 +"     (incompatible with -f|--format)\n"
-+"  --add\n"
-+"     creates BITMAP in FILE, enables to record future edits\n"
-+"  -g, --granularity SIZE[bKMGTPE]\n"
-+"     sets non-default granularity for the bitmap being added,\n"
-+"     with optional multiplier suffix (in powers of 1024)\n"
-+"  --remove\n"
-+"     removes BITMAP from FILE\n"
-+"  --clear\n"
-+"     clears BITMAP in FILE\n"
-+"  --enable, --disable\n"
-+"     starts and stops recording future edits to BITMAP in FILE\n"
-+"  --merge SOURCE\n"
-+"     merges contents of the SOURCE bitmap into BITMAP in FILE\n"
-+"  -b, --source-file SRC_FILE\n"
-+"     select alternative source file for --merge\n"
-+"  -F, --source-format SRC_FMT\n"
-+"     specify format for SRC_FILE explicitly\n"
++"  -O, --output-format OUTPUT_FMT\n"
++"     format of the OUTPUT (default: raw)\n"
++"  -U, --force-share\n"
++"     open images in shared mode for concurrent access\n"
 +"  --object OBJDEF\n"
 +"     defines QEMU user-creatable object\n"
-+"  FILE\n"
-+"     name of the image file, or option string (key=value,..)\n"
-+"     with --image-opts, to operate on\n"
-+"  BITMAP\n"
-+"     name of the bitmap to add, remove, clear, enable, disable or merge to\n"
++"  bs=BLOCK_SIZE[bKMGTP]\n"
++"     size of the I/O block, with optional multiplier suffix (powers of 1024)\n"
++"     (default: 512)\n"
++"  count=COUNT\n"
++"     number of blocks to convert (default whole INPUT)\n"
++"  if=INPUT\n"
++"     name of the file, or option string (key=value,..)\n"
++"     with --image-opts, to use for input\n"
++"  of=OUTPUT\n"
++"     output file name to create (will be overridden if alrady exists)\n"
 +);
              break;
          case 'f':
              fmt = optarg;
              break;
--        case 'F':
--            src_fmt = optarg;
+-        case ':':
+-            missing_argument(argv[optind - 1]);
 -            break;
--        case 'g':
--            granularity = cvtnum("granularity", optarg);
--            if (granularity < 0) {
--                return 1;
--            }
+-        case '?':
+-            unrecognized_option(argv[optind - 1]);
 +        case OPTION_IMAGE_OPTS:
 +            image_opts = true;
              break;
-         case OPTION_ADD:
-             act = g_new0(ImgBitmapAction, 1);
-@@ -5228,6 +5249,12 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
-             QSIMPLEQ_INSERT_TAIL(&actions, act, next);
-             add = true;
+-        case 'h':
+-            help();
++        case 'O':
++            out_fmt = optarg;
              break;
-+        case 'g':
-+            granularity = cvtnum("granularity", optarg);
-+            if (granularity < 0) {
-+                return 1;
-+            }
-+            break;
-         case OPTION_REMOVE:
-             act = g_new0(ImgBitmapAction, 1);
-             act->act = BITMAP_REMOVE;
-@@ -5255,12 +5282,17 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
-             QSIMPLEQ_INSERT_TAIL(&actions, act, next);
-             merge = true;
-             break;
-+        case 'b':
-+            src_filename = optarg;
-+            break;
-+        case 'F':
-+            src_fmt = optarg;
-+            break;
+         case 'U':
+             force_share = true;
+@@ -5565,9 +5588,8 @@ static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
          case OPTION_OBJECT:
              user_creatable_process_cmdline(optarg);
              break;
