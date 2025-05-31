@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4FEAC9BF2
-	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9222FAC9BFC
+	for <lists+qemu-devel@lfdr.de>; Sat, 31 May 2025 19:22:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLPsc-0007La-Kt; Sat, 31 May 2025 13:20:22 -0400
+	id 1uLPs1-0005AR-2d; Sat, 31 May 2025 13:19:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPqU-0002Z6-Kp; Sat, 31 May 2025 13:18:12 -0400
+ id 1uLPqU-0002Z7-L6; Sat, 31 May 2025 13:18:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uLPqP-0001CV-Ca; Sat, 31 May 2025 13:18:07 -0400
+ id 1uLPqQ-0001Cc-Ep; Sat, 31 May 2025 13:18:08 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ADCD3126B48;
+ by isrv.corpit.ru (Postfix) with ESMTP id C0F6C126B49;
  Sat, 31 May 2025 20:16:06 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 86F6921BA4B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8E9BC21BA4C;
  Sat, 31 May 2025 20:16:10 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 24/27] qemu-img: dd: refresh options/--help
-Date: Sat, 31 May 2025 20:16:06 +0300
-Message-Id: <20250531171609.197078-25-mjt@tls.msk.ru>
+Subject: [PATCH 25/27] qemu-img: measure: refresh options/--help
+Date: Sat, 31 May 2025 20:16:07 +0300
+Message-Id: <20250531171609.197078-26-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250531171609.197078-1-mjt@tls.msk.ru>
 References: <20250531171609.197078-1-mjt@tls.msk.ru>
@@ -60,88 +60,147 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Add missing long options and --help output,
 reorder options for consistency.
 
+Also add -s short option for --size (and remove OPTION_SIZE).
+
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 50 ++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 36 insertions(+), 14 deletions(-)
+ qemu-img.c | 89 +++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 62 insertions(+), 27 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 97ce51a1c3..3220c95e3c 100644
+index 3220c95e3c..44212de3f6 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -5533,31 +5533,54 @@ static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
-     };
-     const struct option long_options[] = {
-         { "help", no_argument, 0, 'h'},
--        { "object", required_argument, 0, OPTION_OBJECT},
-+        { "format", required_argument, 0, 'f'},
-         { "image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-+        { "output-format", required_argument, 0, 'O'},
-         { "force-share", no_argument, 0, 'U'},
-+        { "object", required_argument, 0, OPTION_OBJECT},
-         { 0, 0, 0, 0 }
-     };
+@@ -71,7 +71,6 @@ enum {
+     OPTION_FLUSH_INTERVAL = 261,
+     OPTION_NO_DRAIN = 262,
+     OPTION_TARGET_IMAGE_OPTS = 263,
+-    OPTION_SIZE = 264,
+     OPTION_PREALLOCATION = 265,
+     OPTION_SHRINK = 266,
+     OPTION_SALVAGE = 267,
+@@ -5781,15 +5780,6 @@ static void dump_json_block_measure_info(BlockMeasureInfo *info)
  
--    while ((c = getopt_long(argc, argv, ":hf:O:U", long_options, NULL))) {
-+    while ((c = getopt_long(argc, argv, "hf:O:U", long_options, NULL))) {
-         if (c == EOF) {
-             break;
-         }
+ static int img_measure(const img_cmd_t *ccmd, int argc, char **argv)
+ {
+-    static const struct option long_options[] = {
+-        {"help", no_argument, 0, 'h'},
+-        {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
+-        {"object", required_argument, 0, OPTION_OBJECT},
+-        {"output", required_argument, 0, OPTION_OUTPUT},
+-        {"size", required_argument, 0, OPTION_SIZE},
+-        {"force-share", no_argument, 0, 'U'},
+-        {0, 0, 0, 0}
+-    };
+     OutputFormat output_format = OFORMAT_HUMAN;
+     BlockBackend *in_blk = NULL;
+     BlockDriver *drv;
+@@ -5810,23 +5800,61 @@ static int img_measure(const img_cmd_t *ccmd, int argc, char **argv)
+     int ret = 1;
+     int c;
+ 
+-    while ((c = getopt_long(argc, argv, "hf:O:o:l:U",
++    static const struct option long_options[] = {
++        {"help", no_argument, 0, 'h'},
++        {"source-format", required_argument, 0, 'f'}, /* img_convert */
++        {"format", required_argument, 0, 'f'},
++        {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
++        {"source-image-opts", no_argument, 0, OPTION_IMAGE_OPTS}, /* img_convert */
++        {"snapshot", required_argument, 0, 'l'},
++        {"target-format", required_argument, 0, 'O'},
++        {"target-format-options", required_argument, 0, 'o'}, /* img_convert */
++        {"options", required_argument, 0, 'o'},
++        {"force-share", no_argument, 0, 'U'},
++        {"output", required_argument, 0, OPTION_OUTPUT},
++        {"object", required_argument, 0, OPTION_OBJECT},
++        {"size", required_argument, 0, 's'},
++        {0, 0, 0, 0}
++    };
++
++    while ((c = getopt_long(argc, argv, "hf:l:O:o:Us:",
+                             long_options, NULL)) != -1) {
          switch (c) {
--        case 'O':
--            out_fmt = optarg;
-+        case 'h':
-+            cmd_help(ccmd, "[-f FMT|--image-opts] [-O OUTPUT_FMT] [-U]\n"
-+"        [--object OBJDEF] [bs=BLOCK_SIZE] [count=BLOCKS] if=INPUT of=OUTPUT\n"
+-        case '?':
+         case 'h':
+-            help();
++            cmd_help(ccmd, "[-f FMT|--image-opts] [-l SNAPSHOT_PARAM]\n"
++"       [-O TARGET_FMT] [-o TARGET_FMT_OPTS] [--output human|json]\n"
++"       [--object OBJDEF] (--size SIZE | FILE)\n"
 +,
-+"  -f, --format FMT\n"
-+"     specify format for INPUT explicitly (default: probing is used)\n"
++"  -f, --format\n"
++"     specify format of FILE explicitly (default: probing is used)\n"
 +"  --image-opts\n"
-+"     treat INPUT as an option string (key=value,..), not a file name\n"
-+"     (incompatible with -f|--format)\n"
-+"  -O, --output-format OUTPUT_FMT\n"
-+"     format of the OUTPUT (default: raw)\n"
++"     indicates that FILE is a complete image specification\n"
++"     instead of a file name (incompatible with --format)\n"
++"  -l, --snapshot SNAPSHOT\n"
++"     use this snapshot in FILE as source\n"
++"  -O, --target-format TARGET_FMT\n"
++"     desired target/output image format (default: raw)\n"
++"  -o TARGET_FMT_OPTS\n"
++"     options specific to TARGET_FMT\n"
++"  --output human|json\n"
++"     output format (default: human)\n"
 +"  -U, --force-share\n"
 +"     open images in shared mode for concurrent access\n"
 +"  --object OBJDEF\n"
 +"     defines QEMU user-creatable object\n"
-+"  bs=BLOCK_SIZE[bKMGTP]\n"
-+"     size of the I/O block, with optional multiplier suffix (powers of 1024)\n"
-+"     (default: 512)\n"
-+"  count=COUNT\n"
-+"     number of blocks to convert (default whole INPUT)\n"
-+"  if=INPUT\n"
-+"     name of the file, or option string (key=value,..)\n"
-+"     with --image-opts, to use for input\n"
-+"  of=OUTPUT\n"
-+"     output file name to create (will be overridden if alrady exists)\n"
++"  -s, --size SIZE[bKMGTPE]\n"
++"     measure file size for given image size,\n"
++"     with optional multiplier suffix (powers of 1024)\n"
++"  FILE\n"
++"     measure file size required to convert from FILE (either a file name\n"
++"     or an option string (key=value,..) with --image-options)\n"
 +);
              break;
          case 'f':
              fmt = optarg;
              break;
--        case ':':
--            missing_argument(argv[optind - 1]);
+-        case 'O':
+-            out_fmt = optarg;
 -            break;
--        case '?':
--            unrecognized_option(argv[optind - 1]);
+-        case 'o':
+-            if (accumulate_options(&options, optarg) < 0) {
+-                goto out;
+-            }
 +        case OPTION_IMAGE_OPTS:
 +            image_opts = true;
              break;
--        case 'h':
--            help();
+         case 'l':
+             if (strstart(optarg, SNAPSHOT_OPT_BASE, NULL)) {
+@@ -5841,24 +5869,31 @@ static int img_measure(const img_cmd_t *ccmd, int argc, char **argv)
+                 snapshot_name = optarg;
+             }
+             break;
+-        case 'U':
+-            force_share = true;
 +        case 'O':
 +            out_fmt = optarg;
              break;
-         case 'U':
-             force_share = true;
-@@ -5565,9 +5588,8 @@ static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
-         case OPTION_OBJECT:
-             user_creatable_process_cmdline(optarg);
+-        case OPTION_OBJECT:
+-            user_creatable_process_cmdline(optarg);
++        case 'o':
++            if (accumulate_options(&options, optarg) < 0) {
++                goto out;
++            }
              break;
 -        case OPTION_IMAGE_OPTS:
 -            image_opts = true;
--            break;
++        case 'U':
++            force_share = true;
+             break;
+         case OPTION_OUTPUT:
+             output_format = parse_output_format(argv[0], optarg);
+             break;
+-        case OPTION_SIZE:
++        case OPTION_OBJECT:
++            user_creatable_process_cmdline(optarg);
++            break;
++        case 's':
+             img_size = cvtnum("image size", optarg);
+             if (img_size < 0) {
+                 goto out;
+             }
+             break;
 +        default:
 +            tryhelp(argv[0]);
          }
