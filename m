@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82CC3AC9DC4
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 06:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8479AC9E1C
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 10:25:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLahi-0006yq-LY; Sun, 01 Jun 2025 00:53:50 -0400
+	id 1uLdzK-0002R6-6k; Sun, 01 Jun 2025 04:24:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1uLahc-0006xs-Id
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 00:53:45 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1uLdzI-0002Qq-2U
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 04:24:12 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1uLahZ-0002Ro-Li
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 00:53:44 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-7376dd56f8fso3869782b3a.2
- for <qemu-devel@nongnu.org>; Sat, 31 May 2025 21:53:41 -0700 (PDT)
+ id 1uLdzG-0005CN-Bi
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 04:24:11 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-ad55d6aeb07so522121666b.0
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 01:24:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1748753619; x=1749358419; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=I8+mq13Ike4tII/xN10loMuJgw5sR3KYt5pU1khJptI=;
- b=CZ3XpOmfrAGWknF4cG90azSZ93oUuwRuMT8BK5gVBSLwgFsBd+vdKRBjdlETH2B/kb
- fWpFOId3QPRMDI608FQsuhgU715zsFcSdmQgco4ZIPEYtwMg257BpSNXtO+IcMvWrHAx
- Qnw8e41D2yLEX7ZyxAW504DOpwKyK8603PuNn+IU0svxKQU3/qIvHa4CKP29E1BfN/Nx
- DZkF7VO+qcHoNSXLWvXPBSBGInW3jkc79/tV91Ccqd8KGwjpEk+UqhqxvPfqxwMwca9e
- Z6nkwOM5J6yLVJJwDvdk3xK35qsWfEukP5t63ECDz/LmO+0Bv3UBOkT8STZS9oRzXnm9
- o3sw==
+ d=gmail.com; s=20230601; t=1748766248; x=1749371048; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=MGRiNezikHlSH9dQNMu6ohKB/xcUBur2Fa+qu3GhHp8=;
+ b=LqxsH4OxXD9O2F1Y8G/dJVx/IG0zD6rGkofEDaiTN9HLtno82RhmDrbjV4uO4sbgEx
+ cdF2tWC4uYVr7AHCzAXWlBvswAjIM9QghSbmtcJBf5IPmp8wVbkI/ZOBiLej4nGb+tbr
+ fUM/gfk+KImSOaWmmTw4dlYfdwi31x2Ss3fkhfzxH70q+Nj5nGYdn8cbDb4dc6u2KbJa
+ zpOhd4xv7RqdC0CWO5Gam/rcCtDspLbgXczAckH7NTYbd9Bv+AvAgswyGtalTAUA4jM0
+ 2IGeNhlbjL74U3suQtsmrNiPyp3ZTR0Z0nQav8E6cC+Z5yoqzS36hBLygsSOprepMFJM
+ HTOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748753619; x=1749358419;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=I8+mq13Ike4tII/xN10loMuJgw5sR3KYt5pU1khJptI=;
- b=bAs8pfVgAksEEdgZSaPIpehlKGMWl1U5TkGFruorHETOCGlZAleJZ3KxZdycmh/Wpn
- HddHDpQnxer1vSu7yOkzclF2WYtebCnTVjiKJ+Dy85dd5OkPJdR/GZMHqKBRi3/5kEiE
- WJuAPY341vDC2Z4LNTTWhMG/HzutBqVjLzRSEfR8fgAKpfobMDDHE5lDvRGMYnTGUNJe
- Y7BSm27iKvEnEMPBx5mgC+uhDhrrRy5ZFL15Z2eLYd3TZj3rqA2kZajS06bspsVDah0i
- gvpohgevgy/OvsYFDmFtkONlPco+EUMZOxdxO7K+IhuZ0jGkidGfDY0gF1hF36r08K9Z
- dDEw==
-X-Gm-Message-State: AOJu0YxRClO73YCF7wyhqLlBBRb78gsczjLtmdTxOL1HXs8r4EF3aniq
- zsxS7zQ3HIYQvCncIO/67nf3Xm7aRoA+ncgy5UtGpNCkp69rHM4h+pDfXqGS4EKMhb0=
-X-Gm-Gg: ASbGncsWKXigKYdf+xyFlbaICcx6DH3cT/4FRFlM20CA0hH4dutIiTd1e+H3F9BAlXl
- a+NIlbZDEJzvclTCqDBl+bue3FP96ipbQqKC6w1wZzzesPZ2dHyas21eCiDfarNjJKOWxXAFGqT
- QnwuVQ7EjbEiNfaU3rzwL00vS5OJj6+IML0GJQS6sEl32MPF98Czn6UctIBTmrMKKPT2UI98Lu6
- XxBY18NMTqPYBI+kXWN22s0d8IeuZAt2YhdFWb8PJrgs8sJhvw/j6U8XHcdzenXsQxPV9k+Iyb0
- zEqBIQOz/jw86wnZNEg+GDtwYjeXqhpSc08FDc/yQQpAZg2f5Lo5muw=
-X-Google-Smtp-Source: AGHT+IE29cZRw/GowY6WCBbka3EeJTjCjmKIUtKXJq98fFLDgK7oq3z5eFXgTamfo0fgw5xsjaJCIg==
-X-Received: by 2002:a05:6a21:32a5:b0:21a:d7ad:e0c7 with SMTP id
- adf61e73a8af0-21ad979928cmr16035597637.34.1748753619474; 
- Sat, 31 May 2025 21:53:39 -0700 (PDT)
-Received: from localhost ([103.192.227.65]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-747affaf9e5sm5411451b3a.86.2025.05.31.21.53.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 31 May 2025 21:53:38 -0700 (PDT)
-From: Weifeng Liu <weifeng.liu.z@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Weifeng Liu <weifeng.liu.z@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- "Kim, Dongwon" <dongwon.kim@intel.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 2/2] ui/gtk: Add scale option
-Date: Sun,  1 Jun 2025 12:52:33 +0800
-Message-ID: <20250601045245.36778-3-weifeng.liu.z@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250601045245.36778-1-weifeng.liu.z@gmail.com>
-References: <20250601045245.36778-1-weifeng.liu.z@gmail.com>
+ d=1e100.net; s=20230601; t=1748766248; x=1749371048;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MGRiNezikHlSH9dQNMu6ohKB/xcUBur2Fa+qu3GhHp8=;
+ b=I+94nDfzY8FriWmqL7WQP+DnaOXjee+GoOacbKnBCBOmb/LqUdah5K4uAVaE48McPc
+ WqeMaMlFKVB+ZlnXi22yWoPbwa7l7TOlCRJwwpgRkbb0E8kgf0nKkKU+Rnump4m6Rfqa
+ ef2XO89m1DW3qjnjnRzp954nqUkFUp61xhjI2M+EmDtR8GS0JQN7lnWbIPe9asDdS6A2
+ p/PpOfLQieAQlNKq2GPlr/8oIuKFWRjDoCsq1X1sUdIzxesI0cG4MCiZ+gAi4R5Hef0F
+ ytyh3fULbRUV4R9LUvDxmyLDV9cJNDXNBHw2qI4rFZL6gmv2TAvU4XMGBu/0LKLLEeu2
+ iB7A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUiw++3GyOOtxGnVO+CkHhuoxmrbUVINbc+7Ig9OJePjQF/mXS8QPuj0MWfR9ajXkf684toG7VErcON@nongnu.org
+X-Gm-Message-State: AOJu0YwZ1J3zGDmMh1E+8sPXPqqdzLzgX0lsMgOR+3rXUl4vKd2CAzKv
+ RbkKT/0E0TZJridwBZGME6DFsntc48Z1vRobWWVWEd/p72BzJN9LKRNx/Eie+GxSpCOmq6NrdHA
+ HFV1R04c+dGtN0PIrdQmlC6Fc/PD+zy4=
+X-Gm-Gg: ASbGncuYOpqCN8v9GxZg+0375a2c8H7hE1ljsbCTxShyndEE/sdyljrOOcLNKbBUmKH
+ uJntGQjkl4XsWiIpqt6Tta4rlO5fl722b5puafy5aP/AngS6sJ7muciOx71Pv8mEJO9AIFDFCze
+ zbTtLjfoiWnyoiHymtZKQtnE+y7kfM2iHHFGCAFXyTMXXr
+X-Google-Smtp-Source: AGHT+IE84dwwg3DV1WO3y7Cogu2vZkOMM4NeR7NkXtV7jsy3/72zBKYW4UIjj/HvpIL++b0rdoo5LObrWuNkMIuq90Q=
+X-Received: by 2002:a17:906:478d:b0:ace:5461:81dd with SMTP id
+ a640c23a62f3a-adb36b05802mr805613266b.3.1748766248301; Sun, 01 Jun 2025
+ 01:24:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=weifeng.liu.z@gmail.com; helo=mail-pf1-x42d.google.com
+References: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
+ <19542757-ecc0-4eb5-b26c-4a06f7f800c3@tls.msk.ru>
+ <0790819eab97fbc5728f583b6ec90e338c2819e0.camel@gmail.com>
+ <8a78195f-583e-442f-8d0a-41753c70e584@tls.msk.ru>
+In-Reply-To: <8a78195f-583e-442f-8d0a-41753c70e584@tls.msk.ru>
+From: Weifeng Liu <weifeng.liu.z@gmail.com>
+Date: Sun, 1 Jun 2025 16:23:56 +0800
+X-Gm-Features: AX0GCFvitzApRwSykmHZB9VHm7W9KCUsW7Wy6eZVykf-dYHfGqINSJruWgQr2Uw
+Message-ID: <CAGZJSh-BX1WGmWYhau7qm9MrL8c3Hp7qTvxLGfbKCABG5dEe2w@mail.gmail.com>
+Subject: Re: [PATCH 0/9] ui: Improve scale handling
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Dongwon Kim <dongwon.kim@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=weifeng.liu.z@gmail.com; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,155 +99,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow user to set a preferred scale (defaulting to 1) of the virtual
-display. Along with zoom-to-fix=false, this would be helpful for users
-running QEMU on hi-dpi host desktop to achieve pixel to pixel display --
-e.g., if the scale factor of a user's host desktop is set to 200%, then
-they can set a 0.5 scale for the virtual display to avoid magnification
-that might cause blurriness.
+On 5/30/25 6:56 PM, Michael Tokarev wrote:
+> On 30.05.2025 09:39, Weifeng Liu wrote:
+>> On Thu, 2025-05-29 at 10:23 +0300, Michael Tokarev wrote:
+>
+>>>> PATCH 3 - 5 fix bugs in mouse position calculation due to not
+>>>> handling
+>>>> scale properly, for both gtk and sdl.
+>>>>
+>>>> PATCH 6 align scale update logic in gtk-egl with other
+>>>> implementations.
+>>>>
+>>>> PATCH 7 fix an issue that gtk window might keep enlarging/shrinking
+>>>> because
+>>>> ui info propagating to guest not considering scale.
+>>>>
+>>>> PATCH 8 and 9 align fixed-scale mode behavior in gtk-gl-area and
+>>>> gtk-egl with
+>>>> other implementations by adding appropriate padding to the window
+>>>> to preserve
+>>>> the scale.
+>>> ...
+>>>> Weifeng Liu (9):
+>>>>     ui/gtk: Document scale and coordinate handling
+>>>>     ui/gtk: Use consistent naming for variables in different
+>>>> coordinates
+>>>>     gtk/ui: Introduce helper gd_update_scale
+>>>>     ui/gtk: Update scales in fixed-scale mode when rendering GL area
+>>>>     ui/sdl: Consider scaling in mouse event handling
+>>>>     ui/gtk: Don't update scale in fixed scale mode in gtk-egl.c
+>>>>     ui/gtk: Consider scaling when propagating ui info
+>>>>     ui/gtk-gl-area: Render guest content with padding in fixed-scale
+>>>> mode
+>>>>     ui/gtk-egl: Render guest content with padding in fixed-scale
+>>>> mode
+> ...
+>> I think the first five patches are good candidates for backporting to
+>> the stable branches, as they only address bugs without altering
+>> existing behavior. [...]
+>
+> It somehow feels like *all* patches should be picked up, not just first
+> 5 of them :)  BTW, the first one (Document scale handling) does not fix
+> any bugs ;)
+>
 
-Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
----
- include/ui/gtk.h |  1 +
- qapi/ui.json     |  5 ++++-
- ui/gtk.c         | 46 +++++++++++++++++++++++++++++-----------------
- 3 files changed, 34 insertions(+), 18 deletions(-)
+Great! Please apply all these patches to 10.0 branch. Let me know if
+there's anything I can help with.
 
-diff --git a/include/ui/gtk.h b/include/ui/gtk.h
-index b7cfbf218e..3e6ce3cb48 100644
---- a/include/ui/gtk.h
-+++ b/include/ui/gtk.h
-@@ -41,6 +41,7 @@ typedef struct VirtualGfxConsole {
-     DisplaySurface *ds;
-     pixman_image_t *convert;
-     cairo_surface_t *surface;
-+    double preferred_scale;
-     double scale_x;
-     double scale_y;
- #if defined(CONFIG_OPENGL)
-diff --git a/qapi/ui.json b/qapi/ui.json
-index 4f7d994e26..023d055ef1 100644
---- a/qapi/ui.json
-+++ b/qapi/ui.json
-@@ -1338,6 +1338,8 @@
- # @keep-aspect-ratio: Keep width/height aspect ratio of guest content when
- #     resizing host window.  Defaults to "on". (Since 10.1)
- #
-+# @scale: Set preferred scale of the display.  Defaults to 1.0.  (Since 10.1)
-+#
- # Since: 2.12
- ##
- { 'struct'  : 'DisplayGTK',
-@@ -1345,7 +1347,8 @@
-                 '*zoom-to-fit'       : 'bool',
-                 '*show-tabs'         : 'bool',
-                 '*show-menubar'      : 'bool',
--                '*keep-aspect-ratio' : 'bool'  } }
-+                '*keep-aspect-ratio' : 'bool',
-+                '*scale'             : 'number'  } }
- 
- ##
- # @DisplayEGLHeadless:
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 9104509ee1..e91d093a49 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -67,6 +67,7 @@
- #define VC_TERM_X_MIN     80
- #define VC_TERM_Y_MIN     25
- #define VC_SCALE_MIN    0.25
-+#define VC_SCALE_MAX       4
- #define VC_SCALE_STEP   0.25
- 
- #ifdef GDK_WINDOWING_X11
-@@ -272,15 +273,11 @@ static void gd_update_geometry_hints(VirtualConsole *vc)
-         if (!vc->gfx.ds) {
-             return;
-         }
--        if (s->free_scale) {
--            geo.min_width  = surface_width(vc->gfx.ds) * VC_SCALE_MIN;
--            geo.min_height = surface_height(vc->gfx.ds) * VC_SCALE_MIN;
--            mask |= GDK_HINT_MIN_SIZE;
--        } else {
--            geo.min_width  = surface_width(vc->gfx.ds) * vc->gfx.scale_x;
--            geo.min_height = surface_height(vc->gfx.ds) * vc->gfx.scale_y;
--            mask |= GDK_HINT_MIN_SIZE;
--        }
-+        double scale_x = s->free_scale ? VC_SCALE_MIN : vc->gfx.scale_x;
-+        double scale_y = s->free_scale ? VC_SCALE_MIN : vc->gfx.scale_y;
-+        geo.min_width  = surface_width(vc->gfx.ds) * scale_x;
-+        geo.min_height = surface_height(vc->gfx.ds) * scale_y;
-+        mask |= GDK_HINT_MIN_SIZE;
-         geo_widget = vc->gfx.drawing_area;
-         gtk_widget_set_size_request(geo_widget, geo.min_width, geo.min_height);
- 
-@@ -1579,8 +1576,8 @@ static void gd_menu_full_screen(GtkMenuItem *item, void *opaque)
-         }
-         s->full_screen = FALSE;
-         if (vc->type == GD_VC_GFX) {
--            vc->gfx.scale_x = 1.0;
--            vc->gfx.scale_y = 1.0;
-+            vc->gfx.scale_x = vc->gfx.preferred_scale;
-+            vc->gfx.scale_y = vc->gfx.preferred_scale;
-             gd_update_windowsize(vc);
-         }
-     }
-@@ -1636,8 +1633,8 @@ static void gd_menu_zoom_fixed(GtkMenuItem *item, void *opaque)
-     GtkDisplayState *s = opaque;
-     VirtualConsole *vc = gd_vc_find_current(s);
- 
--    vc->gfx.scale_x = 1.0;
--    vc->gfx.scale_y = 1.0;
-+    vc->gfx.scale_x = vc->gfx.preferred_scale;
-+    vc->gfx.scale_y = vc->gfx.preferred_scale;
- 
-     gd_update_windowsize(vc);
- }
-@@ -1651,8 +1648,8 @@ static void gd_menu_zoom_fit(GtkMenuItem *item, void *opaque)
-         s->free_scale = TRUE;
-     } else {
-         s->free_scale = FALSE;
--        vc->gfx.scale_x = 1.0;
--        vc->gfx.scale_y = 1.0;
-+        vc->gfx.scale_x = vc->gfx.preferred_scale;
-+        vc->gfx.scale_y = vc->gfx.preferred_scale;
-     }
- 
-     gd_update_windowsize(vc);
-@@ -2243,6 +2240,11 @@ static void gl_area_realize(GtkGLArea *area, VirtualConsole *vc)
- }
- #endif
- 
-+static bool gd_scale_valid(double scale)
-+{
-+    return scale >= VC_SCALE_MIN && scale <= VC_SCALE_MAX;
-+}
-+
- static GSList *gd_vc_gfx_init(GtkDisplayState *s, VirtualConsole *vc,
-                               QemuConsole *con, int idx,
-                               GSList *group, GtkWidget *view_menu)
-@@ -2252,8 +2254,18 @@ static GSList *gd_vc_gfx_init(GtkDisplayState *s, VirtualConsole *vc,
- 
-     vc->label = qemu_console_get_label(con);
-     vc->s = s;
--    vc->gfx.scale_x = 1.0;
--    vc->gfx.scale_y = 1.0;
-+    vc->gfx.preferred_scale = 1.0;
-+    if (s->opts->u.gtk.has_scale) {
-+        if (gd_scale_valid(s->opts->u.gtk.scale)) {
-+            vc->gfx.preferred_scale = s->opts->u.gtk.scale;
-+        } else {
-+            error_report("Invalid scale value %lf given, being ignored",
-+                         s->opts->u.gtk.scale);
-+            s->opts->u.gtk.has_scale = false;
-+        }
-+    }
-+    vc->gfx.scale_x = vc->gfx.preferred_scale;
-+    vc->gfx.scale_y = vc->gfx.preferred_scale;
- 
- #if defined(CONFIG_OPENGL)
-     if (display_opengl) {
--- 
-2.49.0
-
+Best regards,
+Weifeng
 
