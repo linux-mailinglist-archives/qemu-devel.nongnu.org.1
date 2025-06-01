@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7A1AC9EBC
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 15:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4360AC9EC1
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 15:59:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLjDm-0006fy-DB; Sun, 01 Jun 2025 09:59:30 -0400
+	id 1uLjDq-00075Z-K8; Sun, 01 Jun 2025 09:59:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1uLjDC-0006F3-Kp
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 09:58:57 -0400
+ id 1uLjDJ-0006TG-B2
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 09:59:05 -0400
 Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1uLjDB-000488-1J
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 09:58:54 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1748786320; cv=none; 
+ id 1uLjDH-00048M-QN
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 09:59:01 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1748786326; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=F6ku/vQlRqFBAQTVDOVCUP1IZZk7+KZaEpqMB/lOz/n8IHUy9SUv80vbVOYjV5pmUCs8HLBqxTOqC+tijob/ONHUF1it1n51eINX6IAILRy+FUmZHfw4I4Blz5P0DXyzZuF2ugVINqbC/UZSXu/X3yNGNIhydX+Lk04y9Zs0LnM=
+ b=lSLr25A4Pq6lLNz8w00j+g60qJgv3iNGHE6OJvX/K9VjzRyf0TkrXo3Ga+0mD7oB814ZMO25+1zq3Zj/LaBPK6IpQBlsnWhMoWNCYg8cFV7PE/qtbtXX2B5p8QIP9il4rIxBD9DaqS2FQOYpmoG5g7VUlQdDXwmh/1A44JeDSro=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1748786320;
+ s=zohoarc; t=1748786326;
  h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=On2ZqlFlyIvbUUtMlG5Yem31oH5PEhWYUS42ecHARJw=; 
- b=BL9SEcf3SNDdb2G43GsmhqAzI7pbnYBT+86YhUI+n+KM9YcrA0gZpT0sRwb79arWYLH3Ts9D7e3Cqj9LsmfT3Dnz+xxLt6L1/pIf/aUmdCpfknJyxbLMHnCyW5TqVvfVT4goN3OJqCxmAoj1IusDe6ZgnPbDqRcRs748XrhKSyo=
+ bh=17msrKat4hLkSRXfqm0GaBHluZpGxNgGUlYFZMYDL1g=; 
+ b=dnRX/zMaPWCd1ZBRuizwgAT8OCfKx/szMrFRKL55/bg1dUg73gWuTgA5hX+5uGzcX3NjgNo24f9u7xDnNQb9TpPzvIygb36knN/xzEusf90q3ESdyotAab7E3ReQh1JCX6CLpu4izILd58994IpsoXxpSLvRWtCTL9rxYQRI2xA=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1748786320; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1748786326; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
  h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=On2ZqlFlyIvbUUtMlG5Yem31oH5PEhWYUS42ecHARJw=;
- b=B/1E8Qdc+eXnPmZhjPWLgmR1c69IE6Ikwc/7Cq3WmSWK8YIQ/xH9g9jQ7mPZjnQV
- rN4BQoJojKFbutpSDnAHxUuEKmzWOJFUWT5d5d+HRlEwpfDrbu5lb2E4MnuOJM6IuHC
- Vt4wC/AUtaG4Vii08OYIQnuLe7iECO6mv9oYxpYU=
-Received: by mx.zohomail.com with SMTPS id 1748786318834525.5487427418984;
- Sun, 1 Jun 2025 06:58:38 -0700 (PDT)
+ bh=17msrKat4hLkSRXfqm0GaBHluZpGxNgGUlYFZMYDL1g=;
+ b=bJOYekdTEjSZdbnJ/sX3QfaHD01O92nttc+Z2uraUnh4wxiZPSshsCHtvph4oNON
+ 9mx8kioCc5CwvHnWEnULrJSC51RpwuZ/ubSXbOUVC9nS6iAAV+cEdRi/tKHd/vZpC/4
+ HM8F6NB/sxSpmnCwEqfh4OE5WDzf9vuqVFuNfYLI=
+Received: by mx.zohomail.com with SMTPS id 1748786324628273.51010404668136;
+ Sun, 1 Jun 2025 06:58:44 -0700 (PDT)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -57,10 +57,10 @@ Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>,
  Yiwei Zhang <zzyiwei@gmail.com>, Sergio Lopez Pascual <slp@redhat.com>
-Subject: [PATCH v13 06/10] ui/sdl2: Don't disable scanout when display is
+Subject: [PATCH v13 07/10] ui/gtk: Don't disable scanout when display is
  refreshed
-Date: Sun,  1 Jun 2025 16:57:05 +0300
-Message-ID: <20250601135709.847395-7-dmitry.osipenko@collabora.com>
+Date: Sun,  1 Jun 2025 16:57:06 +0300
+Message-ID: <20250601135709.847395-8-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250601135709.847395-1-dmitry.osipenko@collabora.com>
 References: <20250601135709.847395-1-dmitry.osipenko@collabora.com>
@@ -106,21 +106,34 @@ Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Tested-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- ui/sdl2-gl.c | 1 -
- 1 file changed, 1 deletion(-)
+ ui/gtk-egl.c     | 1 -
+ ui/gtk-gl-area.c | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
-index 4906f6875046..d8e5e0a3642c 100644
---- a/ui/sdl2-gl.c
-+++ b/ui/sdl2-gl.c
-@@ -53,7 +53,6 @@ static void sdl2_gl_render_surface(struct sdl2_console *scon)
-     int ww, wh;
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 0b787bea25ee..33a4b5c1098b 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -183,7 +183,6 @@ void gd_egl_refresh(DisplayChangeListener *dcl)
  
-     SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
--    sdl2_set_scanout_mode(scon, false);
+     if (vc->gfx.glupdates) {
+         vc->gfx.glupdates = 0;
+-        gtk_egl_set_scanout_mode(vc, false);
+         gd_egl_draw(vc);
+     }
+ }
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index 8151cc413cf7..0ccd2f769743 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -187,7 +187,6 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
  
-     SDL_GetWindowSize(scon->real_window, &ww, &wh);
-     surface_gl_setup_viewport(scon->gls, scon->surface, ww, wh);
+     if (vc->gfx.glupdates) {
+         vc->gfx.glupdates = 0;
+-        gtk_gl_area_set_scanout_mode(vc, false);
+         gtk_gl_area_queue_render(GTK_GL_AREA(vc->gfx.drawing_area));
+     }
+ }
 -- 
 2.49.0
 
