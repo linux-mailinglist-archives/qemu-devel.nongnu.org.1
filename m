@@ -2,88 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC07DAC9F01
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3B8AC9F03
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:25:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLkZ6-0002Ff-QU; Sun, 01 Jun 2025 11:25:36 -0400
+	id 1uLkZ9-0002J4-NC; Sun, 01 Jun 2025 11:25:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkZ4-0002E8-Kk
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uLkZ5-0002F8-6M
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkZ2-0004e1-VQ
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uLkZ3-0004e6-LF
  for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748791532;
+ s=mimecast20190719; t=1748791533;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mGe6QEKbqDO2iJtSQF2boocqAH94qpLOcY8tzlF//aY=;
- b=EFlNeGQjn32hGKmQdZkCXNYeQXEgum+IbZy2RHVou3z+6cOfTfhrvthPqrvr6tCR5U6SJf
- EGT5YFzmTwgOLezM1B5cTQfdliga/+dOxqHGvwWdXI3i3TVwXU4vN/u/7Dhmaduiu7kCiX
- ZkWAhOBrKrwjN02JDGLdjSe30cSer8o=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=JM95DHwXzlDExy0RWKOhS3EErqNETTYBPlKPucLRpFw=;
+ b=a6DDOImgLbpxdiVVq4QAjNEaWDynoA6VWFyHT9eZvStpDNYi5n6f5Snnmko0Twm9wDlUEv
+ ReN+jqGdREhTLD1XJgF1xiwr9TbIMgA0yq6yB9s8CBx+XSNvx50yvDRoUiT9yCYZedlXNy
+ ZvBTcuog9xjs+MHfRga8rIvnRJlt9P0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-663-fUI3D8OOPuC4w92wrnIkMQ-1; Sun, 01 Jun 2025 11:25:31 -0400
-X-MC-Unique: fUI3D8OOPuC4w92wrnIkMQ-1
-X-Mimecast-MFC-AGG-ID: fUI3D8OOPuC4w92wrnIkMQ_1748791530
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a50049f8eeso321495f8f.3
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:25:30 -0700 (PDT)
+ us-mta-134-x04SuhJ8PE-7uWudv2p9KA-1; Sun, 01 Jun 2025 11:25:31 -0400
+X-MC-Unique: x04SuhJ8PE-7uWudv2p9KA-1
+X-Mimecast-MFC-AGG-ID: x04SuhJ8PE-7uWudv2p9KA_1748791531
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-450d6768d4dso15955035e9.2
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:25:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748791529; x=1749396329;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1748791530; x=1749396330;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mGe6QEKbqDO2iJtSQF2boocqAH94qpLOcY8tzlF//aY=;
- b=QNhfUfXp3Wfx3wMfykK8Sqcwn4uW0zRdxvHhgRmgUPkcP2ufTQxiE+Jnsgn7FfIgKY
- 2WEDIJra5tpnSU+7k50myp8GIfjj7t1OtsHVr/Kmsw3paea+qh3x8ID/Lu8kYiHCBejm
- PrBoxZ0cg3zt7axQSyxSiJBh1wf0jK/DYW/hMQ1eoZswd7qz7cKvnfoVW4CAlXr0fMW6
- YAE4rFIOclhEWYnrrgpe2GDctXZX0tyK+Q9kEWixOjtjG6aAJ1yJmoMOG035ut2zhzZI
- 0YwBUMuMxWG2k8AnP0UedWcnLjUbCaLHHyVFuUHULUz7cUJXxhz6hba+y2j2a+INMH7J
- 4byQ==
-X-Gm-Message-State: AOJu0YwBE5VcSNG26lN53Jf7SGQcPwMuLE+3uL8p87uWo1bhGxzZaoc5
- ud4qcw4qansIlGaMS6uJTvJ3qgowX+ji7aXhtNnynv44FDDOIXjww/7zq4M4aYMzQQ6gI8nYjz1
- ZNEcoGXFcQ3J9bSeEOg2/E3b5XbO6zyq1YfO950FGLtpeK789MzKzg0Dx/by4jImWceZ1UBSYTB
- yWYE/EroNYY7+OP1oRYtk6SN0n5EbaO+M9jA==
-X-Gm-Gg: ASbGncsorOG1JHsyc9y/etGy6hMusE3aV6QvOabBRqgDVwWNwzcvfrIwK8e+a2CiJPK
- oZxxtkxFXoopv70RgSmyJ/u0kJFyWtnIMFANI1Yl6zWJTA1lXBiwHl8ENgoSmFcPHseIx7+n/kO
- 0srAYrWCddwDLuZLP4ldPX58WtAfsOV5y+6RoStkeSECFm1S9/wa42x0SkZ1OFoFdy23Z40Bcd9
- GnDoHOFrY9o9uMILVs9EDbEK6D90sbZQobCc0J54svKo/ZbR+DqcCtg7fUtOhQkLauRBGbgS34K
- OfbAU/MaOmLFFSG7
-X-Received: by 2002:a05:6000:2507:b0:3a4:dbdf:7147 with SMTP id
- ffacd0b85a97d-3a4f89e8c67mr7235622f8f.54.1748791529535; 
- Sun, 01 Jun 2025 08:25:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHELRmD7pW2SQCqIwkNVv6whO4B7jLZm4NU5mjpjD+MfuyDgTNGGB5Sk3/QBB/A6cNT4ggjGA==
-X-Received: by 2002:a05:6000:2507:b0:3a4:dbdf:7147 with SMTP id
- ffacd0b85a97d-3a4f89e8c67mr7235602f8f.54.1748791529109; 
- Sun, 01 Jun 2025 08:25:29 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+ bh=JM95DHwXzlDExy0RWKOhS3EErqNETTYBPlKPucLRpFw=;
+ b=YmL3AFjBsNH8oqNbJvfu/c2M3Fhca0gv43Fb46rVgOHxkhil2T4U0B/3HtuD+sQ1D0
+ eM8FwcJHBseXJFTODdJutH7R0zdFnLJEGoF9iYkcGgUuRcBmAta2eUhueTl3N7u6327R
+ qiX/kCDmoxPMl4TmRg0U8noqnkYgNqsUs/Ko/Aay+ylFVZr2pGlEa44nNfyHpVe2P9L5
+ 3KCeNdsTmgOAnm5zBtF/Iq48pYnann7ZxBEehYbhpaA71/JQUrlMuGDQlTDAUYV3q3NW
+ YRxOB+TOzYktlJeMQGEpTogJBqt/QeUcso/BTulQrE3cfcMJ+r7JXhtbhUx9MbyB18fp
+ LRKA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXwclASo29RQEBkSLnX0l50+xgHt5nB6NJyJ7Sp+pVMvLy535hjd0GEKsjT4gwa1If0ceepo+txtMhQ@nongnu.org
+X-Gm-Message-State: AOJu0Yw9oh9nNxjUYB2yHtjAm1i9DBsrkkVGd9DAFgfyV+xegEcAy1wS
+ 8XS9MisnTto8xDQR9XTU0BTCEdUbE6Eiru182NP66lPeT+w6q1vwCE7HM2LU1jw3nq24/J59VXk
+ ZRp9jVoznmpwV0AsfZfgQFcF55hjkEJMyF0tQQ/0+/MPb7xolV03eJkkw
+X-Gm-Gg: ASbGncuywA54Yof8XQgjljCg8zdOmG62L9CDH+47Fjcl0oS0GlTyXr0ms7dxZwyrcl2
+ 6kTGG3ZUBrpkGc4fWfQ3GzQOx8YqQIsc978VaUkWoCxNKmYhuzfaSehkHg819LGhfUS0+D7IBln
+ 81uHct78OlljEE18+Pr9kpzLf5JoHdsoE9FloT9GmKltSU/1e+2XWzQyFUeoRIs8WFygQ9CnT0s
+ tAlEwqsIf5I/+srDiW46msYjHqwYy3MHQAHlbxYuw8vAsz+MmZZ39n0v/wVb7MHbr7h/wFlZK/U
+ prst4XnQclwmF0HZH/c61pZ0R9qX0nQZFFsgmUmeCLdf1F/fMA==
+X-Received: by 2002:a5d:5f56:0:b0:3a4:e423:4080 with SMTP id
+ ffacd0b85a97d-3a4f89a5b17mr7257376f8f.4.1748791530627; 
+ Sun, 01 Jun 2025 08:25:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHw1/KYXqGQquM3zRK6DVFIMyXNuQBQKdpf9ohMQq7TdL6UehGr4mWXe6UgvmACoT3fnzDNCA==
+X-Received: by 2002:a5d:5f56:0:b0:3a4:e423:4080 with SMTP id
+ ffacd0b85a97d-3a4f89a5b17mr7257363f8f.4.1748791530251; 
+ Sun, 01 Jun 2025 08:25:30 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe5b8f0sm11574063f8f.6.2025.06.01.08.25.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Jun 2025 08:25:28 -0700 (PDT)
-Date: Sun, 1 Jun 2025 11:25:26 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bibo Mao <maobibo@loongson.cn>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 17/31] tests/qtest/bios-tables-test: Use MiB macro rather
- hardcode value
-Message-ID: <82acc8c83f93814bb01669412a0a226c39fa8d77.1748791463.git.mst@redhat.com>
-References: <cover.1748791463.git.mst@redhat.com>
+ 5b1f17b1804b1-450d8000d50sm88035115e9.19.2025.06.01.08.25.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 01 Jun 2025 08:25:29 -0700 (PDT)
+Message-ID: <d98982d6-678f-473b-85f7-f547501aa570@redhat.com>
+Date: Sun, 1 Jun 2025 17:25:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1748791463.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 18/43] vfio/pci: vfio_pci_vector_init
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
+ <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+References: <1748546679-154091-1-git-send-email-steven.sistare@oracle.com>
+ <1748546679-154091-19-git-send-email-steven.sistare@oracle.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <1748546679-154091-19-git-send-email-steven.sistare@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -108,113 +158,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+On 5/29/25 21:24, Steve Sistare wrote:
+> Extract a subroutine vfio_pci_vector_init.  No functional change.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-Replace 1024 * 1024 with MiB macro.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Message-Id: <20250520130158.767083-4-maobibo@loongson.cn>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- tests/qtest/bios-tables-test.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index 0a333ec435..0b2bdf9d0d 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -1622,7 +1622,7 @@ static void test_acpi_aarch64_virt_tcg_memhp(void)
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-         .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
-         .ram_start = 0x40000000ULL,
--        .scan_len = 256ULL * 1024 * 1024,
-+        .scan_len = 256ULL * MiB,
-     };
- 
-     data.variant = ".memhp";
-@@ -1717,7 +1717,7 @@ static void test_acpi_riscv64_virt_tcg_numamem(void)
-         .uefi_fl2 = "pc-bios/edk2-riscv-vars.fd",
-         .cd = "tests/data/uefi-boot-images/bios-tables-test.riscv64.iso.qcow2",
-         .ram_start = 0x80000000ULL,
--        .scan_len = 128ULL * 1024 * 1024,
-+        .scan_len = 128ULL * MiB,
-     };
- 
-     data.variant = ".numamem";
-@@ -1743,7 +1743,7 @@ static void test_acpi_aarch64_virt_tcg_numamem(void)
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-         .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
-         .ram_start = 0x40000000ULL,
--        .scan_len = 128ULL * 1024 * 1024,
-+        .scan_len = 128ULL * MiB,
-     };
- 
-     data.variant = ".numamem";
-@@ -1765,7 +1765,7 @@ static void test_acpi_aarch64_virt_tcg_pxb(void)
-         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-         .ram_start = 0x40000000ULL,
--        .scan_len = 128ULL * 1024 * 1024,
-+        .scan_len = 128ULL * MiB,
-     };
-     /*
-      * While using -cdrom, the cdrom would auto plugged into pxb-pcie,
-@@ -1841,7 +1841,7 @@ static void test_acpi_aarch64_virt_tcg_acpi_hmat(void)
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-         .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
-         .ram_start = 0x40000000ULL,
--        .scan_len = 128ULL * 1024 * 1024,
-+        .scan_len = 128ULL * MiB,
-     };
- 
-     data.variant = ".acpihmatvirt";
-@@ -2095,7 +2095,7 @@ static void test_acpi_riscv64_virt_tcg(void)
-         .uefi_fl2 = "pc-bios/edk2-riscv-vars.fd",
-         .cd = "tests/data/uefi-boot-images/bios-tables-test.riscv64.iso.qcow2",
-         .ram_start = 0x80000000ULL,
--        .scan_len = 128ULL * 1024 * 1024,
-+        .scan_len = 128ULL * MiB,
-     };
- 
-     /*
-@@ -2117,7 +2117,7 @@ static void test_acpi_aarch64_virt_tcg(void)
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-         .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
-         .ram_start = 0x40000000ULL,
--        .scan_len = 128ULL * 1024 * 1024,
-+        .scan_len = 128ULL * MiB,
-     };
- 
-     data.smbios_cpu_max_speed = 2900;
-@@ -2138,7 +2138,7 @@ static void test_acpi_aarch64_virt_tcg_topology(void)
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-         .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
-         .ram_start = 0x40000000ULL,
--        .scan_len = 128ULL * 1024 * 1024,
-+        .scan_len = 128ULL * MiB,
-     };
- 
-     test_acpi_one("-cpu cortex-a57 "
-@@ -2223,7 +2223,7 @@ static void test_acpi_aarch64_virt_viot(void)
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-         .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
-         .ram_start = 0x40000000ULL,
--        .scan_len = 128ULL * 1024 * 1024,
-+        .scan_len = 128ULL * MiB,
-     };
- 
-     test_acpi_one("-cpu cortex-a57 "
-@@ -2407,7 +2407,7 @@ static void test_acpi_aarch64_virt_oem_fields(void)
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-         .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
-         .ram_start = 0x40000000ULL,
--        .scan_len = 128ULL * 1024 * 1024,
-+        .scan_len = 128ULL * MiB,
-     };
-     char *args;
- 
--- 
-MST
+Thanks,
+
+C.
+
+
+> ---
+>   hw/vfio/pci.c | 24 +++++++++++++++++-------
+>   1 file changed, 17 insertions(+), 7 deletions(-)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 840590c..2d6dc54 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -512,6 +512,22 @@ static void vfio_update_kvm_msi_virq(VFIOMSIVector *vector, MSIMessage msg,
+>       kvm_irqchip_commit_routes(kvm_state);
+>   }
+>   
+> +static void vfio_pci_vector_init(VFIOPCIDevice *vdev, int nr)
+> +{
+> +    VFIOMSIVector *vector = &vdev->msi_vectors[nr];
+> +    PCIDevice *pdev = &vdev->pdev;
+> +
+> +    vector->vdev = vdev;
+> +    vector->virq = -1;
+> +    if (event_notifier_init(&vector->interrupt, 0)) {
+> +        error_report("vfio: Error: event_notifier_init failed");
+> +    }
+> +    vector->use = true;
+> +    if (vdev->interrupt == VFIO_INT_MSIX) {
+> +        msix_vector_use(pdev, nr);
+> +    }
+> +}
+> +
+>   static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+>                                      MSIMessage *msg, IOHandler *handler)
+>   {
+> @@ -525,13 +541,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+>       vector = &vdev->msi_vectors[nr];
+>   
+>       if (!vector->use) {
+> -        vector->vdev = vdev;
+> -        vector->virq = -1;
+> -        if (event_notifier_init(&vector->interrupt, 0)) {
+> -            error_report("vfio: Error: event_notifier_init failed");
+> -        }
+> -        vector->use = true;
+> -        msix_vector_use(pdev, nr);
+> +        vfio_pci_vector_init(vdev, nr);
+>       }
+>   
+>       qemu_set_fd_handler(event_notifier_get_fd(&vector->interrupt),
 
 
