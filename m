@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C02AC9F1A
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AFFAC9F21
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:31:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLkZZ-0003Fp-3A; Sun, 01 Jun 2025 11:26:08 -0400
+	id 1uLka1-0003cs-4s; Sun, 01 Jun 2025 11:26:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkZU-0003E9-GD
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:26:00 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkZX-0003HM-EV
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:26:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkZS-0004gS-SK
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:26:00 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkZW-0004gs-0o
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:26:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748791558;
+ s=mimecast20190719; t=1748791561;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iOHxmu/DSPgZPvZMkn1J47zj3LBk3Nk/LBdtFk70RKE=;
- b=Draeg9yfhThKQqPJqdTGD2tf7gRaEzzLNibAH/st97Wta4S19IFUQQApullfyWBp5cXVEk
- dcpdztvKLVgznlo2Zizzrb0CRTSAH0VDiRjxyckFkUAzjGVGtikM6Ln+Oz4l4TkRVwhLkN
- JLzBAcGIfTJaNBZ6bB82ez7brgC3YG0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IAQySewBx8SloVNKOXAdxhJJVB1Xqg1y29AdslpVETY=;
+ b=B5QiWHdgFgmxubefF5ciq0Mvyc9Gr96AX73+VO0S8fWjGhAgJ6+ErJxSNyLk8ufWMfaxGk
+ +ltSWxkgwU5uQ7s0BP39eEcH1FYw70nGD8retr1qJiQPjCIikc5urUbJL8azNRvBWhTK+b
+ GYq99xfbqA823V6Dv2i2iT8l0AuROxk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-378-kPSueeaGOluutR4w9XKBbA-1; Sun, 01 Jun 2025 11:25:57 -0400
-X-MC-Unique: kPSueeaGOluutR4w9XKBbA-1
-X-Mimecast-MFC-AGG-ID: kPSueeaGOluutR4w9XKBbA_1748791556
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4517abcba41so6828425e9.0
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:25:56 -0700 (PDT)
+ us-mta-76-FvOkRplJP3alXuX75Wgqyw-1; Sun, 01 Jun 2025 11:26:00 -0400
+X-MC-Unique: FvOkRplJP3alXuX75Wgqyw-1
+X-Mimecast-MFC-AGG-ID: FvOkRplJP3alXuX75Wgqyw_1748791559
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a4f7f1b932so1836294f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:26:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748791555; x=1749396355;
+ d=1e100.net; s=20230601; t=1748791559; x=1749396359;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iOHxmu/DSPgZPvZMkn1J47zj3LBk3Nk/LBdtFk70RKE=;
- b=nP46atqxKorbX2ZFzzxBEi9lIxy3MS9hiAV7c8IlChhOSpsgXeGpdFY09kib5loa4e
- wzAS7C+xO82+Jdmg7pazWHYPdEuBXA6d+tIaUXNdorsRjG9aUOHBOSxnI+Cbtb65krwW
- OkeSHSaedfA++dtVQvoMERM3Cor9VqpyxZPppSaY+UfhaXMJg/HpGOKHIyHOsxUHc+G0
- klwmFfVRoOjhrhr3x+5VmcaY9F4xEsYM9bnlGsM4/Ekl5eIKS8kp5j8DM8qIVL0MxHkV
- 9hwfIpcZqv1J0CP8J09SDDFFMMpVfUjX9UNmESnMBSFKu41oeLC3XTCAXRMYUB2Bj2gf
- b9OQ==
-X-Gm-Message-State: AOJu0YxE3OWYWo9f4lnR0ZAWyIbJ5wMBHlVf0YirYkLeQjcEDwImF6kx
- qq9/eqrpJoY6f+UpO/muyXuCbQOdI62MYTF5c0+3Hfe7b82dLzbH+toj8H0bFapXUivO/CW3Ikk
- HM6oJdjptcv7jw3mq803r7e+TqOhFAlwlt/S3+rRitRyHxYccmJC2HcL23vXVznpQyKdOMxBN+G
- qnzfOP0edtXV5peLtUA34dJXaiJgxBMn7MCQ==
-X-Gm-Gg: ASbGnctR68u2rCHNvfjCshaYNf0honSpJYZZja4wWMyFwk98hNE3XwQ9G3rQ8k0w/bZ
- KjynSAneug8/HuB3DA85QW1fOMS1ZUSUKUe5vbXyVxb/unyXSoPaEkXL93qu6Lkh+SIE6PSjhkE
- NLVtHxOGzO3FejaADXN3Do6tfwLw36B3NB5mnXcQ4gObSY3NWI9KI5TUBuf/py+mg9wXt23JzlW
- jzN38cA4obH6oh5/Jw2J14UGfXng/GrxDF/1o19qIFo7ZBkxd/aJENc6ikzOGjnr9Wcdzr78tc5
- I0VSQMa6MJBubgXS
-X-Received: by 2002:a05:600c:5291:b0:440:54ef:dfdc with SMTP id
- 5b1f17b1804b1-450d8843256mr85184065e9.8.1748791555502; 
- Sun, 01 Jun 2025 08:25:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgwoMPhijx7k/O/1H2zVl2GQJiQ25zWQ01e0OwzVFk+07yM+J+49MrKylbR9R30LuiL+rSVg==
-X-Received: by 2002:a05:600c:5291:b0:440:54ef:dfdc with SMTP id
- 5b1f17b1804b1-450d8843256mr85183855e9.8.1748791555098; 
- Sun, 01 Jun 2025 08:25:55 -0700 (PDT)
+ bh=IAQySewBx8SloVNKOXAdxhJJVB1Xqg1y29AdslpVETY=;
+ b=iZjeKTMguOTEiwSjFhfilOc9vO4aO4LcTBNs8uS6YQquDi1dw5aUM+c8pxeI4earcq
+ 7jukwTrdn5iEXNTRUfX2fKqy5Jir6qRtHYSOo5sOJK9gjBbs5a15oMc+rL1pqVp7RUwH
+ A0XfSWj3wk1EcrofsA54jWlRDTWuBm5pe+el4d0ssbJXiU5trM3ouNMuL41CTMM2yGKa
+ 0SNK/EQqRwVdJMcJfsV7kCK7Wbtvl1sVK7PWXUUumCt9Z1xYVMuj6mZ09R8QWIgDSPTL
+ JbeaoLhTVXo/f3S6SsSipecXzK1FtnewQYpba9oI4G+MO0ut9yg0C/U3+4cFrpshixnB
+ S0kg==
+X-Gm-Message-State: AOJu0YwAPea7T+VIifH5VuXJJStbB2ahEbbScrtIkLZKbe4nCXhbwd/F
+ LyDePFRq6nqHxrwoef8UzdZ1Tip8ZvUXCp2YJSZvlHGIGY08b2CvkzwcK5b9+pgClX/Fym9riJe
+ veTjQbU0vvRtPiJEl37WvkEKRTUa8O8diNtA6UrA9TnIhQK/ROuiNhKGSeVzhHVN7kjHK+jqfhl
+ g5Zp/UqkwcLmDGlI77+EbX0joX0p5qYSoOjQ==
+X-Gm-Gg: ASbGncuM804/TO716UPe/hK07HodOWL0gulBUoaemWEm8fuDGWZ+SaTn/zS9TmiytTn
+ Yvgfhe7Q/RY4irZH/zCw1+C8fKcn0+p/kvQwxceJlV7jsP2nTb9dZz2dYPy+Z/MK9ijezVuOYTa
+ PvDjSAVlfgX5mH+WtHNUDNwdeD3DH8uLTBs8o6jfxRbYlB2yBBosLLai5QAv/tjThmwCAy22lh2
+ Nkjv59FesdgcPzbFKGRFGrB/v6aRN3L0+KdK5lVvJaeTW4S1aC7cLFLj+upVtcBuCZWZWIgvpOT
+ dxDykw==
+X-Received: by 2002:a05:6000:220d:b0:3a3:4baa:3f3d with SMTP id
+ ffacd0b85a97d-3a4fe154f5bmr3345749f8f.6.1748791558964; 
+ Sun, 01 Jun 2025 08:25:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFhNPdPvfIEFhKvRLZWGylYG9MfuTqUug660UFI2s8TsbqTM4TXdNswoR4+vV/eGNsbwakL8A==
+X-Received: by 2002:a05:6000:220d:b0:3a3:4baa:3f3d with SMTP id
+ ffacd0b85a97d-3a4fe154f5bmr3345727f8f.6.1748791558536; 
+ Sun, 01 Jun 2025 08:25:58 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d8000d5dsm89010975e9.26.2025.06.01.08.25.53
+ 5b1f17b1804b1-450d7f8f188sm89607355e9.3.2025.06.01.08.25.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Jun 2025 08:25:54 -0700 (PDT)
-Date: Sun, 1 Jun 2025 11:25:52 -0400
+ Sun, 01 Jun 2025 08:25:56 -0700 (PDT)
+Date: Sun, 1 Jun 2025 11:25:55 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -76,8 +76,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Lei Yang <leiyang@redhat.com>, Si-Wei Liu <si-wei.liu@oracle.com>,
  Jason Wang <jasowang@redhat.com>, Jonah Palmer <jonah.palmer@oracle.com>,
  Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PULL 27/31] vdpa: add listener_registered
-Message-ID: <a849b49e5b769c2458ff91174a907e055a26f785.1748791463.git.mst@redhat.com>
+Subject: [PULL 28/31] vdpa: reorder listener assignment
+Message-ID: <0e8b3b44e9dfa8f2b05313b9d19eb1fb622945b8.1748791463.git.mst@redhat.com>
 References: <cover.1748791463.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -113,64 +113,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eugenio Pérez <eperezma@redhat.com>
 
-Check if the listener has been registered or not, so it needs to be
-registered again at start.
+Since commit f6fe3e333f ("vdpa: move memory listener to
+vhost_vdpa_shared") this piece of code repeatedly assign
+shared->listener members.  This was not a problem as it was not used
+until device start.
+
+However next patches move the listener registration to this
+vhost_vdpa_init function.  When the listener is registered it is added
+to an embedded linked list, so setting its members again will cause
+memory corruption to the linked list node.
+
+Do the right thing and only set it in the first vdpa device.
 
 Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Si-Wei Liu <si-wei.liu@oracle.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-Message-Id: <20250522145839.59974-5-jonah.palmer@oracle.com>
+Message-Id: <20250522145839.59974-6-jonah.palmer@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/vhost-vdpa.h | 6 ++++++
- hw/virtio/vhost-vdpa.c         | 7 ++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ hw/virtio/vhost-vdpa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index 0a9575b469..221840987e 100644
---- a/include/hw/virtio/vhost-vdpa.h
-+++ b/include/hw/virtio/vhost-vdpa.h
-@@ -51,6 +51,12 @@ typedef struct vhost_vdpa_shared {
- 
-     bool iotlb_batch_begin_sent;
- 
-+    /*
-+     * The memory listener has been registered, so DMA maps have been sent to
-+     * the device.
-+     */
-+    bool listener_registered;
-+
-     /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
-     bool shadow_data;
- 
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index e9826ede2c..450f68f117 100644
+index 450f68f117..de834f2ebd 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -1379,7 +1379,10 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
-                          "IOMMU and try again");
-             return -1;
-         }
--        memory_listener_register(&v->shared->listener, dev->vdev->dma_as);
-+        if (!v->shared->listener_registered) {
-+            memory_listener_register(&v->shared->listener, dev->vdev->dma_as);
-+            v->shared->listener_registered = true;
-+        }
+@@ -633,7 +633,6 @@ static int vhost_vdpa_init(struct vhost_dev *dev, void *opaque, Error **errp)
  
-         return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_DRIVER_OK);
-     }
-@@ -1399,6 +1402,8 @@ static void vhost_vdpa_reset_status(struct vhost_dev *dev)
+     v->dev = dev;
+     dev->opaque =  opaque ;
+-    v->shared->listener = vhost_vdpa_memory_listener;
+ 
+     ret = vhost_vdpa_set_backend_cap(dev);
+     if (unlikely(ret != 0)) {
+@@ -675,6 +674,7 @@ static int vhost_vdpa_init(struct vhost_dev *dev, void *opaque, Error **errp)
      vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
                                 VIRTIO_CONFIG_S_DRIVER);
-     memory_listener_unregister(&v->shared->listener);
-+    v->shared->listener_registered = false;
-+
+ 
++    v->shared->listener = vhost_vdpa_memory_listener;
+     return 0;
  }
  
- static int vhost_vdpa_set_log_base(struct vhost_dev *dev, uint64_t base,
 -- 
 MST
 
