@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E69CAC9EB6
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 15:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC19AC9EFC
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:23:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLjC8-0005o4-Dk; Sun, 01 Jun 2025 09:57:48 -0400
+	id 1uLkVv-0000zH-5P; Sun, 01 Jun 2025 11:22:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uLjC2-0005nd-T6
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 09:57:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uLkVM-0000xt-QW
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:21:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uLjC0-00045X-QT
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 09:57:42 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uLkVK-0004IB-9W
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:21:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748786253;
+ s=mimecast20190719; t=1748791299;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=+IrOa9IeXy4RWB2pyHPAj1XJ/V2M6023sYuU3O+8NKE=;
- b=BRkucYSJQhg9D6pB532s0p59KXrXLghbF5NUrl0NdLjUtF8U4kxIM2mogU4kquC8FQI0pD
- K/L8eKb2JPtu6X7NK9AG3LwEDQfBJBzPekBM3VazMksl0iQ03YlVhDk9aIOYkdBqP59BME
- TJC3DbeDEvtnhJh9PShwec0DJBO26rQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vvOr2JqV64zoJ5HFHvmLgU2DAnQILOVX54/ayG1fFmk=;
+ b=d7Mq+kilrXKqbaRTiq5WdH/aysSmVnrxJPfAO5o1kGFaMdGvcbL7MaKuumrAWI9YvrGHPW
+ IMpMYie33Ou4uc/LeZunDb660hE1Wgymf5jy4ZEaxeMGeedlNkYJ7AheVYONUdXtSo717S
+ UnZRmilfwChXgPTsw10PCe+DONy4tBY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-rn4sOVHXNiWiZh-STf47YA-1; Sun, 01 Jun 2025 09:57:32 -0400
-X-MC-Unique: rn4sOVHXNiWiZh-STf47YA-1
-X-Mimecast-MFC-AGG-ID: rn4sOVHXNiWiZh-STf47YA_1748786251
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-451ac1b43c4so5214835e9.0
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 06:57:32 -0700 (PDT)
+ us-mta-363-5fV3VqCqNo6Al77DWo8ibQ-1; Sun, 01 Jun 2025 11:21:36 -0400
+X-MC-Unique: 5fV3VqCqNo6Al77DWo8ibQ-1
+X-Mimecast-MFC-AGG-ID: 5fV3VqCqNo6Al77DWo8ibQ_1748791296
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-451d7de4ae3so2318215e9.2
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:21:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748786251; x=1749391051;
+ d=1e100.net; s=20230601; t=1748791295; x=1749396095;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+IrOa9IeXy4RWB2pyHPAj1XJ/V2M6023sYuU3O+8NKE=;
- b=lhIAVa51MDkisLGO4R4x+9qR4q3HzKcqKg9cGU7+OyapzI6FeCBW2HQxPUlesijrR4
- OnZRifiaJGwKqsoc6xuCxEnDcZnq7Bdf9e03QuhtoGaHjwoDrNTBJgliRGmHwqqHshM/
- Vii1X/92aWnsPglglj/wq33C8IBzNif6YutWh1WJpkrQB2bjP2lHFnRnJKAfKu2yhB/d
- kGQjX4R/8nFN6+WwnDPtzpo/aw61ZQbfVmxH41ceLce4TxGHtgz50JMpzQ8EW7Po+Uxe
- cBESzs/q3kBJ4V53k5YXVjoxtvoSoQzgLiBsO/HnDAz3dyyKvoxvjMUaDqJQJK5Jjvhy
- Ppwg==
+ bh=vvOr2JqV64zoJ5HFHvmLgU2DAnQILOVX54/ayG1fFmk=;
+ b=vmfL9wG3xMkqj7JfYEb9nBV+fEX2VpdO2P2suxF9lR3D61xvyuj29XnxCtajogyME4
+ LNk17AZhRO+l1KONqIughbzTMzVXoqVXpqogroD1/KpzsqTXLXwJwC4Ku/RfNiaI+hL4
+ YhOU7+dcfDp5T8BabDt/sAoVoceNWxYMwusOKuXsp3YGvfw6hjJJ2Rw7l4MireRCt5kc
+ x8ALh9kLxzBjJRfeP3J56Qpg7Gc9jGObwX6fp86BpyPlXvmYZokiojj43CMcWHzfyO2f
+ Hr1cO3eVVoQpKhAQh+PCMOqd2BTkwhEOdI6DTATAvCEnS6VRtG+UB+1ZP11q4ycZ91Lh
+ n17w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXKxuERJXtalE5iZ6V6vN9g0tW4okQR3GaG4H7Jltuav5KNZ/JpRmfR+pUKmRCOaVrPrE431yG1I+xm@nongnu.org
-X-Gm-Message-State: AOJu0YxEYlt+8LDUeWihi221nUDAmNY95jLuDRLwDLuFXA71G5eUeAlh
- CHW0AhH4SUwt3YcFQ/TMKLELzWGuE0DTc7mhIFRSCWBA4rCmD0hms2JVxg+L427thE1FLbjIv2n
- X0N1hzKTKm6jGVZmT7iDWoDyLyHUFYohE5P1mWkkmgiMZE1FKjvMj7Del
-X-Gm-Gg: ASbGncu7i0s5C32Nu/4lbjzrxTNvRhucaaA6soJC772qHiHU+IauISRJYv80SXqd1jX
- Qlc/tykI5kl6cboTJ9dvPQLkRCzgj7ciuA80KpO8v/r0pFUO3SJx5p6lqfyIXLLC8diCkl3A3Ej
- 3GHjOlY7omEFLVkjEpnGPD7bYPlc0O+73LHMl4cAdaX53tXm5L5vqDeU4wswWNF6Pl11EvGcZ6f
- 0+JS99ULo9PvLvYWjfImjvIDoSrCSTbJ7WSJPHDPqomVF7Gq8L/lXm8g4aHE/8DJgZSqS74UkSI
- MVUIqK45bT0vCuRpLa24zWZN+KbtWN6e0Oj6056WudrjIQTMdA==
-X-Received: by 2002:a05:6000:220b:b0:3a4:d3ff:cef2 with SMTP id
- ffacd0b85a97d-3a4f89dddd5mr7100002f8f.27.1748786250907; 
- Sun, 01 Jun 2025 06:57:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+dOOfm0Ls8e1YlHjtmAKwmrHZWd3afozdAQspN/z+fNvkoswMgm9yfJF3BC/YKwFCg1b58g==
-X-Received: by 2002:a05:6000:220b:b0:3a4:d3ff:cef2 with SMTP id
- ffacd0b85a97d-3a4f89dddd5mr7099984f8f.27.1748786250505; 
- Sun, 01 Jun 2025 06:57:30 -0700 (PDT)
+ AJvYcCUg9reaMVLJV0a2NSuK8o8KEmyizyFR43/WPY7go5apfA7KxiftbaAWJ0lnfhDruS+Be8RYWMUNDMvb@nongnu.org
+X-Gm-Message-State: AOJu0YysrqvmdCOM+ePhb7Yo7PrrUof5MwPCRZROs1VojqjSOCdpgE4w
+ K0m2qfxCqlAmSC1As75RHKky6hII8YnNaCVhyZ2IGgN3iIvxlPG9esTS64leb1if1ZFVDEq/SLZ
+ vcz4vIzD4syLIj6FzVewMTxiprVzkRiBZzwoc4WM17/dMDOLOCt4lDwgi
+X-Gm-Gg: ASbGncu8rmDvbTGPK+VlHPdSV9PDCl18TI8Mzi9JE2zTXTAo+zpxuhWpvQ0Zw8OW+TU
+ mj0PF4Cy+6Ctx5MSil1tilarjH0Dlp7Ieak/NU/UISwDuoKTOyWhttNo2B6nbEMAaAcVtSRfwvP
+ BgkCyUJ3AFs/EL2d+p6BraD4MIFTD04V5cQAvlVSbLUOtTvs+W7MO8Axybix60Lwgdu7rM0BLS+
+ 4zjUWF43wCiFrgamDWJTs2Z1kgY4yV58DkEQLSWX8rJ/1YpmKXpZEQRM5+tzQFofayzM/VERJl+
+ smWyiyl6uEd146Wqm9CseqPfHlhvlAtAD56PQwG9dQIec3kFnw==
+X-Received: by 2002:a05:6000:2886:b0:3a3:67bb:8f46 with SMTP id
+ ffacd0b85a97d-3a4f89eadcemr7465234f8f.57.1748791295460; 
+ Sun, 01 Jun 2025 08:21:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYKMQj3w6SUk9vXEgHxhyIJUssYicyIPR2LtWlLPmtoyBNkvD8lna2chOkjRmqWcbNHaJMMA==
+X-Received: by 2002:a05:6000:2886:b0:3a3:67bb:8f46 with SMTP id
+ ffacd0b85a97d-3a4f89eadcemr7465208f8f.57.1748791295016; 
+ Sun, 01 Jun 2025 08:21:35 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe73f3csm11379471f8f.42.2025.06.01.06.57.29
+ ffacd0b85a97d-3a4efe73f3csm11573252f8f.42.2025.06.01.08.21.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 01 Jun 2025 06:57:29 -0700 (PDT)
-Message-ID: <7104860b-a406-47df-b180-35ea9bf31b0d@redhat.com>
-Date: Sun, 1 Jun 2025 15:57:29 +0200
+ Sun, 01 Jun 2025 08:21:33 -0700 (PDT)
+Message-ID: <bc043fc9-6bc7-4954-a514-8665dd7c7c31@redhat.com>
+Date: Sun, 1 Jun 2025 17:21:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] backends/iommufd: Add a helper to invalidate
- user-managed HWPT
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
- jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
- joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com
-References: <20250530093512.3959484-1-zhenzhong.duan@intel.com>
- <20250530093512.3959484-2-zhenzhong.duan@intel.com>
+Subject: Re: [PATCH V4 09/43] vfio/container: register container for cpr
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
+ <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+References: <1748546679-154091-1-git-send-email-steven.sistare@oracle.com>
+ <1748546679-154091-10-git-send-email-steven.sistare@oracle.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -130,10 +130,10 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250530093512.3959484-2-zhenzhong.duan@intel.com>
+In-Reply-To: <1748546679-154091-10-git-send-email-steven.sistare@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -158,13 +158,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/25 11:35, Zhenzhong Duan wrote:
-> This helper passes cache invalidation request from guest to invalidate
-> stage-1 page table cache in host hardware.
+On 5/29/25 21:24, Steve Sistare wrote:
+> Register a legacy container for cpr-transfer, replacing the generic CPR
+> register call with a more specific legacy container register call.  Add a
+> blocker if the kernel does not support VFIO_UPDATE_VADDR or VFIO_UNMAP_ALL.
 > 
-> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-
+> This is mostly boiler plate.  The fields to to saved and restored are added
+> in subsequent patches.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
@@ -175,81 +177,200 @@ C.
 
 
 > ---
->   include/system/iommufd.h |  4 ++++
->   backends/iommufd.c       | 36 ++++++++++++++++++++++++++++++++++++
->   backends/trace-events    |  1 +
->   3 files changed, 41 insertions(+)
+>   include/hw/vfio/vfio-container.h |  2 ++
+>   include/hw/vfio/vfio-cpr.h       | 15 +++++++++
+>   hw/vfio/container.c              |  6 ++--
+>   hw/vfio/cpr-legacy.c             | 69 ++++++++++++++++++++++++++++++++++++++++
+>   hw/vfio/cpr.c                    |  5 ++-
+>   hw/vfio/meson.build              |  1 +
+>   6 files changed, 92 insertions(+), 6 deletions(-)
+>   create mode 100644 hw/vfio/cpr-legacy.c
 > 
-> diff --git a/include/system/iommufd.h b/include/system/iommufd.h
-> index cbab75bfbf..83ab8e1e4c 100644
-> --- a/include/system/iommufd.h
-> +++ b/include/system/iommufd.h
-> @@ -61,6 +61,10 @@ bool iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
->                                         uint64_t iova, ram_addr_t size,
->                                         uint64_t page_size, uint64_t *data,
->                                         Error **errp);
-> +bool iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t id,
-> +                                      uint32_t data_type, uint32_t entry_len,
-> +                                      uint32_t *entry_num, void *data,
-> +                                      Error **errp);
+> diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
+> index afc498d..21e5807 100644
+> --- a/include/hw/vfio/vfio-container.h
+> +++ b/include/hw/vfio/vfio-container.h
+> @@ -10,6 +10,7 @@
+>   #define HW_VFIO_CONTAINER_H
 >   
->   #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
->   #endif
-> diff --git a/backends/iommufd.c b/backends/iommufd.c
-> index b73f75cd0b..8bcdb60fe7 100644
-> --- a/backends/iommufd.c
-> +++ b/backends/iommufd.c
-> @@ -311,6 +311,42 @@ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
->       return true;
->   }
+>   #include "hw/vfio/vfio-container-base.h"
+> +#include "hw/vfio/vfio-cpr.h"
 >   
-> +bool iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t id,
-> +                                      uint32_t data_type, uint32_t entry_len,
-> +                                      uint32_t *entry_num, void *data,
-> +                                      Error **errp)
+>   typedef struct VFIOContainer VFIOContainer;
+>   typedef struct VFIODevice VFIODevice;
+> @@ -29,6 +30,7 @@ typedef struct VFIOContainer {
+>       int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+>       unsigned iommu_type;
+>       QLIST_HEAD(, VFIOGroup) group_list;
+> +    VFIOContainerCPR cpr;
+>   } VFIOContainer;
+>   
+>   OBJECT_DECLARE_SIMPLE_TYPE(VFIOContainer, VFIO_IOMMU_LEGACY);
+> diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
+> index 750ea5b..d4e0bd5 100644
+> --- a/include/hw/vfio/vfio-cpr.h
+> +++ b/include/hw/vfio/vfio-cpr.h
+> @@ -9,8 +9,23 @@
+>   #ifndef HW_VFIO_VFIO_CPR_H
+>   #define HW_VFIO_VFIO_CPR_H
+>   
+> +#include "migration/misc.h"
+> +
+> +struct VFIOContainer;
+>   struct VFIOContainerBase;
+>   
+> +typedef struct VFIOContainerCPR {
+> +    Error *blocker;
+> +} VFIOContainerCPR;
+> +
+> +
+> +bool vfio_legacy_cpr_register_container(struct VFIOContainer *container,
+> +                                        Error **errp);
+> +void vfio_legacy_cpr_unregister_container(struct VFIOContainer *container);
+> +
+> +int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier, MigrationEvent *e,
+> +                             Error **errp);
+> +
+>   bool vfio_cpr_register_container(struct VFIOContainerBase *bcontainer,
+>                                    Error **errp);
+>   void vfio_cpr_unregister_container(struct VFIOContainerBase *bcontainer);
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 0f948d0..7d2035c 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -643,7 +643,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+>       new_container = true;
+>       bcontainer = &container->bcontainer;
+>   
+> -    if (!vfio_cpr_register_container(bcontainer, errp)) {
+> +    if (!vfio_legacy_cpr_register_container(container, errp)) {
+>           goto fail;
+>       }
+>   
+> @@ -679,7 +679,7 @@ fail:
+>           vioc->release(bcontainer);
+>       }
+>       if (new_container) {
+> -        vfio_cpr_unregister_container(bcontainer);
+> +        vfio_legacy_cpr_unregister_container(container);
+>           object_unref(container);
+>       }
+>       if (fd >= 0) {
+> @@ -720,7 +720,7 @@ static void vfio_container_disconnect(VFIOGroup *group)
+>           VFIOAddressSpace *space = bcontainer->space;
+>   
+>           trace_vfio_container_disconnect(container->fd);
+> -        vfio_cpr_unregister_container(bcontainer);
+> +        vfio_legacy_cpr_unregister_container(container);
+>           close(container->fd);
+>           object_unref(container);
+>   
+> diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
+> new file mode 100644
+> index 0000000..419b9fb
+> --- /dev/null
+> +++ b/hw/vfio/cpr-legacy.c
+> @@ -0,0 +1,69 @@
+> +/*
+> + * Copyright (c) 2021-2025 Oracle and/or its affiliates.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include <sys/ioctl.h>
+> +#include <linux/vfio.h>
+> +#include "qemu/osdep.h"
+> +#include "hw/vfio/vfio-container.h"
+> +#include "hw/vfio/vfio-cpr.h"
+> +#include "migration/blocker.h"
+> +#include "migration/cpr.h"
+> +#include "migration/migration.h"
+> +#include "migration/vmstate.h"
+> +#include "qapi/error.h"
+> +
+> +static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
 > +{
-> +    int ret, fd = be->fd;
-> +    uint32_t total_entries = *entry_num;
-> +    struct iommu_hwpt_invalidate cache = {
-> +        .size = sizeof(cache),
-> +        .hwpt_id = id,
-> +        .data_type = data_type,
-> +        .entry_len = entry_len,
-> +        .entry_num = total_entries,
-> +        .data_uptr = (uintptr_t)data,
-> +    };
-> +
-> +    ret = ioctl(fd, IOMMU_HWPT_INVALIDATE, &cache);
-> +    trace_iommufd_backend_invalidate_cache(fd, id, data_type, entry_len,
-> +                                           total_entries, cache.entry_num,
-> +                                           (uintptr_t)data, ret ? errno : 0);
-> +    *entry_num = cache.entry_num;
-> +
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "IOMMU_HWPT_INVALIDATE failed:"
-> +                         " total %d entries, processed %d entries",
-> +                         total_entries, cache.entry_num);
-> +    } else if (total_entries != cache.entry_num) {
-> +        error_setg(errp, "IOMMU_HWPT_INVALIDATE succeed but with unprocessed"
-> +                         " entries: total %d entries, processed %d entries."
-> +                         " Kernel BUG?!", total_entries, cache.entry_num);
+> +    if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UPDATE_VADDR)) {
+> +        error_setg(errp, "VFIO container does not support VFIO_UPDATE_VADDR");
 > +        return false;
-> +    }
 > +
-> +    return !ret;
+> +    } else if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UNMAP_ALL)) {
+> +        error_setg(errp, "VFIO container does not support VFIO_UNMAP_ALL");
+> +        return false;
+> +
+> +    } else {
+> +        return true;
+> +    }
 > +}
 > +
->   static int hiod_iommufd_get_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
+> +static const VMStateDescription vfio_container_vmstate = {
+> +    .name = "vfio-container",
+> +    .version_id = 0,
+> +    .minimum_version_id = 0,
+> +    .needed = cpr_incoming_needed,
+> +    .fields = (VMStateField[]) {
+> +        VMSTATE_END_OF_LIST()
+> +    }
+> +};
+> +
+> +bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
+> +{
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+> +    Error **cpr_blocker = &container->cpr.blocker;
+> +
+> +    migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
+> +                                vfio_cpr_reboot_notifier,
+> +                                MIG_MODE_CPR_REBOOT);
+> +
+> +    if (!vfio_cpr_supported(container, cpr_blocker)) {
+> +        return migrate_add_blocker_modes(cpr_blocker, errp,
+> +                                         MIG_MODE_CPR_TRANSFER, -1) == 0;
+> +    }
+> +
+> +    vmstate_register(NULL, -1, &vfio_container_vmstate, container);
+> +
+> +    return true;
+> +}
+> +
+> +void vfio_legacy_cpr_unregister_container(VFIOContainer *container)
+> +{
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+> +
+> +    migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
+> +    migrate_del_blocker(&container->cpr.blocker);
+> +    vmstate_unregister(NULL, &vfio_container_vmstate, container);
+> +}
+> diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
+> index 0210e76..0e59612 100644
+> --- a/hw/vfio/cpr.c
+> +++ b/hw/vfio/cpr.c
+> @@ -7,13 +7,12 @@
+>   
+>   #include "qemu/osdep.h"
+>   #include "hw/vfio/vfio-device.h"
+> -#include "migration/misc.h"
+>   #include "hw/vfio/vfio-cpr.h"
+>   #include "qapi/error.h"
+>   #include "system/runstate.h"
+>   
+> -static int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
+> -                                    MigrationEvent *e, Error **errp)
+> +int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
+> +                             MigrationEvent *e, Error **errp)
 >   {
->       HostIOMMUDeviceCaps *caps = &hiod->caps;
-> diff --git a/backends/trace-events b/backends/trace-events
-> index 40811a3162..7278214ea5 100644
-> --- a/backends/trace-events
-> +++ b/backends/trace-events
-> @@ -18,3 +18,4 @@ iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_
->   iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
->   iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int ret) " iommufd=%d hwpt=%u enable=%d (%d)"
->   iommufd_backend_get_dirty_bitmap(int iommufd, uint32_t hwpt_id, uint64_t iova, uint64_t size, uint64_t page_size, int ret) " iommufd=%d hwpt=%u iova=0x%"PRIx64" size=0x%"PRIx64" page_size=0x%"PRIx64" (%d)"
-> +iommufd_backend_invalidate_cache(int iommufd, uint32_t id, uint32_t data_type, uint32_t entry_len, uint32_t entry_num, uint32_t done_num, uint64_t data_ptr, int ret) " iommufd=%d id=%u data_type=%u entry_len=%u entry_num=%u done_num=%u data_ptr=0x%"PRIx64" (%d)"
+>       if (e->type == MIG_EVENT_PRECOPY_SETUP &&
+>           !runstate_check(RUN_STATE_SUSPENDED) && !vm_get_suspended()) {
+> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+> index bccb050..73d29f9 100644
+> --- a/hw/vfio/meson.build
+> +++ b/hw/vfio/meson.build
+> @@ -21,6 +21,7 @@ system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
+>   system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
+>   system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+>     'cpr.c',
+> +  'cpr-legacy.c',
+>     'device.c',
+>     'migration.c',
+>     'migration-multifd.c',
 
 
