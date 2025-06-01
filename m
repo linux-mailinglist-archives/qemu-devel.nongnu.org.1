@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF06AC9F29
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3A76AC9F28
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:34:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLkYu-00022D-4E; Sun, 01 Jun 2025 11:25:24 -0400
+	id 1uLkgg-0008Qc-7e; Sun, 01 Jun 2025 11:33:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYc-0001rA-6O
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkgW-000871-SE
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:33:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYX-0004O2-Ff
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:05 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkgT-0005IP-0E
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:33:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748791488;
+ s=mimecast20190719; t=1748791843;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=nDg5yKMa0vWezmMCfLKMkb3rs4u75TamxEmrqGTOMUU=;
- b=GYPhpo2j0Dj8BJyRb0TjNN84XsrrmjoAPt78ZmcSh/z2krCReFa2RZrPmJNliJpZR7hIya
- ZH1qT+4wUlBACcskPOtHYCJXcw7uw6q7NDwQ4YEWBKjwDk4HNk6P0VbScC4qmCGB7bdp+t
- r39h+BWhRTjqlUcNDG7nm/+jvS9qJB4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=hKEH6Z9JCQimLJL8lPwV9KIkJSWOuDTn31SzP3o0in0=;
+ b=IuiN1C5mtirBpKPX3XSApJCHwwEdCsupLD1NVa9Mi01o9G2JUIFnJV32oY4zMLLk98khdL
+ LKXphcnaIKtos8E61q12pa7+CQopobLdUfJLHAYMl0Bm5/jN/yBkFehMdR5mKzUXby0ATS
+ QGtm2PF1ZvwyHiHBxkrsQl73BssdNnM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-92--8JifAusPiGK9mxiM8NOGA-1; Sun, 01 Jun 2025 11:24:47 -0400
-X-MC-Unique: -8JifAusPiGK9mxiM8NOGA-1
-X-Mimecast-MFC-AGG-ID: -8JifAusPiGK9mxiM8NOGA_1748791486
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a4e713e05bso1679784f8f.3
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:24:46 -0700 (PDT)
+ us-mta-383-jwGibX3HPnOXehCICnd4SA-1; Sun, 01 Jun 2025 11:25:07 -0400
+X-MC-Unique: jwGibX3HPnOXehCICnd4SA-1
+X-Mimecast-MFC-AGG-ID: jwGibX3HPnOXehCICnd4SA_1748791488
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-450cb902173so16115115e9.1
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:24:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748791485; x=1749396285;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nDg5yKMa0vWezmMCfLKMkb3rs4u75TamxEmrqGTOMUU=;
- b=EKm4RSafeWeMMWZ0HlGgDax4cz2zXwBdGl433HREz/ucZTxEt3sSCnjbuJUYGnz3WO
- QsrSzBJOQ7AoJjwFqlmOeT4gGzFcfKokDrr8aqO/aocbF2K4hKkLyMBlt7TGa6DHnLJ3
- mC59HZH9HVo9vve9yDQdchjGnBHmgG8tN7/pYHj7MMqGm8DG6fiuDPppl3MDTuT7+/lQ
- huFA81fAQX1VZsFwtUgBlaHPoEhXzEBYzh9hqSUdIYu6NSaYKOGocST2HnkztrdF1/be
- 1qsTYBI/foFyMvpFXlgCjJldkuh/FL8ql8sw9hWZfURRWOfubaHejYZIrgKQtjF5Yl1W
- DdYA==
-X-Gm-Message-State: AOJu0Yy3g4XzbM04xVoEa39B0twYilT65MyQbVvftSak6bXPoCyQgN/X
- 2uV4D3VVRo+O68DvBIWx/TpsvjeK/AvvWIAN+EJRkx4uyDX06u1U0FeZ6eVML89le435d27S8K/
- w4P6P4FVjAqviRpIo9veAfqdDGkJKfi7XkVCech3GZmmPoPDY8W1HNcdphIKhnZORVYoxlMfes0
- 9roIiCkR+pcu9LzdQhcrKyxzyxIRzdSGqvIQ==
-X-Gm-Gg: ASbGncuXLqA0rUcbFrZvGUn1ljUnYuAFjI6oS/dTLpq6N6W/A4TLyGZcIY9IrGl6ci1
- ZSFdGvKKW/ESL2GA0WkgptFz//bVz/ONw3441T9mut7RlEOEFwXDCT3Xn0rt7c9OyT/Jp+P3uq3
- GY6n4V1QY+EaW76AVjz/8t2Z0ohcwp+ty4mixAfFTBCnq45RuzLsgaCDRNLCuzRpcv00Z5MuYML
- 5MitQpCp5Ca0ccOnrUoiPz2MKkQ5yWg19pKqQUAk22YapcJ6nZou9uX5eFhkuorDsRQHQh7xxYD
- pY72eQ==
-X-Received: by 2002:a5d:6b90:0:b0:3a4:ff01:218a with SMTP id
- ffacd0b85a97d-3a4ff01218fmr2622489f8f.50.1748791485523; 
- Sun, 01 Jun 2025 08:24:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGzOv2xN9vjeKVGUHC/cPl4/etwULhR+w9A+XTTMoORxJ4Kr3H12sfsIdarXeLN28Le9Kd41w==
-X-Received: by 2002:a5d:6b90:0:b0:3a4:ff01:218a with SMTP id
- ffacd0b85a97d-3a4ff01218fmr2622474f8f.50.1748791485063; 
- Sun, 01 Jun 2025 08:24:45 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748791488; x=1749396288;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hKEH6Z9JCQimLJL8lPwV9KIkJSWOuDTn31SzP3o0in0=;
+ b=JlTRdQ9AwGdfCcCCEdZPDY4qAGPCyajuWbrEp5vFK2unRsZixwz5BY82p7w1csGuXU
+ 9asEc9rYqcHlUVd+7Zf3jNiJmMHlbc4aVrLO61eqA/T+2jOoxCy5+Op46X2TY5AHBfjU
+ DsPq2pFnbDq7EyF8hd25/fAYNlK0RiEI5HhPRBEdWfGGDUWyhC6BRXnGg7u47AmFa11U
+ FzBQBLdme4ZE14l6BSuX4ftzcY6Dcgq6fyGHXvRq/UK8zGDlnfXcw7mO8TsaTdmK/U4c
+ ZT1u8oEbkXfWXqyfiQMp2YczcNrsEjsQxhZSKBYNUqlHY9bnKLTSlJiSf9+Wl2hHIIYI
+ I+KQ==
+X-Gm-Message-State: AOJu0Yx2jJNgnUCgb6OVPKZz39rAAcQJHlGDBBvih++w5D2+t9gfB4kE
+ BXoxB3R5pcx2wd0t1l8xTPgS6ycJuBM+DNNqWLxG2fsn4eKzQYl8RuA+VZokdxe8hsHdLOL6BfT
+ 4nSoOOmSBC4dgf4WANytZR7LEWs6cZ355K9EFTijRtKpYB6iytprxVCzQdYR000HD/RPnyVOqYw
+ 646CNvvWF5qHb2MCrHcozqrjIhM3z/dqFrew==
+X-Gm-Gg: ASbGnctmvqdHZa3DknHDn92KYlVW+dkn6Yh1svOOHr4QB4AXWFEwMCLje/gXt2PivtZ
+ jvNf/LjnABhrN22DR9kfrEDr9EAiYL8hWCBRnbpMXQVsVFezFVQn+H9TQdJ9eV5MMEpKnhmYWTf
+ AwUl1DpKyVZSDSDtziKRlYhQRvqrOtm42XEWLBlFhIGVE4cvt/BdNiwXcua5esbwjNITHYCym/s
+ UnIbcQv1KZLLQucR72ZXP9i2btK3a/a/cOp3XKyAiP29MsdsfKIOy0N9Y9/0eOEewV/1ZB5/HPP
+ nO1xZ9qPhUrUf9kl
+X-Received: by 2002:a05:600c:3f92:b0:442:f904:1305 with SMTP id
+ 5b1f17b1804b1-450d6b5999bmr95833935e9.6.1748791487749; 
+ Sun, 01 Jun 2025 08:24:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHmKWDFQhl1SCz6HHk2dYVS/WFA74r7SfcWFfZWGmgNxihnFEFlOEzISUoCOe0f5IwNy5AWvw==
+X-Received: by 2002:a05:600c:3f92:b0:442:f904:1305 with SMTP id
+ 5b1f17b1804b1-450d6b5999bmr95833705e9.6.1748791487265; 
+ Sun, 01 Jun 2025 08:24:47 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe73f67sm11610485f8f.47.2025.06.01.08.24.43
+ ffacd0b85a97d-3a4efe5b89dsm11909055f8f.19.2025.06.01.08.24.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Jun 2025 08:24:44 -0700 (PDT)
-Date: Sun, 1 Jun 2025 11:24:43 -0400
+ Sun, 01 Jun 2025 08:24:46 -0700 (PDT)
+Date: Sun, 1 Jun 2025 11:24:45 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/31] virtio,pci,pc: features, fixes, tests
-Message-ID: <cover.1748791463.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>
+Subject: [PULL 01/31] virtio: check for validity of indirect descriptors
+Message-ID: <ac8fc4ccacd8a77d8d56dc3990bfb221c1f48fcd.1748791463.git.mst@redhat.com>
+References: <cover.1748791463.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1748791463.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -104,133 +106,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit d2e9b78162e31b1eaf20f3a4f563da82da56908d:
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
 
-  Merge tag 'pull-qapi-2025-05-28' of https://repo.or.cz/qemu/armbru into staging (2025-05-29 08:36:01 -0400)
+virtio processes indirect descriptors even if the respected
+feature VIRTIO_RING_F_INDIRECT_DESC was not negotiated.
+If qemu is used with reduced set of features to emulate the
+hardware device that does not support indirect descriptors,
+the will probably trigger problematic flows on the hardware
+setup but do not reveal the  mistake on qemu.
+Add LOG_GUEST_ERROR for such case. This will issue logs with
+'-d guest_errors' in the command line
 
-are available in the Git repository at:
+Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
+Message-Id: <20250515063237.808293-1-yuri.benditovich@daynix.com>
+Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
+---
+ hw/virtio/virtio.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
-
-for you to fetch changes up to 1c5771c092742b729e2a640be184a0f48c0b2cdb:
-
-  hw/i386/pc_piix: Fix RTC ISA IRQ wiring of isapc machine (2025-06-01 08:30:09 -0400)
-
-----------------------------------------------------------------
-virtio,pci,pc: features, fixes, tests
-
-vhost will now no longer set a call notifier if unused
-loongarch gained acpi tests based on bios-tables-test
-some core pci work for SVM support in vtd
-vhost vdpa init has been optimized for response time to QMP
-A couple more fixes
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Bernhard Beschow (1):
-      hw/i386/pc_piix: Fix RTC ISA IRQ wiring of isapc machine
-
-Bibo Mao (8):
-      uefi-test-tools:: Add LoongArch64 support
-      tests/data/uefi-boot-images: Add ISO image for LoongArch system
-      tests/qtest/bios-tables-test: Use MiB macro rather hardcode value
-      tests/acpi: Add empty ACPI data files for LoongArch
-      tests/qtest/bios-tables-test: Add basic testing for LoongArch
-      rebuild-expected-aml.sh: Add support for LoongArch
-      tests/acpi: Fill acpi table data for LoongArch
-      tests/acpi: Remove stale allowed tables
-
-CLEMENT MATHIEU--DRIF (11):
-      pcie: Add helper to declare PASID capability for a pcie device
-      pcie: Helper functions to check if PASID is enabled
-      pcie: Helper function to check if ATS is enabled
-      pcie: Add a helper to declare the PRI capability for a pcie device
-      pcie: Helper functions to check to check if PRI is enabled
-      pci: Cache the bus mastering status in the device
-      pci: Add an API to get IOMMU's min page size and virtual address width
-      memory: Store user data pointer in the IOMMU notifiers
-      pci: Add a pci-level initialization function for IOMMU notifiers
-      pci: Add a pci-level API for ATS
-      pci: Add a PCI-level API for PRI
-
-Eugenio Pérez (7):
-      vdpa: check for iova tree initialized at net_client_start
-      vdpa: reorder vhost_vdpa_set_backend_cap
-      vdpa: set backend capabilities at vhost_vdpa_init
-      vdpa: add listener_registered
-      vdpa: reorder listener assignment
-      vdpa: move iova_tree allocation to net_vhost_vdpa_init
-      vdpa: move memory listener register to vhost_vdpa_init
-
-Huaitong Han (1):
-      vhost: Don't set vring call if guest notifier is unused
-
-Sairaj Kodilkar (1):
-      hw/i386/amd_iommu: Fix device setup failure when PT is on.
-
-Vasant Hegde (1):
-      hw/i386/amd_iommu: Fix xtsup when vcpus < 255
-
-Yuri Benditovich (1):
-      virtio: check for validity of indirect descriptors
-
- include/hw/pci/pci.h                               | 316 +++++++++++++++++++++
- include/hw/pci/pci_device.h                        |   1 +
- include/hw/pci/pcie.h                              |  13 +-
- include/hw/pci/pcie_regs.h                         |   8 +
- include/hw/virtio/vhost-vdpa.h                     |  22 +-
- include/system/memory.h                            |   1 +
- hw/i386/amd_iommu.c                                |  20 +-
- hw/i386/pc_piix.c                                  |   5 +
- hw/pci/pci.c                                       | 206 +++++++++++++-
- hw/pci/pcie.c                                      |  78 +++++
- hw/virtio/vhost-vdpa.c                             | 107 ++++---
- hw/virtio/virtio-pci.c                             |   7 +-
- hw/virtio/virtio.c                                 |  11 +
- net/vhost-vdpa.c                                   |  34 +--
- tests/qtest/bios-tables-test.c                     |  99 ++++++-
- tests/data/acpi/loongarch64/virt/APIC              | Bin 0 -> 108 bytes
- tests/data/acpi/loongarch64/virt/APIC.topology     | Bin 0 -> 213 bytes
- tests/data/acpi/loongarch64/virt/DSDT              | Bin 0 -> 4641 bytes
- tests/data/acpi/loongarch64/virt/DSDT.memhp        | Bin 0 -> 5862 bytes
- tests/data/acpi/loongarch64/virt/DSDT.numamem      | Bin 0 -> 4647 bytes
- tests/data/acpi/loongarch64/virt/DSDT.topology     | Bin 0 -> 5352 bytes
- tests/data/acpi/loongarch64/virt/FACP              | Bin 0 -> 268 bytes
- tests/data/acpi/loongarch64/virt/MCFG              | Bin 0 -> 60 bytes
- tests/data/acpi/loongarch64/virt/PPTT              | Bin 0 -> 76 bytes
- tests/data/acpi/loongarch64/virt/PPTT.topology     | Bin 0 -> 296 bytes
- tests/data/acpi/loongarch64/virt/SLIT              |   0
- tests/data/acpi/loongarch64/virt/SLIT.numamem      | Bin 0 -> 48 bytes
- tests/data/acpi/loongarch64/virt/SPCR              | Bin 0 -> 80 bytes
- tests/data/acpi/loongarch64/virt/SRAT              | Bin 0 -> 104 bytes
- tests/data/acpi/loongarch64/virt/SRAT.memhp        | Bin 0 -> 144 bytes
- tests/data/acpi/loongarch64/virt/SRAT.numamem      | Bin 0 -> 144 bytes
- tests/data/acpi/loongarch64/virt/SRAT.topology     | Bin 0 -> 216 bytes
- tests/data/acpi/rebuild-expected-aml.sh            |   4 +-
- .../bios-tables-test.loongarch64.iso.qcow2         | Bin 0 -> 12800 bytes
- tests/qtest/meson.build                            |   1 +
- tests/uefi-test-tools/Makefile                     |   5 +-
- .../UefiTestToolsPkg/UefiTestToolsPkg.dsc          |   6 +-
- tests/uefi-test-tools/uefi-test-build.config       |  10 +
- 38 files changed, 846 insertions(+), 108 deletions(-)
- create mode 100644 tests/data/acpi/loongarch64/virt/APIC
- create mode 100644 tests/data/acpi/loongarch64/virt/APIC.topology
- create mode 100644 tests/data/acpi/loongarch64/virt/DSDT
- create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.memhp
- create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.numamem
- create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.topology
- create mode 100644 tests/data/acpi/loongarch64/virt/FACP
- create mode 100644 tests/data/acpi/loongarch64/virt/MCFG
- create mode 100644 tests/data/acpi/loongarch64/virt/PPTT
- create mode 100644 tests/data/acpi/loongarch64/virt/PPTT.topology
- create mode 100644 tests/data/acpi/loongarch64/virt/SLIT
- create mode 100644 tests/data/acpi/loongarch64/virt/SLIT.numamem
- create mode 100644 tests/data/acpi/loongarch64/virt/SPCR
- create mode 100644 tests/data/acpi/loongarch64/virt/SRAT
- create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.memhp
- create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.numamem
- create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.topology
- create mode 100644 tests/data/uefi-boot-images/bios-tables-test.loongarch64.iso.qcow2
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 2e98cecf64..5534251e01 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -205,6 +205,15 @@ static const char *virtio_id_to_name(uint16_t device_id)
+     return name;
+ }
+ 
++static void virtio_check_indirect_feature(VirtIODevice *vdev)
++{
++    if (!virtio_vdev_has_feature(vdev, VIRTIO_RING_F_INDIRECT_DESC)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "Device %s: indirect_desc was not negotiated!\n",
++                      vdev->name);
++    }
++}
++
+ /* Called within call_rcu().  */
+ static void virtio_free_region_cache(VRingMemoryRegionCaches *caches)
+ {
+@@ -1733,6 +1742,7 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
+             virtio_error(vdev, "Invalid size for indirect buffer table");
+             goto done;
+         }
++        virtio_check_indirect_feature(vdev);
+ 
+         /* loop over the indirect descriptor table */
+         len = address_space_cache_init(&indirect_desc_cache, vdev->dma_as,
+@@ -1870,6 +1880,7 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
+             virtio_error(vdev, "Invalid size for indirect buffer table");
+             goto done;
+         }
++        virtio_check_indirect_feature(vdev);
+ 
+         /* loop over the indirect descriptor table */
+         len = address_space_cache_init(&indirect_desc_cache, vdev->dma_as,
+-- 
+MST
 
 
