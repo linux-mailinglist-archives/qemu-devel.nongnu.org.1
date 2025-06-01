@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A76AC9F28
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00228AC9F2B
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:36:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLkgg-0008Qc-7e; Sun, 01 Jun 2025 11:33:26 -0400
+	id 1uLkjO-0004Tu-Ai; Sun, 01 Jun 2025 11:36:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkgW-000871-SE
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:33:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkjA-0004I5-S0
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:36:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkgT-0005IP-0E
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:33:16 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkiv-0005bm-2Q
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:36:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748791843;
+ s=mimecast20190719; t=1748792138;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
  bh=hKEH6Z9JCQimLJL8lPwV9KIkJSWOuDTn31SzP3o0in0=;
- b=IuiN1C5mtirBpKPX3XSApJCHwwEdCsupLD1NVa9Mi01o9G2JUIFnJV32oY4zMLLk98khdL
- LKXphcnaIKtos8E61q12pa7+CQopobLdUfJLHAYMl0Bm5/jN/yBkFehMdR5mKzUXby0ATS
- QGtm2PF1ZvwyHiHBxkrsQl73BssdNnM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ b=glS9+XTQkat2uzwCtLf0Vna8AA/r0QMl9cOiPQzB66efpVEFrmzgVwv/GW9Q66yDwAjTVn
+ BVT8tbBheL1SUtS1EH2+VHt8A1AX53HhQIlGgGrAeIOcmbVdLPz03ocBh9txyc84tNE3Ul
+ qMgONcDmLPQpVEiGknewsEF2fAI5XTs=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-383-jwGibX3HPnOXehCICnd4SA-1; Sun, 01 Jun 2025 11:25:07 -0400
-X-MC-Unique: jwGibX3HPnOXehCICnd4SA-1
-X-Mimecast-MFC-AGG-ID: jwGibX3HPnOXehCICnd4SA_1748791488
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-450cb902173so16115115e9.1
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:24:59 -0700 (PDT)
+ us-mta-646-TB5h96x0MiWmahhCZMJlpA-1; Sun, 01 Jun 2025 11:35:37 -0400
+X-MC-Unique: TB5h96x0MiWmahhCZMJlpA-1
+X-Mimecast-MFC-AGG-ID: TB5h96x0MiWmahhCZMJlpA_1748792136
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-55324bc26dcso1698209e87.1
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:35:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748791488; x=1749396288;
+ d=1e100.net; s=20230601; t=1748792136; x=1749396936;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
  bh=hKEH6Z9JCQimLJL8lPwV9KIkJSWOuDTn31SzP3o0in0=;
- b=JlTRdQ9AwGdfCcCCEdZPDY4qAGPCyajuWbrEp5vFK2unRsZixwz5BY82p7w1csGuXU
- 9asEc9rYqcHlUVd+7Zf3jNiJmMHlbc4aVrLO61eqA/T+2jOoxCy5+Op46X2TY5AHBfjU
- DsPq2pFnbDq7EyF8hd25/fAYNlK0RiEI5HhPRBEdWfGGDUWyhC6BRXnGg7u47AmFa11U
- FzBQBLdme4ZE14l6BSuX4ftzcY6Dcgq6fyGHXvRq/UK8zGDlnfXcw7mO8TsaTdmK/U4c
- ZT1u8oEbkXfWXqyfiQMp2YczcNrsEjsQxhZSKBYNUqlHY9bnKLTSlJiSf9+Wl2hHIIYI
- I+KQ==
-X-Gm-Message-State: AOJu0Yx2jJNgnUCgb6OVPKZz39rAAcQJHlGDBBvih++w5D2+t9gfB4kE
- BXoxB3R5pcx2wd0t1l8xTPgS6ycJuBM+DNNqWLxG2fsn4eKzQYl8RuA+VZokdxe8hsHdLOL6BfT
- 4nSoOOmSBC4dgf4WANytZR7LEWs6cZ355K9EFTijRtKpYB6iytprxVCzQdYR000HD/RPnyVOqYw
- 646CNvvWF5qHb2MCrHcozqrjIhM3z/dqFrew==
-X-Gm-Gg: ASbGnctmvqdHZa3DknHDn92KYlVW+dkn6Yh1svOOHr4QB4AXWFEwMCLje/gXt2PivtZ
- jvNf/LjnABhrN22DR9kfrEDr9EAiYL8hWCBRnbpMXQVsVFezFVQn+H9TQdJ9eV5MMEpKnhmYWTf
- AwUl1DpKyVZSDSDtziKRlYhQRvqrOtm42XEWLBlFhIGVE4cvt/BdNiwXcua5esbwjNITHYCym/s
- UnIbcQv1KZLLQucR72ZXP9i2btK3a/a/cOp3XKyAiP29MsdsfKIOy0N9Y9/0eOEewV/1ZB5/HPP
- nO1xZ9qPhUrUf9kl
+ b=fTx8uHw+2zDcJSwEd8ZEaBxcU2Y1lusMmgZyy7kXnrsdiqQfIsQj6a/32k41buu38M
+ sRKXO4K7IamUyQ52G76bZfWuPeSrNtzIOWUeXryAf7vHYqU5hsgqFLPlg1JcPfZ3udhc
+ VEvMUsuXlz3omj+xtk8Rh32KTyavECg1ib5t1idVg1OkhzdQlwn+RTIt4wAdUG6afMcE
+ Zp6xhOSxVNQ5U9YeHq+5IwxiHzqRdunErpU7qeEDNv4iGQswzDrUHZKyhDh87BE7fXvC
+ P/hy8b4y+Lget73MxMj+/ZDSJcNe217fr2vf/UX9aWwaRCilqaaLvBaK3fch9Y3Oc4Ud
+ HTIQ==
+X-Gm-Message-State: AOJu0Yz5C5iuUucgoJ0uOvVhJNzjq7YnKORQRI4dlZqFC0MlD3lW0Q6t
+ 8F0IQyifU/XGBhLa60XzpFv2tZ/p4e+tnmJo7In+ryEBgJbZ5fZ5MdgABE9shZ7A369Jd5Q8GNI
+ XMh3bR6v3k+LSvrqyjc/aYTE0xc6ski8bYFBYel75W2qo2X4PnlFl+ef+2sgQQwMWGGAn85qe8U
+ 26ZZQMouLuB0skFLzvb43mDB2Jq+sDmQViQA==
+X-Gm-Gg: ASbGncvx1Jdy/hKfh56YvUJGkMD5Jm3IrdBD2QwEr9n8sPadGau0vFe+J3yst8opl0i
+ N2GzNsjtn4AUKvwWqJNWo4XmSRzLT2Nr98vHdacpzvhef+nQaFNafco6TCOw/nLDCH3kyevt/Dm
+ 8nCx57+gGx88sY1Sownos63m0NoIj0ysTktRLUAij2cL0SVRlP4Wx3kHubaZmrF4hfAz/HPBm9c
+ DToRsAcoUkQUg7rALldbdGDBCZxWfIBs6qTqo5BRVbDwt9Nhy7Pb89um4lfLSZtUtSSm6Bv5KGX
+ Nx4L3D41kBR/sqmn
 X-Received: by 2002:a05:600c:3f92:b0:442:f904:1305 with SMTP id
  5b1f17b1804b1-450d6b5999bmr95833935e9.6.1748791487749; 
  Sun, 01 Jun 2025 08:24:47 -0700 (PDT)
@@ -81,7 +81,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1748791463.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -90,7 +90,7 @@ X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.071,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
