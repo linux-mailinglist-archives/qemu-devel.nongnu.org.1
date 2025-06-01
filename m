@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95069AC9F26
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B494AC9F2A
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:35:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLkYu-00022o-QT; Sun, 01 Jun 2025 11:25:24 -0400
+	id 1uLkYu-00022G-3x; Sun, 01 Jun 2025 11:25:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYl-0001wf-Nl
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYl-0001wg-Nn
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYf-0004aH-NL
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYj-0004aX-Fw
  for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748791506;
+ s=mimecast20190719; t=1748791509;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=BNH2pN0u94IUph1O8LRlSEdPOqYaYPrObBwYqpFSiHs=;
- b=AL1EeyWVcSmtd1/VzuBLgb8SLbWmDtWJuX0QO07jIl/wjTfdQWiAdylVHggMwAw676xPTJ
- 4uyZpoEctyxVTTQbW0whq+Z6sitsZtF1n2uskM6BLlin5CrRcA8CJ23qjZWj/dn4Hd28ih
- F3WZHI4F/TLAdF61/moj4WFFl6D3QWo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZDSsFEzywjh9OxEWL6pzAyxwPIhej9RWGxAoQQErVX4=;
+ b=JUN+F2XAwRKYQOB/orSUOxUpN6pSQ2o3ElMpcdO6Q04XCYr+ky0Tn9077UFCj4TcmFj6bk
+ 6QeDqelb/jg0SyIvHyUcJcPgHqTWdIDonI+9O5Xmzze1DbLY63WS+PXuqwGUC45B0b0noc
+ BzZ+6xVNscu+LxzuTEdT3Az9rHEEB6M=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-326-e1IWxMe3PuSRCyJf5JDXew-1; Sun, 01 Jun 2025 11:25:05 -0400
-X-MC-Unique: e1IWxMe3PuSRCyJf5JDXew-1
-X-Mimecast-MFC-AGG-ID: e1IWxMe3PuSRCyJf5JDXew_1748791504
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-451d5600a54so4822475e9.2
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:25:05 -0700 (PDT)
+ us-mta-486-7LNTfkrtM52UkWzxQr8vmw-1; Sun, 01 Jun 2025 11:25:08 -0400
+X-MC-Unique: 7LNTfkrtM52UkWzxQr8vmw-1
+X-Mimecast-MFC-AGG-ID: 7LNTfkrtM52UkWzxQr8vmw_1748791507
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a4f6ff23ccso1563856f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:25:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748791504; x=1749396304;
+ d=1e100.net; s=20230601; t=1748791506; x=1749396306;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BNH2pN0u94IUph1O8LRlSEdPOqYaYPrObBwYqpFSiHs=;
- b=wN51aOhjZ62yrFRh5wmoDeWEZIwmvXWTenRKP/QEdyAIOlRUGqS8GhCd+W0FWxro4+
- CXtCBzZzqgYWfBeeQgwZvRHTG7E08T55+FLKyQHGP8gBiKpKUGMyjYQl5parQNPjupxe
- XN2HwjHCR8RMNMFe0TVqSVFv8cFgFuXxyOS94MWT4/R/4DVVlZq+Ji8w16xLcPp8LoFY
- qRZ1fMwWxjDSNCcoix1+JkcCfhXqJR9dGzTc36BLexI0a/Z9Du1+2pG5W30QfZD3ZN8F
- NNPnFTqU+1g0dVpdK5IX67DiojaMXkpyCyJU91XyfY24zf52GfDvHYzVpxG05HbXnfai
- B62w==
-X-Gm-Message-State: AOJu0YzejCfS6u6+a9XSyiNPW2DdYXZwzV5pzfuo4EU0dMu21XyKrDB2
- c/lv5V743fvynJSLEpK+qPsjirjFGYG+9aUrJzK6yk4s4gnG3FbSGsjDaGl2w2r7Fn23oLonrjM
- FIAZTky6LOIQM9JRLx2WCEwBw+XsaU9V7mEHEKwU7U8ShqU0AHS9HZm2H35//c2LBA+8OSwO82v
- aufuBwnsaHY3kQ42j70ffvbwpPJVVXB5DZKg==
-X-Gm-Gg: ASbGncvfZbY/N4qmpyAf2UBSRpuIejoHZ6O20+s/w+jMI6K/fWnwSEoQhnfcQiOBoyL
- 2YsJ3kyAcWL5w+K6yFhzT5yxQ62HLjzvWGDls2fMvfjH9JknIxbT0biDsgMLQ4/xuqJGq5knZ/3
- YKEaZ9TMK74zB1XAvfX0l1KuCsnUApb8E9V6O1SkSAWtLCkuMrkZmfyTmCBxejSVtCL36LZClxZ
- NIaDxvSNgqA88sE8PgEUhorNXNLd16IXauaKG8rDuuvIgOy9LovcwqmdB8IA2VZxs4Vn5OqCL9c
- +09/VWUGi0BXP/pq
-X-Received: by 2002:a05:600c:3f10:b0:43d:fa59:af97 with SMTP id
- 5b1f17b1804b1-450d6591a0cmr81504115e9.32.1748791504021; 
- Sun, 01 Jun 2025 08:25:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcpYmUcW4ddwEGeMlju21OGvKaEaOH0ahLk/BxKlzlyAKq2Anx4271y3mjDyF9gW9m00/yCg==
-X-Received: by 2002:a05:600c:3f10:b0:43d:fa59:af97 with SMTP id
- 5b1f17b1804b1-450d6591a0cmr81503945e9.32.1748791503616; 
- Sun, 01 Jun 2025 08:25:03 -0700 (PDT)
+ bh=ZDSsFEzywjh9OxEWL6pzAyxwPIhej9RWGxAoQQErVX4=;
+ b=ZLewJDudA/jzWHzHhNQPTrjq3tXC84NnXhq5Q7SgNfVn4J1RXAIt/wqAMAiVN/su7a
+ t3AcLuUtHdz0zOHiG0uEAJvzXnIOyWrUsfIcmjeuUv3p4ioif8D+paBE3tucUcIwbBQk
+ ajyRLpt/3kMp3K8uX5+McUptsudL3Y32vlLz48heyDmnhLFYO0xhj2W8bJSUvYKRYn/h
+ c88/HWT/Is9yAimvJU3zdgIzuZZpVWqjTpJuqQdFEokMpFs0DPSky+TtpyX8Nh4dAO63
+ hgWABMp3TJ13wiIjAAW7xeDKkPG+CVl2pR5hXK/qFuNe9QzK4Yp8XKKOteHUx/WslKPy
+ VlfA==
+X-Gm-Message-State: AOJu0Yy7ckAYERDYtOB8ijGo8sT0+/Mfi9dcHOy2sd0SYIQgX6qfdQJb
+ ZRYN7ACwCWXEGMsJvE9/BYZObiii8hw5UKpYrX/x1FluiWm4Uk+fpW+WWeDPIfPrrfZJ5x/+7Xb
+ o3AJC2RzqLxtnNf27BgS56fERnTMDAeXoQi3FRfXEtaNi6wzWwnzClt0NeswbxstiL3bgdO6CKc
+ mZrsIiJJKHQcEP3kNSqVj45rcvh3wJUoytgw==
+X-Gm-Gg: ASbGncsBwqjJ6Nplq4Cau1OS3DiFexMsWxKzfBrsHl6OblhE92JlHa0S/oYwTNnc5BX
+ 3QZYcW2GoiVlSLDJX63O4spp0OWSn2+dA6IE62UVbw6+hB+PleFq7kQNMR0IU6t+BD/6sAOpwUD
+ G7KJO684aFRFMDjaqrf3D8slbXeKfIVeQup0qdQnQ7/GfauiwwuOdvhpSwrV7o/vCczA5Y4BoGe
+ qRF79DgP38Jmvm7PgxsRlRntj6ZdcbDw7+gHTHsfIKs90bCl7qyjJUhjzx+B4zzp6ftSGLhCyNG
+ FQb+Lg==
+X-Received: by 2002:a5d:64ed:0:b0:3a4:f51c:21a9 with SMTP id
+ ffacd0b85a97d-3a4f7ab12a5mr7889761f8f.52.1748791506209; 
+ Sun, 01 Jun 2025 08:25:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAcjJF6g+byLvSoBtxBrabkU4aCLTkZrOdWxEpTUostWIklT4x+FbaGhGkGDryG3QKZYa0Vg==
+X-Received: by 2002:a5d:64ed:0:b0:3a4:f51c:21a9 with SMTP id
+ ffacd0b85a97d-3a4f7ab12a5mr7889741f8f.52.1748791505822; 
+ Sun, 01 Jun 2025 08:25:05 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d7f8edf9sm87826135e9.3.2025.06.01.08.25.02
+ 5b1f17b1804b1-450d8013e0esm87687235e9.39.2025.06.01.08.25.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Jun 2025 08:25:02 -0700 (PDT)
-Date: Sun, 1 Jun 2025 11:25:01 -0400
+ Sun, 01 Jun 2025 08:25:05 -0700 (PDT)
+Date: Sun, 1 Jun 2025 11:25:03 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 07/31] pcie: Add a helper to declare the PRI capability for a
- pcie device
-Message-ID: <dcad6cb2abf4ffc4f911041d0547c4b54c2f92e2.1748791463.git.mst@redhat.com>
+Subject: [PULL 08/31] pcie: Helper functions to check to check if PRI is
+ enabled
+Message-ID: <5be8cf79188a2a1c73d16f3a8b458d909ac976f4.1748791463.git.mst@redhat.com>
 References: <cover.1748791463.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -110,87 +110,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 
+pri_enabled can be used to check whether the capability is present and
+enabled on a PCIe device
+
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Message-Id: <20250520071823.764266-5-clement.mathieu--drif@eviden.com>
+Message-Id: <20250520071823.764266-6-clement.mathieu--drif@eviden.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/pcie.h      |  5 ++++-
- include/hw/pci/pcie_regs.h |  3 +++
- hw/pci/pcie.c              | 26 ++++++++++++++++++++++++++
- 3 files changed, 33 insertions(+), 1 deletion(-)
+ include/hw/pci/pcie.h | 1 +
+ hw/pci/pcie.c         | 9 +++++++++
+ 2 files changed, 10 insertions(+)
 
 diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
-index 497d0bc2d2..17f06cd5d6 100644
+index 17f06cd5d6..ff6ce08e13 100644
 --- a/include/hw/pci/pcie.h
 +++ b/include/hw/pci/pcie.h
-@@ -70,9 +70,10 @@ struct PCIExpressDevice {
-     uint16_t aer_cap;
-     PCIEAERLog aer_log;
+@@ -158,6 +158,7 @@ void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
+ void pcie_pri_init(PCIDevice *dev, uint16_t offset, uint32_t outstanding_pr_cap,
+                    bool prg_response_pasid_req);
  
--    /* Offset of ATS and PASID capabilities in config space */
-+    /* Offset of ATS, PRI and PASID capabilities in config space */
-     uint16_t ats_cap;
-     uint16_t pasid_cap;
-+    uint16_t pri_cap;
- 
-     /* ACS */
-     uint16_t acs_cap;
-@@ -154,6 +155,8 @@ void pcie_cap_slot_unplug_request_cb(HotplugHandler *hotplug_dev,
- 
- void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
-                      bool exec_perm, bool priv_mod);
-+void pcie_pri_init(PCIDevice *dev, uint16_t offset, uint32_t outstanding_pr_cap,
-+                   bool prg_response_pasid_req);
- 
++bool pcie_pri_enabled(const PCIDevice *dev);
  bool pcie_pasid_enabled(const PCIDevice *dev);
  bool pcie_ats_enabled(const PCIDevice *dev);
-diff --git a/include/hw/pci/pcie_regs.h b/include/hw/pci/pcie_regs.h
-index 4d9cf4a29c..33a22229fe 100644
---- a/include/hw/pci/pcie_regs.h
-+++ b/include/hw/pci/pcie_regs.h
-@@ -91,6 +91,9 @@ typedef enum PCIExpLinkWidth {
- #define PCI_EXT_CAP_PASID_MAX_WIDTH     20
- #define PCI_PASID_CAP_WIDTH_SHIFT       8
- 
-+/* PRI */
-+#define PCI_PRI_VER                     1
-+
- /* AER */
- #define PCI_ERR_VER                     2
- #define PCI_ERR_SIZEOF                  0x48
+ #endif /* QEMU_PCIE_H */
 diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 36de709801..542172b3fa 100644
+index 542172b3fa..eaeb68894e 100644
 --- a/hw/pci/pcie.c
 +++ b/hw/pci/pcie.c
-@@ -1240,6 +1240,32 @@ void pcie_pasid_init(PCIDevice *dev, uint16_t offset, uint8_t pasid_width,
-     dev->exp.pasid_cap = offset;
+@@ -1266,6 +1266,15 @@ void pcie_pri_init(PCIDevice *dev, uint16_t offset, uint32_t outstanding_pr_cap,
+     dev->exp.pri_cap = offset;
  }
  
-+/* PRI */
-+void pcie_pri_init(PCIDevice *dev, uint16_t offset, uint32_t outstanding_pr_cap,
-+                   bool prg_response_pasid_req)
++bool pcie_pri_enabled(const PCIDevice *dev)
 +{
-+    static const uint16_t control_reg_rw_mask = 0x3;
-+    static const uint16_t status_reg_rw1_mask = 0x3;
-+    static const uint32_t pr_alloc_reg_rw_mask = 0xffffffff;
-+    uint16_t status_reg;
-+
-+    status_reg = prg_response_pasid_req ? PCI_PRI_STATUS_PASID : 0;
-+    status_reg |= PCI_PRI_STATUS_STOPPED; /* Stopped by default */
-+
-+    pcie_add_capability(dev, PCI_EXT_CAP_ID_PRI, PCI_PRI_VER, offset,
-+                        PCI_EXT_CAP_PRI_SIZEOF);
-+    /* Disabled by default */
-+
-+    pci_set_word(dev->config + offset + PCI_PRI_STATUS, status_reg);
-+    pci_set_long(dev->config + offset + PCI_PRI_MAX_REQ, outstanding_pr_cap);
-+
-+    pci_set_word(dev->wmask + offset + PCI_PRI_CTRL, control_reg_rw_mask);
-+    pci_set_word(dev->w1cmask + offset + PCI_PRI_STATUS, status_reg_rw1_mask);
-+    pci_set_long(dev->wmask + offset + PCI_PRI_ALLOC_REQ, pr_alloc_reg_rw_mask);
-+
-+    dev->exp.pri_cap = offset;
++    if (!pci_is_express(dev) || !dev->exp.pri_cap) {
++        return false;
++    }
++    return (pci_get_word(dev->config + dev->exp.pri_cap + PCI_PRI_CTRL) &
++                PCI_PRI_CTRL_ENABLE) != 0;
 +}
 +
  bool pcie_pasid_enabled(const PCIDevice *dev)
