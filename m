@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29740AC9F27
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2835AC9F04
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:25:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLkYx-00024l-VY; Sun, 01 Jun 2025 11:25:27 -0400
+	id 1uLkZ2-00027O-18; Sun, 01 Jun 2025 11:25:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYu-00023s-UK
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:25 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYx-000255-GM
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYt-0004cu-1X
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:24 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYv-0004dD-Bm
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748791522;
+ s=mimecast20190719; t=1748791524;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=4oOyhyn0zwWJsClDDP7Djl4UlBECR0W4KSvSBeBDXig=;
- b=KxCzsCLf7J1ppACQzBEauNfEsXT41IZklK0S9KfS+ZSlv9K1Ox0FHqhswOLrLYcUFrdVHW
- 0ZPTBi6CqrbwrY0TM6S6RG2Hc7U5zxeUfgL/sD4lHuMp9bzP1u1wC67CqQqF1aNKQ7XC2k
- HqcjLt5CX7OH+esST/YVCr2N/kJFgsU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=f470Te/20A+JI7N7uDj23gq/WhgjwkX/MH5JkqvMLnY=;
+ b=QujeeHjwDCPlHPBhORXaLyL3p2WMdLUeT/7TbOHx8Fougf8IsKwhfQvhgayp1CFMTwRSLx
+ Z22ZkV0R/ZpKS5foR01i+3sqF08G5V2DkPXb7vNUzsrpY/pgLRJm3fzEuW0lpab7eZACxR
+ hd68S4oGqJG3QGguMs72LhpyCWVmIwo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-245-LiUI1UfRO1C2gxILs-lWnA-1; Sun, 01 Jun 2025 11:25:21 -0400
-X-MC-Unique: LiUI1UfRO1C2gxILs-lWnA-1
-X-Mimecast-MFC-AGG-ID: LiUI1UfRO1C2gxILs-lWnA_1748791520
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-442dc702850so24188755e9.1
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:25:20 -0700 (PDT)
+ us-mta-357-jOeLjqkdOqan3r5IKu_9cw-1; Sun, 01 Jun 2025 11:25:23 -0400
+X-MC-Unique: jOeLjqkdOqan3r5IKu_9cw-1
+X-Mimecast-MFC-AGG-ID: jOeLjqkdOqan3r5IKu_9cw_1748791522
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-451d30992bcso6712815e9.2
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:25:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748791519; x=1749396319;
+ d=1e100.net; s=20230601; t=1748791522; x=1749396322;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4oOyhyn0zwWJsClDDP7Djl4UlBECR0W4KSvSBeBDXig=;
- b=S3Xh45fYAwICtZHrYEYR/vTrnSM9Y+wUCvaUPvPi6w0kpHKd7pDqc6544IKlCBocwE
- gSJ3YiqtY45Hxon1VFAbwjcQmWBarcSX9oeZDS7nRE/Rdv9v6OOxvo/tvldOy8beloqL
- bLayOETtimP5eI53JYa7pyz8O6Z2kI6ECJJXgEkMgKfIqy5lt/eYIoRq1TapWUcwz+vc
- JmqIIcH5d6lLpae4JPAWEaBkInCVmzNXaHZuptTH8z86JDibSF+TGWNXbJFFIhAdRRzi
- EbeuSYaWxKO62aNwBKEeC8BmyrWUoaQpyoWZx8n53t+cYI7W0frXlXp0Q/ziIuRaWT2v
- CMUw==
-X-Gm-Message-State: AOJu0YzzAwyP9wQDmElAS83glnb6jNdAWi+BFfOOhk7gyFV66NlztCkn
- 36lQq9cuu9p9Lrx8s1GB+N5WVg9079EbrOYUZqeaiND4Pj7X5GopCebey9gFz3FNI455rC4LeYi
- 0nDenjW2vx1Y+RNFkHgySlJWjJ+jjqR7uXm6n80HWqV7srxmzmU6fgGuYwdqmJVzAVtQCCtcEtU
- 0ugdXBZAwfUff0xjhmb5MRDUY27GS2Zh6qcg==
-X-Gm-Gg: ASbGncvBVjVoBX3IqB4bjBdoZ1F7XX0KeyFY/krGagPQC/Q8MaGrVdORBUig3jT8ldv
- BscRXEWpn4wE7BLco5AghKNaAMz+v2oxGAGPj8MuVV0S1/hG//oyg0Atbics2y0x1l33v3aewMY
- 42ItqUKIp2m4D0rV6ewxdV+U0J9XQyCmK7EC3bkSci0Bd+GwufduFkJ6LkyZSDG9+xiasm3ueXm
- onsVsKgUCJIuTLYPKgGaAyEIKniYt1inbnIKotf9rgM73vz1Ph6C2Pc9615Qd8ivCy6eV7W+g1c
- XBMQQw==
-X-Received: by 2002:a05:600c:4747:b0:442:d9f2:c753 with SMTP id
- 5b1f17b1804b1-451221a1bbfmr35598245e9.26.1748791519127; 
- Sun, 01 Jun 2025 08:25:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIWBPmbXwauyNBsxvUduJZ1u0g6ygdwkngsvcHVyVzsqVlPZx3M7EVDag8+OJgOGcr0aMWvw==
-X-Received: by 2002:a05:600c:4747:b0:442:d9f2:c753 with SMTP id
- 5b1f17b1804b1-451221a1bbfmr35597975e9.26.1748791518577; 
- Sun, 01 Jun 2025 08:25:18 -0700 (PDT)
+ bh=f470Te/20A+JI7N7uDj23gq/WhgjwkX/MH5JkqvMLnY=;
+ b=GFyrm8rjPa8VNIwMpftXU+6qL/qQ6Evnbmiag1ExLnJZuhs69vGQzSvNZHBa/PcFhR
+ E5Zjt1HOWSiUVDc/CMyyCe3qSniOp+vxmaGhJ7StBY0ce5oJNeWeN5tL+SGGLGQfpWRh
+ BPBp0mmsWAN/YofjsalOdgkTZ938eu69Q4nVs9ryhykPFfzZG4LqzDbRLNdeL4nmqN57
+ +9wG0HEHYqux60DkL8wutsueviQAArRd4BD0r7hYYIHX0RKCbEtbR412EnHfrAWfyEP5
+ +vGcB6A2WOPHvC4vvgRDdFWmCcVhR2Dp3UlGDVm7B5ffmnE79fdZVu3mTNREwlHWe0Pm
+ IqLw==
+X-Gm-Message-State: AOJu0YzxUpDXy8Gsl5yQDGh5tzIx1kDQ3I+7t1wBFHs9gv5gC4DKe6ek
+ qJr0ma6NWtU7w+WPB+8oRqL+D/mxZZxp73qvsVLdkPfyE01rU7GrPlVgbXyduQ2ZPKia8iNbLVf
+ 84+gSbHkfsNzNFyxlUCEXnhz8fewZqDJdegJiNKnDTY3gnW+ftiUmsT2/O+5BaUKYQULnp8jbhD
+ S5Tv2M+FOO1E1S2784pqM20GWX+qBW2kcOVw==
+X-Gm-Gg: ASbGncvJykTlp7QkfDgi2KCPJb3HVeyGODcRWmldseBXiG2GegMyHYW07ho3A4sfd/y
+ ua3RAqIT28VIVZsApvGO+ydY+x3tLFz4+V4owhRdqIMJk0/GN8Pb+ycOI1UaeSorOjx2fhmts++
+ yDvURmN7sEqjYM5RTIq4GvLZviaoMtyx0wRa3B3T9JB9Ex7B3qMYCG3JvSkpGKdBBAIc7O0O4fy
+ KoLtP3X1rGekq7uo/2m5umfDNIPap7iECjrSejA5noyc79K7WCc4bIhQ/K0vfZJ5ugu4kJpbvuN
+ sS1FkQ==
+X-Received: by 2002:a05:600c:8b11:b0:450:d4ad:b7de with SMTP id
+ 5b1f17b1804b1-4511ecb9cd9mr48814555e9.3.1748791521538; 
+ Sun, 01 Jun 2025 08:25:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3oRx0DFOf2pEH7L3o7ZAWFS5oZylVxJXGYiYF8/BUlsrxYWXnjUrKzDZWUdLV3ByHF7WMwg==
+X-Received: by 2002:a05:600c:8b11:b0:450:d4ad:b7de with SMTP id
+ 5b1f17b1804b1-4511ecb9cd9mr48814315e9.3.1748791520994; 
+ Sun, 01 Jun 2025 08:25:20 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d8006946sm87957085e9.31.2025.06.01.08.25.17
+ 5b1f17b1804b1-450d800671csm88636315e9.30.2025.06.01.08.25.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Jun 2025 08:25:17 -0700 (PDT)
-Date: Sun, 1 Jun 2025 11:25:16 -0400
+ Sun, 01 Jun 2025 08:25:20 -0700 (PDT)
+Date: Sun, 1 Jun 2025 11:25:18 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
  Ethan Milon <ethan.milon@eviden.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 13/31] pci: Add a pci-level API for ATS
-Message-ID: <e9b457500adb023229a08ece3a8d7f5866dd360e.1748791463.git.mst@redhat.com>
+Subject: [PULL 14/31] pci: Add a PCI-level API for PRI
+Message-ID: <f0f37daf8e67c7208641aec5e238197279ca7331.1748791463.git.mst@redhat.com>
 References: <cover.1748791463.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -110,33 +110,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 
-Devices implementing ATS can send translation requests using
-pci_ats_request_translation. The invalidation events are sent
-back to the device using the iommu notifier managed with
-pci_iommu_register_iotlb_notifier / pci_iommu_unregister_iotlb_notifier.
+A device can send a PRI request to the IOMMU using pci_pri_request_page.
+The PRI response is sent back using the notifier managed with
+pci_pri_register_notifier and pci_pri_unregister_notifier.
 
 Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 Co-authored-by: Ethan Milon <ethan.milon@eviden.com>
-Message-Id: <20250520071823.764266-11-clement.mathieu--drif@eviden.com>
+Message-Id: <20250520071823.764266-12-clement.mathieu--drif@eviden.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/pci.h | 126 +++++++++++++++++++++++++++++++++++++++++++
- hw/pci/pci.c         |  81 ++++++++++++++++++++++++++++
- 2 files changed, 207 insertions(+)
+ include/hw/pci/pci.h | 130 +++++++++++++++++++++++++++++++++++++++++++
+ hw/pci/pci.c         |  66 ++++++++++++++++++++++
+ 2 files changed, 196 insertions(+)
 
 diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index f3016fd76f..5d72607ed5 100644
+index 5d72607ed5..a6854dad2b 100644
 --- a/include/hw/pci/pci.h
 +++ b/include/hw/pci/pci.h
-@@ -462,6 +462,80 @@ typedef struct PCIIOMMUOps {
-     void (*init_iotlb_notifier)(PCIBus *bus, void *opaque, int devfn,
-                                 IOMMUNotifier *n, IOMMUNotify fn,
-                                 void *user_opaque);
+@@ -375,6 +375,28 @@ void pci_bus_get_w64_range(PCIBus *bus, Range *range);
+ 
+ void pci_device_deassert_intx(PCIDevice *dev);
+ 
++/* Page Request Interface */
++typedef enum {
++    IOMMU_PRI_RESP_SUCCESS,
++    IOMMU_PRI_RESP_INVALID_REQUEST,
++    IOMMU_PRI_RESP_FAILURE,
++} IOMMUPRIResponseCode;
++
++typedef struct IOMMUPRIResponse {
++    IOMMUPRIResponseCode response_code;
++    uint16_t prgi;
++} IOMMUPRIResponse;
++
++struct IOMMUPRINotifier;
++
++typedef void (*IOMMUPRINotify)(struct IOMMUPRINotifier *notifier,
++                               IOMMUPRIResponse *response);
++
++typedef struct IOMMUPRINotifier {
++    IOMMUPRINotify notify;
++} IOMMUPRINotifier;
++
++#define PCI_PRI_PRGI_MASK 0x1ffU
+ 
+ /**
+  * struct PCIIOMMUOps: callbacks structure for specific IOMMU handlers
+@@ -536,6 +558,72 @@ typedef struct PCIIOMMUOps {
+                                        IOMMUTLBEntry *result,
+                                        size_t result_length,
+                                        uint32_t *err_count);
 +    /**
-+     * @register_iotlb_notifier: setup an IOTLB invalidation notifier.
++     * @pri_register_notifier: setup the PRI completion callback.
 +     *
-+     * Callback required if devices are allowed to cache translations.
++     * Callback required if devices are allowed to use the page request
++     * interface.
 +     *
 +     * @bus: the #PCIBus of the PCI device.
 +     *
@@ -144,16 +173,17 @@ index f3016fd76f..5d72607ed5 100644
 +     *
 +     * @devfn: device and function number of the PCI device.
 +     *
-+     * @pasid: the pasid of the address space to watch.
++     * @pasid: the pasid of the address space to track.
 +     *
-+     * @n: the notifier to register.
++     * @notifier: the notifier to register.
 +     */
-+    void (*register_iotlb_notifier)(PCIBus *bus, void *opaque, int devfn,
-+                                    uint32_t pasid, IOMMUNotifier *n);
++    void (*pri_register_notifier)(PCIBus *bus, void *opaque, int devfn,
++                                  uint32_t pasid, IOMMUPRINotifier *notifier);
 +    /**
-+     * @unregister_iotlb_notifier: remove an IOTLB invalidation notifier.
++     * @pri_unregister_notifier: remove the PRI completion callback.
 +     *
-+     * Callback required if devices are allowed to cache translations.
++     * Callback required if devices are allowed to use the page request
++     * interface.
 +     *
 +     * @bus: the #PCIBus of the PCI device.
 +     *
@@ -161,17 +191,15 @@ index f3016fd76f..5d72607ed5 100644
 +     *
 +     * @devfn: device and function number of the PCI device.
 +     *
-+     * @pasid: the pasid of the address space to stop watching.
-+     *
-+     * @n: the notifier to unregister.
++     * @pasid: the pasid of the address space to stop tracking.
 +     */
-+    void (*unregister_iotlb_notifier)(PCIBus *bus, void *opaque, int devfn,
-+                                      uint32_t pasid, IOMMUNotifier *n);
++    void (*pri_unregister_notifier)(PCIBus *bus, void *opaque, int devfn,
++                                    uint32_t pasid);
 +    /**
-+     * @ats_request_translation: issue an ATS request.
++     * @pri_request_page: issue a PRI request.
 +     *
-+     * Callback required if devices are allowed to use the address
-+     * translation service.
++     * Callback required if devices are allowed to use the page request
++     * interface.
 +     *
 +     * @bus: the #PCIBus of the PCI device.
 +     *
@@ -185,104 +213,83 @@ index f3016fd76f..5d72607ed5 100644
 +     *
 +     * @exec_req: execute request bit (PASID TLP).
 +     *
-+     * @addr: start address of the memory range to be translated.
++     * @addr: untranslated address of the requested page.
 +     *
-+     * @length: length of the memory range in bytes.
++     * @lpig: last page in group.
 +     *
-+     * @no_write: request a read-only translation (if supported).
++     * @prgi: page request group index.
 +     *
-+     * @result: buffer in which the TLB entries will be stored.
++     * @is_read: request read access.
 +     *
-+     * @result_length: result buffer length.
-+     *
-+     * @err_count: number of untranslated subregions.
-+     *
-+     * Returns: the number of translations stored in the result buffer, or
-+     * -ENOMEM if the buffer is not large enough.
++     * @is_write: request write access.
 +     */
-+    ssize_t (*ats_request_translation)(PCIBus *bus, void *opaque, int devfn,
-+                                       uint32_t pasid, bool priv_req,
-+                                       bool exec_req, hwaddr addr,
-+                                       size_t length, bool no_write,
-+                                       IOMMUTLBEntry *result,
-+                                       size_t result_length,
-+                                       uint32_t *err_count);
++    int (*pri_request_page)(PCIBus *bus, void *opaque, int devfn,
++                            uint32_t pasid, bool priv_req, bool exec_req,
++                            hwaddr addr, bool lpig, uint16_t prgi, bool is_read,
++                            bool is_write);
  } PCIIOMMUOps;
  
  AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
-@@ -495,6 +569,58 @@ int pci_iommu_get_iotlb_info(PCIDevice *dev, uint8_t *addr_width,
- int pci_iommu_init_iotlb_notifier(PCIDevice *dev, IOMMUNotifier *n,
-                                   IOMMUNotify fn, void *opaque);
+@@ -595,6 +683,48 @@ ssize_t pci_ats_request_translation(PCIDevice *dev, uint32_t pasid,
+                                     size_t result_length,
+                                     uint32_t *err_count);
  
 +/**
-+ * pci_ats_request_translation: perform an ATS request.
++ * pci_pri_request_page: perform a PRI request.
 + *
-+ * Returns the number of translations stored in @result in case of success,
-+ * a negative error code otherwise.
-+ * -ENOMEM is returned when the result buffer is not large enough to store
-+ * all the translations.
++ * Returns 0 if the PRI request has been sent to the guest OS,
++ * an error code otherwise.
 + *
-+ * @dev: the ATS-capable PCI device.
++ * @dev: the PRI-capable PCI device.
 + * @pasid: the pasid of the address space in which the translation will be done.
 + * @priv_req: privileged mode bit (PASID TLP).
 + * @exec_req: execute request bit (PASID TLP).
-+ * @addr: start address of the memory range to be translated.
-+ * @length: length of the memory range in bytes.
-+ * @no_write: request a read-only translation (if supported).
-+ * @result: buffer in which the TLB entries will be stored.
-+ * @result_length: result buffer length.
-+ * @err_count: number of untranslated subregions.
++ * @addr: untranslated address of the requested page.
++ * @lpig: last page in group.
++ * @prgi: page request group index.
++ * @is_read: request read access.
++ * @is_write: request write access.
 + */
-+ssize_t pci_ats_request_translation(PCIDevice *dev, uint32_t pasid,
-+                                    bool priv_req, bool exec_req,
-+                                    hwaddr addr, size_t length,
-+                                    bool no_write, IOMMUTLBEntry *result,
-+                                    size_t result_length,
-+                                    uint32_t *err_count);
++int pci_pri_request_page(PCIDevice *dev, uint32_t pasid, bool priv_req,
++                         bool exec_req, hwaddr addr, bool lpig,
++                         uint16_t prgi, bool is_read, bool is_write);
 +
 +/**
-+ * pci_iommu_register_iotlb_notifier: register a notifier for changes to
-+ * IOMMU translation entries in a specific address space.
++ * pci_pri_register_notifier: register the PRI callback for a given address
++ * space.
 + *
-+ * Returns 0 on success, or a negative errno otherwise.
++ * Returns 0 on success, an error code otherwise.
 + *
-+ * @dev: the device that wants to get notified.
++ * @dev: the PRI-capable PCI device.
 + * @pasid: the pasid of the address space to track.
-+ * @n: the notifier to register.
++ * @notifier: the notifier to register.
 + */
-+int pci_iommu_register_iotlb_notifier(PCIDevice *dev, uint32_t pasid,
-+                                      IOMMUNotifier *n);
++int pci_pri_register_notifier(PCIDevice *dev, uint32_t pasid,
++                              IOMMUPRINotifier *notifier);
 +
 +/**
-+ * pci_iommu_unregister_iotlb_notifier: unregister a notifier that has been
-+ * registerd with pci_iommu_register_iotlb_notifier.
++ * pci_pri_unregister_notifier: remove the PRI callback from a given address
++ * space.
 + *
-+ * Returns 0 on success, or a negative errno otherwise.
-+ *
-+ * @dev: the device that wants to stop notifications.
++ * @dev: the PRI-capable PCI device.
 + * @pasid: the pasid of the address space to stop tracking.
-+ * @n: the notifier to unregister.
 + */
-+int pci_iommu_unregister_iotlb_notifier(PCIDevice *dev, uint32_t pasid,
-+                                        IOMMUNotifier *n);
++void pci_pri_unregister_notifier(PCIDevice *dev, uint32_t pasid);
 +
  /**
-  * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
-  *
+  * pci_iommu_register_iotlb_notifier: register a notifier for changes to
+  * IOMMU translation entries in a specific address space.
 diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index dfa5a0259e..0c63cb4bbe 100644
+index 0c63cb4bbe..c6b5768f3a 100644
 --- a/hw/pci/pci.c
 +++ b/hw/pci/pci.c
-@@ -2987,6 +2987,87 @@ void pci_device_unset_iommu_device(PCIDevice *dev)
+@@ -2987,6 +2987,72 @@ void pci_device_unset_iommu_device(PCIDevice *dev)
      }
  }
  
-+ssize_t pci_ats_request_translation(PCIDevice *dev, uint32_t pasid,
-+                                    bool priv_req, bool exec_req,
-+                                    hwaddr addr, size_t length,
-+                                    bool no_write, IOMMUTLBEntry *result,
-+                                    size_t result_length,
-+                                    uint32_t *err_count)
++int pci_pri_request_page(PCIDevice *dev, uint32_t pasid, bool priv_req,
++                         bool exec_req, hwaddr addr, bool lpig,
++                         uint16_t prgi, bool is_read, bool is_write)
 +{
 +    PCIBus *bus;
 +    PCIBus *iommu_bus;
@@ -293,74 +300,62 @@ index dfa5a0259e..0c63cb4bbe 100644
 +        return -EPERM;
 +    }
 +
-+    if (result_length == 0) {
-+        return -ENOSPC;
-+    }
-+
-+    if (!pcie_ats_enabled(dev)) {
++    if (!pcie_pri_enabled(dev)) {
 +        return -EPERM;
 +    }
 +
 +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-+    if (iommu_bus && iommu_bus->iommu_ops->ats_request_translation) {
-+        return iommu_bus->iommu_ops->ats_request_translation(bus,
++    if (iommu_bus && iommu_bus->iommu_ops->pri_request_page) {
++        return iommu_bus->iommu_ops->pri_request_page(bus,
 +                                                     iommu_bus->iommu_opaque,
 +                                                     devfn, pasid, priv_req,
-+                                                     exec_req, addr, length,
-+                                                     no_write, result,
-+                                                     result_length, err_count);
++                                                     exec_req, addr, lpig, prgi,
++                                                     is_read, is_write);
 +    }
 +
 +    return -ENODEV;
 +}
 +
-+int pci_iommu_register_iotlb_notifier(PCIDevice *dev, uint32_t pasid,
-+                                      IOMMUNotifier *n)
++int pci_pri_register_notifier(PCIDevice *dev, uint32_t pasid,
++                              IOMMUPRINotifier *notifier)
 +{
 +    PCIBus *bus;
 +    PCIBus *iommu_bus;
 +    int devfn;
 +
-+    if ((pasid != PCI_NO_PASID) && !pcie_pasid_enabled(dev)) {
++    if (!dev->is_master ||
++            ((pasid != PCI_NO_PASID) && !pcie_pasid_enabled(dev))) {
 +        return -EPERM;
 +    }
 +
 +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-+    if (iommu_bus && iommu_bus->iommu_ops->register_iotlb_notifier) {
-+        iommu_bus->iommu_ops->register_iotlb_notifier(bus,
-+                                           iommu_bus->iommu_opaque, devfn,
-+                                           pasid, n);
++    if (iommu_bus && iommu_bus->iommu_ops->pri_register_notifier) {
++        iommu_bus->iommu_ops->pri_register_notifier(bus,
++                                                    iommu_bus->iommu_opaque,
++                                                    devfn, pasid, notifier);
 +        return 0;
 +    }
 +
 +    return -ENODEV;
 +}
 +
-+int pci_iommu_unregister_iotlb_notifier(PCIDevice *dev, uint32_t pasid,
-+                                        IOMMUNotifier *n)
++void pci_pri_unregister_notifier(PCIDevice *dev, uint32_t pasid)
 +{
 +    PCIBus *bus;
 +    PCIBus *iommu_bus;
 +    int devfn;
 +
-+    if ((pasid != PCI_NO_PASID) && !pcie_pasid_enabled(dev)) {
-+        return -EPERM;
-+    }
-+
 +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-+    if (iommu_bus && iommu_bus->iommu_ops->unregister_iotlb_notifier) {
-+        iommu_bus->iommu_ops->unregister_iotlb_notifier(bus,
-+                                                        iommu_bus->iommu_opaque,
-+                                                        devfn, pasid, n);
-+        return 0;
++    if (iommu_bus && iommu_bus->iommu_ops->pri_unregister_notifier) {
++        iommu_bus->iommu_ops->pri_unregister_notifier(bus,
++                                                      iommu_bus->iommu_opaque,
++                                                      devfn, pasid);
 +    }
-+
-+    return -ENODEV;
 +}
 +
- int pci_iommu_get_iotlb_info(PCIDevice *dev, uint8_t *addr_width,
-                              uint32_t *min_page_size)
- {
+ ssize_t pci_ats_request_translation(PCIDevice *dev, uint32_t pasid,
+                                     bool priv_req, bool exec_req,
+                                     hwaddr addr, size_t length,
 -- 
 MST
 
