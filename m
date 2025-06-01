@@ -2,91 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0480AC9F02
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D19EDAC9F07
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:27:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLkYs-0001rW-MG; Sun, 01 Jun 2025 11:25:22 -0400
+	id 1uLkYv-00022v-NE; Sun, 01 Jun 2025 11:25:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYa-0001qp-3X
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYi-0001sz-J0
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYW-0004O6-S6
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:03 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkYa-0004Oh-Sp
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748791495;
+ s=mimecast20190719; t=1748791501;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rTv0d6cHxOZy6ieVobHNUbUpmmn/DNQanxQCmUwQh7c=;
- b=LYFYipz3DFwC52CcNnPbIpg7LJv54PCE5uMaqUes5RHe6wVo1Pa/mn0PbStyGHUF1lq7rq
- PtkfSHKyuOSjsKFXUrwcjScBYzxbLN/B6iCEMjrXA5tgbySQvSIqzZE41BLrWqE5WfrUMe
- +stzS20hNOE/zyHPDCBXLilUKlrMM8g=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Ae+KwjiAG0ycwIGxgYOXtWkgDz9Lvz7odZpaInVMJP4=;
+ b=Ls8yQJYthO7pZSxAmG3DxfZjcsIidDibJn4iGJL2HL4dzjWunOaZw/8hCKRNdEHRZ2ujwR
+ gFMCTWTEbAtH0K01IMSOcID1+9Jt/rFRya8jTRvipbA+D7kCTTaYEIgUtLZYeu/g17Cct+
+ 7GW96Dd/7Sunb7TrhiivGDRMvSv+TIc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-8ur90z8oMdOxfqj2XZWkMw-1; Sun, 01 Jun 2025 11:24:53 -0400
-X-MC-Unique: 8ur90z8oMdOxfqj2XZWkMw-1
-X-Mimecast-MFC-AGG-ID: 8ur90z8oMdOxfqj2XZWkMw_1748791492
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-440667e7f92so24461725e9.3
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:24:53 -0700 (PDT)
+ us-mta-187-nP7J-zssMv6P2sK2Lmh6CA-1; Sun, 01 Jun 2025 11:24:57 -0400
+X-MC-Unique: nP7J-zssMv6P2sK2Lmh6CA-1
+X-Mimecast-MFC-AGG-ID: nP7J-zssMv6P2sK2Lmh6CA_1748791495
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a1f6c5f4f2so1312269f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:24:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748791491; x=1749396291;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rTv0d6cHxOZy6ieVobHNUbUpmmn/DNQanxQCmUwQh7c=;
- b=A9f1iRqxnyHakjh532aXhSg2S3YwlKZ8fLMnh9Gh/rqXNRdSufAbNz4Y6vPUI+coa+
- /WrXNUhSjuwthmMzTQ8mizm2AoASz7jEQJ8TT3+et1nCnB5BAVr824SQpxoZrfKO4IUC
- lVDfISe8Wc7UCf7Ca9+v3sr7oWv+4vf024DdTEDqvz7QyNQ/Njn4h/sbrHtgDNs0Ckm5
- MFZvc3lOzHpBH9nvlFET4ioB5r69LF5GsrhpjtKZFxRB1nGBbDDhh3M7x5nXqT+fPh8c
- 1GTdVPuQFUBw608OVrkvVHmE6QHkoqoY4M9raNFXJniTHK1yXQhNOIxTV6QZneWnUyoH
- Zcdg==
-X-Gm-Message-State: AOJu0Yzx1KSjhUCYMjU31G4ME4zL1s80n4WvIhSYwNa5I6A2bAz3Sqtp
- uPwGn8C7bRBIVO9EN6j4JDFQREg6lY+fF9mZJ+HjUNOx7EncwmSa7yULwnfPrG46rMcmyia24yS
- 38K//TRy7LQRonDhLm0l4rkaFtldFI3z2fFX6Vfks86AK+2ZH4uXOvGXWQJ9Y6XvQXFMkthMKLG
- EmmARSu7tNiYIZhY0sH9vLP+VHbltI1F3lbQ==
-X-Gm-Gg: ASbGncs/m/YWSP3ndK8R6QKT1x2m2BV/sOXnW83OK3Myt0UITKB4thjIx9DqlijExH2
- mFjEKTzVEtOPPyZWFvDiWiQ9C+a+I1AfePw5Spim+xwm2Cz2ewztILlqROeOvDbY8B+DTiOmfw7
- P5ZdRAlAE9eNn04yY++OeELGgRDPS3wGHNej4xsQ7QwS39JnEnK01GI7C1TYYGmulomO2M+DmyY
- OggcxsIE6gYwHlhbzmsJgY+R9dkGD5BDMQxx+jNAEHZVxh9FC1rVV1unVXsZXI5X5JqX+Mo+UKp
- 3Q3qgXibiM9oIXLY
-X-Received: by 2002:a05:600c:8b0f:b0:43c:f63c:babb with SMTP id
- 5b1f17b1804b1-4511ecbbdc4mr39669015e9.1.1748791491278; 
- Sun, 01 Jun 2025 08:24:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHL0U/8L6UeynEtKF1ImDj+ymGfJYvxrSyE7yqMsT7JKI1SqMgqiXF/R45KtLgd+NhJ5QLbAw==
-X-Received: by 2002:a05:600c:8b0f:b0:43c:f63c:babb with SMTP id
- 5b1f17b1804b1-4511ecbbdc4mr39668775e9.1.1748791490829; 
- Sun, 01 Jun 2025 08:24:50 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748791495; x=1749396295;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ae+KwjiAG0ycwIGxgYOXtWkgDz9Lvz7odZpaInVMJP4=;
+ b=kAvlUE+QEokUrP0rxwMtqsgBq/clFTzmEBhYpW8qaXRU6FFN/humtPylWiQs9Oh9pe
+ PZ2FKQcqujQu87gSRjPxC4My5xykT/WaP3If3yr4b321TwcG654OWME7m+LjBVBCn81V
+ ZiitphitwU7AMV4MLX3iUT3fmirmr9tlUVEYyt33hiQA/ePGcXOk7BeYI6zk3wXIkvuo
+ KbCxsy10dAksgZ4IV9UMgLor3/Mz+nu3MQTHKq6frRtF8U+mat84oD64Ok0adVnfFwCW
+ bWW0NO9d2XCWG7U4TylRrNBILsFjGDBTJE7KqzBnkXRX6pven67GQtEBjLMTMWSpRuKP
+ hYUw==
+X-Gm-Message-State: AOJu0Yx1VGHtrEp+vPUorwP6SUBCRmDpVbDjOHVzB4P9GEcSvAk3VP4g
+ vALf/ZzJiNA+l52/YmKw8ctA6sLP7yWg7lhtQCf8o9qrngvhrzCw3fuok4UzswxjLIrjmk0GMI2
+ hqcOC8Y5fPYmSxSOnqS+Aiy2trtF0Ic5fbK7gC/cuK8cwOeaR9KavMk8xpu4u2P7kiOSdRzYd4r
+ dAWZQjFTH31fQK4TJRH3J3WB62aJf5kQJhWg==
+X-Gm-Gg: ASbGncshBqnwh8foFu++E6Axgv/iLakmgFqwnq7LjZs+vzYiyruEOGIl/MsJU9U3db4
+ WP7aWBXN5K/OGIrReuvHJG//MQsu/9FDkGAgG9lGFdqxRUlexmmlJuVswBO05rPor0R3FTNU4n1
+ RYPPLdIum6wsGvXuA3e3v65SXrjZlJIjhcNFjC1pOrPo1icV2ExnB7G5F7LI5lhV2VWWb8Esuni
+ F5q3dX6ieyfWg+6dRRkccnIlyZFb1+RD9yzM3NAW6cNPBx6A7EDf2TdIeHTbRIXXS3wsq5heZ0W
+ 6SNfXg==
+X-Received: by 2002:a05:6000:22c6:b0:3a4:f7e6:284b with SMTP id
+ ffacd0b85a97d-3a4f89a7eb0mr6344866f8f.10.1748791494998; 
+ Sun, 01 Jun 2025 08:24:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYs5M9CNTTnil6qdeTRlarfVIfVdJ+8sk+4Yu+I5oNukMVcdME1fc855fhEtx0h5Jl7pEjWg==
+X-Received: by 2002:a05:6000:22c6:b0:3a4:f7e6:284b with SMTP id
+ ffacd0b85a97d-3a4f89a7eb0mr6344842f8f.10.1748791494552; 
+ Sun, 01 Jun 2025 08:24:54 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4f009745esm11870991f8f.71.2025.06.01.08.24.48
+ ffacd0b85a97d-3a4f009fb0bsm11545616f8f.87.2025.06.01.08.24.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Jun 2025 08:24:49 -0700 (PDT)
-Date: Sun, 1 Jun 2025 11:24:47 -0400
+ Sun, 01 Jun 2025 08:24:52 -0700 (PDT)
+Date: Sun, 1 Jun 2025 11:24:51 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Sairaj Kodilkar <sarunkod@amd.com>, Vasant Hegde <vasant.hegde@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ Vasant Hegde <vasant.hegde@amd.com>,
+ Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Joao Martins <joao.m.martins@oracle.com>,
+ Sairaj Kodilkar <sarunkod@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 02/31] hw/i386/amd_iommu: Fix device setup failure when PT is
- on.
-Message-ID: <31753d5a336fbb4e9246397f4b90b6f611f27f22.1748791463.git.mst@redhat.com>
+Subject: [PULL 03/31] hw/i386/amd_iommu: Fix xtsup when vcpus < 255
+Message-ID: <0f178860df3489a9d3c19a5f7f024e6aa6c26515.1748791463.git.mst@redhat.com>
 References: <cover.1748791463.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1748791463.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -111,62 +115,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sairaj Kodilkar <sarunkod@amd.com>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-Commit c1f46999ef506 ("amd_iommu: Add support for pass though mode")
-introduces the support for "pt" flag by enabling nodma memory when
-"pt=off". This allowed VFIO devices to successfully register notifiers
-by using nodma region.
+If vCPUs > 255 then x86 common code (x86_cpus_init()) call kvm_enable_x2apic().
+But if vCPUs <= 255 then the common code won't calls kvm_enable_x2apic().
 
-But, This also broke things when guest is booted with the iommu=nopt
-because, devices bypass the IOMMU and use untranslated addresses (IOVA) to
-perform DMA reads/writes to the nodma memory region, ultimately resulting in
-a failure to setup the devices in the guest.
+This is because commit 8c6619f3e692 ("hw/i386/amd_iommu: Simplify non-KVM
+checks on XTSup feature") removed the call to kvm_enable_x2apic when xtsup
+is "on", which break things when guest is booted with x2apic mode and
+there are <= 255 vCPUs.
 
-Fix the above issue by always enabling the amdvi_dev_as->iommu memory region.
-But this will once again cause VFIO devices to fail while registering the
-notifiers with AMD IOMMU memory region.
+Fix this by adding back kvm_enable_x2apic() call when xtsup=on.
 
-Fixes: c1f46999ef506 ("amd_iommu: Add support for pass though mode")
+Fixes: 8c6619f3e692 ("hw/i386/amd_iommu: Simplify non-KVM checks on XTSup feature")
+Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Tested-by: Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250516100535.4980-2-sarunkod@amd.com>
-Fixes: c1f46999ef506 ("amd_iommu: Add support for pass though mode")
+Message-Id: <20250516100535.4980-3-sarunkod@amd.com>
+Fixes: 8c6619f3e692 ("hw/i386/amd_iommu: Simplify non-KVM checks on XTSup feature")
+Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Tested-by: Tested-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
 Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 ---
- hw/i386/amd_iommu.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ hw/i386/amd_iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 0775c8f3bb..17379db52a 100644
+index 17379db52a..963aa2450c 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -1426,7 +1426,6 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
-     AMDVIState *s = opaque;
-     AMDVIAddressSpace **iommu_as, *amdvi_dev_as;
-     int bus_num = pci_bus_num(bus);
--    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
- 
-     iommu_as = s->address_spaces[bus_num];
- 
-@@ -1486,15 +1485,8 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
-                                             AMDVI_INT_ADDR_FIRST,
-                                             &amdvi_dev_as->iommu_ir, 1);
- 
--        if (!x86_iommu->pt_supported) {
--            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
--            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
--                                      true);
--        } else {
--            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
--                                      false);
--            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, true);
--        }
-+        memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
-+        memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu), true);
+@@ -1715,6 +1715,14 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+         exit(EXIT_FAILURE);
      }
-     return &iommu_as[devfn]->as;
+ 
++    if (s->xtsup) {
++        if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
++            error_report("AMD IOMMU xtsup=on requires x2APIC support on "
++                          "the KVM side");
++            exit(EXIT_FAILURE);
++        }
++    }
++
+     pci_setup_iommu(bus, &amdvi_iommu_ops, s);
+     amdvi_init(s);
  }
 -- 
 MST
