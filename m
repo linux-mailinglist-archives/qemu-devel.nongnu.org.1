@@ -2,138 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3B8AC9F03
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 411ECAC9F0E
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Jun 2025 17:28:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLkZ9-0002J4-NC; Sun, 01 Jun 2025 11:25:39 -0400
+	id 1uLkZ8-0002HS-Sg; Sun, 01 Jun 2025 11:25:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uLkZ5-0002F8-6M
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:35 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkZ7-0002H9-1T
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uLkZ3-0004e6-LF
- for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uLkZ5-0004eS-Ie
+ for qemu-devel@nongnu.org; Sun, 01 Jun 2025 11:25:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748791533;
+ s=mimecast20190719; t=1748791535;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=JM95DHwXzlDExy0RWKOhS3EErqNETTYBPlKPucLRpFw=;
- b=a6DDOImgLbpxdiVVq4QAjNEaWDynoA6VWFyHT9eZvStpDNYi5n6f5Snnmko0Twm9wDlUEv
- ReN+jqGdREhTLD1XJgF1xiwr9TbIMgA0yq6yB9s8CBx+XSNvx50yvDRoUiT9yCYZedlXNy
- ZvBTcuog9xjs+MHfRga8rIvnRJlt9P0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=406buaJv8mgg7FCF8JFusePlvpZgWOp9GQT5SL3Z3sQ=;
+ b=IsESnY0+UmHfQbOhBiC2ySvdQMaQsq9M8K4gZaMiOel1ZHAq9OdPJmlYPHM9IHeEw/AOSH
+ Gyd7SqSEy9szhB5hRA9/RSfn7AylXfn46MzkDBPVlF2TeEtB05z8YSmWs9sLKp23EiQql+
+ C+kxaBumCPrYif1C3zpujAHuIzXE0/Q=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-x04SuhJ8PE-7uWudv2p9KA-1; Sun, 01 Jun 2025 11:25:31 -0400
-X-MC-Unique: x04SuhJ8PE-7uWudv2p9KA-1
-X-Mimecast-MFC-AGG-ID: x04SuhJ8PE-7uWudv2p9KA_1748791531
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-450d6768d4dso15955035e9.2
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:25:31 -0700 (PDT)
+ us-mta-192-fWm_WLvWNaWIqwegeNGMIw-1; Sun, 01 Jun 2025 11:25:34 -0400
+X-MC-Unique: fWm_WLvWNaWIqwegeNGMIw-1
+X-Mimecast-MFC-AGG-ID: fWm_WLvWNaWIqwegeNGMIw_1748791533
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a503f28b09so190232f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 08:25:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748791530; x=1749396330;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1748791532; x=1749396332;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JM95DHwXzlDExy0RWKOhS3EErqNETTYBPlKPucLRpFw=;
- b=YmL3AFjBsNH8oqNbJvfu/c2M3Fhca0gv43Fb46rVgOHxkhil2T4U0B/3HtuD+sQ1D0
- eM8FwcJHBseXJFTODdJutH7R0zdFnLJEGoF9iYkcGgUuRcBmAta2eUhueTl3N7u6327R
- qiX/kCDmoxPMl4TmRg0U8noqnkYgNqsUs/Ko/Aay+ylFVZr2pGlEa44nNfyHpVe2P9L5
- 3KCeNdsTmgOAnm5zBtF/Iq48pYnann7ZxBEehYbhpaA71/JQUrlMuGDQlTDAUYV3q3NW
- YRxOB+TOzYktlJeMQGEpTogJBqt/QeUcso/BTulQrE3cfcMJ+r7JXhtbhUx9MbyB18fp
- LRKA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXwclASo29RQEBkSLnX0l50+xgHt5nB6NJyJ7Sp+pVMvLy535hjd0GEKsjT4gwa1If0ceepo+txtMhQ@nongnu.org
-X-Gm-Message-State: AOJu0Yw9oh9nNxjUYB2yHtjAm1i9DBsrkkVGd9DAFgfyV+xegEcAy1wS
- 8XS9MisnTto8xDQR9XTU0BTCEdUbE6Eiru182NP66lPeT+w6q1vwCE7HM2LU1jw3nq24/J59VXk
- ZRp9jVoznmpwV0AsfZfgQFcF55hjkEJMyF0tQQ/0+/MPb7xolV03eJkkw
-X-Gm-Gg: ASbGncuywA54Yof8XQgjljCg8zdOmG62L9CDH+47Fjcl0oS0GlTyXr0ms7dxZwyrcl2
- 6kTGG3ZUBrpkGc4fWfQ3GzQOx8YqQIsc978VaUkWoCxNKmYhuzfaSehkHg819LGhfUS0+D7IBln
- 81uHct78OlljEE18+Pr9kpzLf5JoHdsoE9FloT9GmKltSU/1e+2XWzQyFUeoRIs8WFygQ9CnT0s
- tAlEwqsIf5I/+srDiW46msYjHqwYy3MHQAHlbxYuw8vAsz+MmZZ39n0v/wVb7MHbr7h/wFlZK/U
- prst4XnQclwmF0HZH/c61pZ0R9qX0nQZFFsgmUmeCLdf1F/fMA==
-X-Received: by 2002:a5d:5f56:0:b0:3a4:e423:4080 with SMTP id
- ffacd0b85a97d-3a4f89a5b17mr7257376f8f.4.1748791530627; 
- Sun, 01 Jun 2025 08:25:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHw1/KYXqGQquM3zRK6DVFIMyXNuQBQKdpf9ohMQq7TdL6UehGr4mWXe6UgvmACoT3fnzDNCA==
-X-Received: by 2002:a5d:5f56:0:b0:3a4:e423:4080 with SMTP id
- ffacd0b85a97d-3a4f89a5b17mr7257363f8f.4.1748791530251; 
- Sun, 01 Jun 2025 08:25:30 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ bh=406buaJv8mgg7FCF8JFusePlvpZgWOp9GQT5SL3Z3sQ=;
+ b=JtoeByshDdtvKEQcijzFX1qcheLGA3XojQ39U+PITz9TWBzO3CZqTryB2xCP5YqaLw
+ 1uxfD0FEkpmEPnYFkf8/Vo8teB3qrPdyfdzhV/Mp9s2bQMDAoqelXjnFhdaSHaveuhRl
+ +r4H/XjPAN42xkgVy5z+D4fEUajhfbG4VQGwZxNihBn4r21J9S1Wi2GZPyBujRruWA/O
+ 5DEvJp8jIGwGIHi7vpioaECXQ6NFSWGnD7Gyg3iZT1cUjJBeR4oAsY3QTiqPNy2xp8fq
+ TAYF1c2KpfIxij9zmVs3CivwLy0nTVt04tKiWMscoH7gzhmwKZMy18IJ5AVOdMpK7KK3
+ im2w==
+X-Gm-Message-State: AOJu0YzRtSN04YjJBtcRGm74aKmBFM4I1zA4w1OpYTTjQuJdXHshtnSN
+ 5M86Cbfc6wJzSDtsq9R4JeEZF42s7XhTbkPRgjXBu9PcjYYlEdSgnsTtIMM0TYNVo1caC4mDwWy
+ pIhCWYqyRReEB08H/LLpntDXTnl40HpmFYUCW2r9bLMzQqYJb7s+sOuoZD/qEGFzxLuAStXnK+X
+ ZBymikHK4VItuoe6GT9thGbOPF8NvIvTzpmA==
+X-Gm-Gg: ASbGncvGtfWI4cfPdF6xOvv78Ab1hxh+H77AZyf61VeFG96Kf2Oh3cUZMrckeIIuqFS
+ 457IUBJYOEz2AyVdKI7T0V3x++S0ngPjBj5p5JLpc8udw/dYyeWtCiY5xq2awzmQJ/cBqeqsUfe
+ dO2rt0eeJkM94Io7CjEB8VoEtLkiDOqUKjoP1AcXdgBHw+oLSy7cazkH99su7jxoDN0UA2g9MSO
+ I3QnLQP5y6i5VMTIEjE2UrYe58F3m4y2scrVyOLMW+xOSq9TSfZ3jxBgegc349EddkFjND0jsl2
+ UA/xBGElVi3vOkI4
+X-Received: by 2002:a05:6000:230b:b0:3a4:d915:d652 with SMTP id
+ ffacd0b85a97d-3a4eedd4eefmr10326820f8f.29.1748791532274; 
+ Sun, 01 Jun 2025 08:25:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG47DOQmrpjqaXWX/LPuKSMJ/BU8irFFKeS0BEwRXrFJfNb9ShpPMLXjINuUlu68WWlaPLkxQ==
+X-Received: by 2002:a05:6000:230b:b0:3a4:d915:d652 with SMTP id
+ ffacd0b85a97d-3a4eedd4eefmr10326800f8f.29.1748791531784; 
+ Sun, 01 Jun 2025 08:25:31 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d8000d50sm88035115e9.19.2025.06.01.08.25.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 01 Jun 2025 08:25:29 -0700 (PDT)
-Message-ID: <d98982d6-678f-473b-85f7-f547501aa570@redhat.com>
-Date: Sun, 1 Jun 2025 17:25:28 +0200
+ ffacd0b85a97d-3a4f0097813sm11929263f8f.72.2025.06.01.08.25.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 01 Jun 2025 08:25:30 -0700 (PDT)
+Date: Sun, 1 Jun 2025 11:25:29 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Bibo Mao <maobibo@loongson.cn>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 18/31] tests/acpi: Add empty ACPI data files for LoongArch
+Message-ID: <adec726cf8f953705b83b46daef8e1b0aafcb7ed.1748791463.git.mst@redhat.com>
+References: <cover.1748791463.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 18/43] vfio/pci: vfio_pci_vector_init
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
- <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-References: <1748546679-154091-1-git-send-email-steven.sistare@oracle.com>
- <1748546679-154091-19-git-send-email-steven.sistare@oracle.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
- 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
- S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
- lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
- EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
- xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
- hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
- VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
- k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
- RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
- 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
- V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
- pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
- KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
- bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
- TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
- CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
- YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
- LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
- JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
- jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
- IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
- 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
- yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
- hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
- s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
- LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
- wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
- XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
- HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
- izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <1748546679-154091-19-git-send-email-steven.sistare@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1748791463.git.mst@redhat.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -158,64 +107,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/29/25 21:24, Steve Sistare wrote:
-> Extract a subroutine vfio_pci_vector_init.  No functional change.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
+Add empty acpi table for LoongArch virt machine, it is only empty
+file and there is no data in these files.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Message-Id: <20250520130158.767083-5-maobibo@loongson.cn>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ tests/qtest/bios-tables-test-allowed-diff.h | 8 ++++++++
+ tests/data/acpi/loongarch64/virt/APIC       | 0
+ tests/data/acpi/loongarch64/virt/DSDT       | 0
+ tests/data/acpi/loongarch64/virt/FACP       | 0
+ tests/data/acpi/loongarch64/virt/MCFG       | 0
+ tests/data/acpi/loongarch64/virt/PPTT       | 0
+ tests/data/acpi/loongarch64/virt/SLIT       | 0
+ tests/data/acpi/loongarch64/virt/SPCR       | 0
+ tests/data/acpi/loongarch64/virt/SRAT       | 0
+ 9 files changed, 8 insertions(+)
+ create mode 100644 tests/data/acpi/loongarch64/virt/APIC
+ create mode 100644 tests/data/acpi/loongarch64/virt/DSDT
+ create mode 100644 tests/data/acpi/loongarch64/virt/FACP
+ create mode 100644 tests/data/acpi/loongarch64/virt/MCFG
+ create mode 100644 tests/data/acpi/loongarch64/virt/PPTT
+ create mode 100644 tests/data/acpi/loongarch64/virt/SLIT
+ create mode 100644 tests/data/acpi/loongarch64/virt/SPCR
+ create mode 100644 tests/data/acpi/loongarch64/virt/SRAT
 
-Thanks,
-
-C.
-
-
-> ---
->   hw/vfio/pci.c | 24 +++++++++++++++++-------
->   1 file changed, 17 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 840590c..2d6dc54 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -512,6 +512,22 @@ static void vfio_update_kvm_msi_virq(VFIOMSIVector *vector, MSIMessage msg,
->       kvm_irqchip_commit_routes(kvm_state);
->   }
->   
-> +static void vfio_pci_vector_init(VFIOPCIDevice *vdev, int nr)
-> +{
-> +    VFIOMSIVector *vector = &vdev->msi_vectors[nr];
-> +    PCIDevice *pdev = &vdev->pdev;
-> +
-> +    vector->vdev = vdev;
-> +    vector->virq = -1;
-> +    if (event_notifier_init(&vector->interrupt, 0)) {
-> +        error_report("vfio: Error: event_notifier_init failed");
-> +    }
-> +    vector->use = true;
-> +    if (vdev->interrupt == VFIO_INT_MSIX) {
-> +        msix_vector_use(pdev, nr);
-> +    }
-> +}
-> +
->   static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
->                                      MSIMessage *msg, IOHandler *handler)
->   {
-> @@ -525,13 +541,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
->       vector = &vdev->msi_vectors[nr];
->   
->       if (!vector->use) {
-> -        vector->vdev = vdev;
-> -        vector->virq = -1;
-> -        if (event_notifier_init(&vector->interrupt, 0)) {
-> -            error_report("vfio: Error: event_notifier_init failed");
-> -        }
-> -        vector->use = true;
-> -        msix_vector_use(pdev, nr);
-> +        vfio_pci_vector_init(vdev, nr);
->       }
->   
->       qemu_set_fd_handler(event_notifier_get_fd(&vector->interrupt),
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..bad1380eec 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,9 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/loongarch64/virt/APIC",
++"tests/data/acpi/loongarch64/virt/DSDT",
++"tests/data/acpi/loongarch64/virt/FACP",
++"tests/data/acpi/loongarch64/virt/MCFG",
++"tests/data/acpi/loongarch64/virt/PPTT",
++"tests/data/acpi/loongarch64/virt/SLIT",
++"tests/data/acpi/loongarch64/virt/SPCR",
++"tests/data/acpi/loongarch64/virt/SRAT",
+diff --git a/tests/data/acpi/loongarch64/virt/APIC b/tests/data/acpi/loongarch64/virt/APIC
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT b/tests/data/acpi/loongarch64/virt/DSDT
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/FACP b/tests/data/acpi/loongarch64/virt/FACP
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/MCFG b/tests/data/acpi/loongarch64/virt/MCFG
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/PPTT b/tests/data/acpi/loongarch64/virt/PPTT
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/SLIT b/tests/data/acpi/loongarch64/virt/SLIT
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/SPCR b/tests/data/acpi/loongarch64/virt/SPCR
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/data/acpi/loongarch64/virt/SRAT b/tests/data/acpi/loongarch64/virt/SRAT
+new file mode 100644
+index 0000000000..e69de29bb2
+-- 
+MST
 
 
