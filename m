@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB2EACB898
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Jun 2025 17:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D49D8ACB8AB
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Jun 2025 17:44:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uM7JF-000331-BP; Mon, 02 Jun 2025 11:42:50 -0400
+	id 1uM7KD-0003uY-A1; Mon, 02 Jun 2025 11:43:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uM7J0-00030z-4h; Mon, 02 Jun 2025 11:42:30 -0400
+ id 1uM7JA-00036b-H5; Mon, 02 Jun 2025 11:42:41 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uM7Iy-0003IX-23; Mon, 02 Jun 2025 11:42:29 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b9yfs4wPCz6DKxd;
- Mon,  2 Jun 2025 23:38:29 +0800 (CST)
+ id 1uM7J6-0003KH-39; Mon, 02 Jun 2025 11:42:37 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b9yjp6SRlz6HJbT;
+ Mon,  2 Jun 2025 23:41:02 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 4C76D14027A;
- Mon,  2 Jun 2025 23:42:19 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 830AD1400D4;
+ Mon,  2 Jun 2025 23:42:30 +0800 (CST)
 Received: from A2303104131.china.huawei.com (10.203.177.241) by
  frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 2 Jun 2025 17:42:11 +0200
+ 15.1.2507.39; Mon, 2 Jun 2025 17:42:22 +0200
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
  <nathanc@nvidia.com>, <mochs@nvidia.com>, <smostafa@google.com>,
  <linuxarm@huawei.com>, <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
  <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>
-Subject: [PATCH v3 3/6] hw/arm/virt-acpi-build: Update IORT for multiple
- smmuv3 devices
-Date: Mon, 2 Jun 2025 16:41:07 +0100
-Message-ID: <20250602154110.48392-4-shameerali.kolothum.thodi@huawei.com>
+Subject: [PATCH v3 4/6] hw/arm/virt: Factor out common SMMUV3 dt bindings code
+Date: Mon, 2 Jun 2025 16:41:08 +0100
+Message-ID: <20250602154110.48392-5-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20250602154110.48392-1-shameerali.kolothum.thodi@huawei.com>
 References: <20250602154110.48392-1-shameerali.kolothum.thodi@huawei.com>
@@ -73,96 +72,97 @@ From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With the soon to be introduced user-creatable SMMUv3 devices for
-virt, it is possible to have multiple SMMUv3 devices associated
-with different PCIe root complexes.
+No functional changes intended. This will be useful when we
+add support for user-creatable smmuv3 device.
 
-Update IORT nodes accordingly.
-
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- hw/arm/virt-acpi-build.c | 54 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+ hw/arm/virt.c | 54 +++++++++++++++++++++++++++------------------------
+ 1 file changed, 29 insertions(+), 25 deletions(-)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index bd26853ef6..b4ff71b8b7 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -43,6 +43,7 @@
- #include "hw/acpi/generic_event_device.h"
- #include "hw/acpi/tpm.h"
- #include "hw/acpi/hmat.h"
-+#include "hw/arm/smmuv3.h"
- #include "hw/pci/pcie_host.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_bus.h"
-@@ -288,6 +289,54 @@ get_smmuv3_legacy_dev(VirtMachineState *vms, void *opaque)
-     g_array_append_val(sdev_blob, sdev);
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 73bd2bd5f2..71b923f786 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1412,19 +1412,43 @@ static void create_pcie_irq_map(const MachineState *ms,
+                            0x7           /* PCI irq */);
  }
  
-+static int smmuv3_dev_idmap_compare(gconstpointer a, gconstpointer b)
++static void create_smmuv3_dt_bindings(const VirtMachineState *vms, hwaddr base,
++                                      hwaddr size, int irq)
 +{
-+    AcpiIortSMMUv3Dev *sdev_a = (AcpiIortSMMUv3Dev *)a;
-+    AcpiIortSMMUv3Dev *sdev_b = (AcpiIortSMMUv3Dev *)b;
-+    AcpiIortIdMapping *map_a = &g_array_index(sdev_a->idmaps,
-+                                              AcpiIortIdMapping, 0);
-+    AcpiIortIdMapping *map_b = &g_array_index(sdev_b->idmaps,
-+                                              AcpiIortIdMapping, 0);
-+    return map_a->input_base - map_b->input_base;
++    char *node;
++    const char compat[] = "arm,smmu-v3";
++    const char irq_names[] = "eventq\0priq\0cmdq-sync\0gerror";
++    MachineState *ms = MACHINE(vms);
++
++    node = g_strdup_printf("/smmuv3@%" PRIx64, base);
++    qemu_fdt_add_subnode(ms->fdt, node);
++    qemu_fdt_setprop(ms->fdt, node, "compatible", compat, sizeof(compat));
++    qemu_fdt_setprop_sized_cells(ms->fdt, node, "reg", 2, base, 2, size);
++
++    qemu_fdt_setprop_cells(ms->fdt, node, "interrupts",
++            GIC_FDT_IRQ_TYPE_SPI, irq    , GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
++            GIC_FDT_IRQ_TYPE_SPI, irq + 1, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
++            GIC_FDT_IRQ_TYPE_SPI, irq + 2, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
++            GIC_FDT_IRQ_TYPE_SPI, irq + 3, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI);
++
++    qemu_fdt_setprop(ms->fdt, node, "interrupt-names", irq_names,
++                     sizeof(irq_names));
++
++    qemu_fdt_setprop(ms->fdt, node, "dma-coherent", NULL, 0);
++    qemu_fdt_setprop_cell(ms->fdt, node, "#iommu-cells", 1);
++    qemu_fdt_setprop_cell(ms->fdt, node, "phandle", vms->iommu_phandle);
++    g_free(node);
 +}
 +
-+static int get_smmuv3_devices(Object *obj, void *opaque)
-+{
-+    VirtMachineState *vms = VIRT_MACHINE(qdev_get_machine());
-+    GArray *sdev_blob = opaque;
-+    AcpiIortIdMapping idmap;
-+    PlatformBusDevice *pbus;
-+    AcpiIortSMMUv3Dev sdev;
-+    int min_bus, max_bus;
-+    SysBusDevice *sbdev;
-+    PCIBus *bus;
-+
-+    if (!object_dynamic_cast(obj, TYPE_ARM_SMMUV3)) {
-+        return 0;
-+    }
-+
-+    bus = PCI_BUS(object_property_get_link(obj, "primary-bus", &error_abort));
-+    if (!bus) {
-+        return 0;
-+    }
-+
-+    pbus = PLATFORM_BUS_DEVICE(vms->platform_bus_dev);
-+    sbdev = SYS_BUS_DEVICE(obj);
-+    sdev.base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
-+    sdev.base += vms->memmap[VIRT_PLATFORM_BUS].base;
-+    sdev.irq = platform_bus_get_irqn(pbus, sbdev, 0);
-+    sdev.irq += vms->irqmap[VIRT_PLATFORM_BUS];
-+    sdev.irq += ARM_SPI_BASE;
-+
-+    pci_bus_range(bus, &min_bus, &max_bus);
-+    sdev.idmaps = g_array_new(false, true, sizeof(AcpiIortIdMapping));
-+    idmap.input_base = min_bus << 8,
-+    idmap.id_count = (max_bus - min_bus + 1) << 8,
-+    g_array_append_val(sdev.idmaps, idmap);
-+    g_array_append_val(sdev_blob, sdev);
-+    return 0;
-+}
-+
- /*
-  * Input Output Remapping Table (IORT)
-  * Conforms to "IO Remapping Table System Software on ARM Platforms",
-@@ -319,6 +368,11 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-          */
-         sdev = &g_array_index(smmuv3_devs, AcpiIortSMMUv3Dev, 0);
-         g_array_sort(sdev->idmaps, iort_idmap_compare);
-+    } else {
-+        object_child_foreach_recursive(object_get_root(),
-+                                       get_smmuv3_devices, smmuv3_devs);
-+        /* Sort the smmuv3 devices(if any) by smmu idmap input_base */
-+        g_array_sort(smmuv3_devs, smmuv3_dev_idmap_compare);
-     }
+ static void create_smmu(const VirtMachineState *vms,
+                         PCIBus *bus)
+ {
+     VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
+-    char *node;
+-    const char compat[] = "arm,smmu-v3";
+     int irq =  vms->irqmap[VIRT_SMMU];
+     int i;
+     hwaddr base = vms->memmap[VIRT_SMMU].base;
+     hwaddr size = vms->memmap[VIRT_SMMU].size;
+-    const char irq_names[] = "eventq\0priq\0cmdq-sync\0gerror";
+     DeviceState *dev;
+-    MachineState *ms = MACHINE(vms);
  
-     num_smmus = smmuv3_devs->len;
+     if (vms->iommu != VIRT_IOMMU_SMMUV3 || !vms->iommu_phandle) {
+         return;
+@@ -1443,27 +1467,7 @@ static void create_smmu(const VirtMachineState *vms,
+         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
+                            qdev_get_gpio_in(vms->gic, irq + i));
+     }
+-
+-    node = g_strdup_printf("/smmuv3@%" PRIx64, base);
+-    qemu_fdt_add_subnode(ms->fdt, node);
+-    qemu_fdt_setprop(ms->fdt, node, "compatible", compat, sizeof(compat));
+-    qemu_fdt_setprop_sized_cells(ms->fdt, node, "reg", 2, base, 2, size);
+-
+-    qemu_fdt_setprop_cells(ms->fdt, node, "interrupts",
+-            GIC_FDT_IRQ_TYPE_SPI, irq    , GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
+-            GIC_FDT_IRQ_TYPE_SPI, irq + 1, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
+-            GIC_FDT_IRQ_TYPE_SPI, irq + 2, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
+-            GIC_FDT_IRQ_TYPE_SPI, irq + 3, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI);
+-
+-    qemu_fdt_setprop(ms->fdt, node, "interrupt-names", irq_names,
+-                     sizeof(irq_names));
+-
+-    qemu_fdt_setprop(ms->fdt, node, "dma-coherent", NULL, 0);
+-
+-    qemu_fdt_setprop_cell(ms->fdt, node, "#iommu-cells", 1);
+-
+-    qemu_fdt_setprop_cell(ms->fdt, node, "phandle", vms->iommu_phandle);
+-    g_free(node);
++    create_smmuv3_dt_bindings(vms, base, size, irq);
+ }
+ 
+ static void create_virtio_iommu_dt_bindings(VirtMachineState *vms)
 -- 
 2.34.1
 
