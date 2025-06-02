@@ -2,73 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6446FACBD4F
+	by mail.lfdr.de (Postfix) with ESMTPS id 49173ACBD4D
 	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 00:27:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMDcV-0004vr-8Z; Mon, 02 Jun 2025 18:27:03 -0400
+	id 1uMDbt-0004KJ-6s; Mon, 02 Jun 2025 18:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uMDcO-0004oh-TS
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:26:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uMDcN-0003w4-67
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:26:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748903214;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=fLn7ssdx8BCX2BCzpgIflQm/+Ee1to3sun7sZPDYLMw=;
- b=KrKUq+Y3mes7Cy6KBIAhijK5/Z++fJ/KSkgun0ieJ95WiqiQvWWp6gxDRurSTX1z9qfvPq
- cBCisqVPBCsOBo1lFJOqEtBHHkMKPa5EUe35pwbl715ZrV57K6Ad8/wogSAW3xEHu9DNLH
- nmip2CRCSgqz/EtJjF7L5ocQAerouuU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-341-q4GiK-iaMKG0aehQsEeHSQ-1; Mon,
- 02 Jun 2025 18:26:49 -0400
-X-MC-Unique: q4GiK-iaMKG0aehQsEeHSQ-1
-X-Mimecast-MFC-AGG-ID: q4GiK-iaMKG0aehQsEeHSQ_1748903209
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ABA7D1955DAB; Mon,  2 Jun 2025 22:26:48 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.84])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EA8F330002C4; Mon,  2 Jun 2025 22:26:47 +0000 (UTC)
-Date: Mon, 2 Jun 2025 18:24:34 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Tanish Desai <tanishdesai37@gmail.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
-	Mads Ynddal <mads@ynddal.dk>
-Subject: Re: [PATCH 2/3] trace/ftrace: seperate cold paths of tracing functions
-Message-ID: <20250602222434.GB320269@fedora>
-References: <20250601181231.3461-1-tanishdesai37@gmail.com>
- <20250601181231.3461-3-tanishdesai37@gmail.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1uMDbc-0004FV-B1
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:26:08 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1uMDba-0003tN-Gs
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:26:07 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-606a4af1869so718697a12.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Jun 2025 15:26:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1748903164; x=1749507964; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=vqA9W7+q7AoIPpvWkNkiM3ROgJ6NFWq8stsfZsfIcCs=;
+ b=HPHZeij1apX4aA/Q3RIGIYqJoFitjSIEOzU/xjhcu34hG5i0bnTs9La5bcBWaFArXL
+ LeIgHQNfSz7eJybGT7jmXGhFdoXKsLD34WKVLjYP1BWRs/ol6oD2OYv9aF5YW3gB37HW
+ o9B/6Af6wDZCJlO7MIo4fnI8QXcxMDX/unJX5cFMXHsdLcdLBhrMj0vQEKF/HfPwFP29
+ gJtnoOzv0+KMzED0Vnpb6H/XSOOfFg7a/e7VB6bQXkUh0jJ5K4jysmeLBpJPAKb7KJfC
+ sUuEXnMnCzX6k90RVqiM+aNHpRFYraARVhlCbR07Jx+y7ZzVj4HN3R9UKKUV5+rcG+X3
+ MOKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748903164; x=1749507964;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vqA9W7+q7AoIPpvWkNkiM3ROgJ6NFWq8stsfZsfIcCs=;
+ b=qM2tOWffpGiAyjx+CC7YhFDMPJEwHOX0YDBKru1VrwZwSxsU7pBomRNIFoSm0Xsu+f
+ HQQ6qNQQBwlit0asoKUr/r/RdNz+BdDt5NtIwbnkQ9YTyDmookeBndJ6eiF7zI7nxfaj
+ l0d8aHclG0fBNc3eu5auVKTh7AekG+yxNiuGjPEeVdyccx5kUfv/JvQ2+gQf631ZwjcO
+ 4DI8K14zDrroGNUe5wab+0r7z8qUf+jCBCcYiNqpTh3UaqbtXJ5m3512BBU5TayCZZ5h
+ depE5NnaOh9bKQhyZbwv4M7mLtTPMy8ypTlmWXcMwk5ClwZoxTw7K93wcff4PCxa46zw
+ VYdw==
+X-Gm-Message-State: AOJu0YzvvXHbNvk5hf7N3BF0phd1OcZyxqgcLkWSdO7X+MJ5G35Rx2De
+ OaDAYajqDhmSJP50zwULuw1XxfKnpSjdsLV2OEfkq2j1HqfzUhS3fQc+xaZddmIn5gAV357mwn3
+ oxJ1cvRNMrzQarYEPcPOdeT4fgiwmsE+TJ52s7Zg=
+X-Gm-Gg: ASbGncvVzmL3FUCDmaLf0t0DVfPeQU0cVchWxkNppldpQyu7CJs8EtPdjQmqk0ahCKb
+ m3WqPpMRNA1w2LbaaHd1lxdWVaVdH+d5M9G2ZBZbdqsGO0A6XQ6grBVITeKBX2FHHD9a9e0SP4f
+ XgVsYAz6k59xIHObCGLhnd5sITlpuTxG4=
+X-Google-Smtp-Source: AGHT+IGMwkXvp65s+s3xDL/dknA5Skgg0rrJ3UTJ7sbHPANqqNKn16eNHN+pbKQl9hdGZd1g4ttGH6fwKef53uv5SXc=
+X-Received: by 2002:a17:907:3fa1:b0:ad8:8efe:3205 with SMTP id
+ a640c23a62f3a-adb36c28fccmr1348890066b.55.1748903163574; Mon, 02 Jun 2025
+ 15:26:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="gYZTh8ptLLO3NZd5"
-Content-Disposition: inline
-In-Reply-To: <20250601181231.3461-3-tanishdesai37@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250528192528.3968-1-tanishdesai37@gmail.com>
+In-Reply-To: <20250528192528.3968-1-tanishdesai37@gmail.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Mon, 2 Jun 2025 18:25:51 -0400
+X-Gm-Features: AX0GCFvr7_C2NTzv0IYWxDt1obcsTCycDt35LYN2piWBGCwIroYyrPCQOLU1P98
+Message-ID: <CAJSP0QU-0f8Rbuk4Z6S6T_DSH1xq63Ai5gQKGzSadT08MhGQyQ@mail.gmail.com>
+Subject: Re: [PATCH] trace/simple: seperate hot paths of tracing fucntions
+To: Tanish Desai <tanishdesai37@gmail.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mads@ynddal.dk
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=stefanha@gmail.com; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.015,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,127 +89,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Applied to my tracing tree, thanks!
 
---gYZTh8ptLLO3NZd5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+https://gitlab.com/stefanha/qemu/-/commit/ffcfb0faaa95fc6ca007f7dd989e390dacf936ca
 
-On Sun, Jun 01, 2025 at 06:12:30PM +0000, Tanish Desai wrote:
-> Moved rarely used (cold) code from the header file to the C file to avoid
-> unnecessary inlining and reduce binary size.
-
-How much of a binary size reduction do you measure? Most trace events
-are only called once, so the difference in code size is likely to be
-small.
-
-> This improves code organization
-> and follows good practices for managing cold paths.
-
-It's easier to understand the code generator and the generated code when
-each trace event is implemented as a single function in the header file.
-Splitting the trace event up adds complexity. I don't think this is a
-step in the right direction.
-
->=20
-> Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
-> ---
->  scripts/tracetool/backend/ftrace.py | 44 +++++++++++++++++++++--------
->  1 file changed, 32 insertions(+), 12 deletions(-)
->=20
-> diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/back=
-end/ftrace.py
-> index baed2ae61c..c9717d7b42 100644
-> --- a/scripts/tracetool/backend/ftrace.py
-> +++ b/scripts/tracetool/backend/ftrace.py
-> @@ -23,6 +23,10 @@
->  def generate_h_begin(events, group):
->      out('#include "trace/ftrace.h"',
->          '')
-> +    for event in events:
-> +        out('void _ftrace_%(api)s(%(args)s);',
-> +            api=3Devent.api(),
-> +            args=3Devent.args)
-> =20
-> =20
->  def generate_h(event, group):
-> @@ -30,26 +34,42 @@ def generate_h(event, group):
->      if len(event.args) > 0:
->          argnames =3D ", " + argnames
-> =20
-> -    out('    {',
-> +    out('        if (trace_event_get_state(%(event_id)s)) {',
-> +        '           _ftrace_%(api)s(%(args)s);',
-> +        '        }',
-> +        name=3Devent.name,
-> +        args=3D", ".join(event.args.names()),
-> +        event_id=3D"TRACE_" + event.name.upper(),
-> +        event_lineno=3Devent.lineno,
-> +        event_filename=3Dos.path.relpath(event.filename),
-> +        fmt=3Devent.fmt.rstrip("\n"),
-> +        argnames=3Dargnames,
-> +        api=3Devent.api()
-> +        )
-> +
-> +
-> +def generate_c(event, group):
-> +        argnames =3D ", ".join(event.args.names())
-> +        if len(event.args) > 0:
-> +            argnames =3D ", " + argnames
-> +        out('void _ftrace_%(api)s(%(args)s){',
->          '        char ftrace_buf[MAX_TRACE_STRLEN];',
->          '        int unused __attribute__ ((unused));',
->          '        int trlen;',
-> -        '        if (trace_event_get_state(%(event_id)s)) {',
->          '#line %(event_lineno)d "%(event_filename)s"',
-> -        '            trlen =3D snprintf(ftrace_buf, MAX_TRACE_STRLEN,',
-> -        '                             "%(name)s " %(fmt)s "\\n" %(argnam=
-es)s);',
-> +        '       trlen =3D snprintf(ftrace_buf, MAX_TRACE_STRLEN,',
->          '#line %(out_next_lineno)d "%(out_filename)s"',
-> -        '            trlen =3D MIN(trlen, MAX_TRACE_STRLEN - 1);',
-> -        '            unused =3D write(trace_marker_fd, ftrace_buf, trlen=
-);',
-> -        '        }',
-> -        '    }',
-> -        name=3Devent.name,
-> -        args=3Devent.args,
-> -        event_id=3D"TRACE_" + event.name.upper(),
-> +        '                       "%(name)s " %(fmt)s "\\n" %(argnames)s);=
-',
-> +        '       trlen =3D MIN(trlen, MAX_TRACE_STRLEN - 1);',
-> +        '       unused =3D write(trace_marker_fd, ftrace_buf, trlen);',
-> +        '}',
->          event_lineno=3Devent.lineno,
->          event_filename=3Dos.path.relpath(event.filename),
-> +        name=3Devent.name,
->          fmt=3Devent.fmt.rstrip("\n"),
-> -        argnames=3Dargnames)
-> +        argnames=3Dargnames,
-> +        api=3Devent.api(),
-> +        args=3Devent.args)
-> =20
-> =20
->  def generate_h_backend_dstate(event, group):
-> --=20
-> 2.34.1
->=20
-
---gYZTh8ptLLO3NZd5
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmg+JKIACgkQnKSrs4Gr
-c8hvXwf/ctvTjpu8D0tZ2kzM2JqLlCschu73gHxKLuWahVjiqh0cdDv1T0a8T550
-2fRgvRai2gqd8c0w7vabB8NdSsNqpwdnN9aJ1vJZjtYb3ZCRMnFxB9aj8kuDZOIJ
-7i9OgaMW94borNSIWQQGwf0cWvCeh4CiIDF1IjYdsC04ujblsWUVX3NE9j6coN5u
-J5prOkOt67XdNYd07zWux0029Hhwbj4WFU60SP6I8apkpiXof6Ueb93M7nhlcp8A
-wNQJFoIPRZPoEV7879FioDn/arnlZdthvZeQk+W6I1tiK4wMY82V9H3meqqb86/O
-ttMgB0h6fu+j+KnfHZCyjepizfqlCQ==
-=C68M
------END PGP SIGNATURE-----
-
---gYZTh8ptLLO3NZd5--
-
+Stefan
 
