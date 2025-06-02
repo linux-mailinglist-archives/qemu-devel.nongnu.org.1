@@ -2,72 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA8FACBD58
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 00:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE96ACBD63
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 00:38:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMDf7-0000C1-1V; Mon, 02 Jun 2025 18:29:45 -0400
+	id 1uMDmP-0002qF-Mw; Mon, 02 Jun 2025 18:37:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uMDf5-0000Be-Nw
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:29:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uMDf4-00043z-45
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:29:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748903381;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=z3X5wpgZRRfInHdkT5N4NfWas7VyDtR6M7oFpRGeEAE=;
- b=VnbYIvmujMDyBGaPIFHfml8Dwe0Twkje1kjU2dXGYmpN+aeJJKVbfyQhGzr34eGJl2+aXr
- AxAYuxcrBcHTWAFmmwT6gEgSxX55FWRQUQBFnzrVchXrOpleqN6sQRVT4exb7tja0ouAhv
- SlNQFyJvza6/nactzzVBieFLEryb57g=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-DN684fXbO5q_ek2IBs9FSg-1; Mon,
- 02 Jun 2025 18:29:39 -0400
-X-MC-Unique: DN684fXbO5q_ek2IBs9FSg-1
-X-Mimecast-MFC-AGG-ID: DN684fXbO5q_ek2IBs9FSg_1748903378
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 130311956095; Mon,  2 Jun 2025 22:29:38 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.84])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 50D9530002C4; Mon,  2 Jun 2025 22:29:37 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- Tanish Desai <tanishdesai37@gmail.com>
-Subject: [PULL 1/1] trace/simple: seperate hot paths of tracing fucntions
-Date: Mon,  2 Jun 2025 18:29:33 -0400
-Message-ID: <20250602222933.336883-2-stefanha@redhat.com>
-In-Reply-To: <20250602222933.336883-1-stefanha@redhat.com>
-References: <20250602222933.336883-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
+ id 1uMDmM-0002ox-SR; Mon, 02 Jun 2025 18:37:14 -0400
+Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
+ id 1uMDmK-0004t5-Ke; Mon, 02 Jun 2025 18:37:14 -0400
+Received: by mail-qk1-x733.google.com with SMTP id
+ af79cd13be357-7d09ab17244so502425985a.0; 
+ Mon, 02 Jun 2025 15:37:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1748903831; x=1749508631; darn=nongnu.org;
+ h=in-reply-to:from:content-language:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CXsTHYB45FBW5fcX6Dw1m3y5f/LMQEL2rFzLAIwuwv8=;
+ b=c+ww/Xa2Io4ztIP8Pk7x5/dj2Ri1VNOywWjZCNhriNY2Fyst3TGxvcL4XWSaFd15TV
+ 2I4U/8xdmJCgbxIYTIu2aTRCzoUIZSUNiUkbiduAmSL5FME3lEEmskW2PgweozXnbeTH
+ Vnv5ek3DfDxlVshTIkbWh4zO0uMo8zkob6WJVXkPaFjxRJ6d2Fh9qt8/UG48j7glgXWK
+ XE+yjCC/OaA4htJhc6fKznpBigSLAoKlcApvla+n+hQWlWkgMknm2BeDKbcfbgXRotih
+ 52pzNXMSUAwrQnEcJ7PcyLYJX+G3nN/uissMEmdKf8YjsXlwMZqqdCgVdDkeMCSEG4pu
+ qe8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748903831; x=1749508631;
+ h=in-reply-to:from:content-language:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=CXsTHYB45FBW5fcX6Dw1m3y5f/LMQEL2rFzLAIwuwv8=;
+ b=cgAkFsvd3thBm+iFibmm6VYDgq9VvsoQyDmN61Qvdqg2XdWHnEspBFdTGGflYKcmrA
+ 61LMlA8+4nxbUeq2illo9OQ66n1Byoj1h3DdBInzjC+9LPAFsQP4N2KCv+9yZ30SAzbR
+ QkKmP9D9FfVzrxHL4vpQSTzApq7ra87fVmgNyuHWpiO+PFvJFERdiwflzH4/awCEk5gv
+ SvsBJ32sn83GZbLs/fFQtAZIkszX5sFfyK7Autz4oxiXNIn+5WRX3aF3Zl6n87GTBqPa
+ BjEY14qJofmFYdt37Le4TrSMFR575UtV4MpYmYmUwEvqJ2UKNWoQ5sIkJYRSy00HrKzQ
+ aCUg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXyAg9CKMjHRAcMUIMXFRnYwXjyeG4G3qmWzTSUzCq0ADoytV8ENHp3Uh8AzCD0hXbFX7BPCG7ICnIx@nongnu.org
+X-Gm-Message-State: AOJu0YzgvaDSDmuXKNAgvwyCisT1Ej4S8I8fdJM4N25rXa5mjajrFcv8
+ AbeJfh61/fp6JKDoYb3dQt0JR/C0rvORd1eisG137SyTJB00ri/S1ru6
+X-Gm-Gg: ASbGncs6Xym6iVCeBRiKquVGcBp7IGa72GKdfyLIj8reeJ1j2aDHoB+4q0SizMhk1GF
+ 4k/HXxpOylm3shAPrb29qOCtHwEt+TwDvLrf1KoMSUnwIXAqzt9stqc8kheVZHfYSMOkfa7AsK7
+ lGQkJPDzugHoldbg9+as/zYnApcv4gie/TBmHuQfKS0h4HtD9wJpDjJdOFljPYQlMZW3gjbtQnU
+ xRwxpv+VRFswfAyWRolHJ1mDKRVf+InmCQFBfhfDhNHSzFEVAJv4Mjo7o2fiNLNK0FBT/yypyVh
+ CMxpSEgT/vFULjLMGnMJjoORDfDzCwKCrjkXogfBko0Eyy+LS1MYapQL/umfmuScELZ8kuLbouI
+ KqqpjO801OesAHVJ0cwz//knyIe/RUNv82N+RLEnG6b0=
+X-Google-Smtp-Source: AGHT+IE0hX0judTei4IMArjvGmvNPIvuOVBYEOCCd21NKUCTUlgyfmLtST9DTTOJkvysYH9ItcDEsg==
+X-Received: by 2002:a05:620a:2629:b0:7c7:bb3f:fd40 with SMTP id
+ af79cd13be357-7d0a49e799dmr2281958285a.5.1748903830809; 
+ Mon, 02 Jun 2025 15:37:10 -0700 (PDT)
+Received: from [10.36.159.1] (wn-campus-nat-129-97-124-1.dynamic.uwaterloo.ca.
+ [129.97.124.1]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7d09a1a790csm706197585a.96.2025.06.02.15.37.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 02 Jun 2025 15:37:10 -0700 (PDT)
+Content-Type: multipart/alternative;
+ boundary="------------4GIw5tG90NEoPeEONcMejVeU"
+Message-ID: <736d9b1a-af8f-404a-9fda-c44e8a4c6df3@gmail.com>
+Date: Mon, 2 Jun 2025 18:37:08 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 08/11] aio-posix: gracefully handle io_uring_queue_init()
+ failure
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Czenczek <hreitz@redhat.com>
+References: <20250528190916.35864-1-stefanha@redhat.com>
+ <20250528190916.35864-9-stefanha@redhat.com>
+ <a0a98436-5e4e-46d1-9a66-b6edce5c0ecc@gmail.com>
+ <20250602202051.GE300284@fedora>
+Content-Language: en-US
+From: Brian <hibriansong@gmail.com>
+In-Reply-To: <20250602202051.GE300284@fedora>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
+ envelope-from=hibriansong@gmail.com; helo=mail-qk1-x733.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.015,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,91 +104,349 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tanish Desai <tanishdesai37@gmail.com>
+This is a multi-part message in MIME format.
+--------------4GIw5tG90NEoPeEONcMejVeU
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-This change improves performance by moving the hot path of the trace_vhost_commit()(or any other trace function) logic to the header file.
-Previously, even when the trace event was disabled, the function call chain:-
-	trace_vhost_commit()(Or any other trace function) →  _nocheck__trace_vhost_commit() →  _simple_trace_vhost_commit()
-	incurred a significant function prologue overhead before checking the trace state.
 
-Disassembly of _simple_trace_vhost_commit() (from the .c file) showed that 11 out of the first 14 instructions were prologue-related, including:
-0x10	stp x29, x30, [sp, #-64]!	Prologue: allocates 64-byte frame and saves old FP (x29) & LR (x30)
-0x14	adrp x3, trace_events_enabled_count	Prologue: computes page-base of the trace-enable counter
-0x18	adrp x2, __stack_chk_guard	Important (maybe prolog don't know?)(stack-protector): starts up the stack-canary load
-0x1c	mov x29, sp	Prologue: sets new frame pointer
-0x20	ldr x3, [x3]	Prologue: loads the actual trace-enabled count
-0x24	stp x19, x20, [sp, #16]	Prologue: spills callee-saved regs used by this function (x19, x20)
-0x28	and w20, w0, #0xff	Tracepoint setup: extracts the low-8 bits of arg0 as the “event boolean”
-0x2c	ldr x2, [x2]	Prologue (cont’d): completes loading of the stack-canary value
-0x30	and w19, w1, #0xff	Tracepoint setup: extracts low-8 bits of arg1
-0x34	ldr w0, [x3]	Important: loads the current trace-enabled flag from memory
-0x38	ldr x1, [x2]	Prologue (cont’d): reads the canary
-0x3c	str x1, [sp, #56]	Prologue (cont’d): writes the canary into the new frame
-0x40	mov x1, #0	Prologue (cont’d): zeroes out x1 for the upcoming branch test
-0x44	cbnz w0, 0x88	Important: if tracing is disabled (w0==0) skip the heavy path entirely
+On 6/2/25 4:20 PM, Stefan Hajnoczi wrote:
+> On Mon, Jun 02, 2025 at 08:26:39AM -0400, Brian wrote:
+>> On 5/28/25 3:09 PM, Stefan Hajnoczi wrote:
+>>> io_uring may not be available at runtime due to system policies (e.g.
+>>> the io_uring_disabled sysctl) or creation could fail due to file
+>>> descriptor resource limits.
+>>>
+>>> Handle failure scenarios as follows:
+>>>
+>>> If another AioContext already has io_uring, then fail AioContext
+>>> creation so that the aio_add_sqe() API is available uniformly from all
+>>> QEMU threads. Otherwise fall back to epoll(7) if io_uring is
+>>> unavailable.
+>>>
+>>> Notes:
+>>> - Update the comment about selecting the fastest fdmon implementation.
+>>>     At this point it's not about speed anymore, it's about aio_add_sqe()
+>>>     API availability.
+>>> - Uppercase the error message when converting from error_report() to
+>>>     error_setg_errno() for consistency (but there are instances of
+>>>     lowercase in the codebase).
+>>> - It's easier to move the #ifdefs from aio-posix.h to aio-posix.c.
+>>>
+>>> Signed-off-by: Stefan Hajnoczi<stefanha@redhat.com>
+>>> ---
+>>>    util/aio-posix.h      | 12 ++----------
+>>>    util/aio-posix.c      | 29 ++++++++++++++++++++++++++---
+>>>    util/fdmon-io_uring.c |  8 ++++----
+>>>    3 files changed, 32 insertions(+), 17 deletions(-)
+>>>
+>>> diff --git a/util/aio-posix.h b/util/aio-posix.h
+>>> index f9994ed79e..6f9d97d866 100644
+>>> --- a/util/aio-posix.h
+>>> +++ b/util/aio-posix.h
+>>> @@ -18,6 +18,7 @@
+>>>    #define AIO_POSIX_H
+>>>    #include "block/aio.h"
+>>> +#include "qapi/error.h" struct AioHandler { GPollFD pfd; @@ -72,17
+>>> +73,8 @@ static inline void fdmon_epoll_disable(AioContext *ctx) #endif
+>>> /* !CONFIG_EPOLL_CREATE1 */ #ifdef CONFIG_LINUX_IO_URING -bool
+>>> fdmon_io_uring_setup(AioContext *ctx); +void
+>>> fdmon_io_uring_setup(AioContext *ctx, Error **errp); void
+>>> fdmon_io_uring_destroy(AioContext *ctx); -#else -static inline bool
+>>> fdmon_io_uring_setup(AioContext *ctx) -{ - return false; -} - -static
+>>> inline void fdmon_io_uring_destroy(AioContext *ctx) -{ -} #endif /*
+>>> !CONFIG_LINUX_IO_URING */ #endif /* AIO_POSIX_H */ diff --git
+>>> a/util/aio-posix.c b/util/aio-posix.c index fa047fc7ad..44b3df61f9
+>>> 100644 --- a/util/aio-posix.c +++ b/util/aio-posix.c @@ -16,6 +16,7 @@
+>>> #include "qemu/osdep.h"
+>>>    #include "block/block.h"
+>>>    #include "block/thread-pool.h"
+>>> +#include "qapi/error.h"
+>>>    #include "qemu/main-loop.h"
+>>>    #include "qemu/lockcnt.h"
+>>>    #include "qemu/rcu.h"
+>>> @@ -717,17 +718,39 @@ void aio_context_setup(AioContext *ctx, Error **errp)
+>>>        ctx->epollfd = -1;
+>>>        ctx->epollfd_tag = NULL;
+>>> -    /* Use the fastest fd monitoring implementation if available */
+>>> -    if (fdmon_io_uring_setup(ctx)) {
+>>> -        return;
+>>> +#ifdef CONFIG_LINUX_IO_URING
+>>> +    {
+>>> +        static bool need_io_uring;
+>>> +        Error *local_err = NULL; /* ERRP_GUARD() doesn't handle error_abort */
+>>> +
+>>> +        /* io_uring takes precedence because it provides aio_add_sqe() support */
+>>> +        fdmon_io_uring_setup(ctx, &local_err);
+>>> +        if (!local_err) {
+>>> +            /*
+>>> +             * If one AioContext gets io_uring, then all AioContexts need io_uring
+>>> +             * so that aio_add_sqe() support is available across all threads.
+>>> +             */
+>>> +            need_io_uring = true;
+>>> +            return;
+>>> +        }
+>>> +        if (need_io_uring) {
+>>> +            error_propagate(errp, local_err);
+>>> +            return;
+>>> +        }
+>>> +
+>>> +        warn_report_err_once(local_err); /* frees local_err */
+>>> +        local_err = NULL;
+>>>        }
+>>> +#endif /* CONFIG_LINUX_IO_URING */
+>> Is there a problem with the logic of this code snippet?
+>>
+>> If we fail at fdmon_io_uring_setup, specifically at io_uring_queue_init,
+>> local_err (or errp) will be set to a non-NULL error value. In that case,
+>> need_io_uring will be set to true, but the function will return immediately.
+> If local_err is non-NULL then this conditional is not taken:
+>
+>    if (!local_err) {
+>        /*
+>         * If one AioContext gets io_uring, then all AioContexts need io_uring
+>         * so that aio_add_sqe() support is available across all threads.
+>         */
+>        need_io_uring = true;
+>        return;
+>    }
+>
+> If the logic you described is correct, please rephrase it. I don't see
+> how what you've written can happen.
 
-The trace-enabled check happens after the prologue. This is wasteful when tracing is disabled, which is often the case in production.
-To optimize this:
-_nocheck__trace_vhost_commit() is now fully inlined in the .h file with
-the hot path.It checks trace_event_get_state() before calling into _simple_trace_vhost_commit(), which remains in .c.
-This avoids calling into the .c function altogether when the tracepoint is disabled, thereby skipping unnecessary prologue instructions.
+Sorry, I didn’t notice that need_io_uring is a static var. Was confused 
+about when if (need_io_block) gets executed
 
-This results in better performance by removing redundant instructions in the tracing fast path.
+>> As a result, the later if (need_io_uring) block will never be executed
+>>
+>>>        fdmon_epoll_setup(ctx);
+>>>    }
+>>>    void aio_context_destroy(AioContext *ctx)
+>>>    {
+>>> +#ifdef CONFIG_LINUX_IO_URING
+>>>        fdmon_io_uring_destroy(ctx);
+>>> +#endif
+>>>        qemu_lockcnt_lock(&ctx->list_lock);
+>>>        fdmon_epoll_disable(ctx);
+>>> diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
+>>> index 2092d08d24..ef1a866a03 100644
+>>> --- a/util/fdmon-io_uring.c
+>>> +++ b/util/fdmon-io_uring.c
+>>> @@ -45,6 +45,7 @@
+>>>    #include "qemu/osdep.h"
+>>>    #include <poll.h>
+>>> +#include "qapi/error.h"
+>>>    #include "qemu/rcu_queue.h"
+>>>    #include "aio-posix.h"
+>>> @@ -361,7 +362,7 @@ static const FDMonOps fdmon_io_uring_ops = {
+>>>        .gsource_dispatch = fdmon_io_uring_gsource_dispatch,
+>>>    };
+>>> -bool fdmon_io_uring_setup(AioContext *ctx)
+>>> +void fdmon_io_uring_setup(AioContext *ctx, Error **errp)
+>>>    {
+>>>        int ret;
+>>> @@ -369,15 +370,14 @@ bool fdmon_io_uring_setup(AioContext *ctx)
+>>>        ret = io_uring_queue_init(FDMON_IO_URING_ENTRIES, &ctx->fdmon_io_uring, 0);
+>>>        if (ret != 0) {
+>>> -        return false;
+>>> +        error_setg_errno(errp, -ret, "Failed to initialize io_uring");
+>>> +        return;
+>>>        }
+>>>        QSLIST_INIT(&ctx->submit_list);
+>>>        ctx->fdmon_ops = &fdmon_io_uring_ops;
+>>>        ctx->io_uring_fd_tag = g_source_add_unix_fd(&ctx->source,
+>>>                ctx->fdmon_io_uring.ring_fd, G_IO_IN);
+>>> -
+>>> -    return true;
+>>>    }
+>>>    void fdmon_io_uring_destroy(AioContext *ctx)
+--------------4GIw5tG90NEoPeEONcMejVeU
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
-Message-id: 20250528192528.3968-1-tanishdesai37@gmail.com
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+<!DOCTYPE html>
+<html data-lt-installed="true">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body style="padding-bottom: 1px;">
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 6/2/25 4:20 PM, Stefan Hajnoczi
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20250602202051.GE300284@fedora">
+      <pre wrap="" class="moz-quote-pre">On Mon, Jun 02, 2025 at 08:26:39AM -0400, Brian wrote:
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">On 5/28/25 3:09 PM, Stefan Hajnoczi wrote:
+</pre>
+        <blockquote type="cite">
+          <pre wrap="" class="moz-quote-pre">io_uring may not be available at runtime due to system policies (e.g.
+the io_uring_disabled sysctl) or creation could fail due to file
+descriptor resource limits.
+
+Handle failure scenarios as follows:
+
+If another AioContext already has io_uring, then fail AioContext
+creation so that the aio_add_sqe() API is available uniformly from all
+QEMU threads. Otherwise fall back to epoll(7) if io_uring is
+unavailable.
+
+Notes:
+- Update the comment about selecting the fastest fdmon implementation.
+   At this point it's not about speed anymore, it's about aio_add_sqe()
+   API availability.
+- Uppercase the error message when converting from error_report() to
+   error_setg_errno() for consistency (but there are instances of
+   lowercase in the codebase).
+- It's easier to move the #ifdefs from aio-posix.h to aio-posix.c.
+
+Signed-off-by: Stefan Hajnoczi<a class="moz-txt-link-rfc2396E" href="mailto:stefanha@redhat.com">&lt;stefanha@redhat.com&gt;</a>
 ---
- scripts/tracetool/backend/simple.py | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+  util/aio-posix.h      | 12 ++----------
+  util/aio-posix.c      | 29 ++++++++++++++++++++++++++---
+  util/fdmon-io_uring.c |  8 ++++----
+  3 files changed, 32 insertions(+), 17 deletions(-)
 
-diff --git a/scripts/tracetool/backend/simple.py b/scripts/tracetool/backend/simple.py
-index a74d61fcd6..2688d4b64b 100644
---- a/scripts/tracetool/backend/simple.py
-+++ b/scripts/tracetool/backend/simple.py
-@@ -36,8 +36,17 @@ def generate_h_begin(events, group):
- 
- 
- def generate_h(event, group):
--    out('    _simple_%(api)s(%(args)s);',
-+    event_id = 'TRACE_' + event.name.upper()
-+    if "vcpu" in event.properties:
-+        # already checked on the generic format code
-+        cond = "true"
-+    else:
-+        cond = "trace_event_get_state(%s)" % event_id
-+    out('    if (%(cond)s) {',
-+        '        _simple_%(api)s(%(args)s);',
-+        '    }',
-         api=event.api(),
-+        cond=cond,
-         args=", ".join(event.args.names()))
- 
- 
-@@ -72,22 +81,10 @@ def generate_c(event, group):
-     if len(event.args) == 0:
-         sizestr = '0'
- 
--    event_id = 'TRACE_' + event.name.upper()
--    if "vcpu" in event.properties:
--        # already checked on the generic format code
--        cond = "true"
--    else:
--        cond = "trace_event_get_state(%s)" % event_id
+diff --git a/util/aio-posix.h b/util/aio-posix.h
+index f9994ed79e..6f9d97d866 100644
+--- a/util/aio-posix.h
++++ b/util/aio-posix.h
+@@ -18,6 +18,7 @@
+  #define AIO_POSIX_H
+  #include "block/aio.h"
++#include "qapi/error.h" struct AioHandler { GPollFD pfd; @@ -72,17
++73,8 @@ static inline void fdmon_epoll_disable(AioContext *ctx) #endif
+/* !CONFIG_EPOLL_CREATE1 */ #ifdef CONFIG_LINUX_IO_URING -bool
+fdmon_io_uring_setup(AioContext *ctx); +void
+fdmon_io_uring_setup(AioContext *ctx, Error **errp); void
+fdmon_io_uring_destroy(AioContext *ctx); -#else -static inline bool
+fdmon_io_uring_setup(AioContext *ctx) -{ - return false; -} - -static
+inline void fdmon_io_uring_destroy(AioContext *ctx) -{ -} #endif /*
+!CONFIG_LINUX_IO_URING */ #endif /* AIO_POSIX_H */ diff --git
+a/util/aio-posix.c b/util/aio-posix.c index fa047fc7ad..44b3df61f9
+100644 --- a/util/aio-posix.c +++ b/util/aio-posix.c @@ -16,6 +16,7 @@
+#include "qemu/osdep.h"
+  #include "block/block.h"
+  #include "block/thread-pool.h"
++#include "qapi/error.h"
+  #include "qemu/main-loop.h"
+  #include "qemu/lockcnt.h"
+  #include "qemu/rcu.h"
+@@ -717,17 +718,39 @@ void aio_context_setup(AioContext *ctx, Error **errp)
+      ctx-&gt;epollfd = -1;
+      ctx-&gt;epollfd_tag = NULL;
+-    /* Use the fastest fd monitoring implementation if available */
+-    if (fdmon_io_uring_setup(ctx)) {
+-        return;
++#ifdef CONFIG_LINUX_IO_URING
++    {
++        static bool need_io_uring;
++        Error *local_err = NULL; /* ERRP_GUARD() doesn't handle error_abort */
++
++        /* io_uring takes precedence because it provides aio_add_sqe() support */
++        fdmon_io_uring_setup(ctx, &amp;local_err);
++        if (!local_err) {
++            /*
++             * If one AioContext gets io_uring, then all AioContexts need io_uring
++             * so that aio_add_sqe() support is available across all threads.
++             */
++            need_io_uring = true;
++            return;
++        }
++        if (need_io_uring) {
++            error_propagate(errp, local_err);
++            return;
++        }
++
++        warn_report_err_once(local_err); /* frees local_err */
++        local_err = NULL;
+      }
++#endif /* CONFIG_LINUX_IO_URING */
+</pre>
+        </blockquote>
+        <pre wrap="" class="moz-quote-pre">Is there a problem with the logic of this code snippet?
+
+If we fail at fdmon_io_uring_setup, specifically at io_uring_queue_init,
+local_err (or errp) will be set to a non-NULL error value. In that case,
+need_io_uring will be set to true, but the function will return immediately.
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+If local_err is non-NULL then this conditional is not taken:
+
+  if (!local_err) {
+      /*
+       * If one AioContext gets io_uring, then all AioContexts need io_uring
+       * so that aio_add_sqe() support is available across all threads.
+       */
+      need_io_uring = true;
+      return;
+  }
+
+If the logic you described is correct, please rephrase it. I don't see
+how what you've written can happen.</pre>
+    </blockquote>
+    <p data-pm-slice="0 0 []">Sorry, I didn’t notice that need_io_uring
+      is a static var. Was confused about when if (need_io_block) gets
+      executed</p>
+    <blockquote type="cite" cite="mid:20250602202051.GE300284@fedora">
+      <pre wrap="" class="moz-quote-pre">
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">As a result, the later if (need_io_uring) block will never be executed
+
+</pre>
+        <blockquote type="cite">
+          <pre wrap="" class="moz-quote-pre">      fdmon_epoll_setup(ctx);
+  }
+  void aio_context_destroy(AioContext *ctx)
+  {
++#ifdef CONFIG_LINUX_IO_URING
+      fdmon_io_uring_destroy(ctx);
++#endif
+      qemu_lockcnt_lock(&amp;ctx-&gt;list_lock);
+      fdmon_epoll_disable(ctx);
+diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
+index 2092d08d24..ef1a866a03 100644
+--- a/util/fdmon-io_uring.c
++++ b/util/fdmon-io_uring.c
+@@ -45,6 +45,7 @@
+  #include "qemu/osdep.h"
+  #include &lt;poll.h&gt;
++#include "qapi/error.h"
+  #include "qemu/rcu_queue.h"
+  #include "aio-posix.h"
+@@ -361,7 +362,7 @@ static const FDMonOps fdmon_io_uring_ops = {
+      .gsource_dispatch = fdmon_io_uring_gsource_dispatch,
+  };
+-bool fdmon_io_uring_setup(AioContext *ctx)
++void fdmon_io_uring_setup(AioContext *ctx, Error **errp)
+  {
+      int ret;
+@@ -369,15 +370,14 @@ bool fdmon_io_uring_setup(AioContext *ctx)
+      ret = io_uring_queue_init(FDMON_IO_URING_ENTRIES, &amp;ctx-&gt;fdmon_io_uring, 0);
+      if (ret != 0) {
+-        return false;
++        error_setg_errno(errp, -ret, "Failed to initialize io_uring");
++        return;
+      }
+      QSLIST_INIT(&amp;ctx-&gt;submit_list);
+      ctx-&gt;fdmon_ops = &amp;fdmon_io_uring_ops;
+      ctx-&gt;io_uring_fd_tag = g_source_add_unix_fd(&amp;ctx-&gt;source,
+              ctx-&gt;fdmon_io_uring.ring_fd, G_IO_IN);
 -
-     out('',
--        '    if (!%(cond)s) {',
--        '        return;',
--        '    }',
--        '',
-         '    if (trace_record_start(&rec, %(event_obj)s.id, %(size_str)s)) {',
-         '        return; /* Trace Buffer Full, Event Dropped ! */',
-         '    }',
--        cond=cond,
-         event_obj=event.api(event.QEMU_EVENT),
-         size_str=sizestr)
- 
--- 
-2.49.0
+-    return true;
+  }
+  void fdmon_io_uring_destroy(AioContext *ctx)
+</pre>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </body>
+  <lt-container></lt-container>
+</html>
 
+--------------4GIw5tG90NEoPeEONcMejVeU--
 
