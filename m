@@ -2,102 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A5AACA959
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Jun 2025 08:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0FAACA950
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Jun 2025 08:12:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uLyRS-0000rd-Mi; Mon, 02 Jun 2025 02:14:41 -0400
+	id 1uLyKm-0005Pn-O5; Mon, 02 Jun 2025 02:08:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uLyEU-000594-Tk
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 02:01:58 -0400
-Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1uLy3L-0001ht-Jc
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 01:50:14 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uLyEL-0001GU-3h
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 02:01:08 -0400
-Received: by mail-qt1-x832.google.com with SMTP id
- d75a77b69052e-4a42cb03673so56080951cf.3
- for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 23:00:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1uLy3D-0007Js-FY
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 01:49:39 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-234bfe37cccso50809205ad.0
+ for <qemu-devel@nongnu.org>; Sun, 01 Jun 2025 22:49:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748844058; x=1749448858; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=C1S/0fOd3Ua61BjaNhpLqiG5aY32cQFtFDl5eGP+t9A=;
- b=z6AjRmt5AUUxtE05ZQxbwHlPJO0x41hCgiW8sbK/tzRTQUsj8SAJKQBfv9ntcGw2RS
- cTunACUuGGtyk5R5OrikRnlynevAqqT06CylrTNCPbqUF7orxzmN8QC2aPdkRNEs5lo2
- sBzr1CalA791yky9VGNB9kO1XTEb/LapM9wb9M6QUrhOBbBN9kE5gHB8LZhzW2VmGbCy
- vBwE5VJcakLdrUSwxzzrPk8fq9whBiJD23SyJR2Ko4pnYKzy+zLbAop9Iv/GRTJ9fi3p
- +s8ViO/TLTwjpWIe7t9qtKXbelLSqSggPeosh2U1JEwEpyw3RvdoeZTsY3/HJZ4FyMFl
- 5WdA==
+ d=gmail.com; s=20230601; t=1748843359; x=1749448159; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cE/rElsE+sxHsKrFd8ZdZIhXnJuddVorLW+oNsQpqho=;
+ b=BYvfUAgyLHhZCJfsEMnC8AfiyInpk2ZxX0ZYsbV95jiYftuf+piUIr7H4zCUBpv71a
+ ZBXgNlcRlOnfAxy9UKn9UR26M32USJP6QUa89DiRzk3vhHc+Eef0ZItaHP2dt+mG75Ms
+ zahp8WetEt0+Hj3iYRPML1WMOHHf/EK/TLjUgiBgPn2jZZCC0QIKRQZesPvkOT9Gxu89
+ 201prRz6Sk9EpFglgpNfCe+jdwzHIhmd0UHfI18PgmSY3ff87rd2nSCJK/I51VM4YN++
+ OYl4SeNrZfeuh0B6GHjcL899tOgQrB7wvTvhYqkfE5uGvKnY+hCoYniVsNd0lVVRyA6M
+ OWUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748844058; x=1749448858;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=C1S/0fOd3Ua61BjaNhpLqiG5aY32cQFtFDl5eGP+t9A=;
- b=BPyF5F85LB2aTU7nzb2oT0VLFx3/FcKqnJv5ky/9Bv7f4jzYDnB9+FECvHWTXqRR5y
- EQnoXBWpzHKqdRkFdCwkVcqJgPxBRQ+O6T2CsSxDsuMcYUzUNs1I+zfAEJg9imiVBG2k
- 9PVTzzow4iJJyQAQgS5fc1Pq2uRcdbqhSWrWsFaZkyPqrgbxOJtdq71osAb54X+EKnE1
- 4krGKbxKYAuXATmwxOsF4kg8bN1Snk+unEPi6pJq/6nIvQ0un6nCbqALIP5bXPQdLMIj
- DksA8HPkT+/OZ6vf7XR/jqSGgoOL6CgluTZA/V1MYQ2hFN7btkxf51rFbz1/LjNFsI7E
- UqXw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWC4Cqgwebpx4yZF/ap5D6SGkGcepTrwCWN2xDm9mMm0dckgDwZPi6Sa/oBIlR/xz0ilT70G0XGpE9u@nongnu.org
-X-Gm-Message-State: AOJu0YzaS5J2RU6IbcBRXVwn2dbksAi0nU9mYyJmxF71c1VDuvxo3KmB
- oLPgw6GSom+xXuMoYQogCTucBhvwhCT7rsvgqo4ErRNWLwPxg1YWQ15vzKeZhH/J0XQguoTSpKv
- cQxdn
-X-Gm-Gg: ASbGncsY95AlC71clfd3EnZPlYPZ+lzrEreIIhut0TsMZv4P528WRAam9l9hHx15CAy
- 4YLy0Q/QqCUoKeb6CHhbnjamRzqORsBGY6/HJjywHQ03zGLwOKSqBDSygSGoLXNLhiHPS5JpCTZ
- dkPf1N5m8vJj3rOZXkvyVkx6c43hEQCaqv6uBsrX/Se0AHUrQ4LqVi/Ecr94QYGOI7CPXPBybM6
- z/7JcUbJbFGL+ocYRwoRyLqhIMjtSoiOSNgBgYvtLJj8l4sl6MOupykKO/dIdv3tptAPxDywtVk
- vrPcRlxIActEonQ/ECjOo0eTBgy0Og762E7NoVPUWQ/EKVCBqm1wW4pyR3hA5JEYrtGVmhf8WIt
- P
-X-Google-Smtp-Source: AGHT+IHgrMZYqPtdotygkP0NHs7OLI1mMRROu42ciHffjOiejGaqv5UflpVp3mNFK2xImt6XPBJreQ==
-X-Received: by 2002:a05:6122:790:b0:52a:7787:53d7 with SMTP id
- 71dfb90a1353d-5308109f849mr9736745e0c.6.1748842553629; 
- Sun, 01 Jun 2025 22:35:53 -0700 (PDT)
-Received: from [192.168.0.102] ([179.180.194.137])
- by smtp.gmail.com with ESMTPSA id
- 71dfb90a1353d-53074c31c38sm6942465e0c.40.2025.06.01.22.35.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 01 Jun 2025 22:35:52 -0700 (PDT)
-Message-ID: <a60b8909-1519-4de7-9aa1-3802065f5bb5@linaro.org>
-Date: Mon, 2 Jun 2025 02:35:52 -0300
+ d=1e100.net; s=20230601; t=1748843359; x=1749448159;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cE/rElsE+sxHsKrFd8ZdZIhXnJuddVorLW+oNsQpqho=;
+ b=AblXy6mxfyK7C+6bWQisP2mkpWTZArZiEc20iHZLsrPhCoexjrCI3oUHQVcml7iUmI
+ VYQkmv8wM6LpMz0dcNm6IkyzwHmaEuUUkdqMzkcmdlMGXM+bcbZjT+/oXcDHwHXxjyDp
+ WuxBzBfolGJLOtqTC+PTDGiLzve6LQUpcB+adeF+Vi9B+wA2Y5/gVWL62lAi9zDjWL0p
+ n5JYvqPn7FuZcyoe7YVdolYA037sjuehuV/54riHyae6bM8m2b5waaVXhsqZVaDyVAJs
+ n45la5ef9ftcHodDWVlqSU4x36R3QFg1h4TadTSaLOn/w95bdw/bT8djUPnDEiZ5dAAw
+ UfMg==
+X-Gm-Message-State: AOJu0Yy9C8aNjhCF1nc3naVHVl1fQe0PFirieI5Rstp/aRxyG4uffCUo
+ /blGQxIW//sCagSqd5Fu/ofii3Cou37slUMPAxcrqRI5SrixVxBJzZeYiBA2TtcAq3I=
+X-Gm-Gg: ASbGncveIAs3R94WYwK5XEqlQ1Q8imnB2X495xyliSlfyNA95qKpebXqjnZ7UNcnGcD
+ Ml4ngCI+0phnDwOf0GfG4x0lwJZ0WgQ7PI12jYpxvoTwIlnISeq/bF5m/unyEvHsB+yFOKnNRfQ
+ WkphDgBfP3xx/fKva7OkmehK8qXUThYXTefU0PosMo3e4w+zTa2ygsXbc/YXAld6HUp1eIV3XoT
+ ZTiqyz0Q6jX2CYkoEHvfFIfDxrd5aMRR3HOj9d0NYhAORq9XdjcKY7ssDj7Ky9gTWmXoA4pie9k
+ pCxc0ZDyKbnuwgOhogW0eWHMYyVwgaHIp4RjTjbIWVxMmGRORLhjq/ubR4Bibg==
+X-Google-Smtp-Source: AGHT+IF3OrWpc7OejIbVPtZtXX3Tazkp58+OYKEBr4C77IESsKlyzCZjxAI9cobLQgQsLSMOGxz2Dw==
+X-Received: by 2002:a17:902:d550:b0:234:9fee:af99 with SMTP id
+ d9443c01a7336-235395e2e4cmr164576335ad.35.1748843359148; 
+ Sun, 01 Jun 2025 22:49:19 -0700 (PDT)
+Received: from shemhazi.lan ([50.46.174.34]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23506bdce12sm63464085ad.99.2025.06.01.22.49.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 01 Jun 2025 22:49:18 -0700 (PDT)
+From: Rowan Hart <rowanbhart@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Yanan Wang <wangyanan55@huawei.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ novafacing <rowanbhart@gmail.com>
+Subject: [PATCH v5 1/9] gdbstub: Expose gdb_write_register function to
+ consumers of gdbstub
+Date: Sun,  1 Jun 2025 22:49:08 -0700
+Message-ID: <20250602054917.302638-2-rowanbhart@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250602054917.302638-1-rowanbhart@gmail.com>
+References: <20250602054917.302638-1-rowanbhart@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 24/25] tests/qtest/bios-tables-test: Keep ACPI PCI
- hotplug off
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org,
- anisinha@redhat.com, mst@redhat.com, shannon.zhaosl@gmail.com,
- pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org,
- alex.bennee@linaro.org
-References: <20250527074224.1197793-1-eric.auger@redhat.com>
- <20250527074224.1197793-25-eric.auger@redhat.com>
- <20250528113813.47086516@imammedo.users.ipa.redhat.com>
- <375cfbd6-e585-4b6d-bf10-6571aa40370e@linaro.org>
- <20250528150239.5f6b63d0@imammedo.users.ipa.redhat.com>
- <6a5776b4-73ef-427b-b4e4-b25031b0ce53@linaro.org>
- <20250530135103.09030cf0@imammedo.users.ipa.redhat.com>
-Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <20250530135103.09030cf0@imammedo.users.ipa.redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
- envelope-from=gustavo.romero@linaro.org; helo=mail-qt1-x832.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,251 +106,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor and Eric,
+From: novafacing <rowanbhart@gmail.com>
 
-On 5/30/25 08:51, Igor Mammedov wrote:
-> On Wed, 28 May 2025 12:04:26 -0300
-> Gustavo Romero <gustavo.romero@linaro.org> wrote:
-> 
->> Hi Igor,
->>
->> On 5/28/25 10:02, Igor Mammedov wrote:
->>> On Wed, 28 May 2025 09:41:15 -0300
->>> Gustavo Romero <gustavo.romero@linaro.org> wrote:
->>>    
->>>> Hi Igor,
->>>>
->>>> On 5/28/25 06:38, Igor Mammedov wrote:
->>>>> On Tue, 27 May 2025 09:40:26 +0200
->>>>> Eric Auger <eric.auger@redhat.com> wrote:
->>>>>       
->>>>>> From: Gustavo Romero <gustavo.romero@linaro.org>
->>>>>>
->>>>>> ACPI PCI hotplug is now turned on by default so we need to change the
->>>>>> existing tests to keep it off. However, even setting the ACPI PCI
->>>>>> hotplug off in the existing tests, there will be changes in the ACPI
->>>>>> tables because the _OSC method was modified, hence in the next patch of
->>>>>> this series the blobs are updated accordingly.
->>>>>>
->>>>>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->>>>>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->>>>>
->>>>> it would be better to test whatever default we end up with.
->>>>> (like x86)
->>>>
->>>> hmm maybe there is a confusion here, Igor. We are actually planning what you
->>>
->>> perhaps, see my reply to Eric about my expectations wrt tests.
->>
->> Yip, I read it before my reply here.
->>
->>
->>> (i.e. default tests shouldn't have any explicit CLI options,
->>> instead it should follow whitelist blobs/set new default patch/update blobs pattern)
->>
->> I see. I agree with that. But this patch is not about the new test. The new test is
->> _not_ in this series. Patches 8/25, 10/25, and 24/25 are _not_ about the new test but
->> about adapting the _legacy tests_ (native acpi) to the situation when ACPI HP becomes
->> the default, because this series makes acpi-pcihp=on the default, hence the CLI option
->> "acpi-pcihp=off" added to them. An update to the blobs are also necessary because of the
->> change in _OSC method, even when acpi-pcihp=off.
->>
->>
->>>> said. This patch and the other two in this series related to the bios-tables-test
->>>> (i.e., patches 8/25 and 10/25) are for actually making the current (legacy) test pass,
->>>> since the new default as per this series will be acpi-pcihp=on. That's why here we're
->>>> adapting the current test here to have acpi-pcihp=off.
->>>>
->>>> The new test that will test for acpi-pcihp=on (the new default) is not in this series
->>>> and we decided to merge it separate. It's in the patch 4/5 and 5/5 of the follow series:
->>
->> We're doing the "blobs/set new default patch/update blobs pattern" in the new test, which
->> we can merge later, once this series is merged, no? The step "set new default" then will
->> not be necessary because the new test will be merged separate, after this series, so when
->> acpi-pcihp=on is already the default.
->>
->> Please note that although we're using acpi-pcihp=on in the new test, it's not necessary,
->> we can dropped this option, making it implicit as you say, and it will work. This is the
->> new test:
->>
->>>> https://mail.gnu.org/archive/html/qemu-devel/2025-05/msg05828.html 4/5
->>>> https://mail.gnu.org/archive/html/qemu-devel/2025-05/msg05827.html 5/5
->>
->>
->> Thus, there are to "acts" of modifying the bios-tables-test:
->>
->> 1) Adapt the current tests to when acpi-pcihp=on becomes the default (hence the addition
->>      to them of "acpi-pcihp=off".
-> 
-> 
-> that's what I disagree with.
-> 
-> 1) Instead adapting majority of tests to legacy before switching defaults,
-> just do whitelist/modify default/update so all of tests run with new default.
-> 
-> and then
-> 
->> There is also the need to update the blobs, but it's because
->>      of the _OSC method change in DSDT table, which will change anyways, even with "acpi-pcihp=off¨,
->>      hence the need for patch 10/25 in this series. This is _done is this series_.
-> 
-> 
->   
->> 2) Add a new test for testing the default (i.e. acpi-pcihp-on). It follows what you're
->>      saying above: "follow whitelist blobs/set new default patch/update blobs pattern",
->>      because we can drop the acpi-pcihp-on option from the CLI in this test without any
->>      prejudice to test. While the step "set new default patch" was actually done in 1).
-> 
-> 2) add a separate test case for native pcie hoplug (preferably within this series)
-> 
-> 3) even better would be to add #2 before #1 (right after 10/25),
-> this way will guarantee that old native hotplug tables stay
-> the same regardless of followup patches that add ACPI pcihp aml.
+This patch exposes the gdb_write_register function from
+gdbstub/gdbstub.c via the exec/gdbstub.h header file to support use in
+plugins to write register contents.
 
-Got it now, hopefully... :)
+Signed-off-by: novafacing <rowanbhart@gmail.com>
+Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
+---
+ gdbstub/gdbstub.c      |  2 +-
+ include/exec/gdbstub.h | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-OK, I'm trying to follow what you recommended in 3). I've pushed a series to:
-
-https://github.com/gromero/qemu/commits/v2_20250527_eric_auger_redhat_com/
-
-So, I understand we will need to add/update the blobs at three times,
-2 times because of the changes in the DSDT generation (_OSC changes and when
-acpi-pci=on) and an additional one because of the new PCIe native hotplug test.
-
-I dropped this patch (Patch 24/25) from the series.
-
-So the overview of the organization would be the following:
-
-
-3c302f7222 tests/qtest/bios-tables-test: Update DSDT blobs                                   #1c (update blob)    \
-671f15f470 hw/arm/virt: Use ACPI PCI hotplug by default                                      #1b (modify default) |--- acpi-pcihp=on
-9468f730e1 tests/qtest/bios-tables-test: Prepare for changes in the DSDT table               #1a (whitelist)      /
-c9ec0e0226 hw/arm/virt: Plug pcihp hotplug/hotunplug callbacks
-dc44749a34 hw/arm/virt: Let virt support pci hotplug/unplug GED event
-f667079260 hw/core/sysbus: Introduce sysbus_mmio_map_name() helper
-46731e563b hw/acpi/ged: Support migration of AcpiPciHpState
-4fa7b0e0f6 hw/acpi/ged: Call pcihp plug callbacks in hotplug handler implementation
-587b001876 hw/acpi/ged: Prepare the device to react to PCI hotplug events
-b55183d128 hw/arm/virt-acpi-build: Modify the DSDT ACPI table to enable ACPI PCI hotplug
-fe4c96b384 hw/i386/acpi-build: Move aml_pci_edsm to a generic place
-010c50dbc7 hw/i386/acpi-build: Introduce and use acpi_get_pci_host
-5a1be727e6 hw/i386/acpi-build: Move build_append_pci_bus_devices/pcihp_slots to pcihp
-14a172e192 hw/i386/acpi-build: Move build_append_notification_callback to pcihp
-5110ae8874 hw/acpi/pcihp: Add an AmlRegionSpace arg to build_acpi_pci_hotplug
-82c2aef672 hw/i386/acpi-build: Introduce build_append_pcihp_resources() helper
-6372fe7eef qtest/bios-tables-test: Update DSDT 'noacpipcihp' variant blob                    #2 (blob update for test), part 2 of 2 (update blob)  ]--- New PCIe native test
-6fb29ba18d tests/qtest/bios-tables-test: Add aarch64 PCIe native hotplug test                #2 (pcie native hp test), part 1 of 2 (whitelist)     /
-12c63a505e tests/qtest/bios-tables-test: Update DSDT blobs after GPEX _OSC change            Patch 10/25 in this series (update blob)    \
-779bd47749 hw/pci-host/gpex-acpi: Use build_pci_host_bridge_osc_method                       Patch  9/25 in this series (modify default) |--- _OSC change
-f260fd59c1 tests/qtest/bios-tables-test: Prepare for changes in the DSDT table               Patch  8/25 in this series (whitelist)      /
-b000677fd9 hw/i386/acpi-build: Turn build_q35_osc_method into a generic method
-a72f87b634 hw/pci-host/gpex-acpi: Propagate hotplug type info from virt machine downto gpex
-77a87b6ba3 hw/pci-host/gpex-acpi: Split host bridge OSC and DSM generation
-67e4dc2e7b hw/pci-host/gpex-acpi: Add native_pci_hotplug arg to acpi_dsdt_add_pci_osc
-b89e69da54 hw/acpi: Rename and move build_x86_acpi_pci_hotplug to pcihp
-74f1080a74 hw/arm/virt: Introduce machine state acpi pcihp flags and props
-1048082f33 hw/i386/acpi-build: Make aml_pci_device_dsm() static
-
-See notes on the right for when the blobs are updated or added in the
-series. The new test for PCIe native hotplug (I prefer not calling it legacy,
-since it's not really legacy; it's just an alternative better in some scenarios,
-specially in virtualization) is now in the series (#2), "right after 10/25".
-
-Is something like that that you want?
-
-
-Cheers,
-Gustavo
-
-> 
->> Cheers,
->> Gustavo
->>
->>>> https://mail.gnu.org/archive/html/qemu-devel/2025-05/msg05828.html 4/5
->>>> https://mail.gnu.org/archive/html/qemu-devel/2025-05/msg05827.html 5/5
->>>>
->>>>
->>>> Cheers,
->>>> Gustavo
->>>>   
->>>>>>
->>>>>> ---
->>>>>>
->>>>>> [Eric] also added acpi-pcihp=off to test_acpi_aarch64_virt_tcg_numamem
->>>>>> ---
->>>>>>     tests/qtest/bios-tables-test.c | 13 +++++++++----
->>>>>>     1 file changed, 9 insertions(+), 4 deletions(-)
->>>>>>
->>>>>> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
->>>>>> index 0a333ec435..6379dba714 100644
->>>>>> --- a/tests/qtest/bios-tables-test.c
->>>>>> +++ b/tests/qtest/bios-tables-test.c
->>>>>> @@ -1626,7 +1626,7 @@ static void test_acpi_aarch64_virt_tcg_memhp(void)
->>>>>>         };
->>>>>>     
->>>>>>         data.variant = ".memhp";
->>>>>> -    test_acpi_one(" -machine nvdimm=on"
->>>>>> +    test_acpi_one(" -machine nvdimm=on,acpi-pcihp=off"
->>>>>>                       " -cpu cortex-a57"
->>>>>>                       " -m 256M,slots=3,maxmem=1G"
->>>>>>                       " -object memory-backend-ram,id=ram0,size=128M"
->>>>>> @@ -1747,7 +1747,8 @@ static void test_acpi_aarch64_virt_tcg_numamem(void)
->>>>>>         };
->>>>>>     
->>>>>>         data.variant = ".numamem";
->>>>>> -    test_acpi_one(" -cpu cortex-a57"
->>>>>> +    test_acpi_one(" -machine acpi-pcihp=off"
->>>>>> +                  " -cpu cortex-a57"
->>>>>>                       " -object memory-backend-ram,id=ram0,size=128M"
->>>>>>                       " -numa node,memdev=ram0",
->>>>>>                       &data);
->>>>>> @@ -1775,7 +1776,8 @@ static void test_acpi_aarch64_virt_tcg_pxb(void)
->>>>>>          * to solve the conflicts.
->>>>>>          */
->>>>>>         data.variant = ".pxb";
->>>>>> -    test_acpi_one(" -device pcie-root-port,chassis=1,id=pci.1"
->>>>>> +    test_acpi_one(" -machine acpi-pcihp=off"
->>>>>> +                  " -device pcie-root-port,chassis=1,id=pci.1"
->>>>>>                       " -device virtio-scsi-pci,id=scsi0,bus=pci.1"
->>>>>>                       " -drive file="
->>>>>>                       "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2,"
->>>>>> @@ -1846,7 +1848,7 @@ static void test_acpi_aarch64_virt_tcg_acpi_hmat(void)
->>>>>>     
->>>>>>         data.variant = ".acpihmatvirt";
->>>>>>     
->>>>>> -    test_acpi_one(" -machine hmat=on"
->>>>>> +    test_acpi_one(" -machine hmat=on,acpi-pcihp=off"
->>>>>>                       " -cpu cortex-a57"
->>>>>>                       " -smp 4,sockets=2"
->>>>>>                       " -m 384M"
->>>>>> @@ -2123,6 +2125,7 @@ static void test_acpi_aarch64_virt_tcg(void)
->>>>>>         data.smbios_cpu_max_speed = 2900;
->>>>>>         data.smbios_cpu_curr_speed = 2700;
->>>>>>         test_acpi_one("-cpu cortex-a57 "
->>>>>> +                  "-machine acpi-pcihp=off "
->>>>>>                       "-smbios type=4,max-speed=2900,current-speed=2700", &data);
->>>>>>         free_test_data(&data);
->>>>>>     }
->>>>>> @@ -2142,6 +2145,7 @@ static void test_acpi_aarch64_virt_tcg_topology(void)
->>>>>>         };
->>>>>>     
->>>>>>         test_acpi_one("-cpu cortex-a57 "
->>>>>> +                  "-machine acpi-pcihp=off "
->>>>>>                       "-smp sockets=1,clusters=2,cores=2,threads=2", &data);
->>>>>>         free_test_data(&data);
->>>>>>     }
->>>>>> @@ -2227,6 +2231,7 @@ static void test_acpi_aarch64_virt_viot(void)
->>>>>>         };
->>>>>>     
->>>>>>         test_acpi_one("-cpu cortex-a57 "
->>>>>> +                  "-machine acpi-pcihp=off "
->>>>>>                       "-device virtio-iommu-pci", &data);
->>>>>>         free_test_data(&data);
->>>>>>     }
->>>>>       
->>>>   
->>>    
->>
-> 
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 565f6b33a9..5846e481be 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -534,7 +534,7 @@ int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
+     return 0;
+ }
+ 
+-static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
++int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
+ {
+     GDBRegisterState *r;
+ 
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index 0675b0b646..a16c0051ce 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -124,6 +124,20 @@ const GDBFeature *gdb_find_static_feature(const char *xmlname);
+  */
+ int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ 
++/**
++ * gdb_write_register() - Write a register associated with a CPU.
++ * @cpu: The CPU associated with the register.
++ * @buf: The buffer that the register contents will be set to.
++ * @reg: The register's number returned by gdb_find_feature_register().
++ *
++ * The size of @buf must be at least the size of the register being
++ * written.
++ *
++ * Return: The number of written bytes, or 0 if an error occurred (for
++ * example, an unknown register was provided).
++ */
++int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg);
++
+ /**
+  * typedef GDBRegDesc - a register description from gdbstub
+  */
+-- 
+2.49.0
 
 
