@@ -2,76 +2,190 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC011ACADBF
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Jun 2025 14:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7737BACAEEB
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Jun 2025 15:24:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uM3s9-0005MG-4o; Mon, 02 Jun 2025 08:02:33 -0400
+	id 1uM59R-0007ls-Gp; Mon, 02 Jun 2025 09:24:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonwilson030981@googlemail.com>)
- id 1uM3s5-0005L3-IJ
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 08:02:29 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jonwilson030981@googlemail.com>)
- id 1uM3s2-0002Aq-7E
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 08:02:29 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-450cfb790f7so31433745e9.0
- for <qemu-devel@nongnu.org>; Mon, 02 Jun 2025 05:02:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=googlemail.com; s=20230601; t=1748865741; x=1749470541; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=ZEJFqk2F8FWRANFG2dY4a81X+NTaL96SF/qjsyS1kMk=;
- b=Brgp7eOvLJQR0QOsuBeWWEfB6tefOqN1fBftS5P2iSpAIku3kkbw0a9ssuBkkLQ68j
- wBEMysxP/SA4VfyJOXL+20SJdVmptdRGuZ2cudLZf3dK0N6REgntkdFwv/GU9GxkQ3P1
- t2yuzTFYtlum6+UIMH/qLhaHmQQEaN7049T4Egn+F9FTPBNXpoFlQ8VzECyHMwPzVVMK
- RvqgN7sqiMECHTn1vdw0QmTSugYnUaWhdU96IUU97p5THJwzZsWjq1tVDoSEKkdO7yWY
- 6/n/EMmsGgEIxgdCn1eW6Dou+okuUi/uJ0jHUoVSjn/Vm5xGIM6p3xTuAwQeY+NNDNdV
- 6vVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748865741; x=1749470541;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZEJFqk2F8FWRANFG2dY4a81X+NTaL96SF/qjsyS1kMk=;
- b=Pg0q6aT9axcEsOPv56NmKCEK9n/NkHhXcDIsxaPu17sGKnQuB53qoVsVBN9eHTRk1K
- Ey5AWQ7NCOGF3nPQJUOoo+ODI1kwEQNGVFK0xvkG4jIhqNAtePeHpa4QqEihgNil6GAb
- 1Sss3mK5+RmNJ5sCSWzPzKiwqDMW9g9LMrCVK8SC7n9zM5snJS8Sj7KJR8FZnJbgrp9N
- QmmqbYajdfLvhlHMdS0WlraZeT3Bj9HsK798TK4kTZZtKG+Mm1bPt+SKi3oKrghcNRpf
- I/GzoryqVYeRx5p/Z5DRaPftTI7tNbXKXCjjIhuUEW2bEliiXEmXXHP90WktIdMosZls
- oJTA==
-X-Gm-Message-State: AOJu0YylhizW/lcTpAjMHG6I+2KEiezV4Q1kJIirXU3Moy+zQlw497qB
- wlefQoRj8frsGheFyQCXplze62y1MMfC0Ryn+u0pGLy/6QsPqCQobOS5Qa2ofs772giBIsqibUE
- BGC0angWGvnmlT0crtcUOyCL35HcLCi6QoFsQ
-X-Gm-Gg: ASbGncv8trleWHwy4WJtPpudOLrK/WTPt4CFRXFpcVpplUSLBBPP1uJ0b/9uY/weGk1
- 3FSRKVhSfJSUp8aAQ0R17GCYEcRqGrA+gDpchM3BLEQeHQJYyKbMNQ+fiPAt/t7Awv9UmTixH4J
- 46mIe7ZbBM8s3aHIUNMbUXYW96Th41nXEw
-X-Google-Smtp-Source: AGHT+IFJJhAU13LBBUJKpj6FBR91+OZuLGNVrSSNPA9LyUHJTfHb0BgdJc5C5N95f1no/HJs/4wcaFmAW4J0DZofQUA=
-X-Received: by 2002:a05:600c:6286:b0:442:f98e:f37 with SMTP id
- 5b1f17b1804b1-450d657fbf9mr105254445e9.21.1748865739118; Mon, 02 Jun 2025
- 05:02:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shivankg@amd.com>)
+ id 1uM2eD-0002Dp-Sq; Mon, 02 Jun 2025 06:44:06 -0400
+Received: from mail-bn7nam10on20602.outbound.protection.outlook.com
+ ([2a01:111:f403:2009::602]
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shivankg@amd.com>)
+ id 1uM2eB-0008BD-64; Mon, 02 Jun 2025 06:44:05 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PESp0Mvx/QVv1XiyZ/Mq2nRu3V15grybqRWfLVSqfK2ycWT92pDvKM0RuzpA96CrrPBmTaySbHNwcCDil5/xTDB0EKtMSjoHfR6h6mrcOpE4VaTVsTet0I54z3pefnUqETXutweZjoGSq00a6s8eOD0rDdRsz7vU9GkSstpQQ+kc9t5Gx0QNHa8kL8EOB0YeMzmNqRhs0VUEuH7In73smJDDvn3xTRwAQEwHLHWHKf1FH2nTxGizkwMqZ5vVECpu6EdkjgMRwynMQQIZeYw60SuyunrKk3LOvS/CJwJEWndO872LNtYjC4GDJkI+vJY+ToYjoG5DefDCMzXgOlko6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1VUNbzakcDQuxi60KWzekzmLSrofcG8Oe2EkvLAGHkE=;
+ b=gib4Rn/M0P3H95FzqFao7tN02fvnJVVQUnYX6NWy4mJ9Uh6QLYLrYHDj1xRtGRczl7bJ9toZpIeRqYkG1zaMVppAvkK3Ps2AUh9r+ae6keD8gPeJJrlJQc4AiIm/lWvR2DtgfHh1juR5JPq/fV4IMPnEByLedAbfiXrjXzsJ0D3WfNXSF+/N+s/+k0Agv82E2ZHTXnNI6y1EVUagiXH4T37gp/nimqJ4PbW50oQXkSoeuvwjSzkx/MpUkukltcUIygjR7+TGrthCYoGyhLIHQiV6rdntnu4dDdwxDvKn9HHekRL4ne5OkS4Q07pHDgSU2KIkRwQ5/HzyYSZWB/sb3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1VUNbzakcDQuxi60KWzekzmLSrofcG8Oe2EkvLAGHkE=;
+ b=NxEJ2TjIVWO3rMNisMu2oRIOBcgU+r4QWgyXHg7K8YsTsKygDKcXdQ3Zvwo6OcHVvWhKI/pcAvoxBu4Sb0VFmXv0k6Zqg7yPM1DkCB/QG0uheMIXoGsumD1quhsBCK0WUk4xu5vQIYrLn+QMI9bPrWE2xKKbRFIKZb9bxl4arpQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH2PR12MB4262.namprd12.prod.outlook.com (2603:10b6:610:af::8)
+ by LV3PR12MB9187.namprd12.prod.outlook.com (2603:10b6:408:194::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.31; Mon, 2 Jun
+ 2025 10:43:56 +0000
+Received: from CH2PR12MB4262.namprd12.prod.outlook.com
+ ([fe80::3bdb:bf3d:8bde:7870]) by CH2PR12MB4262.namprd12.prod.outlook.com
+ ([fe80::3bdb:bf3d:8bde:7870%5]) with mapi id 15.20.8769.035; Mon, 2 Jun 2025
+ 10:43:55 +0000
+Message-ID: <8f85fcf7-3593-46e8-b257-d0da2b7337b9@amd.com>
+Date: Mon, 2 Jun 2025 16:13:30 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 08/16] KVM: guest_memfd: Allow host to map guest_memfd
+ pages
+To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-mm@kvack.org
+Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
+ anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
+ xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com,
+ jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
+ isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz,
+ vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name,
+ david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com,
+ liam.merwick@oracle.com, isaku.yamahata@gmail.com,
+ kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
+ steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
+ quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
+ quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
+ quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
+ yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org,
+ will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk,
+ shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com,
+ jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
+ jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
+ ira.weiny@intel.com, qemu-devel@nongnu.org, qemu-discuss@nongnu.org,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, nikunj@amd.com,
+ Bharata B Rao <bharata@amd.com>
+References: <20250527180245.1413463-1-tabba@google.com>
+ <20250527180245.1413463-9-tabba@google.com>
+Content-Language: en-US
+From: Shivank Garg <shivankg@amd.com>
+In-Reply-To: <20250527180245.1413463-9-tabba@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BMXP287CA0003.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:b00:2c::16) To CH2PR12MB4262.namprd12.prod.outlook.com
+ (2603:10b6:610:af::8)
 MIME-Version: 1.0
-From: Jon Wilson <jonwilson030981@googlemail.com>
-Date: Mon, 2 Jun 2025 13:02:08 +0100
-X-Gm-Features: AX0GCFvUAaTPm3Vntma792-3HbZZDK9keAFe0kx-CmwtWWwlXKOFtbKRcb6JaGI
-Message-ID: <CAJHT5-JwrQ31MEKKSNL-E0RPm+cg7UOiqzV5cPL-mnTOPa7eUA@mail.gmail.com>
-Subject: TCG Address Sanitizer Optimization.
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000023dd180636958921"
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=jonwilson030981@googlemail.com; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB4262:EE_|LV3PR12MB9187:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2192d85b-35f4-4b23-beaa-08dda1c25eba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|7416014|366016|7053199007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Smc0NWdGOWpWbU84dlM2Qm45dXNxWFhjblJWeWlCczlHV2dBNDJCa2xhbkNw?=
+ =?utf-8?B?N0tyN2pkbUVRdE1MalBSY3lwc0FlOHVnRlJHbDdxNGJWNFFSdkNJWk8ySFM5?=
+ =?utf-8?B?eG1wV285UWh3OHpuOEx3MitPeVk2blNQM1g4MTJVcXVQY1pGZGpLNkk1M25D?=
+ =?utf-8?B?ZjN6Um4rZjhQMUQzMnFtVUxzdk1FSDIzRDYrcmZ2b01rYUxvSm5CWHRhRjRW?=
+ =?utf-8?B?Z0RDQlJKeC90dE41RGdkTFJzb1MzODNoQjRMbGE1L0FIYlFaTzY1dWZHUnBn?=
+ =?utf-8?B?SVJEQVZaeGlYWFI3bWM0VUJCOU1Sam5yMjg2WjZiL0FSRXVtT3IzRWVxbnJ2?=
+ =?utf-8?B?Z3NUQVM5ZzFya1lPZWx0dW5URlZBby82a2RtMzFQU1NGMTFxa3V3MVFnejJO?=
+ =?utf-8?B?WDBWMUFXOTRQaTJSd291eUV0TTNKaDdRTEpsZzhnNG5NUjlsOU5jVE9FNXMz?=
+ =?utf-8?B?bU1sL3FWemMwcFVKQ2U5ZDUrNGVHUnErQzl1aHA3VGhGOFVEUStqZ2t5dktI?=
+ =?utf-8?B?NXZPQm84d292YUZSVWV6bytQeTQweXkyZENHVGRxekpwTnBtdkk4b0pjTVl5?=
+ =?utf-8?B?WkhpQnhOVXpoenM4QU1Bc1J6a1RwSVZzc0Npa0Z1cjJFeHAxUWZLbmNEdnh6?=
+ =?utf-8?B?VTVWcGh5dGhDQVpOckprMWVyOUtnWTVRNWhPYS9NRm8xdUw1emF3RCs5Slo0?=
+ =?utf-8?B?WG5KRW44b3lNZW9ZVzNNam5nWXlNYXhFR3M2WTM2QmJzWkllVFI4NlRxS0Fw?=
+ =?utf-8?B?NVQ2MjJESi9zUHF6Q2t6Z3pqejlIY0I1YjZsOHNKY2p3Nk5lcnd6ZzRPWm5O?=
+ =?utf-8?B?VWpqcDRJWVBBMU5mdm9Xbjg2UFFLTjdDWHlpT1dkTTEwNmtydEo5Qk4zTDlM?=
+ =?utf-8?B?OXQ1MjYxWGVFNWxZZG1CQXdETDVEUVB3R1V4MTR1eStGc3ozclNyeURIcDBz?=
+ =?utf-8?B?UDA4dGNsZ2RQNCs0YXYxUXJUTHBXOWxTWFlGUEdRa2t0d2RCd1ZzbHFhSnI4?=
+ =?utf-8?B?ejZTeFVQakJTZjlaS0hKUGJCYUIwM0xGYUZxdysrdHgwSzVpMk1ONVV6bnJC?=
+ =?utf-8?B?cVh4VGZUQ2JZNzBWRjJMcFkwczJlT1g3UXlyOWY4NDIxajA5SDVvaTdhRU5z?=
+ =?utf-8?B?MTQ3bUo3TEFwZXVoaUtsZ1dkWmtHOFBjcHV3dlJqSVcvRiszL2M3bHgvOWxS?=
+ =?utf-8?B?eCtwejk4NDBoMUt6ZkJMSkdCYnd4OTgwZGdFNWJneWFpdUZCVWhHeklPUXpF?=
+ =?utf-8?B?YTdIUktiOGFIQm5UVktyRDN6bktIdzV2VWFpZFoxL1E4enBHci9wRlZTMzBH?=
+ =?utf-8?B?eSs1cWV3djhyRHBJWDBLWDNQUzBJcHJ2WjErc0Q1dWF0SWlWcjV4ZHUybWtC?=
+ =?utf-8?B?S05XTEM0V1dLbUpSUWJBQUxscGw2cXJuMmFNVVpVZlNXcmNyUTB6eGMrbXN1?=
+ =?utf-8?B?TVgrNVBZSWY5N1F5Ykd6STdtVW1sSTdTcytjR0lTd2NBQ2Zmd0pGMXVkYWJa?=
+ =?utf-8?B?cnBHbmRidzlNMGtiZXdtNndONzNNeTRqQ3dpZzRVZDhqZDJJMktKMXB4cm90?=
+ =?utf-8?B?L2R4RHpGaU5nWjNhb3p2MmhNV3JXOGxHWkdSc1hna2RuUmNQSkFCbThTNmM4?=
+ =?utf-8?B?WldZdVZ6V3lWcmFUUThFRjdXK28zUkFGMW00Q0l5Z25LRXlhWm5ERW9ZMlZJ?=
+ =?utf-8?B?SVg4b0hRa01EYXJGWVA1Y3JxUFpyOHFsNG1aRkRacUpMQU1LT3Y5b0h0YkFo?=
+ =?utf-8?B?NHVuR21wbFdxZS8yMHQ3WGk5d2FuMTBSVUVzOEgxTGVQNjNDdmQzaU1vZWtX?=
+ =?utf-8?B?THFqc0tjdXdKekNBZXN2eUZ1N2hicWM3ZmlyR3lyVFRvQ1k2SmpxQWZRUkl3?=
+ =?utf-8?B?OWdnazV3YVBCSjJFank0eEp5LzRmbFpFT003U1ZqZDM4dThvNWpCakdMYnA0?=
+ =?utf-8?Q?OCufw0H9ajYA7kdaW6sFSviwk3aBtKGf?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH2PR12MB4262.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M2FXWG5VNHlqSkhzck9NTzJMZUNFeDJjd3hKeWQ4dGRaVVpjSGY2eGR4YWQr?=
+ =?utf-8?B?anNHQWZSWDh6c0FKb0h4cHFEcDN1UEJya050UndLMFRvbEFVdkoyMDV0K091?=
+ =?utf-8?B?UlpoLyt3cjhJTkIyc0ovQzlkaDB0UGdCajVFMUErVncwcHNWTXVuZUlJMmdx?=
+ =?utf-8?B?MUJ0TWp5bjF0eExwdWJKSmQ1Y09DVkZzcWREKzNoVTNWTE9tTFRiUUZLYTBn?=
+ =?utf-8?B?dU9CekFhQUR3ejdIRHhOVzljQlBRdlk4Y0FPZWtOUENQTDhGUCtoK0dKMkU1?=
+ =?utf-8?B?bGsyOFBIWENDazJvQnNKd1FkRVA3aExpV2NXZVU3WmJzcUxNOGhteGVPVXgw?=
+ =?utf-8?B?SlZPdldtQzNQNVhwZHkyWm5GYitYN01Qb2R1b0tSaVdmb3J2bGpMNEo0VFpG?=
+ =?utf-8?B?MVFITkVJbFVyLzVuclh0ZmJTZFBmTkhIYTJSQ3I5MUw5cG5Eb2R0S3JyY0lC?=
+ =?utf-8?B?RGtodkN3T0NZam5DTkN6UkNnK3U1cFRCMVBFKzlBY0FqczlLZitRaFNZcSto?=
+ =?utf-8?B?ZnNpdFhkc3RyUjF3TnA0b0E5Q2JVRldkei9vUUtmOFcwanJSMDRKZDZObHJG?=
+ =?utf-8?B?SWNEZzRTQ2UyMzBQSXV0UG1WT3FSRHN2YmhzeGpXSzFIc3g3SlE5U2lIc1pK?=
+ =?utf-8?B?WmVjTUZ2cHMrL2lGZ010Tkl3bU1VMFM5T2VqYjBibmFtckV5OVdCSG1rRkcr?=
+ =?utf-8?B?T0lVcGpMNFhmNEl6dmNTVHV4S2szWlFiVm5OcDZ2U0d4UklXdTdmQ2ZkbG1o?=
+ =?utf-8?B?YzczTVNXZDBIOUYzOFQySW16dXNDMFhwYWxRK3p0d2xKc05nNExMeVpzQmN2?=
+ =?utf-8?B?SmZobis3aDcwWWpTVnZxQU42SVNiRmh6c1V0ZmpUL3g3c2k2Uldja3JjZ29a?=
+ =?utf-8?B?a3B4MWNHRHNWU3Fwa04zWTRZMWU1NkU3NXJGOHRxMFZNYVRTc0djWjdxSjdL?=
+ =?utf-8?B?eWRlUEhOa0drcTBsTk1CNlRZRXRSdXZrajNEbXZvSWV0U3lSYW40ZmJncEJU?=
+ =?utf-8?B?U3poWXltYjFDWkJrbmZFTjhjS3NEMlNGak9aUUhPTTRJSUNZbzhqRk1MVEd2?=
+ =?utf-8?B?citoUnUzR3VoNXJpbTRmU1QxWWhDU0VRQ2dWSlhwMHR5NTE3STVSeXlSN0Jt?=
+ =?utf-8?B?cERwK25DM0IyY0ZQVGUrSmZOUm54ZFpVNWVUWTlrdHhCWVNKTGl0Rk1SR1Nw?=
+ =?utf-8?B?WFoxL1l1a3V3QUxxYk9SNWhENU5waHZjaFlVUHl5TjYrT1o2UUx2NGVqUUho?=
+ =?utf-8?B?Y0ZYaEFYNW9HczBKWGhxMDJ4L0hNT2dHRFpCNEZaZjNnUVVNYkVyb3dRSVRl?=
+ =?utf-8?B?SlpTdWpCN2JTOUdRT0tTWmxxNyt1eXF3allUQkZVUmhxMnJ1cDBHdjhPWlZV?=
+ =?utf-8?B?YTNsbXhNcXZWNGhseUpibmlSYjlRRllwQ3A4VENqZUhBV1lzL2JaenJFS0ho?=
+ =?utf-8?B?VEI5ZldRSW5UWHBqYzVVOEVuM2NwNWV6NDdOWEQ5NlZwMXlpZ3h1WENoeEM5?=
+ =?utf-8?B?Q0RhM0d2SWhDUzNUc1hxZCt4MnE4SlVBWnl3cTl2d0xOVDVvVlZuNEF2T0VQ?=
+ =?utf-8?B?WEY3T1QxVE80bjlvVWROOWJrQmRLOGxJSXdDNi9KODhvUHhFWndMeUJ0a0pw?=
+ =?utf-8?B?Ylp6eWc3R2dOS2Fuc2pDekRqa2x2VFI0Qnk4MDRaYitibkYzck5GZXpSK29I?=
+ =?utf-8?B?WUMwUHZ2WlZ0UVNCVkZ0SS9GK3N5YitKQWFXVGRIdVpQZ1lZSFVWNzMwNDM5?=
+ =?utf-8?B?Q2dzZFUyMWtQRTM3cDh1Z2F1MmltODFGaFRHaDM1eU5LemlQN0pjRnhGUi9X?=
+ =?utf-8?B?aHZmdTl3VUpjZWJqTktLRlVrZmJBUUFMaXdTTlRqL3dPcDYxQnlER1pGY2VH?=
+ =?utf-8?B?RzVjVUtzUWxpQ3N0UG0rb01EcCt3emF3Slc0ZXdxZ2RXTnZYSW1TNWx6cHNW?=
+ =?utf-8?B?akNXbnJvV3Y0Y0NjNE1jcngybzZtMG5lNnRYRFl3SVpWTjFVN0hXYUdwTC82?=
+ =?utf-8?B?OXVpL1pEUFJaUmRxV3VDK3hmUGlYY3YwUTBoUmcwSkdxL1dXVnNvUWNQVkly?=
+ =?utf-8?B?Rmc4aDZKVmZwaHJsejU2YW5YTUtQQ3BjWmhvZ2ppTUIvcWE1U3R2cWZNVm5x?=
+ =?utf-8?Q?bFs381nkUGdtk698CyKQ5My4K?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2192d85b-35f4-4b23-beaa-08dda1c25eba
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4262.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 10:43:55.5133 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WLYnyWzFxPD6OEA6jKMyz/RZIeq7b1qPxe9FrShKXhuZNMkV74Uag3iUo30B66VX0OMWuF7CEGGFA5QDq5flHA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9187
+Received-SPF: permerror client-ip=2a01:111:f403:2009::602;
+ envelope-from=shivankg@amd.com;
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.071,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 02 Jun 2025 09:24:06 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,308 +200,298 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000023dd180636958921
-Content-Type: text/plain; charset="UTF-8"
 
-I am attempting to optimize some TCG code which I have previously written
-for
-qemu-libafl-bridge (https://github.com/AFLplusplus/qemu-libafl-bridge), the
-component used by the LibAFL project when fuzzing binaries using QEMU to
-provide runtime instrumentation. The code is used to write additional TCG
-into
-basic blocks whenever a load or store operation is performed in order to
-provide
-address sanitizer functionality.
 
-Address sanitizer is quite simple and works by mapping each 8-byte region of
-address space to single byte within a region called the shadow map. The
-address
-(on a 64-bit platform) of the shadow map for a given address is:
+On 5/27/2025 11:32 PM, Fuad Tabba wrote:
+> This patch enables support for shared memory in guest_memfd, including
+> mapping that memory at the host userspace. This support is gated by the
+> configuration option KVM_GMEM_SHARED_MEM, and toggled by the guest_memfd
+> flag GUEST_MEMFD_FLAG_SUPPORT_SHARED, which can be set when creating a
+> guest_memfd instance.
+> 
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> ---
+>  arch/x86/include/asm/kvm_host.h | 10 ++++
+>  arch/x86/kvm/x86.c              |  3 +-
+>  include/linux/kvm_host.h        | 13 ++++++
+>  include/uapi/linux/kvm.h        |  1 +
+>  virt/kvm/Kconfig                |  5 ++
+>  virt/kvm/guest_memfd.c          | 81 +++++++++++++++++++++++++++++++++
+>  6 files changed, 112 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 709cc2a7ba66..ce9ad4cd93c5 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -2255,8 +2255,18 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+>  
+>  #ifdef CONFIG_KVM_GMEM
+>  #define kvm_arch_supports_gmem(kvm) ((kvm)->arch.supports_gmem)
+> +
+> +/*
+> + * CoCo VMs with hardware support that use guest_memfd only for backing private
+> + * memory, e.g., TDX, cannot use guest_memfd with userspace mapping enabled.
+> + */
+> +#define kvm_arch_supports_gmem_shared_mem(kvm)			\
+> +	(IS_ENABLED(CONFIG_KVM_GMEM_SHARED_MEM) &&			\
+> +	 ((kvm)->arch.vm_type == KVM_X86_SW_PROTECTED_VM ||		\
+> +	  (kvm)->arch.vm_type == KVM_X86_DEFAULT_VM))
+>  #else
+>  #define kvm_arch_supports_gmem(kvm) false
+> +#define kvm_arch_supports_gmem_shared_mem(kvm) false
+>  #endif
+>  
+>  #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 035ced06b2dd..2a02f2457c42 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -12718,7 +12718,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>  		return -EINVAL;
+>  
+>  	kvm->arch.vm_type = type;
+> -	kvm->arch.supports_gmem = (type == KVM_X86_SW_PROTECTED_VM);
+> +	kvm->arch.supports_gmem =
+> +		type == KVM_X86_DEFAULT_VM || type == KVM_X86_SW_PROTECTED_VM;
 
-    Shadow = (Mem >> 3) + 0x7fff8000;
 
-The value in the shadow map encodes the accessibility of an address:
+I've been testing this patch-series. I did not saw failure with guest_memfd selftests but encountered a regression on my system with KVM_X86_DEFAULT_VM.
 
-    0  - The whole 8 byte region is accessible.
-    1 .. 7 - The first n bytes are accessible.
-    negative - The whole 8 byte region is inaccessible.
+I'm getting below error in QEMU:
+Issue #1 - QEMU fails to start with KVM_X86_DEFAULT_VM, showing:
 
-The following pseudo code shows the algorithm:
+qemu-system-x86_64: kvm_set_user_memory_region: KVM_SET_USER_MEMORY_REGION2 failed, slot=65536, start=0x0, size=0x80000000, flags=0x0, guest_memfd=-1, guest_memfd_offset=0x0: Invalid argument
+kvm_set_phys_mem: error registering slot: Invalid argument
 
-////////////////////////////////////////////////////////////////////////////////
+I did some digging to find out,
+In kvm_set_memory_region as_id >= kvm_arch_nr_memslot_as_ids(kvm) now returns true.
+(as_id:1 kvm_arch_nr_memslot_as_ids(kvm):1 id:0 KVM_MEM_SLOTS_NUM:32767)
 
-https://github.com/google/sanitizers/wiki/addresssanitizeralgorithm
+/* SMM is currently unsupported for guests with guest_memfd (esp private) memory. */
+# define kvm_arch_nr_memslot_as_ids(kvm) (kvm_arch_supports_gmem(kvm) ? 1 : 2)
+evaluates to be 1
 
-byte *shadow_address = MemToShadow(address);
-byte shadow_value = *shadow_address;
-if (shadow_value) {
-  if (SlowPathCheck(shadow_value, address, kAccessSize)) {
-    ReportError(address, kAccessSize, kIsWrite);
-  }
-}
+I'm still debugging to find answer to these question
+Why slot=65536 and (as_id = mem->slot >> 16 = 1) is requested for KVM_X86_DEFAULT_VM case
+which is making it fail for above check.
+Was this change intentional for KVM_X86_DEFAULT_VM? Should this be considered as KVM regression or QEMU[1] compatibility issue?
 
-// Check the cases where we access first k bytes of the qword
-// and these k bytes are unpoisoned.
-bool SlowPathCheck(shadow_value, address, kAccessSize) {
-  last_accessed_byte = (address & 7) + kAccessSize - 1;
-  return (last_accessed_byte >= shadow_value);
-}
+---
+Issue #2: Testing challenges with QEMU changes[2] and mmap Implementation:
+Currently, QEMU only enables guest_memfd for SEV_SNP_GUEST (KVM_X86_SNP_VM) by setting require_guest_memfd=true. However, the new mmap implementation doesn't support SNP guests per kvm_arch_supports_gmem_shared_mem().
 
-////////////////////////////////////////////////////////////////////////////////
-
-My current implementation makes use of conditional move instructions to
-trigger
-a segfault by way of null dereference in the event that the shadow map
-indicates
-that a memory access is invalid.
-
-////////////////////////////////////////////////////////////////////////////////
-
-#if TARGET_LONG_BITS == 32
-#define SHADOW_BASE (0x20000000)
-#elif TARGET_LONG_BITS == 64
-#define SHADOW_BASE (0x7fff8000)
-#else
-#error Unhandled TARGET_LONG_BITS value
-#endif
-
-void libafl_tcg_gen_asan(TCGTemp * addr, size_t size)
+static void
+sev_snp_guest_instance_init(Object *obj)
 {
-    if (size == 0)
-        return;
+    ConfidentialGuestSupport *cgs = CONFIDENTIAL_GUEST_SUPPORT(obj);
+    SevSnpGuestState *sev_snp_guest = SEV_SNP_GUEST(obj);
 
-    TCGv addr_val = temp_tcgv_tl(addr);
-    TCGv k = tcg_temp_new();
-    TCGv shadow_addr = tcg_temp_new();
-    TCGv_ptr shadow_ptr = tcg_temp_new_ptr();
-    TCGv shadow_val = tcg_temp_new();
-    TCGv test_addr = tcg_temp_new();
-    TCGv_ptr test_ptr = tcg_temp_new_ptr();
+    cgs->require_guest_memfd = true;
 
-    tcg_gen_andi_tl(k, addr_val, 7);
-    tcg_gen_addi_tl(k, k, size - 1);
 
-    tcg_gen_shri_tl(shadow_addr, addr_val, 3);
-    tcg_gen_addi_tl(shadow_addr, shadow_addr, SHADOW_BASE);
-    tcg_gen_tl_ptr(shadow_ptr, shadow_addr);
-    tcg_gen_ld8s_tl(shadow_val, shadow_ptr, 0);
+To bypass this, I did two things and failed:
+1. Enabling guest_memfd for KVM_X86_DEFAULT_VM in QEMU: Hits Issue #1 above
+2. Adding KVM_X86_SNP_VM to kvm_arch_supports_gmem_shared_mem(): mmap() succeeds but QEMU stuck during boot.
 
-    /*
-     * Making conditional branches here appears to cause QEMU issues with
-dead
-     * temporaries so we will instead avoid branches. We will cause the
-guest
-     * to perform a NULL dereference in the event of an ASAN fault. Note
-that
-     * we will do this by using a store rather than a load, since the TCG
-may
-     * otherwise determine that the result of the load is unused and simply
-     * discard the operation. In the event that the shadow memory doesn't
-     * detect a fault, we will simply write the value read from the shadow
-     * memory back to it's original location. If, however, the shadow memory
-     * detects an invalid access, we will instead attempt to write the value
-     * at 0x0.
-     */
-    tcg_gen_movcond_tl(TCG_COND_EQ, test_addr,
-        shadow_val, tcg_constant_tl(0),
-        shadow_addr, tcg_constant_tl(0));
 
-    if (size < 8)
-    {
-        tcg_gen_movcond_tl(TCG_COND_GE, test_addr,
-            k, shadow_val,
-            test_addr, shadow_addr);
-    }
 
-    tcg_gen_tl_ptr(test_ptr, test_addr);
-    tcg_gen_st8_tl(shadow_val, test_ptr, 0);
-}
+My NUMA policy support for guest-memfd patch[3] depends on mmap() support and extends
+kvm_gmem_vm_ops with get_policy/set_policy operations.
+Since NUMA policy applies to both shared and private memory scenarios, what checks should
+be included in the mmap() implementation, and what's the recommended approach for
+integrating with your shared memory restrictions?
 
-////////////////////////////////////////////////////////////////////////////////
 
-However, I would like test an implementation more like the following to see
-how
-the performance compares. Whilst this introduces branches, the fast path is
-much
-more likely to be executed than the slow path and hence bypassing the
-additional
-checks and unnecessary memory writes I am hopeful it will improve
-performance.
+[1] https://github.com/qemu/qemu
+[2] Snippet to QEMU changes to add mmap
 
-////////////////////////////////////////////////////////////////////////////////
++                new_block->guest_memfd = kvm_create_guest_memfd(
++                                           new_block->max_length, /*0 */GUEST_MEMFD_FLAG_SUPPORT_SHARED, errp);
++                if (new_block->guest_memfd < 0) {
++                        qemu_mutex_unlock_ramlist();
++                        goto out_free;
++                }
++                new_block->ptr_memfd = mmap(NULL, new_block->max_length,
++                                            PROT_READ | PROT_WRITE,
++                                            MAP_SHARED,
++                                            new_block->guest_memfd, 0);
++                if (new_block->ptr_memfd == MAP_FAILED) {
++                    error_report("Failed to mmap guest_memfd");
++                    qemu_mutex_unlock_ramlist();
++                    goto out_free;
++                }
++                printf("mmap successful\n");
++            }
+[3] https://lore.kernel.org/linux-mm/20250408112402.181574-1-shivankg@amd.com
 
-void libafl_tcg_gen_asan(TCGTemp* addr, size_t size)
-{
-    if (size == 0) {
-        return;
-    }
 
-    if (size > 8) {
-        size = 8;
-    }
 
-    TCGLabel *done = gen_new_label();
+>  	/* Decided by the vendor code for other VM types.  */
+>  	kvm->arch.pre_fault_allowed =
+>  		type == KVM_X86_DEFAULT_VM || type == KVM_X86_SW_PROTECTED_VM;
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 80371475818f..ba83547e62b0 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -729,6 +729,19 @@ static inline bool kvm_arch_supports_gmem(struct kvm *kvm)
+>  }
+>  #endif
+>  
+> +/*
+> + * Returns true if this VM supports shared mem in guest_memfd.
+> + *
+> + * Arch code must define kvm_arch_supports_gmem_shared_mem if support for
+> + * guest_memfd is enabled.
+> + */
+> +#if !defined(kvm_arch_supports_gmem_shared_mem) && !IS_ENABLED(CONFIG_KVM_GMEM)
+> +static inline bool kvm_arch_supports_gmem_shared_mem(struct kvm *kvm)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+>  #ifndef kvm_arch_has_readonly_mem
+>  static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)
+>  {
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index b6ae8ad8934b..c2714c9d1a0e 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -1566,6 +1566,7 @@ struct kvm_memory_attributes {
+>  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
+>  
+>  #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
+> +#define GUEST_MEMFD_FLAG_SUPPORT_SHARED	(1ULL << 0)
+>  
+>  struct kvm_create_guest_memfd {
+>  	__u64 size;
+> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+> index 559c93ad90be..df225298ab10 100644
+> --- a/virt/kvm/Kconfig
+> +++ b/virt/kvm/Kconfig
+> @@ -128,3 +128,8 @@ config HAVE_KVM_ARCH_GMEM_PREPARE
+>  config HAVE_KVM_ARCH_GMEM_INVALIDATE
+>         bool
+>         depends on KVM_GMEM
+> +
+> +config KVM_GMEM_SHARED_MEM
+> +       select KVM_GMEM
+> +       bool
+> +       prompt "Enable support for non-private (shared) memory in guest_memfd"
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 6db515833f61..5d34712f64fc 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -312,7 +312,81 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+>  	return gfn - slot->base_gfn + slot->gmem.pgoff;
+>  }
+>  
+> +static bool kvm_gmem_supports_shared(struct inode *inode)
+> +{
+> +	u64 flags;
+> +
+> +	if (!IS_ENABLED(CONFIG_KVM_GMEM_SHARED_MEM))
+> +		return false;
+> +
+> +	flags = (u64)inode->i_private;
+> +
+> +	return flags & GUEST_MEMFD_FLAG_SUPPORT_SHARED;
+> +}
+> +
+> +
+> +#ifdef CONFIG_KVM_GMEM_SHARED_MEM
+> +static vm_fault_t kvm_gmem_fault_shared(struct vm_fault *vmf)
+> +{
+> +	struct inode *inode = file_inode(vmf->vma->vm_file);
+> +	struct folio *folio;
+> +	vm_fault_t ret = VM_FAULT_LOCKED;
+> +
+> +	folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+> +	if (IS_ERR(folio)) {
+> +		int err = PTR_ERR(folio);
+> +
+> +		if (err == -EAGAIN)
+> +			return VM_FAULT_RETRY;
+> +
+> +		return vmf_error(err);
+> +	}
+> +
+> +	if (WARN_ON_ONCE(folio_test_large(folio))) {
+> +		ret = VM_FAULT_SIGBUS;
+> +		goto out_folio;
+> +	}
+> +
+> +	if (!folio_test_uptodate(folio)) {
+> +		clear_highpage(folio_page(folio, 0));
+> +		kvm_gmem_mark_prepared(folio);
+> +	}
+> +
+> +	vmf->page = folio_file_page(folio, vmf->pgoff);
+> +
+> +out_folio:
+> +	if (ret != VM_FAULT_LOCKED) {
+> +		folio_unlock(folio);
+> +		folio_put(folio);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static const struct vm_operations_struct kvm_gmem_vm_ops = {
+> +	.fault = kvm_gmem_fault_shared,
+> +};
+> +
+> +static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+> +{
+> +	if (!kvm_gmem_supports_shared(file_inode(file)))
+> +		return -ENODEV;
+> +
+> +	if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) !=
+> +	    (VM_SHARED | VM_MAYSHARE)) {
+> +		return -EINVAL;
+> +	}
+> +
+> +	vma->vm_ops = &kvm_gmem_vm_ops;
+> +
+> +	return 0;
+> +}
+> +#else
+> +#define kvm_gmem_mmap NULL
+> +#endif /* CONFIG_KVM_GMEM_SHARED_MEM */
+> +
+>  static struct file_operations kvm_gmem_fops = {
+> +	.mmap		= kvm_gmem_mmap,
+>  	.open		= generic_file_open,
+>  	.release	= kvm_gmem_release,
+>  	.fallocate	= kvm_gmem_fallocate,
+> @@ -463,6 +537,9 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
+>  	u64 flags = args->flags;
+>  	u64 valid_flags = 0;
+>  
+> +	if (kvm_arch_supports_gmem_shared_mem(kvm))
+> +		valid_flags |= GUEST_MEMFD_FLAG_SUPPORT_SHARED;
+> +
+>  	if (flags & ~valid_flags)
+>  		return -EINVAL;
+>  
+> @@ -501,6 +578,10 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	    offset + size > i_size_read(inode))
+>  		goto err;
+>  
+> +	if (kvm_gmem_supports_shared(inode) &&
+> +	    !kvm_arch_supports_gmem_shared_mem(kvm))
+> +		goto err;
+> +
+>  	filemap_invalidate_lock(inode->i_mapping);
+>  
+>  	start = offset >> PAGE_SHIFT;
 
-    TCGv addr_val = temp_tcgv_tl(addr);
-    TCGv shadow_addr = tcg_temp_new();
-    TCGv_ptr shadow_ptr = tcg_temp_new_ptr();
-    TCGv shadow_val = tcg_temp_new();
-    TCGv k = tcg_temp_new();
-    TCGv zero = tcg_constant_tl(0);
-    TCGv_ptr null_ptr = tcg_temp_new_ptr();
 
-    tcg_gen_shri_tl(shadow_addr, addr_val, 3);
-    tcg_gen_addi_tl(shadow_addr, shadow_addr, SHADOW_BASE);
-    tcg_gen_tl_ptr(shadow_ptr, shadow_addr);
-    tcg_gen_ld8s_tl(shadow_val, shadow_ptr, 0);
 
-    tcg_gen_brcond_tl(TCG_COND_EQ, shadow_val, zero, done);
 
-    tcg_gen_andi_tl(k, addr_val, 7);
-    tcg_gen_addi_tl(k, k, size - 1);
 
-    tcg_gen_brcond_tl(TCG_COND_LT, shadow_val, k, done);
 
-    tcg_gen_tl_ptr(null_ptr, zero);
-    tcg_gen_st8_tl(zero, null_ptr, 0);
 
-    gen_set_label(done);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-However, when I change to using this implementation, I get the following
-error.
-I have tested it with a trivial hello world implementation for x86_64
-running in
-qemu-user. It doesn't occur the first time the block is executed, therefore
-I
-think the issue is caused by the surrounding TCG in the block it is injected
-into?
-
-////////////////////////////////////////////////////////////////////////////////
-runner-x86_64: ../tcg/tcg.c:4852: tcg_reg_alloc_mov: Assertion
-`ts->val_type == TEMP_VAL_REG' failed.
-Aborted (core dumped)
-////////////////////////////////////////////////////////////////////////////////
-
-I would be very grateful for any advice of how to resolve this issue, or any
-alternative approaches I could use to optimize my original implementation.
-The
-code is obviously a very hot path and so even a tiny performance improvement
-could result in a large performance gain overall.
-
---00000000000023dd180636958921
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">I am attempting to optimize some TCG code which I have pre=
-viously written for<br><div>qemu-libafl-bridge (<a href=3D"https://github.c=
-om/AFLplusplus/qemu-libafl-bridge">https://github.com/AFLplusplus/qemu-liba=
-fl-bridge</a>), the=C2=A0</div><div>component used by the LibAFL project wh=
-en fuzzing binaries using QEMU to=C2=A0</div><div>provide runtime instrumen=
-tation. The code is used to write additional TCG into=C2=A0</div><div>basic=
- blocks whenever a load or store operation is performed in order to provide=
-</div><div>address sanitizer functionality.</div><br>Address sanitizer is q=
-uite simple and works by mapping each 8-byte region of<br>address space to =
-single byte within a region called the shadow map. The address<br>(on a 64-=
-bit platform) of the shadow map for a given address is:<br><br>=C2=A0 =C2=
-=A0 Shadow =3D (Mem &gt;&gt; 3) + 0x7fff8000;<br><br>The value in the shado=
-w map encodes the accessibility of an address:<br><br>=C2=A0 =C2=A0 0 =C2=
-=A0- The whole 8 byte region is accessible.<br>=C2=A0 =C2=A0 1 .. 7 - The f=
-irst n bytes are accessible.<br>=C2=A0 =C2=A0 negative - The whole 8 byte r=
-egion is inaccessible.<br><br>The following pseudo code shows the algorithm=
-:<br><br>//////////////////////////////////////////////////////////////////=
-//////////////<br><br><a href=3D"https://github.com/google/sanitizers/wiki/=
-addresssanitizeralgorithm">https://github.com/google/sanitizers/wiki/addres=
-ssanitizeralgorithm</a><br><br>byte *shadow_address =3D MemToShadow(address=
-);<br>byte shadow_value =3D *shadow_address;<br>if (shadow_value) {<br>=C2=
-=A0 if (SlowPathCheck(shadow_value, address, kAccessSize)) {<br>=C2=A0 =C2=
-=A0 ReportError(address, kAccessSize, kIsWrite);<br>=C2=A0 }<br>}<br><br>//=
- Check the cases where we access first k bytes of the qword<br>// and these=
- k bytes are unpoisoned.<br>bool SlowPathCheck(shadow_value, address, kAcce=
-ssSize) {<br>=C2=A0 last_accessed_byte =3D (address &amp; 7) + kAccessSize =
-- 1;<br>=C2=A0 return (last_accessed_byte &gt;=3D shadow_value);<br>}<br><b=
-r>/////////////////////////////////////////////////////////////////////////=
-///////<br><br>My current implementation makes use of conditional move inst=
-ructions to trigger<br>a segfault by way of null dereference in the event t=
-hat the shadow map indicates<br>that a memory access is invalid.<br><br>///=
-///////////////////////////////////////////////////////////////////////////=
-//<br><br>#if TARGET_LONG_BITS =3D=3D 32<br>#define SHADOW_BASE (0x20000000=
-)<br>#elif TARGET_LONG_BITS =3D=3D 64<br>#define SHADOW_BASE (0x7fff8000)<b=
-r>#else<br>#error Unhandled TARGET_LONG_BITS value<br>#endif<br><br>void li=
-bafl_tcg_gen_asan(TCGTemp * addr, size_t size)<br>{<br>=C2=A0 =C2=A0 if (si=
-ze =3D=3D 0)<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br><br>=C2=A0 =C2=A0 TC=
-Gv addr_val =3D temp_tcgv_tl(addr);<br>=C2=A0 =C2=A0 TCGv k =3D tcg_temp_ne=
-w();<br>=C2=A0 =C2=A0 TCGv shadow_addr =3D tcg_temp_new();<br>=C2=A0 =C2=A0=
- TCGv_ptr shadow_ptr =3D tcg_temp_new_ptr();<br>=C2=A0 =C2=A0 TCGv shadow_v=
-al =3D tcg_temp_new();<br>=C2=A0 =C2=A0 TCGv test_addr =3D tcg_temp_new();<=
-br>=C2=A0 =C2=A0 TCGv_ptr test_ptr =3D tcg_temp_new_ptr();<br><br>=C2=A0 =
-=C2=A0 tcg_gen_andi_tl(k, addr_val, 7);<br>=C2=A0 =C2=A0 tcg_gen_addi_tl(k,=
- k, size - 1);<br><br>=C2=A0 =C2=A0 tcg_gen_shri_tl(shadow_addr, addr_val, =
-3);<br>=C2=A0 =C2=A0 tcg_gen_addi_tl(shadow_addr, shadow_addr, SHADOW_BASE)=
-;<br>=C2=A0 =C2=A0 tcg_gen_tl_ptr(shadow_ptr, shadow_addr);<br>=C2=A0 =C2=
-=A0 tcg_gen_ld8s_tl(shadow_val, shadow_ptr, 0);<br><br>=C2=A0 =C2=A0 /*<br>=
-=C2=A0 =C2=A0 =C2=A0* Making conditional branches here appears to cause QEM=
-U issues with dead<br>=C2=A0 =C2=A0 =C2=A0* temporaries so we will instead =
-avoid branches. We will cause the guest<br>=C2=A0 =C2=A0 =C2=A0* to perform=
- a NULL dereference in the event of an ASAN fault. Note that<br>=C2=A0 =C2=
-=A0 =C2=A0* we will do this by using a store rather than a load, since the =
-TCG may<br>=C2=A0 =C2=A0 =C2=A0* otherwise determine that the result of the=
- load is unused and simply<br>=C2=A0 =C2=A0 =C2=A0* discard the operation. =
-In the event that the shadow memory doesn&#39;t<br>=C2=A0 =C2=A0 =C2=A0* de=
-tect a fault, we will simply write the value read from the shadow<br>=C2=A0=
- =C2=A0 =C2=A0* memory back to it&#39;s original location. If, however, the=
- shadow memory<br>=C2=A0 =C2=A0 =C2=A0* detects an invalid access, we will =
-instead attempt to write the value<br>=C2=A0 =C2=A0 =C2=A0* at 0x0.<br>=C2=
-=A0 =C2=A0 =C2=A0*/<br>=C2=A0 =C2=A0 tcg_gen_movcond_tl(TCG_COND_EQ, test_a=
-ddr,<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 shadow_val, tcg_constant_tl(0),<br>=C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 shadow_addr, tcg_constant_tl(0));<br><br>=C2=A0 =
-=C2=A0 if (size &lt; 8)<br>=C2=A0 =C2=A0 {<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 t=
-cg_gen_movcond_tl(TCG_COND_GE, test_addr,<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 k, shadow_val,<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 t=
-est_addr, shadow_addr);<br>=C2=A0 =C2=A0 }<br><br>=C2=A0 =C2=A0 tcg_gen_tl_=
-ptr(test_ptr, test_addr);<br>=C2=A0 =C2=A0 tcg_gen_st8_tl(shadow_val, test_=
-ptr, 0);<br>}<br><br>//////////////////////////////////////////////////////=
-//////////////////////////<br><br>However, I would like test an implementat=
-ion more like the following to see how<br>the performance compares. Whilst =
-this introduces branches, the fast path is much<br>more likely to be execut=
-ed than the slow path and hence bypassing the additional<br>checks and unne=
-cessary memory writes I am hopeful it will improve performance.<br><br>////=
-///////////////////////////////////////////////////////////////////////////=
-/<br><br>void libafl_tcg_gen_asan(TCGTemp* addr, size_t size)<br>{<br>=C2=
-=A0 =C2=A0 if (size =3D=3D 0) {<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>=
-=C2=A0 =C2=A0 }<br><br>=C2=A0 =C2=A0 if (size &gt; 8) {<br>=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 size =3D 8;<br>=C2=A0 =C2=A0 }<br><br>=C2=A0 =C2=A0 TCGLabel =
-*done =3D gen_new_label();<br><br>=C2=A0 =C2=A0 TCGv addr_val =3D temp_tcgv=
-_tl(addr);<br>=C2=A0 =C2=A0 TCGv shadow_addr =3D tcg_temp_new();<br>=C2=A0 =
-=C2=A0 TCGv_ptr shadow_ptr =3D tcg_temp_new_ptr();<br>=C2=A0 =C2=A0 TCGv sh=
-adow_val =3D tcg_temp_new();<br>=C2=A0 =C2=A0 TCGv k =3D tcg_temp_new();<br=
->=C2=A0 =C2=A0 TCGv zero =3D tcg_constant_tl(0);<br>=C2=A0 =C2=A0 TCGv_ptr =
-null_ptr =3D tcg_temp_new_ptr();<br><br>=C2=A0 =C2=A0 tcg_gen_shri_tl(shado=
-w_addr, addr_val, 3);<br>=C2=A0 =C2=A0 tcg_gen_addi_tl(shadow_addr, shadow_=
-addr, SHADOW_BASE);<br>=C2=A0 =C2=A0 tcg_gen_tl_ptr(shadow_ptr, shadow_addr=
-);<br>=C2=A0 =C2=A0 tcg_gen_ld8s_tl(shadow_val, shadow_ptr, 0);<br><br>=C2=
-=A0 =C2=A0 tcg_gen_brcond_tl(TCG_COND_EQ, shadow_val, zero, done);<br><br>=
-=C2=A0 =C2=A0 tcg_gen_andi_tl(k, addr_val, 7);<br>=C2=A0 =C2=A0 tcg_gen_add=
-i_tl(k, k, size - 1);<br><br>=C2=A0 =C2=A0 tcg_gen_brcond_tl(TCG_COND_LT, s=
-hadow_val, k, done);<br><br>=C2=A0 =C2=A0 tcg_gen_tl_ptr(null_ptr, zero);<b=
-r>=C2=A0 =C2=A0 tcg_gen_st8_tl(zero, null_ptr, 0);<br><br>=C2=A0 =C2=A0 gen=
-_set_label(done);<br>}<br><br>/////////////////////////////////////////////=
-///////////////////////////////////<br><br>However, when I change to using =
-this implementation, I get the following error.<br>I have tested it with a =
-trivial hello world implementation for x86_64 running in<br>qemu-user. It d=
-oesn&#39;t occur the first time the block is executed, therefore I<br>think=
- the issue is caused by the surrounding TCG in the block it is injected<br>=
-into?<br><br>//////////////////////////////////////////////////////////////=
-//////////////////<br>runner-x86_64: ../tcg/tcg.c:4852: tcg_reg_alloc_mov: =
-Assertion `ts-&gt;val_type =3D=3D TEMP_VAL_REG&#39; failed.<br>Aborted (cor=
-e dumped)<br>//////////////////////////////////////////////////////////////=
-//////////////////<br><br>I would be very grateful for any advice of how to=
- resolve this issue, or any<br>alternative approaches I could use to optimi=
-ze my original implementation. The<br>code is obviously a very hot path and=
- so even a tiny performance improvement<br>could result in a large performa=
-nce gain overall.<br><br><br></div>
-
---00000000000023dd180636958921--
 
