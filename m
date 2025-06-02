@@ -2,89 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE16ACBCDD
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Jun 2025 23:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E966ACBD50
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 00:27:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMDB8-0008PE-NB; Mon, 02 Jun 2025 17:58:46 -0400
+	id 1uMDcN-0004kq-NC; Mon, 02 Jun 2025 18:26:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uMDB6-0008Oh-56
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 17:58:44 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uMDcL-0004j6-5a
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:26:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uMDB3-0001OV-Kv
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 17:58:43 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uMDcH-0003v8-JC
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:26:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748901518;
+ s=mimecast20190719; t=1748903201;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PWH6vQN/SEPfYWhKagLIW3DEQIsTcxJ72LlaHbc7hL0=;
- b=jN9AfAD/OX1kT0iyNp5wKR1L5n2bX8V1XKZ8cQalrZ33Wb21A8dCiJc2TjRioaZnnrerCv
- sHpdzqJ7d9tpbpSzGvHESCLHk3LgAbrOzdbY46aEJc97VJDtp+cL6cS6Bh+RHMPX4/CPzz
- enhm0nBo90uMQRfmlZ5KdQFH4KmsUqI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-xapWDBZnN3y7hamGXievnw-1; Mon, 02 Jun 2025 17:58:37 -0400
-X-MC-Unique: xapWDBZnN3y7hamGXievnw-1
-X-Mimecast-MFC-AGG-ID: xapWDBZnN3y7hamGXievnw_1748901516
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-450d244bfabso35161505e9.0
- for <qemu-devel@nongnu.org>; Mon, 02 Jun 2025 14:58:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748901516; x=1749506316;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PWH6vQN/SEPfYWhKagLIW3DEQIsTcxJ72LlaHbc7hL0=;
- b=PxNbrIjJZ7KNfUAMQfZTHS1N2Y7B6DjnHt9S8I20tSlJivHaRPEwpB89iBa0dCX74g
- IkroFg5Rc3Bj9SGt2wAOsNxzicX1cLUPQzJOnnptpBruOxnnc57WSqhKFeqzwyCbWFZz
- 2r99jzFN4JBOW/07iyWt1iFRa61QeuRF0S+NWNpe0xxv2YdbPn/gO9z3dP3dbruzfjYq
- CfX/6gwo/2NE8BpmLI9iVXQStd7+hkWX02z+5t6R31InPLAuNCzQUSvOmA7/uznatqsU
- QryY+zFigy+jbqCAxIsCmAolSskE3RWVi96a2fz0RkBuuop02jxJDXt+olBrTFZ55W51
- ccxw==
-X-Gm-Message-State: AOJu0YxsnMlJPzSK7lLCWtOitogCc9z2kmW9kYGh4tvN7xebO5DakI2S
- DaJ+T0QT472TpgDNmbrI5JU+tlLIr7UmsF+7ZO6xTo1Qb4ci/TuTb1CTNbaeBtKactMm421cU6/
- a1cr1fU6vi5l89/NyruRv/dRZcEZiKMrQXjbl6qNVYR2Tsm78JNU7kICW
-X-Gm-Gg: ASbGnct4jnyhFNBngtlJ5f/icgXJKzdraRp5cQDl71FqZMgMjo1RQq3r0UKJ6z1aMWz
- w3v4oNMeZfPHVlbaCoTrGbSwbT1EPTkaeuSeAzFpIQKHyJS8qdsjABWBEF4RIsvvbm1Pg7g1vsV
- 3hrNHC5TqnveOgAl3+oQsLY3tB1BUcljIcmEO2/SLxoTSOJ80t7y3gxzyKVzW/J/iagFFRdmQf5
- 8tyLcpD+uCSfgXQPN9S21/8L7HWo/5vxC8u/D1oJeJiLe9XOTJIUQBgWyTKaKLNNoRjpyPBygOA
- BK8EXQ==
-X-Received: by 2002:a5d:5f8c:0:b0:3a4:dfaa:df8c with SMTP id
- ffacd0b85a97d-3a4fe154a5amr7696672f8f.11.1748901516293; 
- Mon, 02 Jun 2025 14:58:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEX99Nu6ROJ4IbaBjkGVsV7/Qg0w+L/KU1X8vEW9MRVGIQWPIIXnuV7vBhimVCUwBEGLHc5vA==
-X-Received: by 2002:a5d:5f8c:0:b0:3a4:dfaa:df8c with SMTP id
- ffacd0b85a97d-3a4fe154a5amr7696662f8f.11.1748901515881; 
- Mon, 02 Jun 2025 14:58:35 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe73f22sm15981047f8f.43.2025.06.02.14.58.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Jun 2025 14:58:35 -0700 (PDT)
-Date: Mon, 2 Jun 2025 17:58:32 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Bibo Mao <maobibo@loongson.cn>
-Subject: Re: [PULL 00/31] virtio,pci,pc: features, fixes, tests
-Message-ID: <20250602175809-mutt-send-email-mst@kernel.org>
-References: <cover.1748791463.git.mst@redhat.com>
- <CAJSP0QUCipXvUWQ7uOm4Ct2a0O7=SFF9XZAozTFtAZfak8-EGg@mail.gmail.com>
- <20250602135333-mutt-send-email-mst@kernel.org>
- <CAJSP0QWvkMMcuy=5hU=4Ps4DtoE2TQ8Up4fDSLZZ8ia_+9jjEA@mail.gmail.com>
- <20250602142634-mutt-send-email-mst@kernel.org>
+ bh=vREyzAPNyetaPudYg41WmZi10BINRamqQCyggk2mX0k=;
+ b=H+GV12tpBPrd7IejVPMXv99OizFUJbgHNylzVWEqk+lt5n3MGg6sO/RMEmvk4SKQOvYcXy
+ Yu6k/8XqciEdNRq6sbA6Fqq/Ae2oe68tuKmwi7F+1QigO8424C6h0L7xOsIlioE0a2cinf
+ BlnRIRIppxiw5kDwHrVEDM7JtCikMpA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-8Cq7GLTlO3mgM6c7wCTzIQ-1; Mon,
+ 02 Jun 2025 18:26:40 -0400
+X-MC-Unique: 8Cq7GLTlO3mgM6c7wCTzIQ-1
+X-Mimecast-MFC-AGG-ID: 8Cq7GLTlO3mgM6c7wCTzIQ_1748903199
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EE7E51956086; Mon,  2 Jun 2025 22:26:38 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.84])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E28B419560A3; Mon,  2 Jun 2025 22:26:37 +0000 (UTC)
+Date: Mon, 2 Jun 2025 16:20:51 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Brian <hibriansong@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Czenczek <hreitz@redhat.com>
+Subject: Re: [RFC 08/11] aio-posix: gracefully handle io_uring_queue_init()
+ failure
+Message-ID: <20250602202051.GE300284@fedora>
+References: <20250528190916.35864-1-stefanha@redhat.com>
+ <20250528190916.35864-9-stefanha@redhat.com>
+ <a0a98436-5e4e-46d1-9a66-b6edce5c0ecc@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="Y4A/9oCcGVBQ8113"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250602142634-mutt-send-email-mst@kernel.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+In-Reply-To: <a0a98436-5e4e-46d1-9a66-b6edce5c0ecc@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,180 +86,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 02, 2025 at 02:31:19PM -0400, Michael S. Tsirkin wrote:
-> On Mon, Jun 02, 2025 at 02:25:48PM -0400, Stefan Hajnoczi wrote:
-> > On Mon, Jun 2, 2025 at 1:54 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> > >
-> > > On Mon, Jun 02, 2025 at 12:39:17PM -0400, Stefan Hajnoczi wrote:
-> > > > On Sun, Jun 1, 2025 at 11:34 AM Michael S. Tsirkin <mst@redhat.com> wrote:
-> > > > >
-> > > > > The following changes since commit d2e9b78162e31b1eaf20f3a4f563da82da56908d:
-> > > > >
-> > > > >   Merge tag 'pull-qapi-2025-05-28' of https://repo.or.cz/qemu/armbru into staging (2025-05-29 08:36:01 -0400)
-> > > > >
-> > > > > are available in the Git repository at:
-> > > > >
-> > > > >   https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
-> > > > >
-> > > > > for you to fetch changes up to 1c5771c092742b729e2a640be184a0f48c0b2cdb:
-> > > > >
-> > > > >   hw/i386/pc_piix: Fix RTC ISA IRQ wiring of isapc machine (2025-06-01 08:30:09 -0400)
-> > > > >
-> > > > > ----------------------------------------------------------------
-> > > > > virtio,pci,pc: features, fixes, tests
-> > > > >
-> > > > > vhost will now no longer set a call notifier if unused
-> > > > > loongarch gained acpi tests based on bios-tables-test
-> > > > > some core pci work for SVM support in vtd
-> > > > > vhost vdpa init has been optimized for response time to QMP
-> > > > > A couple more fixes
-> > > > >
-> > > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > >
-> > > > Please take a look at this CI failure:
-> > > > https://gitlab.com/qemu-project/qemu/-/jobs/10225580735#L4750
-> > >
-> > > Hmm must be how it interacts with something in your tree.
-> > > Which commit are you merging with?
-> > > Let me know, I'll try to rebase.
-> > 
-> > commit 25de0b9aa129b2b014a0595befef05f04511868d (HEAD -> staging)
-> > Merge: 3e82ddaa8d 6e672b2a08
-> > Author: Stefan Hajnoczi <stefanha@redhat.com>
-> > Date:   Mon Jun 2 09:56:12 2025 -0400
-> > 
-> >     Merge tag 'for_upstream' of
-> > https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging
-> > 
-> >     virtio,pci,pc: features, fixes, tests
-> > 
-> > Commit 6e672b2a08 is the one you published and 3e82ddaa8d is the
-> > qemu.git/master.
-> 
-> I could not figure it out. Must be a loongarch bug dealing
-> with s390 hosts. I dropped them from the tag for now.
-> Cc contributor to figure it out.
-> Bibo Mao pls take a look.
-> 
-> New tag:
-> 0b006153b7ec66505cb2d231235aa19ca5d2ce37
-> 
-> 
-> Thanks!
 
+--Y4A/9oCcGVBQ8113
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-hope this is ok now. going offline for vacation. see you after the 10th!
+On Mon, Jun 02, 2025 at 08:26:39AM -0400, Brian wrote:
+> On 5/28/25 3:09 PM, Stefan Hajnoczi wrote:
+> > io_uring may not be available at runtime due to system policies (e.g.
+> > the io_uring_disabled sysctl) or creation could fail due to file
+> > descriptor resource limits.
+> >=20
+> > Handle failure scenarios as follows:
+> >=20
+> > If another AioContext already has io_uring, then fail AioContext
+> > creation so that the aio_add_sqe() API is available uniformly from all
+> > QEMU threads. Otherwise fall back to epoll(7) if io_uring is
+> > unavailable.
+> >=20
+> > Notes:
+> > - Update the comment about selecting the fastest fdmon implementation.
+> >    At this point it's not about speed anymore, it's about aio_add_sqe()
+> >    API availability.
+> > - Uppercase the error message when converting from error_report() to
+> >    error_setg_errno() for consistency (but there are instances of
+> >    lowercase in the codebase).
+> > - It's easier to move the #ifdefs from aio-posix.h to aio-posix.c.
+> >=20
+> > Signed-off-by: Stefan Hajnoczi<stefanha@redhat.com>
+> > ---
+> >   util/aio-posix.h      | 12 ++----------
+> >   util/aio-posix.c      | 29 ++++++++++++++++++++++++++---
+> >   util/fdmon-io_uring.c |  8 ++++----
+> >   3 files changed, 32 insertions(+), 17 deletions(-)
+> >=20
+> > diff --git a/util/aio-posix.h b/util/aio-posix.h
+> > index f9994ed79e..6f9d97d866 100644
+> > --- a/util/aio-posix.h
+> > +++ b/util/aio-posix.h
+> > @@ -18,6 +18,7 @@
+> >   #define AIO_POSIX_H
+> >   #include "block/aio.h"
+> > +#include "qapi/error.h" struct AioHandler { GPollFD pfd; @@ -72,17
+> > +73,8 @@ static inline void fdmon_epoll_disable(AioContext *ctx) #endif
+> > /* !CONFIG_EPOLL_CREATE1 */ #ifdef CONFIG_LINUX_IO_URING -bool
+> > fdmon_io_uring_setup(AioContext *ctx); +void
+> > fdmon_io_uring_setup(AioContext *ctx, Error **errp); void
+> > fdmon_io_uring_destroy(AioContext *ctx); -#else -static inline bool
+> > fdmon_io_uring_setup(AioContext *ctx) -{ - return false; -} - -static
+> > inline void fdmon_io_uring_destroy(AioContext *ctx) -{ -} #endif /*
+> > !CONFIG_LINUX_IO_URING */ #endif /* AIO_POSIX_H */ diff --git
+> > a/util/aio-posix.c b/util/aio-posix.c index fa047fc7ad..44b3df61f9
+> > 100644 --- a/util/aio-posix.c +++ b/util/aio-posix.c @@ -16,6 +16,7 @@
+> > #include "qemu/osdep.h"
+> >   #include "block/block.h"
+> >   #include "block/thread-pool.h"
+> > +#include "qapi/error.h"
+> >   #include "qemu/main-loop.h"
+> >   #include "qemu/lockcnt.h"
+> >   #include "qemu/rcu.h"
+> > @@ -717,17 +718,39 @@ void aio_context_setup(AioContext *ctx, Error **e=
+rrp)
+> >       ctx->epollfd =3D -1;
+> >       ctx->epollfd_tag =3D NULL;
+> > -    /* Use the fastest fd monitoring implementation if available */
+> > -    if (fdmon_io_uring_setup(ctx)) {
+> > -        return;
+> > +#ifdef CONFIG_LINUX_IO_URING
+> > +    {
+> > +        static bool need_io_uring;
+> > +        Error *local_err =3D NULL; /* ERRP_GUARD() doesn't handle erro=
+r_abort */
+> > +
+> > +        /* io_uring takes precedence because it provides aio_add_sqe()=
+ support */
+> > +        fdmon_io_uring_setup(ctx, &local_err);
+> > +        if (!local_err) {
+> > +            /*
+> > +             * If one AioContext gets io_uring, then all AioContexts n=
+eed io_uring
+> > +             * so that aio_add_sqe() support is available across all t=
+hreads.
+> > +             */
+> > +            need_io_uring =3D true;
+> > +            return;
+> > +        }
+> > +        if (need_io_uring) {
+> > +            error_propagate(errp, local_err);
+> > +            return;
+> > +        }
+> > +
+> > +        warn_report_err_once(local_err); /* frees local_err */
+> > +        local_err =3D NULL;
+> >       }
+> > +#endif /* CONFIG_LINUX_IO_URING */
+> Is there a problem with the logic of this code snippet?
+>=20
+> If we fail at fdmon_io_uring_setup, specifically at io_uring_queue_init,
+> local_err (or errp) will be set to a non-NULL error value. In that case,
+> need_io_uring will be set to true, but the function will return immediate=
+ly.
 
-> 
-> > >
-> > > > >
-> > > > > ----------------------------------------------------------------
-> > > > > Bernhard Beschow (1):
-> > > > >       hw/i386/pc_piix: Fix RTC ISA IRQ wiring of isapc machine
-> > > > >
-> > > > > Bibo Mao (8):
-> > > > >       uefi-test-tools:: Add LoongArch64 support
-> > > > >       tests/data/uefi-boot-images: Add ISO image for LoongArch system
-> > > > >       tests/qtest/bios-tables-test: Use MiB macro rather hardcode value
-> > > > >       tests/acpi: Add empty ACPI data files for LoongArch
-> > > > >       tests/qtest/bios-tables-test: Add basic testing for LoongArch
-> > > > >       rebuild-expected-aml.sh: Add support for LoongArch
-> > > > >       tests/acpi: Fill acpi table data for LoongArch
-> > > > >       tests/acpi: Remove stale allowed tables
-> > > > >
-> > > > > CLEMENT MATHIEU--DRIF (11):
-> > > > >       pcie: Add helper to declare PASID capability for a pcie device
-> > > > >       pcie: Helper functions to check if PASID is enabled
-> > > > >       pcie: Helper function to check if ATS is enabled
-> > > > >       pcie: Add a helper to declare the PRI capability for a pcie device
-> > > > >       pcie: Helper functions to check to check if PRI is enabled
-> > > > >       pci: Cache the bus mastering status in the device
-> > > > >       pci: Add an API to get IOMMU's min page size and virtual address width
-> > > > >       memory: Store user data pointer in the IOMMU notifiers
-> > > > >       pci: Add a pci-level initialization function for IOMMU notifiers
-> > > > >       pci: Add a pci-level API for ATS
-> > > > >       pci: Add a PCI-level API for PRI
-> > > > >
-> > > > > Eugenio Pérez (7):
-> > > > >       vdpa: check for iova tree initialized at net_client_start
-> > > > >       vdpa: reorder vhost_vdpa_set_backend_cap
-> > > > >       vdpa: set backend capabilities at vhost_vdpa_init
-> > > > >       vdpa: add listener_registered
-> > > > >       vdpa: reorder listener assignment
-> > > > >       vdpa: move iova_tree allocation to net_vhost_vdpa_init
-> > > > >       vdpa: move memory listener register to vhost_vdpa_init
-> > > > >
-> > > > > Huaitong Han (1):
-> > > > >       vhost: Don't set vring call if guest notifier is unused
-> > > > >
-> > > > > Sairaj Kodilkar (1):
-> > > > >       hw/i386/amd_iommu: Fix device setup failure when PT is on.
-> > > > >
-> > > > > Vasant Hegde (1):
-> > > > >       hw/i386/amd_iommu: Fix xtsup when vcpus < 255
-> > > > >
-> > > > > Yuri Benditovich (1):
-> > > > >       virtio: check for validity of indirect descriptors
-> > > > >
-> > > > >  include/hw/pci/pci.h                               | 316 +++++++++++++++++++++
-> > > > >  include/hw/pci/pci_device.h                        |   1 +
-> > > > >  include/hw/pci/pcie.h                              |  13 +-
-> > > > >  include/hw/pci/pcie_regs.h                         |   8 +
-> > > > >  include/hw/virtio/vhost-vdpa.h                     |  22 +-
-> > > > >  include/system/memory.h                            |   1 +
-> > > > >  hw/i386/amd_iommu.c                                |  20 +-
-> > > > >  hw/i386/pc_piix.c                                  |   5 +
-> > > > >  hw/pci/pci.c                                       | 206 +++++++++++++-
-> > > > >  hw/pci/pcie.c                                      |  78 +++++
-> > > > >  hw/virtio/vhost-vdpa.c                             | 107 ++++---
-> > > > >  hw/virtio/virtio-pci.c                             |   7 +-
-> > > > >  hw/virtio/virtio.c                                 |  11 +
-> > > > >  net/vhost-vdpa.c                                   |  34 +--
-> > > > >  tests/qtest/bios-tables-test.c                     |  99 ++++++-
-> > > > >  tests/data/acpi/loongarch64/virt/APIC              | Bin 0 -> 108 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/APIC.topology     | Bin 0 -> 213 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/DSDT              | Bin 0 -> 4641 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/DSDT.memhp        | Bin 0 -> 5862 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/DSDT.numamem      | Bin 0 -> 4647 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/DSDT.topology     | Bin 0 -> 5352 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/FACP              | Bin 0 -> 268 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/MCFG              | Bin 0 -> 60 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/PPTT              | Bin 0 -> 76 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/PPTT.topology     | Bin 0 -> 296 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/SLIT              |   0
-> > > > >  tests/data/acpi/loongarch64/virt/SLIT.numamem      | Bin 0 -> 48 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/SPCR              | Bin 0 -> 80 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/SRAT              | Bin 0 -> 104 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/SRAT.memhp        | Bin 0 -> 144 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/SRAT.numamem      | Bin 0 -> 144 bytes
-> > > > >  tests/data/acpi/loongarch64/virt/SRAT.topology     | Bin 0 -> 216 bytes
-> > > > >  tests/data/acpi/rebuild-expected-aml.sh            |   4 +-
-> > > > >  .../bios-tables-test.loongarch64.iso.qcow2         | Bin 0 -> 12800 bytes
-> > > > >  tests/qtest/meson.build                            |   1 +
-> > > > >  tests/uefi-test-tools/Makefile                     |   5 +-
-> > > > >  .../UefiTestToolsPkg/UefiTestToolsPkg.dsc          |   6 +-
-> > > > >  tests/uefi-test-tools/uefi-test-build.config       |  10 +
-> > > > >  38 files changed, 846 insertions(+), 108 deletions(-)
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/APIC
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/APIC.topology
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.memhp
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.numamem
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.topology
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/FACP
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/MCFG
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/PPTT
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/PPTT.topology
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/SLIT
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/SLIT.numamem
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/SPCR
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.memhp
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.numamem
-> > > > >  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.topology
-> > > > >  create mode 100644 tests/data/uefi-boot-images/bios-tables-test.loongarch64.iso.qcow2
-> > > > >
-> > > > >
-> > >
+If local_err is non-NULL then this conditional is not taken:
+
+  if (!local_err) {
+      /*
+       * If one AioContext gets io_uring, then all AioContexts need io_uring
+       * so that aio_add_sqe() support is available across all threads.
+       */
+      need_io_uring =3D true;
+      return;
+  }
+
+If the logic you described is correct, please rephrase it. I don't see
+how what you've written can happen.
+
+> As a result, the later if (need_io_uring) block will never be executed
+>=20
+> >       fdmon_epoll_setup(ctx);
+> >   }
+> >   void aio_context_destroy(AioContext *ctx)
+> >   {
+> > +#ifdef CONFIG_LINUX_IO_URING
+> >       fdmon_io_uring_destroy(ctx);
+> > +#endif
+> >       qemu_lockcnt_lock(&ctx->list_lock);
+> >       fdmon_epoll_disable(ctx);
+> > diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
+> > index 2092d08d24..ef1a866a03 100644
+> > --- a/util/fdmon-io_uring.c
+> > +++ b/util/fdmon-io_uring.c
+> > @@ -45,6 +45,7 @@
+> >   #include "qemu/osdep.h"
+> >   #include <poll.h>
+> > +#include "qapi/error.h"
+> >   #include "qemu/rcu_queue.h"
+> >   #include "aio-posix.h"
+> > @@ -361,7 +362,7 @@ static const FDMonOps fdmon_io_uring_ops =3D {
+> >       .gsource_dispatch =3D fdmon_io_uring_gsource_dispatch,
+> >   };
+> > -bool fdmon_io_uring_setup(AioContext *ctx)
+> > +void fdmon_io_uring_setup(AioContext *ctx, Error **errp)
+> >   {
+> >       int ret;
+> > @@ -369,15 +370,14 @@ bool fdmon_io_uring_setup(AioContext *ctx)
+> >       ret =3D io_uring_queue_init(FDMON_IO_URING_ENTRIES, &ctx->fdmon_i=
+o_uring, 0);
+> >       if (ret !=3D 0) {
+> > -        return false;
+> > +        error_setg_errno(errp, -ret, "Failed to initialize io_uring");
+> > +        return;
+> >       }
+> >       QSLIST_INIT(&ctx->submit_list);
+> >       ctx->fdmon_ops =3D &fdmon_io_uring_ops;
+> >       ctx->io_uring_fd_tag =3D g_source_add_unix_fd(&ctx->source,
+> >               ctx->fdmon_io_uring.ring_fd, G_IO_IN);
+> > -
+> > -    return true;
+> >   }
+> >   void fdmon_io_uring_destroy(AioContext *ctx)
+
+--Y4A/9oCcGVBQ8113
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmg+B6MACgkQnKSrs4Gr
+c8h0pAgAlntcJSBwPZyJogZ6Euaklc/eMRRjGNr7clN5bHH0FY48kuAzuFkyCfcU
+NYAMhuxxySE68x7U4UjroeEaEZevL6xgsevOt/5qtgr81l52SDn+LeN1LihuOFFT
+kvwj15eYe2JHYb7m6nb9xxSnI2gaD6OJFuztUZlEh2swrG6Z4Ad/EAlyjEm3o3T+
+jRgcQs2EITaI9JxFE+bEewhsmKEi06iZ69bvLulnMzX31u6VOO889R5D8GynycKH
+azvJ46pELGgGZ7rCU9RMMaRRS125o7HzawLDc4kku7CmZ0ERyGJB6lvI7R/NFvSp
+sWev/F7revMM41OEDyp/KGu9/EGbAA==
+=VTQ3
+-----END PGP SIGNATURE-----
+
+--Y4A/9oCcGVBQ8113--
 
 
