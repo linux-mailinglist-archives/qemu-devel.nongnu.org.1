@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97346ACBB34
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Jun 2025 20:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE52ACBC0B
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Jun 2025 21:59:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMA9p-00082u-Rr; Mon, 02 Jun 2025 14:45:13 -0400
+	id 1uMBHX-0004JW-Mu; Mon, 02 Jun 2025 15:57:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uMA9m-00082D-Ba
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 14:45:10 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1uMBHU-0004J5-Mg
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 15:57:12 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uMA9i-0005PB-TG
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 14:45:10 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-604bff84741so9183539a12.2
- for <qemu-devel@nongnu.org>; Mon, 02 Jun 2025 11:45:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1uMBHR-0004qV-De
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 15:57:11 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-73972a54919so4219801b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 02 Jun 2025 12:57:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1748889903; x=1749494703; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8CoIRgdTJ6IzAdVaqKWOUYgO7jDZqUiXBTyKExPJlE0=;
- b=dYOGUvZY5sUB70ow/v71JGILZBqwR5YSWeyn5La0ssXx1vVmi6FqGqmeKY+EeAoA1V
- Xqc26SQkwZhpcy4dat+WJuHvGWci6VPQjy53CYboLH3/G/LfNoDFNEQ6ifqZHQg/f3j/
- 9r299/3osby+XRBTpkhItVxywzKnEKGTCWgW2qeqylM2dzUVSKnrdb3BDRZExX3msK8W
- 2yp4oolYiSv/DFL+RQZjiLFF6i6sQ2nAq0iXE5XE3vJtYuPyEIw2uUJvMFCd+97Ip2gi
- din4Aqpkphxas6CMNMBxSSFHAsVvx4tffM0PyPsbmKtB4hfnPNfe/so2Qv0n/M8T0k3i
- ji6Q==
+ d=gmail.com; s=20230601; t=1748894228; x=1749499028; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IAXt1W/zUR31UqhhUYbswiahGjC6fEsaj/iooiJKKuY=;
+ b=P5IDJvY1p2aONOSR5ufm3sKGllYy8S8ey3+yMLB35yyyQARWzx7qwURL50LuElSyt3
+ L1J2FvJXwjuV9HpxmjynV+K4XofdmggpaumiBZReRJL+Xupl1SEhKFgGsz5za6++5YJT
+ EEopeaTZCyf2c+YUK2u0Kwc8L8ecTSLBr/2IDctaXAYYmgfaloxBzYJL+0Xv9DjnC1VT
+ 7Sosh2NZ6rkoNPsHB8GRukt2wOOeDOaupnQ01aoqyiEKmziz+PsfRCUH0vGqasJdRBUZ
+ QHvAdOxg4ftfNtWtxgoE+X+i+lEzVSsmMGmvMWK4IP5Lkl5FZ+PwHHPzOWmIo/qhmOMg
+ 92gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748889903; x=1749494703;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8CoIRgdTJ6IzAdVaqKWOUYgO7jDZqUiXBTyKExPJlE0=;
- b=gmQram2UpHe8G9sbu+Bxn3rjiM5/gkKAzuf/iqwmW9zEpm5nY/8Tu0m9fGRbWSlR9P
- I1eXw+ZdNwKtCBwIfI/sn9W4WdQk8HpGMo/zmcPDaJ6SLjJXum68Y4OgKReV7dI01j3U
- 7LsHA51fJ2/c83SdkgVe4FSt43EELqnNadNxbUy6iy9YPLXK9YvP/kJ78BAh6+xLJmxc
- r65EnwfNwr2G5dNApVaBPf+wJiWvaYX6BQzBrg/jwfaxlwO7nmaopPiEBGygARDbEngk
- qsVRg8tFraCXITBxclJeOawwctRo6Tg8TIsN6P3LJUkF+h2ek8WriVMDSl58HpSGyu/L
- izfw==
-X-Gm-Message-State: AOJu0YxJw8XiQfBE4T9Syz+5T8dPDHpCklqm9M05+/MUvBplS13rc5BS
- xVXBc7LEgwk4pWkRRNTDPTNOgu2wJ+Vk/b4l2TFcbO5xhCHRRhB6rubzlRTce5EuvXNssg4/wnB
- M9ZN6jjfjCLc9wafd1P2Di+5jqsFtw6o=
-X-Gm-Gg: ASbGnctAtFLZJQZUbgOM3f7Jh+eX+IcL73oGfS0jqi+C7VqDmSNBjRDvZF/wz4eyNcN
- 2FSikIsxaDS0WQTSbCmQYqCM/zQVIFTPxMNyOJ0t1/GRZsL98Z5rWQzFDEtB3Zjulbf6c0cZNLm
- PjjqDwF5B+jQMHZKnHPXJZLXOnrqlpXgc=
-X-Google-Smtp-Source: AGHT+IF9irVdycUOFDMMzBxL5WHXy8juMlYryocoJW5w9RCqIO06T7IikmQbYJyxy5T6va3TJK876Oiuddudm4vtVHM=
-X-Received: by 2002:a05:6402:2113:b0:605:3251:a503 with SMTP id
- 4fb4d7f45d1cf-6057c60464amr12402366a12.20.1748889903119; Mon, 02 Jun 2025
- 11:45:03 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748894228; x=1749499028;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IAXt1W/zUR31UqhhUYbswiahGjC6fEsaj/iooiJKKuY=;
+ b=VyZv758pS/GzexrPzubYQafnn0QgV82wgtbvvaDbnWO6TAxb5U2NFee2n4/LvUeRO3
+ Kj74pKAcKidZA7+qQec/RO18mCYvcEDQy9OPXZr3Y0ccXKmioxVo8puFxmE/E3r1fuu5
+ 1tm50tl1AScaKi/pFlsr+vjLL/P/QlfOwB2f0qKiPI/+rKKTXNdf54DvabdELRiaf3X1
+ cyciyy5E7HZsiECwa9C1tJ68u4fa9wj4AF+N4nthU3JYYdAjuIlpr/i2PRyxs50YraAC
+ /nLpRf8skh8Koc5JJ8W7KCF43hUKLyhLLeUYOLqqcFsaDn4DnT1LvsfNu93K8DKKJiYS
+ hzvA==
+X-Gm-Message-State: AOJu0YxfCnR/R44AzjyyMn3csWHNxPbjOVKDaTZ4f4y+Jch9Iow4k1Yq
+ Knqzng7BPbgd/L1sk4bJVLCgit543ChZwRfk+BMEGvFyKlDs2NiWyuJXVj97jIPWGvk=
+X-Gm-Gg: ASbGncsM1jke0okEc7cFSwGQaocJpMp7H5veMXyrDu3+8TF88HZhbU0PTQM6S3pG0Hi
+ 4fE54wjb3eVNk9irYigZTHbX0Y9pNEiU1yZ4/TTsQTVvXEx2yaOCVaBnlf4YUrEDB7HZ5zlHX+C
+ XvQrpzEy7JswZL9X393hncUKVA1VzDeJa6+mmbusCG1JglWrZ4ShmNnN7InpMNWkGmK/+quC225
+ OetSbhqjhlP1EKswcRwx6w/0Km5jIaD5uhTHaQWl9S7iT2W0rjHb7l0AJ37l9/UzuYBHBl4lPla
+ siqZXu4trreFYrZHoWStumzuRa8w9D/iAMESxhISjMwfKJvN4Hg=
+X-Google-Smtp-Source: AGHT+IHIT8YW7nYEoHVKT+cKdQccYU9TfFeCnLx2rf+gT1N+bBCvGYzj8D70N8K1mrrAidiVN3RSfw==
+X-Received: by 2002:a05:6a00:9292:b0:739:50c0:b3fe with SMTP id
+ d2e1a72fcca58-747d18333c9mr13705678b3a.8.1748894227522; 
+ Mon, 02 Jun 2025 12:57:07 -0700 (PDT)
+Received: from shemhazi.lan ([50.46.174.34]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-747afeab820sm8244575b3a.60.2025.06.02.12.57.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 02 Jun 2025 12:57:07 -0700 (PDT)
+From: Rowan Hart <rowanbhart@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Rowan Hart <rowanbhart@gmail.com>
+Subject: [PATCH v7 0/9] Add additional plugin API functions to read and write
+ memory and registers
+Date: Mon,  2 Jun 2025 12:56:57 -0700
+Message-ID: <20250602195706.1043662-1-rowanbhart@gmail.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-References: <20250529085437.1479-2-oleg.tolmatcev@gmail.com>
-In-Reply-To: <20250529085437.1479-2-oleg.tolmatcev@gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 2 Jun 2025 14:44:50 -0400
-X-Gm-Features: AX0GCFvGBrnYVzQ0bw27QMmd9QvHkJmEwPNVyPpCJkA_Znd-IxM88RI4ccXwgaY
-Message-ID: <CAJSP0QVT56Sx8-T2+qF2LnFksL=feGL+v0CJPnX+ZuQ6iMMMRg@mail.gmail.com>
-Subject: Re: [PATCH v2] meson: fix Windows build
-To: oltolm <oleg.tolmatcev@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x52e.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,227 +103,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 29, 2025 at 4:55=E2=80=AFAM oltolm <oleg.tolmatcev@gmail.com> w=
-rote:
->
-> The build failed when run on Windows. I replaced calls to Unix programs
-> like =C2=B4cat=C2=B4 and =C2=B4true=C2=B4 with calls to =C2=B4python=C2=
-=B4. I wrapped calls to
-> =C2=B4os.path.relpath=C2=B4 in try-except because it can fail when the tw=
-o paths
-> are on different drives. I made sure to convert the Windows paths to
-> Unix paths to prevent warnings in generated files.
->
-> Signed-off-by: oltolm <oleg.tolmatcev@gmail.com>
-> ---
->  contrib/plugins/meson.build         | 2 +-
->  scripts/tracetool/backend/ftrace.py | 9 ++++++++-
->  scripts/tracetool/backend/log.py    | 9 ++++++++-
->  scripts/tracetool/backend/syslog.py | 9 ++++++++-
->  tests/functional/meson.build        | 4 +---
->  tests/include/meson.build           | 2 +-
->  tests/tcg/plugins/meson.build       | 2 +-
->  trace/meson.build                   | 5 +++--
->  8 files changed, 31 insertions(+), 11 deletions(-)
->
-> diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
-> index fa8a426c8..1876bc784 100644
-> --- a/contrib/plugins/meson.build
-> +++ b/contrib/plugins/meson.build
-> @@ -24,7 +24,7 @@ endif
->  if t.length() > 0
->    alias_target('contrib-plugins', t)
->  else
-> -  run_target('contrib-plugins', command: find_program('true'))
-> +  run_target('contrib-plugins', command: [python, '-c', ''])
->  endif
->
->  plugin_modules +=3D t
-> diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/back=
-end/ftrace.py
-> index baed2ae61..81a5f93b3 100644
-> --- a/scripts/tracetool/backend/ftrace.py
-> +++ b/scripts/tracetool/backend/ftrace.py
-> @@ -13,6 +13,7 @@
->
->
->  import os.path
-> +from pathlib import PurePath
->
->  from tracetool import out
->
-> @@ -30,6 +31,12 @@ def generate_h(event, group):
->      if len(event.args) > 0:
->          argnames =3D ", " + argnames
->
-> +    try:
-> +        event_filename =3D os.path.relpath(event.filename)
-> +    except ValueError:
-> +        event_filename =3D event.filename
-> +    event_filename =3D PurePath(event_filename).as_posix()
+This patch series adds several new API functions focused on enabling use
+cases around reading and writing guest memory from QEMU plugins. To support
+these new APIs, some utility functionality around retrieving information about
+address spaces is added as well.
 
-Please do this in one place to avoid code duplication in the backends.
-Perhaps event.filename or a new field can hold the properly formatted
-value so backends don't need to call relpath() themselves.
+The new qemu_plugin_write_register utilizes gdb_write_register, which is now
+declared in gdbstub.h for this purpose instead of being static.
 
-I noticed that out_filename is also emitted with #line but, unlike
-event.filename, no special processing (relpath() or as_posix()) is
-used there. Is it possible to drop relpath() and avoid the whole
-issue?
+qemu_plugin_write_memory_vaddr utilizes cpu_memory_rw_debug much the same as
+the existing read_memory_vaddr function does.
 
-> +
->      out('    {',
->          '        char ftrace_buf[MAX_TRACE_STRLEN];',
->          '        int unused __attribute__ ((unused));',
-> @@ -47,7 +54,7 @@ def generate_h(event, group):
->          args=3Devent.args,
->          event_id=3D"TRACE_" + event.name.upper(),
->          event_lineno=3Devent.lineno,
-> -        event_filename=3Dos.path.relpath(event.filename),
-> +        event_filename=3Devent_filename,
->          fmt=3Devent.fmt.rstrip("\n"),
->          argnames=3Dargnames)
->
-> diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend=
-/log.py
-> index de27b7e62..241fbbbd0 100644
-> --- a/scripts/tracetool/backend/log.py
-> +++ b/scripts/tracetool/backend/log.py
-> @@ -13,6 +13,7 @@
->
->
->  import os.path
-> +from pathlib import PurePath
->
->  from tracetool import out
->
-> @@ -37,6 +38,12 @@ def generate_h(event, group):
->      else:
->          cond =3D "trace_event_get_state(%s)" % ("TRACE_" + event.name.up=
-per())
->
-> +    try:
-> +        event_filename =3D os.path.relpath(event.filename)
-> +    except ValueError:
-> +        event_filename =3D event.filename
-> +    event_filename =3D PurePath(event_filename).as_posix()
-> +
->      out('    if (%(cond)s && qemu_loglevel_mask(LOG_TRACE)) {',
->          '        if (message_with_timestamp) {',
->          '            struct timeval _now;',
-> @@ -55,7 +62,7 @@ def generate_h(event, group):
->          '    }',
->          cond=3Dcond,
->          event_lineno=3Devent.lineno,
-> -        event_filename=3Dos.path.relpath(event.filename),
-> +        event_filename=3Devent_filename,
->          name=3Devent.name,
->          fmt=3Devent.fmt.rstrip("\n"),
->          argnames=3Dargnames)
-> diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/back=
-end/syslog.py
-> index 012970f6c..2e010e7c9 100644
-> --- a/scripts/tracetool/backend/syslog.py
-> +++ b/scripts/tracetool/backend/syslog.py
-> @@ -13,6 +13,7 @@
->
->
->  import os.path
-> +from pathlib import PurePath
->
->  from tracetool import out
->
-> @@ -36,6 +37,12 @@ def generate_h(event, group):
->      else:
->          cond =3D "trace_event_get_state(%s)" % ("TRACE_" + event.name.up=
-per())
->
-> +    try:
-> +        event_filename =3D os.path.relpath(event.filename)
-> +    except ValueError:
-> +        event_filename =3D event.filename
-> +    event_filename =3D PurePath(event_filename).as_posix()
-> +
->      out('    if (%(cond)s) {',
->          '#line %(event_lineno)d "%(event_filename)s"',
->          '        syslog(LOG_INFO, "%(name)s " %(fmt)s %(argnames)s);',
-> @@ -43,7 +50,7 @@ def generate_h(event, group):
->          '    }',
->          cond=3Dcond,
->          event_lineno=3Devent.lineno,
-> -        event_filename=3Dos.path.relpath(event.filename),
-> +        event_filename=3Devent_filename,
->          name=3Devent.name,
->          fmt=3Devent.fmt.rstrip("\n"),
->          argnames=3Dargnames)
-> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-> index 52b4706cf..ee222888f 100644
-> --- a/tests/functional/meson.build
-> +++ b/tests/functional/meson.build
-> @@ -411,6 +411,4 @@ foreach speed : ['quick', 'thorough']
->    endforeach
->  endforeach
->
-> -run_target('precache-functional',
-> -           depends: precache_all,
-> -           command: ['true'])
-> +alias_target('precache-functional', precache_all)
-> diff --git a/tests/include/meson.build b/tests/include/meson.build
-> index 9abba308f..8e8d1ec4e 100644
-> --- a/tests/include/meson.build
-> +++ b/tests/include/meson.build
-> @@ -13,4 +13,4 @@ test_qapi_outputs_extra =3D [
->  test_qapi_files_extra =3D custom_target('QAPI test (include)',
->                                        output: test_qapi_outputs_extra,
->                                        input: test_qapi_files,
-> -                                      command: 'true')
-> +                                      command: [python, '-c', ''])
-> diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.buil=
-d
-> index 41f02f2c7..029342282 100644
-> --- a/tests/tcg/plugins/meson.build
-> +++ b/tests/tcg/plugins/meson.build
-> @@ -17,7 +17,7 @@ endif
->  if t.length() > 0
->    alias_target('test-plugins', t)
->  else
-> -  run_target('test-plugins', command: find_program('true'))
-> +  run_target('test-plugins', command: [python, '-c', ''])
->  endif
->
->  plugin_modules +=3D t
-> diff --git a/trace/meson.build b/trace/meson.build
-> index 3df454935..ebce0154c 100644
-> --- a/trace/meson.build
-> +++ b/trace/meson.build
-> @@ -4,7 +4,7 @@ trace_events_files =3D []
->  foreach item : [ '.' ] + trace_events_subdirs + qapi_trace_events
->    if item in qapi_trace_events
->      trace_events_file =3D item
-> -    group_name =3D item.full_path().split('/')[-1].underscorify()
-> +    group_name =3D fs.name(item).underscorify()
->    else
->      trace_events_file =3D meson.project_source_root() / item / 'trace-ev=
-ents'
->      group_name =3D item =3D=3D '.' ? 'root' : item.underscorify()
-> @@ -57,10 +57,11 @@ foreach item : [ '.' ] + trace_events_subdirs + qapi_=
-trace_events
->    endif
->  endforeach
->
-> +cat =3D [ python, '-c', 'import fileinput;[print(line) for line in filei=
-nput.input()]', '@INPUT@' ]
->  trace_events_all =3D custom_target('trace-events-all',
->                                   output: 'trace-events-all',
->                                   input: trace_events_files,
-> -                                 command: [ 'cat', '@INPUT@' ],
-> +                                 command: [ cat ],
->                                   capture: true,
->                                   install: get_option('trace_backends') !=
-=3D [ 'nop' ],
->                                   install_dir: qemu_datadir)
-> --
-> 2.49.0.windows.1
->
->
+The read and write_hwaddr functions are the most different. These functions
+use address_space_rw, which works well in most cases. There is an important
+caveat that for writes, the page being written will be set dirty by the
+write operation. This dirty setting requires locking the page range,
+which can contend with an already held lock in page_collection_lock
+when called in a tb translate callback with a write to the instruction
+memory in the tb. The doc comments warn against doing this, and it's unlikely
+anyone would want to do this.
+
+I've also added two test plugins: one that implements a simple hypercall
+interface that guest code can use to communicate with the plugin in a
+structured way with a test to ensure that this hypercall works and writing
+virtual memory works. And one that implements a simple patch utility to patch
+memory at runtime. The test for the second plugin ensures the patch applies
+successfully to instruction memory, and can use both hw and vaddr methods.
+
+For v3, I've had a few comments from the last submission that I've addressed,
+and some that I haven't for one reason or another:
+
+- Enforce QEMU_PLUGIN_CB_ flags in register read/write operations: done!
+- Fix my commit messages and add long messages describing commits: done!
+- Un-expose AS internals: done! Functions operate on current vCPU, current AS.
+- Clean up use of current_cpu: done!
+- Make functions take a vcpu_idx: not done. May revisit but it allows footguns.
+  Even for translation, seems best to not do this now. We can easily add _vcpu
+  versions of these functions in the future if we change our minds!
+
+For v5, I've just updated the enforcement of the QEMU_PLUGIN_CB_ flags to just
+use immediate stores, which simplifies the implementation quite a lot and
+should be more efficient too. Thanks Pierrick for the suggestion!
+
+v6 is a formatting pass, I left some whitespace that needed removal, some
+license text was wrong, and so forth.
+
+Rowan Hart (2):
+  plugins: Add enforcement of QEMU_PLUGIN_CB flags in register R/W
+    callbacks
+  plugins: Remove use of qemu_plugin_read_register where it is not
+    permitted
+
+novafacing (7):
+  gdbstub: Expose gdb_write_register function to consumers of gdbstub
+  plugins: Add register write API
+  plugins: Add memory virtual address write API
+  plugins: Add memory hardware address read/write API
+  plugins: Add patcher plugin and test
+  plugins: Add hypercalls plugin and test
+  plugins: Update plugin version and add notes
+
+ accel/tcg/plugin-gen.c                        |  30 +
+ gdbstub/gdbstub.c                             |   2 +-
+ include/exec/gdbstub.h                        |  14 +
+ include/hw/core/cpu.h                         |   1 +
+ include/qemu/plugin.h                         |   4 +
+ include/qemu/qemu-plugin.h                    | 166 +++++-
+ plugins/api.c                                 | 135 ++++-
+ plugins/core.c                                |  32 +-
+ tests/tcg/Makefile.target                     |   2 +
+ tests/tcg/plugins/hypercalls.c                | 547 ++++++++++++++++++
+ tests/tcg/plugins/insn.c                      |  22 +-
+ tests/tcg/plugins/meson.build                 |   2 +-
+ tests/tcg/plugins/patch.c                     | 297 ++++++++++
+ tests/tcg/x86_64/Makefile.softmmu-target      |  36 +-
+ tests/tcg/x86_64/system/hypercalls-target.c   |  40 ++
+ tests/tcg/x86_64/system/patch-target.c        |  27 +
+ .../tcg/x86_64/system/validate-hypercalls.py  |  40 ++
+ tests/tcg/x86_64/system/validate-patch.py     |  39 ++
+ 18 files changed, 1386 insertions(+), 50 deletions(-)
+ create mode 100644 tests/tcg/plugins/hypercalls.c
+ create mode 100644 tests/tcg/plugins/patch.c
+ create mode 100644 tests/tcg/x86_64/system/hypercalls-target.c
+ create mode 100644 tests/tcg/x86_64/system/patch-target.c
+ create mode 100755 tests/tcg/x86_64/system/validate-hypercalls.py
+ create mode 100755 tests/tcg/x86_64/system/validate-patch.py
+
+-- 
+2.49.0
+
 
