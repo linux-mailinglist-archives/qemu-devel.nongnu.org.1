@@ -2,98 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29575ACBD64
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 00:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A5BACBD86
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 00:56:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMDmV-0002rS-SL; Mon, 02 Jun 2025 18:37:23 -0400
+	id 1uME3t-0000AQ-EY; Mon, 02 Jun 2025 18:55:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uMDmS-0002qV-BI
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:37:20 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uMDmO-0004tp-U5
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 18:37:19 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-311e46d38ddso3872182a91.0
- for <qemu-devel@nongnu.org>; Mon, 02 Jun 2025 15:37:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748903835; x=1749508635; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dW8H1hqGsiQB+qTug59UNo1hf5lIkfclvoCGfLgg2tA=;
- b=KJrM6qYNClDcsGJvPguuHSHcAK4oaxQnCS1GC9RvJYz9mQy6N9ov7dEIvTTvPzyR95
- 3Yr11IFUOU6Arir/yQziiLlLYe1O3+DIulg3Ue/1FnA+eOQFlWTHoo5PD9bVfO15VSiN
- IW/RDXRSJQ/N9dGvI00YbGvSkPxWqlTNAZRFS4IyldBD+CeBFDQTb0jDVwYFmfhcrd0c
- LDG4t0LXkv69hAZcBT5Qzuvuj7ny6YtVkeDUzizEZr6wIaJB5xsleLnYYufpD98fq9m/
- mEHQTgPc6WThMVGrGxeau1oY+1EMqLYFZPbv5pA9DUqEWMS+tnFPH3Ly/Zwjcjs+cWrC
- AxgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748903835; x=1749508635;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dW8H1hqGsiQB+qTug59UNo1hf5lIkfclvoCGfLgg2tA=;
- b=pnDUxlNrjIjfD6EVGmQxu8nDD3OD8suSFpMyff/UX+RbXQ02kJHgFcVxT6HxYYmxMo
- z+yNaZBzNmAZ4Z+bTXRuMAGfTgiEcLjrBEu95xBTmSZ7ALwNF6XeEWplfhnL4IUSO/O4
- ZZLTe9FW2R8h4abUTS2D9HzzWtbwKJZ0wdkIGV8wZN5rsImmzwHznOC5ekd2MxPz2VcP
- Mg/TU8p0a+P4i6/xzpd5S6vC8kZKX+/svod63GK9SJr/TCPL7V82LrtHPeuMn1nFCika
- LZIS7qfY9aI3SN2qumT8XV/zuh8CfpM7p8MNEJWobFlrvb6XhD4y8LQjbcso46HvIpxC
- gNag==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXMBsCvdNNCsYUmjYnVlObXajwgHYEkCNKBVO1pPj+ih4HiuiPD8mfVxZe7p8SG+kRNScL5Fuu4IOzH@nongnu.org
-X-Gm-Message-State: AOJu0Yz1eKbcdXSYPYV601pI5qYE5rdoIG3cF9bfZRElVD2ge0+1zUTY
- hLZ9bct/vNxL5nKbZ0m4GIiKaOCLMTOA7oP7fab3IDZPHM8KUd5c9qXmWKrKfgOw9d4=
-X-Gm-Gg: ASbGncutI8rneyStmRVxXBoUTKOf7nvMPuK0VS31JNFaRgP+ukrfA/lBP8ctrAzS3tb
- xBLG6nA1itZapqzqQRCgELnxGLKn/x6/SyhcDKhSPSMseeQgQ2EzkyWl7nh+RvYWY+aBnVPpmOg
- Tdt3RL4jREaC0UwkUSOBiuUGLEqjlZeWW64glooTCRA/1f1xhnAtXOcvPDlmOKhcENgbELi0dQg
- cIJV47lvTOVmFJas1/yvgoxA6VjzN4l7bAOj7yFqNmrQdPEHzIsUpVxaBYn3DavzdOEHbSm7P2W
- EqdlKxj3ZJm/2WPstpQaxtninu12mCKSdDdzXqSWYAVE2i97S2yerZxjApbxbZJx1020NqqwPjw
- =
-X-Google-Smtp-Source: AGHT+IEORVvm5tfle5qubBgcPqZ7zcBWefwEEm2FXEaBnBJJ3Io+yXsB1asoo/ou43GIMHAHd01JgQ==
-X-Received: by 2002:a17:90b:1343:b0:30e:8f60:b4c with SMTP id
- 98e67ed59e1d1-31241735a7dmr24986021a91.16.1748903835232; 
- Mon, 02 Jun 2025 15:37:15 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3124e3c1146sm6121966a91.35.2025.06.02.15.37.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Jun 2025 15:37:14 -0700 (PDT)
-Message-ID: <c54469ce-0385-4aea-b345-47711e9e61de@linaro.org>
-Date: Mon, 2 Jun 2025 15:37:13 -0700
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1uME3r-00008L-BM; Mon, 02 Jun 2025 18:55:19 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1uME3o-00070T-8o; Mon, 02 Jun 2025 18:55:18 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 552LN2bV002631;
+ Mon, 2 Jun 2025 22:55:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2025-04-25; bh=n6DI2nu0l+05eLGL7DjTGysYzGsOb
+ 07T41N0mwGfjBs=; b=hfftSqCVXNcx6RxJsTrcDi2pPEcFrCECKJxXCeEhe7Z/S
+ xsSYa7c2DiHqa43alrY9UAZRmxfBnBrf0mROJpC8DHnQ7oOVNcjCYEVwG0ngHD6x
+ /OXWpmFJ4yBrPKRY9x/1dvh/rARD2M/J2yVIot7QpIcwMDl8QOeSWkmzO9QX3h2a
+ E4g5beC2y265HcEGB3UZdjYDo1+3O9S3jhVnOp+TPM8sbXSct3EiQscc5wv2eVxF
+ nOtGLs8xA5iCxgWId5pjyaak7CjeHTB0BLwzZvzRuAPQLR8otq30sEQTXO1tx+6C
+ WOnbe3KURNKXKOOxxl68X+6Kx0l9eF/0WFm7m2a2g==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 471g8j0my5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 02 Jun 2025 22:55:04 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 552KitLc030620; Mon, 2 Jun 2025 22:55:04 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 46yr78jxur-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 02 Jun 2025 22:55:03 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 552Mt3dM019747;
+ Mon, 2 Jun 2025 22:55:03 GMT
+Received: from ca-dev94.us.oracle.com (ca-dev94.us.oracle.com [10.129.136.30])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 46yr78jxs2-1; Mon, 02 Jun 2025 22:55:03 +0000
+From: Alan Adamson <alan.adamson@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: alan.adamson@oracle.com, foss@defmacro.it, kbusch@kernel.org,
+ its@irrelevant.dk, qemu-block@nongnu.org
+Subject: [PATCH 0/2] Add support for NVMe Namespace and Boundary Atomic
+ Parameters
+Date: Mon,  2 Jun 2025 16:04:56 -0700
+Message-ID: <20250602230458.1073148-1-alan.adamson@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 02/77] hw/arm: remove explicit dependencies listed
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Nabih Estefan <nabihestefan@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Peter Maydell <peter.maydell@linaro.org>
-References: <20250530071250.2050910-1-pbonzini@redhat.com>
- <20250530071250.2050910-3-pbonzini@redhat.com>
- <153c342a-428a-4620-bf91-52ebb4507b97@redhat.com>
- <b7e988ef-82da-43bc-8c57-3b49b3bf9529@linaro.org>
- <CA+QoejVhjy26FraUUMRtZtNPRW6u2MM3T=6hyguttPgx8qpkpw@mail.gmail.com>
- <e1abbc4a-7071-419e-ab49-64828e682064@redhat.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <e1abbc4a-7071-419e-ab49-64828e682064@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-02_08,2025-06-02_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ malwarescore=0
+ suspectscore=0 phishscore=0 adultscore=0 spamscore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2506020189
+X-Proofpoint-GUID: M5ssovULj7KQWBIcCUWtQJ_044Oyp9hv
+X-Proofpoint-ORIG-GUID: M5ssovULj7KQWBIcCUWtQJ_044Oyp9hv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjAyMDE4OSBTYWx0ZWRfXyulyDYg9gWjO
+ E4IVjHcnidWN0KCi5x1J+HjhnM7/Pmkrqu8MKQKae9qcVbL6qJ+yymmT8VwWbx5AjdMbjNtMz1o
+ pwlnJCdyocN14q3VcSqdtLZBHCSF2YHvqrZIusnjLC92rBhu6sq+pw30BYLfEz5rrdCpxs1oDhn
+ RGkcC+KSzuP1sMB7g4uyEbAKkqkv/h8l7wda4+rs3Kiz8tdx7unppAAvjD6CkSg3It7LIwX/oNk
+ eG//oFPmZ3XSmo/EzQGOzLlXX3R3alx/p2OJFqbr/9zQqO5pWJeY02H+74hSimRqa+oxo3HB3xj
+ yPOOadI8aDzgJ20Qt6kB5nTz2FZqNi+3lZ46CdtmPvCxx/UojSbN2gG8ArWivDB7uD/ddZT3hNn
+ saZvILWqhBYlO/rkvVkiXWIhIRk4qNL+R/ruHRvZZye16QSZHg7C1lnznzJtSWRyOFOw447E
+X-Authority-Analysis: v=2.4 cv=QI1oRhLL c=1 sm=1 tr=0 ts=683e2bc8 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6IFa9wvqVegA:10 a=IekB9Y5W0dOZfOWWcgwA:9 cc=ntf awl=host:14714
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alan.adamson@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.068,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,45 +105,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/2/25 2:11 PM, Cédric Le Goater wrote:
-> On 6/2/25 22:53, Nabih Estefan wrote:
->> Hi Pierrick,
->>
->> For what it's worth, those files were also breaking on Ubuntu and Debian for me.
->> I had to explicitly `sudo apt install libfdt-dev` for it to work
->> again. I don't believe
->> it was installed at all previously, but QEMU was building and working correctly
->> without it being explicitly installed.
-> 
-> yes. I had to install libfdt-dev/el on some systems too.
-> 
-> However, for the windows (on Linux) build :
-> 
->     ./configure --cross-prefix=x86_64-w64-mingw32- --target-list=aarch64-softmmu,ppc64-softmmu,x86_64-softmmu,s390x-softmmu --disable-docs --disable-sdl
->
+This patch set is a follow on to commit ebd1568fc732 ("hw/nvme: add atomic
+write support").  These patches introduces two updates to the NVMe subsystem in QEMU,
+both aimed at enhancing atomic write support for namespaces.
 
-Thanks Cédric, I could reproduce it using the fedora-win64-cross 
-container. After investigation, it's related to having a target-list, 
-and in a specific order (hum, hum, feels bad). I observe the same 
-behaviour when building normally for Linux too.
+hw/nvme: enable ns atomic writes
+--------------------------------
+This patch introduces support for namespace-specific atomic write parameters: NAWUN
+and NAWUPF, as defined by the NVMe specification. The atomic parameters are
+utilized to guarantee that writes conforming to these boundaries will be atomic,
+improving data integrity for namespaces that require atomic operations.
 
-Those 3 commands work as expected:
-$ ./configure --target-list=aarch64-softmmu  && \
-ninja -C build libsystem_arm.a.p/hw_arm_raspi4b.c.o
-$ ./configure && \
-ninja -C build libsystem_arm.a.p/hw_arm_raspi4b.c.o
-$ ./configure --target-list=s390x-softmmu,aarch64-softmmu && \
-ninja -C build libsystem_arm.a.p/hw_arm_raspi4b.c.o
+The patch introduces new NVMe QEMU parameters:
+	atomic.nawun (default: 0)
+	atomic.nawupf (default: 0)
+	atomic.nsfeat (default: off)
 
-This one fails:
-$ ./configure --target-list=aarch64-softmmu,s390x-softmmu && \
-ninja -C build libsystem_arm.a.p/hw_arm_raspi4b.c.o
+The addition of atomic.nsfeat sets the Namespace Supported Atomic Boundary &
+Power (NSABP) bit in the Identify Namespace Data Structure, enabling namespace-specific
+atomic write features. The patch also ensures that atomic write behavior adheres to the
+NACWU and NAWUPF parameters.
 
-I will investigate more, but I strongly suspect there is a bug in the 
-meson libraries patch I wrote, with a variable being reused when it 
-should not.
-Sorry for the inconvenience.
+hw/nvme: add atomic boundary support
+------------------------------------
+The second patch expands on the atomic write capabilities by adding support for atomic
+boundary parameters: NABO, NABSN, and NABSPF. These parameters define the atomic
+boundary size for writes and ensure that any writes crossing these boundaries are
+treated atomically, based on the AWUN and AWUPF values.
 
-Regards,
-Pierrick
+The following parameters are added:
+	atomic.nabo (default: 0)
+	atomic.nabsn (default: 0)
+	atomic.nabspf (default: 0)
+
+If the atomic boundary is crossed, the writes are guaranteed to be atomic only if their
+size does not exceed the values defined by AWUN and AWUPF. This ensures that larger
+writes crossing atomic boundaries are not subject to partial updates, thereby improving
+the robustness of atomic operations across boundaries.
+
+See the NVMe Specification for more information.
+
+Alan Adamson (2):
+  hw/nvme: enable ns atomic writes
+  hw/nvme: add atomic boundary support
+
+ hw/nvme/ctrl.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ hw/nvme/ns.c   | 74 ++++++++++++++++++++++++++++++++++++++++++++++++
+ hw/nvme/nvme.h | 14 ++++++++++
+ 3 files changed, 164 insertions(+)
+
+-- 
+2.43.5
+
 
