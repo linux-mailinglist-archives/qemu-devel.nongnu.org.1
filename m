@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D116EACCF50
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFDDACCF5C
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:49:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMZSA-0004tc-Uv; Tue, 03 Jun 2025 17:45:51 -0400
+	id 1uMZSA-0004tY-8l; Tue, 03 Jun 2025 17:45:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZS5-0004tE-Ki
+ id 1uMZS5-0004t2-A4
  for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZS0-00065l-TJ
+ id 1uMZS3-000660-N2
  for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748987140;
+ s=mimecast20190719; t=1748987142;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zkj45g1a0czvtLZjGoji78CoCfioZAX7u5QHfK6wwwM=;
- b=LvMWDSswz9ZlevzmHT1cOqQdUGZyYMOch6QnTNRZhtSBmLIbleDvORw7Gszhrck1m9E8CQ
- iXxZKDqRefpexWSovanDZ1GMKgMY8rO9GLORrsvqtDG1NyrPZ45Rc6W/AJrRftkz47DDPG
- qlXuej8A8P760nh42L9a0HinrKsa7bc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+MaRtQvyQVdxiccHruMjcY+PBk/KP5Z1xfXXYJBauOQ=;
+ b=LkTWjCTn6qHX+1HVTcswP2ADoDcPHj4r8oPB9chejO4xVQG9vdkf8LkwiV3DYBQxBq0m+l
+ dyEqeuET6UM7M4JE3OlWfod7bFuZ5CJqT9P+Bm0nIWPcNv1Dg5W4i4yZnJIOkSREVl3bNF
+ 62uqX0pYituGw5/k6WVQpwNCr6ux2EE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-A-TVhQIuPgC2-izKZbBwug-1; Tue, 03 Jun 2025 17:45:38 -0400
-X-MC-Unique: A-TVhQIuPgC2-izKZbBwug-1
-X-Mimecast-MFC-AGG-ID: A-TVhQIuPgC2-izKZbBwug_1748987138
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a4e713e05bso2940030f8f.3
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:38 -0700 (PDT)
+ us-mta-393-GYrpHMJ3N6GXjp9klJ5t1A-1; Tue, 03 Jun 2025 17:45:41 -0400
+X-MC-Unique: GYrpHMJ3N6GXjp9klJ5t1A-1
+X-Mimecast-MFC-AGG-ID: GYrpHMJ3N6GXjp9klJ5t1A_1748987141
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a5058f9ef4so1187372f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748987137; x=1749591937;
+ d=1e100.net; s=20230601; t=1748987140; x=1749591940;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zkj45g1a0czvtLZjGoji78CoCfioZAX7u5QHfK6wwwM=;
- b=jSsAcWXseuvjdsU6ON29aN30VwKQKQkixw+4HHpzbWwTl8+AVAiGVd8QxWlvCWA/IS
- snkjJPj7bJ54HFQ3tz4/mgSgJRfCcA577V/Zl6g6RF7qo48VFJFYyRp+7WzmrovEJJMm
- SWr+7DGA/qk1pBpes/ULUrwum6eKrqNh8krZIorycWLQRIBMz3Ncv+W2D5cOPzag69Z+
- 8Of+2k5kVYN2822wF0UqTS+w1AwhvAbEG0W4QTSjUya7gXRB95p6ZuiCImUkwc7gCpqG
- 0ctIpiLO+8OGeA+C3g4ulzoxN6eK2gbcQyIyRHwreRu4CsiG8NIHcXkncOqzc6AmbGDl
- A84g==
-X-Gm-Message-State: AOJu0Yw2tviTI9JM57xSMNHtxejnwsBKtKsjthL278/sb+F8SoRQrNZG
- MSAN7iB+oKK7vC+NTKom2llc4G/xfmVQBT8RrV5MP+ADCtdiXcYN6vB+kLb7Q2yLuVFwwQlP71g
- TUGweLfTfBTvg73degLkArczmeGrt9YpL5eLMnWCZu6xTZQzVxM361GjucV44T1+t0Hhyr2CBa9
- r4DyuQ3Dl+5yb/Sz9e7sQ8Gl3IhSWLas2IDH2jBixt
-X-Gm-Gg: ASbGnctS0ZM8HEfVyTDAyP3yEYpOa6+GqsgUWy/IejKyo9GhZPeKVVC1WjIVGyptq5G
- 5XKkrOKyVhFGvehwXiOZIrHDDHpn1CLeFKjCPMuULz3rJqE5ijsLL0BiJZyIzDMDkjfw9i/geXr
- U4zTV51WN0tOzNjFdglC/sN7vatrhfaC15lllufHaAkJrhTVntTXZuH6duQbyYraolcE3JeU/HZ
- t8EPHjz6n893uxXRnFjEDlsFMJWdBy0qG18oOZgRAYrcngd9/6LPDp+siUKcQnyB+sSXJzSSvgQ
- hM/L21mjVPAIZhqmC5ZvHiCa
-X-Received: by 2002:a05:6000:4023:b0:3a4:e706:532b with SMTP id
- ffacd0b85a97d-3a51d9747a0mr237658f8f.43.1748987136902; 
- Tue, 03 Jun 2025 14:45:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF4QVaD745zny/ZiJV2op78IhdXBGfTRbEnEbDXo804pp45wUc9bDkVY0DMr6HpScj/MuHNJw==
-X-Received: by 2002:a05:6000:4023:b0:3a4:e706:532b with SMTP id
- ffacd0b85a97d-3a51d9747a0mr237644f8f.43.1748987136424; 
- Tue, 03 Jun 2025 14:45:36 -0700 (PDT)
+ bh=+MaRtQvyQVdxiccHruMjcY+PBk/KP5Z1xfXXYJBauOQ=;
+ b=CukNKkhgUCfqgx0bo8lzTinU6sNqPhhzGcU0hbQp6CrAJojwYr7QiUM0cZ94ZmwK4d
+ 4fq9R7OB67SlJw9p3X2XH4Vq8+NSK8jP5BVrW4RJ9H14AuBi2g6NvI7cBS8Lm7ThGFfj
+ fhvxvtU2mvCmmol0Y0CKLibChUFz60+JTJzhTbdb2UMzpPsuYv9wvqjSr+NHY/zmXM0w
+ km/hyZSHTLc5sYWujHkZGJkg5XtBK8ieTUnBD2LYhwq1Hbwj3Zgd870xaOBDzkU5YwGK
+ K5M5sHnJh5Cc2bMZoqI7aWuWgbTBpXkgmls9QhuJALKoVWpVVImn9qE7QzmU28yhTxHE
+ hmUQ==
+X-Gm-Message-State: AOJu0YwX/lzZz7mjJxnONtcKJvQduXMh8iFantjc9sTE4k7MC+2Evmb0
+ OFpd85OPG0M6kG+yzmqFYZT2aLDab06vomXZ3NwLl7ofDw2Tlxi208hmf25jsJ5cFBJzwEMp96L
+ x068T2Hd1bMdwram23/SJOUzb2Pwv3knQ9QPV6VSHg68NxoG0RzfnUbHwg0zcNeZN3ugQeGaThY
+ 1KG3sbKhbueKPpplLs3kCKRO2PeSd6BaivaL7C2Bl3
+X-Gm-Gg: ASbGncuaQQLBXB9whfZzMlGZAQY62kumBOD8ibblvdvCt2sOcr0ZVokw9DM+lHzzCRI
+ gX2Hr1KtDD0uYWDEgQ0Ipl+JJv6SfT7OUgtePwV+trs4I6uRgakYX8PWspWWUVBucwDAChl32Um
+ RJYSIbFGRWgBslMvHbS2MX9F15ayuh/SOfzi5z+BTw6d8CQt5CzOGuzPVDqMcGROOa8z9pSCDSG
+ cm6+YNt5EdJ4b3+KY6xxc10niRaNtiBejXpHHc5E+ytY9HKTpKIJ8CR8pKs0GHaOYXz49YRSfDa
+ iqiwlF3lnn3D2OpkC4NVGn4d
+X-Received: by 2002:a05:6000:22c6:b0:3a4:dc0a:5c0a with SMTP id
+ ffacd0b85a97d-3a51dc313f1mr209952f8f.44.1748987139953; 
+ Tue, 03 Jun 2025 14:45:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG05P8ZmTqAMqGL91GlY9Y1ZdnOa6gFSEjKz6PGEymCdavJe9jauizgWoh4RLlWquSr4fro/w==
+X-Received: by 2002:a05:6000:22c6:b0:3a4:dc0a:5c0a with SMTP id
+ ffacd0b85a97d-3a51dc313f1mr209935f8f.44.1748987139486; 
+ Tue, 03 Jun 2025 14:45:39 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d7fb0654sm175023525e9.21.2025.06.03.14.45.35
+ 5b1f17b1804b1-450d7f8ed27sm183202065e9.2.2025.06.03.14.45.36
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Jun 2025 14:45:35 -0700 (PDT)
+ Tue, 03 Jun 2025 14:45:37 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/16] rust: add qemu-api doctests to "meson test"
-Date: Tue,  3 Jun 2025 23:45:12 +0200
-Message-ID: <20250603214523.131185-6-pbonzini@redhat.com>
+Subject: [PULL 06/16] rust: cell: remove support for running doctests with
+ "cargo test --doc"
+Date: Tue,  3 Jun 2025 23:45:13 +0200
+Message-ID: <20250603214523.131185-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250603214523.131185-1-pbonzini@redhat.com>
 References: <20250603214523.131185-1-pbonzini@redhat.com>
@@ -83,14 +84,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,104 +107,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Doctests are weird.  They are essentially integration tests, but they're
-"ran" by executing rustdoc --test, which takes a compiler-ish
-command line.  This is supported by Meson 1.8.0.
-
-Because they run the linker and need all the .o files, run them in the
-build jobs rather than the test jobs.
+This is not needed anymore now that tests link with libqemuutil.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/rust.rst                 |  2 ++
- .gitlab-ci.d/buildtest-template.yml |  3 ++-
- .gitlab-ci.d/buildtest.yml          | 11 +++--------
- rust/qemu-api/meson.build           |  9 +++++++++
- 4 files changed, 16 insertions(+), 9 deletions(-)
+ rust/qemu-api/src/cell.rs | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index 11328c05b45..f66f2bef60b 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -66,6 +66,8 @@ be run via ``meson test`` or ``make``::
+diff --git a/rust/qemu-api/src/cell.rs b/rust/qemu-api/src/cell.rs
+index 05ce09f6cb6..27063b049d5 100644
+--- a/rust/qemu-api/src/cell.rs
++++ b/rust/qemu-api/src/cell.rs
+@@ -225,27 +225,23 @@
  
-    make check-rust
+ /// An internal function that is used by doctests.
+ pub fn bql_start_test() {
+-    if cfg!(MESON) {
+-        // SAFETY: integration tests are run with --test-threads=1, while
+-        // unit tests and doctests are not multithreaded and do not have
+-        // any BQL-protected data.  Just set bql_locked to true.
+-        unsafe {
+-            bindings::rust_bql_mock_lock();
+-        }
++    // SAFETY: integration tests are run with --test-threads=1, while
++    // unit tests and doctests are not multithreaded and do not have
++    // any BQL-protected data.  Just set bql_locked to true.
++    unsafe {
++        bindings::rust_bql_mock_lock();
+     }
+ }
  
-+Note that doctests require all ``.o`` files from the build to be available.
-+
- Supported tools
- '''''''''''''''
+ pub fn bql_locked() -> bool {
+     // SAFETY: the function does nothing but return a thread-local bool
+-    !cfg!(MESON) || unsafe { bindings::bql_locked() }
++    unsafe { bindings::bql_locked() }
+ }
  
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 118371e377d..fea4e8da2f1 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -76,7 +76,8 @@
-       fi
-     - section_end buildenv
-     - section_start test "Running tests"
--    - $MAKE NINJA=":" $MAKE_CHECK_ARGS
-+    # doctests need all the compilation artifacts
-+    - $MAKE NINJA=":" MTESTARGS="--no-suite doc" $MAKE_CHECK_ARGS
-     - section_end test
+ fn bql_block_unlock(increase: bool) {
+-    if cfg!(MESON) {
+-        // SAFETY: this only adjusts a counter
+-        unsafe {
+-            bindings::bql_block_unlock(increase);
+-        }
++    // SAFETY: this only adjusts a counter
++    unsafe {
++        bindings::bql_block_unlock(increase);
+     }
+ }
  
- .native_test_job_template:
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index ca1a9c6f709..d888a600637 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -41,7 +41,7 @@ build-system-ubuntu:
-     IMAGE: ubuntu2204
-     CONFIGURE_ARGS: --enable-docs --enable-rust
-     TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
--    MAKE_CHECK_ARGS: check-build
-+    MAKE_CHECK_ARGS: check-build check-doc
- 
- check-system-ubuntu:
-   extends: .native_test_job_template
-@@ -115,7 +115,7 @@ build-system-fedora:
-     CONFIGURE_ARGS: --disable-gcrypt --enable-nettle --enable-docs --enable-crypto-afalg --enable-rust
-     TARGETS: microblaze-softmmu mips-softmmu
-       xtensa-softmmu m68k-softmmu riscv32-softmmu ppc-softmmu sparc64-softmmu
--    MAKE_CHECK_ARGS: check-build
-+    MAKE_CHECK_ARGS: check-build check-doc
- 
- build-system-fedora-rust-nightly:
-   extends:
-@@ -127,12 +127,7 @@ build-system-fedora-rust-nightly:
-     IMAGE: fedora-rust-nightly
-     CONFIGURE_ARGS: --disable-docs --enable-rust --enable-strict-rust-lints
-     TARGETS: aarch64-softmmu
--    MAKE_CHECK_ARGS: check-build
--  after_script:
--    - source scripts/ci/gitlab-ci-section
--    - section_start test "Running Rust doctests"
--    - cd build
--    - pyvenv/bin/meson devenv -w ../rust ${CARGO-cargo} test --doc -p qemu_api
-+    MAKE_CHECK_ARGS: check-build check-doc
- 
-   allow_failure: true
- 
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index 62068352b0b..b532281e8c0 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -45,6 +45,15 @@ rust.test('rust-qemu-api-tests', _qemu_api_rs,
- qemu_api = declare_dependency(link_with: [_qemu_api_rs],
-   dependencies: [qemu_api_macros, qom, hwcore, chardev, migration])
- 
-+# Doctests are essentially integration tests, so they need the same dependencies.
-+# Note that running them requires the object files for C code, so place them
-+# in a separate suite that is run by the "build" CI jobs rather than "check".
-+rust.doctest('rust-qemu-api-doctests',
-+     _qemu_api_rs,
-+     protocol: 'rust',
-+     dependencies: qemu_api,
-+     suite: ['doc', 'rust'])
-+
- test('rust-qemu-api-integration',
-     executable(
-         'rust-qemu-api-integration',
 -- 
 2.49.0
 
