@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E18ACBF7E
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 07:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9D0ACBF7D
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 07:13:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMJx9-0006ub-PQ; Tue, 03 Jun 2025 01:12:47 -0400
+	id 1uMJxB-0006ui-Nh; Tue, 03 Jun 2025 01:12:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uMJx5-0006tS-IP
+ id 1uMJx5-0006tT-KQ
  for qemu-devel@nongnu.org; Tue, 03 Jun 2025 01:12:43 -0400
 Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uMJx4-0003OJ-1o
+ id 1uMJx3-0003ON-SD
  for qemu-devel@nongnu.org; Tue, 03 Jun 2025 01:12:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1748927562; x=1780463562;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/o9QMCkvz+rS2wSdoCiqmfI/zo6XBVkcN10+Q9PmT0A=;
- b=Wts/mP7weakuQDz/y3W8PN8uApqM1FmuA28sCQwTEoy7n2qdM+FQz3wP
- oCSftYD8nK97IIQas5ZGcZpgnwIzJ5o1AHDh411RsYxIR2QzXgpByyP9g
- Fqvd5i116DMdw5RJZZhCJOgoJmou5VSgd9+H+e9tx4XZb9bAoNaFKp/8p
- GaEdYXxzN5oMD6UmE9YAUPZbe1wgA4MO3i6I5Uv3WIMxndd8qcc9cwRdl
- k1Wq8YtjyStyW7UBBCg1aUa7kEoNLBN+9w8NzynA+ufUt/5pgRzwMwpuc
- otAdCn7M7BVmFPD0uOE1ToSyRxGjGOI/wVLMbWlNFLEaqsptNbBxZzuUh Q==;
-X-CSE-ConnectionGUID: zCdTELykRTWXF072FonCUg==
-X-CSE-MsgGUID: M1j5h+94R9iQFdvzlTZWfg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="62007527"
-X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="62007527"
+ bh=aEBokaXE3lrXtpc+g4ptK8Bwk8vWkUXL1JJQu78WCfw=;
+ b=gJtpt4IN9neEqkap1cGG2ZoPM3ksqrzD3XESH0ASTp/tWxVlli3kK2Og
+ 2VckD3dpcfGs2rjVIN5f24EOHwX5s3kYNKzXpcFSpqnMmX6BBvT7ud9dt
+ +o/mOcIHnzeW9BTr88ZfbQdxDsIXqkoQahGWNz5x1EaWn7543pdWyhxZY
+ 7AWIormkAxvwObvKSj07f+DKsfD/n7VKBQAUnwcpOx5kvQhFLP5FUCG8P
+ LWb3OA83pfIQihkHFWnP5hEFRNe5vRVKnymoHSJBKV6NwCz9DeF9MYzuY
+ tkv90GHUZ2ejIsif5EjOZJfFMIcYKGEno++BsZk5DqxvrmGSrwIszotDC A==;
+X-CSE-ConnectionGUID: X4ByoYRzQV+G65EFRrUjJQ==
+X-CSE-MsgGUID: 7xGo6CViSyGxHkB3WwlKnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="62007533"
+X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="62007533"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 22:09:13 -0700
-X-CSE-ConnectionGUID: +zKWB90qQoeMrDvsK2ulcA==
-X-CSE-MsgGUID: u60MaGTkTt+QBCB9JYHUmg==
+ 02 Jun 2025 22:09:14 -0700
+X-CSE-ConnectionGUID: bcXopVodTeuuUmvu/P/hdA==
+X-CSE-MsgGUID: G1Zc+D52SH25le8L4UpbTw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="175700647"
+X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="175700651"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa002.jf.intel.com with ESMTP; 02 Jun 2025 22:09:11 -0700
+ by orviesa002.jf.intel.com with ESMTP; 02 Jun 2025 22:09:13 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Igor Mammedov <imammedo@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org
-Subject: [PATCH 2/3] i386/tdx: Fix the typo of the comment of struct TdxGuest
-Date: Tue,  3 Jun 2025 01:03:04 -0400
-Message-ID: <20250603050305.1704586-3-xiaoyao.li@intel.com>
+Subject: [PATCH 3/3] i386/tdx: Clarify the error message of
+ mrconfigid/mrowner/mrownerconfig
+Date: Tue,  3 Jun 2025 01:03:05 -0400
+Message-ID: <20250603050305.1704586-4-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250603050305.1704586-1-xiaoyao.li@intel.com>
 References: <20250603050305.1704586-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.13; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
@@ -81,30 +83,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change sha348 to sha384.
+The error message is misleading - we successfully decoded the data,
+the decoded data was simply with the wrong length.
 
+Change the error message to show it is an length check failure with both
+the received and expected values.
+
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/kvm/tdx.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Suggested by Daniel at https://lore.kernel.org/qemu-devel/aBzT3TrdldaN-uqx@redhat.com/
+---
+ target/i386/kvm/tdx.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index 04b5afe199f9..8dd66e90149b 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -40,9 +40,9 @@ typedef struct TdxGuest {
-     bool initialized;
-     uint64_t attributes;    /* TD attributes */
-     uint64_t xfam;
--    char *mrconfigid;       /* base64 encoded sha348 digest */
--    char *mrowner;          /* base64 encoded sha348 digest */
--    char *mrownerconfig;    /* base64 encoded sha348 digest */
-+    char *mrconfigid;       /* base64 encoded sha384 digest */
-+    char *mrowner;          /* base64 encoded sha384 digest */
-+    char *mrownerconfig;    /* base64 encoded sha384 digest */
- 
-     MemoryRegion *tdvf_mr;
-     TdxFirmware tdvf;
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index 17e671f1710f..4172bbd23340 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -1026,7 +1026,9 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+             return -1;
+         }
+         if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
+-            error_setg(errp, "TDX: failed to decode mrconfigid");
++            error_setg(errp, "TDX 'mrconfigid' sha384 digest was %ld bytes, "
++                             "expected %d bytes", data_len,
++                             QCRYPTO_HASH_DIGEST_LEN_SHA384);
+             return -1;
+         }
+         memcpy(init_vm->mrconfigid, data, data_len);
+@@ -1039,7 +1041,9 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+             return -1;
+         }
+         if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
+-            error_setg(errp, "TDX: failed to decode mrowner");
++            error_setg(errp, "TDX 'mrowner' sha384 digest was %ld bytes, "
++                             "expected %d bytes", data_len,
++                             QCRYPTO_HASH_DIGEST_LEN_SHA384);
+             return -1;
+         }
+         memcpy(init_vm->mrowner, data, data_len);
+@@ -1052,7 +1056,9 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+             return -1;
+         }
+         if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
+-            error_setg(errp, "TDX: failed to decode mrownerconfig");
++            error_setg(errp, "TDX 'mrownerconfig' sha384 digest was %ld bytes, "
++                             "expected %d bytes", data_len,
++                             QCRYPTO_HASH_DIGEST_LEN_SHA384);
+             return -1;
+         }
+         memcpy(init_vm->mrownerconfig, data, data_len);
 -- 
 2.43.0
 
