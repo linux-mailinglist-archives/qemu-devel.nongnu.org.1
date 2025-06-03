@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887A5ACC5C4
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC815ACC5C9
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:51:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMQ7o-000404-Hs; Tue, 03 Jun 2025 07:48:12 -0400
+	id 1uMQAa-0005Yu-1l; Tue, 03 Jun 2025 07:51:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uMQ7l-0003yK-34
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:48:09 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uMQ7f-00089D-La
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:48:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748951283; x=1780487283;
- h=message-id:date:mime-version:subject:from:to:cc:
- references:in-reply-to:content-transfer-encoding;
- bh=wFPfWtNIqyhU8/iBwm/da5MNUTLhigsz8vAWZNDTGCU=;
- b=l9afz1H4wjF64pGwKlxwaGb4NBGotIIxgJB6tx2RxmwstHi3dhROuEl/
- CTPmhmUQeCieb/X1dCwYz9tiIQz6xcCHtQIMCjgKWQ8ZKVeuGpNEPA1tW
- ifDHYeI84hrYxfvJpdp4HQfaShux7cV13R/1MnC9p6MoI3nqWx71IcwlH
- dTllORgmonK09xA0lx5Una/xo7+ZtX2KY9Yl2pBEYUhPtnrSk99AKqRPu
- lru1UHFSgzT3H+PRqbXFTF1mAfzlnU+DfBwCf3IouJ4OYhMtZ8cKAOs+g
- mJWN0IcsZ4wSOLSu1mY7n0pUwB29IF/KmfEFaHAmK+EyKDKrxb1a35AR6 A==;
-X-CSE-ConnectionGUID: IGka9JI6QFuogFQefdQMuQ==
-X-CSE-MsgGUID: Xu8uMrbpT7WWtvd6vArlag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="51055867"
-X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="51055867"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2025 04:48:00 -0700
-X-CSE-ConnectionGUID: 3fuKTgmhQ2e6/yWCId+uqg==
-X-CSE-MsgGUID: jGHfrD9oRYqkMGFllyW5GA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="145794207"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2025 04:47:58 -0700
-Message-ID: <cc2dc418-8e33-4c01-9b8a-beca0a376400@intel.com>
-Date: Tue, 3 Jun 2025 19:47:56 +0800
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uMQAW-0005YT-Si
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:51:00 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uMQAP-0008Ub-A1
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:50:57 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-442ea341570so38047345e9.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 04:50:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1748951449; x=1749556249; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Umh+HP+YIzfm01oCuEnx3dxYDMzG774+Azq2vEn7vxI=;
+ b=D9/PF/9rzc24zMgfF8Pg917LNNsYgocxVk2tZ0Qap71D4Q5WBB2nivAO5PlqOoY1fa
+ No+vLq+TL2eZ/rUZhEd1npoPDXFDZvh8tGSQqTq2XDkFw3OskOQsKLlv1E2g5Y6yP21U
+ codgBqJlFz6IwTOZ+51Phr0uRWaDNhlrOiPaofeSVBjQLd0v8nLiNziEChMzdDa57V0e
+ O/5AIoK2dadP3Bg8t9qYFesPBLrujmQlwH6g6YiNoMoVutA40nAoFG8SNuHpB9O+LfmW
+ 2Uj7hgu27N2CFC2mQxPTEeB9CzzqO89LWRiZf6IJGH0rNtmwhtNLhFNOFQYHAQX2e2Ho
+ hGpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748951449; x=1749556249;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Umh+HP+YIzfm01oCuEnx3dxYDMzG774+Azq2vEn7vxI=;
+ b=uTkcTZzlWUXttWYIL9LtcwHIliAsZc6GdN8EJc+QYEdakrc1bNlqP6mfZTgThC44x6
+ v4sfVuvXYd1vaMexSXCA0Ugad1hzFPxs6beGDypMwE0VXIoWGUjwKZivuw1878gjRqPG
+ gKqL0+/Wl+boPOrT67OglA53/LhbMzZEQG/sXeKRtKv35fcMlPeqOm8Ln9rUKfJHb0CC
+ COf81s3fOQ8EQJCtu27yFh0VvOpYfidqHYv/jys+zANSPT8XboTADtExoiQbNEjmkjYd
+ aFSz14hm/KEBwcRUWnRHu6Qn58dF7ahvRw57410GCkmsiq1gLdBgHzdQ3hgAQnoFDrZ5
+ JeEA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUg6RYfXEByppeA8vrDXIGO2a+whuxpoAffio7+SYRbun8fse9EuPtYlJza9uy3X/NSea/raNjeFJbc@nongnu.org
+X-Gm-Message-State: AOJu0Yx9vYrHxf5Gvd5Ptzd+l+JJYq7XSnxPe085g6qAZ9u0ZCDX+KPy
+ IuAaSsowcT5B6YA9w1HNYT4hK3y3xXHVzrt88zbavI75cJ2VHAhDpEQXTMNLKZ3u1lo=
+X-Gm-Gg: ASbGncuG+fg+dB+isMVnTuDpueN3l1l8dlJettYWpTmZD++hZCnODLf68kSlPkQVuKP
+ g1b2ywgNXRWBZoOuQgptbsoh+IdLN07+Cht/J7NZUKOOJPQea+cyJefAOzn/AnIZIjJITZJiaxe
+ MQm1EYq8zWeJy1Eh7X2IqkiLAZIU/GdDE1m9YU7MKzwtLn14tqgLPYgN/4mMxG65dqctLafWisJ
+ mC+rrajkNryADtI7aDSn8QR4EdjQK++vToVUiX49f1zAiZ5Z5nCSAy6hFzUQwxTN8kcbdiN4W7T
+ 8+eZSUX8hefSFRD2mPdPV63EKFp++T894z0FA/eQjmE+mMrU35/VfcpSLh3GoIlBV2qpdMuQ+bT
+ 8rjz9xDuBBsGFaoxKD5ovxYObpDBZf3nsIZ29bf6047+3gQ==
+X-Google-Smtp-Source: AGHT+IHjt7Prro2xyKHy1I9Z+o73vAJlUU0hBjTEZNIV6Mh8F35s9SR8F77axC2yXMBK1MEg1Z2QBw==
+X-Received: by 2002:a05:600c:46cb:b0:450:d5f6:55f5 with SMTP id
+ 5b1f17b1804b1-450d882b463mr130586215e9.6.1748951449292; 
+ Tue, 03 Jun 2025 04:50:49 -0700 (PDT)
+Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-450d8012b09sm157144135e9.37.2025.06.03.04.50.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Jun 2025 04:50:48 -0700 (PDT)
+Message-ID: <fb178d96-ee28-414c-a320-2b5b0ceee5e6@linaro.org>
+Date: Tue, 3 Jun 2025 13:50:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] i386/kvm: Prefault memory on page state change
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, Michael Roth <michael.roth@amd.com>
-References: <f5411c42340bd2f5c14972551edb4e959995e42b.1743193824.git.thomas.lendacky@amd.com>
- <4a757796-11c2-47f1-ae0d-335626e818fd@intel.com>
+Subject: Re: [PATCH 11/16] hw/pci-host/raven: Do not use parent object for
+ mmcfg region
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <cover.1746374076.git.balaton@eik.bme.hu>
+ <104976fab9e144328dd9c73efceeb75a759a83f7.1746374076.git.balaton@eik.bme.hu>
 Content-Language: en-US
-In-Reply-To: <4a757796-11c2-47f1-ae0d-335626e818fd@intel.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <104976fab9e144328dd9c73efceeb75a759a83f7.1746374076.git.balaton@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,59 +104,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/3/2025 3:41 PM, Xiaoyao Li wrote:
-> On 3/29/2025 4:30 AM, Tom Lendacky wrote:
->> A page state change is typically followed by an access of the page(s) and
->> results in another VMEXIT in order to map the page into the nested page
->> table. Depending on the size of page state change request, this can
->> generate a number of additional VMEXITs. For example, under SNP, when
->> Linux is utilizing lazy memory acceptance, memory is typically 
->> accepted in
->> 4M chunks. A page state change request is submitted to mark the pages as
->> private, followed by validation of the memory. Since the guest_memfd
->> currently only supports 4K pages, each page validation will result in
->> VMEXIT to map the page, resulting in 1024 additional exits.
->>
->> When performing a page state change, invoke KVM_PRE_FAULT_MEMORY for the
->> size of the page state change in order to pre-map the pages and avoid the
->> additional VMEXITs. This helps speed up boot times.
+On 4/5/25 18:01, BALATON Zoltan wrote:
+> The mmcfg field in PCIHostState is only used by raven for the PCI
+> config direct access but is not actually needed as the memory region
+> lifetime can be managed by the object given during init so use that
+> and remove the unused field from PCIHostState.
 > 
-> Unfortunately, it breaks TDX guest.
-> 
->    kvm_hc_map_gpa_range gpa 0x80000000 size 0x200000 attributes 0x0 
-> flags 0x1
-> 
-> For TDX guest, it uses MAPGPA to maps the range [0x8000 0000, 
-> +0x0x200000] to shared. The call of KVM_PRE_FAULT_MEMORY on such range 
-> leads to the TD being marked as bugged
-> 
-> [353467.266761] WARNING: CPU: 109 PID: 295970 at arch/x86/kvm/mmu/ 
-> tdp_mmu.c:674 tdp_mmu_map_handle_target_level+0x301/0x460 [kvm]
 
-It turns out to be a KVM bug.
+Well, this is the recommended way to avoid leaking MemoryRegions.
 
-The gpa passed in in KVM_PRE_FAULT_MEMORY, i.e., range->gpa has no 
-indication for share vs. private. KVM directly passes range->gpa to 
-kvm_tdp_map_page() in kvm_arch_vcpu_pre_fault_memory(), which is then 
-assigned to fault.addr
+If QOM object allocates something, it should keep a reference to it,
+allowing simpler eventual implementation of DeviceUnrealize handler.
 
-However, fault.addr is supposed to be a gpa of real access in TDX guest, 
-which means it needs to have shared bit set if the map is for shared 
-access, for TDX case. tdp_mmu_get_root_for_fault() will use it to 
-determine which root to be used.
-
-For this case, the pre fault is on the shared memory, while the 
-fault.addr leads to mirror_root which is for private memory. Thus it 
-triggers KVM_BUG_ON().
-
-
-> [353472.621399] WARNING: CPU: 109 PID: 295970 at arch/x86/kvm/../../../ 
-> virt/kvm/kvm_main.c:4281 kvm_vcpu_pre_fault_memory+0x167/0x1a0 [kvm]
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>   hw/pci-host/raven.c       | 7 ++++---
+>   include/hw/pci/pci_host.h | 1 -
+>   2 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> 
-> It seems the pre map on the non MR back'ed range has issue. But I'm 
-> still debugging it to understand the root cause.
-> 
-> 
+> diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+> index c39e95b45f..7550c291c6 100644
+> --- a/hw/pci-host/raven.c
+> +++ b/hw/pci-host/raven.c
+> @@ -212,7 +212,7 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
+>       SysBusDevice *dev = SYS_BUS_DEVICE(d);
+>       PCIHostState *h = PCI_HOST_BRIDGE(dev);
+>       PREPPCIState *s = RAVEN_PCI_HOST_BRIDGE(dev);
+> -    MemoryRegion *address_space_mem = get_system_memory();
+> +    MemoryRegion *mr, *address_space_mem = get_system_memory();
+>   
+>       qdev_init_gpio_in(d, raven_change_gpio, 1);
+>   
+> @@ -229,9 +229,10 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
+>                             "pci-conf-data", 4);
+>       memory_region_add_subregion(&s->pci_io, 0xcfc, &h->data_mem);
+>   
+> -    memory_region_init_io(&h->mmcfg, OBJECT(h), &raven_mmcfg_ops, h->bus,
+> +    mr = g_new0(MemoryRegion, 1);
+> +    memory_region_init_io(mr, OBJECT(h), &raven_mmcfg_ops, h->bus,
+>                             "pci-mmcfg", 0x00400000);
+> -    memory_region_add_subregion(address_space_mem, 0x80800000, &h->mmcfg);
+> +    memory_region_add_subregion(address_space_mem, 0x80800000, mr);
+>   
+>       memory_region_init_io(&s->pci_intack, OBJECT(s), &raven_intack_ops, s,
+>                             "pci-intack", 1);
+> diff --git a/include/hw/pci/pci_host.h b/include/hw/pci/pci_host.h
+> index e52d8ec2cd..7c0285e2ff 100644
+> --- a/include/hw/pci/pci_host.h
+> +++ b/include/hw/pci/pci_host.h
+> @@ -41,7 +41,6 @@ struct PCIHostState {
+>   
+>       MemoryRegion conf_mem;
+>       MemoryRegion data_mem;
+> -    MemoryRegion mmcfg;
+>       uint32_t config_reg;
+>       bool mig_enabled;
+>       PCIBus *bus;
 
 
