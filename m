@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A60ACBE33
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 03:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECB1ACBE49
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 03:41:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMGbj-0006QA-36; Mon, 02 Jun 2025 21:38:27 -0400
+	id 1uMGbr-0006RP-Pw; Mon, 02 Jun 2025 21:38:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uMGbg-0006Pw-Hc
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 21:38:24 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uMGbn-0006Qz-ST
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 21:38:31 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uMGbe-0001QO-Ge
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 21:38:24 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uMGbm-0001RQ-3i
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 21:38:31 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 13256218E7;
- Tue,  3 Jun 2025 01:38:21 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 171D0218E8;
+ Tue,  3 Jun 2025 01:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1748914701; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1748914703; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HZiChYRCokoaodw33wlx/YS1OZ3Lr7Ka+lZ1U2wYHt8=;
- b=pYeW9bvZubJqw5qECvEeFLOAxAixZzHUWeg0suZQykoQTMYa5Q+CNi7JbFm2ygWxIzGqbD
- tnFpk5JUd93nOyuLjffndnYr90quMIR6EiFlUWZWKMzWEwU9g2/8zFR09m2Pflhthru798
- Gi2mwqck4O1YdwEIlaeJLVHMKC8ZlPY=
+ bh=m1NmJOzistgkewZvj5rcGicm2xwzriSt4DaxoQcJ+lg=;
+ b=h4XVeCQGlnT1Crtxrwu3mNQHmEnwNC6ia5/Ghk2lvuMS+XMGfNW0r3H6Umtcq7HX6RSb/6
+ iWGCRu/ebYW7bMu+36u/ARmBg4cJ/2UGUPMB2Sj3aJBlz1mqgzzFJLDbQrMWxmA7COcP4k
+ pPgh8h/ASokCQnq8BJAx9GUEO0xR4wM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1748914701;
+ s=susede2_ed25519; t=1748914703;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HZiChYRCokoaodw33wlx/YS1OZ3Lr7Ka+lZ1U2wYHt8=;
- b=RfPjfgUnGoc6RU3tlidcT0PoNPB1SrkL94YhOzaTMAxVLyawd2OFinfjYl7DI103Z+KhND
- 4z7Y2NzgrldNDoBg==
+ bh=m1NmJOzistgkewZvj5rcGicm2xwzriSt4DaxoQcJ+lg=;
+ b=mtBT+01NhfRvuGziUe9tJEOo9llbvro4NtMG2bkvKbDHbC2pa4aS/thBbS3k3b4pO1+v8X
+ iDlK0rww3MvSkeDg==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1748914701; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1748914703; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HZiChYRCokoaodw33wlx/YS1OZ3Lr7Ka+lZ1U2wYHt8=;
- b=pYeW9bvZubJqw5qECvEeFLOAxAixZzHUWeg0suZQykoQTMYa5Q+CNi7JbFm2ygWxIzGqbD
- tnFpk5JUd93nOyuLjffndnYr90quMIR6EiFlUWZWKMzWEwU9g2/8zFR09m2Pflhthru798
- Gi2mwqck4O1YdwEIlaeJLVHMKC8ZlPY=
+ bh=m1NmJOzistgkewZvj5rcGicm2xwzriSt4DaxoQcJ+lg=;
+ b=h4XVeCQGlnT1Crtxrwu3mNQHmEnwNC6ia5/Ghk2lvuMS+XMGfNW0r3H6Umtcq7HX6RSb/6
+ iWGCRu/ebYW7bMu+36u/ARmBg4cJ/2UGUPMB2Sj3aJBlz1mqgzzFJLDbQrMWxmA7COcP4k
+ pPgh8h/ASokCQnq8BJAx9GUEO0xR4wM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1748914701;
+ s=susede2_ed25519; t=1748914703;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HZiChYRCokoaodw33wlx/YS1OZ3Lr7Ka+lZ1U2wYHt8=;
- b=RfPjfgUnGoc6RU3tlidcT0PoNPB1SrkL94YhOzaTMAxVLyawd2OFinfjYl7DI103Z+KhND
- 4z7Y2NzgrldNDoBg==
+ bh=m1NmJOzistgkewZvj5rcGicm2xwzriSt4DaxoQcJ+lg=;
+ b=mtBT+01NhfRvuGziUe9tJEOo9llbvro4NtMG2bkvKbDHbC2pa4aS/thBbS3k3b4pO1+v8X
+ iDlK0rww3MvSkeDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 854F413700;
- Tue,  3 Jun 2025 01:38:19 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 89CF013700;
+ Tue,  3 Jun 2025 01:38:21 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id YPWnEQtSPmiNLwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 03 Jun 2025 01:38:19 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id aB2pEg1SPmiNLwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 03 Jun 2025 01:38:21 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 03/21] qapi/migration: Don't document MigrationParameter
-Date: Mon,  2 Jun 2025 22:37:52 -0300
-Message-Id: <20250603013810.4772-4-farosas@suse.de>
+Subject: [PATCH 04/21] migration: Run a post update routine after setting
+ parameters
+Date: Mon,  2 Jun 2025 22:37:53 -0300
+Message-Id: <20250603013810.4772-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250603013810.4772-1-farosas@suse.de>
 References: <20250603013810.4772-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
@@ -93,15 +93,14 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
  RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,199 +117,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MigrationParameter (singular) enumeration is not part of the
-migration QMP API, it's only used for nicely converting HMP strings
-into MigrationParameters (plural) members and for providing readline
-completion.
+Some migration parameters are updated immediately once they are set
+via migrate-set-parameters. Move that work outside of
+migrate_params_apply() and leave that function with the single
+responsibility of setting s->parameters and not doing any
+side-effects.
 
-Documenting this enum only serves to duplicate documentation between
-MigrationParameter and MigrationParameters.
-
-Add an exception to QAPIs pragma.json and stop documenting it.
-
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- qapi/migration.json | 152 +-------------------------------------------
- qapi/pragma.json    |   3 +-
- 2 files changed, 3 insertions(+), 152 deletions(-)
+ migration/options.c | 38 ++++++++++++++++++++++++++++----------
+ migration/ram.c     |  2 +-
+ 2 files changed, 29 insertions(+), 11 deletions(-)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 080968993a..452e6dedaa 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -734,157 +734,7 @@
- ##
- # @MigrationParameter:
- #
--# Migration parameters enumeration
--#
--# @announce-initial: Initial delay (in milliseconds) before sending
--#     the first announce (Since 4.0)
--#
--# @announce-max: Maximum delay (in milliseconds) between packets in
--#     the announcement (Since 4.0)
--#
--# @announce-rounds: Number of self-announce packets sent after
--#     migration (Since 4.0)
--#
--# @announce-step: Increase in delay (in milliseconds) between
--#     subsequent packets in the announcement (Since 4.0)
--#
--# @throttle-trigger-threshold: The ratio of bytes_dirty_period and
--#     bytes_xfer_period to trigger throttling.  It is expressed as
--#     percentage.  The default value is 50.  (Since 5.0)
--#
--# @cpu-throttle-initial: Initial percentage of time guest cpus are
--#     throttled when migration auto-converge is activated.  The
--#     default value is 20.  (Since 2.7)
--#
--# @cpu-throttle-increment: throttle percentage increase each time
--#     auto-converge detects that migration is not making progress.
--#     The default value is 10.  (Since 2.7)
--#
--# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage At
--#     the tail stage of throttling, the Guest is very sensitive to CPU
--#     percentage while the @cpu-throttle -increment is excessive
--#     usually at tail stage.  If this parameter is true, we will
--#     compute the ideal CPU percentage used by the Guest, which may
--#     exactly make the dirty rate match the dirty rate threshold.
--#     Then we will choose a smaller throttle increment between the one
--#     specified by @cpu-throttle-increment and the one generated by
--#     ideal CPU percentage.  Therefore, it is compatible to
--#     traditional throttling, meanwhile the throttle increment won't
--#     be excessive at tail stage.  The default value is false.  (Since
--#     5.1)
--#
--# @tls-creds: ID of the 'tls-creds' object that provides credentials
--#     for establishing a TLS connection over the migration data
--#     channel.  On the outgoing side of the migration, the credentials
--#     must be for a 'client' endpoint, while for the incoming side the
--#     credentials must be for a 'server' endpoint.  Setting this to a
--#     non-empty string enables TLS for all migrations.  An empty
--#     string means that QEMU will use plain text mode for migration,
--#     rather than TLS.  (Since 2.7)
--#
--# @tls-hostname: migration target's hostname for validating the
--#     server's x509 certificate identity.  If empty, QEMU will use the
--#     hostname from the migration URI, if any.  A non-empty value is
--#     required when using x509 based TLS credentials and the migration
--#     URI does not include a hostname, such as fd: or exec: based
--#     migration.  (Since 2.7)
--#
--#     Note: empty value works only since 2.9.
--#
--# @tls-authz: ID of the 'authz' object subclass that provides access
--#     control checking of the TLS x509 certificate distinguished name.
--#     This object is only resolved at time of use, so can be deleted
--#     and recreated on the fly while the migration server is active.
--#     If missing, it will default to denying access (Since 4.0)
--#
--# @max-bandwidth: maximum speed for migration, in bytes per second.
--#     (Since 2.8)
--#
--# @avail-switchover-bandwidth: to set the available bandwidth that
--#     migration can use during switchover phase.  NOTE!  This does not
--#     limit the bandwidth during switchover, but only for calculations
--#     when making decisions to switchover.  By default, this value is
--#     zero, which means QEMU will estimate the bandwidth
--#     automatically.  This can be set when the estimated value is not
--#     accurate, while the user is able to guarantee such bandwidth is
--#     available when switching over.  When specified correctly, this
--#     can make the switchover decision much more accurate.
--#     (Since 8.2)
--#
--# @downtime-limit: set maximum tolerated downtime for migration.
--#     maximum downtime in milliseconds (Since 2.8)
--#
--# @x-checkpoint-delay: The delay time (in ms) between two COLO
--#     checkpoints in periodic mode.  (Since 2.8)
--#
--# @multifd-channels: Number of channels used to migrate data in
--#     parallel.  This is the same number that the number of sockets
--#     used for migration.  The default value is 2 (since 4.0)
--#
--# @xbzrle-cache-size: cache size to be used by XBZRLE migration.  It
--#     needs to be a multiple of the target page size and a power of 2
--#     (Since 2.11)
--#
--# @max-postcopy-bandwidth: Background transfer bandwidth during
--#     postcopy.  Defaults to 0 (unlimited).  In bytes per second.
--#     (Since 3.0)
--#
--# @max-cpu-throttle: maximum cpu throttle percentage.  Defaults to 99.
--#     (Since 3.1)
--#
--# @multifd-compression: Which compression method to use.  Defaults to
--#     none.  (Since 5.0)
--#
--# @multifd-zlib-level: Set the compression level to be used in live
--#     migration, the compression level is an integer between 0 and 9,
--#     where 0 means no compression, 1 means the best compression
--#     speed, and 9 means best compression ratio which will consume
--#     more CPU.  Defaults to 1.  (Since 5.0)
--#
--# @multifd-qatzip-level: Set the compression level to be used in live
--#     migration. The level is an integer between 1 and 9, where 1 means
--#     the best compression speed, and 9 means the best compression
--#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
--#
--# @multifd-zstd-level: Set the compression level to be used in live
--#     migration, the compression level is an integer between 0 and 20,
--#     where 0 means no compression, 1 means the best compression
--#     speed, and 20 means best compression ratio which will consume
--#     more CPU.  Defaults to 1.  (Since 5.0)
--#
--# @block-bitmap-mapping: Maps block nodes and bitmaps on them to
--#     aliases for the purpose of dirty bitmap migration.  Such aliases
--#     may for example be the corresponding names on the opposite site.
--#     The mapping must be one-to-one, but not necessarily complete: On
--#     the source, unmapped bitmaps and all bitmaps on unmapped nodes
--#     will be ignored.  On the destination, encountering an unmapped
--#     alias in the incoming migration stream will result in a report,
--#     and all further bitmap migration data will then be discarded.
--#     Note that the destination does not know about bitmaps it does
--#     not receive, so there is no limitation or requirement regarding
--#     the number of bitmaps received, or how they are named, or on
--#     which nodes they are placed.  By default (when this parameter
--#     has never been set), bitmap names are mapped to themselves.
--#     Nodes are mapped to their block device name if there is one, and
--#     to their node name otherwise.  (Since 5.2)
--#
--# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
--#     limit during live migration.  Should be in the range 1 to
--#     1000ms.  Defaults to 1000ms.  (Since 8.1)
--#
--# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
--#     Defaults to 1.  (Since 8.1)
--#
--# @mode: Migration mode.  See description in @MigMode.  Default is
--#     'normal'.  (Since 8.2)
--#
--# @zero-page-detection: Whether and how to detect zero pages.
--#     See description in @ZeroPageDetection.  Default is 'multifd'.
--#     (since 9.0)
--#
--# @direct-io: Open migration files with O_DIRECT when possible.  This
--#     only has effect if the @mapped-ram capability is enabled.
--#     (Since 9.1)
-+# Migration parameters enumeration. See @MigrationParameters for more info.
- #
- # Features:
- #
-diff --git a/qapi/pragma.json b/qapi/pragma.json
-index 023a2ef7bc..58133907b6 100644
---- a/qapi/pragma.json
-+++ b/qapi/pragma.json
-@@ -76,7 +76,8 @@
-         'X86CPURegister32',
-         'XDbgBlockGraph',
-         'YankInstanceType',
--        'blockdev-reopen' ],
-+        'blockdev-reopen',
-+        'MigrationParameter'],
-     # Externally visible types whose member names may use uppercase
-     'member-name-exceptions': [     # visible in:
-         'ACPISlotType',             # query-acpi-ospm-status
+diff --git a/migration/options.c b/migration/options.c
+index e49d584a99..f64e141394 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -1039,6 +1039,31 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_direct_io = true;
+ }
+ 
++static void migrate_post_update_params(MigrationParameters *new, Error **errp)
++{
++    MigrationState *s = migrate_get_current();
++
++    if (new->has_max_bandwidth) {
++        if (s->to_dst_file && !migration_in_postcopy()) {
++            migration_rate_set(new->max_bandwidth);
++        }
++    }
++
++    if (new->has_x_checkpoint_delay) {
++        colo_checkpoint_delay_set();
++    }
++
++    if (new->has_xbzrle_cache_size) {
++        xbzrle_cache_resize(new->xbzrle_cache_size, errp);
++    }
++
++    if (new->has_max_postcopy_bandwidth) {
++        if (s->to_dst_file && migration_in_postcopy()) {
++            migration_rate_set(new->max_postcopy_bandwidth);
++        }
++    }
++}
++
+ /*
+  * Check whether the parameters are valid. Error will be put into errp
+  * (if provided). Return true if valid, otherwise false.
+@@ -1350,7 +1375,7 @@ static void migrate_params_test_apply(MigrationParameters *params,
+     }
+ }
+ 
+-static void migrate_params_apply(MigrationParameters *params, Error **errp)
++static void migrate_params_apply(MigrationParameters *params)
+ {
+     MigrationState *s = migrate_get_current();
+ 
+@@ -1389,9 +1414,6 @@ static void migrate_params_apply(MigrationParameters *params, Error **errp)
+ 
+     if (params->has_max_bandwidth) {
+         s->parameters.max_bandwidth = params->max_bandwidth;
+-        if (s->to_dst_file && !migration_in_postcopy()) {
+-            migration_rate_set(s->parameters.max_bandwidth);
+-        }
+     }
+ 
+     if (params->has_avail_switchover_bandwidth) {
+@@ -1404,7 +1426,6 @@ static void migrate_params_apply(MigrationParameters *params, Error **errp)
+ 
+     if (params->has_x_checkpoint_delay) {
+         s->parameters.x_checkpoint_delay = params->x_checkpoint_delay;
+-        colo_checkpoint_delay_set();
+     }
+ 
+     if (params->has_multifd_channels) {
+@@ -1424,13 +1445,9 @@ static void migrate_params_apply(MigrationParameters *params, Error **errp)
+     }
+     if (params->has_xbzrle_cache_size) {
+         s->parameters.xbzrle_cache_size = params->xbzrle_cache_size;
+-        xbzrle_cache_resize(params->xbzrle_cache_size, errp);
+     }
+     if (params->has_max_postcopy_bandwidth) {
+         s->parameters.max_postcopy_bandwidth = params->max_postcopy_bandwidth;
+-        if (s->to_dst_file && migration_in_postcopy()) {
+-            migration_rate_set(s->parameters.max_postcopy_bandwidth);
+-        }
+     }
+     if (params->has_max_cpu_throttle) {
+         s->parameters.max_cpu_throttle = params->max_cpu_throttle;
+@@ -1486,7 +1503,8 @@ void qmp_migrate_set_parameters(MigrationParameters *params, Error **errp)
+     migrate_params_test_apply(params, &tmp);
+ 
+     if (migrate_params_check(&tmp, errp)) {
+-        migrate_params_apply(params, errp);
++        migrate_params_apply(params);
++        migrate_post_update_params(params, errp);
+     }
+ 
+     migrate_tls_opts_free(&tmp);
+diff --git a/migration/ram.c b/migration/ram.c
+index d26dbd37c4..22e462bf72 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -174,7 +174,7 @@ static void XBZRLE_cache_unlock(void)
+ /**
+  * xbzrle_cache_resize: resize the xbzrle cache
+  *
+- * This function is called from migrate_params_apply in main
++ * This function is called from migrate_post_update_config in main
+  * thread, possibly while a migration is in progress.  A running
+  * migration may be using the cache and might finish during this call,
+  * hence changes to the cache are protected by XBZRLE.lock().
 -- 
 2.35.3
 
