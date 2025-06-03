@@ -2,82 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D4CACC913
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 16:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3C9ACC974
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 16:46:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMSaM-0003Xm-31; Tue, 03 Jun 2025 10:25:50 -0400
+	id 1uMSsK-00010l-46; Tue, 03 Jun 2025 10:44:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMSaD-0003Wi-AF
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 10:25:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMSa7-0000O4-DH
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 10:25:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748960733;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VfoxNP8bhflz2rzAOvREUlD600WmJKghETNfk2yIVbE=;
- b=MhsBneuF8oUZJm2qO9BV7Iy6qvmceiJNPFu89SpzBIc1cK+HZDDPRqH5ncGZ/oafFxHv+m
- q3gg1v3a5J74+0Awr3EsST+5GKunskK2O6zzYdI1D+3qABoKnJzLtsqaeJVogneGEKvmtw
- +jw7IwdPkxKWq4SWzguQK8sjcNG0GII=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-Hm_piQwrPK-dWhZ_G47gmw-1; Tue,
- 03 Jun 2025 10:25:29 -0400
-X-MC-Unique: Hm_piQwrPK-dWhZ_G47gmw-1
-X-Mimecast-MFC-AGG-ID: Hm_piQwrPK-dWhZ_G47gmw_1748960728
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F20F618004AD; Tue,  3 Jun 2025 14:25:27 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 24A25180049D; Tue,  3 Jun 2025 14:25:26 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4526021E6617; Tue, 03 Jun 2025 16:25:24 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@gmail.com>
-Subject: [PATCH v3 3/3] docs: define policy forbidding use of AI code
- generators
-Date: Tue,  3 Jun 2025 16:25:24 +0200
-Message-ID: <20250603142524.4043193-4-armbru@redhat.com>
-In-Reply-To: <20250603142524.4043193-1-armbru@redhat.com>
-References: <20250603142524.4043193-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uMSs9-0000zm-QQ
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 10:44:15 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uMSs1-0002Ne-3u
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 10:44:12 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3a365a6804eso4293875f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 07:44:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1748961839; x=1749566639; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ej1WLHRtQogBZXpAK07IGpaR+2X1F2rJXfCoNf4yQsQ=;
+ b=OMh2e32/mADmHDxAsIGvQpRz7oFudgK6uMBDZdt9tB1ZhfxXWJ8w7bK7SAOhndzAke
+ 7VRPv4OdJEIZwJEW98h5QZhivk5evt+libQp8WleE6s3dwQCSeGs1y3EvyX06zEdjZe+
+ OGFrutQRdc7BX/FrHPJ6tXrIRvSnXMR4YM9ubVSSp2mL8WCBbXHzZTzqsCkXCGrhXKCk
+ 9ZCoBWwcKKTPaoNUVnDJqY2zACtCT9GkRt2uWB1vmLFd0LBmgD+ixLTrprVzo9NgNKe8
+ elXzXHDkA3laAc4t4Fq5ZAbmt1mdtrqMEP6oxtrWa2hI8K4p6o3QSKqIoVU2rqNitqNO
+ P4UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748961839; x=1749566639;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ej1WLHRtQogBZXpAK07IGpaR+2X1F2rJXfCoNf4yQsQ=;
+ b=wkDoI0/lHvwSBkMlcA+EwartMO6HRH55yMP8UI/1cf3h04Weo6TqlW+t6ZjB+R3v3P
+ 2KfJRH6tgkVLl/8B80uZP2PgBHIPULx0R3ac957QklMdlvmVfmcgzFFTz7dZ9PBTwhnl
+ jvslNGgAfoOuFYc9dM4kW2Tt1l7To/SYvC49JuheY4/+SHdP3YWmPznidCmyp6ut9bK5
+ FlmRboJ/2EeskaJ973m6QYDHx1zBycnk/U8o/w9uq93vBI24sf9Ss+FjUZuQbiT9FLfo
+ IZML7FxrxMW+AG+FrmHgw5t8cQUcWmWqR4J/5Y4fYeGnqQkq3+F6BWbC0gAhxiF59jdT
+ dJnQ==
+X-Gm-Message-State: AOJu0Yz2KTJNse0eqOk/XYelTNrmezH1enrS6j9YgHTFW6skGh/ahdbe
+ AmKOa0hlt1n15qqkYTxRcPwL5TkB2GRC8eojVCy0z60ySOAUQoo4+uJHvjCNA9JihzE=
+X-Gm-Gg: ASbGnctWr+/2wXqp/aYyFzJdwk8jgivNq+3yDz8ElUcLljbq1nxSVEiO9T+qJsn/fhS
+ H148B2ioeLYMi4G+HJK4fj7CD4UQX82mcpgj/MBTtwmAtlL4uM11JWYWfcDKkQKs6seCitwaiio
+ FiezK0kzZJ5ubVEKwqC8BJXZYvPddhtwlnCDra7zQswiiX6qjrC5WSodMLaiT3c+ZFLgOuy1AJm
+ /cxA3NsUh1og86yTcROrXxTD7i+9Crq59m4Q3LxZICn8udhopElvH2Cl724HKerH4P+XTCD7yxu
+ ngv2Jdn1XBhlFLAGd2Lbinqyih8EZuvsWdJRcx8T488Vi54tXhq0sW4aiSPTfmKHz0yzORDgyRn
+ KKDJJfBKVosVTZz2JmcwCFQsGyVTpkcV5DYLee1c/Rr15Gg==
+X-Google-Smtp-Source: AGHT+IGUNGa9PVvIW82XC2aH8Y3fOiJY3XNjxZBfp3uNXnzkFaEpwBvCheuS5mXFkBptD602oDO/cw==
+X-Received: by 2002:a05:6000:4382:b0:3a4:eef5:dece with SMTP id
+ ffacd0b85a97d-3a4f7a7139emr15115324f8f.35.1748961839469; 
+ Tue, 03 Jun 2025 07:43:59 -0700 (PDT)
+Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-450d7f1b0a4sm165568315e9.0.2025.06.03.07.43.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Jun 2025 07:43:58 -0700 (PDT)
+Message-ID: <a2807c77-d1ae-4f17-8fdd-94bd7e94a69b@linaro.org>
+Date: Tue, 3 Jun 2025 16:43:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 02/23] ui/vnc: take account of client byte order in pixman
+ format
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20250522102923.309452-1-berrange@redhat.com>
+ <20250522102923.309452-3-berrange@redhat.com>
+ <e6c7920b-8078-4d97-92ce-2efafb645953@redhat.com>
+ <aD79d0XPK_dARai_@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <aD79d0XPK_dARai_@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,103 +104,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+On 3/6/25 15:49, Daniel P. Berrangé wrote:
+> On Tue, Jun 03, 2025 at 01:18:55PM +0200, Thomas Huth wrote:
+>> On 22/05/2025 12.29, Daniel P. Berrangé wrote:
+>>> The set_pixel_conversion() method is responsible for determining whether
+>>> the VNC client pixel format matches the server format, and thus whether
+>>> we can use the fast path "copy" impl for sending pixels, or must use
+>>> the generic impl with bit swizzling.
+>>>
+>>> The VNC server format is set at build time to VNC_SERVER_FB_FORMAT,
+>>> which corresponds to PIXMAN_x8r8g8b8.
+>>>
+>>> The qemu_pixman_get_format() method is then responsible for converting
+>>> the VNC pixel format into a pixman format.
+>>>
+>>> The VNC client pixel shifts are relative to the associated endianness.
+>>>
+>>> The pixman formats are always relative to the host native endianness.
+>>>
+>>> The qemu_pixman_get_format() method does not take into account the
+>>> VNC client endianness, and is thus returning a pixman format that is
+>>> only valid with the host endianness matches that of the VNC client.
+>> ...
+>>
+>>   Hi Daniel,
+>>
+>> this patch breaks the output in the TigerVNC viewer for me.
+>> If I run "./qemu-system-x86_64 -vnc :1" on my laptop, and then connect to it
+>> via "vncviewer :1", the output of the BIOS now appears in yellow letters
+>> (instead of grey ones).
+> 
+> It turns out that historically we never set the 'client_be' flag
+> when a client does NOT send a "set pixel format" message. By luck
+> this was OK for little endian platforms as the default value of
+> 0 matched little endian.
+> 
+> When I replaced 'client_be' with "client_endian", the default
+> value of 0 matches neither big or little endian.
+> 
+> I didn't see this with remote-viewer as it unconditionally
+> sends "set pixel format", but tigervnc always uses the server's
+> default pixel format.
+> 
+> So this patch is fine, but it exposes a pre-existing latent
+> bug there was probably causing problems on big endian platforms
+> in the past, but now causes problems on little endian platforms.
 
-There has been an explosion of interest in so called AI code
-generators. Thus far though, this is has not been matched by a broadly
-accepted legal interpretation of the licensing implications for code
-generator outputs. While the vendors may claim there is no problem and
-a free choice of license is possible, they have an inherent conflict
-of interest in promoting this interpretation. More broadly there is,
-as yet, no broad consensus on the licensing implications of code
-generators trained on inputs under a wide variety of licenses
-
-The DCO requires contributors to assert they have the right to
-contribute under the designated project license. Given the lack of
-consensus on the licensing of AI code generator output, it is not
-considered credible to assert compliance with the DCO clause (b) or (c)
-where a patch includes such generated code.
-
-This patch thus defines a policy that the QEMU project will currently
-not accept contributions where use of AI code generators is either
-known, or suspected.
-
-These are early days of AI-assisted software development. The legal
-questions will be resolved eventually. The tools will mature, and we
-can expect some to become safely usable in free software projects.
-The policy we set now must be for today, and be open to revision. It's
-best to start strict and safe, then relax.
-
-Meanwhile requests for exceptions can also be considered on a case by
-case basis.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@gmail.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- docs/devel/code-provenance.rst | 50 +++++++++++++++++++++++++++++++++-
- 1 file changed, 49 insertions(+), 1 deletion(-)
-
-diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
-index c27d8fe649..261263cfba 100644
---- a/docs/devel/code-provenance.rst
-+++ b/docs/devel/code-provenance.rst
-@@ -270,4 +270,52 @@ boilerplate code template which is then filled in to produce the final patch.
- The output of such a tool would still be considered the "preferred format",
- since it is intended to be a foundation for further human authored changes.
- Such tools are acceptable to use, provided they follow a deterministic process
--and there is clearly defined copyright and licensing for their output.
-+and there is clearly defined copyright and licensing for their output. Note
-+in particular the caveats applying to AI code generators below.
-+
-+Use of AI code generators
-+~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+TL;DR:
-+
-+  **Current QEMU project policy is to DECLINE any contributions which are
-+  believed to include or derive from AI generated code. This includes ChatGPT,
-+  CoPilot, Llama and similar tools**
-+
-+The increasing prevalence of AI code generators, most notably but not limited
-+to, `Large Language Models <https://en.wikipedia.org/wiki/Large_language_model>`__
-+(LLMs) results in a number of difficult legal questions and risks for software
-+projects, including QEMU.
-+
-+The QEMU community requires that contributors certify their patch submissions
-+are made in accordance with the rules of the dco_ (DCO).
-+
-+To satisfy the DCO, the patch contributor has to fully understand the
-+copyright and license status of code they are contributing to QEMU. With AI
-+code generators, the copyright and license status of the output is ill-defined
-+with no generally accepted, settled legal foundation.
-+
-+Where the training material is known, it is common for it to include large
-+volumes of material under restrictive licensing/copyright terms. Even where
-+the training material is all known to be under open source licenses, it is
-+likely to be under a variety of terms, not all of which will be compatible
-+with QEMU's licensing requirements.
-+
-+How contributors could comply with DCO terms (b) or (c) for the output of AI
-+code generators commonly available today is unclear.  The QEMU project is not
-+willing or able to accept the legal risks of non-compliance.
-+
-+The QEMU project thus requires that contributors refrain from using AI code
-+generators on patches intended to be submitted to the project, and will
-+decline any contribution if use of AI is either known or suspected.
-+
-+Examples of tools impacted by this policy includes both GitHub's CoPilot,
-+OpenAI's ChatGPT, and Meta's Code Llama, amongst many others which are less
-+well known.
-+
-+This policy may evolve as AI tools mature and the legal situation is
-+clarifed. In the meanwhile, requests for exceptions to this policy will be
-+evaluated by the QEMU project on a case by case basis. To be granted an
-+exception, a contributor will need to demonstrate clarity of the license and
-+copyright status for the tool's output in relation to its training model and
-+code, to the satisfaction of the project maintainers.
--- 
-2.48.1
+Nice :)
 
 
