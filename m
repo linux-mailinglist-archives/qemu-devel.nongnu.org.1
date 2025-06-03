@@ -2,69 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6471CACC238
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 10:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A401ACC249
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 10:40:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMN4H-0004Bz-MQ; Tue, 03 Jun 2025 04:32:21 -0400
+	id 1uMNB3-0006vz-DL; Tue, 03 Jun 2025 04:39:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uMN4C-0004Bk-6o; Tue, 03 Jun 2025 04:32:16 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>)
- id 1uMN46-0008TP-6O; Tue, 03 Jun 2025 04:32:15 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxNHACsz5o9fgJAQ--.32227S3;
- Tue, 03 Jun 2025 16:32:02 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowMCxPsf+sj5oIqQGAQ--.26380S3;
- Tue, 03 Jun 2025 16:32:00 +0800 (CST)
-Subject: Re: [PATCH v2] target/loongarch: fix vldi/xvldi raise wrong error
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uMNB1-0006vX-Ao
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:39:19 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uMNAy-0000kI-8L
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:39:19 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3a376ba6f08so3121097f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 01:39:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1748939954; x=1749544754; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Amxoytx7Q/MFSs92zgZ8wbv2ethU8a8vCVUCdQg9Cqs=;
+ b=k6gjVVN6PEKvJhVdjtC2VUIB4H6kLDMTORNsV0Cqir7eBFoa3uNE6QT2ie+99QxDMi
+ npCBGihjscwxkrs6U8nScysCph7zVySewX3WBwWY2iYG4RnMoMxDi+eDDXdCqCbY8rEx
+ 5szrNOj+yNI6Mvkyxvvo/ezAAeQSZ0m6QMUIYszDT81paUqoHdFJ0LpLTdblinMV+Kcn
+ SMMUdw8orMlS/ucxWtDpY8oEVI+t7qiazAjrZoorp1nI3G1mdowQ4NkxB1ldq+reBe2Q
+ 14EZYOM/NDvEw3J1/DPO3udOg/rmX2fYIG6GWINpPIvzur2M7ghMh9+dIgGIMYjyLPZ3
+ f0Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748939954; x=1749544754;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Amxoytx7Q/MFSs92zgZ8wbv2ethU8a8vCVUCdQg9Cqs=;
+ b=odi7UykSbI4ardjbXHQaLEBZFJL//fCWlDOS9yPce/Uhsp8Js4GnlQMV/ooiwUnBci
+ o46GtgHh6s2neUW1jG7N1p0eP2U/x941oTysYEhqPA7DBs6hah91TZlGx0UDjorLrHiR
+ V82yvo7WxRtzQi3YixzcEk4ZQn2LfkB+1gTygjEu20w0lZnEQB5o/VzfOGHG3SOU1cDh
+ yeL1mzVdCv+uXUf4AbbE5lFnioCDZ1thJZTvSFop9+MavA6LK1qgvExQHIUr4g9nK3QQ
+ rYe72tvgALQRDYw5iMzNNU3kYrktHAg9mM0B5REJ//eCufn4m2gw/4KQMG9ntynDMq+v
+ 6h2A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX4njUGefXyLhbF/lplbPQbY1OTEEOa7HkG+jeLSdQnPGnKchMJyMpL70/j/mTFHPhSS9dYVHCrqYWD@nongnu.org
+X-Gm-Message-State: AOJu0Yw9uD7GAF8Yk+z6lzdotWwuyHy1HRVP+K7iEfN9Bb56LuY6aeeG
+ +ZWRVK8Q4jT32+KySElBMsscfpVwtIUmQkCOs9XKFI/9wvgzVsNjpuQtIdCL9pUwNZM=
+X-Gm-Gg: ASbGncvFdTKTH/knyffgraHT/ihaWSc5y5kTXHslnmVUHlGwGIGh5L/+dFv5ITKKA4R
+ XXFDbfkcY3HjMqyh9A7x0SQbx5mqH+2Evodi86cP2So7aco4JLk7gaoJYRwXlXswup28KrBofNn
+ 83SIXR9L4PKRKo1N7XT2VUjrwIO/CN8krV1IG0xHdlpo7Z1MLt18CBX7axOVZPOHad6AvAUEiNj
+ 1fR3rIng7YAe56ygKq+dHah/OORbpuG0GNIOwRmFRWZc3Ujsko48oLBKYNNp6/tgv2oeQxWE8vU
+ 9gF2rR0xgbCz/EP0yK4I9ewT11DkDTFvSPcU22VLBicmNBN1Yw+nDFswIfmVx6iqDpRbphoxJGD
+ SjvajrIBZCsCIvb7/EXhm
+X-Google-Smtp-Source: AGHT+IE2wq1hFwGpjOf658t9nJ6JZdBAXQCXhDtTNEWYfXlgl+qVFYUxcZ0kHXEegcXmHOVx7pUOeA==
+X-Received: by 2002:a05:6000:40e1:b0:3a4:f661:c3e2 with SMTP id
+ ffacd0b85a97d-3a4fe3a8127mr8510212f8f.55.1748939953760; 
+ Tue, 03 Jun 2025 01:39:13 -0700 (PDT)
+Received: from [192.168.1.127] (host-80-41-64-133.as13285.net. [80.41.64.133])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-450d7fa23f4sm158721725e9.14.2025.06.03.01.39.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Jun 2025 01:39:13 -0700 (PDT)
+Message-ID: <1402c3b9-60a4-4696-9b30-acec25df6859@linaro.org>
+Date: Tue, 3 Jun 2025 09:39:00 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] target/loongarch: fix vldi/xvldi raise wrong error
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
 Cc: maobibo@loongson.cn, philmd@linaro.org, lorenz.hetterich@cispa.de,
  qemu-stable@nongnu.org
-References: <20250603024847.350568-1-gaosong@loongson.cn>
- <be345a4b-cfb3-4e97-b09f-b21e5dcb6a43@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <c6efde46-a855-aff2-3b14-10ca65740a5c@loongson.cn>
-Date: Tue, 3 Jun 2025 16:34:46 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <be345a4b-cfb3-4e97-b09f-b21e5dcb6a43@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250603081127.353730-1-gaosong@loongson.cn>
 Content-Language: en-US
-X-CM-TRANSID: qMiowMCxPsf+sj5oIqQGAQ--.26380S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Zr47Gw4fGrWkAFWxuryrXwc_yoW8Kr1kpr
- n3KrW7GryUKF93Jrs5Jw4UAFyUJr48ta1qg3Wvq3WFyFWDAr1Ygr4jqrsF9F17ur40vr15
- XF1UZr17ZFsFqwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AK
- xVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
- AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI
- 42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMI
- IF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2
- KfnxnUUI43ZEXa7IU8j-e5UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.054,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250603081127.353730-1-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,72 +102,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2025/6/3 下午3:42, Richard Henderson 写道:
-> On 6/3/25 03:48, Song Gao wrote:
->> on qemu we got an aborted error
->> **
->> ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: 
->> code should not be reached
->> Bail out! 
->> ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: 
->> code should not be reached
->> Aborted (core dumped)
->> bu on 3A600/3A5000 we got a "Illegal instruction" error.
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2971
->>
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> ---
->>   target/loongarch/tcg/insn_trans/trans_vec.c.inc | 13 ++++++++-----
->>   1 file changed, 8 insertions(+), 5 deletions(-)
->>
->> diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc 
->> b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
->> index dff92772ad..cadc00e75e 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
->> @@ -3465,7 +3465,7 @@ TRANS(xvmsknz_b, LASX, gen_xx, 
->> gen_helper_vmsknz_b)
->>   static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
->>   {
->>       int mode;
->> -    uint64_t data, t;
->> +    uint64_t data = 0, t;
->>         /*
->>        * imm bit [11:8] is mode, mode value is 0-12.
->> @@ -3570,8 +3570,7 @@ static uint64_t vldi_get_value(DisasContext 
->> *ctx, uint32_t imm)
->>           }
->>           break;
->>       default:
->> -        generate_exception(ctx, EXCCODE_INE);
->> -        g_assert_not_reached();
->> +        data = -1;
->>       }
->>       return data;
->>   }
->> @@ -3579,7 +3578,12 @@ static uint64_t vldi_get_value(DisasContext 
->> *ctx, uint32_t imm)
->>   static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
->>   {
->>       int sel, vece;
->> -    uint64_t value;
->> +    uint64_t value = vldi_get_value(ctx, a->imm);
->> +
->> +    if (value == -1){
->> +        generate_exception(ctx, EXCCODE_INE);
->> +        return true;
->> +    }
->
-> Incorrect.  -1 is a valid return value for several modes.
->
+On 6/3/25 09:11, Song Gao wrote:
+> on qemu we got an aborted error
+> **
+> ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
+> Bail out! ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
+> Aborted (core dumped)
+> bu on 3A600/3A5000 we got a "Illegal instruction" error.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2971
+> 
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   target/loongarch/tcg/insn_trans/trans_vec.c.inc | 14 ++++++++++----
+>   1 file changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+> index dff92772ad..f8ff4fa18c 100644
+> --- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+> +++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+> @@ -3465,7 +3465,7 @@ TRANS(xvmsknz_b, LASX, gen_xx, gen_helper_vmsknz_b)
+>   static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
+>   {
+>       int mode;
+> -    uint64_t data, t;
+> +    uint64_t data = 0, t;
+>   
+>       /*
+>        * imm bit [11:8] is mode, mode value is 0-12.
+> @@ -3569,18 +3569,24 @@ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
+>               data = (t1 << 54) | (t0 << 48);
+>           }
+>           break;
+> -    default:
+> -        generate_exception(ctx, EXCCODE_INE);
+> -        g_assert_not_reached();
 
-My negligence.
+Drop the generate_exception, but keep the assert.
+It really is no longer reachable because of check_vldi_mode().
 
-thanks.
-Song Gao
+>       }
+>       return data;
+>   }
+>   
+> +static bool check_vldi_mode(arg_vldi *a)
+> +{
+> +   return (a->imm >>8 & 0xf) > 12 ? false : true;
 
->
-> r~
+Never use ?: with true/false.  Just use the proper boolean expression:
 
+     return ((a->imm >> 8) & 0xf) <= 12;
+
+
+r~
 
