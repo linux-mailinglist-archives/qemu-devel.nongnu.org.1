@@ -2,107 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046D2ACC4F2
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC17EACC51C
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:13:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMPSs-00045m-Iq; Tue, 03 Jun 2025 07:05:55 -0400
+	id 1uMPZV-0005DS-0e; Tue, 03 Jun 2025 07:12:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uMPPT-00087J-3e
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:23 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uMPZT-0005DI-Fa
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:12:43 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uMPPN-0002E2-FG
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:22 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-acacb8743a7so1055706166b.1
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 04:02:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uMPZR-00042S-TY
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:12:43 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3a36e090102so3147302f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 04:12:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748948536; x=1749553336; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BM91DYmyhd/whlHWSkAx+XEJzxYMIFdJJZyTAcb4rl4=;
- b=i8PrxLVBzIsWtswU+KvuZ4yy5/XNNxGxmYzeCtIj79ICAPgCVqW3/aJLBkMuvRVb5x
- 7DPz1/aH8r7TzJZLo2EGnQWld3WFQmAh5/PVGCB5gaPL75L9xj5VcK6UrOuz4jNX9w9U
- ApmxWVI5wi0ugxveZP9onUkExHnVzK1arn7+yi3P74WCg/sotQ+upjv51HtfStQZT+Al
- uIx6FxSFYm6jwaFden+gakJF9QsWwQkMta+wO2IBc6p4had/2+QVOKrHklDDiPKCtoGu
- gQX/2Qwl2BXrgTj9cEsHQeJFPSm+MGD4NplRNB2rJZ0/T04TL0M8+OYgYsm2N+Go4U57
- hNwQ==
+ d=linaro.org; s=google; t=1748949159; x=1749553959; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=E4tmmwWfacUcyM+hSbuy+1JhqfaP2nJVt10wYFCXcJw=;
+ b=ETYHZ6BNUotssJ0GVWsX99hN986aSUH3OIJWZ/t6UaXhifOhnqoLoVZsQEqTMDdS6S
+ xX2PqYH33XBNRTqc6TJCqz8k8JaUNId4yNuLixZ3QYeGdxQA9yomx0+e6q4e9UfBr0Kb
+ gfCrq6Y02kk4ZGrtXi2He8Ts0hnNYsHWtVh6QOMK/YpQbVL3qpNTdfDQqpQhE/c4dsoS
+ O3CIMorn4U7y9VH3kixuA9qi2wOGC1w64L2953X0XPO06zjipBPdk7+ATpXLPviOUrhb
+ uutXt9M5BQKp7oc6Kw47EET47S1FGjMScuG18IG/k50y0I1o09RydChNIv0dOqAxbQd8
+ 6Kew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748948536; x=1749553336;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BM91DYmyhd/whlHWSkAx+XEJzxYMIFdJJZyTAcb4rl4=;
- b=BeDd+6QXzGsx3NBF8GKDHMmz42OgNGLIzZ9e25cSblitZvqyG1RkEHER0SCJjD1BWm
- hxwqdSgBbVK/W1pAYhzgGg4C7uSFwMFrFKtU55JXbm2PYV+JazIC5LQ3WqBAQ2ogu/Tq
- K8ww4jbnqZzCC4kfy5KZ6OhHja06ujqmZn1jg4EPRmtfrePF4iP2SbJs8wmFQsFqj4+L
- fUwGJwhyivNzvrHVWRHZ6QTAC8aPQvwgVs9Lh4MJd3Pf5gs5SGYrTsy9tafmwwhdhQMr
- WnvgoE3VzEEF4HIUPdfKGFG+5Z/SLzlPPQQqYVyiAHxTIjoXdYcS/3VUR4142P66ulcQ
- BWqQ==
-X-Gm-Message-State: AOJu0YxJdndPkA0reRTUKdsKeal2f6Gnb4jAOLN3ES8Vl+LG6D90HYgz
- WXpvBQQaidYZxAjkxu4Dh1r2GW5ri4fha/5D1/bYbc7d0dX+2u8vskL+xooBIE0q3Dg=
-X-Gm-Gg: ASbGncuE9SyI0i3qg+IaKFUkLMys1YviaOYN0aqITq1xeoryCIQR1oGS07IVns88inx
- 59GVKxNkk0Nkiw/6IQFN53I3hpUxu1Bbadq8xth+L9owRGyXEr7N43mWO9lFOsqv92TZ7JgZRNS
- a9peagVt68DxhQqpOCj8cnUAfSmA37zRf5bOhswzX3RfxivzKwpuslI4mXRNb1gZPii35/wWzFu
- L/1DWZp/iL7Atj2jkmgwsKjoNAxDP4eSp9e3a+obdnCAg7sYUy5DVr8+BkClE0/PDbaC2E5XFzn
- MTTPXhdtLEjLHkYLM+yyccNIz//mMDT0Z5UwF2h/hDdYc/w3JoDi
-X-Google-Smtp-Source: AGHT+IFAQxZ8oG2VB5Fyld7vVeDQ/c0KrPvdW6Zz3s5mpsiY+DUZYO7lhOiBc0cCaZuKRThZf7CRAA==
-X-Received: by 2002:a17:907:8694:b0:ad8:5595:ce07 with SMTP id
- a640c23a62f3a-adde66ca1d5mr167272366b.19.1748948535778; 
- Tue, 03 Jun 2025 04:02:15 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5e878152sm938855866b.107.2025.06.03.04.02.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Jun 2025 04:02:13 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 795095F9FC;
- Tue, 03 Jun 2025 12:02:06 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, qemu-arm@nongnu.org,
- Thomas Huth <thuth@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH v4 17/17] gdbstub: update aarch64-core.xml
-Date: Tue,  3 Jun 2025 12:02:04 +0100
-Message-ID: <20250603110204.838117-18-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250603110204.838117-1-alex.bennee@linaro.org>
-References: <20250603110204.838117-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1748949159; x=1749553959;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=E4tmmwWfacUcyM+hSbuy+1JhqfaP2nJVt10wYFCXcJw=;
+ b=P0uYD4doP6dw221uNl/umFPOrdnLuexGgYy+rygPZ2azpWv6+Ym2cll6+e+pHmGqOE
+ Hw9GbvwFeIU/wY1gDoHSYyioTikqP1zDCFcY2W4VHK0tcaqw5pZ/MlJAyVqbP4qUrbLN
+ r66z66/gAUCcomJmSXOAfwWrx25qlniiOB5knOTmKkh3Fd4CyEydNekg+RJPuVVKU+4L
+ hfKUn+WYnbrTb1vKohR3KDbkBfzIdupVLiUaA/EfREmzWmQ+e9SzRMM77KmAkT8x98uP
+ Sj5C4dWXsvFkd4xGKzXCpXn3UahCQZHl6B27D28Hk7ZAjjshAFi4AV+aH/DbioauxAN6
+ QlEQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUmBKDZ8SXDJfGm1QjdtpkWDq7Iq/G0ryvjLnempKNwS5NrD9ByegFeEOcFQoBbyAqDTs+NpXakJYP0@nongnu.org
+X-Gm-Message-State: AOJu0YzTI6ph3W8VLtk1RhSXklZTR+KOxQJ77yjQirkP+yHDs4Ol9j5Q
+ eUbxvIonMPJP8iCB4OB9f9dCdZIt9uUHs3Lw0rp+M760MiAiZ+CgnU0SJZZVRnda+mminbqfjG1
+ qpMX9ylM=
+X-Gm-Gg: ASbGncvvEn50zIXG9wlCiRymEI7ld12Sq1mLxz9wI+FmMOXgPCjCupbPJ1zLzUhmm1w
+ pdJKMrDr3ya1OPVge0v/7vZ22HUOPX9aWHGTVo7N37DrvPTjd1M4ewkoqvq/090fZG/yp93kVNV
+ h6pBUqKoJ/V6aAD5xkANL8gaLD4pTCOqjaX6xpBo6qZzkE8jJzOTdT38Sn6OLLTVhdCwhfA10Ce
+ Oo0NT4K5X4nZVmtXZEu5KUHuHmm5Wx6rT4K+TWtnHpZSbgDolu0AXp5qpjRmLpbSDkRDd5GX5xp
+ gQWz+gKhqjvg1dR7pjaRjyXvust9j+CRS0ln/y5XOcJMjJ39I+z90WQzRQqfXBdlsirl31N2ySU
+ 8uDT92bREYHvdfC5Ln/N7PUoKNPZfGdP+ph8=
+X-Google-Smtp-Source: AGHT+IEdrIsOzl+hF3cG0SD8WZE4XDKJDfsfL6RDJJwfkATz3YBEsBj9Wkz5rQEzmESiIq5f1GeJgQ==
+X-Received: by 2002:a05:6000:b4e:b0:3a4:fc3f:8d5b with SMTP id
+ ffacd0b85a97d-3a4fc3f8d96mr7985347f8f.47.1748949159126; 
+ Tue, 03 Jun 2025 04:12:39 -0700 (PDT)
+Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a4f00a0a96sm18136065f8f.96.2025.06.03.04.12.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Jun 2025 04:12:38 -0700 (PDT)
+Message-ID: <347ecead-c511-4674-98ed-2ee356b9ebd9@linaro.org>
+Date: Tue, 3 Jun 2025 13:12:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] ui/vnc: Do not copy z_stream
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ devel@daynix.com
+References: <20250603-zlib-v3-0-20b857bd8d05@rsg.ci.i.u-tokyo.ac.jp>
+ <20250603-zlib-v3-1-20b857bd8d05@rsg.ci.i.u-tokyo.ac.jp>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250603-zlib-v3-1-20b857bd8d05@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,108 +102,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+On 3/6/25 11:18, Akihiko Odaki wrote:
+> vnc_worker_thread_loop() copies z_stream stored in its local VncState to
+> the persistent VncState, and the copied one is freed with deflateEnd()
+> later. However, deflateEnd() refuses to operate with a copied z_stream
+> and returns Z_STREAM_ERROR, leaking the allocated memory.
+> 
+> Avoid copying the zlib state to fix the memory leak.
+> 
+> Fixes: bd023f953e5e ("vnc: threaded VNC server")
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> ---
+>   ui/vnc.h          |  2 +-
+>   ui/vnc-enc-zlib.c | 30 +++++++++++++++---------------
+>   ui/vnc.c          | 13 ++++++++++---
+>   3 files changed, 26 insertions(+), 19 deletions(-)
 
-Update aarch64-core.xml to include field definitions for PSTATE, which
-in gdb is modelled in the cpsr (current program status register)
-pseudo-register, named after the actual cpsr register in armv7.
-
-Defining the fields layout of the register allows easy inspection of for
-example, the current exception level (EL):
-
-For example. Before booting a Linux guest, EL=2, but after booting and
-Ctrl-C'ing in gdb, we get EL=0:
-
-  (gdb) info registers $cpsr
-  cpsr           0x20402009          [ SP EL=2 BTYPE=0 PAN C ]
-  (gdb) cont
-  Continuing.
-  ^C
-  Thread 2 received signal SIGINT, Interrupt.
-  0x0000ffffaaff286c in ?? ()
-  (gdb) info registers $cpsr
-  cpsr           0x20001000          [ EL=0 BTYPE=0 SSBS C ]
-
-The aarch64-core.xml has been updated to match exactly the version
-retrieved from upstream gdb, retrieved in 2025-05-19 from HEAD commit
-9f4dc0b137c86f6ff2098cb1ab69442c69d6023d.
-
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=blob;f=gdb/features/aarch64-core.xml;h=b8046510b9a085d30463d37b3ecc8d435f5fb7a4;hb=HEAD
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-Id: <20250519-gdbstub-aarch64-pstate-xml-v1-1-b4dbe87fe7c6@linaro.org>
-[AJB: expanded upstream link]
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- gdb-xml/aarch64-core.xml | 52 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 50 insertions(+), 2 deletions(-)
-
-diff --git a/gdb-xml/aarch64-core.xml b/gdb-xml/aarch64-core.xml
-index e1e9dc3f91..b8046510b9 100644
---- a/gdb-xml/aarch64-core.xml
-+++ b/gdb-xml/aarch64-core.xml
-@@ -1,5 +1,5 @@
- <?xml version="1.0"?>
--<!-- Copyright (C) 2009-2012 Free Software Foundation, Inc.
-+<!-- Copyright (C) 2009-2025 Free Software Foundation, Inc.
-      Contributed by ARM Ltd.
- 
-      Copying and distribution of this file, with or without modification,
-@@ -42,5 +42,53 @@
-   <reg name="sp" bitsize="64" type="data_ptr"/>
- 
-   <reg name="pc" bitsize="64" type="code_ptr"/>
--  <reg name="cpsr" bitsize="32"/>
-+
-+  <flags id="cpsr_flags" size="4">
-+    <!-- Stack Pointer.  -->
-+    <field name="SP" start="0" end="0"/>
-+
-+    <!-- Exception Level.  -->
-+    <field name="EL" start="2" end="3"/>
-+    <!-- Execution state.  -->
-+    <field name="nRW" start="4" end="4"/>
-+
-+    <!-- FIQ interrupt mask.  -->
-+    <field name="F" start="6" end="6"/>
-+    <!-- IRQ interrupt mask.  -->
-+    <field name="I" start="7" end="7"/>
-+    <!-- SError interrupt mask.  -->
-+    <field name="A" start="8" end="8"/>
-+    <!-- Debug exception mask.  -->
-+    <field name="D" start="9" end="9"/>
-+
-+    <!-- ARMv8.5-A: Branch Target Identification BTYPE.  -->
-+    <field name="BTYPE" start="10" end="11"/>
-+
-+    <!-- ARMv8.0-A: Speculative Store Bypass.  -->
-+    <field name="SSBS" start="12" end="12"/>
-+
-+    <!-- Illegal Execution state.  -->
-+    <field name="IL" start="20" end="20"/>
-+    <!-- Software Step.  -->
-+    <field name="SS" start="21" end="21"/>
-+    <!-- ARMv8.1-A: Privileged Access Never.  -->
-+    <field name="PAN" start="22" end="22"/>
-+    <!-- ARMv8.2-A: User Access Override.  -->
-+    <field name="UAO" start="23" end="23"/>
-+    <!-- ARMv8.4-A: Data Independent Timing.  -->
-+    <field name="DIT" start="24" end="24"/>
-+    <!-- ARMv8.5-A: Tag Check Override.  -->
-+    <field name="TCO" start="25" end="25"/>
-+
-+    <!-- Overflow Condition flag.  -->
-+    <field name="V" start="28" end="28"/>
-+    <!-- Carry Condition flag.  -->
-+    <field name="C" start="29" end="29"/>
-+    <!-- Zero Condition flag.  -->
-+    <field name="Z" start="30" end="30"/>
-+    <!-- Negative Condition flag.  -->
-+    <field name="N" start="31" end="31"/>
-+  </flags>
-+  <reg name="cpsr" bitsize="32" type="cpsr_flags"/>
-+
- </feature>
--- 
-2.47.2
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
