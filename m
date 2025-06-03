@@ -2,48 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9194ACC266
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 10:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F46BACC233
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 10:31:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMNJF-0008Uw-4H; Tue, 03 Jun 2025 04:47:49 -0400
+	id 1uMN2t-0002uf-KX; Tue, 03 Jun 2025 04:30:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uMNJB-0008UO-C6; Tue, 03 Jun 2025 04:47:45 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>)
- id 1uMNJ8-0001zZ-HE; Tue, 03 Jun 2025 04:47:45 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxmnGntj5oVP0JAQ--.32658S3;
- Tue, 03 Jun 2025 16:47:35 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxb8entj5oNqwGAQ--.20825S2;
- Tue, 03 Jun 2025 16:47:35 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org,
-	richard.henderson@linaro.org
-Cc: maobibo@loongson.cn, philmd@linaro.org, lorenz.hetterich@cispa.de,
- qemu-stable@nongnu.org
-Subject: [PATCH v4] target/loongarch: fix vldi/xvldi raise wrong error
-Date: Tue,  3 Jun 2025 16:25:10 +0800
-Message-Id: <20250603082510.353876-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uMN2l-0002t8-Ox
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:30:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uMN2g-0008Nk-7i
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:30:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748939438;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JD1tTmMCpU8SvTejf7A2EHNroeruBom7yGz0Alplkdg=;
+ b=WFSjPqoR5biaLJOuHjpP1h/Cpqdk61Dn+ol8fFRjsmr2ieKbm2LyMgidHw6gQhwhsjjMqm
+ IoOhnK1AHhdMeTMqxZgsMqIkUFylRsisicHSeTNNvNfKC/xZD5d5Jrlbi0tRKE/BrodkU8
+ xqsdBRmmiH6XSjiDkXZQEp6/dyXt+/w=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-203-Dqz0rNakNb28RveYBI7QQg-1; Tue,
+ 03 Jun 2025 04:30:34 -0400
+X-MC-Unique: Dqz0rNakNb28RveYBI7QQg-1
+X-Mimecast-MFC-AGG-ID: Dqz0rNakNb28RveYBI7QQg_1748939433
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 34DE0195608B; Tue,  3 Jun 2025 08:30:33 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.28])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8A92B1956095; Tue,  3 Jun 2025 08:30:31 +0000 (UTC)
+Date: Tue, 3 Jun 2025 09:30:27 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 3/3] i386/tdx: Clarify the error message of
+ mrconfigid/mrowner/mrownerconfig
+Message-ID: <aD6yo0BeLTrvmALA@redhat.com>
+References: <20250603050305.1704586-1-xiaoyao.li@intel.com>
+ <20250603050305.1704586-4-xiaoyao.li@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxb8entj5oNqwGAQ--.20825S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+In-Reply-To: <20250603050305.1704586-4-xiaoyao.li@intel.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.015,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -58,67 +85,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-on qemu we got an aborted error
-**
-ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
-Bail out! ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
-Aborted (core dumped)
-bu on 3A600/3A5000 we got a "Illegal instruction" error.
+On Tue, Jun 03, 2025 at 01:03:05AM -0400, Xiaoyao Li wrote:
+> The error message is misleading - we successfully decoded the data,
+> the decoded data was simply with the wrong length.
+> 
+> Change the error message to show it is an length check failure with both
+> the received and expected values.
+> 
+> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+> Suggested by Daniel at https://lore.kernel.org/qemu-devel/aBzT3TrdldaN-uqx@redhat.com/
+> ---
+>  target/i386/kvm/tdx.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2971
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/tcg/insn_trans/trans_vec.c.inc | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-index dff92772ad..9fb72fe914 100644
---- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-@@ -3465,7 +3465,7 @@ TRANS(xvmsknz_b, LASX, gen_xx, gen_helper_vmsknz_b)
- static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
- {
-     int mode;
--    uint64_t data, t;
-+    uint64_t data = 0, t;
- 
-     /*
-      * imm bit [11:8] is mode, mode value is 0-12.
-@@ -3568,19 +3568,27 @@ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
-             t1 = (b7 << 9) | ((1-b6) << 8) | (b6 ? 0xff : 0);
-             data = (t1 << 54) | (t0 << 48);
-         }
--        break;
-     default:
--        generate_exception(ctx, EXCCODE_INE);
-         g_assert_not_reached();
-+        break;
-     }
-     return data;
- }
- 
-+static bool check_vldi_mode(arg_vldi *a)
-+{
-+   return (a->imm >>8 & 0xf) <= 12;
-+}
- static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
- {
-     int sel, vece;
-     uint64_t value;
- 
-+    if (!check_vldi_mode(a)){
-+        generate_exception(ctx, EXCCODE_INE);
-+        return true;
-+    }
-+
-     if (!check_vec(ctx, oprsz)) {
-         return true;
-     }
+With regards,
+Daniel
 -- 
-2.34.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
