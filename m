@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF19ACCF4B
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D116EACCF50
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:48:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMZS6-0004tF-V1; Tue, 03 Jun 2025 17:45:47 -0400
+	id 1uMZSA-0004tc-Uv; Tue, 03 Jun 2025 17:45:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZS3-0004si-7b
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:43 -0400
+ id 1uMZS5-0004tE-Ki
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZRz-00065b-O1
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:42 -0400
+ id 1uMZS0-00065l-TJ
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748987138;
+ s=mimecast20190719; t=1748987140;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qcPcMm7ucaSw4wIgb6+bVeJOkGyg2uO0pSfJzc5EtpU=;
- b=KD/EzbBBKE3dlvZ+rMTr3QtMPuhcPLYcpwsfjeycXEV0LkuChL+uQBtesNm2zRVQiYEmzq
- e14tlJDZZXxJfqFZqVSI70SVsjh+iDLdkz05AT/fR9s+0Hg6LJY2NrL+g+cHh6gs5OKyX1
- FB0hacOpZlphvNjKLRY7h1o2TaBLwc0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zkj45g1a0czvtLZjGoji78CoCfioZAX7u5QHfK6wwwM=;
+ b=LvMWDSswz9ZlevzmHT1cOqQdUGZyYMOch6QnTNRZhtSBmLIbleDvORw7Gszhrck1m9E8CQ
+ iXxZKDqRefpexWSovanDZ1GMKgMY8rO9GLORrsvqtDG1NyrPZ45Rc6W/AJrRftkz47DDPG
+ qlXuej8A8P760nh42L9a0HinrKsa7bc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-7ppLYBJxPBa6B2J6OqwiNw-1; Tue, 03 Jun 2025 17:45:37 -0400
-X-MC-Unique: 7ppLYBJxPBa6B2J6OqwiNw-1
-X-Mimecast-MFC-AGG-ID: 7ppLYBJxPBa6B2J6OqwiNw_1748987136
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a4f3796779so3672370f8f.1
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:37 -0700 (PDT)
+ us-mta-655-A-TVhQIuPgC2-izKZbBwug-1; Tue, 03 Jun 2025 17:45:38 -0400
+X-MC-Unique: A-TVhQIuPgC2-izKZbBwug-1
+X-Mimecast-MFC-AGG-ID: A-TVhQIuPgC2-izKZbBwug_1748987138
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a4e713e05bso2940030f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748987136; x=1749591936;
+ d=1e100.net; s=20230601; t=1748987137; x=1749591937;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qcPcMm7ucaSw4wIgb6+bVeJOkGyg2uO0pSfJzc5EtpU=;
- b=SHP85M8tpIcOMjb+Ty9dSYUB1WR7+dBEiookJ2hBDB2LESPTxGieiqHIXvyB8Gv9yw
- lu38auIcUEG26HdXNNZRS1FIF+xxKFSbiD42nyuD/asfl0geiryLRdcV0bJpC65a1+Q7
- bYVxoTV2LT9q7i0Dzfcs5lD0xUpUPqVMYFJgbOtPa55uLr2WqafvF4eNArcsO3+4lHh1
- V+CHHMPSJAc0FScc7c7TGZcxKLbnpbcSh2ACS7q0itSX+SfLNNqHgcoxPtX67G+/XD1w
- 8esLnrpPDyEFM6IGpdqfGAyBIcZeVyZNtnETEOm3Lo3Jl3yz4NlrhK7/QljZBkjSXfWF
- x4pA==
-X-Gm-Message-State: AOJu0Yy5+8DBGsmiJipz4UYaBzp/lYR8u9BcJqCQ/1TRLJF42tbbTFdO
- vOIkuRz9rCRfhVUXZk9pcHRgYXFd/D72PlSLJ7oQ5vXk7H8Xd8jgpmXJfLwo+BuYGRhJyjmFJcC
- kbTV/e0RcmmKPYINN8bNipedjFjxcloBnXnKQiPvhV3oc7iZ+bPEAB9TPE9ZGhtfSVuHJxJwGpS
- jkc0hSCgIr+DN4lpLo5E0/GaQI6gpJzWWNTBdOcotV
-X-Gm-Gg: ASbGncumBHZR5mC+11Wb2YlmbU19ghsKUMxBo1fTXzyFQlbDtzP5j5lg2kkggnLjXBK
- A0Y9Bx5+sxk/XeClbZeDEkIIHpJ5AlVp35rL8x9aVHzTybjvKXxBt+uH1YIPGTDw25B7L7sl+eT
- hHVn04XfuI5ImTVGmk8KAb0lhqK4gAfC/BnMmeoCWWS1rrA0tQglbGOVtyUk0CDwr4MLhsg6lpQ
- 89KcPE0C5gNTEn6nJjqMGquPDASVayfVDS+wKi9P0pioEuc/NYodP7VKZw2YdxIq1uapA+N62ZN
- qTzjhxm/yKOMbQ==
-X-Received: by 2002:a05:6000:4212:b0:3a4:f7af:db9c with SMTP id
- ffacd0b85a97d-3a51d9871a2mr251273f8f.59.1748987135667; 
- Tue, 03 Jun 2025 14:45:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGaQ+r01w4j3k5dJnt5NTJGiKRS50iGlI6RtUYsGx4sGxG2mKChzhW4yMArxsacTGyl5eBWfw==
-X-Received: by 2002:a05:6000:4212:b0:3a4:f7af:db9c with SMTP id
- ffacd0b85a97d-3a51d9871a2mr251261f8f.59.1748987135192; 
- Tue, 03 Jun 2025 14:45:35 -0700 (PDT)
+ bh=zkj45g1a0czvtLZjGoji78CoCfioZAX7u5QHfK6wwwM=;
+ b=jSsAcWXseuvjdsU6ON29aN30VwKQKQkixw+4HHpzbWwTl8+AVAiGVd8QxWlvCWA/IS
+ snkjJPj7bJ54HFQ3tz4/mgSgJRfCcA577V/Zl6g6RF7qo48VFJFYyRp+7WzmrovEJJMm
+ SWr+7DGA/qk1pBpes/ULUrwum6eKrqNh8krZIorycWLQRIBMz3Ncv+W2D5cOPzag69Z+
+ 8Of+2k5kVYN2822wF0UqTS+w1AwhvAbEG0W4QTSjUya7gXRB95p6ZuiCImUkwc7gCpqG
+ 0ctIpiLO+8OGeA+C3g4ulzoxN6eK2gbcQyIyRHwreRu4CsiG8NIHcXkncOqzc6AmbGDl
+ A84g==
+X-Gm-Message-State: AOJu0Yw2tviTI9JM57xSMNHtxejnwsBKtKsjthL278/sb+F8SoRQrNZG
+ MSAN7iB+oKK7vC+NTKom2llc4G/xfmVQBT8RrV5MP+ADCtdiXcYN6vB+kLb7Q2yLuVFwwQlP71g
+ TUGweLfTfBTvg73degLkArczmeGrt9YpL5eLMnWCZu6xTZQzVxM361GjucV44T1+t0Hhyr2CBa9
+ r4DyuQ3Dl+5yb/Sz9e7sQ8Gl3IhSWLas2IDH2jBixt
+X-Gm-Gg: ASbGnctS0ZM8HEfVyTDAyP3yEYpOa6+GqsgUWy/IejKyo9GhZPeKVVC1WjIVGyptq5G
+ 5XKkrOKyVhFGvehwXiOZIrHDDHpn1CLeFKjCPMuULz3rJqE5ijsLL0BiJZyIzDMDkjfw9i/geXr
+ U4zTV51WN0tOzNjFdglC/sN7vatrhfaC15lllufHaAkJrhTVntTXZuH6duQbyYraolcE3JeU/HZ
+ t8EPHjz6n893uxXRnFjEDlsFMJWdBy0qG18oOZgRAYrcngd9/6LPDp+siUKcQnyB+sSXJzSSvgQ
+ hM/L21mjVPAIZhqmC5ZvHiCa
+X-Received: by 2002:a05:6000:4023:b0:3a4:e706:532b with SMTP id
+ ffacd0b85a97d-3a51d9747a0mr237658f8f.43.1748987136902; 
+ Tue, 03 Jun 2025 14:45:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4QVaD745zny/ZiJV2op78IhdXBGfTRbEnEbDXo804pp45wUc9bDkVY0DMr6HpScj/MuHNJw==
+X-Received: by 2002:a05:6000:4023:b0:3a4:e706:532b with SMTP id
+ ffacd0b85a97d-3a51d9747a0mr237644f8f.43.1748987136424; 
+ Tue, 03 Jun 2025 14:45:36 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4f009fd9bsm19159300f8f.82.2025.06.03.14.45.33
+ 5b1f17b1804b1-450d7fb0654sm175023525e9.21.2025.06.03.14.45.35
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Jun 2025 14:45:33 -0700 (PDT)
+ Tue, 03 Jun 2025 14:45:35 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/16] build, dockerfiles: add support for detecting rustdoc
-Date: Tue,  3 Jun 2025 23:45:11 +0200
-Message-ID: <20250603214523.131185-5-pbonzini@redhat.com>
+Subject: [PULL 05/16] rust: add qemu-api doctests to "meson test"
+Date: Tue,  3 Jun 2025 23:45:12 +0200
+Message-ID: <20250603214523.131185-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250603214523.131185-1-pbonzini@redhat.com>
 References: <20250603214523.131185-1-pbonzini@redhat.com>
@@ -83,14 +83,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,148 +106,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-rustdoc is effectively a custom version of rustc, and it is necessary to
-specify it in order to run doctests from Meson.  Add the relevant configure
-option and environment variables.
+Doctests are weird.  They are essentially integration tests, but they're
+"ran" by executing rustdoc --test, which takes a compiler-ish
+command line.  This is supported by Meson 1.8.0.
+
+Because they run the linker and need all the .o files, run them in the
+build jobs rather than the test jobs.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                                           | 8 ++++++++
- meson.build                                         | 2 ++
- tests/docker/dockerfiles/fedora-rust-nightly.docker | 2 ++
- tests/docker/dockerfiles/ubuntu2204.docker          | 1 +
- tests/lcitool/refresh                               | 3 +++
- 5 files changed, 16 insertions(+)
+ docs/devel/rust.rst                 |  2 ++
+ .gitlab-ci.d/buildtest-template.yml |  3 ++-
+ .gitlab-ci.d/buildtest.yml          | 11 +++--------
+ rust/qemu-api/meson.build           |  9 +++++++++
+ 4 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/configure b/configure
-index 74b3865e51e..2b2b3d65979 100755
---- a/configure
-+++ b/configure
-@@ -209,6 +209,8 @@ for opt do
-   ;;
-   --rustc=*) RUSTC="$optarg"
-   ;;
-+  --rustdoc=*) RUSTDOC="$optarg"
-+  ;;
-   --cpu=*) cpu="$optarg"
-   ;;
-   --extra-cflags=*)
-@@ -323,6 +325,7 @@ pkg_config="${PKG_CONFIG-${cross_prefix}pkg-config}"
- sdl2_config="${SDL2_CONFIG-${cross_prefix}sdl2-config}"
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index 11328c05b45..f66f2bef60b 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -66,6 +66,8 @@ be run via ``meson test`` or ``make``::
  
- rustc="${RUSTC-rustc}"
-+rustdoc="${RUSTDOC-rustdoc}"
+    make check-rust
  
- check_define() {
- cat > $TMPC <<EOF
-@@ -660,6 +663,8 @@ for opt do
-   ;;
-   --rustc=*)
-   ;;
-+  --rustdoc=*)
-+  ;;
-   --make=*)
-   ;;
-   --install=*)
-@@ -890,6 +895,7 @@ Advanced options (experts only):
-   --cxx=CXX                use C++ compiler CXX [$cxx]
-   --objcc=OBJCC            use Objective-C compiler OBJCC [$objcc]
-   --rustc=RUSTC            use Rust compiler RUSTC [$rustc]
-+  --rustdoc=RUSTDOC        use rustdoc binary RUSTDOC [$rustdoc]
-   --extra-cflags=CFLAGS    append extra C compiler flags CFLAGS
-   --extra-cxxflags=CXXFLAGS append extra C++ compiler flags CXXFLAGS
-   --extra-objcflags=OBJCFLAGS append extra Objective C compiler flags OBJCFLAGS
-@@ -1901,8 +1907,10 @@ if test "$skip_meson" = no; then
-   if test "$rust" != disabled; then
-     if test "$rust_host_triple" != "$rust_target_triple"; then
-       echo "rust = [$(meson_quote $rustc --target "$rust_target_triple")]" >> $cross
-+      echo "rustdoc = [$(meson_quote $rustdoc --target "$rust_target_triple")]" >> $cross
-     else
-       echo "rust = [$(meson_quote $rustc)]" >> $cross
-+      echo "rustdoc = [$(meson_quote $rustdoc)]" >> $cross
-     fi
-   fi
-   echo "ar = [$(meson_quote $ar)]" >> $cross
-diff --git a/meson.build b/meson.build
-index ef994676fe9..e85b358d637 100644
---- a/meson.build
-+++ b/meson.build
-@@ -106,6 +106,7 @@ if have_rust
- endif
++Note that doctests require all ``.o`` files from the build to be available.
++
+ Supported tools
+ '''''''''''''''
  
- if have_rust
-+  rustdoc = find_program('rustdoc', required: get_option('rust'))
-   bindgen = find_program('bindgen', required: get_option('rust'))
-   if not bindgen.found() or bindgen.version().version_compare('<0.60.0')
-     if get_option('rust').enabled()
-@@ -4757,6 +4758,7 @@ if have_rust
-   summary_info += {'Rust target':     config_host['RUST_TARGET_TRIPLE']}
-   summary_info += {'rustc':           ' '.join(rustc.cmd_array())}
-   summary_info += {'rustc version':   rustc.version()}
-+  summary_info += {'rustdoc':         rustdoc}
-   summary_info += {'bindgen':         bindgen.full_path()}
-   summary_info += {'bindgen version': bindgen.version()}
- endif
-diff --git a/tests/docker/dockerfiles/fedora-rust-nightly.docker b/tests/docker/dockerfiles/fedora-rust-nightly.docker
-index fe4a6ed48d6..4a033309b38 100644
---- a/tests/docker/dockerfiles/fedora-rust-nightly.docker
-+++ b/tests/docker/dockerfiles/fedora-rust-nightly.docker
-@@ -156,6 +156,7 @@ ENV PYTHON "/usr/bin/python3"
- RUN dnf install -y wget
- ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo
- ENV RUSTC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc
-+ENV RUSTDOC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustdoc
- ENV CARGO=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/cargo
- RUN set -eux && \
-   rustArch='x86_64-unknown-linux-gnu' && \
-@@ -170,6 +171,7 @@ RUN set -eux && \
-   /usr/local/cargo/bin/rustup run nightly cargo --version && \
-   /usr/local/cargo/bin/rustup run nightly rustc --version && \
-   test "$CARGO" = "$(/usr/local/cargo/bin/rustup +nightly which cargo)" && \
-+  test "$RUSTDOC" = "$(/usr/local/cargo/bin/rustup +nightly which rustdoc)" && \
-   test "$RUSTC" = "$(/usr/local/cargo/bin/rustup +nightly which rustc)"
- ENV PATH=$CARGO_HOME/bin:$PATH
- RUN /usr/local/cargo/bin/rustup run nightly cargo install bindgen-cli
-diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
-index 4a1cf2bdff3..28a6f932430 100644
---- a/tests/docker/dockerfiles/ubuntu2204.docker
-+++ b/tests/docker/dockerfiles/ubuntu2204.docker
-@@ -151,6 +151,7 @@ ENV MAKE "/usr/bin/make"
- ENV NINJA "/usr/bin/ninja"
- ENV PYTHON "/usr/bin/python3"
- ENV RUSTC=/usr/bin/rustc-1.77
-+ENV RUSTDOC=/usr/bin/rustdoc-1.77
- ENV CARGO_HOME=/usr/local/cargo
- ENV PATH=$CARGO_HOME/bin:$PATH
- RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 8474ea822f4..d3488b2679e 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -121,6 +121,7 @@ fedora_rustup_nightly_extras = [
-     "RUN dnf install -y wget\n",
-     "ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo\n",
-     "ENV RUSTC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc\n",
-+    "ENV RUSTDOC=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustdoc\n",
-     "ENV CARGO=/usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/cargo\n",
-     "RUN set -eux && \\\n",
-     "  rustArch='x86_64-unknown-linux-gnu' && \\\n",
-@@ -135,6 +136,7 @@ fedora_rustup_nightly_extras = [
-     "  /usr/local/cargo/bin/rustup run nightly cargo --version && \\\n",
-     "  /usr/local/cargo/bin/rustup run nightly rustc --version && \\\n",
-     '  test "$CARGO" = "$(/usr/local/cargo/bin/rustup +nightly which cargo)" && \\\n',
-+    '  test "$RUSTDOC" = "$(/usr/local/cargo/bin/rustup +nightly which rustdoc)" && \\\n',
-     '  test "$RUSTC" = "$(/usr/local/cargo/bin/rustup +nightly which rustc)"\n',
-     'ENV PATH=$CARGO_HOME/bin:$PATH\n',
-     'RUN /usr/local/cargo/bin/rustup run nightly cargo install bindgen-cli\n',
-@@ -143,6 +145,7 @@ fedora_rustup_nightly_extras = [
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 118371e377d..fea4e8da2f1 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -76,7 +76,8 @@
+       fi
+     - section_end buildenv
+     - section_start test "Running tests"
+-    - $MAKE NINJA=":" $MAKE_CHECK_ARGS
++    # doctests need all the compilation artifacts
++    - $MAKE NINJA=":" MTESTARGS="--no-suite doc" $MAKE_CHECK_ARGS
+     - section_end test
  
- ubuntu2204_rust_extras = [
-     "ENV RUSTC=/usr/bin/rustc-1.77\n",
-+    "ENV RUSTDOC=/usr/bin/rustdoc-1.77\n",
-     "ENV CARGO_HOME=/usr/local/cargo\n",
-     'ENV PATH=$CARGO_HOME/bin:$PATH\n',
-     "RUN DEBIAN_FRONTEND=noninteractive eatmydata \\\n",
+ .native_test_job_template:
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index ca1a9c6f709..d888a600637 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -41,7 +41,7 @@ build-system-ubuntu:
+     IMAGE: ubuntu2204
+     CONFIGURE_ARGS: --enable-docs --enable-rust
+     TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
+-    MAKE_CHECK_ARGS: check-build
++    MAKE_CHECK_ARGS: check-build check-doc
+ 
+ check-system-ubuntu:
+   extends: .native_test_job_template
+@@ -115,7 +115,7 @@ build-system-fedora:
+     CONFIGURE_ARGS: --disable-gcrypt --enable-nettle --enable-docs --enable-crypto-afalg --enable-rust
+     TARGETS: microblaze-softmmu mips-softmmu
+       xtensa-softmmu m68k-softmmu riscv32-softmmu ppc-softmmu sparc64-softmmu
+-    MAKE_CHECK_ARGS: check-build
++    MAKE_CHECK_ARGS: check-build check-doc
+ 
+ build-system-fedora-rust-nightly:
+   extends:
+@@ -127,12 +127,7 @@ build-system-fedora-rust-nightly:
+     IMAGE: fedora-rust-nightly
+     CONFIGURE_ARGS: --disable-docs --enable-rust --enable-strict-rust-lints
+     TARGETS: aarch64-softmmu
+-    MAKE_CHECK_ARGS: check-build
+-  after_script:
+-    - source scripts/ci/gitlab-ci-section
+-    - section_start test "Running Rust doctests"
+-    - cd build
+-    - pyvenv/bin/meson devenv -w ../rust ${CARGO-cargo} test --doc -p qemu_api
++    MAKE_CHECK_ARGS: check-build check-doc
+ 
+   allow_failure: true
+ 
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 62068352b0b..b532281e8c0 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -45,6 +45,15 @@ rust.test('rust-qemu-api-tests', _qemu_api_rs,
+ qemu_api = declare_dependency(link_with: [_qemu_api_rs],
+   dependencies: [qemu_api_macros, qom, hwcore, chardev, migration])
+ 
++# Doctests are essentially integration tests, so they need the same dependencies.
++# Note that running them requires the object files for C code, so place them
++# in a separate suite that is run by the "build" CI jobs rather than "check".
++rust.doctest('rust-qemu-api-doctests',
++     _qemu_api_rs,
++     protocol: 'rust',
++     dependencies: qemu_api,
++     suite: ['doc', 'rust'])
++
+ test('rust-qemu-api-integration',
+     executable(
+         'rust-qemu-api-integration',
 -- 
 2.49.0
 
