@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E4DACCF56
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5B1ACCF40
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:47:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMZSM-0004x2-9c; Tue, 03 Jun 2025 17:46:02 -0400
+	id 1uMZSP-0004xc-V6; Tue, 03 Jun 2025 17:46:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZSF-0004vv-V3
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:55 -0400
+ id 1uMZSK-0004wo-5O
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:46:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZSE-00067O-6i
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:55 -0400
+ id 1uMZSH-00067h-CR
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748987153;
+ s=mimecast20190719; t=1748987156;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wF/7AMFohajP7PDXK4wy6zTmbmhbRvXmaQ09K9UIhpc=;
- b=dKQSH3nmjNIo9JCN7vlvyp1fJUpOP3TgdqXh7fAsWgkdkft+MojoCNBCiJ23a/Kg6yAB2H
- mIolOU4h/km97QG/qQvp3dOY0oOdP0Ty5gza0CDJAYw+tdKaTvqtarL/0hap0EwU/Z1TeI
- CUjuFhN7H8nyFKedLMY6BJwOReotkWg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Zt4+xOD2JOJaGI09uyl2+blZDob3oG7L89LptgXnbA8=;
+ b=WaP2LoxlbrYhoW9rrOSUht3S7CRZqkjkWIDafcRjMZxdFE9AZ7P6U3zrov7COmyqssfHFy
+ RQ0xgWZtbih/ELTEtP3TaZLCwIuA4WaC7SvmYQpVmlcZXHCLZsQdreMmrBWgU4qdi9FjxB
+ Ghr1bQKlyh5dsimNLrzmWVfrvqNl5Vs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-373-K-98M1igM_2Ls6B2kGGl7A-1; Tue, 03 Jun 2025 17:45:52 -0400
-X-MC-Unique: K-98M1igM_2Ls6B2kGGl7A-1
-X-Mimecast-MFC-AGG-ID: K-98M1igM_2Ls6B2kGGl7A_1748987151
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-450d6768d4dso32857185e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:52 -0700 (PDT)
+ us-mta-529-0sfpcdbNPumjtSKFuJsBjg-1; Tue, 03 Jun 2025 17:45:55 -0400
+X-MC-Unique: 0sfpcdbNPumjtSKFuJsBjg-1
+X-Mimecast-MFC-AGG-ID: 0sfpcdbNPumjtSKFuJsBjg_1748987154
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4ea7e46dfso1938802f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748987150; x=1749591950;
+ d=1e100.net; s=20230601; t=1748987153; x=1749591953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wF/7AMFohajP7PDXK4wy6zTmbmhbRvXmaQ09K9UIhpc=;
- b=oIEsC0XtH5clh0yFnbPp+cXciK/Ky0SsCU32fGrC0J4RoQoqI0VR5jgzXebK2KdpZs
- XX6WMatCKkvOzogaFCs/9T3mnL7wZUDoUKcbFgASRmU9K9shk3WgINn7/kBlqqpAkLdI
- 8MDmTBlrkYOCHvmRm/JykoA3gTTVsZ5Qpi9NnEWQ4Ei39dJt4M7+Yu0IZMoSTevEYx+x
- v+3u6/Y7z9dYw/WgPhpqhZ6ULuE4w06OWT8+Sqbpd3UrDR2b2ffqPyzb+HY9QS75DvH3
- Je3CepdJZu86SpDIqC+UaLF5wkCmD/PYZEu8qU90EveSMAxQD/Oo6TkIlMFH6PIAZvJw
- sg6g==
-X-Gm-Message-State: AOJu0Yz+S+wOuRGqVDI46F/p4lrXRGSbqz+3p0fajVPo0arUmpQzegTQ
- usmKagZUT1SFW6l6JMTzVh2iObaP5w5HLpim7UEM63JKHSlEXK8CMKHsKkmEG4JAghnibnGHjYE
- 3aPnW4TVnVn7KHugPTkogjINa/0qYQJ4RlrnyE73M4Xhya78BY9LaMLm6Qeth1C0eSJ4azxDzYY
- xvcFnL74UHN4ns0UXpfJieKf2qdDZuU52D9P35QpWV
-X-Gm-Gg: ASbGnct4hM2jzXKxIgpLsD2cExqMy/QGp4d9xZ/p/8k3xINLrI21gre1/WRBBFuWW4u
- 33/IUNRweNzi8lSrZQZjoLU8GQTjUaFH2CrTs4N97zXvZQoLh9bQCu3MA6rR2XLC8hobPzuq64M
- Pj5vIDIY/Hn+ODGiSHgQk00MwOi5eE7n5mQgBfeDDW2GsRLlnMvNYxG3idOOUidmntp8RvwlyqO
- pPVrh1YfbsE5HCjqe1DX8h2+gNH3gPKK0ByVeDQ+7VWA6Hg/msHpjUUbOtIcWtBhsIb4u82xTyl
- hDlO1Qh61l/yYA==
-X-Received: by 2002:a05:600c:c87:b0:442:ccfa:18c with SMTP id
- 5b1f17b1804b1-451f0b482ebmr1954035e9.32.1748987150256; 
- Tue, 03 Jun 2025 14:45:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH1dBDZW8QaikG+bX0OEfGehxBWpEufJBLvkClx6rM0UcrW8GuQd5th4yi4crwhqpMGVpMzNQ==
-X-Received: by 2002:a05:600c:c87:b0:442:ccfa:18c with SMTP id
- 5b1f17b1804b1-451f0b482ebmr1953885e9.32.1748987149811; 
- Tue, 03 Jun 2025 14:45:49 -0700 (PDT)
+ bh=Zt4+xOD2JOJaGI09uyl2+blZDob3oG7L89LptgXnbA8=;
+ b=kPmdCqdumCKKyFgVAZPMt/uiExQP6XMMm552ISOsgVzSAEOlNbOaPVFGdvQYJsWQPB
+ zuCS/4myniqN9VwOsyQnYfZu8rdrqhmFGYk5po1wB0mtUq7frrkfv59/MIcjqubryPNH
+ h+HJqOc5dfI8zaW1VXbZP9sjgKUGy6/zil+G8wPpuOZqiPPK2ci1P6Y60OSQu6CRjjk2
+ JO/z5jjO7n6CXIa3NVUf+b6OqOxKMOP8Ip4sAQRlFTf5dIhfRiUM47RFzr+6MlIB0M9H
+ KTR5yEglY20nx7v1qNzcZQWfnp+TsMGBs8zV22/ohCuEEeewbJbMebl3bhw1Veb6M1LK
+ XHHg==
+X-Gm-Message-State: AOJu0Yy49SE+2oTpJIii0n6TaW14Fwb/E2EFY1gQR+ZEeOapoYWfF/8D
+ HELKtp4tVwLiW6EcCAx+KuXfx9gqoTKxkyZcEDxF1HgULwsR9ePKnHYCaITYM4qTiQZNa+E6cHn
+ ALa1F0OjovIRTR3GQURC2E5KCR/HmC89pTNJdnfbFs6IXCcOGU063EP5OGV3y9hQAGHPwho6LU2
+ wxX2ArabS6nLqyLn0ggoNxRLSeBwjn7/0sOTeWi01R
+X-Gm-Gg: ASbGnctitnfZ3/eTmUAZaSwTgxeYWXD8sSm+oLdtywfjkzt05B9t8CzEsvaArUGXLep
+ 7uVcT7p/dJgxSNQRF2v8rG+/B8U2na1KYbYY6ZeuzC2/enY/9g/dLbcakn8e9LVUUgewWJJlQjg
+ UAQFf9jS27JlG8SV5y3kdwKI62wvCnQnNfhk4YQ/7YA2chURVtp6tIJkdYSSZXHImMEdC78tbqN
+ ICd2Fp7g16fqPbDMFR/N+Ixf9RHwyo1+AosyrGx3OF3UUwaiNgjRtWpaPtTFwXX4zfqFpGGJiji
+ Hia9Zlp3Ndcj7w==
+X-Received: by 2002:a05:6000:1a8a:b0:3a4:e8bc:5aa with SMTP id
+ ffacd0b85a97d-3a51d8f698dmr302927f8f.11.1748987152909; 
+ Tue, 03 Jun 2025 14:45:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExLFVSRX0TeppTiYevkt7dKUZoAqteg4RBq8dEAmD0X6xVlvOJPEnQ5Taf3C0dN49N3nKsNg==
+X-Received: by 2002:a05:6000:1a8a:b0:3a4:e8bc:5aa with SMTP id
+ ffacd0b85a97d-3a51d8f698dmr302911f8f.11.1748987152469; 
+ Tue, 03 Jun 2025 14:45:52 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d8000d8csm174591435e9.24.2025.06.03.14.45.47
+ ffacd0b85a97d-3a4efe5b892sm19825593f8f.17.2025.06.03.14.45.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Jun 2025 14:45:48 -0700 (PDT)
+ Tue, 03 Jun 2025 14:45:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 11/16] meson: use config_base_arch for target libraries
-Date: Tue,  3 Jun 2025 23:45:18 +0200
-Message-ID: <20250603214523.131185-12-pbonzini@redhat.com>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 12/16] i386/tdx: Fix build on 32-bit host
+Date: Tue,  3 Jun 2025 23:45:19 +0200
+Message-ID: <20250603214523.131185-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250603214523.131185-1-pbonzini@redhat.com>
 References: <20250603214523.131185-1-pbonzini@redhat.com>
@@ -109,52 +108,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Cédric Le Goater <clg@redhat.com>
 
-Fixed commit introduced common dependencies for target libraries. Alas,
-it wrongly reused the 'target' variable, which was previously set from
-another loop.
+Use PRI formats where required and fix pointer cast.
 
-Thus, some dependencies were missing depending on order of target list,
-as found here [1].
-
-The fix is to use the correct config_base_arch instead.
-Kudos to Thomas Huth who had this right, before I reimplement it, and
-introduce this bug.
-
-[1] https://lore.kernel.org/qemu-devel/c54469ce-0385-4aea-b345-47711e9e61de@linaro.org/
-
-Fixes: 4fb54de823e9 (meson: build target libraries with common dependencies)
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Tested-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/r/20250602233801.2699961-1-pierrick.bouvier@linaro.org
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/r/20250602173101.1052983-2-clg@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ target/i386/kvm/tdx.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 651bd4f7275..967a10e80b8 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4135,13 +4135,12 @@ common_all = static_library('common',
- target_common_arch_libs = {}
- target_common_system_arch_libs = {}
- foreach target_base_arch, config_base_arch : config_base_arch_mak
--  config_target = config_target_mak[target]
-   target_inc = [include_directories('target' / target_base_arch)]
-   inc = [common_user_inc + target_inc]
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index 0a21ae555c5..820ca3614e2 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -284,7 +284,7 @@ static void tdx_post_init_vcpus(void)
  
--  target_common = common_ss.apply(config_target, strict: false)
--  target_system = system_ss.apply(config_target, strict: false)
--  target_user = user_ss.apply(config_target, strict: false)
-+  target_common = common_ss.apply(config_base_arch, strict: false)
-+  target_system = system_ss.apply(config_base_arch, strict: false)
-+  target_user = user_ss.apply(config_base_arch, strict: false)
-   common_deps = []
-   system_deps = []
-   user_deps = []
+     hob = tdx_get_hob_entry(tdx_guest);
+     CPU_FOREACH(cpu) {
+-        tdx_vcpu_ioctl(cpu, KVM_TDX_INIT_VCPU, 0, (void *)hob->address,
++        tdx_vcpu_ioctl(cpu, KVM_TDX_INIT_VCPU, 0, (void *)(uintptr_t)hob->address,
+                        &error_fatal);
+     }
+ }
+@@ -339,7 +339,7 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
+         uint32_t flags;
+ 
+         region = (struct kvm_tdx_init_mem_region) {
+-            .source_addr = (uint64_t)entry->mem_ptr,
++            .source_addr = (uintptr_t)entry->mem_ptr,
+             .gpa = entry->address,
+             .nr_pages = entry->size >> 12,
+         };
+@@ -893,16 +893,16 @@ static int tdx_check_features(X86ConfidentialGuest *cg, CPUState *cs)
+ static int tdx_validate_attributes(TdxGuest *tdx, Error **errp)
+ {
+     if ((tdx->attributes & ~tdx_caps->supported_attrs)) {
+-        error_setg(errp, "Invalid attributes 0x%lx for TDX VM "
+-                   "(KVM supported: 0x%llx)", tdx->attributes,
+-                   tdx_caps->supported_attrs);
++        error_setg(errp, "Invalid attributes 0x%"PRIx64" for TDX VM "
++                   "(KVM supported: 0x%"PRIx64")", tdx->attributes,
++                   (uint64_t)tdx_caps->supported_attrs);
+         return -1;
+     }
+ 
+     if (tdx->attributes & ~TDX_SUPPORTED_TD_ATTRS) {
+         error_setg(errp, "Some QEMU unsupported TD attribute bits being "
+-                    "requested: 0x%lx (QEMU supported: 0x%llx)",
+-                    tdx->attributes, TDX_SUPPORTED_TD_ATTRS);
++                    "requested: 0x%"PRIx64" (QEMU supported: 0x%"PRIx64")",
++                    tdx->attributes, (uint64_t)TDX_SUPPORTED_TD_ATTRS);
+         return -1;
+     }
+ 
+@@ -931,8 +931,8 @@ static int setup_td_xfam(X86CPU *x86cpu, Error **errp)
+            env->features[FEAT_XSAVE_XSS_HI];
+ 
+     if (xfam & ~tdx_caps->supported_xfam) {
+-        error_setg(errp, "Invalid XFAM 0x%lx for TDX VM (supported: 0x%llx))",
+-                   xfam, tdx_caps->supported_xfam);
++        error_setg(errp, "Invalid XFAM 0x%"PRIx64" for TDX VM (supported: 0x%"PRIx64"))",
++                   xfam, (uint64_t)tdx_caps->supported_xfam);
+         return -1;
+     }
+ 
+@@ -999,14 +999,14 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+ 
+     if (env->tsc_khz && (env->tsc_khz < TDX_MIN_TSC_FREQUENCY_KHZ ||
+                          env->tsc_khz > TDX_MAX_TSC_FREQUENCY_KHZ)) {
+-        error_setg(errp, "Invalid TSC %ld KHz, must specify cpu_frequency "
++        error_setg(errp, "Invalid TSC %"PRId64" KHz, must specify cpu_frequency "
+                          "between [%d, %d] kHz", env->tsc_khz,
+                          TDX_MIN_TSC_FREQUENCY_KHZ, TDX_MAX_TSC_FREQUENCY_KHZ);
+        return -EINVAL;
+     }
+ 
+     if (env->tsc_khz % (25 * 1000)) {
+-        error_setg(errp, "Invalid TSC %ld KHz, it must be multiple of 25MHz",
++        error_setg(errp, "Invalid TSC %"PRId64" KHz, it must be multiple of 25MHz",
+                    env->tsc_khz);
+         return -EINVAL;
+     }
+@@ -1014,7 +1014,7 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+     /* it's safe even env->tsc_khz is 0. KVM uses host's tsc_khz in this case */
+     r = kvm_vm_ioctl(kvm_state, KVM_SET_TSC_KHZ, env->tsc_khz);
+     if (r < 0) {
+-        error_setg_errno(errp, -r, "Unable to set TSC frequency to %ld kHz",
++        error_setg_errno(errp, -r, "Unable to set TSC frequency to %"PRId64" kHz",
+                          env->tsc_khz);
+         return r;
+     }
+@@ -1139,7 +1139,7 @@ int tdx_handle_report_fatal_error(X86CPU *cpu, struct kvm_run *run)
+     uint64_t gpa = -1ull;
+ 
+     if (error_code & 0xffff) {
+-        error_report("TDX: REPORT_FATAL_ERROR: invalid error code: 0x%lx",
++        error_report("TDX: REPORT_FATAL_ERROR: invalid error code: 0x%"PRIx64,
+                      error_code);
+         return -1;
+     }
 -- 
 2.49.0
 
