@@ -2,92 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65E5ACC073
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 08:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42930ACC107
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 09:13:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMLRF-0001aE-MV; Tue, 03 Jun 2025 02:47:57 -0400
+	id 1uMLou-0005E8-Fk; Tue, 03 Jun 2025 03:12:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uMLRA-0001Zr-QH
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 02:47:53 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uMLR3-0004kh-C6
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 02:47:46 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-601dfef6a8dso8405767a12.1
- for <qemu-devel@nongnu.org>; Mon, 02 Jun 2025 23:47:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1748933263; x=1749538063; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ea6hTdxF4uF0H2AFslhuAGNmreKAbr7zkjNo4QRPqEo=;
- b=X0uoswufe9ZVAwEYWx0hfv6Jpdyv9OViR4rXUZx6hVviv5a4W9BUCb5NBTYcgIv0kO
- Mr5UjwdIKFa7rwjJ4PrRFfOyUi91byqYfmjqlIknuhGV1hbnnY0TiFkyNG9AGnYAxMMk
- TJu6x+JFxBDipZHRg+tf4SUxwf91q52lEvLiGnIdtJQGCY98K0uYN1mWrm3akpbdDN3p
- Opb3EAeg96npY2aJyNZ+dtIzAdtQTxF15I+Bn1sOLe2PjEzRZgBrYtC/Vf4M1ilTnP7k
- 8q1eO9n0XZyjCt6YN+ixGaFDoWNsSphyH77ZdXDagmID60OvseLLYN6NjNG2R55Pjxca
- khkg==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uMLol-0005BX-0j
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 03:12:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uMLoj-0007Qf-5G
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 03:12:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748934731;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=nyUDjE8AiGvOJmFM9FI+4PU9IZTOPQhPpsBbbtijHto=;
+ b=Smg20K61B5OEh9qr7SYZQp0/ku6t+iK4RUsN2EpcvkebxJNSE5Fyxm7tUbaYopdU0o/Dya
+ PLpFf5T7S2qxaqx40FEsAvT4O+Z5XDijeGmDQU1Z1eLfnXIkMNKJGXNqtFrRXJQIRwAyAS
+ h4EBqAfDOLU6o1JQMa3XrbUCxKRhdk8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-144-8hPGoQ9wMguGcmIBzVycTw-1; Tue, 03 Jun 2025 03:12:10 -0400
+X-MC-Unique: 8hPGoQ9wMguGcmIBzVycTw-1
+X-Mimecast-MFC-AGG-ID: 8hPGoQ9wMguGcmIBzVycTw_1748934729
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a4eee72969so3268629f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 00:12:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748933263; x=1749538063;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ea6hTdxF4uF0H2AFslhuAGNmreKAbr7zkjNo4QRPqEo=;
- b=CLHJ0pkFnDZudgSvhZX/V3UFNR+HriW70ka5QZ2NIG4OuO+nR1grg/dwaK6MFAebM8
- EuvazGccF9TB5JFL5bCuWBuk2ZjqNZ0Zls4j61nfNt319HLUm8CrZ04xZXOIm0yzLeW9
- +fgw7zbUx22cZ2CnRig5a0Md91n6NWWMyt2P5cj8x+vFr6IFPPzDX8sAHR4epEq7Qj0j
- JTGd6gQbxf2OZq8d50VX9CsoIY8E1sg8/S8mUOW1dVy8RJpQg6QLWT1F8qLPIM0LdPGu
- tDFUz63pNaHp/6go95NdW77rPHyrX23g0MjZIaGMpXqFp3tZodniNAPdhqDxtTutTN9n
- ufJA==
-X-Gm-Message-State: AOJu0YxxraqSJfediXbuYwmWqSHqXP5HyGuoyMowono+qqvxayNYTzen
- f5fNSBmYwBkNcbo+Q2hIdS3TyuBhCFSaGkYmIVzlmvZ8Q2AVrOcNIyFw
-X-Gm-Gg: ASbGncvV4rquXus92CSbF3s3mjF9/zxCmA9CGzqQL4f2Aot8NemLYXze5SMhIGtjh2X
- QGTe3ge2T+jCXW63Ox/ozczY38sgYpkoJJjgHPNFQ7PAqViNmgVrspEDdlHwyp3Ip0xAl6I6K/N
- APWazeCLRtwK+5YKqw7zwbbzEpMsIi7cTfAZacJor3WIVrEYMP/Ueo63Ksje34mIkiNPsLpse60
- 7Mshhlm9r2RW+WfXk0XDX3CdLhZ9gIxJJmpQ1u5vHchiWS8q1LKPJTgwjcVNwlNaPkCfFR4Ybjp
- Mr8lhJT+4PJ8S6nIZgp+bPowIyyd1waLKFTZkoJA4MXP9vjQrvKdJPfuBNDwE5DLRhPyr8b32rN
- ZfaJU+ZSpmcXqjI/xMDu6QcxG0M8vUrCBs6Gn6MHPyDWtqRwXoEMefkGOl/adeLiUPBgL
-X-Google-Smtp-Source: AGHT+IGj9Jy4EV17rFZyE+8CA3JU38pVx8EiOmMUyn6mfR4Sih/xMTrryhCr+slsRCCcqvwGYDrLqw==
-X-Received: by 2002:a17:907:728e:b0:ad5:72d4:85f9 with SMTP id
- a640c23a62f3a-adb49510c5amr1179336166b.40.1748933262629; 
- Mon, 02 Jun 2025 23:47:42 -0700 (PDT)
-Received: from ?IPv6:::1?
- (dynamic-2a02-3100-2c1d-9800-e96f-0ee8-1bd2-ecbf.310.pool.telefonica.de.
- [2a02:3100:2c1d:9800:e96f:ee8:1bd2:ecbf])
+ d=1e100.net; s=20230601; t=1748934729; x=1749539529;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nyUDjE8AiGvOJmFM9FI+4PU9IZTOPQhPpsBbbtijHto=;
+ b=LlyX2HeL14DTINmoQ8mKLcOBv7H5uKKBbz6Y9z895hMC5vGkTLzcrtHiILzUq6SyO9
+ RXReJqPVTosfATJm2gK7jMdcP3nBMjHwmEO5uEEMlpHk/bBovG3f+/NJmHijGUZrH4y3
+ j/tOnxUeoUhTJ1j6cLFYUrvlMUYOe+B/tMDSlSGPasnwPe6DuGOWhMbRvlNs1bTlTvg3
+ Ue16+Hr4JMEKep86+0bIH2OVUjawaq2ICXq5/KGEwTvBubyKyeotGl2brI62NYIglGwb
+ 6xBP+AMX+XnU+Xr/YccG/sFLylZEPmfPCGjOcfhoiP+K0COKqxHIHQGJE7oixofezsqI
+ LRYg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXX0LWWQxUrteWSo4tp64D/5eEaT9uLGNjgD/1jm6PrrtP2TI+vC0tc2ixRFS1khS5syxMsHZ83U7Mm@nongnu.org
+X-Gm-Message-State: AOJu0YxUtRC+y3a37iA88dvdwmu4Ts7YdWl+tiQ8Dzi+h8XwEQt6DCsK
+ h6D7x+HMcEoGU7g+sWY9FMovBx7jytWrFE8CqgLwmfwXzHQBlBqFQL4m81bptNIJuekdLPMpMYh
+ UzxwN1UZu9iUaokXPmNmLqBI3hxsI283McNYUOdM2FIVa8YyUrvqWoxnG
+X-Gm-Gg: ASbGncvknwYVROZE3l7hm2RCZxjX/EQszrF6qGEN4EGHyjkOQV/wocSjb59x72FYRD+
+ dsCBnpt5XGxNquAIh/BcILnU93Hlsu0dRc9HK7V4XNnfVJYBkv3AhtjQzjTiUH/iLX+gTpR/KsQ
+ CaSFtMGJ3fH59whGAttbz6N7FtdtdmJ9CfXNR4Oa1mBmowaDxV0wxwFLnTQQdPA10ufz4V7ZmVF
+ xwCyLe+5EPw7bpi17CTgjaLrALbHwpC62zMmha2vS5+OtKzR9H/Hpctry47c75z5RzBvfuVj3nG
+ 02aT4Yd1H+X5CVNc0bpAIR2c8UBIC4R9nr6oSxRWoIKclt/JmhjpUiyfbQ==
+X-Received: by 2002:a05:6000:430e:b0:3a5:1222:ac64 with SMTP id
+ ffacd0b85a97d-3a51222ad7amr2374750f8f.38.1748934728662; 
+ Tue, 03 Jun 2025 00:12:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAV7z6aHe9fRKX8HisNsQ4w9TCLH0/oOwNJyXhRhjhiVaPv5cYN14UZJQCb6aXFCWoxLuwVQ==
+X-Received: by 2002:a05:6000:430e:b0:3a5:1222:ac64 with SMTP id
+ ffacd0b85a97d-3a51222ad7amr2374729f8f.38.1748934728263; 
+ Tue, 03 Jun 2025 00:12:08 -0700 (PDT)
+Received: from ?IPV6:2a01:cb1a:26:f704:85f7:e4c6:1cb:c089?
+ ([2a01:cb1a:26:f704:85f7:e4c6:1cb:c089])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5eb54c42sm903711166b.88.2025.06.02.23.47.42
+ 5b1f17b1804b1-450d7f8ed27sm155935655e9.2.2025.06.03.00.12.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Jun 2025 23:47:42 -0700 (PDT)
-Date: Tue, 03 Jun 2025 06:39:23 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org
-Subject: Re: [PULL 36/58] pc-bios: Move device tree files in their own subdir
-In-Reply-To: <0648af18-2e50-4eaa-96fb-b0e64eb706d9@linaro.org>
-References: <20250425152843.69638-1-philmd@linaro.org>
- <20250425152843.69638-37-philmd@linaro.org>
- <621F23F2-05FC-4C8C-8AA8-F61DED04B306@gmail.com>
- <83dcb220-dd06-fb7f-1960-432fb2696b60@eik.bme.hu>
- <0648af18-2e50-4eaa-96fb-b0e64eb706d9@linaro.org>
-Message-ID: <05174912-B148-4ECB-9F8C-4C0641FFC2BB@gmail.com>
+ Tue, 03 Jun 2025 00:12:07 -0700 (PDT)
+Message-ID: <e7b64b27-f6b8-4a63-b92d-63fb49e26c92@redhat.com>
+Date: Tue, 3 Jun 2025 09:12:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x536.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] meson: use config_base_arch for target libraries
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: nabihestefan@google.com, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ thuth@redhat.com, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20250602233801.2699961-1-pierrick.bouvier@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250602233801.2699961-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.015,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,145 +155,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 6/3/25 01:38, Pierrick Bouvier wrote:
+> Fixed commit introduced common dependencies for target libraries. Alas,
+> it wrongly reused the 'target' variable, which was previously set from
+> another loop.
+> 
+> Thus, some dependencies were missing depending on order of target list,
+> as found here [1].
+> 
+> The fix is to use the correct config_base_arch instead.
+> Kudos to Thomas Huth who had this right, before I reimplement it, and
+> introduce this bug.
+> 
+> [1] https://lore.kernel.org/qemu-devel/c54469ce-0385-4aea-b345-47711e9e61de@linaro.org/
+> 
+> Fixes: 4fb54de823e9 (meson: build target libraries with common dependencies)
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 
-Am 2=2E Juni 2025 08:12:39 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <phil=
-md@linaro=2Eorg>:
->On 30/5/25 02:54, BALATON Zoltan wrote:
->> On Thu, 29 May 2025, Bernhard Beschow wrote:
->>> Am 25=2E April 2025 15:28:20 UTC schrieb "Philippe Mathieu-Daud=C3=A9"=
- <philmd@linaro=2Eorg>:
->>>> From: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
->>>>=20
->>>> We have several device tree files already and may have more in the
->>>> future so add a new dtb subdirectory and move device tree files there
->>>> so they are not mixed with ROM binaries=2E
->>>>=20
->>>> Signed-off-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
->>>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->>>> Message-ID: <57f179bd3904c1f2ca062ca4d4ff9592bb4f4daa=2E1745402140=2E=
-git=2Ebalaton@eik=2Ebme=2Ehu>
->>>> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->>>> ---
->>>> MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +-
->>>> system/datadir=2Ec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 4 +++-
->>>> pc-bios/{ =3D> dtb}/bamboo=2Edtb=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | Bin
->>>> pc-bios/{ =3D> dtb}/bamboo=2Edts=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 0
->>>> pc-bios/{ =3D> dtb}/canyonlands=2Edtb=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | Bin
->>>> pc-bios/{ =3D> dtb}/canyonlands=2Edts=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 0
->>>> pc-bios/dtb/meson=2Ebuild=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0 23 +++++++++++++++++++++
->>>> pc-bios/{ =3D> dtb}/petalogix-ml605=2Edtb=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | Bin
->>>> pc-bios/{ =3D> dtb}/petalogix-ml605=2Edts=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0=C2=A0 0
->>>> pc-bios/{ =3D> dtb}/petalogix-s3adsp1800=2Edtb | Bin
->>>> pc-bios/{ =3D> dtb}/petalogix-s3adsp1800=2Edts |=C2=A0=C2=A0 0
->>>> pc-bios/meson=2Ebuild=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 23 +--------------------
->>>> qemu=2Ensi=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0=C2=A0 2 +-
->>>> 13 files changed, 29 insertions(+), 25 deletions(-)
->>>> rename pc-bios/{ =3D> dtb}/bamboo=2Edtb (100%)
->>>> rename pc-bios/{ =3D> dtb}/bamboo=2Edts (100%)
->>>> rename pc-bios/{ =3D> dtb}/canyonlands=2Edtb (100%)
->>>> rename pc-bios/{ =3D> dtb}/canyonlands=2Edts (100%)
->>>> create mode 100644 pc-bios/dtb/meson=2Ebuild
->>>> rename pc-bios/{ =3D> dtb}/petalogix-ml605=2Edtb (100%)
->>>> rename pc-bios/{ =3D> dtb}/petalogix-ml605=2Edts (100%)
->>>> rename pc-bios/{ =3D> dtb}/petalogix-s3adsp1800=2Edtb (100%)
->>>> rename pc-bios/{ =3D> dtb}/petalogix-s3adsp1800=2Edts (100%)
->>>>=20
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index 661a47db5ac=2E=2Ed82d962f1a4 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -1581,7 +1581,7 @@ F: hw/pci-host/ppc440_pcix=2Ec
->>>> F: hw/display/sm501*
->>>> F: hw/ide/sii3112=2Ec
->>>> F: hw/rtc/m41t80=2Ec
->>>> -F: pc-bios/canyonlands=2Edt[sb]
->>>> +F: pc-bios/dtb/canyonlands=2Edt[sb]
->>>> F: pc-bios/u-boot-sam460ex-20100605=2Ebin
->>>> F: roms/u-boot-sam460ex
->>>> F: docs/system/ppc/amigang=2Erst
->>>> diff --git a/system/datadir=2Ec b/system/datadir=2Ec
->>>> index e450b84ce91=2E=2Ef96f8fc2646 100644
->>>> --- a/system/datadir=2Ec
->>>> +++ b/system/datadir=2Ec
->>>> @@ -44,9 +44,11 @@ char *qemu_find_file(QemuFileType type, const char=
- *name)
->>>>=20
->>>> =C2=A0=C2=A0=C2=A0 switch (type) {
->>>> =C2=A0=C2=A0=C2=A0 case QEMU_FILE_TYPE_BIOS:
->>>> -=C2=A0=C2=A0=C2=A0 case QEMU_FILE_TYPE_DTB:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 subdir =3D "";
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
->>>> +=C2=A0=C2=A0=C2=A0 case QEMU_FILE_TYPE_DTB:
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 subdir =3D "dtb/";
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
->>>> =C2=A0=C2=A0=C2=A0 case QEMU_FILE_TYPE_KEYMAP:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 subdir =3D "keymaps/";
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
->>>> diff --git a/pc-bios/bamboo=2Edtb b/pc-bios/dtb/bamboo=2Edtb
->>>> similarity index 100%
->>>> rename from pc-bios/bamboo=2Edtb
->>>> rename to pc-bios/dtb/bamboo=2Edtb
->>>> diff --git a/pc-bios/bamboo=2Edts b/pc-bios/dtb/bamboo=2Edts
->>>> similarity index 100%
->>>> rename from pc-bios/bamboo=2Edts
->>>> rename to pc-bios/dtb/bamboo=2Edts
->>>> diff --git a/pc-bios/canyonlands=2Edtb b/pc-bios/dtb/canyonlands=2Edt=
-b
->>>> similarity index 100%
->>>> rename from pc-bios/canyonlands=2Edtb
->>>> rename to pc-bios/dtb/canyonlands=2Edtb
->>>> diff --git a/pc-bios/canyonlands=2Edts b/pc-bios/dtb/canyonlands=2Edt=
-s
->>>> similarity index 100%
->>>> rename from pc-bios/canyonlands=2Edts
->>>> rename to pc-bios/dtb/canyonlands=2Edts
->>>> diff --git a/pc-bios/dtb/meson=2Ebuild b/pc-bios/dtb/meson=2Ebuild
->>>> new file mode 100644
->>>> index 00000000000=2E=2E7a71835bca7
->>>> --- /dev/null
->>>> +++ b/pc-bios/dtb/meson=2Ebuild
->>>> @@ -0,0 +1,23 @@
->>>> +dtbs =3D [
->>>> +=C2=A0 'bamboo=2Edtb',
->>>> +=C2=A0 'canyonlands=2Edtb',
->>>> +=C2=A0 'petalogix-ml605=2Edtb',
->>>> +=C2=A0 'petalogix-s3adsp1800=2Edtb',
->>>=20
->>> Was it intended that the suffix changed from =2Edts to =2Edtb? This ch=
-ange isn't motivated in the commit message and usually source files rather =
-than generated artifacts are listed in build files=2E
->>=20
->> I think I either found similar python code somewhere and followed that =
-because meson and python is not something I understand well=2E Or changed i=
-t because we always need the list of dtbs to install but only need the dts =
-when compiling so this way we don't need another list or replacing suffix t=
-wice=2E
->
->Should we revert?
+Tested-by: Cédric Le Goater <clg@redhat.com>
 
-What's the idea behind having dtbs in the repository instead of making dtc=
- mandatory? If there is any perspective that we could remove the dtbs in th=
-e future I vote for restoring the original logic=2E I could send a patch si=
-nce I have further dtb fixes for the e500 and arm=2E
+Thanks,
 
-Best regards,
-Bernhard
+C.
+
+
+> ---
+>   meson.build | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index 2df89006f8b..ad9cef99ed9 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -4142,13 +4142,12 @@ common_all = static_library('common',
+>   target_common_arch_libs = {}
+>   target_common_system_arch_libs = {}
+>   foreach target_base_arch, config_base_arch : config_base_arch_mak
+> -  config_target = config_target_mak[target]
+>     target_inc = [include_directories('target' / target_base_arch)]
+>     inc = [common_user_inc + target_inc]
+>   
+> -  target_common = common_ss.apply(config_target, strict: false)
+> -  target_system = system_ss.apply(config_target, strict: false)
+> -  target_user = user_ss.apply(config_target, strict: false)
+> +  target_common = common_ss.apply(config_base_arch, strict: false)
+> +  target_system = system_ss.apply(config_base_arch, strict: false)
+> +  target_user = user_ss.apply(config_base_arch, strict: false)
+>     common_deps = []
+>     system_deps = []
+>     user_deps = []
+
 
