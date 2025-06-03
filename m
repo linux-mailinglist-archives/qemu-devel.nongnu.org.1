@@ -2,106 +2,205 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED4DACBE42
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 03:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45898ACBE62
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 04:00:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMGd5-0000Td-OB; Mon, 02 Jun 2025 21:39:51 -0400
+	id 1uMGvj-0004PF-2a; Mon, 02 Jun 2025 21:59:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uMGcl-0000HE-CQ
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 21:39:32 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uMGcj-0001gC-CO
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 21:39:31 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id BA85D1F745;
- Tue,  3 Jun 2025 01:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1748914737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zi66cgU68uNxi8+JjcmFVcITaSr2nzElUOJtcyAAYdw=;
- b=cUrP6BFcWczbbm9L3a2M2d6mLC9m0Bx+zDh2AULoAInZksgphB+5UyLcEwTcLLZzvdVmio
- GU1TpovJOcinm95Krcj7cDvvczd8nqoS1ucbI1xZi+HHnOtyd34tURpSr/888CkYSKTT1p
- u4JdFLVkubEMxLwI+Cwk37wxcVSTvOU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1748914737;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zi66cgU68uNxi8+JjcmFVcITaSr2nzElUOJtcyAAYdw=;
- b=rWWdliYh0KA/KMtri1DvmPy4sFaHtrNm+v/KQgfP2HhDNlG1i8R/nLHSrXYiq40kHqUPua
- kHx+1xzlSXxMAbCw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1748914737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zi66cgU68uNxi8+JjcmFVcITaSr2nzElUOJtcyAAYdw=;
- b=cUrP6BFcWczbbm9L3a2M2d6mLC9m0Bx+zDh2AULoAInZksgphB+5UyLcEwTcLLZzvdVmio
- GU1TpovJOcinm95Krcj7cDvvczd8nqoS1ucbI1xZi+HHnOtyd34tURpSr/888CkYSKTT1p
- u4JdFLVkubEMxLwI+Cwk37wxcVSTvOU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1748914737;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zi66cgU68uNxi8+JjcmFVcITaSr2nzElUOJtcyAAYdw=;
- b=rWWdliYh0KA/KMtri1DvmPy4sFaHtrNm+v/KQgfP2HhDNlG1i8R/nLHSrXYiq40kHqUPua
- kHx+1xzlSXxMAbCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2D89013700;
- Tue,  3 Jun 2025 01:38:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id SFjDNy9SPmiNLwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 03 Jun 2025 01:38:55 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 21/21] tests/qtest/migration: Add a test for config passing
-Date: Mon,  2 Jun 2025 22:38:10 -0300
-Message-Id: <20250603013810.4772-22-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250603013810.4772-1-farosas@suse.de>
-References: <20250603013810.4772-1-farosas@suse.de>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1uMGvg-0004Of-5l
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 21:59:04 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1uMGvd-0005iY-6l
+ for qemu-devel@nongnu.org; Mon, 02 Jun 2025 21:59:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1748915941; x=1780451941;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=30dBsEhi9TbKpxfvwwXvBBJbOV7EJyaBNJRZcRuk1Ds=;
+ b=NGWJa4LK6YX3ddFWZv5abTjHEaAmQjw0ahRax4vVDNwioJmX53ayBeVo
+ 0TAaDJJLy745F+i5HGBJRNkz5DFI4vMBNIubd1fVvmUzePcUSG93zCAtJ
+ anKFfCMT+k3f86Z0B79L8P0VXH/fGu6xd3BfM22ZPCr23gcEs+QAcnCAL
+ 5z4fKtqiXa5URXWqcYwmDFGh9mo1DrUn34pi2kjh+Tovx8BuYETPYQdCn
+ KVFyegs/0ht3LKCorV5kI+gFz1q9NByrwGWvrb3BCAKoz1EQjt6hNM7oA
+ GK2zCnG+2vic2gSEiIGfVhkDxD9co2mL+kbCtrvAV9cteHYhWqEt6okV/ A==;
+X-CSE-ConnectionGUID: jKxSn16ZQ9Glkrra4CljKw==
+X-CSE-MsgGUID: dd4+9rE9QGGTX0FNrjAstA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="51084679"
+X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="51084679"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 18:58:51 -0700
+X-CSE-ConnectionGUID: oNEl/rQDTgSS+2dt4GCiMg==
+X-CSE-MsgGUID: rHqH8kzMQVqsBXS2lRmr5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="145044085"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 18:58:26 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 2 Jun 2025 18:58:26 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Mon, 2 Jun 2025 18:58:26 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (40.107.212.66)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.55; Mon, 2 Jun 2025 18:58:25 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MjNzI7HXQ5pJOUSU6VP1XTyRq2ns25FRQaFJCw25uDX56VItLT98lgJNSvbZo0InzA5on8nAyTpi04yl1/ExwCnCDz3aXlOCHcOu/PORZDwIPDWRw31sWlZkRHC3dVqw1G7ni9Gn9o8NpLyP1KIR4nvE0c76GBkzVEhOEXsQxndjRCgfW7QjI5tm8iE2on8DBkNImIhTJ/XvjP0P0kjJ3+ZpSe72lkTcSF18tuLn4SqQE4O5ewgWAW2eBEZZdfJsMGkk4xnmYBAaYxHGqyzn6abdGtPeeOACrvfibvV6koV9ct/5nzR/vrqpdhSI1TNnw+bbj6VwD1i1jWrCsv7ccA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CmQjCHi5T87pdCHEvLg3VKVBwmYSbERubxn4UUEpHG0=;
+ b=h1bgW6+oF6J9vCEIhmJ5eNak265hcc3F9CrPhOBeRriIOFZmgn9NbmHNUQ+3WFx32bcZQKZEBsS9STMhbD976ORRD/sjnWSiN+HrEkS/sHJirjfV+3D3wMDFZt8nj9KjU/TsYKGmb3DHH+mfXpOR0UTItCp1ApK17ah7Ya702XK+ku0PMQjhcHau/emhKlF5QF6rzm2EwTpSu77+LFyYBZcOTVPUeCTdrregDb1gHZr3KrYb5ysdDTiCye67Qj4ZG/QXuCw8+JTpSDEFY+6jdozaZbMKbzWCDZ9wjlwPtHhrgO6s1hGC/KDyiWZUOg/1udBrchBJlMKpeh4BlPjt+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com (2603:10b6:0:4b::20) by
+ PH8PR11MB7072.namprd11.prod.outlook.com (2603:10b6:510:214::8) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8769.31; Tue, 3 Jun 2025 01:58:02 +0000
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::3225:d39b:ca64:ab95]) by DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::3225:d39b:ca64:ab95%4]) with mapi id 15.20.8769.029; Tue, 3 Jun 2025
+ 01:58:01 +0000
+Message-ID: <1bf4a95d-0400-4b5a-be43-18198c850409@intel.com>
+Date: Tue, 3 Jun 2025 09:57:50 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/5] ram-block-attributes: Introduce RamBlockAttributes
+ to manage RAMBlock with guest_memfd
+To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>, 
+ Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Michael Roth <michael.roth@amd.com>
+CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Williams Dan J
+ <dan.j.williams@intel.com>, Zhao Liu <zhao1.liu@intel.com>, Baolu Lu
+ <baolu.lu@linux.intel.com>, Gao Chao <chao.gao@intel.com>, Xu Yilun
+ <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, Alex Williamson
+ <alex.williamson@redhat.com>
+References: <20250530083256.105186-1-chenyi.qiang@intel.com>
+ <20250530083256.105186-5-chenyi.qiang@intel.com>
+ <2278c8cb-a547-4f8d-a8fb-cce38fa3b5f2@redhat.com>
+Content-Language: en-US
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+In-Reply-To: <2278c8cb-a547-4f8d-a8fb-cce38fa3b5f2@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MIME_TRACE(0.00)[0:+];
- R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
- ARC_NA(0.00)[]; TO_DN_SOME(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
- RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+X-ClientProxiedBy: KU0P306CA0071.MYSP306.PROD.OUTLOOK.COM
+ (2603:1096:d10:23::10) To DM3PR11MB8735.namprd11.prod.outlook.com
+ (2603:10b6:0:4b::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR11MB8735:EE_|PH8PR11MB7072:EE_
+X-MS-Office365-Filtering-Correlation-Id: e33e015f-356f-4a25-a483-08dda2421246
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Wi82cXZNMjN1RGE3NE5ocGRpdTk4QUZnVW9qbXZaaCs4UlNHMzl4K01vTzBH?=
+ =?utf-8?B?emhVL2N2c1l0RTJZRU52d3plOXp0RWFQQWlIMTArQkVtcFMwd0prZ0VQTzho?=
+ =?utf-8?B?MXIvVTgrTkxIL1JLbVN4dVBrYVBMeTh6RURFWjU4blFLZllEUlZRWHVObWh5?=
+ =?utf-8?B?WVZCQWJscjQ5N0FLZ2QyNlVRSFhFbjdEdEQ1dStCUWJ2QXp0S1Z1ZmNzQS8v?=
+ =?utf-8?B?ellKU2MrbFZHT1EzNnljem1IUFBXZ2l6YjFXVFNYZUd0SStvUTA3RnVDckIz?=
+ =?utf-8?B?MDRCanNXZTd3SHkrdE9pWVc4WGljYWhCQ2RaR054ZjlkaHQwVmMvRjR2c1hX?=
+ =?utf-8?B?aHpycVlBRHBSbmFSMEZJd2FvelJDckdTU1F5TEhMdDVEWEppUDhhcnpQOE1W?=
+ =?utf-8?B?YmtXKzVaZFIzclZBTXI4ZzltUU56eEpWdTU1MkxYY0FYaVNZTENUaG4zemtQ?=
+ =?utf-8?B?S1oxdEs3TXkxdG9OcGwxaE12T1NpbEpTWWNIL3E1UE91Q3BXcDM2VGhFN09p?=
+ =?utf-8?B?Q2lEbjM2UzVjUXJFekhXRUEzYXZ3RjdIZmgwWjd4WUR1REhpb2FrTTlvV2VP?=
+ =?utf-8?B?TytRc05pL1RqelJNR1padnc2VXNzREVxMEQvajhEVUhkdUxwM3dmOC9JMVlv?=
+ =?utf-8?B?NWRuQnRjUzRkYlJ0eHZFUGtJRERPMWNHY3ByRmptRzlxbUhTQ0Rnd3VJY1ky?=
+ =?utf-8?B?eExhVHRHOVRVTzg1cmVqWk9qTzA2cHRxWE5kbTQ2dDQxcjgwS3IyS3ovZi9t?=
+ =?utf-8?B?VDdiK2hXZkxTWVhYRmN1RXlvUU5IVjhGcjlkTUU5NjMxaGsxdVBtRDM4WnZq?=
+ =?utf-8?B?MDV0MHYrNzNJRVdEQWw2cEFsK1VKcmh5Zyt4a3lpSFQ4VHFqTy9uYjhWdEJC?=
+ =?utf-8?B?bmQrSHc5czZEdWVDNzVPSURiQVp0WUl6TWVkeW5IcEgwRW5NYW9wZENkazlD?=
+ =?utf-8?B?TzdBdmRRR0ZESVQ1TVhjNzF5ZlBxOXUrejNLQjg2VUROR3g2eDhmRFdiOVE3?=
+ =?utf-8?B?ait5UnlOa0laUDY0NmJNMkswOFlzc3JoQTlHKzFYVzVENHMwdVlsWnFhZmYr?=
+ =?utf-8?B?Y1h0bXlWY0dzMzcvaERxN3ZaSDdiWjM5UDZqWUVCZFNMdndsNGpLb0dlTE9M?=
+ =?utf-8?B?T0Fubld5TWNLckpETlJCVXFnN2dLNDRONSttUjdhTUdyM2hzc2U5clNiRGM5?=
+ =?utf-8?B?VzdUVjIrQXRvMVV4anczekw4TnEya2k2SGFzT3J4V0c3b2ZqakdIY0lHMGdv?=
+ =?utf-8?B?OUZUanhXOU1MdHVUakUxaDJrRCtxellZaDBBNEZmWVVVSDRpVGlCblNaUEtP?=
+ =?utf-8?B?cmZzZTRLYnBvR29VbmNoU3FjSU5EZ1BLRldyWnllYk5LdTQzaHZwVTBrY0dh?=
+ =?utf-8?B?UjBKdDc0T0w1TFpkV2Z1dlkvWi95dXErV3phcHFCb0VlQVhwZEtCODFIcDZ6?=
+ =?utf-8?B?T0ZLMUt2NlRMRWdOZGN2bFB4THVlWDI3NzJ2QkQ5UUhIQjVpb2NkeWVQblc3?=
+ =?utf-8?B?cDJLMHBLd2RoZ1VIWkluUVdxbVdMdWFzcWpYTlB2U0tMYUM3U1prMmh6OHBB?=
+ =?utf-8?B?SGdwc2RRcFJBVDN3NEdXQWRMQjEvL0VvMUZKOFdrdW1vREI5MVFzWGQxUGdr?=
+ =?utf-8?B?Q3RqYTE5UnRhSnAwcWZQeXdXNUM0azk4Mk5PTi80ZzNtUkNIclpnZWYxRXNP?=
+ =?utf-8?B?WWZXTzF6ZXp2eFhENndsV0xtMGdxYVl3MDVNWmRLQVBIZXVYNWExZU9wbmpB?=
+ =?utf-8?B?NEtydVhVUjJwZzFKMFNPWkpVb0JZTC9SN0txbVEzU1dUNnpFWHd4SGx4N0Fk?=
+ =?utf-8?B?K2JaSUpOWWVFWSsrOHQvOC9DUk81S3dhbnhKSE81RlpkeE9temV2ZVJ2cGlL?=
+ =?utf-8?B?UlczSWFGdWVjenJJUnk0Nit6dHZSZzhvM1EzODh5Vmg0SkppMzNRK2VaV2pR?=
+ =?utf-8?Q?lDI/QccivLg=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM3PR11MB8735.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(7416014)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VTZXclY5ZHViWWxybHgrM25qWFozMTNISlU5UFRyTWFrQ05RYnJnaEp0S3Rw?=
+ =?utf-8?B?bHQvMVpkYm0yUzFmQWZxck1wMFg0OURLa01qTyt6VVIyd2U0VVBKdU42Tm4r?=
+ =?utf-8?B?bzF5RzluT21zRkpwRVc3RWxXQytUMnhtb1d4UU5MZ01jOHFQRFk2ODQ4Nkw1?=
+ =?utf-8?B?NldFREo5T1owV2JTb2RPelgrd3ZHMXRhTFVkRUpMZXZtbmx1OXZ6cTFrSW5B?=
+ =?utf-8?B?NTJLc0cwOXdrRmVCT2RZSGZNWW1WWjMwN1JrRkhESHNJalFCYlMyYjdmVkpk?=
+ =?utf-8?B?MmRkUWp2b2pTMEtEUU1iaGxGUnpUMjdrOTQvZ2tlbHRwdFJXNzFkZUgvNnNl?=
+ =?utf-8?B?cWFhZ0ZhQnpaNmVXY2FCYVh2NFZuR2JhNG1TN0YzaWRSNGhvNVZBNnpDU3M2?=
+ =?utf-8?B?WTlFYWthZHQzVHZmWks1aXRJdVpHazQzL1I4OWtFQXF2OVdwL0ZZbWhVYnVL?=
+ =?utf-8?B?bFdkdWREU1JqalkycUtKVk4vUXpIbTh0NmFWUTRuTUVTdEpCU0xveGdPU0Q3?=
+ =?utf-8?B?aUpXM1lBRnNUNVJ4UmNVOHdTckd5alBRS2RON2w3NVZBVXpyWUw3S3BRWCtY?=
+ =?utf-8?B?STJPREZiVW5HM1NvRXJsU1hXcUVNM3pOWVp5WjAzVStGeTI0ZXJvZ3c4aDJ1?=
+ =?utf-8?B?YzIyMmlzMldRL1R1bTJBc2drRUwxdEpDajNtMmZlOWZaYzlNYnJCZjZqZWZO?=
+ =?utf-8?B?U3JaOThwZHhjQ2ZTN091c0dUVE8vK25oeE1PdlFMUmV5R2EraXlHLzEvT0RO?=
+ =?utf-8?B?blhwVmpjNDlId3dMcnJhMG5NWXcxN25JSllYbGJFc1lMaTQxckNRZWZjN0ha?=
+ =?utf-8?B?azd3cnJJOXEveVdmK3ViMUx0aGkrZkJTNWJrOGJvVHg4VDRyZTBGNTlNUEVu?=
+ =?utf-8?B?YnlUcHRVekc5M0tmUVhzZUYwZlg5amRzWmZrUlFCWmZxQ0szRUFWK2VWazZO?=
+ =?utf-8?B?cXRQVUhYcWlaQzhLOHFTc2c0cXlMVkRqMXZCc1gzNnVTWk84eklDeVRiUTRI?=
+ =?utf-8?B?MjFJRjBzSnppOWJ3NW1nN29mRkthQlZsVThodExjT015c2M4NXpZS0VlYWRB?=
+ =?utf-8?B?UVJNc0dEN0puYW1tRkZseUhMOHMrdmxQaFpFQmFpdW1HYWxXZ1FKM0JpSXRy?=
+ =?utf-8?B?a1kwSGN5YzVzZ1h2YkY0YWw2ZHpOakJWcE9VT2ZOSUN3UDJCekVHb21Yd3lX?=
+ =?utf-8?B?TWNSdU0zY3N4WktKMjd0MW1rY0ZlSE80cEdsRFNyWkRqTCsvQkQ5Z3hiM1Rx?=
+ =?utf-8?B?dlB2UWRnQkZkeVVHYVduTmpYekVUa1Vta0d4Q21UL2FPa3ZuZkRaS0pCN0NX?=
+ =?utf-8?B?NkN2RG9PTXZSR253aVpEaFBPVmdGazU2K2RqaFJBSFk5UjlITlpBdTZiTGpz?=
+ =?utf-8?B?aW8rbVNiTHBDQmYvc1lEdzFBNGZRTHJiZlRRSkxMU0xHQXlMdU9ZWWN0S0wz?=
+ =?utf-8?B?YmQwL3F2OWtNbmJUdU8vTVgrbUUyTXpnWllvTlA4ZHpMeGVaNStVWks3bVJ2?=
+ =?utf-8?B?N1k0TnZ0clpkTC9UcnpuQlhjOVNnZmI1cXUycklQSW5NellFTEpSTURhWWhP?=
+ =?utf-8?B?K1lzcTdKVmZ3Zjk3YmQvd0I3OTFNbSsxeEhHN0I5dXJuVU1SbFpBRWlUVG1J?=
+ =?utf-8?B?TitmWjNZUm9YYi96UHVvWHNNWGVDaVNOTEZnajhPQVFKOVNjMEdGZmJOaVdT?=
+ =?utf-8?B?V3h6b2pDa29YUk1KNmRuZjJhdmQ1SDljeDJhQ0g0VXBSNk1MMDFzTkw0QjZG?=
+ =?utf-8?B?K2tZdHZQSWxaRStiS3VVa0c3dkxleGt0VEsxSzB6V2l0UXdUU0YvZ2tyQ3RT?=
+ =?utf-8?B?RjR6OXRYaEtzTTl2MjBTdDc5OVVyaFRoV0VHRHRaYU84VFdDWVZwRFJrUTZs?=
+ =?utf-8?B?QXQwajVmLzN6MitjemNIbDNuanVUSkswMWh6b29SaUFxcThYQjVMV2NxZWlh?=
+ =?utf-8?B?Y1R5OTJaMHhET3N2WWNWcGdQQnlBQWhrby9kNFhoRjJFZWw1ZjBIVDFDSmxq?=
+ =?utf-8?B?UE80TXMrdVpESzRjNjVBL3NDUTA0YjVTbnh3OGVSWEJ2ZGRSNHV6OHI5NVFu?=
+ =?utf-8?B?a2prMjA2TEdvSndJYXRQK2FIRnMzRlpEMUJzTTRhYUFNSkk1Mzdkd0Z3STEr?=
+ =?utf-8?B?Z1ZNa1lnTjJIeXdmY0c5WTRLKytuZ0hoUWYwMTlvZDJHK2tMbERTblR2ZEJX?=
+ =?utf-8?B?bXc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e33e015f-356f-4a25-a483-08dda2421246
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR11MB8735.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2025 01:58:01.8256 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tmcEpm/t6I4WiJ5RWM0QVvJlGqy4Wisno2COVNsk/8VUMiJ20TBFeZL13rc0I80gr7TVdpwb6HV+nv91kf+pcg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7072
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.15;
+ envelope-from=chenyi.qiang@intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.015,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -120,83 +219,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass the config directly via the migrate/incoming command.
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/migration/framework.h  |  2 ++
- tests/qtest/migration/misc-tests.c | 39 ++++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+)
 
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index 01e425e64e..e55cd33fa8 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -145,6 +145,8 @@ typedef struct {
-     /* Optional: fine tune start parameters */
-     MigrateStart start;
- 
-+    const char *config;
-+
-     /* Required: the URI for the dst QEMU to listen on */
-     const char *listen_uri;
- 
-diff --git a/tests/qtest/migration/misc-tests.c b/tests/qtest/migration/misc-tests.c
-index 54995256d8..e835865aee 100644
---- a/tests/qtest/migration/misc-tests.c
-+++ b/tests/qtest/migration/misc-tests.c
-@@ -256,6 +256,42 @@ static void test_validate_uri_channels_none_set(void)
-     do_test_validate_uri_channel(&args);
- }
- 
-+static void test_config_migrate(void)
-+{
-+    QTestState *from, *to;
-+    MigrateStart args = {
-+        .hide_stderr = false,
-+    };
-+    const char *config = "{"
-+        "'events':true, "
-+        "'multifd':true, "
-+        "'multifd-channels': 4"
-+        "}";
-+
-+    if (migrate_start(&from, &to, "defer", &args)) {
-+        return;
-+    }
-+
-+    assert(qtest_qmp_cmd_has_feature(from, "migrate", "config"));
-+
-+    wait_for_serial("src_serial");
-+    qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
-+    migrate_ensure_converge(from);
-+
-+    migrate_incoming_qmp(to, "tcp:127.0.0.1:0", NULL,
-+                         "{ 'exit-on-error': false, 'config': %p }",
-+                         qobject_from_json(config, &error_abort));
-+
-+    migrate_qmp(from, to, migrate_get_connect_uri(to), NULL,
-+                "{ 'config': %p }",
-+                qobject_from_json(config, &error_abort));
-+
-+    wait_for_migration_complete(from);
-+    wait_for_migration_complete(to);
-+
-+    migrate_end(from, to, false);
-+}
-+
- static void migration_test_add_misc_smoke(MigrationTestEnv *env)
- {
- #ifndef _WIN32
-@@ -294,4 +330,7 @@ void migration_test_add_misc(MigrationTestEnv *env)
-                        test_validate_uri_channels_both_set);
-     migration_test_add("/migration/validate_uri/channels/none_set",
-                        test_validate_uri_channels_none_set);
-+
-+    migration_test_add("/migration/config/migrate",
-+                       test_config_migrate);
- }
--- 
-2.35.3
+On 6/3/2025 5:10 AM, David Hildenbrand wrote:
+> On 30.05.25 10:32, Chenyi Qiang wrote:
+>> Commit 852f0048f3 ("RAMBlock: make guest_memfd require uncoordinated
+>> discard") highlighted that subsystems like VFIO may disable RAM block
+>> discard. However, guest_memfd relies on discard operations for page
+>> conversion between private and shared memory, potentially leading to
+>> the stale IOMMU mapping issue when assigning hardware devices to
+>> confidential VMs via shared memory. To address this and allow shared
+>> device assignement, it is crucial to ensure the VFIO system refreshes
+>> its IOMMU mappings.
+>>
+>> RamDiscardManager is an existing interface (used by virtio-mem) to
+>> adjust VFIO mappings in relation to VM page assignment. Effectively page
+>> conversion is similar to hot-removing a page in one mode and adding it
+>> back in the other. Therefore, similar actions are required for page
+>> conversion events. Introduce the RamDiscardManager to guest_memfd to
+>> facilitate this process.
+>>
+>> Since guest_memfd is not an object, it cannot directly implement the
+>> RamDiscardManager interface. Implementing it in HostMemoryBackend is
+>> not appropriate because guest_memfd is per RAMBlock, and some RAMBlocks
+>> have a memory backend while others do not. Notably, virtual BIOS
+>> RAMBlocks using memory_region_init_ram_guest_memfd() do not have a
+>> backend.
+>>
+>> To manage RAMBlocks with guest_memfd, define a new object named
+>> RamBlockAttributes to implement the RamDiscardManager interface. This
+>> object can store the guest_memfd information such as bitmap for shared
+>> memory and the registered listeners for event notification. In the
+>> context of RamDiscardManager, shared state is analogous to populated, and
+>> private state is signified as discarded. To notify the conversion events,
+>> a new state_change() helper is exported for the users to notify the
+>> listeners like VFIO, so that VFIO can dynamically DMA map/unmap the
+>> shared mapping.
+>>
+>> Note that the memory state is tracked at the host page size granularity,
+>> as the minimum conversion size can be one page per request and VFIO
+>> expects the DMA mapping for a specific iova to be mapped and unmapped
+>> with the same granularity. Confidential VMs may perform partial
+>> conversions, such as conversions on small regions within larger ones.
+>> To prevent such invalid cases and until DMA mapping cut operation
+>> support is available, all operations are performed with 4K granularity.
+>>
+>> In addition, memory conversion failures cause QEMU to quit instead of
+>> resuming the guest or retrying the operation at present. It would be
+>> future work to add more error handling or rollback mechanisms once
+>> conversion failures are allowed. For example, in-place conversion of
+>> guest_memfd could retry the unmap operation during the conversion from
+>> shared to private. For now, keep the complex error handling out of the
+>> picture as it is not required.
+>>
+>> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+>> ---
+>> Changes in v6:
+>>      - Change the object type name from RamBlockAttribute to
+>>        RamBlockAttributes. (David)
+>>      - Save the associated RAMBlock instead MemoryRegion in
+>>        RamBlockAttributes. (David)
+>>      - Squash the state_change() helper introduction in this commit as
+>>        well as the mixture conversion case handling. (David)
+>>      - Change the block_size type from int to size_t and some cleanup in
+>>        validation check. (Alexey)
+>>      - Add a tracepoint to track the state changes. (Alexey)
+>>
+>> Changes in v5:
+>>      - Revert to use RamDiscardManager interface instead of introducing
+>>        new hierarchy of class to manage private/shared state, and keep
+>>        using the new name of RamBlockAttribute compared with the
+>>        MemoryAttributeManager in v3.
+>>      - Use *simple* version of object_define and object_declare since the
+>>        state_change() function is changed as an exported function instead
+>>        of a virtual function in later patch.
+>>      - Move the introduction of RamBlockAttribute field to this patch and
+>>        rename it to ram_shared. (Alexey)
+>>      - call the exit() when register/unregister failed. (Zhao)
+>>      - Add the ram-block-attribute.c to Memory API related part in
+>>        MAINTAINERS.
+>>
+>> Changes in v4:
+>>      - Change the name from memory-attribute-manager to
+>>        ram-block-attribute.
+>>      - Implement the newly-introduced PrivateSharedManager instead of
+>>        RamDiscardManager and change related commit message.
+>>      - Define the new object in ramblock.h instead of adding a new file.
+>> ---
+>>   MAINTAINERS                   |   1 +
+>>   include/system/ramblock.h     |  21 ++
+>>   system/meson.build            |   1 +
+>>   system/ram-block-attributes.c | 480 ++++++++++++++++++++++++++++++++++
+>>   system/trace-events           |   3 +
+>>   5 files changed, 506 insertions(+)
+>>   create mode 100644 system/ram-block-attributes.c
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 6dacd6d004..8ec39aa7f8 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -3149,6 +3149,7 @@ F: system/memory.c
+>>   F: system/memory_mapping.c
+>>   F: system/physmem.c
+>>   F: system/memory-internal.h
+>> +F: system/ram-block-attributes.c
+>>   F: scripts/coccinelle/memory-region-housekeeping.cocci
+>>     Memory devices
+>> diff --git a/include/system/ramblock.h b/include/system/ramblock.h
+>> index d8a116ba99..1bab9e2dac 100644
+>> --- a/include/system/ramblock.h
+>> +++ b/include/system/ramblock.h
+>> @@ -22,6 +22,10 @@
+>>   #include "exec/cpu-common.h"
+>>   #include "qemu/rcu.h"
+>>   #include "exec/ramlist.h"
+>> +#include "system/hostmem.h"
+>> +
+>> +#define TYPE_RAM_BLOCK_ATTRIBUTES "ram-block-attributes"
+>> +OBJECT_DECLARE_SIMPLE_TYPE(RamBlockAttributes, RAM_BLOCK_ATTRIBUTES)
+>>     struct RAMBlock {
+>>       struct rcu_head rcu;
+>> @@ -91,4 +95,21 @@ struct RAMBlock {
+>>       ram_addr_t postcopy_length;
+>>   };
+>>   +struct RamBlockAttributes {
+>> +    Object parent;
+>> +
+>> +    RAMBlock *ram_block;
+>> +
+>> +    /* 1-setting of the bitmap represents ram is populated (shared) */
+>> +    unsigned bitmap_size;
+>> +    unsigned long *bitmap;
+> 
+> So, initially, all memory starts out as private, correct?
+
+Yes.
+
+> 
+> I guess this mimics what kvm_set_phys_mem() ends up doing, when it does
+> the kvm_set_memory_attributes_private() call.
+> 
+> So there is a short period of inconsistency, between creating the
+> RAMBlock and mapping it into the PA space.
+
+I initially had such a patch [1] to describe the inconsistency in RFC
+series. The bitmap was a 1-setting private bitmap at that time to keep
+consistent with guest_memfd and it required an explicit bitmap_fill().
+
+[1]
+https://lore.kernel.org/qemu-devel/20240725072118.358923-6-chenyi.qiang@intel.com/
+
+> 
+> It might be wroth spelling that out / documenting it somewhere.
+
+OK. I missed the above commit document after changing the bitmap to
+shared. I can add it back if need a new version.
+
+> 
 
 
