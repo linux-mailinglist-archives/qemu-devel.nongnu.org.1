@@ -2,72 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1943ACCD5D
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 20:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E84C5ACCCAB
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 20:05:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMWgu-0002Fa-Tf; Tue, 03 Jun 2025 14:48:52 -0400
+	id 1uMW0S-0003cQ-Ic; Tue, 03 Jun 2025 14:05:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uMWgs-0002F9-4B
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 14:48:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uMWgq-0006k5-BD
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 14:48:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748976524;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mQy7SqjhZzya8G05S3ij7YzxZkFPXtqCKzMudZhOP2E=;
- b=PY6qTIt6ob5zMX+z7KffSk/dTETzwu+YbZ25+p0uuvSP/EojpEjaKYG2JxnMhG+Kt1b3hc
- K9ICTBfaGeN5OU4VjXgSc32zE2eja9FbnuE9+jgOoSUd1f3UgRbtTVJsdsi0+H4ZcbgQ+F
- PvOkMCwolGlmgR6Bk1KFxk9WT8oPdoo=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-327--s8Au_ZNMdib8Qc2n2kGdQ-1; Tue,
- 03 Jun 2025 14:48:40 -0400
-X-MC-Unique: -s8Au_ZNMdib8Qc2n2kGdQ-1
-X-Mimecast-MFC-AGG-ID: -s8Au_ZNMdib8Qc2n2kGdQ_1748976518
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4D443195608E
- for <qemu-devel@nongnu.org>; Tue,  3 Jun 2025 18:48:38 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.58])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8C41E19560A3; Tue,  3 Jun 2025 18:48:37 +0000 (UTC)
-Date: Tue, 3 Jun 2025 11:52:02 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, stefanha@redhat.com
-Subject: Re: [PULL 00/13] QAPI patches patches for 2025-06-03
-Message-ID: <20250603155202.GA354395@fedora>
-References: <20250603063644.3953528-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uMW0Q-0003c8-Pl
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 14:04:58 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uMW0N-000126-Ah
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 14:04:58 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-742c035f2afso3966464b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 11:04:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1748973892; x=1749578692; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DnmeDoz8g7+DS8V8jNjQKbLZQ/32aGZt6Q9zLWDgh8M=;
+ b=i6qsHrk+sNEf+I1HPwq3Hpw9nVNOUwb3NvAkd9gMqwkt+wg32UC2PLRGZtvxlBgiBs
+ Ujinilz+kUQMzdo0KEwq0JKa2blhTGrh4DpJvgRhMMHm5wKczNqNb+mHlEIlC9vecwXw
+ ohkq8vjsV/5GQYpOshFVpzVANB4tQzQ1SsS5zLFzCj0gU3+AI2AktK+xDqFkOEw5Ir3E
+ L20kO/osNXW4qtzvBHuy9K0n7uMY5vQh5QaD2FsaWlbC2+t9LZzazP6y0T9WOuWVr+Bv
+ 4uXHirxw/udPAoeBx1aqjgk9fZ+69N6erb6qV6UWrgOqXTFma3jFiuyduL+aWy29x6Sb
+ OoxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748973892; x=1749578692;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DnmeDoz8g7+DS8V8jNjQKbLZQ/32aGZt6Q9zLWDgh8M=;
+ b=iP11c/wJp5guC4rFpwJic/IzIOHl65iittsdMS/SqBGWaeC2aTL1zUyO4rzT6bBwPt
+ UC3FGmUAbQM+qHqQs7ACoi7TLtXKMqxa0jVjmbYeRgbK75zlqZH1f5NicF71F0+W7mwn
+ cD9quAjUw30fYMN0jUQ1TzWf7IrOdrckkq0aDpbve49peo/YHlO2kP8FqZjMP1OKEGmS
+ EkGSlrdSGo3P38/A33Rn1DJ30VCzJyNaWiiP0hqLZKaKwp9Fr0BhPRGe2CQ7uP6taGzq
+ n2knf849wzNsOds0LBM77vAGk3YsMTfNdUoFoyfewfqAhSflTBSRae5Jf85CrVX9wdGc
+ pdBQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVWOt00DHnlQnE01tN/1oYjqqKx5DrdFaztc4gL9PlUMIWsIRR6PLR3pw9gWWhXS+QGd/5Ya3Wcs+AJ@nongnu.org
+X-Gm-Message-State: AOJu0YwhbGGEprrVFKdAweKY1emqpTzhmYWc544UgrShUSlGGjX3Dgv9
+ idXFjkuhpHv9RYSWaD1GQCXg/OZFqPNZsfUqEKBcol/ExeW6hOP+ZYWSVXd8T6a4UTJDMVWlfAQ
+ O/BM+Z0s=
+X-Gm-Gg: ASbGncvJNcBmkKE2wZfkWuKd1TDeS5kR91R6h4hEIK8/rj6HHCupyFMDj18tKUB8B57
+ VTVm8e+a01YgcNcmj/iqie+Zq2Hr01SN0rtLYss2W/vXt1fWey19AUT0GO8kbrWkHfGXXu0OBTh
+ DsOLZoef6zk9iiAPifaA95N+ryAXeJqi9KWdio0T3o5RgUGLKhqQUuTGCq6URjHT/qKHAygRrQv
+ YykF1+7I+rj9lLvE3No6D3b5xA4lXT6GrtZxdJSryQLHPAUqumOB3ftItgCE5KE/KEdG5Ct8Y4q
+ cDXNArv7p/DpsSSWESvKIPJIqh7AQ3nYPuwfW5STpyxm2fJfg9B4CZfnH+lApqAZJw4=
+X-Google-Smtp-Source: AGHT+IGo2yhw1HC6Lz4jwAAxNbWYM8js2Q4bV0TrMvpdlR1vB+s9VdibJ0BC7s/Ues3qD/pMldENaQ==
+X-Received: by 2002:a05:6a00:cc8:b0:742:a23e:2a68 with SMTP id
+ d2e1a72fcca58-7480b48cfa1mr39984b3a.15.1748973892396; 
+ Tue, 03 Jun 2025 11:04:52 -0700 (PDT)
+Received: from [192.168.68.110] ([177.188.133.196])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-747afff7407sm9937725b3a.178.2025.06.03.11.04.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Jun 2025 11:04:51 -0700 (PDT)
+Message-ID: <102e2e67-4c4d-4912-a892-20f5136f241a@ventanamicro.com>
+Date: Tue, 3 Jun 2025 15:04:44 -0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="d3ChyS3Rq04U1dxU"
-Content-Disposition: inline
-In-Reply-To: <20250603063644.3953528-1-armbru@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/riscv/kvm: implement SBI debug console (DBCN) calls
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+References: <20240425155012.581366-1-dbarboza@ventanamicro.com>
+ <eb6bd3d7-c66b-4300-9573-c29830a3aff4@linaro.org>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <eb6bd3d7-c66b-4300-9573-c29830a3aff4@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,29 +105,134 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---d3ChyS3Rq04U1dxU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-Applied, thanks.
+On 6/3/25 10:19 AM, Philippe Mathieu-Daudé wrote:
+> Hi Daniel,
+> 
+> (now merged as commit a6b53378f537)
+> 
+> On 25/4/24 17:50, Daniel Henrique Barboza wrote:
+>> SBI defines a Debug Console extension "DBCN" that will, in time, replace
+>> the legacy console putchar and getchar SBI extensions.
+>>
+>> The appeal of the DBCN extension is that it allows multiple bytes to be
+>> read/written in the SBI console in a single SBI call.
+>>
+>> As far as KVM goes, the DBCN calls are forwarded by an in-kernel KVM
+>> module to userspace. But this will only happens if the KVM module
+>> actually supports this SBI extension and we activate it.
+>>
+>> We'll check for DBCN support during init time, checking if get-reg-list
+>> is advertising KVM_RISCV_SBI_EXT_DBCN. In that case, we'll enable it via
+>> kvm_set_one_reg() during kvm_arch_init_vcpu().
+>>
+>> Finally, change kvm_riscv_handle_sbi() to handle the incoming calls for
+>> SBI_EXT_DBCN, reading and writing as required.
+>>
+>> A simple KVM guest with 'earlycon=sbi', running in an emulated RISC-V
+>> host, takes around 20 seconds to boot without using DBCN. With this
+>> patch we're taking around 14 seconds to boot due to the speed-up in the
+>> terminal output.  There's no change in boot time if the guest isn't
+>> using earlycon.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/kvm/kvm-cpu.c         | 111 +++++++++++++++++++++++++++++
+>>   target/riscv/sbi_ecall_interface.h |  17 +++++
+>>   2 files changed, 128 insertions(+)
+> 
+> 
+>> +static void kvm_riscv_handle_sbi_dbcn(CPUState *cs, struct kvm_run *run)
+>> +{
+>> +    g_autofree uint8_t *buf = NULL;
+>> +    RISCVCPU *cpu = RISCV_CPU(cs);
+>> +    target_ulong num_bytes;
+>> +    uint64_t addr;
+>> +    unsigned char ch;
+>> +    int ret;
+>> +
+>> +    switch (run->riscv_sbi.function_id) {
+>> +    case SBI_EXT_DBCN_CONSOLE_READ:
+>> +    case SBI_EXT_DBCN_CONSOLE_WRITE:
+>> +        num_bytes = run->riscv_sbi.args[0];
+>> +
+>> +        if (num_bytes == 0) {
+>> +            run->riscv_sbi.ret[0] = SBI_SUCCESS;
+>> +            run->riscv_sbi.ret[1] = 0;
+>> +            break;
+>> +        }
+>> +
+>> +        addr = run->riscv_sbi.args[1];
+>> +
+>> +        /*
+>> +         * Handle the case where a 32 bit CPU is running in a
+>> +         * 64 bit addressing env.
+>> +         */
+>> +        if (riscv_cpu_mxl(&cpu->env) == MXL_RV32) {
+>> +            addr |= (uint64_t)run->riscv_sbi.args[2] << 32;
+>> +        }
+>> +
+>> +        buf = g_malloc0(num_bytes);
+>> +
+>> +        if (run->riscv_sbi.function_id == SBI_EXT_DBCN_CONSOLE_READ) {
+>> +            ret = qemu_chr_fe_read_all(serial_hd(0)->be, buf, num_bytes);
+>> +            if (ret < 0) {
+>> +                error_report("SBI_EXT_DBCN_CONSOLE_READ: error when "
+>> +                             "reading chardev");
+>> +                exit(1);
+>> +            }
+>> +
+>> +            cpu_physical_memory_write(addr, buf, ret);
+>> +        } else {
+>> +            cpu_physical_memory_read(addr, buf, num_bytes);
+>> +
+>> +            ret = qemu_chr_fe_write_all(serial_hd(0)->be, buf, num_bytes);
+>> +            if (ret < 0) {
+>> +                error_report("SBI_EXT_DBCN_CONSOLE_WRITE: error when "
+>> +                             "writing chardev");
+>> +                exit(1);
+>> +            }
+>> +        }
+>> +
+>> +        run->riscv_sbi.ret[0] = SBI_SUCCESS;
+>> +        run->riscv_sbi.ret[1] = ret;
+>> +        break;
+>> +    case SBI_EXT_DBCN_CONSOLE_WRITE_BYTE:
+>> +        ch = run->riscv_sbi.args[0];
+>> +        ret = qemu_chr_fe_write(serial_hd(0)->be, &ch, sizeof(ch));
+>> +
+>> +        if (ret < 0) {
+>> +            error_report("SBI_EXT_DBCN_CONSOLE_WRITE_BYTE: error when "
+>> +                         "writing chardev");
+>> +            exit(1);
+>> +        }
+> 
+> We are ignoring partial writes (non-blocking call returning 0 byte
+> written), is that expected? If so, is it OK to add a comment we can
+> safely discard not-yet-written DBCN_CONSOLE_WRITE_BYTE?
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
+Not sure what you meant. IIUC qemu_chr_fe_write() returns the number
+of bytes consumed, 0 if no chardev is found, and -1 on error. Are you
+saying that we should do a loop when there's no chardev found (ret = 0)
+and wait a certain time until there's one available?
 
---d3ChyS3Rq04U1dxU
-Content-Type: application/pgp-signature; name=signature.asc
 
------BEGIN PGP SIGNATURE-----
+In fact, seeing how SBI_EXT_DBCN_CONSOLE_WRITE is written, I wonder if
+we could use qemu_chr_fe_write_all() in this case too. Thanks,
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmg/GiEACgkQnKSrs4Gr
-c8iCCggAxc1zimTDe/rq369oAKqENpNXKHaQxZ1HZJzTVyDZEUh6QtU/1QwWKsJm
-eAOyB/p0C1YYpT0qCvf6LVPRRfMPcRjmr+/z3zDtQ53Gf+bJOZvSTqb32tjdakkK
-IwDWq80A3GEhkc+8Z2TLqUDe1sPtJq6HwPTmvxPn1U5vWzQGBAhc0Jc+WhqgQ0w6
-wRqG8/GVpCJdNQnb+oJP/5I0/xtUDgkpuEnre3Z7qBwccYAhDEhyk0DXc2pY8/zH
-eneP2xHVYkxU/N8ya6hQdzB7Zf5p/tGYupmup7Q6r9wfk/+t4YWTCJZcwsayq7Oz
-bQe1yTGrod+jFgDo6BJJO2xbKbmb8A==
-=s/er
------END PGP SIGNATURE-----
 
---d3ChyS3Rq04U1dxU--
+Daniel
+
+
+
+> 
+>> +
+>> +        run->riscv_sbi.ret[0] = SBI_SUCCESS;
+>> +        run->riscv_sbi.ret[1] = 0;
+>> +        break;
+>> +    default:
+>> +        run->riscv_sbi.ret[0] = SBI_ERR_NOT_SUPPORTED;
+>> +    }
+>> +}
 
 
