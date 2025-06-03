@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD3DACC4E5
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAFAACC4EA
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:06:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMPPR-00083X-8j; Tue, 03 Jun 2025 07:02:21 -0400
+	id 1uMPPS-000856-Hm; Tue, 03 Jun 2025 07:02:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uMPPG-0007vQ-4Q
+ id 1uMPPI-0007vb-SO
  for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:13 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uMPPE-00029q-7d
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:09 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-602e203db66so9458115a12.1
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 04:02:07 -0700 (PDT)
+ id 1uMPPE-00029s-EU
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:12 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-ad89c32a7b5so885354966b.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 04:02:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748948526; x=1749553326; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=KSCR9Zn1xzSUAQGDM52JddqlPoeyuF15P7dYaTm1EMQ=;
- b=PvYF7mUX12YtljV6QdnqHwGKiCn1RwtCG5R1e8XzfABcx50cPmk6SqwDpxf2vO0N+p
- lLuOnKJHCQr15kfQAW5+crvJdcoNJ1w76zXupaRqKu6lMBzk5TMqIK0LmemvSA1JbDJw
- fY11wu5sixItpeLlslzXiWfrZGnaWgcxeWqqg4TcwrKJChETTU2Y5WTgoFMMPfdD+/Uw
- +JHw9AyPStICK7kNidj7hy0MDlH4tjYO0oUkayVXFCjWT0MSM24Bh0hbgSY63nF3lTKc
- rEUfEqLIn1T4ba0sw1N6AhPmJKLQZ8nhgCEVDXJHX0uRjkDYq2qKSJ4FHNhe/usMKmZG
- pZoQ==
+ d=linaro.org; s=google; t=1748948527; x=1749553327; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qDImHvyM+O+Vef4oVOgEwt3nOLQwPNOaNlg1VossPhA=;
+ b=pH8nznyrVJVTvxoNLVCEr0IuuIpgGkah2f7cE2eIxWU371kJnMlIOp4rruVvg6TBGe
+ yIV01mvuDRVnh6c1o/wY2PTe1OCtvfU2Q9hNHL0Ywh1gEaWpnSo3T52EeHZu+QNvyk5G
+ WgzJ1SzzBVQK46yUugfr8FuLL5cz8lTcW0mHmdaBfJ1bjKCJYMtVeb/r9hocLGJoJYjb
+ gqgRkqrXUvWfBuYSdmxQAxIusYtSeL6ef2iq81LZyhrEqI4LeUL8djbXtEJDu5yRva6y
+ Ui7FCpWADlq+kNXtMkimRKF/QST53TMzsTwdw+9eWH6KWrI61xbDBp4f5TMYDvEeUyaE
+ 0TvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748948526; x=1749553326;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KSCR9Zn1xzSUAQGDM52JddqlPoeyuF15P7dYaTm1EMQ=;
- b=IKBejgHUmUyEQgw2ahwFj0gM8EyEHoMMyl3k9ZCTVrfh3enJBsnrxAWW/VMRsQAb95
- 4EIDNdNv0xKuUxOFFsPKOriyFK7ig6RiS7NqE5iwSBWTFrlCMMSvGpMxBqrbssB2KbzS
- NaUbrDhUp7emhU7JSJN6qTDRw0CT6BXBnDn8kZMEMTnXgZ1oxijcYcJfXa3v2P/yV1EH
- jkCfFo08rN1cKakct9bRP3pA5kc1NfdMHrxTqkkmEgCeEzfUIRccNo/HoBfTCC5TclpC
- NELCP3dCRo4O7suFLDC6xovuvIq3RPPsFpZk/I2Mzor9r2C7GaST3TYmCduT2f5cz2Hu
- ABbA==
-X-Gm-Message-State: AOJu0Yz2NYPOwj7yKfxOqBuPUx4ECe8HDgpagGIK243tU7hkL/KTRUHD
- dFEE7AEGRee1rmYRXJ4UTZ7Emk4v5Cg3RhCGYPsu+gEOIgO6hfCp3JFyrfLJbOK3+Rw=
-X-Gm-Gg: ASbGncs8XegC4uMrUiHOm8Wz1WrD/zepx3OUuklH/pl1sosvlLw0u/wqxtz/qSxDQav
- mz0gZUUW4oCiZ4Q1Q0wf1C0jNHxepBdeP6KL90ImVYJRAhiXkgf9D8C9dV34FnRQU36XoX1aL5p
- Wj5u89ooH11v0EKtOJffH9OETdFPI+LmpKOxIY4Tnbtl+fvpbSbJQEH97m7aJCzTpAzcB/8VMGO
- Df8cMGthXw0C8WO7U/w/ys6iuVlR2R8CaTjF+7WzK2gGrHgNpYWWJWvz2VAqTDP1d0xYC7njwDr
- 93TWmhh6xvM+aItb7wdlV7iX9t3ItOoawBXPVJDME0zqU1kRqSZi
-X-Google-Smtp-Source: AGHT+IFhzREmXPUrTE8Oi69Rskqkh0S+vY2UGZRTGGtRPl8RCBFklZ3LJOtpM7BcA7UowTZi2WiG2g==
-X-Received: by 2002:a05:6402:1941:b0:604:bb1d:938d with SMTP id
- 4fb4d7f45d1cf-605b7b6bf8dmr11023125a12.34.1748948526114; 
+ d=1e100.net; s=20230601; t=1748948527; x=1749553327;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qDImHvyM+O+Vef4oVOgEwt3nOLQwPNOaNlg1VossPhA=;
+ b=RxWk7smWur+4QU/mNHE74tw4yUWAc9P2dMeg6lGcDEXhXCqEqXCZVAMdjT7r/0GUzN
+ 9dN1wz60AkDvpFzWGi7cSiU5n1q3Wh6npDlz1Nbv3lFvGIUktct5pJQ+WUQsWZf4pYoO
+ z8n2Mf6GlU8Jfos0gBc8KtOq1julf4zbhT1gvWqzQ0wC4L6TK2iFcBsd+QHZkvMmfUH7
+ VEV6660FIBp2SChKafAqhiFQg2O+57pYoov27jsv5hQ4fpIUX23q2EFSvjtq99379MJz
+ +ANlXHnF/pLFeV9g2yelfYT7yL6sFqfaDHY44EiEucD1g1PqTJ2v5/VGR0JjpsX2iwat
+ QEGQ==
+X-Gm-Message-State: AOJu0YxdOOUAVItFBM986sBuA7FL5bTOIphw+ipHoi/kvhfKIf7kju5S
+ RF27s3uGbHWPC1Lx4AbTPSu65kssMJGeu2/u5oya+LlcnXS0C2bIfJvbK2FD/nweUQ8=
+X-Gm-Gg: ASbGnctGlgB8CmzIH/W2BPFyYPNJ9VxSgByPX+gTUR2yXE/dhnCxVHZwcHCrPXmE1fj
+ ZnCOHf2DSxb+XEEervykDe8YZFRk6Jitua2jLIbXe7qPaudDyxodpbHHvV7/aHBsxyRsPvn/DHe
+ 1oybfQ1oZWVNwKn2FywrFGB5X81p9hm6nNkdrrHwcA2MA15h2sMhYpp1SAwADmqkqAaJMvHnXgR
+ qDPIHBh0+gJG9m2F2cIMgYZeo/JyvnR/SX236YgRittD7Ca0xi0nKVpVc3dMVdV3WpgSrGXwtFb
+ 5mTiKy8dEgv2HQDuLgM598ik4mwLA96FAfFYx9gNyF4ITG8Hfg1c
+X-Google-Smtp-Source: AGHT+IFYR27+0hmtrAlCQgeTt4UM1g0rBDyw6O9t6Wkih+IUSxorA8OiXpaJ83EcGNwDTGFlXjsjgw==
+X-Received: by 2002:a17:907:d7c2:b0:ad8:8efe:31fa with SMTP id
+ a640c23a62f3a-adb32599e63mr1653947966b.58.1748948526429; 
  Tue, 03 Jun 2025 04:02:06 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-605671437e0sm7347925a12.52.2025.06.03.04.02.05
+ a640c23a62f3a-adb35af4456sm733280266b.182.2025.06.03.04.02.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 03 Jun 2025 04:02:05 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D5B715F839;
+ by draig.lan (Postfix) with ESMTP id EC66B5F9CC;
  Tue, 03 Jun 2025 12:02:04 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,16 +84,18 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH v4 00/17] Maintainer updates for May (testing, plugins,
- virtio-gpu) - pre-PR
-Date: Tue,  3 Jun 2025 12:01:47 +0100
-Message-ID: <20250603110204.838117-1-alex.bennee@linaro.org>
+Subject: [PATCH v4 01/17] tests/docker: expose $HOME/.cache/qemu as docker
+ volume
+Date: Tue,  3 Jun 2025 12:01:48 +0100
+Message-ID: <20250603110204.838117-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250603110204.838117-1-alex.bennee@linaro.org>
+References: <20250603110204.838117-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -115,83 +118,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now the tree is open here is the state of my current maintainer
-queues. I've tagged the virtio-gpu changes as Cc: qemu-stable but
-given how close to release we were it didn't seem worth rushing them
-in for 10.0. I've included a MAINTAINERS patch just to make sure I can
-route any more fixes until a more full time maintainer volunteers.
+If you want to run functional tests we should share .cache/qemu so we
+don't force containers to continually re-download images. We also move
+ccache to use this shared area.
 
-As there is still controversy about a theoretical UAF in virtio-gpu
-I've dropped that patch for now. There were a number of other review
-comments addressed so I'm re-sending the pre-PR so I can roll the PR
-later this week.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-For v4
-  - more review comments
-  - made boot.S error handling more robust
-  - dropped virtio-gpu hang fix for TCG
-  - dropped test-plugins fix for Makefile
+---
+v3
+  - mention ccache
+v2
+  - Share a whole .cache/qemu path.
+---
+ tests/docker/Makefile.include | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-For v3
-  - addressed review comments
-  - included gdb/next patches
-
-For v2
-  - addressed various comments (see bellow --- in commits)
-  - added Akihiko/Dmitry as virtio-gpu reviewers
-
-The following still need review:
-
-  tests/tcg: make aarch64 boot.S handle different starting modes
-
-Alex.
-
-Alex Bennée (11):
-  tests/docker: expose $HOME/.cache/qemu as docker volume
-  gitlab: disable debug info on CI builds
-  tests/tcg: make aarch64 boot.S handle different starting modes
-  contrib/plugins: add a scaling factor to the ips arg
-  contrib/plugins: allow setting of instructions per quantum
-  MAINTAINERS: add myself to virtio-gpu for Odd Fixes
-  MAINTAINERS: add Akihiko and Dmitry as reviewers
-  hw/display: re-arrange memory region tracking
-  include/exec: fix assert in size_memop
-  include/gdbstub: fix include guard in commands.h
-  gdbstub: assert earlier in handle_read_all_regs
-
-Dominik 'Disconnect3d' Czarnota (1):
-  gdbstub: Implement qGDBServerVersion packet
-
-Dongwon Kim (1):
-  ui/gtk-gl-area: Remove extra draw call in refresh
-
-Manos Pitsidianakis (2):
-  virtio-gpu: refactor async blob unmapping
-  gdbstub: update aarch64-core.xml
-
-Nabih Estefan (1):
-  tests/qtest: Avoid unaligned access in IGB test
-
-Yiwei Zhang (1):
-  virtio-gpu: support context init multiple timeline
-
- MAINTAINERS                               |   5 +-
- docs/about/emulation.rst                  |   4 +
- include/exec/memop.h                      |   4 +-
- include/gdbstub/commands.h                |   2 +-
- include/system/memory.h                   |   1 +
- contrib/plugins/ips.c                     |  49 +++++-
- gdbstub/gdbstub.c                         |  19 ++-
- hw/display/virtio-gpu-virgl.c             | 102 +++++++++----
- tests/qtest/libqos/igb.c                  |   4 +-
- ui/gtk-gl-area.c                          |   1 -
- .gitlab-ci.d/buildtest-template.yml       |   1 +
- gdb-xml/aarch64-core.xml                  |  52 ++++++-
- tests/docker/Makefile.include             |  10 +-
- tests/tcg/aarch64/Makefile.softmmu-target |   3 +-
- tests/tcg/aarch64/system/boot.S           | 172 +++++++++++++++++++++-
- 15 files changed, 382 insertions(+), 47 deletions(-)
-
+diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
+index fa1cbb6726..3959d8a028 100644
+--- a/tests/docker/Makefile.include
++++ b/tests/docker/Makefile.include
+@@ -185,8 +185,10 @@ docker:
+ 
+ docker-help: docker
+ 
++# Where QEMU caches build artefacts
++DOCKER_QEMU_CACHE_DIR := $$HOME/.cache/qemu
+ # Use a global constant ccache directory to speed up repetitive builds
+-DOCKER_CCACHE_DIR := $$HOME/.cache/qemu-docker-ccache
++DOCKER_QEMU_CCACHE_DIR := DOCKER_QEMU_CACHE_DIR/docker-ccache
+ 
+ # This rule if for directly running against an arbitrary docker target.
+ # It is called by the expanded docker targets (e.g. make
+@@ -195,7 +197,7 @@ DOCKER_CCACHE_DIR := $$HOME/.cache/qemu-docker-ccache
+ # For example: make docker-run TEST="test-quick" IMAGE="debian:arm64" EXECUTABLE=./aarch64-linux-user/qemu-aarch64
+ #
+ docker-run: docker-qemu-src
+-	@mkdir -p "$(DOCKER_CCACHE_DIR)"
++	@mkdir -p "$(DOCKER_QEMU_CCACHE_DIR)"
+ 	@if test -z "$(IMAGE)" || test -z "$(TEST)"; \
+ 		then echo "Invalid target $(IMAGE)/$(TEST)"; exit 1; \
+ 	fi
+@@ -222,8 +224,8 @@ docker-run: docker-qemu-src
+ 			-e V=$V -e J=$J -e DEBUG=$(DEBUG)		\
+ 			-e SHOW_ENV=$(SHOW_ENV) 			\
+ 			$(if $(NOUSER),,				\
+-				-e CCACHE_DIR=/var/tmp/ccache 		\
+-				-v $(DOCKER_CCACHE_DIR):/var/tmp/ccache:z \
++				-v $(DOCKER_QEMU_CACHE_DIR):$(DOCKER_QEMU_CACHE_DIR) 	\
++				-e CCACHE_DIR=$(DOCKER_QEMU_CCACHE_DIR)	\
+ 			)						\
+ 			-v $$(readlink -e $(DOCKER_SRC_COPY)):/var/tmp/qemu:z$(COMMA)ro \
+ 			$(IMAGE) 					\
 -- 
 2.47.2
 
