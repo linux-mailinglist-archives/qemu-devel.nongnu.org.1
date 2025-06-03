@@ -2,83 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7C9ACBE92
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 04:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6788AACBEB3
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 05:11:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMHap-0004ty-6H; Mon, 02 Jun 2025 22:41:35 -0400
+	id 1uMI3D-0004LU-CC; Mon, 02 Jun 2025 23:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uMHam-0004tj-RY
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 22:41:32 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uMHak-0004v7-Rq
- for qemu-devel@nongnu.org; Mon, 02 Jun 2025 22:41:32 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-3122368d7c4so3798474a91.1
- for <qemu-devel@nongnu.org>; Mon, 02 Jun 2025 19:41:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1748918489; x=1749523289; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Eu+FesRqL52vewcRRuStIzS3DzZENKUPDkHv/RWastY=;
- b=nNxmMZ4zv0WxvB9kOnC+qZRezSwr5wbao2xa6VBWg1PTVpaio36EriRB2v/Dlyt2YG
- iT2bS+ob8K7fZTibHEoVOlesyxSJdpkjTHwHkofEkyrBQA9S+c5Mqt/7GwDFnb601/B0
- /l/OEq0E7ZInTnlNZeI8bhpZfQEdPXMCgUWx3TCoznzwLQzsm0BITMEZ8bDj1rviKvsS
- kh+fsY6JOBBnzPQBWdG8c4NVYThWllI0Dj4HFC03XNNTu70fzsTxxfOs6WuI1LhYeinB
- QwEqr+U8zYzsa2kjAXDugDSFwZvMxvZ+Nm9GT22O4RSK9LHWf8GfXWNAuJLlEehWTtuY
- j4Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748918489; x=1749523289;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Eu+FesRqL52vewcRRuStIzS3DzZENKUPDkHv/RWastY=;
- b=HsUy33iTjMyy6nhmAuEVcZcoJ6A7u0dSBwO3pCQNoU8U/AZZihrmfck25cTmovKP+F
- 6QXgyrbrts0sQFalIJj/s4WeUyQ0BYxCRG5gXtShoFEYwfuR9YLfGYZf18LfK8skkEET
- D+ST8VBG/X2NGa2MSxd2dv1i2cDaHNBtt6LNXKA29Ngh2KATtLdp0dyzM3c25r0BKaph
- EtVGwCJGolgz8jbn2nOVfXDFoUX0QmmPdt1KtWsW3PWTFwjBhuvPRYDpjFFszAAYVzAK
- 97Cjcw/BVPu0fEi/nQ4ZR03C0HGJiK8tuYtzbbCaxTgsT20DfZLQYE+yNHKUXSU/cryx
- HCgQ==
-X-Gm-Message-State: AOJu0YyXQjGrsdftnhAlaTzhXRhh1AfHUn753tNpjVcs6Ew57wDbayw9
- coSSFAIQjWvdDFXBlom1GNwo+9gjW5CG1aYuVsTiT9TLqXo6zjz7/nM4lOkQvKi6ED95TvYJX+i
- KRYLVvMzCnKtouBXRmhLJoPM4zh7l5PcW3RI5
-X-Gm-Gg: ASbGnctGpyHg295VeM0bVthK/iJCQMUcYqzfBaw2X4M3J+qvYPj42B40CvVcuAPLCE2
- iR9s2njScSI1wR4GeARvaexl2ymdXRU/iBME7T6cYt+alWhlC8dMZzP9yUmAD99EH8mkRINjdB+
- rLx8Y0f+YkwI9eGerggp0OY1Qj+z9GBrGESVGuHdgPorGrvRMbgxFTjRaJfh8BO8Q=
-X-Google-Smtp-Source: AGHT+IEKVJgDufR/12Bbg7qkkG1iKRt8/rdvByM/JSHvcx8y2iysMFKeR1huoi/fHFtgkS9jRXzWCkSDvyAgQKfwpI0=
-X-Received: by 2002:a17:90b:3d04:b0:2fa:157e:c78e with SMTP id
- 98e67ed59e1d1-3124150d6a1mr25064180a91.7.1748918488689; Mon, 02 Jun 2025
- 19:41:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1uMI38-0004LB-Ke; Mon, 02 Jun 2025 23:10:50 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>)
+ id 1uMI35-0007hh-MI; Mon, 02 Jun 2025 23:10:50 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxeXGsZz5oaJYJAQ--.31663S3;
+ Tue, 03 Jun 2025 11:10:36 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMCx7xuqZz5olg4GAQ--.20522S2;
+ Tue, 03 Jun 2025 11:10:34 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org,
+	richard.henderson@linaro.org
+Cc: maobibo@loongson.cn, philmd@linaro.org, lorenz.hetterich@cispa.de,
+ qemu-stable@nongnu.org
+Subject: [PATCH v2] target/loongarch: add check for fcond
+Date: Tue,  3 Jun 2025 10:48:09 +0800
+Message-Id: <20250603024810.350510-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <cover.1747922170.git.ktokunaga.mail@gmail.com>
-In-Reply-To: <cover.1747922170.git.ktokunaga.mail@gmail.com>
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Date: Tue, 3 Jun 2025 11:41:16 +0900
-X-Gm-Features: AX0GCFu6yFtr2hRkkKqTFMU2CoLopPx-0-gROj5x_v4T7RmeDUdjqLh69G8FbjE
-Message-ID: <CAEDrbUZQ4-RQoe5BtTnHxz+v0c7_mJMb0dZV8GWmGiG+L_B+Ow@mail.gmail.com>
-Subject: Re: [PATCH 0/5] Enable QEMU TCI to run 64bit guests on browsers
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Stefan Weil <sw@weilnetz.de>, Stefan Hajnoczi <stefanha@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000004271a40636a1d1b6"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pj1-x102f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMCx7xuqZz5olg4GAQ--.20522S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,28 +61,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004271a40636a1d1b6
-Content-Type: text/plain; charset="UTF-8"
+fcond only has 22 types, add a check for fcond.
 
-Hi all,
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2972
 
-Kinldy ping on this patch series. I would appreciate any feedback or
-comments.
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ .../loongarch/tcg/insn_trans/trans_fcmp.c.inc | 25 +++++++++++++------
+ .../loongarch/tcg/insn_trans/trans_vec.c.inc  | 16 +++++++++---
+ 2 files changed, 30 insertions(+), 11 deletions(-)
 
-Patchew URL:
-https://patchew.org/QEMU/cover.1747922170.git.ktokunaga.mail@gmail.com/
+diff --git a/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc b/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
+index 3babf69e4a..6a2c030a6b 100644
+--- a/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
+@@ -4,10 +4,15 @@
+  */
+ 
+ /* bit0(signaling/quiet) bit1(lt) bit2(eq) bit3(un) bit4(neq) */
+-static uint32_t get_fcmp_flags(int cond)
++static uint32_t get_fcmp_flags(DisasContext *ctx, int cond)
+ {
+     uint32_t flags = 0;
+ 
++    /*check cond , cond =[0-8,10,12] */
++    if ((cond > 8) &&(cond != 10) && (cond != 12)) {
++        return -1;
++    }
++
+     if (cond & 0x1) {
+         flags |= FCMP_LT;
+     }
+@@ -26,9 +31,14 @@ static uint32_t get_fcmp_flags(int cond)
+ static bool trans_fcmp_cond_s(DisasContext *ctx, arg_fcmp_cond_s *a)
+ {
+     TCGv var, src1, src2;
+-    uint32_t flags;
++    uint32_t flags = get_fcmp_flags(ctx, a->fcond >>1);
+     void (*fn)(TCGv, TCGv_env, TCGv, TCGv, TCGv_i32);
+ 
++    if (flags == -1) {
++        generate_exception(ctx, EXCCODE_INE);
++        return true;
++    }
++
+     if (!avail_FP_SP(ctx)) {
+         return false;
+     }
+@@ -39,8 +49,6 @@ static bool trans_fcmp_cond_s(DisasContext *ctx, arg_fcmp_cond_s *a)
+     src1 = get_fpr(ctx, a->fj);
+     src2 = get_fpr(ctx, a->fk);
+     fn = (a->fcond & 1 ? gen_helper_fcmp_s_s : gen_helper_fcmp_c_s);
+-    flags = get_fcmp_flags(a->fcond >> 1);
+-
+     fn(var, tcg_env, src1, src2, tcg_constant_i32(flags));
+ 
+     tcg_gen_st8_tl(var, tcg_env, offsetof(CPULoongArchState, cf[a->cd]));
+@@ -50,9 +58,14 @@ static bool trans_fcmp_cond_s(DisasContext *ctx, arg_fcmp_cond_s *a)
+ static bool trans_fcmp_cond_d(DisasContext *ctx, arg_fcmp_cond_d *a)
+ {
+     TCGv var, src1, src2;
+-    uint32_t flags;
++    uint32_t flags = get_fcmp_flags(ctx, a->fcond >> 1);
+     void (*fn)(TCGv, TCGv_env, TCGv, TCGv, TCGv_i32);
+ 
++    if (flags == -1) {
++        generate_exception(ctx, EXCCODE_INE);
++        return true;
++    }
++
+     if (!avail_FP_DP(ctx)) {
+         return false;
+     }
+@@ -63,8 +76,6 @@ static bool trans_fcmp_cond_d(DisasContext *ctx, arg_fcmp_cond_d *a)
+     src1 = get_fpr(ctx, a->fj);
+     src2 = get_fpr(ctx, a->fk);
+     fn = (a->fcond & 1 ? gen_helper_fcmp_s_d : gen_helper_fcmp_c_d);
+-    flags = get_fcmp_flags(a->fcond >> 1);
+-
+     fn(var, tcg_env, src1, src2, tcg_constant_i32(flags));
+ 
+     tcg_gen_st8_tl(var, tcg_env, offsetof(CPULoongArchState, cf[a->cd]));
+diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+index 7a1309a32d..d87c722dcc 100644
+--- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+@@ -4658,19 +4658,23 @@ TRANS(xvslti_du, LASX, do_xcmpi, MO_64, TCG_COND_LTU)
+ 
+ static bool do_vfcmp_cond_s(DisasContext *ctx, arg_vvv_fcond *a, uint32_t sz)
+ {
+-    uint32_t flags;
++    uint32_t flags = get_fcmp_flags(ctx, a->fcond >> 1);
+     void (*fn)(TCGv_env, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32);
+     TCGv_i32 vd = tcg_constant_i32(a->vd);
+     TCGv_i32 vj = tcg_constant_i32(a->vj);
+     TCGv_i32 vk = tcg_constant_i32(a->vk);
+     TCGv_i32 oprsz = tcg_constant_i32(sz);
+ 
++    if(flags == -1){
++        generate_exception(ctx, EXCCODE_INE);
++        return true;
++    }
++
+     if (!check_vec(ctx, sz)) {
+         return true;
+     }
+ 
+     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_s : gen_helper_vfcmp_c_s);
+-    flags = get_fcmp_flags(a->fcond >> 1);
+     fn(tcg_env, oprsz, vd, vj, vk, tcg_constant_i32(flags));
+ 
+     return true;
+@@ -4678,19 +4682,23 @@ static bool do_vfcmp_cond_s(DisasContext *ctx, arg_vvv_fcond *a, uint32_t sz)
+ 
+ static bool do_vfcmp_cond_d(DisasContext *ctx, arg_vvv_fcond *a, uint32_t sz)
+ {
+-    uint32_t flags;
++    uint32_t flags = get_fcmp_flags(ctx, a->fcond >> 1);
+     void (*fn)(TCGv_env, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32);
+     TCGv_i32 vd = tcg_constant_i32(a->vd);
+     TCGv_i32 vj = tcg_constant_i32(a->vj);
+     TCGv_i32 vk = tcg_constant_i32(a->vk);
+     TCGv_i32 oprsz = tcg_constant_i32(sz);
+ 
++    if (flags == -1) {
++        generate_exception(ctx, EXCCODE_INE);
++        return true;
++    }
++
+     if (!check_vec(ctx, sz)) {
+         return true;
+     }
+ 
+     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_d : gen_helper_vfcmp_c_d);
+-    flags = get_fcmp_flags(a->fcond >> 1);
+     fn(tcg_env, oprsz, vd, vj, vk, tcg_constant_i32(flags));
+ 
+     return true;
+-- 
+2.34.1
 
-Kohei
-
---0000000000004271a40636a1d1b6
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi all,<br><br>Kinldy ping on this patch =
-series. I would appreciate any feedback or<br>comments.<br><br>Patchew URL:=
- <a href=3D"https://patchew.org/QEMU/cover.1747922170.git.ktokunaga.mail@gm=
-ail.com/">https://patchew.org/QEMU/cover.1747922170.git.ktokunaga.mail@gmai=
-l.com/</a><br><br>Kohei<br><br></div></div>
-
---0000000000004271a40636a1d1b6--
 
