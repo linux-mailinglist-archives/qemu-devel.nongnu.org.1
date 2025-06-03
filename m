@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C387ACCF38
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C624ACCF3D
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:47:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMZSG-0004vP-Ny; Tue, 03 Jun 2025 17:45:57 -0400
+	id 1uMZSJ-0004w8-RW; Tue, 03 Jun 2025 17:45:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZSB-0004um-2l
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:51 -0400
+ id 1uMZSD-0004vS-Fo
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZS9-00066q-Bc
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:50 -0400
+ id 1uMZSB-000674-Op
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748987148;
+ s=mimecast20190719; t=1748987151;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Czk7eYIkl0e8tYhagcIaK43fy9I0LhvHmm13rULJIgk=;
- b=GYHJMYavO1ZOvN+l7rgWeeEVcePjN9PPh+WZSA+T5KF3WZ49rAX2oz0vkZnzMCCJ9Sr5CH
- KZiOgYry0VWU0exsvr+DH3XkVXsn6DJhWAS1VAi5+p/ajxUeqKWZMkAJHDz9YFfbLWykuY
- 9uRYJL8nlQo9MXhoJmGKbxmRGtE0aFA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mZwngO2l7V1Fr528pWV5WtDvi4S3hP0kwMZlpkoq8II=;
+ b=RzxpuFNhLky+vHGBHLe2w0jak4CdbbggQB/sdHYqUndfIl/HXIZYfcylKF3IkAuyJRTg+2
+ I9fORQx4yDKDHrxQCgeUEXTfo86NJlpMheqnmYN5HFWv4tJd7DH3gV3QLeQ4qq1R5+E7ef
+ sDb3ru9ONGQqdEH+Miv26/+lrpFVw+0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-0ACoAmuhOpWOciLIcBXU3A-1; Tue, 03 Jun 2025 17:45:47 -0400
-X-MC-Unique: 0ACoAmuhOpWOciLIcBXU3A-1
-X-Mimecast-MFC-AGG-ID: 0ACoAmuhOpWOciLIcBXU3A_1748987146
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-451dda846a0so18006475e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:47 -0700 (PDT)
+ us-mta-562-R8d8OfhTPy6wL5cB2oGm-g-1; Tue, 03 Jun 2025 17:45:49 -0400
+X-MC-Unique: R8d8OfhTPy6wL5cB2oGm-g-1
+X-Mimecast-MFC-AGG-ID: R8d8OfhTPy6wL5cB2oGm-g_1748987149
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-450d64026baso25848935e9.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748987145; x=1749591945;
+ d=1e100.net; s=20230601; t=1748987148; x=1749591948;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Czk7eYIkl0e8tYhagcIaK43fy9I0LhvHmm13rULJIgk=;
- b=QBZ8egOnt7XE+rVtAKryuXWv+6x7TxNMnMHSrfvYadR15xEYSkk0nCDChCrmx2+fcg
- KsHcBNcoMiT55kBEic3g9UfdKEQ77wbzC6m18YVyQp5k3gvcIBn3aMlZQ1SdwpR2YZnm
- XDYOQe2GaFEN9kXNCTMP/G6w8C1o5bBlV/qSogaRcMEzFyF+JqCkWeqQ/EV84wLUEG0f
- wy58IU/b5bbsmXqhC84nIXz5MGEAqMKzpIhequ57zbm56Gn0z0RwnifDqwu7ju90TSCH
- 3BzTIqUJy+v8eEUeZLeD/m0Rnnf4+qdrQWw3zzpvRpa6haF7vMd9kxxQjiNmRTK5K/zO
- Fvag==
-X-Gm-Message-State: AOJu0YztrLxrBxCIvHu5sfE28jB9qxMmSnw2N7TwuTBZcuoMt2XNplSU
- jDxR52rMGMaQQF+Ko8Xo6OJWI3B910H6SUMPqkVyBTB+DQCVQYcLb290GvcyBmtJs7Il9bjVwVd
- 0ZpU9SrbyeV4P0049viBDvsLvXHV8bATaHZtKg+JqCWz82syhJd+VRwV8Tg1IfNsSpMyxo0w5/z
- +OET2N/gSFuCMMf1MgDccc7cQ74kWW8YmAHKVfz/jX
-X-Gm-Gg: ASbGnctuKzDhi6zFBYKligLr+yp3oRQW29aSbjFSOFu495V8XEB3HK+iarUjw8q5gMN
- EpFCpnsLQBgTCeiwBMTP2I5JUp+z+Cg1k3PneT7Sgi9uLXM8V3ztTTvvKMjX/mj+FnwRfwmzrhA
- OIt8pKPHPa7MUx0uQqdIwE4/gFHqrVhuFHmv/kMP6kFor0/pHHXO6RQ1eb4CxxWcur+k1bJ7LFb
- uTSpd7QraH8QUMrJmzCgEPafn9fqntk+g9OpQRjRy4WPrua1+wZkNktFUgLs8MNKAUkqDT4rj0y
- JRB6sodsmqezlQ==
-X-Received: by 2002:a05:600c:3e88:b0:450:d611:eb95 with SMTP id
- 5b1f17b1804b1-451f0b269a4mr2338545e9.17.1748987144699; 
- Tue, 03 Jun 2025 14:45:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFEJcpbCGkTlpfwIgMeLBa1+N843BANS51fT9DgWrixdHqhGdSavvT492J0m9go4C5EdLw5NA==
-X-Received: by 2002:a05:600c:3e88:b0:450:d611:eb95 with SMTP id
- 5b1f17b1804b1-451f0b269a4mr2338435e9.17.1748987144247; 
- Tue, 03 Jun 2025 14:45:44 -0700 (PDT)
+ bh=mZwngO2l7V1Fr528pWV5WtDvi4S3hP0kwMZlpkoq8II=;
+ b=pf6OGmqyZqfvjX5n7Pj1Auj+pva0ZdxFAijBdknetB5Pf8R147CMLiR0skXRX8IjWw
+ QMR8csC817CMACdphg1HXvk91sMaBhVhrIGLDepGPAne7nxVCyGWiKm5LjjPgsAKOZaQ
+ GQR7kO5GTw8+/rKID/sLXOGBrkx6iKOWRzfChSqJmIREo1z2ZUkBPMd+qizibTOIqoPQ
+ 3NMbNNnO4426ZORMKbhiCHMSecHGj7OMDC0bNaQY3su9GIi1jo76LrZjR5DTmmydSumZ
+ EiYRSabZTPPyyHoRQ8lSgW/728jdtqFwJRm6EPQxjZdv/T8MEEL6tifetUZk4oI+uS+1
+ 8DUw==
+X-Gm-Message-State: AOJu0Yy8Ze9484R24ncipNwMilGQeRtJbhOTXghSctjtn7YuhwG4SiE9
+ XUuZJHIkUcNuNVGeYgmCOgz5S9JE0bLiVvsu+mGtp37bjA1neLKiNYEuZkzxdbkNvAExTcb4YBX
+ bt/allp0XYkRqRS2XaKye1JshDhPttpLKtAw+1RK4tBytWL0N0bLk5ilE1ZKbZNsD7OeVgqLWPn
+ ACHlKF0oz75pAOhRRsY8/LHXAcscrssdOp7ZxanmVv
+X-Gm-Gg: ASbGncuO0JvEBVNdtHRuRWCx0ZSpRf6P4sf50+nNy9yzDozy00NnLDFHyDBQ3Ym871l
+ 1xePemkSwib8Hm1sLngXzH2CFT45yO2O3xehiB/188IyZSTxzd72BQoYXNYHzAVz9gC7VhwjsVX
+ aAgY8jLPNOYb52C4gTDOQjscXBDQJJLrIXqbEksMW7JpH/Yg+A9obdTkyMr4yB0lNVm2dlCe/TQ
+ pNL6Y0qxNxp9xAGlgAUiDOywnVp/YsV8gjUA/qvv4Eff11qbUFDxjKLZc7fABOpL+bYZJ/gxhQz
+ U7yDDOS+WjjtTA==
+X-Received: by 2002:a05:600c:818c:b0:451:edc8:7806 with SMTP id
+ 5b1f17b1804b1-451f0b3fff4mr1969115e9.32.1748987147792; 
+ Tue, 03 Jun 2025 14:45:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHd0rV0rQowl7bEY4Igg1+11+ILXkV8SDkPcuoXEDrP4Dcma6WICn4f/pVQL6GgEodoxsZE+g==
+X-Received: by 2002:a05:600c:818c:b0:451:edc8:7806 with SMTP id
+ 5b1f17b1804b1-451f0b3fff4mr1968965e9.32.1748987147415; 
+ Tue, 03 Jun 2025 14:45:47 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d7fa2333sm173988585e9.11.2025.06.03.14.45.43
+ ffacd0b85a97d-3a4f00972b5sm19608575f8f.76.2025.06.03.14.45.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Jun 2025 14:45:43 -0700 (PDT)
+ Tue, 03 Jun 2025 14:45:44 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Xin Li (Intel)" <xin@zytor.com>
-Subject: [PULL 09/16] target/i386: Add a new CPU feature word for CPUID.7.1.ECX
-Date: Tue,  3 Jun 2025 23:45:16 +0200
-Message-ID: <20250603214523.131185-10-pbonzini@redhat.com>
+Subject: [PULL 10/16] target/i386: Add the immediate form MSR access
+ instruction support
+Date: Tue,  3 Jun 2025 23:45:17 +0200
+Message-ID: <20250603214523.131185-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250603214523.131185-1-pbonzini@redhat.com>
 References: <20250603214523.131185-1-pbonzini@redhat.com>
@@ -108,86 +109,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Xin Li (Intel)" <xin@zytor.com>
 
-The immediate form of MSR access instructions will use this new CPU
-feature word.
+The immediate form of MSR access instructions are primarily motivated by
+performance, not code size: by having the MSR number in an immediate, it
+is available *much* earlier in the pipeline, which allows the hardware
+much more leeway about how a particular MSR is handled.
 
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Link: https://lore.kernel.org/r/20250103084827.1820007-3-xin@zytor.com
+Link: https://lore.kernel.org/r/20250103084827.1820007-4-xin@zytor.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h |  1 +
- target/i386/cpu.c | 23 ++++++++++++++++++++++-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ target/i386/cpu.h | 4 ++++
+ target/i386/cpu.c | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 1146465c8c6..0ec1cbd9f43 100644
+index 0ec1cbd9f43..545851cbde1 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -668,6 +668,7 @@ typedef enum FeatureWord {
-     FEAT_SGX_12_1_EAX,  /* CPUID[EAX=0x12,ECX=1].EAX (SGX ATTRIBUTES[31:0]) */
-     FEAT_XSAVE_XSS_LO,     /* CPUID[EAX=0xd,ECX=1].ECX */
-     FEAT_XSAVE_XSS_HI,     /* CPUID[EAX=0xd,ECX=1].EDX */
-+    FEAT_7_1_ECX,       /* CPUID[EAX=7,ECX=1].ECX */
-     FEAT_7_1_EDX,       /* CPUID[EAX=7,ECX=1].EDX */
-     FEAT_7_2_EDX,       /* CPUID[EAX=7,ECX=2].EDX */
-     FEAT_24_0_EBX,      /* CPUID[EAX=0x24,ECX=0].EBX */
+@@ -1001,6 +1001,9 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ /* Linear Address Masking */
+ #define CPUID_7_1_EAX_LAM               (1U << 26)
+ 
++/* The immediate form of MSR access instructions */
++#define CPUID_7_1_ECX_MSR_IMM           (1U << 5)
++
+ /* Support for VPDPB[SU,UU,SS]D[,S] */
+ #define CPUID_7_1_EDX_AVX_VNNI_INT8     (1U << 4)
+ /* AVX NE CONVERT Instructions */
+@@ -1024,6 +1027,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define CPUID_7_2_EDX_DDPD_U            (1U << 3)
+ /* Indicate bit 10 of the IA32_SPEC_CTRL MSR is supported */
+ #define CPUID_7_2_EDX_BHI_CTRL          (1U << 4)
++
+ /* Do not exhibit MXCSR Configuration Dependent Timing (MCDT) behavior */
+ #define CPUID_7_2_EDX_MCDT_NO           (1U << 5)
+ 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 73403505c5d..b05f465e2ef 100644
+index b05f465e2ef..40aefb38f6d 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -900,6 +900,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
- 
- #define TCG_7_1_EAX_FEATURES (CPUID_7_1_EAX_FZRM | CPUID_7_1_EAX_FSRS | \
-           CPUID_7_1_EAX_FSRC | CPUID_7_1_EAX_CMPCCXADD)
-+#define TCG_7_1_ECX_FEATURES 0
- #define TCG_7_1_EDX_FEATURES 0
- #define TCG_7_2_EDX_FEATURES 0
- #define TCG_APM_FEATURES 0
-@@ -1150,6 +1151,25 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-         },
-         .tcg_features = TCG_7_1_EAX_FEATURES,
-     },
-+    [FEAT_7_1_ECX] = {
-+        .type = CPUID_FEATURE_WORD,
-+        .feat_names = {
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+        },
-+        .cpuid = {
-+            .eax = 7,
-+            .needs_ecx = true, .ecx = 1,
-+            .reg = R_ECX,
-+        },
-+        .tcg_features = TCG_7_1_ECX_FEATURES,
-+    },
-     [FEAT_7_1_EDX] = {
+@@ -1155,7 +1155,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
          .type = CPUID_FEATURE_WORD,
          .feat_names = {
-@@ -7442,9 +7462,9 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *edx = env->features[FEAT_7_0_EDX]; /* Feature flags */
-         } else if (count == 1) {
-             *eax = env->features[FEAT_7_1_EAX];
-+            *ecx = env->features[FEAT_7_1_ECX];
-             *edx = env->features[FEAT_7_1_EDX];
-             *ebx = 0;
--            *ecx = 0;
-         } else if (count == 2) {
-             *edx = env->features[FEAT_7_2_EDX];
-             *eax = 0;
-@@ -8349,6 +8369,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         x86_cpu_adjust_feat_level(cpu, FEAT_6_EAX);
-         x86_cpu_adjust_feat_level(cpu, FEAT_7_0_ECX);
-         x86_cpu_adjust_feat_level(cpu, FEAT_7_1_EAX);
-+        x86_cpu_adjust_feat_level(cpu, FEAT_7_1_ECX);
-         x86_cpu_adjust_feat_level(cpu, FEAT_7_1_EDX);
-         x86_cpu_adjust_feat_level(cpu, FEAT_7_2_EDX);
-         x86_cpu_adjust_feat_level(cpu, FEAT_8000_0001_EDX);
+             NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
++            NULL, "msr-imm", NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
 -- 
 2.49.0
 
