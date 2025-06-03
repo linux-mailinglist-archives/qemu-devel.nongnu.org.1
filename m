@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569CFACC234
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 10:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1C8ACC237
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 10:32:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMN37-0002wm-Am; Tue, 03 Jun 2025 04:31:09 -0400
+	id 1uMN49-0004Ao-RP; Tue, 03 Jun 2025 04:32:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uMN2t-0002vK-Mq
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:30:55 -0400
+ id 1uMN47-00047S-4g
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:32:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uMN2r-0008Oq-Q4
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:30:55 -0400
+ id 1uMN40-0008TH-Bw
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:32:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748939452;
+ s=mimecast20190719; t=1748939523;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XN79V8ZY0nNwYCplrk+5KHBBDkg+AYBy9jMc+hBNrvM=;
- b=Qr6p8xMKOqB5COQzK7+Ulpxx0+N0R6Kq56PwdUxWkkXqMJas2ZBpRUC6AOV/PQ8os40zgw
- IddYMYjKD2JeLZZuGAVRZsRzAFMFouE4lqbAaeM2y32KoRVjpG9r/ZyRuFKLXl0v1UTOoD
- vPcAsieZCeQxosLspjzH/qsLDKX1yU8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=JkpQobAuLnbM/xd7W7jL3f9iAngy8FiAb6+9LMtYnq4=;
+ b=ZfESB3cfyvR/11E1KKnAUIrmxgDjI563vLZ+uO8+Tg3koeVjvIYFuD7Lm90OB3cvXau+Ie
+ MUNNXQR5WoMFzjPQRivu3PfMficOH0wxFVFGhJ0D2NjwNQK/nVkSmDkr/vIsySYTVX6fdW
+ KCGPXcdYpQyA+guMWHTmgmQiCTHAjlc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-Ji-MfAdgPJ2U4IFBXMOBFw-1; Tue,
- 03 Jun 2025 04:30:49 -0400
-X-MC-Unique: Ji-MfAdgPJ2U4IFBXMOBFw-1
-X-Mimecast-MFC-AGG-ID: Ji-MfAdgPJ2U4IFBXMOBFw_1748939448
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-3-GS6kuzZbPKGcWpHAlTPJbA-1; Tue,
+ 03 Jun 2025 04:32:01 -0400
+X-MC-Unique: GS6kuzZbPKGcWpHAlTPJbA-1
+X-Mimecast-MFC-AGG-ID: GS6kuzZbPKGcWpHAlTPJbA_1748939521
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8CF69180036E; Tue,  3 Jun 2025 08:30:48 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EC45B1800773; Tue,  3 Jun 2025 08:32:00 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.28])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 03A4230002C4; Tue,  3 Jun 2025 08:30:46 +0000 (UTC)
-Date: Tue, 3 Jun 2025 09:30:43 +0100
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4ECE2180047F; Tue,  3 Jun 2025 08:31:59 +0000 (UTC)
+Date: Tue, 3 Jun 2025 09:31:55 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/3] i386/tdx: Fix the typo of the comment of struct
- TdxGuest
-Message-ID: <aD6ys4SKuMdWjPtq@redhat.com>
+Subject: Re: [PATCH 1/3] i386/cpu: Rename enable_cpuid_0x1f to force_cpuid_0x1f
+Message-ID: <aD6y-9cThzlhfvnz@redhat.com>
 References: <20250603050305.1704586-1-xiaoyao.li@intel.com>
- <20250603050305.1704586-3-xiaoyao.li@intel.com>
+ <20250603050305.1704586-2-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250603050305.1704586-3-xiaoyao.li@intel.com>
+In-Reply-To: <20250603050305.1704586-2-xiaoyao.li@intel.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -89,15 +88,23 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 03, 2025 at 01:03:04AM -0400, Xiaoyao Li wrote:
-> Change sha348 to sha384.
+On Tue, Jun 03, 2025 at 01:03:03AM -0400, Xiaoyao Li wrote:
+> The name of "enable_cpuid_0x1f" isn't right to its behavior because the
+> leaf 0x1f can be enabled even when "enable_cpuid_0x1f" is false.
 > 
+> Rename it to "force_cpuid_0x1f" to better reflect its behavior.
+> 
+> Suggested-by: Igor Mammedov <imammedo@redhat.com>
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->  target/i386/kvm/tdx.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> Suggested by Igor at https://lore.kernel.org/qemu-devel/20250513144515.37615651@imammedo.users.ipa.redhat.com/
+> ---
+>  target/i386/cpu.h     | 4 ++--
+>  target/i386/kvm/tdx.c | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
 
 With regards,
 Daniel
