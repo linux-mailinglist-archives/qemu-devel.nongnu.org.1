@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06CE7ACC4E6
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3E2ACC4E9
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:06:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMPPt-00088v-Rn; Tue, 03 Jun 2025 07:02:50 -0400
+	id 1uMPPT-00086B-NX; Tue, 03 Jun 2025 07:02:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uMPPK-0007xF-OL
+ id 1uMPPL-0007xm-OW
  for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:15 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uMPPH-0002Aj-9M
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:14 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-ad56829fabdso845095566b.1
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 04:02:10 -0700 (PDT)
+ id 1uMPPH-0002As-Rz
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:15 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-ad56829fabdso845097566b.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 04:02:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748948529; x=1749553329; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748948530; x=1749553330; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=08HuXk3jkIVLfkToiAYT1EQvKRHMi0bIkqfvgQp9dJ8=;
- b=OuuHSUieAI+1UZLrI6rJPpcp5e60lrMGMlAbBzZgJuMjNEENP/gRBiaWRSrXv+Y70t
- XZ4pUKnXr/Y2Gg3cogY+uaKEyFQVKFTIYY6JaUZFBOHj7XHamqqqDT8s4JBlWgnuclg5
- YUrMEffieZHOashrIrW6d5yvL3xMukFRN9Nn7nEvgprFcaT9t0o3quc3aPi2xFLfhqjO
- qIpMYzNihB5TQDLvgQWbUShWzLuA604iryXHOSNMETe5PQndy3l/BnfijqmaUlpVAkZL
- olnXkY+YamXs9aGShGPpJUNOyas5bEBWxxgduorBXbKQf01jd/MFNK9Cnl5gMim3EXCQ
- I4AA==
+ bh=HSHJXxc1UhfcVCxdzAUK0Y/TOr5iYPq2Hpx36H607ZU=;
+ b=ga7fwdEJnRbs3Lu7Sng99OVV3gxLC3xh88cOr9Rk07Amc2yXS+zB151c1PnQdfAkCU
+ /kjDTB2XTMX5iAYkPRXfv2MHjgsQDtIXRqd3JbTZgELxhZ8zJokzAjZ5Gg5q4rpAGC0A
+ 7eM5GxVz6vDfdCZRHJAQyvfVqHywZpn+lNLO0kRSGXaquLMZ+M49ZdNLqxvWmFD/gsKh
+ HpApt4+rPcDho64P6ALaCVGpZcLzWGqioqiSqIKXP1TJLD3v/WDa8U0lYg0kd9sNA521
+ ExkEgNpHyC3r5qGZmoDTB/iPrenNUTYCB0wivQEN1rN69qenZ2/gMwAd8MzT7IxDMqUo
+ TPOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748948529; x=1749553329;
+ d=1e100.net; s=20230601; t=1748948530; x=1749553330;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=08HuXk3jkIVLfkToiAYT1EQvKRHMi0bIkqfvgQp9dJ8=;
- b=wb/rRNkjv7kWsqTRBDuZFzT1YEIxAKi9XCHydGQUx3JTHjtadzbmGBrD6qk9h1m6Hb
- 2uegMnBBr0vGlf7OT1x/4xaD1YLlSPvN1IYwHpYRqW7vWH6M+4Qp7aslzK/8SAOKHC97
- un6umpdMmqGeGITLlu5lRxPp+D43MHczCXy1q3rzBYGL2KUdv44yIxxIveis40XKoTjC
- 3+VLqU8b3g33b0fEJd3Z7FoqaCLFhOrqjJZBrm9pXOV5mdbzJYTcLVoFYonwDDt0KS5L
- eWbme33rJb9We6Y9Rd4m82chOdPvJvcOh806cPXhqRSWMYcxghHKTna7ts3frJzqnLxR
- ydaQ==
-X-Gm-Message-State: AOJu0YwTZu1y0O33chAOaZ5UX655BnPon7IFNfKrCiESDBc2/uPgjJEr
- AtU9Zk/hVxiIIer3aw6RU9JRhApN4OA+0BCpMkeqkQxK77keTuxZz6yPA3w8lFbAUtk=
-X-Gm-Gg: ASbGncvP5LGUcRI/Qqanpo80NcXtLLVhLjOTuplvZ0TnNPF6AqU8pq830eBeh66cAYV
- 85xq207qt3xP3L3I9sn6CTQiihXxLycnPgdnljAuh7Sr1YDpO7ayv2maZc/bN6mMRypNrmXwDLB
- kq4BRgtHx6048bkB5WnOtZ3NgCoVm0/v4/KoO/beUC29XQkaGDQbS+dRhAExv/2ahIzax94Mn3d
- atUJqwv6kTzf4/+xtrkdWgVA0HdPIgtfyKccfc+ywVfTXxEYU4JZXe8uycuOvWgAY66ctFWxMtL
- /gVxOTNBL95PiC5sVAoNEmilJiSCbDCmyyli7TKN4daU2EM2T9A4
-X-Google-Smtp-Source: AGHT+IFuUQ9Z5gwnAK0Ic0DyqmN6WDKF4zjEaOYv2OLPtOdGJOfZimWxycDuS9jYATKQUPiHamexWw==
-X-Received: by 2002:a17:907:9488:b0:ad8:99e7:171 with SMTP id
- a640c23a62f3a-adb493e28f3mr1175212366b.21.1748948529161; 
- Tue, 03 Jun 2025 04:02:09 -0700 (PDT)
+ bh=HSHJXxc1UhfcVCxdzAUK0Y/TOr5iYPq2Hpx36H607ZU=;
+ b=inpTxzKTdOFGirlZKRmxX6aSOZM5NjbAKhmy4kx10nboeA1RYyQ8o1FIRs1hH38TY+
+ iMU2kEm6FdgNKXKGAShAfP4Y2D4lYXKmGSm9Og9uCPLt0AcGBKnlYF/wdZpYrLPD3ZLk
+ lYGqexJ9dsRc5Fi5WrAHlEmggHAYEpnEbtpaxLKCDdljbF9WDTFFkitoY0VDSGpXd+Me
+ ko1WqVYXGBEpRNpo/5ujaiPyGwg3tzsKCn58ilrt8bSfPRs3GXldW6d8mAnrppcfI5aO
+ wuHp0X1UmK/8h5erulFPpKaLMKes/8/VgOvqkgk/sHkoNJR8hw9wRBLLvYezSOuto7pm
+ carw==
+X-Gm-Message-State: AOJu0Yx1FaBfRhZQt5r4bKOQhS3PdrXl+BM2Uygw0MTh6FWnfMkMLzjt
+ cIOGEDIXQxf/ZNfE+DzVlkzeqBYolSoJMXbSLcSaGquQoa9+LgMSakhaLHFLrX453qU=
+X-Gm-Gg: ASbGncsRCwU7A0cQHCqC8RPTd4RdtxTBQpSz4fkWjSH/8kWPRMl0JcXCbzyWVS4GmB7
+ U97hDT1jOgbDB3/el/DcQqOCLuA4u/HO1aeGTy7EpeJj+v7sdOMNyBuiKl6VbZhnBVW4pQtFZhm
+ HY/0yndjvWKeWZPIrXRGBCvvkQ3bSw6qvVtdk4L0BtsREVnXh9NydX9XeQnfRmOUrLd9sDDlEPP
+ OkqT/zIzXohrJldwTScJtuHphk4A9FdeErr4O4R5BOdzWqt83AJhO0spE7Da4ZgJ87FMZerAMbo
+ rcEegVIJ5/UsBsZyQCZBF4B15HOXzYPdFaEfDn+2TqRR+HOvBkz1
+X-Google-Smtp-Source: AGHT+IHHrnww0ujf4PTrrfN/HfEM6b/60/TWB/wH4jdxh2msGxXJH42Ja/KmZ39S2btbHm4kh8mdmw==
+X-Received: by 2002:a17:906:dc8d:b0:ad2:3f1f:7974 with SMTP id
+ a640c23a62f3a-adb493aba1dmr1213434366b.10.1748948530095; 
+ Tue, 03 Jun 2025 04:02:10 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d7fec86sm933025666b.7.2025.06.03.04.02.06
+ a640c23a62f3a-ada5d82d95bsm948177666b.57.2025.06.03.04.02.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 03 Jun 2025 04:02:08 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 59A5B5F9D2;
+ by draig.lan (Postfix) with ESMTP id 720B85F9DA;
  Tue, 03 Jun 2025 12:02:05 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -84,17 +84,18 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH v4 05/17] contrib/plugins: add a scaling factor to the ips arg
-Date: Tue,  3 Jun 2025 12:01:52 +0100
-Message-ID: <20250603110204.838117-6-alex.bennee@linaro.org>
+Subject: [PATCH v4 06/17] contrib/plugins: allow setting of instructions per
+ quantum
+Date: Tue,  3 Jun 2025 12:01:53 +0100
+Message-ID: <20250603110204.838117-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250603110204.838117-1-alex.bennee@linaro.org>
 References: <20250603110204.838117-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -117,80 +118,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's easy to get lost in zeros while setting the numbers of
-instructions per second. Add a scaling suffix to make things simpler.
+The default is we update time every 1/10th of a second or so. However
+for some cases we might want to update time more frequently. Allow
+this to be set via the command line through the ipq argument.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 ---
+v4
+  - simplify error checking, don't bother with errno
+v3
+  - error checking for ipq
 v2
-  - normalise the suffix before a full strcmp0
-  - check endptr actually set
-  - fix checkpatch
-  - scale_entry -> ScaleEntry
-  - drop hz from suffix
+  - checkpatch fixes.
 ---
- contrib/plugins/ips.c | 34 +++++++++++++++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+ docs/about/emulation.rst |  4 ++++
+ contrib/plugins/ips.c    | 15 ++++++++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
+diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
+index a72591ee4d..456d01d5b0 100644
+--- a/docs/about/emulation.rst
++++ b/docs/about/emulation.rst
+@@ -811,6 +811,10 @@ This plugin can limit the number of Instructions Per Second that are executed::
+   * - ips=N
+     - Maximum number of instructions per cpu that can be executed in one second.
+       The plugin will sleep when the given number of instructions is reached.
++  * - ipq=N
++    - Instructions per quantum. How many instructions before we re-calculate time.
++      The lower the number the more accurate time will be, but the less efficient the plugin.
++      Defaults to ips/10
+ 
+ Other emulation features
+ ------------------------
 diff --git a/contrib/plugins/ips.c b/contrib/plugins/ips.c
-index e5297dbb01..eb4418c25b 100644
+index eb4418c25b..c9948976f6 100644
 --- a/contrib/plugins/ips.c
 +++ b/contrib/plugins/ips.c
-@@ -129,6 +129,18 @@ static void plugin_exit(qemu_plugin_id_t id, void *udata)
-     qemu_plugin_scoreboard_free(vcpus);
- }
- 
-+typedef struct {
-+    const char *suffix;
-+    unsigned long multipler;
-+} ScaleEntry;
-+
-+/* a bit like units.h but not binary */
-+static ScaleEntry scales[] = {
-+    { "k", 1000 },
-+    { "m", 1000 * 1000 },
-+    { "g", 1000 * 1000 * 1000 },
-+};
-+
- QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+@@ -145,6 +145,8 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
                                             const qemu_info_t *info, int argc,
                                             char **argv)
-@@ -137,12 +149,32 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+ {
++    bool ipq_set = false;
++
+     for (int i = 0; i < argc; i++) {
          char *opt = argv[i];
          g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-         if (g_strcmp0(tokens[0], "ips") == 0) {
--            max_insn_per_second = g_ascii_strtoull(tokens[1], NULL, 10);
-+            char *endptr = NULL;
-+            max_insn_per_second = g_ascii_strtoull(tokens[1], &endptr, 10);
-             if (!max_insn_per_second && errno) {
-                 fprintf(stderr, "%s: couldn't parse %s (%s)\n",
-                         __func__, tokens[1], g_strerror(errno));
-                 return -1;
+@@ -175,6 +177,14 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+                     return -1;
+                 }
              }
++        } else if (g_strcmp0(tokens[0], "ipq") == 0) {
++            max_insn_per_quantum = g_ascii_strtoull(tokens[1], NULL, 10);
 +
-+            if (endptr && *endptr != 0) {
-+                g_autofree gchar *lower = g_utf8_strdown(endptr, -1);
-+                unsigned long scale = 0;
-+
-+                for (int j = 0; j < G_N_ELEMENTS(scales); j++) {
-+                    if (g_strcmp0(lower, scales[j].suffix) == 0) {
-+                        scale = scales[j].multipler;
-+                        break;
-+                    }
-+                }
-+
-+                if (scale) {
-+                    max_insn_per_second *= scale;
-+                } else {
-+                    fprintf(stderr, "bad suffix: %s\n", endptr);
-+                    return -1;
-+                }
++            if (!max_insn_per_quantum) {
++                fprintf(stderr, "bad ipq value: %s\n", tokens[0]);
++                return -1;
 +            }
++            ipq_set = true;
          } else {
              fprintf(stderr, "option parsing failed: %s\n", opt);
              return -1;
+@@ -182,7 +192,10 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+     }
+ 
+     vcpus = qemu_plugin_scoreboard_new(sizeof(vCPUTime));
+-    max_insn_per_quantum = max_insn_per_second / NUM_TIME_UPDATE_PER_SEC;
++
++    if (!ipq_set) {
++        max_insn_per_quantum = max_insn_per_second / NUM_TIME_UPDATE_PER_SEC;
++    }
+ 
+     if (max_insn_per_quantum == 0) {
+         fprintf(stderr, "minimum of %d instructions per second needed\n",
 -- 
 2.47.2
 
