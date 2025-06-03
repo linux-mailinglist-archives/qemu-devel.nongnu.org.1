@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538C8ACC4EF
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FEBACC4ED
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 13:06:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMPQn-0008OP-GP; Tue, 03 Jun 2025 07:03:52 -0400
+	id 1uMPSg-0002Zw-Pw; Tue, 03 Jun 2025 07:05:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uMPPP-00083y-Vk
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:20 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1uMPPS-00086w-UL
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:23 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uMPPM-0002DJ-AX
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:19 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-606bbe60c01so921154a12.2
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 04:02:15 -0700 (PDT)
+ id 1uMPPO-0002EU-A8
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 07:02:22 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-adb47e0644dso550958466b.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 04:02:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748948535; x=1749553335; darn=nongnu.org;
+ d=linaro.org; s=google; t=1748948537; x=1749553337; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p9JTCX3puxR1p4q1IiR4N2zLiSIfw5jzEn0qqN/+AEs=;
- b=dCGoEMmeaSR6Q8XxNe1g3csJOTTN16gJZXKjH11DtI18BcjGjTtgCidqCMXA8yRt3q
- dK7G6xuRoDK9d1MrI45bB/dOJV56b5kqvJ6Y078yFlDdGUN5/smQp+/YmwcgyzbqwcQv
- uvo4jXpqBfflYasC+MhFS35wHJfU6EDUBvy4XLdx1vP002DwzDlJv4QStBP+L6BCcT/l
- QOCC02GCZ+C9XMxjOVhU2NRpc68menxOOO9jPxV9jy2vVAL/fP0wNnbwaZHvl659PPAg
- FIPigmqp2e4pk+irqp/OcuHTTAqZ4iiFzJ2H/O5bL3tj58BFgsza/U5O6qXf8p82kQ9M
- Wr3g==
+ bh=E/Bg8Gn8FEOfqUQYMGn4nlmzkMaoZuvkpVzWIx9k58M=;
+ b=DbWS8NNPI2w+VBfGT1aXXzIAIV0XdiyH57LA524KzK3mlBG9lEuIgRriAQqBakGUrN
+ E3pbPEO833s7q8/O+zEOz1PZyyjxCtUctAZ7jbLUJArMbOcUWOtHsbPzXOwmbhgJhhbE
+ Zv0VMHGWy5W51SckUWzHfrjpooscKnPEn25bL1OjTrWorTXglpu0cvhKWRx0RjjsjhYd
+ L8O2GRz1BagwB/p7eyirrY6bmM/6Z6iCCzLAkj0lt1Eh0D5x8HoPHv6luSJ6+u4gF/Ar
+ IY80ow41Es+rpCHMBpU78ZngcFySDPAWsg2sSzPNFV3Jm73Av4nh4j0YSKXxjMM8oEiq
+ eQmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748948535; x=1749553335;
+ d=1e100.net; s=20230601; t=1748948537; x=1749553337;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p9JTCX3puxR1p4q1IiR4N2zLiSIfw5jzEn0qqN/+AEs=;
- b=DYOfTkua1wQSmUQgL3/2T1ZScJcZeKasOHwiw4U9JlBdq6CU9PAaCe/q1XXUbqcwtw
- IbRn42gLk6qukOqx5VRlYBY1VCcpGjWBVPEX3E0P9e9hvMOvJr/YnLrXC3L416JDyUJO
- Fxsalr271ikKChW6bgCcchwX5rXfFQIwFegz1VlNHQgkcmT8y53xtfZN6SuFH+ZzNlLC
- vEkdtHxs7RUu/siGsB2hMYN6/2d6zGBCeu48KCKw+ikhQEl+mVhG+aoXbFZzlmLPdued
- gi2VUadJ/gR+Uw1CNbrBN7K9dC8/SQm3J0kk71qAiUQqI8290I5gyQ37w8Y8qYsYP1Kc
- EsDg==
-X-Gm-Message-State: AOJu0YyVj5MHIzLr7r7Xz/SoazzB9piNCi8nI1xg6Q4kdc6fYS5I7Zz3
- d/f5fpbE/4ujhQ1VS+yFDgN+38ZEccWJmpJP79MxfEZTaqeI1xqu2L+rK/Qyit5YyFg=
-X-Gm-Gg: ASbGncu6JBMsZp922vjbFOp6NGywocHgLieR7x/WnHzoqlVnp/StuQoBntyiw9kWnUQ
- ypDwWpPf3/DM1pZpZa6te7MIX727dcQYvHaN68rEts2nUG7IxD4lbJVYyjoNGfhjgHQjpAQgsPZ
- tRFc7hccnKu8UZ10428yTYfjDSPphv9fDnUIjG26kkFNE0rlfs6WOOURY0fFowFQ8mjHPkuUWUn
- JApmKMNzqcsas/2XQS85EaDQb3zOdXmajkPXyQIOl5VPF2pRRArdepSlqMHYM1wkl7EdTgxebRI
- uydrIsmwbBoLIStyxIGa5NnBpP08ReqGPX+DdKE1ZN70U7zeSgmZhJi3PTRbw8I=
-X-Google-Smtp-Source: AGHT+IEGMMxY0fCQBCWRtAAjOH1Q+SiYDZbg+lIdPzUwtByuSCGd3ISz3YYKt9ptYwgweZ29o9o05Q==
-X-Received: by 2002:a05:6402:1e90:b0:601:ad95:ca6d with SMTP id
- 4fb4d7f45d1cf-605b7735753mr11046273a12.8.1748948534576; 
- Tue, 03 Jun 2025 04:02:14 -0700 (PDT)
+ bh=E/Bg8Gn8FEOfqUQYMGn4nlmzkMaoZuvkpVzWIx9k58M=;
+ b=DCPDQokpg0XJ0aiZGanzcIhgZwV916B/uwBQE+uiv9F2b5wEVBcl8ZA/znpc4x2UK4
+ itaQVgcomjHmWmVQaYa+nmj73fhWtTTuUApZroq0wk/dyiYKqBcoMZxIfIDGTcq1cFGF
+ 7PM4JF9c9XIXeCEcBoG15Hug9FeaanJ/jUGOFJ6TkChAP7uGRI1r6/e0PngHVY80Jydc
+ n82hsXsycwumyyLOrIzum35JityxKLT913cQ0nZk/b6tJPmyM4b4csrdkjv/fhIPD2t8
+ vrs7PPu5e+Z82i2PGkelAae0NjPi8hzJHdIHuoly6Ies2Q/Aw2nC4mhQr0WRRVlqxUyb
+ 7Gng==
+X-Gm-Message-State: AOJu0YzCb1L3mN1Vor59OoXwaATPMeIFX1OTUW40NfunRMC97nY9AayU
+ SLvpipoCjrZhttWuj2sf8VMwyOSHfJb6DfTzi8vjIBXHSkdlfGpTJL6rvC9S0CWtC0c=
+X-Gm-Gg: ASbGncs1+hHLebr76eGxJGW5wACtyrz6O2I0hj29MiNbVYXHhVyyY4kfSh9TRkEtSTp
+ 0buJnxOC/B9UkN//AJx+LuTtvSt0ThPm+PUt9FYBQ0cpkaZL+UE0bsTp6LX6f4JSvSjfFTMzBwv
+ aRCb4M8+PYuDOaI6S8ulveEHicuhLLdGbWoluXV3u0r+QR3kEW3QsXEwzRMaD5ahiTxslFzi701
+ BgLy2Z9sVGD6vlpEyHdgV/kXNCQHoKEoIT8pJ+uf8IrPipHh93e9NAfT/DaOzsdvRCeNO916Yyw
+ AcvG/GsR8hkC19yOdJA4aix0hNuqC66pSIzlc3eKYI54QuU+6Wm8
+X-Google-Smtp-Source: AGHT+IG5hTW2H+UOmD8b1pfi9+QNZib07xsS7Pn/UttOS2X/BP1bjtJ5mdFQ6xEw1OvFvruAawlCYA==
+X-Received: by 2002:a17:907:7245:b0:ad8:5740:9932 with SMTP id
+ a640c23a62f3a-adde606b27emr221329666b.26.1748948536557; 
+ Tue, 03 Jun 2025 04:02:16 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60566c2b301sm7537548a12.15.2025.06.03.04.02.09
+ a640c23a62f3a-ada5d82de84sm944856766b.50.2025.06.03.04.02.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 03 Jun 2025 04:02:13 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 20A075F9EC;
+ by draig.lan (Postfix) with ESMTP id 380B75F9F5;
  Tue, 03 Jun 2025 12:02:06 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,19 +83,18 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v4 13/17] include/exec: fix assert in size_memop
-Date: Tue,  3 Jun 2025 12:02:00 +0100
-Message-ID: <20250603110204.838117-14-alex.bennee@linaro.org>
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PATCH v4 14/17] include/gdbstub: fix include guard in commands.h
+Date: Tue,  3 Jun 2025 12:02:01 +0100
+Message-ID: <20250603110204.838117-15-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250603110204.838117-1-alex.bennee@linaro.org>
 References: <20250603110204.838117-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -118,38 +117,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can handle larger sized memops now, expand the range of the assert.
-
-Fixes: 4b473e0c60 (tcg: Expand MO_SIZE to 3 bits)
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 ---
-v2
-  - instead of 128 use 1 << MO_SIZE for future proofing
-v3
-  - fix comment, 1 << MO_SIZE goes to 1024
-v4
-  - assert is_power_of_2()
----
- include/exec/memop.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/gdbstub/commands.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/exec/memop.h b/include/exec/memop.h
-index 407a47d82c..cf7da3362e 100644
---- a/include/exec/memop.h
-+++ b/include/exec/memop.h
-@@ -162,8 +162,8 @@ static inline unsigned memop_size(MemOp op)
- static inline MemOp size_memop(unsigned size)
- {
- #ifdef CONFIG_DEBUG_TCG
--    /* Power of 2 up to 8.  */
--    assert((size & (size - 1)) == 0 && size >= 1 && size <= 8);
-+    /* Power of 2 up to 1024 */
-+    assert(is_power_of_2(size) && size >= 1 && size <= (1 << MO_SIZE));
- #endif
-     return (MemOp)ctz32(size);
- }
+diff --git a/include/gdbstub/commands.h b/include/gdbstub/commands.h
+index 40f0514fe9..bff3674872 100644
+--- a/include/gdbstub/commands.h
++++ b/include/gdbstub/commands.h
+@@ -1,5 +1,5 @@
+ #ifndef GDBSTUB_COMMANDS_H
+-#define GDBSTUB
++#define GDBSTUB_COMMANDS_H
+ 
+ typedef void (*GdbCmdHandler)(GArray *params, void *user_ctx);
+ 
 -- 
 2.47.2
 
