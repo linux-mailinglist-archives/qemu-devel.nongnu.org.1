@@ -2,91 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A401ACC249
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 10:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A156ACC286
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 11:02:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMNB3-0006vz-DL; Tue, 03 Jun 2025 04:39:21 -0400
+	id 1uMNWc-0002hO-TZ; Tue, 03 Jun 2025 05:01:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uMNB1-0006vX-Ao
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:39:19 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uMNAy-0000kI-8L
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:39:19 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3a376ba6f08so3121097f8f.1
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 01:39:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748939954; x=1749544754; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Amxoytx7Q/MFSs92zgZ8wbv2ethU8a8vCVUCdQg9Cqs=;
- b=k6gjVVN6PEKvJhVdjtC2VUIB4H6kLDMTORNsV0Cqir7eBFoa3uNE6QT2ie+99QxDMi
- npCBGihjscwxkrs6U8nScysCph7zVySewX3WBwWY2iYG4RnMoMxDi+eDDXdCqCbY8rEx
- 5szrNOj+yNI6Mvkyxvvo/ezAAeQSZ0m6QMUIYszDT81paUqoHdFJ0LpLTdblinMV+Kcn
- SMMUdw8orMlS/ucxWtDpY8oEVI+t7qiazAjrZoorp1nI3G1mdowQ4NkxB1ldq+reBe2Q
- 14EZYOM/NDvEw3J1/DPO3udOg/rmX2fYIG6GWINpPIvzur2M7ghMh9+dIgGIMYjyLPZ3
- f0Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748939954; x=1749544754;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Amxoytx7Q/MFSs92zgZ8wbv2ethU8a8vCVUCdQg9Cqs=;
- b=odi7UykSbI4ardjbXHQaLEBZFJL//fCWlDOS9yPce/Uhsp8Js4GnlQMV/ooiwUnBci
- o46GtgHh6s2neUW1jG7N1p0eP2U/x941oTysYEhqPA7DBs6hah91TZlGx0UDjorLrHiR
- V82yvo7WxRtzQi3YixzcEk4ZQn2LfkB+1gTygjEu20w0lZnEQB5o/VzfOGHG3SOU1cDh
- yeL1mzVdCv+uXUf4AbbE5lFnioCDZ1thJZTvSFop9+MavA6LK1qgvExQHIUr4g9nK3QQ
- rYe72tvgALQRDYw5iMzNNU3kYrktHAg9mM0B5REJ//eCufn4m2gw/4KQMG9ntynDMq+v
- 6h2A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX4njUGefXyLhbF/lplbPQbY1OTEEOa7HkG+jeLSdQnPGnKchMJyMpL70/j/mTFHPhSS9dYVHCrqYWD@nongnu.org
-X-Gm-Message-State: AOJu0Yw9uD7GAF8Yk+z6lzdotWwuyHy1HRVP+K7iEfN9Bb56LuY6aeeG
- +ZWRVK8Q4jT32+KySElBMsscfpVwtIUmQkCOs9XKFI/9wvgzVsNjpuQtIdCL9pUwNZM=
-X-Gm-Gg: ASbGncvFdTKTH/knyffgraHT/ihaWSc5y5kTXHslnmVUHlGwGIGh5L/+dFv5ITKKA4R
- XXFDbfkcY3HjMqyh9A7x0SQbx5mqH+2Evodi86cP2So7aco4JLk7gaoJYRwXlXswup28KrBofNn
- 83SIXR9L4PKRKo1N7XT2VUjrwIO/CN8krV1IG0xHdlpo7Z1MLt18CBX7axOVZPOHad6AvAUEiNj
- 1fR3rIng7YAe56ygKq+dHah/OORbpuG0GNIOwRmFRWZc3Ujsko48oLBKYNNp6/tgv2oeQxWE8vU
- 9gF2rR0xgbCz/EP0yK4I9ewT11DkDTFvSPcU22VLBicmNBN1Yw+nDFswIfmVx6iqDpRbphoxJGD
- SjvajrIBZCsCIvb7/EXhm
-X-Google-Smtp-Source: AGHT+IE2wq1hFwGpjOf658t9nJ6JZdBAXQCXhDtTNEWYfXlgl+qVFYUxcZ0kHXEegcXmHOVx7pUOeA==
-X-Received: by 2002:a05:6000:40e1:b0:3a4:f661:c3e2 with SMTP id
- ffacd0b85a97d-3a4fe3a8127mr8510212f8f.55.1748939953760; 
- Tue, 03 Jun 2025 01:39:13 -0700 (PDT)
-Received: from [192.168.1.127] (host-80-41-64-133.as13285.net. [80.41.64.133])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d7fa23f4sm158721725e9.14.2025.06.03.01.39.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Jun 2025 01:39:13 -0700 (PDT)
-Message-ID: <1402c3b9-60a4-4696-9b30-acec25df6859@linaro.org>
-Date: Tue, 3 Jun 2025 09:39:00 +0100
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uMNWZ-0002gv-HL
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 05:01:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uMNWX-00042s-EG
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 05:01:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748941290;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=nkvR2KXc4ovSdfv3vkWSvkxzjtwwjEsmgLiEp3byPyo=;
+ b=QdStx9ReyzbTkb4P6my3wDeSI0j2V+mLRig1BL0Lo7vRP2HxcwybtG+zAqO+xcP7o7E5YT
+ wNJY2j+UpT8EozLptbKPMqIe5n1/m25LtmEZ1fbmCWFdiB8SVKiiEZiG3yHYCMdezlxAsK
+ zdoeTL4LmSmVeDj+C6hwKlOEC3h28c8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-od90qrU_OFmc-snYJy-MJA-1; Tue,
+ 03 Jun 2025 05:01:29 -0400
+X-MC-Unique: od90qrU_OFmc-snYJy-MJA-1
+X-Mimecast-MFC-AGG-ID: od90qrU_OFmc-snYJy-MJA_1748941288
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5744C18001E0; Tue,  3 Jun 2025 09:01:28 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.28])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B3D8A19560AB; Tue,  3 Jun 2025 09:01:25 +0000 (UTC)
+Date: Tue, 3 Jun 2025 10:01:22 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH 16/21] qapi/migration: Mark that
+ query/set-migrate-parameters support capabilities
+Message-ID: <aD654nsXOrCg9umj@redhat.com>
+References: <20250603013810.4772-1-farosas@suse.de>
+ <20250603013810.4772-17-farosas@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] target/loongarch: fix vldi/xvldi raise wrong error
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: maobibo@loongson.cn, philmd@linaro.org, lorenz.hetterich@cispa.de,
- qemu-stable@nongnu.org
-References: <20250603081127.353730-1-gaosong@loongson.cn>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250603081127.353730-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250603013810.4772-17-farosas@suse.de>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.015,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,60 +82,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/3/25 09:11, Song Gao wrote:
-> on qemu we got an aborted error
-> **
-> ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
-> Bail out! ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
-> Aborted (core dumped)
-> bu on 3A600/3A5000 we got a "Illegal instruction" error.
+On Mon, Jun 02, 2025 at 10:38:05PM -0300, Fabiano Rosas wrote:
+> Add a QAPI command feature "capabilities" that can be queried by the
+> client to check that the parameters commands now also support
+> capabilities.
 > 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2971
-> 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->   target/loongarch/tcg/insn_trans/trans_vec.c.inc | 14 ++++++++++----
->   1 file changed, 10 insertions(+), 4 deletions(-)
+>  qapi/migration.json | 20 ++++++++++++++++++--
+>  1 file changed, 18 insertions(+), 2 deletions(-)
 > 
-> diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-> index dff92772ad..f8ff4fa18c 100644
-> --- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-> +++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-> @@ -3465,7 +3465,7 @@ TRANS(xvmsknz_b, LASX, gen_xx, gen_helper_vmsknz_b)
->   static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
->   {
->       int mode;
-> -    uint64_t data, t;
-> +    uint64_t data = 0, t;
->   
->       /*
->        * imm bit [11:8] is mode, mode value is 0-12.
-> @@ -3569,18 +3569,24 @@ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
->               data = (t1 << 54) | (t0 << 48);
->           }
->           break;
-> -    default:
-> -        generate_exception(ctx, EXCCODE_INE);
-> -        g_assert_not_reached();
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 5942622ba7..557a9c523e 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -776,6 +776,13 @@
+>  #
+>  # Set various migration parameters.
+>  #
+> +# Features:
+> +#
+> +# @capabilities: Indicates this command supports setting the set of
+> +# parameters previously known as capabilities.  This means this
+> +# command can (and should) be used instead of the depreacated
+> +# @migrate-set-capabilities.
+> +#
+>  # Since: 2.4
+>  #
+>  # .. qmp-example::
+> @@ -785,7 +792,8 @@
+>  #     <- { "return": {} }
+>  ##
+>  { 'command': 'migrate-set-parameters', 'boxed': true,
+> -  'data': 'MigrationParameters' }
+> +  'data': 'MigrationParameters',
+> +  'features': [ 'capabilities' ] }
+>  
+>  ##
+>  # @MigrationParameters:
+> @@ -1110,6 +1118,13 @@
+>  #
+>  # Returns: @MigrationParameters
+>  #
+> +# Features:
+> +#
+> +# @capabilities: Indicates this command supports setting the set of
+> +# parameters previously known as capabilities.  This means this
+> +# command can (and should) be used instead of the depreacated
+> +# @migrate-set-capabilities.
+> +#
+>  # Since: 2.4
+>  #
+>  # .. qmp-example::
+> @@ -1125,7 +1140,8 @@
+>  #        }
+>  ##
+>  { 'command': 'query-migrate-parameters',
+> -  'returns': 'MigrationParameters' }
+> +  'returns': 'MigrationParameters',
+> +  'features': [ 'capabilities' ] }
+>
 
-Drop the generate_exception, but keep the assert.
-It really is no longer reachable because of check_vldi_mode().
-
->       }
->       return data;
->   }
->   
-> +static bool check_vldi_mode(arg_vldi *a)
-> +{
-> +   return (a->imm >>8 & 0xf) > 12 ? false : true;
-
-Never use ?: with true/false.  Just use the proper boolean expression:
-
-     return ((a->imm >> 8) & 0xf) <= 12;
+Adding QAPI "features" is only needed if there is no other viable
+way to detect existence of the feature. In this case, apps can
+trivially detect the feature by querying the QAPI schema and
+identifying that the MigrationParameters struct has gained a
+load of new fields. So IMHO this patch can be dropped.
 
 
-r~
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
