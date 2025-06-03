@@ -2,47 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4439CACC871
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 15:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB32ACC891
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 15:59:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMS2p-0000nz-2g; Tue, 03 Jun 2025 09:51:11 -0400
+	id 1uMS8n-0002sr-PO; Tue, 03 Jun 2025 09:57:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1uMS2O-0000g4-Ld; Tue, 03 Jun 2025 09:50:52 -0400
-Received: from jedlik.phy.bme.hu ([152.66.102.83])
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1uMS8j-0002qe-Da; Tue, 03 Jun 2025 09:57:17 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1uMS2B-0003X7-LM; Tue, 03 Jun 2025 09:50:36 -0400
-Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
- id E5CA3A0136; Tue,  3 Jun 2025 15:50:27 +0200 (CEST)
-Date: Tue, 3 Jun 2025 15:50:27 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>, 
- Artyom Tarasenko <atar4qemu@gmail.com>, 
- Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 15/16] hw/pci-host/raven: Do not map regions in init method
-In-Reply-To: <bfd1359d-2a25-4c53-9eee-cec527197f8e@linaro.org>
-Message-ID: <alpine.LMD.2.03.2506031547560.13449@eik.bme.hu>
-References: <cover.1746374076.git.balaton@eik.bme.hu>
- <1e85cddcd56f2431e349d21fcf6e539a663a64c3.1746374076.git.balaton@eik.bme.hu>
- <bfd1359d-2a25-4c53-9eee-cec527197f8e@linaro.org>
-User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
+ (Exim 4.90_1) (envelope-from <shalini@linux.ibm.com>)
+ id 1uMS8f-0004LK-GA; Tue, 03 Jun 2025 09:57:17 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5537hRBt019408;
+ Tue, 3 Jun 2025 13:57:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=Ly37+xLTHGG7PXOj/Dssv64eOElI+lckZN26vFybQ
+ Co=; b=Fg+moQxxRhmmXx42JYXCLh0EzXwuZTS7/8Ae8jnzlS83RGqytXnoFaaHv
+ OQsPeAL8lyuKV/k3ht5l8Dtar2FVwjJ/2Z7JSzoDSwJ0hmzazCcoDPll8jerRwir
+ wRpNQ/OfcYnUWGyeSA8ZSvidhEOdjaUu2v7bA2cMgFawZtr1TI90YDT4DA7MI2Za
+ dIG5lDFSkQteOgwLw+Eqau09230UoJyWUGBSxhUI3AgZ9LylE9+KgcRwXPI04K54
+ /0W4PJIIq3xeFefxAkiXYD+Ep51rOvezzSfoCGKIpOv/981WqEcFG18GMXD+LIWj
+ OXQCks7w866jtbuS8YNZO0XG++cdw==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471geymutb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 03 Jun 2025 13:57:05 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 553A81A6028479;
+ Tue, 3 Jun 2025 13:57:04 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 470eakav82-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 03 Jun 2025 13:57:04 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 553Dv1ML25494240
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 3 Jun 2025 13:57:01 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F2A072004E;
+ Tue,  3 Jun 2025 13:57:00 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B05AA2004B;
+ Tue,  3 Jun 2025 13:57:00 +0000 (GMT)
+Received: from a46lp68.lnxne.boe (unknown [9.152.108.100])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  3 Jun 2025 13:57:00 +0000 (GMT)
+From: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+To: qemu-s390x mailing list <qemu-s390x@nongnu.org>,
+ Thomas Huth <thuth@redhat.com>
+Cc: Daniel Berrange <berrange@redhat.com>,
+ qemu-devel mailing list <qemu-devel@nongnu.org>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ Hendrik Brueckner <brueckner@linux.ibm.com>,
+ Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+Subject: [PATCH v5 0/3] Add SCLP event type CPI
+Date: Tue,  3 Jun 2025 15:56:52 +0200
+Message-ID: <20250603135655.595602-1-shalini@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED;
- BOUNDARY="1117279078-745840053-1748958627=:13449"
-Received-SPF: pass client-ip=152.66.102.83;
- envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: wNdqqJdG_7q94gWocDv7sh_T2cp6BYh6
+X-Authority-Analysis: v=2.4 cv=DYMXqutW c=1 sm=1 tr=0 ts=683eff31 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=6IFa9wvqVegA:10 a=f4h7crwb3-BDZkw7WFEA:9
+X-Proofpoint-GUID: wNdqqJdG_7q94gWocDv7sh_T2cp6BYh6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjAzMDExNyBTYWx0ZWRfXyAlYRHlAUMgu
+ q015Uf4wdXJI5EhzCiqMAhOXC2xsaKWnM5NcLhL2Ya2uRicRIPD27+R+LaAb5STKvxadxhNmbrp
+ eBcsSn9C3Zwq/6K+I8g98QKleZjnJT0UIl+zowlYEqm0Lg4SklevTrQ84OIOxrnh7UROVhQbKGL
+ oWasGwANYExyYJi4wvtksRIyyAIduegxSHyIbk558QGWAA/XoR+Ja0mE1Wcqw0m6y2733pepiN7
+ CLFa2sqL0F5PKbFH2nZaPvfW5bv38LGYuvocb0JrmpF4h3/7VxaVoIHPZRQyUE7Cg30j7VcQbcb
+ sSda6sLpxtvdzxC3cMV4cDI+WVPFhrofBI6SHNKzcMYtlKR2lkVmW/6k1kkESV/MrkZp5jZyDTZ
+ 2hPThdmJurhLG5Crr00DyL3Yer1kpgLnRMS6gwJUWtdWdUEu8Ox+wgdFDaof3GLAUbwiIb9t
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-03_01,2025-06-02_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 mlxscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 mlxlogscore=974 adultscore=0
+ malwarescore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506030117
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=shalini@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,150 +117,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Implement the Service-Call Logical Processor (SCLP) event
+type Control-Program Identification (CPI) in QEMU.
 
---1117279078-745840053-1748958627=:13449
-Content-Type: TEXT/PLAIN; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Changed since v4:
+- Remove the object control-program-id and add the CPI attributes
+  directly to the sclpcpi object
+- Instantiate sclpcpi device from v10.1 instead of v10.0
+- Other minor changes
 
-On Tue, 3 Jun 2025, Philippe Mathieu-Daud=C3=A9 wrote:
-> On 4/5/25 18:01, BALATON Zoltan wrote:
->> Export memory regions as sysbus mmio regions and let the board code
->> map them.
->>=20
->
-> Why? The mapping belong to the host bridge, not the board...
+Changed since v3:
+- Add QOM object sclpcpi from ccw_init()
+- Add SCLPEventCPI state to store the CPI data in the sclpcpi device
+- Other minor changes
 
-I took inspiration from grackle that does it the same way.
+Changed since v2:
+- Add SPDX license tag in the new file hw/s390x/sclpcpi.c
+- Store the control-program Identification data in the sclpcpi device
+- Update the description of CPI attributes
+- Use ldq_be_p() intead of be64_to_cpu()
+- Return the CPI attribute system-level as an integer in QMP
+- Add compat handling for backward migration
+- Other minor changes
 
-Regards,
-BALATON Zoltan
+Shalini Chellathurai Saroja (3):
+  hw/s390x: add SCLP event type CPI
+  hw/s390x: add Control-Program Identification to QOM
+  hw/s390x: support migration of CPI data
 
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>   hw/pci-host/raven.c | 37 ++++++++++++-------------------------
->>   hw/ppc/prep.c       | 11 +++++++++--
->>   2 files changed, 21 insertions(+), 27 deletions(-)
->>=20
->> diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
->> index 68d64e3a97..c9df3db401 100644
->> --- a/hw/pci-host/raven.c
->> +++ b/hw/pci-host/raven.c
->> @@ -49,8 +49,6 @@ struct PREPPCIState {
->>       AddressSpace bm_as;
->>   };
->>   -#define PCI_IO_BASE_ADDR    0x80000000  /* Physical address on main b=
-us=20
->> */
->> -
->>   static inline uint32_t raven_idsel_to_addr(hwaddr addr)
->>   {
->>       return (ctz16(addr >> 11) << 11) | (addr & 0x7ff);
->> @@ -166,7 +164,7 @@ static void raven_change_gpio(void *opaque, int n, i=
-nt=20
->> level)
->>       memory_region_set_enabled(&s->pci_discontiguous_io, !!level);
->>   }
->>   -static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
->> +static void raven_pcihost_realize(DeviceState *d, Error **errp)
->>   {
->>       SysBusDevice *dev =3D SYS_BUS_DEVICE(d);
->>       PCIHostState *h =3D PCI_HOST_BRIDGE(dev);
->> @@ -176,7 +174,17 @@ static void raven_pcihost_realizefn(DeviceState *d,=
-=20
->> Error **errp)
->>         qdev_init_gpio_in(d, raven_change_gpio, 1);
->>   +    memory_region_init(&s->pci_io, o, "pci-io", 0x3f800000);
->> +    memory_region_init_io(&s->pci_discontiguous_io, o,
->> +                          &raven_io_ops, &s->pci_io,
->> +                          "pci-discontiguous-io", 8 * MiB);
->> +    memory_region_init(&s->pci_memory, o, "pci-memory", 0x3f000000);
->> +
->> +    sysbus_init_mmio(dev, &s->pci_io);
->> +    sysbus_init_mmio(dev, &s->pci_discontiguous_io);
->> +    sysbus_init_mmio(dev, &s->pci_memory);
->>       sysbus_init_irq(dev, &s->irq);
->> +
->>       h->bus =3D pci_register_root_bus(d, NULL, raven_set_irq, raven_map=
-_irq,
->>                                      &s->irq, &s->pci_memory, &s->pci_io=
-,=20
->> 0, 1,
->>                                      TYPE_PCI_BUS);
->> @@ -215,32 +223,12 @@ static void raven_pcihost_realizefn(DeviceState *d=
-,=20
->> Error **errp)
->>       pci_setup_iommu(h->bus, &raven_iommu_ops, s);
->>   }
->>   -static void raven_pcihost_initfn(Object *obj)
->> -{
->> -    PREPPCIState *s =3D RAVEN_PCI_HOST_BRIDGE(obj);
->> -    MemoryRegion *address_space_mem =3D get_system_memory();
->> -
->> -    memory_region_init(&s->pci_io, obj, "pci-io", 0x3f800000);
->> -    memory_region_init_io(&s->pci_discontiguous_io, obj,
->> -                          &raven_io_ops, &s->pci_io,
->> -                          "pci-discontiguous-io", 8 * MiB);
->> -    memory_region_init(&s->pci_memory, obj, "pci-memory", 0x3f000000);
->> -
->> -    /* CPU address space */
->> -    memory_region_add_subregion(address_space_mem, PCI_IO_BASE_ADDR,
->> -                                &s->pci_io);
->> -    memory_region_add_subregion_overlap(address_space_mem,=20
->> PCI_IO_BASE_ADDR,
->> -                                        &s->pci_discontiguous_io, 1);
->> -    memory_region_set_enabled(&s->pci_discontiguous_io, false);
->> -    memory_region_add_subregion(address_space_mem, 0xc0000000,=20
->> &s->pci_memory);
->> -}
->> -
->>   static void raven_pcihost_class_init(ObjectClass *klass, const void=20
->> *data)
->>   {
->>       DeviceClass *dc =3D DEVICE_CLASS(klass);
->>         set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
->> -    dc->realize =3D raven_pcihost_realizefn;
->> +    dc->realize =3D raven_pcihost_realize;
->>       dc->fw_name =3D "pci";
->>   }
->>   @@ -274,7 +262,6 @@ static const TypeInfo raven_types[] =3D {
->>           .name =3D TYPE_RAVEN_PCI_HOST_BRIDGE,
->>           .parent =3D TYPE_PCI_HOST_BRIDGE,
->>           .instance_size =3D sizeof(PREPPCIState),
->> -        .instance_init =3D raven_pcihost_initfn,
->>           .class_init =3D raven_pcihost_class_init,
->>       },
->>       {
->> diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
->> index d3365414d2..23d0e1eeaa 100644
->> --- a/hw/ppc/prep.c
->> +++ b/hw/ppc/prep.c
->> @@ -53,8 +53,11 @@
->>     #define CFG_ADDR 0xf0000510
->>   -#define KERNEL_LOAD_ADDR 0x01000000
->> -#define INITRD_LOAD_ADDR 0x01800000
->> +#define KERNEL_LOAD_ADDR  0x01000000
->> +#define INITRD_LOAD_ADDR  0x01800000
->> +
->> +#define PCI_IO_BASE_ADDR  0x80000000
->> +#define PCI_MEM_BASE_ADDR 0xc0000000
->>     #define BIOS_ADDR         0xfff00000
->>   #define BIOS_SIZE         (1 * MiB)
->> @@ -293,6 +296,10 @@ static void ibm_40p_init(MachineState *machine)
->>       pcihost =3D SYS_BUS_DEVICE(dev);
->>       object_property_add_child(qdev_get_machine(), "raven", OBJECT(dev)=
-);
->>       sysbus_realize_and_unref(pcihost, &error_fatal);
->> +    sysbus_mmio_map(pcihost, 0, PCI_IO_BASE_ADDR);
->> +    sysbus_mmio_map_overlap(pcihost, 1, PCI_IO_BASE_ADDR, 1);
->> +    memory_region_set_enabled(sysbus_mmio_get_region(pcihost, 1), false=
-);
->> +    sysbus_mmio_map(pcihost, 2, PCI_MEM_BASE_ADDR);
->>       pci_bus =3D PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
->>       if (!pci_bus) {
->>           error_report("could not create PCI host controller");
->
->
---1117279078-745840053-1748958627=:13449--
+ hw/s390x/event-facility.c          |   2 +
+ hw/s390x/meson.build               |   1 +
+ hw/s390x/s390-virtio-ccw.c         |  22 +++++
+ hw/s390x/sclpcpi.c                 | 154 +++++++++++++++++++++++++++++
+ include/hw/s390x/event-facility.h  |  17 ++++
+ include/hw/s390x/s390-virtio-ccw.h |   1 +
+ qapi/machine.json                  |  58 +++++++++++
+ 7 files changed, 255 insertions(+)
+ create mode 100644 hw/s390x/sclpcpi.c
+
+-- 
+2.49.0
+
 
