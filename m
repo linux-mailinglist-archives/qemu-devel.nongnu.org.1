@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF12ACCF3B
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8476DACCF51
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:48:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMZSC-0004up-Gg; Tue, 03 Jun 2025 17:45:52 -0400
+	id 1uMZSJ-0004wF-S1; Tue, 03 Jun 2025 17:45:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZS7-0004tW-3a
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uMZSD-0004vT-LM
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZS5-000668-6V
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:46 -0400
+ id 1uMZS7-00066b-N3
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748987144;
+ s=mimecast20190719; t=1748987147;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bcxJnoz+2En8eWeqkNixpoq4dwRy92+S/WPoZpmcK18=;
- b=CIeV/Q41HCREBMK/NcILLefp+OXwuz1wIYhn4+AUsmOcrGSvRpZSuo0ukobPuc5djCejON
- ve++5xdp49sfaJbVvbW4opAA7lm9e0uNMh2FrRWCgMtrRWDWzEEkLcKC4Orww088Hc/Tx6
- 7NH6GvCaIjM9PnSRT57U/OjIXqgU3oI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wqJ6EVWbDs69t6vbg+iE8Fat+puqrDz2NSdIWjGRYbY=;
+ b=Ecf3LPZvGLlGA5L7C5IfLFHlAx/ybsIQvhgZ2pGgqdNG4q2tK+/6WG6iy+FyBMO+8LKvK7
+ zMEGBsAYSt0rzK3DA79DWn7Zfj0yVeGhypShbevOLsZ/ZTMJCsp6kt2Z/dtVuARh1DulkJ
+ 7v7eYWexGAiDQkaU0KQANnnMjd9Q524=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-ybfj8PJPOYC1pN9R12BSqA-1; Tue, 03 Jun 2025 17:45:43 -0400
-X-MC-Unique: ybfj8PJPOYC1pN9R12BSqA-1
-X-Mimecast-MFC-AGG-ID: ybfj8PJPOYC1pN9R12BSqA_1748987142
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-450cb8ff0c6so29478555e9.3
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:42 -0700 (PDT)
+ us-mta-512-gOqVD3fVNA-NJMq-d7VK8w-1; Tue, 03 Jun 2025 17:45:46 -0400
+X-MC-Unique: gOqVD3fVNA-NJMq-d7VK8w-1
+X-Mimecast-MFC-AGG-ID: gOqVD3fVNA-NJMq-d7VK8w_1748987145
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a503f28b09so142413f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748987141; x=1749591941;
+ d=1e100.net; s=20230601; t=1748987143; x=1749591943;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bcxJnoz+2En8eWeqkNixpoq4dwRy92+S/WPoZpmcK18=;
- b=bmJMq+s/4ePCntZ/lTsJ9NJTMU7H8RHTeCTv25AUIyHSS4HgDIJdcM/XepqeAihvMO
- hKMDdsMyP0kJ/oq7fkuluMJeNxcAOWK0/7dMx5DjeTS2fyhxCJ6U1EpGAbk0l4yhnpnn
- cjSnNWB4hr+ya731vmsWStxLRmytbzOXoYeeHyOCCiuZZ58VdTw2tWk83UuXRul3lx0d
- 24qW3MRSXtmauvvfLZHp2e56hdZpout12rtE13OVNDhCC4MIFzECNJkz54avW7uZLOnJ
- 6aixjqXCb0X7c6Z6hRVGXEKOmTxZxWDe18lCiBPQaVkMISNc/tnfciLzVVen06fZTed0
- J9/Q==
-X-Gm-Message-State: AOJu0YyetZIVdTleb+4xRX2n6x47IiDwI2BNs6tayu90Jbw08znS6Ipn
- UkLt3hUFGfBHQMmCldVmR3MtGTEDQaDvGE4VaIBdXWn0jRxU8aFhu7ydb02sQBii1Nl1mm2xo/C
- eVdvuiLod6FNx4G026qT4SQI30Qlw8iuQx/gmbc3+MpnWtE/ce4+VWtARa+HhaVDW5EaK2jifmL
- ceKL915Schg4xlrPT1FV7Ht0cx1wCueW6w1eVbFYtM
-X-Gm-Gg: ASbGncvsd0L524v7cftsWMIpzd2d0jzTrxAjFFsNaWk4igDavmPntCkhJeX7R/3/mKP
- mouMxgrD2go7qMOwreeIQyC457z4KQNWNhJP/WIQztyZqmUMsrLk1e7589A+WXdLdpeKVNs7bzn
- zwJMA3943fFnICXNkf20/KIftNEvQGn6NSprkdiNmb5Og++xjdI4YdxzkyeRYxEJJXISaH39Aa2
- N2j49tBIO+HkHxzHqKIZu+ETGsy1q9sXvdBWvASpjTleuEyAIJH7WQAOiRbMCB//0A6FQibStIj
- WbR7/tnwyho6qg==
-X-Received: by 2002:a05:600c:818e:b0:440:6a5f:c308 with SMTP id
- 5b1f17b1804b1-451f0a772b1mr2395725e9.13.1748987141309; 
- Tue, 03 Jun 2025 14:45:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPLZPeEJGi1iyEv0ujDosGAydvOhi/wRAW8s+TegKbU3ev18PgHGBKZOxMljbNz8kReRnErw==
-X-Received: by 2002:a05:600c:818e:b0:440:6a5f:c308 with SMTP id
- 5b1f17b1804b1-451f0a772b1mr2395575e9.13.1748987140520; 
- Tue, 03 Jun 2025 14:45:40 -0700 (PDT)
+ bh=wqJ6EVWbDs69t6vbg+iE8Fat+puqrDz2NSdIWjGRYbY=;
+ b=FvVgLFy7B+ryO/7fwtp1dL5KHUeB2fo1phMjGTv/wtGmpXgGq7DEnantu8hGtVP3Bp
+ bruR7FM4782krQQOwxLIMuXZQQ+iUl9oe4D0ctf/OOfe5TMdsiZU4P/QQqG919/h/NHM
+ qgrH7k/T3cgGNumC4Zg3bNHq96nGGSZkZ9ltHlaGuLCIcGwKITLJRZ54m9qEAL0UGMq+
+ 08pGsf0mWOpiDpTQMg/LAI9FcGnRAJ/tCki5BMz1NILujJuh2ShxrIb7s0SJCcb/ybsj
+ PXbwQ0xCXIw2/umQfP7mWWK/Tyi4ccCXhgK98RpyBEQxK27p/qIs5+ODESxrNM6bPmrU
+ edvQ==
+X-Gm-Message-State: AOJu0Yx/YfFJnKVzf3IWVIgWatnRXNue4bRjLUkbuVprwHc147Ao2RRJ
+ kbmKkiG/tKF+dDgiJuejHmdfSeelioyBDiUPbAQbLI3IigDw6dwqkIpxt4B5PVEhwMeESwCLmms
+ HVz2Eeuuut7BLTUY/4HzeItdVlxHBhmMu3bAY8m04rXTjScDbuWNFqrt6ZxPDMxZwKDKeX32a5b
+ qm21ZDkHHXgRVWUyjBum2pYbrdCYAUkDHvyyyMeV48
+X-Gm-Gg: ASbGncsQrkooP0KNgzUtLHAp6a0UOVLkSimoE5LSauOZ+9JsTUTYed5WvJ5IDJDKvJN
+ yPfbf53aeiffYLP6ij6Nzx9bJhyUwySZ3mX3sd7p8hZ5xP1Mk81b6cxBZPBeBwaBdDXhRUqAgiF
+ NGRvYyV1eU1IX0Fwq9EQLc/fjulqmSxedCwvlPYFCuvwdS3kpbnm1WtmJ8s04uXNVfMeIF6xK0p
+ YZZs9VaucJG58MFwc4hZKPP90jiLpZ1f0tat+iAWhVMESeuwkKByc+tpg/O+Rcg/CTweyIUW0eI
+ LNjABTAGgW8cXQ==
+X-Received: by 2002:a05:6000:1448:b0:3a5:1360:6b34 with SMTP id
+ ffacd0b85a97d-3a514169106mr3234290f8f.2.1748987143520; 
+ Tue, 03 Jun 2025 14:45:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQQ1YvA2Mm+d/yvvkAOwLhDoWMXb5KiF9WnJ45XttALvet3DHtGLH7yBfWFzKtnYPt3HRIzQ==
+X-Received: by 2002:a05:6000:1448:b0:3a5:1360:6b34 with SMTP id
+ ffacd0b85a97d-3a514169106mr3234275f8f.2.1748987143019; 
+ Tue, 03 Jun 2025 14:45:43 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe73eebsm19260493f8f.44.2025.06.03.14.45.39
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-450d7fa270csm178226665e9.16.2025.06.03.14.45.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Jun 2025 14:45:40 -0700 (PDT)
+ Tue, 03 Jun 2025 14:45:41 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/16] rust: use native Meson support for clippy and rustdoc
-Date: Tue,  3 Jun 2025 23:45:14 +0200
-Message-ID: <20250603214523.131185-8-pbonzini@redhat.com>
+Cc: "Xin Li (Intel)" <xin@zytor.com>, qemu-stable@nongnu.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 08/16] target/i386: Remove FRED dependency on WRMSRNS
+Date: Tue,  3 Jun 2025 23:45:15 +0200
+Message-ID: <20250603214523.131185-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250603214523.131185-1-pbonzini@redhat.com>
 References: <20250603214523.131185-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -90,7 +91,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,136 +107,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Meson has support for invoking clippy and rustdoc on all crates (1.7.0 for
-clippy, 1.8.0 for rustdoc).  Use it instead of the homegrown version; this
-requires disabling the multiple_crate_versions lint (the only one that was
-enabled from the "cargo" group)---which was not particularly useful anyway
-because all dependencies are converted by hand into Meson subprojects.
+From: "Xin Li (Intel)" <xin@zytor.com>
 
-rustfmt is still not supported.
+WRMSRNS doesn't become a required feature for FERD, and Linux has
+removed the dependency, as such remove it from Qemu.
 
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20250103084827.1820007-2-xin@zytor.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/rust.rst             | 10 +++++++---
- meson.build                     |  2 +-
- rust/clippy.toml => clippy.toml |  2 +-
- rust/Cargo.toml                 |  1 -
- rust/meson.build                | 12 ------------
- scripts/rust/rustc_args.py      |  5 +----
- 6 files changed, 10 insertions(+), 22 deletions(-)
- rename rust/clippy.toml => clippy.toml (55%)
+ target/i386/cpu.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index f66f2bef60b..34d9c7945b7 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -37,12 +37,16 @@ output directory (typically ``rust/target/``).  A vanilla invocation
- of Cargo will complain that it cannot find the generated sources,
- which can be fixed in different ways:
- 
--* by using special shorthand targets in the QEMU build directory::
-+* by using Makefile targets, provided by Meson, that run ``clippy`` or
-+  ``rustdoc``:
- 
-     make clippy
--    make rustfmt
-     make rustdoc
- 
-+A target for ``rustfmt`` is also declared in ``rust/meson.build``:
-+
-+    make rustfmt
-+
- * by invoking ``cargo`` through the Meson `development environment`__
-   feature::
- 
-@@ -50,7 +54,7 @@ which can be fixed in different ways:
-     pyvenv/bin/meson devenv -w ../rust cargo fmt
- 
-   If you are going to use ``cargo`` repeatedly, ``pyvenv/bin/meson devenv``
--  will enter a shell where commands like ``cargo clippy`` just work.
-+  will enter a shell where commands like ``cargo fmt`` just work.
- 
- __ https://mesonbuild.com/Commands.html#devenv
- 
-diff --git a/meson.build b/meson.build
-index e85b358d637..651bd4f7275 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4404,7 +4404,7 @@ foreach target : target_dirs
-                               build_by_default: true,
-                               build_always_stale: true)
-       rlib = static_library('rust_' + target.underscorify(),
--                            rlib_rs,
-+                            structured_sources([], {'.': rlib_rs}),
-                             dependencies: target_rust.dependencies(),
-                             override_options: ['rust_std=2021', 'build.rust_std=2021'],
-                             rust_abi: 'c')
-diff --git a/rust/clippy.toml b/clippy.toml
-similarity index 55%
-rename from rust/clippy.toml
-rename to clippy.toml
-index 58a62c0e632..90161729838 100644
---- a/rust/clippy.toml
-+++ b/clippy.toml
-@@ -1,3 +1,3 @@
--doc-valid-idents = ["PrimeCell", ".."]
-+doc-valid-idents = ["IrDA", "PrimeCell", ".."]
- allow-mixed-uninlined-format-args = false
- msrv = "1.77.0"
-diff --git a/rust/Cargo.toml b/rust/Cargo.toml
-index d9faeecb10b..a00b8ad0bcd 100644
---- a/rust/Cargo.toml
-+++ b/rust/Cargo.toml
-@@ -63,7 +63,6 @@ ignored_unit_patterns = "deny"
- implicit_clone = "deny"
- macro_use_imports = "deny"
- missing_safety_doc = "deny"
--multiple_crate_versions = "deny"
- mut_mut = "deny"
- needless_bitwise_bool = "deny"
- needless_pass_by_ref_mut = "deny"
-diff --git a/rust/meson.build b/rust/meson.build
-index 801f4374dfa..afce62f4772 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -24,21 +24,9 @@ subdir('hw')
- cargo = find_program('cargo', required: false)
- 
- if cargo.found()
--  run_target('clippy',
--    command: [config_host['MESON'], 'devenv',
--              '--workdir', '@CURRENT_SOURCE_DIR@',
--              cargo, 'clippy', '--tests'],
--    depends: bindings_rs)
--
-   run_target('rustfmt',
-     command: [config_host['MESON'], 'devenv',
-               '--workdir', '@CURRENT_SOURCE_DIR@',
-               cargo, 'fmt'],
-     depends: bindings_rs)
--
--  run_target('rustdoc',
--    command: [config_host['MESON'], 'devenv',
--              '--workdir', '@CURRENT_SOURCE_DIR@',
--              cargo, 'doc', '--no-deps', '--document-private-items'],
--    depends: bindings_rs)
- endif
-diff --git a/scripts/rust/rustc_args.py b/scripts/rust/rustc_args.py
-index 2633157df2a..63b0748e0d3 100644
---- a/scripts/rust/rustc_args.py
-+++ b/scripts/rust/rustc_args.py
-@@ -104,10 +104,7 @@ def generate_lint_flags(cargo_toml: CargoTOML, strict_lints: bool) -> Iterable[s
-             else:
-                 raise Exception(f"invalid level {level} for {prefix}{lint}")
- 
--            # This may change if QEMU ever invokes clippy-driver or rustdoc by
--            # hand.  For now, check the syntax but do not add non-rustc lints to
--            # the command line.
--            if k == "rust" and not (strict_lints and lint in STRICT_LINTS):
-+            if not (strict_lints and lint in STRICT_LINTS):
-                 lint_list.append(LintFlag(flags=[flag, prefix + lint], priority=priority))
- 
-     if strict_lints:
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index c9bd3444e46..73403505c5d 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1803,10 +1803,6 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_LKGS },
+         .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
+     },
+-    {
+-        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_WRMSRNS },
+-        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
+-    },
+     {
+         .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
+         .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_SGX_LC },
 -- 
 2.49.0
 
