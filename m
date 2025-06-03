@@ -2,102 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964E6ACC391
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 11:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E145DACC3DE
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 12:01:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMOI9-0008EP-Hb; Tue, 03 Jun 2025 05:50:45 -0400
+	id 1uMOS1-0003Kd-5f; Tue, 03 Jun 2025 06:00:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uMOHw-0008Dt-4J
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 05:50:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uMOHt-0002EN-Sr
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 05:50:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748944226;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mv58T/W6RsypO84fxS5nOpnQQLugeAy7hvEtVnn7U8M=;
- b=Fc/Fi4X5nO94gCGENJBQPmJ2d7exFJIsjz/uHFfuTTpXS3X+7tpRHQZof4UI9Vj4W2iyyL
- pDENBcQER2BkBcvAwqqIN7d6vmLSPdYQmXQlZALIL7kyW7WA55TDDeMBj6gIrCcAtsv6Vv
- OatyGJshHWvmciC0yOnpwDbA28GNH6w=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-66-HJf4kIUnN9ayXPyZeKwkJg-1; Tue, 03 Jun 2025 05:50:25 -0400
-X-MC-Unique: HJf4kIUnN9ayXPyZeKwkJg-1
-X-Mimecast-MFC-AGG-ID: HJf4kIUnN9ayXPyZeKwkJg_1748944224
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-450cf229025so15181765e9.1
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 02:50:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748944224; x=1749549024;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mv58T/W6RsypO84fxS5nOpnQQLugeAy7hvEtVnn7U8M=;
- b=kFl0KKOZAyfo+bX2c0K3EbNM5a3q1Xw0jSCdwE+a8Difn8IvQtBykzVbldbRg4lbxM
- AOquzUeRUDrQqa4qtgX1ovsi8oTELPtOsR4DZO9GC4/7rte36iOYGDMLBCdcdt+DEDcj
- PSYS5jHVE/PYTkQpFRhfstsFqols5lTsQg5YsG5v1gZg7b3pCrZ9B7TK1k+out+4wxsI
- 7lfBmVn73Ulfwh6r2GFuz5pElLTqyRfI34HDbLdQZ++5P+K2ZL4TxzNZr+XKu9jUxFqD
- abzyawQOlT3pZqMPHygjy5bXarTpmd7fcRfD4hmBlaAbnz7vDWir8XV6JiSgqTPd7b2v
- moUg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWBxr4KwCk79iQx1pJsV45Fw9CNWcGtWuu4i1GnF8yN4FN3686yHBlfZ9oqnDFT8HK8HZuGdAKdbo3P@nongnu.org
-X-Gm-Message-State: AOJu0Yws3lZn5W1Z96olaPT0xRJUw6fkmYcpcdEZ6apsfaDrdZS8wu7s
- SQg3xJY6Gg4k6NFxpgQ9T439ojQGRSpeV+O9BZYdYv5zhJO7HczQmNOo4qeZ6ztbF+thatjUUXd
- asesLdd3ZRcVUi+3PCL4yGFoR2YCYtBbDWIOlZqwMR7Xy7ntYVGkFSr4J
-X-Gm-Gg: ASbGncudEu9mTQsX7l/w4MziIb+T3OUX5wDKZE4mxjUb+Wv+mh2mPUjhuq4UZO5pT2W
- uDlfmxx2lJYs0q3zN7gW484G2IaEX7h0rNPGRNyk9+PfPOb3eel94jnDMIA7thhJGIPp51Cftlr
- tEKFd3+b9iGMHZti0V0Gt5Avpm8E9kUs8Ya2cKwe1KoK18RTl7JiBViRgVA69RgmT46xlEkgd6t
- V0T5PkyOpTfYE2KEk0iI8TAItkp7+jplIhw1F4TDjFuf67yvehRZ1tolAsul2Q3d+pqRovPly42
- WJiZA/fBLdU/VdmvMLYSV0wGqMK9jILKQDK03QgvXeXmRMO0S9Z6/+Tis00=
-X-Received: by 2002:a05:600c:6488:b0:442:f4a3:9338 with SMTP id
- 5b1f17b1804b1-4511ee1215emr95955625e9.21.1748944223762; 
- Tue, 03 Jun 2025 02:50:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOVYPeTq8RpTOkVgEndqZNuwmfjtPkVmKaUbIGAoSgUTFFBy8yfaDsvBXWmhvQGk63ouO5wg==
-X-Received: by 2002:a05:600c:6488:b0:442:f4a3:9338 with SMTP id
- 5b1f17b1804b1-4511ee1215emr95955345e9.21.1748944223420; 
- Tue, 03 Jun 2025 02:50:23 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d7fb0467sm155256605e9.19.2025.06.03.02.50.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Jun 2025 02:50:22 -0700 (PDT)
-Message-ID: <ba4ac9e4-f8ca-4885-b2ab-6acdca51175b@redhat.com>
-Date: Tue, 3 Jun 2025 11:50:21 +0200
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1uMORk-0003DS-VU; Tue, 03 Jun 2025 06:00:42 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>)
+ id 1uMORi-0003N8-3I; Tue, 03 Jun 2025 06:00:40 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8CxPuO+xz5orxAKAQ--.63252S3;
+ Tue, 03 Jun 2025 18:00:30 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMBxLse6xz5oe88GAQ--.28599S3;
+ Tue, 03 Jun 2025 18:00:28 +0800 (CST)
+Subject: Re: [PATCH v4] target/loongarch: fix vldi/xvldi raise wrong error
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org,
+ richard.henderson@linaro.org
+Cc: philmd@linaro.org, lorenz.hetterich@cispa.de, qemu-stable@nongnu.org
+References: <20250603082510.353876-1-gaosong@loongson.cn>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <289a2ea8-cf7a-e263-05e6-f4c5fc36ce8e@loongson.cn>
+Date: Tue, 3 Jun 2025 17:59:11 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/arm/virt: Check bypass iommu is not set for iommu-map
- DT property
+In-Reply-To: <20250603082510.353876-1-gaosong@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, nicolinc@nvidia.com, ddutile@redhat.com,
- linuxarm@huawei.com
-References: <20250602114655.42920-1-shameerali.kolothum.thodi@huawei.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250602114655.42920-1-shameerali.kolothum.thodi@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.015,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMBxLse6xz5oe88GAQ--.28599S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Ar1DKr4fXw1ftr4xtr1rKrX_yoW8ZFWxpr
+ yakr4UKr48KFZ3JrZ3Xw4jyrn8uw4xtw42gFn3tasYyFWxJr1rur4Fy39FkFyxC342vr1r
+ XF4Fvwn0gay2q3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
+ 6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+ CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+ 0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+ AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2
+ KfnxnUUI43ZEXa7IU8xuctUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.054,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -112,61 +76,75 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Shameer,
+Song,
 
-On 6/2/25 1:46 PM, Shameer Kolothum wrote:
-> default_bus_bypass_iommu tells us whether the bypass_iommu is set
-> for the default PCIe root bus. Make sure we check that before adding
-> the "iommu-map" DT property.
->
-> Fixes: 6d7a85483a06 ("hw/arm/virt: Add default_bus_bypass_iommu machine option")
-> Suggested-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+It is a little strange that patch with three version is sent in one day.
+Maybe we should keep careful and calm :-)
 
-Thanks!
+Regards
+Bibo Mao
 
-Eric
+On 2025/6/3 下午4:25, Song Gao wrote:
+> on qemu we got an aborted error
+> **
+> ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
+> Bail out! ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
+> Aborted (core dumped)
+> bu on 3A600/3A5000 we got a "Illegal instruction" error.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2971
+> 
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->  hw/arm/virt.c | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
->
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 9a6cd085a3..99fde5836c 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -1487,9 +1487,12 @@ static void create_virtio_iommu_dt_bindings(VirtMachineState *vms)
->      qemu_fdt_setprop_cell(ms->fdt, node, "phandle", vms->iommu_phandle);
->      g_free(node);
->  
-> -    qemu_fdt_setprop_cells(ms->fdt, vms->pciehb_nodename, "iommu-map",
-> -                           0x0, vms->iommu_phandle, 0x0, bdf,
-> -                           bdf + 1, vms->iommu_phandle, bdf + 1, 0xffff - bdf);
-> +    if (!vms->default_bus_bypass_iommu) {
-> +        qemu_fdt_setprop_cells(ms->fdt, vms->pciehb_nodename, "iommu-map",
-> +                               0x0, vms->iommu_phandle, 0x0, bdf,
-> +                               bdf + 1, vms->iommu_phandle, bdf + 1,
-> +                               0xffff - bdf);
+>   target/loongarch/tcg/insn_trans/trans_vec.c.inc | 14 +++++++++++---
+>   1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+> index dff92772ad..9fb72fe914 100644
+> --- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+> +++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+> @@ -3465,7 +3465,7 @@ TRANS(xvmsknz_b, LASX, gen_xx, gen_helper_vmsknz_b)
+>   static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
+>   {
+>       int mode;
+> -    uint64_t data, t;
+> +    uint64_t data = 0, t;
+>   
+>       /*
+>        * imm bit [11:8] is mode, mode value is 0-12.
+> @@ -3568,19 +3568,27 @@ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
+>               t1 = (b7 << 9) | ((1-b6) << 8) | (b6 ? 0xff : 0);
+>               data = (t1 << 54) | (t0 << 48);
+>           }
+> -        break;
+>       default:
+> -        generate_exception(ctx, EXCCODE_INE);
+>           g_assert_not_reached();
+> +        break;
+>       }
+>       return data;
+>   }
+>   
+> +static bool check_vldi_mode(arg_vldi *a)
+> +{
+> +   return (a->imm >>8 & 0xf) <= 12;
+> +}
+>   static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
+>   {
+>       int sel, vece;
+>       uint64_t value;
+>   
+> +    if (!check_vldi_mode(a)){
+> +        generate_exception(ctx, EXCCODE_INE);
+> +        return true;
 > +    }
->  }
->  
->  static void create_pcie(VirtMachineState *vms)
-> @@ -1612,8 +1615,10 @@ static void create_pcie(VirtMachineState *vms)
->          switch (vms->iommu) {
->          case VIRT_IOMMU_SMMUV3:
->              create_smmu(vms, vms->bus);
-> -            qemu_fdt_setprop_cells(ms->fdt, nodename, "iommu-map",
-> -                                   0x0, vms->iommu_phandle, 0x0, 0x10000);
-> +            if (!vms->default_bus_bypass_iommu) {
-> +                qemu_fdt_setprop_cells(ms->fdt, nodename, "iommu-map",
-> +                                       0x0, vms->iommu_phandle, 0x0, 0x10000);
-> +            }
->              break;
->          default:
->              g_assert_not_reached();
+> +
+>       if (!check_vec(ctx, oprsz)) {
+>           return true;
+>       }
+> 
 
 
