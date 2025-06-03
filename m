@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF68ACC058
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 08:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BE8ACC04D
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 08:38:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMLHt-0008Gl-2a; Tue, 03 Jun 2025 02:38:18 -0400
+	id 1uMLII-0000mn-7C; Tue, 03 Jun 2025 02:38:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMLGc-0007mg-Ob
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 02:37:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMLGd-0007mm-4f
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 02:37:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMLGY-0003Qp-H5
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMLGY-0003R2-Hc
  for qemu-devel@nongnu.org; Tue, 03 Jun 2025 02:36:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748932610;
+ s=mimecast20190719; t=1748932612;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D2YePhl86TRowj1SkKU8SWy/uJo7jZBtxDAVLQln27U=;
- b=gZl13JBG9rs9gSd99Hg3sFfICfpI2tRyXhTUSGvQQzlDw726EGsbQMoOgkdOCwZgSbFtmp
- 2+9B0fLqpFIqkLFqiN7uF8M9gd64+3rg//lhryPA3ran/G0+yp/cRHV9u4Ld/jefVT4mN0
- u0KT6FbMSs0tsmAPnGl0tPfzBimx7to=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=W5LQXDHvjy1kP2PmWjPXugqEGBRau6Ojy+3j+rEPZEI=;
+ b=QFokitB4z5hEHqM1Fc3dUVnW3U5va/Lt1wAgVH8zhfELFCKIK8vGDJjjOcxdhgrSebE0Pn
+ Ge8TpCmEVh+5L9YW6r2M011Du3k3hQAas9WKdrN6VvtbF6wiMSbSyPdz1SR8e7u4Mjl/dl
+ 2A81wmmThstDyXJlm/SoDrDVHjeRmm0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-193-XcvgM4CAMnmWcAQS4shljA-1; Tue,
- 03 Jun 2025 02:36:49 -0400
-X-MC-Unique: XcvgM4CAMnmWcAQS4shljA-1
-X-Mimecast-MFC-AGG-ID: XcvgM4CAMnmWcAQS4shljA_1748932608
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-XhfLYTrbOI-M1Kg0u6lsDg-1; Tue,
+ 03 Jun 2025 02:36:48 -0400
+X-MC-Unique: XhfLYTrbOI-M1Kg0u6lsDg-1
+X-Mimecast-MFC-AGG-ID: XhfLYTrbOI-M1Kg0u6lsDg_1748932608
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 43E5D1800360
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 246E619560AE
  for <qemu-devel@nongnu.org>; Tue,  3 Jun 2025 06:36:48 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A0C0F18001DA
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8C17B18008E0
  for <qemu-devel@nongnu.org>; Tue,  3 Jun 2025 06:36:47 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E22EF21E66E2; Tue, 03 Jun 2025 08:36:44 +0200 (CEST)
+ id E66C921E66AD; Tue, 03 Jun 2025 08:36:44 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
 	Eric Blake <eblake@redhat.com>
-Subject: [PULL 01/13] qapi: Tidy up run-together sentences in doc comments
-Date: Tue,  3 Jun 2025 08:36:32 +0200
-Message-ID: <20250603063644.3953528-2-armbru@redhat.com>
+Subject: [PULL 02/13] qapi: Tidy up whitespace in doc comments
+Date: Tue,  3 Jun 2025 08:36:33 +0200
+Message-ID: <20250603063644.3953528-3-armbru@redhat.com>
 In-Reply-To: <20250603063644.3953528-1-armbru@redhat.com>
 References: <20250603063644.3953528-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,206 +84,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: a937b6aa739f (qapi: Reformat doc comments to conform to current conventions)
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250527073916.1243024-2-armbru@redhat.com>
+Message-ID: <20250527073916.1243024-3-armbru@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- qapi/acpi.json       |  2 +-
- qapi/block-core.json | 14 +++++++-------
- qapi/crypto.json     | 18 +++++++++---------
- qapi/machine.json    |  4 ++--
- qapi/migration.json  | 18 +++++++++---------
- 5 files changed, 28 insertions(+), 28 deletions(-)
+ qapi/block-core.json   | 16 ++++++++--------
+ qapi/block-export.json |  4 ++--
+ qapi/char.json         |  2 +-
+ qapi/crypto.json       |  3 ++-
+ qapi/job.json          |  8 ++++----
+ qapi/machine.json      |  2 +-
+ qapi/migration.json    | 12 ++++++------
+ qapi/qom.json          |  2 +-
+ 8 files changed, 25 insertions(+), 24 deletions(-)
 
-diff --git a/qapi/acpi.json b/qapi/acpi.json
-index 045dab6228..2d53b82365 100644
---- a/qapi/acpi.json
-+++ b/qapi/acpi.json
-@@ -80,7 +80,7 @@
- ##
- # @ACPIOSTInfo:
- #
--# OSPM Status Indication for a device For description of possible
-+# OSPM Status Indication for a device.  For description of possible
- # values of @source and @status fields see "_OST (OSPM Status
- # Indication)" chapter of ACPI5.0 spec.
- #
 diff --git a/qapi/block-core.json b/qapi/block-core.json
-index b4115113d4..29d7c1c2c9 100644
+index 29d7c1c2c9..13223df9b4 100644
 --- a/qapi/block-core.json
 +++ b/qapi/block-core.json
-@@ -2667,7 +2667,7 @@
- # @iops-total-max: I/O operations burst
+@@ -488,7 +488,7 @@
  #
- # @iops-total-max-length: length of the iops-total-max burst period,
--#     in seconds It must only be set if @iops-total-max is set as
-+#     in seconds.  It must only be set if @iops-total-max is set as
- #     well.
+ # @active: true if the backend is active; typical cases for inactive backends
+ #     are on the migration source instance after migration completes and on the
+-#     destination before it completes. (since: 10.0)
++#     destination before it completes.  (since: 10.0)
  #
- # @iops-read: limit read operations per second
-@@ -2675,14 +2675,14 @@
- # @iops-read-max: I/O operations read burst
+ # @encrypted: true if the backing device is encrypted
  #
- # @iops-read-max-length: length of the iops-read-max burst period, in
--#     seconds It must only be set if @iops-read-max is set as well.
-+#     seconds.  It must only be set if @iops-read-max is set as well.
+@@ -3030,10 +3030,10 @@
+ # state.  Completing the job in any other state is an error.
  #
- # @iops-write: limit write operations per second
+ # This is supported only for drive mirroring, where it also switches
+-# the device to write to the target path only. Note that drive
++# the device to write to the target path only.  Note that drive
+ # mirroring includes drive-mirror, blockdev-mirror and block-commit
+ # job (only in case of "active commit", when the node being commited
+-# is used by the guest). The ability to complete is signaled with a
++# is used by the guest).  The ability to complete is signaled with a
+ # BLOCK_JOB_READY event.
  #
- # @iops-write-max: I/O operations write burst
+ # This command completes an active background block operation
+@@ -3068,10 +3068,10 @@
  #
- # @iops-write-max-length: length of the iops-write-max burst period,
--#     in seconds It must only be set if @iops-write-max is set as
-+#     in seconds.  It must only be set if @iops-write-max is set as
- #     well.
+ # Deletes a job that is in the CONCLUDED state.  This command only
+ # needs to be run explicitly for jobs that don't have automatic
+-# dismiss enabled. In turn, automatic dismiss may be enabled only
++# dismiss enabled.  In turn, automatic dismiss may be enabled only
+ # for jobs that have @auto-dismiss option, which are drive-backup,
+ # blockdev-backup, drive-mirror, blockdev-mirror, block-commit and
+-# block-stream. @auto-dismiss is enabled by default for these
++# block-stream.  @auto-dismiss is enabled by default for these
+ # jobs.
  #
- # @bps-total: limit total bytes per second
-@@ -2697,14 +2697,14 @@
- # @bps-read-max: total bytes read burst
+ # This command will refuse to operate on any job that has not yet
+@@ -4737,7 +4737,7 @@
+ # @active: whether the block node should be activated (default: true).
+ #     Having inactive block nodes is useful primarily for migration because it
+ #     allows opening an image on the destination while the source is still
+-#     holding locks for it. (Since 10.0)
++#     holding locks for it.  (Since 10.0)
  #
- # @bps-read-max-length: length of the bps-read-max burst period, in
--#     seconds It must only be set if @bps-read-max is set as well.
-+#     seconds.  It must only be set if @bps-read-max is set as well.
+ # @read-only: whether the block device should be read-only (default:
+ #     false).  Note that some block drivers support only read-only
+@@ -4999,14 +4999,14 @@
+ ##
+ # @blockdev-set-active:
  #
- # @bps-write: limit write bytes per second
+-# Activate or inactivate a block device. Use this to manage the handover of
++# Activate or inactivate a block device.  Use this to manage the handover of
+ # block devices on migration with qemu-storage-daemon.
  #
- # @bps-write-max: total bytes write burst
+ # Activating a node automatically activates all of its child nodes first.
+ # Inactivating a node automatically inactivates any of its child nodes that are
+ # not in use by a still active node.
  #
- # @bps-write-max-length: length of the bps-write-max burst period, in
--#     seconds It must only be set if @bps-write-max is set as well.
-+#     seconds.  It must only be set if @bps-write-max is set as well.
+-# @node-name: Name of the graph node to activate or inactivate. By default, all
++# @node-name: Name of the graph node to activate or inactivate.  By default, all
+ #     nodes are affected by the operation.
  #
- # @iops-size: when limiting by iops max size of an I/O in bytes
+ # @active: true if the nodes should be active when the command returns success,
+diff --git a/qapi/block-export.json b/qapi/block-export.json
+index c783e01a53..04190b503c 100644
+--- a/qapi/block-export.json
++++ b/qapi/block-export.json
+@@ -373,9 +373,9 @@
+ #     (since: 5.2)
  #
-@@ -5580,7 +5580,7 @@
- # @x-blockdev-amend:
+ # @allow-inactive: If true, the export allows the exported node to be inactive.
+-#     If it is created for an inactive block node, the node remains inactive. If
++#     If it is created for an inactive block node, the node remains inactive.  If
+ #     the export type doesn't support running on an inactive node, an error is
+-#     returned. If false, inactive block nodes are automatically activated before
++#     returned.  If false, inactive block nodes are automatically activated before
+ #     creating the export and trying to inactivate them later fails.
+ #     (since: 10.0; default: false)
  #
- # Starts a job to amend format specific options of an existing open
--# block device The job is automatically finalized, but a manual
-+# block device.  The job is automatically finalized, but a manual
- # job-dismiss is required.
+diff --git a/qapi/char.json b/qapi/char.json
+index 447c10b91a..f79216e4d2 100644
+--- a/qapi/char.json
++++ b/qapi/char.json
+@@ -274,7 +274,7 @@
+ # @reconnect: For a client socket, if a socket is disconnected, then
+ #     attempt a reconnect after the given number of seconds.  Setting
+ #     this to zero disables this function.  The use of this member is
+-#     deprecated, use @reconnect-ms instead. (default: 0) (Since: 2.2)
++#     deprecated, use @reconnect-ms instead.  (default: 0) (Since: 2.2)
  #
- # @job-id: Identifier for the newly created job.
-@@ -5589,7 +5589,7 @@
- #
- # @options: Options (driver specific)
- #
--# @force: Allow unsafe operations, format specific For luks that
-+# @force: Allow unsafe operations, format specific.  For luks that
- #     allows erase of the last active keyslot (permanent loss of
- #     data), and replacement of an active keyslot (possible loss of
- #     data if IO error happens)
+ # @reconnect-ms: For a client socket, if a socket is disconnected,
+ #     then attempt a reconnect after the given number of milliseconds.
 diff --git a/qapi/crypto.json b/qapi/crypto.json
-index c9d967d782..fc7e294966 100644
+index fc7e294966..9ec6301e18 100644
 --- a/qapi/crypto.json
 +++ b/qapi/crypto.json
-@@ -202,19 +202,19 @@
+@@ -55,7 +55,8 @@
+ # @sha512: SHA-512.  (since 2.7)
  #
- # The options that apply to LUKS encryption format initialization
+ # @ripemd160: RIPEMD-160.  (since 2.7)
+-# @sm3: SM3. (since 9.2.0)
++#
++# @sm3: SM3.  (since 9.2.0)
  #
--# @cipher-alg: the cipher algorithm for data encryption Currently
-+# @cipher-alg: the cipher algorithm for data encryption.  Currently
- #     defaults to 'aes-256'.
+ # Since: 2.6
+ ##
+diff --git a/qapi/job.json b/qapi/job.json
+index b03f80bc84..c53c96cce8 100644
+--- a/qapi/job.json
++++ b/qapi/job.json
+@@ -191,10 +191,10 @@
+ # state.  Completing the job in any other state is an error.
  #
--# @cipher-mode: the cipher mode for data encryption Currently defaults
--#     to 'xts'
-+# @cipher-mode: the cipher mode for data encryption.  Currently
-+#     defaults to 'xts'
+ # This is supported only for drive mirroring, where it also switches
+-# the device to write to the target path only. Note that drive
++# the device to write to the target path only.  Note that drive
+ # mirroring includes drive-mirror, blockdev-mirror and block-commit
+ # job (only in case of "active commit", when the node being commited
+-# is used by the guest). The ability to complete is signaled with a
++# is used by the guest).  The ability to complete is signaled with a
+ # BLOCK_JOB_READY event.
  #
--# @ivgen-alg: the initialization vector generator Currently defaults
-+# @ivgen-alg: the initialization vector generator.  Currently defaults
- #     to 'plain64'
+ # This command completes an active background block operation
+@@ -216,10 +216,10 @@
  #
--# @ivgen-hash-alg: the initialization vector generator hash Currently
--#     defaults to 'sha256'
-+# @ivgen-hash-alg: the initialization vector generator hash.
-+#     Currently defaults to 'sha256'
+ # Deletes a job that is in the CONCLUDED state.  This command only
+ # needs to be run explicitly for jobs that don't have automatic
+-# dismiss enabled. In turn, automatic dismiss may be enabled only
++# dismiss enabled.  In turn, automatic dismiss may be enabled only
+ # for jobs that have @auto-dismiss option, which are drive-backup,
+ # blockdev-backup, drive-mirror, blockdev-mirror, block-commit and
+-# block-stream. @auto-dismiss is enabled by default for these
++# block-stream.  @auto-dismiss is enabled by default for these
+ # jobs.
  #
--# @hash-alg: the master key hash algorithm Currently defaults to
-+# @hash-alg: the master key hash algorithm.  Currently defaults to
- #     'sha256'
- #
- # @iter-time: number of milliseconds to spend in PBKDF passphrase
-@@ -370,11 +370,11 @@
- # @new-secret: The ID of a QCryptoSecret object providing the password
- #     to be written into added active keyslots
- #
--# @old-secret: Optional (for deactivation only) If given will
-+# @old-secret: Optional (for deactivation only).  If given will
- #     deactivate all keyslots that match password located in
- #     QCryptoSecret with this ID
- #
--# @iter-time: Optional (for activation only) Number of milliseconds to
-+# @iter-time: Optional (for activation only).  Number of milliseconds to
- #     spend in PBKDF passphrase processing for the newly activated
- #     keyslot.  Currently defaults to 2000.
- #
+ # This command will refuse to operate on any job that has not yet
 diff --git a/qapi/machine.json b/qapi/machine.json
-index 5373e1368c..0af2e1e0bb 100644
+index 0af2e1e0bb..069e87d16a 100644
 --- a/qapi/machine.json
 +++ b/qapi/machine.json
-@@ -1160,7 +1160,7 @@
+@@ -694,7 +694,7 @@
+ # Structure of HMAT (Heterogeneous Memory Attribute Table)
  #
- # Information about the guest balloon device.
+ # For more information about @HmatLBDataType, see chapter 5.2.27.4:
+-# Table 5-146:  Field "Data Type" of ACPI 6.3 spec.
++# Table 5-146: Field "Data Type" of ACPI 6.3 spec.
  #
--# @actual: the logical size of the VM in bytes Formula used:
-+# @actual: the logical size of the VM in bytes.  Formula used:
- #     logical_vm_size = vm_ram_size - balloon_size
+ # @access-latency: access latency (nanoseconds)
  #
- # Since: 0.14
-@@ -1199,7 +1199,7 @@
- # is equivalent to the @actual field return by the 'query-balloon'
- # command
- #
--# @actual: the logical size of the VM in bytes Formula used:
-+# @actual: the logical size of the VM in bytes.  Formula used:
- #     logical_vm_size = vm_ram_size - balloon_size
- #
- # .. note:: This event is rate-limited.
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 41826bde45..f5a6b35de4 100644
+index f5a6b35de4..7c7b09c341 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -760,9 +760,9 @@
- #     auto-converge detects that migration is not making progress.
- #     The default value is 10.  (Since 2.7)
+@@ -842,9 +842,9 @@
+ #     more CPU.  Defaults to 1.  (Since 5.0)
  #
--# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage At
--#     the tail stage of throttling, the Guest is very sensitive to CPU
--#     percentage while the @cpu-throttle -increment is excessive
-+# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage.
-+#     At the tail stage of throttling, the Guest is very sensitive to
-+#     CPU percentage while the @cpu-throttle -increment is excessive
- #     usually at tail stage.  If this parameter is true, we will
- #     compute the ideal CPU percentage used by the Guest, which may
- #     exactly make the dirty rate match the dirty rate threshold.
-@@ -941,9 +941,9 @@
- #     auto-converge detects that migration is not making progress.
- #     The default value is 10.  (Since 2.7)
+ # @multifd-qatzip-level: Set the compression level to be used in live
+-#     migration. The level is an integer between 1 and 9, where 1 means
++#     migration.  The level is an integer between 1 and 9, where 1 means
+ #     the best compression speed, and 9 means the best compression
+-#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
++#     ratio which will consume more CPU.  Defaults to 1.  (Since 9.2)
  #
--# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage At
--#     the tail stage of throttling, the Guest is very sensitive to CPU
--#     percentage while the @cpu-throttle -increment is excessive
-+# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage.
-+#     At the tail stage of throttling, the Guest is very sensitive to
-+#     CPU percentage while the @cpu-throttle -increment is excessive
- #     usually at tail stage.  If this parameter is true, we will
- #     compute the ideal CPU percentage used by the Guest, which may
- #     exactly make the dirty rate match the dirty rate threshold.
-@@ -1155,9 +1155,9 @@
- #     auto-converge detects that migration is not making progress.
- #     (Since 2.7)
+ # @multifd-zstd-level: Set the compression level to be used in live
+ #     migration, the compression level is an integer between 0 and 20,
+@@ -1023,9 +1023,9 @@
+ #     more CPU.  Defaults to 1.  (Since 5.0)
  #
--# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage At
--#     the tail stage of throttling, the Guest is very sensitive to CPU
--#     percentage while the @cpu-throttle -increment is excessive
-+# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage.
-+#     At the tail stage of throttling, the Guest is very sensitive to
-+#     CPU percentage while the @cpu-throttle -increment is excessive
- #     usually at tail stage.  If this parameter is true, we will
- #     compute the ideal CPU percentage used by the Guest, which may
- #     exactly make the dirty rate match the dirty rate threshold.
+ # @multifd-qatzip-level: Set the compression level to be used in live
+-#     migration. The level is an integer between 1 and 9, where 1 means
++#     migration.  The level is an integer between 1 and 9, where 1 means
+ #     the best compression speed, and 9 means the best compression
+-#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
++#     ratio which will consume more CPU.  Defaults to 1.  (Since 9.2)
+ #
+ # @multifd-zstd-level: Set the compression level to be used in live
+ #     migration, the compression level is an integer between 0 and 20,
+@@ -1233,9 +1233,9 @@
+ #     more CPU.  Defaults to 1.  (Since 5.0)
+ #
+ # @multifd-qatzip-level: Set the compression level to be used in live
+-#     migration. The level is an integer between 1 and 9, where 1 means
++#     migration.  The level is an integer between 1 and 9, where 1 means
+ #     the best compression speed, and 9 means the best compression
+-#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
++#     ratio which will consume more CPU.  Defaults to 1.  (Since 9.2)
+ #
+ # @multifd-zstd-level: Set the compression level to be used in live
+ #     migration, the compression level is an integer between 0 and 20,
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 45cd47508b..3e8debf78c 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -870,7 +870,7 @@
+ #     information read from devices and switches in conjunction with
+ #     link characteristics read from PCIe Configuration space.
+ #     To get the full path latency from CPU to CXL attached DRAM
+-#     CXL device:  Add the latency from CPU to Generic Port (from
++#     CXL device: Add the latency from CPU to Generic Port (from
+ #     HMAT indexed via the node ID in this SRAT structure) to
+ #     that for CXL bus links, the latency across intermediate switches
+ #     and from the EP port to the actual memory.  Bandwidth is more
 -- 
 2.48.1
 
