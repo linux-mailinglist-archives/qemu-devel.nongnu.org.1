@@ -2,87 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD513ACC1F6
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 10:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E06ACC23F
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 10:34:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMMks-000116-AH; Tue, 03 Jun 2025 04:12:18 -0400
+	id 1uMN5x-0005S9-44; Tue, 03 Jun 2025 04:34:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uMMkj-0000n0-KP
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:12:09 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uMMkh-0005vx-FH
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 04:12:09 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-451ebd3d149so921445e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 01:12:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748938324; x=1749543124; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=J2GrhITiUEId9uURHoQBm+QSLG5+mucUTsm7cNKS9ak=;
- b=SuVz+V2rwvo9LZbAfbsmdl/7RqYNDgE5avjMCe9LAzQnj1fUwB4D0h9C2o3OVpBCUX
- nn/dlBwiWu5CYkvPVPUqFXfp31T5o5lcZMWjMlLvtA9HJkw6lcfmSzUxHnREFDExOB/h
- uIcTTD7eFfs7Kt2yuZTmxgLIEThzqzpQ52+pp3w6/X5Yj+gi5nf0b23lGS4F5UKTo9UB
- ECakS5HTAlXigJ46vzziXCyuJWgR0pqdOjOttRAcM0Zf7bk/dEhI3hRYq/51ORPQsBlj
- obLTfI9U8tXxkXIV0qyyI8/ZMwUUDM8Mt8QPjt0Hj+jhtTPu3JC0IR32tbC70lZ0FuAy
- +ybg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748938324; x=1749543124;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=J2GrhITiUEId9uURHoQBm+QSLG5+mucUTsm7cNKS9ak=;
- b=Em81QcLi9dSlR2UT4HXR8OjjKmKxK0HNVTBeHjmwq9PoieXCztDrRHJ1vUZ6AWikef
- tAit3SY3W7cXojb8wxp7f8lAN1FEs1oCWKYhF6jOKwZYC/JZQn/9w0dH70k3o9VhNmbQ
- cjZ5T2dUVZDaZn9fopLZA173mQ5a0GggT6Yp9/DIinCFx5RMKplpIE58U/OD7C/898LT
- r9v5DOeJJwUHvzZyhFpHxDV5Crla0xm/Buly9mMBIdRV2BU3Nwl5h+UcMPqAUEVs5Br6
- bJvDwUjc3fRyleubmAOzF+1gjA5pJCL7cSGC53ui6KmyoY7Ane2/OMOcyiSDTZdMWkhz
- cLbA==
-X-Gm-Message-State: AOJu0Yxd6iQuVyz6FfED7bIRk3Vf/O36L1mHy7jZFmbBOpH5cLlAFdZK
- /XapzeCgbXfJ+PNyXHaUbGxegA7SVyCmrKcRtxFpV8uoqqJp8G+1FCzv8o/hn85UwUOC4/7RKeY
- 7+bWHjNg=
-X-Gm-Gg: ASbGncs9ZDhxjeng77Vpt4iOYybMQbgpVdovjVVBBZ0hXDuP8PPUBtsoS3VhmiUNRHn
- 5RkvMyjoD8eWBgp3ObZZsbYN+3DcXO/K+XZlv9XGN8Fq1FfAfTmJSyoEjLnGEQ1cTHbZ3plt0qj
- 49+WsUFsISkgPM9Il8rqLR6Qbt9JRfpy2RoBvcclWMJc1jaSIomCxetyBDBiEq7vOd4pFpslOiM
- Igaz2L1CcWFrXH0A2GWoAU/mGWLsZ5Cg7dm9U0xBfOA8I2TxeDXLLGqt4s93++LxSm1omMW7TbV
- e07U+WKJAgvG+ELDJkkRbWnqsMNLAdw8+EnQpSLzbp4Nonm1OHc5OeW6NIExqfZxUZrbwdr7mOn
- 1uKpjv5jC8+0C
-X-Google-Smtp-Source: AGHT+IFc5D1Gyg/PvIHjXnj2ze3ElATJYynIrC3qxEg86pB9jCwwGRDILuuPXGmkWsy8y1TCDgUibw==
-X-Received: by 2002:a05:6000:250e:b0:3a3:7cbd:39b1 with SMTP id
- ffacd0b85a97d-3a4fe17c35emr9371624f8f.24.1748938324630; 
- Tue, 03 Jun 2025 01:12:04 -0700 (PDT)
-Received: from stoup.lan (host-80-41-64-133.as13285.net. [80.41.64.133])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4f009ff7asm17668852f8f.90.2025.06.03.01.11.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Jun 2025 01:12:04 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-Subject: [PATCH v2 27/27] tcg/optimize: Simplify fold_eqv constant checks
-Date: Tue,  3 Jun 2025 09:09:08 +0100
-Message-ID: <20250603080908.559594-28-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250603080908.559594-1-richard.henderson@linaro.org>
-References: <20250603080908.559594-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1uMN5s-0005R6-4G; Tue, 03 Jun 2025 04:34:01 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>)
+ id 1uMN5p-00008V-Ao; Tue, 03 Jun 2025 04:33:59 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxHHJxsz5oafkJAQ--.32615S3;
+ Tue, 03 Jun 2025 16:33:53 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMCxLcVwsz5o9aQGAQ--.21159S2;
+ Tue, 03 Jun 2025 16:33:52 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org,
+	richard.henderson@linaro.org
+Cc: maobibo@loongson.cn, philmd@linaro.org, lorenz.hetterich@cispa.de,
+ qemu-stable@nongnu.org
+Subject: [PATCH v3] target/loongarch: fix vldi/xvldi raise wrong error
+Date: Tue,  3 Jun 2025 16:11:27 +0800
+Message-Id: <20250603081127.353730-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowMCxLcVwsz5o9aQGAQ--.21159S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,29 +61,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both cases are handled by fold_xor after conversion.
+on qemu we got an aborted error
+**
+ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
+Bail out! ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
+Aborted (core dumped)
+bu on 3A600/3A5000 we got a "Illegal instruction" error.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2971
+
+Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- tcg/optimize.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ target/loongarch/tcg/insn_trans/trans_vec.c.inc | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index a48ddd9171..62a128bc9b 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -1948,9 +1948,7 @@ static bool fold_eqv(OptContext *ctx, TCGOp *op)
-     uint64_t z_mask, o_mask, s_mask;
-     TempOptInfo *t1, *t2;
+diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+index dff92772ad..f8ff4fa18c 100644
+--- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+@@ -3465,7 +3465,7 @@ TRANS(xvmsknz_b, LASX, gen_xx, gen_helper_vmsknz_b)
+ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
+ {
+     int mode;
+-    uint64_t data, t;
++    uint64_t data = 0, t;
  
--    if (fold_const2_commutative(ctx, op) ||
--        fold_xi_to_x(ctx, op, -1) ||
--        fold_xi_to_not(ctx, op, 0)) {
-+    if (fold_const2_commutative(ctx, op)) {
+     /*
+      * imm bit [11:8] is mode, mode value is 0-12.
+@@ -3569,18 +3569,24 @@ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
+             data = (t1 << 54) | (t0 << 48);
+         }
+         break;
+-    default:
+-        generate_exception(ctx, EXCCODE_INE);
+-        g_assert_not_reached();
+     }
+     return data;
+ }
+ 
++static bool check_vldi_mode(arg_vldi *a)
++{
++   return (a->imm >>8 & 0xf) > 12 ? false : true;
++}
+ static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
+ {
+     int sel, vece;
+     uint64_t value;
+ 
++    if (!check_vldi_mode(a)){
++        generate_exception(ctx, EXCCODE_INE);
++        return true;
++    }
++
+     if (!check_vec(ctx, oprsz)) {
          return true;
      }
- 
 -- 
-2.43.0
+2.34.1
 
 
