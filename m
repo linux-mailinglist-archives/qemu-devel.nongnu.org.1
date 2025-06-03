@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2868BACCF57
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3ACCACCF37
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 23:46:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMZS0-0004rf-0K; Tue, 03 Jun 2025 17:45:40 -0400
+	id 1uMZRy-0004rJ-9U; Tue, 03 Jun 2025 17:45:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZRv-0004qz-IA
+ id 1uMZRu-0004qs-Qz
  for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uMZRq-00064j-Oo
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:35 -0400
+ id 1uMZRs-000650-PW
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 17:45:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748987128;
+ s=mimecast20190719; t=1748987131;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=MdPuQlRGqNRQoffoaOmW8+rZEflww+N6r/BmIyOd8IY=;
- b=N/u0E2QHV2x6t3gYIaAmq5xwDpmrWWrSX0L3yeJGslSiC/USP0Nv3BByYy5p3pLFppT60Q
- 9mR15TczVBfbjNoWMAEUlhvIir7JlzT0N6YENEuNf9FfAiXycFhGGF8+VHqEICm7GSomeo
- 4noYjasCCPnmaSHXqzsZ/9LA56mQ0rA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1Bj5dk8C+RekJOcmSF9CtHPfWXIYUxL8JYZp8eTAP4w=;
+ b=EiLgvZ5iR/xv6jAkbZAG+GbHMqpZr4Hu4zjk1+gzMCqyXZvgX7InO7vx0/b4Ovhce/cxZp
+ ZT/WoFQmJ1aa6rV+oaEln4JmY6sy8mq8MMY7gpNrVeEHZgOYIHJ68I1+CyppTmBBJVGTyU
+ FMH15MJQyFq4H8AQtTfSUI4aSmTW0ak=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-96-p66BHEeEOtSWxC-4fMFWQw-1; Tue, 03 Jun 2025 17:45:27 -0400
-X-MC-Unique: p66BHEeEOtSWxC-4fMFWQw-1
-X-Mimecast-MFC-AGG-ID: p66BHEeEOtSWxC-4fMFWQw_1748987126
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a4f7ebfd00so2307100f8f.2
- for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:26 -0700 (PDT)
+ us-mta-101-clvpHv3UOp-36bulYvStIA-1; Tue, 03 Jun 2025 17:45:28 -0400
+X-MC-Unique: clvpHv3UOp-36bulYvStIA-1
+X-Mimecast-MFC-AGG-ID: clvpHv3UOp-36bulYvStIA_1748987128
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-450d290d542so33211845e9.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Jun 2025 14:45:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748987125; x=1749591925;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MdPuQlRGqNRQoffoaOmW8+rZEflww+N6r/BmIyOd8IY=;
- b=KoEyK32VYxN+nSrWeUxOF6aIlH/04UMCql+5GcHyHsqODYrBM6nEOzt7hkm6Z8MoLZ
- kSRrY6vQFEEf5FD0PUKKlalFyuUEPxklfDqslD6UZV27hQF9n1eJpb1hKvz1np08yTEt
- feeF+uEsm0cyD8hHs8MENOrbZxajKN1NI+ijV5QGKP16GGL/olyL8OZkXTSy7WT1Su0K
- ou+lLnJLLkhT75mHAFdlyBFAHby+k1BwttivwHSEwjeCDEF7lujex8UrR8ltcMmxe6u1
- et58JNXNwPSuZMHAdJa/aDt1xHqHjWkAARUxLMTpZCqn1+Fn9E82pBJXE0wm4LQv3gmC
- eunw==
-X-Gm-Message-State: AOJu0YxwmfSTqecNs8V+2tjLaMz9jzSP0EMCTg7yBQ61f7aEHjrKDiCl
- DTewjESZoqo84MtTxnjxMToB2ityaoTa57OsonVLasO54cQG+kjODKsUDchdLvSNoHxivz2XNEh
- gNDRODegPHj1iUGVtmZTTz4THwAI49qldeBpV4GE0aO+Cj1h2BIjfIzwMQ7jyUlNVzwsFJLDA/4
- S+uCvQE3Nzr/8rfH4ytoLhfasCZBKP+NMU1I+3UvFy
-X-Gm-Gg: ASbGncub3gwYBFeiKAKp13jTk0pWOSexXWFCfdOvd2rwfpoOaTqhKXsAo9DoY2G3oVi
- TEi2S/i8Bv8oG795TI1ig7mVa7lkgTjlhJ1I/cqlguaVSR95NbLM18sDi7v/zrZHhG2aiHHoRl2
- 7Yikn6wme+lv9Zmw2ny50HoS8CgVCl+cBeyyQrhWueXj1OgpQ+HiwXAE9IKcvvYmxlkFILldbsN
- oZfddPRzTbIkb7DXiAcSXkyT57C+YPzjYrBiilzA4dVlVqzCMC4zcoC+uZ242CEGxZizBI/kFFs
- 0onvtVKP+fXXqg==
-X-Received: by 2002:a05:6000:230e:b0:3a5:1cc5:aa6f with SMTP id
- ffacd0b85a97d-3a51d9583d8mr243101f8f.34.1748987125468; 
- Tue, 03 Jun 2025 14:45:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFdNZpswLMgYNIlIDk0ASYYrxtjDk7fxy+iT/mJDZO88OA8I1JIjd/4yVT/4surODG2qICblw==
-X-Received: by 2002:a05:6000:230e:b0:3a5:1cc5:aa6f with SMTP id
- ffacd0b85a97d-3a51d9583d8mr243089f8f.34.1748987124995; 
- Tue, 03 Jun 2025 14:45:24 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1748987127; x=1749591927;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1Bj5dk8C+RekJOcmSF9CtHPfWXIYUxL8JYZp8eTAP4w=;
+ b=faVzmUqs/WxbJIz7rmqPD2tCMvrs4dbM8yEi2tAUoq180oL9qMZLrxDnSfk66ZBPXC
+ C3GCJ87cyyHhnopCfpfq8LwvBGKXZdPt+kb8/e54+FyZ8ZvBEZP/micy+ozu9g3xc5Ma
+ ghE0pMP9cxAfGc4OVAyjZ1Lo9RHB85j5zeXAYashZvGfWv+DrzNqT/F8LyDS3GoXb6RY
+ HiAXM5aV2d3OwCXOrTmxJOo3KLEygDNx0LJwIeAFyJdxlplD/aEg8d3pliIHL+87x+Wb
+ oGC3xEfGn8qV9A8TEHae6Y4HFOXmjXMZ4zgYXnB2DOIfLxo7Al0K4ZS5uPLvMtcfO9x/
+ F0dg==
+X-Gm-Message-State: AOJu0Yyfp6GpnSzTlNe4uwfaRIYEOFJPxKFe06XrRctTx5ylx6SHuEvB
+ RhaNvbBNEfQE70MPaadqyLfYsRQpUvi/HSGR2UmyJ0OKmcz/SPr36Y63WXXqEYPSp/yWDd535xB
+ UEPwcyJJ6FvyjjgIuYf6TODV6ZccOefpnh7gWt1fD/EAkMb3P8f5Mz1uM1oMDaT7Z90SpGuUfne
+ XXaEu2dDePCEZgLu6GyL9kDAYcUuAHX2Tv+O/bL+b0
+X-Gm-Gg: ASbGnctwTYeO/9bF9T5MtII5hf9Psusb6PaecYYoK8Z/vUj8unqVFoAg1JyQdGhe6U0
+ mtxZd/KEjcaURPNJSQvkFL9w+mxw0BnIz0bDw3JygFcnKhRaCqoNEXLpSHv+opTksCk+8iYvaEy
+ s8n+nkSrcpd0tKYKWumowKNz2s4D8rugpEniovZ4kVABRFQV7DkUyx/yP/rACTx/pnopDDBtoxf
+ P5zJqnkrg6GXHo686Nd3OlpYJwi/UMtuPOgzvHeHa2ZqyuYC8MTBOhoyXOsN32YHoRvi4mlA628
+ 09lfhhp8pmkhJA==
+X-Received: by 2002:a05:600c:3b92:b0:445:1984:2479 with SMTP id
+ 5b1f17b1804b1-451f0f008bemr1779605e9.5.1748987127169; 
+ Tue, 03 Jun 2025 14:45:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENZ0Co44rpDckc3zU0J2WczwmFHf16Gmx6jRHKRcNrNX6tigV9zetJ7GhDG8i2zHg2syJa5g==
+X-Received: by 2002:a05:600c:3b92:b0:445:1984:2479 with SMTP id
+ 5b1f17b1804b1-451f0f008bemr1779465e9.5.1748987126670; 
+ Tue, 03 Jun 2025 14:45:26 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d7f90c40sm177429525e9.2.2025.06.03.14.45.24
+ 5b1f17b1804b1-450d7f8eceasm176236935e9.7.2025.06.03.14.45.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Jun 2025 14:45:24 -0700 (PDT)
+ Tue, 03 Jun 2025 14:45:25 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/16] rust, i386 changes for 2025-06-03
-Date: Tue,  3 Jun 2025 23:45:07 +0200
-Message-ID: <20250603214523.131185-1-pbonzini@redhat.com>
+Subject: [PULL 01/16] rust: bindings: allow ptr_offset_with_cast
+Date: Tue,  3 Jun 2025 23:45:08 +0200
+Message-ID: <20250603214523.131185-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250603214523.131185-1-pbonzini@redhat.com>
+References: <20250603214523.131185-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -103,92 +106,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6322b753f798337835e205b6d805356bea582c86:
+This is produced by recent versions of bindgen:
 
-  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2025-06-02 14:52:45 -0400)
+warning: use of `offset` with a `usize` casted to an `isize`
+  --> /builds/bonzini/qemu/rust/target/debug/build/qemu_api-35cb647f4db404b8/out/bindings.inc.rs:39:21
+   |
+39 |         let byte = *(core::ptr::addr_of!((*this).storage) as *const u8).offset(byte_index as isize);
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `(core::ptr::addr_of!((*this).storage) as *const u8).add(byte_index)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_offset_with_cast
+   = note: `#[warn(clippy::ptr_offset_with_cast)]` on by default
+warning: use of `offset` with a `usize` casted to an `isize`
+  --> /builds/bonzini/qemu/rust/target/debug/build/qemu_api-35cb647f4db404b8/out/bindings.inc.rs:68:13
+   |
+68 |             (core::ptr::addr_of_mut!((*this).storage) as *mut u8).offset(byte_index as isize);
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `(core::ptr::addr_of_mut!((*this).storage) as *mut u8).add(byte_index)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_offset_with_cast
 
-are available in the Git repository at:
+This seems to be new in bindgen 0.71.0, possibly related to bindgen
+commit 33006185b7878 ("Add raw_ref_macros feature", 2024-11-22).
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ rust/qemu-api/src/bindings.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-for you to fetch changes up to 214518614c1ce7eb7a002452cd43a7597f90d543:
-
-  rust: qemu-api-macros: add from_bits and into_bits to #[derive(TryInto)] (2025-06-03 22:44:40 +0200)
-
-----------------------------------------------------------------
-* rust: use native Meson support for clippy and rustdoc
-* rust: add "bits", a custom bitflags implementation
-* target/i386: Remove FRED dependency on WRMSRNS
-* target/i386: Add the immediate form MSR access instruction support
-* TDX fixes
-
-----------------------------------------------------------------
-Cédric Le Goater (2):
-      i386/tdx: Fix build on 32-bit host
-      i386/tdvf: Fix build on 32-bit host
-
-Paolo Bonzini (10):
-      rust: bindings: allow ptr_offset_with_cast
-      meson: update to version 1.8.1
-      rust: use "objects" for Rust executables as well
-      build, dockerfiles: add support for detecting rustdoc
-      rust: add qemu-api doctests to "meson test"
-      rust: cell: remove support for running doctests with "cargo test --doc"
-      rust: use native Meson support for clippy and rustdoc
-      rust: add "bits", a custom bitflags implementation
-      rust: pl011: use the bits macro
-      rust: qemu-api-macros: add from_bits and into_bits to #[derive(TryInto)]
-
-Pierrick Bouvier (1):
-      meson: use config_base_arch for target libraries
-
-Xin Li (Intel) (3):
-      target/i386: Remove FRED dependency on WRMSRNS
-      target/i386: Add a new CPU feature word for CPUID.7.1.ECX
-      target/i386: Add the immediate form MSR access instruction support
-
- docs/devel/rust.rst                                |  12 +-
- configure                                          |  16 +
- meson.build                                        |  11 +-
- target/i386/cpu.h                                  |   5 +
- hw/i386/tdvf.c                                     |   6 +-
- target/i386/cpu.c                                  |  27 +-
- target/i386/kvm/tdx.c                              |  26 +-
- .gitlab-ci.d/buildtest-template.yml                |   3 +-
- .gitlab-ci.d/buildtest.yml                         |  11 +-
- rust/clippy.toml => clippy.toml                    |   2 +-
- python/scripts/vendor.py                           |   4 +-
- python/wheels/meson-1.5.0-py3-none-any.whl         | Bin 959846 -> 0 bytes
- python/wheels/meson-1.8.1-py3-none-any.whl         | Bin 0 -> 1013001 bytes
- pythondeps.toml                                    |   2 +-
- rust/Cargo.lock                                    |   8 +
- rust/Cargo.toml                                    |   2 +-
- rust/bits/Cargo.toml                               |  19 +
- rust/bits/meson.build                              |  16 +
- rust/bits/src/lib.rs                               | 443 +++++++++++++++++++++
- rust/hw/char/pl011/Cargo.toml                      |   1 +
- rust/hw/char/pl011/meson.build                     |   1 +
- rust/hw/char/pl011/src/device.rs                   |  51 ++-
- rust/hw/char/pl011/src/registers.rs                |  39 +-
- rust/meson.build                                   |  15 +-
- rust/qemu-api-macros/src/bits.rs                   | 229 +++++++++++
- rust/qemu-api-macros/src/lib.rs                    |  60 ++-
- rust/qemu-api/meson.build                          |  34 +-
- rust/qemu-api/src/bindings.rs                      |   1 +
- rust/qemu-api/src/cell.rs                          |  22 +-
- scripts/rust/rustc_args.py                         |   5 +-
- .../docker/dockerfiles/fedora-rust-nightly.docker  |   2 +
- tests/docker/dockerfiles/ubuntu2204.docker         |   1 +
- tests/lcitool/mappings.yml                         |   6 +-
- tests/lcitool/refresh                              |   3 +
- 34 files changed, 934 insertions(+), 149 deletions(-)
- rename rust/clippy.toml => clippy.toml (55%)
- delete mode 100644 python/wheels/meson-1.5.0-py3-none-any.whl
- create mode 100644 python/wheels/meson-1.8.1-py3-none-any.whl
- create mode 100644 rust/bits/Cargo.toml
- create mode 100644 rust/bits/meson.build
- create mode 100644 rust/bits/src/lib.rs
- create mode 100644 rust/qemu-api-macros/src/bits.rs
+diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
+index 3c1d297581e..057de4b6467 100644
+--- a/rust/qemu-api/src/bindings.rs
++++ b/rust/qemu-api/src/bindings.rs
+@@ -11,6 +11,7 @@
+     clippy::restriction,
+     clippy::style,
+     clippy::missing_const_for_fn,
++    clippy::ptr_offset_with_cast,
+     clippy::useless_transmute,
+     clippy::missing_safety_doc
+ )]
 -- 
 2.49.0
 
