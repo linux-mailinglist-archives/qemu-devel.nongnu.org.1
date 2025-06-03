@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A27EACC04C
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 08:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEB5ACC051
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Jun 2025 08:39:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMLHC-0007x6-CX; Tue, 03 Jun 2025 02:37:34 -0400
+	id 1uMLIF-0000d7-B0; Tue, 03 Jun 2025 02:38:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMLGa-0007jO-Ig
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 02:37:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMLGp-0007oR-0T
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 02:37:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMLGY-0003R7-DZ
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 02:36:56 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMLGZ-0003Rb-FS
+ for qemu-devel@nongnu.org; Tue, 03 Jun 2025 02:37:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748932613;
+ s=mimecast20190719; t=1748932614;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1XUGSxN51OLohv8fvmaAoOjtoyORALr4taS/zHagj5c=;
- b=ah3g/AAotAPeUd0bZUir82maotD9xAHIYlJuV/w9M8t1Zbsftj49rLdLx9BBRM/c5rBpXn
- vzw2qMrdflHX0PNic7HOkurrA84XAgpGBeV1ltUaikFrMw5k4d8BpNu4WphwpDT4VpwHvQ
- uFuFApFevlJz0dQwDM8z9ofZRwkrH5k=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=nuLy0yRA5TsWUJ3DzXHcvSr00tyeggdoG1w2BCWAr7k=;
+ b=W6Oe2FoLIhUs2ULqhNkSgwv/Z0InHSgW5FK5NsamtpmAMcrf2O9TFFrF9PjU5Cem4JCjF8
+ +9Xf3shV5PDI+8083HAgKQ0Cqk146FgYAoIDIdsu23IdG3MLQ0SQXzzwO6j8klhDf4+kfw
+ 95foVQsD3tjcfVJERi+c4dlyQp62nV4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-542-o-bmm1xyMQCbzImjLqpJsQ-1; Tue,
- 03 Jun 2025 02:36:51 -0400
-X-MC-Unique: o-bmm1xyMQCbzImjLqpJsQ-1
-X-Mimecast-MFC-AGG-ID: o-bmm1xyMQCbzImjLqpJsQ_1748932611
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-241-PxMZi2udOVKuWyBnPrxwUw-1; Tue,
+ 03 Jun 2025 02:36:52 -0400
+X-MC-Unique: PxMZi2udOVKuWyBnPrxwUw-1
+X-Mimecast-MFC-AGG-ID: PxMZi2udOVKuWyBnPrxwUw_1748932611
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0CA97180045B
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 28B541955DB0
  for <qemu-devel@nongnu.org>; Tue,  3 Jun 2025 06:36:51 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B89A918008DC
+ id 9B8C8180049D
  for <qemu-devel@nongnu.org>; Tue,  3 Jun 2025 06:36:50 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id F271221E661C; Tue, 03 Jun 2025 08:36:44 +0200 (CEST)
+ id 0258421E661D; Tue, 03 Jun 2025 08:36:45 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, David Hildenbrand <david@redhat.com>,
- Eric Blake <eblake@redhat.com>
-Subject: [PULL 05/13] qapi: Drop a problematic (Since: 2.11) from
- query-hotpluggable-cpus
-Date: Tue,  3 Jun 2025 08:36:36 +0200
-Message-ID: <20250603063644.3953528-6-armbru@redhat.com>
+Cc: stefanha@redhat.com,
+	Eric Blake <eblake@redhat.com>
+Subject: [PULL 06/13] qapi: Correct spelling of QEMU in doc comments
+Date: Tue,  3 Jun 2025 08:36:37 +0200
+Message-ID: <20250603063644.3953528-7-armbru@redhat.com>
 In-Reply-To: <20250603063644.3953528-1-armbru@redhat.com>
 References: <20250603063644.3953528-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,39 +84,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is a (Since: 2.11) in a query-hotpluggable-cpus example.
-Versioning information ought to be in the command description, not
-examples.  The command description is basically empty (there is a TODO
-about it).
+Improve awkward phrasing in migrate-incoming While there.
 
-What exactly didn't work before 2.11 is not quite clear from the
-documentation.  The example was added in commit 4dc3b151882 (s390x:
-implement query-hotpluggable-cpus), which suggests the command failed
-for the s390x target until then.  This was almost eight years ago, and
-I doubt anyone still cares about this detail.  Simply delete
-the problematic (Since: 2.11).
-
-Cc: David Hildenbrand <david@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250527073916.1243024-6-armbru@redhat.com>
+Message-ID: <20250527073916.1243024-7-armbru@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- qapi/machine.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qapi/audio.json        |  8 ++++----
+ qapi/block-core.json   | 10 +++++-----
+ qapi/block-export.json |  2 +-
+ qapi/char.json         |  6 +++---
+ qapi/introspect.json   |  4 ++--
+ qapi/migration.json    |  8 ++++----
+ qapi/run-state.json    |  6 +++---
+ qapi/transaction.json  |  2 +-
+ qapi/uefi.json         |  2 +-
+ qapi/ui.json           |  4 ++--
+ 10 files changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 5eb67fc4e9..230b9b20dd 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1089,7 +1089,7 @@
- #    :annotated:
+diff --git a/qapi/audio.json b/qapi/audio.json
+index 8de4430578..16de231f6d 100644
+--- a/qapi/audio.json
++++ b/qapi/audio.json
+@@ -309,9 +309,9 @@
  #
- #    For s390x-virtio-ccw machine type started with
--#    ``-smp 1,maxcpus=2 -cpu qemu`` (Since: 2.11)::
-+#    ``-smp 1,maxcpus=2 -cpu qemu``::
+ # @name: name of the sink/source to use
  #
- #     -> { "execute": "query-hotpluggable-cpus" }
- #     <- {"return": [
+-# @stream-name: name of the PulseAudio stream created by qemu.  Can be
++# @stream-name: name of the PulseAudio stream created by QEMU.  Can be
+ #     used to identify the stream in PulseAudio when you create
+-#     multiple PulseAudio devices or run multiple qemu instances
++#     multiple PulseAudio devices or run multiple QEMU instances
+ #     (default: audiodev's id, since 4.2)
+ #
+ # @latency: latency you want PulseAudio to achieve in microseconds
+@@ -353,9 +353,9 @@
+ #
+ # @name: name of the sink/source to use
+ #
+-# @stream-name: name of the PipeWire stream created by qemu.  Can be
++# @stream-name: name of the PipeWire stream created by QEMU.  Can be
+ #     used to identify the stream in PipeWire when you create multiple
+-#     PipeWire devices or run multiple qemu instances (default:
++#     PipeWire devices or run multiple QEMU instances (default:
+ #     audiodev's id)
+ #
+ # @latency: latency you want PipeWire to achieve in microseconds
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index cc48fc7122..b6447e847e 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -2030,7 +2030,7 @@
+ #
+ # @id: Block graph node identifier.  This @id is generated only for
+ #     x-debug-query-block-graph and does not relate to any other
+-#     identifiers in Qemu.
++#     identifiers in QEMU.
+ #
+ # @type: Type of graph node.  Can be one of block-backend, block-job
+ #     or block-driver-state.
+@@ -2794,7 +2794,7 @@
+ # The node that receives the data is called the top image, can be
+ # located in any part of the chain (but always above the base image;
+ # see below) and can be specified using its device or node name.
+-# Earlier qemu versions only allowed 'device' to name the top level
++# Earlier QEMU versions only allowed 'device' to name the top level
+ # node; presence of the 'base-node' parameter during introspection can
+ # be used as a witness of the enhanced semantics of 'device'.
+ #
+@@ -3196,7 +3196,7 @@
+ #
+ # Selects the AIO backend to handle I/O requests
+ #
+-# @threads: Use qemu's thread pool
++# @threads: Use QEMU's thread pool
+ #
+ # @native: Use native AIO backend (only Linux and Windows)
+ #
+@@ -5157,10 +5157,10 @@
+ ##
+ # @BlockdevQcow2Version:
+ #
+-# @v2: The original QCOW2 format as introduced in qemu 0.10 (version
++# @v2: The original QCOW2 format as introduced in QEMU 0.10 (version
+ #     2)
+ #
+-# @v3: The extended QCOW2 format as introduced in qemu 1.1 (version 3)
++# @v3: The extended QCOW2 format as introduced in QEMU 1.1 (version 3)
+ #
+ # Since: 2.12
+ ##
+diff --git a/qapi/block-export.json b/qapi/block-export.json
+index 04190b503c..ed4deb54db 100644
+--- a/qapi/block-export.json
++++ b/qapi/block-export.json
+@@ -169,7 +169,7 @@
+ # @growable: Whether writes beyond the EOF should grow the block node
+ #     accordingly.  (default: false)
+ #
+-# @allow-other: If this is off, only qemu's user is allowed access to
++# @allow-other: If this is off, only QEMU's user is allowed access to
+ #     this export.  That cannot be changed even with chmod or chown.
+ #     Enabling this option will allow other users access to the export
+ #     with the FUSE mount option "allow_other".  Note that using
+diff --git a/qapi/char.json b/qapi/char.json
+index f79216e4d2..df6e325e2e 100644
+--- a/qapi/char.json
++++ b/qapi/char.json
+@@ -351,7 +351,7 @@
+ # Configuration info for stdio chardevs.
+ #
+ # @signal: Allow signals (such as SIGINT triggered by ^C) be delivered
+-#     to qemu.  Default: true.
++#     to QEMU.  Default: true.
+ #
+ # Since: 1.5
+ ##
+@@ -443,7 +443,7 @@
+ ##
+ # @ChardevQemuVDAgent:
+ #
+-# Configuration info for qemu vdagent implementation.
++# Configuration info for QEMU vdagent implementation.
+ #
+ # @mouse: enable/disable mouse, default is enabled.
+ #
+@@ -656,7 +656,7 @@
+ ##
+ # @ChardevQemuVDAgentWrapper:
+ #
+-# @data: Configuration info for qemu vdagent implementation
++# @data: Configuration info for QEMU vdagent implementation
+ #
+ # Since: 6.1
+ ##
+diff --git a/qapi/introspect.json b/qapi/introspect.json
+index 95724ee2d2..e9e0297282 100644
+--- a/qapi/introspect.json
++++ b/qapi/introspect.json
+@@ -26,9 +26,9 @@
+ # the QAPI schema.
+ #
+ # Furthermore, while we strive to keep the QMP wire format
+-# backwards-compatible across qemu versions, the introspection output
++# backwards-compatible across QEMU versions, the introspection output
+ # is not guaranteed to have the same stability.  For example, one
+-# version of qemu may list an object member as an optional
++# version of QEMU may list an object member as an optional
+ # non-variant, while another lists the same member only through the
+ # object's variants; or the type of a member may change from a generic
+ # string into a specific enum or from one specific type into an
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 7d1ec06605..84edcf81e4 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -415,7 +415,7 @@
+ #     on secondary side, this process is called COarse-Grain LOck
+ #     Stepping (COLO) for Non-stop Service.  (since 2.8)
+ #
+-# @release-ram: if enabled, qemu will free the migrated ram pages on
++# @release-ram: if enabled, QEMU will free the migrated ram pages on
+ #     the source during postcopy-ram migration.  (since 2.9)
+ #
+ # @return-path: If enabled, migration will use the return path even
+@@ -1500,7 +1500,7 @@
+ ##
+ # @x-colo-lost-heartbeat:
+ #
+-# Tell qemu that heartbeat is lost, request it to do takeover
++# Tell QEMU that heartbeat is lost, request it to do takeover
+ # procedures.  If this command is sent to the PVM, the Primary side
+ # will exit COLO mode.  If sent to the Secondary, the Secondary side
+ # will run failover work, then takes over server operation to become
+@@ -1729,8 +1729,8 @@
+ ##
+ # @migrate-incoming:
+ #
+-# Start an incoming migration, the qemu must have been started with
+-# -incoming defer
++# Start an incoming migration.  QEMU must have been started with
++# -incoming defer.
+ #
+ # @uri: The Uniform Resource Identifier identifying the source or
+ #     address to listen on
+diff --git a/qapi/run-state.json b/qapi/run-state.json
+index ebfeb669ab..fcc00c805b 100644
+--- a/qapi/run-state.json
++++ b/qapi/run-state.json
+@@ -135,19 +135,19 @@
+ ##
+ # @SHUTDOWN:
+ #
+-# Emitted when the virtual machine has shut down, indicating that qemu
++# Emitted when the virtual machine has shut down, indicating that QEMU
+ # is about to exit.
+ #
+ # @guest: If true, the shutdown was triggered by a guest request (such
+ #     as a guest-initiated ACPI shutdown request or other
+ #     hardware-specific action) rather than a host request (such as
+-#     sending qemu a SIGINT).  (since 2.10)
++#     sending QEMU a SIGINT).  (since 2.10)
+ #
+ # @reason: The @ShutdownCause which resulted in the SHUTDOWN.
+ #     (since 4.0)
+ #
+ # .. note:: If the command-line option ``-no-shutdown`` has been
+-#    specified, qemu will not exit, and a STOP event will eventually
++#    specified, QEMU will not exit, and a STOP event will eventually
+ #    follow the SHUTDOWN event.
+ #
+ # Since: 0.12
+diff --git a/qapi/transaction.json b/qapi/transaction.json
+index 021e383496..5c3394919e 100644
+--- a/qapi/transaction.json
++++ b/qapi/transaction.json
+@@ -223,7 +223,7 @@
+ # exists, the request will be rejected.  Only some image formats
+ # support it, for example, qcow2, and rbd,
+ #
+-# On failure, qemu will try delete the newly created internal snapshot
++# On failure, QEMU will try delete the newly created internal snapshot
+ # in the transaction.  When an I/O error occurs during deletion, the
+ # user needs to fix it later with qemu-img or other command.
+ #
+diff --git a/qapi/uefi.json b/qapi/uefi.json
+index bdfcabe1df..6592183d6c 100644
+--- a/qapi/uefi.json
++++ b/qapi/uefi.json
+@@ -5,7 +5,7 @@
+ ##
+ # = UEFI Variable Store
+ #
+-# The qemu efi variable store implementation (hw/uefi/) uses this to
++# The QEMU efi variable store implementation (hw/uefi/) uses this to
+ # store non-volatile variables in json format on disk.
+ #
+ # This is an existing format already supported by (at least) two other
+diff --git a/qapi/ui.json b/qapi/ui.json
+index 7cfedb3914..514fa159b1 100644
+--- a/qapi/ui.json
++++ b/qapi/ui.json
+@@ -1526,12 +1526,12 @@
+ #
+ # Display (user interface) options.
+ #
+-# @type: Which DisplayType qemu should use.
++# @type: Which DisplayType QEMU should use.
+ #
+ # @full-screen: Start user interface in fullscreen mode
+ #     (default: off).
+ #
+-# @window-close: Allow to quit qemu with window close button
++# @window-close: Allow to quit QEMU with window close button
+ #     (default: on).
+ #
+ # @show-cursor: Force showing the mouse cursor (default: off).
 -- 
 2.48.1
 
