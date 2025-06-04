@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF02ACE11E
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 17:19:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C343ACE223
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 18:24:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMpsq-0005Dx-Ua; Wed, 04 Jun 2025 11:18:28 -0400
+	id 1uMqtM-0002I7-0r; Wed, 04 Jun 2025 12:23:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uMpso-0005De-GQ
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 11:18:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uMqtI-0002He-MF
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 12:23:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uMpsm-0005xH-Pw
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 11:18:26 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uMqtD-0002TM-3z
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 12:23:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749050301;
+ s=mimecast20190719; t=1749054169;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hts6c5otb/LchX7JVZLY9JSznCLJaQyGx8CZUd+lxLQ=;
- b=TfLGjgeV/t5+mLoS4wKr1FXupvMepeBQjRKhustBJ3u24/vWatqpoIogIW4MJ9j9AGlZrK
- LiZeVoSTjQvm2N7G6IKUN0af4f3qdBdbPa5nuP2AIb48lVral+w0UcBqKPLIcHVd181M3X
- HxLr2bwT11YVCbAS2l4yFf0m7/RjaWo=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=DEf4B+M0sNZEwiSlZCbiV273r5ZYSiv3MVeD7w3LYcA=;
+ b=fZHb953KwhewbCjlfQX9ZLT6L+hnQ/wOM34dZtyDmpc02zJBBjEa8SFPff7tJdXyLblD3Z
+ GD9esquIRWXkAqgBrfJXb5x1jf311Jdw7Tck8+iUcE8ErMeOQg5hJ3yEAcrQOofmsM0Mm3
+ uLp/C+BCJ1tW+1BsatYYiAQnrh1af1c=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-DZHceR2PPHi6vTsj_-IV5g-1; Wed,
- 04 Jun 2025 11:18:20 -0400
-X-MC-Unique: DZHceR2PPHi6vTsj_-IV5g-1
-X-Mimecast-MFC-AGG-ID: DZHceR2PPHi6vTsj_-IV5g_1749050299
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-45-UuNwtMgDNAGzvO--X3kNww-1; Wed,
+ 04 Jun 2025 12:22:48 -0400
+X-MC-Unique: UuNwtMgDNAGzvO--X3kNww-1
+X-Mimecast-MFC-AGG-ID: UuNwtMgDNAGzvO--X3kNww_1749054167
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 131E91955D69; Wed,  4 Jun 2025 15:18:19 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.40])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 585F419560B1; Wed,  4 Jun 2025 15:18:16 +0000 (UTC)
-Date: Wed, 4 Jun 2025 10:18:13 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: Re: [PATCH v2 12/21] block: Move qemu_fcntl_addfl() into osdep.c
-Message-ID: <oq6qkh5poewgcxava3oqy3fttrtqnudalfacgvgzrk3uqtgz34@pkjxmbmkbzof>
-References: <20250604132813.359438-1-hreitz@redhat.com>
- <20250604132813.359438-13-hreitz@redhat.com>
+ id 4CB8A1955D48
+ for <qemu-devel@nongnu.org>; Wed,  4 Jun 2025 16:22:47 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.60])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6702F30002C8; Wed,  4 Jun 2025 16:22:44 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/2] ui: fix VNC endian regression & improve tracing
+Date: Wed,  4 Jun 2025 17:22:41 +0100
+Message-ID: <20250604162243.452791-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250604132813.359438-13-hreitz@redhat.com>
-User-Agent: NeoMutt/20250510
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -83,24 +82,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 04, 2025 at 03:28:04PM +0200, Hanna Czenczek wrote:
-> Move file-posix's helper to add a flag (or a set of flags) to an FD's
-> existing set of flags into osdep.c for other places to use.
-> 
-> Suggested-by: Eric Blake <eblake@redhat.com>
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->  include/qemu/osdep.h |  1 +
->  block/file-posix.c   | 17 +----------------
->  util/osdep.c         | 18 ++++++++++++++++++
->  3 files changed, 20 insertions(+), 16 deletions(-)
->
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+
+Daniel P. Berrangé (2):
+  ui: fix setting client_endian field defaults
+  ui: add trace events for all client messages
+
+ ui/trace-events | 14 +++++++++++++
+ ui/vnc.c        | 53 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 67 insertions(+)
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.49.0
 
 
