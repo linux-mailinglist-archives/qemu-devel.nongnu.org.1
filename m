@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F23BACDF1B
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1ABACDF2D
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:33:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMoBe-0007wU-5o; Wed, 04 Jun 2025 09:29:46 -0400
+	id 1uMoBh-0008MP-30; Wed, 04 Jun 2025 09:29:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAr-0007A3-Er
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAy-0007Ct-F3
  for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAp-0004lc-UU
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:57 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAu-0004m8-SX
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749043735;
+ s=mimecast20190719; t=1749043739;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/2MYp3UhabT2qS0mTPTCo+T0B/SM6NTgMC1jdFmgg9Q=;
- b=FkOLMGQZt1EmPFUE5DlpxZtfXKCoy7CwHfGSvTagSDllnM9NNVKqeI7CbvbTp9IUuJm+nQ
- ZaUR5r/ryPSmEt4sAES7rAGAnBUtbgGElTc/ZDyiDJBB/m6k3AYvQwbJyCJ5jNJLwcxEF5
- MWveq787DyXd9zIfQjkHtk8uO8SJoJ8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nk418H24kCz2+AUWTyV3Eb4pfrMBZv0WmNVH2UyfbVo=;
+ b=Vj9w0cjI9HHQmjND+yvbHNnbmjagtViFqeoWxaflQH3ZjFVnH+AwBJkMVF9jaL0DtyNJTe
+ beZI+V/u91PrMlCDUNqxgD3+VZcu7Hp4VbIpNosdmb7k3z2DrVL3whV9JWbYMOdC9Dwxiv
+ moLSCr8/G7amzQdEmTNAKGh3sbBojM0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-572-LED5fRMyMX-VtLABjQLVjg-1; Wed, 04 Jun 2025 09:28:54 -0400
-X-MC-Unique: LED5fRMyMX-VtLABjQLVjg-1
-X-Mimecast-MFC-AGG-ID: LED5fRMyMX-VtLABjQLVjg_1749043733
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-450db029f2aso25052365e9.3
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:53 -0700 (PDT)
+ us-mta-624-_uwPc5wDMA6eLrY3DTNtjg-1; Wed, 04 Jun 2025 09:28:58 -0400
+X-MC-Unique: _uwPc5wDMA6eLrY3DTNtjg-1
+X-Mimecast-MFC-AGG-ID: _uwPc5wDMA6eLrY3DTNtjg_1749043737
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a4fea70656so1800144f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749043733; x=1749648533;
+ d=1e100.net; s=20230601; t=1749043737; x=1749648537;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/2MYp3UhabT2qS0mTPTCo+T0B/SM6NTgMC1jdFmgg9Q=;
- b=ONvLq0jv3D9KgUsSaZyCcgfofDCHArnIh9lvv051eZGRYZX2rIHDW5qsRa31jVZ8kE
- /Sho6GJhGpSUSBBvh++w39hMKJWZ5jGGL/IiXe8UPkYZG3GPN+ILaSPN5SGbdAMuPLN6
- 0J6FncRi1uB8MbQCc7LdvHUg5CjwhmS1DK1CoeeRseOwU3fYPReMJi2wP6ldToNyNQhd
- ohlBkEs/fyceHh0cU94Q2F3d3/qWC6P405dEL89QuQCevJ86iDjCpyIYxot3uaUIS8fq
- ebY68eWtoWCm8QWfC8IJGb+xQC40XS2VYtzJ3NciTTs7MEUnC9BxyKW3z6ir5bVvDa5h
- 4aAQ==
-X-Gm-Message-State: AOJu0Yyl6fKlsfy1BVs1B/ijCSDeJjIF7NYiMwosHHmYGVlku9m+VENm
- zMWth3NuFsaTo/MbB6VTYVFZywAs4VSBtwF/vYbQqQAQpLOp3nXE74iW6AO1YjQ4Mp2VwDDNA3q
- 4WjjHSwmoHbbesd5EoRlFmdHSzrTnbPllBtpbTJGP33oOhMV+BhjDDy6A
-X-Gm-Gg: ASbGncvV8FNwQOXNaNt9RJZNB4Ma2FAW8IXoOMpGcPIOujlYQJo7fusH7XdkEi/XNW8
- vKNt/u3CyR9fYMEUKSQIWYyoi2ALZje53hlmqxz+QXx8rdFdNms1yvbSQvK/kyzFsUiyCJFhTI8
- hw+n3R9T+jV5K8/iooXXfB+Zxutx5WbYO1fmdOSB+8vO/i1g75+Go3eu71C5APsltd29+0Z6zXk
- t9zkgNk7Ig3sKbqUtcknhieT/Ci4UXy2Xz/V0KE39C5+yKluHHM7jBsYpf6IUa0vv0DDeITjBuV
- YWu8fpEXE5Wu3qEo+Bmfs4mtqeqdKsnCjIaYQ92waMWMBU0RyetGrJfH73wRVUX3pVa8XJSCdbD
- nv9jx
-X-Received: by 2002:a05:600c:1c29:b0:43d:fa5d:9315 with SMTP id
- 5b1f17b1804b1-451f0b3f724mr23329315e9.33.1749043732881; 
- Wed, 04 Jun 2025 06:28:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFnts/kD0D1GKuZC6Ir2ybxZQVv6nwJiBUsmCm2gsaCcdaMb12ux+CfUepqnITMg22G6hjJng==
-X-Received: by 2002:a05:600c:1c29:b0:43d:fa5d:9315 with SMTP id
- 5b1f17b1804b1-451f0b3f724mr23329045e9.33.1749043732503; 
- Wed, 04 Jun 2025 06:28:52 -0700 (PDT)
+ bh=nk418H24kCz2+AUWTyV3Eb4pfrMBZv0WmNVH2UyfbVo=;
+ b=goaal1aJ43f1Y8VAFmStsAbrqTjzzD7AV4q+ooso2aPAl33I8gfJTM+sbFJ1okW5j4
+ 1ylhPr9jyzBayXa8Gm6DZziEtSe8sLnqE68/o08RbpKlErGWn7IVeH4SszdEohCkol/8
+ RIZ4V3kg4DrkCX42IGr13B+BThLBuGRAR9SQQQZl20ZIYwwCp3F/GfUBufkwIegqU9D6
+ HTkUsAQsuzfW7Zqj8N2YwFY/1CDjMM+X4IK9pLIKJ6Wh4Fpx0Y0BaWx1PQQhByTXssl+
+ vRfdAwJV8TB2Mqh4qe+pKUCNaPe0bTxpwVfHz+iwjlF+pLP/es3XRwZ6IVTlcZzb+f3v
+ 4yZw==
+X-Gm-Message-State: AOJu0YybZnmhqMecTQt9hAY6NZFstPEGZIZ1759D4CiM4D5bH42C6I2l
+ e8Rv02b9BKvqlQiRa05b6ICBrHDdzLG1sTgn1CL/gLZhu2sPEYwbM9NmNfme8ILQkpK5NRepVix
+ i4PVPhlz0C7MWocabVn4k8K7Qp09RFx2r3h1JiToM+s4uUVowH9G8xDOc
+X-Gm-Gg: ASbGncv7w8UXgU0xxcvXD2z8fOHboeu64lcZz+s5ltViF5fLv132m7EmZyYoHkM+S+d
+ DL8mY/f5elMXQL/QvZvGsd8WY/hrrB6t9dMFIe5MPwNRHWHw++360nQmnMMwMd4rgfPBCy6MzMw
+ r9gDNPNmIChUzpqGUKtMKTNbrJ/YaVR7bL0v1N1Mhbp7wLhm1PPMFzuYvQPXqG/FnbUuN5rEF9P
+ 8ap/hbxNvtSDufwmrD4oMhsHh45QqGW0h/w5jxesjKyAq41GMInVXOgM1bAhyvuU8mhtZaKXMvf
+ 5aWlQmgXdNzh15GkEXPtwZKIhQWCV3I0CtVpAIq3PODiTtBlANN15b1S2/cXPXgQp+CQxw==
+X-Received: by 2002:a05:6000:2dc6:b0:3a4:d939:62fc with SMTP id
+ ffacd0b85a97d-3a51d920b3cmr2124804f8f.22.1749043736640; 
+ Wed, 04 Jun 2025 06:28:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG5M5oa3DzMm7KTnqYsIxt+hrRGr0Gva3ljw7o+b1eu8NMFA8U6nZ+HPE0yzqMF91pDhjN1hg==
+X-Received: by 2002:a05:6000:2dc6:b0:3a4:d939:62fc with SMTP id
+ ffacd0b85a97d-3a51d920b3cmr2124784f8f.22.1749043736235; 
+ Wed, 04 Jun 2025 06:28:56 -0700 (PDT)
 Received: from localhost
  (p200300cfd700f306503d3c798c1bf214.dip0.t-ipconnect.de.
  [2003:cf:d700:f306:503d:3c79:8c1b:f214])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d8000e3esm199129705e9.22.2025.06.04.06.28.49
+ ffacd0b85a97d-3a4f00972c1sm22078407f8f.68.2025.06.04.06.28.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Jun 2025 06:28:49 -0700 (PDT)
+ Wed, 04 Jun 2025 06:28:54 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: [PATCH v2 09/21] fuse: Introduce fuse_{inc,dec}_in_flight()
-Date: Wed,  4 Jun 2025 15:28:01 +0200
-Message-ID: <20250604132813.359438-10-hreitz@redhat.com>
+Subject: [PATCH v2 10/21] fuse: Add halted flag
+Date: Wed,  4 Jun 2025 15:28:02 +0200
+Message-ID: <20250604132813.359438-11-hreitz@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250604132813.359438-1-hreitz@redhat.com>
 References: <20250604132813.359438-1-hreitz@redhat.com>
@@ -109,69 +108,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is how vduse-blk.c does it, and it does seem better to have
-dedicated functions for it.
+This is a flag that we will want when processing FUSE requests
+ourselves: When the kernel sends us e.g. a truncated request (i.e. we
+receive less data than the request's indicated length), we cannot rely
+on subsequent data to be valid.  Then, we are going to set this flag,
+halting all FUSE request processing.
+
+We plan to only use this flag in cases that would effectively be kernel
+bugs.
+
+(Right now, the flag is unused because libfuse still does our request
+processing.)
 
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ block/export/fuse.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index 15ec7a5c05..bcbeaf92f4 100644
+index bcbeaf92f4..044fbbf1fe 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -78,6 +78,25 @@ static void read_from_fuse_export(void *opaque);
- static bool is_regular_file(const char *path, Error **errp);
+@@ -53,6 +53,13 @@ typedef struct FuseExport {
+     unsigned int in_flight; /* atomic */
+     bool mounted, fd_handler_set_up;
  
++    /*
++     * Set when there was an unrecoverable error and no requests should be read
++     * from the device anymore (basically only in case of something we would
++     * consider a kernel bug)
++     */
++    bool halted;
++
+     char *mountpoint;
+     bool writable;
+     bool growable;
+@@ -69,6 +76,7 @@ static const struct fuse_lowlevel_ops fuse_ops;
  
-+static void fuse_inc_in_flight(FuseExport *exp)
-+{
-+    if (qatomic_fetch_inc(&exp->in_flight) == 0) {
-+        /* Prevent export from being deleted */
-+        blk_exp_ref(&exp->common);
-+    }
-+}
-+
-+static void fuse_dec_in_flight(FuseExport *exp)
-+{
-+    if (qatomic_fetch_dec(&exp->in_flight) == 1) {
-+        /* Wake AIO_WAIT_WHILE() */
-+        aio_wait_kick();
-+
-+        /* Now the export can be deleted */
-+        blk_exp_unref(&exp->common);
-+    }
-+}
-+
+ static void fuse_export_shutdown(BlockExport *exp);
+ static void fuse_export_delete(BlockExport *exp);
++static void fuse_export_halt(FuseExport *exp) G_GNUC_UNUSED;
+ 
+ static void init_exports_table(void);
+ 
+@@ -99,6 +107,10 @@ static void fuse_dec_in_flight(FuseExport *exp)
+ 
  static void fuse_attach_handlers(FuseExport *exp)
  {
++    if (exp->halted) {
++        return;
++    }
++
      aio_set_fd_handler(exp->common.ctx,
-@@ -297,9 +316,7 @@ static void read_from_fuse_export(void *opaque)
+                        fuse_session_fd(exp->fuse_session),
+                        read_from_fuse_export, NULL, NULL, NULL, exp);
+@@ -316,6 +328,10 @@ static void read_from_fuse_export(void *opaque)
      FuseExport *exp = opaque;
      int ret;
  
--    blk_exp_ref(&exp->common);
--
--    qatomic_inc(&exp->in_flight);
-+    fuse_inc_in_flight(exp);
++    if (unlikely(exp->halted)) {
++        return;
++    }
++
+     fuse_inc_in_flight(exp);
  
      do {
-         ret = fuse_session_receive_buf(exp->fuse_session, &exp->fuse_buf);
-@@ -317,11 +334,7 @@ static void read_from_fuse_export(void *opaque)
-     fuse_session_process_buf(exp->fuse_session, &exp->fuse_buf);
- 
- out:
--    if (qatomic_fetch_dec(&exp->in_flight) == 1) {
--        aio_wait_kick(); /* wake AIO_WAIT_WHILE() */
--    }
--
--    blk_exp_unref(&exp->common);
-+    fuse_dec_in_flight(exp);
+@@ -374,6 +390,20 @@ static void fuse_export_delete(BlockExport *blk_exp)
+     g_free(exp->mountpoint);
  }
  
- static void fuse_export_shutdown(BlockExport *blk_exp)
++/**
++ * Halt the export: Detach FD handlers, and set exp->halted to true, preventing
++ * fuse_attach_handlers() from re-attaching them, therefore stopping all further
++ * request processing.
++ *
++ * Call this function when an unrecoverable error happens that makes processing
++ * all future requests unreliable.
++ */
++static void fuse_export_halt(FuseExport *exp)
++{
++    exp->halted = true;
++    fuse_detach_handlers(exp);
++}
++
+ /**
+  * Check whether @path points to a regular file.  If not, put an
+  * appropriate message into *errp.
 -- 
 2.49.0
 
