@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954E2ACE414
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 19:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10AADACE406
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 19:58:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMsMV-0002Xn-EG; Wed, 04 Jun 2025 13:57:15 -0400
+	id 1uMsMJ-0002PH-D5; Wed, 04 Jun 2025 13:57:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsMA-0002Iz-QR
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsM6-0002G6-FK
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsM4-0000Px-CI
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:54 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsM0-0000QX-3y
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749059789;
+ s=mimecast20190719; t=1749059792;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9vLph1FOmot9axnFpJW6oz5uWeKY/Ute71g5wIqE0ZM=;
- b=Ycp/9wLaFEfsmdtfPA/FK+sqYOv73uu1E4Ct15XkJwqNkWN5Z/9RbjwhGyjfXFk66F3J0H
- 5OkePqHuhBJQv38Vn6BXxI7oxXKQa4nOpZQi0MW/RFsuAlB02Rgx2aKDlb09srLgf1LUWp
- OqY11f1375alX2JiQTnPWhklx2BHfIw=
+ bh=TxDETTY71o0zrhX9CpMdYATtlv6GFu7mE4JS2nZoiuo=;
+ b=YXNljaY9OjCqoiLHrrMJmsG5zVluJYMYm9NcZR/j6vz+ZqyXnOn0wyUZwOhLW0sr6ftU2x
+ BYyKpcZua2zRRC/jtdVXO49nGyjulYMCzWpHYpacQpxlsqQjVUFy3EbVpcjTZR5ZKpg6CS
+ 8pov9586Z1vNqIZaU/fe7xRnpI6gQIE=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-1FRMo6wAPUyeDIAqCcTJ6w-1; Wed,
- 04 Jun 2025 13:56:27 -0400
-X-MC-Unique: 1FRMo6wAPUyeDIAqCcTJ6w-1
-X-Mimecast-MFC-AGG-ID: 1FRMo6wAPUyeDIAqCcTJ6w_1749059787
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-aFzMxoYOMFK1UXHgQ0WvsQ-1; Wed,
+ 04 Jun 2025 13:56:29 -0400
+X-MC-Unique: aFzMxoYOMFK1UXHgQ0WvsQ-1
+X-Mimecast-MFC-AGG-ID: aFzMxoYOMFK1UXHgQ0WvsQ_1749059788
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E7B3E19560AA; Wed,  4 Jun 2025 17:56:26 +0000 (UTC)
+ id AE40C19560AA; Wed,  4 Jun 2025 17:56:28 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.44.34.43])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A46D118003FD; Wed,  4 Jun 2025 17:56:25 +0000 (UTC)
+ id 69BD318003FD; Wed,  4 Jun 2025 17:56:27 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 04/24] block: move drain outside of read-locked
- bdrv_inactivate_recurse()
-Date: Wed,  4 Jun 2025 19:55:53 +0200
-Message-ID: <20250604175613.344113-5-kwolf@redhat.com>
+Subject: [PULL 05/24] block: mark bdrv_parent_change_aio_context() GRAPH_RDLOCK
+Date: Wed,  4 Jun 2025 19:55:54 +0200
+Message-ID: <20250604175613.344113-6-kwolf@redhat.com>
 In-Reply-To: <20250604175613.344113-1-kwolf@redhat.com>
 References: <20250604175613.344113-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -83,94 +82,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fiona Ebner <f.ebner@proxmox.com>
 
-This is in preparation to mark bdrv_drained_begin() as GRAPH_UNLOCKED.
-
-More granular draining is not trivially possible, because
-bdrv_inactivate_recurse() can recursively call itself.
+This is a small step in preparation to mark bdrv_drained_begin() as
+GRAPH_UNLOCKED. More concretely, it allows marking the
+change_aio_ctx() callback GRAPH_RDLOCK_PTR, which is the next step.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20250530151125.955508-5-f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-6-f.ebner@proxmox.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ block.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/block.c b/block.c
-index 3065d5c91e..fa55dfba68 100644
+index fa55dfba68..7207978e53 100644
 --- a/block.c
 +++ b/block.c
-@@ -6989,6 +6989,8 @@ bdrv_inactivate_recurse(BlockDriverState *bs, bool top_level)
+@@ -7575,10 +7575,10 @@ typedef struct BdrvStateSetAioContext {
+     BlockDriverState *bs;
+ } BdrvStateSetAioContext;
  
+-static bool bdrv_parent_change_aio_context(BdrvChild *c, AioContext *ctx,
+-                                           GHashTable *visited,
+-                                           Transaction *tran,
+-                                           Error **errp)
++static bool GRAPH_RDLOCK
++bdrv_parent_change_aio_context(BdrvChild *c, AioContext *ctx,
++                               GHashTable *visited, Transaction *tran,
++                               Error **errp)
+ {
      GLOBAL_STATE_CODE();
- 
-+    assert(bs->quiesce_counter > 0);
-+
-     if (!bs->drv) {
-         return -ENOMEDIUM;
-     }
-@@ -7032,9 +7034,7 @@ bdrv_inactivate_recurse(BlockDriverState *bs, bool top_level)
-         return -EPERM;
-     }
- 
--    bdrv_drained_begin(bs);
-     bs->open_flags |= BDRV_O_INACTIVE;
--    bdrv_drained_end(bs);
- 
-     /*
-      * Update permissions, they may differ for inactive nodes.
-@@ -7059,20 +7059,26 @@ int bdrv_inactivate(BlockDriverState *bs, Error **errp)
-     int ret;
- 
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-+    bdrv_drain_all_begin();
-+    bdrv_graph_rdlock_main_loop();
- 
-     if (bdrv_has_bds_parent(bs, true)) {
-         error_setg(errp, "Node has active parent node");
--        return -EPERM;
-+        ret = -EPERM;
-+        goto out;
-     }
- 
-     ret = bdrv_inactivate_recurse(bs, true);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret, "Failed to inactivate node");
--        return ret;
-+        goto out;
-     }
- 
--    return 0;
-+out:
-+    bdrv_graph_rdunlock_main_loop();
-+    bdrv_drain_all_end();
-+    return ret;
- }
- 
- int bdrv_inactivate_all(void)
-@@ -7082,7 +7088,9 @@ int bdrv_inactivate_all(void)
-     int ret = 0;
- 
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-+    bdrv_drain_all_begin();
-+    bdrv_graph_rdlock_main_loop();
- 
-     for (bs = bdrv_first(&it); bs; bs = bdrv_next(&it)) {
-         /* Nodes with BDS parents are covered by recursion from the last
-@@ -7098,6 +7106,9 @@ int bdrv_inactivate_all(void)
-         }
-     }
- 
-+    bdrv_graph_rdunlock_main_loop();
-+    bdrv_drain_all_end();
-+
-     return ret;
- }
- 
+     if (g_hash_table_contains(visited, c)) {
 -- 
 2.49.0
 
