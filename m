@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B79ACDF29
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A37ACDF27
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:32:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMoBX-0007ZD-Fi; Wed, 04 Jun 2025 09:29:39 -0400
+	id 1uMoBl-00006T-7P; Wed, 04 Jun 2025 09:29:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoB2-0007Km-D0
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoB3-0007L4-Rq
  for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAx-0004mM-DX
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:05 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoB2-0004mv-6f
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749043742;
+ s=mimecast20190719; t=1749043745;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2MF3nqIIquCrTW0JVJjHlVVDeW3RnH4+JqzPQaLGzH8=;
- b=bfiOzAoNqLRBJus9QPFXAdz16U2eUokgfQrcD3guBhggWTHQWB2NXzqx6QByOGF8KJ/9qy
- 2DHZdZ6LknkJERAFSsaFs7LwctDyct1xE3W2xSLIubjgWgDlGe4tyxpeiHvKV0vLGSA3Wc
- Ri/4RQxgA0zKvv3bmkzuM2y5+cJtARk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Oiv9mkdGy8q617zYG7K09rWE+WhVRWSHIK3bd2uZ1Uc=;
+ b=eR6PHBZwGfz6FP5aZwwmtRdD4eKfG+eZ0vtBKQmA2ldZlV3hahYSrRDzfm4EgX24fcwGQt
+ gYsfJNI4riA0OrRDBT0ZLDgBGCtw5eBnsK0iYiNYutyIK3XhQ9XjSJLLJW8Axqj1T12wg6
+ 1WtDLcZWVqjPG1RdwTEWtTL1pYJBwlo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-3-rN9FB6WdOEy4sGK46wLNBg-1; Wed, 04 Jun 2025 09:29:01 -0400
-X-MC-Unique: rN9FB6WdOEy4sGK46wLNBg-1
-X-Mimecast-MFC-AGG-ID: rN9FB6WdOEy4sGK46wLNBg_1749043740
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-450d50eacafso37760155e9.3
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:29:00 -0700 (PDT)
+ us-mta-588-jlcT2VBHPri96MrLMptj2Q-1; Wed, 04 Jun 2025 09:29:04 -0400
+X-MC-Unique: jlcT2VBHPri96MrLMptj2Q-1
+X-Mimecast-MFC-AGG-ID: jlcT2VBHPri96MrLMptj2Q_1749043743
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4edf5bb4dso3769794f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:29:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749043740; x=1749648540;
+ d=1e100.net; s=20230601; t=1749043743; x=1749648543;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2MF3nqIIquCrTW0JVJjHlVVDeW3RnH4+JqzPQaLGzH8=;
- b=c+tfAt37VduHzAvtQRVTqjac2gHZ8qiJRZyHP60gy1C6/mmI4R9V8mcF3S50v329gJ
- LjETnWGmE/a2CmRqCxYH9Bm137i4dWguFXZRUeKtju5bLOru0fA6Q6awWdRcXA1z22La
- 5mQ9ETrOs5aszBA1F+GXCR4sv1VcF4Qer/xp0s6E+oo05Cts/PPX/TdviWrMVPohho4X
- 1Fi9qPAER9oFl+QXr66nqwWngjdbjwKQTBenaLIbLBXKxiaeiaf1HSDkg/wsO4CRti4l
- 1qbNvdud3lnd6m6PBRfk/DPavND/6xQIm/IkZiWftpu9Hyhlt0gs1jxQOPJaC+2DF+rZ
- KVPg==
-X-Gm-Message-State: AOJu0YxMESr36h9Vl4sndCuHZ9XocunMprfHUUWVScCxfnEFJh0xs1fB
- w/0+pPR/XpSJyGVrStwyFQqYclcYh5dL4wn3l5yZFKeOeW3h4HXdd5pd9GTYN4lA5JsqrPaQcEZ
- y9lEnAATpBXL7pxx9KQlUsYO9mUCFWFmJiKSBzwD2lQpfnXbLW3FpSepE
-X-Gm-Gg: ASbGncsfkEPFePmnFbVkgVIYcIO6wU6JAbQdXgUt7pa9A66ef26oN8rTLXvOO6/1UFl
- T49Cli8nYLHAERmkjrm8+qxIFznc41s1WZpJm3LXgglBwexMo32X2cIl2zxHTifIXp6HdeU+A5k
- oSZtrovdWSoDungm0wcTU8+RmXkVzEjQPEpT9+sqgnLIkooGQxgtCmwbB5GanuSbNhvC6VpG42a
- kyKArXVUg/8vILKOqoxPkZvkFtuI3vXiwCz+S/TSFEaAAg25R44okr9qiKXFW7qalVV2uT66iI2
- Swa3aHwW7pvSaEVvlq+6soHZbFor7zZ+0hiuVaV8dAIhDc5uM+j23xJYArf9vNr4HQq4/g==
-X-Received: by 2002:a05:600c:3e07:b0:442:cd13:f15d with SMTP id
- 5b1f17b1804b1-451f0b2c13fmr24690635e9.29.1749043739767; 
- Wed, 04 Jun 2025 06:28:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHNt05yWD6NpqGgyC22Y+8oXm4pFAsB/g/6b8026IPISfo5d34AZxtD6p561Kc7YKnhWCii8g==
-X-Received: by 2002:a05:600c:3e07:b0:442:cd13:f15d with SMTP id
- 5b1f17b1804b1-451f0b2c13fmr24690405e9.29.1749043739352; 
- Wed, 04 Jun 2025 06:28:59 -0700 (PDT)
+ bh=Oiv9mkdGy8q617zYG7K09rWE+WhVRWSHIK3bd2uZ1Uc=;
+ b=CiiHKOh5JHKwzQnxxWsW+PdxrCJ1T96mpmv427yv528an6oXBc+dLSjv45q1E5pLWh
+ cOHxpROcIWusPIC2ztxvkO8PYKvFAMQPaMEctLxzX2MB2m9w4GQYt6QUsvJH9EYPWGZ/
+ BwgGFcu63IQqSkWmPc9G9R4FHmgjd9j1vb9XcvAnGmpcsb3P7VB43HdwCFxXsDqETdIL
+ Q76OTRHA9ji7F7fVfuOIoo1JOLFNQ8hcjf89Gny7aVsjo8K46HWIax/b6IetQTrny4w4
+ gk5P/v5oNuodwhm82K1o2ADNTMhUylNbk6nowGEuQ0hrfRCSuxc9JeL9aGpg1OoTyjGA
+ 8amA==
+X-Gm-Message-State: AOJu0Yxo0hr7PfQdOjVclsHYvPAYyT6sty23TlaleoZNygf2f4f2PHyF
+ YVZfmQ59p9X+uq51OGLrtl/WouHzo3vNsP/jHpozbo1mJWcQIUzXlNsYd3ZtkBKbdDNNhBY6TQf
+ N8rD+qZY+0cSPKgXy4mLoCOn5iDN3fnJ2V2nDe8vVsv+uuxBqTd5ZuKgJ
+X-Gm-Gg: ASbGnctkdWAulkyTYqSdU3LXjwm7/JykA4L2oy8w1evVTkctVXxI30rkd0DCNl08It8
+ jTsZ9L5c3y9aWgsJt+TOcz7DTE8qRLiGZ/3XEnhmLrL3c3hiLP7ve1YhJV3s6iDPpGINQ74+4qn
+ u1TCN1mtI47Jbn2CrP+QBSOl0K0orz6rediyV02PZM+JCumxAtIDXvboTs6DofaxiGpR6CSPK5F
+ HUiJmJZ9yKUkWlghJeJ99IwNnQbKaBpadqGiGMPoqGsI34muNiIALp6w23XT21eJgB4kCREBFFq
+ VM248IT+JvDce4vxZMg4b0yn/Cz4InIeWWvtzPFBLx2p63dtJdTtKlS2dPpQpodGEJLkRg==
+X-Received: by 2002:a05:6000:1207:b0:3a5:2599:4163 with SMTP id
+ ffacd0b85a97d-3a525994257mr200896f8f.47.1749043743308; 
+ Wed, 04 Jun 2025 06:29:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiQY2GgcwKnT5RKi3ZCAN7r8Se6lCeVHmNL0FrikmEyx5/wfz4rsFV5BPrwL620qh0hjJItQ==
+X-Received: by 2002:a05:6000:1207:b0:3a5:2599:4163 with SMTP id
+ ffacd0b85a97d-3a525994257mr200874f8f.47.1749043742834; 
+ Wed, 04 Jun 2025 06:29:02 -0700 (PDT)
 Received: from localhost
  (p200300cfd700f306503d3c798c1bf214.dip0.t-ipconnect.de.
  [2003:cf:d700:f306:503d:3c79:8c1b:f214])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d8006c21sm196094225e9.33.2025.06.04.06.28.57
+ 5b1f17b1804b1-450d7f8ed32sm197816855e9.1.2025.06.04.06.29.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Jun 2025 06:28:57 -0700 (PDT)
+ Wed, 04 Jun 2025 06:29:01 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: [PATCH v2 11/21] fuse: Rename length to blk_len in fuse_write()
-Date: Wed,  4 Jun 2025 15:28:03 +0200
-Message-ID: <20250604132813.359438-12-hreitz@redhat.com>
+Subject: [PATCH v2 12/21] block: Move qemu_fcntl_addfl() into osdep.c
+Date: Wed,  4 Jun 2025 15:28:04 +0200
+Message-ID: <20250604132813.359438-13-hreitz@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250604132813.359438-1-hreitz@redhat.com>
 References: <20250604132813.359438-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -108,53 +108,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The term "length" is ambiguous, use "blk_len" instead to be clear.
+Move file-posix's helper to add a flag (or a set of flags) to an FD's
+existing set of flags into osdep.c for other places to use.
 
+Suggested-by: Eric Blake <eblake@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/qemu/osdep.h |  1 +
+ block/file-posix.c   | 17 +----------------
+ util/osdep.c         | 18 ++++++++++++++++++
+ 3 files changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/block/export/fuse.c b/block/export/fuse.c
-index 044fbbf1fe..fd7887889c 100644
---- a/block/export/fuse.c
-+++ b/block/export/fuse.c
-@@ -679,7 +679,7 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index 96fe51bc39..49b729edc1 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -774,6 +774,7 @@ static inline void qemu_reset_optind(void)
+ }
+ 
+ int qemu_fdatasync(int fd);
++int qemu_fcntl_addfl(int fd, int flag);
+ 
+ /**
+  * qemu_close_all_open_fd:
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 9b5f08ccb2..045e94d54d 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -1047,21 +1047,6 @@ static int raw_handle_perm_lock(BlockDriverState *bs,
+     return ret;
+ }
+ 
+-/* Sets a specific flag */
+-static int fcntl_setfl(int fd, int flag)
+-{
+-    int flags;
+-
+-    flags = fcntl(fd, F_GETFL);
+-    if (flags == -1) {
+-        return -errno;
+-    }
+-    if (fcntl(fd, F_SETFL, flags | flag) == -1) {
+-        return -errno;
+-    }
+-    return 0;
+-}
+-
+ static int raw_reconfigure_getfd(BlockDriverState *bs, int flags,
+                                  int *open_flags, uint64_t perm, Error **errp)
  {
-     FuseExport *exp = fuse_req_userdata(req);
-     void *copied;
--    int64_t length;
-+    int64_t blk_len;
-     int ret;
- 
-     /* Limited by max_write, should not happen */
-@@ -705,13 +705,13 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
-      * Clients will expect short writes at EOF, so we have to limit
-      * offset+size to the image length.
-      */
--    length = blk_getlength(exp->common.blk);
--    if (length < 0) {
--        fuse_reply_err(req, -length);
-+    blk_len = blk_getlength(exp->common.blk);
-+    if (blk_len < 0) {
-+        fuse_reply_err(req, -blk_len);
-         goto free_buffer;
-     }
- 
--    if (offset + size > length) {
-+    if (offset + size > blk_len) {
-         if (exp->growable) {
-             ret = fuse_do_truncate(exp, offset + size, true, PREALLOC_MODE_OFF);
-             if (ret < 0) {
-@@ -719,7 +719,7 @@ static void fuse_write(fuse_req_t req, fuse_ino_t inode, const char *buf,
-                 goto free_buffer;
-             }
-         } else {
--            size = length - offset;
-+            size = blk_len - offset;
-         }
-     }
- 
+@@ -1100,7 +1085,7 @@ static int raw_reconfigure_getfd(BlockDriverState *bs, int flags,
+         /* dup the original fd */
+         fd = qemu_dup(s->fd);
+         if (fd >= 0) {
+-            ret = fcntl_setfl(fd, *open_flags);
++            ret = qemu_fcntl_addfl(fd, *open_flags);
+             if (ret) {
+                 qemu_close(fd);
+                 fd = -1;
+diff --git a/util/osdep.c b/util/osdep.c
+index 770369831b..ce5c6a7f59 100644
+--- a/util/osdep.c
++++ b/util/osdep.c
+@@ -613,3 +613,21 @@ int qemu_fdatasync(int fd)
+     return fsync(fd);
+ #endif
+ }
++
++/**
++ * Set the given flag(s) (fcntl GETFL/SETFL) on the given FD, while retaining
++ * other flags.
++ */
++int qemu_fcntl_addfl(int fd, int flag)
++{
++    int flags;
++
++    flags = fcntl(fd, F_GETFL);
++    if (flags == -1) {
++        return -errno;
++    }
++    if (fcntl(fd, F_SETFL, flags | flag) == -1) {
++        return -errno;
++    }
++    return 0;
++}
 -- 
 2.49.0
 
