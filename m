@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD1CACDD8B
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 14:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B78ACDD7E
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 14:08:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMmul-0004BO-9g; Wed, 04 Jun 2025 08:08:15 -0400
+	id 1uMmuS-00040A-T2; Wed, 04 Jun 2025 08:07:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uMmuB-0003zw-HG; Wed, 04 Jun 2025 08:07:40 -0400
+ id 1uMmu3-0003yA-Bt; Wed, 04 Jun 2025 08:07:31 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uMmtz-0002Cd-Gm; Wed, 04 Jun 2025 08:07:39 -0400
+ id 1uMmu0-0002Ch-LN; Wed, 04 Jun 2025 08:07:31 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id E3DD943A19;
- Wed,  4 Jun 2025 14:07:22 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 38B0744A9D;
+ Wed,  4 Jun 2025 14:07:23 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
  stefanha@redhat.com, fam@euphon.net, jsnow@redhat.com,
  vsementsov@yandex-team.ru, eblake@redhat.com, kbusch@kernel.org,
  its@irrelevant.dk, foss@defmacro.it
-Subject: [PATCH 1/4] block/graph-lock: fix typo in comment
-Date: Wed,  4 Jun 2025 14:07:14 +0200
-Message-Id: <20250604120717.458445-2-f.ebner@proxmox.com>
+Subject: [PATCH 2/4] block-coroutine-wrapper: mark generated co-wrapper as
+ GRAPH_UNLOCKED
+Date: Wed,  4 Jun 2025 14:07:15 +0200
+Message-Id: <20250604120717.458445-3-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604120717.458445-1-f.ebner@proxmox.com>
 References: <20250604120717.458445-1-f.ebner@proxmox.com>
@@ -39,8 +40,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,24 +57,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Generated co-wrappers poll, so they need to be called with the graph
+unlocked.
+
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- include/block/graph-lock.h | 2 +-
+
+Unfortunately, it's not clear how to achieve something similar for the
+mixed wrappers, which would've caught the issue fixed in the following
+patch.
+
+ scripts/block-coroutine-wrapper.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/block/graph-lock.h b/include/block/graph-lock.h
-index 2c26c72108..67c8d04867 100644
---- a/include/block/graph-lock.h
-+++ b/include/block/graph-lock.h
-@@ -169,7 +169,7 @@ bdrv_graph_rdunlock_main_loop(void);
- /*
-  * assert_bdrv_graph_readable:
-  * Make sure that the reader is either the main loop,
-- * or there is at least a reader helding the rdlock.
-+ * or there is at least a reader holding the rdlock.
-  * In this way an incoming writer is aware of the read and waits.
-  */
- void GRAPH_RDLOCK assert_bdrv_graph_readable(void);
+diff --git a/scripts/block-coroutine-wrapper.py b/scripts/block-coroutine-wrapper.py
+index dbbde99e39..cdde957257 100644
+--- a/scripts/block-coroutine-wrapper.py
++++ b/scripts/block-coroutine-wrapper.py
+@@ -186,7 +186,7 @@ def create_co_wrapper(func: FuncDecl) -> str:
+     name = func.target_name
+     struct_name = func.struct_name
+     return f"""\
+-{func.return_type} {func.name}({ func.gen_list('{decl}') })
++{func.return_type} GRAPH_UNLOCKED {func.name}({ func.gen_list('{decl}') })
+ {{
+     {struct_name} s = {{
+         .poll_state.ctx = qemu_get_current_aio_context(),
 -- 
 2.39.5
 
