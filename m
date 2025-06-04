@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0CDBACDF0F
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52856ACDF28
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:32:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMoAc-0006u4-7H; Wed, 04 Jun 2025 09:28:42 -0400
+	id 1uMoAf-0006yK-FT; Wed, 04 Jun 2025 09:28:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAZ-0006sm-Qz
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAc-0006u7-3O
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAY-0004jI-EZ
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:39 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAa-0004jg-Dw
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749043717;
+ s=mimecast20190719; t=1749043719;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7vKpmgPjmhYXTuu7BvlQEe4nDt+V2FcjCdZIcprXjuI=;
- b=iIKe9JVPBNXfSCb+fbJ8elT5OA7POjfUqPcTT3sE953z4talUzyzEC7UfFmSzDHNal3J55
- sCqYimBHZ8rUUX4qIyV8QiKKzMA8XAnPbyOykt1OgbXRweMTzIidTPFqOwZIvj+xSjqcYa
- F4ayaXaF7VmGrLCDZF5NyaZncDVN1r8=
+ bh=VhSz5JkY5LLfO9JP0DfYyzUrOP4ozA4C0+gHoyFHmps=;
+ b=aqDolU5ojYaTQOQl72Xs5Ms64lfu4dnUR6xv26Bjvy9kAPsB+tx8t9+U70RiFUTb/4EpSg
+ T6KD9kf95yyS/h3tfTphCwHFODTi7tlexRkx1RfRuJyYGXURpZhAVTSwkdSgS57vITHOql
+ 6NQmLxMh3GBuFJQRiJF1cxCOuda80bI=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-319-PkYiQZ-BO7CrE__QlrKaFg-1; Wed, 04 Jun 2025 09:28:35 -0400
-X-MC-Unique: PkYiQZ-BO7CrE__QlrKaFg-1
-X-Mimecast-MFC-AGG-ID: PkYiQZ-BO7CrE__QlrKaFg_1749043714
+ us-mta-404-sEwaOvjzM42YMcDZstQDNg-1; Wed, 04 Jun 2025 09:28:38 -0400
+X-MC-Unique: sEwaOvjzM42YMcDZstQDNg-1
+X-Mimecast-MFC-AGG-ID: sEwaOvjzM42YMcDZstQDNg_1749043717
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-450d021b9b1so28762675e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:34 -0700 (PDT)
+ 5b1f17b1804b1-450df53d461so38833765e9.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749043713; x=1749648513;
+ d=1e100.net; s=20230601; t=1749043717; x=1749648517;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7vKpmgPjmhYXTuu7BvlQEe4nDt+V2FcjCdZIcprXjuI=;
- b=c39PUGJVWDM+E7QHx2o941EUukMlIRpEEPgPs1tD9MKd5NWYfNyoGDsKdcsMY9fppp
- Ph8EqtfW20MwQhwyFxUDHJu+RgIINw8Qn1W7PQP23v6+Ue/GI2r5IBPF4kF58go1hMyM
- htsw3AlfZstxA/AnVdNtjn0iJlH2z7X0VgSwZJCZ9ro5hU/3fO1BqVq7eMox8nhZ4xUw
- TQWnBdzxMYn0BTJSnjcWYPbbVjIQZKPfUZNoeV6IslCpVQX1ovbbCeiavV29QC+Rqg5K
- RmxD8d0mVxzAjUhYw8cqRbiWmfP9ctilVAPDjMvq7OrhqXB83jIhQS9/AF/0oOp5NyZb
- HSOw==
-X-Gm-Message-State: AOJu0Yz/AhIGElyqHN8kwHuQ6On3nl0zZG0mK+XKuGzUSHeyqH3jcpQ/
- tEYMVr+zZ3Y2mOGititQtLs2TLamRudZNv9z3dhDnrELyBBHQfXAEawS8QoVmXkS/pD64pO6dTD
- aoTGbzWzWLaq8aBQuxfRuqAodF4euwqF/lJsfJIFAOAsEJNSHW558dB9t
-X-Gm-Gg: ASbGncunG+duODGU1Hhb4WoksgjsaKzjJCo4vpuh+lrhgmgeD83SVJn084Izvlq+TCn
- mdini/KZe+CGpEG3TC0jL3egoeqLaVipIbe8LAzEiBB8nKQ8UQhxrPbqrMSLKAFU68KXQDRk2gc
- ScB4Bhqjx5MpFVruKy1mnfX5y+vOctFXtKpiENcP8+7KMN7DB9OuwsUgC0UKKli2heBSf4AuM/R
- ZKRio21xvxRYaeg+w1atFOH1E1AMfPKbHUXJzjwI+l65XPaxe9H4wNwvXX0qH/S/Z4ZRPTHsIzB
- ILwJCrRO+OTjpUbFN0tttlcOkvqy/UHI3YGoGtNacLt0nCpz70JVxzwKyNf1nmgcvMSMxg==
-X-Received: by 2002:a05:600c:1986:b0:43d:42b:e186 with SMTP id
- 5b1f17b1804b1-451f0a755c6mr26943585e9.8.1749043713519; 
- Wed, 04 Jun 2025 06:28:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJK0LWshRYFkg0cRC4ULrI049mGhGr5B9gQKECkdnvFbOwxQyLIl3Z7nBkbBgJRQZu5j1NIQ==
-X-Received: by 2002:a05:600c:1986:b0:43d:42b:e186 with SMTP id
- 5b1f17b1804b1-451f0a755c6mr26943405e9.8.1749043713177; 
- Wed, 04 Jun 2025 06:28:33 -0700 (PDT)
+ bh=VhSz5JkY5LLfO9JP0DfYyzUrOP4ozA4C0+gHoyFHmps=;
+ b=XMN55O9spQFr4pIe1irrqAXmiv12vE80HRMDJADe6SpWuGCFYJvovbEji30KT/16zH
+ pcKpIesAqBvTk7dCBsOy9Q+8Q6o9spPou1uYDAldvlZ4deC4AEma+O6DLvlfTmMBVh58
+ I95Wu4l5W+5zcAhHlFFSi+u7aMrIS/o7yJAsvU3Oyp2Gj4OjzPD330xlwfahT6w7498H
+ cTTxbJwC23pYhOW0deo8XvUmupEjwFZuxDyu++UAYaHZhnXEXjc88SvgkCDzHNg/24CX
+ aT/xg1iOFx0dKOA7mwhEH0YD/Iaydb/vCJwMTFAXeXrwpmeCaufmhIsM5elKyT4CjBv6
+ f2zw==
+X-Gm-Message-State: AOJu0YyROB9v70XUuLKTC0Mj5wPofyv7MAOhiQyYLqdotZ5OfkRpHgex
+ qVKJG+eezgbEnym3PoNyODNRlBuIiTY2p1nq/fk/snTJyo024PfGfzlc+UcuxoRTcymoVtpSlt8
+ VICBGJab8e5YoggoKy3Kd7GsDEFAWEOEHYu4RaapKMBjjrXLoVOt0mO4T
+X-Gm-Gg: ASbGnct8uiqAF8wEnfEmD2BjGFqcKmqMtDLGtyy5biEN50nmHO6RZhn8EzLDSW4BVui
+ pcltY1fGGGStmKoHJzeT11d3YhmXSnGZebJV01Ex9QyPtBpeXqYpHQSKRDK5v5jCI120Ks24gkb
+ cEVMPjujg43VqUDNqQcGQv1FrbraxXKqOHhsIXpwYJh7jf5vyP6iL5JXh5kk1wMz1lbpqpjQX4K
+ RdUYwI4Swr05PeBaJKL3MiDu8e3e89JQ3ruGY7RApsBK+Ge5qWrlEYsQuHp69rLjHr3Ppzk2EaA
+ UhRW3rYeh1r9F0+3Sho2pjMRz96ck7efIyGhj//ssDnTzwlD86icCdWHtyg1mfHJxv07Qw==
+X-Received: by 2002:a05:600c:19c6:b0:43c:f87c:24ce with SMTP id
+ 5b1f17b1804b1-451f0b0d5cdmr20191245e9.21.1749043717208; 
+ Wed, 04 Jun 2025 06:28:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjEb3i0pDXSToa+sZvdhva1bDq/zVIpDVWfgJNkk1CFvqYKhwpUCtz7xMITElxWqCWMpAMQQ==
+X-Received: by 2002:a05:600c:19c6:b0:43c:f87c:24ce with SMTP id
+ 5b1f17b1804b1-451f0b0d5cdmr20190965e9.21.1749043716752; 
+ Wed, 04 Jun 2025 06:28:36 -0700 (PDT)
 Received: from localhost
  (p200300cfd700f306503d3c798c1bf214.dip0.t-ipconnect.de.
  [2003:cf:d700:f306:503d:3c79:8c1b:f214])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-451ef77b467sm31791285e9.36.2025.06.04.06.28.30
+ ffacd0b85a97d-3a4efe2b35dsm21612708f8f.0.2025.06.04.06.28.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Jun 2025 06:28:31 -0700 (PDT)
+ Wed, 04 Jun 2025 06:28:34 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: [PATCH v2 04/21] fuse: Explicitly set inode ID to 1
-Date: Wed,  4 Jun 2025 15:27:56 +0200
-Message-ID: <20250604132813.359438-5-hreitz@redhat.com>
+Subject: [PATCH v2 05/21] fuse: Change setup_... to mount_fuse_export()
+Date: Wed,  4 Jun 2025 15:27:57 +0200
+Message-ID: <20250604132813.359438-6-hreitz@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250604132813.359438-1-hreitz@redhat.com>
 References: <20250604132813.359438-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -92,7 +92,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,31 +108,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Setting .st_ino to the FUSE inode ID is kind of arbitrary.  While in
-practice it is going to be fixed (to FUSE_ROOT_ID, which is 1) because
-we only have the root inode, that is not obvious in fuse_getattr().
+There is no clear separation between what should go into
+setup_fuse_export() and what should stay in fuse_export_create().
 
-Just explicitly set it to 1 (i.e. no functional change).
+Make it clear that setup_fuse_export() is for mounting only.  Rename it,
+and move everything that has nothing to do with mounting up into
+fuse_export_create().
 
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/export/fuse.c | 49 ++++++++++++++++++++-------------------------
+ 1 file changed, 22 insertions(+), 27 deletions(-)
 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index a93316e1f4..60d68d8fdd 100644
+index 60d68d8fdd..01a5716bdd 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -432,7 +432,7 @@ static void fuse_getattr(fuse_req_t req, fuse_ino_t inode,
+@@ -72,8 +72,7 @@ static void fuse_export_delete(BlockExport *exp);
+ 
+ static void init_exports_table(void);
+ 
+-static int setup_fuse_export(FuseExport *exp, const char *mountpoint,
+-                             bool allow_other, Error **errp);
++static int mount_fuse_export(FuseExport *exp, Error **errp);
+ static void read_from_fuse_export(void *opaque);
+ 
+ static bool is_regular_file(const char *path, Error **errp);
+@@ -193,23 +192,32 @@ static int fuse_export_create(BlockExport *blk_exp,
+     exp->st_gid = getgid();
+ 
+     if (args->allow_other == FUSE_EXPORT_ALLOW_OTHER_AUTO) {
+-        /* Ignore errors on our first attempt */
+-        ret = setup_fuse_export(exp, args->mountpoint, true, NULL);
+-        exp->allow_other = ret == 0;
++        /* Try allow_other == true first, ignore errors */
++        exp->allow_other = true;
++        ret = mount_fuse_export(exp, NULL);
+         if (ret < 0) {
+-            ret = setup_fuse_export(exp, args->mountpoint, false, errp);
++            exp->allow_other = false;
++            ret = mount_fuse_export(exp, errp);
+         }
+     } else {
+         exp->allow_other = args->allow_other == FUSE_EXPORT_ALLOW_OTHER_ON;
+-        ret = setup_fuse_export(exp, args->mountpoint, exp->allow_other, errp);
++        ret = mount_fuse_export(exp, errp);
+     }
+     if (ret < 0) {
+         goto fail;
      }
  
-     statbuf = (struct stat) {
--        .st_ino     = inode,
-+        .st_ino     = 1,
-         .st_mode    = exp->st_mode,
-         .st_nlink   = 1,
-         .st_uid     = exp->st_uid,
++    g_hash_table_insert(exports, g_strdup(exp->mountpoint), NULL);
++
++    aio_set_fd_handler(exp->common.ctx,
++                       fuse_session_fd(exp->fuse_session),
++                       read_from_fuse_export, NULL, NULL, NULL, exp);
++    exp->fd_handler_set_up = true;
++
+     return 0;
+ 
+ fail:
++    fuse_export_shutdown(blk_exp);
+     fuse_export_delete(blk_exp);
+     return ret;
+ }
+@@ -227,10 +235,10 @@ static void init_exports_table(void)
+ }
+ 
+ /**
+- * Create exp->fuse_session and mount it.
++ * Create exp->fuse_session and mount it.  Expects exp->mountpoint,
++ * exp->writable, and exp->allow_other to be set as intended for the mount.
+  */
+-static int setup_fuse_export(FuseExport *exp, const char *mountpoint,
+-                             bool allow_other, Error **errp)
++static int mount_fuse_export(FuseExport *exp, Error **errp)
+ {
+     const char *fuse_argv[4];
+     char *mount_opts;
+@@ -243,7 +251,7 @@ static int setup_fuse_export(FuseExport *exp, const char *mountpoint,
+      */
+     mount_opts = g_strdup_printf("max_read=%zu,default_permissions%s",
+                                  FUSE_MAX_BOUNCE_BYTES,
+-                                 allow_other ? ",allow_other" : "");
++                                 exp->allow_other ? ",allow_other" : "");
+ 
+     fuse_argv[0] = ""; /* Dummy program name */
+     fuse_argv[1] = "-o";
+@@ -256,30 +264,17 @@ static int setup_fuse_export(FuseExport *exp, const char *mountpoint,
+     g_free(mount_opts);
+     if (!exp->fuse_session) {
+         error_setg(errp, "Failed to set up FUSE session");
+-        ret = -EIO;
+-        goto fail;
++        return -EIO;
+     }
+ 
+-    ret = fuse_session_mount(exp->fuse_session, mountpoint);
++    ret = fuse_session_mount(exp->fuse_session, exp->mountpoint);
+     if (ret < 0) {
+         error_setg(errp, "Failed to mount FUSE session to export");
+-        ret = -EIO;
+-        goto fail;
++        return -EIO;
+     }
+     exp->mounted = true;
+ 
+-    g_hash_table_insert(exports, g_strdup(mountpoint), NULL);
+-
+-    aio_set_fd_handler(exp->common.ctx,
+-                       fuse_session_fd(exp->fuse_session),
+-                       read_from_fuse_export, NULL, NULL, NULL, exp);
+-    exp->fd_handler_set_up = true;
+-
+     return 0;
+-
+-fail:
+-    fuse_export_shutdown(&exp->common);
+-    return ret;
+ }
+ 
+ /**
 -- 
 2.49.0
 
