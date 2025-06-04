@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CC0ACDD51
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 13:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF17DACDD52
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 13:58:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMmkp-0005CT-Nz; Wed, 04 Jun 2025 07:57:59 -0400
+	id 1uMmkt-0005D4-17; Wed, 04 Jun 2025 07:58:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uMmkn-0005C0-1Q
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 07:57:57 -0400
+ id 1uMmkq-0005Cl-N8; Wed, 04 Jun 2025 07:58:00 -0400
 Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uMmkk-0000nv-Vr
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 07:57:56 -0400
+ id 1uMmko-0000nv-Pp; Wed, 04 Jun 2025 07:58:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749038275; x=1780574275;
+ t=1749038279; x=1780574279;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iL6MdF/NutyJzJOosq4Y7HU+q/TMdMmP5rP3J7qCWm8=;
- b=Pd5rIF24lN8zSCzJcuRMGBJ+rjYlAdIl3NChYaejDI/UBTt633EBRFRV
- l8/lT5fNXtcTYVclyInJlORIjvjh5kCgPeQf16VNmah6KYsaNXIb4G9zl
- sXgXCfr/tMwQOveCiLCgP3Zzzjt4teHwiOzXkavfQ4cOAd7BqBkt0cyPD
- kdA++rTPTXys6xM8lR6ZNRayrBbht+GVCjX7eohLhNuc91qdSPHYvcYol
- EsYhtJ8GNBg7a3NMUJL/BtkCsFQLGZxzx6G0mayN/eZKDDRU9rITyu8Rm
- Wpi9L16oEp7/kal1A2s6vLRqkdsY+L4z4G/JFVh0c7kInjmVyBprD2qG5 A==;
-X-CSE-ConnectionGUID: zCWem5SuQbWmVNjuuUbn6w==
-X-CSE-MsgGUID: 3h7+Nnm+TEaPozb9kZJtUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="54915363"
-X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; d="scan'208";a="54915363"
+ bh=IjSCOf7F/bOSAtnrMFcFxs/bciMfBh4IH76ect/nfBs=;
+ b=VCUMfYB/eZ35ySCWAXYCTqemqOhDZpDOyCRrcNYCCgMLH4WC067au2Ll
+ Z+GdznJcVNTHV6aU+L20lEe6NXYyYInrEfUWpw13oqKDIKe55aqk4Zw5u
+ B1NqIHD+mL/UyRX0otvd1H8jiSSOeS6ReznISiSNQ7zYfGhIdZdGif4nH
+ F421UWWic2RDVkskbpgtm0g4Ji0Zr6Q6LbYwik+MRoZiAvpw85+hoD9rc
+ o5vl9239vEORz9M7YPmTvkK/ZHiA0MIul8QwxiDTI6YN7yBQ9ihfhjDqA
+ O56Us9V4/6/y1AfqwFCFpobKeHtW5AxpUbM7OguIGs8xsht/HnJTALQaP g==;
+X-CSE-ConnectionGUID: iqWeSYXGQlCXBVIozUAjoA==
+X-CSE-MsgGUID: Lhwj6X2mRu6+gTRbaZJSXA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="54915371"
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; d="scan'208";a="54915371"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2025 04:57:53 -0700
-X-CSE-ConnectionGUID: A9zbaOoLTdiTij4CRtvsiQ==
-X-CSE-MsgGUID: zSu6S3xVTxCcWGoi9EiLSA==
+ 04 Jun 2025 04:57:56 -0700
+X-CSE-ConnectionGUID: jfduiF5jR6S5bzOkGEIZEQ==
+X-CSE-MsgGUID: xIsgy2K3TUGO776OgypQ8g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; d="scan'208";a="150048289"
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; d="scan'208";a="150048307"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2025 04:57:51 -0700
+ 04 Jun 2025 04:57:53 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: chao.p.peng@intel.com, david@redhat.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v2 2/5] virtio-pmem: Fix definition of VirtIOPMEMClass
-Date: Wed,  4 Jun 2025 19:53:57 +0800
-Message-Id: <20250604115400.98905-3-zhenzhong.duan@intel.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org (open list:ASPEED BMCs)
+Subject: [PATCH v2 3/5] hw/gpio/aspeed: Fix definition of AspeedGPIOClass
+Date: Wed,  4 Jun 2025 19:53:58 +0800
+Message-Id: <20250604115400.98905-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250604115400.98905-1-zhenzhong.duan@intel.com>
 References: <20250604115400.98905-1-zhenzhong.duan@intel.com>
@@ -82,28 +85,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VirtIOPMEMClass's parent is VirtioDeviceClass rather than VirtIODevice.
+AspeedGPIOClass's parent is SysBusDeviceClass rather than SysBusDevice.
 
-Fixes: 5f503cd9f388 ("virtio-pmem: add virtio device")
+Fixes: 4b7f956862dc ("hw/gpio: Add basic Aspeed GPIO model for AST2400 and AST2500")
 Suggested-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/virtio/virtio-pmem.h | 2 +-
+ include/hw/gpio/aspeed_gpio.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/virtio/virtio-pmem.h b/include/hw/virtio/virtio-pmem.h
-index fc4fd1f7fe..9cce600d0b 100644
---- a/include/hw/virtio/virtio-pmem.h
-+++ b/include/hw/virtio/virtio-pmem.h
-@@ -36,7 +36,7 @@ struct VirtIOPMEM {
+diff --git a/include/hw/gpio/aspeed_gpio.h b/include/hw/gpio/aspeed_gpio.h
+index e1e6c54333..e6b2fe71b5 100644
+--- a/include/hw/gpio/aspeed_gpio.h
++++ b/include/hw/gpio/aspeed_gpio.h
+@@ -70,7 +70,7 @@ typedef struct AspeedGPIOReg {
+ } AspeedGPIOReg;
  
- struct VirtIOPMEMClass {
-     /* private */
--    VirtIODevice parent;
-+    VirtioDeviceClass parent_class;
- 
-     /* public */
-     void (*fill_device_info)(const VirtIOPMEM *pmem, VirtioPMEMDeviceInfo *vi);
+ struct AspeedGPIOClass {
+-    SysBusDevice parent_obj;
++    SysBusDeviceClass parent_class;
+     const GPIOSetProperties *props;
+     uint32_t nr_gpio_pins;
+     uint32_t nr_gpio_sets;
 -- 
 2.34.1
 
