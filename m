@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE6EACDF26
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F23BACDF1B
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:30:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMoBL-0007RR-7q; Wed, 04 Jun 2025 09:29:27 -0400
+	id 1uMoBe-0007wU-5o; Wed, 04 Jun 2025 09:29:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAp-00079i-EO
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:06 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAr-0007A3-Er
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAn-0004lJ-Qy
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:55 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAp-0004lc-UU
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749043733;
+ s=mimecast20190719; t=1749043735;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iBWE4FPpwD87XkHHPVGSv5gJzue+dVBIat7kcbz/nkQ=;
- b=bJnAimTKHaBh4YVrDbxGteIEtMtsT4a/cJn3exq9gRQIC7BMZq7M9fEP4GGhVA7bN/JYvE
- JC2HVB/9YLRLfHlVp56J6eDZ0on6xIraLoqdteogbOT45FOS39gJzORY279o4QeNXLVSJ/
- omXvKquPRucGZhytDJFq8hsaehFp248=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/2MYp3UhabT2qS0mTPTCo+T0B/SM6NTgMC1jdFmgg9Q=;
+ b=FkOLMGQZt1EmPFUE5DlpxZtfXKCoy7CwHfGSvTagSDllnM9NNVKqeI7CbvbTp9IUuJm+nQ
+ ZaUR5r/ryPSmEt4sAES7rAGAnBUtbgGElTc/ZDyiDJBB/m6k3AYvQwbJyCJ5jNJLwcxEF5
+ MWveq787DyXd9zIfQjkHtk8uO8SJoJ8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-108-WpD7TICdNIWKFcIqaTsA6A-1; Wed, 04 Jun 2025 09:28:50 -0400
-X-MC-Unique: WpD7TICdNIWKFcIqaTsA6A-1
-X-Mimecast-MFC-AGG-ID: WpD7TICdNIWKFcIqaTsA6A_1749043729
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-450d244bfabso50953555e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:50 -0700 (PDT)
+ us-mta-572-LED5fRMyMX-VtLABjQLVjg-1; Wed, 04 Jun 2025 09:28:54 -0400
+X-MC-Unique: LED5fRMyMX-VtLABjQLVjg-1
+X-Mimecast-MFC-AGG-ID: LED5fRMyMX-VtLABjQLVjg_1749043733
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-450db029f2aso25052365e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749043729; x=1749648529;
+ d=1e100.net; s=20230601; t=1749043733; x=1749648533;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iBWE4FPpwD87XkHHPVGSv5gJzue+dVBIat7kcbz/nkQ=;
- b=BX3AWyo53z78Y7hT4f8ubQFQzioi2SW61T7YFi2mYQUvGfpJTAUu3D90el2BAqJ4YJ
- o325IykNHTwV8PkC8TT57CGuEUpp3i9BJNtSgMazGHYjOyl78w+5AqK7MkoWoG81J9ur
- /cTvrV1XgYzyrIeZc8vmmoup4TBnLHeWrXzFPANmfP6fh1h1e0bgiatPomx44/qHdimU
- QA47VqkSPxhFKytoJgOkcFlYuynK81PcSObB2QKHUqPQ0URo3pjT3bUw4JZPnlA12IaJ
- Hr86mEJd0NTYrSgDUK4ZtLmUcKXJIPqbHEcn+zHYlP1UTOTe6AxGiZ8hhcwZCx8TGPu1
- xbsQ==
-X-Gm-Message-State: AOJu0YwZ+4/F3uWhMXigI9eCQXsU0PSZ8rEDKhIpDTOXChk4pEp6qkdu
- fJkg73vosdKaPFv9hGkLKm2AswQhfNrOBpJP/P0HguygdeGBt7KGzmV0wAyRFKcEMiwdtoWLCm9
- 0OFeFMspzT6yfGPRBlKvHQPH7+UtHIDAfu245ZcMbJyCMRhCV2uxFyKJN
-X-Gm-Gg: ASbGncu4PcI05PRb0Ewjh4i0rWZSxNMJIhy4w3le67O+RsNHSOncpTpX1ts6WrKIf8r
- ljyf54iynjX5bYskcah0s74se3rL86ZE6aGcErOsGr3guZiKeJXtCegepqkOe65uBYLEqEKOknq
- NhJr/QvIBGiKxfADE0HclX33HpEZmQJRoS7wGY7KcdVmKGXdc9eceQ8cLkoMEtYJpt8Mnbb/sUk
- XaGNbU9maV97P8GplaPmBW6acQkp7/KAcB9h+dQpBZsuWAabgXCxW1RelKXo2SqiQv1bzJ56tCj
- /xtXFg13c4mgcpQzjOl/IMAC0/Te9liw/lYe4hKKLxSZAuFv87tX6dJnYjjT2YNmVPDFonWbqKU
- rj6Zt
-X-Received: by 2002:a05:600c:1e08:b0:441:d438:505c with SMTP id
- 5b1f17b1804b1-451f0b54b6fmr25681655e9.32.1749043729421; 
- Wed, 04 Jun 2025 06:28:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEjCziu0bTeb/MJ2hGI7TDTIwhbWKGcXichG7/GmKzc8U0sNYvy2KiZ+ROw3vMJZjRpIn4MZw==
-X-Received: by 2002:a05:600c:1e08:b0:441:d438:505c with SMTP id
- 5b1f17b1804b1-451f0b54b6fmr25681415e9.32.1749043728983; 
- Wed, 04 Jun 2025 06:28:48 -0700 (PDT)
+ bh=/2MYp3UhabT2qS0mTPTCo+T0B/SM6NTgMC1jdFmgg9Q=;
+ b=ONvLq0jv3D9KgUsSaZyCcgfofDCHArnIh9lvv051eZGRYZX2rIHDW5qsRa31jVZ8kE
+ /Sho6GJhGpSUSBBvh++w39hMKJWZ5jGGL/IiXe8UPkYZG3GPN+ILaSPN5SGbdAMuPLN6
+ 0J6FncRi1uB8MbQCc7LdvHUg5CjwhmS1DK1CoeeRseOwU3fYPReMJi2wP6ldToNyNQhd
+ ohlBkEs/fyceHh0cU94Q2F3d3/qWC6P405dEL89QuQCevJ86iDjCpyIYxot3uaUIS8fq
+ ebY68eWtoWCm8QWfC8IJGb+xQC40XS2VYtzJ3NciTTs7MEUnC9BxyKW3z6ir5bVvDa5h
+ 4aAQ==
+X-Gm-Message-State: AOJu0Yyl6fKlsfy1BVs1B/ijCSDeJjIF7NYiMwosHHmYGVlku9m+VENm
+ zMWth3NuFsaTo/MbB6VTYVFZywAs4VSBtwF/vYbQqQAQpLOp3nXE74iW6AO1YjQ4Mp2VwDDNA3q
+ 4WjjHSwmoHbbesd5EoRlFmdHSzrTnbPllBtpbTJGP33oOhMV+BhjDDy6A
+X-Gm-Gg: ASbGncvV8FNwQOXNaNt9RJZNB4Ma2FAW8IXoOMpGcPIOujlYQJo7fusH7XdkEi/XNW8
+ vKNt/u3CyR9fYMEUKSQIWYyoi2ALZje53hlmqxz+QXx8rdFdNms1yvbSQvK/kyzFsUiyCJFhTI8
+ hw+n3R9T+jV5K8/iooXXfB+Zxutx5WbYO1fmdOSB+8vO/i1g75+Go3eu71C5APsltd29+0Z6zXk
+ t9zkgNk7Ig3sKbqUtcknhieT/Ci4UXy2Xz/V0KE39C5+yKluHHM7jBsYpf6IUa0vv0DDeITjBuV
+ YWu8fpEXE5Wu3qEo+Bmfs4mtqeqdKsnCjIaYQ92waMWMBU0RyetGrJfH73wRVUX3pVa8XJSCdbD
+ nv9jx
+X-Received: by 2002:a05:600c:1c29:b0:43d:fa5d:9315 with SMTP id
+ 5b1f17b1804b1-451f0b3f724mr23329315e9.33.1749043732881; 
+ Wed, 04 Jun 2025 06:28:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnts/kD0D1GKuZC6Ir2ybxZQVv6nwJiBUsmCm2gsaCcdaMb12ux+CfUepqnITMg22G6hjJng==
+X-Received: by 2002:a05:600c:1c29:b0:43d:fa5d:9315 with SMTP id
+ 5b1f17b1804b1-451f0b3f724mr23329045e9.33.1749043732503; 
+ Wed, 04 Jun 2025 06:28:52 -0700 (PDT)
 Received: from localhost
  (p200300cfd700f306503d3c798c1bf214.dip0.t-ipconnect.de.
  [2003:cf:d700:f306:503d:3c79:8c1b:f214])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-450d7fa2541sm195657605e9.15.2025.06.04.06.28.46
+ 5b1f17b1804b1-450d8000e3esm199129705e9.22.2025.06.04.06.28.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Jun 2025 06:28:47 -0700 (PDT)
+ Wed, 04 Jun 2025 06:28:49 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: [PATCH v2 08/21] fuse: Introduce fuse_{at,de}tach_handlers()
-Date: Wed,  4 Jun 2025 15:28:00 +0200
-Message-ID: <20250604132813.359438-9-hreitz@redhat.com>
+Subject: [PATCH v2 09/21] fuse: Introduce fuse_{inc,dec}_in_flight()
+Date: Wed,  4 Jun 2025 15:28:01 +0200
+Message-ID: <20250604132813.359438-10-hreitz@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250604132813.359438-1-hreitz@redhat.com>
 References: <20250604132813.359438-1-hreitz@redhat.com>
@@ -109,86 +109,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pull setting up and tearing down the AIO context handlers into two
-dedicated functions.
+This is how vduse-blk.c does it, and it does seem better to have
+dedicated functions for it.
 
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ block/export/fuse.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index e1134a27d6..15ec7a5c05 100644
+index 15ec7a5c05..bcbeaf92f4 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -78,27 +78,34 @@ static void read_from_fuse_export(void *opaque);
+@@ -78,6 +78,25 @@ static void read_from_fuse_export(void *opaque);
  static bool is_regular_file(const char *path, Error **errp);
  
  
--static void fuse_export_drained_begin(void *opaque)
-+static void fuse_attach_handlers(FuseExport *exp)
- {
--    FuseExport *exp = opaque;
-+    aio_set_fd_handler(exp->common.ctx,
-+                       fuse_session_fd(exp->fuse_session),
-+                       read_from_fuse_export, NULL, NULL, NULL, exp);
-+    exp->fd_handler_set_up = true;
-+}
- 
-+static void fuse_detach_handlers(FuseExport *exp)
++static void fuse_inc_in_flight(FuseExport *exp)
 +{
-     aio_set_fd_handler(exp->common.ctx,
-                        fuse_session_fd(exp->fuse_session),
-                        NULL, NULL, NULL, NULL, NULL);
-     exp->fd_handler_set_up = false;
- }
- 
-+static void fuse_export_drained_begin(void *opaque)
-+{
-+    fuse_detach_handlers(opaque);
++    if (qatomic_fetch_inc(&exp->in_flight) == 0) {
++        /* Prevent export from being deleted */
++        blk_exp_ref(&exp->common);
++    }
 +}
 +
- static void fuse_export_drained_end(void *opaque)
++static void fuse_dec_in_flight(FuseExport *exp)
++{
++    if (qatomic_fetch_dec(&exp->in_flight) == 1) {
++        /* Wake AIO_WAIT_WHILE() */
++        aio_wait_kick();
++
++        /* Now the export can be deleted */
++        blk_exp_unref(&exp->common);
++    }
++}
++
+ static void fuse_attach_handlers(FuseExport *exp)
  {
+     aio_set_fd_handler(exp->common.ctx,
+@@ -297,9 +316,7 @@ static void read_from_fuse_export(void *opaque)
      FuseExport *exp = opaque;
+     int ret;
  
-     /* Refresh AioContext in case it changed */
-     exp->common.ctx = blk_get_aio_context(exp->common.blk);
+-    blk_exp_ref(&exp->common);
 -
--    aio_set_fd_handler(exp->common.ctx,
--                       fuse_session_fd(exp->fuse_session),
--                       read_from_fuse_export, NULL, NULL, NULL, exp);
--    exp->fd_handler_set_up = true;
-+    fuse_attach_handlers(exp);
+-    qatomic_inc(&exp->in_flight);
++    fuse_inc_in_flight(exp);
+ 
+     do {
+         ret = fuse_session_receive_buf(exp->fuse_session, &exp->fuse_buf);
+@@ -317,11 +334,7 @@ static void read_from_fuse_export(void *opaque)
+     fuse_session_process_buf(exp->fuse_session, &exp->fuse_buf);
+ 
+ out:
+-    if (qatomic_fetch_dec(&exp->in_flight) == 1) {
+-        aio_wait_kick(); /* wake AIO_WAIT_WHILE() */
+-    }
+-
+-    blk_exp_unref(&exp->common);
++    fuse_dec_in_flight(exp);
  }
  
- static bool fuse_export_drained_poll(void *opaque)
-@@ -209,11 +216,7 @@ static int fuse_export_create(BlockExport *blk_exp,
- 
-     g_hash_table_insert(exports, g_strdup(exp->mountpoint), NULL);
- 
--    aio_set_fd_handler(exp->common.ctx,
--                       fuse_session_fd(exp->fuse_session),
--                       read_from_fuse_export, NULL, NULL, NULL, exp);
--    exp->fd_handler_set_up = true;
--
-+    fuse_attach_handlers(exp);
-     return 0;
- 
- fail:
-@@ -329,10 +332,7 @@ static void fuse_export_shutdown(BlockExport *blk_exp)
-         fuse_session_exit(exp->fuse_session);
- 
-         if (exp->fd_handler_set_up) {
--            aio_set_fd_handler(exp->common.ctx,
--                               fuse_session_fd(exp->fuse_session),
--                               NULL, NULL, NULL, NULL, NULL);
--            exp->fd_handler_set_up = false;
-+            fuse_detach_handlers(exp);
-         }
-     }
- 
+ static void fuse_export_shutdown(BlockExport *blk_exp)
 -- 
 2.49.0
 
