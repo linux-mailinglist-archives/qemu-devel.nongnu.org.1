@@ -2,48 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8B7ACDA7A
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 11:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A26ACDA18
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 10:41:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMk1Y-0002RP-7u; Wed, 04 Jun 2025 05:03:04 -0400
+	id 1uMjfj-00051X-P4; Wed, 04 Jun 2025 04:40:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uMk1N-0002R5-Gc; Wed, 04 Jun 2025 05:02:54 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>)
- id 1uMk1I-0003XR-VF; Wed, 04 Jun 2025 05:02:52 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxzOKoC0Bouz8LAQ--.34325S3;
- Wed, 04 Jun 2025 17:02:32 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMAxj8WnC0Bost0IAQ--.31075S2;
- Wed, 04 Jun 2025 17:02:31 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org,
-	richard.henderson@linaro.org
-Cc: maobibo@loongson.cn, philmd@linaro.org, lorenz.hetterich@cispa.de,
- qemu-stable@nongnu.org
-Subject: [PATCH v5] target/loongarch: fix vldi/xvldi raise wrong error
-Date: Wed,  4 Jun 2025 16:40:05 +0800
-Message-Id: <20250604084005.528539-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uMjfg-000515-Ic
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 04:40:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uMjfe-0000nv-4f
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 04:40:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749026424;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bbLMzLUNuiAAl2lCzowt+QCq+sNKBAMVqYXJdqCSKAg=;
+ b=NEq+x9X6WdtIEWbfZSL+dBHabjBfXdiRcVxDzVoQhZG6+Tjgd2qe22RL3OAhjq3WzP/myh
+ Dsz3Z71SA/fY9JUE6uTL8f5KyAGHDymGdQYOe2NZQI7LEqBnBKlK0oqxZUnH2YozbqrFk3
+ 3Seq5ezNDG5hsUocZHK2Q12VnT5VDDM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-100-JWozWwfwMQmmXbOyCn7GAg-1; Wed,
+ 04 Jun 2025 04:40:21 -0400
+X-MC-Unique: JWozWwfwMQmmXbOyCn7GAg-1
+X-Mimecast-MFC-AGG-ID: JWozWwfwMQmmXbOyCn7GAg_1749026418
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 85AE81956080; Wed,  4 Jun 2025 08:40:18 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.60])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C786C18002A5; Wed,  4 Jun 2025 08:40:12 +0000 (UTC)
+Date: Wed, 4 Jun 2025 09:40:09 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH v3 3/3] docs: define policy forbidding use of AI code
+ generators
+Message-ID: <aEAGadbMexZ9mm4a@redhat.com>
+References: <20250603142524.4043193-1-armbru@redhat.com>
+ <20250603142524.4043193-4-armbru@redhat.com>
+ <CAJSP0QUGaQEwhVh_w6Wbdm-Nqo_2kHcb+eS2Simq-x9J=-7qkg@mail.gmail.com>
+ <87a56o1154.fsf@pond.sub.org> <aD_yhelX-w4Vdm8Z@redhat.com>
+ <3df2ae5d-c1c6-45ee-8119-ca42e17a0d98@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxj8WnC0Bost0IAQ--.31075S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+In-Reply-To: <3df2ae5d-c1c6-45ee-8119-ca42e17a0d98@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -58,65 +97,164 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-on qemu we got an aborted error
-**
-ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
-Bail out! ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
-Aborted (core dumped)
-but on 3A600/3A5000 we got a "Illegal instruction" error.
+On Wed, Jun 04, 2025 at 09:54:33AM +0200, Philippe Mathieu-Daudé wrote:
+> On 4/6/25 09:15, Daniel P. Berrangé wrote:
+> > On Wed, Jun 04, 2025 at 08:17:27AM +0200, Markus Armbruster wrote:
+> > > Stefan Hajnoczi <stefanha@gmail.com> writes:
+> > > 
+> > > > On Tue, Jun 3, 2025 at 10:25 AM Markus Armbruster <armbru@redhat.com> wrote:
+> > > > > 
+> > > > > From: Daniel P. Berrangé <berrange@redhat.com>
+> >   >> +
+> > > > > +The increasing prevalence of AI code generators, most notably but not limited
+> > > > 
+> > > > More detail is needed on what an "AI code generator" is. Coding
+> > > > assistant tools range from autocompletion to linters to automatic code
+> > > > generators. In addition there are other AI-related tools like ChatGPT
+> > > > or Gemini as a chatbot that can people use like Stackoverflow or an
+> > > > API documentation summarizer.
+> > > > 
+> > > > I think the intent is to say: do not put code that comes from _any_ AI
+> > > > tool into QEMU.
+> > > > 
+> > > > It would be okay to use AI to research APIs, algorithms, brainstorm
+> > > > ideas, debug the code, analyze the code, etc but the actual code
+> > > > changes must not be generated by AI.
+> > 
+> > The scope of the policy is around contributions we receive as
+> > patches with SoB. Researching / brainstorming / analysis etc
+> > are not contribution activities, so not covered by the policy
+> > IMHO.
+> > 
+> > > 
+> > > The existing text is about "AI code generators".  However, the "most
+> > > notably LLMs" that follows it could lead readers to believe it's about
+> > > more than just code generation, because LLMs are in fact used for more.
+> > > I figure this is your concern.
+> > > 
+> > > We could instead start wide, then narrow the focus to code generation.
+> > > Here's my try:
+> > > 
+> > >    The increasing prevalence of AI-assisted software development results
+> > >    in a number of difficult legal questions and risks for software
+> > >    projects, including QEMU.  Of particular concern is code generated by
+> > >    `Large Language Models
+> > >    <https://en.wikipedia.org/wiki/Large_language_model>`__ (LLMs).
+> > 
+> > Documentation we maintain has the same concerns as code.
+> > So I'd suggest to substitute 'code' with 'code / content'.
+> 
+> Why couldn't we accept documentation patches improved using LLM?
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2971
+I would flip it around and ask why would documentation not be held
+to the same standard as code, when it comes to licensing and legal
+compliance ?
 
-Fixes: 29bb5d727ff ("target/loongarch: Implement vldi")
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/tcg/insn_trans/trans_vec.c.inc | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+This is all copyright content that we merge & distribute under the
+same QEMU licensing terms, and we have the same legal obligations
+whether it is "source code" or "documentation" or other content
+that is not traditional "source code" (images for example).
 
-diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-index dff92772ad..9d82d162a9 100644
---- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-@@ -3465,7 +3465,7 @@ TRANS(xvmsknz_b, LASX, gen_xx, gen_helper_vmsknz_b)
- static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
- {
-     int mode;
--    uint64_t data, t;
-+    uint64_t data = 0, t;
- 
-     /*
-      * imm bit [11:8] is mode, mode value is 0-12.
-@@ -3570,17 +3570,25 @@ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
-         }
-         break;
-     default:
--        generate_exception(ctx, EXCCODE_INE);
-         g_assert_not_reached();
-     }
-     return data;
- }
- 
-+static bool check_vldi_mode(arg_vldi *a)
-+{
-+   return (a->imm >>8 & 0xf) <= 12;
-+}
- static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
- {
-     int sel, vece;
-     uint64_t value;
- 
-+    if (!check_vldi_mode(a)){
-+        generate_exception(ctx, EXCCODE_INE);
-+        return true;
-+    }
-+
-     if (!check_vec(ctx, oprsz)) {
-         return true;
-     }
+
+> As a non-native English speaker being often stuck trying to describe
+> function APIs, I'm very tempted to use a LLM to review my sentences
+> and make them better understandable.
+
+I can understand that desire, and it is an admittedly tricky situation
+and tradeoff for which I don't have a great answer.
+
+As a starting point we (as reviewers/maintainers) must be broadly
+very tolerant & accepting of content that is not perfect English,
+because we know many (probably even the majority of) contributors
+won't have English as their first language.
+
+As a reviewer I don't mind imperfect language in submissions. Even
+if language is not perfect it is at least a direct expression of
+the author's understanding and thus we can have a level of trust
+in the docs based on our community experience with the contributor.
+
+If docs have been altered in any significant manner by an LLM,
+even if they are linguistically improved, IMHO, knowing that use
+of LLM would reduce my personal trust in the technically accuracy
+of the contribution.
+
+This is straying into the debate around the accuracy of LLMs though,
+which is interesting, but tangential from the purpose of this policy
+which aims to focus on the code provenance / legal side. 
+
+
+
+So, back on track, a important point is that this policy (& the
+legal concerns/risks it attempts to address) are implicitly
+around contributions that can be considered copyrightable.
+
+Some so called "trivial" work can be so simplistic as to not meet
+the threshold for copyright protection, and it is thus easy for the
+DCO requirements to be satisfied.
+
+
+As a person, when you write the API documentation from scratch,
+your output would generally be considered to be copyrightable
+contribution by the author.
+
+When a reviewer then suggests changes to your docs, most of the
+time those changes are so trivial, that the reviewer wouldn't be
+claiming copyright over the resulting work.
+
+If the reviewer completely rewrites entire sentences in the
+docs though, though would be able to claim copyright over part
+of the resulting work.
+
+
+The tippping point between copyrightable/non-copyrightable is
+hard to define in a policy. It is inherantly fuzzy, and somewhat
+of a "you'll know it when you see it" or "lets debate it in court"
+situation...
+
+
+So back to LLMs.
+
+
+If you ask the LLM (or an agent using an LLM) to entirely write
+the API docs from scratch, I think that should be expected to
+fall under this proposed contribution policy in general.
+
+
+If you write the API docs yourself and ask the LLM to review and
+suggest improvements, that MAY or MAY NOT fall under this policy.
+
+If the LLM suggested tweaks were minor enough to be considered
+not to meet the threshold to be copyrightable it would be fine,
+this is little different to a human reviewer suggesting tweaks.
+
+
+If the LLM suggested large scale rewriting that would be harder
+to draw the line, but would tend towards falling under this
+contribution policy.
+
+So it depends on the scope of what the LLM suggested as a change
+to your docs.
+
+IOW, LLM-as-sparkling-auto-correct is probably OK, but
+LLM-as-book-editor / LLM-as-ghost-writer is probably NOT OK
+
+This is a scenario where the QEMU contributor has to use their
+personal judgement as to whether their use of LLM in a docs context
+is compliant with this policy, or not. I don't think we should try
+to describe this in the policy given how fuzzy the situation is.
+
+NB, this copyrightable/non-copyrightable situation applies to source
+code too, not just docs.
+
+With regards,
+Daniel
 -- 
-2.34.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
