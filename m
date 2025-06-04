@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB875ACD4BD
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 03:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5153ACD617
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 04:58:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMcy9-0006PF-Cv; Tue, 03 Jun 2025 21:31:05 -0400
+	id 1uMeIN-00022y-F3; Tue, 03 Jun 2025 22:56:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uMcy6-0006NS-3Z
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 21:31:02 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uMcy2-0006KN-Mt
- for qemu-devel@nongnu.org; Tue, 03 Jun 2025 21:31:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749000659; x=1780536659;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=IHfBvoFU6LtxKPLy7BIfFHf5uu/2TIlBFeIop9bjzJc=;
- b=lbAG1bo/vYPyuV9GsiFqoNKR6qMD38cLbhLi1L+p4x3gBsrhg/vd3kfI
- Q9n5vc8HvkHu7XqnVhs17ySVlUjRH8T2nuwo71BZ/mUIUlrmb1C+kYaWw
- V5Ub9vkqeE6YNDcEuvNwGlwaPixeBsTxGsDe6Owgf5OUFbaAKVvcKsVxA
- h3pfUvWOTy+A0i5JcU6ORXgQcY6OZshFpmzd/ETvkBm6dYUTjjO74IUCR
- HBNjP3EQE6tvEpsUpB3P42a59JBFf6z27FAtY2QUvNKwEmm52N84qwdc1
- PmIjrBu1fg5IR/ftKIf4fLnddSwAso1gRV06o2NTlNmQGvGWCKBLmTcBL Q==;
-X-CSE-ConnectionGUID: Yt+NN0siTK6iekJKDSgqXw==
-X-CSE-MsgGUID: 2ZPRG1mSRIWXZoZA3BXOzQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="50922747"
-X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; d="scan'208";a="50922747"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2025 18:30:54 -0700
-X-CSE-ConnectionGUID: 3BPggVVoQsS12nDTzZycTA==
-X-CSE-MsgGUID: LXmr38a3QH6wZxtnICllxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; d="scan'208";a="182201574"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2025 18:30:52 -0700
-Message-ID: <4ac8c8b0-700b-4fac-ae4c-6531fc6b682e@intel.com>
-Date: Wed, 4 Jun 2025 09:30:48 +0800
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1uMeII-000226-NA; Tue, 03 Jun 2025 22:55:58 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1uMeIE-0000N7-V8; Tue, 03 Jun 2025 22:55:57 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-23035b3edf1so57515765ad.3; 
+ Tue, 03 Jun 2025 19:55:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1749005751; x=1749610551; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=BOxyV7A5wkw9VHMD9tX5I+ex7BtKwvVTWy4SVGhvFrk=;
+ b=HstHK+Kir9qMh8FQ0AuoyKDUd0HZ4Foa8XrmGJ7VoMx+42gm0f0uffFWkdYd2v8H2s
+ HCCRXrvH65V9kOy7vFJ+um/N7C1rZlc3Zgd/okaoAlj/06ws1mPRCJYkh8fIhyapDVQ+
+ TTFXJ5eE1nDBo2COqIFDWEJwpBTTL2Tak5s3kYJewx7eixNADk8EzCjGuR0YqsWf3bax
+ eEru+5cQ61WHkI3m/8ixwLIJIUsZf2x1CYkUkNfBeK+N6TyPOmVxd/ZdwvSZIpwyeXK4
+ +KgJ1mHItwCAK0OxcnYPkcHfMejWIVZzTkfw3+W+g6U56dPWg1xYbHA5ijnwZX4UFO21
+ sxEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749005751; x=1749610551;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BOxyV7A5wkw9VHMD9tX5I+ex7BtKwvVTWy4SVGhvFrk=;
+ b=DIfrb9DzymQcSh1Rkor8qBj+c6nbMuCpSSLE2gc8t6QL359mOehBaAS+4awOFYF/jq
+ bEMHpRz7YpEaQgaJPCf5pOduN4CBLsljbNb2kbtw26U9F2saZRwWfU9OuVJyxrzuN+wL
+ hSFB31QMX/NupxUs/nQ9NbsZsz4sPo5mnAhIU4zF0WCYVKrRLsRJHZ2ilNKcZxy/P+Cn
+ AcbirsdJNQhjwPHX6B9inIzEd3+h8swO7CPgltTUb/eQAIzQ0HofsqzSBhNoRgWoEl+Y
+ d1aal1gEbqyrEKhM7Wf0gQDtpQFsqD4aOu2Cgch8OdaknxFSNYSpIaCCf+yBWMZlV9hS
+ ncDg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWZx6gjIMErRqoz67HMrXjJ73gVk+xUoslCvfY1YJMTBsm2up2ogjnJrYZoqMtRFuEQsgOcZeaqqAYl@nongnu.org
+X-Gm-Message-State: AOJu0Yys4pu8cOOcab7/jqbsD9EvUX0DYh2u/yDPqyxu2fxrZKx4raiv
+ 3yKIJOf7HR8pH6yhl7yM9U21Ujk4MKn4aezXugZQi4heatYH6lAsxdgv
+X-Gm-Gg: ASbGncs6YxVQHyV4fBhEjRgoaZiZyzRqyiibMO6xnK5/paJRtV2TAW7bvKcLGdV5LuR
+ hhF2YADh0bcyGCL/kOlhOb2hWxMSam5+ycLjxai2S/aLcWlB8+xYqzYliNOZqqE5PKaMq7hCceV
+ KRrxx35LzweAvOJnpJPQGLPuBTR5P7CNn+G+g3HDa9xKu2I36DbFZd1p+UYH+1F9BXjYuN+9f9U
+ uMY1rixu2E602xeEvHJpkR/vuCPbG+f4q3EIx2Ig3+uR0Ls6CuSZ81r2mLeBVnHH27wb10xtS5O
+ WkSBhwXibBsHhK1BXRB59Cq1u0koi7XhwuBYwmJXOFE3xlzbQ18MxMu2B3Gsxw==
+X-Google-Smtp-Source: AGHT+IEdDm385odiUkgu/TrCJxmJNQPNCkdppCs0yTFP6kXYHH9yZPtm2kuiNgltbCkmz2y/pdobSA==
+X-Received: by 2002:a17:902:e84a:b0:234:a139:1210 with SMTP id
+ d9443c01a7336-235e151c957mr15703565ad.53.1749005751182; 
+ Tue, 03 Jun 2025 19:55:51 -0700 (PDT)
+Received: from donnager-debian.. ([45.124.203.19])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23506d21818sm94457555ad.254.2025.06.03.19.55.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Jun 2025 19:55:50 -0700 (PDT)
+From: Joel Stanley <joel@jms.id.au>
+To: Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH v2 00/12] hw/riscv/virt: device tree reg cleanups 
+Date: Wed,  4 Jun 2025 12:24:36 +0930
+Message-ID: <20250604025450.85327-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] hw/i386/pc: Remove deprecated 2.10, 2.11 and 2.12 PC
- machines
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20250501223522.99772-1-philmd@linaro.org>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250501223522.99772-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=joel.stan@gmail.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,37 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/2/2025 6:35 AM, Philippe Mathieu-Daudé wrote:
-> The versioned 'pc' and 'q35' machines up to 2.12 been marked
-> as deprecated two releases ago, and are older than 6 years,
-> so according to our support policy we can remove them.
-> 
-> This series includes the 2.10 to 2.12 machines removal.
+v2:
+ - Rebased on master now that Daniel's changes are merged
+ - Fixed doubled up patch 1
+ - r-b tags from Alistair and Daniel added
 
-For this series,
+This is a set of cleanups for the riscv virt machine device tree
+generation.
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Using dumpdtb the old and new device trees are identical for -M virt and
+-M virt,aia=aplic-imsic.
 
-Besides, please add more patches to remove hw_compat_2_{10,11,12}
+Joel Stanley (12):
+  hw/riscv/virt: Fix clint base address type
+  hw/riscv/virt: Use setprop_sized_cells for clint
+  hw/riscv/virt: Use setprop_sized_cells for memory
+  hw/riscv/virt: Use setprop_sized_cells for aplic
+  hw/riscv/virt: Use setprop_sized_cells for aclint
+  hw/riscv/virt: Use setprop_sized_cells for plic
+  hw/riscv/virt: Use setprop_sized_cells for virtio
+  hw/riscv/virt: Use setprop_sized_cells for reset
+  hw/riscv/virt: Use setprop_sized_cells for uart
+  hw/riscv/virt: Use setprop_sized_cells for rtc
+  hw/riscv/virt: Use setprop_sized_cells for iommu
+  hw/riscv/virt: Use setprop_sized_cells for pcie
 
-> Philippe Mathieu-Daudé (8):
->    hw/i386/pc: Remove deprecated pc-q35-2.10 and pc-i440fx-2.10 machines
->    hw/i386/pc: Remove pc_compat_2_10[] array
->    hw/pci-host/i440fx: Remove I440FXState::pci_hole64_fix field
->    hw/pci-host/q35: Remove Q35PCIHost::pci_hole64_fix field
->    hw/i386/pc: Remove deprecated pc-q35-2.11 and pc-i440fx-2.11 machines
->    hw/i386/pc: Remove pc_compat_2_11[] array
->    hw/i386/pc: Remove deprecated pc-q35-2.12 and pc-i440fx-2.12 machines
->    hw/i386/pc: Remove pc_compat_2_12[] array
-> 
->   include/hw/i386/pc.h      |  9 ---------
->   include/hw/pci-host/q35.h |  1 -
->   hw/i386/pc.c              | 21 ---------------------
->   hw/i386/pc_piix.c         | 28 ----------------------------
->   hw/i386/pc_q35.c          | 29 -----------------------------
->   hw/pci-host/i440fx.c      |  7 ++-----
->   hw/pci-host/q35.c         |  6 ++----
->   7 files changed, 4 insertions(+), 97 deletions(-)
-> 
+ hw/riscv/virt.c | 66 ++++++++++++++++++++++++-------------------------
+ 1 file changed, 32 insertions(+), 34 deletions(-)
+
+-- 
+2.47.2
 
 
