@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AADACE406
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 19:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1231ACE419
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 20:00:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMsMJ-0002PH-D5; Wed, 04 Jun 2025 13:57:03 -0400
+	id 1uMsML-0002Qb-Nt; Wed, 04 Jun 2025 13:57:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsM6-0002G6-FK
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsM9-0002HS-JI
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsM0-0000QX-3y
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:48 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsM3-0000Qp-VA
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749059792;
+ s=mimecast20190719; t=1749059794;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TxDETTY71o0zrhX9CpMdYATtlv6GFu7mE4JS2nZoiuo=;
- b=YXNljaY9OjCqoiLHrrMJmsG5zVluJYMYm9NcZR/j6vz+ZqyXnOn0wyUZwOhLW0sr6ftU2x
- BYyKpcZua2zRRC/jtdVXO49nGyjulYMCzWpHYpacQpxlsqQjVUFy3EbVpcjTZR5ZKpg6CS
- 8pov9586Z1vNqIZaU/fe7xRnpI6gQIE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=hpBOemLw89s1YEvMfiiEo6gzsUEg6nnjFmlfZjhCRuU=;
+ b=QrqVKYIPUeYAPeGQSugV9+iWmZPsBIwuzmKGsWNMw/SnlLSVP4lPORA2njnz2OEqhEq0dr
+ 1Cckg/1aooLuU8bNm/6z45XSPAuNi/UAKHkROAGNlyID1pYs5S6EpekW2do37qpSJshWcl
+ 8U9HzFGqORaOiZ/L4lq0jSja5WET1wI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-aFzMxoYOMFK1UXHgQ0WvsQ-1; Wed,
- 04 Jun 2025 13:56:29 -0400
-X-MC-Unique: aFzMxoYOMFK1UXHgQ0WvsQ-1
-X-Mimecast-MFC-AGG-ID: aFzMxoYOMFK1UXHgQ0WvsQ_1749059788
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-495-1fHvybZyPCKGmXjeaeyI1g-1; Wed,
+ 04 Jun 2025 13:56:31 -0400
+X-MC-Unique: 1fHvybZyPCKGmXjeaeyI1g-1
+X-Mimecast-MFC-AGG-ID: 1fHvybZyPCKGmXjeaeyI1g_1749059790
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE40C19560AA; Wed,  4 Jun 2025 17:56:28 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A84B91800357; Wed,  4 Jun 2025 17:56:30 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.44.34.43])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 69BD318003FD; Wed,  4 Jun 2025 17:56:27 +0000 (UTC)
+ id 2FE6218003FD; Wed,  4 Jun 2025 17:56:28 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 05/24] block: mark bdrv_parent_change_aio_context() GRAPH_RDLOCK
-Date: Wed,  4 Jun 2025 19:55:54 +0200
-Message-ID: <20250604175613.344113-6-kwolf@redhat.com>
+Subject: [PULL 06/24] block: mark change_aio_ctx() callback and instances as
+ GRAPH_RDLOCK(_PTR)
+Date: Wed,  4 Jun 2025 19:55:55 +0200
+Message-ID: <20250604175613.344113-7-kwolf@redhat.com>
 In-Reply-To: <20250604175613.344113-1-kwolf@redhat.com>
 References: <20250604175613.344113-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -83,36 +84,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Fiona Ebner <f.ebner@proxmox.com>
 
 This is a small step in preparation to mark bdrv_drained_begin() as
-GRAPH_UNLOCKED. More concretely, it allows marking the
-change_aio_ctx() callback GRAPH_RDLOCK_PTR, which is the next step.
+GRAPH_UNLOCKED. More concretely, it is in preparation to move the
+drain out of bdrv_change_aio_context() and marking that function as
+GRAPH_RDLOCK.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20250530151125.955508-6-f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-7-f.ebner@proxmox.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/block/block_int-common.h | 6 +++---
+ block.c                          | 7 ++++---
+ block/block-backend.c            | 6 +++---
+ blockjob.c                       | 6 +++---
+ 4 files changed, 13 insertions(+), 12 deletions(-)
 
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 2982dd3118..37466c7841 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -983,9 +983,9 @@ struct BdrvChildClass {
+                            bool backing_mask_protocol,
+                            Error **errp);
+ 
+-    bool (*change_aio_ctx)(BdrvChild *child, AioContext *ctx,
+-                           GHashTable *visited, Transaction *tran,
+-                           Error **errp);
++    bool GRAPH_RDLOCK_PTR (*change_aio_ctx)(BdrvChild *child, AioContext *ctx,
++                                            GHashTable *visited,
++                                            Transaction *tran, Error **errp);
+ 
+     /*
+      * I/O API functions. These functions are thread-safe.
 diff --git a/block.c b/block.c
-index fa55dfba68..7207978e53 100644
+index 7207978e53..01144c895e 100644
 --- a/block.c
 +++ b/block.c
-@@ -7575,10 +7575,10 @@ typedef struct BdrvStateSetAioContext {
-     BlockDriverState *bs;
- } BdrvStateSetAioContext;
+@@ -1226,9 +1226,10 @@ static int bdrv_child_cb_inactivate(BdrvChild *child)
+     return 0;
+ }
  
--static bool bdrv_parent_change_aio_context(BdrvChild *c, AioContext *ctx,
--                                           GHashTable *visited,
--                                           Transaction *tran,
--                                           Error **errp)
+-static bool bdrv_child_cb_change_aio_ctx(BdrvChild *child, AioContext *ctx,
+-                                         GHashTable *visited, Transaction *tran,
+-                                         Error **errp)
 +static bool GRAPH_RDLOCK
-+bdrv_parent_change_aio_context(BdrvChild *c, AioContext *ctx,
-+                               GHashTable *visited, Transaction *tran,
-+                               Error **errp)
++bdrv_child_cb_change_aio_ctx(BdrvChild *child, AioContext *ctx,
++                             GHashTable *visited, Transaction *tran,
++                             Error **errp)
  {
-     GLOBAL_STATE_CODE();
-     if (g_hash_table_contains(visited, c)) {
+     BlockDriverState *bs = child->opaque;
+     return bdrv_change_aio_context(bs, ctx, visited, tran, errp);
+diff --git a/block/block-backend.c b/block/block-backend.c
+index a402db13f2..6a6949edeb 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -136,9 +136,9 @@ static void blk_root_drained_end(BdrvChild *child);
+ static void blk_root_change_media(BdrvChild *child, bool load);
+ static void blk_root_resize(BdrvChild *child);
+ 
+-static bool blk_root_change_aio_ctx(BdrvChild *child, AioContext *ctx,
+-                                    GHashTable *visited, Transaction *tran,
+-                                    Error **errp);
++static bool GRAPH_RDLOCK
++blk_root_change_aio_ctx(BdrvChild *child, AioContext *ctx, GHashTable *visited,
++                        Transaction *tran, Error **errp);
+ 
+ static char *blk_root_get_parent_desc(BdrvChild *child)
+ {
+diff --git a/blockjob.c b/blockjob.c
+index 32007f31a9..34185d7715 100644
+--- a/blockjob.c
++++ b/blockjob.c
+@@ -144,9 +144,9 @@ static TransactionActionDrv change_child_job_context = {
+     .clean = g_free,
+ };
+ 
+-static bool child_job_change_aio_ctx(BdrvChild *c, AioContext *ctx,
+-                                     GHashTable *visited, Transaction *tran,
+-                                     Error **errp)
++static bool GRAPH_RDLOCK
++child_job_change_aio_ctx(BdrvChild *c, AioContext *ctx, GHashTable *visited,
++                         Transaction *tran, Error **errp)
+ {
+     BlockJob *job = c->opaque;
+     BdrvStateChildJobContext *s;
 -- 
 2.49.0
 
