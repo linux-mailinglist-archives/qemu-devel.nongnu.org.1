@@ -2,95 +2,223 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CE3ACDF2A
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F294EACDF31
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:34:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMoBn-0000Sd-3L; Wed, 04 Jun 2025 09:29:55 -0400
+	id 1uMoFz-0001Pr-MN; Wed, 04 Jun 2025 09:34:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoBa-00081k-VB
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uMoFJ-00018r-Fa
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:33:38 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoBY-0004vU-Kn
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749043780;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=euKxHPQz4t7Fr8wkEVrCL+ghNN0iclWTFA01Yvw1+qU=;
- b=P2Sn9qeirW1RVGEf5m2hVxb/n536tSxRcCLFeYEBZTbltELv3VslQZjBbLjTn+CLRAN2Ve
- ZyMZ+RY+BrVzdlP/pPx461HVFAiyE8wMFBMwQo28jhV4Gj1gFNY6q7pATLZTFpatsKiYbV
- 6aGYj1xnd0x6AoSMpVsramVs16VzJt4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-sQwVboMwP5atD_uS8cyOjw-1; Wed, 04 Jun 2025 09:29:38 -0400
-X-MC-Unique: sQwVboMwP5atD_uS8cyOjw-1
-X-Mimecast-MFC-AGG-ID: sQwVboMwP5atD_uS8cyOjw_1749043778
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a5232c6ae8so238881f8f.3
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:29:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749043778; x=1749648578;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=euKxHPQz4t7Fr8wkEVrCL+ghNN0iclWTFA01Yvw1+qU=;
- b=NiWobGohI/pmtZsLTvOaqGnA586FBsY4e5o78dTw8SJmHT9uzM4n1h6UL0/9mfViGB
- ZOcxwOwQcuoJNLYJbfaagBQrH7gJnQ4jF/KC8yIZQbtbj/7TpJxcBMp09NUXb9D4bKlL
- AMHjn6PrndFR/fDQwWS/5C4WODesa5QqEpy5FPGF0X7DOup4pnc60pITcwZ1pa6dOHfU
- R/97dk/naV4M45213EHmXkakP6r4uST3DMXaXmFNY1qaOBafd0fWKGCkgAdSF0KFu6KT
- 6nvmyYyRE61fAzgUOGwPgpb19RnBEfIY+W5nnK00zhHifgp9H0A+Z/QnWVwqxuDTf8sA
- sQRQ==
-X-Gm-Message-State: AOJu0YyXpfsZErSs8IJrk6HpSsv9NQreAEuk0xdexHwIFbHMZdjmll2D
- 6iiFTKcYxeBgrWeJmmUUkoACY00htxMd7iDN+8cCaRMEVOBu1yxx7Wsg4gTnbKykDIyUnexSq6p
- Bi+ku+kls4OAqHo1Sh6FVGtIWgRwA/lKHlqq4A//tXisG32tbkNGdXfv5
-X-Gm-Gg: ASbGncuqkW2c3dAsDfcs/3/jyV/3+QIh11UCdDbXz4htZjDrcqe3EA8WLnZaQaIiDc6
- 2TZluoCD+0QMggcLqQasA1+0D7fOrlb1P78mxgd9XO0upyb9pYSA2hPc/MXXs2tOAluAqfBh00Y
- pk0IrZM6fPwYYBxI5gQwWCscm/5P8aRB4odhjm9Z4ZiIzgv1KMms7tbhRdWTvtiBeIFeosVZMJ7
- K7ntbgWCB2uMdRBAZISLIUraF5t7J2ACUJgxai0fN4Xb5OXBA4GzYKzkKYhObyggn69GDV/9dY5
- QYqf6IAX0oe8G5+JN8OAGZ6L1au4WQ71+4ozi3RgYNv4u5MVDjZih9KmMh+EFel7/wJI+w==
-X-Received: by 2002:a5d:5850:0:b0:3a4:f6b7:8b07 with SMTP id
- ffacd0b85a97d-3a51d97c66cmr2320069f8f.48.1749043777563; 
- Wed, 04 Jun 2025 06:29:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzBLSeQ6xI6MBLRRsSUv5u7y9ZvileG5/ukHhzJzSw/lO1PMyAPevgg6380qKA16W6pn+6qQ==
-X-Received: by 2002:a5d:5850:0:b0:3a4:f6b7:8b07 with SMTP id
- ffacd0b85a97d-3a51d97c66cmr2320035f8f.48.1749043776987; 
- Wed, 04 Jun 2025 06:29:36 -0700 (PDT)
-Received: from localhost
- (p200300cfd700f306503d3c798c1bf214.dip0.t-ipconnect.de.
- [2003:cf:d700:f306:503d:3c79:8c1b:f214])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe6c8b4sm22224326f8f.36.2025.06.04.06.29.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Jun 2025 06:29:33 -0700 (PDT)
-From: Hanna Czenczek <hreitz@redhat.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: [PATCH v2 21/21] fuse: Increase MAX_WRITE_SIZE with a second buffer
-Date: Wed,  4 Jun 2025 15:28:13 +0200
-Message-ID: <20250604132813.359438-22-hreitz@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250604132813.359438-1-hreitz@redhat.com>
-References: <20250604132813.359438-1-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uMoF2-0005U8-Ck
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:33:18 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5549MtsZ025723;
+ Wed, 4 Jun 2025 13:33:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=SCr9U7MNTFk971fkdwZ58UvIwIZmYmrIzUF0107PQww=; b=
+ rjPkGGHDb1wHuZPSQ/T5792ziVU3XpgyGkD1CZ/D1b5EcW9ppij+l+zcRPPbEsTe
+ UDkKd4UiiWJ4WoLCM7k+wRpGszeSkuhAoZCjLv44A+ryGxl3wSaUxzJjT0FUZw8K
+ vlTO39yh1zgPDONRbvdLKxDbKhMnepBUtMHr8NrMooPD8UXCPP1Cb75QbalOPmME
+ dsJltWSlUoC4z+b9xL+GAirkkHPRuTKzdItZJ/2fdUry5remyASp3UY068m+tksM
+ uhVraGQe8dT0nQ5rFjQxPZfyiezLZgP8L3LgjjJugP/VXSrbF4iEh7+pPjKScv1O
+ gLONedwJd1A1e3KIzqSw0g==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 471gahc2xg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 04 Jun 2025 13:33:12 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 554CJuCb039184; Wed, 4 Jun 2025 13:33:11 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2043.outbound.protection.outlook.com [40.107.220.43])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 46yr7asyc8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 04 Jun 2025 13:33:11 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pJiInqyungOrlhVhgcFq4TAOn0UXD5ctFs3ojERkKbuJWzO44KtRprhSucH2ohKiK4rnHTByI/uflKYITks+ZNwJUeOKcbtPt8OOODEUV3wHjgi+kMgX9fEO5ri7tiuZlSDfNHIEao4GpFH6e5nrbyBWLhvdi0QeAq3uQdZMs7ooYwC/ThkpS4qTF9IX/+BDzCejHe5jHSPaLwTLudV6sc6tuKLQdIuoapsCkUCwKOGnFsOUkXrTv/MnIITmeD//ukKWwLxd2e1N4XL6JzDEmwn0djaKOJRAg6yEOr+79BePJ0X8wDp3k8pJzJ72OiNHsEgZSwiLV+I81d0NTv6zKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SCr9U7MNTFk971fkdwZ58UvIwIZmYmrIzUF0107PQww=;
+ b=nBKSDQki7vwW9wFJirztviHb/ilJFg1pXbpMiFaYwoMXzPxhFTiotEQrUIldKahu16K+ETsUQSm7bw2pSDgXKaW549AtgTp2y9FLD/2pgPjC4M+bKHYRXZVcbui3v5Fym/3Ewlrya6xttm4QbmYqcPkj52QUu28x497agXY8XTp+BDM11JyXc8kVgZO0Cs0iA4dXX8qr5PHrSi0ngs8mT9vwoXTBXATO/BgCiZlPz9vWSeef4tP7J3nIZazx7Iws4BqKStxAyQYUb2TGZrvBdSIGthvkMOj3VXP1OPppydr7jEByX7Uqur5NVxsIrADHMoRNc0/ra3u6re089edS8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SCr9U7MNTFk971fkdwZ58UvIwIZmYmrIzUF0107PQww=;
+ b=oKktUVua+ddjtWCHgUY7TOVKQCUEAckHJNHUYXjCqLK8DXxQ0KGHpqukuE4XwT8hCFZESNfeAfqCgtdflWtD4JRWU9CftnThrqqr8BE3K21PDyZwkcnkfKzH6v2+XD4yw4mZAZdozdr5Q3AarM4tHMKz49ur6bpCG4SbUztOBs8=
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
+ by SN7PR10MB6407.namprd10.prod.outlook.com (2603:10b6:806:269::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.19; Wed, 4 Jun
+ 2025 13:33:09 +0000
+Received: from IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
+ ([fe80::f2fe:d6c6:70c4:4572%3]) with mapi id 15.20.8746.035; Wed, 4 Jun 2025
+ 13:33:09 +0000
+Message-ID: <aa0c0091-7db4-46f3-956a-03a9f1362c1f@oracle.com>
+Date: Wed, 4 Jun 2025 09:33:05 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 04/43] vfio/pci: vfio_pci_put_device on failure
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+References: <1748546679-154091-1-git-send-email-steven.sistare@oracle.com>
+ <1748546679-154091-5-git-send-email-steven.sistare@oracle.com>
+ <IA3PR11MB913626075C1F4FA64AED3B63926DA@IA3PR11MB9136.namprd11.prod.outlook.com>
+ <65ebacc7-ee7e-4c44-92fb-e75a0a6490a8@oracle.com>
+ <IA3PR11MB913659879C0B2EFF7358B229926CA@IA3PR11MB9136.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Steven Sistare <steven.sistare@oracle.com>
+In-Reply-To: <IA3PR11MB913659879C0B2EFF7358B229926CA@IA3PR11MB9136.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN9PR03CA0866.namprd03.prod.outlook.com
+ (2603:10b6:408:13d::31) To IA1PR10MB7447.namprd10.prod.outlook.com
+ (2603:10b6:208:44c::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|SN7PR10MB6407:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83b52c7c-2b61-4a1a-3879-08dda36c5863
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eWpZSVovL0lBWVdCN0c3RFFrcER2MDFVOFR2aC8wV3BmNWcvQVRRdG5YL2Q2?=
+ =?utf-8?B?blZVN0dtM0hnamc2Q2JyTjhEdXVCMHVLNHNpdnNuWmhwOHk0eVRlL2Z1QXlK?=
+ =?utf-8?B?MCszNi9ldE0vRFdZV0ZqZWNlQ0g0TDV3dXBKVWF2Y0xJTVVISmpPZWd0dWg0?=
+ =?utf-8?B?d1JGUlU0VG95NGk4SXVqdEVEZVk3SEg1K3BaZ0FSNXZnM1U3SDlxbzZONitJ?=
+ =?utf-8?B?TW53Y1RtSHdrTldhOERkK0tQMEszRGRXbDYyQ3BGVVpLQSt3YVdTVFVhaGMx?=
+ =?utf-8?B?dFI4YVRhWHNEUDgwazNXRnpiMmU1aDQrekYrZUlxQlhWTkFQM01oQ082d2lz?=
+ =?utf-8?B?WHcwSExCSER5WWY2SXQ2TVFHOUliOFFkVGNGSVhYUkUzek1Ma1RkNWIrVTZ6?=
+ =?utf-8?B?SG9DMUZ6blNjL3F6SHBPTm82QnNhd2dJdXJ2azQvVlRYMmdQaTd0cjN2aXBD?=
+ =?utf-8?B?aDAzQTBuQmxTUDI5T2NYWHVzYXhqRlE3Uk9qRy9PNW53WXdlSUxHbzdVaEY3?=
+ =?utf-8?B?Y0JBNTVEWE16b2hlRG9LN2ZycnpJMEsrWXdDMUllK21pQ3VmZ2QrQ3J3MExw?=
+ =?utf-8?B?TjVRRkZkNHlTeHJFWklnZkpSeW1LRFVJTFhicmxUeThZZ2NhOFhBalowOXFz?=
+ =?utf-8?B?UVo5a3p6b2piMXI4MEhHbU9yMEFlcjllTVlqOUJsRytWK2o1OU1TSE5vUUUy?=
+ =?utf-8?B?VkFWbUZ5am9aaXVVZnp0ckhUdmVXV2lkc0lkYXd1dG83YTZQWC84Q3V2eWdh?=
+ =?utf-8?B?ejdaeWw4OU13aGU1VGEyY0wxM3pNTkpsc1pKdXBha0hCTk5OUjJVZ3AwNG5W?=
+ =?utf-8?B?ODg3a0RQUHlTRTdUMnBlb3gxMFhjMjRWVkNiTkJhQ2JSWTdjK2MwWGZwaU4y?=
+ =?utf-8?B?dzJZekU0ZldLWWtCVlVCU0o5bG96R0Nhckkyb3N3dmF0STZnWk5RMmZPQ2lJ?=
+ =?utf-8?B?N2VuenVlNUZqTml0bXEzL3NrMmN3cjNNUGU3SFFpQ2Q4QXhyVytzc1NqYVo1?=
+ =?utf-8?B?dVRjdHBFTUJ4S2ZNOUR4TGxzdm9EaE1BZHBkWWQvbVNSNW1vTWc2akxnS1VK?=
+ =?utf-8?B?cXdxKytCM2FjN1dPQ0FXM2VXTW9wNWoyalJmallCdmo4WW1IQ3VIVUFNZ1NC?=
+ =?utf-8?B?dUdqUUxHNWdmR0dPTGhlV2V1L3JJK0s4MklmMzhLV0llV1h6RUVoUEYzQWoy?=
+ =?utf-8?B?aUQ0ZkxLU01zNE9HOUtjTEtEOWpYU3lnL0FOa0N5Sld5WEtmQVhlbGpVZjlD?=
+ =?utf-8?B?UkxhbWxIZUdxOHk3bGFqbFJPSzhVd1lBWm8yK3FpTzdwdnd3VDBnTUw4NG03?=
+ =?utf-8?B?ZWMrUlZtOVdFUzN5N1E1YkxNc09VQkd2Yjh1VDRVUWdVR0lTMWNvMUxZOTVP?=
+ =?utf-8?B?UVBrWFhjekhGTC9UK0xMTmpOOThvUWZ2NTFHa0IwNnJDSjdyODVyeFdITmJZ?=
+ =?utf-8?B?a1ZyUVJ6eE14K2loWGRhbzY3WkF4c1hWeXdrWXFhL0svaEJWTUk4ZEFCVWt5?=
+ =?utf-8?B?OU5uNm05YVZLbWVmU1l0dnhvYURoa0NOYzRiVHBUdmU3c3pyZVVaYjZXNHlt?=
+ =?utf-8?B?WDRrWXhZRWV3WVEvUTJZSDFXSkZ5UUJZTEJxeGI1d1lLOVVHcnlHNDBZT2R1?=
+ =?utf-8?B?UHIyUVZQQU5sdFdQVE9wN1FHYTUzMjVhbkd4ZmgxektxNkh1ZmpBNkNXTlB4?=
+ =?utf-8?B?YkN0YXZNdlBvZzhmZlFQOERnd0p2NjB1VkE5encwTXZyZGpBU0dJY3ZVQUJj?=
+ =?utf-8?B?VHJmaWJFVXd4cTlvdmFGYXFKcitvZ0FFVnRTQjk2N211amE3RlRMMmFFMHJm?=
+ =?utf-8?B?RHNnSGFEanJCWWtvd0FUN2s1T0JmRGVuS0wwbVJGblo3WDZTZXhuMXBSVkVh?=
+ =?utf-8?B?eDRtZkg5ME9ZejB2WHV6bVZGcVFJaVVVbUlHeTRsV1EvZ1VnS3lydEwrVXVL?=
+ =?utf-8?Q?H/K+NgDq1AE=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(7416014)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eHBQYjllcEo3bDdMcmZYYkZhbk00OWhkNVpBK0pPOW5FNUJzTktsQTBBdmVF?=
+ =?utf-8?B?cFFsK1dhYzkyN0JRbll0aWN1d0cyVU44ZjQzNWcxWWpvbmdGSGhobmxCUmQ2?=
+ =?utf-8?B?U2xXRnBybE9TVGdNZzhhTnc1R0dOV0FGZWpUVm5VMHAxRExXeFN1dHF3UkRo?=
+ =?utf-8?B?SExHLzVuRmlMWFB5Sk5YTEV4OTZ5VGhHU2g0OG1tUU5FREFPZTMrcFAvZ0Ew?=
+ =?utf-8?B?TmR6T1ptTEVtR2w2L2xwRCtZZWhOSzFBRzFPbHBhN3l2dGhSOERxcGoyd1cr?=
+ =?utf-8?B?R0FoTWJBZi82dVNQQkh2Umhnd3RJOHUvZ21kL1JRbFZ4ZFU0cVp5K3FxT3FR?=
+ =?utf-8?B?bE1zaWFwamYrNU1xeGZKUVU2Z0wvbGk2ZERPVzlDL0tMQ3kzVzk0NS9tMnRV?=
+ =?utf-8?B?NXJGK25ySEhBdnFUV1Jia2o3SERZeE9qQUYzK0d4SG56cjZIRXZncE9xcE52?=
+ =?utf-8?B?a2dZTU9aYnBmejFWN0dwOUF5NTM5Vm5VaDl3ZUk2V2dTN3VxU3ZwL3hCOUFK?=
+ =?utf-8?B?YnFzRDFnZE5KU0QvMUsvNlpzaXRUTUpLcFZTVXo4RXRPM3R2UTQ5WnBXNFlT?=
+ =?utf-8?B?VythbjZLVVRoSjhBMGI5UFZqUmxNT1F5Z01MTnNNNnBEU0loYmRYQ0dxdXlC?=
+ =?utf-8?B?eWZnZCszWnBLdUpwWjlCTDUzd0lEcWFvL2tYS2hHQmN5RGdKR01HRkZzSTZW?=
+ =?utf-8?B?YmZRSVRLK0RHVXYzd1QzTnoxOTRnazhic0FWZmU2N1pVdTdxVlpwZG5mcjd3?=
+ =?utf-8?B?MngyWGZ4ajhHMzFNNUoySmQzRUVIMDlNeWJITXFDQkxrOUovWmVTSjBUN2lr?=
+ =?utf-8?B?ZGVqWE5sUzVldmEyeTdSMXN1bWNwSU41Ny9IaFJxenFTZlpvTHRyZUw5S2Qv?=
+ =?utf-8?B?ZXMvcFhTYVByeWEyTmRaMW00T1FzZWIxQkhnaGdkNEVIQjVjY2FNVmRBNUQy?=
+ =?utf-8?B?QjlDKzlzNmYvMEZnWktSR0VyWWpnT0R5dytFNjNrUytGaENkOXgxK0s1cE9H?=
+ =?utf-8?B?SFZCUFZCSENTa0p1bklWdWFrbkFWdzJVaHU1bVAvRHVVMkhWV2QxUGVLZUp3?=
+ =?utf-8?B?YVpBV2ZQLzlkTGNQRE81ejliS05vL1F0MlNwVDRhK1lUN3cyaWJaODZKNlox?=
+ =?utf-8?B?YVMvMDF1YXdzR25Ma2pXYUU4dVNXcWpXaTZhRVZLVU5PVjF5aXZlRnViaC9Z?=
+ =?utf-8?B?OWxwM2hmYUpyZ1QxK1N2M1AvbGJhZHNFcWRnU2FIWWJramRyU3JxTFpEMDlD?=
+ =?utf-8?B?RkQzZEY4SytsUUNOeHFGMUUyWlJLWUVwN29haENMU0t6dFRGUmFGQStrWWVH?=
+ =?utf-8?B?UEltTnAwazdQd0FFdmF6dy9neDNWdnc2OFpkSWtUTnpFa2NsWEw0QlhjcVda?=
+ =?utf-8?B?OUZmdVJiUmFlZEt5eUhsRk9oN2hFN3NHWk1najlkRWZWUkk0NXhWWUwyRU1r?=
+ =?utf-8?B?SE5lSlpuWlZWd1ZWWEVyN1daSzliM2QwN05FWmt5TkNNbFNjQS9ZZlYzQlRC?=
+ =?utf-8?B?VXBXUTF3ZFgxcjVlZnpTZkFmSlBDOE1XSFg4VlYxcURKRHpKdC9NaUJRMkQ3?=
+ =?utf-8?B?ZllQT2ZITEZSS0NMVFhzVnlIcjg1VkR1YmlPTHFTWU5tdlFReXFibGp2R3ZF?=
+ =?utf-8?B?TXdTMXg2N2VZM3V1amFQemE2YlpTMk1MY3BDVlNnZDdzcU96Q0FudC85eU51?=
+ =?utf-8?B?MWpmSTIrQjJ2T1pwVzgwOXFTMzdjQWJnb2liQS9tQWpTTHVrbkIvNUlnMlQ3?=
+ =?utf-8?B?WDNEbEpQVk53aDFjOUI3RXY4U3pXLyt6U0tEZTJ6WDBIV1JmVTh6bWVXOHFi?=
+ =?utf-8?B?STlwSm1LV3RYdmVGZ2hVb2lEOEFkQjI2Qi91Q09BbmFIdkRBWERhNFVCeTNw?=
+ =?utf-8?B?OHlMOGJKNEpiS2hLOU5HcHV1NGNHU3NXNXpFcFdiSEhlejFCazVCK1dqWXpK?=
+ =?utf-8?B?UUh0US9JRk50UVhVTHdjZHRBOUt5anpJT3ZxMEIvOHZPOUYyTVZneXRqVkVO?=
+ =?utf-8?B?QnVDa0xOMEl2Zm1XaktxTTE5Y0xvTjJKV2haK1o3VjVJeldDT0lTOUpnS3k1?=
+ =?utf-8?B?dkZHRUZ0dzFCa0R1V0pmTG1pOCt2REJKNWhJeVgrWFlKWWF2ZGpURmhQelVU?=
+ =?utf-8?B?TWhnUWhWZ1ZnWlJPYVNOWjJHSXlHa2phL1NVOU84NEhKcnUrRjdmNGk1WHA0?=
+ =?utf-8?B?NWc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: CDqMEKk8dOXvKtz6nmNa7UEczK0L6lLtb6hRhIwv0Z32y70fhDyTR23mWWEClRmUdqtudKGvr1j8T26OJ7a06oMHtKT5027d05nwr2Ni8+iqRdPiKnzQ/I7DgdrvvobeO5JCcbEzgaq01L7x9oTHJtEmCxlMQW4276BBXHJk7FgH8CDmBNkq9v716lZR3H/J9JaZA8Eg291lf+86IszFkGP8/yWNhboEggyWEPhs2eFIXCPq13SjKuJIXX4FLXtOqHW8K4WpRtCOnbkKv6aJynIiYkybNFZjuZ+TvnbI46QkMEdmac8MUtGGq1yoVfj6hM1BZvG9PedZIW/vSHKRDjqvbdUj72LKqsaO/7kWOEJUBM0gXljjkHdcsK5PxQmmj82SiNDXg57APKZ0MOkATUMeFw9kyke0OFs2Gu0XGgHiIgr/j9qHBsIxkuX68UsMkr4juAwtFof2xVmewSRhA6WQfCnjirN4UqIarevGKlDgKMly7tll+l+JTE7Hds07Ho2bP2i5WERz96Fk29Jn0UkYJ+igdHEvlGseFHYzfrr15wiZNRnpT5b8ifltlAX1CDGfjoNCseaDvunrljUWA1PsZLI0iFAe5ZSmjPru7/0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83b52c7c-2b61-4a1a-3879-08dda36c5863
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2025 13:33:09.3154 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7krbwYiAx7PrQuvJPuVDbnLB4NDMqJMZqWPGICwkck1IrbdaX9eBt8bWwQFD3J7wkotk+R8jo0yREI6po8uCj96W8efQYOgkQaqH+ucLW4Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB6407
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-04_03,2025-06-03_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ bulkscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2506040102
+X-Authority-Analysis: v=2.4 cv=aqqyCTZV c=1 sm=1 tr=0 ts=68404b18 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=6IFa9wvqVegA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=YA5KhkqCfEwNnlGfxuIA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: WCVcH7BY5jJ0h8p8JaPs6XoSLIEd6t6I
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDEwMyBTYWx0ZWRfX80zD//v/6b3H
+ Y5EbUMwLD66TzK1ivTIAomQzJmAIsbjDYscPja1smSCDj6GnBfE9PglR6jghjrouTODB3AWhFEB
+ Rr8lZ8l34GxwohEsnMc5pdT+rATSGIH/XamBMDPskI9yb8dL5yLx6kvAoUajze8+ONk0q6Yz4Gk
+ +10H9iHpYrW8+EIAhUOf8BMORsdw97+VsTVi6VscZWqyYQ/6G6lKtFiJuWobh5+ra7j4VgXSzH2
+ uJXzT2xqLD7DoIAiwRfYvQGY8nMdaXYKBYLZqpZN0SFuIMF7nHrGKhrjOSCIdvAp2LwuocsaTbj
+ 3g7YCO5elssVBUee7/SIjcfSpFdB0ygHe6o6DpMaxmnQ+cKwcLAXFM6OkCitm0Tmr87XBxKLlgj
+ xIUPWBIkv7dZ8Op8xU3G+7NRXyUWWg/l0XGYozSNJxqlQBviUax8XVUACUIhism8x4/Eb0kI
+X-Proofpoint-ORIG-GUID: WCVcH7BY5jJ0h8p8JaPs6XoSLIEd6t6I
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,286 +236,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We probably want to support larger write sizes than just 4k; 64k seems
-nice.  However, we cannot read partial requests from the FUSE FD, we
-always have to read requests in full; so our read buffer must be large
-enough to accommodate potential 64k writes if we want to support that.
+On 6/3/2025 11:55 PM, Duan, Zhenzhong wrote:
+>> -----Original Message-----
+>> From: Steven Sistare <steven.sistare@oracle.com>
+>> Subject: Re: [PATCH V4 04/43] vfio/pci: vfio_pci_put_device on failure
+>>
+>> On 6/3/2025 6:40 AM, Duan, Zhenzhong wrote:
+>>>> -----Original Message-----
+>>>> From: Steve Sistare <steven.sistare@oracle.com>
+>>>> Subject: [PATCH V4 04/43] vfio/pci: vfio_pci_put_device on failure
+>>>>
+>>>> If vfio_realize fails after vfio_device_attach, it should call
+>>>> vfio_device_detach during error recovery.  If it fails after
+>>>> vfio_device_get_name, it should free vbasedev->name.  If it fails
+>>>> after vfio_pci_config_setup, it should free vdev->msix.
+>>>>
+>>>> To fix all, call vfio_pci_put_device().
+>>>>
+>>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+>>>> ---
+>>>> hw/vfio/pci.c | 1 +
+>>>> 1 file changed, 1 insertion(+)
+>>>>
+>>>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>>>> index a1bfdfe..7d3b9ff 100644
+>>>> --- a/hw/vfio/pci.c
+>>>> +++ b/hw/vfio/pci.c
+>>>> @@ -3296,6 +3296,7 @@ out_teardown:
+>>>>       vfio_bars_exit(vdev);
+>>>> error:
+>>>>       error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
+>>>> +    vfio_pci_put_device(vdev);
+>>>
+>>> Double free, vfio_pci_put_device() is also called in vfio_instance_finalize().
+>>
+>> If vfio_realize fails with an error, vfio_instance_finalize is not called.
+>> I tested that.
+> 
+> Have you tried with hot plugged device?
 
-Always allocating FuseRequest objects with 64k buffers in them seems
-wasteful, though.  But we can get around the issue by splitting the
-buffer into two and using readv(): One part will hold all normal (up to
-4k) write requests and all other requests, and a second part (the
-"spill-over buffer") will be used only for larger write requests.  Each
-FuseQueue has its own spill-over buffer, and only if we find it used
-when reading a request will we move its ownership into the FuseRequest
-object and allocate a new spill-over buffer for the queue.
+Not before, but I just tried it now, thanks for the suggestion.
+Same result -- vfio_instance_finalize is not called.
 
-This way, we get to support "large" write sizes without having to
-allocate big buffers when they aren't used.
+- Steve
 
-Also, this even reduces the size of the FuseRequest objects because the
-read buffer has to have at least FUSE_MIN_READ_BUFFER (8192) bytes; but
-the requests we support are not quite so large (except for >4k writes),
-so until now, we basically had to have useless padding in there.
-
-With the spill-over buffer added, the FUSE_MIN_READ_BUFFER requirement
-is easily met and we can decrease the size of the buffer portion that is
-right inside of FuseRequest.
-
-As for benchmarks, the benefit of this patch can be shown easily by
-writing a 4G image (with qemu-img convert) to a FUSE export:
-- Before this patch: Takes 25.6 s (14.4 s with -t none)
-- After this patch: Takes 4.5 s (5.5 s with -t none)
-
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
----
- block/export/fuse.c | 137 ++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 118 insertions(+), 19 deletions(-)
-
-diff --git a/block/export/fuse.c b/block/export/fuse.c
-index cdec31f2a8..908266d101 100644
---- a/block/export/fuse.c
-+++ b/block/export/fuse.c
-@@ -50,8 +50,17 @@
- 
- /* Prevent overly long bounce buffer allocations */
- #define FUSE_MAX_READ_BYTES (MIN(BDRV_REQUEST_MAX_BYTES, 1 * 1024 * 1024))
--/* Small enough to fit in the request buffer */
--#define FUSE_MAX_WRITE_BYTES (4 * 1024)
-+/*
-+ * FUSE_MAX_WRITE_BYTES determines the maximum number of bytes we support in a
-+ * write request; FUSE_IN_PLACE_WRITE_BYTES and FUSE_SPILLOVER_BUF_SIZE
-+ * determine the split between the size of the in-place buffer in FuseRequest
-+ * and the spill-over buffer in FuseQueue.  See FuseQueue.spillover_buf for a
-+ * detailed explanation.
-+ */
-+#define FUSE_IN_PLACE_WRITE_BYTES (4 * 1024)
-+#define FUSE_MAX_WRITE_BYTES (64 * 1024)
-+#define FUSE_SPILLOVER_BUF_SIZE \
-+    (FUSE_MAX_WRITE_BYTES - FUSE_IN_PLACE_WRITE_BYTES)
- 
- typedef struct FuseExport FuseExport;
- 
-@@ -67,15 +76,49 @@ typedef struct FuseQueue {
- 
-     /*
-      * The request buffer must be able to hold a full write, and/or at least
--     * FUSE_MIN_READ_BUFFER (from linux/fuse.h) bytes
-+     * FUSE_MIN_READ_BUFFER (from linux/fuse.h) bytes.
-+     * This however is just the first part of the buffer; every read is given
-+     * a vector of this buffer (which should be enough for all normal requests,
-+     * which we check via the static assertion in FUSE_IN_OP_STRUCT()) and the
-+     * spill-over buffer below.
-+     * Therefore, the size of this buffer plus FUSE_SPILLOVER_BUF_SIZE must be
-+     * FUSE_MIN_READ_BUFFER or more (checked via static assertion below).
-+     */
-+    char request_buf[sizeof(struct fuse_in_header) +
-+                     sizeof(struct fuse_write_in) +
-+                     FUSE_IN_PLACE_WRITE_BYTES];
-+
-+    /*
-+     * When retrieving a FUSE request, the destination buffer must always be
-+     * sufficiently large for the whole request, i.e. with max_write=64k, we
-+     * must provide a buffer that fits the WRITE header and 64 kB of space for
-+     * data.
-+     * We do want to support 64k write requests without requiring them to be
-+     * split up, but at the same time, do not want to do such a large allocation
-+     * for every single request.
-+     * Therefore, the FuseRequest object provides an in-line buffer that is
-+     * enough for write requests up to 4k (and all other requests), and for
-+     * every request that is bigger, we provide a spill-over buffer here (for
-+     * the remaining 64k - 4k = 60k).
-+     * When poll_fuse_fd() reads a FUSE request, it passes these buffers as an
-+     * I/O vector, and then checks the return value (number of bytes read) to
-+     * find out whether the spill-over buffer was used.  If so, it will move the
-+     * buffer to the request, and will allocate a new spill-over buffer for the
-+     * next request.
-+     *
-+     * Free this buffer with qemu_vfree().
-      */
--    char request_buf[MAX_CONST(
--        sizeof(struct fuse_in_header) + sizeof(struct fuse_write_in) +
--             FUSE_MAX_WRITE_BYTES,
--        FUSE_MIN_READ_BUFFER
--    )];
-+    void *spillover_buf;
- } FuseQueue;
- 
-+/*
-+ * Verify that FuseQueue.request_buf plus the spill-over buffer together
-+ * are big enough to be accepted by the FUSE kernel driver.
-+ */
-+QEMU_BUILD_BUG_ON(sizeof(((FuseQueue *)0)->request_buf) +
-+                  FUSE_SPILLOVER_BUF_SIZE <
-+                  FUSE_MIN_READ_BUFFER);
-+
- struct FuseExport {
-     BlockExport common;
- 
-@@ -131,7 +174,8 @@ static int clone_fuse_fd(int fd, Error **errp);
- static bool is_regular_file(const char *path, Error **errp);
- 
- static void read_from_fuse_fd(void *opaque);
--static void coroutine_fn fuse_co_process_request(FuseQueue *q);
-+static void coroutine_fn
-+fuse_co_process_request(FuseQueue *q, void *spillover_buf);
- 
- static void fuse_inc_in_flight(FuseExport *exp)
- {
-@@ -476,12 +520,27 @@ static void coroutine_fn co_read_from_fuse_fd(void *opaque)
-     FuseExport *exp = q->exp;
-     ssize_t ret;
-     const struct fuse_in_header *in_hdr;
-+    struct iovec iov[2];
-+    void *spillover_buf = NULL;
- 
-     if (unlikely(exp->halted)) {
-         goto no_request;
-     }
- 
--    ret = RETRY_ON_EINTR(read(fuse_fd, q->request_buf, sizeof(q->request_buf)));
-+    /*
-+     * If handling the last request consumed the spill-over buffer, allocate a
-+     * new one.  Align it to the block device's alignment, which admittedly is
-+     * only useful if FUSE_IN_PLACE_WRITE_BYTES is aligned, too.
-+     */
-+    if (unlikely(!q->spillover_buf)) {
-+        q->spillover_buf = blk_blockalign(exp->common.blk,
-+                                          FUSE_SPILLOVER_BUF_SIZE);
-+    }
-+    /* Construct the I/O vector to hold the FUSE request */
-+    iov[0] = (struct iovec) { q->request_buf, sizeof(q->request_buf) };
-+    iov[1] = (struct iovec) { q->spillover_buf, FUSE_SPILLOVER_BUF_SIZE };
-+
-+    ret = RETRY_ON_EINTR(readv(fuse_fd, iov, ARRAY_SIZE(iov)));
-     if (ret < 0 && errno == EAGAIN) {
-         /* No request available */
-         goto no_request;
-@@ -510,7 +569,13 @@ static void coroutine_fn co_read_from_fuse_fd(void *opaque)
-         goto no_request;
-     }
- 
--    fuse_co_process_request(q);
-+    if (unlikely(ret > sizeof(q->request_buf))) {
-+        /* Spillover buffer used, take ownership */
-+        spillover_buf = q->spillover_buf;
-+        q->spillover_buf = NULL;
-+    }
-+
-+    fuse_co_process_request(q, spillover_buf);
- 
- no_request:
-     fuse_dec_in_flight(exp);
-@@ -560,6 +625,9 @@ static void fuse_export_delete(BlockExport *blk_exp)
-         if (i > 0 && q->fuse_fd >= 0) {
-             close(q->fuse_fd);
-         }
-+        if (q->spillover_buf) {
-+            qemu_vfree(q->spillover_buf);
-+        }
-     }
-     g_free(exp->queues);
- 
-@@ -869,17 +937,25 @@ fuse_co_read(FuseExport *exp, void **bufptr, uint64_t offset, uint32_t size)
- }
- 
- /**
-- * Handle client writes to the exported image.  @buf has the data to be written
-- * and will be copied to a bounce buffer before yielding for the first time.
-+ * Handle client writes to the exported image.  @in_place_buf has the first
-+ * FUSE_IN_PLACE_WRITE_BYTES bytes of the data to be written, @spillover_buf
-+ * contains the rest (if any; NULL otherwise).
-+ * Data in @in_place_buf is assumed to be overwritten after yielding, so will
-+ * be copied to a bounce buffer beforehand.  @spillover_buf in contrast is
-+ * assumed to be exclusively owned and will be used as-is.
-  * Return the number of bytes written to *out on success, and -errno on error.
-  */
- static ssize_t coroutine_fn
- fuse_co_write(FuseExport *exp, struct fuse_write_out *out,
--              uint64_t offset, uint32_t size, const void *buf)
-+              uint64_t offset, uint32_t size,
-+              const void *in_place_buf, const void *spillover_buf)
- {
-+    size_t in_place_size;
-     void *copied;
-     int64_t blk_len;
-     int ret;
-+    struct iovec iov[2];
-+    QEMUIOVector qiov;
- 
-     /* Limited by max_write, should not happen */
-     if (size > BDRV_REQUEST_MAX_BYTES) {
-@@ -891,8 +967,9 @@ fuse_co_write(FuseExport *exp, struct fuse_write_out *out,
-     }
- 
-     /* Must copy to bounce buffer before potentially yielding */
--    copied = blk_blockalign(exp->common.blk, size);
--    memcpy(copied, buf, size);
-+    in_place_size = MIN(size, FUSE_IN_PLACE_WRITE_BYTES);
-+    copied = blk_blockalign(exp->common.blk, in_place_size);
-+    memcpy(copied, in_place_buf, in_place_size);
- 
-     /**
-      * Clients will expect short writes at EOF, so we have to limit
-@@ -916,7 +993,21 @@ fuse_co_write(FuseExport *exp, struct fuse_write_out *out,
-         }
-     }
- 
--    ret = blk_co_pwrite(exp->common.blk, offset, size, copied, 0);
-+    iov[0] = (struct iovec) {
-+        .iov_base = copied,
-+        .iov_len = in_place_size,
-+    };
-+    if (size > FUSE_IN_PLACE_WRITE_BYTES) {
-+        assert(size - FUSE_IN_PLACE_WRITE_BYTES <= FUSE_SPILLOVER_BUF_SIZE);
-+        iov[1] = (struct iovec) {
-+            .iov_base = (void *)spillover_buf,
-+            .iov_len = size - FUSE_IN_PLACE_WRITE_BYTES,
-+        };
-+        qemu_iovec_init_external(&qiov, iov, 2);
-+    } else {
-+        qemu_iovec_init_external(&qiov, iov, 1);
-+    }
-+    ret = blk_co_pwritev(exp->common.blk, offset, size, &qiov, 0);
-     if (ret < 0) {
-         goto fail_free_buffer;
-     }
-@@ -1275,8 +1366,14 @@ static int fuse_write_buf_response(int fd, uint32_t req_id,
-  * Note that yielding in any request-processing function can overwrite the
-  * contents of q->request_buf.  Anything that takes a buffer needs to take
-  * care that the content is copied before yielding.
-+ *
-+ * @spillover_buf can contain the tail of a write request too large to fit into
-+ * q->request_buf.  This function takes ownership of it (i.e. will free it),
-+ * which assumes that its contents will not be overwritten by concurrent
-+ * requests (as opposed to q->request_buf).
-  */
--static void coroutine_fn fuse_co_process_request(FuseQueue *q)
-+static void coroutine_fn
-+fuse_co_process_request(FuseQueue *q, void *spillover_buf)
- {
-     FuseExport *exp = q->exp;
-     uint32_t opcode;
-@@ -1372,7 +1469,7 @@ static void coroutine_fn fuse_co_process_request(FuseQueue *q)
-          * yielding.
-          */
-         ret = fuse_co_write(exp, FUSE_OUT_OP_STRUCT(write, out_buf),
--                            in->offset, in->size, in + 1);
-+                            in->offset, in->size, in + 1, spillover_buf);
-         break;
-     }
- 
-@@ -1414,6 +1511,8 @@ static void coroutine_fn fuse_co_process_request(FuseQueue *q)
-                             ret < 0 ? ret : 0,
-                             ret < 0 ? 0 : ret);
-     }
-+
-+    qemu_vfree(spillover_buf);
- }
- 
- const BlockExportDriver blk_exp_fuse = {
--- 
-2.49.0
+>>> Early free of vdev->vbasedev.name will also break something, e.g.,
+>> trace_vfio_region_finalize(region->vbasedev->name, region->nr);
+>>
+>> All unwinding and calling functions that might use the name is done in the
+>> vfio_realize
+>> failure path, and the very last operation is vfio_pci_put_device, and the last
+>> operation
+>> of that function is freeing the name string.
+>>
+>> - Steve
+>>
+>>>> static void vfio_instance_finalize(Object *obj)
+>>>> --
+>>>> 1.8.3.1
+>>>
+> 
 
 
