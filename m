@@ -2,67 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B80BACDF0C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FA5ACDF16
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:30:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMo9t-0006TT-CR; Wed, 04 Jun 2025 09:27:57 -0400
+	id 1uMoAR-0006kT-7y; Wed, 04 Jun 2025 09:28:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1uMo9r-0006TH-77
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:27:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAO-0006jH-TU
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1uMo9m-0004fq-Fd
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:27:54 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAM-0004hV-Hg
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749043668;
+ s=mimecast20190719; t=1749043704;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=clDW1r158unwtlDsyqPL74tCSQyxdxqdEtDprNG8wHY=;
- b=NPKfllBvakTSo7GW6NhRXojDBfIF2VkzXmXSbfsu6MkQrbSAC44K/ftB2B8ewjM2fo/f0h
- lzkLjHFKD55PZA/ADoQrMl4SeKUB0C9trVlbWdUUAzV4VlEEDPHVw8N+QmteWhZeR/+nCs
- eDHImj4R4ySuyDDUmeCQ4cTBe0eIAZI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-lNlPoC29OFamk-hxzlevLw-1; Wed,
- 04 Jun 2025 09:27:44 -0400
-X-MC-Unique: lNlPoC29OFamk-hxzlevLw-1
-X-Mimecast-MFC-AGG-ID: lNlPoC29OFamk-hxzlevLw_1749043664
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D9861180047F; Wed,  4 Jun 2025 13:27:43 +0000 (UTC)
-Received: from angien.pipo.sk (unknown [10.44.22.3])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E17E419560AE; Wed,  4 Jun 2025 13:27:41 +0000 (UTC)
-Date: Wed, 4 Jun 2025 15:27:33 +0200
-From: Peter Krempa <pkrempa@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>,
- Anushree Mathur <anushree.mathur@linux.ibm.com>,
- qemu-devel@nongnu.org, farosas@suse.de
-Subject: Re: virsh migrate fails when --copy-storage-all option is given!
-Message-ID: <aEBJxUIYRaOKBiCL@angien.pipo.sk>
-References: <31711771-7caa-4ea3-b763-45db6930e28e@linux.ibm.com>
- <aDctC8i7U2J5bmyw@x1.local> <aEA_EtAKVnk0oYej@redhat.com>
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=PiY0TziwcUH+b9ueEem3h88xuf4Pn7hOYcJ8LXI9xG8=;
+ b=jRseNgcmTLX5HukPQHv6LxJMEY7LSwYUtSyvNqXiBNgSpjdWaRwCV4g0SUWFVHX52Zmo8J
+ YAJ8eX1A60A7WzztzTivck1ColVIMTpRLijyK7Gqp2I7Dua+7iye3yrNBaFuFPCRRnbODO
+ i5npU8l9S13bSLjcHYnE6goGxohsFJM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-OBzkijmwMv-S5-HonK6gLQ-1; Wed, 04 Jun 2025 09:28:22 -0400
+X-MC-Unique: OBzkijmwMv-S5-HonK6gLQ-1
+X-Mimecast-MFC-AGG-ID: OBzkijmwMv-S5-HonK6gLQ_1749043701
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-450d64026baso30267585e9.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749043701; x=1749648501;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PiY0TziwcUH+b9ueEem3h88xuf4Pn7hOYcJ8LXI9xG8=;
+ b=U+AFdomIcux5Gq3RYD+s89M05PJzyqUgFl/5A+DUQ1Dv+BXHbS86bXNLVdIFRx8Fe3
+ UcwDFUV/YSIrZiEqrxwncjPKwz0SFiI8AZCZu/C1oEUEwrCv0dLPv2lLPUvhjfBMMQZn
+ 7dGR8u/d7Bj7pflLwaeQCXVi1WXeIGfoUV3hay4D6Yg7TRpOJAWY24PVL1UOPR4pOeTZ
+ 9N5fZbeD3j0+tuHIds3ExHZ6ZE7VV/dh5tH9orHwlCbhieT+VtTptDTpQzErB1AUWAqb
+ 2tKOKBnS6lqO/KExVjtJAop2mHFZBQgoaaWBMhTKLBChyTGkjfMEga5zDSxqWOzeu+OF
+ sQQw==
+X-Gm-Message-State: AOJu0Yw5OxH/yLVA/N8ZdmN3QPkSSPZwzwBqduzUUXB5MMhkWdB7K7/A
+ n6ZXpg02H5MnGKvqHvZScMsrE7maXoSNcAja3uTtrn17rLx7ENW8BHGZau7i7esF34YsGv7Q2sk
+ mBbru3K1+hHGUFfgD/Nf2b4V4TwnxXlH2j23MFo/9SMsIW7BA5f/F/0iM
+X-Gm-Gg: ASbGncvDmZbOZPE6MfyTbKWOK+E6PsLuf0W8OxveU26i5PenQFhueIP43AelNQ4J8VD
+ W5pZJuov73bAlrHeEeo+5bf+oaBqo1uWSGnEF0KPylI9ztR6zx7XG0pg28jBUR5QYSqeh3+D9vH
+ Y2+MRUk4B8TVqZfo0djgKimYRMBDV8YnsCwYVqGXjKoscJV7wkMqMkjqRFVgbSs2BLAxDoGI5L9
+ HotuTUvRas5fn7iUpeWBmEONaQOjybAsWj7VhyU8FGVcETvtbq0Lf6YlpfO6WdYRmdGmk1b9rZZ
+ 5dIcb+RMgj6bOXnpaG3P4t1QF2rZDIEdVujfDdeEEXlBwNLtpNxiCVTZEypbHxLdb7gFcA==
+X-Received: by 2002:a05:600c:c0d2:20b0:43d:94:2d1e with SMTP id
+ 5b1f17b1804b1-451f78169eemr1080155e9.13.1749043700874; 
+ Wed, 04 Jun 2025 06:28:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IErkQiv2t2IRADdUF1rZJF+CcnGymhOciE7hHzX1Bf+OuNeb+wCGtmjdSkXKR20ZQo52LmudA==
+X-Received: by 2002:a05:600c:c0d2:20b0:43d:94:2d1e with SMTP id
+ 5b1f17b1804b1-451f78169eemr1079935e9.13.1749043700353; 
+ Wed, 04 Jun 2025 06:28:20 -0700 (PDT)
+Received: from localhost
+ (p200300cfd700f306503d3c798c1bf214.dip0.t-ipconnect.de.
+ [2003:cf:d700:f306:503d:3c79:8c1b:f214])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-450d8012b09sm197393485e9.37.2025.06.04.06.28.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Jun 2025 06:28:19 -0700 (PDT)
+From: Hanna Czenczek <hreitz@redhat.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
+Subject: [PATCH v2 00/21] export/fuse: Use coroutines and multi-threading
+Date: Wed,  4 Jun 2025 15:27:52 +0200
+Message-ID: <20250604132813.359438-1-hreitz@redhat.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aEA_EtAKVnk0oYej@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -87,166 +106,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 04, 2025 at 14:41:54 +0200, Kevin Wolf wrote:
-> Am 28.05.2025 um 17:34 hat Peter Xu geschrieben:
-> > Copy Kevin.
-> > 
-> > On Wed, May 28, 2025 at 07:21:12PM +0530, Anushree Mathur wrote:
-> > > Hi all,
-> > > 
-> > > 
-> > > When I am trying to migrate the guest from host1 to host2 with the command
-> > > line as follows:
-> > > 
-> > > date;virsh migrate --live --domain guest1 qemu+ssh://dest/system --verbose
-> > > --undefinesource --persistent --auto-converge --postcopy
-> > > --copy-storage-all;date
-> > > 
-> > > and it fails with the following error message-
-> > > 
-> > > error: internal error: unable to execute QEMU command 'block-export-add':
-> > > Block node is read-only
-> > > 
-> > > HOST ENV:
-> > > 
-> > > qemu : QEMU emulator version 9.2.2
-> > > libvirt : libvirtd (libvirt) 11.1.0
-> > > Seen with upstream qemu also
-> > > 
-> > > Steps to reproduce:
-> > > 1) Start the guest1
-> > > 2) Migrate it with the command as
-> > > 
-> > > date;virsh migrate --live --domain guest1 qemu+ssh://dest/system --verbose
-> > > --undefinesource --persistent --auto-converge --postcopy
-> > > --copy-storage-all;date
-> > > 
-> > > 3) It fails as follows:
-> > > error: internal error: unable to execute QEMU command 'block-export-add':
-> > > Block node is read-only
-> 
-> I assume this is about an inactive block node. Probably on the
-> destination, but that's not clear to me from the error message.
+Hi,
 
-Yes this would be on the destination. Libvirt exports the nodes on
-destination, source connects and does the blockjob.
+This series:
+- Fixes some bugs/minor inconveniences,
+- Removes libfuse from the request processing path,
+- Make the FUSE export use coroutines for request handling,
+- Introduces multi-threading into the FUSE export.
 
-The destination side is configured the same way as the source side so
-if the source disk is configured as read-write the destination should be
-as well
+More detail on the v1 cover letter:
 
-> > > Things I analyzed-
-> > > 1) This issue is not happening if I give --unsafe option in the virsh
-> > > migrate command
+https://lists.nongnu.org/archive/html/qemu-block/2025-03/msg00359.html
 
-This is weird; this shouldn't have any impact.
 
-> 
-> What does this translate to on the QEMU command line?
-> 
-> > > 2) O/P of qemu-monitor command also shows ro as false
-> > > 
-> > > virsh qemu-monitor-command guest1 --pretty --cmd '{ "execute": "query-block"
+Changes from v1:
+- Patch 1: Clarified â€œpollingâ€ to be `aio_poll()`
+- Patch 11 (new): Pulled out from patch 13 (prev. 11)
+- Patch 12 (new): Suggested by Eric
+- Patch 13 (prev. 11):
+  - Drop false polling handlers
+  - Use qemu_fcntl_addfl() instead of fcntl(F_SETFL) to keep
+    pre-existing FD flags
+  - Add a note that the buffer returned by read needs to be freed via
+    qemu_vfree()
+  - Pulled out a variable rename into the new patch 11
+- Patch 15 (prev. 13):
+  - Simplified the co_read_from_fuse_fd() interface thanks to no longer
+    needing to support poll handlers
+  - Increment in-flight counter before entering the coroutine to make it
+    more obvious how tihs ensures that the export pointer remains valid
+    throughout
+- Patch 16 (new): Add a common multi-threading interface for exports
+  instead of a specific one just for FUSE
+- Patch 17 (new): Test cases for this new interface
+- Patch 18 (prev. 14):
+  - Drop the contrasting with virtio-blk from the commit message;
+    explaining the interface is no longer necessary now that itâ€™s
+    introduced separately in patch 16.
+  - Generally, the interface definition is removed in favor of the new
+    one in patch 16.
+  - Some rebase conflicts (due to other changes earlier in this series).
+- Patch 19 (new): Stefan suggested adding an explicit note for users on
+  how multi-threading behaves with FUSE, not least because in the future
+  this behavior may depend on the specific implementation features
+  chosen (io-uring or not).  Because the actual multi-thread interface
+  is now on the common export options, it is no longer obvious where to
+  put this implementation note; I decided to put it into the general
+  description of the FUSE export options, inside of this dedicated
+  patch.
+- Patch 20 (new): Simple sanity test for FUSE multi-threading (just test
+  that e.g. nothing crashes when running qemu-img bench on top)
+- Patch 21 (prev. 15): Rebase conflict due to the changes in patch 15;
+  kept Stefanâ€™s R-b anyway
 
-it'd be impossible to execute this on the guest due to timing; you'll
-need to collect libvirt debug logs to do that:
 
-https://www.libvirt.org/kbase/debuglogs.html#tl-dr-enable-debug-logs-for-most-common-scenario
+Review notes/suggestions I deliberately did not follow in v2:
+- Stefan suggested to make patch 1 simpler and more robust by allocating
+  a new buffer for each request.  This is indeed a simple change (for
+  patch 1) that I wouldnâ€™t mind, and that I also started to implement.
+  However, eventually I decided against it:
+  The problem doesnâ€™t disappear with the rest of the series, it
+  basically stays the exact same; though instead of an implicit
+  aio_poll() leading to nested polling, it turns into an implicit
+  coroutine yield doing pretty much the same.
+  For performance, it is better not to allocate a new buffer for each
+  request; we only really need a bounce buffer for writes, as there is
+  no other case where weâ€™d continue to read the request buffer after
+  yielding.  Therefore, the final state I would like to have after this
+  series is to use a common request buffer for all requests on a single
+  queue, only using a bounce buffer for writes.
+  With that, I think itâ€™s better to implement exactly that right from
+  the start, rather than introducing a new intermediate state.
 
-I also thing this should be eventually filed in a 
 
-> > > }'
-> > > {
-> > >   "return": [
-> > >     {
-> > >       "io-status": "ok",
-> > >       "device": "",
-> > >       "locked": false,
-> > >       "removable": false,
-> > >       "inserted": {
-> > >         "iops_rd": 0,
-> > >         "detect_zeroes": "off",
-> > >         "image": {
-> > >           "virtual-size": 21474836480,
-> > >           "filename": "/home/Anu/guest_anu.qcow2",
-> > >           "cluster-size": 65536,
-> > >           "format": "qcow2",
-> > >           "actual-size": 5226561536,
-> > >           "format-specific": {
-> > >             "type": "qcow2",
-> > >             "data": {
-> > >               "compat": "1.1",
-> > >               "compression-type": "zlib",
-> > >               "lazy-refcounts": false,
-> > >               "refcount-bits": 16,
-> > >               "corrupt": false,
-> > >               "extended-l2": false
-> > >             }
-> > >           },
-> > >           "dirty-flag": false
-> > >         },
-> > >         "iops_wr": 0,
-> > >         "ro": false,
-> > >         "node-name": "libvirt-1-format",
-> > >         "backing_file_depth": 0,
-> > >         "drv": "qcow2",
-> > >         "iops": 0,
-> > >         "bps_wr": 0,
-> > >         "write_threshold": 0,
-> > >         "encrypted": false,
-> > >         "bps": 0,
-> > >         "bps_rd": 0,
-> > >         "cache": {
-> > >           "no-flush": false,
-> > >           "direct": false,
-> > >           "writeback": true
-> > >         },
-> > >         "file": "/home/Anu/guest_anu.qcow2"
-> > >       },
-> > >       "qdev": "/machine/peripheral/virtio-disk0/virtio-backend",
-> > >       "type": "unknown"
-> > >     }
-> > >   ],
-> > >   "id": "libvirt-26"
-> > > }
-> 
-> I assume this is still from the source where the image is still active.
+git-backport-diff from v1:
 
-Yes; on the destination the process wouldn't be around long enough to
-call 'virsh qemu-monitor-command'
+Key:
+[----] : patches are identical
+[####] : number of functional differences between upstream/downstream patch
+[down] : patch is downstream-only
+The flags [FC] indicate (F)unctional and (C)ontextual differences, respectively
 
-> 
-> Also it doesn't contain the "active" field yet that was recently
-> introduced, which could show something about this. I believe you would
-> still get "read-only": false for an inactive image if it's supposed to
-> be read-write after the migration completes.
-> 
-> > > 
-> > > 3) Guest doesn't have any readonly
-> > > 
-> > > virsh dumpxml guest1 | grep readonly
-> > > 
-> > > 4) Tried giving the proper permissions also
-> > > 
-> > > -rwxrwxrwx. 1 qemu qemu 4.9G Apr 28 15:06 guest_anu.qcow
+001/21:[0012] [FC] 'fuse: Copy write buffer content before polling'
+002/21:[----] [--] 'fuse: Ensure init clean-up even with error_fatal'
+003/21:[----] [--] 'fuse: Remove superfluous empty line'
+004/21:[----] [--] 'fuse: Explicitly set inode ID to 1'
+005/21:[----] [--] 'fuse: Change setup_... to mount_fuse_export()'
+006/21:[----] [--] 'fuse: Fix mount options'
+007/21:[----] [--] 'fuse: Set direct_io and parallel_direct_writes'
+008/21:[----] [--] 'fuse: Introduce fuse_{at,de}tach_handlers()'
+009/21:[----] [--] 'fuse: Introduce fuse_{inc,dec}_in_flight()'
+010/21:[----] [--] 'fuse: Add halted flag'
+011/21:[down] 'fuse: Rename length to blk_len in fuse_write()'
+012/21:[down] 'block: Move qemu_fcntl_addfl() into osdep.c'
+013/21:[0077] [FC] 'fuse: Manually process requests (without libfuse)'
+014/21:[----] [--] 'fuse: Reduce max read size'
+015/21:[0061] [FC] 'fuse: Process requests in coroutines'
+016/21:[down] 'block/export: Add multi-threading interface'
+017/21:[down] 'iotests/307: Test multi-thread export interface'
+018/21:[0077] [FC] 'fuse: Implement multi-threading'
+019/21:[down] 'qapi/block-export: Document FUSE's multi-threading'
+020/21:[down] 'iotests/308: Add multi-threading sanity test'
+021/21:[0002] [FC] 'fuse: Increase MAX_WRITE_SIZE with a second buffer'
 
-Is this on the destination? did you pre-create it yourself? otherwise
-libvirt is pre-creating that image for-non-shared-storage migration
-(--copy-storage-all) which should have proper permissions when it's
-created
 
-> > > 
-> > > 5) Checked for the permission of the pool also that is also proper!
-> > > 
-> > > 6) Found 1 older bug similar to this, pasting the link for reference:
-> > > 
-> > > 
-> > > https://patchwork.kernel.org/project/qemu-devel/patch/20170811164854.GG4162@localhost.localdomain/
-> 
-> What's happening in detail is more of a virsh/libvirt question. CCing
-> Peter Krempa, he might have an idea.
+Hanna Czenczek (21):
+  fuse: Copy write buffer content before polling
+  fuse: Ensure init clean-up even with error_fatal
+  fuse: Remove superfluous empty line
+  fuse: Explicitly set inode ID to 1
+  fuse: Change setup_... to mount_fuse_export()
+  fuse: Fix mount options
+  fuse: Set direct_io and parallel_direct_writes
+  fuse: Introduce fuse_{at,de}tach_handlers()
+  fuse: Introduce fuse_{inc,dec}_in_flight()
+  fuse: Add halted flag
+  fuse: Rename length to blk_len in fuse_write()
+  block: Move qemu_fcntl_addfl() into osdep.c
+  fuse: Manually process requests (without libfuse)
+  fuse: Reduce max read size
+  fuse: Process requests in coroutines
+  block/export: Add multi-threading interface
+  iotests/307: Test multi-thread export interface
+  fuse: Implement multi-threading
+  qapi/block-export: Document FUSE's multi-threading
+  iotests/308: Add multi-threading sanity test
+  fuse: Increase MAX_WRITE_SIZE with a second buffer
 
-Please collect the debug log; at least from the destination side of
-migration. That should show  how the VM is prepared and qemu invoked.
+ qapi/block-export.json               |   39 +-
+ include/block/export.h               |   12 +-
+ include/qemu/osdep.h                 |    1 +
+ block/export/export.c                |   48 +-
+ block/export/fuse.c                  | 1181 ++++++++++++++++++++------
+ block/export/vduse-blk.c             |    7 +
+ block/export/vhost-user-blk-server.c |    8 +
+ block/file-posix.c                   |   17 +-
+ nbd/server.c                         |    6 +
+ util/osdep.c                         |   18 +
+ tests/qemu-iotests/307               |   47 +
+ tests/qemu-iotests/307.out           |   18 +
+ tests/qemu-iotests/308               |   55 +-
+ tests/qemu-iotests/308.out           |   61 +-
+ 14 files changed, 1213 insertions(+), 305 deletions(-)
+
+-- 
+2.49.0
 
 
