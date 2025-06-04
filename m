@@ -2,83 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F208ACDE20
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 14:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB56ACDE3F
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 14:43:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMnLx-00078y-0l; Wed, 04 Jun 2025 08:36:21 -0400
+	id 1uMnRk-0002cG-PZ; Wed, 04 Jun 2025 08:42:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uMnLo-00072J-M0
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 08:36:13 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMnRd-0002W8-Fa
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 08:42:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uMnLl-0006Oq-3U
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 08:36:11 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMnRZ-000770-0b
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 08:42:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749040567;
+ s=mimecast20190719; t=1749040925;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V7C5kjSSLR6kXHw8Neep/dRsgyz0D4mmfyIVXbIvnZE=;
- b=XJqrXnPdsz0/jFOufYNtkFgLDr3u/hM1nKvE3Tfefiiw23NFmgk4qwejqYorDup3JqAtTN
- OpfNEjaMrZb9wZfluqQCx9kW8iZmzT0iknVxlbmDvPaiPnjKrb2WWM/TxxpS/OkJHFKHn3
- ecB0Sbf3/kBbai91efiG8VWYA+YuniI=
+ bh=GPo7HjPa8VHK79Vl8NrfmtCSwlxeujP82dW9wW5jjes=;
+ b=Oo5MgrbtNrhrUK7tVqCJlcTLqsEZYDWEk2a34OEm+Ay6K+zszl0m27uPDK/Bv9g75aOp/0
+ GWhgXOHnljFlIJdjYnES/jgEtJYxocnqpkznfk1GJT3HOftHk8eKpxeNFp8qh0diSbeYIn
+ myPKz0KUe9Ka469QBFhF0EsZxD19e2E=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-77akjX-INpioeYjyf73qAw-1; Wed,
- 04 Jun 2025 08:36:04 -0400
-X-MC-Unique: 77akjX-INpioeYjyf73qAw-1
-X-Mimecast-MFC-AGG-ID: 77akjX-INpioeYjyf73qAw_1749040562
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-y8-uySfGPxW7B7SWu8SNIw-1; Wed,
+ 04 Jun 2025 08:42:02 -0400
+X-MC-Unique: y8-uySfGPxW7B7SWu8SNIw-1
+X-Mimecast-MFC-AGG-ID: y8-uySfGPxW7B7SWu8SNIw_1749040920
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AB5E01801A22; Wed,  4 Jun 2025 12:36:01 +0000 (UTC)
-Received: from localhost (dhcp-192-216.str.redhat.com [10.33.192.216])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5684719560AD; Wed,  4 Jun 2025 12:35:59 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "maz@kernel.org"
- <maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "sebott@redhat.com" <sebott@redhat.com>, "armbru@redhat.com"
- <armbru@redhat.com>, "berrange@redhat.com" <berrange@redhat.com>,
- "abologna@redhat.com" <abologna@redhat.com>, "jdenemar@redhat.com"
- <jdenemar@redhat.com>
-Cc: "agraf@csgraf.de" <agraf@csgraf.de>, "shahuang@redhat.com"
- <shahuang@redhat.com>, "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>
-Subject: RE: [PATCH v3 00/10] kvm/arm: Introduce a customizable aarch64 KVM
- host model
-In-Reply-To: <f11e5fbddf634bbc88ba4c07bafe3f26@huawei.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20250414163849.321857-1-cohuck@redhat.com>
- <de7db6bc22ad4f0a8ac1fac718c810a1@huawei.com> <87bjrfbkyz.fsf@redhat.com>
- <878qmibc5a.fsf@redhat.com> <87tt4wamcp.fsf@redhat.com>
- <f11e5fbddf634bbc88ba4c07bafe3f26@huawei.com>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Wed, 04 Jun 2025 14:35:57 +0200
-Message-ID: <87o6v3adle.fsf@redhat.com>
+ id EDA4A1800DA5; Wed,  4 Jun 2025 12:41:59 +0000 (UTC)
+Received: from redhat.com (unknown [10.44.34.43])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 930F230002C8; Wed,  4 Jun 2025 12:41:57 +0000 (UTC)
+Date: Wed, 4 Jun 2025 14:41:54 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Anushree Mathur <anushree.mathur@linux.ibm.com>, qemu-devel@nongnu.org,
+ farosas@suse.de, pkrempa@redhat.com
+Subject: Re: virsh migrate fails when --copy-storage-all option is given!
+Message-ID: <aEA_EtAKVnk0oYej@redhat.com>
+References: <31711771-7caa-4ea3-b763-45db6930e28e@linux.ibm.com>
+ <aDctC8i7U2J5bmyw@x1.local>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aDctC8i7U2J5bmyw@x1.local>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -103,102 +83,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 04 2025, Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com> wrote:
+Am 28.05.2025 um 17:34 hat Peter Xu geschrieben:
+> Copy Kevin.
+> 
+> On Wed, May 28, 2025 at 07:21:12PM +0530, Anushree Mathur wrote:
+> > Hi all,
+> > 
+> > 
+> > When I am trying to migrate the guest from host1 to host2 with the command
+> > line as follows:
+> > 
+> > date;virsh migrate --live --domain guest1 qemu+ssh://dest/system --verbose
+> > --undefinesource --persistent --auto-converge --postcopy
+> > --copy-storage-all;date
+> > 
+> > and it fails with the following error message-
+> > 
+> > error: internal error: unable to execute QEMU command 'block-export-add':
+> > Block node is read-only
+> > 
+> > HOST ENV:
+> > 
+> > qemu : QEMU emulator version 9.2.2
+> > libvirt : libvirtd (libvirt) 11.1.0
+> > Seen with upstream qemu also
+> > 
+> > Steps to reproduce:
+> > 1) Start the guest1
+> > 2) Migrate it with the command as
+> > 
+> > date;virsh migrate --live --domain guest1 qemu+ssh://dest/system --verbose
+> > --undefinesource --persistent --auto-converge --postcopy
+> > --copy-storage-all;date
+> > 
+> > 3) It fails as follows:
+> > error: internal error: unable to execute QEMU command 'block-export-add':
+> > Block node is read-only
 
->> -----Original Message-----
->> From: Cornelia Huck <cohuck@redhat.com>
->> Sent: Tuesday, June 3, 2025 4:15 PM
->> To: Shameerali Kolothum Thodi
->> <shameerali.kolothum.thodi@huawei.com>; eric.auger.pro@gmail.com;
->> eric.auger@redhat.com; qemu-devel@nongnu.org; qemu-arm@nongnu.org;
->> kvmarm@lists.linux.dev; peter.maydell@linaro.org;
->> richard.henderson@linaro.org; alex.bennee@linaro.org; maz@kernel.org;
->> oliver.upton@linux.dev; sebott@redhat.com; armbru@redhat.com;
->> berrange@redhat.com; abologna@redhat.com; jdenemar@redhat.com
->> Cc: agraf@csgraf.de; shahuang@redhat.com; mark.rutland@arm.com;
->> philmd@linaro.org; pbonzini@redhat.com
->> Subject: RE: [PATCH v3 00/10] kvm/arm: Introduce a customizable aarch64
->> KVM host model
->> 
->> On Tue, May 27 2025, Cornelia Huck <cohuck@redhat.com> wrote:
->> > The conversion functions are not at fault here, but we're missing
->> > registers. If we have MIDR and friends writable, they show up in the
->> > masks returned by the kernel, but they are not present in the kernel's
->> > sysreg file where we generate our definitions from, and
->> > kvm_idx_to_idregs_idx() asserts instead of returning an error, which
->> > is kind of suboptimal...
->> >
->> > So I see two possible ways to fix this:
->> > - add MIDR and friends to the kernel's sysreg file
->> > - add MIDR and friends in QEMU's cpu-sysregs.h.inc file, and only append
->> >   generated definitions there
->> >
->> > First option means one more round trip, second options has more
->> > potential for messing things up if we keep stuff local to QEMU.
->> 
->> With the patch below, things work for me with a 6.15+ kernel. It's a bit
->
-> Yes works for me too now. Thanks.
+I assume this is about an inactive block node. Probably on the
+destination, but that's not clear to me from the error message.
 
-Thanks for checking.
+> > Things I analyzed-
+> > 1) This issue is not happening if I give --unsafe option in the virsh
+> > migrate command
 
->
->> messy, though, and raises questions (how do we want to handle those regs
->> across accelerators, for example, or how we can make sure that the code is
->> more robust when registers are added.)
->> 
->> My biggest question, however, is how this interacts with the framework to
->> provide lists of MIDR/REVIDR/AIDR for errata management. The hack below
->> adds properties to configure those regs, I guess we'd want to suppress
->> adding the props in order to avoid conflicts.
->
-> Not sure how this impacts the errata management though. My initial take on
-> this was, user will provide a list of target CPU ids through command line and
-> that will be used to set the target CPUs for errata management(if kernel
-> supports it).
->
-> Eg:
-> -machine virt,.., x-target-impl-cpus=0xMIDR1:0xREVIDR1-0xMIDR2:REVIDR2
+What does this translate to on the QEMU command line?
 
-I'm a bit confused by the range, I'd rather expect a list of tuples,
-e.g. <midr>:<revidr>,<midr>:<revidr>, ...
+> > 2) O/P of qemu-monitor command also shows ro as false
+> > 
+> > virsh qemu-monitor-command guest1 --pretty --cmd '{ "execute": "query-block"
+> > }'
+> > {
+> >   "return": [
+> >     {
+> >       "io-status": "ok",
+> >       "device": "",
+> >       "locked": false,
+> >       "removable": false,
+> >       "inserted": {
+> >         "iops_rd": 0,
+> >         "detect_zeroes": "off",
+> >         "image": {
+> >           "virtual-size": 21474836480,
+> >           "filename": "/home/Anu/guest_anu.qcow2",
+> >           "cluster-size": 65536,
+> >           "format": "qcow2",
+> >           "actual-size": 5226561536,
+> >           "format-specific": {
+> >             "type": "qcow2",
+> >             "data": {
+> >               "compat": "1.1",
+> >               "compression-type": "zlib",
+> >               "lazy-refcounts": false,
+> >               "refcount-bits": 16,
+> >               "corrupt": false,
+> >               "extended-l2": false
+> >             }
+> >           },
+> >           "dirty-flag": false
+> >         },
+> >         "iops_wr": 0,
+> >         "ro": false,
+> >         "node-name": "libvirt-1-format",
+> >         "backing_file_depth": 0,
+> >         "drv": "qcow2",
+> >         "iops": 0,
+> >         "bps_wr": 0,
+> >         "write_threshold": 0,
+> >         "encrypted": false,
+> >         "bps": 0,
+> >         "bps_rd": 0,
+> >         "cache": {
+> >           "no-flush": false,
+> >           "direct": false,
+> >           "writeback": true
+> >         },
+> >         "file": "/home/Anu/guest_anu.qcow2"
+> >       },
+> >       "qdev": "/machine/peripheral/virtio-disk0/virtio-backend",
+> >       "type": "unknown"
+> >     }
+> >   ],
+> >   "id": "libvirt-26"
+> > }
 
->
-> And these will be stored in,
->
-> #define MAX_TARGET_IMPL_CPUS    4
-> typedef struct TargetImplCpu {
->      uint32_t midr;
->      uint32_t revidr;
+I assume this is still from the source where the image is still active.
 
-Isn't revidr a 64 bit value?
+Also it doesn't contain the "active" field yet that was recently
+introduced, which could show something about this. I believe you would
+still get "read-only": false for an inactive image if it's supposed to
+be read-write after the migration completes.
 
-> } TargetImplCpu;
->
->
-> Please see the initial (a hack for testing kernel) implementation here,
-> https://github.com/hisilicon/qemu/commit/a393c1180274c73d34f32eaab66764a874a9ad31
->
-> Please let me know if there is a better/preferred way of obtaining this
-> target CPU list from user.
+> > 
+> > 3) Guest doesn't have any readonly
+> > 
+> > virsh dumpxml guest1 | grep readonly
+> > 
+> > 4) Tried giving the proper permissions also
+> > 
+> > -rwxrwxrwx. 1 qemu qemu 4.9G Apr 28 15:06 guest_anu.qcow2
+> > 
+> > 5) Checked for the permission of the pool also that is also proper!
+> > 
+> > 6) Found 1 older bug similar to this, pasting the link for reference:
+> > 
+> > 
+> > https://patchwork.kernel.org/project/qemu-devel/patch/20170811164854.GG4162@localhost.localdomain/
 
-I'm mostly wondering about conflicting values between "we make MIDR et
-al. writable, so we have a value different from what the host sees" and
-"we provide a list of possible values to the guest, so it can prepare
-for running on those hosts". Do we want to be able to provide a common
-set to the guest, and then enlighten it with the list of systems that it
-actually *might* run on? A benefit would be that it could always observe
-the same (configured) register entries, regardless where it runs (needs
-more plumbing in QEMU, I think.) We'd also need to be clear about what
-we'd require (i.e. do we expect that both the real host values and the
-configured values are present in the list?)
+What's happening in detail is more of a virsh/libvirt question. CCing
+Peter Krempa, he might have an idea.
 
-Not sure if the machine level is the right place to configure this, or
-if it needs to go to the cpu options. While it is a machine-wide
-configuration, it also means that we configure some cpu features in two
-different places (even if they serve a different purpose.)
-
-We could also choose to not expose properties for MIDR and friends at
-all, even if they are writable.
+Kevin
 
 
