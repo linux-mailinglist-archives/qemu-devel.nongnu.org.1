@@ -2,93 +2,175 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03B9ACDC41
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 13:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F97DACDC51
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 13:09:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMlsF-0003tP-Pv; Wed, 04 Jun 2025 07:01:37 -0400
+	id 1uMlzm-0006PM-L5; Wed, 04 Jun 2025 07:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uMls9-0003ny-Eo
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 07:01:29 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uMls5-0001Se-6v
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 07:01:27 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-606fdbd20afso863903a12.1
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 04:01:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749034883; x=1749639683; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=SrIpjSl5Cj3QPaupEzeELtj763bW3lGRtpO6G8BFT9c=;
- b=Imfs1UrkZIcI/H0ai89UJ7uAK0AOzmVlgyHAeYGOqxab/IIUTH9mgk8MCPcZC/SVmk
- C+8BL6EQ0GYr8uDOLsd+x9IvBi4/yTFgN6QlEbsMNABYNVpdxVgz01kZYwKz/y7Re2Dz
- UAIfhbLMeFpT0hd63hogEQizNSC1VIoPZ0oW5PN/SExLXqFKdFqWd/uUDmj7zlgBTarO
- dMaun0xOgj9HLnLUw8US1rvsOlXdun8NKE6hoxtcMa+NMvY4Dcr2r9s7zNkRjrz7sOtS
- YEB2q7to6h3z6r06mCIgxy2Jz+tbBhhHDUOW55Q/UPpEVc/QUZA306EGttq/i7Afva+r
- 2O1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749034883; x=1749639683;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SrIpjSl5Cj3QPaupEzeELtj763bW3lGRtpO6G8BFT9c=;
- b=i776rkI2ciZ4nDB6f+UD1I8UQdZOPkAqSSqQAUe+LkIlOiW98fy9ReQBfjS+iCC4lk
- H5+OI7NrYbg1JYNAimG6bFhwBMArJQzY+fgqoDhDi5tnu9KyipxCfPccZbtQXvPo6rog
- QP94EmxAh2+vJPcTq75acR9a/dMgh85r6ad273GlAt2fTlgcUM1eRzYIabbCn9n+4rlC
- Ef0hB3ACAHPZ5Lv6qrA9j0B4lF6TroBRrBJODCLMW66Kz/zdoNZ6yZqWw7V/doiks/sK
- qvGX2k6iJbJYD9s/koi2p8HUWFjIH9yL9A54UWK1CFgJ5rWUwOibLYV5bOznipSTWZoV
- WHkQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVX9g1H9MdsS5Nmv69hwPCn4+HMlxnsdbC5AAL5sJRUVWht/iDgmZ+EhowsZeFdGk/7pJgex9MAngZL@nongnu.org
-X-Gm-Message-State: AOJu0YzarNPis0E4gRo23RE/KywN260G5CW6n1RICmXxWLZVVWFrN69R
- 5patuK/ry23i48N5lC5eQNU6AfxXWiNMVffVUq+qOwIIvRy4IE7u1JfRB0Hrjm4xoX0ezq8J1gH
- PxXHBEVPKn4OosJE5zzwnXxUPon4B01s=
-X-Gm-Gg: ASbGncvjmnP1SpRvbc7+MhMFsHMmSYzOf8SQt/7zcQbGU8CehPA77MlfbxGvPCkUjJR
- a7opkeoeOxH99hgesmtKQJPjjh/OqXmHc9H1DJIX4ic/kqWoKA4/mcnTI32qUFbfWLI28rFZr9/
- InTiJA1ztEo3I2DwKsHUZChittL0wgA0g=
-X-Google-Smtp-Source: AGHT+IEbx45EgD0p9Qw8EeD94dW5uHbyzFO1hijPG8WNuNIYa3MW8fK/8/XZr3F+kEkU5wfnKLNBlvM1U6a++b3rVgs=
-X-Received: by 2002:a17:906:c142:b0:ad2:40a1:7894 with SMTP id
- a640c23a62f3a-addf8f99753mr220692366b.41.1749034882094; Wed, 04 Jun 2025
- 04:01:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <Alexey.Kardashevskiy@amd.com>)
+ id 1uMlzj-0006P0-6u
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 07:09:19 -0400
+Received: from mail-dm6nam11on2057.outbound.protection.outlook.com
+ ([40.107.223.57] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Alexey.Kardashevskiy@amd.com>)
+ id 1uMlzf-0002Tn-Sw
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 07:09:18 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lAxyMGysc5xBrLZvkAvfbjp1nYGOxDQZUdmDWoK2BNqNa5dcMuzX4uSU8nl+Jl8p0qAtfIxWWDPE6L5lPxShmvvwQSlOQOOsvpIVtt9m/RrtsbQyr2/Th5ATArzstfHZOnzEd4Gu+GuEgkA8CCnSSm9EEoxGD2MGK8Jkn3yRcN3Q8kuBtE+mfMdsie++2TA3tBad6pZf4HX9bfpj9NueUy9EoDl2w+yf0YrnzdHAD+VEfJiurVTrbu/Bkz2zKnmZlckB3Gu/fcQ2o5suzv412N2EDo1oaGjxmttJTo9VnxD9EZN3auOVfLzjy8q6KO9SFjHV/lpZ1jsP6Kb3RZQ+MQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vDL2JJfGEob0QnOZ/jqKotc6TwIY/xHMxgnFXjLQ8YU=;
+ b=gsBUtOoDJVjj3ISaxYvqpprU93C4J+5dAn4SJIM7y5uyt+A9D1X3to2oAbvfAM3d3xA16LFV9YhqPxMOoQ83xNjXfDXNm1T2ebKDCQpCq4A0IkK/O0LQhLTYU6Q5gQij+fZHVVqM5p1anaRaDsgWAn4JM7zh4m/da3X0h61i1mVSTnbF+yrxncDSzlHS5ifBuI7DcF2XbiWupdzEfhjY++KoXCBZXK51C0D5NYPNxIZZa89lpTgmez9dbomwKMcdaveg8wYCCE+1+y9QWHwZURWKALptTqTCGCEVH5snJj3r2lBxOcGlsrF6cMr0EAn1mt7tyjDZKx4RincdFcJoMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vDL2JJfGEob0QnOZ/jqKotc6TwIY/xHMxgnFXjLQ8YU=;
+ b=xA8F+FhLXOjiki0Xx3GehcHP/1ud0fCtwDUPzmPAb7rxlQ44MjGhXztV2G6y9hG6AtP68CXJKBHK3V+PIDCb9N+1VAx4m1Va1A1deizrH9rgjWCet0Z5PSKz1Kx+s2LIoMshioHOOLgeVi/5NImEGHjXtvfhYVhdCrDb65wHSDw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by DS0PR12MB8444.namprd12.prod.outlook.com (2603:10b6:8:128::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Wed, 4 Jun
+ 2025 11:04:10 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8769.037; Wed, 4 Jun 2025
+ 11:04:08 +0000
+Message-ID: <55ebb008-a26f-4173-937a-3bb2d8a6c972@amd.com>
+Date: Wed, 4 Jun 2025 21:04:01 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v6 4/5] ram-block-attributes: Introduce RamBlockAttributes
+ to manage RAMBlock with guest_memfd
+To: Chenyi Qiang <chenyi.qiang@intel.com>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Gupta Pankaj <pankaj.gupta@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Williams Dan J <dan.j.williams@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Baolu Lu <baolu.lu@linux.intel.com>, Gao Chao <chao.gao@intel.com>,
+ Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Alex Williamson <alex.williamson@redhat.com>
+References: <20250530083256.105186-1-chenyi.qiang@intel.com>
+ <20250530083256.105186-5-chenyi.qiang@intel.com>
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20250530083256.105186-5-chenyi.qiang@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P300CA0070.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:247::26) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 MIME-Version: 1.0
-References: <20250603142524.4043193-1-armbru@redhat.com>
- <20250603142524.4043193-4-armbru@redhat.com>
- <CAJSP0QUGaQEwhVh_w6Wbdm-Nqo_2kHcb+eS2Simq-x9J=-7qkg@mail.gmail.com>
- <aEANf4HkZTXn9KXN@redhat.com>
-In-Reply-To: <aEANf4HkZTXn9KXN@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 4 Jun 2025 07:01:09 -0400
-X-Gm-Features: AX0GCFu1mqMY8sbaa2oxS5roEKGN4giRmlZesNGr-nooYiuud17HkSsoQd1jr6g
-Message-ID: <CAJSP0QUGY-t=UcFYKFtkU19s6sKcA8ktvWyJDz_CBL8hxjBd5g@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] docs: define policy forbidding use of AI code
- generators
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel <qemu-devel@nongnu.org>, 
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>
-Content-Type: multipart/alternative; boundary="000000000000d8dd360636bcea74"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|DS0PR12MB8444:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5e05108-a572-4b30-b287-08dda3578725
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?S3RCL0gyYkxqWEdOYk1IQVY5eEwzSUpMSXNJODFPdzR5dFNqNGYvUVliRFZI?=
+ =?utf-8?B?Y1Azd1BWZVRVTkxaWEFoaG1CSWZSNWR1UnJ4WFBjbEZsZU4wYVdKT3h5RGRI?=
+ =?utf-8?B?VmpOMzQzUkZsOU5YN29TT2dMNnBlMXduNnkwYU0xaWZzWXhrSlltN2Jod2Jv?=
+ =?utf-8?B?QW54S3Y3ZVZPd3JZNy9JamlqbXl4MElOVWJCMmJOOUN6NDZaRndnMDE4ZTFv?=
+ =?utf-8?B?bWQzdFNIaDFhTDdRTlIwSFh4ZkxTYTBMUnJ0ODlhUGVuUW5ZemVJeWJIVHpX?=
+ =?utf-8?B?YlRGaGRGS0VxaW0zd1AxVmRCMjl4QWNZZGtVaFl3WUVRbHd3QnM2NE5Lczk1?=
+ =?utf-8?B?N3B4TXlsU0ZCOHZOUzRxTnlRQzIxR3dDZEVxemV6ZkpGT2ZGcGZ4QlZjcVhX?=
+ =?utf-8?B?endtMEl4WDZLT2dBdUtnY2dzeFpVeTFZanpOenl2S2M2ZkIwL0lNVVNSRXAy?=
+ =?utf-8?B?RmlvQk5WSm02SkhiaTdCcmlYV3NZMWR3cm1wQklQa1dVTzFEMkRHbk0xTGxh?=
+ =?utf-8?B?emJ0aHRHamgzejFxSFpZb2JsQ0lCV2lHQzFXWHZJTm1Ba2RkQjVOR29FcWJn?=
+ =?utf-8?B?Rlg1RUI1dFFrVjBpT2oyWU4rL2pEcXdsTjJLTW5wUVZ4cjd3dGdIaFJLYTZi?=
+ =?utf-8?B?MlhKMlF0ZlFUYUNGM1BTUng0Z29BWXhzaGhQaE45OEc2dUtORGJqdGpoM2kr?=
+ =?utf-8?B?VU1PaEcrckxuZ21UN0licUpWbHp5azhBL3gwcUpjendpVVB5bCticEtEbnFq?=
+ =?utf-8?B?UHYzekZXbkdCeTYzOVVPV3l4NThtWitTUzhTZG1KTmNUTllITWJ0ZGRrL3RJ?=
+ =?utf-8?B?VUJBSHpOVnhzMkZ3ZjRrZ09RK0ZkcVkwSHcza2NtNUpoVWFrR0dSOG1LRCtr?=
+ =?utf-8?B?QzlVcmZGNnpPZjU0dlVaRVoxUDRyaVB6OXNFTTBjd3l0dVRiRGhhVkl2ZkMx?=
+ =?utf-8?B?Ym5wVm15N1hweDRCZDllb0haQUxmeTNQOFI3VDJuL1M5NXVlQ3o4WHVhQWlB?=
+ =?utf-8?B?bTNPS2xpRWkzcmhZcjRwcit3VlBtQVRNdytJTjZtT0dlOVpVWWdXYzNFQXZH?=
+ =?utf-8?B?dmIxbzNOdzhQV20zOERDcHBQRGNkRXZNRWZ0WjRKL2M1a3h1a2hhbnI4VStT?=
+ =?utf-8?B?UE03R0RrVzd4ZTZ5K3JmYWxBb3VseStTcmZkVFR3bERCT3dBU0hhV1RzUGlk?=
+ =?utf-8?B?SUhiYllnZnBOakZyVG93cks2R2REV2QxdVVsUmEvL2pLWTI2MnczMXdlUlFv?=
+ =?utf-8?B?YVFMWG9JZkprMStJTENBOUpwWnA2aXFnc0t4S0QzdEI3bFdKSXpWc1ZhdWhl?=
+ =?utf-8?B?dTFtN25RUFowVTZablpTWHRtYlViVVFXKzcydFNOQzlYOHB2RVV4bkdnaHk4?=
+ =?utf-8?B?TTRVWHYyYlBrL1RmQzRjSHlTQlM2eGc3NGNiS2xheGsxaXFtTDVQazhYZkV2?=
+ =?utf-8?B?MEg1WlllQ3lGYTFxTFJFZTVORWhHRkpTc3ZqNU84c1AweXRxSk5IWUllZ2Vn?=
+ =?utf-8?B?WU1OZ3ovUUM2N3BrTTk0VzBxYzc2d1Zsc2c5MFhLSzQ3eTd1enlTdmJqaGFV?=
+ =?utf-8?B?Ry9EbDJ5azFzSVlnTjc1c2tncnoxR0NMTmxKb3FQdHM4REVuU0RuL2FsOGNv?=
+ =?utf-8?B?U0ZmVnFPbS9qdTZtTFM5c0FqSnR4bWxRazI1cis0MmkwcHlkWEM5YmpES0V6?=
+ =?utf-8?B?a1BCNmpZc3NmU2FDeDhicTNDekxJaTZScUdUdTZ1SCtrazMvd0hjZmgvS0R6?=
+ =?utf-8?B?bDdNNFU4SFVmcnJYbkc0V2NoRzhoaWQ1VDZIWTcrL0VSbi9YUGVPNHNDZVZU?=
+ =?utf-8?B?UjRXQStTTytNako1bUYreTUveWUxVUo4dkRyZWFSVHBKQ3FFREl5allxVXo5?=
+ =?utf-8?B?cnRoVWpYQjFLN3g2QUEvcTZQOGRiZnRWamtwUzVpbWc1SHhFQWRIenFFN1Bj?=
+ =?utf-8?Q?YO9Elmm7sH4=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR12MB9194.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(7416014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RWpnWWVWRElqNDhoNFk0dmhOSkJVWEdFZ1VYdTRHak9nWG5HYjdJSTFYTEww?=
+ =?utf-8?B?NVF4QXUvNlFCT2c5SDF1K1MyM3NZczY4TGQ2QjFIZTdOemU2OFdzeXI1NHAz?=
+ =?utf-8?B?UlYyaE5yMW5Yak5JK1krekZ4Nk80SG16Zm9uYTY5L1d5NFhHZlpiWmIrdGpE?=
+ =?utf-8?B?MDBLQnJLbE96dndQRC9MOUFYSUpwV2FKWC9hUmFJMzEzeXVXQ3VwNXZFcWYv?=
+ =?utf-8?B?RUVHYWMvcG85ZnBrMjlQMUQ3bDJRaEtsSUNaSkEwVlBUU285ZFcvUngwbVgw?=
+ =?utf-8?B?NkNnQnY1akVHdTAva0xLd0pzcTB0QzlqZzlGMHd3T2c4T3cxYVZHU05nTnIz?=
+ =?utf-8?B?bklUYXh5Sm0yeWdHeTdnSmQvU0JPbkFsM1JEUGpITHRNbDlkbmI2V1RGUVZ3?=
+ =?utf-8?B?dEU3VVNIaXF3WWdUaStNN1NEWjVSMWRtZGpwSkxaSlV3b1NjL2lKYkJFa0Zx?=
+ =?utf-8?B?V0kvdE9SZGtkTUJuT2lnTnpLNjNrVDdFcHBpWGJ6a2ZOM2VuTFRqMlIxMVph?=
+ =?utf-8?B?YUYxenhzZ0IzbjhpMGhKcE1UdnhCcHNyZHZhR014aTVyZUw1aEpVMXlFWlF4?=
+ =?utf-8?B?Ly9QZGUyZHNNRU1UTWFZT2tFeUlmYnBrdVY5SWZWU2ZTNTBQdDRnUk1ocm1u?=
+ =?utf-8?B?Q3NSNnF3UHc5OVhYSnpnejV5SXlxUFNScTBScHhzc1U4TU82c3ovSmZkN2lG?=
+ =?utf-8?B?S1R0NnQrZXVwQ0EyS3pqUHlrZS9YT3ZNZ0JqYUNWdzROQm9XUnRFajA2QjRQ?=
+ =?utf-8?B?T1d3bmIrZ2R2aDNlS0ZtWHM3U1VrV28xOFNTK3Fld0FBR08yMWVmZGlIdFF1?=
+ =?utf-8?B?SldITGhYOXpQSnp1V096NTFpV0dxWTh0TkY0cWIrQk1odzFIcUl2ZXUvdDcv?=
+ =?utf-8?B?enhlTTMwNEdBSUswU2ZqR3g2a2FzWWVVajBseWl3S1YxMFlNWGlRZGtnRU5k?=
+ =?utf-8?B?QVVSN3YwZ1R4Ty9BTnp5S09lQlRWZ3lRaVNvcndFdkhnTWZ0NHBJdUZ4dXBB?=
+ =?utf-8?B?MXV4eUZ0aW51VTBJV1Npa0dHREVRVk90TXhDRlFyZUZqVUdudm9QUWxwRkJ5?=
+ =?utf-8?B?Ui9CZTNxeWZZTFA1dEdIVTNMdGZQT1N4N24vcE9yQVA4OWttdGYvVkF0RVpu?=
+ =?utf-8?B?OEU4ZmFrb2VnMVJnekp2MEd3K2hnRWFkWnNmM25pTFB0cGlJQi9YcE1wT1Vs?=
+ =?utf-8?B?ckJqTWRmUUFHeklCalJxQVhCdnFJQ0pDN1NZdllRb2l0cklMTC9PQU5iTWtX?=
+ =?utf-8?B?am9JRVV4QlNibUFIbzd5eGE5NGpFUDZHYmhWVkc0V28zd2tPTE9BSW5nSklE?=
+ =?utf-8?B?TnhIK290ekxabXZpbUFKUk4yNEFFZFRmZHE1aE5ZR0JJbjN5cHBkcityU3JK?=
+ =?utf-8?B?VUxiTkxiNHFzU0szMTR3NHg1SjJ1cTZMeHBpb0ZMYnZGVUxrbU5wd29jZHVX?=
+ =?utf-8?B?L25UNHZVVURTekJkdW4rU0lYQ3pmaStmb3E3U3JzZXg0aFFsak1wYXFSbHV4?=
+ =?utf-8?B?SkE4QW5Ed2RmZ1pqbGRid0JxbXJrcGtsa1FJS1BvRit0TGord2ZZSzgxRlU1?=
+ =?utf-8?B?Qjh1WDkvOWxVdW1iVmNnZUxKYko1aURDT25Sa1JaRVRwZUdFeDlkaXZIdVFD?=
+ =?utf-8?B?bEJXNnV5SERkcHpnNGt2TkJsU1pXWVBKNHJXZjd4WWVPS1NKc3FKejB6RXRI?=
+ =?utf-8?B?MFJ4VyszUWFVVjlXVFZXdWMwdEtXbmZVNWx3ajlKY3dQTHZnUHdXL25oWG9z?=
+ =?utf-8?B?dmZwSFlYZ2xMV0hSK3MwNExzZEpVbkpXdzBQS2hLZmsxVWRiUmlXamxFTXoz?=
+ =?utf-8?B?Yk82ZkR5VXpIY0tjRkRMVy9CMEVxaFFXejlRS1NkRUxMN1pNZU1zVitOc25O?=
+ =?utf-8?B?R3ZWNSt3WGdZamtvclVPNUNEVjdISkk4YVgvNGcyQ3JiNFBJSFBRdjc1NENv?=
+ =?utf-8?B?TFdJb1VRVm9hZDdsTUNseTRHSUJUQno5MGFHbXIyTk92QWJmdnVuRHRrdFhl?=
+ =?utf-8?B?K0VKTGNkRmdSV3BDQTU4bndjKzFtaTM5bGFsOHBQZDRlYmZoeGRtMVR6WkRJ?=
+ =?utf-8?B?ODdhaStyalNkMUlxd1hZeDJ6a0RURmVQSlluczhSNWVKR2l4SXg1NjN4c2tQ?=
+ =?utf-8?Q?hWbWDvxjXyQIqST44vMp8skFT?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5e05108-a572-4b30-b287-08dda3578725
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2025 11:04:08.5868 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jwCuCTpint1sToli0Uu+UeJ0QvDPC+i6zMRRWvuigZ9cgORvlwyHlnTxxiqOff7hQrsTJrxCEcxT/fKsQ5rHbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8444
+Received-SPF: permerror client-ip=40.107.223.57;
+ envelope-from=Alexey.Kardashevskiy@amd.com;
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,329 +186,727 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000d8dd360636bcea74
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Jun 4, 2025, 05:10 Daniel P. Berrang=C3=A9 <berrange@redhat.com> wr=
-ote:
-
-> On Tue, Jun 03, 2025 at 02:25:42PM -0400, Stefan Hajnoczi wrote:
-> > On Tue, Jun 3, 2025 at 10:25=E2=80=AFAM Markus Armbruster <armbru@redha=
-t.com>
-> wrote:
-> > >
-> > > From: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> > >
-> > > There has been an explosion of interest in so called AI code
-> > > generators. Thus far though, this is has not been matched by a broadl=
-y
-> > > accepted legal interpretation of the licensing implications for code
-> > > generator outputs. While the vendors may claim there is no problem an=
-d
-> > > a free choice of license is possible, they have an inherent conflict
-> > > of interest in promoting this interpretation. More broadly there is,
-> > > as yet, no broad consensus on the licensing implications of code
-> > > generators trained on inputs under a wide variety of licenses
-> > >
-> > > The DCO requires contributors to assert they have the right to
-> > > contribute under the designated project license. Given the lack of
-> > > consensus on the licensing of AI code generator output, it is not
-> > > considered credible to assert compliance with the DCO clause (b) or (=
-c)
-> > > where a patch includes such generated code.
-> > >
-> > > This patch thus defines a policy that the QEMU project will currently
-> > > not accept contributions where use of AI code generators is either
-> > > known, or suspected.
-> > >
-> > > These are early days of AI-assisted software development. The legal
-> > > questions will be resolved eventually. The tools will mature, and we
-> > > can expect some to become safely usable in free software projects.
-> > > The policy we set now must be for today, and be open to revision. It'=
-s
-> > > best to start strict and safe, then relax.
-> > >
-> > > Meanwhile requests for exceptions can also be considered on a case by
-> > > case basis.
-> > >
-> > > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> > > Acked-by: Stefan Hajnoczi <stefanha@gmail.com>
-> > > Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-> > > Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> > > ---
-> > >  docs/devel/code-provenance.rst | 50 ++++++++++++++++++++++++++++++++=
-+-
-> > >  1 file changed, 49 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/docs/devel/code-provenance.rst
-> b/docs/devel/code-provenance.rst
-> > > index c27d8fe649..261263cfba 100644
-> > > --- a/docs/devel/code-provenance.rst
-> > > +++ b/docs/devel/code-provenance.rst
-> > > @@ -270,4 +270,52 @@ boilerplate code template which is then filled i=
-n
-> to produce the final patch.
-> > >  The output of such a tool would still be considered the "preferred
-> format",
-> > >  since it is intended to be a foundation for further human authored
-> changes.
-> > >  Such tools are acceptable to use, provided they follow a
-> deterministic process
-> > > -and there is clearly defined copyright and licensing for their outpu=
-t.
-> > > +and there is clearly defined copyright and licensing for their
-> output. Note
-> > > +in particular the caveats applying to AI code generators below.
-> > > +
-> > > +Use of AI code generators
-> > > +~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > +
-> > > +TL;DR:
-> > > +
-> > > +  **Current QEMU project policy is to DECLINE any contributions whic=
-h
-> are
-> > > +  believed to include or derive from AI generated code. This include=
-s
-> ChatGPT,
-> > > +  CoPilot, Llama and similar tools**
-> >
-> > GitHub spells it "Copilot".
-> >
-> > Claude is very popular for coding at the moment and probably worth
-> mentioning.
-> >
-> > > +
-> > > +The increasing prevalence of AI code generators, most notably but no=
-t
-> limited
-> >
-> > More detail is needed on what an "AI code generator" is. Coding
-> > assistant tools range from autocompletion to linters to automatic code
-> > generators. In addition there are other AI-related tools like ChatGPT
-> > or Gemini as a chatbot that can people use like Stackoverflow or an
-> > API documentation summarizer.
-> >
-> > I think the intent is to say: do not put code that comes from _any_ AI
-> > tool into QEMU.
->
-> Right, the intent is that any copyrightable portion of a commit must
-> not have come directly from an AI/LLM tool, or from an agent which
-> indirectly/internally uses an AI/LLM tool.
->
-> "code generator" is possibly a little overly specific, as this is really
-> about any type of tool which emits content that will make its way into
-> qemu.git, whether code or non-code content (docs, images, etc).
->
-
-Okay. The use case where AI is used to formulate code comments is common
-enough that is with pointing it out explicitly in the policy. Many people
-wouldn't consider that an "AI code generator" use case.
-
-Stefan
 
 
-> > It would be okay to use AI to research APIs, algorithms, brainstorm
-> > ideas, debug the code, analyze the code, etc but the actual code
-> > changes must not be generated by AI.
->
-> Mostly yes - there's a fuzzy boundary in the debug/analyze use cases,
-> if the tool is also suggesting code changes to fix issues.
->
-> If the scope of the suggested changes meets the threshold for being
-> (likely) copyrightable code, that would fall under the policy.
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-
-> https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-
-> https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-
-> https://www.instagram.com/dberrange :|
->
->
+On 30/5/25 18:32, Chenyi Qiang wrote:
+> Commit 852f0048f3 ("RAMBlock: make guest_memfd require uncoordinated
+> discard") highlighted that subsystems like VFIO may disable RAM block
+> discard. However, guest_memfd relies on discard operations for page
+> conversion between private and shared memory, potentially leading to
+> the stale IOMMU mapping issue when assigning hardware devices to
+> confidential VMs via shared memory. To address this and allow shared
+> device assignement, it is crucial to ensure the VFIO system refreshes
+> its IOMMU mappings.
+> 
+> RamDiscardManager is an existing interface (used by virtio-mem) to
+> adjust VFIO mappings in relation to VM page assignment. Effectively page
+> conversion is similar to hot-removing a page in one mode and adding it
+> back in the other. Therefore, similar actions are required for page
+> conversion events. Introduce the RamDiscardManager to guest_memfd to
+> facilitate this process.
+> 
+> Since guest_memfd is not an object, it cannot directly implement the
+> RamDiscardManager interface. Implementing it in HostMemoryBackend is
+> not appropriate because guest_memfd is per RAMBlock, and some RAMBlocks
+> have a memory backend while others do not. Notably, virtual BIOS
+> RAMBlocks using memory_region_init_ram_guest_memfd() do not have a
+> backend.
+> 
+> To manage RAMBlocks with guest_memfd, define a new object named
+> RamBlockAttributes to implement the RamDiscardManager interface. This
+> object can store the guest_memfd information such as bitmap for shared
+> memory and the registered listeners for event notification. In the
+> context of RamDiscardManager, shared state is analogous to populated, and
+> private state is signified as discarded. To notify the conversion events,
+> a new state_change() helper is exported for the users to notify the
+> listeners like VFIO, so that VFIO can dynamically DMA map/unmap the
+> shared mapping.
+> 
+> Note that the memory state is tracked at the host page size granularity,
+> as the minimum conversion size can be one page per request and VFIO
+> expects the DMA mapping for a specific iova to be mapped and unmapped
+> with the same granularity. Confidential VMs may perform partial
+> conversions, such as conversions on small regions within larger ones.
+> To prevent such invalid cases and until DMA mapping cut operation
+> support is available, all operations are performed with 4K granularity.
+> 
+> In addition, memory conversion failures cause QEMU to quit instead of
+> resuming the guest or retrying the operation at present. It would be
+> future work to add more error handling or rollback mechanisms once
+> conversion failures are allowed. For example, in-place conversion of
+> guest_memfd could retry the unmap operation during the conversion from
+> shared to private. For now, keep the complex error handling out of the
+> picture as it is not required.
+> 
+> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+> ---
+> Changes in v6:
+>      - Change the object type name from RamBlockAttribute to
+>        RamBlockAttributes. (David)
+>      - Save the associated RAMBlock instead MemoryRegion in
+>        RamBlockAttributes. (David)
+>      - Squash the state_change() helper introduction in this commit as
+>        well as the mixture conversion case handling. (David)
+>      - Change the block_size type from int to size_t and some cleanup in
+>        validation check. (Alexey)
+>      - Add a tracepoint to track the state changes. (Alexey)
+> 
+> Changes in v5:
+>      - Revert to use RamDiscardManager interface instead of introducing
+>        new hierarchy of class to manage private/shared state, and keep
+>        using the new name of RamBlockAttribute compared with the
+>        MemoryAttributeManager in v3.
+>      - Use *simple* version of object_define and object_declare since the
+>        state_change() function is changed as an exported function instead
+>        of a virtual function in later patch.
+>      - Move the introduction of RamBlockAttribute field to this patch and
+>        rename it to ram_shared. (Alexey)
+>      - call the exit() when register/unregister failed. (Zhao)
+>      - Add the ram-block-attribute.c to Memory API related part in
+>        MAINTAINERS.
+> 
+> Changes in v4:
+>      - Change the name from memory-attribute-manager to
+>        ram-block-attribute.
+>      - Implement the newly-introduced PrivateSharedManager instead of
+>        RamDiscardManager and change related commit message.
+>      - Define the new object in ramblock.h instead of adding a new file.
+> ---
+>   MAINTAINERS                   |   1 +
+>   include/system/ramblock.h     |  21 ++
+>   system/meson.build            |   1 +
+>   system/ram-block-attributes.c | 480 ++++++++++++++++++++++++++++++++++
+>   system/trace-events           |   3 +
+>   5 files changed, 506 insertions(+)
+>   create mode 100644 system/ram-block-attributes.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6dacd6d004..8ec39aa7f8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3149,6 +3149,7 @@ F: system/memory.c
+>   F: system/memory_mapping.c
+>   F: system/physmem.c
+>   F: system/memory-internal.h
+> +F: system/ram-block-attributes.c
+>   F: scripts/coccinelle/memory-region-housekeeping.cocci
+>   
+>   Memory devices
+> diff --git a/include/system/ramblock.h b/include/system/ramblock.h
+> index d8a116ba99..1bab9e2dac 100644
+> --- a/include/system/ramblock.h
+> +++ b/include/system/ramblock.h
+> @@ -22,6 +22,10 @@
+>   #include "exec/cpu-common.h"
+>   #include "qemu/rcu.h"
+>   #include "exec/ramlist.h"
+> +#include "system/hostmem.h"
+> +
+> +#define TYPE_RAM_BLOCK_ATTRIBUTES "ram-block-attributes"
+> +OBJECT_DECLARE_SIMPLE_TYPE(RamBlockAttributes, RAM_BLOCK_ATTRIBUTES)
+>   
+>   struct RAMBlock {
+>       struct rcu_head rcu;
+> @@ -91,4 +95,21 @@ struct RAMBlock {
+>       ram_addr_t postcopy_length;
+>   };
+>   
+> +struct RamBlockAttributes {
+> +    Object parent;
+> +
+> +    RAMBlock *ram_block;
+> +
+> +    /* 1-setting of the bitmap represents ram is populated (shared) */
+> +    unsigned bitmap_size;
+> +    unsigned long *bitmap;
+> +
+> +    QLIST_HEAD(, RamDiscardListener) rdl_list;
+> +};
+> +
+> +RamBlockAttributes *ram_block_attributes_create(RAMBlock *ram_block);
+> +void ram_block_attributes_destroy(RamBlockAttributes *attr);
+> +int ram_block_attributes_state_change(RamBlockAttributes *attr, uint64_t offset,
+> +                                      uint64_t size, bool to_discard);
+> +
+>   #endif
+> diff --git a/system/meson.build b/system/meson.build
+> index c2f0082766..2747dbde80 100644
+> --- a/system/meson.build
+> +++ b/system/meson.build
+> @@ -17,6 +17,7 @@ libsystem_ss.add(files(
+>     'dma-helpers.c',
+>     'globals.c',
+>     'ioport.c',
+> +  'ram-block-attributes.c',
+>     'memory_mapping.c',
+>     'memory.c',
+>     'physmem.c',
+> diff --git a/system/ram-block-attributes.c b/system/ram-block-attributes.c
+> new file mode 100644
+> index 0000000000..514252413f
+> --- /dev/null
+> +++ b/system/ram-block-attributes.c
+> @@ -0,0 +1,480 @@
+> +/*
+> + * QEMU ram block attributes
+> + *
+> + * Copyright Intel
+> + *
+> + * Author:
+> + *      Chenyi Qiang <chenyi.qiang@intel.com>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory
+> + *
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/error-report.h"
+> +#include "system/ramblock.h"
+> +#include "trace.h"
+> +
+> +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RamBlockAttributes,
+> +                                          ram_block_attributes,
+> +                                          RAM_BLOCK_ATTRIBUTES,
+> +                                          OBJECT,
+> +                                          { TYPE_RAM_DISCARD_MANAGER },
+> +                                          { })
+> +
+> +static size_t
+> +ram_block_attributes_get_block_size(const RamBlockAttributes *attr)
+> +{
+> +    /*
+> +     * Because page conversion could be manipulated in the size of at least 4K
+> +     * or 4K aligned, Use the host page size as the granularity to track the
+> +     * memory attribute.
+> +     */
+> +    g_assert(attr && attr->ram_block);
+> +    g_assert(attr->ram_block->page_size == qemu_real_host_page_size());
+> +    return attr->ram_block->page_size;
+> +}
+> +
+> +
+> +static bool
+> +ram_block_attributes_rdm_is_populated(const RamDiscardManager *rdm,
+> +                                      const MemoryRegionSection *section)
+> +{
+> +    const RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rdm);
+> +    const size_t block_size = ram_block_attributes_get_block_size(attr);
+> +    const uint64_t first_bit = section->offset_within_region / block_size;
+> +    const uint64_t last_bit = first_bit + int128_get64(section->size) / block_size - 1;
+> +    unsigned long first_discarded_bit;
+> +
+> +    first_discarded_bit = find_next_zero_bit(attr->bitmap, last_bit + 1,
+> +                                           first_bit);
+> +    return first_discarded_bit > last_bit;
+> +}
+> +
+> +typedef int (*ram_block_attributes_section_cb)(MemoryRegionSection *s,
+> +                                               void *arg);
+> +
+> +static int
+> +ram_block_attributes_notify_populate_cb(MemoryRegionSection *section,
+> +                                        void *arg)
+> +{
+> +    RamDiscardListener *rdl = arg;
+> +
+> +    return rdl->notify_populate(rdl, section);
+> +}
+> +
+> +static int
+> +ram_block_attributes_notify_discard_cb(MemoryRegionSection *section,
+> +                                       void *arg)
+> +{
+> +    RamDiscardListener *rdl = arg;
+> +
+> +    rdl->notify_discard(rdl, section);
+> +    return 0;
+> +}
+> +
+> +static int
+> +ram_block_attributes_for_each_populated_section(const RamBlockAttributes *attr,
+> +                                                MemoryRegionSection *section,
+> +                                                void *arg,
+> +                                                ram_block_attributes_section_cb cb)
+> +{
+> +    unsigned long first_bit, last_bit;
+> +    uint64_t offset, size;
+> +    const size_t block_size = ram_block_attributes_get_block_size(attr);
+> +    int ret = 0;
+> +
+> +    first_bit = section->offset_within_region / block_size;
+> +    first_bit = find_next_bit(attr->bitmap, attr->bitmap_size,
+> +                              first_bit);
+> +
+> +    while (first_bit < attr->bitmap_size) {
+> +        MemoryRegionSection tmp = *section;
+> +
+> +        offset = first_bit * block_size;
+> +        last_bit = find_next_zero_bit(attr->bitmap, attr->bitmap_size,
+> +                                      first_bit + 1) - 1;
+> +        size = (last_bit - first_bit + 1) * block_size;
+> +
+> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+> +            break;
+> +        }
+> +
+> +        ret = cb(&tmp, arg);
+> +        if (ret) {
+> +            error_report("%s: Failed to notify RAM discard listener: %s",
+> +                         __func__, strerror(-ret));
+> +            break;
+> +        }
+> +
+> +        first_bit = find_next_bit(attr->bitmap, attr->bitmap_size,
+> +                                  last_bit + 2);
+> +    }
+> +
+> +    return ret;
+> +}
+> +
+> +static int
+> +ram_block_attributes_for_each_discarded_section(const RamBlockAttributes *attr,
+> +                                                MemoryRegionSection *section,
+> +                                                void *arg,
+> +                                                ram_block_attributes_section_cb cb)
+> +{
+> +    unsigned long first_bit, last_bit;
+> +    uint64_t offset, size;
+> +    const size_t block_size = ram_block_attributes_get_block_size(attr);
+> +    int ret = 0;
+> +
+> +    first_bit = section->offset_within_region / block_size;
+> +    first_bit = find_next_zero_bit(attr->bitmap, attr->bitmap_size,
+> +                                   first_bit);
+> +
+> +    while (first_bit < attr->bitmap_size) {
+> +        MemoryRegionSection tmp = *section;
+> +
+> +        offset = first_bit * block_size;
+> +        last_bit = find_next_bit(attr->bitmap, attr->bitmap_size,
+> +                                 first_bit + 1) - 1;
+> +        size = (last_bit - first_bit + 1) * block_size;
+> +
+> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+> +            break;
+> +        }
+> +
+> +        ret = cb(&tmp, arg);
+> +        if (ret) {
+> +            error_report("%s: Failed to notify RAM discard listener: %s",
+> +                         __func__, strerror(-ret));
+> +            break;
+> +        }
+> +
+> +        first_bit = find_next_zero_bit(attr->bitmap,
+> +                                       attr->bitmap_size,
+> +                                       last_bit + 2);
+> +    }
+> +
+> +    return ret;
+> +}
+> +
+> +static uint64_t
+> +ram_block_attributes_rdm_get_min_granularity(const RamDiscardManager *rdm,
+> +                                             const MemoryRegion *mr)
+> +{
+> +    const RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rdm);
+> +
+> +    g_assert(mr == attr->ram_block->mr);
+> +    return ram_block_attributes_get_block_size(attr);
+> +}
+> +
+> +static void
+> +ram_block_attributes_rdm_register_listener(RamDiscardManager *rdm,
+> +                                           RamDiscardListener *rdl,
+> +                                           MemoryRegionSection *section)
+> +{
+> +    RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rdm);
+> +    int ret;
+> +
+> +    g_assert(section->mr == attr->ram_block->mr);
+> +    rdl->section = memory_region_section_new_copy(section);
+> +
+> +    QLIST_INSERT_HEAD(&attr->rdl_list, rdl, next);
+> +
+> +    ret = ram_block_attributes_for_each_populated_section(attr, section, rdl,
+> +                                    ram_block_attributes_notify_populate_cb);
+> +    if (ret) {
+> +        error_report("%s: Failed to register RAM discard listener: %s",
+> +                     __func__, strerror(-ret));
+> +        exit(1);
+> +    }
+> +}
+> +
+> +static void
+> +ram_block_attributes_rdm_unregister_listener(RamDiscardManager *rdm,
+> +                                             RamDiscardListener *rdl)
+> +{
+> +    RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rdm);
+> +    int ret;
+> +
+> +    g_assert(rdl->section);
+> +    g_assert(rdl->section->mr == attr->ram_block->mr);
+> +
+> +    if (rdl->double_discard_supported) {
+> +        rdl->notify_discard(rdl, rdl->section);
+> +    } else {
+> +        ret = ram_block_attributes_for_each_populated_section(attr,
+> +                rdl->section, rdl, ram_block_attributes_notify_discard_cb);
+> +        if (ret) {
+> +            error_report("%s: Failed to unregister RAM discard listener: %s",
+> +                         __func__, strerror(-ret));
+> +            exit(1);
+> +        }
+> +    }
+> +
+> +    memory_region_section_free_copy(rdl->section);
+> +    rdl->section = NULL;
+> +    QLIST_REMOVE(rdl, next);
+> +}
+> +
+> +typedef struct RamBlockAttributesReplayData {
+> +    ReplayRamDiscardState fn;
+> +    void *opaque;
+> +} RamBlockAttributesReplayData;
+> +
+> +static int ram_block_attributes_rdm_replay_cb(MemoryRegionSection *section,
+> +                                              void *arg)
+> +{
+> +    RamBlockAttributesReplayData *data = arg;
+> +
+> +    return data->fn(section, data->opaque);
+> +}
+> +
+> +static int
+> +ram_block_attributes_rdm_replay_populated(const RamDiscardManager *rdm,
+> +                                          MemoryRegionSection *section,
+> +                                          ReplayRamDiscardState replay_fn,
+> +                                          void *opaque)
+> +{
+> +    RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rdm);
+> +    RamBlockAttributesReplayData data = { .fn = replay_fn, .opaque = opaque };
+> +
+> +    g_assert(section->mr == attr->ram_block->mr);
+> +    return ram_block_attributes_for_each_populated_section(attr, section, &data,
+> +                                            ram_block_attributes_rdm_replay_cb);
+> +}
+> +
+> +static int
+> +ram_block_attributes_rdm_replay_discarded(const RamDiscardManager *rdm,
+> +                                          MemoryRegionSection *section,
+> +                                          ReplayRamDiscardState replay_fn,
+> +                                          void *opaque)
+> +{
+> +    RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(rdm);
+> +    RamBlockAttributesReplayData data = { .fn = replay_fn, .opaque = opaque };
+> +
+> +    g_assert(section->mr == attr->ram_block->mr);
+> +    return ram_block_attributes_for_each_discarded_section(attr, section, &data,
+> +                                            ram_block_attributes_rdm_replay_cb);
+> +}
+> +
+> +static bool
+> +ram_block_attributes_is_valid_range(RamBlockAttributes *attr, uint64_t offset,
+> +                                    uint64_t size)
+> +{
+> +    MemoryRegion *mr = attr->ram_block->mr;
+> +
+> +    g_assert(mr);
+> +
+> +    uint64_t region_size = memory_region_size(mr);
+> +    const size_t block_size = ram_block_attributes_get_block_size(attr);
+> +
+> +    if (!QEMU_IS_ALIGNED(offset, block_size) ||
+> +        !QEMU_IS_ALIGNED(size, block_size)) {
+> +        return false;
+> +    }
+> +    if (offset + size <= offset) {
+> +        return false;
+> +    }
+> +    if (offset + size > region_size) {
+> +        return false;
+> +    }
+> +    return true;
+> +}
+> +
+> +static void ram_block_attributes_notify_discard(RamBlockAttributes *attr,
+> +                                                uint64_t offset,
+> +                                                uint64_t size)
+> +{
+> +    RamDiscardListener *rdl;
+> +
+> +    QLIST_FOREACH(rdl, &attr->rdl_list, next) {
+> +        MemoryRegionSection tmp = *rdl->section;
+> +
+> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+> +            continue;
+> +        }
+> +        rdl->notify_discard(rdl, &tmp);
+> +    }
+> +}
+> +
+> +static int
+> +ram_block_attributes_notify_populate(RamBlockAttributes *attr,
+> +                                     uint64_t offset, uint64_t size)
+> +{
+> +    RamDiscardListener *rdl;
+> +    int ret = 0;
+> +
+> +    QLIST_FOREACH(rdl, &attr->rdl_list, next) {
+> +        MemoryRegionSection tmp = *rdl->section;
+> +
+> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+> +            continue;
+> +        }
+> +        ret = rdl->notify_populate(rdl, &tmp);
+> +        if (ret) {
+> +            break;
+> +        }
+> +    }
+> +
+> +    return ret;
+> +}
+> +
+> +static bool ram_block_attributes_is_range_populated(RamBlockAttributes *attr,
+> +                                                    uint64_t offset,
+> +                                                    uint64_t size)
+> +{
+> +    const size_t block_size = ram_block_attributes_get_block_size(attr);
+> +    const unsigned long first_bit = offset / block_size;
+> +    const unsigned long last_bit = first_bit + (size / block_size) - 1;
+> +    unsigned long found_bit;
+> +
+> +    found_bit = find_next_zero_bit(attr->bitmap, last_bit + 1,
+> +                                   first_bit);
+> +    return found_bit > last_bit;
+> +}
+> +
+> +static bool
+> +ram_block_attributes_is_range_discarded(RamBlockAttributes *attr,
+> +                                        uint64_t offset, uint64_t size)
+> +{
+> +    const size_t block_size = ram_block_attributes_get_block_size(attr);
+> +    const unsigned long first_bit = offset / block_size;
+> +    const unsigned long last_bit = first_bit + (size / block_size) - 1;
+> +    unsigned long found_bit;
+> +
+> +    found_bit = find_next_bit(attr->bitmap, last_bit + 1, first_bit);
+> +    return found_bit > last_bit;
+> +}
+> +
+> +int ram_block_attributes_state_change(RamBlockAttributes *attr,
+> +                                      uint64_t offset, uint64_t size,
+> +                                      bool to_discard)
+> +{
+> +    const size_t block_size = ram_block_attributes_get_block_size(attr);
+> +    const unsigned long first_bit = offset / block_size;
+> +    const unsigned long nbits = size / block_size;
+> +    bool is_range_discarded, is_range_populated;
 
---000000000000d8dd360636bcea74
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Can be reduced to "discarded" and "populated".
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 4, 2025, 05:10 Danie=
-l P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com">berrange@redh=
-at.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">On Tue, Jun 03, 2025 at 02:25:42PM -0400, Stefan Hajnoczi wrote:<br>
-&gt; On Tue, Jun 3, 2025 at 10:25=E2=80=AFAM Markus Armbruster &lt;<a href=
-=3D"mailto:armbru@redhat.com" target=3D"_blank" rel=3D"noreferrer">armbru@r=
-edhat.com</a>&gt; wrote:<br>
-&gt; &gt;<br>
-&gt; &gt; From: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redh=
-at.com" target=3D"_blank" rel=3D"noreferrer">berrange@redhat.com</a>&gt;<br=
->
-&gt; &gt;<br>
-&gt; &gt; There has been an explosion of interest in so called AI code<br>
-&gt; &gt; generators. Thus far though, this is has not been matched by a br=
-oadly<br>
-&gt; &gt; accepted legal interpretation of the licensing implications for c=
-ode<br>
-&gt; &gt; generator outputs. While the vendors may claim there is no proble=
-m and<br>
-&gt; &gt; a free choice of license is possible, they have an inherent confl=
-ict<br>
-&gt; &gt; of interest in promoting this interpretation. More broadly there =
-is,<br>
-&gt; &gt; as yet, no broad consensus on the licensing implications of code<=
-br>
-&gt; &gt; generators trained on inputs under a wide variety of licenses<br>
-&gt; &gt;<br>
-&gt; &gt; The DCO requires contributors to assert they have the right to<br=
->
-&gt; &gt; contribute under the designated project license. Given the lack o=
-f<br>
-&gt; &gt; consensus on the licensing of AI code generator output, it is not=
-<br>
-&gt; &gt; considered credible to assert compliance with the DCO clause (b) =
-or (c)<br>
-&gt; &gt; where a patch includes such generated code.<br>
-&gt; &gt;<br>
-&gt; &gt; This patch thus defines a policy that the QEMU project will curre=
-ntly<br>
-&gt; &gt; not accept contributions where use of AI code generators is eithe=
-r<br>
-&gt; &gt; known, or suspected.<br>
-&gt; &gt;<br>
-&gt; &gt; These are early days of AI-assisted software development. The leg=
-al<br>
-&gt; &gt; questions will be resolved eventually. The tools will mature, and=
- we<br>
-&gt; &gt; can expect some to become safely usable in free software projects=
-.<br>
-&gt; &gt; The policy we set now must be for today, and be open to revision.=
- It&#39;s<br>
-&gt; &gt; best to start strict and safe, then relax.<br>
-&gt; &gt;<br>
-&gt; &gt; Meanwhile requests for exceptions can also be considered on a cas=
-e by<br>
-&gt; &gt; case basis.<br>
-&gt; &gt;<br>
-&gt; &gt; Signed-off-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berr=
-ange@redhat.com" target=3D"_blank" rel=3D"noreferrer">berrange@redhat.com</=
-a>&gt;<br>
-&gt; &gt; Acked-by: Stefan Hajnoczi &lt;<a href=3D"mailto:stefanha@gmail.co=
-m" target=3D"_blank" rel=3D"noreferrer">stefanha@gmail.com</a>&gt;<br>
-&gt; &gt; Reviewed-by: Kevin Wolf &lt;<a href=3D"mailto:kwolf@redhat.com" t=
-arget=3D"_blank" rel=3D"noreferrer">kwolf@redhat.com</a>&gt;<br>
-&gt; &gt; Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@red=
-hat.com" target=3D"_blank" rel=3D"noreferrer">armbru@redhat.com</a>&gt;<br>
-&gt; &gt; ---<br>
-&gt; &gt;=C2=A0 docs/devel/code-provenance.rst | 50 +++++++++++++++++++++++=
-++++++++++-<br>
-&gt; &gt;=C2=A0 1 file changed, 49 insertions(+), 1 deletion(-)<br>
-&gt; &gt;<br>
-&gt; &gt; diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-pro=
-venance.rst<br>
-&gt; &gt; index c27d8fe649..261263cfba 100644<br>
-&gt; &gt; --- a/docs/devel/code-provenance.rst<br>
-&gt; &gt; +++ b/docs/devel/code-provenance.rst<br>
-&gt; &gt; @@ -270,4 +270,52 @@ boilerplate code template which is then fill=
-ed in to produce the final patch.<br>
-&gt; &gt;=C2=A0 The output of such a tool would still be considered the &qu=
-ot;preferred format&quot;,<br>
-&gt; &gt;=C2=A0 since it is intended to be a foundation for further human a=
-uthored changes.<br>
-&gt; &gt;=C2=A0 Such tools are acceptable to use, provided they follow a de=
-terministic process<br>
-&gt; &gt; -and there is clearly defined copyright and licensing for their o=
-utput.<br>
-&gt; &gt; +and there is clearly defined copyright and licensing for their o=
-utput. Note<br>
-&gt; &gt; +in particular the caveats applying to AI code generators below.<=
-br>
-&gt; &gt; +<br>
-&gt; &gt; +Use of AI code generators<br>
-&gt; &gt; +~~~~~~~~~~~~~~~~~~~~~~~~~<br>
-&gt; &gt; +<br>
-&gt; &gt; +TL;DR:<br>
-&gt; &gt; +<br>
-&gt; &gt; +=C2=A0 **Current QEMU project policy is to DECLINE any contribut=
-ions which are<br>
-&gt; &gt; +=C2=A0 believed to include or derive from AI generated code. Thi=
-s includes ChatGPT,<br>
-&gt; &gt; +=C2=A0 CoPilot, Llama and similar tools**<br>
-&gt; <br>
-&gt; GitHub spells it &quot;Copilot&quot;.<br>
-&gt; <br>
-&gt; Claude is very popular for coding at the moment and probably worth men=
-tioning.<br>
-&gt; <br>
-&gt; &gt; +<br>
-&gt; &gt; +The increasing prevalence of AI code generators, most notably bu=
-t not limited<br>
-&gt; <br>
-&gt; More detail is needed on what an &quot;AI code generator&quot; is. Cod=
-ing<br>
-&gt; assistant tools range from autocompletion to linters to automatic code=
-<br>
-&gt; generators. In addition there are other AI-related tools like ChatGPT<=
-br>
-&gt; or Gemini as a chatbot that can people use like Stackoverflow or an<br=
->
-&gt; API documentation summarizer.<br>
-&gt; <br>
-&gt; I think the intent is to say: do not put code that comes from _any_ AI=
-<br>
-&gt; tool into QEMU.<br>
-<br>
-Right, the intent is that any copyrightable portion of a commit must<br>
-not have come directly from an AI/LLM tool, or from an agent which<br>
-indirectly/internally uses an AI/LLM tool.<br>
-<br>
-&quot;code generator&quot; is possibly a little overly specific, as this is=
- really<br>
-about any type of tool which emits content that will make its way into<br>
-qemu.git, whether code or non-code content (docs, images, etc).<br></blockq=
-uote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Okay. The us=
-e case where AI is used to formulate code comments is common enough that is=
- with pointing it out explicitly in the policy. Many people wouldn&#39;t co=
-nsider that an &quot;AI code generator&quot; use case.</div><div dir=3D"aut=
-o"><br></div><div dir=3D"auto">Stefan</div><div dir=3D"auto"><br></div><div=
- dir=3D"auto"><div class=3D"gmail_quote gmail_quote_container"><blockquote =
-class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
-id rgb(204,204,204);padding-left:1ex">
-<br>
-&gt; It would be okay to use AI to research APIs, algorithms, brainstorm<br=
->
-&gt; ideas, debug the code, analyze the code, etc but the actual code<br>
-&gt; changes must not be generated by AI.<br>
-<br>
-Mostly yes - there&#39;s a fuzzy boundary in the debug/analyze use cases,<b=
-r>
-if the tool is also suggesting code changes to fix issues.<br>
-<br>
-If the scope of the suggested changes meets the threshold for being<br>
-(likely) copyrightable code, that would fall under the policy.<br>
-<br>
-With regards,<br>
-Daniel<br>
--- <br>
-|: <a href=3D"https://berrange.com" rel=3D"noreferrer noreferrer" target=3D=
-"_blank">https://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a h=
-ref=3D"https://www.flickr.com/photos/dberrange" rel=3D"noreferrer noreferre=
-r" target=3D"_blank">https://www.flickr.com/photos/dberrange</a> :|<br>
-|: <a href=3D"https://libvirt.org" rel=3D"noreferrer noreferrer" target=3D"=
-_blank">https://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com=
-" rel=3D"noreferrer noreferrer" target=3D"_blank">https://fstop138.berrange=
-.com</a> :|<br>
-|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer noreferrer" tar=
-get=3D"_blank">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0=
- <a href=3D"https://www.instagram.com/dberrange" rel=3D"noreferrer noreferr=
-er" target=3D"_blank">https://www.instagram.com/dberrange</a> :|<br>
-<br>
-</blockquote></div></div></div>
+> +    const uint64_t end = offset + size;
+> +    unsigned long bit;
+> +    uint64_t cur;
+> +    int ret = 0;
+> +
+> +    if (!ram_block_attributes_is_valid_range(attr, offset, size)) {
+> +        error_report("%s, invalid range: offset 0x%lx, size 0x%lx",
+> +                     __func__, offset, size);
+> +        return -EINVAL;
+> +    }
+> +
+> +    is_range_discarded = ram_block_attributes_is_range_discarded(attr, offset,
+> +                                                                 size);
 
---000000000000d8dd360636bcea74--
+See - needlessly long line.
+
+> +    is_range_populated = ram_block_attributes_is_range_populated(attr, offset,
+> +                                                                 size);
+
+If ram_block_attributes_is_range_populated() returned (found_bit*block_size), you could tell from a single call if it is populated (found_bit == size) or discarded (found_bit == 0), otherwise it is a mix (and dump just this number in the tracepoint below).
+
+And then ditch ram_block_attributes_is_range_discarded() which is practically cut-n-paste. And then open code ram_block_attributes_is_range_populated().
+
+These two are not used elsewhere anyway.
+
+> +
+> +    trace_ram_block_attributes_state_change(offset, size,
+> +                                            is_range_discarded ? "discarded" :
+> +                                            is_range_populated ? "populated" :
+> +                                            "mixture",
+> +                                            to_discard ? "discarded" :
+> +                                            "populated");
+
+
+I'd just dump 3 numbers (is_range_discarded, is_range_populated, to_discard) in the tracepoint as:
+
+ram_block_attributes_state_change(uint64_t offset, uint64_t size, int discarded, int populated, int to_discard) "offset 0x%"PRIx64" size 0x%"PRIx64" discarded=%d populated=%d to_discard=%d"
+
+
+
+> +    if (to_discard) {
+> +        if (is_range_discarded) {
+> +            /* Already private */
+> +        } else if (is_range_populated) {
+> +            /* Completely shared */
+> +            bitmap_clear(attr->bitmap, first_bit, nbits);
+> +            ram_block_attributes_notify_discard(attr, offset, size);
+> +        } else {
+> +            /* Unexpected mixture: process individual blocks */
+> +            for (cur = offset; cur < end; cur += block_size) {
+
+imho a little bit more accurate to:
+
+for (bit = first_bit; bit < first_bit + nbits; ++bit) {
+
+as you already have calculated first_bit, nbits...
+
+> +                bit = cur / block_size;
+
+... and drop this ...
+
+> +                if (!test_bit(bit, attr->bitmap)) {
+> +                    continue;
+> +                }
+> +                clear_bit(bit, attr->bitmap);
+> +                ram_block_attributes_notify_discard(attr, cur, block_size);
+
+.. and do: ram_block_attributes_notify_discard(attr, bit * block_size, block_size);
+
+Then you can drop @cur which is used in one place inside the loop.
+
+
+> +            }
+> +        }
+> +    } else {
+> +        if (is_range_populated) {
+> +            /* Already shared */
+> +        } else if (is_range_discarded) {
+> +            /* Complete private */
+
+s/Complete/Completely/
+
+> +            bitmap_set(attr->bitmap, first_bit, nbits);
+> +            ret = ram_block_attributes_notify_populate(attr, offset, size);
+> +        } else {
+> +            /* Unexpected mixture: process individual blocks */
+> +            for (cur = offset; cur < end; cur += block_size) {
+> +                bit = cur / block_size;
+> +                if (test_bit(bit, attr->bitmap)) {
+> +                    continue;
+> +                }
+> +                set_bit(bit, attr->bitmap);
+> +                ret = ram_block_attributes_notify_populate(attr, cur,
+> +                                                           block_size);
+> +                if (ret) {
+> +                    break;
+> +                }
+> +            }
+> +        }
+> +    }
+> +
+> +    return ret;
+> +}
+> +
+> +RamBlockAttributes *ram_block_attributes_create(RAMBlock *ram_block)
+> +{
+> +    uint64_t bitmap_size;
+
+Not really needed.
+
+> +    const int block_size  = qemu_real_host_page_size();
+> +    RamBlockAttributes *attr;
+> +    int ret;
+> +    MemoryRegion *mr = ram_block->mr;
+> +
+> +    attr = RAM_BLOCK_ATTRIBUTES(object_new(TYPE_RAM_BLOCK_ATTRIBUTES));
+> +
+> +    attr->ram_block = ram_block;
+> +    ret = memory_region_set_ram_discard_manager(mr, RAM_DISCARD_MANAGER(attr));
+> +    if (ret) {
+
+Could just "if (memory_region_set_ram_discard_manager(...))".
+
+> +        object_unref(OBJECT(attr));
+> +        return NULL;
+> +    }
+> +    bitmap_size = ROUND_UP(mr->size, block_size) / block_size;
+> +    attr->bitmap_size = bitmap_size;
+> +    attr->bitmap = bitmap_new(bitmap_size);
+> +
+> +    return attr;
+> +}
+> +
+> +void ram_block_attributes_destroy(RamBlockAttributes *attr)
+> +{
+> +    if (!attr) {
+
+
+Rather g_assert().
+
+
+> +        return;
+> +    }
+> +
+> +    g_free(attr->bitmap);
+> +    memory_region_set_ram_discard_manager(attr->ram_block->mr, NULL);
+> +    object_unref(OBJECT(attr));
+> +}
+> +
+> +static void ram_block_attributes_init(Object *obj)
+> +{
+> +    RamBlockAttributes *attr = RAM_BLOCK_ATTRIBUTES(obj);
+> +
+> +    QLIST_INIT(&attr->rdl_list);
+> +}
+
+Not used.
+
+> +
+> +static void ram_block_attributes_finalize(Object *obj)
+
+Not used.
+
+Besides these two, feel free to ignore other comments :)
+
+Otherwise,
+
+Tested-by: Alexey Kardashevskiy <aik@amd.com>
+Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
+
+
+> +{
+> +}
+> +
+> +static void ram_block_attributes_class_init(ObjectClass *klass,
+> +                                            const void *data)
+> +{
+> +    RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_CLASS(klass);
+> +
+> +    rdmc->get_min_granularity = ram_block_attributes_rdm_get_min_granularity;
+> +    rdmc->register_listener = ram_block_attributes_rdm_register_listener;
+> +    rdmc->unregister_listener = ram_block_attributes_rdm_unregister_listener;
+> +    rdmc->is_populated = ram_block_attributes_rdm_is_populated;
+> +    rdmc->replay_populated = ram_block_attributes_rdm_replay_populated;
+> +    rdmc->replay_discarded = ram_block_attributes_rdm_replay_discarded;
+> +}
+> diff --git a/system/trace-events b/system/trace-events
+> index be12ebfb41..82856e44f2 100644
+> --- a/system/trace-events
+> +++ b/system/trace-events
+> @@ -52,3 +52,6 @@ dirtylimit_state_finalize(void)
+>   dirtylimit_throttle_pct(int cpu_index, uint64_t pct, int64_t time_us) "CPU[%d] throttle percent: %" PRIu64 ", throttle adjust time %"PRIi64 " us"
+>   dirtylimit_set_vcpu(int cpu_index, uint64_t quota) "CPU[%d] set dirty page rate limit %"PRIu64
+>   dirtylimit_vcpu_execute(int cpu_index, int64_t sleep_time_us) "CPU[%d] sleep %"PRIi64 " us"
+> +
+> +# ram-block-attributes.c
+> +ram_block_attributes_state_change(uint64_t offset, uint64_t size, const char *from, const char *to) "offset 0x%"PRIx64" size 0x%"PRIx64" from '%s' to '%s'"
+
+
+
+-- 
+Alexey
+
 
