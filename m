@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA55ACDF25
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CDBACDF0F
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:29:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMoAY-0006s6-KW; Wed, 04 Jun 2025 09:28:38 -0400
+	id 1uMoAc-0006u4-7H; Wed, 04 Jun 2025 09:28:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAW-0006oY-Kr
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAZ-0006sm-Qz
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAV-0004if-1I
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:36 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAY-0004jI-EZ
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749043713;
+ s=mimecast20190719; t=1749043717;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Xnb6fY77tTZ5nf3Ugq1ke10+nz2hG2kWSwmOHbAyR9g=;
- b=D34bZEdytjANjMVJoqh5WPSx4o0v+UqbHCd3th3KZmriWBcXBE21/TNMPB48RIF/09s2B8
- NsiAFZxkAUUFtZqV0qZIwc/0/p8FVK0g2iL8Mfukhy2hlUFclUcM4iAv+Fl4MY3sHh5N6G
- zW+ci+pZG6UxHG2LBFcx+l/uYzqI53I=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7vKpmgPjmhYXTuu7BvlQEe4nDt+V2FcjCdZIcprXjuI=;
+ b=iIKe9JVPBNXfSCb+fbJ8elT5OA7POjfUqPcTT3sE953z4talUzyzEC7UfFmSzDHNal3J55
+ sCqYimBHZ8rUUX4qIyV8QiKKzMA8XAnPbyOykt1OgbXRweMTzIidTPFqOwZIvj+xSjqcYa
+ F4ayaXaF7VmGrLCDZF5NyaZncDVN1r8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-G0JCcm3XN2eV_gCRk55zqg-1; Wed, 04 Jun 2025 09:28:32 -0400
-X-MC-Unique: G0JCcm3XN2eV_gCRk55zqg-1
-X-Mimecast-MFC-AGG-ID: G0JCcm3XN2eV_gCRk55zqg_1749043711
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a5058f9ef4so1586456f8f.2
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:32 -0700 (PDT)
+ us-mta-319-PkYiQZ-BO7CrE__QlrKaFg-1; Wed, 04 Jun 2025 09:28:35 -0400
+X-MC-Unique: PkYiQZ-BO7CrE__QlrKaFg-1
+X-Mimecast-MFC-AGG-ID: PkYiQZ-BO7CrE__QlrKaFg_1749043714
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-450d021b9b1so28762675e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749043710; x=1749648510;
+ d=1e100.net; s=20230601; t=1749043713; x=1749648513;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Xnb6fY77tTZ5nf3Ugq1ke10+nz2hG2kWSwmOHbAyR9g=;
- b=ZmKQvMGgbOKAMEQQyvXOF+3o54Dkp0vGqYRbUTnlA8DdfZTXopHJIVwOYVI5Bflau8
- BlMtGEsm914ycnAYJ/+9NYEpHnPC1cjrwrZ+FfOty28IKLEnAxJlSJWHpjn6TIdOyzr/
- ylre1ZQSlaJDzoikR2ZAMToPQrVMWIezcu/fpIYh02bd6jcNJCfQlQnt/ymI4bqEDt2w
- pLEWWLAyD60uXUfGmgrVwVrQkPz2kZa6Mr6R3Ey3vbuvBB3LmB8KFMd/NHY52GOhkuNq
- tKBTgYFsOeHaHevon/zc7I/FLpPT+PyYw+5zDjrfggJ9Dj3vfnJZHjuW1pM3IFBmIHwQ
- GU5g==
-X-Gm-Message-State: AOJu0YxficVwMKVWZx7jVd7d2O/f45oIr7RUW91puHXWVnxJP0W/+jME
- K3K3d+cVLEsLCFX1Gi4olzvaCExCLb//e1pLKnUBm1fypPMgWfaHaXdIiDH3wpIqr08pWqShzBe
- MFSt3LwzgY+8dTjE1WPdTjh0QxdcYEcsA/y9u5dn63M7e2tGdgh0z9/bltexDXWEq
-X-Gm-Gg: ASbGnctnNXI+zUE7AnC+JWCIRNjlzOtY5wGIOWEwQLUG0Ml2YqtB8Lpix1bRR6AOUgs
- ICRwOOtjDfWUhWk67nA7R9vt506I186DLAlwifmoKnLp1gAnVGodq5lTVOYniJWlUn3Gi/NSv49
- tTxAYmsj9cHHJ1MIW4Ammahe8C7fuaciYFdMPQ9XJi2RiuxyZ32QOOMcqC629KZxnrSHWd60oDw
- ieFVB3YlUNN35S6CP/wgL1TN7uEAbRLbwrIWrmuryzizpg2gmJ6XoGaPMeBW3+9zmJNbkGosoej
- QjIhe7/PUY0Em0iF3k8CF4EKdP9nt6uNqDOc6hgg12uALHXC1Jk3wqxmgb7DeIRGg9Tztg==
-X-Received: by 2002:a05:6000:2dca:b0:3a4:edf5:b942 with SMTP id
- ffacd0b85a97d-3a51dc4c4e4mr2176762f8f.57.1749043710594; 
- Wed, 04 Jun 2025 06:28:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcL5AVmKInEelTtThK+peHT0QG3YlWF7/tZ7/QHBq9wWF+Il6hkzBvPy2zivaRPESuEpd83Q==
-X-Received: by 2002:a05:6000:2dca:b0:3a4:edf5:b942 with SMTP id
- ffacd0b85a97d-3a51dc4c4e4mr2176727f8f.57.1749043710201; 
- Wed, 04 Jun 2025 06:28:30 -0700 (PDT)
+ bh=7vKpmgPjmhYXTuu7BvlQEe4nDt+V2FcjCdZIcprXjuI=;
+ b=c39PUGJVWDM+E7QHx2o941EUukMlIRpEEPgPs1tD9MKd5NWYfNyoGDsKdcsMY9fppp
+ Ph8EqtfW20MwQhwyFxUDHJu+RgIINw8Qn1W7PQP23v6+Ue/GI2r5IBPF4kF58go1hMyM
+ htsw3AlfZstxA/AnVdNtjn0iJlH2z7X0VgSwZJCZ9ro5hU/3fO1BqVq7eMox8nhZ4xUw
+ TQWnBdzxMYn0BTJSnjcWYPbbVjIQZKPfUZNoeV6IslCpVQX1ovbbCeiavV29QC+Rqg5K
+ RmxD8d0mVxzAjUhYw8cqRbiWmfP9ctilVAPDjMvq7OrhqXB83jIhQS9/AF/0oOp5NyZb
+ HSOw==
+X-Gm-Message-State: AOJu0Yz/AhIGElyqHN8kwHuQ6On3nl0zZG0mK+XKuGzUSHeyqH3jcpQ/
+ tEYMVr+zZ3Y2mOGititQtLs2TLamRudZNv9z3dhDnrELyBBHQfXAEawS8QoVmXkS/pD64pO6dTD
+ aoTGbzWzWLaq8aBQuxfRuqAodF4euwqF/lJsfJIFAOAsEJNSHW558dB9t
+X-Gm-Gg: ASbGncunG+duODGU1Hhb4WoksgjsaKzjJCo4vpuh+lrhgmgeD83SVJn084Izvlq+TCn
+ mdini/KZe+CGpEG3TC0jL3egoeqLaVipIbe8LAzEiBB8nKQ8UQhxrPbqrMSLKAFU68KXQDRk2gc
+ ScB4Bhqjx5MpFVruKy1mnfX5y+vOctFXtKpiENcP8+7KMN7DB9OuwsUgC0UKKli2heBSf4AuM/R
+ ZKRio21xvxRYaeg+w1atFOH1E1AMfPKbHUXJzjwI+l65XPaxe9H4wNwvXX0qH/S/Z4ZRPTHsIzB
+ ILwJCrRO+OTjpUbFN0tttlcOkvqy/UHI3YGoGtNacLt0nCpz70JVxzwKyNf1nmgcvMSMxg==
+X-Received: by 2002:a05:600c:1986:b0:43d:42b:e186 with SMTP id
+ 5b1f17b1804b1-451f0a755c6mr26943585e9.8.1749043713519; 
+ Wed, 04 Jun 2025 06:28:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFJK0LWshRYFkg0cRC4ULrI049mGhGr5B9gQKECkdnvFbOwxQyLIl3Z7nBkbBgJRQZu5j1NIQ==
+X-Received: by 2002:a05:600c:1986:b0:43d:42b:e186 with SMTP id
+ 5b1f17b1804b1-451f0a755c6mr26943405e9.8.1749043713177; 
+ Wed, 04 Jun 2025 06:28:33 -0700 (PDT)
 Received: from localhost
  (p200300cfd700f306503d3c798c1bf214.dip0.t-ipconnect.de.
  [2003:cf:d700:f306:503d:3c79:8c1b:f214])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a5215e4c64sm1586316f8f.3.2025.06.04.06.28.27
+ 5b1f17b1804b1-451ef77b467sm31791285e9.36.2025.06.04.06.28.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Jun 2025 06:28:28 -0700 (PDT)
+ Wed, 04 Jun 2025 06:28:31 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: [PATCH v2 03/21] fuse: Remove superfluous empty line
-Date: Wed,  4 Jun 2025 15:27:55 +0200
-Message-ID: <20250604132813.359438-4-hreitz@redhat.com>
+Subject: [PATCH v2 04/21] fuse: Explicitly set inode ID to 1
+Date: Wed,  4 Jun 2025 15:27:56 +0200
+Message-ID: <20250604132813.359438-5-hreitz@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250604132813.359438-1-hreitz@redhat.com>
 References: <20250604132813.359438-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -92,7 +92,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,24 +108,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Setting .st_ino to the FUSE inode ID is kind of arbitrary.  While in
+practice it is going to be fixed (to FUSE_ROOT_ID, which is 1) because
+we only have the root inode, that is not obvious in fuse_getattr().
+
+Just explicitly set it to 1 (i.e. no functional change).
+
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c | 1 -
- 1 file changed, 1 deletion(-)
+ block/export/fuse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index b224ce591d..a93316e1f4 100644
+index a93316e1f4..60d68d8fdd 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -464,7 +464,6 @@ static int fuse_do_truncate(const FuseExport *exp, int64_t size,
+@@ -432,7 +432,7 @@ static void fuse_getattr(fuse_req_t req, fuse_ino_t inode,
      }
  
-     if (add_resize_perm) {
--
-         if (!qemu_in_main_thread()) {
-             /* Changing permissions like below only works in the main thread */
-             return -EPERM;
+     statbuf = (struct stat) {
+-        .st_ino     = inode,
++        .st_ino     = 1,
+         .st_mode    = exp->st_mode,
+         .st_nlink   = 1,
+         .st_uid     = exp->st_uid,
 -- 
 2.49.0
 
