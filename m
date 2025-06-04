@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE40ACDF2C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:33:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1270EACDF1A
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:30:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMoBq-0000kT-6s; Wed, 04 Jun 2025 09:29:58 -0400
+	id 1uMoBt-000116-2G; Wed, 04 Jun 2025 09:30:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoBF-0007Vd-Jd
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:22 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoBJ-0007iC-D3
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoBC-0004ow-Ig
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:21 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoBH-0004pt-3v
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749043757;
+ s=mimecast20190719; t=1749043762;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DYgzoamigJ65sPztnH94WA7ARVDEqmnvP0auSWkmL2Y=;
- b=Grbl/pBpDEmIezuD8eneL5lXZ2KeAb9/DWmrTVAmo3F39VTJo5fTw14r3LgJNxm6meOy7T
- dxuqTuenSKe4VQXYaUVTFaajgYR3may7CL/qw6PEDz7PZ3UpZsTadjngjXNzWWCy+5daTK
- VU5dj9PPy0+vmPc8OroYzeuJjDkiaks=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PVYMLToVfSoih+SPkfb8YdRk7R7pSEP/Dbr3lPGMdqE=;
+ b=A58jsAbOEQBgxJZSb7SegHzdMtLftR0XKm44Cijs1jA9q/W3JUD1BTXQa9lJUd9vWQ+5iA
+ 8PGYPk7vlCbioY7NIKyVvMTA4CRKFC/lm9Q6YFqw8tVTDMczybDHcQ/nJ32iSLjym2pSLS
+ VIzOqx2FS05hHSXefBVd7NY/vRf0x3U=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-491-BE49NyxeOJSlA98sRC6VHg-1; Wed, 04 Jun 2025 09:29:16 -0400
-X-MC-Unique: BE49NyxeOJSlA98sRC6VHg-1
-X-Mimecast-MFC-AGG-ID: BE49NyxeOJSlA98sRC6VHg_1749043755
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-450d57a0641so46679825e9.3
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:29:16 -0700 (PDT)
+ us-mta-153-KxmFXFtqOj-0MvDNPIN0Gg-1; Wed, 04 Jun 2025 09:29:20 -0400
+X-MC-Unique: KxmFXFtqOj-0MvDNPIN0Gg-1
+X-Mimecast-MFC-AGG-ID: KxmFXFtqOj-0MvDNPIN0Gg_1749043759
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4fabcafecso2242533f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:29:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749043755; x=1749648555;
+ d=1e100.net; s=20230601; t=1749043759; x=1749648559;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DYgzoamigJ65sPztnH94WA7ARVDEqmnvP0auSWkmL2Y=;
- b=LKcofGq/FbgyE5heyagwiW4mv1KKbh2j1L27zfETb5MUAaHy4ckhdN/r+/4P/0AngL
- 6JurpSnMlUQ4Dljv05fM60qf+8+gN/5I1g0uIBS0/vOykXzFEWgt8SwGOyfxAUIdcSLf
- bWv3JWxOkM2DlP4ufOLiUctk+qJygE24JTXFAre4qZjuAJEtCK+J1jsY7HYxkK01LDD2
- BGeV7aQbCDkR+IvBmnccc0uaAS2rk4OdAfH90M4sRSDJqZ6lbsa3m2LiBi3d+zj9h/X/
- T5kQp7E6IinOcXCV9ngRFnZQeO10Mgpa7Ap23wuBjLInIUMSkmG4+IujfpwOMN08Qkbi
- 2Czg==
-X-Gm-Message-State: AOJu0YzHf7wlnM0P/JoMgKLVEh03eTp59rkSq7W8tFXvwaZPyN5zTKHR
- 5RCQfV4/A0onhZLBnvV+tIp0NEJjZ01bzRGjxKqc1fCReSQr5HIzQcfmYT/ohqz1opQvphSl1ku
- PUVu12mzFsgdJveuZ2N7qrio1gxcCuBoOuCWEVDTtlaMXZRuZZPmYFUXw
-X-Gm-Gg: ASbGncu4KiLtGG/0FRNAsyL+6c8IfjM55pPYIPQGjOuBndanuwqKXvw+zLVFO0i5okw
- wTC+6fqrBhcow9tB2g2yftcTVqQOegFnu3quDcs0cYNFVMpFMTk+mifoiAN8YBA829IpDVNDt00
- TrT6UJWsokPpALtYp0dxtWaJRsEm7ib7QXc0tm/b6FO//gmwFhk+y6gJvbKEPycTo9UgvxrNFnY
- wQG1seXl7xuwgWLu3PqCYqBloVvVbj3kgc83DqY9wTp8upwI7UbfD/KoJQiBVIHppWsy0ufCYmW
- 7+9ZZ04kKUThQHjeHqI6MgnfRAO7npK8HIbWeJzmfjvRM0ziaRQGe4RIr03Og3mg0ejLEg==
-X-Received: by 2002:a05:600c:828f:b0:43d:ac5:11e8 with SMTP id
- 5b1f17b1804b1-451f0b26621mr20612045e9.21.1749043754666; 
- Wed, 04 Jun 2025 06:29:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHojcYhzz8M/VhB9/UDQ/JmZsr4gwLdPi9PdM4tgiZPNby7Vr3LHfVKNUWh0/m1v8PuSg2BQ==
-X-Received: by 2002:a05:600c:828f:b0:43d:ac5:11e8 with SMTP id
- 5b1f17b1804b1-451f0b26621mr20611685e9.21.1749043754125; 
- Wed, 04 Jun 2025 06:29:14 -0700 (PDT)
+ bh=PVYMLToVfSoih+SPkfb8YdRk7R7pSEP/Dbr3lPGMdqE=;
+ b=PMTVcHPUPHIH85XLQ5pInhu9ISFUGqkms8gXAbhSuex2P347/4jjjxZrJStVeDXXdz
+ tMPnmmUM+oMq6kNJw2HvjJ+bBZl8+QziiCCZc0eEQkUaRx+eWFYGKroMCDocTA3zgcXP
+ i2X+Q7R705PRbRBaS2Vd6XfUJ7BXZlIrr4g/KyvDO4ASbgpkaOu9HTE9+qx61QLk48xA
+ Whly7GpxHzhHagvqGLBu6Ve8j/W4A7562OHIexYGW0RtZF9sDQ1kHLcq+OrSgVUZWsw2
+ H2comZd9JBL/0WPKIOHnojqxF7UelA/6Kk/bMRU9RjufFvmC7s3F/noRLeqvyj0E+XwY
+ 11RQ==
+X-Gm-Message-State: AOJu0YwrdiqTjCd1e4K29DzHBmtrMk7szxVAel2/VCHm0kXUEgUsYIz9
+ jqLRAv+G9/2pPUzjdU4xmr2Ejkz7bPSE2jLHT++BNnc1f/1dwQ25BjNZRw0oTHj+76HeN73XQrh
+ K/cfWjilYJy/kC/oGV7Jcc8RTOtJq694CCQGlmkICxghhbgi7ocZ977c+
+X-Gm-Gg: ASbGncv1eGTD26tHNzlxWsC0Tyu3//dqqw2o019tSbMZo8z13/Dq961GNGvGv0X5VXs
+ ZU7+L1+zDO+FjZiQMKF8Hs0/DfVzJNgJvJQcfL14uPYjCfcgM4vfHmHjLgk1sPEXGten11gzPqM
+ P4s3b9CsmwHmkzmk6e9KdNPyIQdYiI/daD4rZN8fkYUQnHABw04qUOXHS4Ce1HUJnWeoltRK4/K
+ A5hufbQ2KFQTDs4WXKnPC5bddHmtAsnJn9xOMBp0HOkm9sJ9lEeULeV4BJMG2UbaD86Y9HLacI0
+ 5S19yyXFrxk9fnT+pBecpomXGTFBB3D2EQoWE3VNuEa2ZGljKrlApiPmYltgOiQIdYdw23Y2282
+ 3+cBk
+X-Received: by 2002:a05:6000:200f:b0:3a4:cfbf:5197 with SMTP id
+ ffacd0b85a97d-3a51dbcd4bbmr2142210f8f.18.1749043759299; 
+ Wed, 04 Jun 2025 06:29:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCeWd44MXHKM62m6CBkiNRoTnlRFd2JRujNfKvAlQwDFYcXG9MWKDRjdYbu0VM9yp5PP0dUg==
+X-Received: by 2002:a05:6000:200f:b0:3a4:cfbf:5197 with SMTP id
+ ffacd0b85a97d-3a51dbcd4bbmr2142186f8f.18.1749043758767; 
+ Wed, 04 Jun 2025 06:29:18 -0700 (PDT)
 Received: from localhost
  (p200300cfd700f306503d3c798c1bf214.dip0.t-ipconnect.de.
  [2003:cf:d700:f306:503d:3c79:8c1b:f214])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4f00a00d4sm22091996f8f.92.2025.06.04.06.29.10
+ 5b1f17b1804b1-450d7f8f188sm201453085e9.3.2025.06.04.06.29.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Jun 2025 06:29:11 -0700 (PDT)
+ Wed, 04 Jun 2025 06:29:15 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: [PATCH v2 15/21] fuse: Process requests in coroutines
-Date: Wed,  4 Jun 2025 15:28:07 +0200
-Message-ID: <20250604132813.359438-16-hreitz@redhat.com>
+Subject: [PATCH v2 16/21] block/export: Add multi-threading interface
+Date: Wed,  4 Jun 2025 15:28:08 +0200
+Message-ID: <20250604132813.359438-17-hreitz@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250604132813.359438-1-hreitz@redhat.com>
 References: <20250604132813.359438-1-hreitz@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
@@ -109,585 +109,324 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make fuse_process_request() a coroutine_fn (fuse_co_process_request())
-and have read_from_fuse_fd() launch it inside of a newly created
-coroutine instead of running it synchronously.  This way, we can process
-requests in parallel.
+Make BlockExportType.iothread an alternate between a single-thread
+variant 'str' and a multi-threading variant '[str]'.
 
-These are the benchmark results, compared to (a) the original results
-with libfuse, and (b) the results after switching away from libfuse
-(i.e. before this patch):
+In contrast to the single-thread setting, the multi-threading setting
+will not change the BDS's context (and so is incompatible with the
+fixed-iothread setting), but instead just pass a list to the export
+driver, with which it can do whatever it wants.
 
-file:                  (vs. libfuse / vs. no libfuse)
-  read:
-    seq aio:   120.6k ±1.1k (+ 53 % / + 58 %)
-    rand aio:  113.3k ±5.9k (+188 % / +325 %)
-    seq sync:   52.4k ±0.4k (+ 61 % / + 10 %)
-    rand sync:  10.4k ±0.4k (+  6 % / +  3 %)
-  write:
-    seq aio:    79.8k ±0.8k (+ 29 % / + 37 %)
-    rand aio:   79.0k ±0.6k (+ 29 % / + 36 %)
-    seq sync:   41.5k ±0.3k (+ 49 % / + 15 %)
-    rand sync:  41.4k ±0.2k (+ 50 % / + 15 %)
-null:
-  read:
-    seq aio:   266.1k ±1.5k (+ 24 % / -  1 %)
-    rand aio:  264.1k ±2.5k (+ 24 % / ±  0 %)
-    seq sync:  135.6k ±3.2k (+ 50 % / +  1 %)
-    rand sync: 134.7k ±3.0k (+ 50 % / +  2 %)
-  write:
-    seq aio:   281.0k ±1.8k (+ 38 % / +  2 %)
-    rand aio:  288.1k ±6.1k (+ 43 % / +  6 %)
-    seq sync:  142.2k ±3.1k (+ 65 % / +  9 %)
-    rand sync: 141.1k ±2.9k (+ 66 % / + 11 %)
+Currently no export driver supports multi-threading, so they all return
+an error when receiving such a list.
 
-So for non-AIO cases (and the null driver, which does not yield), there
-is little change; but for file AIO, results greatly improve, resolving
-the performance issue we saw before (when switching away from libfuse).
-
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c | 194 ++++++++++++++++++++++++++------------------
- 1 file changed, 113 insertions(+), 81 deletions(-)
+ qapi/block-export.json               | 34 +++++++++++++++++---
+ include/block/export.h               | 12 +++++--
+ block/export/export.c                | 48 +++++++++++++++++++++++++---
+ block/export/fuse.c                  |  7 ++++
+ block/export/vduse-blk.c             |  7 ++++
+ block/export/vhost-user-blk-server.c |  8 +++++
+ nbd/server.c                         |  6 ++++
+ 7 files changed, 111 insertions(+), 11 deletions(-)
 
+diff --git a/qapi/block-export.json b/qapi/block-export.json
+index c783e01a53..3ebad4ecef 100644
+--- a/qapi/block-export.json
++++ b/qapi/block-export.json
+@@ -362,14 +362,16 @@
+ #     to the export before completion is signalled.  (since: 5.2;
+ #     default: false)
+ #
+-# @iothread: The name of the iothread object where the export will
+-#     run.  The default is to use the thread currently associated with
+-#     the block node.  (since: 5.2)
++# @iothread: The name(s) of one or more iothread object(s) where the
++#     export will run.  The default is to use the thread currently
++#     associated with the block node.  (since: 5.2; multi-threading
++#     since 10.1)
+ #
+ # @fixed-iothread: True prevents the block node from being moved to
+ #     another thread while the export is active.  If true and
+ #     @iothread is given, export creation fails if the block node
+-#     cannot be moved to the iothread.  The default is false.
++#     cannot be moved to the iothread.  Must not be true when giving
++#     multiple iothreads for @iothread.  The default is false.
+ #     (since: 5.2)
+ #
+ # @allow-inactive: If true, the export allows the exported node to be inactive.
+@@ -385,7 +387,7 @@
+   'base': { 'type': 'BlockExportType',
+             'id': 'str',
+             '*fixed-iothread': 'bool',
+-            '*iothread': 'str',
++            '*iothread': 'BlockExportIothreads',
+             'node-name': 'str',
+             '*writable': 'bool',
+             '*writethrough': 'bool',
+@@ -401,6 +403,28 @@
+                      'if': 'CONFIG_VDUSE_BLK_EXPORT' }
+    } }
+ 
++##
++# @BlockExportIothreads:
++#
++# Specify a single or multiple I/O threads in which to run a block export's I/O.
++#
++# @single: Run the export's I/O in the given single I/O thread.
++#
++# @multi: Use multi-threading across the given set of I/O threads, which must
++#     must not be empty.  Note: Passing a single I/O thread via this variant is
++#     still treated as multi-threading, which is different from using the
++#     @single variant.  In particular, even if there only is a single I/O thread
++#     in the set, export types that do not support multi-threading will
++#     generally reject this variant, and BlockExportOptions.fixed-iothread is
++#     always incompatible with it.
++#
++# Since: 10.1
++##
++{ 'alternate': 'BlockExportIothreads',
++  'data': {
++      'single': 'str',
++      'multi': ['str'] } }
++
+ ##
+ # @block-export-add:
+ #
+diff --git a/include/block/export.h b/include/block/export.h
+index 4bd9531d4d..ca45da928c 100644
+--- a/include/block/export.h
++++ b/include/block/export.h
+@@ -32,8 +32,16 @@ typedef struct BlockExportDriver {
+     /* True if the export type supports running on an inactive node */
+     bool supports_inactive;
+ 
+-    /* Creates and starts a new block export */
+-    int (*create)(BlockExport *, BlockExportOptions *, Error **);
++    /*
++     * Creates and starts a new block export.
++     *
++     * If the user passed a set of I/O threads for multi-threading, @multithread
++     * is a list of the @multithread_count corresponding contexts (freed by the
++     * caller).  Note that @exp->ctx has no relation to that list.
++     */
++    int (*create)(BlockExport *exp, BlockExportOptions *opts,
++                  AioContext *const *multithread, size_t multithread_count,
++                  Error **errp);
+ 
+     /*
+      * Frees a removed block export. This function is only called after all
+diff --git a/block/export/export.c b/block/export/export.c
+index f3bbf11070..b733f269f3 100644
+--- a/block/export/export.c
++++ b/block/export/export.c
+@@ -76,16 +76,26 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
+ {
+     bool fixed_iothread = export->has_fixed_iothread && export->fixed_iothread;
+     bool allow_inactive = export->has_allow_inactive && export->allow_inactive;
++    bool multithread = export->iothread &&
++        export->iothread->type == QTYPE_QLIST;
+     const BlockExportDriver *drv;
+     BlockExport *exp = NULL;
+     BlockDriverState *bs;
+     BlockBackend *blk = NULL;
+     AioContext *ctx;
++    AioContext **multithread_ctxs = NULL;
++    size_t multithread_count = 0;
+     uint64_t perm;
+     int ret;
+ 
+     GLOBAL_STATE_CODE();
+ 
++    if (fixed_iothread && multithread) {
++        error_setg(errp,
++                   "Cannot use fixed-iothread for a multi-threaded export");
++        return NULL;
++    }
++
+     if (!id_wellformed(export->id)) {
+         error_setg(errp, "Invalid block export id");
+         return NULL;
+@@ -116,14 +126,16 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
+ 
+     ctx = bdrv_get_aio_context(bs);
+ 
+-    if (export->iothread) {
++    /* Move the BDS to the target I/O thread, if it is a single one */
++    if (export->iothread && !multithread) {
++        const char *iothread_id = export->iothread->u.single;
+         IOThread *iothread;
+         AioContext *new_ctx;
+         Error **set_context_errp;
+ 
+-        iothread = iothread_by_id(export->iothread);
++        iothread = iothread_by_id(iothread_id);
+         if (!iothread) {
+-            error_setg(errp, "iothread \"%s\" not found", export->iothread);
++            error_setg(errp, "iothread \"%s\" not found", iothread_id);
+             goto fail;
+         }
+ 
+@@ -137,6 +149,32 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
+         } else if (fixed_iothread) {
+             goto fail;
+         }
++    } else if (multithread) {
++        strList *iothread_list = export->iothread->u.multi;
++        size_t i;
++
++        multithread_count = 0;
++        for (strList *e = iothread_list; e; e = e->next) {
++            multithread_count++;
++        }
++
++        if (multithread_count == 0) {
++            error_setg(errp, "The set of I/O threads must not be empty");
++            return NULL;
++        }
++
++        multithread_ctxs = g_new(AioContext *, multithread_count);
++        i = 0;
++        for (strList *e = iothread_list; e; e = e->next) {
++            IOThread *iothread = iothread_by_id(e->value);
++
++            if (!iothread) {
++                error_setg(errp, "iothread \"%s\" not found", e->value);
++                goto fail;
++            }
++            multithread_ctxs[i++] = iothread_get_aio_context(iothread);
++        }
++        assert(i == multithread_count);
+     }
+ 
+     bdrv_graph_rdlock_main_loop();
+@@ -195,7 +233,7 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
+         .blk        = blk,
+     };
+ 
+-    ret = drv->create(exp, export, errp);
++    ret = drv->create(exp, export, multithread_ctxs, multithread_count, errp);
+     if (ret < 0) {
+         goto fail;
+     }
+@@ -203,6 +241,7 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
+     assert(exp->blk != NULL);
+ 
+     QLIST_INSERT_HEAD(&block_exports, exp, next);
++    g_free(multithread_ctxs);
+     return exp;
+ 
+ fail:
+@@ -214,6 +253,7 @@ fail:
+         g_free(exp->id);
+         g_free(exp);
+     }
++    g_free(multithread_ctxs);
+     return NULL;
+ }
+ 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index ec3a307229..75d80da616 100644
+index 75d80da616..44f0b796b3 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -27,6 +27,7 @@
- #include "block/qapi.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-block.h"
-+#include "qemu/coroutine.h"
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
- #include "system/block-backend.h"
-@@ -86,6 +87,12 @@ typedef struct FuseExport {
-     gid_t st_gid;
- } FuseExport;
+@@ -180,6 +180,8 @@ static const BlockDevOps fuse_export_blk_dev_ops = {
  
-+/* Parameters to the request processing coroutine */
-+typedef struct FuseRequestCoParam {
-+    FuseExport *exp;
-+    int got_request;
-+} FuseRequestCoParam;
+ static int fuse_export_create(BlockExport *blk_exp,
+                               BlockExportOptions *blk_exp_args,
++                              AioContext *const *multithread,
++                              size_t mt_count,
+                               Error **errp)
+ {
+     ERRP_GUARD(); /* ensure clean-up even with error_fatal */
+@@ -189,6 +191,11 @@ static int fuse_export_create(BlockExport *blk_exp,
+ 
+     assert(blk_exp_args->type == BLOCK_EXPORT_TYPE_FUSE);
+ 
++    if (multithread) {
++        error_setg(errp, "FUSE export does not support multi-threading");
++        return -EINVAL;
++    }
 +
- static GHashTable *exports;
+     /* For growable and writable exports, take the RESIZE permission */
+     if (args->growable || blk_exp_args->writable) {
+         uint64_t blk_perm, blk_shared_perm;
+diff --git a/block/export/vduse-blk.c b/block/export/vduse-blk.c
+index bd852e538d..bf70c98dd6 100644
+--- a/block/export/vduse-blk.c
++++ b/block/export/vduse-blk.c
+@@ -266,6 +266,7 @@ static const BlockDevOps vduse_block_ops = {
+ };
  
- static void fuse_export_shutdown(BlockExport *exp);
-@@ -99,7 +106,7 @@ static int mount_fuse_export(FuseExport *exp, Error **errp);
- static bool is_regular_file(const char *path, Error **errp);
- 
- static void read_from_fuse_fd(void *opaque);
--static void fuse_process_request(FuseExport *exp);
-+static void coroutine_fn fuse_co_process_request(FuseExport *exp);
- 
- static void fuse_inc_in_flight(FuseExport *exp)
+ static int vduse_blk_exp_create(BlockExport *exp, BlockExportOptions *opts,
++                                AioContext *const *multithread, size_t mt_count,
+                                 Error **errp)
  {
-@@ -346,17 +353,20 @@ static int mount_fuse_export(FuseExport *exp, Error **errp)
- }
- 
- /**
-- * Try to read and process a single request from the FUSE FD.
-+ * Try to read a single request from the FUSE FD.
-+ * Takes a FuseExport pointer in `opaque`.
-+ *
-+ * Assumes the export's in-flight counter has already been incremented.
-+ *
-+ * If a request is available, process it.
-  */
--static void read_from_fuse_fd(void *opaque)
-+static void coroutine_fn co_read_from_fuse_fd(void *opaque)
- {
-     FuseExport *exp = opaque;
-     int fuse_fd = exp->fuse_fd;
-     ssize_t ret;
-     const struct fuse_in_header *in_hdr;
- 
--    fuse_inc_in_flight(exp);
--
-     if (unlikely(exp->halted)) {
-         goto no_request;
+     VduseBlkExport *vblk_exp = container_of(exp, VduseBlkExport, export);
+@@ -301,6 +302,12 @@ static int vduse_blk_exp_create(BlockExport *exp, BlockExportOptions *opts,
+             return -EINVAL;
+         }
      }
-@@ -391,12 +401,28 @@ static void read_from_fuse_fd(void *opaque)
-         goto no_request;
-     }
- 
--    fuse_process_request(exp);
-+    fuse_co_process_request(exp);
- 
- no_request:
-     fuse_dec_in_flight(exp);
- }
- 
-+/**
-+ * Try to read and process a single request from the FUSE FD.
-+ * (To be used as a handler for when the FUSE FD becomes readable.)
-+ * Takes a FuseExport pointer in `opaque`.
-+ */
-+static void read_from_fuse_fd(void *opaque)
-+{
-+    FuseExport *exp = opaque;
-+    Coroutine *co;
 +
-+    co = qemu_coroutine_create(co_read_from_fuse_fd, exp);
-+    /* Decremented by co_read_from_fuse_fd() */
-+    fuse_inc_in_flight(exp);
-+    qemu_coroutine_enter(co);
-+}
++    if (multithread) {
++        error_setg(errp, "vduse-blk export does not support multi-threading");
++        return -EINVAL;
++    }
 +
- static void fuse_export_shutdown(BlockExport *blk_exp)
+     vblk_exp->num_queues = num_queues;
+     vblk_exp->handler.blk = exp->blk;
+     vblk_exp->handler.serial = g_strdup(vblk_opts->serial ?: "");
+diff --git a/block/export/vhost-user-blk-server.c b/block/export/vhost-user-blk-server.c
+index d9d2014d9b..481d4b7441 100644
+--- a/block/export/vhost-user-blk-server.c
++++ b/block/export/vhost-user-blk-server.c
+@@ -315,6 +315,7 @@ static const BlockDevOps vu_blk_dev_ops = {
+ };
+ 
+ static int vu_blk_exp_create(BlockExport *exp, BlockExportOptions *opts,
++                             AioContext *const *multithread, size_t mt_count,
+                              Error **errp)
  {
-     FuseExport *exp = container_of(blk_exp, FuseExport, common);
-@@ -470,8 +496,9 @@ static bool is_regular_file(const char *path, Error **errp)
-  * Process FUSE INIT.
-  * Return the number of bytes written to *out on success, and -errno on error.
-  */
--static ssize_t fuse_init(FuseExport *exp, struct fuse_init_out *out,
--                         uint32_t max_readahead, uint32_t flags)
-+static ssize_t coroutine_fn
-+fuse_co_init(FuseExport *exp, struct fuse_init_out *out,
-+             uint32_t max_readahead, uint32_t flags)
- {
-     const uint32_t supported_flags = FUSE_ASYNC_READ | FUSE_ASYNC_DIO;
- 
-@@ -510,17 +537,18 @@ static ssize_t fuse_init(FuseExport *exp, struct fuse_init_out *out,
-  * Let clients get file attributes (i.e., stat() the file).
-  * Return the number of bytes written to *out on success, and -errno on error.
-  */
--static ssize_t fuse_getattr(FuseExport *exp, struct fuse_attr_out *out)
-+static ssize_t coroutine_fn
-+fuse_co_getattr(FuseExport *exp, struct fuse_attr_out *out)
- {
-     int64_t length, allocated_blocks;
-     time_t now = time(NULL);
- 
--    length = blk_getlength(exp->common.blk);
-+    length = blk_co_getlength(exp->common.blk);
-     if (length < 0) {
-         return length;
-     }
- 
--    allocated_blocks = bdrv_get_allocated_file_size(blk_bs(exp->common.blk));
-+    allocated_blocks = bdrv_co_get_allocated_file_size(blk_bs(exp->common.blk));
-     if (allocated_blocks <= 0) {
-         allocated_blocks = DIV_ROUND_UP(length, 512);
-     } else {
-@@ -547,8 +575,9 @@ static ssize_t fuse_getattr(FuseExport *exp, struct fuse_attr_out *out)
-     return sizeof(*out);
- }
- 
--static int fuse_do_truncate(const FuseExport *exp, int64_t size,
--                            bool req_zero_write, PreallocMode prealloc)
-+static int coroutine_fn
-+fuse_co_do_truncate(const FuseExport *exp, int64_t size, bool req_zero_write,
-+                    PreallocMode prealloc)
- {
-     uint64_t blk_perm, blk_shared_perm;
-     BdrvRequestFlags truncate_flags = 0;
-@@ -577,8 +606,8 @@ static int fuse_do_truncate(const FuseExport *exp, int64_t size,
-         }
-     }
- 
--    ret = blk_truncate(exp->common.blk, size, true, prealloc,
--                       truncate_flags, NULL);
-+    ret = blk_co_truncate(exp->common.blk, size, true, prealloc,
-+                          truncate_flags, NULL);
- 
-     if (add_resize_perm) {
-         /* Must succeed, because we are only giving up the RESIZE permission */
-@@ -599,9 +628,9 @@ static int fuse_do_truncate(const FuseExport *exp, int64_t size,
-  * they cannot be given non-owner access.
-  * Return the number of bytes written to *out on success, and -errno on error.
-  */
--static ssize_t fuse_setattr(FuseExport *exp, struct fuse_attr_out *out,
--                            uint32_t to_set, uint64_t size, uint32_t mode,
--                            uint32_t uid, uint32_t gid)
-+static ssize_t coroutine_fn
-+fuse_co_setattr(FuseExport *exp, struct fuse_attr_out *out, uint32_t to_set,
-+                uint64_t size, uint32_t mode, uint32_t uid, uint32_t gid)
- {
-     int supported_attrs;
-     int ret;
-@@ -638,7 +667,7 @@ static ssize_t fuse_setattr(FuseExport *exp, struct fuse_attr_out *out,
-             return -EACCES;
-         }
- 
--        ret = fuse_do_truncate(exp, size, true, PREALLOC_MODE_OFF);
-+        ret = fuse_co_do_truncate(exp, size, true, PREALLOC_MODE_OFF);
-         if (ret < 0) {
-             return ret;
-         }
-@@ -657,7 +686,7 @@ static ssize_t fuse_setattr(FuseExport *exp, struct fuse_attr_out *out,
-         exp->st_gid = gid;
-     }
- 
--    return fuse_getattr(exp, out);
-+    return fuse_co_getattr(exp, out);
- }
- 
- /**
-@@ -665,7 +694,8 @@ static ssize_t fuse_setattr(FuseExport *exp, struct fuse_attr_out *out,
-  * just acknowledge the request.
-  * Return the number of bytes written to *out on success, and -errno on error.
-  */
--static ssize_t fuse_open(FuseExport *exp, struct fuse_open_out *out)
-+static ssize_t coroutine_fn
-+fuse_co_open(FuseExport *exp, struct fuse_open_out *out)
- {
-     *out = (struct fuse_open_out) {
-         .open_flags = FOPEN_DIRECT_IO | FOPEN_PARALLEL_DIRECT_WRITES,
-@@ -679,8 +709,8 @@ static ssize_t fuse_open(FuseExport *exp, struct fuse_open_out *out)
-  * Returns the buffer (read) size on success, and -errno on error.
-  * After use, *bufptr must be freed via qemu_vfree().
-  */
--static ssize_t fuse_read(FuseExport *exp, void **bufptr,
--                         uint64_t offset, uint32_t size)
-+static ssize_t coroutine_fn
-+fuse_co_read(FuseExport *exp, void **bufptr, uint64_t offset, uint32_t size)
- {
-     int64_t blk_len;
-     void *buf;
-@@ -695,7 +725,7 @@ static ssize_t fuse_read(FuseExport *exp, void **bufptr,
-      * Clients will expect short reads at EOF, so we have to limit
-      * offset+size to the image length.
-      */
--    blk_len = blk_getlength(exp->common.blk);
-+    blk_len = blk_co_getlength(exp->common.blk);
-     if (blk_len < 0) {
-         return blk_len;
-     }
-@@ -709,7 +739,7 @@ static ssize_t fuse_read(FuseExport *exp, void **bufptr,
-         return -ENOMEM;
-     }
- 
--    ret = blk_pread(exp->common.blk, offset, size, buf, 0);
-+    ret = blk_co_pread(exp->common.blk, offset, size, buf, 0);
-     if (ret < 0) {
-         qemu_vfree(buf);
-         return ret;
-@@ -721,11 +751,12 @@ static ssize_t fuse_read(FuseExport *exp, void **bufptr,
- 
- /**
-  * Handle client writes to the exported image.  @buf has the data to be written
-- * and will be copied to a bounce buffer before polling for the first time.
-+ * and will be copied to a bounce buffer before yielding for the first time.
-  * Return the number of bytes written to *out on success, and -errno on error.
-  */
--static ssize_t fuse_write(FuseExport *exp, struct fuse_write_out *out,
--                          uint64_t offset, uint32_t size, const void *buf)
-+static ssize_t coroutine_fn
-+fuse_co_write(FuseExport *exp, struct fuse_write_out *out,
-+              uint64_t offset, uint32_t size, const void *buf)
- {
-     void *copied;
-     int64_t blk_len;
-@@ -740,9 +771,7 @@ static ssize_t fuse_write(FuseExport *exp, struct fuse_write_out *out,
-         return -EACCES;
-     }
- 
--    /*
--     * Must copy to bounce buffer before calling aio_poll() (to allow nesting)
--     */
-+    /* Must copy to bounce buffer before potentially yielding */
-     copied = blk_blockalign(exp->common.blk, size);
-     memcpy(copied, buf, size);
- 
-@@ -750,7 +779,7 @@ static ssize_t fuse_write(FuseExport *exp, struct fuse_write_out *out,
-      * Clients will expect short writes at EOF, so we have to limit
-      * offset+size to the image length.
-      */
--    blk_len = blk_getlength(exp->common.blk);
-+    blk_len = blk_co_getlength(exp->common.blk);
-     if (blk_len < 0) {
-         ret = blk_len;
-         goto fail_free_buffer;
-@@ -758,7 +787,8 @@ static ssize_t fuse_write(FuseExport *exp, struct fuse_write_out *out,
- 
-     if (offset + size > blk_len) {
-         if (exp->growable) {
--            ret = fuse_do_truncate(exp, offset + size, true, PREALLOC_MODE_OFF);
-+            ret = fuse_co_do_truncate(exp, offset + size, true,
-+                                      PREALLOC_MODE_OFF);
-             if (ret < 0) {
-                 goto fail_free_buffer;
-             }
-@@ -767,7 +797,7 @@ static ssize_t fuse_write(FuseExport *exp, struct fuse_write_out *out,
-         }
-     }
- 
--    ret = blk_pwrite(exp->common.blk, offset, size, copied, 0);
-+    ret = blk_co_pwrite(exp->common.blk, offset, size, copied, 0);
-     if (ret < 0) {
-         goto fail_free_buffer;
-     }
-@@ -788,8 +818,9 @@ fail_free_buffer:
-  * Let clients perform various fallocate() operations.
-  * Return 0 on success (no 'out' object), and -errno on error.
-  */
--static ssize_t fuse_fallocate(FuseExport *exp, uint64_t offset, uint64_t length,
--                              uint32_t mode)
-+static ssize_t coroutine_fn
-+fuse_co_fallocate(FuseExport *exp,
-+                  uint64_t offset, uint64_t length, uint32_t mode)
- {
-     int64_t blk_len;
-     int ret;
-@@ -798,7 +829,7 @@ static ssize_t fuse_fallocate(FuseExport *exp, uint64_t offset, uint64_t length,
-         return -EACCES;
-     }
- 
--    blk_len = blk_getlength(exp->common.blk);
-+    blk_len = blk_co_getlength(exp->common.blk);
-     if (blk_len < 0) {
-         return blk_len;
-     }
-@@ -817,14 +848,14 @@ static ssize_t fuse_fallocate(FuseExport *exp, uint64_t offset, uint64_t length,
- 
-         if (offset > blk_len) {
-             /* No preallocation needed here */
--            ret = fuse_do_truncate(exp, offset, true, PREALLOC_MODE_OFF);
-+            ret = fuse_co_do_truncate(exp, offset, true, PREALLOC_MODE_OFF);
-             if (ret < 0) {
-                 return ret;
-             }
-         }
- 
--        ret = fuse_do_truncate(exp, offset + length, true,
--                               PREALLOC_MODE_FALLOC);
-+        ret = fuse_co_do_truncate(exp, offset + length, true,
-+                                  PREALLOC_MODE_FALLOC);
-     }
- #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
-     else if (mode & FALLOC_FL_PUNCH_HOLE) {
-@@ -835,8 +866,9 @@ static ssize_t fuse_fallocate(FuseExport *exp, uint64_t offset, uint64_t length,
-         do {
-             int size = MIN(length, BDRV_REQUEST_MAX_BYTES);
- 
--            ret = blk_pwrite_zeroes(exp->common.blk, offset, size,
--                                    BDRV_REQ_MAY_UNMAP | BDRV_REQ_NO_FALLBACK);
-+            ret = blk_co_pwrite_zeroes(exp->common.blk, offset, size,
-+                                       BDRV_REQ_MAY_UNMAP |
-+                                       BDRV_REQ_NO_FALLBACK);
-             if (ret == -ENOTSUP) {
-                 /*
-                  * fallocate() specifies to return EOPNOTSUPP for unsupported
-@@ -854,8 +886,8 @@ static ssize_t fuse_fallocate(FuseExport *exp, uint64_t offset, uint64_t length,
-     else if (mode & FALLOC_FL_ZERO_RANGE) {
-         if (!(mode & FALLOC_FL_KEEP_SIZE) && offset + length > blk_len) {
-             /* No need for zeroes, we are going to write them ourselves */
--            ret = fuse_do_truncate(exp, offset + length, false,
--                                   PREALLOC_MODE_OFF);
-+            ret = fuse_co_do_truncate(exp, offset + length, false,
-+                                      PREALLOC_MODE_OFF);
-             if (ret < 0) {
-                 return ret;
-             }
-@@ -864,8 +896,8 @@ static ssize_t fuse_fallocate(FuseExport *exp, uint64_t offset, uint64_t length,
-         do {
-             int size = MIN(length, BDRV_REQUEST_MAX_BYTES);
- 
--            ret = blk_pwrite_zeroes(exp->common.blk,
--                                    offset, size, 0);
-+            ret = blk_co_pwrite_zeroes(exp->common.blk,
-+                                       offset, size, 0);
-             offset += size;
-             length -= size;
-         } while (ret == 0 && length > 0);
-@@ -882,9 +914,9 @@ static ssize_t fuse_fallocate(FuseExport *exp, uint64_t offset, uint64_t length,
-  * Let clients fsync the exported image.
-  * Return 0 on success (no 'out' object), and -errno on error.
-  */
--static ssize_t fuse_fsync(FuseExport *exp)
-+static ssize_t coroutine_fn fuse_co_fsync(FuseExport *exp)
- {
--    return blk_flush(exp->common.blk);
-+    return blk_co_flush(exp->common.blk);
- }
- 
- /**
-@@ -892,9 +924,9 @@ static ssize_t fuse_fsync(FuseExport *exp)
-  * notes this to be a way to return last-minute errors.)
-  * Return 0 on success (no 'out' object), and -errno on error.
-  */
--static ssize_t fuse_flush(FuseExport *exp)
-+static ssize_t coroutine_fn fuse_co_flush(FuseExport *exp)
- {
--    return blk_flush(exp->common.blk);
-+    return blk_co_flush(exp->common.blk);
- }
- 
- #ifdef CONFIG_FUSE_LSEEK
-@@ -902,8 +934,9 @@ static ssize_t fuse_flush(FuseExport *exp)
-  * Let clients inquire allocation status.
-  * Return the number of bytes written to *out on success, and -errno on error.
-  */
--static ssize_t fuse_lseek(FuseExport *exp, struct fuse_lseek_out *out,
--                          uint64_t offset, uint32_t whence)
-+static ssize_t coroutine_fn
-+fuse_co_lseek(FuseExport *exp, struct fuse_lseek_out *out,
-+              uint64_t offset, uint32_t whence)
- {
-     if (whence != SEEK_HOLE && whence != SEEK_DATA) {
+     VuBlkExport *vexp = container_of(exp, VuBlkExport, export);
+@@ -340,6 +341,13 @@ static int vu_blk_exp_create(BlockExport *exp, BlockExportOptions *opts,
+         error_setg(errp, "num-queues must be greater than 0");
          return -EINVAL;
-@@ -913,8 +946,8 @@ static ssize_t fuse_lseek(FuseExport *exp, struct fuse_lseek_out *out,
-         int64_t pnum;
-         int ret;
+     }
++
++    if (multithread) {
++        error_setg(errp,
++                   "vhost-user-blk export does not support multi-threading");
++        return -EINVAL;
++    }
++
+     vexp->handler.blk = exp->blk;
+     vexp->handler.serial = g_strdup("vhost_user_blk");
+     vexp->handler.logical_block_size = logical_block_size;
+diff --git a/nbd/server.c b/nbd/server.c
+index d242be9811..a1736a5a24 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -1793,6 +1793,7 @@ static const BlockDevOps nbd_block_ops = {
+ };
  
--        ret = bdrv_block_status_above(blk_bs(exp->common.blk), NULL,
--                                      offset, INT64_MAX, &pnum, NULL, NULL);
-+        ret = bdrv_co_block_status_above(blk_bs(exp->common.blk), NULL,
-+                                         offset, INT64_MAX, &pnum, NULL, NULL);
-         if (ret < 0) {
-             return ret;
-         }
-@@ -931,7 +964,7 @@ static ssize_t fuse_lseek(FuseExport *exp, struct fuse_lseek_out *out,
-              * and @blk_len (the client-visible EOF).
-              */
- 
--            blk_len = blk_getlength(exp->common.blk);
-+            blk_len = blk_co_getlength(exp->common.blk);
-             if (blk_len < 0) {
-                 return blk_len;
-             }
-@@ -1066,14 +1099,14 @@ static int fuse_write_buf_response(int fd, uint32_t req_id,
- }
- 
- /*
-- * For use in fuse_process_request():
-+ * For use in fuse_co_process_request():
-  * Returns a pointer to the parameter object for the given operation (inside of
-  * exp->request_buf, which is assumed to hold a fuse_in_header first).
-  * Verifies that the object is complete (exp->request_buf is large enough to
-  * hold it in one piece, and the request length includes the whole object).
-  *
-- * Note that exp->request_buf may be overwritten after polling, so the returned
-- * pointer must not be used across a function that may poll!
-+ * Note that exp->request_buf may be overwritten after yielding, so the returned
-+ * pointer must not be used across a function that may yield!
-  */
- #define FUSE_IN_OP_STRUCT(op_name, export) \
-     ({ \
-@@ -1097,7 +1130,7 @@ static int fuse_write_buf_response(int fd, uint32_t req_id,
-     })
- 
- /*
-- * For use in fuse_process_request():
-+ * For use in fuse_co_process_request():
-  * Returns a pointer to the return object for the given operation (inside of
-  * out_buf, which is assumed to hold a fuse_out_header first).
-  * Verifies that out_buf is large enough to hold the whole object.
-@@ -1120,12 +1153,11 @@ static int fuse_write_buf_response(int fd, uint32_t req_id,
- /**
-  * Process a FUSE request, incl. writing the response.
-  *
-- * Note that polling in any request-processing function can lead to a nested
-- * read_from_fuse_fd() call, which will overwrite the contents of
-- * exp->request_buf.  Anything that takes a buffer needs to take care that the
-- * content is copied before potentially polling.
-+ * Note that yielding in any request-processing function can overwrite the
-+ * contents of exp->request_buf.  Anything that takes a buffer needs to take
-+ * care that the content is copied before yielding.
-  */
--static void fuse_process_request(FuseExport *exp)
-+static void coroutine_fn fuse_co_process_request(FuseExport *exp)
+ static int nbd_export_create(BlockExport *blk_exp, BlockExportOptions *exp_args,
++                             AioContext *const *multithread, size_t mt_count,
+                              Error **errp)
  {
-     uint32_t opcode;
-     uint64_t req_id;
-@@ -1146,7 +1178,7 @@ static void fuse_process_request(FuseExport *exp)
-     void *out_data_buffer = NULL;
-     ssize_t ret;
- 
--    /* Limit scope to ensure pointer is no longer used after polling */
-+    /* Limit scope to ensure pointer is no longer used after yielding */
-     {
-         const struct fuse_in_header *in_hdr =
-             (const struct fuse_in_header *)exp->request_buf;
-@@ -1158,13 +1190,13 @@ static void fuse_process_request(FuseExport *exp)
-     switch (opcode) {
-     case FUSE_INIT: {
-         const struct fuse_init_in *in = FUSE_IN_OP_STRUCT(init, exp);
--        ret = fuse_init(exp, FUSE_OUT_OP_STRUCT(init, out_buf),
--                        in->max_readahead, in->flags);
-+        ret = fuse_co_init(exp, FUSE_OUT_OP_STRUCT(init, out_buf),
-+                           in->max_readahead, in->flags);
-         break;
+     NBDExport *exp = container_of(blk_exp, NBDExport, common);
+@@ -1829,6 +1830,11 @@ static int nbd_export_create(BlockExport *blk_exp, BlockExportOptions *exp_args,
+         return -EEXIST;
      }
  
-     case FUSE_OPEN:
--        ret = fuse_open(exp, FUSE_OUT_OP_STRUCT(open, out_buf));
-+        ret = fuse_co_open(exp, FUSE_OUT_OP_STRUCT(open, out_buf));
-         break;
- 
-     case FUSE_RELEASE:
-@@ -1176,19 +1208,19 @@ static void fuse_process_request(FuseExport *exp)
-         break;
- 
-     case FUSE_GETATTR:
--        ret = fuse_getattr(exp, FUSE_OUT_OP_STRUCT(attr, out_buf));
-+        ret = fuse_co_getattr(exp, FUSE_OUT_OP_STRUCT(attr, out_buf));
-         break;
- 
-     case FUSE_SETATTR: {
-         const struct fuse_setattr_in *in = FUSE_IN_OP_STRUCT(setattr, exp);
--        ret = fuse_setattr(exp, FUSE_OUT_OP_STRUCT(attr, out_buf),
--                           in->valid, in->size, in->mode, in->uid, in->gid);
-+        ret = fuse_co_setattr(exp, FUSE_OUT_OP_STRUCT(attr, out_buf),
-+                              in->valid, in->size, in->mode, in->uid, in->gid);
-         break;
-     }
- 
-     case FUSE_READ: {
-         const struct fuse_read_in *in = FUSE_IN_OP_STRUCT(read, exp);
--        ret = fuse_read(exp, &out_data_buffer, in->offset, in->size);
-+        ret = fuse_co_read(exp, &out_data_buffer, in->offset, in->size);
-         break;
-     }
- 
-@@ -1216,33 +1248,33 @@ static void fuse_process_request(FuseExport *exp)
- 
-         /*
-          * Passing a pointer to `in` (i.e. the request buffer) is fine because
--         * fuse_write() takes care to copy its contents before potentially
--         * polling.
-+         * fuse_co_write() takes care to copy its contents before potentially
-+         * yielding.
-          */
--        ret = fuse_write(exp, FUSE_OUT_OP_STRUCT(write, out_buf),
--                         in->offset, in->size, in + 1);
-+        ret = fuse_co_write(exp, FUSE_OUT_OP_STRUCT(write, out_buf),
-+                            in->offset, in->size, in + 1);
-         break;
-     }
- 
-     case FUSE_FALLOCATE: {
-         const struct fuse_fallocate_in *in = FUSE_IN_OP_STRUCT(fallocate, exp);
--        ret = fuse_fallocate(exp, in->offset, in->length, in->mode);
-+        ret = fuse_co_fallocate(exp, in->offset, in->length, in->mode);
-         break;
-     }
- 
-     case FUSE_FSYNC:
--        ret = fuse_fsync(exp);
-+        ret = fuse_co_fsync(exp);
-         break;
- 
-     case FUSE_FLUSH:
--        ret = fuse_flush(exp);
-+        ret = fuse_co_flush(exp);
-         break;
- 
- #ifdef CONFIG_FUSE_LSEEK
-     case FUSE_LSEEK: {
-         const struct fuse_lseek_in *in = FUSE_IN_OP_STRUCT(lseek, exp);
--        ret = fuse_lseek(exp, FUSE_OUT_OP_STRUCT(lseek, out_buf),
--                         in->offset, in->whence);
-+        ret = fuse_co_lseek(exp, FUSE_OUT_OP_STRUCT(lseek, out_buf),
-+                            in->offset, in->whence);
-         break;
-     }
- #endif
++    if (multithread) {
++        error_setg(errp, "NBD export does not support multi-threading");
++        return -EINVAL;
++    }
++
+     size = blk_getlength(blk);
+     if (size < 0) {
+         error_setg_errno(errp, -size,
 -- 
 2.49.0
 
