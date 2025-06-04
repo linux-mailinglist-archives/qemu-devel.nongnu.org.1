@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9E6ACDF0E
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE6EACDF26
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 15:32:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMoBB-00078Z-AO; Wed, 04 Jun 2025 09:29:18 -0400
+	id 1uMoBL-0007RR-7q; Wed, 04 Jun 2025 09:29:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAk-00074D-Vq
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAp-00079i-EO
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:29:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAj-0004ke-DJ
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:50 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uMoAn-0004lJ-Qy
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 09:28:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749043728;
+ s=mimecast20190719; t=1749043733;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B9wF3F+3bQ/mxGLpNGnaivuKHU4J9Rkz4uaRH9vksus=;
- b=UVFukt94SboZtd6ePetoe0hP1T5+CBClWNYAx6usqM01TOFyIXkTtdG5PuM3lI27XF8L4E
- L4HG8kunh3gRTe7T/nygw/4DtQbOsfKbl0iov/NlV1VPbtvrNUxbYffrtr8edBHCyPuj+H
- oxzRoQ38as8oBmzecFRYSroTi9ClII8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iBWE4FPpwD87XkHHPVGSv5gJzue+dVBIat7kcbz/nkQ=;
+ b=bJnAimTKHaBh4YVrDbxGteIEtMtsT4a/cJn3exq9gRQIC7BMZq7M9fEP4GGhVA7bN/JYvE
+ JC2HVB/9YLRLfHlVp56J6eDZ0on6xIraLoqdteogbOT45FOS39gJzORY279o4QeNXLVSJ/
+ omXvKquPRucGZhytDJFq8hsaehFp248=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-4u5mvGmKODaPMPeHFMF1rA-1; Wed, 04 Jun 2025 09:28:47 -0400
-X-MC-Unique: 4u5mvGmKODaPMPeHFMF1rA-1
-X-Mimecast-MFC-AGG-ID: 4u5mvGmKODaPMPeHFMF1rA_1749043726
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-450df53d461so38835375e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:47 -0700 (PDT)
+ us-mta-108-WpD7TICdNIWKFcIqaTsA6A-1; Wed, 04 Jun 2025 09:28:50 -0400
+X-MC-Unique: WpD7TICdNIWKFcIqaTsA6A-1
+X-Mimecast-MFC-AGG-ID: WpD7TICdNIWKFcIqaTsA6A_1749043729
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-450d244bfabso50953555e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 06:28:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749043726; x=1749648526;
+ d=1e100.net; s=20230601; t=1749043729; x=1749648529;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B9wF3F+3bQ/mxGLpNGnaivuKHU4J9Rkz4uaRH9vksus=;
- b=MW0eCoo5Y+7COCT4n8rONcThs0MK3MKLMp4vyZsynnRsXsrp68lc8tO5Mhc0YO01j/
- ld6N9u6WSvXm8zOEkyVePPtvr3jX5pI68xO9nCBXB1g7zeUQ24VekHoJOx3dN0da2ht6
- oaEZEX3ukoX0hOO+iWRTjZEFw6UGUG66bClcIhlZNeG6DWPr9jFIdMo1cKG8ISRM9oAZ
- O5ISNohCeAmtujlZ+3w//UWmFVVT6Tu4Ce+IfnQvM5A7u4DhZraQUwBc7+4aVfSYn6Qu
- q94a8/amafOfOyIZXFsw7AjpqTiytxzrELu711q67nhmQvc90gmk1abZ4giPwl6+NTeq
- jOXQ==
-X-Gm-Message-State: AOJu0YxyIqVba3ukh8WdjvcJUXft8z3ca7fAyY1kXv7WwAPpYXp3hgHI
- XEzv3Kk4zFEd2/YKnTr1vkMwT94wGaMocpJVCHv7Z6pEQ5294X6mlaGLs8Qnlpg7YwnVAx/DRvN
- 5J7kqDiDa9XE3+AIxVPewUUn5f5jWckMRA15n0zwZGBWFI/zzMAmY2sVY
-X-Gm-Gg: ASbGnct2bj7Mq1yQea/uII1ogc/SF816hMu7s3smp08jVPGOpYnVBlJM2lMu6M8b+KV
- W4ZXptQnLVOkqGi3GlzIzlVhikKQda5KDsWENf8N3sHmXK852Io89GTCC1D+Fv7udgoT63DnK+c
- vK4T4ua55dGmKzSotegO03nr5hZo8Y+34dGEnMEg9BwOLO1sclJUn6uTld0NItn8cMe8mud6/tg
- jamxD+PjBxKLY0EjuAo36+T6AIeRfe/4SpbqE6//2gslQ/Vwo5U9DWz9Whan75ywt5tz/KjbTm7
- oFnhLtSYncWA0uo/6WXZjz4TPHFpyX1nO+TI0xiIk+wet/gKn/r2LbPkAz3iUKiGCFfwpQ==
-X-Received: by 2002:a05:600c:8312:b0:450:d01f:de6f with SMTP id
- 5b1f17b1804b1-451f0aa72fdmr26627715e9.15.1749043726260; 
- Wed, 04 Jun 2025 06:28:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/9KCRq5HvP1f9mV98ahM8zPG2vDkyaue+NMm575X9qf1nPJAvYe1KNS0qtHcJvvvfSK6wsA==
-X-Received: by 2002:a05:600c:8312:b0:450:d01f:de6f with SMTP id
- 5b1f17b1804b1-451f0aa72fdmr26627375e9.15.1749043725822; 
- Wed, 04 Jun 2025 06:28:45 -0700 (PDT)
+ bh=iBWE4FPpwD87XkHHPVGSv5gJzue+dVBIat7kcbz/nkQ=;
+ b=BX3AWyo53z78Y7hT4f8ubQFQzioi2SW61T7YFi2mYQUvGfpJTAUu3D90el2BAqJ4YJ
+ o325IykNHTwV8PkC8TT57CGuEUpp3i9BJNtSgMazGHYjOyl78w+5AqK7MkoWoG81J9ur
+ /cTvrV1XgYzyrIeZc8vmmoup4TBnLHeWrXzFPANmfP6fh1h1e0bgiatPomx44/qHdimU
+ QA47VqkSPxhFKytoJgOkcFlYuynK81PcSObB2QKHUqPQ0URo3pjT3bUw4JZPnlA12IaJ
+ Hr86mEJd0NTYrSgDUK4ZtLmUcKXJIPqbHEcn+zHYlP1UTOTe6AxGiZ8hhcwZCx8TGPu1
+ xbsQ==
+X-Gm-Message-State: AOJu0YwZ+4/F3uWhMXigI9eCQXsU0PSZ8rEDKhIpDTOXChk4pEp6qkdu
+ fJkg73vosdKaPFv9hGkLKm2AswQhfNrOBpJP/P0HguygdeGBt7KGzmV0wAyRFKcEMiwdtoWLCm9
+ 0OFeFMspzT6yfGPRBlKvHQPH7+UtHIDAfu245ZcMbJyCMRhCV2uxFyKJN
+X-Gm-Gg: ASbGncu4PcI05PRb0Ewjh4i0rWZSxNMJIhy4w3le67O+RsNHSOncpTpX1ts6WrKIf8r
+ ljyf54iynjX5bYskcah0s74se3rL86ZE6aGcErOsGr3guZiKeJXtCegepqkOe65uBYLEqEKOknq
+ NhJr/QvIBGiKxfADE0HclX33HpEZmQJRoS7wGY7KcdVmKGXdc9eceQ8cLkoMEtYJpt8Mnbb/sUk
+ XaGNbU9maV97P8GplaPmBW6acQkp7/KAcB9h+dQpBZsuWAabgXCxW1RelKXo2SqiQv1bzJ56tCj
+ /xtXFg13c4mgcpQzjOl/IMAC0/Te9liw/lYe4hKKLxSZAuFv87tX6dJnYjjT2YNmVPDFonWbqKU
+ rj6Zt
+X-Received: by 2002:a05:600c:1e08:b0:441:d438:505c with SMTP id
+ 5b1f17b1804b1-451f0b54b6fmr25681655e9.32.1749043729421; 
+ Wed, 04 Jun 2025 06:28:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEjCziu0bTeb/MJ2hGI7TDTIwhbWKGcXichG7/GmKzc8U0sNYvy2KiZ+ROw3vMJZjRpIn4MZw==
+X-Received: by 2002:a05:600c:1e08:b0:441:d438:505c with SMTP id
+ 5b1f17b1804b1-451f0b54b6fmr25681415e9.32.1749043728983; 
+ Wed, 04 Jun 2025 06:28:48 -0700 (PDT)
 Received: from localhost
  (p200300cfd700f306503d3c798c1bf214.dip0.t-ipconnect.de.
  [2003:cf:d700:f306:503d:3c79:8c1b:f214])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-451e57bcb99sm40237895e9.2.2025.06.04.06.28.41
+ 5b1f17b1804b1-450d7fa2541sm195657605e9.15.2025.06.04.06.28.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Jun 2025 06:28:41 -0700 (PDT)
+ Wed, 04 Jun 2025 06:28:47 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: [PATCH v2 07/21] fuse: Set direct_io and parallel_direct_writes
-Date: Wed,  4 Jun 2025 15:27:59 +0200
-Message-ID: <20250604132813.359438-8-hreitz@redhat.com>
+Subject: [PATCH v2 08/21] fuse: Introduce fuse_{at,de}tach_handlers()
+Date: Wed,  4 Jun 2025 15:28:00 +0200
+Message-ID: <20250604132813.359438-9-hreitz@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250604132813.359438-1-hreitz@redhat.com>
 References: <20250604132813.359438-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -108,51 +109,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In fuse_open(), set these flags:
-- direct_io: We probably actually don't want to have the host page cache
-  be used for our exports.  QEMU block exports are supposed to represent
-  the image as-is (and thus potentially changing).
-  This causes a change in iotest 308's reference output.
-
-- parallel_direct_writes: We can (now) cope with parallel writes, so we
-  should set this flag.  For some reason, it doesn't seem to make an
-  actual performance difference with libfuse, but it does make a
-  difference without it, so let's set it.
-  (See "fuse: Copy write buffer content before polling" for further
-  discussion.)
+Pull setting up and tearing down the AIO context handlers into two
+dedicated functions.
 
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c        | 2 ++
- tests/qemu-iotests/308.out | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ block/export/fuse.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index 9d110ce949..e1134a27d6 100644
+index e1134a27d6..15ec7a5c05 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -576,6 +576,8 @@ static void fuse_setattr(fuse_req_t req, fuse_ino_t inode, struct stat *statbuf,
- static void fuse_open(fuse_req_t req, fuse_ino_t inode,
-                       struct fuse_file_info *fi)
+@@ -78,27 +78,34 @@ static void read_from_fuse_export(void *opaque);
+ static bool is_regular_file(const char *path, Error **errp);
+ 
+ 
+-static void fuse_export_drained_begin(void *opaque)
++static void fuse_attach_handlers(FuseExport *exp)
  {
-+    fi->direct_io = true;
-+    fi->parallel_direct_writes = true;
-     fuse_reply_open(req, fi);
+-    FuseExport *exp = opaque;
++    aio_set_fd_handler(exp->common.ctx,
++                       fuse_session_fd(exp->fuse_session),
++                       read_from_fuse_export, NULL, NULL, NULL, exp);
++    exp->fd_handler_set_up = true;
++}
+ 
++static void fuse_detach_handlers(FuseExport *exp)
++{
+     aio_set_fd_handler(exp->common.ctx,
+                        fuse_session_fd(exp->fuse_session),
+                        NULL, NULL, NULL, NULL, NULL);
+     exp->fd_handler_set_up = false;
  }
  
-diff --git a/tests/qemu-iotests/308.out b/tests/qemu-iotests/308.out
-index aa96faab6d..2d7a38d63d 100644
---- a/tests/qemu-iotests/308.out
-+++ b/tests/qemu-iotests/308.out
-@@ -131,7 +131,7 @@ wrote 65536/65536 bytes at offset 1048576
++static void fuse_export_drained_begin(void *opaque)
++{
++    fuse_detach_handlers(opaque);
++}
++
+ static void fuse_export_drained_end(void *opaque)
+ {
+     FuseExport *exp = opaque;
  
- --- Try growing non-growable export ---
- (OK: Lengths of export and original are the same)
--dd: error writing 'TEST_DIR/t.IMGFMT.fuse': Input/output error
-+dd: error writing 'TEST_DIR/t.IMGFMT.fuse': No space left on device
- 1+0 records in
- 0+0 records out
+     /* Refresh AioContext in case it changed */
+     exp->common.ctx = blk_get_aio_context(exp->common.blk);
+-
+-    aio_set_fd_handler(exp->common.ctx,
+-                       fuse_session_fd(exp->fuse_session),
+-                       read_from_fuse_export, NULL, NULL, NULL, exp);
+-    exp->fd_handler_set_up = true;
++    fuse_attach_handlers(exp);
+ }
+ 
+ static bool fuse_export_drained_poll(void *opaque)
+@@ -209,11 +216,7 @@ static int fuse_export_create(BlockExport *blk_exp,
+ 
+     g_hash_table_insert(exports, g_strdup(exp->mountpoint), NULL);
+ 
+-    aio_set_fd_handler(exp->common.ctx,
+-                       fuse_session_fd(exp->fuse_session),
+-                       read_from_fuse_export, NULL, NULL, NULL, exp);
+-    exp->fd_handler_set_up = true;
+-
++    fuse_attach_handlers(exp);
+     return 0;
+ 
+ fail:
+@@ -329,10 +332,7 @@ static void fuse_export_shutdown(BlockExport *blk_exp)
+         fuse_session_exit(exp->fuse_session);
+ 
+         if (exp->fd_handler_set_up) {
+-            aio_set_fd_handler(exp->common.ctx,
+-                               fuse_session_fd(exp->fuse_session),
+-                               NULL, NULL, NULL, NULL, NULL);
+-            exp->fd_handler_set_up = false;
++            fuse_detach_handlers(exp);
+         }
+     }
  
 -- 
 2.49.0
