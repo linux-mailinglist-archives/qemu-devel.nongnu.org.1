@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4D1ACDB39
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 11:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86419ACDB40
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 11:42:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMkcG-0007Cx-84; Wed, 04 Jun 2025 05:41:00 -0400
+	id 1uMkcM-0007Ex-QF; Wed, 04 Jun 2025 05:41:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uMkcD-0007CW-De
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 05:40:58 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uMkcB-0000FK-Gn
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 05:40:57 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-450cfb79177so37449155e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Jun 2025 02:40:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749030053; x=1749634853; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0v4oRkMmogR7y0B5fp1lSGMcOWf9pIns4sZawS0F7Rw=;
- b=knIcpxkw+srhXDpqOt6oSUGc0iVKQPNA1IT1m5RTJQk0pz9KjaPATA9NdM5Z6KkZf3
- SBHRx5oaPG3C8rKszxroQZMRCBgDy8iJV9PlKfVcTbOBWzOR/IyY8jAGlVyB9N7dekiT
- Z3VZBAsUfxxNzJi1bCTf/DkaMTRphL9t7Kxs8kdf1OmqOr/MaA5r89L1QjJ0SBMslcXH
- D6D40cMEQ8/c87gbON2ZBpibOITcOV0R9N3zcx3WNSaBmQ5gjM7dHs8wakyaEaI8kEpO
- j1m4KYdGrruwKEeOsgyapl5AwdCGVdiqTMxL9WN4kHVYSf9gbhPbChvjh4OXsmhRhW9V
- Q9KA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749030053; x=1749634853;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0v4oRkMmogR7y0B5fp1lSGMcOWf9pIns4sZawS0F7Rw=;
- b=sjdRdMYIeEQrvr1wvrdVo7RG3A/gs6OAcv03LwrgzT5VwfzFa9AK6yXbM5KzX8KWe9
- lCh7x/Z6rQtkWv6E/Yr+rADMkVbjqvXy8+NfcjT0CORz/KRuKHImJxYNUduzPueajo3Z
- CiNnQ1QD2Usxaem4HTvQYEz2uYhRwd/GbH1ZGYxGjsQwQnY6x8UQJfSXrmjomUUWdXaX
- N5xzALg/PPPgx4U8gr34tknF27se/ot93VKx70ijuqmHAQZYZAizvYk3gXjIBep5eGVX
- 7DHZL0ic9KaG+XIlxHDEn3LsVG4oLKsw/93o9yJfAbRv34Jl6yZHNT/FGsqK2W414x6S
- 6RqQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU2OCyza0/8GkL7I5IwClCN3p3T3/llyEq/EBpN9vOexcgaH4S6dMtvPMVnjcEUuH0gIGCi1dT82Cw6@nongnu.org
-X-Gm-Message-State: AOJu0YzqUSXfbvPEPJclAqHLu1QyZZmBFfVbtRs5Xw9T1IhaYEH3Ubut
- g7yJJOehUtp8mpk56xIG6XE/w93TPQVIJ5IbOKPbaaWX+IOjWkaIQdngW4w6iDihW0I=
-X-Gm-Gg: ASbGncsTjkpcuQSMt8KSsb3Yh5ckte5ICNvVCiBwE6Fcx4IkZF/X/sl7Ws7rIT/GfEh
- i/bpiVkwd1BtTnFjIg0bKQD7/G5aLlQd070SQ1sgNmZ6kIJYF892ATEbRnk+oUrg7o4ZHWJg1ux
- sNDwHQcXt9wkz8I6z68+YQK5LQLs+qn5s/pc+cXm7gOXQneE8Co2otaGAWs2R6duxw6DS577ZLn
- OGn2GFArrIm5M2Kr+v/F0FocDETki3D/nCoksT2kKIwW+u7CNhzEj0zlyQzmAwnMDs/ZxPOwjq9
- m11uAh6dpz9Qo5Jd9r1iLDyOkmAmpVqZZEEGdq3W55+YotOJeKltvRefKL54dzyP2C8X5q95+op
- dMHZfljkCv8ju29BfNJM=
-X-Google-Smtp-Source: AGHT+IHgObejxF6HksytVWqARvUA6SgJFgLDsW39XwVBGsPhN3arFNRRyosGMfKHjXh24ArFMJCFFQ==
-X-Received: by 2002:a05:600c:4f8b:b0:450:d37d:7c with SMTP id
- 5b1f17b1804b1-451f0b105d0mr14413825e9.21.1749030053424; 
- Wed, 04 Jun 2025 02:40:53 -0700 (PDT)
-Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe5b8f0sm20869872f8f.6.2025.06.04.02.40.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Jun 2025 02:40:52 -0700 (PDT)
-Message-ID: <9702baa7-55a7-4ea6-8536-7c614c608e5c@linaro.org>
-Date: Wed, 4 Jun 2025 11:40:51 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMkcK-0007EU-Ba
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 05:41:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uMkcI-0000GB-Hh
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 05:41:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749030060;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=sSeRoDvsZtgFQKXDvRkqhjRCybJhF6ZZimN+TgbYGms=;
+ b=YoV1LFl05cr+Td46To85iJiB94tHQUbMwhSiT5AV7wGdKr/PS+ifJzFPoxpMfiTrZT+8fz
+ o9OCQOG02UFwhEeaP3L2SGQCXUZCRZOpDDcPdx2NloNXuNXeO2S+ZPame0hMIhsIghvAsa
+ WRsAO8iPhdQuR2MNB0ZzCs2aTt3TEHU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-211-Xa-WyHXmO6uZHxOTtJ50vw-1; Wed,
+ 04 Jun 2025 05:40:57 -0400
+X-MC-Unique: Xa-WyHXmO6uZHxOTtJ50vw-1
+X-Mimecast-MFC-AGG-ID: Xa-WyHXmO6uZHxOTtJ50vw_1749030056
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 07FED18004A3; Wed,  4 Jun 2025 09:40:56 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 36EC61955DDA; Wed,  4 Jun 2025 09:40:55 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8CC3B21E66C3; Wed, 04 Jun 2025 11:40:52 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>,  qemu-devel@nongnu.org,  Thomas
+ Huth <thuth@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  "Michael
+ S . Tsirkin" <mst@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Philippe =?utf-8?Q?Mathieu-?=
+ =?utf-8?Q?Daud=C3=A9?=
+ <philmd@linaro.org>,  Kevin Wolf <kwolf@redhat.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>,  Alexander Graf <agraf@csgraf.de>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v3 3/3] docs: define policy forbidding use of AI code
+ generators
+In-Reply-To: <aEAQZLOrJvF5rdz4@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Wed, 4 Jun 2025 10:22:44 +0100")
+References: <20250603142524.4043193-1-armbru@redhat.com>
+ <20250603142524.4043193-4-armbru@redhat.com>
+ <CAJSP0QUGaQEwhVh_w6Wbdm-Nqo_2kHcb+eS2Simq-x9J=-7qkg@mail.gmail.com>
+ <87a56o1154.fsf@pond.sub.org> <aD_yhelX-w4Vdm8Z@redhat.com>
+ <87frgfyjb5.fsf@pond.sub.org> <aEAQZLOrJvF5rdz4@redhat.com>
+Date: Wed, 04 Jun 2025 11:40:52 +0200
+Message-ID: <877c1rvo7v.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] target/loongarch: fix vldi/xvldi raise wrong error
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org,
- richard.henderson@linaro.org
-Cc: maobibo@loongson.cn, lorenz.hetterich@cispa.de, qemu-stable@nongnu.org
-References: <20250604084005.528539-1-gaosong@loongson.cn>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250604084005.528539-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,68 +99,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/6/25 10:40, Song Gao wrote:
-> on qemu we got an aborted error
-> **
-> ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
-> Bail out! ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: code should not be reached
-> Aborted (core dumped)
-> but on 3A600/3A5000 we got a "Illegal instruction" error.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2971
-> 
-> Fixes: 29bb5d727ff ("target/loongarch: Implement vldi")
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   target/loongarch/tcg/insn_trans/trans_vec.c.inc | 12 ++++++++++--
->   1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-> index dff92772ad..9d82d162a9 100644
-> --- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-> +++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-> @@ -3465,7 +3465,7 @@ TRANS(xvmsknz_b, LASX, gen_xx, gen_helper_vmsknz_b)
->   static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
->   {
->       int mode;
-> -    uint64_t data, t;
-> +    uint64_t data = 0, t;
->   
->       /*
->        * imm bit [11:8] is mode, mode value is 0-12.
-> @@ -3570,17 +3570,25 @@ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
->           }
->           break;
->       default:
-> -        generate_exception(ctx, EXCCODE_INE);
->           g_assert_not_reached();
->       }
->       return data;
->   }
->   
-> +static bool check_vldi_mode(arg_vldi *a)
-> +{
-> +   return (a->imm >>8 & 0xf) <= 12;
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Preferably (as easier to review):
+> On Wed, Jun 04, 2025 at 10:58:38AM +0200, Markus Armbruster wrote:
+>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>>=20
+>> > On Wed, Jun 04, 2025 at 08:17:27AM +0200, Markus Armbruster wrote:
+>> >> Stefan Hajnoczi <stefanha@gmail.com> writes:
+>> >>=20
+>> >> > On Tue, Jun 3, 2025 at 10:25=E2=80=AFAM Markus Armbruster <armbru@r=
+edhat.com> wrote:
+>> >> >>
+>> >> >> From: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> >  >> +
+>> >> >> +The increasing prevalence of AI code generators, most notably but=
+ not limited
+>> >> >
+>> >> > More detail is needed on what an "AI code generator" is. Coding
+>> >> > assistant tools range from autocompletion to linters to automatic c=
+ode
+>> >> > generators. In addition there are other AI-related tools like ChatG=
+PT
+>> >> > or Gemini as a chatbot that can people use like Stackoverflow or an
+>> >> > API documentation summarizer.
+>> >> >
+>> >> > I think the intent is to say: do not put code that comes from _any_=
+ AI
+>> >> > tool into QEMU.
+>> >> >
+>> >> > It would be okay to use AI to research APIs, algorithms, brainstorm
+>> >> > ideas, debug the code, analyze the code, etc but the actual code
+>> >> > changes must not be generated by AI.
+>> >
+>> > The scope of the policy is around contributions we receive as
+>> > patches with SoB. Researching / brainstorming / analysis etc
+>> > are not contribution activities, so not covered by the policy
+>> > IMHO.
+>>=20
+>> Yes.  More below.
+>>=20
+>> >> The existing text is about "AI code generators".  However, the "most
+>> >> notably LLMs" that follows it could lead readers to believe it's about
+>> >> more than just code generation, because LLMs are in fact used for mor=
+e.
+>> >> I figure this is your concern.
+>> >>=20
+>> >> We could instead start wide, then narrow the focus to code generation.
+>> >> Here's my try:
+>> >>=20
+>> >>   The increasing prevalence of AI-assisted software development resul=
+ts
+>> >>   in a number of difficult legal questions and risks for software
+>> >>   projects, including QEMU.  Of particular concern is code generated =
+by
+>> >>   `Large Language Models
+>> >>   <https://en.wikipedia.org/wiki/Large_language_model>`__ (LLMs).
+>> >
+>> > Documentation we maintain has the same concerns as code.
+>> > So I'd suggest to substitute 'code' with 'code / content'.
+>>=20
+>> Makes sense, thanks!
+>>=20
+>> >> If we want to mention uses of AI we consider okay, I'd do so further
+>> >> down, to not distract from the main point here.  Perhaps:
+>> >>=20
+>> >>   The QEMU project thus requires that contributors refrain from using=
+ AI code
+>> >>   generators on patches intended to be submitted to the project, and =
+will
+>> >>   decline any contribution if use of AI is either known or suspected.
+>> >>=20
+>> >>   This policy does not apply to other uses of AI, such as researching=
+ APIs or
+>> >>   algorithms, static analysis, or debugging.
+>> >>=20
+>> >>   Examples of tools impacted by this policy includes both GitHub's Co=
+Pilot,
+>> >>   OpenAI's ChatGPT, and Meta's Code Llama, amongst many others which =
+are less
+>> >>   well known.
+>> >>=20
+>> >> The paragraph in the middle is new, the other two are unchanged.
+>> >>=20
+>> >> Thoughts?
+>> >
+>> > IMHO its redundant, as the policy is expressly around contribution of
+>> > code/content, and those activities as not contribution related, so
+>> > outside the scope already.
+>>=20
+>> The very first paragraph in this file already set the scope: "provenance
+>> of patch submissions [...] to the project", so you have a point here.
+>> But does repeating the scope here hurt or help?
+>
+> I guess it probably doesn't hurt to have it. Perhaps tweak to
+>
+>  This policy does not apply to other uses of AI, such as researching APIs=
+ or
+>  algorithms, static analysis, or debugging, provided their output is not
+>  to be included in contributions.
+>
+> and for the last paragraph remove 'both' and add a tailer
+>
+>    Examples of tools impacted by this policy include GitHub's CoPilot,
+>    OpenAI's ChatGPT, and Meta's Code Llama (amongst many others which are=
+ less
+>    well known), and code/content generation agents which are built on top=
+ of
+>    such tools.
 
-       return extract32(a->imm, 8, 4) <= 12;
-
-Otherwise patch LGTM :)
-
-> +}
->   static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
->   {
->       int sel, vece;
->       uint64_t value;
->   
-> +    if (!check_vldi_mode(a)){
-> +        generate_exception(ctx, EXCCODE_INE);
-> +        return true;
-> +    }
-> +
->       if (!check_vec(ctx, oprsz)) {
->           return true;
->       }
+Sold!
 
 
