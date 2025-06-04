@@ -2,43 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC87ACE41C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 20:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE81ACE40C
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 19:58:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMsMz-0002q0-Tl; Wed, 04 Jun 2025 13:57:46 -0400
+	id 1uMsML-0002QE-Mz; Wed, 04 Jun 2025 13:57:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsMD-0002KA-3c
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsMC-0002K8-PY
  for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsM6-0000Tp-CT
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsM6-0000Tl-0R
  for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:56 -0400
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749059808;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hvdDAQ7WPbm2cps1jTAPZHzKup5ZY3cK0fX3djIzIIU=;
+ b=WF0cF44d3kJo4X3GyUPsnHQe9ZPWJiDcp0mpRl0WR5HLSppu6KYDwntAMhXyopp1AdA509
+ RLUGq3vEw2G+AaA/UDJQeQlvmpbT6nCJBNJcgb13EUafsDnFwWCKPJZjdr+hD2oOgRcDTI
+ 5+xn0eWYceP41x2dYXdTz3vKnncbdSE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-347-agQsJ8A1M2qMQEZ09ollSg-1; Wed,
- 04 Jun 2025 13:56:44 -0400
-X-MC-Unique: agQsJ8A1M2qMQEZ09ollSg-1
-X-Mimecast-MFC-AGG-ID: agQsJ8A1M2qMQEZ09ollSg_1749059803
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-L-SGaPvuNnGyMBVj4--uMg-1; Wed,
+ 04 Jun 2025 13:56:47 -0400
+X-MC-Unique: L-SGaPvuNnGyMBVj4--uMg-1
+X-Mimecast-MFC-AGG-ID: L-SGaPvuNnGyMBVj4--uMg_1749059806
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1E4B91956096; Wed,  4 Jun 2025 17:56:43 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A7EBF1800A00; Wed,  4 Jun 2025 17:56:46 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.44.34.43])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CD0B818003FD; Wed,  4 Jun 2025 17:56:41 +0000 (UTC)
+ id 5E98818003FD; Wed,  4 Jun 2025 17:56:45 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 13/24] block: move drain outside of bdrv_attach_child()
-Date: Wed,  4 Jun 2025 19:56:02 +0200
-Message-ID: <20250604175613.344113-14-kwolf@redhat.com>
+Subject: [PULL 15/24] block: move drain outside of bdrv_root_unref_child()
+Date: Wed,  4 Jun 2025 19:56:04 +0200
+Message-ID: <20250604175613.344113-16-kwolf@redhat.com>
 In-Reply-To: <20250604175613.344113-1-kwolf@redhat.com>
 References: <20250604175613.344113-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -46,11 +57,12 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -65,8 +77,6 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Kevin Wolf <kwolf@redhat.com>
-From:  Kevin Wolf via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
@@ -75,312 +85,391 @@ From: Fiona Ebner <f.ebner@proxmox.com>
 This is part of resolving the deadlock mentioned in commit "block:
 move draining out of bdrv_change_aio_context() and mark GRAPH_RDLOCK".
 
-The function bdrv_attach_child() runs under the graph lock, so it is
-not allowed to drain. It is called by:
-1. replication_start()
-2. quorum_add_child()
-3. bdrv_open_child_common()
-4. Throughout test-bdrv-graph-mod.c and test-bdrv-drain.c unit tests.
+bdrv_root_unref_child() is called by:
+1. blk_remove_bs(), where a drained section is introduced.
+2. bdrv_unref_child(), which runs under the graph lock, so the drain
+   will be moved further up to its callers.
+3. block_job_remove_all_bdrv(), where a drained section is introduced.
 
-In all callers, a drained section is introduced.
-
-The function quorum_add_child() runs under the graph lock, so it is
-not actually allowed to drain. This will be addressed by the following
-commit.
+For all callers of bdrv_unref_child() and its generated
+bdrv_co_unref_child() coroutine variant, a drained section is
+introduced, they are not explicilty listed here. The caller
+quorum_del_child() holds the graph lock, so it is not actually allowed
+to drain. This will be addressed in the next commit.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-16-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20250530151125.955508-14-f.ebner@proxmox.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block.c                          |  6 ++++--
- block/quorum.c                   |  2 ++
- block/replication.c              |  5 +++++
- tests/unit/test-bdrv-drain.c     | 14 ++++++++++++++
- tests/unit/test-bdrv-graph-mod.c | 10 ++++++++++
- 5 files changed, 35 insertions(+), 2 deletions(-)
+ block.c                      | 18 ++++++++++++++----
+ block/blklogwrites.c         |  4 ++++
+ block/blkverify.c            |  2 ++
+ block/block-backend.c        |  2 ++
+ block/qcow2.c                |  4 ++++
+ block/quorum.c               |  6 ++++++
+ block/replication.c          |  2 ++
+ block/snapshot.c             |  2 ++
+ block/vmdk.c                 | 10 ++++++++++
+ blockjob.c                   |  2 ++
+ tests/unit/test-bdrv-drain.c |  4 ++++
+ 11 files changed, 52 insertions(+), 4 deletions(-)
 
 diff --git a/block.c b/block.c
-index 17c34dc240..6fc87aa318 100644
+index f6c2f7e208..15a8ccb822 100644
 --- a/block.c
 +++ b/block.c
-@@ -3269,6 +3269,8 @@ out:
-  *
-  * On failure NULL is returned, errp is set and the reference to
-  * child_bs is also dropped.
+@@ -1721,12 +1721,14 @@ bdrv_open_driver(BlockDriverState *bs, BlockDriver *drv, const char *node_name,
+ open_failed:
+     bs->drv = NULL;
+ 
++    bdrv_drain_all_begin();
+     bdrv_graph_wrlock();
+     if (bs->file != NULL) {
+         bdrv_unref_child(bs, bs->file);
+         assert(!bs->file);
+     }
+     bdrv_graph_wrunlock();
++    bdrv_drain_all_end();
+ 
+     g_free(bs->opaque);
+     bs->opaque = NULL;
+@@ -3305,7 +3307,11 @@ out:
+     return ret < 0 ? NULL : child;
+ }
+ 
+-/* Callers must ensure that child->frozen is false. */
++/*
++ * Callers must ensure that child->frozen is false.
 + *
 + * All block nodes must be drained.
-  */
- BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
-                              BlockDriverState *child_bs,
-@@ -3283,7 +3285,6 @@ BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
- 
-     GLOBAL_STATE_CODE();
- 
--    bdrv_drain_all_begin();
-     child = bdrv_attach_child_noperm(parent_bs, child_bs, child_name,
-                                      child_class, child_role, tran, errp);
-     if (!child) {
-@@ -3298,7 +3299,6 @@ BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
- 
- out:
-     tran_finalize(tran, ret);
--    bdrv_drain_all_end();
++ */
+ void bdrv_root_unref_child(BdrvChild *child)
+ {
+     BlockDriverState *child_bs = child->bs;
+@@ -3326,10 +3332,8 @@ void bdrv_root_unref_child(BdrvChild *child)
+          * When the parent requiring a non-default AioContext is removed, the
+          * node moves back to the main AioContext
+          */
+-        bdrv_drain_all_begin();
+         bdrv_try_change_aio_context_locked(child_bs, qemu_get_aio_context(),
+                                            NULL, NULL);
+-        bdrv_drain_all_end();
+     }
  
      bdrv_schedule_unref(child_bs);
+@@ -3402,7 +3406,11 @@ bdrv_unset_inherits_from(BlockDriverState *root, BdrvChild *child,
+     }
+ }
  
-@@ -3789,10 +3789,12 @@ static BdrvChild *bdrv_open_child_common(const char *filename,
-         return NULL;
+-/* Callers must ensure that child->frozen is false. */
++/*
++ * Callers must ensure that child->frozen is false.
++ *
++ * All block nodes must be drained.
++ */
+ void bdrv_unref_child(BlockDriverState *parent, BdrvChild *child)
+ {
+     GLOBAL_STATE_CODE();
+@@ -5172,6 +5180,7 @@ static void bdrv_close(BlockDriverState *bs)
+         bs->drv = NULL;
      }
  
 +    bdrv_drain_all_begin();
      bdrv_graph_wrlock();
-     child = bdrv_attach_child(parent, bs, bdref_key, child_class, child_role,
-                               errp);
+     QLIST_FOREACH_SAFE(child, &bs->children, next, next) {
+         bdrv_unref_child(bs, child);
+@@ -5180,6 +5189,7 @@ static void bdrv_close(BlockDriverState *bs)
+     assert(!bs->backing);
+     assert(!bs->file);
      bdrv_graph_wrunlock();
 +    bdrv_drain_all_end();
  
-     return child;
- }
-diff --git a/block/quorum.c b/block/quorum.c
-index ed8ce801ee..ea17b0ec13 100644
---- a/block/quorum.c
-+++ b/block/quorum.c
-@@ -1096,8 +1096,10 @@ quorum_add_child(BlockDriverState *bs, BlockDriverState *child_bs, Error **errp)
-     /* We can safely add the child now */
-     bdrv_ref(child_bs);
+     g_free(bs->opaque);
+     bs->opaque = NULL;
+diff --git a/block/blklogwrites.c b/block/blklogwrites.c
+index b0f78c4bc7..70ac76f401 100644
+--- a/block/blklogwrites.c
++++ b/block/blklogwrites.c
+@@ -281,9 +281,11 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
+     ret = 0;
+ fail_log:
+     if (ret < 0) {
++        bdrv_drain_all_begin();
+         bdrv_graph_wrlock();
+         bdrv_unref_child(bs, s->log_file);
+         bdrv_graph_wrunlock();
++        bdrv_drain_all_end();
+         s->log_file = NULL;
+         qemu_mutex_destroy(&s->mutex);
+     }
+@@ -296,10 +298,12 @@ static void blk_log_writes_close(BlockDriverState *bs)
+ {
+     BDRVBlkLogWritesState *s = bs->opaque;
  
 +    bdrv_drain_all_begin();
-     child = bdrv_attach_child(bs, child_bs, indexstr, &child_of_bds,
-                               BDRV_CHILD_DATA, errp);
+     bdrv_graph_wrlock();
+     bdrv_unref_child(bs, s->log_file);
+     s->log_file = NULL;
+     bdrv_graph_wrunlock();
 +    bdrv_drain_all_end();
-     if (child == NULL) {
-         s->next_child_index--;
-         return;
+     qemu_mutex_destroy(&s->mutex);
+ }
+ 
+diff --git a/block/blkverify.c b/block/blkverify.c
+index db79a36681..3a71f7498c 100644
+--- a/block/blkverify.c
++++ b/block/blkverify.c
+@@ -151,10 +151,12 @@ static void blkverify_close(BlockDriverState *bs)
+ {
+     BDRVBlkverifyState *s = bs->opaque;
+ 
++    bdrv_drain_all_begin();
+     bdrv_graph_wrlock();
+     bdrv_unref_child(bs, s->test_file);
+     s->test_file = NULL;
+     bdrv_graph_wrunlock();
++    bdrv_drain_all_end();
+ }
+ 
+ static int64_t coroutine_fn GRAPH_RDLOCK
+diff --git a/block/block-backend.c b/block/block-backend.c
+index 24cae3cb55..68209bb2f7 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -889,9 +889,11 @@ void blk_remove_bs(BlockBackend *blk)
+     root = blk->root;
+     blk->root = NULL;
+ 
++    bdrv_drain_all_begin();
+     bdrv_graph_wrlock();
+     bdrv_root_unref_child(root);
+     bdrv_graph_wrunlock();
++    bdrv_drain_all_end();
+ }
+ 
+ /*
+diff --git a/block/qcow2.c b/block/qcow2.c
+index 66fba89b41..45451a7ee8 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -1895,7 +1895,9 @@ qcow2_do_open(BlockDriverState *bs, QDict *options, int flags,
+     g_free(s->image_data_file);
+     if (open_data_file && has_data_file(bs)) {
+         bdrv_graph_co_rdunlock();
++        bdrv_drain_all_begin();
+         bdrv_co_unref_child(bs, s->data_file);
++        bdrv_drain_all_end();
+         bdrv_graph_co_rdlock();
+         s->data_file = NULL;
+     }
+@@ -2821,9 +2823,11 @@ qcow2_do_close(BlockDriverState *bs, bool close_data_file)
+     if (close_data_file && has_data_file(bs)) {
+         GLOBAL_STATE_CODE();
+         bdrv_graph_rdunlock_main_loop();
++        bdrv_drain_all_begin();
+         bdrv_graph_wrlock();
+         bdrv_unref_child(bs, s->data_file);
+         bdrv_graph_wrunlock();
++        bdrv_drain_all_end();
+         s->data_file = NULL;
+         bdrv_graph_rdlock_main_loop();
+     }
+diff --git a/block/quorum.c b/block/quorum.c
+index ed8ce801ee..81407a38ee 100644
+--- a/block/quorum.c
++++ b/block/quorum.c
+@@ -1037,6 +1037,7 @@ static int quorum_open(BlockDriverState *bs, QDict *options, int flags,
+ 
+ close_exit:
+     /* cleanup on error */
++    bdrv_drain_all_begin();
+     bdrv_graph_wrlock();
+     for (i = 0; i < s->num_children; i++) {
+         if (!opened[i]) {
+@@ -1045,6 +1046,7 @@ close_exit:
+         bdrv_unref_child(bs, s->children[i]);
+     }
+     bdrv_graph_wrunlock();
++    bdrv_drain_all_end();
+     g_free(s->children);
+     g_free(opened);
+ exit:
+@@ -1057,11 +1059,13 @@ static void quorum_close(BlockDriverState *bs)
+     BDRVQuorumState *s = bs->opaque;
+     int i;
+ 
++    bdrv_drain_all_begin();
+     bdrv_graph_wrlock();
+     for (i = 0; i < s->num_children; i++) {
+         bdrv_unref_child(bs, s->children[i]);
+     }
+     bdrv_graph_wrunlock();
++    bdrv_drain_all_end();
+ 
+     g_free(s->children);
+ }
+@@ -1143,7 +1147,9 @@ quorum_del_child(BlockDriverState *bs, BdrvChild *child, Error **errp)
+             (s->num_children - i - 1) * sizeof(BdrvChild *));
+     s->children = g_renew(BdrvChild *, s->children, --s->num_children);
+ 
++    bdrv_drain_all_begin();
+     bdrv_unref_child(bs, child);
++    bdrv_drain_all_end();
+ 
+     quorum_refresh_flags(bs);
+ }
 diff --git a/block/replication.c b/block/replication.c
-index 07f274de9e..54cbd03e00 100644
+index 54cbd03e00..0879718854 100644
 --- a/block/replication.c
 +++ b/block/replication.c
-@@ -540,6 +540,7 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-             return;
-         }
+@@ -656,12 +656,14 @@ static void replication_done(void *opaque, int ret)
+     if (ret == 0) {
+         s->stage = BLOCK_REPLICATION_DONE;
  
 +        bdrv_drain_all_begin();
          bdrv_graph_wrlock();
- 
-         bdrv_ref(hidden_disk->bs);
-@@ -549,6 +550,7 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-         if (local_err) {
-             error_propagate(errp, local_err);
-             bdrv_graph_wrunlock();
-+            bdrv_drain_all_end();
-             return;
-         }
- 
-@@ -559,6 +561,7 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-         if (local_err) {
-             error_propagate(errp, local_err);
-             bdrv_graph_wrunlock();
-+            bdrv_drain_all_end();
-             return;
-         }
- 
-@@ -571,12 +574,14 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-             !check_top_bs(top_bs, bs)) {
-             error_setg(errp, "No top_bs or it is invalid");
-             bdrv_graph_wrunlock();
-+            bdrv_drain_all_end();
-             reopen_backing_file(bs, false, NULL);
-             return;
-         }
-         bdrv_op_block_all(top_bs, s->blocker);
- 
+         bdrv_unref_child(bs, s->secondary_disk);
+         s->secondary_disk = NULL;
+         bdrv_unref_child(bs, s->hidden_disk);
+         s->hidden_disk = NULL;
          bdrv_graph_wrunlock();
 +        bdrv_drain_all_end();
  
-         s->backup_job = backup_job_create(
-                                 NULL, s->secondary_disk->bs, s->hidden_disk->bs,
-diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
-index 4f3057844b..ac76525e5a 100644
---- a/tests/unit/test-bdrv-drain.c
-+++ b/tests/unit/test-bdrv-drain.c
-@@ -1049,10 +1049,12 @@ static void do_test_delete_by_drain(bool detach_instead_of_delete,
+         s->error = 0;
+     } else {
+diff --git a/block/snapshot.c b/block/snapshot.c
+index 9f300a78bd..28c9c43621 100644
+--- a/block/snapshot.c
++++ b/block/snapshot.c
+@@ -291,9 +291,11 @@ int bdrv_snapshot_goto(BlockDriverState *bs,
+         }
  
-     null_bs = bdrv_open("null-co://", NULL, NULL, BDRV_O_RDWR | BDRV_O_PROTOCOL,
-                         &error_abort);
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     bdrv_attach_child(bs, null_bs, "null-child", &child_of_bds,
-                       BDRV_CHILD_DATA, &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
+         /* .bdrv_open() will re-attach it */
++        bdrv_drain_all_begin();
+         bdrv_graph_wrlock();
+         bdrv_unref_child(bs, fallback);
+         bdrv_graph_wrunlock();
++        bdrv_drain_all_end();
  
-     /* This child will be the one to pass to requests through to, and
-      * it will stall until a drain occurs */
-@@ -1060,21 +1062,25 @@ static void do_test_delete_by_drain(bool detach_instead_of_delete,
-                                     &error_abort);
-     child_bs->total_sectors = 65536 >> BDRV_SECTOR_BITS;
-     /* Takes our reference to child_bs */
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     tts->wait_child = bdrv_attach_child(bs, child_bs, "wait-child",
-                                         &child_of_bds,
-                                         BDRV_CHILD_DATA | BDRV_CHILD_PRIMARY,
-                                         &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
- 
-     /* This child is just there to be deleted
-      * (for detach_instead_of_delete == true) */
-     null_bs = bdrv_open("null-co://", NULL, NULL, BDRV_O_RDWR | BDRV_O_PROTOCOL,
-                         &error_abort);
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     bdrv_attach_child(bs, null_bs, "null-child", &child_of_bds, BDRV_CHILD_DATA,
-                       &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
- 
-     blk = blk_new(qemu_get_aio_context(), BLK_PERM_ALL, BLK_PERM_ALL);
-     blk_insert_bs(blk, bs, &error_abort);
-@@ -1157,6 +1163,7 @@ static void no_coroutine_fn detach_indirect_bh(void *opaque)
- 
-     bdrv_dec_in_flight(data->child_b->bs);
+         ret = bdrv_snapshot_goto(fallback_bs, snapshot_id, errp);
+         memset(bs->opaque, 0, drv->instance_size);
+diff --git a/block/vmdk.c b/block/vmdk.c
+index 9c7ab037e1..89a7250120 100644
+--- a/block/vmdk.c
++++ b/block/vmdk.c
+@@ -271,6 +271,7 @@ static void vmdk_free_extents(BlockDriverState *bs)
+     BDRVVmdkState *s = bs->opaque;
+     VmdkExtent *e;
  
 +    bdrv_drain_all_begin();
      bdrv_graph_wrlock();
-     bdrv_unref_child(data->parent_b, data->child_b);
- 
-@@ -1165,6 +1172,7 @@ static void no_coroutine_fn detach_indirect_bh(void *opaque)
-                                       &child_of_bds, BDRV_CHILD_DATA,
-                                       &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
- }
- 
- static void coroutine_mixed_fn detach_by_parent_aio_cb(void *opaque, int ret)
-@@ -1262,6 +1270,7 @@ static void TSA_NO_TSA test_detach_indirect(bool by_parent_cb)
-     /* Set child relationships */
-     bdrv_ref(b);
-     bdrv_ref(a);
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     child_b = bdrv_attach_child(parent_b, b, "PB-B", &child_of_bds,
-                                 BDRV_CHILD_DATA, &error_abort);
-@@ -1273,6 +1282,7 @@ static void TSA_NO_TSA test_detach_indirect(bool by_parent_cb)
-                       by_parent_cb ? &child_of_bds : &detach_by_driver_cb_class,
-                       BDRV_CHILD_DATA, &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
- 
-     g_assert_cmpint(parent_a->refcnt, ==, 1);
-     g_assert_cmpint(parent_b->refcnt, ==, 1);
-@@ -1685,6 +1695,7 @@ static void test_drop_intermediate_poll(void)
-      * Establish the chain last, so the chain links are the first
-      * elements in the BDS.parents lists
-      */
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     for (i = 0; i < 3; i++) {
-         if (i) {
-@@ -1694,6 +1705,7 @@ static void test_drop_intermediate_poll(void)
+     for (i = 0; i < s->num_extents; i++) {
+         e = &s->extents[i];
+@@ -283,6 +284,7 @@ static void vmdk_free_extents(BlockDriverState *bs)
          }
      }
      bdrv_graph_wrunlock();
 +    bdrv_drain_all_end();
  
-     job = block_job_create("job", &test_simple_job_driver, NULL, job_node,
-                            0, BLK_PERM_ALL, 0, 0, NULL, NULL, &error_abort);
-@@ -1940,10 +1952,12 @@ static void do_test_replace_child_mid_drain(int old_drain_count,
-     new_child_bs->total_sectors = 1;
- 
-     bdrv_ref(old_child_bs);
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     bdrv_attach_child(parent_bs, old_child_bs, "child", &child_of_bds,
-                       BDRV_CHILD_COW, &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
-     parent_s->setup_completed = true;
- 
-     for (i = 0; i < old_drain_count; i++) {
-diff --git a/tests/unit/test-bdrv-graph-mod.c b/tests/unit/test-bdrv-graph-mod.c
-index d743abb4bb..7b03ebe4b0 100644
---- a/tests/unit/test-bdrv-graph-mod.c
-+++ b/tests/unit/test-bdrv-graph-mod.c
-@@ -137,10 +137,12 @@ static void test_update_perm_tree(void)
- 
-     blk_insert_bs(root, bs, &error_abort);
- 
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     bdrv_attach_child(filter, bs, "child", &child_of_bds,
-                       BDRV_CHILD_DATA, &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
- 
-     ret = bdrv_append(filter, bs, NULL);
-     g_assert_cmpint(ret, <, 0);
-@@ -204,11 +206,13 @@ static void test_should_update_child(void)
- 
-     bdrv_set_backing_hd(target, bs, &error_abort);
- 
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     g_assert(target->backing->bs == bs);
-     bdrv_attach_child(filter, target, "target", &child_of_bds,
-                       BDRV_CHILD_DATA, &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
-     bdrv_append(filter, bs, &error_abort);
- 
-     bdrv_graph_rdlock_main_loop();
-@@ -244,6 +248,7 @@ static void test_parallel_exclusive_write(void)
-     bdrv_ref(base);
-     bdrv_ref(fl1);
- 
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     bdrv_attach_child(top, fl1, "backing", &child_of_bds,
-                       BDRV_CHILD_FILTERED | BDRV_CHILD_PRIMARY,
-@@ -257,6 +262,7 @@ static void test_parallel_exclusive_write(void)
- 
-     bdrv_replace_node(fl1, fl2, &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
- 
-     bdrv_drained_end(fl2);
-     bdrv_drained_end(fl1);
-@@ -363,6 +369,7 @@ static void test_parallel_perm_update(void)
+     g_free(s->extents);
+ }
+@@ -1247,9 +1249,11 @@ vmdk_parse_extents(const char *desc, BlockDriverState *bs, QDict *options,
+                             0, 0, 0, 0, 0, &extent, errp);
+             if (ret < 0) {
+                 bdrv_graph_rdunlock_main_loop();
++                bdrv_drain_all_begin();
+                 bdrv_graph_wrlock();
+                 bdrv_unref_child(bs, extent_file);
+                 bdrv_graph_wrunlock();
++                bdrv_drain_all_end();
+                 bdrv_graph_rdlock_main_loop();
+                 goto out;
+             }
+@@ -1266,9 +1270,11 @@ vmdk_parse_extents(const char *desc, BlockDriverState *bs, QDict *options,
+             g_free(buf);
+             if (ret) {
+                 bdrv_graph_rdunlock_main_loop();
++                bdrv_drain_all_begin();
+                 bdrv_graph_wrlock();
+                 bdrv_unref_child(bs, extent_file);
+                 bdrv_graph_wrunlock();
++                bdrv_drain_all_end();
+                 bdrv_graph_rdlock_main_loop();
+                 goto out;
+             }
+@@ -1277,9 +1283,11 @@ vmdk_parse_extents(const char *desc, BlockDriverState *bs, QDict *options,
+             ret = vmdk_open_se_sparse(bs, extent_file, bs->open_flags, errp);
+             if (ret) {
+                 bdrv_graph_rdunlock_main_loop();
++                bdrv_drain_all_begin();
+                 bdrv_graph_wrlock();
+                 bdrv_unref_child(bs, extent_file);
+                 bdrv_graph_wrunlock();
++                bdrv_drain_all_end();
+                 bdrv_graph_rdlock_main_loop();
+                 goto out;
+             }
+@@ -1287,9 +1295,11 @@ vmdk_parse_extents(const char *desc, BlockDriverState *bs, QDict *options,
+         } else {
+             error_setg(errp, "Unsupported extent type '%s'", type);
+             bdrv_graph_rdunlock_main_loop();
++            bdrv_drain_all_begin();
+             bdrv_graph_wrlock();
+             bdrv_unref_child(bs, extent_file);
+             bdrv_graph_wrunlock();
++            bdrv_drain_all_end();
+             bdrv_graph_rdlock_main_loop();
+             ret = -ENOTSUP;
+             goto out;
+diff --git a/blockjob.c b/blockjob.c
+index 44991e3ff7..e68181a35b 100644
+--- a/blockjob.c
++++ b/blockjob.c
+@@ -198,6 +198,7 @@ void block_job_remove_all_bdrv(BlockJob *job)
+      * one to make sure that such a concurrent access does not attempt
+      * to process an already freed BdrvChild.
       */
-     bdrv_ref(base);
++    bdrv_drain_all_begin();
+     bdrv_graph_wrlock();
+     while (job->nodes) {
+         GSList *l = job->nodes;
+@@ -211,6 +212,7 @@ void block_job_remove_all_bdrv(BlockJob *job)
+         g_slist_free_1(l);
+     }
+     bdrv_graph_wrunlock();
++    bdrv_drain_all_end();
+ }
+ 
+ bool block_job_has_bdrv(BlockJob *job, BlockDriverState *bs)
+diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
+index ac76525e5a..59c2793725 100644
+--- a/tests/unit/test-bdrv-drain.c
++++ b/tests/unit/test-bdrv-drain.c
+@@ -955,11 +955,13 @@ static void bdrv_test_top_close(BlockDriverState *bs)
+ {
+     BdrvChild *c, *next_c;
  
 +    bdrv_drain_all_begin();
      bdrv_graph_wrlock();
-     bdrv_attach_child(top, ws, "file", &child_of_bds, BDRV_CHILD_DATA,
-                       &error_abort);
-@@ -377,6 +384,7 @@ static void test_parallel_perm_update(void)
-                       BDRV_CHILD_FILTERED | BDRV_CHILD_PRIMARY,
-                       &error_abort);
+     QLIST_FOREACH_SAFE(c, &bs->children, next, next_c) {
+         bdrv_unref_child(bs, c);
+     }
      bdrv_graph_wrunlock();
 +    bdrv_drain_all_end();
+ }
  
-     /* Select fl1 as first child to be active */
-     s->selected = c_fl1;
-@@ -430,11 +438,13 @@ static void test_append_greedy_filter(void)
-     BlockDriverState *base = no_perm_node("base");
-     BlockDriverState *fl = exclusive_writer_node("fl1");
- 
-+    bdrv_drain_all_begin();
-     bdrv_graph_wrlock();
-     bdrv_attach_child(top, base, "backing", &child_of_bds,
-                       BDRV_CHILD_FILTERED | BDRV_CHILD_PRIMARY,
-                       &error_abort);
-     bdrv_graph_wrunlock();
-+    bdrv_drain_all_end();
- 
-     bdrv_append(fl, base, &error_abort);
-     bdrv_unref(fl);
+ static int coroutine_fn GRAPH_RDLOCK
+@@ -1016,7 +1018,9 @@ static void coroutine_fn test_co_delete_by_drain(void *opaque)
+         bdrv_graph_co_rdlock();
+         QLIST_FOREACH_SAFE(c, &bs->children, next, next_c) {
+             bdrv_graph_co_rdunlock();
++            bdrv_drain_all_begin();
+             bdrv_co_unref_child(bs, c);
++            bdrv_drain_all_end();
+             bdrv_graph_co_rdlock();
+         }
+         bdrv_graph_co_rdunlock();
 -- 
 2.49.0
 
