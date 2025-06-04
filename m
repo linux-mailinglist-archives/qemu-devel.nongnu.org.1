@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EDEACE41D
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 20:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AD7ACE41A
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Jun 2025 20:01:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uMsMl-0002ZG-3f; Wed, 04 Jun 2025 13:57:33 -0400
+	id 1uMsMu-0002hR-2B; Wed, 04 Jun 2025 13:57:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsME-0002LT-MP
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsMF-0002Lh-PG
  for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsMA-0000Wb-VD
- for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:58 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uMsMC-0000XX-Lo
+ for qemu-devel@nongnu.org; Wed, 04 Jun 2025 13:56:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749059814;
+ s=mimecast20190719; t=1749059816;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qa2nagy+k4YUIF8BffyxJims+i6IqA1schOl/axi3A8=;
- b=Le+2CizTuZWrbBoKDIxAZRoRnAdHBN4l1v85t17qyD0CSFLQVCbLdX40cnoNr469LztUs4
- T+tmyOhp44nWlJM4L9nxVk/b92JalS2ML4Oc5XamWYvJPnt8+Ll+UtRiryn/ZhY7iaiHb8
- 623BoEYJ+SVfNAMJhH0cKGHo1FH7OLw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=fpzRmDnWuh15pWPXAmE2EUi8g7lCTKn3PUl/8Blh9qw=;
+ b=Hfpig9HOSCrBfnRZrZjmnad5Rl7E+O0Dh7qLG/9/NA5mpChHLa9LgySmnZXHDGIdwbgSWk
+ 4nHsNhKh+tU2zqLFI5dmapCnrWliLlDd20fmFMfQF81pqcDrt31H7bQPxzW17q9puL7qku
+ MsYiNH9l2dLtXTCrlpjRKyVs2f0j8TM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-dGwNOz07NHOdx5a8PzaVow-1; Wed,
- 04 Jun 2025 13:56:51 -0400
-X-MC-Unique: dGwNOz07NHOdx5a8PzaVow-1
-X-Mimecast-MFC-AGG-ID: dGwNOz07NHOdx5a8PzaVow_1749059810
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-206-mj4AA7jQNUybqWRACQ38vw-1; Wed,
+ 04 Jun 2025 13:56:52 -0400
+X-MC-Unique: mj4AA7jQNUybqWRACQ38vw-1
+X-Mimecast-MFC-AGG-ID: mj4AA7jQNUybqWRACQ38vw_1749059812
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 339C018001D6; Wed,  4 Jun 2025 17:56:50 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F01531956080; Wed,  4 Jun 2025 17:56:51 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.44.34.43])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E659518003FD; Wed,  4 Jun 2025 17:56:48 +0000 (UTC)
+ id ACC1018002A5; Wed,  4 Jun 2025 17:56:50 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 17/24] blockdev: drain while unlocked in
- internal_snapshot_action()
-Date: Wed,  4 Jun 2025 19:56:06 +0200
-Message-ID: <20250604175613.344113-18-kwolf@redhat.com>
+Subject: [PULL 18/24] blockdev: drain while unlocked in
+ external_snapshot_action()
+Date: Wed,  4 Jun 2025 19:56:07 +0200
+Message-ID: <20250604175613.344113-19-kwolf@redhat.com>
 In-Reply-To: <20250604175613.344113-1-kwolf@redhat.com>
 References: <20250604175613.344113-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -86,65 +86,55 @@ From: Fiona Ebner <f.ebner@proxmox.com>
 This is in preparation to mark bdrv_drained_begin() as GRAPH_UNLOCKED.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20250530151125.955508-18-f.ebner@proxmox.com>
+Message-ID: <20250530151125.955508-19-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- blockdev.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ blockdev.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/blockdev.c b/blockdev.c
-index bd5ca77619..506755bef1 100644
+index 506755bef1..2e7fda6780 100644
 --- a/blockdev.c
 +++ b/blockdev.c
-@@ -1208,7 +1208,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
-     Error *local_err = NULL;
-     const char *device;
-     const char *name;
--    BlockDriverState *bs;
-+    BlockDriverState *bs, *check_bs;
-     QEMUSnapshotInfo old_sn, *sn;
-     bool ret;
-     int64_t rt;
-@@ -1216,7 +1216,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
-     int ret1;
+@@ -1377,9 +1377,10 @@ static void external_snapshot_action(TransactionAction *action,
+     const char *new_image_file;
+     ExternalSnapshotState *state = g_new0(ExternalSnapshotState, 1);
+     uint64_t perm, shared;
++    BlockDriverState *check_bs;
  
-     GLOBAL_STATE_CODE();
+     /* TODO We'll eventually have to take a writer lock in this function */
 -    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +    bdrv_graph_rdlock_main_loop();
  
-     tran_add(tran, &internal_snapshot_drv, state);
+     tran_add(tran, &external_snapshot_drv, state);
  
-@@ -1225,14 +1225,29 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+@@ -1412,11 +1413,25 @@ static void external_snapshot_action(TransactionAction *action,
  
-     bs = qmp_get_root_bs(device, errp);
-     if (!bs) {
+     state->old_bs = bdrv_lookup_bs(device, node_name, errp);
+     if (!state->old_bs) {
 +        bdrv_graph_rdunlock_main_loop();
          return;
      }
  
-     state->bs = bs;
- 
 +    /* Need to drain while unlocked. */
 +    bdrv_graph_rdunlock_main_loop();
      /* Paired with .clean() */
-     bdrv_drained_begin(bs);
- 
+     bdrv_drained_begin(state->old_bs);
 +    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +
-+    /* Make sure the root bs did not change with the drain. */
-+    check_bs = qmp_get_root_bs(device, errp);
-+    if (bs != check_bs) {
++    /* Make sure the associated bs did not change with the drain. */
++    check_bs = bdrv_lookup_bs(device, node_name, errp);
++    if (state->old_bs != check_bs) {
 +        if (check_bs) {
 +            error_setg(errp, "Block node of device '%s' unexpectedly changed",
 +                       device);
 +        } /* else errp is already set */
 +        return;
 +    }
-+
-     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_INTERNAL_SNAPSHOT, errp)) {
-         return;
-     }
+ 
+     if (!bdrv_is_inserted(state->old_bs)) {
+         error_setg(errp, "Device '%s' has no medium",
 -- 
 2.49.0
 
