@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65329ACEACF
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 09:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B677ACED07
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 11:45:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN4vN-0002ze-6Z; Thu, 05 Jun 2025 03:22:05 -0400
+	id 1uN79O-0002me-Sc; Thu, 05 Jun 2025 05:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uN4vJ-0002zJ-Im
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 03:22:02 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uN4vH-0002Ty-MV
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 03:22:01 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3a36748920cso667492f8f.2
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 00:21:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749108117; x=1749712917; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=eszciaitP2kB1wQYPJUOg1SRbq5XGBMAmIFs1ludgkA=;
- b=hlMxv35u2gWf/GL1xEOkESLvAhTmg0uMV45gCwq/bPd+CLHqWLcBVxHHKi/51mGYfe
- +lba866j99oK91XZ72baHNaSi+NS9MYbA/EcOcsNhg9Whkp0d9+n6dDz3/+dwLcYSz7a
- dd6wrxYglLhJ7S1RTthD8pUxFUkMKICE1MaTEDY1dIlLRe7Vk39W+odHgvY/1Qc8UO50
- oM5aljAw11IwQa46SnxlHdR7XTlZRMkssPMeWXGoGmyvoKY+nro9xb1xRpaDwIPZ7YoO
- 5/XsoqEwmB9iNbrMR+aOc31dfjmgMGbfqB/Nd0j2OUdOkYz/DlAXvlNLDRFZCgw1o6BP
- LYmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749108117; x=1749712917;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eszciaitP2kB1wQYPJUOg1SRbq5XGBMAmIFs1ludgkA=;
- b=MiCZwx1Xob38tuZbkeqQ9hY3+cDd+lS2Q8/nO9CnWUGvhNhDkriIeSPDuOquFwZgyW
- euzn8iHv+mlTnOA9eQphO8xrZee5NyzEOjVLGoed0jz/kbMDSpI231D+PfXBtfPaDhCG
- qSKHJdz9Ph4Pe0fCkewJLigXT2RTY2ud5HI2ABwdSkK/InHJzNeobvDVYBdrLZ9SOiPm
- OBh0LZlw7uSHdGZu3OOSqMzKqEENeaVrQedu8i33z85Al4lpwMGzGGCif9HNEXgBNtSc
- 5awlCY5mlINcdVzdLsos2TIlytVK0TCZTJoBKh/uC4MQULSgzEWlpa11VKVE9ZTzxJl8
- Rn4w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVZ2DMWHnh8rBBqlL75ueuVsTVsbpueob3KiTQ9uDeqdMJKdTySiQSs5x7sEIGxYyp8ROGqLCor5z+v@nongnu.org
-X-Gm-Message-State: AOJu0YxOXhlyB1xlIQTbd7zm+CkLzrJOz4m+/WeaUOygNYezANoYVsNO
- 7TJDMorAEXXOywtSeIqpIrE19/jXjTEohi+cAnw7tQvuTQMyhvgnz9PbY314+Ze++N0=
-X-Gm-Gg: ASbGncvTvVyN7xuvWW/8GNxVfjt1sop7NC2cXDNELXA35BQldPcPDFgjFU3+eBe0DmH
- WwJL069tNKakEbdQNJL4ODhMod6oCg1gaiUPcIKewuQdyKhtLcwesgk1gFrZu02IKCIhrEMsTlG
- U2Y6R70VziDsuhOWyjzFhSxLnSelDDSfU6HLV+Elg9H1e8IWuiZQVbFDU3p431HUzvU0Msp6f+3
- wUzHOjusXj2Q26RPUKLzy2Hq9g+gylGVvA/Fm7b5mJf13QzHKCp9jjfai+OFsVwRppmN8B1Zf4K
- oV2VHT9NSQXuSun2ztOgm4dw8vf3ZIUOelTwUZTDtnvEz3fJ4KvIFSHFPjY286pOUfcpQnbY75c
- FBmJbVe1fW4c/FPEVcwU=
-X-Google-Smtp-Source: AGHT+IEjOL6smuYYX/DA1Fzx74mxQwdM687BoooY6oqtJyW85/jq0UTol/UeHovN19xIRHNpfYvqyQ==
-X-Received: by 2002:a05:6000:25c4:b0:3a4:fc3f:ed28 with SMTP id
- ffacd0b85a97d-3a51d95dfc4mr4608934f8f.29.1749108117271; 
- Thu, 05 Jun 2025 00:21:57 -0700 (PDT)
-Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-451f990cffasm14408375e9.19.2025.06.05.00.21.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Jun 2025 00:21:56 -0700 (PDT)
-Message-ID: <369151f7-cde7-4065-ac0a-5364214e8d2c@linaro.org>
-Date: Thu, 5 Jun 2025 09:21:55 +0200
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1uN79K-0002mS-EX
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:44:38 -0400
+Received: from mx1.zhaoxin.com ([210.0.225.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1uN79H-0001jW-Fn
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:44:38 -0400
+X-ASG-Debug-ID: 1749116660-086e2326981c040001-jgbH7p
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by
+ mx1.zhaoxin.com with ESMTP id CBxyUvbUTMPhyFEl (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Thu, 05 Jun 2025 17:44:20 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Thu, 5 Jun
+ 2025 17:44:20 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([::1]) by ZXSHMBX1.zhaoxin.com
+ ([fe80::2c07:394e:4919:4dc1%7]) with mapi id 15.01.2507.044; Thu, 5 Jun 2025
+ 17:44:20 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ewan-server.lan (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Thu, 5 Jun
+ 2025 14:54:45 +0800
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+To: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <zhao1.liu@intel.com>
+CC: <kvm@vger.kernel.org>, <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>,
+ EwanHai <ewanhai-oc@zhaoxin.com>
+Subject: [PATCH v3 RESEND] target/i386/kvm: Refine VMX controls setting for
+ backward compatibility
+Date: Thu, 5 Jun 2025 02:54:45 -0400
+X-ASG-Orig-Subj: [PATCH v3 RESEND] target/i386/kvm: Refine VMX controls
+ setting for backward compatibility
+Message-ID: <20250605065445.30090-1-ewanhai-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] accel/tcg: Make round-robin kick period configurable
-To: Ethan Chen <ethan84@andestech.com>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, pbonzini@redhat.com
-References: <20250605061852.2081342-1-ethan84@andestech.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250605061852.2081342-1-ethan84@andestech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.28.66.62]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 6/5/2025 5:44:18 PM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1749116660
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2924
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.142416
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
+ helo=mx1.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,144 +94,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Ethan,
+From: EwanHai <ewanhai-oc@zhaoxin.com>
 
-On 5/6/25 08:18, Ethan Chen via wrote:
-> This change introduces a configurable round-robin kick period, giving users the
-> flexibility to balance SMP simulation accuracy and performance according to
-> their specific needs.
-> 
-> The round-robin kick period is the time one vCPU can run before scheduler
-> switches to another vCPU when using a single thread TCG. The default value of
-> 0.1 seconds may allow one vCPU to run for too long before the scheduler
-> switches to another. This behavior may not be suitable for workloads with
-> strict timing requirements.
-> 
-> Reducing the period can improve the fidelity of SMP simulation by allowing
-> more frequent vCPU switching, though it may negatively impact overall
-> simulation performance.
-> 
-> Signed-off-by: Ethan Chen <ethan84@andestech.com>
-> ---
->   accel/tcg/tcg-accel-ops-rr.c |  2 +-
->   accel/tcg/tcg-accel-ops-rr.h |  2 +-
->   accel/tcg/tcg-all.c          | 35 +++++++++++++++++++++++++++++++++++
->   qemu-options.hx              |  9 ++++++++-
->   4 files changed, 45 insertions(+), 3 deletions(-)
+Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+execution controls") implemented a workaround for hosts that have
+specific CPUID features but do not support the corresponding VMX
+controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
 
+In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
+If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+use KVM's settings, avoiding any modifications to this MSR.
 
-> diff --git a/accel/tcg/tcg-accel-ops-rr.h b/accel/tcg/tcg-accel-ops-rr.h
-> index 2a76a29612..324bb772cb 100644
-> --- a/accel/tcg/tcg-accel-ops-rr.h
-> +++ b/accel/tcg/tcg-accel-ops-rr.h
-> @@ -10,7 +10,7 @@
->   #ifndef TCG_ACCEL_OPS_RR_H
->   #define TCG_ACCEL_OPS_RR_H
->   
-> -#define TCG_KICK_PERIOD (NANOSECONDS_PER_SECOND / 10)
-> +extern uint64_t rr_kick_period;
+However, this commit (4a910e1) didn't account for cases in older Linux
+kernels(4.17~5.2) where `MSR_IA32_VMX_PROCBASED_CTLS2` is in
+`kvm_feature_msrs`-obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
+but not in `kvm_msr_list`-obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+on `kvm_msr_list` alone, even though KVM does maintain the value of
+this MSR.
 
-No need for another extern, pass it as argument:
+This patch supplements the above logic, ensuring that
+`has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+lists, thus maintaining compatibility with older kernels.
 
--- >8 --
-diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index f62cf24e1d4..551864b5509 100644
---- a/accel/tcg/tcg-accel-ops-rr.c
-+++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -62,9 +62,9 @@ void rr_kick_vcpu_thread(CPUState *unused)
-  static QEMUTimer *rr_kick_vcpu_timer;
-  static CPUState *rr_current_cpu;
-
--static inline int64_t rr_next_kick_time(void)
-+static inline int64_t rr_next_kick_time(uint64_t kick_delay_ns)
-  {
--    return qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + TCG_KICK_PERIOD;
-+    return qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + kick_delay_ns;
-  }
-
-  /* Kick the currently round-robin scheduled vCPU to next */
-@@ -83,15 +83,20 @@ static void rr_kick_next_cpu(void)
-
-  static void rr_kick_thread(void *opaque)
-  {
--    timer_mod(rr_kick_vcpu_timer, rr_next_kick_time());
-+    CPUState *cpu = opaque;
-+
-+    // here use rr_next_kick_time(cpu->accel->rr_kick_delay_ns):
-+    timer_mod(rr_kick_vcpu_timer, rr_next_kick_time(TCG_KICK_PERIOD));
-      rr_kick_next_cpu();
-  }
-
-  static void rr_start_kick_timer(void)
-  {
--    if (!rr_kick_vcpu_timer && CPU_NEXT(first_cpu)) {
-+    CPUState *next_cpu = CPU_NEXT(first_cpu);
-+
-+    if (!rr_kick_vcpu_timer && next_cpu) {
-          rr_kick_vcpu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
--                                           rr_kick_thread, NULL);
-+                                           rr_kick_thread, next_cpu);
-      }
-      if (rr_kick_vcpu_timer && !timer_pending(rr_kick_vcpu_timer)) {
-          timer_mod(rr_kick_vcpu_timer, rr_next_kick_time());
+Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
 ---
+Changes in v3:
+- Use a more precise version range in the comment, specifically "4.17~5.2"
+instead of "<5.3".
 
-> diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-> index 6e5dc333d5..69390020aa 100644
-> --- a/accel/tcg/tcg-all.c
-> +++ b/accel/tcg/tcg-all.c
-> @@ -36,6 +36,7 @@
->   #include "qapi/qapi-builtin-visit.h"
->   #include "qemu/units.h"
->   #include "qemu/target-info.h"
-> +#include "qemu/timer.h"
->   #ifndef CONFIG_USER_ONLY
->   #include "hw/boards.h"
->   #endif
-> @@ -50,6 +51,7 @@ struct TCGState {
->       bool one_insn_per_tb;
->       int splitwx_enabled;
->       unsigned long tb_size;
-> +    uint64_t rr_kick_period;
+Changes in v2:
+- Adjusted some punctuation in the commit message as per suggestions.
+- Added comments to the newly added code to indicate that it is a compatibi=
+lity fix.
 
-'rr_kick_delay_ns' seems more accurate.
+v1 link:
+https://lore.kernel.org/all/20230925071453.14908-1-ewanhai-oc@zhaoxin.com/
 
->   };
->   typedef struct TCGState TCGState;
->   
-> @@ -76,9 +78,11 @@ static void tcg_accel_instance_init(Object *obj)
->   #else
->       s->splitwx_enabled = 0;
->   #endif
-> +    s->rr_kick_period = NANOSECONDS_PER_SECOND / 10;
->   }
->   
->   bool one_insn_per_tb;
-> +uint64_t rr_kick_period;
+v2 link:
+https://lore.kernel.org/all/20231127034326.257596-1-ewanhai-oc@zhaoxin.com/
 
-(Drop)
+---
+ target/i386/kvm/kvm.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
->   
->   static int tcg_init_machine(MachineState *ms)
->   {
-> @@ -125,6 +129,7 @@ static int tcg_init_machine(MachineState *ms)
->   #endif
->   
->       tcg_allowed = true;
-> +    rr_kick_period = s->rr_kick_period;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index a6bc089d02..4ff9b5995c 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2466,6 +2466,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+ static int kvm_get_supported_feature_msrs(KVMState *s)
+ {
+     int ret =3D 0;
++    int i;
+=20
+     if (kvm_feature_msrs !=3D NULL) {
+         return 0;
+@@ -2500,6 +2501,20 @@ static int kvm_get_supported_feature_msrs(KVMState *=
+s)
+         return ret;
+     }
+=20
++   /*
++    * Compatibility fix:
++    * Older Linux kernels (4.17~5.2) report MSR_IA32_VMX_PROCBASED_CTLS2
++    * in KVM_GET_MSR_FEATURE_INDEX_LIST but not in KVM_GET_MSR_INDEX_LIST.
++    * This leads to an issue in older kernel versions where QEMU,
++    * through the KVM_GET_MSR_INDEX_LIST check, assumes the kernel
++    * doesn't maintain MSR_IA32_VMX_PROCBASED_CTLS2, resulting in
++    * incorrect settings by QEMU for this MSR.
++    */
++    for (i =3D 0; i < kvm_feature_msrs->nmsrs; i++) {
++        if (kvm_feature_msrs->indices[i] =3D=3D MSR_IA32_VMX_PROCBASED_CTL=
+S2) {
++            has_msr_vmx_procbased_ctls2 =3D true;
++        }
++    }
+     return 0;
+ }
+=20
+--=20
+2.34.1
 
-(Drop)
-
->   
->       page_init();
->       tb_htable_init();
-> @@ -234,6 +239,30 @@ static int tcg_gdbstub_supported_sstep_flags(void)
->       }
->   }
-
-Patch LGTM otherwise.
-
-Regards,
-
-Phil.
 
