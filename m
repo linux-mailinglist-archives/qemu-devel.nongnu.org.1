@@ -2,68 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F58DACF060
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22EE1ACF159
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:54:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNAaH-0006bP-Op; Thu, 05 Jun 2025 09:24:41 -0400
+	id 1uNB28-0006AT-9x; Thu, 05 Jun 2025 09:53:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uNAaE-0006ac-1H; Thu, 05 Jun 2025 09:24:38 -0400
-Received: from mgamail.intel.com ([198.175.65.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uNAaB-0004nj-PY; Thu, 05 Jun 2025 09:24:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749129876; x=1780665876;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=vR6IePl07Jxlw+pwoPEoQIJHamyhBbgdQQCsqpDI54s=;
- b=gPEoY4d6QS3Zd3pTs+6ueXmcNF1EmY2XH1kIp7NWDZhVaN6+JbXdXk2z
- cfQQ+LCIYQuA39Lb2gR6glOU+LbZ+mMQBHgk5SztzcGSDuM1fEHi8lkd9
- jwTmrgd4g4LmR8OYYkhlyTVHVZOKp6Y/GH6XFlxyDK1N+xgrdfyFnRm7Z
- 87j6F5yfGvz6kK/gNgoudhKZoZfDxsAlXzLDiLg/OIFJAwtJdr1Kxp4Zd
- 2cMrDqIV6GkBsKLNtVgz8dNkVkkLXmFDPQfE0jGW18rt0Syk/E8OPPfDv
- W1nT74qflRrq7uBKwcyhI0XxHJWr3PFuYK5knwH0UMqcIWH512HYcxubx Q==;
-X-CSE-ConnectionGUID: BkygiAfWSrOeoeorlYVTRA==
-X-CSE-MsgGUID: JcqGGodqSZCh19tOHZSkKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="51245197"
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="51245197"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 06:24:32 -0700
-X-CSE-ConnectionGUID: kAXlABKrTmSS3fQ1WVaJuA==
-X-CSE-MsgGUID: 7RKMJEu/SD23/RYMDM4DfA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="176469773"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 05 Jun 2025 06:24:31 -0700
-Date: Thu, 5 Jun 2025 21:45:44 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, qemu-rust@nongnu.org
-Subject: Re: [PATCH 06/14] rust: qemu-api: add bindings to Error
-Message-ID: <aEGfiJ5YMw0qqa4T@intel.com>
-References: <20250605101544.368953-1-pbonzini@redhat.com>
- <20250605101544.368953-7-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uNB26-0006AH-2J
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:53:26 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uNB23-0003Mt-Fx
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:53:25 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-606b58241c9so1544259a12.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 06:53:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1749131601; x=1749736401; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jUybuZgNLUQpxqeXyEfWBDVbcdI9XieMqS5p/YfoGqM=;
+ b=iRj4xn9sbhxoVQgMvCmJhHE2ERPPaBsAC5+NiTiNwZ0htC01xETYWw7jxxR9I4xh7I
+ 59LXFuLrRX0pHdgDnzssjzc5x1+71ko90I8FHORMP5iWD0Aoh3oxVTnE2IkuFDGtZlEP
+ shmkKgn0AMKTychJyceUke8x1aPQNQyeNxfvRZ6nkU2KPR5qe1WhJ+bvpuJJSTBZEtMf
+ N3sAb/P/9P9bpV4V/1zyQIUEllQqX564NxhiVGtHT8ZkCxM0J2b0Fdrk7/C4pOqLttpw
+ iwHnZiGmPMeZ3a6F4Uij+w7F7WAG++IDhwWA+1OpcBUyKXM0hYj81eJnj6j8TJ+UPY4z
+ ji5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749131601; x=1749736401;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=jUybuZgNLUQpxqeXyEfWBDVbcdI9XieMqS5p/YfoGqM=;
+ b=AfGMIgpUUBBvxhzwtDhI1f3WdQ5TqackA69Ywyu4L21n1ccXyYkd3W88qSJLvXq86l
+ lcfJMcvjoguDoI5NUsTNp6+DpC8zwnXTlrsZdGJQA8cyMfcAPds4YrbvFrJ2hSDlwWLk
+ 095Z1iHbNgkaNVxQnGr0knhylCtSf5rNtwQtevW0x/5XGcvY0aJRKF9ySlf5zDop91Rx
+ pm1W7qBf8UQjHSXU83VRocAwCkByS+73Xp1in4B+36jQ+gT1N0brZmPmCtpkXx/Egdj2
+ dV53ZphZVlE8bUl6RT34rVtb8fTEzhUwinexn0qdVLauwmf2hpSkth1dIx9YJu7xXyvY
+ MQ8w==
+X-Gm-Message-State: AOJu0Yz6T2m1Ce5w+14RUZMsmV+wFBRVNIbnAIRpgGy3t7HPuCcRjCtn
+ RbH+yDCUBcxCYvtvEwygLKBTxZyz49pU/pKu6H+5RsGKMSGQb3PehZHb+DAlQz74j4g=
+X-Gm-Gg: ASbGnctPlpPLcvrXFqxlzDOEzYU2XXGWI8eGS8hIa+SIu3wA7zNMb8QQWRbUfbtFtuj
+ CPwZTfMREdsy5Bplb63uwNKwSN9gQLv3Bgzv5RgP8crcYd+csAIuy8TcWUHAUa6RGcajER8JHnB
+ R4X9E29kPeuERdvnXsgv6tv55Foh6twEkq+8vxFM0JpQwZFKsUDQS7qz5wIRJyOA3KaXvmefrjK
+ m8YGOMJe7//BersSn8egCwevQuyTxtX++HkF8RaV6iTnEpvQ/eyq+vOOkn4Eje/5uJH8fgP69Sx
+ eCMKbqWt/lY7TmcJTdMm7+KmQCeP7SXK0/Mrcz9fYZ+mK3hXfwxu
+X-Google-Smtp-Source: AGHT+IFtH4IPr5n1H67Yy44U7FRZRXFjW4uz0O7Yh1HuncOROKyMT2iyBlHC32YeRx9C5AW9Zu+tsw==
+X-Received: by 2002:a05:6402:50c9:b0:601:a681:4d5c with SMTP id
+ 4fb4d7f45d1cf-606ea15f66fmr6838493a12.32.1749131601082; 
+ Thu, 05 Jun 2025 06:53:21 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-60567144345sm10220812a12.56.2025.06.05.06.53.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Jun 2025 06:53:19 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 2E6BE5F782;
+ Thu, 05 Jun 2025 14:53:19 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,  "Michael S . Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,  Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Kevin Wolf <kwolf@redhat.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>,  Alexander Graf <agraf@csgraf.de>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v4 1/3] docs: introduce dedicated page about code
+ provenance / sign-off
+In-Reply-To: <20250605105219.261925-2-armbru@redhat.com> (Markus Armbruster's
+ message of "Thu, 5 Jun 2025 12:52:17 +0200")
+References: <20250605105219.261925-1-armbru@redhat.com>
+ <20250605105219.261925-2-armbru@redhat.com>
+User-Agent: mu4e 1.12.11; emacs 30.1
+Date: Thu, 05 Jun 2025 14:53:19 +0100
+Message-ID: <874iwu70s0.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250605101544.368953-7-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,46 +110,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 05, 2025 at 12:15:35PM +0200, Paolo Bonzini wrote:
-> Date: Thu, 5 Jun 2025 12:15:35 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 06/14] rust: qemu-api: add bindings to Error
-> X-Mailer: git-send-email 2.49.0
-> 
-> Provide an implementation of std::error::Error that bridges the Rust
-> anyhow::Error and std::panic::Location types with QEMU's Error*.
-> 
-> It also has several utility methods, analogous to error_propagate(),
-> that convert a Result into a return value + Error** pair.  One important
-> difference is that these propagation methods *panic* if *errp is NULL,
+Markus Armbruster <armbru@redhat.com> writes:
 
-nit: *panic* if *errp is not NULL
+> From: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>
+> Currently we have a short paragraph saying that patches must include
+> a Signed-off-by line, and merely link to the kernel documentation.
+> The linked kernel docs have a lot of content beyond the part about
+> sign-off an thus are misleading/distracting to QEMU contributors.
+>
+> This introduces a dedicated 'code-provenance' page in QEMU talking
+> about why we require sign-off, explaining the other tags we commonly
+> use, and what to do in some edge cases.
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-> unlike error_propagate() which eats subsequent errors[1].  The reason
-> for this is that in C you have an error_set*() call at the site where
-> the error is created, and calls to error_propagate() are relatively rare.
-> 
-> In Rust instead, even though these functions do "propagate" a
-> qemu_api::Error into a C Error**, there is no error_setg() anywhere that
-> could check for non-NULL errp and call abort().  error_propagate()'s
-> behavior of ignoring subsequent errors is generally considered weird,
-> and there would be a bigger risk of triggering it from Rust code.
-> 
-> [1] This is actually a violation of the preconditions of error_propagate(),
->     so it should not happen.  But you never know...
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  docs/devel/rust.rst        |   5 +
->  rust/Cargo.lock            |  17 ++
->  rust/Cargo.toml            |   1 +
->  rust/qemu-api/Cargo.toml   |   2 +
->  rust/qemu-api/meson.build  |   1 +
->  rust/qemu-api/src/error.rs | 312 +++++++++++++++++++++++++++++++++++++
->  rust/qemu-api/src/lib.rs   |   3 +
->  7 files changed, 341 insertions(+)
->  create mode 100644 rust/qemu-api/src/error.rs
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
