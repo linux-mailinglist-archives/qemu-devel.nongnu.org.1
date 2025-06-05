@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3917ACF450
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 18:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB3FACF459
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 18:31:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNDQm-000721-Mz; Thu, 05 Jun 2025 12:27:04 -0400
+	id 1uNDQn-000723-1m; Thu, 05 Jun 2025 12:27:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uNDQj-0006zf-EW
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:01 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1uNDQi-0006z6-Cq
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:00 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uNDQh-0007wU-Lt
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:01 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-6020ff8d51dso2171180a12.2
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 09:26:58 -0700 (PDT)
+ id 1uNDQg-0007wL-8E
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:00 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-adb5cb6d8f1so191091866b.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 09:26:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749140817; x=1749745617; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749140816; x=1749745616; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U2bAjqn2l1sYmqIqqjIVtgsfD4EifRV4UThIaUxbMJI=;
- b=k/GozYxcofK0NPUAlYIXSpSB8ArTQhrKoOAiXbZydDrInyk0xJ08VVU+y23Pv5uvmc
- D/XQJJ4ig4+5XWBRceXiNmniIMXV4tXRA38bdstN/Qz6yeI+fXzKQ19QvE2c87sL6grD
- 5za7e6tPnlqS3MpBB3IJvdav4Pj/xUQaNo2TNMJEA/rPKbqK+0fyymT1IxQRju39SSUj
- Cs/RUh4U/9jntxWEjD9c7Av675fo9glh8bnW4PAQ8fvwuig6f1uscK3jqywQ9EcJBdiL
- y38sVj1L4+fWgQbCVaQHb5RH29Ujuzgj7BLcXXmS7U1qDtQsSezibQAD30vsDNrlvK7p
- rhlw==
+ bh=aVGmIQVUI71LwqjcHS0gv4sLRbpZFyoXIdxBn+SQNA0=;
+ b=pTIgbQV0hf2+QNSUHOkWunGAd0+j2E7csHqiWeR/mHtV5QUcP2n2s4pBv/OVkjpBVa
+ egr6f0E6tIMbB7vS+Wdk1+X/NoXtUgDEsAsbDbCHLLjjIIMbJ3W5zhlLVApQZCRSUdlh
+ qDC2oJPKouhCF7gpzFPqY2i845wHc3+yapeXE6qCciZZo20oyiYmGs8SWGeaKE4QtXkN
+ dMeHJUB4tcCUAqlu3duMbRjgex/CpaeAyJ/gx+IxrdG5LG23CX6i3BRFwA4nebNxPhfz
+ +baim/IAtIX5tgcETH4kyxC+pGKeX/m4ce5DFUILk+cO6XXnqII8fpClUmMP3UCdD8uD
+ bJWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749140817; x=1749745617;
+ d=1e100.net; s=20230601; t=1749140816; x=1749745616;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U2bAjqn2l1sYmqIqqjIVtgsfD4EifRV4UThIaUxbMJI=;
- b=v9djL2OATmqnsaDXXgZXrjuu++bY4fehFOtRkURlSoYvo9ijppgb3TqQjhAYOcvL9G
- sM8frEe+ogWfgI2v+Y8cMRep9bawWymZ9VMCRtFNlq6xqccE+cHgoAizHCVPj2Nq5iS3
- A+0yv5dq/U/I+qPdTL1c+c7R6qFGW4hHH67QDvvV6wb6RWkRQ3sAm3CXN/+Nhh2Ix9M/
- kQf4dJ+80pRNCHB0y2OJWM768+eSJNtc75yrjzX3gxpHHH6WlggrO9s6n669190whbml
- B6XXRliRCIwJjU1LsquVTiRUKnajauTuXb2Q6NpWloJgNcrwGbNwvvJHlfD/D8zjvUvv
- P1OQ==
-X-Gm-Message-State: AOJu0YzK+1QJuO9a8m5ywmJLcZ1JKhlF+Ay3/zagw8Keq8jWHAsYf8fh
- 1qvGUQzJ+sl52ZAHi5Np8P/wc7SiWPYLPoFIk9kf3+Nu/NE63y3BvtLxOadw7QvE9iM=
-X-Gm-Gg: ASbGncspzk+jVeGQ487DW9tuyFjKho1vrdph1fnNAr6ZvqfRKrPX8SrrDo2oG3DeA4m
- Ur4Ka7Ys2XWEsXN9kcCy1JSqB3X68CUS0ZYC0GLuYs/j+WNhdJq6HeGB4JzNxi2fvj/W6na7wkH
- CLC5v5XoQvHV+lnQcD32MDl2GZuFIWAVH1ZwvS+VmU1Wyen1avqVc3/8RTJXsl9ZYFstQ3NRP5D
- tb0GDnw9rlqOl8631OYzUjBYb4Rk8SEVtMf86mR+nWLpPm2ZxYUrf7JhjaoRRPYfBbQXZ9bGH1c
- x59olmHxMmqyJmZuDqKanXKInJNLK728vOw99fA/e1dyrTO1muI/OtgzRrDtKn0=
-X-Google-Smtp-Source: AGHT+IFfAR18DOBFmZKJ3lz7feNTaQ+ql32aTl9zKKusJnaYcjUvLb5qf/yECxlQ+COMFaPMmhsuLA==
-X-Received: by 2002:a17:907:7fa2:b0:ad8:a50c:f6cb with SMTP id
- a640c23a62f3a-addf8d5ec0amr666246966b.26.1749140817129; 
- Thu, 05 Jun 2025 09:26:57 -0700 (PDT)
+ bh=aVGmIQVUI71LwqjcHS0gv4sLRbpZFyoXIdxBn+SQNA0=;
+ b=ZVt2be+Q/l7KfRnH482/qvzSgMp5WdFUXrCPA5PlS+RRFK6GU6yTEueRmwN+M7LrsZ
+ 3WKC/oqcpZGAb5R75tvXvvT6lIxlWYl+M3nHCVzRhbGI5Lm+0QIDhqFoqSTthRC3AAgf
+ xoQVmTtOcZRfDc5bv85kQDNyOs1LPt/N7btQRbcmWLxDQafNx4jrgBG3St47wrytfFXi
+ JHrwAAqtjkokHghA2j2FGmdppV6S4y0DDVnAYRIWLFWf7qfNXOKVRsKYb783DJViSaO4
+ TS8FbifQMYgAgsqjxkcMI7tbNodle4lmnDJ70U88mDEyQWMnyoD+dc/MamnxyDe+V9f5
+ WxtA==
+X-Gm-Message-State: AOJu0YziPDZ6W91bboHkbfcx0ORalwcrj/421MldnBzYOylI8D+taReV
+ AKYVcipTkGpGXa7ZUmsZF1Qk2M5Eqhp+l9YyoDlJDCfupBJX3ZfJdqn9gwd9IF+LT60=
+X-Gm-Gg: ASbGnctYUnt8q1tXQSH/Pf7Bz2QB+bNYzWiKt299kD/8YXFMUo/IquRw6yI/KEaO4ok
+ yYBSBHETHu8T+Warg5BfLRoLx4qw4vaWXx97LwbHN5uJ0fS+nUE8Aq0q6tfayZob5k4oi5TFdmi
+ zRBYpFkXatyIwKXfyJkzAe8EydL69zwEKtSkTCTweypQ9HeWPZPcLVRLIvWjeGVB2a/9fRPjq5/
+ 2o6LrhbKNn3c/JdWBUvu7LvBFw3tS8GQbQUg9jfXQI9EI3dmF5tWuj+c9nuJ6PPxuUh0TwAZNIm
+ 6nWbCVVHAn49tP7qA0MRuTV5cJ1QKzjKtH/rSz8ebT5jCqt10qIa
+X-Google-Smtp-Source: AGHT+IFFZqOxHLX0Ju5AyBlTOlkaVs0ym2oYyDBqBWhCEUja6Z/vfIiHnkCMTsKRC9vp4p0rUvidPg==
+X-Received: by 2002:a17:906:9fc8:b0:ad2:425c:27ce with SMTP id
+ a640c23a62f3a-addf8caa33fmr708579166b.2.1749140816551; 
+ Thu, 05 Jun 2025 09:26:56 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-607341e69fbsm619848a12.47.2025.06.05.09.26.53
+ a640c23a62f3a-ada5d82ccf8sm1266512566b.44.2025.06.05.09.26.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 05 Jun 2025 09:26:54 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 092625F828;
+ by draig.lan (Postfix) with ESMTP id 211EE5F829;
  Thu, 05 Jun 2025 17:26:52 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 07/17] MAINTAINERS: add myself to virtio-gpu for Odd Fixes
-Date: Thu,  5 Jun 2025 17:26:40 +0100
-Message-ID: <20250605162651.2614401-8-alex.bennee@linaro.org>
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PULL 08/17] MAINTAINERS: add Akihiko and Dmitry as reviewers
+Date: Thu,  5 Jun 2025 17:26:41 +0100
+Message-ID: <20250605162651.2614401-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250605162651.2614401-1-alex.bennee@linaro.org>
 References: <20250605162651.2614401-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -100,29 +104,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Seeing as I've taken a few patches to here now I might as well put
-myself forward to maintain virtio-gpu. I've marked it as Odd Fixes as
-it is not my core focus. If someone with more GPU experience comes
-forward we can always update again.
+Thanks for volunteering to help.
 
+Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250603110204.838117-8-alex.bennee@linaro.org>
+Message-ID: <20250603110204.838117-9-alex.bennee@linaro.org>
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 16af37986a..7718199979 100644
+index 7718199979..194695c881 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2668,7 +2668,8 @@ F: hw/display/ramfb*.c
- F: include/hw/display/ramfb.h
+@@ -2669,6 +2669,8 @@ F: include/hw/display/ramfb.h
  
  virtio-gpu
--S: Orphan
-+M: Alex Bennée <alex.bennee@linaro.org>
-+S: Odd Fixes
+ M: Alex Bennée <alex.bennee@linaro.org>
++R: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
++R: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+ S: Odd Fixes
  F: hw/display/virtio-gpu*
  F: hw/display/virtio-vga.*
- F: include/hw/virtio/virtio-gpu.h
 -- 
 2.47.2
 
