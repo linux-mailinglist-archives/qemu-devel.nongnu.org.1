@@ -2,97 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1E9ACF8F7
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 22:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC81ACF8FB
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 22:59:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNHar-0006qe-Pw; Thu, 05 Jun 2025 16:53:45 -0400
+	id 1uNHfR-0000Io-DK; Thu, 05 Jun 2025 16:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uNHan-0006pr-99
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 16:53:41 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uNHal-0000t0-PT
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 16:53:41 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-b2c4476d381so1428669a12.0
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 13:53:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749156818; x=1749761618; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=d6QSxoH8YMxAkEY7u40LwJLutDJ6kfkoNyWKMUjKwFo=;
- b=pBUwsVShQI9i3xz/0AKGFnJ7Bt3J3S0k7Vd9iSP/C/uuVpqte94zw3C5uxta5gsoxm
- WL/FNyLMoWJE5H5+NC+Le8+8tE1YmYxskj7DxJaX0ClAefSFTEMSN0bbR3egW40vRDeT
- vtpR6ePZx42Qvr+mrtU96yT0aMB5LI1S6jg0aQLhNmlY3p+ox7cBhxXhzzBJucvVYYTi
- fB7WQq3RIdxRqc51OZwKBDPIREBxpcPNZtRd0arQDd1hkwtRzgqLCVCGvEyRSl9sDUY/
- puuWbbbpA+Wy0uQkZ8pCrI5PirqYsgGpGHVV5UlIYQZV/jSglw0kXBIN3xDIOjtcVpdr
- k68w==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uNHfL-0000IQ-Qc
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 16:58:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uNHfK-0002Ho-BU
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 16:58:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749157100;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=FVCWZsfJfKBSl9K1qAhBAXsdnvBBuUTW1UdVE2Kn/mw=;
+ b=X8iy7CitDB2BopEOnGTQ34kiV+K1fh/2+2iE+jD7AUdaG2wEuCQx/ku6qGC+0+/J8LwxPj
+ JBDVtQDgpXguQhpqQ2CE/6FcO85iscfQAsL+y6oRets9mkCVGh4IxmkttKGyORfCT8XUZi
+ fDIL7n0q8CGJDqYIkTVZ5zgmqZQVUQI=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-104-vwnNKyyzMXuENWH-JiZrIQ-1; Thu, 05 Jun 2025 16:58:19 -0400
+X-MC-Unique: vwnNKyyzMXuENWH-JiZrIQ-1
+X-Mimecast-MFC-AGG-ID: vwnNKyyzMXuENWH-JiZrIQ_1749157098
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7c7c30d8986so403956585a.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 13:58:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749156818; x=1749761618;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d6QSxoH8YMxAkEY7u40LwJLutDJ6kfkoNyWKMUjKwFo=;
- b=SzHVBGcLFOsDBEj9vn2nxwFuYlaxdukP66b6lH1hmMqG4TgbjUx1TtOWjD3wY/Ii7N
- S+9Kij98+CwqHGkjSLFNexdTE4qc1OkQgllKO3qi/8lwjTRFB1bohKhB4fJmUODKmy6f
- hmFSWN8Y2VnWbLtUmXe2q9PM20cBy5OPm94Gs+n2Fc9EbCLMllN+MGLoXCOfqzRH7Rtn
- q0RBMWS+vw+ayRcLfqYw8xar6neKKQK/bZe3OtFwQt3HtqfN19Wy1XUK6Irlne6na6U8
- vGRKpGqfOl0ikoY7DhLkZ8sqxgyIjuM0BPHWQIn/xDSzc0wGht/i3cl/ZpG7bXHXGW0N
- cClg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUoEfCxaZHtJFc4FxomKFxGTX83z0aZbIewe6iu7JTv0TkGlobBZhY+SX56KutIcjb6HmKYrhRS8uv2@nongnu.org
-X-Gm-Message-State: AOJu0YyhVBGVhuajOOq42nE34B2p01v3NZrantzLjIDa9wXQLMuRK6ei
- /LRMLCDGnlcNhx0R9rtDwbfKts459lhd8yb/ItfaNMhzYGaZmx94ax4ySOBjO+UDmg4=
-X-Gm-Gg: ASbGncvYWnSOe2vAit/O3t2QYCqVrZZZ0XAPCLceh8YRZqqS44YivkkpAtWOgw/tEqq
- utf7T4VS9wdnujdAHkeI3xCACr3wU4cKkblhOIO80OzHHW2LLd18ki1Jif466HHi84KNrjuPNxO
- VNTbp6FVusA6aVtl5QruEPw/x4m3qMBXxUN8UlTmEJ8WhM5cBXmchsZkw1mbqph56JitkO8WbZv
- rGgyN7k37ssYoOmAYGcC/B7GyNNQ2ILPL+MxX1yCyQwp5g9xGjk4g6WuZGFCNIKark9nmEmyLwQ
- skIjD1sIPMKVg4HpgKBdkGr4cChrOD/fS89zck2vPEjBbg4Mvx4SokTvg5j4NSvfuR5Kjdv9KAW
- KSnYVWuS7yg==
-X-Google-Smtp-Source: AGHT+IGVaA4gp4aKZ6kEJJfdsAaVA5S3M8rqrkmKh+sGXb3B1KT5V1GVZRAHx7l/ny7qo4+Emf4Nvg==
-X-Received: by 2002:a17:90a:2ce6:b0:30e:e9f1:8447 with SMTP id
- 98e67ed59e1d1-3134ce5bb54mr33645a91.4.1749156818423; 
- Thu, 05 Jun 2025 13:53:38 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3134b043d5bsm96118a91.6.2025.06.05.13.53.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Jun 2025 13:53:38 -0700 (PDT)
-Message-ID: <fcbf5124-8b33-41d3-952f-ea35225abd10@linaro.org>
-Date: Thu, 5 Jun 2025 13:53:37 -0700
+ d=1e100.net; s=20230601; t=1749157098; x=1749761898;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FVCWZsfJfKBSl9K1qAhBAXsdnvBBuUTW1UdVE2Kn/mw=;
+ b=k0gzgh2NO/3i62z7QKNlFIKEwQ8yG3f8BUBRh0yt9n8u6rRW7N/ePF/Dn/F0cCTw1Y
+ PiFtLSqlEv402bn3zOM8xdd/NeI+TiLa0XTMl2AEPM+EGGMtSTSEHMLcj63dxoUr51HU
+ dCL4AszeaX2COcYuGNsLej1GvLstN8ZJVZfrgYWYxrDlWrS1jl3ioxTy2i9f/tHEnfVO
+ OGQwFnLidsQ5CdebLW3HAmtrhExGpGJwY+fbXI+/8F2hl/N4MVOTWJNr9s5JtwvOFkXN
+ vbGwQjtJPlURDiG8eam2lg6aunz7RkSU2j6nNsfsYvN+Qz1m/FeWRC+IQI5NlqARPbqA
+ 46bA==
+X-Gm-Message-State: AOJu0YwRh8j9KJrsv3WsFsphcMOHUwgfD86SNHR+3t5KJL7DnY0JteH3
+ BZ9MWwV3AH1LVD8WgJ7NMroyjVFKovhxf/zAp3GLcxeWfyl/kAAXscjoNtdLXl9wT0ZyYp7PhDv
+ 2kw+kIDWUi/eQyhS6vHDyw2FDzFRuAy/PuQuSTWnPwoYuhmiKI8WjgA5B
+X-Gm-Gg: ASbGncuVxrwR97Ogxz2IVSGIexS3vCWnCs5g9dS4ajo3/J7cFp0Kh3pKFTqFLYH3B3C
+ Fv1GzCQNNv+fTqE1Wz+cvNAwmcj71W++LocEGoqWJ0GOvkIoCrBa42zQqjh1ojBT0LYA+vkWzNv
+ 8ikZozvUBnQjMX/3VJX2eovfBMd+ASoUCIyQxbmJYxTnkAC0F1NGOGnw+kMJRXFVxtdcQ0TeoEl
+ tUMxBHG38sP27C0cSTAZdepIjlzh/Ql1WUO7CMoRc2iSXcPF7y+fv71wBHixO9GHxK02SahNAYC
+ irITNoXM8794gQ==
+X-Received: by 2002:a05:620a:2894:b0:7d0:9909:ebe9 with SMTP id
+ af79cd13be357-7d22987fdf0mr172780485a.20.1749157098627; 
+ Thu, 05 Jun 2025 13:58:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3sptOuPWpwgi+S1q2/5Ell21wS4AbULxGr51Lzii/idlrkpNtZ18RwY6ZyHHGyqWaeIS55g==
+X-Received: by 2002:a05:620a:2894:b0:7d0:9909:ebe9 with SMTP id
+ af79cd13be357-7d22987fdf0mr172777885a.20.1749157098308; 
+ Thu, 05 Jun 2025 13:58:18 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6fb09b2a276sm448096d6.97.2025.06.05.13.58.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Jun 2025 13:58:17 -0700 (PDT)
+Date: Thu, 5 Jun 2025 16:58:15 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: Re: [PATCH 02/21] migration: Remove MigrateSetParameters
+Message-ID: <aEIE514VCBhytbgu@x1.local>
+References: <20250603013810.4772-1-farosas@suse.de>
+ <20250603013810.4772-3-farosas@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] system: Forbid alloca()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Glenn Miles <milesg@linux.ibm.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-References: <20250605193540.59874-1-philmd@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250605193540.59874-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250603013810.4772-3-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,26 +103,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/25 12:35 PM, Philippe Mathieu-Daudé wrote:
-> Eradicate alloca() uses on system code, then enable
-> -Walloca to prevent new ones to creep back in.
+On Mon, Jun 02, 2025 at 10:37:51PM -0300, Fabiano Rosas wrote:
+> Now that the TLS options have been made the same between
+> migrate-set-parameters and query-migrate-parameters, a single type can
+> be used. Remove MigrateSetParameters.
 > 
-> Philippe Mathieu-Daudé (4):
->    hw/gpio/pca9552: Avoid using g_newa()
->    backends/tpmL Avoid using g_alloca()
->    tests/unit/test-char: Avoid using g_alloca()
->    buildsys: Prohibit alloca() use on system code
+> The TLS options documentation from MigrationParameters were replaced
+> with the ones from MigrateSetParameters which was more complete.
 > 
->   meson.build                 | 4 ++++
->   backends/tpm/tpm_emulator.c | 4 ++--
->   hw/gpio/pca9552.c           | 2 +-
->   tests/unit/test-char.c      | 3 +--
->   4 files changed, 8 insertions(+), 5 deletions(-)
+> I'm choosing to somewhat ignore any ambiguity between "query" and
+> "set" because other options' docs are already ambiguous in that
+> regard.
 > 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Good idea!
+It's like some wish is going to come true..
 
-For the series:
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+
+-- 
+Peter Xu
 
 
