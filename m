@@ -2,97 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88B1ACED68
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE916ACED94
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:28:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN7eW-0008U1-3m; Thu, 05 Jun 2025 06:16:52 -0400
+	id 1uN7ob-0001bs-Uf; Thu, 05 Jun 2025 06:27:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uN7e6-0007WH-Gx
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:16:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uN7oP-0001Zy-QN
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:27:07 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uN7e5-0001Mq-6F
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:16:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749118584;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I2/G/I18Ub2g4XeJAVy21hDOpNlIY9B+vDIlXLdnVeU=;
- b=U2riWgUVZeR9skFwbixC1zA0Y736AacObZh0KUwz78LGGvso/NCRZn1LBYqaHYCCaY3wi4
- Upnh3Ds3+4GMbnx62X7MZx/awZHRpGfDnnXQ6xMfC0HL3KxVN04ZhZJUhj+RlQukIxnl4j
- G+cmfG1PHzZzAc45rgi2CjUQugpqZnk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-6Z9zl17JPS6Z8MhzRZQTdw-1; Thu, 05 Jun 2025 06:16:23 -0400
-X-MC-Unique: 6Z9zl17JPS6Z8MhzRZQTdw-1
-X-Mimecast-MFC-AGG-ID: 6Z9zl17JPS6Z8MhzRZQTdw_1749118582
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a5232c6ae8so348114f8f.3
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 03:16:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749118581; x=1749723381;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=I2/G/I18Ub2g4XeJAVy21hDOpNlIY9B+vDIlXLdnVeU=;
- b=BLz8dwprmTXlVQ2xwzsfigE3a6e5oFKWuMHrUcK0f5tpIhz9+tnSDBqpQ3eG9iiT1D
- JBW/3PP6z1rtlT+LyT+oHlFEhsbVKYfUXPLz3YbMkfJh4XNfo3Cc6PmnAgB2AynrixCl
- LQnUHwF5BGE+jW8joeMh/Nld1Yptu7CKsUNdWO4E9u/XioxVx4igcHajEKmxmDiLf8zL
- y5CWjECj8sVkq1D+C68mPJtDmV3pi2NWByeswtBc3P/ZRoC4D8HZHWhjXcK18xv+X9Na
- eTiaG0qA0yCNlkZctS3UBI5eSbyNEYMzHOwzzIec01NosUX3Im7LXs7F0BznaOnmlTnL
- 8G6g==
-X-Gm-Message-State: AOJu0Ywjd+A05Ky/N8AspwR9KHiA7ZhwRPuAd6E+uaNUylpXi72OfJmv
- fPpDSyDZ1Qb8OrZ4Rr1gwBh0ojbQueeuNSUj1Mh3AQ4ErKVCaylFbQnFXV0b4wys1g1Dey4/IEt
- kEymGbZX7G7dfuMn34Q9rESHBgzAl7QvuRQTl0LzkroRJWCHIRlZtyVZzLRtBhlepkCnVJwHmvD
- 15aqpE46Zr/q2AiYbSz1fwq0NyQeHN8KVn+gNeG0fM
-X-Gm-Gg: ASbGnctV6Gi+clWF4IYJhUeK5JjDX+UOvzF9YCeR5gHUVN1D6g6RQkIwri7yxmnS/A4
- C1iiZFxfv8/655Gc5uzVpwsW1mUTzG2UPrKtYXEv4c66xodoaC7mlv7J6vLs3bOSIEAa1mXq8fh
- xFXFWR4Sa9dMaKfCWzGchNT5MVQoeXkOwB7019km76Bnw1Z5R3UL/iSbpOX+yG0IVKDQm9HOjBV
- rtbE5YPe2bUquLzqsrIzJUYmXJYxpBhsoYGX+Hp3PJYMlQR2/S/tFAn3Fr2MMsf/YCbETlSS05d
- xuQpWgL9X2/72Q==
-X-Received: by 2002:a05:6000:178a:b0:3a5:1266:e9ce with SMTP id
- ffacd0b85a97d-3a51d96cfffmr5407108f8f.36.1749118581602; 
- Thu, 05 Jun 2025 03:16:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtRlP5OI/J7L/pYLg9MBXPQdHxg/DXcrykIZPgtzrujpMWWBR1Nybv967jyEx3qxLN3ejSqw==
-X-Received: by 2002:a05:6000:178a:b0:3a5:1266:e9ce with SMTP id
- ffacd0b85a97d-3a51d96cfffmr5407074f8f.36.1749118581134; 
- Thu, 05 Jun 2025 03:16:21 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.64.79])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe73f3csm23676310f8f.42.2025.06.05.03.16.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Jun 2025 03:16:19 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uN7oN-00053M-M4
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:27:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749119224; x=1780655224;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=SRhFqtGWCK1GSssH5xMCM8ZE6KbAEs42kQvs+Af0Zn8=;
+ b=YhjxRBeKwbi5/MkPrEIxvLU1oZpa0S7Yz2JXYD7lzDLn/q+R66FOg8QO
+ txkTEVmmtT1yqe+Z91Wq8ncUoCCTHY1bKqIozofToB+W7Tk93aCtU3tLL
+ M3H/jEOs9erDARQkGqZjFnji86iVxVeDo50lMSr62/xtyqXdeOWzLdWCH
+ qy5I8mzYIiZj/fGLDA6Zj70vSqlehyxbZ7MFMjRY+Td/mSzJUnnrzUmPX
+ SPyLFZT71M6yAVaC3txiZt9/rprttgirASYEnPh4QCP1WzbBVYz1bv2zu
+ MNy+0gwtQRqL8fUEvE3E5G+WsMyKwOj68FsOqejQC5nMTRiMauT2Z/0XT w==;
+X-CSE-ConnectionGUID: 4SbPhJRDQheEGpDsk88wMQ==
+X-CSE-MsgGUID: p3c4nLOdR4qOE2/6Pr4zWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="51325291"
+X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="51325291"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2025 03:27:00 -0700
+X-CSE-ConnectionGUID: 8q/G9KVAQZuXtTeky78fkQ==
+X-CSE-MsgGUID: 4q5mFcZcT96dYt7KQI73qA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="145808605"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2025 03:26:58 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
-Cc: armbru@redhat.com,
-	zhao1.liu@intel.com,
-	qemu-rust@nongnu.org
-Subject: [PATCH 14/14] docs: update Rust module status
-Date: Thu,  5 Jun 2025 12:15:43 +0200
-Message-ID: <20250605101544.368953-15-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250605101544.368953-1-pbonzini@redhat.com>
-References: <20250605101544.368953-1-pbonzini@redhat.com>
+Cc: chao.p.peng@intel.com, david@redhat.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v3 0/5] Fix definition of classes with wrong parent
+Date: Thu,  5 Jun 2025 18:23:06 +0800
+Message-Id: <20250605102311.148171-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+Received-SPF: pass client-ip=192.198.163.14;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,31 +79,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-error is new; offset_of is gone.
+Hi,
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- docs/devel/rust.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This fix definition of some classes with wrong parent.
+Used below script to get a list, hoping all are addressed.
 
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index 98803d5e8dd..67acd7d2867 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -160,10 +160,10 @@ module           status
- ``callbacks``    complete
- ``cell``         stable
- ``errno``        complete
-+``error``        stable
- ``irq``          complete
- ``memory``       stable
- ``module``       complete
--``offset_of``    stable
- ``qdev``         stable
- ``qom``          stable
- ``sysbus``       stable
+find "$directory" -type d \( -name "roms" -o -name "build" \) -prune -o -type f \( -name "*.c" -o -name "*.h" \) -print | while read -r file; do
+    awk '/^(struct |typedef struct )/ { 
+        first = $0;
+        getline second; 
+        getline third; 
+        if (first ~ /[Cc]lass/ && !(second ~ /Class/) && !(third ~ /Class/)) {
+            print FILENAME ":" NR-2 ": " first; 
+            print FILENAME ":" NR-1 ": " second; 
+            print FILENAME ":" NR ": " third;
+        }
+    }' "$file"
+done
+
+patch4/5 are more like cleanups instead of fixes as those class_size are not
+initialized so class definition doesn't take effect.
+
+Thanks
+Zhenzhong
+
+Changelog:
+v3:
+- s/Suggested-by/Reported-by on patch2 (David)
+- add Closes: tag (David)
+- collect RB
+
+v2:
+- add more fixes per David
+
+
+Zhenzhong Duan (5):
+  virtio-mem: Fix definition of VirtIOMEMClass
+  virtio-pmem: Fix definition of VirtIOPMEMClass
+  hw/gpio/aspeed: Fix definition of AspeedGPIOClass
+  hw/char/sh_serial: Remove dummy definition of SH_SERIAL class
+  hw/riscv/riscv-iommu: Remove definition of RISCVIOMMU[Pci|Sys]Class
+
+ include/hw/gpio/aspeed_gpio.h   | 2 +-
+ include/hw/riscv/iommu.h        | 6 ++----
+ include/hw/virtio/virtio-mem.h  | 2 +-
+ include/hw/virtio/virtio-pmem.h | 2 +-
+ hw/char/sh_serial.c             | 4 +---
+ hw/riscv/riscv-iommu-pci.c      | 6 ------
+ hw/riscv/riscv-iommu-sys.c      | 6 ------
+ 7 files changed, 6 insertions(+), 22 deletions(-)
+
 -- 
-2.49.0
+2.34.1
 
 
