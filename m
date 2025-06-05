@@ -2,78 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91633ACF0DE
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB85ACF169
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:59:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNAmX-0001vE-10; Thu, 05 Jun 2025 09:37:21 -0400
+	id 1uNB7c-0001JB-GX; Thu, 05 Jun 2025 09:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uNAmT-0001u6-AM; Thu, 05 Jun 2025 09:37:17 -0400
-Received: from mgamail.intel.com ([198.175.65.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uNAmK-0008Ok-An; Thu, 05 Jun 2025 09:37:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749130629; x=1780666629;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=c3AYYTE4jXbTTJMfKgbjtc+QoEFK3LuNYXA8vE/YJ4s=;
- b=kobbXKGecmhETP/ZDe3aWLVghSINdhOIdW3ylng21+74fHu1QpuKg7Uq
- mpbwSZT3cnxvQCe6magBHKg6ZrzpY6aTMYWD5dt9o4m1cKS62io5WA1rs
- Z6fmjUjFL8xADnmr9smQ/Xge5uzzgJ9EQWkmG/LcvP8oYpLucrSO5QQco
- MnnYydwA7ZOiNl5WBfU61G8c8DwrQ8FKz8MoURlcMp2/lZN1yiUcSq6Gz
- Bi6qH5ZAgheoy37TCyyblo9CGCvMYox1HLKmz2TvrcoLLErbs9XVouty8
- Mk/89UPCl31zfoiFQfzl/+SEN+b1MzfIQJcGs8uMWT7mLDV13KpGw9XFZ Q==;
-X-CSE-ConnectionGUID: XLoJ0V9QTKK/jIz69iUhlg==
-X-CSE-MsgGUID: rY+HR2PzSuqF16eDH5aykQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="51246687"
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="51246687"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 06:37:05 -0700
-X-CSE-ConnectionGUID: 37ZMDUOzR9icCqmlqBuOcg==
-X-CSE-MsgGUID: b3v16a65TDSjX9lNECuymQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="182716923"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 05 Jun 2025 06:36:59 -0700
-Date: Thu, 5 Jun 2025 21:58:13 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Alireza Sanaee <alireza.sanaee@huawei.com>
-Cc: mst@redhat.com, anisinha@redhat.com, armbru@redhat.com,
- berrange@redhat.com, dapeng1.mi@linux.intel.com,
- eric.auger@redhat.com, farman@linux.ibm.com,
- gustavo.romero@linaro.org, imammedo@redhat.com,
- jiangkunkun@huawei.com, jonathan.cameron@huawei.com,
- linuxarm@huawei.com, mtosatti@redhat.com, peter.maydell@linaro.org,
- philmd@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- richard.henderson@linaro.org, shameerali.kolothum.thodi@huawei.com,
- shannon.zhaosl@gmail.com, yangyicong@hisilicon.com, maobibo@loongson.cn
-Subject: Re: [PATCH v12 2/6] arm/virt.c: add cache hierarchy to device tree
-Message-ID: <aEGidafjNMYHAgiO@intel.com>
-References: <20250604133439.1592-1-alireza.sanaee@huawei.com>
- <20250604133439.1592-3-alireza.sanaee@huawei.com>
- <aEFnFI+wglkmLD5G@intel.com>
- <20250605104048.00000f00.alireza.sanaee@huawei.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uNB7a-0001IM-DN
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:59:06 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uNB7U-00055x-T8
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:59:02 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-606fdbd20afso1943952a12.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 06:59:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1749131939; x=1749736739; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uUg03zcbNxZ6kqV2FHZ/pzV/KffKuFq0brd2f7OP50Q=;
+ b=fjEgi6UAFKdU/7tv8PSM88nNyHQV7e0MIiU503ny28QuNsI1OuMnPFSAy4LMpmajG1
+ NPQQdF9swu/btldZXnMgGeffHgIBjiUJIwF2NvxBAj9fjVWO8Ayz4uuSbfgd4UwWmxFk
+ WO7dFayR6CfwCfm0z4r7j3WXbM02VObfNpigFfObm58t3L5OuWAt2xwuJxsmyP7Vlbtt
+ Lq6LNyctxjLEs8d9wu7X8yYEAsmAQDrollRcGOr7W5ygwHMNrr5tqlVM0T01nrY1gQUg
+ +Wzz1mPdOZp/F59gZm0mkwsgLvAbdr0haL2Jace7HGzZrg26Zi9jkMQx6psCa6KHH9mW
+ 1Bjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749131939; x=1749736739;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=uUg03zcbNxZ6kqV2FHZ/pzV/KffKuFq0brd2f7OP50Q=;
+ b=seHUOPD5QpKabQYdUoKBCmu465fyFTE4zPlGa0+4Qclgo3XdsgKbt/WZKGkYo0a7/P
+ YhBpXZh3noy0XMC9YAx8JCW4E+R0hsMLQqjkbwOQTBJW6w70IudjdKFeR6j7zIahRw5G
+ 5EPGIHgYmZZXnMtRyjDJvN1QFZM73D+xHp6Q44SCcvrKpKd2B8/v4VPf+ToKC9fVhNQW
+ +PE6olaGCGPGT23lQSTVGQ97JSxs2Yd9e7rHq0OH0SYyOjJ28SDPDKHJYhGcAFN2/lNw
+ 85gri094c5Ccsu5hOsXQ+bhYIIOQRgBAg4/kxNDQIcygrTk7kwu8pjii98cq/fGvd2qT
+ DLpg==
+X-Gm-Message-State: AOJu0YwCT4UMAJLLxKeMplZQeAyATshOGJ5+xpLE4/2aDqM7rMB4lX0+
+ 3xxdIOre7aIaOUs79vevDaLKzRSCqNhbMvpxQaDUSo0uVfUnxW3oXKODZCvPdV/jyz0=
+X-Gm-Gg: ASbGncv34P87+nqLxK+q9NurD4zjsWYEBMrIw5Wk71L02bko1fFGSK0WZAEBlYx/kX2
+ aaAZihzm1yuxKRy5qrkbJJ+w+WU/DpjKFF/udIdf5bN3m68Ibti4JubJnen9ERN7tDWngoTLShb
+ tEkuFVvaH9eQlTDA+344epkqVle3a/eGsTmNji1trSx2VL5yEgOtbUaSm9eEmg5+yS71cKcZh81
+ HfCMCy1PTSeurB1/0+ydtsvq6ViirS+39ijt74bL8ygFe8YXkYj8Egz9uAUPo7G4XhfrQG6qKTd
+ vwP5SzPoBVlQfc5E7hFFCbdVuBEt+uYRCbjZV8uhq80Hr1GH6dkr
+X-Google-Smtp-Source: AGHT+IFvS48CMm0W7XpgNc1n35yUw1W4A+uJE4wq5bR/PMbxPq5dq/c1DoeyNE+0rOqK4jOsA9+vJg==
+X-Received: by 2002:a05:6402:2684:b0:602:1d01:286a with SMTP id
+ 4fb4d7f45d1cf-606e944ee43mr6771155a12.6.1749131938702; 
+ Thu, 05 Jun 2025 06:58:58 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-606f93ae786sm2210158a12.24.2025.06.05.06.58.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Jun 2025 06:58:57 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 486315F782;
+ Thu, 05 Jun 2025 14:58:57 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,  "Michael S . Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,  Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Kevin Wolf <kwolf@redhat.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>,  Alexander Graf <agraf@csgraf.de>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,  Stefan Hajnoczi
+ <stefanha@gmail.com>
+Subject: Re: [PATCH v4 3/3] docs: define policy forbidding use of AI code
+ generators
+In-Reply-To: <20250605105219.261925-4-armbru@redhat.com> (Markus Armbruster's
+ message of "Thu, 5 Jun 2025 12:52:19 +0200")
+References: <20250605105219.261925-1-armbru@redhat.com>
+ <20250605105219.261925-4-armbru@redhat.com>
+User-Agent: mu4e 1.12.11; emacs 30.1
+Date: Thu, 05 Jun 2025 14:58:57 +0100
+Message-ID: <87y0u65ly6.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250605104048.00000f00.alireza.sanaee@huawei.com>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,17 +111,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> Hi Zhao,
-> 
-> Thanks for the feedback, I was actually unsure about the structure, and
-> was looking to get some feedback here, to see where to put what! I
-> will go over the suggestions, and take note. In the meantime, let's see
-> if we can get some more review here.
+Markus Armbruster <armbru@redhat.com> writes:
 
-Sure! BTW, it's better to spilt the general code change (not ARM-specific
-codes) into a separate patch. Anyway, it's up to you.
+> From: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>
+> There has been an explosion of interest in so called AI code
+> generators. Thus far though, this is has not been matched by a broadly
+> accepted legal interpretation of the licensing implications for code
+> generator outputs. While the vendors may claim there is no problem and
+> a free choice of license is possible, they have an inherent conflict
+> of interest in promoting this interpretation. More broadly there is,
+> as yet, no broad consensus on the licensing implications of code
+> generators trained on inputs under a wide variety of licenses
+>
+> The DCO requires contributors to assert they have the right to
+> contribute under the designated project license. Given the lack of
+> consensus on the licensing of AI code generator output, it is not
+> considered credible to assert compliance with the DCO clause (b) or (c)
+> where a patch includes such generated code.
+>
+> This patch thus defines a policy that the QEMU project will currently
+> not accept contributions where use of AI code generators is either
+> known, or suspected.
+>
+> These are early days of AI-assisted software development. The legal
+> questions will be resolved eventually. The tools will mature, and we
+> can expect some to become safely usable in free software projects.
+> The policy we set now must be for today, and be open to revision. It's
+> best to start strict and safe, then relax.
+>
+> Meanwhile requests for exceptions can also be considered on a case by
+> case basis.
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Acked-by: Stefan Hajnoczi <stefanha@gmail.com>
+> Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-Regards,
-Zhao
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
