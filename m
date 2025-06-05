@@ -2,58 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84D1ACEDDA
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8406ACEE1A
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:53:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN7z5-00072H-1K; Thu, 05 Jun 2025 06:38:07 -0400
+	id 1uN8DB-0002Y9-9F; Thu, 05 Jun 2025 06:52:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
- id 1uN7yx-00071p-Ej; Thu, 05 Jun 2025 06:37:59 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uN8D3-0002XU-FN
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:52:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
- id 1uN7yt-0006J4-GD; Thu, 05 Jun 2025 06:37:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gibson.dropbear.id.au; s=202504; t=1749119866;
- bh=Tj5KctCSZIr2LNWvH32eyOQ999psYpoMjtGr3Wzgcdo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=WV7hSN7nUTGeM4XbaRvUMC5hOiJZO1Q5QuwEoZJQbtDL77i8jBrdpiVt6sd+KaBdO
- 81RZiAiXdAWg+GILGwlje+RTTENntn4o0N8t39/TUEoyXE4jimolhDoRjHrOZOxUdn
- U0ii6Ev/ymdRQ4dt2rKzHd7PmW1zZEzpNjnzYxsCk/2Royv4XQLjv6a1pD7t4pVM9K
- AHV688wzHqnzCL5LR/IB0XY/QI7vK59hUrBk5VmvY+td9hmYRCoKKs6bH0iCqQHR86
- AX/MroEJWxxFUW6WvTUuSuWcbMIJzT9EocSbxsje0EndnD3R9F9+3kx4CYBIFD+49U
- iMDGle8niyLAw==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
- id 4bCgrV4Jp3z4x8S; Thu,  5 Jun 2025 20:37:46 +1000 (AEST)
-Date: Thu, 5 Jun 2025 20:25:29 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
- QEMU Development <qemu-devel@nongnu.org>, qemu-ppc@nongnu.org,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Greg Kurz <groug@kaod.org>
-Subject: Re: ppc kvm: support of 64K guest page size with 4K host pagesize?
-Message-ID: <aEFwmU8PRo_SxV4T@zatzit>
-References: <0392df3f-c9fc-4372-a131-f0a7c3313c9c@tls.msk.ru>
- <58abce8b-c5c2-4fd1-a32c-2d887445097d@redhat.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uN8Cz-00032y-Bl
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:52:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749120747;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mJHQF9q6zwOy7LpysJQxfyjiGLINWvadMK60zxscAL8=;
+ b=h2OUkseCm8MqIw34RDw1XWlkOdEDuNhnDo059+AkHPt57lh41+3rcjAxtwKQUdi/tr2MYD
+ XoIBfUjtROFSTYiC9fqpMx6JgNq86Zg/m7hGA6+BMUoLfosHP6WI9f+uK9B4+QiLjelDWE
+ rs9miD20kHA3o8aK+qNbPKk/hOBwMJg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-CAEDr4ReOOCOPKk6rHqwIQ-1; Thu,
+ 05 Jun 2025 06:52:24 -0400
+X-MC-Unique: CAEDr4ReOOCOPKk6rHqwIQ-1
+X-Mimecast-MFC-AGG-ID: CAEDr4ReOOCOPKk6rHqwIQ_1749120743
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CE8791800361; Thu,  5 Jun 2025 10:52:22 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0EE5A195E74A; Thu,  5 Jun 2025 10:52:21 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 17DA221E6757; Thu, 05 Jun 2025 12:52:19 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v4 0/3] docs: define policy forbidding use of "AI" / LLM code
+ generators
+Date: Thu,  5 Jun 2025 12:52:16 +0200
+Message-ID: <20250605105219.261925-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="psDoopDHYiFMTMaf"
-Content-Disposition: inline
-In-Reply-To: <58abce8b-c5c2-4fd1-a32c-2d887445097d@redhat.com>
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=dgibson@gandalf.ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,70 +89,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+More than a year ago, Daniel posted patches to put an AI policy in
+writing.  Reception was mostly positive.  A v2 to address feedback
+followed with some delay.  But no pull request.
 
---psDoopDHYiFMTMaf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I asked Daniel why, and he told me he was concerned it might go too
+far in its interpretation of the DCO requirements.  After a bit of
+discussion, I think Daniel's text is basically fine.  The policy it
+describes is simple and strict.  Relaxing policy is easier than
+tightening it.  I softened the phrasing slightly, addressed open
+review comments, and fixed a few minor things I found myself.
 
-On Thu, Jun 05, 2025 at 08:52:44AM +0200, Thomas Huth wrote:
-> On 05/06/2025 08.34, Michael Tokarev wrote:
-> > There's a bug report filed in debian against qemu,
-> > https://bugs.debian.org/1107288 - saying kvm on ppc does not
-> > work on debian (anymore) due to qemu requesting unrealistic
-> > (non-existing) page size of 64K on a host which only has 4K.
-> >=20
-> > I don't know much about PPC, - what's the issue here? Should
-> > qemu use the same page size for kvm as on the host?
->=20
-> Looking at
->=20
->  https://gitlab.com/qemu-project/qemu/-/commit/2309832afdaf8d6451ebc2e81b=
-ace8eb8ea41293
->=20
-> it seems like this was done on purpose? David, do you remember why
-> auto-detecting was not a good idea here?
+Here's Daniel's cover letter for v2:
 
-Because the available page sizes are guest visible.  So if we
-auto-detected, guests could be silently migration-incompatible with
-the same command line.
+This patch kicks the hornet's nest of AI / LLM code generators.
 
-> Anyway, seems like there is a hpt-max-page-size property that could be us=
-ed
-> to set the value manually - maybe you could suggest that to the user as a
-> work-around?
+With the increasing interest in code generators in recent times,
+it is inevitable that QEMU contributions will include AI generated
+code. Thus far we have remained silent on the matter. Given that
+everyone knows these tools exist, our current position has to be
+considered tacit acceptance of the use of AI generated code in QEMU.
 
-Yes, that's what you'll need to do.  We set the default to 64kiB
-pages, since at that point 64kiB was the default for all major host
-distros, and guests benefit significantly from being able to use 64kiB
-pages.  If you want guests compatible with 4kiB page hosts, you need
-to use this parameter.
+The question for the project is whether that is a good position for
+QEMU to take or not ?
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+IANAL, but I like to think I'm reasonably proficient at understanding
+open source licensing. I am not inherantly against the use of AI tools,
+rather I am anti-risk. I also want to see OSS licenses respected and
+complied with.
 
---psDoopDHYiFMTMaf
-Content-Type: application/pgp-signature; name=signature.asc
+AFAICT at its current state of (im)maturity the question of licensing
+of AI code generator output does not have a broadly accepted / settled
+legal position. This is an inherant bias/self-interest from the vendors
+promoting their usage, who tend to minimize/dismiss the legal questions.
+>From my POV, this puts such tools in a position of elevated legal risk.
 
------BEGIN PGP SIGNATURE-----
+Given the fuzziness over the legal position of generated code from
+such tools, I don't consider it credible (today) for a contributor
+to assert compliance with the DCO terms (b) or (c) (which is a stated
+pre-requisite for QEMU accepting patches) when a patch includes (or is
+derived from) AI generated code.
 
-iQIyBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmhBcIgACgkQzQJF27ox
-2GdOxQ/4i9kmeJehEEu95OUHkP3nGFHtc7m57ZyvwJtf8K3OSLmLqc2gL+szxBs2
-9Ub+VLizJg4IKhnZ5Ve8JBYjhNRjLRxzUumG60faaUyrbLlfRtfKUTG+XxGu6E9G
-Pld/1dqPcORp7VIB9PLcdsvUOFkHrVgD4ZFUiVcz1T+fVsKIb1L2XWaIo3GAudrv
-7lpGkTuw1QCLv4IsyTSnjsydwquZvEdgW4iWYHMBvGWh9h9sy+NZoD9tLUxl/rQ8
-WemuLc/nMHsteNx4miqW6aL+ImHJV8INq9EZT2aGgr6BL9t9wjPrbKNm2Cca7y4H
-QG4reLcFnCqU5lbtqbZRIFVV3GgPMEBxxiN62c0kOoOeBB66PST6LrCm+FYKjXwq
-rJlrtsPDZ5NZbr4kPOiSE0kBRs8R7pi45YQunsJWXQ8kDulGx3QgzZ3Lh/gOPIpz
-7/lICXuNwsvX+qu2ruFSAdHHLZv41teWNiYusNj9DgTTC/TUhURIyFsEGvy3/1a7
-vu+OzGK7+i8HpLYWgTmk6EiOPNmAWwEeaUU1tcXmfUM5ZfMqwDNqd+Xu+g5wzK77
-FxFpfseBMrlAElnZw/+cq+xiR7kwGEzhkEwICHMcc5dp3LjpLHLCroCBnoqvQJka
-NS09MvSDsNHs/0xqxlTWG/Ja2jULfQzT4HAP0Iovq+j8W0tGQA==
-=SWHi
------END PGP SIGNATURE-----
+By implication, I think that QEMU must (for now) explicitly decline
+to (knowingly) accept AI generated code.
 
---psDoopDHYiFMTMaf--
+Perhaps a few years down the line the legal uncertainty will have
+reduced and we can re-evaluate this policy.
+
+Discuss...
+
+Changes in v4 [Markus Armbruster]:
+ * PATCH 1:
+   - Revert v3's "known identity", and instead move existing paragraph
+     from submitting-a-patch.rst to code-provenance.rst [Philippe]
+   - Add a paragraph on recording maintainer modifications [Alex]
+ * PATCH 3:
+   - Talk about "AI-assisted software development", "AI content
+     generators", and "content", not just "AI code generators" and
+     "code" [Stefan, Daniel]
+   - Fix spelling of Copilot, and mention Claude [Stefan]
+   - Fix link text for reference to the DCO
+   - Reiterate the policy does not apply to other uses of AI [Stefan,
+     Daniel]
+   - Add agents to the examples of tools impacted by the policy
+     [Daniel]
+
+Changes in v3 [Markus Armbruster]:
+
+ * PATCH 1:
+   - Require "known identity" (phrasing stolen from Linux kernel docs)
+     [Peter]
+   - Clarify use of multiple addresses [Michael]
+   - Improve markup
+   - Fix a few misspellings
+   - Left for later: explain our use of Message-Id: [Alex]
+ * PATCH 2:
+   - Minor phrasing tweaks and spelling fixes
+ * PATCH 3:
+   - Don't claim DCO compliance is currently impossible, do point out
+     it's unclear how, and that we consider the legal risk not
+     acceptable.
+   - Stress that the policy is open to revision some more by adding
+     "as AI tools mature".  Also rephrase the commit message.
+   - Improve markup
+
+Changes in v2 [Daniel Berrangé]:
+
+ * Fix a huge number of typos in docs
+ * Clarify that maintainers should still add R-b where relevant, even
+   if they are already adding their own S-oB.
+ * Clarify situation when contributor re-starts previously abandoned
+   work from another contributor.
+ * Add info about Suggested-by tag
+ * Add new docs section dealing with the broad topic of "generated
+   files" (whether code generators or compilers)
+ * Simplify the section related to prohibition of AI generated files
+   and give further examples of tools considered covered
+ * Remove repeated references to "LLM" as a specific technology, just
+   use the broad "AI" term, except for one use of LLM as an example.
+ * Add note that the policy may evolve if the legal clarity improves
+ * Add note that exceptions can be requested on case-by-case basis
+   if contributor thinks they can demonstrate a credible copyright
+   and licensing status
+
+Daniel P. Berrangé (3):
+  docs: introduce dedicated page about code provenance / sign-off
+  docs: define policy limiting the inclusion of generated files
+  docs: define policy forbidding use of AI code generators
+
+ docs/devel/code-provenance.rst    | 338 ++++++++++++++++++++++++++++++
+ docs/devel/index-process.rst      |   1 +
+ docs/devel/submitting-a-patch.rst |  23 +-
+ 3 files changed, 341 insertions(+), 21 deletions(-)
+ create mode 100644 docs/devel/code-provenance.rst
+
+-- 
+2.48.1
+
 
