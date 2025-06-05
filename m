@@ -2,62 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5547ACF664
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 20:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D680ACF683
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 20:25:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNFCh-00005g-KP; Thu, 05 Jun 2025 14:20:39 -0400
+	id 1uNFH0-0004IN-TX; Thu, 05 Jun 2025 14:25:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uNFCe-000057-El
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 14:20:36 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uNFGz-0004IE-7x
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 14:25:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uNFCc-0001Y8-Un
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 14:20:36 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uNFGx-00025F-Uf
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 14:25:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749147633;
+ s=mimecast20190719; t=1749147903;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uIEL7At1Y3NnbQwSCu1WOoIPRXsx3kEw5enGJ7P3vag=;
- b=A1mSATvEiBPZQ0snTAp3MlrXjytjEBIqsRrGvcokjEURD5CABHUDnMQBdVx8A6ZCvSVZZ5
- jM3oVI9VEnaECK1tP/jesrASFysPBon8grEvt7yknVS5t+APj7pNHtLSuE2S6GTetinK1+
- lYlzuAtvNFSKeucpQxX2CRfgH4mCmf0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-146-rvsHXGdUMiOhx1c7PNh2nQ-1; Thu,
- 05 Jun 2025 14:20:32 -0400
-X-MC-Unique: rvsHXGdUMiOhx1c7PNh2nQ-1
-X-Mimecast-MFC-AGG-ID: rvsHXGdUMiOhx1c7PNh2nQ_1749147631
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4675318002BE; Thu,  5 Jun 2025 18:20:31 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.66.99])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C18321956050; Thu,  5 Jun 2025 18:20:29 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL v2 6/6] qapi: delete un-needed python static analysis configs
-Date: Thu,  5 Jun 2025 14:20:14 -0400
-Message-ID: <20250605182014.561172-7-jsnow@redhat.com>
-In-Reply-To: <20250605182014.561172-1-jsnow@redhat.com>
-References: <20250605182014.561172-1-jsnow@redhat.com>
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=eM3nOMHTk9YbrDgydhdfOfCdEbC02FB/FlHXz+HD8wKxFR7TVVJtDN4U/rS6yHh98WSTrR
+ 9/rDwuojQz57l8RDGVnLab4Ts9WkmBJj+RKmTDqK8NE4rEfKdUiTvgwO0JRG4dOIeW53CQ
+ 3g/gHHKw13+PnnYlGXZa62x//0mN89g=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-292-2NyXQmozOYuKnc9PTkz5sg-1; Thu, 05 Jun 2025 14:25:02 -0400
+X-MC-Unique: 2NyXQmozOYuKnc9PTkz5sg-1
+X-Mimecast-MFC-AGG-ID: 2NyXQmozOYuKnc9PTkz5sg_1749147901
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a50816cc58so520849f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 11:25:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749147901; x=1749752701;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=ryjcaMq6HpouzJj9pahd0g49OgCE548RvS1d+oUcZJvVabcXqvtL4ci/PvV2456/EF
+ nVQIj/dCtsLGzwMVlcyqiNILOUaYTWWEjMh4KgpSUZDp47s3/C41n6RDinQSEGkWBP5/
+ 6vCBy1MjMkV1dumWTKlmVilH5RxFCCe7vC0fSAytnwAN7r/dZQotoXnvFVEaGmf89uXM
+ witCiRkXDBBFtv1dkc0p28EO7WP8EtaPJj7ZH9STSrHLgimuLl5TSaeHqvZrQaUVESmO
+ 9q4kgNkXq1MiY5DN3J7fdBQ+sG91JjEfhrEaFJLNhZyuRy4YLrdUwMu1knjxqJlChIvI
+ BEVg==
+X-Gm-Message-State: AOJu0Yyz8uQFw4H485/B3ZnHrdQmM6hyq1ud50xfOIZnbKqAfM7k+Vlk
+ neqhxOjtWGsUkwmuLxsg2VDRAvUPyCVZSsoSwAL199NOF3w94pUUkY5X+q/TwXffPc2dyhWPchg
+ 1EGAM2Ihhm12I6I9LyoadX6yFMjukDYvCGLUn3H7hBQucIsUYiuzVK5A8
+X-Gm-Gg: ASbGncuN4DEMqE8t4LEsVZOQCs0FUYwlsho+eaOnpxnh9uGLJhBLAe9gIg3GIth2vj7
+ gdMq+POhxrsUFTA5OzoIw663UZEYKcuFE3yDxT3bkipUGwVG9KQ2qyTIVp8ro5mfZcIhc4bfPoz
+ If9nKz2y2zpCJBWUhuma28t4LsxesV/P1j58x0cjgo8/J/VeuvqgfCYzsOuIFaqhPGMb7biCoux
+ xEccpPYhWaSxcyGakpusujx6vBjsVzH11Ojfvgde234FeUtP/HvP8PvDVu1apTqwzkMwU3AMIN2
+ 1CUY+t/B4Z1kgw==
+X-Received: by 2002:a05:6000:4212:b0:3a4:e844:745d with SMTP id
+ ffacd0b85a97d-3a531cf5420mr111615f8f.56.1749147900828; 
+ Thu, 05 Jun 2025 11:25:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5E3btI45fTIjiwP/NKAqebz5oOum5PoAfffBp7dp2nDkWuZMOJZr57RNpqO0XTRdFJxk+UA==
+X-Received: by 2002:a05:6000:4212:b0:3a4:e844:745d with SMTP id
+ ffacd0b85a97d-3a531cf5420mr111596f8f.56.1749147900453; 
+ Thu, 05 Jun 2025 11:25:00 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.64.79])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45209bc6d50sm1022355e9.5.2025.06.05.11.24.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Jun 2025 11:24:58 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH v2 0/4] target/i386: Emulate ftz and denormal flag bits
+ correctly
+Date: Thu,  5 Jun 2025 20:24:56 +0200
+Message-ID: <20250605182456.464131-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250519145114.2786534-1-peter.maydell@linaro.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -82,72 +107,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the previous commit, python/setup.cfg applies to scripts/qapi/ as
-well.  Configuration files in scripts/qapi/ override python/setup.cfg.
+Queued, thanks.
 
-scripts/qapi/.flake8 and scripts/qapi/.isort.cfg actually match
-python/setup.cfg exactly, and can go.
-
-The differences between scripts/qapi/mypy.ini and python/setup.cfg are
-harmless: namespace_packages being set to True is a requirement for the
-PEP420 nested package structure of QEMU but not for scripts/qapi, but
-has no effect on type checking the QAPI code. warn_unused_ignores is
-used in python/ to be able to target a wide variety of mypy versions;
-some of which that have added new ignore categories that are not present
-in older versions.
-
-Ultimately, scripts/qapi/mypy.ini can be removed without any real change
-in behavior to how mypy enforces type safety there.
-
-The pylint config is being left in place because the settings differ
-enough from the python/ directory settings that we need a chit-chat on
-how to merge them O:-)
-
-Signed-off-by: John Snow <jsnow@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-id: 20250604200354.459501-7-jsnow@redhat.com
----
- scripts/qapi/.flake8    | 3 ---
- scripts/qapi/.isort.cfg | 7 -------
- scripts/qapi/mypy.ini   | 4 ----
- 3 files changed, 14 deletions(-)
- delete mode 100644 scripts/qapi/.flake8
- delete mode 100644 scripts/qapi/.isort.cfg
- delete mode 100644 scripts/qapi/mypy.ini
-
-diff --git a/scripts/qapi/.flake8 b/scripts/qapi/.flake8
-deleted file mode 100644
-index a873ff67309..00000000000
---- a/scripts/qapi/.flake8
-+++ /dev/null
-@@ -1,3 +0,0 @@
--[flake8]
--# Prefer pylint's bare-except checks to flake8's
--extend-ignore = E722
-diff --git a/scripts/qapi/.isort.cfg b/scripts/qapi/.isort.cfg
-deleted file mode 100644
-index 643caa1fbd6..00000000000
---- a/scripts/qapi/.isort.cfg
-+++ /dev/null
-@@ -1,7 +0,0 @@
--[settings]
--force_grid_wrap=4
--force_sort_within_sections=True
--include_trailing_comma=True
--line_length=72
--lines_after_imports=2
--multi_line_output=3
-diff --git a/scripts/qapi/mypy.ini b/scripts/qapi/mypy.ini
-deleted file mode 100644
-index c9dbcec2db0..00000000000
---- a/scripts/qapi/mypy.ini
-+++ /dev/null
-@@ -1,4 +0,0 @@
--[mypy]
--strict = True
--disallow_untyped_calls = False
--python_version = 3.9
--- 
-2.48.1
+Paolo
 
 
