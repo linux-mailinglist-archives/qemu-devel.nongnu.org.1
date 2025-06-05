@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E39ACEB79
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA63ACEC08
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:35:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN5eB-0002XG-5E; Thu, 05 Jun 2025 04:08:23 -0400
+	id 1uN63E-0001OW-LN; Thu, 05 Jun 2025 04:34:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uN5e8-0002Wh-Bo; Thu, 05 Jun 2025 04:08:20 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uN5e6-0006zi-4J; Thu, 05 Jun 2025 04:08:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749110898; x=1780646898;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=/H6fOiGes8RNvPIoYQeQ+oamLmBDlB+hwhF0MUKvjX4=;
- b=mRMzkOLSoyDrfp0iLjxwUYHRYV9V6H04vyeT6nGsVxjdD+ZZFTlYz7+S
- crv+rVwK/z9QU+RoO8Z1d7TBpuUTsF1SDqBtyU0r9wsv0wUxy66AL77d6
- 4x1U9CFf8reI+M8LdMyhTgcJbZ7naacRp0k5L088seg8U7o7QL+WjqtBH
- bzNvhvDeXSiMqPd5c6b7OoQE0atzxyqonWGECCPpty8Yr5zARqTNltAaD
- oOEOYzXaRVgm2OAp/CbdlaYDoacTq/r0J8OH/5vd/jx0PGVfxWKPImpAF
- 4MSszbyvIREVra7D3uZXOJLArXmnvr3oxHArL8gFtTKUJXNXSNNA+4KQX w==;
-X-CSE-ConnectionGUID: cUllEyr2Qy2019+vmMnXVg==
-X-CSE-MsgGUID: rYI+/iyETfqqAwc7lvUgEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="51285653"
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="51285653"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 01:08:15 -0700
-X-CSE-ConnectionGUID: QfbEB4KgQgO/ZyscvWGifA==
-X-CSE-MsgGUID: /LIkIDbzRGONqBX++A+BlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="145940217"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa010.fm.intel.com with ESMTP; 05 Jun 2025 01:08:09 -0700
-Date: Thu, 5 Jun 2025 16:29:22 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Alireza Sanaee <alireza.sanaee@huawei.com>
-Cc: mst@redhat.com, anisinha@redhat.com, armbru@redhat.com,
- berrange@redhat.com, dapeng1.mi@linux.intel.com,
- eric.auger@redhat.com, farman@linux.ibm.com,
- gustavo.romero@linaro.org, imammedo@redhat.com,
- jiangkunkun@huawei.com, jonathan.cameron@huawei.com,
- linuxarm@huawei.com, mtosatti@redhat.com, peter.maydell@linaro.org,
- philmd@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- richard.henderson@linaro.org, shameerali.kolothum.thodi@huawei.com,
- shannon.zhaosl@gmail.com, yangyicong@hisilicon.com, maobibo@loongson.cn
-Subject: Re: [PATCH v12 3/6] bios-tables-test: prepare to change ARM ACPI
- virt PPTT
-Message-ID: <aEFVYrrRXPQQJI3x@intel.com>
-References: <20250604133439.1592-1-alireza.sanaee@huawei.com>
- <20250604133439.1592-4-alireza.sanaee@huawei.com>
+ (Exim 4.90_1) (envelope-from <oenhan@gmail.com>)
+ id 1uN637-0001OA-HH; Thu, 05 Jun 2025 04:34:09 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <oenhan@gmail.com>)
+ id 1uN635-0006cO-Tp; Thu, 05 Jun 2025 04:34:09 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-73972a54919so681865b3a.3; 
+ Thu, 05 Jun 2025 01:34:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1749112445; x=1749717245; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=eStL4HphkzAKYOy6BeV4qdJYcZ2vzM8701fTzYc6Q4I=;
+ b=BtGN7SqjaEvIjy0uFBatVcMU1q8Y8t+BA7px4M21k+nKr2ULaN+2ij1nBFkqy1YOZt
+ nSlByjLsV7Tby8puaLoe7AIJ/mYZyQ70YghbNd+zfm5e8bPnQbrixSmLzmaxBXPbqGI9
+ T7DCPpjPYmUMugN4q5y8n5X8/LpnguQfCfHRfIVS40lzEUaZT/aLu4QXWyaAcYe5ni5f
+ 0f43WHsGZPUw4RydJDXTUnytsQmfJIYkmaRHbGkNT/XR1XifUVQAFV6aRKzO1cCuRVho
+ 5NPmZOR9snf5CLAcksNt8iY76eCeInVC+6MK+0hCwGAj0N1X97irNohXJzrGpSvLZ0IC
+ xqNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749112445; x=1749717245;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eStL4HphkzAKYOy6BeV4qdJYcZ2vzM8701fTzYc6Q4I=;
+ b=XYRCjUhnvpaw5ERh5hW50Yvw3lJLq/6ePmRVXcxdH+4ZIDutjNPF4OmV01OQzmhp11
+ n4SLbcYsnzyQQWf/eLECJbNnhciQpb/KeBimPu17t/sRuqC5zzo+gES7aUvLoykNCVZf
+ ypXx3jkROk/Ipq4BX3sDSjBjVVdflK+oaFBk9/xmFgY6DqKmZRmRqWuPugeUtc2tmP+t
+ EtTrGVCQtTPFKiOB0Xew7o09gu72mkh70ewpir+W/MMjOOmNLr6uvkNyFBQrnOR2d51N
+ mX8aWn75quAiCXGjl34b7I4dqr77cBEgV/HxK/qwiIhPay8HDa1P4rCi22WW2ppJ4RJh
+ e8qQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUpQAT8aRbG+D63/yw7JNzIgF9IV6eFBwhx4LroUSvL+RubzUUoCeoyO9z1iPBk8o3vmI8bb3vqlYxxdQ==@nongnu.org
+X-Gm-Message-State: AOJu0Yyh/w/1m1f0VR4dtxoHU5YrMaGJVeRiezY47yWXchWd4RD87X7X
+ Bm12ovIWcneldUqVsj/f8tlpzhjCribLg6ubosKaL6FmdvmhkGEobV4+
+X-Gm-Gg: ASbGnctKq+X8UBHZGJTzbbel1e83m/kB5Uer1BBJq+AhfcH6Kz5+YjtAscZTO1JjYhV
+ W8gxC613D2me/QLhgikRMyh7egh5ebMCJAvDtlLL26eXbIzND8v/4+2d7FIdq8K6UDroyJVxKVR
+ jhTL4HRR1NzSzK8Oa/AFO9gByXkD1yMiQjomFouMCFLNqnoJ98uoZWjm6vZSg9iZd6sHIfx4iKe
+ E9uWcshbkLjEYb871vNc27tc31yyWFRVn2eYyOZY0kc8sGKlHHBjGJ7mhlgGGE3tHLbLJWl/Fha
+ 9Hgq2w301SwGO5abU8ocPLzOW1m8qsqSxCfOoolTgVoguSiKKVetsY4o4rgKwVea4qZHNRIbCfd
+ 4SfG7P4GSXzct6je77eBD+pTHrjJNrNWCGRI=
+X-Google-Smtp-Source: AGHT+IEkoXeV5o7x/5pmow9f3X4ZVXCVii4DZIF1fVUGJdP9ZJ2g1dkJMg7Boa3srl6KD8jZddamow==
+X-Received: by 2002:a05:6a00:b81:b0:739:50c0:b3fe with SMTP id
+ d2e1a72fcca58-7480b23acb1mr9361471b3a.8.1749112444852; 
+ Thu, 05 Jun 2025 01:34:04 -0700 (PDT)
+Received: from localhost.localdomain (172-234-80-15.ip.linodeusercontent.com.
+ [172.234.80.15]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-747afda8b71sm12326628b3a.0.2025.06.05.01.34.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Jun 2025 01:34:04 -0700 (PDT)
+From: oenhan@gmail.com
+X-Google-Original-From: chenhgs@chinatelecom.cn
+To: mst@redhat.com,
+	clg@redhat.com
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ Huguanshen Chen <chenhgs@chinatelecom.cn>,
+ Heng Zhang <zhangh121@chinatelecom.cn>,
+ Huaitong Han <hanht2@chinatelecom.cn>
+Subject: [PATCH] vfio, migration: save device parent pci config
+Date: Thu,  5 Jun 2025 16:33:38 +0800
+Message-ID: <20250605083338.1845911-1-chenhgs@chinatelecom.cn>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250604133439.1592-4-alireza.sanaee@huawei.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=oenhan@gmail.com; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,21 +99,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 04, 2025 at 02:34:36PM +0100, Alireza Sanaee wrote:
-> Date: Wed, 4 Jun 2025 14:34:36 +0100
-> From: Alireza Sanaee <alireza.sanaee@huawei.com>
-> Subject: [PATCH v12 3/6] bios-tables-test: prepare to change ARM ACPI virt
->  PPTT
-> X-Mailer: git-send-email 2.34.1
-> 
-> Prepare to update `build_pptt` function to add cache description
-> functionalities, thus add binaries in this patch.
-> 
-> Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-> ---
->  tests/qtest/bios-tables-test-allowed-diff.h | 3 +++
->  1 file changed, 3 insertions(+)
+From: Huguanshen Chen <chenhgs@chinatelecom.cn>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+On arm64 virtualization platform, vfio-user devices lose their interrupts after
+migration to the destination. This issue occurs because qemu fails to deliver
+the msi device id to the vGIC. The error device id is calculated based on the
+device's parent bus, so it is essential to save the parent pci config to
+prevent this issue.
+
+Backtrace:
+QEMU:
+ #0 qdev_get_parent_bus
+ #1 pci_dev_bus_num
+ #2 pci_req_id_cache_extract
+ #3 pci_requester_id
+ #4 kvm_irqchip_update_msi_route delivers 0(error id) to vGIC
+
+KVM:
+ #0 find_its_device returns error
+ #1 find_ite
+ #2 vgic_its_resolve_lpi
+ #3 vgic_its_trigger_msi
+ #4 vgic_its_inject_msi
+ #5 kvm_set_msi
+ #6 kvm_send_userspace_msi
+
+Reported-by: Heng Zhang <zhangh121@chinatelecom.cn>
+Signed-off-by: Huguanshen Chen <chenhgs@chinatelecom.cn>
+Signed-off-by: Huaitong Han <hanht2@chinatelecom.cn>
+---
+ hw/vfio/pci.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index a1bfdfe375..442113d0b7 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2654,6 +2654,11 @@ static int vfio_pci_save_config(VFIODevice *vbasedev, QEMUFile *f, Error **errp)
+ {
+     VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
+ 
++    PCIDevice *pdev = &vdev->pdev;
++    BusState *qbus = qdev_get_parent_bus(DEVICE(pdev));
++
++    pci_device_save(PCI_DEVICE(qbus->parent), f);
++
+     return vmstate_save_state_with_err(f, &vmstate_vfio_pci_config, vdev, NULL,
+                                        errp);
+ }
+@@ -2662,6 +2667,7 @@ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
+ {
+     VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
+     PCIDevice *pdev = &vdev->pdev;
++    BusState *qbus = qdev_get_parent_bus(DEVICE(pdev));
+     pcibus_t old_addr[PCI_NUM_REGIONS - 1];
+     int bar, ret;
+ 
+@@ -2669,6 +2675,11 @@ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
+         old_addr[bar] = pdev->io_regions[bar].addr;
+     }
+ 
++    ret = pci_device_load(PCI_DEVICE(qbus->parent), f);
++    if (ret) {
++        return ret;
++    }
++
+     ret = vmstate_load_state(f, &vmstate_vfio_pci_config, vdev, 1);
+     if (ret) {
+         return ret;
+-- 
+2.43.5
 
 
