@@ -2,57 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE916ACED94
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C66ACED93
 	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:28:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN7ob-0001bs-Uf; Thu, 05 Jun 2025 06:27:17 -0400
+	id 1uN7oc-0001d5-OA; Thu, 05 Jun 2025 06:27:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uN7oP-0001Zy-QN
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:27:07 -0400
+ id 1uN7oP-0001Zz-QS
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:27:08 -0400
 Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uN7oN-00053M-M4
+ id 1uN7oN-00053T-M4
  for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:27:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1749119224; x=1780655224;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=SRhFqtGWCK1GSssH5xMCM8ZE6KbAEs42kQvs+Af0Zn8=;
- b=YhjxRBeKwbi5/MkPrEIxvLU1oZpa0S7Yz2JXYD7lzDLn/q+R66FOg8QO
- txkTEVmmtT1yqe+Z91Wq8ncUoCCTHY1bKqIozofToB+W7Tk93aCtU3tLL
- M3H/jEOs9erDARQkGqZjFnji86iVxVeDo50lMSr62/xtyqXdeOWzLdWCH
- qy5I8mzYIiZj/fGLDA6Zj70vSqlehyxbZ7MFMjRY+Td/mSzJUnnrzUmPX
- SPyLFZT71M6yAVaC3txiZt9/rprttgirASYEnPh4QCP1WzbBVYz1bv2zu
- MNy+0gwtQRqL8fUEvE3E5G+WsMyKwOj68FsOqejQC5nMTRiMauT2Z/0XT w==;
-X-CSE-ConnectionGUID: 4SbPhJRDQheEGpDsk88wMQ==
-X-CSE-MsgGUID: p3c4nLOdR4qOE2/6Pr4zWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="51325291"
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="51325291"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=BSJZANj/wCKPPJdGoe9wGJ/+dYAD9goazUL51rpWnR8=;
+ b=a35HwpwNC9LrZztYQRx+aTEpkdF99s2+dJqLJAqqLW8+Iec4fH9UrFaq
+ akQ+rst5e0oug1cqmjn/5pnMjOczeWyWHMnPFkSHictiIaQc0u3RFrXFr
+ /k50mXi0auJMfbMG4i1z0n1S2mE7mn6Z3DC90L3Dg6RjibZEeMQcT5PYS
+ Pg4MdleCRcJ+laXsiYPrdxxsAyZkXU7SHn76953wSABB6S6cpKGJVisJ7
+ wP1NpSsA6RSdwFM+qd7bka0qGN7xD/gx3XWentCXaeTRktqSs8EA+tH+0
+ nAoghf7VeEg/IZSNkRcDSeMzmqTmnEJ5ffDI3+Kv1+Zaej7mSp1OOhgII A==;
+X-CSE-ConnectionGUID: aMd4rn/RRzWoMW2b3dveSQ==
+X-CSE-MsgGUID: 6F9gs5BVR2iChZ9vjeNxhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="51325298"
+X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="51325298"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 03:27:00 -0700
-X-CSE-ConnectionGUID: 8q/G9KVAQZuXtTeky78fkQ==
-X-CSE-MsgGUID: 4q5mFcZcT96dYt7KQI73qA==
+ 05 Jun 2025 03:27:01 -0700
+X-CSE-ConnectionGUID: c5rVclFRRsWmCbn3I1SYGw==
+X-CSE-MsgGUID: oxpYSYkESKWSKoIwK43Dbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="145808605"
+X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="145808618"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 03:26:58 -0700
+ 05 Jun 2025 03:27:00 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: chao.p.peng@intel.com, david@redhat.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v3 0/5] Fix definition of classes with wrong parent
-Date: Thu,  5 Jun 2025 18:23:06 +0800
-Message-Id: <20250605102311.148171-1-zhenzhong.duan@intel.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH v3 1/5] virtio-mem: Fix definition of VirtIOMEMClass
+Date: Thu,  5 Jun 2025 18:23:07 +0800
+Message-Id: <20250605102311.148171-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250605102311.148171-1-zhenzhong.duan@intel.com>
+References: <20250605102311.148171-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.14;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -79,56 +84,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Parent of VirtIOMEMClass is VirtioDeviceClass rather than VirtIODevice.
 
-This fix definition of some classes with wrong parent.
-Used below script to get a list, hoping all are addressed.
+Fixes: 910b25766b33 ("virtio-mem: Paravirtualized memory hot(un)plug")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/virtio/virtio-mem.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-find "$directory" -type d \( -name "roms" -o -name "build" \) -prune -o -type f \( -name "*.c" -o -name "*.h" \) -print | while read -r file; do
-    awk '/^(struct |typedef struct )/ { 
-        first = $0;
-        getline second; 
-        getline third; 
-        if (first ~ /[Cc]lass/ && !(second ~ /Class/) && !(third ~ /Class/)) {
-            print FILENAME ":" NR-2 ": " first; 
-            print FILENAME ":" NR-1 ": " second; 
-            print FILENAME ":" NR ": " third;
-        }
-    }' "$file"
-done
-
-patch4/5 are more like cleanups instead of fixes as those class_size are not
-initialized so class definition doesn't take effect.
-
-Thanks
-Zhenzhong
-
-Changelog:
-v3:
-- s/Suggested-by/Reported-by on patch2 (David)
-- add Closes: tag (David)
-- collect RB
-
-v2:
-- add more fixes per David
-
-
-Zhenzhong Duan (5):
-  virtio-mem: Fix definition of VirtIOMEMClass
-  virtio-pmem: Fix definition of VirtIOPMEMClass
-  hw/gpio/aspeed: Fix definition of AspeedGPIOClass
-  hw/char/sh_serial: Remove dummy definition of SH_SERIAL class
-  hw/riscv/riscv-iommu: Remove definition of RISCVIOMMU[Pci|Sys]Class
-
- include/hw/gpio/aspeed_gpio.h   | 2 +-
- include/hw/riscv/iommu.h        | 6 ++----
- include/hw/virtio/virtio-mem.h  | 2 +-
- include/hw/virtio/virtio-pmem.h | 2 +-
- hw/char/sh_serial.c             | 4 +---
- hw/riscv/riscv-iommu-pci.c      | 6 ------
- hw/riscv/riscv-iommu-sys.c      | 6 ------
- 7 files changed, 6 insertions(+), 22 deletions(-)
-
+diff --git a/include/hw/virtio/virtio-mem.h b/include/hw/virtio/virtio-mem.h
+index bc4f787772..e0ab31b45a 100644
+--- a/include/hw/virtio/virtio-mem.h
++++ b/include/hw/virtio/virtio-mem.h
+@@ -134,7 +134,7 @@ struct VirtioMemSystemReset {
+ 
+ struct VirtIOMEMClass {
+     /* private */
+-    VirtIODevice parent;
++    VirtioDeviceClass parent_class;
+ 
+     /* public */
+     void (*fill_device_info)(const VirtIOMEM *vmen, VirtioMEMDeviceInfo *vi);
 -- 
 2.34.1
 
