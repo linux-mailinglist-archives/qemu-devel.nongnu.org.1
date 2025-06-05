@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FBDACF449
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 18:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBBD3ACF44E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 18:29:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNDQj-0006zZ-SA; Thu, 05 Jun 2025 12:27:01 -0400
+	id 1uNDQi-0006yt-Tb; Thu, 05 Jun 2025 12:27:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uNDQi-0006yv-7g
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:00 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ id 1uNDQg-0006y2-Ts
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:26:59 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uNDQe-0007vp-CX
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:26:59 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-acb39c45b4eso187173066b.1
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 09:26:55 -0700 (PDT)
+ id 1uNDQe-0007vu-J2
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:26:58 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-adb2bd27c7bso188933366b.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 09:26:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749140814; x=1749745614; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749140815; x=1749745615; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QmEv0t2K65ULl4o62PaYkBn9JBHNC8LgfDFkj21skSI=;
- b=isMBnWfORyJ24LBUsYeWmB8IKn5VXKT9BPC2qZra5WgPeVOlbYDh9aRAcbzCfCFj8+
- 7fgxdY7LXdJSO2rbuNPngDO41BhKekt4HTfhTuYH8p5/iC9XqEl1HNP9SD7aeBYCL3R7
- YoDqika75F//vy6YAcnOnHiU74dLHjVMq8mZYLpyrZ8EadCbZ7lZ7ePxijWfGXvjwAwQ
- Tp3QczmkxPv5ass0UalgJeRAeJcesMGnAExZt14NChSyzecy1patUuvWcDQfKV1Hknbe
- MMn86uGUS7z9209GMEpVRAUSan8N+HXgS5UfwGKamruCREeFfk/nxMzYXqZm2kQJTxT+
- pwVA==
+ bh=0vA5SxIxLA+Xz/34QHBA8A6/byxaPtxZW/N/rmkKPYk=;
+ b=uEZ7qWLz25JECCmRG1Dv0PEnbJwYYiYSd//yzthQnfyhFor5fkpjyf8ZKQKt9+yn8k
+ yoQCZEjY25QiBrB1m+CDtRA6HL2TwziOeswEeuN9n0pGyDx+XWsy8GIlAyS/i35BcM1b
+ Vt0wOoZGszzyjlP4n9Fhw3sJusrH+ckTsS/3wspGYoQsShclxQeHPc3k0pO43KmjNhAi
+ Ri51qo3R5J4DZfg6pkJz+7/cnCEnYXt++RgHDry95aEo2/GmfNAgRGkqSwW3h1FxtzsR
+ +hGdvEt9T41COnvgcdzkXwnw4bljedTzMt8osMxHV8xag7NWXUlxyws4XXK1HAhtEH01
+ l7iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749140814; x=1749745614;
+ d=1e100.net; s=20230601; t=1749140815; x=1749745615;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QmEv0t2K65ULl4o62PaYkBn9JBHNC8LgfDFkj21skSI=;
- b=Ls7NDi7PklQQIZIZ6K7Qb2XdrlOXv5tfPBmMfwSauKAEu9os5zSIouHD407pcEevJJ
- Qs0qir4GpUBDq9j6Pl5HEGjUPpGAtOBMP6C5MVZ/czvlrEkAHhX+xIee6p2xv5vSFGOg
- HwKc2H3wx7/dty0ttJFN+vlFdHejbQ+xmeSzQo2ghYxYaYfXHmBezUiX8enHyi0MuseB
- xMQyvSaDpbnLwIGlCEMV+obqPAZaI5LPB00MuGnZpDi5pGO8Bgk8baGaG8c6Pzj3+8Dx
- GbI1JZULq3nPv4rPNOZMZ1QWI05HiMN7dkgKBUVkGELs7eJKdpVmplddCd16j9Oo1zJC
- OKIQ==
-X-Gm-Message-State: AOJu0Yy9nnGZvkGke7ixi1wHL1VX1GFMF6ZmFt0MDQdd6YuieqeL44t1
- JNg+YA1/KABifA9LBVErvBFn2HCHlo/8To1bkI39AkkJZrPg5WT/oH1j6yWGQ184Wpo=
-X-Gm-Gg: ASbGncvai3b8bbJNW8QSH8Z/QHrYoyKcAfTOiYTxQH0VwhH4lrZRwU7MsA2lKMzOIbs
- eV54URVfLXwkQYkdXMk9iLucIOFroffCGX/OcCtw1wHI7gxN5tMkxQCE4pgk9ThYeTdrVC2bFEz
- KJe0ZjEbeFh8vIojmniCDfbhrylAdiOlsVUpRoAocjiSEWVHm5ii5ADn7itZdl4/6awLTMbjZPo
- HKFtwaaSpcdUq2N3su/WcVGJg9+KFg1Zbi147aQt7XIXpjE8aymD6ZwteQkbf923ZdhGXHqgrlI
- bdzWFfouSfYIhJ4IyZk3uZ6kehyPvdJ5+8LVHawtemXZdARxOLTraNVlS2Ozn/8=
-X-Google-Smtp-Source: AGHT+IE8fKpNZa5y651ZqWjvovsE0eDyswGTucYubeD2toF7LCpjemeWEtwYT9G2bQ8N7wqwG9VqmQ==
-X-Received: by 2002:a17:906:9f8f:b0:acb:abff:a5b6 with SMTP id
- a640c23a62f3a-addf8c87401mr692490566b.13.1749140814332; 
+ bh=0vA5SxIxLA+Xz/34QHBA8A6/byxaPtxZW/N/rmkKPYk=;
+ b=j/7Bwue1xMOS0NSRxnZSj5ABggPhtmXmwQnU2jTWd6KeTglmLiBCnlLHTLCmY3twqS
+ HhmqIIfKOuj+M7pmPPB1bqebziqU+ZVOeVm+N4/JzV85LFRYV6OwNSCDY1/MEKD4eXKt
+ p8t3PkU/FWGefdFpeRYn2AxySQiRtkiDyQC9m04QpMzamPv06wlyJfLvDwgSwtiQEh0Z
+ uHTSw6pFRrDjO6BFH4XePTOQiNTZsJUIRj0C6gOLdxHlDdQ24oAcPxYp4YyyTosxUvL9
+ z1i1sCT5d2OoZDGL28WjjJLfFrGaLjC7wRr0anyK1KyU2iirTSZ4dRb4EgKI2J0odktk
+ QcSQ==
+X-Gm-Message-State: AOJu0YybDT7b5qsf1S26uaw1Og26IKBYd8fAJ2/hO4c36QYhjvno7oeA
+ mwPozjVEXlQjX7Rm4Mb1H2GzhilcCWwK2Qq7VQaGR2k8glJr2rixeCbsM83rYOzceUU=
+X-Gm-Gg: ASbGncvgrMrzhgByv+X7DWp9mlDkMEu0Ge9d1LbdM4qLLtMdtk6B17VVBYGIbaYvRFg
+ kR60+u/Osz97o6FRP96ms1n4PcvlZ+9TUlXD3sH1h4nulPcI7ED3veS+tdLZH7oTOPXF8jrm+pO
+ 6B0RWoZwWD3ZNQsZNeudmkh5mcHMLdJVFbnlC0WIft2yiN9iQ0ual2/q+6RAtYTXGhY0rxfr+Y5
+ jGpNfjuyD66YOsQZ3HBJ3gaI+MkewRfqt0CFRBlChVXtXtNRv3+uqWBrDsyo5IOBa2Kds3dyhK8
+ 1O7uMIkMvVAF+n0Z2o2wEZsLKsel/T7FpaYU4naTHl9SskJt9RJE
+X-Google-Smtp-Source: AGHT+IHzP18Nc0O524Rqx9NYOVjNye5wj1CnEZyt0L9t3ySstdf/b711TiRB03DMKBblqH6hCERv1w==
+X-Received: by 2002:a17:907:1c1e:b0:add:ed0d:a56c with SMTP id
+ a640c23a62f3a-addf8a813cbmr718258566b.0.1749140814716; 
  Thu, 05 Jun 2025 09:26:54 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d850d88sm1280215966b.77.2025.06.05.09.26.52
+ a640c23a62f3a-addfae39c05sm260326266b.156.2025.06.05.09.26.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Jun 2025 09:26:52 -0700 (PDT)
+ Thu, 05 Jun 2025 09:26:53 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A1D955F7F5;
+ by draig.lan (Postfix) with ESMTP id B6EE15F7F6;
  Thu, 05 Jun 2025 17:26:51 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Julian Armistead <julian.armistead@linaro.org>,
- Jim MacArthur <jim.macarthur@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PULL 03/17] tests/tcg: make aarch64 boot.S handle different starting
- modes
-Date: Thu,  5 Jun 2025 17:26:36 +0100
-Message-ID: <20250605162651.2614401-4-alex.bennee@linaro.org>
+Cc: Nabih Estefan <nabihestefan@google.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 04/17] tests/qtest: Avoid unaligned access in IGB test
+Date: Thu,  5 Jun 2025 17:26:37 +0100
+Message-ID: <20250605162651.2614401-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250605162651.2614401-1-alex.bennee@linaro.org>
 References: <20250605162651.2614401-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -104,270 +106,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the boot.S code assumes everything starts at EL1. This will
-break things like the memory test which will barf on unaligned memory
-access when run at a higher level.
+From: Nabih Estefan <nabihestefan@google.com>
 
-Adapt the boot code to do some basic verification of the starting mode
-and the minimal configuration to move to the lower exception levels.
-With this we can run the memory test with:
+  ../tests/qtest/libqos/igb.c:106:5: runtime error: load of misaligned address 0x562040be8e33 for type 'uint32_t', which requires 4 byte alignment
 
-  -M virt,secure=on
-  -M virt,secure=on,virtualization=on
-  -M virt,virtualisation=on
+Instead of straight casting the uint8_t array, we can use ldl_le_p and
+lduw_l_p to assure the unaligned access works properly against
+uint32_t and uint16_t.
 
-If a test needs to be at a particular EL it can use the semihosting
-command line to indicate the level we should execute in.
-
-Cc: Julian Armistead <julian.armistead@linaro.org>
-Cc: Jim MacArthur <jim.macarthur@linaro.org>
+Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+Reviewed-by: Laurent Vivier <lvivier@redhat.com>
+Tested-by: Laurent Vivier <lvivier@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20250429155621.2028198-1-nabihestefan@google.com>
+[AJB: fix commit message, remove unneeded casts]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250603110204.838117-4-alex.bennee@linaro.org>
+Message-ID: <20250603110204.838117-5-alex.bennee@linaro.org>
 
-diff --git a/tests/tcg/aarch64/Makefile.softmmu-target b/tests/tcg/aarch64/Makefile.softmmu-target
-index 9c52475b7a..f7a7d2b800 100644
---- a/tests/tcg/aarch64/Makefile.softmmu-target
-+++ b/tests/tcg/aarch64/Makefile.softmmu-target
-@@ -68,7 +68,8 @@ run-plugin-semiconsole-with-%: semiconsole
+diff --git a/tests/qtest/libqos/igb.c b/tests/qtest/libqos/igb.c
+index f40c4ec4cd..ab3ef6f0c3 100644
+--- a/tests/qtest/libqos/igb.c
++++ b/tests/qtest/libqos/igb.c
+@@ -104,10 +104,10 @@ static void igb_pci_start_hw(QOSGraphObject *obj)
+     e1000e_macreg_write(&d->e1000e, E1000_RDT(0), 0);
+     e1000e_macreg_write(&d->e1000e, E1000_RDH(0), 0);
+     e1000e_macreg_write(&d->e1000e, E1000_RA,
+-                        le32_to_cpu(*(uint32_t *)address));
++                        ldl_le_p(address));
+     e1000e_macreg_write(&d->e1000e, E1000_RA + 4,
+                         E1000_RAH_AV | E1000_RAH_POOL_1 |
+-                        le16_to_cpu(*(uint16_t *)(address + 4)));
++                        lduw_le_p(address + 4));
  
- # vtimer test needs EL2
- QEMU_EL2_MACHINE=-machine virt,virtualization=on,gic-version=2 -cpu cortex-a57 -smp 4
--run-vtimer: QEMU_OPTS=$(QEMU_EL2_MACHINE) $(QEMU_BASE_ARGS) -kernel
-+QEMU_EL2_BASE_ARGS=-semihosting-config enable=on,target=native,chardev=output,arg="2"
-+run-vtimer: QEMU_OPTS=$(QEMU_EL2_MACHINE) $(QEMU_EL2_BASE_ARGS) -kernel
- 
- # Simple Record/Replay Test
- .PHONY: memory-record
-diff --git a/tests/tcg/aarch64/system/boot.S b/tests/tcg/aarch64/system/boot.S
-index a5df9c173d..8bfa4e4efc 100644
---- a/tests/tcg/aarch64/system/boot.S
-+++ b/tests/tcg/aarch64/system/boot.S
-@@ -16,6 +16,7 @@
- #define semihosting_call hlt 0xf000
- #define SYS_WRITEC	0x03	/* character to debug channel */
- #define SYS_WRITE0	0x04	/* string to debug channel */
-+#define SYS_GET_CMDLINE 0x15	/* get command line */
- #define SYS_EXIT	0x18
- 
- 	.align	12
-@@ -70,21 +71,172 @@ lower_a32_sync:
- lower_a32_irq:
- lower_a32_fiq:
- lower_a32_serror:
-+	adr	x1, .unexp_excp
-+exit_msg:
- 	mov	x0, SYS_WRITE0
--	adr	x1, .error
- 	semihosting_call
- 	mov	x0, 1 /* EXIT_FAILURE */
- 	bl 	_exit
- 	/* never returns */
- 
- 	.section .rodata
--.error:
--	.string "Terminated by exception.\n"
-+.unexp_excp:
-+	.string "Unexpected exception.\n"
-+.high_el_msg:
-+	.string "Started in lower EL than requested.\n"
-+.unexp_el0:
-+	.string "Started in invalid EL.\n"
-+
-+	.align 8
-+.get_cmd:
-+	.quad	cmdline
-+	.quad	128
- 
- 	.text
- 	.align 4
- 	.global __start
- __start:
-+	/*
-+         * Initialise the stack for whatever EL we are in before
-+	 * anything else, we need it to be able to _exit cleanly.
-+	 * It's smaller than the stack we pass to the C code but we
-+	 * don't need much.
-+	 */
-+	adrp	x0, system_stack_end
-+	add	x0, x0, :lo12:system_stack_end
-+	mov	sp, x0
-+
-+	/*
-+	 * The test can set the semihosting command line to the target
-+	 * EL needed for the test. However if no semihosting args are set we will
-+	 * end up with -kernel/-append data (see semihosting_arg_fallback).
-+	 * Keep the normalised target in w11.
-+	 */
-+	mov	x0, SYS_GET_CMDLINE
-+	adr	x1, .get_cmd
-+	semihosting_call
-+	adrp	x10, cmdline
-+	add	x10, x10, :lo12:cmdline
-+	ldrb	w11, [x10]
-+
-+	/* sanity check, normalise char to EL, clamp to 1 if outside range */
-+	subs w11, w11, #'0'
-+	b.lt el_default
-+	cmp  w11, #3
-+	b.gt el_default
-+	b 1f
-+
-+el_high:
-+	adr	x1, .high_el_msg
-+	b	exit_msg
-+
-+el_default:
-+	mov	w11, #1
-+
-+1:
-+	/* Determine current Exception Level */
-+	mrs	x0, CurrentEL
-+	lsr	x0, x0, #2	  /* CurrentEL[3:2] contains the current EL */
-+
-+	/* Are we already in a lower EL than we want? */
-+	cmp	w11, w0
-+	bgt	el_high
-+
-+	/* Branch based on current EL */
-+	cmp	x0, #3
-+	b.eq	setup_el3
-+	cmp	x0, #2
-+	b.eq	setup_el2
-+	cmp	x0, #1
-+	b.eq	at_testel	     /* Already at EL1, skip transition */
-+
-+	/* Should not be at EL0 - error out */
-+	adr 	x1, .unexp_el0
-+	b	exit_msg
-+
-+setup_el3:
-+	/* Ensure we trap if we get anything wrong */
-+	adr	x0, vector_table
-+	msr	vbar_el3, x0
-+
-+	/* Does the test want to be at EL3? */
-+	cmp	w11, #3
-+	beq	at_testel
-+
-+	/* Configure EL3 to for lower states (EL2 or EL1) */
-+	mrs	x0, scr_el3
-+	orr	x0, x0, #(1 << 10)    /* RW = 1: EL2/EL1 execution state is AArch64 */
-+	orr	x0, x0, #(1 << 0)     /* NS = 1: Non-secure state */
-+	msr	scr_el3, x0
-+
-+	/*
-+	 * We need to check if EL2 is actually enabled via ID_AA64PFR0_EL1,
-+	 * otherwise we should just jump straight to EL1.
-+	 */
-+	mrs	x0, id_aa64pfr0_el1
-+	ubfx	x0, x0, #8, #4	      /* Extract EL2 field (bits 11:8) */
-+	cbz	x0, el2_not_present   /* If field is 0 no EL2 */
-+
-+
-+	/* Prepare SPSR for exception return to EL2 */
-+	mov	x0, #0x3c9	      /* DAIF bits and EL2h mode (9) */
-+	msr	spsr_el3, x0
-+
-+	/* Set EL2 entry point */
-+	adr	x0, setup_el2
-+	msr	elr_el3, x0
-+
-+	/* Return to EL2 */
-+	eret
-+
-+el2_not_present:
-+	/* Initialize SCTLR_EL1 with reset value */
-+	msr	sctlr_el1, xzr
-+
-+	/* Set EL1 entry point */
-+	adr	x0, at_testel
-+	msr	elr_el3, x0
-+
-+	/* Prepare SPSR for exception return to EL1h with interrupts masked */
-+	mov	x0, #0x3c5	      /* DAIF bits and EL1h mode (5) */
-+	msr	spsr_el3, x0
-+
-+	isb			      /* Synchronization barrier */
-+	eret			      /* Jump to EL1 */
-+
-+setup_el2:
-+	/* Ensure we trap if we get anything wrong */
-+	adr	x0, vector_table
-+	msr	vbar_el2, x0
-+
-+	/* Does the test want to be at EL2? */
-+	cmp	w11, #2
-+	beq	at_testel
-+
-+	/* Configure EL2 to allow transition to EL1 */
-+	mrs	x0, hcr_el2
-+	orr	x0, x0, #(1 << 31)    /* RW = 1: EL1 execution state is AArch64 */
-+	msr	hcr_el2, x0
-+
-+	/* Initialize SCTLR_EL1 with reset value */
-+	msr	sctlr_el1, xzr
-+
-+	/* Set EL1 entry point */
-+	adr	x0, at_testel
-+	msr	elr_el2, x0
-+
-+	/* Prepare SPSR for exception return to EL1 */
-+	mov	x0, #(0x5 << 0)	      /* EL1h (SPx), with interrupts disabled */
-+	msr	spsr_el2, x0
-+
-+	/* Return to EL1 */
-+	eret
-+
-+	/*
-+	 * At the target EL for the test, usually EL1. Note we still
-+	 * set everything up as if we were at EL1.
-+	 */
-+at_testel:
- 	/* Installs a table of exception vectors to catch and handle all
- 	   exceptions by terminating the process with a diagnostic.  */
- 	adr	x0, vector_table
-@@ -100,7 +252,7 @@ __start:
- 	 * maps RAM to the first Gb. The stage2 tables have two 2mb
- 	 * translation block entries covering a series of adjacent
- 	 * 4k pages.
--	*/
-+	 */
- 
- 	/* Stage 1 entry: indexed by IA[38:30] */
- 	adr	x1, .				/* phys address */
-@@ -198,7 +350,8 @@ __start:
- 	orr	x0, x0, #(3 << 16)
- 	msr	cpacr_el1, x0
- 
--	/* Setup some stack space and enter the test code.
-+	/*
-+	 * Setup some stack space before we enter the test code.
- 	 * Assume everything except the return value is garbage when we
- 	 * return, we won't need it.
- 	 */
-@@ -233,6 +386,11 @@ __sys_outc:
- 	ret
- 
- 	.data
-+
-+	.align 8
-+cmdline:
-+	.space 128, 0
-+
- 	.align	12
- 
- 	/* Translation table
-@@ -246,6 +404,10 @@ ttb_stage2:
- 	.space	4096, 0
- 
- 	.align	12
-+system_stack:
-+	.space 4096, 0
-+system_stack_end:
-+
- stack:
- 	.space 65536, 0
- stack_end:
+     /* Set supported receive descriptor mode */
+     e1000e_macreg_write(&d->e1000e,
 -- 
 2.47.2
 
