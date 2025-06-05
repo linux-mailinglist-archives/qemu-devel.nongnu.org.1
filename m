@@ -2,105 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D75BACF9EB
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 01:10:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD37ACFA16
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 01:43:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNJhL-0003yB-7s; Thu, 05 Jun 2025 19:08:35 -0400
+	id 1uNKEG-0000LW-UW; Thu, 05 Jun 2025 19:42:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
- id 1uNJhI-0003xj-21
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 19:08:32 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jhkim@linux.ibm.com>)
- id 1uNJhE-0005dA-KT
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 19:08:31 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 555DbCQt008118;
- Thu, 5 Jun 2025 23:08:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=Aev6lqh3nmqk2ryh4iJFfKFa6gRm46Sw+r6R0gl8/
- SI=; b=DUpDNZv+3cZtrkffh0vq0J9CS4swMDzjXh6PuCCFD2Y9/ziFxkbRUiMtm
- tLJYnSxNMNZOmwklKcegNO1yOyOwXOAiygsjb+gkClnzMw0fICCVLLglmokkAE67
- wwh5L1rmHa0p8J4GB5LDGr4jDY+eJqhTyHO0IcN9jdN2C8gtrmha+E/I2w0VpBUS
- Eyi6HNb1cyyjtDZx3vq++q0MPgc6YXF2ljEfUlniwi4kg0UaexE9k1aoVAjzRL0n
- 6VrCm+K7oi+QycNiPf6lCVbovmyalZ6pBxNRkWR8+pPDLvvrKXVjGepQiyiMUKm/
- +Shez4ONDjUzXb+krLoCn8v/ldmSw==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47332yn4ks-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Jun 2025 23:08:24 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 555KQtFB028434;
- Thu, 5 Jun 2025 23:08:23 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 470eakppbf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Jun 2025 23:08:23 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 555N8LTw62587218
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Jun 2025 23:08:22 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D273058068;
- Thu,  5 Jun 2025 23:08:21 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 921A05805D;
- Thu,  5 Jun 2025 23:08:21 +0000 (GMT)
-Received: from IBM-GLTZVH3.ibm.com (unknown [9.61.248.176])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  5 Jun 2025 23:08:21 +0000 (GMT)
-From: Jaehoon Kim <jhkim@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
+ id 1uNKEF-0000LF-8m
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 19:42:35 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
+ id 1uNKED-0004fr-8S
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 19:42:35 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-739b3fe7ce8so1391987b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 16:42:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1749166951; x=1749771751; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=aS7/2pgQjaGIOkdRt5swxrbQrIIOnIX9dYGmTh+yU1s=;
+ b=czD3QTMeSpNL1vzzqGVNejwplppT3c0E/CcRL2Duda+uxRk7LwoQFQx7Ft3FQ2sWO7
+ sJv3rW8O6jVbymCXSng3GjmxSfuZCzCvWU2qCI3LbmlPiiv3hf92gWocLVdG+Ic7rw5J
+ jW7RpF2dNwGA9mzU3xOkd2z/WhAeRc46jZVCzz8kdreOdlWVE1c/kTsCIOCowIJJCq7h
+ rZMDsEEXRiUmBlSNGx6/JwvjJnrfQYfIhDMRAyQnNm9yjCD5dhFFpBHTelomPIBOmScM
+ N22QtGj3bRzJ0BTd0ayaEmJe0wEvxz+Qm4Mm9KBZFuxnuFyvlotNO2oZh/PBBP+YwiGu
+ i3ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749166951; x=1749771751;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aS7/2pgQjaGIOkdRt5swxrbQrIIOnIX9dYGmTh+yU1s=;
+ b=nIL2aBo2AbbpVyoDWFXkiR7V20li9e62PI4RhGwwWY+U4W0YDd3AX812VxM7m3X+jt
+ f8mbjBi2S/hTfJBvqjLjKAE0zvJXUD2i9V5r4DkIPuxhfZt4QynVNBsax5rTbcDRnEp8
+ 4qCMLUEw9IA0gdj0neQ7EXYVwS+hsmIS6vrRxS/ncA4C6IlBPO2MwpJtf2OJAQxU43hC
+ 9e1qfYhIQWlA+08ff3K/S82JxkXHgtI/1nhpPTSwb9OG+h3wnJP7keGaNkyAZdB1xcIW
+ YziJ4At/osniVruCS+bfF3f4hzgJgYRrkMaCVlV+FfleYgqNG4Ovvg897UcqzoL5Tnl9
+ IlIQ==
+X-Gm-Message-State: AOJu0Yw8hxkDMNsXrDfXJMoXoakv8rC/65skoP1BCmu3u6TpFCoTDXpz
+ baulUl2k/l1bHH9+wpQZNQG+sV0fKZMXUKNIwSDpPktYsIKB7djf9KxdvWfdGg==
+X-Gm-Gg: ASbGncvBbty/v/pOqBm1CQHTPGfc0IUIgEYk6eBG/FqOnqjnQc/7E8lnNI/ag9se6NZ
+ rzYjaSJDabZkxTfwigKtCM4YGmX/qtqsno7bASPYiipbftfw5lFSmJrYTIPhZDozh/L3Iy3QhT4
+ 31g6q4T4Jh6D9KQcgGiR6oC+UAUmSLYmJWVjaVpohFBH14EFj2vhJEKoJ1IYEI3IqmrjNcuuNKh
+ aOGFNr1N3YQp3eBLbyxSPea3wjKbehfJmsfevtx8j3gyALH1rgqUNKzfdxt+ySG66Q/ciNJVTJY
+ lErM/8Eqx8h9f+t5bHIgz32FV13+igSg+4+1JgJMXyTkr3X8OTv7mIGt0gdrXt5znlZR7TRF0lj
+ OxMEbBJs=
+X-Google-Smtp-Source: AGHT+IHZ5xV0NBtOLkefRKfzjrVkVLrS4cyy5U4ejLxEHSBXWHnD8axXX9s1pLp01wCrkTiA5MD/uQ==
+X-Received: by 2002:a05:6a00:1ad4:b0:742:aecc:c47c with SMTP id
+ d2e1a72fcca58-74827fcd87cmr1950563b3a.7.1749166950952; 
+ Thu, 05 Jun 2025 16:42:30 -0700 (PDT)
+Received: from deb-101020-bm01.dtc.local ([149.97.161.244])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7482b0847b9sm213916b3a.104.2025.06.05.16.42.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Jun 2025 16:42:30 -0700 (PDT)
+From: anisa.su887@gmail.com
 To: qemu-devel@nongnu.org
-Cc: jjherne@linux.ibm.com, steven.sistare@oracle.com, peterx@redhat.com,
- farosas@suse.de, Jaehoon Kim <jhkim@linux.ibm.com>
-Subject: [PATCH v1] migration: Wait for cpr.sock file to appear before
- connecting
-Date: Thu,  5 Jun 2025 18:08:08 -0500
-Message-ID: <20250605230808.1278840-1-jhkim@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com, dave@stgolabs.net,
+ linux-cxl@vger.kernel.org, Anisa Su <anisa.su@samsung.com>
+Subject: [QEMU PATCH v3 0/9] CXL: FMAPI DCD Management Commands 0x5600-0x5605
+Date: Thu,  5 Jun 2025 23:42:14 +0000
+Message-ID: <20250605234227.970187-1-anisa.su887@gmail.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: zTeEF8xpOOH3xyNIFKN-XBu3n9j6o81o
-X-Proofpoint-ORIG-GUID: zTeEF8xpOOH3xyNIFKN-XBu3n9j6o81o
-X-Authority-Analysis: v=2.4 cv=SO9CVPvH c=1 sm=1 tr=0 ts=68422368 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=fBJVdqey-f1LBL7MPT8A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDIwOSBTYWx0ZWRfX2OMdIi+NuzLp
- UZVamUceQhzXaklxptbRl4KCJgozFRASpcRhFfPCvtzjwuT1WdxNGF++gBrLb666KYa7RwUJfo7
- EuCC4uwu3VdsBGTmfAVyUqkKBw8qQYkakf6bTAjwy1s/uElz77azWIBsj7wtHsCJgu9v/STQWwG
- X1d/xOCNgbKeq5UWDDdndFde6mokfjTBGDaD29dGrV+ywYl26fH0HaUKjrsnsTRClruDuxzdTAa
- nCN2Lgdb/QWaajQMWDDhtRROcINDXp1dADgYQyYQxdfAqAXZnDTRftcy0fw/vpeODrXdwo2she0
- MbVQX8DDzTAhDtMkp/xtFnF6XQIJDsK/Gri01R6xvNL4kZHpqdowDLI+IWtQxliu2VnYNmXrM3F
- WtsqIuuFa4oVTbdf36z1L1Qb0mrFlemxwxBoJCJAUMeA1IvvjqGvse+9W1kLGbRj/G6IMW19
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-05_07,2025-06-05_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0
- mlxlogscore=999 clxscore=1011 spamscore=0 lowpriorityscore=0 bulkscore=0
- mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506050209
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=jhkim@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=anisa.su887@gmail.com; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,89 +95,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the source VM attempts to connect to the destination VM's Unix
-domain socket(cpr.sock) during CPR transfer, the socket file might not
-yet be exist if the destination side hasn't completed the bind
-operation. This can lead to connection failures when running tests with
-the qtest framework.
+From: Anisa Su <anisa.su@samsung.com>
 
-To address this, add cpr_validate_socket_path(), which wait for the
-socket file to appear. This avoids intermittent qtest failures caused by
-early connection attempts.
+This patchset adds support for 6 FM API DCD Management commands (0x5600-0x5605)
+according to the CXL r3.2 Spec.
 
-Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
-Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
----
- include/migration/cpr.h  |  1 +
- migration/cpr-transfer.c | 35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
+The code was tested with libcxlmi, which runs in the QEMU VM and sends 56xxh
+commands to the device (QEMU emulated) through MCTP messages over I2C
+bus. To perform end-to-end tests, both MCTP and DCD support are needed
+for the kernel, so the needed MCTP patches are applied on top of Ira's DCD
+branch https://github.com/weiny2/linux-kernel/tree/dcd-v4-2024-12-11.
 
-diff --git a/include/migration/cpr.h b/include/migration/cpr.h
-index 7561fc75ad..cc9384b4f9 100644
---- a/include/migration/cpr.h
-+++ b/include/migration/cpr.h
-@@ -23,6 +23,7 @@ MigMode cpr_get_incoming_mode(void);
- void cpr_set_incoming_mode(MigMode mode);
- bool cpr_is_incoming(void);
- 
-+bool cpr_validate_socket_path(const char *path, Error **errp);
- int cpr_state_save(MigrationChannel *channel, Error **errp);
- int cpr_state_load(MigrationChannel *channel, Error **errp);
- void cpr_state_close(void);
-diff --git a/migration/cpr-transfer.c b/migration/cpr-transfer.c
-index e1f140359c..3088ed323f 100644
---- a/migration/cpr-transfer.c
-+++ b/migration/cpr-transfer.c
-@@ -17,6 +17,33 @@
- #include "migration/vmstate.h"
- #include "trace.h"
- 
-+#define CPR_MAX_RETRIES     50     /* Retry for up to 5 seconds */
-+#define CPR_RETRY_DELAY_US  100000 /* 100 ms per retry */
-+
-+bool cpr_validate_socket_path(const char *path, Error **errp)
-+{
-+    struct stat st;
-+    int retries = CPR_MAX_RETRIES;
-+
-+    do {
-+        if (!stat(path, &st) && S_ISSOCK(st.st_mode)) {
-+            return true;
-+        }
-+
-+        if (errno == ENOENT) {
-+            usleep(CPR_RETRY_DELAY_US);
-+        } else {
-+            error_setg_errno(errp, errno,
-+                "Unable to check status of socket path '%s'", path);
-+            return false;
-+        }
-+    } while (--retries > 0);
-+
-+    error_setg(errp, "Socket path '%s' not found after %d retries",
-+                                            path, CPR_MAX_RETRIES);
-+    return false;
-+}
-+
- QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp)
- {
-     MigrationAddress *addr = channel->addr;
-@@ -28,6 +55,14 @@ QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp)
-         QIOChannel *ioc = QIO_CHANNEL(sioc);
-         SocketAddress *saddr = &addr->u.socket;
- 
-+        /*
-+         * Verify that the cpr.sock Unix domain socket file exists and is ready
-+         * before proceeding with the connection.
-+         */
-+        if (!cpr_validate_socket_path(addr->u.socket.u.q_unix.path, errp)) {
-+            return NULL;
-+        }
-+
-         if (qio_channel_socket_connect_sync(sioc, saddr, errp) < 0) {
-             return NULL;
-         }
--- 
-2.49.0
+For the tests of commands 0x5600 (Get DCD Info), 0x5601 (Get Host DC Region
+Config), and 0x5603 (Get DC Region Extent Lists), DCD kernel code is not involved.
+The libcxlmi test program is used to send the command to the device and results
+are collected and verified.
+
+For command 0x5602 (Set DC Region Config): device creates an event record with type
+DC_EVENT_REGION_CONFIG_UPDATED and triggers an interrupt to the host
+if the configuration changes as a result of the command. Currently, the kernel
+version used to test this only supports Add/Release type events. Thus, this
+request essentially gets ignored but did not cause problems besides the host
+not knowing about the configuration change when tested.
+
+For the command 0x5604 (Initiate DC Add) and 0x5605 (Initiate DC Release), the
+tests involve libcxlmi test program (acting as the FM), kernel DCD
+code (host) and QEMU device. The test workflow follows that in cxl r3.2 section
+7.6.7.6.5 and 7.6.7.6.6. More specifically, the tests involve following
+steps,
+1. Start a VM with CXL topology: https://github.com/moking/cxl-test-tool/blob/main/utils/cxl.py#L54.
+2. Load the CXL related drivers in the VM;
+3. Create a DC region for the DCD device attached.
+4. add/release DC extents by sending 0x5604 and 0x5605 respectively through
+the out-of-tree libcxlmi test program
+(https://github.com/anisa-su993/libcxlmi/blob/dcd_management_cmds/tests/test-fmapi.c).
+5. Check and verify the extents by retrieving the extents list through
+command 0x5603 in the test program.
+
+The remaining 3 commands in this series (0x5606-0x5608) are related to tags
+and sharing, thus have not been implemented.
+
+v1: https://lore.kernel.org/linux-cxl/20250317164204.2299371-1-anisa.su887@gmail.com/
+v2: https://lore.kernel.org/linux-cxl/aD3jkRBHmbdc9QmD@deb-101020-bm01.eng.stellus.in/T/#t
+
+Changes v2 --> v3
+================================================================================
+1. Rebased on ToT master branch + applied Fan's patch fixing DC extent tracking
+(https://lore.kernel.org/linux-cxl/20250529163925.2916725-1-nifan.cxl@gmail.com/)
+2. Picked up Fan's review tag on several patches. Still need review tag for the
+following:
+- cxl-mailbox-utils: 0x5602 - FMAPI Set DC Region Config
+- cxl-mailbox-utils: 0x5604 - FMAPI Initiate DC Add
+- cxl-mailbox-utils: 0x5605 - FMAPI Initiate DC Release
+3. Changes:
+- 0x5602: Deleted redundant function cxl_mbox_dc_event_create_record_hdr() and
+replaced calls to it with existing function cxl_assign_event_header(). This
+is done in the below patches as well, which also add records to the event log.
+
+- 0x5604: Deleted redundant function cxl_mbox_dc_prescriptive_sanity_check() and
+replaced calls to it with existing function cxl_detect_malformed_extent_list(),
+which was originally added by Fan for the DCD Add/Release Response
+commands (0x4802 and 0x4803), which needs to check for similar errors.
+
+Deleted helper functions to count # of pending/accepted extents because Fan's
+fix for dc.total_extent_count to correctly track pending and accepted extents
+means we don't need to add them up separately.
+
+- 0x5605: Similar to above, uses cxl_detect_malformed_extent_list() and
+additionally, reuses existing function cxl_dc_extent_release_dry_run() to
+detect additional errors that can occur in the case of releasing extents, which are:
+    - extent to release is not actually block backed
+    - releasing extents would cause the device to exceed max. extents supported
+
+Because these patches have been rebased on upstream QEMU which is missing I2C
+MCTP support, I have retested them in a manner similar to what is described above
+but hacked to add the FM commands to the general T3 mailbox (initialized by
+the cxl_initialize_mailbox_t3() function). Then libcxlmi is used to send
+the FMAPI commands via ioctl instead of MCTP and the output is verified.
+
+Anisa Su (9):
+  cxl-mailbox-utils: 0x5600 - FMAPI Get DCD Info
+  cxl/type3: Add dsmas_flags to CXLDCRegion struct
+  cxl-mailbox-utils: 0x5601 - FMAPI Get Host Region Config
+  cxl_events.h: Move definition for dynamic_capacity_uuid and enum for
+    DC event types
+  hw/cxl_type3: Add DC Region bitmap lock
+  cxl-mailbox-utils: 0x5602 - FMAPI Set DC Region Config
+  cxl-mailbox-utils: 0x5603 - FMAPI Get DC Region Extent Lists
+  cxl-mailbox-utils: 0x5604 - FMAPI Initiate DC Add
+  cxl-mailbox-utils: 0x5605 - FMAPI Initiate DC Release
+
+ hw/cxl/cxl-mailbox-utils.c   | 538 +++++++++++++++++++++++++++++++++++
+ hw/mem/cxl_type3.c           |  45 ++-
+ include/hw/cxl/cxl_device.h  |  24 ++
+ include/hw/cxl/cxl_events.h  |  15 +
+ include/hw/cxl/cxl_mailbox.h |   6 +
+ 5 files changed, 605 insertions(+), 23 deletions(-)
+
+--
+2.47.2
 
 
