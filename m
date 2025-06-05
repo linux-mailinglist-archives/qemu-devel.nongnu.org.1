@@ -2,63 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B53DACEFFA
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6ED2ACF003
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:10:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNAIe-0007ew-K3; Thu, 05 Jun 2025 09:06:28 -0400
+	id 1uNAMa-0001Ep-9U; Thu, 05 Jun 2025 09:10:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uNAIW-0007eB-7V
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:06:20 -0400
+ id 1uNAMD-0001Cj-E1; Thu, 05 Jun 2025 09:10:10 -0400
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uNAIS-0005jO-Ua
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:06:18 -0400
+ id 1uNAMB-00068W-Ck; Thu, 05 Jun 2025 09:10:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749128777; x=1780664777;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=bWeo9lD/JYISHzI8hwlLcunUZFInNqo2ewuFKeaXEng=;
- b=FFGPAVG9rBaZjfwYUYBmWq/e+hqHOsenscDTiLejhOCYUxJvx07+JPt+
- cE6oRz1IX2K49P2h9Ug6w1jviP4hxsRShzREGhLnVYfiNWxVuZTIDj1RD
- xer8+w0IM5yAqwO/f9vxiyn7ZCz+tTgP/5P0SLyK8Z/KVVaNL0VxVHVwr
- /Ai4+Pe8Qrs8mb7ysTA+MyXk6tbYs6jg59v22/EKkHVDXNXE0aLr0Dpm7
- 0yPtxER10mudJt++Rlu7k/OTDsZCYfFExBzQibDHk3d+xaDPxASl5NS6H
- qp/XmDyOS6OTUH3JNZ1A+RP2vN08ZrpX4wpyVkChrGYx0y1K+o1kfZIGd w==;
-X-CSE-ConnectionGUID: 3QfYsklZT2asVtxwP+k10w==
-X-CSE-MsgGUID: AF2Rk6QVTKKUcFRzk47BSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="50944526"
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="50944526"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ t=1749129007; x=1780665007;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Gt84GNRJ2xXvJmeqMnz7MaJpNy/Bidb/adMPvyjhzIE=;
+ b=gMi6nGO5K03KNedNd/d86DhfKUZuhafcg+rilKYBboSdik/XDGRlCjow
+ /bTf16JAKz2jxkCxW6TVnfCxqAt1rwQNGDhrrm5EH4ydo2LeJxipjnu9a
+ JX/3Zf7/tSdCHReiCcPxeszPdNFL41XgDF/qIHrDFr5Sq3A2M9i8Zmt+h
+ rFPY+etGs9h+AjWCDZJaWHl/oZS0P7SzdfAN5OpF4KfLE5uAutrisF61P
+ tSAh5ATQz3ALtKdufAerSJgL6fdTvg9bkOSYWrTxD0qNsgYuRIX3aE/ow
+ 5Wbn3p3pNZzO6aWnfAFP+QAZ99ktCkmGAzaeT3uY5W5wh4LblsbFd6aK+ w==;
+X-CSE-ConnectionGUID: FeRKtUvqTtCpW7CGjqtp4w==
+X-CSE-MsgGUID: GMvS3490TOaw5aslBv/8Kg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="50945022"
+X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="50945022"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 06:06:11 -0700
-X-CSE-ConnectionGUID: gYqPSB94QFy5EuABjlEE/g==
-X-CSE-MsgGUID: mNQST26EQB6rTpvcGHkERA==
+ 05 Jun 2025 06:10:05 -0700
+X-CSE-ConnectionGUID: Yxq+fDjYQbi1lqoRLkwp8Q==
+X-CSE-MsgGUID: GdLz69TqTOCzmh4ig5i7zA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="150518859"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 05 Jun 2025 06:06:09 -0700
+X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="145399985"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa006.jf.intel.com with ESMTP; 05 Jun 2025 06:10:04 -0700
+Date: Thu, 5 Jun 2025 21:31:17 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=83?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: qemu-devel@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] hw/core/cpu: Move CacheType to general cpu.h
-Date: Thu,  5 Jun 2025 21:27:22 +0800
-Message-Id: <20250605132722.3597593-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, qemu-rust@nongnu.org
+Subject: Re: [PATCH 03/14] util/error: expose Error definition to Rust code
+Message-ID: <aEGcJc1hitxVoBmw@intel.com>
+References: <20250605101544.368953-1-pbonzini@redhat.com>
+ <20250605101544.368953-4-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250605101544.368953-4-pbonzini@redhat.com>
 Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
@@ -84,57 +79,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I386 has already defined cache types in target/i386/cpu.h.
+On Thu, Jun 05, 2025 at 12:15:32PM +0200, Paolo Bonzini wrote:
+> Date: Thu,  5 Jun 2025 12:15:32 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 03/14] util/error: expose Error definition to Rust code
+> X-Mailer: git-send-email 2.49.0
+> 
+> This is used to preserve the file and line in a roundtrip from
+> C Error to Rust and back to C.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  include/qapi/error-internal.h | 26 ++++++++++++++++++++++++++
+>  rust/wrapper.h                |  1 +
+>  util/error.c                  | 10 +---------
+>  3 files changed, 28 insertions(+), 9 deletions(-)
+>  create mode 100644 include/qapi/error-internal.h
 
-Move CacheType to hw/core/cpu.h, so that ARM and other architectures
-could use it.
-
-Cc: Alireza Sanaee <alireza.sanaee@huawei.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-This is for Ali's ARM cache topology support:
-https://lore.kernel.org/qemu-devel/aEFnFI+wglkmLD5G@intel.com/
-
-(Ali, if maintainer doesn't pick this, you can include this into your
- series freely.)
----
- include/hw/core/cpu.h | 6 ++++++
- target/i386/cpu.h     | 6 ------
- 2 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 1e87f7d393ec..33296a1c080e 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -1126,4 +1126,10 @@ extern const VMStateDescription vmstate_cpu_common;
- #define UNASSIGNED_CPU_INDEX -1
- #define UNASSIGNED_CLUSTER_INDEX -1
- 
-+enum CacheType {
-+    DATA_CACHE,
-+    INSTRUCTION_CACHE,
-+    UNIFIED_CACHE
-+};
-+
- #endif
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 1146465c8c62..8efea2ef2686 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1768,12 +1768,6 @@ typedef enum TPRAccess {
- 
- /* Cache information data structures: */
- 
--enum CacheType {
--    DATA_CACHE,
--    INSTRUCTION_CACHE,
--    UNIFIED_CACHE
--};
--
- typedef struct CPUCacheInfo {
-     enum CacheType type;
-     uint8_t level;
--- 
-2.34.1
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
