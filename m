@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A342ACEC42
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DED0BACEC3C
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:44:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN6CP-0006jG-Af; Thu, 05 Jun 2025 04:43:45 -0400
+	id 1uN6CP-0006s2-TG; Thu, 05 Jun 2025 04:43:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6CB-0006dQ-O8
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:32 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6CD-0006ed-Ul
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6C9-0008HP-Vb
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:31 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6CC-0008I5-89
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749113009;
+ s=mimecast20190719; t=1749113011;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rq3/p7+wMwNrqwNX0ag/QjHx8yDalShYV6NSoatJ55c=;
- b=VBovYa+1q9i+jZ+y6GoC+TT4o+0YOz86nihxcqBDBcdxMNOpFN30l2HH4b+vVQzzrJ7dRu
- Vq2NxqR1vKFIk/f/FgPCRMjiJi+tgjfXtZLa/kg8qcSb6QlCI1Bymj6J1JViF5C7Pw+h7g
- JOeeK1R0VVVXMfT2nUj9AyyJYxlWpBw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=qX+tCSJYfWs63N+/z1dQMGx/2W56gRX4Ps/q3xO9Pv8=;
+ b=R09NUYeXyIH0qkXpLMoYD5QhUx8cGPDZYSgJb/M0PyAHG+/d7zDKFrO9X+yedAQelQYjrx
+ Mkh9lF425Pb6QDEyJLP9ow9KtrPWlXjRhJ4yiYksJOCbKyd0b5aNaDwP/r4Mto2CRWs6er
+ EKJH48j2zKb3nSIijvcjbYDZNIDHuTA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-W8pilgWFM3aPrIVd7klH7g-1; Thu,
- 05 Jun 2025 04:43:25 -0400
-X-MC-Unique: W8pilgWFM3aPrIVd7klH7g-1
-X-Mimecast-MFC-AGG-ID: W8pilgWFM3aPrIVd7klH7g_1749113004
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-o1ahmAMsMm2aMxYGdt6lww-1; Thu,
+ 05 Jun 2025 04:43:28 -0400
+X-MC-Unique: o1ahmAMsMm2aMxYGdt6lww-1
+X-Mimecast-MFC-AGG-ID: o1ahmAMsMm2aMxYGdt6lww_1749113007
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6DE2D195608E; Thu,  5 Jun 2025 08:43:24 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 51822195608F; Thu,  5 Jun 2025 08:43:27 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.77])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 946311954B33; Thu,  5 Jun 2025 08:43:21 +0000 (UTC)
+ id EDCE71954B3C; Thu,  5 Jun 2025 08:43:24 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, Yi Liu <yi.l.liu@intel.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PULL 12/16] vfio/iommufd: Implement [at|de]tach_hwpt handlers
-Date: Thu,  5 Jun 2025 10:42:41 +0200
-Message-ID: <20250605084245.1520562-13-clg@redhat.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Eric Auger <eric.auger@redhat.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 13/16] vfio/iommufd: Save vendor specific device info
+Date: Thu,  5 Jun 2025 10:42:42 +0200
+Message-ID: <20250605084245.1520562-14-clg@redhat.com>
 In-Reply-To: <20250605084245.1520562-1-clg@redhat.com>
 References: <20250605084245.1520562-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,64 +85,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Implement [at|de]tach_hwpt handlers in VFIO subsystem. vIOMMU
-utilizes them to attach to or detach from hwpt on host side.
+Some device information returned by ioctl(IOMMU_GET_HW_INFO) are vendor
+specific. Save them as raw data in a union supporting different vendors,
+then vendor IOMMU can query the raw data with its fixed format for
+capability directly.
 
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Because IOMMU_GET_HW_INFO is only supported in linux, so declare those
+capability related structures with CONFIG_LINUX.
+
+Suggested-by: Eric Auger <eric.auger@redhat.com>
+Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/qemu-devel/20250604062115.4004200-4-zhenzhong.duan@intel.com
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250604062115.4004200-5-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/iommufd.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ include/system/host_iommu_device.h | 15 +++++++++++++++
+ hw/vfio/iommufd.c                  |  8 +++-----
+ 2 files changed, 18 insertions(+), 5 deletions(-)
 
+diff --git a/include/system/host_iommu_device.h b/include/system/host_iommu_device.h
+index 809cced4ba5c56263132b474a382e4bd0ffdd3cd..ab849a4a82d5f2a2a09c7924791b93c26d9ff902 100644
+--- a/include/system/host_iommu_device.h
++++ b/include/system/host_iommu_device.h
+@@ -14,6 +14,13 @@
+ 
+ #include "qom/object.h"
+ #include "qapi/error.h"
++#ifdef CONFIG_LINUX
++#include "linux/iommufd.h"
++
++typedef union VendorCaps {
++    struct iommu_hw_info_vtd vtd;
++    struct iommu_hw_info_arm_smmuv3 smmuv3;
++} VendorCaps;
+ 
+ /**
+  * struct HostIOMMUDeviceCaps - Define host IOMMU device capabilities.
+@@ -22,11 +29,17 @@
+  *
+  * @hw_caps: host platform IOMMU capabilities (e.g. on IOMMUFD this represents
+  *           the @out_capabilities value returned from IOMMU_GET_HW_INFO ioctl)
++ *
++ * @vendor_caps: host platform IOMMU vendor specific capabilities (e.g. on
++ *               IOMMUFD this represents a user-space buffer filled by kernel
++ *               with host IOMMU @type specific hardware information data)
+  */
+ typedef struct HostIOMMUDeviceCaps {
+     uint32_t type;
+     uint64_t hw_caps;
++    VendorCaps vendor_caps;
+ } HostIOMMUDeviceCaps;
++#endif
+ 
+ #define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
+ OBJECT_DECLARE_TYPE(HostIOMMUDevice, HostIOMMUDeviceClass, HOST_IOMMU_DEVICE)
+@@ -38,7 +51,9 @@ struct HostIOMMUDevice {
+     void *agent; /* pointer to agent device, ie. VFIO or VDPA device */
+     PCIBus *aliased_bus;
+     int aliased_devfn;
++#ifdef CONFIG_LINUX
+     HostIOMMUDeviceCaps caps;
++#endif
+ };
+ 
+ /**
 diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 625b1747a29648918298e3a6cb3af68c5459ead5..59033028373c82a22b1aaf092503d037a6d7e9b6 100644
+index 59033028373c82a22b1aaf092503d037a6d7e9b6..c4bbf36241d3ee5c46bca9601688afd742e471f7 100644
 --- a/hw/vfio/iommufd.c
 +++ b/hw/vfio/iommufd.c
-@@ -815,6 +815,24 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, const void *data)
-     vioc->query_dirty_bitmap = iommufd_query_dirty_bitmap;
- };
+@@ -839,16 +839,14 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+     VFIODevice *vdev = opaque;
+     HostIOMMUDeviceIOMMUFD *idev;
+     HostIOMMUDeviceCaps *caps = &hiod->caps;
++    VendorCaps *vendor_caps = &caps->vendor_caps;
+     enum iommu_hw_info_type type;
+-    union {
+-        struct iommu_hw_info_vtd vtd;
+-    } data;
+     uint64_t hw_caps;
  
-+static bool
-+host_iommu_device_iommufd_vfio_attach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
-+                                           uint32_t hwpt_id, Error **errp)
-+{
-+    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
-+
-+    return !iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt_id, errp);
-+}
-+
-+static bool
-+host_iommu_device_iommufd_vfio_detach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
-+                                           Error **errp)
-+{
-+    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
-+
-+    return iommufd_cdev_detach_ioas_hwpt(vbasedev, errp);
-+}
-+
- static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
-                                       Error **errp)
- {
-@@ -869,10 +887,14 @@ hiod_iommufd_vfio_get_page_size_mask(HostIOMMUDevice *hiod)
- static void hiod_iommufd_vfio_class_init(ObjectClass *oc, const void *data)
- {
-     HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_CLASS(oc);
-+    HostIOMMUDeviceIOMMUFDClass *idevc = HOST_IOMMU_DEVICE_IOMMUFD_CLASS(oc);
+     hiod->agent = opaque;
  
-     hiodc->realize = hiod_iommufd_vfio_realize;
-     hiodc->get_iova_ranges = hiod_iommufd_vfio_get_iova_ranges;
-     hiodc->get_page_size_mask = hiod_iommufd_vfio_get_page_size_mask;
-+
-+    idevc->attach_hwpt = host_iommu_device_iommufd_vfio_attach_hwpt;
-+    idevc->detach_hwpt = host_iommu_device_iommufd_vfio_detach_hwpt;
- };
- 
- static const TypeInfo types[] = {
+-    if (!iommufd_backend_get_device_info(vdev->iommufd, vdev->devid,
+-                                         &type, &data, sizeof(data),
++    if (!iommufd_backend_get_device_info(vdev->iommufd, vdev->devid, &type,
++                                         vendor_caps, sizeof(*vendor_caps),
+                                          &hw_caps, errp)) {
+         return false;
+     }
 -- 
 2.49.0
 
