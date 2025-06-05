@@ -2,78 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA90ACEC49
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EB3ACEC52
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:48:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN6CX-00079x-9l; Thu, 05 Jun 2025 04:43:53 -0400
+	id 1uN6FQ-00059w-ED; Thu, 05 Jun 2025 04:46:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uN6C6-0006d0-O1
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1uN6Ei-0004ff-Ql; Thu, 05 Jun 2025 04:46:10 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uN6C4-0008Gq-Vv
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749113004;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HIlkQgP8kNo3VJA5CH0STYG4gdXTHwYavjidWiOafdM=;
- b=DpFOQo/LJ/pvcI7nVLJuMdX456p2g4DtJAyWVa40FEjJqBaPJCuU1YXpiMrF9CT/iVKcTW
- j8L9cnNviN9hoxfWVpNZyslRl7ZCr6g62yVgQ2lcZO4BFY8yfYRxCMqlJkngaw9eNtb9os
- V7uNUOXG1f+7tW6pqYEAyPmz5mBTfEw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-381-yUwULTyTNRqaRcYXP9ZF0g-1; Thu,
- 05 Jun 2025 04:43:17 -0400
-X-MC-Unique: yUwULTyTNRqaRcYXP9ZF0g-1
-X-Mimecast-MFC-AGG-ID: yUwULTyTNRqaRcYXP9ZF0g_1749112996
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1CA9B180035E; Thu,  5 Jun 2025 08:43:16 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.159])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 06BD1195E74A; Thu,  5 Jun 2025 08:43:12 +0000 (UTC)
-Date: Thu, 5 Jun 2025 09:43:09 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>,
- Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-Subject: Re: [PATCH v5 2/7] ui/spice: Add an option for users to provide a
- preferred codec
-Message-ID: <aEFYnTvaDQ6Kd0o4@redhat.com>
-References: <20250529051352.1409904-1-vivek.kasireddy@intel.com>
- <20250529051352.1409904-3-vivek.kasireddy@intel.com>
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1uN6Ee-0001qi-Q8; Thu, 05 Jun 2025 04:46:08 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5558hHD3028846;
+ Thu, 5 Jun 2025 08:46:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=pj68p8
+ JQD4J1HZOfTDk8PbzVkKme7SXTopC5MNetVds=; b=EuvV6uJ861v4UTPb3MacUC
+ r25yJ667SvS4yp2TlPgKIgbf6+jKnTSxJZXdlVNj66Eoo5dPVcia1pVKF30OTMMF
+ /C1WpetOzb/cJa8kwHZEgyqs4tKS3LcupPTtfl+uhO5cgg6XILcg+mlpDa3BRi+Y
+ iEYhqxYsxI9IOGCuDHAGYmrLHwOw6EySug+JFru0YGDikBVitnNFHsELIlCNzH9d
+ 8ZRRhz2BCZ8A3hsPafqcy2T3yolWnX7rclUeRuaH4lTEE9Fp05q9wGIv8R/qidKC
+ THy8JDVAhrPJbX4pEVFhwJkaxtoSVURi6UePjibDDNsJcJFgA7dQwSyefe+sl2xw
+ ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471geyfp7c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Jun 2025 08:46:01 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5554fl0B012508;
+ Thu, 5 Jun 2025 08:46:00 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 470et2kkfu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Jun 2025 08:46:00 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 5558juMT34013750
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 5 Jun 2025 08:45:56 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 737E12004B;
+ Thu,  5 Jun 2025 08:45:56 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 208C520040;
+ Thu,  5 Jun 2025 08:45:56 +0000 (GMT)
+Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
+ [9.111.39.61]) by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  5 Jun 2025 08:45:56 +0000 (GMT)
+Message-ID: <beb12864fd3571a929eba525fcb40f0619f32729.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 1/3] hw/s390x: add SCLP event type CPI
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Shalini Chellathurai Saroja <shalini@linux.ibm.com>, qemu-s390x
+ mailing list <qemu-s390x@nongnu.org>, Thomas Huth <thuth@redhat.com>
+Cc: Daniel Berrange <berrange@redhat.com>, qemu-devel mailing list
+ <qemu-devel@nongnu.org>, Hendrik Brueckner <brueckner@linux.ibm.com>
+Date: Thu, 05 Jun 2025 10:45:55 +0200
+In-Reply-To: <20250603135655.595602-2-shalini@linux.ibm.com>
+References: <20250603135655.595602-1-shalini@linux.ibm.com>
+ <20250603135655.595602-2-shalini@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250529051352.1409904-3-vivek.kasireddy@intel.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=ea09f6EH c=1 sm=1 tr=0 ts=68415949 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
+ a=d4LToudSVkjQPbQJ9YAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: L2zaBfgCmKY82Xh-7TdznkRGXo0IK9sn
+X-Proofpoint-ORIG-GUID: L2zaBfgCmKY82Xh-7TdznkRGXo0IK9sn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDA3NCBTYWx0ZWRfX9QGIBmaQR9hT
+ KbBJPXZFgLrg7tX0qroA2bUDOFYALamU1c5YVP/wxhbX2DzOAa7CxyHcaeQ5wlV+ZaoIo6LE5j0
+ OFEQS/TZWeBJ9/ZKiXmSjyuFdb09o+0a5+X3Mp4mkYP7yY28ElsdWnrIGtLda54h4JBo0O2+MWw
+ S9s6XUBMC+HGee5Njrdyqj7460XVLfOpEtXXP+6yH4MycVKJ4QUEHnn0itrEF03PtmsziTsxn1a
+ X9xmw/vvLKEzXdGbpVh9B+JM/QYzoGXwmxDRkJxxCZoeyU8fGlikAoI28SWh1rbZB4tiZjdy71A
+ 3kSkQUOUTtZxoLI0HYKmroaw7BkXmweG4XLR2gEhRn2UKDV+imtpz3O1uxC5T50hbcvPIO75/wH
+ vuCMnYIB94VonNPjbNzJaKMsbt1yuugCeraZGne3llAxVgL9+t74Py9G+pYhoSoad4rUSc+H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-05_02,2025-06-03_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 bulkscore=0
+ spamscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 phishscore=0 mlxscore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506050074
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,61 +117,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 28, 2025 at 10:11:13PM -0700, Vivek Kasireddy wrote:
-> Giving users an option to choose a particular codec will enable
-> them to make an appropriate decision based on their hardware and
-> use-case.
-> 
-> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Cc: Frediano Ziglio <freddy77@gmail.com>
-> Cc: Dongwon Kim <dongwon.kim@intel.com>
-> Cc: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> ---
->  qemu-options.hx |  5 +++++
->  ui/spice-core.c | 12 ++++++++++++
->  2 files changed, 17 insertions(+)
-> 
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 7eb8e02b4b..fcddb583c9 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -2281,6 +2281,7 @@ DEF("spice", HAS_ARG, QEMU_OPTION_spice,
->      "       [,streaming-video=[off|all|filter]][,disable-copy-paste=on|off]\n"
->      "       [,disable-agent-file-xfer=on|off][,agent-mouse=[on|off]]\n"
->      "       [,playback-compression=[on|off]][,seamless-migration=[on|off]]\n"
-> +    "       [,video-codecs=<encoder>:<codec>\n"
->      "       [,gl=[on|off]][,rendernode=<file>]\n"
->      "                enable spice\n"
->      "                at least one of {port, tls-port} is mandatory\n",
-> @@ -2369,6 +2370,10 @@ SRST
->      ``seamless-migration=[on|off]``
->          Enable/disable spice seamless migration. Default is off.
->  
-> +    ``video-codecs=<encoder>:<codec>``
-> +        Provide the preferred codec the Spice server should use.
-> +        Default would be spice:mjpeg.
+On Tue, 2025-06-03 at 15:56 +0200, Shalini Chellathurai Saroja wrote:
+> Implement the Service-Call Logical Processor (SCLP) event
+> type Control-Program Identification (CPI) in QEMU. This
+> event is used to send CPI identifiers from the guest to the
+> host. The CPI identifiers are: system type, system name,
+> system level and sysplex name.
+>=20
+> System type: operating system of the guest (e.g. "LINUX").
+> System name: user configurable name of the guest (e.g. "TESTVM").
+> System level: distribution and kernel version, if the system type is Linu=
+x
+> (e.g. 0x50e00).
+> Sysplex name: name of the cluster which the guest belongs to (if any)
+> (e.g. "PLEX").
+>=20
+> The SCLP event CPI is supported only from "s390-ccw-virtio-10.1" machine
+> and higher.
+>=20
+> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-This looks like two distinct settings overloaded into one command
-line parameter, which is a design anti-pattern.
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 
-Why can't this be done as separate parameters
-
-   video-encoder=<blah>
-   video-codec=<blah>
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+IBM Deutschland Research & Development GmbH
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+Gesch=C3=A4ftsf=C3=BChrung: David Faller
+Sitz der Gesellschaft: B=C3=B6blingen / Registergericht: Amtsgericht Stuttg=
+art, HRB 243294
 
