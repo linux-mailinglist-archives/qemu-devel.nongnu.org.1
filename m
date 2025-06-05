@@ -2,94 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC67ACF05E
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B53DACEFFA
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:07:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNAaU-0006dw-G3; Thu, 05 Jun 2025 09:24:55 -0400
+	id 1uNAIe-0007ew-K3; Thu, 05 Jun 2025 09:06:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uNAaM-0006bx-CX
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:24:46 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uNAaK-0004qB-7o
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:24:45 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-22e09f57ed4so19342355ad.0
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 06:24:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1749129882; x=1749734682; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dy4790QiAapTU/9dINaY6YYy/qZEB1KGF6g9bVd7Ixo=;
- b=F+7FNtkQI/zWdagp2P3fV7Qd52AHminnHScSjHUcrTrFxYy0LFuh5rQgtn8VzHRARq
- 6u30uiPcJm2LXrIP0wyfgLG9CLgGFJPJoMXtRTT1BW7uAXog/S485Nen7TL7PFfY3A63
- +6QqWRkOMxSvMC4DnbLDyxanzkOpmZLM3ITrKOWLkDihM+Xx/ZpCmUShNioSaVTTNkfx
- 2xb4OxlJpzy8Odl+zfTrfJ9sIYWEMjUoqhRIGdgEepCzmZRJ9J/kJ6gUnLRAf/ZAkff8
- PADtrqDkZdi0tJKAgsIAWTdJMKW4LRQLDYtQ0DjIqNXQ635KjtyWTWn51K8Fh3rCGD37
- 40Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749129882; x=1749734682;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dy4790QiAapTU/9dINaY6YYy/qZEB1KGF6g9bVd7Ixo=;
- b=UjrYXWHpK6IIL7k7JoTDJX1npHMD7/rKEq1oK8NwLmIslA6rWT0jjfvhH4m/ZwgzTr
- 1lVa/c/IMDhyATU55c2cfjwMZByk0g++2v6zxNFjv8MfHRxTqrvR9xGjvAGRxQlkc3Wa
- 1ZmSolrM+wGIJKqGaLYd0CBMlK1YMip57GsfEudHHsBeFNjEEc8Lm6vmuArrzSmETAob
- /XBSymS3iBqkpjdwUo2juk4RkQDXlGUnY244E8znx5bbJQpBUiQcl4aUNNGpQbUhymmY
- Ftkv/bNUqav1MWq2AxH53oZVtTn3GeHFTWbkNFVAqgGF5Dk7TftINGb/bJBw7HK4VIPX
- f7Qg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUI4Z3tR8qxZcJbpC5j+g3UL5rsQYsyzgthsipqED5c44UUNsFG7qZ3XbJvYae2BuKBNGlZ335rUDjl@nongnu.org
-X-Gm-Message-State: AOJu0Ywzppdgkx0DT2vMrMpCPKOADOHOSskYjz9dIWgkqlTEt1jknaoq
- Te+wfsmALWtU6L6pdCMGKNuQqrO7RRHsCNzpucZcQmiURW3SxXZxIS5CdyhjNAtMm98=
-X-Gm-Gg: ASbGncszQLC71q0T4Keh4VoWKXxWwxzhsNGYfuwqcHvwbyyrwY2M1cLHwZ0AsuuhCVK
- pi5c/fiNKh6bxAES4NQ6n5t56QBrLpwNUGuMPjo0m0V27a+3XIKOD5Q62Q0v3TAU/COW2wVTpU6
- tasXrZdyA7iDIuHIuskFF/WKFD1SZqFEzslOumDiSq8l/V/VbLQcWjd45gNPJ+2KFXS0FzsMidv
- MzG1np2AENNpBuVarYwEov8YBkSO2O/ctX3nPQYORRKuAet4O9gvVPZIPxJe2ah+KCXsX5oKnhp
- xNRXfl2lgiAcY/bJy5kL3QVsV8dMs9JsxRZXXvaphSSNV1/NSowutlUiUUy+kGatOMg=
-X-Google-Smtp-Source: AGHT+IFS246kGsrx8xYDplw7j4Xv5CtqdZknErJI9Y0VejgLzXLRT+jBgX/i0av9TE0ZZ8Ak8q9s0g==
-X-Received: by 2002:a17:902:c94f:b0:231:9817:6ec1 with SMTP id
- d9443c01a7336-235f166aa57mr49969275ad.17.1749129882366; 
- Thu, 05 Jun 2025 06:24:42 -0700 (PDT)
-Received: from [192.168.68.110] ([177.188.133.196])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-235e5aafa94sm24213645ad.186.2025.06.05.06.24.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Jun 2025 06:24:41 -0700 (PDT)
-Message-ID: <3d1b8880-bf87-453c-9e16-06312337ffcb@ventanamicro.com>
-Date: Thu, 5 Jun 2025 10:24:36 -0300
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uNAIW-0007eB-7V
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:06:20 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uNAIS-0005jO-Ua
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 09:06:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749128777; x=1780664777;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=bWeo9lD/JYISHzI8hwlLcunUZFInNqo2ewuFKeaXEng=;
+ b=FFGPAVG9rBaZjfwYUYBmWq/e+hqHOsenscDTiLejhOCYUxJvx07+JPt+
+ cE6oRz1IX2K49P2h9Ug6w1jviP4hxsRShzREGhLnVYfiNWxVuZTIDj1RD
+ xer8+w0IM5yAqwO/f9vxiyn7ZCz+tTgP/5P0SLyK8Z/KVVaNL0VxVHVwr
+ /Ai4+Pe8Qrs8mb7ysTA+MyXk6tbYs6jg59v22/EKkHVDXNXE0aLr0Dpm7
+ 0yPtxER10mudJt++Rlu7k/OTDsZCYfFExBzQibDHk3d+xaDPxASl5NS6H
+ qp/XmDyOS6OTUH3JNZ1A+RP2vN08ZrpX4wpyVkChrGYx0y1K+o1kfZIGd w==;
+X-CSE-ConnectionGUID: 3QfYsklZT2asVtxwP+k10w==
+X-CSE-MsgGUID: AF2Rk6QVTKKUcFRzk47BSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="50944526"
+X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="50944526"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2025 06:06:11 -0700
+X-CSE-ConnectionGUID: gYqPSB94QFy5EuABjlEE/g==
+X-CSE-MsgGUID: mNQST26EQB6rTpvcGHkERA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="150518859"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 05 Jun 2025 06:06:09 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=83?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] hw/core/cpu: Move CacheType to general cpu.h
+Date: Thu,  5 Jun 2025 21:27:22 +0800
+Message-Id: <20250605132722.3597593-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/5] hw/riscv/riscv-iommu: Remove definition of
- RISCVIOMMU[Pci|Sys]Class
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: chao.p.peng@intel.com, david@redhat.com,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <20250605102311.148171-1-zhenzhong.duan@intel.com>
- <20250605102311.148171-6-zhenzhong.duan@intel.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20250605102311.148171-6-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,81 +84,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+I386 has already defined cache types in target/i386/cpu.h.
 
+Move CacheType to hw/core/cpu.h, so that ARM and other architectures
+could use it.
 
-On 6/5/25 7:23 AM, Zhenzhong Duan wrote:
-> RISCVIOMMUPciClass and RISCVIOMMUSysClass are defined with missed
-> parent class, class_init on them may corrupt their parent class
-> fields.
-> 
-> It's lucky that parent_realize and parent_phases are not initialized
-> or used until now, so just remove the definitions. They can be added
-> back when really necessary.
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
+Cc: Alireza Sanaee <alireza.sanaee@huawei.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+This is for Ali's ARM cache topology support:
+https://lore.kernel.org/qemu-devel/aEFnFI+wglkmLD5G@intel.com/
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+(Ali, if maintainer doesn't pick this, you can include this into your
+ series freely.)
+---
+ include/hw/core/cpu.h | 6 ++++++
+ target/i386/cpu.h     | 6 ------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
->   include/hw/riscv/iommu.h   | 6 ++----
->   hw/riscv/riscv-iommu-pci.c | 6 ------
->   hw/riscv/riscv-iommu-sys.c | 6 ------
->   3 files changed, 2 insertions(+), 16 deletions(-)
-> 
-> diff --git a/include/hw/riscv/iommu.h b/include/hw/riscv/iommu.h
-> index b03339d75c..8a8acfc3f0 100644
-> --- a/include/hw/riscv/iommu.h
-> +++ b/include/hw/riscv/iommu.h
-> @@ -30,14 +30,12 @@ typedef struct RISCVIOMMUState RISCVIOMMUState;
->   typedef struct RISCVIOMMUSpace RISCVIOMMUSpace;
->   
->   #define TYPE_RISCV_IOMMU_PCI "riscv-iommu-pci"
-> -OBJECT_DECLARE_TYPE(RISCVIOMMUStatePci, RISCVIOMMUPciClass, RISCV_IOMMU_PCI)
-> +OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStatePci, RISCV_IOMMU_PCI)
->   typedef struct RISCVIOMMUStatePci RISCVIOMMUStatePci;
-> -typedef struct RISCVIOMMUPciClass RISCVIOMMUPciClass;
->   
->   #define TYPE_RISCV_IOMMU_SYS "riscv-iommu-device"
-> -OBJECT_DECLARE_TYPE(RISCVIOMMUStateSys, RISCVIOMMUSysClass, RISCV_IOMMU_SYS)
-> +OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStateSys, RISCV_IOMMU_SYS)
->   typedef struct RISCVIOMMUStateSys RISCVIOMMUStateSys;
-> -typedef struct RISCVIOMMUSysClass RISCVIOMMUSysClass;
->   
->   #define FDT_IRQ_TYPE_EDGE_LOW 1
->   
-> diff --git a/hw/riscv/riscv-iommu-pci.c b/hw/riscv/riscv-iommu-pci.c
-> index 1f44eef74e..cdb4a7a8f0 100644
-> --- a/hw/riscv/riscv-iommu-pci.c
-> +++ b/hw/riscv/riscv-iommu-pci.c
-> @@ -68,12 +68,6 @@ typedef struct RISCVIOMMUStatePci {
->       RISCVIOMMUState  iommu;   /* common IOMMU state */
->   } RISCVIOMMUStatePci;
->   
-> -struct RISCVIOMMUPciClass {
-> -    /*< public >*/
-> -    DeviceRealize parent_realize;
-> -    ResettablePhases parent_phases;
-> -};
-> -
->   /* interrupt delivery callback */
->   static void riscv_iommu_pci_notify(RISCVIOMMUState *iommu, unsigned vector)
->   {
-> diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
-> index 74e76b94a5..e34d00aef6 100644
-> --- a/hw/riscv/riscv-iommu-sys.c
-> +++ b/hw/riscv/riscv-iommu-sys.c
-> @@ -53,12 +53,6 @@ struct RISCVIOMMUStateSys {
->       uint8_t *msix_pba;
->   };
->   
-> -struct RISCVIOMMUSysClass {
-> -    /*< public >*/
-> -    DeviceRealize parent_realize;
-> -    ResettablePhases parent_phases;
-> -};
-> -
->   static uint64_t msix_table_mmio_read(void *opaque, hwaddr addr,
->                                        unsigned size)
->   {
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 1e87f7d393ec..33296a1c080e 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1126,4 +1126,10 @@ extern const VMStateDescription vmstate_cpu_common;
+ #define UNASSIGNED_CPU_INDEX -1
+ #define UNASSIGNED_CLUSTER_INDEX -1
+ 
++enum CacheType {
++    DATA_CACHE,
++    INSTRUCTION_CACHE,
++    UNIFIED_CACHE
++};
++
+ #endif
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 1146465c8c62..8efea2ef2686 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1768,12 +1768,6 @@ typedef enum TPRAccess {
+ 
+ /* Cache information data structures: */
+ 
+-enum CacheType {
+-    DATA_CACHE,
+-    INSTRUCTION_CACHE,
+-    UNIFIED_CACHE
+-};
+-
+ typedef struct CPUCacheInfo {
+     enum CacheType type;
+     uint8_t level;
+-- 
+2.34.1
 
 
