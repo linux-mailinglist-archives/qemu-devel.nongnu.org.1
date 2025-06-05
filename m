@@ -2,100 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C918FACECAC
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 11:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 796D0ACECC5
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 11:25:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN6fG-0006yE-2J; Thu, 05 Jun 2025 05:13:34 -0400
+	id 1uN6qS-0001Hc-5E; Thu, 05 Jun 2025 05:25:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uN6f8-0006xH-Ke
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:13:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uN6qO-0001GQ-Nh
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:25:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uN6f6-0000jV-Kb
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:13:25 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uN6qM-0002yO-Mn
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:25:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749114802;
+ s=mimecast20190719; t=1749115501;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mcVuqByWhcIeIPikzMkKDKFUX7b6Fi548juUgAk9raU=;
- b=VD8IRQ6F09WDRNB1H1v/Nc7ZcrmKE2I/NBvk+N7/z+LYYLK851aawUVNCtINV3yRGcjrMH
- OkxsEMXMtqKWf1mkR7Q30zMmLScu1YKtZtx3tLd28/743W3ST0znoyJRosBgULzeO6ETFe
- iGcs2ur4XFIIucHabgdjRwmUBjdkstA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-341-VyLjXyI1OumhT_MTZ9NxUw-1; Thu, 05 Jun 2025 05:13:21 -0400
-X-MC-Unique: VyLjXyI1OumhT_MTZ9NxUw-1
-X-Mimecast-MFC-AGG-ID: VyLjXyI1OumhT_MTZ9NxUw_1749114800
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a503f28b09so371803f8f.0
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 02:13:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749114800; x=1749719600;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mcVuqByWhcIeIPikzMkKDKFUX7b6Fi548juUgAk9raU=;
- b=F+xgIDIASIXdPD6+p6hgBT3NkxPlryZg42KlAHYjhstSfwE0GuhKdwO2bJbJIinuRc
- H5FeITUe1nIwaSpND9EjwhS9FVkOmKXd7NK53hD/mQcw1fd1npNJ0t/Mij88OJHLSHlw
- Zbir4Xsitwl/XWO3vwu/e13UYI6bAyzRBLYp65cY99PyxtpWKYLOCEaIoR35RS4pHE4P
- vb38xqOSphSAGlHHHsSRPgM/FnC2YuAdoPwAJNZgDbNqH57yxYLlLvG+4Z9mhEpPGMCr
- ObCUrgRbhRIq5pP13L0qVyryFQnHFWp1t6b5JDwbySqj+1f6SEhkJy5hVVv/27A+ciqL
- BoQA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUF0EtgiBHXUcVn01dbM5e7Y/SOIxstjUYWoOX4YLbENogsOdUD55f5wpOaUJPLWQsU7t7+C9WDMfsc@nongnu.org
-X-Gm-Message-State: AOJu0Yy994ZHKGD3ULtXwSIKtZTCdDi7SJRTtmH87rn376duK2z6wd3Z
- ygzeCLm18IjPXrTTePHj07bJQmfeY4+fqZkR0QIcxyC9O6bZ3IwcSdKHczxXPujFCx+j9QYCPde
- Wf8HoaLOlcFbH1WiBNJt9vNZ1FuH5d+p2l1JEDKYZ/HvQNhTH1vWegIfP
-X-Gm-Gg: ASbGncs+c9MmXN6ZBhlRSDeJO2YTz0ptIUsP3iN6DZvLuxhFLtmQ2AUt3xxzorsw9wt
- EBQhxOEui6S0jOlfmuZO9DlNHIsV0aG2Z6IZEh9yfBirhOKDj3mWjzdCBlOER+g4SjQS+Rtdckh
- piKZMUNpFb9dQiop7HU2sNYuAV31n7RRhI2zEE9u2I+va7qRZ2gGs5DsaRbiPI8kxfaBaDL1qEB
- azVgMpLvJ8oXKl0foY/aao95eSTWUYz6eR8e5iWcp0cjcLGzNCMFXjnP6xPfmPHJCJtuZRB6IYs
- x/OJEwievcUpMIFz5RXKm9Ut1lrczZ2UdmUwUg96HlzGQFcavIwTOXnDeik=
-X-Received: by 2002:a05:6000:2302:b0:3a3:6478:e08 with SMTP id
- ffacd0b85a97d-3a526e13838mr2493538f8f.23.1749114799854; 
- Thu, 05 Jun 2025 02:13:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxEPTcYEkPVX2O7YwmyEAviHVQsmEs1TBaKGhjReBhaf3tu0YCh8hpxHBW00Jwstik03Gm9w==
-X-Received: by 2002:a05:6000:2302:b0:3a3:6478:e08 with SMTP id
- ffacd0b85a97d-3a526e13838mr2493498f8f.23.1749114799394; 
- Thu, 05 Jun 2025 02:13:19 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe6cd15sm24351195f8f.39.2025.06.05.02.13.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Jun 2025 02:13:18 -0700 (PDT)
-Message-ID: <9a9c70eb-6b2e-4bd5-b665-8b91ae06ae43@redhat.com>
-Date: Thu, 5 Jun 2025 11:13:17 +0200
+ bh=dYYdHaMD8JlnohS7vTjzTBteCTeF4nQYM+W3dSTNICs=;
+ b=W+PUj94mX4fQ4MR5gNYd2rEV3zWg/F6o0r6IerEYkjP7n3D40GdBB604Nx4VeGN+xVRoKO
+ zk2N7/izk49BtvwvbNAsJPFcYPtX8cRisTISHY+ACP9+/D2ckuSl3Sioe2v++mZFeD230E
+ t4Eyoj6fR0GyuU8phTtp/rpaNzEtstI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-CUwECXBIM_Sm9YA9G6TGsA-1; Thu,
+ 05 Jun 2025 05:24:58 -0400
+X-MC-Unique: CUwECXBIM_Sm9YA9G6TGsA-1
+X-Mimecast-MFC-AGG-ID: CUwECXBIM_Sm9YA9G6TGsA_1749115496
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 126F11800773; Thu,  5 Jun 2025 09:24:56 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.159])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B58A918002A5; Thu,  5 Jun 2025 09:24:39 +0000 (UTC)
+Date: Thu, 5 Jun 2025 10:24:34 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Fam Zheng <fam@euphon.net>, Jason Wang <jasowang@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH v4 04/19] target/i386/cpu: Remove X86CPU::check_cpuid field
+Message-ID: <aEFiUp9xD-UIhuGq@redhat.com>
+References: <20250512083948.39294-1-philmd@linaro.org>
+ <20250512083948.39294-5-philmd@linaro.org>
+ <ccf78c07-fc08-493f-85d8-5058cccbe82e@intel.com>
+ <aDad5elq0bgZ/tvp@intel.com>
+ <20250603170238.75a0f1de@imammedo.users.ipa.redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] hw/arm/smmuv3: Check SMMUv3 has PCIe Root Complex
- association
-Content-Language: en-US
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
- ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com,
- mochs@nvidia.com, smostafa@google.com, linuxarm@huawei.com,
- wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
- jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
-References: <20250602154110.48392-1-shameerali.kolothum.thodi@huawei.com>
- <20250602154110.48392-2-shameerali.kolothum.thodi@huawei.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250602154110.48392-2-shameerali.kolothum.thodi@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250603170238.75a0f1de@imammedo.users.ipa.redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -116,50 +98,104 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Shameer,
+On Tue, Jun 03, 2025 at 05:02:38PM +0200, Igor Mammedov wrote:
+> On Wed, 28 May 2025 13:23:49 +0800
+> Zhao Liu <zhao1.liu@intel.com> wrote:
+> 
+> > On Wed, May 28, 2025 at 10:09:56AM +0800, Xiaoyao Li wrote:
+> > > Date: Wed, 28 May 2025 10:09:56 +0800
+> > > From: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > Subject: Re: [PATCH v4 04/19] target/i386/cpu: Remove X86CPU::check_cpuid
+> > >  field
+> > > 
+> > > On 5/12/2025 4:39 PM, Philippe Mathieu-Daudé wrote:  
+> > > > The X86CPU::check_cpuid boolean was only set in the
+> > > > pc_compat_2_4[] array, via the 'check=off' property.
+> > > > We removed all machines using that array, lets remove
+> > > > that CPU property and simplify x86_cpu_realizefn().  
+> > > 
+> > > No.
+> > > 
+> > > We cannot do this. Because it changes the behavior of QEMU.
+> > > 
+> > > 'check_cpuid' is true by default while 'enforce_cpuid' is false. So that
+> > > QEMU emits warnings in x86_cpu_filter_features() by default when user
+> > > requests unsupported CPU features. If remove "check" property and the
+> > > internal 'check_cpuid', QEMU will not do it unless user sets enforce_cpuid
+> > > explicitly.  
+> > 
+> > One option would be to have x86_cpu_filter_features() unconditionally
+> > turn on verbose and print warnings, but some people might want to turn
+> > off these warning prints, I don't know if anyone would, but it would be
+> > possible.
+> > 
+> > The other option is still to keep the “check” property.
+> > 
+> > IMO, the latter option is the better way to reduce Philippe's burden.
+> 
+> we essentially loose warnings by default when some features aren't available,
+> qemu still continues to run though.
+> 
+> Given that Daniel acked it from libvirt side, libvirt doesn't care about warnings
+> (it does its has its own cpu model calculation). Likely other mgmt do not care
+> about it either, and if they do they probably doing something wrong and
+> should use QMP to get that data.
 
-On 6/2/25 5:41 PM, Shameer Kolothum wrote:
-> Although this change does not affect functionality at present, it is
-> required when we add support for user-creatable SMMUv3 devices in
-> future patches.
->
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Acking it was a mistake on my part - I mis-interpreted the patch and so
+didn't notice we were loosing the verbose printing of missing features
+by default.
 
-Eric
-> ---
->  hw/arm/smmuv3.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-> index ab67972353..7e934336c2 100644
-> --- a/hw/arm/smmuv3.c
-> +++ b/hw/arm/smmuv3.c
-> @@ -24,6 +24,7 @@
->  #include "hw/qdev-properties.h"
->  #include "hw/qdev-core.h"
->  #include "hw/pci/pci.h"
-> +#include "hw/pci/pci_bridge.h"
->  #include "cpu.h"
->  #include "exec/target_page.h"
->  #include "trace.h"
-> @@ -1881,6 +1882,13 @@ static void smmu_realize(DeviceState *d, Error **errp)
->      SMMUv3Class *c = ARM_SMMUV3_GET_CLASS(s);
->      SysBusDevice *dev = SYS_BUS_DEVICE(d);
->      Error *local_err = NULL;
-> +    Object *bus;
-> +
-> +    bus = object_property_get_link(OBJECT(d), "primary-bus", &error_abort);
-> +    if (!bus || !object_dynamic_cast(bus->parent, TYPE_PCI_HOST_BRIDGE)) {
-> +        error_setg(errp, "SMMUv3 is not attached to any PCIe Root Complex!");
-> +        return;
-> +    }
->  
->      c->parent_realize(d, &local_err);
->      if (local_err) {
+I'm actually curious why we made the 'check' feature tied to machine
+types at all. If it doesn't affect guest ABI, just causes verbose
+info on stderr, it feels like something we could have just had on
+all machine types new & old. Git history brings us back to
+
+  commit 3e68482224129c3ddc061af7c9d438b882ecfdd1
+  Author: Eduardo Habkost <ehabkost@redhat.com>
+  Date:   Tue Nov 3 17:18:50 2015 -0200
+
+    target-i386: Set "check=off" by default on pc-*-2.4 and older
+    
+    The default CPU model (qemu64) have some issues today: it enables some
+    features (ABM and SSE4a) that are not present in many host CPUs. That
+    means many hosts (but not all of them) had those features silently
+    disabled in the default configuration in QEMU 2.4 and older.
+    
+    With the new "check=on" default, this causes warnings to be printed in
+    the default configuration, because of the lack of SSE4A on all Intel
+    hosts, and the lack of ABM on Sandy Bridge and older hosts:
+    
+      $ qemu-system-x86_64 -machine pc,accel=kvm
+      warning: host doesn't support requested feature: CPUID.80000001H:ECX.abm [bit 5]
+      warning: host doesn't support requested feature: CPUID.80000001H:ECX.sse4a [bit 6]
+    
+    Those issues will be fixed in pc-*-2.5 and newer. But as we can't change
+    the guest ABI in pc-*-2.4, disable "check" mode by default in pc-*-2.4
+    and older so we don't print spurious warnings.
+
+IOW, we wanted to have 'check' unconditionally on by default, but
+had to do a temp hack to avoid spamming all configurations with
+the broken 'qemu64' CPU model design.
+
+> That leaves us with human users, for that case I'd say one should use
+> enforce_cpuid if feature availability matters.
+
+IMHO even with mgmt apps, it is worth having 'check=on' by default
+as the log message has value in debugging scenarios. It could have
+the potential to highlight situations where an mgmt app has
+unwittingly done something wrong with CPU config. At the very least
+though its a warning to humans debugging that they should not trust
+the QEMU command line as a expressing the full CPU featureset.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
