@@ -2,86 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A72ACF00B
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66696ACEEEE
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 14:07:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNANy-0002Kx-Oy; Thu, 05 Jun 2025 09:11:59 -0400
+	id 1uN9N6-0001Pm-4U; Thu, 05 Jun 2025 08:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <taotang2025@gmail.com>)
- id 1uN0Jh-00089x-62; Wed, 04 Jun 2025 22:26:53 -0400
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <taotang2025@gmail.com>)
- id 1uN0Jf-0008MP-N6; Wed, 04 Jun 2025 22:26:52 -0400
-Received: by mail-pl1-x643.google.com with SMTP id
- d9443c01a7336-235ea292956so4950065ad.1; 
- Wed, 04 Jun 2025 19:26:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749090409; x=1749695209; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=K75aSCyzs9q5zyzmveX5d6CIqDix0KE2if+KVjMGA+I=;
- b=TBUG62KgYIZAUk08SXzF3Y9ycrEZ+2mvnxRzv4Y3Si2L4M0RCCpD8XzzWSjHxZ0qRd
- fvya5iGFx4Fm85VJP3InDNA5lq1BRi5awN527L2BC/y4w6W30rh9CssQPybAyHJxVx7U
- y9Pz2k81AJlw8m8POsnzPIY1xWAy1/wDtkpsAMYzE2rw0eJgph8crtsqGVLOqoojNvWA
- pacNd10oSSEHm7ZVbKLpv4J0MAtKYEJuzH9gEPq5SnYU4f9M3IMROzSUXdRiuh4qxGBO
- AYrvVcOPvrDSUaaRVx/4XM3g9KV/YCP2eQ9vUyRVk1LURc3cgR53t7+uagj45JLXBIvL
- 7jdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749090409; x=1749695209;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=K75aSCyzs9q5zyzmveX5d6CIqDix0KE2if+KVjMGA+I=;
- b=scIDbeNbQdAtQP2Kcd7O/INIOCkW9wL7/mqmSh+VFrJc0oN1mba5x+FvLeq/QqJKCa
- gMOXBYklK8YBHO00lZxGdBW48wx9Wdxb//2THjlD/hWinaB8s606DwFYI5L4aVBIah8g
- 1zO3ZHNb8KGfgPO0z//JsuPp3SoaXWd1R+m85YpzrQrGrIfvVZGegyhewdmjN8vmmlfh
- bBkTSijt6OzO/hFsoFmYDtNrLeuRrId3KNP0yARmRYvvrdAZnESp2/pyxPm3NBGodoZO
- 7VfCPAeMTzbtSCNB2l/tRppHPeYSV7FiPuX1qg/Y6fcR/EmkTzNPXy1m6fFtrSdGhO9g
- S7gA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWjDGtK7q8CNbOnz76IvIruULp3Trpqjzql7oAdxD6usac/o984rgD7P6sn1RDC2E87eqVi49QpbQ==@nongnu.org
-X-Gm-Message-State: AOJu0YwII+hrcO5RK3rsrrqVbnvYRTESqffoix1pxX+tvrlRUI+3kSz0
- SNM9xCSLzu3k2CZG0xjUu1U7i7WVtqGZhehodfg9aH+M/t0iKYKpl/oDK3svuc/prpc1Bg==
-X-Gm-Gg: ASbGncsLIilEHkpQJCEl3X3J9FuJok+w0YNfstoWidQ1f9Fdsa+hJy/yy2v3s5PkTCq
- MX/ISvMQv17YUmB4+xQSF5JgyBF9/K0qpBpTFtp6J9P4JEpsX9G00KqzT8K2JKXUE92flDQLhWu
- ZE2xD9KblIFv7hPnDxLCm/HnwtJVYIZHFEoQV9YiOWcYs6urIIwPMLtahqXiQxCJT1nlT1RQmF2
- Fz/FW8V91Yd8hHUDnE/J722LDZWyjr7dvjm9gCtqBGE5q94VYqZGeiyp//eeSFnddD3KyZPNEmG
- D6TB4Q3BEob8JJJ/xxt6lUkQGBOFt6ysOG9+jBFRmQcI0+lljH4z2L2gr/A=
-X-Google-Smtp-Source: AGHT+IH8OPNSpwxBrUdUqJj2+994aSNoyODfmzm1dEquwe0Z7OMJgpOejAjOM0KUOjB9KYRyfdTXYQ==
-X-Received: by 2002:a17:902:c94d:b0:234:9cdd:ffd5 with SMTP id
- d9443c01a7336-235e11e5c3amr65613585ad.25.1749090409026; 
- Wed, 04 Jun 2025 19:26:49 -0700 (PDT)
-Received: from huawei.. ([218.76.62.144]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23506cd3506sm110296125ad.156.2025.06.04.19.26.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Jun 2025 19:26:48 -0700 (PDT)
-From: taotang2025@gmail.com
-To: qemu-devel@nongnu.org
-Cc: eric.auger@redhat.com, peter.maydell@linaro.org, qemu-arm@nongnu.org,
- Tao Tang <taotang2025@gmail.com>
-Subject: [PATCH] hw/arm/smmuv3: Fix incorrect reserved mask for SMMU CR0
- register
-Date: Thu,  5 Jun 2025 10:26:40 +0800
-Message-Id: <20250605022640.598308-1-taotang2025@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uN9Mw-0001N2-4L
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 08:06:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uN9Mu-0000Ul-92
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 08:06:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749125206;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Hjq7PRBrGKH+pUaHF5VWFOYtWfvMXQv7b8Sj1cP1SmM=;
+ b=dgkY7iOeHZ12MrMZyLplpYH7GG7XH0xmgOuW7C/948/r3OB5vVs7zChpyBQDSMleAXHab1
+ vcrH4nQQvebGA+pT/zIQHMvxoYRWHrymvHoZ2jCrQ6Qov4GGTUo7mIQBhwGVRU+Ci4vxTe
+ 8Ub5JfaM0jfvuudbG4Xxra6GkqCRY1c=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-w5_cI8MwPt2Hr2GZb7HWqA-1; Thu,
+ 05 Jun 2025 08:06:42 -0400
+X-MC-Unique: w5_cI8MwPt2Hr2GZb7HWqA-1
+X-Mimecast-MFC-AGG-ID: w5_cI8MwPt2Hr2GZb7HWqA_1749125201
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A89691956095; Thu,  5 Jun 2025 12:06:41 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 602BE18002A5; Thu,  5 Jun 2025 12:06:41 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id BD6B321E6766; Thu, 05 Jun 2025 14:06:38 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org,  zhao1.liu@intel.com,  qemu-rust@nongnu.org
+Subject: Re: [PATCH 06/14] rust: qemu-api: add bindings to Error
+In-Reply-To: <20250605101544.368953-7-pbonzini@redhat.com> (Paolo Bonzini's
+ message of "Thu, 5 Jun 2025 12:15:35 +0200")
+References: <20250605101544.368953-1-pbonzini@redhat.com>
+ <20250605101544.368953-7-pbonzini@redhat.com>
+Date: Thu, 05 Jun 2025 14:06:38 +0200
+Message-ID: <87o6v2fl4h.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::643;
- envelope-from=taotang2025@gmail.com; helo=mail-pl1-x643.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 05 Jun 2025 09:11:51 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,43 +85,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tao Tang <taotang2025@gmail.com>
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-The current definition of the SMMU_CR0_RESERVED mask is incorrect.
-It mistakenly treats bit 10 (DPT_WALK_EN) as a reserved bit while
-treating bit 9 (RES0) as an implemented bit.
+> Provide an implementation of std::error::Error that bridges the Rust
+> anyhow::Error and std::panic::Location types with QEMU's Error*.
+>
+> It also has several utility methods, analogous to error_propagate(),
+> that convert a Result into a return value + Error** pair.  One important
+> difference is that these propagation methods *panic* if *errp is NULL,
+> unlike error_propagate() which eats subsequent errors[1].  The reason
+> for this is that in C you have an error_set*() call at the site where
+> the error is created, and calls to error_propagate() are relatively rare.
+>
+> In Rust instead, even though these functions do "propagate" a
+> qemu_api::Error into a C Error**, there is no error_setg() anywhere that
+> could check for non-NULL errp and call abort().  error_propagate()'s
+> behavior of ignoring subsequent errors is generally considered weird,
+> and there would be a bigger risk of triggering it from Rust code.
+>
+> [1] This is actually a violation of the preconditions of error_propagate(=
+),
+>     so it should not happen.  But you never know...
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-According to the SMMU architecture specification, the layout for CR0 is:
-| 31:11| RES0           |
-| 10   | DPT_WALK_EN    |
-| 9    | RES0           |
-| 8:6  | VMW            |
-| 5    | RES0           |
-| 4    | ATSCHK         |
-| 3    | CMDQEN         |
-| 2    | EVENTQEN       |
-| 1    | PRIQEN         |
-| 0    | SMMUEN         |
+[...]
 
-Signed-off-by: Tao Tang <taotang2025@gmail.com>
----
- hw/arm/smmuv3-internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> diff --git a/rust/qemu-api/src/error.rs b/rust/qemu-api/src/error.rs
+> new file mode 100644
+> index 00000000000..80157f6ea1b
+> --- /dev/null
+> +++ b/rust/qemu-api/src/error.rs
 
-diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-index b6b7399347..42ac77e654 100644
---- a/hw/arm/smmuv3-internal.h
-+++ b/hw/arm/smmuv3-internal.h
-@@ -120,7 +120,7 @@ REG32(CR0,                 0x20)
-     FIELD(CR0, EVENTQEN,      2, 1)
-     FIELD(CR0, CMDQEN,        3, 1)
- 
--#define SMMU_CR0_RESERVED 0xFFFFFC20
-+#define SMMU_CR0_RESERVED 0xFFFFFA20
- 
- REG32(CR0ACK,              0x24)
- REG32(CR1,                 0x28)
--- 
-2.34.1
+[...]
+
+> +    /// Equivalent of the C function `error_propagate`.  Fill `*errp`
+> +    /// with the information container in `self` if `errp` is not NULL;
+> +    /// then consume it.
+> +    ///
+> +    /// This is similar to the C API `error_propagate`, but it panics if
+> +    /// `*errp` is not `NULL`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `errp` must be a valid argument to `error_propagate`; it can be
+> +    /// `NULL` or it can point to any of:
+> +    /// * `error_abort`
+> +    /// * `error_fatal`
+> +    /// * a local variable of (C) type `Error *`
+
+This local variable must contain NULL.
+
+> +    ///
+> +    /// Typically `errp` is received from C code and need not be
+> +    /// checked further at the Rust=E2=86=94C boundary.
+> +    pub unsafe fn propagate(self, errp: *mut *mut bindings::Error) {
+> +        if errp.is_null() {
+> +            return;
+> +        }
+> +
+> +        // SAFETY: caller guarantees that errp and *errp are valid
+> +        unsafe {
+> +            assert_eq!(*errp, ptr::null_mut());
+> +            bindings::error_propagate(errp, self.clone_to_foreign_ptr());
+> +        }
+> +    }
+
+[...]
+
+With the comment tightened:
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+
+The commit message and comment improvements are lovely!
 
 
