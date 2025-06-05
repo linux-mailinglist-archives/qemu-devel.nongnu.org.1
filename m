@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161F7ACEA93
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 09:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB5AACEA92
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 09:00:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN4Zf-0006Ba-AP; Thu, 05 Jun 2025 02:59:39 -0400
+	id 1uN4Zl-0006CE-Qk; Thu, 05 Jun 2025 02:59:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1uN4Zc-0006B9-Az
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 02:59:36 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ id 1uN4Zj-0006Bw-FS
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 02:59:43 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1uN4Za-000391-9K
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 02:59:36 -0400
+ id 1uN4Zh-00039b-Nc
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 02:59:43 -0400
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:471f:0:640:3878:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id AA38860A22;
- Thu,  5 Jun 2025 09:59:28 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id A32D360D7D;
+ Thu,  5 Jun 2025 09:59:38 +0300 (MSK)
 Received: from dtalexundeer-nx.yandex-team.ru (unknown
  [2a02:6bf:8080:976::1:1f])
  by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id LxWRjF5FYqM0-CpjY7Rtr; Thu, 05 Jun 2025 09:59:27 +0300
+ ESMTPSA id LxWRjF5FYqM0-YrxgxWaH; Thu, 05 Jun 2025 09:59:37 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1749106768;
- bh=ig1NU7fC86EK4kPQdQqVe1BbrlEmZOq9hDiSU4y6BY4=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=rxwBuOtCeQQ7y5NNPibxMnAtDkE+ifMnLhPbIZRurOY/8xaobDJe1K4YEilD3/jQX
- 71vu6grZ02AKI21PuUSzQ4E5gov6SzVRRdYUySfWZVrKEfAv/lDS0iJP/tSQWyx0LM
- xAi8V46V1vjN3k9J/42NJdRLFjE9YC6HrWUimjVM=
+ s=default; t=1749106777;
+ bh=PARyZLPgpNjNVOuTGwALJSxPCyPsA06okdw1uAwF4+4=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=0+QUgiPDd+Yh0Ks1kEkYg5TUDwdfC3athSLof464nZ9qmQbNuVRXm5NonJ4cwt0q2
+ brgWJ44QI5gTCT9InmFzRsGgPfH4B/DLZ+Ax04I1L+Ubibg/if22ctySFvcZSdah08
+ cAKu6hGc3MTDGJuSg4zZS9yJv/fdyIToAZ2Oh7G8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
@@ -47,20 +47,22 @@ Cc: Cleber Rosa <crosa@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-Subject: [PATCH v9 0/2] tests/functional: add memlock tests
-Date: Thu,  5 Jun 2025 11:59:07 +0500
-Message-Id: <20250605065908.299979-1-dtalexundeer@yandex-team.ru>
+Subject: [PATCH v9 1/2] tests/functional: add skipLockedMemoryTest decorator
+Date: Thu,  5 Jun 2025 11:59:09 +0500
+Message-Id: <20250605065908.299979-2-dtalexundeer@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250605065908.299979-1-dtalexundeer@yandex-team.ru>
+References: <20250605065908.299979-1-dtalexundeer@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -77,64 +79,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add new tests to check the correctness of the `-overcommit memlock`
-option (possible values: off, on, on-fault) by using
-`/proc/{qemu_pid}/status` file to check in VmSize, VmRSS and VmLck values:
+Used in future commit to skipping execution of a tests if the system's
+locked memory limit is below the required threshold.
 
-* if `memlock=off`, then VmLck = 0;
-* if `memlock=on`, then VmLck > 0 and almost all memory is resident;
-* if `memlock=on-fault`, then VmLck > 0 and only few memory is resident.
-
-On `memlock=on` and `memlock=on-fault` VmLck will be the same.
-
+Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
-v8 -> v9:
-* meson.build: move test to x86 system quick list
-* improve comment in memlock test
-
-v7 -> v8:
-* rewrite test, using process status file instead of smaps
-for checking overcommit option;
-* change error handling on opening status file;
-* add SPDX identifier.
-
-v6 -> v7:
-* add skipTest if can't open smaps file of qemu process
-
-v5 -> v6:
-* add python3 shebang to tests/functional/test_memlock.py
-
-v4 -> v5:
-* refactor skipLockedMemoryTest decorator: using resource.getrlimit()
-  function instead of spawning a process
-
-v3 -> v4:
-* add skipLockedMemoryTest decorator to skip test if system's locked
-  memory limit is below the required threashold;
-* add to MemlockTest skipLockedMemoryTest decorator with 2 GB limit.
-
-v2 -> v3:
-Move tests to tests/functional dir, as the tests/avocado dir is being
-phased out.
-v2 was [PATCH v2] tests/avocado: add memlock tests.
-Supersedes: <20250414075702.9248-1-dtalexundeer@yandex-team.ru>
-
-v1 -> v2:
-In the previous send, i forgot to specify new patch version (v2)
-So i resend previous patch with version specified.
-
-
-Alexandr Moshkov (2):
-  tests/functional: add skipLockedMemoryTest decorator
-  tests/functional: add memlock tests
-
- tests/functional/meson.build             |  1 +
  tests/functional/qemu_test/__init__.py   |  2 +-
- tests/functional/qemu_test/decorators.py | 18 ++++++
- tests/functional/test_memlock.py         | 79 ++++++++++++++++++++++++
- 4 files changed, 99 insertions(+), 1 deletion(-)
- create mode 100755 tests/functional/test_memlock.py
+ tests/functional/qemu_test/decorators.py | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index af41c2c6a2..6e666a059f 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -15,6 +15,6 @@
+ from .linuxkernel import LinuxKernelTest
+ from .decorators import skipIfMissingCommands, skipIfNotMachine, \
+     skipFlakyTest, skipUntrustedTest, skipBigDataTest, skipSlowTest, \
+-    skipIfMissingImports, skipIfOperatingSystem
++    skipIfMissingImports, skipIfOperatingSystem, skipLockedMemoryTest
+ from .archive import archive_extract
+ from .uncompress import uncompress
+diff --git a/tests/functional/qemu_test/decorators.py b/tests/functional/qemu_test/decorators.py
+index 50d29de533..c0d1567b14 100644
+--- a/tests/functional/qemu_test/decorators.py
++++ b/tests/functional/qemu_test/decorators.py
+@@ -5,6 +5,7 @@
+ import importlib
+ import os
+ import platform
++import resource
+ from unittest import skipIf, skipUnless
+ 
+ from .cmd import which
+@@ -131,3 +132,20 @@ def skipIfMissingImports(*args):
+ 
+     return skipUnless(has_imports, 'required import(s) "%s" not installed' %
+                                    ", ".join(args))
++
++'''
++Decorator to skip execution of a test if the system's
++locked memory limit is below the required threshold.
++Takes required locked memory threshold in kB.
++Example:
++
++  @skipLockedMemoryTest(2_097_152)
++'''
++def skipLockedMemoryTest(locked_memory):
++    # get memlock hard limit in bytes
++    _, ulimit_memory = resource.getrlimit(resource.RLIMIT_MEMLOCK)
++
++    return skipUnless(
++        ulimit_memory == resource.RLIM_INFINITY or ulimit_memory >= locked_memory * 1024,
++        f'Test required {locked_memory} kB of available locked memory',
++    )
 -- 
 2.34.1
 
