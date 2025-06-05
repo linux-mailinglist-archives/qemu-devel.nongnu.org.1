@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3036ACF447
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 18:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3917ACF450
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 18:29:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNDQk-00070T-Il; Thu, 05 Jun 2025 12:27:02 -0400
+	id 1uNDQm-000721-Mz; Thu, 05 Jun 2025 12:27:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uNDQi-0006z5-CF
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:00 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ id 1uNDQj-0006zf-EW
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:01 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uNDQf-0007w9-Gu
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:00 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-ad55d6aeb07so229673266b.0
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 09:26:57 -0700 (PDT)
+ id 1uNDQh-0007wU-Lt
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:01 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-6020ff8d51dso2171180a12.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 09:26:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749140816; x=1749745616; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749140817; x=1749745617; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GQwrdoDZTl53LB+IkPogNbh7NAW9W/1iQ9BQhh4VHRk=;
- b=o2+I/oS8bJuUmh4V0o9C2t/ccYckPszbnTRUHOgkLILK35Tyw7UIKHeyM2v8NjxRop
- LQIBm+5hkVWZFvrYzxdEuZlS+VgK7pMYY513De2WUk+ePthJR99Q+Z6pK+9BdmUNsw5v
- nQMKKJlQLGKTtc19UZKu40AR8lZen5m0x/+8LSUSDeFrDJSGbm4XVQivJZ7PywdookIw
- QUpHqI41SRQ64xBH9twMX0sZoXmAMaRHmnMjMymgc01hFM7xoF7j3rpXwFHJqTrAkmNU
- EZLk108v3qbZVfb9stOeENA8mtlRgB0o07PYz4YsQBJHJkoq7sIa5iKx6LQ/ywLf3R7x
- boMQ==
+ bh=U2bAjqn2l1sYmqIqqjIVtgsfD4EifRV4UThIaUxbMJI=;
+ b=k/GozYxcofK0NPUAlYIXSpSB8ArTQhrKoOAiXbZydDrInyk0xJ08VVU+y23Pv5uvmc
+ D/XQJJ4ig4+5XWBRceXiNmniIMXV4tXRA38bdstN/Qz6yeI+fXzKQ19QvE2c87sL6grD
+ 5za7e6tPnlqS3MpBB3IJvdav4Pj/xUQaNo2TNMJEA/rPKbqK+0fyymT1IxQRju39SSUj
+ Cs/RUh4U/9jntxWEjD9c7Av675fo9glh8bnW4PAQ8fvwuig6f1uscK3jqywQ9EcJBdiL
+ y38sVj1L4+fWgQbCVaQHb5RH29Ujuzgj7BLcXXmS7U1qDtQsSezibQAD30vsDNrlvK7p
+ rhlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749140816; x=1749745616;
+ d=1e100.net; s=20230601; t=1749140817; x=1749745617;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GQwrdoDZTl53LB+IkPogNbh7NAW9W/1iQ9BQhh4VHRk=;
- b=TL49xacE0zsbMzGOPfH4XTzLzidqGIexdHtVOsaLcTNpnj4hfOTCMWJm/wdv0VI689
- 9g0YBwZhuIB0WosMh5MRGEhBWx6gcNn6sXiPYAxF+aiYU8dedJkSUE7Qr5MVa4c36IuO
- 1vc1/O1NPpYwRP18/QhT0nQRJP3ZzHONbDGAB0MbMvxKmP0B/6HigYqqgIaCu43AGtB8
- zydKJ14JI6BsMN9CPTIRRD+ecqha9+B37wUo6k7ekT2hx1fT0EhNI3+iN6F/qqOCBDfE
- 3UIyb6cij+BgRMrI7okLYgT40dk6ROIaIWl5lV5lXkiSCi+tQJrWWP3C/VNGldoT/q+C
- hzxQ==
-X-Gm-Message-State: AOJu0Yx2/CHIfCo4hTQ1YG3DRQEFBTh3Vj27KSz6/JM2CG5kQlFhSqki
- WGGzaAE0byKS3vPixIKB13HoJbQvyvf8kh6dTbNSs3goZ51mRS275gBELsCwM2X4Sws=
-X-Gm-Gg: ASbGncsizhGeobaquUT5V6mEtPlExo+vpL3IJWGn1oiePL8AwB78b8V1eRA1cle+GZA
- SCXqU8rcMDgxQF8KJQIwIoVwTSgg70rd6hofVHFGHlG107lsEDdIRruT5PzPGhJy9kWKiInWdSX
- p6eHMrorjTpLOMs4wyr+Tb4vtnPQ72/caLY/rRjbzAQOuW+b9bg7/v0yZ5rCaFSkVh8wJYx5oVH
- koDFiYcZi1LSmvNgBHJVLCgvfl6X+RteiZVg2b4hoz1Y9dW1GlSmWc1jaD8Fl57FAXdCbbZXKhF
- ZgFmXY0fFQFFydbZBmgcKgaJk9zsL8e28GoRd247KFp2i6hLtZcM
-X-Google-Smtp-Source: AGHT+IHhGpOgsEPpHbuowABzQgDC0eereD7wcbln7xOKXUTivyxm1kAuIpNCrPzFnMsK89FHik0GPg==
-X-Received: by 2002:a17:907:3da3:b0:ad8:9a86:cf52 with SMTP id
- a640c23a62f3a-addf8c995c5mr769111066b.11.1749140815913; 
- Thu, 05 Jun 2025 09:26:55 -0700 (PDT)
+ bh=U2bAjqn2l1sYmqIqqjIVtgsfD4EifRV4UThIaUxbMJI=;
+ b=v9djL2OATmqnsaDXXgZXrjuu++bY4fehFOtRkURlSoYvo9ijppgb3TqQjhAYOcvL9G
+ sM8frEe+ogWfgI2v+Y8cMRep9bawWymZ9VMCRtFNlq6xqccE+cHgoAizHCVPj2Nq5iS3
+ A+0yv5dq/U/I+qPdTL1c+c7R6qFGW4hHH67QDvvV6wb6RWkRQ3sAm3CXN/+Nhh2Ix9M/
+ kQf4dJ+80pRNCHB0y2OJWM768+eSJNtc75yrjzX3gxpHHH6WlggrO9s6n669190whbml
+ B6XXRliRCIwJjU1LsquVTiRUKnajauTuXb2Q6NpWloJgNcrwGbNwvvJHlfD/D8zjvUvv
+ P1OQ==
+X-Gm-Message-State: AOJu0YzK+1QJuO9a8m5ywmJLcZ1JKhlF+Ay3/zagw8Keq8jWHAsYf8fh
+ 1qvGUQzJ+sl52ZAHi5Np8P/wc7SiWPYLPoFIk9kf3+Nu/NE63y3BvtLxOadw7QvE9iM=
+X-Gm-Gg: ASbGncspzk+jVeGQ487DW9tuyFjKho1vrdph1fnNAr6ZvqfRKrPX8SrrDo2oG3DeA4m
+ Ur4Ka7Ys2XWEsXN9kcCy1JSqB3X68CUS0ZYC0GLuYs/j+WNhdJq6HeGB4JzNxi2fvj/W6na7wkH
+ CLC5v5XoQvHV+lnQcD32MDl2GZuFIWAVH1ZwvS+VmU1Wyen1avqVc3/8RTJXsl9ZYFstQ3NRP5D
+ tb0GDnw9rlqOl8631OYzUjBYb4Rk8SEVtMf86mR+nWLpPm2ZxYUrf7JhjaoRRPYfBbQXZ9bGH1c
+ x59olmHxMmqyJmZuDqKanXKInJNLK728vOw99fA/e1dyrTO1muI/OtgzRrDtKn0=
+X-Google-Smtp-Source: AGHT+IFfAR18DOBFmZKJ3lz7feNTaQ+ql32aTl9zKKusJnaYcjUvLb5qf/yECxlQ+COMFaPMmhsuLA==
+X-Received: by 2002:a17:907:7fa2:b0:ad8:a50c:f6cb with SMTP id
+ a640c23a62f3a-addf8d5ec0amr666246966b.26.1749140817129; 
+ Thu, 05 Jun 2025 09:26:57 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ada5d7fec76sm1284384766b.20.2025.06.05.09.26.53
+ 4fb4d7f45d1cf-607341e69fbsm619848a12.47.2025.06.05.09.26.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 05 Jun 2025 09:26:54 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E677C5F81D;
- Thu, 05 Jun 2025 17:26:51 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 092625F828;
+ Thu, 05 Jun 2025 17:26:52 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PULL 06/17] contrib/plugins: allow setting of instructions per
- quantum
-Date: Thu,  5 Jun 2025 17:26:39 +0100
-Message-ID: <20250605162651.2614401-7-alex.bennee@linaro.org>
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 07/17] MAINTAINERS: add myself to virtio-gpu for Odd Fixes
+Date: Thu,  5 Jun 2025 17:26:40 +0100
+Message-ID: <20250605162651.2614401-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250605162651.2614401-1-alex.bennee@linaro.org>
 References: <20250605162651.2614401-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -103,69 +100,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The default is we update time every 1/10th of a second or so. However
-for some cases we might want to update time more frequently. Allow
-this to be set via the command line through the ipq argument.
+Seeing as I've taken a few patches to here now I might as well put
+myself forward to maintain virtio-gpu. I've marked it as Odd Fixes as
+it is not my core focus. If someone with more GPU experience comes
+forward we can always update again.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250603110204.838117-7-alex.bennee@linaro.org>
+Message-ID: <20250603110204.838117-8-alex.bennee@linaro.org>
 
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index a72591ee4d..456d01d5b0 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -811,6 +811,10 @@ This plugin can limit the number of Instructions Per Second that are executed::
-   * - ips=N
-     - Maximum number of instructions per cpu that can be executed in one second.
-       The plugin will sleep when the given number of instructions is reached.
-+  * - ipq=N
-+    - Instructions per quantum. How many instructions before we re-calculate time.
-+      The lower the number the more accurate time will be, but the less efficient the plugin.
-+      Defaults to ips/10
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 16af37986a..7718199979 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2668,7 +2668,8 @@ F: hw/display/ramfb*.c
+ F: include/hw/display/ramfb.h
  
- Other emulation features
- ------------------------
-diff --git a/contrib/plugins/ips.c b/contrib/plugins/ips.c
-index d067971135..f110c565bc 100644
---- a/contrib/plugins/ips.c
-+++ b/contrib/plugins/ips.c
-@@ -145,6 +145,8 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-                                            const qemu_info_t *info, int argc,
-                                            char **argv)
- {
-+    bool ipq_set = false;
-+
-     for (int i = 0; i < argc; i++) {
-         char *opt = argv[i];
-         g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-@@ -175,6 +177,14 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-                     return -1;
-                 }
-             }
-+        } else if (g_strcmp0(tokens[0], "ipq") == 0) {
-+            max_insn_per_quantum = g_ascii_strtoull(tokens[1], NULL, 10);
-+
-+            if (!max_insn_per_quantum) {
-+                fprintf(stderr, "bad ipq value: %s\n", tokens[0]);
-+                return -1;
-+            }
-+            ipq_set = true;
-         } else {
-             fprintf(stderr, "option parsing failed: %s\n", opt);
-             return -1;
-@@ -182,7 +192,10 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-     }
- 
-     vcpus = qemu_plugin_scoreboard_new(sizeof(vCPUTime));
--    max_insn_per_quantum = max_insn_per_second / NUM_TIME_UPDATE_PER_SEC;
-+
-+    if (!ipq_set) {
-+        max_insn_per_quantum = max_insn_per_second / NUM_TIME_UPDATE_PER_SEC;
-+    }
- 
-     if (max_insn_per_quantum == 0) {
-         fprintf(stderr, "minimum of %d instructions per second needed\n",
+ virtio-gpu
+-S: Orphan
++M: Alex Bennée <alex.bennee@linaro.org>
++S: Odd Fixes
+ F: hw/display/virtio-gpu*
+ F: hw/display/virtio-vga.*
+ F: include/hw/virtio/virtio-gpu.h
 -- 
 2.47.2
 
