@@ -2,145 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97098ACEEE1
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 14:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A72ACF00B
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 15:12:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN9Ke-00086w-6e; Thu, 05 Jun 2025 08:04:28 -0400
+	id 1uNANy-0002Kx-Oy; Thu, 05 Jun 2025 09:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uN9KW-0007yc-US
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 08:04:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uN9KT-0007CS-MR
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 08:04:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749125056;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=U3TmmfE+IodnI5UiZfT/vpVHYJ+cd4mDwRSSx19gVLo=;
- b=H20zZVuVSrcEXhnm/W+BhnB6NnDoyUaDTHqU8DHySnU5y9chH4n4T7ghBHRHll+tlDYtSR
- rftlgiwq6W/UjN+Xc3UD9lyvuWjRYduFHdeinwe7zHbR/XcVGHjk7VZkBTtJurvzMKhhGO
- xkY+UemCHgaMBScUiPGniWw+WeQMYjM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-214-A3_CJld0NeOaZTOqF58Wbg-1; Thu, 05 Jun 2025 08:04:15 -0400
-X-MC-Unique: A3_CJld0NeOaZTOqF58Wbg-1
-X-Mimecast-MFC-AGG-ID: A3_CJld0NeOaZTOqF58Wbg_1749125054
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-451ac1b43c4so5148995e9.0
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 05:04:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <taotang2025@gmail.com>)
+ id 1uN0Jh-00089x-62; Wed, 04 Jun 2025 22:26:53 -0400
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <taotang2025@gmail.com>)
+ id 1uN0Jf-0008MP-N6; Wed, 04 Jun 2025 22:26:52 -0400
+Received: by mail-pl1-x643.google.com with SMTP id
+ d9443c01a7336-235ea292956so4950065ad.1; 
+ Wed, 04 Jun 2025 19:26:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1749090409; x=1749695209; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=K75aSCyzs9q5zyzmveX5d6CIqDix0KE2if+KVjMGA+I=;
+ b=TBUG62KgYIZAUk08SXzF3Y9ycrEZ+2mvnxRzv4Y3Si2L4M0RCCpD8XzzWSjHxZ0qRd
+ fvya5iGFx4Fm85VJP3InDNA5lq1BRi5awN527L2BC/y4w6W30rh9CssQPybAyHJxVx7U
+ y9Pz2k81AJlw8m8POsnzPIY1xWAy1/wDtkpsAMYzE2rw0eJgph8crtsqGVLOqoojNvWA
+ pacNd10oSSEHm7ZVbKLpv4J0MAtKYEJuzH9gEPq5SnYU4f9M3IMROzSUXdRiuh4qxGBO
+ AYrvVcOPvrDSUaaRVx/4XM3g9KV/YCP2eQ9vUyRVk1LURc3cgR53t7+uagj45JLXBIvL
+ 7jdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749125054; x=1749729854;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1749090409; x=1749695209;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=U3TmmfE+IodnI5UiZfT/vpVHYJ+cd4mDwRSSx19gVLo=;
- b=mmjjXSGDWeSZYzLXaD0fuMRbSDap8Qp9RVyGW+0s8XmBlqC8yiShI3892JodXb+kir
- jRxtAN37ZgqI6Waa+NNLCcjp+47ANB1qCz7rI822MAbf+Ia9ryn34EH5tJs6Cxatzp6x
- cGgVX/q7Xt6VDp1/oB7SjC+aWIM64NjwrrY7FtMLmVcRcuDypAd2jOa3j2HTnVzgMURg
- H6BZBoig6vKe2hw5fvQyX5g/ylEYyN6igE8MumE1PHSgy0YYbFgMXOUg8NA6yNDr9q8E
- Xkj/0gmpTlZtgroL/eZfM0nBgqXxDOTC/oS1Y+zj4yqlx6Ufp81tGLvXHje8tr2s3AcM
- 2P0g==
+ bh=K75aSCyzs9q5zyzmveX5d6CIqDix0KE2if+KVjMGA+I=;
+ b=scIDbeNbQdAtQP2Kcd7O/INIOCkW9wL7/mqmSh+VFrJc0oN1mba5x+FvLeq/QqJKCa
+ gMOXBYklK8YBHO00lZxGdBW48wx9Wdxb//2THjlD/hWinaB8s606DwFYI5L4aVBIah8g
+ 1zO3ZHNb8KGfgPO0z//JsuPp3SoaXWd1R+m85YpzrQrGrIfvVZGegyhewdmjN8vmmlfh
+ bBkTSijt6OzO/hFsoFmYDtNrLeuRrId3KNP0yARmRYvvrdAZnESp2/pyxPm3NBGodoZO
+ 7VfCPAeMTzbtSCNB2l/tRppHPeYSV7FiPuX1qg/Y6fcR/EmkTzNPXy1m6fFtrSdGhO9g
+ S7gA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVK0P8x77WJp/wB9E5Wc45GWY7+XHWDdT085vwD8KUvnPzQ6kyF8uCBr7kH8TrM2N2k8jVrsmXaZ6gF@nongnu.org
-X-Gm-Message-State: AOJu0YxopN8uAcMUuu8vnkOCyZjjqkNxjDVPFeUqqFic0DLU/vKxCUuq
- lio4VskplO3dgkN6RBNg4Iq77/jtOSHKAG5/t2wzfRv8z/geSYihWl4xwJAFEok9KpPFqKqePpT
- 6dQLomciKJrcWteRFEbI0AfdQWa4ofIWrMSLtQnaaTRIfd7Q6SMrwIX0v
-X-Gm-Gg: ASbGnctFB46SSNDXu33vusQIPpO8Bsny4flcyfPpYlhOuDP9n/BIGOcPnpXe0Tp7h4K
- WJGwheeFw3qTOaoT7a9TY9on5m3iEKJYvp23uWsligT0fR1nivpWuTTatqPdh2OV8ZyGI+9nx55
- We3nn3FqeiNgwzNlyng+Um1qGYHVXXGbyvJJfYpPs8qA2clu9uXZWPpqL/PGApUgVJ4vecK4lBu
- 0dA3bVmn/uVcphVlm6PLxTjYJg2NALI1imPcRxkeK3R6bzUx0VhcaCnScM+vMHhHQ+b0GiwoQeY
- XHxiTz/+TheAIQSEFNWU1NODct17cQw4Bw9NHMH28VYdKHzDYe3ZVA==
-X-Received: by 2002:a05:600c:3e0a:b0:43d:fa5d:9314 with SMTP id
- 5b1f17b1804b1-451f0b3f30amr56214655e9.32.1749125053716; 
- Thu, 05 Jun 2025 05:04:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG9br3c2SrIoJqxQDDhL9VLRA16hzDUpmQGc5lmdAZoDZx28ePPZaxm8eUTxCzUbgyMBE+PjQ==
-X-Received: by 2002:a05:600c:3e0a:b0:43d:fa5d:9314 with SMTP id
- 5b1f17b1804b1-451f0b3f30amr56213985e9.32.1749125053215; 
- Thu, 05 Jun 2025 05:04:13 -0700 (PDT)
-Received: from [192.168.0.4] (ip-109-42-50-214.web.vodafone.de.
- [109.42.50.214]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4f009fd7csm24194854f8f.88.2025.06.05.05.04.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Jun 2025 05:04:12 -0700 (PDT)
-Message-ID: <b383753d-419b-4351-987f-eb3acbe8a156@redhat.com>
-Date: Thu, 5 Jun 2025 14:04:11 +0200
+ AJvYcCWjDGtK7q8CNbOnz76IvIruULp3Trpqjzql7oAdxD6usac/o984rgD7P6sn1RDC2E87eqVi49QpbQ==@nongnu.org
+X-Gm-Message-State: AOJu0YwII+hrcO5RK3rsrrqVbnvYRTESqffoix1pxX+tvrlRUI+3kSz0
+ SNM9xCSLzu3k2CZG0xjUu1U7i7WVtqGZhehodfg9aH+M/t0iKYKpl/oDK3svuc/prpc1Bg==
+X-Gm-Gg: ASbGncsLIilEHkpQJCEl3X3J9FuJok+w0YNfstoWidQ1f9Fdsa+hJy/yy2v3s5PkTCq
+ MX/ISvMQv17YUmB4+xQSF5JgyBF9/K0qpBpTFtp6J9P4JEpsX9G00KqzT8K2JKXUE92flDQLhWu
+ ZE2xD9KblIFv7hPnDxLCm/HnwtJVYIZHFEoQV9YiOWcYs6urIIwPMLtahqXiQxCJT1nlT1RQmF2
+ Fz/FW8V91Yd8hHUDnE/J722LDZWyjr7dvjm9gCtqBGE5q94VYqZGeiyp//eeSFnddD3KyZPNEmG
+ D6TB4Q3BEob8JJJ/xxt6lUkQGBOFt6ysOG9+jBFRmQcI0+lljH4z2L2gr/A=
+X-Google-Smtp-Source: AGHT+IH8OPNSpwxBrUdUqJj2+994aSNoyODfmzm1dEquwe0Z7OMJgpOejAjOM0KUOjB9KYRyfdTXYQ==
+X-Received: by 2002:a17:902:c94d:b0:234:9cdd:ffd5 with SMTP id
+ d9443c01a7336-235e11e5c3amr65613585ad.25.1749090409026; 
+ Wed, 04 Jun 2025 19:26:49 -0700 (PDT)
+Received: from huawei.. ([218.76.62.144]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23506cd3506sm110296125ad.156.2025.06.04.19.26.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Jun 2025 19:26:48 -0700 (PDT)
+From: taotang2025@gmail.com
+To: qemu-devel@nongnu.org
+Cc: eric.auger@redhat.com, peter.maydell@linaro.org, qemu-arm@nongnu.org,
+ Tao Tang <taotang2025@gmail.com>
+Subject: [PATCH] hw/arm/smmuv3: Fix incorrect reserved mask for SMMU CR0
+ register
+Date: Thu,  5 Jun 2025 10:26:40 +0800
+Message-Id: <20250605022640.598308-1-taotang2025@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] hw/s390x: support migration of CPI data
-To: Shalini Chellathurai Saroja <shalini@linux.ibm.com>,
- qemu-s390x mailing list <qemu-s390x@nongnu.org>
-Cc: Daniel Berrange <berrange@redhat.com>,
- qemu-devel mailing list <qemu-devel@nongnu.org>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- Hendrik Brueckner <brueckner@linux.ibm.com>
-References: <20250603135655.595602-1-shalini@linux.ibm.com>
- <20250603135655.595602-4-shalini@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250603135655.595602-4-shalini@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::643;
+ envelope-from=taotang2025@gmail.com; helo=mail-pl1-x643.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 05 Jun 2025 09:11:51 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -155,16 +96,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/06/2025 15.56, Shalini Chellathurai Saroja wrote:
-> Register Control-Program Identification data with the live
-> migration infrastructure.
-> 
-> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> ---
->   hw/s390x/sclpcpi.c | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
+From: Tao Tang <taotang2025@gmail.com>
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+The current definition of the SMMU_CR0_RESERVED mask is incorrect.
+It mistakenly treats bit 10 (DPT_WALK_EN) as a reserved bit while
+treating bit 9 (RES0) as an implemented bit.
+
+According to the SMMU architecture specification, the layout for CR0 is:
+| 31:11| RES0           |
+| 10   | DPT_WALK_EN    |
+| 9    | RES0           |
+| 8:6  | VMW            |
+| 5    | RES0           |
+| 4    | ATSCHK         |
+| 3    | CMDQEN         |
+| 2    | EVENTQEN       |
+| 1    | PRIQEN         |
+| 0    | SMMUEN         |
+
+Signed-off-by: Tao Tang <taotang2025@gmail.com>
+---
+ hw/arm/smmuv3-internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index b6b7399347..42ac77e654 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -120,7 +120,7 @@ REG32(CR0,                 0x20)
+     FIELD(CR0, EVENTQEN,      2, 1)
+     FIELD(CR0, CMDQEN,        3, 1)
+ 
+-#define SMMU_CR0_RESERVED 0xFFFFFC20
++#define SMMU_CR0_RESERVED 0xFFFFFA20
+ 
+ REG32(CR0ACK,              0x24)
+ REG32(CR1,                 0x28)
+-- 
+2.34.1
 
 
