@@ -2,95 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4DBACF464
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 18:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 394EEACF476
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 18:36:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNDVt-0006sA-IX; Thu, 05 Jun 2025 12:32:23 -0400
+	id 1uNDa2-00037m-Jn; Thu, 05 Jun 2025 12:36:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uNDV5-0006ag-Ln
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:31:32 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uNDZq-00034x-Ob
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:36:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uNDUz-0001bX-Uj
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:31:31 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uNDZn-0002AG-Ra
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:36:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749141082;
+ s=mimecast20190719; t=1749141382;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jH9CaHdji2L1f3dp8GEPNtVV1TXTMcV74nELdv/ss0Q=;
- b=YfRkZ2wHu5fhZ/WqoN8zo1V8jpwVV5nvaOmxG08ZsCz1XUQWh3tl45fUT55OUOUersR3Ol
- FMp6FeiPKM+oEdQuPQVZOpKCF9pTNWH6U4zr4+hUN/gyb6aGNJ9SoU0LiTRbQfyLKKT7IA
- ZI2afhz/Rg/a31ymLUR9yn9DcWj32lU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-CVVf4lS7Pv-qCoZFLO-JqA-1; Thu,
- 05 Jun 2025 12:31:18 -0400
-X-MC-Unique: CVVf4lS7Pv-qCoZFLO-JqA-1
-X-Mimecast-MFC-AGG-ID: CVVf4lS7Pv-qCoZFLO-JqA_1749141076
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AB5461800771; Thu,  5 Jun 2025 16:31:15 +0000 (UTC)
-Received: from localhost (unknown [10.45.225.217])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1E9CC195E74A; Thu,  5 Jun 2025 16:31:13 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "maz@kernel.org"
- <maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "sebott@redhat.com" <sebott@redhat.com>, "armbru@redhat.com"
- <armbru@redhat.com>, "berrange@redhat.com" <berrange@redhat.com>,
- "abologna@redhat.com" <abologna@redhat.com>, "jdenemar@redhat.com"
- <jdenemar@redhat.com>
-Cc: "agraf@csgraf.de" <agraf@csgraf.de>, "shahuang@redhat.com"
- <shahuang@redhat.com>, "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>
-Subject: RE: [PATCH v3 00/10] kvm/arm: Introduce a customizable aarch64 KVM
- host model
-In-Reply-To: <58dee0533a40458d9cbd2049c8330c5b@huawei.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20250414163849.321857-1-cohuck@redhat.com>
- <de7db6bc22ad4f0a8ac1fac718c810a1@huawei.com> <87bjrfbkyz.fsf@redhat.com>
- <878qmibc5a.fsf@redhat.com> <87tt4wamcp.fsf@redhat.com>
- <f11e5fbddf634bbc88ba4c07bafe3f26@huawei.com> <87o6v3adle.fsf@redhat.com>
- <58dee0533a40458d9cbd2049c8330c5b@huawei.com>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Thu, 05 Jun 2025 18:31:10 +0200
-Message-ID: <87ldq69mlt.fsf@redhat.com>
+ bh=11CLacksM1BhpU+Hs16yXDObr01e/HZjlyOVUKUkByg=;
+ b=fResaSu1ybWTKpW9LXGY2fmVWfNvWJVyLe1f2994OAESFYM0Lm6q6Xwgkl3MW1RTh5egxk
+ FQ3Y2/mKVTdcdeeHNe16d+tyD/KGPjuGBHf3k66J36Hn7HzKgKV88WvE1we4htJJRWhlXg
+ f5+sOvH41zR4zxq1xc/yJ7Z8gBEqbps=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-500--u1asB4qOaejURoU76j0mA-1; Thu, 05 Jun 2025 12:36:20 -0400
+X-MC-Unique: -u1asB4qOaejURoU76j0mA-1
+X-Mimecast-MFC-AGG-ID: -u1asB4qOaejURoU76j0mA_1749141380
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-311d067b3faso2034516a91.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 09:36:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749141379; x=1749746179;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=11CLacksM1BhpU+Hs16yXDObr01e/HZjlyOVUKUkByg=;
+ b=DhtYovRa3Mncge5ZZXfafd3H+yH/RWpYWNw83/Eo0hUfqdsQsGmbIKpZFp/ngClR+h
+ TT3jwNhfDGDgajKLT4aJnny5giAGgS832DOR1KBrBu14L/5hw5T/c/E3ysNj2xvUCQsp
+ uoOVGMtv2wvCWhnM4VuNTO+MHNnUmTa6nV40yXGVUvaKQOGCtSPuigU+AzxkADsHIgN9
+ 9toLqWloawxTiZZqLSbdHHKCa0S4nrirQX31iwTBtZ/itUf4Oxs0QKQSw/7UbBJ/lkSq
+ zNN6MM6fKhtd5mJkBciuhShqsmR4kqntkx3hmmTfTdn5n/Da9CpA4fnHWtNLXDo26Oor
+ xzGg==
+X-Gm-Message-State: AOJu0YyKDUMedQ9XSp+pxhynvK5j0KiJNInrcSrHPyR0a/CH2ZYHcIHf
+ QWz0+3OVWIljNVzHBL7wbZ1h8NQ9be4GJgDmvk0//ZvoQ++317kPC28EVY4NYmzELH18rEgH6L9
+ Z3m0uLp4oUgi/NU9MCw2EkdL5cnAJCiuSZeZxB9pHONzLvZJ1ZhjwdZSahO240AQ4eN0WNy24fM
+ YTfS9YwkQhWKt6E+KEz50W4OsVDVXQ8ZaZI6eXQM96AQ==
+X-Gm-Gg: ASbGncsQUy+H43pDq1yJZdJN/3aeK+sMP2VnpwObLvWYvJlP7H3rrZ2EjWtG/GwudfH
+ FXA3iTcDTDWwPHAPpodF8qv4eIoappmpq05lVyMNmdiLxNWAMU1HWHppcgXyyDWrV3RSLVr7j1j
+ PRcjMORbwNUnqLUPth4mHoabsf
+X-Received: by 2002:a17:90b:2252:b0:312:1c83:58ec with SMTP id
+ 98e67ed59e1d1-31346b2a382mr679933a91.12.1749141378969; 
+ Thu, 05 Jun 2025 09:36:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGeALc0uVQAKHf0Uij+KTSujEMzHJ53YjlES/2Dw7b4vyww0tc6PH/UQXR/ckUqYEjJpVBf4RNEmungmyg6qdw=
+X-Received: by 2002:a17:90b:2252:b0:312:1c83:58ec with SMTP id
+ 98e67ed59e1d1-31346b2a382mr679882a91.12.1749141378369; Thu, 05 Jun 2025
+ 09:36:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+References: <20250523180809.41211-1-jsnow@redhat.com>
+ <20250523180809.41211-2-jsnow@redhat.com>
+ <aD2IBR5FTFCSrV8x@redhat.com>
+In-Reply-To: <aD2IBR5FTFCSrV8x@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Thu, 5 Jun 2025 12:36:06 -0400
+X-Gm-Features: AX0GCFsCDxOJX2AXKvxWs7EMADxceXAmC6wlg87YupbYVAE0y79U59jjzviR5YI
+Message-ID: <CAFn=p-bNR3vTkqc9n9xqdyT7b1uE4V2mdP6UkXbjjAn1hbXZtw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] docs/qapi-domain: Improve QAPI indices
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+Content-Type: multipart/alternative; boundary="0000000000008538380636d5b6f9"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,190 +99,363 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 04 2025, Shameerali Kolothum Thodi <shameerali.kolothum.thodi@h=
-uawei.com> wrote:
+--0000000000008538380636d5b6f9
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->> -----Original Message-----
->> From: Cornelia Huck <cohuck@redhat.com>
->> Sent: Wednesday, June 4, 2025 1:36 PM
->> To: Shameerali Kolothum Thodi
->> <shameerali.kolothum.thodi@huawei.com>; eric.auger.pro@gmail.com;
->> eric.auger@redhat.com; qemu-devel@nongnu.org; qemu-arm@nongnu.org;
->> kvmarm@lists.linux.dev; peter.maydell@linaro.org;
->> richard.henderson@linaro.org; alex.bennee@linaro.org; maz@kernel.org;
->> oliver.upton@linux.dev; sebott@redhat.com; armbru@redhat.com;
->> berrange@redhat.com; abologna@redhat.com; jdenemar@redhat.com
->> Cc: agraf@csgraf.de; shahuang@redhat.com; mark.rutland@arm.com;
->> philmd@linaro.org; pbonzini@redhat.com
->> Subject: RE: [PATCH v3 00/10] kvm/arm: Introduce a customizable aarch64
->> KVM host model
->>=20
->> On Wed, Jun 04 2025, Shameerali Kolothum Thodi
->> <shameerali.kolothum.thodi@huawei.com> wrote:
->>=20
->> >> -----Original Message-----
->> >> From: Cornelia Huck <cohuck@redhat.com>
->> >> Sent: Tuesday, June 3, 2025 4:15 PM
->> >> To: Shameerali Kolothum Thodi
->> >> <shameerali.kolothum.thodi@huawei.com>; eric.auger.pro@gmail.com;
->> >> eric.auger@redhat.com; qemu-devel@nongnu.org; qemu-
->> arm@nongnu.org;
->> >> kvmarm@lists.linux.dev; peter.maydell@linaro.org;
->> >> richard.henderson@linaro.org; alex.bennee@linaro.org;
->> maz@kernel.org;
->> >> oliver.upton@linux.dev; sebott@redhat.com; armbru@redhat.com;
->> >> berrange@redhat.com; abologna@redhat.com; jdenemar@redhat.com
->> >> Cc: agraf@csgraf.de; shahuang@redhat.com; mark.rutland@arm.com;
->> >> philmd@linaro.org; pbonzini@redhat.com
->> >> Subject: RE: [PATCH v3 00/10] kvm/arm: Introduce a customizable
->> aarch64
->> >> KVM host model
->> >>
->> >> On Tue, May 27 2025, Cornelia Huck <cohuck@redhat.com> wrote:
->> >> > The conversion functions are not at fault here, but we're missing
->> >> > registers. If we have MIDR and friends writable, they show up in the
->> >> > masks returned by the kernel, but they are not present in the kerne=
-l's
->> >> > sysreg file where we generate our definitions from, and
->> >> > kvm_idx_to_idregs_idx() asserts instead of returning an error, which
->> >> > is kind of suboptimal...
->> >> >
->> >> > So I see two possible ways to fix this:
->> >> > - add MIDR and friends to the kernel's sysreg file
->> >> > - add MIDR and friends in QEMU's cpu-sysregs.h.inc file, and only
->> append
->> >> >   generated definitions there
->> >> >
->> >> > First option means one more round trip, second options has more
->> >> > potential for messing things up if we keep stuff local to QEMU.
->> >>
->> >> With the patch below, things work for me with a 6.15+ kernel. It's a =
-bit
->> >
->> > Yes works for me too now. Thanks.
->>=20
->> Thanks for checking.
->>=20
->> >
->> >> messy, though, and raises questions (how do we want to handle those
->> regs
->> >> across accelerators, for example, or how we can make sure that the co=
-de
->> is
->> >> more robust when registers are added.)
->> >>
->> >> My biggest question, however, is how this interacts with the framework
->> to
->> >> provide lists of MIDR/REVIDR/AIDR for errata management. The hack
->> below
->> >> adds properties to configure those regs, I guess we'd want to suppress
->> >> adding the props in order to avoid conflicts.
->> >
->> > Not sure how this impacts the errata management though. My initial take
->> on
->> > this was, user will provide a list of target CPU ids through command l=
-ine
->> and
->> > that will be used to set the target CPUs for errata management(if kern=
-el
->> > supports it).
->> >
->> > Eg:
->> > -machine virt,.., x-target-impl-cpus=3D0xMIDR1:0xREVIDR1-0xMIDR2:REVID=
-R2
->>=20
->> I'm a bit confused by the range, I'd rather expect a list of tuples,
->> e.g. <midr>:<revidr>,<midr>:<revidr>, ...
+On Mon, Jun 2, 2025 at 7:16=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@re=
+dhat.com>
+wrote:
+
+> On Fri, May 23, 2025 at 02:08:09PM -0400, John Snow wrote:
+> > This patch changes the "by type" categorization in favor of using
+> > sub-categories of a literal "By type" category instead. A new "By
+> > module" categorization is also added that follows a similar pattern.
 >
-> Hmm..is the concern here is the format or the number of entries?
+> I'm not much of a fan of this. IMHO unless you are looking at the
+> module(s) for the subsystem you are the maintainer of, the split
+> of definitions across modules comes across as somewhat arbitrary
+> and unpredictable.
+>
 
-Format of the command line; number of entries is something we can change
-later.
+I'm assuming here that you are opposing the "by module" categorization
+specifically.
+
+Fair enough. Markus has said similar things; that the split by module is
+more of a sin of necessity than a genuine categorization. I suppose in my
+mind's eye it is my hope that they WOULD be useful for grouping like
+commands, structures, and events by topic. I admit they are not necessarily
+strictly adherent to that idea at the moment.
+
+However, I think it's *conceptually* useful to group together, say, "block
+related things" into a block topic. Modules may not fit this 1:1 at
+current, but it's the best we have.
+
+If there's opposition to doing it in this manner, I cede, but still
+maintain that grouping things by topic would be superior to a flat list of
+just absolutely everything.
+
 
 >
->>=20
->> >
->> > And these will be stored in,
->> >
->> > #define MAX_TARGET_IMPL_CPUS    4
->> > typedef struct TargetImplCpu {
->> >      uint32_t midr;
->> >      uint32_t revidr;
->>=20
->> Isn't revidr a 64 bit value?
+> Looking at this from the POV of a consumer of QMP, our entrypoint
+> to research is either a command name or an event name.
 >
-> Yes. In fact they both are, though MIDR only uses 32 bits now. Will chang=
-e.
-
-It probably should also have aidr, just to be safe. (Even if triplets on
-the command line will be a bit ugly.)
-
+> The data type names of enums/alternates/objects are an internal
+> QEMU detail that's not part of the public API.
 >
->>=20
->> > } TargetImplCpu;
->> >
->> >
->> > Please see the initial (a hack for testing kernel) implementation here,
->> >
->> https://github.com/hisilicon/qemu/commit/a393c1180274c73d34f32eaab66
->> 764a874a9ad31
->> >
->> > Please let me know if there is a better/preferred way of obtaining this
->> > target CPU list from user.
->>=20
->> I'm mostly wondering about conflicting values between "we make MIDR et
->> al. writable, so we have a value different from what the host sees" and
->> "we provide a list of possible values to the guest, so it can prepare
->> for running on those hosts". Do we want to be able to provide a common
->> set to the guest, and then enlighten it with the list of systems that it
->> actually *might* run on? A benefit would be that it could always observe
->> the same (configured) register entries, regardless where it runs (needs
->> more plumbing in QEMU, I think.) We'd also need to be clear about what
->> we'd require (i.e. do we expect that both the real host values and the
->> configured values are present in the list?)
->
-> The expectation from kernel is that when target errata CPUs are specified,
-> it includes the current host CPU Ids as well. We could check to see the l=
-ist includes
-> the host one. But I am not sure how we can validate the complete list pro=
-vided
-> by user though. I think,  the onus of deciding which platforms this Guest=
- VM is
-> going to run during its life time and specifying that correctly is with t=
-he user.
 
-My question was more along the line of "if the user configures MIDR to
-something different from the actual host values, do they need to include
-that modified value in the list of target cpus as well?" If we disallow
-changing MIDR, we'd naturally sidestep that issue.
+Keep in mind that once the "inliner" is merged, the great majority of
+"internal" structures will be omitted from this index. The exact definition
+of what is elided is hard for me to describe formally, but: Any object that
+is currently referenced only via "...The members of ..." will be omitted,
+as the information relating to that definition will be inlined into the
+appropriate command/event instead.
+
+This will also by definition exclude entities that aren't referenced at
+all, such as internal definitions we use for QOM/QDEV and similar purposes.
+
+Due to a limitation in how I present alternates (i.e. via reference to the
+type and not by inlining the choices/types), alternates are one of the few
+types whose internal details remain even after the inliner is merged. This
+isn't a fundamental barrier, just where the cutting room knife made the
+excision, and can be remedied in the future.
+
+The algorithm for what is visible is something like the following:
+
+1. All entities are hidden by default.
+2. All commands and events are marked visible.
+3. All member types belonging to a visible entity (commands, events) are
+marked as visible; i.e. if an event uses an enum or a command takes a
+compound object as an argument, those entities become visible in the
+documentation, even though the name of that type is an "internal detail".
+This is because I do not have a system in place for presenting recursive
+structures, and it is currently easiest to link to these types by
+reference, necessitating their visibility. This marking is carried out
+recursively.
+4. All return types, currently, are marked visible. In the future we may
+inline return structures in a manner similar to members, but we do not do
+so, yet.
+
+This isn't enough to remove *all* internal types, but it does get a lion's
+share of them and thins the documentation considerably. I don't have
+numbers on hand at present, but when I get these prerequisite series out of
+the way, I can enumerate them.
+
 
 >
->>=20
->> Not sure if the machine level is the right place to configure this, or
->> if it needs to go to the cpu options. While it is a machine-wide
->> configuration, it also means that we configure some cpu features in two
->> different places (even if they serve a different purpose.)
+> If we consider the index currently:
 >
-> I exploited MachineState for ease of hacking =F0=9F=98=8A. But not sure t=
-his belongs to CPU
-> either as it is very specific to KVM is enabled, supported kernel etc.
-
-That's an interesting question :) I think we can keep it with the
-machine state for now until we figure out more details -- it's more
-important to actually test it out with real life scenarios.
-
->=20=20
->> We could also choose to not expose properties for MIDR and friends at
->> all, even if they are writable.
->>
+>   Alternates | Commands | Enums | Events | Modules | Objects | A | .... |=
+ Z
 >
-> Does that mean Qemu figures out all the supported target Ids based on the=
-=20
-> Host CPU  Ids?
+> The A ... Z bits link to a mix of all type names, which is a bit
+> overwhealming.
+>
+> At the same time the page is twice as big as it needs to be
+> as the same info is repeated under the A-Z index and the
+> other per-type indexes.
+>
 
-I think the target ids always need to be figured out and provided by the
-user (as only they can possibly have an idea on where that guest might
-end up running.) The question is more whether we should give the user
-the means to directly configure the regs for a certain instance.
+Yes; but that's how indices are at times: multiple things are listed in
+multiple places to facilitate lookup. It is not really meant to be space
+efficient.
+
+In my case, the things I really truly care about are:
+
+(1) A true alphabetical list of all symbols we have documented, and
+(2) A list of all events and commands, specifically.
+
+Everything else more or less just comes along for the ride by parallel;
+making an index for events/commands inherently creates an index for
+objects, enums, etc. I didn't see a need to specifically exclude them.
+
+
+>
+> I think what would help would be to make the index dynamic
+>
+> eg
+>
+>   A | B | C | D | E | ... | X | Y | Z
+>
+>   [ ] Show internal types
+>
+
+> The A-Z index would default to showing commands and events.
+> Selecting the "Types" checkbox would toggle display of the
+> alternate/enum/object names, which could be done via having
+> a CSS class on each index entry, and javascript which just
+> toggles 'display: none' / 'display: block' CSS property on
+> the elements with the given class. I'm not convinced we need
+> the modules in the index.
+>
+
+That'd be cool! Unfortunately I'm going to reply here with the dreaded
+"patches welcome". I'm worried I don't have the mandate to spend much more
+time on this project than I already have... :(
+
+If you'd like to take a crack at it, I would be happy to advise.
+
+
+>
+>
+> > Alphabetical sorting has been improved and will sort in a case
+> > insensitive manner for all categories, now.
+>
+> This is trivial and nice and could be a standalone fix ?
+>
+
+Maybe! This patchset is one of those cases where I went to fix one thing
+and got carried away... If I can extract just this fix by its lonesome I
+will do so. I admit that I forget right now how easy that is to do, or if
+it relies on my restructuring of other elements.
+
+... It's probably easy enough to rewrite, anyway.
+
+
+>
+> > Lastly, the "main" QAPI Index (qapi-index.html) is altered to index
+> > *everything* from all namespaces, adding disambiguation where necessary
+> > to do so.
+>
+> This looks a bit wierd having the same types and modules repeated
+> multiple times.
+>
+
+I suppose so. If we do not find the master index useful, we could go the
+other route and eliminate it entirely, leaving only the domain-specific
+indices. I recall Markus at one point assumed the master index to work as
+this patch makes it work, so I just closed the loop here. The way it
+currently actually works is that the master index only indexes items that
+have no associated domain, which turns out to be essentially nothing.
+
+
+>
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-
+> https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-
+> https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-
+> https://www.instagram.com/dberrange :|
+>
+>
+
+--0000000000008538380636d5b6f9
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jun 2, =
+2025 at 7:16=E2=80=AFAM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berra=
+nge@redhat.com">berrange@redhat.com</a>&gt; wrote:<br></div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
+rgb(204,204,204);padding-left:1ex">On Fri, May 23, 2025 at 02:08:09PM -0400=
+, John Snow wrote:<br>
+&gt; This patch changes the &quot;by type&quot; categorization in favor of =
+using<br>
+&gt; sub-categories of a literal &quot;By type&quot; category instead. A ne=
+w &quot;By<br>
+&gt; module&quot; categorization is also added that follows a similar patte=
+rn.<br>
+<br>
+I&#39;m not much of a fan of this. IMHO unless you are looking at the<br>
+module(s) for the subsystem you are the maintainer of, the split<br>
+of definitions across modules comes across as somewhat arbitrary<br>
+and unpredictable.<br></blockquote><div><br></div><div>I&#39;m assuming her=
+e that you are opposing the &quot;by module&quot; categorization specifical=
+ly. <br></div><div><br></div><div>Fair enough. Markus has said similar thin=
+gs; that the split by module is more of a sin of necessity than a genuine c=
+ategorization. I suppose in my mind&#39;s eye it is my hope that they WOULD=
+ be useful for grouping like commands, structures, and events by topic. I a=
+dmit they are not necessarily strictly adherent to that idea at the moment.=
+</div><div><br></div><div>However, I think it&#39;s *conceptually* useful t=
+o group together, say, &quot;block related things&quot; into a block topic.=
+ Modules may not fit this 1:1 at current, but it&#39;s the best we have.</d=
+iv><div><br></div><div>If there&#39;s opposition to doing it in this manner=
+, I cede, but still maintain that grouping things by topic would be superio=
+r to a flat list of just absolutely everything.</div><div>=C2=A0</div><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
+1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+Looking at this from the POV of a consumer of QMP, our entrypoint<br>
+to research is either a command name or an event name.<br>
+<br>
+The data type names of enums/alternates/objects are an internal<br>
+QEMU detail that&#39;s not part of the public API.<br></blockquote><div><br=
+></div><div>Keep in mind that once the &quot;inliner&quot; is merged, the g=
+reat majority
+ of &quot;internal&quot; structures will be omitted from this index. The ex=
+act definition of what is elided is hard for me to describe formally, but: =
+Any object that is currently referenced only via &quot;...The members of ..=
+.&quot; will be omitted, as the information relating to that definition wil=
+l be inlined into the appropriate command/event instead.</div><div><br></di=
+v><div>This will also by definition exclude entities that aren&#39;t refere=
+nced at all, such as internal definitions we use for QOM/QDEV and similar p=
+urposes.</div><div><br></div><div>Due to a limitation in how I present alte=
+rnates (i.e. via reference to the type and not by inlining the choices/type=
+s), alternates are one of the few types whose internal details remain even =
+after the inliner is merged. This isn&#39;t a fundamental barrier, just whe=
+re the cutting room knife made the excision, and can be remedied in the fut=
+ure.</div><div><br></div><div>The algorithm for what is visible is somethin=
+g like the following:</div><div><br></div><div>1. All entities are hidden b=
+y default.</div><div>2. All commands and events are marked visible.</div><d=
+iv>3. All member types belonging to a visible entity (commands, events) are=
+ marked as visible; i.e. if an event uses an enum or a command takes a comp=
+ound object as an argument, those entities become visible in the documentat=
+ion, even though the name of that type is an &quot;internal detail&quot;. T=
+his is because I do not have a system in place for presenting recursive str=
+uctures, and it is currently easiest to link to these types by reference, n=
+ecessitating their visibility. This marking is carried out recursively.</di=
+v><div>4. All return types, currently, are marked visible. In the future we=
+ may inline return structures in a manner similar to members, but we do not=
+ do so, yet.</div><div><br></div><div>This isn&#39;t enough to remove *all*=
+ internal types, but it does get a lion&#39;s share of them and thins the d=
+ocumentation considerably. I don&#39;t have numbers on hand at present, but=
+ when I get these prerequisite series out of the way, I can enumerate them.=
+</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0p=
+x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+If we consider the index currently:<br>
+<br>
+=C2=A0 Alternates | Commands | Enums | Events | Modules | Objects | A | ...=
+. | Z<br>
+<br>
+The A ... Z bits link to a mix of all type names, which is a bit<br>
+overwhealming.<br>
+<br>
+At the same time the page is twice as big as it needs to be<br>
+as the same info is repeated under the A-Z index and the<br>
+other per-type indexes.<br></blockquote><div><br></div><div>Yes; but that&#=
+39;s how indices are at times: multiple things are listed in multiple place=
+s to facilitate lookup. It is not really meant to be space efficient.</div>=
+<div><br></div><div>In my case, the things I really truly care about are:</=
+div><div><br></div><div>(1) A true alphabetical list of all symbols we have=
+ documented, and</div><div>(2) A list of all events and commands, specifica=
+lly.</div><div><br></div><div>Everything else more or less just comes along=
+ for the ride by parallel; making an index for events/commands inherently c=
+reates an index for objects, enums, etc. I didn&#39;t see a need to specifi=
+cally exclude them.</div><div>=C2=A0</div><blockquote class=3D"gmail_quote"=
+ style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
+adding-left:1ex">
+<br>
+I think what would help would be to make the index dynamic<br>
+<br>
+eg<br>
+<br>
+=C2=A0 A | B | C | D | E | ... | X | Y | Z<br>
+<br>
+=C2=A0 [ ] Show internal types <br></blockquote><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
+204);padding-left:1ex">
+<br>
+The A-Z index would default to showing commands and events.<br>
+Selecting the &quot;Types&quot; checkbox would toggle display of the<br>
+alternate/enum/object names, which could be done via having<br>
+a CSS class on each index entry, and javascript which just<br>
+toggles &#39;display: none&#39; / &#39;display: block&#39; CSS property on<=
+br>
+the elements with the given class. I&#39;m not convinced we need<br>
+the modules in the index.<br></blockquote><div><br></div><div>That&#39;d be=
+ cool! Unfortunately I&#39;m going to reply here with the dreaded &quot;pat=
+ches welcome&quot;. I&#39;m worried I don&#39;t have the mandate to spend m=
+uch more time on this project than I already have... :(</div><div><br></div=
+><div>If you&#39;d like to take a crack at it, I would be happy to advise.<=
+/div><div></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex">
+<br>
+<br>
+&gt; Alphabetical sorting has been improved and will sort in a case<br>
+&gt; insensitive manner for all categories, now.<br>
+<br>
+This is trivial and nice and could be a standalone fix ?<br></blockquote><d=
+iv><br></div><div>Maybe! This patchset is one of those cases where I went t=
+o fix one thing and got carried away... If I can extract just this fix by i=
+ts lonesome I will do so. I admit that I forget right now how easy that is =
+to do, or if it relies on my restructuring of other elements.</div><div><br=
+></div><div>... It&#39;s probably easy enough to rewrite, anyway.</div><div=
+>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
+0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; Lastly, the &quot;main&quot; QAPI Index (qapi-index.html) is altered t=
+o index<br>
+&gt; *everything* from all namespaces, adding disambiguation where necessar=
+y<br>
+&gt; to do so.<br>
+<br>
+This looks a bit wierd having the same types and modules repeated<br>
+multiple times.<br></blockquote><div><br></div><div>I suppose so. If we do =
+not find the master index useful, we could go the other route and eliminate=
+ it entirely, leaving only the domain-specific indices. I recall Markus at =
+one point assumed the master index to work as this patch makes it work, so =
+I just closed the loop here. The way it currently actually works is that th=
+e master index only indexes items that have no associated domain, which tur=
+ns out to be essentially nothing.</div><div>=C2=A0</div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">
+<br>
+<br>
+With regards,<br>
+Daniel<br>
+-- <br>
+|: <a href=3D"https://berrange.com" rel=3D"noreferrer" target=3D"_blank">ht=
+tps://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D"http=
+s://www.flickr.com/photos/dberrange" rel=3D"noreferrer" target=3D"_blank">h=
+ttps://www.flickr.com/photos/dberrange</a> :|<br>
+|: <a href=3D"https://libvirt.org" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com" rel=3D"n=
+oreferrer" target=3D"_blank">https://fstop138.berrange.com</a> :|<br>
+|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer" target=3D"_bla=
+nk">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D=
+"https://www.instagram.com/dberrange" rel=3D"noreferrer" target=3D"_blank">=
+https://www.instagram.com/dberrange</a> :|<br>
+<br>
+</blockquote></div></div>
+
+--0000000000008538380636d5b6f9--
 
 
