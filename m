@@ -2,66 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4E4ACEC15
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F7EACEC46
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:45:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN65o-0005Aa-VH; Thu, 05 Jun 2025 04:36:56 -0400
+	id 1uN6Bs-0006Xz-Hk; Thu, 05 Jun 2025 04:43:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uN65n-0005AK-7S
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:36:55 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6Bm-0006XL-2h
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uN65l-000730-KI
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:36:54 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6Ba-0008DG-IG
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749112611;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=3x3FxLU30MF7ZMaK47pkskaPAWFt/ytFGXLThMUCswM=;
- b=D6l8cz0zgm4u9vl1ORU52QWEPalf0j5XPAyh5hgVNeBqeEVVyMrUPFt43ACzOqnP+wOFnf
- rdAePWXSsKsQA0CfUcSu1ixwFOpzLpbA1+IBVZe03/U92Ss4vItB2frkpaTVW1YeL/bY/c
- pQA+1Sh8PFElQ8A3rbG+M+5BQpTV5Q8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ s=mimecast20190719; t=1749112972;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LVXYJz1LHrfEI2wniogu/4VAM1/25Ron5wCxT6/x7PE=;
+ b=I180aAgYQGFcPrmb5puZ+CMpt8zrsJkpyLzTMGzZ5kyBJSdi+4Xu2okeqj5k8I285qFaAl
+ JKe7Q4tKlCXOYk5WMaZRUjckAAUMRE4WVnOFw7/Ra9LYF/J7Nxodqy3L7JiPovI8w7pM7T
+ ww9pTsXM3Gb6LBlcSZtKtHQC5VK8YeM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-rYziKKgzNNSxmScuW51EqA-1; Thu,
- 05 Jun 2025 04:36:50 -0400
-X-MC-Unique: rYziKKgzNNSxmScuW51EqA-1
-X-Mimecast-MFC-AGG-ID: rYziKKgzNNSxmScuW51EqA_1749112609
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-IS-JOWF4OYuQUfdhqHWPwg-1; Thu,
+ 05 Jun 2025 04:42:50 -0400
+X-MC-Unique: IS-JOWF4OYuQUfdhqHWPwg-1
+X-Mimecast-MFC-AGG-ID: IS-JOWF4OYuQUfdhqHWPwg_1749112970
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1C658195608B; Thu,  5 Jun 2025 08:36:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.159])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9A04D1956048; Thu,  5 Jun 2025 08:36:45 +0000 (UTC)
-Date: Thu, 5 Jun 2025 09:36:41 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org,
- Michael Roth <michael.roth@amd.com>, Cleber Rosa <crosa@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v5 4/6] python: add qapi static analysis tests
-Message-ID: <aEFXGXhqHkIioTOH@redhat.com>
-References: <20250604200354.459501-1-jsnow@redhat.com>
- <20250604200354.459501-5-jsnow@redhat.com>
- <87frgen1dj.fsf@pond.sub.org>
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1577218003FC
+ for <qemu-devel@nongnu.org>; Thu,  5 Jun 2025 08:42:50 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.45.224.77])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 80A351954B33; Thu,  5 Jun 2025 08:42:48 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/16] vfio queue
+Date: Thu,  5 Jun 2025 10:42:29 +0200
+Message-ID: <20250605084245.1520562-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87frgen1dj.fsf@pond.sub.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -83,34 +76,77 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 05, 2025 at 08:33:44AM +0200, Markus Armbruster wrote:
-> John Snow <jsnow@redhat.com> writes:
-> 
-> [...]
-> 
-> > diff --git a/python/tests/qapi-flake8.sh b/python/tests/qapi-flake8.sh
-> > new file mode 100755
-> > index 00000000000..2211b6c7f41
-> > --- /dev/null
-> > +++ b/python/tests/qapi-flake8.sh
-> > @@ -0,0 +1,6 @@
-> > +#!/bin/sh -e
-> > +# SPDX-License-Identifier: LGPL-2.1-or-later
-> 
-> Why not GPL-2.0-or-later?
+The following changes since commit 09be8a511a2e278b45729d7b065d30c68dd699d0:
 
-Indeed, checkpatch.pl should be warning about this choice, and requesting
-that it be explained in the commit message.
+  Merge tag 'pull-qapi-2025-06-03' of https://repo.or.cz/qemu/armbru into staging (2025-06-03 09:19:26 -0400)
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+are available in the Git repository at:
+
+  https://github.com/legoater/qemu/ tags/pull-vfio-20250605
+
+for you to fetch changes up to 3ed34463a2d8ab8aabfa1d612f12b56600c87983:
+
+  vfio: move vfio-cpr.h (2025-06-05 10:40:38 +0200)
+
+----------------------------------------------------------------
+vfio queue:
+
+* Fixed OpRegion detection in IGD
+* Added prerequisite rework for IOMMU nesting support
+* Added prerequisite rework for vfio-user
+* Added prerequisite rework for VFIO live update
+* Modified memory_get_xlat_addr() to return a MemoryRegion
+
+----------------------------------------------------------------
+Edmund Raile (1):
+      vfio/igd: OpRegion not found fix error typo
+
+John Levon (5):
+      vfio: add more VFIOIOMMUClass docs
+      vfio: move more cleanup into vfio_pci_put_device()
+      vfio: move config space read into vfio_pci_config_setup()
+      vfio: refactor out IRQ signalling setup
+      vfio/container: pass MemoryRegion to DMA operations
+
+Steve Sistare (4):
+      vfio: return mr from vfio_get_xlat_addr
+      MAINTAINERS: Add reviewer for CPR
+      vfio: vfio_find_ram_discard_listener
+      vfio: move vfio-cpr.h
+
+Tomita Moeko (1):
+      vfio/igd: Fix incorrect error propagation in vfio_pci_igd_opregion_detect()
+
+Zhenzhong Duan (5):
+      vfio/iommufd: Add comment emphasizing no movement of hiod->realize() call
+      backends/iommufd: Add a helper to invalidate user-managed HWPT
+      vfio/iommufd: Add properties and handlers to TYPE_HOST_IOMMU_DEVICE_IOMMUFD
+      vfio/iommufd: Implement [at|de]tach_hwpt handlers
+      vfio/iommufd: Save vendor specific device info
+
+ MAINTAINERS                           | 10 ++++
+ hw/vfio/vfio-cpr.h                    | 15 ------
+ include/hw/vfio/vfio-container-base.h | 83 ++++++++++++++++++++++++++++++--
+ include/hw/vfio/vfio-cpr.h            | 18 +++++++
+ include/system/host_iommu_device.h    | 15 ++++++
+ include/system/iommufd.h              | 54 +++++++++++++++++++++
+ include/system/memory.h               | 19 ++++----
+ backends/iommufd.c                    | 58 +++++++++++++++++++++++
+ hw/vfio/container-base.c              |  4 +-
+ hw/vfio/container.c                   |  5 +-
+ hw/vfio/cpr.c                         |  2 +-
+ hw/vfio/igd.c                         | 22 ++++-----
+ hw/vfio/iommufd.c                     | 45 +++++++++++++++---
+ hw/vfio/listener.c                    | 74 ++++++++++++++++++-----------
+ hw/vfio/pci.c                         | 89 +++++++++++++++++++----------------
+ hw/virtio/vhost-vdpa.c                |  9 +++-
+ system/memory.c                       | 32 +++----------
+ backends/trace-events                 |  1 +
+ 18 files changed, 406 insertions(+), 149 deletions(-)
+ delete mode 100644 hw/vfio/vfio-cpr.h
+ create mode 100644 include/hw/vfio/vfio-cpr.h
 
 
