@@ -2,84 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0931ACECC7
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 11:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF56EACECCC
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 11:29:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN6rz-0003Af-6T; Thu, 05 Jun 2025 05:26:44 -0400
+	id 1uN6u6-0004gQ-ME; Thu, 05 Jun 2025 05:28:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uN6rl-00036G-Nu
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:26:30 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uN6u4-0004fn-Ro
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:28:52 -0400
+Received: from mail-vk1-xa43.google.com ([2607:f8b0:4864:20::a43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uN6rj-0003FP-K2
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:26:29 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3a5096158dcso610469f8f.1
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 02:26:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uN6u1-0003Ow-SM
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 05:28:52 -0400
+Received: by mail-vk1-xa43.google.com with SMTP id
+ 71dfb90a1353d-530d764149eso178883e0c.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 02:28:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749115586; x=1749720386; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pracb5qXlBkFu3b5DbhIEZ21YPoA0bxcZgfKbvcNdtQ=;
- b=hlNQV6KZU3nDn1RsRU6bqV/A85T6nI3GfktOiTNnVE8mM9b9PhjiiVI+P7Y0LdsMtc
- vnMXTGBYg5g6/zAhok6Loo4RZlUcntBM1H/jq5x9k9yC+ALbLPskpL1hMh2Uk33/pTrn
- mPAhY1ArsShT/VQhVIquU3XS0jzpMAiDQb8cBpgWXJ1eoIeIhvam4qTFrRAKcLJotA7f
- O2S05aEuRSNXKDnism6EjFs5ksHBX2qVxoqubjaANVe48iyAR9+I9ozaAhs1xrXRnK5M
- PjEtLaRmn1IMINdBeZXvG9fuSJY3qc7MJ74Qly1Bdix3l2XiJQ/CYcj4hX53884bHldS
- wTcA==
+ d=ventanamicro.com; s=google; t=1749115728; x=1749720528; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jmx69lwkESXfBB9x/EiovtvbSsz4EmBDYVpw+Vz8XpE=;
+ b=Xbb+kmH/KZhJ19XJyZ0bZJ2eGXuu/gpt8gp9HHBi7jBMxZaENR9uDoEN6+tJdFZ6vB
+ aXI4f0A4+k8TiIBuj+2i4d2uaWwmHUtpk40zByQEhQDLaAhPvC+8HYMZfN/+kNOfyr5U
+ w8H/Y6VoODDuBwssz0Z1rFVEUFwmfcblpwz/12E7ooLeMVq2SDFR98kfrgiEget7Fy8j
+ 44segeg6T6Nw33wFyyMOSKQt5ZkGi2rDmSf1BwHMjH94BBQIHl3ui8f65rv8uShJNQCx
+ 0hTr7Nj5j/gqJK5EWa7v5InfPm+I/mgCi9kTt3LY4Jz5BCojyix12g3h+/OCg3CVtT+F
+ c20g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749115586; x=1749720386;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pracb5qXlBkFu3b5DbhIEZ21YPoA0bxcZgfKbvcNdtQ=;
- b=QoC8GnOEaCitOXcVRAvUhzWGTGoZh3CHOBQS4b8/6pOlJ4vkogXMclmWAXdREY02f3
- /a/kbrBm7y6u8OrJku4c5mrGmNLk9kTJAlTHOI/w8hCZN3qxk3UABSmVugiXPefY8fuW
- AWmVv7mri7thkhZsYjdSYf91dXi4mkgt7OUQn2zmBrvuc5IXKpXxTZJv6JPD3g0/5V2b
- Nc12StfH3OIRfeMn3uSNdyZ5lxsQSj6upFuNItTpBa0FpmYw170WKyNgN61MfVlrIj6D
- wcRw0uo7Tm0EwgYaubtWs8Zv5YE4a8avwMk4KtHgR3Ne6TFz85COv+wnJe/DDSJ6u6t6
- IoHg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXa5EZk0szXZrfVXlPq0EP1joFT3sXCxh3kLxf+joMEFDXLZ12Jn6aXxqowlZX9h75xyY6wEm/8PeQ1@nongnu.org
-X-Gm-Message-State: AOJu0YwUVuMbgjmJRO8MhkT1ILGxGnX8ahuE7sbfic2fGrpsUAeHCDun
- +2c1jzW4NRjjL8iGOEuqaj1yBxILKqVUnSG8WKA2zWppFki1x4/2vUKw9occkT0bYBAThV8Esjb
- vM2rBTfI=
-X-Gm-Gg: ASbGnct6aLn5D7dzCsvbh//UZ9QZFdjCvAgxzeNNI/CeOpHElZsjFhDE5FeIJ6c9Kp7
- U1ZRBpgcLkN3bl4Qal6q9oPx2kh6yLwcnfaDBm4ZqbUJ+JU8nhIJddRnZ0vC4W9kZ7Lf3TnG/aG
- 7Jpy5L/LsKKWj9jeY48yV1XDGLpbY/6Q3Cs9P1yk2cGlNbcoot79mKlOsv4Lz8b7qtzzKTr5ZoL
- k+qYa5nYZw0lITF+G56jwkGIErL+leXwx4LLIkd6v9PogWxoZizcPuO2R4qK9fiWXA3oYzReZKX
- ibX8rg74ntCr+gtL2SyPocVngOI3w6/LdEKk7Rb4tp8FwKvmdWCVTNfpNDuZ5cewnFuLiy4sGGN
- pnotbnAXQsta+Q0DllRhnXwfmDsHmuA==
-X-Google-Smtp-Source: AGHT+IG3AF0Pep3vWPVa77ctNAZKYiXLcEOtaiIkYUGkRx3lfmxIEK1IaQLEiaTJJLrlixxZf0grBA==
-X-Received: by 2002:a05:6000:2089:b0:3a4:f7d9:3f56 with SMTP id
- ffacd0b85a97d-3a51d9249aemr4978428f8f.2.1749115585669; 
- Thu, 05 Jun 2025 02:26:25 -0700 (PDT)
-Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-451fb177afcsm12576965e9.9.2025.06.05.02.26.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Jun 2025 02:26:25 -0700 (PDT)
-Message-ID: <0b6b429a-a3bc-4707-9e94-67d9fe8cc363@linaro.org>
-Date: Thu, 5 Jun 2025 11:26:24 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv/kvm: use qemu_chr_fe_write_all() in
- SBI_EXT_DBCN_CONSOLE_WRITE_BYTE
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+ d=1e100.net; s=20230601; t=1749115728; x=1749720528;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Jmx69lwkESXfBB9x/EiovtvbSsz4EmBDYVpw+Vz8XpE=;
+ b=CKmzqxNNWMCYohChQZpGkSopAdBVNyAZX6z00F6/fNvTELEPDcVAVMu820vwYrJz37
+ 4fUO+g6WdXKHxCRk67OhXzstaKgaZwcvTfRoaZSenPHolliYuOeOCRdlw2lDfERc7EEa
+ vAoOFlZx3fLBUt87NZmwIzCYrfjpCddYP2yEyV0eCXvcKhByBW0oU/NJ1EDn7zbqSWuO
+ Bpa0KIljaDgDPeX6zjes89MfmvplUd0oUI8QgEGLCf2lhEJmHyBWkA+Fw2JncU0q2Mf0
+ Rw6EjExrLd/d3X6Sv4//M3tD5BtV0Ip7jwK0JsypzUM0/eWM4bi9ayJHKEFgsKODrM+y
+ +kMQ==
+X-Gm-Message-State: AOJu0YzLyLPOPWvHbsDOL3Lu2L0JGFJXvT7I0n2oluHXyA8UK4RIGeqZ
+ ++R7xcvqd8OKuuqFY+s2S14nxV6pmiGu1fK64xCEaA6fLxE8+fsnXc3PjkN2N2WmDprJKVgfoxY
+ sJGan50az1w==
+X-Gm-Gg: ASbGncusTx0WOPzlZmGRrNhUjt+WiVC+i6OEI4cVhIz1arJufhwN0z13O5fBbhExUoU
+ fq7rpMpDF8mRMYHd22MhYHCvE5rH6Rz/O5wPPdCtxtHJvyOWeD4N72bqUi2hF+vDOQd2nGDpz32
+ b5o2nssChFywErqq2HxTacINrYwO/pGjgwBNBNjUBSEavaey47FzujwOnsmaCL8BgKkr8qfuj8t
+ jNEX9t+ZCwBiHiIsyPuPrGuZTleSEHyU/qps2E6to5uOmfzfZdlzOF0Tse2itSkz0oXErC4FUnF
+ 062ekXn9xGM8elChh2a9zBIV9Dxi8OgbBh5KfM+5sy5mIrc2gtuJoBJ7p70ZkO0wQiUbDAJGFV1
+ zc/dY
+X-Google-Smtp-Source: AGHT+IGEq0jCySR3m7l2PYmtI6bOr5cyNoR7jyViDp34F3FoQ2kh7pkC3csCkYYKkMw3CUIbrsVgsg==
+X-Received: by 2002:a05:6122:311a:b0:52d:bbab:2055 with SMTP id
+ 71dfb90a1353d-530c895d2eemr4274031e0c.10.1749115728119; 
+ Thu, 05 Jun 2025 02:28:48 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([177.188.133.196])
+ by smtp.gmail.com with ESMTPSA id
+ 71dfb90a1353d-53074bf86b1sm12311772e0c.36.2025.06.05.02.28.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Jun 2025 02:28:46 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com
-References: <20250605090012.1268809-1-dbarboza@ventanamicro.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250605090012.1268809-1-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v3 0/3] target/riscv: add missing named features
+Date: Thu,  5 Jun 2025 06:28:33 -0300
+Message-ID: <20250605092836.1383882-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.49.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a43;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-vk1-xa43.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,32 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/6/25 11:00, Daniel Henrique Barboza wrote:
-> The SBI spec states, for console write byte:
-> 
-> "This is a blocking SBI call and it will only return after writing the
-> specified byte to the debug console. It will also return, with
-> SBI_ERR_FAILED, if there are I/O errors."
-> 
-> Being a blocker call will either succeed writing the byte or error out,
-> it's feasible to use the blocking qemu_chr_fe_write_all() instead of
-> qemu_chr_fe_write(). This is also how SBI_EXT_DBCN_CONSOLE_WRITE is
-> implemented, so we're also being more consistent.
-> 
-> Last but not the least, we will duck possible changes in
-> qemu_chr_fe_write() where ret = 0 will have a 'zero byte written'
-> semantic [1] - something that we're not ready to deal in this current
-> state.
-> 
-> [1] https://lore.kernel.org/qemu-devel/ CAFEAcA_kEndvNtw4EHySXWwQPoGs029yAzZGGBcV=zGHaj7KUQ@mail.gmail.com/
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->   target/riscv/kvm/kvm-cpu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Hi,
 
-Thank you very much Daniel!
+New version where typos in patch 1 were fixed. No other changes made.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+All patches acked.
+
+Changes from v2:
+- patch 1
+  - fixed typos dince -> since and specd -> spec
+- v2 link: https://lore.kernel.org/qemu-riscv/20250604174329.1147549-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (3):
+  target/riscv/cpu.c: add 'sdtrig' in riscv,isa
+  target/riscv/cpu.c: add 'ssstrict' to riscv,isa
+  target/riscv/cpu.c: do better with 'named features' doc
+
+ target/riscv/cpu.c                |  16 ++++++++++++++--
+ target/riscv/tcg/tcg-cpu.c        |   9 +++++++++
+ tests/data/acpi/riscv64/virt/RHCT | Bin 400 -> 416 bytes
+ 3 files changed, 23 insertions(+), 2 deletions(-)
+
+-- 
+2.49.0
 
 
