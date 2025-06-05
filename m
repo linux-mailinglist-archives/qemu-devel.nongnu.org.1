@@ -2,88 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA63ACEC08
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5920AACEC06
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:35:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN63E-0001OW-LN; Thu, 05 Jun 2025 04:34:16 -0400
+	id 1uN63P-0001SA-Vt; Thu, 05 Jun 2025 04:34:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <oenhan@gmail.com>)
- id 1uN637-0001OA-HH; Thu, 05 Jun 2025 04:34:09 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <oenhan@gmail.com>)
- id 1uN635-0006cO-Tp; Thu, 05 Jun 2025 04:34:09 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-73972a54919so681865b3a.3; 
- Thu, 05 Jun 2025 01:34:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749112445; x=1749717245; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=eStL4HphkzAKYOy6BeV4qdJYcZ2vzM8701fTzYc6Q4I=;
- b=BtGN7SqjaEvIjy0uFBatVcMU1q8Y8t+BA7px4M21k+nKr2ULaN+2ij1nBFkqy1YOZt
- nSlByjLsV7Tby8puaLoe7AIJ/mYZyQ70YghbNd+zfm5e8bPnQbrixSmLzmaxBXPbqGI9
- T7DCPpjPYmUMugN4q5y8n5X8/LpnguQfCfHRfIVS40lzEUaZT/aLu4QXWyaAcYe5ni5f
- 0f43WHsGZPUw4RydJDXTUnytsQmfJIYkmaRHbGkNT/XR1XifUVQAFV6aRKzO1cCuRVho
- 5NPmZOR9snf5CLAcksNt8iY76eCeInVC+6MK+0hCwGAj0N1X97irNohXJzrGpSvLZ0IC
- xqNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749112445; x=1749717245;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eStL4HphkzAKYOy6BeV4qdJYcZ2vzM8701fTzYc6Q4I=;
- b=XYRCjUhnvpaw5ERh5hW50Yvw3lJLq/6ePmRVXcxdH+4ZIDutjNPF4OmV01OQzmhp11
- n4SLbcYsnzyQQWf/eLECJbNnhciQpb/KeBimPu17t/sRuqC5zzo+gES7aUvLoykNCVZf
- ypXx3jkROk/Ipq4BX3sDSjBjVVdflK+oaFBk9/xmFgY6DqKmZRmRqWuPugeUtc2tmP+t
- EtTrGVCQtTPFKiOB0Xew7o09gu72mkh70ewpir+W/MMjOOmNLr6uvkNyFBQrnOR2d51N
- mX8aWn75quAiCXGjl34b7I4dqr77cBEgV/HxK/qwiIhPay8HDa1P4rCi22WW2ppJ4RJh
- e8qQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUpQAT8aRbG+D63/yw7JNzIgF9IV6eFBwhx4LroUSvL+RubzUUoCeoyO9z1iPBk8o3vmI8bb3vqlYxxdQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yyh/w/1m1f0VR4dtxoHU5YrMaGJVeRiezY47yWXchWd4RD87X7X
- Bm12ovIWcneldUqVsj/f8tlpzhjCribLg6ubosKaL6FmdvmhkGEobV4+
-X-Gm-Gg: ASbGnctKq+X8UBHZGJTzbbel1e83m/kB5Uer1BBJq+AhfcH6Kz5+YjtAscZTO1JjYhV
- W8gxC613D2me/QLhgikRMyh7egh5ebMCJAvDtlLL26eXbIzND8v/4+2d7FIdq8K6UDroyJVxKVR
- jhTL4HRR1NzSzK8Oa/AFO9gByXkD1yMiQjomFouMCFLNqnoJ98uoZWjm6vZSg9iZd6sHIfx4iKe
- E9uWcshbkLjEYb871vNc27tc31yyWFRVn2eYyOZY0kc8sGKlHHBjGJ7mhlgGGE3tHLbLJWl/Fha
- 9Hgq2w301SwGO5abU8ocPLzOW1m8qsqSxCfOoolTgVoguSiKKVetsY4o4rgKwVea4qZHNRIbCfd
- 4SfG7P4GSXzct6je77eBD+pTHrjJNrNWCGRI=
-X-Google-Smtp-Source: AGHT+IEkoXeV5o7x/5pmow9f3X4ZVXCVii4DZIF1fVUGJdP9ZJ2g1dkJMg7Boa3srl6KD8jZddamow==
-X-Received: by 2002:a05:6a00:b81:b0:739:50c0:b3fe with SMTP id
- d2e1a72fcca58-7480b23acb1mr9361471b3a.8.1749112444852; 
- Thu, 05 Jun 2025 01:34:04 -0700 (PDT)
-Received: from localhost.localdomain (172-234-80-15.ip.linodeusercontent.com.
- [172.234.80.15]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-747afda8b71sm12326628b3a.0.2025.06.05.01.34.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Jun 2025 01:34:04 -0700 (PDT)
-From: oenhan@gmail.com
-X-Google-Original-From: chenhgs@chinatelecom.cn
-To: mst@redhat.com,
-	clg@redhat.com
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- Huguanshen Chen <chenhgs@chinatelecom.cn>,
- Heng Zhang <zhangh121@chinatelecom.cn>,
- Huaitong Han <hanht2@chinatelecom.cn>
-Subject: [PATCH] vfio, migration: save device parent pci config
-Date: Thu,  5 Jun 2025 16:33:38 +0800
-Message-ID: <20250605083338.1845911-1-chenhgs@chinatelecom.cn>
-X-Mailer: git-send-email 2.43.5
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uN63H-0001R0-2y
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:34:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uN63E-0006e8-ED
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:34:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749112455;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=01E7vXHsd8DJFiPRdr2AncfqlZyUgCRn4a6z6Rjb2AQ=;
+ b=Xyy0wcU4JyMMO99ijVpB7JrXot9KlvUv13D3E0rwuHUjCxf9NkbZlvKP5jbT3pt7INvHqO
+ +Pp2s/wZKNmJcDvLx1gG9D0NR4GH7YLvGjdhID3qYglHVqRDnRf078/Ct28xVq3YNghZgB
+ 1KkL6WNDYnkyUO6+60Lmi5EyuJXVoOg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-_WjjoJnIOkOiWtWY2sgoOg-1; Thu,
+ 05 Jun 2025 04:34:08 -0400
+X-MC-Unique: _WjjoJnIOkOiWtWY2sgoOg-1
+X-Mimecast-MFC-AGG-ID: _WjjoJnIOkOiWtWY2sgoOg_1749112448
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D178618004A3; Thu,  5 Jun 2025 08:34:07 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.159])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 953FA30002C0; Thu,  5 Jun 2025 08:34:05 +0000 (UTC)
+Date: Thu, 5 Jun 2025 09:34:01 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] virtio: avoid cost of -ftrivial-auto-var-init in hot path
+Message-ID: <aEFWeZUlqqRvHsJT@redhat.com>
+References: <20250604191843.399309-1-stefanha@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=oenhan@gmail.com; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <20250604191843.399309-1-stefanha@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,78 +83,130 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Huguanshen Chen <chenhgs@chinatelecom.cn>
+On Wed, Jun 04, 2025 at 03:18:43PM -0400, Stefan Hajnoczi wrote:
+> Since commit 7ff9ff039380 ("meson: mitigate against use of uninitialize
+> stack for exploits") the -ftrivial-auto-var-init=zero compiler option is
+> used to zero local variables. While this reduces security risks
+> associated with uninitialized stack data, it introduced a measurable
+> bottleneck in the virtqueue_split_pop() and virtqueue_packed_pop()
+> functions.
+> 
+> These virtqueue functions are in the hot path. They are called for each
+> element (request) that is popped from a VIRTIO device's virtqueue. Using
+> __attribute__((uninitialized)) on large stack variables in these
+> functions improves fio randread bs=4k iodepth=64 performance from 304k
+> to 332k IOPS (+9%).
 
-On arm64 virtualization platform, vfio-user devices lose their interrupts after
-migration to the destination. This issue occurs because qemu fails to deliver
-the msi device id to the vGIC. The error device id is calculated based on the
-device's parent bus, so it is essential to save the parent pci config to
-prevent this issue.
+IIUC, the 'hwaddr addr' variable is 8k in size, and the 'struct iovec iov'
+array is 16k in size, so we have 24k on the stack that we're clearing and
+then later writing the real value. Makes sense that this would have a
+perf impact in a hotpath.
 
-Backtrace:
-QEMU:
- #0 qdev_get_parent_bus
- #1 pci_dev_bus_num
- #2 pci_req_id_cache_extract
- #3 pci_requester_id
- #4 kvm_irqchip_update_msi_route delivers 0(error id) to vGIC
+> This issue was found using perf-top(1). virtqueue_split_pop() was one of
+> the top CPU consumers and the "annotate" feature showed that the memory
+> zeroing instructions at the beginning of the functions were hot.
 
-KVM:
- #0 find_its_device returns error
- #1 find_ite
- #2 vgic_its_resolve_lpi
- #3 vgic_its_trigger_msi
- #4 vgic_its_inject_msi
- #5 kvm_set_msi
- #6 kvm_send_userspace_msi
+When you say you found it with 'perf-top' was that just discovered by
+accident, or was this usage of perf-top in response to users reporting
+a performance degradation vs earlier QEMU ?
 
-Reported-by: Heng Zhang <zhangh121@chinatelecom.cn>
-Signed-off-by: Huguanshen Chen <chenhgs@chinatelecom.cn>
-Signed-off-by: Huaitong Han <hanht2@chinatelecom.cn>
----
- hw/vfio/pci.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+> 
+> Fixes: 7ff9ff039380 ("meson: mitigate against use of uninitialize stack for exploits")
+> Cc: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>  include/qemu/compiler.h | 12 ++++++++++++
+>  hw/virtio/virtio.c      |  8 ++++----
+>  2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index a1bfdfe375..442113d0b7 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2654,6 +2654,11 @@ static int vfio_pci_save_config(VFIODevice *vbasedev, QEMUFile *f, Error **errp)
- {
-     VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
- 
-+    PCIDevice *pdev = &vdev->pdev;
-+    BusState *qbus = qdev_get_parent_bus(DEVICE(pdev));
-+
-+    pci_device_save(PCI_DEVICE(qbus->parent), f);
-+
-     return vmstate_save_state_with_err(f, &vmstate_vfio_pci_config, vdev, NULL,
-                                        errp);
- }
-@@ -2662,6 +2667,7 @@ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
- {
-     VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
-     PCIDevice *pdev = &vdev->pdev;
-+    BusState *qbus = qdev_get_parent_bus(DEVICE(pdev));
-     pcibus_t old_addr[PCI_NUM_REGIONS - 1];
-     int bar, ret;
- 
-@@ -2669,6 +2675,11 @@ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
-         old_addr[bar] = pdev->io_regions[bar].addr;
-     }
- 
-+    ret = pci_device_load(PCI_DEVICE(qbus->parent), f);
-+    if (ret) {
-+        return ret;
-+    }
-+
-     ret = vmstate_load_state(f, &vmstate_vfio_pci_config, vdev, 1);
-     if (ret) {
-         return ret;
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
+
+> 
+> diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+> index 496dac5ac1..fabd540b02 100644
+> --- a/include/qemu/compiler.h
+> +++ b/include/qemu/compiler.h
+> @@ -207,6 +207,18 @@
+>  # define QEMU_USED
+>  #endif
+>  
+> +/*
+> + * Disable -ftrivial-auto-var-init on a local variable. Use this in rare cases
+> + * when the compiler zeroes a large on-stack variable and this causes a
+> + * performance bottleneck. Only use it when performance data indicates this is
+> + * necessary since security risks increase with uninitialized stack variables.
+> + */
+> +#if __has_attribute(uninitialized)
+> +# define QEMU_UNINITIALIZED __attribute__((uninitialized))
+> +#else
+> +# define QEMU_UNINITIALIZED
+> +#endif
+
+For the benefit of other reviewers, this attribute is specifically
+intended for this very purpose:
+
+[quote "info gcc"]
+  ‘uninitialized’
+     This attribute, attached to a variable with automatic storage,
+     means that the variable should not be automatically initialized by
+     the compiler when the option ‘-ftrivial-auto-var-init’ presents.
+
+     With the option ‘-ftrivial-auto-var-init’, all the automatic
+     variables that do not have explicit initializers will be
+     initialized by the compiler.  These additional compiler
+     initializations might incur run-time overhead, sometimes
+     dramatically.  This attribute can be used to mark some variables to
+     be excluded from such automatic initialization in order to reduce
+     runtime overhead.
+
+     This attribute has no effect when the option
+     ‘-ftrivial-auto-var-init’ is not present.
+[/quote]
+
+> +
+>  /*
+>   * http://clang.llvm.org/docs/ThreadSafetyAnalysis.html
+>   *
+> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+> index 5534251e01..82a285a31d 100644
+> --- a/hw/virtio/virtio.c
+> +++ b/hw/virtio/virtio.c
+> @@ -1689,8 +1689,8 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
+>      VirtIODevice *vdev = vq->vdev;
+>      VirtQueueElement *elem = NULL;
+>      unsigned out_num, in_num, elem_entries;
+> -    hwaddr addr[VIRTQUEUE_MAX_SIZE];
+> -    struct iovec iov[VIRTQUEUE_MAX_SIZE];
+> +    hwaddr QEMU_UNINITIALIZED addr[VIRTQUEUE_MAX_SIZE];
+> +    struct iovec QEMU_UNINITIALIZED iov[VIRTQUEUE_MAX_SIZE];
+>      VRingDesc desc;
+>      int rc;
+>  
+> @@ -1836,8 +1836,8 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
+>      VirtIODevice *vdev = vq->vdev;
+>      VirtQueueElement *elem = NULL;
+>      unsigned out_num, in_num, elem_entries;
+> -    hwaddr addr[VIRTQUEUE_MAX_SIZE];
+> -    struct iovec iov[VIRTQUEUE_MAX_SIZE];
+> +    hwaddr QEMU_UNINITIALIZED addr[VIRTQUEUE_MAX_SIZE];
+> +    struct iovec QEMU_UNINITIALIZED iov[VIRTQUEUE_MAX_SIZE];
+>      VRingPackedDesc desc;
+>      uint16_t id;
+>      int rc;
+> -- 
+> 2.49.0
+> 
+
+With regards,
+Daniel
 -- 
-2.43.5
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
