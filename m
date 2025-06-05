@@ -2,43 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD910ACED55
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC90BACED56
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:12:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN7Xu-00036o-Jo; Thu, 05 Jun 2025 06:10:02 -0400
+	id 1uN7ZS-0003yp-Q5; Thu, 05 Jun 2025 06:11:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uN7Xn-000365-Ov; Thu, 05 Jun 2025 06:09:55 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uN7ZO-0003y4-Pb
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:11:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uN7Xk-0008Uz-Qq; Thu, 05 Jun 2025 06:09:55 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 95C0144AEF;
- Thu,  5 Jun 2025 12:09:42 +0200 (CEST)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	kwolf@redhat.com,
-	hreitz@redhat.com
-Subject: [PATCH] iotests: add test for changing the 'drive' property via
- 'qom-set'
-Date: Thu,  5 Jun 2025 12:09:38 +0200
-Message-Id: <20250605100938.43133-1-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.39.5
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uN7ZM-0000To-CH
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:11:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749118291;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=xGJok4ar4KVyPbGQlvZ9sR0i7cZSDEGPhs8lHacKmKo=;
+ b=NJJs+5h9c8SXCtG8BQult5tdhNDGtm4tDGvJndUcoYHrOdvAdBJDkjV8mA83jlN8pEiera
+ mVycTHuB7Y+hirzTJiunqf6FGqk6Khug+wlJOLOjObBkKPlNBHWw9Onr5MI2aJx3X19jkB
+ gK9hcO9lgnXeZ8LyjH0DcrsHP/BT1X0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-12--EYrsoafOQqDFgynfFZwiA-1; Thu, 05 Jun 2025 06:11:29 -0400
+X-MC-Unique: -EYrsoafOQqDFgynfFZwiA-1
+X-Mimecast-MFC-AGG-ID: -EYrsoafOQqDFgynfFZwiA_1749118288
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-450cb8ff0c6so3605185e9.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 03:11:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749118287; x=1749723087;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xGJok4ar4KVyPbGQlvZ9sR0i7cZSDEGPhs8lHacKmKo=;
+ b=OcP1fG5bJsguKt8UgxlRQMoo7SXc2/KnPV03s6WloxZ9JzGEq6uVRFm8s1tb2YgpTZ
+ DzEJp6butefnR9pnPb+TlJbWCxo+VQQYQC2pbavFAQo1/vOlSUOXqAAudj3Wye6qTz5V
+ RnL9w18eq1BphmaUikKvsuiFXBYFAc6Fh+sTLPhCBnG8pSYAAjqU2Sici5pU292WpXoy
+ 2LvVqJ7O1Gqsw2nMPDi91eSZuxXgNwYVMic9mtTs49Yj6isMBbUOXB3hDeY+hp8NAk9d
+ Y078DXB/eewCfDjo3/N9W4seRvMIa7+JRbPBJP+UrPrNHglJI7ojUoYFCEuTBR4F4Yl2
+ 7R9g==
+X-Gm-Message-State: AOJu0Yy/SWvhrJiVgGX9x3DQA6Fb5cXJRT9OH7AFLIK9wn3GxYA4mmAm
+ n5SmQcwIYzpJPLI1xmLweL0kvNU5UI0A2x34jCSDESyQE6y5pOWxUcP8ySKnk9a0gO2BhiZw9UH
+ P07V8ksvnMV0XznzKXUjCopifgxQlLzB874tFKhczdnmThs7jnSH3B3P/O1+P3Pi1vzDChil+uL
+ CygKuSK0A55spiUd3xLW7Jh/Omdqap58WaQqZrZKqZ
+X-Gm-Gg: ASbGnctQ5SKya7/C/lLGvJw6hm9aYjO9HlQ6VAGRDet2DW+zSzzMcKYcqVOvONVSDC6
+ xTmS02TwO572oHbWav5OxiWnEDEIb2usF7qpSjz4D/s7UjVCR0hSzmFWYBUlStLCHHwr4K/XdFq
+ bg8Zj+J2+6ZOwBZW2wIq+/rwu6GQAEaKkM34Fv/in+v64Yty8E3Z07O1dkFhjTnPjydTjZ8lXKz
+ sUcPRmsDCyjaLvCONWAnn+9zL+K8gnrGuQVo9HcsRaCVdQTVAPVtuDaoSWeKU6JOsaEkRq+6DT8
+ 6okQfN7SZCM2HyZmxwxQm9pP
+X-Received: by 2002:a05:600c:1c29:b0:441:d437:e3b8 with SMTP id
+ 5b1f17b1804b1-451f0b256e6mr51276525e9.23.1749118286670; 
+ Thu, 05 Jun 2025 03:11:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcYpNOknwHhCDppbGuTnWbslbd758u7i1B1Whn61rsJvLpSAYC0WWvq4h43N730ICCbToKsw==
+X-Received: by 2002:a05:600c:1c29:b0:441:d437:e3b8 with SMTP id
+ 5b1f17b1804b1-451f0b256e6mr51276175e9.23.1749118286143; 
+ Thu, 05 Jun 2025 03:11:26 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.64.79])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-451f9662cd1sm19986725e9.0.2025.06.05.03.11.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Jun 2025 03:11:25 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, qemu-rust@nongnu.org, armbru@redhat.com,
+ mkletzan@redhat.com
+Subject: [PATCH preview 0/3] reviving minimal QAPI generation from 2021
+Date: Thu,  5 Jun 2025 12:11:21 +0200
+Message-ID: <20250605101124.367270-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,114 +105,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
----
- tests/qemu-iotests/tests/qom-set-drive     | 75 ++++++++++++++++++++++
- tests/qemu-iotests/tests/qom-set-drive.out | 11 ++++
- 2 files changed, 86 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/qom-set-drive
- create mode 100644 tests/qemu-iotests/tests/qom-set-drive.out
+This is just an extremely minimal extraction from the patches at
+https://patchew.org/QEMU/20210907121943.3498701-1-marcandre.lureau@redhat.com/,
+limited to generating structs and enums from the QAPI schema.
+It does not include them in any crate and does not compile them.
 
-diff --git a/tests/qemu-iotests/tests/qom-set-drive b/tests/qemu-iotests/tests/qom-set-drive
-new file mode 100755
-index 0000000000..e44fe4cebc
---- /dev/null
-+++ b/tests/qemu-iotests/tests/qom-set-drive
-@@ -0,0 +1,75 @@
-+#!/usr/bin/env python3
-+# group: quick
-+#
-+# Test how changing the 'drive' property via 'qom-set' behaves.
-+#
-+# Copyright (C) Proxmox Server Solutions GmbH
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+
-+import os
-+import iotests
-+from iotests import imgfmt, log, qemu_img_create, QMPTestCase
-+
-+image_size = 1 * 1024 * 1024
-+images = [os.path.join(iotests.test_dir, f'{i}.img') for i in range(0, 4)]
-+
-+class TestQOMSetDrive(QMPTestCase):
-+    def setUp(self) -> None:
-+        for i in range(0, len(images)):
-+            qemu_img_create('-f', imgfmt, images[i], str(image_size))
-+
-+        self.vm = iotests.VM()
-+        for i in range(0, len(images)):
-+            self.vm.add_blockdev(self.vm.qmp_to_opts({
-+                'driver': imgfmt,
-+                'node-name': f'node{i}',
-+                'file': {
-+                    'driver': 'file',
-+                    'filename': images[i]
-+                }
-+            }))
-+        self.vm.add_object('iothread,id=iothread0')
-+        self.vm.add_device('virtio-scsi,iothread=iothread0')
-+        self.vm.add_device(f'scsi-hd,id=iot,drive=node0')
-+        self.vm.add_device('virtio-scsi')
-+        self.vm.add_device(f'scsi-hd,id=no-iot,drive=node1')
-+        self.vm.launch()
-+
-+    def tearDown(self) -> None:
-+        self.vm.shutdown()
-+        for i in range(0, len(images)):
-+            os.remove(images[i])
-+
-+    def test_qom_set_drive(self) -> None:
-+        log(self.vm.qmp('qom-get', path='/machine/peripheral/iot',
-+                        property='drive'))
-+        log(self.vm.qmp('qom-set', path='/machine/peripheral/iot',
-+                        property='drive', value='node2'))
-+        log(self.vm.qmp('qom-get', path='/machine/peripheral/iot',
-+                        property='drive'))
-+
-+        log(self.vm.qmp('qom-get', path='/machine/peripheral/no-iot',
-+                        property='drive'))
-+        log(self.vm.qmp('qom-set', path='/machine/peripheral/no-iot',
-+                        property='drive', value='node3'))
-+        log(self.vm.qmp('qom-get', path='/machine/peripheral/no-iot',
-+                        property='drive'))
-+
-+if __name__ == '__main__':
-+    iotests.activate_logging()
-+    # LUKS would require special key-secret handling in add_blockdevs()
-+    iotests.main(supported_fmts=['generic'],
-+                 unsupported_fmts=['luks'])
-diff --git a/tests/qemu-iotests/tests/qom-set-drive.out b/tests/qemu-iotests/tests/qom-set-drive.out
-new file mode 100644
-index 0000000000..7fc243dca6
---- /dev/null
-+++ b/tests/qemu-iotests/tests/qom-set-drive.out
-@@ -0,0 +1,11 @@
-+{"return": "node0"}
-+{"error": {"class": "GenericError", "desc": "Different aio context is not supported for new node"}}
-+{"return": "node0"}
-+{"return": "node1"}
-+{"return": {}}
-+{"return": "node3"}
-+.
-+----------------------------------------------------------------------
-+Ran 1 tests
-+
-+OK
+While I'm not going to work on this, I was curious how much work it
+was to produce *some* kind of Rust QAPI struct, which could be a first
+step towards using serde as an interface to C visitors, like this:
+
+trait QapiType: FreeForeign {
+    unsafe fn visit(v: bindings::Visitor, name: *const c_char, obj: *mut <Self as FreeForeign>::Foreign, errp: *mut *mut bindings::Error);
+}
+
+fn to_c<T: QAPIType>(obj: &T) -> *mut <T as FreeForeign>::Foreign {
+    let mut ptr = libc::calloc(...);
+    let mut ser = QapiSerializer::<T>::new(ptr);
+    obj.serialize(&mut ser).unwrap();
+    ptr.cast()
+}
+
+unsafe fn from_c<T: QAPIType>(obj: *const <T as FreeForeign>::Foreign) -> T {
+    let mut de = QapiDeserializer::new(T::visit, obj as *const c_void);
+    let value = de::Deserialize::deserialize(&mut de).unwrap();
+    de.end().unwrap();
+    value
+}
+
+/* Generated code below: */
+
+impl QapiType for UefiVariable {
+    unsafe fn visit(v: bindings::Visitor, name: *const c_char, obj: *mut bindings::UefiVariable, errp: *mut *mut bindings::Error) {
+        unsafe extern "C" visit_type_DumpGuestMemoryFormat(v: bindings::Visitor, name: *const c_char, obj: *mut bindings::UefiVariable, errp: *mut *mut bindings::Error) {
+        unsafe { visit_type_DumpGuestMemoryFormat(v, name, obj, errp); }
+    }
+}
+
+impl FreeForeign for UefiVariable {
+    type Foreign = bindings::UefiVariable;
+
+    unsafe fn free_foreign(p: *mut bindings::UefiVariable) {
+        unsafe extern "C" qapi_free_UefiVariable(p: *mut bindings::UefiVariable);
+        unsafe { qapi_free_UefiVariable(p); }
+    }
+}
+
+impl CloneToForeign for UefiVariable {
+    fn clone_to_foreign(&self) -> OwnedPointer<Self> {
+        OwnedPointer::new(qapi::to_c(self))
+    }
+}
+
+impl FromForeign for UefiVariable {
+    unsafe fn cloned_from_foreign(obj: *const bindings::UefiVariable) -> Self {
+        qapi::from_c(obj)
+    }
+}
+
+The FFI types could be generated by qapi-gen, as in Marc-André's
+proposal, or from bindgen.
+
+I am not sure what approach is better---whether to use serde or to
+automatically generate the marshaling and unmarshaling code; and whether
+to use bindgen or generate C-compatible FFI types---but it made sense,
+from the point of view of extracting "some" code from Marc-André's
+proof of concept and enticing other people, :) to start from high-level
+types.
+
+Paolo
+
+Marc-André Lureau (2):
+  scripts/qapi: add QAPISchemaIfCond.rsgen()
+  scripts/qapi: generate high-level Rust bindings
+
+Paolo Bonzini (1):
+  rust: make TryFrom macro more resilient
+
+ meson.build                     |   4 +-
+ rust/qemu-api-macros/src/lib.rs |   7 +-
+ scripts/qapi/backend.py         |   4 +-
+ scripts/qapi/common.py          |  16 ++
+ scripts/qapi/main.py            |   4 +-
+ scripts/qapi/rs.py              | 183 ++++++++++++++++++
+ scripts/qapi/rs_types.py        | 320 ++++++++++++++++++++++++++++++++
+ scripts/qapi/schema.py          |   4 +
+ 8 files changed, 535 insertions(+), 7 deletions(-)
+ create mode 100644 scripts/qapi/rs.py
+ create mode 100644 scripts/qapi/rs_types.py
+
 -- 
-2.39.5
-
+2.49.0
 
 
