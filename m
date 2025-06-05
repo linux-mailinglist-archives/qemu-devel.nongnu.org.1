@@ -2,107 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65EB3ACEC52
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CEA4ACEC53
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:48:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN6FQ-00059w-ED; Thu, 05 Jun 2025 04:46:54 -0400
+	id 1uN6Gd-0005sB-M0; Thu, 05 Jun 2025 04:48:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1uN6Ei-0004ff-Ql; Thu, 05 Jun 2025 04:46:10 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uN6FD-0005DA-Ti
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:46:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1uN6Ee-0001qi-Q8; Thu, 05 Jun 2025 04:46:08 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5558hHD3028846;
- Thu, 5 Jun 2025 08:46:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=pj68p8
- JQD4J1HZOfTDk8PbzVkKme7SXTopC5MNetVds=; b=EuvV6uJ861v4UTPb3MacUC
- r25yJ667SvS4yp2TlPgKIgbf6+jKnTSxJZXdlVNj66Eoo5dPVcia1pVKF30OTMMF
- /C1WpetOzb/cJa8kwHZEgyqs4tKS3LcupPTtfl+uhO5cgg6XILcg+mlpDa3BRi+Y
- iEYhqxYsxI9IOGCuDHAGYmrLHwOw6EySug+JFru0YGDikBVitnNFHsELIlCNzH9d
- 8ZRRhz2BCZ8A3hsPafqcy2T3yolWnX7rclUeRuaH4lTEE9Fp05q9wGIv8R/qidKC
- THy8JDVAhrPJbX4pEVFhwJkaxtoSVURi6UePjibDDNsJcJFgA7dQwSyefe+sl2xw
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471geyfp7c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Jun 2025 08:46:01 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5554fl0B012508;
- Thu, 5 Jun 2025 08:46:00 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 470et2kkfu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Jun 2025 08:46:00 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 5558juMT34013750
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Jun 2025 08:45:56 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 737E12004B;
- Thu,  5 Jun 2025 08:45:56 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 208C520040;
- Thu,  5 Jun 2025 08:45:56 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.111.39.61]) by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  5 Jun 2025 08:45:56 +0000 (GMT)
-Message-ID: <beb12864fd3571a929eba525fcb40f0619f32729.camel@linux.ibm.com>
-Subject: Re: [PATCH v5 1/3] hw/s390x: add SCLP event type CPI
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Shalini Chellathurai Saroja <shalini@linux.ibm.com>, qemu-s390x
- mailing list <qemu-s390x@nongnu.org>, Thomas Huth <thuth@redhat.com>
-Cc: Daniel Berrange <berrange@redhat.com>, qemu-devel mailing list
- <qemu-devel@nongnu.org>, Hendrik Brueckner <brueckner@linux.ibm.com>
-Date: Thu, 05 Jun 2025 10:45:55 +0200
-In-Reply-To: <20250603135655.595602-2-shalini@linux.ibm.com>
-References: <20250603135655.595602-1-shalini@linux.ibm.com>
- <20250603135655.595602-2-shalini@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uN6FB-0001tH-Oi
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:46:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749113196;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xpL1tbyyEMa/OHUZVbCrkNH8WOEif6TKtLXkzJ0fdD0=;
+ b=SJpesTqoJJbjVIWYJr1zTYKEKntDBoza4o0vt8P24F7lExY90kV6U+WuY2CijrxPIQDjxu
+ /x+mC9VdZtHDK8WDBWnJXHxrJ+qQ3VYpyWfGNi+8FjOJff8Upquz8Q60cOlUhWMcOUEey2
+ Ue0jE+r4YCP0wmPYdxloIhyVI71dS8s=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-468-TcB_m9c5O8CcRsrm2gTBbw-1; Thu,
+ 05 Jun 2025 04:46:31 -0400
+X-MC-Unique: TcB_m9c5O8CcRsrm2gTBbw-1
+X-Mimecast-MFC-AGG-ID: TcB_m9c5O8CcRsrm2gTBbw_1749113191
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F296319560AA; Thu,  5 Jun 2025 08:46:30 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.38])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 63F2A1954B33; Thu,  5 Jun 2025 08:46:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id BEBF821E6768; Thu, 05 Jun 2025 10:46:27 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: John Snow <jsnow@redhat.com>,  qemu-devel@nongnu.org,  Peter Maydell
+ <peter.maydell@linaro.org>
+Subject: Re: [PATCH 1/1] docs/qapi-domain: Improve QAPI indices
+In-Reply-To: <aD2IBR5FTFCSrV8x@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Mon, 2 Jun 2025 12:16:21 +0100")
+References: <20250523180809.41211-1-jsnow@redhat.com>
+ <20250523180809.41211-2-jsnow@redhat.com>
+ <aD2IBR5FTFCSrV8x@redhat.com>
+Date: Thu, 05 Jun 2025 10:46:27 +0200
+Message-ID: <875xhalgnw.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=ea09f6EH c=1 sm=1 tr=0 ts=68415949 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
- a=d4LToudSVkjQPbQJ9YAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: L2zaBfgCmKY82Xh-7TdznkRGXo0IK9sn
-X-Proofpoint-ORIG-GUID: L2zaBfgCmKY82Xh-7TdznkRGXo0IK9sn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDA3NCBTYWx0ZWRfX9QGIBmaQR9hT
- KbBJPXZFgLrg7tX0qroA2bUDOFYALamU1c5YVP/wxhbX2DzOAa7CxyHcaeQ5wlV+ZaoIo6LE5j0
- OFEQS/TZWeBJ9/ZKiXmSjyuFdb09o+0a5+X3Mp4mkYP7yY28ElsdWnrIGtLda54h4JBo0O2+MWw
- S9s6XUBMC+HGee5Njrdyqj7460XVLfOpEtXXP+6yH4MycVKJ4QUEHnn0itrEF03PtmsziTsxn1a
- X9xmw/vvLKEzXdGbpVh9B+JM/QYzoGXwmxDRkJxxCZoeyU8fGlikAoI28SWh1rbZB4tiZjdy71A
- 3kSkQUOUTtZxoLI0HYKmroaw7BkXmweG4XLR2gEhRn2UKDV+imtpz3O1uxC5T50hbcvPIO75/wH
- vuCMnYIB94VonNPjbNzJaKMsbt1yuugCeraZGne3llAxVgL9+t74Py9G+pYhoSoad4rUSc+H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-05_02,2025-06-03_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 bulkscore=0
- spamscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
- impostorscore=0 phishscore=0 mlxscore=0 adultscore=0 clxscore=1015
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506050074
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -120,33 +88,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2025-06-03 at 15:56 +0200, Shalini Chellathurai Saroja wrote:
-> Implement the Service-Call Logical Processor (SCLP) event
-> type Control-Program Identification (CPI) in QEMU. This
-> event is used to send CPI identifiers from the guest to the
-> host. The CPI identifiers are: system type, system name,
-> system level and sysplex name.
->=20
-> System type: operating system of the guest (e.g. "LINUX").
-> System name: user configurable name of the guest (e.g. "TESTVM").
-> System level: distribution and kernel version, if the system type is Linu=
-x
-> (e.g. 0x50e00).
-> Sysplex name: name of the cluster which the guest belongs to (if any)
-> (e.g. "PLEX").
->=20
-> The SCLP event CPI is supported only from "s390-ccw-virtio-10.1" machine
-> and higher.
->=20
-> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> On Fri, May 23, 2025 at 02:08:09PM -0400, John Snow wrote:
+>> This patch changes the "by type" categorization in favor of using
+>> sub-categories of a literal "By type" category instead. A new "By
+>> module" categorization is also added that follows a similar pattern.
+>
+> I'm not much of a fan of this. IMHO unless you are looking at the
+> module(s) for the subsystem you are the maintainer of, the split
+> of definitions across modules comes across as somewhat arbitrary
+> and unpredictable.
 
---=20
-IBM Deutschland Research & Development GmbH
-Vorsitzender des Aufsichtsrats: Wolfgang Wendt
-Gesch=C3=A4ftsf=C3=BChrung: David Faller
-Sitz der Gesellschaft: B=C3=B6blingen / Registergericht: Amtsgericht Stuttg=
-art, HRB 243294
+We have two parallel structures: QAPI modules and reST sections.
+
+QAPI modules are for developers working on the QAPI schema[1].
+
+reST sections are for readers of the documentation generated from the
+QAPI schema.
+
+We intentionally refrained from tying the two together more than
+necessary.
+
+The generated documentation is in an order defined by the include
+directives.  To get the order you want, you may have to juggle include
+directives, and maybe even split up modules.  If this ever gets too
+bothersome, we'll provide some other way to order things[2].
+
+You can then add any section structure you want.  You could even start a
+section in the middle of one module, and end it in the middle of a later
+module.  That would be silly, of course.  My point is: the section
+structure need not mirror the module structure.
+
+What does this mean for structuring the generated documentation's index?
+If we want to structure it, we should use section structure, not module
+structure.
+
+> Looking at this from the POV of a consumer of QMP, our entrypoint
+> to research is either a command name or an event name.
+>
+> The data type names of enums/alternates/objects are an internal
+> QEMU detail that's not part of the public API.
+
+Good observation.  I'd expect readers will want to use the index to look
+up the names present in the external interface (commands and events).
+Once they found them, they'll likely need to look up types mentioned
+there, but they'll want to do so by following links, not going back to
+the index.
+
+> If we consider the index currently:
+>
+>   Alternates | Commands | Enums | Events | Modules | Objects | A | .... |=
+ Z
+>
+> The A ... Z bits link to a mix of all type names, which is a bit
+> overwhealming.
+>
+> At the same time the page is twice as big as it needs to be
+> as the same info is repeated under the A-Z index and the
+> other per-type indexes.
+>
+> I think what would help would be to make the index dynamic
+>
+> eg
+>
+>   A | B | C | D | E | ... | X | Y | Z
+>
+>   [ ] Show internal types=20
+>
+> The A-Z index would default to showing commands and events.
+> Selecting the "Types" checkbox would toggle display of the
+> alternate/enum/object names, which could be done via having
+> a CSS class on each index entry, and javascript which just
+> toggles 'display: none' / 'display: block' CSS property on
+> the elements with the given class.
+
+Hiding types by default makes sense to me.  How exactly to do that is up
+to the developer.  Even something as simple & stupid as a link to an
+alternate index page could work.
+
+>                                    I'm not convinced we need
+> the modules in the index.
+
+Me neither.  See my argument above.
+
+>> Alphabetical sorting has been improved and will sort in a case
+>> insensitive manner for all categories, now.
+>
+> This is trivial and nice and could be a standalone fix ?
+
+Yes, please :)
+
+>> Lastly, the "main" QAPI Index (qapi-index.html) is altered to index
+>> *everything* from all namespaces, adding disambiguation where necessary
+>> to do so.
+>
+> This looks a bit wierd having the same types and modules repeated
+> multiple times.
+
+I'm not sure such an index is useful.
+
+> With regards,
+> Daniel
+
+
+[1] Why are modules useful for developers?
+
+The QAPI schema used to be monolithic: one input file
+(qapi-schema.json), one output file of each kind (qapi-commands.c,
+qapi-events.c, qapi-introspect.c, qapi-types.c, qapi-visit.c, ...).
+
+A single input file is unwiedly, and defeats the MAINTAINERS file.  So
+we added support for splitting it up into modules (commit a719a27c824
+"qapi: Add a primitive to include other files from a QAPI schema file",
+May 2014), and over several years moved *everything* from
+qapi-schema.json to submodules it includes.
+
+A single output file per kind eventually took us to "touch the QAPI
+schema, recompile the world".  So I changed it to generate one output
+file per module for the kinds where that makes sense (commit 252dc3105fc
+"qapi: Generate separate .h, .c for each module", Feb 2018).
+
+
+[2] If the order within a module makes the generated documentation hard
+to read, it'll probably make the source file hard to read, too.  So fix
+that.
+
 
