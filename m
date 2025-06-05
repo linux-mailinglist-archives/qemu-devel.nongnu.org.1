@@ -2,147 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3533BACF1D5
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 16:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3266EACF24E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 16:48:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNBYd-0001cj-0P; Thu, 05 Jun 2025 10:27:03 -0400
+	id 1uNBsZ-0005cd-Oz; Thu, 05 Jun 2025 10:47:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uNBYa-0001cN-UC
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 10:27:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uNBYY-0002K3-Ua
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 10:27:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749133617;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=pWg934uPrhiLGoro/84ql+CujoIKOYEB7X82shANqIM=;
- b=AvD3sYHFDlOEjawxzEAjOAg725EJGciAiBT5q+19iVltJGtvSQdL2GzLmtjUUyr6uswtDG
- weIWBLwJyMF4Gs77CydmSqYRgu0Z61ko2O/f9A5ZovgNY6+wVeNFUsyTnBaT+O2lOrecuJ
- mRZctw8WzJFYmV7nYUjKUN8xNxAqx1M=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-Z79gPdkRMj2BbdVSLEPM8A-1; Thu, 05 Jun 2025 10:26:56 -0400
-X-MC-Unique: Z79gPdkRMj2BbdVSLEPM8A-1
-X-Mimecast-MFC-AGG-ID: Z79gPdkRMj2BbdVSLEPM8A_1749133615
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a4f8fd1847so459850f8f.1
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 07:26:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <cocotroupe20@gmail.com>)
+ id 1uNBcw-0003CD-Ce; Thu, 05 Jun 2025 10:31:38 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cocotroupe20@gmail.com>)
+ id 1uNBcu-0003Tf-9X; Thu, 05 Jun 2025 10:31:30 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-442fda876a6so8448255e9.0; 
+ Thu, 05 Jun 2025 07:31:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1749133884; x=1749738684; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=pJ8Ss0xzwWF59ezoHUUP4X8z0cf+5bPuYM3CJxB7hEo=;
+ b=AQlLV7gjuggp5U+NXd5sUwgWVB/EyW8wk+ap5eNhu1G+DlSyYwgcguWUiWzastv/bH
+ 0Qx0yxA73ztzCyqXe4aKd6JGY08gGZPamuWkDsu3ZtCIUHB53yfJridaSUo5kAHn/b12
+ idA7rI+eK2xPdw7/laDsvxWIaqozm0sT2QZ7Oo4NAbcHtwijQhIKsDO6XPu1w137nWUE
+ hoxjbWSnsesOrG/Ndx/3pjoovLav+Ckz+UajNy7gWAKzmNlz3NDEO/7sAiVoAZRzkovi
+ /daS6hW6bXWgWzm7OC/Mc6whukcl86w7SA3voznV2va2drc2Cd3N42rVIFBbwQunvHhq
+ SevA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749133615; x=1749738415;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pWg934uPrhiLGoro/84ql+CujoIKOYEB7X82shANqIM=;
- b=wx4UrLbuZchDmTwl/VXqKBAc4ehfe7256KPvOCadwiqBhJUTVcnVemaegmOmzAY+Q1
- 8SWXsEgmygJ4eUxdJk2AP9Em5Fatu57VXx1tCZO2RSH3o2RrT2VS+K3e3aty9yk1uHdM
- rjpqKWr29/ntbhvYuIax3yfHBxsIF38ythq6Vyidy7M+IaB4vE9ZdCM3jBYbi+a3nl51
- vfL64Wv4ujby5GHKroxobUJFmkkSrZrix120E4VQ4Pr9JcaNWopSLU+ugQtYTuArwKEL
- WU16G+9dn/nDxK/FH245ndYdGZwYxyOSVP+dO9Rzz5SpileHMg8QWEiG/WQ1gq+RkU9d
- t0Mg==
+ d=1e100.net; s=20230601; t=1749133884; x=1749738684;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pJ8Ss0xzwWF59ezoHUUP4X8z0cf+5bPuYM3CJxB7hEo=;
+ b=e6/Wis2OWpE/HDTWeA6aKYwVBy2C4j7Wk6Kno1/iTIJ3b1e5WLLKfTJqRqmcqgeLYv
+ 6GL4Te9DshwRvEuQPkrehspYTOTrIekoS6pus5U15yA5xhxR1fBQclqkmU7GqkXZK5dc
+ o4pTrCfR7nuAYYsjdGCsiexPTQi6UQtFJQjYZYnGSCWinaqaamObLWPi8lCScmxoNhVo
+ HQk6OZCcEH5efEiHmiUZ+dsP5vXh5elKh8uaxuVInZ9MNYgn1SVOfBYPb2/8PF9JX96o
+ AfMOiMg+yADmhd6CCz5OwJl5ziSdOTacAvLPRtInAQQbxHiwmmyKv4TIgjpm/5Rudlq0
+ QCbw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW/b3tCUR7TP/O47ZpuuteIpwZwhDe5DRvpukqjc+sGf3vzxgh8qic2CQ6jhpG9yiKq25wMJky28Gho@nongnu.org
-X-Gm-Message-State: AOJu0YzryZL0CvQbv4uHGZA+VDveTBxaa6zd6GHFNvIBSsATzuIUP+4V
- LsIOlysnnCRpPb+6sJgmagX4ODL4kfUwOPNP/1q9DjnAmh09aXBPngTyWzNMIKdOCw2RgYrZ+B0
- vWICzTVZiJp3bl+MWxhoiPjZvzn8HxUzGsOcQV3Eq2a2KqGU+fXrM4sln
-X-Gm-Gg: ASbGnctetC3FjgdlC8gmH2ugvpl6Xsr8Ilge3WSFLcp0FIa/R4RdlzbxKLeaSToCVb7
- DY9JvvYnF/xEfNY4Tjjk9bbMyen2XVt3jWQLJXNSHjNEIdbP+Z7TL7fuGNgZcfDEMVc6uNrPMCy
- rXkAPUp+mpidNuXRPtZixCDizb5p02dyasIPXoprj57/Zb3WGG7IEGnhOIT4wKdQKUCXoLPKDJT
- ZTHibBGN7MHV5fSewE8KVOp816cIi2tDvM/an687Mhwuzrr4ecyTFuIpmE6xuuLW9gPeB/2ftPA
- gS7tWoj+nZMj6QUqq9LrIqE08/9/k6k5dgN1yTQFaIBvI3p23ipbSsPD9cYqiV3YtGY4knDXIUX
- KD0JplIf50byqhf4DPiRCUiVRHKiiEFvBcs7xv4mBmgglEA==
-X-Received: by 2002:a05:6000:2282:b0:3a4:f7f3:2d02 with SMTP id
- ffacd0b85a97d-3a51d900221mr6389965f8f.17.1749133614843; 
- Thu, 05 Jun 2025 07:26:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFw0uV4PtNomqI0NWMCjV7GJ7j43Iwm6oFnQfjNlKnQHKpu9E2PUgVqn7ueNuGfiPkBP7qY7w==
-X-Received: by 2002:a05:6000:2282:b0:3a4:f7f3:2d02 with SMTP id
- ffacd0b85a97d-3a51d900221mr6389941f8f.17.1749133614435; 
- Thu, 05 Jun 2025 07:26:54 -0700 (PDT)
-Received: from ?IPV6:2a01:cb01:54:3894:a12c:7ed9:4ede:d4f5?
- (2a01cb0100543894a12c7ed94eded4f5.ipv6.abo.wanadoo.fr.
- [2a01:cb01:54:3894:a12c:7ed9:4ede:d4f5])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a4efe6d0dbsm24149090f8f.40.2025.06.05.07.26.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Jun 2025 07:26:53 -0700 (PDT)
-Message-ID: <9094a7e6-fbb7-422e-9b13-f0ff29eb9ee3@redhat.com>
-Date: Thu, 5 Jun 2025 16:26:42 +0200
+ AJvYcCUXmf2HLCrCwwbJGKCfVNXi4VIa0vjYB+4kaMem9PAju30pasiiZ3U+uFJahrGj37hHf5MHlaVnwAn6QKo=@nongnu.org,
+ AJvYcCWzEPQzVD6We7ELJR6dkJBnndkXwl47MJtDPixqr3dqQriEgSpsgXcA8R0Dl965XLnFphfB0HxHYY6I@nongnu.org
+X-Gm-Message-State: AOJu0YxjR10M6uvYJNK7E8WCQvRR7mBnbIrFcnw3KwBRb6gf6B0gPeoT
+ M3Sa7CjT9Y6iT6Mf9RGST2NwPeAa2pCo4z/UW4pscYA2LfVj2YzVko4eWM53OYbh79n092pM/Ft
+ eYGVFxBkdurdV82/VrDBfzG5QJ+RPieo=
+X-Gm-Gg: ASbGncv9X3q5OsfT2Zjmus8eCcEDa1xoD7hyVMnZADg05AHo1LM7//CkOhpq8kOTs6x
+ AJF6OkDRzKzBn/d24a3c9ylo1OhKBSSGNuJfZZ0lVTxHLELUC8xgOJrivZjApTcNoyGCr5QJpNC
+ LT2zFz+9xnYyST0snPLKktBSENWnMZ1BIa+Q==
+X-Google-Smtp-Source: AGHT+IHPRzu/HcUXTGMC1iFsNmbRt03+9gNQrHmVpdSpip/YEEI5x2XWsbsEt64e4SI+vzucSRv3XLl8WSiO3JnnJak=
+X-Received: by 2002:a05:600c:1c15:b0:442:cab1:e092 with SMTP id
+ 5b1f17b1804b1-451f0aa1786mr67991845e9.11.1749133883743; Thu, 05 Jun 2025
+ 07:31:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ramfb: Add property to control if load the romfile
-To: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org
-Cc: Eric Auger <eauger@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>, qemu-devel@nongnu.org
-References: <20250605030351.2056571-1-shahuang@redhat.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250605030351.2056571-1-shahuang@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250605141801.1083266-1-peter.maydell@linaro.org>
+ <CAFEAcA9++obh-vtp7P9MZ9GHBTjuWGY419Dmp+P8iFJhCJiYHQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA9++obh-vtp7P9MZ9GHBTjuWGY419Dmp+P8iFJhCJiYHQ@mail.gmail.com>
+From: Corentin GENDRE <cocotroupe20@gmail.com>
+Date: Thu, 5 Jun 2025 16:31:11 +0200
+X-Gm-Features: AX0GCFvYgP0bCQncPASA2UU07AmIGfRRFVixQDS4IhrNCYp3uj8fZr4G8N09Fb8
+Message-ID: <CAPwCrcNTgzmOSTRqDRpHXM7zoMZiC3E5Z_W3OFVCBcNbp2WUTQ@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm/mps2: Configure the AN500 CPU with 16 MPU regions
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000ce22140636d3f705"
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=cocotroupe20@gmail.com; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 05 Jun 2025 10:47:38 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -157,163 +93,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/25 05:03, Shaoqin Huang wrote:
-> Now the ramfb will load the vgabios-ramfb.bin unconditionally, but only
-> the x86 need the vgabios-ramfb.bin, this can cause that when use the
-> release package on arm64 it can't find the vgabios-ramfb.bin.
-> 
-> So add a new property ramfb-romfile in both ramfb and vfio_pci device,
-> because the vfio display also use the ramfb_setup() to load the
-> vgabios-ramfb.bin file.
-> 
-> After have this property, the machine type can set the compatibility to
-> not load the vgabios-ramfb.bin if the arch doesn't need it.
-> 
-> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
-> ---
->   hw/display/ramfb-standalone.c | 4 +++-
->   hw/display/ramfb-stubs.c      | 2 +-
->   hw/display/ramfb.c            | 6 ++++--
->   hw/vfio/display.c             | 4 ++--
->   hw/vfio/pci.c                 | 1 +
->   hw/vfio/pci.h                 | 1 +
->   include/hw/display/ramfb.h    | 2 +-
->   7 files changed, 13 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
-> index 1be106b57f..2b96a49baa 100644
-> --- a/hw/display/ramfb-standalone.c
-> +++ b/hw/display/ramfb-standalone.c
-> @@ -17,6 +17,7 @@ struct RAMFBStandaloneState {
->       QemuConsole *con;
->       RAMFBState *state;
->       bool migrate;
-> +    bool ramfb_romfile;
->   };
->   
->   static void display_update_wrapper(void *dev)
-> @@ -39,7 +40,7 @@ static void ramfb_realizefn(DeviceState *dev, Error **errp)
->       RAMFBStandaloneState *ramfb = RAMFB(dev);
->   
->       ramfb->con = graphic_console_init(dev, 0, &wrapper_ops, dev);
-> -    ramfb->state = ramfb_setup(errp);
-> +    ramfb->state = ramfb_setup(ramfb->ramfb_romfile, errp);
->   }
->   
->   static bool migrate_needed(void *opaque)
-> @@ -62,6 +63,7 @@ static const VMStateDescription ramfb_dev_vmstate = {
->   
->   static const Property ramfb_properties[] = {
->       DEFINE_PROP_BOOL("x-migrate", RAMFBStandaloneState, migrate,  true),
-> +    DEFINE_PROP_BOOL("ramfb-romfile", RAMFBStandaloneState, ramfb_romfile, true),
->   };
->   
->   static void ramfb_class_initfn(ObjectClass *klass, void *data)
-> diff --git a/hw/display/ramfb-stubs.c b/hw/display/ramfb-stubs.c
-> index cf64733b10..b83551357b 100644
-> --- a/hw/display/ramfb-stubs.c
-> +++ b/hw/display/ramfb-stubs.c
-> @@ -8,7 +8,7 @@ void ramfb_display_update(QemuConsole *con, RAMFBState *s)
->   {
->   }
->   
-> -RAMFBState *ramfb_setup(Error **errp)
-> +RAMFBState *ramfb_setup(bool romfile, Error **errp)
->   {
->       error_setg(errp, "ramfb support not available");
->       return NULL;
-> diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
-> index 8c0f907673..9a17d97d07 100644
-> --- a/hw/display/ramfb.c
-> +++ b/hw/display/ramfb.c
-> @@ -135,7 +135,7 @@ const VMStateDescription ramfb_vmstate = {
->       }
->   };
->   
-> -RAMFBState *ramfb_setup(Error **errp)
-> +RAMFBState *ramfb_setup(bool romfile, Error **errp)
->   {
->       FWCfgState *fw_cfg = fw_cfg_find();
->       RAMFBState *s;
-> @@ -147,7 +147,9 @@ RAMFBState *ramfb_setup(Error **errp)
->   
->       s = g_new0(RAMFBState, 1);
->   
-> -    rom_add_vga("vgabios-ramfb.bin");
-> +    if (romfile) {
-> +        rom_add_vga("vgabios-ramfb.bin");
-> +    }
->       fw_cfg_add_file_callback(fw_cfg, "etc/ramfb",
->                                NULL, ramfb_fw_cfg_write, s,
->                                &s->cfg, sizeof(s->cfg), false);
-> diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-> index ea87830fe0..56f10564f9 100644
-> --- a/hw/vfio/display.c
-> +++ b/hw/vfio/display.c
-> @@ -365,7 +365,7 @@ static bool vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
->                                             &vfio_display_dmabuf_ops,
->                                             vdev);
->       if (vdev->enable_ramfb) {
-> -        vdev->dpy->ramfb = ramfb_setup(errp);
-> +        vdev->dpy->ramfb = ramfb_setup(vdev->ramfb_romfile, errp);
->           if (!vdev->dpy->ramfb) {
->               return false;
->           }
-> @@ -494,7 +494,7 @@ static bool vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
->                                             &vfio_display_region_ops,
->                                             vdev);
->       if (vdev->enable_ramfb) {
-> -        vdev->dpy->ramfb = ramfb_setup(errp);
-> +        vdev->dpy->ramfb = ramfb_setup(vdev->ramfb_romfile, errp);
->           if (!vdev->dpy->ramfb) {
->               return false;
->           }
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 7f1532fbed..bfdf365978 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -3564,6 +3564,7 @@ static const TypeInfo vfio_pci_dev_info = {
->   
->   static const Property vfio_pci_dev_nohotplug_properties[] = {
->       DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
-> +    DEFINE_PROP_BOOL("ramfb-romfile", VFIOPCIDevice, ramfb_romfile, true),
->       DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate,
->                               ON_OFF_AUTO_AUTO),
->   };
-> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-> index d94ecaba68..d567de8f10 100644
-> --- a/hw/vfio/pci.h
-> +++ b/hw/vfio/pci.h
-> @@ -177,6 +177,7 @@ struct VFIOPCIDevice {
->       bool no_kvm_ioeventfd;
->       bool no_vfio_ioeventfd;
->       bool enable_ramfb;
-> +    bool ramfb_romfile;
+--000000000000ce22140636d3f705
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The attribute 'ramfb_romfile' sounds like a file name. Could you please
-add an 'enable' prefix or suffix.
+Fixed!
 
+Le jeu. 5 juin 2025 =C3=A0 16:22, Peter Maydell <peter.maydell@linaro.org> =
+a
+=C3=A9crit :
 
-Thanks,
+> On Thu, 5 Jun 2025 at 15:18, Peter Maydell <peter.maydell@linaro.org>
+> wrote:
+> >
+> > The AN500 application note documents that it configures the Cortex-M7
+> > CPU to have 16 MPU regions. We weren't doing this in our emulation,
+> > so the CPU had only the default 8 MPU regions. Set the mpu-ns-regions
+> > property to 16 for this board.
+> >
+> > This bug doesn't affect any of the other board types we model in
+> > this source file, because they all use either the Cortex-M3 or
+> > Cortex-M4. Those CPUs do not have an RTL configurable number of
+> > MPU regions, and always provide 8 regions if the MPU is built in.
+> >
+> > Cc: qemu-stable@nongnu.org
+> > Reported-by: Corentin GENDRE <cocotroupe20@gmail.com>
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > ---
+> >  hw/arm/mps2.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/hw/arm/mps2.c b/hw/arm/mps2.c
+> > index 58efb41e6db..50e1a1c1c80 100644
+> > --- a/hw/arm/mps2.c
+> > +++ b/hw/arm/mps2.c
+> > @@ -224,7 +224,11 @@ static void mps2_common_init(MachineState *machine=
+)
+> >      switch (mmc->fpga_type) {
+> >      case FPGA_AN385:
+> >      case FPGA_AN386:
+> > +        qdev_prop_set_uint32(armv7m, "num-irq", 32);
+> > +        break;
+> >      case FPGA_AN500:
+> > +        /* The AN500 configures its Cortex-M7 with 16 MPU regions */
+> > +        qdev_prop_set_uint32(armv7m, "mpu-ns-dregions", 16);
+>
+> Rats, I failed to actually refresh the git commit with a
+> fix for a bug that "make check" caught before I sent it out.
+> This should be "mpu-ns-regions", without the "d".
+>
+> >          qdev_prop_set_uint32(armv7m, "num-irq", 32);
+> >          break;
+> >      case FPGA_AN511:
+>
+> -- PMM
+>
 
-C.
+--000000000000ce22140636d3f705
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-  
->       OnOffAuto ramfb_migrate;
->       bool defer_kvm_irq_routing;
->       bool clear_parent_atomics_on_exit;
-> diff --git a/include/hw/display/ramfb.h b/include/hw/display/ramfb.h
-> index a7e0019144..172aa6dc89 100644
-> --- a/include/hw/display/ramfb.h
-> +++ b/include/hw/display/ramfb.h
-> @@ -6,7 +6,7 @@
->   /* ramfb.c */
->   typedef struct RAMFBState RAMFBState;
->   void ramfb_display_update(QemuConsole *con, RAMFBState *s);
-> -RAMFBState *ramfb_setup(Error **errp);
-> +RAMFBState *ramfb_setup(bool romfile, Error **errp);
->   
->   extern const VMStateDescription ramfb_vmstate;
->   
+<div dir=3D"ltr">Fixed!=C2=A0<br></div><br><div class=3D"gmail_quote gmail_=
+quote_container"><div dir=3D"ltr" class=3D"gmail_attr">Le=C2=A0jeu. 5 juin =
+2025 =C3=A0=C2=A016:22, Peter Maydell &lt;<a href=3D"mailto:peter.maydell@l=
+inaro.org">peter.maydell@linaro.org</a>&gt; a =C3=A9crit=C2=A0:<br></div><b=
+lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
+ft:1px solid rgb(204,204,204);padding-left:1ex">On Thu, 5 Jun 2025 at 15:18=
+, Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org" target=3D"_=
+blank">peter.maydell@linaro.org</a>&gt; wrote:<br>
+&gt;<br>
+&gt; The AN500 application note documents that it configures the Cortex-M7<=
+br>
+&gt; CPU to have 16 MPU regions. We weren&#39;t doing this in our emulation=
+,<br>
+&gt; so the CPU had only the default 8 MPU regions. Set the mpu-ns-regions<=
+br>
+&gt; property to 16 for this board.<br>
+&gt;<br>
+&gt; This bug doesn&#39;t affect any of the other board types we model in<b=
+r>
+&gt; this source file, because they all use either the Cortex-M3 or<br>
+&gt; Cortex-M4. Those CPUs do not have an RTL configurable number of<br>
+&gt; MPU regions, and always provide 8 regions if the MPU is built in.<br>
+&gt;<br>
+&gt; Cc: <a href=3D"mailto:qemu-stable@nongnu.org" target=3D"_blank">qemu-s=
+table@nongnu.org</a><br>
+&gt; Reported-by: Corentin GENDRE &lt;<a href=3D"mailto:cocotroupe20@gmail.=
+com" target=3D"_blank">cocotroupe20@gmail.com</a>&gt;<br>
+&gt; Signed-off-by: Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linar=
+o.org" target=3D"_blank">peter.maydell@linaro.org</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 hw/arm/mps2.c | 4 ++++<br>
+&gt;=C2=A0 1 file changed, 4 insertions(+)<br>
+&gt;<br>
+&gt; diff --git a/hw/arm/mps2.c b/hw/arm/mps2.c<br>
+&gt; index 58efb41e6db..50e1a1c1c80 100644<br>
+&gt; --- a/hw/arm/mps2.c<br>
+&gt; +++ b/hw/arm/mps2.c<br>
+&gt; @@ -224,7 +224,11 @@ static void mps2_common_init(MachineState *machin=
+e)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 switch (mmc-&gt;fpga_type) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 case FPGA_AN385:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 case FPGA_AN386:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 qdev_prop_set_uint32(armv7m, &quot;num-ir=
+q&quot;, 32);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 case FPGA_AN500:<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* The AN500 configures its Cortex-M7 wit=
+h 16 MPU regions */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 qdev_prop_set_uint32(armv7m, &quot;mpu-ns=
+-dregions&quot;, 16);<br>
+<br>
+Rats, I failed to actually refresh the git commit with a<br>
+fix for a bug that &quot;make check&quot; caught before I sent it out.<br>
+This should be &quot;mpu-ns-regions&quot;, without the &quot;d&quot;.<br>
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qdev_prop_set_uint32(armv7m, &quot;n=
+um-irq&quot;, 32);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 case FPGA_AN511:<br>
+<br>
+-- PMM<br>
+</blockquote></div>
 
+--000000000000ce22140636d3f705--
 
