@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77A2ACED6F
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F79ACED6B
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:17:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN7eJ-0007YL-1i; Thu, 05 Jun 2025 06:16:39 -0400
+	id 1uN7ek-0000JD-Oi; Thu, 05 Jun 2025 06:17:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uN7dz-0007SA-CN
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:16:19 -0400
+ id 1uN7e2-0007U4-FZ
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:16:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uN7dx-0001LW-Rx
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:16:19 -0400
+ id 1uN7e0-0001MC-UA
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 06:16:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749118577;
+ s=mimecast20190719; t=1749118580;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VTevlSH5ZQkYyW+Mm1Gr4K/vGmq39vmXxviFGBBggFI=;
- b=Gh69lGaM/3Zfv0nIA7rEixZi6ycjddQIkeAxvY2BtsI50HXrS/I/byYloMWLXZLiOM1T6O
- hRpvPsuLMSJlgPUalGlb/AIP+X2q7NHmPeuqfbb+bemgtXB7B1yvS4yn5PPH7EPVjcjUCf
- 0ZbhPyOogWA6qaz9viGdthvVvLlqpXc=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GD5j4iIBSM/wWOplLwp2FFPFSX88IRGEIBS2r4z9frY=;
+ b=Nv4K359weTv8JxE99S6sq31nXPXVPp3+9f5THGi6clraXcHaZRaad2JFajp4LGu9ST4pGm
+ wu6Z6fb5pvn/7G4/aSekxst51LjooBES4NpkxOV2avVa0t0BV5yv1tDh8w3hV3RYrf1IYo
+ V4c9PvqQKmiigCHPU7hsw949EMxBU8g=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-ZL1OpXgLOf-pOOOxulkkrQ-1; Thu, 05 Jun 2025 06:16:16 -0400
-X-MC-Unique: ZL1OpXgLOf-pOOOxulkkrQ-1
-X-Mimecast-MFC-AGG-ID: ZL1OpXgLOf-pOOOxulkkrQ_1749118575
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a4e6d426b1so971541f8f.1
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 03:16:15 -0700 (PDT)
+ us-mta-631-cbAeAOXxO-yQfkFK3c_Oyw-1; Thu, 05 Jun 2025 06:16:18 -0400
+X-MC-Unique: cbAeAOXxO-yQfkFK3c_Oyw-1
+X-Mimecast-MFC-AGG-ID: cbAeAOXxO-yQfkFK3c_Oyw_1749118578
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-442f90418b0so3746385e9.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 03:16:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749118574; x=1749723374;
+ d=1e100.net; s=20230601; t=1749118577; x=1749723377;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VTevlSH5ZQkYyW+Mm1Gr4K/vGmq39vmXxviFGBBggFI=;
- b=BIi2aMW8zbrurnCPibZCD7ypxnkpXSHYc5Ue+hSrY+sLGH0GpzIupAHaFNitwzZe3A
- 5HlHIzlFw2hXFpJpMzEj0HJQIjFJUdwMImcIddgcDfQNyjAPaCQ/RYTwAhLAiKLqo2UR
- 2V89jzBVabWN16Pa+jnLWsEj7Nu/nFhjEnUKzKUBhyJlTkHXK7S8+GzC+cb8qaWuw0BW
- e8aWqXdb9CGayzsf7P190eU3uwRIqKF31Cq5WGunrNwHBd5HFLO1BtvLDmSHg1LrPdcm
- 5aVQSHsb90mM8r8KEKpYMLvw+6LL+plPa/SKZNkJg8QSwInxSJ8b+4WfXaAhNqAy5GUM
- WHdQ==
-X-Gm-Message-State: AOJu0Yx0OZGfbRb/ld/XLGFE8mmy0nQp+XiO8l73OcMIcn/5R6Ek2gOQ
- TkybcugaFThjNgFyOf12BkQuiddzSNqQO9h3xgA5+MToaZm6GGBCTOAxSElGGzUQDej9LcupTaF
- t/dqLDRWVEfCMlCoq5u7dBOR+PH7i4OrGnwDRHoxmXbOjahoMwTb4kGNalpklhB7V5b3lkdqiKG
- I/kPIsSHJwW2BiJDylSnYhpB4wg6UKJ/CCA2tfCuUv
-X-Gm-Gg: ASbGncvUN6bh/zJfQz2vkk8tepsbim6QvRdAqsh5cDxXpvYEiL655g71ATJE/UVVhlg
- Q88oT8+Rs9CnqKM77O1M/EoyOHVtZdBegQLgEuc7KYYK8TvSoJ9IYgwIQGMUMvfxGYI81JK2812
- EonfB2ja1ao0Bf1WES1uhlAfo6/Ae2i8NCSujugnhhgI1lzGQEHepI7O3ZK5jczkI+oE9OO7Nbd
- ExdvkjbvKmzYU6UKujK+WtVX7UzBhuYeYsDeMbLxpikbjuT63uNmQbYaX+/txAdfFr6k/YYlbZm
- GGggKhtx7PwnElJ68woo0+lt
-X-Received: by 2002:adf:a29e:0:b0:3a5:271e:c684 with SMTP id
- ffacd0b85a97d-3a5271ec74dmr1773816f8f.24.1749118574257; 
- Thu, 05 Jun 2025 03:16:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOh3cD0KZpsvpGZ/pQsCY6Fp/N6aQKKYgtvbN/uCdquTaBlIjQGa0RQBH0Zpn6p42Bc82C5w==
-X-Received: by 2002:adf:a29e:0:b0:3a5:271e:c684 with SMTP id
- ffacd0b85a97d-3a5271ec74dmr1773799f8f.24.1749118573862; 
- Thu, 05 Jun 2025 03:16:13 -0700 (PDT)
+ bh=GD5j4iIBSM/wWOplLwp2FFPFSX88IRGEIBS2r4z9frY=;
+ b=v3CZSqgFzBEjeRGjLEMEP+NBb8FR8x7BSq+vb6N3HK3VLxtDkjfp6wUc226sOwm8i3
+ +vzddqzQ+VPhGQaVncD/RVRoIJgYu3fh8mfeZdokHm2HGJxZ9v9glpnIbuGsZJuFkPOn
+ MJKUovmQDDCp8GP050qsuBfq0iv4N+g/+CF80LuAV6g44RGKdEigb60uqxqh6FcRfjsk
+ nZilqeevhu0SBbEPL3fkzfgR1EcVUhlE3StZ/OFUUMhVMhUpVwjE8am9WHkOOcNPPe/l
+ UFJl1Q3ShuiBdOc3iCWRdgfuSarhsMZdB1NmWPQzKU18VN0WzVb+22R56owJyXtDU4iP
+ B8ow==
+X-Gm-Message-State: AOJu0Ywy/Uhplr8IXJsfp05/VpLnqHIvUVzz3qHhE1Ao8qMVBoRfJ6DS
+ 603cZOB5XdXqiWFd5hrZKsCuykAJ/KP2lmfsxH+pOzxSOe5KTyr6AUmpcM9NZEGU0DZONw4L99K
+ DFflOdiAOBWjMPaqvR+GeYMueTE367doC65AMIe4bdQr0AyT8RZwG5V0iZbnIXpJPGt3gek+zpf
+ 7soHQHpxR52cH5M7i1GSYiH9qvlkdmZYdZCNSFoLpV
+X-Gm-Gg: ASbGncveMOMUY/9Qf/XC8ZfoF6x9qHOPuS3x92KwlOUE0P3FFf3gnqj5lZSzpAovAQk
+ rxmaANe+7TRhBkiC3UO0jlXCErUlReGz9dr0+qENQbME53YfwSkyRwP4PJRrB9BUDqZspWEK85+
+ NTFOUvNW0FxuF+0uRyD4zmP17bHuKedB21uoAgd/vwFvONwzqazpeBAMwo9oSoyTmvEkD3kNofv
+ F8UgKKuR2U6E2bgIIv6Z5E7NmAyZ4PRoveWNngr+v4XP0xccYxAwEam87veA6Hr2AU4fpiMW1fl
+ 3U6DX3pod8gDQg==
+X-Received: by 2002:a05:600c:8b6d:b0:450:cf46:5510 with SMTP id
+ 5b1f17b1804b1-451f0b22e23mr56626895e9.29.1749118576854; 
+ Thu, 05 Jun 2025 03:16:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHM0OyOQR1+NRguq1XOtcjnPQIF9Gr40UgvMJqdEGVs+VneypJ8IWVhahKwCGWB3BdJbkU2fA==
+X-Received: by 2002:a05:600c:8b6d:b0:450:cf46:5510 with SMTP id
+ 5b1f17b1804b1-451f0b22e23mr56626545e9.29.1749118576346; 
+ Thu, 05 Jun 2025 03:16:16 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-451f828715esm17540095e9.0.2025.06.05.03.16.12
+ ffacd0b85a97d-3a4f00972c1sm24452174f8f.68.2025.06.05.03.16.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Jun 2025 03:16:12 -0700 (PDT)
+ Thu, 05 Jun 2025 03:16:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: armbru@redhat.com,
 	zhao1.liu@intel.com,
 	qemu-rust@nongnu.org
-Subject: [PATCH 11/14] hpet: return errors from realize if properties are
+Subject: [PATCH 12/14] rust/hpet: return errors from realize if properties are
  incorrect
-Date: Thu,  5 Jun 2025 12:15:40 +0200
-Message-ID: <20250605101544.368953-12-pbonzini@redhat.com>
+Date: Thu,  5 Jun 2025 12:15:41 +0200
+Message-ID: <20250605101544.368953-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250605101544.368953-1-pbonzini@redhat.com>
 References: <20250605101544.368953-1-pbonzini@redhat.com>
@@ -109,56 +109,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not silently adjust num_timers, and fail if intcap is 0.
+Match the code in hpet.c; this also allows removing the
+BqlCell from the num_timers field.
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/timer/hpet.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ rust/hw/timer/hpet/src/device.rs | 16 +++++++---------
+ rust/hw/timer/hpet/src/fw_cfg.rs |  7 +++----
+ 2 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index 9db027cf76f..cb48cc151f1 100644
---- a/hw/timer/hpet.c
-+++ b/hw/timer/hpet.c
-@@ -691,8 +691,14 @@ static void hpet_realize(DeviceState *dev, Error **errp)
-     int i;
-     HPETTimer *timer;
- 
-+    if (s->num_timers < HPET_MIN_TIMERS || s->num_timers > HPET_MAX_TIMERS) {
-+        error_setg(errp, "hpet.num_timers must be between %d and %d",
-+                   HPET_MIN_TIMERS, HPET_MAX_TIMERS);
-+        return;
-+    }
-     if (!s->intcap) {
--        warn_report("Hpet's intcap not initialized");
-+        error_setg(errp, "hpet.hpet-intcap not initialized");
-+        return;
-     }
-     if (hpet_fw_cfg.count == UINT8_MAX) {
-         /* first instance */
-@@ -700,7 +706,7 @@ static void hpet_realize(DeviceState *dev, Error **errp)
+diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
+index a957de1e767..cd439f90b7e 100644
+--- a/rust/hw/timer/hpet/src/device.rs
++++ b/rust/hw/timer/hpet/src/device.rs
+@@ -725,18 +725,16 @@ fn post_init(&self) {
      }
  
-     if (hpet_fw_cfg.count == 8) {
--        error_setg(errp, "Only 8 instances of HPET is allowed");
-+        error_setg(errp, "Only 8 instances of HPET are allowed");
-         return;
+     fn realize(&self) -> qemu_api::Result<()> {
++        if self.num_timers.get() < HPET_MIN_TIMERS || self.num_timers.get() > HPET_MAX_TIMERS {
++            Err(format!(
++                "hpet.num_timers must be between {HPET_MIN_TIMERS} and {HPET_MAX_TIMERS}"
++            ))?;
++        }
+         if self.int_route_cap == 0 {
+-            // TODO: Add error binding: warn_report()
+-            println!("Hpet's hpet-intcap property not initialized");
++            Err("hpet.hpet-intcap property not initialized")?;
+         }
+ 
+-        self.hpet_id.set(HPETFwConfig::assign_hpet_id());
+-
+-        if self.num_timers.get() < HPET_MIN_TIMERS {
+-            self.num_timers.set(HPET_MIN_TIMERS);
+-        } else if self.num_timers.get() > HPET_MAX_TIMERS {
+-            self.num_timers.set(HPET_MAX_TIMERS);
+-        }
++        self.hpet_id.set(HPETFwConfig::assign_hpet_id()?);
+ 
+         self.init_timer();
+         // 64-bit General Capabilities and ID Register; LegacyReplacementRoute.
+diff --git a/rust/hw/timer/hpet/src/fw_cfg.rs b/rust/hw/timer/hpet/src/fw_cfg.rs
+index 6c10316104c..619d662ee1e 100644
+--- a/rust/hw/timer/hpet/src/fw_cfg.rs
++++ b/rust/hw/timer/hpet/src/fw_cfg.rs
+@@ -36,7 +36,7 @@ unsafe impl Zeroable for HPETFwConfig {}
+ };
+ 
+ impl HPETFwConfig {
+-    pub(crate) fn assign_hpet_id() -> usize {
++    pub(crate) fn assign_hpet_id() -> Result<usize, &'static str> {
+         assert!(bql_locked());
+         // SAFETY: all accesses go through these methods, which guarantee
+         // that the accesses are protected by the BQL.
+@@ -48,13 +48,12 @@ pub(crate) fn assign_hpet_id() -> usize {
+         }
+ 
+         if fw_cfg.count == 8 {
+-            // TODO: Add error binding: error_setg()
+-            panic!("Only 8 instances of HPET is allowed");
++            Err("Only 8 instances of HPET are allowed")?;
+         }
+ 
+         let id: usize = fw_cfg.count.into();
+         fw_cfg.count += 1;
+-        id
++        Ok(id)
      }
  
-@@ -710,11 +716,6 @@ static void hpet_realize(DeviceState *dev, Error **errp)
-         sysbus_init_irq(sbd, &s->irqs[i]);
-     }
- 
--    if (s->num_timers < HPET_MIN_TIMERS) {
--        s->num_timers = HPET_MIN_TIMERS;
--    } else if (s->num_timers > HPET_MAX_TIMERS) {
--        s->num_timers = HPET_MAX_TIMERS;
--    }
-     for (i = 0; i < HPET_MAX_TIMERS; i++) {
-         timer = &s->timer[i];
-         timer->qemu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, hpet_timer, timer);
+     pub(crate) fn update_hpet_cfg(hpet_id: usize, timer_block_id: u32, address: u64) {
 -- 
 2.49.0
 
