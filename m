@@ -2,74 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A702ACED98
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C84D1ACEDDA
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 12:39:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN7pa-00026l-Vr; Thu, 05 Jun 2025 06:28:19 -0400
+	id 1uN7z5-00072H-1K; Thu, 05 Jun 2025 06:38:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uN7oc-0001eZ-1i; Thu, 05 Jun 2025 06:27:18 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
+ (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
+ id 1uN7yx-00071p-Ej; Thu, 05 Jun 2025 06:37:59 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uN7oX-00053b-Rp; Thu, 05 Jun 2025 06:27:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749119234; x=1780655234;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=GX0cPQ9XJQ7H69tzYQWRo7jVHSXVP4HmaFDD1Lk7T+A=;
- b=eEz83p2t4J7v/ZwnMMz+k+kaqtHGA63y95hiA6T08/LZsqXaFRdsQmtt
- nKwO4GUfD96eFSYeCuX0nOoUs6t8wj3EAzOVrilCqKPrb2B8OIvq0Okok
- 6T93rprfj6KN0fdimsXzKqhMqSQcCaM1vwjN+fE2CC0HlffgNJd049TgF
- xoY2yCpT4T6IzctPMH3OYQnwBcZJXU44qInW8y6iIDt7v9gKNwo3fF9k5
- axxGhXa/YNJD9Qu7Ethcu05Yc2XLrrFFE3e+mGWYdjWIlg8k4R80LraUr
- TOZG/utQSiVeLGuRvRKFJPTFscFWfEoQfot/TbKy0PA1Tyzu4wfrVWBJ2 Q==;
-X-CSE-ConnectionGUID: LSIdDzCPTRS/Ik3ai5VnkQ==
-X-CSE-MsgGUID: mQ8jEfrQR2+nkmYV/MFhTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="51325343"
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="51325343"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 03:27:12 -0700
-X-CSE-ConnectionGUID: lw3u3sniRgaKqvSwd4C8DA==
-X-CSE-MsgGUID: B/WLO1BuSOO5TWwSm+4E+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; d="scan'208";a="145808691"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 03:27:09 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: chao.p.peng@intel.com, david@redhat.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH v3 5/5] hw/riscv/riscv-iommu: Remove definition of
- RISCVIOMMU[Pci|Sys]Class
-Date: Thu,  5 Jun 2025 18:23:11 +0800
-Message-Id: <20250605102311.148171-6-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250605102311.148171-1-zhenzhong.duan@intel.com>
-References: <20250605102311.148171-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
+ id 1uN7yt-0006J4-GD; Thu, 05 Jun 2025 06:37:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gibson.dropbear.id.au; s=202504; t=1749119866;
+ bh=Tj5KctCSZIr2LNWvH32eyOQ999psYpoMjtGr3Wzgcdo=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=WV7hSN7nUTGeM4XbaRvUMC5hOiJZO1Q5QuwEoZJQbtDL77i8jBrdpiVt6sd+KaBdO
+ 81RZiAiXdAWg+GILGwlje+RTTENntn4o0N8t39/TUEoyXE4jimolhDoRjHrOZOxUdn
+ U0ii6Ev/ymdRQ4dt2rKzHd7PmW1zZEzpNjnzYxsCk/2Royv4XQLjv6a1pD7t4pVM9K
+ AHV688wzHqnzCL5LR/IB0XY/QI7vK59hUrBk5VmvY+td9hmYRCoKKs6bH0iCqQHR86
+ AX/MroEJWxxFUW6WvTUuSuWcbMIJzT9EocSbxsje0EndnD3R9F9+3kx4CYBIFD+49U
+ iMDGle8niyLAw==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+ id 4bCgrV4Jp3z4x8S; Thu,  5 Jun 2025 20:37:46 +1000 (AEST)
+Date: Thu, 5 Jun 2025 20:25:29 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>,
+ QEMU Development <qemu-devel@nongnu.org>, qemu-ppc@nongnu.org,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Greg Kurz <groug@kaod.org>
+Subject: Re: ppc kvm: support of 64K guest page size with 4K host pagesize?
+Message-ID: <aEFwmU8PRo_SxV4T@zatzit>
+References: <0392df3f-c9fc-4372-a131-f0a7c3313c9c@tls.msk.ru>
+ <58abce8b-c5c2-4fd1-a32c-2d887445097d@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.14;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="psDoopDHYiFMTMaf"
+Content-Disposition: inline
+In-Reply-To: <58abce8b-c5c2-4fd1-a32c-2d887445097d@redhat.com>
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=dgibson@gandalf.ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.128,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,77 +69,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RISCVIOMMUPciClass and RISCVIOMMUSysClass are defined with missed
-parent class, class_init on them may corrupt their parent class
-fields.
 
-It's lucky that parent_realize and parent_phases are not initialized
-or used until now, so just remove the definitions. They can be added
-back when really necessary.
+--psDoopDHYiFMTMaf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- include/hw/riscv/iommu.h   | 6 ++----
- hw/riscv/riscv-iommu-pci.c | 6 ------
- hw/riscv/riscv-iommu-sys.c | 6 ------
- 3 files changed, 2 insertions(+), 16 deletions(-)
+On Thu, Jun 05, 2025 at 08:52:44AM +0200, Thomas Huth wrote:
+> On 05/06/2025 08.34, Michael Tokarev wrote:
+> > There's a bug report filed in debian against qemu,
+> > https://bugs.debian.org/1107288 - saying kvm on ppc does not
+> > work on debian (anymore) due to qemu requesting unrealistic
+> > (non-existing) page size of 64K on a host which only has 4K.
+> >=20
+> > I don't know much about PPC, - what's the issue here? Should
+> > qemu use the same page size for kvm as on the host?
+>=20
+> Looking at
+>=20
+>  https://gitlab.com/qemu-project/qemu/-/commit/2309832afdaf8d6451ebc2e81b=
+ace8eb8ea41293
+>=20
+> it seems like this was done on purpose? David, do you remember why
+> auto-detecting was not a good idea here?
 
-diff --git a/include/hw/riscv/iommu.h b/include/hw/riscv/iommu.h
-index b03339d75c..8a8acfc3f0 100644
---- a/include/hw/riscv/iommu.h
-+++ b/include/hw/riscv/iommu.h
-@@ -30,14 +30,12 @@ typedef struct RISCVIOMMUState RISCVIOMMUState;
- typedef struct RISCVIOMMUSpace RISCVIOMMUSpace;
- 
- #define TYPE_RISCV_IOMMU_PCI "riscv-iommu-pci"
--OBJECT_DECLARE_TYPE(RISCVIOMMUStatePci, RISCVIOMMUPciClass, RISCV_IOMMU_PCI)
-+OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStatePci, RISCV_IOMMU_PCI)
- typedef struct RISCVIOMMUStatePci RISCVIOMMUStatePci;
--typedef struct RISCVIOMMUPciClass RISCVIOMMUPciClass;
- 
- #define TYPE_RISCV_IOMMU_SYS "riscv-iommu-device"
--OBJECT_DECLARE_TYPE(RISCVIOMMUStateSys, RISCVIOMMUSysClass, RISCV_IOMMU_SYS)
-+OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStateSys, RISCV_IOMMU_SYS)
- typedef struct RISCVIOMMUStateSys RISCVIOMMUStateSys;
--typedef struct RISCVIOMMUSysClass RISCVIOMMUSysClass;
- 
- #define FDT_IRQ_TYPE_EDGE_LOW 1
- 
-diff --git a/hw/riscv/riscv-iommu-pci.c b/hw/riscv/riscv-iommu-pci.c
-index 1f44eef74e..cdb4a7a8f0 100644
---- a/hw/riscv/riscv-iommu-pci.c
-+++ b/hw/riscv/riscv-iommu-pci.c
-@@ -68,12 +68,6 @@ typedef struct RISCVIOMMUStatePci {
-     RISCVIOMMUState  iommu;   /* common IOMMU state */
- } RISCVIOMMUStatePci;
- 
--struct RISCVIOMMUPciClass {
--    /*< public >*/
--    DeviceRealize parent_realize;
--    ResettablePhases parent_phases;
--};
--
- /* interrupt delivery callback */
- static void riscv_iommu_pci_notify(RISCVIOMMUState *iommu, unsigned vector)
- {
-diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
-index 74e76b94a5..e34d00aef6 100644
---- a/hw/riscv/riscv-iommu-sys.c
-+++ b/hw/riscv/riscv-iommu-sys.c
-@@ -53,12 +53,6 @@ struct RISCVIOMMUStateSys {
-     uint8_t *msix_pba;
- };
- 
--struct RISCVIOMMUSysClass {
--    /*< public >*/
--    DeviceRealize parent_realize;
--    ResettablePhases parent_phases;
--};
--
- static uint64_t msix_table_mmio_read(void *opaque, hwaddr addr,
-                                      unsigned size)
- {
--- 
-2.34.1
+Because the available page sizes are guest visible.  So if we
+auto-detected, guests could be silently migration-incompatible with
+the same command line.
 
+> Anyway, seems like there is a hpt-max-page-size property that could be us=
+ed
+> to set the value manually - maybe you could suggest that to the user as a
+> work-around?
+
+Yes, that's what you'll need to do.  We set the default to 64kiB
+pages, since at that point 64kiB was the default for all major host
+distros, and guests benefit significantly from being able to use 64kiB
+pages.  If you want guests compatible with 4kiB page hosts, you need
+to use this parameter.
+
+--=20
+David Gibson (he or they)	| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
+				| around.
+http://www.ozlabs.org/~dgibson
+
+--psDoopDHYiFMTMaf
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIyBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmhBcIgACgkQzQJF27ox
+2GdOxQ/4i9kmeJehEEu95OUHkP3nGFHtc7m57ZyvwJtf8K3OSLmLqc2gL+szxBs2
+9Ub+VLizJg4IKhnZ5Ve8JBYjhNRjLRxzUumG60faaUyrbLlfRtfKUTG+XxGu6E9G
+Pld/1dqPcORp7VIB9PLcdsvUOFkHrVgD4ZFUiVcz1T+fVsKIb1L2XWaIo3GAudrv
+7lpGkTuw1QCLv4IsyTSnjsydwquZvEdgW4iWYHMBvGWh9h9sy+NZoD9tLUxl/rQ8
+WemuLc/nMHsteNx4miqW6aL+ImHJV8INq9EZT2aGgr6BL9t9wjPrbKNm2Cca7y4H
+QG4reLcFnCqU5lbtqbZRIFVV3GgPMEBxxiN62c0kOoOeBB66PST6LrCm+FYKjXwq
+rJlrtsPDZ5NZbr4kPOiSE0kBRs8R7pi45YQunsJWXQ8kDulGx3QgzZ3Lh/gOPIpz
+7/lICXuNwsvX+qu2ruFSAdHHLZv41teWNiYusNj9DgTTC/TUhURIyFsEGvy3/1a7
+vu+OzGK7+i8HpLYWgTmk6EiOPNmAWwEeaUU1tcXmfUM5ZfMqwDNqd+Xu+g5wzK77
+FxFpfseBMrlAElnZw/+cq+xiR7kwGEzhkEwICHMcc5dp3LjpLHLCroCBnoqvQJka
+NS09MvSDsNHs/0xqxlTWG/Ja2jULfQzT4HAP0Iovq+j8W0tGQA==
+=SWHi
+-----END PGP SIGNATURE-----
+
+--psDoopDHYiFMTMaf--
 
