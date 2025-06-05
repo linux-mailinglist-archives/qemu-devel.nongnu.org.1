@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F40ACF444
+	by mail.lfdr.de (Postfix) with ESMTPS id B995DACF445
 	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 18:28:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNDQr-00076G-JD; Thu, 05 Jun 2025 12:27:09 -0400
+	id 1uNDQu-000773-Eo; Thu, 05 Jun 2025 12:27:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uNDQp-000753-HV
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:07 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1uNDQn-00073A-4w
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:05 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uNDQk-0007xp-Gj
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:07 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-60461fc88d7so2268591a12.0
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 09:27:01 -0700 (PDT)
+ id 1uNDQl-0007y5-7D
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 12:27:04 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-acacb8743a7so211291566b.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 09:27:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1749140821; x=1749745621; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oHGL3HnA17njL8KC/eaOFn4nJH0BP5PaQATMO4Tu+sY=;
- b=vXZ1KYSd7F03LjSWAgUuv/+GbInx4hOb7MNDM+FOoyc34lqBmXaVhs1x3g2hHnrAuK
- aQgi8Eqwxbbd3Mi9973s36kNidKpF4751ka0gyFS8IJYhMAIVvBaF25Q3rOYGV9cet5U
- RrDBYwge8ebIlwfRdt0wQDnOpChx1DkFTWyoASr+WHBnMvESBFuyO7gWcdYFogcTkMQ2
- lFkzIBfZh5zps2KOZCRqdLUBXaYrAzWI7d9cORPSYjTsHIv95Dkpa3uheM/7MYiME4HF
- NxoVt0UiIFBJ35PVP3lZPH8cSpcltRnw7fuQ3jUK/rmV6v230Bg6d9gd9TJYedjIniRs
- W9Nw==
+ bh=tJVseqRaD6Laof0iJpbCH6iD9WwznG/NmTZUaRCwaMA=;
+ b=oFicJmi9XhFx04le9Jr3yawLTBS3KSDvqc7aQ+35SlAqhrNuHekgJPc3O/cpXhX5wd
+ UnuA3mgUSxqWTUggVi6HaJuuuDGmiuKpK+EbaZvkglU/9A8r4v1qjOOCWUpDWY8dWMYL
+ lI/y9/uiy2XaBPjV/U9NW4ju/VKipY3M2+Ap8WS+jenZlWotRC7kVRzFe6xPf0daAc+Y
+ Z8yM9zMlB2r7nnMzApcVeqFwG848ryQvIDXP6/QwEMUEuptal7xCkT9q5BpwZuMRW0g4
+ ws5/5f2iE2YTeHxF8ZsAEmN5WW2EbdhQPbBB4EBUs6e9OndPC10IAm84PwaDeVBSA+El
+ 6BIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1749140821; x=1749745621;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oHGL3HnA17njL8KC/eaOFn4nJH0BP5PaQATMO4Tu+sY=;
- b=RvOsDo+i1QoHvY5ffesTzGCPCFGzk2tuKH6hsOeQo6CHootcekplhJ9m+zSTVSCVng
- D/1xqUDOP5EN/OBxgR5psu/9QtYNBB8JERy6ggT1KGAEKdqtcp1KvDE4iGdgcZOESnYN
- ZXTfhRB5lW7/5LE6Cg8zqP5/ih73/xKb3XQd8PrArzICYqNu8vu0Wr1pJp17H+pqpz5V
- V5UpkO2cpedJ27Iac2yajAA1xk7wahX5npvSLrfwFYq4ZmSriACJ1okB60T7owzzTHZX
- eeGlELeA91rfVGHFebiRI1ZMw5i8/NKAe3zlw3ayQbuoa9reepvtfXCBw7tcNB2IW/Ah
- +k6w==
-X-Gm-Message-State: AOJu0Yy+BMsvD9KMpy8wSK18Y4VLyNVlcs+QmBE4hsZA3eyEl0GdZBuD
- UAcJbbr68SPLhWASxF0XMlCUKvVveLLuDhMn72T1r+iSVqIuE4y9Eg4FxFLGUx+orU0=
-X-Gm-Gg: ASbGncss7e6rRk7BjDQjCFuZAQtXjy5jyKy8Sgbf4qOauauzyLN1uDxzSr1iIC8eXIB
- 99G5sS3IvLdoiO0L24PMt+V/e0l7sfxipLXeye2hKCLrZqChu5fHosvgO7WhyzUANTdO7jfaFT/
- Zic3x5apb9d59j+foFqmW70lzRL6M2KthAmCaorqpUz2XVDaFncvhzytBVakTE4uBZ6rW/jD+Z7
- d9qdTMCk8Y8G95/HPuDCfBpt5wJUTLdqJE1c7SlwkksbeOJHxwgIE+fEGe83tsIxC1OIle03nuk
- vZYg+0Jsvimqd1+6npebi4ofcSB/4bWguw12fEd6vrWKFk7uTuZG
-X-Google-Smtp-Source: AGHT+IF4eumeblsy+LBeDuMZphbb6zNSN4KAYX9HRFLoHIqoOmBydjcMAxhYCdBHQx4rWyJzGmGjZg==
-X-Received: by 2002:a05:6402:51d2:b0:607:4625:98f5 with SMTP id
- 4fb4d7f45d1cf-607462599bamr1537056a12.23.1749140820658; 
- Thu, 05 Jun 2025 09:27:00 -0700 (PDT)
+ bh=tJVseqRaD6Laof0iJpbCH6iD9WwznG/NmTZUaRCwaMA=;
+ b=ozXiCVzOswAeXH07tt3rY4x0A2ugI28FZTnEx1ibkpPuSE6P9dxVjC09VEodQyfEnl
+ NeAzTFqpXXHqHLnzghQDfkUctfIEnwMErNqDiIdIbB0Q1mO9VZ9goOI/EZtcPwXXEXjH
+ sh2DlDgsGfx86mOJoUTugj781KgWfN7w3jjwGYpN5G7XA5Yh08lofb3K09MZvYwgbAPW
+ LZFgmiGAb8vy7xiMcQOqq2vbu6IkQ6bWG/TmxA3AIsAYFwqSiV+FGvy5hAKqnmK6FoAn
+ Qhd5CKHJfSsBLmj0wRpemW4+4BfK7MTH6vrvYu53wLwPfIdaPAFyx7O7fSmvzcZTz70k
+ BoqA==
+X-Gm-Message-State: AOJu0YxMcZcaBZnkBKXs/2EcUw7n27UDrpSySDQcRtrQ7IwxI/QLhC34
+ bOQR8mg4DB66olCU1GhB47BQsNRwuCrHqOiku9WmIuMzY3ZVgHlvRFrOKmzC7sXqrl7KJGhVEmR
+ ybbW9ea4=
+X-Gm-Gg: ASbGnctS7xanVtjaoFCwWui0R4VOmqKEqtgaO7UDXw4fBpYATYO4mBe9RHa8WrqQndv
+ 9z1Hkr7a7oqDyBRbRSbp/12nNOJltfEwkEITaBiz/QrZnRGBHLAq5GlQP3RoaFxw57KEuUCks/d
+ bsu36qU72mxc5gYFbEX9en3jFXN/t7D5Ok4SY//ys9kvqm4UyG8S9T0hvYQo/42f3OzwgP4JMy3
+ M5FSby5GJRb5osF920ZtY2pA9BRdcFNBFYWRZQFbY37RduSEQsVEbcE0rYoBEfKyonxO1GcTs1X
+ 6D1feTUln5CfglqZBM2IylUZfRg1m2txlc8UHsDa2JpvCyzrI3tx
+X-Google-Smtp-Source: AGHT+IEoUaIifQgf8lGtzJm1EDvBxSdALCND3d5XAtrUel5ZNT6cBG4BPKx/4OOTQNdCYq6tm/cYrQ==
+X-Received: by 2002:a17:907:3dac:b0:ad2:2fdb:b0ab with SMTP id
+ a640c23a62f3a-ade07901184mr448467866b.29.1749140821295; 
+ Thu, 05 Jun 2025 09:27:01 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60699731f06sm4651671a12.27.2025.06.05.09.26.55
+ a640c23a62f3a-ade125a01c3sm79920566b.95.2025.06.05.09.26.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Jun 2025 09:26:57 -0700 (PDT)
+ Thu, 05 Jun 2025 09:26:58 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AE1915F7F3;
+ by draig.lan (Postfix) with ESMTP id C3FB85F832;
  Thu, 05 Jun 2025 17:26:52 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/17] include/gdbstub: fix include guard in commands.h
-Date: Thu,  5 Jun 2025 17:26:47 +0100
-Message-ID: <20250605162651.2614401-15-alex.bennee@linaro.org>
+Subject: [PULL 15/17] gdbstub: assert earlier in handle_read_all_regs
+Date: Thu,  5 Jun 2025 17:26:48 +0100
+Message-ID: <20250605162651.2614401-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250605162651.2614401-1-alex.bennee@linaro.org>
 References: <20250605162651.2614401-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -101,22 +102,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+When things go wrong we want to assert on the register that failed to
+be able to figure out what went wrong.
+
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250603110204.838117-15-alex.bennee@linaro.org>
+Message-ID: <20250603110204.838117-16-alex.bennee@linaro.org>
 
-diff --git a/include/gdbstub/commands.h b/include/gdbstub/commands.h
-index 40f0514fe9..bff3674872 100644
---- a/include/gdbstub/commands.h
-+++ b/include/gdbstub/commands.h
-@@ -1,5 +1,5 @@
- #ifndef GDBSTUB_COMMANDS_H
--#define GDBSTUB
-+#define GDBSTUB_COMMANDS_H
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 565f6b33a9..6023c80d25 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -1343,8 +1343,8 @@ static void handle_read_all_regs(GArray *params, void *user_ctx)
+         len += gdb_read_register(gdbserver_state.g_cpu,
+                                  gdbserver_state.mem_buf,
+                                  reg_id);
++        g_assert(len == gdbserver_state.mem_buf->len);
+     }
+-    g_assert(len == gdbserver_state.mem_buf->len);
  
- typedef void (*GdbCmdHandler)(GArray *params, void *user_ctx);
- 
+     gdb_memtohex(gdbserver_state.str_buf, gdbserver_state.mem_buf->data, len);
+     gdb_put_strbuf();
 -- 
 2.47.2
 
