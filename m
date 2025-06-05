@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E076CACEC41
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDF4ACEC34
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 10:44:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uN6Bv-0006Ze-UO; Thu, 05 Jun 2025 04:43:15 -0400
+	id 1uN6Bw-0006aI-BU; Thu, 05 Jun 2025 04:43:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6Bq-0006YJ-Pt
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6Bq-0006YL-Pv
  for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6Bl-0008EC-UL
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:08 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uN6Bn-0008Es-RH
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 04:43:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749112982;
+ s=mimecast20190719; t=1749112987;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tzKZT2zvE8ZgC/AwLSaejjjum29Bw9aQXpkQXCatp1M=;
- b=OnxSfnfBFH1ixYGuS5ewXuHcPPXpPFVDX2d0OlsYAa8wmIFk1EeqmTRdzLfRZXH8xqxcbJ
- 1w9m/GCGtBq2R+WTZkV55GQuaB/kNF4Me2zCYt2daNToMAhjkydIdeXDomI+vuzHWzQaXY
- 5ZzEZQf8QNAg/UXKaT3p/kjb4TgrfWc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=H4Wdr37b3J8t6NXfTIrly27lZXfIDpYC3kV5BPKN79s=;
+ b=euTaKEqcVvmDjHrMui/Zwm5SqvVIB4Y2qyVb0lB3epavgIwK2UAZr2oBKDrJvBvo6wBTwu
+ MXlDmjc5ea7xwMLYiZwjlPpHvsDEjok7trKMDS21peaztkkoL40xUIsnwEmcsQAWqSD5dz
+ GVHUPzlcsD7aVa7250xw+57CQJndatk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-kj2ADxcJMNWnW8ESChkGHg-1; Thu,
- 05 Jun 2025 04:43:01 -0400
-X-MC-Unique: kj2ADxcJMNWnW8ESChkGHg-1
-X-Mimecast-MFC-AGG-ID: kj2ADxcJMNWnW8ESChkGHg_1749112980
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-jQeqZMBkPm-ywixcbcg7lg-1; Thu,
+ 05 Jun 2025 04:43:03 -0400
+X-MC-Unique: jQeqZMBkPm-ywixcbcg7lg-1
+X-Mimecast-MFC-AGG-ID: jQeqZMBkPm-ywixcbcg7lg_1749112982
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3A29B180045B; Thu,  5 Jun 2025 08:43:00 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C0F5E18002B2; Thu,  5 Jun 2025 08:43:02 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.77])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 74C421954B33; Thu,  5 Jun 2025 08:42:58 +0000 (UTC)
+ id C71A71954B33; Thu,  5 Jun 2025 08:43:00 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  John Levon <john.levon@nutanix.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 04/16] vfio: move config space read into vfio_pci_config_setup()
-Date: Thu,  5 Jun 2025 10:42:33 +0200
-Message-ID: <20250605084245.1520562-5-clg@redhat.com>
+Subject: [PULL 05/16] vfio: refactor out IRQ signalling setup
+Date: Thu,  5 Jun 2025 10:42:34 +0200
+Message-ID: <20250605084245.1520562-6-clg@redhat.com>
 In-Reply-To: <20250605084245.1520562-1-clg@redhat.com>
 References: <20250605084245.1520562-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,87 +84,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Levon <john.levon@nutanix.com>
 
-Small cleanup that reduces duplicate code for vfio-user and reduces the
-size of vfio_realize(); while we're here, correct that name to
-vfio_pci_realize().
+This makes for a slightly more readable vfio_msix_vector_do_use()
+implementation, and we will rely on this shortly.
 
 Signed-off-by: John Levon <john.levon@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250520150419.2172078-4-john.levon@nutanix.com
+Link: https://lore.kernel.org/qemu-devel/20250520150419.2172078-5-john.levon@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ hw/vfio/pci.c | 35 ++++++++++++++++++++---------------
+ 1 file changed, 20 insertions(+), 15 deletions(-)
 
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index d96b55f80c0aa315d46aaa417c54569d71cbed1f..a873f82aeb355cfef68033e43b4829f64145d606 100644
+index a873f82aeb355cfef68033e43b4829f64145d606..b1250d85bf0124a22e3ba3859a47d2b176ade648 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -3017,6 +3017,19 @@ static bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp)
- {
-     PCIDevice *pdev = &vdev->pdev;
-     VFIODevice *vbasedev = &vdev->vbasedev;
-+    uint32_t config_space_size;
-+    int ret;
-+
-+    config_space_size = MIN(pci_config_size(&vdev->pdev), vdev->config_size);
-+
-+    /* Get a copy of config space */
-+    ret = vfio_pci_config_space_read(vdev, 0, config_space_size,
-+                                     vdev->pdev.config);
-+    if (ret < (int)config_space_size) {
-+        ret = ret < 0 ? -ret : EFAULT;
-+        error_setg_errno(errp, ret, "failed to read device config space");
-+        return false;
-+    }
- 
-     /* vfio emulates a lot for us, but some bits need extra love */
-     vdev->emulated_config_bits = g_malloc0(vdev->config_size);
-@@ -3138,15 +3151,14 @@ static bool vfio_interrupt_setup(VFIOPCIDevice *vdev, Error **errp)
-     return true;
+@@ -511,6 +511,25 @@ static void vfio_update_kvm_msi_virq(VFIOMSIVector *vector, MSIMessage msg,
+     kvm_irqchip_commit_routes(kvm_state);
  }
  
--static void vfio_realize(PCIDevice *pdev, Error **errp)
-+static void vfio_pci_realize(PCIDevice *pdev, Error **errp)
++static void set_irq_signalling(VFIODevice *vbasedev, VFIOMSIVector *vector,
++                               unsigned int nr)
++{
++    Error *err = NULL;
++    int32_t fd;
++
++    if (vector->virq >= 0) {
++        fd = event_notifier_get_fd(&vector->kvm_interrupt);
++    } else {
++        fd = event_notifier_get_fd(&vector->interrupt);
++    }
++
++    if (!vfio_device_irq_set_signaling(vbasedev, VFIO_PCI_MSIX_IRQ_INDEX, nr,
++                                       VFIO_IRQ_SET_ACTION_TRIGGER,
++                                       fd, &err)) {
++        error_reportf_err(err, VFIO_MSG_PREFIX, vbasedev->name);
++    }
++}
++
+ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                                    MSIMessage *msg, IOHandler *handler)
  {
-     ERRP_GUARD();
-     VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
-     VFIODevice *vbasedev = &vdev->vbasedev;
--    int i, ret;
-+    int i;
-     char uuid[UUID_STR_LEN];
-     g_autofree char *name = NULL;
--    uint32_t config_space_size;
- 
-     if (vbasedev->fd < 0 && !vbasedev->sysfsdev) {
-         if (!(~vdev->host.domain || ~vdev->host.bus ||
-@@ -3201,17 +3213,6 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-         goto error;
+@@ -583,21 +602,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                              strerror(-ret));
+             }
+         } else {
+-            Error *err = NULL;
+-            int32_t fd;
+-
+-            if (vector->virq >= 0) {
+-                fd = event_notifier_get_fd(&vector->kvm_interrupt);
+-            } else {
+-                fd = event_notifier_get_fd(&vector->interrupt);
+-            }
+-
+-            if (!vfio_device_irq_set_signaling(&vdev->vbasedev,
+-                                        VFIO_PCI_MSIX_IRQ_INDEX, nr,
+-                                        VFIO_IRQ_SET_ACTION_TRIGGER, fd,
+-                                        &err)) {
+-                error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+-            }
++            set_irq_signalling(&vdev->vbasedev, vector, nr);
+         }
      }
  
--    config_space_size = MIN(pci_config_size(&vdev->pdev), vdev->config_size);
--
--    /* Get a copy of config space */
--    ret = vfio_pci_config_space_read(vdev, 0, config_space_size,
--                                     vdev->pdev.config);
--    if (ret < (int)config_space_size) {
--        ret = ret < 0 ? -ret : EFAULT;
--        error_setg_errno(errp, ret, "failed to read device config space");
--        goto error;
--    }
--
-     if (!vfio_pci_config_setup(vdev, errp)) {
-         goto error;
-     }
-@@ -3515,7 +3516,7 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, const void *data)
-     object_class_property_add_str(klass, "fd", NULL, vfio_pci_set_fd);
- #endif
-     dc->desc = "VFIO-based PCI device assignment";
--    pdc->realize = vfio_realize;
-+    pdc->realize = vfio_pci_realize;
- 
-     object_class_property_set_description(klass, /* 1.3 */
-                                           "host",
 -- 
 2.49.0
 
