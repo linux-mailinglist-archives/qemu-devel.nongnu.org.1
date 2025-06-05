@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBC5ACF81E
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 21:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4D1ACF81C
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Jun 2025 21:36:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNGNi-0006lj-Eq; Thu, 05 Jun 2025 15:36:06 -0400
+	id 1uNGNk-0006mD-B0; Thu, 05 Jun 2025 15:36:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uNGNa-0006iG-6e
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 15:35:59 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uNGNf-0006kn-Ca
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 15:36:03 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uNGNX-00016q-Fk
- for qemu-devel@nongnu.org; Thu, 05 Jun 2025 15:35:57 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-442f4a3a4d6so8270095e9.0
- for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 12:35:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uNGNc-00017o-S8
+ for qemu-devel@nongnu.org; Thu, 05 Jun 2025 15:36:03 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3a531fcaa05so35612f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Jun 2025 12:35:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749152153; x=1749756953; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749152158; x=1749756958; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=83yRFqQDqtEfhfQYce2Osef2dywXWD24VcAWbnFp9Kk=;
- b=Oqcb+mrQWvq4iZ1eAEj0YztXidNZ9xREngt3tFL5TMElowPNHfSg54rx8V9GgVwGCP
- 9Y9FZGTzPkUIYyX0bWPgF9YCMyrbhpc+SyB2RVgIqjio+ZdKzFLfJXMFhajZtazfGRyt
- eKTIJCv6kDI0Q4ex4fzA7qtYMggbn5XFEFnFOmV6BfZQHqtjC4JyowI1oCg0eP3RiWxP
- 4Bd6nAGcoEIv70jSsK/+syRWJ+Fe+94qjD3pNDCpB5MCiWhMAuVBsmfA3QkVHQI6C1kL
- 9vr/SD72ukDLhUKoP78365XuuKOZkjUSuXKwCabYFYxyuGOWoUe8yk6km/dvILoV0GXA
- sChQ==
+ bh=0H5JejayswNFHuNqdTgm/gmscONTNKgClj6tOp77taE=;
+ b=MPJVzBorwr+KwcPCwwXI0/edacaAKd1su9dFvRHqAbc1Ly49UrxFBNE5Q20wK/0v+Z
+ 5XhSWlZ3LM94cBhYyqUaO9cSQULa0plEmXbkbbH/Ii6PDyrOsuBFk071us8KZBoxOyEN
+ WjaWB4h+dwdez5Gw5cI+jSHGSSk5GyaOwNq2macnlFB4sc2HqvcaZNojRicPl4jL4Rrn
+ vpGcTd/PtGr4ZV/Ta4JCiKyDuXAgQdNGgZuS3UjE5PgvIKwGEzxkRPt3wfnxqUiM8p33
+ 8KGRENZDXavIyPJ8Vi+um4Vd5O7XlxvH8rOsPCU4sKJW2lk00RPkjZf6N3JuEuO8ided
+ ty6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749152153; x=1749756953;
+ d=1e100.net; s=20230601; t=1749152158; x=1749756958;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=83yRFqQDqtEfhfQYce2Osef2dywXWD24VcAWbnFp9Kk=;
- b=BRzX5ofqRQbekSixqYBLHUlnzDLjEVxEvl10zNiQtp7oTTj+2ipC66jVHHmCv8Zqvn
- Mr8QMw7puH+AYHOIZp1jsYCXKA1c1/AArWV1piyGFuNdOsG+HH9Nit0ss0KCaJBKj1nG
- 8m1bLNL4BzVaoqIDwGhue99AQgi6c91gL20dJ1zLgcjx9Ivaq2D4ltg66aBN86lA6DUv
- NyJE7N0xLacE241Rg61fKqQ4L4hnsnxY+Gmym/WkliZtHJPyz1SVMYByxgWYXOgFR5La
- P54UGxhwin7iSVaxUoRxmmN3vpiaP18aUXMXEWX1UVfpM6nobax25xn4zp55Y/jIdtWp
- TnXg==
-X-Gm-Message-State: AOJu0Yy7Bvlkm99bF9GX/ODtW0mBEsvJRuCc7r0R257On4qLDRS+2+4B
- +FIm1pWnNnON/3wN573Frvsor7vWSLFQUrNtZ3AQdzULEUbLPtxwNT4UeadJktpPZJCSVpB8adx
- 4Zi1RfSg=
-X-Gm-Gg: ASbGncuNwc8Icrw4+Ac1gkzQqqkCREJgXUd6bSzz/lzUBHKBV3dfPBmjDMz91AHUCW+
- zwTLpGe5pHHYeW8RsWJsgCdyxZIviCiGni/DfsBDedxS1duQOAFzAHHyDQWibAO3Z2ddbcHt64t
- uHA37XQXCMMhYIUNtw5gIlxUPMxldSQ1Z/duFAk5rMxvoR+zAVZC/EoaMn9gDKiQB/7ZWDG+6HK
- p3PNcN1TBmjfy7iHnnmK6qff4K2e25ESxvAGhecA8L+qcWfxawvWUQrEjJ2LRlAh/b67HVSV/k1
- DEo5KTfUuHV14X0J6aJvNHR9D1xpKhmxu0rShuBdUIxZYJGQps07xeo692AEBpvGg4zN/lq2xFf
- 1VGVCK31QkXDujHEqPvj1qsDURoYX78GXfDJz
-X-Google-Smtp-Source: AGHT+IEwwg1icoF6ZnxFG0lbDu28dQaCv3Q4Tq0/L1LJKc8Joism/TsTRg9wQoqo6DYinr3mSHfX6g==
-X-Received: by 2002:a05:600c:458a:b0:450:d3a1:95e2 with SMTP id
- 5b1f17b1804b1-451f8855f11mr44862745e9.9.1749152153306; 
- Thu, 05 Jun 2025 12:35:53 -0700 (PDT)
+ bh=0H5JejayswNFHuNqdTgm/gmscONTNKgClj6tOp77taE=;
+ b=xGPiUC4hvvWurMK29xu5zLor4W5yKeZW9o7PsuvFyx22vZ5/znM7Hs19rwLiAg8vRW
+ 51KAQK9v3TliuFYE7XMIgRKaxxJlO5b/RAiQhUQC0dF2OuY6CtUicGb50XDWkJOtS14R
+ BQ3v+k5RRRKi6NoqKa0S/DCw71G0HhZvoRJAePuBIJRegZwp5+Kn9lc/J6qm5cXwzYoQ
+ On2PjA7Qzljbqp168Nc3tMK0G2o2fZLxFEVfCxZG350mHRo9K8CrvR/2pAG8+UbFsbTg
+ QeLYcdMwHclOd3v/MjDDZ1q3KcuSoQMHFX3oTxVGo9R2kBIkm4D1YJDDAT6o0Z+wGNw0
+ CrBg==
+X-Gm-Message-State: AOJu0YyHyO+7nOBdz3h+Izeb7LzASJNtIDigtYGzRKjDakktVfreFWMb
+ QC++8L9Epi2NmfwkGuw0IRLYxkIT00qrjeXmeF9N8HJgwbi5beZzGmbCUHWjVMZsEbFnItpJjIR
+ k+4Ve9CY=
+X-Gm-Gg: ASbGncvxHdgEwGgPzqKpXmMVnr8fJTakPK3HoommRqcTPepdwkOUGuQCfmepJ5DDnaO
+ D9hAdAy3WnLwTg72njlkejgsBTuvzWNqHd185UiOjf5Bi70WgGtXTmaI2sJbgYQq8LhPCre9dlY
+ DJRQ2hzK1xz1Q4dBzu+zZqHnSYZxqjcmxt5fn3rXlnT6blWnmz2n7PjY168U9519RKTaPgSfn6j
+ A+WLFxUiC8Lg03CDW3Ehmwv5WaZIpNQ1dPGZFDuewvOMTGc7b0wBzqBNnZ3CPG95tr5JHy5YlDl
+ isZrD/K+MCwFBVyXqImsA1/9/dtsCTsGMorK4r9JGnDUA5Gb7f4oiohnuJQ932nfb4bHnpTdOzH
+ JVROgH+1BUTQyMaD5t6qfvy5k4gyalkEDsHZ0
+X-Google-Smtp-Source: AGHT+IHG2xTkNtnDvYs8on+sG/fSFtbgIXpf3ChqwXTbBWdIJvHOFqY6usxBDZaDSOxzZ+lYsviOHA==
+X-Received: by 2002:a05:6000:220d:b0:3a4:f744:e013 with SMTP id
+ ffacd0b85a97d-3a531cb8521mr290974f8f.30.1749152158248; 
+ Thu, 05 Jun 2025 12:35:58 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45209ce1f34sm2477585e9.14.2025.06.05.12.35.52
+ ffacd0b85a97d-3a53244df06sm59169f8f.69.2025.06.05.12.35.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 05 Jun 2025 12:35:52 -0700 (PDT)
+ Thu, 05 Jun 2025 12:35:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,17 +71,17 @@ Cc: qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 2/4] backends/tpmL Avoid using g_alloca()
-Date: Thu,  5 Jun 2025 21:35:38 +0200
-Message-ID: <20250605193540.59874-3-philmd@linaro.org>
+Subject: [PATCH 3/4] tests/unit/test-char: Avoid using g_alloca()
+Date: Thu,  5 Jun 2025 21:35:39 +0200
+Message-ID: <20250605193540.59874-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250605193540.59874-1-philmd@linaro.org>
 References: <20250605193540.59874-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,32 +104,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tpm_emulator_ctrlcmd() is not in hot path.
-Use the heap instead of the stack, removing
-the g_alloca() call.
+Do not use g_alloca(), simply allocate the CharBackend
+structure on the stack.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- backends/tpm/tpm_emulator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/unit/test-char.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
-index 43d350e895d..4a234ab2c0b 100644
---- a/backends/tpm/tpm_emulator.c
-+++ b/backends/tpm/tpm_emulator.c
-@@ -129,11 +129,11 @@ static int tpm_emulator_ctrlcmd(TPMEmulator *tpm, unsigned long cmd, void *msg,
-     CharBackend *dev = &tpm->ctrl_chr;
-     uint32_t cmd_no = cpu_to_be32(cmd);
-     ssize_t n = sizeof(uint32_t) + msg_len_in;
--    uint8_t *buf = NULL;
-     ptm_res res;
+diff --git a/tests/unit/test-char.c b/tests/unit/test-char.c
+index 60a843b79d9..f30a39f61ff 100644
+--- a/tests/unit/test-char.c
++++ b/tests/unit/test-char.c
+@@ -993,7 +993,7 @@ static void char_udp_test_internal(Chardev *reuse_chr, int sock)
+     struct sockaddr_in other;
+     SocketIdleData d = { 0, };
+     Chardev *chr;
+-    CharBackend *be;
++    CharBackend stack_be, *be = &stack_be;
+     socklen_t alen = sizeof(other);
+     int ret;
+     char buf[10];
+@@ -1009,7 +1009,6 @@ static void char_udp_test_internal(Chardev *reuse_chr, int sock)
+         chr = qemu_chr_new("client", tmp, NULL);
+         g_assert_nonnull(chr);
  
-     WITH_QEMU_LOCK_GUARD(&tpm->mutex) {
--        buf = g_alloca(n);
-+        g_autofree uint8_t *buf = g_malloc(n);
-+
-         memcpy(buf, &cmd_no, sizeof(cmd_no));
-         memcpy(buf + sizeof(cmd_no), msg, msg_len_in);
+-        be = g_alloca(sizeof(CharBackend));
+         qemu_chr_fe_init(be, chr, &error_abort);
+     }
  
 -- 
 2.49.0
