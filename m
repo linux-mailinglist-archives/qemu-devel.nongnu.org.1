@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE68AD0020
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 12:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD623AD0035
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 12:15:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNU1R-000256-MH; Fri, 06 Jun 2025 06:10:02 -0400
+	id 1uNU62-0001Z0-3j; Fri, 06 Jun 2025 06:14:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uNU17-0001lm-PP
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:09:42 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uNU5x-0001Xt-KG
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:14:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uNU11-0007i7-GG
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:09:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749204576; x=1780740576;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=nBrp6tgFc6v/6yO9PWU6WxZehXvpkuKA2N+NwoCjvnU=;
- b=AQXVXk/DfhpIwHEfYR6n7NgpJEXB487pHVM5us2TLeifnH8VPRcpvlYB
- ZyrHTWPSdHTyYykipeeySmy9PacLUxzB+bVlc4us5e04x6NxE08dvJPFT
- Qo0calP7ilYMo4UZ2Zj+lymzRPlX15HW1F6pE90gEYwd1c7iNgN5RsnJ4
- ZvSaQKqJ84OIBDdLtmQ6q2XmLaXAiYUCVKoMP5S4jj2ioV9+YmVHbTCJ+
- ppRFGEzSYqXrLB2Qoi0lbdZeFsY3WEhJqGpsy8ispcauvwN8i3/1m6ed/
- iDKE8VEMUJzj6by+V4Y3jJZXj4lZVUGoDHRrutizH5ZZK29BsD+FqpRQO A==;
-X-CSE-ConnectionGUID: oqJefj8bQQOMYjdOHtavIQ==
-X-CSE-MsgGUID: IeN/H/lTQFug9/WCbSn5bg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="76747389"
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="76747389"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 03:09:34 -0700
-X-CSE-ConnectionGUID: Hc88ue5fQpKmaPcCi7oBxQ==
-X-CSE-MsgGUID: rC4Alo+3QQG+IIBescqeJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="146759289"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 03:09:30 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com,
- jgg@nvidia.com, nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
- joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v1 15/15] intel_iommu: Enable host device when x-flts=on in
- scalable mode
-Date: Fri,  6 Jun 2025 18:04:16 +0800
-Message-Id: <20250606100416.346132-16-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250606100416.346132-1-zhenzhong.duan@intel.com>
-References: <20250606100416.346132-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uNU5v-0000F8-0S
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:14:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749204876;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=BCbIyiqEhxKCXJZHwh71NMDxqKoyGU9R+wWtHoALYqo=;
+ b=JEida8XWdQG38ai/8gkFo9uDmlzVvuU253SKNOJi0cl66Pwb9kHoHbZA1TQwP4k2KvTJcq
+ KivtMHDirJBdp9EXu6p3qFyDf12VIxg8xKovLI3aI/xmkjcHm76BnaZ1DqaHd89XDxFW9Q
+ FT0DjG8P9vtZUISIlVS4z9MGigeZYl8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-AZZvhBU2MA-PzB3gBHZIKg-1; Fri,
+ 06 Jun 2025 06:14:33 -0400
+X-MC-Unique: AZZvhBU2MA-PzB3gBHZIKg-1
+X-Mimecast-MFC-AGG-ID: AZZvhBU2MA-PzB3gBHZIKg_1749204871
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D206218002BD; Fri,  6 Jun 2025 10:14:31 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.55])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 79976195E74A; Fri,  6 Jun 2025 10:14:26 +0000 (UTC)
+Date: Fri, 6 Jun 2025 11:14:23 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Zhuoying Cai <zycai@linux.ibm.com>
+Cc: thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
+ pbonzini@redhat.com, walling@linux.ibm.com, jjherne@linux.ibm.com,
+ jrossi@linux.ibm.com, pasic@linux.ibm.com,
+ borntraeger@linux.ibm.com, farman@linux.ibm.com, iii@linux.ibm.com,
+ eblake@redhat.com, armbru@redhat.com, qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 02/28] crypto/x509-utils: Add helper functions for
+ certificate store
+Message-ID: <aEK_f57-kymX4_Iu@redhat.com>
+References: <20250604215657.528142-1-zycai@linux.ibm.com>
+ <20250604215657.528142-3-zycai@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.7;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250604215657.528142-3-zycai@linux.ibm.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,30 +86,126 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all infrastructures of supporting passthrough device running
-with stage-1 translation are there, enable it now.
+On Wed, Jun 04, 2025 at 05:56:30PM -0400, Zhuoying Cai wrote:
+> Add helper functions for x509 certificate which will be used in the next
+> patch for the certificate store.
+> 
+> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+> ---
+>  crypto/meson.build          |   5 +-
+>  crypto/x509-utils.c         | 166 ++++++++++++++++++++++++++++++++++++
+>  include/crypto/x509-utils.h |  54 ++++++++++++
+>  qapi/crypto.json            |  80 +++++++++++++++++
+>  4 files changed, 301 insertions(+), 4 deletions(-)
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/i386/intel_iommu.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 165998896c..1df861ba90 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -5597,6 +5597,7 @@ static bool vtd_check_hiod(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
-     }
- 
-     vtd_hiod->errata = vtd->flags & IOMMU_HW_INFO_VTD_ERRATA_772415_SPR17;
-+    return true;
- #endif
- 
-     error_setg(errp, "host device is uncompatible with stage-1 translation");
+> +int qcrypto_check_x509_cert_fmt(uint8_t *cert, size_t size,
+> +                                QCryptoCertFmt fmt, Error **errp)
+> +{
+> +    int rc;
+> +    int ret = -1;
+> +    gnutls_x509_crt_t crt;
+> +    gnutls_datum_t datum = {.data = cert, .size = size};
+> +
+> +    if (fmt >= G_N_ELEMENTS(qcrypto_to_gnutls_cert_fmt_map)) {
+> +        error_setg(errp, "Unknown certificate format");
+> +        return ret;
+> +    }
+> +
+> +    if (gnutls_x509_crt_init(&crt) < 0) {
+> +        error_setg(errp, "Failed to initialize certificate");
+> +        return ret;
+> +    }
+> +
+> +    rc = gnutls_x509_crt_import(crt, &datum, qcrypto_to_gnutls_cert_fmt_map[fmt]);
+> +    if (rc == GNUTLS_E_ASN1_TAG_ERROR) {
+> +        goto cleanup;
+> +    }
+> +
+> +    ret = 0;
+> +
+> +cleanup:
+> +    gnutls_x509_crt_deinit(crt);
+> +    return ret;
+> +}
+
+On reflection I think this method should be removed entirely.
+In terms of QEMU command line we should exclusively allow
+certs in PEM format only. If we need DER format internally,
+we can use gnutls to convert from PEM to DER.
+
+> +
+> +int qcrypto_get_x509_hash_len(QCryptoHashAlgo alg)
+> +{
+> +    if (alg >= G_N_ELEMENTS(qcrypto_to_gnutls_hash_alg_map)) {
+> +        return 0;
+> +    }
+> +
+> +    return gnutls_hash_get_len(qcrypto_to_gnutls_hash_alg_map[alg]);
+> +}
+> +
+> +int qcrypto_get_x509_keyid_len(QCryptoKeyidFlags flag)
+> +{
+> +    QCryptoHashAlgo alg;
+> +
+> +    if (flag >= G_N_ELEMENTS(qcrypto_to_gnutls_keyid_flags_map)) {
+> +        return 0;
+> +    }
+> +
+> +    alg = QCRYPTO_HASH_ALGO_SHA1;
+> +    if ((flag & qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_SHA512]) ||
+> +        (flag & qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_BEST_KNOWN])) {
+> +        alg = QCRYPTO_HASH_ALGO_SHA512;
+> +    } else if (flag & qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_SHA256]) {
+> +        alg = QCRYPTO_HASH_ALGO_SHA256;
+> +    }
+> +
+> +    return qcrypto_get_x509_hash_len(alg);
+> +}
+> +
+> +static int qcrypto_import_x509_cert(gnutls_x509_crt_t crt, gnutls_datum_t *datum)
+> +{
+> +    int rc;
+> +
+> +    rc = gnutls_x509_crt_import(crt, datum, GNUTLS_X509_FMT_PEM);
+> +    if (rc) {
+> +        rc = gnutls_x509_crt_import(crt, datum, GNUTLS_X509_FMT_DER);
+> +    }
+> +
+> +    return rc;
+> +}
+
+This method can go away too if we declare the public interface
+is exclusively PEM.
+
+
+> +
+> +##
+> +# @QCryptoCertFmt:
+> +#
+> +# The supported certificate encoding formats
+> +#
+> +# @der: DER
+> +#
+> +# @pem: PEM
+> +#
+> +# Since: 10.1
+> +##
+> +{ 'enum': 'QCryptoCertFmt',
+> +  'data': ['der', 'pem']}
+
+This can go away too if we declare we only use PEM.
+
+
+With regards,
+Daniel
 -- 
-2.34.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
