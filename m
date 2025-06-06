@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4731AD026C
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FABEAD024F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:36:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNWIH-0002cc-7i; Fri, 06 Jun 2025 08:35:33 -0400
+	id 1uNWIL-0002dj-1b; Fri, 06 Jun 2025 08:35:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWID-0002a8-6b
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uNWIG-0002cd-CZ
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWI9-0005tB-Pd
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:28 -0400
+ id 1uNWIE-0005tY-8i
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749213323;
+ s=mimecast20190719; t=1749213326;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ElGaxLGiSIb6e5dqiWIlm8oesZYBfD74a0jBFqGIj5Q=;
- b=GJo3psK41XDtTFkJltjf/IuxlQdnDn8oafPF0p5Yo3Uw01TQygH0Fs06vZ0cDcWgd/MbTo
- 3YGGbW4hCaOwWU//IGf6srWbzClWhDhf75ACMtSP5aQj+jTLw4esBpIKt9quvPlDFnAEhn
- 9Sfo31m5bXyZE0xI4sGi94TJpy58ABc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MfaojDveYu66HwFkWgBRf71Aj3k7FgV+E+U33pqpFC4=;
+ b=RZxkIgMlJrGunJdoQBiodeWuoTpscR98qCV03eiBC9tPxea/DH8QgUjd/5+WqzDYI4oFfm
+ JU8RtW+oT0o+9hmKhld5a6a3a1/snx9GYGL5PlGsSP9ZgZ8w3yd6VjaM8FgN9d7Zh65m2j
+ shFeLPCptfu8nNPP6q8eDpZj5Ng1Rjw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-NuW9KMYyNq-hyul1vQY51Q-1; Fri, 06 Jun 2025 08:35:21 -0400
-X-MC-Unique: NuW9KMYyNq-hyul1vQY51Q-1
-X-Mimecast-MFC-AGG-ID: NuW9KMYyNq-hyul1vQY51Q_1749213321
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a4e6d426b1so1640260f8f.1
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:35:21 -0700 (PDT)
+ us-mta-641-if_vEaZCMQOtGhKfG-fCjg-1; Fri, 06 Jun 2025 08:35:25 -0400
+X-MC-Unique: if_vEaZCMQOtGhKfG-fCjg-1
+X-Mimecast-MFC-AGG-ID: if_vEaZCMQOtGhKfG-fCjg_1749213324
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4f6cc5332so1321925f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:35:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749213320; x=1749818120;
+ d=1e100.net; s=20230601; t=1749213323; x=1749818123;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ElGaxLGiSIb6e5dqiWIlm8oesZYBfD74a0jBFqGIj5Q=;
- b=VSn9QjUfihwKUfmYEPlKKZGeC/fTDgFq8hxGmrmzSCeduG9uF6uov4YTLoImEcqwXP
- SaDrnh5X/XJUouMDMAJy5jXTJ8jhCmWGmgccp7VF1t9TGKlSOcwDvmzOzo5aAQvNpFQE
- opXXnusHBcWOAn+l3Qs2U1FCBIyZunukL0/UquKKwcG4V9LxuHm/sYMN0yvGtY5hfPPg
- HFNKfz3Q5B0uRM3jM9U54aKiMBSZQ14uxRurEDs38B+vd5mxOAtR1FFnnZ6FWm7ddVR5
- L01d/LJ4WeZCl0nAPTp0kJz4EhusX7idzsiIk+zwW1nF1atcMBiTE+8gCXsM9mAZzVpE
- 8A0Q==
-X-Gm-Message-State: AOJu0Yw8EPlrBA5if7HlmnbzhZbhdksudTdUIevVvmO2JnROLCYh0Qos
- d4KSljoQBcuBQP09kshZEj83npGOjNi1iHu2241Q2j8Dl2NX5DhQGYoga044CR0PjFeikNw2fSm
- 2mud3H1sAszj7tX8Lz3fXncEJ2rrlyMJxjdCxLydC+RhqXLnqHFtKO23e2uwUN0NnTCyqG9JsW8
- 9xPFG+2N1n95JNcS7AqX8mvU4ejgbTzUabya/ImX3D
-X-Gm-Gg: ASbGncu9Qm4sU7zxWwoQ2iAed0xNwpGDWQgDIcyt6GHLE7InpeLoIAiC+EbqKcCAKQm
- SmUui4g/H/6s7Xk14sHkKV6Df+UU0FXmDRSCxsE7TVSxu8DvRQ6rQDmv1iaKWtmZ10sHlnXE+o7
- W48H5uJ6ILLaL7NmBgYuiDjrtYSFTlFthMggXaP066Sv+ngVeGhLW56qQejA/9FExa/lHV1WpC2
- NK6fkylD/HIrvhex1Buc1YuSic9pnzd+xeQ51BHZIJpZi12ywslAobDgN5qf3AlQlk7v6iBdqir
- 7oIxc0lnR5a+HA==
-X-Received: by 2002:a5d:64ec:0:b0:3a4:ebfc:8c7 with SMTP id
- ffacd0b85a97d-3a53131d543mr3096840f8f.8.1749213319680; 
- Fri, 06 Jun 2025 05:35:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHowyxNi5O/hoLRVThlxz0E/FZ/S/77MmPuWjIbZJQEJ4HpxnZ7GKX+J1PCkn8ON/iChdRxWA==
-X-Received: by 2002:a5d:64ec:0:b0:3a4:ebfc:8c7 with SMTP id
- ffacd0b85a97d-3a53131d543mr3096809f8f.8.1749213319156; 
- Fri, 06 Jun 2025 05:35:19 -0700 (PDT)
+ bh=MfaojDveYu66HwFkWgBRf71Aj3k7FgV+E+U33pqpFC4=;
+ b=Ag303TyRP6r8ShN44AiQHS+esm8GYDEhYP39pSce6/vj/ejM57aZ3BJUKtaLFPxWZj
+ ZJgJ+dtvOtVSwcItzrAZ3HLL6XP5/s73Q67fk6qnzF74UU7ArE5JCG6/nJpdieNObY0q
+ 8CMlZly9Wv0Mdz4GA/XFTVjwsMGXSQEi41V6iELFPOIAAuAozyCIBSDliddhCbD/orbp
+ WbDfa0Yu/nPA/ARe+3ufDYrtLQdKkHutGc3uWkh9kct1xg2FBJ+Wsimsvec0io4RW74T
+ NmEPPa5stfZrqyxJabPKI+eoEW/ZM9upwHNaKM9j4Yvvic/qh9WN9wX3LX0AiKSkW2z2
+ 5EeQ==
+X-Gm-Message-State: AOJu0Yx0dPxfpPmYeqyH3EOZSNFpqbRW0jbmom2Hk0yBGpBRYknY7HTW
+ 9wTUoKA/G2moiFOkQGKXeeCEFW2Z1eW/l1A9l1Qw2R1Lm6VxqYdKYUPsUh3EZhsrwW/i1jEJJ3P
+ Obi11CQgkN+o05GBWiENBH8mLkOVUgUhn+GzZiAy0E7h06S3jWuI/Q41FeY4eDyCDQ6oI5/vwtE
+ MTIGUBxAzjCvH3Kw+jdRxycODzB3qh2Js6QJj5V5aJ
+X-Gm-Gg: ASbGnctPZFZdetXLo4a0vhNt5qFpf6o7qzPt1VKYbL9glwIBBFgi2JVVxEzQZB9AfnF
+ 6/d7tJFv/7xv3B1Ea66PhgKNzjVvPiScnhx9xodG1yU3JuQ7baPkPpeFnozRnQ26ZcI+Hn9jvDp
+ xdFdzWGCti9/n2DN44yVK/Y0ZQct9egQ3vhuGfN3OY3GgEPQal8oL4cKHgQhhNQebYndfAKK1qK
+ 0WhLAWXGwtTnh68TRxwEZN91D75ecCgUwM9zgieOnki0ZjiXRV+COPpNDjbieDz2VRQP5pnjfSD
+ tIxC0M2iYQqUwVcjnD96R2EX
+X-Received: by 2002:a5d:5f42:0:b0:3a4:e7d3:bd9c with SMTP id
+ ffacd0b85a97d-3a53188d69amr2880595f8f.17.1749213323580; 
+ Fri, 06 Jun 2025 05:35:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGs4qeu95fGypwqTy19ecMaPiJ3D3U3rHNtkgB1KByPfTqAyvJRcG7AdXpa3zmoqPh3HZBYJA==
+X-Received: by 2002:a5d:5f42:0:b0:3a4:e7d3:bd9c with SMTP id
+ ffacd0b85a97d-3a53188d69amr2880562f8f.17.1749213323093; 
+ Fri, 06 Jun 2025 05:35:23 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a5322ab413sm1764452f8f.23.2025.06.06.05.35.16
+ ffacd0b85a97d-3a5323b3992sm1778932f8f.35.2025.06.06.05.35.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Jun 2025 05:35:17 -0700 (PDT)
+ Fri, 06 Jun 2025 05:35:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 09/31] rust/hpet: change type of num_timers to usize
-Date: Fri,  6 Jun 2025 14:34:23 +0200
-Message-ID: <20250606123447.538131-10-pbonzini@redhat.com>
+Subject: [PULL 10/31] hpet: adjust VMState for consistency with Rust version
+Date: Fri,  6 Jun 2025 14:34:24 +0200
+Message-ID: <20250606123447.538131-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250606123447.538131-1-pbonzini@redhat.com>
 References: <20250606123447.538131-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -106,111 +106,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the need to convert after every read of the BqlCell.  Because the
-vmstate uses a u8 as the size of the VARRAY, this requires switching
-the VARRAY to use num_timers_save; which in turn requires ensuring that
-the num_timers_save is always there.  For simplicity do this by
-removing support for version 1, which QEMU has not been producing for
-~15 years.
+No functional change intended.
 
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/timer/hpet/src/device.rs | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ hw/timer/hpet.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index 68c82b09b60..a957de1e767 100644
---- a/rust/hw/timer/hpet/src/device.rs
-+++ b/rust/hw/timer/hpet/src/device.rs
-@@ -12,7 +12,7 @@
- use qemu_api::{
-     bindings::{
-         address_space_memory, address_space_stl_le, qdev_prop_bit, qdev_prop_bool,
--        qdev_prop_uint32, qdev_prop_uint8,
-+        qdev_prop_uint32, qdev_prop_usize,
+diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+index 0fd1337a156..9db027cf76f 100644
+--- a/hw/timer/hpet.c
++++ b/hw/timer/hpet.c
+@@ -328,16 +328,16 @@ static const VMStateDescription vmstate_hpet_timer = {
+ static const VMStateDescription vmstate_hpet = {
+     .name = "hpet",
+     .version_id = 2,
+-    .minimum_version_id = 1,
++    .minimum_version_id = 2,
+     .pre_save = hpet_pre_save,
+     .post_load = hpet_post_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(config, HPETState),
+         VMSTATE_UINT64(isr, HPETState),
+         VMSTATE_UINT64(hpet_counter, HPETState),
+-        VMSTATE_UINT8_V(num_timers_save, HPETState, 2),
++        VMSTATE_UINT8(num_timers_save, HPETState),
+         VMSTATE_VALIDATE("num_timers must match", hpet_validate_num_timers),
+-        VMSTATE_STRUCT_VARRAY_UINT8(timer, HPETState, num_timers, 0,
++        VMSTATE_STRUCT_VARRAY_UINT8(timer, HPETState, num_timers_save, 0,
+                                     vmstate_hpet_timer, HPETTimer),
+         VMSTATE_END_OF_LIST()
      },
-     cell::{BqlCell, BqlRefCell},
-     irq::InterruptSource,
-@@ -36,9 +36,9 @@
- const HPET_REG_SPACE_LEN: u64 = 0x400; // 1024 bytes
- 
- /// Minimum recommended hardware implementation.
--const HPET_MIN_TIMERS: u8 = 3;
-+const HPET_MIN_TIMERS: usize = 3;
- /// Maximum timers in each timer block.
--const HPET_MAX_TIMERS: u8 = 32;
-+const HPET_MAX_TIMERS: usize = 32;
- 
- /// Flags that HPETState.flags supports.
- const HPET_FLAG_MSI_SUPPORT_SHIFT: usize = 0;
-@@ -561,8 +561,8 @@ pub struct HPETState {
- 
-     /// HPET timer array managed by this timer block.
-     #[doc(alias = "timer")]
--    timers: [BqlRefCell<HPETTimer>; HPET_MAX_TIMERS as usize],
--    num_timers: BqlCell<u8>,
-+    timers: [BqlRefCell<HPETTimer>; HPET_MAX_TIMERS],
-+    num_timers: BqlCell<usize>,
-     num_timers_save: BqlCell<u8>,
- 
-     /// Instance id (HPET timer block ID).
-@@ -572,7 +572,7 @@ pub struct HPETState {
- impl HPETState {
-     // Get num_timers with `usize` type, which is useful to play with array index.
-     fn get_num_timers(&self) -> usize {
--        self.num_timers.get().into()
-+        self.num_timers.get()
-     }
- 
-     const fn has_msi_flag(&self) -> bool {
-@@ -854,7 +854,7 @@ fn pre_save(&self) -> i32 {
-          * also added to the migration stream.  Check that it matches the value
-          * that was configured.
-          */
--        self.num_timers_save.set(self.num_timers.get());
-+        self.num_timers_save.set(self.num_timers.get() as u8);
-         0
-     }
- 
-@@ -884,7 +884,7 @@ fn is_offset_needed(&self) -> bool {
-     }
- 
-     fn validate_num_timers(&self, _version_id: u8) -> bool {
--        self.num_timers.get() == self.num_timers_save.get()
-+        self.num_timers.get() == self.num_timers_save.get().into()
-     }
- }
- 
-@@ -911,7 +911,7 @@ impl ObjectImpl for HPETState {
-         c"timers",
-         HPETState,
-         num_timers,
--        unsafe { &qdev_prop_uint8 },
-+        unsafe { &qdev_prop_usize },
-         u8,
-         default = HPET_MIN_TIMERS
-     ),
-@@ -1016,16 +1016,16 @@ impl ObjectImpl for HPETState {
- static VMSTATE_HPET: VMStateDescription = VMStateDescription {
-     name: c"hpet".as_ptr(),
-     version_id: 2,
--    minimum_version_id: 1,
-+    minimum_version_id: 2,
-     pre_save: Some(hpet_pre_save),
-     post_load: Some(hpet_post_load),
-     fields: vmstate_fields! {
-         vmstate_of!(HPETState, config),
-         vmstate_of!(HPETState, int_status),
-         vmstate_of!(HPETState, counter),
--        vmstate_of!(HPETState, num_timers_save).with_version_id(2),
-+        vmstate_of!(HPETState, num_timers_save),
-         vmstate_validate!(HPETState, VALIDATE_TIMERS_NAME, HPETState::validate_num_timers),
--        vmstate_struct!(HPETState, timers[0 .. num_timers], &VMSTATE_HPET_TIMER, BqlRefCell<HPETTimer>, HPETState::validate_num_timers).with_version_id(0),
-+        vmstate_struct!(HPETState, timers[0 .. num_timers_save], &VMSTATE_HPET_TIMER, BqlRefCell<HPETTimer>, HPETState::validate_num_timers).with_version_id(0),
-     },
-     subsections: vmstate_subsections! {
-         VMSTATE_HPET_RTC_IRQ_LEVEL,
 -- 
 2.49.0
 
