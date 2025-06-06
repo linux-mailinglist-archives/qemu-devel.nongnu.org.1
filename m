@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54726AD0250
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B86A0AD025F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:39:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNWIS-0002iA-7b; Fri, 06 Jun 2025 08:35:44 -0400
+	id 1uNWIU-0002jf-UT; Fri, 06 Jun 2025 08:35:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWIP-0002hB-Py
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:41 -0400
+ id 1uNWIR-0002i9-Hv
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWIL-0005ue-5Q
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:41 -0400
+ id 1uNWIP-0005v4-Dg
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749213335;
+ s=mimecast20190719; t=1749213339;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1xUwrRORHhhFQcsqo0wojfaEACCcvTZjPhl1zMHXkSg=;
- b=J5XH9QKt4IToYfntSADqKtXPVH5qkPNa/KTjBR+VvbcZg1x2WCSKVvmeGlF6Rqb85A5E/I
- 8xgdB1uNwddIMJrsFbWUTCJRTtyWeua8fEPPD81sOgN7Mh5OXOPvqZev7+oUr5pS1SwUsM
- j8dNMxNyCTzy6qs/+wqc1sklSTcSQz8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OivQJNioYdlpUaf6YbGQbquj0nz64DfXDVzbTQpXZ10=;
+ b=A5dbrKuLK1GCHY5gKr4TqF2hMjG6j49AXcXFaobjhIvq+knAqvK3nrn/7BoqoXtYM1gbtu
+ UNF9iqJ5LgsLJ7nIlXX8+lYpvZPPuvZxmRfQnnJ+pE629nAzMbbfo6MyPylauiNNDCnYsT
+ W8aKHvQRvDa0TyXzku7HIEtncSwxtgs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-417-eKkTufbINJSltIdE3eqp4A-1; Fri, 06 Jun 2025 08:35:34 -0400
-X-MC-Unique: eKkTufbINJSltIdE3eqp4A-1
-X-Mimecast-MFC-AGG-ID: eKkTufbINJSltIdE3eqp4A_1749213333
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a4f85f31d9so1134565f8f.1
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:35:34 -0700 (PDT)
+ us-mta-435-UDwY3R6oOaST6lIIzmmmvw-1; Fri, 06 Jun 2025 08:35:38 -0400
+X-MC-Unique: UDwY3R6oOaST6lIIzmmmvw-1
+X-Mimecast-MFC-AGG-ID: UDwY3R6oOaST6lIIzmmmvw_1749213337
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-451dda846a0so15676985e9.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:35:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749213332; x=1749818132;
+ d=1e100.net; s=20230601; t=1749213336; x=1749818136;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1xUwrRORHhhFQcsqo0wojfaEACCcvTZjPhl1zMHXkSg=;
- b=FVJxc/ggYFezYyyBjyi4quIxKekf2QLDb4R/Uzu8ca+lLNCUV9sn06KWC9ZjcbjaES
- SUAs/IIyS9s9XGffNE157BXqZ5Md7kL4Zot1yihhTR4yY2gw15rNNq+RUW2ZdlnR37MK
- xmlRGegvpFuMl3PAYTzdRcVi4EQrFU2Uesgc97jfJgXGW/VVLnPcMbJROFUNJ+Evahpi
- iR1pBaC8lNmWGvPwDJaVEhQ4cdtzXzOvoaTVnSXHXTaKpGxTQaHz+dixw54O6KbYy/Ro
- 6ymwbn/tYRKAcF/pDoj1p1sg7wUTlukNTkqj90pGyplWxZZEolP+ux+reFkRiXTm7VBN
- r2sw==
-X-Gm-Message-State: AOJu0YzARcU14oit0ZGpEWAgoGRpB25V2fUmjQnkg7AzgsoX7wWZ5IGL
- Ie2G+ZzC9qMrfrVv/+gRoS+SVI6kZAm4Fj1WiWZ3yiZ02x3aypebk8iH77wZT+rnIut/I28EHE0
- vw0Owr2y/I1b9txxOukefQV+6GR7ocVr3MEuTVwxMRYbghfNoFDZz9W3Odx8p3tRI4YgQ7F6FAm
- RfT76bKLOEDlacB0/gchziQ3tpg6SaB2z0OaXRKK1y
-X-Gm-Gg: ASbGnctO9B/rYZBQXZ4CBdxoqS9i2WkwRslFgfHAc3+le9hOwLnnXtGotrcOTcD5Qs3
- dnBbN5ZGKC9/N0gF/F0vkJjczF/apOQqbHXh04V06MoZFKcwzMNNjag8Y2/cqve641NnEkkfNDG
- NKYwB5xEMI0hNfTIk+yaBrKB+qJiFMYiArvIS50Ex2AIddz6D+tZuUKhM0gFzRN9kH6WufeqrBd
- oXZ9DY/uo8KpS0Dj5+2ze3uUJHvkUuzigcNMWYVOrnaNFMmW+gsTpu4GOpBSqr/Bpol7fluxqoj
- bZaWrqSGiS18Sw==
-X-Received: by 2002:a05:6000:4205:b0:3a4:c75c:efd5 with SMTP id
- ffacd0b85a97d-3a5319b4d6bmr2851404f8f.46.1749213332293; 
- Fri, 06 Jun 2025 05:35:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVEFY2q+AYeLXlABIg3UGktiuDuK2fpNlaVk7uueUTf0jCQpj51gdtRs4kiZQUhzfULg9QdA==
-X-Received: by 2002:a05:6000:4205:b0:3a4:c75c:efd5 with SMTP id
- ffacd0b85a97d-3a5319b4d6bmr2851380f8f.46.1749213331765; 
- Fri, 06 Jun 2025 05:35:31 -0700 (PDT)
+ bh=OivQJNioYdlpUaf6YbGQbquj0nz64DfXDVzbTQpXZ10=;
+ b=Uz0Bo9W0GYfqA4uWWHnq0YfbdovehfQvr06xnhHQyhUwYePYD0eRJto8VrtBQS+HyR
+ p8WfCor28ZqNur2YXFDxN8xE6VFqzr1FdQHtP7xd/R4GkFKQ3ER0vlGbvxQAT7BxoBXA
+ ko6cPyaqsXvp7s3eSeS5ODYcpoBqAKM/B72wbMJbtO1qhvnXXlvnYpOKIgz4ZQoHOC3s
+ JaDc0RqDXmeaaJ5CXb8Isic+wzQtXRbhuLrVt2VXnFnbbnKtolQaSPYnDSHetyazUklm
+ FrGDvNIPSgDH9lPacZtGo9qkelcv6qS6cQB3V0daLwp1uRp2nwqoRfWHbKoRg4TFaIaJ
+ TrMQ==
+X-Gm-Message-State: AOJu0Yx4Q6zwqkFUsTJVRZDZJ2gf77sOZcAscygy/PKgh8aBOvb25m89
+ ZmbAm5CxCC+SLQUuQoRslTamg7jbtuKPABOTozwGdU8h7tTqDzTXWPzBFjvRwrXmOFd/aHj0jIc
+ I63KrY+TdWQjqcxEfcib5lkcgEaLU2k+TYJjDl/cBr8rMEAjXWF3YsjI6oMS9vq0FOM0sVehtTj
+ 6tWVu5ZA2L2HiSVYuMUxO6RGiwBAqoI5yKtm6yYyzJ
+X-Gm-Gg: ASbGnctdQikAz7pZosEF2uXtwPRAi5MD+2X3itU4ZuUpp162yMQfYVd7EUxj6rAgDgg
+ oTfVDxZDsE5EOu625WA3c4jq/edg9NqUh0DvAG8HItUSrdvxRDN1EN8iT2zeB/tu9Uv7xhDvGkx
+ 884XA8q6+cASMXUO1V/vXfNSXJG4ouExBKNGOslwSjLmgy2Pj1RwPAGaykKMT4A5kNk+pMg7Czx
+ 5T//khm36AJqxwYmSc/Na4xpCc1ndNS6VOYRfqUTUx9+pFOMUOwWwzF6vdoRzjpGaGD74zgZY57
+ Jr70cMOQ07/Nxg==
+X-Received: by 2002:a05:600c:c4b7:b0:43c:e70d:44f0 with SMTP id
+ 5b1f17b1804b1-4520137c932mr31884255e9.19.1749213336023; 
+ Fri, 06 Jun 2025 05:35:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiA40ztizJJWAF0WEz833FmOdzp76s5qVk5KsVItgIZyKD7/vdWMYrroPTA8RfqqT6yLYy1A==
+X-Received: by 2002:a05:600c:c4b7:b0:43c:e70d:44f0 with SMTP id
+ 5b1f17b1804b1-4520137c932mr31884045e9.19.1749213335589; 
+ Fri, 06 Jun 2025 05:35:35 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-452730d162asm19792785e9.39.2025.06.06.05.35.29
+ 5b1f17b1804b1-4521370961csm22703135e9.22.2025.06.06.05.35.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Jun 2025 05:35:30 -0700 (PDT)
+ Fri, 06 Jun 2025 05:35:32 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 13/31] rust/hpet: Drop BqlCell wrapper for num_timers
-Date: Fri,  6 Jun 2025 14:34:27 +0200
-Message-ID: <20250606123447.538131-14-pbonzini@redhat.com>
+Subject: [PULL 14/31] docs: update Rust module status
+Date: Fri,  6 Jun 2025 14:34:28 +0200
+Message-ID: <20250606123447.538131-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250606123447.538131-1-pbonzini@redhat.com>
 References: <20250606123447.538131-1-pbonzini@redhat.com>
@@ -88,9 +88,9 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.104,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,133 +106,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+error is new; offset_of is gone.
 
-Now that the num_timers field is initialized as a property, someone may
-change its default value using qdev_prop_set_uint8(), but the value is
-fixed after the Rust code sees it first.  Since there is no need to modify
-it after realize(), it is not to be necessary to have a BqlCell wrapper.
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250520152750.2542612-4-zhao1.liu@intel.com
-[Remove .into() as well. - Paolo]
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/timer/hpet/src/device.rs | 27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ docs/devel/rust.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index cd439f90b7e..735b2fbef79 100644
---- a/rust/hw/timer/hpet/src/device.rs
-+++ b/rust/hw/timer/hpet/src/device.rs
-@@ -562,7 +562,7 @@ pub struct HPETState {
-     /// HPET timer array managed by this timer block.
-     #[doc(alias = "timer")]
-     timers: [BqlRefCell<HPETTimer>; HPET_MAX_TIMERS],
--    num_timers: BqlCell<usize>,
-+    num_timers: usize,
-     num_timers_save: BqlCell<u8>,
- 
-     /// Instance id (HPET timer block ID).
-@@ -570,11 +570,6 @@ pub struct HPETState {
- }
- 
- impl HPETState {
--    // Get num_timers with `usize` type, which is useful to play with array index.
--    fn get_num_timers(&self) -> usize {
--        self.num_timers.get()
--    }
--
-     const fn has_msi_flag(&self) -> bool {
-         self.flags & (1 << HPET_FLAG_MSI_SUPPORT_SHIFT) != 0
-     }
-@@ -636,7 +631,7 @@ fn set_cfg_reg(&self, shift: u32, len: u32, val: u64) {
-             self.hpet_offset
-                 .set(ticks_to_ns(self.counter.get()) - CLOCK_VIRTUAL.get_ns());
- 
--            for timer in self.timers.iter().take(self.get_num_timers()) {
-+            for timer in self.timers.iter().take(self.num_timers) {
-                 let mut t = timer.borrow_mut();
- 
-                 if t.is_int_enabled() && t.is_int_active() {
-@@ -648,7 +643,7 @@ fn set_cfg_reg(&self, shift: u32, len: u32, val: u64) {
-             // Halt main counter and disable interrupt generation.
-             self.counter.set(self.get_ticks());
- 
--            for timer in self.timers.iter().take(self.get_num_timers()) {
-+            for timer in self.timers.iter().take(self.num_timers) {
-                 timer.borrow_mut().del_timer();
-             }
-         }
-@@ -671,7 +666,7 @@ fn set_int_status_reg(&self, shift: u32, _len: u32, val: u64) {
-         let new_val = val << shift;
-         let cleared = new_val & self.int_status.get();
- 
--        for (index, timer) in self.timers.iter().take(self.get_num_timers()).enumerate() {
-+        for (index, timer) in self.timers.iter().take(self.num_timers).enumerate() {
-             if cleared & (1 << index) != 0 {
-                 timer.borrow_mut().update_irq(false);
-             }
-@@ -725,7 +720,7 @@ fn post_init(&self) {
-     }
- 
-     fn realize(&self) -> qemu_api::Result<()> {
--        if self.num_timers.get() < HPET_MIN_TIMERS || self.num_timers.get() > HPET_MAX_TIMERS {
-+        if self.num_timers < HPET_MIN_TIMERS || self.num_timers > HPET_MAX_TIMERS {
-             Err(format!(
-                 "hpet.num_timers must be between {HPET_MIN_TIMERS} and {HPET_MAX_TIMERS}"
-             ))?;
-@@ -743,7 +738,7 @@ fn realize(&self) -> qemu_api::Result<()> {
-             1 << HPET_CAP_COUNT_SIZE_CAP_SHIFT |
-             1 << HPET_CAP_LEG_RT_CAP_SHIFT |
-             HPET_CAP_VENDER_ID_VALUE << HPET_CAP_VENDER_ID_SHIFT |
--            ((self.get_num_timers() - 1) as u64) << HPET_CAP_NUM_TIM_SHIFT | // indicate the last timer
-+            ((self.num_timers - 1) as u64) << HPET_CAP_NUM_TIM_SHIFT | // indicate the last timer
-             (HPET_CLK_PERIOD * FS_PER_NS) << HPET_CAP_CNT_CLK_PERIOD_SHIFT, // 10 ns
-         );
- 
-@@ -753,7 +748,7 @@ fn realize(&self) -> qemu_api::Result<()> {
-     }
- 
-     fn reset_hold(&self, _type: ResetType) {
--        for timer in self.timers.iter().take(self.get_num_timers()) {
-+        for timer in self.timers.iter().take(self.num_timers) {
-             timer.borrow_mut().reset();
-         }
- 
-@@ -781,7 +776,7 @@ fn decode(&self, mut addr: hwaddr, size: u32) -> HPETAddrDecode {
-             GlobalRegister::try_from(addr).map(HPETRegister::Global)
-         } else {
-             let timer_id: usize = ((addr - 0x100) / 0x20) as usize;
--            if timer_id <= self.get_num_timers() {
-+            if timer_id < self.num_timers {
-                 // TODO: Add trace point - trace_hpet_ram_[read|write]_timer_id(timer_id)
-                 TimerRegister::try_from(addr & 0x18)
-                     .map(|reg| HPETRegister::Timer(&self.timers[timer_id], reg))
-@@ -852,12 +847,12 @@ fn pre_save(&self) -> i32 {
-          * also added to the migration stream.  Check that it matches the value
-          * that was configured.
-          */
--        self.num_timers_save.set(self.num_timers.get() as u8);
-+        self.num_timers_save.set(self.num_timers as u8);
-         0
-     }
- 
-     fn post_load(&self, _version_id: u8) -> i32 {
--        for timer in self.timers.iter().take(self.get_num_timers()) {
-+        for timer in self.timers.iter().take(self.num_timers) {
-             let mut t = timer.borrow_mut();
- 
-             t.cmp64 = t.calculate_cmp64(t.get_state().counter.get(), t.cmp);
-@@ -882,7 +877,7 @@ fn is_offset_needed(&self) -> bool {
-     }
- 
-     fn validate_num_timers(&self, _version_id: u8) -> bool {
--        self.num_timers.get() == self.num_timers_save.get().into()
-+        self.num_timers == self.num_timers_save.get().into()
-     }
- }
- 
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index d60d56d0a69..47e9677fcb0 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -160,10 +160,10 @@ module           status
+ ``callbacks``    complete
+ ``cell``         stable
+ ``errno``        complete
++``error``        stable
+ ``irq``          complete
+ ``memory``       stable
+ ``module``       complete
+-``offset_of``    stable
+ ``qdev``         stable
+ ``qom``          stable
+ ``sysbus``       stable
 -- 
 2.49.0
 
