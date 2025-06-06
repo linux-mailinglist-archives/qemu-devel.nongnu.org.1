@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9923AD0011
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 12:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69972AD002D
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 12:11:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNU06-0008GC-8q; Fri, 06 Jun 2025 06:08:38 -0400
+	id 1uNU0A-0008Gm-E4; Fri, 06 Jun 2025 06:08:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uNU03-0008Fo-FV
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:08:35 -0400
+ id 1uNU07-0008GY-ST
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:08:39 -0400
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uNU01-0007c5-Jx
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:08:35 -0400
+ id 1uNU06-0007c5-1s
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:08:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749204514; x=1780740514;
+ t=1749204518; x=1780740518;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=orJ8wji7aPlYPo/WE9OfeJizeFk1Xi1vvwQ2fhR7UAw=;
- b=VW2hFk7/haX98bTIi4bHLojU0xestegOVUxxSmknNLiiDOg13X9hfmVq
- QOz0nWE4ezkhF1gm6Cir1pbYzAVAWbVs/Ojz/IKPvJZlPnqMGf3UiVrRW
- OqsuYwdZZkJNPa+fDJEvr+HQigBptXq0eCYYn0wdmtgl4k3NuhrT9JVQl
- t7Wui5/BRn2jTYei38CYLaaX+p1/5EBBk//LBM+6aJi4rTw75Uxsf12L7
- fsR0GJ1fRKU9BoiGk72bDr7uySd5MT5tTJWeQBCdk8yr0OKweVMxUHowT
- 7De5nZIyDKaloSaaqXQQHkgi3OIe4mMbk7xYk+pq40nGZpxeAowktCw5U Q==;
-X-CSE-ConnectionGUID: TyEag/2NRmu00WdJvKdGaw==
-X-CSE-MsgGUID: +RdUnEVxSI6YN408smrp9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="76747213"
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="76747213"
+ bh=QNfMpmiCptpOxp1FVWJoHoPhLSHGPh7wjkENZaj10Ow=;
+ b=HPjcIsWxSCq7r7wT2QfMNlPGWdPM0o0pV9KcU0H/RKLEgoXgj+E/SxAH
+ pV9evs1/QrlTUeB5bYYk4eYUPjko2oly0b9Vm7kGdwszlmiYpe87AmWGz
+ IWh28YGDGCmPdqjiyGCZFrGqY++doEkSPQhNEYhNPB7J9Nyw+dnuGBFO/
+ fCiFZOhbg3BPawLXrHqJvf/1ai41xHdTsRHfdYu4jMBkfxmcDCvidfhUC
+ /O49igMrqsOgASOlboEX/xi/Mzw/HzjSchbgIuSlAVpP4gcbrbhROPGNd
+ I3G8i60Un+5JLudlzGLUpdRgwzEajJNyen1psLPmt934Q2WLm+QKRy5EC w==;
+X-CSE-ConnectionGUID: Up2UxMGhQSeO9u0GmKTe6A==
+X-CSE-MsgGUID: IqixyC5wQYau3Dsg/7qr/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="76747228"
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="76747228"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 03:08:32 -0700
-X-CSE-ConnectionGUID: /lCr8MIBTO6nicxIQscy7Q==
-X-CSE-MsgGUID: aKBAz+vbRiS76kX1hfeV/Q==
+ 06 Jun 2025 03:08:37 -0700
+X-CSE-ConnectionGUID: l5chEk+gS+CZIC5HSkn68g==
+X-CSE-MsgGUID: oe0K35SjSvy0t9hQcQQfUQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="146759070"
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="146759074"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 03:08:27 -0700
+ 06 Jun 2025 03:08:33 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -56,10 +56,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v1 04/15] intel_iommu: Introduce a new structure
- VTDHostIOMMUDevice
-Date: Fri,  6 Jun 2025 18:04:05 +0800
-Message-Id: <20250606100416.346132-5-zhenzhong.duan@intel.com>
+Subject: [PATCH v1 05/15] intel_iommu: Introduce two helpers
+ vtd_as_from/to_iommu_pasid_locked
+Date: Fri,  6 Jun 2025 18:04:06 +0800
+Message-Id: <20250606100416.346132-6-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250606100416.346132-1-zhenzhong.duan@intel.com>
 References: <20250606100416.346132-1-zhenzhong.duan@intel.com>
@@ -90,102 +90,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new structure VTDHostIOMMUDevice which replaces
-HostIOMMUDevice to be stored in hash table.
+We already have vtd_find_add_as() to find an AS from BDF+pasid, but this
+pasid is passed from PCI subsystem. PCI device supports two request types,
+Requests-without-PASID and Requests-with-PASID. Requests-without-PASID
+doesn't include a PASID TLP prefix, IOMMU fetches rid_pasid from context
+entry and use it as IOMMU's pasid to index pasid table.
 
-It includes a reference to HostIOMMUDevice and IntelIOMMUState,
-also includes BDF information which will be used in future
-patches.
+So we need to translate between PCI's pasid and IOMMU's pasid specially
+for Requests-without-PASID, e.g., PCI_NO_PASID(-1) <-> rid_pasid.
+For Requests-with-PASID, PCI's pasid and IOMMU's pasid are same value.
+
+vtd_as_from_iommu_pasid_locked() translates from BDF+iommu_pasid to vtd_as
+which contains PCI's pasid vtd_as->pasid.
+
+vtd_as_to_iommu_pasid_locked() translates from BDF+vtd_as->pasid to iommu_pasid.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu_internal.h |  7 +++++++
- include/hw/i386/intel_iommu.h  |  2 +-
- hw/i386/intel_iommu.c          | 14 ++++++++++++--
- 3 files changed, 20 insertions(+), 3 deletions(-)
+ hw/i386/intel_iommu.c | 50 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index 2cda744786..18bc22fc72 100644
---- a/hw/i386/intel_iommu_internal.h
-+++ b/hw/i386/intel_iommu_internal.h
-@@ -28,6 +28,7 @@
- #ifndef HW_I386_INTEL_IOMMU_INTERNAL_H
- #define HW_I386_INTEL_IOMMU_INTERNAL_H
- #include "hw/i386/intel_iommu.h"
-+#include "system/host_iommu_device.h"
- 
- /*
-  * Intel IOMMU register specification
-@@ -608,4 +609,10 @@ typedef struct VTDRootEntry VTDRootEntry;
- /* Bits to decide the offset for each level */
- #define VTD_LEVEL_BITS           9
- 
-+typedef struct VTDHostIOMMUDevice {
-+    IntelIOMMUState *iommu_state;
-+    PCIBus *bus;
-+    uint8_t devfn;
-+    HostIOMMUDevice *hiod;
-+} VTDHostIOMMUDevice;
- #endif
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index e95477e855..50f9b27a45 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -295,7 +295,7 @@ struct IntelIOMMUState {
-     /* list of registered notifiers */
-     QLIST_HEAD(, VTDAddressSpace) vtd_as_with_notifiers;
- 
--    GHashTable *vtd_host_iommu_dev;             /* HostIOMMUDevice */
-+    GHashTable *vtd_host_iommu_dev;             /* VTDHostIOMMUDevice */
- 
-     /* interrupt remapping */
-     bool intr_enabled;              /* Whether guest enabled IR */
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index c42ef83ddc..796b71605c 100644
+index 796b71605c..112e09e305 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -281,7 +281,10 @@ static gboolean vtd_hiod_equal(gconstpointer v1, gconstpointer v2)
- 
- static void vtd_hiod_destroy(gpointer v)
- {
--    object_unref(v);
-+    VTDHostIOMMUDevice *vtd_hiod = v;
-+
-+    object_unref(vtd_hiod->hiod);
-+    g_free(vtd_hiod);
+@@ -1617,6 +1617,56 @@ static int vtd_as_to_context_entry(VTDAddressSpace *vtd_as, VTDContextEntry *ce)
+     }
  }
  
- static gboolean vtd_hash_remove_by_domain(gpointer key, gpointer value,
-@@ -4397,6 +4400,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-                                      HostIOMMUDevice *hiod, Error **errp)
- {
-     IntelIOMMUState *s = opaque;
-+    VTDHostIOMMUDevice *vtd_hiod;
-     struct vtd_as_key key = {
-         .bus = bus,
-         .devfn = devfn,
-@@ -4413,6 +4417,12 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-         return false;
-     }
- 
-+    vtd_hiod = g_malloc0(sizeof(VTDHostIOMMUDevice));
-+    vtd_hiod->bus = bus;
-+    vtd_hiod->devfn = (uint8_t)devfn;
-+    vtd_hiod->iommu_state = s;
-+    vtd_hiod->hiod = hiod;
++static inline int vtd_as_to_iommu_pasid_locked(VTDAddressSpace *vtd_as,
++                                               uint32_t *pasid)
++{
++    VTDContextEntry ce;
++    int ret;
 +
-     if (!vtd_check_hiod(s, hiod, errp)) {
-         vtd_iommu_unlock(s);
-         return false;
-@@ -4423,7 +4433,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-     new_key->devfn = devfn;
- 
-     object_ref(hiod);
--    g_hash_table_insert(s->vtd_host_iommu_dev, new_key, hiod);
-+    g_hash_table_insert(s->vtd_host_iommu_dev, new_key, vtd_hiod);
- 
-     vtd_iommu_unlock(s);
- 
++    ret = vtd_as_to_context_entry(vtd_as, &ce);
++    if (ret) {
++        return ret;
++    }
++
++    /* Translate to iommu pasid if PCI_NO_PASID */
++    if (vtd_as->pasid == PCI_NO_PASID) {
++        *pasid = VTD_CE_GET_RID2PASID(&ce);
++    } else {
++        *pasid = vtd_as->pasid;
++    }
++
++    return 0;
++}
++
++static gboolean vtd_find_as_by_sid_and_iommu_pasid(gpointer key, gpointer value,
++                                                   gpointer user_data)
++{
++    VTDAddressSpace *vtd_as = (VTDAddressSpace *)value;
++    struct vtd_as_raw_key *target = (struct vtd_as_raw_key *)user_data;
++    uint16_t sid = PCI_BUILD_BDF(pci_bus_num(vtd_as->bus), vtd_as->devfn);
++    uint32_t pasid;
++
++    if (vtd_as_to_iommu_pasid_locked(vtd_as, &pasid)) {
++        return false;
++    }
++
++    return (pasid == target->pasid) && (sid == target->sid);
++}
++
++/* Translate iommu pasid to vtd_as */
++static inline
++VTDAddressSpace *vtd_as_from_iommu_pasid_locked(IntelIOMMUState *s,
++                                                uint16_t sid, uint32_t pasid)
++{
++    struct vtd_as_raw_key key = {
++        .sid = sid,
++        .pasid = pasid
++    };
++
++    return g_hash_table_find(s->vtd_address_spaces,
++                             vtd_find_as_by_sid_and_iommu_pasid, &key);
++}
++
+ static int vtd_sync_shadow_page_hook(const IOMMUTLBEvent *event,
+                                      void *private)
+ {
 -- 
 2.34.1
 
