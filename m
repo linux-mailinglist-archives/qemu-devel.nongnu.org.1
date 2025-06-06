@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C99ACFF4C
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 11:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A22BDACFF4F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 11:30:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNTN2-0005mf-MP; Fri, 06 Jun 2025 05:28:16 -0400
+	id 1uNTN5-0005n1-A4; Fri, 06 Jun 2025 05:28:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uNTMx-0005mJ-Ft
+ id 1uNTMx-0005mK-Eu
  for qemu-devel@nongnu.org; Fri, 06 Jun 2025 05:28:12 -0400
 Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uNTMq-0001A3-PG
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 05:28:08 -0400
+ id 1uNTMs-00019f-Ai
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 05:28:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749202085; x=1780738085;
+ t=1749202087; x=1780738087;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=o0hkaWPYUnwbP8NGyL8wPrEalmQcvBzMpWUoUp6CO4s=;
- b=NzMJiLVe1xMmMGEdo1GYgWeQRqZhxslbyHUZoQO+pPMTDC9wsAZb+Dwh
- E43FHD7Y/mR0GQUOOUXRNTwm+kkKoSNiItv/wybkosvH+Poku19rE06W0
- 5/i9Raw70MDLyYcqUMIQUKlfTiM8nJEmzbP5rHZBF/3Yli2FXJdboAJ8A
- 95WhxGoSCQIvhsrRxHoKR+dzk6Jiidk6wx4N67n0JYwEIjjow0hJbz8/v
- rpAI9x36aD/Jsd9SrgAM3Jt+x/1Ted4hKoGgBq9etIR6rmmrAwCdkRFDV
- EJe+BOPlDVgCvQu7sMMTkNbZIB48KYILuy5YZdEeeNlUZdnFYjs89B2ab g==;
-X-CSE-ConnectionGUID: VBoMVaNRQoWjdkBvV918Mg==
-X-CSE-MsgGUID: g/EE3JJURJ6GeXbMWwvLag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="55154609"
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="55154609"
+ bh=GbtKvxYwkjb/bGSi2Re9ZH2gHiI8nCh8rP5U1OpY04I=;
+ b=Qd1X2e7dneR+vfqkBV4wypi4Ge3IbqohXIcFUQ92s9lqvjStPTvHMSg3
+ OCGO7usxKXCFq22EQ2RMVZKCpAFSj9P8t9GNTCegoe1933i86QzHYW6rx
+ fy6WXegTuPzgpXWyY3IMwEC1SDCeZLadSV90VZx5AG9ndGa8K20l/vDJg
+ zkR4GUsC77QRYco7DuMnwNz1YRDtsSIxnEWFAFedySnU98vJVRTcoS4n9
+ DeCVc97vGgP5A+dZoiCunKOrz+/gbkxLsc7XAEZXrYYKvnsHUGbtEqemT
+ 6ovl8rTU+JT6Up8kmXOiDQVYQ8w39q7m/rpBP19ntyK69C0DMz+i9SnAP A==;
+X-CSE-ConnectionGUID: rLKO1FwpSFeqXjQj/yJStA==
+X-CSE-MsgGUID: 238kjDZtQ/6/FVCmVLvwfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="55154622"
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="55154622"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 02:27:58 -0700
-X-CSE-ConnectionGUID: YmelUEpzQvWzaULIeOyJqA==
-X-CSE-MsgGUID: EocgvfF3TNOsCAVdE3oomA==
+ 06 Jun 2025 02:28:00 -0700
+X-CSE-ConnectionGUID: k1FB9aQASGqo71nBxlw40A==
+X-CSE-MsgGUID: 9wTxa4hkQaK/dQChLGSHvA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="145706177"
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="145706181"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 02:27:55 -0700
+ 06 Jun 2025 02:27:57 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: chao.p.peng@intel.com, david@redhat.com, armbru@redhat.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v4 1/5] virtio-mem: Fix definition of VirtIOMEMClass
-Date: Fri,  6 Jun 2025 17:24:02 +0800
-Message-Id: <20250606092406.229833-2-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 2/5] virtio-pmem: Fix definition of VirtIOPMEMClass
+Date: Fri,  6 Jun 2025 17:24:03 +0800
+Message-Id: <20250606092406.229833-3-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250606092406.229833-1-zhenzhong.duan@intel.com>
 References: <20250606092406.229833-1-zhenzhong.duan@intel.com>
@@ -84,31 +84,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Parent of VirtIOMEMClass is VirtioDeviceClass rather than VirtIODevice.
+VirtIOPMEMClass's parent is VirtioDeviceClass rather than VirtIODevice.
 This isn't catastrophic only because sizeof(VirtIODevice) >
 sizeof(VirtioDeviceClass).
 
-Fixes: 910b25766b33 ("virtio-mem: Paravirtualized memory hot(un)plug")
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Fixes: 5f503cd9f388 ("virtio-pmem: add virtio device")
+Closes: https://lists.gnu.org/archive/html/qemu-devel/2025-06/msg00586.html
+Reported-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/virtio/virtio-mem.h | 2 +-
+ include/hw/virtio/virtio-pmem.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/virtio/virtio-mem.h b/include/hw/virtio/virtio-mem.h
-index bc4f787772..e0ab31b45a 100644
---- a/include/hw/virtio/virtio-mem.h
-+++ b/include/hw/virtio/virtio-mem.h
-@@ -134,7 +134,7 @@ struct VirtioMemSystemReset {
+diff --git a/include/hw/virtio/virtio-pmem.h b/include/hw/virtio/virtio-pmem.h
+index fc4fd1f7fe..9cce600d0b 100644
+--- a/include/hw/virtio/virtio-pmem.h
++++ b/include/hw/virtio/virtio-pmem.h
+@@ -36,7 +36,7 @@ struct VirtIOPMEM {
  
- struct VirtIOMEMClass {
+ struct VirtIOPMEMClass {
      /* private */
 -    VirtIODevice parent;
 +    VirtioDeviceClass parent_class;
  
      /* public */
-     void (*fill_device_info)(const VirtIOMEM *vmen, VirtioMEMDeviceInfo *vi);
+     void (*fill_device_info)(const VirtIOPMEM *pmem, VirtioPMEMDeviceInfo *vi);
 -- 
 2.34.1
 
