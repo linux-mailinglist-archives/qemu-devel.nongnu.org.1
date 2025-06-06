@@ -2,66 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B12AACFF51
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 11:30:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CBB5ACFF4A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 11:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNTNE-0005qH-OE; Fri, 06 Jun 2025 05:28:28 -0400
+	id 1uNTNB-0005o9-G2; Fri, 06 Jun 2025 05:28:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uNTN3-0005n9-Br; Fri, 06 Jun 2025 05:28:18 -0400
+ id 1uNTN3-0005n8-AV
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 05:28:18 -0400
 Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uNTMw-0001AE-40; Fri, 06 Jun 2025 05:28:15 -0400
+ id 1uNTMx-0001A3-Ri
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 05:28:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749202091; x=1780738091;
+ t=1749202092; x=1780738092;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2ePIszT8vhUK6g6wYVAlRimUVB4HDL6I8i1MCH7XmJE=;
- b=mXothN+uN6KilGLRnetdrFcxAfcymwC+OlLKXvKJryYea022bvtOzZGz
- P4I95krVbwvJaC6rCB1a+wZyJeenIfcq1DtP0TJGLRpOoCqLNgxIYPM/B
- VrDsOmsaEugy+t+ZBe7Fcaex8gB/JTL9X/lXyk6TRcaiJlZBPfx0wMZhE
- +RC7Vt1TA71OZ45aKq+zmwTn0uN2cElEI5JYNLS5U80jon1RGgkYlFScP
- jBNfBg6U/53Vf5DSri1Hq3x5Hj7OJvPPk66fAbuh/30PQGVqbxvYZxL/7
- BmwJYrtHd3Uz6WxxBV+hKc7+0klXgJLQdXcW+yqW0cP73DrRZK5z9SPYW Q==;
-X-CSE-ConnectionGUID: V8dck0uLSH2FPAM4F9D3aw==
-X-CSE-MsgGUID: 73C6WmPgR9q6+6Y/4f+R5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="55154640"
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="55154640"
+ bh=Q1xJF8Ah52Uw0aW5slqBi90Q1Dc1bkj0gSplaCj/C9o=;
+ b=ZdwxsW9OGEQ3HwhetzsXeuKSeKpD/rD92E5EqIUqEgYaYU2SCSKedB56
+ 6dYxZWKPZJmYchhGwlSMAmzNk7Uqzpr99BURbG1KBK9DUiZ2DWmt8H0Yv
+ r7eC0eSj/FJlQiyppVSbbe2W0Muoc0bw5sELJ9xLQd2oChAfxVV2XBoWN
+ sWqNw4o6pDLAENpg0U4eB5ymIcM+mO37357Cx8ISAxIhxvxtuI1EJqLik
+ bBss28qZDCD9TnE/XBWHSIZ39dm/1KLcmPRb6s7ZJXn6CXwMDS/cvOZCg
+ R02q5rtw/wsRW0mF4LFJHCZxMjuH4q8CsWG/KZ2aEO7tM3OIVurSK7vhZ g==;
+X-CSE-ConnectionGUID: 2vyaXakpTYiGQMkwV57krQ==
+X-CSE-MsgGUID: 6/ohapU0RPaiPyNNrtb1zw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="55154654"
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="55154654"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 02:28:03 -0700
-X-CSE-ConnectionGUID: zBWB2QWuRxmXX5DQK84FSQ==
-X-CSE-MsgGUID: CuSblt6HR3mqDKjBqDsTQg==
+ 06 Jun 2025 02:28:06 -0700
+X-CSE-ConnectionGUID: fDIAfB33T620Eid2LPajcw==
+X-CSE-MsgGUID: T0FLjf4JQueofwAbtEc4Zw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="145706189"
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="145706195"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 02:27:59 -0700
+ 06 Jun 2025 02:28:03 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: chao.p.peng@intel.com, david@redhat.com, armbru@redhat.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org (open list:ASPEED BMCs)
-Subject: [PATCH v4 3/5] hw/gpio/aspeed: Fix definition of AspeedGPIOClass
-Date: Fri,  6 Jun 2025 17:24:04 +0800
-Message-Id: <20250606092406.229833-4-zhenzhong.duan@intel.com>
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v4 4/5] hw/char/sh_serial: Remove dummy definition of
+ SH_SERIAL class
+Date: Fri,  6 Jun 2025 17:24:05 +0800
+Message-Id: <20250606092406.229833-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250606092406.229833-1-zhenzhong.duan@intel.com>
 References: <20250606092406.229833-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.14;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -72,7 +70,7 @@ X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,33 +86,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AspeedGPIOClass's parent is SysBusDeviceClass rather than SysBusDevice.
-This isn't catastrophic only because sizeof(SysBusDevice) >
-sizeof(SysBusDeviceClass).
+SH_SERIAL is declared with OBJECT_DECLARE_SIMPLE_TYPE but defined with
+OBJECT_DEFINE_TYPE, SHSerialStateClass is also a dummy class which
+missed its parent.
 
-Fixes: 4b7f956862dc ("hw/gpio: Add basic Aspeed GPIO model for AST2400 and AST2500")
+Change to use OBJECT_DEFINE_SIMPLE_TYPE and remove SHSerialStateClass.
+
 Closes: https://lists.gnu.org/archive/html/qemu-devel/2025-06/msg00586.html
 Suggested-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/gpio/aspeed_gpio.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/char/sh_serial.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/hw/gpio/aspeed_gpio.h b/include/hw/gpio/aspeed_gpio.h
-index e1e6c54333..e6b2fe71b5 100644
---- a/include/hw/gpio/aspeed_gpio.h
-+++ b/include/hw/gpio/aspeed_gpio.h
-@@ -70,7 +70,7 @@ typedef struct AspeedGPIOReg {
- } AspeedGPIOReg;
+diff --git a/hw/char/sh_serial.c b/hw/char/sh_serial.c
+index 6abd80386f..8ccc2234ba 100644
+--- a/hw/char/sh_serial.c
++++ b/hw/char/sh_serial.c
+@@ -78,9 +78,7 @@ struct SHSerialState {
+     qemu_irq bri;
+ };
  
- struct AspeedGPIOClass {
--    SysBusDevice parent_obj;
-+    SysBusDeviceClass parent_class;
-     const GPIOSetProperties *props;
-     uint32_t nr_gpio_pins;
-     uint32_t nr_gpio_sets;
+-typedef struct {} SHSerialStateClass;
+-
+-OBJECT_DEFINE_TYPE(SHSerialState, sh_serial, SH_SERIAL, SYS_BUS_DEVICE)
++OBJECT_DEFINE_SIMPLE_TYPE(SHSerialState, sh_serial, SH_SERIAL, SYS_BUS_DEVICE)
+ 
+ static void sh_serial_clear_fifo(SHSerialState *s)
+ {
 -- 
 2.34.1
 
