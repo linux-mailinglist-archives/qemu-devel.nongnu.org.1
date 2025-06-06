@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B76FAD0265
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0176AD024B
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:36:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNWHv-0002Qr-KK; Fri, 06 Jun 2025 08:35:11 -0400
+	id 1uNWHw-0002T9-Hq; Fri, 06 Jun 2025 08:35:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWHr-0002QZ-Nw
+ id 1uNWHr-0002QY-Bm
  for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWHl-0005cC-BN
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:07 -0400
+ id 1uNWHp-0005dG-09
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749213300;
+ s=mimecast20190719; t=1749213302;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uFozPSq0Nxq/m+LlcuCwjfLALKFKRR7FnzLY+vop8P0=;
- b=YLeaaOfzmGdrVIvrmQMrjF5RQFJUjgnYjLzGFr2BDK3ONHLL51OkXW7wSEcU/sWmbDeUym
- Xfm2K8kxznsz03pxZEm0Fy0WPD3EtFg9w6l/37yf1nzsbabFpctyveFci+HfjvSVhmt/ec
- b0D0Ug56sS3B+k5Ay4QLbAmGPF24/yE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ucBnDbok7v6Mu7KPseGvFTjV3duwh5RlIILFahRdtRA=;
+ b=RrWv9Xsh/CEzAHxzzx7xZl64YKDPOaNIb72OPPihT75GJ5PJH5NrFn6yIyrctIAy7ECUZS
+ psn6yTdPGJgxPjDMQdxEyKGofo+LCOP9B1JSfH0y0mGmyQpl3w1Bf9Xq+NU+7wz8EtG35P
+ YEZMqUUn7l8lWLIcKuv+MG6mPgzpsg8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-288-g-wSKDH9PAKaHZNPDgLBsA-1; Fri, 06 Jun 2025 08:34:59 -0400
-X-MC-Unique: g-wSKDH9PAKaHZNPDgLBsA-1
-X-Mimecast-MFC-AGG-ID: g-wSKDH9PAKaHZNPDgLBsA_1749213298
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a4eee2398bso1035860f8f.1
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:34:58 -0700 (PDT)
+ us-mta-375-uGSd6W-4M6GfS5KEoQSNGw-1; Fri, 06 Jun 2025 08:35:01 -0400
+X-MC-Unique: uGSd6W-4M6GfS5KEoQSNGw-1
+X-Mimecast-MFC-AGG-ID: uGSd6W-4M6GfS5KEoQSNGw_1749213300
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-451e24dfe1dso16465635e9.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:35:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749213297; x=1749818097;
+ d=1e100.net; s=20230601; t=1749213300; x=1749818100;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uFozPSq0Nxq/m+LlcuCwjfLALKFKRR7FnzLY+vop8P0=;
- b=n5EAPy+1I4PPh4GFdXX+NuWTas0b0LkgU4NdaxOVrBPpXG4EB//c3I8qrsZe877KwX
- Bc0IrQu+ufY56OuCmp1v3ji8/8I57qlTAxh3cupjTAH4Bps3QObLmrAN0gQ0PwfQKQtc
- XNqkvojhKU2MWYkBeGVrctH9FYIMgzcwAzxCANUYfAi6kza6PHdp0k6IpNjhOUmxgsc6
- 7tWvuraf/APFlwtXg31NU7dosOZuyCVofrWYgrKhOu+D4uYOWni/Nbmg20nQLx5p5CEg
- /o1KCMA6LVuuIZQhhevG8PRgpHAY6Ka8b7XSwRRnAw3cAjUm288JeEt2K0yO//+clpkA
- 5mkg==
-X-Gm-Message-State: AOJu0YyX/cjpV0zFzHkU/+N8VjejA2aVAw2IfG5rEyyVhBC0g0AngtlV
- /7gKPwIOpQ3g1KMj8pgfLZtAakBJnuICdLg/snswjlknDBy1kzX+oG8KfROiRYENIysnt0R3R5A
- 1PGy6eULOTc78/OgkanXMWfn1oN4OAVg23POwdWORNTUaz9zrtbHM6G1sMcPrckYrkvK+mkt49r
- WgthZ8SnhCGbuMTRhFq4yCi+R58kTDSM/YAauq/1JX
-X-Gm-Gg: ASbGncuuIGKihfKtfqn2NH/YEW6etHdFHG/17V2kyIEqwxlut3knhAnSXz55fYmeO12
- C+opGsZf7KtxJx/9mD33hbDYg6qse//weHUVJBpVfRzPXX5tHBBV070SE+sWFgHeTaREosY12Mb
- HfRXV27nwcOwkqpZRqceXE128x91VPhvdpFx8P70dDcEq1uxQ1S/IGN4m0w9AQnIWEyOtCnt8Bt
- NrQZoBmvYPDNKlXbrJRIjnHB92WI1VK5aWJlIR9kHvursqK62v94ebhQpmK45zrEBTcJI6MMPkI
- 90UXGVimLC38qtr0Ib5ale3g
-X-Received: by 2002:a05:6000:144d:b0:3a4:fc3f:8d5b with SMTP id
- ffacd0b85a97d-3a531cb76c5mr2640149f8f.47.1749213296882; 
- Fri, 06 Jun 2025 05:34:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMh7adJiaQmyF/iKcuRiJrYdOVV0Fh+95zUOOwdim/tIy+A5OoAptCApWuDVvu6947VIhdqg==
-X-Received: by 2002:a05:6000:144d:b0:3a4:fc3f:8d5b with SMTP id
- ffacd0b85a97d-3a531cb76c5mr2640127f8f.47.1749213296366; 
- Fri, 06 Jun 2025 05:34:56 -0700 (PDT)
+ bh=ucBnDbok7v6Mu7KPseGvFTjV3duwh5RlIILFahRdtRA=;
+ b=LxnMWOe6nYOz6S6zEvB2tDnpNLvm5hEkFm9I3c2MsSfu9iE3XrGheskcuIje9JcVOe
+ qAQ+DGFC9bHQxH6ie/AkVPie3cg5bDsU5GItQD8ZMwdw+/C7kyPdlNllEEG2rGi7V6Sl
+ dkvmASiGcyGJ27mmUzHZIpujUK+YznAntFomIy3i0nvjpSn5D5ngrz63MIF+rR9M7XgL
+ GsPjV7U3NTLMQFroyTyFCaN1n9/YbcrOuer15WAdZSsJEoiyELDy9w0/suIMGqSIYuz5
+ eQqDDsiojUd+BsYEP8mn0v0PBiWaGCfOg8+zDWuoTYwWus9k9mRnO0+eAsg0LWFHxHEw
+ CKuw==
+X-Gm-Message-State: AOJu0YwaeolonH6pnC4ybIzBiixRAylt8rGdYgijlxkzcU1ezezZ/TZn
+ onuO39Rd0jLqliGM2UkBn4bVkRqxf5+xlk6ovbb70a73GULCmnPCk8B+pUjYubTsctE+vaMQIxs
+ bU04pLLrr39NzbBVF7wyRA9KeXi5XUjAj6OZZAO8TAU9txmzb/L/6IaGAH9Dy/r3HFLqlgjULji
+ nTFamxqOtEJhpWrnYH3eGwgIuCmvLizJZJlAxllClo
+X-Gm-Gg: ASbGncs1jYo85671NGoN4kdn/FO3GIVpmBVkauNXcPtfDkb2bIjmDCtAEyXldAtO41F
+ SfldSCf/0wd2eUohqrJZnKuTJksfHKnJnxjvlaZq7YvlaHxd/CEKr3ah4yldknnTn5q3khKhIIm
+ aSm9kTKNU2PZiZjtb1v70QFLfxRtqyE4/nvQw9lA6wl7ca7c7Wp+Y6TuKrnI07Um4BK3x/5u1ls
+ 1zbJOM4IlVik9qv53s572tETC0USatE8vN5LlDhckZsKRGBFI1lGXSE10n9d18QX6B4oYryMBkN
+ KPBxyacdk6tRTQ==
+X-Received: by 2002:a05:600c:1909:b0:442:cd03:3e2 with SMTP id
+ 5b1f17b1804b1-45201437a77mr37750875e9.2.1749213299832; 
+ Fri, 06 Jun 2025 05:34:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG/Grsk6/PFJ/noJL+P4cP/Gu1gNswRy5VULEKnHCuVU90SO2t5ZvOfS8DDQ8BlJDnh8/FdXg==
+X-Received: by 2002:a05:600c:1909:b0:442:cd03:3e2 with SMTP id
+ 5b1f17b1804b1-45201437a77mr37750625e9.2.1749213299260; 
+ Fri, 06 Jun 2025 05:34:59 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a53229de0csm1747307f8f.1.2025.06.06.05.34.53
+ ffacd0b85a97d-3a5323ae183sm1802889f8f.32.2025.06.06.05.34.57
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Jun 2025 05:34:53 -0700 (PDT)
+ Fri, 06 Jun 2025 05:34:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 02/31] subprojects: add the foreign crate
-Date: Fri,  6 Jun 2025 14:34:16 +0200
-Message-ID: <20250606123447.538131-3-pbonzini@redhat.com>
+Subject: [PULL 03/31] util/error: expose Error definition to Rust code
+Date: Fri,  6 Jun 2025 14:34:17 +0200
+Message-ID: <20250606123447.538131-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250606123447.538131-1-pbonzini@redhat.com>
 References: <20250606123447.538131-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -106,145 +106,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a cleaned up and separated version of the patches at
-https://lore.kernel.org/all/20240701145853.1394967-4-pbonzini@redhat.com/
-https://lore.kernel.org/all/20240701145853.1394967-5-pbonzini@redhat.com/
+This is used to preserve the file and line in a roundtrip from
+C Error to Rust and back to C.
 
-Its first user will be the Error bindings; for example a QEMU Error ** can be
-converted to a Rust Option using
-
-     unsafe { Option::<Error>::from_foreign(c_error) }
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/meson.build                              |  2 ++
- rust/qemu-api/meson.build                     |  2 +-
- scripts/archive-source.sh                     |  3 ++-
- scripts/make-release                          |  3 ++-
- subprojects/.gitignore                        |  1 +
- subprojects/foreign-0.3-rs.wrap               |  7 +++++
- .../packagefiles/foreign-0.3-rs/meson.build   | 26 +++++++++++++++++++
- 7 files changed, 41 insertions(+), 3 deletions(-)
- create mode 100644 subprojects/foreign-0.3-rs.wrap
- create mode 100644 subprojects/packagefiles/foreign-0.3-rs/meson.build
+ include/qapi/error-internal.h | 26 ++++++++++++++++++++++++++
+ rust/wrapper.h                |  1 +
+ util/error.c                  | 10 +---------
+ 3 files changed, 28 insertions(+), 9 deletions(-)
+ create mode 100644 include/qapi/error-internal.h
 
-diff --git a/rust/meson.build b/rust/meson.build
-index f752a064649..99ae7956cd0 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -1,11 +1,13 @@
- subproject('anyhow-1-rs', required: true)
- subproject('bilge-0.2-rs', required: true)
- subproject('bilge-impl-0.2-rs', required: true)
-+subproject('foreign-0.3-rs', required: true)
- subproject('libc-0.2-rs', required: true)
- 
- anyhow_rs = dependency('anyhow-1-rs')
- bilge_rs = dependency('bilge-0.2-rs')
- bilge_impl_rs = dependency('bilge-impl-0.2-rs')
-+foreign_rs = dependency('foreign-0.3-rs')
- libc_rs = dependency('libc-0.2-rs')
- 
- subproject('proc-macro2-1-rs', required: true)
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index da70720e4c1..2f0f3b2aae1 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -35,7 +35,7 @@ _qemu_api_rs = static_library(
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
-   rust_args: _qemu_api_cfg,
--  dependencies: [anyhow_rs, libc_rs, qemu_api_macros, qemuutil_rs,
-+  dependencies: [anyhow_rs, foreign_rs, libc_rs, qemu_api_macros, qemuutil_rs,
-                  qom, hwcore, chardev, migration],
- )
- 
-diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
-index 816062fee94..035828c532e 100755
---- a/scripts/archive-source.sh
-+++ b/scripts/archive-source.sh
-@@ -28,7 +28,8 @@ sub_file="${sub_tdir}/submodule.tar"
- # different to the host OS.
- subprojects="keycodemapdb libvfio-user berkeley-softfloat-3
-   berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
--  bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
-+  bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
-+  libc-0.2-rs proc-macro2-1-rs
-   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
-   syn-2-rs unicode-ident-1-rs"
- sub_deinit=""
-diff --git a/scripts/make-release b/scripts/make-release
-index ea65bdcc0cf..4509a9fabf5 100755
---- a/scripts/make-release
-+++ b/scripts/make-release
-@@ -41,7 +41,8 @@ fi
- # Only include wraps that are invoked with subproject()
- SUBPROJECTS="libvfio-user keycodemapdb berkeley-softfloat-3
-   berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
--  bilge-impl-0.2-rs either-1-rs itertools-0.11-rs libc-0.2-rs proc-macro2-1-rs
-+  bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
-+  libc-0.2-rs proc-macro2-1-rs
-   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
-   syn-2-rs unicode-ident-1-rs"
- 
-diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index b9ae507b85a..f4281934ce1 100644
---- a/subprojects/.gitignore
-+++ b/subprojects/.gitignore
-@@ -11,6 +11,7 @@
- /bilge-0.2.0
- /bilge-impl-0.2.0
- /either-1.12.0
-+/foreign-0.3.1
- /itertools-0.11.0
- /libc-0.2.162
- /proc-macro-error-1.0.4
-diff --git a/subprojects/foreign-0.3-rs.wrap b/subprojects/foreign-0.3-rs.wrap
+diff --git a/include/qapi/error-internal.h b/include/qapi/error-internal.h
 new file mode 100644
-index 00000000000..0d218ec2c25
+index 00000000000..d5c3904adec
 --- /dev/null
-+++ b/subprojects/foreign-0.3-rs.wrap
-@@ -0,0 +1,7 @@
-+[wrap-file]
-+directory = foreign-0.3.1
-+source_url = https://crates.io/api/v1/crates/foreign/0.3.1/download
-+source_filename = foreign-0.3.1.tar.gz
-+source_hash = 17ca1b5be8c9d320daf386f1809c7acc0cb09accbae795c2001953fa50585846
-+#method = cargo
-+patch_directory = foreign-0.3-rs
-diff --git a/subprojects/packagefiles/foreign-0.3-rs/meson.build b/subprojects/packagefiles/foreign-0.3-rs/meson.build
-new file mode 100644
-index 00000000000..0901c02c527
---- /dev/null
-+++ b/subprojects/packagefiles/foreign-0.3-rs/meson.build
++++ b/include/qapi/error-internal.h
 @@ -0,0 +1,26 @@
-+project('foreign-0.3-rs', 'rust',
-+  meson_version: '>=1.5.0',
-+  version: '0.2.0',
-+  license: 'MIT OR Apache-2.0',
-+  default_options: [])
++/*
++ * QEMU Error Objects - struct definition
++ *
++ * Copyright IBM, Corp. 2011
++ * Copyright (C) 2011-2015 Red Hat, Inc.
++ *
++ * Authors:
++ *  Anthony Liguori   <aliguori@us.ibm.com>
++ *  Markus Armbruster <armbru@redhat.com>,
++ *
++ * This work is licensed under the terms of the GNU LGPL, version 2.  See
++ * the COPYING.LIB file in the top-level directory.
++ */
 +
-+subproject('libc-0.2-rs', required: true)
-+libc_rs = dependency('libc-0.2-rs')
++#ifndef QAPI_ERROR_INTERNAL_H
 +
-+_foreign_rs = static_library(
-+  'foreign',
-+  files('src/lib.rs'),
-+  gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-+  rust_abi: 'rust',
-+  rust_args: [
-+    '--cap-lints', 'allow',
-+  ],
-+  dependencies: [libc_rs],
-+)
++struct Error
++{
++    char *msg;
++    ErrorClass err_class;
++    const char *src, *func;
++    int line;
++    GString *hint;
++};
 +
-+foreign_dep = declare_dependency(
-+  link_with: _foreign_rs,
-+)
-+
-+meson.override_dependency('foreign-0.3-rs', foreign_dep)
++#endif
+diff --git a/rust/wrapper.h b/rust/wrapper.h
+index beddd9aab2f..6060d3ba1ab 100644
+--- a/rust/wrapper.h
++++ b/rust/wrapper.h
+@@ -60,6 +60,7 @@ typedef enum memory_order {
+ #include "hw/qdev-properties-system.h"
+ #include "hw/irq.h"
+ #include "qapi/error.h"
++#include "qapi/error-internal.h"
+ #include "migration/vmstate.h"
+ #include "chardev/char-serial.h"
+ #include "exec/memattrs.h"
+diff --git a/util/error.c b/util/error.c
+index 673011b89e9..e5bcb7c0225 100644
+--- a/util/error.c
++++ b/util/error.c
+@@ -15,15 +15,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+-
+-struct Error
+-{
+-    char *msg;
+-    ErrorClass err_class;
+-    const char *src, *func;
+-    int line;
+-    GString *hint;
+-};
++#include "qapi/error-internal.h"
+ 
+ Error *error_abort;
+ Error *error_fatal;
 -- 
 2.49.0
 
