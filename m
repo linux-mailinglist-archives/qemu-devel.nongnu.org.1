@@ -2,59 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F98AD023A
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C39CAD025D
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:39:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNWDC-0000sx-LU; Fri, 06 Jun 2025 08:30:18 -0400
+	id 1uNWHq-0002Pq-Io; Fri, 06 Jun 2025 08:35:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1uNWDA-0000qm-3J
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:30:16 -0400
-Received: from mx.treblig.org ([2a00:1098:5b::1])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uNWHn-0002PX-46
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1uNWCx-0004wA-3p
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:30:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=TP9zixZc6p07lO6UHxKLDUvYWlj6E2NNyB/0TPwLe1M=; b=mfgoESb3+WRUHZj1
- dzcYoyZYdBBx405BSPdW/MHgInHMgRMVO8lnEjhBk1dwoZjCkQ9Li7rjgvlJVCHamfUDkJX9ZssNj
- fc7HmngbrOZski5wk1JdBki6oAXlQQhmj2VKjed1t6SGf7w+8oU1e+sXAGWwnaQGYncVBn/VuiA0t
- q6FjU8MffD2UuwLyBTSuxSC83qqzURvWBAmFpupjJ5SAv7sp+kLqI1/eBqfQlqQv79lIKNdVdFhy0
- bW8R8kwHmqNZbO6P9NdtzakjR/Za6rUozjU4SRxVw29m7yp5+SJbGUSlOM4+YF7XEJD4DECjRb1eR
- P8sgg/kluKluvagVYg==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
- (envelope-from <dg@treblig.org>) id 1uNWCk-0082bL-2P;
- Fri, 06 Jun 2025 12:29:50 +0000
-Date: Fri, 6 Jun 2025 12:29:50 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Babu Moger <babu.moger@amd.com>
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, davydov-max@yandex-team.ru
-Subject: Re: [PATCH v7 4/6] target/i386: Add couple of feature bits in
- CPUID_Fn80000021_EAX
-Message-ID: <aELfPr7snDmIirNk@gallifrey>
-References: <cover.1746734284.git.babu.moger@amd.com>
- <a5f6283a59579b09ac345b3f21ecb3b3b2d92451.1746734284.git.babu.moger@amd.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uNWHg-0005a3-Cy
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749213293;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=GFT03fcVdCBPNH84iXV0ut6Ea/ANt9t4v0l5zOU9j1A=;
+ b=Q00GeohBujVm69T3piqfJ2QAj/KnJuDH90J7FMlu68hE3sP2INBplxd/1HWBL8/Ywl81qB
+ c7HAqzompIMHd5nvaLlAG2//tWd8STiH128+1SJMSARe5TZRpQjqPHXZnhQbT43vJaJ86D
+ TTM4it7nVvO/cdhT+D7hfb0p13NNbxY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-304-cf15VCUiMBGbgZL-ZCid_Q-1; Fri, 06 Jun 2025 08:34:52 -0400
+X-MC-Unique: cf15VCUiMBGbgZL-ZCid_Q-1
+X-Mimecast-MFC-AGG-ID: cf15VCUiMBGbgZL-ZCid_Q_1749213291
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43eea5a5d80so11361945e9.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:34:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749213290; x=1749818090;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GFT03fcVdCBPNH84iXV0ut6Ea/ANt9t4v0l5zOU9j1A=;
+ b=axhQeoLqyoRUe2E3tH9UU9SZxyyvBRtXPDdbeJep+R6dI3Pis1XPPN/2BsIsOvqesD
+ Dqq6yqRQnZVPQVKtxj+azjopSP0XROOOioyDw7Qe1aHf0txS6AfgAO5WWibc6HbbLXZL
+ QkuJ4ojo7056b+zzCVDIkkMEC9vi3OA3uDMJhwVZdegXmwPJ/4ITJUfmr9wRwrX0nXsZ
+ hD9+ryrv+tOo/X08nPg/OWEimQfy8DUruHwqEfIOpGb8ImJsYbtAYqTlVUO2soklpdWe
+ Ls3VFuif7G6/OEI/6jJ/wtueXhLubeRJspElzrC+1uaPFtjLCvJxFOFMAtsLHhp+JCAH
+ I/Qg==
+X-Gm-Message-State: AOJu0Yw07RROK7gblUI9Q85WG+azL7ZzlQUNU0N8qUciST4j+oppTyCG
+ ajZOk8qTWDEkCCgtPwdCsqCbMJ/6rihWxhBqijm9OqlekCj/1Zu/2nyi5mhTKPfu0YUyvLsO0lT
+ 9Q40r+t0r5cok7M6AijERAZw3vuGlokBbdGzS8bVnZivWx2/oohqcbR6gh3X2gRrEldolQiCJSE
+ GhSKQYrpkC9SwVmeXwBvKsFv60urmA0wAIjxEluR8q
+X-Gm-Gg: ASbGncvQMHAskGaaioaWMcOvQJr5ZrTnpfvLVKLXL2oMH2X58WMBvw3qpEz4OOccCQn
+ 3wJKsjeGJ0n07VKuYK4ppFFIeEQ8bxTWcpRwe3dZb+RS30kh7Q/mTnWSl/BVDrAQv8WWS0Q8CIB
+ SQsfK3DASak411RkytyBzacslqwGZJjIPbGgU3k6HZYBqXa3n2CMCiSewMuRKunpE36copKQFMJ
+ AM7+8lK69ahLruahKnkocGKqAX7BzkltT4SD2Yo3KVUC9MBQVGHpN4Si9FtXGLkAL9FQMpEfTdP
+ +XDHX96lAOc6GjDBnmOelDGO
+X-Received: by 2002:a05:600c:1c99:b0:44a:b793:9e4f with SMTP id
+ 5b1f17b1804b1-4520143724fmr28490745e9.19.1749213290248; 
+ Fri, 06 Jun 2025 05:34:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMYizOQEw61QO/2MSSdQ3fgfaBp/WY9/Q/RXGc0Ghoq0oWJn2sgRwTt6QTcarIo6ZgFH2m3w==
+X-Received: by 2002:a05:600c:1c99:b0:44a:b793:9e4f with SMTP id
+ 5b1f17b1804b1-4520143724fmr28490455e9.19.1749213289618; 
+ Fri, 06 Jun 2025 05:34:49 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.64.79])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45209ce0b97sm22704255e9.9.2025.06.06.05.34.48
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Jun 2025 05:34:48 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/31] Threading, Rust, i386 changes for 2025-06-06
+Date: Fri,  6 Jun 2025 14:34:14 +0200
+Message-ID: <20250606123447.538131-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <a5f6283a59579b09ac345b3f21ecb3b3b2d92451.1746734284.git.babu.moger@amd.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
-X-Uptime: 12:28:21 up 39 days, 20:41,  2 users,  load average: 0.00, 0.01, 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.104,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,83 +103,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Babu Moger (babu.moger@amd.com) wrote:
-> Add CPUID bit indicates that a WRMSR to MSR_FS_BASE, MSR_GS_BASE, or
-> MSR_KERNEL_GS_BASE is non-serializing amd PREFETCHI that the indicates
-> support for IC prefetch.
-> 
-> CPUID_Fn80000021_EAX
-> Bit    Feature description
-> 20     Indicates support for IC prefetch.
-> 1      FsGsKernelGsBaseNonSerializing.
+The following changes since commit f8a113701dd2d28f3bedb216e59125ddcb77fd05:
 
-I'm curious about this:
-  a) Is this new CPUs are non-serialising on that write?
-  b) If so, what happens if you run existing kernels/firmware on them?
-  c) Bonus migration question; what happens if you live migrate from a host
-     that claims to be serialising to one that has the extra non-serialising
-     flag but is disabled in the emulated CPU model.
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-06-04 11:43:31 -0400)
 
-Dave
+are available in the Git repository at:
 
->        WRMSR to FS_BASE, GS_BASE and KernelGSbase are non-serializing.
-> 
-> Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
-> Reviewed-by: Maksim Davydov <davydov-max@yandex-team.ru>
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
->  target/i386/cpu.c | 4 ++--
->  target/i386/cpu.h | 4 ++++
->  2 files changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 98fad3a2f9..741be0eaa8 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -1239,12 +1239,12 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
->      [FEAT_8000_0021_EAX] = {
->          .type = CPUID_FEATURE_WORD,
->          .feat_names = {
-> -            "no-nested-data-bp", NULL, "lfence-always-serializing", NULL,
-> +            "no-nested-data-bp", "fs-gs-base-ns", "lfence-always-serializing", NULL,
->              NULL, NULL, "null-sel-clr-base", NULL,
->              "auto-ibrs", NULL, NULL, NULL,
->              NULL, NULL, NULL, NULL,
->              NULL, NULL, NULL, NULL,
-> -            NULL, NULL, NULL, NULL,
-> +            "prefetchi", NULL, NULL, NULL,
->              "eraps", NULL, NULL, "sbpb",
->              "ibpb-brtype", "srso-no", "srso-user-kernel-no", NULL,
->          },
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 4f8ed8868e..d251e32ae9 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -1070,12 +1070,16 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
->  
->  /* Processor ignores nested data breakpoints */
->  #define CPUID_8000_0021_EAX_NO_NESTED_DATA_BP            (1U << 0)
-> +/* WRMSR to FS_BASE, GS_BASE, or KERNEL_GS_BASE is non-serializing */
-> +#define CPUID_8000_0021_EAX_FS_GS_BASE_NS                (1U << 1)
->  /* LFENCE is always serializing */
->  #define CPUID_8000_0021_EAX_LFENCE_ALWAYS_SERIALIZING    (1U << 2)
->  /* Null Selector Clears Base */
->  #define CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE            (1U << 6)
->  /* Automatic IBRS */
->  #define CPUID_8000_0021_EAX_AUTO_IBRS                    (1U << 8)
-> +/* Indicates support for IC prefetch */
-> +#define CPUID_8000_0021_EAX_PREFETCHI                    (1U << 20)
->  /* Enhanced Return Address Predictor Scurity */
->  #define CPUID_8000_0021_EAX_ERAPS                        (1U << 24)
->  /* Selective Branch Predictor Barrier */
-> -- 
-> 2.34.1
-> 
-> 
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 3f9bdfb0dc8162cbc080c868625336178ddcda56:
+
+  tests/tcg/x86_64/fma: add test for exact-denormal output (2025-06-06 14:32:55 +0200)
+
+----------------------------------------------------------------
+* futex: support Windows
+* qemu-thread: Avoid futex abstraction for non-Linux
+* migration, hw/display/apple-gfx: replace QemuSemaphore with QemuEvent
+* rust: bindings for Error
+* hpet, rust/hpet: return errors from realize if properties are incorrect
+* rust/hpet: Drop BqlCell wrapper for num_timers
+* target/i386: Emulate ftz and denormal flag bits correctly
+* i386/kvm: Prefault memory on page state change
+
+----------------------------------------------------------------
+Akihiko Odaki (11):
+      futex: Check value after qemu_futex_wait()
+      futex: Support Windows
+      qemu-thread: Replace __linux__ with CONFIG_LINUX
+      qemu-thread: Avoid futex abstraction for non-Linux
+      qemu-thread: Use futex for QemuEvent on Windows
+      qemu-thread: Use futex if available for QemuLockCnt
+      qemu-thread: Document QemuEvent
+      migration: Replace QemuSemaphore with QemuEvent
+      migration/colo: Replace QemuSemaphore with QemuEvent
+      migration/postcopy: Replace QemuSemaphore with QemuEvent
+      hw/display/apple-gfx: Replace QemuSemaphore with QemuEvent
+
+Paolo Bonzini (14):
+      subprojects: add the anyhow crate
+      subprojects: add the foreign crate
+      util/error: expose Error definition to Rust code
+      util/error: allow non-NUL-terminated err->src
+      util/error: make func optional
+      rust: qemu-api: add bindings to Error
+      rust: qemu-api: add tests for Error bindings
+      rust: qdev: support returning errors from realize
+      rust/hpet: change type of num_timers to usize
+      hpet: adjust VMState for consistency with Rust version
+      hpet: return errors from realize if properties are incorrect
+      rust/hpet: return errors from realize if properties are incorrect
+      docs: update Rust module status
+      rust: make TryFrom macro more resilient
+
+Peter Maydell (4):
+      target/i386: Detect flush-to-zero after rounding
+      target/i386: Use correct type for get_float_exception_flags() values
+      target/i386: Wire up MXCSR.DE and FPUS.DE correctly
+      tests/tcg/x86_64/fma: add test for exact-denormal output
+
+Tom Lendacky (1):
+      i386/kvm: Prefault memory on page state change
+
+Zhao Liu (1):
+      rust/hpet: Drop BqlCell wrapper for num_timers
+
+ docs/devel/rust.rst                                |   7 +-
+ meson.build                                        |   7 +
+ include/qapi/error-internal.h                      |  35 ++
+ include/qemu/futex.h                               |  44 ++-
+ include/qemu/lockcnt.h                             |   2 +-
+ include/qemu/thread-posix.h                        |   9 -
+ include/qemu/thread-win32.h                        |   6 -
+ include/qemu/thread.h                              |  21 +-
+ include/system/kvm.h                               |   1 +
+ migration/migration.h                              |  12 +-
+ rust/wrapper.h                                     |   1 +
+ target/i386/ops_sse.h                              |  16 +-
+ accel/kvm/kvm-all.c                                |   2 +
+ hw/timer/hpet.c                                    |  21 +-
+ migration/colo.c                                   |  20 +-
+ migration/migration.c                              |  21 +-
+ migration/postcopy-ram.c                           |  10 +-
+ migration/savevm.c                                 |   2 +-
+ target/i386/kvm/kvm.c                              |  31 +-
+ target/i386/tcg/fpu_helper.c                       | 101 +++--
+ tests/tcg/x86_64/fma.c                             |  17 +-
+ tests/unit/test-aio-multithread.c                  |   6 +-
+ util/error.c                                       |  20 +-
+ util/event.c                                       | 171 +++++++++
+ util/lockcnt.c                                     |   9 +-
+ util/qemu-thread-posix.c                           | 148 --------
+ util/qemu-thread-win32.c                           | 129 -------
+ hw/display/apple-gfx.m                             |  10 +-
+ rust/Cargo.lock                                    |  17 +
+ rust/Cargo.toml                                    |   1 +
+ rust/hw/char/pl011/src/device.rs                   |   5 +-
+ rust/hw/timer/hpet/src/device.rs                   |  62 ++-
+ rust/hw/timer/hpet/src/fw_cfg.rs                   |   7 +-
+ rust/meson.build                                   |   4 +
+ rust/qemu-api-macros/src/lib.rs                    |   7 +-
+ rust/qemu-api/Cargo.toml                           |   2 +
+ rust/qemu-api/meson.build                          |   3 +-
+ rust/qemu-api/src/error.rs                         | 416 +++++++++++++++++++++
+ rust/qemu-api/src/lib.rs                           |   3 +
+ rust/qemu-api/src/qdev.rs                          |  12 +-
+ scripts/archive-source.sh                          |   5 +-
+ scripts/make-release                               |   5 +-
+ subprojects/.gitignore                             |   2 +
+ subprojects/anyhow-1-rs.wrap                       |   7 +
+ subprojects/foreign-0.3-rs.wrap                    |   7 +
+ subprojects/packagefiles/anyhow-1-rs/meson.build   |  33 ++
+ .../packagefiles/foreign-0.3-rs/meson.build        |  26 ++
+ util/meson.build                                   |   3 +-
+ 48 files changed, 1018 insertions(+), 488 deletions(-)
+ create mode 100644 include/qapi/error-internal.h
+ create mode 100644 util/event.c
+ create mode 100644 rust/qemu-api/src/error.rs
+ create mode 100644 subprojects/anyhow-1-rs.wrap
+ create mode 100644 subprojects/foreign-0.3-rs.wrap
+ create mode 100644 subprojects/packagefiles/anyhow-1-rs/meson.build
+ create mode 100644 subprojects/packagefiles/foreign-0.3-rs/meson.build
 -- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+2.49.0
+
 
