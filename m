@@ -2,79 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15708AD0005
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 12:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BC5AD0014
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 12:09:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNTvc-0006nF-Dp; Fri, 06 Jun 2025 06:04:00 -0400
+	id 1uNTzn-0008DB-I2; Fri, 06 Jun 2025 06:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uNTvN-0006kF-6U
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:03:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uNTzk-0008Cy-Ug
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:08:17 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uNTvF-0006oR-EK
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:03:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749204215;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=kZ9L5EGOgNggAPnW4NLdvH93jxRhd3SyJXMcvelDHfw=;
- b=ADYmkFTCug4Tva6Wvia/M5yMyzS8W6F1EPKSVSxGCA9Vg5F0HXFS+ZEeO8UuFkV+wSHEYp
- o/k1ZckNERgSmEH9TlDWHVXQIiVnBulalgRrxPqiOrdylvSWElwKqBHwiQqYifiXRMSxZa
- FqH9QAc/vHgw1E69dMj2Bdt6eqvShF4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-XO_KVVytNAmpe8KJRITliQ-1; Fri,
- 06 Jun 2025 06:03:31 -0400
-X-MC-Unique: XO_KVVytNAmpe8KJRITliQ-1
-X-Mimecast-MFC-AGG-ID: XO_KVVytNAmpe8KJRITliQ_1749204210
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4C00D19560B2; Fri,  6 Jun 2025 10:03:30 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.55])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 00A60180035E; Fri,  6 Jun 2025 10:03:24 +0000 (UTC)
-Date: Fri, 6 Jun 2025 11:03:21 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Zhuoying Cai <zycai@linux.ibm.com>
-Cc: thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
- pbonzini@redhat.com, walling@linux.ibm.com, jjherne@linux.ibm.com,
- jrossi@linux.ibm.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, farman@linux.ibm.com, iii@linux.ibm.com,
- eblake@redhat.com, armbru@redhat.com, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 02/28] crypto/x509-utils: Add helper functions for
- certificate store
-Message-ID: <aEK86dSVDBGxguM8@redhat.com>
-References: <20250604215657.528142-1-zycai@linux.ibm.com>
- <20250604215657.528142-3-zycai@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uNTzg-0007Yu-RW
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 06:08:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749204493; x=1780740493;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=A88u28mt0bKFJUV/RTKwful70/8bb19NSOCtlBowFbQ=;
+ b=FwoucjviT95qktIdUkvSjGYr/u5q0DaKn9Y6mYTK7NLJGc1cE9jOLvYt
+ Ri8AzZr+udfZ0ZP+NgWIy5zU73P2o8Oz2tNQBeFRAv5wrLwnaQJoN/74I
+ KHeRjXqzhvHMzCcNzU9djn2ZNMOzFDTrNhhS/zgbDTP2mKKstjT2Y835k
+ W09dvjywGoWTR4GUnLWstoLEAfMU4MI/duFC2y9RnGuhsDZNlgYhJBsJe
+ ERkt0qAMbtcq+BTHrlsOVvyi9XRQEt8ANVmCYisloDrIXDnZUFDAsQuLy
+ 3jIOfmmFVwEjlsSAQKqiUJ3WHuKDjJc1K8aIHqRZtYDcjP3amSMKQpB5S w==;
+X-CSE-ConnectionGUID: aVc9NwK1TU2x8s6KMWd+2Q==
+X-CSE-MsgGUID: xTRc95mlTVK3GCRILBb1lw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="76747154"
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="76747154"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jun 2025 03:08:10 -0700
+X-CSE-ConnectionGUID: c4fblvZBS+qdhrdVJDHTmQ==
+X-CSE-MsgGUID: TtPIv0BqRCmYiSP1hvYlSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="146759030"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jun 2025 03:08:06 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com,
+ jgg@nvidia.com, nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
+ joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v1 00/15] intel_iommu: Enable stage-1 translation for
+ passthrough device
+Date: Fri,  6 Jun 2025 18:04:01 +0800
+Message-Id: <20250606100416.346132-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250604215657.528142-3-zycai@linux.ibm.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.7;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.132,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,311 +81,221 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 04, 2025 at 05:56:30PM -0400, Zhuoying Cai wrote:
-> Add helper functions for x509 certificate which will be used in the next
-> patch for the certificate store.
-> 
-> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
-> ---
->  crypto/meson.build          |   5 +-
->  crypto/x509-utils.c         | 166 ++++++++++++++++++++++++++++++++++++
->  include/crypto/x509-utils.h |  54 ++++++++++++
->  qapi/crypto.json            |  80 +++++++++++++++++
->  4 files changed, 301 insertions(+), 4 deletions(-)
-> 
-> diff --git a/crypto/meson.build b/crypto/meson.build
-> index 735635de1f..0614bfa914 100644
-> --- a/crypto/meson.build
-> +++ b/crypto/meson.build
-> @@ -22,12 +22,9 @@ crypto_ss.add(files(
->    'tlscredsx509.c',
->    'tlssession.c',
->    'rsakey.c',
-> +  'x509-utils.c',
->  ))
->  
-> -if gnutls.found()
-> -  crypto_ss.add(files('x509-utils.c'))
-> -endif
-> -
->  if nettle.found()
->    crypto_ss.add(nettle, files('hash-nettle.c', 'hmac-nettle.c', 'pbkdf-nettle.c'))
->    if hogweed.found()
-> diff --git a/crypto/x509-utils.c b/crypto/x509-utils.c
-> index 8bad00a51b..7a7f12c111 100644
-> --- a/crypto/x509-utils.c
-> +++ b/crypto/x509-utils.c
-> @@ -11,6 +11,8 @@
->  #include "qemu/osdep.h"
->  #include "qapi/error.h"
->  #include "crypto/x509-utils.h"
-> +
-> +#ifdef CONFIG_GNUTLS
->  #include <gnutls/gnutls.h>
->  #include <gnutls/crypto.h>
->  #include <gnutls/x509.h>
-> @@ -25,6 +27,109 @@ static const int qcrypto_to_gnutls_hash_alg_map[QCRYPTO_HASH_ALGO__MAX] = {
->      [QCRYPTO_HASH_ALGO_RIPEMD160] = GNUTLS_DIG_RMD160,
->  };
->  
-> +static const int qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS__MAX] = {
-> +    [QCRYPTO_KEYID_FLAGS_SHA1] = GNUTLS_KEYID_USE_SHA1,
-> +    [QCRYPTO_KEYID_FLAGS_SHA256] = GNUTLS_KEYID_USE_SHA256,
-> +    [QCRYPTO_KEYID_FLAGS_SHA512] = GNUTLS_KEYID_USE_SHA512,
-> +    [QCRYPTO_KEYID_FLAGS_BEST_KNOWN] = GNUTLS_KEYID_USE_BEST_KNOWN,
-> +};
-> +
-> +static const int qcrypto_to_gnutls_cert_fmt_map[QCRYPTO_CERT_FMT__MAX] = {
-> +    [QCRYPTO_CERT_FMT_DER] = GNUTLS_X509_FMT_DER,
-> +    [QCRYPTO_CERT_FMT_PEM] = GNUTLS_X509_FMT_PEM,
-> +};
-> +
-> +static const int gnutls_to_qcrypto_sig_alg_map[QCRYPTO_SIG_ALGO__MAX] = {
-> +    [GNUTLS_SIGN_UNKNOWN] = QCRYPTO_SIG_ALGO_UNKNOWN,
-> +    [GNUTLS_SIGN_RSA_SHA1] = QCRYPTO_SIG_ALGO_RSA_SHA1,
-> +    [GNUTLS_SIGN_RSA_SHA] = QCRYPTO_SIG_ALGO_RSA_SHA1,
-> +    [GNUTLS_SIGN_DSA_SHA1] = QCRYPTO_SIG_ALGO_DSA_SHA1,
-> +    [GNUTLS_SIGN_RSA_MD5] = QCRYPTO_SIG_ALGO_RSA_MD5,
-> +    [GNUTLS_SIGN_RSA_MD2] = QCRYPTO_SIG_ALGO_RSA_MD2,
-> +    [GNUTLS_SIGN_RSA_RMD160] = QCRYPTO_SIG_ALGO_RSA_RMD160,
-> +    [GNUTLS_SIGN_RSA_SHA256] = QCRYPTO_SIG_ALGO_RSA_SHA256,
-> +    [GNUTLS_SIGN_RSA_SHA384] = QCRYPTO_SIG_ALGO_RSA_SHA384,
-> +    [GNUTLS_SIGN_RSA_SHA512] = QCRYPTO_SIG_ALGO_RSA_SHA512,
-> +    [GNUTLS_SIGN_RSA_SHA224] = QCRYPTO_SIG_ALGO_RSA_SHA224,
-> +    [GNUTLS_SIGN_DSA_SHA224] = QCRYPTO_SIG_ALGO_DSA_SHA224,
-> +    [GNUTLS_SIGN_DSA_SHA256] = QCRYPTO_SIG_ALGO_DSA_SHA256,
-> +    [GNUTLS_SIGN_ECDSA_SHA1] = QCRYPTO_SIG_ALGO_ECDSA_SHA1,
-> +    [GNUTLS_SIGN_ECDSA_SHA224] = QCRYPTO_SIG_ALGO_ECDSA_SHA224,
-> +    [GNUTLS_SIGN_ECDSA_SHA256] = QCRYPTO_SIG_ALGO_ECDSA_SHA256,
-> +    [GNUTLS_SIGN_ECDSA_SHA384] = QCRYPTO_SIG_ALGO_ECDSA_SHA384,
-> +    [GNUTLS_SIGN_ECDSA_SHA512] = QCRYPTO_SIG_ALGO_ECDSA_SHA512,
-> +};
-> +
-> +int qcrypto_check_x509_cert_fmt(uint8_t *cert, size_t size,
-> +                                QCryptoCertFmt fmt, Error **errp)
-> +{
-> +    int rc;
-> +    int ret = -1;
-> +    gnutls_x509_crt_t crt;
-> +    gnutls_datum_t datum = {.data = cert, .size = size};
-> +
-> +    if (fmt >= G_N_ELEMENTS(qcrypto_to_gnutls_cert_fmt_map)) {
-> +        error_setg(errp, "Unknown certificate format");
+Hi,
 
-Always include the actual invalid value in messages like this
+After VFIO/IOMMUFD prerequisite patchset got accepted, now this focuses on
+stage-1 translation for passthrough device in intel_iommu. I thought it's
+time to bump to v1 from rfcv3.
 
-       error_setg(errp, "Unknown certificate format %d", fmt);
+rfcv3 cover-letter:
 
-> +        return ret;
-> +    }
-> +
-> +    if (gnutls_x509_crt_init(&crt) < 0) {
-> +        error_setg(errp, "Failed to initialize certificate");
+Per Jason Wang's suggestion, iommufd nesting series[1] is split into
+"Enable stage-1 translation for emulated device" series and
+"Enable stage-1 translation for passthrough device" series.
 
-Include the real error message please
+This series is 2nd part focusing on passthrough device. We don't do shadowing
+of guest page table for passthrough device but pass stage-1 page table to host
+side to construct a nested domain. There was some effort to enable this feature
+in old days, see [2] for details.
 
-  rc = gnutls_x509_crt_init(&crt);
-  if (rc < 0) {
-     error_setg(errp, "Failed to initialize certificate: %s",
-                gnutls_strerror(rc));
-  }
+The key design is to utilize the dual-stage IOMMU translation (also known as
+IOMMU nested translation) capability in host IOMMU. As the below diagram shows,
+guest I/O page table pointer in GPA (guest physical address) is passed to host
+and be used to perform the stage-1 address translation. Along with it,
+modifications to present mappings in the guest I/O page table should be followed
+with an IOTLB invalidation.
 
-> +        return ret;
-> +    }
-> +
-> +    rc = gnutls_x509_crt_import(crt, &datum, qcrypto_to_gnutls_cert_fmt_map[fmt]);
-> +    if (rc == GNUTLS_E_ASN1_TAG_ERROR) {
-> +        goto cleanup;
+        .-------------.  .---------------------------.
+        |   vIOMMU    |  | Guest I/O page table      |
+        |             |  '---------------------------'
+        .----------------/
+        | PASID Entry |--- PASID cache flush --+
+        '-------------'                        |
+        |             |                        V
+        |             |           I/O page table pointer in GPA
+        '-------------'
+    Guest
+    ------| Shadow |---------------------------|--------
+          v        v                           v
+    Host
+        .-------------.  .------------------------.
+        |   pIOMMU    |  | Stage1 for GIOVA->GPA  |
+        |             |  '------------------------'
+        .----------------/  |
+        | PASID Entry |     V (Nested xlate)
+        '----------------\.--------------------------------------.
+        |             |   | Stage2 for GPA->HPA, unmanaged domain|
+        |             |   '--------------------------------------'
+        '-------------'
+For history reason, there are different namings in different VTD spec rev,
+Where:
+ - Stage1 = First stage = First level = flts
+ - Stage2 = Second stage = Second level = slts
+<Intel VT-d Nested translation>
 
-This is jumping to the error cleanup path without filling 'errp'.
+There are some interactions between VFIO and vIOMMU
+* vIOMMU registers PCIIOMMUOps [set|unset]_iommu_device to PCI
+  subsystem. VFIO calls them to register/unregister HostIOMMUDevice
+  instance to vIOMMU at vfio device realize stage.
+* vIOMMU calls HostIOMMUDeviceIOMMUFD interface [at|de]tach_hwpt
+  to bind/unbind device to IOMMUFD backed domains, either nested
+  domain or not.
 
-> +    }
-> +
-> +    ret = 0;
-> +
-> +cleanup:
-> +    gnutls_x509_crt_deinit(crt);
-> +    return ret;
-> +}
-> +
-> +int qcrypto_get_x509_hash_len(QCryptoHashAlgo alg)
-> +{
-> +    if (alg >= G_N_ELEMENTS(qcrypto_to_gnutls_hash_alg_map)) {
-> +        return 0;
-> +    }
-> +
-> +    return gnutls_hash_get_len(qcrypto_to_gnutls_hash_alg_map[alg]);
-> +}
+See below diagram:
 
-This is just reinventing the qcrypto_hash_digest_len method,
-drop it please.
+        VFIO Device                                 Intel IOMMU
+    .-----------------.                         .-------------------.
+    |                 |                         |                   |
+    |       .---------|PCIIOMMUOps              |.-------------.    |
+    |       | IOMMUFD |(set_iommu_device)       || Host IOMMU  |    |
+    |       | Device  |------------------------>|| Device list |    |
+    |       .---------|(unset_iommu_device)     |.-------------.    |
+    |                 |                         |       |           |
+    |                 |                         |       V           |
+    |       .---------|  HostIOMMUDeviceIOMMUFD |  .-------------.  |
+    |       | IOMMUFD |            (attach_hwpt)|  | Host IOMMU  |  |
+    |       | link    |<------------------------|  |   Device    |  |
+    |       .---------|            (detach_hwpt)|  .-------------.  |
+    |                 |                         |       |           |
+    |                 |                         |       ...         |
+    .-----------------.                         .-------------------.
 
-> +int qcrypto_get_x509_keyid_len(QCryptoKeyidFlags flag)
-> +{
-> +    QCryptoHashAlgo alg;
-> +
-> +    if (flag >= G_N_ELEMENTS(qcrypto_to_gnutls_keyid_flags_map)) {
-> +        return 0;
-> +    }
-> +
-> +    alg = QCRYPTO_HASH_ALGO_SHA1;
-> +    if ((flag & qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_SHA512]) ||
-> +        (flag & qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_BEST_KNOWN])) {
+Based on Yi's suggestion, this design is optimal in sharing ioas/hwpt
+whenever possible and create new one on demand, also supports multiple
+iommufd objects and ERRATA_772415.
 
-What is this comparison wanting to do ?
+E.g., Under one guest's scope, Stage-2 page table could be shared by different
+devices if there is no conflict and devices link to same iommufd object,
+i.e. devices under same host IOMMU can share same stage-2 page table. If there
+is conflict, i.e. there is one device under non cache coherency mode which is
+different from others, it requires a separate stage-2 page table in non-CC mode.
 
-'flag' is declared as being a member of the QCryptoKeyidFlags enum
+SPR platform has ERRATA_772415 which requires no readonly mappings
+in stage-2 page table. This series supports creating VTDIOASContainer
+with no readonly mappings. If there is a rare case that some IOMMUs
+on a multiple IOMMU host have ERRATA_772415 and others not, this
+design can still survive.
 
-The code is checking 'flag' is in range for the bounds
-of the qcrypto_to_gnutls_keyid_flags_map array, but then
-'flag' is never used as an index for that array.
+See below example diagram for a full view:
 
-then the code takes the result of "qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_SHA512]"
-which is a GNUTLS keyid constant, and compares it to 'flag' which is
-a QCryptoKeyidFlags value.
+      IntelIOMMUState
+             |
+             V
+    .------------------.    .------------------.    .-------------------.
+    | VTDIOASContainer |--->| VTDIOASContainer |--->| VTDIOASContainer  |-->...
+    | (iommufd0,RW&RO) |    | (iommufd1,RW&RO) |    | (iommufd0,only RW)|
+    .------------------.    .------------------.    .-------------------.
+             |                       |                              |
+             |                       .-->...                        |
+             V                                                      V
+      .-------------------.    .-------------------.          .---------------.
+      |   VTDS2Hwpt(CC)   |--->| VTDS2Hwpt(non-CC) |-->...    | VTDS2Hwpt(CC) |-->...
+      .-------------------.    .-------------------.          .---------------.
+          |            |               |                            |
+          |            |               |                            |
+    .-----------.  .-----------.  .------------.              .------------.
+    | IOMMUFD   |  | IOMMUFD   |  | IOMMUFD    |              | IOMMUFD    |
+    | Device(CC)|  | Device(CC)|  | Device     |              | Device(CC) |
+    | (iommufd0)|  | (iommufd0)|  | (non-CC)   |              | (errata)   |
+    |           |  |           |  | (iommufd0) |              | (iommufd0) |
+    .-----------.  .-----------.  .------------.              .------------.
 
-This makes no sense at all.
+This series is also a prerequisite work for vSVA, i.e. Sharing
+guest application address space with passthrough devices.
 
-> +        alg = QCRYPTO_HASH_ALGO_SHA512;
-> +    } else if (flag & qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_SHA256]) {
-> +        alg = QCRYPTO_HASH_ALGO_SHA256;
-> +    }
-> +
-> +    return qcrypto_get_x509_hash_len(alg);
-> +}
+To enable stage-1 translation, only need to add "x-scalable-mode=on,x-flts=on".
+i.e. -device intel-iommu,x-scalable-mode=on,x-flts=on...
 
-This indirection via 'alg' is pointless when we have constants
-for hash sizes already
+Passthrough device should use iommufd backend to work with stage-1 translation.
+i.e. -object iommufd,id=iommufd0 -device vfio-pci,iommufd=iommufd0,...
 
-     if ((flag & qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_SHA512]) ||
-         (flag & qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_BEST_KNOWN])) {
-         return QCRYPTO_HASH_DIGEST_LEN_SHA512;
-     } else if (flag & qcrypto_to_gnutls_keyid_flags_map[QCRYPTO_KEYID_FLAGS_SHA256]) {
-         return QCRYPTO_HASH_DIGEST_LEN_SHA256;
-     } else {
-         return QCRYPTO_HASH_DIGEST_LEN_SHA1;
-     }
+If host doesn't support nested translation, qemu will fail with an unsupported
+report.
+
+Test done:
+- VFIO devices hotplug/unplug
+- different VFIO devices linked to different iommufds
+- vhost net device ping test
+- build on windows
+
+Fault report isn't supported in this series, we presume guest kernel always
+construct correct S1 page table for passthrough device. For emulated devices,
+the emulation code already provided S1 fault injection.
+
+PATCH1-2:  Some cleanup work
+PATCH3:    cap/ecap related compatibility check between vIOMMU and Host IOMMU
+PATCH4-14: Implement stage-1 page table for passthrough device
+PATCH15:   Enable stage-1 translation for passthrough device
+
+Qemu code can be found at [3]
+
+TODO:
+- RAM discard
+- dirty tracking on stage-2 page table
+- Fault report to guest when HW S1 faults
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02740.html
+[2] https://patchwork.kernel.org/project/kvm/cover/20210302203827.437645-1-yi.l.liu@intel.com/
+[3] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting.v1
+
+Thanks
+Zhenzhong
+
+Changelog:
+v1:
+- simplify vendor specific checking in vtd_check_hiod (Cedric, Nicolin)
+- rebase to master
+
+rfcv3:
+- s/hwpt_id/id in iommufd_backend_invalidate_cache()'s parameter (Shameer)
+- hide vtd vendor specific caps in a wrapper union (Eric, Nicolin)
+- simplify return value check of get_cap() (Eric)
+- drop realize_late (Cedric, Eric)
+- split patch13:intel_iommu: Add PASID cache management infrastructure (Eric)
+- s/vtd_pasid_cache_reset/vtd_pasid_cache_reset_locked (Eric)
+- s/vtd_pe_get_domain_id/vtd_pe_get_did (Eric)
+- refine comments (Eric, Donald)
+
+rfcv2:
+- Drop VTDPASIDAddressSpace and use VTDAddressSpace (Eric, Liuyi)
+- Move HWPT uAPI patches ahead(patch1-8) so arm nesting could easily rebase
+- add two cleanup patches(patch9-10)
+- VFIO passes iommufd/devid/hwpt_id to vIOMMU instead of iommufd/devid/ioas_id
+- add vtd_as_[from|to]_iommu_pasid() helper to translate between vtd_as and
+  iommu pasid, this is important for dropping VTDPASIDAddressSpace
 
 
-> +
-> +static int qcrypto_import_x509_cert(gnutls_x509_crt_t crt, gnutls_datum_t *datum)
-> +{
-> +    int rc;
-> +
-> +    rc = gnutls_x509_crt_import(crt, datum, GNUTLS_X509_FMT_PEM);
-> +    if (rc) {
-> +        rc = gnutls_x509_crt_import(crt, datum, GNUTLS_X509_FMT_DER);
-> +    }
+Yi Liu (3):
+  intel_iommu: Replay pasid binds after context cache invalidation
+  intel_iommu: Propagate PASID-based iotlb invalidation to host
+  intel_iommu: Refresh pasid bind when either SRTP or TE bit is changed
 
-Must report the gnutls_strerror into an "errp" parameter.
+Zhenzhong Duan (12):
+  intel_iommu: Rename vtd_ce_get_rid2pasid_entry to
+    vtd_ce_get_pasid_entry
+  intel_iommu: Optimize context entry cache utilization
+  intel_iommu: Check for compatibility with IOMMUFD backed device when
+    x-flts=on
+  intel_iommu: Introduce a new structure VTDHostIOMMUDevice
+  intel_iommu: Introduce two helpers vtd_as_from/to_iommu_pasid_locked
+  intel_iommu: Handle PASID entry removing and updating
+  intel_iommu: Handle PASID entry adding
+  intel_iommu: Introduce a new pasid cache invalidation type FORCE_RESET
+  intel_iommu: Bind/unbind guest page table to host
+  intel_iommu: ERRATA_772415 workaround
+  intel_iommu: Bypass replay in stage-1 page table mode
+  intel_iommu: Enable host device when x-flts=on in scalable mode
 
-> +
-> +    return rc;
-> +}
-> +
->  int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
->                                        QCryptoHashAlgo alg,
->                                        uint8_t *result,
-> @@ -74,3 +179,64 @@ int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
->      gnutls_x509_crt_deinit(crt);
->      return ret;
->  }
-> +
-> +int qcrypto_get_x509_signature_algorithm(uint8_t *cert, size_t size, Error **errp)
-> +{
-> +    int rc = -1;
-> +    gnutls_x509_crt_t crt;
-> +    gnutls_datum_t datum = {.data = cert, .size = size};
-> +
-> +    if (gnutls_x509_crt_init(&crt) < 0) {
-> +        error_setg(errp, "Failed to initialize certificate");
+ hw/i386/intel_iommu_internal.h |   56 ++
+ include/hw/i386/intel_iommu.h  |   33 +-
+ hw/i386/intel_iommu.c          | 1659 ++++++++++++++++++++++++++++----
+ hw/i386/trace-events           |   13 +
+ 4 files changed, 1563 insertions(+), 198 deletions(-)
 
-This must include the gnutls_sterrror result
-
-> +        return rc;
-> +    }
-> +
-> +    if (qcrypto_import_x509_cert(crt, &datum) != 0) {
-
-'errp' must be passed into this so it can report an accurate message...
-
-> +        error_setg(errp, "Failed to import certificate");
-
-..as this is useless.
-
-
-> +        goto cleanup;
-> +    }
-> +
-> +    rc = gnutls_x509_crt_get_signature_algorithm(crt);
-
-This is not handling errors.
-
-> +    rc = gnutls_to_qcrypto_sig_alg_map[rc];
-
-This is not bounds checking the value.
-
-Also it is bad practice to re-use the same variable for
-two different purposes. Use 'ret' for tracking the overall
-return status of this functino, and use 'rc' for things
-this function calls.
-
-> +
-> +cleanup:
-> +    gnutls_x509_crt_deinit(crt);
-> +    return rc;
-> +}
-> +
-> +#else /* ! CONFIG_GNUTLS */
-> +
-> +int qcrypto_check_x509_cert_fmt(uint8_t *cert, size_t size,
-> +                                QCryptoCertFmt fmt, Error **errp)
-> +{
-> +    error_setg(errp, "GNUTLS is required to get certificate format");
-> +    return -ENOTSUP;
-
-No returning of errnos in crypto APIs please, only
-the 'errp' parameter and 'return -1'.
-
-> +}
-> +
-> +int qcrypto_get_x509_hash_len(QCryptoHashAlgo alg)
-> +{
-> +    return -ENOTSUP;
-> +}
-> +
-> +int qcrypto_get_x509_keyid_len(QCryptoKeyidFlags flag)
-> +{
-> +    return -ENOTSUP;
-> +}
-> +
-> +int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
-> +                                      QCryptoHashAlgo hash,
-> +                                      uint8_t *result,
-> +                                      size_t *resultlen,
-> +                                      Error **errp)
-> +{
-> +    error_setg(errp, "GNUTLS is required to get fingerprint");
-> +    return -ENOTSUP;
-> +}
-> +
-> +int qcrypto_get_x509_signature_algorithm(uint8_t *cert, size_t size, Error **errp)
-> +{
-> +    error_setg(errp, "GNUTLS is required to get signature algorithm");
-> +    return -ENOTSUP;
-> +}
-> +
-> +#endif /* ! CONFIG_GNUTLS */
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
