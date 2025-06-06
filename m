@@ -2,89 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8E4AD07F8
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 20:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0C0AD082A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 20:38:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNbh2-0000tL-MJ; Fri, 06 Jun 2025 14:21:28 -0400
+	id 1uNbwj-0004F3-6t; Fri, 06 Jun 2025 14:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uNbgo-0000qd-RY
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 14:21:15 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uNbgm-0006jU-JX
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 14:21:14 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-747fc77ba9eso1931922b3a.0
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 11:21:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749234071; x=1749838871; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=tP/wQPBGjbbKyfTZfIc/iAV9m6jQ7fU2q5ZDYkmBio0=;
- b=NNuYtv1a5nO1PhwVdNPvvQ8VFoQlioaBS8X8x6W5E5fps3gWMdYl/Yv8aqfacGRQOQ
- KaDhgrDqrY8miTY/fKLXkr8y6Jz7t7ajTVFraiHsra7VlGh8D5OKY3TFFYaMNnXNJGTp
- 6sceMdszVOw24bmyu5WCCUM7i0vxzMkNFdrC4CRE6/84uf6I6506S7xrX1Y12IZipLdc
- pqarvIlVAT3AuglRSDIWoh7xEe7LEU0d+LUiVdJlqMvHTdt9vw1k4HJw3W2P4rGhh6cA
- RqeFnhQQZBhNFYrxUwoH5Z1JfQlexjmOhVKEIYWw9dnE9Ef1o5ZRkvvqmcL/VbwOyvmM
- bJJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749234071; x=1749838871;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tP/wQPBGjbbKyfTZfIc/iAV9m6jQ7fU2q5ZDYkmBio0=;
- b=XL6rL9ACU9/Mp7OGtP8+Y60Y7GxogGiXyRTFG9tXM/p+fnjwJRHmCOdQ0X1Kcv3Gq+
- 9je7cS8cM0d2ro1oeN2dakj0xg1tNFZQrS5cWg4zM17eoRf/nqU7B6nYXlLI+hjHGxY/
- +9vywqNF1DowXbobLLsQ2uOABak9LcIEBUqBz87kCMH0PQIuC4oaFgW59TCWgRb7zcTD
- 6qiWaxiH30OUVNuyTyBJTil3zSJ0VQbZF55zdUh4hgZJx9zjZsC6H1X5stu7qYR1udOu
- MVmqozbXzpn8BCLbR21qivveURd13JHdod7OErpvARoCf/lX7DfkWPnmo6yE8h4mhjFm
- VCdQ==
-X-Gm-Message-State: AOJu0Yxbr8bq/WkMV6CQ4uVSzbwgCEkv1feurhXkis71UraonmE1x7eY
- L450dB4JSd1TUgquosQuidOx38mGnxmzMy2NwwQbsFO6oKQvkSwld/ls
-X-Gm-Gg: ASbGnct2U9qpDwLAMAp+SikBbH5UrU9GTdAhKck1qlRPbriTepQuZ1nDU+64yEv4jRv
- 3Nr482ro+PrRlitlvg1ufyPOIaC4O4wQoqDbY2Ty0AJYdm+1NE5Zecb/xAgQEtrBY2S1CgLrNSN
- ydqmy2ju15iBIb4zq+jhhwDlKpO96WQKhyMRTHtpR83D7BGWYk8+2hZxbXMcAaZrU60syjhif9v
- D2XXbJpjUf7F5CfREMXSUkP09gQNkGFmuPB43oK0VLPjBXxgH3yfjC59SlF5GcB+hQ7f7LWTF03
- lLtWf03gS4AqdAvvt+Nla4Nr54VfSpxmK1wKrtaTYXj0Ug40q6TQSnsq
-X-Google-Smtp-Source: AGHT+IEQKwEx2+/rddCXUF2Qea6AEuSEJ2Z4uB4eLOdmdV0gZL/ozRb0PlKzXwtLOLvwFDwZQdiaXw==
-X-Received: by 2002:a05:6a20:3d8a:b0:215:e9ec:81d2 with SMTP id
- adf61e73a8af0-21ee686173bmr6007354637.32.1749234070773; 
- Fri, 06 Jun 2025 11:21:10 -0700 (PDT)
-Received: from debian ([2601:646:8f03:9fee:5e33:e006:dcd5:852d])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7482b091cc3sm1612701b3a.106.2025.06.06.11.21.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Jun 2025 11:21:10 -0700 (PDT)
-From: Fan Ni <nifan.cxl@gmail.com>
-X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
-Date: Fri, 6 Jun 2025 11:21:08 -0700
-To: anisa.su887@gmail.com
-Cc: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com,
- dave@stgolabs.net, linux-cxl@vger.kernel.org,
- Anisa Su <anisa.su@samsung.com>
-Subject: Re: [QEMU PATCH v3 8/9] cxl-mailbox-utils: 0x5604 - FMAPI Initiate
- DC Add
-Message-ID: <aEMxlAvukxhWXhw1@debian>
-References: <20250605234227.970187-1-anisa.su887@gmail.com>
- <20250605234227.970187-9-anisa.su887@gmail.com>
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1uNbwU-0004DQ-MN; Fri, 06 Jun 2025 14:37:26 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1uNbwS-0008Iq-5V; Fri, 06 Jun 2025 14:37:26 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 556F4p9M011268;
+ Fri, 6 Jun 2025 18:37:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=cVKbOBi72xEJLWn1Y9G/3CMMGxYV
+ qRgSmYcaPn76DLA=; b=F4YyPeSYzS7SaJtBEGq9xpYi7SRPZIlVKNFmz97c5ewO
+ TYnyhybrkrDTfUjV9U6nIC0PBu165eRqeCJ2Tnz12BqtKzCS3r7O0wdTKWGWfthC
+ fDjFx+/HCcMs/qbT5rZT3aWMEXcl96yTVorwXj1c4Hb78xqxkciVVfsuna1m2mf1
+ A+sa43kEZxV/DDL0/qDPjJxAc94uPlRVr91MzAsPnsp9cMwyqkIwbq49EBt1PL9R
+ HbkE4fBaEt7zT7K7vEd5H1C17WUDGcxlEVmCwny0H9f61wUtXFgqvLwwDxRz2EAd
+ B6d6t4kvXucUTzOXmvL9GFSCQQlNaA7Mf4jkxi7+Lg==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471gf07t9r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Jun 2025 18:37:19 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 556FbajL012511;
+ Fri, 6 Jun 2025 18:37:19 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 470et2teks-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Jun 2025 18:37:19 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 556IbHsq11403902
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 6 Jun 2025 18:37:18 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CF80858043;
+ Fri,  6 Jun 2025 18:37:17 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9859A58053;
+ Fri,  6 Jun 2025 18:37:16 +0000 (GMT)
+Received: from MacBookPro.ibm.com (unknown [9.61.255.166])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  6 Jun 2025 18:37:16 +0000 (GMT)
+From: Rorie Reyes <rreyes@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
+ akrowiak@linux.ibm.com, rreyes@linux.ibm.com
+Subject: [RFC PATCH v12 0/4] Report vfio-ap configuration changes
+Date: Fri,  6 Jun 2025 14:37:12 -0400
+Message-ID: <20250606183716.26152-1-rreyes@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250605234227.970187-9-anisa.su887@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5Tnlh7H3ft8kOeWIwQKiClB7uDtzHaPw
+X-Proofpoint-ORIG-GUID: 5Tnlh7H3ft8kOeWIwQKiClB7uDtzHaPw
+X-Authority-Analysis: v=2.4 cv=X4dSKHTe c=1 sm=1 tr=0 ts=6843355f cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=b-2j7H-tuh0H-JaNz4oA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA2MDE1OSBTYWx0ZWRfX8Et32hxc9j28
+ 0ssvKRUSfR22OKQCVfbHU4/sN+bHZAEyruWtfENv/DI1AcZEoc5ZOEhNwLM6BO9Lqm1jdRuXvZt
+ +MOuv5o+1itu8o/Mr2wPzzAGZOR88tkKjWRQLXtsjWm5rl5eEclENy+SBFT3IfK0c/KMqnndND0
+ oQm3cJbqTIu1MpmXE9nY8w4SUfyUO9p/avUncGx3nwLzTqiGmWCzltEDNwgac4lJoqV7WPO5yH5
+ FnkRwqwfKkEEcayt6zQUJ8edLGBbW7y09uTQdqkjTRtgyyfwnngRpvb0AXIiKyduYkBx04B6Bpf
+ kZajR1/4U/0TqeDiky7VGCBLmE+LoZrWX0gN9jMPzHq8pwuR+ozgei19A3K/8aMSrNIqHpj0rm9
+ 9BjrrrD4UbPhciKBvJpBl7xvdYPsMBF/XMsJ4zHX5EDeVKh5SDXxHobkcmBPsIQ9uMDBS6j1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-06_07,2025-06-05_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ malwarescore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506060159
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=rreyes@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,266 +117,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 05, 2025 at 11:42:22PM +0000, anisa.su887@gmail.com wrote:
-> From: Anisa Su <anisa.su@samsung.com>
-> 
-> FM DCD Management command 0x5604 implemented per CXL r3.2 Spec Section 7.6.7.6.5
-> 
-> Signed-off-by: Anisa Su <anisa.su@samsung.com>
+Changelog:
+v12: 
+- adding locks to 'ap_chsc_sei_nt0_have_event' and 'ap_chsc_sei_nt0_get_event'
 
-See below...
+v11:
+- reverted return type to int for 'ap_chsc_sei_nt0_get_event'
+   - files reflected are 'ap.c', 'ap-bridge'h, and 'ap-stub.c'
+- using defined variables to represent return 0 and 1 to reflect logical sense
+- update documentation for 'ap_chsc_sei_nt0_get_event' to reflect return types
 
-> ---
->  hw/cxl/cxl-mailbox-utils.c  | 152 ++++++++++++++++++++++++++++++++++++
->  hw/mem/cxl_type3.c          |   8 +-
->  include/hw/cxl/cxl_device.h |   4 +
->  3 files changed, 160 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index 004e502b22..7ee5be00bc 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -123,6 +123,7 @@ enum {
->          #define GET_HOST_DC_REGION_CONFIG   0x1
->          #define SET_DC_REGION_CONFIG        0x2
->          #define GET_DC_REGION_EXTENT_LIST   0x3
-> +        #define INITIATE_DC_ADD             0x4
->  };
->  
->  /* CCI Message Format CXL r3.1 Figure 7-19 */
-> @@ -3540,6 +3541,150 @@ static CXLRetCode cmd_fm_get_dc_region_extent_list(const struct cxl_cmd *cmd,
->      return CXL_MBOX_SUCCESS;
->  }
->  
-> +static void cxl_mbox_dc_add_to_pending(CXLType3Dev *ct3d,
+v10:
+- Added reviewed by for patch 4 by Tony and Cedric
+   - review needed for patch 2 and 3
+- changed 'cfg_chg_events' to a static variable
+- locked 'cfg_chg_events' using QemuMutex
+- removed ';' at the end of the definition for NT0
+- returning bools for 'ap_chsc_sei_nt0_get_event' and
+'ap_chsc_sei_nt0_have_event'
+- updated the header file that contains 'ap_chsc_sei_nt0_get_event' and
+'ap_chsc_sei_nt0_have_event' to a bool function
+- added documentation explaining the returning bool functions
+- whitespace clean up
 
-This naming can be improved here, not straightforward to me.
-Maybe cxl_add_extents_to_pending_list() ?
+v9:
+- added SPDX licensing to newly created file 'hw/s390x/ap-stub.c'
 
-> +                                       uint32_t ext_count,
-> +                                       CXLDCExtentRaw extents[])
-> +{
-> +    CXLDCExtentGroup *group = NULL;
-> +    int i;
-> +
-> +    for (i = 0; i < ext_count; i++) {
-> +        group = cxl_insert_extent_to_extent_group(group,
-> +                                                  extents[i].start_dpa,
-> +                                                  extents[i].len,
-> +                                                  extents[i].tag,
-> +                                                  extents[i].shared_seq);
-> +    }
-> +
-> +    cxl_extent_group_list_insert_tail(&ct3d->dc.extents_pending, group);
-> +    ct3d->dc.total_extent_count += ext_count;
-> +}
+v8:
+- fixed windows cross-compile build
+- moved /hw/vfio/ap-stub.c to /hw/s390x/ap-stub.c
+- updated the use of stub file to MAINTAINERS to reflect new location
+- removed if_false for 'CONFIG_VFIO_AP' statement from /hw/vfio/meson.build
+- added if_false for 'CONFIG_VFIO_AP' to use ap-stub.c in /hw/s390x/meson.build
+- all those changes still address '--without-default-devices' issue from v5
 
-Also the code is duplicate with existing code in cxl_type3.c 
-qmp_cxl_process_dynamic_capacity_prescriptive(). 
-The function was simulating the behaviour of the mailbox command, so it is
-behaviour will be smilar to what we have in this patch, 
-find a way to reuse code, maybe extract common code as a helper function and use
-it in both qmp interface and here.
+v7:
+- Dropped initial commit for linux-header file vfio.h since I created two new commits
+to address the changes made in v6
+- Moved patches 6 and 7 to the beginning of the series after dropping the first patch
+   - Because I dropped the initial commit for linux-header file vfio.h, I had to add
+VFIO_AP_CFG_CHG_IRQ_INDEX
+- Resyncing latest to v6.15-rc3
+- Still need Thomas Huth's review of v5 changes for patch 6/6
 
-> +
-> +static void cxl_mbox_create_dc_event_records_for_extents(CXLType3Dev *ct3d,
-cxl_create_dc_extent_records_for extents()?
-> +                                                         CXLDCEventType type,
-> +                                                         CXLDCExtentRaw extents[],
-> +                                                         uint32_t ext_count)
-> +{
-> +    CXLEventDynamicCapacity event_rec = {};
-> +    int i;
-> +
-> +    cxl_assign_event_header(&event_rec.hdr,
-> +                            &dynamic_capacity_uuid,
-> +                            (1 << CXL_EVENT_TYPE_INFO),
-> +                            sizeof(event_rec),
-> +                            cxl_device_get_timestamp(&ct3d->cxl_dstate));
-> +    event_rec.type = type;
-> +    event_rec.validity_flags = 1;
-> +    event_rec.host_id = 0;
-> +    event_rec.updated_region_id = 0;
-> +    event_rec.extents_avail = CXL_NUM_EXTENTS_SUPPORTED -
-> +                              ct3d->dc.total_extent_count;
-> +
-> +    for (i = 0; i < ext_count; i++) {
-> +        memcpy(&event_rec.dynamic_capacity_extent,
-> +               &extents[i],
-> +               sizeof(CXLDCExtentRaw));
-> +        event_rec.flags = 0;
-> +        if (i < ext_count - 1) {
-> +            /* Set "More" flag */
-> +            event_rec.flags |= BIT(0);
-> +        }
-> +
-> +        if (cxl_event_insert(&ct3d->cxl_dstate,
-> +                             CXL_EVENT_TYPE_DYNAMIC_CAP,
-> +                             (CXLEventRecordRaw *)&event_rec)) {
-> +            cxl_event_irq_assert(ct3d);
-> +        }
-> +    }
-> +}
+v6:
+- Updating the update-linux-headers script to address kernel commit change 8a14
+- Update headers to retrieve uapi information for vfio-ap for update to Linux v6.15-rc1
+- Still need Thomas Huth's review of v5 changes for patch 7/7 (see below)
 
-Some issue here. A lot of duplicate code compared to
-qmp_cxl_process_dynamic_capacity_prescriptive.
+v5:
+- configuring using the '--without-default-devices' fails when building the code
+- created a stub file for functions ap_chsc_sei_nt0_get_event and ap_chsc_sei_nt0_have_event
+- add if_false for 'CONFIG_VFIO_AP' use ap-stub.c in meson.build
+- add the use of the stub file to MAINTAINERS since it's a new file
 
-> +
-> +/*
-> + * Helper function to convert CXLDCExtentRaw to CXLUpdateDCExtentListInPl
-> + * in order to reuse cxl_detect_malformed_extent_list() functin which accepts
-> + * CXLUpdateDCExtentListInPl as a parameter.
-> + */
-> +static void convert_raw_extents(CXLDCExtentRaw raw_extents[],
-> +                                CXLUpdateDCExtentListInPl *extent_list,
-> +                                int count)
-> +{
-> +    int i;
-> +
-> +    extent_list->num_entries_updated = count;
-> +
-> +    for (i = 0; i < count; i++) {
-> +        extent_list->updated_entries[i].start_dpa = raw_extents[i].start_dpa;
-> +        extent_list->updated_entries[i].len = raw_extents[i].len;
-> +    }
-> +}
-> +
-> +/* CXL r3.2 Section 7.6.7.6.5 Initiate Dynamic Capacity Add (Opcode 5604h) */
-> +static CXLRetCode cmd_fm_initiate_dc_add(const struct cxl_cmd *cmd,
-> +                                         uint8_t *payload_in,
-> +                                         size_t len_in,
-> +                                         uint8_t *payload_out,
-> +                                         size_t *len_out,
-> +                                         CXLCCI *cci)
-> +{
-> +    struct {
-> +        uint16_t host_id;
-> +        uint8_t selection_policy;
-> +        uint8_t reg_num;
-> +        uint64_t length;
-> +        uint8_t tag[0x10];
-> +        uint32_t ext_count;
-> +        CXLDCExtentRaw extents[];
-> +    } QEMU_PACKED *in = (void *)payload_in;
-> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-> +    CXLUpdateDCExtentListInPl *list;
-> +    int i, rc;
-> +
-> +    switch (in->selection_policy) {
-> +    case CXL_EXTENT_SELECTION_POLICY_PRESCRIPTIVE:
-> +        /* Adding extents exceeds device's extent tracking ability. */
-> +        if (in->ext_count + ct3d->dc.total_extent_count >
-> +            CXL_NUM_EXTENTS_SUPPORTED) {
-> +            return CXL_MBOX_RESOURCES_EXHAUSTED;
-> +        }
-> +
-> +        list = calloc(1, (sizeof(*list) +
-> +                          in->ext_count * sizeof(*list->updated_entries)));
+v4:
+- allocating cfg_chg_event before inserting into the queue
+- calling nt0_have_event in if loop to check if there are any
+elemenets in the queue, then calling QTAILQ_FIRST when the check
+passes
+- moving memset() after the check
 
-Use g_malloc() and g_free().
+v3:
+- changes that were made to patch 3/5 should have been made in
+patch 2/5
 
-> +        convert_raw_extents(in->extents, list, in->ext_count);
-> +        rc = cxl_detect_malformed_extent_list(ct3d, list);
-> +
-> +        for (i = 0; i < in->ext_count; i++) {
-> +            CXLDCExtentRaw ext = in->extents[i];
-> +             /* Check requested extents do not overlap with pending extents. */
-> +            if (cxl_extent_groups_overlaps_dpa_range(&ct3d->dc.extents_pending,
-> +                                                     ext.start_dpa, ext.len)) {
-> +                return CXL_MBOX_INVALID_EXTENT_LIST;
-> +            }
-> +            /* Check requested extents do not overlap with existing extents. */
-> +            if (cxl_extents_overlaps_dpa_range(&ct3d->dc.extents,
-> +                                               ext.start_dpa, ext.len)) {
-> +                return CXL_MBOX_INVALID_EXTENT_LIST;
-> +            }
-> +        }
-> +
-> +        if (rc) {
-> +            return rc;
-> +        }
-> +
-> +        cxl_mbox_dc_add_to_pending(ct3d, in->ext_count, in->extents);
-> +        cxl_mbox_create_dc_event_records_for_extents(ct3d,
-> +                                                     DC_EVENT_ADD_CAPACITY,
-> +                                                     in->extents,
-> +                                                     in->ext_count);
-> +
-> +        return CXL_MBOX_SUCCESS;
-> +    default:
-> +        qemu_log_mask(LOG_UNIMP,
-> +                      "CXL extent selection policy not supported.\n");
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +
+v2:
+- removed warnings that weren't needed
+- added unregister function
+- removed whitelines
+- changed variable names for consistency
+- removed rc variable and returning 1 or 0 outright
+- reversed logics for if statements
+- using g_free() instead of free()
+- replaced hardcoded numeric values by defining them with #define
+in the header
 
-For all the case to return, instead of return directly set return code and jump
-here, do two things:
-1. g_free(list);
-2. return rt;
+--------------------------------------------------------------------------
 
-Fan
+Rorie Reyes (4):
+  hw/vfio/ap: notification handler for AP config changed event
+  hw/vfio/ap: store object indicating AP config changed in a queue
+  hw/vfio/ap: Storing event information for an AP configuration change
+    event
+  s390: implementing CHSC SEI for AP config change
 
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
->  static const struct cxl_cmd cxl_cmd_set[256][256] = {
->      [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
->          cmd_infostat_bg_op_abort, 0, 0 },
-> @@ -3667,6 +3812,13 @@ static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
->           CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
->      [FMAPI_DCD_MGMT][GET_DC_REGION_EXTENT_LIST] = { "GET_DC_REGION_EXTENT_LIST",
->          cmd_fm_get_dc_region_extent_list, 12, 0 },
-> +    [FMAPI_DCD_MGMT][INITIATE_DC_ADD] = { "INIT_DC_ADD",
-> +        cmd_fm_initiate_dc_add, ~0,
-> +        (CXL_MBOX_CONFIG_CHANGE_COLD_RESET |
-> +        CXL_MBOX_CONFIG_CHANGE_CONV_RESET |
-> +        CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
-> +        CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
-> +        CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
->  };
->  
->  /*
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index ee554a77be..ca9fe89e4f 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -1885,8 +1885,8 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
->   * the list.
->   * Return value: return true if has overlaps; otherwise, return false
->   */
-> -static bool cxl_extents_overlaps_dpa_range(CXLDCExtentList *list,
-> -                                           uint64_t dpa, uint64_t len)
-> +bool cxl_extents_overlaps_dpa_range(CXLDCExtentList *list,
-> +                                    uint64_t dpa, uint64_t len)
->  {
->      CXLDCExtent *ent;
->      Range range1, range2;
-> @@ -1931,8 +1931,8 @@ bool cxl_extents_contains_dpa_range(CXLDCExtentList *list,
->      return false;
->  }
->  
-> -static bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-> -                                                 uint64_t dpa, uint64_t len)
-> +bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-> +                                          uint64_t dpa, uint64_t len)
->  {
->      CXLDCExtentGroup *group;
->  
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index 76af75d2d0..d30f6503fa 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -724,4 +724,8 @@ bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
->  void cxl_assign_event_header(CXLEventRecordHdr *hdr,
->                               const QemuUUID *uuid, uint32_t flags,
->                               uint8_t length, uint64_t timestamp);
-> +bool cxl_extents_overlaps_dpa_range(CXLDCExtentList *list,
-> +                                    uint64_t dpa, uint64_t len);
-> +bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-> +                                          uint64_t dpa, uint64_t len);
->  #endif
-> -- 
-> 2.47.2
-> 
+ MAINTAINERS                  |  1 +
+ hw/s390x/ap-stub.c           | 21 +++++++++
+ hw/s390x/meson.build         |  1 +
+ hw/vfio/ap.c                 | 86 ++++++++++++++++++++++++++++++++++++
+ include/hw/s390x/ap-bridge.h | 39 ++++++++++++++++
+ target/s390x/ioinst.c        | 11 ++++-
+ 6 files changed, 157 insertions(+), 2 deletions(-)
+ create mode 100644 hw/s390x/ap-stub.c
+
+-- 
+2.48.1
+
 
