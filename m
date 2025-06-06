@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21570AD0262
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4731AD026C
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:42:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNWIF-0002ai-TC; Fri, 06 Jun 2025 08:35:32 -0400
+	id 1uNWIH-0002cc-7i; Fri, 06 Jun 2025 08:35:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWI9-0002YR-1H
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uNWID-0002a8-6b
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWI5-0005sw-IN
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:24 -0400
+ id 1uNWI9-0005tB-Pd
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749213320;
+ s=mimecast20190719; t=1749213323;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=z2NuiPAVz5qwYZ3DwOgzCzQjZAP4Szd5YKA/6O60EH4=;
- b=fzWjxQl9Y79ie/F+3tbhHO0Oi9U1l8be8jSe77L9N4STJDefGPwnXHtGX6Xciz2iFQuYxV
- 6nUtltMLYWQJiNu4DlAMK7UFjbtFoQOEx/kMovY7MytfF5paibeazaZKOaITYic0t6SS3Q
- VIw94UZ02CDmrm8LBhDvPSUAhfd7dkI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ElGaxLGiSIb6e5dqiWIlm8oesZYBfD74a0jBFqGIj5Q=;
+ b=GJo3psK41XDtTFkJltjf/IuxlQdnDn8oafPF0p5Yo3Uw01TQygH0Fs06vZ0cDcWgd/MbTo
+ 3YGGbW4hCaOwWU//IGf6srWbzClWhDhf75ACMtSP5aQj+jTLw4esBpIKt9quvPlDFnAEhn
+ 9Sfo31m5bXyZE0xI4sGi94TJpy58ABc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-281-xraoYt4xOT6HDOb4oR3B9Q-1; Fri, 06 Jun 2025 08:35:18 -0400
-X-MC-Unique: xraoYt4xOT6HDOb4oR3B9Q-1
-X-Mimecast-MFC-AGG-ID: xraoYt4xOT6HDOb4oR3B9Q_1749213318
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a4f85f31d9so1134369f8f.1
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:35:18 -0700 (PDT)
+ us-mta-654-NuW9KMYyNq-hyul1vQY51Q-1; Fri, 06 Jun 2025 08:35:21 -0400
+X-MC-Unique: NuW9KMYyNq-hyul1vQY51Q-1
+X-Mimecast-MFC-AGG-ID: NuW9KMYyNq-hyul1vQY51Q_1749213321
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a4e6d426b1so1640260f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:35:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749213317; x=1749818117;
+ d=1e100.net; s=20230601; t=1749213320; x=1749818120;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z2NuiPAVz5qwYZ3DwOgzCzQjZAP4Szd5YKA/6O60EH4=;
- b=tOVcY+Yj2i6Ww8UM9AyWZPQzzfpBlVtPl/Sl9QCTJBwY4LoNqxTVIERSJUpIdhIaHB
- bAxkSdErpLLoSk+7jmCnR6upYw++zSDnxt4+AK3fO7pLbHuOWyMadJ98VrmRu0XECjXg
- 00MAsOKz2biLoD467Ea1kH9UZtqolVoYveyfa9YDe8ekNsuHF+1gMQURlNmaxn6c3x1i
- ZgSX/WyPguFSzz0B0CRjZuSYj+RcACg3mBZJtS4wVcWZu3b3RBq6t//wUAcSJWVz62Hk
- UdZSXOntm5b6nrxsYiLKWglR6WQMWMa1f4sNq4g2LTLettGdkPi+08BjdF/U9b5yR1ih
- j6uA==
-X-Gm-Message-State: AOJu0YyMivwZuuORik97TH9ig47lZZf1RMDk5Fmwy9kjlzyqH0Zl3mea
- /2SFHOX3rhCCwU+j1KUuHfr55GtTwqwDcsSkMKBQbTgOHMhYu3nzwhSdVl/EO4emxc7faF0ETR9
- xErUD+F3zzeeo71xEkHhvgCrsR4e8LkygHWfpLFIv1jM/rbmMxZzf6cJW1m/NikyBVixBXiqsDk
- W7dgqRwwbf4DedTYqyyqKHENPAEdqnn1aFewbgDm8E
-X-Gm-Gg: ASbGncv9AbctZMOxfxobX/9DplBxON24iCsycY+6WvnP2SNleptokIr0xoJsaOqaLAT
- mRu2GVaTr+4u438Ce3t8Gj6RtoyMJXjNRb+hwZ3wt13goUMmhy128AM8xrNKBb043OivwpHOaFj
- EdvQbPQydp6yl9E12m3ArKoHUTHC6tNFoQxAV6kUkrDgk+wNDrvRMeHSbFvqDlt11OJVBexRr8a
- GsNd0TNzywJQXDPgX/cLVu58wdDO0AQoNTqdvA46cEXW+qkj6B3EqJMo3I8xeBLWf9n2zVdtgOK
- HwalNiLCQnOGanu6w0nx8WUE
-X-Received: by 2002:a05:6000:248a:b0:3a4:dfc2:b9e1 with SMTP id
- ffacd0b85a97d-3a531784b7emr2502235f8f.2.1749213316791; 
- Fri, 06 Jun 2025 05:35:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFbUxNCm7kt5V/g9fsxwA2v8bawKKzfy+M+Cgovisivn6p9PfAsxAj4k5JosX3pODJfq77ofg==
-X-Received: by 2002:a05:6000:248a:b0:3a4:dfc2:b9e1 with SMTP id
- ffacd0b85a97d-3a531784b7emr2502213f8f.2.1749213316263; 
- Fri, 06 Jun 2025 05:35:16 -0700 (PDT)
+ bh=ElGaxLGiSIb6e5dqiWIlm8oesZYBfD74a0jBFqGIj5Q=;
+ b=VSn9QjUfihwKUfmYEPlKKZGeC/fTDgFq8hxGmrmzSCeduG9uF6uov4YTLoImEcqwXP
+ SaDrnh5X/XJUouMDMAJy5jXTJ8jhCmWGmgccp7VF1t9TGKlSOcwDvmzOzo5aAQvNpFQE
+ opXXnusHBcWOAn+l3Qs2U1FCBIyZunukL0/UquKKwcG4V9LxuHm/sYMN0yvGtY5hfPPg
+ HFNKfz3Q5B0uRM3jM9U54aKiMBSZQ14uxRurEDs38B+vd5mxOAtR1FFnnZ6FWm7ddVR5
+ L01d/LJ4WeZCl0nAPTp0kJz4EhusX7idzsiIk+zwW1nF1atcMBiTE+8gCXsM9mAZzVpE
+ 8A0Q==
+X-Gm-Message-State: AOJu0Yw8EPlrBA5if7HlmnbzhZbhdksudTdUIevVvmO2JnROLCYh0Qos
+ d4KSljoQBcuBQP09kshZEj83npGOjNi1iHu2241Q2j8Dl2NX5DhQGYoga044CR0PjFeikNw2fSm
+ 2mud3H1sAszj7tX8Lz3fXncEJ2rrlyMJxjdCxLydC+RhqXLnqHFtKO23e2uwUN0NnTCyqG9JsW8
+ 9xPFG+2N1n95JNcS7AqX8mvU4ejgbTzUabya/ImX3D
+X-Gm-Gg: ASbGncu9Qm4sU7zxWwoQ2iAed0xNwpGDWQgDIcyt6GHLE7InpeLoIAiC+EbqKcCAKQm
+ SmUui4g/H/6s7Xk14sHkKV6Df+UU0FXmDRSCxsE7TVSxu8DvRQ6rQDmv1iaKWtmZ10sHlnXE+o7
+ W48H5uJ6ILLaL7NmBgYuiDjrtYSFTlFthMggXaP066Sv+ngVeGhLW56qQejA/9FExa/lHV1WpC2
+ NK6fkylD/HIrvhex1Buc1YuSic9pnzd+xeQ51BHZIJpZi12ywslAobDgN5qf3AlQlk7v6iBdqir
+ 7oIxc0lnR5a+HA==
+X-Received: by 2002:a5d:64ec:0:b0:3a4:ebfc:8c7 with SMTP id
+ ffacd0b85a97d-3a53131d543mr3096840f8f.8.1749213319680; 
+ Fri, 06 Jun 2025 05:35:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHowyxNi5O/hoLRVThlxz0E/FZ/S/77MmPuWjIbZJQEJ4HpxnZ7GKX+J1PCkn8ON/iChdRxWA==
+X-Received: by 2002:a5d:64ec:0:b0:3a4:ebfc:8c7 with SMTP id
+ ffacd0b85a97d-3a53131d543mr3096809f8f.8.1749213319156; 
+ Fri, 06 Jun 2025 05:35:19 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a53244d15asm1813791f8f.66.2025.06.06.05.35.13
+ ffacd0b85a97d-3a5322ab413sm1764452f8f.23.2025.06.06.05.35.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Jun 2025 05:35:14 -0700 (PDT)
+ Fri, 06 Jun 2025 05:35:17 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 08/31] rust: qdev: support returning errors from realize
-Date: Fri,  6 Jun 2025 14:34:22 +0200
-Message-ID: <20250606123447.538131-9-pbonzini@redhat.com>
+Subject: [PULL 09/31] rust/hpet: change type of num_timers to usize
+Date: Fri,  6 Jun 2025 14:34:23 +0200
+Message-ID: <20250606123447.538131-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250606123447.538131-1-pbonzini@redhat.com>
 References: <20250606123447.538131-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -106,111 +106,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Remove the need to convert after every read of the BqlCell.  Because the
+vmstate uses a u8 as the size of the VARRAY, this requires switching
+the VARRAY to use num_timers_save; which in turn requires ensuring that
+the num_timers_save is always there.  For simplicity do this by
+removing support for version 1, which QEMU has not been producing for
+~15 years.
+
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs |  5 +++--
- rust/hw/timer/hpet/src/device.rs |  5 +++--
- rust/qemu-api/src/qdev.rs        | 12 ++++++++----
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ rust/hw/timer/hpet/src/device.rs | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 0501fa5be9c..be8387f6f2d 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -175,7 +175,7 @@ fn properties() -> &'static [Property] {
-     fn vmsd() -> Option<&'static VMStateDescription> {
-         Some(&device_class::VMSTATE_PL011)
-     }
--    const REALIZE: Option<fn(&Self)> = Some(Self::realize);
-+    const REALIZE: Option<fn(&Self) -> qemu_api::Result<()>> = Some(Self::realize);
- }
- 
- impl ResettablePhasesImpl for PL011State {
-@@ -619,9 +619,10 @@ fn event(&self, event: Event) {
-         }
-     }
- 
--    fn realize(&self) {
-+    fn realize(&self) -> qemu_api::Result<()> {
-         self.char_backend
-             .enable_handlers(self, Self::can_receive, Self::receive, Self::event);
-+        Ok(())
-     }
- 
-     fn reset_hold(&self, _type: ResetType) {
 diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index e3ba62b2875..68c82b09b60 100644
+index 68c82b09b60..a957de1e767 100644
 --- a/rust/hw/timer/hpet/src/device.rs
 +++ b/rust/hw/timer/hpet/src/device.rs
-@@ -724,7 +724,7 @@ fn post_init(&self) {
-         }
-     }
- 
--    fn realize(&self) {
-+    fn realize(&self) -> qemu_api::Result<()> {
-         if self.int_route_cap == 0 {
-             // TODO: Add error binding: warn_report()
-             println!("Hpet's hpet-intcap property not initialized");
-@@ -751,6 +751,7 @@ fn realize(&self) {
- 
-         self.init_gpio_in(2, HPETState::handle_legacy_irq);
-         self.init_gpio_out(from_ref(&self.pit_enabled));
-+        Ok(())
-     }
- 
-     fn reset_hold(&self, _type: ResetType) {
-@@ -1042,7 +1043,7 @@ fn vmsd() -> Option<&'static VMStateDescription> {
-         Some(&VMSTATE_HPET)
-     }
- 
--    const REALIZE: Option<fn(&Self)> = Some(Self::realize);
-+    const REALIZE: Option<fn(&Self) -> qemu_api::Result<()>> = Some(Self::realize);
- }
- 
- impl ResettablePhasesImpl for HPETState {
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 1279d7a58d5..0610959f467 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -12,10 +12,11 @@
- pub use bindings::{ClockEvent, DeviceClass, Property, ResetType};
- 
- use crate::{
--    bindings::{self, qdev_init_gpio_in, qdev_init_gpio_out, Error, ResettableClass},
-+    bindings::{self, qdev_init_gpio_in, qdev_init_gpio_out, ResettableClass},
-     callbacks::FnCall,
-     cell::{bql_locked, Opaque},
-     chardev::Chardev,
-+    error::{Error, Result},
+@@ -12,7 +12,7 @@
+ use qemu_api::{
+     bindings::{
+         address_space_memory, address_space_stl_le, qdev_prop_bit, qdev_prop_bool,
+-        qdev_prop_uint32, qdev_prop_uint8,
++        qdev_prop_uint32, qdev_prop_usize,
+     },
+     cell::{BqlCell, BqlRefCell},
      irq::InterruptSource,
-     prelude::*,
-     qom::{ObjectClass, ObjectImpl, Owned},
-@@ -108,7 +109,7 @@ pub trait DeviceImpl: ObjectImpl + ResettablePhasesImpl + IsA<DeviceState> {
-     ///
-     /// If not `None`, the parent class's `realize` method is overridden
-     /// with the function pointed to by `REALIZE`.
--    const REALIZE: Option<fn(&Self)> = None;
-+    const REALIZE: Option<fn(&Self) -> Result<()>> = None;
+@@ -36,9 +36,9 @@
+ const HPET_REG_SPACE_LEN: u64 = 0x400; // 1024 bytes
  
-     /// An array providing the properties that the user can set on the
-     /// device.  Not a `const` because referencing statics in constants
-@@ -134,10 +135,13 @@ fn vmsd() -> Option<&'static VMStateDescription> {
- /// readable/writeable from one thread at any time.
- unsafe extern "C" fn rust_realize_fn<T: DeviceImpl>(
-     dev: *mut bindings::DeviceState,
--    _errp: *mut *mut Error,
-+    errp: *mut *mut bindings::Error,
- ) {
-     let state = NonNull::new(dev).unwrap().cast::<T>();
--    T::REALIZE.unwrap()(unsafe { state.as_ref() });
-+    let result = T::REALIZE.unwrap()(unsafe { state.as_ref() });
-+    unsafe {
-+        Error::ok_or_propagate(result, errp);
-+    }
+ /// Minimum recommended hardware implementation.
+-const HPET_MIN_TIMERS: u8 = 3;
++const HPET_MIN_TIMERS: usize = 3;
+ /// Maximum timers in each timer block.
+-const HPET_MAX_TIMERS: u8 = 32;
++const HPET_MAX_TIMERS: usize = 32;
+ 
+ /// Flags that HPETState.flags supports.
+ const HPET_FLAG_MSI_SUPPORT_SHIFT: usize = 0;
+@@ -561,8 +561,8 @@ pub struct HPETState {
+ 
+     /// HPET timer array managed by this timer block.
+     #[doc(alias = "timer")]
+-    timers: [BqlRefCell<HPETTimer>; HPET_MAX_TIMERS as usize],
+-    num_timers: BqlCell<u8>,
++    timers: [BqlRefCell<HPETTimer>; HPET_MAX_TIMERS],
++    num_timers: BqlCell<usize>,
+     num_timers_save: BqlCell<u8>,
+ 
+     /// Instance id (HPET timer block ID).
+@@ -572,7 +572,7 @@ pub struct HPETState {
+ impl HPETState {
+     // Get num_timers with `usize` type, which is useful to play with array index.
+     fn get_num_timers(&self) -> usize {
+-        self.num_timers.get().into()
++        self.num_timers.get()
+     }
+ 
+     const fn has_msi_flag(&self) -> bool {
+@@ -854,7 +854,7 @@ fn pre_save(&self) -> i32 {
+          * also added to the migration stream.  Check that it matches the value
+          * that was configured.
+          */
+-        self.num_timers_save.set(self.num_timers.get());
++        self.num_timers_save.set(self.num_timers.get() as u8);
+         0
+     }
+ 
+@@ -884,7 +884,7 @@ fn is_offset_needed(&self) -> bool {
+     }
+ 
+     fn validate_num_timers(&self, _version_id: u8) -> bool {
+-        self.num_timers.get() == self.num_timers_save.get()
++        self.num_timers.get() == self.num_timers_save.get().into()
+     }
  }
  
- unsafe impl InterfaceType for ResettableClass {
+@@ -911,7 +911,7 @@ impl ObjectImpl for HPETState {
+         c"timers",
+         HPETState,
+         num_timers,
+-        unsafe { &qdev_prop_uint8 },
++        unsafe { &qdev_prop_usize },
+         u8,
+         default = HPET_MIN_TIMERS
+     ),
+@@ -1016,16 +1016,16 @@ impl ObjectImpl for HPETState {
+ static VMSTATE_HPET: VMStateDescription = VMStateDescription {
+     name: c"hpet".as_ptr(),
+     version_id: 2,
+-    minimum_version_id: 1,
++    minimum_version_id: 2,
+     pre_save: Some(hpet_pre_save),
+     post_load: Some(hpet_post_load),
+     fields: vmstate_fields! {
+         vmstate_of!(HPETState, config),
+         vmstate_of!(HPETState, int_status),
+         vmstate_of!(HPETState, counter),
+-        vmstate_of!(HPETState, num_timers_save).with_version_id(2),
++        vmstate_of!(HPETState, num_timers_save),
+         vmstate_validate!(HPETState, VALIDATE_TIMERS_NAME, HPETState::validate_num_timers),
+-        vmstate_struct!(HPETState, timers[0 .. num_timers], &VMSTATE_HPET_TIMER, BqlRefCell<HPETTimer>, HPETState::validate_num_timers).with_version_id(0),
++        vmstate_struct!(HPETState, timers[0 .. num_timers_save], &VMSTATE_HPET_TIMER, BqlRefCell<HPETTimer>, HPETState::validate_num_timers).with_version_id(0),
+     },
+     subsections: vmstate_subsections! {
+         VMSTATE_HPET_RTC_IRQ_LEVEL,
 -- 
 2.49.0
 
