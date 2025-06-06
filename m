@@ -2,70 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548E8ACFD5A
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 09:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0D9ACFD74
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 09:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNRLZ-0002Df-MD; Fri, 06 Jun 2025 03:18:37 -0400
+	id 1uNRSP-0005Cm-BC; Fri, 06 Jun 2025 03:25:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1uNRLH-00024Z-Qf
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 03:18:21 -0400
-Received: from mout.kundenserver.de ([212.227.126.135])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1uNRL5-0006Jc-0H
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 03:18:18 -0400
-Received: from [192.168.100.1] ([82.64.211.94]) by mrelayeu.kundenserver.de
- (mreue011 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1M6UqP-1uUJ6F1ahd-00CHo5; Fri, 06 Jun 2025 09:17:58 +0200
-Message-ID: <1ec605e1-6ea4-4970-b2fd-148ae26e4519@vivier.eu>
-Date: Fri, 6 Jun 2025 09:17:57 +0200
+ (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
+ id 1uNRSK-0005Bo-KK
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 03:25:39 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jay.chang@sifive.com>)
+ id 1uNRSH-0007ZP-QG
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 03:25:35 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-312028c644bso1418877a91.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 00:25:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1749194731; x=1749799531; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=eqQgg7FhIoL/447jsGOcCEkgWZv5U2WvjQztrTXd0ZU=;
+ b=LIYhJSq9/V9PYT+INuLGvO4VBzSGsee5quRNn46rmQwdTb+cS1uDahfSCrCNL3KxTF
+ piJvOxtLR/HUKS92xZ2jTiyVdN24riS4UMODyScffXz8wp45CpFkiQwP7RvbRP5u1iIC
+ F4F+2BuJSraMA/hj+PgOsO29GUL3klGCLCRdHvKNzJQwzFnzA38ED/pPGw2Rf5v4aFBn
+ NmR+LgRcVCi4WpxWDqkbV4DpF61dqYO4574GX57nCvIezedvOlVJFylnpzSUtJA25NF+
+ 3TuOFwsEhfJ/pRgxBLBaVLXf6UIOS6zKpR3wK6zloY08mHAYccQVMFuwAEFDtNvqLHDT
+ FAfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749194731; x=1749799531;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eqQgg7FhIoL/447jsGOcCEkgWZv5U2WvjQztrTXd0ZU=;
+ b=gPg+HwIJ7+P+LdE5h4kAqxTeI08MW/Yydm86pXBSZzH4y6bth/r21fuDgk74pv322G
+ Hq2Uso9nD+7TIjiu/91KN0CnEPxWWrulBN3SwooblePVLqGgIVSrEJ/SyxwxeLYqH6Dw
+ +c7yCpMP5BbxxsRwqj2/a5zJ5I6tw+zUiMJJQJ8vLatacaEHWekdS+BhqvfiBkeAzRCE
+ QhG+EuaF+pRa2eEeRB6VxGsFnRDksceTTEiM1Z390cBB0fBlJOAWM2OEfUBtWrJMCOB/
+ UK3v8Nv3IHHxoSf9iyhp4OoLbq7CgocgS4M7thzP+n5woJXWOvSasD4EnbXI4YheGQ72
+ bioQ==
+X-Gm-Message-State: AOJu0YzQsv3NcXK5R19/BaH8QFTSQjjsMcmcXrbZwiM3zBPtts8Ug88R
+ YdUVf2zXmPblRmKofGORCYuzokR0QAjqCq4t7mP4wFL3u6rvjQbnp0d0T1/142zmf4xUbzuMKs9
+ jgMkpehZhHhV0TPZUNL1T8z4m/75nBwUowlMVu/fVqf2qiFNxXB7gsrPUcwZrPaAzdQR6Ahjpre
+ CMbe/7h4FKsC0U4MmEV20rYnD5cog54cna1EXAnu70
+X-Gm-Gg: ASbGncumXXq9rpYEoOZXDoJxuW5Lp5g5PnRYla0CQnmsJIY9hvUV0OiT9CTeqrCiVex
+ 9SlCWBQ7xOLSC8fmTRxguCBBlCTiTIe6vu+vsDfCKT6M7ZoZ0RFl0rLhbm57Wr3T5CcQkC8GMcT
+ QTCzxg/xCLkgKXQshY41dzPZmze2IH9i+qbZyDyRqWepjq4BYT2Mhbvi1KU/jLlYubkBNWmYnOd
+ iBMg1dckKkPq57ChG7CIiCMTh4STl0UwXQAFlzZe5hAu6YzQXJDxKOAa+tUvA0xZv7y/VbvmkKG
+ uiQp1I7jiDdAEgVsoujroPEYBPCagoZxgZVTGJz75Q/qp2JL+jQQd1SqOEV7kWP/SEfxYhmNuU5
+ brUxRjlb2dLRZ6hI=
+X-Google-Smtp-Source: AGHT+IH3uP+SzyW+Hb0EtoTBQrLVDPauSC7nKygY/6do2xIwQgfQRdL0UNdsEIj4gKOeVO7B9nsO3Q==
+X-Received: by 2002:a17:90b:5345:b0:311:ffe8:20e9 with SMTP id
+ 98e67ed59e1d1-31347308c79mr4429732a91.17.1749194730855; 
+ Fri, 06 Jun 2025 00:25:30 -0700 (PDT)
+Received: from jchang-1875.internal.sifive.com ([136.226.240.181])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-31349f17bddsm774703a91.9.2025.06.06.00.25.28
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 06 Jun 2025 00:25:30 -0700 (PDT)
+From: Jay Chang <jay.chang@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Jay Chang <jay.chang@sifive.com>
+Subject: [PATCH v5 0/2] Extend and configure PMP region count
+Date: Fri,  6 Jun 2025 15:25:23 +0800
+Message-ID: <20250606072525.17313-1-jay.chang@sifive.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Fixes: failed to call mq_open/mq_unlink in qemu-arm
-To: Zhang He <zhanghe9702@163.com>
-Cc: qemu-devel@nongnu.org
-References: <20250605144603.17475-1-zhanghe9702@163.com>
-Content-Language: en-US, fr-FR
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20250605144603.17475-1-zhanghe9702@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:9D0YHr7Cxtu4rDLka+fv4+7egm+lkFDd7W1B1H4LdD0jKcWYrsL
- lspwxaWeRpI1QbQkEGrvdT877LitPskCZ6euTdR5iBlclQc7bMsn0/QI/vdVXaApkNHYzJw
- UwO3FeP+yWOAq/jUAWaQmrHJJMZB2ccewwJzjxW/25VAtY6Cdz7YYjZlO1SNH4b+vqemqJP
- 3xdpRQHTut47iOQ+LQJfg==
-UI-OutboundReport: notjunk:1;M01:P0:z72ZZP4yB4c=;9PhJW98ZbTPZJk5YjodoZxZT+TY
- x6rtkDFLI3iWqUnVbp0JhRCrcnMi72x/ouqx7d0wbrO5eRFrhZ2D3KD4TFz774lgDZWNIuhZ/
- hL60POQ5V+0d+0fhGvcy69P/fyPw4Ty3y6B7m1qYdJd8XPndczBLdzyczM1V97E/RfhHFTqT4
- SvpTQ9jaCPHv1eBDYItAWqKN9KK6t8hwUfcTZPE37o8qRp/iJNku5GgMgBH54rzpqGCUR/p8t
- 39KKGA59TohfNgwr4qXbPt00K1DGa1f9HOtIoOk7SCUCz3IVpfCSmGsxViPAB8YxHdDF8CcPj
- DttwBvPif3ZkMeVOcsArdjAeefkR31QAUq9SaPDIuyFZ2e1u5fE2T7ZijiLvNQYbJk6mOD0E2
- 2husMLHa2+xUjfDAHr/di4kagKPZlFiGOwWCjlMoZ78JNZYKyA27gz35WxO6MxEE5ALM0goll
- ErfBRJho2c5mQasVyv5xP/IzcbZd/lOKPbMSlhY4UFC19wyuCEEE2iq7USjfSSdHYTHJYQYSh
- cVFxhbqFeQYr7o7wsTv2REUpMu2khX8fdA770sKkChh2oj7qE8mwF2hwvIak3e0mJQW1HCNKg
- aupJIkGr2NGdzx6RoNgf7dXxy2KbrLaROUaPF/eO8SuMnpqFjfQ4vtam4BzAERJ250rNyQsdh
- knoDPL7aI8jZKT//mnmWaSgPwNQf1v4zEB/b0hEKevpR+STGFj83XVHoVbDQ2XZ2G5QT5yFAv
- YDD2YKz4tY+jNd9agPynqcuJSx1FuvN0uBLMeZ8D9h8kQZ+zQZw0TS3Fv5H/ZJhOygz5L/+1T
- z/I4HFHmGWV/uxiWmrXtpiQ9Oyy57PlqC/uQ4Mwlq/sgyI8XnOw1ezRhXoCC9DsTgexb/xEG4
- dHXhudyaYuCZ03nX2WSOGJqLRPDGZYDhou9t2rYbTXbkWUjVDsfHqnxuZcxxbdFP1ARdgiq44
- B8U93hbM1UvcLwMugpftXq+T6UQnlMtfpGF3Km92GNjuz9eHRX744bVdwhabmOLuAkbgCGMo0
- zHmEZrCKDYprQ1UPBN1pxG/2x35TiXVCME9zPq4v0F3LCZ09H/J+EfLjhqIaxHM6Cyn+57eY9
- nJzsK8v1mB+ohi2khxuUoC43LTwZuTtY24Jsk8la4oBr8kL2YMT5btjtqgpXOUOy/h8MlXfWi
- 2V/LaL/DBcPHZvzFqAL0FN4mI/ejBNfjufSianQGuIFBx6v4YEaIbs+0bphbEB63IrziCuUyB
- D9g+qMiAq/dwyLHrFw/DWGah6cjtW44+p9PEGws+JPSuKv2kd5JBVGk5aymCjT478QrKaygyn
- MCemujodSKnnFN4hgwtyzqborI7biF4+3fWQ2kV+I3MZGEyxxeRogDsea9KGz53lGe3fUbzVA
- UYoAvABySviE/b0L9NQ1MSCAIAGbpY+EVijlQ=
-Received-SPF: pass client-ip=212.227.126.135; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=jay.chang@sifive.com; helo=mail-pj1-x102b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,78 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 05/06/2025 à 16:46, Zhang He a écrit :
-> i write some bare-metal c code need mq_open/mq_unlink syscall, but
-> the syscall failed in passed name param check, arg1 in this scenario
-> is the correct address from user-space, arg1 - 1 not.
-> i have tested in arm cortex-m55 cpu model, maybe should add conditional compile macro?
-> 
-> Signed-off-by: Zhang He <zhanghe9702@163.com>
-> ---
->   linux-user/syscall.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index fc37028597..be9610176a 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -13058,7 +13058,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
->                   }
->                   pposix_mq_attr = &posix_mq_attr;
->               }
-> -            p = lock_user_string(arg1 - 1);
-> +            p = lock_user_string(arg1);
->               if (!p) {
->                   return -TARGET_EFAULT;
->               }
-> @@ -13068,7 +13068,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
->           return ret;
->   
->       case TARGET_NR_mq_unlink:
-> -        p = lock_user_string(arg1 - 1);
-> +        p = lock_user_string(arg1);
->           if (!p) {
->               return -TARGET_EFAULT;
->           }
+The first patch extends the number of PMP regions supported up to 64,
+following the RISC-V Privileged Specification (version >1.12), where
+RV32 can have up to 64 PMP regions configured through 16 CSRs.
 
-According to the original thread:
+The second patch makes the PMP region count configurable via a new
+CPU parameter `num-pmp-regions`. This allows platforms to adjust
+the number of PMP regions without relying on a fixed default value.
+If unspecified, the default remains 16 to preserve compatibility.
 
-Re: [Qemu-devel] [linux-user] Added posix message queue syscalls except
-https://mail.gnu.org/archive/html/qemu-devel/2008-12/msg00966.html
+Change log:
+  V5:
+  * Dropped all pmp_regions = 8 overrides except SiFive-specific cases,
+    and every other vendor CPU should set its own default if they want.
+    (based on feedback from Daniel)
 
-It comes from glibc:
+Jay Chang (2):
+  target/riscv: Extend PMP region up to 64
+  target/riscv: Make PMP region count configurable
 
-/* Remove message queue named NAME.  */
-int
-__mq_unlink (const char *name)
-{
-   if (name[0] != '/')
-     return INLINE_SYSCALL_ERROR_RETURN_VALUE (EINVAL);
+ target/riscv/cpu.c                |  48 ++++++++++-
+ target/riscv/cpu.h                |   3 +-
+ target/riscv/cpu_bits.h           |  60 ++++++++++++++
+ target/riscv/cpu_cfg_fields.h.inc |   1 +
+ target/riscv/csr.c                | 129 +++++++++++++++++++++++++++++-
+ target/riscv/machine.c            |   3 +-
+ target/riscv/pmp.c                |  28 ++++---
+ 7 files changed, 256 insertions(+), 16 deletions(-)
 
-   int ret = INTERNAL_SYSCALL_CALL (mq_unlink, name + 1);
-
-   /* While unlink can return either EPERM or EACCES, mq_unlink should
-      return just EACCES.  */
-   if (__glibc_unlikely (INTERNAL_SYSCALL_ERROR_P (ret)))
-     {
-       ret = INTERNAL_SYSCALL_ERRNO (ret);
-       if (ret == EPERM)
-         ret = EACCES;
-       return INLINE_SYSCALL_ERROR_RETURN_VALUE (ret);
-     }
-
-   return ret;
-}
-
-I think the '+' is to remove the starting '/'.
-
-So if we call it from linux-user app, the string is '/XXXX', then into 
-the linux-user glibc it becomes 'XXXX', so to pass it to the host glibc 
-again we need to restore the '/' by doing '- 1'.
-
-So I don't think your change is correct.
-
-Thanks,
-Laurent
+-- 
+2.48.1
 
 
