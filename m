@@ -2,97 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8662DAD068F
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 18:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A753AD06A0
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 18:27:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNZpi-0005gU-74; Fri, 06 Jun 2025 12:22:18 -0400
+	id 1uNZuV-0007ep-55; Fri, 06 Jun 2025 12:27:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uNZpg-0005fy-AZ
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 12:22:16 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1uNZuS-0007eK-Pm
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 12:27:12 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uNZpa-0008GO-Ft
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 12:22:14 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-74800b81f1bso1908093b3a.1
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 09:22:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1uNZuQ-0000MO-Qm
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 12:27:12 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-313154270bbso2465715a91.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 09:27:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749226929; x=1749831729; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7SYTdlE/fJXOVY6ynl4ET3geGWrAb8cvhJwwq/SC4jQ=;
- b=zCr1n4S/24HOLqCh+n7zfY3do2elwaWDvjZf0LOINn36Mq71w4goNolt25gcjsXSo5
- tL9B2dG9zPxyHVL6Tmx3By5vwIgjkNs+zo2ld8JTIskkyW/cy+O67O632781qCE+kwII
- 1K6W5Pimmky5BjQ3u+Fd3Inrdy8Tj8Xdq2my3YX+TeY5n/ZI8WGBMA5v9P088zUGRnrp
- H3qTQzZScuncXOmp35ERUdS0A+dGnVVl+7ckfAW2P0uwRukSuDGRK/sZFP4h8y20oEUQ
- ZAOXx7imHfwtKBeqQZumuw8BsSYiEjK1e7x+Gz4hSnpV5qaZwjJdOnXkvXuzy5bqE5RR
- jpug==
+ d=gmail.com; s=20230601; t=1749227229; x=1749832029; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:date:from:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=LJo/2H61aEcasih2UA9s9opFRItpP5BcPNNKHiIMYyI=;
+ b=Kg+YRDgTNKR0kSVD9lXjEcs2iTOPO5a2Bc+NDVKTxjcwK9ZcDKoM3usa0BRDkpzsHz
+ 73Dq74hf2j+x2Yz4Sme8KYD/7zvOTd2Pfqd73eF6Qg0lLRh0b5PVcM9KGbrOIJU6fUXW
+ H3yxLBYhng0z+Fyx4P1BsQ74Tu241m9Rek5eX94WNl07ejVOthiWcUn47qHPbbEc2rDc
+ 5TG5ZZh+URJDNycA0l2eLa1YYbDJqiZVyepNlBfbu6OXyZw1FN6ay9MJ4Vk7B0lREoZ6
+ hwAixtgqBDCIN4dMbbPQuH24sGxWJqys6HmtoSlTQ6e3bcwAkgfNZZo9jGfJp9awQAnG
+ k6MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749226929; x=1749831729;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1749227229; x=1749832029;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:date:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7SYTdlE/fJXOVY6ynl4ET3geGWrAb8cvhJwwq/SC4jQ=;
- b=tu5lHcSEAR9xuPyffQgVQzj1pjHhmWIa5HYMJt1BTfA48a34Hg6wJc4MvRvk25+fME
- u4Qc8KfTdI7AS8fWhjwp3GCMcxwxH02ypInQXERYFPleT5QgTRSCtcGEZyEddbt+Iz6y
- YKKlnMraFySUNqsaCYXf/76TET7GBtkZU1uDou3MyMBkYME7ZJ8zO+F6h0EzLhxuQ1Yr
- UPOxQ0cBh+vppN+2rz0ffV4MU2sQntmewjZIz9S4QIUzmCGdyOLVjoVNjKr62hpQuB79
- Qxse2J5zwDph3ICgsbLiP1IMJdvvRrsaddwU9RKoR4GxCBDWMTYSI2p+v635HuIeGnCQ
- nOFA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX0PRFdBNFq495+99YXhsGKfPFQ29KH+APbLDgedof5BNUMBSuCvSOOPGYjL/aJWSxFRvKtKSN793/7@nongnu.org
-X-Gm-Message-State: AOJu0YzHqtgSkU2B6ZJKapUO8idx96pehUE7mL3e7L3OyNEVur4uDuUQ
- 7HRJBQTpW+9IDr9z/jtKgziLK1fL6FaRtO57tCGMUxAUWpnkpfL9XbcLPL8BrQOcMxo=
-X-Gm-Gg: ASbGncuYbvdam3GrMSMorMJ8nS0ixO8/frfrpdmRz7ftG/rDYFyIYUdsS/m3DrHTXiZ
- i1ZcOG7LLn6lxI282fb/ekbQZnOCnIeN4/pNCQMgHhpjxeL+Q4fL23SwCLTCdtUQkGL3Kwyyj3E
- incKAbV1iuA55AZ2Lg5MWnlElgNVsU0LbqiWPMvU9naAxIm7x83FZTGIixQy/CHeS2dvQwfiZm3
- 6BkX7rGVfEdME8FSSUqrEyTPMy4hF8+kG7KZ94J4+mDz/uunfPCrc/YwbRyTzzAO1l9ZDZ7v5m0
- 37TtNhQzv38An49/Z6xWVlWjxWqYneo/jmGwwHJFqe3uJV25Ww6HnlpI72dhtW0F/VoaE4T5no0
- =
-X-Google-Smtp-Source: AGHT+IGjNym0gikeObc/XVXl6dvxSz6Qhr+BYtz2Iz0Af39IPxWYrECHbX5B+0L0Mnvrx415OpDvsg==
-X-Received: by 2002:a05:6a21:2d8f:b0:1f5:8dea:bb93 with SMTP id
- adf61e73a8af0-21ee24fd015mr5968341637.7.1749226928946; 
- Fri, 06 Jun 2025 09:22:08 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
+ bh=LJo/2H61aEcasih2UA9s9opFRItpP5BcPNNKHiIMYyI=;
+ b=QYeGp0Iseoh6BDd4V3zv4M7uiNaQyz9Ko7becDNuCctpoZqh2jvqfPAYDLRyOem2GF
+ ypFlNb5LsXoDQGCQAQNIG0Mqu80rMjB/b3P0ri366akUl33aAbKWRHx0NdycStGI5bOP
+ OXs3ifIgLweUnmRDxGgi8cUs5QrKqWWlIjG023kDxnWuRh1vOTrqS3A2gC2POx2qOWmQ
+ MNTKxBwBUeo/Bi955oK/xejoblAADO1bjNQDZR8LD4yTwW7bsMokodEPqgGmDunNqvb8
+ BKIcihdGkmmTnV+J5Y6r9aCRvp2gcKXvK2arlAIgJACOXORQXHI40LrMD9jZGnR0cLYO
+ G+1w==
+X-Gm-Message-State: AOJu0YzK59jmPsFqbYumQT0y7iXj+3XuM0PkJe6CvCerz6qzgAMTx9T6
+ /SN6dQWMGJ+X4Q7lkjzUFwmCC6UWfZwOHRQCWDUmqtp5OSH8Wq0yzIso
+X-Gm-Gg: ASbGncsSbUUsz5gfz4WBG40AwXwIDIaLfZjlrFo3ff7v0Mgml0FuqzqY/uwMoHawYn5
+ snjcR3PMveZujxxh9QXgkqknEe8xmUbfgnlH+g/ME0V3n6LPBE6jH5CL3PGo11H1P8r6MPppkWK
+ CGvIVgAymomxwOXnSWwWiF6sRWL22K84eM+yvHTJv2R3fqiSQ7LFaMZExYGESsBcxj1fRoSHlb+
+ oMeDLQVAjjxv+KqUAhZqdrJzMoMYD54UUz3LR8ohxoQrm24D16ewArvkTZ1d0WM2Ff5SFXPFLe0
+ 92923N3ZW2K45e3MbAsNL3PXcdB6hMxbmtuk2JXRQAMjrA==
+X-Google-Smtp-Source: AGHT+IEKi6kelnMID7Y/svXIB+jik0hfOHx3xJYctF6Pu+ddRZqnbbb0d7EMCaz4F2yl+M80M3Uyug==
+X-Received: by 2002:a17:90b:1646:b0:311:f05b:869a with SMTP id
+ 98e67ed59e1d1-313472eb280mr5905063a91.8.1749227228714; 
+ Fri, 06 Jun 2025 09:27:08 -0700 (PDT)
+Received: from debian ([2601:646:8f03:9fee:5e33:e006:dcd5:852d])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7482af7a90dsm1504256b3a.57.2025.06.06.09.22.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Jun 2025 09:22:08 -0700 (PDT)
-Message-ID: <ae7090c3-37e4-4f10-8267-d7106aa5e259@linaro.org>
-Date: Fri, 6 Jun 2025 09:22:07 -0700
+ 98e67ed59e1d1-31349f35284sm1514066a91.17.2025.06.06.09.27.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Jun 2025 09:27:08 -0700 (PDT)
+From: Fan Ni <nifan.cxl@gmail.com>
+X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
+Date: Fri, 6 Jun 2025 09:27:05 -0700
+To: anisa.su887@gmail.com
+Cc: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com,
+ dave@stgolabs.net, linux-cxl@vger.kernel.org,
+ Anisa Su <anisa.su@samsung.com>
+Subject: Re: [QEMU PATCH v3 6/9] cxl-mailbox-utils: 0x5602 - FMAPI Set DC
+ Region Config
+Message-ID: <aEMW2SDuAE10Iyuf@debian>
+References: <20250605234227.970187-1-anisa.su887@gmail.com>
+ <20250605234227.970187-7-anisa.su887@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ramfb: Add property to control if load the romfile
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>
-Cc: qemu-arm@nongnu.org, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-References: <20250606070234.2063451-1-shahuang@redhat.com>
- <aEKeNSc8mAZ8vhGj@redhat.com>
- <9b083ae2-3afb-43f4-8929-fc693b581a0d@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <9b083ae2-3afb-43f4-8929-fc693b581a0d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <20250605234227.970187-7-anisa.su887@gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pj1-x102c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,127 +102,190 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/6/25 2:04 AM, Philippe Mathieu-Daudé wrote:
-> On 6/6/25 09:52, Daniel P. Berrangé wrote:
->> On Fri, Jun 06, 2025 at 03:02:34AM -0400, Shaoqin Huang wrote:
->>> Now the ramfb will load the vgabios-ramfb.bin unconditionally, but only
->>> the x86 need the vgabios-ramfb.bin, this can cause that when use the
->>> release package on arm64 it can't find the vgabios-ramfb.bin.
->>>
->>> Because only seabios will use the vgabios-ramfb.bin, load the rom logic
->>> is x86-specific. For other !x86 platforms, the edk2 ships an EFI driver
->>> for ramfb, so they don't need to load the romfile.
->>>
->>> So add a new property use_legacy_x86_rom in both ramfb and vfio_pci
->>> device, because the vfio display also use the ramfb_setup() to load
->>> the vgabios-ramfb.bin file.
->>>
->>> After have this property, the machine type can set the compatibility to
->>> not load the vgabios-ramfb.bin if the arch doesn't need it.
->>
->> Can you make this a series, with an additional patch that updates the
->> current in-dev machine types to use this new property, so we're clear
->> about the proposed usage.
->>
->>>
->>> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
->>> ---
->>>    hw/display/ramfb-standalone.c | 4 +++-
->>>    hw/display/ramfb-stubs.c      | 2 +-
->>>    hw/display/ramfb.c            | 6 ++++--
->>>    hw/vfio/display.c             | 4 ++--
->>>    hw/vfio/pci.c                 | 1 +
->>>    hw/vfio/pci.h                 | 1 +
->>>    include/hw/display/ramfb.h    | 2 +-
->>>    7 files changed, 13 insertions(+), 7 deletions(-)
+On Thu, Jun 05, 2025 at 11:42:20PM +0000, anisa.su887@gmail.com wrote:
+> From: Anisa Su <anisa.su@samsung.com>
 > 
+> FM DCD Management command 0x5602 implemented per CXL r3.2 Spec Section 7.6.7.6.3
 > 
->>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
->>> index 7f1532fbed..4e4759c954 100644
->>> --- a/hw/vfio/pci.c
->>> +++ b/hw/vfio/pci.c
->>> @@ -3564,6 +3564,7 @@ static const TypeInfo vfio_pci_dev_info = {
->>>    
->>>    static const Property vfio_pci_dev_nohotplug_properties[] = {
->>>        DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
->>> +    DEFINE_PROP_BOOL("use_legacy_x86_rom", VFIOPCIDevice, use_legacy_x86_rom, true),
->>>        DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate,
->>>                                ON_OFF_AUTO_AUTO),
->>>    };
+> Signed-off-by: Anisa Su <anisa.su@samsung.com>
+> ---
+
+One minor comment, otherwise LGTM.
+
+>  hw/cxl/cxl-mailbox-utils.c   | 86 ++++++++++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3.c           |  6 +--
+>  include/hw/cxl/cxl_device.h  |  3 ++
+>  include/hw/cxl/cxl_mailbox.h |  6 +++
+>  4 files changed, 98 insertions(+), 3 deletions(-)
 > 
-> Alternatively with target-info API:
-> 
-> -- >8 --
-> diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
-> index 8c0f907673d..689f10625f8 100644
-> --- a/hw/display/ramfb.c
-> +++ b/hw/display/ramfb.c
-> @@ -12,6 +12,7 @@
->     */
-> 
->    #include "qemu/osdep.h"
-> +#include "qemu/target-info.h"
->    #include "qapi/error.h"
->    #include "hw/loader.h"
->    #include "hw/display/ramfb.h"
-> @@ -147,7 +148,15 @@ RAMFBState *ramfb_setup(Error **errp)
-> 
->        s = g_new0(RAMFBState, 1);
-> 
-> -    rom_add_vga("vgabios-ramfb.bin");
-> +    switch (target_system_arch()) {
-> +    case SYS_EMU_TARGET_I386:
-> +    case SYS_EMU_TARGET_X86_64:
-> +        rom_add_vga("vgabios-ramfb.bin");
-> +        break;
-> +    default:
-> +        break;
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index 1b5c7216f9..47b1509a0e 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -121,6 +121,7 @@ enum {
+>      FMAPI_DCD_MGMT = 0x56,
+>          #define GET_DCD_INFO    0x0
+>          #define GET_HOST_DC_REGION_CONFIG   0x1
+> +        #define SET_DC_REGION_CONFIG        0x2
+>  };
+>  
+>  /* CCI Message Format CXL r3.1 Figure 7-19 */
+> @@ -3387,6 +3388,84 @@ static CXLRetCode cmd_fm_get_host_dc_region_config(const struct cxl_cmd *cmd,
+>      return CXL_MBOX_SUCCESS;
+>  }
+>  
+> +/* CXL r3.2 section 7.6.7.6.3: Set Host DC Region Configuration (Opcode 5602) */
+> +static CXLRetCode cmd_fm_set_dc_region_config(const struct cxl_cmd *cmd,
+> +                                              uint8_t *payload_in,
+> +                                              size_t len_in,
+> +                                              uint8_t *payload_out,
+> +                                              size_t *len_out,
+> +                                              CXLCCI *cci)
+> +{
+> +    struct {
+> +        uint8_t reg_id;
+> +        uint8_t rsvd[3];
+> +        uint64_t block_sz;
+> +        uint8_t flags;
+> +        uint8_t rsvd2[3];
+> +    } QEMU_PACKED *in = (void *)payload_in;
+> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+> +    CXLEventDynamicCapacity dcEvent = {};
+> +    CXLDCRegion *region = &ct3d->dc.regions[in->reg_id];
+> +
+> +    /*
+> +     * CXL r3.2 7.6.7.6.3: Set DC Region Configuration
+> +     * This command shall fail with Unsupported when the Sanitize on Release
+> +     * field does not match the region’s configuration... and the device
+> +     * does not support reconfiguration of the Sanitize on Release setting.
+> +     *
+> +     * Currently not reconfigurable, so always fail if sanitize bit (bit 0)
+> +     * doesn't match.
+> +     */
+> +    if ((in->flags & 0x1) != (region->flags & 0x1)) {
+> +        return CXL_MBOX_UNSUPPORTED;
 > +    }
 > +
->        fw_cfg_add_file_callback(fw_cfg, "etc/ramfb",
->                                 NULL, ramfb_fw_cfg_write, s,
->                                 &s->cfg, sizeof(s->cfg), false);
-> ---
-> 
-> Recent work event introduces target_base_FOO() so that'd be:
-> 
-> -- >8 --
-> diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
-> index 8c0f907673d..2aa3b309010 100644
-> --- a/hw/display/ramfb.c
-> +++ b/hw/display/ramfb.c
-> @@ -12,6 +12,7 @@
->     */
-> 
->    #include "qemu/osdep.h"
-> +#include "qemu/target-info.h"
->    #include "qapi/error.h"
->    #include "hw/loader.h"
->    #include "hw/display/ramfb.h"
-> @@ -147,7 +148,10 @@ RAMFBState *ramfb_setup(Error **errp)
-> 
->        s = g_new0(RAMFBState, 1);
-> 
-> -    rom_add_vga("vgabios-ramfb.bin");
-> +    if (target_base_x86()) {
-> +        rom_add_vga("vgabios-ramfb.bin");
+> +    if (in->reg_id >= DCD_MAX_NUM_REGION) {
+> +        return CXL_MBOX_UNSUPPORTED;
 > +    }
 > +
->        fw_cfg_add_file_callback(fw_cfg, "etc/ramfb",
->                                 NULL, ramfb_fw_cfg_write, s,
->                                 &s->cfg, sizeof(s->cfg), false);
-> ---
+> +    /* Return success if new block size == current block size */
+> +    if (in->block_sz == region->block_size) {
+> +        return CXL_MBOX_SUCCESS;
+> +    }
+
+Should we move this below, after checking the bitmap?
+
+Fan
+> +
+> +    /* Check that no extents are in the region being reconfigured */
+> +    if (!bitmap_empty(region->blk_bitmap, region->len / region->block_size)) {
+> +        return CXL_MBOX_UNSUPPORTED;
+> +    }
+> +
+> +    /* Check that new block size is supported */
+> +    if (!test_bit(BIT((int) log2(in->block_sz)),
+> +                  &region->supported_blk_size_bitmask)) {
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+> +
+> +    /* Free bitmap and create new one for new block size. */
+> +    qemu_mutex_lock(&region->bitmap_lock);
+> +    g_free(region->blk_bitmap);
+> +    region->blk_bitmap = bitmap_new(region->len / in->block_sz);
+> +    qemu_mutex_unlock(&region->bitmap_lock);
+> +    region->block_size = in->block_sz;
+> +
+> +    /* Create event record and insert into event log */
+> +    cxl_assign_event_header(&dcEvent.hdr,
+> +                            &dynamic_capacity_uuid,
+> +                            (1 << CXL_EVENT_TYPE_INFO),
+> +                            sizeof(dcEvent),
+> +                            cxl_device_get_timestamp(&ct3d->cxl_dstate));
+> +    dcEvent.type = DC_EVENT_REGION_CONFIG_UPDATED;
+> +    dcEvent.validity_flags = 1;
+> +    dcEvent.host_id = 0;
+> +    dcEvent.updated_region_id = in->reg_id;
+> +
+> +    if (cxl_event_insert(&ct3d->cxl_dstate,
+> +                         CXL_EVENT_TYPE_DYNAMIC_CAP,
+> +                         (CXLEventRecordRaw *)&dcEvent)) {
+> +        cxl_event_irq_assert(ct3d);
+> +    }
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+>  static const struct cxl_cmd cxl_cmd_set[256][256] = {
+>      [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
+>          cmd_infostat_bg_op_abort, 0, 0 },
+> @@ -3505,6 +3584,13 @@ static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
+>          cmd_fm_get_dcd_info, 0, 0 },
+>      [FMAPI_DCD_MGMT][GET_HOST_DC_REGION_CONFIG] = { "GET_HOST_DC_REGION_CONFIG",
+>          cmd_fm_get_host_dc_region_config, 4, 0 },
+> +    [FMAPI_DCD_MGMT][SET_DC_REGION_CONFIG] = { "SET_DC_REGION_CONFIG",
+> +        cmd_fm_set_dc_region_config, 16,
+> +        (CXL_MBOX_CONFIG_CHANGE_COLD_RESET |
+> +         CXL_MBOX_CONFIG_CHANGE_CONV_RESET |
+> +         CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
+> +         CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
+> +         CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
+>  };
+>  
+>  /*
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index b872a26173..ee554a77be 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -1590,9 +1590,9 @@ void qmp_cxl_inject_correctable_error(const char *path, CxlCorErrorType type,
+>      pcie_aer_inject_error(PCI_DEVICE(obj), &err);
+>  }
+>  
+> -static void cxl_assign_event_header(CXLEventRecordHdr *hdr,
+> -                                    const QemuUUID *uuid, uint32_t flags,
+> -                                    uint8_t length, uint64_t timestamp)
+> +void cxl_assign_event_header(CXLEventRecordHdr *hdr,
+> +                             const QemuUUID *uuid, uint32_t flags,
+> +                             uint8_t length, uint64_t timestamp)
+>  {
+>      st24_le_p(&hdr->flags, flags);
+>      hdr->length = length;
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index 96ef9be444..76af75d2d0 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -721,4 +721,7 @@ void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+>                                     uint64_t len);
+>  bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+>                                    uint64_t len);
+> +void cxl_assign_event_header(CXLEventRecordHdr *hdr,
+> +                             const QemuUUID *uuid, uint32_t flags,
+> +                             uint8_t length, uint64_t timestamp);
+>  #endif
+> diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
+> index 9008402d1c..a05d7cb5b7 100644
+> --- a/include/hw/cxl/cxl_mailbox.h
+> +++ b/include/hw/cxl/cxl_mailbox.h
+> @@ -8,6 +8,7 @@
+>  #ifndef CXL_MAILBOX_H
+>  #define CXL_MAILBOX_H
+>  
+> +#define CXL_MBOX_CONFIG_CHANGE_COLD_RESET (1)
+>  #define CXL_MBOX_IMMEDIATE_CONFIG_CHANGE (1 << 1)
+>  #define CXL_MBOX_IMMEDIATE_DATA_CHANGE (1 << 2)
+>  #define CXL_MBOX_IMMEDIATE_POLICY_CHANGE (1 << 3)
+> @@ -15,5 +16,10 @@
+>  #define CXL_MBOX_SECURITY_STATE_CHANGE (1 << 5)
+>  #define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
+>  #define CXL_MBOX_BACKGROUND_OPERATION_ABORT (1 << 7)
+> +#define CXL_MBOX_SECONDARY_MBOX_SUPPORTED (1 << 8)
+> +#define CXL_MBOX_REQUEST_ABORT_BACKGROUND_OP_SUPPORTED (1 << 9)
+> +#define CXL_MBOX_CEL_10_TO_11_VALID (1 << 10)
+> +#define CXL_MBOX_CONFIG_CHANGE_CONV_RESET (1 << 11)
+> +#define CXL_MBOX_CONFIG_CHANGE_CXL_RESET (1 << 12)
+>  
+>  #endif
+> -- 
+> 2.47.2
 > 
-> Unfortunately I had to focus on more urgent stuff so this isn't
-> merged yet (besides I hurt a finger yesterday and am now typing
-> slower). I hope I'd be able to respin that next week.
-
-In case it's too much effort to respin all the series in a close future, 
-maybe it could be a good idea to just send target_system_arch(), so that 
-people can start using it.
- From there, people can add target_base_FOO() easily on a as needed 
-basis, without any hard conflict issue.
-
-Thanks,
-Pierrick
 
