@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE98AD025C
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C76AD0275
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:44:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNWJ7-0003CR-5V; Fri, 06 Jun 2025 08:36:28 -0400
+	id 1uNWJs-0003px-0O; Fri, 06 Jun 2025 08:37:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWIx-00039N-AV
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:36:15 -0400
+ id 1uNWJ3-0003Ml-FT
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:36:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWIu-0005z2-Kn
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:36:15 -0400
+ id 1uNWJ0-0005zX-1z
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:36:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749213370;
+ s=mimecast20190719; t=1749213377;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=r6T2UdLZ98T4mEFrrnkCvZZaWql+Pj2cZBNd8iq7JhE=;
- b=daA+JJy5XgclajL0xHN/Vpd4HjoeSEVKAimuiAI1F66lNR76kfnlgNU2DR3NTXrCtFF+Hs
- y1e1VShyH9uOBUehEyMNRH19V+3YcdtAlPesLG7/MBCkkfT+MGUSTRzEcatq/eCdTJOEuw
- LF0u/QX+1BDxVRuAerr0Frqn+jQliJw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vRjdgkT+SM7jCW9MUtI3FAgwqDoN5/Ld4xOkembi0iw=;
+ b=cPnUGHJoSToavEdpnYSgY73gEmc9+XEUNpOQdzQBzpGCYdS1YYD+o99deH0zMmPmmOY4PI
+ 4BEZ/aPA1XSFIAoVn/EBMd6vx3IGyJZLIXmMKBI295PbMlNHmWYBe0ULua1OuXQhGVxhkI
+ W0CvXoCUaaveIvf6ADNnYOEpIpVHoZ8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-ZK5QGKgXOAGEeWXVamvdmg-1; Fri, 06 Jun 2025 08:36:09 -0400
-X-MC-Unique: ZK5QGKgXOAGEeWXVamvdmg-1
-X-Mimecast-MFC-AGG-ID: ZK5QGKgXOAGEeWXVamvdmg_1749213368
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-450d6768d4dso13428505e9.2
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:36:09 -0700 (PDT)
+ us-mta-164-uGxQPm-xOAy7xuFoiVUVsQ-1; Fri, 06 Jun 2025 08:36:13 -0400
+X-MC-Unique: uGxQPm-xOAy7xuFoiVUVsQ-1
+X-Mimecast-MFC-AGG-ID: uGxQPm-xOAy7xuFoiVUVsQ_1749213372
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a4f7f1b932so1289041f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:36:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749213367; x=1749818167;
+ d=1e100.net; s=20230601; t=1749213371; x=1749818171;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r6T2UdLZ98T4mEFrrnkCvZZaWql+Pj2cZBNd8iq7JhE=;
- b=uYFQEqyYRTm3RckWillkZXdo54/00COOdCNS+HE8PuOgvA8bSWX8B9WfSXa1IfTqMe
- bSqFAxJ45rVKEBHjkX6h2akpQ3yjTCIseuGVCHl0QRkPsqWMny0qBGemSCbTw2QYlXqP
- 3k2KRAz3LYNhENL2YuuP+a81yJjqdKeISFj8UtUqrLlLPDl+Y1FvPptwWgb7BWoKDlJO
- S79nnUBxG0UzCCiPIE6k6GRykny+X0wCK/Fe0vPdYGfwR2JfFpbagS6pPpio8dRq670E
- OijZdgmdA5/jx2QoR715+Y1aDVmikkrBN000vWCrpp3wSey+gd/FT+e8Dl8N0uE46t42
- HU2Q==
-X-Gm-Message-State: AOJu0YzfBsWoZs0SOH2+eLC9iDpNfWHVaR7wYUhrDBE4jTYg+1ifdTnH
- 29PmiEhMTDVPZlvazDCzm85Dvr+glol6qe9n3hrqrHkF4dWT08L7GQ7UYGWN+tEQr7MnY5tuFbV
- 5OJdbNoAuDBo0nxur8O1Lp3RKgOja2kS00V4qjju/QhtiyLUgrbA2Pl2//y3AQHBfY/9+3NzAsf
- r+mgzYJB17aD3w3AmpYIUuJSOyU7WEHgs38FFf232S
-X-Gm-Gg: ASbGncvQWlDbzZ2HzotUk0DJEZq8H3YnZyQAMKfZ/XIWy8GD5gpXrPTtbbCr/Epjmlc
- XD0YUQB6b8uCx0+GONv2kzT+0BcsvgsW02euiVieR9NVwnCi1DoVi1NWbT+RW20JJ4MaZIbcV0l
- 7L7vFEBATgdtRd+cJao0bfSzEUI+jTkRh+AMsZGa3+1w9IRdYClIHLFm2MfIFtCiNjsCKTeyTZn
- 3IAaCaUw01Lrd3gC+pTY3eEXrjCl3CVpL7+31GJOpbZb53TA21ZZhBOApsPzd2f+vGpGuLET7Dq
- 77zol/Sugck0Nw==
-X-Received: by 2002:a05:600c:310a:b0:441:d4e8:76cd with SMTP id
- 5b1f17b1804b1-452014235d1mr32936825e9.29.1749213367447; 
- Fri, 06 Jun 2025 05:36:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE424q/EwXJFAssQxY2eCPg3Fsp78gspcYwg612N1I05o9/1GG7qSkOkP+1NgweuT2WF32sew==
-X-Received: by 2002:a05:600c:310a:b0:441:d4e8:76cd with SMTP id
- 5b1f17b1804b1-452014235d1mr32936535e9.29.1749213366894; 
- Fri, 06 Jun 2025 05:36:06 -0700 (PDT)
+ bh=vRjdgkT+SM7jCW9MUtI3FAgwqDoN5/Ld4xOkembi0iw=;
+ b=iLQk5A4EKzdZsId+N3EUxD7kAeLJDVmbTf3wRtHMMZUDw2tUwiKCYHc2sI5F3s0aEA
+ aibHf39Cd3sb+eIrN97YpGHQCyoRQO3iUmz4P8xkfd0XrDEIBWWu0dBrRkQ67B7HnCbP
+ ZqcOMtqneZAJY21AISMqBcoevNKTl4uWOWp3ojTFBdTVDklY7SIdDCfmquqA5dmiy8Z2
+ WB93H5afM7+xRsn20qjpg5SxblAkNmx1zgmk7IgvEQrovbBJYUuAVUGMyrzxc+m1ENCL
+ 0cU7QjqeJ7CWgksATdB/IOsh5hguQ+BmfBMs5Y4y95hmdcW432IK08KDJvPhn7h/9AbP
+ u1Qw==
+X-Gm-Message-State: AOJu0Yw2SwgLDXkRh0QSYSH1fW+PGZK78H6RaavgBcWXUGHRugPIL5gY
+ ULAZN+Tm5Y4nDbT/m4rTBibvXySZIUQAT8U92TSwyFvNE3lsE53TXe4FFizX675DtnEcChxNBRw
+ S6ot9DVlTcB1wjLls5N9NXnn6xt69cKNnyWYqzOxotRkzReLRXOobQ2tQyBp2nQrlTtp+3Y5dPF
+ CEImDqMpn5t+QosxHmIefIeaB1ghv9sqRgxAG0tDub
+X-Gm-Gg: ASbGncvy2LTrqdkQrhGPyv+m8+bdmyUT7Ft/rRXrh0Uo6HedlojNo5qwwSKohLzurgN
+ N5V3iRz1SQSEkzK/IOeiBwBmJlu1am6YBK9nZKq3H1l3dBMnyUA1tTZK0Q53O0ADx/mL7NVqwzM
+ 5hAhSlxhzROhj/fvbakNr0IYBhTiIQwItpOR/kBxF0tEu+z4qbMZbn7ELVR/724YWGHpljYRfTP
+ KhylJcMJzGHDkQ1ngtHj2X3FBFHQzkOyLMrjmmUJfl3a0zy3rCmcktga8jJku2GwCa5zlKTHsFF
+ ofI6vBKES5nFeG2m5YEMTi6C
+X-Received: by 2002:a05:6000:18a4:b0:3a4:dfaa:df8c with SMTP id
+ ffacd0b85a97d-3a5319b6f06mr3034528f8f.11.1749213370961; 
+ Fri, 06 Jun 2025 05:36:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHa8XlNpzMhIibmrlaSoiKwZD9MQF+e4DhYO3G/BUGZRkALjov2oyXfqSleGgzkT3jcWYt2mQ==
+X-Received: by 2002:a05:6000:18a4:b0:3a4:dfaa:df8c with SMTP id
+ ffacd0b85a97d-3a5319b6f06mr3034495f8f.11.1749213370412; 
+ Fri, 06 Jun 2025 05:36:10 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a53243664fsm1786344f8f.65.2025.06.06.05.36.04
+ ffacd0b85a97d-3a53246b678sm1732980f8f.101.2025.06.06.05.36.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Jun 2025 05:36:04 -0700 (PDT)
+ Fri, 06 Jun 2025 05:36:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 23/31] qemu-thread: Document QemuEvent
-Date: Fri,  6 Jun 2025 14:34:37 +0200
-Message-ID: <20250606123447.538131-24-pbonzini@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 24/31] migration: Replace QemuSemaphore with QemuEvent
+Date: Fri,  6 Jun 2025 14:34:38 +0200
+Message-ID: <20250606123447.538131-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250606123447.538131-1-pbonzini@redhat.com>
 References: <20250606123447.538131-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -108,37 +110,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Document QemuEvent to help choose an appropriate synchronization
-primitive.
+pause_event can utilize qemu_event_reset() to discard events.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Link: https://lore.kernel.org/r/20250529-event-v5-12-53b285203794@daynix.com
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lore.kernel.org/r/20250529-event-v5-7-53b285203794@daynix.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qemu/thread.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ migration/migration.h |  2 +-
+ migration/migration.c | 21 +++++++++------------
+ 2 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/include/qemu/thread.h b/include/qemu/thread.h
-index 573f8c9ede2..f0302ed01fd 100644
---- a/include/qemu/thread.h
-+++ b/include/qemu/thread.h
-@@ -10,6 +10,16 @@ typedef struct QemuSemaphore QemuSemaphore;
- typedef struct QemuLockCnt QemuLockCnt;
- typedef struct QemuThread QemuThread;
+diff --git a/migration/migration.h b/migration/migration.h
+index d53f7cad84d..21aa6a3c8fe 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -379,7 +379,7 @@ struct MigrationState {
+     QemuSemaphore wait_unplug_sem;
  
-+/*
-+ * QemuEvent
-+ * =========
-+ *
-+ * QemuEvent is an implementation of Win32 manual-reset event object.
-+ * For details, refer to:
-+ * https://learn.microsoft.com/en-us/windows/win32/sync/using-event-objects
-+ *
-+ * QemuEvent is more lightweight than QemuSemaphore when HAVE_FUTEX is defined.
-+ */
- typedef struct QemuEvent {
- #ifndef HAVE_FUTEX
-     pthread_mutex_t lock;
+     /* Migration is paused due to pause-before-switchover */
+-    QemuSemaphore pause_sem;
++    QemuEvent pause_event;
+ 
+     /* The semaphore is used to notify COLO thread that failover is finished */
+     QemuSemaphore colo_exit_sem;
+diff --git a/migration/migration.c b/migration/migration.c
+index 4697732bef9..4098870bce3 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1630,7 +1630,7 @@ void migration_cancel(void)
+         }
+         /* If the migration is paused, kick it out of the pause */
+         if (old_state == MIGRATION_STATUS_PRE_SWITCHOVER) {
+-            qemu_sem_post(&s->pause_sem);
++            qemu_event_set(&s->pause_event);
+         }
+         migrate_set_state(&s->state, old_state, MIGRATION_STATUS_CANCELLING);
+     } while (s->state != MIGRATION_STATUS_CANCELLING);
+@@ -2342,7 +2342,7 @@ void qmp_migrate_continue(MigrationStatus state, Error **errp)
+                    MigrationStatus_str(s->state));
+         return;
+     }
+-    qemu_sem_post(&s->pause_sem);
++    qemu_event_set(&s->pause_event);
+ }
+ 
+ int migration_rp_wait(MigrationState *s)
+@@ -2911,21 +2911,18 @@ static bool migration_switchover_prepare(MigrationState *s)
+         return true;
+     }
+ 
+-    /* Since leaving this state is not atomic with posting the semaphore
++    /*
++     * Since leaving this state is not atomic with setting the event
+      * it's possible that someone could have issued multiple migrate_continue
+-     * and the semaphore is incorrectly positive at this point;
+-     * the docs say it's undefined to reinit a semaphore that's already
+-     * init'd, so use timedwait to eat up any existing posts.
++     * and the event is incorrectly set at this point so reset it.
+      */
+-    while (qemu_sem_timedwait(&s->pause_sem, 1) == 0) {
+-        /* This block intentionally left blank */
+-    }
++    qemu_event_reset(&s->pause_event);
+ 
+     /* Update [POSTCOPY_]ACTIVE to PRE_SWITCHOVER */
+     migrate_set_state(&s->state, s->state, MIGRATION_STATUS_PRE_SWITCHOVER);
+     bql_unlock();
+ 
+-    qemu_sem_wait(&s->pause_sem);
++    qemu_event_wait(&s->pause_event);
+ 
+     bql_lock();
+     /*
+@@ -4057,7 +4054,7 @@ static void migration_instance_finalize(Object *obj)
+     qemu_mutex_destroy(&ms->qemu_file_lock);
+     qemu_sem_destroy(&ms->wait_unplug_sem);
+     qemu_sem_destroy(&ms->rate_limit_sem);
+-    qemu_sem_destroy(&ms->pause_sem);
++    qemu_event_destroy(&ms->pause_event);
+     qemu_sem_destroy(&ms->postcopy_pause_sem);
+     qemu_sem_destroy(&ms->rp_state.rp_sem);
+     qemu_sem_destroy(&ms->rp_state.rp_pong_acks);
+@@ -4072,7 +4069,7 @@ static void migration_instance_init(Object *obj)
+     ms->state = MIGRATION_STATUS_NONE;
+     ms->mbps = -1;
+     ms->pages_per_second = -1;
+-    qemu_sem_init(&ms->pause_sem, 0);
++    qemu_event_init(&ms->pause_event, false);
+     qemu_mutex_init(&ms->error_mutex);
+ 
+     migrate_params_init(&ms->parameters);
 -- 
 2.49.0
 
