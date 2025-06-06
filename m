@@ -2,95 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171FCAD092B
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 22:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A56AD0A8C
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Jun 2025 02:01:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNe1q-0000sg-PD; Fri, 06 Jun 2025 16:51:06 -0400
+	id 1uNgz2-0000jy-Mt; Fri, 06 Jun 2025 20:00:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uNe1p-0000s9-5H
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 16:51:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uNe1m-0006qk-3e
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 16:51:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749243060;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Pl1iJVAwbmj2k/Qu1VmgLakylCSHgmA0/gr1PYfswhA=;
- b=EiCQMc88pogfCpZuR5Ecejl4qJsZdpZBJ7oUxBXRIMNCsbyHJmKFqJpbC9mWFg5mTlQ6KE
- DbJzzu+sV35oGZG+H7AulCxbOTBFohnSz+63IAzORGFzG++Y71G5MeLObo3UmijmeoNtMM
- fIHZTHyaTJw36XRL4/ONYM+GRCWlM1w=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-L1GwN62rOSq_e_D-gdrEfg-1; Fri, 06 Jun 2025 16:50:58 -0400
-X-MC-Unique: L1GwN62rOSq_e_D-gdrEfg-1
-X-Mimecast-MFC-AGG-ID: L1GwN62rOSq_e_D-gdrEfg_1749243058
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7c5d608e6f5so581589385a.0
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 13:50:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749243058; x=1749847858;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Pl1iJVAwbmj2k/Qu1VmgLakylCSHgmA0/gr1PYfswhA=;
- b=UThH6vjYjmxDtZlW7UwCyTRXFtd79oaL67qB377PuCMea7tfkhmwdVF+ESrd0joLnX
- Fz9rfHo0ip/qhAZh49wyNI3qxhMloQskdlucCdVu/eKL0jVmuJPZlGOZhOJGo5hG8s/8
- kfRB27/jEZGqPzQGDx2bCMwxbCmTLGEJFa1peCm/VLCLcc72UgQ/0PLtGNxL7yjo8TM8
- F2onOecYKwXMCfCbRPXQ8eFRL+G4oZhXBP/NaxPpHxzjiwtw9EGiSTkqpUuoh+jwKhvZ
- DDvFK4h/CuNF3blU2XlY0WiTrDD02GCuswh5JpLyZdM6mKz2n1Tksl+cWq71zQE85inK
- DIlg==
-X-Gm-Message-State: AOJu0YzYqZ0B81wnOVdo+2UEnju2K19KVRhCu7rGgOlNEbEd+Z/dyR99
- lkL0g+rCNIigG00MJw94bjL413KzxMDLipEwsEMuLuMx8XpCfEPc6KZhMatoCd5tDJOTplC2n5g
- /YBnDz8wS9Ol1cglggEFyvCm20qBpx+3RwBk7SZKzsIbckdCbWi+XA307
-X-Gm-Gg: ASbGnctWWRTOUbyfEJQci9fXEKioQSjadjeQCOaRVHk0vY1JAcCiUUBmIpFipXGcN/Q
- 05gD0UUnM7Av66/+ZjWWiPqqrRg5+qE7Z7RgJXKsKodAYJurUdhlmLOanmKLgvYEJ/f0pNZyZ8Z
- HFc4S5LeD0NfFnwqHCtw0VEwh5uCDMCGH2GVVbvTc+s9leLpHjXPzNAS+VNsXgGnqxc8Mh2WzNq
- yL0wNvR2a2Apz7YRAD4UbsNduojK9UOqmUhutZJ9i2oMCNJyLTEFE2qZW/MeKGWeX+s7+WredJL
- v+G2HKJgfbnD0Q==
-X-Received: by 2002:a05:620a:4728:b0:7d2:28c7:7795 with SMTP id
- af79cd13be357-7d2298d8ad7mr718528285a.35.1749243057800; 
- Fri, 06 Jun 2025 13:50:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLDPZ64jSlAYGy6SjsPAj1qXu9lrf9Z7nnJJcjc+UW0vK469MYT6RFfhiAREjG/6UA8lQfsQ==
-X-Received: by 2002:a05:620a:4728:b0:7d2:28c7:7795 with SMTP id
- af79cd13be357-7d2298d8ad7mr718525085a.35.1749243057388; 
- Fri, 06 Jun 2025 13:50:57 -0700 (PDT)
-Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7d25a536ec9sm186100785a.36.2025.06.06.13.50.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Jun 2025 13:50:56 -0700 (PDT)
-Date: Fri, 6 Jun 2025 16:50:54 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
-Subject: Re: [PATCH 19/21] migration: Allow migrate commands to provide the
- migration config
-Message-ID: <aENUrociiqlFuPpz@x1.local>
-References: <20250603013810.4772-1-farosas@suse.de>
- <20250603013810.4772-20-farosas@suse.de>
- <aENBda_y3v3y4ptS@x1.local> <874iwswrex.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <nunodasneves@linux.microsoft.com>)
+ id 1uNg96-0000Nx-Bl
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 19:06:44 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <nunodasneves@linux.microsoft.com>)
+ id 1uNg94-0007ND-7B
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 19:06:44 -0400
+Received: from [100.64.96.210] (unknown [52.148.138.235])
+ by linux.microsoft.com (Postfix) with ESMTPSA id E92F9201FF41;
+ Fri,  6 Jun 2025 16:06:38 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E92F9201FF41
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1749251199;
+ bh=HqOoge/lTNqPzjjj+Fzb0ZGUe7l8smRccNjvfGKcty4=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=mQZ1j8nCTPgBlpvkCARZyBN77ni9ehBLDz97C/lHY7J7KuUZEqqzx+B2X8fH5DF0R
+ yLp9FdzSofy7c6U+xa6Od4blJVldgj1TNLJZAFByfTIa1RcVF5qdBUG0BJ4MS57/r4
+ 8KXa/gCdZUx0LNcsALi3i/TU3NT2a+pbWmGB9ak0=
+Message-ID: <52ffb2a1-4b93-4048-8efa-55677898f4f0@linux.microsoft.com>
+Date: Fri, 6 Jun 2025 16:06:38 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <874iwswrex.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 12/25] accel/mshv: Add vCPU creation and execution loop
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Magnus Kulke <magnuskulke@linux.microsoft.com>, magnuskulke@microsoft.com,
+ qemu-devel@nongnu.org, liuwe@microsoft.com
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Wei Liu <wei.liu@kernel.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Roman Bolshakov
+ <rbolshakov@ddn.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
+ <20250520113018.49569-13-magnuskulke@linux.microsoft.com>
+ <8b65b12c-ca3e-4528-9544-65784c862763@redhat.com>
+Content-Language: en-US
+From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
+In-Reply-To: <8b65b12c-ca3e-4528-9544-65784c862763@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=nunodasneves@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.104,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 06 Jun 2025 20:00:22 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,76 +78,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 06, 2025 at 05:23:18PM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
+On 5/20/2025 6:50 AM, Paolo Bonzini wrote:
+> On 5/20/25 13:30, Magnus Kulke wrote:
+>> +    int ret;
+>> +    hv_message exit_msg = { 0 };
 > 
-> > On Mon, Jun 02, 2025 at 10:38:08PM -0300, Fabiano Rosas wrote:
-> >> Allow the migrate and migrate_incoming commands to pass the migration
-> >> configuration options all at once, dispensing the use of
-> >> migrate-set-parameters and migrate-set-capabilities.
-> >> 
-> >> The motivation of this is to simplify the interface with the
-> >> management layer and avoid the usage of several command invocations to
-> >> configure a migration. It also avoids stale parameters from a previous
-> >> migration to influence the current migration.
-> >> 
-> >> The options that are changed during the migration can still be set
-> >> with the existing commands.
-> >> 
-> >> The order of precedence is:
-> >> 
-> >> 'config' argument > -global cmdline > defaults (migration_properties)
-> >
-> > Could we still keep the QMP migrate-set-parameters values?
-> >
-> >   'config' argument > QMP setups using migrate-set-parameters >
-> >     -global cmdline > defaults (migration_properties)
-> >
+> You probably don't want to fill 512 bytes on every vmentry.  Maybe pass &exit_msg up from mshv_cpu_exec()?
 > 
-> That's the case. I failed to mention it in the commit message. IOW it
-> behaves just like today, but the new 'config' way takes precedence over
-> all.
+>> +        /*
+>> +         * Read cpu->exit_request before KVM_RUN reads run->immediate_exit.
+>> +         * Matching barrier in kvm_eat_signals.
+>> +         */
+>> +        smp_rmb();
+> 
+> The comment is obviously wrong; unfortunately, the code is wrong too:
+> 
+> 1) qemu_cpu_kick_self() is only needed for an old KVM API.  In that API the signal handler is blocked while QEMU runs.  In your case, qemu_cpu_kick_self() is an expensive way to do nothing.
+> 
+> 2) Because of this, there's a race condition between delivering the signal and entering MSHV_RUN_VP
+> 
 
-Referring to below chunk of code:
+Hi Paolo,
 
-[...]
+I might be misunderstanding something here, but isn't there a race condition regardless of where this check is made?
+i.e., checking a flag in userspace, like the above:
 
-> >> +bool migrate_params_override(MigrationState *s, MigrationParameters *new,
-> >> +                             Error **errp)
-> >> +{
-> >> +    ERRP_GUARD();
-> >> +
-> >> +    assert(bql_locked());
-> >> +
-> >> +    /* reset to default parameters */
-> >> +    migrate_params_apply(&s->defaults);
+if (qatomic_read(&cpu->exit_request)) {
 
-IIUC here it'll reset all global parameters using the initial defaults
-first, then apply the "config" specified in "migrate" QMP command?
+vs checking the flag in the kernel, are effectively doing the same thing.
+The signal can still come just after the check is made (in the kernel) and the VP will dispatch.
 
-I think there're actually two separate questions to be asked, to make it
-clearer, they are:
+The virtual "explicit suspend" register in the VP seems to solve this problem - it can be used for manually kicking the VP
+while it is running. But, it can also be set before dispatching the VP, and the dispatch hypercall will return immediately
+in that case.
 
-  (1) Whether we should allow QMP "migrate" 'config' parameter to overwrite
-      global setup?
+Thanks
+Nuno
 
-  (2) Whether we should allow previous QMP global setup to be used even if
-      QMP "migrate" provided 'config' parameter?
-
-So IIUC the patch does (1) YES (2) NO, while what I think might be more
-intuitive is (1) NO (2) YES.
-
-> >> +
-> >> +    /* overwrite with the new ones */
-> >> +    qmp_migrate_set_parameters(new, errp);
-> >> +    if (*errp) {
-> >> +        return false;
-> >> +    }
-> >> +
-> >> +    return true;
-> >> +}
-
--- 
-Peter Xu
+> You need support in the hypervisor for this: KVM and HVF both have it.
+> 
+> There are two ways to do it, for both cases the hypervisor side for the latter can be something like this:
+> 
+> diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
+> index 72df774e410a..627afece4046 100644
+> --- a/drivers/hv/mshv_root_main.c
+> +++ b/drivers/hv/mshv_root_main.c
+> @@ -530,7 +530,7 @@ static long mshv_run_vp_with_root_scheduler(
+>          struct hv_output_dispatch_vp output;
+> 
+>          ret = mshv_pre_guest_mode_work(vp);
+> -        if (ret)
+> +        if (ret || vp->run.flags.immediate_exit)
+>              break;
+> 
+>          if (vp->run.flags.intercept_suspend)
+> @@ -585,6 +585,7 @@
+>          }
+>      } while (!vp->run.flags.intercept_suspend);
+> 
+> +    vp->run.flags.immediate_exit = 0;
+>      return ret;
+>  }
+> 
+> 
+> Instead of calling qemu_cpu_kick_self(), your signal handler would invoke a new MSHV ioctl that sets vp->run.flags.immediate_exit = 1.
+> 
+> And then you also don't need the barrier, by the way, because all inter-thread communication is mediated by the signal handler.
+> 
+> Paolo
+> 
+> 
+> 
 
 
