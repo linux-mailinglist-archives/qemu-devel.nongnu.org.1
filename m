@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA00AD0272
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE98AD025C
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:38:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNWJ0-00038t-6h; Fri, 06 Jun 2025 08:36:18 -0400
+	id 1uNWJ7-0003CR-5V; Fri, 06 Jun 2025 08:36:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWIu-00033n-QY
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:36:12 -0400
+ id 1uNWIx-00039N-AV
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:36:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWIq-0005yj-J7
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:36:12 -0400
+ id 1uNWIu-0005z2-Kn
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:36:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749213366;
+ s=mimecast20190719; t=1749213370;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5uzjuLSgEF/FIRBnn8m7SuPE8mBgQcI4+vg0czbC7uA=;
- b=CiBJQfs0oG3vma6In/BkGrD+uXSJ+Yxr6FFhVyuHojdMkUKEMxeSqfJusZSD956jv0AtLF
- UyZCx1I0ZLwFzakUA4zJC1DOs9FxHS8DY59tUEVDO9dvK+/WHPuwxcKS+ljwIiOb3lCRah
- 9f7ONKdtAGqgXZ9rTGN/NTDv6S1CmM8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=r6T2UdLZ98T4mEFrrnkCvZZaWql+Pj2cZBNd8iq7JhE=;
+ b=daA+JJy5XgclajL0xHN/Vpd4HjoeSEVKAimuiAI1F66lNR76kfnlgNU2DR3NTXrCtFF+Hs
+ y1e1VShyH9uOBUehEyMNRH19V+3YcdtAlPesLG7/MBCkkfT+MGUSTRzEcatq/eCdTJOEuw
+ LF0u/QX+1BDxVRuAerr0Frqn+jQliJw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-Ex3xEc1UOviw9uFNYgh6fw-1; Fri, 06 Jun 2025 08:36:06 -0400
-X-MC-Unique: Ex3xEc1UOviw9uFNYgh6fw-1
-X-Mimecast-MFC-AGG-ID: Ex3xEc1UOviw9uFNYgh6fw_1749213365
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a4f8192e2cso1130535f8f.3
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:36:05 -0700 (PDT)
+ us-mta-146-ZK5QGKgXOAGEeWXVamvdmg-1; Fri, 06 Jun 2025 08:36:09 -0400
+X-MC-Unique: ZK5QGKgXOAGEeWXVamvdmg-1
+X-Mimecast-MFC-AGG-ID: ZK5QGKgXOAGEeWXVamvdmg_1749213368
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-450d6768d4dso13428505e9.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:36:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749213364; x=1749818164;
+ d=1e100.net; s=20230601; t=1749213367; x=1749818167;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5uzjuLSgEF/FIRBnn8m7SuPE8mBgQcI4+vg0czbC7uA=;
- b=NgeqQDwXg/7AP4jFu6kbiMP5Xjv59t9zttz/69TBxcDRzL6ulKfQytzij57CWtTnLY
- 2NlzfTFNFGZ8OPE3ppcycPQTc5S+L9aTy3EMNps+FDoIfx226F7lEg3U+NtT64tfnkNt
- bizoXjlU/5ekRFUDog6eoqgdJQ9afzQ5z4mnFQ5DhVHdEjiVY/04yad74fL4a1Ctal/F
- 0oUXhCm1BmRliwzGCYVerEtrg+X0GBDg18r74SXlFqiBxb9LgVbBWkojPsVB9dYjqMH2
- DSkEy3JehuuwxnzUI1Aww0Easue8+LAd6lsftNEUpQMV5881mjvegH1difvgDYfCzl8c
- iM1w==
-X-Gm-Message-State: AOJu0YzmZIT3ReF7Dhi7cEBWG1t+mdVmQ3GY7zgG+ztPBFvsl/i6GkKe
- FYquSguyLa666BdaAFNuVIFf9nKaQUix7HLO0/f29b3wD0VxFtOAs589hIVyHHLLqBVyw3UDBwh
- HpyuySSr6jN81fu3On7G/Kq87rM6aZ7OpzfnHQvUF+SZdWCt3uoAVKIfd9FW/hfeisHTtIgYdvW
- 4U0rfO6OXD0YEsdVrjpf7prs15aZ3TvLZvEYCvhR2E
-X-Gm-Gg: ASbGncthTRDcl2YsRvjTdBlteH0+9zVyn19UMW2RxJeI8bMTSqKunl30RjW+1YZT2vt
- ht4DjL0CLKAwrQ6+2sgTFhS9yisd+H052adidmHzT7c9VycCz/ybF6tYJD449UGpmafKVM22iea
- swZN1MVAD9gL/JsLlGw+T9m9TySVofsN9ARQP7ys6GoTt4DZ1YzH74Tu0K/deFzDnSDitN2wL3P
- EsnfN5bGspFZQkLL/sYzwzO+zn1N/7+gEV4MbxdQgvsDQ/6f3+96GTvwUsTPukVX4w5hjRixx1U
- riZSFqqDXyatcpxWYJZUMnv7
-X-Received: by 2002:a05:6000:144d:b0:3a4:ef2c:f41c with SMTP id
- ffacd0b85a97d-3a531cb398dmr2539855f8f.26.1749213363865; 
- Fri, 06 Jun 2025 05:36:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF/M1v76688IS5doGwdqn7njxie6kVO3PSvh0fiBZLDxXG4Q5Iz4OrOXe8IvEq/koXjPJtjQ==
-X-Received: by 2002:a05:6000:144d:b0:3a4:ef2c:f41c with SMTP id
- ffacd0b85a97d-3a531cb398dmr2539840f8f.26.1749213363406; 
- Fri, 06 Jun 2025 05:36:03 -0700 (PDT)
+ bh=r6T2UdLZ98T4mEFrrnkCvZZaWql+Pj2cZBNd8iq7JhE=;
+ b=uYFQEqyYRTm3RckWillkZXdo54/00COOdCNS+HE8PuOgvA8bSWX8B9WfSXa1IfTqMe
+ bSqFAxJ45rVKEBHjkX6h2akpQ3yjTCIseuGVCHl0QRkPsqWMny0qBGemSCbTw2QYlXqP
+ 3k2KRAz3LYNhENL2YuuP+a81yJjqdKeISFj8UtUqrLlLPDl+Y1FvPptwWgb7BWoKDlJO
+ S79nnUBxG0UzCCiPIE6k6GRykny+X0wCK/Fe0vPdYGfwR2JfFpbagS6pPpio8dRq670E
+ OijZdgmdA5/jx2QoR715+Y1aDVmikkrBN000vWCrpp3wSey+gd/FT+e8Dl8N0uE46t42
+ HU2Q==
+X-Gm-Message-State: AOJu0YzfBsWoZs0SOH2+eLC9iDpNfWHVaR7wYUhrDBE4jTYg+1ifdTnH
+ 29PmiEhMTDVPZlvazDCzm85Dvr+glol6qe9n3hrqrHkF4dWT08L7GQ7UYGWN+tEQr7MnY5tuFbV
+ 5OJdbNoAuDBo0nxur8O1Lp3RKgOja2kS00V4qjju/QhtiyLUgrbA2Pl2//y3AQHBfY/9+3NzAsf
+ r+mgzYJB17aD3w3AmpYIUuJSOyU7WEHgs38FFf232S
+X-Gm-Gg: ASbGncvQWlDbzZ2HzotUk0DJEZq8H3YnZyQAMKfZ/XIWy8GD5gpXrPTtbbCr/Epjmlc
+ XD0YUQB6b8uCx0+GONv2kzT+0BcsvgsW02euiVieR9NVwnCi1DoVi1NWbT+RW20JJ4MaZIbcV0l
+ 7L7vFEBATgdtRd+cJao0bfSzEUI+jTkRh+AMsZGa3+1w9IRdYClIHLFm2MfIFtCiNjsCKTeyTZn
+ 3IAaCaUw01Lrd3gC+pTY3eEXrjCl3CVpL7+31GJOpbZb53TA21ZZhBOApsPzd2f+vGpGuLET7Dq
+ 77zol/Sugck0Nw==
+X-Received: by 2002:a05:600c:310a:b0:441:d4e8:76cd with SMTP id
+ 5b1f17b1804b1-452014235d1mr32936825e9.29.1749213367447; 
+ Fri, 06 Jun 2025 05:36:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE424q/EwXJFAssQxY2eCPg3Fsp78gspcYwg612N1I05o9/1GG7qSkOkP+1NgweuT2WF32sew==
+X-Received: by 2002:a05:600c:310a:b0:441:d4e8:76cd with SMTP id
+ 5b1f17b1804b1-452014235d1mr32936535e9.29.1749213366894; 
+ Fri, 06 Jun 2025 05:36:06 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a5323b5147sm1818585f8f.37.2025.06.06.05.36.00
+ ffacd0b85a97d-3a53243664fsm1786344f8f.65.2025.06.06.05.36.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Jun 2025 05:36:01 -0700 (PDT)
+ Fri, 06 Jun 2025 05:36:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 22/31] qemu-thread: Use futex if available for QemuLockCnt
-Date: Fri,  6 Jun 2025 14:34:36 +0200
-Message-ID: <20250606123447.538131-23-pbonzini@redhat.com>
+Subject: [PULL 23/31] qemu-thread: Document QemuEvent
+Date: Fri,  6 Jun 2025 14:34:37 +0200
+Message-ID: <20250606123447.538131-24-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250606123447.538131-1-pbonzini@redhat.com>
 References: <20250606123447.538131-1-pbonzini@redhat.com>
@@ -108,48 +108,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-This unlocks the futex-based implementation of QemuLockCnt to Windows.
+Document QemuEvent to help choose an appropriate synchronization
+primitive.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Link: https://lore.kernel.org/r/20250529-event-v5-6-53b285203794@daynix.com
+Link: https://lore.kernel.org/r/20250529-event-v5-12-53b285203794@daynix.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qemu/lockcnt.h | 2 +-
- util/lockcnt.c         | 7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ include/qemu/thread.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/qemu/lockcnt.h b/include/qemu/lockcnt.h
-index f4b62a3f701..5a2800e3f18 100644
---- a/include/qemu/lockcnt.h
-+++ b/include/qemu/lockcnt.h
-@@ -17,7 +17,7 @@
+diff --git a/include/qemu/thread.h b/include/qemu/thread.h
+index 573f8c9ede2..f0302ed01fd 100644
+--- a/include/qemu/thread.h
++++ b/include/qemu/thread.h
+@@ -10,6 +10,16 @@ typedef struct QemuSemaphore QemuSemaphore;
  typedef struct QemuLockCnt QemuLockCnt;
+ typedef struct QemuThread QemuThread;
  
- struct QemuLockCnt {
--#ifndef CONFIG_LINUX
-+#ifndef HAVE_FUTEX
-     QemuMutex mutex;
- #endif
-     unsigned count;
-diff --git a/util/lockcnt.c b/util/lockcnt.c
-index ca27d8e61a5..92c9f8ceca8 100644
---- a/util/lockcnt.c
-+++ b/util/lockcnt.c
-@@ -12,10 +12,11 @@
- #include "qemu/atomic.h"
- #include "trace.h"
- 
--#ifdef CONFIG_LINUX
--#include "qemu/futex.h"
-+#ifdef HAVE_FUTEX
- 
--/* On Linux, bits 0-1 are a futex-based lock, bits 2-31 are the counter.
 +/*
-+ * When futex is available, bits 0-1 are a futex-based lock, bits 2-31 are the
-+ * counter.
-  * For the mutex algorithm see Ulrich Drepper's "Futexes Are Tricky" (ok,
-  * this is not the most relaxing citation I could make...).  It is similar
-  * to mutex2 in the paper.
++ * QemuEvent
++ * =========
++ *
++ * QemuEvent is an implementation of Win32 manual-reset event object.
++ * For details, refer to:
++ * https://learn.microsoft.com/en-us/windows/win32/sync/using-event-objects
++ *
++ * QemuEvent is more lightweight than QemuSemaphore when HAVE_FUTEX is defined.
++ */
+ typedef struct QemuEvent {
+ #ifndef HAVE_FUTEX
+     pthread_mutex_t lock;
 -- 
 2.49.0
 
