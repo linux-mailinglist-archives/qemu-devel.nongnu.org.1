@@ -2,110 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E65E1AD0828
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 20:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D900AD082D
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 20:39:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNbwq-0004Jd-PH; Fri, 06 Jun 2025 14:37:48 -0400
+	id 1uNbyA-0005Zw-H2; Fri, 06 Jun 2025 14:39:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uNbwX-0004Eh-TL; Fri, 06 Jun 2025 14:37:30 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uNbwV-0008JR-R1; Fri, 06 Jun 2025 14:37:29 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 556F5B3H020624;
- Fri, 6 Jun 2025 18:37:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=fVzaY2
- 45JOK2WHnWPfZaG3KcQG2OjmEdw7QvliX8y8c=; b=KkV/uJOImg1KolMQabNjER
- l5GdLmPL/8B07w/Oxapcc+41/cT6Fhlue1H1DJj65U5Z97I4qHE47DfCOlok8wXP
- TGduEpqdq1QTyYv12MKTC8ThiOetoLB8gTPzEdyrZSQ9n7mu0tyeJU66rdcAS4QZ
- LYj4Y+LKXa6HrincdYLkgTfB2B/bA65e3pkJyUJKIyJlgjq4jnezzEa5r/OW8g4B
- ckverQ7AFnHljruOgbjsna2GQWfOv3wjFOH9a2DAVmT/ciTjSXwzXY5XQDXMunvw
- Ptz2pM09QTkfpmxoVxeQiLH+RZKMiLa2tzhsSnF3A4njehuAtfKD7kFbarryrNyw
- ==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471gf08689-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Jun 2025 18:37:25 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 556FfQPw028437;
- Fri, 6 Jun 2025 18:37:24 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 470eakthwn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Jun 2025 18:37:24 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 556IbNbg31982116
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Jun 2025 18:37:23 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3B0AE58059;
- Fri,  6 Jun 2025 18:37:23 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 09E4058053;
- Fri,  6 Jun 2025 18:37:22 +0000 (GMT)
-Received: from MacBookPro.ibm.com (unknown [9.61.255.166])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  6 Jun 2025 18:37:21 +0000 (GMT)
-From: Rorie Reyes <rreyes@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
- akrowiak@linux.ibm.com, rreyes@linux.ibm.com
-Subject: [RFC PATCH v12 4/4] s390: implementing CHSC SEI for AP config change
-Date: Fri,  6 Jun 2025 14:37:16 -0400
-Message-ID: <20250606183716.26152-5-rreyes@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250606183716.26152-1-rreyes@linux.ibm.com>
-References: <20250606183716.26152-1-rreyes@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uNbxz-0005JU-3W
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 14:39:01 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uNbxw-0008Pa-Sp
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 14:38:58 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D44381F455;
+ Fri,  6 Jun 2025 18:38:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1749235105; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9ePC3DH6Uz2eYuuOghgjWPWDLMm/vbyNNiuCNQxDBSI=;
+ b=VuL8YNqG43Yj+qWaa+Qkueoe+uAw36d3I/HOihH/E30tbNZo4XnWxDKuEysrdZyjnTQd+i
+ lPE3rlMYXX955wbQk+fM70knNNOfCXMPCecxNu3uye89Kyuih5rkqA2UTXx1TZWBkpNV6W
+ g7muVHOyIU1+/dAgvvxIBxMSewxPN7k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1749235105;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9ePC3DH6Uz2eYuuOghgjWPWDLMm/vbyNNiuCNQxDBSI=;
+ b=fegK5ryznJO+cnLne8pQHoFFk/lYUWnkclUbA9IamqKjDQKHzeD/hi8eLPYmDuTqpN2/Uk
+ 3Ew2Ehwx1UVdeqDA==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KnimEYTx;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eZD864Ib
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1749235104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9ePC3DH6Uz2eYuuOghgjWPWDLMm/vbyNNiuCNQxDBSI=;
+ b=KnimEYTx6FMgFoZ8m4HrdmMPbm9F8Brw5+kHAlSc5VFtr22hjpjba0cComQenRfUHwQA7M
+ VDvnfMohtXRTGuUjH0cDri2a604Elg2VLKMjJtZ/zfmXrTwOVKpRA9223Wscp55A8xBBAh
+ xqpMoRKEMCCrFOVtoIliGPfvTtlsrpg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1749235104;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9ePC3DH6Uz2eYuuOghgjWPWDLMm/vbyNNiuCNQxDBSI=;
+ b=eZD864IbpI1Mf5SywpEq9regnQH2en/TCPagMxu9vvhv91xd/YEQnnSYMNs0AjnwHVQGG3
+ 9/ZJ1/l80kafJcAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 48F3F1369F;
+ Fri,  6 Jun 2025 18:38:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id RgAvAqA1Q2jmYgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 06 Jun 2025 18:38:24 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH 05/21] migration: Add a flag to track
+ block-bitmap-mapping input
+In-Reply-To: <aEMpDFJG37ADqMAi@x1.local>
+References: <20250603013810.4772-1-farosas@suse.de>
+ <20250603013810.4772-6-farosas@suse.de> <aEMDTl7yaDGSv33I@x1.local>
+ <87frgcx4dz.fsf@suse.de> <aEMpDFJG37ADqMAi@x1.local>
+Date: Fri, 06 Jun 2025 15:38:21 -0300
+Message-ID: <877c1oww9u.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: J5v5cy4ZD-4y6DlMlF13VNk_ORNaEpOi
-X-Authority-Analysis: v=2.4 cv=DYMXqutW c=1 sm=1 tr=0 ts=68433565 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
- a=uLlxcZOcU1Y7BrJQP9YA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: J5v5cy4ZD-4y6DlMlF13VNk_ORNaEpOi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA2MDE1OSBTYWx0ZWRfX0pMg6ZanIuPF
- 4fOdY4PRWM+02CuS15HxwaY0fWPVUC5420MMHSE2bG/BTPv6HXi7kYk9LmMF5QGMSPjPrUIChUj
- 1dqtAzynSMsIICKwsu+Uye8DJlROe83rIvASMn6Q6TtM1FIEiQQwv2Wxy94aN8yqgqi2VO/gCux
- uHofBcAh+p5+x/eoAijAiOMjc6AaT5j3ebAsvy0xALnJk91rThpYIKlHA+LQcMxCNIA+UvmeQHB
- MirgX95NzT+2ol6aRNj8/EutVEC6wMv69yMn2J/VkNNHYaqCji1rNL80nuFMfk8xSQuyxTz9tND
- KRKhI57cCHN0H9cBw9lWvSlmLoesNdPfgfjJ+A588K86EyUq1Kef4xCG6J6MkLeDzCFVdlfG77V
- mq5p0/7Qa0evybxPIL97NZ8XV5r8PT4Sw2oveqbsC7ZEZtqcuTI6gHeQ8OmZTpcv78yjtFWB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-06_07,2025-06-05_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 mlxscore=0
- priorityscore=1501 clxscore=1015 phishscore=0 mlxlogscore=999 adultscore=0
- malwarescore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506060159
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rreyes@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: D44381F455
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,111 +124,250 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle interception of the CHSC SEI instruction for requests
-indicating the guest's AP configuration has changed.
+Peter Xu <peterx@redhat.com> writes:
 
-If configuring --without-default-devices, hw/s390x/ap-stub.c
-was created to handle such circumstance. Also added the
-following to hw/s390x/meson.build if CONFIG_VFIO_AP is
-false, it will use the stub file.
+> On Fri, Jun 06, 2025 at 12:43:04PM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > On Mon, Jun 02, 2025 at 10:37:54PM -0300, Fabiano Rosas wrote:
+>> >> The QAPI converts an empty list on the block-bitmap-mapping input into
+>> >> a NULL BitmapMigrationNodeAliasList. The empty list is a valid input
+>> >> for the block-bitmap-mapping option, so commit 3cba22c9ad ("migration:
+>> >> Fix block_bitmap_mapping migration") started using the
+>> >> s->parameters.has_block_bitmap_mapping field to tell when the user has
+>> >> passed in an empty list vs. when no list has been passed at all.
+>> >> 
+>> >> However, using the has_block_bitmap_mapping field of s->parameters is
+>> >> only possible because MigrationParameters has had its members made
+>> >> optional due to historical reasons.
+>> >> 
+>> >> In order to make improvements to the way configuration options are set
+>> >> for a migration, we'd like to reduce the usage of the has_* fields of
+>> >> the global configuration object (s->parameters).
+>> >> 
+>> >> Add a separate boolean to track the status of the block_bitmap_mapping
+>> >> option.
+>> >> 
+>> >> (this was verified to not regress iotest 300, which is the test that
+>> >> 3cba22c9ad refers to)
+>> >> 
+>> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> >> ---
+>> >>  migration/migration.h | 7 +++++++
+>> >>  migration/options.c   | 6 +++---
+>> >>  2 files changed, 10 insertions(+), 3 deletions(-)
+>> >> 
+>> >> diff --git a/migration/migration.h b/migration/migration.h
+>> >> index d53f7cad84..ab797540b0 100644
+>> >> --- a/migration/migration.h
+>> >> +++ b/migration/migration.h
+>> >> @@ -510,6 +510,13 @@ struct MigrationState {
+>> >>      bool rdma_migration;
+>> >>  
+>> >>      GSource *hup_source;
+>> >> +
+>> >> +    /*
+>> >> +     * The block-bitmap-mapping option is allowed to be an emtpy list,
+>> >> +     * therefore we need a way to know wheter the user has given
+>> >> +     * anything as input.
+>> >> +     */
+>> >> +    bool has_block_bitmap_mapping;
+>> >>  };
+>> >>  
+>> >>  void migrate_set_state(MigrationStatus *state, MigrationStatus old_state,
+>> >> diff --git a/migration/options.c b/migration/options.c
+>> >> index f64e141394..cf77826204 100644
+>> >> --- a/migration/options.c
+>> >> +++ b/migration/options.c
+>> >> @@ -685,7 +685,7 @@ bool migrate_has_block_bitmap_mapping(void)
+>> >>  {
+>> >>      MigrationState *s = migrate_get_current();
+>> >>  
+>> >> -    return s->parameters.has_block_bitmap_mapping;
+>> >> +    return s->has_block_bitmap_mapping;
+>> >>  }
+>> >>  
+>> >>  uint32_t migrate_checkpoint_delay(void)
+>> >> @@ -989,7 +989,7 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+>> >>      params->has_announce_step = true;
+>> >>      params->announce_step = s->parameters.announce_step;
+>> >>  
+>> >> -    if (s->parameters.has_block_bitmap_mapping) {
+>> >> +    if (s->has_block_bitmap_mapping) {
+>> >>          params->has_block_bitmap_mapping = true;
+>> >>          params->block_bitmap_mapping =
+>> >>              QAPI_CLONE(BitmapMigrationNodeAliasList,
+>> >> @@ -1469,7 +1469,7 @@ static void migrate_params_apply(MigrationParameters *params)
+>> >>          qapi_free_BitmapMigrationNodeAliasList(
+>> >>              s->parameters.block_bitmap_mapping);
+>> >>  
+>> >> -        s->parameters.has_block_bitmap_mapping = true;
+>> >> +        s->has_block_bitmap_mapping = true;
+>> >>          s->parameters.block_bitmap_mapping =
+>> >>              QAPI_CLONE(BitmapMigrationNodeAliasList,
+>> >>                         params->block_bitmap_mapping);
+>> >> -- 
+>> >> 2.35.3
+>> >> 
+>> >
+>> > This is definitely unfortunate, and I'm still scratching my head on
+>> > understanding why it's necessary.
+>> >
+>> > E.g. I tried to revert this patch manually and iotest 300 passed, with:
+>> 
+>> This (mine) patch is not needed per-se. I want it so we stop using
+>> s->parameters.has_* altogether. If we think we need a flag to track
+>> whether the user has passed some value or not, then we add one to some
+>> migration specific state, say MigrationState.
+>> 
+>> This decouples the migration internal usage from the QAPI. Today we use
+>> MigrationParameters as defined by the QAPI, we might in the future want
+>> something else. And that something else might not come with has_*
+>> fields. So it's simple enough now to add this one flag to the
+>> MigrationState and be able to me completely independent from the
+>> QAPI-generated has_ fields.
+>> 
+>> >
+>> > ===8<===
+>> > From a952479805d8bdfe532ad4e0c0092f758991af08 Mon Sep 17 00:00:00 2001
+>> > From: Peter Xu <peterx@redhat.com>
+>> > Date: Fri, 6 Jun 2025 10:44:37 -0400
+>> > Subject: [PATCH] Revert "migration: Add a flag to track block-bitmap-mapping
+>> >  input"
+>> >
+>> > This reverts commit fd755a53c0e4ce9739d20d7cdd69400b2a37102c.
+>> >
+>> > Signed-off-by: Peter Xu <peterx@redhat.com>
+>> > ---
+>> >  migration/migration.h | 7 -------
+>> >  migration/options.c   | 4 ++--
+>> >  2 files changed, 2 insertions(+), 9 deletions(-)
+>> >
+>> > diff --git a/migration/migration.h b/migration/migration.h
+>> > index 49761f4699..e710c421f8 100644
+>> > --- a/migration/migration.h
+>> > +++ b/migration/migration.h
+>> > @@ -510,13 +510,6 @@ struct MigrationState {
+>> >      bool rdma_migration;
+>> >  
+>> >      GSource *hup_source;
+>> > -
+>> > -    /*
+>> > -     * The block-bitmap-mapping option is allowed to be an emtpy list,
+>> > -     * therefore we need a way to know wheter the user has given
+>> > -     * anything as input.
+>> > -     */
+>> > -    bool has_block_bitmap_mapping;
+>> >  };
+>> >  
+>> >  void migrate_set_state(MigrationStatus *state, MigrationStatus old_state,
+>> > diff --git a/migration/options.c b/migration/options.c
+>> > index dd2288187d..e71a57764d 100644
+>> > --- a/migration/options.c
+>> > +++ b/migration/options.c
+>> > @@ -765,7 +765,7 @@ bool migrate_has_block_bitmap_mapping(void)
+>> >  {
+>> >      MigrationState *s = migrate_get_current();
+>> >  
+>> > -    return s->has_block_bitmap_mapping;
+>> > +    return s->parameters.has_block_bitmap_mapping;
+>> >  }
+>> >  
+>> >  uint32_t migrate_checkpoint_delay(void)
+>> > @@ -1376,7 +1376,7 @@ void qmp_migrate_set_parameters(MigrationParameters *params, Error **errp)
+>> >       * params structure with the user input around.
+>> >       */
+>> >      if (params->has_block_bitmap_mapping) {
+>> > -        migrate_get_current()->has_block_bitmap_mapping = true;
+>> > +        migrate_get_current()->parameters.has_block_bitmap_mapping = true;
+>> >      }
+>> >  
+>> >      if (migrate_params_check(tmp, errp)) {
+>> > -- 
+>> > 2.49.0
+>> > ===8<===
+>> >
+>> > I'm staring at commit 3cba22c9ad now, looks like what it wants to do is
+>> > making sure construct_alias_map() will be invoked even if the block bitmap
+>> > mapping is NULL itself.  But then right below the code, it has:
+>> >
+>> > static int init_dirty_bitmap_migration(DBMSaveState *s, Error **errp)
+>> > {
+>> >     ...
+>> >     if (migrate_has_block_bitmap_mapping()) {
+>> >         alias_map = construct_alias_map(migrate_block_bitmap_mapping(), true,
+>> >                                         &error_abort);
+>> >     }
+>> >     ...
+>> >     if (!alias_map) {
+>> >     ...
+>> >     }
+>> > }
+>> >
+>> > Looks like it's also ready for !alias_map anyway.  I'm definitely puzzled
+>> > by this code.
+>> >
+>> > Even if so, IIUC the question can still be asked on whether we can always
+>> > assume has_block_bitmap_mapping to be always true, then here instead of:
+>> >
+>> >     if (migrate_has_block_bitmap_mapping()) {
+>> >         alias_map = construct_alias_map(migrate_block_bitmap_mapping(), true,
+>> >                                         &error_abort);
+>> >     }
+>> >
+>> > We do:
+>> >
+>> >     alias_map = construct_alias_map(migrate_block_bitmap_mapping(), true,
+>> >                                     &error_abort);
+>> >
+>> > After all it looks like construct_alias_map() takes NULL too..
+>> 
+>> The point is that construct_alias_map always returns a hashtable. It
+>> might be empty if the user passes [], and that's ok according to
+>> 3cba22c9ad. So they needed some flag to say: "the user has tried to use
+>> block-bitmap-mapping".
+>> 
+>> I don't know why it needs to be like that and I honestly don't want to
+>> go into details of block migration just to be able to do a
+>> refactoring. All I want is that this code stop using s->parameters.has_*
+>> so we can do nice tricks with QAPI_CLONE later on and not bother about
+>> this.
+>> 
+>> I fully support we chase this, but keep in mind this patch (mine) is
+>> just gingerly moving the problem to the side so we can make progress
+>> with this series.
+>
+> Yep that makes sense.
+>
+> I'm thinking whether we have other better ways to move on without digging
+> another hole for ourselves, e.g. make migrate_has_block_bitmap_mapping() to
+> constantly return true?
 
-Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
-Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
----
- MAINTAINERS           |  1 +
- hw/s390x/ap-stub.c    | 21 +++++++++++++++++++++
- hw/s390x/meson.build  |  1 +
- target/s390x/ioinst.c | 11 +++++++++--
- 4 files changed, 32 insertions(+), 2 deletions(-)
- create mode 100644 hw/s390x/ap-stub.c
+Your concept of what it takes to dig a hole is quite different from
+mine.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aa6763077e..1e84bfeaee 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -112,6 +112,7 @@ F: hw/intc/s390_flic.c
- F: hw/intc/s390_flic_kvm.c
- F: hw/s390x/
- F: hw/vfio/ap.c
-+F: hw/s390x/ap-stub.c
- F: hw/vfio/ccw.c
- F: hw/watchdog/wdt_diag288.c
- F: include/hw/s390x/
-diff --git a/hw/s390x/ap-stub.c b/hw/s390x/ap-stub.c
-new file mode 100644
-index 0000000000..001fe5f8b0
---- /dev/null
-+++ b/hw/s390x/ap-stub.c
-@@ -0,0 +1,21 @@
-+/*
-+ * VFIO based AP matrix device assignment
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Rorie Reyes <rreyes@linux.ibm.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/s390x/ap-bridge.h"
-+
-+int ap_chsc_sei_nt0_get_event(void *res)
-+{
-+    return EVENT_INFORMATION_NOT_STORED;
-+}
-+
-+bool ap_chsc_sei_nt0_have_event(void)
-+{
-+    return false;
-+}
-diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
-index 3bbebfd817..99cbcbd7d6 100644
---- a/hw/s390x/meson.build
-+++ b/hw/s390x/meson.build
-@@ -33,6 +33,7 @@ s390x_ss.add(when: 'CONFIG_S390_CCW_VIRTIO', if_true: files(
- ))
- s390x_ss.add(when: 'CONFIG_TERMINAL3270', if_true: files('3270-ccw.c'))
- s390x_ss.add(when: 'CONFIG_VFIO', if_true: files('s390-pci-vfio.c'))
-+s390x_ss.add(when: 'CONFIG_VFIO_AP', if_false: files('ap-stub.c'))
- 
- virtio_ss = ss.source_set()
- virtio_ss.add(files('virtio-ccw.c'))
-diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
-index fe62ba5b06..2320dd4c12 100644
---- a/target/s390x/ioinst.c
-+++ b/target/s390x/ioinst.c
-@@ -18,6 +18,7 @@
- #include "trace.h"
- #include "hw/s390x/s390-pci-bus.h"
- #include "target/s390x/kvm/pv.h"
-+#include "hw/s390x/ap-bridge.h"
- 
- /* All I/O instructions but chsc use the s format */
- static uint64_t get_address_from_regs(CPUS390XState *env, uint32_t ipb,
-@@ -574,13 +575,19 @@ out:
- 
- static int chsc_sei_nt0_get_event(void *res)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_get_event(res);
-+    }
-+
-     return 1;
- }
- 
- static int chsc_sei_nt0_have_event(void)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_have_event();
-+    }
-+
-     return 0;
- }
- 
--- 
-2.48.1
+> We can cc the block people on that patch, assuming
+> we'd always better copy them when touching this part, including the current
+> patch.
 
+I think I messed up the get_maintainers usage.
+
+>
+> AFAIU, as long as it takes NULL for the real parameter it'll just work.
+>
+
+But that's what 3cba22c9ad was fixing. I belive the !alias_map is the
+key, it'll be NULL if has_block_bitmap is false, no matter the actual
+value of the parameters.
+
+> Then if all tests can pass and no one is unhappy, we go with that.  We can
+> always add this var back when someone reports a break, then we at least
+> know this is needed and why.
+>
+
+Ok, this part is a sticking point of the series indeed. I'll try to
+clear this up. Let's not make this another "TLS options" situation.
+
+> That's what I'll do, but feel free to choose yours.  In all cases, I'd
+> still suggest we copy block developers on similar changes.
 
