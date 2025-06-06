@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FF5AD024A
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A6EAD0249
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Jun 2025 14:36:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uNWHy-0002TZ-Fg; Fri, 06 Jun 2025 08:35:14 -0400
+	id 1uNWI6-0002Wi-Ih; Fri, 06 Jun 2025 08:35:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWHu-0002Qw-I6
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:10 -0400
+ id 1uNWHx-0002To-0O
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uNWHs-0005om-L9
- for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:10 -0400
+ id 1uNWHv-0005pc-2U
+ for qemu-devel@nongnu.org; Fri, 06 Jun 2025 08:35:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749213306;
+ s=mimecast20190719; t=1749213309;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D0N4/ek3rDKnJspa+pZ+XlKtcNsZl6mQsa0mbBdxvXA=;
- b=Wz3LGnz3pB0+DYA1nhWvoVmEAX2bQO8z6HJmxW1eqWsSAGof6BvN0ggU/8stWSJMQLnP92
- msVDOinif6AmWabAbiCcE/Ea+7QqplINJDW8+NqYChdo9UjE1dckRB+86KlVfWNYnPA1lW
- pEB+upWV9wd2X+AHjyd2f8ESJ6gWcog=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ww1lY6S2uTksI0wQpy/g8QzaKoXGCoLz7u1pFjqzdyU=;
+ b=CaZsGVU02dQNdDzYtuLKLpgfvB3IjWsSZWxyIOMiYTG5iwd4uNhPWk7+r/dEhejaiZ9xZp
+ Eb4h98duSvAx6u9ZuLemb8lNEp5sGOdSJn+U6tzsfTOiHw/R6io8NF/IzJ6QgQyRYTt52U
+ mZj8tk2XhYEmcpP/IYiOM2LeJcZtKww=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459-GQgCsEUvP_iDzVLWeGt5TA-1; Fri, 06 Jun 2025 08:35:04 -0400
-X-MC-Unique: GQgCsEUvP_iDzVLWeGt5TA-1
-X-Mimecast-MFC-AGG-ID: GQgCsEUvP_iDzVLWeGt5TA_1749213304
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a3696a0d3aso857198f8f.2
- for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:35:04 -0700 (PDT)
+ us-mta-67-nAy1XDzfPXOogJb2CjG39A-1; Fri, 06 Jun 2025 08:35:08 -0400
+X-MC-Unique: nAy1XDzfPXOogJb2CjG39A-1
+X-Mimecast-MFC-AGG-ID: nAy1XDzfPXOogJb2CjG39A_1749213307
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4eb6fcd88so1311029f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Jun 2025 05:35:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749213303; x=1749818103;
+ d=1e100.net; s=20230601; t=1749213306; x=1749818106;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D0N4/ek3rDKnJspa+pZ+XlKtcNsZl6mQsa0mbBdxvXA=;
- b=MHTsQjEUW2xuQyQOLBPNt0qxydIKmcpEdREP4o+BD8jLZ+EhzNyjQfokf6ApbgpdOY
- qJ06QJoLsVwK1P1AtgdvvCxJSBGpeG9QYQtfi9FsaWtpfqnxq1tcRF+f2IjVgsj1ULEf
- +px+dkIMMbnS42jK9WlAQTcY/bRGQusMcgEg2ZphXnMPxYSrs/Q9GQa2oNXfoMR99C4y
- VNhsbkMObmt9mlLTMgC9m78Og/znHUleVQeYbY2qWP8S/Rnq6NOQ0MrkGMoTshPmBVsv
- Ifd7tV98ypHmXn38JLxq3BViaZ6HBpjmjcQT711pxRr2tjgrdldpqN2b/HCEsMdzSTjD
- Ec2Q==
-X-Gm-Message-State: AOJu0YzVCqi6aceiY/pHGyuEkyfsgUVkZY2BqtqV3KrVvc8F7OkD/PTB
- Ca1u+CVYiWOGXk86o3sDabqHsqb7TbBUM0VaDpjjXVuvnk99Bekck0FHcfyXDOwp1mK5FGosFdk
- g7WC3eT3oyOYTw/Igg2k0iGqM6VcJHuVk59j+z1p8SIDqJCTTjNjPTPBhgTKqLcwoNuB1qi9Irh
- gfUiUzN8C9XEfz6fKhMAIaJt6KCF/IplyU4pNf1jDN
-X-Gm-Gg: ASbGnctVsDFtBh9wp6zv//Xhn0C+CAee4SS9Eh+h+CKc+8Fy3xtqkyhGVCUaatzrsL6
- bCEH4Y82TvREKF6zFYZwi8uTOlzpdNpooRASuit30D9yBB6jaJMS8IR2hLxO/SNZ9V3wLrgZNtp
- 2fYUVV2RYEirEvknWPCRyXuu2zTJL5HRyqd5HRwWQR8Mf/t0wefaQUkPvJhJTVQIOMGzejnTDuY
- EytC5SFd+a0UwhHhU/J8buQ1lPkJb1jewhW6WVam9ijQcQkgoPmUnHuRQvCz+KMwrKlEmppDBl+
- E9YEAIXgV49pwsneuu7f6p+X
-X-Received: by 2002:a5d:5f86:0:b0:3a3:64fb:304d with SMTP id
- ffacd0b85a97d-3a5319ba166mr2505374f8f.12.1749213303315; 
- Fri, 06 Jun 2025 05:35:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEit2lgWsoW1LrwVsoSu/pU3Rft5jOX9vhL7tfrd3aY8ggHwSJ8mPzA2caOAgOc25jVUf1WZQ==
-X-Received: by 2002:a5d:5f86:0:b0:3a3:64fb:304d with SMTP id
- ffacd0b85a97d-3a5319ba166mr2505342f8f.12.1749213302764; 
- Fri, 06 Jun 2025 05:35:02 -0700 (PDT)
+ bh=ww1lY6S2uTksI0wQpy/g8QzaKoXGCoLz7u1pFjqzdyU=;
+ b=sanCeC9CdQYYrIckPho44OBCEP7JN3d76XlXvp1SrVb7OTZVwGBhWS6p0uPfQWv0xc
+ LhzqyqdcLDA0ULVon9wvCXLuN8v9G/WuIyWz8l+1MzEzwT+8AsuaSH9BM3PoA6xd9+eq
+ 0A4c430UZ+WTBIkLPjfAXZp0HHYsrN6yrg9YxrJKn9ZMPO93VQE/3TNti4dKNIgTqXm7
+ Fhn+0EVZNzPy0sWLMaGi9ZIWatM6K8xozdOA7S+loogdPTOYEutvsAO4o7+i9v2v0KC9
+ KZijb4VeXKwmHxrN5PxGVz9IPZmPuarBIZBgZUlpqsbXQm2tfeGPbbqUls5BbxoQESN9
+ H3RA==
+X-Gm-Message-State: AOJu0Yw2b5vmS5pWGZXMGJgz1MEEOeQ0bYpIlfgqgiabpjA80iyysAGq
+ TA47gVQ/342OfxlPuGjqMVa01rm29p0oJOThoTtx/6BHX5rHReEmUI3U4fiD83k6+lvkgKLI6dC
+ xPfb5MOxtf4BNTvfpZiWpwgHv58/p6qnjGXnrDwZR7XgvofUTtTWsYxJF/w9Ozlgqi8mwV1wtLv
+ Ls4tgYks3+puGPvXBrEVhg+rSMM1YRUL3LZOmHJ3+n
+X-Gm-Gg: ASbGncuz6kxEXZSF5mVxoR3/Z0PDGQOzm9zGe6TasgKwP+9HnG8fDSwKyocA3jA8XZ3
+ LfkPgdtiyZ3WCPMZoP4QPtk/aNiQgvG0lEp828rdoOgTRbV+l2oi+bHMuNbhPWyDfyGFnVrkEbi
+ s6xc8fEald9JRJHvWkB61084ZWXJOG80Eivd2i2d62VdbxDruQVBjcRMRtocOwbRRT5GZUsMUDO
+ ursPdoEjM+0D7oIBKPpYWot+OFPsRSnxB/rVj5a34xovPO6Ngyb46p3yX0SkaeMihu+pGHgY5rm
+ kwaxwgy19zezXA==
+X-Received: by 2002:a5d:64e2:0:b0:3a3:685b:118 with SMTP id
+ ffacd0b85a97d-3a531cb35bdmr2760988f8f.24.1749213306494; 
+ Fri, 06 Jun 2025 05:35:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGsIRYqg26O6wvRMeFHlAFmdgrPCWDVkr1YL8snkAYwEiv6oJlnpWQ/ANLFtbU9fMQ8W8hfMg==
+X-Received: by 2002:a5d:64e2:0:b0:3a3:685b:118 with SMTP id
+ ffacd0b85a97d-3a531cb35bdmr2760968f8f.24.1749213306055; 
+ Fri, 06 Jun 2025 05:35:06 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a53244df34sm1789580f8f.71.2025.06.06.05.34.59
+ 5b1f17b1804b1-4526e158637sm20211105e9.11.2025.06.06.05.35.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Jun 2025 05:35:00 -0700 (PDT)
+ Fri, 06 Jun 2025 05:35:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 04/31] util/error: allow non-NUL-terminated err->src
-Date: Fri,  6 Jun 2025 14:34:18 +0200
-Message-ID: <20250606123447.538131-5-pbonzini@redhat.com>
+Subject: [PULL 05/31] util/error: make func optional
+Date: Fri,  6 Jun 2025 14:34:19 +0200
+Message-ID: <20250606123447.538131-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250606123447.538131-1-pbonzini@redhat.com>
 References: <20250606123447.538131-1-pbonzini@redhat.com>
@@ -106,60 +106,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rust makes the current file available as a statically-allocated string,
-but without a NUL terminator.  Allow this by storing an optional maximum
-length in the Error.
+The function name is not available in Rust, so make it optional.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qapi/error-internal.h | 9 ++++++++-
- util/error.c                  | 5 +++--
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ include/qapi/error-internal.h | 2 ++
+ util/error.c                  | 9 +++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/include/qapi/error-internal.h b/include/qapi/error-internal.h
-index d5c3904adec..1ec3ceb40f0 100644
+index 1ec3ceb40f0..ff18a2086d2 100644
 --- a/include/qapi/error-internal.h
 +++ b/include/qapi/error-internal.h
-@@ -18,7 +18,14 @@ struct Error
+@@ -18,6 +18,8 @@ struct Error
  {
      char *msg;
      ErrorClass err_class;
--    const char *src, *func;
-+    const char *func;
 +
-+    /*
-+     * src might be NUL-terminated or not.  If it is, src_len is negative.
-+     * If it is not, src_len is the length.
-+     */
-+    const char *src;
-+    int src_len;
-     int line;
-     GString *hint;
- };
++    /* Used for error_abort only, may be NULL. */
+     const char *func;
+ 
+     /*
 diff --git a/util/error.c b/util/error.c
-index e5bcb7c0225..3449ecc0b92 100644
+index 3449ecc0b92..daea2142f30 100644
 --- a/util/error.c
 +++ b/util/error.c
-@@ -24,8 +24,8 @@ Error *error_warn;
+@@ -24,8 +24,13 @@ Error *error_warn;
  static void error_handle(Error **errp, Error *err)
  {
      if (errp == &error_abort) {
--        fprintf(stderr, "Unexpected error in %s() at %s:%d:\n",
--                err->func, err->src, err->line);
-+        fprintf(stderr, "Unexpected error in %s() at %.*s:%d:\n",
-+                err->func, err->src_len, err->src, err->line);
+-        fprintf(stderr, "Unexpected error in %s() at %.*s:%d:\n",
+-                err->func, err->src_len, err->src, err->line);
++        if (err->func) {
++            fprintf(stderr, "Unexpected error in %s() at %.*s:%d:\n",
++                    err->func, err->src_len, err->src, err->line);
++        } else {
++            fprintf(stderr, "Unexpected error at %.*s:%d:\n",
++		    err->src_len, err->src, err->line);
++        }
          error_report("%s", error_get_pretty(err));
          if (err->hint) {
              error_printf("%s", err->hint->str);
-@@ -67,6 +67,7 @@ static void error_setv(Error **errp,
-         g_free(msg);
-     }
-     err->err_class = err_class;
-+    err->src_len = -1;
-     err->src = src;
-     err->line = line;
-     err->func = func;
 -- 
 2.49.0
 
