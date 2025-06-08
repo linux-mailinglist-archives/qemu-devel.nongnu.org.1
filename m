@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F04AD1572
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 01:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 893D4AD15B6
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 01:25:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOP7w-0005uh-JR; Sun, 08 Jun 2025 19:08:32 -0400
+	id 1uOPNM-0004ff-3s; Sun, 08 Jun 2025 19:24:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1uOP7u-0005u7-U1
- for qemu-devel@nongnu.org; Sun, 08 Jun 2025 19:08:30 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1uOPNJ-0004fN-L1
+ for qemu-devel@nongnu.org; Sun, 08 Jun 2025 19:24:25 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1uOP7t-0004dA-Dm
- for qemu-devel@nongnu.org; Sun, 08 Jun 2025 19:08:30 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2320d06b728so31924345ad.1
- for <qemu-devel@nongnu.org>; Sun, 08 Jun 2025 16:08:29 -0700 (PDT)
+ id 1uOPNI-0006MP-2a
+ for qemu-devel@nongnu.org; Sun, 08 Jun 2025 19:24:25 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-742c46611b6so4684820b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 08 Jun 2025 16:24:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749424108; x=1750028908; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Io8QAlH/AZbTYfjODl1SD6d4ZkI/a0qoPWASwOSekic=;
- b=d+6uLiJw+Qagwz5f9pr3X3cWvJGJ2qP9laS0CrVELeIGNXVxx2rzLsX44LjeD4tlBv
- OBosR3ue4/bOnI20KkzcQdx7pOGOHjEe3DUlV2Yiti09+sWmj7CMQ2eJd1x/2+7qbbG9
- ar//6QQPl+5xFdjzXhc9Y5jcmCU0iuZE6BcilXiEBxqXhlVy2MhoAp378KXinMByufmh
- iKeIK83fJzg7/F/Uy/dprScoDYc/878rbC0DPDW/GUZ0g/M14DO0C+fgOkOONaC0dXby
- MXSQ2wfILF2K03xIYh6kyLU6bn/YRqxW7fgixqCpDbz95r9MxOmeudPBf7xAIOAki40G
- PXkA==
+ d=gmail.com; s=20230601; t=1749425062; x=1750029862; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5eD+u1ZW3Lr8a+vGQaEredxT+am7OpXo7NrfN7WV1J0=;
+ b=jeDh1jeV7P3g9OV7+nJbfhPfqLrr7UXU3gsieCSeZgX5EVAxW6YfTY5vbm9Hy8n9xF
+ r4CPHafzHI/YTSWs3dC2yz4FJOKolpCAAy4QICUAn6KFTX6UfYWr4GNrM5hrH/CnS7iw
+ baqw1Re7F+wIz1LrVSQgv7OsKSJB+XHRFGHOjUtNYdiqINu4VFRxlLzGOqm29lntZK2c
+ YncscMKSS+1s2NEKHY9Cj52x2pjxXLcob3R+H0vjl8hPv3BzZDIquPVSPycL1rQKfvij
+ dpEGzoCuapK5Z8JxF+7KczFMnJf/R2pTmOOtd9kpDx9Yozyb9Mm3pAdo4ta9+oNXnqt/
+ RchA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749424108; x=1750028908;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Io8QAlH/AZbTYfjODl1SD6d4ZkI/a0qoPWASwOSekic=;
- b=iR697pk2RGgmXAu5KLLzbqcuZ9NdfrEBfq4Jl7nWCDbjpTNKdy2L9PsRD4gvCRmuiR
- 2AaNh0imwWLyko4RJht7qmA0XNe52eYoEnticQY4QaW5drPP8mDoC3dMVr6jyMIruXxn
- ZqJzLKkXpw6nzBb2+TyIUB8At9urIxinsaXimGx9Qh/mzM+8mm2CKFdsbHwtZrJxUMXn
- DxN+CeL4PwKZQRz6zEY7WRYaqhIHEQcyNi/+VgN+S2AY6OZc8B+EdSMptXf3jHTTtmBH
- cJOFTsQXH/3EohBAGkQtdi6hy3EvmYhI/hEiSbEzPof8gmEiHHcarxUsdnHPGWKL//9C
- jlyA==
-X-Gm-Message-State: AOJu0YyuL4kINXDnlwNAvl239BdKCBfnRW6z2lvNhgkuCaHWo8R7JLHF
- QXQYsqCJ9bqJrzz67+MF85gjHNcb8SmFvGrl2bn7ysgBuOqOyeHjpBlpsmY+NKh0RSo=
-X-Gm-Gg: ASbGncvr09A0upNuGECGMwCC2qZk1JeAhelBKHbwkIjre2cU8bbAkdKibJf1ETg4HLk
- MYS9lvoAIMNREpOsf44plZdPr3lMVxu/1mGsl9xkd86t60uGZjyOftny84jokLVyqKsMOqRL6MK
- jBvl2C4Yt7MA0U5nipYKU6NYBh4O6cxXSwiwMt/d6qTievT7jaKMse6DaA+UAfPTj08jNrCuWBk
- R1PWAgOr6OPSiJQwDBi1lT21t6IYjcbtdpq92tPC/PY0p1lnCsFXMTiRlj7DwssbefHva5pPN5F
- im/Omm3rWQwdyqKeafJoF6mLwfxRnAySMUXZttxIk/4Uf9Hez3QJdmWhTDGWMg==
-X-Google-Smtp-Source: AGHT+IH2suhQxXX/VqnJtSEqNAfS34Gc3VukV3jBVRTogIa9BnS3aSK064cHp377sOflD6FVHyyjWA==
-X-Received: by 2002:a17:903:3bd0:b0:234:8ef1:aa7b with SMTP id
- d9443c01a7336-23601cfe4a4mr142402545ad.20.1749424107928; 
- Sun, 08 Jun 2025 16:08:27 -0700 (PDT)
-Received: from shemhazi.lan ([50.46.174.34]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23603504f09sm43421325ad.223.2025.06.08.16.08.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 08 Jun 2025 16:08:27 -0700 (PDT)
-From: Rowan Hart <rowanbhart@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, novafacing <rowanbhart@gmail.com>
-Subject: [PATCH v9 9/9] plugins: Update plugin version and add notes
-Date: Sun,  8 Jun 2025 16:08:19 -0700
-Message-ID: <20250608230819.3382527-10-rowanbhart@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250608230819.3382527-1-rowanbhart@gmail.com>
-References: <20250608230819.3382527-1-rowanbhart@gmail.com>
+ d=1e100.net; s=20230601; t=1749425062; x=1750029862;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5eD+u1ZW3Lr8a+vGQaEredxT+am7OpXo7NrfN7WV1J0=;
+ b=aAcHB6tAnZOUaSysJUY1T2dyFLpMU+80ZRVwdweGlrE9R1jVCFDq6TifwtPD9ZhBA4
+ l2KcGT+zl4KpErLzj62S+9UFDsJ1d+vRswk33zip2fNmj2qFjbeio9VKzFJVolq07h18
+ 0fjGBLuchuZZH3D1r1wyB42m9K1GkhHKGwvw24jPA34BJEYjX9j511GEkdPXDuCPK6rE
+ mv00+ot99oS0HG+VFVOKUwxrb4wRqavQpV9Zg9BaECAu9BC1TmyD/P0Ed1klUc4e1Wok
+ fn7Wd3j/7KnXqR9VJeSu80SvhWnz32aumSj4g39O6pyfDOUlsTArnjF7Be4F4mZ+Xjpg
+ Fg+w==
+X-Gm-Message-State: AOJu0YztQRdT34FIO8YbG8t5EqMifKN6xG5uMS75qkGeMH86ZgNtS61d
+ 6efQefFL0SN0YkoAot6FWsXwjvNYNRvHJSuJDtORJkWNgvqPDo+AW1nsuY9cccciH1s=
+X-Gm-Gg: ASbGnctFeQWDub/44kHQToP+P3VuCXUCgL2BM7mQePOtz1nnLXEsFX8QETd6uUOHUII
+ vNHjxcGojK/xauld3Vzw99egd/JSAQWo3MKLKHstXfSm7wHjuHKu2OAH0/wppe3Jv8r3UO31q7n
+ 81LBIjRw9PDEx4VJUf287X7l231l7QL8PPG8zXdWaIt9lrNLRjaWldtS91KIL7O7dbtMFJElou+
+ bJx7K/f67mhXFcliUpGwHhb8J8HyATIr6z+sd+QyEuo53ejgA1wGZf3Yuo0t1yHyLZQUeymEeqL
+ qUxhGNoMxZr/DE/2sPxXb5BQAMRL/PKXthv2X7VZtxJ4kS4LVYAZBvg=
+X-Google-Smtp-Source: AGHT+IGfgKkwDNv1SSIsGICDhijZZpFKwTx0nRTVtkdOGqHWfeVjARjTpDjy3vIx+3Upnh8GhZu05w==
+X-Received: by 2002:a05:6a00:b42:b0:748:33f3:8da8 with SMTP id
+ d2e1a72fcca58-74833f38e49mr9478411b3a.5.1749425062322; 
+ Sun, 08 Jun 2025 16:24:22 -0700 (PDT)
+Received: from [192.168.1.119] ([50.46.174.34])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7482af7a216sm4454530b3a.40.2025.06.08.16.24.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 08 Jun 2025 16:24:22 -0700 (PDT)
+Message-ID: <2a61d08c-97de-4500-85d2-06fd8ba8e583@gmail.com>
+Date: Sun, 8 Jun 2025 16:24:21 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=rowanbhart@gmail.com; helo=mail-pl1-x62f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/9] Add additional plugin API functions to read and
+ write memory and registers
+To: qemu-devel@nongnu.org
+Cc: Yanan Wang <wangyanan55@huawei.com>, Alexandre Iooss <erdnaxe@crans.org>, 
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Zhao Liu
+ <zhao1.liu@intel.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20250608225136.3340370-1-rowanbhart@gmail.com>
+Content-Language: en-US
+From: Rowan Hart <rowanbhart@gmail.com>
+In-Reply-To: <20250608225136.3340370-1-rowanbhart@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,41 +107,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: novafacing <rowanbhart@gmail.com>
+I added another update I missed to v9, so please disregard this version 
+and check 
+https://lore.kernel.org/qemu-devel/20250608230819.3382527-1-rowanbhart@gmail.com/T/#t 
+instead.
 
-This patch updates the plugin version to gate new APIs and adds notes
-describing what has been added.
 
-Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
----
- include/qemu/qemu-plugin.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 2cb5de9f64..170a79e667 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -65,11 +65,18 @@ typedef uint64_t qemu_plugin_id_t;
-  *
-  * version 4:
-  * - added qemu_plugin_read_memory_vaddr
-+ *
-+ * version 5:
-+ * - added qemu_plugin_write_memory_vaddr
-+ * - added qemu_plugin_read_memory_hwaddr
-+ * - added qemu_plugin_write_memory_hwaddr
-+ * - added qemu_plugin_write_register
-+ * - added qemu_plugin_translate_vaddr
-  */
- 
- extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
- 
--#define QEMU_PLUGIN_VERSION 4
-+#define QEMU_PLUGIN_VERSION 5
- 
- /**
-  * struct qemu_info_t - system information for plugins
--- 
-2.49.0
+-Rowan
 
 
