@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61597AD1559
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 00:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B42EBAD155D
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 00:53:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOOrw-0005Cm-Ol; Sun, 08 Jun 2025 18:52:00 -0400
+	id 1uOOrw-0005CJ-93; Sun, 08 Jun 2025 18:52:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1uOOrj-00058f-Ry
+ id 1uOOrk-00058q-Bu
  for qemu-devel@nongnu.org; Sun, 08 Jun 2025 18:51:48 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1uOOri-00031I-8r
- for qemu-devel@nongnu.org; Sun, 08 Jun 2025 18:51:47 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-af51596da56so2549483a12.0
- for <qemu-devel@nongnu.org>; Sun, 08 Jun 2025 15:51:45 -0700 (PDT)
+ id 1uOOri-00031Q-Qf
+ for qemu-devel@nongnu.org; Sun, 08 Jun 2025 18:51:48 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-b2c40a7ca6eso3517709a12.1
+ for <qemu-devel@nongnu.org>; Sun, 08 Jun 2025 15:51:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1749423105; x=1750027905; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wVjrW993BqqXU9EpDADVH1dB+hpwPyajnX8KVD/tm+w=;
- b=FKkPNrKJjoakvx2UL4lQYZU8yx4hoSerCb9r/PHN23e+cuO2qlGaRNTwkW0bIPYodG
- PtQ1Fffii0NdoewzJsVHR7Cf3rBxaUIlEjG4VtFwDeyGJAcBaDMLrdV0F6c4K30S96i7
- LWaO8GVLt+3geS77931EV7V5exQ27aPLXEk6lceL0BS2/xBZ1DpTk8MOWZxI1sd2l/ez
- IRzh7giJHTl6iRAt3tS/yaRH9O4rmEOxIYN9pSykfoN4RsGeR5bOHdeDATJXR8PZFabJ
- U1t1RG7EfcA/mZm1HUHuGN68Z2OKe3NciRDo2pMSurPyfJj+S3TUTposkLNtSzDPimOB
- 7Lcg==
+ bh=Io8QAlH/AZbTYfjODl1SD6d4ZkI/a0qoPWASwOSekic=;
+ b=nkP5VZQjbW6Tax0UAlX+BbfokzkKsEFuM/AaOMAaUfAdUkGX6RLuYZH8yL4It8u2u+
+ CuR3/7qmk4yrN8wZL8PLTUp4syptYCF3cA4aUZP985HC1iWhcfNFFqWQPUs1sVHHhzEw
+ 8/b6DA18WK+mah7ntLJnHgrj5Z6lFa5duos1g+MnMj1JOpXwjVoiolcrv48/Yln/+X5F
+ lYdEsI5cfmqyxWDP1acVyj8l18UdoaxwuCkZmIZpggC9JIXGX88cnvWnmmzNS2yFnSLH
+ HA/k9+HK365Qzf/MsXaqJO99BgISHxCZBe41jnK2fLaaEC5b6jrFIHfmQsXa3RMf3Af8
+ uY9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1749423105; x=1750027905;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wVjrW993BqqXU9EpDADVH1dB+hpwPyajnX8KVD/tm+w=;
- b=BZCSImneNpLCLENn6JVC+Ot1kDAXrapau5vD5QGklC0WGwhm7tZ/46VYe50gwTJFjW
- gBZG2d0igRgguXhP9vVXrzhrYDg8Oxz0TWo9t23UyCOzTroYDwbsMCeBBWJ1XfQsu15e
- G3ZSmDAo1ERXzaFmoWHuGYu1xkJXc18U1lLOKebI9p9U5/LYsNWM8McEdjbwdT1Z6Rd1
- u6R5DHSBzJ1Srnd4yHXUI/HPqhIImwRgyBK2+cAuJpcsW4meKQaVzQ1eXYIbkWz5zt+S
- cxwTKTcjeZ0RiN8C0ppEKJ9CqShX9NJPE0ta32Sg6cCvYCGRPBDBJDbRzmGZtwus7MmC
- LfBA==
-X-Gm-Message-State: AOJu0YwfRWfS52hURyNnmbLs834vmrl2y+Axe7CabchbgV6AGOJTdN61
- eqOs8flp/lzryGe2jW6ZPob0aFmdkV/fKwjHhSwamAvEczNphYuTez8HdtLNVQeYtQE=
-X-Gm-Gg: ASbGncsN6EJdQTCsUBplZgM5KIR6WKCzJTKskKew06vjHEb6EiRE47k/+RgaiSyprEv
- k1cHGVssfUcZSLyrMUWUi0lL60V5xess/B0S1IaNKs9oGBhAnUzxbIHacRVQ684IPqM7gWZDgwn
- rrB8ySX3w7EO0Smr259Tx5AWjXR26s34OGOOnI5LUHFdofHo6Jty4GHf9KUce51GbuHW9j0VkRA
- XqUb+gILt/YXdiwl0z9CA0NRlPyEiMwb+FaMF6otOc3exNMqF1et1Z7vMkdwQ+TXPC1omOxdj1O
- SQZ64kor1POdo0ko7wSaM6vKJ8E2/e/cFcQId0DXZIUtMpSoX/zo2EqeEePVcg==
-X-Google-Smtp-Source: AGHT+IHvzXvHO+40grYr+NnwvJegJs408G3u//dG6qX8nLTkti6x1WVnsC48WUReXqOQ0+S08/Pp9Q==
-X-Received: by 2002:a17:90b:4b46:b0:312:b4a:6342 with SMTP id
- 98e67ed59e1d1-3134788faefmr15811422a91.33.1749423104709; 
- Sun, 08 Jun 2025 15:51:44 -0700 (PDT)
+ bh=Io8QAlH/AZbTYfjODl1SD6d4ZkI/a0qoPWASwOSekic=;
+ b=KCz4hAdUih8ozEljDhsgCkiWXo6w+p4hlkho5tgr7Irwlr7THkciDJ/yeDE6JxAiTj
+ iccLIFwHZoOVHvXqMVj94jXhaDb6DjfjMYtuUi+91tOFgL7qYoUSB0POh20l80GfQ2Pn
+ D5s/nx2wHaBpe9ungs3DdYQFoYnp6Br4bcdhr1J2IZpNOX68exKwOlZLas6jDuQSo2U9
+ xVeKe7wbBOpvs8d4I4JkL2YJbSYPjj22lH15S0kEwaBZwsbot8fWJmEDX9ti2hSBxhM7
+ 1dqFyePVSlCKrW9v8+FE8XKBYLCoSZjncP2vPWndSDRXZTnxxb4COf0QjBxmGd4e4CWa
+ XiWg==
+X-Gm-Message-State: AOJu0Yx+CrluEr8KNJFg1FuSGGrQqUGQhMzkI45lkP4uWEBJr0/ZfoXF
+ 7uMRcHhtXd23UuVFZ6q0tlvV6lpmuIEBTdu32zcHaecuXuFlVtEq1ymgcqZaShPY1QA=
+X-Gm-Gg: ASbGnct1h4zUzoNnrl1ezVY6Ncl5LqRKdBANGIIQbrD0ciO9ZuhXbF89mR4uUxrn76n
+ bPgnMuQpFBBdcvObL11gAyCv31Qz+780XF8pFbE6rGcc1lX/KwXmEgZObX9YPMN1yJgBqplGmod
+ 6wGQz78yu7VlCHjd953CnvfwqA28fE7OClfvt4M5CRk9CNFufuCzE4uK8gFSIppIJQnZN/rjKYT
+ TQNoIjLQvBeYtrtl5Gfmkqi9uAPRAzRbFQx0FkabTrfYNjoYQfAVdp/yCRFbGkQLp++KqhAMiZy
+ PA+WsbGpu8Zc/q0CPB9r/jf0uhXbwq9Xu1F+CTEqArTZ1MQHiCZ3XSHmt4YIbQ==
+X-Google-Smtp-Source: AGHT+IHVrOrOPliO8a5wjVXxY6WuUiQZ8G8fVHzC6CGywg+9IBViLrn1yj/bmrr6jrmIDpAbCg9ODg==
+X-Received: by 2002:a17:903:244c:b0:235:866:9fac with SMTP id
+ d9443c01a7336-23601cf0a49mr166529645ad.2.1749423105333; 
+ Sun, 08 Jun 2025 15:51:45 -0700 (PDT)
 Received: from shemhazi.lan ([50.46.174.34]) by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-3134b128012sm4395970a91.32.2025.06.08.15.51.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 08 Jun 2025 15:51:44 -0700 (PDT)
+ Sun, 08 Jun 2025 15:51:45 -0700 (PDT)
 From: Rowan Hart <rowanbhart@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Yanan Wang <wangyanan55@huawei.com>, Alexandre Iooss <erdnaxe@crans.org>,
@@ -71,18 +71,17 @@ Cc: Yanan Wang <wangyanan55@huawei.com>, Alexandre Iooss <erdnaxe@crans.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Rowan Hart <rowanbhart@gmail.com>
-Subject: [PATCH v8 8/9] plugins: Remove use of qemu_plugin_read_register where
- it is not permitted
-Date: Sun,  8 Jun 2025 15:51:35 -0700
-Message-ID: <20250608225136.3340370-9-rowanbhart@gmail.com>
+ Paolo Bonzini <pbonzini@redhat.com>, novafacing <rowanbhart@gmail.com>
+Subject: [PATCH v8 9/9] plugins: Update plugin version and add notes
+Date: Sun,  8 Jun 2025 15:51:36 -0700
+Message-ID: <20250608225136.3340370-10-rowanbhart@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250608225136.3340370-1-rowanbhart@gmail.com>
 References: <20250608225136.3340370-1-rowanbhart@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=rowanbhart@gmail.com; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,60 +104,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch is required to make the insn plugin work after adding
-enforcement of QEMU_PLUGIN_CB_ flags in calls to read or write
-registers. Previously, these flags were not enforced and the API could
-be called from anywhere, but this was not intended as described by the
-documentation. Now, the flags are enforced and qemu_plugin_read_register
-can no longer be called from a vcpu_init callback because it does not
-request the QEMU_PLUGIN_CB_ flag (nor does it have a mechanism to do
-so).
+From: novafacing <rowanbhart@gmail.com>
+
+This patch updates the plugin version to gate new APIs and adds notes
+describing what has been added.
 
 Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
 ---
- tests/tcg/plugins/insn.c | 22 +---------------------
- 1 file changed, 1 insertion(+), 21 deletions(-)
+ include/qemu/qemu-plugin.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tests/tcg/plugins/insn.c b/tests/tcg/plugins/insn.c
-index 0c723cb9ed..265d3ebe9e 100644
---- a/tests/tcg/plugins/insn.c
-+++ b/tests/tcg/plugins/insn.c
-@@ -81,25 +81,6 @@ static Instruction * get_insn_record(const char *disas, uint64_t vaddr, Match *m
-     return record;
- }
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 2cb5de9f64..170a79e667 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -65,11 +65,18 @@ typedef uint64_t qemu_plugin_id_t;
+  *
+  * version 4:
+  * - added qemu_plugin_read_memory_vaddr
++ *
++ * version 5:
++ * - added qemu_plugin_write_memory_vaddr
++ * - added qemu_plugin_read_memory_hwaddr
++ * - added qemu_plugin_write_memory_hwaddr
++ * - added qemu_plugin_write_register
++ * - added qemu_plugin_translate_vaddr
+  */
  
--/*
-- * Initialise a new vcpu with reading the register list
-- */
--static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
--{
--    g_autoptr(GArray) reg_list = qemu_plugin_get_registers();
--    g_autoptr(GByteArray) reg_value = g_byte_array_new();
--
--    if (reg_list) {
--        for (int i = 0; i < reg_list->len; i++) {
--            qemu_plugin_reg_descriptor *rd = &g_array_index(
--                reg_list, qemu_plugin_reg_descriptor, i);
--            int count = qemu_plugin_read_register(rd->handle, reg_value);
--            g_assert(count > 0);
--        }
--    }
--}
--
--
- static void vcpu_insn_exec_before(unsigned int cpu_index, void *udata)
- {
-     qemu_plugin_u64_add(insn_count, cpu_index, 1);
-@@ -295,8 +276,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-     insn_count = qemu_plugin_scoreboard_u64(
-         qemu_plugin_scoreboard_new(sizeof(uint64_t)));
+ extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
  
--    /* Register init, translation block and exit callbacks */
--    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
-+    /* Register translation block and exit callbacks */
-     qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
-     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
-     return 0;
+-#define QEMU_PLUGIN_VERSION 4
++#define QEMU_PLUGIN_VERSION 5
+ 
+ /**
+  * struct qemu_info_t - system information for plugins
 -- 
 2.49.0
 
