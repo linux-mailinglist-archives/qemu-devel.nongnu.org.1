@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA65AD13C5
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Jun 2025 20:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4698AD13C8
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Jun 2025 20:32:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOKly-0003CD-H0; Sun, 08 Jun 2025 14:29:34 -0400
+	id 1uOKly-0003Bl-8B; Sun, 08 Jun 2025 14:29:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1uOKld-00033k-Kh; Sun, 08 Jun 2025 14:29:14 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1uOKle-00033y-4e; Sun, 08 Jun 2025 14:29:14 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1uOKlb-0001G8-A7; Sun, 08 Jun 2025 14:29:13 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 558DuaQK011924;
- Sun, 8 Jun 2025 18:29:09 GMT
+ id 1uOKlc-0001GP-Ef; Sun, 08 Jun 2025 14:29:13 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 558HhwWH012358;
+ Sun, 8 Jun 2025 18:29:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=wGLIYr
- wJBR4mz7JJWIF4/b3kBf5YqDd9zWOuZaECf94=; b=eQkK5Pcs8EmPYpYXei7b+N
- rTPqlpBJf7AEm+Kh2L5xkEze62OMuiWSKj6QIRA2uCLZ+533DmoXS3JRPrx3Vrxu
- 6twDwYlqJ0K3+rJ1CyYU+U8V7ApJy1Y8updMOKi7Bf6nVp8AnMyYs4zs8JrJGGMR
- WqcLdLmb7Qwm2aDdSNzpnq3Wp7qvsvHGARJR4WnUsU5BE3UySaoe4xc/39aoBn9T
- DI53YJNfeSBHjeDc6ylBbvlQlcQeHmjSICTisOUvWkLDewOwpRZrD9rS1fuRk8WZ
- U8hx4n13cO/UDRXDXTAASNjuTwAuUNonp99nffgfEvsJVVr6W7Z0RjMza4O2WZsw
+ :message-id:mime-version:references:subject:to; s=pp1; bh=SFhp6h
+ Wno6crnJ07NbZ0nI0+F81IFJ7WZWoTz77Tspw=; b=Dr6lkOJrkGix1oHlcF5wnq
+ lNsHc+4obC/l5o5b3HEKqgPdiXqBg6Xs9H0XkJnpKRmWxgWWk5xeZHyjBsmy/zpT
+ WPzspUiqegnVcziCsOPxZJVnpRsNgp2pQZTipuuzFN54OqPLzx+vRYMsQvaZaijA
+ Vb+AJfLpA7AOmZ5pd+vbT7nGLdATtiQsu2anRxlXeMzlexkG1+jKV3JGaFvwz6st
+ XSWIC9pMD40e02yQFr6HqHqat1jAlgSb8TwjFUsQ89mPGFRwBMPvbuh8fJT37oRQ
+ +ozQLMu8aDwtQD1fVVfohEet31WzAvEPISVWptBps8PTV00ypKuZY/A0dXau8J/Q
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474cxhwerm-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474bunng5a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 08 Jun 2025 18:29:09 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 558IT8Cl030290;
+ Sun, 08 Jun 2025 18:29:11 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 558ITA1C027254;
+ Sun, 8 Jun 2025 18:29:10 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474bunng58-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 08 Jun 2025 18:29:10 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 558Du9NN003463;
  Sun, 8 Jun 2025 18:29:09 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474cxhwerh-1
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4751ykafuj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 08 Jun 2025 18:29:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 558HRV7k021879;
- Sun, 8 Jun 2025 18:29:07 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47504yjtbb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 08 Jun 2025 18:29:07 +0000
+ Sun, 08 Jun 2025 18:29:09 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 558IT30O22872522
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 558IT6YC25428592
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 8 Jun 2025 18:29:03 GMT
+ Sun, 8 Jun 2025 18:29:06 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A3D9820049;
- Sun,  8 Jun 2025 18:29:03 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5756A20049;
+ Sun,  8 Jun 2025 18:29:06 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E6AB20040;
- Sun,  8 Jun 2025 18:29:01 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 12E9920040;
+ Sun,  8 Jun 2025 18:29:04 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
  [9.39.24.199]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sun,  8 Jun 2025 18:29:01 +0000 (GMT)
+ Sun,  8 Jun 2025 18:29:03 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>
@@ -71,9 +71,9 @@ Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>, <qemu-devel@nongnu.org>,
  <qemu-ppc@nongnu.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH v8 3/8] ppc/pnv: Add XIVE2 controller to Power11
-Date: Sun,  8 Jun 2025 23:58:37 +0530
-Message-ID: <20250608182842.2717225-4-adityag@linux.ibm.com>
+Subject: [PATCH v8 4/8] ppc/pnv: Add PHB5 PCIe Host bridge to Power11
+Date: Sun,  8 Jun 2025 23:58:38 +0530
+Message-ID: <20250608182842.2717225-5-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250608182842.2717225-1-adityag@linux.ibm.com>
 References: <20250608182842.2717225-1-adityag@linux.ibm.com>
@@ -81,32 +81,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: M07YFAj5eIocGKHNnUkvcwR_3gzdBEss
-X-Proofpoint-GUID: wClbbo-eb3nsGib1MnfJBg7la_AQFDcs
-X-Authority-Analysis: v=2.4 cv=fZWty1QF c=1 sm=1 tr=0 ts=6845d675 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Authority-Analysis: v=2.4 cv=H4Hbw/Yi c=1 sm=1 tr=0 ts=6845d677 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=20KFwNOVAAAA:8 a=VvyhdzPrB7g4W_GO34sA:9
+ a=20KFwNOVAAAA:8 a=460_-ORYMF3lY5BZaOYA:9
  a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA4MDE0NyBTYWx0ZWRfX75Yfv25+hGey
- efgox98K6X9o6sj8JEoAb9+kjGd1GjUsAEjvUppXSlUxls5Er4CbpOk4qVpvKzitkZw8mfdt4uQ
- RbG40qHQ1f0/YukZG+jTWOfr9+CuMkzXxjLCRKOiKN3ElJnH2Ek3cvXLuIPiMjG1ynUQxeEwkCF
- H6eBQCelpAwjeA/qhTCVTIWiiDe+3zs2hanjZdzPGEnPME/AulVTpNuv7eCLZ5+EZGCOQLvyRzk
- sjCZgMOlaPzht3o0y04jUyVYeH7H1aZxnoTrJTHU8LuXfqu44ZMj3hZ4jPpieYKSsfjv6fUfMId
- g97rQQFHGE4HXEqGW95nMZ1aWzaReuZWoPeHkHIJ0gPGUaPr65l/sC2UbOzu9/EvOOvSy3Bs0wJ
- 36KU1v0EuhWm//BWFulMTeD8ugmSabt3fWKP4ekvQLTnjcbaoifCcJEZ7U/9ykJSC7C8sDde
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA4MDE0NyBTYWx0ZWRfX7Vl8JVSXakcP
+ VnCw0gjjWcv0w4J0CVrRU/BMKb0psCka9vhtqY4RnkV+2GNPm5vvId6H/wRewFrVv0iQD6EaeUI
+ E9HASUrGv/Jx1VDCHar9xQzQJcWez8xoXrZTvonC20SOXjKLArfRNu0wIKkZ4bEsYefZDUW1gR3
+ masLIQtbcZebIfj86EEEukOLOGei0wWGIHv454FrRTRCBpd/QwsSsepwqeBvWj2/VsHg+TTBvnc
+ QAJePtJkLH/b/kUYmuznGH3DbDqXZSBQpLH9sommE1cSjwUt+4yN2nk+HC0PnWGGF5//3LW57g+
+ 8VWGrj6oKiDqGvaWaoy+QMZ9QtAEAB8UfPeUCQCxZebg2sKwnpZ3+Ysj2xzEFCKBH5noqvIOFWl
+ 6qS9cFoaA0xtDcNq2cuURcLsQGe8tj6kjiTeHjVr0gqJIqFGp/MHRWWtGJP2HEpivL4lUfEg
+X-Proofpoint-GUID: Q9wMtM5jZ0jIZI82VLcI_d57CHOtEs2Z
+X-Proofpoint-ORIG-GUID: 9Q0DztLobUoc_1ruG1OzP8F02TeQ_7Jn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-08_03,2025-06-05_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0
- priorityscore=1501 spamscore=0 bulkscore=0 phishscore=0 suspectscore=0
- adultscore=0 mlxscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=999
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505280000
+ suspectscore=0
+ mlxlogscore=999 phishscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
+ clxscore=1015 adultscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
+ impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2506080147
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -36
 X-Spam_score: -3.7
 X-Spam_bar: ---
@@ -130,8 +130,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a XIVE2 controller to Power11 chip and machine.
-The controller has the same logic as Power10.
+Power11 also uses PHB5, same as Power10.
+
+Add Power11 PHBs with similar code as the corresponding Power10 implementation.
 
 Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
 Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
@@ -140,243 +141,119 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
- hw/ppc/pnv.c         | 133 ++++++++++++++++++++++++++++++++++++++++++-
- include/hw/ppc/pnv.h |  18 ++++++
- 2 files changed, 150 insertions(+), 1 deletion(-)
+ hw/ppc/pnv.c | 57 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 56 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 5205728d3329..cd85278baf53 100644
+index cd85278baf53..8b0133cecf41 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -972,6 +972,7 @@ static void pnv_chip_power11_pic_print_info(PnvChip *chip, GString *buf)
-     Pnv11Chip *chip11 = PNV11_CHIP(chip);
+@@ -973,6 +973,8 @@ static void pnv_chip_power11_pic_print_info(PnvChip *chip, GString *buf)
  
      pnv_psi_pic_print_info(&chip11->psi, buf);
-+    pnv_xive2_pic_print_info(&chip11->xive, buf);
+     pnv_xive2_pic_print_info(&chip11->xive, buf);
++    object_child_foreach_recursive(OBJECT(chip),
++                         pnv_chip_power9_pic_print_info_child, buf);
  }
  
  /* Always give the first 1GB to chip 0 else we won't boot */
-@@ -1481,6 +1482,50 @@ static void pnv_chip_power10_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
-     xive_tctx_pic_print_info(XIVE_TCTX(pnv_cpu_state(cpu)->intc), buf);
+@@ -2373,6 +2375,7 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+ 
+ static void pnv_chip_power11_instance_init(Object *obj)
+ {
++    PnvChip *chip = PNV_CHIP(obj);
+     Pnv11Chip *chip11 = PNV11_CHIP(obj);
+     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(obj);
+     int i;
+@@ -2395,6 +2398,13 @@ static void pnv_chip_power11_instance_init(Object *obj)
+     object_initialize_child(obj, "n1-chiplet", &chip11->n1_chiplet,
+                             TYPE_PNV_N1_CHIPLET);
+ 
++    chip->num_pecs = pcc->num_pecs;
++
++    for (i = 0; i < chip->num_pecs; i++) {
++        object_initialize_child(obj, "pec[*]", &chip11->pecs[i],
++                                TYPE_PNV_PHB5_PEC);
++    }
++
+     for (i = 0; i < pcc->i2c_num_engines; i++) {
+         object_initialize_child(obj, "i2c[*]", &chip11->i2c[i], TYPE_PNV_I2C);
+     }
+@@ -2427,6 +2437,38 @@ static void pnv_chip_power11_quad_realize(Pnv11Chip *chip11, Error **errp)
+     }
  }
  
-+static void pnv_chip_power11_intc_create(PnvChip *chip, PowerPCCPU *cpu,
-+                                        Error **errp)
++static void pnv_chip_power11_phb_realize(PnvChip *chip, Error **errp)
 +{
 +    Pnv11Chip *chip11 = PNV11_CHIP(chip);
-+    Error *local_err = NULL;
-+    Object *obj;
-+    PnvCPUState *pnv_cpu = pnv_cpu_state(cpu);
++    int i;
 +
-+    /*
-+     * The core creates its interrupt presenter but the XIVE2 interrupt
-+     * controller object is initialized afterwards. Hopefully, it's
-+     * only used at runtime.
-+     */
-+    obj = xive_tctx_create(OBJECT(cpu), XIVE_PRESENTER(&chip11->xive),
-+                           &local_err);
++    for (i = 0; i < chip->num_pecs; i++) {
++        PnvPhb4PecState *pec = &chip11->pecs[i];
++        PnvPhb4PecClass *pecc = PNV_PHB4_PEC_GET_CLASS(pec);
++        uint32_t pec_cplt_base;
++        uint32_t pec_nest_base;
++        uint32_t pec_pci_base;
++
++        object_property_set_int(OBJECT(pec), "index", i, &error_fatal);
++        object_property_set_int(OBJECT(pec), "chip-id", chip->chip_id,
++                                &error_fatal);
++        object_property_set_link(OBJECT(pec), "chip", OBJECT(chip),
++                                 &error_fatal);
++        if (!qdev_realize(DEVICE(pec), NULL, errp)) {
++            return;
++        }
++
++        pec_cplt_base = pecc->xscom_cplt_base(pec);
++        pec_nest_base = pecc->xscom_nest_base(pec);
++        pec_pci_base = pecc->xscom_pci_base(pec);
++
++        pnv_xscom_add_subregion(chip, pec_cplt_base,
++                 &pec->nest_pervasive.xscom_ctrl_regs_mr);
++        pnv_xscom_add_subregion(chip, pec_nest_base, &pec->nest_regs_mr);
++        pnv_xscom_add_subregion(chip, pec_pci_base, &pec->pci_regs_mr);
++    }
++}
++
+ static void pnv_chip_power11_realize(DeviceState *dev, Error **errp)
+ {
+     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(dev);
+@@ -2556,7 +2598,12 @@ static void pnv_chip_power11_realize(DeviceState *dev, Error **errp)
+     pnv_xscom_add_subregion(chip, PNV11_XSCOM_N1_PB_SCOM_ES_BASE,
+                            &chip11->n1_chiplet.xscom_pb_es_mr);
+ 
+-    /* WIP: PHB added in future patch */
++    /* PHBs */
++    pnv_chip_power11_phb_realize(chip, &local_err);
 +    if (local_err) {
 +        error_propagate(errp, local_err);
 +        return;
 +    }
-+
-+    pnv_cpu->intc = obj;
-+}
-+
-+static void pnv_chip_power11_intc_reset(PnvChip *chip, PowerPCCPU *cpu)
-+{
-+    PnvCPUState *pnv_cpu = pnv_cpu_state(cpu);
-+
-+    xive_tctx_reset(XIVE_TCTX(pnv_cpu->intc));
-+}
-+
-+static void pnv_chip_power11_intc_destroy(PnvChip *chip, PowerPCCPU *cpu)
-+{
-+    PnvCPUState *pnv_cpu = pnv_cpu_state(cpu);
-+
-+    xive_tctx_destroy(XIVE_TCTX(pnv_cpu->intc));
-+    pnv_cpu->intc = NULL;
-+}
-+
-+static void pnv_chip_power11_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
-+                                             GString *buf)
-+{
-+    xive_tctx_pic_print_info(XIVE_TCTX(pnv_cpu_state(cpu)->intc), buf);
-+}
-+
- /*
-  * Allowed core identifiers on a POWER8 Processor Chip :
-  *
-@@ -2343,6 +2388,10 @@ static void pnv_chip_power11_instance_init(Object *obj)
-     object_initialize_child(obj, "occ",  &chip11->occ, TYPE_PNV10_OCC);
-     object_initialize_child(obj, "sbe",  &chip11->sbe, TYPE_PNV10_SBE);
-     object_initialize_child(obj, "homer", &chip11->homer, TYPE_PNV10_HOMER);
-+
-+    object_initialize_child(obj, "xive", &chip11->xive, TYPE_PNV_XIVE2);
-+    object_property_add_alias(obj, "xive-fabric", OBJECT(&chip11->xive),
-+                              "xive-fabric");
-     object_initialize_child(obj, "n1-chiplet", &chip11->n1_chiplet,
-                             TYPE_PNV_N1_CHIPLET);
  
-@@ -2410,11 +2459,33 @@ static void pnv_chip_power11_realize(DeviceState *dev, Error **errp)
-         return;
-     }
+     /*
+      * I2C
+@@ -2690,6 +2737,7 @@ static void pnv_chip_power11_class_init(ObjectClass *klass, const void *data)
+     k->xscom_core_base = pnv_chip_power11_xscom_core_base;
+     k->xscom_pcba = pnv_chip_power11_xscom_pcba;
+     dc->desc = "PowerNV Chip Power11";
++    k->num_pecs = PNV10_CHIP_MAX_PEC;
+     k->i2c_num_engines = PNV10_CHIP_MAX_I2C;
+     k->i2c_ports_per_engine = i2c_ports_per_engine;
  
--    /* WIP: XIVE added in future patch */
-+    /* XIVE2 interrupt controller */
-+    object_property_set_int(OBJECT(&chip11->xive), "ic-bar",
-+                            PNV11_XIVE2_IC_BASE(chip), &error_fatal);
-+    object_property_set_int(OBJECT(&chip11->xive), "esb-bar",
-+                            PNV11_XIVE2_ESB_BASE(chip), &error_fatal);
-+    object_property_set_int(OBJECT(&chip11->xive), "end-bar",
-+                            PNV11_XIVE2_END_BASE(chip), &error_fatal);
-+    object_property_set_int(OBJECT(&chip11->xive), "nvpg-bar",
-+                            PNV11_XIVE2_NVPG_BASE(chip), &error_fatal);
-+    object_property_set_int(OBJECT(&chip11->xive), "nvc-bar",
-+                            PNV11_XIVE2_NVC_BASE(chip), &error_fatal);
-+    object_property_set_int(OBJECT(&chip11->xive), "tm-bar",
-+                            PNV11_XIVE2_TM_BASE(chip), &error_fatal);
-+    object_property_set_link(OBJECT(&chip11->xive), "chip", OBJECT(chip),
-+                             &error_abort);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&chip11->xive), errp)) {
-+        return;
-+    }
-+    pnv_xscom_add_subregion(chip, PNV11_XSCOM_XIVE2_BASE,
-+                            &chip11->xive.xscom_regs);
- 
-     /* Processor Service Interface (PSI) Host Bridge */
-     object_property_set_int(OBJECT(&chip11->psi), "bar",
-                             PNV11_PSIHB_BASE(chip), &error_fatal);
-+    /* PSI can be configured to use 64k ESB pages on POWER11 */
-+    object_property_set_int(OBJECT(&chip11->psi), "shift", XIVE_ESB_64K,
-+                            &error_fatal);
-     if (!qdev_realize(DEVICE(&chip11->psi), NULL, errp)) {
-         return;
-     }
-@@ -2609,6 +2680,10 @@ static void pnv_chip_power11_class_init(ObjectClass *klass, const void *data)
-     k->chip_cfam_id = 0x220da04980000000ull; /* P11 DD2.0 (with NX) */
-     k->cores_mask = POWER11_CORE_MASK;
-     k->get_pir_tir = pnv_get_pir_tir_p10;
-+    k->intc_create = pnv_chip_power11_intc_create;
-+    k->intc_reset = pnv_chip_power11_intc_reset;
-+    k->intc_destroy = pnv_chip_power11_intc_destroy;
-+    k->intc_print_info = pnv_chip_power11_intc_print_info;
-     k->isa_create = pnv_chip_power11_isa_create;
-     k->dt_populate = pnv_chip_power11_dt_populate;
-     k->pic_print_info = pnv_chip_power11_pic_print_info;
-@@ -2977,6 +3052,54 @@ static int pnv10_xive_broadcast(XiveFabric *xfb,
-     return 0;
- }
- 
-+static int pnv11_xive_match_nvt(XiveFabric *xfb, uint8_t format,
-+                                uint8_t nvt_blk, uint32_t nvt_idx,
-+                                bool crowd, bool cam_ignore, uint8_t priority,
-+                                uint32_t logic_serv,
-+                                XiveTCTXMatch *match)
-+{
-+    PnvMachineState *pnv = PNV_MACHINE(xfb);
-+    int total_count = 0;
-+    int i;
-+
-+    for (i = 0; i < pnv->num_chips; i++) {
-+        Pnv11Chip *chip11 = PNV11_CHIP(pnv->chips[i]);
-+        XivePresenter *xptr = XIVE_PRESENTER(&chip11->xive);
-+        XivePresenterClass *xpc = XIVE_PRESENTER_GET_CLASS(xptr);
-+        int count;
-+
-+        count = xpc->match_nvt(xptr, format, nvt_blk, nvt_idx, crowd,
-+                               cam_ignore, priority, logic_serv, match);
-+
-+        if (count < 0) {
-+            return count;
-+        }
-+
-+        total_count += count;
-+    }
-+
-+    return total_count;
-+}
-+
-+static int pnv11_xive_broadcast(XiveFabric *xfb,
-+                                uint8_t nvt_blk, uint32_t nvt_idx,
-+                                bool crowd, bool cam_ignore,
-+                                uint8_t priority)
-+{
-+    PnvMachineState *pnv = PNV_MACHINE(xfb);
-+    int i;
-+
-+    for (i = 0; i < pnv->num_chips; i++) {
-+        Pnv11Chip *chip11 = PNV11_CHIP(pnv->chips[i]);
-+        XivePresenter *xptr = XIVE_PRESENTER(&chip11->xive);
-+        XivePresenterClass *xpc = XIVE_PRESENTER_GET_CLASS(xptr);
-+
-+        xpc->broadcast(xptr, nvt_blk, nvt_idx, crowd, cam_ignore, priority);
-+    }
-+    return 0;
-+}
-+
-+
- static bool pnv_machine_get_big_core(Object *obj, Error **errp)
- {
-     PnvMachineState *pnv = PNV_MACHINE(obj);
-@@ -3155,6 +3278,7 @@ static void pnv_machine_power11_class_init(ObjectClass *oc, const void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-     PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
-+    XiveFabricClass *xfc = XIVE_FABRIC_CLASS(oc);
+@@ -3281,6 +3329,13 @@ static void pnv_machine_power11_class_init(ObjectClass *oc, const void *data)
+     XiveFabricClass *xfc = XIVE_FABRIC_CLASS(oc);
      static const char compat[] = "qemu,powernv11\0ibm,powernv";
  
++    static GlobalProperty phb_compat[] = {
++        { TYPE_PNV_PHB, "version", "5" },
++        { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
++    };
++
++    compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
++
      pmc->compat = compat;
-@@ -3164,6 +3288,9 @@ static void pnv_machine_power11_class_init(ObjectClass *oc, const void *data)
-     pmc->quirk_tb_big_core = true;
-     pmc->dt_power_mgt = pnv_dt_power_mgt;
- 
-+    xfc->match_nvt = pnv11_xive_match_nvt;
-+    xfc->broadcast = pnv11_xive_broadcast;
-+
-     mc->desc = "IBM PowerNV (Non-Virtualized) Power11";
-     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power11_v2.0");
- 
-@@ -3297,6 +3424,10 @@ static const TypeInfo types[] = {
-         .name          = MACHINE_TYPE_NAME("powernv11"),
-         .parent        = TYPE_PNV_MACHINE,
-         .class_init    = pnv_machine_power11_class_init,
-+        .interfaces = (InterfaceInfo[]) {
-+            { TYPE_XIVE_FABRIC },
-+            { },
-+        },
-     },
-     {
-         .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
-diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
-index f0002627bcab..cbdddfc73cd4 100644
---- a/include/hw/ppc/pnv.h
-+++ b/include/hw/ppc/pnv.h
-@@ -270,6 +270,24 @@ void pnv_bmc_set_pnor(IPMIBmc *bmc, PnvPnor *pnor);
- #define PNV11_PSIHB_SIZE            PNV10_PSIHB_SIZE
- #define PNV11_PSIHB_BASE(chip)      PNV10_PSIHB_BASE(chip)
- 
-+#define PNV11_XIVE2_IC_SIZE         PNV10_XIVE2_IC_SIZE
-+#define PNV11_XIVE2_IC_BASE(chip)   PNV10_XIVE2_IC_BASE(chip)
-+
-+#define PNV11_XIVE2_TM_SIZE         PNV10_XIVE2_TM_SIZE
-+#define PNV11_XIVE2_TM_BASE(chip)   PNV10_XIVE2_TM_BASE(chip)
-+
-+#define PNV11_XIVE2_NVC_SIZE        PNV10_XIVE2_NVC_SIZE
-+#define PNV11_XIVE2_NVC_BASE(chip)  PNV10_XIVE2_NVC_BASE(chip)
-+
-+#define PNV11_XIVE2_NVPG_SIZE       PNV10_XIVE2_NVPG_SIZE
-+#define PNV11_XIVE2_NVPG_BASE(chip) PNV10_XIVE2_NVPG_BASE(chip)
-+
-+#define PNV11_XIVE2_ESB_SIZE        PNV10_XIVE2_ESB_SIZE
-+#define PNV11_XIVE2_ESB_BASE(chip)  PNV10_XIVE2_ESB_BASE(chip)
-+
-+#define PNV11_XIVE2_END_SIZE        PNV10_XIVE2_END_SIZE
-+#define PNV11_XIVE2_END_BASE(chip)  PNV10_XIVE2_END_BASE(chip)
-+
- #define PNV11_OCC_SENSOR_BASE(chip) PNV10_OCC_SENSOR_BASE(chip)
- 
- #endif /* PPC_PNV_H */
+     pmc->compat_size = sizeof(compat);
+     pmc->max_smt_threads = 4;
 -- 
 2.49.0
 
