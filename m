@@ -2,114 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490D1AD13BE
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Jun 2025 20:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50651AD13F1
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Jun 2025 21:09:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOKm0-0003EH-B9; Sun, 08 Jun 2025 14:29:36 -0400
+	id 1uOLN4-0008Hd-3N; Sun, 08 Jun 2025 15:07:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1uOKlr-00038c-8n; Sun, 08 Jun 2025 14:29:29 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1uOLN0-0008GJ-Nb; Sun, 08 Jun 2025 15:07:50 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1uOKlp-0001HG-BW; Sun, 08 Jun 2025 14:29:26 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 558HsfEs027631;
- Sun, 8 Jun 2025 18:29:22 GMT
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1uOLMy-0005GV-HC; Sun, 08 Jun 2025 15:07:50 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 558DvApH012817;
+ Sun, 8 Jun 2025 19:07:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=AavGl+
- 9IexK4uLEn02BwXZdn6O68bkYXT14Wu36z/JE=; b=RwCabo8RJufYlak5PFwsGh
- Aq4NhHhqq0WRP7txd9f2aIRVzleghv8Tm2RwCWOQjp/JKa6zkty0t9Wnxq0Nqmu4
- bvkPZ4G4CDANKFZh0Vok0HJv5pZ3Ck7tdosytz0vK8hLiqPe3iw77VlGaT+Wu/94
- 9w6dzxca2lUtYIdZ5Hk1wR07qRpTXhy41S2VjGYwttk3MWeR4NCd+ttnSVDuOblB
- hAe4/Ocr4xd7Plonu9ajDoi5OCMOpMFJw8MC8TQkbQddLA/99+AfpEQpJ40yJd/H
- 0avUvDNqHUyYty8H5N27vkrvhai8+KDaNAEfXSM8SgF69JcRxM16gH1O02cxwXtA
+ :message-id:mime-version:references:subject:to; s=pp1; bh=cHqlNV
+ szVKhbHALwnpLFLjSm2ZiqgTrwkLlBQQWD9yk=; b=NGV6vonaC3lZcfHxYjb/4z
+ owZUE+QAspPQJyUTBNEqYRGS8fs1P0P/3/So5zNw/+btWUEx1nO/9FKH42zpA9w3
+ 73Yo80fVCbjXYqrA5xu4Ako+hHW9OJij/zdFZbE/TAsMSEYMDnaFHzTE5vafT2w6
+ roqAba6fJ6a/Y3o28Jw1p6eSar8j7GwEToQcctMFRxwXh/m5w19rTM1foWxnV4ui
+ Nx/23CiKuF+hqZROBXcw8LTifEV8XkHWeGAYK3Es8RckwOm0o2dm4dNHzu6ewMZw
+ qVliTm3sMztuHsFm4d3s93u1q/dgd+CFhysF8rY28T3rea3mmPkr5K0LzBqaXWow
  ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474bunng5j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 08 Jun 2025 18:29:22 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 558IT3N9027111;
- Sun, 8 Jun 2025 18:29:21 GMT
 Received: from ppma11.dal12v.mail.ibm.com
  (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474bunng5h-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474cxhwhg7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 08 Jun 2025 18:29:21 +0000 (GMT)
+ Sun, 08 Jun 2025 19:07:43 +0000 (GMT)
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 558F06fc019602;
- Sun, 8 Jun 2025 18:29:21 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4752f22c3f-1
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 558EvArt019623;
+ Sun, 8 Jun 2025 19:07:42 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4752f22fbt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 08 Jun 2025 18:29:21 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 558ITHkD29098694
+ Sun, 08 Jun 2025 19:07:42 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 558J7f8s22741538
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 8 Jun 2025 18:29:17 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 913462004B;
- Sun,  8 Jun 2025 18:29:17 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 53C3F20040;
- Sun,  8 Jun 2025 18:29:15 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
- [9.39.24.199]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sun,  8 Jun 2025 18:29:15 +0000 (GMT)
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, <qemu-devel@nongnu.org>,
- <qemu-ppc@nongnu.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH v8 8/8] MAINTAINERS: Add myself as a reviewer of PowerNV
- emulation
-Date: Sun,  8 Jun 2025 23:58:42 +0530
-Message-ID: <20250608182842.2717225-9-adityag@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250608182842.2717225-1-adityag@linux.ibm.com>
-References: <20250608182842.2717225-1-adityag@linux.ibm.com>
+ Sun, 8 Jun 2025 19:07:41 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27E9258055;
+ Sun,  8 Jun 2025 19:07:41 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C4AD858043;
+ Sun,  8 Jun 2025 19:07:34 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Sun,  8 Jun 2025 19:07:34 +0000 (GMT)
+Message-ID: <524d3481-e2d2-4523-8966-a5bde1a557ce@linux.ibm.com>
+Date: Sun, 8 Jun 2025 15:07:34 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] backends/tpmL Avoid using g_alloca()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Glenn Miles <milesg@linux.ibm.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20250605193540.59874-1-philmd@linaro.org>
+ <20250605193540.59874-3-philmd@linaro.org>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20250605193540.59874-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=H4Hbw/Yi c=1 sm=1 tr=0 ts=6845d682 cx=c_pps
+X-Proofpoint-ORIG-GUID: 3bkCvHJOjRsnmm6P5HcjF_v8cqXaCCWg
+X-Proofpoint-GUID: 3bkCvHJOjRsnmm6P5HcjF_v8cqXaCCWg
+X-Authority-Analysis: v=2.4 cv=fZWty1QF c=1 sm=1 tr=0 ts=6845df7f cx=c_pps
  a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=aow-egSQAAAA:8 a=VnNF1IyMAAAA:8
- a=pGLkceISAAAA:8 a=69wJf7TsAAAA:8
- a=vuDgblk52OjkwLTa9dgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=gFNbaldVC-z-bsjSTzMo:22 a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA4MDE0NyBTYWx0ZWRfX1oppav3/aewF
- 5VG/D9W/ncYPp5NT47RNs9aWbqEXLX2xzU3DMt2on7cjjkLamBATlp4JN0f7m4kuDSLOJIrOlGf
- LwaSIPXTco/+vjoi4NdImDjDtd/1lQJ6kevFVaiYtBtbKScUDbfPx/ZaEHjrbj8RlWPj0YHnOfg
- dx31/sqowp/DEmLIaDzovvJQfWYUTyS34jhAiPBV5gnC4nzLdxgjz1q6svefAN+hzPAP5w89n4b
- d9/tE56EG1FhoKluGnnY5VNFd5frnUhdKlu03e2w6cokp6uwzNGeetVYZA7nWUJ159GlY0g3dYT
- BWlVuYb9rWlq469S/rLTdIpConnwFeO65/qRLsE2akbllqmgAkFI+L91Gkha3RGA2FRxAUq2e3q
- egMA90Vuigkjssw63zoWpCCFArCTMIJ3lqUmx8v2qZ4KNQbFWBNGpeELXud2O422Z5YXE/rp
-X-Proofpoint-GUID: hdMp1T6-cQooE2aPvesktAArj1AzyxL3
-X-Proofpoint-ORIG-GUID: 5CDOdWBbZ0xlP7XrKAhJRyN3p8MZ8Q96
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8
+ a=w0j3Yjxa2R2qolxzHAIA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA4MDE1MSBTYWx0ZWRfXy7jxQibbd9o7
+ cJJuRMdvfmYkTnpUD8aA2ZXJ9kwclwiYRHsJhsMukXjTVWkVEBiM/jrn9sWU8OHd3hUbP+RFK+d
+ gei+h6uz5C+q4GOyF6irhjlGSybeQA150HEPZO1vGY4A0twsxAdtC5D7w3cbP2+mZ3DWZVc0Men
+ ILKcIrSJ+X5WK6EzCbVBs+UGmuH9J4jEa8Jhr5h63UAYxYDWdzoH0f1qxAkyBKgp0H5p0S4URqz
+ Uf2DBY9eILVdEhGRmpTsOOWlFVo6rm8YaqYA5uK+HzQhWWCpEk7rKpxTgCXnRucdJH2nqJmWOC3
+ Jw3Q97VVXMHibCeYd+UuBNH2S0nBVJ1rjYGJIJlhpIg/FOt3GD3Ow7Oejapg07qmdfw7zN0QwBX
+ WWTe+JK1jr1B8C5OMA5+FgrsyerohZaOE4Ale8CWWWChdKCS7tBDh6QvgUWnhg+Eb5LZPQ+S
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-08_03,2025-06-05_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- mlxlogscore=945 phishscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506080147
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ clxscore=1011 impostorscore=0
+ priorityscore=1501 spamscore=0 bulkscore=0 phishscore=0 suspectscore=0
+ adultscore=0 mlxscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=917
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506080151
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -36
 X-Spam_score: -3.7
 X-Spam_bar: ---
@@ -133,34 +127,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Proposing myself as a reviewer in the PowerNV emulation in QEMU
 
-Have been working on PowerNV QEMU for sometime, with contributions in
-Power11, MPIPL and minor fixes and things such as dtb support
 
-Cc: Cédric Le Goater <clg@kaod.org>
-Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+On 6/5/25 3:35 PM, Philippe Mathieu-Daudé wrote:
+> tpm_emulator_ctrlcmd() is not in hot path.
+> Use the heap instead of the stack, removing
+> the g_alloca() call.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aa6763077ea8..a61c8d6b203a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1564,6 +1564,7 @@ F: tests/functional/test_ppc64_tuxrun.py
- PowerNV (Non-Virtualized)
- M: Nicholas Piggin <npiggin@gmail.com>
- R: Frédéric Barrat <fbarrat@linux.ibm.com>
-+R: Aditya Gupta <adityag@linux.ibm.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: docs/system/ppc/powernv.rst
--- 
-2.49.0
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+
+> ---
+>   backends/tpm/tpm_emulator.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
+> index 43d350e895d..4a234ab2c0b 100644
+> --- a/backends/tpm/tpm_emulator.c
+> +++ b/backends/tpm/tpm_emulator.c
+> @@ -129,11 +129,11 @@ static int tpm_emulator_ctrlcmd(TPMEmulator *tpm, unsigned long cmd, void *msg,
+>       CharBackend *dev = &tpm->ctrl_chr;
+>       uint32_t cmd_no = cpu_to_be32(cmd);
+>       ssize_t n = sizeof(uint32_t) + msg_len_in;
+> -    uint8_t *buf = NULL;
+>       ptm_res res;
+>   
+>       WITH_QEMU_LOCK_GUARD(&tpm->mutex) {
+> -        buf = g_alloca(n);
+> +        g_autofree uint8_t *buf = g_malloc(n);
+> +
+>           memcpy(buf, &cmd_no, sizeof(cmd_no));
+>           memcpy(buf + sizeof(cmd_no), msg, msg_len_in);
+>   
 
 
