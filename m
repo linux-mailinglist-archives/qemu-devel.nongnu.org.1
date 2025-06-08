@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA9FAD1557
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 00:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B911BAD155E
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 00:53:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOOrk-00058N-V1; Sun, 08 Jun 2025 18:51:49 -0400
+	id 1uOOrl-000598-TW; Sun, 08 Jun 2025 18:51:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1uOOrf-00057U-7G
+ id 1uOOrf-00057W-JB
  for qemu-devel@nongnu.org; Sun, 08 Jun 2025 18:51:43 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1uOOrc-000309-J8
- for qemu-devel@nongnu.org; Sun, 08 Jun 2025 18:51:41 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-3122a63201bso3010341a91.0
- for <qemu-devel@nongnu.org>; Sun, 08 Jun 2025 15:51:40 -0700 (PDT)
+ id 1uOOrd-00030E-Eb
+ for qemu-devel@nongnu.org; Sun, 08 Jun 2025 18:51:43 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-7fd581c2bf4so2481608a12.3
+ for <qemu-devel@nongnu.org>; Sun, 08 Jun 2025 15:51:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749423099; x=1750027899; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1749423100; x=1750027900; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1ysiNB3jN3pm4xSzw9lWbP2QG1HmR4QbzZmy+B07iUo=;
- b=Mff03rR9YNiOaZ38fYrFVTjmoOR450PIz0tXmQLV4hiFVbfODJqIfLFtJay81D7oCX
- vBOlOZYzJAekoNQ3LTbzBU3WuqrdfPMJJxVALxicjLunZwKUpGfub92mPUWeDpApDYDR
- xpqrHueCLt638nBVI0pZT2Wt6el8hSaxSm16i8t25+2a4nDbJ2VOr0B+/o6HGrKyqIPd
- YPNRb7CyFsfqtJa+DzaFXC+JtzndIK7659KB55UujDK9u7U57xGvpMV5cbeU8N0d6PF7
- QMvhP499a5U2I5tvdq3aRwgJEKtKaPI+txjlMHCnE6jGhLLOdmc9arp0iWjiNVvAAQ8O
- bWBA==
+ bh=iWW4a9PQ/O4Q7KJJXSiLz2UUrA0y3cIURdmeEfB6pjM=;
+ b=HGj874SpM8otOYgj8+fc8D3/y8b1Hpb2ov79VHeOGYNZjRNxfiOnl1apf0ufMep7Vh
+ 6R0Ua3fL2C6A5T394fVfiB23RX5dkk/CGE9qf0mKSBipkvxvn7jtS6z9jGm9ilvUUFC/
+ HoPd2wzhF0cE34t/v1uG9cx4oZv4lV0AHOuOOcrd3rrt0okNVDLPy44IHiHfJYXUWBJg
+ BlVOksnSVidi5SJq80L6MXe+5b6YcuSDc8kHub2Q0sq4uAGdxeO7DsVPzRHtkrTygGOl
+ NclvQrGOWh6+1YLseHlA2U4ERLNHXAE2ly+vbxGKZVrCSCepkr4MZKmJiC5m8i6lMb6p
+ Plig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749423099; x=1750027899;
+ d=1e100.net; s=20230601; t=1749423100; x=1750027900;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1ysiNB3jN3pm4xSzw9lWbP2QG1HmR4QbzZmy+B07iUo=;
- b=U5DQ6cfUuXbJEvcuabE4Z7geZ6GyTEwKpNjmhH1iD4MQCuBvtzIbEMPN5vNqHIPswL
- uI/5iGBoSWxQDep5wnpa6S5nh4cIiBqawgApjnoLOdY+6ko1SRO5sH73SacUG8IBi+go
- CownZ1n2mUhT7qoKbxRhMAZrSq0CQmpMkToVxz+3s67Q57Kf/6dOUSpLB9YOaUyCVdQx
- VJGtCBDO0SzUEo1NbnhSuPrSX8gigDsczm4RMYFQ2fzcSG5v0BfAIFKBw7F+zodle6vY
- 4xOUmWAWKRx3U+ceTLbihwpPgnaTa4qmkXZ2RkVCfKJGbPKfZlXmY+aPoOOinAvLR61u
- rmAQ==
-X-Gm-Message-State: AOJu0YwPMf8SjNagzheWetBu4kdRt+IcGHoBpXaXiOLVsxjMKw8CJkLB
- qDFIOLRoFg01sUgIfriG2OuoalLtt73fMwu2FR017pFAv4oCTj9agfWQF1IwuTi8Cqk=
-X-Gm-Gg: ASbGncsW8HUXSlNuTZFjai7gurtEkp4ug+pTP89CecGdIXnlP18M/7YRHCgEeOaraQL
- yHCEcURgQmlI9HBUJHH05FnHAw9jpod9/fDQcHM+x4xfaY+mbxjR2Qd3I/ke/BMpcNlQ+ZfUDwy
- Hltkj4753ViKC+BiSwK7Hk+9yU1l9Zn/UwkQl8RWOpSotAfmf6uEumLCSiu9nO3IC9/ZtJYdcpC
- kGgDbBWmc2zg/3uphSdiaO2hXmEd3CJ6kX+iDQLinOmz8N2JoDqotW0tOHPjLCRJ/TEjbvLtPaX
- LHQxoJj1xK1q9yJGgCwkG12FmEh+mIrWQg6XVXj2o6JgYxDxvSI=
-X-Google-Smtp-Source: AGHT+IErVpP7YaBcze7lzkII2h36SlBlCu955KhO1nGI2Svwwj8WL4Yx/zmGM/+Ba+foGtVvWtzw+Q==
-X-Received: by 2002:a17:90b:1d87:b0:312:2bb:aa89 with SMTP id
- 98e67ed59e1d1-3134740ba49mr15153408a91.20.1749423098855; 
- Sun, 08 Jun 2025 15:51:38 -0700 (PDT)
+ bh=iWW4a9PQ/O4Q7KJJXSiLz2UUrA0y3cIURdmeEfB6pjM=;
+ b=MGKJOD/Upw5Oa9nfwQZY6IfvEgt9/D9fqqn03XvF+xFZI3AfFI1X78P56Rs/l7bF/6
+ i6TG4i9BiRc4OvAW8q2ZYyiYAwxAC2mjIFMQ6wFUWSIAeiihiJfkGd3dkjt8A1O6FKR1
+ S4DJ/yxv8PmMRHQP3SdbWGFeJ4HJOMWjDhVBkenHTIxIKetiGaPb31DhrSRC01CB8sKB
+ nvTbHOubxMBisFhill4MU3I9zwQuBM0UQof5bfy2QoEJUnEvDIo1oG5Cfw4h4HWhV3N1
+ RYdIgnYzPyRjUAGMQTV4jypCELoIZXjXmr+ckytcZHp6E5/NyvKv9FF3xeIiwhSRUO3Y
+ YZFw==
+X-Gm-Message-State: AOJu0Ywo+GZdyuAa0+vWL2DAr22JgPDR0x+MlTxmV7f1+GCOwIaUpJRk
+ 4xyYj3ib23Q6MUzDYaB4Uwv+ZfaQ4eANYzElnBEqAkk470jWSsLMl+3JdxzWlH/3PHE=
+X-Gm-Gg: ASbGncuN6LMvHQ1FccmNKKN6GxPjHO3xvwlGMfsQ0+rigB/xFFySVn/WLuYkNPVD20p
+ 8T5S0LgvgqQYNKSuIVKatsv9encd/6TS6XzYjZOKHFQQMzfWY5wqJUrFarhl8QcIdxYI7jjAcpT
+ W3kJd7a5KbHp4CHyphA9RMz17UYavChZcry5i8btd2Mj+1TfLq5mssrAOKBARNmNwOwWpHk7aWM
+ HhFrydJXWGMA1Xi79zPHqWcVq00mQTIzW8PqA05gRWj4yGra4yvGfqCfXsJLrOECoIMz5wmHku9
+ ln9sC9TaZoD/v7yDrLDaOwsJjKj7+rpkD8MubPqExv41lmp4rgI=
+X-Google-Smtp-Source: AGHT+IFLUhcDEUy2gN5Ehyf3L6ZeD9TFSdnrqgG4kmH1Br4ORl5lkAWUjkMUOQ3U1WiQaKVuk8yIcw==
+X-Received: by 2002:a17:90b:4b4f:b0:311:c939:c848 with SMTP id
+ 98e67ed59e1d1-31346b44fafmr19620944a91.0.1749423099717; 
+ Sun, 08 Jun 2025 15:51:39 -0700 (PDT)
 Received: from shemhazi.lan ([50.46.174.34]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3134b128012sm4395970a91.32.2025.06.08.15.51.38
+ 98e67ed59e1d1-3134b128012sm4395970a91.32.2025.06.08.15.51.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 08 Jun 2025 15:51:38 -0700 (PDT)
+ Sun, 08 Jun 2025 15:51:39 -0700 (PDT)
 From: Rowan Hart <rowanbhart@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Yanan Wang <wangyanan55@huawei.com>, Alexandre Iooss <erdnaxe@crans.org>,
@@ -71,20 +71,17 @@ Cc: Yanan Wang <wangyanan55@huawei.com>, Alexandre Iooss <erdnaxe@crans.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, novafacing <rowanbhart@gmail.com>,
- Julian Ganz <neither@nut.email>
-Subject: [PATCH v8 1/9] gdbstub: Expose gdb_write_register function to
- consumers of gdbstub
-Date: Sun,  8 Jun 2025 15:51:28 -0700
-Message-ID: <20250608225136.3340370-2-rowanbhart@gmail.com>
+ Paolo Bonzini <pbonzini@redhat.com>, novafacing <rowanbhart@gmail.com>
+Subject: [PATCH v8 2/9] plugins: Add register write API
+Date: Sun,  8 Jun 2025 15:51:29 -0700
+Message-ID: <20250608225136.3340370-3-rowanbhart@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250608225136.3340370-1-rowanbhart@gmail.com>
 References: <20250608225136.3340370-1-rowanbhart@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=rowanbhart@gmail.com; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,57 +106,136 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: novafacing <rowanbhart@gmail.com>
 
-This patch exposes the gdb_write_register function from
-gdbstub/gdbstub.c via the exec/gdbstub.h header file to support use in
-plugins to write register contents.
+This patch adds a function to the plugins API to allow plugins to write
+register contents. It also moves the qemu_plugin_read_register function
+so all the register-related functions are grouped together in the file.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Julian Ganz <neither@nut.email>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
 ---
- gdbstub/gdbstub.c      |  2 +-
- include/exec/gdbstub.h | 14 ++++++++++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ include/qemu/qemu-plugin.h | 54 ++++++++++++++++++++++++++------------
+ plugins/api.c              | 22 +++++++++++-----
+ 2 files changed, 52 insertions(+), 24 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 565f6b33a9..5846e481be 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -534,7 +534,7 @@ int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-     return 0;
- }
- 
--static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
-+int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
- {
-     GDBRegisterState *r;
- 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 0675b0b646..a16c0051ce 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -124,6 +124,20 @@ const GDBFeature *gdb_find_static_feature(const char *xmlname);
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 3a850aa216..cfe1692ecb 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -871,7 +871,8 @@ struct qemu_plugin_register;
+ /**
+  * typedef qemu_plugin_reg_descriptor - register descriptions
+  *
+- * @handle: opaque handle for retrieving value with qemu_plugin_read_register
++ * @handle: opaque handle for retrieving value with qemu_plugin_read_register or
++ *          writing value with qemu_plugin_write_register
+  * @name: register name
+  * @feature: optional feature descriptor, can be NULL
   */
- int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+@@ -893,6 +894,41 @@ typedef struct {
+ QEMU_PLUGIN_API
+ GArray *qemu_plugin_get_registers(void);
  
 +/**
-+ * gdb_write_register() - Write a register associated with a CPU.
-+ * @cpu: The CPU associated with the register.
-+ * @buf: The buffer that the register contents will be set to.
-+ * @reg: The register's number returned by gdb_find_feature_register().
++ * qemu_plugin_read_register() - read register for current vCPU
 + *
-+ * The size of @buf must be at least the size of the register being
-+ * written.
++ * @handle: a @qemu_plugin_reg_handle handle
++ * @buf: A GByteArray for the data owned by the plugin
 + *
-+ * Return: The number of written bytes, or 0 if an error occurred (for
-+ * example, an unknown register was provided).
++ * This function is only available in a context that register read access is
++ * explicitly requested via the QEMU_PLUGIN_CB_R_REGS flag.
++ *
++ * Returns the size of the read register. The content of @buf is in target byte
++ * order. On failure returns -1.
 + */
-+int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg);
++QEMU_PLUGIN_API
++int qemu_plugin_read_register(struct qemu_plugin_register *handle,
++                              GByteArray *buf);
++
++/**
++ * qemu_plugin_write_register() - write register for current vCPU
++ *
++ * @handle: a @qemu_plugin_reg_handle handle
++ * @buf: A GByteArray for the data owned by the plugin
++ *
++ * This function is only available in a context that register write access is
++ * explicitly requested via the QEMU_PLUGIN_CB_RW_REGS flag.
++ *
++ * The size of @buf must be at least the size of the requested register.
++ * Attempting to write a register with @buf smaller than the register size
++ * will result in a crash or other undesired behavior.
++ *
++ * Returns the number of bytes written. On failure returns 0.
++ */
++QEMU_PLUGIN_API
++int qemu_plugin_write_register(struct qemu_plugin_register *handle,
++                              GByteArray *buf);
 +
  /**
-  * typedef GDBRegDesc - a register description from gdbstub
-  */
+  * qemu_plugin_read_memory_vaddr() - read from memory using a virtual address
+  *
+@@ -915,22 +951,6 @@ QEMU_PLUGIN_API
+ bool qemu_plugin_read_memory_vaddr(uint64_t addr,
+                                    GByteArray *data, size_t len);
+ 
+-/**
+- * qemu_plugin_read_register() - read register for current vCPU
+- *
+- * @handle: a @qemu_plugin_reg_handle handle
+- * @buf: A GByteArray for the data owned by the plugin
+- *
+- * This function is only available in a context that register read access is
+- * explicitly requested via the QEMU_PLUGIN_CB_R_REGS flag.
+- *
+- * Returns the size of the read register. The content of @buf is in target byte
+- * order. On failure returns -1.
+- */
+-QEMU_PLUGIN_API
+-int qemu_plugin_read_register(struct qemu_plugin_register *handle,
+-                              GByteArray *buf);
+-
+ /**
+  * qemu_plugin_scoreboard_new() - alloc a new scoreboard
+  *
+diff --git a/plugins/api.c b/plugins/api.c
+index 3c9d4832e9..3a7add50d2 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -433,6 +433,21 @@ GArray *qemu_plugin_get_registers(void)
+     return create_register_handles(regs);
+ }
+ 
++int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
++{
++    g_assert(current_cpu);
++
++    return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg) - 1);
++}
++
++int qemu_plugin_write_register(struct qemu_plugin_register *reg,
++                               GByteArray *buf)
++{
++    g_assert(current_cpu);
++
++    return gdb_write_register(current_cpu, buf->data, GPOINTER_TO_INT(reg) - 1);
++}
++
+ bool qemu_plugin_read_memory_vaddr(uint64_t addr, GByteArray *data, size_t len)
+ {
+     g_assert(current_cpu);
+@@ -453,13 +468,6 @@ bool qemu_plugin_read_memory_vaddr(uint64_t addr, GByteArray *data, size_t len)
+     return true;
+ }
+ 
+-int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
+-{
+-    g_assert(current_cpu);
+-
+-    return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg) - 1);
+-}
+-
+ struct qemu_plugin_scoreboard *qemu_plugin_scoreboard_new(size_t element_size)
+ {
+     return plugin_scoreboard_new(element_size);
 -- 
 2.49.0
 
