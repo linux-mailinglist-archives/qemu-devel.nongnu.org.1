@@ -2,65 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98323AD1CAB
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 13:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA62AD1CBA
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 13:59:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOaye-0002u4-Td; Mon, 09 Jun 2025 07:47:44 -0400
+	id 1uOb9A-0005RG-16; Mon, 09 Jun 2025 07:58:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ben.dooks@codethink.co.uk>)
- id 1uOaya-0002tT-3u; Mon, 09 Jun 2025 07:47:40 -0400
-Received: from imap5.colo.codethink.co.uk ([78.40.148.171])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uOb96-0005Qo-Tz
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 07:58:32 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ben.dooks@codethink.co.uk>)
- id 1uOayV-0003tK-5U; Mon, 09 Jun 2025 07:47:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
- Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
- Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=WQWw2lKQYSRsOOcfT7ZKX2n+8Gg0Mu7/0Gew0HXPBVU=; b=zPuD20rXZKIH6UBgWiKcWcryLJ
- v5XYkkPuqPs5vrc9147hti5JuHmAqbGxCK7HTB237w/gmlAcPnZ+UNYnIXbjalDce7KGhkHRJTkxk
- R4G1i5LcpqZMH/DpDdISs93U39aAECMT3U2AZxmUnzJFy7IPQT9ri+2xGQ2eTUOdX+GAsfU8mO6FK
- QeUFvX0N5RM53zFYLEUzZOohZLuRamibwEkkagDcqnYDmSBqKLTLeAiPA5VFoVoA3hINQl9dp7WIQ
- +/iB54H9zZ8Nhc5HWbr2LTu5YT4KLQoQ7GUyQsepdCkLKXYdyS47+/n8qGYpSehH7KmGpFNR+YQYs
- LNfg0Zqg==;
-Received: from [63.135.74.212] (helo=[192.168.1.249])
- by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1uOayL-00FMpK-Du; Mon, 09 Jun 2025 12:47:25 +0100
-Message-ID: <a661eb0c-ba27-4348-93d2-dfb1a080c18e@codethink.co.uk>
-Date: Mon, 9 Jun 2025 12:47:24 +0100
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uOb94-00056q-Dx
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 07:58:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749470310; x=1781006310;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=i3Egw/2Ml9/3iJoQJpmV2HVW802GPWUG14pG1oMZymI=;
+ b=C66B+21gN1RlBn1xzDTbA52IO7ErH+CJj/6Ibx/8q2ndKJFa0W1OM1he
+ HBmtUgTbiJhcUcpjgQfPZN0Ya6MaLOniIBsdxUR3+G+a33F9gYBs8k6fM
+ n3xRfBII0TaC4A99ev9eAoaEiXZ5aXxjG6tpQfA/gmO0OUYx7K+biw3is
+ q6fGHv+J9HA20XZNdPAc9s3GL3US64XZb4le8FHrYbTyiZc+5GnqnKUIs
+ Q8Ucr/ZflDZZWWL4FQ/QjwI+HaRgmpkHSwiY0VYGdnFXZSgd+hBgmsNld
+ s+4LMVIRZLW+nd1la42Qd0pRroKkMxs+XgaGxEugPIUuDtLZgmZoFQrXG Q==;
+X-CSE-ConnectionGUID: WOxbOULGQsmdAp50Y7SvEg==
+X-CSE-MsgGUID: SrbxxTvPTe2QrNsvcgfjWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11458"; a="51687614"
+X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; d="scan'208";a="51687614"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jun 2025 04:58:25 -0700
+X-CSE-ConnectionGUID: FjmNgvFlQw21MddHjbP+Qw==
+X-CSE-MsgGUID: 9P8loa3zTzSfVPUo9kXimw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; d="scan'208";a="146398855"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jun 2025 04:58:23 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: john.levon@nutanix.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH] vfio/container: Fix vfio_listener_commit()
+Date: Mon,  9 Jun 2025 19:54:33 +0800
+Message-Id: <20250609115433.401775-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] target/riscv: add cva6 core type
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- nazar.kazakov@codethink.co.uk, joseph.baker@codethink.co.uk,
- fran.redondo@codethink.co.uk, lawrence.hunter@codethink.co.uk,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20250527112437.291445-1-ben.dooks@codethink.co.uk>
- <20250527112437.291445-3-ben.dooks@codethink.co.uk>
- <ef6c7b15-04a7-42cf-a89b-c2674388810f@ventanamicro.com>
- <06323162-66b9-4165-ab2e-86ec6272aca8@codethink.co.uk>
- <341224e9-d335-40ac-af98-6395b3aede84@ventanamicro.com>
-Content-Language: en-GB
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-Organization: Codethink Limited.
-In-Reply-To: <341224e9-d335-40ac-af98-6395b3aede84@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=78.40.148.171;
- envelope-from=ben.dooks@codethink.co.uk; helo=imap5.colo.codethink.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.198.163.15;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,136 +81,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09/06/2025 12:30, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 6/9/25 7:40 AM, Ben Dooks wrote:
->> On 07/06/2025 21:17, Daniel Henrique Barboza wrote:
->>>
->>>
->>> On 5/27/25 8:24 AM, Ben Dooks wrote:
->>>> Add TYPE_RISCV_CPU_CVA6 for the CVA6 core
->>>>
->>>> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
->>>> ---
->>>>   target/riscv/cpu-qom.h |  1 +
->>>>   target/riscv/cpu.c     | 11 +++++++++++
->>>>   2 files changed, 12 insertions(+)
->>>>
->>>> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
->>>> index 1ee05eb393..3daf75568c 100644
->>>> --- a/target/riscv/cpu-qom.h
->>>> +++ b/target/riscv/cpu-qom.h
->>>> @@ -34,6 +34,7 @@
->>>>   #define TYPE_RISCV_CPU_BASE32           RISCV_CPU_TYPE_NAME("rv32")
->>>>   #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
->>>>   #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x- 
->>>> rv128")
->>>> +#define TYPE_RISCV_CPU_CVA6             RISCV_CPU_TYPE_NAME("cva6")
->>>>   #define TYPE_RISCV_CPU_RV32I            RISCV_CPU_TYPE_NAME("rv32i")
->>>>   #define TYPE_RISCV_CPU_RV32E            RISCV_CPU_TYPE_NAME("rv32e")
->>>>   #define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
->>>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->>>> index 629ac37501..fca45dc9d9 100644
->>>> --- a/target/riscv/cpu.c
->>>> +++ b/target/riscv/cpu.c
->>>> @@ -3009,6 +3009,17 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->>>>           .misa_mxl_max = MXL_RV64,
->>>>       ),
->>>> +    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_CVA6, TYPE_RISCV_VENDOR_CPU,
->>>> +        .misa_ext = RVI | RVM | RVA | RVF | RVD | RVC | RVB | RVS | 
->>>> RVU,
->>>> +        .misa_mxl_max = MXL_RV64,
->>>> +        .cfg.max_satp_mode = VM_1_10_SV39,
->>>> +        .priv_spec = PRIV_VERSION_1_12_0,
->>>> +        .cfg.pmp = true,
->>>> +        .cfg.mmu = true,
->>>> +        .cfg.ext_zifencei = true,
->>>> +        .cfg.ext_zicsr = true,
->>>> +    ),
->>>> +
->>>
->>> The CPU is being added inside a "#if defined(TARGET_RISCV64)" block, 
->>> meaning
->>> that it's a 64-bit CPU only. But the CVA6 board added in patch 1 is 
->>> being
->>> added for both 32 and 64 bit emulations in hw/riscv/Kconfig:
->>
->> Ah yes, it is possible to make a cva6 32bit, is it ok just to ove this
->> into a different place or is there anything else needed to allow 32 or 
->> 64bit?
->>
->> I've only been building a 64bit userland to test so didn't notice the
->> lack of 32bit was an issue.
->>
->>> config CVA6
->>>      bool
->>>      default y
->>>      depends on RISCV32 || RISCV64  <------------------
->>>
->>> This setup (after patch 3 is added) triggered a test failure in 
->>> 'check- qtest',
->>> when polling all available boards in qemu-system-riscv32, because it 
->>> didn't find
->>> a default 32 bit CPU for the cva6 board:
->>>
->>> # starting QEMU: exec ./qemu-system-riscv32 -qtest unix:/tmp/ 
->>> qtest-1683816.sock -qtest-log /dev/null -chardev socket,path=/tmp/ 
->>> qtest-1683816.qmp,id=char0 -mon chardev=char0,mode=control -display 
->>> none -audio none -machine cva6 -accel qtest
->>> ----------------------------------- stderr 
->>> -----------------------------------
->>> qemu-system-riscv32: ../hw/core/machine.c:1574: 
->>> is_cpu_type_supported: Assertion `cc != NULL' failed.
->>> Broken pipe
->>> ../tests/qtest/libqtest.c:208: kill_qemu() detected QEMU death from 
->>> signal 6 (Aborted) (core dumped)
->>>
->>>
->>>
->>> We have 2 options here:
->>>
->>> - if the CVA6 board is supposed to run in RISCV32 and RISCV64, then 
->>> its default
->>> CPU must be 32 bit compliant too. The CPU declaration in this patch 
->>> must be moved
->>> outside the "#if defined(TARGET_RISCV64)" block (e.g right after
->>> TYPE_RISCV_CPU_SIFIVE_U);
->>>
->>> - if the board is 64 bit only then the CPU declaration is fine, and 
->>> we need to
->>> change the board hw/riscv/Kconfig entry to "depends on RISCV64".
->>>
->>
->> As long as it is just the #ifdef block I will move it.
-> 
-> I just read the CV6 documentation at:
-> 
-> https://github.com/openhwgroup/cva6/
-> 
-> 
-> The README states right at the start:
-> 
-> 
-> "CVA6 is a 6-stage, single-issue, in-order CPU which implements the 64- 
-> bit RISC-V instruction set."
-> 
-> 
-> So this means that CVA6 is a 64-bit CPU only. This means that we want 
-> the second
-> option: the CPU declaration is fine, but the CVA6 board must be built 
-> only for 64
-> bits. In patch 1, this line:
+It's wrong to call into listener_begin callback in vfio_listener_commit().
+Currently this impacts vfio-user.
 
+Fixes: d9b7d8b6993b ("vfio/container: pass listener_begin/commit callbacks")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ hw/vfio/listener.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-There do seem to be some build variants for cva32a6 deep in the docs
-and the cva6-sdk has builds for both xlen==32 and xlen==64 so I am a
-bit confused here.
-
-
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index 203ed0314e..735b5f21b7 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -437,7 +437,7 @@ static void vfio_listener_commit(MemoryListener *listener)
+                                                  listener);
+     void (*listener_commit)(VFIOContainerBase *bcontainer);
+ 
+-    listener_commit = VFIO_IOMMU_GET_CLASS(bcontainer)->listener_begin;
++    listener_commit = VFIO_IOMMU_GET_CLASS(bcontainer)->listener_commit;
+ 
+     if (listener_commit) {
+         listener_commit(bcontainer);
 -- 
-Ben Dooks				http://www.codethink.co.uk/
-Senior Engineer				Codethink - Providing Genius
+2.34.1
 
-https://www.codethink.co.uk/privacy.html
 
