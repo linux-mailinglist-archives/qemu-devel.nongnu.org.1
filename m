@@ -2,54 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D934EAD1C46
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 13:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7137AD1C5F
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 13:21:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOaPO-0005CV-Dw; Mon, 09 Jun 2025 07:11:18 -0400
+	id 1uOaYf-0003tc-EE; Mon, 09 Jun 2025 07:20:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uOaPJ-0005C6-RN
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 07:11:13 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uOaPH-00075e-49
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 07:11:13 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxCeFJwUZoYW4RAQ--.3066S3;
- Mon, 09 Jun 2025 19:11:05 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMAxzxtFwUZoiU0SAQ--.4222S12;
- Mon, 09 Jun 2025 19:11:05 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: maobibo@loongson.cn
-Cc: qemu-devel@nongnu.org,
-	philmd@linaro.org,
-	jiaxun.yang@flygoat.com
-Subject: [PATCH 10/10] target/loongarch: cpu do interrupt support msg
- interrupt.
-Date: Mon,  9 Jun 2025 18:48:33 +0800
-Message-Id: <20250609104833.839811-11-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250609104833.839811-1-gaosong@loongson.cn>
-References: <20250609104833.839811-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uOaYR-0003t6-GT
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 07:20:39 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uOaYK-0000Kd-5L
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 07:20:39 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-607ea238c37so2469407a12.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 04:20:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1749468027; x=1750072827; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=hbAFR8dpaT+tpvYJJV6xvVeGuw82jyaWwAlg0j/xdgQ=;
+ b=l7RJrZ/1NFhGGk0Bs55gJvS/QOjY8RLSqmvO0ShWmB332rH8vjGcpb0JGEw3ZlgFex
+ OokYsMfCx4Z+7yC0CsN4x13hbEUqZMHeG1Zky71Oa/mbjR/tNsgDtu9573psv7nFJDQQ
+ Uh/ZbU5+Jh0icqLLt9dN8jCOsNwM8Fbkkgs805aZMRCBQgg9H3Y+pwry0hVFc3ERQgpn
+ ozrtfrMMoamlAGBASWL7mjjfB/XWJqQtZVXUDD/IGcnadUzUybhYgvg1EJB/kv6Hy8BQ
+ sswsZRAnX2wMJycXgggFCKNxODC1/vkQV9e3FqGY/EDZ5wlvyVvY17J5SslIkwA32CZC
+ 0l0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749468027; x=1750072827;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hbAFR8dpaT+tpvYJJV6xvVeGuw82jyaWwAlg0j/xdgQ=;
+ b=jVd2mKAm24smkxo+NShq9qEqUgX5mryxzkUH5rlSoG1BcGFbMKOrYN+2L5JU5ulqr0
+ REc7YZ79jwYrl7aSD7Z6buYKT2qtHEQ6gP5PAX26nxRNDKaNDXoedpAMDOJ4jU0/GnOM
+ GLKmezYtPiDa5e/Krq2azz6OSv16d9fcM9uan4BpYhYkIgHxlBsUWixRpIXA/158987X
+ DIbMN/J861LYBz9CQY2ZxTNWPa4dNhPuxd6VQqroZvlZ2HeXrp/Or6tQL6LH4nNYpmKJ
+ z//Rt8QhE3EdVIFQAozcINOR+ltSV+h0SbtvPV5r7veW1xoah5na6ZCLVmK40o0c5LV6
+ L6HA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXOk8wa0ynT8YJudOaStOtTv6DrVLDzwUcHeROc+NVe3p8Efdv0LFcsG21LQtL56cpuY0fMaw9CI7X/@nongnu.org
+X-Gm-Message-State: AOJu0YwKKo8YL9cxZIJxtAXSYQGytFLLRpXvSU++cYg52Noxidz9NAuu
+ bdWx/y0Axz3M2zOU78QbqKEn34HL+RqLOfPG4hGGTu5WZ3CQEERL5PMuRv7niLVqcjI=
+X-Gm-Gg: ASbGncuJDYXQ2U2nfQxQBno3sd6g82Byoi58eSyvCKtIDGOhAxpHLGBSqWskcADtT+R
+ lOqUTQYQgyCGjBG3QMACwdurGEGDzzu0yA2nZd8Ljezv2ZRuhOoC/I3NMj14e3KDKBGYMzuIXNm
+ o3/z2wZNmt6N9DjLn8bkhH82MXGrsVs/Q2Uaeak7DJNlbw9V+EI+23FlP6c7/RiL0Yrf+iZJ6A2
+ T0Ud9q9mys+QsO+tsr0kMdEn8YjNvZFXP962uP4v0aOY3xnY1TiHqk/c+3DKpwZEDos7s/qV+1E
+ yPJBLx1qODGs92TeTSRMkhlDwTar5w82g1llNkY2TdBUuLouACYAf2IHN/5vhZs=
+X-Google-Smtp-Source: AGHT+IHZVmgI4IKHWWtmMlwcw1eNDH1cDX5+KYsVVEHoXhImXYh3Yz3KliZtU6Vc/FbtKaobxq8u7g==
+X-Received: by 2002:a05:6402:1ed4:b0:606:f7bf:86f3 with SMTP id
+ 4fb4d7f45d1cf-607735120e8mr10695357a12.6.1749468026909; 
+ Mon, 09 Jun 2025 04:20:26 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-607783dd48esm4469676a12.56.2025.06.09.04.20.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Jun 2025 04:20:25 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0D0CF5F8A4;
+ Mon, 09 Jun 2025 12:20:22 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Alessandro Di Federico <ale@rev.ng>, Alistair Francis
+ <alistair.francis@wdc.com>, Anton Johansson <anjo@rev.ng>, Markus
+ Armbruster <armbru@redhat.com>, Brian Cain <bcain@quicinc.com>, "Daniel P.
+ Berrange" <berrange@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ cjia@nvidia.com, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ cw@f00f.org,
+ dhedde@kalrayinc.com, Eric Blake <eblake@redhat.com>, eblot@rivosinc.com,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Elena Ufimtseva <elena.ufimtseva@oracle.com>, Auger
+ Eric <eric.auger@redhat.com>, felipe@nutanix.com, iggy@theiggy.com, Warner
+ Losh <imp@bsdimp.com>, Jan Kiszka <jan.kiszka@web.de>, Jason Gunthorpe
+ <jgg@nvidia.com>, jidong.xiao@gmail.com, Jim Shu <jim.shu@sifive.com>,
+ Joao Martins <joao.m.martins@oracle.com>, Konrad Rzeszutek Wilk
+ <konrad.wilk@oracle.com>, Luc Michel <luc@lmichel.fr>, Manos Pitsidianakis
+ <manos.pitsidianakis@linaro.org>, Max Chou <max.chou@sifive.com>, Mark
+ Burton <mburton@qti.qualcomm.com>, mdean@redhat.com,
+ mimu@linux.vnet.ibm.com, "Ho, Nelson" <nelson.ho@windriver.com>, Paul
+ Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Phil =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@linaro.org>, QEMU Developers <qemu-devel@nongnu.org>, Roberto
+ Campesato <rbc@meta.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Shameerali Kolothum Thodi
+ <shameerali.kolothum.thodi@huawei.com>, Bernhard Beschow
+ <shentey@gmail.com>, Stefan Hajnoczi <stefanha@gmail.com>, Thomas Huth
+ <thuth@redhat.com>, Wei Wang <wei.w.wang@intel.com>, z.huo@139.com, LIU
+ Zhiwei <zhiwei_liu@linux.alibaba.com>, zwu.kernel@gmail.com
+Subject: KVM/QEMU community call 10/06/2025 agenda items?
+User-Agent: mu4e 1.12.11; emacs 30.1
+Date: Mon, 09 Jun 2025 12:20:21 +0100
+Message-ID: <87qzztkvpm.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxzxtFwUZoiU0SAQ--.4222S12
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: 37
+X-Spam_score: 3.7
+X-Spam_bar: +++
+X-Spam_report: (3.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SORTED_RECIPS=2.499, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,117 +123,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-we use CSR_ESTAT and CSR_ECFG bit 15 for msg interrupt.
-and loongarch_cpu_do_interrupt support msg interrupts.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/cpu-csr.h |  3 ++-
- target/loongarch/cpu.c     | 35 ++++++++++++++++++++++++++++++-----
- 2 files changed, 32 insertions(+), 6 deletions(-)
+Hi,
 
-diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
-index 83f6cb081a..5a00cf3366 100644
---- a/target/loongarch/cpu-csr.h
-+++ b/target/loongarch/cpu-csr.h
-@@ -35,11 +35,12 @@ FIELD(CSR_MISC, DWPL, 16, 3)
- 
- #define LOONGARCH_CSR_ECFG           0x4 /* Exception config */
- FIELD(CSR_ECFG, LIE, 0, 13)
-+FIELD(CSR_ECFG, MSGINT, 14, 1)      /* used for msg */
- FIELD(CSR_ECFG, VS, 16, 3)
- 
- #define LOONGARCH_CSR_ESTAT          0x5 /* Exception status */
- FIELD(CSR_ESTAT, IS, 0, 13)
--FIELD(CSR_ESTAT, MSGINT, 14, 1)
-+FIELD(CSR_ESTAT, MSGINT, 14, 1)    /* used for msg */
- FIELD(CSR_ESTAT, ECODE, 16, 6)
- FIELD(CSR_ESTAT, ESUBCODE, 22, 9)
- 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 207d11266f..b92463101e 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -117,6 +117,13 @@ static vaddr loongarch_cpu_get_pc(CPUState *cs)
- #ifndef CONFIG_USER_ONLY
- #include "hw/loongarch/virt.h"
- 
-+static uint32_t loongarch_cpu_has_interrupt(CPULoongArchState *env)
-+{
-+    uint32_t ret = 0;
-+    ret = FIELD_EX64(env->CSR_ESTAT, CSR_ESTAT, IS);
-+    ret |= FIELD_EX64(env->CSR_ESTAT, CSR_ESTAT, MSGINT);
-+    return ret;
-+}
- void loongarch_cpu_set_irq(void *opaque, int irq, int level)
- {
-     LoongArchCPU *cpu = opaque;
-@@ -134,21 +141,20 @@ void loongarch_cpu_set_irq(void *opaque, int irq, int level)
-                 env->CSR_MSGIR = FIELD_DP64(env->CSR_MSGIR, CSR_MSGIR, INTNUM, i);
-                 env->CSR_MSGIR = FIELD_DP64(env->CSR_MSGIR, CSR_MSGIR, ACTIVE, 0);
-                 env->CSR_ESTAT = FIELD_DP64(env->CSR_ESTAT, CSR_ESTAT, MSGINT, 1);
--                cpu_interrupt(cs, CPU_INTERRUPT_HARD);
-+                env->CSR_ECFG = FIELD_DP64(env->CSR_ECFG, CSR_ECFG, MSGINT, 1);
-                 clear_bit(i, &(env->CSR_MSGIS[i / 64]));
-             }
-         }
-     } else {
-        env->CSR_ESTAT = FIELD_DP64(env->CSR_ESTAT, CSR_ESTAT, MSGINT, 0);
--       env->CSR_MSGIR = FIELD_DP64(env->CSR_MSGIR, CSR_MSGIR, ACTIVE, 1);
--       return;
-+       env->CSR_ECFG = FIELD_DP64(env->CSR_ECFG, CSR_ECFG, MSGINT, 0);
-     }
- 
-     if (kvm_enabled()) {
-         kvm_loongarch_set_interrupt(cpu, irq, level);
-     } else if (tcg_enabled()) {
-         env->CSR_ESTAT = deposit64(env->CSR_ESTAT, irq, 1, level != 0);
--        if (FIELD_EX64(env->CSR_ESTAT, CSR_ESTAT, IS)) {
-+        if (loongarch_cpu_has_interrupt(env)) {
-             cpu_interrupt(cs, CPU_INTERRUPT_HARD);
-         } else {
-             cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
-@@ -166,12 +172,24 @@ static inline bool cpu_loongarch_hw_interrupts_enabled(CPULoongArchState *env)
-     return ret;
- }
- 
-+static inline bool cpu_loongarch_hw_interrupt_msg_pending(CPULoongArchState *env)
-+{
-+    bool pending_msg = 0;
-+    bool status_msg = 0;
-+
-+    pending_msg = FIELD_EX64(env->CSR_ESTAT, CSR_ESTAT, MSGINT);
-+    status_msg = FIELD_EX64(env->CSR_ECFG, CSR_ECFG, MSGINT);
-+
-+    return (pending_msg & status_msg) != 0;
-+}
- /* Check if there is pending and not masked out interrupt */
- static inline bool cpu_loongarch_hw_interrupts_pending(CPULoongArchState *env)
- {
-     uint32_t pending;
-     uint32_t status;
--
-+    if (cpu_loongarch_hw_interrupt_msg_pending(env)) {
-+        return true;
-+    }
-     pending = FIELD_EX64(env->CSR_ESTAT, CSR_ESTAT, IS);
-     status  = FIELD_EX64(env->CSR_ECFG, CSR_ECFG, LIE);
- 
-@@ -285,6 +303,13 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-         uint32_t vector = 0;
-         uint32_t pending = FIELD_EX64(env->CSR_ESTAT, CSR_ESTAT, IS);
-         pending &= FIELD_EX64(env->CSR_ECFG, CSR_ECFG, LIE);
-+        if (cpu_loongarch_hw_interrupt_msg_pending(env)) {
-+            env->CSR_ESTAT = FIELD_DP64(env->CSR_ESTAT, CSR_ESTAT, MSGINT, 0);
-+            env->CSR_ECFG = FIELD_DP64(env->CSR_ECFG, CSR_ECFG, MSGINT, 0);
-+            set_pc(env, env->CSR_EENTRY + \
-+                   (EXCCODE_EXTERNAL_INT + INT_AVEC) * vec_size);
-+            return;
-+        }
- 
-         /* Find the highest-priority interrupt. */
-         vector = 31 - clz32(pending);
--- 
-2.34.1
+The KVM/QEMU community call is at:
 
+https://meet.jit.si/kvmcallmeeting
+@
+10/06/2025 14:00 UTC
+
+Are there any agenda items for the sync-up?
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
