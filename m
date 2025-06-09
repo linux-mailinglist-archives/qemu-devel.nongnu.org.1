@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01E1AD26E1
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 21:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A646AD2555
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 20:11:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOiKJ-00078b-3v; Mon, 09 Jun 2025 15:38:35 -0400
+	id 1uOgwq-0003ap-DG; Mon, 09 Jun 2025 14:10:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <psingh.cubic@gmail.com>)
- id 1uOgCv-0002rQ-CL
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 13:22:49 -0400
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <psingh.cubic@gmail.com>)
- id 1uOgCs-0002tg-Gc
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 13:22:49 -0400
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-2d0d25cebfeso3780028fac.2
- for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 10:22:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749489763; x=1750094563; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=bBvAMitpJB38slqKe5uByFVDlwxkMIStUUpnjKg1DwU=;
- b=XKeAql5DvpiIvYo6ZiQXzNsa0nHkaYhW+U0hmYwnBAOjkJDxT8GdFApM32A13sz/p8
- 0BHFifjtqHHn9eYEG3B0yqQNzcTrRq/zx9bjOvf0JiOvkkfX+L71wwYVTF043ep1vk8/
- AX6pn5hgcJmqpx26i2agHq7iaYqHZdH7eB+o+aN1oPHxu6GKzjfZgM3rI708yFIg2zOw
- gv2oN/W1eAamkPFJfEFFcsMDn7oD7+VKIujmMJJd69FSz07k/eEsr75e58p62NnlbvDE
- U8pg0zFuXEw3I+4Y7FJFdJSyddB0H/J6W+knRjLJnqtjPfgnbdKdSdx3dZWVTv57IGxd
- 3VQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749489763; x=1750094563;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bBvAMitpJB38slqKe5uByFVDlwxkMIStUUpnjKg1DwU=;
- b=VrlvjMG0SMRFro9jqTmzU0W7/iw5opBoPKVWqgQ+ZH0znLF1SAt5yq21d0K7og2iLJ
- 5586CTI+I2rF2NYnsUYLYeycQf8E5iOQufW0+g97qo518/kOHItJKSuTpWAMhRO8DeJx
- KvisW5jWHPN/1u7Z9PE52qDn9hNlCtzAEC9hVPlXa76NeQTPMRcNp1V7+LMtirS+CQ3J
- fFQgYLmLQGwwNAlpjMRmuR/y6Y5vZ/aIUrpx+P2HGQqeIEesbuw2r9iKC2+Woufvct/d
- EUMgpBDgusiXCZ+XJYWriqfIQU+ZtaUnJik4dTGuMpeH4FlqLLldfQwAgK8ahf0fKHOk
- 0Y6A==
-X-Gm-Message-State: AOJu0Yx/FR1nO3kGDPqZsdDCBhfxsPGVqSQS+LuZ/OH6+o51vDXOFmxT
- eWcLRrjeZD2spMQrUvCkMDv2bIyilnmnVPmf35FlNHrzBERfZ8ikMSVXzGmhRLXD53pLaPfcM1Y
- 4USnq98cdglwWSwWBO51z59BkOFZnHk+RP+zCejraMp3p
-X-Gm-Gg: ASbGncvEQoMm/ARAQrGZMiZSzyFxn4bV5qo9cDqUfX6zc1dIwe0Q6DedfMEQsmU8up+
- +3sNcAtcuPRomsHEbxUohqstPt8giklX05h0egpsftp0qpeJEFtw7afprpQL8PkkqQmJc4/mBnA
- FmpupAGuodn+ABlVVNJ8Mc7qP2ELOOY82EhQ==
-X-Google-Smtp-Source: AGHT+IGf1s3CXzjy1zH8c+gkHPGDYu1/GiuDpKsibOZ4bsUTtVkMe1lNWQlo4ZXLNRofO4Eb8u9HnE+YEcjTbZgOQik=
-X-Received: by 2002:a05:6870:8e06:b0:2e9:e9b9:fd7c with SMTP id
- 586e51a60fabf-2ea01355dcbmr9182538fac.26.1749489763361; Mon, 09 Jun 2025
- 10:22:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uOgwl-0003aL-Vt
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 14:10:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uOgwj-0001gf-Dj
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 14:10:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749492607;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=sIY90yziHLVJVB/PrA7doeBgszGfUm8aDQJ3AJp6LkU=;
+ b=ITWmm4y9j/P/K2npf+m7yoVbknbLKHNgANyIDXrSb2hw7hFVSk/2wRjh6A8n+A40OFkv0/
+ 10AtT6H/7s/dZO5Qb/2taHY1mhuD0EBp+yPlI/2KwJvq7gIguTZ3nKWREf01jMrDWto6YL
+ JAP99hStGct1/8e4pV/iUstyAbLm0GM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-uO_lEH95N5mXTWXh9sGKEw-1; Mon,
+ 09 Jun 2025 14:10:05 -0400
+X-MC-Unique: uO_lEH95N5mXTWXh9sGKEw-1
+X-Mimecast-MFC-AGG-ID: uO_lEH95N5mXTWXh9sGKEw_1749492604
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0C2561956095; Mon,  9 Jun 2025 18:10:04 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.92])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 36C9319560AB; Mon,  9 Jun 2025 18:10:02 +0000 (UTC)
+Date: Mon, 9 Jun 2025 14:10:01 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Brian Song <hibriansong@gmail.com>
+Subject: Re: [PATCH v2 18/21] fuse: Implement multi-threading
+Message-ID: <20250609181001.GJ29452@fedora>
+References: <20250604132813.359438-1-hreitz@redhat.com>
+ <20250604132813.359438-19-hreitz@redhat.com>
 MIME-Version: 1.0
-From: PJ Singh <psingh.cubic@gmail.com>
-Date: Mon, 9 Jun 2025 13:22:32 -0400
-X-Gm-Features: AX0GCFv4wvMNzA9eO47qfeBoajRs8CAXTB3oOyrInFwBqKYEAp0ZDcI2Q0Dgq8s
-Message-ID: <CAPUuJsMOHWQW7bb9_S0Ofj-t840A3mMg+nD57hceASktkbSGhg@mail.gmail.com>
-Subject: Embed QEMU terminal into GUI application (Cubic - Custom Ubuntu ISO
- Creator)
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000e22736063726d34e"
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=psingh.cubic@gmail.com; helo=mail-oa1-x32.google.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="6TcR3qrKPcoiybd0"
+Content-Disposition: inline
+In-Reply-To: <20250604132813.359438-19-hreitz@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 09 Jun 2025 15:38:31 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,75 +85,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e22736063726d34e
-Content-Type: text/plain; charset="UTF-8"
 
-Hello Everyone,
-
-I want to embed a QEMU window directly in my GUI application. Are Python
-APIs available to embed QEMU into a GNOME GUI application?
-
-I am the developer of Cubic (Custom Ubuntu ISO Creator), a tool which
-allows users to customize Ubuntu and Debian based Live ISOs.
-
-Screenshots & information...
-https://github.com/PJ-Singh-001/Cubic/wiki
-
-Source code...
-https://launchpad.net/cubic
-
-There is a terminal window (
-https://github.com/PJ-Singh-001/Cubic/wiki/Terminal-Page) in Cubic that
-allows users to make their customizations. However, this is a chroot
-environment. I want to replace this with a command-line emulator, so users
-can make more advanced changes that require services (such as snapd) to be
-running.
-
-The terminal in Cubic currently uses the Vte.Pty class (
-https://lazka.github.io/pgi-docs/Vte-2.91/classes/Pty.html). My plan is to
-replace this chroot terminal with a command-line environment emulator
-running the Live environment of the OS being customized.
-
-Is something similar to Pte.Vte available from QEMU?
-
-Would some kind person point me in the right direction? I would also very
-much appreciate some tips or guidance from the community to help accelerate
-my learning process to achieve the above goals.
-
-Thank You,
-PJ
-
---000000000000e22736063726d34e
-Content-Type: text/html; charset="UTF-8"
+--6TcR3qrKPcoiybd0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hello Everyone,</div><div><br></div><div><div><div>I =
-want to embed a QEMU window directly in my GUI application.=C2=A0Are Python=
- APIs available to embed QEMU into a GNOME GUI application?</div></div></di=
-v><div><br></div><div>I am the developer of Cubic (Custom Ubuntu ISO Creato=
-r), a tool which allows users to customize Ubuntu and Debian based Live ISO=
-s.</div><div><br></div><div style=3D"margin-left:40px">Screenshots &amp; in=
-formation...</div><div style=3D"margin-left:40px"><a href=3D"https://github=
-.com/PJ-Singh-001/Cubic/wiki">https://github.com/PJ-Singh-001/Cubic/wiki</a=
-></div><div style=3D"margin-left:40px"><br></div><div style=3D"margin-left:=
-40px">Source code...</div><div style=3D"margin-left:40px"><a href=3D"https:=
-//launchpad.net/cubic">https://launchpad.net/cubic</a></div><div><br></div>=
-<div><div>There is a terminal window (<a href=3D"https://github.com/PJ-Sing=
-h-001/Cubic/wiki/Terminal-Page">https://github.com/PJ-Singh-001/Cubic/wiki/=
-Terminal-Page</a>) in Cubic that allows users to make their
- customizations. However, this is a chroot environment. I want to=20
-replace this with a command-line emulator, so users can make more=20
-advanced changes that require services (such as snapd) to be running.</div>=
-<div><br></div><div>The terminal in Cubic currently uses the Vte.Pty class =
-(<a href=3D"https://lazka.github.io/pgi-docs/Vte-2.91/classes/Pty.html">htt=
-ps://lazka.github.io/pgi-docs/Vte-2.91/classes/Pty.html</a>). My plan is to=
- replace this chroot terminal with a command-line environment emulator runn=
-ing the Live environment of the OS being customized.</div><div><br></div><d=
-iv>Is something=C2=A0similar to Pte.Vte available=C2=A0from QEMU?</div><div=
-><br></div></div><div>Would some kind person point me in the right directio=
-n? I would also very much appreciate some tips or guidance from the communi=
-ty to help accelerate my learning process to achieve=C2=A0the above goals.<=
-/div><div><br></div><div>Thank You,</div><div>PJ</div><div><br></div></div>
+On Wed, Jun 04, 2025 at 03:28:10PM +0200, Hanna Czenczek wrote:
+> FUSE allows creating multiple request queues by "cloning" /dev/fuse FDs
+> (via open("/dev/fuse") + ioctl(FUSE_DEV_IOC_CLONE)).
+>=20
+> We can use this to implement multi-threading.
+>=20
+> For configuration, we don't need any more information beyond the simple
+> array provided by the core block export interface: The FUSE kernel
+> driver feeds these FDs in a round-robin fashion, so all of them are
+> equivalent and we want to have exactly one per thread.
+>=20
+> These are the benchmark results when using four threads (compared to a
+> single thread); note that fio still only uses a single job, but
+> performance can still be improved because of said round-robin usage for
+> the queues.  (Not in the sync case, though, in which case I guess it
+> just adds overhead.)
+>=20
+> file:
+>   read:
+>     seq aio:   264.8k =B10.8k (+120 %)
+>     rand aio:  143.8k =B10.4k (+ 27 %)
+>     seq sync:   49.9k =B10.5k (-  5 %)
+>     rand sync:  10.3k =B10.1k (-  1 %)
+>   write:
+>     seq aio:   226.6k =B12.1k (+184 %)
+>     rand aio:  225.9k =B11.8k (+186 %)
+>     seq sync:   36.9k =B10.6k (- 11 %)
+>     rand sync:  36.9k =B10.2k (- 11 %)
+> null:
+>   read:
+>     seq aio:   315.2k =B111.0k (+18 %)
+>     rand aio:  300.5k =B110.8k (+14 %)
+>     seq sync:  114.2k =B1 3.6k (-16 %)
+>     rand sync: 112.5k =B1 2.8k (-16 %)
+>   write:
+>     seq aio:   222.6k =B16.8k (-21 %)
+>     rand aio:  220.5k =B16.8k (-23 %)
+>     seq sync:  117.2k =B13.7k (-18 %)
+>     rand sync: 116.3k =B14.4k (-18 %)
+>=20
+> (I don't know what's going on in the null-write AIO case, sorry.)
+>=20
+> Here's results for numjobs=3D4:
+>=20
+> "Before", i.e. without multithreading in QSD/FUSE (results compared to
+> numjobs=3D1):
+>=20
+> file:
+>   read:
+>     seq aio:   104.7k =B1 0.4k (- 13 %)
+>     rand aio:  111.5k =B1 0.4k (-  2 %)
+>     seq sync:   71.0k =B113.8k (+ 36 %)
+>     rand sync:  41.4k =B1 0.1k (+297 %)
+>   write:
+>     seq aio:    79.4k =B10.1k (-  1 %)
+>     rand aio:   78.6k =B10.1k (=B1  0 %)
+>     seq sync:   83.3k =B10.1k (+101 %)
+>     rand sync:  82.0k =B10.2k (+ 98 %)
+> null:
+>   read:
+>     seq aio:   260.5k =B11.5k (-  2 %)
+>     rand aio:  260.1k =B11.4k (-  2 %)
+>     seq sync:  291.8k =B11.3k (+115 %)
+>     rand sync: 280.1k =B11.7k (+115 %)
+>   write:
+>     seq aio:   280.1k =B11.7k (=B1  0 %)
+>     rand aio:  279.5k =B11.4k (-  3 %)
+>     seq sync:  306.7k =B12.2k (+116 %)
+>     rand sync: 305.9k =B11.8k (+117 %)
+>=20
+> (As probably expected, little difference in the AIO case, but great
+> improvements in the sync case because it kind of gives it an artificial
+> iodepth of 4.)
+>=20
+> "After", i.e. with four threads in QSD/FUSE (now results compared to the
+> above):
+>=20
+> file:
+>   read:
+>     seq aio:   193.3k =B1 1.8k (+ 85 %)
+>     rand aio:  329.3k =B1 0.3k (+195 %)
+>     seq sync:   66.2k =B113.0k (-  7 %)
+>     rand sync:  40.1k =B1 0.0k (-  3 %)
+>   write:
+>     seq aio:   219.7k =B10.8k (+177 %)
+>     rand aio:  217.2k =B11.5k (+176 %)
+>     seq sync:   92.5k =B10.2k (+ 11 %)
+>     rand sync:  91.9k =B10.2k (+ 12 %)
+> null:
+>   read:
+>     seq aio:   706.7k =B12.1k (+171 %)
+>     rand aio:  714.7k =B13.2k (+175 %)
+>     seq sync:  431.7k =B13.0k (+ 48 %)
+>     rand sync: 435.4k =B12.8k (+ 50 %)
+>   write:
+>     seq aio:   746.9k =B12.8k (+167 %)
+>     rand aio:  749.0k =B14.9k (+168 %)
+>     seq sync:  420.7k =B13.1k (+ 37 %)
+>     rand sync: 419.1k =B12.5k (+ 37 %)
+>=20
+> So this helps mainly for the AIO cases, but also in the null sync cases,
+> because null is always CPU-bound, so more threads help.
+>=20
+> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> ---
+>  block/export/fuse.c | 205 ++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 159 insertions(+), 46 deletions(-)
 
---000000000000e22736063726d34e--
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--6TcR3qrKPcoiybd0
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhHI3kACgkQnKSrs4Gr
+c8jbJgf/UOkkds9x1k4wSyDs57952x9lobHWMWZiAZORHSQ+smhO+11ARRQckd+L
+hHsCJ7yXy/x7qefLUmApmhCbwR32i2iA6iTyx/XhuRJ3yKxnIdbpoxXhCTsmvZ6d
+6qLA5fZJkalntvkXFupPylDfp+nayPL1HqhEIKhvywUD/ciaI9FwmjtNSFdOV1xw
+XXs7wcL0J+5hDj6Iup1ay6fpEBIJ/thKn23X4r5Ja4Vg1ToK0WAMsO3ZSj9NDDWs
+yyv+WIkttvOTiHWbovVv14OfJPkfye2+eJKZoyNcLhPt/qWo2r1jA1N8UZgcefeI
+TMU/NiMqD7j74ztk6HsIb3uaOretkQ==
+=I2M3
+-----END PGP SIGNATURE-----
+
+--6TcR3qrKPcoiybd0--
+
 
