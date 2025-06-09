@@ -2,120 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E64AD254A
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 20:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D01E1AD26E1
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 21:39:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOgpC-00084W-IC; Mon, 09 Jun 2025 14:02:22 -0400
+	id 1uOiKJ-00078b-3v; Mon, 09 Jun 2025 15:38:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uOgp8-0007zR-6q
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 14:02:18 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <psingh.cubic@gmail.com>)
+ id 1uOgCv-0002rQ-CL
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 13:22:49 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uOgp4-0000Q5-IB
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 14:02:17 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4F8C31F6E6;
- Mon,  9 Jun 2025 18:02:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1749492130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JxfVT0GM0GaktC2LuLyebCIQOybE0epmE+LXDMW8oM8=;
- b=Kh5ZxB21pPBuJxcXksPzMrsiH/P3Y2LWvx1Pk3A/xG8Uu62vMWRkU0FbxMqvgtLSBRJmMB
- OcC3ElLA+2WdpXCDXaiCjFSZKjzIBDR9s+/zfIz4oS5xUmTYzot/VmT6qwBdsAVncxO02+
- oueB7vZqE3d1uiOTUKEd8qdbKAyaUXQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1749492130;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JxfVT0GM0GaktC2LuLyebCIQOybE0epmE+LXDMW8oM8=;
- b=Z7exDFXTlgVzyMe7zSZ5XHmgEk0o83zeHlowJOsMz/zOGV3pQ+7HOsiU9t6gVIhZl2oYKI
- gATb+sbKHMyp/7DA==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Kh5ZxB21;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Z7exDFXT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1749492130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JxfVT0GM0GaktC2LuLyebCIQOybE0epmE+LXDMW8oM8=;
- b=Kh5ZxB21pPBuJxcXksPzMrsiH/P3Y2LWvx1Pk3A/xG8Uu62vMWRkU0FbxMqvgtLSBRJmMB
- OcC3ElLA+2WdpXCDXaiCjFSZKjzIBDR9s+/zfIz4oS5xUmTYzot/VmT6qwBdsAVncxO02+
- oueB7vZqE3d1uiOTUKEd8qdbKAyaUXQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1749492130;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JxfVT0GM0GaktC2LuLyebCIQOybE0epmE+LXDMW8oM8=;
- b=Z7exDFXTlgVzyMe7zSZ5XHmgEk0o83zeHlowJOsMz/zOGV3pQ+7HOsiU9t6gVIhZl2oYKI
- gATb+sbKHMyp/7DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B77FB13A1D;
- Mon,  9 Jun 2025 18:02:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id Z1x0HaEhR2gFKwAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 09 Jun 2025 18:02:09 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PATCH 19/21] migration: Allow migrate commands to provide the
- migration config
-In-Reply-To: <aEcC9X5i6eV4N7An@x1.local>
-References: <20250603013810.4772-1-farosas@suse.de>
- <20250603013810.4772-20-farosas@suse.de> <aENBda_y3v3y4ptS@x1.local>
- <874iwswrex.fsf@suse.de> <aENUrociiqlFuPpz@x1.local>
- <87y0u1ugkx.fsf@suse.de> <aEcC9X5i6eV4N7An@x1.local>
-Date: Mon, 09 Jun 2025 15:02:06 -0300
-Message-ID: <87v7p4vlnl.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <psingh.cubic@gmail.com>)
+ id 1uOgCs-0002tg-Gc
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 13:22:49 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-2d0d25cebfeso3780028fac.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 10:22:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1749489763; x=1750094563; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=bBvAMitpJB38slqKe5uByFVDlwxkMIStUUpnjKg1DwU=;
+ b=XKeAql5DvpiIvYo6ZiQXzNsa0nHkaYhW+U0hmYwnBAOjkJDxT8GdFApM32A13sz/p8
+ 0BHFifjtqHHn9eYEG3B0yqQNzcTrRq/zx9bjOvf0JiOvkkfX+L71wwYVTF043ep1vk8/
+ AX6pn5hgcJmqpx26i2agHq7iaYqHZdH7eB+o+aN1oPHxu6GKzjfZgM3rI708yFIg2zOw
+ gv2oN/W1eAamkPFJfEFFcsMDn7oD7+VKIujmMJJd69FSz07k/eEsr75e58p62NnlbvDE
+ U8pg0zFuXEw3I+4Y7FJFdJSyddB0H/J6W+knRjLJnqtjPfgnbdKdSdx3dZWVTv57IGxd
+ 3VQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749489763; x=1750094563;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bBvAMitpJB38slqKe5uByFVDlwxkMIStUUpnjKg1DwU=;
+ b=VrlvjMG0SMRFro9jqTmzU0W7/iw5opBoPKVWqgQ+ZH0znLF1SAt5yq21d0K7og2iLJ
+ 5586CTI+I2rF2NYnsUYLYeycQf8E5iOQufW0+g97qo518/kOHItJKSuTpWAMhRO8DeJx
+ KvisW5jWHPN/1u7Z9PE52qDn9hNlCtzAEC9hVPlXa76NeQTPMRcNp1V7+LMtirS+CQ3J
+ fFQgYLmLQGwwNAlpjMRmuR/y6Y5vZ/aIUrpx+P2HGQqeIEesbuw2r9iKC2+Woufvct/d
+ EUMgpBDgusiXCZ+XJYWriqfIQU+ZtaUnJik4dTGuMpeH4FlqLLldfQwAgK8ahf0fKHOk
+ 0Y6A==
+X-Gm-Message-State: AOJu0Yx/FR1nO3kGDPqZsdDCBhfxsPGVqSQS+LuZ/OH6+o51vDXOFmxT
+ eWcLRrjeZD2spMQrUvCkMDv2bIyilnmnVPmf35FlNHrzBERfZ8ikMSVXzGmhRLXD53pLaPfcM1Y
+ 4USnq98cdglwWSwWBO51z59BkOFZnHk+RP+zCejraMp3p
+X-Gm-Gg: ASbGncvEQoMm/ARAQrGZMiZSzyFxn4bV5qo9cDqUfX6zc1dIwe0Q6DedfMEQsmU8up+
+ +3sNcAtcuPRomsHEbxUohqstPt8giklX05h0egpsftp0qpeJEFtw7afprpQL8PkkqQmJc4/mBnA
+ FmpupAGuodn+ABlVVNJ8Mc7qP2ELOOY82EhQ==
+X-Google-Smtp-Source: AGHT+IGf1s3CXzjy1zH8c+gkHPGDYu1/GiuDpKsibOZ4bsUTtVkMe1lNWQlo4ZXLNRofO4Eb8u9HnE+YEcjTbZgOQik=
+X-Received: by 2002:a05:6870:8e06:b0:2e9:e9b9:fd7c with SMTP id
+ 586e51a60fabf-2ea01355dcbmr9182538fac.26.1749489763361; Mon, 09 Jun 2025
+ 10:22:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 4F8C31F6E6
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- ARC_NA(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCPT_COUNT_THREE(0.00)[4]; MISSING_XM_UA(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim, suse.de:mid,
- imap1.dmz-prg2.suse.org:rdns, imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.51
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+From: PJ Singh <psingh.cubic@gmail.com>
+Date: Mon, 9 Jun 2025 13:22:32 -0400
+X-Gm-Features: AX0GCFv4wvMNzA9eO47qfeBoajRs8CAXTB3oOyrInFwBqKYEAp0ZDcI2Q0Dgq8s
+Message-ID: <CAPUuJsMOHWQW7bb9_S0Ofj-t840A3mMg+nD57hceASktkbSGhg@mail.gmail.com>
+Subject: Embed QEMU terminal into GUI application (Cubic - Custom Ubuntu ISO
+ Creator)
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000e22736063726d34e"
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=psingh.cubic@gmail.com; helo=mail-oa1-x32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 09 Jun 2025 15:38:31 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,158 +87,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+--000000000000e22736063726d34e
+Content-Type: text/plain; charset="UTF-8"
 
-> On Mon, Jun 09, 2025 at 11:37:02AM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Fri, Jun 06, 2025 at 05:23:18PM -0300, Fabiano Rosas wrote:
->> >> Peter Xu <peterx@redhat.com> writes:
->> >> 
->> >> > On Mon, Jun 02, 2025 at 10:38:08PM -0300, Fabiano Rosas wrote:
->> >> >> Allow the migrate and migrate_incoming commands to pass the migration
->> >> >> configuration options all at once, dispensing the use of
->> >> >> migrate-set-parameters and migrate-set-capabilities.
->> >> >> 
->> >> >> The motivation of this is to simplify the interface with the
->> >> >> management layer and avoid the usage of several command invocations to
->> >> >> configure a migration. It also avoids stale parameters from a previous
->> >> >> migration to influence the current migration.
->> >> >> 
->> >> >> The options that are changed during the migration can still be set
->> >> >> with the existing commands.
->> >> >> 
->> >> >> The order of precedence is:
->> >> >> 
->> >> >> 'config' argument > -global cmdline > defaults (migration_properties)
->> >> >
->> >> > Could we still keep the QMP migrate-set-parameters values?
->> >> >
->> >> >   'config' argument > QMP setups using migrate-set-parameters >
->> >> >     -global cmdline > defaults (migration_properties)
->> >> >
->> >> 
->> >> That's the case. I failed to mention it in the commit message. IOW it
->> >> behaves just like today, but the new 'config' way takes precedence over
->> >> all.
->> >
->> > Referring to below chunk of code:
->> >
->> > [...]
->> >
->> >> >> +bool migrate_params_override(MigrationState *s, MigrationParameters *new,
->> >> >> +                             Error **errp)
->> >> >> +{
->> >> >> +    ERRP_GUARD();
->> >> >> +
->> >> >> +    assert(bql_locked());
->> >> >> +
->> >> >> +    /* reset to default parameters */
->> >> >> +    migrate_params_apply(&s->defaults);
->> >
->> > IIUC here it'll reset all global parameters using the initial defaults
->> > first, then apply the "config" specified in "migrate" QMP command?
->> >
->> 
->> Yes, this is so any previously set parameter via migrate-set-parameter
->> gets erased. I think what we want (but feel free to disagree) is to have
->> the migrate-set-parameter _eventually_ only handle parameters that need
->> to be modifed during migration runtime. Anything else can be done via
->> passing config to qmp_migrate.
->> 
->> For -global, I don't have a preference. Having -global take precedence
->> over all would require a way to know which options were present in the
->> command-line and which are just the defaults seet in
->> migration_properties. I currently don't know how to do that. If it is at
->> all possible (within reason) we could make the change, no worries.
->> 
->> > I think there're actually two separate questions to be asked, to make it
->> > clearer, they are:
->> 
->> Here it got ambiguous when you say "global", I've been using -global to
->> refer to the cmdline -global migration.foo, but others have used global
->> to mean s->parameters (which has an extended lifetime). Could you
->> clarify?
->
-> I meant the -global, and the global setups via migrate-set-parameters.
->
-> As replied to Dan in the other email, I changed my mind on question (1); I
-> think it makes sense to have it YES.  I left my pure question on (2) there
-> too.
->
-> Do we really want to disable migrate-set-parameters setting most of the
-> parameters, and only allow it to be set during migration on a few things
-> like bandwidth or so?
->
+Hello Everyone,
 
-Well, if we decide we have reasons to introduce the "config" concept,
-then I think we should not present two ways of doing the same
-thing. User calls qmp_migrate with its arguments and that's the
-migration. No other ways of setting parameters.
+I want to embed a QEMU window directly in my GUI application. Are Python
+APIs available to embed QEMU into a GNOME GUI application?
 
-Since we do have parameters that are set in "runtime" I though of
-keeping migrate-set-parameters around to minimize the interface
-change. Maybe those should have been separate knobs on their own after
-all... But in any case, we can't reject migrate-set-parameters because
-it might happen way earlier than the actual migration command. So I
-don't think anything changes regarding the API.
+I am the developer of Cubic (Custom Ubuntu ISO Creator), a tool which
+allows users to customize Ubuntu and Debian based Live ISOs.
 
-> I just don't really see the major benefit of that yet.  I would think it
-> make more sense if we don't need to change any parameters in migration,
-> then provide that in one shot in QMP migrate "config".  Maybe making more
-> sense if migration is not heavily thread-based but having its aiocontext so
-> we could even move to Jobs.
->
-> Now after all we'll need to allow setting something like bandwidth even
-> during migration alive, and we have all the things ready allowing to set
-> before migration starts, I'm not 100% sure whether we need to bother even
-> if it does look cleaner, because we'll still break mgmt used to be working
-> for years.. I could be over-cautious on breaking things, but I still want
-> to understand better on the benefits.
->
+Screenshots & information...
+https://github.com/PJ-Singh-001/Cubic/wiki
 
-Makes sense. We'd say either use the old way or the new way. If both are
-mixed, then the new way takes precedence. That keeps older apps working
-and allows new code to transition into the new way.
+Source code...
+https://launchpad.net/cubic
 
-> One step back, on this "allow migrate to specify 'config'" request: I
-> think we can definitely do that as it still provides some kind of
-> atomicity.  But frankly speaking I never see it a "real problem" - do
-> we really have report or use case showing that Libvirt can trigger
-> "migrate" with some global settings touched by other apps at all?
->
+There is a terminal window (
+https://github.com/PJ-Singh-001/Cubic/wiki/Terminal-Page) in Cubic that
+allows users to make their customizations. However, this is a chroot
+environment. I want to replace this with a command-line emulator, so users
+can make more advanced changes that require services (such as snapd) to be
+running.
 
-I don't think other apps is the problem, but libvirt itself maybe
-attempting two migrations in sequence after one of them fails.
+The terminal in Cubic currently uses the Vte.Pty class (
+https://lazka.github.io/pgi-docs/Vte-2.91/classes/Pty.html). My plan is to
+replace this chroot terminal with a command-line environment emulator
+running the Live environment of the OS being customized.
 
-There always the possibility that the user is poking around, which of
-course is not advisable, but if a weird migration bug shows up it's
-difficult to confirm that other app/user hasn't changed the parameters.
+Is something similar to Pte.Vte available from QEMU?
 
-> To me, it was yet an illutionary problem, I never know the answer of that.
-> If Libvirt is still the owner of QEMU instance via the QMP channel, I
-> actually don't really see why the atomicity would even help, even though we
-> can still provide that as it's pretty easy as something optional; like what
-> this patch does without too much hassle.
->
+Would some kind person point me in the right direction? I would also very
+much appreciate some tips or guidance from the community to help accelerate
+my learning process to achieve the above goals.
 
-We can provide it, but I'd rather not unless we agree that is the way
-forward. We don't need another way of doing the same as existing
-commands.
+Thank You,
+PJ
 
-> Then if to move one step further to remove all global settings, we face
-> breaking debugging scripts, and breaking of any old libvirt and non-libvirt
-> mgmt apps.  Frankly I really don't yet know whether it's a good idea.  I
-> could miss some important reasoning of why we want to do it - it needs to
-> be something not relevant to "making the code cleaner", IMHO..
+--000000000000e22736063726d34e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I don't see it as breaking the old stuff. Because any old users would
-still be using migrate-set-parameters as usual. So I think your concern
-is about calling migrate the new way and also keeping -global
-working. As I said, personally I don't mind if put some ifs around to
-keep -global working.
+<div dir=3D"ltr"><div>Hello Everyone,</div><div><br></div><div><div><div>I =
+want to embed a QEMU window directly in my GUI application.=C2=A0Are Python=
+ APIs available to embed QEMU into a GNOME GUI application?</div></div></di=
+v><div><br></div><div>I am the developer of Cubic (Custom Ubuntu ISO Creato=
+r), a tool which allows users to customize Ubuntu and Debian based Live ISO=
+s.</div><div><br></div><div style=3D"margin-left:40px">Screenshots &amp; in=
+formation...</div><div style=3D"margin-left:40px"><a href=3D"https://github=
+.com/PJ-Singh-001/Cubic/wiki">https://github.com/PJ-Singh-001/Cubic/wiki</a=
+></div><div style=3D"margin-left:40px"><br></div><div style=3D"margin-left:=
+40px">Source code...</div><div style=3D"margin-left:40px"><a href=3D"https:=
+//launchpad.net/cubic">https://launchpad.net/cubic</a></div><div><br></div>=
+<div><div>There is a terminal window (<a href=3D"https://github.com/PJ-Sing=
+h-001/Cubic/wiki/Terminal-Page">https://github.com/PJ-Singh-001/Cubic/wiki/=
+Terminal-Page</a>) in Cubic that allows users to make their
+ customizations. However, this is a chroot environment. I want to=20
+replace this with a command-line emulator, so users can make more=20
+advanced changes that require services (such as snapd) to be running.</div>=
+<div><br></div><div>The terminal in Cubic currently uses the Vte.Pty class =
+(<a href=3D"https://lazka.github.io/pgi-docs/Vte-2.91/classes/Pty.html">htt=
+ps://lazka.github.io/pgi-docs/Vte-2.91/classes/Pty.html</a>). My plan is to=
+ replace this chroot terminal with a command-line environment emulator runn=
+ing the Live environment of the OS being customized.</div><div><br></div><d=
+iv>Is something=C2=A0similar to Pte.Vte available=C2=A0from QEMU?</div><div=
+><br></div></div><div>Would some kind person point me in the right directio=
+n? I would also very much appreciate some tips or guidance from the communi=
+ty to help accelerate my learning process to achieve=C2=A0the above goals.<=
+/div><div><br></div><div>Thank You,</div><div>PJ</div><div><br></div></div>
 
-Could we add another parameter that says allow-globals (or w/e) and make
-everyone happy?
-
+--000000000000e22736063726d34e--
 
