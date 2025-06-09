@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F3DAD22D1
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 17:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DB7AD22CE
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 17:45:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOefu-0000QE-G1; Mon, 09 Jun 2025 11:44:38 -0400
+	id 1uOefw-0000U6-OV; Mon, 09 Jun 2025 11:44:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uOefs-0000NO-4E
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:44:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uOeft-0000Q3-NR
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:44:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uOefp-0007gy-Tz
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:44:35 -0400
+ id 1uOefs-0007hZ-3I
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:44:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749483873;
+ s=mimecast20190719; t=1749483875;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5HjroMel8a6RF+nigSPUiqMo1YKd1zSm1exQlnXqhVE=;
- b=eCn+Nxijya2SOZlOr2LCxknlhwoleaO6d3NhDkBvcQkkjVJDDawdtOqa+WK4XlYyFCgdkR
- EevDRVPdDniUKB50a+Twjp5tx34rdjJ2eiRUtIHZNU7SP+eC6bwEbfdkGoKfW0JB3kozkE
- Bngd3n426lqR3bb0Mz8GbOGvlnksQnQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0XtFw1Gm8P8SykWkqXaUzKJqdfFMOaemdUuq3TQP0wE=;
+ b=CNlabHVMGB4vyvCejNNbI7LvFpqkub4INgfPgOsQyQqxbDQxCgPHhgEmu1p43FEJ64QE7N
+ IrRALg/R1m22pXxesIXm1Pr/QYAfASqSXiNfC+kc9Sqs0bQXXa13A/kD9NZkvfDdijVeHU
+ FfLArKVsSkiob7oudhR/xy69Fl5iVJs=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-326-1CAVF-HHM4icG44tJPohjA-1; Mon, 09 Jun 2025 11:44:32 -0400
-X-MC-Unique: 1CAVF-HHM4icG44tJPohjA-1
-X-Mimecast-MFC-AGG-ID: 1CAVF-HHM4icG44tJPohjA_1749483871
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-453080e4741so12727335e9.0
- for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 08:44:31 -0700 (PDT)
+ us-mta-381-DKml0V4VMB2HAuI3cxdufg-1; Mon, 09 Jun 2025 11:44:34 -0400
+X-MC-Unique: DKml0V4VMB2HAuI3cxdufg-1
+X-Mimecast-MFC-AGG-ID: DKml0V4VMB2HAuI3cxdufg_1749483873
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a4ff581df3so2312547f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 08:44:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749483870; x=1750088670;
+ d=1e100.net; s=20230601; t=1749483872; x=1750088672;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5HjroMel8a6RF+nigSPUiqMo1YKd1zSm1exQlnXqhVE=;
- b=UjtR3DzdLMQZ4NfS6YRoERzjbsjdI6WwRqvrTm3B+5eTq42YkYNkMXSIdBVi5lRBdC
- 5kYneYFklXrlOKCWBx0rTp1g/0wK/mNMyWG9rRznQAOXvANHXqEmdigEXR73YRIV6iK0
- 5zOoYa1gquX4J4qSMekC+D6aHP6eAC6aSmuLn8CcGnefvXl/neV8uEXcnS1vUknELNDj
- F4xY1Lp3XjDeG2cI1SPRsMfDwWGQ9vkecz+AUWeAxGqFRxjLzeIvBgkB8hW0Ti1tmHhe
- 6l8IrbTOigtqaixTPda/Q9TX12nTZMtyejZnDPYwKo98vmHG9fKM1CTsh+EXRxUiG2tC
- XuAw==
-X-Gm-Message-State: AOJu0YyZ2SvB4d/xLPzXHCg626i7sQ7N3Cr4cgQj6nxy1x/eYfLFzgcv
- WeTvqCC7vW4YZvRzMJMD/PyWtCBSPqN9IUTKoazhieqT+NppVGElCT1H+Kr6V21oBS9i0NEbBYa
- xA5Oy+okShuZXnvW38kZmPW3IxFYE4xA75u5G5x+srXue5P2pOQrVH1hQq9y1BvCPwXh34SHywu
- d3SZhzVZXeef7/yBJ1n1l7eO1pQO4bZFx8ltG+ZTbS
-X-Gm-Gg: ASbGncuaOgpztsozfn73e2WqdD+Z13TysbosBQbmIri1rVJR80H+8H1XESIZpqFd/wl
- fMYZd0eulaBixUiyfsJVGrVjIUHKoNQisDCvkpYPMklJUdQQJLG2cwI/5mXVYIY86jGHBoHn4XP
- W8Hsy4+0Uh2zjcNb3hbT923smJAdgTfZ2wXT3tO5voZ2wUFTvZNen1/+GPZSUtMOyhO82MD4Ake
- ryYCVXbNNsqHw31Pr3pLxmRN+BSGV+Ed9CtDsYzquZAiHAMBscgr0O1eWb9zHvKbxlO7pknxGkD
- q+vJ7kC1sFi0VQ==
-X-Received: by 2002:a05:600c:8b23:b0:450:d37c:9fc8 with SMTP id
- 5b1f17b1804b1-452013898d8mr134266425e9.13.1749483869999; 
- Mon, 09 Jun 2025 08:44:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF535ooEPbrZS5uS233pOZdaRmQSWaeSCD/MruHfVyfo1LgqyeQe8cN6CnFFxN99WP1nPwp5A==
-X-Received: by 2002:a05:600c:8b23:b0:450:d37c:9fc8 with SMTP id
- 5b1f17b1804b1-452013898d8mr134266155e9.13.1749483869432; 
- Mon, 09 Jun 2025 08:44:29 -0700 (PDT)
+ bh=0XtFw1Gm8P8SykWkqXaUzKJqdfFMOaemdUuq3TQP0wE=;
+ b=LKy7RmBzDr7Wre80aiAmjRWQMvHfEfnSCW5HPiJaqzxl0w0+G9QKPSDUvMqV/Z2SXK
+ WR1Hi6vpX9alqoplJq62Zdu36B1amZ9AZqmaX0Qp5ilKFAjBz3HYsgi5GkBWUY41dyzj
+ vBcCAv8nmXyzusu5LUxqZKh0cXO+jCBQyfjY+vnrZVp0/upjzJ3rShgX70QdjRzf3T2t
+ 5J1HHnf0M++bqsrQ1iT+FTn5tYV0WjR1oVflvVU1z82gvjR9Pk7LPUCNUyGONnSF40Xm
+ k/FQy7Kn+InxK2k2vJm4vJc1U4G9KO3J5/RoXjtSTlAS51aoRm3t4du+xUvGhGPl1eB6
+ E0Zw==
+X-Gm-Message-State: AOJu0YwxotWx1CnMd7+qwKEEyhzqBRU+f9hzRDoIZUQeqNgb3DEpiUjG
+ JWzZa25uSrrA+xnKY353vzX8yyez9TrX0P9d4GHeagfYbuG9V2ZlWKQeXuARbLsb7Gbt2XI+loD
+ 3+Y0JAARb4j42ovgkIP2eM5dZSFYaR1v9SK1HAMa7qLiC28xBAavQT1xUkfT/89NuyFhpKdbOsV
+ wR8P1BZ/MwGXbZTIH1vLD534HO6cPbIlisY8nBhM8U
+X-Gm-Gg: ASbGnculcL/7L9/xv/D1RAdY2rXb0sJVRSPwGC6/g2dmWQQgUR6YGooIQftk8HDZnQr
+ k5zigQrRFYkCo9yeJJgHsD/ILiOrb5MmCkSJKgkblT5XeogCHbHAETYcFTSDhNIRctZjK3MsqAm
+ XfZiIhvQOl9fhyaPLvsPqeHky84RtSVpv95ySZx5fUSfqqkHU4AAFg9JWyHOmGOC5CLLlWSSsHR
+ ifcLiZCSKpVXIoQ+8bFVYxknynppI4BYF4viq84zq5oIblxMeCDcKzmB4pv0Jo+VKAYVMOlCEFX
+ vQqxRsAlDfBYWM6be61sIrGh
+X-Received: by 2002:a05:6000:124c:b0:3a4:dfbe:2b14 with SMTP id
+ ffacd0b85a97d-3a5513f6775mr11945f8f.16.1749483872259; 
+ Mon, 09 Jun 2025 08:44:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGA887dzRG+kwqNJMKkT2oJADBvSV+FfV5SewknSuJ4Z+XFGr12R8krTTB0SZuf5A77jgfh+Q==
+X-Received: by 2002:a05:6000:124c:b0:3a4:dfbe:2b14 with SMTP id
+ ffacd0b85a97d-3a5513f6775mr11932f8f.16.1749483871720; 
+ Mon, 09 Jun 2025 08:44:31 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-452730d1686sm110576235e9.36.2025.06.09.08.44.27
+ ffacd0b85a97d-3a532464575sm9901756f8f.97.2025.06.09.08.44.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Jun 2025 08:44:27 -0700 (PDT)
+ Mon, 09 Jun 2025 08:44:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 2/5] rust: hpet: fully initialize object after instance_init
-Date: Mon,  9 Jun 2025 17:44:20 +0200
-Message-ID: <20250609154423.706056-3-pbonzini@redhat.com>
+Subject: [PATCH 3/5] rust: qom: introduce ParentInit
+Date: Mon,  9 Jun 2025 17:44:21 +0200
+Message-ID: <20250609154423.706056-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250609154423.706056-1-pbonzini@redhat.com>
 References: <20250609154423.706056-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,120 +106,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The array of BqlRefCell<HPETTimer> is not initialized yet at the
-end of instance_init.  In particular, the "state" field is NonNull
-and therefore it is invalid to have it as zero bytes.
-
-Note that MaybeUninit is necessary because assigning to self.timers[index]
-would trigger Drop of the old value.
+This is a smart pointer for MaybeUninit; it can be upcasted to the
+already-initialized parent classes, or dereferenced to a MaybeUninit
+for the class that is being initialized.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/timer/hpet/src/device.rs | 42 +++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ rust/qemu-api/src/qom.rs | 86 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 85 insertions(+), 1 deletion(-)
 
-diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index 735b2fbef79..340ca1d355d 100644
---- a/rust/hw/timer/hpet/src/device.rs
-+++ b/rust/hw/timer/hpet/src/device.rs
-@@ -4,6 +4,7 @@
- 
+diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
+index 14f98fee60a..21c271cd2f9 100644
+--- a/rust/qemu-api/src/qom.rs
++++ b/rust/qemu-api/src/qom.rs
+@@ -95,7 +95,7 @@
  use std::{
-     ffi::{c_int, c_void, CStr},
-+    mem::MaybeUninit,
-     pin::Pin,
-     ptr::{addr_of_mut, null_mut, NonNull},
-     slice::from_ref,
-@@ -25,6 +26,7 @@
-     qom_isa,
-     sysbus::{SysBusDevice, SysBusDeviceImpl},
-     timer::{Timer, CLOCK_VIRTUAL, NANOSECONDS_PER_SECOND},
-+    uninit_field_mut,
-     vmstate::VMStateDescription,
-     vmstate_fields, vmstate_of, vmstate_struct, vmstate_subsections, vmstate_validate,
-     zeroable::Zeroable,
-@@ -212,13 +214,13 @@ pub struct HPETTimer {
+     ffi::{c_void, CStr},
+     fmt,
+-    mem::ManuallyDrop,
++    mem::{ManuallyDrop, MaybeUninit},
+     ops::{Deref, DerefMut},
+     ptr::NonNull,
+ };
+@@ -206,6 +206,90 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+     }
  }
  
- impl HPETTimer {
--    fn init(&mut self, index: u8, state: &HPETState) {
--        *self = HPETTimer {
-+    fn new(index: u8, state: *const HPETState) -> HPETTimer {
-+        HPETTimer {
-             index,
-             // SAFETY: the HPETTimer will only be used after the timer
-             // is initialized below.
-             qemu_timer: unsafe { Timer::new() },
--            state: NonNull::new((state as *const HPETState).cast_mut()).unwrap(),
-+            state: NonNull::new(state.cast_mut()).unwrap(),
-             config: 0,
-             cmp: 0,
-             fsb: 0,
-@@ -226,19 +228,15 @@ fn init(&mut self, index: u8, state: &HPETState) {
-             period: 0,
-             wrap_flag: 0,
-             last: 0,
--        };
-+        }
++/// This struct knows that the superclasses of the object have already been
++/// initialized.
++pub struct ParentInit<'a, T>(&'a mut MaybeUninit<T>);
++
++impl<'a, T> ParentInit<'a, T> {
++    #[inline]
++    pub fn with(obj: &'a mut MaybeUninit<T>, f: impl FnOnce(ParentInit<'a, T>)) {
++        let parent_init = ParentInit(obj);
++        f(parent_init)
 +    }
- 
-+    fn init_timer_with_cell(cell: &BqlRefCell<Self>) {
-+        let mut timer = cell.borrow_mut();
-         // SAFETY: HPETTimer is only used as part of HPETState, which is
-         // always pinned.
--        let qemu_timer = unsafe { Pin::new_unchecked(&mut self.qemu_timer) };
--        qemu_timer.init_full(
--            None,
--            CLOCK_VIRTUAL,
--            Timer::NS,
--            0,
--            timer_handler,
--            &state.timers[self.index as usize],
--        )
-+        let qemu_timer = unsafe { Pin::new_unchecked(&mut timer.qemu_timer) };
-+        qemu_timer.init_full(None, CLOCK_VIRTUAL, Timer::NS, 0, timer_handler, cell);
-     }
- 
-     fn get_state(&self) -> &HPETState {
-@@ -607,9 +605,18 @@ fn handle_legacy_irq(&self, irq: u32, level: u32) {
-         }
-     }
- 
--    fn init_timer(&self) {
--        for (index, timer) in self.timers.iter().enumerate() {
--            timer.borrow_mut().init(index.try_into().unwrap(), self);
-+    fn init_timers(this: &mut MaybeUninit<Self>) {
-+        let state = this.as_ptr();
-+        for index in 0..HPET_MAX_TIMERS {
-+            let mut timer = uninit_field_mut!(*this, timers[index]);
++}
 +
-+            // Initialize in two steps, to avoid calling Timer::init_full on a
-+            // temporary that can be moved.
-+            let timer = timer.write(BqlRefCell::new(HPETTimer::new(
-+                index.try_into().unwrap(),
-+                state,
-+            )));
-+            HPETTimer::init_timer_with_cell(timer);
-         }
-     }
- 
-@@ -710,6 +717,8 @@ unsafe fn init(&mut self) {
-             "hpet",
-             HPET_REG_SPACE_LEN,
-         );
++impl<T: ObjectType> ParentInit<'_, T> {
++    /// Return the receiver as a mutable raw pointer to Object.
++    pub fn as_object_mut_ptr(&self) -> *mut bindings::Object {
++        self.as_object_ptr().cast_mut()
++    }
 +
-+        Self::init_timers(unsafe { &mut *((self as *mut Self).cast::<MaybeUninit<Self>>()) });
-     }
- 
-     fn post_init(&self) {
-@@ -731,7 +740,6 @@ fn realize(&self) -> qemu_api::Result<()> {
- 
-         self.hpet_id.set(HPETFwConfig::assign_hpet_id()?);
- 
--        self.init_timer();
-         // 64-bit General Capabilities and ID Register; LegacyReplacementRoute.
-         self.capability.set(
-             HPET_CAP_REV_ID_VALUE << HPET_CAP_REV_ID_SHIFT |
++    /// Return the receiver as a const raw pointer to Object.
++    /// This is preferrable to `as_object_mut_ptr()` if a C
++    /// function only needs a `const Object *`.
++    pub fn as_object_ptr(&self) -> *const bindings::Object {
++        self.0.as_ptr().cast()
++    }
++}
++
++impl<'a, T: ObjectImpl> ParentInit<'a, T> {
++    /// Convert from a derived type to one of its parent types, which
++    /// have already been initialized.
++    ///
++    /// # Safety
++    ///
++    /// Structurally this is always a safe operation; the [`IsA`] trait
++    /// provides static verification trait that `Self` dereferences to `U` or
++    /// a child of `U`, and only parent types of `T` are allowed.
++    ///
++    /// However, while the fields of the resulting reference are initialized,
++    /// calls might use uninitialized fields of the subclass.  It is your
++    /// responsibility to avoid this.
++    pub unsafe fn upcast<U: ObjectType>(&self) -> &'a U
++    where
++        T::ParentType: IsA<U>,
++    {
++        // SAFETY: soundness is declared via IsA<U>, which is an unsafe trait;
++        // the parent has been initialized before `instance_init `is called
++        unsafe { &*(self.0.as_ptr().cast::<U>()) }
++    }
++
++    /// Convert from a derived type to one of its parent types, which
++    /// have already been initialized.
++    ///
++    /// # Safety
++    ///
++    /// Structurally this is always a safe operation; the [`IsA`] trait
++    /// provides static verification trait that `Self` dereferences to `U` or
++    /// a child of `U`, and only parent types of `T` are allowed.
++    ///
++    /// However, while the fields of the resulting reference are initialized,
++    /// calls might use uninitialized fields of the subclass.  It is your
++    /// responsibility to avoid this.
++    pub unsafe fn upcast_mut<U: ObjectType>(&mut self) -> &'a mut U
++    where
++        T::ParentType: IsA<U>,
++    {
++        // SAFETY: soundness is declared via IsA<U>, which is an unsafe trait;
++        // the parent has been initialized before `instance_init `is called
++        unsafe { &mut *(self.0.as_mut_ptr().cast::<U>()) }
++    }
++}
++
++impl<T> Deref for ParentInit<'_, T> {
++    type Target = MaybeUninit<T>;
++
++    fn deref(&self) -> &Self::Target {
++        self.0
++    }
++}
++
++impl<T> DerefMut for ParentInit<'_, T> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        self.0
++    }
++}
++
+ unsafe extern "C" fn rust_instance_init<T: ObjectImpl>(obj: *mut bindings::Object) {
+     let mut state = NonNull::new(obj).unwrap().cast::<T>();
+     // SAFETY: obj is an instance of T, since rust_instance_init<T>
 -- 
 2.49.0
 
