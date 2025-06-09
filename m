@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B62AD22C1
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 17:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F3DAD22D1
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 17:46:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOeft-0000Nc-Bm; Mon, 09 Jun 2025 11:44:37 -0400
+	id 1uOefu-0000QE-G1; Mon, 09 Jun 2025 11:44:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uOefq-0000MP-PV
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:44:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uOefs-0000NO-4E
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:44:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uOefp-0007gW-4q
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:44:34 -0400
+ id 1uOefp-0007gy-Tz
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:44:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749483872;
+ s=mimecast20190719; t=1749483873;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wPitIwtRsJrMNIILebImcTxNfCDytC/cKtWdPcESChA=;
- b=S1RwrdFc2M8GVXqbrLDPt15iwirLEwtu4XVGVVa9QoJ+5Kpww+scHUDokswERUdrsBH6Fh
- fXrOSR0fFMLmhFSD1d46x6GhGhV+5kXLcj8l8Eo+X9VjM+xte3dCgfDWY2IRVGaIH3NrDi
- C21d+zI2u2DrFjJP3zNSJN9R26OwFsk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5HjroMel8a6RF+nigSPUiqMo1YKd1zSm1exQlnXqhVE=;
+ b=eCn+Nxijya2SOZlOr2LCxknlhwoleaO6d3NhDkBvcQkkjVJDDawdtOqa+WK4XlYyFCgdkR
+ EevDRVPdDniUKB50a+Twjp5tx34rdjJ2eiRUtIHZNU7SP+eC6bwEbfdkGoKfW0JB3kozkE
+ Bngd3n426lqR3bb0Mz8GbOGvlnksQnQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-7-XCyTK5edNJKt-QmVctJHIg-1; Mon, 09 Jun 2025 11:44:29 -0400
-X-MC-Unique: XCyTK5edNJKt-QmVctJHIg-1
-X-Mimecast-MFC-AGG-ID: XCyTK5edNJKt-QmVctJHIg_1749483868
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a4eec544c6so1821575f8f.0
- for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 08:44:29 -0700 (PDT)
+ us-mta-326-1CAVF-HHM4icG44tJPohjA-1; Mon, 09 Jun 2025 11:44:32 -0400
+X-MC-Unique: 1CAVF-HHM4icG44tJPohjA-1
+X-Mimecast-MFC-AGG-ID: 1CAVF-HHM4icG44tJPohjA_1749483871
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-453080e4741so12727335e9.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 08:44:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749483868; x=1750088668;
+ d=1e100.net; s=20230601; t=1749483870; x=1750088670;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wPitIwtRsJrMNIILebImcTxNfCDytC/cKtWdPcESChA=;
- b=gYGyuOU48IWcxGjq4uYQRgugJ1h2OTKFKAsyCCA2INyoYMVHwm81MiuaOdr8I+XTu7
- VS8Vh7+7G0EchlBMHYUIoig5LxRTcoIpaq0Kdv+Lcq3gJVEQXZXKasVKR0qIu4YiSu4n
- LWVLZmWyU2mEGD41n0z7214NtWHnckz5p60j/A4jqBuf3Ol9VqP+OUcnfnp3vYfkGzYr
- 1UDHsy3l1RZp9FBNQ0eOgTIQPvweVJ2vtyoJv/ULNXUS2YbVU/a5rNZithSfYr+9bTMG
- 3nynoMUI2rNoEWuFwhBXCBYWSUydCw+3rzcVnzNhIw1/CcLpkl+DXcr2t7JC8fplcbwx
- Wwaw==
-X-Gm-Message-State: AOJu0Yzl/qBhB842ZlnI/hk5kgQIR4XLRbIAh9qjCIBUnU4DHDI7EZzz
- B/mR8yHqNY5x4ggu/z+AklQjLKcJGLz8XPzXEbuvlTup7Se79FuBT8SLDRxn25sUdchNstPRt7I
- uQ5nPQRPNz9/ikzCioEt6GBegp9Jf4pV1esiCpNI2l6YuBYkjA8OYGzmbmeknVv5huPjtKbz0Eh
- 0cRAkrElCf2yxnaJK22yU10aj9aQU7aEzXlA+gSiWx
-X-Gm-Gg: ASbGncvfhJ11q3BqIlMsMq85vhsi5anYH+HMwTDJiKkum6k91sp4ctMrAl9p4Xi+54U
- QI01lSRVWt6x5b4sRoCZNtyXWfOk0BlHpkdeVPM7Glq+aq24o8A2Lb1k4+0LoG61EkFhNlJaj4w
- V1RHJBzQ7ZFrBUOK0JWhaY5he9eXYkkCU76O2KIgNyrS/oXAJr3Ds1UctbRP2XV+JW6rOvcUf5i
- V7L1dXuxaP2sbOSkdrrkBL9MEAxQNNVPtoK8P++ElnkW5pHBFeICpsdcmPp8VImBojxShTdm+vO
- 1WOZEthuorLV1w==
-X-Received: by 2002:a05:6000:2c0f:b0:3a5:222f:c0d0 with SMTP id
- ffacd0b85a97d-3a53166c269mr10426962f8f.0.1749483867669; 
- Mon, 09 Jun 2025 08:44:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFkwF1GAK1Q8MA9qw75TWqqQtRjZhcW7CjQjgwMId/TkFXlky45NF92JRCplH0YmqnglgC7Q==
-X-Received: by 2002:a05:6000:2c0f:b0:3a5:222f:c0d0 with SMTP id
- ffacd0b85a97d-3a53166c269mr10426939f8f.0.1749483867177; 
- Mon, 09 Jun 2025 08:44:27 -0700 (PDT)
+ bh=5HjroMel8a6RF+nigSPUiqMo1YKd1zSm1exQlnXqhVE=;
+ b=UjtR3DzdLMQZ4NfS6YRoERzjbsjdI6WwRqvrTm3B+5eTq42YkYNkMXSIdBVi5lRBdC
+ 5kYneYFklXrlOKCWBx0rTp1g/0wK/mNMyWG9rRznQAOXvANHXqEmdigEXR73YRIV6iK0
+ 5zOoYa1gquX4J4qSMekC+D6aHP6eAC6aSmuLn8CcGnefvXl/neV8uEXcnS1vUknELNDj
+ F4xY1Lp3XjDeG2cI1SPRsMfDwWGQ9vkecz+AUWeAxGqFRxjLzeIvBgkB8hW0Ti1tmHhe
+ 6l8IrbTOigtqaixTPda/Q9TX12nTZMtyejZnDPYwKo98vmHG9fKM1CTsh+EXRxUiG2tC
+ XuAw==
+X-Gm-Message-State: AOJu0YyZ2SvB4d/xLPzXHCg626i7sQ7N3Cr4cgQj6nxy1x/eYfLFzgcv
+ WeTvqCC7vW4YZvRzMJMD/PyWtCBSPqN9IUTKoazhieqT+NppVGElCT1H+Kr6V21oBS9i0NEbBYa
+ xA5Oy+okShuZXnvW38kZmPW3IxFYE4xA75u5G5x+srXue5P2pOQrVH1hQq9y1BvCPwXh34SHywu
+ d3SZhzVZXeef7/yBJ1n1l7eO1pQO4bZFx8ltG+ZTbS
+X-Gm-Gg: ASbGncuaOgpztsozfn73e2WqdD+Z13TysbosBQbmIri1rVJR80H+8H1XESIZpqFd/wl
+ fMYZd0eulaBixUiyfsJVGrVjIUHKoNQisDCvkpYPMklJUdQQJLG2cwI/5mXVYIY86jGHBoHn4XP
+ W8Hsy4+0Uh2zjcNb3hbT923smJAdgTfZ2wXT3tO5voZ2wUFTvZNen1/+GPZSUtMOyhO82MD4Ake
+ ryYCVXbNNsqHw31Pr3pLxmRN+BSGV+Ed9CtDsYzquZAiHAMBscgr0O1eWb9zHvKbxlO7pknxGkD
+ q+vJ7kC1sFi0VQ==
+X-Received: by 2002:a05:600c:8b23:b0:450:d37c:9fc8 with SMTP id
+ 5b1f17b1804b1-452013898d8mr134266425e9.13.1749483869999; 
+ Mon, 09 Jun 2025 08:44:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF535ooEPbrZS5uS233pOZdaRmQSWaeSCD/MruHfVyfo1LgqyeQe8cN6CnFFxN99WP1nPwp5A==
+X-Received: by 2002:a05:600c:8b23:b0:450:d37c:9fc8 with SMTP id
+ 5b1f17b1804b1-452013898d8mr134266155e9.13.1749483869432; 
+ Mon, 09 Jun 2025 08:44:29 -0700 (PDT)
 Received: from [192.168.122.1] ([151.49.64.79])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45213709637sm113704375e9.26.2025.06.09.08.44.25
+ 5b1f17b1804b1-452730d1686sm110576235e9.36.2025.06.09.08.44.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Jun 2025 08:44:25 -0700 (PDT)
+ Mon, 09 Jun 2025 08:44:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 1/5] rust: qemu_api: introduce MaybeUninit field projection
-Date: Mon,  9 Jun 2025 17:44:19 +0200
-Message-ID: <20250609154423.706056-2-pbonzini@redhat.com>
+Subject: [PATCH 2/5] rust: hpet: fully initialize object after instance_init
+Date: Mon,  9 Jun 2025 17:44:20 +0200
+Message-ID: <20250609154423.706056-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250609154423.706056-1-pbonzini@redhat.com>
 References: <20250609154423.706056-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,137 +106,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a macro that makes it possible to convert a MaybeUninit<> into
-another MaybeUninit<> for a single field within it.  Furthermore, it is
-possible to use the resulting MaybeUninitField<> in APIs that take the
-parent object, such as memory_region_init_io().
+The array of BqlRefCell<HPETTimer> is not initialized yet at the
+end of instance_init.  In particular, the "state" field is NonNull
+and therefore it is invalid to have it as zero bytes.
 
-This allows removing some of the undefined behavior from instance_init()
-functions, though this may not be the definitive implementation.
+Note that MaybeUninit is necessary because assigning to self.timers[index]
+would trigger Drop of the old value.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/meson.build   |  1 +
- rust/qemu-api/src/lib.rs    |  1 +
- rust/qemu-api/src/uninit.rs | 85 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 87 insertions(+)
- create mode 100644 rust/qemu-api/src/uninit.rs
+ rust/hw/timer/hpet/src/device.rs | 42 +++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index cac8595a148..33653b4a28e 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -28,6 +28,7 @@ _qemu_api_rs = static_library(
-       'src/qom.rs',
-       'src/sysbus.rs',
-       'src/timer.rs',
-+      'src/uninit.rs',
-       'src/vmstate.rs',
-       'src/zeroable.rs',
-     ],
-diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
-index 93902fc94bc..c78198f0f41 100644
---- a/rust/qemu-api/src/lib.rs
-+++ b/rust/qemu-api/src/lib.rs
-@@ -27,6 +27,7 @@
- pub mod qom;
- pub mod sysbus;
- pub mod timer;
-+pub mod uninit;
- pub mod vmstate;
- pub mod zeroable;
+diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
+index 735b2fbef79..340ca1d355d 100644
+--- a/rust/hw/timer/hpet/src/device.rs
++++ b/rust/hw/timer/hpet/src/device.rs
+@@ -4,6 +4,7 @@
  
-diff --git a/rust/qemu-api/src/uninit.rs b/rust/qemu-api/src/uninit.rs
-new file mode 100644
-index 00000000000..a7bed6935b1
---- /dev/null
-+++ b/rust/qemu-api/src/uninit.rs
-@@ -0,0 +1,85 @@
-+//! Access fields of a [`MaybeUninit`](std::mem::MaybeUninit)
-+
-+use std::{
+ use std::{
+     ffi::{c_int, c_void, CStr},
 +    mem::MaybeUninit,
-+    ops::{Deref, DerefMut},
-+};
-+
-+pub struct MaybeUninitField<'a, T, U> {
-+    parent: &'a mut MaybeUninit<T>,
-+    child: *mut U,
-+}
-+
-+impl<'a, T, U> MaybeUninitField<'a, T, U> {
-+    #[doc(hidden)]
-+    pub fn new(parent: &'a mut MaybeUninit<T>, child: *mut U) -> Self {
-+        MaybeUninitField { parent, child }
+     pin::Pin,
+     ptr::{addr_of_mut, null_mut, NonNull},
+     slice::from_ref,
+@@ -25,6 +26,7 @@
+     qom_isa,
+     sysbus::{SysBusDevice, SysBusDeviceImpl},
+     timer::{Timer, CLOCK_VIRTUAL, NANOSECONDS_PER_SECOND},
++    uninit_field_mut,
+     vmstate::VMStateDescription,
+     vmstate_fields, vmstate_of, vmstate_struct, vmstate_subsections, vmstate_validate,
+     zeroable::Zeroable,
+@@ -212,13 +214,13 @@ pub struct HPETTimer {
+ }
+ 
+ impl HPETTimer {
+-    fn init(&mut self, index: u8, state: &HPETState) {
+-        *self = HPETTimer {
++    fn new(index: u8, state: *const HPETState) -> HPETTimer {
++        HPETTimer {
+             index,
+             // SAFETY: the HPETTimer will only be used after the timer
+             // is initialized below.
+             qemu_timer: unsafe { Timer::new() },
+-            state: NonNull::new((state as *const HPETState).cast_mut()).unwrap(),
++            state: NonNull::new(state.cast_mut()).unwrap(),
+             config: 0,
+             cmp: 0,
+             fsb: 0,
+@@ -226,19 +228,15 @@ fn init(&mut self, index: u8, state: &HPETState) {
+             period: 0,
+             wrap_flag: 0,
+             last: 0,
+-        };
++        }
 +    }
+ 
++    fn init_timer_with_cell(cell: &BqlRefCell<Self>) {
++        let mut timer = cell.borrow_mut();
+         // SAFETY: HPETTimer is only used as part of HPETState, which is
+         // always pinned.
+-        let qemu_timer = unsafe { Pin::new_unchecked(&mut self.qemu_timer) };
+-        qemu_timer.init_full(
+-            None,
+-            CLOCK_VIRTUAL,
+-            Timer::NS,
+-            0,
+-            timer_handler,
+-            &state.timers[self.index as usize],
+-        )
++        let qemu_timer = unsafe { Pin::new_unchecked(&mut timer.qemu_timer) };
++        qemu_timer.init_full(None, CLOCK_VIRTUAL, Timer::NS, 0, timer_handler, cell);
+     }
+ 
+     fn get_state(&self) -> &HPETState {
+@@ -607,9 +605,18 @@ fn handle_legacy_irq(&self, irq: u32, level: u32) {
+         }
+     }
+ 
+-    fn init_timer(&self) {
+-        for (index, timer) in self.timers.iter().enumerate() {
+-            timer.borrow_mut().init(index.try_into().unwrap(), self);
++    fn init_timers(this: &mut MaybeUninit<Self>) {
++        let state = this.as_ptr();
++        for index in 0..HPET_MAX_TIMERS {
++            let mut timer = uninit_field_mut!(*this, timers[index]);
 +
-+    /// Return a constant pointer to the containing object of the field.
-+    ///
-+    /// Because the `MaybeUninitField` remembers the containing object,
-+    /// it is possible to use it in foreign APIs that initialize the
-+    /// child.
-+    pub fn parent(f: &Self) -> *const T {
-+        f.parent.as_ptr()
-+    }
++            // Initialize in two steps, to avoid calling Timer::init_full on a
++            // temporary that can be moved.
++            let timer = timer.write(BqlRefCell::new(HPETTimer::new(
++                index.try_into().unwrap(),
++                state,
++            )));
++            HPETTimer::init_timer_with_cell(timer);
+         }
+     }
+ 
+@@ -710,6 +717,8 @@ unsafe fn init(&mut self) {
+             "hpet",
+             HPET_REG_SPACE_LEN,
+         );
 +
-+    /// Return a mutable pointer to the containing object.
-+    ///
-+    /// Because the `MaybeUninitField` remembers the containing object,
-+    /// it is possible to use it in foreign APIs that initialize the
-+    /// child.
-+    pub fn parent_mut(f: &mut Self) -> *mut T {
-+        f.parent.as_mut_ptr()
-+    }
-+}
-+
-+impl<'a, T, U> Deref for MaybeUninitField<'a, T, U> {
-+    type Target = MaybeUninit<U>;
-+
-+    fn deref(&self) -> &MaybeUninit<U> {
-+        // SAFETY: self.child was obtained by dereferencing a valid mutable
-+        // reference; the content of the memory may be invalid or uninitialized
-+        // but MaybeUninit<_> makes no assumption on it
-+        unsafe { &*(self.child.cast()) }
-+    }
-+}
-+
-+impl<'a, T, U> DerefMut for MaybeUninitField<'a, T, U> {
-+    fn deref_mut(&mut self) -> &mut MaybeUninit<U> {
-+        // SAFETY: self.child was obtained by dereferencing a valid mutable
-+        // reference; the content of the memory may be invalid or uninitialized
-+        // but MaybeUninit<_> makes no assumption on it
-+        unsafe { &mut *(self.child.cast()) }
-+    }
-+}
-+
-+/// ```
-+/// #[derive(Debug)]
-+/// struct S {
-+///     x: u32,
-+///     y: u32,
-+/// }
-+///
-+/// # use std::mem::MaybeUninit;
-+/// # use qemu_api::{assert_match, uninit_field_mut};
-+///
-+/// let mut s: MaybeUninit<S> = MaybeUninit::zeroed();
-+/// uninit_field_mut!(s, x).write(5);
-+/// let s = unsafe { s.assume_init() };
-+/// assert_match!(s, S { x: 5, y: 0 });
-+/// ```
-+#[macro_export]
-+macro_rules! uninit_field_mut {
-+    ($container:expr, $($field:tt)+) => {{
-+        let container__: &mut ::std::mem::MaybeUninit<_> = &mut $container;
-+        let container_ptr__ = container__.as_mut_ptr();
-+
-+        // SAFETY: the container is not used directly, only through a MaybeUninit<>,
-+        // so the safety is delegated to the caller and to final invocation of
-+        // assume_init()
-+        let target__ = unsafe { std::ptr::addr_of_mut!((*container_ptr__).$($field)+) };
-+        $crate::uninit::MaybeUninitField::new(container__, target__)
-+    }};
-+}
++        Self::init_timers(unsafe { &mut *((self as *mut Self).cast::<MaybeUninit<Self>>()) });
+     }
+ 
+     fn post_init(&self) {
+@@ -731,7 +740,6 @@ fn realize(&self) -> qemu_api::Result<()> {
+ 
+         self.hpet_id.set(HPETFwConfig::assign_hpet_id()?);
+ 
+-        self.init_timer();
+         // 64-bit General Capabilities and ID Register; LegacyReplacementRoute.
+         self.capability.set(
+             HPET_CAP_REV_ID_VALUE << HPET_CAP_REV_ID_SHIFT |
 -- 
 2.49.0
 
