@@ -2,62 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1CAAD28C6
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 23:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFDAAD2927
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 00:06:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOk14-00005n-Je; Mon, 09 Jun 2025 17:26:50 -0400
+	id 1uOkcW-0001lA-CW; Mon, 09 Jun 2025 18:05:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1uOk12-0008WJ-HF; Mon, 09 Jun 2025 17:26:48 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOkcQ-0001ki-DS
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 18:05:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1uOk10-0007dM-Di; Mon, 09 Jun 2025 17:26:48 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c37:722f:0:640:94d5:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id A2E8E60CF4;
- Tue, 10 Jun 2025 00:26:44 +0300 (MSK)
-Received: from d-tatianin-lin.yandex-team.ru (unknown
- [2a02:6bf:8080:771::1:29])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id VQpuLN5FZuQ0-iqrq8V2p; Tue, 10 Jun 2025 00:26:44 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1749504404;
- bh=pOSrzwwHova+AKyw5BhzHtXPI3s5dRv75DsZ5g7EMz0=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=fsMoyl2PadZU44G9BADbu/1EdWRUQlxj7VO4fMnHTR/yEYYJRjH0A2vDU3vltWNOg
- iuq+LHu8vFzsWR6nM8JjYfni7PjCM8IS8/N83QcQeM0K/c0S9KVl9WF8ht7YcyaMTJ
- DSOlq6/t5EL7oQOZr0hkBn1BG3lquFzzvwG5CIeA=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Raphael Norwitz <raphael@enfabrica.net>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH 3/3] vhost-user-blk: add an option to skip GET_VRING_BASE for
- force shutdown
-Date: Tue, 10 Jun 2025 00:25:47 +0300
-Message-Id: <20250609212547.2859224-4-d-tatianin@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250609212547.2859224-1-d-tatianin@yandex-team.ru>
-References: <20250609212547.2859224-1-d-tatianin@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOkcO-0003Tq-VV
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 18:05:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749506723;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kRxy/RmZWDWh5y3iQ80Qe/y74RtbpRQy2MhGcLQaHY0=;
+ b=bS/nOIU1+FN0tRpIG+YlgbXb1AfD05vxLPK2hUfTVplbxTlMGSgo+7tZajJgkfQ4HMM8yh
+ 2en8cJmT5ITUG0R1uie9KpesB1npTOshCzEKpwy7WOqXOorc40WsrW9hhaiglfTt4TPIto
+ zMR079c4w2nmG4fqRtuimn7cRCH8Xj4=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-497--c5WZn21MZKe81_q1Eix8Q-1; Mon, 09 Jun 2025 18:05:21 -0400
+X-MC-Unique: -c5WZn21MZKe81_q1Eix8Q-1
+X-Mimecast-MFC-AGG-ID: -c5WZn21MZKe81_q1Eix8Q_1749506721
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7d09ed509aaso869390385a.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 15:05:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749506721; x=1750111521;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kRxy/RmZWDWh5y3iQ80Qe/y74RtbpRQy2MhGcLQaHY0=;
+ b=ogOAD1q4zj5fLcSnzpRwcWlrCrFrV27Nliu9lmq7hJrw5TMz7uMTeSTJryNFWmvLko
+ 17p8qMrkmsUi1e+MJjDEl+LBf5YNukGQWUMSFZ6RPaaWkhdsxa/RimluUuU3InvvaPj6
+ TYJ0rSeCvvCFN3EPOwKyTWSNZYXM3zSLUZqx7LRx7CUw5YxaoH/RT5jcF8dPGpSUw13l
+ XNlrLZcfGLvChp4oZd+TvLFCszQruto8z3y20ft0I5eutA9jhQqYqDJFJoDXGkjZitOG
+ I2MDoVXdaZ6mF9pRQthrwR53A7LXuK7ZDaSqOwg6ids6nr1V8B3hmQXMCk3znO9YVmMV
+ DVew==
+X-Gm-Message-State: AOJu0YwXAFB18OFPStA2B2naKniTstqR6UalyjxyA+3i8kSt63y0ZzlO
+ 0Zz27JAFZgpxWoD8Kre4yJ8WParOpCP+Sdu54q/Rom5XGL1jbOveTCrA0QvaaxrDSMdFr1yx0Ck
+ HIprxvD/u3GJUdemNMme0TFE/Vxs9whMPFwZXPeOm017Lj/nfG6H0qEmWYkDn+TOQxg39DhdCwC
+ 42I7vtSUZP7S7aleNvADtki3zRab8T1Skt51ZyYQ==
+X-Gm-Gg: ASbGncsr/KMTQHdc4IdJxyvZkS731IFnFlufOXJv7CnhD1z7OM/A9tefHaddfv4u57z
+ EctbkHHKl2BOXGIgMed+duFqCnGRfb4lI5Uf2avImRTFBXB6sj3OVoX2j3qBwJ3pEz+VxIdRG5g
+ dlncjLMpmrohMYJb+1WXIzCHCW+XB8eMnDTyjmXbOX6AcOWqY5IOaCTu58z0Eqbko68PmjilS3e
+ LafSK3Q3jTC829Asc+rGtyOVdYNuUZAbwwvRixsRdnxN0YPzo/2GrkmiayCvTFfxpM/ueIG0Tl8
+ 81sWC5PtlCpIZA==
+X-Received: by 2002:a05:620a:1a85:b0:7d0:9d42:732b with SMTP id
+ af79cd13be357-7d39f5962a2mr53704785a.20.1749506720914; 
+ Mon, 09 Jun 2025 15:05:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdMF9svvgKZS3eNdywgOvHULdRALqwDmWs2cQb+OiTAuJCl5BYuheqrYuat52zomeOUFcLPw==
+X-Received: by 2002:a05:620a:1a85:b0:7d0:9d42:732b with SMTP id
+ af79cd13be357-7d39f5962a2mr53701585a.20.1749506720424; 
+ Mon, 09 Jun 2025 15:05:20 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7d38f63dd31sm302955885a.5.2025.06.09.15.05.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Jun 2025 15:05:19 -0700 (PDT)
+Date: Mon, 9 Jun 2025 18:05:16 -0400
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alexey Perevalov <a.perevalov@samsung.com>,
+ Juraj Marcin <jmarcin@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v2 08/13] migration/postcopy: Report fault latencies in
+ blocktime
+Message-ID: <aEdanIDLjSR4szMo@x1.local>
+References: <20250609191259.9053-1-peterx@redhat.com>
+ <20250609191259.9053-9-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250609191259.9053-9-peterx@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -75,75 +107,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we have a server running disk requests that is for whatever reason
-hanging or not able to process any more IO requests but still has some
-in-flight requests previously issued by the guest OS, QEMU will still
-try to drain the vring before shutting down even if it was explicitly
-asked to do a "force shutdown" via SIGTERM or QMP quit. This is not
-useful since the guest is no longer running at this point since it was
-killed by QEMU earlier in the process. At this point, we don't care
-about whatever in-flight IO it might have pending, we just want QEMU
-to shut down.
+On Mon, Jun 09, 2025 at 03:12:54PM -0400, Peter Xu wrote:
+> +static void migration_dump_blocktime(Monitor *mon, MigrationInfo *info)
+> +{
+> +    if (info->has_postcopy_blocktime) {
+> +        monitor_printf(mon, "Postcopy Blocktime (ms): %" PRIu32 "\n",
+> +                       info->postcopy_blocktime);
+> +    }
+> +
+> +    if (info->has_postcopy_vcpu_blocktime) {
+> +        uint32List *item = info->postcopy_vcpu_blocktime;
+> +        const char *sep = "";
+> +        int count = 0;
+> +
+> +        monitor_printf(mon, "Postcopy vCPU Blocktime (ms): \n [");
+> +
+> +        while (item) {
+> +            monitor_printf(mon, "%s%"PRIu32, sep, item->value);
+> +            item = item->next;
+> +            /* Each line 10 vcpu results, newline if there's more */
+> +            sep = ((++count % 10 == 0) && item) ? ",\n  " : ", ";
+> +        }
+> +        monitor_printf(mon, "]\n");
+> +    }
+> +
+> +    if (info->has_postcopy_latency) {
+> +        monitor_printf(mon, "Postcopy Latency (us): %" PRIu64 "\n",
+> +                       info->postcopy_latency);
+> +    }
+> +
+> +    if (info->has_postcopy_vcpu_latency) {
+> +        uint64List *item = info->postcopy_vcpu_latency;
+> +        int count = 0;
+> +
+> +        monitor_printf(mon, "Postcopy vCPU Latencies (us): \n [");
+> +
+> +        while (item) {
+> +            monitor_printf(mon, "%"PRIu64", ", item->value);
+> +            item = item->next;
+> +            /* Each line 10 vcpu results, newline if there's more */
+> +            if ((++count % 10 == 0) && item) {
+> +                monitor_printf(mon, "\n  ");
+> +            }
+> +        }
+> +        monitor_printf(mon, "\b\b]\n");
 
-Add an option called "skip-get-vring-base-on-force-shutdown" to allow
-SIGTERM/QMP quit() to actually act like a "force shutdown" at least
-for vhost-user-blk devices since those require the drain operation
-to shut down gracefully unlike, for example, network devices.
+In the review of the other series I posted, Markus pointed out we should
+avoid using "\b" and suggested a better way.  I fixed it there, but I
+overlooked I have this similar use case in this series.  I'll fix this too
+when posting v3 with similar approach.
 
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
----
- hw/block/vhost-user-blk.c          | 9 ++++++++-
- include/hw/virtio/vhost-user-blk.h | 2 ++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+> +    }
+> +}
 
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 0eebbcd80d..c0cc5f6942 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -210,6 +210,7 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
-     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
-     int ret;
-+    bool force_stop = false;
- 
-     if (!s->started_vu) {
-         return 0;
-@@ -220,7 +221,11 @@ static int vhost_user_blk_stop(VirtIODevice *vdev)
-         return 0;
-     }
- 
--    ret = vhost_dev_stop(&s->dev, vdev, true);
-+    force_stop = s->skip_get_vring_base_on_force_shutdown &&
-+                 qemu_force_shutdown_requested();
-+
-+    ret = force_stop ? vhost_dev_force_stop(&s->dev, vdev, true) :
-+                       vhost_dev_stop(&s->dev, vdev, true);
- 
-     if (k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false) < 0) {
-         error_report("vhost guest notifier cleanup failed: %d", ret);
-@@ -584,6 +589,8 @@ static const Property vhost_user_blk_properties[] = {
-                       VIRTIO_BLK_F_DISCARD, true),
-     DEFINE_PROP_BIT64("write-zeroes", VHostUserBlk, parent_obj.host_features,
-                       VIRTIO_BLK_F_WRITE_ZEROES, true),
-+    DEFINE_PROP_BOOL("skip-get-vring-base-on-force-shutdown", VHostUserBlk,
-+                     skip_get_vring_base_on_force_shutdown, false),
- };
- 
- static void vhost_user_blk_class_init(ObjectClass *klass, const void *data)
-diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-user-blk.h
-index ea085ee1ed..a10f785672 100644
---- a/include/hw/virtio/vhost-user-blk.h
-+++ b/include/hw/virtio/vhost-user-blk.h
-@@ -50,6 +50,8 @@ struct VHostUserBlk {
-     bool connected;
-     /* vhost_user_blk_start/vhost_user_blk_stop */
-     bool started_vu;
-+
-+    bool skip_get_vring_base_on_force_shutdown;
- };
- 
- #endif
 -- 
-2.34.1
+Peter Xu
 
 
