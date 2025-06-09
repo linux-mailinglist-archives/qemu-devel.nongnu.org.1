@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984B3AD2459
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 18:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E85AD2456
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 18:45:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOfc6-000240-PB; Mon, 09 Jun 2025 12:44:46 -0400
+	id 1uOfc4-00022L-9C; Mon, 09 Jun 2025 12:44:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uOfbq-0001zY-El; Mon, 09 Jun 2025 12:44:31 -0400
+ id 1uOfbr-0001zo-S9; Mon, 09 Jun 2025 12:44:33 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uOfbn-0003fi-Kg; Mon, 09 Jun 2025 12:44:30 -0400
+ id 1uOfbo-0003g8-QM; Mon, 09 Jun 2025 12:44:31 -0400
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 559BTWOM020816;
- Mon, 9 Jun 2025 16:44:25 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55977leH025405;
+ Mon, 9 Jun 2025 16:44:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=xJNPME4K4eUs1Wc/O
- VQFMYPPwja4yEUxcYLcrB16Ajk=; b=JCgID8Sh1hnuWJDEOu3TnOrBxdB5IzrwP
- yuBqzk1/8efM4AlFuSqIDq9NiFO1PaSSpPkZ4i8EXMJNVzEihv0VwWji8ijcqWwa
- 8IGWec1arrITOYr87o1Dea/q5vgPx/rBb/28qVpvewYHvfM+uR9p/VEmyP2Dhx1u
- l2fPiNlzQEonrOAG3ydWbDg7yKAYt3Z5CAYd1KfyoScGWbq6WRwZBK051Mr1+3Z7
- oBwMMdnRnOzJulTrCMXkj9Ui37eDuNr/PbsCqB5/qIB/UDlojYieqGURwkj5wD6k
- g3urCeMxt9zSm2UB3wqg2/zRcdCrwHkAU+xA5QHnfV0We/GMDoGqg==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474bunste1-1
+ :mime-version:references:subject:to; s=pp1; bh=YT1bP9b3CAXHrFrek
+ QNF8d3IjxOl+cQEcvyCjLmfRRk=; b=YTn/d+1ittSwdfyAtU7kVIoiHxi5JbZMJ
+ GkFLFRQF+4TziL+Q/DLWAGm/VYxeNQcatrBbDBYr0VXIuGK39I1znHE0IWd2Shx8
+ wG3y8CKUh2tDsulfIuT3h8/QijLJpLOpjoSOTKqgS60jcz85u8ba7ZPixjq6XKA0
+ 8gu6h6U7chI08DzLTIoZvqj3N1sHor3OJrx1LL6lQIzeKCMjBD02WJ6Sin4biTvt
+ 1U4nKd3O6Kz9JLgWLbtdDg4EplovEsuFI2iys6skM0dV9POSCtt3WIXw7MEUkU3o
+ eeYZq27UXjPoVvJpAbrQF9tjfUG+L1QsTnhp73FSfKmEJnNvpmdNA==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474bunste5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Jun 2025 16:44:25 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 559EECVC021879;
- Mon, 9 Jun 2025 16:44:24 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47504yppvt-1
+ Mon, 09 Jun 2025 16:44:27 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 559FcsUV003367;
+ Mon, 9 Jun 2025 16:44:26 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4751ykec20-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Jun 2025 16:44:24 +0000
+ Mon, 09 Jun 2025 16:44:26 +0000
 Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
  [10.39.53.230])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 559GiNbc29229692
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 559GiOb830606028
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Jun 2025 16:44:23 GMT
+ Mon, 9 Jun 2025 16:44:25 GMT
 Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 71D225805A;
+ by IMSVA (Postfix) with ESMTP id CF7C55805F;
+ Mon,  9 Jun 2025 16:44:24 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9A6FA58054;
  Mon,  9 Jun 2025 16:44:23 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37DCC58054;
- Mon,  9 Jun 2025 16:44:22 +0000 (GMT)
 Received: from MacBookPro.ibm.com (unknown [9.61.253.10])
  by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Jun 2025 16:44:22 +0000 (GMT)
+ Mon,  9 Jun 2025 16:44:23 +0000 (GMT)
 From: Rorie Reyes <rreyes@linux.ibm.com>
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
 Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
  jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
  alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
  akrowiak@linux.ibm.com, rreyes@linux.ibm.com
-Subject: [RFC PATCH v13 2/4] hw/vfio/ap: store object indicating AP config
- changed in a queue
-Date: Mon,  9 Jun 2025 12:44:16 -0400
-Message-ID: <20250609164418.17585-3-rreyes@linux.ibm.com>
+Subject: [RFC PATCH v13 3/4] hw/vfio/ap: Storing event information for an AP
+ configuration change event
+Date: Mon,  9 Jun 2025 12:44:17 -0400
+Message-ID: <20250609164418.17585-4-rreyes@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250609164418.17585-1-rreyes@linux.ibm.com>
 References: <20250609164418.17585-1-rreyes@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=H4Hbw/Yi c=1 sm=1 tr=0 ts=68470f69 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=n_lu--N5RhutrOJcQFMA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA5MDEyMSBTYWx0ZWRfX/JDFzmqruMul
- YXvSWnHST4v26tyASF+zONyeV/E/n4oKOp9g0AMqHZcL8lkWqbOO9CogOJQKgR9oNo1JSWFXA7n
- J0j54ajOTySxxoZK72RH9xAa1NQ/tuZyBQ7dZVlRYtXWPvXtR8nTyNrOWZi+X0sL02dIMKyxYQQ
- yRNBCVJNtYCD810teII4erEur2QxgPe8U2S/9GMdGV8MXAHRctJ2rIIEcmtVo8B5iVn586wlHRQ
- 8MWmbyA+RbjMljPfo5hjQQTZKk/HiMZjk80ilP1ScEBI8CYt8oUd6EVdIOT9PdAsJXNRoAhs4UR
- EAGpV5Hfmj6E+o+o3k5OQnEDLZ+rP3EYKgLKB2q05kvIBQXna8+noOxUR5kk4MC+f4SXSXnrBv9
- 6d+uf3DKCThXJ6ttUa4ThrfGNu9bz4FGQSEkFwuCDpkNL7grtDmeUgRBUFGuH0Yo5K74s5SA
-X-Proofpoint-GUID: SpXkZsJCwSL6BglDdvnVIGyxIpPbUwWq
-X-Proofpoint-ORIG-GUID: SpXkZsJCwSL6BglDdvnVIGyxIpPbUwWq
+X-Authority-Analysis: v=2.4 cv=H4Hbw/Yi c=1 sm=1 tr=0 ts=68470f6b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=6IFa9wvqVegA:10 a=sWKEhP36mHoA:10 a=VnNF1IyMAAAA:8 a=Z0WjHMB6GHtyqmt2ikkA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA5MDEyMSBTYWx0ZWRfX/T3fEVxXrO2H
+ IaUzVJlvV+yC+tuZdjJCcqLe2l2/OZZnzMJ5sJpxP1ZcLxNCR1woqq4GZT6b3A2rYRJYxm0book
+ AobSWhrRlaK0c7zOWTmJhcxlHB8WpWbDGi7JX9yvryd4sBS612PvRtA9ykX6YTmD59Mc5jMvnLb
+ RinPWLdrvsPrq28iWGnFQNxGh7ksX2rBfsK12ffcRB4lpwDPw1viHbpsWXxAS0bGorL25Z+sxrf
+ AV1xNaPhrGl9ifhCukxax52FyacgsxIwcBv117jvmAZOEQZG8Mzswm95MeJ1xaQpibdJrnXIbr1
+ J02cUsAw9X0X46oL6cG2eZWCfO71rhv+kIU2Ob6xHXgMcrFiPHr3rMttZyHaLAGDQTLBSjDWk5D
+ OLu+T70oTZ7TK9bziKqBw0cLx1rXblDgd/tqwRWih5Ircxgnshp0oom/TdqOTqkSeWc5BHA3
+X-Proofpoint-GUID: Hvp4OMx2hYMEyw2VfwZXvA413VsG9i7s
+X-Proofpoint-ORIG-GUID: Hvp4OMx2hYMEyw2VfwZXvA413VsG9i7s
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-09_06,2025-06-09_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0
- mlxlogscore=999 phishscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
+ mlxlogscore=846 phishscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
  clxscore=1015 adultscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
  impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
@@ -118,65 +118,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Creates an object indicating that an AP configuration change event
-has been received and stores it in a queue. These objects will later
-be used to store event information for an AP configuration change
-when the CHSC instruction is intercepted.
+These functions can be invoked by the function that handles interception
+of the CHSC SEI instruction for requests indicating the accessibility of
+one or more adjunct processors has changed.
 
 Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
 Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 ---
- hw/vfio/ap.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ hw/vfio/ap.c                 | 40 ++++++++++++++++++++++++++++++++++++
+ include/hw/s390x/ap-bridge.h | 39 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 79 insertions(+)
 
 diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 93c74ebedb..681fd4a4f1 100644
+index 681fd4a4f1..874e0d1eaf 100644
 --- a/hw/vfio/ap.c
 +++ b/hw/vfio/ap.c
-@@ -21,6 +21,7 @@
- #include "hw/s390x/css.h"
- #include "qemu/error-report.h"
- #include "qemu/event_notifier.h"
-+#include "qemu/lockable.h"
- #include "qemu/main-loop.h"
- #include "qemu/module.h"
- #include "qemu/option.h"
-@@ -41,6 +42,15 @@ struct VFIOAPDevice {
-     EventNotifier cfg_notifier;
- };
+@@ -10,6 +10,7 @@
+  * directory.
+  */
  
-+typedef struct APConfigChgEvent {
-+    QTAILQ_ENTRY(APConfigChgEvent) next;
-+} APConfigChgEvent;
-+
-+static QTAILQ_HEAD(, APConfigChgEvent) cfg_chg_events =
-+    QTAILQ_HEAD_INITIALIZER(cfg_chg_events);
-+
-+static QemuMutex cfg_chg_events_lock;
-+
- OBJECT_DECLARE_SIMPLE_TYPE(VFIOAPDevice, VFIO_AP_DEVICE)
- 
- static void vfio_ap_compute_needs_reset(VFIODevice *vdev)
-@@ -74,12 +84,19 @@ static void vfio_ap_req_notifier_handler(void *opaque)
- 
- static void vfio_ap_cfg_chg_notifier_handler(void *opaque)
- {
-+    APConfigChgEvent *cfg_chg_event;
-     VFIOAPDevice *vapdev = opaque;
- 
-     if (!event_notifier_test_and_clear(&vapdev->cfg_notifier)) {
-         return;
-     }
- 
-+    cfg_chg_event = g_new0(APConfigChgEvent, 1);
-+
-+    WITH_QEMU_LOCK_GUARD(&cfg_chg_events_lock) {
-+        QTAILQ_INSERT_TAIL(&cfg_chg_events, cfg_chg_event, next);
-+    }
-+
-     css_generate_css_crws(0);
++#include <stdbool.h>
+ #include "qemu/osdep.h"
+ #include CONFIG_DEVICES /* CONFIG_IOMMUFD */
+ #include <linux/vfio.h>
+@@ -101,6 +102,38 @@ static void vfio_ap_cfg_chg_notifier_handler(void *opaque)
  
  }
+ 
++int ap_chsc_sei_nt0_get_event(void *res)
++{
++    ChscSeiNt0Res *nt0_res  = (ChscSeiNt0Res *)res;
++    APConfigChgEvent *cfg_chg_event;
++
++    WITH_QEMU_LOCK_GUARD(&cfg_chg_events_lock) {
++        if (QTAILQ_EMPTY(&cfg_chg_events)) {
++            return EVENT_INFORMATION_NOT_STORED;
++        }
++
++        cfg_chg_event = QTAILQ_FIRST(&cfg_chg_events);
++        QTAILQ_REMOVE(&cfg_chg_events, cfg_chg_event, next);
++    }
++
++    memset(nt0_res, 0, sizeof(*nt0_res));
++    g_free(cfg_chg_event);
++    nt0_res->flags |= PENDING_EVENT_INFO_BITMASK;
++    nt0_res->length = sizeof(ChscSeiNt0Res);
++    nt0_res->code = NT0_RES_RESPONSE_CODE;
++    nt0_res->nt = NT0_RES_NT_DEFAULT;
++    nt0_res->rs = NT0_RES_RS_AP_CHANGE;
++    nt0_res->cc = NT0_RES_CC_AP_CHANGE;
++
++    return EVENT_INFORMATION_STORED;
++}
++
++bool ap_chsc_sei_nt0_have_event(void)
++{
++    QEMU_LOCK_GUARD(&cfg_chg_events_lock);
++    return !QTAILQ_EMPTY(&cfg_chg_events);
++}
++
+ static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+                                           unsigned int irq, Error **errp)
+ {
+@@ -197,6 +230,13 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
+     VFIODevice *vbasedev = &vapdev->vdev;
+ 
++    static bool lock_initialized;
++
++    if (!lock_initialized) {
++        qemu_mutex_init(&cfg_chg_events_lock);
++        lock_initialized = true;
++    }
++
+     if (!vfio_device_get_name(vbasedev, errp)) {
+         return;
+     }
+diff --git a/include/hw/s390x/ap-bridge.h b/include/hw/s390x/ap-bridge.h
+index 470e439a98..7efc52928d 100644
+--- a/include/hw/s390x/ap-bridge.h
++++ b/include/hw/s390x/ap-bridge.h
+@@ -16,4 +16,43 @@
+ 
+ void s390_init_ap(void);
+ 
++typedef struct ChscSeiNt0Res {
++    uint16_t length;
++    uint16_t code;
++    uint8_t reserved1;
++    uint16_t reserved2;
++    uint8_t nt;
++#define PENDING_EVENT_INFO_BITMASK 0x80;
++    uint8_t flags;
++    uint8_t reserved3;
++    uint8_t rs;
++    uint8_t cc;
++} QEMU_PACKED ChscSeiNt0Res;
++
++#define NT0_RES_RESPONSE_CODE 1
++#define NT0_RES_NT_DEFAULT    0
++#define NT0_RES_RS_AP_CHANGE  5
++#define NT0_RES_CC_AP_CHANGE  3
++
++#define EVENT_INFORMATION_NOT_STORED 1
++#define EVENT_INFORMATION_STORED     0
++
++/**
++ * ap_chsc_sei_nt0_get_event - Retrieve the next pending AP config
++ * change event
++ * @res: Pointer to a ChscSeiNt0Res struct to be filled with event
++ * data
++ *
++ * This function checks for any pending AP config change events and,
++ * if present, populates the provided response structure with the
++ * appropriate SEI NT0 fields.
++ *
++ * Return:
++ *   EVENT_INFORMATION_STORED - An event was available and written to @res
++ *   EVENT_INFORMATION_NOT_STORED - No event was available
++ */
++int ap_chsc_sei_nt0_get_event(void *res);
++
++bool ap_chsc_sei_nt0_have_event(void);
++
+ #endif
 -- 
 2.48.1
 
