@@ -2,96 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0CBAD268C
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 21:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC882AD26AE
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 21:25:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOhw4-0006QW-NA; Mon, 09 Jun 2025 15:13:32 -0400
+	id 1uOi6F-0007w5-TC; Mon, 09 Jun 2025 15:24:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOhw1-0006PX-Ag
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 15:13:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOhvx-0000ri-L0
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 15:13:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749496404;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=H+0dxBgcrJD05UEZ9RtM2gpVlmr//hQAVm1OfgwPSoM=;
- b=JEFB8qyp0p5E3ONPgMTDRmDpu8xZ8jClMwbzPw2go8Lu7TEpeUQuZVKPwZFN61KrSsaHaC
- iOWmq6U6Bky9uutxNP8ukuaAnVMZn4kBickA5Ll1SFNubrCapNu6UvPTDV6smc0R85FRmR
- uKrBPo8+c6l1afrwK4N0jaCAQPtg1Ns=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-573-IIl2SZHEPYGg_vaVI7c6hg-1; Mon, 09 Jun 2025 15:13:23 -0400
-X-MC-Unique: IIl2SZHEPYGg_vaVI7c6hg-1
-X-Mimecast-MFC-AGG-ID: IIl2SZHEPYGg_vaVI7c6hg_1749496403
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6fb1c6b5ea7so21570146d6.0
- for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 12:13:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1uOi64-0007sz-Tw
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 15:23:52 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1uOi5y-0002Qs-06
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 15:23:51 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-879d2e419b9so3974622a12.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 12:23:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1749497023; x=1750101823; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qxWMjtr1fM1T4IMQK/JrfZ1AeXTPMKTKhrkuHqf2sac=;
+ b=BnGZuZAK0a9RYLvpFEjeR+LNJwoKsm0koI4BIbleeuoEUf6YmC+MmkKQR1jSYAUVkx
+ I/Yul2cQTBfuM66dBTSX4zQlEmo8ooC7cJFu3B8GdWDrZt/a9EqsTO87hvDEBCrh7pTF
+ 2Y+4DLKZaZpId87ZHQFa44sb+/SlIPVC/CTp76/UHw4jn+09lWKT3lUWm689YCY5S2NG
+ 8jbeshJglt4WHbMN7zWf2bbmcUR8fIGSsP67vhpzZ+hS5EyDa7pAwYsNfXBfOzzX2ZAF
+ D+605J/uTVC4JUgSbLCph8B7OVJf2YWgdKhlROC+IilpsNGwOS7FKFC1iV6N0rZER9Kc
+ 8ogQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749496402; x=1750101202;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=H+0dxBgcrJD05UEZ9RtM2gpVlmr//hQAVm1OfgwPSoM=;
- b=nDxUzZlWA+4QZPXV+BrmltFuiB8VgicnVZDQC81ehVtFON90tBnBD479wtBcJ70RXx
- ETsJ4pieoo9mrphhgCoGofuFYGwc42FP/aguKEIHGaBeUWIlJMyqMCaZAlM4sGfa6hUB
- GsWAhJtEfe1ZhHmyFS3hWc9xPrXu0yc9XFpRQ/bh7BT/aBo0P7MZc0fmDYdz0gJVbN9W
- QJ0cnuLjTpkS9oebvFNg33WUBpT3rJF4MnCvY1sBWohkp9H0lFzAJCsq0KtrrlAz/kSa
- boqEvvl9h4ierksIQHH/JEyd36I3q+gpL1j1wx+mTxAkZDOGhSueEtqmQ8vhRUnE/314
- 9Hgg==
-X-Gm-Message-State: AOJu0YxRHBYn/Z22cDv6ND4jUWZgFKaoLqDqCcWIlyEyMDeUAFtdPmRo
- UE01EIyNmyCdryGsRCuuffiZA+A86AHFAjgKaFmblg5tMIbwWKcfviviLEdKvxfdVxOrYnrj5nS
- KrYhrv0ny7oX6sW7Ocklw+yVLRwUEcp6vZJQ+FhuXi91CghsGS9e1Mt9mjHSL/Cn7rPrIDXQH/k
- xsjtTFzOBBX+HkuC23NLeW3BUvfKHywV6iY9ujQQ==
-X-Gm-Gg: ASbGncvtHr5u+IrQKtLN3HqPOGtlBDBkxyI51OKY7DuwDnee4xBMPYwpjyunGuuiPC/
- 2wX+sQt88CLjKkJX62MGAB7rqOedItPUNQbd6Ua0TFFXkeeV1VI1oF86exNMkC8MrfdfNmhuudh
- s4Wjj7ybKryXTmLOrKet7saqvjFhlnkKral8uKfDc9OfNAHC2XAoon2Q/dvua6KVbPi0CpJQZNu
- 4WJcrzT56/nkyW1M5kqKpzoMHcwJoNTP17W3S/ITpRBFaDFKSpyEChyjDghvxedqIhZisOhW15L
- iBjDkfjhVZXhjQ==
-X-Received: by 2002:a05:6214:1d02:b0:6fa:c45e:34cb with SMTP id
- 6a1803df08f44-6fb08f4f424mr220899166d6.5.1749496402457; 
- Mon, 09 Jun 2025 12:13:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFSfmD8FfGk6IDmZYYwqE/naqggarJRNB/qS7CjmEcJuWUkdH70aGMZQ0vtqtwML4KUd8VpjQ==
-X-Received: by 2002:a05:6214:1d02:b0:6fa:c45e:34cb with SMTP id
- 6a1803df08f44-6fb08f4f424mr220898706d6.5.1749496401879; 
- Mon, 09 Jun 2025 12:13:21 -0700 (PDT)
-Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6fb09b1cc24sm55178856d6.72.2025.06.09.12.13.18
+ d=1e100.net; s=20230601; t=1749497023; x=1750101823;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qxWMjtr1fM1T4IMQK/JrfZ1AeXTPMKTKhrkuHqf2sac=;
+ b=TxboqzONWSpHsLvlbRPlJ3ic5QL7irnDIAL8WTHVPjZFcXDe4npg4T7bEcO5e91AqV
+ wG7INvDTh0gCBS9X/gLR+d0jttGG8o+tQ4q+Rx//sxPYMW393MEFJpwl1oB9qFDO0jv9
+ BcOOLtyvk9mhR4ApbnhL56bSGU6Gooraa26kE8Glc3BmK6UnwBz8nGirezecwVZWsciN
+ p6UPoTqn8h6oKcLy7TRUfLLxyrUcU0rvP2KwEk60lJU82R/64eXdkVzKG5YmRO49uuuf
+ URPIY2nozujJxpnKhfwGg4iCZ+PYiAs6IRmCGXkJKLg7rAt46VWgY+L3ZVtwA1M2SgRr
+ HlqA==
+X-Gm-Message-State: AOJu0YzMoRwcKWOsaDMDK83HX9A4iNZlIwQzD6oRgK5ghjay2wXWfVth
+ lMrXjGcxBUyF4bDWVYhMuvYT9eH4eu980UET40fGBk4B6TDRHZI3OuoYGktuap0L
+X-Gm-Gg: ASbGncsiihVrx9K6rMBwXTL4GA3J+1tAU54JBrYK+ugYPtLcIWY8XEtl1IY6TmaYPi3
+ MbDslPDXRAZKS6GesBzVuP6LnQTaXiRmWSW9sMyBK9UOkzTiag82iZILPB5yVtkzT32Q5mNlVXo
+ K4RPti3rCsbnyoXic33a8JFYnKIg9vSoIDQHaciaps9y8dHKcjWkfCc7yRmilN/iFrOHvXZ9af7
+ +G9fs9nD8WyyB5t3iNNRtmTu0/5z6ItJ3wL4+zvmF17jtWL7T2y2O/GS7X567LathfOsOJPyLAx
+ JkfbVRpmjklxVhICcwyrYJNLHlr6ge6a63UvcxvyU5cpNbHRtUQRQLfM3YpfjQ==
+X-Google-Smtp-Source: AGHT+IF8Wzpvy1cvLHw29iL3xD7M4sPYr3D05VpqjSC/+OlgRM7KCvhdwjv2naK56fUCOGX7Xlq6iQ==
+X-Received: by 2002:a17:90b:1d43:b0:311:c970:c9bc with SMTP id
+ 98e67ed59e1d1-31347077300mr20625274a91.30.1749497023449; 
+ Mon, 09 Jun 2025 12:23:43 -0700 (PDT)
+Received: from shemhazi.lan ([50.46.174.34]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-3134b044ef2sm6057658a91.3.2025.06.09.12.23.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Jun 2025 12:13:19 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
+ Mon, 09 Jun 2025 12:23:43 -0700 (PDT)
+From: Rowan Hart <rowanbhart@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Alexey Perevalov <a.perevalov@samsung.com>,
- Juraj Marcin <jmarcin@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>, peterx@redhat.com,
- Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 13/13] migration/postcopy: blocktime allows track / report
- non-vCPU faults
-Date: Mon,  9 Jun 2025 15:12:59 -0400
-Message-ID: <20250609191259.9053-14-peterx@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
+ Rowan Hart <rowanbhart@gmail.com>
+Subject: [PATCH v10 0/8] Add additional plugin API functions to read and write
+ memory and registers
+Date: Mon,  9 Jun 2025 12:23:34 -0700
+Message-ID: <20250609192342.316156-1-rowanbhart@gmail.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250609191259.9053-1-peterx@redhat.com>
-References: <20250609191259.9053-1-peterx@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,242 +103,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When used to report page fault latencies, the blocktime feature can be
-almost useless when KVM async page fault is enabled, because in most cases
-such remote fault will kickoff async page faults, then it's not trackable
-from blocktime layer.
+This patch series adds several new API functions focused on enabling use
+cases around reading and writing guest memory from QEMU plugins. To support
+these new APIs, some utility functionality around retrieving information about
+address spaces is added as well.
 
-After all these recent rewrites to blocktime layer, it's finally so easy to
-also support tracking non-vCPU faults.  It'll be even faster if we could
-always index fault records with TIDs, unfortunately we need to maintain the
-blocktime API which report things in vCPU indexes.
+The new qemu_plugin_write_register utilizes gdb_write_register, which is now
+declared in gdbstub.h for this purpose instead of being static.
 
-Of course this can work not only for kworkers, but also any guest accesses
-that may reach a missing page, for example, very likely when in the QEMU
-main thread too (and all other threads whenever applicable).
+qemu_plugin_write_memory_vaddr utilizes cpu_memory_rw_debug much the same as
+the existing read_memory_vaddr function does.
 
-In this case, we don't care about "how long the threads are blocked", but
-we only care about "how long the fault will be resolved".
+The read and write_hwaddr functions are the most different. These functions
+use address_space_rw, which works well in most cases. There is an important
+caveat that for writes, the page being written will be set dirty by the
+write operation. This dirty setting requires locking the page range,
+which can contend with an already held lock in page_collection_lock
+when called in a tb translate callback with a write to the instruction
+memory in the tb. The doc comments warn against doing this, and it's unlikely
+anyone would want to do this.
 
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- qapi/migration.json                   |  7 +++
- migration/migration-hmp-cmds.c        |  5 +++
- migration/postcopy-ram.c              | 64 +++++++++++++++++++++------
- tests/qtest/migration/migration-qmp.c |  1 +
- migration/trace-events                |  2 +-
- 5 files changed, 64 insertions(+), 15 deletions(-)
+I've also added two test plugins: one that implements a simple hypercall
+interface that guest code can use to communicate with the plugin in a
+structured way with a test to ensure that this hypercall works and writing
+virtual memory works. And one that implements a simple patch utility to patch
+memory at runtime. The test for the second plugin ensures the patch applies
+successfully to instruction memory, and can use both hw and vaddr methods.
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index e95b7402cb..cc680dda46 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -247,6 +247,12 @@
- #     this is the per-vCPU statistics.  This is only present when the
- #     postcopy-blocktime migration capability is enabled.  (Since 10.1)
- #
-+# @postcopy-non-vcpu-latency: average remote page fault latency for all
-+#     faults happend in non-vCPU threads (in us).  It has the same
-+#     definition of @postcopy-latency but this only provides statistics to
-+#     non-vCPU faults.  This is only present when the postcopy-blocktime
-+#     migration capability is enabled.  (Since 10.1)
-+#
- # @socket-address: Only used for tcp, to know what the real port is
- #     (Since 4.0)
- #
-@@ -288,6 +294,7 @@
-            '*postcopy-vcpu-blocktime': ['uint32'],
-            '*postcopy-latency': 'uint64',
-            '*postcopy-vcpu-latency': ['uint64'],
-+           '*postcopy-non-vcpu-latency': 'uint64',
-            '*socket-address': ['SocketAddress'],
-            '*dirty-limit-throttle-time-per-round': 'uint64',
-            '*dirty-limit-ring-full-time': 'uint64'} }
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 600b0f8071..4445d6404f 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -80,6 +80,11 @@ static void migration_dump_blocktime(Monitor *mon, MigrationInfo *info)
-                        info->postcopy_latency);
-     }
- 
-+    if (info->has_postcopy_non_vcpu_latency) {
-+        monitor_printf(mon, "Postcopy non-vCPU Latencies (us): %" PRIu64 "\n",
-+                       info->postcopy_non_vcpu_latency);
-+    }
-+
-     if (info->has_postcopy_vcpu_latency) {
-         uint64List *item = info->postcopy_vcpu_latency;
-         int count = 0;
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index fe0c2ce225..23332ef3dd 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -192,6 +192,8 @@ typedef struct PostcopyBlocktimeContext {
-     GHashTable *tid_to_vcpu_hash;
-     /* Count of non-vCPU faults.  This is only for debugging purpose. */
-     uint64_t non_vcpu_faults;
-+    /* total blocktime when a non-vCPU thread is stopped */
-+    uint64_t non_vcpu_blocktime_total;
- 
-     /*
-      * Handler for exit event, necessary for
-@@ -203,7 +205,10 @@ typedef struct PostcopyBlocktimeContext {
- typedef struct {
-     /* The time the fault was triggered */
-     uint64_t fault_time;
--    /* The vCPU index that was blocked */
-+    /*
-+     * The vCPU index that was blocked, when cpu==-1, it means it's a
-+     * fault from non-vCPU threads.
-+     */
-     int cpu;
- } BlocktimeVCPUEntry;
- 
-@@ -344,6 +349,12 @@ void fill_destination_postcopy_migration_info(MigrationInfo *info)
-         QAPI_LIST_PREPEND(list_latency, latency);
-     }
- 
-+    latency_total += bc->non_vcpu_blocktime_total;
-+    faults += bc->non_vcpu_faults;
-+
-+    info->has_postcopy_non_vcpu_latency = true;
-+    info->postcopy_non_vcpu_latency = bc->non_vcpu_faults ?
-+        (bc->non_vcpu_blocktime_total / bc->non_vcpu_faults) : 0;
-     info->has_postcopy_blocktime = true;
-     info->postcopy_blocktime = (uint32_t)(bc->total_blocktime / 1000);
-     info->has_postcopy_vcpu_blocktime = true;
-@@ -982,7 +993,10 @@ static uint64_t get_current_us(void)
-     return (uint64_t)qemu_clock_get_us(QEMU_CLOCK_REALTIME);
- }
- 
--/* Inject an (cpu, fault_time) entry into the database, using addr as key */
-+/*
-+ * Inject an (cpu, fault_time) entry into the database, using addr as key.
-+ * When cpu==-1, it means it's a non-vCPU fault.
-+ */
- static void blocktime_fault_inject(PostcopyBlocktimeContext *ctx,
-                                    uintptr_t addr, int cpu, uint64_t time)
- {
-@@ -1065,9 +1079,17 @@ void mark_postcopy_blocktime_begin(uintptr_t addr, uint32_t ptid,
-         /* Making sure it won't overflow - it really should never! */
-         assert(dc->vcpu_faults_current[cpu] <= 255);
-     } else {
--        /* We do not support non-vCPU thread tracking yet */
-+        /*
-+         * For non-vCPU thread faults, we don't care about tid or cpu index
-+         * or time the thread is blocked (e.g., a kworker trying to help
-+         * KVM when async_pf=on is OK to be blocked and not affect guest
-+         * responsiveness), but we care about latency.  Track it with
-+         * cpu=-1.
-+         *
-+         * Note that this will NOT affect blocktime reports on vCPU being
-+         * blocked, but only about system-wide latency reports.
-+         */
-         dc->non_vcpu_faults++;
--        return;
-     }
- 
-     blocktime_fault_inject(dc, addr, cpu, current_us);
-@@ -1077,6 +1099,7 @@ typedef struct {
-     PostcopyBlocktimeContext *ctx;
-     uint64_t current_us;
-     int affected_cpus;
-+    int affected_non_cpus;
- } BlockTimeVCPUIter;
- 
- static void blocktime_cpu_list_iter_fn(gpointer data, gpointer user_data)
-@@ -1084,6 +1107,7 @@ static void blocktime_cpu_list_iter_fn(gpointer data, gpointer user_data)
-     BlockTimeVCPUIter *iter = user_data;
-     PostcopyBlocktimeContext *ctx = iter->ctx;
-     BlocktimeVCPUEntry *entry = data;
-+    uint64_t time_passed;
-     int cpu = entry->cpu;
- 
-     /*
-@@ -1091,17 +1115,27 @@ static void blocktime_cpu_list_iter_fn(gpointer data, gpointer user_data)
-      * later than when it was faulted.
-      */
-     assert(iter->current_us >= entry->fault_time);
-+    time_passed = iter->current_us - entry->fault_time;
- 
--    /*
--     * If we resolved all pending faults on one vCPU due to this page
--     * resolution, take a note.
--     */
--    if (--ctx->vcpu_faults_current[cpu] == 0) {
--        ctx->vcpu_blocktime_total[cpu] += iter->current_us - entry->fault_time;
--        iter->affected_cpus += 1;
-+    if (cpu >= 0) {
-+        /*
-+         * If we resolved all pending faults on one vCPU due to this page
-+         * resolution, take a note.
-+         */
-+        if (--ctx->vcpu_faults_current[cpu] == 0) {
-+            ctx->vcpu_blocktime_total[cpu] += time_passed;
-+            iter->affected_cpus += 1;
-+        }
-+        trace_postcopy_blocktime_end_one(cpu, ctx->vcpu_faults_current[cpu]);
-+    } else {
-+        iter->affected_non_cpus++;
-+        ctx->non_vcpu_blocktime_total += time_passed;
-+        /*
-+         * We do not maintain how many pending non-vCPU faults because we
-+         * do not care about blocktime, only latency.
-+         */
-+        trace_postcopy_blocktime_end_one(-1, 0);
-     }
--
--    trace_postcopy_blocktime_end_one(cpu, ctx->vcpu_faults_current[cpu]);
- }
- 
- /*
-@@ -1140,6 +1174,7 @@ static void mark_postcopy_blocktime_end(uintptr_t addr)
-     BlockTimeVCPUIter iter = {
-         .current_us = get_current_us(),
-         .affected_cpus = 0,
-+        .affected_non_cpus = 0,
-         .ctx = dc,
-     };
-     gpointer key = (gpointer)addr;
-@@ -1173,7 +1208,8 @@ static void mark_postcopy_blocktime_end(uintptr_t addr)
-     }
-     dc->smp_cpus_down -= iter.affected_cpus;
- 
--    trace_postcopy_blocktime_end(addr, iter.current_us, iter.affected_cpus);
-+    trace_postcopy_blocktime_end(addr, iter.current_us, iter.affected_cpus,
-+                                 iter.affected_non_cpus);
- }
- 
- static void postcopy_pause_fault_thread(MigrationIncomingState *mis)
-diff --git a/tests/qtest/migration/migration-qmp.c b/tests/qtest/migration/migration-qmp.c
-index 1a5ab2d229..67a67d4bd6 100644
---- a/tests/qtest/migration/migration-qmp.c
-+++ b/tests/qtest/migration/migration-qmp.c
-@@ -361,6 +361,7 @@ void read_blocktime(QTestState *who)
-     g_assert(qdict_haskey(rsp_return, "postcopy-vcpu-blocktime"));
-     g_assert(qdict_haskey(rsp_return, "postcopy-latency"));
-     g_assert(qdict_haskey(rsp_return, "postcopy-vcpu-latency"));
-+    g_assert(qdict_haskey(rsp_return, "postcopy-non-vcpu-latency"));
-     qobject_unref(rsp_return);
- }
- 
-diff --git a/migration/trace-events b/migration/trace-events
-index a36a78f01a..706db97def 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -310,7 +310,7 @@ postcopy_preempt_thread_entry(void) ""
- postcopy_preempt_thread_exit(void) ""
- postcopy_blocktime_tid_cpu_map(int cpu, uint32_t tid) "cpu: %d, tid: %u"
- postcopy_blocktime_begin(uint64_t addr, uint64_t time, int cpu, bool exists) "addr: 0x%" PRIx64 ", time: %" PRIu64 ", cpu: %d, exist: %d"
--postcopy_blocktime_end(uint64_t addr, uint64_t time, int affected_cpu) "addr: 0x%" PRIx64 ", time: %" PRIu64 ", affected_cpus: %d"
-+postcopy_blocktime_end(uint64_t addr, uint64_t time, int affected_cpu, int affected_non_cpus) "addr: 0x%" PRIx64 ", time: %" PRIu64 ", affected_cpus: %d, affected_non_cpus: %d"
- postcopy_blocktime_end_one(int cpu, uint8_t left_faults) "cpu: %d, left_faults: %" PRIu8
- 
- # exec.c
+For v3, I've had a few comments from the last submission that I've addressed,
+and some that I haven't for one reason or another:
+
+- Enforce QEMU_PLUGIN_CB_ flags in register read/write operations: done!
+- Fix my commit messages and add long messages describing commits: done!
+- Un-expose AS internals: done! Functions operate on current vCPU, current AS.
+- Clean up use of current_cpu: done!
+- Make functions take a vcpu_idx: not done. May revisit but it allows footguns.
+  Even for translation, seems best to not do this now. We can easily add _vcpu
+  versions of these functions in the future if we change our minds!
+
+For v5, I've just updated the enforcement of the QEMU_PLUGIN_CB_ flags to just
+use immediate stores, which simplifies the implementation quite a lot and
+should be more efficient too. Thanks Pierrick for the suggestion!
+
+v6 is a formatting pass, I left some whitespace that needed removal, some
+license text was wrong, and so forth.
+
+v8 reverts a mistake I made extending the size of arrays of TCGHelperInfo
+structs, as I misunderstood their sizes. It preserves adding an explicit
+zero as the last entry for clarity, however.
+
+v9 fixes qemu_plugin_read_register to return -1 on parameter or flag state
+error instead of 0.
+
+In v10, I relaxed the restriction on when the register r/w functions can be
+called, allowing all them to be used from any callback where the CPU is not
+currently executing, with additional notes in the documentation for exceptions
+(atexit and flush, which do not operate on a specific CPU and in which
+current_cpu is not set).
+
+Rowan Hart (1):
+  plugins: Add enforcement of QEMU_PLUGIN_CB flags in register R/W
+    callbacks
+
+novafacing (7):
+  gdbstub: Expose gdb_write_register function to consumers of gdbstub
+  plugins: Add register write API
+  plugins: Add memory virtual address write API
+  plugins: Add memory hardware address read/write API
+  plugins: Add patcher plugin and test
+  plugins: Add hypercalls plugin and test
+  plugins: Update plugin version and add notes
+
+ accel/tcg/plugin-gen.c                        |  30 +
+ gdbstub/gdbstub.c                             |   2 +-
+ include/exec/gdbstub.h                        |  14 +
+ include/hw/core/cpu.h                         |   1 +
+ include/qemu/plugin.h                         |   6 +
+ include/qemu/qemu-plugin.h                    | 176 +++++-
+ plugins/api.c                                 | 135 ++++-
+ plugins/core.c                                |  45 ++
+ tests/tcg/Makefile.target                     |   2 +
+ tests/tcg/plugins/hypercalls.c                | 547 ++++++++++++++++++
+ tests/tcg/plugins/meson.build                 |   2 +-
+ tests/tcg/plugins/patch.c                     | 297 ++++++++++
+ tests/tcg/x86_64/Makefile.softmmu-target      |  36 +-
+ tests/tcg/x86_64/system/hypercalls-target.c   |  40 ++
+ tests/tcg/x86_64/system/patch-target.c        |  27 +
+ .../tcg/x86_64/system/validate-hypercalls.py  |  40 ++
+ tests/tcg/x86_64/system/validate-patch.py     |  39 ++
+ 17 files changed, 1416 insertions(+), 23 deletions(-)
+ create mode 100644 tests/tcg/plugins/hypercalls.c
+ create mode 100644 tests/tcg/plugins/patch.c
+ create mode 100644 tests/tcg/x86_64/system/hypercalls-target.c
+ create mode 100644 tests/tcg/x86_64/system/patch-target.c
+ create mode 100755 tests/tcg/x86_64/system/validate-hypercalls.py
+ create mode 100755 tests/tcg/x86_64/system/validate-patch.py
+
 -- 
 2.49.0
 
