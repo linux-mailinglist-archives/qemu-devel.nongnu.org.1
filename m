@@ -2,74 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1E1AD21B7
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 17:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDBBAD224A
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 17:22:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOe26-0006Pr-JK; Mon, 09 Jun 2025 11:03:30 -0400
+	id 1uOeIz-0002Gx-6C; Mon, 09 Jun 2025 11:20:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uOe1w-0006Ny-L0
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:03:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uOe1u-0002v7-5w
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:03:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749481397;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ebaWM8LDMAhvO11U8ObZgocVzRhMNHWfUiUufJWdeVY=;
- b=TinAQK+WeCZkcdALQvuxom/D/FfCgE8xLjnDvnekeEo4hXcKb6OSCN4Bdzx9f0K+uA7E9V
- G867pipGgzCOLdBBkWy4aNJFDq/nul8luq1rpMp71dkDmnXyWtgYgiaHiYoSFDiBRdLHgx
- KGQcsyOfLijX0iMV0UNHbDq2FJe/sL4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-445-5ekLP5UdON-vIfWTN2_bhg-1; Mon,
- 09 Jun 2025 11:03:13 -0400
-X-MC-Unique: 5ekLP5UdON-vIfWTN2_bhg-1
-X-Mimecast-MFC-AGG-ID: 5ekLP5UdON-vIfWTN2_bhg_1749481392
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 140C31800298; Mon,  9 Jun 2025 15:03:12 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.92])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9FBC518003FC; Mon,  9 Jun 2025 15:03:11 +0000 (UTC)
-Date: Mon, 9 Jun 2025 11:03:10 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Brian Song <hibriansong@gmail.com>
-Subject: Re: [PATCH v2 12/21] block: Move qemu_fcntl_addfl() into osdep.c
-Message-ID: <20250609150310.GF29452@fedora>
-References: <20250604132813.359438-1-hreitz@redhat.com>
- <20250604132813.359438-13-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uOeIw-0002Gb-JX
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:20:54 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uOeIu-0005EC-Uy
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:20:54 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-ad51ba0af48so1023384666b.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 08:20:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1749482450; x=1750087250; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RoJBL9/VH36x7L7yxNUA09PGKcLBXC7kOFv0XLXZ1Uw=;
+ b=IcwYeBma9ZROPxaBcK6Hcg3vQDUqboSkPqwtBq3FOVusg2c5wCUmtaFvB7lAMD5Bby
+ iXABk6l+5ecPyqS9rLQThft8Ti/NfgDrKJwq0aF4cRbEb30a2SqemyPbNe/WWBKebb3d
+ SwTfQMV0yPZfEfDQBtp3BN0UToNTeLtDoSwFvskXdksEB1pCs/yMlobLVTl6pXVo1rEm
+ GhEFtiQK1Q+8JsEBroNo3MHnHDYIaCw4sLGDGN1tonYWMI5iGoY3K6viO84NG2nADr1t
+ PwryPfeYpTdKidC0aDFiOLb5qHLCi7FbtzIwEmYeNOiXNM1BLiYinHzuXRpZkHHc0/gC
+ LVTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749482450; x=1750087250;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=RoJBL9/VH36x7L7yxNUA09PGKcLBXC7kOFv0XLXZ1Uw=;
+ b=Xxdk9N6ztQxWRcTjN1/HS3pWagTrALD7UyRvebDNZP4fdYrNTwmNK0xRl44JSDs9M8
+ 0Yjn8OtaCcMXFuq1eSb9gN24KRr03D1ZOLFi+IyjR2oQzYvEy5fjwMDbVOvYyIyvGRxI
+ uek5kNpLvWlLkbHkH2Gl7Km9Y2XGfdaOF2/6LYi66PAC+EvW9dYMoxue/L7a40+0CBfN
+ cAxi5l0k+rALcdYnFA6Wfh3nY+9Up2ODhywcy2bIHj0q6Ayl8NFFZZrmzHFEDXsyAC+6
+ TSJrowvLb5kO1+kUgkzpBLmMJGVtEUd9akgACZFCxaEyCA1UtP3xQELo8hp5nkk9g2ee
+ VE+A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUvJJ2BcJ5ZweTO2dmB0FBrvUKDd6l1TMN4hTdxTo8zz/KrjZRSeZeqEgQInBXlr240ielAjxjGtGC9@nongnu.org
+X-Gm-Message-State: AOJu0YzJ67IFd5ozbi7esoiujN5hve0NjbOjDcTXgKUCE0H4G6Q1h0GN
+ jF/vgbwVBUbiTNO1k/AK6vyAMLLIWZTBOPyEbQ0SBXBQbo4VsR8VNsKsduEGAHbQYzQ=
+X-Gm-Gg: ASbGncvAtHdhpZi/rWN4TmShdpFwd21+56PoTOqU4CDFGuB9TaLXHVckS1Y9tzX/ut1
+ B1jgKN31oDvO/sXZNvX9d4aA73giYu0GkgofkkkA4AqfWc7DKZg1KjZiaw3UnLh/do01yY/uRdL
+ 3pGchj6iCFjwPceqE5wjbOQiz8cs7pOutCzI+Vv8ilbV1HehWcfXNCbBP2M2t7I7RhltiipsS/G
+ d+GJiEiByCGJRagQLob8rz6pGDcTEuLY1dGexNCnm0hlDyJdLaMKuWk8/KgfRp9nsErVTfsR8W2
+ CPnQ8Qn96oiViY1cgMioULdvnnirP4QBIQgkaVSAyKkf2KBQvOsMhRwbifk6aa0=
+X-Google-Smtp-Source: AGHT+IFqlmC+qud0pH413xd/2V3+GqO4o+Av7iF7f2pkxY41nByWHywUEKrcxAjaDXmIApwM6Nap2w==
+X-Received: by 2002:a17:907:7f03:b0:ad8:ace9:e280 with SMTP id
+ a640c23a62f3a-ade75f6263bmr29870466b.5.1749482450079; 
+ Mon, 09 Jun 2025 08:20:50 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ade1dc7c765sm571607466b.178.2025.06.09.08.20.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Jun 2025 08:20:49 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 849BE5F8A4;
+ Mon, 09 Jun 2025 16:20:48 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Rowan Hart <rowanbhart@gmail.com>
+Cc: Julian Ganz <neither@nut.email>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,  Eduardo Habkost
+ <eduardo@habkost.net>,  Yanan Wang <wangyanan55@huawei.com>,  Pierrick
+ Bouvier <pierrick.bouvier@linaro.org>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Zhao Liu <zhao1.liu@intel.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Alexandre Iooss
+ <erdnaxe@crans.org>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v9 3/9] plugins: Add enforcement of QEMU_PLUGIN_CB flags
+ in register R/W callbacks
+In-Reply-To: <CAE5MsNZG2S2s=bqJ_kAj=p65_mNf7s0UTpAN1vt75iwm2+YD8A@mail.gmail.com>
+ (Rowan Hart's message of "Mon, 9 Jun 2025 07:55:18 -0700")
+References: <20250608230819.3382527-1-rowanbhart@gmail.com>
+ <20250608230819.3382527-4-rowanbhart@gmail.com>
+ <20250609135636.22368-1-neither@nut.email>
+ <CAE5MsNZG2S2s=bqJ_kAj=p65_mNf7s0UTpAN1vt75iwm2+YD8A@mail.gmail.com>
+User-Agent: mu4e 1.12.11; emacs 30.1
+Date: Mon, 09 Jun 2025 16:20:48 +0100
+Message-ID: <87ikl5kkkv.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="R/sC28YuqQrhXtg8"
-Content-Disposition: inline
-In-Reply-To: <20250604132813.359438-13-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,161 +113,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Rowan Hart <rowanbhart@gmail.com> writes:
 
---R/sC28YuqQrhXtg8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>  However, it should be safe at least for a subset of those callbacks and
+>
+>  I believe there are very valid use-cases for allowing such usage. For
+>  example, we are currently working on a plugin API exposing traps. In
+>  those callbacks, users may want to peek at some registers such as
+>  "ecause" and "tval" (on RISC-V). We certainly will want to do so for the
+>  use-case we are pushing that API for.
+>
+>  We could add a QEMU_PLUGIN_CB flag parameter to the respective
+>  registration functions. But since they are not run from translated
+>  blocks but _outside_ that context, I feel they would just clutter the
+>  API without introducing any real benefit. That is, if there is no valid
+>  safety or correctness concern that I'm not aware of.
+>
+> This makes sense, I think we could just set QEMU_PLUGIN_CB_RW_REGS for th=
+ese callbacks if they're always called in a state
+> where the stated requirements are met (I think they are). This would avoi=
+d breaking compatibility while maintaining the
+> functionality. Same as you, I looked around and it seems like the vcpu_(i=
+nit|idle|exit) locations are definitely okay, I'll check
+> into the tb_trans callback, I'm not entirely sure about it.
 
-On Wed, Jun 04, 2025 at 03:28:04PM +0200, Hanna Czenczek wrote:
-> Move file-posix's helper to add a flag (or a set of flags) to an FD's
-> existing set of flags into osdep.c for other places to use.
->=20
-> Suggested-by: Eric Blake <eblake@redhat.com>
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->  include/qemu/osdep.h |  1 +
->  block/file-posix.c   | 17 +----------------
->  util/osdep.c         | 18 ++++++++++++++++++
->  3 files changed, 20 insertions(+), 16 deletions(-)
+It should be OK here too.
 
-I was curious if putting POSIX fcntl(2) in osdep.c would work on
-Windows. It does not:
+The CB_RW_REGS flags are only needed for callback from within the
+translated code - much like their cousins the TCG helpers. All register
+state should rectified if we are no longer running translated code -
+indeed currently it is rectified by the time we leave the translated
+block and before we start the next one.
 
-x86_64-w64-mingw32-gcc -m64 -Ilibqemuutil.a.p -I. -I.. -Iqapi -Itrace -Iui =
--Iui/shader -I/usr/x86_64-w64-mingw32/sys-root/mingw/include/glib-2.0 -I/us=
-r/x86_64-w64-mingw32/sys-root/mingw/lib/glib-2.0/include -fdiagnostics-colo=
-r=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O2 -g -fstack-protector-=
-strong -Wempty-body -Wendif-labels -Wexpansion-to-defined -Wformat-security=
- -Wformat-y2k -Wignored-qualifiers -Wimplicit-fallthrough=3D2 -Winit-self -=
-Wmissing-format-attribute -Wmissing-prototypes -Wnested-externs -Wold-style=
--declaration -Wold-style-definition -Wredundant-decls -Wshadow=3Dlocal -Wst=
-rict-prototypes -Wtype-limits -Wundef -Wvla -Wwrite-strings -Wno-missing-in=
-clude-dirs -Wno-psabi -Wno-shift-negative-value -iquote . -iquote /home/ste=
-fanha/qemu -iquote /home/stefanha/qemu/include -iquote /home/stefanha/qemu/=
-host/include/x86_64 -iquote /home/stefanha/qemu/host/include/generic -iquot=
-e /home/stefanha/qemu/tcg/i386 -mms-bitfields -mms-bitfields -mcx16 -msse2 =
--D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-alia=
-sing -fno-common -fwrapv -fno-pie -no-pie -ftrivial-auto-var-init=3Dzero -f=
-zero-call-used-regs=3Dused-gpr -mms-bitfields -mms-bitfields -pthread -mms-=
-bitfields -MD -MQ libqemuutil.a.p/util_osdep.c.obj -MF libqemuutil.a.p/util=
-_osdep.c.obj.d -o libqemuutil.a.p/util_osdep.c.obj -c ../util/osdep.c
-=2E./util/osdep.c: In function 'qemu_fcntl_addfl':
-=2E./util/osdep.c:625:13: error: implicit declaration of function 'fcntl' [=
--Wimplicit-function-declaration]
-  625 |     flags =3D fcntl(fd, F_GETFL);
-      |             ^~~~~
-=2E./util/osdep.c:625:13: error: nested extern declaration of 'fcntl' [-Wer=
-ror=3Dnested-externs]
-=2E./util/osdep.c:625:23: error: 'F_GETFL' undeclared (first use in this fu=
-nction)
-  625 |     flags =3D fcntl(fd, F_GETFL);
-      |                       ^~~~~~~
-=2E./util/osdep.c:625:23: note: each undeclared identifier is reported only=
- once for each function it appears in
-=2E./util/osdep.c:629:19: error: 'F_SETFL' undeclared (first use in this fu=
-nction)
-  629 |     if (fcntl(fd, F_SETFL, flags | flag) =3D=3D -1) {
-      |                   ^~~~~~~
-cc1: all warnings being treated as errors
+There are some edge cases when we handle exceptions but we should have
+fixed up any register state before we longjmp back to the start of the
+run loop.
 
->=20
-> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-> index 96fe51bc39..49b729edc1 100644
-> --- a/include/qemu/osdep.h
-> +++ b/include/qemu/osdep.h
-> @@ -774,6 +774,7 @@ static inline void qemu_reset_optind(void)
->  }
-> =20
->  int qemu_fdatasync(int fd);
-> +int qemu_fcntl_addfl(int fd, int flag);
-> =20
->  /**
->   * qemu_close_all_open_fd:
-> diff --git a/block/file-posix.c b/block/file-posix.c
-> index 9b5f08ccb2..045e94d54d 100644
-> --- a/block/file-posix.c
-> +++ b/block/file-posix.c
-> @@ -1047,21 +1047,6 @@ static int raw_handle_perm_lock(BlockDriverState *=
-bs,
->      return ret;
->  }
-> =20
-> -/* Sets a specific flag */
-> -static int fcntl_setfl(int fd, int flag)
-> -{
-> -    int flags;
-> -
-> -    flags =3D fcntl(fd, F_GETFL);
-> -    if (flags =3D=3D -1) {
-> -        return -errno;
-> -    }
-> -    if (fcntl(fd, F_SETFL, flags | flag) =3D=3D -1) {
-> -        return -errno;
-> -    }
-> -    return 0;
-> -}
-> -
->  static int raw_reconfigure_getfd(BlockDriverState *bs, int flags,
->                                   int *open_flags, uint64_t perm, Error *=
-*errp)
->  {
-> @@ -1100,7 +1085,7 @@ static int raw_reconfigure_getfd(BlockDriverState *=
-bs, int flags,
->          /* dup the original fd */
->          fd =3D qemu_dup(s->fd);
->          if (fd >=3D 0) {
-> -            ret =3D fcntl_setfl(fd, *open_flags);
-> +            ret =3D qemu_fcntl_addfl(fd, *open_flags);
->              if (ret) {
->                  qemu_close(fd);
->                  fd =3D -1;
-> diff --git a/util/osdep.c b/util/osdep.c
-> index 770369831b..ce5c6a7f59 100644
-> --- a/util/osdep.c
-> +++ b/util/osdep.c
-> @@ -613,3 +613,21 @@ int qemu_fdatasync(int fd)
->      return fsync(fd);
->  #endif
->  }
-> +
-> +/**
-> + * Set the given flag(s) (fcntl GETFL/SETFL) on the given FD, while reta=
-ining
-> + * other flags.
-> + */
-> +int qemu_fcntl_addfl(int fd, int flag)
-> +{
-> +    int flags;
-> +
-> +    flags =3D fcntl(fd, F_GETFL);
-> +    if (flags =3D=3D -1) {
-> +        return -errno;
-> +    }
-> +    if (fcntl(fd, F_SETFL, flags | flag) =3D=3D -1) {
-> +        return -errno;
-> +    }
-> +    return 0;
-> +}
-> --=20
-> 2.49.0
->=20
-
---R/sC28YuqQrhXtg8
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhG964ACgkQnKSrs4Gr
-c8iRMgf/WJSd6+2f8LrVdWTH5crT0UubctE2kLj4U2TD9dMPLMyy8YVNjPUM5jTm
-O+bJbWFCulh4gd7xp3B5xJIJjHTiNIeiKxA49s5Rpo2XWtsZL9LnKT7lc7YBQ3O/
-kRNcZojX/obOxdIL3Z3+G3NdFls/9a14BmCGKDY4Ffb6LfWuYZPLAi9E5VEh+51g
-UuaWSuUGUAUN0346k7JjpgnwMTb6IJznQ8++VFyp9JDJAn7SaqCTfEjT1/z/qbeO
-ERu1pdhjappNF4byFZ7d6IjSpBwx3ZuiH66mYCsYiPSr6jhraFVI8cimgkFkH69H
-ETls42TaYN7UU+uE87HPKUt38rqzOA==
-=+t5X
------END PGP SIGNATURE-----
-
---R/sC28YuqQrhXtg8--
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
