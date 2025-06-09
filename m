@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594F8AD266A
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 21:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02172AD2688
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 21:16:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOhwD-0006Us-Dt; Mon, 09 Jun 2025 15:13:41 -0400
+	id 1uOhw7-0006Qw-J6; Mon, 09 Jun 2025 15:13:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOhwB-0006Ug-Rv
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 15:13:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOhw5-0006Qm-Em
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 15:13:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOhw9-0000t1-SF
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 15:13:39 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOhw3-0000sr-Rj
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 15:13:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749496416;
+ s=mimecast20190719; t=1749496411;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=23L5yPZvHG4Cl7o3uwV6lHe0CI7eepSc2KOqycRd62o=;
- b=ecf9L0GoIairV+52xAvaIsg8leJiRp6EoTUjl9VxqE4vT3x91TW+8VD1SXVGAPKXMcvpm/
- 4mykBZlE/ue6ibxSh7b89UHQRQ+c/3dQfl0DsofmlQ3C2bixiqqr+tjV9pYBApu4SYQVos
- 4WKzs8zlExDFP15YdIgS4ZDEP/pvOjw=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iq7xbPIA+CJC8vrhFn6C8E+xdY4lZ0qyjDI51Wr01Ds=;
+ b=XpCSnjSa/gRdbEcnBKIwKm6cU1eD5+I9Kkb/Pho3yrofMG5bfPNgqJv5Nk1V3GCrJa7kfw
+ vy9+u5mXLaZvsdgqoSif9I5/FwO/dHbNC8UrWxak9e/BrJnE3Ci30WqrKNk89Tqqu+xeYK
+ /Ea4ADpln0wd7/s7THxpV9JOB+vFJmE=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-mvvtdy2bMtiJHXhAcf4-vw-1; Mon, 09 Jun 2025 15:13:34 -0400
-X-MC-Unique: mvvtdy2bMtiJHXhAcf4-vw-1
-X-Mimecast-MFC-AGG-ID: mvvtdy2bMtiJHXhAcf4-vw_1749496413
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6faca0f2677so130862716d6.1
- for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 12:13:34 -0700 (PDT)
+ us-mta-314-ps7BqtPTPeSuZVDqb3h4hg-1; Mon, 09 Jun 2025 15:13:30 -0400
+X-MC-Unique: ps7BqtPTPeSuZVDqb3h4hg-1
+X-Mimecast-MFC-AGG-ID: ps7BqtPTPeSuZVDqb3h4hg_1749496410
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4a6fb9bbbc9so50102201cf.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 12:13:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749496413; x=1750101213;
+ d=1e100.net; s=20230601; t=1749496409; x=1750101209;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=23L5yPZvHG4Cl7o3uwV6lHe0CI7eepSc2KOqycRd62o=;
- b=SKRqU7XxnGwN1wNT4ZS+XG2HMZDFeb8VMGu66S5LfCgLMjjUUf9gj4EhmP5XUQEsmd
- 4fe0/kKa1rHT2tjk7xH/EVXacVsFbd/iQJDis5dTv6v9fYaljYCmPm7ryv7+WYCrEs00
- tE+0kwjnTKv59ik9r6/K/Cw2wqNJSlLKEcN3C3ZkSYzzTrRsFKdEItnOC7EHw/hNDhkx
- 6CGbStV6ENIphbyVy+TBvwwDUayYY9lGQCqmbVVOVc6ON5gxIm/eiT480qMV+xVix08W
- dhQMZ6R7ptIqIAsVRC28xV+rS9119SSm8OPsChqFczO7mKvFng/6hOplNycydtL+rWzr
- RVAw==
-X-Gm-Message-State: AOJu0YzpYg/w6ZsjumKciGU8ZaKpG/delXodBfWu8B0LSodMZMmkQgLh
- Wj5r6P9dJZZnwyKJmzdll9nLDS7qnI8Kz2D6bmZsniyFhXS+pUeouCoAQ7uNqMX9GUcW873aPSo
- +xfZS0Ol96GCM22DBORmmquVA4Pt4pEvemprlTSgYx/s4g3864oEdENjzt8JRz+p40kFFRkMekL
- /Y2hZ9X9MPxPG3YJDa5v4BCJCUKYyVSHE4yWmXFw==
-X-Gm-Gg: ASbGncu4nERifnhC+ug/Hzy0chc91uyW6u5Y6PpOoLefdi7yuusvJoT4NhaLW/ZOHKJ
- xlJnVoCqwJFFRMWwqKTx5AKQbNjyvEph9u4zv58cCC/fGLM0ubJX8EBkAPN08/EpBv//IeldDbU
- qdkiK8DsUDu+lMTKfc4DbkDMUGudZmayTxrbpZIRVqkK2T6Qeo7P8INYKof8f+slMrfo2QxhIcu
- 9Uc7rI1+Zhn8kO4R+GNxC3XenNPCvxMT/mqAYdty5XuR9vAEt32r08AwiDjx32O8cbF/nXQg38t
- NvM=
-X-Received: by 2002:a05:6214:27ec:b0:6fa:c44f:2ae6 with SMTP id
- 6a1803df08f44-6fb09054ff9mr257225746d6.38.1749496412707; 
- Mon, 09 Jun 2025 12:13:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHF96GhhxhC92Zns2AttJG0MFbA1nfpHLr3jh80NrwM9NjgrLAy87gpg+uUg5Zm/RSUhFB9HQ==
-X-Received: by 2002:a05:6214:4106:b0:6fa:cb97:9722 with SMTP id
- 6a1803df08f44-6fb0903b447mr242966006d6.34.1749496396377; 
- Mon, 09 Jun 2025 12:13:16 -0700 (PDT)
+ bh=iq7xbPIA+CJC8vrhFn6C8E+xdY4lZ0qyjDI51Wr01Ds=;
+ b=Oa1pzDn0g2m+NTlFx4OFZn5eLPkz36VK996BGFJxwCYvrRy0LiCQUTuLzskJq+FNU4
+ b8Y8Nz12qDgYg9P11adb2j1Ewn/5+Lb74G56uswnbYBZP/0HIp9hBfFdrjOWz/mkKIwB
+ h+yKKaHgT7l+XGua5sAKJxr2MsRkPKmQbmGMLy+iNfaIjRMsmK4aoLnOHkiPvcjRC+Ex
+ tpgvMQvSsKLqjhi7IMsF+OQ6EyyMyfjnsqoMZENuPcEu43g8BDvc6ZX+0cOge76ihV17
+ oV/JKN9Zfh/IIJAnJD9Iw8CvwQriqN3pavKSIlIX5MYGV7ol6x8jR7Wui3xeaQxquMs+
+ 7AyQ==
+X-Gm-Message-State: AOJu0YzGOBrF38mN0gC1IJX6MHNaCnkAdwDtFq6DDitPxcqLYhSWXkYC
+ ychTPz1LTXMfpC6SFgWtvWCOpPfv4b6cYh6WtrtGVD09RDVyr85IEtRV7sOlTYoGRIP9z9zlb09
+ ZAQEcZyvdL/PMVHdtyYwxqyBkGNL1fDqfOkgJxTH36CkxHKlm8e7fqd+eYnnaevztKhBNCNcGN6
+ n0ZTSjkBMrUeVvTJOR4s10PhVgZBkZNWEsQVeN7w==
+X-Gm-Gg: ASbGnct8kYNGHv3ze1OqO8Czv8kRM6SOL5MDWVw5Renbi5g3tNlH2nWClYaNGo2g+1y
+ cgZbWiHfB3+EirdA2o2GTYZ+Nbcpw8N/FJjo/buglJ/ChtGbci62FaBPxVdXCNKgq8xJUsuHf1m
+ CK8vEfTA/LNJfNzYh6bVnT4H2hmlN4VtX9+VVrtm9YKyUKAm++6AZSvtbymHqZluEfvo89D8R3j
+ 1lukwP1uZ3xkNazCMRd6KfAYiQXEDTeTuG1KpuWnHeKYpkQI2fphLelc98THQ1qV8/+ui9ai7Tg
+ Gq8=
+X-Received: by 2002:a05:622a:5984:b0:4a4:2d7a:994b with SMTP id
+ d75a77b69052e-4a5b9a436c6mr293068441cf.19.1749496409255; 
+ Mon, 09 Jun 2025 12:13:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGVFP7RKaP8qjzzj/qm8SQhdvvZeGhwHLlxFYLVPRYHFLP1P6x/L+0ucwCY3M7uPzPpl+30XA==
+X-Received: by 2002:a05:6214:cc5:b0:6fa:ce21:cad with SMTP id
+ 6a1803df08f44-6fb08ff4381mr223557446d6.18.1749496397568; 
+ Mon, 09 Jun 2025 12:13:17 -0700 (PDT)
 Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6fb09b1cc24sm55178856d6.72.2025.06.09.12.13.15
+ 6a1803df08f44-6fb09b1cc24sm55178856d6.72.2025.06.09.12.13.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Jun 2025 12:13:15 -0700 (PDT)
+ Mon, 09 Jun 2025 12:13:17 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alexey Perevalov <a.perevalov@samsung.com>,
  Juraj Marcin <jmarcin@redhat.com>,
  "Dr . David Alan Gilbert" <dave@treblig.org>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 10/13] migration/postcopy: Cache the tid->vcpu mapping for
- blocktime
-Date: Mon,  9 Jun 2025 15:12:56 -0400
-Message-ID: <20250609191259.9053-11-peterx@redhat.com>
+Subject: [PATCH v2 11/13] migration/postcopy: Cleanup the total blocktime
+ accounting
+Date: Mon,  9 Jun 2025 15:12:57 -0400
+Message-ID: <20250609191259.9053-12-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250609191259.9053-1-peterx@redhat.com>
 References: <20250609191259.9053-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,153 +107,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Looking up the vCPU index for each fault can be expensive when there're
-hundreds of vCPUs.  Provide a cache for tid->vcpu instead with a hash
-table, then lookup from there.
+The variable vcpu_total_blocktime isn't easy to follow.  In reality, it
+wants to capture the case where all vCPUs are stopped, and now there will
+be some vCPUs starts running.
 
-When at it, add another counter to record how many non-vCPU faults it gets.
-For example, the main thread can also access a guest page that was missing.
-These kind of faults are not accounted by blocktime so far.
+The name now starts to conflict with vcpu_blocktime_total[], meanwhile it's
+actually not necessary to have the variable at all: since nobody is
+touching smp_cpus_down except ourselves, we can safely do the calculation
+at the end before decrementing smp_cpus_down.
+
+Hopefully this makes the logic easier to read, side benefit is we drop one
+temp var.
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/postcopy-ram.c | 68 ++++++++++++++++++++++++++++++++++------
- migration/trace-events   |  3 +-
- 2 files changed, 59 insertions(+), 12 deletions(-)
+ migration/postcopy-ram.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 6ed4546744..494bfbab71 100644
+index 494bfbab71..f222239c7a 100644
 --- a/migration/postcopy-ram.c
 +++ b/migration/postcopy-ram.c
-@@ -127,6 +127,17 @@ typedef struct PostcopyBlocktimeContext {
-     /* number of vCPU are suspended */
-     int smp_cpus_down;
- 
-+    /*
-+     * Fast path for looking up vcpu_index from tid.  NOTE: this result
-+     * only reflects the vcpu setup when postcopy is running.  It may not
-+     * always match with the current vcpu setup because vcpus can be hot
-+     * attached/detached after migration completes.  However this should be
-+     * stable when blocktime is using the structure.
-+    */
-+    GHashTable *tid_to_vcpu_hash;
-+    /* Count of non-vCPU faults.  This is only for debugging purpose. */
-+    uint64_t non_vcpu_faults;
-+
-     /*
-      * Handler for exit event, necessary for
-      * releasing whole blocktime_ctx
-@@ -136,6 +147,7 @@ typedef struct PostcopyBlocktimeContext {
- 
- static void destroy_blocktime_context(struct PostcopyBlocktimeContext *ctx)
- {
-+    g_hash_table_destroy(ctx->tid_to_vcpu_hash);
-     g_free(ctx->vcpu_blocktime_start);
-     g_free(ctx->vcpu_blocktime_total);
-     g_free(ctx->vcpu_faults_count);
-@@ -150,6 +162,36 @@ static void migration_exit_cb(Notifier *n, void *data)
-     destroy_blocktime_context(ctx);
- }
- 
-+static GHashTable *blocktime_init_tid_to_vcpu_hash(void)
-+{
-+    /*
-+     * TID as an unsigned int can be directly used as the key.  However,
-+     * CPU index can NOT be directly used as value, because CPU index can
-+     * be 0, which means NULL.  Then when lookup we can never know whether
-+     * it's 0 or "not found".  Hence use an indirection for CPU index.
-+     */
-+    GHashTable *table = g_hash_table_new_full(g_direct_hash, g_direct_equal,
-+                                              NULL, g_free);
-+    CPUState *cpu;
-+
-+    /*
-+     * Initialize the tid->cpu_id mapping for lookups.  The caller needs to
-+     * make sure when reaching here the CPU topology is frozen and will be
-+     * stable for the whole blocktime trapping period.
-+     */
-+    CPU_FOREACH(cpu) {
-+        int *value = g_new(int, 1);
-+
-+        *value = cpu->cpu_index;
-+        g_hash_table_insert(table,
-+                            GUINT_TO_POINTER((uint32_t)cpu->thread_id),
-+                            value);
-+        trace_postcopy_blocktime_tid_cpu_map(cpu->cpu_index, cpu->thread_id);
-+    }
-+
-+    return table;
-+}
-+
- static struct PostcopyBlocktimeContext *blocktime_context_new(void)
- {
+@@ -971,7 +971,6 @@ static void mark_postcopy_blocktime_end(uintptr_t addr)
      MachineState *ms = MACHINE(qdev_get_machine());
-@@ -160,6 +202,8 @@ static struct PostcopyBlocktimeContext *blocktime_context_new(void)
-     ctx->vcpu_blocktime_total = g_new0(uint64_t, smp_cpus);
-     ctx->vcpu_faults_count = g_new0(uint64_t, smp_cpus);
-     ctx->vcpu_addr = g_new0(uintptr_t, smp_cpus);
-+    ctx->tid_to_vcpu_hash = blocktime_init_tid_to_vcpu_hash();
-+
-     ctx->exit_notifier.notify = migration_exit_cb;
-     qemu_add_exit_notifier(&ctx->exit_notifier);
+     unsigned int smp_cpus = ms->smp.cpus;
+     int i, affected_cpu = 0;
+-    bool vcpu_total_blocktime = false;
+     uint64_t read_vcpu_time, current_us;
  
-@@ -826,18 +870,21 @@ int postcopy_request_shared_page(struct PostCopyFD *pcfd, RAMBlock *rb,
-     return 0;
- }
- 
--static int get_mem_fault_cpu_index(uint32_t pid)
-+static int blocktime_get_vcpu(PostcopyBlocktimeContext *ctx, uint32_t tid)
- {
--    CPUState *cpu_iter;
-+    int *found;
- 
--    CPU_FOREACH(cpu_iter) {
--        if (cpu_iter->thread_id == pid) {
--            trace_get_mem_fault_cpu_index(cpu_iter->cpu_index, pid);
--            return cpu_iter->cpu_index;
+     if (!dc) {
+@@ -993,20 +992,19 @@ static void mark_postcopy_blocktime_end(uintptr_t addr)
+         dc->vcpu_addr[i] = 0;
+         vcpu_blocktime = current_us - read_vcpu_time;
+         affected_cpu += 1;
+-        /* we need to know is that mark_postcopy_end was due to
+-         * faulted page, another possible case it's prefetched
+-         * page and in that case we shouldn't be here */
+-        if (!vcpu_total_blocktime && dc->smp_cpus_down == smp_cpus) {
+-            vcpu_total_blocktime = true;
 -        }
-+    found = g_hash_table_lookup(ctx->tid_to_vcpu_hash, GUINT_TO_POINTER(tid));
-+    if (!found) {
-+        /*
-+         * NOTE: this is possible, because QEMU's non-vCPU threads can
-+         * also access a missing page.  Or, when KVM async pf is enabled, a
-+         * fault can even happen from a kworker..
-+         */
-+        return -1;
+         /* continue cycle, due to one page could affect several vCPUs */
+         dc->vcpu_blocktime_total[i] += vcpu_blocktime;
      }
--    trace_get_mem_fault_cpu_index(-1, pid);
--    return -1;
+ 
+-    dc->smp_cpus_down -= affected_cpu;
+-    if (vcpu_total_blocktime) {
++    /*
++     * If all vCPUs used to be down, and copying this page would free some
++     * vCPUs, then the system-level blocktime ends here.
++     */
++    if (dc->smp_cpus_down == smp_cpus && affected_cpu) {
+         dc->total_blocktime += current_us - dc->last_begin;
+     }
++    dc->smp_cpus_down -= affected_cpu;
 +
-+    return *found;
+     trace_mark_postcopy_blocktime_end(addr, dc->total_blocktime,
+                                       affected_cpu);
  }
- 
- static uint64_t get_current_us(void)
-@@ -864,8 +911,9 @@ void mark_postcopy_blocktime_begin(uintptr_t addr, uint32_t ptid,
-     if (!dc || ptid == 0) {
-         return;
-     }
--    cpu = get_mem_fault_cpu_index(ptid);
-+    cpu = blocktime_get_vcpu(dc, ptid);
-     if (cpu < 0) {
-+        dc->non_vcpu_faults++;
-         return;
-     }
- 
-diff --git a/migration/trace-events b/migration/trace-events
-index 02cdb6e7cc..9c1f3b7044 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -310,8 +310,7 @@ postcopy_preempt_tls_handshake(void) ""
- postcopy_preempt_new_channel(void) ""
- postcopy_preempt_thread_entry(void) ""
- postcopy_preempt_thread_exit(void) ""
--
--get_mem_fault_cpu_index(int cpu, uint32_t pid) "cpu: %d, pid: %u"
-+postcopy_blocktime_tid_cpu_map(int cpu, uint32_t tid) "cpu: %d, tid: %u"
- 
- # exec.c
- migration_exec_outgoing(const char *cmd) "cmd=%s"
 -- 
 2.49.0
 
