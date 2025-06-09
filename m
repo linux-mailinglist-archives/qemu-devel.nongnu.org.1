@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC1FAD23A5
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 18:21:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5782AD23A2
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 18:21:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOfDK-0008PY-WD; Mon, 09 Jun 2025 12:19:11 -0400
+	id 1uOfDN-0008Tj-6T; Mon, 09 Jun 2025 12:19:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOfDI-0008Nl-AE
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 12:19:08 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOfDJ-0008ON-1X
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 12:19:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOfDG-0004Tr-NF
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOfDH-0004U0-FN
  for qemu-devel@nongnu.org; Mon, 09 Jun 2025 12:19:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749485945;
+ s=mimecast20190719; t=1749485946;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hT+PxuMKRJ8Bh39RMhUF6/Cm7/wGAILL/wn1CqdT0Rg=;
- b=a4Zl1/voEKwusfZoWVJyU7l/YT1ltThnZerVFOt68eSm4Xey4sCumwKwvolwww0uzFyx46
- ZrT/Nvh75CQ2FShNyB+x3aRNfzzkTwVpBH+L2iGP8Lnx1xHFgUqygOI+Z4lflcDl33ceQW
- fP5rdC9GLC0hhljxv1EeSGK/k0m1y20=
+ bh=cDCSHE7UZto1NWz1vjWrhDSXJj9UdV9w/vzQlY4ASS0=;
+ b=O7gG/M5p4zxPECmBo5fgLZd/SLfpi7Q+OV0CANhfwvhsqNcETbDbBqXCGxaYBtLtTgG3oX
+ FR8jNvZZiXVeCDKqcuOdYhPYtooI3BqNZE5mQfzFQdAMrLpsJvvyQ/Aa1j6bUsW9WTcw2h
+ VwMqR98YhcpJp6n3NmKdosavRqpwhiA=
 Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
  [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-362-0t6EcvsZNwWYUL2edn094Q-1; Mon, 09 Jun 2025 12:19:04 -0400
-X-MC-Unique: 0t6EcvsZNwWYUL2edn094Q-1
-X-Mimecast-MFC-AGG-ID: 0t6EcvsZNwWYUL2edn094Q_1749485944
+ us-mta-550-dgjchpKsPcqjUIDnAUdmvQ-1; Mon, 09 Jun 2025 12:19:05 -0400
+X-MC-Unique: dgjchpKsPcqjUIDnAUdmvQ-1
+X-Mimecast-MFC-AGG-ID: dgjchpKsPcqjUIDnAUdmvQ_1749485945
 Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6fafca0971cso80309806d6.0
- for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 09:19:04 -0700 (PDT)
+ 6a1803df08f44-6fb1f84a448so7772496d6.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 09:19:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749485944; x=1750090744;
+ d=1e100.net; s=20230601; t=1749485945; x=1750090745;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hT+PxuMKRJ8Bh39RMhUF6/Cm7/wGAILL/wn1CqdT0Rg=;
- b=jO3eWxAMMcyl6TksAmbAMv6B9kIwkY8Wnx4kvq5cvys2Fp9yviPmzHWgOhOIPR25EQ
- mEQgqz8kZP5+QuDb1UcdRaeFD6md6pS4a3pTvQq87jSyxVcZOPsufYsG8H9yzWgnl1jj
- kxM97bikpzi/cgtaAjaRG8yfGaaxsRo9hYCN73J3aMLOltYhJLk0NWSqjogejNcjybKg
- yImSjj9ttMU25WIb0vda4TED2Yxju9/o/417i9agV7rQ+WkRBortIb0SnpfWDUICr52j
- Sz0K8+1kW9h/5Y5jgFK7g51RaqMT179PCkoVA8jgv0SITMxH2Vu+hdQAGNHorYW6jg8r
- Ootw==
-X-Gm-Message-State: AOJu0Yyf7/U9RYrdxSC2usCPWIGVtOX85kKqmSI2d1ch6Mf+a2PKWqa6
- qVIbERW+w+FzJ3xITcYZ7u1OptMy1R6B6rktsMRgeMcNKwL3yk9ZZh0nlIcWhhjTrVD0DQf8C5z
- tNH3adoCVAwuuLuf/RmoXAYvMlVQY4gl/Kzfvv4UOW2g2YWs82Nxj3+gR9XSLC/zERfbYEoI8Hu
- L9Hj+vtLccxqZMXFf7EDNp7cf+Em5jcdLtciiZ9Q==
-X-Gm-Gg: ASbGncuAzgtpGV6frjAhrZZLYDpcdYuuzr5idPDBGXCy1aWLmeJsoaWphhVh0vwNlKe
- m6XqrUx49zOANbMy38FY/Mv2MV59fnWvWoAgFGxgzaauxAI8Ak95O91GVqfdNOPbeDqXaq3Kgi/
- wqY8ZyQd8ua/Zn/8RbRiNUdcydDd0wRvcEyr8G3fO4f2Hznst8zFM47b2FoyJh1+vtbfkKl3vJO
- KurxPJyFfmICn+x9q09Gt4q4QCBq2/MS4zUvPh3IycJeh41SXWhT49114RVjtM0lGWScv+ZjIKa
- hCo=
-X-Received: by 2002:a05:6214:226d:b0:6f2:a4cf:5fd7 with SMTP id
- 6a1803df08f44-6fb0903f125mr234169746d6.45.1749485943713; 
+ bh=cDCSHE7UZto1NWz1vjWrhDSXJj9UdV9w/vzQlY4ASS0=;
+ b=T3NY7Y0p/Y3Fkk4FOenPSmb8rg3n9Zp7mH60EZjOaGp023/b/+uat6jC/RpkL5A9JG
+ ovLxxT16pXs8gZRB4pr/kXGe4M56FaDfWzSi2Kgoq6LQFZsVgjDMws45w5kGwwp2KZh6
+ uGjsxDbzKqZsiKiOv4Ir24tybGtYGcycMZuf/RULcbaHu69YGHQX00/tBLjeMVFkSnLD
+ NvzlXvVxUVUi+9fmpsB9RUw52Z464lty4gZc/GnryiukBBAPKMOI0+F+xGOMS5F/aFTv
+ TxEHrJtxY6UIig/7JOpWKXC0DNdZIH5hqiKVVd0BECmPjDi/cVtPjafpr/R1UslXoMo2
+ 94eg==
+X-Gm-Message-State: AOJu0YzCdmalBMmLIdTU72Rmrzf/tgSPfSiNyGSma0X9L38zv/cFPykN
+ BB46Dwh6HjaqniwJ0JKZDUgXAEAemZUS1qL31XumkCbI66amzufwB4HnncC7Q+hrSzlDDL6GMHv
+ 9DLKXNK7mFv06Ot/hvc1tcoMlO8hQleQHo4o1udv2PA9lToYqxudKdlrYwwV3VjG1d/kcy7uCof
+ ZepZBrKqN1a+t9aG1RNRyIUojow1QecMXpcwl2Lg==
+X-Gm-Gg: ASbGnctaNL0uNwnSpyTLPJ8h2am52TvWpN9v8bQKARGDkGq9OZPHYG3fnZgdzjSP2+P
+ YDeb0ZsjkpQnggwoH+TMzXLvECpHLwxxvtcR1qlPgqEdrrnHLx2KuUlh7fu0ca+aE/Cn2vK62ry
+ RFApv/0rUja1YZ/nfbjveaT0Y9VrPpMjTimvpMBAuIrdye8xACvEsxzD/+MFR4qKxsACrWNOMlA
+ HSxLqJ+fwwW0D3U+KWfhEqJSbZWHdwY0vl1owYBAk/vo05WUSwcn9ZnfjOrLKcGvKAbzF802XUv
+ FjxwTA1GaRMo6w==
+X-Received: by 2002:a05:6214:d68:b0:6fa:ccb6:6036 with SMTP id
+ 6a1803df08f44-6fb08f8d31fmr217734006d6.35.1749485944641; 
+ Mon, 09 Jun 2025 09:19:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IErobSbYOP8oWeS9RDsAXGUPZIAOJdLibvL5y6Ss1B80VuId+QxeBBsQPHt/ImkJHS9JaYocg==
+X-Received: by 2002:a05:6214:d68:b0:6fa:ccb6:6036 with SMTP id
+ 6a1803df08f44-6fb08f8d31fmr217733226d6.35.1749485943949; 
  Mon, 09 Jun 2025 09:19:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDFAtJ+oIhAKqZO5TOGwU7PZ0gt7EFwbL5stBG87K9+9yyZkIljqZxh9TQMb703j33haU+xg==
-X-Received: by 2002:a05:6214:226d:b0:6f2:a4cf:5fd7 with SMTP id
- 6a1803df08f44-6fb0903f125mr234168816d6.45.1749485942879; 
- Mon, 09 Jun 2025 09:19:02 -0700 (PDT)
 Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6fb09ab95c1sm53420546d6.15.2025.06.09.09.19.01
+ 6a1803df08f44-6fb09ab95c1sm53420546d6.15.2025.06.09.09.19.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Jun 2025 09:19:01 -0700 (PDT)
+ Mon, 09 Jun 2025 09:19:03 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Juraj Marcin <jmarcin@redhat.com>, peterx@redhat.com,
  "Dr . David Alan Gilbert" <dave@treblig.org>,
  Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2 03/11] migration/docs: Move docs for postcopy blocktime
- feature
-Date: Mon,  9 Jun 2025 12:18:47 -0400
-Message-ID: <20250609161855.6603-4-peterx@redhat.com>
+Subject: [PATCH v2 04/11] migration/bg-snapshot: Do not check for SKIP in
+ iterator
+Date: Mon,  9 Jun 2025 12:18:48 -0400
+Message-ID: <20250609161855.6603-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250609161855.6603-1-peterx@redhat.com>
 References: <20250609161855.6603-1-peterx@redhat.com>
@@ -106,68 +106,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move it out of vanilla postcopy session, but instead a standalone feature.
-When at it, removing the NOTE because it's incorrect now after introduction
-of max-postcopy-bandwidth, which can control the throughput even for
-postcopy phase.
+It's not possible to happen in bg-snapshot case.
 
 Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- docs/devel/migration/postcopy.rst | 36 +++++++++++++++----------------
- 1 file changed, 17 insertions(+), 19 deletions(-)
+ migration/migration.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/docs/devel/migration/postcopy.rst b/docs/devel/migration/postcopy.rst
-index 82e7a848c6..e319388d8f 100644
---- a/docs/devel/migration/postcopy.rst
-+++ b/docs/devel/migration/postcopy.rst
-@@ -33,25 +33,6 @@ will now cause the transition from precopy to postcopy.
- It can be issued immediately after migration is started or any
- time later on.  Issuing it after the end of a migration is harmless.
+diff --git a/migration/migration.c b/migration/migration.c
+index 4098870bce..e33e39ac74 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3887,9 +3887,8 @@ static void *bg_migration_thread(void *opaque)
  
--Blocktime is a postcopy live migration metric, intended to show how
--long the vCPU was in state of interruptible sleep due to pagefault.
--That metric is calculated both for all vCPUs as overlapped value, and
--separately for each vCPU. These values are calculated on destination
--side.  To enable postcopy blocktime calculation, enter following
--command on destination monitor:
--
--``migrate_set_capability postcopy-blocktime on``
--
--Postcopy blocktime can be retrieved by query-migrate qmp command.
--postcopy-blocktime value of qmp command will show overlapped blocking
--time for all vCPU, postcopy-vcpu-blocktime will show list of blocking
--time per vCPU.
--
--.. note::
--  During the postcopy phase, the bandwidth limits set using
--  ``migrate_set_parameter`` is ignored (to avoid delaying requested pages that
--  the destination is waiting for).
--
- Postcopy internals
- ==================
+     while (migration_is_active()) {
+         MigIterateState iter_state = bg_migration_iteration_run(s);
+-        if (iter_state == MIG_ITERATE_SKIP) {
+-            continue;
+-        } else if (iter_state == MIG_ITERATE_BREAK) {
++
++        if (iter_state == MIG_ITERATE_BREAK) {
+             break;
+         }
  
-@@ -312,3 +293,20 @@ explicitly) to be sent in a separate preempt channel, rather than queued in
- the background migration channel.  Anyone who cares about latencies of page
- faults during a postcopy migration should enable this feature.  By default,
- it's not enabled.
-+
-+Postcopy blocktime statistics
-+-----------------------------
-+
-+Blocktime is a postcopy live migration metric, intended to show how
-+long the vCPU was in state of interruptible sleep due to pagefault.
-+That metric is calculated both for all vCPUs as overlapped value, and
-+separately for each vCPU. These values are calculated on destination
-+side.  To enable postcopy blocktime calculation, enter following
-+command on destination monitor:
-+
-+``migrate_set_capability postcopy-blocktime on``
-+
-+Postcopy blocktime can be retrieved by query-migrate qmp command.
-+postcopy-blocktime value of qmp command will show overlapped blocking
-+time for all vCPU, postcopy-vcpu-blocktime will show list of blocking
-+time per vCPU.
 -- 
 2.49.0
 
