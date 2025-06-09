@@ -2,108 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460E5AD2457
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 18:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB82AD2461
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 18:50:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOfc6-00023L-1h; Mon, 09 Jun 2025 12:44:46 -0400
+	id 1uOfhN-0006jP-IJ; Mon, 09 Jun 2025 12:50:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uOfbt-0001zs-7h; Mon, 09 Jun 2025 12:44:36 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOfge-0006i3-QX
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 12:49:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uOfbq-0003gh-Tu; Mon, 09 Jun 2025 12:44:32 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 559FU46G000664;
- Mon, 9 Jun 2025 16:44:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=fVzaY2
- 45JOK2WHnWPfZaG3KcQG2OjmEdw7QvliX8y8c=; b=jDdP02PYc5CYMCqGeU0piO
- 2VZJM1Hios4C/vjchofkPFwl82ytep0mtXTKPyX2Z3hKfLgQrlya/weeCcC0lG3m
- P+h57vM0xQnOfXyVYPhvBpmiANVqKM5xeaCRQsNpiICVmFPT19/y2SGP5zZb/6Vi
- o36eGNY/rTBueMYPzvvZZO0df4DpOFzTGQh8DwY6gBGrlrlC0Ph6CQ0meuDb22iK
- E7XyCQJY/ah79bjERmVs4qfLD54xQHLxFWxCqG1Pf6QzDPNvvNEjKzcwSa9mWk7L
- aTZ/SCQTJzHeFfyzSktEZdOY/C9DrumStr21XLt6WCsgOyfP1OkAWSdq+01gcOqA
- ==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474dv79ngt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Jun 2025 16:44:28 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 559FAbx8027927;
- Mon, 9 Jun 2025 16:44:27 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47518m6g4e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Jun 2025 16:44:27 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 559GiQmr27525792
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Jun 2025 16:44:26 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 306805805C;
- Mon,  9 Jun 2025 16:44:26 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0416258054;
- Mon,  9 Jun 2025 16:44:25 +0000 (GMT)
-Received: from MacBookPro.ibm.com (unknown [9.61.253.10])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Jun 2025 16:44:24 +0000 (GMT)
-From: Rorie Reyes <rreyes@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
- akrowiak@linux.ibm.com, rreyes@linux.ibm.com
-Subject: [RFC PATCH v13 4/4] s390: implementing CHSC SEI for AP config change
-Date: Mon,  9 Jun 2025 12:44:18 -0400
-Message-ID: <20250609164418.17585-5-rreyes@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250609164418.17585-1-rreyes@linux.ibm.com>
-References: <20250609164418.17585-1-rreyes@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uOfgc-0004VU-DR
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 12:49:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749487764;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8qIiWTVzNmtq+0HKuzwbMGWs2G2nAd8hdK2q9yH4iPA=;
+ b=U1nEvbqaKWWTpmnWQFi/7pVvYCr1MG9lFgHlHKeTlmmvM+M+iQTX4LOOal0zR79xMqofm3
+ hyXNv7cx3BvVTp2LLo53YC4oun6NMzyaooDK3JODxdTa3I1WBjPYEAghwalUt+ORg/fs5d
+ 3BR23J8ETvLrFWjZV1N4dfz22ga/LKw=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-318-vM9SiFBbN9Wn0auk2VLErQ-1; Mon, 09 Jun 2025 12:49:23 -0400
+X-MC-Unique: vM9SiFBbN9Wn0auk2VLErQ-1
+X-Mimecast-MFC-AGG-ID: vM9SiFBbN9Wn0auk2VLErQ_1749487762
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7c5d608e703so896303685a.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 09:49:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749487762; x=1750092562;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8qIiWTVzNmtq+0HKuzwbMGWs2G2nAd8hdK2q9yH4iPA=;
+ b=wZHpoNiDyzyhqovhoSiO04jL9fHKWgbUWQEyxlXpscM4RymlTSfP6ZqJw1Vn4LmFLS
+ pguTTsA8DXFja/sSWHBHpTGbbCSiswLzsCcBf0PJ26wy4TwAzF5Vb4dqNuTpqB8+Fs1I
+ PRTYFJ4qDHTuq3rHl94QUlCZcktfABOPweEtTR3E7cHDsvKBEDBETcQIeeJYTVD3COKy
+ U7vC8+GjUv66Ork6W+HfC6zQT4CG6cPek8TToqKkzHaQAbUT6bitGy5ccaK+85F1NVYb
+ GCKKfQg6puQaH1D2Cm6FlYgmqpsec7lItThFdayoGBZCc2gcwBAVchF9bISpa5koVzES
+ 0BaA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWTlNaX5pxkFu9/bGCWH1irl6tDF04MLhYZ4tuyTrZRaSHoDsm8n6stnZ4Z9eVLs08vnwlbOKEXvY2D@nongnu.org
+X-Gm-Message-State: AOJu0Yyl/bZc47kTpKozY5/Lt7oMJPSs5RW1qIzn1ILI5U34VZbd1fZn
+ TbwhgWl4swW5mmSl5k4GRxG/YIDUVzCnnnA8JZEJGDO8diT3pGqnIZg44kHlVviZae12D7J0TJG
+ Mo+b/x4VZes6tWTUOvGcr3wu0gwysAY0YSjbgELNCnyqTu0OtqS3rLHYI
+X-Gm-Gg: ASbGncvvNiVFsDT3myYGahzDQCjKXGZDQ9y0yrm/rq1gVU/8eTjwkd9Yx2VJZwWu9ym
+ mdTj4nc2rqWZoZK3dmTF7ph9LrABMBBhVT+gwCSQBY7ELJfogN4TBwoGtupKacAwsiipe4hprBI
+ 8ECWKo2xJWP+cHR+FPJpYlREuKKTHwUZQkcDUPOkLeXC6v6RD6XCqRlIohSJyTL46wLdFYFqqxv
+ qTRj1PUPqHFKwT8CIgLQ+grI38zDm9xpvurWeg/AyRrvcQaIZt5PHBwtSgOnk+HbkUStk1UMfni
+ vm83hgLgyeAGjw==
+X-Received: by 2002:a05:620a:4447:b0:7ca:ca00:735 with SMTP id
+ af79cd13be357-7d2298ec39fmr2052762685a.41.1749487762605; 
+ Mon, 09 Jun 2025 09:49:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEeWsBwPHN9mQnL3yS+Fb2gTR9w1TXs3GIHzr1EfHplZNyQIaUob1jv5LSZ7lueP+t1i5z0vQ==
+X-Received: by 2002:a05:620a:4447:b0:7ca:ca00:735 with SMTP id
+ af79cd13be357-7d2298ec39fmr2052759285a.41.1749487762264; 
+ Mon, 09 Jun 2025 09:49:22 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7d25a59321asm563530185a.52.2025.06.09.09.49.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Jun 2025 09:49:21 -0700 (PDT)
+Date: Mon, 9 Jun 2025 12:49:19 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH 19/21] migration: Allow migrate commands to provide the
+ migration config
+Message-ID: <aEcQj_XLnnnS9FKv@x1.local>
+References: <20250603013810.4772-1-farosas@suse.de>
+ <20250603013810.4772-20-farosas@suse.de>
+ <aENBda_y3v3y4ptS@x1.local> <874iwswrex.fsf@suse.de>
+ <aENUrociiqlFuPpz@x1.local> <87y0u1ugkx.fsf@suse.de>
+ <aEcC9X5i6eV4N7An@x1.local> <aEcIDNpXJHGAhwmK@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ddITiQpxWjR4XlSH7uFqtRgrejAX4V-A
-X-Proofpoint-GUID: ddITiQpxWjR4XlSH7uFqtRgrejAX4V-A
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA5MDEyMSBTYWx0ZWRfX04b7w8gCkTLY
- +O7lqsgFtcF7dlxREkC7c7kHuGITqBSgTnp1wcwfo3RghcSAFh7EU3eqyIp4w/44nYXP72qQOSx
- I6uHJtMccSpnNoBoCqGAbiscPLN9JgZHmebPwpYEdaZnTZQtpKTbKjlqMj1ZofXp95BxfHu9jec
- zJg0LNeXSOdl+lAZa6NlmUQR/5KweerfcJQH6ygUzKtlV9v1eaI0hYGosEfAALbUcMGofxZizsd
- rAQ3a2vUasQprGwP+P01LIO0wm5fUj+kMyVPwkOspLD++JhhIlNPkKSWLCKmM1cpwfoBtJEBPZf
- dzaXSn6NagpuVoqsPSSPmnzO1D95ivbL1cnZQe1fngbuj/s34QBOlmdZHLqgd21wx4W8Fj91GML
- 9UX2CEGcIaHhJfttejES06h294E38HixitZrEvZXonnhiKYkmL8lWZ0tUs6vss8BnMbupVRV
-X-Authority-Analysis: v=2.4 cv=CfMI5Krl c=1 sm=1 tr=0 ts=68470f6c cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
- a=uLlxcZOcU1Y7BrJQP9YA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-09_06,2025-06-09_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- phishscore=0 priorityscore=1501 clxscore=1015 impostorscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506090121
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rreyes@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+In-Reply-To: <aEcIDNpXJHGAhwmK@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -121,111 +111,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle interception of the CHSC SEI instruction for requests
-indicating the guest's AP configuration has changed.
+(I had a reply in the other thread, that might have covered most of the
+ points but maybe not this one..)
 
-If configuring --without-default-devices, hw/s390x/ap-stub.c
-was created to handle such circumstance. Also added the
-following to hw/s390x/meson.build if CONFIG_VFIO_AP is
-false, it will use the stub file.
+On Mon, Jun 09, 2025 at 05:13:00PM +0100, Daniel P. Berrangé wrote:
+> Even if only a single mgmt app is involved this is still beneficial
+> because the migration infrastructure is used for distinct use cases
+> inside QEMU - live migration, CPR, save/restore, and savevm/loadvm.
 
-Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
-Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
----
- MAINTAINERS           |  1 +
- hw/s390x/ap-stub.c    | 21 +++++++++++++++++++++
- hw/s390x/meson.build  |  1 +
- target/s390x/ioinst.c | 11 +++++++++--
- 4 files changed, 32 insertions(+), 2 deletions(-)
- create mode 100644 hw/s390x/ap-stub.c
+I assume CPR is save/restore, so indeed we have 3 ways to use migration
+core.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aa6763077e..1e84bfeaee 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -112,6 +112,7 @@ F: hw/intc/s390_flic.c
- F: hw/intc/s390_flic_kvm.c
- F: hw/s390x/
- F: hw/vfio/ap.c
-+F: hw/s390x/ap-stub.c
- F: hw/vfio/ccw.c
- F: hw/watchdog/wdt_diag288.c
- F: include/hw/s390x/
-diff --git a/hw/s390x/ap-stub.c b/hw/s390x/ap-stub.c
-new file mode 100644
-index 0000000000..001fe5f8b0
---- /dev/null
-+++ b/hw/s390x/ap-stub.c
-@@ -0,0 +1,21 @@
-+/*
-+ * VFIO based AP matrix device assignment
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Rorie Reyes <rreyes@linux.ibm.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/s390x/ap-bridge.h"
-+
-+int ap_chsc_sei_nt0_get_event(void *res)
-+{
-+    return EVENT_INFORMATION_NOT_STORED;
-+}
-+
-+bool ap_chsc_sei_nt0_have_event(void)
-+{
-+    return false;
-+}
-diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
-index 3bbebfd817..99cbcbd7d6 100644
---- a/hw/s390x/meson.build
-+++ b/hw/s390x/meson.build
-@@ -33,6 +33,7 @@ s390x_ss.add(when: 'CONFIG_S390_CCW_VIRTIO', if_true: files(
- ))
- s390x_ss.add(when: 'CONFIG_TERMINAL3270', if_true: files('3270-ccw.c'))
- s390x_ss.add(when: 'CONFIG_VFIO', if_true: files('s390-pci-vfio.c'))
-+s390x_ss.add(when: 'CONFIG_VFIO_AP', if_false: files('ap-stub.c'))
- 
- virtio_ss = ss.source_set()
- virtio_ss.add(files('virtio-ccw.c'))
-diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
-index fe62ba5b06..2320dd4c12 100644
---- a/target/s390x/ioinst.c
-+++ b/target/s390x/ioinst.c
-@@ -18,6 +18,7 @@
- #include "trace.h"
- #include "hw/s390x/s390-pci-bus.h"
- #include "target/s390x/kvm/pv.h"
-+#include "hw/s390x/ap-bridge.h"
- 
- /* All I/O instructions but chsc use the s format */
- static uint64_t get_address_from_regs(CPUS390XState *env, uint32_t ipb,
-@@ -574,13 +575,19 @@ out:
- 
- static int chsc_sei_nt0_get_event(void *res)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_get_event(res);
-+    }
-+
-     return 1;
- }
- 
- static int chsc_sei_nt0_have_event(void)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_have_event();
-+    }
-+
-     return 0;
- }
- 
+> Any time code any one of those uses cases starts using a new parameter,
+> apps have to make sure they don't inadvertantly have its effects apply
+> to the other use cases.
+
+AFAICT, that's not affected by "whether we allow global settings", that is
+still a concern internally as long as they use migration core.
+
+One thing to mention is CPR is really a fine citizen here, AFAICT it is
+exactly live migration using all the proper caps/params.  We _could_ split
+it as many things do not apply like postcopy, but we could still just reuse
+everything and ignoring the rest.  It'll be again a cleaness issue to me,
+and even if CPR reuses everything it looks still clean enough, especially
+comparing to savevm/loadvm.
+
+savevm/loadvm is another story.. however afaiu if we want to decouple it,
+it should be done not from the interface level, but internally first.
+E.g., we should allow taking parameters as a temp pointer passing to
+migration core, so that will be passed over by savevm setting all caps off,
+for example, ignoring the global config.  The interface alone should, IMHO,
+be done only later.
+
+Meanwhile, even if that, IMO we can't avoid the need to think any new param
+affecting savevm, as long as it's still using migration core.  I don't know
+whether we need to do that one step even further to decouple savevm: I
+would think the other way round to obsolete savevm completely if necessary
+when we have fine "file:" migrations now, especially with mapped-ram.
+
+Thanks,
+
 -- 
-2.48.1
+Peter Xu
 
 
