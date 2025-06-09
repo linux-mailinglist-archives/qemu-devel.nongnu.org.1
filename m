@@ -2,72 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126A2AD2149
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 16:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D431AD216C
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 16:53:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOdnP-0004O6-4f; Mon, 09 Jun 2025 10:48:19 -0400
+	id 1uOdrq-0001yu-2n; Mon, 09 Jun 2025 10:52:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uOdnM-0004Nf-FI
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 10:48:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1uOdrn-0001yI-5o; Mon, 09 Jun 2025 10:52:51 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uOdnL-0008Fd-4A
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 10:48:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749480494;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0ycHjZ5PRH/HXZmKtA3tqEywPxmYdSfn4wThBF7cfZM=;
- b=TlYd7BiGoN6ihMt2E6q6GlK1EkPmbJLo/6ExSsuFqOA5uX2eF9ub5op8beVMsImu6cILAD
- 2p6BrhrVD03DAkiYYivuRClpiKhsTK/ciMfuFjYNkEjOz0IDIv24IaKZ/u1uLx/ElTsMLB
- 0axO4OoP6qyFETuiKSLkKVFCNlXVY/U=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-125-zqeS6837N1K7Hi2uG8lrSg-1; Mon,
- 09 Jun 2025 10:48:12 -0400
-X-MC-Unique: zqeS6837N1K7Hi2uG8lrSg-1
-X-Mimecast-MFC-AGG-ID: zqeS6837N1K7Hi2uG8lrSg_1749480492
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F28E51809C96; Mon,  9 Jun 2025 14:48:11 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.92])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7B87719560B0; Mon,  9 Jun 2025 14:48:11 +0000 (UTC)
-Date: Mon, 9 Jun 2025 10:48:10 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Brian Song <hibriansong@gmail.com>
-Subject: Re: [PATCH v2 11/21] fuse: Rename length to blk_len in fuse_write()
-Message-ID: <20250609144810.GE29452@fedora>
-References: <20250604132813.359438-1-hreitz@redhat.com>
- <20250604132813.359438-12-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1uOdrk-0000xi-KZ; Mon, 09 Jun 2025 10:52:50 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c15:2b89:0:640:9815:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 732B260CDF;
+ Mon,  9 Jun 2025 17:52:44 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:a98::1:26] (unknown
+ [2a02:6bf:8080:a98::1:26])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id hqiHwO8FeW20-wwA4giur; Mon, 09 Jun 2025 17:52:43 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1749480763;
+ bh=qqlL+gfILre4QunlojxfP1/EQMHxxZuLkpi1dGwyrhY=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=iVqQwvBtzkIderxhy9h3DaWnyilA/FHkVNArwKNCsfafUCn3RNlFWmK9p9WsHYw58
+ kwAjI/FSGm/y5chO6gQA6s6kT8Xc+7IjYr6GgJgHS4qeMvNPc4At7u1k6nNUcAKL74
+ Gkkz9UVrk7SdbgfO3YVnymDmCA2KXr+rSU7aHJ58=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <26000017-b3d4-4383-aeb3-557306aa0703@yandex-team.ru>
+Date: Mon, 9 Jun 2025 17:52:43 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="x2CtQXzX6rnkBlzc"
-Content-Disposition: inline
-In-Reply-To: <20250604132813.359438-12-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] block/copy-before-write: report partial block
+ status to snapshot
+To: Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>, eblake@redhat.com
+Cc: qemu-block@nongnu.org, jsnow@redhat.com, kwolf@redhat.com,
+ hreitz@redhat.com, qemu-devel@nongnu.org, andrey.drobyshev@virtuozzo.com,
+ den@virtuozzo.com
+References: <20250528120732.2247150-1-andrey.zhadchenko@virtuozzo.com>
+ <20250528120732.2247150-5-andrey.zhadchenko@virtuozzo.com>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20250528120732.2247150-5-andrey.zhadchenko@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,37 +76,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 28.05.25 15:07, Andrey Zhadchenko wrote:
+> until the non-accessible area
 
---x2CtQXzX6rnkBlzc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Please write a bit more: what, why and how. What is the scenario when this change helps? I think the client of snapshot-access, should not try to read/get-block-status from "denied" areas?
 
-On Wed, Jun 04, 2025 at 03:28:03PM +0200, Hanna Czenczek wrote:
-> The term "length" is ambiguous, use "blk_len" instead to be clear.
->=20
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+Also, it's a lot more comfortable to read messages, starting from a full sentence, not just continuing a sentence of subject. It's OK to repeat the subject, may be in more detailed form.
+
+> 
+> Signed-off-by: Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>
 > ---
->  block/export/fuse.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+>   block/copy-before-write.c | 18 ++++++++++++------
+>   1 file changed, 12 insertions(+), 6 deletions(-)
+> 
+> diff --git a/block/copy-before-write.c b/block/copy-before-write.c
+> index 7e074ad569..c5e6e1c112 100644
+> --- a/block/copy-before-write.c
+> +++ b/block/copy-before-write.c
+> @@ -207,10 +207,11 @@ static int coroutine_fn GRAPH_RDLOCK cbw_co_flush(BlockDriverState *bs)
+>    */
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+the comment above the function should be updated to cover new logic
 
---x2CtQXzX6rnkBlzc
-Content-Type: application/pgp-signature; name=signature.asc
+>   static BlockReq * coroutine_fn GRAPH_RDLOCK
+>   cbw_snapshot_read_lock(BlockDriverState *bs, int64_t offset, int64_t bytes,
+> -                       int64_t *pnum, BdrvChild **file)
+> +                       int64_t *pnum, BdrvChild **file, bool query)
+>   {
+>       BDRVCopyBeforeWriteState *s = bs->opaque;
+>       BlockReq *req = g_new(BlockReq, 1);
+> +    int64_t next_dirty;
+>       bool done;
+>   
+>       QEMU_LOCK_GUARD(&s->lock);
+> @@ -220,9 +221,13 @@ cbw_snapshot_read_lock(BlockDriverState *bs, int64_t offset, int64_t bytes,
+>           return NULL;
+>       }
+>   
+> -    if (bdrv_dirty_bitmap_next_dirty(s->access_bitmap, offset, bytes) != -1) {
+> -        g_free(req);
+> -        return NULL;
+> +    next_dirty = bdrv_dirty_bitmap_next_dirty(s->access_bitmap, offset, bytes);
+> +    if (next_dirty != -1) {
+> +        if (!query || next_dirty == offset) {
+> +            g_free(req);
+> +            return NULL;
+> +        }
+> +        bytes = offset + bytes - next_dirty;
 
------BEGIN PGP SIGNATURE-----
+I don't follow. Shouldn't this be
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhG9CoACgkQnKSrs4Gr
-c8hqYwgAk4typ5xLxZ1ou/YdWDqO5BEBbtQjoP6cfXyDBKpoul1xwbZmkkoDa0LI
-6qeSiZrj4Ej8WheIVupjGexu4LuZMWdQnIU7A2Q+GBrjKPWmXmXKJwtWDgLhNfuL
-rDBWSffi9gWjXA7Ur8D4oTi1yqyEljrBmt8yErQ243LpdmWQinFTcC9rNc3BrY3R
-SjoeNQfhGjsLv/QHyOh5MTJo2Hh9RRMM2lUL5fmIJYUNK5dWnD369GbcdXW6FFuG
-zAtjGFBgE1WarhWfZ+YFu0OFxv1LHPiqv1TlapTAk5wMLgmpQYsiwiDWTBCmdXNf
-1KsxY3DZSDO9NjNQR8ZR07PCl5KcKA==
-=K+bT
------END PGP SIGNATURE-----
+     bytes = next_dirty - offset
 
---x2CtQXzX6rnkBlzc--
+I.e., number of bytes from offset up to first "denied" byte.
+
+>       }
+>   
+>       done = bdrv_dirty_bitmap_status(s->done_bitmap, offset, bytes, pnum);
+> @@ -270,7 +275,8 @@ cbw_co_preadv_snapshot(BlockDriverState *bs, int64_t offset, int64_t bytes,
+>       while (bytes) {
+>           int64_t cur_bytes;
+>   
+> -        req = cbw_snapshot_read_lock(bs, offset, bytes, &cur_bytes, &file);
+> +        req = cbw_snapshot_read_lock(bs, offset, bytes, &cur_bytes, &file,
+> +                                     false);
+>           if (!req) {
+>               return -EACCES;
+>           }
+> @@ -302,7 +308,7 @@ cbw_co_snapshot_block_status(BlockDriverState *bs,
+>       int64_t cur_bytes;
+>       BdrvChild *child;
+>   
+> -    req = cbw_snapshot_read_lock(bs, offset, bytes, &cur_bytes, &child);
+> +    req = cbw_snapshot_read_lock(bs, offset, bytes, &cur_bytes, &child, true);
+>       if (!req) {
+>           return -EACCES;
+>       }
+
+-- 
+Best regards,
+Vladimir
 
 
