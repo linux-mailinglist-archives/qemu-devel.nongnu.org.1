@@ -2,205 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB73AD1781
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 05:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8453FAD1787
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 05:39:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOT7O-0000CH-AM; Sun, 08 Jun 2025 23:24:14 -0400
+	id 1uOTKq-0003QU-8F; Sun, 08 Jun 2025 23:38:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uOT7A-0000Bj-RO
- for qemu-devel@nongnu.org; Sun, 08 Jun 2025 23:24:00 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1uOTKk-0003Q3-BX
+ for qemu-devel@nongnu.org; Sun, 08 Jun 2025 23:38:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uOT76-0003YQ-JK
- for qemu-devel@nongnu.org; Sun, 08 Jun 2025 23:24:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749439437; x=1780975437;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=M/BaNv6IXttF0Oape6DS04/aTOAyiIbLJ9WcC5xbV7s=;
- b=naV4BMmQ+YaI3SGQ+pFTLvxZPc0etWVsUYVD1Pi/79gpZ7gSxFQ/T1R1
- feTkA4upgB1xgtjHDtixmnIaFYbLzDu4RSMnhe1ybRdAWbah1OaV1aggR
- lcdPWgSirOT2CwuR2qHfXLmz9NXuj82x4fpP5PJLcp2EOVpO6fl8Hm2rh
- vEttYnDDByUZoQKPyN9wxPQDwMcF+9FI8JBma0zDPtYYCVL4PBdrdiaW7
- XD7fOm/RMJLCWQEo8DOzXMcxEyU6kAUMlJo/9Hz2Hl3sXtDJXD7lGyO1U
- 4BLf/Kdfu6/YxEUmpfIrJYHYl0qXCluXJ/N+ml4eGhIylf3YyIEjEmZmY w==;
-X-CSE-ConnectionGUID: 0NGyTu7FQRG/lZ+Da3aXnQ==
-X-CSE-MsgGUID: 5onbkRVoQHuR9/G5SLI0Rw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11458"; a="74039879"
-X-IronPort-AV: E=Sophos;i="6.16,221,1744095600"; d="scan'208";a="74039879"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2025 20:23:51 -0700
-X-CSE-ConnectionGUID: sT69WmYYSu+ANq05YN1mSA==
-X-CSE-MsgGUID: 9IDLvjYrQbyxkioJNbRdTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,221,1744095600"; d="scan'208";a="147361901"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jun 2025 20:23:50 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 8 Jun 2025 20:23:50 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Sun, 8 Jun 2025 20:23:50 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.80)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Sun, 8 Jun 2025 20:23:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SGYAf9YbKXUmaXX6wlWFnvjU8rSFGBlCohSaLvXWCRpDr462ZTvalgbqc7vdxIxA4M+337Xb60Xf3+L/JfXFuQ3jxEfwZXwuVjVxTwjlWpL68Z/n5dy6zLOXiZDX9tVu0Wddner2KX1BvEDdA63RypGiOZ6bR0WjfnW8t3YWPLqd6KuXU1HaDNBgaYqRqpGVPg5H/NW1JpFSLazw6Wvoq+bjggMb/daXrbiqNVpao5TzajHCqKgwxj3JcYj+uNN9SqvaGMoI6Q7TyXJrAwYMXN5KgwLVgl5dJsjlAva2BSmU54306xy66GSDjdeeDp+yvy/wk2wESTmRzEtMFKf94A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JYgyDxGqxtCGFd++6sYGpd91wGowBv1HRWbG5zrsBtQ=;
- b=QTWs/Xsoxzslxl/Ip6VDC508bmk5fMayVa0CSxY4K7T4JBAe1vM2lUlk2y0cy+Oj4oqJvISlUdHQCSQ8a88bt3poUEHbnFY8Glj9Sq98zITLX91uaPZ+kRRxW0YauYCp31J44GfKpTHndG+ghF+T3nVAPGL/JZL2EH5Ru/5+ehgRzT9LOdHi7kuWudXb3Jdt7r2AmYBq7CXv5RwxbQcdMIsNZJcf7pUXj+iAoU9Mn7ABFlGOc+qOHfxIBhkSE/sAW7ldVNZBW3kfYdolkJSOSmH7XKwp+L3ZxiJ5aioJo1zigzp4ASptOfE9CJ8exTljgRiV0Sk8XlPV6AykjI79Fg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM3PR11MB8735.namprd11.prod.outlook.com (2603:10b6:0:4b::20) by
- DM3PR11MB8684.namprd11.prod.outlook.com (2603:10b6:0:4a::21) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8813.27; Mon, 9 Jun 2025 03:23:45 +0000
-Received: from DM3PR11MB8735.namprd11.prod.outlook.com
- ([fe80::3225:d39b:ca64:ab95]) by DM3PR11MB8735.namprd11.prod.outlook.com
- ([fe80::3225:d39b:ca64:ab95%4]) with mapi id 15.20.8813.024; Mon, 9 Jun 2025
- 03:23:45 +0000
-Message-ID: <c2474abf-bf90-4908-a2a7-04e4eb9ee821@intel.com>
-Date: Mon, 9 Jun 2025 11:23:30 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/5] Enable shared device assignment
-To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>, 
- Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Michael Roth <michael.roth@amd.com>
-CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Williams Dan J
- <dan.j.williams@intel.com>, Zhao Liu <zhao1.liu@intel.com>, Baolu Lu
- <baolu.lu@linux.intel.com>, Gao Chao <chao.gao@intel.com>, Xu Yilun
- <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, Alex Williamson
- <alex.williamson@redhat.com>
-References: <20250530083256.105186-1-chenyi.qiang@intel.com>
-Content-Language: en-US
-From: Chenyi Qiang <chenyi.qiang@intel.com>
-In-Reply-To: <20250530083256.105186-1-chenyi.qiang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR01CA0003.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::16) To CYXPR11MB8729.namprd11.prod.outlook.com
- (2603:10b6:930:dc::17)
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1uOTKg-00055S-O2
+ for qemu-devel@nongnu.org; Sun, 08 Jun 2025 23:38:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749440276;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2Rzx5NiZAd0x4mEjPq8dOiKAZARMPQ5U3iWYsJELvqk=;
+ b=XBkCjpTD7A6kHDqjApZksri7YpMJKfNjRDG8hTKk+HTjFktaPOtlOEz7Tg56im3po0sU36
+ Xq3UHkM5EdHPtWhI79a0qud+4B0P5mnB0ZOyOpnWy+WjFBM60fG0e9YvJOxMmcN8OxLTg9
+ SBEX+2eDe23qc4RTS45cn9d0F+37z8Q=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-bZsRDNN-MZaS8Hahuf0-Pg-1; Sun, 08 Jun 2025 23:37:55 -0400
+X-MC-Unique: bZsRDNN-MZaS8Hahuf0-Pg-1
+X-Mimecast-MFC-AGG-ID: bZsRDNN-MZaS8Hahuf0-Pg_1749440274
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-31315427249so4814308a91.1
+ for <qemu-devel@nongnu.org>; Sun, 08 Jun 2025 20:37:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749440274; x=1750045074;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2Rzx5NiZAd0x4mEjPq8dOiKAZARMPQ5U3iWYsJELvqk=;
+ b=HLG1KF0r/85uoBxKbvRH+pov03w+WJ2k7QkJ6xYgP3/2/sFd63OafAqOrhFsM+tItj
+ cJXQh0bsQfl8/bA8pN+F4bc9M96wOky5kPiFfVc0z6yaVJ4CVQH4UJgUkfxZv+69IktN
+ 4zkMx7T/IZescgfq5ur5W4zo+5QS1F/Z1Bu08s0IYcSTis3tRRpjdbDBx7C3rnyOI5K0
+ kO3mDe9qwj3scS83lJ1Yq/kOqNWEnyPvD1xTC37lGDQM5WDwMg6EazMphJChnPRGkntG
+ DL3SoJexvdLn4L5FaeQvPfi/0CyaInXM05V4JZlTm0b06iux20bapQY9qNte9O2SXX0g
+ EtMQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX3QYfmhW38ajYAP/H47RLvxK3QnQsJFJ31XCN1LXYHT7f9F1VetFLKoD1HH75u7veB3NgNFvE+zfAE@nongnu.org
+X-Gm-Message-State: AOJu0YzhyP/lRAG4/4UwgCep750mof2NPkQB5nzYNWcFJDAmx23Sh5yN
+ Ufn2VTIPAakYCkGPBFhmyAFj5UkK90i51ZDjSlDhuePN5H313ETGCou4aH1PWTNaVTGIQaFdSVS
+ xI5syDnD0SreIk0rE9LAxNS+B3udBrrFNgVSDLqnf6MoJ5n3lVQySE6DN
+X-Gm-Gg: ASbGnct9luMEZeGxsLxxFzkKbfQWJmi9D2oQlx8/P/qS/IJV6nmYLAGuGs6QqzSz64O
+ MJ8FPzNupzLh9FXFJt9s4cGxLmM2Z8DGWF8DTee94sdUadAHwxKuld/txfy25NYQG8peAE/uAw2
+ 2Zz/ekg+c1zs5ydhWlvdjXe41Pjf2/cYzZeqXss8ZeMGIWmHgFGoAiI+kcd0dzsAt6t+6wvLYV2
+ NUzCTBp1tXeljypw+YpBcabiDvTdCXWhtI4Lv87GqjNXv3lmG/XPLWcA/pEgdHrOK2GsV+57QPT
+ Ayt2ycU16CMriik=
+X-Received: by 2002:a17:90b:4e8d:b0:311:d258:3473 with SMTP id
+ 98e67ed59e1d1-313472fc4b5mr16021570a91.13.1749440273968; 
+ Sun, 08 Jun 2025 20:37:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFUbHC8Sa1du6hZZR09nxMIkQLcTK0BOrOCQIW92Ckr/yU+q75AYd8pTZ/HpTvs39MPj1fv7A==
+X-Received: by 2002:a17:90b:4e8d:b0:311:d258:3473 with SMTP id
+ 98e67ed59e1d1-313472fc4b5mr16021552a91.13.1749440273529; 
+ Sun, 08 Jun 2025 20:37:53 -0700 (PDT)
+Received: from [10.66.193.79] ([209.132.188.88])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-3134b0903fcsm5194299a91.21.2025.06.08.20.37.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 08 Jun 2025 20:37:53 -0700 (PDT)
+Message-ID: <3f093907-34d3-40f7-956b-828c0c58f04a@redhat.com>
+Date: Mon, 9 Jun 2025 11:37:49 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR11MB8735:EE_|DM3PR11MB8684:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b4ab085-43f5-432f-1ef5-08dda7050a67
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aXRocWZHMHRyV0NQbnZrOVU3aFUrNE8yZm1LdEEzdVA1VlRaVHVZakpFK1kr?=
- =?utf-8?B?VDBLOTBWY1NYVlpBUFNVazJsQWpDeDJnQ29VS3Q4Sy83Zms1Q0VFM2pwcWRa?=
- =?utf-8?B?b0xVMjFWOS9QUE5tZnRpd25xN2VCWTg2V3JVbHNGY0c2bHJTT0lNempXcGVa?=
- =?utf-8?B?MlJTL0FWMWlKemRUUmpsQ0kyTk5yVUM5R2FOKytNTm9QNlRTOWxEbTh2REoy?=
- =?utf-8?B?TzlmVHdFVW9YQUQveldwMkFTU1djZHhNYW9TZFpyK1d4Sm1CdTkvN2FKWkx6?=
- =?utf-8?B?YUNxVThHNlVNb05EbG1kTVZObXM5cDJzSGlGd2cyL3lnWkhxWTdEM1QvcDI2?=
- =?utf-8?B?Smd2bkR2Vzcya2lYRDJsTEF0T1ROcndRdzEvNmVidzVzemo1Ulo1OHRiSUZz?=
- =?utf-8?B?cE5sNEJUdHFVdDZZYzk4dnhXVkFWUmw3NGprWWg5N1VURzc4UU83TDExV1lR?=
- =?utf-8?B?SUU5R2Y4MTg4MkpPQ0xXbW1FMXdYK2ptc1RhSXM5cDBhMVFGZ0tXSm5LN252?=
- =?utf-8?B?MDRGb1dVNmZ1Mk9kWm05NWZkR0o5T0hvZDlOMG5SVFRWYklBMWlkU2ZYM2xx?=
- =?utf-8?B?S0Z6NHB1ZXVnYitrbWJBeVgxOWF3K1hNd1FkRG1pa3MwQzFuV0pHbk9yVnhK?=
- =?utf-8?B?YlJUZ2ZQMEhkbzVKSjV0cVZTN2Y5K3hLc2NoRHU1SXRnbEYybmJDYW00MnRk?=
- =?utf-8?B?eXVlVEpvR3ljYURPSVJ4Y042U1NTanNhM2tjYWxNOWRwWms4cXlBekVJUjF3?=
- =?utf-8?B?TCtUWmgwcVFocUNPWnQ4TDdPTlUvYzNXM3FKTFhiemV5OUtQVDRybFZuMkxG?=
- =?utf-8?B?NGRPZitqSmNZMlh4OEpJU3g0YnV4RldweUpkcklGVzlEQVlRekdKSFFneTJo?=
- =?utf-8?B?dTYvL1FYUjROSzUrc0hmYjM0UDF6VUo1Vm16K2JaUWMySVl1SGhTU01GTko1?=
- =?utf-8?B?VytBa05ZNi9weU1BdDJrTkZVRlNvMzJsMVViSFhDNFBFY0I4emtMRzVIZUFY?=
- =?utf-8?B?eG1NdDFyTldwdXF3S2xON3JTcmdJeGtNTFdURUtXcVFSK0pHeW16NzBXak8r?=
- =?utf-8?B?ai9kUGZVYTFCMnZHbTlyVEp5VnMxWHpaeUFFYXhLaHJpT3l5Z0l4d3pkQUpa?=
- =?utf-8?B?MnVORndEYjlFVUx3VjNVNWlybmJPQWx5T054T2FyY3hqd2t6NG53Q1U2UkRE?=
- =?utf-8?B?bEVUMHk3VTYzaUJjbFNlSVBKTjhPbmNMTW9JeTRxLzZiZXRCWC9mdWVrdXJi?=
- =?utf-8?B?Nm0vL0Z2Z0NqTUppQms3L0VXcXdlZVpDMHJDMUVVZERyaHlCUWNYN3lham1n?=
- =?utf-8?B?eE9QS0tGSWZyMlM1anpCMzRLMDJOZnFkNUZFdHA1eUQ4UGNkbnpVYStRa0tB?=
- =?utf-8?B?Rm9SSjVxVzZpTkdQVGlIb1NLRWdJSkJwaDQ5V3lzSmVVYytsUGV0alh0Y0dS?=
- =?utf-8?B?TjBpdVNFS3hvbjRTTmNLV3EvZ2NqaUVBQWp0YlpySnNmVUhUYlNja2ZOMjBk?=
- =?utf-8?B?T0l2ZHhpdVRkV2xrcUUydnJpTFVVS0ltazVmUDZsODNzazBXZFkrZWt1ZGJ3?=
- =?utf-8?B?Q3lidk5RamRtT09nL2pmVjVPQS96TzBrTlFMT29zQlFJQ0FCdUJIb3dhUmpR?=
- =?utf-8?B?Y1NaTVphVERXK2pMZDNpbVdGZkRWYWNyNGx4MkJON015Tms2OGhaWW1Oejdn?=
- =?utf-8?B?NW1KRXo5S3BybnUzQy9YUVhwTWk0RHU5YTU5T0U2YjM1WlpYSTZlUXMxK0Vj?=
- =?utf-8?B?dURHM0ZBbjlQd1dBTUN2bWtkN1VLaEk2U2VZcGRuUEhmUkMvcElxdWl2eGZS?=
- =?utf-8?B?UGhiN1ZCWEdMcmUvSXdTTGtUeldtQWJRcjVNcFFGT0Q2dlRvVC9VS0tUNnRF?=
- =?utf-8?B?dHk3ZXRRSytPbFRFWm5SSXJhT2pZWGx2SDRMT3VscXRDSmhHRlY5RGRCU1lm?=
- =?utf-8?Q?4pYNI/VxsXQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM3PR11MB8735.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(7416014)(366016)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QmQ5cUpIZFJueStQQ29sVHRSQU44R3V6MlhHbm5GUHVBOTBNSFR6UlZNQmVl?=
- =?utf-8?B?T2FFWFM0dCtTcC9USkF2N3ZManF3ME05bVJtb2V3Q2FNWkZ5ZUlRVDFEWkJj?=
- =?utf-8?B?TWhXZjNSdjdKc1pIRmg2QmxIQnZOYm5jSG1PcTZzak4zUXpDTElqbmRTNHdw?=
- =?utf-8?B?andCQ3RoS0ZjNVg0dnJNWVd6YVpWeFRkTlR5STNCRVU4RGpLWnVmZmRhZHVD?=
- =?utf-8?B?RUNDMXN4Vk5JOEpvNTVmWU90NVRpTmJwWFNFbUd1NDZVdndUTHRlVHB2NTJI?=
- =?utf-8?B?NFVXKzg0OW9yUDZZbHo4cDZpMDc5Z2JwSEU2TEVDYTNoN29NZnNZdlFpSXlp?=
- =?utf-8?B?QkVZcWo3N0xFdjlPRHNjeUVCZ3hPTzhzRGV5RU4xbDhycUxLNXFVM3c1bWMr?=
- =?utf-8?B?eGlGNXpaK3FaQ3VZZit6dDNXbytJdVNBaCsrUmhzNVh3cEtNQkU5M1NKMS9n?=
- =?utf-8?B?QlRjSFllTU9qSmE1Q2x5TTRvWTJwWVM5UDlNWVdOUUwxYTZnbTlldldOZGI4?=
- =?utf-8?B?dDc4SnJoRUw0Ykx2bmFzdWF2YVpBUnc5NHo4Vnl2RmxzWnZuWmp2bUNKOWlL?=
- =?utf-8?B?cWkxSEl0Qk1CYUlWOUEwRmlOaDhBa3dzRWNVcUhrdGtML0NxLzdLQkNEcGlE?=
- =?utf-8?B?WGE0dnpVMkljS29xczAwR1NteStKblZMbEtlN0QvTHE4dmpHYWtiUnBrZmwx?=
- =?utf-8?B?ZlRNalZUNm9hb1EzWElYT3gwVnoybG1wYk0wUHZ5REpLSFNkZkRlWWZlY0Jj?=
- =?utf-8?B?QXJyUlJLald2dWd3aklwRVlUc2FQb0hJQ3Rqb3lNOHl1dzZnSlNVaEhYbEUx?=
- =?utf-8?B?OW9UV3BMeHgwbTFMR3lFcTI1ckhjTG9FU2hJbVFHa25DS28zT1ZTMTgrTWxN?=
- =?utf-8?B?eTRTdFhSajc4b0p2cHZUUEdwU1ExeHMxaFJIUllqbVl4RVhUWlAzYWw4Lzl6?=
- =?utf-8?B?WEE3MTNjOFJhY0gxcjN0cVBuTlVFTG1HOW9oU2wvcW53NGt6aFFBOEdGWGVt?=
- =?utf-8?B?YVR0RkJCenlWZWdad29BZjFMNGRGRjBCSlEwaTdkZDUwZ3RxTC9qWWVjRllO?=
- =?utf-8?B?Y0VrV2V6WUxhR082ZTVENmRkclFoT2dTaktLVWM4UHYvVS9RSCs4SC9wZ2NF?=
- =?utf-8?B?WUpIVldNTzB0UUNxeEJjb0QzenNwUGhxRGtVU0YrSFBMNkNvNWVCUzVPVGp0?=
- =?utf-8?B?OGhEOFJXdlYvN1ZVM3p5bTJUVmcwT3lIQURvN25YR2ovdjdkUnIwWGFFQm9O?=
- =?utf-8?B?dHJrRzVZVGQ3eXF5aVlpbTAzUVM5NkpibjFSVit1cDZxZkUwWFViRTRpZTU4?=
- =?utf-8?B?RnJ0YmJ6b3BqR1lQbGNBcndPZ0RyS3pGZU96ZVIyR2J3TStlMzQ2ZG9wQW8y?=
- =?utf-8?B?SHU0Q2V2bk1mbGoyK0FBSEhSNDhCZmliZCt0YjFpZDhIOUw4ZmNMejN1VklS?=
- =?utf-8?B?SitDTWcxSHJ2WncycVNpM1Q3WGxvZlBTWFdzanhsMHVWWFEwVjlYcnNudUhG?=
- =?utf-8?B?bTRVd2ZQWEt5MVBDYVYzdExEL0NYL0g0UXlybVZVQytVOTNWTjRLeHhzT1Aw?=
- =?utf-8?B?WmcrUVIrTFlmMTZBRjVEejhmMmtFa0p4N1BJTE5IR0JxNGVnTzh6bUg1RWUy?=
- =?utf-8?B?M3NlSSthRHdlWGRTNFl1WHIvS0VOaHJEYXlZQlk4clJvQk1JYVdidDNsTE10?=
- =?utf-8?B?Z04yMXJIQXFLUHNMeTRyTGlSM1RsSFlnbGtseHVNVHlmMHVoOUhsNWgxZHVI?=
- =?utf-8?B?R000NEhnYm12WE5XZXVXUDloOFdwVzlkSnRRaDNjbDVLT0dNMEtJRnRQMlZL?=
- =?utf-8?B?VFV5OTk4NS9kOFBMWU1CdVczQzcvRWhDZWNoZTliNURSVXpTQWY0STBaUkZ3?=
- =?utf-8?B?UzNnM01ndUpYNnQxSDFXdUZNVk1SakxpekNpYWdIQis3RVZXZmpyQ0FPc29v?=
- =?utf-8?B?THV1cHdwWkh6bHNxYTNjZTZSTDlFQlF0VnV5T0xHSjl6cEVUeXdMZVBFK3VN?=
- =?utf-8?B?b2FHSDlpZk4zQzA2SDBJOFZ1WHI3SUhXeDZlSTZBNVZDVXA5SmZtK3prckVm?=
- =?utf-8?B?eXdnbGc5YTJRMHJIWExxenhjYXRvQmx6VE16a2FObkQrMWkwZFMycnNMMnl0?=
- =?utf-8?B?VlJrVmlMdFk1cUxVdXIzbi9NbUd6TWFzY0hhYmN4UTVOcWpxL1NXd2h3WVhs?=
- =?utf-8?B?Z1E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b4ab085-43f5-432f-1ef5-08dda7050a67
-X-MS-Exchange-CrossTenant-AuthSource: CYXPR11MB8729.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 03:23:45.3921 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kXD6CAh20yEcKFbdIWiZzD28C0KX7DY3MsazGuc8Usu9Ea8TSokBDQeCOm6+yxCwqMPi2VZhh9w+ojN4WljcwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR11MB8684
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=chenyi.qiang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ramfb: Add property to control if load the romfile
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-arm@nongnu.org, Eric Auger <eauger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+References: <20250606070234.2063451-1-shahuang@redhat.com>
+ <aEKeNSc8mAZ8vhGj@redhat.com>
+Content-Language: en-US
+From: Shaoqin Huang <shahuang@redhat.com>
+In-Reply-To: <aEKeNSc8mAZ8vhGj@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=shahuang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -216,166 +113,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+Hi Daniel,
 
-Since this series has received Reviewed-by/Acked-by on all patches,
-besides some coding style comments from Alexey and the suggestion to
-document the bitmap consistency from David in patch #4, Any other
-comments? Or I would send the next version to resolve them.
+On 6/6/25 3:52 PM, Daniel P. Berrangé wrote:
+> On Fri, Jun 06, 2025 at 03:02:34AM -0400, Shaoqin Huang wrote:
+>> Now the ramfb will load the vgabios-ramfb.bin unconditionally, but only
+>> the x86 need the vgabios-ramfb.bin, this can cause that when use the
+>> release package on arm64 it can't find the vgabios-ramfb.bin.
+>>
+>> Because only seabios will use the vgabios-ramfb.bin, load the rom logic
+>> is x86-specific. For other !x86 platforms, the edk2 ships an EFI driver
+>> for ramfb, so they don't need to load the romfile.
+>>
+>> So add a new property use_legacy_x86_rom in both ramfb and vfio_pci
+>> device, because the vfio display also use the ramfb_setup() to load
+>> the vgabios-ramfb.bin file.
+>>
+>> After have this property, the machine type can set the compatibility to
+>> not load the vgabios-ramfb.bin if the arch doesn't need it.
+> 
+> Can you make this a series, with an additional patch that updates the
+> current in-dev machine types to use this new property, so we're clear
+> about the proposed usage.
+> 
 
-Thanks
-Chenyi
+Ok. Thanks for notification. I will update it in the version 3.
 
-On 5/30/2025 4:32 PM, Chenyi Qiang wrote:
-> This is the v6 series of the shared device assignment support.
+>>
+>> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
+>> ---
+>>   hw/display/ramfb-standalone.c | 4 +++-
+>>   hw/display/ramfb-stubs.c      | 2 +-
+>>   hw/display/ramfb.c            | 6 ++++--
+>>   hw/vfio/display.c             | 4 ++--
+>>   hw/vfio/pci.c                 | 1 +
+>>   hw/vfio/pci.h                 | 1 +
+>>   include/hw/display/ramfb.h    | 2 +-
+>>   7 files changed, 13 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
+>> index 1be106b57f..af1175bf96 100644
+>> --- a/hw/display/ramfb-standalone.c
+>> +++ b/hw/display/ramfb-standalone.c
+>> @@ -17,6 +17,7 @@ struct RAMFBStandaloneState {
+>>       QemuConsole *con;
+>>       RAMFBState *state;
+>>       bool migrate;
+>> +    bool use_legacy_x86_rom;
+>>   };
+>>   
+>>   static void display_update_wrapper(void *dev)
+>> @@ -39,7 +40,7 @@ static void ramfb_realizefn(DeviceState *dev, Error **errp)
+>>       RAMFBStandaloneState *ramfb = RAMFB(dev);
+>>   
+>>       ramfb->con = graphic_console_init(dev, 0, &wrapper_ops, dev);
+>> -    ramfb->state = ramfb_setup(errp);
+>> +    ramfb->state = ramfb_setup(ramfb->use_legacy_x86_rom, errp);
+>>   }
+>>   
+>>   static bool migrate_needed(void *opaque)
+>> @@ -62,6 +63,7 @@ static const VMStateDescription ramfb_dev_vmstate = {
+>>   
+>>   static const Property ramfb_properties[] = {
+>>       DEFINE_PROP_BOOL("x-migrate", RAMFBStandaloneState, migrate,  true),
+>> +    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState, use_legacy_x86_rom, true),
+>>   };
+>>   
+>>   static void ramfb_class_initfn(ObjectClass *klass, void *data)
+>> diff --git a/hw/display/ramfb-stubs.c b/hw/display/ramfb-stubs.c
+>> index cf64733b10..b83551357b 100644
+>> --- a/hw/display/ramfb-stubs.c
+>> +++ b/hw/display/ramfb-stubs.c
+>> @@ -8,7 +8,7 @@ void ramfb_display_update(QemuConsole *con, RAMFBState *s)
+>>   {
+>>   }
+>>   
+>> -RAMFBState *ramfb_setup(Error **errp)
+>> +RAMFBState *ramfb_setup(bool romfile, Error **errp)
+>>   {
+>>       error_setg(errp, "ramfb support not available");
+>>       return NULL;
+>> diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
+>> index 8c0f907673..9a17d97d07 100644
+>> --- a/hw/display/ramfb.c
+>> +++ b/hw/display/ramfb.c
+>> @@ -135,7 +135,7 @@ const VMStateDescription ramfb_vmstate = {
+>>       }
+>>   };
+>>   
+>> -RAMFBState *ramfb_setup(Error **errp)
+>> +RAMFBState *ramfb_setup(bool romfile, Error **errp)
+>>   {
+>>       FWCfgState *fw_cfg = fw_cfg_find();
+>>       RAMFBState *s;
+>> @@ -147,7 +147,9 @@ RAMFBState *ramfb_setup(Error **errp)
+>>   
+>>       s = g_new0(RAMFBState, 1);
+>>   
+>> -    rom_add_vga("vgabios-ramfb.bin");
+>> +    if (romfile) {
+>> +        rom_add_vga("vgabios-ramfb.bin");
+>> +    }
+>>       fw_cfg_add_file_callback(fw_cfg, "etc/ramfb",
+>>                                NULL, ramfb_fw_cfg_write, s,
+>>                                &s->cfg, sizeof(s->cfg), false);
+>> diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+>> index ea87830fe0..8bfd8eb1e3 100644
+>> --- a/hw/vfio/display.c
+>> +++ b/hw/vfio/display.c
+>> @@ -365,7 +365,7 @@ static bool vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
+>>                                             &vfio_display_dmabuf_ops,
+>>                                             vdev);
+>>       if (vdev->enable_ramfb) {
+>> -        vdev->dpy->ramfb = ramfb_setup(errp);
+>> +        vdev->dpy->ramfb = ramfb_setup(vdev->use_legacy_x86_rom, errp);
+>>           if (!vdev->dpy->ramfb) {
+>>               return false;
+>>           }
+>> @@ -494,7 +494,7 @@ static bool vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
+>>                                             &vfio_display_region_ops,
+>>                                             vdev);
+>>       if (vdev->enable_ramfb) {
+>> -        vdev->dpy->ramfb = ramfb_setup(errp);
+>> +        vdev->dpy->ramfb = ramfb_setup(vdev->use_legacy_x86_rom, errp);
+>>           if (!vdev->dpy->ramfb) {
+>>               return false;
+>>           }
+>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>> index 7f1532fbed..4e4759c954 100644
+>> --- a/hw/vfio/pci.c
+>> +++ b/hw/vfio/pci.c
+>> @@ -3564,6 +3564,7 @@ static const TypeInfo vfio_pci_dev_info = {
+>>   
+>>   static const Property vfio_pci_dev_nohotplug_properties[] = {
+>>       DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
+>> +    DEFINE_PROP_BOOL("use_legacy_x86_rom", VFIOPCIDevice, use_legacy_x86_rom, true),
+>>       DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate,
+>>                               ON_OFF_AUTO_AUTO),
+>>   };
+>> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+>> index d94ecaba68..713956157e 100644
+>> --- a/hw/vfio/pci.h
+>> +++ b/hw/vfio/pci.h
+>> @@ -177,6 +177,7 @@ struct VFIOPCIDevice {
+>>       bool no_kvm_ioeventfd;
+>>       bool no_vfio_ioeventfd;
+>>       bool enable_ramfb;
+>> +    bool use_legacy_x86_rom;
+>>       OnOffAuto ramfb_migrate;
+>>       bool defer_kvm_irq_routing;
+>>       bool clear_parent_atomics_on_exit;
+>> diff --git a/include/hw/display/ramfb.h b/include/hw/display/ramfb.h
+>> index a7e0019144..172aa6dc89 100644
+>> --- a/include/hw/display/ramfb.h
+>> +++ b/include/hw/display/ramfb.h
+>> @@ -6,7 +6,7 @@
+>>   /* ramfb.c */
+>>   typedef struct RAMFBState RAMFBState;
+>>   void ramfb_display_update(QemuConsole *con, RAMFBState *s);
+>> -RAMFBState *ramfb_setup(Error **errp);
+>> +RAMFBState *ramfb_setup(bool romfile, Error **errp);
+>>   
+>>   extern const VMStateDescription ramfb_vmstate;
+>>   
+>> -- 
+>> 2.40.1
+>>
 > 
-> Compared with the last version [1], this series retains the basic support
-> and removes the additional complex error handling, which can be added
-> back when necessary. Meanwhile, the patchset has been re-organized to
-> be clearer.
-> 
-> Overview of this series:
-> 
-> - Patch 1-3: Preparation patches. These include function exposure and
->   some function prototype changes.
-> - Patch 4: Introduce a new object to implement RamDiscardManager
->   interface and a helper to notify the shared/private state change.
-> - Patch 5: Enable coordinated discarding of RAM with guest_memfd through
->   the RamDiscardManager interface.
-> 
-> More small changes or details can be found in the individual patches.
-> 
-> ---
-> 
-> Background
-> ==========
-> Confidential VMs have two classes of memory: shared and private memory.
-> Shared memory is accessible from the host/VMM while private memory is
-> not. Confidential VMs can decide which memory is shared/private and
-> convert memory between shared and private at runtime.
-> 
-> "guest_memfd" is a new kind of fd whose primary goal is to serve guest
-> private memory. In current implementation, shared memory is allocated
-> with normal methods (e.g. mmap or fallocate) while private memory is
-> allocated from guest_memfd. When a VM performs memory conversions, QEMU
-> frees pages via madvise or via PUNCH_HOLE on memfd or guest_memfd from
-> one side, and allocates new pages from the other side. This will cause a
-> stale IOMMU mapping issue mentioned in [2] when we try to enable shared
-> device assignment in confidential VMs.
-> 
-> Solution
-> ========
-> The key to enable shared device assignment is to update the IOMMU mappings
-> on page conversion. RamDiscardManager, an existing interface currently
-> utilized by virtio-mem, offers a means to modify IOMMU mappings in
-> accordance with VM page assignment. Page conversions is similar to
-> hot-removing a page in one mode and adding it back in the other.
-> 
-> This series implements a RamDiscardmanager for confidential VMs and
-> utilizes its infrastructure to notify VFIO of page conversions.
-> 
-> Limitation and future extension
-> ===============================
-> This series only supports the basic shared device assignment functionality.
-> There are still some limitations and areas that can be extended and
-> optimized in the future.
-> 
-> Relationship with in-place conversion
-> -------------------------------------
-> In-place page conversion is the ongoing work to allow mmap() of
-> guest_memfd to userspace so that both private and shared memory can use
-> the same physical memory as the backend. This new design eliminates the
-> need to discard pages during shared/private conversions. When it is
-> ready, shared device assignment needs be adjusted to achieve an
-> unmap-before-conversion-to-private and map-after-conversion-to-shared
-> sequence to be compatible with the change.
-> 
-> Partial unmap limitation
-> ------------------------
-> VFIO expects the DMA mapping for a specific IOVA to be mapped and
-> unmapped with the same granularity. The guest may perform partial
-> conversion, such as converting a small region within a larger one. To
-> prevent such invalid cases, current operations are performed with 4K
-> granularity. This could be optimized after DMA mapping cut operation
-> [3] is introduced in the future. We can always perform a
-> split-before-unmap if partial conversions happens. If the split
-> succeeds, the unmap will succeed and be atomic. If the split fails, the
-> unmap process fails.
-> 
-> More attributes management
-> --------------------------
-> Current RamDiscardManager can only manage a pair of opposite states like
-> populated/discared or shared/private. If more states need to be
-> considered, for example, support virtio-mem in confidential VMs, three
-> states would be possible (shared populated/private populated/discard).
-> Current framework cannot handle such scenario and we need to think of
-> some new framework at that time [4].
-> 
-> Memory overhead optimization
-> ----------------------------
-> A comment from Baolu [5] suggests considering using Maple Tree or a generic
-> interval tree to manage private/shared state instead of a bitmap, which
-> can reduce memory consumption. This optmization can also be considered
-> in other bitmap use cases like dirty bitmaps for guest RAM.
-> 
-> Testing
-> =======
-> This patch series is tested based on mainline kernel since TDX base
-> support has been merged. The QEMU repo is available at
-> QEMU: https://github.com/intel-staging/qemu-tdx/tree/tdx-upstream-snapshot-2025-05-30-v2
-> 
-> To facilitate shared device assignment with the NIC, employ the legacy
-> type1 VFIO with the QEMU command:
-> 
-> qemu-system-x86_64 [...]
->     -device vfio-pci,host=XX:XX.X
-> 
-> The parameter of dma_entry_limit needs to be adjusted. For example, a
-> 16GB guest needs to adjust the parameter like
-> vfio_iommu_type1.dma_entry_limit=4194304.
-> 
-> If use the iommufd-backed VFIO with the qemu command:
-> 
-> qemu-system-x86_64 [...]
->     -object iommufd,id=iommufd0 \
->     -device vfio-pci,host=XX:XX.X,iommufd=iommufd0
-> 
-> 
-> Because the new features like cut_mapping operation will only be support in iommufd.
-> It is more recommended to use the iommufd-backed VFIO.
-> 
-> Related link
-> ============
-> [1] https://lore.kernel.org/qemu-devel/20250520102856.132417-1-chenyi.qiang@intel.com/
-> [2] https://lore.kernel.org/qemu-devel/20240423150951.41600-54-pbonzini@redhat.com/
-> [3] https://lore.kernel.org/linux-iommu/0-v2-5c26bde5c22d+58b-iommu_pt_jgg@nvidia.com/
-> [4] https://lore.kernel.org/qemu-devel/d1a71e00-243b-4751-ab73-c05a4e090d58@redhat.com/
-> [5] https://lore.kernel.org/qemu-devel/013b36a9-9310-4073-b54c-9c511f23decf@linux.intel.com/
-> 
-> Chenyi Qiang (5):
->   memory: Export a helper to get intersection of a MemoryRegionSection
->     with a given range
->   memory: Change memory_region_set_ram_discard_manager() to return the
->     result
->   memory: Unify the definiton of ReplayRamPopulate() and
->     ReplayRamDiscard()
->   ram-block-attributes: Introduce RamBlockAttributes to manage RAMBlock
->     with guest_memfd
->   physmem: Support coordinated discarding of RAM with guest_memfd
-> 
->  MAINTAINERS                   |   1 +
->  accel/kvm/kvm-all.c           |   9 +
->  hw/virtio/virtio-mem.c        |  83 +++---
->  include/system/memory.h       | 100 +++++--
->  include/system/ramblock.h     |  22 ++
->  migration/ram.c               |   5 +-
->  system/memory.c               |  22 +-
->  system/meson.build            |   1 +
->  system/physmem.c              |  18 +-
->  system/ram-block-attributes.c | 480 ++++++++++++++++++++++++++++++++++
->  system/trace-events           |   3 +
->  11 files changed, 660 insertions(+), 84 deletions(-)
->  create mode 100644 system/ram-block-attributes.c
-> 
+> With regards,
+> Daniel
+
+-- 
+Shaoqin
 
 
