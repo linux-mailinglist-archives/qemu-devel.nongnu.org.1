@@ -2,76 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E6AAD217F
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 16:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DF8AD21B6
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 17:04:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOdwp-00057r-Jy; Mon, 09 Jun 2025 10:58:03 -0400
+	id 1uOe21-0006Nh-V9; Mon, 09 Jun 2025 11:03:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uOdwm-00055b-ID
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 10:58:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uOe1o-0006NS-Hw
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:03:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uOdwk-000293-8K
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 10:58:00 -0400
+ id 1uOe1m-0002uR-Cb
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 11:03:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749481076;
+ s=mimecast20190719; t=1749481389;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Sg1nfnhEfylTDAb6cjEuaXj3riRspKAwcF3uOY23jHs=;
- b=CqAu4aJ5g/yz1pI6VMZY5YAmGQ3r0j/xGQnwEIOcnA2wJSGdwPFrZYgiAQLO7xRoXCfXGD
- Gqx+6FeLP5dQBgDqjjTNg8IDE1MW9RbdQuF30gwRktjMb3yFR7wiTHHB0ZIxI/usTpZBEh
- 1ODgexAFP2nN1oSqDmjm0zjBizm+o4k=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=vmPLKClueFFZvZQRbmobTeF2DRgYUjAoBYW2pKQxMMU=;
+ b=AUT9Uws2ihLE8IdOtGozhIXkpe5mDPrJKSCb5qfYhALCnVFwasnz7INy4oDGcPC9nJhKNu
+ 3nnODwOV+jORdGkME0xQdK+pRSs/1iECr1pCXrGdycpPlDwGkvMjdl+E3Rf4ZQAKDwRaMx
+ TO/LNwlaP4PNtsO8K/R7IR0SvYwzgD4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-23EQmwaUMRa0zYuv8kBJ4Q-1; Mon,
- 09 Jun 2025 10:57:52 -0400
-X-MC-Unique: 23EQmwaUMRa0zYuv8kBJ4Q-1
-X-Mimecast-MFC-AGG-ID: 23EQmwaUMRa0zYuv8kBJ4Q_1749481071
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-134-FXltjgjBNLGlePD7d-Vyzg-1; Mon,
+ 09 Jun 2025 11:03:07 -0400
+X-MC-Unique: FXltjgjBNLGlePD7d-Vyzg-1
+X-Mimecast-MFC-AGG-ID: FXltjgjBNLGlePD7d-Vyzg_1749481387
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8447C1955F45; Mon,  9 Jun 2025 14:57:51 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C994318001D1; Mon,  9 Jun 2025 15:03:06 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.45])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9DF2E30001B1; Mon,  9 Jun 2025 14:57:48 +0000 (UTC)
-Date: Mon, 9 Jun 2025 15:57:45 +0100
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 14D5919560A3; Mon,  9 Jun 2025 15:03:04 +0000 (UTC)
+Date: Mon, 9 Jun 2025 16:03:01 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: JAEHOON KIM <jhkim@linux.ibm.com>
-Cc: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- jjherne@linux.ibm.com, peterx@redhat.com, farosas@suse.de
-Subject: Re: [PATCH v1] migration: Wait for cpr.sock file to appear before
- connecting
-Message-ID: <aEb2aaOpn4aahXcM@redhat.com>
-References: <aEMR6Xjs8tRJ8_sp@redhat.com>
- <b2d90921-0991-4a57-a141-ad0c830f8618@oracle.com>
- <5f211f67-17f7-4b1d-a60a-4ff62645fbfa@linux.ibm.com>
- <ad638089-af36-4f3e-8f3d-61549e9bed06@oracle.com>
- <aEaWC_Lc6c1g821f@redhat.com>
- <f46393bb-115a-489f-aa8d-08348e89d25e@oracle.com>
- <aEbfuM681MJh2S-b@redhat.com>
- <881cb07a-95c7-4f3b-8012-352873e88d64@oracle.com>
- <aEbmvQXyCLMKSy_8@redhat.com>
- <45458e9f-ef59-43e3-abd6-5d923575afa4@linux.ibm.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH 19/21] migration: Allow migrate commands to provide the
+ migration config
+Message-ID: <aEb3pRkQK30JBf04@redhat.com>
+References: <20250603013810.4772-1-farosas@suse.de>
+ <20250603013810.4772-20-farosas@suse.de>
+ <aENBda_y3v3y4ptS@x1.local> <874iwswrex.fsf@suse.de>
+ <aENUrociiqlFuPpz@x1.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <45458e9f-ef59-43e3-abd6-5d923575afa4@linux.ibm.com>
+In-Reply-To: <aENUrociiqlFuPpz@x1.local>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,90 +88,72 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 09, 2025 at 09:54:02AM -0500, JAEHOON KIM wrote:
-> 
-> On 6/9/2025 8:50 AM, Daniel P. Berrangé wrote:
-> > On Mon, Jun 09, 2025 at 09:39:48AM -0400, Steven Sistare wrote:
-> > > On 6/9/2025 9:20 AM, Daniel P. Berrangé wrote:
-> > > > On Mon, Jun 09, 2025 at 09:12:27AM -0400, Steven Sistare wrote:
-> > > > > On 6/9/2025 4:06 AM, Daniel P. Berrangé wrote:
-> > > > > > On Fri, Jun 06, 2025 at 03:37:56PM -0400, Steven Sistare wrote:
-> > > > > > > The easiest solution, with no interface changes, is adding wait_for_socket() in qtest,
-> > > > > > > with this addition from Daniel:
-> > > > > > > 
-> > > > > > >      "With the busy wait you risk looping forever if the child (target) QEMU
-> > > > > > >      already exited for some reason without ever creating the socket. You
-> > > > > > >      can mitigate this by using 'kill($PID, 0)' in the loop and looking
-> > > > > > >      for -ERSCH, but this only works if you know the pid involved."
-> > > > > > > 
-> > > > > > > Daniel also suggested:
-> > > > > > >      "For the tests, passing a pre-opened UNIX socket FD could work"
-> > > > > > > 
-> > > > > > > Note we can not use any of the standard chardev options to specify such a socket,
-> > > > > > > because the cpr socket is created before chardevs are created.
-> > > > > > > 
-> > > > > > > Perhaps we could specify the fd in an extension of the MigrationChannel MigrationAddress.
-> > > > > > > { 'union': 'MigrationAddress',
-> > > > > > >      'base': { 'transport' : 'MigrationAddressType'},
-> > > > > > >      'discriminator': 'transport',
-> > > > > > >      'data': {
-> > > > > > >        'socket': 'SocketAddress',
-> > > > > > >        'exec': 'MigrationExecCommand',
-> > > > > > >        'rdma': 'InetSocketAddress',
-> > > > > > >        'file': 'FileMigrationArgs',
-> > > > > > >        'fd':   'FdMigrationArgs' } }           <-- add this
-> > > > > > > 
-> > > > > > > That would be useful for all clients, but this is asking a lot from you,
-> > > > > > > when you are just trying to fix the tests.
-> > > > > > Note, 'SocketAddress' already has an option for declaring a FD that
-> > > > > > represents a socket.
-> > > > > Yes, but if I understand, you proposed passing an fd that represents a
-> > > > > pre-listened socket, which requires target qemu to accept() first.  The
-> > > > > existing FdSocketAddress is ready to read.  We could add a boolean to enable
-> > > > > the new behavior.
-> > > > It can do both actually - it depends on what APIs the QEMU uses the
-> > > > SocketAddress with.
-> > > > 
-> > > > If it is used with qio_channel_socket_connect* the FD must be an
-> > > > active peer connection.
-> > > > 
-> > > > If it is used with qio_channel_socket_listen*/qio_net_listener* the
-> > > > FD must be listener socket.
-> > > Fair enough.  cpr currently listens here, and we could add a case for the FD:
-> > > 
-> > >    QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp)
-> > >    {
-> > >      MigrationAddress *addr = channel->addr;
-> > > 
-> > >      if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET &&
-> > >          addr->u.socket.type == SOCKET_ADDRESS_TYPE_UNIX) {
-> > >          ...
-> > >          g_autoptr(QIONetListener) listener = qio_net_listener_new();
-> > > 
-> > > Or to use my socketpair() suggestion, that function would also need changes,
-> > > calling qio_channel_socket_connect.
-> > > 
-> > > Which do you think is better for clients -- socketpair or pre-listened?
-> > Please just use the existing SocketAddress functionality, as that's used
-> > throughout QEMU - a special case with socketpair for migration is not
-> > desirable.
+On Fri, Jun 06, 2025 at 04:50:54PM -0400, Peter Xu wrote:
+> On Fri, Jun 06, 2025 at 05:23:18PM -0300, Fabiano Rosas wrote:
+> > Peter Xu <peterx@redhat.com> writes:
 > > 
-> > The SocketAddress stuff is what libvirt's used for many years now to
-> > address the race condition with QMP listeners.
+> > > On Mon, Jun 02, 2025 at 10:38:08PM -0300, Fabiano Rosas wrote:
+> > >> Allow the migrate and migrate_incoming commands to pass the migration
+> > >> configuration options all at once, dispensing the use of
+> > >> migrate-set-parameters and migrate-set-capabilities.
+> > >> 
+> > >> The motivation of this is to simplify the interface with the
+> > >> management layer and avoid the usage of several command invocations to
+> > >> configure a migration. It also avoids stale parameters from a previous
+> > >> migration to influence the current migration.
+> > >> 
+> > >> The options that are changed during the migration can still be set
+> > >> with the existing commands.
+> > >> 
+> > >> The order of precedence is:
+> > >> 
+> > >> 'config' argument > -global cmdline > defaults (migration_properties)
+> > >
+> > > Could we still keep the QMP migrate-set-parameters values?
+> > >
+> > >   'config' argument > QMP setups using migrate-set-parameters >
+> > >     -global cmdline > defaults (migration_properties)
+> > >
+> > 
+> > That's the case. I failed to mention it in the commit message. IOW it
+> > behaves just like today, but the new 'config' way takes precedence over
+> > all.
 > 
-> Dear Daniel and Steve,
+> Referring to below chunk of code:
 > 
-> Thank you both for your valuable insights.
+> [...]
 > 
-> To clarify regarding the socket handling approach:
-> If I do not use socketpair() and instead pass a pre-listened FD to the target, which then calls accept(),
-> it seems this could mitigate some race condition. However, isn't there still a risk that the old QEMU might try to
-> connect before the target QEMU calls accept(), thereby resulting in the same race condition?
+> > >> +bool migrate_params_override(MigrationState *s, MigrationParameters *new,
+> > >> +                             Error **errp)
+> > >> +{
+> > >> +    ERRP_GUARD();
+> > >> +
+> > >> +    assert(bql_locked());
+> > >> +
+> > >> +    /* reset to default parameters */
+> > >> +    migrate_params_apply(&s->defaults);
+> 
+> IIUC here it'll reset all global parameters using the initial defaults
+> first, then apply the "config" specified in "migrate" QMP command?
+> 
+> I think there're actually two separate questions to be asked, to make it
+> clearer, they are:
+> 
+>   (1) Whether we should allow QMP "migrate" 'config' parameter to overwrite
+>       global setup?
+> 
+>   (2) Whether we should allow previous QMP global setup to be used even if
+>       QMP "migrate" provided 'config' parameter?
+> 
+> So IIUC the patch does (1) YES (2) NO, while what I think might be more
+> intuitive is (1) NO (2) YES.
 
-No, that's fine. The kernel will queue all incoming connections
-until accept() is called. So essentially the source QEMU connect()
-will get blocked until dst QEMU accept()s, which is exactly the
-semantics we want.
+The point of the 'config' parameter to the 'migrate' command is to
+enable the mgmt app to fully specify what it wants the configuration
+to be, such that there is no previously set state will will cause
+it surprises. Allowing -global to have an effect undermines the
+predictibility in the same way that migrate-set-parameter undermines
+the predictibility.
 
 With regards,
 Daniel
