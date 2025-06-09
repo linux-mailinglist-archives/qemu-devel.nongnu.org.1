@@ -2,61 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03144AD2423
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 18:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BF5AD240D
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Jun 2025 18:35:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOfU9-0004KS-55; Mon, 09 Jun 2025 12:36:33 -0400
+	id 1uOfSh-0002M7-2t; Mon, 09 Jun 2025 12:35:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uOfTw-00046g-Ee
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 12:36:22 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uOfRs-0001Y8-CQ
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 12:34:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uOfTq-0002GW-8W
- for qemu-devel@nongnu.org; Mon, 09 Jun 2025 12:36:19 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bGHZ75lPwz6L5LY;
- Tue, 10 Jun 2025 00:34:23 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 28368140276;
- Tue, 10 Jun 2025 00:36:11 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
- frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 9 Jun 2025 18:36:10 +0200
-To: Klaus Jensen <k.jensen@samsung.com>, <cminyard@mvista.com>, Fan Ni
- <fan.ni@samsung.com>, Anisa Su <anisa.su@samsung.com>,
- <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <mst@redhat.com>
-CC: <linuxarm@huawei.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: [RFC PATCH qemu 5/5] usb/mctp/cxl: CXL FMAPI interface via MCTP over
- usb.
-Date: Mon, 9 Jun 2025 17:33:33 +0100
-Message-ID: <20250609163334.922346-6-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250609163334.922346-1-Jonathan.Cameron@huawei.com>
-References: <20250609163334.922346-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uOfRp-0001Xr-1k
+ for qemu-devel@nongnu.org; Mon, 09 Jun 2025 12:34:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749486845;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=TyzyXP1Jyl9iO19x+rAhTwzE0VDj1TzyHo5k0t6hCJE=;
+ b=ObXBjPfA5wjripZAMaQyTjsB5BomYJ2Nujvmg4P3RVCw4PGh1ORnw2gPIE+TqxBMyvS9sO
+ jqRoYw6kafd4G6k8s7P0X17mlW0Rg6ic7ze7oc5BMLLWXgfNPo4YxvXFBB0ifJG+SF2sRw
+ Ii2tM4EXgd6tLxN5qxNPBKnMejoVXAM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-117-GUTqaxAjPqK54sFUHMnwzQ-1; Mon, 09 Jun 2025 12:34:03 -0400
+X-MC-Unique: GUTqaxAjPqK54sFUHMnwzQ-1
+X-Mimecast-MFC-AGG-ID: GUTqaxAjPqK54sFUHMnwzQ_1749486842
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-453080e4741so13128135e9.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 09:34:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749486842; x=1750091642;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TyzyXP1Jyl9iO19x+rAhTwzE0VDj1TzyHo5k0t6hCJE=;
+ b=h8xSIWlmiPlWkV4yDQl3b0SOFfIhuzXSsOY2ZA8YotCE9JsD8XbcUHEk6CRHqwSJJ2
+ sjo2rhj84tlTAmC66a2ivSyZyALhhHqzQNUowPoh5Fd/+ksA8RLqujWqDJU7PFye5GT/
+ faZsumulWITunTHO0UrCHb9niPd6MIalvx2HBwbgDpohxPemBd79HvK2qerC+t8G4t9p
+ dYrGw68hpYV/OsoHvza3Qd2tvbta1UGY73GtkjbH9PQ3aOAIrotwnu4/ZZUG6y9yVIHg
+ WU9d84pPy9puqI81BBKtcaywoV+mr+5d08pTkZQ2c9X8ezfeqjsdUydpeMnEXbkJQS0f
+ jfRA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW357uEjeLJhSteNvXSiGAjXapwv6fBhyoRvzSkWNhMCxPzx287+ANyYIVZ9997ODP7mmCMYcAREyuS@nongnu.org
+X-Gm-Message-State: AOJu0YwBq/4KhHmtSurAbapCHf0187Hj2lyOP8HbdmhU67P0x2QnTlrv
+ a8mwaHlKUWSZeRKodGOIqzEQG7GM+HsnA8zInusc4ImCDvbHVvHC7NA326xlaVM437xvIljhA63
+ HZn1kJq5a/OJNcUM393Qfbq9Yc24JPXQ/uiWMGXpxolcfgJtpRYpnMVpx
+X-Gm-Gg: ASbGnctBV9FcPktpeTVf4QGPM6ZC8+8H2fHlBMMW2hDb73xi1Da83sh/lzYl9gILXXY
+ /PnOtt2oXAv6QZ1VBWpwNttVFVNbDN+eR1S1v+0qebzFRkdt/BCyqwzGnI91AaX8bC0enFJ730h
+ QpKiiM63651mKmlfXbfjtzBDcaQa86SIo63YrtbRBDGkLXfU5YL49TKIwqk6Ja5178InHwTh2na
+ ReyYsE4lt1vi9sEywAFgXhaawVs5VuEMWhyR3cTQ4V/dx1SgmEBW/l8ojBDofUS437UlnDdE6HE
+ txjp2Ig8cVSvpFFxDN1ZZplXQLVNH2EbvCLZbXKGg6wbLuvUuWkc4lwkuxgW
+X-Received: by 2002:a05:6000:2503:b0:3a4:ec23:dba5 with SMTP id
+ ffacd0b85a97d-3a5319b17c0mr11985019f8f.5.1749486841455; 
+ Mon, 09 Jun 2025 09:34:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGpiLvMFS5AXQwp5AJh9bxc0jwh9AcpOOaCsUZhpXwdDWs41Up1sjNyHVKXRUNSVxEMlT4CnQ==
+X-Received: by 2002:a05:6000:2503:b0:3a4:ec23:dba5 with SMTP id
+ ffacd0b85a97d-3a5319b17c0mr11984986f8f.5.1749486841011; 
+ Mon, 09 Jun 2025 09:34:01 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a53229df09sm9941204f8f.6.2025.06.09.09.34.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Jun 2025 09:34:00 -0700 (PDT)
+Message-ID: <433391e7-47d7-422d-ad24-b5a1ceb354b5@redhat.com>
+Date: Mon, 9 Jun 2025 18:33:59 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vfio/container: Fix vfio_listener_commit()
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: john.levon@nutanix.com, chao.p.peng@intel.com,
+ Alex Williamson <alex.williamson@redhat.com>
+References: <20250609115433.401775-1-zhenzhong.duan@intel.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250609115433.401775-1-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,857 +150,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Given the challenges in testing systems with the previously
-posted i2c based mctp support for x86 / arm64 machines (as only
-emulated controller that is suitably capable is the aspeed one)
-providing a USB interface greatly simplifies things.
+On 6/9/25 13:54, Zhenzhong Duan wrote:
+> It's wrong to call into listener_begin callback in vfio_listener_commit().
+> Currently this impacts vfio-user.
+> 
+> Fixes: d9b7d8b6993b ("vfio/container: pass listener_begin/commit callbacks")
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   hw/vfio/listener.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+> index 203ed0314e..735b5f21b7 100644
+> --- a/hw/vfio/listener.c
+> +++ b/hw/vfio/listener.c
+> @@ -437,7 +437,7 @@ static void vfio_listener_commit(MemoryListener *listener)
+>                                                    listener);
+>       void (*listener_commit)(VFIOContainerBase *bcontainer);
+>   
+> -    listener_commit = VFIO_IOMMU_GET_CLASS(bcontainer)->listener_begin;
+> +    listener_commit = VFIO_IOMMU_GET_CLASS(bcontainer)->listener_commit;
+>   
+>       if (listener_commit) {
+>           listener_commit(bcontainer);
 
-This is a PoC of such an interface.
 
-RFC reasons:
-- Not all error conditions are fully checked / handled.
-- MTU in the 'to host' direction is ignored.  Seems the Linux
-  stack doesn't care about this today but that should be brought
-  into compliance with the specification anyway.
+Applied to vfio-next.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- include/hw/usb.h   |   1 +
- include/net/mctp.h |  77 +++++-
- hw/i2c/mctp.c      |  17 --
- hw/usb/dev-mctp.c  | 639 +++++++++++++++++++++++++++++++++++++++++++++
- hw/usb/Kconfig     |   5 +
- hw/usb/meson.build |   1 +
- 6 files changed, 717 insertions(+), 23 deletions(-)
+Thanks,
 
-diff --git a/include/hw/usb.h b/include/hw/usb.h
-index 26a9f3ecde..ae5f3f77cb 100644
---- a/include/hw/usb.h
-+++ b/include/hw/usb.h
-@@ -81,6 +81,7 @@
- #define USB_CLASS_CDC_DATA              0x0a
- #define USB_CLASS_CSCID                 0x0b
- #define USB_CLASS_CONTENT_SEC           0x0d
-+#define USB_CLASS_MCTP                  0x14
- #define USB_CLASS_APP_SPEC              0xfe
- #define USB_CLASS_VENDOR_SPEC           0xff
- 
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index 5d26d855db..f278b17ce2 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -3,21 +3,21 @@
- 
- #include "hw/registerfields.h"
- 
--/* DSP0236 1.3.0, Section 8.3.1 */
-+/* DSP0236 1.3.3, Section 8.4.2 Baseline transmission unit */
- #define MCTP_BASELINE_MTU 64
- 
--/* DSP0236 1.3.0, Table 1, Message body */
-+/* DSP0236 1.3.3, Table 1, Message body */
- FIELD(MCTP_MESSAGE_H, TYPE, 0, 7)
- FIELD(MCTP_MESSAGE_H, IC,   7, 1)
- 
--/* DSP0236 1.3.0, Table 1, MCTP transport header */
-+/* DSP0236 1.3.3, Table 1, MCTP transport header */
- FIELD(MCTP_H_FLAGS, TAG,    0, 3);
- FIELD(MCTP_H_FLAGS, TO,     3, 1);
- FIELD(MCTP_H_FLAGS, PKTSEQ, 4, 2);
- FIELD(MCTP_H_FLAGS, EOM,    6, 1);
- FIELD(MCTP_H_FLAGS, SOM,    7, 1);
- 
--/* DSP0236 1.3.0, Figure 4 */
-+/* DSP0236 1.3.3, Figure 4 Generic message fields */
- typedef struct MCTPPacketHeader {
-     uint8_t version;
-     struct {
-@@ -25,11 +25,76 @@ typedef struct MCTPPacketHeader {
-         uint8_t source;
-     } eid;
-     uint8_t flags;
--} MCTPPacketHeader;
-+} QEMU_PACKED MCTPPacketHeader;
- 
- typedef struct MCTPPacket {
-     MCTPPacketHeader hdr;
-     uint8_t          payload[];
--} MCTPPacket;
-+} QEMU_PACKED MCTPPacket;
-+
-+/* DSP0236 1.3.3, Figure 20 MCTP control message format */
-+typedef struct MCTPControlMessage {
-+#define MCTP_MESSAGE_TYPE_CONTROL 0x0
-+    uint8_t type;
-+#define MCTP_CONTROL_FLAGS_RQ               (1 << 7)
-+#define MCTP_CONTROL_FLAGS_D                (1 << 6)
-+    uint8_t flags;
-+    uint8_t command_code;
-+    uint8_t data[];
-+} QEMU_PACKED MCTPControlMessage;
-+
-+enum MCTPControlCommandCodes {
-+    MCTP_CONTROL_SET_EID                    = 0x01,
-+    MCTP_CONTROL_GET_EID                    = 0x02,
-+    MCTP_CONTROL_GET_UUID                   = 0x03,
-+    MCTP_CONTROL_GET_VERSION                = 0x04,
-+    MCTP_CONTROL_GET_MESSAGE_TYPE_SUPPORT   = 0x05,
-+};
-+
-+/* DSP0236 1.3.3, Table 13 MCTP control message completion codes */
-+#define MCTP_CONTROL_CC_SUCCESS                 0x0
-+#define MCTP_CONTROL_CC_ERROR                   0x1
-+#define MCTP_CONTROL_CC_ERROR_INVALID_DATA      0x2
-+#define MCTP_CONTROL_CC_ERROR_INVALID_LENGTH    0x3
-+#define MCTP_CONTROL_CC_ERROR_NOT_READY         0x4
-+#define MCTP_CONTROL_CC_ERROR_UNSUP_COMMAND     0x5
-+
-+typedef struct MCTPControlErrRsp {
-+    uint8_t completion_code;
-+} MCTPControlErrRsp;
-+
-+/* DSP0236 1.3.3 Table 14 - Set Endpoint ID message */
-+typedef struct MCTPControlSetEIDReq {
-+    uint8_t operation;
-+    uint8_t eid;
-+} MCTPControlSetEIDReq;
-+
-+typedef struct MCTPControlSetEIDRsp {
-+    uint8_t completion_code;
-+    uint8_t operation_result; /* Not named in spec */
-+    uint8_t eid_setting;
-+    uint8_t eid_pool_size;
-+} MCTPControlSetEIDRsp;
-+
-+/* DSP0236 1.3.3 Table 15 - Get Endpoint ID message */
-+typedef struct MCTPControlGetEIDRsp {
-+    uint8_t completion_code;
-+    uint8_t endpoint_id;
-+    uint8_t endpoint_type;
-+    uint8_t medium_specific_info;
-+} MCTPControlGetEIDRsp;
-+
-+/* DSP0236 1.3.3 Table 16 - Get Endpoint UUID message format */
-+typedef struct MCTPControlGetUUIDRsp {
-+    uint8_t completion_code;
-+    uint8_t uuid[0x10];
-+} MCTPControlGetUUIDRsp;
-+
-+/* DSP0236 1.3.3 Table 19 - Get Message Type Support message */
-+typedef struct MCTPControlGetMessageTypeRsp {
-+    uint8_t completion_code;
-+    uint8_t message_type_count;
-+    uint8_t types[];
-+} MCTPControlGetMessageTypeRsp;
- 
- #endif /* QEMU_MCTP_H */
-diff --git a/hw/i2c/mctp.c b/hw/i2c/mctp.c
-index cf45a46706..ac9bebb3c4 100644
---- a/hw/i2c/mctp.c
-+++ b/hw/i2c/mctp.c
-@@ -33,23 +33,6 @@ typedef struct MCTPI2CPacket {
- #define i2c_mctp_payload_offset offsetof(MCTPI2CPacket, mctp.payload)
- #define i2c_mctp_payload(buf) (buf + i2c_mctp_payload_offset)
- 
--/* DSP0236 1.3.0, Figure 20 */
--typedef struct MCTPControlMessage {
--#define MCTP_MESSAGE_TYPE_CONTROL 0x0
--    uint8_t type;
--#define MCTP_CONTROL_FLAGS_RQ               (1 << 7)
--#define MCTP_CONTROL_FLAGS_D                (1 << 6)
--    uint8_t flags;
--    uint8_t command_code;
--    uint8_t data[];
--} MCTPControlMessage;
--
--enum MCTPControlCommandCodes {
--    MCTP_CONTROL_SET_EID                    = 0x01,
--    MCTP_CONTROL_GET_EID                    = 0x02,
--    MCTP_CONTROL_GET_VERSION                = 0x04,
--    MCTP_CONTROL_GET_MESSAGE_TYPE_SUPPORT   = 0x05,
--};
- 
- #define MCTP_CONTROL_ERROR_UNSUPPORTED_CMD 0x5
- 
-diff --git a/hw/usb/dev-mctp.c b/hw/usb/dev-mctp.c
-new file mode 100644
-index 0000000000..aafb9e7e96
---- /dev/null
-+++ b/hw/usb/dev-mctp.c
-@@ -0,0 +1,639 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Copyright Huawei 2025
-+ *
-+ * Author: Jonathan Cameron <jonathan.cameron@huawei.com>
-+ *
-+ * CXL MCTP device
-+ *
-+ * TODO:
-+ * - Respect MTU on packets being sent to host. For now it work in Linux but
-+ *   who knows longer term.
-+ * - More complete sanity checking of command flags etc.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+
-+#include "hw/pci/pci_device.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/cxl/cxl.h"
-+#include "hw/pci-bridge/cxl_upstream_port.h"
-+#include "hw/pci/pcie.h"
-+#include "hw/pci/pcie_port.h"
-+#include "hw/usb.h"
-+#include "hw/usb/desc.h"
-+#include "net/mctp.h"
-+
-+/* TODO: Move to header */
-+
-+/* DMTF DSP0234 CXL Fabric Manager API over MCTP Binding Specification */
-+#define MCTP_MT_CXL_FMAPI 0x7
-+/*
-+ * DMTF DSP0281 CXL Type 3 Device Component Command Interface over MCTP
-+ * Binding Specification
-+ */
-+#define MCTP_MT_CXL_TYPE3 0x8
-+typedef struct CXLMCTPMessage {
-+    /*
-+     * DSP0236 (MCTP Base) Integrity Check + Message Type
-+     * DSP0234/DSP0281 (CXL bindings) state no Integrity Check
-+     * so just the message type.
-+     */
-+    uint8_t message_type;
-+    /* Remaining fields from CXL r3.0 Table 7-14 CCI Message Format */
-+    uint8_t category;
-+    uint8_t tag;
-+    uint8_t rsvd;
-+    /*
-+     * CXL r3.0 - Table 8-36 Generic Component Command Opcodes:
-+     * Command opcode is split into two sub fields
-+     */
-+    uint8_t command;
-+    uint8_t command_set;
-+    /* Only bits 4:0 of pl_length[2] are part of the length */
-+    uint8_t pl_length[3];
-+    uint16_t rc;
-+    uint16_t vendor_status;
-+    uint8_t payload[];
-+} QEMU_PACKED CXLMCTPMessage;
-+
-+/* DSP0283 1.0.0 Figure 5 */
-+typedef struct MCTPUSBPacket {
-+    uint16_t dmtf_id;
-+    uint8_t resv;
-+    uint8_t length;
-+    /* Do we see the header? */
-+    MCTPPacket mctp;
-+} MCTPUSBPacket;
-+
-+#define MCTP_CXL_MAILBOX_BYTES 128
-+
-+enum cxl_dev_type {
-+    cxl_type3,
-+    cxl_switch,
-+};
-+
-+typedef struct USBCXLMCTPState {
-+    USBDevice dev;
-+    PCIDevice *target;
-+    CXLCCI *cci;
-+    enum cxl_dev_type type;
-+    USBPacket *cached_tohost;
-+    USBPacket *cached_fromhost;
-+    uint8_t my_eid;
-+    bool building_input;
-+/* TODO, match size to what we report as acceptable */
-+#define MCTPUSBCXL_MAX_SIZE 1024 * 1024
-+    MCTPUSBPacket *pack0; /* Current incoming packet */
-+    MCTPUSBPacket *pack; /* Aggregate packet - what we'd get with large MTU */
-+} USBCLXMCTState;
-+
-+#define TYPE_USB_CXL_MCTP "usb-cxl-mctp"
-+OBJECT_DECLARE_SIMPLE_TYPE(USBCXLMCTPState, USB_CXL_MCTP)
-+
-+enum {
-+    STR_MANUFACTURER = 1,
-+    STR_PRODUCT,
-+    STR_SERIALNUMBER,
-+    STR_MCTP,
-+    STR_CONFIG_FULL,
-+    STR_CONFIG_HIGH,
-+    STR_CONFIG_SUPER,
-+};
-+
-+static const USBDescStrings desc_strings = {
-+    [STR_MANUFACTURER] = "QEMU",
-+    [STR_PRODUCT] = "QEMU CXL MCTP",
-+    [STR_SERIALNUMBER] = "34618",
-+    [STR_MCTP] = "MCTP",
-+    [STR_CONFIG_FULL] = "Full speed config (usb 1.1)",
-+    [STR_CONFIG_HIGH] = "High speed config (usb 2.0)",
-+    [STR_CONFIG_SUPER] = "Super speed config (usb 3.0)",
-+};
-+
-+static const USBDescIface desc_iface_full = {
-+    .bInterfaceNumber = 0,
-+    .bNumEndpoints = 2,
-+    .bInterfaceClass = USB_CLASS_MCTP,
-+    .bInterfaceSubClass = 0x0,
-+    .bInterfaceProtocol = 0x1,
-+    .iInterface = STR_MCTP,
-+    .eps = (USBDescEndpoint[]) {
-+        {
-+             /* DSP0283 6.1.4.2.1 Out Bulk endpoint descriptor */
-+            .bEndpointAddress = USB_DIR_OUT | 0x1,
-+            .bmAttributes = USB_ENDPOINT_XFER_BULK,
-+            .wMaxPacketSize = 512,
-+            .bInterval = 0x1,
-+        }, {
-+            /* DSP0283 6.1.4.2.2 In Bulk endpoint descriptor */
-+            .bEndpointAddress = USB_DIR_IN | 0x1,
-+            .bmAttributes = USB_ENDPOINT_XFER_BULK,
-+            .wMaxPacketSize = 512,
-+            .bInterval = 0x1,
-+        },
-+    },
-+};
-+
-+static const USBDescDevice desc_device_full = {
-+    .bcdUSB = 0x200,
-+    .bMaxPacketSize0 = 8,
-+    .bNumConfigurations = 1,
-+    .confs = (USBDescConfig[]) {
-+        {
-+            .bNumInterfaces = 1,
-+            .bConfigurationValue = 1,
-+            .iConfiguration = STR_CONFIG_FULL,
-+            .bmAttributes = USB_CFG_ATT_ONE | USB_CFG_ATT_WAKEUP,
-+            .bMaxPower = 2,
-+            .nif = 1,
-+            .ifs = &desc_iface_full,
-+        },
-+    },
-+};
-+
-+static const USBDescMSOS desc_msos = {
-+    .CompatibleID = "MCTP",
-+    .SelectiveSuspendEnabled = true,
-+};
-+
-+static const USBDesc desc = {
-+    .id = {
-+        .idVendor = 0x46f4, /* CRC16() of "QEMU" */
-+        .idProduct = 0x0006,
-+        .bcdDevice = 0,
-+        .iManufacturer = STR_MANUFACTURER,
-+        .iSerialNumber = STR_SERIALNUMBER,
-+    },
-+    .full = &desc_device_full,
-+    .high = &desc_device_full,
-+    .str = desc_strings,
-+    .msos = &desc_msos,
-+};
-+
-+static void usb_cxl_mctp_handle_reset(USBDevice *dev)
-+{
-+    USBCXLMCTPState *s = USB_CXL_MCTP(dev);
-+
-+    s->cached_tohost = NULL;
-+    s->cached_fromhost = NULL;
-+    s->building_input = 0;
-+    s->my_eid = 0;
-+}
-+
-+static void usb_cxl_mctp_handle_control(USBDevice *dev, USBPacket *p,
-+                                        int request, int value, int index,
-+                                        int length, uint8_t *data)
-+{
-+    usb_desc_handle_control(dev, p, request, value, index, length, data);
-+}
-+
-+/* A lot of fields are the same for all control responses */
-+static void usb_mctp_fill_common(MCTPUSBPacket *o_usb_pkt,
-+                                 MCTPUSBPacket *i_usb_pkt,
-+                                 uint8_t usb_pkt_len)
-+{
-+    MCTPPacket *o_mctp_pkt = &o_usb_pkt->mctp;
-+    uint8_t tag, flags;
-+
-+    o_usb_pkt->dmtf_id = cpu_to_be16(0x1AB4);
-+    o_usb_pkt->length = usb_pkt_len;
-+
-+    o_mctp_pkt->hdr.version = 1;
-+    o_mctp_pkt->hdr.eid.dest =  i_usb_pkt->mctp.hdr.eid.source;
-+    o_mctp_pkt->hdr.eid.source = i_usb_pkt->mctp.hdr.eid.dest;
-+
-+    tag = FIELD_EX8(i_usb_pkt->mctp.hdr.flags, MCTP_H_FLAGS, TAG);
-+
-+    flags = FIELD_DP8(0, MCTP_H_FLAGS, PKTSEQ, 0);
-+    flags = FIELD_DP8(flags, MCTP_H_FLAGS, TAG, tag);
-+    flags = FIELD_DP8(flags, MCTP_H_FLAGS, SOM, 1);
-+    flags = FIELD_DP8(flags, MCTP_H_FLAGS, EOM, 1);
-+    o_mctp_pkt->hdr.flags = flags;
-+}
-+
-+static MCTPUSBPacket *usb_mctp_handle_control(USBCXLMCTPState *s,
-+                                              MCTPControlMessage *ctrlmsg,
-+                                              USBPacket *p)
-+{
-+    switch (ctrlmsg->command_code) {
-+    case MCTP_CONTROL_SET_EID: {
-+        MCTPControlSetEIDReq *req = (MCTPControlSetEIDReq *)(ctrlmsg->data);
-+        uint8_t usb_pkt_len = sizeof(MCTPUSBPacket) +
-+            sizeof(MCTPControlMessage) +
-+            sizeof(MCTPControlSetEIDRsp);
-+        MCTPUSBPacket *o_usb_pkt = g_malloc0(usb_pkt_len);
-+        MCTPPacket *o_mctp_pkt = &o_usb_pkt->mctp;
-+        MCTPControlMessage *o_mctp_ctrl =
-+            (MCTPControlMessage *)(o_mctp_pkt->payload);
-+        MCTPControlSetEIDRsp *rsp = (MCTPControlSetEIDRsp *)o_mctp_ctrl->data;
-+
-+        /* Todo - check flags in request */
-+        s->my_eid = req->eid;
-+
-+        o_mctp_ctrl->type = 0;
-+        o_mctp_ctrl->command_code = ctrlmsg->command_code;
-+        o_mctp_ctrl->flags = ctrlmsg->flags &
-+            ~(MCTP_CONTROL_FLAGS_RQ | MCTP_CONTROL_FLAGS_D);
-+        *rsp = (MCTPControlSetEIDRsp) {
-+            .completion_code = MCTP_CONTROL_CC_SUCCESS,
-+            .operation_result = 0,
-+            .eid_setting = s->my_eid,
-+            .eid_pool_size = 0,
-+        };
-+
-+        usb_mctp_fill_common(o_usb_pkt, s->pack, usb_pkt_len);
-+
-+        return o_usb_pkt;
-+    }
-+    case MCTP_CONTROL_GET_EID: {
-+        uint8_t usb_pkt_len = sizeof(MCTPUSBPacket) +
-+            sizeof(MCTPControlMessage) +
-+            sizeof(MCTPControlGetEIDRsp);
-+        MCTPUSBPacket *o_usb_pkt = g_malloc0(usb_pkt_len);
-+        MCTPPacket *o_mctp_pkt = &o_usb_pkt->mctp;
-+        MCTPControlMessage *o_mctp_ctrl =
-+            (MCTPControlMessage *)(o_mctp_pkt->payload);
-+        MCTPControlGetEIDRsp *rsp = (MCTPControlGetEIDRsp *)o_mctp_ctrl->data;
-+
-+        o_mctp_ctrl->type = 0;
-+        o_mctp_ctrl->command_code = ctrlmsg->command_code;
-+        o_mctp_ctrl->flags = ctrlmsg->flags &
-+            ~(MCTP_CONTROL_FLAGS_RQ | MCTP_CONTROL_FLAGS_D);
-+        *rsp = (MCTPControlGetEIDRsp) {
-+            .completion_code = MCTP_CONTROL_CC_SUCCESS,
-+            .endpoint_id = s->my_eid,
-+            .endpoint_type = 0,
-+            .medium_specific_info = 0,
-+        };
-+        usb_mctp_fill_common(o_usb_pkt, s->pack, usb_pkt_len);
-+
-+        return o_usb_pkt;
-+    }
-+    case MCTP_CONTROL_GET_UUID: {
-+        uint8_t usb_pkt_len = sizeof(MCTPUSBPacket) +
-+            sizeof(MCTPControlMessage) +
-+            sizeof(MCTPControlGetUUIDRsp);
-+        MCTPUSBPacket *o_usb_pkt = g_malloc0(usb_pkt_len);
-+        MCTPPacket *o_mctp_pkt = &o_usb_pkt->mctp;
-+        MCTPControlMessage *o_mctp_ctrl =
-+            (MCTPControlMessage *)(o_mctp_pkt->payload);
-+        MCTPControlGetUUIDRsp *rsp = (MCTPControlGetUUIDRsp *)o_mctp_ctrl->data;
-+
-+        o_mctp_ctrl->type = 0;
-+        o_mctp_ctrl->command_code = ctrlmsg->command_code;
-+        o_mctp_ctrl->flags = ctrlmsg->flags &
-+            ~(MCTP_CONTROL_FLAGS_RQ | MCTP_CONTROL_FLAGS_D);
-+        *rsp = (MCTPControlGetUUIDRsp) {
-+            .completion_code = MCTP_CONTROL_CC_SUCCESS,
-+            /* TODO: Fill in uuid */
-+        };
-+        usb_mctp_fill_common(o_usb_pkt, s->pack, usb_pkt_len);
-+
-+        return o_usb_pkt;
-+    }
-+    case MCTP_CONTROL_GET_MESSAGE_TYPE_SUPPORT: {
-+        const uint8_t types[] = { MCTP_MT_CXL_FMAPI, MCTP_MT_CXL_TYPE3, };
-+        uint8_t usb_pkt_len = sizeof(MCTPUSBPacket) +
-+            sizeof(MCTPControlMessage) +
-+            sizeof(MCTPControlGetMessageTypeRsp) +
-+            sizeof(types);
-+        MCTPUSBPacket *o_usb_pkt = g_malloc0(usb_pkt_len);
-+        MCTPPacket *o_mctp_pkt = &o_usb_pkt->mctp;
-+        MCTPControlMessage *o_mctp_ctrl =
-+            (MCTPControlMessage *)(o_mctp_pkt->payload);
-+        MCTPControlGetMessageTypeRsp *rsp =
-+            (MCTPControlGetMessageTypeRsp *)o_mctp_ctrl->data;
-+
-+        o_mctp_ctrl->type = 0;
-+        o_mctp_ctrl->command_code = ctrlmsg->command_code;
-+        o_mctp_ctrl->flags = ctrlmsg->flags &
-+            ~(MCTP_CONTROL_FLAGS_RQ | MCTP_CONTROL_FLAGS_D);
-+        *rsp = (MCTPControlGetMessageTypeRsp) {
-+            .completion_code = MCTP_CONTROL_CC_SUCCESS,
-+            .message_type_count = sizeof(types),
-+        };
-+        memcpy(rsp->types, types, sizeof(types));
-+
-+        usb_mctp_fill_common(o_usb_pkt, s->pack, usb_pkt_len);
-+
-+        return o_usb_pkt;
-+    }
-+    default: {
-+        uint8_t usb_pkt_len = sizeof(MCTPUSBPacket) +
-+            sizeof(MCTPControlMessage) +
-+            sizeof(MCTPControlErrRsp);
-+        MCTPUSBPacket *o_usb_pkt = g_malloc0(usb_pkt_len);
-+        MCTPPacket *o_mctp_pkt = &o_usb_pkt->mctp;
-+        MCTPControlMessage *o_mctp_ctrl =
-+            (MCTPControlMessage *)(o_mctp_pkt->payload);
-+        MCTPControlErrRsp *rsp = (MCTPControlErrRsp *)o_mctp_ctrl->data;
-+
-+        o_mctp_ctrl->type = 0;
-+        o_mctp_ctrl->command_code = ctrlmsg->command_code;
-+        o_mctp_ctrl->flags = ctrlmsg->flags &
-+            ~(MCTP_CONTROL_FLAGS_RQ | MCTP_CONTROL_FLAGS_D);
-+        *rsp = (MCTPControlErrRsp) {
-+            .completion_code = MCTP_CONTROL_CC_ERROR_UNSUP_COMMAND,
-+        };
-+        usb_mctp_fill_common(o_usb_pkt, s->pack, usb_pkt_len);
-+        return o_usb_pkt;
-+    }
-+    }
-+}
-+
-+static void usb_cxl_mctp_handle_data(USBDevice *dev, USBPacket *p)
-+{
-+    USBCXLMCTPState *s = USB_CXL_MCTP(dev);
-+    USBPacket *tohost, *fromhost;
-+    uint8_t message_type;
-+    bool som, eom;
-+
-+    /*
-+     * In and out on EP 0x1: anything else is bug.
-+     * Not sure what right answer is.
-+     */
-+    if (p->ep->nr != 1) {
-+        p->status = USB_RET_STALL;
-+        return;
-+    }
-+
-+    /*
-+     * Conservative approach - don't proceed until we have at least one packet
-+     * in each direction. For fragmented messages cases we only need this to be
-+     * true for the EOM packet (potential optimization).
-+     */
-+    if (p->pid == USB_TOKEN_IN) { /* Direction from point of view of host */
-+        tohost = p;
-+        if (s->cached_fromhost == NULL) {
-+            s->cached_tohost = tohost;
-+            tohost->status = USB_RET_ASYNC;
-+            return;
-+        }
-+        fromhost = s->cached_fromhost;
-+    } else {
-+        fromhost = p;
-+        if (s->cached_tohost == NULL) {
-+            s->cached_fromhost = fromhost;
-+            fromhost->status = USB_RET_ASYNC;
-+            return;
-+        }
-+        tohost = s->cached_tohost;
-+    }
-+
-+    /* DSP0236 1.3.3 section 8.7 Dropped packets, physical layer errors */
-+    if (fromhost->iov.size < sizeof(s->pack->mctp)) {
-+        goto err_drop;
-+    }
-+
-+    usb_packet_copy(fromhost, s->pack0, fromhost->iov.size);
-+    /* DSP0236 1.3.3 section 8.7 Dropped packets, physical layer errors */
-+    if ((be16_to_cpu(s->pack0->dmtf_id) != 0x1AB4) ||
-+        (fromhost->iov.size != s->pack0->length)) {
-+        goto err_drop;
-+    }
-+
-+    eom = FIELD_EX8(s->pack0->mctp.hdr.flags, MCTP_H_FLAGS, EOM);
-+    som = FIELD_EX8(s->pack0->mctp.hdr.flags, MCTP_H_FLAGS, SOM);
-+
-+    /* DSP0236 1.3.3 section 8.7 Dropped packets, unexpected middle or end */
-+    if (!som && !s->building_input) {
-+        goto err_drop;
-+    }
-+
-+    if (som) {
-+        /* Note repeated SOM without EOM is not an error */
-+        s->building_input = true;
-+        /* Put first part of full message in place */
-+        memcpy(s->pack, s->pack0, s->pack0->length);
-+    } else {
-+        size_t additional_len;
-+
-+        additional_len = s->pack0->length - 8;
-+        memcpy((void *)(s->pack) + s->pack->length, s->pack0->mctp.payload,
-+               additional_len);
-+        s->pack->length += additional_len;
-+    }
-+
-+    if (eom) {
-+        s->building_input = false;
-+    } else { /* More to come so complete message from host to let it flow */
-+        if (p->pid == USB_TOKEN_IN) {
-+            /* Hold the tohost packet */
-+            p->status = USB_RET_ASYNC;
-+            s->cached_tohost = p;
-+            /* Release the fromhost packet */
-+            fromhost->status = USB_RET_SUCCESS;
-+            s->cached_fromhost = NULL;
-+            usb_packet_complete(dev, fromhost);
-+        } else {
-+            /* From host - handled synchronously */
-+            p->status = USB_RET_SUCCESS;
-+        }
-+        return;
-+    }
-+
-+    /* DSP0236 1.3.3 section 8.7 Dropped packets, bad header version */
-+    if (s->pack->mctp.hdr.version != 1) {
-+        goto err_drop;
-+    }
-+
-+    /* DSP0236 1.3.3 section 8.7 Dropped packets, unknown eid */
-+    if ((s->pack->mctp.hdr.eid.dest != s->my_eid) &&
-+        (s->pack->mctp.hdr.eid.dest != 0)) {
-+        goto err_drop;
-+    }
-+
-+    message_type = s->pack->mctp.payload[0];
-+    switch (message_type) {
-+    case MCTP_MESSAGE_TYPE_CONTROL: {
-+        MCTPUSBPacket *o_usb_pkt;
-+        MCTPControlMessage *ctrlmsg =
-+            (MCTPControlMessage *)(s->pack->mctp.payload);
-+
-+        /* DSP0236 1.3.3 section 8.7 Dropped packets, physical layer errors */
-+        if (fromhost->iov.size < sizeof(s->pack->mctp) + sizeof(*ctrlmsg)) {
-+            goto err_drop;
-+        }
-+
-+        o_usb_pkt = usb_mctp_handle_control(s, ctrlmsg, tohost);
-+
-+        usb_packet_copy(tohost, o_usb_pkt, o_usb_pkt->length);
-+        g_free(o_usb_pkt);
-+
-+        break;
-+    }
-+    case MCTP_MT_CXL_TYPE3:
-+    case MCTP_MT_CXL_FMAPI: {
-+        size_t usb_pkt_len = MCTPUSBCXL_MAX_SIZE;
-+        g_autofree MCTPUSBPacket *o_usb_pkt = g_malloc0(usb_pkt_len);
-+        MCTPPacket *o_mctp_pkt = &o_usb_pkt->mctp;
-+        CXLMCTPMessage *rsp = (CXLMCTPMessage *)(o_mctp_pkt->payload);
-+        CXLMCTPMessage *req = (CXLMCTPMessage *)(s->pack->mctp.payload);
-+        bool bg_started;
-+        size_t len_out = 0;
-+        size_t len_in;
-+        int rc;
-+
-+        *rsp = (CXLMCTPMessage) {
-+            .message_type = req->message_type,
-+            .category = 1,
-+            .tag = req->tag,
-+            .command = req->command,
-+            .command_set = req->command_set,
-+        };
-+
-+        /*
-+         * As it was not immediately obvious from the various specifications,
-+         * clarification was sort for which binding applies for which command
-+         * set. The outcome was:
-+         *
-+         * Any command forming part of the CXL FM-API command set
-+         * e.g. Present in CXL r3.0 Table 8-132: CXL FM API Command Opcodes
-+         * (and equivalent in later CXL specifications) is valid only with
-+         * the CXL Fabric Manager API over MCTP binding (DSP0234).
-+         *
-+         * Any other CXL command currently should be sent using the
-+         * CXL Type 3 Device Component Command interface over MCTP binding,
-+         * even if it is being sent to a switch.
-+         *
-+         * If tunneling is used, the component creating the PCIe VDMs must
-+         * use the appropriate binding for sending the tunnel contents
-+         * onwards.
-+         */
-+        if (!(req->message_type == MCTP_MT_CXL_TYPE3 &&
-+              req->command_set < 0x51) &&
-+            !(req->message_type == MCTP_MT_CXL_FMAPI &&
-+              req->command_set >= 0x51 && req->command_set < 0x56)) {
-+            len_out = 0;
-+            usb_pkt_len = sizeof(MCTPUSBPacket) + sizeof(CXLMCTPMessage) +
-+                len_out;
-+            rsp->rc = CXL_MBOX_UNSUPPORTED;
-+            st24_le_p(rsp->pl_length, len_out);
-+
-+            usb_mctp_fill_common(o_usb_pkt, s->pack, usb_pkt_len);
-+            usb_packet_copy(tohost, o_usb_pkt, usb_pkt_len);
-+            break;
-+        }
-+        /* TODO: add ld24_le_p */
-+        len_in = req->pl_length[2] << 16 | req->pl_length[1] << 8 |
-+            req->pl_length[0];
-+        rc = cxl_process_cci_message(s->cci, req->command_set,
-+                                     req->command,
-+                                     len_in, req->payload,
-+                                     &len_out,
-+                                     (uint8_t *)(rsp + 1),
-+                                     &bg_started);
-+        rsp->rc = rc;
-+        st24_le_p(rsp->pl_length, len_out);
-+        usb_pkt_len = sizeof(MCTPUSBPacket) + sizeof(CXLMCTPMessage) +
-+            len_out;
-+
-+        usb_mctp_fill_common(o_usb_pkt, s->pack, usb_pkt_len);
-+        usb_packet_copy(tohost, o_usb_pkt, usb_pkt_len);
-+        break;
-+    }
-+    default:
-+        /*
-+         * 8.9 Dropped messages - message type unsuported.
-+         * Dropping after assembly
-+         */
-+        goto err_drop;
-+    }
-+    /* Something to send */
-+    tohost->status = USB_RET_SUCCESS;
-+    fromhost->status = USB_RET_SUCCESS;
-+    if (p->pid == USB_TOKEN_IN) {
-+        s->cached_fromhost = NULL;
-+        usb_packet_complete(dev, fromhost);
-+    } else {
-+        s->cached_tohost = NULL;
-+        usb_packet_complete(dev, tohost);
-+    }
-+    return;
-+
-+err_drop:
-+    /* Reply with 'nothing' as dropping packet */
-+    fromhost->status = USB_RET_SUCCESS;
-+    if (p->pid == USB_TOKEN_IN) {
-+        /* Hold the tohost packet */
-+        tohost->status = USB_RET_ASYNC;
-+        s->cached_tohost = p;
-+        s->cached_fromhost = NULL;
-+        usb_packet_complete(dev, fromhost);
-+    }
-+}
-+
-+static void usb_cxl_mctp_realize(USBDevice *dev, Error **errp)
-+{
-+    USBCXLMCTPState *s = USB_CXL_MCTP(dev);
-+
-+    s->pack = g_malloc0(MCTPUSBCXL_MAX_SIZE);
-+    s->pack0 = g_malloc0(MCTPUSBCXL_MAX_SIZE);
-+    usb_desc_create_serial(dev);
-+    usb_desc_init(dev);
-+
-+    /* Check this is a type we support */
-+    if (object_dynamic_cast(OBJECT(s->target), TYPE_CXL_USP)) {
-+        CXLUpstreamPort *usp = CXL_USP(s->target);
-+
-+        s->type = cxl_switch;
-+        s->cci = &usp->mctpcci;
-+
-+        cxl_initialize_usp_mctpcci(s->cci, DEVICE(s->target), DEVICE(dev),
-+                                   MCTP_CXL_MAILBOX_BYTES);
-+
-+        return;
-+    }
-+
-+    if (object_dynamic_cast(OBJECT(s->target), TYPE_CXL_TYPE3)) {
-+        CXLType3Dev *ct3d = CXL_TYPE3(s->target);
-+
-+        s->type = cxl_type3;
-+        s->cci = &ct3d->oob_mctp_cci;
-+
-+        cxl_initialize_t3_fm_owned_ld_mctpcci(s->cci, DEVICE(s->target),
-+                                              DEVICE(dev),
-+                                              MCTP_CXL_MAILBOX_BYTES);
-+        return;
-+    }
-+
-+    error_setg(errp, "Unhandled target type for CXL MCTP EP");
-+}
-+
-+static const Property usb_cxl_mctp_properties[] = {
-+    DEFINE_PROP_LINK("target", USBCXLMCTPState, target, TYPE_PCI_DEVICE,
-+                     PCIDevice *),
-+};
-+
-+static void usb_cxl_mctp_class_initfn(ObjectClass *klass, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    USBDeviceClass *uc = USB_DEVICE_CLASS(klass);
-+
-+    uc->realize = usb_cxl_mctp_realize;
-+    uc->product_desc = "QEMU USB CXL MCTP";
-+    uc->usb_desc = &desc;
-+    uc->handle_attach = usb_desc_attach;
-+    uc->handle_reset = usb_cxl_mctp_handle_reset;
-+    uc->handle_control = usb_cxl_mctp_handle_control;
-+    uc->handle_data = usb_cxl_mctp_handle_data;
-+    dc->desc = "USB CXL MCTP device";
-+    dc->fw_name = "mctp";
-+    device_class_set_props(dc, usb_cxl_mctp_properties);
-+}
-+
-+static const TypeInfo usb_cxl_mctp_info = {
-+    .name = TYPE_USB_CXL_MCTP,
-+    .parent = TYPE_USB_DEVICE,
-+    .instance_size = sizeof(USBCXLMCTPState),
-+    .class_init = usb_cxl_mctp_class_initfn,
-+};
-+
-+static void usb_cxl_mctp_register_types(void)
-+{
-+    type_register_static(&usb_cxl_mctp_info);
-+}
-+type_init(usb_cxl_mctp_register_types)
-diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index 69c663be52..4340475708 100644
---- a/hw/usb/Kconfig
-+++ b/hw/usb/Kconfig
-@@ -105,6 +105,11 @@ config USB_SERIAL
-     default y
-     depends on USB
- 
-+config USB_MCTP
-+    bool
-+    default y if CXL
-+    depends on USB
-+
- config USB_NETWORK
-     bool
-     default y
-diff --git a/hw/usb/meson.build b/hw/usb/meson.build
-index 17360a5b5a..c2910f9818 100644
---- a/hw/usb/meson.build
-+++ b/hw/usb/meson.build
-@@ -43,6 +43,7 @@ system_ss.add(when: 'CONFIG_USB_STORAGE_UAS', if_true: files('dev-uas.c'))
- system_ss.add(when: 'CONFIG_USB_AUDIO', if_true: files('dev-audio.c'))
- system_ss.add(when: 'CONFIG_USB_SERIAL', if_true: files('dev-serial.c'))
- system_ss.add(when: 'CONFIG_USB_NETWORK', if_true: files('dev-network.c'))
-+system_ss.add(when: 'CONFIG_USB_MCTP', if_true: files('dev-mctp.c'))
- if host_os != 'windows'
-   system_ss.add(when: 'CONFIG_USB_STORAGE_MTP', if_true: files('dev-mtp.c'))
- endif
--- 
-2.48.1
+C.
+
 
 
