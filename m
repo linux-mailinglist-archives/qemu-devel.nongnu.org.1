@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFB0AD37EF
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56FD5AD37E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:04:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOyXG-0006ac-Lh; Tue, 10 Jun 2025 08:57:02 -0400
+	id 1uOyXG-0006Zh-5g; Tue, 10 Jun 2025 08:57:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyX3-0006Y9-6d
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:56:54 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyX8-0006YQ-R1
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:56:55 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyX0-0002YL-Qq
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:56:48 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-453066fad06so19507525e9.2
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:56:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyX5-0002Z8-43
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:56:53 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3a4ef2c2ef3so4442388f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:56:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749560204; x=1750165004; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749560209; x=1750165009; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0Z+F9XmQmU87AVbjZbrQLCllEUIvwWYDtRqjIX6YXKQ=;
- b=lQw5qI2dNPRPls8X8mah+MqyRWPR/SsITx7hSvX6AMtYYuwVHwXuin7O/kKSqhJJ6h
- cFLxFBtWt8s4qaAFmpKvmxPmthqCjnWu919bHHrxNig9fPcgwqtN0er3IPe/tmqlWN21
- kL1pl2UohEsnaw3xhoYy4NhxtgAkAQ84GDl/d8WMXRXQGMfSnoG/tY94mNymvIYTQZ2R
- qKVi04Oo3bygw2wqdKwkWD1Iuq4aE1ujHxpDnCW2+5P4q+gOy/2des3sf/lwCPv2DmBm
- R7CGBOfTL0OQPURhXuTUVUAZ+QXVuwIWbLX/4C3xvQQ4YkARhGkfLnRJAfZHquR0ybg9
- A/DQ==
+ bh=xYWOMe7KOZYqH5WTkINgsrklm0G/7PrDwav/PmZ5N5o=;
+ b=mGF1KB+X14vYj+bUE2xesW4InYkk1PopxIZ0aD5KJr1JIBAMaoXEwQFvK8sc+bY0CU
+ 7kt6MqHaZ7EP26iDS1pkgq2wzR8sNwxPaDRLT27Y3P/EbdNTXIqsBALdOHOlzmvGnpro
+ SOlBviJLvZo/dpZW78Fwzn/vuYnRJ+/1wCd33gXgU4oEjCRkYEBlJFZ3d7d8kT6oGIrW
+ 0JjHufDaHPbqim4cNoSe8TamqmpESoBTNmnEfRSR89OeBvWcYbrmmPnCo8vD40krZpGP
+ NjSVw29aDPhDQeRGwnneksSyKRgd6QoIKagwVt8teWUV/Qqx/0ZWtiFCAdLxoV2P7iG7
+ lCyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749560204; x=1750165004;
+ d=1e100.net; s=20230601; t=1749560209; x=1750165009;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0Z+F9XmQmU87AVbjZbrQLCllEUIvwWYDtRqjIX6YXKQ=;
- b=Rr4nvub9ocyEOoY5Ub/Cd4fbTjqiTo7aJy5jZ1VWyx+S4szQh8auM88vBTJewbE/64
- si8+IbCVdDJFR6ciF+eYn/JzXnkVbPlsrtTbsUX9mWhob+7Q/A+5fFBG6t7fLLN0u56e
- Fz4DRABiIkOdcKh6mZVLyAyrr+FABI9e3RUpgRf40vb+RDWtXz/Fe0CCN1AwUttyie0m
- BK5g9Dg4Yj3AR8rdNrKaD+ESODdyoNz3hJPwkN44njT/k14/FJviAbWb7B+sp3PDlbhO
- QHVGntfWa14A1t5y7blOj5y23A43mCVREU5tzioja4l9tS5wx0NPEuqxwK9R6n/hNFON
- yN6Q==
-X-Gm-Message-State: AOJu0YwrVHO/G/XoL0TsQYnObEInKJmXnO/cXX9qA0kd9I4UyYOWngKW
- deOctlp2Vv+t0XpNmvxVDL89ES9Uh5yxLQatjOMBJUSr24+1T5t2ppBRSZ6djNd4ua1Wr9b+jYo
- +PlqmRcI=
-X-Gm-Gg: ASbGncukQ8a7Cl87hxkGuDHNkrDK0W7+ZIxferL5MJjTmCKt1wBvFaPLzZsD461yed9
- p+9PMF9rudD12qZwXjSYw++FrxAhcW+NpMqnGFbWpUywzZkwt5YP58Ri7WKlvIpWUakPLK5vIN3
- tL9LbF6/mjm8keVPH0TFFOzuVN7vZe28bhzfXYG2tYXb/qYuaTowxaDzaGOGMXKH4rl2udFlGe5
- LmdYrszqNVv9pTqHU8RycfHNCSf4MaOgr0E+q3yS7NJ6ZdTp5KrE4HwisNXakNDmSlUAuIZDxZX
- EUKaaRF8dfKlhaltqKQkG3rgIAokSGmhDDbED0KyUXQoSnmZA9lUWPuDupt/PzA1Cfq/UkU+6bH
- UHCqczyrVMlsnfyAx9oltA60OgRsPVnEOV0Z/jbhJbw==
-X-Google-Smtp-Source: AGHT+IHpNGsL5t2pi/phCL8ghVtAcRgc6McDZe0NX6CxXkiiex/9ahceZpFZiT8xxm7WeB1Qa8kh1Q==
-X-Received: by 2002:a05:600c:4f8a:b0:453:b44:eb71 with SMTP id
- 5b1f17b1804b1-4530b44efb3mr73427365e9.19.1749560204409; 
- Tue, 10 Jun 2025 05:56:44 -0700 (PDT)
+ bh=xYWOMe7KOZYqH5WTkINgsrklm0G/7PrDwav/PmZ5N5o=;
+ b=JCxRURJ6stazjHWPIIgKl/ffhzpBgAU5p6xn46Wwb5gZ3Ed/qcssfxwuszHKiMKYkz
+ 626cjhOYoBGdzALXaOo+wnOsWsGEijz/MznVm1XtP2yogWNZ22IHfZQDj2Dee/4DjJQn
+ G3YEC3HOeVaT2K8J8swT/kElI25ocImYc5ySwlYv/N/cYWVU/MYvriyT/2JWhyoHAdLg
+ kVx3pUvUDDj+MHrooOY1cugUYG8rNDcJNyTrXsINkXssByimOlH9ujAfA71Xfl2DNIut
+ ChDPOwWbwrjL+WMflbg0TSoxQTy0Tz1zWglunRU2sQ6EKAiQu/94UA4EuDtirwaSC0Uj
+ gdNw==
+X-Gm-Message-State: AOJu0YyZIfIsIMH4qsze4NO0aHnlYGkr3LVN7ntCMJQZ0UmvoJzW1NF7
+ 58+a+CuFVD0wSlP/lK6nDCAgnnM37qM7AYTF+qlUS8pqPN9ko43vq6PLwIyL21B2puvkbkVl+nb
+ jfGLDnT8=
+X-Gm-Gg: ASbGnct0ZVvBhBF2n1WBgX+zeUJYHjjyB410fyTbqXFYlywtfW4dDTLk3CSg/qsany5
+ QbhhEm0uMXE+DVfL9l/iHYYKZVeq+4Uv/tXt/uYDaIUCtAU2nfvm2gynTLSeTM950ZeLyllW3fy
+ TvTx0S2NUaer03kqqcko2Yf4CJiF7Oiuaa5fYGfMnLABGpq94jYk2heIfv2CkTop1D2eJuG7zlC
+ YI6MLTugw8/8/CLEGNu+pBViOwuIFFQXksii65L7y3+kh0UvD7tn6bF8Wns9wKKZxtJlxZkcL2C
+ JQE2DuWrbrHpI2iLbSLFCcjOqWvTE27nKkCCog+GDBzrKH7M9t6FLMWO13yTIzBhlrXwVqhnb8t
+ vjf4LtdMt3a1R4DIE78st1XsEsFiKSztLnzHbxpGzvA==
+X-Google-Smtp-Source: AGHT+IEgf6of4EgJUYnT1rI2k6XmYt7cRtgY7eqQA/xRiHMLNjEdtFvdPjqWsaQ71VFfWdy0S57r1A==
+X-Received: by 2002:a5d:564d:0:b0:3a5:39e9:7997 with SMTP id
+ ffacd0b85a97d-3a539e979e5mr8554336f8f.34.1749560208877; 
+ Tue, 10 Jun 2025 05:56:48 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a53244d15asm12581969f8f.66.2025.06.10.05.56.43
+ ffacd0b85a97d-3a532435f95sm7698854f8f.60.2025.06.10.05.56.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Jun 2025 05:56:43 -0700 (PDT)
+ Tue, 10 Jun 2025 05:56:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 02/24] hw/char/sh_serial: Convert to TypeInfo
-Date: Tue, 10 Jun 2025 14:56:11 +0200
-Message-ID: <20250610125633.24411-3-philmd@linaro.org>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 03/24] hw/pci-host/raven: Remove is-legacy-prep property
+Date: Tue, 10 Jun 2025 14:56:12 +0200
+Message-ID: <20250610125633.24411-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250610125633.24411-1-philmd@linaro.org>
 References: <20250610125633.24411-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,66 +98,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QOM types are now registered using as TypeInfo via DEFINE_TYPES()
-or type_init(). Update TYPE_SH_SERIAL, removing the empty QOM
-instance_init/finalize handlers.
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-This was definitely wrong, because OBJECT_DEFINE_TYPE() is only
-for cases where the class needs its own virtual methods or some
-other per-class state in its own class struct.
+This was a workaround for the prep machine that was removed 5 years
+ago so this is no longer needed.
 
+Fixes: b2ce76a073 (hw/ppc/prep: Remove the deprecated "prep" machine        and the OpenHackware BIOS)
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <0d41c18a8831bd4c8b0948eda3ef8f60f5a311f3.1746374076.git.balaton@eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20250124175053.74461-3-philmd@linaro.org>
 ---
- hw/char/sh_serial.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ hw/pci-host/raven.c | 30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
-diff --git a/hw/char/sh_serial.c b/hw/char/sh_serial.c
-index cdaeac7b709..30447fa018a 100644
---- a/hw/char/sh_serial.c
-+++ b/hw/char/sh_serial.c
-@@ -78,10 +78,6 @@ struct SHSerialState {
-     qemu_irq bri;
+diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+index 21f7ca65e06..b78a8f32d32 100644
+--- a/hw/pci-host/raven.c
++++ b/hw/pci-host/raven.c
+@@ -75,7 +75,6 @@ struct PRePPCIState {
+     RavenPCIState pci_dev;
+ 
+     int contiguous_map;
+-    bool is_legacy_prep;
  };
  
--typedef struct {} SHSerialStateClass;
--
--OBJECT_DEFINE_TYPE(SHSerialState, sh_serial, SH_SERIAL, SYS_BUS_DEVICE)
--
- static void sh_serial_clear_fifo(SHSerialState *s)
- {
-     memset(s->rx_fifo, 0, SH_RX_FIFO_LENGTH);
-@@ -441,14 +437,6 @@ static void sh_serial_unrealize(DeviceState *dev)
-     timer_del(&s->fifo_timeout_timer);
- }
+ #define BIOS_SIZE (1 * MiB)
+@@ -243,22 +242,18 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
+     MemoryRegion *address_space_mem = get_system_memory();
+     int i;
  
--static void sh_serial_init(Object *obj)
--{
--}
--
--static void sh_serial_finalize(Object *obj)
--{
--}
--
- static const Property sh_serial_properties[] = {
-     DEFINE_PROP_CHR("chardev", SHSerialState, chr),
-     DEFINE_PROP_UINT8("features", SHSerialState, feat, 0),
-@@ -465,3 +453,14 @@ static void sh_serial_class_init(ObjectClass *oc, const void *data)
-     /* Reason: part of SuperH CPU/SoC, needs to be wired up */
-     dc->user_creatable = false;
- }
-+
-+static const TypeInfo sh_serial_types[] = {
-+    {
-+        .name           = TYPE_SH_SERIAL,
-+        .parent         = TYPE_SYS_BUS_DEVICE,
-+        .instance_size  = sizeof(SHSerialState),
-+        .class_init     = sh_serial_class_init,
-+    },
-+};
-+
-+DEFINE_TYPES(sh_serial_types)
+-    if (s->is_legacy_prep) {
+-        for (i = 0; i < PCI_NUM_PINS; i++) {
+-            sysbus_init_irq(dev, &s->pci_irqs[i]);
+-        }
+-    } else {
+-        /* According to PReP specification section 6.1.6 "System Interrupt
+-         * Assignments", all PCI interrupts are routed via IRQ 15 */
+-        s->or_irq = OR_IRQ(object_new(TYPE_OR_IRQ));
+-        object_property_set_int(OBJECT(s->or_irq), "num-lines", PCI_NUM_PINS,
+-                                &error_fatal);
+-        qdev_realize(DEVICE(s->or_irq), NULL, &error_fatal);
+-        sysbus_init_irq(dev, &s->or_irq->out_irq);
++    /*
++     * According to PReP specification section 6.1.6 "System Interrupt
++     * Assignments", all PCI interrupts are routed via IRQ 15
++     */
++    s->or_irq = OR_IRQ(object_new(TYPE_OR_IRQ));
++    object_property_set_int(OBJECT(s->or_irq), "num-lines", PCI_NUM_PINS,
++                            &error_fatal);
++    qdev_realize(DEVICE(s->or_irq), NULL, &error_fatal);
++    sysbus_init_irq(dev, &s->or_irq->out_irq);
+ 
+-        for (i = 0; i < PCI_NUM_PINS; i++) {
+-            s->pci_irqs[i] = qdev_get_gpio_in(DEVICE(s->or_irq), i);
+-        }
++    for (i = 0; i < PCI_NUM_PINS; i++) {
++        s->pci_irqs[i] = qdev_get_gpio_in(DEVICE(s->or_irq), i);
+     }
+ 
+     qdev_init_gpio_in(d, raven_change_gpio, 1);
+@@ -426,9 +421,6 @@ static const Property raven_pcihost_properties[] = {
+     DEFINE_PROP_UINT32("elf-machine", PREPPCIState, pci_dev.elf_machine,
+                        EM_NONE),
+     DEFINE_PROP_STRING("bios-name", PREPPCIState, pci_dev.bios_name),
+-    /* Temporary workaround until legacy prep machine is removed */
+-    DEFINE_PROP_BOOL("is-legacy-prep", PREPPCIState, is_legacy_prep,
+-                     false),
+ };
+ 
+ static void raven_pcihost_class_init(ObjectClass *klass, const void *data)
 -- 
 2.49.0
 
