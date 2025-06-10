@@ -2,61 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04613AD3FB2
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0AEAD3F75
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:50:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP2AX-0000hu-VA; Tue, 10 Jun 2025 12:49:50 -0400
+	id 1uP275-0001rW-P9; Tue, 10 Jun 2025 12:46:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uP0sT-00028o-5y
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:27:06 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uP151-0004Kb-Ur
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:04 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uP0sL-0004Ya-Ij
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:27:03 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bGszc06Nkz6HJlk;
- Tue, 10 Jun 2025 23:25:00 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 0F115140373;
- Tue, 10 Jun 2025 23:26:50 +0800 (CST)
-Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 10 Jun
- 2025 17:26:49 +0200
-Date: Tue, 10 Jun 2025 16:26:48 +0100
-To: Fan Ni <nifan.cxl@gmail.com>
-CC: <anisa.su887@gmail.com>, <qemu-devel@nongnu.org>, <dave@stgolabs.net>,
- <linux-cxl@vger.kernel.org>, Anisa Su <anisa.su@samsung.com>
-Subject: Re: [QEMU PATCH v3 8/9] cxl-mailbox-utils: 0x5604 - FMAPI Initiate
- DC Add
-Message-ID: <20250610162648.000071a2@huawei.com>
-In-Reply-To: <aEMxlAvukxhWXhw1@debian>
-References: <20250605234227.970187-1-anisa.su887@gmail.com>
- <20250605234227.970187-9-anisa.su887@gmail.com>
- <aEMxlAvukxhWXhw1@debian>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uP14z-0005vH-6z
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:03 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEXkAR026798;
+ Tue, 10 Jun 2025 15:39:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2025-04-25; bh=0vWbYPwUqAyxHANs
+ ufLsmmSYtZy0GZZOktKxhM53uZM=; b=X9gVJ6exiRC4uvJtAcz/GmAV1BzImS5F
+ m97pHsa9urwkbVyy14hpjQlTxg1JOGD7ZmEOH0tYZVamN9Oh2XYWOt75qJ4AI1oy
+ 5Uegm7jUNZQtnSHMEDYTzpM9etXgeGxgYKGkUpe987pdQ3RkW0sMY6C0tV2Kpu5v
+ lmS2x+tntzWiR9MKrpYtXpSFccG3v5L7YOvmDqCdCFgZOUPNPPhW7Acyzox/iy0p
+ xC16uHhqiS6yYftg5mQjGyiRhYCH4tJvSnYburRjbtD1NW2rZN/JfjriXb8ONbpd
+ 8U02Y3blpJN9iFpgBJJNxbzcUPWq5VawRCNlZncFIKqpIbBe1fLmuA==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4752xjuwkd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Jun 2025 15:39:54 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 55AF2B9h003893; Tue, 10 Jun 2025 15:39:53 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 474bv8wakj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Jun 2025 15:39:53 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55AFdrf7028825;
+ Tue, 10 Jun 2025 15:39:53 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 474bv8wak1-1; Tue, 10 Jun 2025 15:39:53 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V5 00/38] Live update: vfio and iommufd
+Date: Tue, 10 Jun 2025 08:39:13 -0700
+Message-Id: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-10_07,2025-06-10_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ malwarescore=0 mlxscore=0
+ mlxlogscore=999 phishscore=0 spamscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2506100125
+X-Authority-Analysis: v=2.4 cv=K4AiHzWI c=1 sm=1 tr=0 ts=684851ca b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=_1xoADwHarsGdfnuW2QA:9
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:14714
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEyNiBTYWx0ZWRfX+iHGNj+6/dAQ
+ Yn1pNw/8Dtu4R0TugnL4hp5DOJbZre5BRth8/SJKSGbFNT90dYH9xuzsm7nba8eDDVQQAp/ATAF
+ GAmQS1veKPanmGvdPxv2Ri/6AXRmEQNd+xBr3K4VKJyaLalJJX6q1+7T/PHhxFSu+z043sBPpUD
+ vfL4vLpM2AbmvTMRmCF2FPuwti+pPMZm/tVcgSSXJDxhCnJDJW0/Tf9UpdWBeYeTfw8JtHIyKn0
+ SvcONQNeQP7HcC7vG4jU69Y66rjWWPPorZY0h2235Oln/9Nq6/Sq2psT3hgLVGlL2+fV92Drjcw
+ PeX4DHxjE9dYo7zIRIuQi2QOMzc3LIG6pdbdd2VQVYgR7rFzh+M/4hr7OofMYeNopiLw6YQhcm8
+ 7JNaHadNTcF5rA7rNCF2VADsnIdkHWWNKvccFmnIw+pAOCs9nKTt6xSBF3vNLvvceIl3T01J
+X-Proofpoint-ORIG-GUID: u04SNc2kSNlPAVa5H5yLkXl3Wr67H0cQ
+X-Proofpoint-GUID: u04SNc2kSNlPAVa5H5yLkXl3Wr67H0cQ
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,310 +111,219 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 6 Jun 2025 11:21:08 -0700
-Fan Ni <nifan.cxl@gmail.com> wrote:
+Support vfio and iommufd devices with the cpr-transfer live migration mode.
+Devices that do not support live migration can still support cpr-transfer,
+allowing live update to a new version of QEMU on the same host, with no loss
+of guest connectivity.
 
-> On Thu, Jun 05, 2025 at 11:42:22PM +0000, anisa.su887@gmail.com wrote:
-> > From: Anisa Su <anisa.su@samsung.com>
-> > 
-> > FM DCD Management command 0x5604 implemented per CXL r3.2 Spec Section 7.6.7.6.5
-> > 
-> > Signed-off-by: Anisa Su <anisa.su@samsung.com>  
-> 
-> See below...
-A few follow ups.
-> 
-> > ---
-> >  hw/cxl/cxl-mailbox-utils.c  | 152 ++++++++++++++++++++++++++++++++++++
-> >  hw/mem/cxl_type3.c          |   8 +-
-> >  include/hw/cxl/cxl_device.h |   4 +
-> >  3 files changed, 160 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> > index 004e502b22..7ee5be00bc 100644
-> > --- a/hw/cxl/cxl-mailbox-utils.c
-> > +++ b/hw/cxl/cxl-mailbox-utils.c
-> > @@ -123,6 +123,7 @@ enum {
-> >          #define GET_HOST_DC_REGION_CONFIG   0x1
-> >          #define SET_DC_REGION_CONFIG        0x2
-> >          #define GET_DC_REGION_EXTENT_LIST   0x3
-> > +        #define INITIATE_DC_ADD             0x4
-> >  };
-> >  
-> >  /* CCI Message Format CXL r3.1 Figure 7-19 */
-> > @@ -3540,6 +3541,150 @@ static CXLRetCode cmd_fm_get_dc_region_extent_list(const struct cxl_cmd *cmd,
-> >      return CXL_MBOX_SUCCESS;
-> >  }
-> >  
-> > +static void cxl_mbox_dc_add_to_pending(CXLType3Dev *ct3d,  
-> 
-> This naming can be improved here, not straightforward to me.
-> Maybe cxl_add_extents_to_pending_list() ?
-> 
-> > +                                       uint32_t ext_count,
-> > +                                       CXLDCExtentRaw extents[])
-> > +{
-> > +    CXLDCExtentGroup *group = NULL;
-> > +    int i;
-> > +
-> > +    for (i = 0; i < ext_count; i++) {
-> > +        group = cxl_insert_extent_to_extent_group(group,
-> > +                                                  extents[i].start_dpa,
-> > +                                                  extents[i].len,
-> > +                                                  extents[i].tag,
-> > +                                                  extents[i].shared_seq);
-> > +    }
-> > +
-> > +    cxl_extent_group_list_insert_tail(&ct3d->dc.extents_pending, group);
-> > +    ct3d->dc.total_extent_count += ext_count;
-> > +}  
-> 
-> Also the code is duplicate with existing code in cxl_type3.c 
-> qmp_cxl_process_dynamic_capacity_prescriptive(). 
-> The function was simulating the behaviour of the mailbox command, so it is
-> behaviour will be smilar to what we have in this patch, 
-> find a way to reuse code, maybe extract common code as a helper function and use
-> it in both qmp interface and here.
-> 
-> > +
-> > +static void cxl_mbox_create_dc_event_records_for_extents(CXLType3Dev *ct3d,  
-> cxl_create_dc_extent_records_for extents()?
-> > +                                                         CXLDCEventType type,
-> > +                                                         CXLDCExtentRaw extents[],
-> > +                                                         uint32_t ext_count)
-> > +{
-> > +    CXLEventDynamicCapacity event_rec = {};
-> > +    int i;
-> > +
-> > +    cxl_assign_event_header(&event_rec.hdr,
-> > +                            &dynamic_capacity_uuid,
-> > +                            (1 << CXL_EVENT_TYPE_INFO),
-> > +                            sizeof(event_rec),
-> > +                            cxl_device_get_timestamp(&ct3d->cxl_dstate));
-> > +    event_rec.type = type;
-> > +    event_rec.validity_flags = 1;
-> > +    event_rec.host_id = 0;
-> > +    event_rec.updated_region_id = 0;
-> > +    event_rec.extents_avail = CXL_NUM_EXTENTS_SUPPORTED -
-> > +                              ct3d->dc.total_extent_count;
-> > +
-> > +    for (i = 0; i < ext_count; i++) {
-> > +        memcpy(&event_rec.dynamic_capacity_extent,
-> > +               &extents[i],
-> > +               sizeof(CXLDCExtentRaw));
-> > +        event_rec.flags = 0;
-> > +        if (i < ext_count - 1) {
-> > +            /* Set "More" flag */
-> > +            event_rec.flags |= BIT(0);
-> > +        }
-> > +
-> > +        if (cxl_event_insert(&ct3d->cxl_dstate,
-> > +                             CXL_EVENT_TYPE_DYNAMIC_CAP,
-> > +                             (CXLEventRecordRaw *)&event_rec)) {
-> > +            cxl_event_irq_assert(ct3d);
-> > +        }
-> > +    }
-> > +}  
-> 
-> Some issue here. A lot of duplicate code compared to
-> qmp_cxl_process_dynamic_capacity_prescriptive.
-> 
-I'm not going to refactor this on my tree.  Given the level of feedback,
-Anisa can you spin a new patch to replace what I'm carrying (which is
-modified version of this with a bit of rebasing).
+No user-visible interfaces are added.
 
-I'll push out a tree once I've caught up with reviewing this a bit more.
+For legacy containers:
 
-> > +/* CXL r3.2 Section 7.6.7.6.5 Initiate Dynamic Capacity Add (Opcode 5604h) */
-> > +static CXLRetCode cmd_fm_initiate_dc_add(const struct cxl_cmd *cmd,
-> > +                                         uint8_t *payload_in,
-> > +                                         size_t len_in,
-> > +                                         uint8_t *payload_out,
-> > +                                         size_t *len_out,
-> > +                                         CXLCCI *cci)
-> > +{
-> > +    struct {
-> > +        uint16_t host_id;
-> > +        uint8_t selection_policy;
-> > +        uint8_t reg_num;
-> > +        uint64_t length;
-> > +        uint8_t tag[0x10];
-> > +        uint32_t ext_count;
-> > +        CXLDCExtentRaw extents[];
-> > +    } QEMU_PACKED *in = (void *)payload_in;
-> > +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-> > +    CXLUpdateDCExtentListInPl *list;
-> > +    int i, rc;
-> > +
-> > +    switch (in->selection_policy) {
-> > +    case CXL_EXTENT_SELECTION_POLICY_PRESCRIPTIVE:
-> > +        /* Adding extents exceeds device's extent tracking ability. */
-> > +        if (in->ext_count + ct3d->dc.total_extent_count >
-> > +            CXL_NUM_EXTENTS_SUPPORTED) {
-> > +            return CXL_MBOX_RESOURCES_EXHAUSTED;
-> > +        }
-> > +
-> > +        list = calloc(1, (sizeof(*list) +
-> > +                          in->ext_count * sizeof(*list->updated_entries)));  
-> 
-> Use g_malloc() and g_free().
+Pass vfio device descriptors to new QEMU.  In new QEMU, during vfio_realize,
+skip the ioctls that configure the device, because it is already configured.
 
-g_malloc0() I think.
+Use VFIO_DMA_UNMAP_FLAG_VADDR to abandon the old VA's for DMA mapped
+regions, and use VFIO_DMA_MAP_FLAG_VADDR to register the new VA in new
+QEMU and update the locked memory accounting.  The physical pages remain
+pinned, because the descriptor of the device that locked them remains open,
+so DMA to those pages continues without interruption.  Mediated devices are
+not supported, however, because they require the VA to always be valid, and
+there is a brief window where no VA is registered.
 
-> 
-> > +        convert_raw_extents(in->extents, list, in->ext_count);
-> > +        rc = cxl_detect_malformed_extent_list(ct3d, list);
-> > +
-> > +        for (i = 0; i < in->ext_count; i++) {
-> > +            CXLDCExtentRaw ext = in->extents[i];
-> > +             /* Check requested extents do not overlap with pending extents. */
-> > +            if (cxl_extent_groups_overlaps_dpa_range(&ct3d->dc.extents_pending,
-> > +                                                     ext.start_dpa, ext.len)) {
-> > +                return CXL_MBOX_INVALID_EXTENT_LIST;
-> > +            }
-> > +            /* Check requested extents do not overlap with existing extents. */
-> > +            if (cxl_extents_overlaps_dpa_range(&ct3d->dc.extents,
-> > +                                               ext.start_dpa, ext.len)) {
-> > +                return CXL_MBOX_INVALID_EXTENT_LIST;
-> > +            }
-> > +        }
-> > +
-> > +        if (rc) {
-> > +            return rc;
-> > +        }
-> > +
-> > +        cxl_mbox_dc_add_to_pending(ct3d, in->ext_count, in->extents);
-> > +        cxl_mbox_create_dc_event_records_for_extents(ct3d,
-> > +                                                     DC_EVENT_ADD_CAPACITY,
-> > +                                                     in->extents,
-> > +                                                     in->ext_count);
-> > +
-> > +        return CXL_MBOX_SUCCESS;
-> > +    default:
-> > +        qemu_log_mask(LOG_UNIMP,
-> > +                      "CXL extent selection policy not supported.\n");
-> > +        return CXL_MBOX_INVALID_INPUT;
-> > +    }
-> > +  
-> 
-> For all the case to return, instead of return directly set return code and jump
-> here, do two things:
-> 1. g_free(list);
-> 2. return rt;
+Save the MSI message area as part of vfio-pci vmstate, and pass the interrupt
+and notifier eventfd's to new QEMU.  New QEMU loads the MSI data, then the
+vfio-pci post_load handler finds the eventfds in CPR state, rebuilds vector
+data structures, and attaches the interrupts to the new KVM instance.  This
+logic also applies to iommufd containers.
 
-I'd prefer this which I think has same effect. I like direct returns ;)
-Don't forget the {} to define scope though - I did and you get odd error
-messages :)
+For iommufd containers:
 
+Use IOMMU_IOAS_MAP_FILE to register memory regions for DMA when they are
+backed by a file (including a memfd), so DMA mappings do not depend on VA,
+which can differ after live update.  This allows mediated devices to be
+supported.
 
+Pass the iommufd and vfio device descriptors from old to new QEMU.  In new
+QEMU, during vfio_realize, skip the ioctls that configure the device, because
+it is already configured.
 
-@@ -3674,19 +3674,19 @@ static CXLRetCode cmd_fm_initiate_dc_add(const struct cxl_cmd *cmd,
-         CXLDCExtentRaw extents[];
-     } QEMU_PACKED *in = (void *)payload_in;
-     CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
--    CXLUpdateDCExtentListInPl *list;
-     int i, rc;
+In new QEMU, call ioctl(IOMMU_IOAS_CHANGE_PROCESS) to update mm ownership and
+locked memory accounting.
 
-     switch (in->selection_policy) {
--    case CXL_EXTENT_SELECTION_POLICY_PRESCRIPTIVE:
--        /* Adding extents exceeds device's extent tracking ability. */
-+    case CXL_EXTENT_SELECTION_POLICY_PRESCRIPTIVE: {
-+         /* Adding extents exceeds device's extent tracking ability. */
-         if (in->ext_count + ct3d->dc.total_extent_count >
-             CXL_NUM_EXTENTS_SUPPORTED) {
-             return CXL_MBOX_RESOURCES_EXHAUSTED;
-         }
+Patches 3 to 8 are specific to legacy containers.
+Patches 21 to 36 are specific to iommufd containers.
+The remainder apply to both.
 
--        list = calloc(1, (sizeof(*list) +
--                          in->ext_count * sizeof(*list->updated_entries)));
-+        g_autofree CXLUpdateDCExtentListInPl *list =
-+             g_malloc0(sizeof(*list) +
-+                      in->ext_count * sizeof(*list->updated_entries));
-         convert_raw_extents(in->extents, list, in->ext_count);
-         rc = cxl_detect_malformed_extent_list(ct3d, list);
+Changes from previous versions:
+  * V1 of this series contains minor changes from the "Live update: vfio" and
+    "Live update: iommufd" series, mainly bug fixes and refactored patches.
 
-@@ -3715,13 +3715,12 @@ static CXLRetCode cmd_fm_initiate_dc_add(const struct cxl_cmd *cmd,
-                                                      in->ext_count);
+Changes in V2:
+  * refactored various vfio code snippets into new cpr helpers
+  * refactored vfio struct members into cpr-specific structures
+  * refactored various small changes into their own patches
+  * split complex patches.  Notably:
+    - split "refactor for cpr" into 5 patches
+    - split "reconstruct device" into 4 patches
+  * refactored vfio_connect_container using helpers and made its
+    error recovery more robust.
+  * moved vfio pci msi/vector/intx cpr functions to cpr.c
+  * renamed "reused" to cpr_reused and cpr.reused
+  * squashed vfio_cpr_[un]register_container to their call sites
+  * simplified iommu_type setting after cpr
+  * added cpr_open_fd and cpr_is_incoming helpers
+  * removed changes from vfio_legacy_dma_map, and instead temporarily
+    override dma_map and dma_unmap ops.
+  * deleted error_report and returned Error to callers where possible.
+  * simplified the memory_get_xlat_addr interface
+  * fixed flags passed to iommufd_backend_alloc_hwpt
+  * defined MIG_PRI_UNINITIALIZED
+  * added maintainers
 
-         return CXL_MBOX_SUCCESS;
-+    }
-     default:
-         qemu_log_mask(LOG_UNIMP,
-                       "CXL extent selection policy not supported.\n");
-         return CXL_MBOX_INVALID_INPUT;
-     }
--
--    return CXL_MBOX_SUCCESS;
- }
-> 
-> Fan
-> 
-> > +    return CXL_MBOX_SUCCESS;
-> > +}
-> > +
-> >  static const struct cxl_cmd cxl_cmd_set[256][256] = {
-> >      [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
-> >          cmd_infostat_bg_op_abort, 0, 0 },
-> > @@ -3667,6 +3812,13 @@ static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
-> >           CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
-> >      [FMAPI_DCD_MGMT][GET_DC_REGION_EXTENT_LIST] = { "GET_DC_REGION_EXTENT_LIST",
-> >          cmd_fm_get_dc_region_extent_list, 12, 0 },
-> > +    [FMAPI_DCD_MGMT][INITIATE_DC_ADD] = { "INIT_DC_ADD",
-> > +        cmd_fm_initiate_dc_add, ~0,
-> > +        (CXL_MBOX_CONFIG_CHANGE_COLD_RESET |
-> > +        CXL_MBOX_CONFIG_CHANGE_CONV_RESET |
-> > +        CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
-> > +        CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
-> > +        CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
-> >  };
-> >  
-> >  /*
-> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> > index ee554a77be..ca9fe89e4f 100644
-> > --- a/hw/mem/cxl_type3.c
-> > +++ b/hw/mem/cxl_type3.c
-> > @@ -1885,8 +1885,8 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-> >   * the list.
-> >   * Return value: return true if has overlaps; otherwise, return false
-> >   */
-> > -static bool cxl_extents_overlaps_dpa_range(CXLDCExtentList *list,
-> > -                                           uint64_t dpa, uint64_t len)
-> > +bool cxl_extents_overlaps_dpa_range(CXLDCExtentList *list,
-> > +                                    uint64_t dpa, uint64_t len)
-> >  {
-> >      CXLDCExtent *ent;
-> >      Range range1, range2;
-> > @@ -1931,8 +1931,8 @@ bool cxl_extents_contains_dpa_range(CXLDCExtentList *list,
-> >      return false;
-> >  }
-> >  
-> > -static bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-> > -                                                 uint64_t dpa, uint64_t len)
-> > +bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-> > +                                          uint64_t dpa, uint64_t len)
-> >  {
-> >      CXLDCExtentGroup *group;
-> >  
-> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> > index 76af75d2d0..d30f6503fa 100644
-> > --- a/include/hw/cxl/cxl_device.h
-> > +++ b/include/hw/cxl/cxl_device.h
-> > @@ -724,4 +724,8 @@ bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-> >  void cxl_assign_event_header(CXLEventRecordHdr *hdr,
-> >                               const QemuUUID *uuid, uint32_t flags,
-> >                               uint8_t length, uint64_t timestamp);
-> > +bool cxl_extents_overlaps_dpa_range(CXLDCExtentList *list,
-> > +                                    uint64_t dpa, uint64_t len);
-> > +bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-> > +                                          uint64_t dpa, uint64_t len);
-> >  #endif
-> > -- 
-> > 2.47.2
-> >   
+Changes in V3:
+  * removed cleanup patches that were already pulled
+  * rebased to latest master
+
+Changes in V4:
+  * added SPDX-License-Identifier
+  * patch "vfio/container: preserve descriptors"
+    - rewrote search loop in vfio_container_connect
+    - do not return pfd from vfio_cpr_container_match
+    - add helper for VFIO_GROUP_GET_DEVICE_FD
+  * deleted patch "export vfio_legacy_dma_map"
+  * patch "vfio/container: restore DMA vaddr"
+    - deleted redundant error_report from vfio_legacy_cpr_dma_map
+    - save old dma_map function
+  * patch "vfio-pci: skip reset during cpr"
+    - use cpr_is_incoming instead of cpr_reused
+  * renamed err -> local_err in all new code
+  * patch "export MSI functions"
+    -  renamed with vfio_pci prefix, and defined wrappers for low level
+       routines instead of exporting them.
+  * patch "close kvm after cpr"
+    - fixed build error for !CONFIG_KVM
+  * added the cpr_resave_fd helper
+  * dropped patch "pass ramblock to vfio_container_dma_map", relying on
+    "pass MemoryRegion" from the vfio-user series instead.
+  * deleted "reused" variables, replaced with cpr_is_incoming()
+  * renamed cpr_needed_for_reuse -> cpr_incoming_needed
+  * rewrote patch "pci: skip reset during cpr"
+  * rebased to latest master
+
+  for iommufd:
+    * deleted redundant error_report from iommufd_backend_map_file_dma
+    * added interface doc for dma_map_file
+    * check return value of cpr_open_fd
+    * deleted "export iommufd_cdev_get_info_iova_range"
+    * deleted "reconstruct device"
+    * deleted "reconstruct hw_caps"
+    * deleted "define hwpt constructors"
+    * separated cpr registration for iommufd be and vfio container
+    * correctly attach to multiple containers per iommufd using ioas_id
+    * simplified "reconstruct hwpt" by matching against hwpt_id.
+    * added patch "add vfio_device_free_name"
+
+Changes in V5:
+  * dropped: vfio/pci: vfio_pci_put_device on failure
+  * added: "vfio: doc changes for cpr"
+  * deleted unnecessary include of vfio-cpr.h
+  * fixed compilation for !CONFIG_VFIO and !CONFIG_IOMMUFD
+  * misc minor changes
+  * Added RB's, rebased to master
+
+Steve Sistare (38):
+  migration: cpr helpers
+  migration: lower handler priority
+  vfio/container: register container for cpr
+  vfio/container: preserve descriptors
+  vfio/container: discard old DMA vaddr
+  vfio/container: restore DMA vaddr
+  vfio/container: mdev cpr blocker
+  vfio/container: recover from unmap-all-vaddr failure
+  pci: export msix_is_pending
+  pci: skip reset during cpr
+  vfio-pci: skip reset during cpr
+  vfio/pci: vfio_pci_vector_init
+  vfio/pci: vfio_notifier_init
+  vfio/pci: pass vector to virq functions
+  vfio/pci: vfio_notifier_init cpr parameters
+  vfio/pci: vfio_notifier_cleanup
+  vfio/pci: export MSI functions
+  vfio-pci: preserve MSI
+  vfio-pci: preserve INTx
+  migration: close kvm after cpr
+  migration: cpr_get_fd_param helper
+  backends/iommufd: iommufd_backend_map_file_dma
+  backends/iommufd: change process ioctl
+  physmem: qemu_ram_get_fd_offset
+  vfio/iommufd: use IOMMU_IOAS_MAP_FILE
+  vfio/iommufd: invariant device name
+  vfio/iommufd: add vfio_device_free_name
+  vfio/iommufd: device name blocker
+  vfio/iommufd: register container for cpr
+  migration: vfio cpr state hook
+  vfio/iommufd: cpr state
+  vfio/iommufd: preserve descriptors
+  vfio/iommufd: reconstruct device
+  vfio/iommufd: reconstruct hwpt
+  vfio/iommufd: change process
+  iommufd: preserve DMA mappings
+  vfio/container: delete old cpr register
+  vfio: doc changes for cpr
+
+ docs/devel/migration/CPR.rst          |   5 +-
+ qapi/migration.json                   |   6 +-
+ hw/vfio/pci.h                         |  10 ++
+ include/exec/cpu-common.h             |   1 +
+ include/hw/pci/msix.h                 |   1 +
+ include/hw/pci/pci_device.h           |   3 +
+ include/hw/vfio/vfio-container-base.h |  18 +++
+ include/hw/vfio/vfio-container.h      |   2 +
+ include/hw/vfio/vfio-cpr.h            |  66 +++++++-
+ include/hw/vfio/vfio-device.h         |   5 +
+ include/migration/cpr.h               |  21 +++
+ include/migration/vmstate.h           |   6 +-
+ include/system/iommufd.h              |   7 +
+ include/system/kvm.h                  |   1 +
+ accel/kvm/kvm-all.c                   |  32 ++++
+ accel/stubs/kvm-stub.c                |   5 +
+ backends/iommufd.c                    | 101 +++++++++++-
+ hw/pci/msix.c                         |   2 +-
+ hw/pci/pci.c                          |   5 +
+ hw/vfio/ap.c                          |   2 +-
+ hw/vfio/ccw.c                         |   2 +-
+ hw/vfio/container-base.c              |   9 ++
+ hw/vfio/container.c                   |  97 +++++++++---
+ hw/vfio/cpr-iommufd.c                 | 220 ++++++++++++++++++++++++++
+ hw/vfio/cpr-legacy.c                  | 287 ++++++++++++++++++++++++++++++++++
+ hw/vfio/cpr.c                         | 159 +++++++++++++++++--
+ hw/vfio/device.c                      |  40 +++--
+ hw/vfio/helpers.c                     |  10 ++
+ hw/vfio/iommufd-stubs.c               |  18 +++
+ hw/vfio/iommufd.c                     |  81 ++++++++--
+ hw/vfio/listener.c                    |  19 ++-
+ hw/vfio/pci.c                         | 231 ++++++++++++++++++++-------
+ hw/vfio/platform.c                    |   2 +-
+ hw/vfio/vfio-stubs.c                  |  13 ++
+ migration/cpr-transfer.c              |  18 +++
+ migration/cpr.c                       |  95 +++++++++--
+ migration/migration.c                 |   1 +
+ migration/savevm.c                    |   4 +-
+ system/physmem.c                      |   5 +
+ backends/trace-events                 |   2 +
+ hw/vfio/meson.build                   |   5 +
+ 41 files changed, 1482 insertions(+), 135 deletions(-)
+ create mode 100644 hw/vfio/cpr-iommufd.c
+ create mode 100644 hw/vfio/cpr-legacy.c
+ create mode 100644 hw/vfio/iommufd-stubs.c
+ create mode 100644 hw/vfio/vfio-stubs.c
+
+base-commit: bc98ffdc7577e55ab8373c579c28fe24d600c40f
+-- 
+1.8.3.1
 
 
