@@ -2,87 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57767AD37F7
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACF0AD37EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:05:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOybG-0000yw-27; Tue, 10 Jun 2025 09:01:10 -0400
+	id 1uOyXK-0006bm-F0; Tue, 10 Jun 2025 08:57:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYj-000826-4k
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:37 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYf-0002jb-9u
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:32 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3a365a6804eso3410812f8f.3
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:58:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749560306; x=1750165106; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=39EvlkRXXlcumPLuzzHWwFXfargkkijcg5vOQOsW2Dc=;
- b=uNYVrdpNbvP6T0MoLAIfRRYbjNKnfJ51qe5sbacAkVIE+cvyzQF5IzXNJWErby9L3l
- vxH1dzzO9H44O9bujYMmhkN716U0drq0NWeinEVxnWWjF0J+ChrtXM9JPN0tZZfBK3Mv
- y1zXYkm3hre2UcwlqCthsczEi0VA4xMdQH2wv/nGzkpAWaWxp1tNfWp32n/YUV+x7RDw
- km71I2kc7bZuAPUYR2ymrQwl2gM73yxwdK/NL6Hig3T3gsztC/BasqmmimQ07WOCt8iG
- Y6BBMekTsmHoq6dKHbJTzhrr4fyE3dUCL0dspcGPG50ziZxexvEvd6MiwwISAiddrRVQ
- UWwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749560306; x=1750165106;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=39EvlkRXXlcumPLuzzHWwFXfargkkijcg5vOQOsW2Dc=;
- b=i97LZAZ0qUaiXK2dliQE+ryYk8Q5aFn3Gdquy2NF/BFtxwe2CgPgkJEw7V00PvBgu8
- c7Cv1vTM6eaAoT/GYuCIhDtj0gPu9TjRvt8QUAEhBS/GAXoo9vXcfgNN2QmWEmeKno85
- kB6yWIb4SMrQQmapPRe7bpgzidj9bA1KPZnWqwl/kou/1R0DkHIptSbZPGhs7l5+pvx3
- x2bjzsJ9amnsQQdwabZm1ZGEy8Hl5+LOoiuJEbD+2sAkYI89ASoUjEJzz/MegSf/09uw
- /n3Jhl+p+NWJLNjEXfM+r+XYR/wtIhLY/934f9BtXnRtu4sUj9QHpjlvOO6DY1OcpmSU
- RUdw==
-X-Gm-Message-State: AOJu0YxFZD9u5FrHsUxX4D/SavGN+btk8UKdzheMQL82n/VGeF8GTTAP
- ruzFWWQ+LOAyHl1XUumNAshA0i2mCFH/AahkDj6JpgLS0V44VXd8uda83S36VLsp1N6gu1Ls4Wj
- BYAapDvw=
-X-Gm-Gg: ASbGncvH0/Upc60UsLMKpHFhFtRr1Gg0tjfcd2MGuNfR6R0lEzO/K0Tu7dAj0u8yOCn
- clVcAcoeypVpKWFTP8GGiHtxO5sSBNh1fzYE2u1FuuS0mhlLg53cFuFpfcuoWJmb8xJJghyiN+E
- +tSupoByvwKlXokLbp9rTz1j/TaTSCX5FVNKRvqSOLPpxZosurpeavqKUL71F7SAIHXI+uphcf2
- g2sFQ6Gvze+n7KQe2WSxDVhhu3acsLNCNuRW8cQ1d/s3jWvjjDeknNeDK/xLZZdpIcriQEeFyrz
- HooXxyGOOMkwBt4yHyoh5CUOh1uyChb/Lea5BRjJYYMvtTuY+xFYSQVuND1xox4lLV+x+1SisKc
- hA1MtSk2/OSxyixfakFWX5hIyRbRJzio7nfkZ20FuIA==
-X-Google-Smtp-Source: AGHT+IHpUki8lK6upCgEtIu6Ft7/2IvSPuvlA520CYTRMZLFhhPxHCeaF8fFIAO7C8jC82G4IYM3IQ==
-X-Received: by 2002:a05:6000:4027:b0:3a4:d6ed:8df8 with SMTP id
- ffacd0b85a97d-3a5522bdeeamr2019374f8f.39.1749560305674; 
- Tue, 10 Jun 2025 05:58:25 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-452730c7756sm138986805e9.33.2025.06.10.05.58.24
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Jun 2025 05:58:25 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Soumyajyotii_Ssarkar <soumyajyotisarkar23@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 24/24] hw/net/i82596: Factor configure function out
-Date: Tue, 10 Jun 2025 14:56:33 +0200
-Message-ID: <20250610125633.24411-25-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250610125633.24411-1-philmd@linaro.org>
-References: <20250610125633.24411-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uOyXF-0006aD-IA
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:57:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uOyX9-0002Zc-KW
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:57:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749560213;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=m5gsxmS3YBb/LFAIkUU/W0hMLRwggAnMdw0nJPa/0gI=;
+ b=JspjpdtcA8qPLTFdxsuVrSTdOFN3LcAUbUwdr5FYUCI77eVU8OfwovwwyT6ji8Kl6bcnq4
+ qLWsdIRzGmM3zqn5dTDvEZTS+ueeRLJo8CjbSVpu7HJUa4mdA3zRAJDUYnpitU71OJAiVF
+ lQ1itgJ0FmfMgBikwsbxMe0xkKlBI/A=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-qcbrCAK2PBmpo-GPf6M7cA-1; Tue,
+ 10 Jun 2025 08:56:50 -0400
+X-MC-Unique: qcbrCAK2PBmpo-GPf6M7cA-1
+X-Mimecast-MFC-AGG-ID: qcbrCAK2PBmpo-GPf6M7cA_1749560209
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2C98A19560B7; Tue, 10 Jun 2025 12:56:49 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.87])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9995A1956087; Tue, 10 Jun 2025 12:56:46 +0000 (UTC)
+Date: Tue, 10 Jun 2025 13:56:43 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [PATCH 00/31] Skip automatic zero-init of large arrays / structs
+ in I/O paths
+Message-ID: <aEgri00LXfeRQRJ2@redhat.com>
+References: <20250610123709.835102-1-berrange@redhat.com>
+ <50405e77-e665-4772-9715-3901730d00fd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+In-Reply-To: <50405e77-e665-4772-9715-3901730d00fd@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,83 +86,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Soumyajyotii_Ssarkar <soumyajyotisarkar23@gmail.com>
+On Tue, Jun 10, 2025 at 02:49:02PM +0200, Philippe Mathieu-Daudé wrote:
+> On 10/6/25 14:36, Daniel P. Berrangé wrote:
+> > This series is an extension of Stefan's proposal:
+> > 
+> >    https://lists.nongnu.org/archive/html/qemu-devel/2025-06/msg00736.html
+> > 
+> > It used '-Wframe-larger-than=4096' to identify all code locations
+> > with more than 4k on the stack. Any locations in the I/O paths
+> > were chosen to avoid automatic zero-init, to eliminate the performance
+> > overhead of the automatic initialization.
+> 
+> Should we eventually add it to our default CFLAGS?
 
-Abstract the configure function.
+You mean as a way to impose a hard limit on stack frame size ?
 
-Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250607152711.108914-2-soumyajyotisarkar23@gmail.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/net/i82596.c | 36 +++++++++++++++++++++---------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+FWIW, the VNC server is biggest at 100kb, but we have a large
+number of other big frames - here's a sorted list of frame
+sizes vs frequency
 
-diff --git a/hw/net/i82596.c b/hw/net/i82596.c
-index fc33a00d498..c1ff3e6c564 100644
---- a/hw/net/i82596.c
-+++ b/hw/net/i82596.c
-@@ -177,6 +177,26 @@ static void set_individual_address(I82596State *s, uint32_t addr)
-     trace_i82596_new_mac(nc->info_str);
- }
- 
-+static void i82596_configure(I82596State *s, uint32_t addr)
-+{
-+    uint8_t byte_cnt;
-+    byte_cnt = get_byte(addr + 8) & 0x0f;
-+
-+    byte_cnt = MAX(byte_cnt, 4);
-+    byte_cnt = MIN(byte_cnt, sizeof(s->config));
-+    /* copy byte_cnt max. */
-+    address_space_read(&address_space_memory, addr + 8,
-+                       MEMTXATTRS_UNSPECIFIED, s->config, byte_cnt);
-+    /* config byte according to page 35ff */
-+    s->config[2] &= 0x82; /* mask valid bits */
-+    s->config[2] |= 0x40;
-+    s->config[7]  &= 0xf7; /* clear zero bit */
-+    assert(I596_NOCRC_INS == 0); /* do CRC insertion */
-+    s->config[10] = MAX(s->config[10], 5); /* min frame length */
-+    s->config[12] &= 0x40; /* only full duplex field valid */
-+    s->config[13] |= 0x3f; /* set ones in byte 13 */
-+}
-+
- static void set_multicast_list(I82596State *s, uint32_t addr)
- {
-     uint16_t mc_count, i;
-@@ -234,7 +254,6 @@ static void command_loop(I82596State *s)
- {
-     uint16_t cmd;
-     uint16_t status;
--    uint8_t byte_cnt;
- 
-     DBG(printf("STARTING COMMAND LOOP cmd_p=%08x\n", s->cmd_p));
- 
-@@ -254,20 +273,7 @@ static void command_loop(I82596State *s)
-             set_individual_address(s, s->cmd_p);
-             break;
-         case CmdConfigure:
--            byte_cnt = get_byte(s->cmd_p + 8) & 0x0f;
--            byte_cnt = MAX(byte_cnt, 4);
--            byte_cnt = MIN(byte_cnt, sizeof(s->config));
--            /* copy byte_cnt max. */
--            address_space_read(&address_space_memory, s->cmd_p + 8,
--                               MEMTXATTRS_UNSPECIFIED, s->config, byte_cnt);
--            /* config byte according to page 35ff */
--            s->config[2] &= 0x82; /* mask valid bits */
--            s->config[2] |= 0x40;
--            s->config[7]  &= 0xf7; /* clear zero bit */
--            assert(I596_NOCRC_INS == 0); /* do CRC insertion */
--            s->config[10] = MAX(s->config[10], 5); /* min frame length */
--            s->config[12] &= 0x40; /* only full duplex field valid */
--            s->config[13] |= 0x3f; /* set ones in byte 13 */
-+            i82596_configure(s, s->cmd_p);
-             break;
-         case CmdTDR:
-             /* get signal LINK */
+      1 103696 
+      2 69664 
+     46 49184 
+      4 42608 
+     23 32880 
+     23 32864 
+      1 32832 
+      1 28688 
+     36 24800 
+     10 24784 
+      1 22240 
+     21 21760 
+      1 20624 
+      1 17536 
+      2 17168 
+      1 16592 
+      1 16576 
+      1 16544 
+      1 16512 
+      2 16480 
+      2 16464 
+      1 16448 
+      4 16432 
+      1 15136 
+      1 12960 
+      1 12336 
+      1 12048 
+      1 10064 
+      5 9184 
+      1 8832 
+      1 8784 
+      1 8576 
+      1 8448 
+      2 8400 
+      1 8384 
+      2 8304 
+      1 8272 
+      4 8256 
+      1 8240 
+      4 8224 
+      7 8208 
+      2 7120 
+      1 6800 
+      1 5856 
+      1 4928 
+      2 4560 
+      1 4464 
+      1 4336 
+      2 4256 
+      1 4240 
+      2 4224 
+      4 4208 
+      9 4176 
+      9 4160 
+     40 4144 
+     68 4128 
+      9 4112 
+
+
+
+With regards,
+Daniel
 -- 
-2.49.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
