@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6700AD379D
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75301AD37A0
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:59:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOyYN-0007Nn-PW; Tue, 10 Jun 2025 08:58:14 -0400
+	id 1uOyZK-00084p-UW; Tue, 10 Jun 2025 08:59:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyXw-00072T-NB
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyY0-00075d-0J
  for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:57:48 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyXu-0002eu-5d
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:57:44 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-441ab63a415so56528375e9.3
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:57:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyXy-0002fM-79
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:57:47 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3a503d9ef59so4539480f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:57:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749560259; x=1750165059; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749560264; x=1750165064; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=f1SDtp+PzmoXDCdOjc+70YYb7XPFBDbAy3avwI/RQMs=;
- b=PaW8DMKvjuHnaErdBdY4YTNo2BbOvjOexHigHLkS8Jd1awdelFPfBLUzp/vjdVyFR+
- MGwLLJ6xr5V2crnG+U9LIg40ltagzuaoRxHxxmRXYptXCxRCbWyp5rh9Rz1VbvRI//fA
- wZ4SU33bcmxuBHIdJorCy9DXYVMXEJ3gTe7ixsaWqvyhDxwfQ2Ps85hH9FOu0BG1500E
- oQ9BiC72DkUlxKtItczjO95SW+gzn02AVXemvYbsqegySZDHiSlqmJfvchYswVY/8gIN
- xdk4Hh8RMOyD7jpaQF7hylGrwLFAQFcfNNFljWRY9UGBIVZ1xFMc5Nt7xiLPPgvxuw53
- xU7w==
+ bh=DoWnKErT6L5M/XOHBo7kM8xkl21t85uZpmhKzYCdWBM=;
+ b=LkDQRj9WyLDWzUf0/H1x+b6tGRESsXKqeBzM6mcCYO6bc/aB8AYnT9KhtXL0Za1idO
+ 8HawYPbL7w7at+gnZhMg/EoNd1zyLWyA/CPKrpmU+kFRH3lSbKlH71sERpS5Nq7JX0fd
+ bMvwmhfFCIJS9KiFProkz7ya+hCpFRvQDO0a6DEMOkS9Gj7fBaBSuvUKCHz7AXEpEYzd
+ +mjuTNuvMJ/OMKKWVLmRbwgXtA5XlaX2x8YEjpzjyPHd4t51wd1THnL1CH91MYTwErut
+ LPS5PIgUfE2vDo2wY+PNXWgfAnViTFaKS8/Wecc0QmQNPJg9oVwle5RGxvtaykDg9yoX
+ CH3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749560259; x=1750165059;
+ d=1e100.net; s=20230601; t=1749560264; x=1750165064;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f1SDtp+PzmoXDCdOjc+70YYb7XPFBDbAy3avwI/RQMs=;
- b=mGAAJxP3eO8Yvyqb8FNNFrmOSJNaFgvk25Tu4YcspS5A0+5FCMP4kiNHQgmWal7OlK
- K1fuUloEiCjtohwdIMcUk/oLCEgFQRTt/a6KQa+h0EYdWnM5TEkt9dIl1YNBU7ATDBWr
- snJ0jhFhVnHTVzF6lihkA5suRz52j2eKBaPW/8nEOWPY+3G1iy9OJZ9QSBc2bhHW0B9w
- J7MRFEehtDpE6OYDEOWxAoACpVLW7DVetm52YIJJ/nUhB6bNXVFd00nKwck5Wbb3I38D
- AlHc6A/vVSFyIsbdndAeqj+gVH/ziKJ6a0rZ5iVfUQBQbH3wngR8CV4NfoVFB/kgfCbl
- 0X0Q==
-X-Gm-Message-State: AOJu0Yzma41FFv4Fj5BRIqFfrilDzcgsd0UUSm6/OQzb90zOCzSeVzdB
- qXUjXWTEftZq3mZ0xB/jGbCTCPX//cGwMcmFhAZ7xJqA5uuuF3akwoq09IEHpz6PII7cDXERbED
- FGenpudc=
-X-Gm-Gg: ASbGnctX1C53OQbwyYcaXryDCVNDEL5ZMkZeHcGwXI2R1QXaT2ItzatHPltYQwCivHN
- lGldWn2QD5HlBmLf6oGmSKoR+u7Swt2PgoDT6L0PWSVWdPwwlXyIIRZqC6fMGO6xUYGojJ0jiwo
- EMe5Iiv/JinewyBBlYY4JRbi3W8ZcBjvjP3xKdN7oICRBwpapOapLuhBuMoegMy0hsaMd1aRhmr
- yYQmFWaJWVRa0KjOhwz3nXCpaFzQv7z/chEuRAtfjtNwAVOzlVR8Co6XKlbhI/RDPerC9jQhyoH
- YTHm8pGalpU3LXGBWCsLWOJk6BJKNwy7u3v0vexDoCZ6usHseD4ZM89MBrhmStUed05MN6txUDH
- nYOffkiu4rTW1neHxAnOw2zD0eyfmKv9UbTzk1iEUe0v3aZw9NQFS
-X-Google-Smtp-Source: AGHT+IEN5klxZr3rdNlkU2fc8MJtjcCFsxh1awHwe89VnWrH+p06NUGRaezwD6tPG7jhc+nGhyeVFQ==
-X-Received: by 2002:a05:6000:220d:b0:3a1:fe77:9e1d with SMTP id
- ffacd0b85a97d-3a552274ab9mr2414992f8f.16.1749560259447; 
- Tue, 10 Jun 2025 05:57:39 -0700 (PDT)
+ bh=DoWnKErT6L5M/XOHBo7kM8xkl21t85uZpmhKzYCdWBM=;
+ b=qtTaLMPHJApbotHE4++SGsxY6orXF+8yN2nbFX9MUl9ilKB1wbtJQ4XmzT+7D7FsET
+ LkSnY9n4b/9Jap2VqMmpJhredRdfeSN1iuL5p0ENDJODNJCMB6LF/ISwjnzqFT63XUcS
+ hac7USZhnQ36furFm4g2Jr2EKMTVqx0M3oLqqJkhU0VawM2CLpE7tjwpTDBscjSWXeXr
+ I5DaZEmR/oJvwVcKuQUuO5kqkNMOlwrz4Nh/ipq7Ogf1awnXo5+OSMPtoVvPxWD5SZJ2
+ f2IHOYwzk63R9TgHfeEOMyOYHAiTbI+r+g113B3VABDvJYV+kzpuI61d4IPdUulCOXNr
+ uIAg==
+X-Gm-Message-State: AOJu0YxkGOYUJ6rFQ2FYdXtlueilmXb0gBfPOHk3jOC9DVt+cotD388g
+ xS98jiqJUtoRh2D5cCcyUS3vag9pfv+lTx7z7OisncWH9IKoqVKW5/+e+o2PfTHVJyzRGUNwNKs
+ GDvL17KY=
+X-Gm-Gg: ASbGncs1CS01XaqHnFbKKXDkiQTqRufEBhgKU9+Ob01hCxYF++Op52waIsslEtbIe0I
+ vWE6WHteNu1d3wqIg/Cwaienu+Ag5N15PwdXwzQ2Ct7Z3WCKzU3+8TVq56zP0Ue8ZTFjexwV2t/
+ +LbJbqco75Q3wQk4so7LAGfBlZbX25NNqDxuFUL5YmN3ZPN2nG+FbzeKlYOYoJLnelII5FAyXnW
+ jl4TBcM/nDRwoyPJOVr8znc/0IOStxGn060nSMTF/46CTnXDJOBRE8+/rU200eljel27ogZe95/
+ l34F+6+0V3LgTD6nSo4LSUnuHzWFsEQ0/w9Klh1YqgIWnE3mOoS3ZlxXHcjYVP/GSqWeTP89dCv
+ liILJ6aI6LZFY5EnYpfzYTGey2YJnpK1CA0ON6DKWCA==
+X-Google-Smtp-Source: AGHT+IE8BeYS6UuWieiSlLOgWOB1or8T9lzwDOsWAsX6e84yX7OH7NfWpGgPXmW0HTr6Xo6G0vXNIw==
+X-Received: by 2002:a05:6000:4313:b0:3a5:25e4:264f with SMTP id
+ ffacd0b85a97d-3a531cb01acmr14320750f8f.31.1749560264048; 
+ Tue, 10 Jun 2025 05:57:44 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a532463ed4sm12316003f8f.94.2025.06.10.05.57.38
+ ffacd0b85a97d-3a532436863sm12477526f8f.52.2025.06.10.05.57.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Jun 2025 05:57:39 -0700 (PDT)
+ Tue, 10 Jun 2025 05:57:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Alireza Sanaee <alireza.sanaee@huawei.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/24] hw/core/cpu: Move CacheType to general cpu.h
-Date: Tue, 10 Jun 2025 14:56:23 +0200
-Message-ID: <20250610125633.24411-15-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Glenn Miles <milesg@linux.ibm.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 15/24] hw/gpio/pca9552: Avoid using g_newa()
+Date: Tue, 10 Jun 2025 14:56:24 +0200
+Message-ID: <20250610125633.24411-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250610125633.24411-1-philmd@linaro.org>
 References: <20250610125633.24411-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,55 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+We have pin_count <= PCA955X_PIN_COUNT_MAX. Having
+PCA955X_PIN_COUNT_MAX = 16, it is safe to explicitly
+allocate the char buffer on the stack, without g_newa().
 
-I386 has already defined cache types in target/i386/cpu.h.
-
-Move CacheType to hw/core/cpu.h, so that ARM and other architectures
-could use it.
-
-Cc: Alireza Sanaee <alireza.sanaee@huawei.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250605132722.3597593-1-zhao1.liu@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <20250605193540.59874-2-philmd@linaro.org>
 ---
- include/hw/core/cpu.h | 6 ++++++
- target/i386/cpu.h     | 6 ------
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ hw/gpio/pca9552.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 1e87f7d393e..33296a1c080 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -1126,4 +1126,10 @@ extern const VMStateDescription vmstate_cpu_common;
- #define UNASSIGNED_CPU_INDEX -1
- #define UNASSIGNED_CLUSTER_INDEX -1
+diff --git a/hw/gpio/pca9552.c b/hw/gpio/pca9552.c
+index d65c0a2e90f..1e10238b2e0 100644
+--- a/hw/gpio/pca9552.c
++++ b/hw/gpio/pca9552.c
+@@ -76,7 +76,7 @@ static void pca955x_display_pins_status(PCA955xState *s,
+         return;
+     }
+     if (trace_event_get_state_backends(TRACE_PCA955X_GPIO_STATUS)) {
+-        char *buf = g_newa(char, k->pin_count + 1);
++        char buf[PCA955X_PIN_COUNT_MAX + 1];
  
-+enum CacheType {
-+    DATA_CACHE,
-+    INSTRUCTION_CACHE,
-+    UNIFIED_CACHE
-+};
-+
- #endif
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 545851cbde1..5910dcf74d4 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1773,12 +1773,6 @@ typedef enum TPRAccess {
- 
- /* Cache information data structures: */
- 
--enum CacheType {
--    DATA_CACHE,
--    INSTRUCTION_CACHE,
--    UNIFIED_CACHE
--};
--
- typedef struct CPUCacheInfo {
-     enum CacheType type;
-     uint8_t level;
+         for (i = 0; i < k->pin_count; i++) {
+             if (extract32(pins_status, i, 1)) {
 -- 
 2.49.0
 
