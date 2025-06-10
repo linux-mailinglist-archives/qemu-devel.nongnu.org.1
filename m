@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5DBAD3F95
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF71AD3FBC
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:58:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP27b-0001ym-Ni; Tue, 10 Jun 2025 12:46:47 -0400
+	id 1uP2Aa-0000ps-VM; Tue, 10 Jun 2025 12:49:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP159-0004MA-Ij
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:11 -0400
+ id 1uP15B-0004MK-1u
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:13 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP158-00069x-2f
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:11 -0400
+ id 1uP159-0006A9-FX
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:12 -0400
 Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEXfHi007049;
- Tue, 10 Jun 2025 15:40:07 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEXZqE006965;
+ Tue, 10 Jun 2025 15:40:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=AHfRRIyR8YCML/A7SHtFAv/JqCdZ7sYkJ4qx4/ujCDk=; b=
- fBIgy8/kjhR4YJit9JQPDdm2efuZEi7nwnADf9VeISdQCeoIqTdIFM8rUcOBt/DI
- 9sL9q1dWju+K/YVxWXldb3WfArMQrTSRsZizCVUVj6xCUaOTY8yaDJBK/aw1fqB3
- VI7g9+7eRkNTXTFZ8V98JxVLkBRVlDpHojLR4er169IJT/gCzucEcFTXOekaAJUW
- is++t+XUNLYdKjlJkaE+ip2/JfCpV2VmPekahdHMEJF/ZVU2xu+LPjlU24HefY7n
- bw/GR+h38a8gRyqgJvMHXMUj+4TCYJOfwhjKocfU9ZdVH/ECDXZtVVQhEqxFzibD
- Qdoq6ED8BPcMZ7X8jKQMSg==
+ corp-2025-04-25; bh=tds6gG+dA5WZrNQV0J7lwZQNk4HjqQon3BwKAvCaj0Q=; b=
+ amnzo27s1YYhIKtNMheqc+9K6hg6dDSGuR6ba2anzWtrntEp9L0JJmgrxPyqdTo3
+ MCm9Mo2CmyJQVmashiGHXy1sWD1ykpUpa6/loG4zSQkOCtH9lND10oUb8uQK7FlS
+ SYHssCaT3rwGNoa9/1cJUp6RJa09AuBZ7dVT9xLiq5fSTVdGRj8tHPhormN9npwc
+ x1JNQ/AZv4z1NKxEDuBoX7obqvhvfAErIPIzaoLJ/qMu3MW7yJkDy+IXTBHEZfbJ
+ INt5KewKrNWFQy2iGF/hr8IkjntQlbMCAzbknr6iXqn4xs39trn6AjiUjqQPy1NS
+ pI7J+kard8mORxBBNQwZpQ==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474c74vjq9-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474c74vjqd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 15:40:07 +0000 (GMT)
+ Tue, 10 Jun 2025 15:40:08 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 55AF52Br003304; Tue, 10 Jun 2025 15:40:06 GMT
+ with ESMTP id 55AEfgqL003281; Tue, 10 Jun 2025 15:40:08 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 474bv8wavv-1
+ 474bv8wax3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 15:40:06 +0000
+ Tue, 10 Jun 2025 15:40:08 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55AFdrfP028825;
- Tue, 10 Jun 2025 15:40:06 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55AFdrfR028825;
+ Tue, 10 Jun 2025 15:40:07 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 474bv8wak1-10; Tue, 10 Jun 2025 15:40:06 +0000
+ ESMTP id 474bv8wak1-11; Tue, 10 Jun 2025 15:40:07 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 09/38] pci: export msix_is_pending
-Date: Tue, 10 Jun 2025 08:39:22 -0700
-Message-Id: <1749569991-25171-10-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 10/38] pci: skip reset during cpr
+Date: Tue, 10 Jun 2025 08:39:23 -0700
+Message-Id: <1749569991-25171-11-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
 References: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
@@ -75,19 +75,19 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  mlxlogscore=999 phishscore=0 spamscore=0 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2506100125
-X-Authority-Analysis: v=2.4 cv=LIpmQIW9 c=1 sm=1 tr=0 ts=684851d7 b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=LIpmQIW9 c=1 sm=1 tr=0 ts=684851d8 b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=b0qJq_d53OdcEBA1QiMA:9
- cc=ntf awl=host:14714
-X-Proofpoint-ORIG-GUID: _M6xzonvey-zl-LWdhTMctvtJD-2S7Jj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEyNiBTYWx0ZWRfXxw6CuD1Oa5rm
- n//2fA82HyZVoU0w1l7bZWL+2je0Cc4ta3dybogFD4esFxv97G3nWrC6qFYDo1Nv7/ODfNbt67g
- xkIELX4jQfzwM3cWRoahARqWfpQf1/dfrzsVYWSYkalpY4tpuMFrTkWqyOjsMBXBvVWMUZe/Cn3
- VDlEaN/1ibVohlwYhm6EIfSlLEPj9+9VxJufBor/9clBO6Ee1QAnvJPOjBtd+Djk4OAJu95SFJO
- 9UsdkZjnudujff7NKXgUSpHtX5NodJ58Xz0Hs3PsihDOii2VuXDt4SR9xgqTn9OE4Ukgwpiad0T
- qy7iW9qmeYtk8TeeNn/s/towZAYSSmL/f6uI7UMUc/MlIDJxkwtnNnUzczzQ2xMcH3dVxwYkPuz
- sosW8jnMv/JM6Rkq04bSz7XN0gGh50EJEsGswt4HFmv1j/9sN0c9Jpdui1aKiVO05PSS7CF6
-X-Proofpoint-GUID: _M6xzonvey-zl-LWdhTMctvtJD-2S7Jj
+ a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=9sbxz00wAFZublB0PowA:9 cc=ntf
+ awl=host:14714
+X-Proofpoint-ORIG-GUID: rRW8Tlqh5UfDfSPDAIYE-1uvnmrGDIKn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEyNiBTYWx0ZWRfX6o5jhaiwoN15
+ y6TOan90+EaAK5kYaldTjD7DTRWV+SLF2gKnWf9XRezs8NEo/DmxWERfIBpFMcIz51MbUIydIBW
+ SfHJubxGODZ0RYHYFWDsQqFvAlAUJSnXhkfBHHzE+i9CHnbv4FFG2dwe1ObO5qYHAZ/McgLSTO/
+ 6QGsKOz72RLj1zrlheu1IZXjKmc1vgTCCcdKt++0UfJB498dR+j4+aKNLr6swC7Hvl7EovME54v
+ RH2sgXm5XDdygK0Zt1BfyuvsEfmotl6YN+C1Oxk/Rwn/LNfTiDJN6agNcg1b6vbM0Mn7SFC0vY/
+ 7YP+fYlFpDUF8U8beduvRI2kMCi/Uw3XUFekyzvoFeG9gNonoQAN0nRhC6qWST3KgRq/oyugwvw
+ cOv+xzLzuz67oKVwXl7MuqW/xMueTufLd8R99i8oRoEZkIaAt6n2efiFSGOwbIXKwRxc4PiZ
+X-Proofpoint-GUID: rRW8Tlqh5UfDfSPDAIYE-1uvnmrGDIKn
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -113,40 +113,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Export msix_is_pending for use by cpr.  No functional change.
+Do not reset a vfio-pci device during CPR.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/msix.h | 1 +
- hw/pci/msix.c         | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ include/hw/pci/pci_device.h | 3 +++
+ hw/pci/pci.c                | 5 +++++
+ hw/vfio/pci.c               | 7 +++++++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/include/hw/pci/msix.h b/include/hw/pci/msix.h
-index 0e6f257..11ef945 100644
---- a/include/hw/pci/msix.h
-+++ b/include/hw/pci/msix.h
-@@ -32,6 +32,7 @@ int msix_present(PCIDevice *dev);
- bool msix_is_masked(PCIDevice *dev, unsigned vector);
- void msix_set_pending(PCIDevice *dev, unsigned vector);
- void msix_clr_pending(PCIDevice *dev, int vector);
-+int msix_is_pending(PCIDevice *dev, unsigned vector);
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index eee0338..0509430 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -182,6 +182,9 @@ struct PCIDevice {
+     uint32_t max_bounce_buffer_size;
  
- void msix_vector_use(PCIDevice *dev, unsigned vector);
- void msix_vector_unuse(PCIDevice *dev, unsigned vector);
-diff --git a/hw/pci/msix.c b/hw/pci/msix.c
-index 66f27b9..8c7f670 100644
---- a/hw/pci/msix.c
-+++ b/hw/pci/msix.c
-@@ -72,7 +72,7 @@ static uint8_t *msix_pending_byte(PCIDevice *dev, int vector)
-     return dev->msix_pba + vector / 8;
- }
+     char *sriov_pf;
++
++    /* CPR */
++    bool skip_reset_on_cpr;
+ };
  
--static int msix_is_pending(PCIDevice *dev, int vector)
-+int msix_is_pending(PCIDevice *dev, unsigned int vector)
+ static inline int pci_intx(PCIDevice *pci_dev)
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 9b4bf48..0f6b9b3 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -32,6 +32,7 @@
+ #include "hw/pci/pci_host.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
++#include "migration/cpr.h"
+ #include "migration/qemu-file-types.h"
+ #include "migration/vmstate.h"
+ #include "net/net.h"
+@@ -537,6 +538,10 @@ static void pci_reset_regions(PCIDevice *dev)
+ 
+ static void pci_do_device_reset(PCIDevice *dev)
  {
-     return *msix_pending_byte(dev, vector) & msix_pending_mask(vector);
++    if (dev->skip_reset_on_cpr && cpr_is_incoming()) {
++        return;
++    }
++
+     pci_device_deassert_intx(dev);
+     assert(dev->irq_state == 0);
+ 
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index b1250d8..819170d 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3408,6 +3408,13 @@ static void vfio_instance_init(Object *obj)
+     /* QEMU_PCI_CAP_EXPRESS initialization does not depend on QEMU command
+      * line, therefore, no need to wait to realize like other devices */
+     pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
++
++    /*
++     * A device that is resuming for cpr is already configured, so do not
++     * reset it during qemu_system_reset prior to cpr load, else interrupts
++     * may be lost.
++     */
++    pci_dev->skip_reset_on_cpr = true;
  }
+ 
+ static void vfio_pci_base_dev_class_init(ObjectClass *klass, const void *data)
 -- 
 1.8.3.1
 
