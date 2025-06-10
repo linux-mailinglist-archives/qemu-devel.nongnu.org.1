@@ -2,47 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28135AD3F68
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBECAD3F9E
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:54:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP26v-0001pK-4K; Tue, 10 Jun 2025 12:46:05 -0400
+	id 1uP2AM-00009E-IS; Tue, 10 Jun 2025 12:49:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uP0cg-000085-RR
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:10:46 -0400
+ id 1uP0j1-0000dM-7H
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:17:19 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uP0cd-00027q-Tz
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:10:46 -0400
+ id 1uP0iz-0002x1-2B
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:17:18 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bGsdz75N9z6D94m;
- Tue, 10 Jun 2025 23:09:43 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bGsp76D4bz6D8gq;
+ Tue, 10 Jun 2025 23:16:47 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id EAE6C1405F9;
- Tue, 10 Jun 2025 23:10:06 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id D05271402FE;
+ Tue, 10 Jun 2025 23:17:10 +0800 (CST)
 Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 10 Jun
- 2025 17:10:00 +0200
-Date: Tue, 10 Jun 2025 16:09:59 +0100
-To: Fan Ni <nifan.cxl@gmail.com>
-CC: <anisa.su887@gmail.com>, <qemu-devel@nongnu.org>, <dave@stgolabs.net>,
- <linux-cxl@vger.kernel.org>, Anisa Su <anisa.su@samsung.com>
-Subject: Re: [QEMU PATCH v3 6/9] cxl-mailbox-utils: 0x5602 - FMAPI Set DC
- Region Config
-Message-ID: <20250610160959.000010b9@huawei.com>
-In-Reply-To: <aEMW2SDuAE10Iyuf@debian>
+ 2025 17:17:10 +0200
+Date: Tue, 10 Jun 2025 16:17:09 +0100
+To: Anisa Su <anisa.su887@gmail.com>
+CC: ALOK TIWARI <alok.a.tiwari@oracle.com>, <qemu-devel@nongnu.org>,
+ <nifan.cxl@gmail.com>, <dave@stgolabs.net>, <linux-cxl@vger.kernel.org>
+Subject: Re: [QEMU PATCH v3 8/9] cxl-mailbox-utils: 0x5604 - FMAPI Initiate
+ DC Add
+Message-ID: <20250610161709.000059f7@huawei.com>
+In-Reply-To: <aEMly5F8kdziHWzO@deb-101020-bm01.eng.stellus.in>
 References: <20250605234227.970187-1-anisa.su887@gmail.com>
- <20250605234227.970187-7-anisa.su887@gmail.com>
- <aEMW2SDuAE10Iyuf@debian>
+ <20250605234227.970187-9-anisa.su887@gmail.com>
+ <09aea84f-8c3f-4321-879d-35c8956b3573@oracle.com>
+ <aEMly5F8kdziHWzO@deb-101020-bm01.eng.stellus.in>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.122.19.247]
 X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
  frapeml500008.china.huawei.com (7.182.85.71)
@@ -74,218 +75,108 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 6 Jun 2025 09:27:05 -0700
-Fan Ni <nifan.cxl@gmail.com> wrote:
 
-> On Thu, Jun 05, 2025 at 11:42:20PM +0000, anisa.su887@gmail.com wrote:
-> > From: Anisa Su <anisa.su@samsung.com>
-> >=20
-> > FM DCD Management command 0x5602 implemented per CXL r3.2 Spec Section =
-7.6.7.6.3
-> >=20
-> > Signed-off-by: Anisa Su <anisa.su@samsung.com>
-> > --- =20
->=20
-> One minor comment, otherwise LGTM.
->=20
-> >  hw/cxl/cxl-mailbox-utils.c   | 86 ++++++++++++++++++++++++++++++++++++
-> >  hw/mem/cxl_type3.c           |  6 +--
-> >  include/hw/cxl/cxl_device.h  |  3 ++
-> >  include/hw/cxl/cxl_mailbox.h |  6 +++
-> >  4 files changed, 98 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> > index 1b5c7216f9..47b1509a0e 100644
-> > --- a/hw/cxl/cxl-mailbox-utils.c
-> > +++ b/hw/cxl/cxl-mailbox-utils.c
-> > @@ -121,6 +121,7 @@ enum {
-> >      FMAPI_DCD_MGMT =3D 0x56,
-> >          #define GET_DCD_INFO    0x0
-> >          #define GET_HOST_DC_REGION_CONFIG   0x1
-> > +        #define SET_DC_REGION_CONFIG        0x2
-> >  };
-> > =20
-> >  /* CCI Message Format CXL r3.1 Figure 7-19 */
-> > @@ -3387,6 +3388,84 @@ static CXLRetCode cmd_fm_get_host_dc_region_conf=
-ig(const struct cxl_cmd *cmd,
-> >      return CXL_MBOX_SUCCESS;
-> >  }
-> > =20
-> > +/* CXL r3.2 section 7.6.7.6.3: Set Host DC Region Configuration (Opcod=
-e 5602) */
-> > +static CXLRetCode cmd_fm_set_dc_region_config(const struct cxl_cmd *cm=
-d,
-> > +                                              uint8_t *payload_in,
-> > +                                              size_t len_in,
-> > +                                              uint8_t *payload_out,
-> > +                                              size_t *len_out,
-> > +                                              CXLCCI *cci)
-> > +{
-> > +    struct {
-> > +        uint8_t reg_id;
-> > +        uint8_t rsvd[3];
-> > +        uint64_t block_sz;
-> > +        uint8_t flags;
-> > +        uint8_t rsvd2[3];
-> > +    } QEMU_PACKED *in =3D (void *)payload_in;
-> > +    CXLType3Dev *ct3d =3D CXL_TYPE3(cci->d);
-> > +    CXLEventDynamicCapacity dcEvent =3D {};
-> > +    CXLDCRegion *region =3D &ct3d->dc.regions[in->reg_id];
-> > +
-> > +    /*
-> > +     * CXL r3.2 7.6.7.6.3: Set DC Region Configuration
-> > +     * This command shall fail with Unsupported when the Sanitize on R=
-elease
-> > +     * field does not match the region=E2=80=99s configuration... and =
-the device
-> > +     * does not support reconfiguration of the Sanitize on Release set=
-ting.
-> > +     *
-> > +     * Currently not reconfigurable, so always fail if sanitize bit (b=
-it 0)
-> > +     * doesn't match.
-> > +     */
-> > +    if ((in->flags & 0x1) !=3D (region->flags & 0x1)) {
-> > +        return CXL_MBOX_UNSUPPORTED;
-> > +    }
-> > +
-> > +    if (in->reg_id >=3D DCD_MAX_NUM_REGION) {
-> > +        return CXL_MBOX_UNSUPPORTED;
-> > +    }
-> > +
-> > +    /* Return success if new block size =3D=3D current block size */
-> > +    if (in->block_sz =3D=3D region->block_size) {
-> > +        return CXL_MBOX_SUCCESS;
-> > +    } =20
->=20
-> Should we move this below, after checking the bitmap?
-Yes.  The text is a little confusing but the list of what should
-fail with unsupported doesn't allow an exception for a noop
-request. I've made that tweak on the updated tree I'm building now.
+> > > +/* CXL r3.2 Section 7.6.7.6.5 Initiate Dynamic Capacity Add (Opcode 5604h) */
+> > > +static CXLRetCode cmd_fm_initiate_dc_add(const struct cxl_cmd *cmd,
+> > > +                                         uint8_t *payload_in,
+> > > +                                         size_t len_in,
+> > > +                                         uint8_t *payload_out,
+> > > +                                         size_t *len_out,
+> > > +                                         CXLCCI *cci)
+> > > +{
+> > > +    struct {
+> > > +        uint16_t host_id;
+> > > +        uint8_t selection_policy;
+> > > +        uint8_t reg_num;
+> > > +        uint64_t length;
+> > > +        uint8_t tag[0x10];
+> > > +        uint32_t ext_count;
+> > > +        CXLDCExtentRaw extents[];
+> > > +    } QEMU_PACKED *in = (void *)payload_in;
+> > > +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+> > > +    CXLUpdateDCExtentListInPl *list;
+> > > +    int i, rc;
+> > > +
+> > > +    switch (in->selection_policy) {
+> > > +    case CXL_EXTENT_SELECTION_POLICY_PRESCRIPTIVE:
+> > > +        /* Adding extents exceeds device's extent tracking ability. */
+> > > +        if (in->ext_count + ct3d->dc.total_extent_count >
+> > > +            CXL_NUM_EXTENTS_SUPPORTED) {
+> > > +            return CXL_MBOX_RESOURCES_EXHAUSTED;
+> > > +        }
+> > > +
+> > > +        list = calloc(1, (sizeof(*list) +
+> > > +                          in->ext_count * sizeof(*list->updated_entries)));
+> > > +        convert_raw_extents(in->extents, list, in->ext_count);
+> > > +        rc = cxl_detect_malformed_extent_list(ct3d, list);
+> > > +
+> > > +        for (i = 0; i < in->ext_count; i++) {
+> > > +            CXLDCExtentRaw ext = in->extents[i];
+> > > +             /* Check requested extents do not overlap with pending extents. */
+> > > +            if (cxl_extent_groups_overlaps_dpa_range(&ct3d->dc.extents_pending,
+> > > +                                                     ext.start_dpa, ext.len)) {
+> > > +                return CXL_MBOX_INVALID_EXTENT_LIST;
+> > > +            }
+> > > +            /* Check requested extents do not overlap with existing extents. */
+> > > +            if (cxl_extents_overlaps_dpa_range(&ct3d->dc.extents,
+> > > +                                               ext.start_dpa, ext.len)) {
+> > > +                return CXL_MBOX_INVALID_EXTENT_LIST;
+> > > +            }
+> > > +        }
+> > > +
+> > > +        if (rc) {
+> > > +            return rc;  
+> > 
+> > is list free not require ?
+> >   
+> oh yeah it's definitely required :( that was dumb of me, same for the
+> next patch.
 
-If there is another version of this series please make this change.
+Use a g_autofree marking for this probably given it is just
+a local temp array I think.
 
-Jonathan
->=20
-> Fan
-> > +
-> > +    /* Check that no extents are in the region being reconfigured */
-> > +    if (!bitmap_empty(region->blk_bitmap, region->len / region->block_=
-size)) {
-> > +        return CXL_MBOX_UNSUPPORTED;
-> > +    }
-> > +
-> > +    /* Check that new block size is supported */
-> > +    if (!test_bit(BIT((int) log2(in->block_sz)),
-> > +                  &region->supported_blk_size_bitmask)) {
-> > +        return CXL_MBOX_INVALID_INPUT;
-> > +    }
-> > +
-> > +    /* Free bitmap and create new one for new block size. */
-> > +    qemu_mutex_lock(&region->bitmap_lock);
-> > +    g_free(region->blk_bitmap);
-> > +    region->blk_bitmap =3D bitmap_new(region->len / in->block_sz);
-> > +    qemu_mutex_unlock(&region->bitmap_lock);
-> > +    region->block_size =3D in->block_sz;
-> > +
-> > +    /* Create event record and insert into event log */
-> > +    cxl_assign_event_header(&dcEvent.hdr,
-> > +                            &dynamic_capacity_uuid,
-> > +                            (1 << CXL_EVENT_TYPE_INFO),
-> > +                            sizeof(dcEvent),
-> > +                            cxl_device_get_timestamp(&ct3d->cxl_dstate=
-));
-> > +    dcEvent.type =3D DC_EVENT_REGION_CONFIG_UPDATED;
-> > +    dcEvent.validity_flags =3D 1;
-> > +    dcEvent.host_id =3D 0;
-> > +    dcEvent.updated_region_id =3D in->reg_id;
-> > +
-> > +    if (cxl_event_insert(&ct3d->cxl_dstate,
-> > +                         CXL_EVENT_TYPE_DYNAMIC_CAP,
-> > +                         (CXLEventRecordRaw *)&dcEvent)) {
-> > +        cxl_event_irq_assert(ct3d);
-> > +    }
-> > +    return CXL_MBOX_SUCCESS;
-> > +}
-> > +
-> >  static const struct cxl_cmd cxl_cmd_set[256][256] =3D {
-> >      [INFOSTAT][BACKGROUND_OPERATION_ABORT] =3D { "BACKGROUND_OPERATION=
-_ABORT",
-> >          cmd_infostat_bg_op_abort, 0, 0 },
-> > @@ -3505,6 +3584,13 @@ static const struct cxl_cmd cxl_cmd_set_fm_dcd[2=
-56][256] =3D {
-> >          cmd_fm_get_dcd_info, 0, 0 },
-> >      [FMAPI_DCD_MGMT][GET_HOST_DC_REGION_CONFIG] =3D { "GET_HOST_DC_REG=
-ION_CONFIG",
-> >          cmd_fm_get_host_dc_region_config, 4, 0 },
-> > +    [FMAPI_DCD_MGMT][SET_DC_REGION_CONFIG] =3D { "SET_DC_REGION_CONFIG=
-",
-> > +        cmd_fm_set_dc_region_config, 16,
-> > +        (CXL_MBOX_CONFIG_CHANGE_COLD_RESET |
-> > +         CXL_MBOX_CONFIG_CHANGE_CONV_RESET |
-> > +         CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
-> > +         CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
-> > +         CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
-> >  };
-> > =20
-> >  /*
-> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> > index b872a26173..ee554a77be 100644
-> > --- a/hw/mem/cxl_type3.c
-> > +++ b/hw/mem/cxl_type3.c
-> > @@ -1590,9 +1590,9 @@ void qmp_cxl_inject_correctable_error(const char =
-*path, CxlCorErrorType type,
-> >      pcie_aer_inject_error(PCI_DEVICE(obj), &err);
-> >  }
-> > =20
-> > -static void cxl_assign_event_header(CXLEventRecordHdr *hdr,
-> > -                                    const QemuUUID *uuid, uint32_t fla=
-gs,
-> > -                                    uint8_t length, uint64_t timestamp)
-> > +void cxl_assign_event_header(CXLEventRecordHdr *hdr,
-> > +                             const QemuUUID *uuid, uint32_t flags,
-> > +                             uint8_t length, uint64_t timestamp)
-> >  {
-> >      st24_le_p(&hdr->flags, flags);
-> >      hdr->length =3D length;
-> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> > index 96ef9be444..76af75d2d0 100644
-> > --- a/include/hw/cxl/cxl_device.h
-> > +++ b/include/hw/cxl/cxl_device.h
-> > @@ -721,4 +721,7 @@ void ct3_clear_region_block_backed(CXLType3Dev *ct3=
-d, uint64_t dpa,
-> >                                     uint64_t len);
-> >  bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-> >                                    uint64_t len);
-> > +void cxl_assign_event_header(CXLEventRecordHdr *hdr,
-> > +                             const QemuUUID *uuid, uint32_t flags,
-> > +                             uint8_t length, uint64_t timestamp);
-> >  #endif
-> > diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
-> > index 9008402d1c..a05d7cb5b7 100644
-> > --- a/include/hw/cxl/cxl_mailbox.h
-> > +++ b/include/hw/cxl/cxl_mailbox.h
-> > @@ -8,6 +8,7 @@
-> >  #ifndef CXL_MAILBOX_H
-> >  #define CXL_MAILBOX_H
-> > =20
-> > +#define CXL_MBOX_CONFIG_CHANGE_COLD_RESET (1)
-> >  #define CXL_MBOX_IMMEDIATE_CONFIG_CHANGE (1 << 1)
-> >  #define CXL_MBOX_IMMEDIATE_DATA_CHANGE (1 << 2)
-> >  #define CXL_MBOX_IMMEDIATE_POLICY_CHANGE (1 << 3)
-> > @@ -15,5 +16,10 @@
-> >  #define CXL_MBOX_SECURITY_STATE_CHANGE (1 << 5)
-> >  #define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
-> >  #define CXL_MBOX_BACKGROUND_OPERATION_ABORT (1 << 7)
-> > +#define CXL_MBOX_SECONDARY_MBOX_SUPPORTED (1 << 8)
-> > +#define CXL_MBOX_REQUEST_ABORT_BACKGROUND_OP_SUPPORTED (1 << 9)
-> > +#define CXL_MBOX_CEL_10_TO_11_VALID (1 << 10)
-> > +#define CXL_MBOX_CONFIG_CHANGE_CONV_RESET (1 << 11)
-> > +#define CXL_MBOX_CONFIG_CHANGE_CXL_RESET (1 << 12)
-> > =20
-> >  #endif
-> > --=20
-> > 2.47.2
-> >  =20
+> 
+> Thanks for catching that!
+> -Anisa
+> > > +        }
+> > > +
+> > > +        cxl_mbox_dc_add_to_pending(ct3d, in->ext_count, in->extents);
+> > > +        cxl_mbox_create_dc_event_records_for_extents(ct3d,
+> > > +                                                     DC_EVENT_ADD_CAPACITY,
+> > > +                                                     in->extents,
+> > > +                                                     in->ext_count);
+> > > +
+> > > +        return CXL_MBOX_SUCCESS;
+> > > +    default:
+> > > +        qemu_log_mask(LOG_UNIMP,
+> > > +                      "CXL extent selection policy not supported.\n");
+> > > +        return CXL_MBOX_INVALID_INPUT;
+> > > +    }
+> > > +
+> > > +    return CXL_MBOX_SUCCESS;  
+> > 
+> > CXL_MBOX_SUCCESS, this is unreachable
+> >   
+> > > +}
+> > > +
+> > >   static const struct cxl_cmd cxl_cmd_set[256][256] = {
+> > >       [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
+> > >           cmd_infostat_bg_op_abort, 0, 0 },
+> > > @@ -3667,6 +3812,13 @@ static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
+> > >            CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
+> > >       [FMAPI_DCD_MGMT][GET_DC_REGION_EXTENT_LIST] = { "GET_DC_REGION_EXTENT_LIST",
+> > >           cmd_fm_get_dc_region_extent_list, 12, 0 },
+> > > +    [FMAPI_DCD_MGMT][INITIATE_DC_ADD] = { "INIT_DC_ADD",
+> > > +        cmd_fm_initiate_dc_add, ~0,
+> > > +        (CXL_MBOX_CONFIG_CHANGE_COLD_RESET |
+> > > +        CXL_MBOX_CONFIG_CHANGE_CONV_RESET |
+> > > +        CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
+> > > +        CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
+> > > +        CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
+> > >   };  
+> > 
+> > 
+> > Thanks,
+> > Alok  
 
 
