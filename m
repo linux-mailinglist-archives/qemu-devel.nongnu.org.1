@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9C0AD3F92
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE34FAD3F96
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:54:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP27q-00030k-57; Tue, 10 Jun 2025 12:47:02 -0400
+	id 1uP2Ai-00017I-0z; Tue, 10 Jun 2025 12:50:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP153-0004Kr-Rg
+ id 1uP154-0004Ky-J7
  for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:07 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP151-0005vT-MZ
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:05 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEXgwG007057;
- Tue, 10 Jun 2025 15:39:57 GMT
+ id 1uP151-0005vZ-Me
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:06 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEXatV029093;
+ Tue, 10 Jun 2025 15:39:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=os4V9oK8JAtfJNBxo/pn0Lvi0VUC5ckpCkYGhVSNoG8=; b=
- m+rYYw8bmQgk8DNsKXn0wQNAmPcXJ7hHEL8VBvhqXxOmkZWgUxXHqOvLLkcxZ4ex
- 0oiXZ9U6elltb8cQDUyX872mHq3IbFeNI71xVJK3vsjp1UGIJgE5CpVdln59Lk3B
- LCfonVF44c6t3F8r3pGnBw/4yx1MmKrQsiudmJ++5eOBizF1cGKvZSVjEaV+WEsn
- 61TxRbCJIJKL77P5UjSj9xe6RinpC43fExPxCRf6MVQ6X2nKdClo+qwIFScAiIj4
- Cc5we1ltqk0lppdd/LCs9UV77P9PGbFvDwT9MRyuvrBMZzmR+gQnyqJs/cdp395b
- At4dU6OGX73aISzFwG9daA==
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=gqCnY8/yKRYd46ubbAyvy2o3ATfIgXQVrC1QFKKZH98=; b=
+ FjOMcXOzIi4FHe1pTNwTMSh0nysxh/RL/vEM+5nKxvyjV+9vbhahyVsSkegL0uX6
+ z6bnv9pjqKklKZKYDu7lUEbqN3rT2bJuPqZVOEB8OuptzPIjG88h1BoHECoQ0ve2
+ vYkq/jaWuA8ESg3Ubo/syVsKK/hSmLKXGSHXy9Dv+3wfEbDwPYM9Njsd7kPi9e95
+ KgSqgCbUhu6ZHSBa8sCjM5qSimUxeqAwNfTnizWHr4SJHxfGWnC5u5nortdihDJb
+ 4/VgKQbz5+DNDA+nbkc6+jHTUpi1llcvEg5nd03+SynsJtVwnpe/IAoOYRyeobvC
+ rdrHgs2nxg9QsrcwGCSSzg==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474c74vjpp-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474d1v4jf7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 15:39:57 +0000 (GMT)
+ Tue, 10 Jun 2025 15:39:58 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 55AEp9R7003279; Tue, 10 Jun 2025 15:39:56 GMT
+ with ESMTP id 55AEoK1t003889; Tue, 10 Jun 2025 15:39:57 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 474bv8wamg-1
+ 474bv8wanb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 15:39:56 +0000
+ Tue, 10 Jun 2025 15:39:57 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55AFdrfB028825;
- Tue, 10 Jun 2025 15:39:55 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55AFdrfD028825;
+ Tue, 10 Jun 2025 15:39:57 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 474bv8wak1-3; Tue, 10 Jun 2025 15:39:55 +0000
+ ESMTP id 474bv8wak1-4; Tue, 10 Jun 2025 15:39:57 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,12 +62,15 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 02/38] migration: lower handler priority
-Date: Tue, 10 Jun 2025 08:39:15 -0700
-Message-Id: <1749569991-25171-3-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 03/38] vfio/container: register container for cpr
+Date: Tue, 10 Jun 2025 08:39:16 -0700
+Message-Id: <1749569991-25171-4-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
 References: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-10_07,2025-06-10_01,2025-03-28_01
@@ -75,19 +79,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  mlxlogscore=999 phishscore=0 spamscore=0 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2506100125
-X-Authority-Analysis: v=2.4 cv=LIpmQIW9 c=1 sm=1 tr=0 ts=684851cd b=1 cx=c_pps
+X-Proofpoint-GUID: I5zQ8ERIxYnAR8a153Bvk1qE06ADgcmE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEyNiBTYWx0ZWRfX8yo7Oo29Q7F3
+ qTxTMX5rIhNoyOTjk2P+ezk8pVaOxPwMwq6x7T2KYwzl6DAJUh+DoPZgF0df9NHrVlCB62BMJMM
+ pHZMpu5dGS0AzptvD6hgXGkIrEGGIi74lkogW8j2WiZmXBzc3ee1VNNlJ0B9hG0ZiD3JvDENNWe
+ BaW5Z5gS9zPQsPpwikmZBBzJitdEOiOGMmicXCHlg3skBZhGVVvA8KuEVfTbc9HQsIHSt3d+QtY
+ XRVRekfNNb4cGtgzguDRnSX1yB4+4diBTGJ4XTzXK9/+6l313I7UUynH8L0M2h+66SVx4MCoJdY
+ GIHrI0hzyzefTYvtg8M0ncVS5lgFKDx0pkeaOsVoBOWwSCmTvMpUF8thGCo5T9VCrtITyDhbcL5
+ 55ezPGIaWlYxsnPuokVQt0ArtMIWxeBrCQgZIUsostBqBROpWG23uN1UZ9pdUlRO0vBTuayN
+X-Proofpoint-ORIG-GUID: I5zQ8ERIxYnAR8a153Bvk1qE06ADgcmE
+X-Authority-Analysis: v=2.4 cv=d731yQjE c=1 sm=1 tr=0 ts=684851ce b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=AmUmXUaXWCDEmLEOI0wA:9
- cc=ntf awl=host:14714
-X-Proofpoint-ORIG-GUID: 686vOCUfQQUycUGJ-G41DgwpqNFIMcXb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEyNiBTYWx0ZWRfX7SlT88zqkKZc
- mS+J5gJBTjPHJNW2d9gosQqrDxlO7AJ4K+9HhAvkkvyDYhaNH/Kw8Pw03sLBqY71rCEBmoKJG35
- tVOnmfhg4qLjHSzuv3DWwVI3Zt9eu8BpTuABZ9lQq12rJ555Qgou2zsZH2mykX3ucOKf6+bAW8s
- cWwmLTpvsupO/d6h4WSH5G2Q0+5GL2XeSylCQ4BqsKGQmfmXHqxD5cbwQh5WhDZ6uC8a8vtjgDk
- wTHHGMC/BcIbEqxAUPkHCI4OTrZautD6NwGamPLoxx08AhPYzMjwd3+iLjP5jJyim/FpjZzElMV
- fHceGwqDGitp8+jufl7Tcit6L20YskfjMDGmXvBTSmX9F5+bIV1NwVZ8iUnNoNqZjckG8TX0Xy+
- NJGAjuEohmyVYGIRZT6iv7a7J2JXKlUhbSMMtqUgcU8XrrX+WfrQk+nIbJsyfJdAWu7+MalG
-X-Proofpoint-GUID: 686vOCUfQQUycUGJ-G41DgwpqNFIMcXb
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8
+ a=Wa8AqhRQI3GCQIrSjY4A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:14714
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -113,60 +118,218 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define a vmstate priority that is lower than the default, so its handlers
-run after all default priority handlers.  Since 0 is no longer the default
-priority, translate an uninitialized priority of 0 to MIG_PRI_DEFAULT.
+Register a legacy container for cpr-transfer, replacing the generic CPR
+register call with a more specific legacy container register call.  Add a
+blocker if the kernel does not support VFIO_UPDATE_VADDR or VFIO_UNMAP_ALL.
 
-CPR for vfio will use this to install handlers for containers that run
-after handlers for the devices that they contain.
+This is mostly boiler plate.  The fields to to saved and restored are added
+in subsequent patches.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/migration/vmstate.h | 6 +++++-
- migration/savevm.c          | 4 ++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ include/hw/vfio/vfio-container.h |  2 ++
+ include/hw/vfio/vfio-cpr.h       | 15 +++++++++
+ hw/vfio/container.c              |  7 ++---
+ hw/vfio/cpr-legacy.c             | 68 ++++++++++++++++++++++++++++++++++++++++
+ hw/vfio/cpr.c                    |  5 ++-
+ hw/vfio/meson.build              |  1 +
+ 6 files changed, 91 insertions(+), 7 deletions(-)
+ create mode 100644 hw/vfio/cpr-legacy.c
 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index a1dfab4..1ff7bd9 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -155,7 +155,11 @@ enum VMStateFlags {
- };
+diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
+index afc498d..21e5807 100644
+--- a/include/hw/vfio/vfio-container.h
++++ b/include/hw/vfio/vfio-container.h
+@@ -10,6 +10,7 @@
+ #define HW_VFIO_CONTAINER_H
  
- typedef enum {
--    MIG_PRI_DEFAULT = 0,
-+    MIG_PRI_UNINITIALIZED = 0,  /* An uninitialized priority field maps to */
-+                                /* MIG_PRI_DEFAULT in save_state_priority */
+ #include "hw/vfio/vfio-container-base.h"
++#include "hw/vfio/vfio-cpr.h"
+ 
+ typedef struct VFIOContainer VFIOContainer;
+ typedef struct VFIODevice VFIODevice;
+@@ -29,6 +30,7 @@ typedef struct VFIOContainer {
+     int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+     unsigned iommu_type;
+     QLIST_HEAD(, VFIOGroup) group_list;
++    VFIOContainerCPR cpr;
+ } VFIOContainer;
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(VFIOContainer, VFIO_IOMMU_LEGACY);
+diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
+index 750ea5b..d4e0bd5 100644
+--- a/include/hw/vfio/vfio-cpr.h
++++ b/include/hw/vfio/vfio-cpr.h
+@@ -9,8 +9,23 @@
+ #ifndef HW_VFIO_VFIO_CPR_H
+ #define HW_VFIO_VFIO_CPR_H
+ 
++#include "migration/misc.h"
 +
-+    MIG_PRI_LOW,                /* Must happen after default */
-+    MIG_PRI_DEFAULT,
-     MIG_PRI_IOMMU,              /* Must happen before PCI devices */
-     MIG_PRI_PCI_BUS,            /* Must happen before IOMMU */
-     MIG_PRI_VIRTIO_MEM,         /* Must happen before IOMMU */
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 52105dd..bb04a45 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -266,7 +266,7 @@ typedef struct SaveState {
++struct VFIOContainer;
+ struct VFIOContainerBase;
  
- static SaveState savevm_state = {
-     .handlers = QTAILQ_HEAD_INITIALIZER(savevm_state.handlers),
--    .handler_pri_head = { [MIG_PRI_DEFAULT ... MIG_PRI_MAX] = NULL },
-+    .handler_pri_head = { [0 ... MIG_PRI_MAX] = NULL },
-     .global_section_id = 0,
- };
++typedef struct VFIOContainerCPR {
++    Error *blocker;
++} VFIOContainerCPR;
++
++
++bool vfio_legacy_cpr_register_container(struct VFIOContainer *container,
++                                        Error **errp);
++void vfio_legacy_cpr_unregister_container(struct VFIOContainer *container);
++
++int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier, MigrationEvent *e,
++                             Error **errp);
++
+ bool vfio_cpr_register_container(struct VFIOContainerBase *bcontainer,
+                                  Error **errp);
+ void vfio_cpr_unregister_container(struct VFIOContainerBase *bcontainer);
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 0f948d0..93cdf80 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -33,7 +33,6 @@
+ #include "qapi/error.h"
+ #include "pci.h"
+ #include "hw/vfio/vfio-container.h"
+-#include "hw/vfio/vfio-cpr.h"
+ #include "vfio-helpers.h"
+ #include "vfio-listener.h"
  
-@@ -737,7 +737,7 @@ static int calculate_compat_instance_id(const char *idstr)
+@@ -643,7 +642,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+     new_container = true;
+     bcontainer = &container->bcontainer;
  
- static inline MigrationPriority save_state_priority(SaveStateEntry *se)
- {
--    if (se->vmsd) {
-+    if (se->vmsd && se->vmsd->priority) {
-         return se->vmsd->priority;
+-    if (!vfio_cpr_register_container(bcontainer, errp)) {
++    if (!vfio_legacy_cpr_register_container(container, errp)) {
+         goto fail;
      }
-     return MIG_PRI_DEFAULT;
+ 
+@@ -679,7 +678,7 @@ fail:
+         vioc->release(bcontainer);
+     }
+     if (new_container) {
+-        vfio_cpr_unregister_container(bcontainer);
++        vfio_legacy_cpr_unregister_container(container);
+         object_unref(container);
+     }
+     if (fd >= 0) {
+@@ -720,7 +719,7 @@ static void vfio_container_disconnect(VFIOGroup *group)
+         VFIOAddressSpace *space = bcontainer->space;
+ 
+         trace_vfio_container_disconnect(container->fd);
+-        vfio_cpr_unregister_container(bcontainer);
++        vfio_legacy_cpr_unregister_container(container);
+         close(container->fd);
+         object_unref(container);
+ 
+diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
+new file mode 100644
+index 0000000..dd7ac84
+--- /dev/null
++++ b/hw/vfio/cpr-legacy.c
+@@ -0,0 +1,68 @@
++/*
++ * Copyright (c) 2021-2025 Oracle and/or its affiliates.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include <sys/ioctl.h>
++#include <linux/vfio.h>
++#include "qemu/osdep.h"
++#include "hw/vfio/vfio-container.h"
++#include "migration/blocker.h"
++#include "migration/cpr.h"
++#include "migration/migration.h"
++#include "migration/vmstate.h"
++#include "qapi/error.h"
++
++static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
++{
++    if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UPDATE_VADDR)) {
++        error_setg(errp, "VFIO container does not support VFIO_UPDATE_VADDR");
++        return false;
++
++    } else if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UNMAP_ALL)) {
++        error_setg(errp, "VFIO container does not support VFIO_UNMAP_ALL");
++        return false;
++
++    } else {
++        return true;
++    }
++}
++
++static const VMStateDescription vfio_container_vmstate = {
++    .name = "vfio-container",
++    .version_id = 0,
++    .minimum_version_id = 0,
++    .needed = cpr_incoming_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
++{
++    VFIOContainerBase *bcontainer = &container->bcontainer;
++    Error **cpr_blocker = &container->cpr.blocker;
++
++    migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
++                                vfio_cpr_reboot_notifier,
++                                MIG_MODE_CPR_REBOOT);
++
++    if (!vfio_cpr_supported(container, cpr_blocker)) {
++        return migrate_add_blocker_modes(cpr_blocker, errp,
++                                         MIG_MODE_CPR_TRANSFER, -1) == 0;
++    }
++
++    vmstate_register(NULL, -1, &vfio_container_vmstate, container);
++
++    return true;
++}
++
++void vfio_legacy_cpr_unregister_container(VFIOContainer *container)
++{
++    VFIOContainerBase *bcontainer = &container->bcontainer;
++
++    migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
++    migrate_del_blocker(&container->cpr.blocker);
++    vmstate_unregister(NULL, &vfio_container_vmstate, container);
++}
+diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
+index 0210e76..0e59612 100644
+--- a/hw/vfio/cpr.c
++++ b/hw/vfio/cpr.c
+@@ -7,13 +7,12 @@
+ 
+ #include "qemu/osdep.h"
+ #include "hw/vfio/vfio-device.h"
+-#include "migration/misc.h"
+ #include "hw/vfio/vfio-cpr.h"
+ #include "qapi/error.h"
+ #include "system/runstate.h"
+ 
+-static int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
+-                                    MigrationEvent *e, Error **errp)
++int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
++                             MigrationEvent *e, Error **errp)
+ {
+     if (e->type == MIG_EVENT_PRECOPY_SETUP &&
+         !runstate_check(RUN_STATE_SUSPENDED) && !vm_get_suspended()) {
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index bccb050..73d29f9 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -21,6 +21,7 @@ system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
+ system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
+ system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+   'cpr.c',
++  'cpr-legacy.c',
+   'device.c',
+   'migration.c',
+   'migration-multifd.c',
 -- 
 1.8.3.1
 
