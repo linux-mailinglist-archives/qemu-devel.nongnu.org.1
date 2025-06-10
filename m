@@ -2,89 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFA1AD2F4F
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 09:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D65DFAD2FBA
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 10:18:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOtp0-0007QG-5j; Tue, 10 Jun 2025 03:55:02 -0400
+	id 1uOu9t-0004mu-PS; Tue, 10 Jun 2025 04:16:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOton-0007N7-EU
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 03:54:51 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOtol-0005h1-8l
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 03:54:48 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43cfe63c592so58697615e9.2
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 00:54:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749542084; x=1750146884; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8B6qLJiUllI8GeCv/Gl5huzcjr3YE6kXAQV+l9wR3gA=;
- b=xDkXxTPaaJmGacw3CY+nMIrpaOnLKS8aHG9qvlZ+ntTpYNqhj1WfpmXjX+HQjOSyFh
- nNQ3P47GNHh9VnuFf3whWEv811ym62wvEeM7SA1XLIOk73xlPQJ4SV9NYr9xMNJjf42P
- 9nzngcMeNU8gvEK+gWyiTu39PGqOGo4Yz2orJf9C7NGlr5rDNj+1cYycK4Tehd4LtG+C
- 6aiACuviMiosJm+eDp6FIX5dZUxJNaiG92d5p/OsVKTCW2rb1ow5CXPdz/F1e8nol+Bh
- ODAJn526VfCfkFpXUmHvyXbuY4AWxEnDwEE+Og5Vxe+1DDuyBP/1NWVqb0W4yv1ZwDCk
- H59g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749542084; x=1750146884;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8B6qLJiUllI8GeCv/Gl5huzcjr3YE6kXAQV+l9wR3gA=;
- b=RDsZReARZXeYzJ3SUz/zduZm24enSJ+JJyiFJJXL/Wj0n53CqGruHd0XpUnJxDIa+O
- ih0eJL4x3T3NWwOE7NxXNdphFR1v9Rl/Ws0ujvBym+7tWCPN8FfbGWEr8f75DycR+pB6
- uuceSXsMYTPb5UTTwffU3t5DQI7DdhWuyZHeP2bNJX1B7r7sCNrE5wo+xYjvSdRqJ1VL
- kIFKeoO6z+oPUMbY1ChzsVsaKutoLkV5hnDHtJkzdUs5iWze1C6WhSBUYOJZdVOaNyXf
- 52ddyY7s8tvAgq4nFOGzaxpHu3TmgBIXvW2Il3tWwQXokkVYQNtBfr7jYbFZjsOwRMOI
- tXOg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW/dwuFCra4Z76UsNjV2wEb9HOZuE0u+PJaueCSLaphFzwG8UEAcuNHrdGFpoWTi47A0GJCLRaiQYVr@nongnu.org
-X-Gm-Message-State: AOJu0YxtHTRHeFxPVdpOBU1MMYoWfgw1sZA2AH09ZxlCe44m2ELC7JIN
- 0miB8X94gyTb7LF0WEsEZ4RVJFZK0xZt1iwgJlFwlk2Olfi16gc7f/6ZARCETvzce3I=
-X-Gm-Gg: ASbGncvMjiM+d1PwQtHfb/IroVBSjsmtqDmxMGCMAboQkMyhdWxdBFKL2so9ziRQfwU
- Os7ARm/YO+EJFanQGddbX2kxOSoFNy4HSS+MJjqG2ddm8CoHtg5zl5tD0REkky6LXL2G0gmSRnF
- ailpiGyWAbq6Hg8AaK5LyfL2CzQTteDOkgxENbuw3io0OlXTUTOQSAUKVt6C/pN2srimSp0OkRg
- Yu3+be4o6Qba5L7dkTi4ftoStUtkcn0A4AiP/LFx2I5vPWi8nzHrTTlei3DUZ40Jmawi7cUXx7c
- 2dqaF0hnpZ1ojfArSFtMLXdTXiCYXzbyI0oppHf/jgln9zYSWYq2Fs/JSykO1Ug0R2cTU6eS3iN
- 7ee6KLsRUTm738TWMToHNuzJnCdQ+qkSSDjQ=
-X-Google-Smtp-Source: AGHT+IHKUQ5x0zagsLu97n8yuaiPeEvLwwCjmgbJ68Yx1a3n1ZP5Nc4Wa1b4blqApSy5DObsF13BdQ==
-X-Received: by 2002:a05:600c:37cd:b0:43c:ee3f:2c3 with SMTP id
- 5b1f17b1804b1-45201364a49mr137358155e9.7.1749542084245; 
- Tue, 10 Jun 2025 00:54:44 -0700 (PDT)
-Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a5322aa3c0sm11393162f8f.22.2025.06.10.00.54.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Jun 2025 00:54:43 -0700 (PDT)
-Message-ID: <13e2364e-ef09-4316-96b2-ed16a0c6ffc7@linaro.org>
-Date: Tue, 10 Jun 2025 09:54:43 +0200
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1uOu9o-0004mf-W2
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 04:16:33 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1uOu9m-0000Sc-2P
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 04:16:32 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxlmnW6UdoaX0SAQ--.45731S3;
+ Tue, 10 Jun 2025 16:16:22 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMBxb8fT6UdojgwUAQ--.58593S2;
+ Tue, 10 Jun 2025 16:16:19 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: stefanha@gmail.com
+Subject: [PULL 0/7] loongarch-to-apply queue
+Date: Tue, 10 Jun 2025 15:53:43 +0800
+Message-Id: <20250610075350.865626-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 13/77] rocker: do not pollute the namespace
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20250530071250.2050910-1-pbonzini@redhat.com>
- <20250530071250.2050910-14-pbonzini@redhat.com>
- <91e38ead-cea4-4100-9f90-f0e75dd748a1@linaro.org>
-Content-Language: en-US
-In-Reply-To: <91e38ead-cea4-4100-9f90-f0e75dd748a1@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowMBxb8fT6UdojgwUAQ--.58593S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,44 +61,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/6/25 09:53, Philippe Mathieu-Daudé wrote:
-> Hi Paolo,
-> 
-> On 30/5/25 09:11, Paolo Bonzini wrote:
->> Do not leave the __le* macros defined, in fact do not use them at 
->> all.  Fixes a
->> build failure on Alpine with the TDX patches:
->>
->> In file included from ../hw/net/rocker/rocker_of_dpa.c:25:
->> ../hw/net/rocker/rocker_hw.h:14:16: error: conflicting types for 
->> 'uint64_t'; have '__u64' {aka 'long long unsigned int'}
->>     14 | #define __le64 uint64_t
->>        |                ^~~~~~~~
->> In file included from /usr/include/stdint.h:20,
->>                   from ../include/qemu/osdep.h:111,
->>                   from ../hw/net/rocker/rocker_of_dpa.c:17:
->> /usr/include/bits/alltypes.h:136:25: note: previous declaration of 
->> 'uint64_t' with type 'uint64_t' {aka 'long unsigned int'}
->>    136 | typedef unsigned _Int64 uint64_t;
->>        |                         ^~~~~~~~
->>
->> because the Linux headers include a typedef of __leNN.
->>
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> Your tools sometimes miss R-b tags:
-> https://lore.kernel.org/qemu- 
-> devel/4d8013d1-3787-4d8a-8b8d-3eee7d389d6e@linaro.org/
+The following changes since commit bc98ffdc7577e55ab8373c579c28fe24d600c40f:
 
-Bah, my bad, I didn't noticed the PR was posted 4min after the patch;
-I shouldn't have reviewed it.
+  Merge tag 'pull-10.1-maintainer-may-2025-070625-1' of https://gitlab.com/stsquad/qemu into staging (2025-06-07 15:08:55 -0400)
 
-> 
->> ---
->>   hw/net/rocker/rocker.h        | 14 +++---------
->>   hw/net/rocker/rocker_hw.h     | 20 +++++++-----------
->>   hw/net/rocker/rocker_of_dpa.c | 40 +++++++++++++++++------------------
->>   3 files changed, 31 insertions(+), 43 deletions(-)
-> 
+are available in the Git repository at:
+
+  https://github.com/gaosong715/qemu.git tags/pull-loongarch-20250610
+
+for you to fetch changes up to ffe89c1762d879fd39ba1be853d154677dbfbc7b:
+
+  hw/loongarch/virt: Remove global variables about memmap tables (2025-06-10 15:01:41 +0800)
+
+----------------------------------------------------------------
+pull-loongarch_20250610
+
+----------------------------------------------------------------
+Bibo Mao (5):
+      hw/loongarch/virt: Fix big endian support with MCFG table
+      hw/intc/loongarch_pch: Convert to little endian with ID register
+      hw/intc/loongarch_extioi: Fix typo issue about register EXTIOI_COREISR_END
+      hw/loongarch/virt: Remove global variables about initrd
+      hw/loongarch/virt: Remove global variables about memmap tables
+
+Qiang Ma (1):
+      hw/loongarch/virt: inform guest of kvm
+
+Song Gao (1):
+      target/loongarch: add check for fcond
+
+ hw/intc/loongarch_pch_pic.c                      |  2 +-
+ hw/loongarch/boot.c                              | 52 +++++++++++++-----------
+ hw/loongarch/virt-acpi-build.c                   |  4 +-
+ hw/loongarch/virt.c                              | 27 ++++++++----
+ include/hw/intc/loongarch_extioi_common.h        |  2 +-
+ include/hw/loongarch/boot.h                      |  5 +--
+ include/hw/loongarch/virt.h                      |  2 +
+ target/loongarch/tcg/insn_trans/trans_fcmp.c.inc | 25 ++++++++----
+ target/loongarch/tcg/insn_trans/trans_vec.c.inc  | 16 ++++++--
+ 9 files changed, 87 insertions(+), 48 deletions(-)
 
 
