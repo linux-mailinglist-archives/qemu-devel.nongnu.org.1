@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC96CAD3F87
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:52:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C627AD3FD7
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 19:02:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP27o-0002ug-27; Tue, 10 Jun 2025 12:47:00 -0400
+	id 1uP2At-0001JB-L1; Tue, 10 Jun 2025 12:50:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP15P-0004UD-QP
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:28 -0400
+ id 1uP15R-0004Un-Qf
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:30 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP15M-0006CX-Ss
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:26 -0400
+ id 1uP15O-0006D0-MY
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:29 -0400
 Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEXeBS031158;
- Tue, 10 Jun 2025 15:40:22 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEXeN1031142;
+ Tue, 10 Jun 2025 15:40:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=r2pXbiXAAzoUKPSA8Yg7xFLJfunsyYuz2vp8+4/kJ9s=; b=
- oYUCJWy/gyz/TOlFZVKwncOMbeyrzyhZ1QXv2Bpt7IXqAss426G3GdH5u8tse6HR
- t6GyxSU03ZXFuJeRTZoothuD5Gr8ag5qnDzmEQObZVkMY5LXlzuUP6wcb/mHR0Hf
- gvqz6KybihHxeAVVYGFVHZZ1ACaop5B/4EqLNez4M1aS20oRjxBi5Rzv4ZZHn8Sj
- +I1/mihL94KO3LWKRjDO57nu/hDBvq2x0jVyvUsuVywqjAeC6Lnji6HoIGYWQ8Wo
- 1/82sYdsaqQltxUDq3pa8wNgPgd5Mn9iqrDuT6XCXw2A/uUP1u+Q8Yuk4gCLx3EV
- tF8AYYgnPrpSqRTZ2M5JWQ==
+ corp-2025-04-25; bh=rjcBzt9GtYLUD97vLNEESxroG7+MwYcBu07u518gFkE=; b=
+ KGsJT/mVkerkjhC+oteNqgdKR0Ud8BZ7NGkzuPlV/YoL+vWiE+R/YMy9/hnZavAL
+ vRDVpDra4LIwbW6dLY8sDGp/qLYD1iyCeL95R87pU1oB8UoIsDHKwaWKyKLeHCny
+ LWGs3PcdePyI0tF9ZG3sVZgcoiBrmyRdgU46h0ftZnUsKIluVYLCx6M4Y0sp1vvn
+ RKeqxP6HHZps+i5DF8MocD3d2tXjtMTIprgN0PvTwvW4ql+enIZZVk8PbIHroFAg
+ U/H5aRm2QxBIPtb4OVmvV9xVtpyzHnc6WygfKGYJJLZhzIGnMosWbYrKJGO0gVJH
+ At0x/UlgfpvRa34iumb4dQ==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474dywvgs9-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474dywvgsb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 15:40:22 +0000 (GMT)
+ Tue, 10 Jun 2025 15:40:23 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 55AEn3Eb003965; Tue, 10 Jun 2025 15:40:20 GMT
+ with ESMTP id 55AEbn3x004100; Tue, 10 Jun 2025 15:40:22 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 474bv8wbau-1
+ 474bv8wbby-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 15:40:20 +0000
+ Tue, 10 Jun 2025 15:40:22 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55AFdrfh028825;
- Tue, 10 Jun 2025 15:40:20 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55AFdrfj028825;
+ Tue, 10 Jun 2025 15:40:21 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 474bv8wak1-19; Tue, 10 Jun 2025 15:40:20 +0000
+ ESMTP id 474bv8wak1-20; Tue, 10 Jun 2025 15:40:21 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 18/38] vfio-pci: preserve MSI
-Date: Tue, 10 Jun 2025 08:39:31 -0700
-Message-Id: <1749569991-25171-19-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 19/38] vfio-pci: preserve INTx
+Date: Tue, 10 Jun 2025 08:39:32 -0700
+Message-Id: <1749569991-25171-20-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
 References: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
@@ -75,19 +75,19 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  mlxlogscore=999 phishscore=0 spamscore=0 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2506100125
-X-Authority-Analysis: v=2.4 cv=fdaty1QF c=1 sm=1 tr=0 ts=684851e6 b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=fdaty1QF c=1 sm=1 tr=0 ts=684851e7 b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=iXcB1Mdy36yPJsoaOdUA:9 cc=ntf
+ a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=aHyXveKDkG1ssMKnveQA:9 cc=ntf
  awl=host:14714
-X-Proofpoint-ORIG-GUID: AHI7FU0aW5Fv9MzhI1iEctP59HEtFL7B
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEyNiBTYWx0ZWRfX7dZzrhm3RvND
- tNceQdcZ3y/+Xz7vphBEo8XJCmAt4uODfQDutvmD+Gb+81YRwhuusYZLDn/ewybkQhkwErOYl7o
- H93mHBf4hsXwwBzB78uzTLwpDevJSt1uiLuNhDFRHGzsS3HpUbrHlY+A71fehGpf9PUOaRwJ1At
- XB6ObiOERc7EDkae6ivRMy91TZSab+MLunNVVR/eSEl6Q6lYoYrBFV/02FZ1LqnNtmcmIpskQHo
- N8tPlnC19g0SA/AESs/K+H9ZGRom6ja4vslKmkE9gK61hDC+gDPZW757H1OZEA/UHboU7c5jAXU
- paj3ev7IjvpAcF6nu2vNk+Uckm0NGt9cYw5jtDdxySA5Vmd171KZ6FXPFjx/hDl79oJlY7n2YXb
- P7pO4c3rAihK0+3pzxDZmzxkPxTS+rDxyaeFlnbc/qfWK8Fk2qSFXqWUsLr5lcXO6aklqwNK
-X-Proofpoint-GUID: AHI7FU0aW5Fv9MzhI1iEctP59HEtFL7B
+X-Proofpoint-ORIG-GUID: 2qYp4ko4etI_UBxVuROK0J_YkcNWkzjS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEyNiBTYWx0ZWRfX06CrjEf0PLyp
+ D6JWdiGpVCOOwIO+R3RC95Q5WHFlP1nsjuauNC68sWMvTfdmf/M9yyXRLOqndAS20Z99UtcvN87
+ +aWAYBsbK1jYe1xvj0IlaTKVlT2VQtlehtgR2tDemxh1oUt42KlVbDGYrvYavuRKm+kqHnJsIeJ
+ Nn9y6FDJTp1epZ1L8Ze3Hnl9DHHolq1zBlREOvF/Sv+iTl3bTkbwArtVb8hWk39ZhjMr8Z3N/ZY
+ 5BeVvKs9FogE80gE93nDiHLaqmPetYFPLMzfJJC0E71LLMgpQtAOiCCq+5HQfsDLLozcKduKgqt
+ 1qdP9oubPii6bm9RunhpBk+FpMAxQToBPxztY2IIBnYSy4n97z1DcOAh0ws7tiQzRveTCRDIVag
+ ewIMPBI0yRe0dUKCjuIHlIDkry3n8n36A3Nu1uOkZk+W/1bm9qSYsozYhyWcx0hhqc1Qt/pW
+X-Proofpoint-GUID: 2qYp4ko4etI_UBxVuROK0J_YkcNWkzjS
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -113,306 +113,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Save the MSI message area as part of vfio-pci vmstate, and preserve the
-interrupt and notifier eventfd's.  migrate_incoming loads the MSI data,
-then the vfio-pci post_load handler finds the eventfds in CPR state,
-rebuilds vector data structures, and attaches the interrupts to the new
-KVM instance.
+Preserve vfio INTx state across cpr-transfer.  Preserve VFIOINTx fields as
+follows:
+  pin : Recover this from the vfio config in kernel space
+  interrupt : Preserve its eventfd descriptor across exec.
+  unmask : Ditto
+  route.irq : This could perhaps be recovered in vfio_pci_post_load by
+    calling pci_device_route_intx_to_irq(pin), whose implementation reads
+    config space for a bridge device such as ich9.  However, there is no
+    guarantee that the bridge vmstate is read before vfio vmstate.  Rather
+    than fiddling with MigrationPriority for vmstate handlers, explicitly
+    save route.irq in vfio vmstate.
+  pending : save in vfio vmstate.
+  mmap_timeout, mmap_timer : Re-initialize
+  bool kvm_accel : Re-initialize
+
+In vfio_realize, defer calling vfio_intx_enable until the vmstate
+is available, in vfio_pci_post_load.  Modify vfio_intx_enable and
+vfio_intx_kvm_enable to skip vfio initialization, but still perform
+kvm initialization.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/pci.h              |  2 +
- include/hw/vfio/vfio-cpr.h |  8 ++++
- hw/vfio/cpr.c              | 97 ++++++++++++++++++++++++++++++++++++++++++++++
- hw/vfio/pci.c              | 54 ++++++++++++++++++++++++--
- 4 files changed, 158 insertions(+), 3 deletions(-)
+ hw/vfio/cpr.c | 27 ++++++++++++++++++++++++++-
+ hw/vfio/pci.c | 32 ++++++++++++++++++++++++++++----
+ 2 files changed, 54 insertions(+), 5 deletions(-)
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 6e4840d..4d1203c 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -217,6 +217,8 @@ void vfio_pci_add_kvm_msi_virq(VFIOPCIDevice *vdev, VFIOMSIVector *vector,
- void vfio_pci_prepare_kvm_msi_virq_batch(VFIOPCIDevice *vdev);
- void vfio_pci_commit_kvm_msi_virq_batch(VFIOPCIDevice *vdev);
- bool vfio_pci_intx_enable(VFIOPCIDevice *vdev, Error **errp);
-+void vfio_pci_msix_set_notifiers(VFIOPCIDevice *vdev);
-+void vfio_pci_msi_set_handler(VFIOPCIDevice *vdev, int nr);
- 
- uint32_t vfio_pci_read_config(PCIDevice *pdev, uint32_t addr, int len);
- void vfio_pci_write_config(PCIDevice *pdev,
-diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-index 8bf85b9..25e74ee 100644
---- a/include/hw/vfio/vfio-cpr.h
-+++ b/include/hw/vfio/vfio-cpr.h
-@@ -15,6 +15,7 @@
- struct VFIOContainer;
- struct VFIOContainerBase;
- struct VFIOGroup;
-+struct VFIOPCIDevice;
- 
- typedef struct VFIOContainerCPR {
-     Error *blocker;
-@@ -52,6 +53,13 @@ void vfio_cpr_giommu_remap(struct VFIOContainerBase *bcontainer,
- bool vfio_cpr_ram_discard_register_listener(
-     struct VFIOContainerBase *bcontainer, MemoryRegionSection *section);
- 
-+void vfio_cpr_save_vector_fd(struct VFIOPCIDevice *vdev, const char *name,
-+                             int nr, int fd);
-+int vfio_cpr_load_vector_fd(struct VFIOPCIDevice *vdev, const char *name,
-+                            int nr);
-+void vfio_cpr_delete_vector_fd(struct VFIOPCIDevice *vdev, const char *name,
-+                               int nr);
-+
- extern const VMStateDescription vfio_cpr_pci_vmstate;
- 
- #endif /* HW_VFIO_VFIO_CPR_H */
 diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-index fdbb58e..e467373 100644
+index e467373..f5555ca 100644
 --- a/hw/vfio/cpr.c
 +++ b/hw/vfio/cpr.c
-@@ -9,6 +9,8 @@
- #include "hw/vfio/vfio-device.h"
- #include "hw/vfio/vfio-cpr.h"
- #include "hw/vfio/pci.h"
-+#include "hw/pci/msix.h"
-+#include "hw/pci/msi.h"
- #include "migration/cpr.h"
- #include "qapi/error.h"
- #include "system/runstate.h"
-@@ -40,6 +42,69 @@ void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer)
-     migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
- }
+@@ -139,7 +139,11 @@ static int vfio_cpr_pci_post_load(void *opaque, int version_id)
+         vfio_cpr_claim_vectors(vdev, nr_vectors, false);
  
-+#define STRDUP_VECTOR_FD_NAME(vdev, name)   \
-+    g_strdup_printf("%s_%s", (vdev)->vbasedev.name, (name))
-+
-+void vfio_cpr_save_vector_fd(VFIOPCIDevice *vdev, const char *name, int nr,
-+                             int fd)
-+{
-+    g_autofree char *fdname = STRDUP_VECTOR_FD_NAME(vdev, name);
-+    cpr_save_fd(fdname, nr, fd);
-+}
-+
-+int vfio_cpr_load_vector_fd(VFIOPCIDevice *vdev, const char *name, int nr)
-+{
-+    g_autofree char *fdname = STRDUP_VECTOR_FD_NAME(vdev, name);
-+    return cpr_find_fd(fdname, nr);
-+}
-+
-+void vfio_cpr_delete_vector_fd(VFIOPCIDevice *vdev, const char *name, int nr)
-+{
-+    g_autofree char *fdname = STRDUP_VECTOR_FD_NAME(vdev, name);
-+    cpr_delete_fd(fdname, nr);
-+}
-+
-+static void vfio_cpr_claim_vectors(VFIOPCIDevice *vdev, int nr_vectors,
-+                                   bool msix)
-+{
-+    int i, fd;
-+    bool pending = false;
-+    PCIDevice *pdev = &vdev->pdev;
-+
-+    vdev->nr_vectors = nr_vectors;
-+    vdev->msi_vectors = g_new0(VFIOMSIVector, nr_vectors);
-+    vdev->interrupt = msix ? VFIO_INT_MSIX : VFIO_INT_MSI;
-+
-+    vfio_pci_prepare_kvm_msi_virq_batch(vdev);
-+
-+    for (i = 0; i < nr_vectors; i++) {
-+        VFIOMSIVector *vector = &vdev->msi_vectors[i];
-+
-+        fd = vfio_cpr_load_vector_fd(vdev, "interrupt", i);
-+        if (fd >= 0) {
-+            vfio_pci_vector_init(vdev, i);
-+            vfio_pci_msi_set_handler(vdev, i);
+     } else if (vfio_pci_read_config(pdev, PCI_INTERRUPT_PIN, 1)) {
+-        g_assert_not_reached();      /* completed in a subsequent patch */
++        Error *local_err = NULL;
++        if (!vfio_pci_intx_enable(vdev, &local_err)) {
++            error_report_err(local_err);
++            return -1;
 +        }
-+
-+        if (vfio_cpr_load_vector_fd(vdev, "kvm_interrupt", i) >= 0) {
-+            vfio_pci_add_kvm_msi_virq(vdev, vector, i, msix);
-+        } else {
-+            vdev->msi_vectors[i].virq = -1;
-+        }
-+
-+        if (msix && msix_is_pending(pdev, i) && msix_is_masked(pdev, i)) {
-+            set_bit(i, vdev->msix->pending);
-+            pending = true;
-+        }
-+    }
-+
-+    vfio_pci_commit_kvm_msi_virq_batch(vdev);
-+
-+    if (msix) {
-+        memory_region_set_enabled(&pdev->msix_pba_mmio, pending);
-+    }
-+}
-+
- /*
-  * The kernel may change non-emulated config bits.  Exclude them from the
-  * changed-bits check in get_pci_config_device.
-@@ -58,13 +123,45 @@ static int vfio_cpr_pci_pre_load(void *opaque)
+     }
+ 
      return 0;
+@@ -152,6 +156,26 @@ static bool pci_msix_present(void *opaque, int version_id)
+     return msix_present(pdev);
  }
  
-+static int vfio_cpr_pci_post_load(void *opaque, int version_id)
-+{
-+    VFIOPCIDevice *vdev = opaque;
-+    PCIDevice *pdev = &vdev->pdev;
-+    int nr_vectors;
-+
-+    if (msix_enabled(pdev)) {
-+        vfio_pci_msix_set_notifiers(vdev);
-+        nr_vectors = vdev->msix->entries;
-+        vfio_cpr_claim_vectors(vdev, nr_vectors, true);
-+
-+    } else if (msi_enabled(pdev)) {
-+        nr_vectors = msi_nr_vectors_allocated(pdev);
-+        vfio_cpr_claim_vectors(vdev, nr_vectors, false);
-+
-+    } else if (vfio_pci_read_config(pdev, PCI_INTERRUPT_PIN, 1)) {
-+        g_assert_not_reached();      /* completed in a subsequent patch */
++static const VMStateDescription vfio_intx_vmstate = {
++    .name = "vfio-cpr-intx",
++    .version_id = 0,
++    .minimum_version_id = 0,
++    .fields = (VMStateField[]) {
++        VMSTATE_BOOL(pending, VFIOINTx),
++        VMSTATE_UINT32(route.mode, VFIOINTx),
++        VMSTATE_INT32(route.irq, VFIOINTx),
++        VMSTATE_END_OF_LIST()
 +    }
++};
 +
-+    return 0;
-+}
-+
-+static bool pci_msix_present(void *opaque, int version_id)
-+{
-+    PCIDevice *pdev = opaque;
-+
-+    return msix_present(pdev);
++#define VMSTATE_VFIO_INTX(_field, _state) {                         \
++    .name       = (stringify(_field)),                              \
++    .size       = sizeof(VFIOINTx),                                 \
++    .vmsd       = &vfio_intx_vmstate,                               \
++    .flags      = VMS_STRUCT,                                       \
++    .offset     = vmstate_offset_value(_state, _field, VFIOINTx),   \
 +}
 +
  const VMStateDescription vfio_cpr_pci_vmstate = {
      .name = "vfio-cpr-pci",
      .version_id = 0,
-     .minimum_version_id = 0,
-     .pre_load = vfio_cpr_pci_pre_load,
-+    .post_load = vfio_cpr_pci_post_load,
-     .needed = cpr_incoming_needed,
+@@ -162,6 +186,7 @@ const VMStateDescription vfio_cpr_pci_vmstate = {
      .fields = (VMStateField[]) {
-+        VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
-+        VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, pci_msix_present),
+         VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
+         VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, pci_msix_present),
++        VMSTATE_VFIO_INTX(intx, VFIOPCIDevice),
          VMSTATE_END_OF_LIST()
      }
  };
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 4cda6dc..b3dbb84 100644
+index b3dbb84..b52c488 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -29,6 +29,7 @@
- #include "hw/pci/pci_bridge.h"
- #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
-+#include "hw/vfio/vfio-cpr.h"
- #include "migration/vmstate.h"
- #include "migration/cpr.h"
- #include "qobject/qdict.h"
-@@ -57,13 +58,25 @@ static void vfio_disable_interrupts(VFIOPCIDevice *vdev);
- static void vfio_mmap_set_enabled(VFIOPCIDevice *vdev, bool enabled);
- static void vfio_msi_disable_common(VFIOPCIDevice *vdev);
- 
-+/* Create new or reuse existing eventfd */
- static bool vfio_notifier_init(VFIOPCIDevice *vdev, EventNotifier *e,
-                                const char *name, int nr, Error **errp)
- {
--    int ret = event_notifier_init(e, 0);
-+    int fd = vfio_cpr_load_vector_fd(vdev, name, nr);
-+    int ret = 0;
- 
--    if (ret) {
--        error_setg_errno(errp, -ret, "vfio_notifier_init %s failed", name);
-+    if (fd >= 0) {
-+        event_notifier_init_fd(e, fd);
-+    } else {
-+        ret = event_notifier_init(e, 0);
-+        if (ret) {
-+            error_setg_errno(errp, -ret, "vfio_notifier_init %s failed", name);
-+        } else {
-+            fd = event_notifier_get_fd(e);
-+            if (fd >= 0) {
-+                vfio_cpr_save_vector_fd(vdev, name, nr, fd);
-+            }
-+        }
+@@ -161,12 +161,17 @@ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+         return true;
      }
-     return !ret;
- }
-@@ -71,6 +84,7 @@ static bool vfio_notifier_init(VFIOPCIDevice *vdev, EventNotifier *e,
- static void vfio_notifier_cleanup(VFIOPCIDevice *vdev, EventNotifier *e,
-                                   const char *name, int nr)
- {
-+    vfio_cpr_delete_vector_fd(vdev, name, nr);
-     event_notifier_cleanup(e);
- }
  
-@@ -394,6 +408,14 @@ static void vfio_msi_interrupt(void *opaque)
-     notify(&vdev->pdev, nr);
- }
- 
-+void vfio_pci_msi_set_handler(VFIOPCIDevice *vdev, int nr)
-+{
-+    VFIOMSIVector *vector = &vdev->msi_vectors[nr];
-+    int fd = event_notifier_get_fd(&vector->interrupt);
++    if (cpr_is_incoming()) {
++        goto skip_state;
++    }
 +
-+    qemu_set_fd_handler(fd, vfio_msi_interrupt, NULL, vector);
-+}
-+
- /*
-  * Get MSI-X enabled, but no vector enabled, by setting vector 0 with an invalid
-  * fd to kernel.
-@@ -580,6 +602,15 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-     int ret;
-     bool resizing = !!(vdev->nr_vectors < nr + 1);
+     /* Get to a known interrupt state */
+     qemu_set_fd_handler(irq_fd, NULL, NULL, vdev);
+     vfio_device_irq_mask(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+     vdev->intx.pending = false;
+     pci_irq_deassert(&vdev->pdev);
  
++skip_state:
+     /* Get an eventfd for resample/unmask */
+     if (!vfio_notifier_init(vdev, &vdev->intx.unmask, "intx-unmask", 0, errp)) {
+         goto fail;
+@@ -180,6 +185,10 @@ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+         goto fail_irqfd;
+     }
+ 
++    if (cpr_is_incoming()) {
++        goto skip_irq;
++    }
++
+     if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX, 0,
+                                        VFIO_IRQ_SET_ACTION_UNMASK,
+                                        event_notifier_get_fd(&vdev->intx.unmask),
+@@ -190,6 +199,7 @@ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+     /* Let'em rip */
+     vfio_device_irq_unmask(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+ 
++skip_irq:
+     vdev->intx.kvm_accel = true;
+ 
+     trace_vfio_intx_enable_kvm(vdev->vbasedev.name);
+@@ -305,7 +315,13 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+         return true;
+     }
+ 
+-    vfio_disable_interrupts(vdev);
 +    /*
-+     * Ignore the callback from msix_set_vector_notifiers during resume.
-+     * The necessary subset of these actions is called from
-+     * vfio_cpr_claim_vectors during post load.
++     * Do not alter interrupt state during vfio_realize and cpr load.
++     * The incoming state is cleared thereafter.
 +     */
-+    if (cpr_is_incoming()) {
-+        return 0;
++    if (!cpr_is_incoming()) {
++        vfio_disable_interrupts(vdev);
 +    }
-+
-     trace_vfio_msix_vector_do_use(vdev->vbasedev.name, nr);
  
-     vector = &vdev->msi_vectors[nr];
-@@ -686,6 +717,12 @@ static void vfio_msix_vector_release(PCIDevice *pdev, unsigned int nr)
-     }
- }
+     vdev->intx.pin = pin - 1; /* Pin A (1) -> irq[0] */
+     pci_config_set_interrupt_pin(vdev->pdev.config, pin);
+@@ -328,8 +344,10 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+     fd = event_notifier_get_fd(&vdev->intx.interrupt);
+     qemu_set_fd_handler(fd, vfio_intx_interrupt, NULL, vdev);
  
-+void vfio_pci_msix_set_notifiers(VFIOPCIDevice *vdev)
-+{
-+    msix_set_vector_notifiers(&vdev->pdev, vfio_msix_vector_use,
-+                              vfio_msix_vector_release, NULL);
-+}
+-    if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX, 0,
+-                                VFIO_IRQ_SET_ACTION_TRIGGER, fd, errp)) {
++    if (!cpr_is_incoming() &&
++        !vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX,
++                                       0, VFIO_IRQ_SET_ACTION_TRIGGER, fd,
++                                       errp)) {
+         qemu_set_fd_handler(fd, NULL, NULL, vdev);
+         vfio_notifier_cleanup(vdev, &vdev->intx.interrupt, "intx-interrupt", 0);
+         return false;
+@@ -3234,7 +3252,13 @@ static bool vfio_interrupt_setup(VFIOPCIDevice *vdev, Error **errp)
+                                              vfio_intx_routing_notifier);
+         vdev->irqchip_change_notifier.notify = vfio_irqchip_change;
+         kvm_irqchip_add_change_notifier(&vdev->irqchip_change_notifier);
+-        if (!vfio_intx_enable(vdev, errp)) {
 +
- void vfio_pci_prepare_kvm_msi_virq_batch(VFIOPCIDevice *vdev)
- {
-     assert(!vdev->defer_kvm_irq_routing);
-@@ -2962,6 +2999,11 @@ static void vfio_register_err_notifier(VFIOPCIDevice *vdev)
-     fd = event_notifier_get_fd(&vdev->err_notifier);
-     qemu_set_fd_handler(fd, vfio_err_notifier_handler, NULL, vdev);
- 
-+    /* Do not alter irq_signaling during vfio_realize for cpr */
-+    if (cpr_is_incoming()) {
-+        return;
-+    }
-+
-     if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_ERR_IRQ_INDEX, 0,
-                                        VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
-         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-@@ -3029,6 +3071,12 @@ static void vfio_register_req_notifier(VFIOPCIDevice *vdev)
-     fd = event_notifier_get_fd(&vdev->req_notifier);
-     qemu_set_fd_handler(fd, vfio_req_notifier_handler, NULL, vdev);
- 
-+    /* Do not alter irq_signaling during vfio_realize for cpr */
-+    if (cpr_is_incoming()) {
-+        vdev->req_enabled = true;
-+        return;
-+    }
-+
-     if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_REQ_IRQ_INDEX, 0,
-                                        VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
-         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
++        /*
++         * During CPR, do not call vfio_intx_enable at this time.  Instead,
++         * call it from vfio_pci_post_load after the intx routing data has
++         * been loaded from vmstate.
++         */
++        if (!cpr_is_incoming() && !vfio_intx_enable(vdev, errp)) {
+             timer_free(vdev->intx.mmap_timer);
+             pci_device_set_intx_routing_notifier(&vdev->pdev, NULL);
+             kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
 -- 
 1.8.3.1
 
