@@ -2,60 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA8AAD3F9F
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60003AD3FFB
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 19:05:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP27o-0002vY-25; Tue, 10 Jun 2025 12:47:00 -0400
+	id 1uP26u-0001pJ-ME; Tue, 10 Jun 2025 12:46:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02M-00026F-FO
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02K-00021Y-6w
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02H-0005zm-TD
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:13 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02H-0005zx-TR
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749565986;
+ s=mimecast20190719; t=1749565988;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=nZb4ucaOK666f4Mp5IessTrBl/S3IzkH1NVU2azg++0=;
- b=gY6ZtpwxR0mZ05SoT76RJ7vINm/HfnweN4B+xZUo1KRz2PZFdj9UpWl2fozujkaorCIgJr
- 3yweXAWijGSK3JPmu9CL6kiSz0rCqSs/EqzxnB3TieDvsEEEQkK7TnElyszpfP4Skl5vab
- O4zsbVA2qCwGHMT/yvKVl1yehD8HgeY=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hRSeCwj+dMHoZjmVPyY8OrzDtBJno4nhvUzRPDwlTJ4=;
+ b=dZ2RJeEmcoQtmtXv7jV1ZTDvbLrj07BXIA7xFO7Ah+ro4CjwnP9vbcOgEMRp+eaDpn6TvX
+ eRXMvvPuCHlBAzOv5WHWAhi1sNNZBqBykNYOtuPygL+vZffH1IdUY7nfx40ga2WdGmqrU6
+ NFCxFmY/g60KP6+iUT/iaqG6r4lddT0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-153-2Z7UqJWhOKiD3sdd1nHfYA-1; Tue,
- 10 Jun 2025 10:33:05 -0400
-X-MC-Unique: 2Z7UqJWhOKiD3sdd1nHfYA-1
-X-Mimecast-MFC-AGG-ID: 2Z7UqJWhOKiD3sdd1nHfYA_1749565984
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-APleBND4M0eo1An14_w_Gg-1; Tue,
+ 10 Jun 2025 10:33:06 -0400
+X-MC-Unique: APleBND4M0eo1An14_w_Gg-1
+X-Mimecast-MFC-AGG-ID: APleBND4M0eo1An14_w_Gg_1749565986
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7DBE81956048
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 14:33:04 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F371D180034E
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 14:33:05 +0000 (UTC)
 Received: from gondolin.str.redhat.com (dhcp-192-216.str.redhat.com
  [10.33.192.216])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A86211956087; Tue, 10 Jun 2025 14:33:02 +0000 (UTC)
+ id C0E9819560B0; Tue, 10 Jun 2025 14:33:04 +0000 (UTC)
 From: Cornelia Huck <cohuck@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH 0/2] cosmetics for the i6300esb watchdog
-Date: Tue, 10 Jun 2025 16:32:57 +0200
-Message-ID: <20250610143259.1056400-1-cohuck@redhat.com>
+Subject: [PATCH 1/2] watchdog: CONFIG_WDT_IB6300ESB -> CONFIG_WDT_I6300ESB
+Date: Tue, 10 Jun 2025 16:32:58 +0200
+Message-ID: <20250610143259.1056400-2-cohuck@redhat.com>
+In-Reply-To: <20250610143259.1056400-1-cohuck@redhat.com>
+References: <20250610143259.1056400-1-cohuck@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,20 +83,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The i6300esb watchdog device is generic enough to be used on any PCI
-platform; however, having an "Intel" device on a non-x86 platform looks
-a bit odd. Just call it a "virtual" device instead, and also fix an old
-typo for the config option while at it.
+There's no ib6300esb device; let's correct the typo in the config option.
 
-Cornelia Huck (2):
-  watchdog: CONFIG_WDT_IB6300ESB -> CONFIG_WDT_I6300ESB
-  watchdog: generic name for i6300esb
+Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+---
+ hw/watchdog/Kconfig     | 2 +-
+ hw/watchdog/meson.build | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
- hw/watchdog/Kconfig        | 2 +-
- hw/watchdog/meson.build    | 2 +-
- hw/watchdog/wdt_i6300esb.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
+diff --git a/hw/watchdog/Kconfig b/hw/watchdog/Kconfig
+index 861fd003341d..1003939e1f33 100644
+--- a/hw/watchdog/Kconfig
++++ b/hw/watchdog/Kconfig
+@@ -2,7 +2,7 @@ config CMSDK_APB_WATCHDOG
+     bool
+     select PTIMER
+ 
+-config WDT_IB6300ESB
++config WDT_I6300ESB
+     bool
+     default y if PCI_DEVICES
+     depends on PCI
+diff --git a/hw/watchdog/meson.build b/hw/watchdog/meson.build
+index 15370565bd4d..dafb85dfffc3 100644
+--- a/hw/watchdog/meson.build
++++ b/hw/watchdog/meson.build
+@@ -1,7 +1,7 @@
+ system_ss.add(files('watchdog.c'))
+ system_ss.add(when: 'CONFIG_ALLWINNER_WDT', if_true: files('allwinner-wdt.c'))
+ system_ss.add(when: 'CONFIG_CMSDK_APB_WATCHDOG', if_true: files('cmsdk-apb-watchdog.c'))
+-system_ss.add(when: 'CONFIG_WDT_IB6300ESB', if_true: files('wdt_i6300esb.c'))
++system_ss.add(when: 'CONFIG_WDT_I6300ESB', if_true: files('wdt_i6300esb.c'))
+ system_ss.add(when: 'CONFIG_WDT_IB700', if_true: files('wdt_ib700.c'))
+ system_ss.add(when: 'CONFIG_WDT_DIAG288', if_true: files('wdt_diag288.c'))
+ system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('wdt_aspeed.c'))
 -- 
 2.49.0
 
