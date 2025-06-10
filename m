@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60003AD3FFB
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 19:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771DCAD3F9C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:54:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP26u-0001pJ-ME; Tue, 10 Jun 2025 12:46:04 -0400
+	id 1uP26v-0001r0-ER; Tue, 10 Jun 2025 12:46:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02K-00021Y-6w
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02O-0002AT-CW
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02H-0005zx-TR
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:11 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02M-00060N-Cl
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749565988;
+ s=mimecast20190719; t=1749565993;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hRSeCwj+dMHoZjmVPyY8OrzDtBJno4nhvUzRPDwlTJ4=;
- b=dZ2RJeEmcoQtmtXv7jV1ZTDvbLrj07BXIA7xFO7Ah+ro4CjwnP9vbcOgEMRp+eaDpn6TvX
- eRXMvvPuCHlBAzOv5WHWAhi1sNNZBqBykNYOtuPygL+vZffH1IdUY7nfx40ga2WdGmqrU6
- NFCxFmY/g60KP6+iUT/iaqG6r4lddT0=
+ bh=OGGjWV/AnA2+8v3700Mtz6kS/vWJbya6CYmVChAkRJI=;
+ b=hy8ybPgLAHkrLcKXD1GSGwypQwtSxvKZG3ZVdqOrTMdFExytsdUlvr9etMw/hwZ/YgkJjG
+ hjFPoEoVs5jehejzsNa0ywKBlP+jNK/L+mONVtzmG8EyrNBC4VQEjoOpl9JR65eczPyvE8
+ fNLDK/oat+PoXczVIUACQ4ql8Q2bn/Y=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-APleBND4M0eo1An14_w_Gg-1; Tue,
- 10 Jun 2025 10:33:06 -0400
-X-MC-Unique: APleBND4M0eo1An14_w_Gg-1
-X-Mimecast-MFC-AGG-ID: APleBND4M0eo1An14_w_Gg_1749565986
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-szl0iZfBMFy-oJasQho1Vg-1; Tue,
+ 10 Jun 2025 10:33:10 -0400
+X-MC-Unique: szl0iZfBMFy-oJasQho1Vg-1
+X-Mimecast-MFC-AGG-ID: szl0iZfBMFy-oJasQho1Vg_1749565987
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F371D180034E
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 14:33:05 +0000 (UTC)
+ id 8EB5E18002E4
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 14:33:07 +0000 (UTC)
 Received: from gondolin.str.redhat.com (dhcp-192-216.str.redhat.com
  [10.33.192.216])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C0E9819560B0; Tue, 10 Jun 2025 14:33:04 +0000 (UTC)
+ id 58ACD1956087; Tue, 10 Jun 2025 14:33:06 +0000 (UTC)
 From: Cornelia Huck <cohuck@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH 1/2] watchdog: CONFIG_WDT_IB6300ESB -> CONFIG_WDT_I6300ESB
-Date: Tue, 10 Jun 2025 16:32:58 +0200
-Message-ID: <20250610143259.1056400-2-cohuck@redhat.com>
+Subject: [PATCH 2/2] watchdog: generic name for i6300esb
+Date: Tue, 10 Jun 2025 16:32:59 +0200
+Message-ID: <20250610143259.1056400-3-cohuck@redhat.com>
 In-Reply-To: <20250610143259.1056400-1-cohuck@redhat.com>
 References: <20250610143259.1056400-1-cohuck@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,40 +83,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There's no ib6300esb device; let's correct the typo in the config option.
+The Intel 6300 Enterprise SouthBridge is a south bridge for a more or
+less obscure embedded Intel system; however, the i6300esb watchdog
+device we implement in QEMU is a virtual watchdog device that should
+work well on any PCI-based machine, is well supported by Linux guests,
+and used in many examples on how to set up a virtual watchdog.
+
+Let's use "virtual i6300ESB" in the description to make clear that
+this device will work just fine on non-Intel platforms.
 
 Signed-off-by: Cornelia Huck <cohuck@redhat.com>
 ---
- hw/watchdog/Kconfig     | 2 +-
- hw/watchdog/meson.build | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/watchdog/wdt_i6300esb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/watchdog/Kconfig b/hw/watchdog/Kconfig
-index 861fd003341d..1003939e1f33 100644
---- a/hw/watchdog/Kconfig
-+++ b/hw/watchdog/Kconfig
-@@ -2,7 +2,7 @@ config CMSDK_APB_WATCHDOG
-     bool
-     select PTIMER
+diff --git a/hw/watchdog/wdt_i6300esb.c b/hw/watchdog/wdt_i6300esb.c
+index bb8a2766b69b..5e5d8c48cfd7 100644
+--- a/hw/watchdog/wdt_i6300esb.c
++++ b/hw/watchdog/wdt_i6300esb.c
+@@ -472,7 +472,7 @@ static void i6300esb_class_init(ObjectClass *klass, const void *data)
+     device_class_set_legacy_reset(dc, i6300esb_reset);
+     dc->vmsd = &vmstate_i6300esb;
+     set_bit(DEVICE_CATEGORY_WATCHDOG, dc->categories);
+-    dc->desc = "Intel 6300ESB";
++    dc->desc = "virtual i6300ESB";
+ }
  
--config WDT_IB6300ESB
-+config WDT_I6300ESB
-     bool
-     default y if PCI_DEVICES
-     depends on PCI
-diff --git a/hw/watchdog/meson.build b/hw/watchdog/meson.build
-index 15370565bd4d..dafb85dfffc3 100644
---- a/hw/watchdog/meson.build
-+++ b/hw/watchdog/meson.build
-@@ -1,7 +1,7 @@
- system_ss.add(files('watchdog.c'))
- system_ss.add(when: 'CONFIG_ALLWINNER_WDT', if_true: files('allwinner-wdt.c'))
- system_ss.add(when: 'CONFIG_CMSDK_APB_WATCHDOG', if_true: files('cmsdk-apb-watchdog.c'))
--system_ss.add(when: 'CONFIG_WDT_IB6300ESB', if_true: files('wdt_i6300esb.c'))
-+system_ss.add(when: 'CONFIG_WDT_I6300ESB', if_true: files('wdt_i6300esb.c'))
- system_ss.add(when: 'CONFIG_WDT_IB700', if_true: files('wdt_ib700.c'))
- system_ss.add(when: 'CONFIG_WDT_DIAG288', if_true: files('wdt_diag288.c'))
- system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('wdt_aspeed.c'))
+ static const TypeInfo i6300esb_info = {
 -- 
 2.49.0
 
