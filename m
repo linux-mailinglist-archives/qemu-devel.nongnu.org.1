@@ -2,194 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FF5AD35C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0CAAD35D3
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:17:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOxrQ-0000c9-8H; Tue, 10 Jun 2025 08:13:48 -0400
+	id 1uOxuT-000243-4c; Tue, 10 Jun 2025 08:16:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1uOxrI-0000bf-1i
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:13:40 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uOxtg-0001xU-OC
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:16:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1uOxrC-0005HH-2t
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:13:39 -0400
-Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55A5QcHS003503;
- Tue, 10 Jun 2025 05:13:26 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=xvMCX9z22gq2FYoCB/4fn2Qdtrin8O4BjcuwWiYC/
- /I=; b=IGrN5Ts3mAOje+71jqXVhb8mHcA/4KlxO9z/eSrk7AY8853KPkFTSv/ka
- i1m4g0V5mS4V8yXQhxgvLOOX/YJn58Ijp01bES7U23UCR+rTyzTz8h0IvaoqGK/y
- MGIX88YW7MhatHzNq2XaJmhrgv1wtkGAgxhEVzPOj0UK572n3APCdWT32ejSIdiP
- tyDOB38zwJpw0QbAybwmfaanpP96Y6o3Xdc3LcOsg9QYiypaBIvo2IT+yEM+nOog
- EydVupdjvKOE/m7ElWIYVr6YG8prfyUAOLKrX7rhUNfE6gbeliqZln7ASF9LiEBv
- O77/83+RxDhcDECrwiJ80kcw8B3QA==
-Received: from cy4pr02cu008.outbound.protection.outlook.com
- (mail-westcentralusazon11021114.outbound.protection.outlook.com
- [40.93.199.114])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 474sdgdugh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Jun 2025 05:13:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sGaXmcnIq5fkwf/oKDG/a88yXQBEMkMGkbhlnmgHRZcAPLirmAxZs3H/63QAshuXg5Fo6nV26gmM8YKzuNYnhyymBZxtF1d2ulQARbseYzUKCgjft3j1k2W+TWlIQkl9AvCf4CemONutO65/Ut3qTqkPw1aEr5pcraqU2zBv4yK2N83aB3C3ffk+V1Q0RhtrAtXBl4pFUoRoGIkcjdptdfyaREbJT3Hca0XYVl9xx97KG3N+q7IbHW9fMMM5HAkoE9rWEZAAg5cGCN6Y4M+iGXbHWZGHdhI8t7ZBtNFLGFPhkVPakYl1Bh0SlbqF2fLLWlyXIILUzmHAfXk5eXioBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GHkKBuFEa/a/kzfGoABOTo6El89tARYl5sa1k7QhjfU=;
- b=LPqtsCYsNnBzrDHagj5uRNnX5x/WV0NtCpJc9ioyIWCqWwk/pTR8sVbDc4ilDjyWVOD5aLL8OI9Oc2JYVRQef+DOnVbB6n1F1+NBmeFXC42TcOFTE/8AeaCHPJ2XB2A++bVR/V8fDtHYKdHnmXS8R1kU1FFiU+dBMpoCW69vxd2raTlr1SEg2TU09MAPICJVR8ZWNhgtYRsaprfbowl0yeKYfswP9x8B1QEOG9JoXramXMk4OU5Tg5am/KWGdtsPfHosQQU6t8PdPEC02GEiUGaN5LQ+eYrZPbHVUWJP19+gxoCJ7iyzOvuQWggMjHodPl/u5GCxTl6Mz5zWNpVcag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GHkKBuFEa/a/kzfGoABOTo6El89tARYl5sa1k7QhjfU=;
- b=eQDOPdwi2a04DMmDGagcKtOSdqplwdeoIq8L9Fp/QV+J5xMPZWUo2m9aoexwwt9lA+t7XVISpWv5bbGLVp/jRY6aJDi4jxbE+MvXEjAmVsiZoMqRfzWnopBDXxurtAAF9v9N6WEGKXWtSfs3LipBk+OGYlEYBc+hBFdsb5GTgxFYQVYApdgQx6xGhGrq2W9Xg37VzW5MjuSoCkBqzFU2Iw+JOBxnsNp/jQOMJ71NIkxvOiXi2Jy2mGXcTLJ4qESeilcUZs5KHz9VpJF9QXUez2fCgvh8bwUwgrUzJnBWwilE6R+sEMp0twt/ElgCAXkjZORborPRfNqPsmrpyAL4GQ==
-Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
- by SA1PR02MB8351.namprd02.prod.outlook.com (2603:10b6:806:1e6::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.20; Tue, 10 Jun
- 2025 12:13:24 +0000
-Received: from CH2PR02MB6760.namprd02.prod.outlook.com
- ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
- ([fe80::fd77:ea65:a159:ef51%2]) with mapi id 15.20.8813.024; Tue, 10 Jun 2025
- 12:13:23 +0000
-Date: Tue, 10 Jun 2025 05:13:20 -0700
-From: John Levon <john.levon@nutanix.com>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>, qemu-devel@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v3 03/23] vfio: add per-region fd support
-Message-ID: <aEghYMUp2PYw2AAD@lent>
-References: <20250607001056.335310-1-john.levon@nutanix.com>
- <20250607001056.335310-4-john.levon@nutanix.com>
- <dfa38212-2f55-4097-b025-beafe11bb3d2@nutanix.com>
- <aEgWk5NvYg01GnUO@lent>
- <c1d90eb0-6077-4b43-b1f3-b04dc6551d23@redhat.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c1d90eb0-6077-4b43-b1f3-b04dc6551d23@redhat.com>
-X-Url: http://www.movementarian.org/
-X-ClientProxiedBy: AS4P189CA0042.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:5dd::20) To CH2PR02MB6760.namprd02.prod.outlook.com
- (2603:10b6:610:7f::9)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uOxtW-0005iq-0A
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:16:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749557754;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=ZwC9UDQ4MhLr8/jFXSDmikgsYg12hjN6NmEFQ+rdPno=;
+ b=Jf0buEfO4PtrxNWyKwsrURWx5Lu+C3zN5Bizo/TsbHOA/ILh43SlMV/nIuFFcUWmDmpkH7
+ BD/ERkjC0b36hbGt9B2Ugy3jWgZn14aROrNR7aTs8e/98d7Kg0STWs8FudEQAlaL9Xpmo3
+ NKZggIdW0L1IoM/lmTf01j319Sr0qLQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-374-G2dzV34xMi2ji8LPwLg6RQ-1; Tue, 10 Jun 2025 08:15:53 -0400
+X-MC-Unique: G2dzV34xMi2ji8LPwLg6RQ-1
+X-Mimecast-MFC-AGG-ID: G2dzV34xMi2ji8LPwLg6RQ_1749557752
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a5058f9ef4so2593848f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:15:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749557752; x=1750162552;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZwC9UDQ4MhLr8/jFXSDmikgsYg12hjN6NmEFQ+rdPno=;
+ b=ub9xR1BE0w8jJ7cgDk0QnkK/Ow8kgqEPwZWDWjUcxJ/1Nv0IlOm18oF17lZSueV40i
+ 01Iqyfh19ehT+TQTnitOcepRTSlfPj8jPWMgo4xYRjwsjd1dZsS/20Gmy+6ppCs8RypE
+ 1yYJGV6zUZTbBURyt9/kh/r4+bNFWidJ1sL61CHEX54gAldO8GzsZGjzVSEU12B+9nkP
+ KIqoxxzM2kgAUJzvemkJfD8J3heNADX378ulMxotY9uBqMHZrqelkfVDfoEDOyduaPxt
+ vvOD0lDZ6RBZmF2XVz2Po/wh8RUVco/CcxqGMgf2ZjXAnuQE68Kaqnx4KzY8Xeo3L3+E
+ zM2g==
+X-Gm-Message-State: AOJu0YwsCD/uUYKyS73XFMo8tiXjj+er6x/LS4d8KCLuqN+hICW3SEBp
+ W5ojxsb31aDFZQsND/W3J8k7Ll6KuGlDbDyZbcxV7HWNGz7Qx5ZzJKRUJJ6Jl1qZh+DwAZEps82
+ MQN8CZZWSAfU3wp0BhfF0XCv6hoYXVKD5DJ9xWM0fOKdjqqrn5SM0JMfQ
+X-Gm-Gg: ASbGnctfQeo6Bbw09yHCas+6rEsSRgFzxTE2u/t6dfO+AdUJA6sEDPxgPjzVa0ZSpFs
+ E05JfHs8jstXX1FPMeDRq50T/XUPnO6OqA0WpMykNvJUkLSZSKfKESvqah81ClFpDUoQMj6crKt
+ wfC1qFrdofpcschrc9Znpcc8pczhObokq7CMDd4A73QH4p7V5KE+8nVdxWPqe/mQZmJ4LmvWdb3
+ qYnnAlE2MKdHAnD1EyFjphSRvJbqaUQ4c9xWFY3Ub1dKbThuR2N4EF81b+Lv2LA8AeMVr02cjNU
+ EH8EMqwxjnRMdZIN+jhtA/pE2WpSUekBtKR9aKvJuvpwOtOXSj3Am0u8xL15
+X-Received: by 2002:a05:6000:1a8f:b0:3a4:cfbf:51a0 with SMTP id
+ ffacd0b85a97d-3a53189bc76mr15576386f8f.21.1749557751819; 
+ Tue, 10 Jun 2025 05:15:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGd/KQY8A02EMGDNtFhF4zDZHoBv+KnXtVh1ZSPu1dnC7ddprJ0C0NTvRSX2df7rfmIBJ+UeQ==
+X-Received: by 2002:a05:6000:1a8f:b0:3a4:cfbf:51a0 with SMTP id
+ ffacd0b85a97d-3a53189bc76mr15576354f8f.21.1749557751406; 
+ Tue, 10 Jun 2025 05:15:51 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4526e0563b6sm138621765e9.7.2025.06.10.05.15.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Jun 2025 05:15:50 -0700 (PDT)
+Message-ID: <9b0f9720-cc46-4102-aa97-7664b57a05ef@redhat.com>
+Date: Tue, 10 Jun 2025 14:15:49 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|SA1PR02MB8351:EE_
-X-MS-Office365-Filtering-Correlation-Id: b445f40b-e869-45ee-2cf0-08dda8183287
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?UA1/FV6kspWUbbFMjzrd6gDI4YtojB+GjMGhaeWr0wSPPNAtGGVkDxZVLk?=
- =?iso-8859-1?Q?np9KwI7/YysbkHcQUG7LOcXNxA+k1Nkr3MWcPwyLxKFz20qbXrDxY4iyNN?=
- =?iso-8859-1?Q?Gnb0DFlCAOeSgbNtPh8Y+pmheaQSLgRWKDkSue5+ygGb9jzEMHBp9ThLua?=
- =?iso-8859-1?Q?ZX+LBQOvwM/+RfOaf8neEgdgAgMEcOFJ2T/zWTo8BuPbcLMxjIBMxG4oYZ?=
- =?iso-8859-1?Q?H4iUTFXNP9LPlk3SXH0sO5IgYA8BbmajOeeDHybXOGxpvg87+D/LakN7NA?=
- =?iso-8859-1?Q?k4YOk6UqEuu18JbLDA5ipi47J1SgCQvEaw9zJtaxthJQx8d7t3TP7y6d5l?=
- =?iso-8859-1?Q?DJr1TSFUY4Jl3cWMreQEapcspv77Gsdb8S+Y/v/G3/a69+CTXD50Q8fDb4?=
- =?iso-8859-1?Q?njwif9BMY919N+L0n2SxpY2em6cQJMx1foh6y1IT8wkzT71aS2IjnsEFj8?=
- =?iso-8859-1?Q?vT27nrhk1CRDe8MzydC1WlAGY3NkQgGRCjImRxteZq38Vtrl2Ansdmw5OR?=
- =?iso-8859-1?Q?SaoK2PTpkFeq+2/chV+G6bKI300AYLROHSO7PbSL+3wdSfrzMHj4MYSJ2X?=
- =?iso-8859-1?Q?y8SUY4KAFhuMDTetGPHUUdC9748tZjm+iqw+gJzK0DFoz3bvK/YeU8CjH0?=
- =?iso-8859-1?Q?mCBjdu8SCK0RC359gyIMVQTe8bsnGUstVJI9iistGwp0Ud1KZfRpd0oypR?=
- =?iso-8859-1?Q?IN58l4t9XY8UNmqUq47WRcWkihy2djNWkGpPsL9UGYAm1Fq9wu6DidWysG?=
- =?iso-8859-1?Q?Mr5y7gGccveezJXdSxPN5n9CLafCTqGkxGugKC6t2UgXBLLu+335cmoSfd?=
- =?iso-8859-1?Q?MMLMA1Js2FhVZoGZ2nLj2osYj0Ju55v4DTPe/gu2aL/OBuNTLCdxDarRbN?=
- =?iso-8859-1?Q?PZ5Jz4L+ooGVV7b1q+1OD207DPQHI+oNG6FMpbYKA2KSmmk9qvKtksePi1?=
- =?iso-8859-1?Q?45f11O2sFM3bZt+eVPJrI3eiEEGl7kjfJKy2biYHrlZd7xK5m+eU+H9bEg?=
- =?iso-8859-1?Q?Ij8vEinc6Scgmbr6a6WD4LrOh7MFP3ipBHpVM3CdKydbzlrfZs/cxarZNa?=
- =?iso-8859-1?Q?TuHdZAJ1BWMlQEx8xbUA6e6m3viYh+VKgSp6CcGo0DnU/JYuRIYQn1elYy?=
- =?iso-8859-1?Q?xHX3DhoHDVCiakCmRjrDWEzxpBbqJgu+FSr7aRkXh67z+uASVPCqjF8KKr?=
- =?iso-8859-1?Q?KepKV0G/V0mrbaFZTfi5Eygh3jFhsmLMkwY75YZGnPLnmKsYMDj2SCG8be?=
- =?iso-8859-1?Q?D0cFZAzNfbjAInldSX9Xr6tup9lWomU7gPGLfA9hxM8UFdtuhHfjeCYsBH?=
- =?iso-8859-1?Q?ibeqeiKwf9kp6xpnoAVc6YwIL2pAS9VCMEsf3SbL5hkFghgnTvdv7ok7Ak?=
- =?iso-8859-1?Q?O8CSS8SPEursans80beYd7lmh8a4j6Mv3Fs6Yh6gK5pHY5RJ8Rb1NCRILL?=
- =?iso-8859-1?Q?34a7FTN+Wfd2/NW8GPIIak/caafnj3aXfAE7tQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?a+jfZ03tjH3+9cnEG+5qzcGjec2HNjHW855Cpwmh8x1VfOaRbBiwB+/jAS?=
- =?iso-8859-1?Q?SCxuqwHqIBcWmLdzIUjedi3wnZTTYflAI/pxLRrOHpYqhdTqnlw8NsE0Ur?=
- =?iso-8859-1?Q?8d0/TA3g1l5qsz11+lSgY12sleOpq95TNt+yaPqCN1ceFSHgeIy/koTl+O?=
- =?iso-8859-1?Q?61yAmnqinEUT/Qy1e2q7rIlQWIqQSxSr0U3W5Or22V0ePJ0kw7uLmWcyaQ?=
- =?iso-8859-1?Q?+wEqvFatNNEPli+xB8462WAdp+QZjP1DN2AYghdeKR+mL82QDeJOOW+lCs?=
- =?iso-8859-1?Q?J/EOLFmYRnk97v+Ew58cZdHJS71YXWl/g8UDpR23FGVgCsfPAd+226Fal+?=
- =?iso-8859-1?Q?k0kQSkYIxpT+D8d4mC05JArUPq2LU8CZ48frQDJrBCwBL4B6/rRew6eshw?=
- =?iso-8859-1?Q?HG9w4rwj2Evqh/XnljLh3iccDgFUlss1U8hy0+Bli/Ha7dmRjGGl3/cCWz?=
- =?iso-8859-1?Q?lqaZOnA07b9tm9s0xw5XzmGFRxV2IXG6lSnFOvg/haCBs5/WWWaPlIyvbl?=
- =?iso-8859-1?Q?N4tObCsJ1KNAJcrvKiM3k4uTqAh2AypqGGlgdXOsPp2I8ifE+86x6X+FOe?=
- =?iso-8859-1?Q?GORwfNBdvwTFMSLzzeNMmpPDgXYdy4UEP6JXninZUmWhI/RDEZdpx11gmv?=
- =?iso-8859-1?Q?MwivOYGN8DdOwraQp8fj/C4UqGs7l4XCS+TxpDL2zb7GXRCs2wIEIUwoiF?=
- =?iso-8859-1?Q?yL57bMwoLpL9eA+e6myhjZHaxtlRKZL2sbBQLr9bqvA06HCI/Muh+VOFa/?=
- =?iso-8859-1?Q?H5vvMHd/ecUAI+HMbfOfnWv/FmgLOMzTZOFWl9rLDTciKBUaYuGv73P/RX?=
- =?iso-8859-1?Q?w5Gc7KLpnr7ORxyB2ks2Tu+nOZYBpx0Dk8mib4zymoro7JES7tG23YjZza?=
- =?iso-8859-1?Q?H3aFqtcqj8RZMog6MihWsgS+IMStN9W2QxlM6zKPoePXhjDd87EUHwqR+L?=
- =?iso-8859-1?Q?mpS3qXPBDwpfBLETHYSd6Cn9GRQI+BXf+5U7gEk0kcRckdXSNfL55pT0kt?=
- =?iso-8859-1?Q?PAgNKYEfLh4/GJ2MtCpeuKaU24I/eDbs3oFugrJCgm6do282NaWhJf+hQB?=
- =?iso-8859-1?Q?X0XXK0jHj7TFE6yZDTRKKp4jWxzKaoQUfrvh1bVPB/PMJc1Xb2w0ED+f1b?=
- =?iso-8859-1?Q?fD+3EFLAIslXw5YUCvfrMHIXQQrVf0HBbs9RLcL1pCzvW0xTqcqI51ySp6?=
- =?iso-8859-1?Q?nwz7/EIUce1OYJQJr9rdDkN7GB5WBtn39uPCy2vd0wjY44JwOKtwnN3xUE?=
- =?iso-8859-1?Q?wq6xDoRfVZILoqJmjqXjoCVcRF87D1jK+eXQJKaH1gDo3y0rRYoRlEdTQj?=
- =?iso-8859-1?Q?E8zyjpzJ7CE4LNsY41QHaekWO92E7t5uTuWhmnVy+7UAA0zU6A8Nf2pQLc?=
- =?iso-8859-1?Q?wJ4jsT3Wg4rurMJlg/6BM6tmrf//Rx6kl4YCs0p9RngHPP0ayMB5rRqXzG?=
- =?iso-8859-1?Q?2KCV+6yG9y+COAgQ8AE1a2qNObdKnL0yoBt6107PktyOK+xOuByhjp/wXe?=
- =?iso-8859-1?Q?NcRP6kOB9HgdwHei8njU+RQLkc0C3/vE2ZA3j8ceHEWV16AzW96FCOV0nF?=
- =?iso-8859-1?Q?cXKd+i2M/eXbidGXloEg5MY/Oi28pMU7hSB8A5McW/nLXrNinZEW4O/h7C?=
- =?iso-8859-1?Q?WU/1VDgBK+H2v0VH7Xr8//zots1PL0WJhc?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b445f40b-e869-45ee-2cf0-08dda8183287
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2025 12:13:23.8802 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +m3hMam15TwXRQAsvIGt+iZB3tji0LX4SzT4nVn8RG9t//9zHvILDIgpcL4D/nHU28oOrE/XwBpz81LQWBjrBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR02MB8351
-X-Proofpoint-GUID: XHLnjvNOct9HwMhCHH3C-6XO7W_-sWFG
-X-Authority-Analysis: v=2.4 cv=L9cdQ/T8 c=1 sm=1 tr=0 ts=68482166 cx=c_pps
- a=F87Zho3t19+33hgggmDd9g==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=6IFa9wvqVegA:10 a=0kUYKlekyDsA:10
- a=X2lp7Aib7Jb76k5qj1wA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
-X-Proofpoint-ORIG-GUID: XHLnjvNOct9HwMhCHH3C-6XO7W_-sWFG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDA5NSBTYWx0ZWRfXxPEDkatbl7Vx
- 8pOCw/uK1FSJx3ykZH3W7Z/eh1epqThaXVQYeXomsnWU+pJGpxAPcjTarJcwKaJEuxjwU5gPbgw
- qO/br8Wuc9m4II7GRjAGR5DSjdiZKIEVvjUMr1hAnUn2Jypwfnu6xaZrIV4FJ4PlkeQep+JdV1p
- Gd/eM/ETSzbz8WXxmunn0vaPODuaOuMWgabE0nnjP0qkqG0htAMpjjUuC6FoxD2S8CA0jL+gdeE
- UqFjdGTl45phzYoHbW+/+Ki6Vfu1zDx8ZBX61NyIywn+ci06YItKXEanrlpwfyEgE54LTzC8Kdx
- gNIApIcBfF4WzVDmYw0OrPWHCJGgy+i0vhCefpxYaXXzeYmM0avhP28uu85HB8aKLGfEnCzakOd
- GKhyu9vHszfWhqxvxRNfOD6qNnnRsF4CWlmprb31uadsw8pd7LDOZ3bLwPp66bkPdI/BdY5n
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-10_04,2025-06-10_01,2025-03-28_01
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12;
- envelope-from=john.levon@nutanix.com; helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/23] vfio-user: add vfio-user class and container
+To: John Levon <john.levon@nutanix.com>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Johnson <john.g.johnson@oracle.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>
+References: <20250607001056.335310-1-john.levon@nutanix.com>
+ <20250607001056.335310-7-john.levon@nutanix.com>
+ <f1a03beb-3667-485e-aca3-5a8f4990f67a@nutanix.com> <aEgdcfh-OBklhGFg@lent>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <aEgdcfh-OBklhGFg@lent>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -205,35 +161,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 10, 2025 at 01:57:23PM +0200, Cédric Le Goater wrote:
-
-> On 6/10/25 13:27, John Levon wrote:
-> > On Tue, Jun 10, 2025 at 11:58:18AM +0100, Mark Cave-Ayland wrote:
-> > 
-> > > > +        /* Use the per-region fd if set, or the shared fd. */
-> > > > +        fd = region->vbasedev->region_fds ?
-> > > > +             region->vbasedev->region_fds[region->nr] :
-> > > > +             region->vbasedev->fd,
-> > > > +
-> > > 
-> > > This feels a bit odd: if you're asking to map a VFIORegion then shouldn't
-> > > that contain all the information required for the mapping, including the fd?
-> > > 
-> > > (goes and looks)
-> > > 
-> > > It appears that there is already a fd field in VFIORegion so is there a
-> > > reason why we can't use this instead of adding region_fds to vbasedev?
-> > 
-> > region->fd was in earlier patchsets, but dropped as requested by Cédric. So we
-> > must look it up here.
+On 6/10/25 13:56, John Levon wrote:
+> On Tue, Jun 10, 2025 at 12:42:35PM +0100, Mark Cave-Ayland wrote:
 > 
-> yes. It didn't seem necessary to store the same information under
-> multiple structs.
+>> Question: how do you see the division between hw/vfio and hw/vfio-user? My
+>> initial feeling is that there is substantial sharing between the two, in
+>> which case I'd expect the files to be in hw/vfio as e.g.
+>> hw/vfio/container-user.c etc. instead of its own directory.
+> 
+> That was also in the earlier patchsets! CÃ©dric asked for hw/vfio-user - and I
+> think I actually prefer it myself. The amount we export from hw/vfio is actually
+> fairly minimal (now).
 
-And the reason we have ->region_fds at all rather than just storing directly in
-region->fd is that vfio_device_get_region_info() doesn't take a VFIORegion
-argument, as it's used in other contexts too.
+yes. It looks much better. The interfaces between the core VFIO framework
+and the new vfio-user-pci device are clear. This is easier for maintenance
+too.
 
-regards
-john
+Thanks,
+
+C.
+
 
