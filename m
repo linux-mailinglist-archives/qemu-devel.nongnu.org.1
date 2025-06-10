@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E984AD381F
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6700AD379D
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:59:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOyZW-0008Ld-1q; Tue, 10 Jun 2025 08:59:22 -0400
+	id 1uOyYN-0007Nn-PW; Tue, 10 Jun 2025 08:58:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyXs-0006s9-6Z
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:57:40 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyXw-00072T-NB
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:57:48 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyXq-0002eX-9j
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:57:39 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-45305c280a3so9663725e9.3
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:57:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyXu-0002eu-5d
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:57:44 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-441ab63a415so56528375e9.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:57:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749560255; x=1750165055; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749560259; x=1750165059; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8T1V36v8wKP/BAz1gGD+Xad///zXpxrmTwUCr9UV/II=;
- b=XBu8lyybs2/KKFcY5nEYlnij/fKrOspIPrY+P2TsN+/J24SlhE6mIVAARma9F5wIgf
- Gtgnc8+ESsY0Iz7QdKA8pZoVAu7TDgFP/CQRMCH6Ip1xtv7MYYy2sUVpRl9MOrBT7ifD
- Ox+Dz8WgChRP2HDHdLnBidBLrV72b3TmZzWMYRfW1uRM3ht6dSI8H7Cng9OM6NebNCGm
- r5pE7q9Wfp4P+mE2cztmzaYZr7qsJD8BNvn53e+HZNHOrh4/aZFFQ+5UKnks1rGByysh
- EuZQZXCFuzcxizwLCkf3DuGqxBZdm60lK/QuK6R8GBvgT4J0HfAZ6xd4jHx5ha+kr2Ou
- K0yA==
+ bh=f1SDtp+PzmoXDCdOjc+70YYb7XPFBDbAy3avwI/RQMs=;
+ b=PaW8DMKvjuHnaErdBdY4YTNo2BbOvjOexHigHLkS8Jd1awdelFPfBLUzp/vjdVyFR+
+ MGwLLJ6xr5V2crnG+U9LIg40ltagzuaoRxHxxmRXYptXCxRCbWyp5rh9Rz1VbvRI//fA
+ wZ4SU33bcmxuBHIdJorCy9DXYVMXEJ3gTe7ixsaWqvyhDxwfQ2Ps85hH9FOu0BG1500E
+ oQ9BiC72DkUlxKtItczjO95SW+gzn02AVXemvYbsqegySZDHiSlqmJfvchYswVY/8gIN
+ xdk4Hh8RMOyD7jpaQF7hylGrwLFAQFcfNNFljWRY9UGBIVZ1xFMc5Nt7xiLPPgvxuw53
+ xU7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749560255; x=1750165055;
+ d=1e100.net; s=20230601; t=1749560259; x=1750165059;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8T1V36v8wKP/BAz1gGD+Xad///zXpxrmTwUCr9UV/II=;
- b=vdkqJFCLXY2od7QnT2j5m9t8PIls+Pc/V8Yw91qVxPnzb4GYvkRBH+oPtwjeSPRsJo
- L5XG3RRQAf5WDYk29vOhOSJwn+6rmeA6oPwOb3Ow3slu/E9DBNumK+nywYF4j0EWJs+2
- yKnFTpaUNb82anWMLVM/+Ieu2E4/svL30ZDdPcR5BqcWXGPg6Oh1ASOCEgM7KD1EorTp
- LwviZbEi/UWDYPL2Pzt6EAqX+miu+GM96+caVmvUMqr9++bUoBN4qQD34EaaU6SKuEX2
- R/zpcPqRi3kPJ9FNsubmJLhCoDF4DMC5Q2Gk/rsg7Zm3xRBikPxmLitEk/llwcFYjBtL
- GoTA==
-X-Gm-Message-State: AOJu0YyNX/h1H0evYBhpo2Ey3AJ+Phke4y6OKkt0qtxn4PPhpUMlu5FF
- aLqTv/vFCRtOMiDHJLgbeYqai0Z3CQMssK1Jqd6c3aNaXjE20u40kI76UQwaaronNTh20SMhK/8
- FF8RAsbI=
-X-Gm-Gg: ASbGncuNMHyoWmuCL8/MLCEA963lprZ5QPko/+aW9WlAnLKJrBjEyoTvAGXvU6fqg/m
- aZYaSxguxKs91jmD04Mh8Tn9W6+8bshq+jl5CetHXd99uHScKqnuJ1rdRaOGH31xD3Nm5AL6xUg
- bnIB4FaL7UaqusQuMswvJ+G4dVbTrgEGPmexxlHFdro0OwgADKByLTCIuFMoaZWIXkPz8mLoEUn
- yKaDc6BrSSAWQb4devITgBvK7iurEzRJLLNcTrO0XalWNucdI5iGl7Ox/h+aYEIdPJWKuuY2TpF
- OQqoZubCddDYijbMEAGgb/7pDg8UccRS9PFyPh3WSP4t29yv5eRa3fQdhMpGRnyyQdK1hNwmdZ+
- 6J4tE8Fn+UmN9xlcWcDux55XhKafN8pt6fW3QobvAzg==
-X-Google-Smtp-Source: AGHT+IEM9R3aOBN7bpwDcyH+VELdNiSjRcqI+UXLkLTYhF7O6qEqL3oheW9+hiGoGXMMelB9klgteA==
-X-Received: by 2002:a05:600c:1d86:b0:443:48:66d2 with SMTP id
- 5b1f17b1804b1-452013ab8e3mr191485635e9.16.1749560254978; 
- Tue, 10 Jun 2025 05:57:34 -0700 (PDT)
+ bh=f1SDtp+PzmoXDCdOjc+70YYb7XPFBDbAy3avwI/RQMs=;
+ b=mGAAJxP3eO8Yvyqb8FNNFrmOSJNaFgvk25Tu4YcspS5A0+5FCMP4kiNHQgmWal7OlK
+ K1fuUloEiCjtohwdIMcUk/oLCEgFQRTt/a6KQa+h0EYdWnM5TEkt9dIl1YNBU7ATDBWr
+ snJ0jhFhVnHTVzF6lihkA5suRz52j2eKBaPW/8nEOWPY+3G1iy9OJZ9QSBc2bhHW0B9w
+ J7MRFEehtDpE6OYDEOWxAoACpVLW7DVetm52YIJJ/nUhB6bNXVFd00nKwck5Wbb3I38D
+ AlHc6A/vVSFyIsbdndAeqj+gVH/ziKJ6a0rZ5iVfUQBQbH3wngR8CV4NfoVFB/kgfCbl
+ 0X0Q==
+X-Gm-Message-State: AOJu0Yzma41FFv4Fj5BRIqFfrilDzcgsd0UUSm6/OQzb90zOCzSeVzdB
+ qXUjXWTEftZq3mZ0xB/jGbCTCPX//cGwMcmFhAZ7xJqA5uuuF3akwoq09IEHpz6PII7cDXERbED
+ FGenpudc=
+X-Gm-Gg: ASbGnctX1C53OQbwyYcaXryDCVNDEL5ZMkZeHcGwXI2R1QXaT2ItzatHPltYQwCivHN
+ lGldWn2QD5HlBmLf6oGmSKoR+u7Swt2PgoDT6L0PWSVWdPwwlXyIIRZqC6fMGO6xUYGojJ0jiwo
+ EMe5Iiv/JinewyBBlYY4JRbi3W8ZcBjvjP3xKdN7oICRBwpapOapLuhBuMoegMy0hsaMd1aRhmr
+ yYQmFWaJWVRa0KjOhwz3nXCpaFzQv7z/chEuRAtfjtNwAVOzlVR8Co6XKlbhI/RDPerC9jQhyoH
+ YTHm8pGalpU3LXGBWCsLWOJk6BJKNwy7u3v0vexDoCZ6usHseD4ZM89MBrhmStUed05MN6txUDH
+ nYOffkiu4rTW1neHxAnOw2zD0eyfmKv9UbTzk1iEUe0v3aZw9NQFS
+X-Google-Smtp-Source: AGHT+IEN5klxZr3rdNlkU2fc8MJtjcCFsxh1awHwe89VnWrH+p06NUGRaezwD6tPG7jhc+nGhyeVFQ==
+X-Received: by 2002:a05:6000:220d:b0:3a1:fe77:9e1d with SMTP id
+ ffacd0b85a97d-3a552274ab9mr2414992f8f.16.1749560259447; 
+ Tue, 10 Jun 2025 05:57:39 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a53229e009sm12603364f8f.16.2025.06.10.05.57.34
+ ffacd0b85a97d-3a532463ed4sm12316003f8f.94.2025.06.10.05.57.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Jun 2025 05:57:34 -0700 (PDT)
+ Tue, 10 Jun 2025 05:57:39 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 13/24] accel/hvf: Fix TYPE_HVF_ACCEL instance size
-Date: Tue, 10 Jun 2025 14:56:22 +0200
-Message-ID: <20250610125633.24411-14-philmd@linaro.org>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Alireza Sanaee <alireza.sanaee@huawei.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 14/24] hw/core/cpu: Move CacheType to general cpu.h
+Date: Tue, 10 Jun 2025 14:56:23 +0200
+Message-ID: <20250610125633.24411-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250610125633.24411-1-philmd@linaro.org>
 References: <20250610125633.24411-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,39 +98,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: c97d6d2cdf9 ("i386: hvf: add code base from Google repo")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250606164418.98655-7-philmd@linaro.org>
----
- include/system/hvf_int.h  | 1 +
- accel/hvf/hvf-accel-ops.c | 1 +
- 2 files changed, 2 insertions(+)
+From: Zhao Liu <zhao1.liu@intel.com>
 
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index 8c8b84012d9..d774e58df91 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -44,6 +44,7 @@ typedef struct hvf_vcpu_caps {
+I386 has already defined cache types in target/i386/cpu.h.
+
+Move CacheType to hw/core/cpu.h, so that ARM and other architectures
+could use it.
+
+Cc: Alireza Sanaee <alireza.sanaee@huawei.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250605132722.3597593-1-zhao1.liu@intel.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/core/cpu.h | 6 ++++++
+ target/i386/cpu.h     | 6 ------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 1e87f7d393e..33296a1c080 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1126,4 +1126,10 @@ extern const VMStateDescription vmstate_cpu_common;
+ #define UNASSIGNED_CPU_INDEX -1
+ #define UNASSIGNED_CLUSTER_INDEX -1
  
- struct HVFState {
-     AccelState parent;
++enum CacheType {
++    DATA_CACHE,
++    INSTRUCTION_CACHE,
++    UNIFIED_CACHE
++};
 +
-     hvf_slot slots[32];
-     int num_slots;
+ #endif
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 545851cbde1..5910dcf74d4 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1773,12 +1773,6 @@ typedef enum TPRAccess {
  
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index b8b6116bc84..d60446b85b8 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -366,6 +366,7 @@ static void hvf_accel_class_init(ObjectClass *oc, const void *data)
- static const TypeInfo hvf_accel_type = {
-     .name = TYPE_HVF_ACCEL,
-     .parent = TYPE_ACCEL,
-+    .instance_size = sizeof(HVFState),
-     .class_init = hvf_accel_class_init,
- };
+ /* Cache information data structures: */
  
+-enum CacheType {
+-    DATA_CACHE,
+-    INSTRUCTION_CACHE,
+-    UNIFIED_CACHE
+-};
+-
+ typedef struct CPUCacheInfo {
+     enum CacheType type;
+     uint8_t level;
 -- 
 2.49.0
 
