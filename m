@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7547AD36B0
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0E1AD374D
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:52:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOyG9-0002nQ-9U; Tue, 10 Jun 2025 08:39:21 -0400
+	id 1uOyHm-0005lW-M9; Tue, 10 Jun 2025 08:41:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uOyFb-0001gB-Eo
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:38:47 -0400
+ id 1uOyFc-0001jK-AH
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:38:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uOyFU-0000V6-0F
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:38:46 -0400
+ id 1uOyFU-0000VL-Fo
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:38:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749559103;
+ s=mimecast20190719; t=1749559106;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fcKc7mPq03c9SlEVtawb5OFfJPbW/Em16y1fOBmMvWI=;
- b=EAiY9yQSP6Qn3Cyuc30yXmDOeTbgDlxazgyrwtp1x+7uVrvjdkeeqEc70Ma33WrHzJ0RLZ
- a0JJqxvVDF84B/j1WmAKC2l/oKYYN4UplQJbL4v/bOulacVLonc/tnVQBV455RyjcEe1BD
- 7uUInZJ+PBCNma7QeRNYpKkc2Ufde9M=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=QkAVWBPN1XXg4ujBgWif1bxqLQ8Q6MO5spMflk0PHuo=;
+ b=f8qrNA2Jhd2t42w0FfXZ15PpWSKVi0JV+ytMe+zhXGxbvSVoU45+MI4vhCttQrNwoL/ISB
+ IZeO5zXi9p45V8AiexqqWnDkCPBy3wVv9E4PJNZ2TlAEqAuYsNplepZNj341lG+dsUWcGo
+ ItqBvF7yWahnaoxJMtFL4NSA0FW+pXc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-oITOk2dYP9a3cd7zyS7GEQ-1; Tue,
- 10 Jun 2025 08:38:20 -0400
-X-MC-Unique: oITOk2dYP9a3cd7zyS7GEQ-1
-X-Mimecast-MFC-AGG-ID: oITOk2dYP9a3cd7zyS7GEQ_1749559099
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-bgvBChAUOrOwAXKU7xkZtQ-1; Tue,
+ 10 Jun 2025 08:38:23 -0400
+X-MC-Unique: bgvBChAUOrOwAXKU7xkZtQ-1
+X-Mimecast-MFC-AGG-ID: bgvBChAUOrOwAXKU7xkZtQ_1749559102
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D1DD81956059; Tue, 10 Jun 2025 12:38:19 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5D6C718002A1; Tue, 10 Jun 2025 12:38:22 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.87])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 889CE30001B1; Tue, 10 Jun 2025 12:38:17 +0000 (UTC)
+ id 35EDB30001B1; Tue, 10 Jun 2025 12:38:20 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -52,10 +52,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 25/31] hw/ppc/spapr_tpm_proxy: skip automatic zero-init of
- large arrays
-Date: Tue, 10 Jun 2025 13:37:03 +0100
-Message-ID: <20250610123709.835102-26-berrange@redhat.com>
+Subject: [PATCH 26/31] hw/usb/hcd-ohci: skip automatic zero-init of large array
+Date: Tue, 10 Jun 2025 13:37:04 +0100
+Message-ID: <20250610123709.835102-27-berrange@redhat.com>
 In-Reply-To: <20250610123709.835102-1-berrange@redhat.com>
 References: <20250610123709.835102-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -71,7 +70,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,33 +86,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'tpm_execute' method has a pair of 4k arrays used for copying
-data between guest and host. Skip the automatic zero-init of these
-arrays to eliminate the performance overhead in the I/O hot path.
+The 'ohci_service_iso_td' method has a 8k byte array used for copying
+data between guest and host. Skip the automatic zero-init of this
+array to eliminate the performance overhead in the I/O hot path.
 
-The two arrays will be fully initialized when reading data from
-guest memory or reading data from the proxy FD.
+The 'buf' array will be fully initialized when reading data from guest
+memory.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/ppc/spapr_tpm_proxy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/usb/hcd-ohci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ppc/spapr_tpm_proxy.c b/hw/ppc/spapr_tpm_proxy.c
-index 862eeaa50a..1297b3ad56 100644
---- a/hw/ppc/spapr_tpm_proxy.c
-+++ b/hw/ppc/spapr_tpm_proxy.c
-@@ -41,8 +41,8 @@ static ssize_t tpm_execute(SpaprTpmProxy *tpm_proxy, target_ulong *args)
-     target_ulong data_in_size = args[2];
-     uint64_t data_out = ppc64_phys_to_real(args[3]);
-     target_ulong data_out_size = args[4];
--    uint8_t buf_in[TPM_SPAPR_BUFSIZE];
--    uint8_t buf_out[TPM_SPAPR_BUFSIZE];
-+    QEMU_UNINITIALIZED uint8_t buf_in[TPM_SPAPR_BUFSIZE];
-+    QEMU_UNINITIALIZED uint8_t buf_out[TPM_SPAPR_BUFSIZE];
-     ssize_t ret;
- 
-     trace_spapr_tpm_execute(data_in, data_in_size, data_out, data_out_size);
+diff --git a/hw/usb/hcd-ohci.c b/hw/usb/hcd-ohci.c
+index 71b54914d3..72a9f9f474 100644
+--- a/hw/usb/hcd-ohci.c
++++ b/hw/usb/hcd-ohci.c
+@@ -577,7 +577,7 @@ static int ohci_service_iso_td(OHCIState *ohci, struct ohci_ed *ed)
+     USBDevice *dev;
+     USBEndpoint *ep;
+     USBPacket *pkt;
+-    uint8_t buf[8192];
++    QEMU_UNINITIALIZED uint8_t buf[8192];
+     bool int_req;
+     struct ohci_iso_td iso_td;
+     uint32_t addr;
 -- 
 2.49.0
 
