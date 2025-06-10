@@ -2,90 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F4BAD3FB6
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6184AD3FB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:57:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP27f-0002Rw-J8; Tue, 10 Jun 2025 12:46:51 -0400
+	id 1uP29V-0006fc-U0; Tue, 10 Jun 2025 12:48:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1uOyzt-000791-Iq
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 09:26:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <michael.scherle@rz.uni-freiburg.de>)
+ id 1uOz5U-0007fx-CU
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 09:32:27 -0400
+Received: from a1422.mx.srv.dfn.de ([194.95.233.70])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1uOyzn-0006gD-4M
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 09:26:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749561988;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=TZ8YbzTFpdhd6WiOhudM2Tuhugtqn6d4bA9UVq6kugI=;
- b=WqsJwhhiPBjFzLan/wTHeXXqUg60KOCa7U1y5mG4SKhuOjL1cWfiOkpjx1meniKT2zBd5w
- i7nsjJZFuxNtJNSJfgPFSskk0ENp+va8WdDf6IBaBQ7e0hOCnlQepkeRaElHKpR/aExHDg
- ZWmRbxfdAATxUkMtXuxvGWaRaMsOlis=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-504-7VqRrdStMkiDlApx8uIKdA-1; Tue, 10 Jun 2025 09:26:24 -0400
-X-MC-Unique: 7VqRrdStMkiDlApx8uIKdA-1
-X-Mimecast-MFC-AGG-ID: 7VqRrdStMkiDlApx8uIKdA_1749561984
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6faeebe9c5bso48192716d6.2
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 06:26:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749561984; x=1750166784;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TZ8YbzTFpdhd6WiOhudM2Tuhugtqn6d4bA9UVq6kugI=;
- b=rTRfMm6/RIy7P8n2er2Fk485eucaYQLPV/zWjgHZLEjd6sRmI0iQqQARlej0bJ4qWj
- 9mwlPVZZiFu96ORbh1O4PJtTIvvfEDLZjiWyGN4h98ugp27gZEOShkz0tPfrkuWSpIqA
- nflgxfvoM8YNLCbtLdo23fijT55b3SPG+3/h965gOhyZj/oEMA4Zvcchqlh3oWVSzfMw
- lkoqT7/eQMOEYge15HpIluWEWfy3CsWojiDP2u7qFSfPbRP3Ex4RXww47RE46RyYA2j8
- Mq0NUxRzaUEV45tXOnlp5Y52oKIeVLbBRrsyxxLZdT875mmj5J+O3nZBFA+k35tKwZAA
- p3zw==
-X-Gm-Message-State: AOJu0YxiQiYk4iT/0TgMdhpREMmLT9CkXjhaGsXVcq3NQfmYvoK+xFeL
- dz29l/snmrwzQILgvHUKWL+hTy1UyBZmg6J6QGI3dQTfgITo8/YsaFlC2Rk+n6wFVq7QRFN23Ub
- So5CWU9VhnTh81MAIibOe3ytQHkXFdU7I6PRbPPSpO3fvzEGK23GyIXcnzY2tkhQFtgiuRDtrKu
- mfG2oTvuSrVfyNcj1sbh1eXU/p+d0wFfo=
-X-Gm-Gg: ASbGncsqBC9j9FtINAgAuLGDg/ZYZxs0YlElMrILTxEWDzO3pYxQspnlmlF592ay5NT
- YZbVktg7gKGNyUyLO0vtdRt7BGjC3LXmFWkjJYkjSj6GkxbfpxAbFkmungC/CN0dnoQoF0zw03f
- y2YBVkqb+foVBEQVwdIDhQk0R9TPWhkUI2sEjP
-X-Received: by 2002:a05:6214:242e:b0:6fa:cb05:b44c with SMTP id
- 6a1803df08f44-6fb08f4314fmr266826766d6.3.1749561984281; 
- Tue, 10 Jun 2025 06:26:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGG33ocxkZEMglLzN5LY6ffp83zf1HHmc9QPJ1W61gb+CYFBfzhOluCj4vzs9SClPZByqDMfkiWzoQkPajiv1Q=
-X-Received: by 2002:a05:6214:242e:b0:6fa:cb05:b44c with SMTP id
- 6a1803df08f44-6fb08f4314fmr266826216d6.3.1749561983816; Tue, 10 Jun 2025
- 06:26:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <michael.scherle@rz.uni-freiburg.de>)
+ id 1uOz5N-0007HA-U9
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 09:32:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+ rz.uni-freiburg.de; h=content-transfer-encoding:content-type
+ :content-type:in-reply-to:from:from:content-language:references
+ :subject:subject:user-agent:mime-version:date:date:message-id
+ :received; s=s1; t=1749562258; x=1751376659; bh=ro3c+IiFs3bUi9FY
+ 16JxvDzPWyC7CGD9BaZoSNhftTg=; b=L7faUY48LXdPVfFpZI196fSSFl0iZdlh
+ mr5iEuFY8AcAMklgZ8XqHqAVPXRnVGKa/tFdz3AMes5yMLS/gFvazNKALV3mN/KS
+ ell7yZkDBl/Z71Im/LHP4R2W2n6C+js60+1nQYQw+N/j0qm/UMVFr8QSEsBltPTj
+ Sm+liLNRF1w=
+Received: from fe1.uni-freiburg.de (fe1.uni-freiburg.de [132.230.2.221])
+ by a1422.mx.srv.dfn.de (Postfix) with ESMTP id B0C1F1E0127
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 15:30:58 +0200 (CEST)
+Received: from [10.8.8.230] (account michael.scherle@rz.uni-freiburg.de
+ [10.8.8.230] verified)
+ by mail.uni-freiburg.de (CommuniGate Pro SMTP 6.3.19)
+ with ESMTPSA id 47896810; Tue, 10 Jun 2025 15:30:58 +0200
+Message-ID: <c27a3dfa-7e3a-4fa0-a43d-5d8b5f401b0f@rz.uni-freiburg.de>
+Date: Tue, 10 Jun 2025 15:30:57 +0200
 MIME-Version: 1.0
-References: <20250605101124.367270-1-pbonzini@redhat.com>
- <20250605101124.367270-2-pbonzini@redhat.com>
-In-Reply-To: <20250605101124.367270-2-pbonzini@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Tue, 10 Jun 2025 17:26:12 +0400
-X-Gm-Features: AX0GCFvE64xeikhVCZx9sJM6BU5Q1IMeiXm2InfyBL5Zwgr9Ien68vArHYlPu24
-Message-ID: <CAMxuvayD+KvQTVWv+MyU8gmxLgwDF3p1ahiY+6WLvHJndJTXxg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: make TryFrom macro more resilient
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, armbru@redhat.com, 
- mkletzan@redhat.com
-Content-Type: multipart/alternative; boundary="0000000000008ee651063737a4da"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/7] ui/spice: Add an option for users to provide a
+ preferred codec
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: Frediano Ziglio <freddy77@gmail.com>,
+ "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ "Kim, Dongwon" <dongwon.kim@intel.com>
+References: <20250529051352.1409904-1-vivek.kasireddy@intel.com>
+ <20250529051352.1409904-3-vivek.kasireddy@intel.com>
+ <aEFYnTvaDQ6Kd0o4@redhat.com>
+ <IA0PR11MB71852C724D241204B8C09AF0F86EA@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <aEKVmH8ZxDcGKSeq@redhat.com>
+ <CAMxuvaz1wJw-qMDDPwj_BOGPL0zdgBsi647B6+AG+OdOOomhDQ@mail.gmail.com>
+ <aEgjHdDScyiuF4ID@redhat.com>
+Content-Language: en-US
+From: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
+In-Reply-To: <aEgjHdDScyiuF4ID@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=194.95.233.70;
+ envelope-from=michael.scherle@rz.uni-freiburg.de; helo=a1422.mx.srv.dfn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,131 +85,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008ee651063737a4da
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jun 5, 2025 at 2:11=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
-
-> If the enum includes values such as "Ok", "Err", or "Error", the TryInto
-> macro can cause errors.  Be careful and qualify identifiers with the full
-> path, or in the case of TryFrom<>::Error do not use the associated type
-> at all.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->
-
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
 
-> ---
->  rust/qemu-api-macros/src/lib.rs | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/
-> lib.rs
-> index 103470785e3..c18bb4e036f 100644
-> --- a/rust/qemu-api-macros/src/lib.rs
-> +++ b/rust/qemu-api-macros/src/lib.rs
-> @@ -203,8 +203,8 @@ fn derive_tryinto_body(
->      Ok(quote! {
->          #(const #discriminants: #repr =3D #name::#discriminants as #repr=
-;)*;
->          match value {
-> -            #(#discriminants =3D> Ok(#name::#discriminants),)*
-> -            _ =3D> Err(value),
-> +            #(#discriminants =3D>
-> core::result::Result::Ok(#name::#discriminants),)*
-> +            _ =3D> core::result::Result::Err(value),
->          }
->      })
->  }
-> @@ -236,7 +236,8 @@ pub const fn from_bits(value: #repr) -> Self {
->          impl core::convert::TryFrom<#repr> for #name {
->              type Error =3D #repr;
->
-> -            fn try_from(value: #repr) -> Result<Self, Self::Error> {
-> +            #[allow(ambiguous_associated_items)]
-> +            fn try_from(value: #repr) -> Result<Self, #repr> {
->                  #body
->              }
->          }
-> --
-> 2.49.0
->
->
+On 10.06.25 14:20, Daniel P. Berrangé wrote:
+> On Tue, Jun 10, 2025 at 03:30:24PM +0400, Marc-André Lureau wrote:
+>> Hi
+>>
+>> On Fri, Jun 6, 2025 at 11:16 AM Daniel P. Berrangé <berrange@redhat.com>
+>> wrote:
+>>
+>> Apparently you cannot mix and match freely, it has a rather fixed set of
+>> actually working values.
+>>
+>> See here and related code:
+>> https://gitlab.freedesktop.org/spice/spice/-/blob/master/server/reds.cpp?ref_type=heads#L3468
+> 
+> That's just showing the built-in defaults - the parsing code is
+> not enforcing any constraints. The impl though cleary only allows
+> 'mjpeg' with 'spice':
+> 
+>    https://gitlab.freedesktop.org/spice/spice/-/blob/master/server/mjpeg-encoder.c#L1371
+> 
+>> Tbh, I don't think the encoder matters much, and I don't know why it was
+>> decided to associate it with video codec names.
+> 
+> AFAICT the only way in which the encoder matters is to distinguish the
+> built-in "mjpeg" impl from the gstreamer "mjpeg" coder.
+> 
+>> Maybe the spice API should provide a simpler form: accept only codec names.
+>>
+>> In the meantime, qemu should perhaps add the "working" encoder prefixes
+>> (spice: for mjpeg, gstreamer: for others)  itself and not expose any extra
+>> option to the user?
+> 
+> Ths question is whether we need to be able to request the gstreamer
+> 'mjpeg' impl ?
+> 
+> If we do, and we also assume that 'spice' will never gain any more codec
+> impls as built-ins, we could do
+> 
+>    builtin, mjpeg, vp8, vp9, h264
 
---0000000000008ee651063737a4da
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+With 'spice' you mean only that the builtin will not get any more codecs 
+right? because I want to do an MR for spice gstreamer to add more 
+codecs, like av1.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
-mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jun 5, =
-2025 at 2:11=E2=80=AFPM Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat=
-.com">pbonzini@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmai=
-l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
-4,204);padding-left:1ex">If the enum includes values such as &quot;Ok&quot;=
-, &quot;Err&quot;, or &quot;Error&quot;, the TryInto<br>
-macro can cause errors.=C2=A0 Be careful and qualify identifiers with the f=
-ull<br>
-path, or in the case of TryFrom&lt;&gt;::Error do not use the associated ty=
-pe<br>
-at all.<br>
-<br>
-Signed-off-by: Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com" tar=
-get=3D"_blank">pbonzini@redhat.com</a>&gt;<br></blockquote><div><br></div><=
-div>Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lur=
-eau@redhat.com">marcandre.lureau@redhat.com</a>&gt;</div><div>=C2=A0</div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft:1px solid rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0rust/qemu-api-macros/src/<a href=3D"http://lib.rs" rel=3D"noreferrer"=
- target=3D"_blank">lib.rs</a> | 7 ++++---<br>
-=C2=A01 file changed, 4 insertions(+), 3 deletions(-)<br>
-<br>
-diff --git a/rust/qemu-api-macros/src/<a href=3D"http://lib.rs" rel=3D"nore=
-ferrer" target=3D"_blank">lib.rs</a> b/rust/qemu-api-macros/src/<a href=3D"=
-http://lib.rs" rel=3D"noreferrer" target=3D"_blank">lib.rs</a><br>
-index 103470785e3..c18bb4e036f 100644<br>
---- a/rust/qemu-api-macros/src/<a href=3D"http://lib.rs" rel=3D"noreferrer"=
- target=3D"_blank">lib.rs</a><br>
-+++ b/rust/qemu-api-macros/src/<a href=3D"http://lib.rs" rel=3D"noreferrer"=
- target=3D"_blank">lib.rs</a><br>
-@@ -203,8 +203,8 @@ fn derive_tryinto_body(<br>
-=C2=A0 =C2=A0 =C2=A0Ok(quote! {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0#(const #discriminants: #repr =3D #name::=
-#discriminants as #repr;)*;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0match value {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 #(#discriminants =3D&gt; Ok(#nam=
-e::#discriminants),)*<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 _ =3D&gt; Err(value),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 #(#discriminants =3D&gt; core::r=
-esult::Result::Ok(#name::#discriminants),)*<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 _ =3D&gt; core::result::Result::=
-Err(value),<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0})<br>
-=C2=A0}<br>
-@@ -236,7 +236,8 @@ pub const fn from_bits(value: #repr) -&gt; Self {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0impl core::convert::TryFrom&lt;#repr&gt; =
-for #name {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0type Error =3D #repr;<br>
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 fn try_from(value: #repr) -&gt; =
-Result&lt;Self, Self::Error&gt; {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 #[allow(ambiguous_associated_ite=
-ms)]<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 fn try_from(value: #repr) -&gt; =
-Result&lt;Self, #repr&gt; {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0#body<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
--- <br>
-2.49.0<br>
-<br>
-</blockquote></div></div>
+Also It might be useful to set more parameters in future, like chroma 
+sub-sampling or which GStreamer plugin is wanted like: msdk, va, vaapi....
 
---0000000000008ee651063737a4da--
+Another point is that it can actually be a list of codecs like:
+gstreamer:vp8;gstreamer:h264;spice:mjpeg
+
+Which is maybe not clear from the current documentation, which might 
+rather be:
+[,video-codecs=<encoder>:<codec>[;...]]
+
+This is useful the specify the allowed codecs and also set the priority.
+
+
+> 
+> where 'builtin' is the standard mjpeg encoder ?
+> 
+> Alternatively we could just go with
+> 
+>    mjpeg, vp8, vp9, h264
+> 
+> and in the unlikely event we need to be able to skip the built-in mjpeg,
+> we could add  a boolean 'prefer-gstreamer=on|off'
+> 
+> With regards,
+> Daniel
+
+Greetings,
+Michael
 
 
