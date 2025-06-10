@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6ACAD440B
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 22:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC67AD440F
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 22:43:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP5n8-000613-SM; Tue, 10 Jun 2025 16:41:54 -0400
+	id 1uP5n3-0005rQ-4g; Tue, 10 Jun 2025 16:41:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uP5my-0005oe-Ey; Tue, 10 Jun 2025 16:41:44 -0400
+ id 1uP5my-0005oA-6d; Tue, 10 Jun 2025 16:41:44 -0400
 Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uP5mw-0003Qx-1u; Tue, 10 Jun 2025 16:41:44 -0400
+ id 1uP5mw-0003R7-9e; Tue, 10 Jun 2025 16:41:43 -0400
 Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-606ddbda275so10805944a12.1; 
- Tue, 10 Jun 2025 13:41:40 -0700 (PDT)
+ 4fb4d7f45d1cf-606b6dbe316so6887301a12.3; 
+ Tue, 10 Jun 2025 13:41:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749588099; x=1750192899; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=QZzAerTSiSj2iP/yiVo1pLCMeUgucyrx0qc66O/SPas=;
- b=nqhBFcImZY+dnyVa+NMlibD3BqX1SC2+T6FeIDDG1dg+v8Og/9cS1lZv8PVcgd5AXD
- xM4t7RUdB1behKIqLSomY/OJcfpFj5JTgcSlbmVUgQsEOOEVyC5R3SU+dgxHVmPow3Q1
- m4u1x1QuqE1P0/luNKwBxj6NXs0hFq6wDZxryIES0eS76VOpdWTg1uY4n+HbOQUpNY9c
- NFAfWd71pb5OZg4Q1m0PrkSjUD6fvvHD6LB2EAa/juQPWjK64+mK6/k2l72Poo7xERs9
- pjGp8piuLTeGNXXZbPb5DV6jVMyHj7a/W2rdSlpccMqQ/ezvS0BMa3Mv/FTVTU5rcKQO
- ApMg==
+ d=gmail.com; s=20230601; t=1749588100; x=1750192900; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=shjFIoaQyra9yiwcwIYMAJApqIMBlEvH5T9r287lwOw=;
+ b=CRaP3zUcFydxHzqqWcRLmunyxCht6/0C+Rv2CY9+sEPpSNUTvVlVUVi2/jfbksmf3R
+ 1hoW3s4f1byF5b+xQyVtmfqxnlQe0rDq1HXMWPcvexC5MqDwWR8Tkt6TiDoknXXCyfAy
+ omDSjYRAhVku/P1mtH1vJx+OSKczOZLBFLlFLfGyRAHxQDWeJlYt7wVfRvr1Gt3WKjbp
+ el3c3iBHdwrUlPHLUN/uqsjwF/+0GRvyiZSUEoUWqH57+7p65tNUlLr0oOaUpAsMwPfH
+ WYB85sSh9epHamTqTncszO9WB9r4XgbDXcaBMQ8ePrBwJKZ0WpJtEunJFnqSPdx1Mvi7
+ A6MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749588099; x=1750192899;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QZzAerTSiSj2iP/yiVo1pLCMeUgucyrx0qc66O/SPas=;
- b=P0rOwcb/Rm9/Jw25s5EKuF1P1UqO/vbZdldAu3xatZLC3w+uQeO6b/GqbME/TaLHdm
- OfxuXbCG3mnQwqCf3xuGn4jBiwtrdgO/TbHZRQRwsH/IDNQp/N1ciIdky2TOcETLnzgB
- LwYzWk+wKDv/fkoO6u8bcMsSTAvjAa1zrbvEodAfhSz3UZfftQeFQr2HVLLBZErE8mY3
- 7G90NSDwsaeZtK7NVPCU/y0e1SDpNyP0zn51CHp3GV+lZXv2farvQBegWQ1TvWT6CHBE
- 2pPdI/eyQT596r9unWpP/MMmipsePKR7AZcniPgg4AwNCWOg/dP/i55P+Gcw6OrQuff3
- 3HfQ==
+ d=1e100.net; s=20230601; t=1749588100; x=1750192900;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=shjFIoaQyra9yiwcwIYMAJApqIMBlEvH5T9r287lwOw=;
+ b=TJUtOalK7m151lPYFl+7IsWf8jNxL4Vcod9Q/RTdhk02nSn4Gc9zrnHxT1RizcQGWk
+ xlzbL1eElHh2xyiBMoiid56blXjB9loQf/bUD9JM8JAVIQRtQ5FPBWtWotHBwXPR7NA7
+ xCWXdELdoLW2QxfRsPEDJ7Ofgtiss2VQ0YAycOTmipo3cVg9vZeiBKtItEbHwl36CA+H
+ AyfhvN0o5jT31KCR4OJVkESvbHwH8GZh3OUCXdjYO8Tr4ZZCUmyNG3HzAXfePETXsZiN
+ jBrOoMTFNpn+r52QuBz7rT/Fksr28OwjGsBT2H1v3a8cSN48wsdugBXQVSzR0Xfq49Kl
+ QN0g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWAPcJB445KeHIxPg2F4l2tsDoRRmeNHztwR+vGumU9c25pFOwbPE3h1SOJGHO++QnuYZ1MeeJFRg==@nongnu.org
-X-Gm-Message-State: AOJu0YwprnKQ/2jx6yxyQRa8S7FFy87XPU/l05BEbRgPqd9/oVgbeQa+
- IHHpPW7hp+sROU3L9b2psvCa1X6ViAFFUUba6nMVwABnwREJAQEYg/jkznH8Pg==
-X-Gm-Gg: ASbGncuSx45CXGMEkX7N5nTbOZhEwzutyUFTiHpYgwgk22Lp/nNVyY61kKr1sY6s07p
- oxuI2B6FeTw6ickEvr1GMycSAQloy9tCay64e0izsGklB2X3eAbrs+dmunN77QZCgtj4wxjaDDB
- P4TrSKBPgqU9qUKDGRtgXDMAih9sZ1Qp4tzK9W6N2+Buh87+L3wjdixMY52sgXI9EsMXWqrAClm
- v0Uf8wdFENXTQevnDGfxMg1gLOOSj3VIjc8vPQdL3KJn9XnvcSS+kILYf1o2nH9UIVR2UPkqjtY
- g98Tjo/c56cCzjAyOIicD02j8C838BgHzFXWUN/woXanIxkn2Q39ATz0Dxug78Bx87tCEEQZHTj
- GcJ5JNzAlG8I4QxNyN5nbOKXy0Wd2nU4gVoa5i2tRjpq4VIzZ6GpN98744iG5GrYP3Lq24EmO/y
- hM3QiIeg==
-X-Google-Smtp-Source: AGHT+IG1RfY9zY7Y7rf6OE4/o0hyRLrAa7ope8DAsG7AqumhrbIa0J5hrIKDgLO2pwqZEWb3p5Ms4g==
-X-Received: by 2002:a05:6402:2745:b0:608:3f9c:c69d with SMTP id
- 4fb4d7f45d1cf-60846d2e9efmr506657a12.33.1749588098882; 
- Tue, 10 Jun 2025 13:41:38 -0700 (PDT)
+ AJvYcCUJbGdIfXKBciMW6f4ze9pQwWYQaC8fGVo2Ul/qFjrtzroQQNax9MKWVFz/1ZFdqAs2+h7Wbr9zZw==@nongnu.org
+X-Gm-Message-State: AOJu0YxooM+JN/gjbrAi1zupQfp6OUJgT9VFS8dgVLmHz+thWz3jStRq
+ spBTpUE4tM+llWp151lqlmldrm4ehU430/nUx4bAwWrIl520Kf7Fknu5EJTEDQ==
+X-Gm-Gg: ASbGncvB2Fe1k4qfcuTJf25P5dK0lXFLQSmcj6OreV3UgRpM+zObaPs0biuQ8qP67jS
+ xSX5ete6CnpREyOsg1c+13ArPMiyP9xlYYgILaH4EB48/+57swruwd9TueHtUjjBYF7LLRrPUxo
+ 9IGjhjFW8B3+pMIJZdMAZmc1rII968ebYV+rRy4dV7GFdMryEk1bRRZcD8Qy1ZnqlI/nMOm8yPk
+ 5lmjmThaZHzwF20BV6KyR/Gv/ptVJhxcarbS3GfNKWNaxGxf4P0CuQG7G0DdIXeHqlwQpwfI6H7
+ BLlPxVMt3PbwGAwNufv6Xczu/xQtSc0/S4eT/v9p3jJ4mPL2NgNycJ8lCHqie44J8XozWmJ2RBi
+ /plvQCOoX+d+XhV6e2Dxk1fUSkk87+PhUhn/ln5nhUQisVBPFOr214m/lQsJW4cVSboBM4calgO
+ uk8KwcLw==
+X-Google-Smtp-Source: AGHT+IFDnUFYsi8/vEvVSQu6X/ITolen/ymxIKDo4hkCOc4Di111PCDkuNVzkf1RucXQnbS3Ow0CUQ==
+X-Received: by 2002:a05:6402:5cb:b0:607:5af9:19b6 with SMTP id
+ 4fb4d7f45d1cf-60846875435mr528462a12.15.1749588099593; 
+ Tue, 10 Jun 2025 13:41:39 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-2a02-3100-2cbf-5d00-0219-99ff-feb2-2458.310.pool.telefonica.de.
  [2a02:3100:2cbf:5d00:219:99ff:feb2:2458])
  by smtp.gmail.com with ESMTPSA id
  4fb4d7f45d1cf-607783de2bcsm6521847a12.68.2025.06.10.13.41.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Jun 2025 13:41:38 -0700 (PDT)
+ Tue, 10 Jun 2025 13:41:39 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
@@ -73,11 +74,12 @@ Cc: qemu-arm@nongnu.org,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 0/5] DTB build housekeeping
-Date: Tue, 10 Jun 2025 22:41:26 +0200
-Message-ID: <20250610204131.2862-1-shentey@gmail.com>
+Subject: [PATCH 1/5] hw: Fix type constant for DTB files
+Date: Tue, 10 Jun 2025 22:41:27 +0200
+Message-ID: <20250610204131.2862-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.49.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250610204131.2862-1-shentey@gmail.com>
+References: <20250610204131.2862-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
@@ -104,47 +106,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series removes the bundled device tree blobs from the repository which are
-redundant to the bundled device tree sources. To make this work, the device tree
-compiler 'dtc' is now required for the boards which rely on these device trees.
-Building these board can be enforced with a 'dtc' build option which should
-help packagers. For simplicity, 'dtc' is searched for in the system only rather
-than also considering the 'dtc' submodule.
+Commit fcb1ad456c58 ("system/datadir: Add new type constant for DTB files")
+introduced a new type constant for DTB files and converted the boards with
+bundled device trees to use it. Convert the other boards for consistency.
 
-I also tried unsing Meson's source_set::add(when: ...) for building only the
-needed DTBs but eventually found it to be too over-engineered.
+Fixes: fcb1ad456c58 ("system/datadir: Add new type constant for DTB files")
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/arm/boot.c | 2 +-
+ hw/ppc/e500.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Last but not least two inconsistencies regarding QEMU_FILE_TYPE_DTB are fixed
-which seem to be latent bugs (one of which materializes in my e500-fdt branch).
-
-Bernhard Beschow (5):
-  hw: Fix type constant for DTB files
-  pc-bios/dtb/meson: Prefer target name to be outfile, not infile
-  scripts/meson-buildoptions: Sort coroutine_backend choices
-    lexicographically
-  configure: Add dtc option
-  configure: Require dtc for boards with bundled device trees
-
- MAINTAINERS                          |   2 +-
- meson.build                          |  12 ++++++++++++
- hw/arm/boot.c                        |   2 +-
- hw/ppc/e500.c                        |   2 +-
- Kconfig.host                         |   3 +++
- hw/microblaze/Kconfig                |   4 ++--
- hw/ppc/Kconfig                       |   4 ++--
- meson_options.txt                    |   3 +++
- pc-bios/dtb/bamboo.dtb               | Bin 3211 -> 0 bytes
- pc-bios/dtb/canyonlands.dtb          | Bin 9779 -> 0 bytes
- pc-bios/dtb/meson.build              |  19 ++++++++-----------
- pc-bios/dtb/petalogix-ml605.dtb      | Bin 9882 -> 0 bytes
- pc-bios/dtb/petalogix-s3adsp1800.dtb | Bin 8161 -> 0 bytes
- scripts/meson-buildoptions.sh        |   5 ++++-
- 14 files changed, 37 insertions(+), 19 deletions(-)
- delete mode 100644 pc-bios/dtb/bamboo.dtb
- delete mode 100644 pc-bios/dtb/canyonlands.dtb
- delete mode 100644 pc-bios/dtb/petalogix-ml605.dtb
- delete mode 100644 pc-bios/dtb/petalogix-s3adsp1800.dtb
-
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index 79afb51b8a..64040504a1 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -527,7 +527,7 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
+ 
+     if (binfo->dtb_filename) {
+         char *filename;
+-        filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, binfo->dtb_filename);
++        filename = qemu_find_file(QEMU_FILE_TYPE_DTB, binfo->dtb_filename);
+         if (!filename) {
+             fprintf(stderr, "Couldn't open dtb file %s\n", binfo->dtb_filename);
+             goto fail;
+diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+index 809078a2c3..69fe71ad39 100644
+--- a/hw/ppc/e500.c
++++ b/hw/ppc/e500.c
+@@ -411,7 +411,7 @@ static int ppce500_load_device_tree(PPCE500MachineState *pms,
+ 
+     if (dtb_file) {
+         char *filename;
+-        filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, dtb_file);
++        filename = qemu_find_file(QEMU_FILE_TYPE_DTB, dtb_file);
+         if (!filename) {
+             goto out;
+         }
 -- 
 2.49.0
 
