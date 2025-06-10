@@ -2,72 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771DCAD3F9C
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A1BAD3FB3
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:57:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP26v-0001r0-ER; Tue, 10 Jun 2025 12:46:05 -0400
+	id 1uP284-0003eR-En; Tue, 10 Jun 2025 12:47:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02O-0002AT-CW
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uP0E6-0004SS-BE
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:45:22 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uP02M-00060N-Cl
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:33:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749565993;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OGGjWV/AnA2+8v3700Mtz6kS/vWJbya6CYmVChAkRJI=;
- b=hy8ybPgLAHkrLcKXD1GSGwypQwtSxvKZG3ZVdqOrTMdFExytsdUlvr9etMw/hwZ/YgkJjG
- hjFPoEoVs5jehejzsNa0ywKBlP+jNK/L+mONVtzmG8EyrNBC4VQEjoOpl9JR65eczPyvE8
- fNLDK/oat+PoXczVIUACQ4ql8Q2bn/Y=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-szl0iZfBMFy-oJasQho1Vg-1; Tue,
- 10 Jun 2025 10:33:10 -0400
-X-MC-Unique: szl0iZfBMFy-oJasQho1Vg-1
-X-Mimecast-MFC-AGG-ID: szl0iZfBMFy-oJasQho1Vg_1749565987
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8EB5E18002E4
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 14:33:07 +0000 (UTC)
-Received: from gondolin.str.redhat.com (dhcp-192-216.str.redhat.com
- [10.33.192.216])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 58ACD1956087; Tue, 10 Jun 2025 14:33:06 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH 2/2] watchdog: generic name for i6300esb
-Date: Tue, 10 Jun 2025 16:32:59 +0200
-Message-ID: <20250610143259.1056400-3-cohuck@redhat.com>
-In-Reply-To: <20250610143259.1056400-1-cohuck@redhat.com>
-References: <20250610143259.1056400-1-cohuck@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uP0E1-0007Qw-MX
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:45:20 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bGs0c1LMxz6L5WY;
+ Tue, 10 Jun 2025 22:40:48 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 95DEE140417;
+ Tue, 10 Jun 2025 22:45:03 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 10 Jun
+ 2025 16:45:02 +0200
+Date: Tue, 10 Jun 2025 15:45:01 +0100
+To: Arpit Kumar <arpit1.kumar@samsung.com>
+CC: <qemu-devel@nongnu.org>, <gost.dev@samsung.com>,
+ <linux-cxl@vger.kernel.org>, <nifan.cxl@gmail.com>, <dave@stgolabs.net>,
+ <vishak.g@samsung.com>, <krish.reddy@samsung.com>,
+ <a.manzanares@samsung.com>, <alok.rathore@samsung.com>
+Subject: Re: [PATCH 3/3] hw/cxl: Add Physical Port Control (Opcode 5102h)
+Message-ID: <20250610154501.0000213b@huawei.com>
+In-Reply-To: <20250602135942.2773823-4-arpit1.kumar@samsung.com>
+References: <20250602135942.2773823-1-arpit1.kumar@samsung.com>
+ <CGME20250602140045epcas5p2445a99b249ba9588af027d59b0c8bd35@epcas5p2.samsung.com>
+ <20250602135942.2773823-4-arpit1.kumar@samsung.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,37 +70,240 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Intel 6300 Enterprise SouthBridge is a south bridge for a more or
-less obscure embedded Intel system; however, the i6300esb watchdog
-device we implement in QEMU is a virtual watchdog device that should
-work well on any PCI-based machine, is well supported by Linux guests,
-and used in many examples on how to set up a virtual watchdog.
+On Mon,  2 Jun 2025 19:29:42 +0530
+Arpit Kumar <arpit1.kumar@samsung.com> wrote:
 
-Let's use "virtual i6300ESB" in the description to make clear that
-this device will work just fine on non-Intel platforms.
 
-Signed-off-by: Cornelia Huck <cohuck@redhat.com>
----
- hw/watchdog/wdt_i6300esb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Very interesting to see support for this. It will enable a load
+of additional test cases.
 
-diff --git a/hw/watchdog/wdt_i6300esb.c b/hw/watchdog/wdt_i6300esb.c
-index bb8a2766b69b..5e5d8c48cfd7 100644
---- a/hw/watchdog/wdt_i6300esb.c
-+++ b/hw/watchdog/wdt_i6300esb.c
-@@ -472,7 +472,7 @@ static void i6300esb_class_init(ObjectClass *klass, const void *data)
-     device_class_set_legacy_reset(dc, i6300esb_reset);
-     dc->vmsd = &vmstate_i6300esb;
-     set_bit(DEVICE_CATEGORY_WATCHDOG, dc->categories);
--    dc->desc = "Intel 6300ESB";
-+    dc->desc = "virtual i6300ESB";
- }
- 
- static const TypeInfo i6300esb_info = {
--- 
-2.49.0
+> added assert-deassert PERST implementation, reset PPB
+> for physical port.
+Added
+
+Please also include some details of testing done and what happens.
+Given I know we have some issues with reset that we haven't resolved
+I'm curious if you see them here.
+
+> 
+> Signed-off-by: Arpit Kumar <arpit1.kumar@samsung.com>
+
+> +/* Assert - Deassert PERST */
+> +#define ASSERT_WAIT_TIME_MS 100
+> +
+>  /* link state flags */
+>  #define LINK_STATE_FLAG_LANE_REVERSED    (1 << 0)
+>  #define LINK_STATE_FLAG_PERST_ASSERTED   (1 << 1)
+> @@ -662,6 +666,114 @@ static CXLRetCode cmd_get_physical_port_state(const struct cxl_cmd *cmd,
+>      return CXL_MBOX_SUCCESS;
+>  }
+>  
+> +static struct PCIDevice *cxl_find_port_dev(uint8_t ppb_id, PCIBus *bus)
+> +{
+> +    PCIDevice *d;
+> +    int devfn;
+> +
+> +    for (devfn = 0; devfn < ARRAY_SIZE(bus->devices); devfn++) {
+
+As in patch one, maybe use the for_each_pci_...  Though with the callback
+needed it may end up slightly more complex that this.
+
+
+> +        d = bus->devices[devfn];
+> +        if (d) {
+> +            if (object_dynamic_cast(OBJECT(d), TYPE_CXL_DSP)) {
+> +                uint8_t port = PCIE_PORT(d)->port;
+I'd not bother with the local variable for this one.
+
+                 if (PCIE_PORT(d)->port == ppb_id) {
+                     return d;
+                 }
+
+> +                if (port == ppb_id) {
+> +                    return d;
+> +                }
+> +            }
+> +        }
+> +    }
+> +    return NULL;
+> +}
+> +
+> +static CXLRetCode deassert_PERST(Object *obj, ResetType type, uint8_t pn, CXLCCI *cci)
+> +{
+> +    ResettableClass *rc = RESETTABLE_GET_CLASS(obj);
+> +    ResettableState *s = rc->get_state(obj);
+> +
+> +    if (cci->pports.perst[pn].issued_assert_PERST) {
+> +        if (cci->pports.perst[pn].asrt_time == -1 && !s->hold_phase_pending) {
+
+I'd flip the logic as then can return early in error case and reduce
+indent of the rest.
+
+
+> +            qemu_mutex_lock(&cci->pports.perst[pn].lock);
+
+            QEMU_LOCK_GUARD(&cci->pports.prst[pn].lock);
+
+> +            resettable_release_reset(obj, type);
+> +            cci->pports.perst[pn].issued_assert_PERST = false;
+> +            cci->pports.pport_info[pn].link_state_flags &=
+> +                ~LINK_STATE_FLAG_PERST_ASSERTED;
+> +            cci->pports.perst[pn].asrt_time = ASSERT_WAIT_TIME_MS;
+> +            qemu_mutex_unlock(&cci->pports.perst[pn].lock);
+and drop explicit unlock.
+> +        } else {
+> +            return CXL_MBOX_INTERNAL_ERROR;
+> +        }
+> +    } else {
+> +        return CXL_MBOX_INTERNAL_ERROR;
+> +    }
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+> +static CXLRetCode assert_PERST(Object *obj, ResetType type, uint8_t pn, CXLCCI *cci)
+> +{
+> +    ResettableClass *rc = RESETTABLE_GET_CLASS(obj);
+> +    ResettableState *s = rc->get_state(obj);
+> +
+> +    if (cci->pports.perst[pn].issued_assert_PERST || s->exit_phase_in_progress) {
+> +        return CXL_MBOX_INTERNAL_ERROR;
+> +    }
+> +
+
+WITH_QEMU_LOCK_GUARD() perhaps
+
+> +    qemu_mutex_lock(&cci->pports.perst[pn].lock);
+> +    cci->pports.perst[pn].issued_assert_PERST = true;
+> +    cci->pports.pport_info[pn].link_state_flags |=
+> +        LINK_STATE_FLAG_PERST_ASSERTED;
+> +    resettable_assert_reset(obj, type);
+> +    qemu_mutex_unlock(&cci->pports.perst[pn].lock);
+> +
+> +    /* holding reset phase for 100ms */
+> +    while (cci->pports.perst[pn].asrt_time--) {
+> +        usleep(1000);
+Is this happening synchronously?  I'd kind of expect it to be a background thing
+where we'd just check it had finished.
+> +    }
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+> +/*CXL r3.2 Section 7.6.7.1.3: Get Physical Port Control (Opcode 5102h)*/
+> +static CXLRetCode cmd_physical_port_control(const struct cxl_cmd *cmd,
+> +                                            uint8_t *payload_in,
+> +                                            size_t len_in,
+> +                                            uint8_t *payload_out,
+> +                                            size_t *len_out,
+> +                                            CXLCCI *cci)
+> +{
+> +    PCIBus *bus = &PCI_BRIDGE(cci->d)->sec_bus;
+> +    PCIDevice *dev;
+> +    struct cxl_fmapi_get_physical_port_control_req_pl {
+> +        uint8_t PPB_ID;
+> +        uint8_t Ports_Op;
+> +    } QEMU_PACKED *in;
+> +
+> +    in = (struct cxl_fmapi_get_physical_port_control_req_pl *)payload_in;
+
+Often we cheat on these where the type is locally defined and do
+
+    struct cxl_fmapi_get_physical_port_control_req_pl {
+        uint8_t ppb_id;
+        uint8_t ports_op;
+    } QEMU_PACKED *in = (void *)payload_in;
+
+Given it's all together the type isn't confusing or ambiguous even
+though we use a void * instead of the more specific cast.
+
+Note also that it is better to stick to local style and use lower_case
+style for structure element naming etc.
+
+> +
+> +    if (len_in < sizeof(*in)) {
+> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+> +    }
+> +
+> +    uint8_t pn = in->PPB_ID;
+> +    dev = cxl_find_port_dev(pn, bus);
+> +    if (!dev) {
+> +        return CXL_MBOX_INTERNAL_ERROR;
+> +    }
+> +
+> +    switch (in->Ports_Op) {
+> +    case 0:
+> +        assert_PERST(OBJECT(&dev->qdev), RESET_TYPE_COLD, pn, cci);
+
+Even for these probably
+
+assert_perst()
+
+> +        break;
+return CXL_MBOX_SUCESS;
+> +    case 1:
+> +        deassert_PERST(OBJECT(&dev->qdev), RESET_TYPE_COLD, pn, cci);
+> +        break;
+> +    case 2:
+> +        device_cold_reset(&dev->qdev);
+> +        break;
+> +    default:
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+
+> @@ -3878,4 +3995,15 @@ void cxl_initialize_usp_mctpcci(CXLCCI *cci, DeviceState *d, DeviceState *intf,
+>      cci->intf = intf;
+>      cxl_init_cci(cci, payload_max);
+>      cxl_set_phy_port_info(cci); /* store port info */
+> +    /* physical port control */
+> +    for (int i = 0; i < PCI_DEVFN_MAX; i++) {
+> +        qemu_mutex_init(&cci->pports.perst[i].lock);
+
+perst is definitely port wise - not linked to CCI so that stuff should be
+in the port structures themselves.
+
+> +        cci->pports.perst[i].issued_assert_PERST = false;
+> +        /* Assert PERST involves physical port to be in
+wrap at 80 chars.
+> +         * hold reset phase for minimum 100ms. No other calls
+> +         * are entertained until Deassert PERST command.
+> +         * https://patchwork.ozlabs.org/project/linux-pci/patch/20190523194409.17718-1-niklas.cassel@linaro.org/#2178369
+
+Blocking other commands is fine but we should lock up emulation of other stuff
+in the system and I think you currently do.
+
+> +         */
+> +        cci->pports.perst[i].asrt_time = ASSERT_WAIT_TIME_MS;
+> +    }
+>  }
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index 9eb128a1e8..f877d60b39 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -146,10 +146,18 @@ struct cxl_phy_port_info {
+>      uint8_t supported_ld_count;
+>  } QEMU_PACKED;
+>  
+> +/* assert-deassert PERST */
+> +struct pperst {
+> +    bool issued_assert_PERST;
+> +    int asrt_time;
+> +    QemuMutex lock;
+> +};
+> +
+>  struct phy_port {
+>      uint8_t num_ports;
+>      uint8_t active_port_bitmask[0x20];
+>      struct cxl_phy_port_info pport_info[PCI_DEVFN_MAX];
+> +    struct pperst perst[PCI_DEVFN_MAX];
+>  };
+>  
+>  /* CXL r3.1 Table 8-34: Command Return Codes */
 
 
