@@ -2,66 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37887AD2F75
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 10:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6ADAD2E28
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 08:56:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOtxL-00027q-Qo; Tue, 10 Jun 2025 04:03:40 -0400
+	id 1uOssQ-0007rn-VX; Tue, 10 Jun 2025 02:54:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uOtxH-00026J-RO
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 04:03:35 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1uOssG-0007rF-GR
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 02:54:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uOtxF-0006nb-9k
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 04:03:35 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1uOssC-0004Xv-9L
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 02:54:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749542611;
+ s=mimecast20190719; t=1749538454;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C6v5eO4KRPLDLssBKHllP2DNjh2KCFp7qAC/RbRL70k=;
- b=HBPimPYEkxiqopijC+jIw9+i2KSBrOzwU/+qugd+XbYcUnpPifch4OhI9T+3PS7Qv0CWoz
- 3TKaytb3oAUUMfZSEukIa/YjfC63oCU3CNNqghMtUK2Pb/qzhxVUEYSBlqkyc7n1lVuEHf
- bIeu5sQ3uOHE35o/S1Ygur6T+aN2xw8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-Ue46WyiQO-W6R1cymSI5ag-1; Tue,
- 10 Jun 2025 04:03:27 -0400
-X-MC-Unique: Ue46WyiQO-W6R1cymSI5ag-1
-X-Mimecast-MFC-AGG-ID: Ue46WyiQO-W6R1cymSI5ag_1749542606
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2DBCB1956056; Tue, 10 Jun 2025 08:03:26 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.44.32.69])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2AB4C1956087; Tue, 10 Jun 2025 08:03:25 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 9A83A1801083; Tue, 10 Jun 2025 08:47:06 +0200 (CEST)
-Date: Tue, 10 Jun 2025 08:47:06 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Eric Auger <eauger@redhat.com>, 
- Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 1/2] ramfb: Add property to control if load the romfile
-Message-ID: <dli36wx3pe5we6xg5w7c3vyxifnfctovurucrci75kec3qk2y2@2dweacwekfcl>
-References: <20250609073408.2083831-1-shahuang@redhat.com>
- <20250609073408.2083831-2-shahuang@redhat.com>
- <aEakP3rDTyBqDXA5@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aEakP3rDTyBqDXA5@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ bh=jTLjeh0ZFAKBjgmIFXj1HF0w+IgIOxtUcHM7LCQkMSI=;
+ b=IVgAEOJ+U1MRPmRh6r0iELmxVZR5l5Xwli6qgk2tq0B2bxm9nM5jEYVziL/mt+J7QtJ6os
+ RtiaCJknzxsB+VRzVHlv5my3hJKSB/dr7QkCulWVT4UvhDqGRnqV1sMM3qWt07V3/bcG2p
+ Moj47BB5F3vOCRfQOeaRisfzrnc8hV4=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-454-jpdX6sdfNJWX2CUBpkc9QA-1; Tue, 10 Jun 2025 02:54:12 -0400
+X-MC-Unique: jpdX6sdfNJWX2CUBpkc9QA-1
+X-Mimecast-MFC-AGG-ID: jpdX6sdfNJWX2CUBpkc9QA_1749538451
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-2362e130be8so14822265ad.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Jun 2025 23:54:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749538451; x=1750143251;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jTLjeh0ZFAKBjgmIFXj1HF0w+IgIOxtUcHM7LCQkMSI=;
+ b=sT5NG0McNjUZXArw3baAnpXN0Hy5T/F+9ORqnY2BEDmDhTK/h2DE4aLoRo6T5Hd+qp
+ CDMnxZkNxenqEfYutKsaeqtF8Jra0v7/yYd/Pu+cizTEVupZP/bwWlRRqqzEpYyGcRKd
+ /ozZTo1e0OeWhyYIUREWBYL4fptbfkAJGEoagMzDbL7YEWNxkj35sLaByVgMd2lKGd6m
+ pXrV4KMO8D0Pgn49fR/uA5TQn3D1zKhjy3o2YkN211hTf5y3Mnrm1ZrDofhZOoEj0T+6
+ mcJg48ZcZ+t5BttaG4X6eDJdMqd2bpFk3kmhLWcF1V9lxzdXdVJm/j9quWOjwkmz5c0a
+ pabg==
+X-Gm-Message-State: AOJu0YzoTm5X8kfFlUDvOwWY+wfVBlPfXP1WGRcejonAOq05d5L11zFa
+ ZZQ5lPKvRq4T/8ZrvpNGYJBGy8go294P2YLC/+Ff8zlgNI0d8h6Vem3l5tiZsci1aKP3Z+FufLR
+ rCe9wX8xOQjkKtn4EpijjO4VBsVPpB1B68jbg0pyQBCbhuv3tw/dPiEiK
+X-Gm-Gg: ASbGnctCy9NcSQYjAufr7ze2YZHadiBiRSq93dy4in0A5ZCDOiflfEg4NK8PrqENd0E
+ 7pwSUh9FA6Jl0jWNwq7P+Ce1drWfZSmBJug0+d2wDPKrA9C6nHY6ogTpGTAT7SY/MnJqwoDrNcA
+ gU3T58P9hWs/k+qK3kdA7B+DbZDs8TKaWMvN6KaShwHdKz28wmYfkHd02BaHD1MsoJhg1+sfUxo
+ qeWrNQatVS05t0ffxM/MHFe4EceVegAUWhsFJymUO+XVhu//4WwqOm+0HWqPFSOYuIhgq8qpfpB
+ J1eSvihmmHjOd0oIJbSieNB754Uv2O4QmTi2SXA=
+X-Received: by 2002:a17:902:f693:b0:235:f45f:ed2b with SMTP id
+ d9443c01a7336-23601d0417amr236007805ad.1.1749538451275; 
+ Mon, 09 Jun 2025 23:54:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrMdM30XleML0XId1VRSYrxBp3VIUkr1sogK7LqsPSwECxN/fqvg3aj/Nw7zyzSwHU7i65mg==
+X-Received: by 2002:a17:902:f693:b0:235:f45f:ed2b with SMTP id
+ d9443c01a7336-23601d0417amr236007615ad.1.1749538450884; 
+ Mon, 09 Jun 2025 23:54:10 -0700 (PDT)
+Received: from smtpclient.apple ([171.78.154.233])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23603406916sm64399075ad.169.2025.06.09.23.54.08
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 09 Jun 2025 23:54:10 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.4\))
+Subject: Re: [PATCH] MAINTAINERS: Update the paths to the testing
+ documentation files
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20250610053734.10417-1-thuth@redhat.com>
+Date: Tue, 10 Jun 2025 12:23:56 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-block@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Alexander Bulekov <alxndr@bu.edu>, Fabiano Rosas <farosas@suse.de>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <58CEF573-E771-44F4-A09C-36D792057953@redhat.com>
+References: <20250610053734.10417-1-thuth@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+X-Mailer: Apple Mail (2.3776.700.51.11.4)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -70,7 +96,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,45 +112,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
 
-> $ qemu-system-aarch64  -machine virt -cpu max -device ati-vga
-> qemu-system-aarch64: -device ati-vga: failed to find romfile "vgabios-ati.bin"
-> $ qemu-system-aarch64  -machine virt -cpu max -device cirrus-vga
-> qemu-system-aarch64: -device cirrus-vga: failed to find romfile "vgabios-cirrus.bin"
-> $ qemu-system-aarch64  -machine virt -cpu max -device VGA
-> qemu-system-aarch64: -device VGA: failed to find romfile "vgabios-stdvga.bin"
-> 
-> Perhaps some of these devices are non-functional for other
-> reasons ?
 
-Anything with pci memory bars is problematic on arm (which is one of the
-reasons why ramfb exists in the first place).
+> On 10 Jun 2025, at 11:07=E2=80=AFAM, Thomas Huth <thuth@redhat.com> =
+wrote:
+>=20
+> From: Thomas Huth <thuth@redhat.com>
+>=20
+> When the testing docs were moved to a separate subfolder, the entries
+> in the MAINTAINERS file were missed. Update them now.
+>=20
+> Fixes: ff41da50308 ("docs/devel: Split testing docs from the build =
+docs and move to separate folder")
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-> None the less if the device is built for non-x86 targets, and
-> the ROM files contain x86-only code that is to be executed by
-> SeaBIOS only, then conceptually this fix should apply to all
-> devices use a VGA BIOS ROM, not just ramfb.
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
 
-Note that non-x86 drivers for some of these devices exist, we have at
-least roms/QemuMacDrivers which includes a driver for (IIRC) stdvga.
-
-The ipxe roms are x86-only too btw.  We could make them multi-arch at
-least for EFI platforms, but given that edk2 ships a virtio-net driver
-and the recently added EFI archs (aarch64, riscv64, loongarch64) are all
-younger than virtio-net there is little reason to do so.
-
-> If we're introducing a property to control this usage, then
-> we should fix all devices at once, so we don't need to add
-> separate properties for other devices in future.
-
-All pci devices already have a romfile property.  So for most devices
-this is a matter of setting this property via machine compat properties.
-
-ramfb is a bit different here because it is not a PCI device, so we
-can't control things with the existing property and need a new one.
-
-take care,
-  Gerd
+> ---
+> MAINTAINERS | 15 ++++++++-------
+> 1 file changed, 8 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index aa6763077ea..eb2b338fb11 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2124,7 +2124,7 @@ M: Michael S. Tsirkin <mst@redhat.com>
+> S: Supported
+> F: tests/functional/acpi-bits/*
+> F: tests/functional/test_acpi_bits.py
+> -F: docs/devel/acpi-bits.rst
+> +F: docs/devel/testing/acpi-bits.rst
+>=20
+> ACPI/HEST/GHES
+> R: Dongjiu Geng <gengdongjiu1@gmail.com>
+> @@ -3440,8 +3440,8 @@ F: system/qtest.c
+> F: include/system/qtest.h
+> F: accel/qtest/
+> F: tests/qtest/
+> -F: docs/devel/qgraph.rst
+> -F: docs/devel/qtest.rst
+> +F: docs/devel/testing/qgraph.rst
+> +F: docs/devel/testing/qtest.rst
+> X: tests/qtest/bios-tables-test*
+> X: tests/qtest/migration-*
+>=20
+> @@ -3459,7 +3459,7 @@ F: tests/qtest/fuzz-*test.c
+> F: tests/docker/test-fuzz
+> F: scripts/oss-fuzz/
+> F: hw/mem/sparse-mem.c
+> -F: docs/devel/fuzzing.rst
+> +F: docs/devel/testing/fuzzing.rst
+>=20
+> Register API
+> M: Alistair Francis <alistair@alistair23.me>
+> @@ -4078,7 +4078,7 @@ M: Stefan Hajnoczi <stefanha@redhat.com>
+> L: qemu-block@nongnu.org
+> S: Supported
+> F: block/blkverify.c
+> -F: docs/devel/blkverify.rst
+> +F: docs/devel/testing/blkverify.rst
+>=20
+> bochs
+> M: Stefan Hajnoczi <stefanha@redhat.com>
+> @@ -4156,7 +4156,7 @@ M: Hanna Reitz <hreitz@redhat.com>
+> L: qemu-block@nongnu.org
+> S: Supported
+> F: block/blkdebug.c
+> -F: docs/devel/blkdebug.rst
+> +F: docs/devel/testing/blkdebug.rst
+>=20
+> vpc
+> M: Kevin Wolf <kwolf@redhat.com>
+> @@ -4276,7 +4276,8 @@ F: tests/vm/
+> F: tests/lcitool/
+> F: tests/functional/test_*_tuxrun.py
+> F: scripts/archive-source.sh
+> -F: docs/devel/testing.rst
+> +F: docs/devel/testing/ci*
+> +F: docs/devel/testing/main.rst
+> W: https://gitlab.com/qemu-project/qemu/pipelines
+> W: https://travis-ci.org/qemu/qemu
+>=20
+> --=20
+> 2.49.0
+>=20
 
 
