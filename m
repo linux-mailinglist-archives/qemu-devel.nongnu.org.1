@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6566CAD37CE
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5B5AD37EB
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:05:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOyaw-0000ro-MP; Tue, 10 Jun 2025 09:00:51 -0400
+	id 1uOybC-0000xQ-4R; Tue, 10 Jun 2025 09:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYN-0007hZ-Gx
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:14 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYT-0007ni-Rq
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:18 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYK-0002hb-UB
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:11 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-451d3f72391so70528405e9.3
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:58:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYQ-0002i3-Bz
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:16 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3a525eee2e3so4085359f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:58:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749560287; x=1750165087; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749560291; x=1750165091; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=taQBYKGiataMrkl3P46PoMWshwDonRVg+ORcNAH8umE=;
- b=fDsvVSsvE7OzFVbX4PNzyQyeSYNxq7yLhO/0e9AF6aJS7S+xgQDbupBBKl8JzCLUPf
- GE6fl2PAqGW4HKDpTlfugGzf9Dy9v3BIMMl+1NzEv+oP6/H+5BZgoKCghHVtx8iItv46
- ZkGz055HVxQyU3DKxYDt3M5o64fHidL0tvhp4nzFhyqpEyKyGbqN2f7pSoKrldW0UlYw
- QnAY2IvKiczwkz+bmJo2Y7Wni+TIqTcbtGuEN27GHWVqgmBt/DiOgNtZnb9ozZZYu2MX
- 5I4SRcwzvEjNpceAB+IrDVMEAZ7uEwCbhAhjkft+LMzmrpuEenaDZaa8dMu09adVT2S/
- zCzQ==
+ bh=NsM3LWHZll8CDgTMYcVvtFIDSa02yxNPgaUuG9wfk94=;
+ b=J3dDY8TCUToHo/4IP1KtufwoVdkgFiMjLxClqKBsteLRly0iZfwCDmMyKvJP++LGF1
+ N8YAL9e9FuhSganHRtZacxgsLudXxzc8d4opgBtah9XjKE7Vx209JgqV77AtKnr8cMfK
+ JYrwng5nKEbEvKZdkWEYdg91XmDesYcVMiZxvverLGgdzY3uToJneFvh+mZ+8aupXPET
+ ZRcwgobDyKiITCm1Fp5lkvbg0Iqqmxi25NmxDpHF6Ki0i09ANg4I2LhYjXFuz//V2xz9
+ edIff1LYalDR9pljJt+yAhOBq4m1kaqihaK3kYFCsWqgAC71nxW4QqT3UTMDfbYxFhzT
+ KckQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749560287; x=1750165087;
+ d=1e100.net; s=20230601; t=1749560291; x=1750165091;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=taQBYKGiataMrkl3P46PoMWshwDonRVg+ORcNAH8umE=;
- b=ihmTbxE1DPdKS4yW/m9TEdsT+hc5ua1IbcC8ZxZEgY8wk3rAA08sW/5c6rCaM9c5di
- M8krERZE+Y7nTatT8RuryMBwVVlUjRbP/ltxeFJnM+2UTJBY/NZssYIcaVaMkWSckR/T
- crDe9p88D+C8XsJUsTlF8KQx/OBh+xvcrkh3ZOpoxnzGnolxllVc7hpY4YXa6boMlFMy
- lP4boNxeVtcc1jboyY/Juc9C+HAyUCjeVnvcxSWUdOWuBnbMnsKPldGTkRslatos+b9c
- bCkWk1orcDIEyW4oVaFIcK+Ji5NeFAm7lJw1GuHSsqKJzHW2PbdHVePdOnhg3HFONdSU
- zEhg==
-X-Gm-Message-State: AOJu0Yzg/g4ALruM+9dCZt9X4cf+JL1ahji+16bSCKNU+sIy5P6j0Yx0
- ZOIOy3klGfWah0pM6vlVkfWCMSohd3S3R1nmN5J9ZWb6d5GS8tEI/dnNJMJTYywfqus1aNEr2LG
- 2jxV8vQE=
-X-Gm-Gg: ASbGncs4U2MjZOiHHWBhqrMCCsgOXw0K8o0NQMM1eKMelw9yzWvyogCbdEW2L36CwvS
- eO7FwvLjPRrcsr4fFvt3I9nXIoJtnkVntCAGHrQUNuX2BFmVi7XMfE57gZTtGM/zQEwAThTsU0H
- E8jrS578NbRzpo4xj5dXXFzSclqxAAfoKdQcO2uGCxSNuCANJOdrN2wddgb/i+RZ81gE/bCDjAr
- Dpk3LUx7/p7QdTQjlUVEqevc0djHy0EqIz6BhyzJxpLdnquccjCrtwf3W4jt9tw6flsNABcXWY2
- 0XrcH0PZ+cB9bmE5NxOM+brTI8dgfb8yIyx9bWBn0SRwlFOzX1lzcV/qdGQhkqY1ig3jqTnJSCs
- Ls45IFw2tILWgMKX40GNXIcuJuVUABea4aAKDN4mNU/dDEPNMlYJA
-X-Google-Smtp-Source: AGHT+IG/8wsFeyevifiDQkct0SB0x01VNl7qRnuZfeLXkpx3bbv7EFKQjC6FuyFKtdmgFQwdRZjQ0Q==
-X-Received: by 2002:a05:6000:430c:b0:3a5:1240:6802 with SMTP id
- ffacd0b85a97d-3a531cb2a63mr13700643f8f.57.1749560286854; 
- Tue, 10 Jun 2025 05:58:06 -0700 (PDT)
+ bh=NsM3LWHZll8CDgTMYcVvtFIDSa02yxNPgaUuG9wfk94=;
+ b=NdGGsQJvMq9guexyQzSdRMcF1WiNZnERwIFBbXosXv0khnNeMdtBVlkNrZb6cwLK63
+ LbTKNsUjKKBTnw5Wcuqi9iu0uMMQfRgD2QkG/RScCjpIc0uKAUIzLA/SJHBlA+Vp5bY5
+ CfDjwro2q//JvkgGk0vBSINYBTlpvoVz0ySTiY8Ue3uYLjRTRQc2iEn6x0+77Rzx4SRm
+ txv2ZghwiCkurXZCMPVDdyzhO0qzgJY5uQOmxp86IKZuKhCN48eWauELjgWvlJ5ZmB5j
+ xIwMyykj0UPZ1oEWJg2zzHH/2h00QHwRJVFJD6lLhLi4VVFKz5thV4rdrgwO+JultwWG
+ yFfQ==
+X-Gm-Message-State: AOJu0YwTDoJwxFouP4j8FspdqsSh02Tl1tWoOeyt6xvAVVg1yWWFbWwT
+ rWda8ncZezBGEOlwAmwaRhq2ZUijWi3dkwODXN+AqEIhchF3DvtZwS/69xreh23TGIyoqTXYMiT
+ LhaEGrCY=
+X-Gm-Gg: ASbGncsfWy6yirp/tZeGNzNA2AgY4oq3EOc6v/zCh+1T9KOqaKCh7ftNWgJLNnT08Eo
+ wpZZAhw6CqGJO3MyW6wVHYyB++vNxdJh6GumxyN3Sc0EDCB59ap76CrUJbuLteyRoOwlrTTqjKL
+ zsPAnSBTLxVie/M5TsoZJA9HqRALdXCHDs2bJebxpXDSM6Aezk+zLRhabC8K8r7NKSKgMnNRZAz
+ GofpVYyZjnSnCFzcooN01+8lSyWPOajkA9HWOIOq3Ees5I3Xhigzvegw2E48p4jjzaOiDQei5wm
+ zKraTUzbegg1hQ5ipvXNjjZW8R0X8xywjYYyyJHv1fwNZqAH15FQ98buVaxuMs4PAVHwMy9U5P/
+ 5g1EHEtQUbl5k7KLmMBFVthTyDEM89Ax3W7mgLAmHDw==
+X-Google-Smtp-Source: AGHT+IEVAOT4SSr5CJIUSvG4dXnxT3n0qXPiq6u2ePwMeeQSe8h7ZC27Hiwf8bxFC5/nTuqsFP3wWw==
+X-Received: by 2002:a5d:5f49:0:b0:3a5:2fe2:c9e1 with SMTP id
+ ffacd0b85a97d-3a53188e42bmr11600920f8f.30.1749560291354; 
+ Tue, 10 Jun 2025 05:58:11 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a53244f07dsm12432763f8f.79.2025.06.10.05.58.06
+ ffacd0b85a97d-3a53229d96fsm12174152f8f.7.2025.06.10.05.58.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Jun 2025 05:58:06 -0700 (PDT)
+ Tue, 10 Jun 2025 05:58:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 20/24] hw/gpio/aspeed: Fix definition of AspeedGPIOClass
-Date: Tue, 10 Jun 2025 14:56:29 +0200
-Message-ID: <20250610125633.24411-21-philmd@linaro.org>
+Subject: [PULL 21/24] hw/riscv/riscv-iommu: Remove definition of
+ RISCVIOMMU[Pci|Sys]Class
+Date: Tue, 10 Jun 2025 14:56:30 +0200
+Message-ID: <20250610125633.24411-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250610125633.24411-1-philmd@linaro.org>
 References: <20250610125633.24411-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,35 +103,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-AspeedGPIOClass's parent is SysBusDeviceClass rather than SysBusDevice.
-This isn't catastrophic only because sizeof(SysBusDevice) >
-sizeof(SysBusDeviceClass).
+RISCVIOMMUPciClass and RISCVIOMMUSysClass are defined with missed
+parent class, class_init on them may corrupt their parent class
+fields.
 
-Fixes: 4b7f956862dc ("hw/gpio: Add basic Aspeed GPIO model for AST2400 and AST2500")
-Closes: https://lists.gnu.org/archive/html/qemu-devel/2025-06/msg00586.html
-Suggested-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+It's lucky that parent_realize and parent_phases are not initialized
+or used until now, so just remove the definitions. They can be added
+back when really necessary.
+
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Message-ID: <20250606092406.229833-4-zhenzhong.duan@intel.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250606092406.229833-6-zhenzhong.duan@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/gpio/aspeed_gpio.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/riscv/iommu.h   | 6 ++----
+ hw/riscv/riscv-iommu-pci.c | 6 ------
+ hw/riscv/riscv-iommu-sys.c | 6 ------
+ 3 files changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/include/hw/gpio/aspeed_gpio.h b/include/hw/gpio/aspeed_gpio.h
-index e1e6c543339..e6b2fe71b50 100644
---- a/include/hw/gpio/aspeed_gpio.h
-+++ b/include/hw/gpio/aspeed_gpio.h
-@@ -70,7 +70,7 @@ typedef struct AspeedGPIOReg {
- } AspeedGPIOReg;
+diff --git a/include/hw/riscv/iommu.h b/include/hw/riscv/iommu.h
+index b03339d75ce..8a8acfc3f07 100644
+--- a/include/hw/riscv/iommu.h
++++ b/include/hw/riscv/iommu.h
+@@ -30,14 +30,12 @@ typedef struct RISCVIOMMUState RISCVIOMMUState;
+ typedef struct RISCVIOMMUSpace RISCVIOMMUSpace;
  
- struct AspeedGPIOClass {
--    SysBusDevice parent_obj;
-+    SysBusDeviceClass parent_class;
-     const GPIOSetProperties *props;
-     uint32_t nr_gpio_pins;
-     uint32_t nr_gpio_sets;
+ #define TYPE_RISCV_IOMMU_PCI "riscv-iommu-pci"
+-OBJECT_DECLARE_TYPE(RISCVIOMMUStatePci, RISCVIOMMUPciClass, RISCV_IOMMU_PCI)
++OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStatePci, RISCV_IOMMU_PCI)
+ typedef struct RISCVIOMMUStatePci RISCVIOMMUStatePci;
+-typedef struct RISCVIOMMUPciClass RISCVIOMMUPciClass;
+ 
+ #define TYPE_RISCV_IOMMU_SYS "riscv-iommu-device"
+-OBJECT_DECLARE_TYPE(RISCVIOMMUStateSys, RISCVIOMMUSysClass, RISCV_IOMMU_SYS)
++OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStateSys, RISCV_IOMMU_SYS)
+ typedef struct RISCVIOMMUStateSys RISCVIOMMUStateSys;
+-typedef struct RISCVIOMMUSysClass RISCVIOMMUSysClass;
+ 
+ #define FDT_IRQ_TYPE_EDGE_LOW 1
+ 
+diff --git a/hw/riscv/riscv-iommu-pci.c b/hw/riscv/riscv-iommu-pci.c
+index 1f44eef74ea..cdb4a7a8f03 100644
+--- a/hw/riscv/riscv-iommu-pci.c
++++ b/hw/riscv/riscv-iommu-pci.c
+@@ -68,12 +68,6 @@ typedef struct RISCVIOMMUStatePci {
+     RISCVIOMMUState  iommu;   /* common IOMMU state */
+ } RISCVIOMMUStatePci;
+ 
+-struct RISCVIOMMUPciClass {
+-    /*< public >*/
+-    DeviceRealize parent_realize;
+-    ResettablePhases parent_phases;
+-};
+-
+ /* interrupt delivery callback */
+ static void riscv_iommu_pci_notify(RISCVIOMMUState *iommu, unsigned vector)
+ {
+diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
+index 74e76b94a5c..e34d00aef64 100644
+--- a/hw/riscv/riscv-iommu-sys.c
++++ b/hw/riscv/riscv-iommu-sys.c
+@@ -53,12 +53,6 @@ struct RISCVIOMMUStateSys {
+     uint8_t *msix_pba;
+ };
+ 
+-struct RISCVIOMMUSysClass {
+-    /*< public >*/
+-    DeviceRealize parent_realize;
+-    ResettablePhases parent_phases;
+-};
+-
+ static uint64_t msix_table_mmio_read(void *opaque, hwaddr addr,
+                                      unsigned size)
+ {
 -- 
 2.49.0
 
