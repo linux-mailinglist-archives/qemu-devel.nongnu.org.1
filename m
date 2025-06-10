@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463F8AD3FF5
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 19:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2ECEAD3FE4
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 19:03:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP29L-0006jM-9l; Tue, 10 Jun 2025 12:48:35 -0400
+	id 1uP2A7-0008BI-24; Tue, 10 Jun 2025 12:49:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uOzV2-0002uw-1s
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 09:58:48 -0400
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uOzV0-0001XH-4C
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 09:58:47 -0400
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-70e77831d68so52077367b3.2
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 06:58:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749563924; x=1750168724; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Tn5YmeUOssp9njr5/DLp437/HWWmTrAYEkvk2kK3IbY=;
- b=m7uWBcTVUZib2i1fALHMDMahRUsZIqyJcf0IFEV1XQmKa181MJRIvPi/nWRHdEPIIi
- NEQ1WW4RVe1I9CFtq+E14KhRQgXBRmKHdzS6iJ49CMmq+kAXxpSut7yyIzO0skbwjno3
- 9RNs+R+AsEFDv0dJJAoZjnGkXikOaJs3sletm6psODvMh/HN3+ugyBNomHGrFMTutEuK
- AeiruFmRITmOcbn8MSNxoOSAQKqp7yQn9vw3b5nGK3JCY1s97TTdG4vQQEqjAPRn0clt
- 4mHk1SzEe/pSvdnJG27kuoF75E/Hx81zXzFNWS0cAbaaVZothVpihHJMyfOLM+I1jORw
- qOcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749563924; x=1750168724;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Tn5YmeUOssp9njr5/DLp437/HWWmTrAYEkvk2kK3IbY=;
- b=qkHmzcWyBt8MgbrGIhRPAj1H7632XPNMj0CkUIaOrcS4aU65TEKGIHenEkHQYQj1rQ
- frPoQhlIW9DgOzIQFNve1N5hx5ifa7QedLtykyYkvQ1yit3mVxlcdJEhdvN5VB5bvUSx
- hbTepnrXdGBcZaf6b2Vxp08zHEWf7cygheKj2GSL2ySSIkJ7QfTFPKBS5OdNoPWXl1J/
- 2wQ2JRjZlFqA+SQLNmkA/4ne7wvjeLaUukwoB60LJ8ZRp0X30UCYvICfPa1SUjxhrApj
- AmXLyAiRMpSzkQbeAUJ07KZvT/WmWTbSM3fLOskse/drzWVG8HNadkU726SshjqtGEvI
- ms1A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUz3+fuzJPkbw/0jENrNxRfohMfkXlf8pSxededIJ5l5JqibNStd2Oqvqm9nmLEAHVxXWQGvE6eNL1i@nongnu.org
-X-Gm-Message-State: AOJu0YxDjLfmrpTnnRv1Jt2nH70IoCXhHq+5to3OCt4fCAqfOkvwSy+D
- RFvwuwuNeDw2YmuhCxlendLJNS/VU/FL6jfrYar58DuthxvudkM8CMz+Pi5ERWD+QIxhZAZpcdM
- 49L/xVQQ948pMD8s0BAramQIYI9kzwcAAvdXkGrHzJA==
-X-Gm-Gg: ASbGnctnmRtqwl/7SjNZJxSF+1u+Df3g+cNVHxu8G9YppCt+4lOxYxSAlMUBeKjM+m9
- aWsqNiYhdGZOaaWojZYrDgxivu6C1W9vQ0uXaNYpRFC9QP3PZcwqcuDsVIo6hbhl+QzvuFYbIay
- vAvMafrgqkDKrTir+01m55U3nbtkyY/FZrKH3Y/Qy25USJ
-X-Google-Smtp-Source: AGHT+IHyI/gYx7+Y/KXYz0D34FrpiW6RdQEgX7kEcxXdXIFwqUuRMpUUFlr6Tx4Ugj4MJeHvRqoqQ4EBpelXgyW1SKY=
-X-Received: by 2002:a05:690c:1c:b0:70f:83af:7dab with SMTP id
- 00721157ae682-710f762d432mr220003697b3.4.1749563923702; Tue, 10 Jun 2025
- 06:58:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uOzaO-0003lf-V4
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:04:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uOzaM-0002El-98
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:04:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749564253;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zzdN0CL/lLyYJghNLOM/Yltt8/r3RbgRJn1xCXGjnKE=;
+ b=X/hjvXzFAwfiF1Qs40rCN1AIpXJdSDSaKwQOHz256y741WRK+KRCbdwI0EQO5Kxvuh308q
+ ZLRylB7/CNjwxJkczCK81CWzqSi/txvhv7/M+5ld/R8XoNPySpOOf1t1JN+JAOGuAEZE/r
+ /bzn4xdrXDJFTD6Fma+41WjqtaO7WaQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-237-VF8MVbd2NLO6UnmwOhXNjg-1; Tue,
+ 10 Jun 2025 10:04:12 -0400
+X-MC-Unique: VF8MVbd2NLO6UnmwOhXNjg-1
+X-Mimecast-MFC-AGG-ID: VF8MVbd2NLO6UnmwOhXNjg_1749564251
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ED1771808984; Tue, 10 Jun 2025 14:04:10 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.43])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id CE2461956087; Tue, 10 Jun 2025 14:04:09 +0000 (UTC)
+Date: Tue, 10 Jun 2025 10:04:07 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [PATCH 00/31] Skip automatic zero-init of large arrays / structs
+ in I/O paths
+Message-ID: <20250610140407.GB89694@fedora>
+References: <20250610123709.835102-1-berrange@redhat.com>
 MIME-Version: 1.0
-References: <20250610012851.1627715-1-linux@roeck-us.net>
- <CAFEAcA-aznHrcSk9xfmLHkpJTiabjd4oX2KnvC5TXkkLgW6n8A@mail.gmail.com>
- <50464a50-1ddc-410b-bc5b-ec68b895b797@roeck-us.net>
-In-Reply-To: <50464a50-1ddc-410b-bc5b-ec68b895b797@roeck-us.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 10 Jun 2025 14:58:31 +0100
-X-Gm-Features: AX0GCFsUd9430EAQHL8DAZPHE2TpbvRHRYfiYqun59rrgCCqagK1Fn99e1MNJAE
-Message-ID: <CAFEAcA9CWeEmrZ5vTr7M-UZfH3cp5Y9EZUeGPfc2s75Tz2-K9g@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm/npcm7xx_boards: Add support for specifying SPI
- flash model
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1134.google.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="qfV5VfRfA7tGUPbg"
+Content-Disposition: inline
+In-Reply-To: <20250610123709.835102-1-berrange@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,43 +87,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 10 Jun 2025 at 14:31, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On 6/10/25 01:42, Peter Maydell wrote:
-> > I think the question I would have here is "is this the flash
-> > device the hardware actually has?". If QEMU's using the wrong
-> > flash type, we should fix that. If QEMU's modelling the right
-> > flash type and the kernel doesn't implement it, then that's
-> > a kernel bug and the right fix is to get the kernel to
-> > handle that flash type.
-> >
->
-> That isn't the point.
 
-It is the point from my perspective. This board type is
-supposed to be modelling real hardware, and therefore in
-determining how it should behave we start by saying "so
-what does the real hardware do?". Adding extra behaviour
-that the real hardware does not have is something that
-has a tendency to lead into unspecified, untested and hard
-to maintain complexity.
+--qfV5VfRfA7tGUPbg
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Yes, one is that qemu's emulation is broken, the other is
-> that I wanted to be able to test with other flash types anyway. I understand
-> that this 'violates' the idea of exactly emulating some hardware, but I want
-> to be able to use qemu beyond that.
+On Tue, Jun 10, 2025 at 01:36:38PM +0100, Daniel P. Berrang=E9 wrote:
+> This series is an extension of Stefan's proposal:
+>=20
+>   https://lists.nongnu.org/archive/html/qemu-devel/2025-06/msg00736.html
+>=20
+> It used '-Wframe-larger-than=3D4096' to identify all code locations
+> with more than 4k on the stack. Any locations in the I/O paths
+> were chosen to avoid automatic zero-init, to eliminate the performance
+> overhead of the automatic initialization.
+>=20
+> Note, although all the changed locations are I/O paths, this does not
+> imply that the changes make a measurement performance difference in
+> every case.
+>=20
+> This is because many of the emulated devices are likely limited by the
+> emulation impl, rather than any implicit memory zero'ing overhead of
+> stack data.
+>=20
+> None the less the memory zero'ing is still a redundant CPU burn in
+> all these cases, so I felt it worth setting the general precedent
+> that any data over 4k on a stack in a device I/O path should be
+> skipping zero-init.
+>=20
+> I did reasonable review in each case to identify that the data was
+> indeed initialized explicitly later in the method.
+>=20
+> Daniel P. Berrang=E9 (29):
+>   block: skip automatic zero-init of large array in ioq_submit
+>   chardev/char-fd: skip automatic zero-init of large array
+>   chardev/char-pty: skip automatic zero-init of large array
+>   chardev/char-socket: skip automatic zero-init of large array
+>   hw/audio/ac97: skip automatic zero-init of large arrays
+>   hw/audio/cs4231a: skip automatic zero-init of large arrays
+>   hw/audio/es1370: skip automatic zero-init of large array
+>   hw/audio/gus: skip automatic zero-init of large array
+>   hw/audio/gus: skip automatic zero-init of large array
+>   hw/audio/sb16: skip automatic zero-init of large array
+>   hw/audio/via-ac97: skip automatic zero-init of large array
+>   hw/char/sclpconsole-lm: skip automatic zero-init of large array
+>   hw/dma/xlnx_csu_dma: skip automatic zero-init of large array
+>   hw/display/vmware_vga: skip automatic zero-init of large struct
+>   hw/hyperv/syndbg: skip automatic zero-init of large array
+>   hw/misc/aspeed_hace: skip automatic zero-init of large array
+>   hw/net/rtl8139: skip automatic zero-init of large array
+>   hw/net/tulip: skip automatic zero-init of large array
+>   hw/net/virtio-net: skip automatic zero-init of large arrays
+>   hw/net/xgamc: skip automatic zero-init of large array
+>   hw/nvme/ctrl: skip automatic zero-init of large arrays
+>   hw/ppc/pnv_occ: skip automatic zero-init of large struct
+>   hw/ppc/spapr_tpm_proxy: skip automatic zero-init of large arrays
+>   hw/usb/hcd-ohci: skip automatic zero-init of large array
+>   hw/scsi/lsi53c895a: skip automatic zero-init of large array
+>   hw/scsi/megasas: skip automatic zero-init of large arrays
+>   hw/ufs/lu: skip automatic zero-init of large array
+>   net/socket: skip automatic zero-init of large array
+>   net/stream: skip automatic zero-init of large array
+>=20
+> Stefan Hajnoczi (2):
+>   include/qemu/compiler: add QEMU_UNINITIALIZED attribute macro
+>   hw/virtio/virtio: avoid cost of -ftrivial-auto-var-init in hot path
+>=20
+>  block/linux-aio.c          |  2 +-
+>  chardev/char-fd.c          |  2 +-
+>  chardev/char-pty.c         |  2 +-
+>  chardev/char-socket.c      |  2 +-
+>  hw/audio/ac97.c            |  4 ++--
+>  hw/audio/cs4231a.c         |  4 ++--
+>  hw/audio/es1370.c          |  2 +-
+>  hw/audio/gus.c             |  2 +-
+>  hw/audio/marvell_88w8618.c |  2 +-
+>  hw/audio/sb16.c            |  2 +-
+>  hw/audio/via-ac97.c        |  2 +-
+>  hw/char/sclpconsole-lm.c   |  2 +-
+>  hw/display/vmware_vga.c    |  2 +-
+>  hw/dma/xlnx_csu_dma.c      |  2 +-
+>  hw/hyperv/syndbg.c         |  2 +-
+>  hw/misc/aspeed_hace.c      |  2 +-
+>  hw/net/rtl8139.c           |  2 +-
+>  hw/net/tulip.c             |  2 +-
+>  hw/net/virtio-net.c        |  6 +++---
+>  hw/net/xgmac.c             |  2 +-
+>  hw/nvme/ctrl.c             |  6 +++---
+>  hw/ppc/pnv_occ.c           |  2 +-
+>  hw/ppc/spapr_tpm_proxy.c   |  4 ++--
+>  hw/scsi/lsi53c895a.c       |  2 +-
+>  hw/scsi/megasas.c          |  7 ++-----
+>  hw/ufs/lu.c                |  2 +-
+>  hw/usb/hcd-ohci.c          |  2 +-
+>  hw/virtio/virtio.c         |  8 ++++----
+>  include/qemu/compiler.h    | 20 ++++++++++++++++++++
+>  net/socket.c               |  2 +-
+>  net/stream.c               |  2 +-
+>  31 files changed, 61 insertions(+), 44 deletions(-)
+>=20
+> --=20
+> 2.49.0
+>=20
 
-Why this machine type in particular, though? You say in the commit
-message that aspeed lets you specify the flash type.
+I will merge this series but want to give others a chance to review it
+first:
 
-> Either case, I did some debugging: For flashes with sfdp data (mx25l25635e),
-> qemu returns bad sfdp data (at least with quanta-gsj), causing the kernel
-> (as of v6.16-rc1) to bail out. For other flashes (mx66u51235f) it returns
-> no sfdp data, but the upstream kernel now depends on it.
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-That sounds like a bug we should fix. Would one of the Nuvoton
-maintainers like to take a look?
+--qfV5VfRfA7tGUPbg
+Content-Type: application/pgp-signature; name=signature.asc
 
-thanks
--- PMM
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhIO1cACgkQnKSrs4Gr
+c8hVaQgApXC6UxIGdTOWCOF+4jDBSMtL/h3IhNg8XIhGslTEa+ax64nnzLvdFuac
+CpRHEXvYSPTrftgNmxlcFZA36BGsd6Zv+oU/dKrRlIxp4TlawaSJC4BIdWAonGdw
+RJ6hAhYXazRdg805Xkb2efit+6sCZJESuiMm1p+o693TIGWI+RgTVqAVhprKQxR8
+SE14UFe+ACIPSpmMStPR9Llmlqy0epCwlR+86ufZPpQadsQSXy24L9Bles9WFWCo
+9kktS3lxsZx+nWIX+nbDerk8q9BCCJEz+OglL6jNyoQHQZAZYIpv0dSUzVMgkSgf
+myE4NNbjH2347DcX5l9kCokiYn8kFQ==
+=iRmu
+-----END PGP SIGNATURE-----
+
+--qfV5VfRfA7tGUPbg--
+
 
