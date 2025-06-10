@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853A7AD4410
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 22:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC297AD440C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 22:42:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP5n7-0005wU-Pz; Tue, 10 Jun 2025 16:41:54 -0400
+	id 1uP5n9-00065V-8z; Tue, 10 Jun 2025 16:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uP5mz-0005qp-Vr; Tue, 10 Jun 2025 16:41:45 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1uP5n1-0005rV-C1; Tue, 10 Jun 2025 16:41:48 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uP5mx-0003Rv-Mg; Tue, 10 Jun 2025 16:41:45 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5efe8d9ebdfso10419366a12.3; 
- Tue, 10 Jun 2025 13:41:42 -0700 (PDT)
+ id 1uP5mz-0003SG-6F; Tue, 10 Jun 2025 16:41:47 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-607ec30df2bso5231669a12.1; 
+ Tue, 10 Jun 2025 13:41:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749588101; x=1750192901; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1749588102; x=1750192902; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Yu15xTjUu7sbSjCZzNz4Y36AaOPlbj3ZUNiPok3KAgE=;
- b=NdsBE+aObjwdswskcETenp10inYIE8AZb9CZH2iTxy5hOIjWu0jSfotqkGHYkLMtnV
- asSqkB67vUAp3vCDnp4qMN4JXhAig05Rasl2K9hzA6YSkvlpl0cFJkHATSfkvGdJneLf
- SEP4m5qJPeqW7Ogy0COZtBF0qfYsMswHacvGazQKM5+Jcb0mtK4pNARXZqBfh8WuSUXo
- OJwONyI6+L7BsMXFHW+yxD9nIDdUHbxf5/4/g92GDEw4pC7PopUAg61flNadSLCmF+UT
- 5m22XgvPfe+s2r637ZfCqThArDUVQgecTKmm3y6qzBKjNgnZUjYA0svsU90LpMu+v1nO
- QtQg==
+ bh=dgmJXjtcgf2rDQe3ZcrY29ofFCyiwKawclslIYHzuxs=;
+ b=GDAmFUhUoeMquD/hw0yGU3CfyyP0SNf89tZ96i374FvkeBsekTIFP8Xu5RiapdUi1W
+ l2rqFHGE6PWkQUQCc2oySWPLAdkuiRYTzZUGocmTPt7YwCo+OzGZWKltTEnZrBriuKHo
+ 7yr/gDQ+gllxN6chzq6svWyZmGWuJg43yrwXdoZFKW8lDD9xjb5d3x2NR8ppDZdZ5nn+
+ tcwmzBh00ue4l5ubmaP6DxU0XLdvSjWrBfr14T5nxu7XqF2xGBqjms+qNc3zVqdgdkZR
+ rXCik2ksIptMJA97ayryk8EhYXV43bLkPUPV8Nq28ogMUAz6zbn+D19DHl3djdGpzlTv
+ VmXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749588101; x=1750192901;
+ d=1e100.net; s=20230601; t=1749588102; x=1750192902;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yu15xTjUu7sbSjCZzNz4Y36AaOPlbj3ZUNiPok3KAgE=;
- b=UX6F8ffCH9NWlhpG44XwZHWT2q89gLShLpzKZZ48TQL8BAe35ODnTsM9LclJ2oP/52
- jjyLYlf/Bcv1rNBDNu9pqgqdLGE30iDmon4jY1r2cw/RskGOHW9y6ZS3DhvYGjwPnRw6
- 6QfWsiLD7ZvSAZQrvCb7srO3XhFVgt7rVsomOSGREKcTawu/dbf1f76GV/9azPhKG4x8
- 7NCjuWYn97I3F+aID4VxeqiFEJ46m4pH0BipvvYHnJR62wI6pWy4BjTDTsTKHS0Biyz0
- /U4LNi4En0Qj4OdCOWqIclTbi8GXCz+Ufcz4au5eEiRsjk46dNd0BtvDTery7A0DLvhX
- 0LGA==
+ bh=dgmJXjtcgf2rDQe3ZcrY29ofFCyiwKawclslIYHzuxs=;
+ b=CqWpVeQ2qF9AnSQGOgHzNBQppdLFlFoIT1HmO7LiBzLaX2wWBhlCQ4OomWkTdauONi
+ ylKFkCkfhUk762SjUn2hbeFpChcIUHbhAq2Wkzj9r5JLzl1ZFkkNmVKSlEtNtIgcF7Yd
+ kZS834C0NPs95Oye5OxBGSgDY/j+qsmk7vGz5aEp3DBYB5LRSM4QkDh1tVyNtOf4j3ID
+ V+Tx6AtDLniIrtUXLxBO+Fu4TRYSgGa5fmrIkZHOjBowec6veu13Lk8mkqohD+66iNc7
+ DkZTDLrMshhOJIN66amM7GxclGCmFgkTo/pp+7MsKfpPGoFf+RBiIY3BiaYRYXrw9RUn
+ RXpQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWbhp68y9aMAKzJwvj+x1iwhlncKUYqk1hQ4H2OWOYiK5SokmW8Oiroj3B4NhEMWnAwdgQ8jphMXQ==@nongnu.org
-X-Gm-Message-State: AOJu0YwNl32QD4pg+/TK7YPvDneYdN2l7e+AJt8QKPzukOseE7usQUl0
- F415AeNck56SlKrEEGPoybvDimeT3Pyn5b0V6cLzDLFxNQdy+5k+J97qQcBePg==
-X-Gm-Gg: ASbGncutEyL2we37rISs4OFJjUMkD1W07gIZvNnwB8Gmzq03cCUzzSGcCONveKz0rry
- FH7b9vJ8x1w9T/quJi/QFsr+Yg8urMAiXwJ6O82t622d4bzaqFMUMJDjtkvJjDgyY1iqdeY38ZL
- pptL+VtzshkdxF6ipQk9sxwbT1ixKLqXq8cCevUhkBVYPsd2PFu2ORZK22uXFKhOsLP4wzWq83v
- gMXicYdON+sBHopgKxAxFH2tyn4uslk3Nmn1mkDHTJYqrv5Bntql0Ox8z+Xd50T26Za09g0xuJs
- uiiM/P/pKvYAUys6IPrlRcC8cZH6Qzy+xzq6LbDDF0ZjFMKziDHFsFkpjxd8GCRqKoul1PoQQfe
- 1JaiqWuDeJBGCMr4SUAZhCJL5ANOoy97T7LTzeltLqS9/+SByiqtdYEt+zWO3cDpb2INE4KVayw
- /TXppjLQ==
-X-Google-Smtp-Source: AGHT+IHpPT/20Kgz3ZK2t/3JX6u9asAs4aM0Nbb3Um+EVEQiQkG9M1o/LaF2sLsHvvLXnMthHa+sVg==
-X-Received: by 2002:a05:6402:254a:b0:606:ebd9:c58b with SMTP id
- 4fb4d7f45d1cf-6084e695303mr99620a12.1.1749588101094; 
- Tue, 10 Jun 2025 13:41:41 -0700 (PDT)
+ AJvYcCU43+lE12ZlFhrw40G/UdYAxBBLGhoKdt+XEp6L4026LQwM2vIu67PULVslKB91UlSMMdtSWArTMg==@nongnu.org
+X-Gm-Message-State: AOJu0YxFlqt73sucf8cY3mUiAyn5k6tWORc6JpE55BocvZWFwLRqTImT
+ neVTLDxNamNQ2j+mCvC+AJwFGxjJ77pafMmeC4vOMgWDD8/5qD1tnh9NhsXqAg==
+X-Gm-Gg: ASbGncvaFOUfn+gf4ZNKhHjkoSRxSw+7DHegHRpJHm4BW5cqqLDLR7z8OcKOG1CqIDn
+ WrOzaelyb3Ybt9U2Kh1P5mLkTWOx9yKuVIeBI/03CwtTuzj19zxgbvqOY+carRNelDxvQiFglRr
+ HQYzzYqi4F+R8dXBJxh0pnjBXAOQ6DZ1/MdFwa5/WcnrYu9B3PxJnSXjGwr5AS2VIR1R0fOrx/p
+ fr6Xnj5h4ZXNFTVFZrAKk8+mTKJbOho24XpWm4LpulLHTIx66NnVFXCu18tNwS8i1tSgIIzLwXJ
+ 68YFV0clYuAfuYzXJ8b4JCAQvKvPSXmZt+FGzfRkXFg+eBHly1EB1AQUsgbQQNjtNO5Z3TwKjlH
+ c2PDDDWX3n3WTNBLUEDb/HWkInuILrXSxJQVfvY2FvAlAeXWjOPZx1JYp8HW1rLFHfRvJHnfBNT
+ wXfb6a5A==
+X-Google-Smtp-Source: AGHT+IEF3v/0hIXq/nGE3i0DdYmDGtRy4dul89pgAbZgejfuucE50ut4FR20zRr0p/+AwWj15CgJug==
+X-Received: by 2002:a05:6402:280c:b0:607:f5ce:4c01 with SMTP id
+ 4fb4d7f45d1cf-60846625a12mr630118a12.3.1749588102245; 
+ Tue, 10 Jun 2025 13:41:42 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-2a02-3100-2cbf-5d00-0219-99ff-feb2-2458.310.pool.telefonica.de.
  [2a02:3100:2cbf:5d00:219:99ff:feb2:2458])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-607783de2bcsm6521847a12.68.2025.06.10.13.41.40
+ 4fb4d7f45d1cf-607783de2bcsm6521847a12.68.2025.06.10.13.41.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Jun 2025 13:41:40 -0700 (PDT)
+ Tue, 10 Jun 2025 13:41:41 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
@@ -74,17 +74,16 @@ Cc: qemu-arm@nongnu.org,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 3/5] scripts/meson-buildoptions: Sort coroutine_backend
- choices lexicographically
-Date: Tue, 10 Jun 2025 22:41:29 +0200
-Message-ID: <20250610204131.2862-4-shentey@gmail.com>
+Subject: [PATCH 4/5] configure: Add dtc option
+Date: Tue, 10 Jun 2025 22:41:30 +0200
+Message-ID: <20250610204131.2862-5-shentey@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250610204131.2862-1-shentey@gmail.com>
 References: <20250610204131.2862-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,29 +106,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When changing meson_options.txt, this script gets updated automatically by QEMU
-tooling which sorts the choices lexicographically. Fix this in preparation of
-the ext patch.
+The next patch will make dtc mandatory for boards with a bundled DTB, causing
+these boards to be omitted when dtc is missing. Allow packagers to force the
+build of those boards by providing an option.
 
-Fixes: ccc403ed5844 ("meson: Add wasm build in build scripts")
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- scripts/meson-buildoptions.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ meson.build                   | 12 ++++++++++++
+ Kconfig.host                  |  3 +++
+ meson_options.txt             |  3 +++
+ pc-bios/dtb/meson.build       |  1 -
+ scripts/meson-buildoptions.sh |  3 +++
+ 5 files changed, 21 insertions(+), 1 deletion(-)
 
+diff --git a/meson.build b/meson.build
+index 34729c2a3d..8a03fbaed8 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2119,6 +2119,15 @@ if fdt_opt == 'internal'
+   fdt = libfdt_proj.get_variable('libfdt_dep')
+ endif
+ 
++dtc = not_found
++dtc_opt = get_option('dtc')
++if dtc_opt == 'enabled' or (dtc_opt == 'auto' and have_system)
++  dtc = find_program('dtc', required: dtc_opt == 'enabled')
++  if not dtc.found() and dtc_opt == 'enabled'
++    error('dtc not found')
++  endif
++endif
++
+ rdma = not_found
+ if not get_option('rdma').auto() or have_system
+   rdma_libs = [cc.find_library('rdmacm', has_headers: ['rdma/rdma_cma.h'],
+@@ -2477,6 +2486,7 @@ config_host_data.set('CONFIG_FREEBSD', host_os == 'freebsd')
+ config_host_data.set('CONFIG_CAPSTONE', capstone.found())
+ config_host_data.set('CONFIG_COCOA', cocoa.found())
+ config_host_data.set('CONFIG_DARWIN', host_os == 'darwin')
++config_host_data.set('CONFIG_DTC', dtc.found())
+ config_host_data.set('CONFIG_FDT', fdt.found())
+ config_host_data.set('CONFIG_FUZZ', get_option('fuzzing'))
+ config_host_data.set('CONFIG_GCOV', get_option('b_coverage'))
+@@ -3314,6 +3324,7 @@ host_kconfig = \
+   (libcbor.found() ? ['CONFIG_LIBCBOR=y'] : []) + \
+   (gnutls.found() ? ['CONFIG_GNUTLS=y'] : []) + \
+   (x11.found() ? ['CONFIG_X11=y'] : []) + \
++  (dtc.found() ? ['CONFIG_DTC=y'] : []) + \
+   (fdt.found() ? ['CONFIG_FDT=y'] : []) + \
+   (have_vhost_user ? ['CONFIG_VHOST_USER=y'] : []) + \
+   (have_vhost_vdpa ? ['CONFIG_VHOST_VDPA=y'] : []) + \
+@@ -4703,6 +4714,7 @@ summary_info += {'sphinx-build':      sphinx_build}
+ if config_host.has_key('GDB')
+   summary_info += {'gdb':             config_host['GDB']}
+ endif
++summary_info += {'dtc':               dtc}
+ summary_info += {'iasl':              iasl}
+ summary_info += {'genisoimage':       config_host['GENISOIMAGE']}
+ if host_os == 'windows' and have_ga
+diff --git a/Kconfig.host b/Kconfig.host
+index 933425c74b..82fc8848dd 100644
+--- a/Kconfig.host
++++ b/Kconfig.host
+@@ -29,6 +29,9 @@ config IVSHMEM
+ config TPM
+     bool
+ 
++config DTC
++    bool
++
+ config FDT
+     bool
+ 
+diff --git a/meson_options.txt b/meson_options.txt
+index a442be2995..d0e56564fb 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -316,6 +316,9 @@ option('vduse_blk_export', type: 'feature', value: 'auto',
+ 
+ option('capstone', type: 'feature', value: 'auto',
+        description: 'Whether and how to find the capstone library')
++option('dtc', type: 'combo', value: 'auto',
++       choices: ['disabled', 'enabled', 'auto'],
++       description: 'Whether to find the device tree compiler')
+ option('fdt', type: 'combo', value: 'auto',
+        choices: ['disabled', 'enabled', 'auto', 'system', 'internal'],
+        description: 'Whether and how to find the libfdt library')
+diff --git a/pc-bios/dtb/meson.build b/pc-bios/dtb/meson.build
+index 993032949f..9fcdbeff14 100644
+--- a/pc-bios/dtb/meson.build
++++ b/pc-bios/dtb/meson.build
+@@ -5,7 +5,6 @@ dtbs = [
+   'petalogix-s3adsp1800.dtb',
+ ]
+ 
+-dtc = find_program('dtc', required: false)
+ if dtc.found()
+   foreach out : dtbs
+     f = fs.replace_suffix(out, '.dts')
 diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index f09ef9604f..73e0770f42 100644
+index 73e0770f42..e8c452ffb0 100644
 --- a/scripts/meson-buildoptions.sh
 +++ b/scripts/meson-buildoptions.sh
-@@ -80,7 +80,7 @@ meson_options_help() {
-   printf "%s\n" '  --tls-priority=VALUE     Default TLS protocol/cipher priority string'
-   printf "%s\n" '                           [NORMAL]'
-   printf "%s\n" '  --with-coroutine=CHOICE  coroutine backend to use (choices:'
--  printf "%s\n" '                           auto/sigaltstack/ucontext/windows/wasm)'
-+  printf "%s\n" '                           auto/sigaltstack/ucontext/wasm/windows)'
-   printf "%s\n" '  --with-pkgversion=VALUE  use specified string as sub-version of the'
-   printf "%s\n" '                           package'
-   printf "%s\n" '  --with-suffix=VALUE      Suffix for QEMU data/modules/config directories'
+@@ -116,6 +116,7 @@ meson_options_help() {
+   printf "%s\n" '  dmg             dmg image format support'
+   printf "%s\n" '  docs            Documentations build support'
+   printf "%s\n" '  dsound          DirectSound sound support'
++  printf "%s\n" '  dtc             Whether to find the device tree compiler'
+   printf "%s\n" '  fuse            FUSE block device export'
+   printf "%s\n" '  fuse-lseek      SEEK_HOLE/SEEK_DATA support for FUSE exports'
+   printf "%s\n" '  gcrypt          libgcrypt cryptography support'
+@@ -310,6 +311,8 @@ _meson_option_parse() {
+     --disable-docs) printf "%s" -Ddocs=disabled ;;
+     --enable-dsound) printf "%s" -Ddsound=enabled ;;
+     --disable-dsound) printf "%s" -Ddsound=disabled ;;
++    --enable-dtc) printf "%s" -Ddtc=enabled ;;
++    --disable-dtc) printf "%s" -Ddtc=disabled ;;
+     --enable-fdt) printf "%s" -Dfdt=enabled ;;
+     --disable-fdt) printf "%s" -Dfdt=disabled ;;
+     --enable-fdt=*) quote_sh "-Dfdt=$2" ;;
 -- 
 2.49.0
 
