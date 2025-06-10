@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07579AD3827
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57767AD37F7
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:05:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOybR-0001al-F8; Tue, 10 Jun 2025 09:01:21 -0400
+	id 1uOybG-0000yw-27; Tue, 10 Jun 2025 09:01:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYe-0007yH-U0
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:32 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYj-000826-4k
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:37 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYY-0002j4-Of
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:25 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3a51481a598so3144655f8f.3
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:58:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYf-0002jb-9u
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:32 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3a365a6804eso3410812f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:58:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749560300; x=1750165100; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749560306; x=1750165106; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=P1V3w/IS64oeqhhB6d9B4sJVJcOGGWYHRK87tYEg+og=;
- b=gAShiRFxDYHLbRgcO0vcBHyYb8XyHMjdoVZl6n0fuF+O4E7/CyM5hZyJ9JJeLYnXw2
- PDeeQoOsj9TO/9FndbRbdWrb5XiXvIimB66BX5RGmSTd3H/SQSs2bpH3VfJnNRzHy1po
- 6dYhbx/DnhhQhC+WIbNVxOBhO2kSy5v1i3Hz+e4HceDROKsgAexFO9eUaeZv8RF3IS/U
- p6RZIuIEuLn7QmyOKfDrPjif6xeAsHEO7GjtGkpoHXks8XwNH5k715gzJH2udcHzZR0k
- FXKFylNJwzl2KrA0XoJF4aStNeP7Vm5S9Fz51Wp02ZJ9uXjkYx1QvvFbZx4RDB2tefkC
- n/4g==
+ bh=39EvlkRXXlcumPLuzzHWwFXfargkkijcg5vOQOsW2Dc=;
+ b=uNYVrdpNbvP6T0MoLAIfRRYbjNKnfJ51qe5sbacAkVIE+cvyzQF5IzXNJWErby9L3l
+ vxH1dzzO9H44O9bujYMmhkN716U0drq0NWeinEVxnWWjF0J+ChrtXM9JPN0tZZfBK3Mv
+ y1zXYkm3hre2UcwlqCthsczEi0VA4xMdQH2wv/nGzkpAWaWxp1tNfWp32n/YUV+x7RDw
+ km71I2kc7bZuAPUYR2ymrQwl2gM73yxwdK/NL6Hig3T3gsztC/BasqmmimQ07WOCt8iG
+ Y6BBMekTsmHoq6dKHbJTzhrr4fyE3dUCL0dspcGPG50ziZxexvEvd6MiwwISAiddrRVQ
+ UWwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749560300; x=1750165100;
+ d=1e100.net; s=20230601; t=1749560306; x=1750165106;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=P1V3w/IS64oeqhhB6d9B4sJVJcOGGWYHRK87tYEg+og=;
- b=wgZpl+Hw2cvba4kcbJbe5NSTslx0apdhjK8EMLt8L497DdMKGTvSBZiFwq+YNzGp7T
- qwC8zb6LuS4gxQUfb6PUzJSWadM+/6HkFZ+uij4yjEmKeo52taSql1/t7EtGnVyoQ42w
- eObZcdZqyiu4JH/MgC65WvcoAZEwt1LfikXUHpNB+PijMtVJMPNgofd7axbWbsDCQ37v
- tlJBby44ja9ArNIM1e742LjyzzKx/E4kvsLi1Kpq7FtZqreEwHLI7OuL1eszKorxMaD6
- /McwzXVUNT/hrML9ZSXak/WIxndS9jQU7GgfxgVi8NovcjV4pLksa/7fbBNtYnE38gXh
- 5BoQ==
-X-Gm-Message-State: AOJu0Ywpx5B1vaSifEwwXPfPg84MoY4yJoSe0AZ7Hh8puYGefBKviYWV
- WN4XMoagAU8M6yplIxHUvJkLHJFaalVR89eJvqaSU+evHrYgH3HT8+GiTz1bTgS5NL8esCVG1xR
- f8VUOCN0=
-X-Gm-Gg: ASbGncv/Y4DT4QvOz7MEPb9ZXzckZWwJb34TrTbu5JZZ75c9g16lUMXFuz8t714w7GQ
- 6OIyRDPP9kuhniTum1ZKJTvF/tNv9bgobQBc1wZtyAGFuQwvSVxnEh1Qu0R4qxPEoMZ/saFOeKk
- rIhFmHxsDW4GgVIxC+Om+p3/IUP2ZNFQhaTXuB1TBgu0C8+QHO3vMZt5j6aR9t114dwnT/ZiErk
- BVyL+3mijIiTLqI56RPenzOHJfM7sBGPkStpz/cRA9mj+buGXu9qtFtgBDRQFgmwMSy/6VHXnEM
- inmxCujyRF0cIyUZQYhPaXauwhmjLkGkx7yP+ZhqDZqwEAOFZRD8BRAeQMcvL2arcqIbJELH3Lo
- 972Is0XaXsNIow3a01YDZGKOhpb7KSSutjhMHiKLZRQ==
-X-Google-Smtp-Source: AGHT+IHLY2qOlpaD7ew7yDnmClP1Hpf5uajbMMKQr25oi/iLFkV82EWxorDwVrkAmQ7SxKtBsP8mVA==
-X-Received: by 2002:a05:6000:2f88:b0:3a4:c8c1:aed8 with SMTP id
- ffacd0b85a97d-3a5319a6fa1mr14453238f8f.39.1749560300385; 
- Tue, 10 Jun 2025 05:58:20 -0700 (PDT)
+ bh=39EvlkRXXlcumPLuzzHWwFXfargkkijcg5vOQOsW2Dc=;
+ b=i97LZAZ0qUaiXK2dliQE+ryYk8Q5aFn3Gdquy2NF/BFtxwe2CgPgkJEw7V00PvBgu8
+ c7Cv1vTM6eaAoT/GYuCIhDtj0gPu9TjRvt8QUAEhBS/GAXoo9vXcfgNN2QmWEmeKno85
+ kB6yWIb4SMrQQmapPRe7bpgzidj9bA1KPZnWqwl/kou/1R0DkHIptSbZPGhs7l5+pvx3
+ x2bjzsJ9amnsQQdwabZm1ZGEy8Hl5+LOoiuJEbD+2sAkYI89ASoUjEJzz/MegSf/09uw
+ /n3Jhl+p+NWJLNjEXfM+r+XYR/wtIhLY/934f9BtXnRtu4sUj9QHpjlvOO6DY1OcpmSU
+ RUdw==
+X-Gm-Message-State: AOJu0YxFZD9u5FrHsUxX4D/SavGN+btk8UKdzheMQL82n/VGeF8GTTAP
+ ruzFWWQ+LOAyHl1XUumNAshA0i2mCFH/AahkDj6JpgLS0V44VXd8uda83S36VLsp1N6gu1Ls4Wj
+ BYAapDvw=
+X-Gm-Gg: ASbGncvH0/Upc60UsLMKpHFhFtRr1Gg0tjfcd2MGuNfR6R0lEzO/K0Tu7dAj0u8yOCn
+ clVcAcoeypVpKWFTP8GGiHtxO5sSBNh1fzYE2u1FuuS0mhlLg53cFuFpfcuoWJmb8xJJghyiN+E
+ +tSupoByvwKlXokLbp9rTz1j/TaTSCX5FVNKRvqSOLPpxZosurpeavqKUL71F7SAIHXI+uphcf2
+ g2sFQ6Gvze+n7KQe2WSxDVhhu3acsLNCNuRW8cQ1d/s3jWvjjDeknNeDK/xLZZdpIcriQEeFyrz
+ HooXxyGOOMkwBt4yHyoh5CUOh1uyChb/Lea5BRjJYYMvtTuY+xFYSQVuND1xox4lLV+x+1SisKc
+ hA1MtSk2/OSxyixfakFWX5hIyRbRJzio7nfkZ20FuIA==
+X-Google-Smtp-Source: AGHT+IHpUki8lK6upCgEtIu6Ft7/2IvSPuvlA520CYTRMZLFhhPxHCeaF8fFIAO7C8jC82G4IYM3IQ==
+X-Received: by 2002:a05:6000:4027:b0:3a4:d6ed:8df8 with SMTP id
+ ffacd0b85a97d-3a5522bdeeamr2019374f8f.39.1749560305674; 
+ Tue, 10 Jun 2025 05:58:25 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a53229d9e9sm12425447f8f.13.2025.06.10.05.58.19
+ 5b1f17b1804b1-452730c7756sm138986805e9.33.2025.06.10.05.58.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Jun 2025 05:58:19 -0700 (PDT)
+ Tue, 10 Jun 2025 05:58:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Soumyajyotii_Ssarkar <soumyajyotisarkar23@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 23/24] hw/net/i82596: Update datasheet URL
-Date: Tue, 10 Jun 2025 14:56:32 +0200
-Message-ID: <20250610125633.24411-24-philmd@linaro.org>
+Subject: [PULL 24/24] hw/net/i82596: Factor configure function out
+Date: Tue, 10 Jun 2025 14:56:33 +0200
+Message-ID: <20250610125633.24411-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250610125633.24411-1-philmd@linaro.org>
 References: <20250610125633.24411-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,29 +100,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Soumyajyotii_Ssarkar <soumyajyotisarkar23@gmail.com>
 
-Change the asset link to one which is working from the PARISC website.
+Abstract the configure function.
 
 Signed-off-by: Soumyajyotii Ssarkar <soumyajyotisarkar23@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Message-ID: <20250607152711.108914-2-soumyajyotisarkar23@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/i82596.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/net/i82596.c | 36 +++++++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
 diff --git a/hw/net/i82596.c b/hw/net/i82596.c
-index 64ed3c83905..fc33a00d498 100644
+index fc33a00d498..c1ff3e6c564 100644
 --- a/hw/net/i82596.c
 +++ b/hw/net/i82596.c
-@@ -5,7 +5,7 @@
-  * This work is licensed under the GNU GPL license version 2 or later.
-  *
-  * This software was written to be compatible with the specification:
-- * https://www.intel.com/assets/pdf/general/82596ca.pdf
-+ * https://parisc.docs.kernel.org/en/latest/_downloads/96672be0650d9fc046bbcea40b92482f/82596CA.pdf
-  */
+@@ -177,6 +177,26 @@ static void set_individual_address(I82596State *s, uint32_t addr)
+     trace_i82596_new_mac(nc->info_str);
+ }
  
- #include "qemu/osdep.h"
++static void i82596_configure(I82596State *s, uint32_t addr)
++{
++    uint8_t byte_cnt;
++    byte_cnt = get_byte(addr + 8) & 0x0f;
++
++    byte_cnt = MAX(byte_cnt, 4);
++    byte_cnt = MIN(byte_cnt, sizeof(s->config));
++    /* copy byte_cnt max. */
++    address_space_read(&address_space_memory, addr + 8,
++                       MEMTXATTRS_UNSPECIFIED, s->config, byte_cnt);
++    /* config byte according to page 35ff */
++    s->config[2] &= 0x82; /* mask valid bits */
++    s->config[2] |= 0x40;
++    s->config[7]  &= 0xf7; /* clear zero bit */
++    assert(I596_NOCRC_INS == 0); /* do CRC insertion */
++    s->config[10] = MAX(s->config[10], 5); /* min frame length */
++    s->config[12] &= 0x40; /* only full duplex field valid */
++    s->config[13] |= 0x3f; /* set ones in byte 13 */
++}
++
+ static void set_multicast_list(I82596State *s, uint32_t addr)
+ {
+     uint16_t mc_count, i;
+@@ -234,7 +254,6 @@ static void command_loop(I82596State *s)
+ {
+     uint16_t cmd;
+     uint16_t status;
+-    uint8_t byte_cnt;
+ 
+     DBG(printf("STARTING COMMAND LOOP cmd_p=%08x\n", s->cmd_p));
+ 
+@@ -254,20 +273,7 @@ static void command_loop(I82596State *s)
+             set_individual_address(s, s->cmd_p);
+             break;
+         case CmdConfigure:
+-            byte_cnt = get_byte(s->cmd_p + 8) & 0x0f;
+-            byte_cnt = MAX(byte_cnt, 4);
+-            byte_cnt = MIN(byte_cnt, sizeof(s->config));
+-            /* copy byte_cnt max. */
+-            address_space_read(&address_space_memory, s->cmd_p + 8,
+-                               MEMTXATTRS_UNSPECIFIED, s->config, byte_cnt);
+-            /* config byte according to page 35ff */
+-            s->config[2] &= 0x82; /* mask valid bits */
+-            s->config[2] |= 0x40;
+-            s->config[7]  &= 0xf7; /* clear zero bit */
+-            assert(I596_NOCRC_INS == 0); /* do CRC insertion */
+-            s->config[10] = MAX(s->config[10], 5); /* min frame length */
+-            s->config[12] &= 0x40; /* only full duplex field valid */
+-            s->config[13] |= 0x3f; /* set ones in byte 13 */
++            i82596_configure(s, s->cmd_p);
+             break;
+         case CmdTDR:
+             /* get signal LINK */
 -- 
 2.49.0
 
