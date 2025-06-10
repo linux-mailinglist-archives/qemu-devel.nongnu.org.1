@@ -2,90 +2,147 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3075AD3382
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 12:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE71BAD33E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 12:44:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOw8A-0008ID-72; Tue, 10 Jun 2025 06:22:58 -0400
+	id 1uOwS5-0004ZR-6s; Tue, 10 Jun 2025 06:43:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uOw88-0008Hx-Nc
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 06:22:56 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uOw86-0006PZ-4v
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 06:22:56 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-450cb2ddd46so31808925e9.2
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 03:22:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749550970; x=1750155770; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:from:to:cc:subject:date:message-id
- :reply-to; bh=7lslP2hFur8NQXFSzATNMpM+eyqV7pzgPRYWwkQKhic=;
- b=CAnkuyAM6rbohCNA9A2Xc3WhscHQFiQPF0wRcvF0Fy8dcKWyk/lv/kIP89yElTQSJj
- 257+yk2fzRPy9WiYrJhdqxyX83s3RxGais1OjeX+nLAMDAyKrHGIzm0KyLKs4FYZFTgH
- 3XrA//EvKkoZXoLwPDJHZs7pLIkywRedxvEGRU3QkVpcUDfXGd0TOTl4Mt8MpZE6bbaD
- qkeJCbKdWRRyebczSTErVoZQx2BLxFuE2ihvxcYTd6SJCQtinIhwMkw5A2xhO01eCI9t
- wXZj5fOK6hAXlZuVL/SCsRuB2TH8bYEhQ5lCTGFJvFJ6TGPcaYl8gUBJ/LSmh2EUTprt
- omoQ==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uOwS3-0004Z3-5y
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 06:43:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uOwRz-0000cF-Qr
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 06:43:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749552204;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=uHFLhgGIYP2g0wU8P4sjggV0oEKCBvBN6Ac+3j+lNps=;
+ b=hxI6WQMUje8Oghx0isc0g0acGWk9k9Fi5s0KFHfp5PAW3yHDqcpClWHpe/T8Hy7aitwVRC
+ HozRRZyxWtlsmPAVu65GDXndhecdDYTn8pJ2/JglLKPrydkhFKn/Y2InlPmuTKYhmRs2+j
+ BGm6PxKWiaLidu6voNWjhBH/AsVttM0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-388-kS4kVHN6OI-UJRL-mEvQvw-1; Tue, 10 Jun 2025 06:43:23 -0400
+X-MC-Unique: kS4kVHN6OI-UJRL-mEvQvw-1
+X-Mimecast-MFC-AGG-ID: kS4kVHN6OI-UJRL-mEvQvw_1749552202
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-451d30992bcso41677585e9.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 03:43:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749550970; x=1750155770;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7lslP2hFur8NQXFSzATNMpM+eyqV7pzgPRYWwkQKhic=;
- b=ZcT/Uss7dlwbBtszMsdUkdyoVT1qejmiZk0FxLZocJsGJb+rveJms6A9NLby0ljClR
- wiNkiPkzsLu8xQcPqZDLdbxUR9hKcZzW2PUNM+z5zU5Bgndq2gn/f8XmFpOv1fYdu0jp
- wDK9tb9mHh9Sat8UBH7grFjy4TJEO04OUxkfPPYj7OoJtToOrzNqgg3Zf24D5TeVN9/3
- xoNa7pekh7kJNRS0esyFKR1pfVTIz/x4HzP4xyYAfa6G3llB7ghzH/gY0hHnPCxAKTi9
- sr8k/mzm4iKAwvVo8Eq746aZzFjoLr1qV2TmOT+jkzMBUx/TnDoSlC8LH3aRQZtEocgK
- tvMA==
+ d=1e100.net; s=20230601; t=1749552202; x=1750157002;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :content-language:from:references:cc:to:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=uHFLhgGIYP2g0wU8P4sjggV0oEKCBvBN6Ac+3j+lNps=;
+ b=W1vOrBl7FliYCRF9lDrIDxX/jJVOjz4XPsRWgfcqQaNr462etKYf/6cDD1QANt4m3e
+ YnEUwRh01z1wNfhtG+fA9TewsOZlpFFCH5tnnq6gacwxQ7OJCJ37iLx8lSAL/iZLppKr
+ amLcHUeteOAm/nE76A4klvKTOGjMAJoFlE4BQhs29MsPGqYk/BeHRp18Zdy0iD12aFA9
+ xnTHEgPk686QdtonTZDuII5+SVTfglKUhBF+9vCXxeSHEE9oepPZlHPT7JxkPo6YfGdx
+ n2ZlGwO9CfBpu0lrp/kqXK2NJqp1PNbs6aiOy5PJ0NbftgC21hYaC9YmPCk5arnuNF70
+ OykQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX7pa0lugl/bMrXgw7SYiXj9sacE8Dge25vY8JE444bLAMsK8gR9Bnsb6KcUBOuZqAYK3F7KcYo5xM2@nongnu.org
-X-Gm-Message-State: AOJu0Yy/wlORw0EM5AInSAlutBeVqJpo+1vzgYaSJNlr98a+YpgTJcwq
- XUaYc9in6uJw8JGlj69fUD8f7vJus/GYVRNN49jDxOMuEPMlza3Qv91QJbKELw==
-X-Gm-Gg: ASbGncsdVmNdJCqID8hUkiBw/kurnEemdLIH6CRgCaigh8eX7YoTwBeXa4e//wwTFXp
- 1+1H/ouqo3iirL0AAJTh/E74NxNWIbG1piS7YCd+W/29iN4eG1hLlO1eZmqfXBrD9wgYURo59QG
- NW2/DoCJUAqrPrgtMKtEecorjE5eaXVZXmlgR33ntVSwLQySlLNDLgCP88p/G61prKrIcf9uO/U
- Ye7//LyIDOMp8zIuWGiV64Cfo3JdXU+lJgmfaP+eseb/tKjWccBEDinkCJQ8NmCN1+oCFSqZ2v1
- TMn7hYd9mR2Jtus1zRW0VfMnbXgJMRk0I3E1rHTU5St+yUAs+jh1FRIz
-X-Google-Smtp-Source: AGHT+IGKWY2tPpaLCP5QceZnf7fzrMquWPtxjBa4Epy4HZCQ3Us7Jam6A4KviorLp2057ZYtYRp/XQ==
-X-Received: by 2002:a05:600c:3493:b0:450:d386:1afb with SMTP id
- 5b1f17b1804b1-4531de060c7mr18662505e9.9.1749550969619; 
- Tue, 10 Jun 2025 03:22:49 -0700 (PDT)
-Received: from [127.0.0.1] ([185.238.219.2]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45209ce17f9sm139311105e9.11.2025.06.10.03.22.48
+ AJvYcCX61YCgqcYhPX4YnEIcOmmsLZKthdiaEJOOpRDQUShEy0HSErUt7hxgNY+DNO8UhVSRHy170EFBIfwN@nongnu.org
+X-Gm-Message-State: AOJu0YyNQLXucpSZbrw8jOtre1e+GFbLd0Vbw/Bp6EvLJlTn3zXQOqJj
+ pZw3yeAuxHRvUjhSYokr3+5nVStefpX3SQfaWLjIEk3lwWJKggqc37cyEvfeEyC9O+rT0JZjBCK
+ 4meyCMYMPJFR1IjHuxyQ5At/DTFTFAm1pGy5PaIgC4EoEER+8A7VBKw1f
+X-Gm-Gg: ASbGnctstxdfgBS/pBhVY4vKgUEwf0WdRWi5pKpOH/68DgIoRI4SfhzNsNY4wK9HSka
+ h/4+dvPKdO8LOeVYWzEOnzJiDvtGs4hCmAgbKNpLWrzR6z6OiIj8bdCYmqLtDsxvSNBQZUvuoRL
+ tRwiQSJ0G/725gGUjoA2FsLZCJNumijvq+lj+Jm5sw0n7l0zD3dehwaLfbr+VuOqBE/2KgvGF9C
+ /XzIYWY1TWEBtkF+H4RRU3e+YAkfDmn6UZH8owP0zeykiJyzVX/BmaHMnCiiZF8X9jN6YbuAFd3
+ awxnpLXyVekwf2n1jQ3sMMi91PUNo/Ta6wn37j7d4VzgDSeuMsBcKkw=
+X-Received: by 2002:a05:600c:5396:b0:43c:f44c:72a6 with SMTP id
+ 5b1f17b1804b1-45201364c47mr172511585e9.2.1749552202321; 
+ Tue, 10 Jun 2025 03:43:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvV5JY3bGfsYp5VuherL+EoZ6KlJh9SmhQUQHRcOXIbXYIQokDS3YByBl5Ng/BVRG6/3+2Tg==
+X-Received: by 2002:a05:600c:5396:b0:43c:f44c:72a6 with SMTP id
+ 5b1f17b1804b1-45201364c47mr172511255e9.2.1749552201940; 
+ Tue, 10 Jun 2025 03:43:21 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
+ ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a53229e009sm12297166f8f.16.2025.06.10.03.43.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Jun 2025 03:22:49 -0700 (PDT)
-Date: Tue, 10 Jun 2025 10:22:40 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?ISO-8859-1?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: Controlling time in QEMU
-In-Reply-To: <b3cef05e-8bb5-4390-8b43-914adca3b3b6@linaro.org>
-References: <b3cef05e-8bb5-4390-8b43-914adca3b3b6@linaro.org>
-Message-ID: <8CDF867E-5AB2-43B6-B271-B350E833316E@gmail.com>
+ Tue, 10 Jun 2025 03:43:21 -0700 (PDT)
+Message-ID: <d4f46b6e-b002-47f9-9f13-09b44d4431df@redhat.com>
+Date: Tue, 10 Jun 2025 12:43:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x334.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/7] vhost-user: Add VirtIO Shared Memory map request
+To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
+Cc: stefanha@redhat.com, slp@redhat.com, "Michael S. Tsirkin"
+ <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ jasowang@redhat.com, stevensd@chromium.org, hi@alyssa.is,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250609144729.884027-1-aesteve@redhat.com>
+ <20250609144729.884027-2-aesteve@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250609144729.884027-2-aesteve@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,64 +158,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 09.06.25 16:47, Albert Esteve wrote:
+> Add SHMEM_MAP/UNMAP requests to vhost-user to
+> handle VIRTIO Shared Memory mappings.
+> 
+> This request allows backends to dynamically map
+> fds into a VIRTIO Shared Memory Region indentified
+> by its `shmid`. The map is performed by calling
+> `memory_region_init_ram_from_fd` and adding the
+> new region as a subregion of the shmem container
+> MR. Then, the fd memory is advertised to the
+> driver as a base addres + offset, so it can be
+
+s/addres/address/
+
+> read/written (depending on the mmap flags
+> requested) while it is valid.
+> 
+> The backend can unmap the memory range
+> in a given VIRTIO Shared Memory Region (again,
+> identified by its `shmid`), to free it.
+> Upon receiving this message, the front-end
+> must delete the MR as a subregion of
+> the shmem container region and free its
+> resources.
+> 
+> Note that commit all these operations need
+> to be delayed to after we respond the request
+> to the backend to avoid deadlocks.
+> 
+> The device model needs to create VirtSharedMemory
+> instances for the VirtIO Shared Memory Regions
+> and add them to the `VirtIODevice` instance.
+
+Just a general comment: you can use more characters per line in the 
+patch desription.
 
 
-Am 6=2E Juni 2025 19:03:32 UTC schrieb Pierrick Bouvier <pierrick=2Ebouvie=
-r@linaro=2Eorg>:
->Hi,
->
->I recently needed to slow down time within a virtual machine, due to a ti=
-meout being hit because my QEMU binary which was not fast enough (gcov debu=
-g build if you're curious about the use case)=2E
->
->Currently, people tend to use -icount shift=3DX with low values for that,=
- as it roughly maps time to how many instructions were ran=2E
->As well, I've been working on ips (Instructions per second) plugin [1], w=
-hich allows to slow down QEMU execution by sleeping, as suggested by Alex=
-=2E It's using a new clock update API [2], that is limited to move time fas=
-ter (jump to future time), but not slower=2E
->
->After looking at how all this implemented, I am wondering why we don't si=
-mply fake real time QEMU is using as a reference, which is based on gettime=
-ofday [3]=2E
->
->Using faketime, which fakes gettimeofday I've been able to manipulate QEM=
-U time:
->- faketime -f '+0 x10' qemu-system-aarch64: boot timestamp is 14s
->- faketime -f '+0 x0=2E1' qemu-system-aarch64: boot timestamp is 0=2E13s
->In both cases, the real boot time (QEMU execution) is around 3s=2E
->
->It works as expected, speeding or slowing execution without impacting QEM=
-U speed itself, which can run without needing to do any artificial sleep or=
- clock manipulation=2E If a program in guest vm sleeps with an absolute tim=
-e, it will be multiplied by the factor, which results in significant slowdo=
-wn=2E But it can't be avoided, by design=2E
->By using a time factor big enough (x200), it can even trigger rcu_preempt=
- stall detection in Linux guest kernel=2E
->
->As it seems a bit too good to be true, time for questions:
->- Has it already been considered?
->- Any obvious downside I might have skipped?
+-- 
+Cheers,
 
-The only downside I can see is that it seems to disturb QEMU's internal ti=
-mekeeping=2E The GTK gui freezes for quite some time when the time facor is=
- very low, e=2Eg=2E 0=2E001=2E
+David / dhildenb
 
-Best regards,
-Bernhard
-
->- Would that be interesting to offer such a feature in QEMU itself
->  (-time-dilation 0=2E10)?
->
->[1] https://gitlab=2Ecom/qemu-project/qemu/-/commit/72db6d54a4a9203736261=
-fc63f32f6cd3486b7e4
->[2] https://gitlab=2Ecom/qemu-project/qemu/-/commit/847a65dd76bf1868c7966=
-a2b2608dcd00cb68dc7
->[3] https://gitlab=2Ecom/qemu-project/qemu/-/blob/master/include/qemu/tim=
-er=2Eh?ref_type=3Dheads#L809
->[4] https://github=2Ecom/wolfcw/libfaketime
->
->Regards,
->Pierrick
->
 
