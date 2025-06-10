@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A639AD36C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 456C2AD36F1
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:45:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOyGK-0003Od-08; Tue, 10 Jun 2025 08:39:37 -0400
+	id 1uOyGC-0002u8-0T; Tue, 10 Jun 2025 08:39:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uOyF9-0001Ls-0E
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:38:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uOyF8-0001Ll-Qo
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:38:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uOyF7-0000TT-8g
+ id 1uOyF5-0000T8-VO
  for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:38:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749559095;
+ s=mimecast20190719; t=1749559094;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+mvDwpNWQ8xeg/LgMN6K7nHPAI9N0u8M0JC8hy7d4No=;
- b=MD83NSc110eIBteJ+xH4wpfx2Kh6aCUZ0wr0drbzv42QrG2uXes1WLXJTgis6K8B0c/k05
- /qf4j22Xh0PvtXnXpr6635ujYdZyAdEib7YsNIn3LAsKCjUEfHtCi8rPTIDTvqBZz/nhyw
- M/6DD5bHaYdGEumjPaCmjIvZKhLE3kQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=rfv9jyv5YI08M7ggzHxF27WvksZj0F/4HtudRMJKIdw=;
+ b=B2oTOGxU71h9sqwVNTYnV7PoF+VEr+FVC3tm/0ZDitp4pavwJkHljAXmsit6RbqCdVslpv
+ X45c0nPWk6mMHoA9Wd5CJQriXsh1CRjP6LBtbW7k+MraZYeumpD3+Ap3AAVH9tbNaiiGzW
+ TtBwoIW81LXK5mSZlRMtA+FyIjimwc0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-Cv50WpDwM_O_mSiDmcViLg-1; Tue,
- 10 Jun 2025 08:38:10 -0400
-X-MC-Unique: Cv50WpDwM_O_mSiDmcViLg-1
-X-Mimecast-MFC-AGG-ID: Cv50WpDwM_O_mSiDmcViLg_1749559089
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-139-E2jVuWXQNUiKtzAmXrd6dA-1; Tue,
+ 10 Jun 2025 08:38:12 -0400
+X-MC-Unique: E2jVuWXQNUiKtzAmXrd6dA-1
+X-Mimecast-MFC-AGG-ID: E2jVuWXQNUiKtzAmXrd6dA_1749559091
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DDAB91808993; Tue, 10 Jun 2025 12:38:08 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 76482195608E; Tue, 10 Jun 2025 12:38:11 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.87])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C398030001B1; Tue, 10 Jun 2025 12:38:06 +0000 (UTC)
+ id 580FA30001B1; Tue, 10 Jun 2025 12:38:09 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -52,17 +52,16 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 21/31] hw/net/virtio-net: skip automatic zero-init of large
- arrays
-Date: Tue, 10 Jun 2025 13:36:59 +0100
-Message-ID: <20250610123709.835102-22-berrange@redhat.com>
+Subject: [PATCH 22/31] hw/net/xgamc: skip automatic zero-init of large array
+Date: Tue, 10 Jun 2025 13:37:00 +0100
+Message-ID: <20250610123709.835102-23-berrange@redhat.com>
 In-Reply-To: <20250610123709.835102-1-berrange@redhat.com>
 References: <20250610123709.835102-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,37 +86,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'virtio_net_receive_rcu' method has three arrays with
-VIRTQUEUE_MAX_SIZE elements, which are apprixmately 32k in
-size used for copying data between guest and host. Skip the
-automatic zero-init of these arrays to eliminate the
-performance overhead in the I/O hot path.
+The 'xgmac_enet_send' method has a 8k byte array used for copying
+data between guest and host. Skip the automatic zero-init of this
+array to eliminate the performance overhead in the I/O hot path.
 
-The three arrays will be selectively initialized as required
-when processing network buffers.
+The 'frame' buffer will be fully initialized when reading guest
+memory to fetch the data to send.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/net/virtio-net.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/net/xgmac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 221252e00a..eb93607b8c 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1911,9 +1911,9 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
-     VirtIONet *n = qemu_get_nic_opaque(nc);
-     VirtIONetQueue *q;
-     VirtIODevice *vdev = VIRTIO_DEVICE(n);
--    VirtQueueElement *elems[VIRTQUEUE_MAX_SIZE];
--    size_t lens[VIRTQUEUE_MAX_SIZE];
--    struct iovec mhdr_sg[VIRTQUEUE_MAX_SIZE];
-+    QEMU_UNINITIALIZED VirtQueueElement *elems[VIRTQUEUE_MAX_SIZE];
-+    QEMU_UNINITIALIZED size_t lens[VIRTQUEUE_MAX_SIZE];
-+    QEMU_UNINITIALIZED struct iovec mhdr_sg[VIRTQUEUE_MAX_SIZE];
-     struct virtio_net_hdr_v1_hash extra_hdr;
-     unsigned mhdr_cnt = 0;
-     size_t offset, i, guest_offset, j;
+diff --git a/hw/net/xgmac.c b/hw/net/xgmac.c
+index 9c87c4e70f..d45f872467 100644
+--- a/hw/net/xgmac.c
++++ b/hw/net/xgmac.c
+@@ -207,7 +207,7 @@ static void xgmac_enet_send(XgmacState *s)
+     struct desc bd;
+     int frame_size;
+     int len;
+-    uint8_t frame[8192];
++    QEMU_UNINITIALIZED uint8_t frame[8192];
+     uint8_t *ptr;
+ 
+     ptr = frame;
 -- 
 2.49.0
 
