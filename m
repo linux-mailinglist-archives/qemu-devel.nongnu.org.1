@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0901AAD36BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4293DAD36E1
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:44:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOyFw-0002HM-98; Tue, 10 Jun 2025 08:39:11 -0400
+	id 1uOyGE-000341-BJ; Tue, 10 Jun 2025 08:39:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uOyEh-0001E5-Nl
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:37:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uOyEk-0001EU-GE
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:38:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uOyEf-0000Oy-TC
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:37:51 -0400
+ id 1uOyEi-0000PF-Pa
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:37:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749559069;
+ s=mimecast20190719; t=1749559071;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oC3bnhW/4ufRd4rICQUGkAzauGbYWqso40cbwdueTAg=;
- b=f0XtBML1cGsTG8UBvOn+qrurb4G58MtVd1h+MjX+q78FeiTlZKwSgauOZcGkR5s//xq72l
- Kwj4PQT6MbxCj4Fv4m2aTPkxfG1GPKmsSpjZj4Gk+W18kFdSnj6+Lz8VXwp4LZOLMAk5cn
- 0a1ErnipptggKekvBDiUf1XXVaxbDO4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=/ziOtHkbVXRYUSBWCtKwOP17Zb9Et/uXA8AYoC3S5Tg=;
+ b=Tnu7OJlW7IPRzJGhqo76Zb5T7kS0egEYHvjqsbqr6WPvzXyKIGenFXjDm5ZVS1igwjOVJL
+ 9vT7Ra3uckHzdjq9SDlfkVAP27MLxycmHT5Q/VNlc2VkgvDRIjrBdPLa4opERbs8aCXIQI
+ s+Rpw/xMXKL/L6Ihzt7Eq0yJYLpfDn8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-186-sdGXTp4HMOiMp92RcASgsQ-1; Tue,
- 10 Jun 2025 08:37:45 -0400
-X-MC-Unique: sdGXTp4HMOiMp92RcASgsQ-1
-X-Mimecast-MFC-AGG-ID: sdGXTp4HMOiMp92RcASgsQ_1749559064
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-65AaL7fOOGyErpF2aqa6Kg-1; Tue,
+ 10 Jun 2025 08:37:48 -0400
+X-MC-Unique: 65AaL7fOOGyErpF2aqa6Kg-1
+X-Mimecast-MFC-AGG-ID: 65AaL7fOOGyErpF2aqa6Kg_1749559067
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A1A2818002EC; Tue, 10 Jun 2025 12:37:44 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BDD9A19560B8; Tue, 10 Jun 2025 12:37:47 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.87])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 81D9630002C5; Tue, 10 Jun 2025 12:37:42 +0000 (UTC)
+ id 1691930001B1; Tue, 10 Jun 2025 12:37:44 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -52,16 +52,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 12/31] hw/audio/sb16: skip automatic zero-init of large array
-Date: Tue, 10 Jun 2025 13:36:50 +0100
-Message-ID: <20250610123709.835102-13-berrange@redhat.com>
+Subject: [PATCH 13/31] hw/audio/via-ac97: skip automatic zero-init of large
+ array
+Date: Tue, 10 Jun 2025 13:36:51 +0100
+Message-ID: <20250610123709.835102-14-berrange@redhat.com>
 In-Reply-To: <20250610123709.835102-1-berrange@redhat.com>
 References: <20250610123709.835102-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,7 +87,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'write_audio' method has a 4k byte array used for copying data
+The 'out_cb' method has a 4k byte array used for copying data
 between the audio backend and device. Skip the automatic zero-init
 of this array to eliminate the performance overhead in the I/O hot
 path.
@@ -96,22 +97,22 @@ device memory.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/audio/sb16.c | 2 +-
+ hw/audio/via-ac97.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/audio/sb16.c b/hw/audio/sb16.c
-index 19fd3b9020..bac64118fe 100644
---- a/hw/audio/sb16.c
-+++ b/hw/audio/sb16.c
-@@ -1181,7 +1181,7 @@ static int write_audio (SB16State *s, int nchan, int dma_pos,
-     IsaDma *isa_dma = nchan == s->dma ? s->isa_dma : s->isa_hdma;
-     IsaDmaClass *k = ISADMA_GET_CLASS(isa_dma);
-     int temp, net;
+diff --git a/hw/audio/via-ac97.c b/hw/audio/via-ac97.c
+index 1e0a5c7398..d5231e1cf2 100644
+--- a/hw/audio/via-ac97.c
++++ b/hw/audio/via-ac97.c
+@@ -175,7 +175,7 @@ static void out_cb(void *opaque, int avail)
+     ViaAC97SGDChannel *c = &s->aur;
+     int temp, to_copy, copied;
+     bool stop = false;
 -    uint8_t tmpbuf[4096];
 +    QEMU_UNINITIALIZED uint8_t tmpbuf[4096];
  
-     temp = len;
-     net = 0;
+     if (c->stat & STAT_PAUSED) {
+         return;
 -- 
 2.49.0
 
