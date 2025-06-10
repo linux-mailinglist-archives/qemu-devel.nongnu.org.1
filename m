@@ -2,216 +2,190 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA413AD3FB7
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1707AD3FDC
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 19:03:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP2IJ-0003ZS-Oo; Tue, 10 Jun 2025 12:57:51 -0400
+	id 1uP2Kl-0000uI-KQ; Tue, 10 Jun 2025 13:00:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP2ID-0003MB-KF
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 12:57:46 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uP2KL-0000TG-Ox
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 12:59:58 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP2I7-0002Gu-Ep
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 12:57:43 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AGMxiv018483;
- Tue, 10 Jun 2025 16:57:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uP2KJ-0002sM-Sb
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 12:59:57 -0400
+Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEA33D002722;
+ Tue, 10 Jun 2025 09:59:52 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=31cwX4eYcqN1Wkz2s0hsXP2i1IJ9gyOP2p7gZhgOEyY=; b=
- bagkyvihBTohRLW46+P2Dh76LCuKKm8dgJLOonsbN+Sfi32IAFnE8hRBuDsGNN6h
- NCQ93jXJJ0feQJCwa3YyUFGDbq3/BgkN2rrfiHKKI9f9qg2P34jwPaVvFSZEo36u
- H+zkJCfDYRftQcN99RpjmerxnkAT9b7GQsDnlky85TPyKJWTl0utDZUXpCwRIsti
- v7Xp9Fjb9XbnieD/vrWxSIOY022k6+glzVtPS0qf4bU+S113KwCenIzNEHUXb+65
- gSMqJamwiB3ulWWRQbLNqtvIOwFTQcSq1t/yJlpybw0meq+lRLAcujb4SszOnkUh
- l4azdTPkn8v3nstUt2+8pA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474c74vqq3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 16:57:37 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 55AFGL2p011969; Tue, 10 Jun 2025 16:57:36 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2085.outbound.protection.outlook.com [40.107.236.85])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 474bv9yrpr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 16:57:36 +0000
+ proofpoint20171006; bh=WpOtjfWGEveaez4rKlD8ErxDTLQWuWO3UTa5FKpwX
+ 64=; b=0xYye6gmRr5VlubO8Q5qMLTlwp4EFOwFfVhu8s+LiPEq+EUwjEWDNOdZt
+ DWnj8PFaAzGpnko3QIPdtCpxvdpdYhrD/F3Q9kZTsLQ/ayiPnsEoUaW18SdilTV5
+ 760icJ/K4xTfTPkcyyg5V+Y7EAUSSAi9DIsLhuhdR3kBEmBbakbbD5VunRfhMnQJ
+ ZLQaeK9MUuO0nCMy1ba0+OzLItNaUVymuG1Jk2wMVWza0hpNK1IKN+IB3mF5MH2Q
+ +Sk/cH8Cxkr2dqTqC5/SdpcVQsAuQdozb0KWRl4shkKTpTPD+Xp2Oyy4+WQEQXrM
+ VWYn3brOkabyHs4755zGjdytDJTxQ==
+Received: from nam12-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2101.outbound.protection.outlook.com [40.107.244.101])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 474khjeurg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Jun 2025 09:59:52 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k/mCRSj4o1Q5ZkJnlXtRuA5r2ccWGNlP8DFEpaiBLigFKZfKSw1ehOcn4BBD17PHG2w6f6z1SRalAiiIEXGKG6V/Yja2sm013Q8TkdatopqmrN0tgWYpa0PJ8E78RKdQQ94igG36fmG0Tw4oUiPmB56wq40D7s0EMpFC0ktKBygz+/zhbITwt5LoRp87x02o1KKT9r56gri50Vq4sSDgpnWj5i08Mq4KJKJz2btcSCEVQVhzNmJEsrel/ROLBQXt1QyPuQXI7+K+S14YU9RFU2MIUUYNgs0wnfGJawvcBZ3uFujYCDQq7pChA+Wirlgxo7o/NnR7drFMG3JFec/WQQ==
+ b=lESX+/rCGkBReLexUshq6JkCxHak3yPE9R6/2w3WTtnj5yZ9/iY2r1wj7d0mtaB8NMNI0vr1X5dLyDF2C6/FnisoJH5s5JnZ0jFEglNkkmJgtRcVo73UeMYV9/zvuYVX068dRhK+bvf4uGT0p/djHuBhcTkPRG+jaXJyKr1n4pBpZX0vi4aD/5BcZOgP5o55un5VgJjo1KX0fH3MaGLkr5sSZ8hdMBw53o/pZgdl3luG4m0k6AkkvTVa+zHUdnb9EZBkQXUBiW8es2/YDCGaMadFkMS8YKVFCbakiG94h7Co8wO1BmAqRh6ckTfJjfFlC0Ie5e90A/MKxPkgI4poDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=31cwX4eYcqN1Wkz2s0hsXP2i1IJ9gyOP2p7gZhgOEyY=;
- b=ySiF6U9pEg2GIJM9QQs1Tl1EjyRCrssmeM7ceX++MkNsGwWFqT89XEhAIs8LtIiBIInxpqvBEt+xDlRCuCFMb69D/79lPCLsKEWDjKLw89vDsP+WfbrGHI/rxhWyvUgYEBLmIl48vXTHMvnsCjN+y7e8V87jdsaYg9/71S4xWc4d6W7hhQeUQ0apGBS0ySLb96AdbOAs53dWwVpgfBDVQ2+KK48NNzYfkN4AlSv6RHLnMB9EXyqNu88wKEPjAZ9IHjrdpVxX3VfVRLU58+VB/M0+7Yu3PR1EpYJnS2SlFICvqjn4LY8JGp5Nex8KVSePe6CkCHJl3gDC5D+mLGIzTw==
+ bh=HaCeumNagYP3poowHZtToIhEJPkUPoZnbnh5GhtUaHU=;
+ b=cciquWYtIWbpA1S0M6mblW+HCSf2FGHVCK8IX33lm1G75/VfoRsdGiJNVZ2wrgDsH5OmdN7z3vbwFLIp+3O2g8TNntPSDvfIf6zwME0rUsBwLyQYOa+Tl+blGfseveUlVw+UUVdv153YiVtXpa5q5/6k99h6uQ3bfL8zVupaXOG57nqvnvqB/u7GuQ2iGbU1aB9teWT2FwFlBA8VFHGolJ6/5HqybtdaO+SMrxA+YfJiL12sR+qGDS7dZCa2L+pwZndsomzlQgsU3lxiEbtWN9P2oAR9V5iDubkLGsGrt+XCQ6AGjSARyprG8NFtmYRnddVWb0lNzmwExZxs/Es0tg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=31cwX4eYcqN1Wkz2s0hsXP2i1IJ9gyOP2p7gZhgOEyY=;
- b=qNv0uBfAEA+aTm0kl+iScbWpclpOwuMhbpEhcdkySSq59f1GC56QLlx9alpcnDP6hD+jnBLcNDxcxB2pkUTMvXU6gOlxynjo96F+cxDv2R62zpukLglfeWKJjLKQseuGMBbSbksbQb8L4YNDcgSrhBhUphrun+XDP1RwExQe1c8=
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by DM6PR10MB4252.namprd10.prod.outlook.com (2603:10b6:5:215::9) with
+ bh=HaCeumNagYP3poowHZtToIhEJPkUPoZnbnh5GhtUaHU=;
+ b=LT1io7UOsPNvi51w+lQSzqcsJrW3JymKEpjzrth1ua/M5qV2DLrtCazlkQ5Xhtk+kKekGT2xZFd0kzCZIs5/FgMzjENWjJZGoaSP3NReJo8O2ZUY3jOhx9NiBH4gXIqjgAg+Rr7/ge+1896QKVNzvF1By4gXI1vXoaanUFGJxKcuZPnNL7C5VO24bDUfQHIXYPxOepl2WRA4HRpD3A0cNuX5xbJGSMuqXFCHK7YRZT0rzt4pAFBeCwGxNAfnQLV06E7HBhrPl9AikwhviXoyVqmsJVHL3GsrYVE1l7NO5FvZjrWuOB3PJSg8AtbV/bLugtOOppVK9ekZVESmxunwyw==
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
+ by CH3PR02MB10129.namprd02.prod.outlook.com (2603:10b6:610:1a0::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.29; Tue, 10 Jun
- 2025 16:57:33 +0000
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572%3]) with mapi id 15.20.8835.018; Tue, 10 Jun 2025
- 16:57:32 +0000
-Message-ID: <17a19315-c3a9-495f-ab46-8e2350b5aed6@oracle.com>
-Date: Tue, 10 Jun 2025 12:57:26 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] migration: Setup pre-listened cpr.sock to remove
- race-condition.
-To: Jaehoon Kim <jhkim@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: jjherne@linux.ibm.com, peterx@redhat.com, farosas@suse.de,
- lvivier@redhat.com, pbonzini@redhat.com
-References: <20250610150849.326194-1-jhkim@linux.ibm.com>
-Content-Language: en-US
-From: Steven Sistare <steven.sistare@oracle.com>
-In-Reply-To: <20250610150849.326194-1-jhkim@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LNXP123CA0022.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:d2::34) To IA1PR10MB7447.namprd10.prod.outlook.com
- (2603:10b6:208:44c::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.19; Tue, 10 Jun
+ 2025 16:59:48 +0000
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51%2]) with mapi id 15.20.8813.024; Tue, 10 Jun 2025
+ 16:59:48 +0000
+Date: Tue, 10 Jun 2025 09:59:44 -0700
+From: John Levon <john.levon@nutanix.com>
+To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v3 03/23] vfio: add per-region fd support
+Message-ID: <aEhkgAY1SUsxQ2Z9@lent>
+References: <20250607001056.335310-1-john.levon@nutanix.com>
+ <20250607001056.335310-4-john.levon@nutanix.com>
+ <44882230-0e48-4232-9549-9c24c09d3749@redhat.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <44882230-0e48-4232-9549-9c24c09d3749@redhat.com>
+X-Url: http://www.movementarian.org/
+X-ClientProxiedBy: AM0PR04CA0122.eurprd04.prod.outlook.com
+ (2603:10a6:208:55::27) To CH2PR02MB6760.namprd02.prod.outlook.com
+ (2603:10b6:610:7f::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|DM6PR10MB4252:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba693758-bbd6-4e46-5e9b-08dda83fe3e9
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|CH3PR02MB10129:EE_
+X-MS-Office365-Filtering-Correlation-Id: d669d4cd-9151-49ca-0c9f-08dda840350e
+x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SUNzR2NIM3MvcnhHbjVOdUp3MmVUamlON1BpZGFyRVdvZHd0cDhJa0M2aUNV?=
- =?utf-8?B?VWd3SGczQ2toWlZCK3R3ZkJZaTJqYWNWbmV1QTJVYThCakxJaVRTT1BJcUFt?=
- =?utf-8?B?VlRXcWt3RE95OUpFZkZYamdFakZlYjY5SVdRNkhkU2JhUlczU0VrM0xyNTZ0?=
- =?utf-8?B?VThtOEx0dnJaTS9ENnljbndXVkp6TWFGcGVkckRicVVTekdNU1p5MDU0R20y?=
- =?utf-8?B?VDQrTVBVSzlIUTNnVkxJYmNjKzB2VHVFVXJ5OEFwZTAzcWpRSUtVdG9zckhX?=
- =?utf-8?B?M09nY0xCb3E3eXYxVEhNdm10ODFvckRQMVBIK296RHFlcXpVZHdpNDcwWWE1?=
- =?utf-8?B?RTlmT3BxZXZKYTgzTkJ6LytwOElFQlhqcGhpcVVIR2o5c0cyeldUbmd4cXFV?=
- =?utf-8?B?NXhrL0VKcTdCM0RweENiZDdWRXJSWlIxWFdmdjZQVWRpZy8yVmVIOGZob1oy?=
- =?utf-8?B?UnhsTHRkOVFqUUUyR2NtelkvT3JvVnZZR0RxeVluaDVqVXhyS3pMVWpRRm1Q?=
- =?utf-8?B?UnZrcmFpVWlIYUQrT0RKZ3daMnhSeHdjWXh1aXYwSTZyTGJhTEgzOWNFQStO?=
- =?utf-8?B?VmJ4T1hIaC9XcnJxYVZuOHR4V0RhZURackFTVXh5bFFZZnY1TlBlcDNpL2po?=
- =?utf-8?B?c2tZZ2dkREc5bEpUUkQ3V0w2bnRZakRLMWUzNkRLc3llMk1QTGNGS09rRTcr?=
- =?utf-8?B?cWl2U1FqUnZhT0liYTFqV0tOZG8vcWxtaEpKTVBCOXFITXdjN3dIS2FRUHla?=
- =?utf-8?B?ald3REQwMG4zR2FZcUhzUmEzV0VHdjNRUGJRcUo5dDRNUGlmUUVkanVYeldt?=
- =?utf-8?B?MDRXQnJydllncktHaEMzM1hWU1lxOExBemN5TlpBeS9tWW0xd2t0bTl1SkVl?=
- =?utf-8?B?dm01eURvT0FOUE1wME9Ra0FibjNkUkF5V2tTbWMzbUlyaStPRHVSYXBDNHM1?=
- =?utf-8?B?M2Ntc2tSVTIwaWNJTGtzUVBtaml4RWhHZnZjQnVESTZHZUk2OVpNWVJkakxW?=
- =?utf-8?B?UEdqdmZqSVkxOFhMaVROczdYR3JaQU04QVYyVWFDeW9uUnVPVWttQkt4US80?=
- =?utf-8?B?OEUzRjNnaHVaYmJiWXUvS3FNaUU5Mkxxbm5mYkwxeTUzbzlDem9TVUFIVWN5?=
- =?utf-8?B?a2MyV3Y2UkhpTFp0Z0FydjJ0ODkzSi95ek9ZQXhGWng3eUd3MFpXY0xEZnZ1?=
- =?utf-8?B?VFNtWjZOdzNmMldiWENPb1RFUm54OVQrS2NZT3c2N0h0UElIK0U1YzFsOGJo?=
- =?utf-8?B?MXBjTlhmZDZWcWlWdEJuR1hsZ0ZwaHZ5aklXKzNJUU9VQzNubHRLbzNyY0Rj?=
- =?utf-8?B?cG5PVisyUDY4azg3MUVjZWZpWERXWVdJbXYxSTg1cWhndmVORFNhNlFlanNk?=
- =?utf-8?B?Sk8wcUtGeExDd3J4ZmYwSnh2NmFzd0hrV3prMmpFSjhJYW4yekNlRFVOZWND?=
- =?utf-8?B?NG4za096SjFNb044dnIzSkxoQytyQlo4bFNBR2x0dU43a2lXM1hCcEhBa0hW?=
- =?utf-8?B?TDh3WVVrMUZxWFpsdjY4ZWtlSnArc1ZxMy9RU3UxUWxSVkpVdFc3VVRHbUNk?=
- =?utf-8?B?TTNLSkRFeHUyN3cvYWRxbWZMYTdtYTlNcVptMnQ2bFBXNFFQR0dNTDJxSDBL?=
- =?utf-8?B?Vy9QVGlmV2JkOHppUnozdmlGRjRGVlh2VVc5L2twV2NCZG11NGhNNklJZW4y?=
- =?utf-8?B?b0lrNC93SmFGS3lNMTNxN2ppM0JmTGpXZW8zck94d2YrWGQ3djJzZ3dnWmRs?=
- =?utf-8?B?TzlDKzZrWXlaMWVxYmVEVnBydkZTb3k1SGdKajExaTl2ZVcxckNtN3FzRnlE?=
- =?utf-8?B?ZVNzZ3d6V3BaWk5kZDJSTWdjd3htQkc1TG0yWWM3OHdyQzFmK0hNTnhIT3JW?=
- =?utf-8?B?MGdNRzA0YitKeDBLdzE4ZW9tZTcranpCS0JrLzFadTNqU2tFUnZZQ3VkU2xW?=
- =?utf-8?Q?Afpdqjtsfrw=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?kzr1wdTRIWLXKK1/6YKbOVdeNBP+Nq1DhhJaJS5de6ecPXTmwCMigpXpwi?=
+ =?iso-8859-1?Q?XSWeZ0Qv/M5z/QNmiCCuTVcZCLYyME3I0NECFh5wmEKrG5DIL+BEjK9cE4?=
+ =?iso-8859-1?Q?0F9fEqfTgT+mAiBeuWM0EPz/kMngYw4RKRpfx61Eba5AtV1n2LMe+tbfeD?=
+ =?iso-8859-1?Q?MGVouvI955WqLQ57ddbjTyRIPGTtnGCuswqAilhNFRNxVYaz7UZ3kSXEqq?=
+ =?iso-8859-1?Q?O1zk03FL5nQGNk0pif5UG6O7WbFQAnvmMMwmtEiDD1CWgJLEJrkrAyzC3M?=
+ =?iso-8859-1?Q?P/T3TNeTUxivNBHtKhIkch38iWMFAXX+xCA1unFLGARHhrdT92npz5TfxJ?=
+ =?iso-8859-1?Q?a9yp4HQIGvxRjVJCsWQJMD1DjLw1ntSEU+3BSqcuQl5h65uY6sWzSvO6xY?=
+ =?iso-8859-1?Q?O/kO6HewXnqniMC3ctMeHFv4YXU6LYTtFBM7Z4dMCz3u3kpxTbg9tFGjtM?=
+ =?iso-8859-1?Q?aOtHaogJxRbLYG7JgWcBMAX3mtkbHPqKhMlgM5fyrtF5Py4VIcvB4qHaAi?=
+ =?iso-8859-1?Q?3xfnjVrNPKg1A2r1TgbthfblgeXqugwOEb1i/lggH8uNUlDD7ppGCbgJ3P?=
+ =?iso-8859-1?Q?FM7ls92lMxEr8fxZ3DWPhO7QsoeXc0KqIwWpffPgmSo8NLIwWdHX6v8n6T?=
+ =?iso-8859-1?Q?a0YPFNUXWL4iXQoYnIIKtTXQqYXOmDrdUfpZ9h3Ixe0qoHGulkXbo3cNNV?=
+ =?iso-8859-1?Q?fmnvHMiEehZN5eTcXYlujSXsR5yYncE83enVxfhzKobRKLXWacJXoMtTcg?=
+ =?iso-8859-1?Q?/oX7kiw3LUDZlw+ZeU1pcIp3vO4AbKoJMfjS2YOt4PxsuiAQNci82O5n7v?=
+ =?iso-8859-1?Q?8M6whUYg7ewF+XozhD3FRYJg4IK3PKcwhlAYHZHUwt8ymfJdiRquzPELWX?=
+ =?iso-8859-1?Q?bgfTW0bjWb93MUDEH+87yNMrC36WQ5eD1XAFcGAM4CbtG6HOpQcMh/Sqh7?=
+ =?iso-8859-1?Q?unPylct/mBqS08TQjH6U0ueCTgC62O7dkXq1f9Joi854ZoM/VzVbOI/JMy?=
+ =?iso-8859-1?Q?awZuuDHcFgzCLgGE4Fa0ANBiLyn7bN0BaM55hhIwpHKEp8X5sUwxfapgc4?=
+ =?iso-8859-1?Q?caiCAO3EmJ8fNcu8qcMu7b0b7oWbayf3bheuB9OtJZWZX22G/qRM23eRmc?=
+ =?iso-8859-1?Q?nAXzR1OXkIXxkfsDueW+UsmJJsMWs0a/haudU7tx8FjiU5i8seXa+6csq2?=
+ =?iso-8859-1?Q?FkEAeZOAG45EYqMuZNeLlGvE98gpNFHOuu/7ApaDyvc28GBGmalGpkJ/9p?=
+ =?iso-8859-1?Q?tAUJkVBzDAWVvPzflPRuvzPc1z8PfgZIF9Jsa3BYGB6ZVzO5xyGxCc1uub?=
+ =?iso-8859-1?Q?5nJhviT8i+rtqa7+WgnfiK4Mzoup9Jf7MIA2d04j/3RaOqkqBCSfKdYAg6?=
+ =?iso-8859-1?Q?rC71IYGluBbldFVoTTwbUkEwz6VLF8wMrSd0Q/VuY/cohQ5R2ua4h/DsMO?=
+ =?iso-8859-1?Q?+Rdjt5Lun6VlotRoqOSXkyll4RjyRfcl7zmKn84QA7kUljKhY+j5Q7ZqmI?=
+ =?iso-8859-1?Q?w=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(7053199007); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dzI2dHVjTnc2dWFMaGZkTTNEdjFUM1duN3RNajdHWE9rcG9aRis1dXRVYWtI?=
- =?utf-8?B?NG1iR2plTTJwR0o1a0hnMWdkVUJXNE55blVQVlZmNWlvT3U1L1RoMWNnKy9F?=
- =?utf-8?B?OFh0NGVxODllRGQ5TFhudGNXMTlML2hsSEhSZHRXZXJtdnY1a3hDbXBaelRR?=
- =?utf-8?B?OXNiejRTLzQvZERRK3ZyWkRGZG9Jb01aMVJyRjNEZFlBcklPb2NibDdvOU9J?=
- =?utf-8?B?K0pJeWZCbUdUcFRTQjd0Qy9vcUlPSkJxVnRtTmE3T3pCVUpGVGl4MnNHaDVC?=
- =?utf-8?B?VnZvY3hXUUFwTHFjTFdFT2VwZkd6Y0NJSHFpMUxYNkE1K0hwL1kzQnY1aWF1?=
- =?utf-8?B?TnRsZWpCR2V5ODJGSUhyWEN4UjI0UnF6KzNGR3NmaFNXVVZwUlYvRGF3ZERl?=
- =?utf-8?B?cCtvaHZtMTZsaDM4aFpONmZFd2VhWCtBbDZDZVhla1AwdDZqM0FBTndwVXpo?=
- =?utf-8?B?SGMzUXAzejExK3pnd2dtaFBJMlkxWTBucHRUbzU1TEJqc0hPL05yVWtwYmly?=
- =?utf-8?B?dGtxekpud1Fab0FxdGpNbFBJTkhLdVM3dXVYQWExOVBuTFJlTTVLdXllb3Ux?=
- =?utf-8?B?dFI3K09JaUJ0RTVoSlRQbU1pWmFxd29hK0JJaUhzeVY1bkxrQWloSVhSdldo?=
- =?utf-8?B?NUh4b0JzelNnNUpaTzhhK1d6YjZxUHFrOVZ0Qm1RbFZ0aVZCMjFYOENhUzlY?=
- =?utf-8?B?SlMxd2pzVHBhcERpTDd4ODhMZmtFMVVPOVRrZ2J5bjgzM2k0QXk1eDdxNFl2?=
- =?utf-8?B?UFhydFhMZjlwYU5WbEg1U0xJVnpNUndDTXNnVkoxM093b1lsWlBjY3I5eUxN?=
- =?utf-8?B?OVU3N1p4WmdSQjZwZzlpdGlQUVhkUnBzdVNSYU9zTzN4bEE2T1dCTU4yNGU5?=
- =?utf-8?B?ejU1Y1dDUnBReWErdnlTNC93Ulo3bXc2aDRScDJ5S1MwekhCODBNSkIvcWZT?=
- =?utf-8?B?K0RCcGlEVE14L1pZY3o0akVCQVZqYldtc3BhQW1ydjE2WE0wWHROWkdleHJP?=
- =?utf-8?B?dzczTEUyaWJMcHNPTUNDb0tXNnhwa1JRdXlVKzlWenZlVjJSa3d2bW91VnYx?=
- =?utf-8?B?aTJYQlRjMlpFOWVwUy82MHNiTWJBNkRvaEpuY3pKb1ovc2x2RlZBRElSUkI4?=
- =?utf-8?B?d0l6ZkdnSHRGOGZvalNFcjZ5Q254bXo0MlVLRGR1ald3VVF3NXA3c2xPVWpG?=
- =?utf-8?B?dDRxTWYydHMyelB3NHdBL1dJelB4KzkyeHNGVnRLWHRrUDVpUkR0Nmg3cGwx?=
- =?utf-8?B?azhJd25CVTFYYjg4Zk4xSHlUVXdlbWJ6Y1BKQ01jMnhqMkpBamZBYmNkS0tP?=
- =?utf-8?B?S1R0U2FoV2hIUjc2NVM0ampmbEQvTHRpRHlKOE1WRlZqOGNQNUZyM2twOWU4?=
- =?utf-8?B?WFM4aUdudDQrbDM4Zm82WGpNWGZ2a0F4aGMrbEVDcjV6bG8rVENLd0JjU2Ju?=
- =?utf-8?B?ZlBlY09mcEJCNTVNQ1NrMnlPWU5vb3dDN1ZZNXQxWmVVdjZkRGd0d2tzZG9T?=
- =?utf-8?B?NkorZ29XTHlabHVmeVNTZW9Zby9GN0swSk8wSDhuMGdlRFVlR1EvMXRXdVZG?=
- =?utf-8?B?V0t1dTZOTjAwRlErek5jK3NCZWRucXhqcmhyZDR6cEpIS3dnMXdwc0ttblBR?=
- =?utf-8?B?eTdqaFhHRnpvYUJ0UENNckFoQTlxQmRVV0x6MkI3VEdTQU82cGZoalZVc05t?=
- =?utf-8?B?Qy96dnh5K3NDNVI1T21JOU9haHVyMURSWDZDdjZHLzBBTnpDUkNyZ1o5REVZ?=
- =?utf-8?B?OEc2QzYveVNtNEx6azVwQjNnTExIbEJueElNcU5qdjhadjIvcmx4eWdEMzZ2?=
- =?utf-8?B?ejlpSkJpc2wyaXI1cGVkZDJxdmxvckN2K013YTFWTld3U1NaZXAzRUs5cWhh?=
- =?utf-8?B?WnJLenZtVDg4Y3JlOTIvNzk3NXg3OUl6QnFRaFAxemRyMEFWT0kyUXQ4d3hE?=
- =?utf-8?B?V1pFVGp0bXRKeFV6VXNGR2ZqakpscXNYSjlSazNwQk5xa0VuV0czeTdjWVBu?=
- =?utf-8?B?bUl4Qlcyb0hBSm9mUHQyL09jMlVGTFY3ajlJV3Q5WUJXclBTUVM1Y0orc1VX?=
- =?utf-8?B?N25yWSthWVppcUl0Q2V3NUdTbmdsdHI2ZFN4OWZsVWx0RGxpMjhXUFF4Y2lx?=
- =?utf-8?B?UDRDUFZCa0xUK3pTakxQd21NTGx4MkpkNmg5WHlMbW95TGVHdXRXL1o2QmQx?=
- =?utf-8?B?U0E9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: YD7xRazTIOfnEWBOlkS9in0w6KlHzC5AhCP0Y368UFGJOWG7DROuWv0xBeRHzwaXmI4fVfGX1nwVArbET/A4LmtV7YprCGXjZIe9wxuNlHqOtNElT7xbhrGpWgLs2886NY5k6aEuVpb3kETP6mBG7KLYb9TJ9fMTKdNc7m4/96wJWyLgPulismIGG7TdugsJNcQrwkxCL3Pj73CMaeoFOTQhAnoVqYsz70koXetL+0XeS0Gvh7EkOBZ4/xOcBN3Uwo+taKnXkxS5cnAyjAOMZhNDWs3vDXYtZL1AyH6JdkOO4cSZrkX6zUxCZmk/0yDWHDuRqbRZy0I8r4zJYI/fK0C5xC/NIrKKdqcanA4vpKfkvU7J9ur9uuMYA/De9+oCzSCodeNAViUIOsp77/s/8zGho9AKH7h8sPsVfn1uRUvxhVIjslgQhk0vmaV4cEgvbTzBNCwwqVePBRPG67UPojWgFcDfGYEyigz4H/lbLktMrvI4htDfNrELqJ5s0PDfBPeYLdnQ4msOpdwSlf4DtXkiQG89FStdqaDMQvW2q7koqDBBWQmqLXFXRMG12hyMaMZePBMsPjf80haEr90dbtjXAoVQbcu3DVp9PaQNuvw=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba693758-bbd6-4e46-5e9b-08dda83fe3e9
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?WHEzn4mZtjP1vrePoHJ/XTQlJAZ5s6nyuqlE/t+7K48pxpXMEEyvu6QhPg?=
+ =?iso-8859-1?Q?YqAobfyvA6XwNOTQYNOPBttz3wOJZQjwuOCRDkSTAcP+ZsXCy/Y3Rod+Ra?=
+ =?iso-8859-1?Q?mYRuAdvLlXv55UVY2yohX4TYfewNtFUrIpEaUhjNWkp8unkWUQapdTg/KZ?=
+ =?iso-8859-1?Q?AnKI4AXX+se10LwtdgANr5KMy5hiTJGGj+2OToLgqGdSTDYivqoxMSkp7X?=
+ =?iso-8859-1?Q?KerhdKXu6TXNN9qmWbN1C31kTZEx1KHqh/0L4ByxdilmWxRG1rlDV2esP+?=
+ =?iso-8859-1?Q?omFQHYtnVt9idH2Jeh5wXqSkcS46YC0mYLVEyH7s+TZ5oziStR/xHT+zZz?=
+ =?iso-8859-1?Q?hWK2yFaqbVj0tK+FwYpk1WJY0NgxuQqZsvsr9vX9VvwCYSLQ/dffGGAM8r?=
+ =?iso-8859-1?Q?QG4CUqHEEcvu1Oqek6KEiVrp2+aFfynbnzuHEOySB0YmxK+xeq9veIC3G9?=
+ =?iso-8859-1?Q?LBbZLi0LDwv6hfd50pRJmsphHGMKLT3KQV4/Wwv3Ers9Wkw6MFssKnKJX6?=
+ =?iso-8859-1?Q?N0rZ+pRG9RGNyTf6MBBRIvYrmDcE6u6avnqj1xs0Rz1OJvO5/hCY9aXdU/?=
+ =?iso-8859-1?Q?GO98DM+nVOnZPat4+r5mmQ0zb+kvLmpva7NEUvCZB71RgMgZIe2atSessQ?=
+ =?iso-8859-1?Q?rxoNRWmPGv5k7gBGev7Rc0Oaj7KVKSg0Uya3+NJvzoJH5mDw79xkBnecZi?=
+ =?iso-8859-1?Q?XAwJ5y3GR0X4ZSXYt0rRBBQLIcwke4wQhLbA/7q/l6hesV8Twchp5nb3FU?=
+ =?iso-8859-1?Q?FMdEEYYZiCU2GtRFooThZVvoO0y6tzpKcLnqYQP4SEGl3VFPs7o9jMaB7E?=
+ =?iso-8859-1?Q?CRvLnL2z8UhQleFRWNnbg7JvLZAhUHoTa1dkQVHavjOGi1n96uwHq5W3n7?=
+ =?iso-8859-1?Q?SdmTqMZTmLnJsbExyhSd/u4kI1KEt8gSj4v6tRoOLQFBvRPpqmu5RHtYmi?=
+ =?iso-8859-1?Q?UpzpIFYwXtmsxq0zbcoede3ImDQiMWMqAT/eroMGU24tRyNtVVhhi3SnL3?=
+ =?iso-8859-1?Q?uuAdS0em8MGyP1awQPMdQ8zkLmdBnBUmAR3YmTGRqqsxyVqh0GJXBapf4t?=
+ =?iso-8859-1?Q?G0EWZqlz4KC9iyNz4ZtMt8Kb7O/LwWhfS0+DiaKOOnbC4K83z5GVemslAx?=
+ =?iso-8859-1?Q?kNTNVzT6TFFqKbTJRllqo2YUHNcLDIF7Lh6u4Io9FbxOx19gNn+hcx6RBt?=
+ =?iso-8859-1?Q?IlC2m6WpAUOwh2xShj+6O7E7cW1vVFyUPhYT2zxIFkH5YvJPgKQjGy3l+P?=
+ =?iso-8859-1?Q?qyV/uxdb5R8GdhFhetR17oChsQ77WQsQirTj/rwYv5NoggbMoM1wgV2umP?=
+ =?iso-8859-1?Q?1GrCQNLru3H8lmdqPRn9fSIejMRMG0xfiYQhM1ulPxpuiXO9Svfm+zQ+Me?=
+ =?iso-8859-1?Q?VeFNLMm0uALZ6TfRtTvKGeJ5qhFfTnDiezj7RfGVqaqJXYsisttJElwwWR?=
+ =?iso-8859-1?Q?Fa0m4XwsCn1wG/kbXa3luiueM2+gl226wfZJ0vboN5pTSN0qsi81uU58Vu?=
+ =?iso-8859-1?Q?katOcyQqMMa1VrHizPlnEU7u+OXWMBkQvZihmFgZiVtkSOp2SEbDdsaHCR?=
+ =?iso-8859-1?Q?REd0Hp0OL//RAOMC9PwpQgdlBDefxy32TrAqYOLcCs/3QzJiaBSFYeq3lP?=
+ =?iso-8859-1?Q?qNIFus8MD6VoctZjVFQ7iw6RHIYARdIRlz?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d669d4cd-9151-49ca-0c9f-08dda840350e
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2025 16:57:31.9467 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2025 16:59:47.9566 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3y2/zVXPwBi7Yxy5Gqb0N6II+pYhWtRXoiXgJbDmBS1ekzLeOLSXgx7mazFHsCU3ocpoIHWyrnuEj0F11l/V3t2kBodPm5RWe4L/CVPCV0U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB4252
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9rqdmfytzZL4R12TO1DXukdsbf6D3FGoBISLLBxl3LkwHw+8Xno5lwrk2eoYiItq/tGQmnyOOtpNNm/c4ij0VQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR02MB10129
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEzNyBTYWx0ZWRfX0T2IpCs7UkBy
+ OtFLDoDsGrfH7y0YkO/gxQaYpZ8C9PxE5THNhuAtNiGuNye5WEM4tN7oTbXlTSbWmopwxr1aOmF
+ AEdpjlFmVjA2C3vIyoi3UdAJzpfu8UgNeOo+avkj8hUrmxarGgThOmpOrhGwDve37SyqLTxnRzC
+ z8+MsG662noqT4RE2Ogn9F2b6EX3bz7WGlXeN0iZtcUqF6stCdNw/f9HNRd+OVuJhAqRQkJIO9q
+ hifwz2YULFrRz+5mqlsuKmJqkt2pPAgW27KrBvBtqH2HgFSL45nFKZlvaDeOq+EGh9o6oHLqxJd
+ pWcURoheA5xJu9eU2w9dV1MMOqgsZwnN4kS3VNiu/eot9jwRkDSR8cupPn4yR+7Ma9bw9/lCDF4
+ 3tFNCm2rWRjRGWWBCqFKmz+/F5zcXrs0mAL7LZF+wVzF5QKrY0Px9D+M+bSTYqJZHq7n/oDR
+X-Authority-Analysis: v=2.4 cv=KOtaDEFo c=1 sm=1 tr=0 ts=68486488 cx=c_pps
+ a=VQV0i9s3/jMECRWyVTU93Q==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=6IFa9wvqVegA:10 a=0kUYKlekyDsA:10
+ a=UF_GpJYHLsthOnA7oYEA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Proofpoint-GUID: 3t1z8D3396xH9XdyREq_E3F14FBJ_NxO
+X-Proofpoint-ORIG-GUID: 3t1z8D3396xH9XdyREq_E3F14FBJ_NxO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-10_08,2025-06-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- adultscore=0 malwarescore=0
- mlxlogscore=999 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2506100136
-X-Authority-Analysis: v=2.4 cv=LIpmQIW9 c=1 sm=1 tr=0 ts=68486401 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=6IFa9wvqVegA:10 a=GoEa3M9JfhUA:10 a=VnNF1IyMAAAA:8 a=XT0JP9-Hmb0RTEwDs5wA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: HHk53rKL7K8fvLKU0_RURD5AhkGspMI4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEzNiBTYWx0ZWRfXxZIFFVcV62iP
- dx/CybO3MVjrlxWlxdAQDMbtx+VVh4ODgTbMuV5t9ANQOg1YSJd7R0bL0dmsYtIiKOKCCNvMWk/
- 0NcYlRPuN4gcZO32gwSwIJqHjy6uSZRFkOnqpxhl5mamjWN2HfyK1exdUcI59dkg0omkRp4WhrK
- 9r0fM4VRGr6HH5R8pEYAOe4dMkAoiplVJiFdtydGufQDhdRl9GlUX0P+M1PC8yquzpN7Bnh/ecN
- Os+C5fJcHAU63FJmMkI1BqoCWly53pkY5RqoSW3wt2UYkToXm1WdxmKkTsdQ2zrKKamqPFBJb6d
- BZbJcIiV8Vx+U23pWbBI2G7ASRnuYe2cfbMOnvA7vPXYT6F15h/lFp8Zr+K/M034xSbZliUHQ+s
- CvKgn1U07+OWcPZw4UDXp82Nx1thUiQPXQakTXjonkqASN6FWlHzJXeuSWa6HU6ApdQtNUay
-X-Proofpoint-GUID: HHk53rKL7K8fvLKU0_RURD5AhkGspMI4
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12;
+ envelope-from=john.levon@nutanix.com; helo=mx0b-002c1b01.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -229,164 +203,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/10/2025 11:08 AM, Jaehoon Kim wrote:
-> When the source VM attempts to connect to the destination VM's Unix
-> domain socket (cpr.sock) during a cpr-transfer test, race conditions can
-> occur if the socket file isn't ready. This can lead to connection
-> failures when running tests.
+On Tue, Jun 10, 2025 at 09:42:41AM +0200, Cédric Le Goater wrote:
+
+> > @@ -478,9 +491,14 @@ void vfio_device_unprepare(VFIODevice *vbasedev)
+> >       for (i = 0; i < vbasedev->num_regions; i++) {
+> >           g_free(vbasedev->reginfo[i]);
+> > +        if (vbasedev->region_fds != NULL && vbasedev->region_fds[i] != -1) {
+> > +            close(vbasedev->region_fds[i]);
+> > +        }
+> > +
 > 
-> This patch creates and listens on the socket in advance, and passes the
-> pre-listened FD directly. This avoids timing issues and improves the
-> reliability of CPR tests.
-> 
-> Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
-> Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
-> 
-> ---
-> Changes since v1:
-> - In v1, the patch added a wait loop to poll the existence of the socket
->    file (cpr_validate_socket_path()).
-> 
-> - This version instead creates the socket beforehand and passes its FD
->    to the destination QEMU, eliminating the race condition entirely.
-> 
-> - Commit title and message changed accordingly.
-> ---
->   migration/cpr-transfer.c          |  3 +-
->   tests/qtest/migration/cpr-tests.c | 72 ++++++++++++++++++++++++++++++-
->   2 files changed, 72 insertions(+), 3 deletions(-)
-> 
-> diff --git a/migration/cpr-transfer.c b/migration/cpr-transfer.c
-> index e1f140359c..7c9de70bad 100644
-> --- a/migration/cpr-transfer.c
-> +++ b/migration/cpr-transfer.c
-> @@ -46,7 +46,8 @@ QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp)
->       MigrationAddress *addr = channel->addr;
->   
->       if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET &&
-> -        addr->u.socket.type == SOCKET_ADDRESS_TYPE_UNIX) {
-> +        (addr->u.socket.type == SOCKET_ADDRESS_TYPE_UNIX ||
-> +            addr->u.socket.type == SOCKET_ADDRESS_TYPE_FD)) {
+> Adding a small helper to retrieve the region fd from the cache,
+> would hide some of the implementation details here and below in
+> vfio_region_mmap()
 
-Nice, I did not realize this would be so simple!
+I can add a region_get_fd() helper, but I can't use it here - we should only
+close the fd if it's a per-region fd. I'll make this call a region_cleanup() or
+similar.
 
->           g_autoptr(QIOChannelSocket) sioc = NULL;
->           SocketAddress *saddr = &addr->u.socket;
-> diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
-> index 5536e14610..6f90160e21 100644
-> --- a/tests/qtest/migration/cpr-tests.c
-> +++ b/tests/qtest/migration/cpr-tests.c
-> @@ -50,6 +50,51 @@ static void *test_mode_transfer_start(QTestState *from, QTestState *to)
->       return NULL;
->   }
->   
-> +/*
-> + * Create a pre-listened UNIX domain socket at the specified path.
-> + *
-> + * This is used to eliminate a race condition that can occur
-> + * intermittently in qtest during CPR tests. By pre-creating and
-> + * listening on the socket, we avoid timing-related issues.
-> + */
-> +static int setup_socket_listener(const char *path)
-> +{
-> +    struct sockaddr_un un;
-> +    size_t pathlen;
-> +    int sock_fd;
-> +
-> +    sock_fd = socket(PF_UNIX, SOCK_STREAM, 0);
-> +    if (sock_fd < 0) {
-> +        g_test_message("Failed to create Unix socket");
-> +        return -1;
-> +    }
-> +
-> +    pathlen = strlen(path);
-> +    if (pathlen >= sizeof(un.sun_path)) {
-> +        g_test_message("UNIX socket path '%s' is too long", path);
-> +        close(sock_fd);
-> +        return -1;
-> +    }
-> +
-> +    memset(&un, 0, sizeof(un));
-> +    un.sun_family = AF_UNIX;
-> +    strncpy(un.sun_path, path, sizeof(un.sun_path) - 1);
-> +
-> +    if (bind(sock_fd, (struct sockaddr *)&un, sizeof(un)) < 0) {
-> +        g_test_message("Failed to bind socket to %s", path);
-> +        close(sock_fd);
-> +        return -1;
-> +    }
-> +
-> +    if (listen(sock_fd, 1) < 0) {
-> +        g_test_message("Failed to listen on socket %s", path);
-> +        close(sock_fd);
-> +        return -1;
-> +    }
-> +
-> +    return sock_fd;
-> +}
-> +
-
-Very nice code, but you can just use libqtest.c:qtest_socket_server().
-That does not check for errors as nicely as you do, but none of its
-actions should ever fail, unless the system is very starved for resources.
-
->   /*
->    * cpr-transfer mode cannot use the target monitor prior to starting the
->    * migration, and cannot connect synchronously to the monitor, so defer
-> @@ -60,13 +105,13 @@ static void test_mode_transfer_common(bool incoming_defer)
->       g_autofree char *cpr_path = g_strdup_printf("%s/cpr.sock", tmpfs);
->       g_autofree char *mig_path = g_strdup_printf("%s/migsocket", tmpfs);
->       g_autofree char *uri = g_strdup_printf("unix:%s", mig_path);
-> +    g_autofree char *addr_type, *addr_key, *addr_value;
-> +    g_autofree char *opts_target;
->   
->       const char *opts = "-machine aux-ram-share=on -nodefaults";
->       g_autofree const char *cpr_channel = g_strdup_printf(
->           "cpr,addr.transport=socket,addr.type=unix,addr.path=%s",
->           cpr_path);
-> -    g_autofree char *opts_target = g_strdup_printf("-incoming %s %s",
-> -                                                   cpr_channel, opts);
->   
->       g_autofree char *connect_channels = g_strdup_printf(
->           "[ { 'channel-type': 'main',"
-> @@ -75,6 +120,29 @@ static void test_mode_transfer_common(bool incoming_defer)
->           "              'path': '%s' } } ]",
->           mig_path);
->   
-> +    /*
-> +     * Determine socket address type and value.
-> +     * If socket creation fails, provide the socket path to the target,
-> +     * so it can create the Unix domain socket itself.
-> +     * Otherwise, use the pre-listened socket file descriptor directly.
-> +     */
-> +    int cpr_sockfd = setup_socket_listener(cpr_path);
-
-unlink(cpr_path) after the listen socket is created.
-
-g_assert(cpr_sockfd >= 0), then you can simplify the next block of code.
-qtest_socket_server() will only fail if something is very wrong, in which
-case trying to proceed with more tests is probably doomed.
-
-- Steve
-
-> +
-> +    if (cpr_sockfd < 0) {
-> +        addr_type = g_strdup("unix");
-> +        addr_key = g_strdup("path");
-> +        addr_value = g_strdup(cpr_path);
-> +    } else {
-> +        addr_type = g_strdup("fd");
-> +        addr_key = g_strdup("str");
-> +        addr_value = g_strdup_printf("%d", cpr_sockfd);
-> +    }
-> +
-> +    opts_target = g_strdup_printf("-incoming cpr,addr.transport=socket,"
-> +                                  "addr.type=%s,addr.%s=%s %s",
-> +                                  addr_type, addr_key, addr_value, opts);
-> +
-> +
->       MigrateCommon args = {
->           .start.opts_source = opts,
->           .start.opts_target = opts_target,
-
+regards
+john
 
