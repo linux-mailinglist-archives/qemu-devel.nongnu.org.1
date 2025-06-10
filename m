@@ -2,73 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53D5AD3738
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3BBBAD3734
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:50:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOyII-0006TQ-HC; Tue, 10 Jun 2025 08:41:35 -0400
+	id 1uOyQM-0000mC-LJ; Tue, 10 Jun 2025 08:49:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1uOyHK-0004jg-Fw
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:40:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1uOyHH-0000si-OS
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:40:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749559228;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ASwNA2wfL49mOmHnh2dobWoUVIEWtpdRP4iCqqMdQfw=;
- b=G+zTv6OvpxzkxYg0JDcU/+rZeiGb2okQneE5xBXxJ/PVFxGdPUzv15QlrI0Zr81uAzz+/h
- XtjflAdsHJiUROnOQxRFeJOfdgVzoy/H7/MCddsRZCwwLxsxIwb/RiFJ6B/3AKPpnCsHB9
- zWmIOvpoFn2+hy8gDXDCqpoYlJ3ZQ2A=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-192-TEWG4-IOOLyLHQSLX_sCfg-1; Tue,
- 10 Jun 2025 08:40:25 -0400
-X-MC-Unique: TEWG4-IOOLyLHQSLX_sCfg-1
-X-Mimecast-MFC-AGG-ID: TEWG4-IOOLyLHQSLX_sCfg_1749559223
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EE610195609E; Tue, 10 Jun 2025 12:40:22 +0000 (UTC)
-Received: from angien.pipo.sk (unknown [10.45.242.10])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 56F2930001B1; Tue, 10 Jun 2025 12:40:21 +0000 (UTC)
-Date: Tue, 10 Jun 2025 14:40:18 +0200
-From: Peter Krempa <pkrempa@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- qemu-block@nongnu.org, Pavel Hrdina <phrdina@redhat.com>
-Subject: Re: [PATCH v2 0/3] scripts: render_block_graph: Fix with new python
- and improve argument parsing
-Message-ID: <aEgnsqTpcX0Fp3vx@angien.pipo.sk>
-References: <cover.1742401551.git.pkrempa@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyPg-0000NO-Bd
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:49:12 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyPa-0001g0-5D
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:49:09 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-450cb2ddd46so32655235e9.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:49:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1749559743; x=1750164543; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AoMikksxnXdYGRhyqfdY38jzMLWdVcYKsVpV/YhTMQA=;
+ b=SyT6Zj9F5mrX4Bx7/OzF3NOzdUFB2nKO/XJl5fjUHtAkxFwi8hYGpU4ewLv2kcYZhh
+ 4XTxnZ7KDFKmufOeIKs6RUyvQcW3XLeO2d1lXvegQS0HTifZaGTo7oCkh61WdO/fhPot
+ 1spdFpZmh5OJi0mBVq9g2cefmE/UYwu2X2Q4rHY8uTqSQZEtpdOYjc6mhNHam+XY3xyn
+ YMiw98EYfB9cuX3LvIhzj7bqMf2WA3IS6VzIQHnTY+dQ/HiJy6VOjK0oxrpyVNVcefYy
+ MsUx1Qcz3D2oN/ULnm+JKwU8LYMgfPZtzSLjkE8+j6a8ZR4LPuQBaVauK6L6hqvurTcN
+ IPGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749559743; x=1750164543;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AoMikksxnXdYGRhyqfdY38jzMLWdVcYKsVpV/YhTMQA=;
+ b=QtT0hOxIQ7udr9VxhJrfBsshP0t9qI4H3lV1oenKQQoQHhAQb535HOU8PKYv/Co4Hm
+ qT33WFoLstXMSYun1/V6bIcX3XOBhOFsx7z1f2C7FdG+TZuhLdL/sCStyuevwIlzWBlm
+ 5Uz35WnRUTTQo/jEYnUpzYiaBXNNAC5EQWbInEJgkTVJ1ZspvQn5rV65NoHvLxvcKBo5
+ Os2pPzgCNKm3mLR6sDAgxyqt32Xt1YkplatUyzYpTwv6FBrkVzz3R4Hfg9vUupFJfMAY
+ qu86PIzywRvGcjpXNQx76ipUL6qO0R6RdKGxb0hj7EVpz8PNFKgBmLn0cZeyJR2JnL1x
+ Djag==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU588UFBTE+1JR7ns9B4CZF/y3A91tFaKKenvhijkwH4iGgvq10tLfqMHWAJ2N40LGKNPU7x/b/UGtN@nongnu.org
+X-Gm-Message-State: AOJu0YxWQf1fAFZRjdoEbAnDm7AMbCCpUEmUa7BFx596xvOMTMaQ8Oq1
+ /4RbO7SGlc3RGmHnCc6J/wHnRuLVNxs0Q3LXnOrHcakqgDp7sS0WmDE/jPKTfubvTd0=
+X-Gm-Gg: ASbGncvUTF6XfXgDEAhASYnzr7bfCeWGds4KylEsH2JYW2Kv+aWUF3XlBjlqodz4kPq
+ ouCjzM2voVRBcuE2HGsEW+uG4Dzf+OpSNtO61G/ZNvgcB567rIEgQT+uOFbqgRcQejYoOw91N7Y
+ qgNFgRg03mEcmVQqE+vTBH3z/aA6+nyhO3P2k7bqJrvSiYBdBWc4jawTJ9qYprsZU42qGxHFd8r
+ KDxUOeaiwZX0Oewsq0xhZWqjVPooQuGX9j/oQKMcxVBw72IqX+bxjeqPPr0OJZl8zzCesm8Z/+v
+ RefZRY7UTbebkQiCJXHtd2SMwHGKrYQlLnYnhgkDyLLeDkY5xRyczgBm39U9fC765M1HK3nXLaZ
+ XrB+fFkVoMJNv6CxT6D1KUfaSJU6XtTISbOQ=
+X-Google-Smtp-Source: AGHT+IFExA/vxNyfJdsqAvxybPHbjN6ERBgW5E/z+Reol1sptXJYy/aBskkRGn3fpI6cG9HeoWu6tA==
+X-Received: by 2002:a05:600c:4691:b0:450:c210:a01b with SMTP id
+ 5b1f17b1804b1-4531de673c7mr27799755e9.17.1749559743444; 
+ Tue, 10 Jun 2025 05:49:03 -0700 (PDT)
+Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-452669ada25sm142090435e9.0.2025.06.10.05.49.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Jun 2025 05:49:02 -0700 (PDT)
+Message-ID: <50405e77-e665-4772-9715-3901730d00fd@linaro.org>
+Date: Tue, 10 Jun 2025 14:49:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1742401551.git.pkrempa@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/31] Skip automatic zero-init of large arrays / structs
+ in I/O paths
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+References: <20250610123709.835102-1-berrange@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250610123709.835102-1-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,21 +103,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 19, 2025 at 17:28:06 +0100, Peter Krempa wrote:
-> New python doesn't like '\l' escapes from the 'dot' language.
+On 10/6/25 14:36, Daniel P. Berrangé wrote:
+> This series is an extension of Stefan's proposal:
 > 
-> While at it improve usability of the script by employing proper argument
-> parsing.
+>    https://lists.nongnu.org/archive/html/qemu-devel/2025-06/msg00736.html
 > 
-> v2:
->  - use mutually exclusive group instead of hardcoding it (Pavel)
-> 
-> Peter Krempa (3):
->   scripts: render_block_graph: Fix invalid escape sequence warning with
->     python 3.12
->   scripts: render_block_graph: Implement proper argument parser
->   scripts: render_block_graph: Avoid backtrace on error from virsh
+> It used '-Wframe-larger-than=4096' to identify all code locations
+> with more than 4k on the stack. Any locations in the I/O paths
+> were chosen to avoid automatic zero-init, to eliminate the performance
+> overhead of the automatic initialization.
 
-Ping :)
+Should we eventually add it to our default CFLAGS?
+
+> Note, although all the changed locations are I/O paths, this does not
+> imply that the changes make a measurement performance difference in
+> every case.
+> 
+> This is because many of the emulated devices are likely limited by the
+> emulation impl, rather than any implicit memory zero'ing overhead of
+> stack data.
+> 
+> None the less the memory zero'ing is still a redundant CPU burn in
+> all these cases, so I felt it worth setting the general precedent
+> that any data over 4k on a stack in a device I/O path should be
+> skipping zero-init.
+> 
+> I did reasonable review in each case to identify that the data was
+> indeed initialized explicitly later in the method.
 
 
