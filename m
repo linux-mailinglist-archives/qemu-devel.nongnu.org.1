@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BBBAD3734
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC2DAD378C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 14:58:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOyQM-0000mC-LJ; Tue, 10 Jun 2025 08:49:55 -0400
+	id 1uOyXF-0006Xz-EH; Tue, 10 Jun 2025 08:57:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyPg-0000NO-Bd
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:49:12 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyWv-0006Wv-4U
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:56:42 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyPa-0001g0-5D
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:49:09 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-450cb2ddd46so32655235e9.2
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:49:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyWs-0002XP-CA
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:56:40 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-451ebd3d149so34144505e9.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:56:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749559743; x=1750164543; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AoMikksxnXdYGRhyqfdY38jzMLWdVcYKsVpV/YhTMQA=;
- b=SyT6Zj9F5mrX4Bx7/OzF3NOzdUFB2nKO/XJl5fjUHtAkxFwi8hYGpU4ewLv2kcYZhh
- 4XTxnZ7KDFKmufOeIKs6RUyvQcW3XLeO2d1lXvegQS0HTifZaGTo7oCkh61WdO/fhPot
- 1spdFpZmh5OJi0mBVq9g2cefmE/UYwu2X2Q4rHY8uTqSQZEtpdOYjc6mhNHam+XY3xyn
- YMiw98EYfB9cuX3LvIhzj7bqMf2WA3IS6VzIQHnTY+dQ/HiJy6VOjK0oxrpyVNVcefYy
- MsUx1Qcz3D2oN/ULnm+JKwU8LYMgfPZtzSLjkE8+j6a8ZR4LPuQBaVauK6L6hqvurTcN
- IPGQ==
+ d=linaro.org; s=google; t=1749560195; x=1750164995; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jeuOGtzF3tzPzFfkJpJg8XisuC1RT3WPIytfTmZ7FFk=;
+ b=QxTSQc5A7xJaVEmRufAwWIu0FyEkGHscph6V2i7XuTwljnOll7H40bOFJBT9yUGHmB
+ CN92uRqyjobqc2xQ8mo3CD73u9PST2MntOIvWVfguf9vdmlxBCIv6m27dAezffndJUcM
+ vePSK2SZfazwPk3EBLnq+7+flKlJ1lSVd5WAMXZhwkpIkzUHL+/nr40/m3JNxV4p/hPl
+ aY9WaWahovhrpOGPgFnL+sm/XwV7pIILGNG+3XwXp0/C/X4F7VDU6c3iSuXNfeEezKHr
+ 9KDFfRWZeGmwODXjGwlAwzcGGjL94JHXZPn1u3JTsSvHYx8OTh0A1+YbXj/9rIqnjWmK
+ gOww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749559743; x=1750164543;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AoMikksxnXdYGRhyqfdY38jzMLWdVcYKsVpV/YhTMQA=;
- b=QtT0hOxIQ7udr9VxhJrfBsshP0t9qI4H3lV1oenKQQoQHhAQb535HOU8PKYv/Co4Hm
- qT33WFoLstXMSYun1/V6bIcX3XOBhOFsx7z1f2C7FdG+TZuhLdL/sCStyuevwIlzWBlm
- 5Uz35WnRUTTQo/jEYnUpzYiaBXNNAC5EQWbInEJgkTVJ1ZspvQn5rV65NoHvLxvcKBo5
- Os2pPzgCNKm3mLR6sDAgxyqt32Xt1YkplatUyzYpTwv6FBrkVzz3R4Hfg9vUupFJfMAY
- qu86PIzywRvGcjpXNQx76ipUL6qO0R6RdKGxb0hj7EVpz8PNFKgBmLn0cZeyJR2JnL1x
- Djag==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU588UFBTE+1JR7ns9B4CZF/y3A91tFaKKenvhijkwH4iGgvq10tLfqMHWAJ2N40LGKNPU7x/b/UGtN@nongnu.org
-X-Gm-Message-State: AOJu0YxWQf1fAFZRjdoEbAnDm7AMbCCpUEmUa7BFx596xvOMTMaQ8Oq1
- /4RbO7SGlc3RGmHnCc6J/wHnRuLVNxs0Q3LXnOrHcakqgDp7sS0WmDE/jPKTfubvTd0=
-X-Gm-Gg: ASbGncvUTF6XfXgDEAhASYnzr7bfCeWGds4KylEsH2JYW2Kv+aWUF3XlBjlqodz4kPq
- ouCjzM2voVRBcuE2HGsEW+uG4Dzf+OpSNtO61G/ZNvgcB567rIEgQT+uOFbqgRcQejYoOw91N7Y
- qgNFgRg03mEcmVQqE+vTBH3z/aA6+nyhO3P2k7bqJrvSiYBdBWc4jawTJ9qYprsZU42qGxHFd8r
- KDxUOeaiwZX0Oewsq0xhZWqjVPooQuGX9j/oQKMcxVBw72IqX+bxjeqPPr0OJZl8zzCesm8Z/+v
- RefZRY7UTbebkQiCJXHtd2SMwHGKrYQlLnYnhgkDyLLeDkY5xRyczgBm39U9fC765M1HK3nXLaZ
- XrB+fFkVoMJNv6CxT6D1KUfaSJU6XtTISbOQ=
-X-Google-Smtp-Source: AGHT+IFExA/vxNyfJdsqAvxybPHbjN6ERBgW5E/z+Reol1sptXJYy/aBskkRGn3fpI6cG9HeoWu6tA==
-X-Received: by 2002:a05:600c:4691:b0:450:c210:a01b with SMTP id
- 5b1f17b1804b1-4531de673c7mr27799755e9.17.1749559743444; 
- Tue, 10 Jun 2025 05:49:03 -0700 (PDT)
-Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1749560195; x=1750164995;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jeuOGtzF3tzPzFfkJpJg8XisuC1RT3WPIytfTmZ7FFk=;
+ b=mUhKAepDghTSim7kpd0QXzhnniHs04H6KBR01dGgSIbeMPuduuLJSKdD01nyTyVCVU
+ y+3G3SAW8J0x7Udnraz410JqpTcOjberYiRFBlszR1ZloWhN4UWi4WWyHRJEuEK15fff
+ B7b1+5aNi0oiR5KRWGFzOzgSW2NOAoWVydYip6Uj6Ueq7/opbxBcQODzSAY/h1M+Oov6
+ BDyrSGbZ02T7xDs+bDGrmk8h34YMUwdP8scQ2isCTEAHuUfsa346lwuwqDm91HLi7nuX
+ YGISl3fuIRNfUcfubV4H260Wn4xNNc+3JSZxB8jENJ4OFzvqEJfcbHlwm/92RAlS7MG6
+ YiKQ==
+X-Gm-Message-State: AOJu0YyQw8rUCYKeIdwoq1DHpHjgO9npp447XKWW6n3Q9vuB7lKaxnbR
+ 6KVW9UdpblVLUGpYlsvAWvGjetQXeilHAw3M51G4iP4uYLW0gt5S2+094zwsoswJ2s10UfoLkla
+ ndtMu900=
+X-Gm-Gg: ASbGnctxHg1a8lJ1T9HiLz4M3hVY5EO6qv/15zDf0YJGc7EipSAkW/sQXrjkWoGDIR4
+ D1jhcpwYS7g1GBGFd9e3915t5fWXKKhrJrCjLyeBPSrIq8+MA9X8zv4B3sLfCX2KbGvcoEzFdtn
+ veSdGIA2sv2ibG4a3nljawTAisGAFpUq2krXicKq8fi/+7wVPhQAqLlrIE0AZ2Y8f3tH08Febxf
+ vdMD0/hiCu3xqvPYuaOGRrXgZYQuyQ9iu4tbj6rvj3fZgfXXmEJslLtvviW9n8eKIBo74XS+2Z/
+ x6FLKhqvwX2PftGUWcsBX2BsSZN2Dj7p721Xyk/vsfkobi/qz05CpCnSxixBA3jqIOaSkbtTa9q
+ 8SOVzdfxQWFIg/Yu4dVwiEbuDvi9izI9P1nQsk5nVrw==
+X-Google-Smtp-Source: AGHT+IF4V6/RfFf/YwRq2lOW9PZS+pU8Dn4ZCDXSbQEb0F9f3Thuk5fhGZX3LHNfdVfuC4ObwaerLw==
+X-Received: by 2002:a05:600c:190e:b0:43d:160:cd97 with SMTP id
+ 5b1f17b1804b1-45201416350mr140062525e9.25.1749560195351; 
+ Tue, 10 Jun 2025 05:56:35 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-452669ada25sm142090435e9.0.2025.06.10.05.49.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Jun 2025 05:49:02 -0700 (PDT)
-Message-ID: <50405e77-e665-4772-9715-3901730d00fd@linaro.org>
-Date: Tue, 10 Jun 2025 14:49:02 +0200
+ 5b1f17b1804b1-45209bc6d3esm141214785e9.6.2025.06.10.05.56.34
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 10 Jun 2025 05:56:34 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/24] Misc HW patches for 2025-06-10
+Date: Tue, 10 Jun 2025 14:56:09 +0200
+Message-ID: <20250610125633.24411-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/31] Skip automatic zero-init of large arrays / structs
- in I/O paths
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>
-References: <20250610123709.835102-1-berrange@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250610123709.835102-1-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,32 +94,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/6/25 14:36, Daniel P. Berrangé wrote:
-> This series is an extension of Stefan's proposal:
-> 
->    https://lists.nongnu.org/archive/html/qemu-devel/2025-06/msg00736.html
-> 
-> It used '-Wframe-larger-than=4096' to identify all code locations
-> with more than 4k on the stack. Any locations in the I/O paths
-> were chosen to avoid automatic zero-init, to eliminate the performance
-> overhead of the automatic initialization.
+The following changes since commit bc98ffdc7577e55ab8373c579c28fe24d600c40f:
 
-Should we eventually add it to our default CFLAGS?
+  Merge tag 'pull-10.1-maintainer-may-2025-070625-1' of https://gitlab.com/stsquad/qemu into staging (2025-06-07 15:08:55 -0400)
 
-> Note, although all the changed locations are I/O paths, this does not
-> imply that the changes make a measurement performance difference in
-> every case.
-> 
-> This is because many of the emulated devices are likely limited by the
-> emulation impl, rather than any implicit memory zero'ing overhead of
-> stack data.
-> 
-> None the less the memory zero'ing is still a redundant CPU burn in
-> all these cases, so I felt it worth setting the general precedent
-> that any data over 4k on a stack in a device I/O path should be
-> skipping zero-init.
-> 
-> I did reasonable review in each case to identify that the data was
-> indeed initialized explicitly later in the method.
+are available in the Git repository at:
+
+  https://github.com/philmd/qemu.git tags/hw-misc-20250610
+
+for you to fetch changes up to 46d9ac6602dfa3bd69fbee17198d77ac796b4919:
+
+  hw/net/i82596: Factor configure function out (2025-06-10 12:59:09 +0200)
+
+----------------------------------------------------------------
+Misc HW patches
+----------------------------------------------------------------
+
+Akihiko Odaki (1):
+  MAINTAINERS: Update Akihiko Odaki's affiliation
+
+BALATON Zoltan (4):
+  hw/pci-host/raven: Remove is-legacy-prep property
+  hw/pci-host/raven: Revert "raven: Move BIOS loading from board code to
+    PCI host"
+  hw/ppc/e500: Move clock and TB frequency to machine class
+  hw/net/fsl_etsec: Set default MAC address
+
+Bernhard Beschow (1):
+  hw/ppc/e500: Use SysBusDevice API to access TYPE_CCSR's internal
+    resources
+
+Daniel P. Berrangé (1):
+  pc-bios: ensure installed ROMs don't have execute permissions
+
+Philippe Mathieu-Daudé (6):
+  hw/char/sh_serial: Delete fifo_timeout_timer in DeviceUnrealize
+  hw/char/sh_serial: Convert to TypeInfo
+  accel/hvf: Fix TYPE_HVF_ACCEL instance size
+  hw/gpio/pca9552: Avoid using g_newa()
+  backends/tpm: Avoid using g_alloca()
+  tests/unit/test-char: Avoid using g_alloca()
+
+Philippe Michaud-Boudreault (1):
+  hw/misc/stm32_rcc: Fix stm32_rcc_write() arguments order
+
+Soumyajyotii_Ssarkar (2):
+  hw/net/i82596: Update datasheet URL
+  hw/net/i82596: Factor configure function out
+
+Thomas Huth (1):
+  tests/functional: Add a test for the Arduino UNO machine
+
+Zhao Liu (3):
+  hw/core/resetcontainer: Consolidate OBJECT_DECLARE_SIMPLE_TYPE
+  hw/hyperv/balloon: Consolidate
+    OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+  hw/core/cpu: Move CacheType to general cpu.h
+
+Zhenzhong Duan (4):
+  hw/virtio/virtio-mem: Fix definition of VirtIOMEMClass
+  hw/virtio/virtio-pmem: Fix definition of VirtIOPMEMClass
+  hw/gpio/aspeed: Fix definition of AspeedGPIOClass
+  hw/riscv/riscv-iommu: Remove definition of RISCVIOMMU[Pci|Sys]Class
+
+ MAINTAINERS                      | 19 +++----
+ hw/ppc/e500.h                    |  4 ++
+ include/hw/core/cpu.h            |  6 +++
+ include/hw/core/resetcontainer.h |  2 +-
+ include/hw/gpio/aspeed_gpio.h    |  2 +-
+ include/hw/riscv/iommu.h         |  6 +--
+ include/hw/virtio/virtio-mem.h   |  2 +-
+ include/hw/virtio/virtio-pmem.h  |  2 +-
+ include/system/hvf_int.h         |  1 +
+ target/i386/cpu.h                |  6 ---
+ accel/hvf/hvf-accel-ops.c        |  1 +
+ backends/tpm/tpm_emulator.c      |  4 +-
+ hw/char/sh_serial.c              | 24 +++++----
+ hw/gpio/pca9552.c                |  2 +-
+ hw/hyperv/hv-balloon.c           |  9 ++--
+ hw/misc/stm32_rcc.c              |  2 +-
+ hw/net/fsl_etsec/etsec.c         |  1 +
+ hw/net/i82596.c                  | 38 ++++++++------
+ hw/pci-host/ppce500.c            |  8 +--
+ hw/pci-host/raven.c              | 85 +++++---------------------------
+ hw/ppc/e500.c                    | 26 +++++-----
+ hw/ppc/e500plat.c                |  2 +
+ hw/ppc/mpc8544ds.c               |  2 +
+ hw/ppc/prep.c                    | 27 +++++++++-
+ hw/riscv/riscv-iommu-pci.c       |  6 ---
+ hw/riscv/riscv-iommu-sys.c       |  6 ---
+ tests/unit/test-char.c           |  3 +-
+ .mailmap                         |  3 +-
+ pc-bios/meson.build              |  2 +-
+ tests/functional/meson.build     |  1 +
+ tests/functional/test_avr_uno.py | 32 ++++++++++++
+ 31 files changed, 166 insertions(+), 168 deletions(-)
+ create mode 100755 tests/functional/test_avr_uno.py
+
+-- 
+2.49.0
 
 
