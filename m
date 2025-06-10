@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0982EAD3F8F
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 103F0AD3FAB
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:56:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP27o-0002ul-1b; Tue, 10 Jun 2025 12:47:00 -0400
+	id 1uP2AA-0008D4-2u; Tue, 10 Jun 2025 12:49:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uP0MQ-0005QA-T5
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:53:59 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uP0T3-0006UX-F2
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:00:49 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uP0MO-0008Ks-KQ
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 10:53:58 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-747c2cc3419so3929772b3a.2
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 07:53:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uP0T1-0000p5-J1
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:00:49 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3a54836cb7fso1583328f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 08:00:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749567233; x=1750172033; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1749567645; x=1750172445; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=sLbR6oc+On5Mq6zpnUUQIMWRLD1RcyCjq2IEay9viWA=;
- b=dInfK68cO66lZeOeYITY1AJVUpA52GUZf2wAzoPDq6tjFMSHYpinDlaoJYWLexlwko
- CknaKUtImocRwFAFJjFYH/pcPjI+kJ3k8KfUwnwpKVjhKQs0m8z7HYKbFstbv2u5L0Xt
- KE2d76usN3wPJLCGx9JLcTNjWVaSmsIxlyw3zEqUo1WGMWaB9cyvCwuQNPJlg6Gr0SeH
- b8anWPc6QInDdQXvplC0Oq19t6PtIMqtctblUXl5LG6T0go2LMrK8f/K210LuHkEJbu8
- N/v84rQh7xn3W75nvKeroZyBDWi83pViD9+gRNBeg13Aoup5X1CHoe6MTmgMdvNZnghi
- +7kw==
+ bh=etkACMaH6okwnINcTnrxnSS/kK+PzIFfBrEYmbMGJdw=;
+ b=Af0ikxGPDPqE9AZayJbdNuVB/W7ygDlAw6GvfkAlpAkd0eHdrOepH9+GtIcDezqv7z
+ QEL+q1SryysNREpvc9vsTAy+2BdMnv9KqDh0y8WuTATYL6ptDmhqBztPZro04jO7qO7C
+ 83puBaCgm4pHB3LCyg9RVFtBjFPJlJLSOgTsLUzDwBXVydbMZLFT4myOi6U0XebQh8td
+ g0RAtoP7ofwLvnjflcTpzbO1QJibdZeozPB8fZU38ZoG9A+5sT9gE0F76REI2UGbcJZv
+ J6AVnqrWOVd4547kpw5KPetfKGXOqrpm1pn/nB/9NBl70DPSsJOOaosTlby2vamJ9VEP
+ 5lCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749567233; x=1750172033;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1749567645; x=1750172445;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sLbR6oc+On5Mq6zpnUUQIMWRLD1RcyCjq2IEay9viWA=;
- b=UeYvOPNspP6kDgT9m/uR8HGoi1O5Q6ZrpgdP8As+NjuxTM18PRJN7Px5SyTCFxvnMT
- yIbRSbtTLkELDAQkEotr1//20nGylr5uPIN0FNnPXl/zIVEk/fa3/nx3tdGLRZt2QseE
- b5EC5gLMGKmq+/2pUlREPQXSZoUfakH/Nt3g+oLJ1uTMsBskad72TSkzYboiCsO+Wi9m
- NyOEdvIGm1wvM5peB7mCUqY0yIZTWZmE4r176moha5zO9nHZ59QoPJWaZH0e9r+OukTQ
- 5/Zu8zxDIaqJMMmTRgAhQC4hZiRv9pT6WL8SDEebL3PeVlwJ7RwoZMkkN91avR0k45F4
- UkIQ==
-X-Gm-Message-State: AOJu0YxAY7VquZ9HHCDsspkcmarq9icTH/Yr9AOQtn64wco7a41lp8HZ
- P+eM7PZUHG6+Aygns9nhkcV8uijR4ZjVeeNqJifnVBMvNkL9v0ggroBjAueqkj6Q16o=
-X-Gm-Gg: ASbGncueXJvGRH+ZVylmTPbxtF5Ly+RigFkYyGdZ75XAu7VZrS1OsD6rcpRkZPyU/eQ
- A0Tjvd0I56SzjORksE961/EdVmp/6mPQMuGmzEr5FYtSvUo4AssJneAvvJgLcqLi3Dlupuq1WOW
- 1Hd8DRbjt6nmKdZ9mXl59YZD0TbyVYSQ7rMLQ7qC2g5ZbE/dNthSlIENV9kMzNy+GDPi30hJghL
- joc2ulfKkZ3578EgusPMxqz4FMoK748URT3ldU0YR26Dyv1wwlQtujuVLK9csbR66tTQOHKZSWc
- 6VX3IeK7y6FP21eAS+4BdgxtG7mYs7BI5l8b2MBP4LkwGN7AddnIdkhI4cMGpWNtngtaOWZUNx8
- =
-X-Google-Smtp-Source: AGHT+IGfgDE4yJRZdn2k3SW/MkvgFzLx7RChz6WAbj0e6LY1RNp17Zx8bvfTTm1TeTxcVj3FjzHUQw==
-X-Received: by 2002:a05:6a00:9a3:b0:747:b043:41e8 with SMTP id
- d2e1a72fcca58-74827f12808mr21781849b3a.15.1749567233447; 
- Tue, 10 Jun 2025 07:53:53 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7482b0f3e59sm7759943b3a.178.2025.06.10.07.53.52
+ bh=etkACMaH6okwnINcTnrxnSS/kK+PzIFfBrEYmbMGJdw=;
+ b=SyR7FO3Lw1tQM6dID0TPbiHcmMTkD1IMROjuq0ya6A6YtSxq8y2JmxJsolcUdkuKUF
+ 7r109F6okIsy5DtZpQf52DBNKmeOE/k9IBsI/lMyjaDYDAtyU5+BI7gx19K9+nlKxK8U
+ A1OWOJKpaY32OiqTFrpDlrISxGJT87QR9YtgpJgdgHseGtT5qTSV74r1Xk6MhWlIzi0x
+ g4MCdi3KX/LZu19EzcmoRRN6mqN4VZY3hcE4FCpWeef0ykmq+fnKuut6zfCsbj81cSL7
+ 4toorpEEwDjKydsMXMdWWxE1MCJkqZK5IXBA1xMYvqzh4H55i2Wlb3V06VWDQ10neJOh
+ J6KA==
+X-Gm-Message-State: AOJu0YxTYfKD+AP213v2+DY0OgaYhR/q+auOyOtXvSWutfo4IL2FsW5N
+ jT0mwhlBVVJZcS3Q42qZTIxIw2aGgKnWzLWH1ELGtcJFs7NtZdvodwNvWi6jC+/HdWo=
+X-Gm-Gg: ASbGncvw9nydI3VGt7wBX8V+l3pUlYmJoPYCvdwNqDpXgj7fO21f8Oq/VHn0HdjGz+M
+ pvSzcB5qpUiqhd+MJifOOWp/dzbtfUyvkGzP56Cx2117qQUa48VSTfck5QeMYNQgR2n0F/N21Yl
+ Ju6n7HHuwYjOQH0LYjte2SzNlzpZhmCwaDdx22Iflp2289h2OX7NtJTF2NMfMJ18AWNcIIMHA+7
+ 4fzc6J4kxWIQusUfibagn1Rg5dA5/wHR2jnanp4jblWFV638n5/XZbGPuZu5mZaDMVOU6yvYmMb
+ 8lPrlT1W2MR28zzf4EIgsodKovHFwEo3hj+e1/dCdm+UHYKG7y4h8mgfLV7Lrm19fqoPNDmqs27
+ nFiL+DJ9EvoSSdLPBx1az3xx1NbNoamhRaFT9j6rS
+X-Google-Smtp-Source: AGHT+IEH6pMoIfv5xpLrMPTt3Sgm1EM3PuT8uCmTvSReuZtz6usq25kRVq7GMQU8Jw3q7SSnSm0KmA==
+X-Received: by 2002:a5d:5f8f:0:b0:3a3:7bad:29cb with SMTP id
+ ffacd0b85a97d-3a531cba7afmr13643772f8f.52.1749567644965; 
+ Tue, 10 Jun 2025 08:00:44 -0700 (PDT)
+Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-452730b9b33sm140470095e9.26.2025.06.10.08.00.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Jun 2025 07:53:53 -0700 (PDT)
-Message-ID: <6edebc63-4b64-42b1-acdc-c70a9f58cb9f@linaro.org>
-Date: Tue, 10 Jun 2025 07:53:52 -0700
+ Tue, 10 Jun 2025 08:00:44 -0700 (PDT)
+Message-ID: <4d03fe23-86a1-4030-b5fc-8de8be461770@linaro.org>
+Date: Tue, 10 Jun 2025 17:00:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v3] meson: fix Windows build
+Subject: Re: [PATCH 00/31] Skip automatic zero-init of large arrays / structs
+ in I/O paths
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+References: <20250610123709.835102-1-berrange@redhat.com>
+ <50405e77-e665-4772-9715-3901730d00fd@linaro.org>
+ <aEgri00LXfeRQRJ2@redhat.com>
 Content-Language: en-US
-To: Oleg Tolmatcev <oleg.tolmatcev@gmail.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>
-References: <20250607094503.1307-2-oleg.tolmatcev@gmail.com>
- <878ac7c5-6729-4930-a64f-19cf0e10f7f2@linaro.org>
- <CACcXsZgSdLNUovP_Cz7vAU+E=KzaJ6tLCKFhm1xQpQpKO5h=2Q@mail.gmail.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <CACcXsZgSdLNUovP_Cz7vAU+E=KzaJ6tLCKFhm1xQpQpKO5h=2Q@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <aEgri00LXfeRQRJ2@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,57 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/8/25 1:23 AM, Oleg Tolmatcev wrote:
-> Am So., 8. Juni 2025 um 02:43 Uhr schrieb Pierrick Bouvier
-> <pierrick.bouvier@linaro.org>:
->>
->> On 6/7/25 2:45 AM, oltolm wrote:
->>> Sorry, I forgot to cc the maintainers.
+On 10/6/25 14:56, Daniel P. Berrangé wrote:
+> On Tue, Jun 10, 2025 at 02:49:02PM +0200, Philippe Mathieu-Daudé wrote:
+>> On 10/6/25 14:36, Daniel P. Berrangé wrote:
+>>> This series is an extension of Stefan's proposal:
 >>>
->>> The build failed when run on Windows. I replaced calls to Unix programs
->>> like ´cat´, ´sed´ and ´true´ with calls to ´python´. I wrapped calls to
->>> ´os.path.relpath´ in try-except because it can fail when the two paths
->>> are on different drives. I made sure to convert the Windows paths to
->>> Unix paths to prevent warnings in generated files.
+>>>     https://lists.nongnu.org/archive/html/qemu-devel/2025-06/msg00736.html
 >>>
->>> Signed-off-by: oltolm <oleg.tolmatcev@gmail.com>
->>> ---
->>>    contrib/plugins/meson.build         |  2 +-
->>>    plugins/meson.build                 |  2 +-
->>>    scripts/tracetool/__init__.py       | 15 ++++++++++++---
->>>    scripts/tracetool/backend/ftrace.py |  4 +---
->>>    scripts/tracetool/backend/log.py    |  4 +---
->>>    scripts/tracetool/backend/syslog.py |  4 +---
->>>    tests/functional/meson.build        |  4 +---
->>>    tests/include/meson.build           |  2 +-
->>>    tests/tcg/plugins/meson.build       |  2 +-
->>>    trace/meson.build                   |  5 +++--
->>>    10 files changed, 23 insertions(+), 21 deletions(-)
+>>> It used '-Wframe-larger-than=4096' to identify all code locations
+>>> with more than 4k on the stack. Any locations in the I/O paths
+>>> were chosen to avoid automatic zero-init, to eliminate the performance
+>>> overhead of the automatic initialization.
 >>
->> Are you building using msys2, or another environment on Windows? I'm
->> curious to know in which configuration the build is failing.
->>
->> In case you use msys2, maybe you're simply missing some packages. Our
->> documentation explains what to install [1].
->> Building out of msys2 on Windows is not recommended, as this is the only
->> maintained setup (tested in our CI, and maintained as an msys2 package
->> by msys2 maintainers) for this system.
->>
->> [1] https://www.qemu.org/docs/master/devel/build-environment.html
+>> Should we eventually add it to our default CFLAGS?
 > 
-> Yes I do use msys2, but I only use bash for the initial configuration.
-> Afterwards I just call meson and ninja from "cmd" not from bash.
+> You mean as a way to impose a hard limit on stack frame size ?
 
-Maybe it's because it's complicated to execute a single command from 
-msys2, and return. Using the -shell parameter of msys2_shell, you can 
-pass arguments to bash.
+Yes, we could use -Wframe-larger-than=50000 for this release, then
+aim to reduce by 5/10k every release until some reasonable limit...
 
-cmd.exe /c c:/msys64/msys2_shell.cmd -defterm -here -no-start -mingw64
-   -shell bash -c 'ls / /tmp'
+> FWIW, the VNC server is biggest at 100kb, but we have a large
+> number of other big frames - here's a sorted list of frame
+> sizes vs frequency
+> 
+>        1 103696
+>        2 69664
+>       46 49184
+>        4 42608
+>       23 32880
+>       23 32864
 
-That said, I'm not opposed to the current series, I just wanted to 
-understand what is the context.
-
-Thanks,
-Pierrick
 
