@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A442AD3F9D
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 022C9AD3FAC
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:56:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP27g-0002YX-84; Tue, 10 Jun 2025 12:46:52 -0400
+	id 1uP27l-0002p2-0T; Tue, 10 Jun 2025 12:46:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uP1RL-00071z-Te
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 12:03:13 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uP1ZB-00033Q-GS
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 12:11:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uP1RK-0000LN-Fr
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 12:03:07 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uP1Z5-0001eu-QL
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 12:11:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749571384;
+ s=mimecast20190719; t=1749571862;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rtT0IHU1UsqC6SynSODcmb8WSOW/YHF9wPm6k+JvGCc=;
- b=cgY+CoS1WWdZq70REhcy4d9v0HWxbGSZ0PM1Wjvn3jCYLcn8COh6YtILG4wJBl0cNWqrRu
- 4CRL7+D3Zy7iDM+lBDppkDihrI/FoLiHgcWDN6+N1jfhatdXrO6yFkHD6DFnUXlm8z0Jbt
- 6YPT36BqbF8/VQhwFX6/iKKNTOBL2Vg=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Lw4KCgn5AuZvkE6iDhSORyprWcfTe4OMDLQGuKVdJ68=;
+ b=K/JPED1DWreLh6dNLi1Ky/KwB86/2PlF5N0I/zKkUZNOTtwG1XKB7dyZRuRLrMMu5K1qCR
+ DRFNjaXSrONTHGbIDzuMovjEkYku4/oljRmjNzSjqnijojmdGNndqDjY2KKYpjdN+IAzBa
+ cxXIlfdRmP2xYnN8JBUTpxUac1MTvlM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-255-hk-u2ys9NamT8_DdIOHhUA-1; Tue, 10 Jun 2025 12:03:01 -0400
-X-MC-Unique: hk-u2ys9NamT8_DdIOHhUA-1
-X-Mimecast-MFC-AGG-ID: hk-u2ys9NamT8_DdIOHhUA_1749571381
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4a6e9182fbaso68297211cf.1
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 09:03:01 -0700 (PDT)
+ us-mta-335-_TOcaThQOzCPbBoPH1Cn6Q-1; Tue, 10 Jun 2025 12:11:00 -0400
+X-MC-Unique: _TOcaThQOzCPbBoPH1Cn6Q-1
+X-Mimecast-MFC-AGG-ID: _TOcaThQOzCPbBoPH1Cn6Q_1749571859
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a50049f8eeso2558901f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 09:11:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749571381; x=1750176181;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rtT0IHU1UsqC6SynSODcmb8WSOW/YHF9wPm6k+JvGCc=;
- b=DRFQlvW6WEGTU7Ut5lsynjFowginOPN3alQ/qLRKrJ69acywUYldOeFchSUwOPD243
- tlnZRo2qs4DrWLqWNKyVri0pls+i2vdwLUXxRxKhgfi9oKesUz3fXxGkUsd17a6miH9z
- OFOKGvP9Lw9s/tsQr+Ps7YtbOu7y2lBq+yA9btryxG4rGKMgljTWjHzvPx9+qjLPFiR5
- JKbo2dhJfqxrypOe/LiEcHFtmygug21uUaQ59vicFkdNis1HFahwuH+KZBoKy9Ho7rRQ
- AzyHknqXPytPY8Ex04gnJK+VhHX3a42AGju0fz2eQ9PXlcU4LGecu5UD1DFfrq5tpIRd
- Ve3w==
-X-Gm-Message-State: AOJu0YzeCrjbqTpgv4L5xolHki8zr0BBKbNaA1wbLFrWOohAl7OZhMke
- SGyLv24vr+8aHaOB3KQI+x2dxQM8/+p2o2lr4fAGj0bQguHLYuUHUVENIidMJJ3IAFgLQV3uYyu
- NyZf1YlNhBK2RMJ1uoSfmpcWhc/3/Pa/lkQQkedzAWh2CJjrf20GhdGs7
-X-Gm-Gg: ASbGnctCYXqaWFowYmyE2prgplQfBPNGdUhAUo9KqGtFRgsuGypfcc+Go0HgKpabBqz
- vB0U6yprAaVvo9KuYYI5E8uqXkWR0TGMJGmzfsmca+wlL/nxUtWX+U/yD/t/l/6P6ZkpCG6uwzh
- mb3utvAaSjUUZ6NEyZ93jSUAilAbqK73llY3yimvopB9g3y2BM3uzs5/CTJVuuaqGZeWG+4z89x
- x/R4alK/ZhbIYs/Hs/N4SmUeizM30mw0UeOBMQu65bxQk80aZslz0h9NIWnQ/GdgJHZ1Cf3Hips
- Iil3CQWbBnr0DQ==
-X-Received: by 2002:a05:622a:2303:b0:4a6:f9e3:b08a with SMTP id
- d75a77b69052e-4a708dd2c18mr71796681cf.26.1749571380733; 
- Tue, 10 Jun 2025 09:03:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFl++5DIbbNqxYdn2eZCN0IJLKc9soaUXaED6uFceZT4C/KWmXjWHSx7FMluarA0NzvmKpJMQ==
-X-Received: by 2002:a05:622a:2303:b0:4a6:f9e3:b08a with SMTP id
- d75a77b69052e-4a708dd2c18mr71796171cf.26.1749571380286; 
- Tue, 10 Jun 2025 09:03:00 -0700 (PDT)
-Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4a611150830sm73064281cf.10.2025.06.10.09.02.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Jun 2025 09:02:59 -0700 (PDT)
-Date: Tue, 10 Jun 2025 12:02:56 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Jaehoon Kim <jhkim@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, jjherne@linux.ibm.com, steven.sistare@oracle.com,
- farosas@suse.de, lvivier@redhat.com, pbonzini@redhat.com
-Subject: Re: [PATCH v2] migration: Setup pre-listened cpr.sock to remove
- race-condition.
-Message-ID: <aEhXMCuztHlUEhqb@x1.local>
-References: <20250610150849.326194-1-jhkim@linux.ibm.com>
+ d=1e100.net; s=20230601; t=1749571859; x=1750176659;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Lw4KCgn5AuZvkE6iDhSORyprWcfTe4OMDLQGuKVdJ68=;
+ b=ZosxGoMOjKNuKkOjMs5y4B4ml+OvVt92p9ZSRxtgKI2xucZH96QRJBmOuTzr29YOzm
+ QlKIJ8bRsDoF7lytzPcIJLlWLEpJ82GRRp2s7gKhHJobk/rjk1iDogIN33F2i6ihf8Qr
+ jEGv9Dp735Yexb+GJMBrAahXEr6e+UbdyN+2ZSxYCM2kM9Du8gIC/XYBM9JfVhVEbz1n
+ jtaIkCDn8ZLkRry7dOKIVCHI9p/YH/C4v28UN9NvGdARVlp6tRcjD77xSsSqP7alRgx+
+ qfTpGBpx3LmF66zIn9B/c5YfeNgHjB2Eqw4lixJm7kwn1K3YEEyjxMsAj/cR1teU7Kg/
+ 69+A==
+X-Gm-Message-State: AOJu0YwTmBMNBBiTT20+pk/FLVv+5TPgfZPI+P9BwZh6gVcco+6X4jzn
+ Nx5atZ5AWJJY17DPyeH76RK7C1XsT5qNk78FLuNKcK7YOQjMO65cPfHzIj8FFJQrzPrDsfinPaz
+ OH2zSW6z9tCsuxfKiZAUfDNG7hmoIExJSFKvSVryAGgLrwdzS2Id+aXmbNVI6SnyVZnAOyWWrIS
+ dlm5tgAtMeTW7vb+x+kLJwvypuMAvj7aE=
+X-Gm-Gg: ASbGncticym5frAPbPvFkueO+ZqRWYVZKICDD+dKfqiO62bcNLyqaeVBUGsG2uqEc71
+ ZapxBop2icIvS5qBSNzvZgnmH+mjZ+6wn6uvlb4bCRl9uDKs3Q7kQbFNX6ZcZkzH9hblqgi/B/a
+ brfQ==
+X-Received: by 2002:adf:f58c:0:b0:3a5:39d7:3f17 with SMTP id
+ ffacd0b85a97d-3a539d73f90mr9783997f8f.47.1749571859468; 
+ Tue, 10 Jun 2025 09:10:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8rvEMsKyQJ+gIF14zjTJ0VBycm1tLlvb9Fi2AQvxcIw7deQAd1I27kyWkq0ZOiMcEThd5tumYH8vB1D0U1VQ=
+X-Received: by 2002:adf:f58c:0:b0:3a5:39d7:3f17 with SMTP id
+ ffacd0b85a97d-3a539d73f90mr9783966f8f.47.1749571859026; Tue, 10 Jun 2025
+ 09:10:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250610150849.326194-1-jhkim@linux.ibm.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+References: <20250605101124.367270-1-pbonzini@redhat.com>
+ <CAMxuvazN2OMc1VANJVMgj0nQ1KCCop46A151uAUe0mdATrQjCg@mail.gmail.com>
+In-Reply-To: <CAMxuvazN2OMc1VANJVMgj0nQ1KCCop46A151uAUe0mdATrQjCg@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 10 Jun 2025 18:10:47 +0200
+X-Gm-Features: AX0GCFsdiMxgV9drCac9melcjaVIHtck4Y6vTQFlL7mrYgE6AYChETUHOZm5-z8
+Message-ID: <CABgObfYt=Gg=R6cekCTbYhmF+2P-9DoOCSeaaWHHGbMmew2ZyQ@mail.gmail.com>
+Subject: Re: [PATCH preview 0/3] reviving minimal QAPI generation from 2021
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, armbru@redhat.com, 
+ mkletzan@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,26 +102,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 10, 2025 at 10:08:49AM -0500, Jaehoon Kim wrote:
-> When the source VM attempts to connect to the destination VM's Unix
-> domain socket (cpr.sock) during a cpr-transfer test, race conditions can
-> occur if the socket file isn't ready. This can lead to connection
-> failures when running tests.
-> 
-> This patch creates and listens on the socket in advance, and passes the
-> pre-listened FD directly. This avoids timing issues and improves the
-> reliability of CPR tests.
-> 
-> Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
-> Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
+On Tue, Jun 10, 2025 at 3:53=E2=80=AFPM Marc-Andr=C3=A9 Lureau
+<marcandre.lureau@redhat.com> wrote:
+> On Thu, Jun 5, 2025 at 2:11=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com=
+> wrote:
+>> This is just an extremely minimal extraction from the patches at
+>> https://patchew.org/QEMU/20210907121943.3498701-1-marcandre.lureau@redha=
+t.com/,
+>> limited to generating structs and enums from the QAPI schema.
+>> It does not include them in any crate and does not compile them.
+>
+> Do you keep an up to date branch for those patches?
 
-One quick comment while we can wait for others to look at the details: when
-it involves both qemu and tests changes, please consider splitting that
-into two patches. The test patch can be prefixed with "tests/migration:".
+I can add them to my rust-next branch but they can in theory just be
+applied to upstream/master.
 
-Thanks,
+> I fail to understand the advantage of going through Serde to deserialize/=
+serialize from C when you can have C types in Rust - having less generated =
+code?
 
--- 
-Peter Xu
+It's indeed trading generated Rust code for generic serializers and
+deserializers + #[derive(Serializer, Deserializer)]. It's not the
+primary reason but the size of your code generator patches was a bit
+scary indeed and I don't want to inflict too much review effort on
+QAPI maintainers.
+
+But also, I'm not sure that the C types are needed at all for
+implementing QAPI commands. The QAPI command generator could have a
+directive like 'rust': 'qga::qmp'" directive (or maybe just
+'language': 'rust', I don't know) that would generate Rust
+marshaling/unmarshaling functions:
+
+pub extern "C" fn qmp_guest_get_host_name(
+        args: *mut QDict,
+        ret: *mut *mut QObject,
+        errp: *mut *mut bindings::Error) {
+    let args =3D unsafe { from_qobject::<()>(args) };
+    match ::qga::qmp::guest_get_host_name(args) {
+        Ok(ref v) =3D> unsafe { *ret =3D to_qobject::<GuestHostName>(v); },
+        Err(err) =3D> unsafe { err.propagate(errp); }
+    }
+}
+
+and this (more specifically from_qobject/to_qobject) could also use
+serde, this time to go directly from QObject to Rust and back. A
+QObject serializer/deserializer should be easier to write (and very
+similar to existing code in serde_json for
+https://docs.rs/serde_json/latest/serde_json/enum.Value.html), so you
+could reach the stage of your old posting with qapi-gen changes that
+are little more than these two patches.
+
+> I also do not fully understand how that would work.
+
+To be honest neither do I entirely. But what I understood is that
+Serde is based on a visitor API that is very similar to what we have
+in QEMU. See the above serde_json link where it implements Serializer
+and Deserializer, and the blog post at
+https://ohadravid.github.io/posts/2025-05-serde-reflect/ should be a
+good introduction too.
+
+That said: the *possibility* of using Serde is why I started from the
+native structs. I'm not wed to it and generating/converting the C
+types remains a possibility as well.
+
+Paolo
 
 
