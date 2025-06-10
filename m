@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DF8AD3F6C
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64216AD3FA9
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 18:56:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uP27k-0002oj-RT; Tue, 10 Jun 2025 12:46:56 -0400
+	id 1uP27w-0003Pi-0I; Tue, 10 Jun 2025 12:47:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP15J-0004Qa-Mm
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:21 -0400
+ id 1uP15M-0004Sn-QZ
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:26 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uP15H-0006BR-OH
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:21 -0400
+ id 1uP15J-0006C0-Pp
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 11:40:24 -0400
 Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEXdQ7031132;
- Tue, 10 Jun 2025 15:40:17 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55AEXe7s031147;
+ Tue, 10 Jun 2025 15:40:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=7KjLChNKYftLDBg2MG/3EU+4ngFSxntqkzJpHXBx8bc=; b=
- leQAHdnwtQ+Ur/Z37chleNW9LI+wOBw0hEPAhZTPJ2eKms+CeTkzgx2t2cgSr+Ca
- R/9l2FF2HIPphwzM9rykc3TF9IVT+Dkncw1/8P+cDYykcTXlTao/PVlLHuv6mDdK
- 0QKpsBHNsgv7Pda0OYnkl4aiQum3rAyB4gmJWANe64KX6ERHy7xeKzY+h4uvldpX
- uEWF5tBJl1DK7ASl0eWIlOiHVFMKD1z1GrLovczNv9xBxN369cxXbSMLuZ0OAiRq
- Q9L1L0QzZYl6Lr/iOyWM2AakQddJpvMAI4q9NJHYoSveYJiMW4G/FyuGvszq/vS5
- UbUcbGQp290q1lA+dgE6EA==
+ corp-2025-04-25; bh=dImXolpWbJtPiSZFmHlkZlCp8b/agnfa37fqDv+cfFc=; b=
+ lKIaT4xtbsLF1yuiUQz45A425FtVVGZ1X2WJhaz2jnN+tkxGSO+XtXwP+nPhPg61
+ gHkRMTdarpetEc5i0amgA2fx3lx//LFb91yyJkox+zUT+0BtTpjz5Bsc2tg01gkM
+ qLMNlEUfhyAuPJcaerhTFg3GZaIvTEevP/Fv8UoRazzieR56aAOlfpPxYES1thBR
+ Di8XkmG+IYvu6q8ISdzWMwj7GJibSE2EhWM5ECpRwSlqvA9whzLFDePreTGaV25G
+ kwTPja2JwhvCCd4Zma9r3Ghh5kKxXWTQ0XbwDfqWqmaOlJHo413C9c0KjP+83O+W
+ MMKIQ+GZi29nKEPecUz5TA==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474dywvgs0-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474dywvgs3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 15:40:17 +0000 (GMT)
+ Tue, 10 Jun 2025 15:40:18 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 55AEiqkT003975; Tue, 10 Jun 2025 15:40:15 GMT
+ with ESMTP id 55AFAkHl003301; Tue, 10 Jun 2025 15:40:17 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 474bv8wb68-1
+ 474bv8wb7p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Jun 2025 15:40:15 +0000
+ Tue, 10 Jun 2025 15:40:17 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55AFdrfb028825;
- Tue, 10 Jun 2025 15:40:15 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55AFdrfd028825;
+ Tue, 10 Jun 2025 15:40:16 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 474bv8wak1-16; Tue, 10 Jun 2025 15:40:15 +0000
+ ESMTP id 474bv8wak1-17; Tue, 10 Jun 2025 15:40:16 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -62,9 +62,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V5 15/38] vfio/pci: vfio_notifier_init cpr parameters
-Date: Tue, 10 Jun 2025 08:39:28 -0700
-Message-Id: <1749569991-25171-16-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V5 16/38] vfio/pci: vfio_notifier_cleanup
+Date: Tue, 10 Jun 2025 08:39:29 -0700
+Message-Id: <1749569991-25171-17-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
 References: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
@@ -79,20 +79,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  mlxlogscore=999 phishscore=0 spamscore=0 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2506100125
-X-Authority-Analysis: v=2.4 cv=fdaty1QF c=1 sm=1 tr=0 ts=684851e1 b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=fdaty1QF c=1 sm=1 tr=0 ts=684851e3 b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
  a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8
- a=jRqgxlNjA3WZj7__-qIA:9 a=3ZKOabzyN94A:10
+ a=28Sen26mfX-obivxnQMA:9 a=3ZKOabzyN94A:10
  a=QEXdDO2ut3YA:10 cc=ntf awl=host:14714
-X-Proofpoint-ORIG-GUID: OK5aVthmea9Kr7atO5R2iI7CSWcoJfZZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEyNiBTYWx0ZWRfX7ZHhrPPWEqfV
- vIRr6BWTWrjlTmQOZjBnSfDiTDhcaLhWBp+qUqi/ILfyNmaHlA/AEtyExNAhMt5koYvNrI4s4Fk
- wCdtHEr+hYuESVx7uNCqASqe/M4EG23uA9F4o9wDZC/9mSKN6TxosHUaYeO0TnnjdMe0fWl/FC/
- GBFaSf9AoTVhjEWgqyva8uR6muUfKVUJJEPQTCFJbFWfrNHUnTQlh2sM2HVGxb0mFl8B3OXJFd2
- 2sPIQqThACGLCPZKvaYuojPuK1xhs7IHgltSnBEMp6pET1vdplWc8we1hHZ3kzwkZOiKLzjScVt
- 7bc2kFLtD9aG+YDwxsleXRbfJDwbpai4/0pf8ztGTAGT/KnPZubc2HEpm4aP+YM9bd2m89cHbRx
- x+bVt4wBKHpGvkorhmj0Niws5gjuakzh6bqDCfN3EykwiXOkNZuO+km1IMquomHoxfuYjF9j
-X-Proofpoint-GUID: OK5aVthmea9Kr7atO5R2iI7CSWcoJfZZ
+X-Proofpoint-ORIG-GUID: AuTk0hEJqYIvpY2dKASU1f0tYkCH9yGc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDEyNiBTYWx0ZWRfX8ZYZTXmi9Ar3
+ h9KtX+nhDE4qTkWeK1se9+CihxCP7QndFZTOeLBqyMIvHZH2+6ATqmTl+nmPYweThXtFz4wE9RK
+ mw4nTv5Xkwb0B9JMlqo3cXZfd69bw0GrLAqGxwpUFlLiIW9hc6yChisSAMYGy2gUaitlNJSQcU5
+ o60ScJnziJMQscX86XoUoM/I4zMP3udawv/FMAIk62CXi0U/A7hPB9m5eWIt0YadgEj/FtIBGCc
+ ferlMh58aHpSNiYjCKyO26nC5kzLWIdhrK6eMcVT6t4HS47pyyXB+WHhC/NrwcqhgCJ+u3POb3u
+ nr9OmXuha4JTGwcYd1oaXAlXhbxByG4UTkBisr5tPW5fOeT2U8ZUZZunytti3cSIJBm22egMGl1
+ ZWnY9UMVYrefeZ3XoK0D2RdbS5QfUNkwItbjU56HQb1/aUiGTQVCvb/MJycuUNeD6nRFYOO5
+X-Proofpoint-GUID: AuTk0hEJqYIvpY2dKASU1f0tYkCH9yGc
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -118,114 +118,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass vdev and nr to vfio_notifier_init, for use by CPR in a subsequent
-patch.  No functional change.
+Move event_notifier_cleanup calls to a helper vfio_notifier_cleanup.
+This version is trivial, and does not yet use the vdev and nr parameters.
+No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ hw/vfio/pci.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index e40402a..ebc1a4b 100644
+index ebc1a4b..508701c 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -57,7 +57,8 @@ static void vfio_disable_interrupts(VFIOPCIDevice *vdev);
- static void vfio_mmap_set_enabled(VFIOPCIDevice *vdev, bool enabled);
- static void vfio_msi_disable_common(VFIOPCIDevice *vdev);
+@@ -68,6 +68,12 @@ static bool vfio_notifier_init(VFIOPCIDevice *vdev, EventNotifier *e,
+     return !ret;
+ }
  
--static bool vfio_notifier_init(EventNotifier *e, const char *name, Error **errp)
-+static bool vfio_notifier_init(VFIOPCIDevice *vdev, EventNotifier *e,
-+                               const char *name, int nr, Error **errp)
- {
-     int ret = event_notifier_init(e, 0);
- 
-@@ -147,7 +148,7 @@ static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
-     pci_irq_deassert(&vdev->pdev);
- 
-     /* Get an eventfd for resample/unmask */
--    if (!vfio_notifier_init(&vdev->intx.unmask, "intx-unmask", errp)) {
-+    if (!vfio_notifier_init(vdev, &vdev->intx.unmask, "intx-unmask", 0, errp)) {
-         goto fail;
++static void vfio_notifier_cleanup(VFIOPCIDevice *vdev, EventNotifier *e,
++                                  const char *name, int nr)
++{
++    event_notifier_cleanup(e);
++}
++
+ /*
+  * Disabling BAR mmaping can be slow, but toggling it around INTx can
+  * also be a huge overhead.  We try to get the best of both worlds by
+@@ -180,7 +186,7 @@ fail_vfio:
+     kvm_irqchip_remove_irqfd_notifier_gsi(kvm_state, &vdev->intx.interrupt,
+                                           vdev->intx.route.irq);
+ fail_irqfd:
+-    event_notifier_cleanup(&vdev->intx.unmask);
++    vfio_notifier_cleanup(vdev, &vdev->intx.unmask, "intx-unmask", 0);
+ fail:
+     qemu_set_fd_handler(irq_fd, vfio_intx_interrupt, NULL, vdev);
+     vfio_device_irq_unmask(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+@@ -212,7 +218,7 @@ static void vfio_intx_disable_kvm(VFIOPCIDevice *vdev)
      }
  
-@@ -300,7 +301,8 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
-     }
- #endif
+     /* We only need to close the eventfd for VFIO to cleanup the kernel side */
+-    event_notifier_cleanup(&vdev->intx.unmask);
++    vfio_notifier_cleanup(vdev, &vdev->intx.unmask, "intx-unmask", 0);
  
--    if (!vfio_notifier_init(&vdev->intx.interrupt, "intx-interrupt", errp)) {
-+    if (!vfio_notifier_init(vdev, &vdev->intx.interrupt, "intx-interrupt", 0,
-+                            errp)) {
+     /* QEMU starts listening for interrupt events. */
+     qemu_set_fd_handler(event_notifier_get_fd(&vdev->intx.interrupt),
+@@ -311,7 +317,7 @@ static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+     if (!vfio_device_irq_set_signaling(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX, 0,
+                                 VFIO_IRQ_SET_ACTION_TRIGGER, fd, errp)) {
+         qemu_set_fd_handler(fd, NULL, NULL, vdev);
+-        event_notifier_cleanup(&vdev->intx.interrupt);
++        vfio_notifier_cleanup(vdev, &vdev->intx.interrupt, "intx-interrupt", 0);
          return false;
      }
+ 
+@@ -338,7 +344,7 @@ static void vfio_intx_disable(VFIOPCIDevice *vdev)
+ 
      fd = event_notifier_get_fd(&vdev->intx.interrupt);
-@@ -486,7 +488,8 @@ static void vfio_connect_kvm_msi_virq(VFIOMSIVector *vector, int nr)
-         return;
-     }
+     qemu_set_fd_handler(fd, NULL, NULL, vdev);
+-    event_notifier_cleanup(&vdev->intx.interrupt);
++    vfio_notifier_cleanup(vdev, &vdev->intx.interrupt, "intx-interrupt", 0);
  
--    if (!vfio_notifier_init(&vector->kvm_interrupt, name, NULL)) {
-+    if (!vfio_notifier_init(vector->vdev, &vector->kvm_interrupt, name, nr,
-+                            NULL)) {
-         goto fail_notifier;
-     }
+     vdev->interrupt = VFIO_INT_NONE;
  
-@@ -544,12 +547,13 @@ static void vfio_pci_vector_init(VFIOPCIDevice *vdev, int nr)
- {
-     VFIOMSIVector *vector = &vdev->msi_vectors[nr];
-     PCIDevice *pdev = &vdev->pdev;
--    Error *err = NULL;
-+    Error *local_err = NULL;
+@@ -501,7 +507,7 @@ static void vfio_connect_kvm_msi_virq(VFIOMSIVector *vector, int nr)
+     return;
  
-     vector->vdev = vdev;
+ fail_kvm:
+-    event_notifier_cleanup(&vector->kvm_interrupt);
++    vfio_notifier_cleanup(vector->vdev, &vector->kvm_interrupt, name, nr);
+ fail_notifier:
+     kvm_irqchip_release_virq(kvm_state, vector->virq);
      vector->virq = -1;
--    if (!vfio_notifier_init(&vector->interrupt, "interrupt", &err)) {
--        error_report_err(err);
-+    if (!vfio_notifier_init(vdev, &vector->interrupt, "interrupt", nr,
-+                            &local_err)) {
-+        error_report_err(local_err);
-     }
-     vector->use = true;
-     if (vdev->interrupt == VFIO_INT_MSIX) {
-@@ -765,14 +769,15 @@ retry:
+@@ -514,7 +520,7 @@ static void vfio_remove_kvm_msi_virq(VFIOPCIDevice *vdev, VFIOMSIVector *vector,
+                                           vector->virq);
+     kvm_irqchip_release_virq(kvm_state, vector->virq);
+     vector->virq = -1;
+-    event_notifier_cleanup(&vector->kvm_interrupt);
++    vfio_notifier_cleanup(vdev, &vector->kvm_interrupt, "kvm_interrupt", nr);
+ }
  
-     for (i = 0; i < vdev->nr_vectors; i++) {
-         VFIOMSIVector *vector = &vdev->msi_vectors[i];
--        Error *err = NULL;
-+        Error *local_err = NULL;
- 
-         vector->vdev = vdev;
-         vector->virq = -1;
-         vector->use = true;
- 
--        if (!vfio_notifier_init(&vector->interrupt, "interrupt", &err)) {
--            error_report_err(err);
-+        if (!vfio_notifier_init(vdev, &vector->interrupt, "interrupt", i,
-+                                &local_err)) {
-+            error_report_err(local_err);
+ static void vfio_update_kvm_msi_virq(VFIOMSIVector *vector, MSIMessage msg,
+@@ -837,7 +843,7 @@ static void vfio_msi_disable_common(VFIOPCIDevice *vdev)
+             }
+             qemu_set_fd_handler(event_notifier_get_fd(&vector->interrupt),
+                                 NULL, NULL, NULL);
+-            event_notifier_cleanup(&vector->interrupt);
++            vfio_notifier_cleanup(vdev, &vector->interrupt, "interrupt", i);
          }
- 
-         qemu_set_fd_handler(event_notifier_get_fd(&vector->interrupt),
-@@ -2936,7 +2941,8 @@ static void vfio_register_err_notifier(VFIOPCIDevice *vdev)
-         return;
      }
  
--    if (!vfio_notifier_init(&vdev->err_notifier, "err_notifier", &err)) {
-+    if (!vfio_notifier_init(vdev, &vdev->err_notifier, "err_notifier", 0,
-+                            &err)) {
-         error_report_err(err);
+@@ -2955,7 +2961,7 @@ static void vfio_register_err_notifier(VFIOPCIDevice *vdev)
+                                        VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+         qemu_set_fd_handler(fd, NULL, NULL, vdev);
+-        event_notifier_cleanup(&vdev->err_notifier);
++        vfio_notifier_cleanup(vdev, &vdev->err_notifier, "err_notifier", 0);
          vdev->pci_aer = false;
-         return;
-@@ -3003,7 +3009,8 @@ static void vfio_register_req_notifier(VFIOPCIDevice *vdev)
-         return;
      }
+ }
+@@ -2974,7 +2980,7 @@ static void vfio_unregister_err_notifier(VFIOPCIDevice *vdev)
+     }
+     qemu_set_fd_handler(event_notifier_get_fd(&vdev->err_notifier),
+                         NULL, NULL, vdev);
+-    event_notifier_cleanup(&vdev->err_notifier);
++    vfio_notifier_cleanup(vdev, &vdev->err_notifier, "err_notifier", 0);
+ }
  
--    if (!vfio_notifier_init(&vdev->req_notifier, "req_notifier", &err)) {
-+    if (!vfio_notifier_init(vdev, &vdev->req_notifier, "req_notifier", 0,
-+                            &err)) {
-         error_report_err(err);
-         return;
+ static void vfio_req_notifier_handler(void *opaque)
+@@ -3022,7 +3028,7 @@ static void vfio_register_req_notifier(VFIOPCIDevice *vdev)
+                                        VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+         qemu_set_fd_handler(fd, NULL, NULL, vdev);
+-        event_notifier_cleanup(&vdev->req_notifier);
++        vfio_notifier_cleanup(vdev, &vdev->req_notifier, "req_notifier", 0);
+     } else {
+         vdev->req_enabled = true;
      }
+@@ -3042,7 +3048,7 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
+     }
+     qemu_set_fd_handler(event_notifier_get_fd(&vdev->req_notifier),
+                         NULL, NULL, vdev);
+-    event_notifier_cleanup(&vdev->req_notifier);
++    vfio_notifier_cleanup(vdev, &vdev->req_notifier, "req_notifier", 0);
+ 
+     vdev->req_enabled = false;
+ }
 -- 
 1.8.3.1
 
