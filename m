@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D75C3AD3822
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6566CAD37CE
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Jun 2025 15:02:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uOybK-00013V-Pc; Tue, 10 Jun 2025 09:01:15 -0400
+	id 1uOyaw-0000ro-MP; Tue, 10 Jun 2025 09:00:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYJ-0007b8-6C
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:07 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYN-0007hZ-Gx
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:14 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYG-0002hG-L3
- for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:06 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3a54690d369so1971432f8f.3
- for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:58:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uOyYK-0002hb-UB
+ for qemu-devel@nongnu.org; Tue, 10 Jun 2025 08:58:11 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-451d3f72391so70528405e9.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Jun 2025 05:58:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749560282; x=1750165082; darn=nongnu.org;
+ d=linaro.org; s=google; t=1749560287; x=1750165087; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zK8JfL+K6DY+H6D8BIWrVhPNwjGTBASRCCeC9mTbJFE=;
- b=P1axd9lTd0vsAdExoflX61GxsfOaJ2C6Vp1JFEWrwQxYRkyFnvTaRT5p9fXON2helA
- gYcHuz92l+UFNXQmLLQQSDa2PcoBFQjdwro9acI6GlS2oU/Q2K7kjDO/U2MlCG3Z0BRk
- s2CbAdyKzWGZ5/ucj23gfb8gSTFy74U5vYvFVcbIgKz2DphrLf6OVzkqDa7LyPqBVw3F
- ZX43E0v+jcaHs5CyxQskKvAHAru/h+c2o2vvPvtjeB7km3PH8pE3/5hswSHhS8LYcorb
- VLO4aVLdan4GpPN8PvaBJ9WKrRv+EEUhO4QUyanyzxZDjYfht1VC4KNVT1+dNcex8ixh
- sW5g==
+ bh=taQBYKGiataMrkl3P46PoMWshwDonRVg+ORcNAH8umE=;
+ b=fDsvVSsvE7OzFVbX4PNzyQyeSYNxq7yLhO/0e9AF6aJS7S+xgQDbupBBKl8JzCLUPf
+ GE6fl2PAqGW4HKDpTlfugGzf9Dy9v3BIMMl+1NzEv+oP6/H+5BZgoKCghHVtx8iItv46
+ ZkGz055HVxQyU3DKxYDt3M5o64fHidL0tvhp4nzFhyqpEyKyGbqN2f7pSoKrldW0UlYw
+ QnAY2IvKiczwkz+bmJo2Y7Wni+TIqTcbtGuEN27GHWVqgmBt/DiOgNtZnb9ozZZYu2MX
+ 5I4SRcwzvEjNpceAB+IrDVMEAZ7uEwCbhAhjkft+LMzmrpuEenaDZaa8dMu09adVT2S/
+ zCzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749560282; x=1750165082;
+ d=1e100.net; s=20230601; t=1749560287; x=1750165087;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zK8JfL+K6DY+H6D8BIWrVhPNwjGTBASRCCeC9mTbJFE=;
- b=He250CQr4XgqHPCYpPjxiYlX5scekS7pERMoLKpcWJjwUuhYbS45AccYgyDZi7Gd6m
- duiaL+4G1wPvUFDdujwC+tJWZOxQr0tHcSxI2oKwesP0gWC6EA8A6DJldifzatyzZYM+
- rLORM/vLF91gtI3smRSheFEQq04ISaQB4okdTTUsyj1wKnqfWKiTQxr8f7x0b2jQQDo4
- EC9eMxaqz2aHN3zwjmrvXX2jLBC2ajPP6CzBbo6QUqksS/I97awAr/Blmq9e87xwC66w
- fsGsTztDuz+yJt3onk/2nxsj/d7jlnCVH547ckux6FWdU3aHFjcmAtK/NBNixCT4HN23
- 2BTg==
-X-Gm-Message-State: AOJu0YzK438RxBkSjEfbuxZBvta5y8xzqFPQj4D3qicHIzF+D94mccJB
- foxCvhqbPQqib2Ph8WmcWp9bG+nC+ks0KvbFbtbrxi4Q1Pc9Ff7EaTCcEHn5zuQXHAOWesld84A
- QwU492p0=
-X-Gm-Gg: ASbGncvgYc+R3jy4K/KdPVqum/Rv0PqNeUuxUZJJn3o85KnJTWlCcidEMEDoRg5HHBY
- hM+USI8YmxW6kDw8mciavr3L50A70uOS55E6Zd/ptgk0UG6dKj52HUa1WCqLOP80c9CKRCWJog/
- 2flCXUXWTBEQRrg11JM4OuNsM6DejGSoXNSpe4bNvO/LiTkoEZp1Ek5UEAKbprBP3SENQtvSLKF
- WZJN8JFZW0nTrmWC3mELviFcVxbLxEQ1CSxTIvrFQgBBhpI/J3KB5GB178Gd4RKXfq9hEzGzFh1
- cSAxedn4ItAPXUVwVrSVPSJ0A9P6czzTfvI26/vtCQ51TpTQlB38GDY/fXlzaumbWmzRNb7Qo8M
- KLCZirHuCxlsNP1PhZdUQ8Gcvx/Y/YTE+pRnXDJaMlg==
-X-Google-Smtp-Source: AGHT+IFSf5rP+bGvwTtachKHxuNTrYtyMkIGmShlefIEdlN+4E4aZs9uSph6KVFFa1FVFLq7dsovtQ==
-X-Received: by 2002:a05:6000:1a8d:b0:3a4:f7ae:77ca with SMTP id
- ffacd0b85a97d-3a5319b6a1cmr14665298f8f.3.1749560282240; 
- Tue, 10 Jun 2025 05:58:02 -0700 (PDT)
+ bh=taQBYKGiataMrkl3P46PoMWshwDonRVg+ORcNAH8umE=;
+ b=ihmTbxE1DPdKS4yW/m9TEdsT+hc5ua1IbcC8ZxZEgY8wk3rAA08sW/5c6rCaM9c5di
+ M8krERZE+Y7nTatT8RuryMBwVVlUjRbP/ltxeFJnM+2UTJBY/NZssYIcaVaMkWSckR/T
+ crDe9p88D+C8XsJUsTlF8KQx/OBh+xvcrkh3ZOpoxnzGnolxllVc7hpY4YXa6boMlFMy
+ lP4boNxeVtcc1jboyY/Juc9C+HAyUCjeVnvcxSWUdOWuBnbMnsKPldGTkRslatos+b9c
+ bCkWk1orcDIEyW4oVaFIcK+Ji5NeFAm7lJw1GuHSsqKJzHW2PbdHVePdOnhg3HFONdSU
+ zEhg==
+X-Gm-Message-State: AOJu0Yzg/g4ALruM+9dCZt9X4cf+JL1ahji+16bSCKNU+sIy5P6j0Yx0
+ ZOIOy3klGfWah0pM6vlVkfWCMSohd3S3R1nmN5J9ZWb6d5GS8tEI/dnNJMJTYywfqus1aNEr2LG
+ 2jxV8vQE=
+X-Gm-Gg: ASbGncs4U2MjZOiHHWBhqrMCCsgOXw0K8o0NQMM1eKMelw9yzWvyogCbdEW2L36CwvS
+ eO7FwvLjPRrcsr4fFvt3I9nXIoJtnkVntCAGHrQUNuX2BFmVi7XMfE57gZTtGM/zQEwAThTsU0H
+ E8jrS578NbRzpo4xj5dXXFzSclqxAAfoKdQcO2uGCxSNuCANJOdrN2wddgb/i+RZ81gE/bCDjAr
+ Dpk3LUx7/p7QdTQjlUVEqevc0djHy0EqIz6BhyzJxpLdnquccjCrtwf3W4jt9tw6flsNABcXWY2
+ 0XrcH0PZ+cB9bmE5NxOM+brTI8dgfb8yIyx9bWBn0SRwlFOzX1lzcV/qdGQhkqY1ig3jqTnJSCs
+ Ls45IFw2tILWgMKX40GNXIcuJuVUABea4aAKDN4mNU/dDEPNMlYJA
+X-Google-Smtp-Source: AGHT+IG/8wsFeyevifiDQkct0SB0x01VNl7qRnuZfeLXkpx3bbv7EFKQjC6FuyFKtdmgFQwdRZjQ0Q==
+X-Received: by 2002:a05:6000:430c:b0:3a5:1240:6802 with SMTP id
+ ffacd0b85a97d-3a531cb2a63mr13700643f8f.57.1749560286854; 
+ Tue, 10 Jun 2025 05:58:06 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a532435f95sm7701475f8f.60.2025.06.10.05.58.01
+ ffacd0b85a97d-3a53244f07dsm12432763f8f.79.2025.06.10.05.58.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Jun 2025 05:58:01 -0700 (PDT)
+ Tue, 10 Jun 2025 05:58:06 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
  David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 19/24] hw/virtio/virtio-pmem: Fix definition of VirtIOPMEMClass
-Date: Tue, 10 Jun 2025 14:56:28 +0200
-Message-ID: <20250610125633.24411-20-philmd@linaro.org>
+Subject: [PULL 20/24] hw/gpio/aspeed: Fix definition of AspeedGPIOClass
+Date: Tue, 10 Jun 2025 14:56:29 +0200
+Message-ID: <20250610125633.24411-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250610125633.24411-1-philmd@linaro.org>
 References: <20250610125633.24411-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,35 +102,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-VirtIOPMEMClass's parent is VirtioDeviceClass rather than VirtIODevice.
-This isn't catastrophic only because sizeof(VirtIODevice) >
-sizeof(VirtioDeviceClass).
+AspeedGPIOClass's parent is SysBusDeviceClass rather than SysBusDevice.
+This isn't catastrophic only because sizeof(SysBusDevice) >
+sizeof(SysBusDeviceClass).
 
-Fixes: 5f503cd9f388 ("virtio-pmem: add virtio device")
+Fixes: 4b7f956862dc ("hw/gpio: Add basic Aspeed GPIO model for AST2400 and AST2500")
 Closes: https://lists.gnu.org/archive/html/qemu-devel/2025-06/msg00586.html
-Reported-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Message-ID: <20250606092406.229833-3-zhenzhong.duan@intel.com>
+Message-ID: <20250606092406.229833-4-zhenzhong.duan@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/virtio/virtio-pmem.h | 2 +-
+ include/hw/gpio/aspeed_gpio.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/virtio/virtio-pmem.h b/include/hw/virtio/virtio-pmem.h
-index fc4fd1f7fe8..9cce600d0b2 100644
---- a/include/hw/virtio/virtio-pmem.h
-+++ b/include/hw/virtio/virtio-pmem.h
-@@ -36,7 +36,7 @@ struct VirtIOPMEM {
+diff --git a/include/hw/gpio/aspeed_gpio.h b/include/hw/gpio/aspeed_gpio.h
+index e1e6c543339..e6b2fe71b50 100644
+--- a/include/hw/gpio/aspeed_gpio.h
++++ b/include/hw/gpio/aspeed_gpio.h
+@@ -70,7 +70,7 @@ typedef struct AspeedGPIOReg {
+ } AspeedGPIOReg;
  
- struct VirtIOPMEMClass {
-     /* private */
--    VirtIODevice parent;
-+    VirtioDeviceClass parent_class;
- 
-     /* public */
-     void (*fill_device_info)(const VirtIOPMEM *pmem, VirtioPMEMDeviceInfo *vi);
+ struct AspeedGPIOClass {
+-    SysBusDevice parent_obj;
++    SysBusDeviceClass parent_class;
+     const GPIOSetProperties *props;
+     uint32_t nr_gpio_pins;
+     uint32_t nr_gpio_sets;
 -- 
 2.49.0
 
