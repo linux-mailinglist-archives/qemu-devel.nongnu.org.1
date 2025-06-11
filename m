@@ -2,67 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FAEAD5281
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 12:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C33BEAD5448
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 13:42:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPIzn-0002eD-P1; Wed, 11 Jun 2025 06:47:51 -0400
+	id 1uPJpR-0005dv-Kg; Wed, 11 Jun 2025 07:41:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uPIzl-0002Yp-C9; Wed, 11 Jun 2025 06:47:49 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1uPJpM-0005cd-PC; Wed, 11 Jun 2025 07:41:08 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uPIzj-0002Gv-Ij; Wed, 11 Jun 2025 06:47:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749638868; x=1781174868;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8D0GGfYU0Tw4972vz+bqe7kJGRZlLX5oEJ2OBkzYpEw=;
- b=EDkSictbse7cvdQlYTvl/jXauzhrMtzRKRhJz4ZHhrSEsCMAKoR3lpEr
- WFxkek7QhMUz0Q/Skh5o14HDcxy6/+w4zuAUQvCEuPexShMZoQDosn+O8
- O2Ucm9TgRKQX+xPTfeyAa6JcorKkGtw5qIfRvACVAKixfyrF/o4rJCQ2J
- Q7z4BBkMOIn5z8LErUckZlDVYbOLvYz0Pkr0wpkySRo5SST0WC5fWgY/p
- 11is8puZhQSxk/al9E89pSfZG0p8BpEal62OtFnRVbqfuymAlsvxrJfAQ
- kndutzr9SOM+Snhg/7JNzdTlzfVuZTD9+qmqqndZclKL0bZRZG4Z7pmKw Q==;
-X-CSE-ConnectionGUID: kPypbl0RRP+kPpR8pflSVQ==
-X-CSE-MsgGUID: Q0/603npQmGfJw9v/98Cag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="62055948"
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="62055948"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2025 03:47:46 -0700
-X-CSE-ConnectionGUID: G0aowGx1RnuhUMg8pf/o+Q==
-X-CSE-MsgGUID: HqMm7XP3T+GWFW7tHsqdeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="170337623"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 11 Jun 2025 03:47:44 -0700
-Date: Wed, 11 Jun 2025 19:09:00 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 1/5] rust: qemu_api: introduce MaybeUninit field projection
-Message-ID: <aEljzPOf/76W25iC@intel.com>
-References: <20250609154423.706056-1-pbonzini@redhat.com>
- <20250609154423.706056-2-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1uPJot-0001N1-LL; Wed, 11 Jun 2025 07:41:08 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bHNpW1L7fz6L616;
+ Wed, 11 Jun 2025 19:33:55 +0800 (CST)
+Received: from frapeml500003.china.huawei.com (unknown [7.182.85.28])
+ by mail.maildlp.com (Postfix) with ESMTPS id 5C67A140275;
+ Wed, 11 Jun 2025 19:38:13 +0800 (CST)
+Received: from localhost (10.203.177.99) by frapeml500003.china.huawei.com
+ (7.182.85.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 11 Jun
+ 2025 13:38:12 +0200
+Date: Wed, 11 Jun 2025 12:38:06 +0100
+To: Zhao Liu <zhao1.liu@intel.com>
+CC: <mst@redhat.com>, <anisinha@redhat.com>, <armbru@redhat.com>,
+ <berrange@redhat.com>, <dapeng1.mi@linux.intel.com>, <eric.auger@redhat.com>, 
+ <farman@linux.ibm.com>, <gustavo.romero@linaro.org>, <imammedo@redhat.com>,
+ <jiangkunkun@huawei.com>, <jonathan.cameron@huawei.com>,
+ <linuxarm@huawei.com>, <mtosatti@redhat.com>, <peter.maydell@linaro.org>,
+ <philmd@linaro.org>, <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>,
+ <richard.henderson@linaro.org>, <shameerali.kolothum.thodi@huawei.com>,
+ <shannon.zhaosl@gmail.com>, <yangyicong@hisilicon.com>, <maobibo@loongson.cn>
+Subject: Re: [PATCH v12 2/6] arm/virt.c: add cache hierarchy to device tree
+Message-ID: <20250611123806.00002a09.alireza.sanaee@huawei.com>
+In-Reply-To: <aEFnFI+wglkmLD5G@intel.com>
+References: <20250604133439.1592-1-alireza.sanaee@huawei.com>
+ <20250604133439.1592-3-alireza.sanaee@huawei.com>
+ <aEFnFI+wglkmLD5G@intel.com>
+Organization: Huawei
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250609154423.706056-2-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.99]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ frapeml500003.china.huawei.com (7.182.85.28)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,55 +73,258 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
+From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 09, 2025 at 05:44:19PM +0200, Paolo Bonzini wrote:
-> Date: Mon,  9 Jun 2025 17:44:19 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 1/5] rust: qemu_api: introduce MaybeUninit field projection
-> X-Mailer: git-send-email 2.49.0
+On Thu, 5 Jun 2025 17:44:52 +0800
+Zhao Liu <zhao1.liu@intel.com> wrote:
+
+> Hi Ali,
 > 
-> Add a macro that makes it possible to convert a MaybeUninit<> into
-> another MaybeUninit<> for a single field within it.  Furthermore, it is
-> possible to use the resulting MaybeUninitField<> in APIs that take the
-> parent object, such as memory_region_init_io().
+> I'm very sorry to bother you with some comments after so many
+> versions.
 > 
-> This allows removing some of the undefined behavior from instance_init()
-> functions, though this may not be the definitive implementation.
+> > diff --git a/hw/cpu/core.c b/hw/cpu/core.c
+> > index 5cb2e9a7f5..7339782663 100644
+> > --- a/hw/cpu/core.c
+> > +++ b/hw/cpu/core.c  
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/qemu-api/meson.build   |  1 +
->  rust/qemu-api/src/lib.rs    |  1 +
->  rust/qemu-api/src/uninit.rs | 85 +++++++++++++++++++++++++++++++++++++
->  3 files changed, 87 insertions(+)
->  create mode 100644 rust/qemu-api/src/uninit.rs
+> core.c is not the right place. It just contains the "cpu-core"
+> abstraction. So we need to move the following functions to other
+> files.
+> 
+> > @@ -102,4 +102,96 @@ static void cpu_core_register_types(void)
+> >      type_register_static(&cpu_core_type_info);
+> >  }
+> >  
+> > +bool cache_described_at(const MachineState *ms, CpuTopologyLevel
+> > level)  
+> 
+> It's better to add the comment about what this function did. (its name
+> doesn't reflect it wants to check the coresponding CPU topology
+> level.)
+> 
+> I also feel it's not a good name, what about
+> "machine_check_cache_at_topo_level"?
+> 
+> Furthermore, we can move this one to hw/core/machine-smp.c, as it is
+> about with machine's smp_cache.
+> 
+> > +{
+> > +    if (machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3)
+> > == level ||
+> > +        machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2)
+> > == level ||
+> > +        machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I)
+> > == level ||
+> > +        machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D)
+> > == level) {
+> > +        return true;
+> > +    }
+> > +    return false;
+> > +}
+> > +
+> > +int partial_cache_description(const MachineState *ms,
+> > CPUCorePPTTCaches *caches,
+> > +                              int num_caches)  
+> 
+> Because I'll suggest to move CPUCorePPTTCaches to
+> include/hw/acpi/cpu.h later, and this function accepts
+> CPUCorePPTTCaches as the argument, so I think we could move this
+> function to hw/acpi/cpu.c (if Michael and Igor don't object).
 
-...
+Hi Zhao
 
-> +impl<'a, T, U> Deref for MaybeUninitField<'a, T, U> {
-> +    type Target = MaybeUninit<U>;
-> +
-> +    fn deref(&self) -> &MaybeUninit<U> {
-> +        // SAFETY: self.child was obtained by dereferencing a valid mutable
-> +        // reference; the content of the memory may be invalid or uninitialized
-> +        // but MaybeUninit<_> makes no assumption on it
-> +        unsafe { &*(self.child.cast()) }
-> +    }
-> +}
-> +
-> +impl<'a, T, U> DerefMut for MaybeUninitField<'a, T, U> {
-> +    fn deref_mut(&mut self) -> &mut MaybeUninit<U> {
-> +        // SAFETY: self.child was obtained by dereferencing a valid mutable
-> +        // reference; the content of the memory may be invalid or uninitialized
-> +        // but MaybeUninit<_> makes no assumption on it
-> +        unsafe { &mut *(self.child.cast()) }
-> +    }
-> +}
+partial_cache_description function has been used in both hw/arm/virt.c
+and hw/acpi/aml-build.c it feels like it neither for arm nor acpi.
+Where do you think it is better to be placed at? does it go to core
+maybe?
 
-Nice trick.
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Thanks
+Alirez
+> 
+> > +{
+> > +    int level, c;
+> > +
+> > +    for (level = 1; level < num_caches; level++) {
+> > +        for (c = 0; c < num_caches; c++) {
+> > +            if (caches[c].level != level) {
+> > +                continue;
+> > +            }
+> > +
+> > +            switch (level) {
+> > +            case 1:
+> > +                /*
+> > +                 * L1 cache is assumed to have both L1I and L1D
+> > available.
+> > +                 * Technically both need to be checked.
+> > +                 */
+> > +                if (machine_get_cache_topo_level(ms,
+> > +
+> > CACHE_LEVEL_AND_TYPE_L1I) ==
+> > +                    CPU_TOPOLOGY_LEVEL_DEFAULT) {
+> > +                    return level;
+> > +                }
+> > +                break;
+> > +            case 2:
+> > +                if (machine_get_cache_topo_level(ms,
+> > CACHE_LEVEL_AND_TYPE_L2) ==
+> > +                    CPU_TOPOLOGY_LEVEL_DEFAULT) {
+> > +                    return level;
+> > +                }
+> > +                break;
+> > +            case 3:
+> > +                if (machine_get_cache_topo_level(ms,
+> > CACHE_LEVEL_AND_TYPE_L3) ==
+> > +                    CPU_TOPOLOGY_LEVEL_DEFAULT) {
+> > +                    return level;
+> > +                }
+> > +                break;
+> > +            }
+> > +        }
+> > +    }
+> > +
+> > +    return 0;
+> > +}
+> > +
+> > +/*
+> > + * This function assumes l3 and l2 have unified cache and l1 is
+> > split l1d
+> > + * and l1i, and further prepares the lowest cache level for a
+> > topology
+> > + * level.  The info will be fed to build_caches to create caches
+> > at the
+> > + * right level.
+> > + */
+> > +bool find_the_lowest_level_cache_defined_at_level(const
+> > MachineState *ms,
+> > +                                                  int *level_found,
+> > +                                                  CpuTopologyLevel
+> > topo_level) {  
+> 
+> This is a very long name :-).
+> 
+> Maybe we can rename it like:
+> 
+> machine_find_lowest_level_cache_at_topo_level,
+> 
+> (sorry this name doesn't shorten the length but align the naming style
+> in machine-smp.c)
+> 
+> and explain the arguments in the comment.
+> 
+> Furthermore, we can move this one to hw/core/machine-smp.c, too.
+> 
+> > +    CpuTopologyLevel level;
+> > +
+> > +    level = machine_get_cache_topo_level(ms,
+> > CACHE_LEVEL_AND_TYPE_L1I);
+> > +    if (level == topo_level) {
+> > +        *level_found = 1;
+> > +        return true;
+> > +    }
+> > +
+> > +    level = machine_get_cache_topo_level(ms,
+> > CACHE_LEVEL_AND_TYPE_L1D);
+> > +    if (level == topo_level) {
+> > +        *level_found = 1;
+> > +        return true;
+> > +    }
+> > +
+> > +    level = machine_get_cache_topo_level(ms,
+> > CACHE_LEVEL_AND_TYPE_L2);
+> > +    if (level == topo_level) {
+> > +        *level_found = 2;
+> > +        return true;
+> > +    }
+> > +
+> > +    level = machine_get_cache_topo_level(ms,
+> > CACHE_LEVEL_AND_TYPE_L3);
+> > +    if (level == topo_level) {
+> > +        *level_found = 3;
+> > +        return true;
+> > +    }
+> > +
+> > +    return false;
+> > +}
+> > +
+> >  type_init(cpu_core_register_types)  
+> 
+> ...
+> 
+> > diff --git a/include/hw/cpu/core.h b/include/hw/cpu/core.h
+> > index 98ab91647e..0f7bf8bc28 100644
+> > --- a/include/hw/cpu/core.h
+> > +++ b/include/hw/cpu/core.h
+> > @@ -11,6 +11,7 @@
+> >  
+> >  #include "hw/qdev-core.h"
+> >  #include "qom/object.h"
+> > +#include "qapi/qapi-types-machine-common.h"
+> >  
+> >  #define TYPE_CPU_CORE "cpu-core"
+> >  
+> > @@ -25,6 +26,32 @@ struct CPUCore {
+> >      int nr_threads;
+> >  };
+> >  
+> > +typedef enum CPUCacheType {
+> > +    CPU_CORE_DATA,
+> > +    CPU_CORE_INSTRUCTION,
+> > +    CPU_CORE_UNIFIED,
+> > +} CPUCoreCacheType;  
+> 
+> This is a complete duplicate of the x86's CPUCaches
+> (target/i386/cpu.h).
+> 
+> I think we can move x86's CPUCaches to include/hw/core/cpu.h.
+> 
+> > +typedef struct CPUPPTTCaches {
+> > +    CPUCoreCacheType type;
+> > +    uint32_t pptt_id;
+> > +    uint32_t sets;
+> > +    uint32_t size;
+> > +    uint32_t level;
+> > +    uint16_t linesize;
+> > +    uint8_t attributes; /* write policy: 0x0 write back, 0x1 write
+> > through */
+> > +    uint8_t associativity;
+> > +} CPUCorePPTTCaches;  
+> 
+> x86 doesn't use PPTT to describe cache so it's not necessary to reuse
+> CPUCacheInfo (target/i386/cpu.h) for PPTT.
+> 
+> But I understand it's better to place this sturct in
+> include/hw/acpi/cpu.h, since it is part of the ACPI PPTT table.
+> 
+> > +int partial_cache_description(const MachineState *ms,
+> > CPUCorePPTTCaches *caches,
+> > +                              int num_caches);  
+> 
+> Could move to include/hw/acpi/cpu.h, too.
+> 
+> > +bool cache_described_at(const MachineState *ms, CpuTopologyLevel
+> > level); +
+> > +bool find_the_lowest_level_cache_defined_at_level(const
+> > MachineState *ms,
+> > +                                                  int *level_found,
+> > +                                                  CpuTopologyLevel
+> > topo_level);
+> > +  
+> 
+> Because these 2 functions' definitions would be moved to
+> hw/core/machine-smp.c, then we need to move their declarations to
+> include/hw/boards.h.
+> 
+> 
+> Except the above nits, the general part is fine for me.
+> 
+> Thanks,
+> Zhao
+> 
+> 
+> 
 
 
