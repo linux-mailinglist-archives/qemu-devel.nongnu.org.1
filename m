@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C384AD5E15
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 598BCAD5E4B
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:36:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPQ9s-0001Vy-U2; Wed, 11 Jun 2025 14:26:47 -0400
+	id 1uPQAr-0002qR-RE; Wed, 11 Jun 2025 14:27:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQ9f-0001Qd-CG
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:31 -0400
+ id 1uPQ9p-0001as-Tp
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQ9G-0001GR-TQ
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:11 -0400
+ id 1uPQ9g-0001Hd-OS
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749666365;
+ s=mimecast20190719; t=1749666370;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xkb+GWy3WwV0UX+pp8/jWU5Gi0bbhpy85QXCop36z+U=;
- b=iT3kqWgzWJsl7SF6wm70zcIO8jgDpjXB6w25i3URZnUqXDoaQSshAdnEVCECQ3BYhDW9nl
- NmMEsvNn4VYxb4tnhvIgZR5E2phzhFqQPph0DduyjgRLRPm6W3NcXLUYlqsy0hIQhrUjcc
- MqRDkZLqnODfMw6oJqdiLz5Poievik0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=mm98qXn5IDmt3E297nVLvHl5ngbngtyzaU5/4dIyXnw=;
+ b=OmRx0aR8nKs1UnbqFH55GSxG5J4cR26tz/h9u/YavUJOo8AY0hq5BUcy5PIYZKBH4yY2KE
+ ypE1fT/MA365eSHfR1qR0ZxmSXt+xlBNyYZxRelRNUuDJJSdx2/7zBhQLOvx8JDaeem0Xg
+ bEl78CTIfrhLH4qg2vWSR9jxZk1Hg0I=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-OKcJr-I9OceoHkUS9DJXKw-1; Wed,
- 11 Jun 2025 14:26:03 -0400
-X-MC-Unique: OKcJr-I9OceoHkUS9DJXKw-1
-X-Mimecast-MFC-AGG-ID: OKcJr-I9OceoHkUS9DJXKw_1749666360
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-E9XgjjYEMhqIillSL_vM_Q-1; Wed,
+ 11 Jun 2025 14:26:07 -0400
+X-MC-Unique: E9XgjjYEMhqIillSL_vM_Q-1
+X-Mimecast-MFC-AGG-ID: E9XgjjYEMhqIillSL_vM_Q_1749666364
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BFFB6180028C; Wed, 11 Jun 2025 18:25:59 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0D00B195608E; Wed, 11 Jun 2025 18:26:03 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.122])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A1A9019560A3; Wed, 11 Jun 2025 18:25:55 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id F008819560A3; Wed, 11 Jun 2025 18:26:00 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -74,16 +74,16 @@ Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 02/31] hw/virtio/virtio: avoid cost of -ftrivial-auto-var-init
- in hot path
-Date: Wed, 11 Jun 2025 14:25:04 -0400
-Message-ID: <20250611182533.200590-3-stefanha@redhat.com>
+Subject: [PULL 03/31] block: skip automatic zero-init of large array in
+ ioq_submit
+Date: Wed, 11 Jun 2025 14:25:05 -0400
+Message-ID: <20250611182533.200590-4-stefanha@redhat.com>
 In-Reply-To: <20250611182533.200590-1-stefanha@redhat.com>
 References: <20250611182533.200590-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -93,7 +93,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,59 +109,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 7ff9ff039380 ("meson: mitigate against use of uninitialize
-stack for exploits") the -ftrivial-auto-var-init=zero compiler option is
-used to zero local variables. While this reduces security risks
-associated with uninitialized stack data, it introduced a measurable
-bottleneck in the virtqueue_split_pop() and virtqueue_packed_pop()
-functions.
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-These virtqueue functions are in the hot path. They are called for each
-element (request) that is popped from a VIRTIO device's virtqueue. Using
-__attribute__((uninitialized)) on large stack variables in these
-functions improves fio randread bs=4k iodepth=64 performance from 304k
-to 332k IOPS (+9%).
+The 'ioq_submit' method has a struct array that is 8k in size.
+Skip the automatic zero-init of this array to eliminate the
+performance overhead in the I/O hot path.
 
-This issue was found using perf-top(1). virtqueue_split_pop() was one of
-the top CPU consumers and the "annotate" feature showed that the memory
-zeroing instructions at the beginning of the functions were hot.
+The 'iocbs' array will selectively initialized when processing
+the I/O data.
 
-Fixes: 7ff9ff039380 ("meson: mitigate against use of uninitialize stack for exploits")
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-id: 20250610123709.835102-3-berrange@redhat.com
+Message-id: 20250610123709.835102-4-berrange@redhat.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- hw/virtio/virtio.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ block/linux-aio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 5534251e01..82a285a31d 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -1689,8 +1689,8 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
-     VirtIODevice *vdev = vq->vdev;
-     VirtQueueElement *elem = NULL;
-     unsigned out_num, in_num, elem_entries;
--    hwaddr addr[VIRTQUEUE_MAX_SIZE];
--    struct iovec iov[VIRTQUEUE_MAX_SIZE];
-+    hwaddr QEMU_UNINITIALIZED addr[VIRTQUEUE_MAX_SIZE];
-+    struct iovec QEMU_UNINITIALIZED iov[VIRTQUEUE_MAX_SIZE];
-     VRingDesc desc;
-     int rc;
+diff --git a/block/linux-aio.c b/block/linux-aio.c
+index 407369f5c9..c200e7ad20 100644
+--- a/block/linux-aio.c
++++ b/block/linux-aio.c
+@@ -291,7 +291,7 @@ static void ioq_submit(LinuxAioState *s)
+ {
+     int ret, len;
+     struct qemu_laiocb *aiocb;
+-    struct iocb *iocbs[MAX_EVENTS];
++    QEMU_UNINITIALIZED struct iocb *iocbs[MAX_EVENTS];
+     QSIMPLEQ_HEAD(, qemu_laiocb) completed;
  
-@@ -1836,8 +1836,8 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
-     VirtIODevice *vdev = vq->vdev;
-     VirtQueueElement *elem = NULL;
-     unsigned out_num, in_num, elem_entries;
--    hwaddr addr[VIRTQUEUE_MAX_SIZE];
--    struct iovec iov[VIRTQUEUE_MAX_SIZE];
-+    hwaddr QEMU_UNINITIALIZED addr[VIRTQUEUE_MAX_SIZE];
-+    struct iovec QEMU_UNINITIALIZED iov[VIRTQUEUE_MAX_SIZE];
-     VRingPackedDesc desc;
-     uint16_t id;
-     int rc;
+     do {
 -- 
 2.49.0
 
