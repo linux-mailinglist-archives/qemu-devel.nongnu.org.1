@@ -2,114 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F95AD4F9D
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 11:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8F0AD4FF6
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 11:35:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPHdz-0004VM-HC; Wed, 11 Jun 2025 05:21:15 -0400
+	id 1uPHq5-00080F-ES; Wed, 11 Jun 2025 05:33:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1uPHdq-0004V7-1z; Wed, 11 Jun 2025 05:21:06 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <roan.richmond@codethink.co.uk>)
+ id 1uPHq2-0007yt-GY; Wed, 11 Jun 2025 05:33:42 -0400
+Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1uPHdn-0000lM-NZ; Wed, 11 Jun 2025 05:21:05 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55B8lEDS029189;
- Wed, 11 Jun 2025 09:21:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=T3/JpI
- X8K63+79FCzoYkQ+0dWfNkiYRilyM4KdhbQgE=; b=YJk3Ac5EAXpQ2k5WM2/o+r
- 3PK3e1cQWvL46L4PiPIsiAB6Gnx4X5MjJYkycly3U9A+FgltcE7vsG++CANVUyZU
- Xt5gc2EUWsJALtmbHGuR1VkazZohF1dUmvQKXagwEgw5CVUFPNVgxp0o3680VlM1
- Fu5f16JdB5SVcesz8JfH8aclB49sJRU5AtPT7hW/DdeKencP3RF8LT1yGbMMmseq
- tjKcm53+Y75nOsdnlR4SRWNfBGHRN8cmdjvjWeBV8yeXClzAgta2eBMK94XyWaL8
- KnzbW4qsDM+2bnvXiptZU4pWE5S5bXSOsrFAbLpxY/6qPVKmFyulQXVfxJdz6D6w
- ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474hgujnau-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Jun 2025 09:21:01 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55B81BHI015184;
- Wed, 11 Jun 2025 09:21:00 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 474yrtf77e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Jun 2025 09:21:00 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 55B9KxtE61079950
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Jun 2025 09:20:59 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D6005805D;
- Wed, 11 Jun 2025 09:20:59 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8C2E458053;
- Wed, 11 Jun 2025 09:20:56 +0000 (GMT)
-Received: from [9.39.28.10] (unknown [9.39.28.10])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 11 Jun 2025 09:20:56 +0000 (GMT)
-Message-ID: <adfbfd74-bea3-4479-99bd-079a22548f3e@linux.ibm.com>
-Date: Wed, 11 Jun 2025 14:50:54 +0530
+ (Exim 4.90_1) (envelope-from <roan.richmond@codethink.co.uk>)
+ id 1uPHpz-00021R-A4; Wed, 11 Jun 2025 05:33:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+ Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=cFQy2W40EyvS2+VvC0lkkXo04Uagl7gI6EvP6jsnenI=; b=yqLFKBA7Wn3ErDOqL49LsZGCEv
+ 4sMURb8Q4YhTAF4ztO85tnd8L18gD4dzTJaVGRybmCW6eNyrSkjQgaPH/D8w9n472C2vB7/uLiRjN
+ SV7ni0d6wkbPH47/pz2kZajf+1MmnPU4fhN0F7sA4IctBuCpQsFEzqanaBtqO1buLASzLL95myMuw
+ LLbpaOHXTyT7Rayra+zifXUMqUgLHBKE5zruv2uGpS6zNbncAPCw9GzNG6NT9HNmuMC50UWLdWk3R
+ 86GnDXoMjMmXz7XtkMrXZ3GTziL/lmEh/bxryXERyexY7YJjfk2q5jkl/prEtms+oJv29GZ4sEkW4
+ BBnMQzsw==;
+Received: from [167.98.27.226] (helo=[10.35.4.30])
+ by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+ id 1uPHpq-00CSo8-Bq; Wed, 11 Jun 2025 10:33:30 +0100
+Message-ID: <786197e2-360b-4723-99d6-445b8a2076ae@codethink.co.uk>
+Date: Wed, 11 Jun 2025 10:33:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 25/31] hw/ppc/spapr_tpm_proxy: skip automatic zero-init of
- large arrays
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>
-References: <20250610123709.835102-1-berrange@redhat.com>
- <20250610123709.835102-26-berrange@redhat.com>
+Subject: Re: [PATCH v2 1/1] Add RISCV ZALASR extension
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, qemu-devel@nongnu.org
+References: <20250610083309.992724-1-roan.richmond@codethink.co.uk>
+ <20250610083309.992724-2-roan.richmond@codethink.co.uk>
+ <CAKmqyKMG_wNPNdAYhsUFJ4K7o4g+LNYwUDUAO_8V14=GezDKPg@mail.gmail.com>
 Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20250610123709.835102-26-berrange@redhat.com>
+From: Roan Richmond <roan.richmond@codethink.co.uk>
+In-Reply-To: <CAKmqyKMG_wNPNdAYhsUFJ4K7o4g+LNYwUDUAO_8V14=GezDKPg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Pfr/hjhd c=1 sm=1 tr=0 ts=68494a7d cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=f7IdgyKtn90A:10 a=20KFwNOVAAAA:8
- a=VnNF1IyMAAAA:8 a=RGSA8qlED6iX_nMAe8wA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: BVpNZqKzhHuT8gDDcD2XJXTduJf4YAlc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjExMDA3OSBTYWx0ZWRfX7vLlniUZIxk4
- mGO5vmnhv94fKge6bVyBQFk5rtE8oTlcntTvnC7bR6ejnkik1b/nqIWLRruJLw2M77Ryr/Y+lQF
- gu9DX1oeLv0Gz6lxPBLf78crbTiiQSH9io0+Rsg4XcHjr34lmWCcs8Num6zaAvX5FNib5u/eus8
- LAx/MzkaTqKoY/flbV/BliHbCVz4I19FaT4+4dxhVPNEe1G5tf5EXNYhvp7xqA3/lCHiI1nO3vt
- mT6CwtLmBAOPZwdXYLRmuTBGio400JDj/vWKJFTl51nQznEAaF6lQlxKsic9U+Bx6Tqvg7hBx3r
- B04lj0fV4SPcI7uM2vYBwJ3+4zJpPXYSogwdYcKBIsGjuKjAINtJCZS0+9faLsXXs8kiMNsOxIk
- jSjDBjZbQ8gMWdsuT5B1VQTNQuSWTJUoPs8iAsNwdABDcuZco+7fU9e+vMpFNoTFDc6qeBgP
-X-Proofpoint-ORIG-GUID: BVpNZqKzhHuT8gDDcD2XJXTduJf4YAlc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-11_03,2025-06-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- priorityscore=1501 impostorscore=0 suspectscore=0 adultscore=0
- clxscore=1015 phishscore=0 bulkscore=0 malwarescore=0 mlxlogscore=828
- mlxscore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506110079
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=188.40.203.114;
+ envelope-from=roan.richmond@codethink.co.uk; helo=imap4.hz.codethink.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,36 +73,202 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+On 11/06/2025 05:29, Alistair Francis wrote:
+> On Tue, Jun 10, 2025 at 6:33 PM Roan Richmond
+> <roan.richmond@codethink.co.uk> wrote:
+>> This is based on version v0.8.3 of the ZALASR specification [1].
+>> The specification is listed as in Frozen state [2].
+>>
+>> [1]: https://github.com/riscv/riscv-zalasr/tree/v0.8.3
+>> [2]: https://lf-riscv.atlassian.net/wiki/spaces/HOME/pages/16154882/All+RISC-V+Specifications+Under+Active+Development
+>>
+>> Signed-off-by: Roan Richmond <roan.richmond@codethink.co.uk>
+>> ---
+>>   target/riscv/cpu.c                           |   1 +
+>>   target/riscv/insn32.decode                   |  10 ++
+>>   target/riscv/insn_trans/trans_rvzalasr.c.inc | 110 +++++++++++++++++++
+>>   target/riscv/translate.c                     |   1 +
+>>   4 files changed, 122 insertions(+)
+>>   create mode 100644 target/riscv/insn_trans/trans_rvzalasr.c.inc
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 629ac37501..b52bbf0936 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -128,6 +128,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+>>       ISA_EXT_DATA_ENTRY(zabha, PRIV_VERSION_1_13_0, ext_zabha),
+>>       ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
+>>       ISA_EXT_DATA_ENTRY(zama16b, PRIV_VERSION_1_13_0, ext_zama16b),
+>> +    ISA_EXT_DATA_ENTRY(zalasr, PRIV_VERSION_1_12_0, ext_zalasr),
+>>       ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
+>>       ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+>>       ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
+>> diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+>> index cd23b1f3a9..c848c0c1c5 100644
+>> --- a/target/riscv/insn32.decode
+>> +++ b/target/riscv/insn32.decode
+>> @@ -1066,3 +1066,13 @@ amominu_h  11000 . . ..... ..... 001 ..... 0101111 @atom_st
+>>   amomaxu_h  11100 . . ..... ..... 001 ..... 0101111 @atom_st
+>>   amocas_b    00101 . . ..... ..... 000 ..... 0101111 @atom_st
+>>   amocas_h    00101 . . ..... ..... 001 ..... 0101111 @atom_st
+>> +
+>> +# *** Zalasr Standard Extension ***
+>> +lb_aqrl  00110 . . ..... ..... 000 ..... 0101111 @atom_st
+>> +lh_aqrl  00110 . . ..... ..... 001 ..... 0101111 @atom_st
+>> +lw_aqrl  00110 . . ..... ..... 010 ..... 0101111 @atom_st
+>> +ld_aqrl  00110 . . ..... ..... 011 ..... 0101111 @atom_st
+>> +sb_aqrl  00111 . . ..... ..... 000 ..... 0101111 @atom_st
+>> +sh_aqrl  00111 . . ..... ..... 001 ..... 0101111 @atom_st
+>> +sw_aqrl  00111 . . ..... ..... 010 ..... 0101111 @atom_st
+>> +sd_aqrl  00111 . . ..... ..... 011 ..... 0101111 @atom_st
+>> diff --git a/target/riscv/insn_trans/trans_rvzalasr.c.inc b/target/riscv/insn_trans/trans_rvzalasr.c.inc
+>> new file mode 100644
+>> index 0000000000..2f2934e731
+>> --- /dev/null
+>> +++ b/target/riscv/insn_trans/trans_rvzalasr.c.inc
+>> @@ -0,0 +1,110 @@
+>> +/*
+>> + * RISC-V translation routines for the ZALASR (Load-Aquire and Store-Release)
+>> + * Extension.
+>> + *
+>> + * Copyright (c) 2025 Roan Richmond, roan.richmond@codethink.co.uk
+>> + *
+>> + * This program is free software; you can redistribute it and/or modify it
+>> + * under the terms and conditions of the GNU General Public License,
+>> + * version 2 or later, as published by the Free Software Foundation.
+>> + *
+>> + * This program is distributed in the hope it will be useful, but WITHOUT
+>> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+>> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+>> + * more details.
+>> + *
+>> + * You should have received a copy of the GNU General Public License along with
+>> + * this program.  If not, see <http://www.gnu.org/licenses/>.
+>> + */
+>> +
+>> +#define REQUIRE_ZALASR(ctx) do {     \
+>> +    if (!ctx->cfg_ptr->ext_zalasr) { \
+>> +        return false;                \
+>> +    }                                \
+>> +} while (0)
+>> +
+>> +static bool gen_load_acquire(DisasContext *ctx, arg_lb_aqrl *a, MemOp memop)
+>> +{
+>> +    decode_save_opc(ctx, 0);
+>> +
+>> +    TCGv addr = get_address(ctx, a->rs1, 0);
+>> +    TCGv dest = get_gpr(ctx, a->rd, EXT_NONE);
+>> +    TCGBar bar = (a->rl) ? TCG_BAR_STRL : 0;
+> I think we should check that aq isn't set
+According to the spec, it is valid for both of `rl` and `aq` to be set.
+For the Load Acquire instruction it just states that `aq` must be set, 
+and `rl` is optionally set.
+Therefore, I don't think we should check that `aq` isn't set here.
+>> +
+>> +    memop |= (ctx->cfg_ptr->ext_zama16b) ? MO_ATOM_WITHIN16 : 0;
+>> +
+>> +    tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, memop);
+>> +    gen_set_gpr(ctx, a->rd, dest);
+>> +
+>> +    /* Add a memory barrier implied by AQ (mandatory) and RL (optional) */
+>> +    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ | bar);
+>> +
+>> +    return true;
+>> +}
+>> +
+>> +static bool trans_lb_aqrl(DisasContext *ctx, arg_lb_aqrl *a)
+>> +{
+>> +    REQUIRE_ZALASR(ctx);
+>> +    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_SB));
+>> +}
+>> +
+>> +static bool trans_lh_aqrl(DisasContext *ctx, arg_lh_aqrl *a)
+>> +{
+>> +    REQUIRE_ZALASR(ctx);
+>> +    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TESW));
+>> +}
+>> +
+>> +static bool trans_lw_aqrl(DisasContext *ctx, arg_lw_aqrl *a)
+>> +{
+>> +    REQUIRE_ZALASR(ctx);
+>> +    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TESL));
+>> +}
+>> +
+>> +static bool trans_ld_aqrl(DisasContext *ctx, arg_ld_aqrl *a)
+>> +{
+>> +    REQUIRE_64BIT(ctx);
+>> +    REQUIRE_ZALASR(ctx);
+>> +    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TEUQ));
+>> +}
+>> +
+>> +static bool gen_store_release(DisasContext *ctx, arg_sb_aqrl *a, MemOp memop)
+>> +{
+>> +    decode_save_opc(ctx, 0);
+>> +
+>> +    TCGv addr = get_address(ctx, a->rs1, 0);
+>> +    TCGv data = get_gpr(ctx, a->rs2, EXT_NONE);
+>> +    TCGBar bar = (a->aq) ? TCG_BAR_LDAQ : 0;
+> and check here that rq isn't set either
+>
+> Alistair
+For the Store Release instruction it the spec just states that `rl` must 
+be set, and `aq` is optionally set.
+Therefore, I don't think we should check that `rl` isn't set here.
+>> +
+>> +    memop |= (ctx->cfg_ptr->ext_zama16b) ? MO_ATOM_WITHIN16 : 0;
+>> +
+>> +    /* Add a memory barrier implied by RL (mandatory) and AQ (optional) */
+>> +    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL | bar);
+>> +
+>> +    tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, memop);
+>> +    return true;
+>> +}
+>> +
+>> +static bool trans_sb_aqrl(DisasContext *ctx, arg_sb_aqrl *a)
+>> +{
+>> +    REQUIRE_ZALASR(ctx);
+>> +    return gen_store_release(ctx, a, (MO_ALIGN | MO_SB));
+>> +}
+>> +
+>> +static bool trans_sh_aqrl(DisasContext *ctx, arg_sh_aqrl *a)
+>> +{
+>> +    REQUIRE_ZALASR(ctx);
+>> +    return gen_store_release(ctx, a, (MO_ALIGN | MO_TESW));
+>> +}
+>> +
+>> +static bool trans_sw_aqrl(DisasContext *ctx, arg_sw_aqrl *a)
+>> +{
+>> +    REQUIRE_ZALASR(ctx);
+>> +    return gen_store_release(ctx, a, (MO_ALIGN | MO_TESL));
+>> +}
+>> +
+>> +static bool trans_sd_aqrl(DisasContext *ctx, arg_sd_aqrl *a)
+>> +{
+>> +    REQUIRE_64BIT(ctx);
+>> +    REQUIRE_ZALASR(ctx);
+>> +    return gen_store_release(ctx, a, (MO_ALIGN | MO_TEUQ));
+>> +}
+>> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+>> index d7a6de02df..4cd2d68e46 100644
+>> --- a/target/riscv/translate.c
+>> +++ b/target/riscv/translate.c
+>> @@ -1183,6 +1183,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
+>>   #include "insn_trans/trans_rvzicond.c.inc"
+>>   #include "insn_trans/trans_rvzacas.c.inc"
+>>   #include "insn_trans/trans_rvzabha.c.inc"
+>> +#include "insn_trans/trans_rvzalasr.c.inc"
+>>   #include "insn_trans/trans_rvzawrs.c.inc"
+>>   #include "insn_trans/trans_rvzicbo.c.inc"
+>>   #include "insn_trans/trans_rvzimop.c.inc"
+>> --
+>> 2.43.0
+>>
+Thanks,
+Roan
 
-On 6/10/25 18:07, Daniel P. Berrangé wrote:
-> The 'tpm_execute' method has a pair of 4k arrays used for copying
-> data between guest and host. Skip the automatic zero-init of these
-> arrays to eliminate the performance overhead in the I/O hot path.
-> 
-> The two arrays will be fully initialized when reading data from
-> guest memory or reading data from the proxy FD.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   hw/ppc/spapr_tpm_proxy.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/ppc/spapr_tpm_proxy.c b/hw/ppc/spapr_tpm_proxy.c
-> index 862eeaa50a..1297b3ad56 100644
-> --- a/hw/ppc/spapr_tpm_proxy.c
-> +++ b/hw/ppc/spapr_tpm_proxy.c
-> @@ -41,8 +41,8 @@ static ssize_t tpm_execute(SpaprTpmProxy *tpm_proxy, target_ulong *args)
->       target_ulong data_in_size = args[2];
->       uint64_t data_out = ppc64_phys_to_real(args[3]);
->       target_ulong data_out_size = args[4];
-> -    uint8_t buf_in[TPM_SPAPR_BUFSIZE];
-> -    uint8_t buf_out[TPM_SPAPR_BUFSIZE];
-> +    QEMU_UNINITIALIZED uint8_t buf_in[TPM_SPAPR_BUFSIZE];
-> +    QEMU_UNINITIALIZED uint8_t buf_out[TPM_SPAPR_BUFSIZE];
+-- 
+Roan Richmond (he/him)
+Software Engineer
+Codethink Ltd
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-
->       ssize_t ret;
->   
->       trace_spapr_tpm_execute(data_in, data_in_size, data_out, data_out_size);
 
