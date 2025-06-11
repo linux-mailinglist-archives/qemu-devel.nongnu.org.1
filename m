@@ -2,92 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881C5AD4C5E
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 09:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B64AD4C78
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 09:21:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPFeN-0004ah-5P; Wed, 11 Jun 2025 03:13:31 -0400
+	id 1uPFkT-0006w7-5q; Wed, 11 Jun 2025 03:19:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPFeK-0004aX-E3
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 03:13:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPFkA-0006o5-Ei
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 03:19:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPFeI-0006vD-QL
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 03:13:28 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPFk5-00083B-11
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 03:19:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749626005;
+ s=mimecast20190719; t=1749626362;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=b9xyqR9XJOsm2ct0SjOYQVSSRCEVwNdEGYUVFb0tYIk=;
- b=GFMH0Hb7EMuONusp81NxhvSBIz3aBfwmfYBNXlOFCUZj+OGk0lMyzSdUkS3l123T5xrlYi
- z+vfnDvcPVwwoHfiZOFiIp8sNBHImqE7XDnJ7tOar5nPv2jfdSPuhXgKBL0Nfy1QC5H6YD
- giG1mwtYJK4/M/DfkPRV9YIM4LUwsr4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5r5fF7ieGtkj0LzxiM9xt6tktotQ7XFPwUcsZWeMWRQ=;
+ b=e7TzrF9kUvZJaRDv4RZRTTq7gbPyegnjGb4xLzLuHZVJOpEXVhOiYSuO36GOQacTTJTKtz
+ LK/yn+wKdjGLhopfu1m79JXayLIP3DuTeKw+qcEJuRUTO7eU275UwOd5BwAGQ4RFWOwjPV
+ Es0uzsifQ0GeHf8e9zxnYj5UPY5ddac=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-444-t8QS11xBNIyaU8zkuROW7A-1; Wed, 11 Jun 2025 03:13:22 -0400
-X-MC-Unique: t8QS11xBNIyaU8zkuROW7A-1
-X-Mimecast-MFC-AGG-ID: t8QS11xBNIyaU8zkuROW7A_1749626001
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a4eb9c80deso2316943f8f.0
- for <qemu-devel@nongnu.org>; Wed, 11 Jun 2025 00:13:22 -0700 (PDT)
+ us-mta-157-O1nZao07MFaLjgptBAXaAA-1; Wed, 11 Jun 2025 03:19:21 -0400
+X-MC-Unique: O1nZao07MFaLjgptBAXaAA-1
+X-Mimecast-MFC-AGG-ID: O1nZao07MFaLjgptBAXaAA_1749626360
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4f858bc5eso4530375f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Jun 2025 00:19:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749626001; x=1750230801;
+ d=1e100.net; s=20230601; t=1749626360; x=1750231160;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b9xyqR9XJOsm2ct0SjOYQVSSRCEVwNdEGYUVFb0tYIk=;
- b=E5PMq76nnNm/GsvkRB3cx2Jqcpt829U2Sx+NfzPPekKLylSLcVg2obcm5UnUf7R4ak
- Ewld5/yTIBDkc6YH8uPmkLRuwo99YFhfZ+HxYv5dAHwFYU9WuntqxXSyTPjkYJ+BhF90
- 935S7foT6ZEbjv9wVbRjbTseGsNmVHaf50vcpOBlvuVSfncIudnFhVXpWloVVeA7GteZ
- TXQvCMYIQDCis7YLeC2nsCjCauPVJ5XjOY36Z0otSWe4fWzAt5FmNT1yzleD6DAm2GB0
- dxTkVInbFAfFBxXLKE6iO/ebu5Dekyrlr1xdx8ZdFS/SbMNKeTDrzYlEMdhzn17p6pGw
- uSXg==
+ bh=5r5fF7ieGtkj0LzxiM9xt6tktotQ7XFPwUcsZWeMWRQ=;
+ b=a2A1K0w+3pO7VY4rlDh0zD8uB1BgJADS9/O0ODTOZtZaoa9juviccoZ0EFfkawhNLc
+ bLQiw8DgctMu4y9MuLPHocMNtd905mQNzPylos2ggLvkrP8g7YVkfZ8iB5dBblfch7H1
+ oHHwnMLCcYgTJOa8gyFre+vmnSgEbZ27q5InJGlYbCLM6uQcaEchSM6rGmK9S6Pmk1w7
+ hOW/K0HgakR6dw72Bm1O2V2BbBhVPxM0ewn8pltSNTXxoz5hhP0xHL5D9M/z8Vib87m2
+ Z/e5NhkbSTwJcJA2Bb3jW7NfbXwZYLiZ1HIzBu0d7FRayUU/shcHmFeJJkhr4hy4GN8t
+ gU3A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXsGP0LJL2z2DEks27c6m9YseXW87QjK+GfDU4JRJ92trfxRggCU67nk5yLHrUxzGV8lQMGtTW9mxGn@nongnu.org
-X-Gm-Message-State: AOJu0YwZuIviq7tEWqaF3Q+B/r8FchlBkV7mDFuwi8QIF5WAI+nS62YS
- NxAaT5nazygghCMOGFGso08HkFgFGJn80pBRJahe8WV8Xv91ov3iKGe3jtKWFHAJZLEL0g5HZvW
- 1Mw7seTrN7R/gjFo2lljSBy5uedP9IBzwSAVyfuuhTNX3de+4uHVEu9lE
-X-Gm-Gg: ASbGncu+zMyg6WLafWvcjyc6x2BClvSCMS7q/g1QXGBdYtYulTx2n30N/KdZ4uy/0UJ
- vOlr/rtHD0d8XmDY4J1J8tuD36RTjfem/j9yK47shPPc2ARDCq+u0p6bF/EYxnDEG7Zs23M/0O2
- gR6mrBBGJTbpzk+KPncmsnFvwNTh/67kOHS4a3p6yM/7zXespXyOnnj//tpX2X8nxN2ZbLg0DGk
- PaMZPAe4JRJqyTTj/tU/YVFsJPWhzzJ5W8+Ab6BfXQnNtrIHMkvFIaeXE/XzrLCYdzXtfKptmG3
- zi0MIaMSjNVewcEzB2UpEfEnQ0F1noc6ztUpCcvv1eBACjxGf8d+8iGlR7/5
-X-Received: by 2002:a05:6000:2082:b0:3a3:7987:945f with SMTP id
- ffacd0b85a97d-3a558b09dbcmr1360067f8f.57.1749626001400; 
- Wed, 11 Jun 2025 00:13:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHtrPhcwHUY/XpE6C2QTmCwGCyreldo2fKADXuZ6CVbGCLzQOXq/cdGL5ow7yLaHlUjXkclHQ==
-X-Received: by 2002:a05:6000:2082:b0:3a3:7987:945f with SMTP id
- ffacd0b85a97d-3a558b09dbcmr1360040f8f.57.1749626001030; 
- Wed, 11 Jun 2025 00:13:21 -0700 (PDT)
+ AJvYcCXB+VSvhEPqTBsx/FuQG1zDYgBodvocMBVWcGOpPoa8X424izNGmLGvI7HzG4TNYgK2g6vBiz+xeW4I@nongnu.org
+X-Gm-Message-State: AOJu0YzkDTk9+dABnqCCiW/Eae4v+trxyqjuL62Nkq7GPw/cOlvCgK+H
+ xr0zrHVdV+u6gzy3/apfKmHegD1PjSRn87xpD4DGE5TrZ6L90nhVzwkYAUW8Rg7LI5Ga0Fne+1k
+ WT2fMO9Y2A7TvjcNKNm7rvgBjpsCQ/LHAuc6GmbEUHvzHL1gRQiTraHdKwFglFfru
+X-Gm-Gg: ASbGnctoIFDs4yUDSE0gboIZmN1bRygxd0/BpGZOSsBLuZxJoEHYygq+RAp/FRKwtFr
+ Zr3Sl58VwqBUDXkinqILTb54LWB7LngPY5M9RbRJQME6N3pdwvbZFkB7snzkn8AaNO3CZqOFTQj
+ dd5P2xZk31sSoK5ihLcE8o3bavZ+Ov6EmCqnKwIs+DiWTyMjskKnZktZ6X626nb6ha3gCr1QRB3
+ nMaJp627p0A3KXOjgW7Qo352bbacV4hzPThXOE5g/bEgABgNRHVWjH9EwHGXn2IMyBUaBseBB0H
+ DZ6FTHxhPpTG8QaHyX8Dq9o5bFVY+u46lYggBq3Iy2EoZdcDPT9H7AlHRqze
+X-Received: by 2002:a5d:5f88:0:b0:3a4:fbaf:664a with SMTP id
+ ffacd0b85a97d-3a55881dc04mr1363714f8f.29.1749626360180; 
+ Wed, 11 Jun 2025 00:19:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJDTVxNsv01XUdS2JhaQ24U15sPPTcyL9y4a1tpgbfnZDXVFSoXn6vu0D9IUeQ9YKRdoT+gQ==
+X-Received: by 2002:a5d:5f88:0:b0:3a4:fbaf:664a with SMTP id
+ ffacd0b85a97d-3a55881dc04mr1363694f8f.29.1749626359780; 
+ Wed, 11 Jun 2025 00:19:19 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
  ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a53229e009sm14764306f8f.16.2025.06.11.00.13.20
+ ffacd0b85a97d-3a53244fd02sm14251600f8f.75.2025.06.11.00.19.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Jun 2025 00:13:20 -0700 (PDT)
-Message-ID: <9e4162ee-08b1-4309-9a38-bd155a61f585@redhat.com>
-Date: Wed, 11 Jun 2025 09:13:19 +0200
+ Wed, 11 Jun 2025 00:19:19 -0700 (PDT)
+Message-ID: <58e02d61-7f6e-41bb-a7a5-f1058e52af31@redhat.com>
+Date: Wed, 11 Jun 2025 09:19:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/23] vfio: enable per-IRQ MSI-X masking
-To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Johnson <john.g.johnson@oracle.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>
-References: <20250607001056.335310-1-john.levon@nutanix.com>
- <20250607001056.335310-3-john.levon@nutanix.com> <aEipFWB1BOmKyXBQ@lent>
+Subject: Re: [PATCH] vfio/pci: Fix instance_size of VFIO_PCI_BASE
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: john.levon@nutanix.com, chao.p.peng@intel.com,
+ Alex Williamson <alex.williamson@redhat.com>
+References: <20250611024228.423666-1-zhenzhong.duan@intel.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -133,10 +125,10 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <aEipFWB1BOmKyXBQ@lent>
+In-Reply-To: <20250611024228.423666-1-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -161,22 +153,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/10/25 23:52, John Levon wrote:
-> On Fri, Jun 06, 2025 at 05:10:34PM -0700, John Levon wrote:
+On 6/11/25 04:42, Zhenzhong Duan wrote:
+> Currently the final instance_size of VFIO_PCI_BASE is sizeof(PCIDevice).
+> It should be sizeof(VFIOPCIDevice), VFIO_PCI uses same structure as
+> base class VFIO_PCI_BASE, so no need to set its instance_size explicitly.
 > 
->> If VFIO_IRQ_INFO_MASKABLE is set for VFIO_PCI_MSIX_IRQ_INDEX, record
->> this in ->can_mask_msix, and use it to individually mask MSI-X
->> interrupts as needed.
+> This isn't catastrophic only because VFIO_PCI_BASE is an abstract class.
 > 
-> I'm just going to drop this patch. Neither vfio nor libvfio-user (including
-> qemu-as-server) report MASKABLE for MSI-X anyway, so it doesn't seem relevant.
+> Fixes: d4e392d0a99b ("vfio: add vfio-pci-base class")
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-ok. Dropped.
 
+Hey, we were discussing this issue on IRC yesterday (#qemu on OFTC)
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Applied to vfio-next.
 
 Thanks,
 
 C.
 
+
+> ---
+>   hw/vfio/pci.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 92562898e4..03f52a9b8f 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3478,7 +3478,7 @@ static void vfio_pci_base_dev_class_init(ObjectClass *klass, const void *data)
+>   static const TypeInfo vfio_pci_base_dev_info = {
+>       .name = TYPE_VFIO_PCI_BASE,
+>       .parent = TYPE_PCI_DEVICE,
+> -    .instance_size = 0,
+> +    .instance_size = sizeof(VFIOPCIDevice),
+>       .abstract = true,
+>       .class_init = vfio_pci_base_dev_class_init,
+>       .interfaces = (const InterfaceInfo[]) {
+> @@ -3701,7 +3701,6 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, const void *data)
+>   static const TypeInfo vfio_pci_dev_info = {
+>       .name = TYPE_VFIO_PCI,
+>       .parent = TYPE_VFIO_PCI_BASE,
+> -    .instance_size = sizeof(VFIOPCIDevice),
+>       .class_init = vfio_pci_dev_class_init,
+>       .instance_init = vfio_instance_init,
+>       .instance_finalize = vfio_instance_finalize,
 
 
