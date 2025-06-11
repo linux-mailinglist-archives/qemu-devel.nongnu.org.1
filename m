@@ -2,85 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ABA0AD5ED2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 21:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EFFAD5EF9
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 21:25:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPQpU-00021c-A2; Wed, 11 Jun 2025 15:09:45 -0400
+	id 1uPR3o-0007bu-W2; Wed, 11 Jun 2025 15:24:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uPQpL-00021A-Vs
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:09:36 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uPQpJ-000759-Tv
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:09:35 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-605b9488c28so405448a12.2
- for <qemu-devel@nongnu.org>; Wed, 11 Jun 2025 12:09:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749668970; x=1750273770; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=L2jcq4JR31ZncXo7GCs+Vs2TyWS4MOEzTFNBBWpcIPI=;
- b=ZoKbVKKPopCaZ6n3DbIJx6nqrSAyotyOTe9Ic3vsPxsn3K+oH4Blb3mmNJQkyTI3V4
- 1VxWXj+mmllcy3fmNn0z7amDpowe+SzjJYDOVgf8SbuxnGTagKI41uST91ANTd9+YNRo
- 65EnZorschkSTsTMfery/zPQn6WGSXprtcZf2fPOhbadUd9ha+k74SNnO1733ADe+kZY
- 7SINbnuSh48fqY2sveRJe7PQMpWRBddvWOYAFwmC81KAYdu/dv63WMpVKEfTy2pssfpo
- 393Jf6hv/HUGg0cdfrof/BWqLgWPrXglH9sFIrAWuwP7kAZ+986dTedquJiWZ5zXOyEj
- uFig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749668970; x=1750273770;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=L2jcq4JR31ZncXo7GCs+Vs2TyWS4MOEzTFNBBWpcIPI=;
- b=JKxT/1Bps07VK9+tNPhTEnD6RFP/moSURp11Z5xVmp/LC3AFgIp58GXkhdMoonyTkl
- JFke05B42s5N5tsA3A0nSM1So9kLU1/RC7A6TIUZ9XXYz9/BP989qOCJvZy4QAT/laj9
- BvWSOLx5o5HuJSdMIhrcoOoEPE5oXIMaGWuQ+SnAItgT2gAI/EQQcHf+1o8HfqOM0Nbt
- iMAacLSOYZid+KTboX1x9m+nyZVFkotqf43jyHH0TaiJdacGFfQFrF3x0PdWGN3MJt04
- xBTLCf0buU/n5t8QR8XlJQgSm4pN9gLwi3J7KtmNkkRJvapwFkqLRcSLAisZ1B7emPdk
- LoCg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX4l42x9ZE1VOdKPqZmzYXSqVf0KWguK1zFzlDVm4DJHSsMMmYxPfjpdIg2/LbWCyModKz4lDP1LTsv@nongnu.org
-X-Gm-Message-State: AOJu0YwnkGMn9283waqfAePl6bbU8jZZuSsGNtRxyHhNmFuuDBx68wZt
- XF/niUi8aKmeX/mnF8XnFJD8/InDZlMhPpeBs7+n4cBzjhKH1krBDAJol4wAJ7/4m8syy8xXiBT
- Z58wUDawCqt5JMKqLq9i0SMbLOUzmp3s=
-X-Gm-Gg: ASbGncvDZcrd+SUYawwdui0bTBTmW9bMsl3HLxiybLfaZGguilqAd5CgXm03755rlC6
- V//mqtalbVq78kVNeH8jgpFHqfA7eZyGsups2XzIFf5mUIfJZ9cC/t32JyQ2o+C++HXtu/7Wy6m
- vJmuP7uLMdQDexC3sjeRk3Y7KHZnRf51+V/N9AwqKAqg==
-X-Google-Smtp-Source: AGHT+IGaID/PpihC/S0A7DaDOv/gziZPBfkw28zGbWEu3rzgXxVVNVFVE49tH1VJnUgMdHxeBOai4uEumDy8e7F4JGc=
-X-Received: by 2002:a05:6402:13d5:b0:608:47ef:46e4 with SMTP id
- 4fb4d7f45d1cf-60863aca018mr984283a12.17.1749668970001; Wed, 11 Jun 2025
- 12:09:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1uPR3l-0007bW-UO
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:24:29 -0400
+Received: from jedlik.phy.bme.hu ([152.66.102.83])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1uPR3j-000158-Gs
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:24:29 -0400
+Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
+ id 17CD3A0127; Wed, 11 Jun 2025 21:18:36 +0200 (CEST)
+Date: Wed, 11 Jun 2025 21:18:36 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+cc: qemu-devel@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ Mads Ynddal <mads@ynddal.dk>, Alexandre Iooss <erdnaxe@crans.org>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
+ =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
+ oltolm <oleg.tolmatcev@gmail.com>
+Subject: Re: [PULL 1/1] meson: fix Windows build
+In-Reply-To: <20250611182902.201331-2-stefanha@redhat.com>
+Message-ID: <alpine.LMD.2.03.2506112113260.22610@eik.bme.hu>
+References: <20250611182902.201331-1-stefanha@redhat.com>
+ <20250611182902.201331-2-stefanha@redhat.com>
+User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
 MIME-Version: 1.0
-References: <20250611075037.659610-1-kraxel@redhat.com>
- <3bc239aa-a2ab-400c-84b5-d7de3e5193ea@redhat.com>
-In-Reply-To: <3bc239aa-a2ab-400c-84b5-d7de3e5193ea@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 11 Jun 2025 15:09:18 -0400
-X-Gm-Features: AX0GCFvjHxzjSDXWD0llLG_SWNT90cCZjPbrzhvbUqU-MzjN0qdYWP7ZaelBp-I
-Message-ID: <CAJSP0QU++wDCXvYe2sUyHCZHrHVVY2ehdeAswjDE_5V2J-qE9w@mail.gmail.com>
-Subject: Re: [PULL 0/2] Seabios 1.17.0 20250611 patches
-To: Thomas Huth <thuth@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org, 
- Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: MULTIPART/MIXED;
+ BOUNDARY="1117279078-340601367-1749669516=:22610"
+Received-SPF: pass client-ip=152.66.102.83;
+ envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,78 +60,278 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 11, 2025 at 2:36=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
-e:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--1117279078-340601367-1749669516=:22610
+Content-Type: TEXT/PLAIN; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+
+On Wed, 11 Jun 2025, Stefan Hajnoczi wrote:
+> From: oltolm <oleg.tolmatcev@gmail.com>
 >
-> On 11/06/2025 09.50, Gerd Hoffmann wrote:
-> > The following changes since commit bc98ffdc7577e55ab8373c579c28fe24d600=
-c40f:
-> >
-> >    Merge tag 'pull-10.1-maintainer-may-2025-070625-1' of https://gitlab=
-.com/stsquad/qemu into staging (2025-06-07 15:08:55 -0400)
-> >
-> > are available in the Git repository at:
-> >
-> >    https://gitlab.com/kraxel/qemu.git tags/seabios-1.17.0-20250611-pull=
--request
-> >
-> > for you to fetch changes up to cba36cf3881e907553ba2de38abd5edf7f952de1=
-:
-> >
-> >    seabios: update binaries to 1.17.0 (2025-06-11 09:45:00 +0200)
-> >
-> > ----------------------------------------------------------------
-> > seabios: update to 1.17.0 release
-> >
-> > ----------------------------------------------------------------
-> >
-> > Gerd Hoffmann (2):
-> >    seabios: update submodule to 1.17.0
-> >    seabios: update binaries to 1.17.0
+> Sorry, I forgot to cc the maintainers.
+
+Do we want comments like this end up in git log? This could have been=20
+fixed before a pull. Also the other pull request about uninitialised stack=
+=20
+variables had hw/audio/gus twice which was pointed out by a comment before=
+=20
+the pull that one of those should be different but the pull request still=
+=20
+had this error. Did you miss these or aren't these important enough to fix=
+=20
+before getting in git log forever or there is just no easy way to fix up=20
+commit messages in pull requests?
+
+Regards,
+BALATON Zoltan
+
+> The build failed when run on Windows. I replaced calls to Unix programs
+> like =C2=B4cat=C2=B4, =C2=B4sed=C2=B4 and =C2=B4true=C2=B4 with calls to =
+=C2=B4python=C2=B4. I wrapped calls to
+> =C2=B4os.path.relpath=C2=B4 in try-except because it can fail when the tw=
+o paths
+> are on different drives. I made sure to convert the Windows paths to
+> Unix paths to prevent warnings in generated files.
 >
->   Hi Gerd, hi Stefan,
+> Signed-off-by: oltolm <oleg.tolmatcev@gmail.com>
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Message-id: 20250607094503.1307-2-oleg.tolmatcev@gmail.com
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+> contrib/plugins/meson.build         |  2 +-
+> plugins/meson.build                 |  2 +-
+> scripts/tracetool/__init__.py       | 15 ++++++++++++---
+> scripts/tracetool/backend/ftrace.py |  4 +---
+> scripts/tracetool/backend/log.py    |  4 +---
+> scripts/tracetool/backend/syslog.py |  4 +---
+> tests/functional/meson.build        |  4 +---
+> tests/include/meson.build           |  2 +-
+> tests/tcg/plugins/meson.build       |  2 +-
+> trace/meson.build                   |  5 +++--
+> 10 files changed, 23 insertions(+), 21 deletions(-)
 >
-> I'm now getting this when doing a git pull:
+> diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+> index fa8a426c8b..1876bc7843 100644
+> --- a/contrib/plugins/meson.build
+> +++ b/contrib/plugins/meson.build
+> @@ -24,7 +24,7 @@ endif
+> if t.length() > 0
+>   alias_target('contrib-plugins', t)
+> else
+> -  run_target('contrib-plugins', command: find_program('true'))
+> +  run_target('contrib-plugins', command: [python, '-c', ''])
+> endif
 >
-> Fetching submodule roms/seabios
-> fatal: remote error: upload-pack: not our ref
-> b52ca86e094d19b58e2304417787e96b940e39c6
-> Errors during submodule fetch:
->         roms/seabios
-
-GitLab CI didn't detect this, probably because the tests don't build
-SeaBIOS from source and use the binaries instead. Given infinite CI
-resources we should rebuild all ROMs from source to catch problems
-like this one.
-
-I wanted to mention this in case anyone wants to tighten up the CI to
-catch these issues for SeaBIOS and other ROMs.
-
-> Looking at
-> https://gitlab.com/qemu-project/seabios/-/commits/master?ref_type=3DHEADS
-> there is a problem with the mirroring:
+> plugin_modules +=3D t
+> diff --git a/plugins/meson.build b/plugins/meson.build
+> index b20edfbabc..62c991d87f 100644
+> --- a/plugins/meson.build
+> +++ b/plugins/meson.build
+> @@ -33,7 +33,7 @@ if host_os =3D=3D 'windows'
+>     input: qemu_plugin_symbols,
+>     output: 'qemu_plugin_api.def',
+>     capture: true,
+> -    command: ['sed', '-e', '0,/^/s//EXPORTS/; s/[{};]//g', '@INPUT@'])
+> +    command: [python, '-c', 'import fileinput, re; print("EXPORTS", end=
+=3D""); [print(re.sub(r"[{};]", "", line), end=3D"") for line in fileinput.=
+input()]', '@INPUT@'])
 >
-> "This project is mirrored from https://review.coreboot.org/seabios. Pull
-> mirroring failed 4 months ago.
-> Repository mirroring has been paused due to too many failed attempts. It =
-can
-> be resumed by a project maintainer or owner.
-> Last successful update 4 months ago. This branch has diverged from upstre=
-am. "
+>   # then use dlltool to assemble a delaylib.
+>   # The delaylib will have an "imaginary" name (qemu.exe), that is used b=
+y the
+> diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.p=
+y
+> index bc03238c0f..6dfcbf71e1 100644
+> --- a/scripts/tracetool/__init__.py
+> +++ b/scripts/tracetool/__init__.py
+> @@ -12,12 +12,14 @@
+> __email__      =3D "stefanha@redhat.com"
 >
-> Could you please fix this?
-
-`git clone https://review.coreboot.org/seabios` works on my machine,
-but I manually clicked the "update" button and GitLab failed again.
-
-In the GitLab UI there is a button to add a new mirror repo. I thought
-maybe we can delete the old repo and add a new one, but the push/pull
-direction dropdown list is disabled. Maybe that's because only 1 repo
-can be a mirror source for pull, I'm worried that deleting the
-existing failed repo will leave us with no way to add a new repo that
-supports pull.
-
-Does anyone know how to go about fixing this failed mirror?
-
-Stefan
+>
+> +import os
+> import re
+> import sys
+> import weakref
+> +from pathlib import PurePath
+>
+> -import tracetool.format
+> import tracetool.backend
+> +import tracetool.format
+>
+>
+> def error_write(*lines):
+> @@ -36,7 +38,7 @@ def error(*lines):
+>
+> def out_open(filename):
+>     global out_filename, out_fobj
+> -    out_filename =3D filename
+> +    out_filename =3D posix_relpath(filename)
+>     out_fobj =3D open(filename, 'wt')
+>
+> def out(*lines, **kwargs):
+> @@ -308,7 +310,7 @@ def build(line_str, lineno, filename):
+>             fmt =3D [fmt_trans, fmt]
+>         args =3D Arguments.build(groups["args"])
+>
+> -        return Event(name, props, fmt, args, lineno, filename)
+> +        return Event(name, props, fmt, args, lineno, posix_relpath(filen=
+ame))
+>
+>     def __repr__(self):
+>         """Evaluable string representation for this object."""
+> @@ -447,3 +449,10 @@ def generate(events, group, format, backends,
+>     tracetool.backend.dtrace.PROBEPREFIX =3D probe_prefix
+>
+>     tracetool.format.generate(events, format, backend, group)
+> +
+> +def posix_relpath(path, start=3DNone):
+> +    try:
+> +        path =3D os.path.relpath(path, start)
+> +    except ValueError:
+> +        pass
+> +    return PurePath(path).as_posix()
+> diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/back=
+end/ftrace.py
+> index baed2ae61c..5fa30ccc08 100644
+> --- a/scripts/tracetool/backend/ftrace.py
+> +++ b/scripts/tracetool/backend/ftrace.py
+> @@ -12,8 +12,6 @@
+> __email__      =3D "stefanha@redhat.com"
+>
+>
+> -import os.path
+> -
+> from tracetool import out
+>
+>
+> @@ -47,7 +45,7 @@ def generate_h(event, group):
+>         args=3Devent.args,
+>         event_id=3D"TRACE_" + event.name.upper(),
+>         event_lineno=3Devent.lineno,
+> -        event_filename=3Dos.path.relpath(event.filename),
+> +        event_filename=3Devent.filename,
+>         fmt=3Devent.fmt.rstrip("\n"),
+>         argnames=3Dargnames)
+>
+> diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend=
+/log.py
+> index de27b7e62e..17ba1cd90e 100644
+> --- a/scripts/tracetool/backend/log.py
+> +++ b/scripts/tracetool/backend/log.py
+> @@ -12,8 +12,6 @@
+> __email__      =3D "stefanha@redhat.com"
+>
+>
+> -import os.path
+> -
+> from tracetool import out
+>
+>
+> @@ -55,7 +53,7 @@ def generate_h(event, group):
+>         '    }',
+>         cond=3Dcond,
+>         event_lineno=3Devent.lineno,
+> -        event_filename=3Dos.path.relpath(event.filename),
+> +        event_filename=3Devent.filename,
+>         name=3Devent.name,
+>         fmt=3Devent.fmt.rstrip("\n"),
+>         argnames=3Dargnames)
+> diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/back=
+end/syslog.py
+> index 012970f6cc..5a3a00fe31 100644
+> --- a/scripts/tracetool/backend/syslog.py
+> +++ b/scripts/tracetool/backend/syslog.py
+> @@ -12,8 +12,6 @@
+> __email__      =3D "stefanha@redhat.com"
+>
+>
+> -import os.path
+> -
+> from tracetool import out
+>
+>
+> @@ -43,7 +41,7 @@ def generate_h(event, group):
+>         '    }',
+>         cond=3Dcond,
+>         event_lineno=3Devent.lineno,
+> -        event_filename=3Dos.path.relpath(event.filename),
+> +        event_filename=3Devent.filename,
+>         name=3Devent.name,
+>         fmt=3Devent.fmt.rstrip("\n"),
+>         argnames=3Dargnames)
+> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+> index 557d59ddf4..4bce961c04 100644
+> --- a/tests/functional/meson.build
+> +++ b/tests/functional/meson.build
+> @@ -412,6 +412,4 @@ foreach speed : ['quick', 'thorough']
+>   endforeach
+> endforeach
+>
+> -run_target('precache-functional',
+> -           depends: precache_all,
+> -           command: ['true'])
+> +alias_target('precache-functional', precache_all)
+> diff --git a/tests/include/meson.build b/tests/include/meson.build
+> index 9abba308fa..8e8d1ec4e6 100644
+> --- a/tests/include/meson.build
+> +++ b/tests/include/meson.build
+> @@ -13,4 +13,4 @@ test_qapi_outputs_extra =3D [
+> test_qapi_files_extra =3D custom_target('QAPI test (include)',
+>                                       output: test_qapi_outputs_extra,
+>                                       input: test_qapi_files,
+> -                                      command: 'true')
+> +                                      command: [python, '-c', ''])
+> diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.buil=
+d
+> index 41f02f2c7f..029342282a 100644
+> --- a/tests/tcg/plugins/meson.build
+> +++ b/tests/tcg/plugins/meson.build
+> @@ -17,7 +17,7 @@ endif
+> if t.length() > 0
+>   alias_target('test-plugins', t)
+> else
+> -  run_target('test-plugins', command: find_program('true'))
+> +  run_target('test-plugins', command: [python, '-c', ''])
+> endif
+>
+> plugin_modules +=3D t
+> diff --git a/trace/meson.build b/trace/meson.build
+> index 3df4549355..9c42a57a05 100644
+> --- a/trace/meson.build
+> +++ b/trace/meson.build
+> @@ -4,7 +4,7 @@ trace_events_files =3D []
+> foreach item : [ '.' ] + trace_events_subdirs + qapi_trace_events
+>   if item in qapi_trace_events
+>     trace_events_file =3D item
+> -    group_name =3D item.full_path().split('/')[-1].underscorify()
+> +    group_name =3D fs.name(item).underscorify()
+>   else
+>     trace_events_file =3D meson.project_source_root() / item / 'trace-eve=
+nts'
+>     group_name =3D item =3D=3D '.' ? 'root' : item.underscorify()
+> @@ -57,10 +57,11 @@ foreach item : [ '.' ] + trace_events_subdirs + qapi_=
+trace_events
+>   endif
+> endforeach
+>
+> +cat =3D [ python, '-c', 'import fileinput; [print(line, end=3D"") for li=
+ne in fileinput.input()]', '@INPUT@' ]
+> trace_events_all =3D custom_target('trace-events-all',
+>                                  output: 'trace-events-all',
+>                                  input: trace_events_files,
+> -                                 command: [ 'cat', '@INPUT@' ],
+> +                                 command: cat,
+>                                  capture: true,
+>                                  install: get_option('trace_backends') !=
+=3D [ 'nop' ],
+>                                  install_dir: qemu_datadir)
+> --=20
+> 2.49.0
+>
+>
+>
+--1117279078-340601367-1749669516=:22610--
 
