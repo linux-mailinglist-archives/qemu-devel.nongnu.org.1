@@ -2,49 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EFFAD5EF9
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 21:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1389EAD5EEE
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 21:21:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPR3o-0007bu-W2; Wed, 11 Jun 2025 15:24:33 -0400
+	id 1uPQzR-0005Z0-JD; Wed, 11 Jun 2025 15:20:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1uPR3l-0007bW-UO
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:24:29 -0400
-Received: from jedlik.phy.bme.hu ([152.66.102.83])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uPQzP-0005Pr-1g
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:19:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1uPR3j-000158-Gs
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:24:29 -0400
-Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
- id 17CD3A0127; Wed, 11 Jun 2025 21:18:36 +0200 (CEST)
-Date: Wed, 11 Jun 2025 21:18:36 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-cc: qemu-devel@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>, 
- Mads Ynddal <mads@ynddal.dk>, Alexandre Iooss <erdnaxe@crans.org>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
- oltolm <oleg.tolmatcev@gmail.com>
-Subject: Re: [PULL 1/1] meson: fix Windows build
-In-Reply-To: <20250611182902.201331-2-stefanha@redhat.com>
-Message-ID: <alpine.LMD.2.03.2506112113260.22610@eik.bme.hu>
-References: <20250611182902.201331-1-stefanha@redhat.com>
- <20250611182902.201331-2-stefanha@redhat.com>
-User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uPQzM-00008u-L6
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:19:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749669594;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4ehi/eFBo/AclvnplLqqFiCyzQsF35Oy+01HkW8nsdA=;
+ b=UU3vXRONGx8AFjOeCPSp945Y1qIBJNGz9DON07vucXgx1GnfnO+3cqoGugD/n54d37rPVm
+ Amx+SkFg6s0Q5cLatMZBwR48GKTxGDUEGjk1TqOmgjCk/iAknqDgKCBxGmihKOmt3YAi10
+ FqhXXSMJ04jcfmA2TehXuBZmnmqmlTM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-32-0YlkMXqsMeGzfAJ3pP-x0A-1; Wed,
+ 11 Jun 2025 15:19:52 -0400
+X-MC-Unique: 0YlkMXqsMeGzfAJ3pP-x0A-1
+X-Mimecast-MFC-AGG-ID: 0YlkMXqsMeGzfAJ3pP-x0A_1749669591
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 633011956088; Wed, 11 Jun 2025 19:19:51 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.122])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9041730002C3; Wed, 11 Jun 2025 19:19:50 +0000 (UTC)
+Date: Wed, 11 Jun 2025 15:19:49 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [PATCH 00/31] Skip automatic zero-init of large arrays / structs
+ in I/O paths
+Message-ID: <20250611191949.GD190743@fedora>
+References: <20250610123709.835102-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED;
- BOUNDARY="1117279078-340601367-1749669516=:22610"
-Received-SPF: pass client-ip=152.66.102.83;
- envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="GAVj/9fHDz7LIFa6"
+Content-Disposition: inline
+In-Reply-To: <20250610123709.835102-1-berrange@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,278 +87,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---1117279078-340601367-1749669516=:22610
-Content-Type: TEXT/PLAIN; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+--GAVj/9fHDz7LIFa6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Jun 2025, Stefan Hajnoczi wrote:
-> From: oltolm <oleg.tolmatcev@gmail.com>
->
-> Sorry, I forgot to cc the maintainers.
-
-Do we want comments like this end up in git log? This could have been=20
-fixed before a pull. Also the other pull request about uninitialised stack=
-=20
-variables had hw/audio/gus twice which was pointed out by a comment before=
-=20
-the pull that one of those should be different but the pull request still=
-=20
-had this error. Did you miss these or aren't these important enough to fix=
-=20
-before getting in git log forever or there is just no easy way to fix up=20
-commit messages in pull requests?
-
-Regards,
-BALATON Zoltan
-
-> The build failed when run on Windows. I replaced calls to Unix programs
-> like =C2=B4cat=C2=B4, =C2=B4sed=C2=B4 and =C2=B4true=C2=B4 with calls to =
-=C2=B4python=C2=B4. I wrapped calls to
-> =C2=B4os.path.relpath=C2=B4 in try-except because it can fail when the tw=
-o paths
-> are on different drives. I made sure to convert the Windows paths to
-> Unix paths to prevent warnings in generated files.
->
-> Signed-off-by: oltolm <oleg.tolmatcev@gmail.com>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Message-id: 20250607094503.1307-2-oleg.tolmatcev@gmail.com
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
-> contrib/plugins/meson.build         |  2 +-
-> plugins/meson.build                 |  2 +-
-> scripts/tracetool/__init__.py       | 15 ++++++++++++---
-> scripts/tracetool/backend/ftrace.py |  4 +---
-> scripts/tracetool/backend/log.py    |  4 +---
-> scripts/tracetool/backend/syslog.py |  4 +---
-> tests/functional/meson.build        |  4 +---
-> tests/include/meson.build           |  2 +-
-> tests/tcg/plugins/meson.build       |  2 +-
-> trace/meson.build                   |  5 +++--
-> 10 files changed, 23 insertions(+), 21 deletions(-)
->
-> diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
-> index fa8a426c8b..1876bc7843 100644
-> --- a/contrib/plugins/meson.build
-> +++ b/contrib/plugins/meson.build
-> @@ -24,7 +24,7 @@ endif
-> if t.length() > 0
->   alias_target('contrib-plugins', t)
-> else
-> -  run_target('contrib-plugins', command: find_program('true'))
-> +  run_target('contrib-plugins', command: [python, '-c', ''])
-> endif
->
-> plugin_modules +=3D t
-> diff --git a/plugins/meson.build b/plugins/meson.build
-> index b20edfbabc..62c991d87f 100644
-> --- a/plugins/meson.build
-> +++ b/plugins/meson.build
-> @@ -33,7 +33,7 @@ if host_os =3D=3D 'windows'
->     input: qemu_plugin_symbols,
->     output: 'qemu_plugin_api.def',
->     capture: true,
-> -    command: ['sed', '-e', '0,/^/s//EXPORTS/; s/[{};]//g', '@INPUT@'])
-> +    command: [python, '-c', 'import fileinput, re; print("EXPORTS", end=
-=3D""); [print(re.sub(r"[{};]", "", line), end=3D"") for line in fileinput.=
-input()]', '@INPUT@'])
->
->   # then use dlltool to assemble a delaylib.
->   # The delaylib will have an "imaginary" name (qemu.exe), that is used b=
-y the
-> diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.p=
-y
-> index bc03238c0f..6dfcbf71e1 100644
-> --- a/scripts/tracetool/__init__.py
-> +++ b/scripts/tracetool/__init__.py
-> @@ -12,12 +12,14 @@
-> __email__      =3D "stefanha@redhat.com"
->
->
-> +import os
-> import re
-> import sys
-> import weakref
-> +from pathlib import PurePath
->
-> -import tracetool.format
-> import tracetool.backend
-> +import tracetool.format
->
->
-> def error_write(*lines):
-> @@ -36,7 +38,7 @@ def error(*lines):
->
-> def out_open(filename):
->     global out_filename, out_fobj
-> -    out_filename =3D filename
-> +    out_filename =3D posix_relpath(filename)
->     out_fobj =3D open(filename, 'wt')
->
-> def out(*lines, **kwargs):
-> @@ -308,7 +310,7 @@ def build(line_str, lineno, filename):
->             fmt =3D [fmt_trans, fmt]
->         args =3D Arguments.build(groups["args"])
->
-> -        return Event(name, props, fmt, args, lineno, filename)
-> +        return Event(name, props, fmt, args, lineno, posix_relpath(filen=
-ame))
->
->     def __repr__(self):
->         """Evaluable string representation for this object."""
-> @@ -447,3 +449,10 @@ def generate(events, group, format, backends,
->     tracetool.backend.dtrace.PROBEPREFIX =3D probe_prefix
->
->     tracetool.format.generate(events, format, backend, group)
-> +
-> +def posix_relpath(path, start=3DNone):
-> +    try:
-> +        path =3D os.path.relpath(path, start)
-> +    except ValueError:
-> +        pass
-> +    return PurePath(path).as_posix()
-> diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/back=
-end/ftrace.py
-> index baed2ae61c..5fa30ccc08 100644
-> --- a/scripts/tracetool/backend/ftrace.py
-> +++ b/scripts/tracetool/backend/ftrace.py
-> @@ -12,8 +12,6 @@
-> __email__      =3D "stefanha@redhat.com"
->
->
-> -import os.path
-> -
-> from tracetool import out
->
->
-> @@ -47,7 +45,7 @@ def generate_h(event, group):
->         args=3Devent.args,
->         event_id=3D"TRACE_" + event.name.upper(),
->         event_lineno=3Devent.lineno,
-> -        event_filename=3Dos.path.relpath(event.filename),
-> +        event_filename=3Devent.filename,
->         fmt=3Devent.fmt.rstrip("\n"),
->         argnames=3Dargnames)
->
-> diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend=
-/log.py
-> index de27b7e62e..17ba1cd90e 100644
-> --- a/scripts/tracetool/backend/log.py
-> +++ b/scripts/tracetool/backend/log.py
-> @@ -12,8 +12,6 @@
-> __email__      =3D "stefanha@redhat.com"
->
->
-> -import os.path
-> -
-> from tracetool import out
->
->
-> @@ -55,7 +53,7 @@ def generate_h(event, group):
->         '    }',
->         cond=3Dcond,
->         event_lineno=3Devent.lineno,
-> -        event_filename=3Dos.path.relpath(event.filename),
-> +        event_filename=3Devent.filename,
->         name=3Devent.name,
->         fmt=3Devent.fmt.rstrip("\n"),
->         argnames=3Dargnames)
-> diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/back=
-end/syslog.py
-> index 012970f6cc..5a3a00fe31 100644
-> --- a/scripts/tracetool/backend/syslog.py
-> +++ b/scripts/tracetool/backend/syslog.py
-> @@ -12,8 +12,6 @@
-> __email__      =3D "stefanha@redhat.com"
->
->
-> -import os.path
-> -
-> from tracetool import out
->
->
-> @@ -43,7 +41,7 @@ def generate_h(event, group):
->         '    }',
->         cond=3Dcond,
->         event_lineno=3Devent.lineno,
-> -        event_filename=3Dos.path.relpath(event.filename),
-> +        event_filename=3Devent.filename,
->         name=3Devent.name,
->         fmt=3Devent.fmt.rstrip("\n"),
->         argnames=3Dargnames)
-> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-> index 557d59ddf4..4bce961c04 100644
-> --- a/tests/functional/meson.build
-> +++ b/tests/functional/meson.build
-> @@ -412,6 +412,4 @@ foreach speed : ['quick', 'thorough']
->   endforeach
-> endforeach
->
-> -run_target('precache-functional',
-> -           depends: precache_all,
-> -           command: ['true'])
-> +alias_target('precache-functional', precache_all)
-> diff --git a/tests/include/meson.build b/tests/include/meson.build
-> index 9abba308fa..8e8d1ec4e6 100644
-> --- a/tests/include/meson.build
-> +++ b/tests/include/meson.build
-> @@ -13,4 +13,4 @@ test_qapi_outputs_extra =3D [
-> test_qapi_files_extra =3D custom_target('QAPI test (include)',
->                                       output: test_qapi_outputs_extra,
->                                       input: test_qapi_files,
-> -                                      command: 'true')
-> +                                      command: [python, '-c', ''])
-> diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.buil=
-d
-> index 41f02f2c7f..029342282a 100644
-> --- a/tests/tcg/plugins/meson.build
-> +++ b/tests/tcg/plugins/meson.build
-> @@ -17,7 +17,7 @@ endif
-> if t.length() > 0
->   alias_target('test-plugins', t)
-> else
-> -  run_target('test-plugins', command: find_program('true'))
-> +  run_target('test-plugins', command: [python, '-c', ''])
-> endif
->
-> plugin_modules +=3D t
-> diff --git a/trace/meson.build b/trace/meson.build
-> index 3df4549355..9c42a57a05 100644
-> --- a/trace/meson.build
-> +++ b/trace/meson.build
-> @@ -4,7 +4,7 @@ trace_events_files =3D []
-> foreach item : [ '.' ] + trace_events_subdirs + qapi_trace_events
->   if item in qapi_trace_events
->     trace_events_file =3D item
-> -    group_name =3D item.full_path().split('/')[-1].underscorify()
-> +    group_name =3D fs.name(item).underscorify()
->   else
->     trace_events_file =3D meson.project_source_root() / item / 'trace-eve=
-nts'
->     group_name =3D item =3D=3D '.' ? 'root' : item.underscorify()
-> @@ -57,10 +57,11 @@ foreach item : [ '.' ] + trace_events_subdirs + qapi_=
-trace_events
->   endif
-> endforeach
->
-> +cat =3D [ python, '-c', 'import fileinput; [print(line, end=3D"") for li=
-ne in fileinput.input()]', '@INPUT@' ]
-> trace_events_all =3D custom_target('trace-events-all',
->                                  output: 'trace-events-all',
->                                  input: trace_events_files,
-> -                                 command: [ 'cat', '@INPUT@' ],
-> +                                 command: cat,
->                                  capture: true,
->                                  install: get_option('trace_backends') !=
-=3D [ 'nop' ],
->                                  install_dir: qemu_datadir)
+On Tue, Jun 10, 2025 at 01:36:38PM +0100, Daniel P. Berrang=E9 wrote:
+> This series is an extension of Stefan's proposal:
+>=20
+>   https://lists.nongnu.org/archive/html/qemu-devel/2025-06/msg00736.html
+>=20
+> It used '-Wframe-larger-than=3D4096' to identify all code locations
+> with more than 4k on the stack. Any locations in the I/O paths
+> were chosen to avoid automatic zero-init, to eliminate the performance
+> overhead of the automatic initialization.
+>=20
+> Note, although all the changed locations are I/O paths, this does not
+> imply that the changes make a measurement performance difference in
+> every case.
+>=20
+> This is because many of the emulated devices are likely limited by the
+> emulation impl, rather than any implicit memory zero'ing overhead of
+> stack data.
+>=20
+> None the less the memory zero'ing is still a redundant CPU burn in
+> all these cases, so I felt it worth setting the general precedent
+> that any data over 4k on a stack in a device I/O path should be
+> skipping zero-init.
+>=20
+> I did reasonable review in each case to identify that the data was
+> indeed initialized explicitly later in the method.
+>=20
+> Daniel P. Berrang=E9 (29):
+>   block: skip automatic zero-init of large array in ioq_submit
+>   chardev/char-fd: skip automatic zero-init of large array
+>   chardev/char-pty: skip automatic zero-init of large array
+>   chardev/char-socket: skip automatic zero-init of large array
+>   hw/audio/ac97: skip automatic zero-init of large arrays
+>   hw/audio/cs4231a: skip automatic zero-init of large arrays
+>   hw/audio/es1370: skip automatic zero-init of large array
+>   hw/audio/gus: skip automatic zero-init of large array
+>   hw/audio/gus: skip automatic zero-init of large array
+>   hw/audio/sb16: skip automatic zero-init of large array
+>   hw/audio/via-ac97: skip automatic zero-init of large array
+>   hw/char/sclpconsole-lm: skip automatic zero-init of large array
+>   hw/dma/xlnx_csu_dma: skip automatic zero-init of large array
+>   hw/display/vmware_vga: skip automatic zero-init of large struct
+>   hw/hyperv/syndbg: skip automatic zero-init of large array
+>   hw/misc/aspeed_hace: skip automatic zero-init of large array
+>   hw/net/rtl8139: skip automatic zero-init of large array
+>   hw/net/tulip: skip automatic zero-init of large array
+>   hw/net/virtio-net: skip automatic zero-init of large arrays
+>   hw/net/xgamc: skip automatic zero-init of large array
+>   hw/nvme/ctrl: skip automatic zero-init of large arrays
+>   hw/ppc/pnv_occ: skip automatic zero-init of large struct
+>   hw/ppc/spapr_tpm_proxy: skip automatic zero-init of large arrays
+>   hw/usb/hcd-ohci: skip automatic zero-init of large array
+>   hw/scsi/lsi53c895a: skip automatic zero-init of large array
+>   hw/scsi/megasas: skip automatic zero-init of large arrays
+>   hw/ufs/lu: skip automatic zero-init of large array
+>   net/socket: skip automatic zero-init of large array
+>   net/stream: skip automatic zero-init of large array
+>=20
+> Stefan Hajnoczi (2):
+>   include/qemu/compiler: add QEMU_UNINITIALIZED attribute macro
+>   hw/virtio/virtio: avoid cost of -ftrivial-auto-var-init in hot path
+>=20
+>  block/linux-aio.c          |  2 +-
+>  chardev/char-fd.c          |  2 +-
+>  chardev/char-pty.c         |  2 +-
+>  chardev/char-socket.c      |  2 +-
+>  hw/audio/ac97.c            |  4 ++--
+>  hw/audio/cs4231a.c         |  4 ++--
+>  hw/audio/es1370.c          |  2 +-
+>  hw/audio/gus.c             |  2 +-
+>  hw/audio/marvell_88w8618.c |  2 +-
+>  hw/audio/sb16.c            |  2 +-
+>  hw/audio/via-ac97.c        |  2 +-
+>  hw/char/sclpconsole-lm.c   |  2 +-
+>  hw/display/vmware_vga.c    |  2 +-
+>  hw/dma/xlnx_csu_dma.c      |  2 +-
+>  hw/hyperv/syndbg.c         |  2 +-
+>  hw/misc/aspeed_hace.c      |  2 +-
+>  hw/net/rtl8139.c           |  2 +-
+>  hw/net/tulip.c             |  2 +-
+>  hw/net/virtio-net.c        |  6 +++---
+>  hw/net/xgmac.c             |  2 +-
+>  hw/nvme/ctrl.c             |  6 +++---
+>  hw/ppc/pnv_occ.c           |  2 +-
+>  hw/ppc/spapr_tpm_proxy.c   |  4 ++--
+>  hw/scsi/lsi53c895a.c       |  2 +-
+>  hw/scsi/megasas.c          |  7 ++-----
+>  hw/ufs/lu.c                |  2 +-
+>  hw/usb/hcd-ohci.c          |  2 +-
+>  hw/virtio/virtio.c         |  8 ++++----
+>  include/qemu/compiler.h    | 20 ++++++++++++++++++++
+>  net/socket.c               |  2 +-
+>  net/stream.c               |  2 +-
+>  31 files changed, 61 insertions(+), 44 deletions(-)
+>=20
 > --=20
 > 2.49.0
->
->
->
---1117279078-340601367-1749669516=:22610--
+>=20
+
+Thanks, applied to my block tree:
+https://gitlab.com/stefanha/qemu/commits/block
+
+Stefan
+
+--GAVj/9fHDz7LIFa6
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhJ1tUACgkQnKSrs4Gr
+c8iMIQf/b+XkC+bCVWmARDzZzWvl7DZ94tIArDHmXW8gNWlDo0L5eXFcQkD42ogN
+GNI8oDV3GllJdE2HgppSO7VwtpCKX0gR2jjRTVDkDXS1j+QH0BIG6Lt2qJskdFmb
+xx6lk4sq0xSWw9EFUA6a2DdR2w5Yt1iF64OzXEdentQ0k//oLc+vQ5sa7d/iDh30
+O8YPMcHf6m6OPx5t39TXTcl/v7zWG+3HEXjpjltXDZbkWy0r0cR+ePrZzu7j8z61
+zKg20Bqy9h9TMgL+SKiDnITRcNoS8KzNSGWfHptJ6O0V0ioLX93ETEMueGLvQtbx
+9afk8RAqXYtkYXO/HhHwz0eggC6/PA==
+=j7+E
+-----END PGP SIGNATURE-----
+
+--GAVj/9fHDz7LIFa6--
+
 
