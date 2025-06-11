@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD19DAD59C6
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 17:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F5CAD598A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 17:05:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPN3E-0006Gk-9V; Wed, 11 Jun 2025 11:07:40 -0400
+	id 1uPMza-00038i-Tc; Wed, 11 Jun 2025 11:03:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN3A-0005zR-MX
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:07:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uPMzY-00038N-RI; Wed, 11 Jun 2025 11:03:52 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN38-0007DL-RQ
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:07:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749654453;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kFq26DYsWLmzPImzHrGHSPD9KDvKkjwHURprqDjb7nI=;
- b=YrVwhwtPSttFmCSfPobqDyuVCcJAeqrJTivcv7vYBY69ChUjyks4stHyDSo/tJY2L8hrvT
- LXqe4hZnt80ZCreJPmO+IlFgDRMMSM9TCwDBDupPMmNyJr7mh7R9vIk9EYc30O5Zyl/ksU
- tL34/HsefeVhBY1q8X0DR9Gkijt1UCY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-509-ik5SPssXNCWP2hS7YfhWdQ-1; Wed,
- 11 Jun 2025 11:07:30 -0400
-X-MC-Unique: ik5SPssXNCWP2hS7YfhWdQ-1
-X-Mimecast-MFC-AGG-ID: ik5SPssXNCWP2hS7YfhWdQ_1749654449
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A4BF11801BD8; Wed, 11 Jun 2025 15:07:29 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.45.225.191])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E524E180045B; Wed, 11 Jun 2025 15:07:27 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- John Levon <john.levon@nutanix.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 27/27] vfio: improve VFIODeviceIOOps docs
-Date: Wed, 11 Jun 2025 17:06:19 +0200
-Message-ID: <20250611150620.701903-28-clg@redhat.com>
-In-Reply-To: <20250611150620.701903-1-clg@redhat.com>
-References: <20250611150620.701903-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uPMzW-0006PM-S8; Wed, 11 Jun 2025 11:03:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749654231; x=1781190231;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=DfzGUjwb+a4TDpGYGcU/G2ITlow1Fg8h03KOgk9GmwI=;
+ b=Y8E6bXAU5lpv1hZpEnM8ybygouMMe24g8yxb5pKesar2O/sQlchDXFr3
+ JCE0TQDClQnFOlxTBrNzS6xwtENvt1QqsKthY6k36mhv0PLq03fqUdlid
+ d8Qq0f4rXo1PFYdtkpWvM1f+AxMDjZsyBt4bQlwrvzMQ7Gp9EG0AQbxNF
+ kOJcREDYZxK67w4d547Qg2rDNoEjEriBfbr/cW4KLFwB1l+3hCUO2S3i+
+ xvRDSY1TjYS9I05jcjKNLkJ9+KNXae1E+7pg6yRcoQXpZ7kd114DEScd/
+ mVg//1AcnvuERgkUvpIOGWOmycxlEMPs6aXF9VkIcq79XSDRH8yX44SQV Q==;
+X-CSE-ConnectionGUID: XTdnpMdeSXaTQGRvBPGtTw==
+X-CSE-MsgGUID: /XZ/0PluS7SChLFG/5WNxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="62081722"
+X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; d="scan'208";a="62081722"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2025 08:03:48 -0700
+X-CSE-ConnectionGUID: zC2q91qXQPye49Irs+YFDw==
+X-CSE-MsgGUID: N+f5b9JrRTeDji7F2RuNZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; d="scan'208";a="178171883"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa001.fm.intel.com with ESMTP; 11 Jun 2025 08:03:47 -0700
+Date: Wed, 11 Jun 2025 23:25:02 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 3/5] rust: qom: introduce ParentInit
+Message-ID: <aEmfzssEUlYIP9MR@intel.com>
+References: <20250609154423.706056-1-pbonzini@redhat.com>
+ <20250609154423.706056-4-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250609154423.706056-4-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,113 +79,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Levon <john.levon@nutanix.com>
+On Mon, Jun 09, 2025 at 05:44:21PM +0200, Paolo Bonzini wrote:
+> Date: Mon,  9 Jun 2025 17:44:21 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 3/5] rust: qom: introduce ParentInit
+> X-Mailer: git-send-email 2.49.0
+> 
+> This is a smart pointer for MaybeUninit; it can be upcasted to the
+> already-initialized parent classes, or dereferenced to a MaybeUninit
+> for the class that is being initialized.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/qemu-api/src/qom.rs | 86 +++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 85 insertions(+), 1 deletion(-)
 
-Explicitly describe every parameter rather than summarizing.
-
-Signed-off-by: John Levon <john.levon@nutanix.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250611104753.1199796-1-john.levon@nutanix.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- include/hw/vfio/vfio-device.h | 52 +++++++++++++++++++++++++++++------
- 1 file changed, 43 insertions(+), 9 deletions(-)
-
-diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index f39259406bdd7b4577c4c54cfb3ac0dbbcedccb2..d45e5a68a24e7990fa93ce6549f5710b4f25a037 100644
---- a/include/hw/vfio/vfio-device.h
-+++ b/include/hw/vfio/vfio-device.h
-@@ -168,14 +168,25 @@ struct VFIODeviceIOOps {
-      * @device_feature
-      *
-      * Fill in feature info for the given device.
-+     *
-+     * @vdev: #VFIODevice to use
-+     * @feat: feature information to fill in
-+     *
-+     * Returns 0 on success or -errno.
-      */
--    int (*device_feature)(VFIODevice *vdev, struct vfio_device_feature *);
-+    int (*device_feature)(VFIODevice *vdev, struct vfio_device_feature *feat);
- 
-     /**
-      * @get_region_info
-      *
--     * Fill in @info (and optionally @fd) with information on the region given
--     * by @info->index.
-+     * Get the information for a given region on the device.
-+     *
-+     * @vdev: #VFIODevice to use
-+     * @info: set @info->index to the region index to look up; the rest of the
-+     *        struct will be filled in on success
-+     * @fd: pointer to the fd for the region; will be -1 if not found
-+     *
-+     * Returns 0 on success or -errno.
-      */
-     int (*get_region_info)(VFIODevice *vdev,
-                            struct vfio_region_info *info, int *fd);
-@@ -183,22 +194,38 @@ struct VFIODeviceIOOps {
-     /**
-      * @get_irq_info
-      *
--     * Fill in @irq with information on the IRQ given by @info->index.
-+     * @vdev: #VFIODevice to use
-+     * @irq: set @irq->index to the IRQ index to look up; the rest of the struct
-+     *       will be filled in on success
-+     *
-+     * Returns 0 on success or -errno.
-      */
-     int (*get_irq_info)(VFIODevice *vdev, struct vfio_irq_info *irq);
- 
-     /**
-      * @set_irqs
-      *
--     * Configure IRQs as defined by @irqs.
-+     * Configure IRQs.
-+     *
-+     * @vdev: #VFIODevice to use
-+     * @irqs: IRQ configuration as defined by VFIO docs.
-+     *
-+     * Returns 0 on success or -errno.
-      */
-     int (*set_irqs)(VFIODevice *vdev, struct vfio_irq_set *irqs);
- 
-     /**
-      * @region_read
-      *
--     * Read @size bytes from the region @nr at offset @off into the buffer
--     * @data.
-+     * Read part of a region.
-+     *
-+     * @vdev: #VFIODevice to use
-+     * @nr: region index
-+     * @off: offset within the region
-+     * @size: size in bytes to read
-+     * @data: buffer to read into
-+     *
-+     * Returns number of bytes read on success or -errno.
-      */
-     int (*region_read)(VFIODevice *vdev, uint8_t nr, off_t off, uint32_t size,
-                        void *data);
-@@ -206,8 +233,15 @@ struct VFIODeviceIOOps {
-     /**
-      * @region_write
-      *
--     * Write @size bytes to the region @nr at offset @off from the buffer
--     * @data; if @post, the write is posted.
-+     * Write part of a region.
-+     *
-+     * @vdev: #VFIODevice to use
-+     * @nr: region index
-+     * @off: offset within the region
-+     * @size: size in bytes to write
-+     * @data: buffer to write from
-+     *
-+     * Returns number of bytes write on success or -errno.
-      */
-     int (*region_write)(VFIODevice *vdev, uint8_t nr, off_t off, uint32_t size,
-                         void *data, bool post);
--- 
-2.49.0
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
