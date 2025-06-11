@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0745AD5E4C
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA49AD5E42
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:34:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPQFc-0004uC-7b; Wed, 11 Jun 2025 14:32:41 -0400
+	id 1uPQFy-0005j2-0g; Wed, 11 Jun 2025 14:33:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQAn-0002oG-4p
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uPQAo-0002rt-Nk
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQAi-0001ph-Bs
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:40 -0400
+ id 1uPQAl-0001rd-2u
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749666455;
+ s=mimecast20190719; t=1749666458;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FU8wL7XxDJ9uyH0nMB1l6aLZjdzSp7OBD7R4cqOfBZU=;
- b=Bmh3m3wtB0sMiCGPvlFqHAEYdR15doX0Tzd1wLf6pHDQZK1qMRPs+tyw6N7xyhaF0uGrep
- T97Cmnr8z4uPvP/zlUkW7p4FTeRTU4aNdJ1HdKSevZLJGNXuEGx/buIe74Wfe8Fb5+YOEC
- NjSHnw2XoWpNESTeEWIBUpGreir0DOQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GuZNk0F1bodSwirhOG/JBltWIHXjauSG+o14JA3+usQ=;
+ b=EEFzaF2OYIthOClB3AUjp4CxcX8783PXf69ReNCXbwuEHYYJaKD3+ZacD8qONwAe0HhSO0
+ KXiLx4zhCB42bkUQkkH10tw6C8QnvcnkqvPZO/i/cjVXsPPuvJIdYXDdN+J6K/gz6XHytF
+ hQIkCsg28lxxxc0vubOru1ks7waN8AQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-BRevhgz1MY-FqReGZ6l7FQ-1; Wed,
- 11 Jun 2025 14:27:30 -0400
-X-MC-Unique: BRevhgz1MY-FqReGZ6l7FQ-1
-X-Mimecast-MFC-AGG-ID: BRevhgz1MY-FqReGZ6l7FQ_1749666446
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-IlUTyrPmOYmn9OcCGGCdvw-1; Wed,
+ 11 Jun 2025 14:27:33 -0400
+X-MC-Unique: IlUTyrPmOYmn9OcCGGCdvw-1
+X-Mimecast-MFC-AGG-ID: IlUTyrPmOYmn9OcCGGCdvw_1749666450
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6243E195608B; Wed, 11 Jun 2025 18:27:26 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F35F919560B4; Wed, 11 Jun 2025 18:27:29 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.122])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A198518002B5; Wed, 11 Jun 2025 18:27:25 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 964ED18003FC; Wed, 11 Jun 2025 18:27:27 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -75,16 +75,16 @@ Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 30/31] net/socket: skip automatic zero-init of large array
-Date: Wed, 11 Jun 2025 14:25:32 -0400
-Message-ID: <20250611182533.200590-31-stefanha@redhat.com>
+Subject: [PULL 31/31] net/stream: skip automatic zero-init of large array
+Date: Wed, 11 Jun 2025 14:25:33 -0400
+Message-ID: <20250611182533.200590-32-stefanha@redhat.com>
 In-Reply-To: <20250611182533.200590-1-stefanha@redhat.com>
 References: <20250611182533.200590-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -111,7 +111,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The 'net_socket_send' method has a 68k byte array used for copying
+The 'net_stream_send' method has a 68k byte array used for copying
 data between guest and host. Skip the automatic zero-init of this
 array to eliminate the performance overhead in the I/O hot path.
 
@@ -122,25 +122,25 @@ Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Message-id: 20250610123709.835102-31-berrange@redhat.com
+Message-id: 20250610123709.835102-32-berrange@redhat.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- net/socket.c | 2 +-
+ net/stream.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/socket.c b/net/socket.c
-index 8e3702e1f3..784dda686f 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -157,7 +157,7 @@ static void net_socket_send(void *opaque)
-     NetSocketState *s = opaque;
+diff --git a/net/stream.c b/net/stream.c
+index 4de5613844..6152d2a05e 100644
+--- a/net/stream.c
++++ b/net/stream.c
+@@ -148,7 +148,7 @@ static gboolean net_stream_send(QIOChannel *ioc,
+     NetStreamState *s = data;
      int size;
      int ret;
--    uint8_t buf1[NET_BUFSIZE];
-+    QEMU_UNINITIALIZED uint8_t buf1[NET_BUFSIZE];
-     const uint8_t *buf;
+-    char buf1[NET_BUFSIZE];
++    QEMU_UNINITIALIZED char buf1[NET_BUFSIZE];
+     const char *buf;
  
-     size = recv(s->fd, buf1, sizeof(buf1), 0);
+     size = qio_channel_read(s->ioc, buf1, sizeof(buf1), NULL);
 -- 
 2.49.0
 
