@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC3CAD5E56
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD69AD5E4F
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:37:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPQFH-0003uc-0z; Wed, 11 Jun 2025 14:32:19 -0400
+	id 1uPQGL-0006H2-12; Wed, 11 Jun 2025 14:33:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQAh-0002Zz-Vm
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uPQAl-0002ib-17
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQAc-0001mP-2X
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:35 -0400
+ id 1uPQAf-0001nV-4w
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749666449;
+ s=mimecast20190719; t=1749666451;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lJ0vZgBOtVyV/kxbsVrweB7URiKy+WNZJU2nYcVkU88=;
- b=ez+/NvcIRWouQudZdo+LWJb7nRNDp+yuZgM3n9SilMLzgrLwIK9h+EIxdRhSPIpTOzrN9d
- Bfc4ZjA5qclGGtr+/gBj5OSZsbZOCH24moJ7h1B2VXwKWDQaga/Kw7asK46n3NOZvNNBpK
- SidoUnWZNF6i4jUuekLND8+8JxWC0xg=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=TKCERI53LuMk8TuYkm/wkoeKkMg0tToLNccvF0Tm5YY=;
+ b=Nro1EOPw5YmilNT6CfynIpnTZxwc5VRJpAcLWK45rB63JiKuJmTWyXKBb5g7iGEWnUWQFB
+ HHQMvAf7UrKePl2iiqh3pRP5m3bo7BhF9Oz1Uf/e4QLGR3aQJbVVKhuyLZB19+uyzjM+BA
+ xbhS26DYcqoSmbpAT4rrsOyv+G9WaNw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-Q0_R4qAbOxyb2Wxe-FzFjA-1; Wed,
- 11 Jun 2025 14:27:26 -0400
-X-MC-Unique: Q0_R4qAbOxyb2Wxe-FzFjA-1
-X-Mimecast-MFC-AGG-ID: Q0_R4qAbOxyb2Wxe-FzFjA_1749666442
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-135-GFsYugu_M6SpL27G8L--Yw-1; Wed,
+ 11 Jun 2025 14:27:28 -0400
+X-MC-Unique: GFsYugu_M6SpL27G8L--Yw-1
+X-Mimecast-MFC-AGG-ID: GFsYugu_M6SpL27G8L--Yw_1749666444
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F403819560A7; Wed, 11 Jun 2025 18:27:21 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 49F531809C82; Wed, 11 Jun 2025 18:27:24 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.122])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3B0091956094; Wed, 11 Jun 2025 18:27:20 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 65B6618002B6; Wed, 11 Jun 2025 18:27:23 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -75,16 +75,16 @@ Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 28/31] hw/scsi/megasas: skip automatic zero-init of large arrays
-Date: Wed, 11 Jun 2025 14:25:30 -0400
-Message-ID: <20250611182533.200590-29-stefanha@redhat.com>
+Subject: [PULL 29/31] hw/ufs/lu: skip automatic zero-init of large array
+Date: Wed, 11 Jun 2025 14:25:31 -0400
+Message-ID: <20250611182533.200590-30-stefanha@redhat.com>
 In-Reply-To: <20250611182533.200590-1-stefanha@redhat.com>
 References: <20250611182533.200590-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -111,59 +111,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The 'megasas_dcmd_pd_get_list' and 'megasas_dcmd_get_properties'
-methods have 4k structs used for copying data from the device.
-Skip the automatic zero-init of this array to eliminate the
-performance overhead in the I/O hot path.
+The 'ufs_emulate_scsi_cmd' method has a 4k byte array used for
+copying data from the device. Skip the automatic zero-init of
+this array to eliminate the performance overhead in the I/O hot
+path.
 
-The 'info' structs are manually initialized with memset(). The
-compiler ought to be intelligent enough to turn the memset()
-into a static initialization operation, and thus not duplicate
-the automatic zero-init. Replacing memset() with '{}' makes it
-unambiguous that the arrays are statically initialized.
+The 'outbuf' array will be fully initialized when data is copied
+from the guest.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Message-id: 20250610123709.835102-29-berrange@redhat.com
+Message-id: 20250610123709.835102-30-berrange@redhat.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- hw/scsi/megasas.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ hw/ufs/lu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
-index 55cd188bd5..844643d916 100644
---- a/hw/scsi/megasas.c
-+++ b/hw/scsi/megasas.c
-@@ -981,13 +981,11 @@ static int megasas_event_wait(MegasasState *s, MegasasCmd *cmd)
- 
- static int megasas_dcmd_pd_get_list(MegasasState *s, MegasasCmd *cmd)
+diff --git a/hw/ufs/lu.c b/hw/ufs/lu.c
+index 57b307ea56..2d8ffd72c5 100644
+--- a/hw/ufs/lu.c
++++ b/hw/ufs/lu.c
+@@ -194,7 +194,7 @@ static int ufs_emulate_wlun_inquiry(UfsRequest *req, uint8_t *outbuf,
+ static UfsReqResult ufs_emulate_scsi_cmd(UfsLu *lu, UfsRequest *req)
  {
--    struct mfi_pd_list info;
--    size_t dcmd_size = sizeof(info);
-+    struct mfi_pd_list info = {};
-     BusChild *kid;
-     uint32_t offset, dcmd_limit, num_pd_disks = 0, max_pd_disks;
-     dma_addr_t residual;
- 
--    memset(&info, 0, dcmd_size);
-     offset = 8;
-     dcmd_limit = offset + sizeof(struct mfi_pd_address);
-     if (cmd->iov_size < dcmd_limit) {
-@@ -1429,11 +1427,10 @@ static int megasas_dcmd_cfg_read(MegasasState *s, MegasasCmd *cmd)
- 
- static int megasas_dcmd_get_properties(MegasasState *s, MegasasCmd *cmd)
- {
--    struct mfi_ctrl_props info;
-+    struct mfi_ctrl_props info = {};
-     size_t dcmd_size = sizeof(info);
-     dma_addr_t residual;
- 
--    memset(&info, 0x0, dcmd_size);
-     if (cmd->iov_size < dcmd_size) {
-         trace_megasas_dcmd_invalid_xfer_len(cmd->index, cmd->iov_size,
-                                             dcmd_size);
+     uint8_t lun = lu->lun;
+-    uint8_t outbuf[4096];
++    QEMU_UNINITIALIZED uint8_t outbuf[4096];
+     uint8_t sense_buf[UFS_SENSE_SIZE];
+     uint8_t scsi_status;
+     int len = 0;
 -- 
 2.49.0
 
