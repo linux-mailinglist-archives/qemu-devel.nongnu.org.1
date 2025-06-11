@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAECAD59AC
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 17:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23241AD59AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 17:08:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPN39-0005gr-LF; Wed, 11 Jun 2025 11:07:35 -0400
+	id 1uPN3B-0005vu-CJ; Wed, 11 Jun 2025 11:07:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN2t-0005YB-Cj
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:07:21 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN31-0005cG-0E
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:07:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN2r-0007Aq-DP
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:07:19 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN2y-0007Bf-FY
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:07:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749654436;
+ s=mimecast20190719; t=1749654443;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=voVPz9bppXe4ojOkmZSq1ah1isRPLqgbpzeFf+0RIgM=;
- b=cVQSqNIQHFUX9Syifx3CXV8Ut6vThTBB2/OzhCaSUAnwWxRbmjLzBs8jWQz45KM5T9iZe1
- fykULtebJmjagpjRQhW3WyUb+E2Cd8irCCA/e0QEkeVY7q/GJKvOIe/DVh7eFTzu1TFCqf
- Ur3Jf6pkj1hfKdqkzKCqvyZD7fucUqU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=A55MlTvVA9xM9Udo2f8ierjn04fv0f7X3KcXB2zJzxA=;
+ b=JRsnqpr0vUhsXnu6mJz2WggN0aruzgyVKRwnlUKjceq6awT9s5+cQIZpJwJa8zNfp4L+NG
+ zzjF2UDf+/7yCriOsWFXRUSH7dnIcKnCD5/12OF0kKMqMqRvVC+UGTrfeUnXvs7Z1ht0m3
+ toYjnVynKc882a1vV82uf1+O/oBBgus=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-540-hbZnV96AOquNoWY6nWxsqg-1; Wed,
- 11 Jun 2025 11:07:15 -0400
-X-MC-Unique: hbZnV96AOquNoWY6nWxsqg-1
-X-Mimecast-MFC-AGG-ID: hbZnV96AOquNoWY6nWxsqg_1749654434
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-306-kiC5NFLnN9KcCvOnFBQv-g-1; Wed,
+ 11 Jun 2025 11:07:17 -0400
+X-MC-Unique: kiC5NFLnN9KcCvOnFBQv-g-1
+X-Mimecast-MFC-AGG-ID: kiC5NFLnN9KcCvOnFBQv-g_1749654436
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9C4781956095; Wed, 11 Jun 2025 15:07:14 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BBDD1180047F; Wed, 11 Jun 2025 15:07:16 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.225.191])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 81F0C180045C; Wed, 11 Jun 2025 15:07:12 +0000 (UTC)
+ id 261B0180045B; Wed, 11 Jun 2025 15:07:14 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 20/27] vfio-pci: skip reset during cpr
-Date: Wed, 11 Jun 2025 17:06:12 +0200
-Message-ID: <20250611150620.701903-21-clg@redhat.com>
+Subject: [PULL 21/27] vfio/pci: vfio_pci_vector_init
+Date: Wed, 11 Jun 2025 17:06:13 +0200
+Message-ID: <20250611150620.701903-22-clg@redhat.com>
 In-Reply-To: <20250611150620.701903-1-clg@redhat.com>
 References: <20250611150620.701903-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,109 +84,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Do not reset a vfio-pci device during CPR, and do not complain if the
-kernel's PCI config space changes for non-emulated bits between the
-vmstate save and load, which can happen due to ongoing interrupt activity.
+Extract a subroutine vfio_pci_vector_init.  No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/1749569991-25171-12-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/qemu-devel/1749569991-25171-13-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-cpr.h |  2 ++
- hw/vfio/cpr.c              | 31 +++++++++++++++++++++++++++++++
- hw/vfio/pci.c              |  7 +++++++
- 3 files changed, 40 insertions(+)
+ hw/vfio/pci.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-index 56ede049ad68759e31d855809c5bd8493dc09176..8bf85b9f4ec2cd712ef835dc5d720fe03d767d03 100644
---- a/include/hw/vfio/vfio-cpr.h
-+++ b/include/hw/vfio/vfio-cpr.h
-@@ -52,4 +52,6 @@ void vfio_cpr_giommu_remap(struct VFIOContainerBase *bcontainer,
- bool vfio_cpr_ram_discard_register_listener(
-     struct VFIOContainerBase *bcontainer, MemoryRegionSection *section);
- 
-+extern const VMStateDescription vfio_cpr_pci_vmstate;
-+
- #endif /* HW_VFIO_VFIO_CPR_H */
-diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-index 0e596122284507cb419cceabaf90ca37871cd9f1..fdbb58e2039e9fc6bd91c37a0f534522c0987680 100644
---- a/hw/vfio/cpr.c
-+++ b/hw/vfio/cpr.c
-@@ -8,6 +8,8 @@
- #include "qemu/osdep.h"
- #include "hw/vfio/vfio-device.h"
- #include "hw/vfio/vfio-cpr.h"
-+#include "hw/vfio/pci.h"
-+#include "migration/cpr.h"
- #include "qapi/error.h"
- #include "system/runstate.h"
- 
-@@ -37,3 +39,32 @@ void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer)
- {
-     migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
- }
-+
-+/*
-+ * The kernel may change non-emulated config bits.  Exclude them from the
-+ * changed-bits check in get_pci_config_device.
-+ */
-+static int vfio_cpr_pci_pre_load(void *opaque)
-+{
-+    VFIOPCIDevice *vdev = opaque;
-+    PCIDevice *pdev = &vdev->pdev;
-+    int size = MIN(pci_config_size(pdev), vdev->config_size);
-+    int i;
-+
-+    for (i = 0; i < size; i++) {
-+        pdev->cmask[i] &= vdev->emulated_config_bits[i];
-+    }
-+
-+    return 0;
-+}
-+
-+const VMStateDescription vfio_cpr_pci_vmstate = {
-+    .name = "vfio-cpr-pci",
-+    .version_id = 0,
-+    .minimum_version_id = 0,
-+    .pre_load = vfio_cpr_pci_pre_load,
-+    .needed = cpr_incoming_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index b97261c61b4f303cb799e4ed6cdce391c198353c..2da5989581e72538cf61de3f453070b5e4f53cc4 100644
+index 2da5989581e72538cf61de3f453070b5e4f53cc4..7a33c19ea28c454221ee430784e5d84cf498486b 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -30,6 +30,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
- #include "migration/vmstate.h"
-+#include "migration/cpr.h"
- #include "qobject/qdict.h"
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
-@@ -3354,6 +3355,11 @@ static void vfio_pci_reset(DeviceState *dev)
- {
-     VFIOPCIDevice *vdev = VFIO_PCI_BASE(dev);
+@@ -531,6 +531,22 @@ static void set_irq_signalling(VFIODevice *vbasedev, VFIOMSIVector *vector,
+     }
+ }
  
-+    /* Do not reset the device during qemu_system_reset prior to cpr load */
-+    if (cpr_is_incoming()) {
-+        return;
-+    }
++static void vfio_pci_vector_init(VFIOPCIDevice *vdev, int nr)
++{
++    VFIOMSIVector *vector = &vdev->msi_vectors[nr];
++    PCIDevice *pdev = &vdev->pdev;
 +
-     trace_vfio_pci_reset(vdev->vbasedev.name);
++    vector->vdev = vdev;
++    vector->virq = -1;
++    if (event_notifier_init(&vector->interrupt, 0)) {
++        error_report("vfio: Error: event_notifier_init failed");
++    }
++    vector->use = true;
++    if (vdev->interrupt == VFIO_INT_MSIX) {
++        msix_vector_use(pdev, nr);
++    }
++}
++
+ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                                    MSIMessage *msg, IOHandler *handler)
+ {
+@@ -544,13 +560,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+     vector = &vdev->msi_vectors[nr];
  
-     vfio_pci_pre_reset(vdev);
-@@ -3530,6 +3536,7 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, const void *data)
- #ifdef CONFIG_IOMMUFD
-     object_class_property_add_str(klass, "fd", NULL, vfio_pci_set_fd);
- #endif
-+    dc->vmsd = &vfio_cpr_pci_vmstate;
-     dc->desc = "VFIO-based PCI device assignment";
-     pdc->realize = vfio_pci_realize;
+     if (!vector->use) {
+-        vector->vdev = vdev;
+-        vector->virq = -1;
+-        if (event_notifier_init(&vector->interrupt, 0)) {
+-            error_report("vfio: Error: event_notifier_init failed");
+-        }
+-        vector->use = true;
+-        msix_vector_use(pdev, nr);
++        vfio_pci_vector_init(vdev, nr);
+     }
  
+     qemu_set_fd_handler(event_notifier_get_fd(&vector->interrupt),
 -- 
 2.49.0
 
