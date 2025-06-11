@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8890AD567E
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 15:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 475D1AD5698
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 15:12:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPLA5-0003No-Uw; Wed, 11 Jun 2025 09:06:38 -0400
+	id 1uPLEN-00050G-T7; Wed, 11 Jun 2025 09:11:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uPL9v-0003NX-EG
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 09:06:28 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uPLEM-0004yY-0x
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 09:11:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uPL9t-0005QJ-HG
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 09:06:27 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uPLEK-00065C-6Q
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 09:11:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749647179;
+ s=mimecast20190719; t=1749647456;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fG6IPyaBwfU9Ynqfua7se+8r7xvL/Sudy5TbowxPWHk=;
- b=bldCH2DljfwwppucM2UL1oXRok10wI/Wz834/zeAydyk3BwALldg6v2+2PJSEje2YJ1TY2
- gTYoH6QcdkzG6HkqtcAKf0TOirBCNbo2OsdFGa3jR4QtH3gEGJ0hd9RcJi9YlrmM9LBE7x
- zoUN9vHmU3AWBAAuPiizdJUlGy6w450=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kB6yIVfO2HF0upfAAXtnXlTUS3vFMabCNfe03UnjCzo=;
+ b=VVnKLDAOKxCl4GlZDlIKYQ6NH18VESvv4Q53OeHnLbZ8gUA9PwLov5rbtWgoldxbg951Sz
+ uvBqmQGyuJr73Tye9tc8hXUAqoLVqs/1N91jizf8Ykc671vMd9rhkKLfTFKkH2WDmMQTHH
+ LaJF7chUjAfkgT/sT9Z+y9K/gZWo7LQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-462-7hd4xut_OTeF2TO479tzAA-1; Wed, 11 Jun 2025 09:06:17 -0400
-X-MC-Unique: 7hd4xut_OTeF2TO479tzAA-1
-X-Mimecast-MFC-AGG-ID: 7hd4xut_OTeF2TO479tzAA_1749647177
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4a46163297eso177782531cf.1
- for <qemu-devel@nongnu.org>; Wed, 11 Jun 2025 06:06:17 -0700 (PDT)
+ us-mta-6-SZ-XCoNVM-y9ldPiRLCdmQ-1; Wed, 11 Jun 2025 09:10:55 -0400
+X-MC-Unique: SZ-XCoNVM-y9ldPiRLCdmQ-1
+X-Mimecast-MFC-AGG-ID: SZ-XCoNVM-y9ldPiRLCdmQ_1749647454
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-453080e4741so32119495e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Jun 2025 06:10:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749647177; x=1750251977;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fG6IPyaBwfU9Ynqfua7se+8r7xvL/Sudy5TbowxPWHk=;
- b=QGPQrIGNd6cC7EOJFqI39ROsHPaamtw21JbLaeod+rlMA7DZ/tw0+E4FWxEfozREeu
- Tkyh21e4D1jrOqIDXjeXxWNsQQnUDIeovWxs2a+DTOOPMOmhibatzpciTJH0b8xnj1S/
- cbcD5nXfm0VkYzuAtiDiBOK3T4HpQAqXRs3YrwiV6SyNEMgvYEcRgycId1KiShTC+D0n
- /xtuQ9SB+C4UI/y8qsmfTqwjKx4KfqNv1ikXn8hwHp1y0A96q8YOSJguUyvNehOD72xC
- GThAW8Gzi8XKwYZuQ6AoPOKhImUaq6PVKNI8LGidNohasULAGGqUqrY+E7KHtPdxBtLa
- IAmQ==
-X-Gm-Message-State: AOJu0YwIwCYr5zljd/KsGQ51KeMPAbbef55PsGLX4lS3h0LatVaeIMTL
- 24ghf/1ZWNBVue/bxMmxiAfEhMnoBunhMHkFBUs+uATHpJkgZwg47yRGT7tGVIk/ZBGK1RHUPzw
- P8bESPKtcIZkXiliv04R3UTqqdyNJUReXc57icAElEPg4u4eOqycu7yXj
-X-Gm-Gg: ASbGncu2UPZ1+x3Y7Bk9iMY8xjAzk4/fnZyswDcb3/f2qmug4PQuNg+Gecv1zoDyWvT
- AbqsUDbu9jUm0ISqZaKT6Hseh9ToKZFOqbWdnhPGAiQ5jIZpFth+G0uHBRXcaRhbdAvs7zH5qhr
- gTPOcA7AoHhhxDVemzIP5VeYW3IeT3/nEb4cedFLQuoFStRzulO6AyPmUGMjNzj0RWTnad80fGX
- IfP1fLZoRSl8BRiqQdGvlSu3CLrACO551UxSiqSxY/oxGWhndA6an9SHniZfxM7zxOBZNIm/YWm
- gRTmiyf4ZAAhjw==
-X-Received: by 2002:a05:622a:5510:b0:4a5:a632:2888 with SMTP id
- d75a77b69052e-4a714dc4634mr52149911cf.47.1749647177075; 
- Wed, 11 Jun 2025 06:06:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5mZ3lqC308/6xOduUKk+KoPVSaaWyUwcPNcy2Wc705rwnelH9jr5VuPvEkOqeDO1O+DSCTQ==
-X-Received: by 2002:a05:622a:5510:b0:4a5:a632:2888 with SMTP id
- d75a77b69052e-4a714dc4634mr52149341cf.47.1749647176482; 
- Wed, 11 Jun 2025 06:06:16 -0700 (PDT)
-Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4a6f7a786a3sm55836581cf.81.2025.06.11.06.06.15
+ d=1e100.net; s=20230601; t=1749647454; x=1750252254;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kB6yIVfO2HF0upfAAXtnXlTUS3vFMabCNfe03UnjCzo=;
+ b=U1SDIblwe5belUNFQn4qfck+3zA4P0sOq1xPYbiJKkKxT4nVm5cSCTPazqFZvovJaH
+ cXVnRncABRDcuCNc40OjYIlMaSdiRANbwOcH7QWG8V++OvjFWyE+ymauJtXEOPMBcDXR
+ Ki6fKlJRpIUghFQNY9E1SzkJEbIMFDLuTwD/h/zxnJcMNfloEwhbwv1wSYQSg0oQX0EK
+ DRDbTXrxyLx3YT7o4d9BNh9ZCnhakmLDBuHagvbnrbYVUe1be+b6+0rkx6sGZa0N2VKO
+ RY+OXdAcywL8mZKoevy7T/kUZs8fReiA7QwZDnsADrWk5duEfayIsBChG/Wln4Tk2zte
+ 6ovQ==
+X-Gm-Message-State: AOJu0YwMIsW/IzMbPcSw00zFJjXXbno/I+6r/gkxxcA7SDYFPpsAgzD2
+ vLMW4EeTVX+L1zIRBxMleg6R0o+9pgQ4ijkR6AWdpPFckTKhsOPqPXBOcCzFaX65NQT79v95zzd
+ I4NUawZo1KYGbu4+tdkYLrQsrYVczjP6VB9rB3u68QDajS0Es7luJBooA
+X-Gm-Gg: ASbGncsif94d1DbNJxT7VZbM4ZqExM6on+GSeXlxS7dmaK0zObCP0N+xE843mfEEXBU
+ Y5HXkLdljcYK7yC9LrK3+LAMQn4KKQkXkHVHkATjqFOcR+9Tr9YVyuP7kC+18uKyM6kG0P7FA0p
+ cS/5uydpO5UWe1YY6GoFEYAAAVkJiJvrkl44kfwNxAewEJgAjkAHjdOPShVqPtUvWeCR9UAi7Gq
+ Fl46IE9DK/oeZKi9SWZs0/sspE2FqJ9NvFuIlp+FapPEcsBAI1RRx7RbNsuX4M3jyaob3Oo+/XN
+ wg+rdCGQF0y97hpKfd+S58zd
+X-Received: by 2002:a05:600c:3511:b0:441:b19c:96fe with SMTP id
+ 5b1f17b1804b1-45324882d3amr35222035e9.10.1749647454335; 
+ Wed, 11 Jun 2025 06:10:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFp2ix5BspRb47dluGnZUln3CEoyn20/BBSt8BN7U+T7boGjFz3KnJFqJgtEhdSNzPisIik1g==
+X-Received: by 2002:a05:600c:3511:b0:441:b19c:96fe with SMTP id
+ 5b1f17b1804b1-45324882d3amr35221585e9.10.1749647453978; 
+ Wed, 11 Jun 2025 06:10:53 -0700 (PDT)
+Received: from [192.168.122.1] ([151.49.64.79])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a5323b59d0sm15416717f8f.38.2025.06.11.06.10.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Jun 2025 06:06:16 -0700 (PDT)
-Date: Wed, 11 Jun 2025 09:06:12 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Mario Casquero <mcasquer@redhat.com>
-Cc: qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH v2 00/11] migration: Some enhancements and cleanups for
- 10.1
-Message-ID: <aEl_RESZhLS56pv2@x1.local>
-References: <20250609161855.6603-1-peterx@redhat.com>
- <CAMXpfWtGPUDGtn40tkZYNMhntp48BbMRHnZqQkrBKokyMyEXyQ@mail.gmail.com>
+ Wed, 11 Jun 2025 06:10:51 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, richard.henderson@linaro.org,
+ eduardo@habkost.net, qemu-stable@nongnu.org
+Subject: Re: [PATCH] target/i386: fix TB exit logic in gen_movl_seg() when
+ writing to SS
+Date: Wed, 11 Jun 2025 15:10:31 +0200
+Message-ID: <20250611131030.971554-2-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250611130315.383151-1-mark.cave-ayland@ilande.co.uk>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMXpfWtGPUDGtn40tkZYNMhntp48BbMRHnZqQkrBKokyMyEXyQ@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,55 +107,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 11, 2025 at 08:15:55AM +0200, Mario Casquero wrote:
-> This series has been successfully tested. The information displayed
-> from the HMP info migrate command is more user-friendly, with the
-> possibility of displaying the globals with info migrate -a.
-> (qemu) info migrate -a
-> Status: active
-> Sockets: [
-> tcp::::8888
-> ]
-> Globals:
->   store-global-state: on
->   only-migratable: off
->   send-configuration: on
->   send-section-footer: on
->   send-switchover-start: on
->   clear-bitmap-shift: 18
-> 
-> Tested-by: Mario Casquero <mcasquer@redhat.com>
+> Before commit e54ef98c8a ("target/i386: do not trigger IRQ shadow for LSS"), any
+> write to SS in gen_movl_seg() would cause a TB exit. The changes introduced by
+> this commit were intended to restrict the DISAS_EOB_INHIBIT_IRQ exit to the case
+> where inhibit_irq is true, but missed that a DISAS_EOB_NEXT exit can still be
+> required when writing to SS and inhibit_irq is false.
 
-Hey, Mario,
+Sorry about that.  Queued the fix, thanks.
 
-Thanks for doing this!
-
-This is a specific HMP dump test on recv side, just to mention the major
-change will be on the src side, so feel free to try that too.  That's what
-patch 1 does.
-
-Patch 2 changed recv side report for blocktime, but in your case you didn't
-enable it, to cover tests on patch 2, you can enable postcopy-blocktime
-feature and kickoff a postcopy migration.
-
-And just to mention, the real meat in this series is actually the last
-patch. :) If you want to test that, you'd likely want to apply another of
-my series:
-
-https://lore.kernel.org/r/20250609191259.9053-1-peterx@redhat.com
-
-Then invoke postcopy test with some loads, then check the blocktime reports
-again.  The other series added latency tracking to blocktime.  With that
-extra series applied, you should be able to observe average page fault
-latency reduction after the last patch, aka, the meat.
-
-Note that this is not a request to have you test everything!  Just to
-mention the bits from test perspective, so just take it as FYI.  I
-appreciate your help already to test on the recv side!
-
-Thanks,
-
--- 
-Peter Xu
+Paolo
 
 
