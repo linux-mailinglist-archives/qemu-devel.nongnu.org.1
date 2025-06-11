@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0583AD5E44
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BA1AD5E43
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:34:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPQFp-00059j-9G; Wed, 11 Jun 2025 14:32:53 -0400
+	id 1uPQFP-0004Xa-Ux; Wed, 11 Jun 2025 14:32:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQAa-0002Cy-Hg
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uPQAh-0002Zy-VQ
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQAW-0001hm-5M
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:26 -0400
+ id 1uPQAc-0001l4-2d
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749666441;
+ s=mimecast20190719; t=1749666447;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f128TMvyALcEvw2Q1PgUkPtT2l4n4rQQAsIOgSwd6Bw=;
- b=fqFUhuZZBSIJamGAslmNAYvmzABGkME81L8a5IJ1pOybcqhdrZAbKxxwujTStmosDZkmBQ
- kLDxYmLUI7wp+GoifCDNan52kUFKzDr0Ud1BR9ZKXMbOEdrg22Z4mJvGHt6cT1ihn3c+ME
- iO6dnAnevXZO/Ufk+Fe+ymSED6C/kPU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GkQJxxqIb7abXJVfUSauncS5q94lB96LQMTClKO0AaU=;
+ b=LqpEn7Ga/6p+yn/yletyS1VWhlT4fxfDQed44HhaGMAIQyIJHjL4iXKKRxUh31jEW0amUX
+ w3XbBYkBmBEgA54Fa84d+ZQ+4TLBvkcpaStRr0dIuQVXbGTFoQRylIbsM2Dd/hpivsa2Dr
+ GV5cm57XSrLvLDhyfjjziCif7h2sHBo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-mSrFx_MUMsimIImP4xTVHA-1; Wed,
- 11 Jun 2025 14:27:20 -0400
-X-MC-Unique: mSrFx_MUMsimIImP4xTVHA-1
-X-Mimecast-MFC-AGG-ID: mSrFx_MUMsimIImP4xTVHA_1749666436
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-EuRogx8FOqqC9-X06jtGCw-1; Wed,
+ 11 Jun 2025 14:27:23 -0400
+X-MC-Unique: EuRogx8FOqqC9-X06jtGCw-1
+X-Mimecast-MFC-AGG-ID: EuRogx8FOqqC9-X06jtGCw_1749666439
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D1B0119560B6; Wed, 11 Jun 2025 18:27:15 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E92BA1955F4A; Wed, 11 Jun 2025 18:27:18 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.122])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1B8CB195609D; Wed, 11 Jun 2025 18:27:15 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 2781818002B7; Wed, 11 Jun 2025 18:27:17 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -75,16 +75,17 @@ Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 26/31] hw/usb/hcd-ohci: skip automatic zero-init of large array
-Date: Wed, 11 Jun 2025 14:25:28 -0400
-Message-ID: <20250611182533.200590-27-stefanha@redhat.com>
+Subject: [PULL 27/31] hw/scsi/lsi53c895a: skip automatic zero-init of large
+ array
+Date: Wed, 11 Jun 2025 14:25:29 -0400
+Message-ID: <20250611182533.200590-28-stefanha@redhat.com>
 In-Reply-To: <20250611182533.200590-1-stefanha@redhat.com>
 References: <20250611182533.200590-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -111,36 +112,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The 'ohci_service_iso_td' method has a 8k byte array used for copying
-data between guest and host. Skip the automatic zero-init of this
-array to eliminate the performance overhead in the I/O hot path.
+The 'lsi_memcpy' method has a 4k byte array used for copying data
+to/from the device. Skip the automatic zero-init of this array to
+eliminate the performance overhead in the I/O hot path.
 
-The 'buf' array will be fully initialized when reading data from guest
-memory.
+The 'buf' array will be fully initialized when data is copied.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Message-id: 20250610123709.835102-27-berrange@redhat.com
+Message-id: 20250610123709.835102-28-berrange@redhat.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- hw/usb/hcd-ohci.c | 2 +-
+ hw/scsi/lsi53c895a.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/usb/hcd-ohci.c b/hw/usb/hcd-ohci.c
-index 71b54914d3..72a9f9f474 100644
---- a/hw/usb/hcd-ohci.c
-+++ b/hw/usb/hcd-ohci.c
-@@ -577,7 +577,7 @@ static int ohci_service_iso_td(OHCIState *ohci, struct ohci_ed *ed)
-     USBDevice *dev;
-     USBEndpoint *ep;
-     USBPacket *pkt;
--    uint8_t buf[8192];
-+    QEMU_UNINITIALIZED uint8_t buf[8192];
-     bool int_req;
-     struct ohci_iso_td iso_td;
-     uint32_t addr;
+diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
+index f4f2ef321e..9ea4aa0a85 100644
+--- a/hw/scsi/lsi53c895a.c
++++ b/hw/scsi/lsi53c895a.c
+@@ -1112,7 +1112,7 @@ bad:
+ static void lsi_memcpy(LSIState *s, uint32_t dest, uint32_t src, int count)
+ {
+     int n;
+-    uint8_t buf[LSI_BUF_SIZE];
++    QEMU_UNINITIALIZED uint8_t buf[LSI_BUF_SIZE];
+ 
+     trace_lsi_memcpy(dest, src, count);
+     while (count) {
 -- 
 2.49.0
 
