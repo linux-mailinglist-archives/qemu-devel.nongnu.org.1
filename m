@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F988AD5E19
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 569B7AD5E2E
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:32:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPQAv-0002xp-Pd; Wed, 11 Jun 2025 14:27:49 -0400
+	id 1uPQAn-0002k6-Tg; Wed, 11 Jun 2025 14:27:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQ9q-0001ay-Qy
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uPQ9l-0001Wc-Jy
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQ9g-0001Ir-VL
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:42 -0400
+ id 1uPQ9f-0001JU-Fu
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749666379;
+ s=mimecast20190719; t=1749666382;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a+3IbSd15/rc8GUbCSOu3df+NumonRFcoNFm3e5bolg=;
- b=IEdLxosoS1xJFxZDZ/8kB19jWXyVdCLrrV5EwxfWNV5BgNJ0NKIRgu+PTRr9zllRCStXFU
- ZhG8TPFEAu418p31oce9Z7pbSOeb6mE9/oXpoUoHQfJ19W0gobXuNEMF1Dm8pWTai9vVXu
- hOcjjtdvbyuh/2Ni3gT8GkEcIVA5thg=
+ bh=HrDpLNUDxNjCCWyN7dPnjdzORIrSgivckyj7LOAAsYg=;
+ b=Oeb+fjpkoPDN6fQ7KOZnf4hG4LpZzAS+enRVq/oT5nzA6ZScKAJe+rnSu1xbPVLwPw6bjh
+ wmkM2EORwHDUf0TSUPd4w/Ait6S2v9seSRuuJ8v1ywwuPfmU4V1Tgd11YQVS4eTMaoeezk
+ k0NYRHKQq73AE8T0tZWzGDmwQ93TErg=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-Q6Hs_-hbPnyFGqvz5I4myw-1; Wed,
- 11 Jun 2025 14:26:16 -0400
-X-MC-Unique: Q6Hs_-hbPnyFGqvz5I4myw-1
-X-Mimecast-MFC-AGG-ID: Q6Hs_-hbPnyFGqvz5I4myw_1749666372
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-61-0fmQl1_hOTK9_fyKainSSA-1; Wed,
+ 11 Jun 2025 14:26:19 -0400
+X-MC-Unique: 0fmQl1_hOTK9_fyKainSSA-1
+X-Mimecast-MFC-AGG-ID: 0fmQl1_hOTK9_fyKainSSA_1749666375
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 216D1180028F; Wed, 11 Jun 2025 18:26:11 +0000 (UTC)
+ id 9893418002A2; Wed, 11 Jun 2025 18:26:14 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.122])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 624F218003FC; Wed, 11 Jun 2025 18:26:06 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 85D4319560A3; Wed, 11 Jun 2025 18:26:12 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -74,16 +74,17 @@ Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 05/31] chardev/char-pty: skip automatic zero-init of large array
-Date: Wed, 11 Jun 2025 14:25:07 -0400
-Message-ID: <20250611182533.200590-6-stefanha@redhat.com>
+Subject: [PULL 06/31] chardev/char-socket: skip automatic zero-init of large
+ array
+Date: Wed, 11 Jun 2025 14:25:08 -0400
+Message-ID: <20250611182533.200590-7-stefanha@redhat.com>
 In-Reply-To: <20250611182533.200590-1-stefanha@redhat.com>
 References: <20250611182533.200590-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -110,35 +111,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The 'pty_chr_read' method has a 4k byte array used for copying
-data between the PTY and device. Skip the automatic zero-init
+The 'tcp_chr_read' method has a 4k byte array used for copying
+data between the socket and device. Skip the automatic zero-init
 of this array to eliminate the performance overhead in the I/O
 hot path.
 
 The 'buf' array will be fully initialized when reading data off
-the PTY.
+the network socket.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-id: 20250610123709.835102-6-berrange@redhat.com
+Message-id: 20250610123709.835102-7-berrange@redhat.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- chardev/char-pty.c | 2 +-
+ chardev/char-socket.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-index c28554e6e0..674e9b3f14 100644
---- a/chardev/char-pty.c
-+++ b/chardev/char-pty.c
-@@ -154,7 +154,7 @@ static gboolean pty_chr_read(QIOChannel *chan, GIOCondition cond, void *opaque)
+diff --git a/chardev/char-socket.c b/chardev/char-socket.c
+index e8dd2931dc..1e8313915b 100644
+--- a/chardev/char-socket.c
++++ b/chardev/char-socket.c
+@@ -497,7 +497,7 @@ static gboolean tcp_chr_read(QIOChannel *chan, GIOCondition cond, void *opaque)
+ {
      Chardev *chr = CHARDEV(opaque);
-     PtyChardev *s = PTY_CHARDEV(opaque);
-     gsize len;
+     SocketChardev *s = SOCKET_CHARDEV(opaque);
 -    uint8_t buf[CHR_READ_BUF_LEN];
 +    QEMU_UNINITIALIZED uint8_t buf[CHR_READ_BUF_LEN];
-     ssize_t ret;
+     int len, size;
  
-     len = sizeof(buf);
+     if ((s->state != TCP_CHARDEV_STATE_CONNECTED) ||
 -- 
 2.49.0
 
