@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A72FAD59CF
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 17:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01156AD59C0
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 17:10:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPN2Y-0004U5-U5; Wed, 11 Jun 2025 11:06:59 -0400
+	id 1uPN2a-0004Vb-MR; Wed, 11 Jun 2025 11:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN2P-0004Rb-KZ
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:06:49 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN2T-0004Sj-9a
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:06:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN2M-00075d-SN
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:06:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uPN2R-00076P-9C
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 11:06:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749654406;
+ s=mimecast20190719; t=1749654409;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+VU1TB5grpCeBAJ9Vl8LSO6PsVx0nbNU2xZlFwjklSA=;
- b=e0olNFrqmdOPfi96Gzsgi27VucuAcFnfxzDarWVskGf74n5ggB+S80nkbcX5W5bd+BHWtC
- LD1k/dXpR31BLVeivIZ8sMIT2yYkklklfjf4G74tD1wcyIeGU45mhqaGjNuClj2K306fuR
- 6HRxGfFce1HYXAU932vgNtrhGGSx9PA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=MUGT0dF9kElz2HxdD/WmTDEZEkfwDZyixh8VsmslCw8=;
+ b=VbFE09E6e1N3BB2acuTVA/mIbsEO3mPVzr7hdZSQRlG03/F0sGMGnqiXm81TWmupOMpJx5
+ UqMpU4F0gKLSERdWmqPsySTsOGfqty4E1WBx0MX37JpnFKxKTYtBlNTxItqymYP5jBJhpj
+ blFdjHoRU78fXl5n6l/qo+4si8fTkYI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-ntgBjuHNMmGo3gaxaT96TA-1; Wed,
- 11 Jun 2025 11:06:43 -0400
-X-MC-Unique: ntgBjuHNMmGo3gaxaT96TA-1
-X-Mimecast-MFC-AGG-ID: ntgBjuHNMmGo3gaxaT96TA_1749654402
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-660-FblJkeDENpS7nJjZ5via5A-1; Wed,
+ 11 Jun 2025 11:06:45 -0400
+X-MC-Unique: FblJkeDENpS7nJjZ5via5A-1
+X-Mimecast-MFC-AGG-ID: FblJkeDENpS7nJjZ5via5A_1749654405
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C36B919560BA; Wed, 11 Jun 2025 15:06:42 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0B750195608B; Wed, 11 Jun 2025 15:06:45 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.225.191])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DDC4C180045B; Wed, 11 Jun 2025 15:06:40 +0000 (UTC)
+ id 4A0CC180045C; Wed, 11 Jun 2025 15:06:43 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  John Levon <john.levon@nutanix.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 07/27] vfio: export PCI helpers needed for vfio-user
-Date: Wed, 11 Jun 2025 17:05:59 +0200
-Message-ID: <20250611150620.701903-8-clg@redhat.com>
+Subject: [PULL 08/27] vfio: add per-region fd support
+Date: Wed, 11 Jun 2025 17:06:00 +0200
+Message-ID: <20250611150620.701903-9-clg@redhat.com>
 In-Reply-To: <20250611150620.701903-1-clg@redhat.com>
 References: <20250611150620.701903-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,265 +84,178 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Levon <john.levon@nutanix.com>
 
-The vfio-user code will need to re-use various parts of the vfio PCI
-code. Export them in hw/vfio/pci.h, and rename them to the vfio_pci_*
-namespace.
+For vfio-user, each region has its own fd rather than sharing
+vbasedev's. Add the necessary plumbing to support this, and use the
+correct fd in vfio_region_mmap().
 
 Signed-off-by: John Levon <john.levon@nutanix.com>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250607001056.335310-2-john.levon@nutanix.com
+Link: https://lore.kernel.org/qemu-devel/20250607001056.335310-4-john.levon@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.h        | 11 ++++++++++
- hw/vfio/pci.c        | 48 ++++++++++++++++++++++----------------------
- hw/vfio/trace-events |  6 +++---
- 3 files changed, 38 insertions(+), 27 deletions(-)
+ include/hw/vfio/vfio-device.h |  7 +++++--
+ hw/vfio/device.c              | 29 +++++++++++++++++++++++++----
+ hw/vfio/region.c              |  9 +++++++--
+ 3 files changed, 37 insertions(+), 8 deletions(-)
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 5ce0fb916f3896a448b59fc0b99e892c11c3a9e1..d4c6b2e7b77f26e44f902e6b840d7e39d39de3e9 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -248,4 +248,15 @@ void vfio_display_finalize(VFIOPCIDevice *vdev);
+diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+index 8bcb3c19f62b5a47c835e10149c04a9bd7536520..bf54fc69205a713263a666b480b2399e2a91f552 100644
+--- a/include/hw/vfio/vfio-device.h
++++ b/include/hw/vfio/vfio-device.h
+@@ -66,6 +66,7 @@ typedef struct VFIODevice {
+     OnOffAuto enable_migration;
+     OnOffAuto migration_multifd_transfer;
+     bool migration_events;
++    bool use_region_fds;
+     VFIODeviceOps *ops;
+     VFIODeviceIOOps *io_ops;
+     unsigned int num_irqs;
+@@ -84,6 +85,7 @@ typedef struct VFIODevice {
+     VFIOIOASHwpt *hwpt;
+     QLIST_ENTRY(VFIODevice) hwpt_next;
+     struct vfio_region_info **reginfo;
++    int *region_fds;
+ } VFIODevice;
  
- extern const VMStateDescription vfio_display_vmstate;
+ struct VFIODeviceOps {
+@@ -170,10 +172,11 @@ struct VFIODeviceIOOps {
+     /**
+      * @get_region_info
+      *
+-     * Fill in @info with information on the region given by @info->index.
++     * Fill in @info (and optionally @fd) with information on the region given
++     * by @info->index.
+      */
+     int (*get_region_info)(VFIODevice *vdev,
+-                           struct vfio_region_info *info);
++                           struct vfio_region_info *info, int *fd);
  
-+void vfio_pci_bars_exit(VFIOPCIDevice *vdev);
-+bool vfio_pci_add_capabilities(VFIOPCIDevice *vdev, Error **errp);
-+bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp);
-+bool vfio_pci_interrupt_setup(VFIOPCIDevice *vdev, Error **errp);
-+void vfio_pci_intx_eoi(VFIODevice *vbasedev);
-+void vfio_pci_put_device(VFIOPCIDevice *vdev);
-+bool vfio_pci_populate_device(VFIOPCIDevice *vdev, Error **errp);
-+void vfio_pci_register_err_notifier(VFIOPCIDevice *vdev);
-+void vfio_pci_register_req_notifier(VFIOPCIDevice *vdev);
-+void vfio_pci_teardown_msi(VFIOPCIDevice *vdev);
+     /**
+      * @get_irq_info
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 9fba2c7272f207f2fe870fc97b46c342bd57dc0a..a4bdde8e8bd49c82923d0d29a44f18fd71a44204 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -200,6 +200,7 @@ int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
+                                 struct vfio_region_info **info)
+ {
+     size_t argsz = sizeof(struct vfio_region_info);
++    int fd = -1;
+     int ret;
+ 
+     /* check cache */
+@@ -214,7 +215,7 @@ int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
+ retry:
+     (*info)->argsz = argsz;
+ 
+-    ret = vbasedev->io_ops->get_region_info(vbasedev, *info);
++    ret = vbasedev->io_ops->get_region_info(vbasedev, *info, &fd);
+     if (ret != 0) {
+         g_free(*info);
+         *info = NULL;
+@@ -225,11 +226,19 @@ retry:
+         argsz = (*info)->argsz;
+         *info = g_realloc(*info, argsz);
+ 
++        if (fd != -1) {
++            close(fd);
++            fd = -1;
++        }
 +
- #endif /* HW_VFIO_VFIO_PCI_H */
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 6748f4e876942f89138f9d8fedfb99dab95b865e..2901cedf6f3e4e1283cb59a1ff6c8ddb99a41b56 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -103,7 +103,7 @@ static void vfio_intx_interrupt(void *opaque)
+         goto retry;
      }
+ 
+     /* fill cache */
+     vbasedev->reginfo[index] = *info;
++    if (vbasedev->region_fds != NULL) {
++        vbasedev->region_fds[index] = fd;
++    }
+ 
+     return 0;
+ }
+@@ -334,6 +343,7 @@ void vfio_device_init(VFIODevice *vbasedev, int type, VFIODeviceOps *ops,
+     vbasedev->io_ops = &vfio_device_io_ops_ioctl;
+     vbasedev->dev = dev;
+     vbasedev->fd = -1;
++    vbasedev->use_region_fds = false;
+ 
+     vbasedev->ram_block_discard_allowed = ram_discard;
+ }
+@@ -444,6 +454,9 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
+ 
+     vbasedev->reginfo = g_new0(struct vfio_region_info *,
+                                vbasedev->num_regions);
++    if (vbasedev->use_region_fds) {
++        vbasedev->region_fds = g_new0(int, vbasedev->num_regions);
++    }
  }
  
--static void vfio_intx_eoi(VFIODevice *vbasedev)
-+void vfio_pci_intx_eoi(VFIODevice *vbasedev)
- {
-     VFIOPCIDevice *vdev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
+ void vfio_device_unprepare(VFIODevice *vbasedev)
+@@ -452,9 +465,14 @@ void vfio_device_unprepare(VFIODevice *vbasedev)
  
-@@ -111,7 +111,7 @@ static void vfio_intx_eoi(VFIODevice *vbasedev)
-         return;
+     for (i = 0; i < vbasedev->num_regions; i++) {
+         g_free(vbasedev->reginfo[i]);
++        if (vbasedev->region_fds != NULL && vbasedev->region_fds[i] != -1) {
++            close(vbasedev->region_fds[i]);
++        }
++
      }
+-    g_free(vbasedev->reginfo);
+-    vbasedev->reginfo = NULL;
++
++    g_clear_pointer(&vbasedev->reginfo, g_free);
++    g_clear_pointer(&vbasedev->region_fds, g_free);
  
--    trace_vfio_intx_eoi(vbasedev->name);
-+    trace_vfio_pci_intx_eoi(vbasedev->name);
- 
-     vdev->intx.pending = false;
-     pci_irq_deassert(&vdev->pdev);
-@@ -236,7 +236,7 @@ static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
-     }
- 
-     /* Re-enable the interrupt in cased we missed an EOI */
--    vfio_intx_eoi(&vdev->vbasedev);
-+    vfio_pci_intx_eoi(&vdev->vbasedev);
+     QLIST_REMOVE(vbasedev, container_next);
+     QLIST_REMOVE(vbasedev, global_next);
+@@ -476,10 +494,13 @@ static int vfio_device_io_device_feature(VFIODevice *vbasedev,
  }
  
- static void vfio_intx_routing_notifier(PCIDevice *pdev)
-@@ -1743,7 +1743,7 @@ static bool vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
-     return true;
- }
- 
--static void vfio_teardown_msi(VFIOPCIDevice *vdev)
-+void vfio_pci_teardown_msi(VFIOPCIDevice *vdev)
+ static int vfio_device_io_get_region_info(VFIODevice *vbasedev,
+-                                          struct vfio_region_info *info)
++                                          struct vfio_region_info *info,
++                                          int *fd)
  {
-     msi_uninit(&vdev->pdev);
+     int ret;
  
-@@ -1839,7 +1839,7 @@ static void vfio_bars_register(VFIOPCIDevice *vdev)
-     }
- }
++    *fd = -1;
++
+     ret = ioctl(vbasedev->fd, VFIO_DEVICE_GET_REGION_INFO, info);
  
--static void vfio_bars_exit(VFIOPCIDevice *vdev)
-+void vfio_pci_bars_exit(VFIOPCIDevice *vdev)
+     return ret < 0 ? -errno : ret;
+diff --git a/hw/vfio/region.c b/hw/vfio/region.c
+index 34752c3f65c4b43fc961754657b18f5269c01ef1..cb172f2136dab7d5e649e588bda16b0e4821079d 100644
+--- a/hw/vfio/region.c
++++ b/hw/vfio/region.c
+@@ -241,6 +241,7 @@ int vfio_region_mmap(VFIORegion *region)
  {
-     int i;
+     int i, ret, prot = 0;
+     char *name;
++    int fd;
  
-@@ -2430,7 +2430,7 @@ static void vfio_add_ext_cap(VFIOPCIDevice *vdev)
-     g_free(config);
- }
- 
--static bool vfio_add_capabilities(VFIOPCIDevice *vdev, Error **errp)
-+bool vfio_pci_add_capabilities(VFIOPCIDevice *vdev, Error **errp)
- {
-     PCIDevice *pdev = &vdev->pdev;
- 
-@@ -2706,7 +2706,7 @@ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
- static VFIODeviceOps vfio_pci_ops = {
-     .vfio_compute_needs_reset = vfio_pci_compute_needs_reset,
-     .vfio_hot_reset_multi = vfio_pci_hot_reset_multi,
--    .vfio_eoi = vfio_intx_eoi,
-+    .vfio_eoi = vfio_pci_intx_eoi,
-     .vfio_get_object = vfio_pci_get_object,
-     .vfio_save_config = vfio_pci_save_config,
-     .vfio_load_config = vfio_pci_load_config,
-@@ -2777,7 +2777,7 @@ bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
-     return true;
- }
- 
--static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
-+bool vfio_pci_populate_device(VFIOPCIDevice *vdev, Error **errp)
- {
-     VFIODevice *vbasedev = &vdev->vbasedev;
-     struct vfio_region_info *reg_info = NULL;
-@@ -2823,7 +2823,7 @@ static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
-         return false;
-     }
- 
--    trace_vfio_populate_device_config(vdev->vbasedev.name,
-+    trace_vfio_pci_populate_device_config(vdev->vbasedev.name,
-                                       (unsigned long)reg_info->size,
-                                       (unsigned long)reg_info->offset,
-                                       (unsigned long)reg_info->flags);
-@@ -2845,7 +2845,7 @@ static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
-     ret = vfio_device_get_irq_info(vbasedev, VFIO_PCI_ERR_IRQ_INDEX, &irq_info);
-     if (ret) {
-         /* This can fail for an old kernel or legacy PCI dev */
--        trace_vfio_populate_device_get_irq_info_failure(strerror(-ret));
-+        trace_vfio_pci_populate_device_get_irq_info_failure(strerror(-ret));
-     } else if (irq_info.count == 1) {
-         vdev->pci_aer = true;
-     } else {
-@@ -2857,7 +2857,7 @@ static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
-     return true;
- }
- 
--static void vfio_pci_put_device(VFIOPCIDevice *vdev)
-+void vfio_pci_put_device(VFIOPCIDevice *vdev)
- {
-     vfio_display_finalize(vdev);
-     vfio_bars_finalize(vdev);
-@@ -2905,7 +2905,7 @@ static void vfio_err_notifier_handler(void *opaque)
-  * and continue after disabling error recovery support for the
-  * device.
-  */
--static void vfio_register_err_notifier(VFIOPCIDevice *vdev)
-+void vfio_pci_register_err_notifier(VFIOPCIDevice *vdev)
- {
-     Error *err = NULL;
-     int32_t fd;
-@@ -2964,7 +2964,7 @@ static void vfio_req_notifier_handler(void *opaque)
-     }
- }
- 
--static void vfio_register_req_notifier(VFIOPCIDevice *vdev)
-+void vfio_pci_register_req_notifier(VFIOPCIDevice *vdev)
- {
-     struct vfio_irq_info irq_info;
-     Error *err = NULL;
-@@ -3018,7 +3018,7 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
-     vdev->req_enabled = false;
- }
- 
--static bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp)
-+bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp)
- {
-     PCIDevice *pdev = &vdev->pdev;
-     VFIODevice *vbasedev = &vdev->vbasedev;
-@@ -3124,7 +3124,7 @@ static bool vfio_pci_config_setup(VFIOPCIDevice *vdev, Error **errp)
-     return true;
- }
- 
--static bool vfio_interrupt_setup(VFIOPCIDevice *vdev, Error **errp)
-+bool vfio_pci_interrupt_setup(VFIOPCIDevice *vdev, Error **errp)
- {
-     PCIDevice *pdev = &vdev->pdev;
- 
-@@ -3214,7 +3214,7 @@ static void vfio_pci_realize(PCIDevice *pdev, Error **errp)
-         goto error;
-     }
- 
--    if (!vfio_populate_device(vdev, errp)) {
-+    if (!vfio_pci_populate_device(vdev, errp)) {
-         goto error;
-     }
- 
-@@ -3228,7 +3228,7 @@ static void vfio_pci_realize(PCIDevice *pdev, Error **errp)
-         goto out_teardown;
-     }
- 
--    if (!vfio_add_capabilities(vdev, errp)) {
-+    if (!vfio_pci_add_capabilities(vdev, errp)) {
-         goto out_unset_idev;
-     }
- 
-@@ -3244,7 +3244,7 @@ static void vfio_pci_realize(PCIDevice *pdev, Error **errp)
-         vfio_bar_quirk_setup(vdev, i);
-     }
- 
--    if (!vfio_interrupt_setup(vdev, errp)) {
-+    if (!vfio_pci_interrupt_setup(vdev, errp)) {
-         goto out_unset_idev;
-     }
- 
-@@ -3288,8 +3288,8 @@ static void vfio_pci_realize(PCIDevice *pdev, Error **errp)
+     if (!region->mem) {
+         return 0;
+@@ -271,14 +272,18 @@ int vfio_region_mmap(VFIORegion *region)
+             goto no_mmap;
          }
-     }
  
--    vfio_register_err_notifier(vdev);
--    vfio_register_req_notifier(vdev);
-+    vfio_pci_register_err_notifier(vdev);
-+    vfio_pci_register_req_notifier(vdev);
-     vfio_setup_resetfn_quirk(vdev);
++        /* Use the per-region fd if set, or the shared fd. */
++        fd = region->vbasedev->region_fds ?
++             region->vbasedev->region_fds[region->nr] :
++             region->vbasedev->fd,
++
+         map_align = (void *)ROUND_UP((uintptr_t)map_base, (uintptr_t)align);
+         munmap(map_base, map_align - map_base);
+         munmap(map_align + region->mmaps[i].size,
+                align - (map_align - map_base));
  
-     return;
-@@ -3310,8 +3310,8 @@ out_unset_idev:
-         pci_device_unset_iommu_device(pdev);
-     }
- out_teardown:
--    vfio_teardown_msi(vdev);
--    vfio_bars_exit(vdev);
-+    vfio_pci_teardown_msi(vdev);
-+    vfio_pci_bars_exit(vdev);
- error:
-     error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
- }
-@@ -3338,9 +3338,9 @@ static void vfio_exitfn(PCIDevice *pdev)
-     if (vdev->intx.mmap_timer) {
-         timer_free(vdev->intx.mmap_timer);
-     }
--    vfio_teardown_msi(vdev);
-+    vfio_pci_teardown_msi(vdev);
-     vfio_pci_disable_rp_atomics(vdev);
--    vfio_bars_exit(vdev);
-+    vfio_pci_bars_exit(vdev);
-     vfio_migration_exit(vbasedev);
-     if (!vbasedev->mdev) {
-         pci_device_unset_iommu_device(pdev);
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index e90ec9bff8d5fa51afde7b55fb736a8d51fef1b0..f06236f37b72cc64868456be3a5a58fdb5beb829 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -2,7 +2,7 @@
- 
- # pci.c
- vfio_intx_interrupt(const char *name, char line) " (%s) Pin %c"
--vfio_intx_eoi(const char *name) " (%s) EOI"
-+vfio_pci_intx_eoi(const char *name) " (%s) EOI"
- vfio_intx_enable_kvm(const char *name) " (%s) KVM INTx accel enabled"
- vfio_intx_disable_kvm(const char *name) " (%s) KVM INTx accel disabled"
- vfio_intx_update(const char *name, int new_irq, int target_irq) " (%s) IRQ moved %d -> %d"
-@@ -35,8 +35,8 @@ vfio_pci_hot_reset(const char *name, const char *type) " (%s) %s"
- vfio_pci_hot_reset_has_dep_devices(const char *name) "%s: hot reset dependent devices:"
- vfio_pci_hot_reset_dep_devices(int domain, int bus, int slot, int function, int group_id) "\t%04x:%02x:%02x.%x group %d"
- vfio_pci_hot_reset_result(const char *name, const char *result) "%s hot reset: %s"
--vfio_populate_device_config(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device '%s' config: size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
--vfio_populate_device_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
-+vfio_pci_populate_device_config(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device '%s' config: size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
-+vfio_pci_populate_device_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
- vfio_mdev(const char *name, bool is_mdev) " (%s) is_mdev %d"
- vfio_add_ext_cap_dropped(const char *name, uint16_t cap, uint16_t offset) "%s 0x%x@0x%x"
- vfio_pci_reset(const char *name) " (%s)"
+         region->mmaps[i].mmap = mmap(map_align, region->mmaps[i].size, prot,
+-                                     MAP_SHARED | MAP_FIXED,
+-                                     region->vbasedev->fd,
++                                     MAP_SHARED | MAP_FIXED, fd,
+                                      region->fd_offset +
+                                      region->mmaps[i].offset);
+         if (region->mmaps[i].mmap == MAP_FAILED) {
 -- 
 2.49.0
 
