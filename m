@@ -2,59 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6ACAD564E
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 15:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 361F8AD563A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 15:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPL2z-0003MB-Qm; Wed, 11 Jun 2025 08:59:18 -0400
+	id 1uPL2x-0003Kr-J6; Wed, 11 Jun 2025 08:59:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uPL2n-0003Jm-S4
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 08:59:09 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uPL2p-0003Jp-8q
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 08:59:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uPL2k-0004NR-Si
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 08:59:04 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uPL2n-0004Nt-AP
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 08:59:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749646741;
+ s=mimecast20190719; t=1749646743;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IG4QZWJX/3xJ8U2UhIrcXQnb0TMpwriBUkDLZsInNwo=;
- b=iE5KOqSKlSK2xMduWFoO5lT9dGEqNMdl3cqhKReFnRZZ6OMyR9ViRcFq/yHGeIvOaXi94V
- jtflNKoecI2AN3Qu4S7yDUIKEZ0K3x5b8VwWNWzDCGkeKXr6EjX/0nv2T3dIM8OCiH8X27
- 7MUDF6D6/9W0cU+yHvN1UQS7Ce0tl20=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=XEOjCmUy01jwqk9KrpLlJaN0XNee6ITqm1T5kaq49Js=;
+ b=IV26cDcTiw2ktIKv5TNcGbXuhyzCrJfS6VTmvPUAqZjyaeoWvxbVoMuhKDgKFiIp3f82gR
+ 2Dy2bmnqFg6ZlWnhXK9mENDNHT0G67ykKeWCFdr9oM4O8T/3ykrRCiwucwyCuRxEuRLTWl
+ XwMocbigcPl15nBDlGCHrvPK934RWxA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-8-YkxDKz3AO8OFNmVcQrRdhQ-1; Wed,
- 11 Jun 2025 08:58:59 -0400
-X-MC-Unique: YkxDKz3AO8OFNmVcQrRdhQ-1
-X-Mimecast-MFC-AGG-ID: YkxDKz3AO8OFNmVcQrRdhQ_1749646738
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-524-49A6-v0AM86Ga2HFG4wcJQ-1; Wed,
+ 11 Jun 2025 08:59:02 -0400
+X-MC-Unique: 49A6-v0AM86Ga2HFG4wcJQ-1
+X-Mimecast-MFC-AGG-ID: 49A6-v0AM86Ga2HFG4wcJQ_1749646741
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7737319560A6; Wed, 11 Jun 2025 12:58:58 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1679B1955E80; Wed, 11 Jun 2025 12:59:01 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.174])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AB03E19560A3; Wed, 11 Jun 2025 12:58:56 +0000 (UTC)
+ id D215F19560A3; Wed, 11 Jun 2025 12:58:58 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PULL 04/10] tests/functional: Speed up the avr_mega2560 test
-Date: Wed, 11 Jun 2025 14:58:40 +0200
-Message-ID: <20250611125846.125918-5-thuth@redhat.com>
+ Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Subject: [PULL 05/10] tests/functional: add skipLockedMemoryTest decorator
+Date: Wed, 11 Jun 2025 14:58:41 +0200
+Message-ID: <20250611125846.125918-6-thuth@redhat.com>
 In-Reply-To: <20250611125846.125918-1-thuth@redhat.com>
 References: <20250611125846.125918-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -82,58 +80,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
 
-We can simply check for the expected pattern on the console,
-no need to wait for two seconds here to search for the pattern
-in the log at the end.
+Used in future commit to skipping execution of a tests if the system's
+locked memory limit is below the required threshold.
 
-While we're at it, also remove the obsolete "timeout" variable
-from this test.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250605065908.299979-2-dtalexundeer@yandex-team.ru>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250603184710.25651-1-thuth@redhat.com>
 ---
- tests/functional/test_avr_mega2560.py | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ tests/functional/qemu_test/__init__.py   |  2 +-
+ tests/functional/qemu_test/decorators.py | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/tests/functional/test_avr_mega2560.py b/tests/functional/test_avr_mega2560.py
-index 8e47b4200b1..6359b72af39 100755
---- a/tests/functional/test_avr_mega2560.py
-+++ b/tests/functional/test_avr_mega2560.py
-@@ -18,12 +18,10 @@
- # along with this program.  If not, see <http://www.gnu.org/licenses/>.
- #
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index af41c2c6a22..6e666a059fc 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -15,6 +15,6 @@
+ from .linuxkernel import LinuxKernelTest
+ from .decorators import skipIfMissingCommands, skipIfNotMachine, \
+     skipFlakyTest, skipUntrustedTest, skipBigDataTest, skipSlowTest, \
+-    skipIfMissingImports, skipIfOperatingSystem
++    skipIfMissingImports, skipIfOperatingSystem, skipLockedMemoryTest
+ from .archive import archive_extract
+ from .uncompress import uncompress
+diff --git a/tests/functional/qemu_test/decorators.py b/tests/functional/qemu_test/decorators.py
+index 50d29de533d..c0d1567b142 100644
+--- a/tests/functional/qemu_test/decorators.py
++++ b/tests/functional/qemu_test/decorators.py
+@@ -5,6 +5,7 @@
+ import importlib
+ import os
+ import platform
++import resource
+ from unittest import skipIf, skipUnless
  
--import time
-+from qemu_test import QemuSystemTest, Asset, wait_for_console_pattern
+ from .cmd import which
+@@ -131,3 +132,20 @@ def skipIfMissingImports(*args):
  
--from qemu_test import QemuSystemTest, Asset
- 
- class AVR6Machine(QemuSystemTest):
--    timeout = 5
- 
-     ASSET_ROM = Asset(('https://github.com/seharris/qemu-avr-tests'
-                        '/raw/36c3e67b8755dcf/free-rtos/Demo'
-@@ -40,13 +38,12 @@ def test_freertos(self):
-         self.set_machine('arduino-mega-2560-v3')
-         self.vm.add_args('-bios', rom_path)
-         self.vm.add_args('-nographic')
-+        self.vm.set_console()
-         self.vm.launch()
- 
--        time.sleep(2)
--        self.vm.shutdown()
-+        wait_for_console_pattern(self,
-+                        'XABCDEFGHIJKLMNOPQRSTUVWXABCDEFGHIJKLMNOPQRSTUVWXA')
- 
--        self.assertIn('ABCDEFGHIJKLMNOPQRSTUVWXABCDEFGHIJKLMNOPQRSTUVWX',
--                self.vm.get_log())
- 
- if __name__ == '__main__':
-     QemuSystemTest.main()
+     return skipUnless(has_imports, 'required import(s) "%s" not installed' %
+                                    ", ".join(args))
++
++'''
++Decorator to skip execution of a test if the system's
++locked memory limit is below the required threshold.
++Takes required locked memory threshold in kB.
++Example:
++
++  @skipLockedMemoryTest(2_097_152)
++'''
++def skipLockedMemoryTest(locked_memory):
++    # get memlock hard limit in bytes
++    _, ulimit_memory = resource.getrlimit(resource.RLIMIT_MEMLOCK)
++
++    return skipUnless(
++        ulimit_memory == resource.RLIM_INFINITY or ulimit_memory >= locked_memory * 1024,
++        f'Test required {locked_memory} kB of available locked memory',
++    )
 -- 
 2.49.0
 
