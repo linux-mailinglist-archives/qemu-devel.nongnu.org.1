@@ -2,69 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89B9AD5641
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 15:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5445AD564D
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 15:01:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPL37-0003PM-BR; Wed, 11 Jun 2025 08:59:25 -0400
+	id 1uPL4k-0003w3-H4; Wed, 11 Jun 2025 09:01:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uPL34-0003Nz-Hb
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 08:59:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uPL32-0004QK-CC
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 08:59:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749646758;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Pk2hdLwLqp6qfO9HrDFZOhDUjEsHJM4tHkTqlFUCzFI=;
- b=cMd9g2R2pm3w/2CL4EV1kBk1czZ+kTFO+of8irSN2Een21sEkHtMIZBmOC+fKmJXUpRHaS
- mAUVAbkRBs1VM/BoJEliZcthfulcGqJ1a3C5+uOloAhTF+H31PatJZDOITDLcP8CgUeBCz
- r/XSPkKQFYGqQatseURu0Jnqb9fvc9o=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-317-93YDAvPfPDi3CjaSGYq0kw-1; Wed,
- 11 Jun 2025 08:59:14 -0400
-X-MC-Unique: 93YDAvPfPDi3CjaSGYq0kw-1
-X-Mimecast-MFC-AGG-ID: 93YDAvPfPDi3CjaSGYq0kw_1749646753
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 09353195608D; Wed, 11 Jun 2025 12:59:13 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.224.174])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6330219560A3; Wed, 11 Jun 2025 12:59:11 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PULL 10/10] scripts/meson-buildoptions: Sort coroutine_backend
- choices lexicographically
-Date: Wed, 11 Jun 2025 14:58:46 +0200
-Message-ID: <20250611125846.125918-11-thuth@redhat.com>
-In-Reply-To: <20250611125846.125918-1-thuth@redhat.com>
-References: <20250611125846.125918-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1uPL43-0003ps-3f; Wed, 11 Jun 2025 09:00:23 -0400
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1uPL40-0004jZ-UI; Wed, 11 Jun 2025 09:00:22 -0400
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-4a442a3a2bfso116827791cf.1; 
+ Wed, 11 Jun 2025 06:00:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1749646816; x=1750251616; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=jf6tMngBWOppBmsTO8G8rEDGlplT+20Nq8g2MEOpmr8=;
+ b=eN1QJQ/yyjRIFvmM/FHP3vmzYveR7DAPBuGJjbt8DX5/TWjZMR4089RllUdvUx/6ZB
+ 2N0cqNzRMZaMuAHKSzOmv7++6MAdFWuXdD7WAbU6AJ0res8zTshp5iUG+hCVT4UqkAJO
+ ZQlgA3g0yDkiNJ/EsVBU48l04Bi15BllIgLwvR0obofzId6rVVkahATZnDmOPUiiKQyQ
+ vFFVwFY0JtOf6sphQy4AH+/JHzm/sBbCvNcAEWcDysZUrz3d5EZrsIdseOh0FkGAdHAj
+ x7aJeVtDPn5Cc3E2q1vemEEzUdSAQtmVhH1PKzYMP/M+wUKE8ITOR3ICiueaFWY1X+2u
+ Zs7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749646816; x=1750251616;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jf6tMngBWOppBmsTO8G8rEDGlplT+20Nq8g2MEOpmr8=;
+ b=j6cU0kTzJJOw4xtU44jsKpGFcSGvTBdrGjcjCgpugUMDWd6Bf3ZQHpCevGR5L+wclY
+ ocXbY3Rfp40hIX5ZgzQmzOyXEubdoqHDbvKMS7wDxXvF8jVYB1y+XOyRtibfTcRSGDcy
+ RagbbLM2GQE+nEnz7JdXUkQ0qFZazjqVVxAK7FAuHxLzAh3Ck9fQ3GijZXqgoC4aESr7
+ +s14lTnNr4lvxvSaAUAipwGffGpI962KFqDCWS5CLBxL8H7BtUQsOPJHKYkOGpGyIypd
+ IEM/mGJuAkcHikcH8dV3i1amkEXZiQPFlmZg6bEn7rZtKN5Ht0gkuux3MpEMQx3clxHH
+ 1S4g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWT/apyg6G6QjneXqC7v0+Etmhsw2A6ldL6VdasoAFOYRmuMtGKTK3G/CyxFBxGryBO1+6lTNPJM6Y=@nongnu.org,
+ AJvYcCWWBg6/J6zik+p9lrA0Rb1jZ7EPy+PUS0CzB81DNP0ygBlSX6J7BzvsiQyAjTMZlgjo8smw6aKuq8FQ@nongnu.org
+X-Gm-Message-State: AOJu0YwvdJh6Iu0+EkUFZLrgtSe92Ndzj/2ZPi7gGX8g5Ti/4UW6H6gT
+ yIO7ex5RCmdOVf9ZA7g1uwvf3cX5oxI6YY6cG0WZoQZz9FVIJ/6ho79ze7Nu8ImCa1Ppmn1h6NT
+ pLXHOfRxohaslLHcf4ib/j1abFiYUHqErWYjd
+X-Gm-Gg: ASbGnctFs4upL2kZfhSrygdaUVc0AJBk3IjyBFRm0K/betEd6G6jxPId5GKCI1nbfBm
+ Yf2uzPAmnhMV2oHoeJIuO8QxW7Gd0dR1aOY/dv9vL8coYhqSlrdcGwJ1mIO0JgZAhtPGQzCo/UH
+ Jg1X6VIFOc5VmoRdfjTZQ53tX614ywofjJWe6NEGfTOT1PJSW2ILJV4pWmXLaR3DRSj0GufwaX
+X-Google-Smtp-Source: AGHT+IE96SQjD9oe8y0u7PgyZyBxdkDpVSsTh9D4RFnMHMu8Wsnn5AYaraeRtn4FLkdN3v00F7llwvhngheUbjf/NCI=
+X-Received: by 2002:a17:90b:54c3:b0:2ff:6167:e92d with SMTP id
+ 98e67ed59e1d1-313b200de9cmr3245116a91.32.1749646805176; Wed, 11 Jun 2025
+ 06:00:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250610204131.2862-1-shentey@gmail.com>
+ <20250610204131.2862-4-shentey@gmail.com>
+ <32a05613-7606-495b-8b2b-fb64b31885c4@redhat.com>
+In-Reply-To: <32a05613-7606-495b-8b2b-fb64b31885c4@redhat.com>
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Date: Wed, 11 Jun 2025 21:59:53 +0900
+X-Gm-Features: AX0GCFvEQQIsEJPjWiVPODjyYS17LYLxJkVINVAbwoiJEX4Er78g_COisy_PVDY
+Message-ID: <CAEDrbUY2=bs9oFc=vF_ZZhScCpZqKn+iEmCNH0zfYuKnjLM6yQ@mail.gmail.com>
+Subject: Re: [PATCH 3/5] scripts/meson-buildoptions: Sort coroutine_backend
+ choices lexicographically
+To: Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: multipart/alternative; boundary="0000000000004e162b06374b6406"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-qt1-x834.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,34 +99,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+--0000000000004e162b06374b6406
+Content-Type: text/plain; charset="UTF-8"
 
-When changing meson_options.txt, this script gets updated automatically
-by QEMU tooling which sorts the choices lexicographically.
+I should've made sure to run the tool, sorry. Thanks for spotting and fixing
+this issue.
 
-Fixes: ccc403ed5844 ("meson: Add wasm build in build scripts")
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20250610204131.2862-4-shentey@gmail.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- scripts/meson-buildoptions.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index f09ef9604f0..73e0770f42b 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -80,7 +80,7 @@ meson_options_help() {
-   printf "%s\n" '  --tls-priority=VALUE     Default TLS protocol/cipher priority string'
-   printf "%s\n" '                           [NORMAL]'
-   printf "%s\n" '  --with-coroutine=CHOICE  coroutine backend to use (choices:'
--  printf "%s\n" '                           auto/sigaltstack/ucontext/windows/wasm)'
-+  printf "%s\n" '                           auto/sigaltstack/ucontext/wasm/windows)'
-   printf "%s\n" '  --with-pkgversion=VALUE  use specified string as sub-version of the'
-   printf "%s\n" '                           package'
-   printf "%s\n" '  --with-suffix=VALUE      Suffix for QEMU data/modules/config directories'
--- 
-2.49.0
+--0000000000004e162b06374b6406
+Content-Type: text/html; charset="UTF-8"
 
+<div dir="ltr"><div dir="ltr">I should&#39;ve made sure to run the tool, sorry. Thanks for spotting and fixing<br>this issue.<br><br>Reviewed-by: Kohei Tokunaga &lt;<a href="mailto:ktokunaga.mail@gmail.com">ktokunaga.mail@gmail.com</a>&gt;</div></div>
+
+--0000000000004e162b06374b6406--
 
