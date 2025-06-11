@@ -2,102 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87AEAD4BBC
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 08:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B49D6AD4BE9
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 08:39:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPEya-0001jN-EZ; Wed, 11 Jun 2025 02:30:20 -0400
+	id 1uPF6X-0003hy-8y; Wed, 11 Jun 2025 02:38:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1uPEyB-0001j8-3s
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 02:29:55 -0400
-Received: from fhigh-a1-smtp.messagingengine.com ([103.168.172.152])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1uPEy9-0000np-8b
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 02:29:54 -0400
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal
- [10.202.2.46])
- by mailfhigh.phl.internal (Postfix) with ESMTP id EBFF511401C0;
- Wed, 11 Jun 2025 02:29:51 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-06.internal (MEProxy); Wed, 11 Jun 2025 02:29:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
- :cc:content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:subject
- :subject:to:to; s=fm3; t=1749623391; x=1749709791; bh=jTRKXrMaTn
- lusgYsbcpleYoeB940ODQx8jB1YalZeFg=; b=mAu9iDTpCfQW2HZSlPBv9aeGUq
- NhSWQCUk9HhaKT/KQofPBddbQm3rEoIDP1hhvGzsITdp0GpYFqMZkXMQUwWSZ7lL
- vKRm5dTteDO5y+jfD3LF+4B1giI91GKwqZJjDix/5WEmtmgqBN54mAanmBmjzQEG
- PBGQdOsSG/4Vznaa0j7kmFuMQAVn+PRXWbpm9BaTfVXJWA/l42Ft3v0qGG9yqezu
- RalrV4pYF5WFasq4NFfcD8YfXGccLcMCnpQQkizLHYrOi4+PvOyGCX9f896usWXP
- vJuX2O2MYN5XG1OGU6zJR1L8AnMwo0W5bpmbpaQ96gv+VyG7ceoN/FinfH2Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
- 1749623391; x=1749709791; bh=jTRKXrMaTnlusgYsbcpleYoeB940ODQx8jB
- 1YalZeFg=; b=MOiTd8In4nyFOV7x9zTCfWfTOhphSA4CXmcrknxbRVv/Ze3c0/D
- zzzkoV9x7lZfqOw0t0GD2OQb6MGZSGSTpMfau91IFwtpcsD9f67o8EMEYx9VVg+m
- rNZBAFRKeF/TZd6ukfO2T3cTUiqb2YkW/Ac0mYVz60yIFHE42h0C7xjZJNZ/RN2z
- 95IhB2GYkacFXZEReTd1bipCgYosocisGii6aTLXxfUBabN/kf9O6KegJ1dKMEEc
- oYfwmwukFvoxCbrVFta8y6bqfeJKicj6kRBqRD6fxrt4N6ISu1Zb2ZwRgfA0je6Y
- wgTVaVmVT1cKk3q4UUg3liIgEIWMtxPjVDA==
-X-ME-Sender: <xms:XyJJaDgubqmsyTDIy5IwC-w6tSHrdRZ_JiPDSV_7jxmWJJik2Qqfkg>
- <xme:XyJJaAAaBpXeix79-tR8HEzUtzRtvmupx-z8ZUeLhe4m5kcqVb535-MiyyH0IbrgW
- nK9pv2OSjZRzon5PQ>
-X-ME-Received: <xmr:XyJJaDFqVd4hxNxJjqUlxquEB3rWSmzyaUVhDmrkf2gzrP1hWd7fxYqfKws_Mi-HAL4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduudekvdcutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
- uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
- hnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhffkfggtgesghdtreertddttden
- ucfhrhhomheptehlhihsshgrucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecugg
- ftrfgrthhtvghrnhepieduffeuieelgfetgfdttddtkeekheekgfehkedufeevteegfeei
- ffetvdetueevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
- homhephhhisegrlhihshhsrgdrihhspdhnsggprhgtphhtthhopedutddpmhhouggvpehs
- mhhtphhouhhtpdhrtghpthhtohepshhtvghvvghnshgusegthhhrohhmihhumhdrohhrgh
- dprhgtphhtthhopegrlhgvgidrsggvnhhnvggvsehlihhnrghrohdrohhrghdprhgtphht
- thhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtoheprggvsh
- htvghvvgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugesrhgvughhrght
- rdgtohhmpdhrtghpthhtohepjhgrshhofigrnhhgsehrvgguhhgrthdrtghomhdprhgtph
- htthhopehmshhtsehrvgguhhgrthdrtghomhdprhgtphhtthhopehsghgrrhiirghrvges
- rhgvughhrghtrdgtohhmpdhrtghpthhtohepshhlphesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:XyJJaASp1Q8K_fTgEKCyGvZ3eAlYnNCIEeucQe-Kqg_gfd6Io16oHw>
- <xmx:XyJJaAxTxjeoIGfgarfj93k4HVWEW6vXqrTBMopcGD0OV4YoK-3Z5Q>
- <xmx:XyJJaG7ABGaUpLCqX9Zi-HcgSMNboxnGH20OuzSG6FZt6IU3uBgOuQ>
- <xmx:XyJJaFxU7vCJCdXIGMWsTahMtASySZL_MXe6NoltwkTsEnvpW4A-vw>
- <xmx:XyJJaJpwQwFN451RBNppoq7jCRXXeN7Wk3VYpici0bonpjOd0nmxrduK>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Jun 2025 02:29:51 -0400 (EDT)
-Received: by mbp.qyliss.net (Postfix, from userid 1000)
- id 87FE37127E5; Wed, 11 Jun 2025 08:29:32 +0200 (CEST)
-From: Alyssa Ross <hi@alyssa.is>
-To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, slp@redhat.com, david@redhat.com, "Michael S.
- Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- jasowang@redhat.com, stevensd@chromium.org, Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Albert Esteve <aesteve@redhat.com>
-Subject: Re: [PATCH v5 7/7] vhost-user-devive: Add shmem BAR
-In-Reply-To: <20250609144729.884027-8-aesteve@redhat.com>
-References: <20250609144729.884027-1-aesteve@redhat.com>
- <20250609144729.884027-8-aesteve@redhat.com>
-Date: Wed, 11 Jun 2025 08:29:29 +0200
-Message-ID: <877c1ipz92.fsf@alyssa.is>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1uPF6P-0003hF-R5
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 02:38:27 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1uPF6M-0001sk-IU
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 02:38:24 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8CxPuNXJEloNnkTAQ--.12685S3;
+ Wed, 11 Jun 2025 14:38:15 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMAxDcVUJEloLJEVAQ--.62009S3;
+ Wed, 11 Jun 2025 14:38:14 +0800 (CST)
+Subject: Re: [PATCH 07/10] hw/loongarch: connect pch_msi controller to avec
+ controller
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
+References: <20250609104833.839811-1-gaosong@loongson.cn>
+ <20250609104833.839811-8-gaosong@loongson.cn>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <b0441034-9c99-0480-d0e1-2e30aac9a143@loongson.cn>
+Date: Wed, 11 Jun 2025 14:36:56 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha512; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=103.168.172.152; envelope-from=hi@alyssa.is;
- helo=fhigh-a1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250609104833.839811-8-gaosong@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMAxDcVUJEloLJEVAQ--.62009S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7uF18Zr4rur18JFWxZFW5Jwc_yoW8ZrWUpa
+ yDua9YkrW0qa4xWrZagw4UGr98Aws3KF1I9FnrKr18Kw15Zryj9Fy8Aws8GryUtr95ZFyq
+ v34UWa9Fg3WDC3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v2
+ 6r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr
+ 1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8P5r7UU
+ UUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.653,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,20 +81,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-=-=
-Content-Type: text/plain
 
-Subject should say vhost-user-devi*c*e
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+On 2025/6/9 下午6:48, Song Gao wrote:
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   hw/loongarch/virt.c | 18 +++++++++++++-----
+>   1 file changed, 13 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> index 718b5b4f92..6b670e7936 100644
+> --- a/hw/loongarch/virt.c
+> +++ b/hw/loongarch/virt.c
+> @@ -503,11 +503,19 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms, MachineState *ms)
+>       qdev_prop_set_uint32(pch_msi, "msi_irq_num", num);
+>       d = SYS_BUS_DEVICE(pch_msi);
+>       sysbus_realize_and_unref(d, &error_fatal);
+> -    sysbus_mmio_map(d, 0, VIRT_PCH_MSI_ADDR_LOW);
+> -    for (i = 0; i < num; i++) {
+> -        /* Connect pch_msi irqs to extioi */
+> -        qdev_connect_gpio_out(DEVICE(d), i,
+> -                              qdev_get_gpio_in(extioi, i + start));
+> +    if (virt_is_avecintc_enabled(lvms)) {
+> +        for (i = 0; i < num; i++) {
+> +            /* Connect pch_msi irqs to avec */
+> +            qdev_connect_gpio_out(DEVICE(d), i,
+> +                                 qdev_get_gpio_in(avec, i + start));
+one parent irqline for avec is enough. Variable num is the number 
+allocated for pch_msi when connecting to extioi. So variable num is 
+meaningless with avec.
 
------BEGIN PGP SIGNATURE-----
+Also there is no msi memory map region for avec such as 
+sysbus_mmio_map() in the following.
 
-iHUEARYKAB0WIQRV/neXydHjZma5XLJbRZGEIw/wogUCaEkiSgAKCRBbRZGEIw/w
-oglSAQCcNBORaEu6/ZHXIQgvrfoY3VnK1uNhVQH9Pq9SGDolXwD/a5V7xGaDBTwl
-u7Ha0y1Ps5kq+WNdBAL/ZqFQjPO83g0=
-=P0Z0
------END PGP SIGNATURE-----
---=-=-=--
+> +        }
+> +    } else {In the first, I think irqchip avec and pch_msi can coexist together.
+MSI memory area for avec is
+    [VIRT_PCH_MSI_ADDR_LOW - 0x100000, VIRT_PCH_MSI_ADDR_LOW)
+for pch_msi is
+    [VIRT_PCH_MSI_ADDR_LOW, VIRT_PCH_MSI_ADDR_LOW + 0x8)
+
+For parent line, AVEC is connected to CPU MSGINT BIT14 and pch_msi is
+connected to extioi.
+
+So they can coexists together, it only depends on how guest kernel use 
+MSI controller.
+
+Regards
+Bibo Mao
+> +        sysbus_mmio_map(d, 0, VIRT_PCH_MSI_ADDR_LOW);
+> +        for (i = 0; i < num; i++) {
+> +            /* Connect pch_msi irqs to extioi */
+> +            qdev_connect_gpio_out(DEVICE(d), i,
+> +                                  qdev_get_gpio_in(extioi, i + start));
+> +        }
+>       }
+>   
+>       virt_devices_init(pch_pic, lvms);
+> 
+
 
