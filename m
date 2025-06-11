@@ -2,81 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C1CAD5EF3
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 21:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB8EAD5F03
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 21:26:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPR1J-0006N4-DF; Wed, 11 Jun 2025 15:21:57 -0400
+	id 1uPR5W-00007E-CD; Wed, 11 Jun 2025 15:26:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uPR1H-0006Ms-3B
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:21:55 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uPR5O-00006c-DE
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:26:10 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uPR1F-0000oy-7A
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:21:54 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-60768f080d8so531165a12.1
- for <qemu-devel@nongnu.org>; Wed, 11 Jun 2025 12:21:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uPR5K-0001Pr-Ed
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 15:26:09 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-234b9dfb842so2558955ad.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Jun 2025 12:26:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749669711; x=1750274511; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zwz44GEUT3ZCSN76rbHNV9dQ+12xKYJ0ba5kBVe8jYE=;
- b=GNhBLGTA3kHPVBhrje2le5U01zuRlETZEOADdU0fH0xoMVjCqk7A3ebWCeFD8w7zZ3
- eBddqkg+xPAtUQ/sTIkF/VDWzX1gtjeLpKiRl3DW0gBShTtodN/Zsen59A01l2Edo5+Y
- JHizilOBvumOLpxWbqBuploILH9yclUCh1pv9mRWTRHHVZ+fP0P03Fn/Df203Od4YavQ
- IaZiIMaXmkGy024bRQrbjHHoq3PFy0NC3gD4SppuvDQlANFcUGHvdvyoPcDohlkIDvyP
- FgQXKZmNj1g2m+IBm7DIITDpe6goMj5V7l6ncAKc2hAr5J9avAlTtLyIQqKwVfSvw8Kd
- eFQA==
+ d=linaro.org; s=google; t=1749669963; x=1750274763; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HZ0UJUhoS+8woREvP2CZpKuzXxVhx0tZiZ0xEWnSWlc=;
+ b=qsWIHthzRSuvggiLRHemWNkHiEFTdrTytHevzRnSye6R3ZVpSNlF3PiPOwGDer46o9
+ i6YdLf7fKCDp1yce5dRkh4PLvuXgWcbDgyraRDd4o48cYW1CQhybBuZYF5xoKaUVGM/6
+ JBXU7CCkXr9jU5COEM+HB0AiH8BAh5KWnrgOlkJ/3nsOYjb0YS0I2Sgur92oHsiMcm6J
+ kyLZ1sx/v12gcECihNFnmslwlq1qWR4EgWh2R3dClAx5K1D/wSIAtPVhGUPqTENHiBhr
+ lbI0qfK9JqVvX97vyK8dSiJnh3lCXDnvi5fsZ0Y8Si3rvdVkkvWASFA5x0jLWh2TNB6U
+ IKhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749669711; x=1750274511;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zwz44GEUT3ZCSN76rbHNV9dQ+12xKYJ0ba5kBVe8jYE=;
- b=FejhPbSkZ7MXWAcR30cWp7YID27/IRY0YKaO2n+pR4cYTqepUElJKUiWZTZuldWz4Y
- VLYBpuaChNzpzKsO4xTmM4UkwGQ+Cry8770zsi60SiJNxg2s33qMSnKWGTRVvyh50nAX
- TWhnvn0sm3HjlTH8np6CLhjDnUNPaBuKcOWIYBV+D2OSk9wk75UyodbEXnzCJ2akXxiz
- kLYCilCYcRxwLMw1GMpN04+XNolv9BmcixauA/rk1ki1gGjnuxODiAwT/zu/9nhJjICk
- w9FOm0VQ1k99oucJX00dHy3vkneurjRyDEpuNKcRVdfwBGy5vRIU/mXn/3FrzL4ozrCT
- XHVQ==
+ d=1e100.net; s=20230601; t=1749669963; x=1750274763;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HZ0UJUhoS+8woREvP2CZpKuzXxVhx0tZiZ0xEWnSWlc=;
+ b=SPrsWqJRjBXfRpxg3iL24qCtEs3hs8LOLVn5JvsLBCNgPI9BJR5z8eNlV99DVC0se+
+ Ix9nGsB983BCAJ+eOdbQlW4gMPKD6nEuq2+0quolWR6TybYcZWFqeV01HW2+v4N8QmDi
+ LNJE/rfiWpeeDC57Al6NSJ2JE5R14ZcT+jOazLqIrWIOOMR80d+l/XC5pD4utiAuXfwd
+ v75F+sWJL5H4mDbzBsv6JOY1F5vcVjHzhaTJRiJqHi6VqeQlBE57Jf4zlhiNd3wBWdzV
+ RUyKF0/dsmSHJO0D2zKwtNNQq7hEiQHju90iE3sefG47WptWo3EtwfL1GlBeefhepv2a
+ e4Jw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWgdWVReXOoAK8+aiabIo+5skZUxgdNk6ZpfCQQWVRv8pv4qy3a322qtvixQdxtVWgtv1TwetURaYOW@nongnu.org
-X-Gm-Message-State: AOJu0YwBT7gIXGonz7aFCXNMvf2FG/A/i9oWR8CqFEnOodgCDVma6Wbu
- PBmZYUBQ6grf6u29ra5CiHcZm0QIpeNabWYJX5nhx6rYL8gIOphpfqfjRAL+1T9gpVdTgBqj3TV
- aTdG8ITq7VUnm5rheaTKmwEjJjVeXAuAUOw==
-X-Gm-Gg: ASbGncsa1uLOU16fiyQ5oiNMp/HTjHy+vmG8kCbmzR0f5ZuE4Xe0z9VLJXttfjn6/IS
- j3NvvizG5WjZzMqjjE0I6nZ5IbVCE54/3YFQlnRpRVaA7usZeKZBxVwKorO2oAnJMBJ+LgOR9we
- d3qgMvHciKlb+Y0/y+VR9Yw+/pkVq0Ue+Gj9mDzHx36w==
-X-Google-Smtp-Source: AGHT+IHNPPnah2cqbNyaDNBiNXuSGgk3YZkuLxREFsD2SuvwinBPKMphLl5ib25VVK38mwFT9qWKNLm/blBMY35oKXo=
-X-Received: by 2002:a05:6402:2399:b0:608:6754:ec67 with SMTP id
- 4fb4d7f45d1cf-6086754ed6fmr330272a12.30.1749669711028; Wed, 11 Jun 2025
- 12:21:51 -0700 (PDT)
+ AJvYcCX4gp68lk5FQ/e3/mnkJX/MeSNjM8sneKZbDWhkBHNLNQNO0tdtVmm/YERUT89LdtHjbqnhuMHLqeME@nongnu.org
+X-Gm-Message-State: AOJu0YwGHj5cpXcUEBY8EQi9++eqej5oldv7cRkYI56MDTC45kW3KNDY
+ wN/RvUrTeVVW+VCAGsNzd5VAdyR7fVwJyI3kO7SMEaM1R+YBc5GBnUfcoKOHseTsrLU=
+X-Gm-Gg: ASbGnctHt8R6SpqzQs4T6mTz+UB64wXL2MGODNtyscLmLrsoCL6gbR54D/uLH2eg63R
+ Yp2aDejzOjpAoETAsgFdSkxBRBC6Ew0qzJmt8zyw/V1OX+pY9zcASkQNGQKNfrmBJzK7LTbd82q
+ VDqOOhMzaThMrVtCWxD0XgD7XIaeQyWNNJongcpckcThD/cR9o0T9WS7mSVE/Cduxwq7dyawhn5
+ quwqOi/AWxiyXoRvUmJuEsbDgZrePYi22m2+x7jPxCeRo963hYFoYqOEppAiXewCV6JJZl8cqKQ
+ DVeIJHM2FbevfIqWA4OZRaSR3PsLBmco0pW8Ig7e4zyJwmGr4X07VAws8MgDPQKEspMxqZ17LdU
+ =
+X-Google-Smtp-Source: AGHT+IH6mtZc3MsnpVMi27oycK56bmbL/n1Vol56QcmcNPZAHT4ksdGALQ65mQ+jhyf3Ch/CTur3Ww==
+X-Received: by 2002:a17:903:3c2f:b0:235:1b3e:c01c with SMTP id
+ d9443c01a7336-2364d8ef6f9mr4365845ad.39.1749669963420; 
+ Wed, 11 Jun 2025 12:26:03 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23603514b3esm91697095ad.258.2025.06.11.12.26.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Jun 2025 12:26:02 -0700 (PDT)
+Message-ID: <02f706f1-4dde-4f6f-b806-7882d57e5de6@linaro.org>
+Date: Wed, 11 Jun 2025 12:26:02 -0700
 MIME-Version: 1.0
-References: <20250611075037.659610-1-kraxel@redhat.com>
- <aEnEiqfa57eH53Gf@redhat.com>
-In-Reply-To: <aEnEiqfa57eH53Gf@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 11 Jun 2025 15:21:38 -0400
-X-Gm-Features: AX0GCFu8BmkTztJ3OjZiz3Kke5oN9p7eH89zPXpLAKxdajTJdEMuc74oe0WgYmI
-Message-ID: <CAJSP0QX7pcNTz_uSdMBzDhTRbUkrmmSPziBs82-GscRHM-xiug@mail.gmail.com>
-Subject: Re: [PULL 0/2] Seabios 1.17.0 20250611 patches
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x530.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 7/8] plugins: Add hypercalls plugin and test
+Content-Language: en-US
+To: Rowan Hart <rowanbhart@gmail.com>, qemu-devel@nongnu.org
+Cc: Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Alexandre Iooss <erdnaxe@crans.org>
+References: <20250609193841.348076-1-rowanbhart@gmail.com>
+ <20250609193841.348076-8-rowanbhart@gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250609193841.348076-8-rowanbhart@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,77 +108,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 11, 2025 at 2:03=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
->
-> FYI, this seabios 1.17.0 release appears to have broken the
-> ability to use virtio-pci with libguestfs+QEMU:
->
->   https://bugzilla.redhat.com/show_bug.cgi?id=3D2372329
->
-> so I'd suggest we hold off on this pull request until
-> the regression is diagnosed.
+On 6/9/25 12:38 PM, Rowan Hart wrote:
+> From: novafacing <rowanbhart@gmail.com>
+> 
+> This patch adds a plugin that implements a simple form of hypercalls
+> from guest code to the plugin by using the register read API. It accepts
+> only one hypercall, which writes a magic value to guest memory.
+> 
+> Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
+> ---
+>   tests/tcg/Makefile.target                     |   1 +
+>   tests/tcg/plugins/hypercalls.c                | 547 ++++++++++++++++++
+>   tests/tcg/plugins/meson.build                 |   2 +-
+>   tests/tcg/x86_64/Makefile.softmmu-target      |   6 +-
+>   tests/tcg/x86_64/system/hypercalls-target.c   |  40 ++
+>   .../tcg/x86_64/system/validate-hypercalls.py  |  40 ++
+>   6 files changed, 634 insertions(+), 2 deletions(-)
+>   create mode 100644 tests/tcg/plugins/hypercalls.c
+>   create mode 100644 tests/tcg/x86_64/system/hypercalls-target.c
+>   create mode 100755 tests/tcg/x86_64/system/validate-hypercalls.py
 
-Thanks, Daniel. I have pushed a revert to staging.
+Hypercalls are a very nice idea, and could help to write code aware of 
+instrumentation, to send specific events to a plugin.
 
-Stefan
+Introducing this in a specific plugin is an excellent proof of concept, 
+but if we want something upstream, we'll need a proper plugin API 
+implementation. That means one where a plugin can register a specific 
+hypercall_nr (checking it's only registered once), and can read 
+arguments and return values: in short, reinventing a proper syscall 
+convention. This is what has been achieved in the current patch, the 
+idea would to wrap all that on QEMU plugins side.
 
->
-> On Wed, Jun 11, 2025 at 09:50:35AM +0200, Gerd Hoffmann wrote:
-> > The following changes since commit bc98ffdc7577e55ab8373c579c28fe24d600=
-c40f:
-> >
-> >   Merge tag 'pull-10.1-maintainer-may-2025-070625-1' of https://gitlab.=
-com/stsquad/qemu into staging (2025-06-07 15:08:55 -0400)
-> >
-> > are available in the Git repository at:
-> >
-> >   https://gitlab.com/kraxel/qemu.git tags/seabios-1.17.0-20250611-pull-=
-request
-> >
-> > for you to fetch changes up to cba36cf3881e907553ba2de38abd5edf7f952de1=
-:
-> >
-> >   seabios: update binaries to 1.17.0 (2025-06-11 09:45:00 +0200)
-> >
-> > ----------------------------------------------------------------
-> > seabios: update to 1.17.0 release
-> >
-> > ----------------------------------------------------------------
-> >
-> > Gerd Hoffmann (2):
-> >   seabios: update submodule to 1.17.0
-> >   seabios: update binaries to 1.17.0
-> >
-> >  pc-bios/bios-256k.bin             | Bin 262144 -> 262144 bytes
-> >  pc-bios/bios-microvm.bin          | Bin 131072 -> 131072 bytes
-> >  pc-bios/bios.bin                  | Bin 131072 -> 131072 bytes
-> >  pc-bios/vgabios-ati.bin           | Bin 39424 -> 39424 bytes
-> >  pc-bios/vgabios-bochs-display.bin | Bin 28672 -> 28672 bytes
-> >  pc-bios/vgabios-cirrus.bin        | Bin 38912 -> 39424 bytes
-> >  pc-bios/vgabios-qxl.bin           | Bin 39424 -> 39424 bytes
-> >  pc-bios/vgabios-ramfb.bin         | Bin 28672 -> 28672 bytes
-> >  pc-bios/vgabios-stdvga.bin        | Bin 39424 -> 39424 bytes
-> >  pc-bios/vgabios-virtio.bin        | Bin 39424 -> 39424 bytes
-> >  pc-bios/vgabios-vmware.bin        | Bin 39424 -> 39424 bytes
-> >  pc-bios/vgabios.bin               | Bin 38912 -> 38912 bytes
-> >  roms/seabios                      |   2 +-
-> >  13 files changed, 1 insertion(+), 1 deletion(-)
-> >
-> > --
-> > 2.49.0
-> >
-> >
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
-ge :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
-om :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
-ge :|
->
->
+In more, we should provide a portable header, allowing any code to 
+include it. All that with fixed width types, so it's not affected by 
+differences between architectures. This way, any system code, or user 
+code, can include this, and communicate with a (compatible) plugin easily.
+
+No need to cover all architectures at once, we can start with only i386* 
+and arm* targets, and extend that later.
+
+That said, I think we should leave this out of the current series for 
+now, as it's not directly related to what is introduced, but it's 
+definitely something that would be nice to see in the future, with the 
+requirements above.
+
+Thanks,
+Pierrick
 
