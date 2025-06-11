@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97B8AD5E14
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB65AD5E20
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPQ9y-0001h0-GY; Wed, 11 Jun 2025 14:26:50 -0400
+	id 1uPQ9v-0001X2-OK; Wed, 11 Jun 2025 14:26:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQ9l-0001WY-Gt
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uPQ9f-0001Qg-FJ
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQ9b-0001FW-PV
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:33 -0400
+ id 1uPQ9I-0001Fz-BC
+ for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:26:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749666359;
+ s=mimecast20190719; t=1749666363;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mkg1+W8RvAcUUgL/WOeKMGXWZeEOTEr6LlHLyMUvJ7w=;
- b=aZIMkkU0lMu6d1rNYaf339Ym8RsbMbvi19Ge0okeGlHRsNBAiGQOpltk5RTdldPG0f9A9j
- 4o7GhROj/PJwA1VmfhDOnyxX5DHJpPQ5w27NMsRGHCaRsMcmEAM1TwpJxabAL8XX4AU0HW
- D/NMUCGwU0E1BmemEIHuRHeGntoxhsY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UQNXH4s6oZwiIt3/fk9WMce4UX8+i3+RrT8bw0pK+dY=;
+ b=aJPfENxZNKAaHq5beoh9bxiw7rOLZAtJlwFmww9lvRbYymGQTL7qd5wR5yatuBr+lZfyBc
+ DobUYtI56mCuxnSlxsAt0vvGHyGf0joqkj9tnm53T3p8zZWdfdjeB46kLIbQBdN2EqYhWk
+ 2mWs9PR1VkaaWLmjpRsjSSSLI5Pm148=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-K1nQ5IFnPbKDwG6aJtt7cw-1; Wed,
- 11 Jun 2025 14:25:56 -0400
-X-MC-Unique: K1nQ5IFnPbKDwG6aJtt7cw-1
-X-Mimecast-MFC-AGG-ID: K1nQ5IFnPbKDwG6aJtt7cw_1749666352
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-FQt9AiT3P5azAo_his_eOA-1; Wed,
+ 11 Jun 2025 14:25:59 -0400
+X-MC-Unique: FQt9AiT3P5azAo_his_eOA-1
+X-Mimecast-MFC-AGG-ID: FQt9AiT3P5azAo_his_eOA_1749666356
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D6DE818002ED; Wed, 11 Jun 2025 18:25:48 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3AE341800283; Wed, 11 Jun 2025 18:25:54 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.122])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BA72619560AF; Wed, 11 Jun 2025 18:25:34 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 389FA18003FC; Wed, 11 Jun 2025 18:25:50 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -71,15 +72,19 @@ Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
  Rob Herring <robh@kernel.org>, Steven Lee <steven_lee@aspeedtech.com>,
  Jamin Lin <jamin_lin@aspeedtech.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 00/31] Block patches
-Date: Wed, 11 Jun 2025 14:25:02 -0400
-Message-ID: <20250611182533.200590-1-stefanha@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 01/31] include/qemu/compiler: add QEMU_UNINITIALIZED attribute
+ macro
+Date: Wed, 11 Jun 2025 14:25:03 -0400
+Message-ID: <20250611182533.200590-2-stefanha@redhat.com>
+In-Reply-To: <20250611182533.200590-1-stefanha@redhat.com>
+References: <20250611182533.200590-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,91 +109,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit bc98ffdc7577e55ab8373c579c28fe24d600c40f:
+The QEMU_UNINITIALIZED macro is to be used to skip the default compiler
+variable initialization done by -ftrivial-auto-var-init=zero.
 
-  Merge tag 'pull-10.1-maintainer-may-2025-070625-1' of https://gitlab.com/stsquad/qemu into staging (2025-06-07 15:08:55 -0400)
+Use this in cases where there a method in the device I/O path (or other
+important hot paths), that has large variables on the stack. A rule of
+thumb is that "large" means a method with 4kb data in the local stack
+frame. Any variables which are KB in size, should be annotated with this
+attribute, to pre-emptively eliminate any potential overhead from the
+compiler zero'ing memory.
 
-are available in the Git repository at:
+Given that this turns off a security hardening feature, when using this
+to flag variables, it is important that the code is double-checked to
+ensure there is no possible use of uninitialized data in the method.
 
-  https://gitlab.com/stefanha/qemu.git tags/block-pull-request
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-id: 20250610123709.835102-2-berrange@redhat.com
+[DB: split off patch & rewrite guidance on when to use the annotation]
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ include/qemu/compiler.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-for you to fetch changes up to dc0dfd00f428f7aed17ce2fd01a156186d5f76a3:
-
-  net/stream: skip automatic zero-init of large array (2025-06-11 14:20:10 -0400)
-
-----------------------------------------------------------------
-Pull request
-
-----------------------------------------------------------------
-
-Daniel P. Berrangé (29):
-  block: skip automatic zero-init of large array in ioq_submit
-  chardev/char-fd: skip automatic zero-init of large array
-  chardev/char-pty: skip automatic zero-init of large array
-  chardev/char-socket: skip automatic zero-init of large array
-  hw/audio/ac97: skip automatic zero-init of large arrays
-  hw/audio/cs4231a: skip automatic zero-init of large arrays
-  hw/audio/es1370: skip automatic zero-init of large array
-  hw/audio/gus: skip automatic zero-init of large array
-  hw/audio/gus: skip automatic zero-init of large array
-  hw/audio/sb16: skip automatic zero-init of large array
-  hw/audio/via-ac97: skip automatic zero-init of large array
-  hw/char/sclpconsole-lm: skip automatic zero-init of large array
-  hw/dma/xlnx_csu_dma: skip automatic zero-init of large array
-  hw/display/vmware_vga: skip automatic zero-init of large struct
-  hw/hyperv/syndbg: skip automatic zero-init of large array
-  hw/misc/aspeed_hace: skip automatic zero-init of large array
-  hw/net/rtl8139: skip automatic zero-init of large array
-  hw/net/tulip: skip automatic zero-init of large array
-  hw/net/virtio-net: skip automatic zero-init of large arrays
-  hw/net/xgamc: skip automatic zero-init of large array
-  hw/nvme/ctrl: skip automatic zero-init of large arrays
-  hw/ppc/pnv_occ: skip automatic zero-init of large struct
-  hw/ppc/spapr_tpm_proxy: skip automatic zero-init of large arrays
-  hw/usb/hcd-ohci: skip automatic zero-init of large array
-  hw/scsi/lsi53c895a: skip automatic zero-init of large array
-  hw/scsi/megasas: skip automatic zero-init of large arrays
-  hw/ufs/lu: skip automatic zero-init of large array
-  net/socket: skip automatic zero-init of large array
-  net/stream: skip automatic zero-init of large array
-
-Stefan Hajnoczi (2):
-  include/qemu/compiler: add QEMU_UNINITIALIZED attribute macro
-  hw/virtio/virtio: avoid cost of -ftrivial-auto-var-init in hot path
-
- include/qemu/compiler.h    | 20 ++++++++++++++++++++
- block/linux-aio.c          |  2 +-
- chardev/char-fd.c          |  2 +-
- chardev/char-pty.c         |  2 +-
- chardev/char-socket.c      |  2 +-
- hw/audio/ac97.c            |  4 ++--
- hw/audio/cs4231a.c         |  4 ++--
- hw/audio/es1370.c          |  2 +-
- hw/audio/gus.c             |  2 +-
- hw/audio/marvell_88w8618.c |  2 +-
- hw/audio/sb16.c            |  2 +-
- hw/audio/via-ac97.c        |  2 +-
- hw/char/sclpconsole-lm.c   |  2 +-
- hw/display/vmware_vga.c    |  2 +-
- hw/dma/xlnx_csu_dma.c      |  2 +-
- hw/hyperv/syndbg.c         |  2 +-
- hw/misc/aspeed_hace.c      |  2 +-
- hw/net/rtl8139.c           |  2 +-
- hw/net/tulip.c             |  2 +-
- hw/net/virtio-net.c        |  6 +++---
- hw/net/xgmac.c             |  2 +-
- hw/nvme/ctrl.c             |  6 +++---
- hw/ppc/pnv_occ.c           |  2 +-
- hw/ppc/spapr_tpm_proxy.c   |  4 ++--
- hw/scsi/lsi53c895a.c       |  2 +-
- hw/scsi/megasas.c          |  7 ++-----
- hw/ufs/lu.c                |  2 +-
- hw/usb/hcd-ohci.c          |  2 +-
- hw/virtio/virtio.c         |  8 ++++----
- net/socket.c               |  2 +-
- net/stream.c               |  2 +-
- 31 files changed, 61 insertions(+), 44 deletions(-)
-
+diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+index 496dac5ac1..65b89958d3 100644
+--- a/include/qemu/compiler.h
++++ b/include/qemu/compiler.h
+@@ -207,6 +207,26 @@
+ # define QEMU_USED
+ #endif
+ 
++/*
++ * Disable -ftrivial-auto-var-init on a local variable.
++ *
++ * Use this in cases where there a method in the device I/O path (or other
++ * important hot paths), that has large variables on the stack. A rule of
++ * thumb is that "large" means a method with 4kb data in the local stack
++ * frame. Any variables which are KB in size, should be annotated with this
++ * attribute, to pre-emptively eliminate any potential overhead from the
++ * compiler's implicit zero'ing of memory.
++ *
++ * Given that this turns off a security hardening feature, when using this
++ * to flag variables, it is important that the code is double-checked to
++ * ensure there is no possible use of uninitialized data in the method.
++ */
++#if __has_attribute(uninitialized)
++# define QEMU_UNINITIALIZED __attribute__((uninitialized))
++#else
++# define QEMU_UNINITIALIZED
++#endif
++
+ /*
+  * http://clang.llvm.org/docs/ThreadSafetyAnalysis.html
+  *
 -- 
 2.49.0
 
