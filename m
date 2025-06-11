@@ -2,88 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5445AD564D
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 15:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07878AD566D
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 15:05:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPL4k-0003w3-H4; Wed, 11 Jun 2025 09:01:08 -0400
+	id 1uPL82-00086t-AD; Wed, 11 Jun 2025 09:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uPL43-0003ps-3f; Wed, 11 Jun 2025 09:00:23 -0400
-Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uPL40-0004jZ-UI; Wed, 11 Jun 2025 09:00:22 -0400
-Received: by mail-qt1-x834.google.com with SMTP id
- d75a77b69052e-4a442a3a2bfso116827791cf.1; 
- Wed, 11 Jun 2025 06:00:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749646816; x=1750251616; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=jf6tMngBWOppBmsTO8G8rEDGlplT+20Nq8g2MEOpmr8=;
- b=eN1QJQ/yyjRIFvmM/FHP3vmzYveR7DAPBuGJjbt8DX5/TWjZMR4089RllUdvUx/6ZB
- 2N0cqNzRMZaMuAHKSzOmv7++6MAdFWuXdD7WAbU6AJ0res8zTshp5iUG+hCVT4UqkAJO
- ZQlgA3g0yDkiNJ/EsVBU48l04Bi15BllIgLwvR0obofzId6rVVkahATZnDmOPUiiKQyQ
- vFFVwFY0JtOf6sphQy4AH+/JHzm/sBbCvNcAEWcDysZUrz3d5EZrsIdseOh0FkGAdHAj
- x7aJeVtDPn5Cc3E2q1vemEEzUdSAQtmVhH1PKzYMP/M+wUKE8ITOR3ICiueaFWY1X+2u
- Zs7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749646816; x=1750251616;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jf6tMngBWOppBmsTO8G8rEDGlplT+20Nq8g2MEOpmr8=;
- b=j6cU0kTzJJOw4xtU44jsKpGFcSGvTBdrGjcjCgpugUMDWd6Bf3ZQHpCevGR5L+wclY
- ocXbY3Rfp40hIX5ZgzQmzOyXEubdoqHDbvKMS7wDxXvF8jVYB1y+XOyRtibfTcRSGDcy
- RagbbLM2GQE+nEnz7JdXUkQ0qFZazjqVVxAK7FAuHxLzAh3Ck9fQ3GijZXqgoC4aESr7
- +s14lTnNr4lvxvSaAUAipwGffGpI962KFqDCWS5CLBxL8H7BtUQsOPJHKYkOGpGyIypd
- IEM/mGJuAkcHikcH8dV3i1amkEXZiQPFlmZg6bEn7rZtKN5Ht0gkuux3MpEMQx3clxHH
- 1S4g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWT/apyg6G6QjneXqC7v0+Etmhsw2A6ldL6VdasoAFOYRmuMtGKTK3G/CyxFBxGryBO1+6lTNPJM6Y=@nongnu.org,
- AJvYcCWWBg6/J6zik+p9lrA0Rb1jZ7EPy+PUS0CzB81DNP0ygBlSX6J7BzvsiQyAjTMZlgjo8smw6aKuq8FQ@nongnu.org
-X-Gm-Message-State: AOJu0YwvdJh6Iu0+EkUFZLrgtSe92Ndzj/2ZPi7gGX8g5Ti/4UW6H6gT
- yIO7ex5RCmdOVf9ZA7g1uwvf3cX5oxI6YY6cG0WZoQZz9FVIJ/6ho79ze7Nu8ImCa1Ppmn1h6NT
- pLXHOfRxohaslLHcf4ib/j1abFiYUHqErWYjd
-X-Gm-Gg: ASbGnctFs4upL2kZfhSrygdaUVc0AJBk3IjyBFRm0K/betEd6G6jxPId5GKCI1nbfBm
- Yf2uzPAmnhMV2oHoeJIuO8QxW7Gd0dR1aOY/dv9vL8coYhqSlrdcGwJ1mIO0JgZAhtPGQzCo/UH
- Jg1X6VIFOc5VmoRdfjTZQ53tX614ywofjJWe6NEGfTOT1PJSW2ILJV4pWmXLaR3DRSj0GufwaX
-X-Google-Smtp-Source: AGHT+IE96SQjD9oe8y0u7PgyZyBxdkDpVSsTh9D4RFnMHMu8Wsnn5AYaraeRtn4FLkdN3v00F7llwvhngheUbjf/NCI=
-X-Received: by 2002:a17:90b:54c3:b0:2ff:6167:e92d with SMTP id
- 98e67ed59e1d1-313b200de9cmr3245116a91.32.1749646805176; Wed, 11 Jun 2025
- 06:00:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1uPL7N-00073w-PM; Wed, 11 Jun 2025 09:04:01 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1uPL7C-0004zy-Lr; Wed, 11 Jun 2025 09:03:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References;
+ bh=gSeAlrhldGJ6CDc/fuawdB7PxaXoK/BgnXGltMyWnxM=; b=M7vhMSJ+cxLKEVYQ+11kZy5a8r
+ sXGAtThm1Uf3rfhCo3FMiLofPnE4K+D9N+5hmvxumGvrc7XFAXNmAUcxU+MDVkOWt+xDzyNngQ2t5
+ wzqKzT901SnEwj/PpyZ+lHIrHx24T+9PnvhdnzgNbhm/xuWRumQxSQaDzEBVe7PHGmKBvnZTjlSlU
+ jOzInN5ZabTuiOTq617Imhd7meq5hxL4RuoiY6BBhUWDoksHDpnHZFINE69tUv8z+IXGpJJtNNtrs
+ uizRnivhuNUIdf7Bmc617dwbf0sakMPdSrnsOjKDEvxmtHqd0Pkbo2ADpgn+JVYVWccAry2OSBaoA
+ iI7QrK2k/XvEm49ITkEIrW8t7hSteq06j0cfoxSc0KwurJEZWiEiaJEOK9WpBlNvRR4XnULWO4Fxj
+ TOR+H4uCc6RIrJXaQpggEeb899pSUAOp/OGkgfwmJbY7ElJBYygDEaUY2lU8jvlMoU7EIWUUNA6AW
+ 1sk4z0eHZn8+O2+nDNUtBc/dFZRVFU/8SovdbxbiGQdKCX+vTmleEhbu6h3vcHWfr1zlYeHcKgbrU
+ JWg3xE/U+aWdIQSvxLKp7xO2GlCWznxCSQsfaNFufGQVFhGHUf1vDAq9YIUd744oCShSoIkXrG8jK
+ ZTZFNDjn40m2f2SWhPlb68W8qonnt0R6JW+fIiLEs=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ (helo=cheesecake.fritz.box)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1uPL5c-0002P7-G4; Wed, 11 Jun 2025 14:02:01 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: qemu-devel@nongnu.org, pbonzini@redhat.com, richard.henderson@linaro.org,
+ eduardo@habkost.net
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+	qemu-stable@nongnu.org
+Date: Wed, 11 Jun 2025 14:03:15 +0100
+Message-Id: <20250611130315.383151-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20250610204131.2862-1-shentey@gmail.com>
- <20250610204131.2862-4-shentey@gmail.com>
- <32a05613-7606-495b-8b2b-fb64b31885c4@redhat.com>
-In-Reply-To: <32a05613-7606-495b-8b2b-fb64b31885c4@redhat.com>
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Date: Wed, 11 Jun 2025 21:59:53 +0900
-X-Gm-Features: AX0GCFvEQQIsEJPjWiVPODjyYS17LYLxJkVINVAbwoiJEX4Er78g_COisy_PVDY
-Message-ID: <CAEDrbUY2=bs9oFc=vF_ZZhScCpZqKn+iEmCNH0zfYuKnjLM6yQ@mail.gmail.com>
-Subject: Re: [PATCH 3/5] scripts/meson-buildoptions: Sort coroutine_backend
- choices lexicographically
-To: Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000004e162b06374b6406"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-qt1-x834.google.com
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH] target/i386: fix TB exit logic in gen_movl_seg() when writing
+ to SS
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,18 +75,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004e162b06374b6406
-Content-Type: text/plain; charset="UTF-8"
+Before commit e54ef98c8a ("target/i386: do not trigger IRQ shadow for LSS"), any
+write to SS in gen_movl_seg() would cause a TB exit. The changes introduced by
+this commit were intended to restrict the DISAS_EOB_INHIBIT_IRQ exit to the case
+where inhibit_irq is true, but missed that a DISAS_EOB_NEXT exit can still be
+required when writing to SS and inhibit_irq is false.
 
-I should've made sure to run the tool, sorry. Thanks for spotting and fixing
-this issue.
+Comparing the PE(s) && !VM86(s) section with the logic in x86_update_hflags(), we
+can see that the DISAS_EOB_NEXT exit is still required for the !CODE32 case when
+writing to SS in gen_movl_seg() because any change to the SS flags can affect
+hflags. Similarly we can see that the existing CODE32 case is still correct since
+a change to any of DS, ES and SS can affect hflags. Finally for the
+gen_op_movl_seg_real() case an explicit TB exit is not needed because the segment
+register selector does not affect hflags.
 
-Reviewed-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Update the logic in gen_movl_seg() so that a write to SS with inhibit_irq set to
+false where PE(s) && !VM86(s) will generate a DISAS_EOB_NEXT exit along with the
+inline comment. This has the effect of allowing Win98SE to boot in QEMU once
+again.
 
---0000000000004e162b06374b6406
-Content-Type: text/html; charset="UTF-8"
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-stable@nongnu.org
+Fixes: e54ef98c8a ("target/i386: do not trigger IRQ shadow for LSS")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2987
+---
+ target/i386/tcg/translate.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-<div dir="ltr"><div dir="ltr">I should&#39;ve made sure to run the tool, sorry. Thanks for spotting and fixing<br>this issue.<br><br>Reviewed-by: Kohei Tokunaga &lt;<a href="mailto:ktokunaga.mail@gmail.com">ktokunaga.mail@gmail.com</a>&gt;</div></div>
+(Many thanks to Peter Maydell for help with the hflags analysis and for suggesting
+ the improved comment wording.)
 
---0000000000004e162b06374b6406--
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 0fcddc2ec0..0cb87d0201 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -2033,8 +2033,11 @@ static void gen_movl_seg(DisasContext *s, X86Seg seg_reg, TCGv src, bool inhibit
+         tcg_gen_trunc_tl_i32(sel, src);
+         gen_helper_load_seg(tcg_env, tcg_constant_i32(seg_reg), sel);
+ 
+-        /* For move to DS/ES/SS, the addseg or ss32 flags may change.  */
+-        if (CODE32(s) && seg_reg < R_FS) {
++        /*
++         * For moves to SS, the SS32 flag may change. For CODE32 only, changes
++         * to SS, DS and ES may change the ADDSEG flags.
++         */
++        if (seg_reg == R_SS || (CODE32(s) && seg_reg < R_FS)) {
+             s->base.is_jmp = DISAS_EOB_NEXT;
+         }
+     } else {
+-- 
+2.39.5
+
 
