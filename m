@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CE3AD5E3D
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF80AD5E4D
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 20:36:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPQBL-0004Nz-So; Wed, 11 Jun 2025 14:28:16 -0400
+	id 1uPQDL-0007c0-MF; Wed, 11 Jun 2025 14:30:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQAJ-0001xl-Rx
+ id 1uPQAJ-0001xj-RM
  for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uPQAA-0001ZH-Pr
+ id 1uPQAB-0001Zm-Ht
  for qemu-devel@nongnu.org; Wed, 11 Jun 2025 14:27:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749666421;
+ s=mimecast20190719; t=1749666422;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=98MBMcUSEptGVNIPVLyiue7Ww+HKRSay/z2TDY8nvFw=;
- b=Xz2NS2lQhM0ooBA1AyawoB9y8KAO4xQNYB1976k5MK01UpfQ7hmu4jYuq86cM5FZitOK/+
- imUXZyy0cNekwP7zLKcNqAWjXsT1+DuM3kceaFIa6+a1LgR7sjIYWhXIkghFlmEpwJscnm
- LBDRs1tqqK16Y5QxCCpoqutLM0pL6bk=
+ bh=1P7ALdUgUH3egQpJpZZh+seXhAmubgaRIgDOiJvBoJg=;
+ b=gCuC4METErBbRToif6dxPUVXA9XwDgDDsBQ6DGwuDQIm60A5m5j63L6McPWQ2XQpNnDc0f
+ SBocvd1kxQZ2GvPoJSmD+kTAea6SHObkbmfdCZwHsSS0ZV2xulMSEl/7xgwKaSbN4kHAC1
+ iOSmF2h70XgTkfcusncos7reDhEGcnI=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-317-AELjrSb9N5yl-IVITRhf6w-1; Wed,
- 11 Jun 2025 14:26:56 -0400
-X-MC-Unique: AELjrSb9N5yl-IVITRhf6w-1
-X-Mimecast-MFC-AGG-ID: AELjrSb9N5yl-IVITRhf6w_1749666412
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-257-Rbp6d6JYMo-D6lC9mV6ANw-1; Wed,
+ 11 Jun 2025 14:26:59 -0400
+X-MC-Unique: Rbp6d6JYMo-D6lC9mV6ANw-1
+X-Mimecast-MFC-AGG-ID: Rbp6d6JYMo-D6lC9mV6ANw_1749666414
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 76D7C18089B5; Wed, 11 Jun 2025 18:26:51 +0000 (UTC)
+ id 697621801BD8; Wed, 11 Jun 2025 18:26:54 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.122])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B00EF19560AF; Wed, 11 Jun 2025 18:26:49 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id DBDD630002C3; Wed, 11 Jun 2025 18:26:52 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -74,15 +74,16 @@ Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 17/31] hw/hyperv/syndbg: skip automatic zero-init of large array
-Date: Wed, 11 Jun 2025 14:25:19 -0400
-Message-ID: <20250611182533.200590-18-stefanha@redhat.com>
+Subject: [PULL 18/31] hw/misc/aspeed_hace: skip automatic zero-init of large
+ array
+Date: Wed, 11 Jun 2025 14:25:20 -0400
+Message-ID: <20250611182533.200590-19-stefanha@redhat.com>
 In-Reply-To: <20250611182533.200590-1-stefanha@redhat.com>
 References: <20250611182533.200590-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -110,35 +111,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The 'handle_recv_msg' method has a 4k byte array used for copying
-data between the network socket and guest memory. Skip the automatic
+The 'do_hash_operation' method has a 256 element iovec array used for
+holding pointers to data that is to be hashed. Skip the automatic
 zero-init of this array to eliminate the performance overhead in the
 I/O hot path.
 
-The 'data_buf' array will be fully initialized when data is read
-off the network socket.
+The 'iovec' array will be selectively initialized based on data that
+needs to be hashed.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-id: 20250610123709.835102-18-berrange@redhat.com
+Message-id: 20250610123709.835102-19-berrange@redhat.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- hw/hyperv/syndbg.c | 2 +-
+ hw/misc/aspeed_hace.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/hyperv/syndbg.c b/hw/hyperv/syndbg.c
-index 8b8a14750d..ac7e15f6f1 100644
---- a/hw/hyperv/syndbg.c
-+++ b/hw/hyperv/syndbg.c
-@@ -192,7 +192,7 @@ static uint16_t handle_recv_msg(HvSynDbg *syndbg, uint64_t outgpa,
+diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
+index 8924a30eff..726368fbbc 100644
+--- a/hw/misc/aspeed_hace.c
++++ b/hw/misc/aspeed_hace.c
+@@ -419,7 +419,7 @@ static void hash_execute_acc_mode(AspeedHACEState *s, int algo,
+ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+                               bool acc_mode)
  {
-     uint16_t ret;
-     g_assert(MSG_BUFSZ >= qemu_target_page_size());
--    uint8_t data_buf[MSG_BUFSZ];
-+    QEMU_UNINITIALIZED uint8_t data_buf[MSG_BUFSZ];
-     hwaddr out_len;
-     void *out_data;
-     ssize_t recv_byte_count;
+-    struct iovec iov[ASPEED_HACE_MAX_SG];
++    QEMU_UNINITIALIZED struct iovec iov[ASPEED_HACE_MAX_SG];
+     bool acc_final_request = false;
+     int iov_idx = -1;
+ 
 -- 
 2.49.0
 
