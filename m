@@ -2,95 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865AEAD5315
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 13:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FAEAD5281
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Jun 2025 12:48:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPJHJ-00086c-B1; Wed, 11 Jun 2025 07:05:57 -0400
+	id 1uPIzn-0002eD-P1; Wed, 11 Jun 2025 06:47:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uPJHG-00085z-VA
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 07:05:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uPIzl-0002Yp-C9; Wed, 11 Jun 2025 06:47:49 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uPJHF-00055G-4T
- for qemu-devel@nongnu.org; Wed, 11 Jun 2025 07:05:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749639952;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aF7LWn17pkhhg22fNCmAQAxb3U/YTglkfbLytrggQjk=;
- b=dhhJZpuS5yx0EDU95OS/vsugysx0jHjrUh4PMFF+ApDSRtZsYLDjc8F/TalPlyWC13t3Bh
- MJSLvFvNl7ew5K56UudDJcDfPodeI59d5GTb2b9BvAOipTWo4r89hEm2hQ7HN1ZQrc0jpE
- h8qhRPvIgTvY+Ll5Dwqz7sH7WQuVN3I=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-qOFr8jewMVGFSpP5Sy6B_A-1; Wed, 11 Jun 2025 07:05:50 -0400
-X-MC-Unique: qOFr8jewMVGFSpP5Sy6B_A-1
-X-Mimecast-MFC-AGG-ID: qOFr8jewMVGFSpP5Sy6B_A_1749639949
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-450d64026baso40082535e9.1
- for <qemu-devel@nongnu.org>; Wed, 11 Jun 2025 04:05:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749639948; x=1750244748;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aF7LWn17pkhhg22fNCmAQAxb3U/YTglkfbLytrggQjk=;
- b=jaO7U2A1b2K1GJXc6kpSD0w3uougOhc3vSZzlhlEDD5B5XuzL7dwKMRZkMqFfGoQ8O
- 0W6iDEWDDQk2AtDoqrLUKURC5q4AiOIDAlStCcSA4oPwpb+fw4MdLUaGojPsAB+tGDnc
- K42xkZYlzKmsEDcD1DYBokgar8hyPd501bJcTGRVHH8+AH65bOjRwqxmR5YV8wyHDfyS
- u2Wi/GRZ8qX95pY9yAOF44hHncO+URaOgRG7jIf2eBP9yOaWw0/UAYV913DRkwwX0G/4
- f19fudnZnrROAqQ6O37FXutmJWZbKI7y3lHcpDvbsqnZFVL3tYzFDkxUm0X7EXWn9pBh
- bJ6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU+6xbrsBZZYYYvWh5JGm5s4WfzcycfU8PJeP0okCSobnVGkCD8DBMrS+rt6cxOZPxeXbEzOuqNV+VV@nongnu.org
-X-Gm-Message-State: AOJu0YywEpR56RWlvPWtTeX/pxhS5AbqT619kuTSeOSFmoDp/nMuuPli
- 1oc6NanZiZRKEtAo65QvMG9sSBk/PjGV7brfAB1eYe5Eu23WJAj8yetJ+D/tSXp96ErTNs8ZbRO
- 5XyHdfm7axG5MCats8Z3/PIFIJJZCrQQZHttzi1q1XvLiNZPYGgxeVitOTqaylZVr2gA7/oSp9p
- GXKMtf87Q2HH67i+L4kl3a0snWcdAk+O9DliBkuKEBCg==
-X-Gm-Gg: ASbGncs4DY5pITgaIkwmrHo4GfyjHDYpvhNoS88YK4Vc3hkvkfKRNfpHecATLm/pheV
- wf9qrGslL475KEBvccP7mNkppKePz2RLpdnLfxMIzJ3bLNHkfcI4KZ046siiYPGP3iR+Cot3q+I
- fUeg==
-X-Received: by 2002:a05:6000:2301:b0:3a5:42:b17b with SMTP id
- ffacd0b85a97d-3a5586cac26mr2035174f8f.29.1749639948388; 
- Wed, 11 Jun 2025 04:05:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFqo/U5r7IN+KQsjwCtgoOdkY5TI/BNjAE9vGFM4UAA6LPlNIgj0XiGaASxFbBAWGx0yHGQda4X/5DGZQtrwqw=
-X-Received: by 2002:a05:6000:2301:b0:3a5:42:b17b with SMTP id
- ffacd0b85a97d-3a5586cac26mr2035153f8f.29.1749639948099; Wed, 11 Jun 2025
- 04:05:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uPIzj-0002Gv-Ij; Wed, 11 Jun 2025 06:47:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749638868; x=1781174868;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=8D0GGfYU0Tw4972vz+bqe7kJGRZlLX5oEJ2OBkzYpEw=;
+ b=EDkSictbse7cvdQlYTvl/jXauzhrMtzRKRhJz4ZHhrSEsCMAKoR3lpEr
+ WFxkek7QhMUz0Q/Skh5o14HDcxy6/+w4zuAUQvCEuPexShMZoQDosn+O8
+ O2Ucm9TgRKQX+xPTfeyAa6JcorKkGtw5qIfRvACVAKixfyrF/o4rJCQ2J
+ Q7z4BBkMOIn5z8LErUckZlDVYbOLvYz0Pkr0wpkySRo5SST0WC5fWgY/p
+ 11is8puZhQSxk/al9E89pSfZG0p8BpEal62OtFnRVbqfuymAlsvxrJfAQ
+ kndutzr9SOM+Snhg/7JNzdTlzfVuZTD9+qmqqndZclKL0bZRZG4Z7pmKw Q==;
+X-CSE-ConnectionGUID: kPypbl0RRP+kPpR8pflSVQ==
+X-CSE-MsgGUID: Q0/603npQmGfJw9v/98Cag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="62055948"
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="62055948"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2025 03:47:46 -0700
+X-CSE-ConnectionGUID: G0aowGx1RnuhUMg8pf/o+Q==
+X-CSE-MsgGUID: HqMm7XP3T+GWFW7tHsqdeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="170337623"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa002.fm.intel.com with ESMTP; 11 Jun 2025 03:47:44 -0700
+Date: Wed, 11 Jun 2025 19:09:00 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 1/5] rust: qemu_api: introduce MaybeUninit field projection
+Message-ID: <aEljzPOf/76W25iC@intel.com>
+References: <20250609154423.706056-1-pbonzini@redhat.com>
+ <20250609154423.706056-2-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20250610202110.2243-1-shentey@gmail.com>
- <20250610202110.2243-2-shentey@gmail.com>
- <CAAjaMXbtcyB3J3AvGh8ZW3MSi41uMaE+TkZwipCs5pg6wvYJ=w@mail.gmail.com>
-In-Reply-To: <CAAjaMXbtcyB3J3AvGh8ZW3MSi41uMaE+TkZwipCs5pg6wvYJ=w@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 11 Jun 2025 13:05:35 +0200
-X-Gm-Features: AX0GCFtBBKwf6_WTw-AJEPOpstVJA4JtOOxuTIxppkBOv4rxO49_WvdS7Lv5c60
-Message-ID: <CABgObfYgoYBJmZjin_Wj8JeEviFMM+vFa_QX_8Np+1n9apq4kw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust/qemu-api: Add initial logging support based
- on C API
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org,
- qemu-rust@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250609154423.706056-2-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,29 +79,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 11, 2025 at 12:57=E2=80=AFPM Manos Pitsidianakis
-<manos.pitsidianakis@linaro.org> wrote:
+On Mon, Jun 09, 2025 at 05:44:19PM +0200, Paolo Bonzini wrote:
+> Date: Mon,  9 Jun 2025 17:44:19 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 1/5] rust: qemu_api: introduce MaybeUninit field projection
+> X-Mailer: git-send-email 2.49.0
+> 
+> Add a macro that makes it possible to convert a MaybeUninit<> into
+> another MaybeUninit<> for a single field within it.  Furthermore, it is
+> possible to use the resulting MaybeUninitField<> in APIs that take the
+> parent object, such as memory_region_init_io().
+> 
+> This allows removing some of the undefined behavior from instance_init()
+> functions, though this may not be the definitive implementation.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/qemu-api/meson.build   |  1 +
+>  rust/qemu-api/src/lib.rs    |  1 +
+>  rust/qemu-api/src/uninit.rs | 85 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 87 insertions(+)
+>  create mode 100644 rust/qemu-api/src/uninit.rs
 
-> Maybe we could take this chance to remove the requirement for trailing
-> newline? Not urgent, and also something we could change afterwards
-> anyway. We could also introduce log_mask_ln! macro but now I'm just
-> bikeshedding.
+...
 
-Good idea; there is no "formatln!" but I think you could use concat instead=
-.
+> +impl<'a, T, U> Deref for MaybeUninitField<'a, T, U> {
+> +    type Target = MaybeUninit<U>;
+> +
+> +    fn deref(&self) -> &MaybeUninit<U> {
+> +        // SAFETY: self.child was obtained by dereferencing a valid mutable
+> +        // reference; the content of the memory may be invalid or uninitialized
+> +        // but MaybeUninit<_> makes no assumption on it
+> +        unsafe { &*(self.child.cast()) }
+> +    }
+> +}
+> +
+> +impl<'a, T, U> DerefMut for MaybeUninitField<'a, T, U> {
+> +    fn deref_mut(&mut self) -> &mut MaybeUninit<U> {
+> +        // SAFETY: self.child was obtained by dereferencing a valid mutable
+> +        // reference; the content of the memory may be invalid or uninitialized
+> +        // but MaybeUninit<_> makes no assumption on it
+> +        unsafe { &mut *(self.child.cast()) }
+> +    }
+> +}
 
-If that doesn't work for whatever reason we can indeed add it later. I
-had the idea of a struct that wraps the logging functions
-qemu_log_trylock() and qemu_log_unlock() and implements io::Write; at
-which point, implementing log_mask_ln! (or _nl! following the unstable
-format_args_nl!) with writeln! would be trivial.
+Nice trick.
 
-> Besides that, I think it'd be useful to have the macro re-exported in
-> rust/qemu-api/src/prelude.rs as well. Please add it for the next
-> version.
-
-Yes, I agree.
-
-Paolo
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
