@@ -2,57 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D26AD6B95
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 11:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63282AD6BB6
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 11:08:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPdqp-0002K4-3x; Thu, 12 Jun 2025 05:03:59 -0400
+	id 1uPduw-000602-ME; Thu, 12 Jun 2025 05:08:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1uPdqi-0002I0-He
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 05:03:52 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1uPdqe-0000JG-Qq
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 05:03:50 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxHHLxl0poh7cUAQ--.50133S3;
- Thu, 12 Jun 2025 17:03:45 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMAxzxvZl0poBIYXAQ--.19666S7;
- Thu, 12 Jun 2025 17:03:42 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v3 5/5] tests/acpi: Remove stale allowed tables
-Date: Thu, 12 Jun 2025 17:03:21 +0800
-Message-Id: <20250612090321.3416594-6-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250612090321.3416594-1-maobibo@loongson.cn>
-References: <20250612090321.3416594-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uPdus-0005zX-06
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 05:08:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uPduq-00014h-83
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 05:08:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749719287;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zbcMrrIPcCkuUx3QPLQAk4IfNXL0oqnM7npn3lylVjw=;
+ b=XRCTFXoMZEiZQMU+BlY881vpjpb9x3tFQZHUuq2UHga2vAdzxu0OS2sirjZNC0Ao5yrHys
+ ppvOOT5i/mpxqfSl8wSxzy5xfmSC/DYMhE68AiggRPxTOip7lw/ijcYsWJUCXNj6Ee9HNA
+ hetcMlMWF+Q7kbMIGPml9JBypReJ7As=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-587-rzv5tpQ4Nt-Gdj-ElT0E9w-1; Thu, 12 Jun 2025 05:08:05 -0400
+X-MC-Unique: rzv5tpQ4Nt-Gdj-ElT0E9w-1
+X-Mimecast-MFC-AGG-ID: rzv5tpQ4Nt-Gdj-ElT0E9w_1749719284
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4f8fd1847so266776f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 02:08:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749719283; x=1750324083;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zbcMrrIPcCkuUx3QPLQAk4IfNXL0oqnM7npn3lylVjw=;
+ b=Ic+tgbY4RjrQwi2K1dhFFBUbCw9KVxEQ4mUHQhrypbq6mSrWC7uZHQLXZvc7BLWQXE
+ m4LCelxfTh8diZi9mn19S+cl9E95DB1pxjjmMUp0p7/E1NV9DqnCJKZprxUtQZ3s70Ux
+ N81TF9OhEQPuhrhBD3hL13p/t+GIEtAJru1kxQqcenX8uHVPxGJEDT/JNXQwcwPdTcxh
+ fHGRQQ7Zmpzk3kLD7/kR+95OWMSo2xTyTHpDXYNBNPHIln8XjujCP1O6QJAy46PDAKyT
+ J4odrgtMbl/ORnxLunOmtX7sso6fkWPmgR+DZlrkbGqxTApD8+e/xQTwVHe6Vthsltcr
+ RgQg==
+X-Gm-Message-State: AOJu0YzxArM6kcfv7nzDYiP0ZZpmRmCWDtmQTEeTXHm+cOAA8NxpNJOL
+ 4JCE7J0tsh121GzNs5arlJ/Ucd+6/WZ9PonlW8a1t1nezQc7eRHgX57Nb1NiPH2+9trTUFM66tJ
+ H/0WBCWGNrCJVZqaUkRFrnxu7N3uFGOggKOYnAoAUwJ/JPZl2bLYZBGKrTf6NJG0COFYE3XUESF
+ L/YNsC/zIjvdWKw/+7PTYiha7CYA+KR4EQo+fsZ0LJyw==
+X-Gm-Gg: ASbGncsUGy/w+2iIMxJ259QPtBhy5+TDzcJLdaaf1mk03EnPg4U5lK1nhgwKDHpIGT9
+ 7DwAESnFWWMWDqyWyMH50KtKcJgFrK8dndkd2p7NPqqALeqrvqIInriEDDnMVjVgmlrVwtqBS+8
+ UyWh4=
+X-Received: by 2002:a05:6000:1a8b:b0:3a4:f8e9:cee0 with SMTP id
+ ffacd0b85a97d-3a5586dfe01mr5205014f8f.40.1749719283497; 
+ Thu, 12 Jun 2025 02:08:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2fh/xY/0jl8G3zBet1JSkGC7kU+gMY+uEx0ZKa2UrXhIgqlXKsfP3G/VkOd+eUVzEMVDXUfge7qY2tc+yZX8=
+X-Received: by 2002:a05:6000:1a8b:b0:3a4:f8e9:cee0 with SMTP id
+ ffacd0b85a97d-3a5586dfe01mr5204980f8f.40.1749719283112; Thu, 12 Jun 2025
+ 02:08:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxzxvZl0poBIYXAQ--.19666S7
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9,
+References: <20250609154423.706056-1-pbonzini@redhat.com>
+ <20250609154423.706056-5-pbonzini@redhat.com>
+ <aEqcGiGmZiMoIhY5@intel.com>
+In-Reply-To: <aEqcGiGmZiMoIhY5@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 12 Jun 2025 11:07:51 +0200
+X-Gm-Features: AX0GCFv6QVVNJhmqAdTb5KqbCbq6FYLTVpEMbhlGyDhcwIdHbY6CTrrdmHvbqsU
+Message-ID: <CABgObfb8CWy5zthqHRJrKqjP4xmBC=Zh3FrDjcK2Z6wsZJu-ew@mail.gmail.com>
+Subject: Re: [PATCH 4/5] rust: qom: make ParentInit lifetime-invariant
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- TVD_SUBJ_WIPE_DEBT=1.004 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,28 +102,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove stale allowed tables for LoongArch virt machine.
+On Thu, Jun 12, 2025 at 11:00=E2=80=AFAM Zhao Liu <zhao1.liu@intel.com> wro=
+te:
+> > +/// It's impossible to escape the `Jail`; `token1` cannot be moved out=
+ of the
+> > +/// closure:
+> > +///
+> > +/// ```ignore
+> > +/// let x =3D 42;
+> > +/// let escape =3D Jail::with(&x, |token1| {
+> > +///     println!("{}", token1.get());
+> > +///     token1
+>
+> This line will fail to compile (the below comment "// fails to compile" s=
+eems
+> to indicate that println! will fail):
+>
+> error: lifetime may not live long enough
+>   --> src/main.rs:22:9
+>    |
+> 20 |     let escape =3D Jail::with(x, |token1| {
+>    |                                 ------- return type of closure is Ja=
+il<'2, i32>
+>    |                                 |
+>    |                                 has type `Jail<'1, i32>`
+> 21 |         println!("{}", token1.get());
+> 22 |         token1
+>    |         ^^^^^^ returning this value requires that `'1` must outlive =
+`'2`
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- tests/qtest/bios-tables-test-allowed-diff.h | 8 --------
- 1 file changed, 8 deletions(-)
+Right, I put it there because '2 lives until the second println!. The
+problem is not so much that it's returning token1, it's that the
+println uses it.
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index bad1380eec..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,9 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/loongarch64/virt/APIC",
--"tests/data/acpi/loongarch64/virt/DSDT",
--"tests/data/acpi/loongarch64/virt/FACP",
--"tests/data/acpi/loongarch64/virt/MCFG",
--"tests/data/acpi/loongarch64/virt/PPTT",
--"tests/data/acpi/loongarch64/virt/SLIT",
--"tests/data/acpi/loongarch64/virt/SPCR",
--"tests/data/acpi/loongarch64/virt/SRAT",
--- 
-2.39.3
+I can see that it's confusing, maybe:
+
+    // Because "escape" is used after the closure has returned, the
+    // compiler cannot find a type for the "let escape" assignment.
+
+Paolo
 
 
