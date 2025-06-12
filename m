@@ -2,61 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87AA1AD7344
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 16:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2DCAD736B
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 16:17:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPidO-0006eF-DR; Thu, 12 Jun 2025 10:10:26 -0400
+	id 1uPijK-0002Ai-K6; Thu, 12 Jun 2025 10:16:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1uPidM-0006cQ-Bx
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 10:10:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uPijB-00029d-1I
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 10:16:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1uPidK-0004jc-Oy
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 10:10:24 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uPij7-0005iy-Ua
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 10:16:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749737421;
+ s=mimecast20190719; t=1749737777;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=9BAN5HZ8IUPZMahsfrk73BSgqvB455M7gULX/WU50Js=;
- b=coTgmQkfdrUlaq0SPmwY1Lg7tS5sbDxOmHDS/ldyC99C8Q7DmG2onuWoWkb4o14bPsBK+I
- FqmbZOh9PlAlPLOspzYOfKhD91XO1uFVkYsbqwRM+3cK+5Mf0DOMFkHY5dghCy52AOjO8t
- S9tGuPa9M1aVVU+zq0o7YX7QxQfX/Fc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Eet4CCnKiCdz4kay6uxTV2EPFXCO2j7HvnK8ae/+bP0=;
+ b=MV9QEQ72vMokd5j8Lp8DCr7Tm1n+GNEE2VuYgDzpyxYbuDfoX5nrxt39fUbiXU2BhDDeoT
+ IxJn88/3TOEXTJiMUxFNDnwkiqn26rwZE5/w2xaVJeUwz7VM3SXCLZL9MkE5Yh1h/oMYj/
+ QRr64pGpjIeyffALAlD1Dn+KOXDtBy8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-cBxZf4mePbu3Y3H1YXXw-A-1; Thu,
- 12 Jun 2025 10:09:08 -0400
-X-MC-Unique: cBxZf4mePbu3Y3H1YXXw-A-1
-X-Mimecast-MFC-AGG-ID: cBxZf4mePbu3Y3H1YXXw-A_1749737347
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-2gvVUHA9OsG9Imy0aQWIFA-1; Thu,
+ 12 Jun 2025 10:16:10 -0400
+X-MC-Unique: 2gvVUHA9OsG9Imy0aQWIFA-1
+X-Mimecast-MFC-AGG-ID: 2gvVUHA9OsG9Imy0aQWIFA_1749737769
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 984E319560A6; Thu, 12 Jun 2025 14:09:07 +0000 (UTC)
-Received: from srv1.redhat.com (unknown [10.45.224.218])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3A53D180045B; Thu, 12 Jun 2025 14:09:05 +0000 (UTC)
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 2/2] qga: Add tests for guest-get-load command
-Date: Thu, 12 Jun 2025 17:08:57 +0300
-Message-ID: <20250612140857.47286-3-kkostiuk@redhat.com>
-In-Reply-To: <20250612140857.47286-1-kkostiuk@redhat.com>
-References: <20250612140857.47286-1-kkostiuk@redhat.com>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 33AC61956088; Thu, 12 Jun 2025 14:16:09 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.69])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8A3A6180045B; Thu, 12 Jun 2025 14:16:08 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 3B114180108A; Thu, 12 Jun 2025 16:16:05 +0200 (CEST)
+Date: Thu, 12 Jun 2025 16:16:05 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: Re: [PULL 0/2] Seabios 1.17.0 20250611 patches
+Message-ID: <4ftyylwfpk2d6xioduftadbbwq3cydjmzeaqivksseem4a2h5d@xg7u6y6qaaak>
+References: <20250611075037.659610-1-kraxel@redhat.com>
+ <3bc239aa-a2ab-400c-84b5-d7de3e5193ea@redhat.com>
+ <CAJSP0QU++wDCXvYe2sUyHCZHrHVVY2ehdeAswjDE_5V2J-qE9w@mail.gmail.com>
+ <4dd4bee5-7098-4f24-a81b-3935c58a6d9c@redhat.com>
+ <CAJSP0QWyjzLLGnvrzMDtRubHuzAPWNtejb_wLz33PVWJ+QJLmw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJSP0QWyjzLLGnvrzMDtRubHuzAPWNtejb_wLz33PVWJ+QJLmw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,49 +87,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tested-by: Dehan Meng <demeng@redhat.com>
-Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
-Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
----
- tests/unit/test-qga.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+  Hi,
 
-diff --git a/tests/unit/test-qga.c b/tests/unit/test-qga.c
-index 541b08a5e7..587e30c7e4 100644
---- a/tests/unit/test-qga.c
-+++ b/tests/unit/test-qga.c
-@@ -332,6 +332,22 @@ static void test_qga_get_fsinfo(gconstpointer fix)
-     }
- }
- 
-+static void test_qga_get_load(gconstpointer fix)
-+{
-+    const TestFixture *fixture = fix;
-+    g_autoptr(QDict) ret = NULL;
-+    QDict *load;
-+
-+    ret = qmp_fd(fixture->fd, "{'execute': 'guest-get-load'}");
-+    g_assert_nonnull(ret);
-+    qmp_assert_no_error(ret);
-+
-+    load = qdict_get_qdict(ret, "return");
-+    g_assert(qdict_haskey(load, "load1m"));
-+    g_assert(qdict_haskey(load, "load5m"));
-+    g_assert(qdict_haskey(load, "load15m"));
-+}
-+
- static void test_qga_get_memory_block_info(gconstpointer fix)
- {
-     const TestFixture *fixture = fix;
-@@ -1105,6 +1121,7 @@ int main(int argc, char **argv)
-         g_test_add_data_func("/qga/get-vcpus", &fix, test_qga_get_vcpus);
-     }
-     g_test_add_data_func("/qga/get-fsinfo", &fix, test_qga_get_fsinfo);
-+    g_test_add_data_func("/qga/get-load", &fix, test_qga_get_load);
-     g_test_add_data_func("/qga/get-memory-block-info", &fix,
-                          test_qga_get_memory_block_info);
-     g_test_add_data_func("/qga/get-memory-blocks", &fix,
--- 
-2.48.1
+> I didn't fix it. GitLab's mirror operation is still failing. Your
+> suggestion of force pushing should fix it, but I want to understand
+> why a commit was lost first.
+> 
+> The issue is that QEMU's mirror and upstream have diverged. The
+> following commit is only in QEMU's mirror repo:
+> 
+> commit 44693a974cd90917f81a7d0310df4b592edd7e09
+> Author: Christopher Lentocha <christopherericlentocha@gmail.com>
+> Date:   Tue Jan 21 11:59:14 2025 -0500
+> 
+>     Fix AHCI Disk Detection when using EDK2 CSM
+> 
+> It is not possible to fast-forward to upstream's master due to this difference.
+> 
+> Gerd: Do you know what happened to this commit upstream?
+
+Hmm, no idea.  Didn't notice it got lost until now.  Also can't remember
+having seen a non-ff update on the seabios master branch when pulling.
+
+Either me or Kevin must have deleted it by accident, or something went
+wrong with the coreboot git server (where seabios git repo is hosted).
+
+Guess we must do a forced update once to get them back in sync.
+
+take care,
+  Gerd
 
 
