@@ -2,91 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8C5AD6B89
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 11:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD007AD6B97
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 11:04:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPdmc-0000mr-Hx; Thu, 12 Jun 2025 04:59:39 -0400
+	id 1uPdqi-0002GK-PK; Thu, 12 Jun 2025 05:03:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uPdmP-0000mb-HI
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 04:59:27 -0400
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uPdmN-0008IV-RW
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 04:59:25 -0400
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-70e447507a0so4659177b3.0
- for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 01:59:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1749718762; x=1750323562; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dOH4TOPKfXVTtEum4vcNxqUxilqMWr/Vjh2CfFpD4p4=;
- b=l67PgzAdCXDZqVdJxuY9cTElzEcoUn7NnKn+CQRSH790XT2+keijmkZ/i29NBrpqf2
- CPuhAvLy/bUq6Qomu4R9XIr890bZjcMyVq6CFh0GL7tZJ+s1Aa7PfrlHQ3/POWAdx6dq
- W+NfpSZeBp//tzDYaZCe9RY5tJqe7VzoxfoC9sqLdQWEMG/dVWvuxSvw1D6G8gFW/0s0
- CeDmWC3SgosRE7QTigoxGddfU9ozJZta/WU+AoBEiQE33PP7b/g4wFZVKfen4c/mo80T
- HcbIOuX4vNDMgvcBp274F9gIC1aQrEPfPFWfDN6KYyt0V3MitM5GXNQ6qrDzdWRbKGC8
- 4hzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749718762; x=1750323562;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dOH4TOPKfXVTtEum4vcNxqUxilqMWr/Vjh2CfFpD4p4=;
- b=dD+PX+AX9oi7X6KbVqQAAj3HvJAADLDKcYdloUWFoqHoqFJNegyXB1xVyNeMajF1Ph
- wHZbP1viRi2KCv/nablb7jMX0msB59yVyg6L0GGwSgFtT8evaoGZ4WCpbOxXwPPOL6hA
- d0JIP8FojSK/giuJjZMGhuOHRGIqSX1vKRbWJ+H7anX6WgYXUF7pMGyhrgSkNp9I2wZ9
- cganGw/Rp8ISk5HN+7SuMqGZPkCxv8sXIlZ450D5fzF7WsUQQoOFzXL4GRkGwYYH/Wnl
- 4FUgEWeKS2zayu9yywippESSv3Lv6hc/lgVxjwhqQ7IFAivlGQ4EYa39ZRcA/3OZoR4r
- TwbA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXlt09litQlXdrjlCZWZm4xy2EWus1vnInJ4HWcfa2d7Zh1W2gB4lJPbQ0Gh5xdPDZHtElfNI9g0gbl@nongnu.org
-X-Gm-Message-State: AOJu0Yy1P2cCNANCqSEL5HHXsZ2PSShl4lbJJgYW8jUyeWvO8KCf2dK+
- iiWlSHgPnFz1CLLKDqPQ+Y30tAZZkgPobjYoKSDyLAy5hIdlLWbF1x6HnafEvBAVjmVO4071l+w
- cRGge6MwmrQU2b7aDPBuyntwkM2cQgI0pOQWHGgy/Yw==
-X-Gm-Gg: ASbGncsnCQKNpu82EAv6dMozTKHBmG68nN2hMVfLucPdMa1tWH4l8anpdxs72qIy2Ie
- Zi9q6XWJ0ADX3ORfKda5QVKg/IHyb/Wxz5I4H6+2FlZfL+c+lszjkYPREgAhXBcvw0ifnBhb6eB
- QFRDL50jtIxZLD/NjkTQV+KiYdZZm87DiAzGD22Djshk22
-X-Google-Smtp-Source: AGHT+IHE/y8PR2bSWQkpeBdjykvQj6Er7X2jjQT1pUgLSP427cYx3+3qdjUxwK8mMRn/DhX8Rek4iQDr3NF9TU54b+M=
-X-Received: by 2002:a05:690c:680d:b0:70e:1bd8:a9c8 with SMTP id
- 00721157ae682-7114ed6aa60mr39561017b3.23.1749718761960; Thu, 12 Jun 2025
- 01:59:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1uPdqX-0002Fm-Jr
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 05:03:42 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1uPdqT-0000Hd-DW
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 05:03:41 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8BxLHLcl0poaLcUAQ--.15377S3;
+ Thu, 12 Jun 2025 17:03:24 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMAxzxvZl0poBIYXAQ--.19666S2;
+ Thu, 12 Jun 2025 17:03:22 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: [PATCH v3 0/5] Add bios-tables-test for LoongArch system
+Date: Thu, 12 Jun 2025 17:03:16 +0800
+Message-Id: <20250612090321.3416594-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20250611182902.201331-1-stefanha@redhat.com>
- <20250611182902.201331-2-stefanha@redhat.com>
- <alpine.LMD.2.03.2506112113260.22610@eik.bme.hu>
- <CAJSP0QVWQLK+5Z4DiNVDaz2-YtUUDYRj+roq9rwRS8ZVWYMKBg@mail.gmail.com>
-In-Reply-To: <CAJSP0QVWQLK+5Z4DiNVDaz2-YtUUDYRj+roq9rwRS8ZVWYMKBg@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 12 Jun 2025 09:59:10 +0100
-X-Gm-Features: AX0GCFtGhA8rOG7O6c-9vu0CHs1olgpXspjqdRJI8rhzNiQbhNsNvbl_TP75Oas
-Message-ID: <CAFEAcA-GjJ0o37nwNX0+oLJPRUACEbW2KVi1N63fC0Etc1q0kw@mail.gmail.com>
-Subject: Re: [PULL 1/1] meson: fix Windows build
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: BALATON Zoltan <balaton@eik.bme.hu>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-devel@nongnu.org, 
- Mahmoud Mandour <ma.mandourr@gmail.com>, Mads Ynddal <mads@ynddal.dk>, 
- Alexandre Iooss <erdnaxe@crans.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- oltolm <oleg.tolmatcev@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMAxzxvZl0poBIYXAQ--.19666S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,70 +65,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 11 Jun 2025 at 20:55, Stefan Hajnoczi <stefanha@gmail.com> wrote:
->
-> On Wed, Jun 11, 2025 at 3:25=E2=80=AFPM BALATON Zoltan <balaton@eik.bme.h=
-u> wrote:
-> >
-> > On Wed, 11 Jun 2025, Stefan Hajnoczi wrote:
-> > > From: oltolm <oleg.tolmatcev@gmail.com>
-> > >
-> > > Sorry, I forgot to cc the maintainers.
-> >
-> > Do we want comments like this end up in git log? This could have been
-> > fixed before a pull. Also the other pull request about uninitialised st=
-ack
-> > variables had hw/audio/gus twice which was pointed out by a comment bef=
-ore
-> > the pull that one of those should be different but the pull request sti=
-ll
-> > had this error. Did you miss these or aren't these important enough to =
-fix
-> > before getting in git log forever or there is just no easy way to fix u=
-p
-> > commit messages in pull requests?
->
-> If another reviewer asks for the author to resend then I'll hold off
-> on merging, but I didn't see the comment about hw/audio/gus. Sorry!
->
-> I did see this "Sorry, I forgot to cc the maintainers" comment.
-> Although I'm not consistent, nowadays I generally do not fix these
-> issues when merging, provided it's a small issue that can be ignored
-> or understood from the context.
->
-> I don't really mind either way, so if there is a consensus that all
-> maintainers should be strict about this, I'm happy to join.
+This patchset adds bios-tables-test for LoongArch64 virt machine
+system. Some basic ACPI tables is added here, and it passes with
+command make check-qtest-loongarch64 with the result:
+ qtest-loongarch64/bios-tables-test OK 42.00s 5 subtests passed
 
-Personally when I'm accumulating patches as a maintainer I do
-fix up this kind of commit message. It's generally from a first
-time contributor, so the commit needs closer attention anyway,
-and I favour just fixing "this isn't quite the way we usually
-do things" problems at my end, rather than asking the submitter to
-resend. I also fix nits from longer term contributors where it's
-faster to do that than to ask for a respin.
+---
+v2 .. v3:
+  1. Replace parameter cores=4,threads=2 with cores=2,threads=2 in test
+     case test_acpi_loongarch64_virt_topology(), so that it passes to
+     run on big endian S390 qemu host.
+v1 .. v2:
+  1. Replace 1024 * 1024 with MiB macro.
+  2. Add memory size of all node and node instance and with numa memory
+     test case.
+  3. Remove requirement with virtio-blk-pci with test case.
+  4. Merge patch 6 and patch 3 into together, and adjust patch order.
+  5. Add oem-id test case.
+---
+Bibo Mao (5):
+  tests/acpi: Add empty ACPI data files for LoongArch
+  tests/qtest/bios-tables-test: Add basic testing for LoongArch
+  rebuild-expected-aml.sh: Add support for LoongArch
+  tests/acpi: Fill acpi table data for LoongArch
+  tests/acpi: Remove stale allowed tables
 
-In this specific case I'd probably re-cast the commit message
-entirely, because the first-person past-tense phrasing is not
-our standard commit log style. I would also want to add something
-clarifying exactly what we're fixing (clearly "the Windows build"
-generally was not broken, or we'd have seen it in CI, so this
-is fixing a more niche build environment setup, and it's worth
-having the commit message be clear about what that setup is).
+ tests/data/acpi/loongarch64/virt/APIC         | Bin 0 -> 108 bytes
+ .../data/acpi/loongarch64/virt/APIC.topology  | Bin 0 -> 153 bytes
+ tests/data/acpi/loongarch64/virt/DSDT         | Bin 0 -> 4641 bytes
+ tests/data/acpi/loongarch64/virt/DSDT.memhp   | Bin 0 -> 5862 bytes
+ tests/data/acpi/loongarch64/virt/DSDT.numamem | Bin 0 -> 4647 bytes
+ .../data/acpi/loongarch64/virt/DSDT.topology  | Bin 0 -> 4943 bytes
+ tests/data/acpi/loongarch64/virt/FACP         | Bin 0 -> 268 bytes
+ tests/data/acpi/loongarch64/virt/MCFG         | Bin 0 -> 60 bytes
+ tests/data/acpi/loongarch64/virt/PPTT         | Bin 0 -> 76 bytes
+ .../data/acpi/loongarch64/virt/PPTT.topology  | Bin 0 -> 176 bytes
+ tests/data/acpi/loongarch64/virt/SLIT         |   0
+ tests/data/acpi/loongarch64/virt/SLIT.numamem | Bin 0 -> 48 bytes
+ tests/data/acpi/loongarch64/virt/SPCR         | Bin 0 -> 80 bytes
+ tests/data/acpi/loongarch64/virt/SRAT         | Bin 0 -> 104 bytes
+ tests/data/acpi/loongarch64/virt/SRAT.memhp   | Bin 0 -> 144 bytes
+ tests/data/acpi/loongarch64/virt/SRAT.numamem | Bin 0 -> 144 bytes
+ .../data/acpi/loongarch64/virt/SRAT.topology  | Bin 0 -> 152 bytes
+ tests/data/acpi/rebuild-expected-aml.sh       |   4 +-
+ tests/qtest/bios-tables-test.c                |  79 ++++++++++++++++++
+ tests/qtest/meson.build                       |   1 +
+ 20 files changed, 82 insertions(+), 2 deletions(-)
+ create mode 100644 tests/data/acpi/loongarch64/virt/APIC
+ create mode 100644 tests/data/acpi/loongarch64/virt/APIC.topology
+ create mode 100644 tests/data/acpi/loongarch64/virt/DSDT
+ create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.memhp
+ create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.numamem
+ create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.topology
+ create mode 100644 tests/data/acpi/loongarch64/virt/FACP
+ create mode 100644 tests/data/acpi/loongarch64/virt/MCFG
+ create mode 100644 tests/data/acpi/loongarch64/virt/PPTT
+ create mode 100644 tests/data/acpi/loongarch64/virt/PPTT.topology
+ create mode 100644 tests/data/acpi/loongarch64/virt/SLIT
+ create mode 100644 tests/data/acpi/loongarch64/virt/SLIT.numamem
+ create mode 100644 tests/data/acpi/loongarch64/virt/SPCR
+ create mode 100644 tests/data/acpi/loongarch64/virt/SRAT
+ create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.memhp
+ create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.numamem
+ create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.topology
 
-> One related point I do have a strong opinion on is that the
-> qemu.git/master maintainer shouldn't be expected to do fixups on a
-> pull request they receive. Fixups should be done by subsystem
-> maintainers (and the pull request must be resent) or the original
-> patch authors. It doesn't scale when the qemu.git/master maintainer
-> has to make changes to code that they are unfamiliar with. That's not
-> the case here, but I just wanted to mention it because from time to
-> time someone requests this.
 
-Fixing up a pullreq is also basically not possible -- the
-pullreq is signed and you can't change the commits in it.
-I don't recommend throwing random fixes (as opposed to
-genuine simple merge conflict fixes) into the merge commit.
+base-commit: d9ce74873a6a5a7c504379857461e4ae64fcf0cd
+-- 
+2.39.3
 
-thanks
--- PMM
 
