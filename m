@@ -2,74 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA9EAD7255
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 15:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A88FAD7263
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 15:45:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPiBY-0004bz-Ht; Thu, 12 Jun 2025 09:41:40 -0400
+	id 1uPiEU-0005LM-6i; Thu, 12 Jun 2025 09:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uPiBQ-0004bf-LB
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 09:41:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uPiDh-0005Fr-0H; Thu, 12 Jun 2025 09:43:55 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uPiBM-0000X0-Vu
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 09:41:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749735687;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=/6nhs55HeCEfop4HhUcD3CdGhQXBSPU2ZhHHxwdY5Rs=;
- b=WYtjKsGFlk5LG723yCzLtHp0HWaZC5vz8Llk3N473jGMx7lnUztJ0ghYRPz5tCgu/eMlmn
- cuDnF9HXyJcgWwk4U649U/YfqFZh56rio3FltcRkUlxS5ACGuktwhy65AmPCRbBRQmQOLW
- hK4Je6788p5IYvq1y9AmuC5KzM43LLk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-QMw2CSZANOOWU_7jTfk1TQ-1; Thu,
- 12 Jun 2025 09:41:23 -0400
-X-MC-Unique: QMw2CSZANOOWU_7jTfk1TQ-1
-X-Mimecast-MFC-AGG-ID: QMw2CSZANOOWU_7jTfk1TQ_1749735682
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AD694180AE16; Thu, 12 Jun 2025 13:41:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.113])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9DC9E195E340; Thu, 12 Jun 2025 13:41:19 +0000 (UTC)
-Date: Thu, 12 Jun 2025 14:41:15 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Jaehoon Kim <jhkim@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, jjherne@linux.ibm.com, steven.sistare@oracle.com,
- peterx@redhat.com, farosas@suse.de, lvivier@redhat.com, pbonzini@redhat.com
-Subject: Re: [PATCH v4 2/2] migration: Support fd-based socket address in
- cpr_transfer_input
-Message-ID: <aErY-yZy9qbVpdcU@redhat.com>
-References: <20250611205610.147008-1-jhkim@linux.ibm.com>
- <20250611205610.147008-3-jhkim@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uPiDd-0000mS-Cz; Thu, 12 Jun 2025 09:43:52 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bJ3dG2QBPz6M51h;
+ Thu, 12 Jun 2025 21:43:14 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 2F2341402EB;
+ Thu, 12 Jun 2025 21:43:40 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 12 Jun 2025 15:43:39 +0200
+To: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>, Peter Maydell
+ <peter.maydell@linaro.org>, <mst@redhat.com>, Zhijian Li
+ <lizhijian@fujitsu.com>, Itaru Kitayama <itaru.kitayama@linux.dev>
+CC: <linuxarm@huawei.com>, <linux-cxl@vger.kernel.org>, <qemu-arm@nongnu.org>, 
+ Yuquan Wang <wangyuquan1236@phytium.com.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Alireza Sanaee
+ <alireza.sanaee@huawei.com>, =?UTF-8?q?Alex=20Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Subject: [PATCH v15 0/4] arm/virt: CXL support via pxb_cxl
+Date: Thu, 12 Jun 2025 14:43:34 +0100
+Message-ID: <20250612134338.1871023-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250611205610.147008-3-jhkim@linux.ibm.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,64 +67,125 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 11, 2025 at 03:56:10PM -0500, Jaehoon Kim wrote:
-> Extend cpr_transfer_input to handle SOCKET_ADDRESS_TYPE_FD alongside
-> SOCKET_ADDRESS_TYPE_UNIX. This change supports the use of pre-listened
-> socket file descriptors for cpr migration channels.
-> 
-> This change is particularly useful in qtest environments, where the
-> socket may be created externally and passed via fd.
-> 
-> Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
-> Reviewed-by: Steve Sistare <steven.sistare@oracle.com>
-> Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
-> ---
->  migration/cpr-transfer.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+v15:
+  - Split the address map calculations and mmio setup into separate
+    functions in patch 2, allowing v14 patch 3 to be dropped as not
+    x86 and arm make the same calls.  Note I felt this was a sufficient
+    change to trigger dropping tags. (Zhijian Li)
+  - A few other minor tweaks.
+  - TLB issue mentioned in v14 now fixed upstream so dropped reference
+    in this cover letter.
 
-This patch *MUST* be first in the series, otherwise 'git bisect'
-will hit test failures on the former patch.
+Thanks to Itaru Kitayama and Zhijian Li for testing + reviews.
 
-> 
-> diff --git a/migration/cpr-transfer.c b/migration/cpr-transfer.c
-> index e1f140359c..00371d17c3 100644
-> --- a/migration/cpr-transfer.c
-> +++ b/migration/cpr-transfer.c
-> @@ -46,7 +46,8 @@ QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp)
->      MigrationAddress *addr = channel->addr;
->  
->      if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET &&
-> -        addr->u.socket.type == SOCKET_ADDRESS_TYPE_UNIX) {
-> +        (addr->u.socket.type == SOCKET_ADDRESS_TYPE_UNIX ||
-> +            addr->u.socket.type == SOCKET_ADDRESS_TYPE_FD)) {
->  
->          g_autoptr(QIOChannelSocket) sioc = NULL;
->          SocketAddress *saddr = &addr->u.socket;
-> @@ -60,7 +61,9 @@ QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp)
->  
->          sioc = qio_net_listener_wait_client(listener);
->          ioc = QIO_CHANNEL(sioc);
-> -        trace_cpr_transfer_input(addr->u.socket.u.q_unix.path);
-> +        trace_cpr_transfer_input(
-> +            addr->u.socket.type == SOCKET_ADDRESS_TYPE_UNIX ?
-> +            addr->u.socket.u.q_unix.path : addr->u.socket.u.fd.str);
->          qio_channel_set_name(ioc, "cpr-in");
->          return qemu_file_new_input(ioc);
->  
-> -- 
-> 2.49.0
-> 
-> 
+Updated cover letter
 
-With regards,
-Daniel
+Back in 2022, this series stalled on the absence of a solution to device
+tree support for PCI Expander Bridges (PXB) and we ended up only having
+x86 support upstream. I've been carrying the arm64 support out of tree
+since then, with occasional nasty surprises (e.g. UNIMP + DT issue seen
+a few weeks ago) and a fair number of fiddly rebases.
+gitlab.com/jic23/qemu cxl-<latest date>.  Will update shortly with this
+series.
+
+A recent discussion with Peter Maydell indicated that there are various
+other ACPI only features now, so in general he might be more relaxed
+about DT support being necessary. The upcoming vSMMUv3 support would
+run into this problem as well.
+
+I presented the background to the PXB issue at Linaro connect 2022. In
+short the issue is that PXBs steal MMIO space from the main PCI root
+bridge. The challenge is knowing how much to steal.
+
+On ACPI platforms, we can rely on EDK2 to perform an enumeration and
+configuration of the PCI topology and QEMU can update the ACPI tables
+after EDK2 has done this when it can simply read the space used by the
+root ports. On device tree, there is no entity to figure out that
+enumeration so we don't know how to size the stolen region.
+
+Three approaches were discussed:
+1) Enumerating in QEMU. Horribly complex and the last thing we want is a
+   3rd enumeration implementation that ends up out of sync with EDK2 and
+   the kernel (there are frequent issues because of how those existing
+   implementations differ.
+2) Figure out how to enumerate in kernel. I never put a huge amount of work
+   into this, but it seemed likely to involve a nasty dance with similar
+   very specific code to that EDK2 is carrying and would very challenging
+   to upstream (given the lack of clarity on real use cases for PXBs and
+   DT).
+3) Hack it based on the control we have which is bus numbers.
+   No one liked this but it worked :)
+
+The other little wrinkle would be the need to define full bindings for CXL
+on DT + implement a fairly complex kernel stack as equivalent in ACPI
+involves a static table, CEDT, new runtime queries via _DSM and a description
+of various components. Doable, but so far there is no interest on physical
+platforms. Worth noting that for now, the QEMU CXL emulation is all about
+testing and developing the OS stack, not about virtualization (performance
+is terrible except in some very contrived situations!)
+
+There is only a very simple test in here, because my intent is not to
+duplicate what we have on x86, but just to do a smoke test that everything
+is hooked up.  In general we need much more comprehensive end to end CXL
+tests but that requires a reaonsably stable guest software stack. A few
+people have expressed interest in working on that, but we aren't there yet.
+
+Note that this series has a very different use case to that in the proposed
+SBSA-ref support:
+https://lore.kernel.org/qemu-devel/20250117034343.26356-1-wangyuquan1236@phytium.com.cn/
+
+SBSA-ref is a good choice if you want a relatively simple mostly fixed
+configuration.  That works well with the limited host system
+discoverability etc as EDK2 can be build against a known configuration.
+
+My interest with this support in arm/virt is support host software stack
+development (we have a wide range of contributors, most of whom are working
+on emulation + the kernel support). I care about the weird corners. As such
+I need to be able to bring up variable numbers of host bridges, multiple CXL
+Fixed Memory Windows with varying characteristics (interleave etc), complex
+NUMA topologies with wierd performance characteristics etc. We can do that
+on x86 upstream today, or my gitlab tree. Note that we need arm support
+for some arch specific features in the near future (cache flushing).
+Doing kernel development with this need for flexibility on SBSA-ref is not
+currently practical. SBSA-ref CXL support is an excellent thing, just
+not much use to me for this work.
+
+Also, we are kicking off some work on DCD virtualization, particularly to
+support inter-host shared memory being presented up into a VM. That
+will need upstream support on arm64 as it is built on top of the existing
+CXL emulation to avoid the need for a separate guest software stack.
+
+Note this is TCG only - it is possible to support limited use with KVM but
+that needs additional patches not yet ready for upstream.  The challenge
+is interleave - and the solution is don't interleave if you want to run
+with KVM.
+
+Jonathan Cameron (4):
+  hw/cxl-host: Add an index field to CXLFixedMemoryWindow
+  hw/cxl: Make the CXL fixed memory windows devices.
+  hw/arm/virt: Basic CXL enablement on pci_expander_bridge instances
+    pxb-cxl
+  qtest/cxl: Add aarch64 virt test for CXL
+
+ include/hw/arm/virt.h     |   4 +
+ include/hw/cxl/cxl.h      |   5 +-
+ include/hw/cxl/cxl_host.h |   5 +-
+ hw/acpi/cxl.c             |  76 +++++++++--------
+ hw/arm/virt-acpi-build.c  |  34 ++++++++
+ hw/arm/virt.c             |  29 +++++++
+ hw/cxl/cxl-host-stubs.c   |   7 +-
+ hw/cxl/cxl-host.c         | 170 +++++++++++++++++++++++++++++++-------
+ hw/i386/pc.c              |  50 +++++------
+ tests/qtest/cxl-test.c    |  59 ++++++++++---
+ tests/qtest/meson.build   |   1 +
+ 11 files changed, 330 insertions(+), 110 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.48.1
 
 
