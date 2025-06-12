@@ -2,64 +2,217 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05981AD70D3
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 14:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D796FAD70C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 14:49:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPhPy-0003TR-D4; Thu, 12 Jun 2025 08:52:30 -0400
+	id 1uPhLv-0002C8-4E; Thu, 12 Jun 2025 08:48:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uPhOx-0003Lh-3c; Thu, 12 Jun 2025 08:51:32 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1uPhLt-0002By-4L
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 08:48:17 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uPhOq-0001u0-S8; Thu, 12 Jun 2025 08:51:25 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bJ2Mz5Ym1z6L53f;
- Thu, 12 Jun 2025 20:46:39 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 4EF6F1402F3;
- Thu, 12 Jun 2025 20:51:01 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 12 Jun
- 2025 14:51:00 +0200
-Date: Thu, 12 Jun 2025 13:50:58 +0100
-To: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Fan Ni
- <fan.ni@samsung.com>, Peter Maydell <peter.maydell@linaro.org>,
- "mst@redhat.com" <mst@redhat.com>, "linuxarm@huawei.com"
- <linuxarm@huawei.com>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- Yuquan Wang <wangyuquan1236@phytium.com.cn>, Itaru Kitayama
- <itaru.kitayama@linux.dev>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, Alireza Sanaee <alireza.sanaee@huawei.com>
-Subject: Re: [PATCH v14 3/5] hw/cxl-host: Allow split of establishing memory
- address and mmio setup.
-Message-ID: <20250612135058.000047fe@huawei.com>
-In-Reply-To: <ce28ad6b-a76a-44d7-8135-9560e8e1d6f8@fujitsu.com>
-References: <20250528110726.226389-1-Jonathan.Cameron@huawei.com>
- <20250528110726.226389-4-Jonathan.Cameron@huawei.com>
- <ce28ad6b-a76a-44d7-8135-9560e8e1d6f8@fujitsu.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1uPhLn-0001Sk-DM
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 08:48:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749732491; x=1781268491;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=oTyR0pxXTTO9lgb54R2DKxPTIrDBNI1kz71HZGaaZIs=;
+ b=eFlR0WAuZC3R3n/+YO+ovvFV/mGqETZ8x4yLQC7CE56OiiYZ85FV32rO
+ 1hH2iSbQRpgZu9xWdFnDghEEXcaC0tVxbaMvyKi74qK2H7A/NB6HUk369
+ 87DvcJU5KYrpiomLeV6JBBQlQsw0ABOvPsnWZRNqNk/e3S9f4Jy1aQhRr
+ +alAvCTtC/bK3/5eaYTRvV2RRFU8GUPkCWZk19QBez5n8H6FMv/tFLZt+
+ RIpAacUMaR4jWNeRcx6YBmu9MkF8s/r9ZO/8Y9fgOseuC8zqCarOCclK5
+ zTuXWkHjyatYmL6ftTO52Xz2C8hJ3hbkqXDr1vUlXh4kSE+Jlr9lYv66b Q==;
+X-CSE-ConnectionGUID: Bn+biyE1TKKE7V3aTn2KoA==
+X-CSE-MsgGUID: KTLzGuomS4G5/wPaFlRfQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="62559970"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="62559970"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2025 05:48:06 -0700
+X-CSE-ConnectionGUID: PZDXUGmVSpWA3/ctuVDySg==
+X-CSE-MsgGUID: gX7L1tqhRiKRhwzwv9ZLKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="147415922"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2025 05:48:07 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 12 Jun 2025 05:48:05 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Thu, 12 Jun 2025 05:48:05 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.69) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 12 Jun 2025 05:48:05 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QiNiYN/s/64PloH8iqqMK1ZbtLkTCP2ek53iYxoPEhBfBZGrIsek4R2tevIuhzvIdHu2TR3TI6AxaEcByiSPZhSrhkJPEjOi2wxCEmOYpW1zk3mXXcu/8ujnBjd0noaO+lm2mQ87DBdHpxvW62Nu4TqMRoQqZWwy6PAg7zS1mGijttkWpAoaUXD9Xz3iz/MGCGwqPUPhreaRiXMx8qLIDCnBDDx51xfgy0gaCLyAL0TDx9aVAezACuugGnjEIp/6kLTOUMV6q/44UESF4TBOwhHLTLvXGYDAVDEbuSbadZLrr4+Qxn8lF9eJSAAHFtgWXNaOY6deFz8s3YL9jg4vjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tajO51v/pGYQo95bO3bktNm6VhSOjx/HZlSJygQ14uw=;
+ b=eXABLF1b7rDC5yk8J6LN0OQzuLLbD9KB1kkdU0AbwMvjP4a8eFoOJ3askmT9gGepnRafAxj0xtA7cu4Ub9IplvdDb4GcJ4Cfu66vzX8657yy+WdOL36PPzP0kQ5IOTYFICLEbJTLbB91GT3lGcZizDEx4Z1pSMvbMhmhLVptuR2SwpdMjNWgGkqQAhEJx3Yix4Y+t9dZzNhbU2DOAqNqRIP7AMGJcpJFZwOHALRpBCckvwVSL5UUN2TCjJ6vNn2DchswnDrbCMIPwbjCt+FIqKkpliRj/cOOkYYK3fhAOsEtE4Lcqq7OScZB4uuO3xwnf3QAGLMRY/mFFH1xr/nprw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com (2603:10b6:8:141::20)
+ by CO1PR11MB4946.namprd11.prod.outlook.com (2603:10b6:303:9e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.32; Thu, 12 Jun
+ 2025 12:47:35 +0000
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a]) by DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a%7]) with mapi id 15.20.8835.018; Thu, 12 Jun 2025
+ 12:47:35 +0000
+Message-ID: <f6baaea1-a60c-41dc-a9a8-d2389ed14679@intel.com>
+Date: Thu, 12 Jun 2025 20:53:40 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rfcv3 15/21] intel_iommu: Bind/unbind guest page table to
+ host
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, Nicolin Chen
+ <nicolinc@nvidia.com>
+CC: Peter Xu <peterx@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>, 
+ "shameerali.kolothum.thodi@huawei.com"
+ <shameerali.kolothum.thodi@huawei.com>, "joao.m.martins@oracle.com"
+ <joao.m.martins@oracle.com>, "clement.mathieu--drif@eviden.com"
+ <clement.mathieu--drif@eviden.com>, "Tian, Kevin" <kevin.tian@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20250521111452.3316354-1-zhenzhong.duan@intel.com>
+ <20250521111452.3316354-16-zhenzhong.duan@intel.com>
+ <aC5YjHrv5EMDixzZ@Asurada-Nvidia>
+ <0f8087f4-0c97-440d-84d2-f3f017f81041@intel.com>
+ <aDDk1NYwJXaAdUQI@Asurada-Nvidia>
+ <29f5f434-1fe3-4b5e-91d1-f153e1e98602@intel.com>
+ <aDSmcvZ08jNOSr05@Asurada-Nvidia>
+ <SJ0PR11MB6744340B889FF65D3BD5B8459267A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <SJ0PR11MB6744340B889FF65D3BD5B8459267A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+X-ClientProxiedBy: KL1PR01CA0053.apcprd01.prod.exchangelabs.com
+ (2603:1096:820:5::17) To DS0PR11MB7529.namprd11.prod.outlook.com
+ (2603:10b6:8:141::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7529:EE_|CO1PR11MB4946:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15ad6650-874d-45f3-e71e-08dda9af4df8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|366016|7416014|376014|1800799024|7053199007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?VGxFSzNpZmJzazl2THFnMitQM3pkTlh5dXZVeWVmMmVvMjV5NE5PUUZJNWxD?=
+ =?utf-8?B?T2t4M3g4aUM3elNVVTlwZkk0ejQxV0JONDNSK3BxbVFqbk9pRTVwTExLWFZX?=
+ =?utf-8?B?cHpHaXMvM05tejQ2dDFkUEUrMWdKRm1hbllJQ2JKTDdibTFvUmU5S1k2ZHFZ?=
+ =?utf-8?B?NklLVnhSVGp1bjYwdHhhSGZYV2l0enU5WWVEUWNKNmNKVDVmK09kM1NhWVpY?=
+ =?utf-8?B?TUVGWU5LMEptc3VvbVYrNXpyR08xdEpSVFFCSzVxN2J0K3F3OUlDbmU1OHdw?=
+ =?utf-8?B?a3Z6TndCUE9KZjlxTFB0WGVKRkhuYU9GdDhPZ2RsK0lIN3JlS3prRWlpQitZ?=
+ =?utf-8?B?L3Q5WnQwbjNOYmFzVUdxSnZCYVBYYWdTSkROVE96VWVDYmNUWTFXOVVpMU05?=
+ =?utf-8?B?ZXpyK2ZDR0trdWRwMzZsQmNHenpvTEZpZ3o3U0Y0NVU0VTFUYUJmdmE2N2pC?=
+ =?utf-8?B?ZkVIWGp2NmYrWjBId1VwR1c1UU5vOEJna2laWXdSbEFPTHhDY0NlSXF5dVho?=
+ =?utf-8?B?QThqOGtlelNndUlmdFdYRG1HY0NmZVR4cjZSWGxCNHVOWFVXb3pqSUgxRkxE?=
+ =?utf-8?B?dlo2cFEzRjVQdEtHRDlsUnVhMWZwYjBXeW8vSldGTlp3WHE4dzgyZUNtY2pw?=
+ =?utf-8?B?MFlUNnVBb3M2blUxVEc2anc0VElOcEdWalE5RU11S1JkNTNIcUNCRlFEOHZX?=
+ =?utf-8?B?em84aGNwTENFR3BzdXFycXUveG9Sdk5kRGNsL1BFKzBuWldsWVpVenQ3Wnlz?=
+ =?utf-8?B?Z25TNEEvT3d4UkNENHFoZThZM1ArSUJJcjcwMkxuWkRyck1VUC9nZkM2cTNI?=
+ =?utf-8?B?U1NSY2t4Ry90YXNXRURadFpHbmdWR1Z3Z2UxMjJBK2U2dk9zSGVUcUZuQ1p0?=
+ =?utf-8?B?R3NXN1pUc3FMZnp0bE5OREtvN20zcW8wd0JtWUJXRDJBV091N1MvOWs5Zncz?=
+ =?utf-8?B?UUo1TVRUd0ZvZHVQTTlYTndibVhUS0hlV2Q5dDVTL3NBcHFXcStTMklRUGtw?=
+ =?utf-8?B?WHhxSlQrQ05QemJYYmovLzJNUk5mTXFuMEdOWDZIK20rMXlqaXNpS3hGbERQ?=
+ =?utf-8?B?aXA4UGJzeDgwSDlzam9UdnZ6a29Oa0JtdnF4dDlSSG1LZmI1ZGdRMHFSZlVp?=
+ =?utf-8?B?UXJTRXdhU3p2T3BKTWpEKyswUWZWbXQzcjNhdDEySWhIbjdXRG82YW14VXJI?=
+ =?utf-8?B?NWZXNGFUaTl2Y2ZwOGxaSnQ0YWpYdURTYVZ2UmJwb0ZMbHRIZWZOVHhWQ25o?=
+ =?utf-8?B?WEhmNnl1bEJpdURCd2FaKzdvN2MxVzZYUndWclFISDVyTzRycjYza1hIbVhS?=
+ =?utf-8?B?cThHdExwUmU5WTYwTzdCMmZaMEhsMmxuMTFreTVVdWhWa1MzZGI3L1p6RVFk?=
+ =?utf-8?B?clMxQkF1SU1KZ1VKN2xtVE9DT2ZvMmQvWjArNGxUcU5mTFF6YlBpY1YrNGtq?=
+ =?utf-8?B?alNXSmN2V2RNbHpjblRzUmE1Vm5lbkg0TEJFOS9CS3gyWDc3K284UnJpZmty?=
+ =?utf-8?B?dDRoTk52NEVHSFR5bWh3RzRQb1hKcmtDQU84MjFJdDdhVHJzRXNKL05PV3dj?=
+ =?utf-8?B?cFhXMGNHdXJZb3RUaWt3NzVCV2NOV25xOWZEbWxlc21ZRVhjZW1pZmZqVk15?=
+ =?utf-8?B?NzlMckhUczFWVnVrWmdrZ1lZVHRwd0lhaVVSWnQyWDg5L1JMVDFqZnFidlVC?=
+ =?utf-8?B?Y2JaWXVuWlhlSnpFbVlQeGpsWUkwTmFSYlBUVk13Ty9CcDNGZ0xVdWIzb0FQ?=
+ =?utf-8?B?aFBNTzdmNXJGMGw4dEpTNkNpRWNydEZuRC9rRDJFYzNSLzF6Snh0LzVRbmdZ?=
+ =?utf-8?Q?X863iB+1iHoJ7n89TqQAvRfZ2lsuusynjYfco=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7529.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T3R5RTVyNmFFaVNtblF0QjBOUEtXdGtTRk9HYUJTVCtUTkxJR2ZUUURtNmc3?=
+ =?utf-8?B?eEtWU2JtQVo2dnExWDl6TGtwdlBWTlRNWnQ5WWE4c1pkdXJuN2VVRmswMXBr?=
+ =?utf-8?B?V0NNK2JWUk5nRG5rK1FhYmZhcHJ6U2QwdnNRSjB1S2dselZrd2tpSTFid3Y3?=
+ =?utf-8?B?Y1lFVkJoa21TUkc5L3ovZVlHT1NSZU9YWHMvSGFVdWwzOFJRd3JoRlNuNVRZ?=
+ =?utf-8?B?cE83bEMrTXQzTEVaVWtZVjAxZnNkaXBaU0JXWVR5VWNJWWd6NDQySVJWV1VW?=
+ =?utf-8?B?Y2hiVEZKV3FBcjdKYzdwZTM1Yko2MWl4cEZnajhSSzVscytRSkRqNUN0c29x?=
+ =?utf-8?B?V1NHeU1SdDkrZTFVYmFxdlQ3WkRJZTU4ZEl0VmZ0WGNYK0dNaERhdWNHY1pC?=
+ =?utf-8?B?c3NRVzRhQXhabDhlWW1yc1h6RkRQa3BSVzVMZEV1SDcvd29ub21YY01YYnNH?=
+ =?utf-8?B?c3g1blNHQXpTRlRTMXRHbkFscXFvNFBJM2tYOUtvWnZPM1BxY3hOUFpFNUtk?=
+ =?utf-8?B?ZklURmFWZGVod21QRGtJZzJYSzdWc2l2dVJXTHFpb2hJMDVIWDRRV3VDNUJy?=
+ =?utf-8?B?eXJRVmJDY0J2UFZBZVVNbkRvenFTd2Zka2VjSVcvdldrbytHUVVmZEM2OElE?=
+ =?utf-8?B?MU8rQVFsMzdVejE0YlpMRGZya3VIMWtmM1lpSENkNkdMVHBvSTdlMFlEN2pl?=
+ =?utf-8?B?MjcwREFpeS9RVEdCbVMrbEg0YnZkV3E5dWY1ZUNDYjZrVDVON2RKMFBEZ2FB?=
+ =?utf-8?B?cGJ3VVZVSWU3eEF6WmVKcENQVEdCZlNxTTBRRVd4RkgzWjlVSUpFTVRBT2dh?=
+ =?utf-8?B?clZ3MVlxVng1QS9OWDZIbG04OXB2NzF1c2NlLzh6Zm1lMHR3Um1HcjdEeXBL?=
+ =?utf-8?B?T0xmOXZIaGFCU0Y4OTgyWmtBK3VsbUI4Z1JaU3g0dytTMG02R294WnBHWUhT?=
+ =?utf-8?B?b2tjRHJGVlVXR2p2c2xKNktQZzMwUkVFN29zOTFZMFNLcHhDUlZNWW1uZDVP?=
+ =?utf-8?B?TlJMMDd4ZFN3Sk9sMFk0ZWU2MnRoVE51N1JjR1JoVW8vMThCTFUybHZPdXlD?=
+ =?utf-8?B?UVB4ZmhRTWpHelV3M2dKWXBSMU4xa2t2Zi9mQkxSSjEyN2txM3RMeXJUdS9I?=
+ =?utf-8?B?UG93ak9OQkVCMjNXZG56ZzI0MGYrVGZYSnE3bHBIUlFSQWg3bEpOdUhTSjBY?=
+ =?utf-8?B?Z2Z1cXpZUXFaWVJqM041TWVXU2V0MWpPTkNaaCt2eGRkYWpMeEZXb2tLRXJE?=
+ =?utf-8?B?ZTU1SlIvdEVKbXRtdDN2cFhJV3pOaGFGVHRDWHlMSnVoUjR4TjhxSENjZ01S?=
+ =?utf-8?B?YXRyNERtdWZRMkJac050K2lEcVZrdzV2UHRLM2JHd3ZHTDJmaERjVXFsUzR3?=
+ =?utf-8?B?aW1VSjdNMjNHVko2MkxqYmdwNDNKNWNEUEVhQllTMFlLdmhWclVzTEh3dmJ5?=
+ =?utf-8?B?aTJnSkxXTURyWlgxMlFZWnVUMFU3TUFvZ2V5bEhNWk96bkhYR1ZCYS9KTUJy?=
+ =?utf-8?B?cUlQUjhFWkp0akYzZHU4bnc4eVdzalBWajZiRDZYSFFmTnBLZVg5Zk9pMk5H?=
+ =?utf-8?B?R3FBY1pzRWdySE4yZlcvTG1MT0tGbWVYUURZS2Z6VXh3MHJLZFZwcExMbi9N?=
+ =?utf-8?B?SkF5QkhHSUVvK3pjQTBGSFE4RHdYVWpJaUtWb2h4aTltWlBtOUFoVEcvdGlm?=
+ =?utf-8?B?Kzc2dDdHSFRwd3diWWNFWDdtcUl5NlJVVStwZ2R3NGd6NXhvN0lIOG83YjNq?=
+ =?utf-8?B?VWMyY2ZxQWdudWNhTWkvclcyZWRpT1B1bFArT2hoMGhUazRucnFVMXNwVmhr?=
+ =?utf-8?B?elNaZGU3dDd5YzR0Y0xTYWxLMEh6dFlPelJaN0d6RlBNaTNWckRhZ0JaSlAv?=
+ =?utf-8?B?VER3WG5XUjZRdzJzcysyd0c4OFJ2dTNIVUdkTlRCaVFieFpGYWtHb3ZjR2p5?=
+ =?utf-8?B?UUZIRnU5citBK2J6TER2NlhDVWFrSTMrRENIaTY0cHF2SkNsdUdWOUJyWEd2?=
+ =?utf-8?B?TlN3cVROWWRVbXlXUVJmbERrYU8zREdHcDVkSS9BZ3BiM1pzNGFBWUhQSUlV?=
+ =?utf-8?B?YW83Z245SGF2dmpYNWt4YTV2MXh3U2VUdnZ0cGdkZ2RacmEyOVVWMnNELzZv?=
+ =?utf-8?Q?RpRFWbVIDIlgbKGN/ZCelU3jT?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15ad6650-874d-45f3-e71e-08dda9af4df8
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7529.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 12:47:35.2368 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bXNEzrw6JqcaF8vOr2BfNQMTBJrWaqTl9bf00dHfUC9GaTpJ2r3t59YbHzJGrwaTBn9Q5sLNDhcEzw5WD2vRNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4946
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=yi.l.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,176 +226,165 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 9 Jun 2025 01:15:10 +0000
-"Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com> wrote:
-
-> In patch 2/5, we introduced `cxl_fmws_set_memmap_and_update_mmio()`.
-> 
-> Initially, I assumed patch 3/5 would split `cxl_fmws_set_memmap_and_update_mmio()` into two steps:
-> 1. Traverse CXLFixedWindow and update `fw->base`.
-> 2. Call `sysbus_mmio_map(SYS_BUS_DEVICE(fw), 0, fw->base)`.
-> For example (my personal preference):
-> ```c
-> hwaddr cxl_fmws_set_memmap_and_update_mmio(hwaddr base, hwaddr max_addr)
-> {
->      hwaddr end = cxl_fmws_set_memmap(base, max_addr);
->      cxl_fmws_update_mmio();
->      return end;
-> }
+On 2025/5/28 15:12, Duan, Zhenzhong wrote:
 > 
 > 
-> If we had implemented this design in patch 2/5, patch 3/5 might not be necessary.
-
-At the time of patch 2 we had no justification for the split as for x86 that would
-just look like a pointless double loop.
-
-However you are right that this is too complex given it's not a performance path
-and perhaps some commentary in the patch description will be enough that no
-one minds.
-
-I'll go a little further than you suggest and push the two calls in
-your cxl_fmws_set_memmap_and_mmio() into pc.c (patch 2) as that wrapper
-isn't adding much value.
-
-I think it is a big enough change that I'll drop tags given on patch 2.
-
-Thanks,
-
-Jonathan
-
-
-> The only potential benefit I see in the current patch 3/5 is efficiency improvements
-> in cxl_fmws_set_memmap_and_update_mmio(), but since the function is typically
-> called only once and the GLib list (glist) is small, the practical impact should
-> be minimal.
+>> -----Original Message-----
+>> From: Nicolin Chen <nicolinc@nvidia.com>
+>> Subject: Re: [PATCH rfcv3 15/21] intel_iommu: Bind/unbind guest page table to
+>> host
+>>
+>> OK. Let me clarify this at the top as I see the gap here now:
+>>
+>> First, the vSMMU model is based on Zhenzhong's older series that
+>> keeps an ioas_id in the HostIOMMUDeviceIOMMUFD structure, which
+>> now it only keeps an hwpt_id in this RFCv3 series. This ioas_id
+>> is allocated when a passthrough cdev attaches to a VFIO container.
+>>
+>> Second, the vSMMU model reuses the default IOAS via that ioas_id.
+>> Since the VFIO container doesn't allocate a nesting parent S2 HWPT
+>> (maybe it could?), so the vSMMU allocates another S2 HWPT in the
+>> vIOMMU code.
+>>
+>> Third, the vSMMU model, for invalidation efficiency and HW Queue
+>> support, isolates all emulated devices out of the nesting-enabled
+>> vSMMU instance, suggested by Jason. So, only passthrough devices
+>> would use the nesting-enabled vSMMU instance, meaning there is no
+>> need of IOMMU_NOTIFIER_IOTLB_EVENTS:
 > 
-> I'm interested in others' perspectives on this.
+> I see, then you need to check if there is emulated device under nesting-enabled vSMMU and fail if there is.
 > 
-> Thanks
-> Zhijian
+>> - MAP is not needed as there is no shadow page table. QEMU only
+>>    traps the page table pointer and forwards it to host kernel.
+>> - UNMAP is not needed as QEMU only traps invalidation requests
+>>    and forwards them to host kernel.
+>>
+>> (let's forget about the "address space switch" for MSI for now.)
+>>
+>> So, in the vSMMU model, there is actually no need for the iommu
+>> AS. And there is only one IOAS in the VM instance allocated by the
+>> VFIO container. And this IOAS manages the GPA->PA mappings. So,
+>> get_address_space() returns the system AS for passthrough devices.
+>>
+>> On the other hand, the VT-d model is a bit different. It's a giant
+>> vIOMMU for all devices (either passthrough or emualted). For all
+>> emulated devices, it needs IOMMU_NOTIFIER_IOTLB_EVENTS, i.e. the
+>> iommu address space returned via get_address_space().
+>>
+>> That being said, IOMMU_NOTIFIER_IOTLB_EVENTS should not be needed
+>> for passthrough devices, right?
 > 
+> No, even if x-flts=on is configured in QEMU cmdline, that only mean virtual vtd
+> supports stage-1 translation, guest still can choose to run in legacy mode(stage2),
+> e.g., with kernel cmdline intel_iommu=on,sm_off
 > 
-> On 28/05/2025 19:07, Jonathan Cameron via wrote:
-> > On arm/virt the memory map is set up before any devices are brought
-> > up.  To enable this provide split functions to establish the fw->base
-> > and later to actually map it.
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> > v14: Update wrt to changes in previous patch.
-> >       Add a do_cfwms_set_memmap_and_update_mmio() utility function
-> >       to reduce code duplication. (Zhijian)
-> > ---
-> >   include/hw/cxl/cxl_host.h |  2 ++
-> >   hw/cxl/cxl-host-stubs.c   |  2 ++
-> >   hw/cxl/cxl-host.c         | 43 +++++++++++++++++++++++++++++++++++----
-> >   3 files changed, 43 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/include/hw/cxl/cxl_host.h b/include/hw/cxl/cxl_host.h
-> > index 6dce2cde07..aee9d573d6 100644
-> > --- a/include/hw/cxl/cxl_host.h
-> > +++ b/include/hw/cxl/cxl_host.h
-> > @@ -16,6 +16,8 @@
-> >   void cxl_machine_init(Object *obj, CXLState *state);
-> >   void cxl_fmws_link_targets(Error **errp);
-> >   void cxl_hook_up_pxb_registers(PCIBus *bus, CXLState *state, Error **errp);
-> > +hwaddr cxl_fmws_set_memmap(hwaddr base, hwaddr max_addr);
-> > +void cxl_fmws_update_mmio(void);
-> >   hwaddr cxl_fmws_set_memmap_and_update_mmio(hwaddr base, hwaddr max_addr);
-> >   GSList *cxl_fmws_get_all_sorted(void);
-> >   
-> > diff --git a/hw/cxl/cxl-host-stubs.c b/hw/cxl/cxl-host-stubs.c
-> > index 13eb6bf6a4..d9e38618d6 100644
-> > --- a/hw/cxl/cxl-host-stubs.c
-> > +++ b/hw/cxl/cxl-host-stubs.c
-> > @@ -11,6 +11,8 @@
-> >   void cxl_fmws_link_targets(Error **errp) {};
-> >   void cxl_machine_init(Object *obj, CXLState *state) {};
-> >   void cxl_hook_up_pxb_registers(PCIBus *bus, CXLState *state, Error **errp) {};
-> > +hwaddr cxl_fmws_set_memmap(hwaddr base, hwaddr max_addr) { return base; };
-> > +void cxl_fmws_update_mmio(void) {};
-> >   hwaddr cxl_fmws_set_memmap_and_update_mmio(hwaddr base, hwaddr max_addr)
-> >   {
-> >       return base;
-> > diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-> > index 016a4fdc6a..a1b9980035 100644
-> > --- a/hw/cxl/cxl-host.c
-> > +++ b/hw/cxl/cxl-host.c
-> > @@ -378,11 +378,14 @@ void cxl_hook_up_pxb_registers(PCIBus *bus, CXLState *state, Error **errp)
-> >       }
-> >   }
-> >   
-> > -static void cxl_fmws_update(CXLFixedWindow *fw, hwaddr *base, hwaddr max_addr)
-> > +static void cxl_fmws_update(CXLFixedWindow *fw, hwaddr *base, hwaddr max_addr,
-> > +                            bool update_mmio)
-> >   {
-> >       if (*base + fw->size <= max_addr) {
-> >           fw->base = *base;
-> > -        sysbus_mmio_map(SYS_BUS_DEVICE(fw), 0, fw->base);
-> > +        if (update_mmio) {
-> > +            sysbus_mmio_map(SYS_BUS_DEVICE(fw), 0, fw->base);
-> > +        }
-> >           *base += fw->size;
-> >       }
-> >   }
-> > @@ -421,19 +424,51 @@ GSList *cxl_fmws_get_all_sorted(void)
-> >       return g_slist_sort_with_data(cxl_fmws_get_all(), cfmws_cmp, NULL);
-> >   }
-> >   
-> > -hwaddr cxl_fmws_set_memmap_and_update_mmio(hwaddr base, hwaddr max_addr)
-> > +static hwaddr do_cxl_fmws_set_memmap_and_update_mmio(hwaddr base,
-> > +                                                     hwaddr max_addr,
-> > +                                                     bool update_mmio)
-> >   {
-> >       GSList *cfmws_list, *iter;
-> >   
-> >       cfmws_list = cxl_fmws_get_all_sorted();
-> >       for (iter = cfmws_list; iter; iter = iter->next) {
-> > -        cxl_fmws_update(CXL_FMW(iter->data), &base, max_addr);
-> > +        cxl_fmws_update(CXL_FMW(iter->data), &base, max_addr, update_mmio);
-> >       }
-> >       g_slist_free(cfmws_list);
-> >   
-> >       return base;
-> >   }
-> >   
-> > +hwaddr cxl_fmws_set_memmap(hwaddr base, hwaddr max_addr)
-> > +{
-> > +    return do_cxl_fmws_set_memmap_and_update_mmio(base, max_addr, false);
-> > +}
-> > +
-> > +hwaddr cxl_fmws_set_memmap_and_update_mmio(hwaddr base, hwaddr max_addr)
-> > +{
-> > +    return do_cxl_fmws_set_memmap_and_update_mmio(base, max_addr, true);
-> > +}
-> > +
-> > +static int cxl_fmws_mmio_map(Object *obj, void *opaque)
-> > +{
-> > +    struct CXLFixedWindow *fw;
-> > +
-> > +    if (!object_dynamic_cast(obj, TYPE_CXL_FMW)) {
-> > +        return 0;
-> > +    }
-> > +    fw = CXL_FMW(obj);
-> > +    sysbus_mmio_map(SYS_BUS_DEVICE(fw), 0, fw->base);
-> > +
-> > +    return 0;
-> > +}
-> > +
-> > +void cxl_fmws_update_mmio(void)
-> > +{
-> > +    /* Ordering is not required for this */
-> > +    object_child_foreach_recursive(object_get_root(), cxl_fmws_mmio_map,
-> > +                                   NULL);
-> > +}
-> > +
-> >   static void cxl_fmw_realize(DeviceState *dev, Error **errp)
-> >   {
-> >       CXLFixedWindow *fw = CXL_FMW(dev)  
+> So before guest run, we don't know which kind of page table either stage1 or stage2
+> for this VFIO device by guest. So we have to use iommu AS to catch stage2's MAP event
+> if guest choose stage2.
 
+@Zheznzhong, if guest decides to use legacy mode then vIOMMU should switch
+the MRs of the device's AS, hence the IOAS created by VFIO container would
+be switched to using the IOMMU_NOTIFIER_IOTLB_EVENTS since the MR is
+switched to IOMMU MR. So it should be able to support shadowing the guest
+IO page table. Hence, this should not be a problem.
+
+@Nicolin, I think your major point is making the VFIO container IOAS as a
+GPA IOAS (always return system AS in get_address_space op) and reusing it
+when setting nested translation. Is it? I think it should work if:
+1) we can let the vfio memory listener filter out the RO pages per vIOMMU's
+    request. But I don't want the get_address_space op always return system
+    AS as the reason mentioned by Zhenzhong above.
+2) we can disallow emulated/passthru devices behind the same pcie-pci
+    bridge[1]. For emulated devices, AS should switch to iommu MR, while for
+    passthru devices, it needs the AS stick with the system MR hence be able
+    to keep the VFIO container IOAS as a GPA IOAS. To support this, let AS
+    switch to iommu MR and have a separate GPA IOAS is needed. This separate
+    GPA IOAS can be shared by all the passthru devices.
+
+[1] 
+https://lore.kernel.org/all/SJ0PR11MB6744E2BA00BBE677B2B49BE99265A@SJ0PR11MB6744.namprd11.prod.outlook.com/#t
+
+So basically, we are ok with your idea. But we should decide if it is 
+necessary to support the topology in 2). I think this is a general
+question. TBH. I don't have much information to judge if it is valuable.
+Perhaps, let's hear from more people.
+
+>>
+>> IIUIC, in the VT-d model, a passthrough device also gets attached
+>> to the VFIO container via iommufd_cdev_attach, allocating an IOAS.
+>> But it returns the iommu address space, treating them like those
+>> emulated devices, although the underlying MR of the returned IOMMU
+>> AS is backed by a nodmar MR (that is essentially a system AS).
+>>
+>> This seems to completely ignore the default IOAS owned by the VFIO
+>> container, because it needs to bypass those RO mappings(?)
+>>
+>> Then for passthrough devices, the VT-d model allocates an internal
+>> IOAS that further requires an internal S2 listener, which seems an
+>> large duplication of what the VFIO container already does..
+>>
+>> So, here are things that I want us to conclude:
+>> 1) Since the VFIO container already has an IOAS for a passthrough
+>>     device, and IOMMU_NOTIFIER_IOTLB_EVENTS isn't seemingly needed,
+>>     why not setup this default IOAS to manage gPA=>PA mappings by
+>>     returning the system AS via get_address_space() for passthrough
+>>     devices?
+>>
+>>     I got that the VT-d model might have some concern against this,
+>>     as the default listener would map those RO regions. Yet, maybe
+>>     the right approach is to figure out a way to bypass RO regions
+>>     in the core v.s. duplicating another ioas_alloc()/map() and S2
+>>     listener?
+>>
+>> 2) If (1) makes sense, I think we can further simplify the routine
+>>     by allocating a nesting parent HWPT in iommufd_cdev_attach(),
+>>     as long as the attaching device is identified as "passthrough"
+>>     and there is "iommufd" in its "-device" string?
+>>
+>>     After all, IOMMU_HWPT_ALLOC_NEST_PARENT is a common flag.
+>>
+>> On Mon, May 26, 2025 at 03:24:50PM +0800, Yi Liu wrote:
+>>> vfio_listener_region_add, section->mr->name: pc.bios, iova: fffc0000, size:
+>>> 40000, vaddr: 7fb314200000, RO
+>>> vfio_listener_region_add, section->mr->name: pc.rom, iova: c0000, size:
+>>> 20000, vaddr: 7fb206c00000, RO
+>> ..
+>>> vfio_listener_region_add, section->mr->name: pc.ram, iova: ce000, size:
+>>> 1a000, vaddr: 7fb207ece000, RO
+>>
+>> OK. They look like memory carveouts for FWs. "iova" is gPA right?
+>>
+>> And they can be in the range of a guest RAM..
+>>
+>> Mind elaborating why they shouldn't be mapped onto nesting parent
+>> S2?
+
+@Nicolin, It's due to ERRATA_772415.
+
+>>> IMHO. At least for vfio devices, I can see only one get_address_space()
+>>> call. So even there are two ASs, how should the vfio be notified when the
+>>> AS changed? Since vIOMMU is the source of map/umap requests, it looks fine
+>>> to always return iommu AS and handle the AS switch by switching the enabled
+>>> subregions according to the guest vIOMMU translation types.
+>>
+>> No, VFIO doesn't get notified when the AS changes.
+>>
+>> The vSMMU model wants VFIO to stay in the system AS since the VFIO
+>> container manages the S2 mappings for guest PA.
+>>
+>> The "switch" in vSMMU model is only needed by KVM for MSI doorbell
+>> translation. By thinking it carefully, maybe it shouldn't switch AS
+>> because VFIO might be confused if it somehow does get_address_space
+>> again in the future..
+
+@Nicolin, not quite get the detailed logic for the MSI stuff on SMMU. But I
+agree with the last sentence. get_address_space should return a consistent
+AS.
+
+-- 
+Regards,
+Yi Liu
 
