@@ -2,86 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A670DAD7341
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FCAAD7342
 	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 16:11:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPidZ-0006jf-Pd; Thu, 12 Jun 2025 10:10:39 -0400
+	id 1uPidL-0006bA-N1; Thu, 12 Jun 2025 10:10:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uPidS-0006j3-Cc
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 10:10:30 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1uPidJ-0006ZF-5E
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 10:10:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uPidN-0003r3-Vh
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 10:10:30 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bJ42p4kM6z6L532;
- Thu, 12 Jun 2025 22:01:54 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 596C714020C;
- Thu, 12 Jun 2025 22:06:16 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 12 Jun 2025 16:06:16 +0200
-Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
- frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Thu, 12 Jun 2025 16:06:16 +0200
-To: Yi Liu <yi.l.liu@intel.com>, "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, 
- Nicolin Chen <nicolinc@nvidia.com>
-CC: Peter Xu <peterx@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>,
- "ddutile@redhat.com" <ddutile@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>, 
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>, "Tian, 
- Kevin" <kevin.tian@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>, Yi Sun
- <yi.y.sun@linux.intel.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>
-Subject: RE: [PATCH rfcv3 15/21] intel_iommu: Bind/unbind guest page table to
- host
-Thread-Topic: [PATCH rfcv3 15/21] intel_iommu: Bind/unbind guest page table to
- host
-Thread-Index: AQHbykJHUawRnIodOUq2mz8F4Dn7BLPdj0MAgAIQvoCAAPjWAIADz6UAgACqsQCAAnaBgIAYEmR9gAAR++A=
-Date: Thu, 12 Jun 2025 14:06:15 +0000
-Message-ID: <7b684d1b8454496f9a302c66298daf37@huawei.com>
-References: <20250521111452.3316354-1-zhenzhong.duan@intel.com>
- <20250521111452.3316354-16-zhenzhong.duan@intel.com>
- <aC5YjHrv5EMDixzZ@Asurada-Nvidia>
- <0f8087f4-0c97-440d-84d2-f3f017f81041@intel.com>
- <aDDk1NYwJXaAdUQI@Asurada-Nvidia>
- <29f5f434-1fe3-4b5e-91d1-f153e1e98602@intel.com>
- <aDSmcvZ08jNOSr05@Asurada-Nvidia>
- <SJ0PR11MB6744340B889FF65D3BD5B8459267A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <f6baaea1-a60c-41dc-a9a8-d2389ed14679@intel.com>
-In-Reply-To: <f6baaea1-a60c-41dc-a9a8-d2389ed14679@intel.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.203.177.241]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1uPidF-0004h8-Vd
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 10:10:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749737416;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Egb4YeUhJAWOersscHOMQ4gzQrgMUi07QI6Ax5eucf8=;
+ b=G8Jp/++7eLnTug/Jx35W12xOfYE8sov8LeGtPctH7k5jpg1X56a3koHqHyxSHnG5tGzqIy
+ M7+VmIYsZvnkUNuC+O3+3YAAd6AmNIbAzKN53p2i1G1l1Oz2HGL+JBtEj/9+4cn77bEQm+
+ ShMX0GRVy3dOctzkNLR2ucU91QyTQ/s=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-164-fNCZ7fnpOEu3ldBOSIWOsw-1; Thu,
+ 12 Jun 2025 10:09:04 -0400
+X-MC-Unique: fNCZ7fnpOEu3ldBOSIWOsw-1
+X-Mimecast-MFC-AGG-ID: fNCZ7fnpOEu3ldBOSIWOsw_1749737343
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0533C180AE03; Thu, 12 Jun 2025 14:09:03 +0000 (UTC)
+Received: from srv1.redhat.com (unknown [10.45.224.218])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3187918003FC; Thu, 12 Jun 2025 14:09:00 +0000 (UTC)
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 0/2] QGA patches for 2025-06-12
+Date: Thu, 12 Jun 2025 17:08:55 +0300
+Message-ID: <20250612140857.47286-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,44 +76,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogWWkgTGl1IDx5aS5sLmxp
-dUBpbnRlbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBKdW5lIDEyLCAyMDI1IDE6NTQgUE0NCj4g
-VG86IER1YW4sIFpoZW56aG9uZyA8emhlbnpob25nLmR1YW5AaW50ZWwuY29tPjsgTmljb2xpbiBD
-aGVuDQo+IDxuaWNvbGluY0BudmlkaWEuY29tPg0KPiBDYzogUGV0ZXIgWHUgPHBldGVyeEByZWRo
-YXQuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOw0KPiBhbGV4LndpbGxpYW1zb25AcmVkaGF0
-LmNvbTsgY2xnQHJlZGhhdC5jb207IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsNCj4gbXN0QHJlZGhh
-dC5jb207IGphc293YW5nQHJlZGhhdC5jb207IGRkdXRpbGVAcmVkaGF0LmNvbTsNCj4gamdnQG52
-aWRpYS5jb207IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkNCj4gPHNoYW1lZXJhbGkua29sb3Ro
-dW0udGhvZGlAaHVhd2VpLmNvbT47IGpvYW8ubS5tYXJ0aW5zQG9yYWNsZS5jb207DQo+IGNsZW1l
-bnQubWF0aGlldS0tZHJpZkBldmlkZW4uY29tOyBUaWFuLCBLZXZpbiA8a2V2aW4udGlhbkBpbnRl
-bC5jb20+Ow0KPiBQZW5nLCBDaGFvIFAgPGNoYW8ucC5wZW5nQGludGVsLmNvbT47IFlpIFN1biA8
-eWkueS5zdW5AbGludXguaW50ZWwuY29tPjsNCj4gTWFyY2VsIEFwZmVsYmF1bSA8bWFyY2VsLmFw
-ZmVsYmF1bUBnbWFpbC5jb20+OyBQYW9sbyBCb256aW5pDQo+IDxwYm9uemluaUByZWRoYXQuY29t
-PjsgUmljaGFyZCBIZW5kZXJzb24NCj4gPHJpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmc+OyBF
-ZHVhcmRvIEhhYmtvc3QNCj4gPGVkdWFyZG9AaGFia29zdC5uZXQ+DQo+IFN1YmplY3Q6IFJlOiBb
-UEFUQ0ggcmZjdjMgMTUvMjFdIGludGVsX2lvbW11OiBCaW5kL3VuYmluZCBndWVzdCBwYWdlDQo+
-IHRhYmxlIHRvIGhvc3QNCiANCj4gPj4gVGhlICJzd2l0Y2giIGluIHZTTU1VIG1vZGVsIGlzIG9u
-bHkgbmVlZGVkIGJ5IEtWTSBmb3IgTVNJIGRvb3JiZWxsDQo+ID4+IHRyYW5zbGF0aW9uLiBCeSB0
-aGlua2luZyBpdCBjYXJlZnVsbHksIG1heWJlIGl0IHNob3VsZG4ndCBzd2l0Y2ggQVMNCj4gPj4g
-YmVjYXVzZSBWRklPIG1pZ2h0IGJlIGNvbmZ1c2VkIGlmIGl0IHNvbWVob3cgZG9lcyBnZXRfYWRk
-cmVzc19zcGFjZQ0KPiA+PiBhZ2FpbiBpbiB0aGUgZnV0dXJlLi4NCj4gDQo+IEBOaWNvbGluLCBu
-b3QgcXVpdGUgZ2V0IHRoZSBkZXRhaWxlZCBsb2dpYyBmb3IgdGhlIE1TSSBzdHVmZiBvbiBTTU1V
-LiBCdXQgSQ0KPiBhZ3JlZSB3aXRoIHRoZSBsYXN0IHNlbnRlbmNlLiBnZXRfYWRkcmVzc19zcGFj
-ZSBzaG91bGQgcmV0dXJuIGEgY29uc2lzdGVudA0KPiBBUy4NCg0KSSB0aGluayBpdCBpcyBiZWNh
-dXNlLCBpbiBBUk0gd29ybGQgdGhlIE1TSSBkb29yYmVsbCBhZGRyZXNzIGlzIHRyYW5zbGF0ZWQg
-YnkNCmFuIElPTU1VLiBIZW5jZSwgaWYgdGhlIEd1ZXN0IGRldmljZSBpcyBiZWhpbmQgSU9NTVUs
-IGl0IG5lZWRzIHRvIHJldHVybg0KdGhlIElPTU1VIEFTIGluLA0KDQprdm1faXJxY2hpcF9hZGRf
-bXNpX3JvdXRlKCkNCiBrdm1fYXJjaF9maXh1cF9tc2lfcm91dGUoKQ0KICAgcGNpX2RldmljZV9p
-b21tdV9hZGRyZXNzX3NwYWNlKCkgIC0tPiAuZ2V0X2FkZHJlc3Nfc3BhY2UoKSAgLS0+QXQgdGhp
-cyBwb2ludCB3ZSBub3cgcmV0dXJuIElPTU1VIEFTLg0KDQpJZiBub3QgdGhlIGRldmljZSB3aWxs
-IGJlIGNvbmZpZ3VyZWQgd2l0aCBhICB3cm9uZyBNU0kgZG9vcmJlbGwgYWRkcmVzcy4NCg0KTmlj
-b2xpbiwgeW91IHNlZW1zIHRvIHN1Z2dlc3Qgd2UgY291bGQgYXZvaWQgdGhpcyBzd2l0Y2hpbmcg
-YW5kIGFsd2F5cyByZXR1cm4NClN5c3RlbSBBUy4gRG9lcyB0aGF0IG1lYW4gd2UgaGFuZGxlIHRo
-aXMgS1ZNL01TSSBjYXNlIHNlcGFyYXRlbHk/DQpDb3VsZCB5b3UgcGxlYXNlIGRldGFpbCBvdXQg
-dGhlIGlkZWE/DQoNClRoYW5rcywNClNoYW1lZXINCg0K
+The following changes since commit d9ce74873a6a5a7c504379857461e4ae64fcf0cd:
+
+  Merge tag 'pull-vfio-20250611' of https://github.com/legoater/qemu into staging (2025-06-11 11:39:53 -0400)
+
+are available in the Git repository at:
+
+  https://github.com/kostyanf14/qemu.git tags/qga-pull-2025-06-12
+
+for you to fetch changes up to 1ebbc8b774d8b44697740b108ad060612828b58f:
+
+  qga: Add tests for guest-get-load command (2025-06-12 17:02:05 +0300)
+
+----------------------------------------------------------------
+qga-pull-2025-06-12
+
+----------------------------------------------------------------
+Konstantin Kostiuk (2):
+      qga-win: implement a 'guest-get-load' command
+      qga: Add tests for guest-get-load command
+
+ qga/commands-win32.c   | 148 +++++++++++++++++++++++++++++++++++++++++++++++++
+ qga/guest-agent-core.h |  10 ++++
+ qga/main.c             |  39 +++++++++++++
+ qga/meson.build        |   2 +-
+ qga/qapi-schema.json   |   9 ++-
+ tests/unit/test-qga.c  |  17 ++++++
+ 6 files changed, 222 insertions(+), 3 deletions(-)
+
+--
+2.48.1
+
 
