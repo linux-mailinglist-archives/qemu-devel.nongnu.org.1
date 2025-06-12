@@ -2,71 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED5EAD6C15
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 11:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D8FAD6D5A
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 12:17:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPe8k-0007s6-OL; Thu, 12 Jun 2025 05:22:35 -0400
+	id 1uPezH-0004jW-U2; Thu, 12 Jun 2025 06:16:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uPe7B-0007Et-DX; Thu, 12 Jun 2025 05:21:25 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uPezF-0004jG-34
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 06:16:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uPe75-0004oq-IM; Thu, 12 Jun 2025 05:20:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749720048; x=1781256048;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=+a3YUpdp7BYCX4nn8bMckAZORE+ZM3CNCghwwusOxvo=;
- b=O2lsE4n8Ow26czjtjlVU/TqVM44eoi0X1qchVM476kdlxAksdL4B5GWL
- gyThRz0F26y6FAFfSfb8uOrTu1MBUJkfGmKTBuCSVuMOUKSCHfIAyT+P/
- zMl7xlqJYy0XMHh38uFoCPLXCdnFOFQXtUDR1mtegfS5ADRO/4ruPwsTq
- lMx42QZuF1KgHPhioeE78oKJXAdSKx/xkzt6WDpyeZVz296xs514+ZuHZ
- 3s3PNKz+DJTvhFnKFW7FHNn7HSkDlks5GgiEHFLN6ROQasdVXjRxkCVQn
- +SGyY5z2n15GKokMyv/H1rJIDPFSwZmbEnutwBi+GsZroPTK8L/bEUr6p g==;
-X-CSE-ConnectionGUID: t4IGMQDMTRC8A7ExbMATAw==
-X-CSE-MsgGUID: cerdrT5eRH+wY0ayBDk9zg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51974152"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="51974152"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 02:20:43 -0700
-X-CSE-ConnectionGUID: vtdjdNUfT7WHiv+E/ERgVQ==
-X-CSE-MsgGUID: dJ1v64K8Qy6TVSXUfdnsXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="148362129"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa009.fm.intel.com with ESMTP; 12 Jun 2025 02:20:41 -0700
-Date: Thu, 12 Jun 2025 17:41:58 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 4/5] rust: qom: make ParentInit lifetime-invariant
-Message-ID: <aEqg5j9LFgszQzAv@intel.com>
-References: <20250609154423.706056-1-pbonzini@redhat.com>
- <20250609154423.706056-5-pbonzini@redhat.com>
- <aEqcGiGmZiMoIhY5@intel.com>
- <CABgObfb8CWy5zthqHRJrKqjP4xmBC=Zh3FrDjcK2Z6wsZJu-ew@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uPez7-0006HV-EM
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 06:16:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749723395;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dOgXUdbL82gnOhjSLwzcjPZxSpnddvg2hIBOzaCHeAE=;
+ b=DdmE6gARkPoLYsR4dz+LTQuHtLrI82lcyCANR2HXXJU5d3G13rRx1jf0pDz//ih7Q6MdCp
+ Sda1NGdTQ7tHn6ae0PpPxS6kRsfXrioAIoVfln+bPQUktisyGxZFt1nWzxg5KBOeLnOK87
+ dTxpS8wZuw7PNsXNoqfyh3Wvm3XNdI0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-102-GNNomrzTN2mJgHLcoli2aA-1; Thu,
+ 12 Jun 2025 06:16:33 -0400
+X-MC-Unique: GNNomrzTN2mJgHLcoli2aA-1
+X-Mimecast-MFC-AGG-ID: GNNomrzTN2mJgHLcoli2aA_1749723393
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CD77F18089B5; Thu, 12 Jun 2025 10:16:32 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.113])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4786A180045B; Thu, 12 Jun 2025 10:16:31 +0000 (UTC)
+Date: Thu, 12 Jun 2025 11:16:27 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PULL 0/2] Seabios 1.17.0 20250611 patches
+Message-ID: <aEqo-1g4gL0QXKWe@redhat.com>
+References: <20250611075037.659610-1-kraxel@redhat.com>
+ <aEnEiqfa57eH53Gf@redhat.com>
+ <CAJSP0QX7pcNTz_uSdMBzDhTRbUkrmmSPziBs82-GscRHM-xiug@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfb8CWy5zthqHRJrKqjP4xmBC=Zh3FrDjcK2Z6wsZJu-ew@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <CAJSP0QX7pcNTz_uSdMBzDhTRbUkrmmSPziBs82-GscRHM-xiug@mail.gmail.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,58 +84,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 12, 2025 at 11:07:51AM +0200, Paolo Bonzini wrote:
-> Date: Thu, 12 Jun 2025 11:07:51 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [PATCH 4/5] rust: qom: make ParentInit lifetime-invariant
-> 
-> On Thu, Jun 12, 2025 at 11:00 AM Zhao Liu <zhao1.liu@intel.com> wrote:
-> > > +/// It's impossible to escape the `Jail`; `token1` cannot be moved out of the
-> > > +/// closure:
-> > > +///
-> > > +/// ```ignore
-> > > +/// let x = 42;
-> > > +/// let escape = Jail::with(&x, |token1| {
-> > > +///     println!("{}", token1.get());
-> > > +///     token1
+On Wed, Jun 11, 2025 at 03:21:38PM -0400, Stefan Hajnoczi wrote:
+> On Wed, Jun 11, 2025 at 2:03 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
 > >
-> > This line will fail to compile (the below comment "// fails to compile" seems
-> > to indicate that println! will fail):
+> > FYI, this seabios 1.17.0 release appears to have broken the
+> > ability to use virtio-pci with libguestfs+QEMU:
 > >
-> > error: lifetime may not live long enough
-> >   --> src/main.rs:22:9
-> >    |
-> > 20 |     let escape = Jail::with(x, |token1| {
-> >    |                                 ------- return type of closure is Jail<'2, i32>
-> >    |                                 |
-> >    |                                 has type `Jail<'1, i32>`
-> > 21 |         println!("{}", token1.get());
-> > 22 |         token1
-> >    |         ^^^^^^ returning this value requires that `'1` must outlive `'2`
+> >   https://bugzilla.redhat.com/show_bug.cgi?id=2372329
+> >
+> > so I'd suggest we hold off on this pull request until
+> > the regression is diagnosed.
 > 
-> Right, I put it there because '2 lives until the second println!. The
-> problem is not so much that it's returning token1, it's that the
-> println uses it.
+> Thanks, Daniel. I have pushed a revert to staging.
 
-Even after I comment out the last intln line, the compiler still
-complains about returning token1. It seems the compiler's checking is
-stricter.
+This has been diagnosed now.
 
-I tried at there:
+Old SeaBIOS would unconditionally add ACPI tables, even when QEMU
+machine type had acpi=off. libguestfs forgot to ask for ACPI in
+its libvirt XML, so was getting acpi=off as far as QEMU was
+concerned, but SeaBIOS was none the less creating ACPI tables.
 
-https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1a9232532250b4a275638b926d7e65e5
+It was a miracle this worked because the ACPI tables were
+designed for i440fx, but somehow Linux still booted with
+them under q35.
 
-Thanks,
-Zhao
+So, the SeaBIOS update has a functional change, but that
+was intentional & desirable, and the root bug was the lack
+of request for ACPI in libguestfs.
 
-> I can see that it's confusing, maybe:
-> 
->     // Because "escape" is used after the closure has returned, the
->     // compiler cannot find a type for the "let escape" assignment.
-> 
-> Paolo
-> 
+So no need to revert anything
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
