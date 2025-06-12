@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F076AD7CD4
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 23:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D95BFAD7CD7
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 23:01:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPp20-0002Tq-Ut; Thu, 12 Jun 2025 17:00:17 -0400
+	id 1uPp2T-0003xG-6z; Thu, 12 Jun 2025 17:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uPp1y-0002Rb-8g
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 17:00:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uPp2Q-0003qo-UR
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 17:00:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uPp1n-0000qH-Uv
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 17:00:13 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uPp2J-00017d-4y
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 17:00:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749762002;
+ s=mimecast20190719; t=1749762033;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=emNV1/voq8vLNxrXGL0MQiHgqI8v5/GVX6i/w8ik8zI=;
- b=XJ8RVA8Dapj42b42A2xq9wplaYFN6Xs4NU1bVFC6IVc+ldgJqH6viprr4ed3rT4GUD+Ok/
- U98hN28SxWznkF6KuExQiVPj7FqwNSw8w0gDQ+JBEK6v2zo6xyRTt9hunBYbB3M/HV+i1m
- P6JY4hFZjfhK8oBTd0X34Q0P/tSze/s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=PBxHPU8F9xytU1WJw8ndoGxgIxFGcDQhUL4l1zUYAMc=;
+ b=Z5E0PvP+7enLnzNMibiaPHJfjomceTRJrK9htYC3DwPYHvJMEOvAztSz+wtCN5kfFgbHjw
+ wtWr0qzl2B83TLpFBWZLUl0r223mxNFAvWj1JafXwbSC+9wfvcJhF+4CnBrBNxEMg4o09p
+ f7OWcXI+Kt3ZRJ8dEJ0mTClxwP86yc8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-FMI1iKeyOf-ip1YEUJLvsQ-1; Thu,
- 12 Jun 2025 17:00:00 -0400
-X-MC-Unique: FMI1iKeyOf-ip1YEUJLvsQ-1
-X-Mimecast-MFC-AGG-ID: FMI1iKeyOf-ip1YEUJLvsQ_1749761996
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-nAgNX1eRO0idUHF4Tns3sw-1; Thu,
+ 12 Jun 2025 17:00:31 -0400
+X-MC-Unique: nAgNX1eRO0idUHF4Tns3sw-1
+X-Mimecast-MFC-AGG-ID: nAgNX1eRO0idUHF4Tns3sw_1749762027
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C0E471956095; Thu, 12 Jun 2025 20:59:55 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2628518001D6; Thu, 12 Jun 2025 21:00:26 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.54])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A265C1955F4A; Thu, 12 Jun 2025 20:59:26 +0000 (UTC)
+ id E49291956050; Thu, 12 Jun 2025 20:59:55 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>, Yi Liu <yi.l.liu@intel.com>,
@@ -124,25 +124,25 @@ Cc: Joel Stanley <joel@jms.id.au>, Yi Liu <yi.l.liu@intel.com>,
  Huacai Chen <chenhuacai@kernel.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH v2 08/12] python: further 3.9+ syntax upgrades
-Date: Thu, 12 Jun 2025 16:54:46 -0400
-Message-ID: <20250612205451.1177751-9-jsnow@redhat.com>
+Subject: [PATCH v2 09/12] python: update mkvenv to type-check under different
+ python versions
+Date: Thu, 12 Jun 2025 16:54:47 -0400
+Message-ID: <20250612205451.1177751-10-jsnow@redhat.com>
 In-Reply-To: <20250612205451.1177751-1-jsnow@redhat.com>
 References: <20250612205451.1177751-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,189 +158,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pyupgrade does not catch absolutely everything - there are still a few
-deprecated type aliases we need to shift away from using.
+Currently, we instruct mypy to pretend it is type checking under a
+specific version of python. For our case, where our scripts may in fact
+actually be executing under a number of different environments in the
+build system, we want mypy to remove this restriction.
+
+This patch adjusts some of the import logic in mkvenv.py to make it type
+check under a wider range of python versions. It's largely arbitrary, to
+work around some mypy fussiness.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/compat.py                 | 8 ++------
- docs/sphinx/qapi_domain.py            | 6 +++---
- python/qemu/machine/console_socket.py | 4 ++--
- python/qemu/qmp/events.py             | 9 +++++++--
- python/qemu/qmp/protocol.py           | 3 +--
- python/qemu/utils/qemu_ga_client.py   | 4 ++--
- tests/qemu-iotests/fat16.py           | 3 ++-
- tests/qemu-iotests/iotests.py         | 8 ++++++--
- 8 files changed, 25 insertions(+), 20 deletions(-)
+ python/scripts/mkvenv.py | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/docs/sphinx/compat.py b/docs/sphinx/compat.py
-index 2a93687cb3e..1eb1a49d976 100644
---- a/docs/sphinx/compat.py
-+++ b/docs/sphinx/compat.py
-@@ -2,13 +2,9 @@
- Sphinx cross-version compatibility goop
- """
+diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
+index 8026ca24861..b5d1edd3afa 100644
+--- a/python/scripts/mkvenv.py
++++ b/python/scripts/mkvenv.py
+@@ -99,16 +99,18 @@
+         HAVE_DISTLIB = False
  
-+from collections.abc import Callable
- import re
--from typing import (
--    TYPE_CHECKING,
--    Any,
--    Callable,
--    Optional,
--)
-+from typing import TYPE_CHECKING, Any, Optional
+ # Try to load tomllib, with a fallback to tomli.
+-# HAVE_TOMLLIB is checked below, just-in-time, so that mkvenv does not fail
++# TOML is checked below, just-in-time, so that mkvenv does not fail
+ # outside the venv or before a potential call to ensurepip in checkpip().
+-HAVE_TOMLLIB = True
++TOML = None
+ try:
+     import tomllib
++    TOML = tomllib
+ except ImportError:
+     try:
+-        import tomli as tomllib
++        import tomli
++        TOML = tomli
+     except ImportError:
+-        HAVE_TOMLLIB = False
++        pass
  
- from docutils import nodes
- from docutils.nodes import Element, Node, Text
-diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index cb6104922b5..7673eaed6d5 100644
---- a/docs/sphinx/qapi_domain.py
-+++ b/docs/sphinx/qapi_domain.py
-@@ -39,8 +39,8 @@
+ # Do not add any mandatory dependencies from outside the stdlib:
+ # This script *must* be usable standalone!
+@@ -194,6 +196,7 @@ def compute_venv_libpath(context: SimpleNamespace) -> str:
+         # Python 3.12+, not strictly necessary because it's documented
+         # to be the same as 3.10 code below:
+         if sys.version_info >= (3, 12):
++            assert isinstance(context.lib_path, str)
+             return context.lib_path
  
- 
- if TYPE_CHECKING:
--    from collections.abc import Iterable
--    from typing import AbstractSet, Any
-+    from collections.abc import Iterable, Set
-+    from typing import Any
- 
-     from docutils.nodes import Element, Node
-     from sphinx.addnodes import desc_signature, pending_xref
-@@ -825,7 +825,7 @@ def clear_doc(self, docname: str) -> None:
-                 del self.objects[fullname]
- 
-     def merge_domaindata(
--        self, docnames: AbstractSet[str], otherdata: dict[str, Any]
-+        self, docnames: Set[str], otherdata: dict[str, Any]
-     ) -> None:
-         for fullname, obj in otherdata["objects"].items():
-             if obj.docname in docnames:
-diff --git a/python/qemu/machine/console_socket.py b/python/qemu/machine/console_socket.py
-index 0754f340310..bcd27017fc9 100644
---- a/python/qemu/machine/console_socket.py
-+++ b/python/qemu/machine/console_socket.py
-@@ -17,7 +17,7 @@
- import socket
- import threading
- import time
--from typing import Deque, Optional
-+from typing import Optional
+         # Python 3.10+
+@@ -710,7 +713,7 @@ def _do_ensure(
  
  
- class ConsoleSocket(socket.socket):
-@@ -43,7 +43,7 @@ def __init__(self,
+ def _parse_groups(file: str) -> dict[str, dict[str, Any]]:
+-    if not HAVE_TOMLLIB:
++    if not TOML:
+         if sys.version_info < (3, 11):
+             raise Ouch("found no usable tomli, please install it")
  
-         self._recv_timeout_sec = 300.0
-         self._sleep_time = 0.5
--        self._buffer: Deque[int] = deque()
-+        self._buffer: deque[int] = deque()
-         if address is not None:
-             socket.socket.__init__(self, socket.AF_UNIX, socket.SOCK_STREAM)
-             self.connect(address)
-diff --git a/python/qemu/qmp/events.py b/python/qemu/qmp/events.py
-index e444d9334ec..33a9317e4d4 100644
---- a/python/qemu/qmp/events.py
-+++ b/python/qemu/qmp/events.py
-@@ -448,10 +448,15 @@ def accept(self, event) -> bool:
- """
- 
- import asyncio
--from collections.abc import AsyncIterator, Iterable, Iterator
-+from collections.abc import (
-+    AsyncIterator,
-+    Callable,
-+    Iterable,
-+    Iterator,
-+)
- from contextlib import contextmanager
- import logging
--from typing import Callable, Optional, Union
-+from typing import Optional, Union
- 
- from .error import QMPError
- from .message import Message
-diff --git a/python/qemu/qmp/protocol.py b/python/qemu/qmp/protocol.py
-index 4ec9564c4b3..683df61f55e 100644
---- a/python/qemu/qmp/protocol.py
-+++ b/python/qemu/qmp/protocol.py
-@@ -15,7 +15,7 @@
- 
- import asyncio
- from asyncio import StreamReader, StreamWriter
--from collections.abc import AsyncGenerator, Awaitable
-+from collections.abc import AsyncGenerator, Awaitable, Callable
- from contextlib import asynccontextmanager
- from enum import Enum
- from functools import wraps
-@@ -25,7 +25,6 @@
- from ssl import SSLContext
- from typing import (
-     Any,
--    Callable,
-     Generic,
-     Optional,
-     TypeVar,
-diff --git a/python/qemu/utils/qemu_ga_client.py b/python/qemu/utils/qemu_ga_client.py
-index a653c234c4b..d15848667b1 100644
---- a/python/qemu/utils/qemu_ga_client.py
-+++ b/python/qemu/utils/qemu_ga_client.py
-@@ -39,11 +39,11 @@
- import argparse
- import asyncio
- import base64
--from collections.abc import Sequence
-+from collections.abc import Callable, Sequence
- import os
- import random
- import sys
--from typing import Any, Callable, Optional
-+from typing import Any, Optional
- 
- from qemu.qmp import ConnectError, SocketAddrT
- from qemu.qmp.legacy import QEMUMonitorProtocol
-diff --git a/tests/qemu-iotests/fat16.py b/tests/qemu-iotests/fat16.py
-index 88c3d56c662..ec4bc980725 100644
---- a/tests/qemu-iotests/fat16.py
-+++ b/tests/qemu-iotests/fat16.py
-@@ -15,8 +15,9 @@
- # You should have received a copy of the GNU General Public License
- # along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-+from collections.abc import Callable
- import string
--from typing import Callable, Optional, Protocol
-+from typing import Optional, Protocol
+@@ -722,7 +725,7 @@ def _parse_groups(file: str) -> dict[str, dict[str, Any]]:
+     # Debian bullseye-backports) and v2.0.x
+     with open(file, encoding="ascii") as depfile:
+         contents = depfile.read()
+-        return tomllib.loads(contents)  # type: ignore
++        return TOML.loads(contents)  # type: ignore
  
  
- SECTOR_SIZE = 512
-diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
-index 104a61058fa..b69895cd117 100644
---- a/tests/qemu-iotests/iotests.py
-+++ b/tests/qemu-iotests/iotests.py
-@@ -20,7 +20,12 @@
- import atexit
- import bz2
- from collections import OrderedDict
--from collections.abc import Iterable, Iterator, Sequence
-+from collections.abc import (
-+    Callable,
-+    Iterable,
-+    Iterator,
-+    Sequence,
-+)
- from contextlib import contextmanager
- import faulthandler
- import json
-@@ -35,7 +40,6 @@
- import time
- from typing import (
-     Any,
--    Callable,
-     Optional,
-     TextIO,
-     TypeVar,
+ def ensure_group(
 -- 
 2.48.1
 
