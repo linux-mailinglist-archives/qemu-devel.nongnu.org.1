@@ -2,61 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDEEAD70A3
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 14:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59345AD70CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 14:51:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPhE0-0006x3-IE; Thu, 12 Jun 2025 08:40:11 -0400
+	id 1uPhNv-0002wh-Nz; Thu, 12 Jun 2025 08:50:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uPhDd-0006tc-Hn; Thu, 12 Jun 2025 08:39:50 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1uPhNs-0002wH-TF
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 08:50:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uPhDW-0008T8-E1; Thu, 12 Jun 2025 08:39:42 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id ECA4255C16F;
- Thu, 12 Jun 2025 14:39:30 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 8CG0zaX2-EOY; Thu, 12 Jun 2025 14:39:28 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DDBED55C16E; Thu, 12 Jun 2025 14:39:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id DB3B3745682;
- Thu, 12 Jun 2025 14:39:28 +0200 (CEST)
-Date: Thu, 12 Jun 2025 14:39:28 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Paolo Bonzini <pbonzini@redhat.com>
-cc: =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
- Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org, 
- qemu-arm@nongnu.org, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH 4/5] configure: Add dtc option
-In-Reply-To: <c29386d1-1a4b-4f3b-a669-4206c366ad9e@redhat.com>
-Message-ID: <7a9f2ae7-93fb-8acd-34ca-0d5d71b80af5@eik.bme.hu>
-References: <20250610204131.2862-1-shentey@gmail.com>
- <20250610204131.2862-5-shentey@gmail.com>
- <cdfc561e-23a9-607a-d9a8-70e07e73e0fd@eik.bme.hu>
- <aElCJnmjrB-X9M-n@redhat.com>
- <6eb6aa79-33f8-57ea-5714-af264557f8c8@eik.bme.hu>
- <c29386d1-1a4b-4f3b-a669-4206c366ad9e@redhat.com>
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1uPhNq-0001qo-Op
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 08:50:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749732616;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5lFhxRtUAdJGBztxdsbcyW9odsc9OfWhuK0xDjPtH3o=;
+ b=GluziHWRrRTYYpfgPFY5cS9t8MBypylC5HWoSIxQwLY1PvnWqaPDq73pyvfYckVdN9qbiy
+ /OKVkzZuhJ3+fCWCWW3eoR4t6AD+6YyAXLb3/HCwnYLVWxdgqqNBgEwkiT1fpNxP7J8g4X
+ 78ZVENl+i7JAjAQlNvWH//TO/0cP7W0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-321-5MR4po14NzSHiwFsO0Lz1w-1; Thu, 12 Jun 2025 08:50:14 -0400
+X-MC-Unique: 5MR4po14NzSHiwFsO0Lz1w-1
+X-Mimecast-MFC-AGG-ID: 5MR4po14NzSHiwFsO0Lz1w_1749732612
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a4e6d426b1so1073509f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 05:50:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749732612; x=1750337412;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5lFhxRtUAdJGBztxdsbcyW9odsc9OfWhuK0xDjPtH3o=;
+ b=VLLv5b0YXkIHBGctDiOKj0l2ByoyHODvmI1nItwO2gzpXZYicT1Jsx22I4YK8UbtoL
+ oEXqW2T433i4cvIxOQqj31RlgLJqzCH1obIBYFp1Av25gsLsvOLdbPP1ysOrQmBzQB3M
+ S5diQ8BzgvK+8ffqEEic5ahViC8niKohrcOiukFYxOAEBuHwyKsyZb3b/3nbtlS0CGBE
+ AfR3SaF3EESv+tqg6h6hU2XREgK/Nf0PrGdNauPMeMOCHxfK0NFX056DYirUex64PCmD
+ n80CCwxzkBEt2zMNruJGN9aFs/rr6Qmq0NWMtiHpgD0PC32gZdY05iDdA7MjI2J5BfqD
+ VDYA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX5lodV7fytTtFDlM5ONpIfkhJuEcPoAlT030Pddw6r23dyyrcX+/uBkGxZ2E/Qy8/haX/f8im7yfiz@nongnu.org
+X-Gm-Message-State: AOJu0YzpdWK0NP5zJ58ikQO585885crDcQdZZIcPQTW7QkQBYt5VWsD6
+ vE4UIjntwUnrL4n1OumPo/NAXaiLFuUaNwPAjUgzhlrIDZNdkElqhNOGre10q1hp1Fap38eo8u4
+ pFZiQYG6PVCutIULQkqOlkfW5BMnlOxdj2VKH31d8O/+fi+LRRy6Wf77b
+X-Gm-Gg: ASbGncs7IZbOl0IAGyJpnUldIZDa+UaELfmqu38D9Cq37tUMcag/YfVIvTtE3FTcnBh
+ QGw7c7poMmvGrnRCwqGXLuzUNMhJlVG3iQsPavAuKP4G5lUM78JDQXwGYhpdcuYNPGp45w59IDa
+ uI5IB/Gobzw6f3aJCM+Ep4opZLhL5RZ7ScMNqQ6fUdf+NlhGqa8c/kHzwzo6d6Lh/I5BXHe+l4l
+ TheJY4VkLtzS4c+uI0RgK1lB/fTj0mqIa7BzAd4JA76EJwJEh/VzVmUtK46dHHYsqhCSjqoihnD
+ sSv9Fm7pJwLM7Tm5mBTd0QYvYSn1EkNt9hajsX34A8I=
+X-Received: by 2002:a05:6000:40e1:b0:3a4:e238:6496 with SMTP id
+ ffacd0b85a97d-3a5607fa69emr3046021f8f.18.1749732611907; 
+ Thu, 12 Jun 2025 05:50:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGO6o/t6QxOgeJ0B48RL0PPBg4I1OpsgEFatHOkGg49x9CNWeUKVdB78pNeJgIP9WNjtor9fQ==
+X-Received: by 2002:a05:6000:40e1:b0:3a4:e238:6496 with SMTP id
+ ffacd0b85a97d-3a5607fa69emr3045980f8f.18.1749732611447; 
+ Thu, 12 Jun 2025 05:50:11 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com ([85.93.96.130])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4532e2522b1sm19433325e9.25.2025.06.12.05.50.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 12 Jun 2025 05:50:11 -0700 (PDT)
+Date: Thu, 12 Jun 2025 14:50:09 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Gustavo Romero <gustavo.romero@linaro.org>
+Cc: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org,
+ anisinha@redhat.com, mst@redhat.com, shannon.zhaosl@gmail.com,
+ pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org,
+ alex.bennee@linaro.org
+Subject: Re: [PATCH v2 24/25] tests/qtest/bios-tables-test: Keep ACPI PCI
+ hotplug off
+Message-ID: <20250612145009.28d69876@imammedo.users.ipa.redhat.com>
+In-Reply-To: <848ad5cf-7e83-49bd-8547-ac757c918fdf@linaro.org>
+References: <20250527074224.1197793-1-eric.auger@redhat.com>
+ <20250527074224.1197793-25-eric.auger@redhat.com>
+ <20250528113813.47086516@imammedo.users.ipa.redhat.com>
+ <375cfbd6-e585-4b6d-bf10-6571aa40370e@linaro.org>
+ <20250528150239.5f6b63d0@imammedo.users.ipa.redhat.com>
+ <6a5776b4-73ef-427b-b4e4-b25031b0ce53@linaro.org>
+ <20250530135103.09030cf0@imammedo.users.ipa.redhat.com>
+ <bcc200fb-fa45-44ac-9e36-4c829becbf1c@linaro.org>
+ <e3bc87d8-5016-455e-933d-6cefae993c25@linaro.org>
+ <20250611105437.5ecda7c9@imammedo.users.ipa.redhat.com>
+ <848ad5cf-7e83-49bd-8547-ac757c918fdf@linaro.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-479763625-1749731968=:67385"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,102 +123,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Wed, 11 Jun 2025 10:14:55 -0300
+Gustavo Romero <gustavo.romero@linaro.org> wrote:
 
---3866299591-479763625-1749731968=:67385
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+> Hi Igor,
+>=20
+> On 6/11/25 05:54, Igor Mammedov wrote:
+> > On Tue, 10 Jun 2025 11:29:02 -0300
+> > Gustavo Romero <gustavo.romero@linaro.org> wrote:
+[...]
+>=20
+>=20
+> BTW, why did we ultimately choose to commit blobs instead of the actual A=
+CPI
+> code (as generated by iasl)? I'm just wondering if we could avoid committ=
+ing
+> the blobs to 1) avoid committing binaries and 2) have the changes in the
+> ACPI code in the same commit that changes the ACPI itself.
+>=20
+> If that's only for historical reasons maybe I can improve the bios-tables=
+-test.c
+> to handle the ACPI code/struct in text format, avoiding the blobs, so I a=
+sk.
 
-On Thu, 12 Jun 2025, Paolo Bonzini wrote:
-> On 6/11/25 13:45, BALATON Zoltan wrote:
->> On Wed, 11 Jun 2025, Daniel P. Berrangé wrote:
->>> On Wed, Jun 11, 2025 at 02:37:08AM +0200, BALATON Zoltan wrote:
->>>> On Tue, 10 Jun 2025, Bernhard Beschow wrote:
->>>>> The next patch will make dtc mandatory for boards with a bundled DTB, 
->>>>> causing
->>>>> these boards to be omitted when dtc is missing. Allow packagers to force 
->>>>> the
->>>>> build of those boards by providing an option.
->>>> 
->>>> I don't like this. This might result in some machines missing from some
->>>> distros if they don't notice this and forget to update their packages and
->>>> these are machines I care about.
->>> 
->>> "Someone might not notice & screw up" is pretty much an argument for
->>> not doing anything at all. We publish release notes to alert distros
->> 
->> More like "if it ain't broke don't fix it".
->> 
->>> to these kind of changes which is a reasonable effort on our part.
->>> Distros need to play their part by reading them and adapting to the
->>> changes. They can also compare the available options with new and
->>> old QEMU to identify any new build features they need to handle when
->>> updating.
->>> 
->>>>                                  Also what guarantees that we don't get 
->>>> bugs
->>>> by compiling the device tree with different dtc versions which might
->>>> generate different binaries? The binaries we have now are known to work 
->>>> and
->>>> don't take much space so keeping them for convenience might be simpler. 
->>>> If
->>>> it worked so far why change it now?
->>> 
->>> Ultimately the DTC project has responsibility to not cause regressions
->>> in new releases they issue, as is the case for any 3rd party dep that
->>> we rely on.
->>> 
->>> We have CI jobs that can run on different distros. If we have coverage
->>> of the boards in functional test suite that provides a way to validate the
->>> operation with differing DTC versions as a sanity check.
->>> 
->>> Distributing pre-built binaries in source release tarballs is a long
->>> standing issue with QEMU's releases. If we can eliminate the pre-bbuilt
->>> DTB and only ship the source that is a good thing IMHO.
->>> 
->>>> If this was using dtc from the submodule when not using system libfdt 
->>>> then
->>>> at least it would not result in dropped machines and we had a known 
->>>> working
->>>> dtc to compile with. Why isn't that used when we already have it for 
->>>> libfdt?
->>> 
->>> Are there any platforms that we target which still lack dtc ? The
->>> submodule was there to plug gaps in distro support long ago, but
->>> if every distro has dtc available the submodule is redundant.
->> 
->> OK, can we then make libfdt and dtc mandatory and not build at all instead 
->> of disabling boards without it?
->
-> Disabling libfdt was done because of the x86 microvm board, which was adding 
-> a libfdt dependency to all of qemu-system-x86_64.
->
-> However, several targets still have a hard dependency on libfdt, plus libfdt 
-> is supported as a subproject and will be built together with the emulators. 
-> So the impact of the change was minimal, and limited only to people using 
-> --disable-libfdt or --disable-download on the configure command line.  This 
-> is not true of Bernard's proposal to use dtc.
->
-> For now, one possibility is just to make dtc mandatory whenever one of this 
-> boards is used; the best would be to be able to use the dtc that comes from 
-> the libfdt subproject.  This however requires patching dtc's meson.build so 
-> that it calls meson.override_find_program (and it could also use 
-> meson.override_dependency while you're at it).
->
-> I'll send a patch to the upstream dtc project and you can add it to QEMU via 
-> diff_files (see commit 64644bc4eab2f for an example).
 
-This seems getting too complicated just to get rid of some small binaries 
-so I'd just leave it as it is now but if Bernhard wants to make this 
-change I'm OK with it as long as my boards won't get disabled in configs 
-where now they are built I.e. if no system dtc is found now the dtbs are 
-installed; if this used dtc from submodule instead that would be OK but 
-dropping the board is not. I'm also OK with replacing the submodule with 
-always requiring system libfdt and dtc but that may be more work for 
-distros to update their package dependencies.
+We've had this for binary blobs at the beginning, however iasl output was
+a moving target (whether it's ASL or AML) hence it proved to be unsuitable
+for testing infrastructure (and not only testing, I don't remember concrete=
+ bugs though).
 
-Regards,
-BALATON Zoltan
---3866299591-479763625-1749731968=:67385--
+As result, we've switched to custom AML generator (aml_foo() API) with
+blobs it has generated. ASL output by IASL in tests is used by maintaners
+for diagnostic (/documenting) purposes only.
+
+> Thanks!
+>=20
+>=20
+> Cheers,
+> Gustavo
+>=20
+> >>
+> >>
+> >> Thanks,
+> >> Gustavo
+> >>     =20
+> >>>
+> >>> Cheers,
+> >>> Gustavo
+> >>>     =20
+> >>>>    =20
+> >>>>> Cheers,
+> >>>>> Gustavo
+> >>>>>    =20
+> >>>>>>> https://mail.gnu.org/archive/html/qemu-devel/2025-05/msg05828.htm=
+l 4/5
+> >>>>>>> https://mail.gnu.org/archive/html/qemu-devel/2025-05/msg05827.htm=
+l 5/5
+> >>>>>>>
+> >>>>>>>
+> >>>>>>> Cheers,
+> >>>>>>> Gustavo =20
+> >>>>>>>>>
+> >>>>>>>>> ---
+> >>>>>>>>>
+> >>>>>>>>> [Eric] also added acpi-pcihp=3Doff to test_acpi_aarch64_virt_tc=
+g_numamem
+> >>>>>>>>> ---
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0 tests/qtest/bios-tables-test.c | 13 +++++++=
+++----
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0 1 file changed, 9 insertions(+), 4 deletion=
+s(-)
+> >>>>>>>>>
+> >>>>>>>>> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-=
+tables-test.c
+> >>>>>>>>> index 0a333ec435..6379dba714 100644
+> >>>>>>>>> --- a/tests/qtest/bios-tables-test.c
+> >>>>>>>>> +++ b/tests/qtest/bios-tables-test.c
+> >>>>>>>>> @@ -1626,7 +1626,7 @@ static void test_acpi_aarch64_virt_tcg_me=
+mhp(void)
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data.variant =3D ".=
+memhp";
+> >>>>>>>>> -=C2=A0=C2=A0=C2=A0 test_acpi_one(" -machine nvdimm=3Don"
+> >>>>>>>>> +=C2=A0=C2=A0=C2=A0 test_acpi_one(" -machine nvdimm=3Don,acpi-p=
+cihp=3Doff"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -cpu c=
+ortex-a57"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -m 256=
+M,slots=3D3,maxmem=3D1G"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -objec=
+t memory-backend-ram,id=3Dram0,size=3D128M"
+> >>>>>>>>> @@ -1747,7 +1747,8 @@ static void test_acpi_aarch64_virt_tcg_nu=
+mamem(void)
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data.variant =3D ".=
+numamem";
+> >>>>>>>>> -=C2=A0=C2=A0=C2=A0 test_acpi_one(" -cpu cortex-a57"
+> >>>>>>>>> +=C2=A0=C2=A0=C2=A0 test_acpi_one(" -machine acpi-pcihp=3Doff"
+> >>>>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -cpu cortex-a57"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -objec=
+t memory-backend-ram,id=3Dram0,size=3D128M"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -numa =
+node,memdev=3Dram0",
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &data);
+> >>>>>>>>> @@ -1775,7 +1776,8 @@ static void test_acpi_aarch64_virt_tcg_px=
+b(void)
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * to solve th=
+e conflicts.
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data.variant =3D ".=
+pxb";
+> >>>>>>>>> -=C2=A0=C2=A0=C2=A0 test_acpi_one(" -device pcie-root-port,chas=
+sis=3D1,id=3Dpci.1"
+> >>>>>>>>> +=C2=A0=C2=A0=C2=A0 test_acpi_one(" -machine acpi-pcihp=3Doff"
+> >>>>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -device pcie-root-port,chassis=
+=3D1,id=3Dpci.1"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -devic=
+e virtio-scsi-pci,id=3Dscsi0,bus=3Dpci.1"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -drive=
+ file=3D"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "tests/d=
+ata/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2,"
+> >>>>>>>>> @@ -1846,7 +1848,7 @@ static void test_acpi_aarch64_virt_tcg_ac=
+pi_hmat(void)
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data.variant =3D ".=
+acpihmatvirt";
+> >>>>>>>>> -=C2=A0=C2=A0=C2=A0 test_acpi_one(" -machine hmat=3Don"
+> >>>>>>>>> +=C2=A0=C2=A0=C2=A0 test_acpi_one(" -machine hmat=3Don,acpi-pci=
+hp=3Doff"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -cpu c=
+ortex-a57"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -smp 4=
+,sockets=3D2"
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 " -m 384=
+M"
+> >>>>>>>>> @@ -2123,6 +2125,7 @@ static void test_acpi_aarch64_virt_tcg(vo=
+id)
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data.smbios_cpu_max=
+_speed =3D 2900;
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data.smbios_cpu_cur=
+r_speed =3D 2700;
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 test_acpi_one("-cpu=
+ cortex-a57 "
+> >>>>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "-machine acpi-pcihp=3Doff "
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "-smbios=
+ type=3D4,max-speed=3D2900,current-speed=3D2700", &data);
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 free_test_data(&dat=
+a);
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0 }
+> >>>>>>>>> @@ -2142,6 +2145,7 @@ static void test_acpi_aarch64_virt_tcg_to=
+pology(void)
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 test_acpi_one("-cpu=
+ cortex-a57 "
+> >>>>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "-machine acpi-pcihp=3Doff "
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "-smp so=
+ckets=3D1,clusters=3D2,cores=3D2,threads=3D2", &data);
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 free_test_data(&dat=
+a);
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0 }
+> >>>>>>>>> @@ -2227,6 +2231,7 @@ static void test_acpi_aarch64_virt_viot(v=
+oid)
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 test_acpi_one("-cpu=
+ cortex-a57 "
+> >>>>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "-machine acpi-pcihp=3Doff "
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "-device=
+ virtio-iommu-pci", &data);
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 free_test_data(&dat=
+a);
+> >>>>>>>>>  =C2=A0=C2=A0=C2=A0 } =20
+> >>>>>    =20
+> >>>>    =20
+> >>>     =20
+> >> =20
+> >  =20
+>=20
+
 
