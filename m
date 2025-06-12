@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D7AAD7CC7
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 22:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E310BAD7CCB
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Jun 2025 22:59:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPp0A-0007U7-Gr; Thu, 12 Jun 2025 16:58:22 -0400
+	id 1uPp0V-0008I9-Mq; Thu, 12 Jun 2025 16:58:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uPozs-0007Ie-Jl
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 16:58:07 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uPp0Q-00082w-OF
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 16:58:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uPozp-0000WZ-KZ
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 16:58:04 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uPp0P-0000cn-4b
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 16:58:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749761880;
+ s=mimecast20190719; t=1749761916;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UMyq4IM8orE552UKyUH3BKbgGyjRLLE1wmihoPQ7GH0=;
- b=f3WF2sQR/2VmtYojUJDh07/iMz5fyCSd1FH89KQ9Lse8+6/B2SwpweARY7ydnxPILp3XSq
- YB16gcLjrPPqNNRdMb5ROYHeLwDWi8+UczlOImJoSgq0LxjuCJp9gcOGIsYLhvbmDGoXkN
- YSFDipNRjNLtB3RmPedvyHJvf7uzuaA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=uCM/Luch++bkeRG2d0E9z2F9L/FoZdsWLzzalPuqzaM=;
+ b=T5fAcu9Yg9TKGkLgUtwoKi01CBzYjxXliYcqhtZB7Nt/Rq2HH+TFmzJZE+d757HGgIdT91
+ 2tmDxDJM2uvPQlwBudlDT5kNeZmXordBnbxe/8Kk3BYCesRLVtxTFywfFJGwIKs/fQMAHD
+ gakieTixfoSW3YoF4aVO7uZnKes230w=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-PKTUzVbfM6eijA0y1ZoMeA-1; Thu,
- 12 Jun 2025 16:57:57 -0400
-X-MC-Unique: PKTUzVbfM6eijA0y1ZoMeA-1
-X-Mimecast-MFC-AGG-ID: PKTUzVbfM6eijA0y1ZoMeA_1749761871
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-32-JE3lZeGoPGWbpbmm6pLJqg-1; Thu,
+ 12 Jun 2025 16:58:32 -0400
+X-MC-Unique: JE3lZeGoPGWbpbmm6pLJqg-1
+X-Mimecast-MFC-AGG-ID: JE3lZeGoPGWbpbmm6pLJqg_1749761907
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 023B119560BF; Thu, 12 Jun 2025 20:57:51 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B4C4F195608C; Thu, 12 Jun 2025 20:58:26 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.54])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B5BBB1955F57; Thu, 12 Jun 2025 20:57:18 +0000 (UTC)
+ id 709B21956050; Thu, 12 Jun 2025 20:57:51 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>, Yi Liu <yi.l.liu@intel.com>,
@@ -124,10 +124,9 @@ Cc: Joel Stanley <joel@jms.id.au>, Yi Liu <yi.l.liu@intel.com>,
  Huacai Chen <chenhuacai@kernel.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH v2 04/12] python: update shebangs to standard,
- using /usr/bin/env
-Date: Thu, 12 Jun 2025 16:54:42 -0400
-Message-ID: <20250612205451.1177751-5-jsnow@redhat.com>
+Subject: [PATCH v2 05/12] python: fix illegal escape sequences
+Date: Thu, 12 Jun 2025 16:54:43 -0400
+Message-ID: <20250612205451.1177751-6-jsnow@redhat.com>
 In-Reply-To: <20250612205451.1177751-1-jsnow@redhat.com>
 References: <20250612205451.1177751-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -158,50 +157,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the standard shebang we should always be using, as it plays
-nicely with virtual environments and our desire to always be using a
-specific python interpreter in our environments.
+\{ is an illegal escape sequence, to get a literal backslash we need to
+use \\.
 
-(It also makes sure I can find all of the python scripts in our tree
-easily.)
+This is being fixed because of an issue spotted when attempting to use
+the pyupgrade script.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- roms/edk2-build.py           | 2 +-
- scripts/cpu-x86-uarch-abi.py | 2 +-
- scripts/userfaultfd-wrlat.py | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ scripts/feature_to_c.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/roms/edk2-build.py b/roms/edk2-build.py
-index e564765aaa7..8dc38700394 100755
---- a/roms/edk2-build.py
-+++ b/roms/edk2-build.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/python3
-+#!/usr/bin/env python3
- """
- build helper script for edk2, see
- https://gitlab.com/kraxel/edk2-build-config
-diff --git a/scripts/cpu-x86-uarch-abi.py b/scripts/cpu-x86-uarch-abi.py
-index 7360e55c6e0..5a052083eea 100644
---- a/scripts/cpu-x86-uarch-abi.py
-+++ b/scripts/cpu-x86-uarch-abi.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/python3
-+#!/usr/bin/env python3
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
- #
-diff --git a/scripts/userfaultfd-wrlat.py b/scripts/userfaultfd-wrlat.py
-index 0684be4e044..5f36c7af565 100755
---- a/scripts/userfaultfd-wrlat.py
-+++ b/scripts/userfaultfd-wrlat.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/python3
-+#!/usr/bin/env python3
- #
- # userfaultfd-wrlat Summarize userfaultfd write fault latencies.
- #                   Events are continuously accumulated for the
+diff --git a/scripts/feature_to_c.py b/scripts/feature_to_c.py
+index 807af0e685c..5f8fa8ad5c6 100644
+--- a/scripts/feature_to_c.py
++++ b/scripts/feature_to_c.py
+@@ -25,7 +25,7 @@ def writeliteral(indent, bytes):
+         elif c >= 32 and c < 127:
+             sys.stdout.write(c.to_bytes(1, 'big').decode())
+         else:
+-            sys.stdout.write(f'\{c:03o}')
++            sys.stdout.write(f'\\{c:03o}')
+ 
+     if quoted:
+         sys.stdout.write('"')
 -- 
 2.48.1
 
