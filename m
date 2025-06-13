@@ -2,71 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C103AD906A
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 16:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D29DDAD8EF5
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 16:13:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQ5rV-0008CO-J9; Fri, 13 Jun 2025 10:58:33 -0400
+	id 1uQ59N-00043R-AG; Fri, 13 Jun 2025 10:12:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
- id 1uQ5rO-0008Ba-Mg
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:58:28 -0400
-Received: from smtp-out-60.livemail.co.uk ([213.171.216.60]
- helo=dkim.livemail.co.uk)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ59E-0003vl-Nn
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:12:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
- id 1uQ5rL-0008Im-Et
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:58:25 -0400
-Received: from smtp.livemail.co.uk (unknown [10.44.132.82])
- by dkim.livemail.co.uk (Postfix) with ESMTPS id F0082A03C3;
- Fri, 13 Jun 2025 15:58:21 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=randomman.co.uk;
- s=livemail2; t=1749826702;
- bh=BmgYGfqxadfNjre5CbBsoPtvW6352tZwhB9WZhQQwgc=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=lGxnxoiGLa0XLnVMlZHgwcxpC3TzRXMdlux4ZCDAifUSYFNx+o9qDf+aACDnWLZAE
- SXq5Zu6GmEwBX6z5Xi7HqI4YEy+RSrZ9bOl/p/sTJdjg8gEf/I4bIOto31YS6vW2cD
- aLENzvtVR5ER+Im1qNtsk19joPc0exk3JISrCTQA=
-Received: from localhost.localdomain (unknown [145.40.191.116])
- (Authenticated sender: roy.hopkins@randomman.co.uk)
- by smtp.livemail.co.uk (Postfix) with ESMTPSA id 657B8C03ED;
- Fri, 13 Jun 2025 15:58:17 +0100 (BST)
-From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ595-0002If-Py
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:12:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749823943;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=nqSSpxIohRg2NhWZf9VXjEXc2pigBlW1DvzrAV4Vz/8=;
+ b=VdIiLwNwJzC+52asA71P2iyZgqvlGL81mE0s7lqsloQEFQH8KQIrVPZ7mlCzMksyBgitpp
+ qBszPugYl8n6mDy51AHoPP01lcgL5y7i46WqCzyFRXME++FWIAaOMjmK7fKpqybNJRwWDC
+ YDCrylkCwQ9OZsJNwehTrCOEdz8dExQ=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-413-apn7Nxb7MAWyl8SGmmOECg-1; Fri, 13 Jun 2025 10:12:22 -0400
+X-MC-Unique: apn7Nxb7MAWyl8SGmmOECg-1
+X-Mimecast-MFC-AGG-ID: apn7Nxb7MAWyl8SGmmOECg_1749823941
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-4a57fea76beso44146881cf.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Jun 2025 07:12:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749823941; x=1750428741;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nqSSpxIohRg2NhWZf9VXjEXc2pigBlW1DvzrAV4Vz/8=;
+ b=YP/sy+dSonZcu7i8yCmXiSSPX5UrspCzyWrLUzbfM+G3rcGHvnSbXP02DpuKQ42H7S
+ Sdz34yPtoVj0SVvZDuTzqk1zpyBR1wkhgftjHeOy7QasFQZ06veOLUlQW9Lco+wKWx8I
+ NmtuSSRJZCbhWd10+ytAtwoxKEAmfwGLEQLO13hL/p2wi0eCrHP+47RQ+MoNDFSTwMER
+ VrxwXBo0h7zxynFtMd9z2ZJcnHgKMGnqDyG1K96+NLjzl3eCiL6BPaqX9FaNz/EFIrS+
+ UMSqwxndNA9hGstyYJ2g2Uhh+9sLe+LEaoGisQYN3ceb4kq6M5OktwY5i6IdnErJw6hs
+ tsTQ==
+X-Gm-Message-State: AOJu0YzRA6HXGbRnIXPXJmA5vkRS5PR6YvRyEVaDFlLZjALZiZ0USc6u
+ rlrhXExokh5m9rwrnDxRcMO/hBkXAwyLbbZML2gMrs/WczHjcMEgeCllTB/dyBhK9oFJ2i8Z2gU
+ WEk+KTGCIl+wEpYhKEQZzOzQ21mj4wInqBxvmJ/rv1fXO4wvRh7z+9a1Z5GogE5CKHMVpK0U7VC
+ M3ethU6NiiwMX19O4z7n1kszMS6yRQ+QVbcI5P+w==
+X-Gm-Gg: ASbGnctEH910QjAmt3SwPv/Xyj6m952KUq/HD3nQ+En6G/bZ5zuQywapaVpy8z4eG1f
+ OY+tSO6GjXBtHwFi7+19uK+aw/HH+v9Sjo3NLx8FPtlZgT6QLo9ZTctC5Win4G5NKUjPl+Rs4Br
+ 7EUpUYzaVIeaeOHUagQFeYNfAIo03tr52Ma6IE6x13mCrrP37pRrF2uyPSylihiO3odf/YIoqOP
+ qGHEJav5sHr+AareRc2s6f2yGZ7aHrvM2769hvYJeMwfCswCKRgMgOkBNvXNhPctheRS2FhOYdx
+ vLs39ekK6MI=
+X-Received: by 2002:a05:622a:580e:b0:4a6:eac8:58c6 with SMTP id
+ d75a77b69052e-4a72fe7ac63mr65121261cf.13.1749823941126; 
+ Fri, 13 Jun 2025 07:12:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwn2bY+mx5B4ehm2hhD+NqntNYAhfRkVAQ4HubpkQH8ouRrBWMIsPWmc8m5LCx2kwcYWNX2g==
+X-Received: by 2002:a05:622a:580e:b0:4a6:eac8:58c6 with SMTP id
+ d75a77b69052e-4a72fe7ac63mr65120891cf.13.1749823940667; 
+ Fri, 13 Jun 2025 07:12:20 -0700 (PDT)
+Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4a72a526cc6sm17141641cf.79.2025.06.13.07.12.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Jun 2025 07:12:20 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P . Berrange" <berrange@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
- Gerd Hoffman <kraxel@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
- Joerg Roedel <joro@8bytes.org>
-Subject: [PATCH v8 12/16] backends/confidential-guest-support: Add
- set_guest_policy() function
-Date: Fri, 13 Jun 2025 15:11:52 +0100
-Message-ID: <65089ffb0e3e935e8f046098db3cd2c2f7b0d950.1749820158.git.roy.hopkins@randomman.co.uk>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1749820158.git.roy.hopkins@randomman.co.uk>
-References: <cover.1749820158.git.roy.hopkins@randomman.co.uk>
+Cc: Mario Casquero <mcasquer@redhat.com>,
+ Alexey Perevalov <a.perevalov@samsung.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>, peterx@redhat.com,
+ Juraj Marcin <jmarcin@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v3 00/14] migration/postcopy: Blocktime tracking overhaul
+Date: Fri, 13 Jun 2025 10:12:03 -0400
+Message-ID: <20250613141217.474825-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.49.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=213.171.216.60;
- envelope-from=roy.hopkins@randomman.co.uk; helo=dkim.livemail.co.uk
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,96 +104,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For confidential guests a policy can be provided that defines the
-security level, debug status, expected launch measurement and other
-parameters that define the configuration of the confidential platform.
+This series is based on the other series I posted here:
 
-This commit adds a new function named set_guest_policy() that can be
-implemented by each confidential platform, such as AMD SEV to set the
-policy. This will allow configuration of the policy from a
-multi-platform resource such as an IGVM file without the IGVM processor
-requiring specific implementation details for each platform.
+Based-on: <20250609161855.6603-1-peterx@redhat.com>
+https://lore.kernel.org/r/20250609161855.6603-1-peterx@redhat.com
 
-Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Gerd Hoffman <kraxel@redhat.com>
----
- backends/confidential-guest-support.c       | 12 ++++++++++++
- include/system/confidential-guest-support.h | 21 +++++++++++++++++++++
- 2 files changed, 33 insertions(+)
+v1: https://lore.kernel.org/r/20250527231248.1279174-1-peterx@redhat.com
+v2: https://lore.kernel.org/r/20250609191259.9053-1-peterx@redhat.com
 
-diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
-index c5bef1fbfa..156dd15e66 100644
---- a/backends/confidential-guest-support.c
-+++ b/backends/confidential-guest-support.c
-@@ -38,6 +38,17 @@ static int set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
-     return -1;
- }
- 
-+static int set_guest_policy(ConfidentialGuestPolicyType policy_type,
-+                            uint64_t policy,
-+                            void *policy_data1, uint32_t policy_data1_size,
-+                            void *policy_data2, uint32_t policy_data2_size,
-+                            Error **errp)
-+{
-+    error_setg(errp,
-+               "Setting confidential guest policy is not supported for this platform");
-+    return -1;
-+}
-+
- static int get_mem_map_entry(int index, ConfidentialGuestMemoryMapEntry *entry,
-                              Error **errp)
- {
-@@ -53,6 +64,7 @@ static void confidential_guest_support_class_init(ObjectClass *oc,
-     ConfidentialGuestSupportClass *cgsc = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
-     cgsc->check_support = check_support;
-     cgsc->set_guest_state = set_guest_state;
-+    cgsc->set_guest_policy = set_guest_policy;
-     cgsc->get_mem_map_entry = get_mem_map_entry;
- }
- 
-diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
-index 79ecd21f42..0cc8b26e64 100644
---- a/include/system/confidential-guest-support.h
-+++ b/include/system/confidential-guest-support.h
-@@ -57,6 +57,10 @@ typedef enum ConfidentialGuestPageType {
-     CGS_PAGE_TYPE_REQUIRED_MEMORY,
- } ConfidentialGuestPageType;
- 
-+typedef enum ConfidentialGuestPolicyType {
-+    GUEST_POLICY_SEV,
-+} ConfidentialGuestPolicyType;
-+
- struct ConfidentialGuestSupport {
-     Object parent;
- 
-@@ -123,6 +127,23 @@ typedef struct ConfidentialGuestSupportClass {
-                            ConfidentialGuestPageType memory_type,
-                            uint16_t cpu_index, Error **errp);
- 
-+    /*
-+     * Set the guest policy. The policy can be used to configure the
-+     * confidential platform, such as if debug is enabled or not and can contain
-+     * information about expected launch measurements, signed verification of
-+     * guest configuration and other platform data.
-+     *
-+     * The format of the policy data is specific to each platform. For example,
-+     * SEV-SNP uses a policy bitfield in the 'policy' argument and provides an
-+     * ID block and ID authentication in the 'policy_data' parameters. The type
-+     * of policy data is identified by the 'policy_type' argument.
-+     */
-+    int (*set_guest_policy)(ConfidentialGuestPolicyType policy_type,
-+                            uint64_t policy,
-+                            void *policy_data1, uint32_t policy_data1_size,
-+                            void *policy_data2, uint32_t policy_data2_size,
-+                            Error **errp);
-+
-     /*
-      * Iterate the system memory map, getting the entry with the given index
-      * that can be populated into guest memory.
+v3 changelog:
+- Switch to nanoseconds across for the whole patchset [Dave]
+  NOTE: many patches need small touch ups on the conversion of units and
+  rebase, I kept the tags.
+- Mark all new blocktime fields experimental in QMP
+  The expected use case is having mgmt query the results and dump them into
+  log only for debugging purposes (rather than parsing them, as of now).
+  Chose this way to suggest userapp not parsing them, meanwhile more flexible.
+- Added the other patch to add latency buckets into this series
+- Fixes spots on checkpatch issues
+- Added Tested-by tags for Mario for relevant patches
+
+Overview
+========
+
+This series almost rewrites the blocktime feature.  It is a postcopy
+feature which can track how long a vCPU got blocked, and how long the whole
+system got blocked.  I'm wildly guessing most people are not aware of it,
+or tried to use it.
+
+Recently, when I was doing some postcopy tests using my normal scripts for
+traps, I remembered once again that we have the blocktime feature.  I
+decided to bite the bullet this time to make this feature more useful.
+
+The feature in general isn't extremely helpful before.  One major reason
+might be the existance of KVM async page fault (which is also on by default
+in many environments).  KVM async page fault allows guest OSes to schedule
+some guest threads out when they're accessing a missing page.  It means the
+vCPUs will _not_ be blocked even if they're accessing a missing page.
+However blocktime reporting all close to zeros may not really mean the
+guest is not affected: the workload is definitely impacted.  That's also
+why I normally measure page fault latencies instead for most postcopy
+tests, because they're more critical to me.
+
+Said that, the blocktime layer is actually close to what we want to do
+here, on trapping fault latencies too.  So I added it in this series.  Also
+I added non-vCPU threads tracking too, so that at least the latency results
+are valid even if KVM async PF is ON.
+
+When at it, I found so many things missing in this feature.  I tackled
+every single one of them with separate patches.  One can have a quick look
+at what has changed in the follow up section.
+
+Major Changes
+=============
+
+- Locking refactor: remove atomic ops, rely on page request mutex instead
+
+  It used to rely on atomic ops but probably not correct either..  I have a
+  paragraph in patch "migration/postcopy: Optimize blocktime fault tracking
+  with hashtable" explaining why it is buggy.
+
+- Extend all blocktime records internally from 32 bits to 64 bits
+
+  Do this almost to support nanoseconds trackings (which used to be in
+  milliseconds).  Note this does not change existing results reported in
+  QMP in the past because it is ABI, however we'll use nanoseconds for any
+  new results to be reported later.
+
+- Added support to report fault average latencies (globally, per-vCPU,
+  non-vCPU), results are in nanoseconds.
+
+- Initialize blocktime reliably only when POSTCOPY_LISTEN
+
+  Rather than hack-init it when creating any userfaultfd..
+
+- Provide tid->vcpu cache
+
+  Add a quick cache for tid->vcpu hash mapping.  It used to be a for loop
+  looking for the CPU index, which is unwanted.
+
+- Replace fault record arrays with a hashtable
+
+  This is an optimization for fast inject/lookup of fault records.
+
+  Again, it used to be yet another array keeping all vCPU data.  It's not
+  only less performant when vCPUs can be a lot (especially on the lookups,
+  which is another for loop..), but also buggy.  It's because in reality
+  each vCPU can receive more than one fault sometimes.
+
+  Please see the patch "migration/postcopy: Optimize blocktime fault
+  tracking with hashtable" for more information.
+
+- Added support for non-vCPU fault trackings
+
+  This will be extremely useful when e.g. KVM async page fault is enabled,
+  because vCPUs almost never block.
+
+- Added latency distribution in power-of-two buckets
+
+  It's the last patch, it's collected from a separate post from:
+  https://lore.kernel.org/all/20250609223607.34387-1-peterx@redhat.com/
+
+Test Results
+============
+
+I did quite some tests with the feature after the rewrote.  It looks pretty
+well so far and I plan to throw my scripts away until proven more useful.
+
+I was testing on a 80 vCPUs VM with 16GB memory, best I can find at hand.
+The page latencies overhead is almost negligible:
+
+  Disabled:
+  Average: 236.00 (+-4.66%)
+
+  Enabled:
+  Average: 232.67 (+-2.01%)
+
+It was average results out of three runs for each.  Enabling the feature
+even makes the latency to be smaller?  Well that's probably noise..
+
+Surprisingly, I did also try the old code, the overhead is also almost not
+mesurable comparing to the faults.  I guess it's because a few "for loop"s
+over some arrays of 80 elements isn't much of a hurdle when the round trip
+is still ~200us.  But still, it's not only about perf, but other things
+too, on such rewrites.  For example, arrays won't be able to trap non-vCPU
+faults.  The hash is still pretty much needed, one way or another.
+
+I think it means we should be able to enable this feature altogether with
+postcopy-ram if we want, and unless the VM is extremely huge we shouldn't
+expect much overhead.  Actually I'd bet it should work all fine even with
+hundreds of vCPUs especially after this rewrite.  If add preempt mode into
+picture, I think one should enable all three features for postcopy by
+default at some point.
+
+Comments welcomed, thanks.
+
+Peter Xu (14):
+  migration: Add option to set postcopy-blocktime
+  migration/postcopy: Push blocktime start/end into page req mutex
+  migration/postcopy: Drop all atomic ops in blocktime feature
+  migration/postcopy: Make all blocktime vars 64bits
+  migration/postcopy: Drop PostcopyBlocktimeContext.start_time
+  migration/postcopy: Bring blocktime layer to ns level
+  migration/postcopy: Add blocktime fault counts per-vcpu
+  migration/postcopy: Report fault latencies in blocktime
+  migration/postcopy: Initialize blocktime context only until listen
+  migration/postcopy: Cache the tid->vcpu mapping for blocktime
+  migration/postcopy: Cleanup the total blocktime accounting
+  migration/postcopy: Optimize blocktime fault tracking with hashtable
+  migration/postcopy: blocktime allows track / report non-vCPU faults
+  migration/postcopy: Add latency distribution report for blocktime
+
+ qapi/migration.json                   |  38 ++
+ migration/migration.h                 |   2 +-
+ migration/postcopy-ram.h              |   2 +
+ migration/migration-hmp-cmds.c        | 104 ++++-
+ migration/migration.c                 |  25 +-
+ migration/options.c                   |   2 +
+ migration/postcopy-ram.c              | 563 ++++++++++++++++++++------
+ tests/qtest/migration/migration-qmp.c |   5 +
+ migration/trace-events                |   8 +-
+ 9 files changed, 593 insertions(+), 156 deletions(-)
+
 -- 
-2.43.0
+2.49.0
 
 
