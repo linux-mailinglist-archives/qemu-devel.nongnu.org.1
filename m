@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5EEAD8D5D
+	by mail.lfdr.de (Postfix) with ESMTPS id 965F8AD8D5C
 	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 15:43:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQ4gF-0001q2-VO; Fri, 13 Jun 2025 09:42:52 -0400
+	id 1uQ4gH-0001uq-5j; Fri, 13 Jun 2025 09:42:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1uQ4fi-0001iE-UZ
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 09:42:20 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1uQ4fk-0001iI-Cw
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 09:42:22 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1uQ4ff-0006GX-Gt
+ id 1uQ4fg-0006Gt-0X
  for qemu-devel@nongnu.org; Fri, 13 Jun 2025 09:42:18 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-450dd065828so17499265e9.2
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4530921461aso18725185e9.0
  for <qemu-devel@nongnu.org>; Fri, 13 Jun 2025 06:42:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1749822133; x=1750426933; darn=nongnu.org;
+ d=adacore.com; s=google; t=1749822134; x=1750426934; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GWZIDBLsFhdR8GCNkB2CqLPUwwJ7URlhmr8AdedA46w=;
- b=jV+IU1xjMznxwsaYwDQOBPutJ2XMlPKvK6WEI3WOlsxJDSRGl4SkWAYPFVTiB+hVl5
- pZJ1fYPXLGM4cftNldiGlKF+flUt1glUJ11Jpi49ZkKGbp2etthFZbdcf2hrgzVXFmEn
- mpedvJAXQF1CD/pJgxJkjqtnNlPn0ejsxxxFubih5YUt8c8nyrgKaJOp3IHwU2E7LTtD
- PXHz1K+dkCuUs9SKUl/0pfPKPxKWti/lttRU4iL3VUhLgVwqlA3TfqP18vG9bF9dJQMi
- RmsUjkv9BK6pFjd1DF5pZkddtEXO+StoemruFxpz0A3so6O7kYbqE57L6LLdIKmgr3H7
- 8Xxw==
+ bh=gBmjh7KSh/lXhoXTOuKukePRCVIS57DizEDl33AZgJw=;
+ b=RrBhSCwjuNc/LO2Sdnu6jrTAqIUHQrdKxrKoTrMMKNeKXKRKJuWDpis0HuhqTVcoU3
+ giFJiUJM/e6ZwEwMFy50zXPVzGs9289qmzNjTQ102xk1LZHIodt0Z8Ex37MeQs3RNki1
+ Aph49V9mcoWqKLqghT8Zj1wyejOLLzpxWtNkedL17tGshUmnlwujHVTbbgbOGULdLxrP
+ ZAsxUFrrSYAavI8ehi+Y05ZYchwRDtRJbWaY4YGIgSXuRweYWrrM6akRN/XrOPHEtJQB
+ PRA5uUcAnThWJmmf3mS0oM7Cq4j45djmrznvAgm9ZNGvzgrhI6sdcWGJgz5Wjdoo+GAA
+ NiXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749822133; x=1750426933;
+ d=1e100.net; s=20230601; t=1749822134; x=1750426934;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GWZIDBLsFhdR8GCNkB2CqLPUwwJ7URlhmr8AdedA46w=;
- b=nKfDrJhGXwLgM5ej27DJpIv1d9DHoo/lbPFkeQFitgML17TM+GLqU6pIn66pdxS6xM
- pL7YuEHJV2chJth7BkxYv5iUpapUI4fmtw21n62w8/Hn+eOf3wlRHkcn+BXfRHf+CUEw
- XK3iEekIZ783iX8gFyYwMt0M50XqH3ckxRiJfoJwA8srxIGkYbwYtkpicwW2m3PwIbLW
- 7eWkIppsAbxglLa9SffhoR31jw0xcSYETtJosgpPd8FdMSfhvATckrVOa36yGnlwFp7P
- IKZCOZluYbc/JLFL8srl1NpF2+smzOfa/OCN+Y5HvMh3wk+D2wEmpFKP4B5TWy++ZTHj
- eZRA==
-X-Gm-Message-State: AOJu0Yx3OIE8DWeNZuuJPcJ7OamNYV+uol1frzZheAlRRjTfXrGH53DC
- 0VSYs1IJ9w1jlPh+XiTvlRmGCzNErmNDtDkXoGuODnYGhwt0TyqFe2KR03pyqH/GGtZrqmR9KYm
- 1WaQ=
-X-Gm-Gg: ASbGncvF1RS0pWYxRyU3TqvSg2ci9Mw6AOhSt+qpTA6y01Wt57sefVqPBsBI/7EfVKJ
- 4dn7pM5+YK6BpMnMKNPh5Ai7CnH3xhouWkPbTLFWHtKdxX5g3nznV7OjcYsSzXQZHKH1Fg1x8w0
- BJnNFw7qMrH1jK4ttfprWDd99o/x3CnbQhDor5c1UXq2rVxRUVfhEjfZQf2/fhd/57sxZZT5E5I
- QQIVYK0ALGz/6uk+t/89lqOcLX7Uh4GueToOB3v8Ph49eX7gq73v/sWGxV3LyiMhy7D94QJL0aD
- TI9+3E6eBEcmUiTi8h0RFaCHElDPNRBS8x2jTovuj31Sh7jcU8xVt1oQ12s4dnBFCmeELYY=
-X-Google-Smtp-Source: AGHT+IGDKkhaJdWsplV/NODlTd3qrSVom6X+jZ2Qa68Lno8nVrKB9Moia/dUCPgefqQJijZiyR3Sdg==
-X-Received: by 2002:a05:600c:4fd6:b0:450:d367:c385 with SMTP id
- 5b1f17b1804b1-45334ae6432mr34861245e9.16.1749822133566; 
- Fri, 13 Jun 2025 06:42:13 -0700 (PDT)
+ bh=gBmjh7KSh/lXhoXTOuKukePRCVIS57DizEDl33AZgJw=;
+ b=rNc2PSR9SQWM2iYUZh6Q1O+t0DH2DRKV2y8LkIoFHlQCcFbXApEz+TCga38HyrXSHg
+ /rqVtG/bIdP7E501fyfuQKDohJF9hfaJ3sQF4cQTTNH8oaV2CagSBIdKmReqRs2tzrjH
+ ddgOClkOSJJdbusnYi7FVhPcKMorlbcPf9Ier/ExDlHUttPtKpidMxU0D61Re0VvnY0Q
+ BT/TChLpNC3wBmROLasMo5dpUwnAVuCPRy8vRHPnTTZmOuDFtYn3LNzZsO8Wqo8t9KRx
+ n0FnnAJfTLy6ALmCGXvTPv/BqbbHHwpEbaNuyn9qnlKTg4n1ux3tzrU/tOAnDr3dJp+m
+ RCwg==
+X-Gm-Message-State: AOJu0YzQL+mBrEvDsBdpEyBZpfMg+GpD/8RrYtcXJMzOJz+1fS0mG+TF
+ qydthTYJPmuzUGvLgIPB9+ospfqeFkmZUA8nAvta01Y4XCUwWvJPT6nfFeFqZFVT+GJxjmvsw9V
+ i/Y8=
+X-Gm-Gg: ASbGnctpcPwjqgnwkUuy4+22CYGJxUD5Z3bCWZ/90oxcDvan7p6zL9SUMXsqb1EtYre
+ Sl6i0XXYijld8HfYDk+htZ1LL7SeDq/skeRxzxfPz7ttaUh3Y52XmtmVhI7tHvMs/LrKIHwwkfP
+ DlGFzUuxB++v6pIlYDuXnNPv+EKiga2XAIXZhkyVnlFn1TCd04VnIaa3XoMgSYGMVzbbw/wReGQ
+ oO2z8WzJRoTrkiilP56fCuVl+Q4djZxbNeybAsv0AO5s7OxGp5bgmTohLn/SNHoUxxyeezqvKTW
+ 0OFzqDvt39I9T3fpCkpRcVciioPxPH7azeo4yY4M0NCK3QGMbUyUkOWy8P782iuOyk1MXsg=
+X-Google-Smtp-Source: AGHT+IGSqhN5Y0rRhs274m7hKi2KXsOJXM4fouZ5Sl3FNuvTM9nV2EU1dqKy8M+s2TLZNxiroU0rzQ==
+X-Received: by 2002:a05:600c:8710:b0:43b:ca39:6c75 with SMTP id
+ 5b1f17b1804b1-45334ad0716mr37715865e9.16.1749822134294; 
+ Fri, 13 Jun 2025 06:42:14 -0700 (PDT)
 Received: from chigot-Dell.home ([2a01:cb15:8100:3d00:9e4f:bbb8:63a3:78f3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4532e224795sm53258035e9.7.2025.06.13.06.42.12
+ 5b1f17b1804b1-4532e224795sm53258035e9.7.2025.06.13.06.42.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 13 Jun 2025 06:42:13 -0700 (PDT)
 From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org, edgar.iglesias@gmail.com,
- alistair@alistair23.me,
+ alistair@alistair23.me, Frederic Konrad <konrad.frederic@yahoo.fr>,
  =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-Subject: [PATCH v3 1/3] hw/arm: make cpu targeted by arm_load_kernel the
- primary CPU.
-Date: Fri, 13 Jun 2025 15:42:06 +0200
-Message-Id: <20250613134208.1509436-2-chigot@adacore.com>
+Subject: [PATCH v3 2/3] hw/intc/arm_gic: introduce a first-cpu-index property
+Date: Fri, 13 Jun 2025 15:42:07 +0200
+Message-Id: <20250613134208.1509436-3-chigot@adacore.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250613134208.1509436-1-chigot@adacore.com>
 References: <20250613134208.1509436-1-chigot@adacore.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=chigot@adacore.com; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,85 +100,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, arm booting processus assumes that the first_cpu is the CPU
-that will boot: `arm_load_kernel` is powering off all but the `first_cpu`;
-`do_cpu_reset` is setting the loader address only for this `first_cpu`.
+From: Frederic Konrad <konrad.frederic@yahoo.fr>
 
-For most of the boards, this isn't an issue as the kernel is loaded and
-booted on the first CPU anyway. However, for zynqmp, the option
-"boot-cpu" allows to choose any CPUs.
-
-Create a new arm_boot_info entry `primary_cpu` recording which CPU will
-be boot first. This one is set when `arm_boot_kernel` is called.
+This introduces a first-cpu-index property to the arm-gic, as some SOCs
+could have two separate GIC (ie: the zynqmp).
 
 Signed-off-by: Clément Chigot <chigot@adacore.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/boot.c         | 15 +++++++--------
- include/hw/arm/boot.h |  3 +++
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ hw/intc/arm_gic.c                | 2 +-
+ hw/intc/arm_gic_common.c         | 1 +
+ include/hw/intc/arm_gic.h        | 2 ++
+ include/hw/intc/arm_gic_common.h | 2 ++
+ 4 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 79afb51b8a..3c93d87985 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -744,7 +744,7 @@ static void do_cpu_reset(void *opaque)
-             } else {
-                 if (arm_feature(env, ARM_FEATURE_EL3) &&
-                     (info->secure_boot ||
--                     (info->secure_board_setup && cs == first_cpu))) {
-+                     (info->secure_board_setup && cpu == info->primary_cpu))) {
-                     /* Start this CPU in Secure SVC */
-                     target_el = 3;
-                 }
-@@ -752,7 +752,7 @@ static void do_cpu_reset(void *opaque)
+diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c
+index d18bef40fc..899f133363 100644
+--- a/hw/intc/arm_gic.c
++++ b/hw/intc/arm_gic.c
+@@ -59,7 +59,7 @@ static const uint8_t gic_id_gicv2[] = {
+ static inline int gic_get_current_cpu(GICState *s)
+ {
+     if (!qtest_enabled() && s->num_cpu > 1) {
+-        return current_cpu->cpu_index;
++        return current_cpu->cpu_index - s->first_cpu_index;
+     }
+     return 0;
+ }
+diff --git a/hw/intc/arm_gic_common.c b/hw/intc/arm_gic_common.c
+index 0f0c48d89a..ed5be05645 100644
+--- a/hw/intc/arm_gic_common.c
++++ b/hw/intc/arm_gic_common.c
+@@ -350,6 +350,7 @@ static void arm_gic_common_linux_init(ARMLinuxBootIf *obj,
  
-             arm_emulate_firmware_reset(cs, target_el);
+ static const Property arm_gic_common_properties[] = {
+     DEFINE_PROP_UINT32("num-cpu", GICState, num_cpu, 1),
++    DEFINE_PROP_UINT32("first-cpu-index", GICState, first_cpu_index, 0),
+     DEFINE_PROP_UINT32("num-irq", GICState, num_irq, 32),
+     /* Revision can be 1 or 2 for GIC architecture specification
+      * versions 1 or 2, or 0 to indicate the legacy 11MPCore GIC.
+diff --git a/include/hw/intc/arm_gic.h b/include/hw/intc/arm_gic.h
+index 48f6a51a70..6faccf8ef6 100644
+--- a/include/hw/intc/arm_gic.h
++++ b/include/hw/intc/arm_gic.h
+@@ -27,6 +27,8 @@
+  *    implement the security extensions
+  *  + QOM property "has-virtualization-extensions": set true if the GIC should
+  *    implement the virtualization extensions
++ *  + QOM property "first-cpu-index": index of the first cpu attached to the
++ *    GIC.
+  *  + unnamed GPIO inputs: (where P is number of SPIs, i.e. num-irq - 32)
+  *    [0..P-1]  SPIs
+  *    [P..P+31] PPIs for CPU 0
+diff --git a/include/hw/intc/arm_gic_common.h b/include/hw/intc/arm_gic_common.h
+index 97fea4102d..93a3cc2bf8 100644
+--- a/include/hw/intc/arm_gic_common.h
++++ b/include/hw/intc/arm_gic_common.h
+@@ -129,6 +129,8 @@ struct GICState {
+     uint32_t num_lrs;
  
--            if (cs == first_cpu) {
-+            if (cpu == info->primary_cpu) {
-                 AddressSpace *as = arm_boot_address_space(cpu, info);
+     uint32_t num_cpu;
++    /* cpu_index of the first CPU, attached to this GIC.  */
++    uint32_t first_cpu_index;
  
-                 cpu_set_pc(cs, info->loader_start);
-@@ -1239,6 +1239,9 @@ void arm_load_kernel(ARMCPU *cpu, MachineState *ms, struct arm_boot_info *info)
-     info->dtb_filename = ms->dtb;
-     info->dtb_limit = 0;
- 
-+    /* We assume the CPU passed as argument is the primary CPU.  */
-+    info->primary_cpu = cpu;
-+
-     /* Load the kernel.  */
-     if (!info->kernel_filename || info->firmware_loaded) {
-         arm_setup_firmware_boot(cpu, info);
-@@ -1288,12 +1291,8 @@ void arm_load_kernel(ARMCPU *cpu, MachineState *ms, struct arm_boot_info *info)
- 
-             object_property_set_int(cpuobj, "psci-conduit", info->psci_conduit,
-                                     &error_abort);
--            /*
--             * Secondary CPUs start in PSCI powered-down state. Like the
--             * code in do_cpu_reset(), we assume first_cpu is the primary
--             * CPU.
--             */
--            if (cs != first_cpu) {
-+            /* Secondary CPUs start in PSCI powered-down state.  */
-+            if (ARM_CPU(cs) != info->primary_cpu) {
-                 object_property_set_bool(cpuobj, "start-powered-off", true,
-                                          &error_abort);
-             }
-diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
-index b12bf61ca8..a2e22bda8a 100644
---- a/include/hw/arm/boot.h
-+++ b/include/hw/arm/boot.h
-@@ -132,6 +132,9 @@ struct arm_boot_info {
-     bool secure_board_setup;
- 
-     arm_endianness endianness;
-+
-+    /* CPU having load the kernel and that should be the first to boot.  */
-+    ARMCPU *primary_cpu;
- };
- 
- /**
+     MemoryRegion iomem; /* Distributor */
+     /* This is just so we can have an opaque pointer which identifies
 -- 
 2.34.1
 
