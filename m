@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47553AD9684
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 22:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBE8AD9694
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 22:41:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQB8n-00029m-Ur; Fri, 13 Jun 2025 16:36:45 -0400
+	id 1uQB8y-0002By-KX; Fri, 13 Jun 2025 16:36:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uQB8l-000295-G2
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 16:36:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uQB8w-0002BU-LE
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 16:36:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uQB8k-0004yQ-0q
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 16:36:43 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uQB8v-00050L-9R
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 16:36:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749847001;
+ s=mimecast20190719; t=1749847012;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RZwb5CD1LNuohrMwP8F5tTT4t3ppyxmLmym4kOeJua4=;
- b=OaNZ/TIQouttim983ktENmYQvntIFrYlvCBFAJL4ZHaOfhXi2LX1miQSGP5XKbY46Bajhw
- O6mnVbmidZY2UmhaPrbRNIoJpBWa/uWSC49VO3in1Wu5Un/28obHe3/9czF6ErNd2OzmVU
- QKuJIVUEYacyWbM9OGN+/ApmsmvKbQQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=HvAW79klHfY8YcQpj4tTEG4nFxXcNdp3u4MynL6q3c8=;
+ b=J75h0b9UoYcMTz4hPdCuZjsAhNGB65bMussmuJWRm+LqGn3ZvxuU43XofILchFixRDvE4Z
+ z1xjVbpqNsFXUoEoaRg265fNHhk628lCVGRwxzM32jFfylGOGUb048xHzJ+AXUPtotnAJp
+ Svlu0dAWL7UAqmQltp1PEk1Z7bQNCiA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-gqsRhqQ5MI2t6gF7TrpLzw-1; Fri,
- 13 Jun 2025 16:36:40 -0400
-X-MC-Unique: gqsRhqQ5MI2t6gF7TrpLzw-1
-X-Mimecast-MFC-AGG-ID: gqsRhqQ5MI2t6gF7TrpLzw_1749846998
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-427-HjTtNKplOuGu3RGN4a1O1w-1; Fri,
+ 13 Jun 2025 16:36:48 -0400
+X-MC-Unique: HjTtNKplOuGu3RGN4a1O1w-1
+X-Mimecast-MFC-AGG-ID: HjTtNKplOuGu3RGN4a1O1w_1749847006
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9AA761956086; Fri, 13 Jun 2025 20:36:37 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 136EF195608C; Fri, 13 Jun 2025 20:36:46 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.65.203])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 39FE530044CC; Fri, 13 Jun 2025 20:36:29 +0000 (UTC)
+ id 1475530044D5; Fri, 13 Jun 2025 20:36:37 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -61,15 +61,15 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  qemu-block@nongnu.org, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH 01/18] qapi: add cross-references to acpi.json
-Date: Fri, 13 Jun 2025 16:36:03 -0400
-Message-ID: <20250613203620.1283814-2-jsnow@redhat.com>
+Subject: [PATCH 02/18] qapi: add cross-references to authz.json
+Date: Fri, 13 Jun 2025 16:36:04 -0400
+Message-ID: <20250613203620.1283814-3-jsnow@redhat.com>
 In-Reply-To: <20250613203620.1283814-1-jsnow@redhat.com>
 References: <20250613203620.1283814-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,22 +96,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- qapi/acpi.json | 2 +-
+ qapi/authz.json | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qapi/acpi.json b/qapi/acpi.json
-index 2d53b823656..8e48d8874dd 100644
---- a/qapi/acpi.json
-+++ b/qapi/acpi.json
-@@ -106,7 +106,7 @@
- ##
- # @query-acpi-ospm-status:
+diff --git a/qapi/authz.json b/qapi/authz.json
+index 7fc6e3032ea..cbd9399c461 100644
+--- a/qapi/authz.json
++++ b/qapi/authz.json
+@@ -75,7 +75,7 @@
+ # Properties for authz-listfile objects.
  #
--# Return a list of ACPIOSTInfo for devices that support status
-+# Return a list of `ACPIOSTInfo` for devices that support status
- # reporting via ACPI _OST method.
+ # @filename: File name to load the configuration from.  The file must
+-#     contain valid JSON for AuthZListProperties.
++#     contain valid JSON for `AuthZListProperties`.
  #
- # Since: 2.1
+ # @refresh: If true, inotify is used to monitor the file,
+ #     automatically reloading changes.  If an error occurs during
 -- 
 2.48.1
 
