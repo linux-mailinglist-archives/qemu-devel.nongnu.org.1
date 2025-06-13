@@ -2,70 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB01AD8EDB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 16:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3027AD8EC9
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 16:10:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQ57y-0001cM-0w; Fri, 13 Jun 2025 10:11:30 -0400
+	id 1uQ56k-00073E-FT; Fri, 13 Jun 2025 10:10:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
- id 1uQ57s-0001Ob-3W
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:11:24 -0400
-Received: from smtp-out-60.livemail.co.uk ([213.171.216.60]
- helo=dkim.livemail.co.uk)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ56M-0006lX-9N
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:09:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
- id 1uQ57p-0002CM-MA
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:11:23 -0400
-Received: from smtp.livemail.co.uk (unknown [10.44.132.82])
- by dkim.livemail.co.uk (Postfix) with ESMTPS id D97611802D4;
- Fri, 13 Jun 2025 15:11:19 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=randomman.co.uk;
- s=livemail2; t=1749823879;
- bh=2Ql4x0vibybJS4USky7CMG78BCCbeUBBq6FeJfBQwEs=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=k+n238ocloDzLuWDki7losdBtSVaP+aLw5ypF1VYMyrovyvy78zzy4t/yx11yuBXd
- LCL8D+6NDSYlSheIZuvrwQaHBelB3KBd9dLsyKdBLvDwXqSI/aQuVEAO5xeEGj6uau
- B1fkFKYhHJzh5zeLI84JS/miej6JjmU1Q18tePQs=
-Received: from localhost.localdomain (unknown [145.40.191.116])
- (Authenticated sender: roy.hopkins@randomman.co.uk)
- by smtp.livemail.co.uk (Postfix) with ESMTPSA id 56462C0B3E;
- Fri, 13 Jun 2025 15:11:15 +0100 (BST)
-From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ56K-0001lX-DN
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:09:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1749823787;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=7nILyzynSnvknIr8mqdNZ9z3dvv7bdU1U/3+yRo7Unw=;
+ b=i9KTx3mTShfHp4vnj73U0SdL+yGOs1qFDi1IC8xbNGUbF3K+mSqHxyHHXz+h1L2JvQax62
+ K1F/8bHdPsfRPoo0ATgIHSWu38F/2ZTbqxQiZ9fOGnX5XfmDEBlIs8atyPzVe6zgFXMifI
+ EOUQZ58uhzpMqrue3LzAnkXJfqdOE14=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-185-jc0cE9oLON6PwFP1N35B_g-1; Fri, 13 Jun 2025 10:08:06 -0400
+X-MC-Unique: jc0cE9oLON6PwFP1N35B_g-1
+X-Mimecast-MFC-AGG-ID: jc0cE9oLON6PwFP1N35B_g_1749823686
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4a58cd9b142so38733271cf.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Jun 2025 07:08:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749823685; x=1750428485;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7nILyzynSnvknIr8mqdNZ9z3dvv7bdU1U/3+yRo7Unw=;
+ b=R/5gvsE8l5p45l/Sp5YTTb3YrFi1I6I34Fi0XphQAXV5cI1SKWLb6OUfGy+QXRb72Y
+ zdHr6LalHnZXd9dwJ991lDjZ8fp4FrN9z+YOR9+NrBGidjpT+Hd/z4RSdJqXUwmuX9hx
+ u4vqZZy/RHYon707jnHyM7LG/4pxanxEscUf1OJy5qZTzypekUAay/i+t5t0jzQ1S4HF
+ 8s2LIHueyPe6mLNCYjdNUnEvxUptEb97E7JaM6aYM1QVpgesQL3WSabw1icLn7ktLmMW
+ nvmFT5xTKZn8omXU2xx7oYAV95lst7idPsnC9gQLCdZQz6ZsfOZ2Njn+3lLFnT56IYVF
+ yDXQ==
+X-Gm-Message-State: AOJu0YyWWc/AL5nzKKNbgC5zlIN3ION/jeYpEF+D259PpoAt4GKjVWMF
+ NlG7X78hVqmjd3goib6qo7i4m32V0Y0HDJVM1X0WVqJY0cJLnvMz6FHKtHnljimD5/naqkDTizk
+ oFeD9AIm9ic5q9XEtdasTeGICyaUvkWedBtbxG8wpB1GOfw5eAB/VBNO78pNZvuJrgOVxqDWpQF
+ 0IIkaqniJLfmq5XRMl8ssibLCCXyLEX2vijOvZ+w==
+X-Gm-Gg: ASbGncuhNzX3WBnGiaiJDx9vR/JDWe+eIzlvCmUPtOD+eLSTJFX7fZ46eRz+7NRInXs
+ u0VKqt8Dsx93yiaLU3NpFlFXYnMD90g0F2Dj6BZ0UaQNqFw8SKuPqNxbEM8Usybp4M2QisejUJ8
+ heVHPzSUJlePcxX8Q8znFcUPjDqWsDoN4Wpj8IRWSYOlaTQjGoR3x1ePcYZbt81bXyuYAxVZwER
+ ybjpNzT5tEBiJryuYf7DJivrcGXXE/EZNX+43/kK0F725CVJu7VaFLOFFCVfNJipHEfH4sPxZEa
+ FsrVtmb6Xao=
+X-Received: by 2002:a05:622a:418a:b0:494:b1f9:d678 with SMTP id
+ d75a77b69052e-4a72ff34caemr69052171cf.50.1749823685463; 
+ Fri, 13 Jun 2025 07:08:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiFeqi2sOFzCI8zx1ceUYmeWUKCIy/23RD3dCQ3aBQNudxnd154kLtXypfsQhRkWjdoK2CTA==
+X-Received: by 2002:a05:622a:418a:b0:494:b1f9:d678 with SMTP id
+ d75a77b69052e-4a72ff34caemr69051541cf.50.1749823684888; 
+ Fri, 13 Jun 2025 07:08:04 -0700 (PDT)
+Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4a72a52a1ddsm17384111cf.81.2025.06.13.07.08.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Jun 2025 07:08:04 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P . Berrange" <berrange@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
- Gerd Hoffman <kraxel@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
- Joerg Roedel <joro@8bytes.org>
-Subject: [PATCH v8 06/16] sev: Update launch_update_data functions to use
- Error handling
-Date: Fri, 13 Jun 2025 14:53:21 +0100
-Message-ID: <8e41059626469c94459b6a6b6cc1ce745968dae9.1749820158.git.roy.hopkins@randomman.co.uk>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1749820158.git.roy.hopkins@randomman.co.uk>
-References: <cover.1749820158.git.roy.hopkins@randomman.co.uk>
+Cc: peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>,
+ Mario Casquero <mcasquer@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>
+Subject: [PATCH v3 00/11] migration: Some enhancements and cleanups for 10.1
+Date: Fri, 13 Jun 2025 10:07:50 -0400
+Message-ID: <20250613140801.474264-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.49.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=213.171.216.60;
- envelope-from=roy.hopkins@randomman.co.uk; helo=dkim.livemail.co.uk
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,188 +103,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The class function and implementations for updating launch data return
-a code in case of error. In some cases an error message is generated and
-in other cases, just the error return value is used.
+v1: https://lore.kernel.org/r/20250527215850.1271072-1-peterx@redhat.com
+v2: https://lore.kernel.org/r/20250609161855.6603-1-peterx@redhat.com
 
-This small refactor adds an 'Error **errp' parameter to all functions
-which consistently set an error condition if a non-zero value is
-returned.
+v3 changelog:
+- Fix checkpatch issues on spaces etc.
+- Added Tested-by tags for Mario on relevant patches
 
-Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Gerd Hoffman <kraxel@redhat.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
----
- target/i386/sev.c | 68 +++++++++++++++++++++++------------------------
- 1 file changed, 33 insertions(+), 35 deletions(-)
+The series is based on a small patch from Yanfei Xu here:
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 1a12f0671c..a84f5f5d28 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -122,7 +122,8 @@ struct SevCommonStateClass {
-                                        Error **errp);
-     int (*launch_start)(SevCommonState *sev_common);
-     void (*launch_finish)(SevCommonState *sev_common);
--    int (*launch_update_data)(SevCommonState *sev_common, hwaddr gpa, uint8_t *ptr, size_t len);
-+    int (*launch_update_data)(SevCommonState *sev_common, hwaddr gpa,
-+                              uint8_t *ptr, size_t len, Error **errp);
-     int (*kvm_init)(ConfidentialGuestSupport *cgs, Error **errp);
- };
- 
-@@ -970,9 +971,8 @@ sev_snp_adjust_cpuid_features(X86ConfidentialGuest *cg, uint32_t feature, uint32
-     return value;
- }
- 
--static int
--sev_launch_update_data(SevCommonState *sev_common, hwaddr gpa,
--                       uint8_t *addr, size_t len)
-+static int sev_launch_update_data(SevCommonState *sev_common, hwaddr gpa,
-+                                  uint8_t *addr, size_t len, Error **errp)
- {
-     int ret, fw_error;
-     struct kvm_sev_launch_update_data update;
-@@ -987,8 +987,8 @@ sev_launch_update_data(SevCommonState *sev_common, hwaddr gpa,
-     ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_LAUNCH_UPDATE_DATA,
-                     &update, &fw_error);
-     if (ret) {
--        error_report("%s: LAUNCH_UPDATE ret=%d fw_error=%d '%s'",
--                __func__, ret, fw_error, fw_error_to_str(fw_error));
-+        error_setg(errp, "%s: LAUNCH_UPDATE ret=%d fw_error=%d '%s'", __func__,
-+                   ret, fw_error, fw_error_to_str(fw_error));
-     }
- 
-     return ret;
-@@ -1116,8 +1116,8 @@ sev_launch_finish(SevCommonState *sev_common)
-     migrate_add_blocker(&sev_mig_blocker, &error_fatal);
- }
- 
--static int
--snp_launch_update_data(uint64_t gpa, void *hva, size_t len, int type)
-+static int snp_launch_update_data(uint64_t gpa, void *hva, size_t len,
-+                                  int type, Error **errp)
- {
-     SevLaunchUpdateData *data;
- 
-@@ -1132,23 +1132,21 @@ snp_launch_update_data(uint64_t gpa, void *hva, size_t len, int type)
-     return 0;
- }
- 
--static int
--sev_snp_launch_update_data(SevCommonState *sev_common, hwaddr gpa,
--                           uint8_t *ptr, size_t len)
-+static int sev_snp_launch_update_data(SevCommonState *sev_common, hwaddr gpa,
-+                                      uint8_t *ptr, size_t len, Error **errp)
- {
--       int ret = snp_launch_update_data(gpa, ptr, len,
--                                         KVM_SEV_SNP_PAGE_TYPE_NORMAL);
--       return ret;
-+    return snp_launch_update_data(gpa, ptr, len,
-+                                     KVM_SEV_SNP_PAGE_TYPE_NORMAL, errp);
- }
- 
- static int
- sev_snp_cpuid_info_fill(SnpCpuidInfo *snp_cpuid_info,
--                        const KvmCpuidInfo *kvm_cpuid_info)
-+                        const KvmCpuidInfo *kvm_cpuid_info, Error **errp)
- {
-     size_t i;
- 
-     if (kvm_cpuid_info->cpuid.nent > SNP_CPUID_FUNCTION_MAXCOUNT) {
--        error_report("SEV-SNP: CPUID entry count (%d) exceeds max (%d)",
-+        error_setg(errp, "SEV-SNP: CPUID entry count (%d) exceeds max (%d)",
-                      kvm_cpuid_info->cpuid.nent, SNP_CPUID_FUNCTION_MAXCOUNT);
-         return -1;
-     }
-@@ -1190,8 +1188,8 @@ sev_snp_cpuid_info_fill(SnpCpuidInfo *snp_cpuid_info,
-     return 0;
- }
- 
--static int
--snp_launch_update_cpuid(uint32_t cpuid_addr, void *hva, size_t cpuid_len)
-+static int snp_launch_update_cpuid(uint32_t cpuid_addr, void *hva,
-+                                   size_t cpuid_len, Error **errp)
- {
-     KvmCpuidInfo kvm_cpuid_info = {0};
-     SnpCpuidInfo snp_cpuid_info;
-@@ -1208,26 +1206,25 @@ snp_launch_update_cpuid(uint32_t cpuid_addr, void *hva, size_t cpuid_len)
-     } while (ret == -E2BIG);
- 
-     if (ret) {
--        error_report("SEV-SNP: unable to query CPUID values for CPU: '%s'",
--                     strerror(-ret));
--        return 1;
-+        error_setg(errp, "SEV-SNP: unable to query CPUID values for CPU: '%s'",
-+                   strerror(-ret));
-+        return -1;
-     }
- 
--    ret = sev_snp_cpuid_info_fill(&snp_cpuid_info, &kvm_cpuid_info);
--    if (ret) {
--        error_report("SEV-SNP: failed to generate CPUID table information");
--        return 1;
-+    ret = sev_snp_cpuid_info_fill(&snp_cpuid_info, &kvm_cpuid_info, errp);
-+    if (ret < 0) {
-+        return -1;
-     }
- 
-     memcpy(hva, &snp_cpuid_info, sizeof(snp_cpuid_info));
- 
-     return snp_launch_update_data(cpuid_addr, hva, cpuid_len,
--                                  KVM_SEV_SNP_PAGE_TYPE_CPUID);
-+                                  KVM_SEV_SNP_PAGE_TYPE_CPUID, errp);
- }
- 
--static int
--snp_launch_update_kernel_hashes(SevSnpGuestState *sev_snp, uint32_t addr,
--                                void *hva, uint32_t len)
-+static int snp_launch_update_kernel_hashes(SevSnpGuestState *sev_snp,
-+                                           uint32_t addr, void *hva,
-+                                           uint32_t len, Error **errp)
- {
-     int type = KVM_SEV_SNP_PAGE_TYPE_ZERO;
-     if (sev_snp->parent_obj.kernel_hashes) {
-@@ -1239,7 +1236,7 @@ snp_launch_update_kernel_hashes(SevSnpGuestState *sev_snp, uint32_t addr,
-                sizeof(*sev_snp->kernel_hashes_data));
-         type = KVM_SEV_SNP_PAGE_TYPE_NORMAL;
-     }
--    return snp_launch_update_data(addr, hva, len, type);
-+    return snp_launch_update_data(addr, hva, len, type, errp);
- }
- 
- static int
-@@ -1277,12 +1274,14 @@ snp_populate_metadata_pages(SevSnpGuestState *sev_snp,
-         }
- 
-         if (type == KVM_SEV_SNP_PAGE_TYPE_CPUID) {
--            ret = snp_launch_update_cpuid(desc->base, hva, desc->len);
-+            ret = snp_launch_update_cpuid(desc->base, hva, desc->len,
-+                                          &error_fatal);
-         } else if (desc->type == SEV_DESC_TYPE_SNP_KERNEL_HASHES) {
-             ret = snp_launch_update_kernel_hashes(sev_snp, desc->base, hva,
--                                                  desc->len);
-+                                                  desc->len, &error_fatal);
-         } else {
--            ret = snp_launch_update_data(desc->base, hva, desc->len, type);
-+            ret = snp_launch_update_data(desc->base, hva, desc->len, type,
-+                                         &error_fatal);
-         }
- 
-         if (ret) {
-@@ -1615,9 +1614,8 @@ sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp)
-     if (sev_check_state(sev_common, SEV_STATE_LAUNCH_UPDATE)) {
-         int ret;
- 
--        ret = klass->launch_update_data(sev_common, gpa, ptr, len);
-+        ret = klass->launch_update_data(sev_common, gpa, ptr, len, errp);
-         if (ret < 0) {
--            error_setg(errp, "SEV: Failed to encrypt pflash rom");
-             return ret;
-         }
-     }
+Based-on: <20250514115827.3216082-1-yanfei.xu@bytedance.com>
+https://lore.kernel.org/r/20250514115827.3216082-1-yanfei.xu@bytedance.com
+
+This is a series that collected many of either enhancements or cleanups I
+got for QEMU 10.1, which almost came from when working on the last patch.
+
+The last patch, which is a oneliner, can further reduce 10% postcopy page
+fault latency with preempt mode enabled.
+
+      Before: 268.00us (+-1.87%)
+      After:  232.67us (+-2.01%)
+
+The patch layout is as following:
+
+Patch 1:         A follow up of HMP change for "info migrate", per
+                 suggestion from Dave
+Patch 2:         Yet another HMP fix for blocktime displays
+Patch 3-10:      Cleanups everywhere, especially please take a look at
+                 patch 10 which changes the core switchover decision logic
+Patch 11:        The one-liner optimization
+
+Comments welcomed, thanks.
+
+Peter Xu (11):
+  migration/hmp: Reorg "info migrate" once more
+  migration/hmp: Fix postcopy-blocktime per-vCPU results
+  migration/docs: Move docs for postcopy blocktime feature
+  migration/bg-snapshot: Do not check for SKIP in iterator
+  migration: Drop save_live_complete_postcopy hook
+  migration: Rename save_live_complete_precopy to save_complete
+  migration: qemu_savevm_complete*() helpers
+  migration/ram: One less indent for ram_find_and_save_block()
+  migration/ram: Add tracepoints for ram_save_complete()
+  migration: Rewrite the migration complete detect logic
+  migration/postcopy: Avoid clearing dirty bitmap for postcopy too
+
+ docs/devel/migration/postcopy.rst | 36 +++++++-------
+ include/migration/register.h      | 26 ++++------
+ hw/ppc/spapr.c                    |  2 +-
+ hw/s390x/s390-stattrib.c          |  2 +-
+ hw/vfio/migration.c               |  2 +-
+ migration/block-dirty-bitmap.c    |  3 +-
+ migration/migration-hmp-cmds.c    | 81 ++++++++++++++++--------------
+ migration/migration.c             | 62 ++++++++++++++++-------
+ migration/ram.c                   | 32 +++++++-----
+ migration/savevm.c                | 83 +++++++++++++++++--------------
+ migration/trace-events            |  1 +
+ 11 files changed, 185 insertions(+), 145 deletions(-)
+
 -- 
-2.43.0
+2.49.0
 
 
