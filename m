@@ -2,83 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20548AD8D94
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 15:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 339DFAD8DF9
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 15:55:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQ4jz-0006Ey-3E; Fri, 13 Jun 2025 09:46:43 -0400
+	id 1uQ4r4-0007x5-SX; Fri, 13 Jun 2025 09:54:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1uQ4je-0006Cu-BW
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 09:46:24 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1uQ4jY-0006sp-Aa
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 09:46:19 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-60789b450ceso4098489a12.2
- for <qemu-devel@nongnu.org>; Fri, 13 Jun 2025 06:46:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1749822374; x=1750427174; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mc8wSP+/FV9P/n2j5WAoDMSG4PUhKFwccG4V6/uG2pc=;
- b=XRazCXMGT9bXzub8T4s+drZibUxvqW+n6GCrnWuw273C0+nkoKRKAhiAa1cgFQnSaL
- 0SMdz4Cu3EmqN/UFtESNj69vR+u3WvwqBbqlckqf/S9xgSplcIvtAWLR9CmRCSdtdYN2
- nNpveOa4A6ivJMbYfHzSpZLiRjMPB5LSmR1wq23uCp2sxRc51ww+YMqhgrjreU6vmYSR
- 85Zkv1hanR5uFF5/CkhrxXdWm5OKKeXB+cIfdWv+Fj+ROY9qwoqm7eu2RY8aVmvHnSzw
- pvPJDWUhWfzkMEyIwKvyNFGow40G9+VZYpCG8Bj/59Q78xhF0CZjJVbfLRVPRAk0e/8P
- MWFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749822374; x=1750427174;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mc8wSP+/FV9P/n2j5WAoDMSG4PUhKFwccG4V6/uG2pc=;
- b=G+gY1A/Om4N4jM4WGcKck/Q+FdK2t0TUO/RbzOHYBqFaIAK5wUqqhGoeZgjXTZwcT8
- NuiF8sGC7fCIb5+q2jt0AmNmTHHIWqsHLwCeB8F9o999gdRyBrVZCD7Oq+ixrb8a8683
- VtixbHn0/Axmb/3erDOdPYP3B/1FA7Sn6lSSeUNVSk5yxgz92k8ipAOosrQojg3kQEmR
- mRuigDjapBajx2DQD4TUe4lbSRs2yKo4DJ/8hl2WYu0OwZuZq9WcU62f43+8q0TZKthX
- mSammxVnMFGi/+8f/qBDXl9rPuO9Pdv/6+uy0vWmX5xMD6jarAuErO8xcs8OhtUwN456
- bgjA==
-X-Gm-Message-State: AOJu0YyeG0kdGvpx7Fc8r0m0l5mjlULli1na0nKBK2WsTBhZVVIEvWyf
- 6VJ0lX7d1PNE8Cb0DJBHTn5+Vrs5I0rG1lbTnScudmh+Uwlm42htbqdmygPrHI4RKdbK1tDK8A5
- jI+Bhj9mxqqP/Gttc1c47Ik4x1hyujZ4VaVXZorOZ
-X-Gm-Gg: ASbGncstBHzy7W14nqlKTtnuf/QkH3L/Gy0Av/3NvVYfi8VhzoCxulfnk/k6kz+MQSx
- SYx3T9N3bi03h4k65RkP0ZXxhM7Eb3hGFE6zp1HgG69P7S3/AAkzh4l56PE2P7rZJ2nCUG2/a/Z
- rXGx7uWjG2TGb9+Yqdi/2vwL+TcPYuNqI3/Eb9emLtQbOmvVMiAwAb90CoTo5K83U02VNYjm1Yu
- OOMNg==
-X-Google-Smtp-Source: AGHT+IEQWZPZiq3MrFlwEg3yz4tF3UugQGAR5uG0fm4+7wnUF8Mn+61dAEUiNNO380Imf5sEv/L0zetelsFYPNU0gLg=
-X-Received: by 2002:a05:6402:2115:b0:607:ec09:d462 with SMTP id
- 4fb4d7f45d1cf-608b48c758amr2887829a12.7.1749822374469; Fri, 13 Jun 2025
- 06:46:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1uQ4qy-0007wk-Ce
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 09:53:56 -0400
+Received: from smtp-out-60.livemail.co.uk ([213.171.216.60]
+ helo=dkim.livemail.co.uk)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1uQ4qs-0007VU-9i
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 09:53:55 -0400
+Received: from smtp.livemail.co.uk (unknown [10.44.132.84])
+ by dkim.livemail.co.uk (Postfix) with ESMTPS id 7D1A840025;
+ Fri, 13 Jun 2025 14:53:47 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=randomman.co.uk;
+ s=livemail2; t=1749822827;
+ bh=T1F4PkCZc9hM269QFlUAsS4pAdaE4fkVc8PPMV67P6o=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=fm+C/QeZi6SteqUN9yX6gtRNwvxvmM2Pe7Zp1w2ocAueZ+hyvP6PbYTFzdHYxB5hA
+ ZFcOD81ZKWYQfbHJD1rIZMefAOE4xcYpyvZBWuJJu3GIcA+xnuSPxgR8CqnSaOlvPV
+ uP6o5Ymg/UM/DV5onAQvDTv1jqlcZzMIW8ZljSi4=
+Received: from localhost.localdomain (unknown [145.40.191.116])
+ (Authenticated sender: roy.hopkins@randomman.co.uk)
+ by smtp.livemail.co.uk (Postfix) with ESMTPSA id E8C15A022B;
+ Fri, 13 Jun 2025 14:53:42 +0100 (BST)
+From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+To: qemu-devel@nongnu.org
+Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
+ Gerd Hoffman <kraxel@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Joerg Roedel <joro@8bytes.org>
+Subject: [PATCH v8 03/16] backends/igvm: Add IGVM loader and configuration
+Date: Fri, 13 Jun 2025 14:53:18 +0100
+Message-ID: <faf5775bd7d83b023e14f6c04cccec78a8a80037.1749820158.git.roy.hopkins@randomman.co.uk>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1749820158.git.roy.hopkins@randomman.co.uk>
+References: <cover.1749820158.git.roy.hopkins@randomman.co.uk>
 MIME-Version: 1.0
-References: <20250526085523.809003-1-chigot@adacore.com>
- <CAFEAcA-2fnu9hsGirQ5FJGqtNktNX2X52UgQBu4yYN4WjeSVQg@mail.gmail.com>
-In-Reply-To: <CAFEAcA-2fnu9hsGirQ5FJGqtNktNX2X52UgQBu4yYN4WjeSVQg@mail.gmail.com>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Fri, 13 Jun 2025 15:46:03 +0200
-X-Gm-Features: AX0GCFuTHFrLMQWmQj1Hpk1c4MVGv7bN_bui-dYiv0vfvKVT1lWpTZv93IVj-2s
-Message-ID: <CAJ307EiPsrCDP2_5urEROOZj-3TRc4rOAQA-wOHEGUuhO3T=7w@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] xlnx-zynqmp: add support to boot on RPUs
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, edgar.iglesias@gmail.com, 
- alistair@alistair23.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=chigot@adacore.com; helo=mail-ed1-x52a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=213.171.216.60;
+ envelope-from=roy.hopkins@randomman.co.uk; helo=dkim.livemail.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,48 +82,1042 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 13, 2025 at 1:58=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> On Mon, 26 May 2025 at 09:55, Cl=C3=A9ment Chigot <chigot@adacore.com> wr=
-ote:
-> >
-> > This series enhances Xilinx ZynqMP support to allow booting on RPUs and
-> > ease gdb connections to them.
-> >
-> > It was validated with home-made binaries. FreeRTOS was tested but witho=
-ut
-> > success: outputs/IRQ seems broken. AFAICT, FreeRTOS is expecting Xilinx=
-'s
-> > QEMU thus I didn't investigate further, but I'd still like advice
-> > on the 3rd patch ("wire a second GIC") since it could be related to it.
-> >
-> > Changes since v1:
-> >  - add doc for "first-cpu-index" new property in arm_gic.h.
-> >
-> > Cl=C3=A9ment Chigot (2):
-> >   hw/arm: make cpu targeted by arm_load_kernel the primary CPU.
-> >   hw/arm/xlnx-zynqmp: adapt cluster-id based on the boot cpu
-> >
-> > Frederic Konrad (2):
-> >   hw/intc/arm_gic: introduce a first-cpu-index property
-> >   hw/arm/xlnx-zynqmp: wire a second GIC for the Cortex-R5
->
-> Hi; I've taken the first 2 patches in this series into
-> target-arm.next. I left some review comments on patch 3.
+Adds an IGVM loader to QEMU which processes a given IGVM file and
+applies the directives within the file to the current guest
+configuration.
 
-Thanks a lot. I've just sent a v3 addressing them.
+The IGVM loader can be used to configure both confidential and
+non-confidential guests. For confidential guests, the
+ConfidentialGuestSupport object for the system is used to encrypt
+memory, apply the initial CPU state and perform other confidential guest
+operations.
 
-> For patch 4, I still feel this is something that should
-> be dealt with at the gdb end (e.g. gdb should support
-> "connect to this target and connect to remote-inferior 2,
-> not inferior 1, and don't fall over just because you
-> don't know the architecture of inferior 1").
+The loader is configured via a new IgvmCfg QOM object which allows the
+user to provide a path to the IGVM file to process.
 
-Yeah, I'm totally fine with that, I've removed it from v3.
+Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Gerd Hoffman <kraxel@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+---
+ backends/igvm-cfg.c       |  51 +++
+ backends/igvm.c           | 807 ++++++++++++++++++++++++++++++++++++++
+ backends/igvm.h           |  22 ++
+ backends/meson.build      |   2 +
+ include/system/igvm-cfg.h |  46 +++
+ qapi/qom.json             |  17 +
+ 6 files changed, 945 insertions(+)
+ create mode 100644 backends/igvm-cfg.c
+ create mode 100644 backends/igvm.c
+ create mode 100644 backends/igvm.h
+ create mode 100644 include/system/igvm-cfg.h
 
-PS: I'll be off for a few weeks but should be able to make a v4 if
-needed before 10.1 soft freeze.
+diff --git a/backends/igvm-cfg.c b/backends/igvm-cfg.c
+new file mode 100644
+index 0000000000..45df63e06c
+--- /dev/null
++++ b/backends/igvm-cfg.c
+@@ -0,0 +1,51 @@
++/*
++ * QEMU IGVM interface
++ *
++ * Copyright (C) 2023-2024 SUSE
++ *
++ * Authors:
++ *  Roy Hopkins <roy.hopkins@randomman.co.uk>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++
++#include "system/igvm-cfg.h"
++#include "igvm.h"
++#include "qom/object_interfaces.h"
++
++static char *get_igvm(Object *obj, Error **errp)
++{
++    IgvmCfg *igvm = IGVM_CFG(obj);
++    return g_strdup(igvm->filename);
++}
++
++static void set_igvm(Object *obj, const char *value, Error **errp)
++{
++    IgvmCfg *igvm = IGVM_CFG(obj);
++    g_free(igvm->filename);
++    igvm->filename = g_strdup(value);
++}
++
++OBJECT_DEFINE_TYPE_WITH_INTERFACES(IgvmCfg, igvm_cfg, IGVM_CFG, OBJECT,
++                                   { TYPE_USER_CREATABLE }, { NULL })
++
++static void igvm_cfg_class_init(ObjectClass *oc, const void *data)
++{
++    IgvmCfgClass *igvmc = IGVM_CFG_CLASS(oc);
++
++    object_class_property_add_str(oc, "file", get_igvm, set_igvm);
++    object_class_property_set_description(oc, "file",
++                                          "Set the IGVM filename to use");
++
++    igvmc->process = qigvm_process_file;
++}
++
++static void igvm_cfg_init(Object *obj)
++{
++}
++
++static void igvm_cfg_finalize(Object *obj)
++{
++}
+diff --git a/backends/igvm.c b/backends/igvm.c
+new file mode 100644
+index 0000000000..2a31021d44
+--- /dev/null
++++ b/backends/igvm.c
+@@ -0,0 +1,807 @@
++/*
++ * QEMU IGVM configuration backend for guests
++ *
++ * Copyright (C) 2023-2024 SUSE
++ *
++ * Authors:
++ *  Roy Hopkins <roy.hopkins@randomman.co.uk>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++
++#include "igvm.h"
++#include "qapi/error.h"
++#include "system/memory.h"
++#include "system/address-spaces.h"
++#include "hw/core/cpu.h"
++
++#include <igvm/igvm.h>
++#include <igvm/igvm_defs.h>
++
++typedef struct QIgvmParameterData {
++    QTAILQ_ENTRY(QIgvmParameterData) next;
++    uint8_t *data;
++    uint32_t size;
++    uint32_t index;
++} QIgvmParameterData;
++
++/*
++ * QIgvm contains the information required during processing
++ * of a single IGVM file.
++ */
++typedef struct QIgvm {
++    IgvmHandle file;
++    ConfidentialGuestSupport *cgs;
++    ConfidentialGuestSupportClass *cgsc;
++    uint32_t compatibility_mask;
++    unsigned current_header_index;
++    QTAILQ_HEAD(, QIgvmParameterData) parameter_data;
++
++    /* These variables keep track of contiguous page regions */
++    IGVM_VHS_PAGE_DATA region_prev_page_data;
++    uint64_t region_start;
++    unsigned region_start_index;
++    unsigned region_last_index;
++    unsigned region_page_count;
++} QIgvm;
++
++static int qigvm_directive_page_data(QIgvm *ctx, const uint8_t *header_data,
++                                     Error **errp);
++static int qigvm_directive_vp_context(QIgvm *ctx, const uint8_t *header_data,
++                                      Error **errp);
++static int qigvm_directive_parameter_area(QIgvm *ctx,
++                                          const uint8_t *header_data,
++                                          Error **errp);
++static int qigvm_directive_parameter_insert(QIgvm *ctx,
++                                            const uint8_t *header_data,
++                                            Error **errp);
++static int qigvm_directive_memory_map(QIgvm *ctx, const uint8_t *header_data,
++                                      Error **errp);
++static int qigvm_directive_vp_count(QIgvm *ctx, const uint8_t *header_data,
++                                    Error **errp);
++static int qigvm_directive_environment_info(QIgvm *ctx,
++                                            const uint8_t *header_data,
++                                            Error **errp);
++static int qigvm_directive_required_memory(QIgvm *ctx,
++                                           const uint8_t *header_data,
++                                           Error **errp);
++
++struct QIGVMHandler {
++    uint32_t type;
++    uint32_t section;
++    int (*handler)(QIgvm *ctx, const uint8_t *header_data, Error **errp);
++};
++
++static struct QIGVMHandler handlers[] = {
++    { IGVM_VHT_PAGE_DATA, IGVM_HEADER_SECTION_DIRECTIVE,
++      qigvm_directive_page_data },
++    { IGVM_VHT_VP_CONTEXT, IGVM_HEADER_SECTION_DIRECTIVE,
++      qigvm_directive_vp_context },
++    { IGVM_VHT_PARAMETER_AREA, IGVM_HEADER_SECTION_DIRECTIVE,
++      qigvm_directive_parameter_area },
++    { IGVM_VHT_PARAMETER_INSERT, IGVM_HEADER_SECTION_DIRECTIVE,
++      qigvm_directive_parameter_insert },
++    { IGVM_VHT_MEMORY_MAP, IGVM_HEADER_SECTION_DIRECTIVE,
++      qigvm_directive_memory_map },
++    { IGVM_VHT_VP_COUNT_PARAMETER, IGVM_HEADER_SECTION_DIRECTIVE,
++      qigvm_directive_vp_count },
++    { IGVM_VHT_ENVIRONMENT_INFO_PARAMETER, IGVM_HEADER_SECTION_DIRECTIVE,
++      qigvm_directive_environment_info },
++    { IGVM_VHT_REQUIRED_MEMORY, IGVM_HEADER_SECTION_DIRECTIVE,
++      qigvm_directive_required_memory },
++};
++
++static int qigvm_handler(QIgvm *ctx, uint32_t type, Error **errp)
++{
++    size_t handler;
++    IgvmHandle header_handle;
++    const uint8_t *header_data;
++    int result;
++
++    for (handler = 0; handler < G_N_ELEMENTS(handlers); handler++) {
++        if (handlers[handler].type != type) {
++            continue;
++        }
++        header_handle = igvm_get_header(ctx->file, handlers[handler].section,
++                                        ctx->current_header_index);
++        if (header_handle < 0) {
++            error_setg(
++                errp,
++                "IGVM file is invalid: Failed to read directive header (code: %d)",
++                (int)header_handle);
++            return -1;
++        }
++        header_data = igvm_get_buffer(ctx->file, header_handle) +
++                      sizeof(IGVM_VHS_VARIABLE_HEADER);
++        result = handlers[handler].handler(ctx, header_data, errp);
++        igvm_free_buffer(ctx->file, header_handle);
++        return result;
++    }
++    error_setg(errp,
++               "IGVM: Unknown header type encountered when processing file: "
++               "(type 0x%X)",
++               type);
++    return -1;
++}
++
++static void *qigvm_prepare_memory(QIgvm *ctx, uint64_t addr, uint64_t size,
++                                  int region_identifier, Error **errp)
++{
++    ERRP_GUARD();
++    MemoryRegion *igvm_pages = NULL;
++    Int128 gpa_region_size;
++    MemoryRegionSection mrs =
++        memory_region_find(get_system_memory(), addr, size);
++    if (mrs.mr) {
++        if (!memory_region_is_ram(mrs.mr)) {
++            memory_region_unref(mrs.mr);
++            error_setg(
++                errp,
++                "Processing of IGVM file failed: Could not prepare memory "
++                "at address 0x%lX due to existing non-RAM region",
++                addr);
++            return NULL;
++        }
++
++        gpa_region_size = int128_make64(size);
++        if (int128_lt(mrs.size, gpa_region_size)) {
++            memory_region_unref(mrs.mr);
++            error_setg(
++                errp,
++                "Processing of IGVM file failed: Could not prepare memory "
++                "at address 0x%lX: region size exceeded",
++                addr);
++            return NULL;
++        }
++        return qemu_map_ram_ptr(mrs.mr->ram_block, mrs.offset_within_region);
++    } else {
++        /*
++         * The region_identifier is the is the index of the IGVM directive that
++         * contains the page with the lowest GPA in the region. This will
++         * generate a unique region name.
++         */
++        g_autofree char *region_name =
++            g_strdup_printf("igvm.%X", region_identifier);
++        igvm_pages = g_new0(MemoryRegion, 1);
++        if (ctx->cgs && ctx->cgs->require_guest_memfd) {
++            if (!memory_region_init_ram_guest_memfd(igvm_pages, NULL,
++                                                    region_name, size, errp)) {
++                return NULL;
++            }
++        } else {
++            if (!memory_region_init_ram(igvm_pages, NULL, region_name, size,
++                                        errp)) {
++                return NULL;
++            }
++        }
++        memory_region_add_subregion(get_system_memory(), addr, igvm_pages);
++        return memory_region_get_ram_ptr(igvm_pages);
++    }
++}
++
++static int qigvm_type_to_cgs_type(IgvmPageDataType memory_type, bool unmeasured,
++                                  bool zero)
++{
++    switch (memory_type) {
++    case IGVM_PAGE_DATA_TYPE_NORMAL: {
++        if (unmeasured) {
++            return CGS_PAGE_TYPE_UNMEASURED;
++        } else {
++            return zero ? CGS_PAGE_TYPE_ZERO : CGS_PAGE_TYPE_NORMAL;
++        }
++    }
++    case IGVM_PAGE_DATA_TYPE_SECRETS:
++        return CGS_PAGE_TYPE_SECRETS;
++    case IGVM_PAGE_DATA_TYPE_CPUID_DATA:
++        return CGS_PAGE_TYPE_CPUID;
++    case IGVM_PAGE_DATA_TYPE_CPUID_XF:
++        return CGS_PAGE_TYPE_CPUID;
++    default:
++        return -1;
++    }
++}
++
++static bool qigvm_page_attrs_equal(IgvmHandle igvm, unsigned header_index,
++                                   const IGVM_VHS_PAGE_DATA *page_1,
++                                   const IGVM_VHS_PAGE_DATA *page_2)
++{
++    IgvmHandle data_handle1, data_handle2;
++
++    /*
++     * If one page has data and the other doesn't then this results in different
++     * page types: NORMAL vs ZERO.
++     */
++    data_handle1 = igvm_get_header_data(igvm, IGVM_HEADER_SECTION_DIRECTIVE,
++                                        header_index - 1);
++    data_handle2 =
++        igvm_get_header_data(igvm, IGVM_HEADER_SECTION_DIRECTIVE, header_index);
++    if ((data_handle1 == IGVMAPI_NO_DATA ||
++         data_handle2 == IGVMAPI_NO_DATA) &&
++         data_handle1 != data_handle2) {
++        return false;
++    }
++    return ((*(const uint32_t *)&page_1->flags ==
++             *(const uint32_t *)&page_2->flags) &&
++            (page_1->data_type == page_2->data_type) &&
++            (page_1->compatibility_mask == page_2->compatibility_mask));
++}
++
++static int qigvm_process_mem_region(QIgvm *ctx, unsigned start_index,
++                                    uint64_t gpa_start, unsigned page_count,
++                                    const IgvmPageDataFlags *flags,
++                                    const IgvmPageDataType page_type,
++                                    Error **errp)
++{
++    uint8_t *region;
++    IgvmHandle data_handle;
++    const void *data;
++    uint32_t data_size;
++    unsigned page_index;
++    bool zero = true;
++    const uint64_t page_size = flags->is_2mb_page ? 0x200000 : 0x1000;
++    int result;
++    int cgs_page_type;
++
++    region = qigvm_prepare_memory(ctx, gpa_start, page_count * page_size,
++                                  start_index, errp);
++    if (!region) {
++        return -1;
++    }
++
++    for (page_index = 0; page_index < page_count; page_index++) {
++        data_handle = igvm_get_header_data(
++            ctx->file, IGVM_HEADER_SECTION_DIRECTIVE, page_index + start_index);
++        if (data_handle == IGVMAPI_NO_DATA) {
++            /* No data indicates a zero page */
++            memset(&region[page_index * page_size], 0, page_size);
++        } else if (data_handle < 0) {
++            error_setg(
++                errp,
++                "IGVM file contains invalid page data for directive with "
++                "index %d",
++                page_index + start_index);
++            return -1;
++        } else {
++            zero = false;
++            data_size = igvm_get_buffer_size(ctx->file, data_handle);
++            if (data_size < page_size) {
++                memset(&region[page_index * page_size], 0, page_size);
++            } else if (data_size > page_size) {
++                error_setg(errp,
++                           "IGVM file contains page data with invalid size for "
++                           "directive with index %d",
++                           page_index + start_index);
++                return -1;
++            }
++            data = igvm_get_buffer(ctx->file, data_handle);
++            memcpy(&region[page_index * page_size], data, data_size);
++            igvm_free_buffer(ctx->file, data_handle);
++        }
++    }
++
++    /*
++     * If a confidential guest support object is provided then use it to set the
++     * guest state.
++     */
++    if (ctx->cgs) {
++        cgs_page_type =
++            qigvm_type_to_cgs_type(page_type, flags->unmeasured, zero);
++        if (cgs_page_type < 0) {
++            error_setg(errp,
++                       "Invalid page type in IGVM file. Directives: %d to %d, "
++                       "page type: %d",
++                       start_index, start_index + page_count, page_type);
++            return -1;
++        }
++
++        result = ctx->cgsc->set_guest_state(
++            gpa_start, region, page_size * page_count, cgs_page_type, 0, errp);
++        if (result < 0) {
++            return result;
++        }
++    }
++    return 0;
++}
++
++static int qigvm_process_mem_page(QIgvm *ctx,
++                                  const IGVM_VHS_PAGE_DATA *page_data,
++                                  Error **errp)
++{
++    if (page_data) {
++        if (ctx->region_page_count == 0) {
++            ctx->region_start = page_data->gpa;
++            ctx->region_start_index = ctx->current_header_index;
++        } else {
++            if (!qigvm_page_attrs_equal(ctx->file, ctx->current_header_index,
++                                        page_data,
++                                        &ctx->region_prev_page_data) ||
++                ((ctx->region_prev_page_data.gpa +
++                  (ctx->region_prev_page_data.flags.is_2mb_page ? 0x200000 :
++                                                                  0x1000)) !=
++                 page_data->gpa) ||
++                (ctx->region_last_index != (ctx->current_header_index - 1))) {
++                /* End of current region */
++                if (qigvm_process_mem_region(
++                        ctx, ctx->region_start_index, ctx->region_start,
++                        ctx->region_page_count,
++                        &ctx->region_prev_page_data.flags,
++                        ctx->region_prev_page_data.data_type, errp) < 0) {
++                    return -1;
++                }
++                ctx->region_page_count = 0;
++                ctx->region_start = page_data->gpa;
++                ctx->region_start_index = ctx->current_header_index;
++            }
++        }
++        memcpy(&ctx->region_prev_page_data, page_data,
++               sizeof(ctx->region_prev_page_data));
++        ctx->region_last_index = ctx->current_header_index;
++        ctx->region_page_count++;
++    } else {
++        if (ctx->region_page_count > 0) {
++            if (qigvm_process_mem_region(
++                    ctx, ctx->region_start_index, ctx->region_start,
++                    ctx->region_page_count, &ctx->region_prev_page_data.flags,
++                    ctx->region_prev_page_data.data_type, errp) < 0) {
++                return -1;
++            }
++            ctx->region_page_count = 0;
++        }
++    }
++    return 0;
++}
++
++static int qigvm_directive_page_data(QIgvm *ctx, const uint8_t *header_data,
++                                     Error **errp)
++{
++    const IGVM_VHS_PAGE_DATA *page_data =
++        (const IGVM_VHS_PAGE_DATA *)header_data;
++    if (page_data->compatibility_mask & ctx->compatibility_mask) {
++        return qigvm_process_mem_page(ctx, page_data, errp);
++    }
++    return 0;
++}
++
++static int qigvm_directive_vp_context(QIgvm *ctx, const uint8_t *header_data,
++                                      Error **errp)
++{
++    const IGVM_VHS_VP_CONTEXT *vp_context =
++        (const IGVM_VHS_VP_CONTEXT *)header_data;
++    IgvmHandle data_handle;
++    uint8_t *data;
++    int result;
++
++    if (!(vp_context->compatibility_mask & ctx->compatibility_mask)) {
++        return 0;
++    }
++
++    /*
++     * A confidential guest support object must be provided for setting
++     * a VP context.
++     */
++    if (!ctx->cgs) {
++        error_setg(
++            errp,
++            "A VP context is present in the IGVM file but is not supported "
++            "by the current system.");
++        return -1;
++    }
++
++    data_handle = igvm_get_header_data(ctx->file, IGVM_HEADER_SECTION_DIRECTIVE,
++                                       ctx->current_header_index);
++    if (data_handle < 0) {
++        error_setg(errp, "Invalid VP context in IGVM file. Error code: %X",
++                   data_handle);
++        return -1;
++    }
++
++    data = (uint8_t *)igvm_get_buffer(ctx->file, data_handle);
++    result = ctx->cgsc->set_guest_state(
++        vp_context->gpa, data, igvm_get_buffer_size(ctx->file, data_handle),
++        CGS_PAGE_TYPE_VMSA, vp_context->vp_index, errp);
++    igvm_free_buffer(ctx->file, data_handle);
++    if (result < 0) {
++        return result;
++    }
++    return 0;
++}
++
++static int qigvm_directive_parameter_area(QIgvm *ctx,
++                                          const uint8_t *header_data,
++                                          Error **errp)
++{
++    const IGVM_VHS_PARAMETER_AREA *param_area =
++        (const IGVM_VHS_PARAMETER_AREA *)header_data;
++    QIgvmParameterData *param_entry;
++
++    param_entry = g_new0(QIgvmParameterData, 1);
++    param_entry->size = param_area->number_of_bytes;
++    param_entry->index = param_area->parameter_area_index;
++    param_entry->data = g_malloc0(param_entry->size);
++
++    QTAILQ_INSERT_TAIL(&ctx->parameter_data, param_entry, next);
++    return 0;
++}
++
++static int qigvm_directive_parameter_insert(QIgvm *ctx,
++                                            const uint8_t *header_data,
++                                            Error **errp)
++{
++    const IGVM_VHS_PARAMETER_INSERT *param =
++        (const IGVM_VHS_PARAMETER_INSERT *)header_data;
++    QIgvmParameterData *param_entry;
++    int result;
++    void *region;
++
++    if (!(param->compatibility_mask & ctx->compatibility_mask)) {
++        return 0;
++    }
++
++    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
++    {
++        if (param_entry->index == param->parameter_area_index) {
++            region = qigvm_prepare_memory(ctx, param->gpa, param_entry->size,
++                                          ctx->current_header_index, errp);
++            if (!region) {
++                return -1;
++            }
++            memcpy(region, param_entry->data, param_entry->size);
++            g_free(param_entry->data);
++            param_entry->data = NULL;
++
++            /*
++             * If a confidential guest support object is provided then use it to
++             * set the guest state.
++             */
++            if (ctx->cgs) {
++                result = ctx->cgsc->set_guest_state(param->gpa, region,
++                                                    param_entry->size,
++                                                    CGS_PAGE_TYPE_UNMEASURED, 0,
++                                                    errp);
++                if (result < 0) {
++                    return -1;
++                }
++            }
++        }
++    }
++    return 0;
++}
++
++static int qigvm_cmp_mm_entry(const void *a, const void *b)
++{
++    const IGVM_VHS_MEMORY_MAP_ENTRY *entry_a =
++        (const IGVM_VHS_MEMORY_MAP_ENTRY *)a;
++    const IGVM_VHS_MEMORY_MAP_ENTRY *entry_b =
++        (const IGVM_VHS_MEMORY_MAP_ENTRY *)b;
++    if (entry_a->starting_gpa_page_number < entry_b->starting_gpa_page_number) {
++        return -1;
++    } else if (entry_a->starting_gpa_page_number >
++               entry_b->starting_gpa_page_number) {
++        return 1;
++    } else {
++        return 0;
++    }
++}
++
++static int qigvm_directive_memory_map(QIgvm *ctx, const uint8_t *header_data,
++                                      Error **errp)
++{
++    const IGVM_VHS_PARAMETER *param = (const IGVM_VHS_PARAMETER *)header_data;
++    QIgvmParameterData *param_entry;
++    int max_entry_count;
++    int entry = 0;
++    IGVM_VHS_MEMORY_MAP_ENTRY *mm_entry;
++    ConfidentialGuestMemoryMapEntry cgmm_entry;
++    int retval = 0;
++
++    if (!ctx->cgs) {
++        error_setg(errp,
++                   "IGVM file contains a memory map but this is not supported "
++                   "by the current system.");
++        return -1;
++    }
++
++    /* Find the parameter area that should hold the memory map */
++    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
++    {
++        if (param_entry->index == param->parameter_area_index) {
++            max_entry_count =
++                param_entry->size / sizeof(IGVM_VHS_MEMORY_MAP_ENTRY);
++            mm_entry = (IGVM_VHS_MEMORY_MAP_ENTRY *)param_entry->data;
++
++            retval = ctx->cgsc->get_mem_map_entry(entry, &cgmm_entry, errp);
++            while (retval == 0) {
++                if (entry > max_entry_count) {
++                    error_setg(
++                        errp,
++                        "IGVM: guest memory map size exceeds parameter area defined in IGVM file");
++                    return -1;
++                }
++                mm_entry[entry].starting_gpa_page_number = cgmm_entry.gpa >> 12;
++                mm_entry[entry].number_of_pages = cgmm_entry.size >> 12;
++
++                switch (cgmm_entry.type) {
++                case CGS_MEM_RAM:
++                    mm_entry[entry].entry_type =
++                        IGVM_MEMORY_MAP_ENTRY_TYPE_MEMORY;
++                    break;
++                case CGS_MEM_RESERVED:
++                    mm_entry[entry].entry_type =
++                        IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
++                    break;
++                case CGS_MEM_ACPI:
++                    mm_entry[entry].entry_type =
++                        IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
++                    break;
++                case CGS_MEM_NVS:
++                    mm_entry[entry].entry_type =
++                        IGVM_MEMORY_MAP_ENTRY_TYPE_PERSISTENT;
++                    break;
++                case CGS_MEM_UNUSABLE:
++                    mm_entry[entry].entry_type =
++                        IGVM_MEMORY_MAP_ENTRY_TYPE_PLATFORM_RESERVED;
++                    break;
++                }
++                retval =
++                    ctx->cgsc->get_mem_map_entry(++entry, &cgmm_entry, errp);
++            }
++            if (retval < 0) {
++                return retval;
++            }
++            /* The entries need to be sorted */
++            qsort(mm_entry, entry, sizeof(IGVM_VHS_MEMORY_MAP_ENTRY),
++                  qigvm_cmp_mm_entry);
++
++            break;
++        }
++    }
++    return 0;
++}
++
++static int qigvm_directive_vp_count(QIgvm *ctx, const uint8_t *header_data,
++                                    Error **errp)
++{
++    const IGVM_VHS_PARAMETER *param = (const IGVM_VHS_PARAMETER *)header_data;
++    QIgvmParameterData *param_entry;
++    uint32_t *vp_count;
++    CPUState *cpu;
++
++    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
++    {
++        if (param_entry->index == param->parameter_area_index) {
++            vp_count = (uint32_t *)(param_entry->data + param->byte_offset);
++            *vp_count = 0;
++            CPU_FOREACH(cpu)
++            {
++                (*vp_count)++;
++            }
++            break;
++        }
++    }
++    return 0;
++}
++
++static int qigvm_directive_environment_info(QIgvm *ctx,
++                                            const uint8_t *header_data,
++                                            Error **errp)
++{
++    const IGVM_VHS_PARAMETER *param = (const IGVM_VHS_PARAMETER *)header_data;
++    QIgvmParameterData *param_entry;
++    IgvmEnvironmentInfo *environmental_state;
++
++    QTAILQ_FOREACH(param_entry, &ctx->parameter_data, next)
++    {
++        if (param_entry->index == param->parameter_area_index) {
++            environmental_state =
++                (IgvmEnvironmentInfo *)(param_entry->data + param->byte_offset);
++            environmental_state->memory_is_shared = 1;
++            break;
++        }
++    }
++    return 0;
++}
++
++static int qigvm_directive_required_memory(QIgvm *ctx,
++                                           const uint8_t *header_data,
++                                           Error **errp)
++{
++    const IGVM_VHS_REQUIRED_MEMORY *mem =
++        (const IGVM_VHS_REQUIRED_MEMORY *)header_data;
++    uint8_t *region;
++    int result;
++
++    if (!(mem->compatibility_mask & ctx->compatibility_mask)) {
++        return 0;
++    }
++
++    region = qigvm_prepare_memory(ctx, mem->gpa, mem->number_of_bytes,
++                                  ctx->current_header_index, errp);
++    if (!region) {
++        return -1;
++    }
++    if (ctx->cgs) {
++        result =
++            ctx->cgsc->set_guest_state(mem->gpa, region, mem->number_of_bytes,
++                                       CGS_PAGE_TYPE_REQUIRED_MEMORY, 0, errp);
++        if (result < 0) {
++            return result;
++        }
++    }
++    return 0;
++}
++
++static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
++{
++    int32_t header_count;
++    unsigned header_index;
++    IgvmHandle header_handle;
++    IGVM_VHS_SUPPORTED_PLATFORM *platform;
++    uint32_t compatibility_mask_sev = 0;
++    uint32_t compatibility_mask_sev_es = 0;
++    uint32_t compatibility_mask_sev_snp = 0;
++    uint32_t compatibility_mask = 0;
++
++    header_count = igvm_header_count(ctx->file, IGVM_HEADER_SECTION_PLATFORM);
++    if (header_count < 0) {
++        error_setg(errp,
++                   "Invalid platform header count in IGVM file. Error code: %X",
++                   header_count);
++        return -1;
++    }
++
++    for (header_index = 0; header_index < (unsigned)header_count;
++         header_index++) {
++        IgvmVariableHeaderType typ = igvm_get_header_type(
++            ctx->file, IGVM_HEADER_SECTION_PLATFORM, header_index);
++        if (typ == IGVM_VHT_SUPPORTED_PLATFORM) {
++            header_handle = igvm_get_header(
++                ctx->file, IGVM_HEADER_SECTION_PLATFORM, header_index);
++            if (header_handle < 0) {
++                error_setg(errp,
++                           "Invalid platform header in IGVM file. "
++                           "Index: %d, Error code: %X",
++                           header_index, header_handle);
++                return -1;
++            }
++            platform =
++                (IGVM_VHS_SUPPORTED_PLATFORM *)(igvm_get_buffer(ctx->file,
++                                                                header_handle) +
++                                                sizeof(
++                                                    IGVM_VHS_VARIABLE_HEADER));
++            if ((platform->platform_type == IGVM_PLATFORM_TYPE_SEV_ES) &&
++                ctx->cgs) {
++                if (ctx->cgsc->check_support(
++                        CGS_PLATFORM_SEV_ES, platform->platform_version,
++                        platform->highest_vtl, platform->shared_gpa_boundary)) {
++                    compatibility_mask_sev_es = platform->compatibility_mask;
++                }
++            } else if ((platform->platform_type == IGVM_PLATFORM_TYPE_SEV) &&
++                       ctx->cgs) {
++                if (ctx->cgsc->check_support(
++                        CGS_PLATFORM_SEV, platform->platform_version,
++                        platform->highest_vtl, platform->shared_gpa_boundary)) {
++                    compatibility_mask_sev = platform->compatibility_mask;
++                }
++            } else if ((platform->platform_type ==
++                        IGVM_PLATFORM_TYPE_SEV_SNP) &&
++                       ctx->cgs) {
++                if (ctx->cgsc->check_support(
++                        CGS_PLATFORM_SEV_SNP, platform->platform_version,
++                        platform->highest_vtl, platform->shared_gpa_boundary)) {
++                    compatibility_mask_sev_snp = platform->compatibility_mask;
++                }
++            } else if (platform->platform_type == IGVM_PLATFORM_TYPE_NATIVE) {
++                compatibility_mask = platform->compatibility_mask;
++            }
++            igvm_free_buffer(ctx->file, header_handle);
++        }
++    }
++    /* Choose the strongest supported isolation technology */
++    if (compatibility_mask_sev_snp != 0) {
++        ctx->compatibility_mask = compatibility_mask_sev_snp;
++    } else if (compatibility_mask_sev_es != 0) {
++        ctx->compatibility_mask = compatibility_mask_sev_es;
++    } else if (compatibility_mask_sev != 0) {
++        ctx->compatibility_mask = compatibility_mask_sev;
++    } else if (compatibility_mask != 0) {
++        ctx->compatibility_mask = compatibility_mask;
++    } else {
++        error_setg(
++            errp,
++            "IGVM file does not describe a compatible supported platform");
++        return -1;
++    }
++    return 0;
++}
++
++static IgvmHandle qigvm_file_init(char *filename, Error **errp)
++{
++    IgvmHandle igvm;
++    g_autofree uint8_t *buf = NULL;
++    unsigned long len;
++    g_autoptr(GError) gerr = NULL;
++
++    if (!g_file_get_contents(filename, (gchar **)&buf, &len, &gerr)) {
++        error_setg(errp, "Unable to load %s: %s", filename, gerr->message);
++        return -1;
++    }
++
++    igvm = igvm_new_from_binary(buf, len);
++    if (igvm < 0) {
++        error_setg(errp, "Unable to parse IGVM file %s: %d", filename, igvm);
++        return -1;
++    }
++    return igvm;
++}
++
++int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
++                       Error **errp)
++{
++    int32_t header_count;
++    QIgvmParameterData *parameter;
++    int retval = -1;
++    QIgvm ctx;
++
++    memset(&ctx, 0, sizeof(ctx));
++    ctx.file = qigvm_file_init(cfg->filename, errp);
++    if (ctx.file < 0) {
++        return -1;
++    }
++
++    /*
++     * The ConfidentialGuestSupport object is optional and allows a confidential
++     * guest platform to perform extra processing, such as page measurement, on
++     * IGVM directives.
++     */
++    ctx.cgs = cgs;
++    ctx.cgsc = cgs ? CONFIDENTIAL_GUEST_SUPPORT_GET_CLASS(cgs) : NULL;
++
++    /*
++     * Check that the IGVM file provides configuration for the current
++     * platform
++     */
++    if (qigvm_supported_platform_compat_mask(&ctx, errp) < 0) {
++        goto cleanup;
++    }
++
++    header_count = igvm_header_count(ctx.file, IGVM_HEADER_SECTION_DIRECTIVE);
++    if (header_count <= 0) {
++        error_setg(
++            errp, "Invalid directive header count in IGVM file. Error code: %X",
++            header_count);
++        goto cleanup;
++    }
++
++    QTAILQ_INIT(&ctx.parameter_data);
++
++    for (ctx.current_header_index = 0;
++         ctx.current_header_index < (unsigned)header_count;
++         ctx.current_header_index++) {
++        IgvmVariableHeaderType type = igvm_get_header_type(
++            ctx.file, IGVM_HEADER_SECTION_DIRECTIVE, ctx.current_header_index);
++        if (qigvm_handler(&ctx, type, errp) < 0) {
++            goto cleanup_parameters;
++        }
++    }
++
++    /*
++     * Contiguous pages of data with compatible flags are grouped together in
++     * order to reduce the number of memory regions we create. Make sure the
++     * last group is processed with this call.
++     */
++    retval = qigvm_process_mem_page(&ctx, NULL, errp);
++
++cleanup_parameters:
++    QTAILQ_FOREACH(parameter, &ctx.parameter_data, next)
++    {
++        g_free(parameter->data);
++        parameter->data = NULL;
++    }
++
++cleanup:
++    igvm_free(ctx.file);
++
++    return retval;
++}
+diff --git a/backends/igvm.h b/backends/igvm.h
+new file mode 100644
+index 0000000000..db02ea9165
+--- /dev/null
++++ b/backends/igvm.h
+@@ -0,0 +1,22 @@
++/*
++ * QEMU IGVM configuration backend for Confidential Guests
++ *
++ * Copyright (C) 2023-2024 SUSE
++ *
++ * Authors:
++ *  Roy Hopkins <roy.hopkins@randomman.co.uk>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef BACKENDS_IGVM_H
++#define BACKENDS_IGVM_H
++
++#include "system/confidential-guest-support.h"
++#include "system/igvm-cfg.h"
++#include "qapi/error.h"
++
++int qigvm_process_file(IgvmCfg *igvm, ConfidentialGuestSupport *cgs,
++                      Error **errp);
++
++#endif
+diff --git a/backends/meson.build b/backends/meson.build
+index ac0fac7845..60021f45d1 100644
+--- a/backends/meson.build
++++ b/backends/meson.build
+@@ -36,6 +36,8 @@ system_ss.add(when: gio, if_true: files('dbus-vmstate.c'))
+ system_ss.add(when: 'CONFIG_SGX', if_true: files('hostmem-epc.c'))
+ if igvm.found()
+   system_ss.add(igvm)
++  system_ss.add(files('igvm-cfg.c'), igvm)
++  system_ss.add(files('igvm.c'), igvm)
+ endif
+ 
+ system_ss.add(when: 'CONFIG_SPDM_SOCKET', if_true: files('spdm-socket.c'))
+diff --git a/include/system/igvm-cfg.h b/include/system/igvm-cfg.h
+new file mode 100644
+index 0000000000..321b3196f0
+--- /dev/null
++++ b/include/system/igvm-cfg.h
+@@ -0,0 +1,46 @@
++/*
++ * QEMU IGVM interface
++ *
++ * Copyright (C) 2024 SUSE
++ *
++ * Authors:
++ *  Roy Hopkins <roy.hopkins@randomman.co.uk>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef QEMU_IGVM_CFG_H
++#define QEMU_IGVM_CFG_H
++
++#include "qom/object.h"
++
++typedef struct IgvmCfg {
++    ObjectClass parent_class;
++
++    /*
++     * filename: Filename that specifies a file that contains the configuration
++     *           of the guest in Independent Guest Virtual Machine (IGVM)
++     *           format.
++     */
++    char *filename;
++} IgvmCfg;
++
++typedef struct IgvmCfgClass {
++    ObjectClass parent_class;
++
++    /*
++     * If an IGVM filename has been specified then process the IGVM file.
++     * Performs a no-op if no filename has been specified.
++     *
++     * Returns 0 for ok and -1 on error.
++     */
++    int (*process)(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
++                   Error **errp);
++
++} IgvmCfgClass;
++
++#define TYPE_IGVM_CFG "igvm-cfg"
++
++OBJECT_DECLARE_TYPE(IgvmCfg, IgvmCfgClass, IGVM_CFG)
++
++#endif
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 3e8debf78c..9f1b9564e0 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -932,6 +932,19 @@
+   'data': { '*filename': 'str' },
+   'if': 'CONFIG_POSIX' }
+ 
++##
++# @IgvmCfgProperties:
++#
++# Properties common to objects that handle IGVM files.
++#
++# @file: IGVM file to use to configure guest
++#
++# Since: 10.1
++##
++{ 'struct': 'IgvmCfgProperties',
++  'if': 'CONFIG_IGVM',
++  'data': { 'file': 'str' } }
++
+ ##
+ # @SevCommonProperties:
+ #
+@@ -1136,6 +1149,8 @@
+     'filter-redirector',
+     'filter-replay',
+     'filter-rewriter',
++    { 'name': 'igvm-cfg',
++      'if': 'CONFIG_IGVM' },
+     'input-barrier',
+     { 'name': 'input-linux',
+       'if': 'CONFIG_LINUX' },
+@@ -1212,6 +1227,8 @@
+       'filter-redirector':          'FilterRedirectorProperties',
+       'filter-replay':              'NetfilterProperties',
+       'filter-rewriter':            'FilterRewriterProperties',
++      'igvm-cfg':                   { 'type': 'IgvmCfgProperties',
++                                      'if': 'CONFIG_IGVM' },
+       'input-barrier':              'InputBarrierProperties',
+       'input-linux':                { 'type': 'InputLinuxProperties',
+                                       'if': 'CONFIG_LINUX' },
+-- 
+2.43.0
 
-Thanks, Cl=C3=A9ment
 
