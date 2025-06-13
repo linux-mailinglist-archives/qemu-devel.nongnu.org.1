@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B44AD7F6F
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 02:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B83F0AD7F74
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 02:09:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPrwj-0007qo-V4; Thu, 12 Jun 2025 20:07:03 -0400
+	id 1uPrxQ-0001RX-Ls; Thu, 12 Jun 2025 20:07:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3EGtLaAcKCl0FJHGJ8DBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--komlodi.bounces.google.com>)
- id 1uPruU-0005sy-FR
+ <3EWtLaAcKCl4GKIHK9ECKKCHA.8KIMAIQ-9ARAHJKJCJQ.KNC@flex--komlodi.bounces.google.com>)
+ id 1uPruV-0005t3-UD
  for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:47 -0400
-Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
+Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3EGtLaAcKCl0FJHGJ8DBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--komlodi.bounces.google.com>)
- id 1uPruM-0000bH-Av
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:36 -0400
-Received: by mail-pl1-x649.google.com with SMTP id
- d9443c01a7336-235e3f93687so18896045ad.2
- for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 17:04:33 -0700 (PDT)
+ <3EWtLaAcKCl4GKIHK9ECKKCHA.8KIMAIQ-9ARAHJKJCJQ.KNC@flex--komlodi.bounces.google.com>)
+ id 1uPruN-0000bZ-I2
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:40 -0400
+Received: by mail-pg1-x549.google.com with SMTP id
+ 41be03b00d2f7-6c8f99fef10so1618108a12.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 17:04:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1749773072; x=1750377872; darn=nongnu.org;
+ d=google.com; s=20230601; t=1749773074; x=1750377874; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=OIZH2xkbqf0VU2m6tXJnpYTNb7RaFWBkaYVW+cq3n6g=;
- b=dnxTVhVntuJWK4JAjyE85IQnDZEheEM52MWq6HCHqtT5oGTzV+YnAp3x1zn41P1crR
- idptzk+YaPi2j1kJwvLm4+45lkJCIHUhd9xlGjFVK4qjwSlhgMQyS5i/7svDKUhj3oJj
- jXUPgLk/3k/Fo9e6F4BqnUnrcNRdcz8TjJlz2eGPcEWDXgteR8sAoUErl/tHcCKOql07
- Lwj5e8JZxEbzw+TAUPRJCQDfUiyIcDJlcaWmhhbx+OcEb7V4UUqSxc8+B9ceIg8i1Jfo
- /xmOVAOFBMh+a27uc+wvoVugFjv8pTrfQ8qt/ljuA2bARIFHYdusVXR60lOvN92wucSb
- gkEQ==
+ bh=DyCoNnGqjybs2atj+VUDFeC2YSxcleyR8BFixP1/Qu4=;
+ b=J5PXfWF6Q0DbIIaNhIFwgx5tIcL4ct37bRm5ZYcMkKpuB3nBe8xKHO6I0z9hJbV5lb
+ vmnUbikXq0a5x+S0QbI9YNP9MaBNwsiM+e3QUhFM2Uhdvgs6YlRLcG81o3VCYNeUS+7z
+ CBW0se16UlSOApA1FXlbhXp5A4hXgr1e741+eKKf6CYWWZ6UftqUBrPKquuy9DyP3KY/
+ 8YTRF3MhzkH+tjtanFIr4dPMSGTobH2qvDYFvhN+rjUV9c8+rSAAyjsndr85zK+PyubF
+ +uHrySZBhVWY4ihgwpQcZJarwLmRnPD80D3M1Yp7OisEgynIQjM/DT1+FtUY9MpUp5Ho
+ YBDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749773072; x=1750377872;
+ d=1e100.net; s=20230601; t=1749773074; x=1750377874;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OIZH2xkbqf0VU2m6tXJnpYTNb7RaFWBkaYVW+cq3n6g=;
- b=TCBefP1QAWoKcAjyJjytlhQ7p1vicoAFqdHgwXXHqLNx0tdIKu/JDypfnrzr3QAqJT
- dJa+8t5V73UYlrcIVPt+3C1EUqad3C3aFqX5oCvxUq8fE9YKO3oiHTgEGbGOsOaLqVTH
- o6ZYypjn964R3EAKRV6U3ajYVpw48H0IKq8wlH278EjUWhk7FSBhUF43RAH3W4Paoksk
- tzEJPnER3jJCR+YUQsw6Q2GjfSA+oHo1I9kQRU7JggrD6BldtIG4nZH3owuc9reyLrD2
- q0CRhBRh7UcolFeo/Mo9UN0A3ns/K+0lz4qnIggpWbsR6PpX7dEFzrzinVntrLaMz5Kl
- YrrQ==
-X-Gm-Message-State: AOJu0YyzbCzA+U6H4bhoV3Ns9qAEPeA0NsccQ+zn64drfTUV3n40YwB3
- /OCcQLAH4VSa06qUzaXrmD/THcFU6YxWSlCiBIzuFghQFNocPMQ8TucLGWHBOi08DgAklkxAwa3
- nx20fJnTLHCknakUI6my6O7JxNoEQtRyfeqye2SSh81LQ6fiZ0EY+WaV+BWvrjZhutp2q/kcr1R
- Do/P3Cw8hK1WY05VqAopTKkNjDPo8To0WLRkKasNMO
-X-Google-Smtp-Source: AGHT+IEP1W9AelPzz3ZYsYe3gktWUdq580jYTbGroEtbfPQaUTVZGezYF+TuAf0CxnnchkAj23SD6RuUZ5ak
-X-Received: from pge22.prod.google.com ([2002:a05:6a02:2d16:b0:b2f:795e:379a])
+ bh=DyCoNnGqjybs2atj+VUDFeC2YSxcleyR8BFixP1/Qu4=;
+ b=hnPzDkv08zWcwKlcN2daV8rV9F9Nj0dZMmSq1F8QNsPyFjA/jAiZKf87gMajGqCPHN
+ dbgdB5s+J7aj6uAWKox5c6EjJhpUyg76dnxMCW552DzO0H5Cm5n9KB+dBskgIvbimb8g
+ JKDIwmlzGR7jfWrzKMEOtPRnGPaSQUT/bpSqxgKUhlxEY/8L8zLlNWkPYeM4IpU0RzZZ
+ U/TG8toHrMDciXouFg7crT7Tq7qTQV7sy9ztXfS6flMi0mF6WOxgAQaxu0pSf+c2hL5N
+ Th6+XLBfBsGq/ew8eyQRNYPUNrwV48OLQR65O35er7mMVdOjlR2v33mOzIM3ItTQYsQI
+ QtjQ==
+X-Gm-Message-State: AOJu0Yys5mxEY5NTtm12T4qdNfZqDdh9Ttw1XmrdtA7FaU5nSjiM1/rp
+ 311T3tN0ql5UjvN+FrBXH8Mp1xkU/e5caMPlfQEk9XsbWK3jrdJuY3tgR1isBjGutMBkscVBu5z
+ XZ5Z2lPJI9I5TVAnzCPHgxcNcH+ZHNoP1WO9iyoa5tceXucUFftVNYlOYX9kLrzCu6MG3gazBJR
+ Jp0kyDXhfmg8PYMCCckbRGWFGOcd8pSWHmmKrRi7bv
+X-Google-Smtp-Source: AGHT+IEQNf3jfeqf9R3//A0o866O8OSG6b08lWEizaGS9QyaXLbndrVufc6kDUvYwo5Qco4ejdRPIzyI8PTv
+X-Received: from pgbda7.prod.google.com ([2002:a05:6a02:2387:b0:b2c:4fcd:fe1b])
  (user=komlodi job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:be03:b0:235:27b6:a891
- with SMTP id d9443c01a7336-2365da079a2mr10352165ad.28.1749773072319; Thu, 12
- Jun 2025 17:04:32 -0700 (PDT)
-Date: Fri, 13 Jun 2025 00:04:06 +0000
+ 2002:a05:6a20:9148:b0:21f:512c:ba2c
+ with SMTP id adf61e73a8af0-21facec450emr1402302637.34.1749773073827; Thu, 12
+ Jun 2025 17:04:33 -0700 (PDT)
+Date: Fri, 13 Jun 2025 00:04:07 +0000
 In-Reply-To: <20250613000411.1516521-1-komlodi@google.com>
 Mime-Version: 1.0
 References: <20250613000411.1516521-1-komlodi@google.com>
 X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
-Message-ID: <20250613000411.1516521-15-komlodi@google.com>
-Subject: [PATCH 14/19] hw/i3c/dw-i3c: Add ctrl MMIO handling
+Message-ID: <20250613000411.1516521-16-komlodi@google.com>
+Subject: [PATCH 15/19] hw/i3c/dw-i3c: Add controller resets
 From: Joe Komlodi <komlodi@google.com>
 To: qemu-devel@nongnu.org
 Cc: venture@google.com, komlodi@google.com, clg@kaod.org, 
@@ -69,9 +69,9 @@ Cc: venture@google.com, komlodi@google.com, clg@kaod.org,
  jamin_lin@aspeedtech.com, andrew@codeconstruct.com.au, joel@jms.id.au, 
  qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
- envelope-from=3EGtLaAcKCl0FJHGJ8DBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--komlodi.bounces.google.com;
- helo=mail-pl1-x649.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
+ envelope-from=3EWtLaAcKCl4GKIHK9ECKKCHA.8KIMAIQ-9ARAHJKJCJQ.KNC@flex--komlodi.bounces.google.com;
+ helo=mail-pg1-x549.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -94,76 +94,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds functionality to the CTRL register.
+Adds behavior to the device reset register.
 
 Signed-off-by: Joe Komlodi <komlodi@google.com>
 
-Reviewed-by: Titus Rwantare <titusr@google.com>
 Reviewed-by: Patrick Venture <venture@google.com>
+Reviewed-by: Stephen Longfield <slongfield@google.com>
 ---
- hw/i3c/dw-i3c.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ hw/i3c/dw-i3c.c     | 117 ++++++++++++++++++++++++++++++++++++++++++++
+ hw/i3c/trace-events |   1 +
+ 2 files changed, 118 insertions(+)
 
 diff --git a/hw/i3c/dw-i3c.c b/hw/i3c/dw-i3c.c
-index c5af331ac4..61845c909f 100644
+index 61845c909f..fff3a3591f 100644
 --- a/hw/i3c/dw-i3c.c
 +++ b/hw/i3c/dw-i3c.c
-@@ -361,6 +361,8 @@ static const uint32_t dw_i3c_ro[DW_I3C_NR_REGS] = {
-     [R_SLAVE_CONFIG]                = 0xffffffff,
- };
- 
-+static void dw_i3c_cmd_queue_execute(DWI3C *s);
-+
- static inline bool dw_i3c_has_hdr_ts(DWI3C *s)
- {
-     return ARRAY_FIELD_EX32(s->regs, HW_CAPABILITY, HDR_TS);
-@@ -520,6 +522,36 @@ static int dw_i3c_recv_data(DWI3C *s, bool is_i2c, uint8_t *data,
-     return ret;
+@@ -877,6 +877,122 @@ static void dw_i3c_intr_force_w(DWI3C *s, uint32_t val)
+     dw_i3c_update_irq(s);
  }
  
-+static void dw_i3c_ctrl_w(DWI3C *s, uint32_t val)
++static void dw_i3c_cmd_queue_reset(DWI3C *s)
 +{
-+    /*
-+     * If the user is setting I3C_RESUME, the controller was halted.
-+     * Try and resume execution and leave the bit cleared.
-+     */
-+    if (FIELD_EX32(val, DEVICE_CTRL, I3C_RESUME)) {
-+        dw_i3c_cmd_queue_execute(s);
-+        val = FIELD_DP32(val, DEVICE_CTRL, I3C_RESUME, 0);
-+    }
-+    /*
-+     * I3C_ABORT being set sends an I3C STOP. It's cleared when the STOP is
-+     * sent.
-+     */
-+    if (FIELD_EX32(val, DEVICE_CTRL, I3C_ABORT)) {
-+        dw_i3c_end_transfer(s, /*is_i2c=*/true);
-+        dw_i3c_end_transfer(s, /*is_i2c=*/false);
-+        val = FIELD_DP32(val, DEVICE_CTRL, I3C_ABORT, 0);
-+        ARRAY_FIELD_DP32(s->regs, INTR_STATUS, TRANSFER_ABORT, 1);
-+        dw_i3c_update_irq(s);
-+    }
-+    /* Update present state. */
-+    ARRAY_FIELD_DP32(s->regs, PRESENT_STATE, CM_TFR_ST_STATUS,
-+                     DW_I3C_TRANSFER_STATE_IDLE);
-+    ARRAY_FIELD_DP32(s->regs, PRESENT_STATE, CM_TFR_STATUS,
-+                     DW_I3C_TRANSFER_STATUS_IDLE);
++    fifo32_reset(&s->cmd_queue);
 +
-+    s->regs[R_DEVICE_CTRL] = val;
++    ARRAY_FIELD_DP32(s->regs, QUEUE_STATUS_LEVEL, CMD_QUEUE_EMPTY_LOC,
++                     fifo32_num_free(&s->cmd_queue));
++    uint8_t empty_threshold = ARRAY_FIELD_EX32(s->regs, QUEUE_THLD_CTRL,
++                                               CMD_BUF_EMPTY_THLD);
++    if (fifo32_num_free(&s->cmd_queue) >= empty_threshold) {
++        ARRAY_FIELD_DP32(s->regs, INTR_STATUS, CMD_QUEUE_RDY, 1);
++        dw_i3c_update_irq(s);
++    };
 +}
 +
- static inline bool dw_i3c_target_is_i2c(DWI3C *s, uint16_t offset)
++static void dw_i3c_resp_queue_reset(DWI3C *s)
++{
++    fifo32_reset(&s->resp_queue);
++
++    ARRAY_FIELD_DP32(s->regs, QUEUE_STATUS_LEVEL, RESP_BUF_BLR,
++                     fifo32_num_used(&s->resp_queue));
++    /*
++     * This interrupt will always be cleared because the threshold is a minimum
++     * of 1 and the queue size is 0.
++     */
++    ARRAY_FIELD_DP32(s->regs, INTR_STATUS, RESP_RDY, 0);
++    dw_i3c_update_irq(s);
++}
++
++static void dw_i3c_ibi_queue_reset(DWI3C *s)
++{
++    fifo32_reset(&s->ibi_queue);
++
++    ARRAY_FIELD_DP32(s->regs, QUEUE_STATUS_LEVEL, IBI_BUF_BLR,
++                     fifo32_num_used(&s->resp_queue));
++    /*
++     * This interrupt will always be cleared because the threshold is a minimum
++     * of 1 and the queue size is 0.
++     */
++    ARRAY_FIELD_DP32(s->regs, INTR_STATUS, IBI_THLD, 0);
++    dw_i3c_update_irq(s);
++}
++
++static void dw_i3c_tx_queue_reset(DWI3C *s)
++{
++    fifo32_reset(&s->tx_queue);
++
++    ARRAY_FIELD_DP32(s->regs, DATA_BUFFER_STATUS_LEVEL, TX_BUF_EMPTY_LOC,
++                     fifo32_num_free(&s->tx_queue));
++    /* TX buf is empty, so this interrupt will always be set. */
++    ARRAY_FIELD_DP32(s->regs, INTR_STATUS, TX_THLD, 1);
++    dw_i3c_update_irq(s);
++}
++
++static void dw_i3c_rx_queue_reset(DWI3C *s)
++{
++    fifo32_reset(&s->rx_queue);
++
++    ARRAY_FIELD_DP32(s->regs, DATA_BUFFER_STATUS_LEVEL, RX_BUF_BLR,
++                     fifo32_num_used(&s->resp_queue));
++    /*
++     * This interrupt will always be cleared because the threshold is a minimum
++     * of 1 and the queue size is 0.
++     */
++    ARRAY_FIELD_DP32(s->regs, INTR_STATUS, RX_THLD, 0);
++    dw_i3c_update_irq(s);
++}
++
++static void dw_i3c_reset(DeviceState *dev)
++{
++    DWI3C *s = DW_I3C(dev);
++    trace_dw_i3c_reset(s->cfg.id);
++
++    memcpy(s->regs, dw_i3c_resets, sizeof(s->regs));
++    /*
++     * The user config for these may differ from our resets array, set them
++     * manually.
++     */
++    ARRAY_FIELD_DP32(s->regs, DEVICE_ADDR_TABLE_POINTER, ADDR,
++                     s->cfg.dev_addr_table_pointer);
++    ARRAY_FIELD_DP32(s->regs, DEVICE_ADDR_TABLE_POINTER, DEPTH,
++                     s->cfg.dev_addr_table_depth);
++    ARRAY_FIELD_DP32(s->regs, DEV_CHAR_TABLE_POINTER,
++                     P_DEV_CHAR_TABLE_START_ADDR,
++                     s->cfg.dev_char_table_pointer);
++    ARRAY_FIELD_DP32(s->regs, DEV_CHAR_TABLE_POINTER, DEV_CHAR_TABLE_DEPTH,
++                     s->cfg.dev_char_table_depth);
++
++    dw_i3c_cmd_queue_reset(s);
++    dw_i3c_resp_queue_reset(s);
++    dw_i3c_ibi_queue_reset(s);
++    dw_i3c_tx_queue_reset(s);
++    dw_i3c_rx_queue_reset(s);
++}
++
++static void dw_i3c_reset_ctrl_w(DWI3C *s, uint32_t val)
++{
++    if (FIELD_EX32(val, RESET_CTRL, CORE_RESET)) {
++        dw_i3c_reset(DEVICE(s));
++    }
++    if (FIELD_EX32(val, RESET_CTRL, CMD_QUEUE_RESET)) {
++        dw_i3c_cmd_queue_reset(s);
++    }
++    if (FIELD_EX32(val, RESET_CTRL, RESP_QUEUE_RESET)) {
++        dw_i3c_resp_queue_reset(s);
++    }
++    if (FIELD_EX32(val, RESET_CTRL, TX_BUF_RESET)) {
++        dw_i3c_tx_queue_reset(s);
++    }
++    if (FIELD_EX32(val, RESET_CTRL, RX_BUF_RESET)) {
++        dw_i3c_rx_queue_reset(s);
++    }
++    if (FIELD_EX32(val, RESET_CTRL, IBI_QUEUE_RESET)) {
++        dw_i3c_ibi_queue_reset(s);
++    }
++}
++
+ static uint32_t dw_i3c_pop_rx(DWI3C *s)
  {
-     /* / sizeof(uint32_t) because we're indexing into our 32-bit reg array. */
-@@ -1592,6 +1624,9 @@ static void dw_i3c_write(void *opaque, hwaddr offset, uint64_t value,
-                       "] = 0x%08" PRIx64 "\n",
-                       __func__, offset, value);
+     if (fifo32_is_empty(&s->rx_queue)) {
+@@ -1634,6 +1750,7 @@ static void dw_i3c_write(void *opaque, hwaddr offset, uint64_t value,
+         dw_i3c_cmd_queue_port_w(s, val32);
          break;
-+    case R_DEVICE_CTRL:
-+        dw_i3c_ctrl_w(s, val32);
-+        break;
-     case R_RX_TX_DATA_PORT:
-         dw_i3c_push_tx(s, val32);
+     case R_RESET_CTRL:
++        dw_i3c_reset_ctrl_w(s, val32);
          break;
+     case R_INTR_STATUS:
+         dw_i3c_intr_status_w(s, val32);
+diff --git a/hw/i3c/trace-events b/hw/i3c/trace-events
+index a262fcce39..39f33d9a50 100644
+--- a/hw/i3c/trace-events
++++ b/hw/i3c/trace-events
+@@ -11,6 +11,7 @@ dw_i3c_send(uint32_t deviceid, uint32_t num_bytes) "I3C Dev[%u] send %" PRId32 "
+ dw_i3c_recv_data(uint32_t deviceid, uint32_t num_bytes) "I3C Dev[%u] recv %" PRId32 " bytes from bus"
+ dw_i3c_ibi_recv(uint32_t deviceid, uint8_t ibi_byte) "I3C Dev[%u] recv IBI byte 0x%" PRIx8
+ dw_i3c_ibi_handle(uint32_t deviceid, uint8_t addr, bool rnw) "I3C Dev[%u] handle IBI from address 0x%" PRIx8 " RnW=%d"
++dw_i3c_reset(uint32_t deviceid) "I3C Dev[%u] reset"
+ dw_i3c_pop_rx(uint32_t deviceid, uint32_t data) "I3C Dev[%u] pop 0x%" PRIx32 " from RX FIFO"
+ dw_i3c_resp_queue_push(uint32_t deviceid, uint32_t data) "I3C Dev[%u] push 0x%" PRIx32 " to response queue"
+ dw_i3c_push_tx(uint32_t deviceid, uint32_t data) "I3C Dev[%u] push 0x%" PRIx32 " to TX FIFO"
 -- 
 2.50.0.rc1.591.g9c95f17f64-goog
 
