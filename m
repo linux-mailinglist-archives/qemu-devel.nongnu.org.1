@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C864AD7F62
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 02:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D7EAD7F60
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 02:06:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPruR-0005qy-J1; Thu, 12 Jun 2025 20:04:45 -0400
+	id 1uPrvO-00060b-3j; Thu, 12 Jun 2025 20:05:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3B2tLaAcKClQ6A87Az42AA270.yA8C08G-z0H079A929G.AD2@flex--komlodi.bounces.google.com>)
- id 1uPruF-0005q2-PO
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:27 -0400
-Received: from mail-pg1-x549.google.com ([2607:f8b0:4864:20::549])
+ <3CWtLaAcKClY8CA9C164CC492.0CAE2AI-12J29BCB4BI.CF4@flex--komlodi.bounces.google.com>)
+ id 1uPruH-0005qi-AJ
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:29 -0400
+Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3B2tLaAcKClQ6A87Az42AA270.yA8C08G-z0H079A929G.AD2@flex--komlodi.bounces.google.com>)
- id 1uPruD-0000ZA-PG
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:27 -0400
-Received: by mail-pg1-x549.google.com with SMTP id
- 41be03b00d2f7-b00e4358a34so921001a12.0
- for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 17:04:24 -0700 (PDT)
+ <3CWtLaAcKClY8CA9C164CC492.0CAE2AI-12J29BCB4BI.CF4@flex--komlodi.bounces.google.com>)
+ id 1uPruF-0000Zd-Nl
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:28 -0400
+Received: by mail-pl1-x649.google.com with SMTP id
+ d9443c01a7336-235e1d66fa6so14388205ad.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 17:04:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1749773064; x=1750377864; darn=nongnu.org;
+ d=google.com; s=20230601; t=1749773065; x=1750377865; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=p8GFuynGr1nk+VpIO+5MvKgGfqQz5tqawVbKnQiXbx4=;
- b=z8id1q9TSumCNdFNNRtbKIKvvlWNKDeYR/6zI/KE/q7qOM5KAcgQjhy05pYffiigR4
- F7B5PGh5S9Ryan9FSfidb5DdSXwP11nEH0KFlfFBCUq721Iig7AGrhBu1E7d0ASpjUI7
- uyZSoXs9kergOaeOgkDZDukaLy1ssnKDF17pn5hnLD0ZHT7X4SNDDH2G+3vtIA79qjB7
- WAVOFMJ2BMEo/qDk48s1oiEMXs6BdZFu/IGwN9akKo2ac6LQ9F5jgkHwjR8hmkgeKEeE
- yHM62cZCk4xAFdVvcSTa8DGllvPD8cr4GgZ45O0wRvJ7oZ+B21PWUfRLOcnl2jkPBxdd
- FNnA==
+ bh=qzeXApkoHKyQHwiWeTNus/brrOxPdJq1kjayormL0Vs=;
+ b=U6HMRmO5/2Q5kFg8xS3AKQE63dUheuOX6DAITITb/HZn7q/wp/8N9Wdpd8xOG1Thoj
+ 9d8Fry/dsnjSQmxHhP9piVGAwRFMylWppCEsNN5Be9muWd1PmnPkemtg6UnE6vjNJgQC
+ EuoavtADB61I44GCcZUgyDWHs9yyvPtXf/nqyHcyx8qHA1x5MnCRCtNu5pJXM1TbrBgW
+ +G/6O6WBgtA7WC0txHKf2J/sy1NnIMvvRxAaWa3Tn5k5P6eQPIEp9mUxTFO1lTvTu3+e
+ 3AQZ8jbLO66JQDvJMVzGjISJ/cCpLI5MZIFlEuvd9h55SQ1QbumLO05vKB6hU+8moEJs
+ JOXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749773064; x=1750377864;
+ d=1e100.net; s=20230601; t=1749773065; x=1750377865;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p8GFuynGr1nk+VpIO+5MvKgGfqQz5tqawVbKnQiXbx4=;
- b=AZK1iNe5H7bM2d3bqLUzHYNra9DBsBgYeB22hqP2ZfgqtMkR9F+lS3pzVViPsR7oWu
- 2uW9Pe3beT1kor8lcTvttYGQdGQzC4dC9PGshmrtEEXeXe0lLNR0yg5U4L/brDnLiDMW
- BNPWXmPUJkbRf721FkGDT0xqS3q3StBKOq/+AUmMcTyXahd99UiyVQjFPq1D7w7uoErb
- Cw4UfNEH3aas7nWOo6055FYP/9nH4YuTqRdOkxFMqIaMfWBbqymdDxmrl/Y9fusOHLXg
- n5zUf7RkRcAeE8bLBvobnMDFJcoACdj+bcJWxGB5jlUOE9VZKXtCjEflZKPgpbcC71OP
- tuJg==
-X-Gm-Message-State: AOJu0YxIs1Gz661brh+KqyjHQuRAOT/L/O6luAk9pJiQjVbLe9JASNwB
- cU/4f8RXLG1eJ/sjzGl/a0DB5WgAJN6OKgd2w6mtfr1o8yqBsHxh5SXlpZCZ7ExEx5e4i6tFhUI
- l1AEM0EFrGTr+aBd8wZdM8wEY7TexyznPrDQeOXsx4OG1L6RlR2ZWrceR7LdvGMOS3ZMqW/k9wa
- Ly7jVkfSSg4yY783wr509VkPTRhtMbo2f8cjxXo00M
-X-Google-Smtp-Source: AGHT+IHkf788GgVLS7iXbgwTAE5UzkS0H2haTTYF+o0yJk64nWaDSM0TC0ZIyzG8EqOobxTF5pJgiqEOevc4
-X-Received: from pgbcw6.prod.google.com ([2002:a05:6a02:4286:b0:af9:8f44:d7ec])
+ bh=qzeXApkoHKyQHwiWeTNus/brrOxPdJq1kjayormL0Vs=;
+ b=Tna3q5YkJNhBEGPKG2sl2AHPbwx8wiltuEeuPE9w9pnBbdTFhxqY1RpbkQLunevu6U
+ zLVjEoF2rCfwwQ1XVdLrqqh8VDfiR9FUIs5+dIrdCXML2ASiduc3T5rcTltq6tgGmq+R
+ AqFz/UEsJimBIVmyY6JLSIm0BYOOWB9DZ7iUbTmbP1zW6aJJ/j5V6vEczHDWzVUlqmXd
+ fOmEg+skWFOuc6YXlvqYr4Yb9xREFZI1wuklOTygw/YTE/JsZBd0dpYhdPL5J7o+5KC9
+ /fUo26TeWT2j50LuNnaR22/1WfHzjj5+X+eemZDTBHcrdwjgm2rz6ylH8/HcLE+tl0hv
+ lBqA==
+X-Gm-Message-State: AOJu0YzUyxyrv4xbUJgGRehx/yPXU7E6JEQdxHl2ZkrAmiAWU7bPc+VX
+ sMeiI7odmIpEKrcrVcMQgeflKKN6SLdmAkwC1UdNekgS9EQhQ3w9+z3Zy75WL6m/IcyQzmx4DVW
+ VA5LneL6Ez19ZbJXKyOdFvsHSiD/njPoDCtrLG2MsWlLv8bLnV7X1zrI847lWPyJgg6SKk9CLWn
+ HnObak4UrQxn4LhgJXBVhV9WK3537V4G0W8HpbDtwL
+X-Google-Smtp-Source: AGHT+IGLKDmLbZW/qGezSxYha2G+BZmAVQInMd45qP0gEERp59ero1+jqvHP6nwox2JBl1Byld/1jiqT+PWI
+X-Received: from pgbda8.prod.google.com ([2002:a05:6a02:2388:b0:b2c:4d7e:b626])
  (user=komlodi job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:431d:b0:21f:5aa1:3124
- with SMTP id adf61e73a8af0-21fac92fc14mr1289955637.13.1749773063550; Thu, 12
- Jun 2025 17:04:23 -0700 (PDT)
-Date: Fri, 13 Jun 2025 00:04:00 +0000
+ 2002:a17:902:f684:b0:234:aa5b:e7b1
+ with SMTP id d9443c01a7336-2365d8ad4aamr11086965ad.18.1749773065089; Thu, 12
+ Jun 2025 17:04:25 -0700 (PDT)
+Date: Fri, 13 Jun 2025 00:04:01 +0000
 In-Reply-To: <20250613000411.1516521-1-komlodi@google.com>
 Mime-Version: 1.0
 References: <20250613000411.1516521-1-komlodi@google.com>
 X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
-Message-ID: <20250613000411.1516521-9-komlodi@google.com>
-Subject: [PATCH 08/19] hw/i3c/dw-i3c: Add register RO field masks
+Message-ID: <20250613000411.1516521-10-komlodi@google.com>
+Subject: [PATCH 09/19] hw/i3c/dw-i3c: Treat more registers as read-as-zero
 From: Joe Komlodi <komlodi@google.com>
 To: qemu-devel@nongnu.org
 Cc: venture@google.com, komlodi@google.com, clg@kaod.org, 
@@ -69,16 +69,16 @@ Cc: venture@google.com, komlodi@google.com, clg@kaod.org,
  jamin_lin@aspeedtech.com, andrew@codeconstruct.com.au, joel@jms.id.au, 
  qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::549;
- envelope-from=3B2tLaAcKClQ6A87Az42AA270.yA8C08G-z0H079A929G.AD2@flex--komlodi.bounces.google.com;
- helo=mail-pg1-x549.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
+ envelope-from=3CWtLaAcKClY8CA9C164CC492.0CAE2AI-12J29BCB4BI.CF4@flex--komlodi.bounces.google.com;
+ helo=mail-pl1-x649.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,73 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds read-only register masks for the DwC I3C controller.
+RESET_CTRL and INTR_FORCE are write-only.
 
 Signed-off-by: Joe Komlodi <komlodi@google.com>
 
 Reviewed-by: Patrick Venture <venture@google.com>
 ---
- hw/i3c/dw-i3c.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ hw/i3c/dw-i3c.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/hw/i3c/dw-i3c.c b/hw/i3c/dw-i3c.c
-index 845fbd5efd..4f40f999f4 100644
+index 4f40f999f4..bf51c00935 100644
 --- a/hw/i3c/dw-i3c.c
 +++ b/hw/i3c/dw-i3c.c
-@@ -313,6 +313,45 @@ static const uint32_t dw_i3c_resets[DW_I3C_NR_REGS] = {
-     [R_SLAVE_CONFIG]                = 0x00000023,
- };
+@@ -359,7 +359,10 @@ static uint64_t dw_i3c_read(void *opaque, hwaddr offset, unsigned size)
+     uint64_t value;
  
-+static const uint32_t dw_i3c_ro[DW_I3C_NR_REGS] = {
-+    [R_DEVICE_CTRL]                 = 0x04fffe00,
-+    [R_DEVICE_ADDR]                 = 0x7f807f80,
-+    [R_HW_CAPABILITY]               = 0xffffffff,
-+    [R_IBI_QUEUE_STATUS]            = 0xffffffff,
-+    [R_DATA_BUFFER_THLD_CTRL]       = 0xf8f8f8f8,
-+    [R_IBI_QUEUE_CTRL]              = 0xfffffff0,
-+    [R_RESET_CTRL]                  = 0xffffffc0,
-+    [R_SLV_EVENT_CTRL]              = 0xffffff3f,
-+    [R_INTR_STATUS]                 = 0xffff809f,
-+    [R_INTR_STATUS_EN]              = 0xffff8080,
-+    [R_INTR_SIGNAL_EN]              = 0xffff8080,
-+    [R_INTR_FORCE]                  = 0xffff8000,
-+    [R_QUEUE_STATUS_LEVEL]          = 0xffffffff,
-+    [R_DATA_BUFFER_STATUS_LEVEL]    = 0xffffffff,
-+    [R_PRESENT_STATE]               = 0xffffffff,
-+    [R_CCC_DEVICE_STATUS]           = 0xffffffff,
-+    [R_I3C_VER_ID]                  = 0xffffffff,
-+    [R_I3C_VER_TYPE]                = 0xffffffff,
-+    [R_DEVICE_ADDR_TABLE_POINTER]   = 0xffffffff,
-+    [R_DEV_CHAR_TABLE_POINTER]      = 0xffcbffff,
-+    [R_SLV_PID_VALUE]               = 0xffff0fff,
-+    [R_SLV_CHAR_CTRL]               = 0xffffffff,
-+    [A_VENDOR_SPECIFIC_REG_POINTER] = 0xffffffff,
-+    [R_SLV_MAX_LEN]                 = 0xffffffff,
-+    [R_MAX_READ_TURNAROUND]         = 0xffffffff,
-+    [R_MAX_DATA_SPEED]              = 0xffffffff,
-+    [R_SLV_INTR_REQ]                = 0xfffffff0,
-+    [R_SLV_TSX_SYMBL_TIMING]        = 0xffffffc0,
-+    [R_DEVICE_CTRL_EXTENDED]        = 0xfffffff8,
-+    [R_SCL_I3C_OD_TIMING]           = 0xff00ff00,
-+    [R_SCL_I3C_PP_TIMING]           = 0xff00ff00,
-+    [R_SCL_I2C_FMP_TIMING]          = 0xff000000,
-+    [R_SCL_EXT_TERMN_LCNT_TIMING]   = 0x0000fff0,
-+    [R_BUS_IDLE_TIMING]             = 0xfff00000,
-+    [R_EXTENDED_CAPABILITY]         = 0xffffffff,
-+    [R_SLAVE_CONFIG]                = 0xffffffff,
-+};
-+
- static uint64_t dw_i3c_read(void *opaque, hwaddr offset, unsigned size)
- {
-     DWI3C *s = DW_I3C(opaque);
-@@ -341,6 +380,7 @@ static void dw_i3c_write(void *opaque, hwaddr offset, uint64_t value,
- 
-     trace_dw_i3c_write(s->id, offset, value);
- 
-+    value &= ~dw_i3c_ro[addr];
      switch (addr) {
-     case R_HW_CAPABILITY:
-     case R_RESPONSE_QUEUE_PORT:
++    /* RAZ */
+     case R_COMMAND_QUEUE_PORT:
++    case R_RESET_CTRL:
++    case R_INTR_FORCE:
+         value = 0;
+         break;
+     default:
 -- 
 2.50.0.rc1.591.g9c95f17f64-goog
 
