@@ -2,154 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E65D2AD814C
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 04:55:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B088AD8152
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 05:03:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPuZg-0002tG-Ua; Thu, 12 Jun 2025 22:55:24 -0400
+	id 1uPugX-0006Zk-UE; Thu, 12 Jun 2025 23:02:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uPuZU-0002do-F2; Thu, 12 Jun 2025 22:55:12 -0400
-Received: from mail-japanwestazlp170120003.outbound.protection.outlook.com
- ([2a01:111:f403:c406::3] helo=OS8PR02CU002.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uPuZR-0007W3-5K; Thu, 12 Jun 2025 22:55:12 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N4Qp6GpE5bMHyYtmJulHb6NfdCc+OHU5ltdh4edG5Bq4T8/NiZwC1kfYf5LQhjXYDK2e2CbD8gWml8iCobN445ucc61g9N0FRMIBGodk9Br3jfc9auKHr5pjGmGXHfpHLr4RQ3Zn4shYcpg18k7FA7ru3p97gWveSnUrBN+sntzDs0bLYC6YksNsHu7AFlgD9coZmFudV85JqSw87IZrzqy24479MOqTknTnh9PBwrNbQceTAJ/VdtPNyY46WQdywEFdySmT/5WV774rVk40chboFaPzReBg2DzH20LE6GY12C7PdFC+/+zK+C0F9k//m2Xd3MChA3XioorV7xTbgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DgbMODNQ2BDFhwcJYlbaO/WcmddV9gQYEliQaaxFw+Y=;
- b=c96BHH27X21XbBsF1m89eBJWbaBTDV9Cfkh+9zNLTKBJ/tEUQwVtB6AqMKl20mE5aTmEu2duOpFK0AbpCfKg9eLGgz1InRP/v6KDOwOv4sNjK5RIdlKOAdM+H0DAcMpd0ioSNoOqURbm5FFkl1g31GAdOag5F4BDPcUwScaq3Jby0nUslwQBUM2uLP3FkC/sCmSRzZGV/7MpjdBG9f3cHlU15B/hbBQc8Ib71GTyVFQ4IIdnsr/mvJKEdSMgB6+MXDI/LMM91HdAb75jRWQyOGNeqQONi9qg8suqJO5Es28XuIOMYxaZindmWBJwLsRTO5qUeutAksZnfhBo89Z/nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
- header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DgbMODNQ2BDFhwcJYlbaO/WcmddV9gQYEliQaaxFw+Y=;
- b=FJYw6RldY3sB5UU/gotsKHJKv0YnOVCvaV8VxFU6YNJvSYAAXJn7JbrjremUGnQ3ptOBJX51pmKhrZ1gBLsZjFfWN5VD8yVDUeYpbmimzhtvziYaV3qp2MPfcRj3Gm30umXQ/h/+2KMNAO/pcYx+3CJ5tlAu9rPxNU4lcTiXOhZE6JYocPyn2F2hLnD+jZnWhSx7e+Vgcgi+EKaL35ThJGJu1owusuPzBmLH3Z5Y5UpGjOZnr7PspGH55ZzLFzcVBLZ6lcvcdPvGYhcafUeMMpgjwbeRrgRWOmhXo6T1vcJ+WYg4CwxJ1ievRIukTYQMiC9kMetg8ZxmEqy74ecOog==
-Received: from SI2PR06MB5041.apcprd06.prod.outlook.com (2603:1096:4:1a4::6) by
- KL1PR06MB6961.apcprd06.prod.outlook.com (2603:1096:820:120::8) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8835.22; Fri, 13 Jun 2025 02:54:57 +0000
-Received: from SI2PR06MB5041.apcprd06.prod.outlook.com
- ([fe80::705a:352a:7564:8e56]) by SI2PR06MB5041.apcprd06.prod.outlook.com
- ([fe80::705a:352a:7564:8e56%4]) with mapi id 15.20.8813.024; Fri, 13 Jun 2025
- 02:54:57 +0000
-From: Jamin Lin <jamin_lin@aspeedtech.com>
-To: Tan Siewert <tan@siewert.io>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: =?iso-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-Subject: RE: [PATCH v2] hw/misc/aspeed_scu: Handle AST2600 protection key
- registers correctly
-Thread-Topic: [PATCH v2] hw/misc/aspeed_scu: Handle AST2600 protection key
- registers correctly
-Thread-Index: AQHb26gO6SN3HcnSYUqhj+VKKkWvBrQAZASg
-Date: Fri, 13 Jun 2025 02:54:57 +0000
-Message-ID: <SI2PR06MB5041DE20EB548C3137045975FC77A@SI2PR06MB5041.apcprd06.prod.outlook.com>
-References: <20250612144052.22478-1-tan@siewert.io>
-In-Reply-To: <20250612144052.22478-1-tan@siewert.io>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=aspeedtech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SI2PR06MB5041:EE_|KL1PR06MB6961:EE_
-x-ms-office365-filtering-correlation-id: a33e25cd-0908-4656-1abb-08ddaa25ae5f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?C0492gCYkxKgggJE/Qcc5XAdeugTsfbeBSlmXwkdzQfsPfI36LDN0LG/RY?=
- =?iso-8859-1?Q?zaVUWJKm6AEwgZFG4IYNz/RyEplbEn8D9Xo2Y7zGDiD49ffWVR0eQLTIiZ?=
- =?iso-8859-1?Q?OMxCRSlLr3Zr7cWRk2cJde5AI31mETeoIf9Sz945ZiyNcf5mfu+OQxZKo3?=
- =?iso-8859-1?Q?gyLH2wj+1PhAmQjH48s+b/XLS40xaVwVFAOj89QnrX/fC60bTfGe6BllRO?=
- =?iso-8859-1?Q?Cs9tdrbdsF4MwBOXVEpvTXvqgHL2bkPdYBbALgnFFLr+rOO5MX4q1tKgKy?=
- =?iso-8859-1?Q?h6n9MDYG8n2DRuDQceoia5oi5UB9aKQvgonBSxXB13wm+CK3oa1CLTIv5K?=
- =?iso-8859-1?Q?hFsy7fv6g+XPiyyZPXixCMvLs0ZOAsNUg8KZo670X5Rlmd7IHTsd4rFgFT?=
- =?iso-8859-1?Q?pdGuEHe1M6o/0uRAgcAGwWii33Thz/uhaZHqVFvJdBt8sWjukE8L/AjTO1?=
- =?iso-8859-1?Q?2N2CYSnAoqOaaiHbYlI/PrbMRWmQDmYeLxSQe/QfAwDvB9wfQnl6eYA6+J?=
- =?iso-8859-1?Q?LMeK3nU5WIyCMNqpN8YHQLar3f2Pscm815UOsZovnlB0j4+DLZo1FP7Pn2?=
- =?iso-8859-1?Q?ItJI/JrIUXSLOskqKtrULB8dXcsPyC6Hoh0rfWQ+c6Y8R/Nr2P2VCVjWTy?=
- =?iso-8859-1?Q?7gXf0tnv5VbW+KeDDe0ErCGVOhAXr25hbbvYWTwsLgAiExN0Se1UICbIuY?=
- =?iso-8859-1?Q?f2x7M3qaJqC5viKUGou+uE2tuFJeeyBxW4xtb8CkXcYyo1qe+ENvmD607n?=
- =?iso-8859-1?Q?dD2sW0fRvTQZiwz+lTaX3o3JLDghFljJFI90Uhrj9aYiuAWlhjyDckdxkW?=
- =?iso-8859-1?Q?JVxIxk5s+sfIbUhuq+/btZBhmwSycSY6VfA4P7MHd+gj5M/kK2zeyonVXH?=
- =?iso-8859-1?Q?TVidQ5xxgfyXsOW8nMvjq1EIfjabB8QT24ygjw7/8pSqKVwSTuH2tWNBCZ?=
- =?iso-8859-1?Q?encfrz6DyOglbm2x04yf9myNNHwUSLyvU0vHNTKS+kFEIZ7SSSaawTAVAY?=
- =?iso-8859-1?Q?QIZo9gp+fFidP1y/1bWbp50Xq5e4rsv0COmiZm3vMQSYgA3SlMXt/HvyV6?=
- =?iso-8859-1?Q?ovpYzjR3weWyWvGe+6vF3eqDzsOHXhdHVzrRQqQoGJvkAwtGvggBG7DxLB?=
- =?iso-8859-1?Q?ChXlA6DfTlDYyXtH7tRaI5oPdT8+4ya0UXG2QBxzw8RPEo8T4nhXStnryA?=
- =?iso-8859-1?Q?FAqzHhHbHBBPDBOUuZe/3v9Hedq0r3pkTqsIHltMe9yQOBdmxK3ZhA/Jvn?=
- =?iso-8859-1?Q?J8xVLP6HJjwuKkdoFooGko8vrnOg1DEgNAcNuMZML67SWTE23L4JFGHozQ?=
- =?iso-8859-1?Q?6nYyKgHXW+UoJYP9Ecl1m59cTs/4yoz28f+TUnHrS8a+i58XVOB1kR8I2q?=
- =?iso-8859-1?Q?3D63PD5uTIeg/eDEIqO5v3E+EWkWk7AAgrd50ZRJJpbOErtWT2ecOfxBWN?=
- =?iso-8859-1?Q?0v2ThdV3p2v+YYMK0ptxygZwOX5DiYuWxIA8Hu7BOwTyQ145RoL2mL2yKC?=
- =?iso-8859-1?Q?6iEsN8mOJmoBQoeU0YbLijQNVPpCdr185soBkesr65YDHU+fusSY2blULQ?=
- =?iso-8859-1?Q?BKd/Lok=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-tw; SCL:1;
- SRV:; IPV:NLI; SFV:NSPM; H:SI2PR06MB5041.apcprd06.prod.outlook.com; PTR:;
- CAT:NONE; SFS:(13230040)(366016)(1800799024)(376014)(38070700018); DIR:OUT;
- SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?jLsGzF4YCnRXhs5a6rhm3AneN5N53PrqokvYh9SyzG54gm7inmkfknDsm9?=
- =?iso-8859-1?Q?ubOkRcXv44XvPw7yZVj6QG6z5GbXasDKCCYuhHqShfTh4oef56Fvb64205?=
- =?iso-8859-1?Q?95zxbujNeeAwuQ6NB8Saw5gFNNa8D65HA/FNgkKy2muxDY7qsBZQDgveqH?=
- =?iso-8859-1?Q?WdRJ+AtriwpTCdEXhp3lqkxFThfGq/fg4WZN/A2s5PN6ALqB0UNmyiwzwI?=
- =?iso-8859-1?Q?RwEVwjyLjLJwQEWqfHWAkE/b8bf3UMY1NWK4jXs6rAxGmzkHoNYCoMTCKF?=
- =?iso-8859-1?Q?d8NfwBpKuvpSOWM0xvLl/y7wNZctwvmn7kiiDtBxDhGnAyZknJqIgzsy9K?=
- =?iso-8859-1?Q?Sm6s8fedf9t3BsjwsFw+ZCxAuYIHLIgpljdNR8wwrp6cVSfFSZXu6cDQas?=
- =?iso-8859-1?Q?ws/IDIllvrBCkhlsdCwcKpynB9BtR8ol+xItZNk+XzTDEWgPiCcCIWm+Hq?=
- =?iso-8859-1?Q?xKzmipHOJVBer53Fd6BumNr0D4U8dwLrEtLQDVH6+cdWdQGmlnW8BZD+QZ?=
- =?iso-8859-1?Q?H+uSdTzJgtxaLVRZ7T0cqN08aYlciN4PvnmacFZeHKk4oNNLuQE9wBcWrh?=
- =?iso-8859-1?Q?3Y4HsNKAnbzF65RUlPYtX9YuEa2+JSL6sPizbBc40Dq9qDvpzApHt+pJBQ?=
- =?iso-8859-1?Q?YEtQYnJsbIdeUpcNjwr0yyBmdPmaDdhisM6wA4GOxB/gIPU6rekix8XEyb?=
- =?iso-8859-1?Q?p/UBWNUynfxS0Kuxm6sPMAKSlLx0wWjQqrEHXJXAnZQdyCV69ZQelTaZ23?=
- =?iso-8859-1?Q?d19J0z4JieSMnLAIUgLcgvXsNDfOh8gB6c+ZeCi3sW3Y/1ndOi1rpSFsv1?=
- =?iso-8859-1?Q?EpbujBsAn7ZJyY/JRmvH0D9TbX06x9BvMjNrJPWCw97BVv24ignMWU6oOc?=
- =?iso-8859-1?Q?9q3kTLV5tHPodzMYL0K7LgSDJ+AwO1Y2/IDPiYzJEVzvT/64DTJvDlrbrc?=
- =?iso-8859-1?Q?bv3/Y3+hITKSNEpLWuelchAMZpDMymv6BB2VFafPf9sjfDPPsSHjzqCEGU?=
- =?iso-8859-1?Q?V3WgX4Qp3aN9IjLFN4EJCzZAo16DOjIydTRCOyXXGOQZY161vaLXlTkxpy?=
- =?iso-8859-1?Q?MWetCOa1lzrfZPniCUCaLu5J69m3Kao/GQC9mY/j6HeYj1phNsv7D1+RY2?=
- =?iso-8859-1?Q?4QfZzde8t5XMY8cRYf2RFK+OD0xA50LO2aq/o55X7cHkvQPSQ2d3OQ5qDH?=
- =?iso-8859-1?Q?ypIEOknFddHi/0q3e7n5zopnXZkse9VmewbrHJnxGQq4MRPLTWDgzRQLZW?=
- =?iso-8859-1?Q?uP2FprztnUW+zbed+O411r99sTdYAXwSkLbI/MNvsyj3wL4FnVCp4p5h64?=
- =?iso-8859-1?Q?iEAQtp81yNHGeprC0OllrWv9ABteQaFTjaYLH+90s7BovFFqstFqeuLito?=
- =?iso-8859-1?Q?BUqqjM56bwoHgIVhqwFNLoZAnm+lfqf2mwKnvVO/sxc06TJLH3E0C7ggvU?=
- =?iso-8859-1?Q?cQbv7JsDTiReMmHwCxQAblS5dH5RazVv7sbv4NfmbI0/qu//VQAejzLj1d?=
- =?iso-8859-1?Q?YZM8P02XSmIlphmsfRD6orbi062XpiQlDq7itNwHgFXtw79EcOAiEfzlSG?=
- =?iso-8859-1?Q?8JR/wUQSBCZwe2pRNl6nsJcqeZVvA4sSz15yFQYdCfzZBCkvZcnsEhzfVY?=
- =?iso-8859-1?Q?IIKNe+m96JMjqa6b9XB5QeBlWUy9P2JnWM?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uPugT-0006Z7-40
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 23:02:25 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uPugN-00008x-RF
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 23:02:23 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-afc857702d1so1327438a12.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 20:01:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1749783719; x=1750388519; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=n/GptnQflBaFVz42wx2o3AUWBDJwcTdztdJYMtLW1p8=;
+ b=aNa9ObL0v76yyivyPqpOMfuKnmFm4i/BKaHwZqAawX6E/uJzQSnbNK/aJaxE8934q4
+ n3tozZG43Kf9UANDQzOr3VMeZF/hokmmbemZmwF8qUZM5U/+zDGXerie6sZc1LSNvviX
+ BcR0nZHW1AdbgvHGBBeuKB/W6f8d1xsi4oYvRmoZ8aB14jaaw7uPnFPNr236uS1HIjyJ
+ tBhk1wOi9cgpWTZPAnLbJJnkPHHvPGE9TMabMUk0qqEBu4ZWdN4QfHFCv67BJ5KvVWA6
+ YfHLVAZvmNIJ+qIfDjKK/0+3MYu9b1n4vjpBfjaFSpowqufIMXVvEjsuwtyJOUfyTGY9
+ 3ZsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1749783719; x=1750388519;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=n/GptnQflBaFVz42wx2o3AUWBDJwcTdztdJYMtLW1p8=;
+ b=AKjQrCpWA8u18opSW81M3/Hc/tvcUfcjoWagdV6cSlSdTOz+x8We9bb9B/RBdrC2zY
+ cJn2QFVEFB/Yokk0AasYhYOSqtUFoI4VJby4MOSpNe9OhuguFq3jfYUsfm25tDsKXvmR
+ vuIU8R92WztwWkRGnovGuqrMef3htV72cm0ic8D5QURs5JcJisdxa0NhFcUi8GEUiulN
+ 7qwMsCKejdSjQDPPPoy14ZoMLLiQ/jsPjiLMAJxdNhbxSHsE3v6+61rYkqFBXViIp9by
+ X09LMHvZjWwvGGNfNEruDrwmAkQGUTIESAvL4vZkOxAIoWZDL2YwGQxQ2MNvL9OWeCaY
+ 99aQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU6wucIbTggMWsG58ZxvLOhj813aGNf5y7r3SdNo/D3CcvfqDCugrh6k0rm/SAdzIlXfw6OEzXc2CqA@nongnu.org
+X-Gm-Message-State: AOJu0Ywgd00bzMwrXpVg7hU34RlaxQMr4lv1/p9Wjs9eAse3iXG80Uaq
+ hKWxu4XshsKD/gC0g9oYijD1TgVbp0nsDfGBYIbZFpeHCPf578txdmep82GwQMNhPJA=
+X-Gm-Gg: ASbGncsV4jdkHtsuPNNWLxiaQgdu4g9W36jHFugGVxdIVKtBLI4ILd+ii3NpNcZ6Cqo
+ sJX34xXhmQfkIx+Mx77kFFbKpUkinhiKJFx1EBRgMMwPAt77m7E/yKHT1S+Y9emBvg755Tm9NoC
+ 90+sDk3F9ehRpjLwPJY4kQs5u9VnnyabG9fGA3wNdQuwsikEImdDBFBAuOAPgx4JiZtFLPo4fgy
+ 83xRSVG3ksciIpRh8edlrPLqXT237ZtNboPTWH2XUbCzQR3nDUBWu7Wo7Uba0fBb/jis5lpyj1H
+ ujnJm2OUjFEKT6Rbxmq5F53IquOaWOLdkAzSQvYGXXFrusGmLq8WLULDeJUOiVFLCgLiubUsthX
+ +/C6cYQ8DxriOrSXrq2xzmYtC2fp4qNiaEaaiGcbrqqkSEQ==
+X-Google-Smtp-Source: AGHT+IFG3zzNsopLHddsMJbny5PwduMm6X6AIA8AK2/yU+7C09b4Ol27czDZQ9FQeKodW6w+Jsvfgg==
+X-Received: by 2002:a05:6a20:a109:b0:21f:7430:148a with SMTP id
+ adf61e73a8af0-21facf11c28mr1954803637.28.1749783718533; 
+ Thu, 12 Jun 2025 20:01:58 -0700 (PDT)
+Received: from [192.168.0.102] (200-162-224-156.static-corp.ajato.com.br.
+ [200.162.224.156]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b2fe16899b0sm437204a12.52.2025.06.12.20.01.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Jun 2025 20:01:57 -0700 (PDT)
+Message-ID: <61599d8b-d83d-44ff-8c4d-86bf90ebbb4c@linaro.org>
+Date: Fri, 13 Jun 2025 00:01:46 -0300
 MIME-Version: 1.0
-X-OriginatorOrg: aspeedtech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5041.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a33e25cd-0908-4656-1abb-08ddaa25ae5f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2025 02:54:57.2156 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: VPy7ZVZpK2dp/0D8/0/g4RBHRBE850Q4oxnxMJ5lUBqxgbHUtlt2F2f4A3cN85N454CY7MGk5W/0ELFDrkGcfXAILYtYDfkQ20qL57uHWIE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR06MB6961
-Received-SPF: pass client-ip=2a01:111:f403:c406::3;
- envelope-from=jamin_lin@aspeedtech.com;
- helo=OS8PR02CU002.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/25] hw/arm/virt: Introduce machine state acpi pcihp
+ flags and props
+To: Igor Mammedov <imammedo@redhat.com>, Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ peter.maydell@linaro.org, anisinha@redhat.com, mst@redhat.com,
+ shannon.zhaosl@gmail.com, pbonzini@redhat.com, Jonathan.Cameron@huawei.com,
+ philmd@linaro.org, alex.bennee@linaro.org
+References: <20250527074224.1197793-1-eric.auger@redhat.com>
+ <20250527074224.1197793-3-eric.auger@redhat.com>
+ <20250527135813.2d6cde91@imammedo.users.ipa.redhat.com>
+ <d6bd4794-bcee-4701-8e63-4adee91120d9@redhat.com>
+ <20250528123325.750529a4@imammedo.users.ipa.redhat.com>
+ <13792b72-d336-41b8-8ac7-8790e10f833c@redhat.com>
+ <20250611104511.55152616@imammedo.users.ipa.redhat.com>
+ <05680827-85d9-4ebd-91a7-93e262da52f5@redhat.com>
+ <20250612145537.7dff93a8@imammedo.users.ipa.redhat.com>
+Content-Language: en-US
+From: Gustavo Romero <gustavo.romero@linaro.org>
+In-Reply-To: <20250612145537.7dff93a8@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -166,148 +113,250 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Tan,
+Hi Eric,
 
-> Subject: [PATCH v2] hw/misc/aspeed_scu: Handle AST2600 protection key
-> registers correctly
->=20
-> The AST2600 SCU has two protection key registers (0x00 and 0x10) that bot=
-h
-> need to be unlocked. Each must be unlocked individually, but locking one =
-will
-> lock both.
->=20
-> This commit updates the SCU write logic to reject writes unless both prot=
-ection
-> key registers are unlocked, matching the behaviour of real hardware.
->=20
-> Signed-off-by: Tan Siewert <tan@siewert.io>
-> ---
-> V2:
->   - Fix protection key register check to be an OR instead of AND
->   - Add missing return if SCU is locked (like for AST2500)
->=20
->  hw/misc/aspeed_scu.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
->=20
-> diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c index
-> 4930e00fed..4dcfe8f7b4 100644
-> --- a/hw/misc/aspeed_scu.c
-> +++ b/hw/misc/aspeed_scu.c
-> @@ -91,6 +91,7 @@
->  #define BMC_DEV_ID           TO_REG(0x1A4)
->=20
->  #define AST2600_PROT_KEY          TO_REG(0x00)
-> +#define AST2600_PROT_KEY2         TO_REG(0x10)
->  #define AST2600_SILICON_REV       TO_REG(0x04)
->  #define AST2600_SILICON_REV2      TO_REG(0x14)
->  #define AST2600_SYS_RST_CTRL      TO_REG(0x40)
-> @@ -722,6 +723,7 @@ static void aspeed_ast2600_scu_write(void *opaque,
-> hwaddr offset,
->      int reg =3D TO_REG(offset);
->      /* Truncate here so bitwise operations below behave as expected */
->      uint32_t data =3D data64;
-> +    bool unlocked =3D s->regs[AST2600_PROT_KEY] &&
-> + s->regs[AST2600_PROT_KEY2];
->=20
->      if (reg >=3D ASPEED_AST2600_SCU_NR_REGS) {
->          qemu_log_mask(LOG_GUEST_ERROR,
-> @@ -730,15 +732,27 @@ static void aspeed_ast2600_scu_write(void *opaque,
-> hwaddr offset,
->          return;
->      }
->=20
-> -    if (reg > PROT_KEY && !s->regs[PROT_KEY]) {
-> +    if ((reg !=3D AST2600_PROT_KEY || reg !=3D AST2600_PROT_KEY2) &&
-> + !unlocked) {
->          qemu_log_mask(LOG_GUEST_ERROR, "%s: SCU is locked!\n",
-> __func__);
-> +        return;
->      }
->=20
->      trace_aspeed_scu_write(offset, size, data);
->=20
->      switch (reg) {
->      case AST2600_PROT_KEY:
-> -        s->regs[reg] =3D (data =3D=3D ASPEED_SCU_PROT_KEY) ? 1 : 0;
-> +    case AST2600_PROT_KEY2:
-> +        /*
-> +         * Writing a value other than the protection key will lock
-> +         * both protection registers, but unlocking must be done
-> +         * to each protection register individually.
-> +         */
-> +        if (data !=3D ASPEED_SCU_PROT_KEY) {
-> +            s->regs[AST2600_PROT_KEY] =3D 0;
-> +            s->regs[AST2600_PROT_KEY2] =3D 0;
-> +        } else {
-> +            s->regs[reg] =3D (data =3D=3D ASPEED_SCU_PROT_KEY) ? 1 : 0;
-               It can set 1 directly.
-               s->regs[reg] =3D 1;
-> +        }
->          return;
-According to the datasheet description: it seems your changes do not match =
-the actual hardware behavior.
-Protection Key
-This register is designed to protect SCU registers from unpredictable updat=
-es,
-especially when ARM CPU is out of control.
-The password of the protection key is 0x1688A8A8.
-Unlock SCU registers: Write 0x1688A8A8 to this register
-Lock SCU registers: Write others value to this register
-Only firmware can lock the SCU registers, other softwares (ex. system
-BIOS/driver) can not do this to prevent disturbing the operation of firmwar=
-e.
-When this register is unlocked, the read back value of this register is 0x0=
-0000001.
-When this register is locked, the read back value of this register is 0x000=
-00000.
-Writing to SCU000 can be seen on both SCU000 and SCU010.
-Writing to SCU010 is only on SCU010 itself. SCU000 does not change.
+On 6/12/25 09:55, Igor Mammedov wrote:
+> On Wed, 11 Jun 2025 10:50:04 +0200
+> Eric Auger <eric.auger@redhat.com> wrote:
+> 
+>> Hi Igor,
+>> On 6/11/25 10:45 AM, Igor Mammedov wrote:
+>>> On Wed, 11 Jun 2025 08:53:28 +0200
+>>> Eric Auger <eric.auger@redhat.com> wrote:
+>>>   
+>>>> Hi Gustavo, Alex,
+>>>>
+>>>> On 5/28/25 12:33 PM, Igor Mammedov wrote:
+>>>>> On Tue, 27 May 2025 15:54:15 +0200
+>>>>> Eric Auger <eric.auger@redhat.com> wrote:
+>>>>>     
+>>>>>> Hi Igor,
+>>>>>>
+>>>>>> On 5/27/25 1:58 PM, Igor Mammedov wrote:
+>>>>>>> On Tue, 27 May 2025 09:40:04 +0200
+>>>>>>> Eric Auger <eric.auger@redhat.com> wrote:
+>>>>>>>       
+>>>>>>>> acpi_pcihp VirtMachineClass state flag will allow
+>>>>>>>> to opt in for acpi pci hotplug. This is guarded by a
+>>>>>>>> class no_acpi_pcihp flag to manage compats (<= 10.0
+>>>>>>>> machine types will not support ACPI PCI hotplug).
+>>>>>>> there is no reason to put an effort in force disabling it
+>>>>>>> on old machines, as long as code works when explicitly
+>>>>>>> enabled property on CLI.
+>>>>>>>
+>>>>>>> See comment below on how to deal with it
+>>>>>>>       
+>>>>>>>> Machine state acpi_pcihp flag must be set before the creation
+>>>>>>>> of the GED device which will use it.
+>>>>>>>>
+>>>>>>>> Currently the ACPI PCI HP is turned off by default. This will
+>>>>>>>> change later on for 10.1 machine type.
+>>>>>>> one thing to note, is that turning it on by default might
+>>>>>>> cause change of NIC naming in guest as this brings in
+>>>>>>> new "_Sxx" slot naming. /so configs tied to nic  go down the drain/
+>>>>>>>
+>>>>>>> Naming, we have, also happens to be broken wrt spec
+>>>>>>> (it should be unique system wide, there was a gitlab issue for that,
+>>>>>>> there is no easy fix that though)
+>>>>>>>
+>>>>>>> So I'd leave it disabled by default and let users to turn
+>>>>>>> it on explicitly when needed.
+>>>>>> what is the status on q35, isn't it enabled by default? If so why
+>>>>>> wouldn't we want the same setting on ARM? Is that because of the known
+>>>>>> issue you report above?
+>>>>> Above issue is not a blocker (for thae lack of a good way to fix it)
+>>>>>
+>>>>> on q35 we have had a few complains and fixes, after pcihp was promoted
+>>>>> to default (so hopefully that won't happen on with ARM). Also given
+>>>>> that ARM VM is less popular like hood breaking someone setup is even less.
+>>>>>
+>>>>> That said I'd be cautions keep native hotplug as default,
+>>>>> and only ones who need ACPI one, could turn it on explicitly.
+>>>>>
+>>>>> But well it's policies, so it's up to you ARM folks to decide what
+>>>>> virt board should look like.
+>>>> What is your preference? Do you prefer enabling ACPI PCI HP by default
+>>>> or the opposite.
+>>> I'd prefer native PCIe hotplug being default,
+>>> that way we have less chance of causing regressions not to mention
+>>> less complexity (as acpi pcihp adds up quite a bit of it).
+>>>
+>>> And ones who want/need acpi-pcihp/acpi-index can enable it explicitly,
+>>> to play with.
+>>
+>> OK I will follow your suggestion. You have definitively more expertise
+>> than me here ! ;-)
+> 
+> So far what I suggest looks like better option compared to multiple machine knobs
+> fiddling. But I can easily change my mind once I see respin, if experiment
+> with compat props is not coming well together.
 
-I The following results were tested on the AST2600 EVB.
-Could you please verify the QEMU behavior?
+For now, I think it's okay to let ACPI PCI hotplug stabilize (while not being the
+default) for at least one release cycle. So I'm fine with keeping acpi-pcihp=off as
+the default.
 
-Writing to SCU000 can be seen on both SCU000 and SCU010.
-Writing to SCU010 is only on SCU010 itself. SCU000 does not change.
+As I mentioned elsewhere, I don't consider native PCIe hotplug to be legacy.
 
-1. locked status
-ast# md 1e6e2000
-1e6e2000: 00000000                               ....
-ast# md 1e6e2010
-1e6e2010: 00000000
+We can make acpi-pcihp=on the default in a future release once it's been more
+widely exercised.
 
-unlocked protection key
-mw 1e6e2000 1688A8A8
+I'll update the bios-tables-test.c test accordingly, then you can either put them
+in the v3 (if you happen to send v3 next week) or add them to a v4.
 
-both key and key1 unlock
-ast# md 1e6e2000
-1e6e2000: 00000001                               ....
-ast# md 1e6e2010
-1e6e2010: 0000000
 
-lock protection key
-ast# mw 1e6e2000 abcd
+Cheers,
+Gustavo
 
-both key and key1 unlock
-ast# md 1e6e2000
-1e6e2000: 00000000                               ....
-ast# md 1e6e2010
-1e6e2010: 00000000
-
-unlocked protection key1
-ast# mw 1e6e2010 1688A8A8
-ast# md 1e6e2000
-
-Only protection key 1 unlock
-1e6e2000: 00000000                               ....
-ast# md 1e6e2010
-1e6e2010: 00000001
-
-Thanks-Jamin
-
->      case AST2600_HW_STRAP1:
->      case AST2600_HW_STRAP2:
-> --
-> 2.49.0
+>> Thanks!
+>>
+>> Eric
+>>>   
+>>>> Anybody else?
+>>>>
+>>>> On my end I think I would prefer to have the same default setting than
+>>>> on x86 (ie. ACPI PCI hotplug set by default) but I have no strong
+>>>> opinion either.
+>>>>
+>>>> Thanks
+>>>>
+>>>> Eric
+>>>>>     
+>>>>>> The no_foo compat stuff was especially introduced to avoid breaking the
+>>>>>> guest ABI for old machine types (like the NIC naming alternation you evoke).
+>>>>> no_foo is just another way to handle compat stuff,
+>>>>> and when it's more than one knob per feature it gets ugly really fast.
+>>>>> Hence, I'd prefer pcihp done in x86 way aka:
+>>>>>     hw_compat_OLD(ged.use_acpi_hotplug_bridge, false|true)
+>>>>> to manage presence of ACPI hotplug on desired machine version.
+>>>>> Side benefit it's consistent with how pcihp works on x86
+>>>>>     
+>>>>>>>       
+>>>>>>>> We also introduce properties to allow disabling it.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>>>>>>>> Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+>>>>>>>> ---
+>>>>>>>>   include/hw/arm/virt.h |  2 ++
+>>>>>>>>   hw/arm/virt.c         | 27 +++++++++++++++++++++++++++
+>>>>>>>>   2 files changed, 29 insertions(+)
+>>>>>>>>
+>>>>>>>> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+>>>>>>>> index 9a1b0f53d2..10ea581f06 100644
+>>>>>>>> --- a/include/hw/arm/virt.h
+>>>>>>>> +++ b/include/hw/arm/virt.h
+>>>>>>>> @@ -129,6 +129,7 @@ struct VirtMachineClass {
+>>>>>>>>       bool no_tcg_lpa2;
+>>>>>>>>       bool no_ns_el2_virt_timer_irq;
+>>>>>>>>       bool no_nested_smmu;
+>>>>>>>> +    bool no_acpi_pcihp;
+>>>>>>>>   };
+>>>>>>>>   
+>>>>>>>>   struct VirtMachineState {
+>>>>>>>> @@ -150,6 +151,7 @@ struct VirtMachineState {
+>>>>>>>>       bool mte;
+>>>>>>>>       bool dtb_randomness;
+>>>>>>>>       bool second_ns_uart_present;
+>>>>>>>> +    bool acpi_pcihp;
+>>>>>>>>       OnOffAuto acpi;
+>>>>>>>>       VirtGICType gic_version;
+>>>>>>>>       VirtIOMMUType iommu;
+>>>>>>>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+>>>>>>>> index 9a6cd085a3..a0deeaf2b3 100644
+>>>>>>>> --- a/hw/arm/virt.c
+>>>>>>>> +++ b/hw/arm/virt.c
+>>>>>>>> @@ -2397,8 +2397,10 @@ static void machvirt_init(MachineState *machine)
+>>>>>>>>       create_pcie(vms);
+>>>>>>>>   
+>>>>>>>>       if (has_ged && aarch64 && firmware_loaded && virt_is_acpi_enabled(vms)) {
+>>>>>>>> +        vms->acpi_pcihp &= !vmc->no_acpi_pcihp;
+>>>>>>> I don't particularly like no_foo naming as it makes code harder to read
+>>>>>>> and combined with 'duplicated' field in machine state it make even things worse.
+>>>>>>> (if I recall right Philippe was cleaning mess similar flags usage
+>>>>>>> have introduced with ITS)
+>>>>>>>
+>>>>>>> instead of adding machine property (both class and state),
+>>>>>>> I'd suggest adding the only property to GPE device (akin to what we have in x86 world)
+>>>>>>> And then one can meddle with defaults using hw_compat_xxx
+>>>>>> no_foo still is a largely used pattern in arm virt: no_ged,
+>>>>>> kvm_no_adjvtime, no_kvm_steal_time, no_tcg_lpa2, ../.. There are plenty
+>>>>>> of them and I am not under the impression this is going to be changed.
+>>>>>>
+>>>>>> If you refer to 8d23b1df7212 ("hw/arm/virt: Remove
+>>>>>> VirtMachineClass::no_its field") I think the no_its was removed because
+>>>>>> the machine it applied was removed.
+>>>>>>
+>>>>>> If I understand correctly you would like the prop to be attached to the
+>>>>>> GED device. However the GED device is internally created by the virt
+>>>>>> machine code and not passed through a "-device" CLI option. So how would
+>>>>>> you pass the option on the cmd line if you don't want it to be set by
+>>>>>> default per machine type?
+>>>>>>
+>>>>>> Thanks
+>>>>>>
+>>>>>> Eric
+>>>>>>>       
+>>>>>>>>           vms->acpi_dev = create_acpi_ged(vms);
+>>>>>>>>       } else {
+>>>>>>>> +        vms->acpi_pcihp = false;
+>>>>>>>>           create_gpio_devices(vms, VIRT_GPIO, sysmem);
+>>>>>>>>       }
+>>>>>>>>   
+>>>>>>>> @@ -2593,6 +2595,20 @@ static void virt_set_its(Object *obj, bool value, Error **errp)
+>>>>>>>>       vms->its = value;
+>>>>>>>>   }
+>>>>>>>>   
+>>>>>>>> +static bool virt_get_acpi_pcihp(Object *obj, Error **errp)
+>>>>>>>> +{
+>>>>>>>> +    VirtMachineState *vms = VIRT_MACHINE(obj);
+>>>>>>>> +
+>>>>>>>> +    return vms->acpi_pcihp;
+>>>>>>>> +}
+>>>>>>>> +
+>>>>>>>> +static void virt_set_acpi_pcihp(Object *obj, bool value, Error **errp)
+>>>>>>>> +{
+>>>>>>>> +    VirtMachineState *vms = VIRT_MACHINE(obj);
+>>>>>>>> +
+>>>>>>>> +    vms->acpi_pcihp = value;
+>>>>>>>> +}
+>>>>>>>> +
+>>>>>>>>   static bool virt_get_dtb_randomness(Object *obj, Error **errp)
+>>>>>>>>   {
+>>>>>>>>       VirtMachineState *vms = VIRT_MACHINE(obj);
+>>>>>>>> @@ -3310,6 +3326,10 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
+>>>>>>>>                                             "in ACPI table header."
+>>>>>>>>                                             "The string may be up to 8 bytes in size");
+>>>>>>>>   
+>>>>>>>> +    object_class_property_add_bool(oc, "acpi-pcihp",
+>>>>>>>> +                                   virt_get_acpi_pcihp, virt_set_acpi_pcihp);
+>>>>>>>> +    object_class_property_set_description(oc, "acpi-pcihp",
+>>>>>>>> +                                          "Force ACPI PCI hotplug");
+>>>>>>>>   }
+>>>>>>>>   
+>>>>>>>>   static void virt_instance_init(Object *obj)
+>>>>>>>> @@ -3344,6 +3364,9 @@ static void virt_instance_init(Object *obj)
+>>>>>>>>           vms->tcg_its = true;
+>>>>>>>>       }
+>>>>>>>>   
+>>>>>>>> +    /* default disallows ACPI PCI hotplug */
+>>>>>>>> +    vms->acpi_pcihp = false;
+>>>>>>>> +
+>>>>>>>>       /* Default disallows iommu instantiation */
+>>>>>>>>       vms->iommu = VIRT_IOMMU_NONE;
+>>>>>>>>   
+>>>>>>>> @@ -3394,8 +3417,12 @@ DEFINE_VIRT_MACHINE_AS_LATEST(10, 1)
+>>>>>>>>   
+>>>>>>>>   static void virt_machine_10_0_options(MachineClass *mc)
+>>>>>>>>   {
+>>>>>>>> +    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
+>>>>>>>> +
+>>>>>>>>       virt_machine_10_1_options(mc);
+>>>>>>>>       compat_props_add(mc->compat_props, hw_compat_10_0, hw_compat_10_0_len);
+>>>>>>>> +    /* 10.0 and earlier do not support ACPI PCI hotplug */
+>>>>>>>> +    vmc->no_acpi_pcihp = true;
+>>>>>>>>   }
+>>>>>>>>   DEFINE_VIRT_MACHINE(10, 0)
+>>>>>>>>         
+>>
+> 
 
 
