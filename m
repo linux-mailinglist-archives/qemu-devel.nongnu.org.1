@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3027AD8EC9
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 16:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C721FAD8EBE
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 16:09:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQ56k-00073E-FT; Fri, 13 Jun 2025 10:10:16 -0400
+	id 1uQ54y-00048l-0z; Fri, 13 Jun 2025 10:08:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ56M-0006lX-9N
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:09:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ54r-00047l-Fh
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:08:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ56K-0001lX-DN
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:09:50 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ54o-0001TF-Qj
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:08:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749823787;
+ s=mimecast20190719; t=1749823691;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=7nILyzynSnvknIr8mqdNZ9z3dvv7bdU1U/3+yRo7Unw=;
- b=i9KTx3mTShfHp4vnj73U0SdL+yGOs1qFDi1IC8xbNGUbF3K+mSqHxyHHXz+h1L2JvQax62
- K1F/8bHdPsfRPoo0ATgIHSWu38F/2ZTbqxQiZ9fOGnX5XfmDEBlIs8atyPzVe6zgFXMifI
- EOUQZ58uhzpMqrue3LzAnkXJfqdOE14=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Eb09oWLwuSnauqTMTtyOC9YBT06C8v5NY6NTl05oP68=;
+ b=LPrb0xNa6IcC5yGQW6n31n9JdwEUbJTZu91R9GtxN1GNp8v2jdn4SoFH9Wbg33kzjhWCv9
+ OyCLvnREuIikGgY0xS/Ff21YUjk+jTweJfB/d8juBsfYldu3mdAYJqNLZrJYt+3rytihQ2
+ k1kX138wxts8V8JyaOO+D0MOn+DzphQ=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-185-jc0cE9oLON6PwFP1N35B_g-1; Fri, 13 Jun 2025 10:08:06 -0400
-X-MC-Unique: jc0cE9oLON6PwFP1N35B_g-1
-X-Mimecast-MFC-AGG-ID: jc0cE9oLON6PwFP1N35B_g_1749823686
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4a58cd9b142so38733271cf.0
- for <qemu-devel@nongnu.org>; Fri, 13 Jun 2025 07:08:06 -0700 (PDT)
+ us-mta-412-rH5nKDPBNou7lKXnXqF4Bw-1; Fri, 13 Jun 2025 10:08:09 -0400
+X-MC-Unique: rH5nKDPBNou7lKXnXqF4Bw-1
+X-Mimecast-MFC-AGG-ID: rH5nKDPBNou7lKXnXqF4Bw_1749823687
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6fad29c1b72so30499466d6.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Jun 2025 07:08:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749823685; x=1750428485;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7nILyzynSnvknIr8mqdNZ9z3dvv7bdU1U/3+yRo7Unw=;
- b=R/5gvsE8l5p45l/Sp5YTTb3YrFi1I6I34Fi0XphQAXV5cI1SKWLb6OUfGy+QXRb72Y
- zdHr6LalHnZXd9dwJ991lDjZ8fp4FrN9z+YOR9+NrBGidjpT+Hd/z4RSdJqXUwmuX9hx
- u4vqZZy/RHYon707jnHyM7LG/4pxanxEscUf1OJy5qZTzypekUAay/i+t5t0jzQ1S4HF
- 8s2LIHueyPe6mLNCYjdNUnEvxUptEb97E7JaM6aYM1QVpgesQL3WSabw1icLn7ktLmMW
- nvmFT5xTKZn8omXU2xx7oYAV95lst7idPsnC9gQLCdZQz6ZsfOZ2Njn+3lLFnT56IYVF
- yDXQ==
-X-Gm-Message-State: AOJu0YyWWc/AL5nzKKNbgC5zlIN3ION/jeYpEF+D259PpoAt4GKjVWMF
- NlG7X78hVqmjd3goib6qo7i4m32V0Y0HDJVM1X0WVqJY0cJLnvMz6FHKtHnljimD5/naqkDTizk
- oFeD9AIm9ic5q9XEtdasTeGICyaUvkWedBtbxG8wpB1GOfw5eAB/VBNO78pNZvuJrgOVxqDWpQF
- 0IIkaqniJLfmq5XRMl8ssibLCCXyLEX2vijOvZ+w==
-X-Gm-Gg: ASbGncuhNzX3WBnGiaiJDx9vR/JDWe+eIzlvCmUPtOD+eLSTJFX7fZ46eRz+7NRInXs
- u0VKqt8Dsx93yiaLU3NpFlFXYnMD90g0F2Dj6BZ0UaQNqFw8SKuPqNxbEM8Usybp4M2QisejUJ8
- heVHPzSUJlePcxX8Q8znFcUPjDqWsDoN4Wpj8IRWSYOlaTQjGoR3x1ePcYZbt81bXyuYAxVZwER
- ybjpNzT5tEBiJryuYf7DJivrcGXXE/EZNX+43/kK0F725CVJu7VaFLOFFCVfNJipHEfH4sPxZEa
- FsrVtmb6Xao=
-X-Received: by 2002:a05:622a:418a:b0:494:b1f9:d678 with SMTP id
- d75a77b69052e-4a72ff34caemr69052171cf.50.1749823685463; 
- Fri, 13 Jun 2025 07:08:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHiFeqi2sOFzCI8zx1ceUYmeWUKCIy/23RD3dCQ3aBQNudxnd154kLtXypfsQhRkWjdoK2CTA==
-X-Received: by 2002:a05:622a:418a:b0:494:b1f9:d678 with SMTP id
- d75a77b69052e-4a72ff34caemr69051541cf.50.1749823684888; 
- Fri, 13 Jun 2025 07:08:04 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1749823687; x=1750428487;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Eb09oWLwuSnauqTMTtyOC9YBT06C8v5NY6NTl05oP68=;
+ b=Pf15NDN6c9b7qSyZ3tEqHJcEtrj+ZhO6mp0YhPFaNTpzTp/AYhluF0AuaDdFrtBMdK
+ GJE2u0moS5FNPaqdjzaPU/q8FeOnSJzaDbOMR+n4fhD1WHr93dQzffYhTR8BmSr6OuvB
+ Zrbn68mpreCTyDjTPYL75uCVNfBkF8IMiYB3QJaUNfiOmLpbrliEwCC5wNmrc/elbanN
+ ERWLCcYLO6qepq7zRgjF1f5btIZyOKq2jCLMcHAWFOnTcYe4EAGxlP+jqJgB24TEtFqN
+ JPTVcWjy97gJsLpmOZBcZciVL1DYRgyBzPNINt2FFxa2Nxtt0kxq7seAd+2Q0nFNBfoN
+ 7bkQ==
+X-Gm-Message-State: AOJu0YxoiA4limTPH2SVb1d17go1wsktaqtJroYpBujP/K6B6g8LkMfE
+ Zab456Bvc/kmQuy7Ea0MsHE1q2QnRqJkGqEeC4IgculQSqC6N37dleQtzmc+D6bMps+hSJlore6
+ WLTdlO1uL9WIwOlT4d+5l34TO1ByBBvfo9kkPuWDBtPxOJ+vfxlP+ng0I7n7p+C5AbzihZGMz+T
+ b767k1fbIOceLvrxsgyVT3m7vdMx4TI+4wT+vIrg==
+X-Gm-Gg: ASbGncvHjk8TAzwJLijZavaF/OGhFokL0Lca50QoDs6HCMmxz56yZV51tj/PBTExCH1
+ jFK5Qzi8HK8BOLv0WRIwwXADpW6EiLPTSxcvyYS2mA2A6dv65tsk66Z+U3v7eUAWpF2h8I8xRCO
+ ccyvpLfVpF9JhVBLnXbNQpW2z6xPIYBXnlnh1zzuZZcGqCwdPd519sHFTQoUSXmZqHnymw2c/iD
+ qyQ5t8YNe/z7DvPPdsghTpyZksn6S0vy5pLDbj91bTOP16YdWAqbkcmTd+2tmNGSyej/dyM9LSN
+ a95EivlIVYg=
+X-Received: by 2002:a05:622a:5c17:b0:494:a4bc:3b4d with SMTP id
+ d75a77b69052e-4a72fe7833cmr59582161cf.18.1749823686654; 
+ Fri, 13 Jun 2025 07:08:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGS09x4u0ZVFzuSVZy7c0tnx6UYEilIa2/+HZTTGDi28eeJ9k+MqGdgqcReWAiJle1+nhnBVw==
+X-Received: by 2002:a05:622a:5c17:b0:494:a4bc:3b4d with SMTP id
+ d75a77b69052e-4a72fe7833cmr59581381cf.18.1749823686029; 
+ Fri, 13 Jun 2025 07:08:06 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4a72a52a1ddsm17384111cf.81.2025.06.13.07.08.04
+ d75a77b69052e-4a72a52a1ddsm17384111cf.81.2025.06.13.07.08.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Jun 2025 07:08:04 -0700 (PDT)
+ Fri, 13 Jun 2025 07:08:05 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>,
  Mario Casquero <mcasquer@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- "Dr . David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH v3 00/11] migration: Some enhancements and cleanups for 10.1
-Date: Fri, 13 Jun 2025 10:07:50 -0400
-Message-ID: <20250613140801.474264-1-peterx@redhat.com>
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Li Zhijian <lizhijian@fujitsu.com>
+Subject: [PATCH v3 01/11] migration/hmp: Reorg "info migrate" once more
+Date: Fri, 13 Jun 2025 10:07:51 -0400
+Message-ID: <20250613140801.474264-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250613140801.474264-1-peterx@redhat.com>
+References: <20250613140801.474264-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,64 +106,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1: https://lore.kernel.org/r/20250527215850.1271072-1-peterx@redhat.com
-v2: https://lore.kernel.org/r/20250609161855.6603-1-peterx@redhat.com
+Dave suggested the HMP output for "info migrate" can not only leverage the
+lines but also better grouping:
 
-v3 changelog:
-- Fix checkpatch issues on spaces etc.
-- Added Tested-by tags for Mario on relevant patches
+  https://lore.kernel.org/r/aC4_-nMc7FwsMf9p@gallifrey
 
-The series is based on a small patch from Yanfei Xu here:
+I followed Dave's suggestion, and some more modifications on top:
 
-Based-on: <20250514115827.3216082-1-yanfei.xu@bytedance.com>
-https://lore.kernel.org/r/20250514115827.3216082-1-yanfei.xu@bytedance.com
+  - Added all elements into the picture
 
-This is a series that collected many of either enhancements or cleanups I
-got for QEMU 10.1, which almost came from when working on the last patch.
+  - Use size_to_str() and drop most of the units: benefit is more friendly
+  to most human eyes, bad side effect is lose of details, but that should
+  be corner case per my uses, and one can still leverage the QMP interface
+  when necessary.
 
-The last patch, which is a oneliner, can further reduce 10% postcopy page
-fault latency with preempt mode enabled.
+  - Sub-grouping for "Transfers" ("Channels" and "Page Types").
 
-      Before: 268.00us (+-1.87%)
-      After:  232.67us (+-2.01%)
+  - Better indentations
 
-The patch layout is as following:
+Sample output:
 
-Patch 1:         A follow up of HMP change for "info migrate", per
-                 suggestion from Dave
-Patch 2:         Yet another HMP fix for blocktime displays
-Patch 3-10:      Cleanups everywhere, especially please take a look at
-                 patch 10 which changes the core switchover decision logic
-Patch 11:        The one-liner optimization
+(qemu) info migrate
+Status:                 postcopy-active
+Time (ms):              total=47317, setup=5, down=8
+RAM info:
+  Throughput (Mbps):    1342.83
+  Sizes:                pagesize=4 KiB, total=4.02 GiB
+  Transfers:            transferred=1.41 GiB, remain=2.46 GiB
+    Channels:           precopy=15.2 MiB, multifd=0 B, postcopy=1.39 GiB
+    Page Types:         normal=367713, zero=41195
+  Page Rates (pps):     transfer=40900, dirty=4
+  Others:               dirty_syncs=2, postcopy_req=57503
 
-Comments welcomed, thanks.
+Suggested-by: Dr. David Alan Gilbert <dave@treblig.org>
+Tested-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
+Acked-by: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/migration-hmp-cmds.c | 59 ++++++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 28 deletions(-)
 
-Peter Xu (11):
-  migration/hmp: Reorg "info migrate" once more
-  migration/hmp: Fix postcopy-blocktime per-vCPU results
-  migration/docs: Move docs for postcopy blocktime feature
-  migration/bg-snapshot: Do not check for SKIP in iterator
-  migration: Drop save_live_complete_postcopy hook
-  migration: Rename save_live_complete_precopy to save_complete
-  migration: qemu_savevm_complete*() helpers
-  migration/ram: One less indent for ram_find_and_save_block()
-  migration/ram: Add tracepoints for ram_save_complete()
-  migration: Rewrite the migration complete detect logic
-  migration/postcopy: Avoid clearing dirty bitmap for postcopy too
-
- docs/devel/migration/postcopy.rst | 36 +++++++-------
- include/migration/register.h      | 26 ++++------
- hw/ppc/spapr.c                    |  2 +-
- hw/s390x/s390-stattrib.c          |  2 +-
- hw/vfio/migration.c               |  2 +-
- migration/block-dirty-bitmap.c    |  3 +-
- migration/migration-hmp-cmds.c    | 81 ++++++++++++++++--------------
- migration/migration.c             | 62 ++++++++++++++++-------
- migration/ram.c                   | 32 +++++++-----
- migration/savevm.c                | 83 +++++++++++++++++--------------
- migration/trace-events            |  1 +
- 11 files changed, 185 insertions(+), 145 deletions(-)
-
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index e8a563c7d8..367ff6037f 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -69,7 +69,7 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+     }
+ 
+     if (info->has_status) {
+-        monitor_printf(mon, "Status: %s",
++        monitor_printf(mon, "Status: \t\t%s",
+                        MigrationStatus_str(info->status));
+         if (info->status == MIGRATION_STATUS_FAILED && info->error_desc) {
+             monitor_printf(mon, " (%s)\n", info->error_desc);
+@@ -78,7 +78,7 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+         }
+ 
+         if (info->total_time) {
+-            monitor_printf(mon, "Time (ms): total=%" PRIu64,
++            monitor_printf(mon, "Time (ms): \t\ttotal=%" PRIu64,
+                            info->total_time);
+             if (info->has_setup_time) {
+                 monitor_printf(mon, ", setup=%" PRIu64,
+@@ -110,48 +110,51 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+     }
+ 
+     if (info->ram) {
++        g_autofree char *str_psize = size_to_str(info->ram->page_size);
++        g_autofree char *str_total = size_to_str(info->ram->total);
++        g_autofree char *str_transferred = size_to_str(info->ram->transferred);
++        g_autofree char *str_remaining = size_to_str(info->ram->remaining);
++        g_autofree char *str_precopy = size_to_str(info->ram->precopy_bytes);
++        g_autofree char *str_multifd = size_to_str(info->ram->multifd_bytes);
++        g_autofree char *str_postcopy = size_to_str(info->ram->postcopy_bytes);
++
+         monitor_printf(mon, "RAM info:\n");
+-        monitor_printf(mon, "  Throughput (Mbps): %0.2f\n",
++        monitor_printf(mon, "  Throughput (Mbps): \t%0.2f\n",
+                        info->ram->mbps);
+-        monitor_printf(mon, "  Sizes (KiB): pagesize=%" PRIu64
+-                       ", total=%" PRIu64 ",\n",
+-                       info->ram->page_size >> 10,
+-                       info->ram->total >> 10);
+-        monitor_printf(mon, "    transferred=%" PRIu64
+-                       ", remain=%" PRIu64 ",\n",
+-                       info->ram->transferred >> 10,
+-                       info->ram->remaining >> 10);
+-        monitor_printf(mon, "    precopy=%" PRIu64
+-                       ", multifd=%" PRIu64
+-                       ", postcopy=%" PRIu64,
+-                       info->ram->precopy_bytes >> 10,
+-                       info->ram->multifd_bytes >> 10,
+-                       info->ram->postcopy_bytes >> 10);
++        monitor_printf(mon, "  Sizes: \t\tpagesize=%s, total=%s\n",
++                       str_psize, str_total);
++        monitor_printf(mon, "  Transfers: \t\ttransferred=%s, remain=%s\n",
++                       str_transferred, str_remaining);
++        monitor_printf(mon, "    Channels: \t\tprecopy=%s, "
++                       "multifd=%s, postcopy=%s",
++                       str_precopy, str_multifd, str_postcopy);
+ 
+         if (info->vfio) {
+-            monitor_printf(mon, ", vfio=%" PRIu64,
+-                           info->vfio->transferred >> 10);
++            g_autofree char *str_vfio = size_to_str(info->vfio->transferred);
++
++            monitor_printf(mon, ", vfio=%s", str_vfio);
+         }
+         monitor_printf(mon, "\n");
+ 
+-        monitor_printf(mon, "  Pages: normal=%" PRIu64 ", zero=%" PRIu64
+-                       ", rate_per_sec=%" PRIu64 "\n",
+-                       info->ram->normal,
+-                       info->ram->duplicate,
++        monitor_printf(mon, "    Page Types: \tnormal=%" PRIu64
++                       ", zero=%" PRIu64 "\n",
++                       info->ram->normal, info->ram->duplicate);
++        monitor_printf(mon, "  Page Rates (pps): \ttransfer=%" PRIu64,
+                        info->ram->pages_per_second);
+-        monitor_printf(mon, "  Others: dirty_syncs=%" PRIu64,
+-                       info->ram->dirty_sync_count);
+-
+         if (info->ram->dirty_pages_rate) {
+-            monitor_printf(mon, ", dirty_pages_rate=%" PRIu64,
++            monitor_printf(mon, ", dirty=%" PRIu64,
+                            info->ram->dirty_pages_rate);
+         }
++        monitor_printf(mon, "\n");
++
++        monitor_printf(mon, "  Others: \t\tdirty_syncs=%" PRIu64,
++                       info->ram->dirty_sync_count);
+         if (info->ram->postcopy_requests) {
+             monitor_printf(mon, ", postcopy_req=%" PRIu64,
+                            info->ram->postcopy_requests);
+         }
+         if (info->ram->downtime_bytes) {
+-            monitor_printf(mon, ", downtime_ram=%" PRIu64,
++            monitor_printf(mon, ", downtime_bytes=%" PRIu64,
+                            info->ram->downtime_bytes);
+         }
+         if (info->ram->dirty_sync_missed_zero_copy) {
 -- 
 2.49.0
 
