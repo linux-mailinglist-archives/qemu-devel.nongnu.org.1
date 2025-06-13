@@ -2,94 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5D8AD8F7C
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 16:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B104AD8FF5
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 16:48:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQ5LY-0006cP-CW; Fri, 13 Jun 2025 10:25:32 -0400
+	id 1uQ5fl-0007lL-LA; Fri, 13 Jun 2025 10:46:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ5LW-0006cA-TG
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:25:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uQ5fg-0007kl-DX; Fri, 13 Jun 2025 10:46:20 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uQ5LU-0004CD-IR
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 10:25:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1749824726;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gJTn+NvgEVXmOaDiTB5Fx6TPuNnbmCPhshaUTh2Pews=;
- b=Mz+gDUQW3OQQrNb5/8wDweEAzTsEsrYK1eZ8XvfWVUs/B0X3g4AAS+y/Xj6IRM/x7LRx+Y
- f1MX+wDwCuskqKolcWZQpkuBmKo5D3TE5g0E3grMiqZ6hE+DlNewE+g9hyuD2Ute+Dd5kt
- rbb94L0VQJvRwHcW09eUinJQDFoLFfg=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-470-y8n1VFm2PzGbnMO8p-atdw-1; Fri, 13 Jun 2025 10:25:25 -0400
-X-MC-Unique: y8n1VFm2PzGbnMO8p-atdw-1
-X-Mimecast-MFC-AGG-ID: y8n1VFm2PzGbnMO8p-atdw_1749824724
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7caee988153so377456485a.1
- for <qemu-devel@nongnu.org>; Fri, 13 Jun 2025 07:25:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749824724; x=1750429524;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gJTn+NvgEVXmOaDiTB5Fx6TPuNnbmCPhshaUTh2Pews=;
- b=M7o8toqJIy7mEtj5xr8VRe4iYczjfP9U9+Nflj5n4lGoN6lGZm08ImgU+E9KrOpi3P
- LqAnfWfIbKLOpP06W0XioYK9G/xe3N6rKCl6/RQoCxRSIms6TDHs31nONW3TOSuQeacV
- gM5NVrxu1zBWjtdb57nLDo1y1mJhEVcth/4ZYDScid0BTk+lsXxnRws6LHvIL4T6tBwc
- T3XFUJ+73r12+NMjPwsDeATsXfuVwoY+TXZ8tS9wDMdGTkI3KW6r/8W9VgViTdjYto6m
- LwulmE8+/hZtvv6jlxoNVV8bokmeYTsXkMZLHwa+eWOD8Zy5MEaImIJmUGm+adZJrJU5
- hHqw==
-X-Gm-Message-State: AOJu0Yy70eLtND64tMaTh9GTJsq6OvsNLA+UZ985NHoHdZfHIzBuIwxJ
- hXidBA/rFaecSFmc9pt5N0DD6TDBXpQIaWqWqH5uGWiwysYMgte2z2WXdjkJOM0WMHYxMHbvjsQ
- LM8oMVhI6//mYsHDK0yqKr5GwLGDcb2rpkVm7Wq0D0VMkD5S/77rHF9dkDmE2I4SFpZZ2jwCvJ6
- dL2lHaDRS6i3pbQhgNNoFSMeM/W1AB0WUd+IvYYw==
-X-Gm-Gg: ASbGnctvGIpxYe38awVBIGEusl2NA7vGZRCeoSx7wpBDBWKmbJiC2GQycYzBGN9vpjf
- UgQFV+MoP2p69bM7fz1mj/w2BSUtUcJk0zb9b4BGoSIQsS+Bkk2ggkF+erD9Fvl+QM+TcbfZwrv
- CadnZUFpshlDllnLUOk4zTEEtiTaj8izt/w0OlC6fP4VCRFPJSyg3JIrfK0sKb3aD6xpwOp4rFj
- tJIh7tdQRN7VXBB+EVb07xINd0z40YCKE84IOtqiZQuy60sI3YcJLR1RDMh1ne4U0rjxLckkaXr
- oOq5wk5r5UlpzQ==
-X-Received: by 2002:a05:6214:21e8:b0:6fa:864f:87cc with SMTP id
- 6a1803df08f44-6fb3e613ef8mr44550816d6.33.1749824724099; 
- Fri, 13 Jun 2025 07:25:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGlBmeLk2dIJCunsiPGqMHwy4r/Kh4m3uuZrhqyTgQ8BcL8XzQJFKluhs/R3AC5u4MIm78mcw==
-X-Received: by 2002:a05:6214:c41:b0:6e8:9b52:7a1d with SMTP id
- 6a1803df08f44-6fb3e59a035mr50694996d6.8.1749824713065; 
- Fri, 13 Jun 2025 07:25:13 -0700 (PDT)
-Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6fb35c316e7sm21985976d6.60.2025.06.13.07.25.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Jun 2025 07:25:12 -0700 (PDT)
-Date: Fri, 13 Jun 2025 10:25:09 -0400
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Juraj Marcin <jmarcin@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH] migration/postcopy: Add latency distribution report for
- blocktime
-Message-ID: <aEw0xUO6t_Z44ruM@x1.local>
-References: <20250609223607.34387-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uQ5fd-0006dp-4T; Fri, 13 Jun 2025 10:46:20 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bJht82dNMz67Hm8;
+ Fri, 13 Jun 2025 22:41:36 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 5444A140159;
+ Fri, 13 Jun 2025 22:46:01 +0800 (CST)
+Received: from A2303104131.china.huawei.com (10.203.177.241) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 13 Jun 2025 16:45:53 +0200
+To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
+ <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
+ <imammedo@redhat.com>, <nathanc@nvidia.com>, <mochs@nvidia.com>,
+ <smostafa@google.com>, <linuxarm@huawei.com>, <wangzhou1@hisilicon.com>,
+ <jiangkunkun@huawei.com>, <jonathan.cameron@huawei.com>,
+ <zhangfei.gao@linaro.org>
+Subject: [PATCH v4 0/7] hw/arm/virt: Add support for user creatable SMMUv3
+ device
+Date: Fri, 13 Jun 2025 15:44:42 +0100
+Message-ID: <20250613144449.60156-1-shameerali.kolothum.thodi@huawei.com>
+X-Mailer: git-send-email 2.12.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250609223607.34387-1-peterx@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.203.177.241]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) AC_FROM_MANY_DOTS=0.916, BAYES_00=-1.9,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,55 +68,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 09, 2025 at 06:36:07PM -0400, Peter Xu wrote:
-> Add the latency distribution too for blocktime, using order-of-two buckets.
-> It accounts for all the faults, from either vCPU or non-vCPU threads.  With
-> prior rework, it's very easy to achieve by adding an array to account for
-> faults in each buckets.
-> 
-> Sample output for HMP (while for QMP it's simply an array):
-> 
-> Postcopy Latency Distribution:
->   [     1 us -     2 us ]:          0
->   [     2 us -     4 us ]:          0
->   [     4 us -     8 us ]:          1
->   [     8 us -    16 us ]:          2
->   [    16 us -    32 us ]:          2
->   [    32 us -    64 us ]:          3
->   [    64 us -   128 us ]:      10169
->   [   128 us -   256 us ]:      50151
->   [   256 us -   512 us ]:      12876
->   [   512 us -     1 ms ]:         97
->   [     1 ms -     2 ms ]:         42
->   [     2 ms -     4 ms ]:         44
->   [     4 ms -     8 ms ]:         93
->   [     8 ms -    16 ms ]:        138
->   [    16 ms -    32 ms ]:          0
->   [    32 ms -    65 ms ]:          0
->   [    65 ms -   131 ms ]:          0
->   [   131 ms -   262 ms ]:          0
->   [   262 ms -   524 ms ]:          0
->   [   524 ms -    1 sec ]:          0
->   [    1 sec -    2 sec ]:          0
->   [    2 sec -    4 sec ]:          0
->   [    4 sec -    8 sec ]:          0
->   [    8 sec -   16 sec ]:          0
-> 
-> Cc: Dr. David Alan Gilbert <dave@treblig.org>
-> Cc: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+Hi All,
 
-Just to keep a record, the new version of this patch is included here:
+Changes from v3:
+https://lore.kernel.org/qemu-devel/20250602154110.48392-1-shameerali.kolothum.thodi@huawei.com/
 
-https://lore.kernel.org/all/20250613141217.474825-15-peterx@redhat.com/
+Addressed feedback on v3. Thanks to all.
+Major changes:
+1. Based on Igor's suggestion, moved the associated primary-bus is of type
+   TYPE_PCI_HOST_BRIDGE check to smmu-common.
+2. Addressed IORT related comments from Eric
+3. Picked up T-by tag from Nathan. Thanks for giving it a spin.
+4. Added a documents entry for arm-smmuv3.
 
-There're trivial changes there, on marking the feature unstable, meanwhile
-adjustments to suite the us->ns conversion suggested by Dave.
+Cover letter:
+
+This patch series introduces support for a user-creatable SMMUv3 device
+(-device arm-smmuv3) in QEMU.
+
+The implementation is based on feedback received from the RFCv2[0]:
+"hw/arm/virt: Add support for user-creatable accelerated SMMUv3"
+
+Currently, QEMU's SMMUv3 emulation (iommu=smmuv3) is tied to the machine
+and does not support instantiating multiple SMMUv3 devices—each associated
+with a separate PCIe root complex. In contrast, real-world ARM systems
+often include multiple SMMUv3 instances, each bound to a different PCIe
+root complex.
+
+This series allows to specify multiple SMMUv3 instances as below,
+
+ -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.0
+  ...
+ -device arm-smmuv3,primary-bus=pcie.1,,id=smmuv3.1
+
+The multiple SMMUv3 instance support lays the groundwork for supporting
+accelerated SMMUv3, as proposed in the aforementioned RFCv2[0]. The
+proposed accelerated support will be an optional property like below,
+-device arm-smmuv3,primary-bus=pcie.1,accel=on,..
+
+Please note, the accelerated SMMUv3 support is not part of this series
+and will be sent out as a separate series later on top of this one.
+
+This series also,
+
+-Supports either the legacy iommu=smmuv3 option or the new
+  "-device arm-smmuv3" model.
+  -Adds device tree bindings for the new SMMUv3 device on the arm/virt
+   machine only, and only for the default pcie.0 root complex.
+   (Note: pxb-pcie root complexes are currently not supported with the
+    device tree due to known limitations[1].)
+
+Example usage:
+  -device arm-smmuv3,primary-bus=pcie.0,id=smmuv3.0
+  -device virtio-net-pci,bus=pcie.0
+  -device pxb-pcie,id=pcie.1,bus_nr=2
+  -device arm-smmuv3,primary-bus=pcie.1,id=smmuv3.1
+  -device pcie-root-port,id=pcie.port1,bus=pcie.1
+  -device virtio-net-pci,bus=pcie.port1
+
+Please take a look and let me know your feedback.
+
+Thanks,
+Shameer
+[0]:https://lore.kernel.org/qemu-devel/20250311141045.66620-1-shameerali.kolothum.thodi@huawei.com/
+[1]:https://lore.kernel.org/qemu-devel/20230421165037.2506-1-Jonathan.Cameron@huawei.com/
+
+Nicolin Chen (1):
+  hw/arm/virt: Add an SMMU_IO_LEN macro
+
+Shameer Kolothum (6):
+  hw/arm/smmu-common: Check SMMU has PCIe Root Complex association
+  hw/arm/virt-acpi-build: Re-arrange SMMUv3 IORT build
+  hw/arm/virt-acpi-build: Update IORT for multiple smmuv3 devices
+  hw/arm/virt: Factor out common SMMUV3 dt bindings code
+  hw/arm/virt: Allow user-creatable SMMUv3 dev instantiation
+  qemu-options.hx: Document the arm-smmuv3 device
+
+ hw/arm/smmu-common.c     |   4 +-
+ hw/arm/smmuv3.c          |   2 +
+ hw/arm/virt-acpi-build.c | 166 +++++++++++++++++++++++++++++++--------
+ hw/arm/virt.c            | 108 ++++++++++++++++++-------
+ hw/core/sysbus-fdt.c     |   3 +
+ include/hw/arm/virt.h    |   1 +
+ qemu-options.hx          |   6 ++
+ 7 files changed, 228 insertions(+), 62 deletions(-)
 
 -- 
-Peter Xu
+2.47.0
 
 
