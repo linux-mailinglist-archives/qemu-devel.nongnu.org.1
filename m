@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D7EAD7F60
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 02:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 041EAAD7F66
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Jun 2025 02:06:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uPrvO-00060b-3j; Thu, 12 Jun 2025 20:05:42 -0400
+	id 1uPrvi-0006SR-7z; Thu, 12 Jun 2025 20:06:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3CWtLaAcKClY8CA9C164CC492.0CAE2AI-12J29BCB4BI.CF4@flex--komlodi.bounces.google.com>)
- id 1uPruH-0005qi-AJ
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:29 -0400
-Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
+ <3CmtLaAcKClc9DBAD275DD5A3.1DBF3BJ-23K3ACDC5CJ.DG5@flex--komlodi.bounces.google.com>)
+ id 1uPruI-0005rB-Ax
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:31 -0400
+Received: from mail-pl1-x64a.google.com ([2607:f8b0:4864:20::64a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3CWtLaAcKClY8CA9C164CC492.0CAE2AI-12J29BCB4BI.CF4@flex--komlodi.bounces.google.com>)
- id 1uPruF-0000Zd-Nl
- for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:28 -0400
-Received: by mail-pl1-x649.google.com with SMTP id
- d9443c01a7336-235e1d66fa6so14388205ad.0
- for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 17:04:26 -0700 (PDT)
+ <3CmtLaAcKClc9DBAD275DD5A3.1DBF3BJ-23K3ACDC5CJ.DG5@flex--komlodi.bounces.google.com>)
+ id 1uPruG-0000a3-L2
+ for qemu-devel@nongnu.org; Thu, 12 Jun 2025 20:04:30 -0400
+Received: by mail-pl1-x64a.google.com with SMTP id
+ d9443c01a7336-2365ab89b52so5026945ad.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Jun 2025 17:04:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1749773065; x=1750377865; darn=nongnu.org;
+ d=google.com; s=20230601; t=1749773066; x=1750377866; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=qzeXApkoHKyQHwiWeTNus/brrOxPdJq1kjayormL0Vs=;
- b=U6HMRmO5/2Q5kFg8xS3AKQE63dUheuOX6DAITITb/HZn7q/wp/8N9Wdpd8xOG1Thoj
- 9d8Fry/dsnjSQmxHhP9piVGAwRFMylWppCEsNN5Be9muWd1PmnPkemtg6UnE6vjNJgQC
- EuoavtADB61I44GCcZUgyDWHs9yyvPtXf/nqyHcyx8qHA1x5MnCRCtNu5pJXM1TbrBgW
- +G/6O6WBgtA7WC0txHKf2J/sy1NnIMvvRxAaWa3Tn5k5P6eQPIEp9mUxTFO1lTvTu3+e
- 3AQZ8jbLO66JQDvJMVzGjISJ/cCpLI5MZIFlEuvd9h55SQ1QbumLO05vKB6hU+8moEJs
- JOXw==
+ bh=bGxi0+b2ieHBb3xRNVEv/9JKjepFFVub1/UswMe9fwo=;
+ b=3gjmOgRqwpEeQ4+ZUxnKZCXqdUCux0gW/uF15+pzQ2sZRZKloX/9Em65LU2yfijvTO
+ +1yxpop18yOQHvq6/xQkNpNhiBjngrGGNhDPtpd8aO5mCfvP8tPcVUQmTt/R0VAlCWc4
+ wGJQ9fwPYTMr/VXnlbjEV8u+cEYJD2Uar0ZDN7QMUPxSggTgOuhA60DFTE/3kOzYmM2q
+ BIN/stQPRHNAn+3kmrKXlx8I+HgTd99hxafjMJvDGWI9GjczIltNA+JXA/yEfwU6Fj0R
+ NvZfL7lOT8Zt1eZi6zbM72SRqCGxPrpySaAvOajY6EvbKn2+uXvuEkwYg6HQIsunOvPa
+ 9Dhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749773065; x=1750377865;
+ d=1e100.net; s=20230601; t=1749773066; x=1750377866;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qzeXApkoHKyQHwiWeTNus/brrOxPdJq1kjayormL0Vs=;
- b=Tna3q5YkJNhBEGPKG2sl2AHPbwx8wiltuEeuPE9w9pnBbdTFhxqY1RpbkQLunevu6U
- zLVjEoF2rCfwwQ1XVdLrqqh8VDfiR9FUIs5+dIrdCXML2ASiduc3T5rcTltq6tgGmq+R
- AqFz/UEsJimBIVmyY6JLSIm0BYOOWB9DZ7iUbTmbP1zW6aJJ/j5V6vEczHDWzVUlqmXd
- fOmEg+skWFOuc6YXlvqYr4Yb9xREFZI1wuklOTygw/YTE/JsZBd0dpYhdPL5J7o+5KC9
- /fUo26TeWT2j50LuNnaR22/1WfHzjj5+X+eemZDTBHcrdwjgm2rz6ylH8/HcLE+tl0hv
- lBqA==
-X-Gm-Message-State: AOJu0YzUyxyrv4xbUJgGRehx/yPXU7E6JEQdxHl2ZkrAmiAWU7bPc+VX
- sMeiI7odmIpEKrcrVcMQgeflKKN6SLdmAkwC1UdNekgS9EQhQ3w9+z3Zy75WL6m/IcyQzmx4DVW
- VA5LneL6Ez19ZbJXKyOdFvsHSiD/njPoDCtrLG2MsWlLv8bLnV7X1zrI847lWPyJgg6SKk9CLWn
- HnObak4UrQxn4LhgJXBVhV9WK3537V4G0W8HpbDtwL
-X-Google-Smtp-Source: AGHT+IGLKDmLbZW/qGezSxYha2G+BZmAVQInMd45qP0gEERp59ero1+jqvHP6nwox2JBl1Byld/1jiqT+PWI
-X-Received: from pgbda8.prod.google.com ([2002:a05:6a02:2388:b0:b2c:4d7e:b626])
+ bh=bGxi0+b2ieHBb3xRNVEv/9JKjepFFVub1/UswMe9fwo=;
+ b=Fe3/yzSLAfI8OLbfb27g4Vbrtc+8JqY+zc4g6mg2J6GOCuZVidHQiLzzu821gQdxhu
+ Dv70i+45d2WGnePnbLn2Inm2M7pIdeY5ZbIjBCPacjkrQASthfJpQPkz3TkVzoygZjV8
+ 0Ld1p4XNTiq/ddnfjcUWGeriAgMgtWWzz0qhSbcdg/8RAFETc2z8rVfn9zQWA0LeO0OI
+ 7AKhaStSkN8rLyUfEUnv0MelrjSA7yLeRstzVDh044LYWucb9PvJTTiCKcmPk4bMToAu
+ v/T3qDu0+Kc2Cwxq8pBpaoLLSz9yiQQ25guyxabbp/wea11gDxgGEyEp+IuCaqxsMPDT
+ 9mIA==
+X-Gm-Message-State: AOJu0Yxv+4CDoWbMMioERQin5EYk9hg/4sP79YOzAMr0NAaai/2CzS6/
+ wpTiUS8FGlsVzuKe4WQIOx7FIv/McWXNDqFtWjbWOCl0X2T23oG6e4JAWzZPas9+koo2c0UH1Ll
+ goIbEI+I2ppw42LXWprx4o/wolOwmyE2cql8gEz+TMm7JCm0b/duI+XmOa54AppS7/kpRwlRN3G
+ DaXN/gPs7HoU2hCUCuSGWPbUZDPn4O0m8stt0D9Had
+X-Google-Smtp-Source: AGHT+IFirUvxD2IX451LrPoZsi4qEBbNUbqzhApW0pieIbOQgAAFEoX1n+cFSAlycEtF4voIhDobGxe5YWPU
+X-Received: from pgb23.prod.google.com ([2002:a05:6a02:3417:b0:b2c:4d40:79b9])
  (user=komlodi job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:f684:b0:234:aa5b:e7b1
- with SMTP id d9443c01a7336-2365d8ad4aamr11086965ad.18.1749773065089; Thu, 12
- Jun 2025 17:04:25 -0700 (PDT)
-Date: Fri, 13 Jun 2025 00:04:01 +0000
+ 2002:a17:902:f689:b0:235:ea0d:ae21
+ with SMTP id d9443c01a7336-2365dc09ad7mr14535485ad.35.1749773066491; Thu, 12
+ Jun 2025 17:04:26 -0700 (PDT)
+Date: Fri, 13 Jun 2025 00:04:02 +0000
 In-Reply-To: <20250613000411.1516521-1-komlodi@google.com>
 Mime-Version: 1.0
 References: <20250613000411.1516521-1-komlodi@google.com>
 X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
-Message-ID: <20250613000411.1516521-10-komlodi@google.com>
-Subject: [PATCH 09/19] hw/i3c/dw-i3c: Treat more registers as read-as-zero
+Message-ID: <20250613000411.1516521-11-komlodi@google.com>
+Subject: [PATCH 10/19] hw/i3c/dw-i3c: Use 32 bits on MMIO writes
 From: Joe Komlodi <komlodi@google.com>
 To: qemu-devel@nongnu.org
 Cc: venture@google.com, komlodi@google.com, clg@kaod.org, 
@@ -69,9 +69,9 @@ Cc: venture@google.com, komlodi@google.com, clg@kaod.org,
  jamin_lin@aspeedtech.com, andrew@codeconstruct.com.au, joel@jms.id.au, 
  qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
- envelope-from=3CWtLaAcKClY8CA9C164CC492.0CAE2AI-12J29BCB4BI.CF4@flex--komlodi.bounces.google.com;
- helo=mail-pl1-x649.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::64a;
+ envelope-from=3CmtLaAcKClc9DBAD275DD5A3.1DBF3BJ-23K3ACDC5CJ.DG5@flex--komlodi.bounces.google.com;
+ helo=mail-pl1-x64a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -94,30 +94,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RESET_CTRL and INTR_FORCE are write-only.
+The registers are only 32 bits wide, so we should cast the 64-bit value
+passed in to only be 32 bits wide.
 
 Signed-off-by: Joe Komlodi <komlodi@google.com>
 
 Reviewed-by: Patrick Venture <venture@google.com>
+Reviewed-by: Titus Rwantare <titusr@google.com>
 ---
- hw/i3c/dw-i3c.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/i3c/dw-i3c.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/i3c/dw-i3c.c b/hw/i3c/dw-i3c.c
-index 4f40f999f4..bf51c00935 100644
+index bf51c00935..ecd79aba8c 100644
 --- a/hw/i3c/dw-i3c.c
 +++ b/hw/i3c/dw-i3c.c
-@@ -359,7 +359,10 @@ static uint64_t dw_i3c_read(void *opaque, hwaddr offset, unsigned size)
-     uint64_t value;
+@@ -380,10 +380,11 @@ static void dw_i3c_write(void *opaque, hwaddr offset, uint64_t value,
+ {
+     DWI3C *s = DW_I3C(opaque);
+     uint32_t addr = offset >> 2;
++    uint32_t val32 = (uint32_t)value;
  
+     trace_dw_i3c_write(s->id, offset, value);
+ 
+-    value &= ~dw_i3c_ro[addr];
++    val32 &= ~dw_i3c_ro[addr];
      switch (addr) {
-+    /* RAZ */
-     case R_COMMAND_QUEUE_PORT:
-+    case R_RESET_CTRL:
-+    case R_INTR_FORCE:
-         value = 0;
+     case R_HW_CAPABILITY:
+     case R_RESPONSE_QUEUE_PORT:
+@@ -409,7 +410,7 @@ static void dw_i3c_write(void *opaque, hwaddr offset, uint64_t value,
+     case R_RESET_CTRL:
          break;
      default:
+-        s->regs[addr] = value;
++        s->regs[addr] = val32;
+         break;
+     }
+ }
 -- 
 2.50.0.rc1.591.g9c95f17f64-goog
 
