@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BB3AD9996
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Jun 2025 04:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CA8AD999B
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Jun 2025 04:10:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQGKv-0002qv-3h; Fri, 13 Jun 2025 22:09:37 -0400
+	id 1uQGLV-0003bQ-Up; Fri, 13 Jun 2025 22:10:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <me@sean.taipei>) id 1uQGKt-0002pf-6t
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 22:09:35 -0400
+ (Exim 4.90_1) (envelope-from <me@sean.taipei>) id 1uQGLR-0003YO-Us
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 22:10:10 -0400
 Received: from mail.sean.taipei ([128.199.207.102] helo=sean.taipei)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <me@sean.taipei>) id 1uQGKr-0006aj-Me
- for qemu-devel@nongnu.org; Fri, 13 Jun 2025 22:09:34 -0400
+ (Exim 4.90_1) (envelope-from <me@sean.taipei>) id 1uQGLQ-0006or-1d
+ for qemu-devel@nongnu.org; Fri, 13 Jun 2025 22:10:09 -0400
 Authentication-Results: sean.taipei; dmarc=fail (p=quarantine dis=none)
  header.from=sean.taipei
-ARC-Filter: OpenARC Filter v0.1.0 sean.taipei 8A0C52806
-ARC-Seal: i=1; a=rsa-sha256; d=sean.taipei; s=arc-2024Q2; t=1749866940;
+ARC-Filter: OpenARC Filter v0.1.0 sean.taipei 343775F9F
+ARC-Seal: i=1; a=rsa-sha256; d=sean.taipei; s=arc-2024Q2; t=1749866975;
  cv=none;
- b=FoepIYZXbB90bZburMfKQZC0YhulBgDbM6A67wdwTJ2dhjyagK7IVLFalw0mFy5w8h6SJKX0JP/IT25aooc3DiGXBnNgfVj5zN1a0i5s6J2HFoPmC6gA5yPJI3f91kssRT5GhmiSq7qfsWAOFADMbh32NMgxi/cBYOjSJmHxEAP0BQFr8Wc5wFFVpNZQueiyqU6UNgznIuEEbh34rYCqQJBRHTf0Xq1Pm+hjiZ/5o3AlQA1rW9/JJ0Gx0bIkH2Bou77Ge7tGNv1eNJUFkp29AEluBFDj+7+5K+1duRRlJuw+m+1kX3LpOmrOU+itcSUkMHJseATp5RjbPWDmUMXhmw==
+ b=SpjVyNmVzgk1/nkZxJhHGAScIKPN515uHFwITUlzuF9+CqGHKFnBdifDJzYQSQqrdNmJfbK3kb995yReQw1vgea7sU6hBAJYLXtCbLWtHtlFw1WDQzzswG9uoGmFbUQBNiBkVlEwvdyU/+E13ch4WbPnlKRuYL6UNE7ECod2KsMuuHKodqHZKNqFR1n3ZG9RPsic2PXy/ZoCow4w6m401HWjNpOwNNPN80ji3Slt2wdMd+E+nA+edIpAIg4X27v0TJlwPnCJMX7kcptjvyLJAcO+8Xxvi4yfKJJAPclOE6OUuhLUAauZb3s3lEJfm29+ZFaxnI3hk1Ubdq+aKEEzRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=sean.taipei; s=arc-2024Q2;
- t=1749866940; c=relaxed/simple;
- bh=OFgiAYNFhF4Pa/5z/yEOAjYoeD4iuxqzyU+5fqONaLQ=;
+ t=1749866975; c=relaxed/simple;
+ bh=m0K56CSPcT09qRkK6ylaq0Uw2Aj41rsQzExHIcDXrOQ=;
  h=DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:References:
  MIME-Version;
- b=bDMJviHBmWGxj2vZ8EPePzDqu63SCeIeMI1wSyWOp6ss3wV0Lz3svQIKRiIPUHUqTOdUaieUbG0SuBBvivaFsrPVNnKor69TrhnL/qq+1XlO97Qxb79oAurGDXgIQMhnMZx8vJVSLxgt4S4XFG7a68tE6QSm7T8UajSYNsTZhAmbMrjfwgq/DNZGoWwrS3oXp0KdIqsTC3vZ6WaU5MQq3q13bijeVKnxcAD2v1w51IWXSxbQ4eSE5cjPJMvZ3B+xLq+W4AXC8wk8jUb/hFkuFex7B0M0MUxswGX/YNh1yppiRef76bgrzRVE41e5eUrdrl1JNsx5/UK0yOBx3rxvhw==
+ b=WlZnjCxAOvNF2WQYA9hzPvV/n1B1ZznD1WYYCPvZvnQPQDeiGYyqw0bGtlGFsYmT0k3gcPrmGNkXkIYpskoZ8i1vsVm1we5y2Ky/VcDh96gxxJMTWENRXSe8am0r28DC0rB960uiZSterkw9qN+Wg/j/OS1VvbY3+2le50CtM5Q2XpUBSaaPStetlIe67DJFYGw9dKTRci4Jnokq+/nsZpWaoxklwEPyQ6uEMKDR+LCm24R78knXgRTWl2JKu61AJVNXolcX4nklELPd0GmpRyaJV4TcEARXdc1LLnemPBtrVQ92ps1LEpZ7btG0+2UXnyYpd7dy++/AUcvp4hVkxQ==
 ARC-Authentication-Results: i=1; sean.taipei;
  dmarc=fail (p=quarantine dis=none)
  header.from=sean.taipei
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sean.taipei;
- s=2021Q3; t=1749866939;
- bh=OFgiAYNFhF4Pa/5z/yEOAjYoeD4iuxqzyU+5fqONaLQ=;
+ s=2021Q3; t=1749866974;
+ bh=m0K56CSPcT09qRkK6ylaq0Uw2Aj41rsQzExHIcDXrOQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=0Md08k+b47vGppahMK/Voly0TpeBN3dDi36fPqz+G9HNBhxNkZjNA7drcNsV8I7TC
- AzWz4WVgQLF5MDfDMKFDb1uNcZPeLKXsRg1w+47cVNU2o8HfoI6p09YWU5ck4FQG/z
- 44lXjD6CU20uOG4gRTBi86DAeb7rQ5igZmanJQK4tGMcNiGJcUZU9eaBiBK3GKvWD4
- yd4RRzjh4gGt69bTY0YOxxZ0uvzje+gsQiireeULSM9GefZUFvJyHklKikGuKaoit5
- 8xgwoFKT1dNgQShoZ5uYXmFsp4nCTmwJJoCCrsLLCHSs0T2sdIPmiXvDTawj3dtehm
- kP7BqJzh7dqAA==
+ b=rMwYb4BqW3r1x7nV6kXHGMuwLxgsk/OLMdYBr0VNfZmDkYElqpx0ASSLtU3H4h0qt
+ M9fKVDD3VXQlxZV6hRq2Hgc3WlIvLZczm/+Zzs6AmMjoZQ9y1DANWRLNMyhaQeWX+j
+ W3twbWdavinbfCac6Wm6LaMBAt8KzIhHwjvir+r69Fw+hI4C4Gl1klf/5V3A+XhKvj
+ EwL1E/IBfznpOIIfzmNSJh5uziGbNz26JHGrttceKtlzXoxThOiz/rY7V/eBPdzUjM
+ sT3Q2ymI+McBzbuCXEp/r/f+iYpFX2FC4u/238wQ4X7o3ECQ/1BqryWsZVae+/1DoD
+ pCWeku2iZbE0A==
 Received: from Mac.home.lla.com (unknown [207.191.242.16])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by sean.taipei (Postfix) with ESMTPSA id 8A0C52806;
- Sat, 14 Jun 2025 10:08:57 +0800 (CST)
+ by sean.taipei (Postfix) with ESMTPSA id 343775F9F;
+ Sat, 14 Jun 2025 10:09:31 +0800 (CST)
 From: Sean Wei <me@sean.taipei>
 To: qemu-devel@nongnu.org
 Cc: Sean Wei <me@sean.taipei>, Christian Schoenebeck <qemu_oss@crudebyte.com>,
  Greg Kurz <groug@kaod.org>
-Subject: [PATCH 1/2] fsdev/9p-marshal: move G_GNUC_PRINTF to header
-Date: Fri, 13 Jun 2025 22:08:40 -0400
-Message-ID: <20250613.qemu.9p.01@sean.taipei>
+Subject: [PATCH 2/2] hw/9pfs: move G_GNUC_PRINTF to header
+Date: Fri, 13 Jun 2025 22:09:20 -0400
+Message-ID: <20250613.qemu.9p.02@sean.taipei>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250613.qemu.9p@sean.taipei>
 References: <20250613.qemu.9p@sean.taipei>
@@ -86,8 +86,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v9fs_string_sprintf() is annotated with G_GNUC_PRINTF(2, 3) in
-9p-marshal.c, but the prototype in fsdev/9p-marshal.h is missing the
+v9fs_path_sprintf() is annotated with G_GNUC_PRINTF(2, 3) in
+hw/9pfs/9p.c, but the prototype in hw/9pfs/9p.h is missing the
 attribute, so callers that include only the header do not get format
 checking.
 
@@ -96,37 +96,37 @@ source file. No behavior change.
 
 Signed-off-by: Sean Wei <me@sean.taipei>
 ---
- fsdev/9p-marshal.c | 3 +--
- fsdev/9p-marshal.h | 2 +-
+ hw/9pfs/9p.c | 3 +--
+ hw/9pfs/9p.h | 2 +-
  2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fsdev/9p-marshal.c b/fsdev/9p-marshal.c
-index f9b0336cd5..3455580703 100644
---- a/fsdev/9p-marshal.c
-+++ b/fsdev/9p-marshal.c
-@@ -27,8 +27,7 @@ void v9fs_string_free(V9fsString *str)
-     str->size = 0;
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 8b001b9112..acfa7db4e1 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -201,8 +201,7 @@ void v9fs_path_free(V9fsPath *path)
  }
  
+ 
 -void G_GNUC_PRINTF(2, 3)
--v9fs_string_sprintf(V9fsString *str, const char *fmt, ...)
-+void v9fs_string_sprintf(V9fsString *str, const char *fmt, ...)
+-v9fs_path_sprintf(V9fsPath *path, const char *fmt, ...)
++void v9fs_path_sprintf(V9fsPath *path, const char *fmt, ...)
  {
      va_list ap;
  
-diff --git a/fsdev/9p-marshal.h b/fsdev/9p-marshal.h
-index f1abbe151c..e8c0ef0e11 100644
---- a/fsdev/9p-marshal.h
-+++ b/fsdev/9p-marshal.h
-@@ -76,7 +76,7 @@ static inline void v9fs_string_init(V9fsString *str)
-     str->size = 0;
- }
- void v9fs_string_free(V9fsString *str);
--void v9fs_string_sprintf(V9fsString *str, const char *fmt, ...);
-+void G_GNUC_PRINTF(2, 3) v9fs_string_sprintf(V9fsString *str, const char *fmt, ...);
- void v9fs_string_copy(V9fsString *lhs, V9fsString *rhs);
- 
- #endif
+diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+index 259ad32ed1..f4f4086cf7 100644
+--- a/hw/9pfs/9p.h
++++ b/hw/9pfs/9p.h
+@@ -456,7 +456,7 @@ static inline uint8_t v9fs_request_cancelled(V9fsPDU *pdu)
+ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu);
+ void v9fs_path_init(V9fsPath *path);
+ void v9fs_path_free(V9fsPath *path);
+-void v9fs_path_sprintf(V9fsPath *path, const char *fmt, ...);
++void G_GNUC_PRINTF(2, 3) v9fs_path_sprintf(V9fsPath *path, const char *fmt, ...);
+ void v9fs_path_copy(V9fsPath *dst, const V9fsPath *src);
+ size_t v9fs_readdir_response_size(V9fsString *name);
+ int v9fs_name_to_path(V9fsState *s, V9fsPath *dirpath,
 -- 
 2.49.0
 
