@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65142ADA1A2
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Jun 2025 13:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0A3ADA1A1
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Jun 2025 13:22:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQlQR-0003eM-1t; Sun, 15 Jun 2025 07:21:23 -0400
+	id 1uQlQU-0003eo-E5; Sun, 15 Jun 2025 07:21:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uQlQK-0003dn-CJ; Sun, 15 Jun 2025 07:21:16 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1uQlQK-0003dv-Ld; Sun, 15 Jun 2025 07:21:16 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uQlQH-0007xo-EN; Sun, 15 Jun 2025 07:21:14 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3a575a988f9so655900f8f.0; 
- Sun, 15 Jun 2025 04:21:12 -0700 (PDT)
+ id 1uQlQH-0007xw-U7; Sun, 15 Jun 2025 07:21:16 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3a4ef2c2ef3so2952077f8f.2; 
+ Sun, 15 Jun 2025 04:21:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749986470; x=1750591270; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Hutb4ji51xb3Yw07pXHv6w3iBGw3zwwmaYb3nUMWfCo=;
- b=eCrv7q/DrFEIfkavy5LGdpJj04pLWT9cisOVuIDeKg8cnQfwW2W+3EXj08QiwQrma4
- M8vEisyLCyji0f2vDK7tiF3HtNTBv8U440/7jZUajsDIMHhROkgaAlTYxB/D+kp7Ryk2
- gs+wUov6NysH2a/9Tcaar3KMNN+xsNLgplBBEsfUE8ks2OpplmfSOIOQoJcYiG1WTb03
- Et2F1jsngI/fPUed2/IaPmbXgmeJPfjJKCBtW+3v8Iq+N4trD6px4UE+X4jQIGNCr38r
- nz7YKmNry8lgVWAAsY4oDV3hPmhxn7/by/aKMabYN3B+zzbQJH2X+6hgF5ZpMYmaEZhz
- mLNA==
+ d=gmail.com; s=20230601; t=1749986471; x=1750591271; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GOSazWwN655AIgokLtohZGPN+qL0XFCzquoeB/U0TnE=;
+ b=LweUYbxypWkWvyuHKma4O5xBFKl9wQiX0EsPpF6JaMnQRlch60xfAcmj2FhwuRwKSe
+ mNJD2uGEDCGnQXigXLkCBmFZpm0G8Pz3C1bgx81dqvydq7/HsfUmrq4M6Ms78oq8B6n3
+ jb99ioPySMiEYid/Kwl9P6g9X2bgzTSOxNdSkJm0B7XSmGk9MOybDRyHGr39EFmi/uSP
+ sWErApPJ3y3z6uQ8HH70pAQoVV0aLi0mZQ6srLnp3aW0bD2Iri6x9439uYR2js5N5kA1
+ Ha+fGpyvdQneVxvzXhoJIu/PkiTmAWyzCxz0S4/lsU3U5f7SzpWUYoIvgJM1Jx+eAyBE
+ AVtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749986470; x=1750591270;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Hutb4ji51xb3Yw07pXHv6w3iBGw3zwwmaYb3nUMWfCo=;
- b=KDlv0Oa0Rwo4xnYmJDfsvgYbVvetek3AVOr30AyO3BCJeP6U8yMCbxr9GNyDKI2Msg
- rnSWwEG/2IcqADaWpnIeVCmCRrt/2kU3Sskt6GC8olm1A85R7sD+YB24ch+IetYohqYe
- QfP1uA1dXy1tQJkJPoUrWYPUPyhVZlWhGJ4JtYHY/qL2/hJgT0zxDtxdKfirGGfwtBhh
- pIY0UQBJ3YhTfSnC7WnX6fhA85YR+QH+PqPzfJm+ksnOhP2dB0x0Z6Mqm+ZXB/CN9Jof
- EFYOCDxOcA7MEGD1PjZCbO6xpkuhGEw2xNOZIPmMwSmIHz3niAMfRHoSzwNu/UsBHQjc
- Qyrw==
+ d=1e100.net; s=20230601; t=1749986471; x=1750591271;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GOSazWwN655AIgokLtohZGPN+qL0XFCzquoeB/U0TnE=;
+ b=mluymFCNUww8lok4tE7PyrZ2q5jVwMrAAni5T/+JbBQBuNuuVAHzXi3diwJ7WUoRQI
+ Mf4oyJaSNbTdUf0D2Xg7ugr6HC+TP9dd9RAkSO+AJ3R8Ss7pgRZ8I7Fm89/OS/0OzgBZ
+ ZpIIANnWfqXRq9/MraInPJ+YKrDG3FkVJtzmYw9d0Q5AfoPWAT01RmNZMG80n4qtkWZb
+ Bm/OWBVVSlP2mUZQwUwfrgeFhx8KLWioUCVqRAZXu1jXAB8cX1J4TJJc3cy8VFECgdZm
+ H/A4JQRMTs0+x6g17zuAuIb8U43hD/sDg4Cb6aRRcByE0oBNSS4e47M2mb043wd0+qDx
+ TTDQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX69bIn4A6GfCcHepNLJziJXfe68LToeODlHc69KIAIWAEWB5nZqnmQ6BokvgprKH4u4SejWrLf9n0=@nongnu.org
-X-Gm-Message-State: AOJu0YxjOG23oG1RV39grx6KvvfrEy9eg2wJucJDfkPnHipSelYvVoof
- PKulqc4fR+MhGcaxZ6jdpH1ic8G/T79YW4dl3zKpE6yhGvjcgVSi/fFKc0ewAg==
-X-Gm-Gg: ASbGncsiJmsLgVGDtnx+lM0mkQxwAiHMQR78RLCpADjc4KAA8bR9DyFLpMMZKaaHh9j
- H+E5Pxry8sf7DxVyywVV1+pYSKhDSXXrKDFDLOtY+lfljVAUFIyR+a8Zr6Yev9l5N2TqgnYgt7m
- 3cJOjtOmqH+eF6jVbCRXlKvdHutp4nbZaUzHxgCba/GZCnSjCrbojVfwgbzBC6b5ayKvkx8Jctd
- 7/EIXOWAjQ7jssQleCJ3fU9XXmzqi5PjeyPGohdql8h9HAxuwT/5UhyfpIkwALLE058Ad4WMwQ5
- RwbTtZ1H2H5q3WDyPZ45j7xsqAwzv7QePwG4ZwTV6DM5Aa5tp2TNw22aysqgDdLxCOiRVWheViX
- 4qxt8ppZgdcWHky3dZ9HvE47fXOSJv1kPpdJaySaO07Eb4N/SU7OrSmCqQ28p132XCQL4prKLr6
- +lP8n2IQ==
-X-Google-Smtp-Source: AGHT+IEFB2YPqR+A59N5lh65OHm5NgptfSZMbIdCGXVgX9QK6jvYZ7FCLSyStDFJUfIGyyg3vQPhRA==
-X-Received: by 2002:a5d:64cb:0:b0:3a4:d274:1d9b with SMTP id
- ffacd0b85a97d-3a5723ad5eamr5086294f8f.25.1749986469963; 
- Sun, 15 Jun 2025 04:21:09 -0700 (PDT)
+ AJvYcCXoo9OBgtS1famHev8eFf7BYukt7BopeaVP0yMjCxaCSxJPX1hhQYW6LmHlSg4VDTPxljK9AtwWioU=@nongnu.org
+X-Gm-Message-State: AOJu0Yw7+bL5xSq0WykLCT/iTrjvfKOyprc/5VsbSzcv5e84d5rwPslU
+ qzC5fwoFDe0Kk5Mb1FI9dbp23NrGWJsyJrxZO5QQt1pYyCxUZ0Gz0xu4/OAJZQ==
+X-Gm-Gg: ASbGncuGHZk5WnXLHY88aVV0I+ij+V0/b59SSLg6AJor5gMc//sdXD4IPMsVH5AhXuF
+ 3M43Nd2pQ33GOcAU9z78AEa9RgB3/qL1dTVhqZ4LpphY2+v55WBJaH2k11qa0C+muNZTS/floW/
+ 6v8dsGAUt0yVJp6PRTnvTGJcTytTwALNh4qedz9uGBUe6Hz9UmlgFQwsXF2otAlNKTraa9xGb8u
+ CnMRBuAqQrhTjdPJzGIQWdxgcFmbiJe/6IJbx5y8TTenYj3CuJc21DREA2nlaQ8lvmlCxcHCu9e
+ NA4/pgfjcOn9mcEo2bqBZ8rcRrlJ12QyrNsP2hGHKp06DfBMi4i/2355xDdPgADVoi5PU6D791H
+ POHCBRsTWnwFeazuNbCuLQI9963Z/OvSrICJRqFBzfWeb8GWkCxXMfYuyNISR2SWUoj3CaFRmy0
+ 8//Y1x1g==
+X-Google-Smtp-Source: AGHT+IHRcKJm2uEfjPxwsJtfrZob2XRVen8PUExl2auoG8Byuob7lnyGPPHm9Q+KXzHbnGibo5Wx7w==
+X-Received: by 2002:a05:6000:2dc3:b0:3a5:1471:d885 with SMTP id
+ ffacd0b85a97d-3a572e58cb3mr4350729f8f.56.1749986471301; 
+ Sun, 15 Jun 2025 04:21:11 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-2a02-3100-231b-9b00-0219-99ff-feb2-2458.310.pool.telefonica.de.
  [2a02:3100:231b:9b00:219:99ff:feb2:2458])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a568b5c372sm7327099f8f.89.2025.06.15.04.21.09
+ ffacd0b85a97d-3a568b5c372sm7327099f8f.89.2025.06.15.04.21.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Jun 2025 04:21:09 -0700 (PDT)
+ Sun, 15 Jun 2025 04:21:10 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-rust@nongnu.org,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 0/4] Initial logging support for Rust
-Date: Sun, 15 Jun 2025 13:20:33 +0200
-Message-ID: <20250615112037.11992-1-shentey@gmail.com>
+Subject: [PATCH v3 1/4] rust/qemu-api: Add initial logging support based on C
+ API
+Date: Sun, 15 Jun 2025 13:20:34 +0200
+Message-ID: <20250615112037.11992-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.49.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250615112037.11992-1-shentey@gmail.com>
+References: <20250615112037.11992-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,47 +103,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series introduces a log_mask_ln! macro which is inspired by the C version
-and is just a thin wrapper around qemu_log(). It caters to Rust expectations by
-accepting an enum for logging categories and working like the format! macro. The
-macro then gets used in the pl011 device which either had its logging commented
-out or relied on eprintln!() which can't be silenced by users.
+A log_mask_ln!() macro is provided which expects similar arguments as the
+C version. However, the formatting works as one would expect from Rust.
 
-Testing done:
-* Run `make clippy`
-* Purposefully trigger warnings with varying number of arguments
+To maximize code reuse the macro is just a thin wrapper around
+qemu_log(). Also, just the bare minimum of logging masks is provided
+which should suffice for the current use case of Rust in QEMU.
 
-v3:
-* Add macro to prelude (Manos)
-* Have log_mask_ln! rather than log_mask! macro (Manos, Paolo)
-* rustdoc improvements (Paolo)
-* Fix logged function names (Manos)
-* Add missing logging to pl011 to match C version (Paolo)
-* Add patch to make clippy happier (which still complains about "PrimeCell" in
-  rustdoc comment)
-
-v2:
-* Drop the qemu_ prefix from the macro name (Paolo)
-* Use an enum for the logging categories in PascalCase as suggested by Paolo
-
-Bernhard Beschow (4):
-  rust/qemu-api: Add initial logging support based on C API
-  rust/hw/char/pl011/src/device: Implement logging
-  rust/hw/char/pl011/src/device: Add missing logging to match C version
-  rust/qemu-api: Fix clippy lint `missing_const_for_fn`
-
- docs/devel/rust.rst              |  1 +
- rust/wrapper.h                   |  2 +
- rust/hw/char/pl011/src/device.rs | 18 ++++++--
- rust/qemu-api/meson.build        |  1 +
- rust/qemu-api/src/cell.rs        |  2 +-
- rust/qemu-api/src/lib.rs         |  1 +
- rust/qemu-api/src/log.rs         | 78 ++++++++++++++++++++++++++++++++
- rust/qemu-api/src/prelude.rs     |  2 +
- rust/qemu-api/src/qom.rs         |  2 +-
- 9 files changed, 101 insertions(+), 6 deletions(-)
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ docs/devel/rust.rst          |  1 +
+ rust/wrapper.h               |  2 +
+ rust/qemu-api/meson.build    |  1 +
+ rust/qemu-api/src/lib.rs     |  1 +
+ rust/qemu-api/src/log.rs     | 78 ++++++++++++++++++++++++++++++++++++
+ rust/qemu-api/src/prelude.rs |  2 +
+ 6 files changed, 85 insertions(+)
  create mode 100644 rust/qemu-api/src/log.rs
 
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index 47e9677fcb..dc8c44109e 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -162,6 +162,7 @@ module           status
+ ``errno``        complete
+ ``error``        stable
+ ``irq``          complete
++``log``          proof of concept
+ ``memory``       stable
+ ``module``       complete
+ ``qdev``         stable
+diff --git a/rust/wrapper.h b/rust/wrapper.h
+index 6060d3ba1a..15a1b19847 100644
+--- a/rust/wrapper.h
++++ b/rust/wrapper.h
+@@ -48,6 +48,8 @@ typedef enum memory_order {
+ #endif /* __CLANG_STDATOMIC_H */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "qemu/log-for-trace.h"
+ #include "qemu/module.h"
+ #include "qemu-io.h"
+ #include "system/system.h"
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index cac8595a14..33caee3c4f 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -21,6 +21,7 @@ _qemu_api_rs = static_library(
+       'src/errno.rs',
+       'src/error.rs',
+       'src/irq.rs',
++      'src/log.rs',
+       'src/memory.rs',
+       'src/module.rs',
+       'src/prelude.rs',
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 93902fc94b..e20be35460 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -21,6 +21,7 @@
+ pub mod errno;
+ pub mod error;
+ pub mod irq;
++pub mod log;
+ pub mod memory;
+ pub mod module;
+ pub mod qdev;
+diff --git a/rust/qemu-api/src/log.rs b/rust/qemu-api/src/log.rs
+new file mode 100644
+index 0000000000..0d7f06e63c
+--- /dev/null
++++ b/rust/qemu-api/src/log.rs
+@@ -0,0 +1,78 @@
++// Copyright 2025 Bernhard Beschow <shentey@gmail.com>
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++//! Bindings for QEMU's logging infrastructure
++
++#[repr(u32)]
++/// Represents specific error categories within QEMU's logging system.
++///
++/// The `Log` enum provides a Rust abstraction for logging errors, corresponding
++/// to a subset of the error categories defined in the C implementation.
++pub enum Log {
++    /// Log invalid access caused by the guest.
++    /// Corresponds to `LOG_GUEST_ERROR` in the C implementation.
++    GuestError = crate::bindings::LOG_GUEST_ERROR,
++
++    /// Log guest access of unimplemented functionality.
++    /// Corresponds to `LOG_UNIMP` in the C implementation.
++    Unimp = crate::bindings::LOG_UNIMP,
++}
++
++/// A macro to log messages conditionally based on a provided mask.
++///
++/// The `log_mask_ln` macro checks whether the given mask matches the current
++/// log level and, if so, formats and logs the message. It is the Rust
++/// counterpart of the `qemu_log_mask()` macro in the C implementation.
++///
++/// # Parameters
++///
++/// - `$mask`: A log level mask. This should be a variant of the `Log` enum.
++/// - `$fmt`: A format string following the syntax and rules of the `format!`
++///   macro. It specifies the structure of the log message.
++/// - `$args`: Optional arguments to be interpolated into the format string.
++///
++/// # Example
++///
++/// ```
++/// use qemu_api::log::Log;
++/// use qemu_api::log_mask_ln;
++///
++/// let error_address = 0xbad;
++/// log_mask_ln!(
++///     Log::GuestError,
++///     "Address 0x{error_address:x} out of range"
++/// );
++/// ```
++///
++/// It is also possible to use printf-style formatting, as well as having a
++/// trailing `,`:
++///
++/// ```
++/// use qemu_api::log::Log;
++/// use qemu_api::log_mask_ln;
++///
++/// let error_address = 0xbad;
++/// log_mask_ln!(
++///     Log::GuestError,
++///     "Address 0x{:x} out of range",
++///     error_address,
++/// );
++/// ```
++#[macro_export]
++macro_rules! log_mask_ln {
++    ($mask:expr, $fmt:tt $($args:tt)*) => {{
++        // Type assertion to enforce type `Log` for $mask
++        let _: Log = $mask;
++
++        if unsafe {
++            (::qemu_api::bindings::qemu_loglevel & ($mask as std::os::raw::c_int)) != 0
++        } {
++            let formatted_string = format!("{}\n", format_args!($fmt $($args)*));
++            let c_string = std::ffi::CString::new(formatted_string).unwrap();
++
++            unsafe {
++                ::qemu_api::bindings::qemu_log(c_string.as_ptr());
++            }
++        }
++    }};
++}
+diff --git a/rust/qemu-api/src/prelude.rs b/rust/qemu-api/src/prelude.rs
+index 43bfcd5fca..8f9e23ee2c 100644
+--- a/rust/qemu-api/src/prelude.rs
++++ b/rust/qemu-api/src/prelude.rs
+@@ -11,6 +11,8 @@
+ 
+ pub use crate::errno;
+ 
++pub use crate::log_mask_ln;
++
+ pub use crate::qdev::DeviceMethods;
+ 
+ pub use crate::qom::InterfaceType;
 -- 
 2.49.0
 
