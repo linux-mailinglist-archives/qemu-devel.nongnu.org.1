@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8419ADA1A0
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Jun 2025 13:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC64ADA1A4
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Jun 2025 13:22:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uQlQb-0003nr-3g; Sun, 15 Jun 2025 07:21:33 -0400
+	id 1uQlQb-0003pV-Pw; Sun, 15 Jun 2025 07:21:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uQlQM-0003eL-15; Sun, 15 Jun 2025 07:21:18 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1uQlQM-0003en-Gk; Sun, 15 Jun 2025 07:21:19 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uQlQK-0007y8-Gr; Sun, 15 Jun 2025 07:21:17 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3a507e88b0aso3492212f8f.1; 
- Sun, 15 Jun 2025 04:21:14 -0700 (PDT)
+ id 1uQlQL-0007z5-1K; Sun, 15 Jun 2025 07:21:18 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-451e2f0d9c2so29486905e9.1; 
+ Sun, 15 Jun 2025 04:21:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1749986473; x=1750591273; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1749986474; x=1750591274; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1PAd+Ag09Z1RtE6nSLbu8MU1jQdIfYloyvGbcP1uNwY=;
- b=FnJqbTuJqQao/hZC6gPbNUF1RMpUSlGE2adBMmu4r3cj6O/spFGW4yOCR9sH7ldhif
- 2wCd/UocmHH76g54pjnwehq+0gRXEzQ2ldG3ykc6bIYiiWlywHz8q0fE0C6ndr1Svwlo
- koI/AF/6q6Kt2X5k/EJxaWIRzYzVuyNevog6eRWnaDnUOLrYSTP8AayVn+an3GxZ/d+q
- GHTWx4nrixQTOV1HbAfGBvgDac/X/3tOdRxXO79eMTk6yg99qV2SibWv7OBv1QpaGA1h
- QB/aZtBCVPaCaBG0QSC9+7Wa8vLuF0twmCisaVeLXYypQ9qplFG8HfoOveP9e86GAZpt
- ATjA==
+ bh=2c5qfKZcmwYpDnUHRh6s6NpbcxxLoJdjpMU5BVDJlAk=;
+ b=LrqmGHg5WmX09giCpVzHt/4ga0b2kC3j8bvaQvTs0iUUmbITM6VlnAjec0o/tievWg
+ SzKLLcxjaxhq1kcyU4VrCsdJWvB5EhBvxuMKIOerMwrBcIF7dZ82YTXIWOhRpB/cajFy
+ JQiXj4x9knrw2S4i4mXazPMg6e3LnZlpo5LGV83HlvJ5FpqTUhSetJ5U4eIosOKIxdA0
+ 2vifg9KK0brPITn3NzGg6b326+cjWQXgoO/XhVyTaWeTEDHGYFKsE+k2dLQH/Ua413nr
+ PcwBWmMcBACAt4dNDPR6tGqmbM3N0js16OjoK1knyrWOY7ZExEW3TsJEFS7BRRPlaPjc
+ WdAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1749986473; x=1750591273;
+ d=1e100.net; s=20230601; t=1749986474; x=1750591274;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1PAd+Ag09Z1RtE6nSLbu8MU1jQdIfYloyvGbcP1uNwY=;
- b=YwY0TxHnOwNEuBqXMIYxQR1uhuojMqoIMCTjKugtFRzL2QbQD8x0er1gGu0ySC2oS3
- 7+9CXcwbWZ1w6/kNs40NgvKDp0eQm/+P5RYtRNxI000Jb51oM0pvpbCkwKnSxZLjehfE
- AmFY+PwhAh223XmbjKQ/KZb7CQW3Qk26ZBz27K5h242rmtR0rwyexOadWTwgpYqGf92r
- RRfmyg1uH2/4ZBMs6+e0MdiuQD2QQtTVDEcvAYLhiivwSNOOveLKnbpu4N8P7SE/uiR/
- sQXq8Hj4HEJz9iEh+gC/NtEwMVwdaSNgKbp183Be9irZVm5ZH2yLJ0OqD7Wk5VglzVWJ
- mfFQ==
+ bh=2c5qfKZcmwYpDnUHRh6s6NpbcxxLoJdjpMU5BVDJlAk=;
+ b=s2+N3w8/SZvx5U/EitMW0/YzQbiVdqtCyFdpoX+PAUF3Vm2Cxnn8ktBu53QfMRQTpL
+ zict1M2qgRE9mn01Q6X/evCPtpaMMeRpHFtT783pZcQNyzvYiM2CUnIyEiI95RUqoqq6
+ K+J027FRcrZDVSFqzveOsZhDWYbVlfDCF3PoPP3DBmSxS6GFxFyx+4cpsXGZ+oPrqXF+
+ 5ELyCiSudrHnweb09LABD0M68NWh5+hyhL7RCdl/Rb7WHPLVnj2yAUubCqBWYX0MAiFN
+ xIF9H8Sx2KTBeDomjQggo7OWXpMD+KNcWakoVfptHnEiI1skeUOjSMeh8BnDs5G10oiE
+ ek5Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXTEwthdNLerWKpQ6BHED2/rXdTroMqMeSK3ocTzZy8syZW3ybMUhf9rn2aEZboPgiitzNX+fWhR2I=@nongnu.org
-X-Gm-Message-State: AOJu0Yw4szZ6S2a+odThntvmI+qMHjcfLu+B2L09Uhtn5bF2wu/EqucM
- nQF45StCrkXS00Q3wIs+iqym7ClJwGPJfwk4oyBKk2qY8q+v/0fyVUT/X4AxeA==
-X-Gm-Gg: ASbGncvGGEOngRcwvASSWUEhQDMz04NXCxAwKr7ICkqZmMhLTUfGUgFZmLVE1wrn9b/
- k4sYbbjfc/cqKS1zjMTaCTpkXfuEVCswdBmpqCtIyM1spBMV6sQlAaO4PL9no51812O3BTHmh2q
- mo1rWI8xgCdztp7bEZcPfg4Q5anRiXYupTfnfS+jJP0xHfuHzRsCOir/02F2RuzXjnxnnqBcx+v
- vAx5kqfyOtBiwiyKb6nMOhDtT8V7keqYaejtUjDsqyM1+GvFO66Z2C0ilCW+IxwgyFLOePMeaEN
- x7DECuz9a7vRBxP/az1pbhogmoQraEDhAod0Y+MvLvuI8clWFLGM0g02kEjQ0pCVff/jY5amK1L
- 0tTyW8mw0iNDQgaMkKaiv6Y5BjHhHe9ZoyKo5Al3E2RFPmT8MM9MawPZQe/PaG88JBJyAAxQvp0
- cx1ymosQ==
-X-Google-Smtp-Source: AGHT+IGqFpEiTIg7K7tEux/BOI4K4o2CpLwSw+ng+8y1WcXpcuD9s52EVtO5umVxRJCb8D31lJmMnw==
-X-Received: by 2002:a05:6000:2884:b0:3a5:2ef8:3512 with SMTP id
- ffacd0b85a97d-3a572373cdamr5418243f8f.14.1749986472881; 
- Sun, 15 Jun 2025 04:21:12 -0700 (PDT)
+ AJvYcCVXSDWb9gJiHqAjkg/7Z90nsuUr3KWYSa3M/tYxkiCtAO3xTKR0QzVi6JWIUPq/nrWKNAKlicyZtzY=@nongnu.org
+X-Gm-Message-State: AOJu0YzVzgNgRTCI7Cv8SDIM0HfViYznCA5saGTxz36/kq+hsG6mSLUk
+ KmJdtdwLBQf8umYT8Jv4GCxgdsl8kMpxDp6NFiCqUbp+hCasU83BmkrXxA9C9Q==
+X-Gm-Gg: ASbGncvwW66vzSJcoX5OiYxqk5oncsTddptkiPcIH8Xr2E/EzgPSJqo0WHb9AfBNweE
+ ClsePEWy6JvhooRzeEM5yWGKCVAo2wgQNgJHvehSLxokaEoBfdO+gfeuyqK9px186E34ESgdKP7
+ Gljdwx2dFf2QF/ZVodTNwUJv+PSnrSDTMA0KI5rIEnxLCFg1FNJD5h+INrezc2EGwPramgjYYJC
+ ixdgnmWJeAvU7EY87+XY3YCsNkBIlw3bbBchiL2B+G/ahx3SMsIQ3h6bnXA1VJXkv+Quy4i5T2y
+ cWXLkyp5baWDHF6M0i20J/vTf10ac+Z0vr4huEHkVBaL9ty5oWBlv81LhbVJYOgdDOju3bbOzWx
+ aUS0uPL5VEDGVSXUn6VkIACZrRoylcCIyOXEQXHs2Hyg9iDbH0aCYlqmxkG94me0jj0vbTqJ3FP
+ 4YmhRHkg==
+X-Google-Smtp-Source: AGHT+IHAaIVSOBh7QurW4GdAIH3p1GVLkLBB77gQHQfwKB0esk0dVHziuPn65jh5CqXEGevpKUa2lQ==
+X-Received: by 2002:a05:600c:4f4b:b0:439:5f04:4f8d with SMTP id
+ 5b1f17b1804b1-453449ea4b5mr22834735e9.12.1749986473941; 
+ Sun, 15 Jun 2025 04:21:13 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-2a02-3100-231b-9b00-0219-99ff-feb2-2458.310.pool.telefonica.de.
  [2a02:3100:231b:9b00:219:99ff:feb2:2458])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3a568b5c372sm7327099f8f.89.2025.06.15.04.21.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Jun 2025 04:21:12 -0700 (PDT)
+ Sun, 15 Jun 2025 04:21:13 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-rust@nongnu.org,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 3/4] rust/hw/char/pl011/src/device: Add missing logging to
- match C version
-Date: Sun, 15 Jun 2025 13:20:36 +0200
-Message-ID: <20250615112037.11992-4-shentey@gmail.com>
+Subject: [PATCH v3 4/4] rust/qemu-api: Fix clippy lint `missing_const_for_fn`
+Date: Sun, 15 Jun 2025 13:20:37 +0200
+Message-ID: <20250615112037.11992-5-shentey@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250615112037.11992-1-shentey@gmail.com>
 References: <20250615112037.11992-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,29 +102,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- rust/hw/char/pl011/src/device.rs | 6 ++++++
- 1 file changed, 6 insertions(+)
+ rust/qemu-api/src/cell.rs | 2 +-
+ rust/qemu-api/src/qom.rs  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index fa591c3ef6..48b4bca6b8 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -304,6 +304,12 @@ fn read_data_register(&mut self, update: &mut bool) -> u32 {
-     }
- 
-     fn write_data_register(&mut self, value: u32) -> bool {
-+        if !self.control.enable_uart() {
-+            log_mask_ln!(Log::GuestError, "PL011 data written to disabled UART");
-+        }
-+        if !self.control.enable_transmit() {
-+            log_mask_ln!(Log::GuestError, "PL011 data written to disabled TX UART");
-+        }
-         // interrupts always checked
-         let _ = self.loopback_tx(value.into());
-         self.int_level |= Interrupt::TX;
+diff --git a/rust/qemu-api/src/cell.rs b/rust/qemu-api/src/cell.rs
+index 27063b049d..851573f8ef 100644
+--- a/rust/qemu-api/src/cell.rs
++++ b/rust/qemu-api/src/cell.rs
+@@ -965,7 +965,7 @@ impl<T> Opaque<T> {
+     /// # Safety
+     ///
+     /// The pointer must be valid, though it need not point to a valid value.
+-    pub unsafe fn from_raw<'a>(ptr: *mut T) -> &'a Self {
++    pub const unsafe fn from_raw<'a>(ptr: *mut T) -> &'a Self {
+         let ptr = NonNull::new(ptr).unwrap().cast::<Self>();
+         // SAFETY: Self is a transparent wrapper over T
+         unsafe { ptr.as_ref() }
+diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
+index 14f98fee60..29d1b02720 100644
+--- a/rust/qemu-api/src/qom.rs
++++ b/rust/qemu-api/src/qom.rs
+@@ -634,7 +634,7 @@ impl<T: ObjectType> Owned<T> {
+     /// back to `from_raw()` (assuming the original `Owned` was valid!),
+     /// since the owned reference remains there between the calls to
+     /// `into_raw()` and `from_raw()`.
+-    pub unsafe fn from_raw(ptr: *const T) -> Self {
++    pub const unsafe fn from_raw(ptr: *const T) -> Self {
+         // SAFETY NOTE: while NonNull requires a mutable pointer, only
+         // Deref is implemented so the pointer passed to from_raw
+         // remains const
 -- 
 2.49.0
 
