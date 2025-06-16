@@ -2,82 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B366AADB78C
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 19:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A8DADB7C0
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 19:26:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRDJI-00085J-B4; Mon, 16 Jun 2025 13:07:54 -0400
+	id 1uRDb7-00061l-Fd; Mon, 16 Jun 2025 13:26:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uRDJ0-00081V-Qm; Mon, 16 Jun 2025 13:07:36 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uRDIy-0007wC-9i; Mon, 16 Jun 2025 13:07:34 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-606fdbd20afso9710787a12.1; 
- Mon, 16 Jun 2025 10:07:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1750093649; x=1750698449; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yOo8rSqsKdyCcBpCDqRMCJh2UFcFmNcw+BIDQqIIz18=;
- b=Y9kLPTse9zOfYaAGZEmNsP1kLfSZD/h0lf3QJpk61DoihdqemRhkocSrdY7Fe5+WR3
- BO7zQp+js82oX3FK/iaCH8yghytbsg242KQ+/wJn6eugF0rDrF4fDTAX+gD8PANICgze
- sx1tuZh6Z8Id3WobpLkEffnra5/k87//7MrFk4UPpyQHHI3lmojynE1nAir97bu03cmr
- O8lXDCsf9ku3O6MAd6PVaPZbAS1aJxeEnC7KwulEo41ndyOnrD8ezOOK+DX2CN/3iqbA
- QrH6F3EClGvpLpeNtkav6EmXN1VX8QTalOCFNCv2jwjMSueUegDO8S7CvId3eoEIhy14
- H0XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750093649; x=1750698449;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yOo8rSqsKdyCcBpCDqRMCJh2UFcFmNcw+BIDQqIIz18=;
- b=tsyVon7KJbtmfkib36H33ufWwlAwKeoquQx8hox7s8+dHyg8kAcfB1z8EVMNvJJISh
- pHo2g4b99HDSWn+FTbd7UiQhBbzFlKCsDINnr4e8XVF9Wzk1BM7z8h68jIzMGTVaBhsh
- ns9P+dHxWnsoL2KtJKLxryLc1hxqwln8JghEziAszl0nte19pGDPjDwhMYixGXkVHAfU
- B6klrNimOqcJYPBOG2BTFb9Bc4UIRENAQv6a8ywzEf1J4e/uLS4DfYCEyEy0/W6doaVU
- Z0A9P8mHQYOjs1DVZibKwWvyej3Z5F9EQoJFGkw2ixhjADMlelVMShHV+06cVHDWRuZ/
- Tm/A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW4jP9OlwY63WqjsdbbMzlEwwF5ZH9QHGpAqrn5lys0ZP/dLkVsVtqqS/Xzw3YJrCDEXYnif1tNvGg=@nongnu.org
-X-Gm-Message-State: AOJu0Yyii7mbQfXo3rJ1RhufmLTUA4/0FeBvnwR1i7qGoD1xva8SvzIp
- qcrbTUp7/zSiS6LqZ+kZycW7LYLPkY9Up0eZkKB1v9HsElRzdVGkfeqgSURbId3zyviTPP98rTm
- WL6nv+gl4nCF/mJKy49HfRp8MFeyoN2dnEg==
-X-Gm-Gg: ASbGnct22rqLQCTzCoOGbt6Hq7Kpc464nmV+P9umNY6B0YlNzUKFWQKNCrLkkazyEKg
- JXv9ok+8L+HrSSZL6/TApuaQ51fV1mVbJSfKR5RpwWvK55EcQ8hijsmYblBrHQ76ODCVhy0XWic
- 5USWoQBv2nDGq0O/GnkCIPTT81lEZWkiwhlG43YAzpzQ==
-X-Google-Smtp-Source: AGHT+IFp4xdeIItnCONEuthp6am/jG4GogweqiGRmNTCLSqcBae8qFzTlMAKnA71vxoWVkdtTSuK74OG0/YY/eojNyc=
-X-Received: by 2002:a17:907:7ea9:b0:ad4:f517:ca3 with SMTP id
- a640c23a62f3a-adfad363e27mr990033766b.20.1750093648381; Mon, 16 Jun 2025
- 10:07:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <root@wjsota.com>) id 1uRDRI-0002PK-3K
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 13:16:08 -0400
+Received: from p-west1-cluster3-host8-snip4-10.eps.apple.com ([57.103.66.63]
+ helo=outbound.pv.icloud.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <root@wjsota.com>) id 1uRDRB-0000hp-AV
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 13:16:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wjsota.com; s=sig1;
+ bh=evBOl5rbfEcn1En9csBiLwPoXAIPY0sQhp6r0d0a+mY=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
+ b=PAcNiDeqDVxQwbss0cDDfUxhyRsyJ0iWIfZfpxotD21zgzI0CLO7LXKPPy5q8gfpD
+ 0mZgO4rQXubVVZ3FoAb/21Kgxn+oF9IJhn9tif63goD70TbwEEbKx/2EHObenH5X1I
+ zdeMtyTaNNcmpzQxEucrPyz/Z9U+CVHmQzbAGuPwGydvLWIgrGr2BykB/6nrtBZbwB
+ f3WLqwDZbPtweYGw/uubgA1M/8q0ODwSQWIAdgajmOtGVqfBECipYwDjqujl1FPW1f
+ 9yT5Bk+qL4iPnYqSN29iPzcRZFcZKcYWjcLl2LS7KbVW+I2ZPOBJh0VDLPPh7m4B4o
+ QMnjBcugJYV0Q==
+Received: from outbound.pv.icloud.com (localhost [127.0.0.1])
+ by outbound.pv.icloud.com (Postfix) with ESMTPS id 7F601180030C;
+ Mon, 16 Jun 2025 17:15:54 +0000 (UTC)
+Received: from dell-op7020.. (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
+ by outbound.pv.icloud.com (Postfix) with ESMTPSA id 3286D1800B55;
+ Mon, 16 Jun 2025 17:15:53 +0000 (UTC)
+From: Solomon Tan <root@wjsota.com>
+To: 
+Cc: peter.maydell@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Solomon Tan <root@wjsota.com>
+Subject: [PATCH] target/arm: Make RETA[AB] UNDEF when pauth is not implemented
+Date: Tue, 17 Jun 2025 01:15:46 +0800
+Message-ID: <20250616171549.59190-1-root@wjsota.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <CAJSP0QW-3ibYSCL0jYyvm1eADp7fKvLgorGWEk8WXW4SMGfaJw@mail.gmail.com>
- <b23712cc-1291-4b3e-b6c9-2d5c9abc4622@redhat.com>
-In-Reply-To: <b23712cc-1291-4b3e-b6c9-2d5c9abc4622@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 16 Jun 2025 13:07:15 -0400
-X-Gm-Features: AX0GCFt6NjmU3IML0HyCYUzC4MGsoSZFV32dJdzvwqA3pS88Jia6HYMkHriwhp8
-Message-ID: <CAJSP0QWNPuO-Bs3dEs3JbLSgh9HMC3WyPVeJ1j8GLWC0tQ3ndQ@mail.gmail.com>
-Subject: Re: New CI error due to mismatched lifetime in hpet device
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x52c.google.com
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: jyJRFDUagL06QZIPT0DSlFADjHdhK3qA
+X-Proofpoint-ORIG-GUID: jyJRFDUagL06QZIPT0DSlFADjHdhK3qA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-16_08,2025-06-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=1
+ clxscore=1030 malwarescore=0 mlxlogscore=734 mlxscore=0 phishscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2503310001 definitions=main-2506160115
+Received-SPF: pass client-ip=57.103.66.63; envelope-from=root@wjsota.com;
+ helo=outbound.pv.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 16 Jun 2025 13:26:15 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,55 +77,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 16, 2025 at 1:00=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> On 6/16/25 18:46, Stefan Hajnoczi wrote:
-> > Hi Paolo,
-> > The CI is hitting the following new issue in rust/hw/hpet/device.rs:
->
-> Thanks!  I just saw it as well.
->
-> As you've noticed, this job is allowed to fail, because it's just making
-> sure that we find these issues before they hit the "real" CI targets.
->
-> I'll send a patch as soon as it passes CI.  Let me know if you want to
-> apply it right away; otherwise I'll send my next pull request later this
-> week and in the meanwhile you can ignore the failure.
+According to the Arm A-profile A64 Instruction Set Architecture,
+RETA[AB] should be decoded as UNDEF if the pauth feature is not
+implemented.
 
-There is no rush, I just wanted to let you know that the job is now in
-the warning state. The next pull request is good.
+Fixes: 0ebbe9021254f ("target/arm: Convert BRA[AB]Z, BLR[AB]Z, RETA[AB] to decodetree")
+Signed-off-by: Solomon Tan <root@wjsota.com>
+---
+ target/arm/tcg/translate-a64.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks,
-Stefan
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index ac80f572a2..d0719b5665 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -1816,6 +1816,10 @@ static bool trans_RETA(DisasContext *s, arg_reta *a)
+ {
+     TCGv_i64 dst;
+ 
++    if (!dc_isar_feature(aa64_pauth, s)) {
++        return false;
++    }
++
+     dst = auth_branch_target(s, cpu_reg(s, 30), cpu_X[31], !a->m);
+     gen_a64_set_pc(s, dst);
+     s->base.is_jmp = DISAS_JUMP;
+-- 
+2.48.1
 
->
-> Paolo
->
-> > error: lifetime flowing from input to output with different syntax can
-> > be confusing
-> > --> ../rust/hw/timer/hpet/src/device.rs:770:15
-> > |
-> > 770 | fn decode(&self, mut addr: hwaddr, size: u32) -> HPETAddrDecode {
-> > | ^^^^^ -------------- the lifetime gets resolved as `'_`
-> > | |
-> > | this lifetime flows to the output
-> > |
-> > =3D note: `-D mismatched-lifetime-syntaxes` implied by `-D warnings`
-> > =3D help: to override `-D warnings` add `#[allow(mismatched_lifetime_sy=
-ntaxes)]`
-> > help: one option is to remove the lifetime for references and use the
-> > anonymous lifetime for paths
-> > |
-> > 770 | fn decode(&self, mut addr: hwaddr, size: u32) -> HPETAddrDecode<'=
-_> {
-> > | ++++
-> > error: aborting due to 1 previous error
-> >
-> > https://gitlab.com/qemu-project/qemu/-/jobs/10338038013#L5165
-> >
-> > Stefan
-> >
-> >
->
 
