@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A84AADAC82
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C56EADAC5C
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:51:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uR6UM-0001SF-5U; Mon, 16 Jun 2025 05:50:50 -0400
+	id 1uR6UV-0001fq-F5; Mon, 16 Jun 2025 05:50:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uR6UH-0001GR-Mz
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:50:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uR6UQ-0001bk-El
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:50:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uR6UC-0002I9-0c
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:50:45 -0400
+ id 1uR6UI-0002J5-7U
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:50:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750067439;
+ s=mimecast20190719; t=1750067444;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zubIoFh9ZPeBOwkz2oBfKxpS2MJRsQpjm6T4ikFUl2U=;
- b=GOoh5djsu1u5C6i2fj7Ryt3YYatQ+3n7PspGTLZzRjVsRFUqQuLyge4cQCTES5dJolDAlY
- VsImMiPAdvOFZafR05yrIV5QCkkDH1OjcShOSoUIHmAXVCY8J373I3QCKk6QVr0ny+S7m7
- prvFdOg339cwwMy5yIb3Eko9FUOrMOM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=CDbaTZpBIN+bSl0Gm4UeVXh57r0yQ+O/c3GBAhZxp10=;
+ b=TdLbOpIOf+0PX6us1nPLWziimFPIsfslVCeU1uZ1qp7vsc8s+LwxRxYJoBAVzWlYLFlizQ
+ rdH6e+lD+aqGGDk9VsUMaLNHCwt0ego/bOAfR7PZzLUfHX3pj+RLzwKHHLdns+XCdTbfrh
+ T5j+Ux0gbD4yKHoDKtKjWljAk7LP9u0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-52-QNnQzIezOgyXdrdWeBY4pw-1; Mon,
- 16 Jun 2025 05:50:35 -0400
-X-MC-Unique: QNnQzIezOgyXdrdWeBY4pw-1
-X-Mimecast-MFC-AGG-ID: QNnQzIezOgyXdrdWeBY4pw_1750067434
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-49-AqHCKoMTOYK78vjv4do81g-1; Mon,
+ 16 Jun 2025 05:50:40 -0400
+X-MC-Unique: AqHCKoMTOYK78vjv4do81g-1
+X-Mimecast-MFC-AGG-ID: AqHCKoMTOYK78vjv4do81g_1750067438
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DCE751956096; Mon, 16 Jun 2025 09:50:33 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C82ED18089B8; Mon, 16 Jun 2025 09:50:38 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.45.224.77])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8691419560A3; Mon, 16 Jun 2025 09:50:29 +0000 (UTC)
+ id 6B10C19560A3; Mon, 16 Jun 2025 09:50:34 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -52,16 +52,16 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  shannon.zhaosl@gmail.com
 Cc: pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org,
  alex.bennee@linaro.org
-Subject: [PATCH v3 15/29] hw/i386/acpi-build: Use AcpiPciHpState::root in
- acpi_set_pci_info
-Date: Mon, 16 Jun 2025 11:46:44 +0200
-Message-ID: <20250616094903.885753-16-eric.auger@redhat.com>
+Subject: [PATCH v3 16/29] hw/i386/acpi-build: Move aml_pci_edsm to a generic
+ place
+Date: Mon, 16 Jun 2025 11:46:45 +0200
+Message-ID: <20250616094903.885753-17-eric.auger@redhat.com>
 In-Reply-To: <20250616094903.885753-1-eric.auger@redhat.com>
 References: <20250616094903.885753-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,66 +86,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pcihp acpi_set_pci_info() generic code currently uses
-acpi_get_i386_pci_host() to retrieve the pci host bridge.
-
-To make it work also on ARM we get rid of that call and
-directly use AcpiPciHpState::root.
+Move aml_pci_edsm to pci-bridge.c since we want to reuse that for
+ARM and acpi-index support.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
 
 ---
 
 v2 -> v3:
-- Use AcpiPciHpState::root
-
-v1 -> v2
-- described the fact we changed the implementation of
-  acpi_get_pci_host() in the commit msg.
+- move to pci-bridge.c instead of pcihp.c (Igor)
 ---
- hw/acpi/pcihp.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ include/hw/acpi/pci.h |  1 +
+ hw/acpi/pci-bridge.c  | 54 +++++++++++++++++++++++++++++++++++++++++++
+ hw/i386/acpi-build.c  | 53 ------------------------------------------
+ 3 files changed, 55 insertions(+), 53 deletions(-)
 
-diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-index 236e175b69..e79a24b821 100644
---- a/hw/acpi/pcihp.c
-+++ b/hw/acpi/pcihp.c
-@@ -99,10 +99,10 @@ static void *acpi_set_bsel(PCIBus *bus, void *opaque)
-     return info;
- }
+diff --git a/include/hw/acpi/pci.h b/include/hw/acpi/pci.h
+index 69bae95eac..05e72815c8 100644
+--- a/include/hw/acpi/pci.h
++++ b/include/hw/acpi/pci.h
+@@ -42,5 +42,6 @@ void build_pci_bridge_aml(AcpiDevAmlIf *adev, Aml *scope);
+ void build_srat_generic_affinity_structures(GArray *table_data);
  
--static void acpi_set_pci_info(bool has_bridge_hotplug)
-+static void acpi_set_pci_info(AcpiPciHpState *s)
- {
-     static bool bsel_is_set;
--    Object *host = acpi_get_i386_pci_host();
-+    bool has_bridge_hotplug = s->use_acpi_hotplug_bridge;
-     PCIBus *bus;
-     BSELInfo info = { .bsel_alloc = ACPI_PCIHP_BSEL_DEFAULT,
-                       .has_bridge_hotplug = has_bridge_hotplug };
-@@ -112,11 +112,8 @@ static void acpi_set_pci_info(bool has_bridge_hotplug)
+ Aml *build_pci_host_bridge_osc_method(bool enable_native_pcie_hotplug);
++Aml *aml_pci_edsm(void);
+ 
+ #endif
+diff --git a/hw/acpi/pci-bridge.c b/hw/acpi/pci-bridge.c
+index 7baa7034a1..be68a98c34 100644
+--- a/hw/acpi/pci-bridge.c
++++ b/hw/acpi/pci-bridge.c
+@@ -35,3 +35,57 @@ void build_pci_bridge_aml(AcpiDevAmlIf *adev, Aml *scope)
+         }
      }
-     bsel_is_set = true;
- 
--    if (!host) {
--        return;
--    }
- 
--    bus = PCI_HOST_BRIDGE(host)->bus;
-+    bus = s->root;
-     if (bus) {
-         /* Scan all PCI buses. Set property to enable acpi based hotplug. */
-         pci_for_each_bus_depth_first(bus, acpi_set_bsel, NULL, &info);
-@@ -266,7 +263,7 @@ static void acpi_pcihp_update(AcpiPciHpState *s)
- 
- void acpi_pcihp_reset(AcpiPciHpState *s)
- {
--    acpi_set_pci_info(s->use_acpi_hotplug_bridge);
-+    acpi_set_pci_info(s);
-     acpi_pcihp_update(s);
+ }
++
++Aml *aml_pci_edsm(void)
++{
++    Aml *method, *ifctx;
++    Aml *zero = aml_int(0);
++    Aml *func = aml_arg(2);
++    Aml *ret = aml_local(0);
++    Aml *aidx = aml_local(1);
++    Aml *params = aml_arg(4);
++
++    method = aml_method("EDSM", 5, AML_SERIALIZED);
++
++    /* get supported functions */
++    ifctx = aml_if(aml_equal(func, zero));
++    {
++        /* 1: have supported functions */
++        /* 7: support for function 7 */
++        const uint8_t caps = 1 | BIT(7);
++        build_append_pci_dsm_func0_common(ifctx, ret);
++        aml_append(ifctx, aml_store(aml_int(caps), aml_index(ret, zero)));
++        aml_append(ifctx, aml_return(ret));
++    }
++    aml_append(method, ifctx);
++
++    /* handle specific functions requests */
++    /*
++     * PCI Firmware Specification 3.1
++     * 4.6.7. _DSM for Naming a PCI or PCI Express Device Under
++     *        Operating Systems
++     */
++    ifctx = aml_if(aml_equal(func, aml_int(7)));
++    {
++       Aml *pkg = aml_package(2);
++       aml_append(pkg, zero);
++       /* optional, if not impl. should return null string */
++       aml_append(pkg, aml_string("%s", ""));
++       aml_append(ifctx, aml_store(pkg, ret));
++
++       /*
++        * IASL is fine when initializing Package with computational data,
++        * however it makes guest unhappy /it fails to process such AML/.
++        * So use runtime assignment to set acpi-index after initializer
++        * to make OSPM happy.
++        */
++       aml_append(ifctx,
++           aml_store(aml_derefof(aml_index(params, aml_int(0))), aidx));
++       aml_append(ifctx, aml_store(aidx, aml_index(ret, zero)));
++       aml_append(ifctx, aml_return(ret));
++    }
++    aml_append(method, ifctx);
++
++    return method;
++}
++
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index fe8bc62c03..6cf623392e 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -338,59 +338,6 @@ build_facs(GArray *table_data)
+     g_array_append_vals(table_data, reserved, 40); /* Reserved */
  }
  
+-static Aml *aml_pci_edsm(void)
+-{
+-    Aml *method, *ifctx;
+-    Aml *zero = aml_int(0);
+-    Aml *func = aml_arg(2);
+-    Aml *ret = aml_local(0);
+-    Aml *aidx = aml_local(1);
+-    Aml *params = aml_arg(4);
+-
+-    method = aml_method("EDSM", 5, AML_SERIALIZED);
+-
+-    /* get supported functions */
+-    ifctx = aml_if(aml_equal(func, zero));
+-    {
+-        /* 1: have supported functions */
+-        /* 7: support for function 7 */
+-        const uint8_t caps = 1 | BIT(7);
+-        build_append_pci_dsm_func0_common(ifctx, ret);
+-        aml_append(ifctx, aml_store(aml_int(caps), aml_index(ret, zero)));
+-        aml_append(ifctx, aml_return(ret));
+-    }
+-    aml_append(method, ifctx);
+-
+-    /* handle specific functions requests */
+-    /*
+-     * PCI Firmware Specification 3.1
+-     * 4.6.7. _DSM for Naming a PCI or PCI Express Device Under
+-     *        Operating Systems
+-     */
+-    ifctx = aml_if(aml_equal(func, aml_int(7)));
+-    {
+-       Aml *pkg = aml_package(2);
+-       aml_append(pkg, zero);
+-       /* optional, if not impl. should return null string */
+-       aml_append(pkg, aml_string("%s", ""));
+-       aml_append(ifctx, aml_store(pkg, ret));
+-
+-       /*
+-        * IASL is fine when initializing Package with computational data,
+-        * however it makes guest unhappy /it fails to process such AML/.
+-        * So use runtime assignment to set acpi-index after initializer
+-        * to make OSPM happy.
+-        */
+-       aml_append(ifctx,
+-           aml_store(aml_derefof(aml_index(params, aml_int(0))), aidx));
+-       aml_append(ifctx, aml_store(aidx, aml_index(ret, zero)));
+-       aml_append(ifctx, aml_return(ret));
+-    }
+-    aml_append(method, ifctx);
+-
+-    return method;
+-}
+-
+ /*
+  * build_prt - Define interrupt routing rules
+  *
 -- 
 2.49.0
 
