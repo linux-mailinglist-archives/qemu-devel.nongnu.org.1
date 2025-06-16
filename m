@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A175ADABD5
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C10ABADABE5
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:27:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uR64C-0001W8-IG; Mon, 16 Jun 2025 05:23:48 -0400
+	id 1uR67V-0006ml-H8; Mon, 16 Jun 2025 05:27:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uR63N-0000P1-Am
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:23:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uR63J-0005Je-LO
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:22:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750065772;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/57mASegoW8S7VeTMnJN+Cb99ND64Q2D44UkawBVIvY=;
- b=DhR1HIXaFPxcXHW9YdYgVi/dpfyRzYbeGyw8ryUhJNdAvJsndhEiqNPyBmBUEf8Hc4fP+F
- 0hNysyCXLlb+hnHcnkZJS5v+n0pMXTXU2wB9z/1hlyqyAad/X984jCz4xUUYDcN99qxMsC
- s8dcRutqGNOMSJwgtbkOLxTAQ270Lbs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-434-nyvLT8HWNpupm0VGxNkk_Q-1; Mon,
- 16 Jun 2025 05:22:49 -0400
-X-MC-Unique: nyvLT8HWNpupm0VGxNkk_Q-1
-X-Mimecast-MFC-AGG-ID: nyvLT8HWNpupm0VGxNkk_Q_1750065767
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2B05818011CD; Mon, 16 Jun 2025 09:22:47 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.11])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7686C195608D; Mon, 16 Jun 2025 09:22:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D3BA921E6935; Mon, 16 Jun 2025 11:22:41 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v5 3/3] docs: define policy forbidding use of AI code
- generators
-Date: Mon, 16 Jun 2025 11:22:41 +0200
-Message-ID: <20250616092241.212898-4-armbru@redhat.com>
-In-Reply-To: <20250616092241.212898-1-armbru@redhat.com>
-References: <20250616092241.212898-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <idryomov@gmail.com>)
+ id 1uR66e-0003pB-LW; Mon, 16 Jun 2025 05:26:21 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <idryomov@gmail.com>)
+ id 1uR66Z-0006bX-Cf; Mon, 16 Jun 2025 05:26:20 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-3141b84bf65so434075a91.1; 
+ Mon, 16 Jun 2025 02:26:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1750065966; x=1750670766; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=w+/3HMADXf0HtBF8KLRVm6z51m1HeA/H0vSXqEkSXH4=;
+ b=boGUi4X0P7wfRcUX9dz0bWb/XR64GNK4kvg2DLA+V0G+oLzDs5NqCMqY5kiP5MUFvs
+ 2z4nD6ccUh/N2pCtQ4YCcPHZbLmsufDOnE/35uJcGqj5+FihpFo0Z8MGC7KOp2o4b173
+ LtY7OFhIOC25rj/PQA97oznS9RujfdXLJatG7h/96ZWJ+Y0M+SABBHajaDxc1UbYEwCU
+ J8eUBhdw4baS3wMEdkK3YAIXLG28WIhkbhrYFsF2fVf1cax+J0T/rJ0KUsZHJWghAp76
+ PxufkrvgW1+LOFTSQirGXkrIhmmk7psjesMFUQBchRZ/RRlAnPGcuEeYvcCSRdMZ+KvL
+ jmAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750065966; x=1750670766;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=w+/3HMADXf0HtBF8KLRVm6z51m1HeA/H0vSXqEkSXH4=;
+ b=Ew7udWvoZikna5MzJd+2OEAWMDSQXPLJ2cNJm4cimjbWm239oXoslL5Rs7SODGZO10
+ SPV3o4lDy4Trv4Ec9v9OGMu1ju74N9lXLCrNJj0CP72xILev/OJiIZREGMWihqQj4IY1
+ t+lXLiMsIZTt4UVvcYGkwhIJ8+ZUgRyKifBQei+aHxn55PLDZtaZqx/EyqXTmiYB/1/E
+ J2eFWrVV2VFwT9Dm241jse/uZjCDx6dKQbDj/15VjdWoc2yB529hwea85oknSAX7wnxq
+ PZkyEwI6Lmumf/kiEE3HnBkGGMpLlNSuH5uBIQZf81vkW6nP+7XjQB+/BdCshDnTO+hZ
+ l5Vg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWy4bED8vBLzT8B58Q/mX5FHWl+eZmcWylGdbuJd074NG61L1dUCZiHPpwfoyX2RzUt9cOUgToSYTI+@nongnu.org
+X-Gm-Message-State: AOJu0YyfCdxvCoI7WdAO4ImO4JMkE9zgbpIgKSviUgPOO8thyBTPwe5f
+ iK7SaoUHNtM2I5tDqu1+G7r6lwo1x+SpPVMGp/3QzvdFHpXgWUkP0gbLgF+6pIoONqkTVPps+FO
+ wA3OqXG97SAqMxIsXQrHwF6z0nNfNzZw=
+X-Gm-Gg: ASbGncts+tdzRfwHJcWaNZ/XWX02pLHwoKBDYPJMKWoj5zHBMMGFs1Q+VvsLO6MRv5S
+ 5ryYwkENKXovvCK3BZtLhZlBY4H+MFUDbQ583mC9BaKQbEgm1wPKeCkQaoIoJ61jHUV1vKiRaOo
+ 5XrrRM3DjxmlXPHP2fT1W6cRQimTSZUo0bFkb3wyRACWTvR76oEBciIA==
+X-Google-Smtp-Source: AGHT+IE44MtVVsZTqTaeo7ZKZCw8dUA0nSkl3XRkw2WaLFqYFSyXCyl39iS++4m9IE9DN+Wn2ufMksJXVrMisInP3K4=
+X-Received: by 2002:a17:90b:2f8b:b0:312:51a9:5d44 with SMTP id
+ 98e67ed59e1d1-313f1bef890mr12309718a91.5.1750065966414; Mon, 16 Jun 2025
+ 02:26:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250515112908.383693-1-f.ebner@proxmox.com>
+ <20250515112908.383693-2-f.ebner@proxmox.com>
+In-Reply-To: <20250515112908.383693-2-f.ebner@proxmox.com>
+From: Ilya Dryomov <idryomov@gmail.com>
+Date: Mon, 16 Jun 2025 11:25:54 +0200
+X-Gm-Features: AX0GCFsFOmA0j6UH6b-LEYrl1GTtIVCYuaHQxnr7NrNnvVPw3ePv3lAmBfLgAcA
+Message-ID: <CAOi1vP94WJ7r1vPXvcpGZTs2xf6TZ=p=EmVGQvwipftufaYAMw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] block/rbd: support selected key-value-pairs via QAPI
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, armbru@redhat.com, 
+ eblake@redhat.com, hreitz@redhat.com, kwolf@redhat.com, pl@dlhnet.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=idryomov@gmail.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,109 +93,246 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+On Thu, May 15, 2025 at 1:29=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
+rote:
+>
+> Currently, most Ceph configuration options are not exposed via QAPI.
+> While it is possible to specify a dedicated Ceph configuration file,
+> specialized options are often only required for a selection of images
+> on the RBD storage, not all of them. To avoid the need to generate a
+> dedicated Ceph configuration file for each image (or for each required
+> combination of options), support a selection of key-value pairs via
+> QAPI.
+>
+> Initially, this is just 'rbd_cache_policy'. For example, this is
+> useful with small images used as a pflash for EFI variables. Setting
+> the 'rbd_cache_policy' to 'writeback' yields a substantial improvement
+> there [0].
+>
+> The function qemu_rbd_extract_key_value_pairs() was copied/adapted
+> from the existing qemu_rbd_extract_encryption_create_options().
+>
+> [0]: https://bugzilla.proxmox.com/show_bug.cgi?id=3D3329#c9
+>
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> ---
+>  block/rbd.c          | 73 ++++++++++++++++++++++++++++++++++++++++++++
+>  qapi/block-core.json | 37 ++++++++++++++++++++++
+>  2 files changed, 110 insertions(+)
+>
+> diff --git a/block/rbd.c b/block/rbd.c
+> index 7446e66659..2924f23093 100644
+> --- a/block/rbd.c
+> +++ b/block/rbd.c
+> @@ -298,6 +298,27 @@ static int qemu_rbd_set_auth(rados_t cluster, Blockd=
+evOptionsRbd *opts,
+>      return 0;
+>  }
+>
+> +static int qemu_rbd_set_key_value_pairs(rados_t cluster,
+> +                                        RbdKeyValuePairs *key_value_pair=
+s,
+> +                                        Error **errp)
+> +{
+> +    if (!key_value_pairs) {
+> +        return 0;
+> +    }
+> +
+> +    if (key_value_pairs->has_rbd_cache_policy) {
+> +        RbdCachePolicy value =3D key_value_pairs->rbd_cache_policy;
+> +        int r =3D rados_conf_set(cluster, "rbd_cache_policy",
+> +                               RbdCachePolicy_str(value));
+> +        if (r < 0) {
+> +            error_setg_errno(errp, -r, "could not set 'rbd_cache_policy'=
+");
+> +            return -EINVAL;
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>  static int qemu_rbd_set_keypairs(rados_t cluster, const char *keypairs_j=
+son,
+>                                   Error **errp)
+>  {
+> @@ -791,6 +812,44 @@ exit:
+>      return ret;
+>  }
+>
+> +static int qemu_rbd_extract_key_value_pairs(
+> +        QemuOpts *opts,
+> +        RbdKeyValuePairs **key_value_pairs,
+> +        Error **errp)
+> +{
+> +    QDict *opts_qdict;
+> +    QDict *key_value_pairs_qdict;
+> +    Visitor *v;
+> +    int ret =3D 0;
+> +
+> +    opts_qdict =3D qemu_opts_to_qdict(opts, NULL);
+> +    qdict_extract_subqdict(opts_qdict, &key_value_pairs_qdict,
+> +                           "key-value-pairs.");
+> +    qobject_unref(opts_qdict);
+> +    if (!qdict_size(key_value_pairs_qdict)) {
+> +        *key_value_pairs =3D NULL;
+> +        goto exit;
+> +    }
+> +
+> +    /* Convert options into a QAPI object */
+> +    v =3D qobject_input_visitor_new_flat_confused(key_value_pairs_qdict,=
+ errp);
+> +    if (!v) {
+> +        ret =3D -EINVAL;
+> +        goto exit;
+> +    }
+> +
+> +    visit_type_RbdKeyValuePairs(v, NULL, key_value_pairs, errp);
+> +    visit_free(v);
+> +    if (!*key_value_pairs) {
+> +        ret =3D -EINVAL;
+> +        goto exit;
+> +    }
+> +
+> +exit:
+> +    qobject_unref(key_value_pairs_qdict);
+> +    return ret;
+> +}
+> +
+>  static int coroutine_fn qemu_rbd_co_create_opts(BlockDriver *drv,
+>                                                  const char *filename,
+>                                                  QemuOpts *opts,
+> @@ -800,6 +859,7 @@ static int coroutine_fn qemu_rbd_co_create_opts(Block=
+Driver *drv,
+>      BlockdevCreateOptionsRbd *rbd_opts;
+>      BlockdevOptionsRbd *loc;
+>      RbdEncryptionCreateOptions *encrypt =3D NULL;
+> +    RbdKeyValuePairs *key_value_pairs =3D NULL;
+>      Error *local_err =3D NULL;
+>      const char *keypairs, *password_secret;
+>      QDict *options =3D NULL;
+> @@ -848,6 +908,13 @@ static int coroutine_fn qemu_rbd_co_create_opts(Bloc=
+kDriver *drv,
+>      loc->image       =3D g_strdup(qdict_get_try_str(options, "image"));
+>      keypairs         =3D qdict_get_try_str(options, "=3Dkeyvalue-pairs")=
+;
+>
+> +    /* These are the key-value pairs coming in via the QAPI. */
+> +    ret =3D qemu_rbd_extract_key_value_pairs(opts, &key_value_pairs, err=
+p);
+> +    if (ret < 0) {
+> +        goto exit;
+> +    }
+> +    loc->key_value_pairs =3D key_value_pairs;
+> +
+>      ret =3D qemu_rbd_do_create(create_options, keypairs, password_secret=
+, errp);
+>      if (ret < 0) {
+>          goto exit;
+> @@ -937,6 +1004,12 @@ static int qemu_rbd_connect(rados_t *cluster, rados=
+_ioctx_t *io_ctx,
+>          goto failed_shutdown;
+>      }
+>
+> +    /* For the key-value pairs coming via QAPI. */
+> +    r =3D qemu_rbd_set_key_value_pairs(*cluster, opts->key_value_pairs, =
+errp);
+> +    if (r < 0) {
+> +        goto failed_shutdown;
+> +    }
+> +
+>      if (mon_host) {
+>          r =3D rados_conf_set(*cluster, "mon_host", mon_host);
+>          if (r < 0) {
+> diff --git a/qapi/block-core.json b/qapi/block-core.json
+> index 91c70e24a7..4666765e66 100644
+> --- a/qapi/block-core.json
+> +++ b/qapi/block-core.json
+> @@ -4301,6 +4301,39 @@
+>    'data': { 'luks': 'RbdEncryptionCreateOptionsLUKS',
+>              'luks2': 'RbdEncryptionCreateOptionsLUKS2' } }
+>
+> +##
+> +# @RbdCachePolicy:
+> +#
+> +# An enumeration of values for the 'rbd_cache_policy' Ceph
+> +# configuration setting.  See the Ceph documentation for details.
+> +#
+> +# @writearound: cachable writes return immediately, reads are not
+> +#     served from the cache.
+> +#
+> +# @writeback: cachable writes return immediately, reads are served
+> +#     from the cache.
+> +#
+> +# @writethrough: writes return only when the data is on disk for all
+> +#     replicas, reads are served from the cache.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'enum' : 'RbdCachePolicy',
+> +  'data' : [ 'writearound', 'writeback', 'writethrough' ] }
+> +
+> +
+> +##
+> +# @RbdKeyValuePairs:
+> +#
+> +# Key-value pairs for Ceph configuration.
+> +#
+> +# @rbd-cache-policy: Ceph configuration option 'rbd_cache_policy'.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'struct': 'RbdKeyValuePairs',
+> +  'data': { '*rbd-cache-policy': 'RbdCachePolicy' } }
 
-There has been an explosion of interest in so called AI code
-generators. Thus far though, this is has not been matched by a broadly
-accepted legal interpretation of the licensing implications for code
-generator outputs. While the vendors may claim there is no problem and
-a free choice of license is possible, they have an inherent conflict
-of interest in promoting this interpretation. More broadly there is,
-as yet, no broad consensus on the licensing implications of code
-generators trained on inputs under a wide variety of licenses
+Hi Fiona,
 
-The DCO requires contributors to assert they have the right to
-contribute under the designated project license. Given the lack of
-consensus on the licensing of AI code generator output, it is not
-considered credible to assert compliance with the DCO clause (b) or (c)
-where a patch includes such generated code.
+I'm not following the rationale for introducing RbdKeyValuePairs
+struct.  If there is a desire to expose rbd_cache_policy option this
+way, couldn't it just be added to BlockdevOptionsRbd struct?  The
+existing auth_client_required option has a very similar pattern.
 
-This patch thus defines a policy that the QEMU project will currently
-not accept contributions where use of AI code generators is either
-known, or suspected.
+If exposing rbd_cache_policy option, rbd_cache option (enabled/disabled
+bool) should likely be exposed as well.  It doesn't make much sense to
+provide a built-in way to adjust the cache policy without also providing
+a built-in way to disable the cache entirely.  Then the question of what
+would be better from the QAPI perspective arises: a bool option to map
+to Ceph as close as possible or perhaps an additional 'disabled' value
+in RbdCachePolicy enum?  And regardless of that, the need to remember
+to update QEMU if a new cache policy is ever added because even though
+these are just strings, QEMU is going to be validating them...
 
-These are early days of AI-assisted software development. The legal
-questions will be resolved eventually. The tools will mature, and we
-can expect some to become safely usable in free software projects.
-The policy we set now must be for today, and be open to revision. It's
-best to start strict and safe, then relax.
+> +
+>  ##
+>  # @BlockdevOptionsRbd:
+>  #
+> @@ -4327,6 +4360,9 @@
+>  #     authentication.  This maps to Ceph configuration option "key".
+>  #     (Since 3.0)
+>  #
+> +# @key-value-pairs: Key-value pairs for additional Ceph configuraton.
+> +#     (Since 10.1)
+> +#
+>  # @server: Monitor host address and port.  This maps to the "mon_host"
+>  #     Ceph option.
+>  #
+> @@ -4342,6 +4378,7 @@
+>              '*user': 'str',
+>              '*auth-client-required': ['RbdAuthMode'],
+>              '*key-secret': 'str',
+> +            '*key-value-pairs' : 'RbdKeyValuePairs',
 
-Meanwhile requests for exceptions can also be considered on a case by
-case basis.
+To side-step all of the above, have you considered implementing
+a straightforward passthrough to Ceph instead?  Something like
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- docs/devel/code-provenance.rst | 55 +++++++++++++++++++++++++++++++++-
- 1 file changed, 54 insertions(+), 1 deletion(-)
+  '*key-value-pairs': ['RbdKeyValuePair']
 
-diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
-index c25afed98d..b5aae2e253 100644
---- a/docs/devel/code-provenance.rst
-+++ b/docs/devel/code-provenance.rst
-@@ -282,4 +282,57 @@ boilerplate code template which is then filled in to produce the final patch.
- The output of such a tool would still be considered the "preferred format",
- since it is intended to be a foundation for further human authored changes.
- Such tools are acceptable to use, provided there is clearly defined copyright
--and licensing for their output.
-+and licensing for their output. Note in particular the caveats applying to AI
-+content generators below.
-+
-+Use of AI content generators
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+TL;DR:
-+
-+  **Current QEMU project policy is to DECLINE any contributions which are
-+  believed to include or derive from AI generated content. This includes
-+  ChatGPT, Claude, Copilot, Llama and similar tools.**
-+
-+The increasing prevalence of AI-assisted software development results in a
-+number of difficult legal questions and risks for software projects, including
-+QEMU.  Of particular concern is content generated by `Large Language Models
-+<https://en.wikipedia.org/wiki/Large_language_model>`__ (LLMs).
-+
-+The QEMU community requires that contributors certify their patch submissions
-+are made in accordance with the rules of the `Developer's Certificate of
-+Origin (DCO) <dco>`.
-+
-+To satisfy the DCO, the patch contributor has to fully understand the
-+copyright and license status of content they are contributing to QEMU. With AI
-+content generators, the copyright and license status of the output is
-+ill-defined with no generally accepted, settled legal foundation.
-+
-+Where the training material is known, it is common for it to include large
-+volumes of material under restrictive licensing/copyright terms. Even where
-+the training material is all known to be under open source licenses, it is
-+likely to be under a variety of terms, not all of which will be compatible
-+with QEMU's licensing requirements.
-+
-+How contributors could comply with DCO terms (b) or (c) for the output of AI
-+content generators commonly available today is unclear.  The QEMU project is
-+not willing or able to accept the legal risks of non-compliance.
-+
-+The QEMU project thus requires that contributors refrain from using AI content
-+generators on patches intended to be submitted to the project, and will
-+decline any contribution if use of AI is either known or suspected.
-+
-+This policy does not apply to other uses of AI, such as researching APIs or
-+algorithms, static analysis, or debugging, provided their output is not to be
-+included in contributions.
-+
-+Examples of tools impacted by this policy includes GitHub's CoPilot, OpenAI's
-+ChatGPT, Anthropic's Claude, and Meta's Code Llama, and code/content
-+generation agents which are built on top of such tools.
-+
-+This policy may evolve as AI tools mature and the legal situation is
-+clarifed. In the meanwhile, requests for exceptions to this policy will be
-+evaluated by the QEMU project on a case by case basis. To be granted an
-+exception, a contributor will need to demonstrate clarity of the license and
-+copyright status for the tool's output in relation to its training model and
-+code, to the satisfaction of the project maintainers.
--- 
-2.49.0
+where RbdKeyValuePair is just a pair arbitrary strings (and
+key-value-pairs is thus an optional list of those).  rados_conf_set()
+would be called just the same but the user would be able to override
+any Ceph option they wish, not just a few that we thought of here.
 
+Thanks,
+
+                Ilya
 
