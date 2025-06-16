@@ -2,115 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1A0ADB7B9
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 19:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 520B4ADB7D2
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 19:33:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRDYd-0004tY-11; Mon, 16 Jun 2025 13:23:44 -0400
+	id 1uRDgC-0007tU-Ah; Mon, 16 Jun 2025 13:31:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leif.lindholm@oss.qualcomm.com>)
- id 1uRDYJ-0004qE-Ne
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 13:23:24 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
+ id 1uRDg9-0007sw-Q4
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 13:31:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leif.lindholm@oss.qualcomm.com>)
- id 1uRDYD-00028S-Uv
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 13:23:22 -0400
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55G8kfMX002991
- for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 17:23:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-type:date:from:in-reply-to:message-id:mime-version
- :references:subject:to; s=qcppdkim1; bh=m6YqyeBy7Ov8800VxqTiWsN8
- BrbBZn4cTFMrsDcYbSI=; b=S6PEvpM2FK9QmfujM/rysSmgb1/oEy93bhEOL41i
- SVT8BVDmdrX+zP/gecVNELZZi9LCo+a4Kxm63PlqKSSVfKyFLb+aQPoUgl0WMsH/
- qS9wYgGon27ZVCQ5N5ERnePMrJ/HWgQFx3RzPSCBmO/glRPTAwAYwrRIEIqf+qzW
- I1jyzMw0e0yXCc4vuJ3QHASDNB/br+k172qQIARCKvhVKFGCGMIFkVglnwQLpNMB
- mMx0m/UAyLg4N510tigFSRBcXUoBIC8lrFI8oYpsC3UaSx3uiA1p5Qwu0IA6Bk0O
- SwQpAvOl5uB/lkDQd+foYPAorubkcWsZmU387sHQiJLA2g==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47ag231hjq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 17:23:12 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-b31814efd1cso1679541a12.3
- for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 10:23:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ddutile@redhat.com>)
+ id 1uRDg2-0003vp-VN
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 13:31:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750095076;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ihjeWi/0gcPpegSQ04JiCzsJbM1MCOCfpX5SzthJRl4=;
+ b=ZxkPxIECwE8ikFVJouJO0qHjXjULMpxzbkiO2cQlGMAa2groUHjzakzBwnrRwCXTLTXEO9
+ +aTPUFUUOcRH4y06JIfGlsvBYNp9cps2bq1yfTIdBBjBjMpqPi/utgk4Qn0EYgg2LY3Q2A
+ 1+dv+PYP/KNCW3c/Eg9t3bF9pVxyHgs=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-9Er3apkzPTCdD7J0VSLMPw-1; Mon, 16 Jun 2025 13:29:32 -0400
+X-MC-Unique: 9Er3apkzPTCdD7J0VSLMPw-1
+X-Mimecast-MFC-AGG-ID: 9Er3apkzPTCdD7J0VSLMPw_1750094971
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4a6f89098cfso104387951cf.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 10:29:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750094591; x=1750699391;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=m6YqyeBy7Ov8800VxqTiWsN8BrbBZn4cTFMrsDcYbSI=;
- b=iGtbmIBRS8hfv2xb5SbLog/P0HkDR5VCwOKEOMY/KP5mbKsGBBPdURRWQC3uuXPq4R
- SYgaTP/vciAxpUJYaHZR791fIpQCxU6Rfhf1r3ykt5QmnUe+4aUt5YwkkL8MMrRP/aOg
- jPJldbXSz5OpkzHBUyd2imXm0hX8ymidPmEnydtEH1zqPYUslnkn5vwnFFn79LfgPJb9
- 1/PJz02ZjHiJVQhjpyT72qAGTylAiMiOAcTxad4YZp+vqjWMprr/HuWezVXVjgI2DQMC
- LE9gejW2++HmAw6lUzvzJ/8Ii6GXMkNeICMAAGgZx/6Bd5p7e6zl/+KyUBov7KEdEZhf
- tIvQ==
+ d=1e100.net; s=20230601; t=1750094971; x=1750699771;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ihjeWi/0gcPpegSQ04JiCzsJbM1MCOCfpX5SzthJRl4=;
+ b=ZVs5lQMT7Ejfg00Ws4nDsqkap6XNwxIfBsPfV6t6VSA6896cy6SoYVfQP7VGA6B1Gh
+ gduc34uOrm7GWYrWfPouax+ipf4ASqhpPNpGE6hTIeRQxrOlopvxTOpkTIGu25QX/j4g
+ 6ajIWO0HpS4boHnN8KF4O+Qzqr8MbHlSPVUJECXPBJTjoQR7HsFQmh9lH0IH4vaR2uSD
+ nf5Pq3LBWAD7qg8kha4/y+DmRU1Ixr6ddA0GxVLRhcWc7raIU3HEglOKPr8ulgEL+Ykv
+ A4DLki+eaUiy6ki6Dy1LM4Dgo4AcWfLez5aRV5LqKlv9uoqbdg2Ahm/HrNcrFEUhJ4MH
+ 5FNw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV8FLLpCvL6PAB4a/nX/ZXtKYq9/ia4LSjA35//G9Ij1Vqg0l9Xin2j5GlJfDwlq7pD04oxhqwpvX2u@nongnu.org
-X-Gm-Message-State: AOJu0Yz5OCHWWhGk4Zu57W1vnF9gN8tCUPObFB+kSjmGRcSdoPCplLFg
- /fdQUrWZvsuHHlBkKJ0s86np7Iz5Mqm6UNpexVN1iA7DDt/gk5ALQgftk5h/5bO0tTWqR59PdrA
- YI6dmCGWZsryPcotYrUZdvMKMn+cwVJj9ivUrNJnezv7/2Zc3Kb3/20hom8PBYS6Fv+xkJ+fMDO
- Dy9eoNr4RbEYzXhrM7ssCYKgd/uV/joAxuUCPqSg66
-X-Gm-Gg: ASbGnctkkBM9B4Y9LpAz4M3L6BppfA0ToTCnGPylOyNiwKuN2KWaI65yARZX/A1BEr6
- VtjLaPwQgwnyXkYRLxYKd+Kdf724hKL47dH+oNVI8PioCplO32IVF85NXFHEcN1APr0POa3DrLW
- au2ut3nlStaq7i2x99zs7XpLkLIH7WK145KwPQ
-X-Received: by 2002:a17:90b:3805:b0:313:2768:3f6b with SMTP id
- 98e67ed59e1d1-313f1daf338mr14972217a91.27.1750094591535; 
- Mon, 16 Jun 2025 10:23:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG/RyDJ7K3KS6GMwbYw05w1eiNNPGaBZDamZbMnsx1mEbSqlH2ArymUN+7RmqduX/J1dxCXmqmceqnjgeN7Lbk=
-X-Received: by 2002:a17:90b:3805:b0:313:2768:3f6b with SMTP id
- 98e67ed59e1d1-313f1daf338mr14972173a91.27.1750094591053; Mon, 16 Jun 2025
- 10:23:11 -0700 (PDT)
+ AJvYcCWymfiG2P+FFFJFhF41Be+9NeADsAnZTCB0BtFCS/nfEkNi04SS4ITE3L08bmzPE2NhtuTdY+FyJa96@nongnu.org
+X-Gm-Message-State: AOJu0YzUn4gDqYC6ztG3FDhsRL4hq7eXo7HGc8XS+Ij0mhYkDSfN1o8P
+ Rgl1OPgYgJtlWeqxqmh5ZZQzLGc8IkoB/LhMSv8kVMyzMa+zwtxAzL4q2y8ggj0vdGifFX7n8Vv
+ Qm8vpORZkCGif+SRV9WsA9CgitYr/Hs8rMV0A5FH34lfYpRfgroRSTch3
+X-Gm-Gg: ASbGncu0ORbiJNV967YyyeTErLjuS8GwjF94R/3fYC7LZWr/oV7WmBkcNhfGQ47abB0
+ j1wyoCa4gCWSKcdsOCs2g8B9Nbaf3XsYZHyk+jvMov+GvsVXpEKPcFq5eQwK+YI17CXsvVm/cqE
+ NooGnsz8AGVEllukALaN4GpgEbd4kWjWy08cw4F1R4EHkoinaUtyIKanYtmhDtxdne2dWuS3I8O
+ bzXnyizlDdjnrqxymt4Zj6m4idVVBgKMyVHRPYPKaxwkda6LoQRnsO76AZuklLj0yF4gfcraSkX
+ XmEZhA/U4en58S2zZ/W7GMw=
+X-Received: by 2002:ac8:5acb:0:b0:4a6:f518:6b19 with SMTP id
+ d75a77b69052e-4a73c5faebemr158210181cf.28.1750094971345; 
+ Mon, 16 Jun 2025 10:29:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEj2qaweCyr9da+O4wWnjtlxF5wk2mZj9iamltjuRQnmZJySoH44uKzzAyKZGwRLBktgskMCQ==
+X-Received: by 2002:ac8:5acb:0:b0:4a6:f518:6b19 with SMTP id
+ d75a77b69052e-4a73c5faebemr158209631cf.28.1750094970803; 
+ Mon, 16 Jun 2025 10:29:30 -0700 (PDT)
+Received: from [192.168.40.164] ([70.105.235.240])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4a72a3103a5sm51516451cf.30.2025.06.16.10.29.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Jun 2025 10:29:30 -0700 (PDT)
+Message-ID: <bee0abcd-2cf5-4640-a3a5-92955bac6976@redhat.com>
+Date: Mon, 16 Jun 2025 13:28:26 -0400
 MIME-Version: 1.0
-References: <20250530105430.1662-1-wangyuquan1236@phytium.com.cn>
- <20250612161739.0000400c@huawei.com>
-In-Reply-To: <20250612161739.0000400c@huawei.com>
-From: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
-Date: Mon, 16 Jun 2025 18:22:59 +0100
-X-Gm-Features: AX0GCFvh6NbG-uIeTzAZqgYkufOxYvvCG6hnR9L5itpvXJCw5VmS78OBCW99iG4
-Message-ID: <CAD=n3R1_rox5VQBPFK7XdXT8YR4Bk2S6demyLeir=Y30RirTsA@mail.gmail.com>
-Subject: Re: [RFC PATCH v5] hw/arm/sbsa-ref: Support CXL Host Bridge & CFMW
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: wangyuquan <wangyuquan1236@phytium.com.cn>, rad@semihalf.com,
- peter.maydell@linaro.org, chenbaozi@phytium.com.cn,
- qemu-devel@nongnu.org, linux-cxl@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-ORIG-GUID: J_KGruCNC6Muls2lrot9Af_Di1GT3cs2
-X-Authority-Analysis: v=2.4 cv=edY9f6EH c=1 sm=1 tr=0 ts=68505300 cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10
- a=i0EeH86SAAAA:8 a=fgrLqfBXAAAA:8 a=UGI2eN1KjAFkz-9eoiAA:9 a=QEXdDO2ut3YA:10
- a=_Vgx9l1VpLgwpw_dHYaR:22 a=_Ge82aPy-h_wFa7gWU4u:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE2MDExNiBTYWx0ZWRfX5KekQtMSAhV3
- 5HY9zOfl5e21gQswKABqQHAdkc9GxOSCS9dtbLoX7wYPopoSLCEd9Z6/HTGCtGbe5KkVnPxflKA
- 3+lz8cBDEbgkHfjZsc2/FQQIIHYDGZMZ71ODTO8ZTgcMLmhPh0naC8LNw0Dn9vn+Ugo9KpOCD+2
- 4B79xSikoZ5mwZpW2YP2GCQcwXsckzrx2feQGtXXgqndr7j8WqbRhGzjLD9CBriyrSwdqJL08ws
- gt0hjHENBxWXaPrWBuo3WJFdiz89gZFD9p5vZGP1k8d9rTzFBnvkeh4TmRWIQcZC94tASyD+h8y
- SJgwPJvxZDWEQIJwmfvRS7kBTTb0pNgGfp61VMfEjNfXaJsXCLVI9K52rn2eEKJDh1fxWNC4szu
- t26FicBPPo/R2VN5LPdDAy3GyTmoblLYmBHybJJQnxRzAwdFESbURBACz4Ts+XRqg3HxLk5p
-X-Proofpoint-GUID: J_KGruCNC6Muls2lrot9Af_Di1GT3cs2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-16_08,2025-06-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0
- impostorscore=0 mlxscore=0 clxscore=1015 mlxlogscore=999 malwarescore=0
- phishscore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506160116
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=leif.lindholm@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 7/7] qemu-options.hx: Document the arm-smmuv3 device
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>, linuxarm@huawei.com
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, eric.auger@redhat.com,
+ peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
+ berrange@redhat.com, imammedo@redhat.com, nathanc@nvidia.com,
+ mochs@nvidia.com, smostafa@google.com, wangzhou1@hisilicon.com,
+ jiangkunkun@huawei.com, zhangfei.gao@linaro.org
+References: <20250613144449.60156-1-shameerali.kolothum.thodi@huawei.com>
+ <20250613144449.60156-8-shameerali.kolothum.thodi@huawei.com>
+ <20250616121245.00005b4b@huawei.com>
+From: Donald Dutile <ddutile@redhat.com>
+In-Reply-To: <20250616121245.00005b4b@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ddutile@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.892,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,59 +116,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 12 Jun 2025 at 16:17, Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
-> On Fri, 30 May 2025 18:54:30 +0800
-> wangyuquan <wangyuquan1236@phytium.com.cn> wrote:
-> > Dynamic cxl topology problem
-> > ============================
-> > Actually the ideal expectation is sbsa-ref could also have a dynamic cxl topology by user
-> > parameters. According to my knowledge, it should pass a dtb to firmware to match the requird
->
-> Spell check: required
->
-> > address space. I'm currently trying to solve this problem. I am looking for suggestions on if
-> > there are better ways to do it.
->
-> I wonder how many cases we actually need to cover?  If we were to support 2 host bridges
-> with a few root ports each (maybe 4 or 8?) and a set of static fixed memory windows
->
-> 1. Target only 1st host bridge.
-> 2. Target only 2nd host bridge
-> 3. Target interleave granularity X across host bridges
-> 4. Target interleave granularity Y across host bridges
->
-> Maybe longer term we'd want some of the more complex options such as different properties
-> for the fixed memory windows or different QoS groups (QTG) but I'm not sure
-> we want to go for fully configurable.  The virt patches cover testing a
-> general software stack - in my mind SBSA-ref is about testing a single representative
-> configuration.
 
-No. (continued below)
 
-> The dance through DT and trusted world is just too messy for
-> a development platform / configurable test platform.
+On 6/16/25 7:12 AM, Jonathan Cameron wrote:
+> On Fri, 13 Jun 2025 15:44:49 +0100
+> Shameer Kolothum <shameerali.kolothum.thodi@huawei.com> wrote:
+> 
+>> Now that arm,virt can have user-creatable smmuv3 devices, document it.
+>>
+>> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+>> ---
+>>   qemu-options.hx | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/qemu-options.hx b/qemu-options.hx
+>> index 7eb8e02b4b..3edbde45bb 100644
+>> --- a/qemu-options.hx
+>> +++ b/qemu-options.hx
+>> @@ -1226,6 +1226,12 @@ SRST
+>>       ``aw-bits=val`` (val between 32 and 64, default depends on machine)
+>>           This decides the address width of the IOVA address space.
+>>   
+>> +``-device arm-smmuv3,primary-bus=id``
+>> +    This is only supported by ``-machine virt`` (ARM).
+>> +
+>> +    ``primary-bus=id``
+>> +        The PCIe Root Complex to be associated with.
+> 
+> Hmm.  Root complex or host bridge?
+> I think an RC is allowed to have multiple heirarchy and hence multiple
+> host bridges. Figure 1.2 in the PCI spec. So my gut feeling is this
+> should be host bridge.
+> 
++1.
+the key word-hint: 'complex' -- a RP (a Root *Port*) can only host a single PCI(e) (sub-)tree,
+but a RC can have multiple PCI domains, not to mention a bunch of platform-level,
+acpi-defined PCI(e) devices.
 
-Well, the "messiness" is the point. Although the DT is incidental and
-nothing that would be visible
-beyond the first layer of firmware.
 
-A lot of the general testing effort being done (across the
-firmware/software layers) is set up to succed,
-rather than to verify sane and functional interfaces.
-The purpose of the sbsa-ref platform is to enable useful verification
-of the full firmware/software stack.
-_But_ it's also about providing a sane default platform.
+> 
+>> +
+>>   ERST
+>>   
+>>   DEF("name", HAS_ARG, QEMU_OPTION_name,
+> 
 
-If we can have a sane default platform that also permits specifying
-more complex topologies on
-command line, that would be great.
-But there's not necessarily value in providing more flexibility than
-could realistically be found in real
-SBSA-compliant platforms.
-
-I need to take the time to read through this series properly.
-
-/
-    Leif
 
