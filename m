@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E74FADBA98
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 22:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A46ADBA99
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 22:13:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRGAS-0001l1-Gx; Mon, 16 Jun 2025 16:10:56 -0400
+	id 1uRGCC-0002Ub-Cr; Mon, 16 Jun 2025 16:12:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRGAP-0001k4-7f
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 16:10:53 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
+ id 1uRGC5-0002SA-AH
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 16:12:37 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRGAN-0006IE-06
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 16:10:52 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-45347d6cba3so4362015e9.0
- for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 13:10:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
+ id 1uRGC0-00071c-NV
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 16:12:36 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-b170c99aa49so3291601a12.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 13:12:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750104648; x=1750709448; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1750104748; x=1750709548; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=e1HQznq99qoCK8P8PgCsYfpPefLsvFqz98NOZI1uUSU=;
- b=tyC3dZyxRvrr7Da1k297sXE1T3xhamu1b7g0UrUO+eWVI1rmLx5ZUy+lGc6jtbEKhu
- pv5IjpPRqyZ9vKxM2gfOmU/lwibX40DD6UsIPbNe+DAj+OMvmu2lklGf0cvEEU+xLHOH
- 3m/LmGF1LDjiwcKDOQuJWnxqZ2IjdeWxZQcnMMd1MxY2OhKuJcyFfp5XISbRN72e1hz5
- uDQBAyW+JgDgpKBjlqYp+j6kiTMwiaRaz/i3wgehMb/ATjnkerNn27UXAogAYDI5IkNf
- dC3UH2lHDa+NSpVMCts0ovBn8dpMwZEwWm1tyWGTqa3WUm0XdSR/CAkbDbjxOI0pc/s+
- s15w==
+ bh=8dpPuIQm597ppmYcZK6ONNClkflv0azexsjBdfcITAU=;
+ b=a6s9H/iHvqL5sFlK9GmVTWpeLA+2uuaHDaGnC4GbmUliSpJ6nJqOlIVGxmHwxbxpdp
+ XRI0MbCReou03alRR0eUYNOROVdvF6rwSZHDSZCiIltd+130S6j8RYWegXw116yj1nL7
+ Q1RMnQ51Wsudz2jSTXiAOzJj5T+4dpcMOqMxoPgC+bks+AjsDHcVWUgsXj6J/9dnMw6X
+ QgGfEowPjvm6XjEh9j+pUOCDIup4bKKvumkPE81ovS+dcUUcBBvpZ088ziTN0WTR9w14
+ 6eeMgJBPa47PoCqL/oyOHOK0qSG5lspSVCQWwVC6q/QccFItJ1oZIkbJvaGFuAALtv/U
+ +vWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750104648; x=1750709448;
+ d=1e100.net; s=20230601; t=1750104748; x=1750709548;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=e1HQznq99qoCK8P8PgCsYfpPefLsvFqz98NOZI1uUSU=;
- b=ZsOtGSzJqxMW0/yOsllF0g43kI7dNt8zTscktBCei80AAUT7VcETjidP6fgV1DxOym
- 5bBvN2QHSDGFsMSMjKAm+BIyUQgv6MDWLt3LJEzntmGP/ADJbYkXRTJDTEl9NQsCYisd
- I6CPUtQXidUzEq4Moev99PIiTL269z21SCRPkuhla5i8Fb9vqlDiURwWJAEhK3J6sHM0
- fO9SI0D6/tO+ePPXUS7rZSVLJIuJ/OkO2TVogXsiQjeE2nz0ztlhYwmOQyjEfynUUOFf
- VQAUUeNgfDqfaTNpszlCvQj5pBGXKMlQFUyaTEaTnhTunBWpKSmAL6p/qSJLDvjUblWR
- FW6w==
-X-Gm-Message-State: AOJu0Yz964MW+CaWDkJP3O2Mj0qmaHAFTzKADBHUydwKTYOUlRa0b9gw
- xrusitxtuCD4NsdrzYsSVlfkx7mCPqMDo84sCRrOvPDzefDyvzg1VgCS7ld47TJOfdKZw9c0a4U
- iHe0xkxU=
-X-Gm-Gg: ASbGnctSeQg6q2hyK+VlFSigpMTeftCv/0kUxMesh4jrZvqkB1XhvOEogu0EzsQCr98
- ihaUV0o4PZvBe8DRSdd4ZwWAbGhZEwOFsxohj7O1P+rAEmY92wSTiIlLqvxOrWJWI4vqMeVVwpZ
- v0IS+Vwdu4NdFd5fzgPR2n5ZZOTQloIK3FUQvbDbnjCTqkcHnIdZN2nexkxfXjNe0FC2E0g7gCE
- Z0u8SX3I7EwhPtXiO22mLl9TuqsUOZgZ1Bp0U7XlUVYHvBG7o9Lnj1Sl+9a11Ka6j+CWhnE/Mtr
- C/c488utmzZT5GyHOBOdkz6HkDsznsAFKIWLCgopUxQYjwcVuHzXcP96FZpjtWA=
-X-Google-Smtp-Source: AGHT+IHGttkRrfephVCBQu0wUh/9hw3NjkRpFA2g7XLjUPlYK2Q5LCLzFXgzlRRFiOykgcrvx0kk+w==
-X-Received: by 2002:a05:600c:1c0b:b0:453:1058:f8aa with SMTP id
- 5b1f17b1804b1-453418d1130mr91380755e9.15.1750104648334; 
- Mon, 16 Jun 2025 13:10:48 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4532dea1c27sm152889575e9.15.2025.06.16.13.10.47
+ bh=8dpPuIQm597ppmYcZK6ONNClkflv0azexsjBdfcITAU=;
+ b=S2oqV6zDwzsKsFB1+s3s+Q7sAGeodHH2GNdYcTwxz3vuD9u75LeW7keBoY/JwlP9TI
+ aXd1tTnxWGtcQgyXw+sQeSv68+fiNoH0c3gqvYgZCsS1Uf6+LWpqgq+mLIuBUXKkfQW7
+ 7QDdYHy/tGOj3ZAb49RrmlbdzyMIbc1lXuYn6Xmc9jWQq0Z4m6uGq/i/mci/R+2QmYLn
+ QFAxBHU9zHNeFoqv3/07qBqZSFLYGUVvBWL+qbIr631mmuWdq8yfI4og0SXV87IgW9AR
+ SoM+7faLze7fjErQlotYIp8Hedp5lGvibo53Q/brmsaH5G9E74S5V6KQCXUxY2r9sLnN
+ Hu4A==
+X-Gm-Message-State: AOJu0YyUc0Xb/KVScOmsG/QehzvcPteIxXP54n4KMadHn7HrGAhvicM7
+ yKZqjfvw5DP7LYPH5sBvn+LcUretPQM+3qpwGVg1I2N5bPbJYkB9QyoGN7qXooS2aLjR2w==
+X-Gm-Gg: ASbGncu9DD1lqK1fvk/l7XkHdy/yt83U3ucQyYgfJQE8s15vYJSJWGKuXqRBb3RhbuD
+ a7sjX1Zllbj/KCLuUOiOU5lXFVUOPZ2WbXnwX5ooMUun1VBFZAaXYPN5vSSf7Wv9e3BBmVSswZ8
+ ELO+23CdZVm0YZnBYK58JJUGGNSPeZbGDB2kWxrVUkEIMYS03t6pU197shn/J9Am434363RMQaP
+ AqyUwL1DDpvBmmlgr0WOoIjbz2NdRsuIQALFZUYBUpUC8Gu+PM/C5JZhGVs5HAFaDSml6PLEYSV
+ w6lYrld0dhv3cNhclFbz9Blvt6+6vE6ix3V+vOlYyQjCVM/++TkCQNzMB6Svw3bmybUYqH/Se/T
+ 8Tg==
+X-Google-Smtp-Source: AGHT+IGRbkk4OnsviAjT10VTMOttBHYZ/PyQ9S/WqLKagWq5K0LBFyHWrb9D1Q41dnExJJTiRD0EfA==
+X-Received: by 2002:a05:6300:4041:b0:206:a9bd:a3a3 with SMTP id
+ adf61e73a8af0-21fbd63496dmr16758585637.24.1750104747984; 
+ Mon, 16 Jun 2025 13:12:27 -0700 (PDT)
+Received: from ubuntu.. ([49.207.59.180]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b2fe1642dfdsm7369494a12.18.2025.06.16.13.12.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Jun 2025 13:10:47 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2E3705F7D7;
- Mon, 16 Jun 2025 21:10:47 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ Mon, 16 Jun 2025 13:12:27 -0700 (PDT)
+From: Tanish Desai <tanishdesai37@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM cores)
-Subject: [RFC PATCH] target/arm: clamp value to account for RES0 fields
-Date: Mon, 16 Jun 2025 21:10:42 +0100
-Message-ID: <20250616201042.2196127-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.2
+Cc: =?UTF-8?q?Llu=C3=ADs=20Vilanova?= <vilanova@ac.upc.edu>,
+ Paolo Bonzini <pbonzini@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Tanish Desai <tanishdesai37@gmail.com>
+Subject: [PATCH 0/3] tracetool:cleanup "if(true)" check from trace_foo()
+Date: Mon, 16 Jun 2025 20:12:19 +0000
+Message-Id: <20250616201222.6416-1-tanishdesai37@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=tanishdesai37@gmail.com; helo=mail-pg1-x531.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,40 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the user writes a large value to the register but with the bottom
-bits unset we could end up with something illegal. By clamping ahead
-of the check we at least assure we won't assert(bpr > 0) later in the
-GIC interface code.
+This series of patch aims to removes the leftover if (true) condition from trace_foo, a remnant from the TCG tracing feature removal.
+It replaces it with a proper trace_event_get_state(...) check where necessary(for log/simple/syslog and ftrace backend).
+Additionally, this change centralizes the generation of trace_event_get_state(...) calls into format/h.py,
+eliminating redundant code across individual backends.
+This cleanup results in more consistent and less repetitive backend code.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- hw/intc/arm_gicv3_cpuif.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Tanish Desai (3):
+  tracetool: removed the unused vcpu property
+  tracetool: introduce generate_unconditional
+  tracetool: remove redundant event_get_state checks
 
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index 4b4cf09157..165f7e9c2f 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -1797,6 +1797,9 @@ static void icc_bpr_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     trace_gicv3_icc_bpr_write(ri->crm == 8 ? 0 : 1,
-                               gicv3_redist_affid(cs), value);
- 
-+    /* clamp the value to 2:0, the rest os RES0 */
-+    value = deposit64(0, 0, 3, value);
-+
-     if (grp == GICV3_G1 && gicv3_use_ns_bank(env)) {
-         grp = GICV3_G1NS;
-     }
-@@ -1820,7 +1823,7 @@ static void icc_bpr_write(CPUARMState *env, const ARMCPRegInfo *ri,
-         value = minval;
-     }
- 
--    cs->icc_bpr[grp] = value & 7;
-+    cs->icc_bpr[grp] = value;
-     gicv3_cpuif_update(cs);
- }
- 
+ scripts/tracetool/backend/__init__.py |  3 +++
+ scripts/tracetool/backend/dtrace.py   |  3 ++-
+ scripts/tracetool/backend/ftrace.py   |  3 ---
+ scripts/tracetool/backend/log.py      |  9 +--------
+ scripts/tracetool/backend/simple.py   | 11 +----------
+ scripts/tracetool/backend/syslog.py   | 11 +----------
+ scripts/tracetool/backend/ust.py      |  2 +-
+ scripts/tracetool/format/h.py         | 13 +++++++++----
+ 8 files changed, 18 insertions(+), 37 deletions(-)
+
 -- 
-2.47.2
+2.34.1
 
 
