@@ -2,79 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B54BADAC51
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05156ADAC72
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:54:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uR6SF-0007O4-0P; Mon, 16 Jun 2025 05:48:39 -0400
+	id 1uR6Wr-00064g-KQ; Mon, 16 Jun 2025 05:53:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uR6Rr-0007Lq-Gs
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:48:29 -0400
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uR6Rm-0001k7-7w
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:48:15 -0400
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-70e78e04e48so33494317b3.1
- for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 02:48:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750067289; x=1750672089; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bwBGyav45mYFg5Qk/FJZrwGz24J0qSZfM7lP6yYswZM=;
- b=ojy3wjykMu7R9uQN7GCE7SQ0HC84yYqdF3fviKaAwKKnsZ7nzvbVbCDxWurOMMc3Hh
- CMNvJYvism7rhShH78DnJnkf1YnEBFnrfCBEmQL0U7wNND4oDzdKzYMQINFqAksF5Ttg
- gp2cjnGKWHV7zA7FYeZMCHBKH29DtaEMSnwl1EENj13UYCgTsLwxhnZW06fSjrEfa4Vl
- HtRuU57XReaK7PAN9HjhmjKCBTwzX9PC2GOJ1mWHsyl72cJ//JsLyMU3MPK3yAZDrCR9
- OoIskS9dFRVi1vCSKZUdKiT187AK1eiM+a/V8OL1R9uKjdX6PK6ULNFsEUa4reF2iNJz
- VwYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750067289; x=1750672089;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bwBGyav45mYFg5Qk/FJZrwGz24J0qSZfM7lP6yYswZM=;
- b=GT118WoMmLuFqegXzi19MGJ/jwJIKiiLBfxkgOphzxGlrlJ9RVw7KQD8ZO+u46GvJw
- /8sJYLMnT/NL1pXyDPNEzSL/OLbqy+emPYQgfZloyRtUe2EUVKkAlRboyI1Yp/2G3iiB
- NO1kaucItjvCI7NWXmfMSRhU5uH1gAgzviIaInaB+9U/HEFF9Rc24N8LayuDFMHSkaTp
- Xr2XLRoN92ZKumsn0Uyr0JqV0CTHUpIcrE8XwrIM+b69xYR/evgn07y1Yo/oq+fI08l6
- ic//xzXaX75Z9vCzRSTRDpiheZn2zb2vR91+hOPYK1uiYHls+jsLTrlpNkArz2X62zpA
- iLLQ==
-X-Gm-Message-State: AOJu0YyaiGM5UdxxkaO9PPZubE8CVdy6fFV0Hw4A0wJK5j3IasiJF7MF
- P/U/qtFwb+3L9Ulp50flmZCmdBitGSTYb1m8dAAlljefEGfmblaNjEF3VfF7UrvjCt1dhY2C9O9
- 0jaeKtb4MfiOWkmALYO0Byufjga8LiMkRiKjfxswibw==
-X-Gm-Gg: ASbGncvNQe2XSyqOshZD/h8fAje6NYxleUsQvNEkWn71RVZvSQM3ku+uMLOfqmwFvGC
- jlvURZEk69gaRxcda8LjQ9byQFljgZzGiJZF887tmXyF9MJiBRvj4FaXL17lXmx/QBdvgCr8R85
- 3UZMlQY5gyoQwl10SDOhr23PW9CXx1mPC1rWZtkfbvnM6Gn1W7DMifl9k=
-X-Google-Smtp-Source: AGHT+IFXUvGN29G4Iwdbxqw2b6uTN7N7lN4n+hCPo2VlObErLlLYmA03U/AP28+URA/MKS/Z/TKi2Rgc04VB0yPnplw=
-X-Received: by 2002:a05:690c:6:b0:70f:84c8:3134 with SMTP id
- 00721157ae682-71175384faamr111035257b3.3.1750067288599; Mon, 16 Jun 2025
- 02:48:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1uR6Vq-0005qf-Q8; Mon, 16 Jun 2025 05:52:27 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1uR6Vo-0002Qc-Hb; Mon, 16 Jun 2025 05:52:22 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55G1L3hk024164;
+ Mon, 16 Jun 2025 09:52:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=2qkq6whAaxXj/jPcEIOqeF0LtM4eG6ksZGow2PTSV
+ vg=; b=tfVB+Vsr6VM6pyDLpQgj/ZM0eWaPrGFdW/zwbSK0pdZyUs/BgzwIVQqIH
+ brcNwRr1gzUdY4WdPQSMhh3QVLpCP6hNoA7P8Q23JFGD0qTSk/vl8wnh4Ud+IivF
+ qcOa8EeZy2C2YfUi5b6zkAmh7a4qnrEQ8NgIj9p4qxZZFKeDj14xKRbWVEwxPEoM
+ 0ujhFaBRAsVI9D9ygDaABKHPpx9dZGM6DtOVqzV08/bU3SgraC6XcUhuFbYIklSR
+ VCxF1G20ppYZPfn8ieyyvNvhOc5LkKgViUoVecDXANiNWM/Cdm9FmKuhs7TiZjL3
+ ZL9b3cTdPTvdcCRqZMLZJyYQu2hCg==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 478ygn10sy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Jun 2025 09:52:16 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55G9qFjv018260;
+ Mon, 16 Jun 2025 09:52:15 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 478ygn10sw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Jun 2025 09:52:15 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55G7XTYM010817;
+ Mon, 16 Jun 2025 09:52:14 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 479kdt5qvq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Jun 2025 09:52:14 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 55G9qDGE31195832
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 16 Jun 2025 09:52:13 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C0DA2004B;
+ Mon, 16 Jun 2025 09:52:13 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2BDD620043;
+ Mon, 16 Jun 2025 09:52:12 +0000 (GMT)
+Received: from ltcblue8v9-lp2.aus.stglabs.ibm.com (unknown [9.40.192.95])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 16 Jun 2025 09:52:12 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org
+Subject: [PATCH] ppc/spapr: remove dead logic for non-existent machine type
+Date: Mon, 16 Jun 2025 05:52:08 -0400
+Message-ID: <20250616095208.241834-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-References: <20250510042043.2056265-1-jcksn@duck.com>
- <ACFFEE84-30F3-4A74-93C0-5E18B0412D25.1@smtp-inbound1.duck.com>
-In-Reply-To: <ACFFEE84-30F3-4A74-93C0-5E18B0412D25.1@smtp-inbound1.duck.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 16 Jun 2025 10:47:57 +0100
-X-Gm-Features: AX0GCFvPi8tISK6a1ZNjQHJn_iuxgIkFp9m713eUBXOMh9uYxF3kjTjFaVg53aE
-Message-ID: <CAFEAcA8+FqdRMcn2MskEjtmrvz1qCQuAzbLZFTC6zuhWRJ=oCw@mail.gmail.com>
-Subject: Re: [PATCH 4/6] MAX78000 GCR implementation
-To: jcksn@duck.com
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair@alistair23.me>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE2MDA2MCBTYWx0ZWRfXz6AqugU3zR6j
+ /qkiSyEz3iawgJr0BfoUddu4UQt1BzaEq9+m4QKPu6xvqPZkkIkTDu40B3+hKAWWm3XJZcOyk8X
+ cen6Y3OlHhgdIrxmI6s2KdseFDenjNWXWfW8U1rtrG/5FSfRRPyi3WI2o6cdxe6aMkDvF5hjRZ0
+ ff+gg4+TIjqrU7WXl0UYFMnb3kcMS/+Pux+BOH7koGP0pn5tUkCPZluOuOTd/unABiThaoQ0GVr
+ 07gfqXbpB24Kb3fOjnoBI/7vjNztcZnvPE3Pa+FRFpU7tZIzfI41M0nFjoOJ2TbpfB1FbgoTbgE
+ xLqIYufTZ4fnmd28//LXNc4oMYK47ps8tIKA9pm+OxaSPZtzgB7irVBzT4/63Y8AYSw43gDcNcq
+ b3+1cBWomYAkIihGhVqkRsDw96DwPjFRdE4sEH9unvJIqL4DXDCD1LMMl1xmgRfagz5U/EsE
+X-Authority-Analysis: v=2.4 cv=fYSty1QF c=1 sm=1 tr=0 ts=684fe950 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=6IFa9wvqVegA:10 a=f7IdgyKtn90A:10 a=VnNF1IyMAAAA:8 a=LKRhd8M__PCHzWEdhwkA:9
+X-Proofpoint-ORIG-GUID: h4Tf03T96SgNU7m6WXrpLD7vMHTjmCS_
+X-Proofpoint-GUID: uEXtdg01mDpstt8Bw2TlbPGrXGYo2cf5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-16_04,2025-06-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ spamscore=0 mlxlogscore=861 lowpriorityscore=0 adultscore=0 mlxscore=0
+ impostorscore=0 bulkscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506160060
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,314 +119,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 10 May 2025 at 07:57, <jcksn@duck.com> wrote:
->
-> This patch implements the Global Control Register for the MAX78000 SOC
->
-> Signed-off-by: Jackson Donaldson <jcksn@duck.com>
-> ---
->  hw/arm/Kconfig                 |   1 +
->  hw/arm/max78000_soc.c          |   9 +-
->  hw/misc/Kconfig                |   3 +
->  hw/misc/max78000_gcr.c         | 285 +++++++++++++++++++++++++++++++++
->  hw/misc/meson.build            |   1 +
->  include/hw/arm/max78000_soc.h  |   2 +
->  include/hw/misc/max78000_gcr.h | 122 ++++++++++++++
->  7 files changed, 422 insertions(+), 1 deletion(-)
->  create mode 100644 hw/misc/max78000_gcr.c
->  create mode 100644 include/hw/misc/max78000_gcr.h
->
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index 59450dc3cb..211b201629 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -369,6 +369,7 @@ config MAX78000_SOC
->      select ARM_V7M
->      select MAX78000_ICC
->      select MAX78000_UART
-> +    select MAX78000_GCR
->
->  config RASPI
->      bool
-> diff --git a/hw/arm/max78000_soc.c b/hw/arm/max78000_soc.c
-> index 6334d8b49b..7a012c6ef7 100644
-> --- a/hw/arm/max78000_soc.c
-> +++ b/hw/arm/max78000_soc.c
-> @@ -29,6 +29,8 @@ static void max78000_soc_initfn(Object *obj)
->
->      object_initialize_child(obj, "armv7m", &s->armv7m, TYPE_ARMV7M);
->
-> +    object_initialize_child(obj, "gcr", &s->gcr, TYPE_MAX78000_GCR);
-> +
->      for (i = 0; i < MAX78000_NUM_ICC; i++) {
->          object_initialize_child(obj, "icc[*]", &s->icc[i], TYPE_MAX78000_ICC);
->      }
-> @@ -104,6 +106,10 @@ static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
->          return;
->      }
->
-> +    dev = DEVICE(&s->gcr);
-> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), errp);
-> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x40000000);
-> +
->      for (i = 0; i < MAX78000_NUM_ICC; i++) {
->          dev = DEVICE(&(s->icc[i]));
->          sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), errp);
-> @@ -116,6 +122,8 @@ static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
->          if (!sysbus_realize(SYS_BUS_DEVICE(&s->uart[i]), errp)) {
->              return;
->          }
-> +        dev->id = g_strdup_printf("uart%d", i);
-> +
->          busdev = SYS_BUS_DEVICE(dev);
->          sysbus_mmio_map(busdev, 0, max78000_uart_addr[i]);
->          sysbus_connect_irq(busdev, 0, qdev_get_gpio_in(armv7m,
-> @@ -123,7 +131,6 @@ static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
->      }
->
->
-> -    create_unimplemented_device("globalControl",    0x40000000, 0x400);
->      create_unimplemented_device("systemInterface",  0x40000400, 0x400);
->      create_unimplemented_device("functionControl",  0x40000800, 0x3400);
->      create_unimplemented_device("watchdogTimer0",   0x40003000, 0x400);
-> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-> index 781bcf74cc..fde2266b8f 100644
-> --- a/hw/misc/Kconfig
-> +++ b/hw/misc/Kconfig
-> @@ -47,6 +47,9 @@ config A9SCU
->  config ARM11SCU
->      bool
->
-> +config MAX78000_GCR
-> +    bool
-> +
->  config MAX78000_ICC
->      bool
->
-> diff --git a/hw/misc/max78000_gcr.c b/hw/misc/max78000_gcr.c
-> new file mode 100644
-> index 0000000000..657b7fc490
-> --- /dev/null
-> +++ b/hw/misc/max78000_gcr.c
-> @@ -0,0 +1,285 @@
-> +/*
-> + * MAX78000 Global Control Registers
-> + *
-> + * Copyright (c) 2025 Jackson Donaldson <jcksn@duck.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/log.h"
-> +#include "trace.h"
-> +#include "hw/irq.h"
-> +#include "system/runstate.h"
-> +#include "migration/vmstate.h"
-> +#include "hw/misc/max78000_gcr.h"
-> +
-> +static void max78000_gcr_reset(DeviceState *dev)
-> +{
-> +    Max78000GcrState *s = MAX78000_GCR(dev);
-> +    s->sysctrl = 0x21002;
-> +    s->rst0 = 0;
-> +    /* All clocks are always ready */
-> +    s->clkctrl = 0x3e140008;
-> +    s->pm = 0x3f000;
-> +    s->pclkdiv = 0;
-> +    s->pclkdis0 = 0xffffffff;
-> +    s->memctrl = 0x5;
-> +    s->memz = 0;
-> +    s->sysst = 0;
-> +    s->rst1 = 0;
-> +    s->pckdis1 = 0xffffffff;
-> +    s->eventen = 0;
-> +    s->revision = 0xa1;
-> +    s->sysie = 0;
-> +    s->eccerr = 0;
-> +    s->ecced = 0;
-> +    s->eccie = 0;
-> +    s->eccaddr = 0;
-> +}
-> +
-> +static uint64_t max78000_gcr_read(void *opaque, hwaddr addr,
-> +                                     unsigned int size)
-> +{
-> +    Max78000GcrState *s = opaque;
-> +
-> +    switch (addr) {
-> +        case SYSCTRL:{
-> +            return s->sysctrl;
-> +        }
-> +        case RST0:{
-> +            return s->rst0;
-> +        }
-> +        case CLKCTRL:{
-> +            return s->clkctrl;
-> +        }
-> +        case PM:{
-> +            return s->pm;
-> +        }
-> +        case PCLKDIV:{
-> +            return s->pclkdiv;
-> +        }
-> +        case PCLKDIS0:{
-> +            return s->pclkdis0;
-> +        }
-> +        case MEMCTRL:{
-> +            return s->memctrl;
-> +        }
-> +        case MEMZ:{
-> +            return s->memz;
-> +        }
-> +        case SYSST:{
-> +            return s->sysst;
-> +        }
-> +        case RST1:{
-> +            return s->rst1;
-> +        }
-> +        case PCKDIS1:{
-> +            return s->pckdis1;
-> +        }
-> +        case EVENTEN:{
-> +            return s->eventen;
-> +        }
-> +        case REVISION:{
-> +            return s->revision;
-> +        }
-> +        case SYSIE:{
-> +            return s->sysie;
-> +        }
-> +        case ECCERR:{
-> +            return s->eccerr;
-> +        }
-> +        case ECCED:{
-> +            return s->ecced;
-> +        }
-> +        case ECCIE:{
-> +            return s->eccie;
-> +        }
-> +        case ECCADDR:{
-> +            return s->eccaddr;
-> +        }
-> +        default:{
-> +            return 0;
-> +        }
-> +    }
-> +}
-> +
-> +static void max78000_gcr_reset_device(const char *device_name)
-> +{
-> +    DeviceState *dev = qdev_find_recursive(sysbus_get_default(), device_name);
-> +    if (dev) {
-> +        device_cold_reset(dev);
-> +    } else {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "no device %s for reset\n", device_name);
-> +    }
-> +}
+This logic was kept here to support pseries-2.12 and older machine type
+to enable them to calculate supported page size. Since the support for
+such older machine types is already removed, this becomes dead code and
+hence removed.
 
-This device shouldn't be finding the devices it needs to reset
-by looking them up by name. I don't think we really have any
-pre-existing examples of reset controllers in the tree, so
-here's the off-the-top-of-my-head suggestion:
- * have this device define link properties with DEFINE_PROP_LINK
-   for the devices it needs to reset
- * have the SoC set those link properties when it creates this
-   device
- * then in the code that does the reset you have a direct pointer
-   to the DeviceState* that you want to reset
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+---
+ hw/ppc/spapr_caps.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-> +static void max78000_gcr_write(void *opaque, hwaddr addr,
-> +                       uint64_t val64, unsigned int size)
-> +{
-> +    Max78000GcrState *s = opaque;
-> +    uint32_t val = val64;
-> +    uint8_t zero[0xc000] = {0};
-> +    switch (addr) {
-> +        case SYSCTRL:{
-> +            /* Checksum calculations always pass immediately */
-> +            s->sysctrl = (val & 0x30000) | 0x1002;
-> +            break;
-> +        }
-> +        case RST0:{
-> +            if (val & SYSTEM_RESET) {
-> +                qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-> +            }
-> +            if (val & PERIPHERAL_RESET) {
-> +                /*
-> +                 * Peripheral reset resets all peripherals. The CPU
-> +                 * retains its state. The GPIO, watchdog timers, AoD,
-> +                 * RAM retention, and general control registers (GCR),
-> +                 * including the clock configuration, are unaffected.
-> +                 */
-> +                val = UART2_RESET | UART1_RESET | UART0_RESET |
-> +                      ADC_RESET | CNN_RESET | TRNG_RESET |
-> +                      RTC_RESET | I2C0_RESET | SPI1_RESET |
-> +                      TMR3_RESET | TMR2_RESET | TMR1_RESET |
-> +                      TMR0_RESET | WDT0_RESET | DMA_RESET;
-> +            }
-> +            if (val & SOFT_RESET) {
-> +                /* Soft reset also resets GPIO */
-> +                val = UART2_RESET | UART1_RESET | UART0_RESET |
-> +                      ADC_RESET | CNN_RESET | TRNG_RESET |
-> +                      RTC_RESET | I2C0_RESET | SPI1_RESET |
-> +                      TMR3_RESET | TMR2_RESET | TMR1_RESET |
-> +                      TMR0_RESET | GPIO1_RESET | GPIO0_RESET |
-> +                      DMA_RESET;
-> +            }
-> +            if (val & UART2_RESET) {
-> +                max78000_gcr_reset_device("uart2");
-> +            }
-> +            if (val & UART1_RESET) {
-> +                max78000_gcr_reset_device("uart1");
-> +            }
-> +            if (val & UART0_RESET) {
-> +                max78000_gcr_reset_device("uart0");
-> +            }
-> +            /* TODO: As other devices are implemented, add them here */
-> +            break;
-> +        }
-> +        case CLKCTRL:{
-> +            s->clkctrl = val | SYSCLK_RDY;
-> +            break;
-> +        }
-> +        case PM:{
-> +            s->pm = val;
-> +            break;
-> +        }
-> +        case PCLKDIV:{
-> +            s->pclkdiv = val;
-> +            break;
-> +        }
-> +        case PCLKDIS0:{
-> +            s->pclkdis0 = val;
-> +            break;
-> +        }
-> +        case MEMCTRL:{
-> +            s->memctrl = val;
-> +            break;
-> +        }
-> +        case MEMZ:{
-> +            if (val & ram0) {
-> +                cpu_physical_memory_write(SYSRAM0_START, zero, 0x8000);
-> +            }
-> +            if (val & ram1) {
-> +                cpu_physical_memory_write(SYSRAM1_START, zero, 0x8000);
-> +            }
-> +            if (val & ram2) {
-> +                cpu_physical_memory_write(SYSRAM2_START, zero, 0xC000);
-> +            }
-> +            if (val & ram3) {
-> +                cpu_physical_memory_write(SYSRAM3_START, zero, 0x4000);
-> +            }
+diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+index d643591e25..0d62c11195 100644
+--- a/hw/ppc/spapr_caps.c
++++ b/hw/ppc/spapr_caps.c
+@@ -901,19 +901,6 @@ static SpaprCapabilities default_caps_with_cpu(SpaprMachineState *spapr,
+         caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_BROKEN;
+     }
+ 
+-    /* This is for pseries-2.12 and older */
+-    if (smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] == 0) {
+-        uint8_t mps;
+-
+-        if (kvmppc_hpt_needs_host_contiguous_pages()) {
+-            mps = ctz64(qemu_minrampagesize());
+-        } else {
+-            mps = 34; /* allow everything up to 16GiB, i.e. everything */
+-        }
+-
+-        caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = mps;
+-    }
+-
+     return caps;
+ }
+ 
+-- 
+2.49.0
 
-New devices shouldn't use cpu_physical_memory_write(), please.
-Take a link property to a MemoryRegion, which you then convert
-into an AddressSpace you can pass to address_space_write().
-
-> +            break;
-> +        }
-
-thanks
--- PMM
 
