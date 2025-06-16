@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DABDADB1AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 15:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB720ADB1A9
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 15:22:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uR9lY-00025u-JO; Mon, 16 Jun 2025 09:20:48 -0400
+	id 1uR9la-00027Y-HU; Mon, 16 Jun 2025 09:20:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uR9lJ-0001wN-3k
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 09:20:36 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1uR9lK-0001wR-Jo
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 09:20:38 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uR9lD-0005T8-9k
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 09:20:30 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-af6a315b491so4110843a12.1
- for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 06:20:26 -0700 (PDT)
+ id 1uR9lI-0005Tf-2y
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 09:20:34 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2360ff7ac1bso30884275ad.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 06:20:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750080025; x=1750684825; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750080027; x=1750684827; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D8W/yE99oVdomm0D2Fyb+s9ZavOYJt5IOPZHZYUPXcU=;
- b=xz4bquyEtDX+kNBcYZ7Ud1ventzV5GmYQ1b0ve+NszrGdYCZs9QT+j9jx1KXKP8u+Y
- 4/0Uq1StNuDpVQGF/N8zSFl+p7X0s4Qh2Nx4C8t/X1MfujFm6nuoKqrIwqQCuNTkXsIw
- 9syKBohvboFEvmuHCprmz8LN3t6rD4hMBm6h/zNJjoBbwecGBzIksl+6FdI6lQYRnzbA
- q1Tuh+zLvlS8f7zApcqB2G2FwPfDNyg/RGIFMVYhssMplPHYEeycYNXgBij4z23QlKRJ
- 8+zB/okCnhTCdAzhLZojSvlNWcMOFZEyFQkx8uFSvZ9SaV4noGx8W0t5Spmnb/5lO7v+
- Ny6w==
+ bh=pb22C6xJcHTC7zCwmUSNjwxICkvjIFLQmQAAl9DeMUI=;
+ b=jMxscr73EAv6+Y2XmzUoIrtUCeFWT2FVzNRM+o0mX1pJx5T8+Eq/P5ceZlyGNdwVPg
+ +w56eIxrq+G3MmT3g5ZSEHIio56jsP3KpIcFF7Fchzu9GwJXVQYrwEqS2jdiv2AFh77C
+ pz9112r64vOEkvatgmkb3+pvImldF8KzsB2Dxn+A4AUV/1db7yUdv8lQnvP1yIVC//C6
+ z6q0jA3pBeU8LUECspd/xYZzZUfoUAfHhsXoQI+ZmFpAAlT5LBt1LlvhNRXX6J0BEBCF
+ W44iOfZyvnuLd34DK6PZVp7XOxeRRlns2l2b/E0aKR1FtILzlZComAsg8dqDZcYIUbvr
+ 3lMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750080025; x=1750684825;
+ d=1e100.net; s=20230601; t=1750080027; x=1750684827;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D8W/yE99oVdomm0D2Fyb+s9ZavOYJt5IOPZHZYUPXcU=;
- b=dTdgtrDwHUM9KavN1ylMqfCJityC9GFcQUa7VccDaYQTDtPGW7paG6kQfa8j4U1Fr2
- Tt41hrOdrG961yr6LD8TCcSVCo/oApuaoTkg9PaS+hmuOKP6U0aOaLAc9yHszDSspGWw
- y6UX1mBrp20hXsbTAoDLiY3kLee5ZaTgF9l0tnOOtJR/mndrYidc+aTKFIyWwvV6u6FC
- iMspzMzHRTPsDXtop7yZ8sW1K4TNofkoTcvvJw6/sKSGQEiXh2HnC5/fc0Bdm5uRQai1
- hJTYxUAmH1SLqurxSzXLbe6HmdMosYZ1eD6jfdkLBr3ulL3/fuVdWljj1VI+Cyzd+s2E
- C8mg==
-X-Gm-Message-State: AOJu0Yy+2vrljTNmFCc7hvmtkq2cfQ2Xl19S+MG1pyZxhMqgfAc7oZX1
- mf2dmfvawuQlRKRAQzTkKQ99vXBU16O/T9oj1wNsqkK2smZqVCyKN27Rhas2KsRn9c1tRB3b7n6
- g/wHN
-X-Gm-Gg: ASbGncvVKPQaZLC/zlQ4LQER+XwCd+qixN8W+J/wdsr1x9nxohSAq3Yb8tYF3FeF3gA
- u6z6hP9dhGzn4TqyKZ5ac7wqW+orOmPO1wOp1EotENjCdp/Vdjio0M/YDRq3JQRLxZG/iz64m6f
- L5HJVo+aghsk9Nayug2xVyvEOKBiBOuDNEXTn0MugO9d5G1/HFPNFro3ar0v3vWzbz57yaIiY2B
- s/vFoDV0T+lthf8bB5eHkaHTRLZFD5m5DSXhZGIqMkYH7x6VArOsADkw922SaiMpsrmnl5qLhG8
- PELzx6lmYokPp43Duwk18fTQuzZVIM13UVdKOLhW0LY6HwLq2iqCBCxfmGpEP6qy5PrrsxoaBF8
- wQA==
-X-Google-Smtp-Source: AGHT+IFaHruaonQo5WTISuUKEmzod1ppAIC6mFjlggBADfSPAlO2iVq41L/proSl6+ZD/e9QDYYkgw==
-X-Received: by 2002:a17:903:1a8d:b0:235:f18f:2911 with SMTP id
- d9443c01a7336-2366afd3873mr149900765ad.2.1750080023418; 
- Mon, 16 Jun 2025 06:20:23 -0700 (PDT)
+ bh=pb22C6xJcHTC7zCwmUSNjwxICkvjIFLQmQAAl9DeMUI=;
+ b=ObIRtQrhp67AD69w7p5+Kb4BBEaGjVqNpkaixehN1+0R/neQmPjEjLQNhyQufEHWrx
+ NDikmUTHMNilPTeor90BcZoSAs3SMBPdUBF9mOsy3D5NVGKLXZf9vDJJidqyBndALkL5
+ toa3V5N79g4sgu8heqxvEf2zOwbmcKR27757SDBOAwJ1JtXKeK72tOrhxjF0y/U6Wsq/
+ 8XqZOrXS4LIE/Aa1hS4B6I4K8ieOBsoOM2auEi49pILUTRXOEnxQYLKxzz8ZnvrH25iF
+ 4/J3t7+hLoRSmQylyVgVUlUBeUXlRsw9pqZvfwzhr4152T3MrlzwoS/s7fvS064PulXw
+ rJgA==
+X-Gm-Message-State: AOJu0YzkL+91fMlVEowEFTBSSiPEBX6LrYOlpAkyg0wHvAL/JHpIaumh
+ JbeUBKMlqmm3znbzRcfPhkmzdaMvzlDTqIt2KHTQtaAsoveWPRUMExIGVeJI1OBesmkzAmwOGiZ
+ tpel4
+X-Gm-Gg: ASbGncv0d3wLkrKC+KVQptvyv6slqe4cLnepjWRSBSabRD7J2gUTymN0ueyH8MhytRo
+ 8eP3Ut4udoe8Hcpy5Wantiukw7u06vNH/qs6PpyaBsNkPdOSy0z9jWNV4pbr1/xR8nBA0vuaiVa
+ elRweQ06AcUVdT7fd7jpl5c9F5xDZpNwy4fcTfQayHkqnN5DTIP/ZSW55lIU7BUsJZ+kpk1DqFw
+ WCoOfynyAZe3dbYJcIhD4XVwF2Wc4Ytilhn5qACCvv8tEKvk79YQzB4myn3hvVSzr6tQXfvXBjw
+ +D+TfUGIhpziNGY6xAaNuQOrQE+5S9ltcrusiMSkkddIVVyvKLgN+y8gMN5KyiByEAw=
+X-Google-Smtp-Source: AGHT+IFCStmfOmsnPdmEaxuUS6wfRTCeQyHwuBgp4aOVsXWxixMkPmB2dOR2f62POR4NWL5VIkKCfw==
+X-Received: by 2002:a17:902:ec8b:b0:224:26fd:82e5 with SMTP id
+ d9443c01a7336-2366b16e7d6mr133455025ad.48.1750080027034; 
+ Mon, 16 Jun 2025 06:20:27 -0700 (PDT)
 Received: from gromero0.. ([186.215.60.20]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2365de781dfsm60848405ad.131.2025.06.16.06.20.20
+ d9443c01a7336-2365de781dfsm60848405ad.131.2025.06.16.06.20.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Jun 2025 06:20:22 -0700 (PDT)
+ Mon, 16 Jun 2025 06:20:26 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, eric.auger@redhat.com, philmd@linaro.org,
  mst@redhat.com
 Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, gustavo.romero@linaro.org,
  udo@hypervisor.org, ajones@ventanamicro.com, peter.maydell@linaro.org,
  imammedo@redhat.com, anisinha@redhat.com
-Subject: [PATCH v4 4/8] hw/arm/virt-acpi-build: Fix comment in build_iort
-Date: Mon, 16 Jun 2025 13:18:20 +0000
-Message-Id: <20250616131824.425315-5-gustavo.romero@linaro.org>
+Subject: [PATCH v4 5/8] qtest/bios-tables-test: Add test for when ITS is off
+ on aarch64
+Date: Mon, 16 Jun 2025 13:18:21 +0000
+Message-Id: <20250616131824.425315-6-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250616131824.425315-1-gustavo.romero@linaro.org>
 References: <20250616131824.425315-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,55 +101,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The comment about the mapping from SMMU to ITS is incorrect and it reads
-"RC -> ITS". The code in question actually maps SMMU -> ITS, so the
-mapping in question is not direct. The direct mapping, i.e., RC -> ITS,
-is handled a bit further down in the code, in the else block, and we
-take the opportunity to update that as well, adding "RC -> ITS" to the
-text so it's easier to see it's the direct map to the ITS Group node.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Signed-off-by Gustavo Romero <gustavo.romero@linaro.org>
+Arm64 GIC ITS (Interrupt Translation Service) is an optional piece of
+hardware introduced in GICv3 and, being optional, it can be disabled
+in QEMU aarch64 VMs that support it using machine option "its=off",
+like, for instance: "-M virt,its=off".
+
+In ACPI, the ITS is advertised, if present, in the MADT (aka APIC)
+table and the remappings from the Root Complex (RC) and from the SMMU
+nodes to the ITS Group nodes are described in the IORT table.
+
+This new test verifies that when the "its=off" option is passed to the
+machine the ITS-related data is correctly pruned from the ACPI tables.
+
+The new blobs for this test will be added in a following commit.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/virt-acpi-build.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h |  2 ++
+ tests/qtest/bios-tables-test.c              | 21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 9eee284c80..6990bce3bb 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -407,23 +407,27 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-     if (vms->iommu == VIRT_IOMMU_SMMUV3) {
-         AcpiIortIdMapping *range;
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..a88198d5c2 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,3 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/APIC.its_off",
++"tests/data/acpi/aarch64/virt/IORT.its_off",
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 0b2bdf9d0d..4201ec1131 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -2146,6 +2146,25 @@ static void test_acpi_aarch64_virt_tcg_topology(void)
+     free_test_data(&data);
+ }
  
--        /* translated RIDs connect to SMMUv3 node: RC -> SMMUv3 -> ITS */
-+        /* Map RIDs (input) from RC to SMMUv3 nodes: RC -> SMMUv3. */
-         for (i = 0; i < smmu_idmaps->len; i++) {
-             range = &g_array_index(smmu_idmaps, AcpiIortIdMapping, i);
--            /* output IORT node is the smmuv3 node */
-+            /* Output IORT node is the SMMUv3 node. */
-             build_iort_id_mapping(table_data, range->input_base,
-                                   range->id_count, smmu_offset);
-         }
- 
--        /* bypassed RIDs connect to ITS group node directly: RC -> ITS */
-+        /* Map DeviceIDs (input) from SMMUv3 to ITS Group nodes: SMMU -> ITS. */
-         for (i = 0; i < its_idmaps->len; i++) {
-             range = &g_array_index(its_idmaps, AcpiIortIdMapping, i);
--            /* output IORT node is the ITS group node (the first node) */
-+            /* Output IORT node is the ITS Group node (the first node). */
-             build_iort_id_mapping(table_data, range->input_base,
-                                   range->id_count, IORT_NODE_OFFSET);
-         }
-     } else {
--        /* output IORT node is the ITS group node (the first node) */
-+        /*
-+         * Map bypassed RIDs (input) (don't go through the SMMU) to ITS Group
-+         * nodes: RC -> ITS.
-+         * Output IORT node is the ITS Group node (the first node).
-+         */
-         build_iort_id_mapping(table_data, 0, 0x10000, IORT_NODE_OFFSET);
-     }
- 
++static void test_acpi_aarch64_virt_tcg_its_off(void)
++{
++    test_data data = {
++        .machine = "virt",
++        .arch = "aarch64",
++        .variant =".its_off",
++        .tcg_only = true,
++        .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
++        .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
++        .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
++        .ram_start = 0x40000000ULL,
++        .scan_len = 128ULL * 1024 * 1024,
++    };
++
++    test_acpi_one("-cpu cortex-a57 "
++                  "-M gic-version=3,iommu=smmuv3,its=off", &data);
++    free_test_data(&data);
++}
++
+ static void test_acpi_q35_viot(void)
+ {
+     test_data data = {
+@@ -2577,6 +2596,8 @@ int main(int argc, char *argv[])
+                            test_acpi_aarch64_virt_tcg_acpi_hmat);
+             qtest_add_func("acpi/virt/topology",
+                            test_acpi_aarch64_virt_tcg_topology);
++            qtest_add_func("acpi/virt/its_off",
++                           test_acpi_aarch64_virt_tcg_its_off);
+             qtest_add_func("acpi/virt/numamem",
+                            test_acpi_aarch64_virt_tcg_numamem);
+             qtest_add_func("acpi/virt/memhp", test_acpi_aarch64_virt_tcg_memhp);
 -- 
 2.34.1
 
