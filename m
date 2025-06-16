@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3668ADB307
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 16:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88232ADB319
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 16:09:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRAUc-0001Ha-N1; Mon, 16 Jun 2025 10:07:22 -0400
+	id 1uRAUc-0001G7-9H; Mon, 16 Jun 2025 10:07:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uRAU7-00016a-4o
+ id 1uRAU6-00016Y-TA
  for qemu-devel@nongnu.org; Mon, 16 Jun 2025 10:06:54 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uRATz-00040y-2W
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 10:06:49 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4533a53a6efso10971335e9.0
+ id 1uRATy-00040l-RU
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 10:06:45 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-451e2f0d9c2so39441535e9.1
  for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 07:06:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1750082800; x=1750687600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LChNT2oan2dCMkf7YUp2ghN9GIJ92+FXAYXzABpNUw8=;
- b=yplTDK2QVw1f7Pv+/Dt86BXSznEG39wVACjtlZIP8bEZAqYLWpFcxQlgmR92k3Cu/M
- alj6gSWF5nKSNw5NXfmm51qG7j2pUlv0stLMy/iOg+oivCsxWDyosb/cByDtWPQpMxXy
- lC+nMsETsq6gcJareYU4TGAKmjxwHxLXgvcvbTwGXwFtBcuG2GYT49CU3JuvYib5hsQ6
- tceaOW9aeVauCOAi9OWVmg61QCR0DNolhXT28VfsKnWs1wEamThONLDQVEX8+sQalVCt
- hn/fo7XIt58CqExRzM34lMxJlVUdt6dHkzxpxNuZ5m4Ox3ortLurGmcct0cMMZIhi8Zu
- y0Lg==
+ :reply-to; bh=QdO1TRVyU9YNCEAr0pruHF+mbDwtSG805YxNKFeiJsk=;
+ b=F+sFCTW08UC+6Uo377deOdxJKZ++JO/+ET3VszcyDw38azMoW3fK5gmqvpygyT2Y4v
+ E/XH4ga7wPd3ex4UZP22MtaEMk4zoMrUAC9xetWLVqxP07UiGH+Yxg9Y+kCsYVoZqgTh
+ dmT/pNZJnvB5ZKiw67X7naOLaxVw+BbcGV/ytja27owDWg63yBaO8HRFCcT4PrRCDWuM
+ M90oI18lMNsDnwoUnDbAHGYWSAb3TcgbLV0M51zb/1+ib3B4Z7mMnPIXFTI3y6qjJ9OB
+ RJZ8u7NQtcoR3uky4/NAmWiB/LYzd+ZtYTcHb27krsCCFfhiVAwCaBXYgFAyZ9V0WSkD
+ ngXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750082800; x=1750687600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LChNT2oan2dCMkf7YUp2ghN9GIJ92+FXAYXzABpNUw8=;
- b=j0s+i3XnBfYkubB5imNWLmHIPD3lejyv9xe+s2/GdsTCsVDwz7BWVMKjrqyj7qq0Rz
- a//zsxggmZHr/GbiuVdBsbIGcIwdDvqFHl340VdSKr4bt5P6ATwV2P/B+Ap+f7N9ET2r
- kOWJ0nrlZYoDzJ8IfNJ1HOuxg+v3f5XC+S8xdUz1orKG+SV21XFUQuVq5GbuEYWjR4/h
- hc4cfS+lp0u/76NE4xjEfW98uq9YB7IQmcFLQ9K5/d/YDssMHi65r9YthQsbvIab400U
- iSiG9kgP3YAV1sKncpdichDsrEnGxNgPHRD5LGOYSSZlQrBpMPCPgW0FJxH0aijKfFq7
- n7uQ==
-X-Gm-Message-State: AOJu0YxDe16DVTaRBsa2REC7EY5hM4MOqkRlmKKJXw3iL57T1aaKW57r
- 1seqmj3FqJ7vaFeKVaTnBehmBkn96yhw4kycvXAC+zN6s3taoPvj7cQ9IDLUcKpGKX1QqFScJBB
- akbbZ
-X-Gm-Gg: ASbGnctHe7IsRR13E5qm37ItCQzLgESft+VE7PFDJdl/gqCEcZx6zao3oPeLVjx10L2
- t4/KvFVHY4JR9ujLo0IkHFVHPCE5TgQXvT+6TF/5Z/vH0Kn0mhtM/O6SGneeaYQpBpoc4poTjPY
- I4mKTBYy3FbuI2gHDN0cvl1FZl3JbZUpVFUO8elBvldKMZd872V66Qg8Guq+xRi9+bRPOwPli43
- cwlEQBoq7xcNcYRbP3REJh+ZNXGHyQp5uYSQw6/JZya7MmODZczSM5SCuBZxurGLO5ePbu7ET7J
- ZlBozsMKtfeumfUEvBSK0gvLqf0CyoUn8aaigPeBxA54G4D6VHxQAwWEU/+oMPJjA9Bc
-X-Google-Smtp-Source: AGHT+IGJqHXYcba1VCswTvfaxnwCn7dIqydzLTDOlZAKGF5MFlnGtikP7ITD9CNBuvxnHo7lVRItJg==
-X-Received: by 2002:a05:600c:1549:b0:43d:fa5f:7d30 with SMTP id
- 5b1f17b1804b1-4533c97c5eamr85760065e9.16.1750082796972; 
- Mon, 16 Jun 2025 07:06:36 -0700 (PDT)
+ bh=QdO1TRVyU9YNCEAr0pruHF+mbDwtSG805YxNKFeiJsk=;
+ b=WXKMjc4MSp36/BRbmGJGO+SDHe+QQCmEPLaV13IFi8FUk8qwgveiRUHukkFScsWdRx
+ OY2bBq5AcW4D/9bhyuP2qZsr5yHCvu1KIHfa6X490YLUGYcsLfWyhV9bz/EQU8/jLTe1
+ QGUUz018Yu/axE0Wh1ZHZL2BxRVmh4nXCXRDjKi0mdHOm/YLUnDZLIqE2xaICcDznmDU
+ lkI5et7WQehNsY7iXu4t6OkcpwWL6gWwVu0njbk6ESX6Q0W45CJLhM/lYo+oJsV9xGVe
+ HOtJQPDhKvqNC0UBRcP+NgEXywQFklLRPdS1PWUUEgW4gKnEGxo/l0qh4s4mc9PaEId5
+ QOmQ==
+X-Gm-Message-State: AOJu0YxmvprBsj0suVQO4a8LNM1Xneg2McuPz7MDy++Bu6C/jyPC3BlI
+ AhgKI3V5QhsmBBrbDzL3E/Y3nkl8ju731CJ0PiBQF58zleomN/14i9Ee1op9jS6zMiGAZY27w8h
+ CGAYU
+X-Gm-Gg: ASbGnculD44AQJpPR6m4LP0b/Gz5GHZvC++5ZQwXdtr8Xf46J4E0Ki8JZyrCTtUJaVu
+ Aw7lSIECEx9+Gxa7fUTC4sHEBsAsBoziOhpoaNCnX/OWb/5zD72bXPdT2KoMnNRuZXEXRF0eg75
+ LhGFdwYL3rFBG/qeYuMTF/FMOoSPmqeTSb+5v0yHf4GiGcu1qHl3wo9JfjINIQi6lluFBR2oRIZ
+ IcnMv1y+M1CdmhL82BVllhjRmqdFr2UEb108me32TJzVKGBYHkPo1o/rpEDG3lFb+XKHMGZevvl
+ v6ig/eHKJbBS2WU4qvdgBg/MU8gDSlshwj6RZSh1QQiwFNAFFScXhFjByrZkPBzZyFqkvHTMBii
+ I5WM=
+X-Google-Smtp-Source: AGHT+IGkVa/q4L9xFYXQlOhzBz5S104Nnvi4AF2Kn3R+3RMoT+wPPxnhvA8EB9n5oNhpsN005669Fw==
+X-Received: by 2002:a05:600c:4ba1:b0:450:d3a1:95e2 with SMTP id
+ 5b1f17b1804b1-4533b272406mr69552325e9.9.1750082798181; 
+ Mon, 16 Jun 2025 07:06:38 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4532e13c192sm146561975e9.26.2025.06.16.07.06.35
+ 5b1f17b1804b1-4532e13c192sm146561975e9.26.2025.06.16.07.06.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Jun 2025 07:06:35 -0700 (PDT)
+ Mon, 16 Jun 2025 07:06:37 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 4/9] target/arm: Define raw write for PMU CLR registers
-Date: Mon, 16 Jun 2025 15:06:25 +0100
-Message-ID: <20250616140630.2273870-5-peter.maydell@linaro.org>
+Subject: [PULL 5/9] docs/interop: convert qed_spec.txt to reStructuredText
+ format
+Date: Mon, 16 Jun 2025 15:06:26 +0100
+Message-ID: <20250616140630.2273870-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250616140630.2273870-1-peter.maydell@linaro.org>
 References: <20250616140630.2273870-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,100 +98,422 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+From: Souleymane Conte <conte.souleymane@gmail.com>
 
-Raw writes to PMCNTENCLR and PMCNTENCLR_EL0 incorrectly used their
-default write function, which clears written bits instead of writes the
-raw value.
+Convert the qed_spec.txt file to reStructuredText and
+include it in the manual.
 
-PMINTENCLR and PMINTENCLR_EL1 are similar registers, but they instead
-had ARM_CP_NO_RAW. Commit 7a0e58fa6487 ("target-arm: Split NO_MIGRATE
-into ALIAS and NO_RAW") sugguests ARM_CP_ALIAS should be used instead of
-ARM_CP_NO_RAW in such a case:
-
-> We currently mark ARM coprocessor/system register definitions with
-> the flag ARM_CP_NO_MIGRATE for two different reasons:
-> 1) register is an alias on to state that's also visible via
->    some other register, and that other register is the one
->    responsible for migrating the state
-> 2) register is not actually state at all (for instance the TLB
->    or cache maintenance operation "registers") and it makes no
->    sense to attempt to migrate it or otherwise access the raw state
->
-> This works fine for identifying which registers should be ignored
-> when performing migration, but we also use the same functions for
-> synchronizing system register state between QEMU and the kernel
-> when using KVM. In this case we don't want to try to sync state
-> into registers in category 2, but we do want to sync into registers
-> in category 1, because the kernel might have picked a different
-> one of the aliases as its choice for which one to expose for
-> migration.
-
-These registers fall in category 1 (ARM_CP_ALIAS), not category 2
-(ARM_CP_NO_RAW).
-
-ARM_CP_NO_RAW also has another undesired side effect that hides
-registers from GDB.
-
-Properly set raw write functions and drop the ARM_CP_NO_RAW flag from
-PMINTENCLR and PMINTENCLR_EL1; this fixes GDB/KVM state synchronization
-of PMCNTENCLR and PMCNTENCLR_EL0, and exposes all these four registers
-to GDB.
-
-It is not necessary to add ARM_CP_ALIAS to these registers because the
-flag is already set.
-
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Message-id: 20250531-clr-v3-1-377f9bf1746d@rsg.ci.i.u-tokyo.ac.jp
+buglink: https://gitlab.com/qemu-project/qemu/-/issues/527
+Signed-off-by: Souleymane Conte <conte.souleymane@gmail.com>
+Message-id: 20250609135124.45078-1-conte.souleymane@gmail.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: adjusted position of doc in the table of contents;
+ bulked up commit message; added file to MAINTAINERS section
+ for QED; made 'Consistency checking' a higher level section;
+ fixed one preexisting grammar nit (s/by from/from/)]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ MAINTAINERS               |   1 +
+ docs/interop/index.rst    |   1 +
+ docs/interop/qed_spec.rst | 219 ++++++++++++++++++++++++++++++++++++++
+ docs/interop/qed_spec.txt | 138 ------------------------
+ 4 files changed, 221 insertions(+), 138 deletions(-)
+ create mode 100644 docs/interop/qed_spec.rst
+ delete mode 100644 docs/interop/qed_spec.txt
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 76312102879..889d3088079 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -1904,7 +1904,7 @@ static const ARMCPRegInfo v7_cp_reginfo[] = {
-       .fieldoffset = offsetoflow32(CPUARMState, cp15.c9_pmcnten),
-       .accessfn = pmreg_access,
-       .fgt = FGT_PMCNTEN,
--      .writefn = pmcntenclr_write,
-+      .writefn = pmcntenclr_write, .raw_writefn = raw_write,
-       .type = ARM_CP_ALIAS | ARM_CP_IO },
-     { .name = "PMCNTENCLR_EL0", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 3, .crn = 9, .crm = 12, .opc2 = 2,
-@@ -1912,7 +1912,7 @@ static const ARMCPRegInfo v7_cp_reginfo[] = {
-       .fgt = FGT_PMCNTEN,
-       .type = ARM_CP_ALIAS | ARM_CP_IO,
-       .fieldoffset = offsetof(CPUARMState, cp15.c9_pmcnten),
--      .writefn = pmcntenclr_write },
-+      .writefn = pmcntenclr_write, .raw_writefn = raw_write },
-     { .name = "PMOVSR", .cp = 15, .crn = 9, .crm = 12, .opc1 = 0, .opc2 = 3,
-       .access = PL0_RW, .type = ARM_CP_IO,
-       .fieldoffset = offsetoflow32(CPUARMState, cp15.c9_pmovsr),
-@@ -2029,16 +2029,16 @@ static const ARMCPRegInfo v7_cp_reginfo[] = {
-     { .name = "PMINTENCLR", .cp = 15, .crn = 9, .crm = 14, .opc1 = 0, .opc2 = 2,
-       .access = PL1_RW, .accessfn = access_tpm,
-       .fgt = FGT_PMINTEN,
--      .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_NO_RAW,
-+      .type = ARM_CP_ALIAS | ARM_CP_IO,
-       .fieldoffset = offsetof(CPUARMState, cp15.c9_pminten),
--      .writefn = pmintenclr_write, },
-+      .writefn = pmintenclr_write, .raw_writefn = raw_write },
-     { .name = "PMINTENCLR_EL1", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 0, .crn = 9, .crm = 14, .opc2 = 2,
-       .access = PL1_RW, .accessfn = access_tpm,
-       .fgt = FGT_PMINTEN,
--      .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_NO_RAW,
-+      .type = ARM_CP_ALIAS | ARM_CP_IO,
-       .fieldoffset = offsetof(CPUARMState, cp15.c9_pminten),
--      .writefn = pmintenclr_write },
-+      .writefn = pmintenclr_write, .raw_writefn = raw_write },
-     { .name = "CCSIDR", .state = ARM_CP_STATE_BOTH,
-       .opc0 = 3, .crn = 0, .crm = 0, .opc1 = 1, .opc2 = 0,
-       .access = PL1_R,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 84cfef835eb..94c40761278 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4117,6 +4117,7 @@ M: Stefan Hajnoczi <stefanha@redhat.com>
+ L: qemu-block@nongnu.org
+ S: Supported
+ F: block/qed.c
++F: docs/interop/qed_spec.rst
+ 
+ raw
+ M: Kevin Wolf <kwolf@redhat.com>
+diff --git a/docs/interop/index.rst b/docs/interop/index.rst
+index 4b951ae4162..972f3e49ce9 100644
+--- a/docs/interop/index.rst
++++ b/docs/interop/index.rst
+@@ -18,6 +18,7 @@ are useful for making QEMU interoperate with other software.
+    parallels
+    prl-xml
+    qcow2
++   qed_spec
+    pr-helper
+    qmp-spec
+    qemu-ga
+diff --git a/docs/interop/qed_spec.rst b/docs/interop/qed_spec.rst
+new file mode 100644
+index 00000000000..cd6c7d90051
+--- /dev/null
++++ b/docs/interop/qed_spec.rst
+@@ -0,0 +1,219 @@
++===================================
++QED Image File Format Specification
++===================================
++
++The file format looks like this::
++
++ +----------+----------+----------+-----+
++ | cluster0 | cluster1 | cluster2 | ... |
++ +----------+----------+----------+-----+
++
++The first cluster begins with the ``header``. The header contains information
++about where regular clusters start; this allows the header to be extensible and
++store extra information about the image file. A regular cluster may be
++a ``data cluster``, an ``L2``, or an ``L1 table``. L1 and L2 tables are composed
++of one or more contiguous clusters.
++
++Normally the file size will be a multiple of the cluster size.  If the file size
++is not a multiple, extra information after the last cluster may not be preserved
++if data is written. Legitimate extra information should use space between the header
++and the first regular cluster.
++
++All fields are little-endian.
++
++Header
++------
++
++::
++
++  Header {
++     uint32_t magic;               /* QED\0 */
++
++     uint32_t cluster_size;        /* in bytes */
++     uint32_t table_size;          /* for L1 and L2 tables, in clusters */
++     uint32_t header_size;         /* in clusters */
++
++     uint64_t features;            /* format feature bits */
++     uint64_t compat_features;     /* compat feature bits */
++     uint64_t autoclear_features;  /* self-resetting feature bits */
++
++     uint64_t l1_table_offset;     /* in bytes */
++     uint64_t image_size;          /* total logical image size, in bytes */
++
++     /* if (features & QED_F_BACKING_FILE) */
++     uint32_t backing_filename_offset; /* in bytes from start of header */
++     uint32_t backing_filename_size;   /* in bytes */
++  }
++
++Field descriptions:
++~~~~~~~~~~~~~~~~~~~
++
++- ``cluster_size`` must be a power of 2 in range [2^12, 2^26].
++- ``table_size`` must be a power of 2 in range [1, 16].
++- ``header_size`` is the number of clusters used by the header and any additional
++  information stored before regular clusters.
++- ``features``, ``compat_features``, and ``autoclear_features`` are file format
++  extension bitmaps. They work as follows:
++
++  - An image with unknown ``features`` bits enabled must not be opened. File format
++    changes that are not backwards-compatible must use ``features`` bits.
++  - An image with unknown ``compat_features`` bits enabled can be opened safely.
++    The unknown features are simply ignored and represent backwards-compatible
++    changes to the file format.
++  - An image with unknown ``autoclear_features`` bits enable can be opened safely
++    after clearing the unknown bits. This allows for backwards-compatible changes
++    to the file format which degrade gracefully and can be re-enabled again by a
++    new program later.
++- ``l1_table_offset`` is the offset of the first byte of the L1 table in the image
++  file and must be a multiple of ``cluster_size``.
++- ``image_size`` is the block device size seen by the guest and must be a multiple
++  of 512 bytes.
++- ``backing_filename_offset`` and ``backing_filename_size`` describe a string in
++  (byte offset, byte size) form. It is not NUL-terminated and has no alignment constraints.
++  The string must be stored within the first ``header_size`` clusters. The backing filename
++  may be an absolute path or relative to the image file.
++
++Feature bits:
++~~~~~~~~~~~~~
++
++- ``QED_F_BACKING_FILE = 0x01``. The image uses a backing file.
++- ``QED_F_NEED_CHECK = 0x02``. The image needs a consistency check before use.
++- ``QED_F_BACKING_FORMAT_NO_PROBE = 0x04``. The backing file is a raw disk image
++  and no file format autodetection should be attempted.  This should be used to
++  ensure that raw backing files are never detected as an image format if they happen
++  to contain magic constants.
++
++There are currently no defined ``compat_features`` or ``autoclear_features`` bits.
++
++Fields predicated on a feature bit are only used when that feature is set.
++The fields always take up header space, regardless of whether or not the feature
++bit is set.
++
++Tables
++------
++
++Tables provide the translation from logical offsets in the block device to cluster
++offsets in the file.
++
++::
++
++ #define TABLE_NOFFSETS (table_size * cluster_size / sizeof(uint64_t))
++
++ Table {
++     uint64_t offsets[TABLE_NOFFSETS];
++ }
++
++The tables are organized as follows::
++
++                    +----------+
++                    | L1 table |
++                    +----------+
++               ,------'  |  '------.
++          +----------+   |    +----------+
++          | L2 table |  ...   | L2 table |
++          +----------+        +----------+
++      ,------'  |  '------.
++ +----------+   |    +----------+
++ |   Data   |  ...   |   Data   |
++ +----------+        +----------+
++
++A table is made up of one or more contiguous clusters.  The ``table_size`` header
++field determines table size for an image file. For example, ``cluster_size=64 KB``
++and ``table_size=4`` results in 256 KB tables.
++
++The logical image size must be less than or equal to the maximum possible size of
++clusters rooted by the L1 table:
++
++.. code::
++
++ header.image_size <= TABLE_NOFFSETS * TABLE_NOFFSETS * header.cluster_size
++
++L1, L2, and data cluster offsets must be aligned to ``header.cluster_size``.
++The following offsets have special meanings:
++
++L2 table offsets
++~~~~~~~~~~~~~~~~
++
++- 0 - unallocated. The L2 table is not yet allocated.
++
++Data cluster offsets
++~~~~~~~~~~~~~~~~~~~~
++
++- 0 - unallocated.  The data cluster is not yet allocated.
++- 1 - zero. The data cluster contents are all zeroes and no cluster is allocated.
++
++Future format extensions may wish to store per-offset information. The least
++significant 12 bits of an offset are reserved for this purpose and must be set
++to zero. Image files with ``cluster_size`` > 2^12 will have more unused bits
++which should also be zeroed.
++
++Unallocated L2 tables and data clusters
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Reads to an unallocated area of the image file access the backing file. If there
++is no backing file, then zeroes are produced. The backing file may be smaller
++than the image file and reads of unallocated areas beyond the end of the backing
++file produce zeroes.
++
++Writes to an unallocated area cause a new data clusters to be allocated, and a new
++L2 table if that is also unallocated. The new data cluster is populated with data
++from the backing file (or zeroes if no backing file) and the data being written.
++
++Zero data clusters
++~~~~~~~~~~~~~~~~~~
++
++Zero data clusters are a space-efficient way of storing zeroed regions of the image.
++
++Reads to a zero data cluster produce zeroes.
++
++.. note::
++    The difference between an unallocated and a zero data cluster is that zero data
++    clusters stop the reading of contents from the backing file.
++
++Writes to a zero data cluster cause a new data cluster to be allocated.  The new
++data cluster is populated with zeroes and the data being written.
++
++Logical offset translation
++~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Logical offsets are translated into cluster offsets as follows::
++
++  table_bits table_bits    cluster_bits
++  <--------> <--------> <--------------->
++ +----------+----------+-----------------+
++ | L1 index | L2 index |     byte offset |
++ +----------+----------+-----------------+
++
++       Structure of a logical offset
++
++ offset_mask = ~(cluster_size - 1) # mask for the image file byte offset
++
++ def logical_to_cluster_offset(l1_index, l2_index, byte_offset):
++   l2_offset = l1_table[l1_index]
++   l2_table = load_table(l2_offset)
++   cluster_offset = l2_table[l2_index] & offset_mask
++   return cluster_offset + byte_offset
++
++Consistency checking
++--------------------
++
++This section is informational and included to provide background on the use
++of the ``QED_F_NEED_CHECK features`` bit.
++
++The ``QED_F_NEED_CHECK`` bit is used to mark an image as dirty before starting
++an operation that could leave the image in an inconsistent state if interrupted
++by a crash or power failure.  A dirty image must be checked on open because its
++metadata may not be consistent.
++
++Consistency check includes the following invariants:
++
++- Each cluster is referenced once and only once. It is an inconsistency to have
++  a cluster referenced more than once by L1 or L2 tables. A cluster has been leaked
++  if it has no references.
++- Offsets must be within the image file size and must be ``cluster_size`` aligned.
++- Table offsets must at least ``table_size`` * ``cluster_size`` bytes from the end
++  of the image file so that there is space for the entire table.
++
++The consistency check process starts from ``l1_table_offset`` and scans all L2 tables.
++After the check completes with no other errors besides leaks, the ``QED_F_NEED_CHECK``
++bit can be cleared and the image can be accessed.
+diff --git a/docs/interop/qed_spec.txt b/docs/interop/qed_spec.txt
+deleted file mode 100644
+index 7982e058b2c..00000000000
+--- a/docs/interop/qed_spec.txt
++++ /dev/null
+@@ -1,138 +0,0 @@
+-=Specification=
+-
+-The file format looks like this:
+-
+- +----------+----------+----------+-----+
+- | cluster0 | cluster1 | cluster2 | ... |
+- +----------+----------+----------+-----+
+-
+-The first cluster begins with the '''header'''.  The header contains information about where regular clusters start; this allows the header to be extensible and store extra information about the image file.  A regular cluster may be a '''data cluster''', an '''L2''', or an '''L1 table'''.  L1 and L2 tables are composed of one or more contiguous clusters.
+-
+-Normally the file size will be a multiple of the cluster size.  If the file size is not a multiple, extra information after the last cluster may not be preserved if data is written.  Legitimate extra information should use space between the header and the first regular cluster.
+-
+-All fields are little-endian.
+-
+-==Header==
+- Header {
+-     uint32_t magic;               /* QED\0 */
+- 
+-     uint32_t cluster_size;        /* in bytes */
+-     uint32_t table_size;          /* for L1 and L2 tables, in clusters */
+-     uint32_t header_size;         /* in clusters */
+- 
+-     uint64_t features;            /* format feature bits */
+-     uint64_t compat_features;     /* compat feature bits */
+-     uint64_t autoclear_features;  /* self-resetting feature bits */
+-
+-     uint64_t l1_table_offset;     /* in bytes */
+-     uint64_t image_size;          /* total logical image size, in bytes */
+- 
+-     /* if (features & QED_F_BACKING_FILE) */
+-     uint32_t backing_filename_offset; /* in bytes from start of header */
+-     uint32_t backing_filename_size;   /* in bytes */
+- }
+-
+-Field descriptions:
+-* ''cluster_size'' must be a power of 2 in range [2^12, 2^26].
+-* ''table_size'' must be a power of 2 in range [1, 16].
+-* ''header_size'' is the number of clusters used by the header and any additional information stored before regular clusters.
+-* ''features'', ''compat_features'', and ''autoclear_features'' are file format extension bitmaps.  They work as follows:
+-** An image with unknown ''features'' bits enabled must not be opened.  File format changes that are not backwards-compatible must use ''features'' bits.
+-** An image with unknown ''compat_features'' bits enabled can be opened safely.  The unknown features are simply ignored and represent backwards-compatible changes to the file format.
+-** An image with unknown ''autoclear_features'' bits enable can be opened safely after clearing the unknown bits.  This allows for backwards-compatible changes to the file format which degrade gracefully and can be re-enabled again by a new program later.
+-* ''l1_table_offset'' is the offset of the first byte of the L1 table in the image file and must be a multiple of ''cluster_size''.
+-* ''image_size'' is the block device size seen by the guest and must be a multiple of 512 bytes.
+-* ''backing_filename_offset'' and ''backing_filename_size'' describe a string in (byte offset, byte size) form.  It is not NUL-terminated and has no alignment constraints.  The string must be stored within the first ''header_size'' clusters.  The backing filename may be an absolute path or relative to the image file.
+-
+-Feature bits:
+-* QED_F_BACKING_FILE = 0x01.  The image uses a backing file.
+-* QED_F_NEED_CHECK = 0x02.  The image needs a consistency check before use.
+-* QED_F_BACKING_FORMAT_NO_PROBE = 0x04.  The backing file is a raw disk image and no file format autodetection should be attempted.  This should be used to ensure that raw backing files are never detected as an image format if they happen to contain magic constants.
+-
+-There are currently no defined ''compat_features'' or ''autoclear_features'' bits.
+-
+-Fields predicated on a feature bit are only used when that feature is set.  The fields always take up header space, regardless of whether or not the feature bit is set.
+-
+-==Tables==
+-
+-Tables provide the translation from logical offsets in the block device to cluster offsets in the file.
+-
+- #define TABLE_NOFFSETS (table_size * cluster_size / sizeof(uint64_t))
+-  
+- Table {
+-     uint64_t offsets[TABLE_NOFFSETS];
+- }
+-
+-The tables are organized as follows:
+-
+-                    +----------+
+-                    | L1 table |
+-                    +----------+
+-               ,------'  |  '------.
+-          +----------+   |    +----------+
+-          | L2 table |  ...   | L2 table |
+-          +----------+        +----------+
+-      ,------'  |  '------.
+- +----------+   |    +----------+
+- |   Data   |  ...   |   Data   |
+- +----------+        +----------+
+-
+-A table is made up of one or more contiguous clusters.  The table_size header field determines table size for an image file.  For example, cluster_size=64 KB and table_size=4 results in 256 KB tables.
+-
+-The logical image size must be less than or equal to the maximum possible size of clusters rooted by the L1 table:
+- header.image_size <= TABLE_NOFFSETS * TABLE_NOFFSETS * header.cluster_size
+-
+-L1, L2, and data cluster offsets must be aligned to header.cluster_size.  The following offsets have special meanings:
+-
+-===L2 table offsets===
+-* 0 - unallocated.  The L2 table is not yet allocated.
+-
+-===Data cluster offsets===
+-* 0 - unallocated.  The data cluster is not yet allocated.
+-* 1 - zero.  The data cluster contents are all zeroes and no cluster is allocated.
+-
+-Future format extensions may wish to store per-offset information.  The least significant 12 bits of an offset are reserved for this purpose and must be set to zero.  Image files with cluster_size > 2^12 will have more unused bits which should also be zeroed.
+-
+-===Unallocated L2 tables and data clusters===
+-Reads to an unallocated area of the image file access the backing file.  If there is no backing file, then zeroes are produced.  The backing file may be smaller than the image file and reads of unallocated areas beyond the end of the backing file produce zeroes.
+-
+-Writes to an unallocated area cause a new data clusters to be allocated, and a new L2 table if that is also unallocated.  The new data cluster is populated with data from the backing file (or zeroes if no backing file) and the data being written.
+-
+-===Zero data clusters===
+-Zero data clusters are a space-efficient way of storing zeroed regions of the image.
+-
+-Reads to a zero data cluster produce zeroes.  Note that the difference between an unallocated and a zero data cluster is that zero data clusters stop the reading of contents from the backing file.
+-
+-Writes to a zero data cluster cause a new data cluster to be allocated.  The new data cluster is populated with zeroes and the data being written.
+-
+-===Logical offset translation===
+-Logical offsets are translated into cluster offsets as follows:
+-
+-  table_bits table_bits    cluster_bits
+-  <--------> <--------> <--------------->
+- +----------+----------+-----------------+
+- | L1 index | L2 index |     byte offset |
+- +----------+----------+-----------------+
+- 
+-       Structure of a logical offset
+-
+- offset_mask = ~(cluster_size - 1) # mask for the image file byte offset
+- 
+- def logical_to_cluster_offset(l1_index, l2_index, byte_offset):
+-   l2_offset = l1_table[l1_index]
+-   l2_table = load_table(l2_offset)
+-   cluster_offset = l2_table[l2_index] & offset_mask
+-   return cluster_offset + byte_offset
+-
+-==Consistency checking==
+-
+-This section is informational and included to provide background on the use of the QED_F_NEED_CHECK ''features'' bit.
+-
+-The QED_F_NEED_CHECK bit is used to mark an image as dirty before starting an operation that could leave the image in an inconsistent state if interrupted by a crash or power failure.  A dirty image must be checked on open because its metadata may not be consistent.
+-
+-Consistency check includes the following invariants:
+-# Each cluster is referenced once and only once.  It is an inconsistency to have a cluster referenced more than once by L1 or L2 tables.  A cluster has been leaked if it has no references.
+-# Offsets must be within the image file size and must be ''cluster_size'' aligned.
+-# Table offsets must at least ''table_size'' * ''cluster_size'' bytes from the end of the image file so that there is space for the entire table.
+-
+-The consistency check process starts by from ''l1_table_offset'' and scans all L2 tables.  After the check completes with no other errors besides leaks, the QED_F_NEED_CHECK bit can be cleared and the image can be accessed.
 -- 
 2.43.0
 
