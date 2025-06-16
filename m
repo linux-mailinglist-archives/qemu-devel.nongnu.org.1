@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0F3ADAC77
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA4EADACA8
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:59:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uR6Wz-0006UY-PK; Mon, 16 Jun 2025 05:53:33 -0400
+	id 1uR6at-0004JE-8d; Mon, 16 Jun 2025 05:57:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uR6WT-0006CH-NS
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:53:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uR6WQ-0002St-JY
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:53:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750067577;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cFZ3XfaJHHBYyrUjidgVSFS7BuCjSPvE2KeY0wm4Ah0=;
- b=bn1gGGSWeEW943ffa8DBgx25WL7qt84ug0oxy7jmqh5q1Q071uncsR/QF4tCOeIXgJzJQw
- JRKr/T5pdBDDNjhQ6ej35xhpfr1ZVl+LA7aa7HH7B71b0USZbP3yWJzeP63CnwRsL+65K/
- upOq/s+UmhBZiuDrzgkCBXAETxZrOH4=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-369-S6WROfhNNYeSFMAsKBxOkw-1; Mon,
- 16 Jun 2025 05:52:53 -0400
-X-MC-Unique: S6WROfhNNYeSFMAsKBxOkw-1
-X-Mimecast-MFC-AGG-ID: S6WROfhNNYeSFMAsKBxOkw_1750067573
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 822E919560B0; Mon, 16 Jun 2025 09:52:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.53])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B2A10180045C; Mon, 16 Jun 2025 09:52:48 +0000 (UTC)
-Date: Mon, 16 Jun 2025 10:52:44 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Ilya Dryomov <idryomov@gmail.com>
-Cc: Fiona Ebner <f.ebner@proxmox.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- hreitz@redhat.com, kwolf@redhat.com, pl@dlhnet.de
-Subject: Re: [PATCH 1/2] block/rbd: support selected key-value-pairs via QAPI
-Message-ID: <aE_pbAS_gS12Fp8f@redhat.com>
-References: <20250515112908.383693-1-f.ebner@proxmox.com>
- <20250515112908.383693-2-f.ebner@proxmox.com>
- <CAOi1vP94WJ7r1vPXvcpGZTs2xf6TZ=p=EmVGQvwipftufaYAMw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uR6aL-00042A-ID
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:57:02 -0400
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uR6aJ-000367-Im
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:57:01 -0400
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-710fe491842so30967847b3.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 02:56:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1750067818; x=1750672618; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=I235erRaayFx7BYOEeId81HFtNTQgLr8vcqgU7Z0iuI=;
+ b=nrqGx2UR5elY41J58VmEhxi8ryEdIboEPr8QR5KCqtnKAMOIsQsmdaoMgcw0DOwABg
+ 4xnz6kS41mQUWr/YspRDvTX+qxQYgSrN+n4MA2lhwfNnPk56mHs0Cvul/PK9qOez9WSW
+ LMFDvvB1DmJ9JBscosNbOLO1Q7pd45GpaHYdUC32HrRcD423RPftIQ5t4/EUaCJQ/JTg
+ wFalW9lcDaO6c62TqbjDICXMPyypr7tv60NEuQny4yj2k0qWA+CdpsuqQKzH30/c40ZJ
+ CIiogkxYCCf/wrgqpJd4TwQV5X1WbV/hIl1K6UgHqwg4Q9aD/ATqV9Hy8SSUEHCD9u/8
+ CogA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750067818; x=1750672618;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=I235erRaayFx7BYOEeId81HFtNTQgLr8vcqgU7Z0iuI=;
+ b=W3pRRgLyLUP+2fz8HydwQ3qAHVNUSlABCZga6Xp5hupa8ZYnbv4LkcMWJ6P02fxk6Y
+ Q3Qt2F5kDawBcl27kpdVl25o0b/8nbQk3FrzhYrC6gVr013iEQkj4aqLCacmMJpi0I8v
+ z0WWgT+lBHsStEkVf/v6oLBB23mcPiy9dmv885mT1tFZvQobhXfOe/2IQ08itef0JpTK
+ c5nsbz0koyCno2CBB75jAvRLJItFSh8YSgtH/es5JQGPgwIIms3xLVs/WyYbNz9vtsrJ
+ IMdeMgU/HykbaKVfagmG9SlJA081mA1EJjAlbBV9+4qdDMZzwikFNRs2t0cJuVPLolyF
+ Oxxw==
+X-Gm-Message-State: AOJu0YziXro3fC03Uq7XE9VCLAV0B9lRoPhDkuAAphks33ZW4lfUBcFr
+ JaTmLiMopVMRqAzc/OzItSwMyNjZnDSejT1AV8sBMaqHyJug9yehIfqKBcCKcPF0puSP2iFKRhI
+ tywMEkMHRTLiz+Ek0D4heIbtagI/BLcTWDKCKSDqoig==
+X-Gm-Gg: ASbGnctRdz4AHR79GQm25vkhw6bwPQg2SXPKzcpxuDvS/CrPnfDBhvjcCi8wWQh7FSK
+ fqVjUJC7eYqfC2eL5Y5PahT9c0x6QZH8uROtCqLRr6gHAopDF/RWK85JyZFgLx5td17z7tgJLqg
+ x48fcXjeXvkxvau49PCR3kacTPPw7wknHzH8zboEaoPiHkOlRHVPAOY9M=
+X-Google-Smtp-Source: AGHT+IH1b9ORrUmBrwwoo5kXePYtutdazqPQBKkvme32P2sU5A1G2NCcH1B1VeTIGuom34r0DAxADMnrkedbS1cTcSw=
+X-Received: by 2002:a05:690c:4901:b0:703:b5ae:a3da with SMTP id
+ 00721157ae682-71175457d73mr126992267b3.32.1750067818209; Mon, 16 Jun 2025
+ 02:56:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOi1vP94WJ7r1vPXvcpGZTs2xf6TZ=p=EmVGQvwipftufaYAMw@mail.gmail.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250510042043.2056265-1-jcksn@duck.com>
+ <D705B9CD-82EC-42AF-A370-21038E35BDC1.1@smtp-inbound1.duck.com>
+In-Reply-To: <D705B9CD-82EC-42AF-A370-21038E35BDC1.1@smtp-inbound1.duck.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 16 Jun 2025 10:56:46 +0100
+X-Gm-Features: AX0GCFsOdMl3U_gcU8YKi8GM00c_z8VA6n5RHXIAOTqhohQTStioIgHzaiSiH3U
+Message-ID: <CAFEAcA83NzkG7NgwAyW9X12YLm5m439_b4y=M0dS6eR14-y2Gw@mail.gmail.com>
+Subject: Re: [PATCH 5/6] MAX78000 TRNG Implementation
+To: jcksn@duck.com
+Cc: qemu-devel@nongnu.org, alistair@alistair.me
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,79 +87,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 16, 2025 at 11:25:54AM +0200, Ilya Dryomov wrote:
-> On Thu, May 15, 2025 at 1:29 PM Fiona Ebner <f.ebner@proxmox.com> wrote:
-> >
-> > Currently, most Ceph configuration options are not exposed via QAPI.
-> > While it is possible to specify a dedicated Ceph configuration file,
-> > specialized options are often only required for a selection of images
-> > on the RBD storage, not all of them. To avoid the need to generate a
-> > dedicated Ceph configuration file for each image (or for each required
-> > combination of options), support a selection of key-value pairs via
-> > QAPI.
-> >
-> > Initially, this is just 'rbd_cache_policy'. For example, this is
-> > useful with small images used as a pflash for EFI variables. Setting
-> > the 'rbd_cache_policy' to 'writeback' yields a substantial improvement
-> > there [0].
-> >
-> > The function qemu_rbd_extract_key_value_pairs() was copied/adapted
-> > from the existing qemu_rbd_extract_encryption_create_options().
-> >
-> > [0]: https://bugzilla.proxmox.com/show_bug.cgi?id=3329#c9
-> >
-> > Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+On Sat, 10 May 2025 at 07:57, <jcksn@duck.com> wrote:
+>
+> This patch implements the True Random Number Generator for the MAX78000 SOC
+>
+> Signed-off-by: Jackson Donaldson <jcksn@duck.com>
+> ---
+>  hw/arm/Kconfig                  |   1 +
+>  hw/arm/max78000_soc.c           |   9 ++-
+>  hw/misc/Kconfig                 |   3 +
+>  hw/misc/max78000_gcr.c          |   3 +
+>  hw/misc/max78000_trng.c         | 115 ++++++++++++++++++++++++++++++++
+>  hw/misc/meson.build             |   1 +
+>  include/hw/arm/max78000_soc.h   |   2 +
+>  include/hw/misc/max78000_trng.h |  35 ++++++++++
+>  8 files changed, 168 insertions(+), 1 deletion(-)
+>  create mode 100644 hw/misc/max78000_trng.c
+>  create mode 100644 include/hw/misc/max78000_trng.h
+> +static uint64_t max78000_trng_read(void *opaque, hwaddr addr,
+> +                                    unsigned int size)
+> +{
+> +    uint8_t buf[4];
+> +    Error *errp = NULL;
+> +
+> +    Max78000TrngState *s = opaque;
+> +    switch (addr) {
+> +        case CTRL:{
+> +            return s->ctrl;
+> +        }
+> +        case STATUS:{
+> +            return 1;
+> +        }
+> +        case DATA:{
+> +            qcrypto_random_bytes(buf, 4, &errp);
+> +            return *(uint32_t *)buf;
+> +        }
 
-snip
+No other code in hw/ calls qcrypto_random_bytes(). This kind
+of "almost no other use of this function like this" is usually
+a hint that it's not a good idea in new code. You want
+qemu_guest_getrandom_nofail().
 
-> >  ##
-> >  # @BlockdevOptionsRbd:
-> >  #
-> > @@ -4327,6 +4360,9 @@
-> >  #     authentication.  This maps to Ceph configuration option "key".
-> >  #     (Since 3.0)
-> >  #
-> > +# @key-value-pairs: Key-value pairs for additional Ceph configuraton.
-> > +#     (Since 10.1)
-> > +#
-> >  # @server: Monitor host address and port.  This maps to the "mon_host"
-> >  #     Ceph option.
-> >  #
-> > @@ -4342,6 +4378,7 @@
-> >              '*user': 'str',
-> >              '*auth-client-required': ['RbdAuthMode'],
-> >              '*key-secret': 'str',
-> > +            '*key-value-pairs' : 'RbdKeyValuePairs',
-> 
-> To side-step all of the above, have you considered implementing
-> a straightforward passthrough to Ceph instead?  Something like
-> 
->   '*key-value-pairs': ['RbdKeyValuePair']
-> 
-> where RbdKeyValuePair is just a pair arbitrary strings (and
-> key-value-pairs is thus an optional list of those).  rados_conf_set()
-> would be called just the same but the user would be able to override
-> any Ceph option they wish, not just a few that we thought of here.
+Also, instead of using a uint8_t buf[], use a
+uint32_t and pass the address of that to the function:
 
-Passing through arbitrary key/value pairs as strings is essentially
-abdicating our design responsibility in QAPI. enums would no longer
-be introspectable. Integers / booleans would require abnormal formatting
-by clients. API stability / deprecation promises can no longer be made.
-and more besides.
+     uint32_t data;
+     qemu_guest_getrandom_nofail(&data, sizeof(data));
+     return data;
 
-Given that limitation, if we did go the string pairs route, I would
-expect it to be marked as "unstable" in the QAPI schema, so apps have
-a suitable warning NOT to rely on this.
+That avoids the need for a cast.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
+Your interrupt generation code in this device doesn't look
+right: the interrupt is supposed to be generated when each
+new random number is ready, so in our "generation takes
+zero time" model a read from DATA should provoke a new
+interrupt immediately (assuming the interrupt is enabled):
+you need to simulate the ready status bit going low and
+then high again.
+
+See also my comments on an earlier patch about the usual
+logic being to have an update function which does
+"set interrupt to (condition && enabled)".
+
+-- PMM
 
