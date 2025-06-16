@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BFBADAC9B
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC6AADAC6D
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:53:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uR6Uo-000357-8X; Mon, 16 Jun 2025 05:51:18 -0400
+	id 1uR6Uu-0003HC-US; Mon, 16 Jun 2025 05:51:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uR6Um-00033D-F6
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:51:16 -0400
+ id 1uR6Us-0003GI-5l
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:51:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uR6Uk-0002Lp-JD
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:51:16 -0400
+ id 1uR6Uq-0002MJ-Fd
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:51:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750067473;
+ s=mimecast20190719; t=1750067479;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8Y1qdYHZEKH6Xmzl8eoJOe9QKUbxbGtABxaz9IVujHw=;
- b=QYa2Tqs2MkAUgVVjLQ5idNmRVzvkxzBatSd0/R3Ls4ZWkm9iRe0aMZIp6mS8NJuxQEmnzi
- 3s+UhcZPxG3OLA+J8JMVDwDctkKbIyHllAwHhrsSh57kaM6FqSlqSFoyiBNReaQ28EvpoF
- KCzkZxBZqlQk8oplmHMfzMx4KHthQLY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ENcWQhSiq/mDYXzO0B3NWUXB9XTPdOHL4+pzW85tp58=;
+ b=hDyTpShL77PmbFB3MECSXr+Qz4mDEeEepiooxD9i52N41CKcJnLtiVIw/IcC+Yru15+OPh
+ qNnja/KUWy/aOchdv+q2XA8uKk+ntJnQVAQYEP/GWy0LS0MXzeHMIIl2t2abXk2z6EMlPJ
+ BflsJ4peUPBJbzBmnj+jc5o1p37ICJg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-5uLTMmmPNgWlHJCfabrEGA-1; Mon,
- 16 Jun 2025 05:51:11 -0400
-X-MC-Unique: 5uLTMmmPNgWlHJCfabrEGA-1
-X-Mimecast-MFC-AGG-ID: 5uLTMmmPNgWlHJCfabrEGA_1750067470
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-76xb6vKTNZ2Gkf0i8pHCCA-1; Mon,
+ 16 Jun 2025 05:51:16 -0400
+X-MC-Unique: 76xb6vKTNZ2Gkf0i8pHCCA-1
+X-Mimecast-MFC-AGG-ID: 76xb6vKTNZ2Gkf0i8pHCCA_1750067474
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EDB601800282; Mon, 16 Jun 2025 09:51:09 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D0D4418002ED; Mon, 16 Jun 2025 09:51:14 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.45.224.77])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 94F4A19560AD; Mon, 16 Jun 2025 09:51:05 +0000 (UTC)
+ id 7912A19560A3; Mon, 16 Jun 2025 09:51:10 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -52,9 +52,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  shannon.zhaosl@gmail.com
 Cc: pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org,
  alex.bennee@linaro.org
-Subject: [PATCH v3 22/29] hw/acpi/ged: Support migration of AcpiPciHpState
-Date: Mon, 16 Jun 2025 11:46:51 +0200
-Message-ID: <20250616094903.885753-23-eric.auger@redhat.com>
+Subject: [PATCH v3 23/29] hw/core/sysbus: Introduce sysbus_mmio_map_name()
+ helper
+Date: Mon, 16 Jun 2025 11:46:52 +0200
+Message-ID: <20250616094903.885753-24-eric.auger@redhat.com>
 In-Reply-To: <20250616094903.885753-1-eric.auger@redhat.com>
 References: <20250616094903.885753-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -85,52 +86,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a subsection to migrate the AcpiPciHpState state.
+Some sysbus devices have conditionnal mmio regions. This
+happens for instance with the hw/acpi/ged device. In that case
+it becomes difficult to predict which index a specific MMIO
+region corresponds to when one needs to mmio map the region.
+Introduce a new helper that takes the name of the region instead
+of its index. If the region is not found this returns -1.
+Otherwise it maps the corresponding index and returns this latter.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/generic_event_device.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ include/hw/sysbus.h |  1 +
+ hw/core/sysbus.c    | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 2ae9ad082a..48b286ccb2 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -417,6 +417,25 @@ static const VMStateDescription vmstate_ghes_state = {
-     }
- };
+diff --git a/include/hw/sysbus.h b/include/hw/sysbus.h
+index 7dc88aaa27..18fde8a7b4 100644
+--- a/include/hw/sysbus.h
++++ b/include/hw/sysbus.h
+@@ -82,6 +82,7 @@ void sysbus_connect_irq(SysBusDevice *dev, int n, qemu_irq irq);
+ bool sysbus_is_irq_connected(SysBusDevice *dev, int n);
+ qemu_irq sysbus_get_connected_irq(SysBusDevice *dev, int n);
+ void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr);
++int sysbus_mmio_map_name(SysBusDevice *dev, const char*name, hwaddr addr);
+ void sysbus_mmio_map_overlap(SysBusDevice *dev, int n, hwaddr addr,
+                              int priority);
  
-+static bool pcihp_needed(void *opaque)
+diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
+index e71367adfb..ec69e877a2 100644
+--- a/hw/core/sysbus.c
++++ b/hw/core/sysbus.c
+@@ -151,6 +151,17 @@ void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr)
+     sysbus_mmio_map_common(dev, n, addr, false, 0);
+ }
+ 
++int sysbus_mmio_map_name(SysBusDevice *dev, const char *name, hwaddr addr)
 +{
-+    AcpiGedState *s = opaque;
-+    return s->pcihp_state.use_acpi_hotplug_bridge;
++    for (int i = 0; i < dev->num_mmio; i++) {
++        if (!strcmp(dev->mmio[i].memory->name, name)) {
++            sysbus_mmio_map(dev, i, addr);
++            return i;
++        }
++    }
++    return -1;
 +}
 +
-+static const VMStateDescription vmstate_pcihp_state = {
-+    .name = "acpi-ged/pcihp",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = pcihp_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_PCI_HOTPLUG(pcihp_state,
-+                            AcpiGedState,
-+                            NULL, NULL),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static const VMStateDescription vmstate_acpi_ged = {
-     .name = "acpi-ged",
-     .version_id = 1,
-@@ -429,6 +448,7 @@ static const VMStateDescription vmstate_acpi_ged = {
-         &vmstate_memhp_state,
-         &vmstate_cpuhp_state,
-         &vmstate_ghes_state,
-+        &vmstate_pcihp_state,
-         NULL
-     }
- };
+ void sysbus_mmio_map_overlap(SysBusDevice *dev, int n, hwaddr addr,
+                              int priority)
+ {
 -- 
 2.49.0
 
