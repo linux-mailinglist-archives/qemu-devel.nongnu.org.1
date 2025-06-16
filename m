@@ -2,106 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05156ADAC72
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0F3ADAC77
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 11:55:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uR6Wr-00064g-KQ; Mon, 16 Jun 2025 05:53:26 -0400
+	id 1uR6Wz-0006UY-PK; Mon, 16 Jun 2025 05:53:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1uR6Vq-0005qf-Q8; Mon, 16 Jun 2025 05:52:27 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uR6WT-0006CH-NS
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:53:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1uR6Vo-0002Qc-Hb; Mon, 16 Jun 2025 05:52:22 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55G1L3hk024164;
- Mon, 16 Jun 2025 09:52:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=2qkq6whAaxXj/jPcEIOqeF0LtM4eG6ksZGow2PTSV
- vg=; b=tfVB+Vsr6VM6pyDLpQgj/ZM0eWaPrGFdW/zwbSK0pdZyUs/BgzwIVQqIH
- brcNwRr1gzUdY4WdPQSMhh3QVLpCP6hNoA7P8Q23JFGD0qTSk/vl8wnh4Ud+IivF
- qcOa8EeZy2C2YfUi5b6zkAmh7a4qnrEQ8NgIj9p4qxZZFKeDj14xKRbWVEwxPEoM
- 0ujhFaBRAsVI9D9ygDaABKHPpx9dZGM6DtOVqzV08/bU3SgraC6XcUhuFbYIklSR
- VCxF1G20ppYZPfn8ieyyvNvhOc5LkKgViUoVecDXANiNWM/Cdm9FmKuhs7TiZjL3
- ZL9b3cTdPTvdcCRqZMLZJyYQu2hCg==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 478ygn10sy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Jun 2025 09:52:16 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55G9qFjv018260;
- Mon, 16 Jun 2025 09:52:15 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 478ygn10sw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Jun 2025 09:52:15 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55G7XTYM010817;
- Mon, 16 Jun 2025 09:52:14 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 479kdt5qvq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Jun 2025 09:52:14 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 55G9qDGE31195832
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Jun 2025 09:52:13 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2C0DA2004B;
- Mon, 16 Jun 2025 09:52:13 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2BDD620043;
- Mon, 16 Jun 2025 09:52:12 +0000 (GMT)
-Received: from ltcblue8v9-lp2.aus.stglabs.ibm.com (unknown [9.40.192.95])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 16 Jun 2025 09:52:12 +0000 (GMT)
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Cc: npiggin@gmail.com, danielhb413@gmail.com, clg@kaod.org
-Subject: [PATCH] ppc/spapr: remove dead logic for non-existent machine type
-Date: Mon, 16 Jun 2025 05:52:08 -0400
-Message-ID: <20250616095208.241834-1-harshpb@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uR6WQ-0002St-JY
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 05:53:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750067577;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cFZ3XfaJHHBYyrUjidgVSFS7BuCjSPvE2KeY0wm4Ah0=;
+ b=bn1gGGSWeEW943ffa8DBgx25WL7qt84ug0oxy7jmqh5q1Q071uncsR/QF4tCOeIXgJzJQw
+ JRKr/T5pdBDDNjhQ6ej35xhpfr1ZVl+LA7aa7HH7B71b0USZbP3yWJzeP63CnwRsL+65K/
+ upOq/s+UmhBZiuDrzgkCBXAETxZrOH4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-369-S6WROfhNNYeSFMAsKBxOkw-1; Mon,
+ 16 Jun 2025 05:52:53 -0400
+X-MC-Unique: S6WROfhNNYeSFMAsKBxOkw-1
+X-Mimecast-MFC-AGG-ID: S6WROfhNNYeSFMAsKBxOkw_1750067573
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 822E919560B0; Mon, 16 Jun 2025 09:52:52 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.53])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B2A10180045C; Mon, 16 Jun 2025 09:52:48 +0000 (UTC)
+Date: Mon, 16 Jun 2025 10:52:44 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Ilya Dryomov <idryomov@gmail.com>
+Cc: Fiona Ebner <f.ebner@proxmox.com>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ hreitz@redhat.com, kwolf@redhat.com, pl@dlhnet.de
+Subject: Re: [PATCH 1/2] block/rbd: support selected key-value-pairs via QAPI
+Message-ID: <aE_pbAS_gS12Fp8f@redhat.com>
+References: <20250515112908.383693-1-f.ebner@proxmox.com>
+ <20250515112908.383693-2-f.ebner@proxmox.com>
+ <CAOi1vP94WJ7r1vPXvcpGZTs2xf6TZ=p=EmVGQvwipftufaYAMw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE2MDA2MCBTYWx0ZWRfXz6AqugU3zR6j
- /qkiSyEz3iawgJr0BfoUddu4UQt1BzaEq9+m4QKPu6xvqPZkkIkTDu40B3+hKAWWm3XJZcOyk8X
- cen6Y3OlHhgdIrxmI6s2KdseFDenjNWXWfW8U1rtrG/5FSfRRPyi3WI2o6cdxe6aMkDvF5hjRZ0
- ff+gg4+TIjqrU7WXl0UYFMnb3kcMS/+Pux+BOH7koGP0pn5tUkCPZluOuOTd/unABiThaoQ0GVr
- 07gfqXbpB24Kb3fOjnoBI/7vjNztcZnvPE3Pa+FRFpU7tZIzfI41M0nFjoOJ2TbpfB1FbgoTbgE
- xLqIYufTZ4fnmd28//LXNc4oMYK47ps8tIKA9pm+OxaSPZtzgB7irVBzT4/63Y8AYSw43gDcNcq
- b3+1cBWomYAkIihGhVqkRsDw96DwPjFRdE4sEH9unvJIqL4DXDCD1LMMl1xmgRfagz5U/EsE
-X-Authority-Analysis: v=2.4 cv=fYSty1QF c=1 sm=1 tr=0 ts=684fe950 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=6IFa9wvqVegA:10 a=f7IdgyKtn90A:10 a=VnNF1IyMAAAA:8 a=LKRhd8M__PCHzWEdhwkA:9
-X-Proofpoint-ORIG-GUID: h4Tf03T96SgNU7m6WXrpLD7vMHTjmCS_
-X-Proofpoint-GUID: uEXtdg01mDpstt8Bw2TlbPGrXGYo2cf5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-16_04,2025-06-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- spamscore=0 mlxlogscore=861 lowpriorityscore=0 adultscore=0 mlxscore=0
- impostorscore=0 bulkscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506160060
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+In-Reply-To: <CAOi1vP94WJ7r1vPXvcpGZTs2xf6TZ=p=EmVGQvwipftufaYAMw@mail.gmail.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -116,44 +86,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This logic was kept here to support pseries-2.12 and older machine type
-to enable them to calculate supported page size. Since the support for
-such older machine types is already removed, this becomes dead code and
-hence removed.
+On Mon, Jun 16, 2025 at 11:25:54AM +0200, Ilya Dryomov wrote:
+> On Thu, May 15, 2025 at 1:29 PM Fiona Ebner <f.ebner@proxmox.com> wrote:
+> >
+> > Currently, most Ceph configuration options are not exposed via QAPI.
+> > While it is possible to specify a dedicated Ceph configuration file,
+> > specialized options are often only required for a selection of images
+> > on the RBD storage, not all of them. To avoid the need to generate a
+> > dedicated Ceph configuration file for each image (or for each required
+> > combination of options), support a selection of key-value pairs via
+> > QAPI.
+> >
+> > Initially, this is just 'rbd_cache_policy'. For example, this is
+> > useful with small images used as a pflash for EFI variables. Setting
+> > the 'rbd_cache_policy' to 'writeback' yields a substantial improvement
+> > there [0].
+> >
+> > The function qemu_rbd_extract_key_value_pairs() was copied/adapted
+> > from the existing qemu_rbd_extract_encryption_create_options().
+> >
+> > [0]: https://bugzilla.proxmox.com/show_bug.cgi?id=3329#c9
+> >
+> > Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
----
- hw/ppc/spapr_caps.c | 13 -------------
- 1 file changed, 13 deletions(-)
+snip
 
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index d643591e25..0d62c11195 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -901,19 +901,6 @@ static SpaprCapabilities default_caps_with_cpu(SpaprMachineState *spapr,
-         caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_BROKEN;
-     }
- 
--    /* This is for pseries-2.12 and older */
--    if (smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] == 0) {
--        uint8_t mps;
--
--        if (kvmppc_hpt_needs_host_contiguous_pages()) {
--            mps = ctz64(qemu_minrampagesize());
--        } else {
--            mps = 34; /* allow everything up to 16GiB, i.e. everything */
--        }
--
--        caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = mps;
--    }
--
-     return caps;
- }
- 
+> >  ##
+> >  # @BlockdevOptionsRbd:
+> >  #
+> > @@ -4327,6 +4360,9 @@
+> >  #     authentication.  This maps to Ceph configuration option "key".
+> >  #     (Since 3.0)
+> >  #
+> > +# @key-value-pairs: Key-value pairs for additional Ceph configuraton.
+> > +#     (Since 10.1)
+> > +#
+> >  # @server: Monitor host address and port.  This maps to the "mon_host"
+> >  #     Ceph option.
+> >  #
+> > @@ -4342,6 +4378,7 @@
+> >              '*user': 'str',
+> >              '*auth-client-required': ['RbdAuthMode'],
+> >              '*key-secret': 'str',
+> > +            '*key-value-pairs' : 'RbdKeyValuePairs',
+> 
+> To side-step all of the above, have you considered implementing
+> a straightforward passthrough to Ceph instead?  Something like
+> 
+>   '*key-value-pairs': ['RbdKeyValuePair']
+> 
+> where RbdKeyValuePair is just a pair arbitrary strings (and
+> key-value-pairs is thus an optional list of those).  rados_conf_set()
+> would be called just the same but the user would be able to override
+> any Ceph option they wish, not just a few that we thought of here.
+
+Passing through arbitrary key/value pairs as strings is essentially
+abdicating our design responsibility in QAPI. enums would no longer
+be introspectable. Integers / booleans would require abnormal formatting
+by clients. API stability / deprecation promises can no longer be made.
+and more besides.
+
+Given that limitation, if we did go the string pairs route, I would
+expect it to be marked as "unstable" in the QAPI schema, so apps have
+a suitable warning NOT to rely on this.
+
+With regards,
+Daniel
 -- 
-2.49.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
