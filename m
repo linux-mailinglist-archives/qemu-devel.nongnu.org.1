@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2B8ADB1B3
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 15:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DABDADB1AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Jun 2025 15:22:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uR9lZ-00026g-Jp; Mon, 16 Jun 2025 09:20:49 -0400
+	id 1uR9lY-00025u-JO; Mon, 16 Jun 2025 09:20:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uR9lA-0001u7-3f
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 09:20:24 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1uR9lJ-0001wN-3k
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 09:20:36 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uR9l7-0005RU-Pp
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 09:20:23 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-234fcadde3eso55877705ad.0
- for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 06:20:21 -0700 (PDT)
+ id 1uR9lD-0005T8-9k
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 09:20:30 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-af6a315b491so4110843a12.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Jun 2025 06:20:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750080020; x=1750684820; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750080025; x=1750684825; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lkf/OdEQSfxG2yHQ++B0CfVtDkkYN+xz19jFGvSBQ6U=;
- b=k7LTzeHPEw8X9Z7RowY6GoFU1VP8O9fcd5Bj0ZURm1wo1Cgae5IOX62xMlGo0cVISY
- NdmjGf8S+u7+KvmDjgOIpDMht0427ukevOPuBkTnNkmZcLdmXMAY5mUGreMRmqEN/LTE
- +5bKjVxbp0cSP9KHr8/YJxhISTQiwly5jxjPA3zwpOcIRa9dmXjN0MksJnicml/ruVP+
- yaBBhDy3NcZkM1sb9JAgVSTXOffg3aKesUj+cwUvoe2A9yL4gQh15fMknRRskaCqVqhf
- XNw0x/Ij5Fp6qK/KYCKtNVJfl7YnYRLIbl7S02QKeALuozdZZudm+2SPr5jOdzkUmzS7
- ID3A==
+ bh=D8W/yE99oVdomm0D2Fyb+s9ZavOYJt5IOPZHZYUPXcU=;
+ b=xz4bquyEtDX+kNBcYZ7Ud1ventzV5GmYQ1b0ve+NszrGdYCZs9QT+j9jx1KXKP8u+Y
+ 4/0Uq1StNuDpVQGF/N8zSFl+p7X0s4Qh2Nx4C8t/X1MfujFm6nuoKqrIwqQCuNTkXsIw
+ 9syKBohvboFEvmuHCprmz8LN3t6rD4hMBm6h/zNJjoBbwecGBzIksl+6FdI6lQYRnzbA
+ q1Tuh+zLvlS8f7zApcqB2G2FwPfDNyg/RGIFMVYhssMplPHYEeycYNXgBij4z23QlKRJ
+ 8+zB/okCnhTCdAzhLZojSvlNWcMOFZEyFQkx8uFSvZ9SaV4noGx8W0t5Spmnb/5lO7v+
+ Ny6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750080020; x=1750684820;
+ d=1e100.net; s=20230601; t=1750080025; x=1750684825;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Lkf/OdEQSfxG2yHQ++B0CfVtDkkYN+xz19jFGvSBQ6U=;
- b=cMbcp5DhXA7XqVm+or5dsCNqq6Mxr02ILrLNLKaYVlRfSEfAYfKEWkW1rgIcrqcSBs
- kujVW0M1/ljJ1XEKq0fiZ5wv9+rEqXSJah8ETQjYSRc+dY6MDTTEb6xljNm54164suQt
- WOBW0x+nVVcNRU+AIPtX/3wX/oAYctbGYkwLOpMXjcfR08/g4DGR/wjeYctpDXy307YT
- tjP9fPODGSWspopxsD08AwvLxSscIfOHBIjIDUrw+RXhXNioL2N1XOQsrxQ49Zw2PPel
- f7h89BlNA0RQvs8SrhXQSS0t1f2FnmmPSdY0CNMWIR8rOmfiCT5EVMIgDzxGV5uXWCi+
- 5E7A==
-X-Gm-Message-State: AOJu0YxCOapnlSMIZTaxKfSVPkdlsEtUiWkXPW/Jlc54YlUxNGePwbx9
- c1truRykKyponysAUd1qDwteEyeqU1s++NBo8LDcsPOVQw2YO3kDPdqh3DC/XCWeZ6DrxJS8bEI
- 8r6NO
-X-Gm-Gg: ASbGncumX4AdWgT7Zlp6t9hCJxZeQzMZlV0nYICEgUEYk6E3H7KhfNH0phaNIgomsSJ
- gjUoaA1tu9dh4yMajq+an0s4W+ulS9HLk+ZfyuYufqSLmGjUsY0X2FHX76dCmOoGUhvdP86XBdk
- g1mESqz+Sv5MV0CkdcOvNHhb0+YLFyqQ1jn06Bl/bGbN3fnoa4sv+cb22SNRZRilL3WW+4LE2nQ
- IJRgJ/Me7y4wlPzXRBwaPjRkGDz9QMEb8FRQmqYJQYTyrcUIYXdK781Rm4nlwZfgaiZfNhkQVhX
- ZZQ0VhoeTLhZnfFJvZWONcxPCoG4QZTiH75y7Qbjk33IvGfKD5yuuZbiKs/ELEx8DKdDsAP/EGY
- YmQ==
-X-Google-Smtp-Source: AGHT+IFJjIvSu2YVYXgzAph1VFqVYENhN8dbtxLcpdoy3NyYUEgSm8dwYLskPlOusQ2jSHctan+idQ==
-X-Received: by 2002:a17:902:d4c9:b0:235:f4f7:a633 with SMTP id
- d9443c01a7336-2366b3ac074mr160663695ad.28.1750080019963; 
- Mon, 16 Jun 2025 06:20:19 -0700 (PDT)
+ bh=D8W/yE99oVdomm0D2Fyb+s9ZavOYJt5IOPZHZYUPXcU=;
+ b=dTdgtrDwHUM9KavN1ylMqfCJityC9GFcQUa7VccDaYQTDtPGW7paG6kQfa8j4U1Fr2
+ Tt41hrOdrG961yr6LD8TCcSVCo/oApuaoTkg9PaS+hmuOKP6U0aOaLAc9yHszDSspGWw
+ y6UX1mBrp20hXsbTAoDLiY3kLee5ZaTgF9l0tnOOtJR/mndrYidc+aTKFIyWwvV6u6FC
+ iMspzMzHRTPsDXtop7yZ8sW1K4TNofkoTcvvJw6/sKSGQEiXh2HnC5/fc0Bdm5uRQai1
+ hJTYxUAmH1SLqurxSzXLbe6HmdMosYZ1eD6jfdkLBr3ulL3/fuVdWljj1VI+Cyzd+s2E
+ C8mg==
+X-Gm-Message-State: AOJu0Yy+2vrljTNmFCc7hvmtkq2cfQ2Xl19S+MG1pyZxhMqgfAc7oZX1
+ mf2dmfvawuQlRKRAQzTkKQ99vXBU16O/T9oj1wNsqkK2smZqVCyKN27Rhas2KsRn9c1tRB3b7n6
+ g/wHN
+X-Gm-Gg: ASbGncvVKPQaZLC/zlQ4LQER+XwCd+qixN8W+J/wdsr1x9nxohSAq3Yb8tYF3FeF3gA
+ u6z6hP9dhGzn4TqyKZ5ac7wqW+orOmPO1wOp1EotENjCdp/Vdjio0M/YDRq3JQRLxZG/iz64m6f
+ L5HJVo+aghsk9Nayug2xVyvEOKBiBOuDNEXTn0MugO9d5G1/HFPNFro3ar0v3vWzbz57yaIiY2B
+ s/vFoDV0T+lthf8bB5eHkaHTRLZFD5m5DSXhZGIqMkYH7x6VArOsADkw922SaiMpsrmnl5qLhG8
+ PELzx6lmYokPp43Duwk18fTQuzZVIM13UVdKOLhW0LY6HwLq2iqCBCxfmGpEP6qy5PrrsxoaBF8
+ wQA==
+X-Google-Smtp-Source: AGHT+IFaHruaonQo5WTISuUKEmzod1ppAIC6mFjlggBADfSPAlO2iVq41L/proSl6+ZD/e9QDYYkgw==
+X-Received: by 2002:a17:903:1a8d:b0:235:f18f:2911 with SMTP id
+ d9443c01a7336-2366afd3873mr149900765ad.2.1750080023418; 
+ Mon, 16 Jun 2025 06:20:23 -0700 (PDT)
 Received: from gromero0.. ([186.215.60.20]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2365de781dfsm60848405ad.131.2025.06.16.06.20.16
+ d9443c01a7336-2365de781dfsm60848405ad.131.2025.06.16.06.20.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Jun 2025 06:20:19 -0700 (PDT)
+ Mon, 16 Jun 2025 06:20:22 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, eric.auger@redhat.com, philmd@linaro.org,
  mst@redhat.com
 Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, gustavo.romero@linaro.org,
  udo@hypervisor.org, ajones@ventanamicro.com, peter.maydell@linaro.org,
- imammedo@redhat.com, anisinha@redhat.com,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v4 3/8] hw/arm/virt: Simplify create_its()
-Date: Mon, 16 Jun 2025 13:18:19 +0000
-Message-Id: <20250616131824.425315-4-gustavo.romero@linaro.org>
+ imammedo@redhat.com, anisinha@redhat.com
+Subject: [PATCH v4 4/8] hw/arm/virt-acpi-build: Fix comment in build_iort
+Date: Mon, 16 Jun 2025 13:18:20 +0000
+Message-Id: <20250616131824.425315-5-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250616131824.425315-1-gustavo.romero@linaro.org>
 References: <20250616131824.425315-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,50 +100,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need to strstr() check the class name when we can use
-kvm_irqchip_in_kernel() to check if the ITS from the host can be used.
+The comment about the mapping from SMMU to ITS is incorrect and it reads
+"RC -> ITS". The code in question actually maps SMMU -> ITS, so the
+mapping in question is not direct. The direct mapping, i.e., RC -> ITS,
+is handled a bit further down in the code, in the else block, and we
+take the opportunity to update that as well, adding "RC -> ITS" to the
+text so it's easier to see it's the direct map to the ITS Group node.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+Signed-off-by Gustavo Romero <gustavo.romero@linaro.org>
 ---
- hw/arm/virt.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ hw/arm/virt-acpi-build.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 42a63a523e..d2cd79ca50 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -705,21 +705,18 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 9eee284c80..6990bce3bb 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -407,23 +407,27 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     if (vms->iommu == VIRT_IOMMU_SMMUV3) {
+         AcpiIortIdMapping *range;
  
- static void create_its(VirtMachineState *vms)
- {
--    const char *itsclass = its_class_name();
-     DeviceState *dev;
+-        /* translated RIDs connect to SMMUv3 node: RC -> SMMUv3 -> ITS */
++        /* Map RIDs (input) from RC to SMMUv3 nodes: RC -> SMMUv3. */
+         for (i = 0; i < smmu_idmaps->len; i++) {
+             range = &g_array_index(smmu_idmaps, AcpiIortIdMapping, i);
+-            /* output IORT node is the smmuv3 node */
++            /* Output IORT node is the SMMUv3 node. */
+             build_iort_id_mapping(table_data, range->input_base,
+                                   range->id_count, smmu_offset);
+         }
  
--    if (!strcmp(itsclass, "arm-gicv3-its")) {
--        if (!vms->tcg_its) {
--            itsclass = NULL;
--        }
--    }
--
--    if (!itsclass) {
--        /* Do nothing if not supported */
-+    assert(vms->its);
-+    if (!kvm_irqchip_in_kernel() && !vms->tcg_its) {
+-        /* bypassed RIDs connect to ITS group node directly: RC -> ITS */
++        /* Map DeviceIDs (input) from SMMUv3 to ITS Group nodes: SMMU -> ITS. */
+         for (i = 0; i < its_idmaps->len; i++) {
+             range = &g_array_index(its_idmaps, AcpiIortIdMapping, i);
+-            /* output IORT node is the ITS group node (the first node) */
++            /* Output IORT node is the ITS Group node (the first node). */
+             build_iort_id_mapping(table_data, range->input_base,
+                                   range->id_count, IORT_NODE_OFFSET);
+         }
+     } else {
+-        /* output IORT node is the ITS group node (the first node) */
 +        /*
-+         * Do nothing if ITS is neither supported by the host nor emulated by
-+         * the machine.
++         * Map bypassed RIDs (input) (don't go through the SMMU) to ITS Group
++         * nodes: RC -> ITS.
++         * Output IORT node is the ITS Group node (the first node).
 +         */
-         return;
+         build_iort_id_mapping(table_data, 0, 0x10000, IORT_NODE_OFFSET);
      }
  
--    dev = qdev_new(itsclass);
-+    dev = qdev_new(its_class_name());
- 
-     object_property_set_link(OBJECT(dev), "parent-gicv3", OBJECT(vms->gic),
-                              &error_abort);
 -- 
 2.34.1
 
