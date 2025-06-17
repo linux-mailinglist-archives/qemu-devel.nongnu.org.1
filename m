@@ -2,98 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE12ADD382
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 17:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB42AADD303
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 17:52:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRYc0-0003rA-6t; Tue, 17 Jun 2025 11:52:39 -0400
+	id 1uRYbB-0003Xc-Pu; Tue, 17 Jun 2025 11:51:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uRYKo-0003yF-3K
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:34:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uRYKj-0004Bk-Ku
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:34:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uRWKt-0008Sh-L3
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 09:26:53 -0400
+ id 1uRWS6-0001bE-3z
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 09:34:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750166803;
+ s=mimecast20190719; t=1750167251;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CN5hHjMIPHO/GMteEkHH8lxx5y/cl+D15tG5+ZrsW+k=;
- b=Zq3ASuKmQU4HSu2L9X052Ys3T/iZfQrsqJHylbGExUB+0ddnlLB4/5Sziq3uFv8FAEgYHV
- HYJr06+SyPVPbYVSqaSKsSujeVrNiFoXpdGqmmtq00Hd2pU3gBxaoVmkp3fGeUBP+bevoQ
- EMX/ZEsXoLnZfIUPwTmW0Wr+R+5m5Aw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ha0XZi3PC2IVQ1lBR0EUp81EerH9P6ZxpdcTmNxLBlw=;
+ b=aOHTL12h+wQN6KBcCM6UWdi3LNxx0eOXSdgpqLtfe5u+5HLDAaMhvrLr5WySisDHTDvHAB
+ CAXzQuML8J8gCG6ExR1femx4vFTJ69tox6Q+dGMJcsmG7ChaBEHVTUuJy7l1gifyETQLX8
+ N+1LPqJ8kVHeowmU6SDRLFSniyklEok=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-p0PEONmJMhWbHWj6cGV-kA-1; Tue, 17 Jun 2025 09:26:41 -0400
-X-MC-Unique: p0PEONmJMhWbHWj6cGV-kA-1
-X-Mimecast-MFC-AGG-ID: p0PEONmJMhWbHWj6cGV-kA_1750166800
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a503f28b09so445967f8f.0
- for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 06:26:41 -0700 (PDT)
+ us-mta-227-1iE24AnvO12xqmOs6LT_-g-1; Tue, 17 Jun 2025 09:34:08 -0400
+X-MC-Unique: 1iE24AnvO12xqmOs6LT_-g-1
+X-Mimecast-MFC-AGG-ID: 1iE24AnvO12xqmOs6LT_-g_1750167247
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a4eb6fcd88so3416616f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 06:34:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750166799; x=1750771599;
+ d=1e100.net; s=20230601; t=1750167247; x=1750772047;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=CN5hHjMIPHO/GMteEkHH8lxx5y/cl+D15tG5+ZrsW+k=;
- b=ICjJ7sJ69NMEbWBtgfEe1Rq929+rv8IOFyZLn3RktNAHD42oxVBnQoJ2QWpU/zHKN8
- Dkt+x73s7S+FZzS1iJIRsxe58uKaJq3dBfX2qyqj+ngcmHdAR4qEWPOZdrRf2ja3Pazl
- 0s+2R23D6e9Ao9HVhPBqS8GyP771qKkQfAtRDdIUNxokKKz8xrul0JdDJIKjOHebR93Z
- nmu/NRvMTxFNClO2QEHzTR6O6s4cTLt5JdJ9C7m500UtHY5rEVMO73ku6q+4BAebr02a
- AS8MhWoLHq8PhP6sTF5aXOV6fX/IOVPT9WjeGv279H51ggOo+CJSRZPqtOlp0iTJ5BE2
- KfRw==
+ bh=ha0XZi3PC2IVQ1lBR0EUp81EerH9P6ZxpdcTmNxLBlw=;
+ b=t2LQcOQXXagJkxNpCnEFAZieVykRxoIL66Tm53qkpx7h2NUz3AM97KoZrsAd4Q3Nlw
+ NAMCkPu6I7rtHiSkZ7Jux9DbUp4Fn4sh+FmUvsgaY5eYGTWOAHVH3zlav9kQv6bcVDqe
+ 8d5LOYRIAdc+4mn8tkSUEDboD6/9MksDHLVoLTTIAHAs4pqCpAItcd6eh2U7yQahuPWw
+ LXKuXi4ZBUOBocEGrknKB/+F8E7QBIvlzAKugcS6A0J0KC8erjilnFkG9NwHi8csOhzb
+ f/iP3jMuzeEctjDIrwyVw5mMT+aAUZ/V0uEniAKCSYTEtUZtlCsYJNPcdmrT5J4v1g1+
+ /ypA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXdHHZOKp8dbqLSl1kIO7NpsV0sL6OWus+aWxr/ttdVT175cgTIEGZ9awGx4ac5Ltso5cxV7oiiLhta@nongnu.org
-X-Gm-Message-State: AOJu0YwO6bv6SrrxZoRyKAKrOieAWG32fSc2hPbpwj9AM0A/xdci6P0D
- K1bBvuUdQFNozs6YY2nnJkY2s0X2CnqItjC15KrFse8ItnblG7H/w4Locq493zW8BQZZ7EUcriw
- oYZRj2AN3D2Qtm5fGsgdrVbM3Ed30vC3Q0YKlQ9rNSOnviOQp02ZFr87TD5knMwiF
-X-Gm-Gg: ASbGncsdKUHjNAd5LE9watNd+Nb3ty4VTXzjKZLfJZH61YufwFBCxWP9RwhOAAevh1R
- ZS/dMKNmyJgdATqBrx6gC6l90OI/dYcoFWUFFzYZhQvWI4oH3ZzmXsPvHw0veQPJ5U0YKCElJBP
- FX2wO2A4Wjfy5Lf6QwUOCcpzoWu3OZXLvYzGnEmo0Cd1+5+Nq/21Aod6boRNhGSYcfV7mO3KkvW
- NcPC93XLcvShS7WdPlVIX+eLQSttFnMihIIQo+J1TtQctQXP2Hz3LieW12bUnS4vxX7VKBH5S39
- 14t6rWsOS2cJ3W8eRi1Ib0jJWP3vfKY0VWiG5ipprv1r8sLv90GbwmnMqonGIlVFCmBSew==
-X-Received: by 2002:a5d:64cc:0:b0:3a4:d685:3de7 with SMTP id
- ffacd0b85a97d-3a56d7cd56bmr12345016f8f.8.1750166799283; 
- Tue, 17 Jun 2025 06:26:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGa31fOt3M0d6C7ClYd1TOlgYkmTcpt25oTo6RJDjebAolkbG7VQ2/u00E5i8kWG07dzqN0dQ==
-X-Received: by 2002:a5d:64cc:0:b0:3a4:d685:3de7 with SMTP id
- ffacd0b85a97d-3a56d7cd56bmr12344992f8f.8.1750166798808; 
- Tue, 17 Jun 2025 06:26:38 -0700 (PDT)
+ AJvYcCXr/M+AX/KByMxQe8vcMNwWyz9pMIGpVA3+2N2FeCcA9HkUbaSX/tiROGR2GXQ2uwe+gKzlPGhC9diB@nongnu.org
+X-Gm-Message-State: AOJu0YwMakaTHcE5zYjyb/TJpzjgSAjNCCirMHDlaiegEh9UsZiX5Brk
+ gpsjbw4zVfA8q9RhV8h95MF5mpR5+xrdEUHcfS6IgThzGj5bCPBd0hEXzAU76OUvF00OsUryjlS
+ 5wzBqMVydmb1RaH+T3GopOS73tSRCsgovhaMCUm/88qbuh/cULQ4Jq3PA
+X-Gm-Gg: ASbGncsTiiEdLJrhL8SJDVqyMIBo5601JiO6V7JFFATjaVxQfGmiWE+ISNy7DrIZDjV
+ gSGRTx9/5mTjKQHlC+i8kq1gikfES+0u9MLYZsAqDyzp9cKFn6ZXqeAiVRMzIsI7q7u5eXvVaFG
+ VFH1HoQe8hCg5NCnsmrNP58jVIORmockkwJH4aCAJejc6W2dzfA/+5owHqWXaoU2zzgT73d3OWc
+ LrQk1T8i3km5WXUCl09KwF9YqXdE7WoCUaBsIqnYH7jTP4iMUHQViDAjPT0Fh+eUIn/wg+8JsV1
+ 9Fv9b4g+PYXDHa4CkDBxp2X3gylN8EprGDkyWXfUkbllPm7qMEGTBoiylFhQ8B9LKzxs6w==
+X-Received: by 2002:a05:6000:1447:b0:3a5:2fad:17af with SMTP id
+ ffacd0b85a97d-3a572e58cbemr8799272f8f.57.1750167247311; 
+ Tue, 17 Jun 2025 06:34:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEWuKpIzFA5EOrW7frVPEBawZ2k+SvHAPCXmr54cZJx+V/3fuGOT+6ARfwZpQgnkTzTkiXMbw==
+X-Received: by 2002:a05:6000:1447:b0:3a5:2fad:17af with SMTP id
+ ffacd0b85a97d-3a572e58cbemr8799244f8f.57.1750167246910; 
+ Tue, 17 Jun 2025 06:34:06 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
  ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a568b62ba7sm14314490f8f.91.2025.06.17.06.26.37
+ ffacd0b85a97d-3a568a68b0esm13828969f8f.29.2025.06.17.06.34.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Jun 2025 06:26:38 -0700 (PDT)
-Message-ID: <cd38280c-6f5e-4c58-b40c-3391d121e557@redhat.com>
-Date: Tue, 17 Jun 2025 15:26:37 +0200
+ Tue, 17 Jun 2025 06:34:06 -0700 (PDT)
+Message-ID: <fe166574-9e53-4e27-9c12-c91f3fc774c7@redhat.com>
+Date: Tue, 17 Jun 2025 15:34:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-10.1 v4 0/8] hw/arm: GIC 'its=off' ACPI table fixes
+Subject: Re: [PATCH v4 5/8] qtest/bios-tables-test: Add test for when ITS is
+ off on aarch64
 Content-Language: en-US
 To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- philmd@linaro.org, mst@redhat.com,
- Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+ philmd@linaro.org, mst@redhat.com
 Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, udo@hypervisor.org,
  ajones@ventanamicro.com, peter.maydell@linaro.org, imammedo@redhat.com,
  anisinha@redhat.com
 References: <20250616131824.425315-1-gustavo.romero@linaro.org>
- <5b0f2250-e521-4172-870c-0384c5ef2382@redhat.com>
- <36ac7f90-d946-439f-ab20-123f542291b6@linaro.org>
+ <20250616131824.425315-6-gustavo.romero@linaro.org>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <36ac7f90-d946-439f-ab20-123f542291b6@linaro.org>
+In-Reply-To: <20250616131824.425315-6-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -121,89 +120,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi Gustavo,
 
-On 6/17/25 3:01 PM, Gustavo Romero wrote:
-> Hi Eric,
+On 6/16/25 3:18 PM, Gustavo Romero wrote:
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
 >
-> Thanks a lot for doing a first pass on this series!
+> Arm64 GIC ITS (Interrupt Translation Service) is an optional piece of
+> hardware introduced in GICv3 and, being optional, it can be disabled
+> in QEMU aarch64 VMs that support it using machine option "its=off",
+> like, for instance: "-M virt,its=off".
 >
-> On 6/17/25 06:35, Eric Auger wrote:
->> Hi Gustavo,
->>
->> On 6/16/25 3:18 PM, Gustavo Romero wrote:
->>> Since v2:
->>> - Fixed no_tcg_its inverted logic (rth)
->>>
->>> Since v3:
->>> - Fixed remappings in the IORT table when ITS is no present
->>> - Rebased on master and resoled conflics, like no more "no_its"
->>>    flag in VirtMachineClass
->>> - Dropped patch 1/9 because we actually want the instance flags,
->>>    not only the class flags, and the instance flags are the ones
->>>    to be used often when deciding about the presence/absence of a
->>>    machine feature, instead of the negated class flags ("no_*")
->>> - Adapted the other patches that depended on 1/9
->>> - Dropped patch 4/9 in favor of using the instance flag for
->>>    checking if ITS is on or off
->>> - Simplified VM options for the new "its=off" test
->>>
->>> v1: https://lists.gnu.org/archive/html/qemu-devel/2025-03/msg07080.html
->>> v2:
->>> https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg00495.html
->>> (Patches 6/14 -> 14/14 in the series)
->>> v3: https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg00567.html
->>>
->>> Fix ACPI tables for '-M its=off' CLI option and resolve the issue:
->>>
->>> https://gitlab.com/qemu-project/qemu/-/issues/2886
->>
->> One first comment is that this series will collide with Shameer's SMMU
->> multi instance series which has been lunder review for quite some time
->> (adding him in TO):
->>
->> I think it may be more future proof if you could rebase on it - I know
->> it is a pain ;-( -. Or if sbdy objects for Shameer's series please raise
->> your voice now.
->>
->> [PATCH v4 0/7] hw/arm/virt: Add support for user creatable SMMUv3
->> device
->> <https://lore.kernel.org/all/20250613144449.60156-1-shameerali.kolothum.thodi@huawei.com/#r>
->>
->> https://lore.kernel.org/all/20250613144449.60156-1-shameerali.kolothum.thodi@huawei.com/
->>
+> In ACPI, the ITS is advertised, if present, in the MADT (aka APIC)
+> table and the remappings from the Root Complex (RC) and from the SMMU
+I would rephrase "and the remappings" by "while the RID mappings from ..."
+> nodes to the ITS Group nodes are described in the IORT table.
 >
-> ayayay, life is never that easy! :)
+> This new test verifies that when the "its=off" option is passed to the
+> machine the ITS-related data is correctly pruned from the ACPI tables.
 >
-> Thanks for point that out. Sure, I can rebase it on Shameer's series,
-> but also
-> I'd like to have this ITS fix for 10.1, so I think it's a matter of
-> understanding
-> if Shameer's series will make the 10.1 release (thanks for asking the
-> reviewers if they
-> have any current objection so we have an idea if it's close to get
-> accepted
-> or not)?
-Peter was the most annoyed by the usage of -device arm-smmuv3 option
-line. We'd better ask him.
+> The new blobs for this test will be added in a following commit.
+>
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  tests/qtest/bios-tables-test-allowed-diff.h |  2 ++
+>  tests/qtest/bios-tables-test.c              | 21 +++++++++++++++++++++
+>  2 files changed, 23 insertions(+)
+>
+> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+> index dfb8523c8b..a88198d5c2 100644
+> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+I still fail to understand whether empty tables + update if the
 
-On my end I don't see how we can achieve this more elegantly.
->
-> Meanwhile, I'm pretty keen on if I'm correctly generating the IORT
-> table pruned from ITS
-> (patch 7/8 in this series), like, are the remappings for the RC and
-> SMMU nodes correct? That
-> would make me more comfortable to start working on a rebase.
-sure looking at it...
+bios-tables-test-allowed-diff.h need to be done prior to adding the new test.
+
+ * How to add or update the tests or commit changes that affect ACPI tables:
+ * Contributor:
+ * 1. add empty files for new tables, if any, under tests/data/acpi
+ * 2. list any changed files in tests/qtest/bios-tables-test-allowed-diff.h
+ * 3. commit the above *before* making changes that affect the tables
+
+> @@ -1 +1,3 @@
+>  /* List of comma-separated changed AML files to ignore */
+> +"tests/data/acpi/aarch64/virt/APIC.its_off",
+> +"tests/data/acpi/aarch64/virt/IORT.its_off",
+> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+> index 0b2bdf9d0d..4201ec1131 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -2146,6 +2146,25 @@ static void test_acpi_aarch64_virt_tcg_topology(void)
+>      free_test_data(&data);
+>  }
+>  
+> +static void test_acpi_aarch64_virt_tcg_its_off(void)
+> +{
+> +    test_data data = {
+> +        .machine = "virt",
+> +        .arch = "aarch64",
+> +        .variant =".its_off",
+you have a checkpatch error here.
+> +        .tcg_only = true,
+> +        .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
+> +        .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
+> +        .cd = "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
+> +        .ram_start = 0x40000000ULL,
+> +        .scan_len = 128ULL * 1024 * 1024,
+> +    };
+> +
+> +    test_acpi_one("-cpu cortex-a57 "
+> +                  "-M gic-version=3,iommu=smmuv3,its=off", &data);
+> +    free_test_data(&data);
+> +}
+> +
+>  static void test_acpi_q35_viot(void)
+>  {
+>      test_data data = {
+> @@ -2577,6 +2596,8 @@ int main(int argc, char *argv[])
+>                             test_acpi_aarch64_virt_tcg_acpi_hmat);
+>              qtest_add_func("acpi/virt/topology",
+>                             test_acpi_aarch64_virt_tcg_topology);
+> +            qtest_add_func("acpi/virt/its_off",
+> +                           test_acpi_aarch64_virt_tcg_its_off);
+>              qtest_add_func("acpi/virt/numamem",
+>                             test_acpi_aarch64_virt_tcg_numamem);
+>              qtest_add_func("acpi/virt/memhp", test_acpi_aarch64_virt_tcg_memhp);
+Thanks
 
 Eric
->
->
->> Also I understood Shameer intended to write some new bios-tables-test.
->
-> I see.
->
->
-> Cheers,
-> Gustavo
->
 
 
