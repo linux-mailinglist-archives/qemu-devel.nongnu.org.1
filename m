@@ -2,98 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155D7ADD56A
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E58ADD696
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:35:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRZ0E-0006jY-0T; Tue, 17 Jun 2025 12:17:38 -0400
+	id 1uRZGI-0000kl-Gi; Tue, 17 Jun 2025 12:34:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uRYqC-0005lz-RW
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:07:19 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uRZG1-0000kE-9c
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:33:57 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uRYq7-0002Th-5z
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:07:16 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-313154270bbso6458407a91.2
- for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 09:07:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uRZFz-0000cS-1v
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:33:57 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3a54690d369so6093585f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 09:33:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750176429; x=1750781229; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dPooGodvHOd25Hd926Qo9oypTPkB595thoSSxi84ong=;
- b=rP5Y7sAVIhqjA4cJFFAejRvJ/A3QaBVc93JG178mY70qSMjOLi2R8KKWQcXSIIKeWU
- 3PYvPbt2hBo9a6AHKKDRUm16LHphTGiGy79iVWa2PjF0LcyA3xi5f5FVlEZCcxIJJKCM
- ZyXgYfUtE4wzTY0zJvZUQXj/gekALXfO55Mb0glsZ1E6himxjlx6+dviOYtNFOWC82vD
- ULVTDJlJsnEtHOAEBZI5EKUFJJmVJGagP3SAnnE9csSWlOGnV+lfQfICph7eec3sNgqT
- C36xhoX4WpeWr0mvH1M4KGyxTB8NlmLxubVNI4bW0HRg6N867lflqCQzNYnwJthDQOb2
- S7ZQ==
+ d=linaro.org; s=google; t=1750178033; x=1750782833; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7g71wEGz4iCfItRB+5Qq2e0WxZcJFHzJDCahI6238Rg=;
+ b=OkU7t5h7VpJxVC8gtDEEUabYFanJcQxf4KZtMEh2Imb4+scoLHMIuEK9ea0AGL/bZh
+ SsgVl3Y2/XyJ81P3YAI8uBeM3w032s681mlT76JKhe6pcWJNKkQCQGWyPP7AWFVY0tI2
+ 4ein5my4B80CAVzceOo/o82bN8LgMp3fR8A6C8FtrVNFh/6h7YBtzK7SH5Dux9NQhGdi
+ KTCwPRseY8sGvYp3owIHo8ajSBN9PhpFtnGqdEAokyl/lFoIH8fWamoTyBUXfbSwJo9q
+ YMfRBofUoyLfwiPiz4Av1tYUqFyeKKTZyPsbyD0DLsPSJ+2hylvQ7AZ6qvJwN69C7bAA
+ XcNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750176429; x=1750781229;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dPooGodvHOd25Hd926Qo9oypTPkB595thoSSxi84ong=;
- b=IR5jG3kaYnc73WHpUKIgUNpg6NPFH0LhIH56KCp6dIgbYkdOK+DSaXHEuLKBboK8Tf
- gafzlLmPG89FZqu9Os5ZROxvlAsQr0w6ftLRFDQPcQov0SzH4lp6xm4pO4wnJ0NKBoHP
- i3CAaNpk1Cu5i6r5Gpp2T6Bl2rMues97GLWP+wkJjbO1NZUnZsPwzgW9c1sTQ7SUroaE
- cL1wxI0iWccfy7iAhZyLAeFtPO1GBvclEI5+HbHROX/u8KYJ21kd0F93AdpqZSt0Gnl9
- TBYAFjd25f4Vddf7552VTGU0KFdE4BNerxn2MJ1ZTtwb0VCvKp8V/GotEfJZT4JTPFeW
- DGEQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUoP92plS1s47L/G65FT9nmWAF5/XgWD5/nbDrrNSC8cXgr77rv1SxQrbNqFjNhfvUdm1Plq9c7hKJb@nongnu.org
-X-Gm-Message-State: AOJu0YzwcMQ8+lXGxE1eJ8mX7djOwr2ys8dVxbH7XmidmuGcIXD5RRHX
- FpfpZP6ei+c3eU7vyMAE1rHB3DkvI2tN/l5EX4two3pO8oy7t2DZ2o4vMkAmlhobA6M=
-X-Gm-Gg: ASbGncvg6wBkuze3dtwAq8pK2coRw30tuSju5IYFw5kI3Hjey9cCzmcCmCypCU3vqHg
- +nNq4dh8/XJZALhvKl0AzZh6wtmmKnHu1O7joy/LtZ8SXgELdcV8ql2eX3YHO0H8THCZFq4Qto9
- SYTVDeqaVvlwoVA5vleGzVWliwA8iKmlBj/za31shNl7ZabDOH9/xWbU/aatX6nzQ8Gxz+kXLBs
- YnUiwB0XsaV4BskMSP4IeNh3C2kSBn/bjZcbAfgFBqJ181o+AydQDVqG47sn+y0CPngFN0h27HZ
- i3t4YD83MHbFA/K8kRNtcw4apejgra5xvvPyG5FICzpbCe3WFBljeRtg360+l5pUfMFcqVTmEA=
- =
-X-Google-Smtp-Source: AGHT+IFtFXA0xCexhG7ezEYeGusVFz2h2wR9DiTKZsUvW4VMIi55VULTSoUi9FXA306bINke54IKhg==
-X-Received: by 2002:a17:90b:35cc:b0:30e:3718:e9d with SMTP id
- 98e67ed59e1d1-313f1d5077fmr21766876a91.35.1750176428956; 
- Tue, 17 Jun 2025 09:07:08 -0700 (PDT)
-Received: from [192.168.0.102] ([186.215.60.20])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-313c1b2b545sm10805794a91.0.2025.06.17.09.07.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Jun 2025 09:07:08 -0700 (PDT)
-Message-ID: <825d1a10-0e47-4a73-a274-a01380785ec4@linaro.org>
-Date: Tue, 17 Jun 2025 13:06:53 -0300
+ d=1e100.net; s=20230601; t=1750178033; x=1750782833;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7g71wEGz4iCfItRB+5Qq2e0WxZcJFHzJDCahI6238Rg=;
+ b=bYcwu24Nso0lYhdVzirAVMpL7UoGxCBdIsfJfpeXJctcg455v4jwu3X8i39nRC2Y20
+ yUwuNq09bvZWG706iLXJObxZfX0ZRC4bRHAdUO/Scza58X3QNDnWPiHjj/zxNRqUwLdb
+ HfpOCZuu7MbhVeXfC5Ylzfhca4OGL1Lqm3LIzgcUbztYrHx14884YgbEjcEF2MP9xdt3
+ 4vggJu9/ExkSbJB1rapMyuh5r7q68vkVp+8oH8vL4XveGIvv+u167KJY3ofixH5sZBvs
+ wYxNFYl01MIvs2KTLVHakrUWYECo9vMrUmbcwI9GnY4bVCC0LxQwGsyquO/E+cP+TFrC
+ 29QQ==
+X-Gm-Message-State: AOJu0YzNzXbsJMZpQ/8CPESQAMaeeN0VN0ydFFTmTLlx+KF67JRz5wZ/
+ 55Gg/aMdesdPBYt6lRvoKTmKHU4suOyDnQQqqkvHtUihwpiYOXq1XfpoMGqfQafpeYQ=
+X-Gm-Gg: ASbGncsFdTDNFA1lLemxk/AzQ6DtcV4MtKODISyMGlAaEqT3KxRmB5CQWcO+usJNZR5
+ aSjGNmuE1XKHFkHxnk6tM7o5SoxoSeYRqcuj0UeKtSwURz9dhUQHzT3qFfCuTt3grTaSjS/+6ah
+ ujWfTfIKyr9NDTgpdhU1qRZL0rSgCA3SIoKLS+U670r9Cne3MW0ntaHnpwhAkHzXv4pY8K7CkYN
+ 9+iLkwpWAD91BZibmvoiJsmbeCte9bLLPS7FMirEra5YS33EIfhypffnu4VpFOfQlWBddtTnTae
+ SOWgv/Y2fpuuh0a722BTawRBo6zVkuvhkycaStRjF15ZcbtkjMURr0N+DgZiZPk=
+X-Google-Smtp-Source: AGHT+IGXjDEcTadgL/tfpywilh4gF6w7AoZlWcBsmeY/+2CORMJLZuFGY8Lwl3XURIT66o/5GXOVnQ==
+X-Received: by 2002:a05:6000:4021:b0:3a3:6595:9209 with SMTP id
+ ffacd0b85a97d-3a5723a3986mr12184278f8f.36.1750178033049; 
+ Tue, 17 Jun 2025 09:33:53 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4532e232e4asm178681425e9.11.2025.06.17.09.33.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Jun 2025 09:33:52 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id DB2275F834;
+ Tue, 17 Jun 2025 17:33:51 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Cornelia Huck <cohuck@redhat.com>, qemu-arm@nongnu.org,
+ Mark Burton <mburton@qti.qualcomm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Alexander Graf <graf@amazon.com>,
+ kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [RFC PATCH 00/11] kvm/arm: trap-me-harder implementation
+Date: Tue, 17 Jun 2025 17:33:40 +0100
+Message-ID: <20250617163351.2640572-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/8] qtest/bios-tables-test: Add test for when ITS is
- off on aarch64
-To: eric.auger@redhat.com, qemu-devel@nongnu.org, philmd@linaro.org,
- mst@redhat.com
-Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, udo@hypervisor.org,
- ajones@ventanamicro.com, peter.maydell@linaro.org, imammedo@redhat.com,
- anisinha@redhat.com
-References: <20250616131824.425315-1-gustavo.romero@linaro.org>
- <20250616131824.425315-6-gustavo.romero@linaro.org>
- <fe166574-9e53-4e27-9c12-c91f3fc774c7@redhat.com>
- <3881403f-c618-47d1-afec-27592bd7be99@linaro.org>
- <74c1948a-3c90-431b-805f-b5a4238beecb@redhat.com>
-Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <74c1948a-3c90-431b-805f-b5a4238beecb@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pj1-x1031.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,218 +102,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Eric,
+The following is an RFC to explore how KVM would look if we forwarded
+almost all traps back to QEMU to deal with.
 
-On 6/17/25 12:51, Eric Auger wrote:
-> 
-> 
-> On 6/17/25 5:12 PM, Gustavo Romero wrote:
->> Hi Eric,
->>
->> On 6/17/25 10:34, Eric Auger wrote:
->>> Hi Gustavo,
->>>
->>> On 6/16/25 3:18 PM, Gustavo Romero wrote:
->>>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>
->>>> Arm64 GIC ITS (Interrupt Translation Service) is an optional piece of
->>>> hardware introduced in GICv3 and, being optional, it can be disabled
->>>> in QEMU aarch64 VMs that support it using machine option "its=off",
->>>> like, for instance: "-M virt,its=off".
->>>>
->>>> In ACPI, the ITS is advertised, if present, in the MADT (aka APIC)
->>>> table and the remappings from the Root Complex (RC) and from the SMMU
->>> I would rephrase "and the remappings" by "while the RID mappings from
->>> ..."
->>
->> hmm true. Do you think it would be even better to say something like:
->>
->> "while the RID and StreamID mappings from the RC and from the SMMU nodes
->> to the ITS Group nodes are described in the IORT table."?
->>
->> I'm saying that because I understand the map from RC to ITS is from
->> a RID to a DeviceID, while map from the SMMU to ITS is from a StreamID to
->> a DeviceID, hence say "while the RID and StreamID". Does it make sense?
-> I think I won't bother and would simply talk about "ID mappings" which
-> is the generic term used in the IORT spec.
->>
->>
->>>> nodes to the ITS Group nodes are described in the IORT table.
->>>>
->>>> This new test verifies that when the "its=off" option is passed to the
->>>> machine the ITS-related data is correctly pruned from the ACPI tables.
->>>>
->>>> The new blobs for this test will be added in a following commit.
->>>>
->>>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>> ---
->>>>    tests/qtest/bios-tables-test-allowed-diff.h |  2 ++
->>>>    tests/qtest/bios-tables-test.c              | 21
->>>> +++++++++++++++++++++
->>>>    2 files changed, 23 insertions(+)
->>>>
->>>> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h
->>>> b/tests/qtest/bios-tables-test-allowed-diff.h
->>>> index dfb8523c8b..a88198d5c2 100644
->>>> --- a/tests/qtest/bios-tables-test-allowed-diff.h
->>>> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
->>> I still fail to understand whether empty tables + update if the
->>>
->>> bios-tables-test-allowed-diff.h need to be done prior to adding the
->>> new test.
->>>
->>>    * How to add or update the tests or commit changes that affect ACPI
->>> tables:
->>>    * Contributor:
->>>    * 1. add empty files for new tables, if any, under tests/data/acpi
->>>    * 2. list any changed files in
->>> tests/qtest/bios-tables-test-allowed-diff.h
->>>    * 3. commit the above *before* making changes that affect the tables
->>
->> I think the best reference I have to it is the reply from Igor to me
->> here:
->>
->> https://lore.kernel.org/qemu-devel/20250506173640.5ed03a16@imammedo.users.ipa.redhat.com/
->>
->>
->> I understand there are two possibilities when adding a new test:
->>
->> 1) Like in the steps above, 1., 2., and 3., which are taken from the
->> bios-tables-test.c.
->>
->> That gives option A:
->>
->> A Patch 1: New empty files uuder tests/data/acpi + list of them in
->> tests/qtest/bios-tables-test-allowed-diff.h
->> A Patch 2: New test (since the blobs are wrong but we added them in
->> Patch 1 to allow list, there is no fail in test
->> A Patch 3: Update blobs (actually you are adding the real blobs, or
->> updating from empty to real one)
->>
->> or (what I'm doing here), option B:
->>
->> B Patch 1: (A Patch 1) + (A Patch 2)
->> B Patch 2: Like (A Patch 3), i.e., just update the blobs (add the real
->> ones)
->>
->> This is the sequence Igor confirmed it's ok:
->>
->>> - Patch 1     : Add the new test, add the empty blobs *.suffix files,
->>> whitelist such a blobs
->>> - Patch 2     : Update the blobs in Patch 1 with the ones that make
->>> the new test pass and remove them from the whitelist
->>
->> Also, Igor says it's ok to add to the allow list the blobs that change
->> at the same time
->> we add test that changes the very same blobs even when updating an
->> existing test (not adding a
->> new one, which is slight variation):
->>
->>> - Patch 3     : Add the APIC.suffix blob to the whitelist (the table
->>> that changes due to the fix)
->>> - Patch 4 - n : Fix(es)
->>
->> "3 is not binary so it can be folded into 4 or be a separate patch
->> (either way works for me)"
->>   
->> The important thingy is to follow the rules:
->>
->> 1) Don't make a commit which fails the tests
->> 2) Don't fold a blob with the commit that changes the blob
->>
->> That's my current understanding about it.
->>
->> Let me know if that makes sense to you. We need to reach a consensus
->> on this, confusing as
->> these acrobatics may be! :)
-> 
-> Actually I checked your patch and effectively it does not produce any
-> checkpatch error related to bios-tables-test rules so your patch is OK
-> (yesterday I discovered with the ACPI PCI HP series that checkpatch
-> points out infractions to bios-tables-test.c rules!). Since it results
-> in less patches I think it is better. May be worth to clarify that
-> directly in bios-tables-test.c though.
+Why - won't it be horribly slow?
+--------------------------------
 
-oh I didn't know it! wow, glad Option B passes the checkpatch scrutinity heh
+Maybe, that's why its an RFC.
 
-Yes I think I can update the doc now I confirmed with Igor the details.
+Traditionally KVM tries to avoid full vmexit's to QEMU because the
+additional context switches add to the latency of servicing requests.
+For things like the GIC where latency really matters the normal KVM
+approach is to implement it in the kernel and then just leave QEMU to
+handling state saving and migration matters.
 
-I'll cc Igor and you when submitting the doc improvement.
+Where we have to exit, for example for device emulation, platforms
+like VirtIO try really hard minimise the number of times we exit for
+any data transfer.
 
-Thanks.
+However hypervisors can't virtualise everything and for some QEMU
+use-cases you might want to run the full software stack (firmware,
+hypervisor et all). This is the idea for the proposed SplitAccel where
+EL1/EL0 are run under a hypervisor and EL2+ get run under TCG's
+emulation. For this to work QEMU needs to be aware of the whole system
+state and have full control over anything that is virtualised by the
+hypervisor. We have an initial PoC for SplitAccel that works with
+HVF's much simpler programming model.
 
+This series is a precursor to implementing a SplitAccel for KVM and
+investigates how hacky it might look.
 
-Cheers,
-Gustavo
+Kernel
+------
 
-> Cheers
-> 
-> Eric
->>
->>
->> Cheers,
->> Gustavo
->>
->>>> @@ -1 +1,3 @@
->>>>    /* List of comma-separated changed AML files to ignore */
->>>> +"tests/data/acpi/aarch64/virt/APIC.its_off",
->>>> +"tests/data/acpi/aarch64/virt/IORT.its_off",
->>>> diff --git a/tests/qtest/bios-tables-test.c
->>>> b/tests/qtest/bios-tables-test.c
->>>> index 0b2bdf9d0d..4201ec1131 100644
->>>> --- a/tests/qtest/bios-tables-test.c
->>>> +++ b/tests/qtest/bios-tables-test.c
->>>> @@ -2146,6 +2146,25 @@ static void
->>>> test_acpi_aarch64_virt_tcg_topology(void)
->>>>        free_test_data(&data);
->>>>    }
->>>>    +static void test_acpi_aarch64_virt_tcg_its_off(void)
->>>> +{
->>>> +    test_data data = {
->>>> +        .machine = "virt",
->>>> +        .arch = "aarch64",
->>>> +        .variant =".its_off",
->>> you have a checkpatch error here.
->>
->> ouch, thanks, will fix in v5.
->>
->>
->> Cheers,
->> Gustavo
->>
->>>> +        .tcg_only = true,
->>>> +        .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
->>>> +        .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
->>>> +        .cd =
->>>> "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
->>>> +        .ram_start = 0x40000000ULL,
->>>> +        .scan_len = 128ULL * 1024 * 1024,
->>>> +    };
->>>> +
->>>> +    test_acpi_one("-cpu cortex-a57 "
->>>> +                  "-M gic-version=3,iommu=smmuv3,its=off", &data);
->>>> +    free_test_data(&data);
->>>> +}
->>>> +
->>>>    static void test_acpi_q35_viot(void)
->>>>    {
->>>>        test_data data = {
->>>> @@ -2577,6 +2596,8 @@ int main(int argc, char *argv[])
->>>>                               test_acpi_aarch64_virt_tcg_acpi_hmat);
->>>>                qtest_add_func("acpi/virt/topology",
->>>>                               test_acpi_aarch64_virt_tcg_topology);
->>>> +            qtest_add_func("acpi/virt/its_off",
->>>> +                           test_acpi_aarch64_virt_tcg_its_off);
->>>>                qtest_add_func("acpi/virt/numamem",
->>>>                               test_acpi_aarch64_virt_tcg_numamem);
->>>>                qtest_add_func("acpi/virt/memhp",
->>>> test_acpi_aarch64_virt_tcg_memhp);
->>> Thanks
->>>
->>> Eric
->>>
->>
-> 
+For this to work you need a modified kernel. You can find my tree
+here:
+
+  https://git.linaro.org/plugins/gitiles/people/alex.bennee/linux/+/refs/heads/kvm/trap-me-harder
+
+I will be posting the kernel patches to LKML in due course but the
+changes are pretty simple. We add a new creation flag
+(KVM_VM_TYPE_ARM_TRAP_ALL) that when activated implement an
+alternative table in KVM's handle_exit() code.
+
+The ESR_ELx_EC_IABT_LOW/ESR_ELx_EC_DABT_LOW exceptions are still
+handled by KVM as the kernel general has to deal with paging in the
+required memory. I've also left the debug exceptions to be processed
+in KVM as the handling of pstate gets tricky and takes care when
+re-entering the guest.
+
+Everything else exits with a new exit reason called
+KVM_EXIT_ARM_TRAP_HARDER when exposed the ESR_EL1 and a few other
+registers so QEMU can deal with things.
+
+QEMU Patches
+------------
+
+Patches 1-2 - minor tweaks that make debugging easier
+Patch   3   - bring in the uapi headers from Kernel
+Patches 4-5 - plumbing in -accel kvm,trap-harder=on
+Patches 6-7 - allow creation of an out-of-kernel GIC (kernel-irqchip=off)
+Patches 8-11- trap handlers for the kvm_arm_handle_hard_trap path
+
+Testing
+-------
+
+Currently I'm testing everything inside an emulated QEMU, so the guest
+host is booted with a standard Debian Trixie although I use virtiofsd to
+mount my real host home inside the guest hosts home:
+
+  ./qemu-system-aarch64 \
+             -machine type=virt,virtualization=on,pflash0=rom,pflash1=efivars,gic-version=max \
+             -blockdev node-name=rom,driver=file,filename=(pwd)/pc-bios/edk2-aarch64-code.fd,read-only=true \
+             -blockdev node-name=efivars,driver=file,filename=$HOME/images/qemu-arm64-efivars \
+             -cpu cortex-a76 \
+             -m 8192 \
+             -object memory-backend-memfd,id=mem,size=8G,share=on \
+             -numa node,memdev=mem \
+             -smp 4 \
+             -accel tcg \
+             -serial mon:stdio \
+             -device virtio-net-pci,netdev=unet \
+             -netdev user,id=unet,hostfwd=tcp::2222-:22 \
+             -device virtio-scsi-pci \
+             -device scsi-hd,drive=hd \
+             -blockdev driver=raw,node-name=hd,file.driver=host_device,file.filename=/dev/zen-ssd2/trixie-arm64,discard=unmap \
+             -kernel /home/alex/lsrc/linux.git/builds/arm64/arch/arm64/boot/Image \
+             -append "root=/dev/sda2" \
+             -chardev socket,id=vfs,path=/tmp/virtiofsd.sock \
+             -device vhost-user-fs-pci,chardev=vfs,tag=home \
+             -display none -s -S
+
+Inside the guest host I have built QEMU with:
+
+  ../../configure --disable-docs \
+    --enable-debug-info --extra-ldflags=-gsplit-dwarf \
+    --disable-tcg --disable-xen --disable-tools \
+    --target-list=aarch64-softmmu
+
+  make qemu-system-aarch64 -j(nproc)
+
+Even with a cut down configuration this can take awhile to build under
+softmmu emulation!
+
+And finally I can boot my guest image with:
+
+  ./qemu-system-aarch64 \
+             -machine type=virt,gic-version=3 \
+             -cpu host \
+             -smp 1 \
+             -accel kvm,kernel-irqchip=off,trap-harder=on \
+             -serial mon:stdio \
+             -m 4096 \
+             -kernel ~/lsrc/linux.git/builds/arm64.initramfs/arch/arm64/boot/Image \
+             -append "console=ttyAMA0" \
+             -display none -d unimp,trace:kvm_hypercall,trace:kvm_wfx_trap
+
+And you can witness the system slowly booting up. Currently the system
+hangs before displaying the login prompt because its not being woken
+up from the WFI:
+
+  [    0.315642] Serial: AMBA PL011 UART driver
+  [    0.345625] 9000000.pl011: ttyAMA0 at MMIO 0x9000000 (irq = 13, base_baud = 0) is a PL011 rev1
+  [    0.348138] printk: console [ttyAMA0] enabled
+  Saving 256 bits of creditable seed for next boot
+  Starting syslogd: OK
+  Starting klogd: OK
+  Running sysctl: OK
+  Populating /dev using udev: done
+  Starting system message bus: done
+  Starting network: udhcpc: started, v1.37.0
+  kvm_wfx_trap 0: WFI @ 0xffffffc080cf9be4
+
+Next steps
+----------
+
+I need to figure out whats going on with the WFI failing. I also
+intend to boot up my Aarch64 system and try it out on real hardware.
+Then I can start looking into the actual performance and what
+bottlenecks this might introduce.
+
+Once Philippe has posted the SplitAccel RFC I can look at what it
+would take to integrate this approach so we can boot a full-stack with
+EL3/EL2 starting.
+
+Alex Bennée (11):
+  target/arm: allow gdb to read ARM_CP_NORAW regs (!upstream)
+  target/arm: re-arrange debug_cp_reginfo
+  linux-headers: Update to Linux 6.15.1 with trap-mem-harder (WIP)
+  kvm: expose a trap-harder option to the command line
+  target/arm: enable KVM_VM_TYPE_ARM_TRAP_ALL when asked
+  kvm/arm: allow out-of kernel GICv3 to work with KVM
+  target/arm: clamp value on icc_bpr_write to account for RES0 fields
+  kvm/arm: plumb in a basic trap harder handler
+  kvm/arm: implement sysreg trap handler
+  kvm/arm: implement a basic hypercall handler
+  kvm/arm: implement WFx traps for KVM
+
+ include/standard-headers/linux/virtio_pci.h |   1 +
+ include/system/kvm_int.h                    |   4 +
+ linux-headers/linux/kvm.h                   |   8 +
+ linux-headers/linux/vhost.h                 |   4 +-
+ target/arm/kvm_arm.h                        |  17 ++
+ target/arm/syndrome.h                       |   4 +
+ hw/arm/virt.c                               |  18 +-
+ hw/intc/arm_gicv3_common.c                  |   4 -
+ hw/intc/arm_gicv3_cpuif.c                   |   5 +-
+ target/arm/cpu.c                            |   2 +-
+ target/arm/debug_helper.c                   |  12 +-
+ target/arm/gdbstub.c                        |   6 +-
+ target/arm/helper.c                         |  15 +-
+ target/arm/kvm-stub.c                       |   5 +
+ target/arm/kvm.c                            | 243 ++++++++++++++++++++
+ hw/intc/Kconfig                             |   2 +-
+ target/arm/trace-events                     |   4 +
+ 17 files changed, 334 insertions(+), 20 deletions(-)
+
+-- 
+2.47.2
 
 
