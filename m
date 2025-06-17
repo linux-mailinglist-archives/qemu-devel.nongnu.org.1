@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 366D3ADD697
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B832DADD6CD
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:37:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRZGi-0000sZ-8A; Tue, 17 Jun 2025 12:34:44 -0400
+	id 1uRZIn-0002O8-SS; Tue, 17 Jun 2025 12:36:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRZG5-0000lO-LS
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:08 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1uRZGC-0000mJ-Re
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:10 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRZG1-0000dP-Cl
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:00 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4533bf4d817so20403475e9.2
- for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 09:33:56 -0700 (PDT)
+ id 1uRZG2-0000dd-0G
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:02 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3a35c894313so6707317f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 09:33:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1750178036; x=1750782836; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=I4mTaJwkAe0rgPcWQ6kEwY/uI1enES5AbvkajjNAiL4=;
- b=FT3jVPIkt5uUfNwK/IZvjugQHOE5Fn6jzm8TZt0UNPS8R1z2MbtgBKoosXGoWIDSBs
- eeW6yfR+uVYPLIJK6GWDuKfsODCWwZ08q5tDCwOExP1bKccHjFRI6/uLS0cLPLf28EvS
- S7xSp8efVGYldEJR5/6RzD2j2x+z8u1MymYOd4MPTTwtn6eWWMMQ/G+8nyYQ8SSv31Is
- 9GVjv70tLTlM0XGn5ou6aTFohK2FxcRpDlIzBq7/6b4cOfLoiSFxVBiniGj6UWAXzgZL
- LnKNQ4dSlT0J0h1jxdnon4t2buxeZAxlRiC2xrrg5MXQdmUMQZPXQJdf6jMPCKv3aaOL
- H4/A==
+ bh=rbBMXE6agkH4y/ezmub6pqd0ynNZ26J7iJ0lGND0r7M=;
+ b=UEiSHrVyH7ktfqk3LQ7oQjSUP5c0umM+t2HKVzd0hRRdgEkkRRYnGnkUHNzyJpvDY2
+ e1vNCUeOjDAhrU63aYFuwjuOKaK7Nz4LJrmxQBO5vFbLHZcVzzjPHiSb3glgbOmEx9mp
+ TrYI/nrOFQaQOxXKR5YC5Soycn+QYHwE/lCw/ozqx7TuqYf6hPAfRgsQPk12u4/sA88O
+ Jql8uxaXBBozxmZdvsIJZa2UWIfBlC/11z8obfVw/ShdVeKW3EUIUC+Qej1acwwG1v14
+ 0PMoiFlfXRYLjszJokzTiq2o5MSMFvEPVQnBLHh/G3jfgP6DznwIHJIBOKLinuf2DU2y
+ dPWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750178036; x=1750782836;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I4mTaJwkAe0rgPcWQ6kEwY/uI1enES5AbvkajjNAiL4=;
- b=V+byQ2n72766k1SskNN6pg06WLalCDa9bOpbwtopW73ZQoI0G0MnJIYCyGxXg6+/do
- LNoI7tCOm4vf9NOkuO4eNdSG53w1nSv6Iq+LHC/FotgXQ5i+G6aJpj5UnTYnq/cURz+W
- SfP03kvuzHeKzkfbZpa7mIYnlVLi2+EgDFm1wES2TW+hWwl1eKHgjtY9x2cOdd3e9sTj
- diRtOxWckFlr6hbhgR2jIANIK5Pa4dpFmc0Y2ChPnilcNaFe7bQXTBGOwx+h+7gKkQ8N
- zLo0L+NoW4/mqydUB8YgFfCwRwPdWgc1RXqb9cwgIkF9sx4eZfY4E/KZcHNqdZkzGBiX
- 4CSA==
-X-Gm-Message-State: AOJu0YzdsLiOB/FaJXo+oKl/N/cNA3LC4VKEJGkxFXxB4ogh3ZfshQNc
- Xfj/hyEPxnTExAGHXWWPYDOSd8CHkxPzsuE3+Y6rp+nZFrVAeNVNc2Ertthbf86xtq4=
-X-Gm-Gg: ASbGncvRMvHems7MB1X6VBKL/5UknHCKJHzlHKPwCQCL/+w/FJcdXDOwCqNPmrPrWoP
- TiCX7kBkPa28bSEyDTmY5wwm4MHVQwNG00+52xGQPHtg4VzOJS/Z7Ds4UqjstAHDibGFW7wDH+j
- LnrJnlsdUckosvFGXZpxKFEEyxzV9Jj/Mpx4RHc6CFiP6fdc9WFynBfqIivBZGwBTR6RaIbygGo
- MQAVeHJkTv9hDhfxZKBveabfp8a1QedsHSwTMuYbaCW2hrJKK0lOPg5rSFIVnP9HQf6nfcX1/7e
- fdlaBbpfI9347z3EEsxJRlr+BFfl4DwAnnOp6gCRF5cWQp8UgJx44xg7kLNVEKw=
-X-Google-Smtp-Source: AGHT+IESqAJjlJORLPBH6qBRxEOGX0LC6olwh+WEK+ySWojj+8sfKO3Ap0Z35PSoPGipXAysw/qWZQ==
-X-Received: by 2002:a05:600c:1e02:b0:43d:fa59:af97 with SMTP id
- 5b1f17b1804b1-4533cac919bmr120131075e9.32.1750178035689; 
- Tue, 17 Jun 2025 09:33:55 -0700 (PDT)
+ bh=rbBMXE6agkH4y/ezmub6pqd0ynNZ26J7iJ0lGND0r7M=;
+ b=xDeoy+TRjOYLp3sU9tn2G4aMJUBSCLpLiJwEOX0Gl0CYjADGqtb84nI/ER9GksLJhA
+ awvW1HoEtmON7RD5xKPLKiYTrwS7iNUtCht9sjKb6AvDzaoqSp2pcYScrjZayStBJJcC
+ PuRuHXWx4SWQDI0fysZLQyaxVlNBo9kU9cN5ZclSI2oX9gEAFbAjlfPX2GWlUd8bQr7w
+ b8+0FLMFgv/pJWUwnpna/CifpYMO1i5KjEmVIMfi9kXoLuybrP1kSHUOyhDdjRSKU0lz
+ gBkn56DRTJUDo+/a1dGfGD8k8pemCiewP8/uDz4t/V3vHbj90/MgtWYPHrkTVBjmf22g
+ nzFw==
+X-Gm-Message-State: AOJu0YxDiU9URDoqYh+9NANTA+u08fwPmnvhNA/SgqP5v1LWm769YAe4
+ LaMrIAXZITVPVnb8storq6dmvaBvmxVJgT+U1Xddib7fNZFBjlgBoSckrQD35Q4i+ak=
+X-Gm-Gg: ASbGncv2wccL1TUw3FlNdq9zlhFVWRVUWuU+6PYDOgYdl5LAHQ7wpTu+MvpH9k/lT1c
+ lLk60iNG5kNiJOnn/vZ42Pt/Ci2TdzXmKJddvGPrjfw1PHLmiUTJIyJAUlRWpLd30i1eYSQ8Eam
+ +E+iwCxYUOi5Q1l07MTj5h5cxZkNE1UHakUi8+UbMGgwcsr021Fh5wSPhH3VnIqFTsWVwBHnyVu
+ Vu6JaZQQBD6sTILHWmYKIRqHNOBG+jhRxbd5trYKhL0sshn1ZTaWpZDHP5AUEPqjPEQCV5n9ril
+ oDNl1K8XtcUT+Uri071gdnfhSLZgUQBjZ2C6XSNI+8DnjxX7c4Z6h3Jl05CI3DU=
+X-Google-Smtp-Source: AGHT+IHa+tTRhzZC5JgvxX7eaDorwkAI71UFHvcJbR60AGJdJK9kAKmeytdmd5ysTcE1li+eFVBMhw==
+X-Received: by 2002:a05:6000:2507:b0:3a4:efc0:c90b with SMTP id
+ ffacd0b85a97d-3a5723974e2mr12693214f8f.15.1750178036481; 
+ Tue, 17 Jun 2025 09:33:56 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4532e232219sm178762495e9.9.2025.06.17.09.33.53
+ ffacd0b85a97d-3a568a54d1fsm14265133f8f.2.2025.06.17.09.33.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 17 Jun 2025 09:33:54 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5B8825F8B5;
+ by draig.lan (Postfix) with ESMTP id 77B535F90B;
  Tue, 17 Jun 2025 17:33:52 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,18 +72,17 @@ Cc: Cornelia Huck <cohuck@redhat.com>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 05/11] target/arm: enable KVM_VM_TYPE_ARM_TRAP_ALL when
- asked
-Date: Tue, 17 Jun 2025 17:33:45 +0100
-Message-ID: <20250617163351.2640572-6-alex.bennee@linaro.org>
+Subject: [RFC PATCH 06/11] kvm/arm: allow out-of kernel GICv3 to work with KVM
+Date: Tue, 17 Jun 2025 17:33:46 +0100
+Message-ID: <20250617163351.2640572-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250617163351.2640572-1-alex.bennee@linaro.org>
 References: <20250617163351.2640572-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -106,80 +105,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Previously we suppressed this option as KVM would get confused if it
+started trapping GIC system registers without a GIC configured.
+However if we know we are trapping harder we can allow it much like we
+do for HVF.
+
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/kvm_arm.h | 9 +++++++++
- hw/arm/virt.c        | 7 +++++--
- target/arm/kvm.c     | 7 +++++++
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ target/arm/kvm_arm.h       |  8 ++++++++
+ hw/arm/virt.c              | 11 +++++++++--
+ hw/intc/arm_gicv3_common.c |  4 ----
+ target/arm/cpu.c           |  2 +-
+ target/arm/kvm.c           |  6 ++++++
+ hw/intc/Kconfig            |  2 +-
+ 6 files changed, 25 insertions(+), 8 deletions(-)
 
 diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 7dc83caed5..a4f68e14cb 100644
+index a4f68e14cb..008a72ccd4 100644
 --- a/target/arm/kvm_arm.h
 +++ b/target/arm/kvm_arm.h
-@@ -191,6 +191,15 @@ bool kvm_arm_sve_supported(void);
+@@ -200,6 +200,14 @@ bool kvm_arm_mte_supported(void);
   */
- bool kvm_arm_mte_supported(void);
+ int kvm_arm_get_type(MachineState *ms);
  
 +/**
-+ * kvm_arm_get_type: return the base KVM type flags
++ * kvm_arm_is_trapping_harder: return true if trapping harder
 + * @ms: Machine state handle
 + *
-+ * Returns the base type flags, usually zero. These will be combined
-+ * with the IPA flags from bellow.
++ * return true if trapping harder
 + */
-+int kvm_arm_get_type(MachineState *ms);
++bool kvm_arm_is_trapping_harder(MachineState *ms);
 +
  /**
   * kvm_arm_get_max_vm_ipa_size:
   * @ms: Machine state handle
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 9a6cd085a3..55433f8fce 100644
+index 55433f8fce..e117433cc7 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -3037,11 +3037,14 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
- 
- /*
-  * for arm64 kvm_type [7-0] encodes the requested number of bits
-- * in the IPA address space
-+ * in the IPA address space.
-+ *
-+ * For trap-me-harder we apply KVM_VM_TYPE_ARM_TRAP_ALL
-  */
- static int virt_kvm_type(MachineState *ms, const char *type_str)
- {
-     VirtMachineState *vms = VIRT_MACHINE(ms);
-+    int kvm_type = kvm_arm_get_type(ms);
-     int max_vm_pa_size, requested_pa_size;
-     bool fixed_ipa;
- 
-@@ -3071,7 +3074,7 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
-      * the implicit legacy 40b IPA setting, in which case the kvm_type
-      * must be 0.
-      */
--    return fixed_ipa ? 0 : requested_pa_size;
-+    return fixed_ipa ? kvm_type : deposit32(kvm_type, 0, 8, requested_pa_size);
+@@ -1998,9 +1998,16 @@ static void finalize_gic_version(VirtMachineState *vms)
+             gics_supported |= VIRT_GIC_VERSION_3_MASK;
+         }
+     } else if (kvm_enabled() && !kvm_irqchip_in_kernel()) {
+-        /* KVM w/o kernel irqchip can only deal with GICv2 */
++        MachineState *ms = MACHINE(vms);
+         gics_supported |= VIRT_GIC_VERSION_2_MASK;
+-        accel_name = "KVM with kernel-irqchip=off";
++        if (kvm_arm_is_trapping_harder(ms) &&
++            module_object_class_by_name("arm-gicv3")) {
++            gics_supported |= VIRT_GIC_VERSION_3_MASK;
++            accel_name = "TMH KVM with kernel-irqchip=off";
++        } else {
++            /* KVM w/o kernel irqchip can only deal with GICv2 */
++            accel_name = "KVM with kernel-irqchip=off";
++        }
+     } else if (tcg_enabled() || hvf_enabled() || qtest_enabled())  {
+         gics_supported |= VIRT_GIC_VERSION_2_MASK;
+         if (module_object_class_by_name("arm-gicv3")) {
+diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
+index 1cee68193c..9a46afaa0d 100644
+--- a/hw/intc/arm_gicv3_common.c
++++ b/hw/intc/arm_gicv3_common.c
+@@ -662,10 +662,6 @@ const char *gicv3_class_name(void)
+     if (kvm_irqchip_in_kernel()) {
+         return "kvm-arm-gicv3";
+     } else {
+-        if (kvm_enabled()) {
+-            error_report("Userspace GICv3 is not supported with KVM");
+-            exit(1);
+-        }
+         return "arm-gicv3";
+     }
  }
- 
- static int virt_hvf_get_physical_address_range(MachineState *ms)
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index e025e241ed..f7618a3038 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1463,7 +1463,7 @@ static void arm_cpu_initfn(Object *obj)
+ # endif
+ #else
+     /* Our inbound IRQ and FIQ lines */
+-    if (kvm_enabled()) {
++    if (kvm_enabled() && kvm_irqchip_in_kernel()) {
+         /*
+          * VIRQ, VFIQ, NMI, VINMI are unused with KVM but we add
+          * them to maintain the same interface as non-KVM CPUs.
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 8b1719bfc1..ed0f6024d6 100644
+index ed0f6024d6..c5374d12cf 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -515,6 +515,13 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
-     return ret > 0 ? ret : 40;
+@@ -522,6 +522,12 @@ int kvm_arm_get_type(MachineState *ms)
+     return s->trap_harder ? KVM_VM_TYPE_ARM_TRAP_ALL : 0;
  }
  
-+int kvm_arm_get_type(MachineState *ms)
++bool kvm_arm_is_trapping_harder(MachineState *ms)
 +{
 +    KVMState *s = KVM_STATE(ms->accelerator);
-+
-+    return s->trap_harder ? KVM_VM_TYPE_ARM_TRAP_ALL : 0;
++    return s->trap_harder;
 +}
 +
  int kvm_arch_get_default_type(MachineState *ms)
  {
      bool fixed_ipa;
+diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
+index 7547528f2c..0eb37364a7 100644
+--- a/hw/intc/Kconfig
++++ b/hw/intc/Kconfig
+@@ -23,7 +23,7 @@ config APIC
+ 
+ config ARM_GIC
+     bool
+-    select ARM_GICV3 if TCG
++    select ARM_GICV3 # can be used by TCG, HVF or KVM
+     select ARM_GIC_KVM if KVM
+     select MSI_NONBROKEN
+ 
 -- 
 2.47.2
 
