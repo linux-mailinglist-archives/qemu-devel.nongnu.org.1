@@ -2,96 +2,213 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4CBADC882
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 12:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7C7ADC8B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 12:53:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRTfH-0007Hb-2t; Tue, 17 Jun 2025 06:35:39 -0400
+	id 1uRTvB-0001Tt-Q2; Tue, 17 Jun 2025 06:52:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRTfB-0007HR-AN
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 06:35:33 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRTf8-00062t-JW
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 06:35:33 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43edecbfb94so61749705e9.1
- for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 03:35:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750156527; x=1750761327; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GPvPGzFs0a3PkB4JAWcIGIJWqK5K2TevyIQjprK6q1k=;
- b=e4d3PwKhTql+pHXzOrLcU6DsPTAK8Hvdras+h/DC8zbzH9oBzDUTFuXOmlV/vmiUmj
- hahd/imrX0XwoJ+8G+fAsixvNGdsnEqR7LMhNqNkxMrk7o9XhJhLF705oV3LStOXVapc
- 0EzezyJIwetq3/OK/uthOy64mSMKJTDg4qj7sZdDqeQis388bOjqgVG8SedV/DIgKyQ6
- E5093+Wic7CpyuA6qDu+iFsBj75i5PKm4tmTJn2ds7sQdGiLxcg4WlZxTE7HGIxZWvNJ
- nOmNISHq04TM1azIonARPt2Zf3F2HLFVxgTyDaXeH9QaA75A6StbUUJF4VLqwv3cgICS
- 2MmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750156527; x=1750761327;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=GPvPGzFs0a3PkB4JAWcIGIJWqK5K2TevyIQjprK6q1k=;
- b=iECy2PlP+bSy6ZrIJ+UK5Tg+nmkCGrkKRGTe9N+wpkoVNMZQnjOCP3yHIOKSD1LAYv
- oyJJKNrLuj9My0fnX4FMGo2QdFtct6L0hxzXSeEAuvlhaMR1A/PIaJJAy70njwdo/qaJ
- YcuvfLLQrqgixlbrKg0lmfmyZLPIU8kLxXnKfMpmDmYC63LgIMHmKzc10Q1GK9UaJlXK
- IOAXmMKtY8JHF0Hgtg3Qh+B0+nnca8xvXDxUfBX3lDYkNMlQ3sFoLa0rmOIPJhkuDhxf
- Ea49aZaiaaLplfEiddUm3Zr4hDYcv0YoaLEapBZh7zL5YtYcE3PfvMXGgCA731TCMICw
- w9iw==
-X-Gm-Message-State: AOJu0YxyO5nv/QwCIbjOFbif2NAw3KCWO61d8I/vbBWbpUXMkKotWejp
- 6RD8/2YxbHICGpVT84vue6Xrw82yUmF7amgp8EMtn0of5cHrOXeptNCDClzSN3xyDoc=
-X-Gm-Gg: ASbGnctunvc0Z+m+Kc/Ff141oFt0F/E49Wcx3hQfi1MNEJcVZweMCelB/39BbmFmtaw
- epxi4EIatX2BHlXmTxbjG10WvhSynCFIf+SY1Z4NLpPz60ZUUALPCUk0bOa2yATXh9YMygunELD
- SR/wFlWmcj0Izzxu8ySFhSqNXnavh//duFfB+/3pfFQRpwR88kxLYGsqeS/Apia9Ru7H0tGgAAb
- NdFCZLIw7VnhlJTyzlyd60hA8Dfkcg3/gkiNXCjl+cQBYYxDInosbkMe0uU1xuPwTMzI+Crjl/b
- H377AgtTnObukJxr7lvUTniI7Da04s8LOPNo71JOU9HNiKLj8AH9z7gcWw5AOQo=
-X-Google-Smtp-Source: AGHT+IGCdgPWXS1A4l5Y8ZFCMXmwkvCP/rG9QQ7Wpi8QPSpwgxZH2q/vIp9SWwF7c1b0tUPMSMxUNA==
-X-Received: by 2002:a05:600c:1e1d:b0:442:ccfa:1461 with SMTP id
- 5b1f17b1804b1-4533ca6ace2mr130706555e9.13.1750156527018; 
- Tue, 17 Jun 2025 03:35:27 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4532de8c2d2sm177401215e9.1.2025.06.17.03.35.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Jun 2025 03:35:26 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B706D5F834;
- Tue, 17 Jun 2025 11:35:25 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Rowan Hart <rowanbhart@gmail.com>
-Cc: qemu-devel@nongnu.org,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Yanan Wang <wangyanan55@huawei.com>,  Mahmoud
- Mandour <ma.mandourr@gmail.com>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Alexandre Iooss <erdnaxe@crans.org>,  Zhao
- Liu <zhao1.liu@intel.com>,  Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v12 6/7] plugins: Add patcher plugin and test
-In-Reply-To: <20250611232409.2936521-7-rowanbhart@gmail.com> (Rowan Hart's
- message of "Wed, 11 Jun 2025 16:24:08 -0700")
-References: <20250611232409.2936521-1-rowanbhart@gmail.com>
- <20250611232409.2936521-7-rowanbhart@gmail.com>
-User-Agent: mu4e 1.12.11; emacs 30.1
-Date: Tue, 17 Jun 2025 11:35:25 +0100
-Message-ID: <87bjqmveoi.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1uRTv6-0001TW-Qy
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 06:52:00 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1uRTv3-0007WD-8Q
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 06:52:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1750157517; x=1781693517;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=RuBBZChyvHxK4bznW27KV2t7iIZOenOvK2x0Wl6GeKw=;
+ b=CPHUkti1XiOPybeWOUOSOgqeOAf6hYbxPYUU1WdDOziSNhH7Aa7BKYH1
+ 9jeztCmeRo3Eiq+3l11Wr038qFM7dQG5I+LirMvyDsNE6hHcoMiqY0IRL
+ THxGDaHsQpMdeQ7ZIdx+V3e3YF37v7m5swvW81Vf2m6rHzjZ0HQBgKvQr
+ D9YiF7z7tBh8I62a3fViF3TG0IajD/5FmnoNH9nzcLPy+P64PxeCk3rIy
+ 2D057+S7F0Dq26GF4rCK4tPe7fUrEwB6GqEWnJR9CYvNYVshp41MSvtXZ
+ IipNv29/TjZIy29Kz4H4YyfoGVrPIDACG9AMMrt0P+Xmy+fe69EuyRPGf A==;
+X-CSE-ConnectionGUID: sYTEZjygQ12gk9/9wlNong==
+X-CSE-MsgGUID: 8HWievQoS866Rs4sV0T7pQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="63683617"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="63683617"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2025 03:51:50 -0700
+X-CSE-ConnectionGUID: b9IE90DMQHeqlh1pcjRGOQ==
+X-CSE-MsgGUID: 8VmOuJy9TMueGKs0Ekgy3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="148656864"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2025 03:51:49 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 17 Jun 2025 03:51:47 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Tue, 17 Jun 2025 03:51:47 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.76)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 17 Jun 2025 03:51:45 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TMjJkbVbZZ5iOHBPEax/J9ow6RKCghFbtS1TldXMjqJLMP4zRvABgl6Uk6Zc0d2xgWxt/sC+0A894+0M1rQnKEXBmHPWD8rs/hCJcyCjUaqSgQaESS822sFt541fuogo2SJ5wtZcyzelHhL1Oc/7k4wLml+FDbGoJ6m/3tsg2Yt1teyTG80/FIrWW2e/knWjSpqQtcZew77dmK65Bce4kzkEvrAO+e3EnPKo3c8cghmyxjpXleUwbHTdvd1SHP4LL1qvWwDwKGJ5JdkjoQhu7HWaebLC6dVAQl2sGo91e3ZnFoMFWP5lq9q24dg/KxHuK8Zze7QLMhX0+/B90Uer3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sR8N/pGSoFE0QREOZcs2NrdKDpno/jOIdmMaz7P4LSw=;
+ b=VtryyAr/pxV9ol0/LQxBzejXtlzcPMZzdoE5+ZUosC1WnQX4rXRhQ+ps/A5KbCA55NmAZAftG/J1ddtWXWu8o5tt06K7ResQbsWVtMdhTApr+URPtSnSDF+IsYQDnYwj0Y2DwYdtPUJZU6svI5U2Okzz9GT3mIUW958Lsq7DZ8W8k5XjVmdskfiGo0cvbzXKkgE+IocipSXiFSDFcmyYo3lnBC+hu8JBlNvqphueSh+hQXAEod/EUAiVRM2aZUuQkyi8lIoaSpZt+Yr9um5CsdEs0lWyP8qHI7pFDvVLBE9m4f27vj/4dGtwYJuicrCoEOqWDDCTtopvjDNL02Aqng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com (2603:10b6:8:141::20)
+ by PH0PR11MB5013.namprd11.prod.outlook.com (2603:10b6:510:30::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Tue, 17 Jun
+ 2025 10:51:42 +0000
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a]) by DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a%7]) with mapi id 15.20.8835.027; Tue, 17 Jun 2025
+ 10:51:42 +0000
+Message-ID: <9add1df3-1a2d-41bb-ba6b-ef625e05d7e9@intel.com>
+Date: Tue, 17 Jun 2025 18:57:48 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 02/15] intel_iommu: Optimize context entry cache
+ utilization
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "eric.auger@redhat.com"
+ <eric.auger@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "peterx@redhat.com"
+ <peterx@redhat.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "shameerali.kolothum.thodi@huawei.com"
+ <shameerali.kolothum.thodi@huawei.com>, "joao.m.martins@oracle.com"
+ <joao.m.martins@oracle.com>, "clement.mathieu--drif@eviden.com"
+ <clement.mathieu--drif@eviden.com>, "Tian, Kevin" <kevin.tian@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, "Richard
+ Henderson" <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>
+References: <20250606100416.346132-1-zhenzhong.duan@intel.com>
+ <20250606100416.346132-3-zhenzhong.duan@intel.com>
+ <a36077a1-9eee-4c3b-9365-1b7a9dac3b41@intel.com>
+ <IA3PR11MB913640374E35567AA052B6DD9275A@IA3PR11MB9136.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <IA3PR11MB913640374E35567AA052B6DD9275A@IA3PR11MB9136.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2PR01CA0002.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::21) To DS0PR11MB7529.namprd11.prod.outlook.com
+ (2603:10b6:8:141::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7529:EE_|PH0PR11MB5013:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81c48e58-acf6-422c-5320-08ddad8cf1d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eFhGMzJIcFBNUzhmVDhEdXRkS2tXZUloUklsdUdNTWd3cmZ1ejQ5YU1tcWU1?=
+ =?utf-8?B?eW9xQ25VQm52ZHVINEFCQ2J3cVVWM0phbUMrS0dqd2NlZEJLd0hQa3B5V2pl?=
+ =?utf-8?B?OEFvQU1kbG10dzdKVXhDNXc5aFRJWnFJMUxLRUZEbXFlblJSUkZiRFg0OXBU?=
+ =?utf-8?B?bVA5OHpuZ1Ywcml6Q2NJQ2NLb0NaQm5OcmdPcnhmcTkySG5vNHUzTXVYMXlT?=
+ =?utf-8?B?U1RBMkozSHk1VGd0VjJuR0lMSUhlMUVOWTRBejFwREZ2OEg3WElxT05idFRQ?=
+ =?utf-8?B?QmhnYXhldmkybG1nOXFrLzZGVDkyMU9ic2p3UkUvMlAvaVBHdU5HQzhvcGFS?=
+ =?utf-8?B?akY0UVBrY1diWG5Mc0pYSFI5ZTlqczcwdnpIVUJDeTRBQno4d25PanBBK1BM?=
+ =?utf-8?B?L3puU1NNWmxHR3E4V0twZGdxbWw4eXEwTHFZNktsQUptTGh6SEV6bWVqRzZE?=
+ =?utf-8?B?TmdJajliZzZBbSttR1lxRDMrbjVDK24xM0prRWtodjJoWlkxUlBUTEdmRHJs?=
+ =?utf-8?B?Q3M0NllFUkdmeWkxdUR4UTgxdXNSRzN2cmd1QlV4b0tRbGlpbmRraEhzdzdH?=
+ =?utf-8?B?ZFV4b0NiVFVxbTcyVEFTS0JLNnkwQzN6ektYTVZOUWU2bW9QM05UenpJeWt6?=
+ =?utf-8?B?YkJFRk1LdmgzNGMzb1lGN0Eyd0xiSGRHb3NnQ2FRSGpNeW5nUE56ZmVoRkUx?=
+ =?utf-8?B?MU9yWFkvMjFZRHYrd3EvdkQwMnNINGJlVEk1RHhENzJQVzE1aUVTZWorUHY3?=
+ =?utf-8?B?Ukd2UTVGV3lWWXRlV0lQcXdqR2pxa0dGWHZyMVZYL3gzTitrWVIyY1N4UlV1?=
+ =?utf-8?B?VTMwNDMvOG5xd3lhVlB6dktza1gyNEthSjZtY3hGOWF6UGZsVXFxYWN6NCsz?=
+ =?utf-8?B?MU9oWnJEbXRRWE81dXg4cmhLbDNUdmdkVXh6dzU2YU5vSi9JVkRjQXJ2YnJN?=
+ =?utf-8?B?eW1VVHR6alhKa2lOQ1dXZkF2eVBwU0Z4YXp4eFBaMDdKUmQvVHRRVExOWlpr?=
+ =?utf-8?B?bHkvZFdFSnJtM1g2dnhWam1ockgxai9pQjJtdmNWd3p1MG8rUTdwdjZzaTlU?=
+ =?utf-8?B?czNndTdPclVhcWxCQTQvT0lENjZSa1RSbTJ1VTBXaFhnNjBETmFhY3pOOEdE?=
+ =?utf-8?B?aFV6Q1p2TEFFY0k0Nkh2cklRTzBPVzhsckdBeTZvN3hWVk04ZFZOSDRMWlVi?=
+ =?utf-8?B?NThxdmN3N3lBTFFyY25GTTU5enJmUnp1MlVOYzlpWHdHc285WUNjZm5CckhH?=
+ =?utf-8?B?NCtrUXNvQ3JFelp1TVkxT0ZaRWdIMDFxb1FyaldMajVFOVI1UUdkWTdBaGxn?=
+ =?utf-8?B?SndzRkJPZGZ5K0JpbGlEbVcwbTVlS08wQnJSQ2w2V0wxWURIK0J0WWlPcjc5?=
+ =?utf-8?B?WVdDcUxSU3RBNXZGOTk0ZVk0czV2NUp1MjdsSVhNWkwxMEhkblpWZ01hNTZr?=
+ =?utf-8?B?S0loUGlCZCthdlNXb0RYdEZmQUpRRk1rWUVEYVVielNjNWI2ZDY4UENkZGVM?=
+ =?utf-8?B?M1hMMmtwbWtDajQ0dHpGbE5kZTBSWWRUSFB3UnZSYWJjc0JBYWtOY1NLN3No?=
+ =?utf-8?B?ZUZHT2dMVlZhcGsxOU10clJVMlNEN0EwMkplMHpEZlQybTVuQ25RRlU4OVgw?=
+ =?utf-8?B?SEVBQkZEbjFBRDJYTEhHZ0JzY0N5ejRTeWtaN255ZE5ZM0hlMFgxaW0yOW9m?=
+ =?utf-8?B?NmdPeDFueFBsSlhJRXREQm02Y1ZzYlRLTnliaTRuLzF0NHpxTUZiNFVhZFFo?=
+ =?utf-8?B?d0hnUHRERENFN3IzYXVLYnZkVnh6K0FaQ0d2OHYzc2xTeTlDZXdnTVgwRmg2?=
+ =?utf-8?B?WENyTUNKdnF3RTRUQ0krQzBPMzBYMFFXcHRRZnN3c0lKcGhwbmtqMU1PK0M4?=
+ =?utf-8?B?SmN6K2hNRlVFUU1aRmVHMHBnNUdtWUxIODZJdXM5b3dlbnc9PQ==?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7529.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(7416014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZGxNZTAwYThoTVBCSlR6Mmx6Uk1heUZDMUpTM1c0bEtyakYremRGOFhCUlll?=
+ =?utf-8?B?UVQ3anBsT25mWEx3UzdNZ2gydHR0ZUtzdklEcW9wejRJbHRPQ1R1dGpJRGRZ?=
+ =?utf-8?B?cnFXdC9FeUxUMUhDY0dReTBocVR0c3dPVEdkTG9IbVNoWjBaNUdmRU1tcm5L?=
+ =?utf-8?B?T2FzRWhsbFNaMUJVQllrUWxWNU0xSUIrditmQmZpUngxZENzUmVSZEdSQ1Ra?=
+ =?utf-8?B?NWU1Ni9JWER5MGFjNTJDYWdLRlpSN3dwcFFiTnlSK0JYOGRTRVhSMHVhOURQ?=
+ =?utf-8?B?ay82dHdwNVFGSXU5U0c0UC9ENzZoWjl3dzZwNEloNzhKaE9xQWdSZkwrdU16?=
+ =?utf-8?B?TUQ3V2tGRFltVWgyUkRtUjN0NVphVUordWNHZEhtUXI4cVJMVTN1aGJyR2RK?=
+ =?utf-8?B?ZnBZOG5oY0hUV2pLalNNQkpZYVpVcnpaMDJwcEU4M1krelRlSUFuWHR1djZG?=
+ =?utf-8?B?bGl1ZENVYS9scGJUdDdjZWlQMUNlZFMzRnNzZG9vUWNBTTcrT0l0RnJLVWJi?=
+ =?utf-8?B?OTEwUzNidENtQlVtTTFRQnQ3WXM1QURoMm00UjZRZGxBUGJTYnp4aGZ0NmhE?=
+ =?utf-8?B?ckNGZXRUTTRBVFpVc3dvdTRkRURtL1hYQ1lsUWh3M3FqakVFY2txSVNrclli?=
+ =?utf-8?B?L21sb045cnl3SzJsUnBOcWRKYnlrVU1zWDJWZGNHSUEwdVZVVytsOWpwVWt1?=
+ =?utf-8?B?VGlxN2w0c0l0QlQxdjhpTS83WWxPakx2NTZybCtzZy9EUHhrS2xSMTZHcjMv?=
+ =?utf-8?B?U2xBZTFxZ2QxNzZ6ZnJ3NjFFN1RvbVJpSzJBVWxwOGtVWGpHVVB3VkZJM2Nt?=
+ =?utf-8?B?c2E0MFE0Ukw2bS9qN3FScVNTUXoxM2prRFZybzZRTTlWdUVQVlVlMVlWNWtL?=
+ =?utf-8?B?ejdhQnpVemwvSXU3ek8xNkxDbHIxRTZkRkk1NTBTVzlwRys3RVp1eTZIWnRN?=
+ =?utf-8?B?ZG5iemhpYmdVME9oTWlLRW96M2hpRkozVVcweWZWRit4RDdxT2haOUh6UEQy?=
+ =?utf-8?B?UUduNXhXNzkvWE5jOVNjbzQ2R05TZHRJeXMyTmdId01BNGlLUDV0SGd0cFVi?=
+ =?utf-8?B?VDlNNUtsTVcyTVl1cHJyZDArMGNWWlN1L21VaC9OVVExdEE4UW5jR2h3NjhC?=
+ =?utf-8?B?T3dYRi8yckI2QnQ0U1BHT2F4eUZDUmZVdXJQZW1JTGh1Vi9SMnFvSXhWQkpK?=
+ =?utf-8?B?aTVLaGZKV3cvNEVpUzR0S0VSVXIrT2RHQUh6N0ZidjN0RC9vWWZ0eXpBMDEr?=
+ =?utf-8?B?VHFZeXB1elRtRW0rc3ZlQStIUTdSYjNVTHBtMWQvNFNWSUYzVGEwWGFma28z?=
+ =?utf-8?B?ZjJJUG1BUmF2OERNNWpGVjZzTWQwOExuMHdzNEcxZkNBMzRUOVlTdjJZN1A4?=
+ =?utf-8?B?K0k5MFlNM2cxaXlKTE5nY0VTTXdIQlo2ZFBhQ1NxYTNlU3ExRHM4ZEFmUDdn?=
+ =?utf-8?B?VjNFSzV3VEE0azdrVmN0WkR6SS8rREYzMVVkZVNVRDhtTUxEVmhFU0d5UXZo?=
+ =?utf-8?B?STZGcThjSGFqOWZYWHdsOG9WeGdGb0ZOOS9ZV0hGL3Q5bmVkQWZBbHJ0UUxZ?=
+ =?utf-8?B?aGZxVDdjdGlGdnlWNWZkMHZ5a3N3YnY5S2I3Nm5vbGFuTlNzY0xBRDM5d1Zn?=
+ =?utf-8?B?S254WnNPZDFJT0Z6Uno0WUJvZE9FTW5wcXBsL0FkYU40YXZqQmY2UTJ3U3Qv?=
+ =?utf-8?B?MHE2L2JOS2d0ZU5UQ3NpclI4U1c2MllzdHRLUHZod0tGVVBVQkJIVlNkSWdR?=
+ =?utf-8?B?SFdkNERZNHBiN1AyTWY2WG1xaWxOREgycWdjeGRzOVlmSWJ4WUtVMGVGNG96?=
+ =?utf-8?B?RUNyaFlIY1pQWGlib2VyWnoxbFM0Y2hkeG84K0VPaDdJc01LZ3RXYVJZcjdv?=
+ =?utf-8?B?NEkvUzU2UXBQVHhZMWUxZklmYkV4UXdOSHZHWU9JVTAzTk5INUxWYjFTNVlh?=
+ =?utf-8?B?Y1l3WmpnOUhNcjE4dnFGcVdLRDJYZkNPZ0Q3UnUxM3hoS1YzN2lic1BvMGxw?=
+ =?utf-8?B?eU51RkRUR3hqekc4eldzY0VSYmhla0NIb0pyek9LdEtkWm5DY0NKcUFIME96?=
+ =?utf-8?B?NkJDaWZoWndCUi9WbkI3ckZoZmVjUUdmK0M3UmpjR2NrbUJvZU03MlFqMWxv?=
+ =?utf-8?Q?Mq3xlF96z4eR5ciDIez0FUzXr?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81c48e58-acf6-422c-5320-08ddad8cf1d1
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7529.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 10:51:42.3534 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uryrv7VcGi2hXBRsxUtwu1Xgw/AhHwUyzO99CbR4iVEVKxvJSlUeHfxRSS2am4IGnMGWcWApBZ3GoK3UYlRlXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5013
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=yi.l.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.892,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,311 +224,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rowan Hart <rowanbhart@gmail.com> writes:
+On 2025/6/11 18:06, Duan, Zhenzhong wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Liu, Yi L <yi.l.liu@intel.com>
+>> Subject: Re: [PATCH v1 02/15] intel_iommu: Optimize context entry cache
+>> utilization
+>>
+>> On 2025/6/6 18:04, Zhenzhong Duan wrote:
+>>> There are many call sites referencing context entry by calling
+>>> vtd_dev_to_context_entry() which will traverse the DMAR table.
+>>>
+>>> In most cases we can use cached context entry in vtd_as->context_cache_entry
+>>> except when its entry is stale. Currently only global and domain context
+>>> invalidation stale it.
+>>>
+>>> So introduce a helper function vtd_as_to_context_entry() to fetch from cache
+>>> before trying with vtd_dev_to_context_entry().
+>>
+>> The cached context entry is now protected by vtd_iommu_lock(). While not
+>> all caller of vtd_dev_to_context_entry() are under this lock.
+>>
+>> Also, the cached context entry is created in the translate path. IMHO,
+>> this path is not supposed to be triggered for passthrough devices.
+>> While this may need double check and may change in the future. But let's
+>> see if any locking issue with the current code.
+> 
+> Good finding, yes.
+> Previously I thought translation path updates cc_entry->context_entry after cc_entry->context_cache_gen.
+> In vtd_as_to_context_entry() cc_entry->context_cache_gen is checked first, so there was no real race.
+> But I still missed a memory barrier like below:
 
-> From: novafacing <rowanbhart@gmail.com>
->
-> This patch adds a plugin that exercises the virtual and hardware memory
-> read-write API functions added in a previous patch. The plugin takes a
-> target and patch byte sequence, and will overwrite any instruction
-> matching the target byte sequence with the patch.
->
-> Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
-> ---
->  tests/tcg/Makefile.target                 |   1 +
->  tests/tcg/plugins/meson.build             |   2 +-
->  tests/tcg/plugins/patch.c                 | 241 ++++++++++++++++++++++
->  tests/tcg/x86_64/Makefile.softmmu-target  |  32 ++-
->  tests/tcg/x86_64/system/patch-target.c    |  27 +++
->  tests/tcg/x86_64/system/validate-patch.py |  39 ++++
->  6 files changed, 336 insertions(+), 6 deletions(-)
->  create mode 100644 tests/tcg/plugins/patch.c
->  create mode 100644 tests/tcg/x86_64/system/patch-target.c
->  create mode 100755 tests/tcg/x86_64/system/validate-patch.py
->
-> diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-> index 95ff76ea44..4b709a9d18 100644
-> --- a/tests/tcg/Makefile.target
-> +++ b/tests/tcg/Makefile.target
-> @@ -176,6 +176,7 @@ RUN_TESTS+=3D$(EXTRA_RUNS)
->  # Some plugins need additional arguments above the default to fully
->  # exercise things. We can define them on a per-test basis here.
->  run-plugin-%-with-libmem.so: PLUGIN_ARGS=3D$(COMMA)inline=3Dtrue
-> +run-plugin-%-with-libpatch.so: PLUGIN_ARGS=3D$(COMMA)target=3Dffffffff$(=
-COMMA)patch=3D00000000
->
+yeah, testing context_cache_gen is necessary. But without lock, this
+cannot guarantee the cc_entry is valid after the test.
 
-I think we need to manually add this to the x86_64 specific tests because...
+> @@ -2277,6 +2286,7 @@ static bool vtd_do_iommu_translate(VTDAddressSpace *vtd_as, PCIBus *bus,
+>                                     cc_entry->context_cache_gen,
+>                                     s->context_cache_gen);
+>           cc_entry->context_entry = ce;
+> +        smp_wmb();
+>           cc_entry->context_cache_gen = s->context_cache_gen;
+>       }
+>   
+> Another option I can think of is adding lock to cache reading like below:
 
->  ifeq ($(filter %-softmmu, $(TARGET)),)
->  run-%: %
-> diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
-> index 41f02f2c7f..163042e601 100644
-> --- a/tests/tcg/plugins/meson.build
-> +++ b/tests/tcg/plugins/meson.build
-> @@ -1,6 +1,6 @@
->  t =3D []
->  if get_option('plugins')
-> -  foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall=
-']
-> +  foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall=
-', 'patch']
->      if host_os =3D=3D 'windows'
->        t +=3D shared_module(i, files(i + '.c') + '../../../contrib/plugin=
-s/win32_linker.c',
->                          include_directories: '../../../include/qemu',
+this is in-enough as well since the cc_entry->context_entry can be modified
+after lock is released.
 
-... the problem with adding test patches into tests/tcg is we balloon the
-number of test cases. Whats worse we are running on linux-user tests
-where we don't exercise anything.
+> @@ -1659,11 +1659,15 @@ static int vtd_as_to_context_entry(VTDAddressSpace *vtd_as, VTDContextEntry *ce)
+>       uint8_t devfn = vtd_as->devfn;
+>       VTDContextCacheEntry *cc_entry = &vtd_as->context_cache_entry;
+> 
+> +    vtd_iommu_lock(s);
+> +
+>       /* Try to fetch context-entry from cache first */
+>       if (cc_entry->context_cache_gen == s->context_cache_gen) {
+>           *ce = cc_entry->context_entry;
+> +        vtd_iommu_unlock(s);
+>           return 0;
+>       } else {
+> +        vtd_iommu_unlock(s);
+>           return vtd_dev_to_context_entry(s, bus_num, devfn, ce);
+>       }
+>   }
+> 
+> Which one do you prefer?
 
-So I think we should filter out the test from the general testing by
-fixing up:
+If it's just optimization, perhaps just drop it. :)
 
-PLUGINS=3D$(patsubst %.c, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.c)))
-
-<snip>
-> +
-> +static void usage(void)
-> +{
-> +    fprintf(stderr, "Usage: <lib>,target=3D<bytes>,patch=3D<new_bytes>"
-> +            "[,use_hwaddr=3Dtrue|false]");
-> +}
-> +
-> +/*
-> + * Called when the plugin is installed
-> + */
-> +QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-> +                                           const qemu_info_t *info, int =
-argc,
-> +                                           char **argv)
-> +{
-> +
-> +    use_hwaddr =3D true;
-> +    target_data =3D NULL;
-> +    patch_data =3D NULL;
-> +
-> +    if (argc > 4) {
-> +        usage();
-> +        return -1;
-> +    }
-> +
-> +    for (size_t i =3D 0; i < argc; i++) {
-> +        char *opt =3D argv[i];
-> +        g_auto(GStrv) tokens =3D g_strsplit(opt, "=3D", 2);
-> +        if (g_strcmp0(tokens[0], "use_hwaddr") =3D=3D 0) {
-> +            if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &use_hwadd=
-r)) {
-> +                fprintf(stderr,
-> +                        "Failed to parse boolean argument use_hwaddr\n");
-> +                return -1;
-> +            }
-> +        } else if (g_strcmp0(tokens[0], "target") =3D=3D 0) {
-> +            target_data =3D str_to_bytes(tokens[1]);
-> +            if (!target_data) {
-> +                fprintf(stderr,
-> +                         "Failed to parse target bytes.\n");
-> +                return -1;
-> +            }
-> +        } else if (g_strcmp0(tokens[0], "patch") =3D=3D 0) {
-> +            patch_data =3D str_to_bytes(tokens[1]);
-> +            if (!patch_data) {
-> +                fprintf(stderr, "Failed to parse patch bytes.\n");
-> +                return -1;
-> +            }
-> +        } else {
-> +            fprintf(stderr, "Unknown argument: %s\n", tokens[0]);
-> +            usage();
-> +            return -1;
-> +        }
-> +    }
-> +
-> +    if (!target_data) {
-> +        fprintf(stderr, "target argument is required\n");
-> +        usage();
-> +        return -1;
-> +    }
-> +
-> +    if (!patch_data) {
-> +        fprintf(stderr, "patch argument is required\n");
-> +        usage();
-> +        return -1;
-> +    }
-> +
-> +    if (target_data->len !=3D patch_data->len) {
-> +        fprintf(stderr, "Target and patch data must be the same length\n=
-");
-> +        return -1;
-> +    }
-> +
-> +    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans_cb);
-> +
-> +    return 0;
-> +}
-> diff --git a/tests/tcg/x86_64/Makefile.softmmu-target b/tests/tcg/x86_64/=
-Makefile.softmmu-target
-> index ef6bcb4dc7..154910ab72 100644
-> --- a/tests/tcg/x86_64/Makefile.softmmu-target
-> +++ b/tests/tcg/x86_64/Makefile.softmmu-target
-> @@ -7,18 +7,27 @@
->  #
->=20=20
->  I386_SYSTEM_SRC=3D$(SRC_PATH)/tests/tcg/i386/system
-> -X64_SYSTEM_SRC=3D$(SRC_PATH)/tests/tcg/x86_64/system
-> +X86_64_SYSTEM_SRC=3D$(SRC_PATH)/tests/tcg/x86_64/system
-
-Can we have symbol renaming in a separate patch as it makes diffs messy
-to follow otherwise.
-
->=20=20
->  # These objects provide the basic boot code and helper functions for all=
- tests
->  CRT_OBJS=3Dboot.o
->=20=20
-> -CRT_PATH=3D$(X64_SYSTEM_SRC)
-> -LINK_SCRIPT=3D$(X64_SYSTEM_SRC)/kernel.ld
-> +X86_64_TEST_C_SRCS=3D$(wildcard $(X86_64_SYSTEM_SRC)/*.c)
-> +X86_64_TEST_S_SRCS=3D
-> +
-> +X86_64_C_TESTS =3D $(patsubst $(X86_64_SYSTEM_SRC)/%.c, %, $(X86_64_TEST=
-_C_SRCS))
-> +X86_64_S_TESTS =3D $(patsubst $(X86_64_SYSTEM_SRC)/%.S, %, $(X86_64_TEST=
-_S_SRCS))
-> +
-> +X86_64_TESTS =3D $(X86_64_C_TESTS)
-> +X86_64_TESTS +=3D $(X86_64_S_TESTS)
-> +
-> +CRT_PATH=3D$(X86_64_SYSTEM_SRC)
-> +LINK_SCRIPT=3D$(X86_64_SYSTEM_SRC)/kernel.ld
->  LDFLAGS=3D-Wl,-T$(LINK_SCRIPT) -Wl,-melf_x86_64
->  CFLAGS+=3D-nostdlib -ggdb -O0 $(MINILIB_INC)
->  LDFLAGS+=3D-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
->=20=20
-> -TESTS+=3D$(MULTIARCH_TESTS)
-> +TESTS+=3D$(X86_64_TESTS) $(MULTIARCH_TESTS)
->  EXTRA_RUNS+=3D$(MULTIARCH_RUNS)
->=20=20
->  # building head blobs
-> @@ -27,11 +36,24 @@ EXTRA_RUNS+=3D$(MULTIARCH_RUNS)
->  %.o: $(CRT_PATH)/%.S
->  	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -Wa,--noexecstack -c $< -o $@
->=20=20
-> -# Build and link the tests
-> +# Build and link the multiarch tests
->  %: %.c $(LINK_SCRIPT) $(CRT_OBJS) $(MINILIB_OBJS)
->  	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
->=20=20
-> +# Build and link the arch tests
-> +%: $(X86_64_SYSTEM_SRC)/%.c $(LINK_SCRIPT) $(CRT_OBJS) $(MINILIB_OBJS)
-> +	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
-> +
-
-Is this needed? The aarch64 vtimer system test didn't need a new build stan=
-za.
-
->  memory: CFLAGS+=3D-DCHECK_UNALIGNED=3D1
-> +patch-target: CFLAGS+=3D-O0
->=20=20
->  # Running
->  QEMU_OPTS+=3D-device isa-debugcon,chardev=3Doutput -device isa-debug-exi=
-t,iobase=3D0xf4,iosize=3D0x4 -kernel
-> +
-> +# Add patch-target to ADDITIONAL_PLUGINS_TESTS
-> +ADDITIONAL_PLUGINS_TESTS +=3D patch-target
-> +
-> +run-plugin-patch-target-with-libpatch.so:		\
-> +	PLUGIN_ARGS=3D$(COMMA)target=3Dffc0$(COMMA)patch=3D9090$(COMMA)use_hwad=
-dr=3Dtrue
-> +run-plugin-patch-target-with-libpatch.so:		\
-> +	CHECK_PLUGIN_OUTPUT_COMMAND=3D$(X86_64_SYSTEM_SRC)/validate-patch.py $@=
-.out
-> \ No newline at end of file
-> diff --git a/tests/tcg/x86_64/system/patch-target.c b/tests/tcg/x86_64/sy=
-stem/patch-target.c
-> new file mode 100644
-> index 0000000000..8a7c0a0ae8
-> --- /dev/null
-> +++ b/tests/tcg/x86_64/system/patch-target.c
-> @@ -0,0 +1,27 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * This test target increments a value 100 times. The patcher converts t=
-he
-> + * inc instruction to a nop, so it only increments the value once.
-> + *
-> + */
-> +#include <minilib.h>
-> +
-> +int main(void)
-> +{
-> +    ml_printf("Running test...\n");
-> +#if defined(__x86_64__)
-> +    ml_printf("Testing insn memory read/write...\n");
-> +    unsigned int x =3D 0;
-> +    for (int i =3D 0; i < 100; i++) {
-> +        asm volatile (
-> +            "inc %[x]"
-> +            : [x] "+a" (x)
-> +        );
-> +    }
-> +    ml_printf("Value: %d\n", x);
-> +#else
-> +    #error "This test is only valid for x86_64 architecture."
-> +#endif
-
-This is a bit redundant given the test is in tests/tcg/x86_64/system.
-
-> +    return 0;
-> +}
-> diff --git a/tests/tcg/x86_64/system/validate-patch.py b/tests/tcg/x86_64=
-/system/validate-patch.py
-> new file mode 100755
-> index 0000000000..700950eae5
-> --- /dev/null
-> +++ b/tests/tcg/x86_64/system/validate-patch.py
-> @@ -0,0 +1,39 @@
-> +#!/usr/bin/env python3
-> +#
-> +# validate-patch.py: check the patch applies
-> +#
-> +# This program takes two inputs:
-> +#   - the plugin output
-> +#   - the binary output
-> +#
-> +# Copyright (C) 2024
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +import sys
-> +from argparse import ArgumentParser
-> +
-> +def main() -> None:
-> +    """
-> +    Process the arguments, injest the program and plugin out and
-> +    verify they match up and report if they do not.
-> +    """
-> +    parser =3D ArgumentParser(description=3D"Validate patch")
-> +    parser.add_argument('test_output',
-> +                        help=3D"The output from the test itself")
-> +    parser.add_argument('plugin_output',
-> +                        help=3D"The output from plugin")
-> +    args =3D parser.parse_args()
-> +
-> +    with open(args.test_output, 'r') as f:
-> +        test_data =3D f.read()
-> +    with open(args.plugin_output, 'r') as f:
-> +        plugin_data =3D f.read()
-> +    if "Value: 1" in test_data:
-> +        sys.exit(0)
-> +    else:
-> +        sys.exit(1)
-> +
-> +if __name__ =3D=3D "__main__":
-> +    main()
-> +
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+-- 
+Regards,
+Yi Liu
 
