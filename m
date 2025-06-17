@@ -2,227 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5435FADD408
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3425FADD405
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:05:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRYil-0007XE-03; Tue, 17 Jun 2025 11:59:35 -0400
+	id 1uRYix-0007tD-15; Tue, 17 Jun 2025 11:59:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <miguel.luis@oracle.com>)
- id 1uRYah-0003JQ-IH; Tue, 17 Jun 2025 11:51:17 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uRYaj-0003Kp-GV
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:51:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <miguel.luis@oracle.com>)
- id 1uRYaa-0007tU-37; Tue, 17 Jun 2025 11:51:13 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55HEXDaD013201;
- Tue, 17 Jun 2025 15:50:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-id:content-transfer-encoding:content-type:date:from
- :in-reply-to:message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=Iw0FQmpDiAsJKAq3tV45Lh/c4hETAexviqz1Fb0Vq3U=; b=
- MrvG5ASLTtUt+PQUc/tRsXRI0bijFoFnA85JdfLCNa9hWI35pTC/AjdJxDT9pCGt
- i2R1qYhMKYc/RMJvknIFSLOe2KW8XpCV/mCDBeO1t6nvl9n/4nRrUNSjPyz/6JDX
- P1N+I4ScjsrvNhVPF9UShhw8U9PnODk+nu7u5g/B+ddy3B6P0bjvErznNPqcjac7
- MBkUDxIV4V9r+YLKE+2+GWn18cR7KlbjpKeOPkgLrx366D3G7IH+xa2wI7zi2tmG
- MG+Ty3Ts0H+oNhc2VK5PHrreIxeWdDNJdsebq1JCRfA0gl32wXiZNejA+JZf5rzB
- Icx99HVGhD8oTKsDEQxw5w==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4790yd5mgj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Jun 2025 15:50:56 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 55HEhjcB036299; Tue, 17 Jun 2025 15:50:54 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com
- (mail-centralusazon11010012.outbound.protection.outlook.com [52.101.61.12])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 478yhfwnq5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Jun 2025 15:50:54 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PRaXHVC3NRMm0/9QubIG7edEzEfxJOj2H6oZ59CznmbISHFN6wvI+amVHF6RrQPqoURlPLxXnKNzR1Lsj6WixAf1neg7OZ7gr/xGh5YtV/XWGst5ezVF8D9uKWrK06TFF8GaZhjScGHeBCwnyfAa6XZNvX67hndKZv2zGLS6xZ3dHR0PbQIOjboH1didsEUuzmsyrEmzS7AHSvatFJ7jIh1xt/Xp6PVn6/oPq8AryFEEAOQAMn45ognnwOmrIZW9GSgsuMjsbu6hAY+K7a160CNiCcOrsdgBPsempse59qDRO9Em9gbM9fr2i+iwvWo1/U4+cvaCLNVgFX4xKowkUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Iw0FQmpDiAsJKAq3tV45Lh/c4hETAexviqz1Fb0Vq3U=;
- b=TazMrl0fG8ppGqwUYAphu2zlaKkMrkHTnRaEFPYmz4xLFLK0HUldtQBxzYc2RSo1fUklcBio8++i5lXsxa5KKQShXskRkIxZHNOZRuZ5Orhf4e5u6UXqT6wTzMuzNEZwdL5ENkWmnZzGNxb7vkcdJVu9Oi2UPDC5YGN/OrEykpxsmukVr/d7+lW/sMsdE8fmusIqobKhSJdptm2oJGAPar6LhEIabR1+zivnboCAwQdGulD1zL8pZyaGJVD3oI4FqEmnlGKd6jHsew+af/VhtL87g4jBRWkDe+yMnv5JWjavj/88hhdOCTx5nO9tJFUtAneA5TXl8xYBkXSx/kzomg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Iw0FQmpDiAsJKAq3tV45Lh/c4hETAexviqz1Fb0Vq3U=;
- b=TbPceMPeLNqwh+J94YmC2Gb8gR/aBipJGZQ8IQQfehUY76cmqTkl5oJUQH2Jcj9gYbAcW6a5it1MdvbatI8J54y8H9F+6AE3hqjE/Q1DA1GQvwqskPQmCD9oHzSVyEBo/3mmUbYOXwwXj9xkCM1I84b+0V6Y6Z36aASGlDTzxXU=
-Received: from PH0PR10MB5433.namprd10.prod.outlook.com (2603:10b6:510:e0::9)
- by PH7PR10MB7056.namprd10.prod.outlook.com (2603:10b6:510:275::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Tue, 17 Jun
- 2025 15:50:51 +0000
-Received: from PH0PR10MB5433.namprd10.prod.outlook.com
- ([fe80::47be:ad6e:e3be:ba80]) by PH0PR10MB5433.namprd10.prod.outlook.com
- ([fe80::47be:ad6e:e3be:ba80%7]) with mapi id 15.20.8835.027; Tue, 17 Jun 2025
- 15:50:51 +0000
-From: Miguel Luis <miguel.luis@oracle.com>
-To: "eric.auger@redhat.com" <eric.auger@redhat.com>
-CC: Alyssa Ross <hi@alyssa.is>, "eric.auger.pro@gmail.com"
- <eric.auger.pro@gmail.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "maz@kernel.org" <maz@kernel.org>,
- "gkulkarni@amperecomputing.com" <gkulkarni@amperecomputing.com>,
- "gankulkarni@os.amperecomputing.com" <gankulkarni@os.amperecomputing.com>
-Subject: Re: [PATCH v5 5/5] hw/arm/virt: Allow virt extensions with KVM
-Thread-Topic: [PATCH v5 5/5] hw/arm/virt: Allow virt extensions with KVM
-Thread-Index: AQHbztBANNalBs/OM0mEgKpxsV1Eb7QHh2YAgAASmQCAAAUTAIAAAnMA
-Date: Tue, 17 Jun 2025 15:50:51 +0000
-Message-ID: <0EA149E9-D637-4BC0-A10F-7B896581A914@oracle.com>
-References: <20250527062534.1186004-1-eric.auger@redhat.com>
- <20250527062534.1186004-6-eric.auger@redhat.com> <875xgutpuh.fsf@alyssa.is>
- <D3582F3A-B07A-4F05-827C-B030617B77EA@oracle.com>
- <efd4cb44-3d63-43b5-9568-1263ccf7566a@redhat.com>
-In-Reply-To: <efd4cb44-3d63-43b5-9568-1263ccf7566a@redhat.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR10MB5433:EE_|PH7PR10MB7056:EE_
-x-ms-office365-filtering-correlation-id: 529a82af-7f2a-44a0-9746-08ddadb6bc76
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|7416014|1800799024|366016|38070700018; 
-x-microsoft-antispam-message-info: =?utf-8?B?OThOdkFrWHFpdE9WQUJJTzMySFZoSS9weUNoenVVZHY0RTAyVEoycm1DOWNu?=
- =?utf-8?B?R2hicjFrYkhhQ3NIQkhXTm9QRUkrdm9wbHhwaStPaWVaNGhKMUR1bE4rUTA5?=
- =?utf-8?B?TXRuYmhKVm0wclZGTG1rZEVjdTdKZTU0Z0RkWUhRUk8wakp6ckd3Y1ROYXpv?=
- =?utf-8?B?SjBOMGxiYVJzSVhGTEVQUEI5aVpkeHV1NWJvTHQ5enFKVnBOSlRCbllYL0hn?=
- =?utf-8?B?ZzJETjBUN0hhVWdiRzIwUm5RSXFNd0tMb1VWK0hlQ1l3T01DRHdlYnNORVRF?=
- =?utf-8?B?OW1JMWhXU3o0Tkg4dDF0bkpYMHNlbDVRUTQzeHAvcDFkbjRzdTl2bmhjclJN?=
- =?utf-8?B?eGo5RXdvOUd5eVRNNEkwaUNOZzZxTVgzakQveDBqSFFTREVTVFE4RGdXLzV4?=
- =?utf-8?B?cUxWdDhmVCszSzh0Y25kYkU3cThDcXFaT1dhQnJJQ3JRa1FEV2NOTTBSdDhw?=
- =?utf-8?B?eXRvTFhNdVo4MjFnWi9YOFdEMEkvbFI4My9UekZRU2pWU2JNOW54ZFkyekNs?=
- =?utf-8?B?bXVlM3lhWW5nM2VzNWFvWUhNSUNmOG1JREsyd1V4cXp5aGNjelh1b0diT1g3?=
- =?utf-8?B?dWZvR1JYbmE1VTY5ZDlpeXI2eFh2Q1A1d2tCUC8yVTNrYnc5eTllUTU3T3c3?=
- =?utf-8?B?Z0I1V0FsS3Y1S1A1Rlp5VHhYZXBNRmpVc0JpUHZ1QzYrMm5ramEwMzZOcUdR?=
- =?utf-8?B?NHQ4Y0E0V0o1N1JacDBRMXhkQXBhb25qd0JJWU0wZUptSlB3Y0ZsWldkRVMr?=
- =?utf-8?B?U2xnNldLK2NaN1pSZXJBYWRmNDdxaUd3Y1VFbTh2ajZRL0p0eDRPaU4yYzZ6?=
- =?utf-8?B?UFdZaHpIYkdHWC9MVC85elBLMmk1cDh0Ty9LdWV2U3lnTVR0V0JpelVRRm5m?=
- =?utf-8?B?RzM4NTNEQkhRalRrbFZKbkJhZWx4NjNMVFdWOEhZL0JObGN4aWJVejl2NXdh?=
- =?utf-8?B?SWQ5c2hFejNBYVJLT1hFN01sa0lDT0hjL05USGZqVWhFbjkvMFJydGN6cU16?=
- =?utf-8?B?NjhhZUV2dkpuTi9pZWJRN3M2Uk5LTkNDUFFoTU5uMkNKZ0JEbkpiRXlpY1lH?=
- =?utf-8?B?bUVHeUtmUTZON2hMS1RvbFJOMmdvTENoN2s1VEhZZ2pVVmY0d0xydDU4NllW?=
- =?utf-8?B?b2QwZVJXUHJKRml5aG5VRnhLZ3dzYnpsMTcxOG1SL3VVWTVmMzFYcmxuOEhR?=
- =?utf-8?B?KzJEMGtYbVgrb0FtbSs1RkJUcmNhZkduOTVUMkNxQWxaamc0Q0RxVXFRNG5S?=
- =?utf-8?B?WmdBbVhoQ3hZN0NvcWFUVldvYzlIU1VBaFdQanV6blF2TEVSQU1ZeWQyZG1k?=
- =?utf-8?B?Y3hweXpaMXdrVjJGM2Jla1BGdWRLV2l4WGtDTHdqZnRQcDRaRUxSck8vOVkw?=
- =?utf-8?B?NHpwRzArRllFeElBUEJ0SVJjQWJ6NllQOFJTVFU1N0dwTDVzcUlFYjlMTHAr?=
- =?utf-8?B?OHUyMy9aNXRUdzNOMVlkZnlmN2xxODdrSStlWlJZRUJJQjRHVFUzenVOMXYy?=
- =?utf-8?B?YjhQSlpYMWx3WXlGYnZQRWtzV0FKK0ZVQmd0T0g5WG15eGliN0hxS2Fjclhm?=
- =?utf-8?B?UDdVNkk5dmFGaHViVmhRcXBUK0daRWtmMUExV21MRVRaUkxjSXpMSlQzOUps?=
- =?utf-8?B?RGtvOEpsL282NURPSjE0MDBlTFVaaXFhYSt1bjBCRXk2ekRVUkRUOEtCdXBW?=
- =?utf-8?B?OVB4SGlUc25Ydm5ieEhEcEJQVHp1TVFvRDhzeEREVUJaYy8zMFh4TGZtUFJa?=
- =?utf-8?B?Vks2YmRoK24wNmozem92NlllTnhFOCtnVUgrMUI5SUQ0a0Y1ZE9ZRDBkTUlh?=
- =?utf-8?B?bGd2Nk1ybUZZYnZoRXliajQ1cGhKUGNnN3hPcitqUGRoekhMNXBhMWNTcmxU?=
- =?utf-8?B?ZjZ5SVAwOHpmcndxTTYxdjFraURDelFnRlU0c0svc3hjUjM4alBtcVZ1KzVT?=
- =?utf-8?B?RE1pbkZyWUNaZGNhdWNRTGt4VlVoQTNJU3BJcFJvd1JEN1p2cWE2Rjk3T3Bh?=
- =?utf-8?B?dngwODFoTUxRPT0=?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR10MB5433.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aXVGRlFNNUd5OUNZd0lzME9LTzRSbzJpWXQ5U09WeXZXNkJISVZETkk1bDBm?=
- =?utf-8?B?c05Vd3owMHVxdTJ2V2lneFhLeWZHdER6SEd2TVdtc1V6MVNwR3dJVWNTMDJk?=
- =?utf-8?B?WElYdDJHZGl2aCtVSkpHbFdHRzR4SDM0aUZCQnVudU9laHROSHQyUXhDOFRv?=
- =?utf-8?B?QTFyOTMzMktQK2h2cTFma3Ryc3lwM0YxcXdlTFVxNVdQTUJXWHJ6NnRaWDMz?=
- =?utf-8?B?cHk3VzVpaFpsVis4eStKWVEzeURmRjhQZFV3YXJZQk14OWtHWEZFMHl5WEFw?=
- =?utf-8?B?ZTdmQzZxVUdqWnpRMjM0b0ZseVl0MkVOV25meGRQSy93S2Y2TkpHNFhXZTRH?=
- =?utf-8?B?dkNwZFdoTUg0T1JWZTg2d1A2WVZkM09wQ0t3NzlINDl4NmZ5YmRlY0tvTUg4?=
- =?utf-8?B?N0pFdm5SaWVnb0xIM2xXK0FIR1pJNDB4VWlGN2VjYXZmcFpjZVYwNFBmYmNI?=
- =?utf-8?B?b2xJV3E2bkpDa25KRW43STlXZWRMQWM4SklXMlAyb2RMZW1iQmVJWFhZQnJ4?=
- =?utf-8?B?azVCWEJyUXZGUU0rQUVhQ3dGa2JmUDI3aDJ6R0tjYnA4dFlvc3BodEVXWVdu?=
- =?utf-8?B?c3ovU3JjRStSRlNseEwyWHYyUGVOazhEelVhOUNWNnJ3aEJCbm5hNVN2UUJS?=
- =?utf-8?B?b25XWEdCWk1TNWk2dW80WUlIdUE0QjVtYkhOcnphSE9SVUZGMSt4VG1PNzFB?=
- =?utf-8?B?T1FWV3RlWloxS0Q0dUltSW55THVRVFZrUmg5em5tanJvYU4zM0RtdjRDcE9i?=
- =?utf-8?B?aUY0OVNzbFNMRWlZM3JrWjN0OXYxRFFnQzVScERoMUZqVHJrT2NHODltQWMz?=
- =?utf-8?B?TjFlWCs3Y0Z0ZG5NTk1yTGp3Lyt5UXdWMldBckhFRkdNQTkzZFl4N1pNSFBM?=
- =?utf-8?B?WEJQaVBEREhlQ2JGcGw2a2VqUjVjNmp4NWM5OStPb2d6RFcyUHVONklseWNt?=
- =?utf-8?B?N2FpVVE2cFVNMW9taW1VOHJWN0lWMkxqQms4THR1emd2Q1pTWTkxL2tmRzU0?=
- =?utf-8?B?akNhelhzdkRHOTN0Y2JGOFJyNUtDdS84UXkvajNyNk5rN1RDZ1RWNUMrUE9o?=
- =?utf-8?B?MVZLeTN0ZG4xK21peStBRlIrRUZjTmo1bGdSOThjKzF1U1JmVy9YckNaM0l4?=
- =?utf-8?B?Y3V4QWhLRFNHNGlMbjl3YytKM3VCRjV2QU9PMkdrT0NNRmN3aFVTbTduaGZH?=
- =?utf-8?B?WllRNzhmRmFhSUhWLzRlQmwwZ3ZsN1pVNWR2VHFhMENjWk0rT2RVQnFLQmlD?=
- =?utf-8?B?K3FCMC9WZUJTRGIrVjZlOCswRmdpbVhWNWkxYW55U2ZpSVdBdUFRQW16NHRl?=
- =?utf-8?B?dkxzd1pHK0xOOWJnMk5lY3VRYWRYRnpYcWVjbG9MM1laWWZVOHJDU1hhUWJQ?=
- =?utf-8?B?VmVhUG9kdlJrbFBkbjRvZHFOa2JDUDhkUWIvb1djcjBmK2VJRi9VZVlUR0xs?=
- =?utf-8?B?dHA3T1pLK2xTa3h4UzlqNjBpR1Q5OHQ1ZTdYV2RhbWNRTzNpczRXR2xpK2Mv?=
- =?utf-8?B?VkhkbjYyYXYwak9IcWRwYlE1ZnVVM005bEMrOE9YclRFems2c0RZalo2VGxQ?=
- =?utf-8?B?UmZOenRMNERBTTc5UmlEU001VDc2RmRnY2NGMkZLeU10aHRYeWNyamN6TkJR?=
- =?utf-8?B?ZE1PTUhOSlZ1ZnFidkRvL3c1TkNGZElpVTJOeFBhcFcrYjNBakYwTzUrYTdq?=
- =?utf-8?B?cmFDbmVwa1l6bklab3lCbzNlTWRSRm0yV1dnbFBsemNyWVBvWEd4YVZRTUIw?=
- =?utf-8?B?UXVmdDlvQ0pZWjFSNTdJRlp1T0U5K29CRUdsWlJnMTlScGhCTWlDeHB4c0xp?=
- =?utf-8?B?bzlnc3hYU1BzM0Zxa0hYYU1kQk5sSHlQMncxVmNXMFdrbG9RYmsvb1QxbTRP?=
- =?utf-8?B?dlJGMHhDSjU1TU8vaHdRRWtnS25Gc3ZHU3RyelpPMmxDelFML0s4TEhDbVJN?=
- =?utf-8?B?SklWQWtHNFh2OVNNcytWZk9saGNhQ3d5ZXRSdkdiRzlLekRJZjZjUWlZTitW?=
- =?utf-8?B?Y0puby9ycDdlWnIwVUZDalRpZlhnUWo5OGVIUy8rVlN4U1E0NUdOT3ZqOFJm?=
- =?utf-8?B?OEJqcy9qVENiMjc1QVJ6YUVxbnR4NnVMbGVlYzZ3T1k4eUlEeHpFeHlKZzky?=
- =?utf-8?B?SWNYK3Z2VjBLa1JOSHdteVA5WHU3ZkFMWnVVeERPYnhxZWRIZkZ5NENPZngz?=
- =?utf-8?B?NUE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DA031E85C94C45498960CADF141AFD71@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uRYaf-0007uE-JN
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:51:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750175471;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VS9urkfSFWt7AAn5yxzZ6Nil/NSfyk3gPz8NMoBeooM=;
+ b=ZlML2LJ4xWIrjyBHIQ+yQkQuaddWsz1pJBK1QkqeKXNtimMAfx/XDWWIv+9Jq5oE3UGFV2
+ i66uJwTXcwMYYOC/3TDPGaqsivnyQXOf4JgjrWTysCPpOgtxw214asgQgC5vU0IvdyW9u2
+ je1f7QVqJlD/0sv70e1Lt/SEDR0Bz28=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-151-mLE1sjApOPioRrRJdvQwtw-1; Tue, 17 Jun 2025 11:51:10 -0400
+X-MC-Unique: mLE1sjApOPioRrRJdvQwtw-1
+X-Mimecast-MFC-AGG-ID: mLE1sjApOPioRrRJdvQwtw_1750175469
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-450d50eacafso36041405e9.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 08:51:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750175469; x=1750780269;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VS9urkfSFWt7AAn5yxzZ6Nil/NSfyk3gPz8NMoBeooM=;
+ b=h69Me7ZN8awJIL72Jp47+huZhVQWvV0XGL+0B69la7T1PSVPwxuo4u71EQK5l4dxrF
+ SFST3/F49yA/r0QpgsJ/Gyb1KhCmX4RLRD1v3jbApyR15iqBFgWua9Wddp8ZWua/0Qnq
+ SCvm0sMIsq1ela/E7exDRoE0kl3tpS3Y42K1DTJX1wfX2tqJQO8bQ9F8y6cbCZr/Q2rt
+ 4/jcg2GoJ3NDI6AggxRc64EntpEt6MjrASiEQfckGCEaccqznuJDtQeKuXJMZsa85ubu
+ dkyG9HMZtMsAskeIkEiACfa+hHzi6ylB1lzzTDaTaLG1BYPBCXb3+G6W7Agf1VrLT/U7
+ PNLQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUOJM0ziKsbyQuwxyJKQArpj/Ecv3ot2z2j8u790bM9cKwxgvMzCtIRWLUx8hMLNcChTfsub+mj+p1n@nongnu.org
+X-Gm-Message-State: AOJu0Yynqo4rU/Blob11yUt9ut7pQLAaKvq0UPK4BK8L+vx86qjmWZQ7
+ qLPRlpSnfGSFqotJKY+C4nbFcSgJgW8cjI/ycV1Md1JLHjc1zm5c4KFTPPznJevRMrh2nVPr8Io
+ GSGyNHUD3HmAkZWbxngpzqaF1UCXt1Z9Nj68PrC21YtzJBN5ULlBwvjFB
+X-Gm-Gg: ASbGncvoTWZNivS8fXO1Nt0g5DogeBQlzoZlWj1KwEGJEZLrmJfavkrrwEtOcxG00yI
+ v32oWsCYdVMNwXWLV19brlIEv1GbJ8O6dXJ9Jkc6OSl/8q7cbbp3po3GXs1HCfK06K8WR5x71Na
+ nWwNnYcVRYjaIvO4eVxsIkYEhEjW7PNFFB1MJt2pZs+5sXUxAyX/q1lDJcVpw5uj8LFwbRG2x3R
+ OVo3c8vM66E5AcMfdK8trUKSHYV0wr4Imeb0KDPPLZt/KrBKfOpYch1K7uWH+BlXWW8DOusuYbz
+ yeJhyt7crZGL9ayxAb0tVCrH2m2Tkj63cuWqlrQYPUggEDyrNA6GPBr6CuQI0Z8Ih5LWkg==
+X-Received: by 2002:a05:600c:a00c:b0:43d:40b0:5b with SMTP id
+ 5b1f17b1804b1-45353f6c370mr24876115e9.25.1750175469299; 
+ Tue, 17 Jun 2025 08:51:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGokbolh5+wMjavNcW3U/wAa79plPfJoTUUv9f444Ko9Di03DaZjj6NSsxccaDjfr0Lu0OZpQ==
+X-Received: by 2002:a05:600c:a00c:b0:43d:40b0:5b with SMTP id
+ 5b1f17b1804b1-45353f6c370mr24875805e9.25.1750175468818; 
+ Tue, 17 Jun 2025 08:51:08 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4532e25f207sm178883935e9.35.2025.06.17.08.51.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Jun 2025 08:51:08 -0700 (PDT)
+Message-ID: <74c1948a-3c90-431b-805f-b5a4238beecb@redhat.com>
+Date: Tue, 17 Jun 2025 17:51:07 +0200
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Hhm1qoiHlyjj4NsUhPJD+KqNA8MgnlbtwywUlyaL2PpKXXEpYp9Z0ixpl6I8C/zKRNDnbOuVGYyCg29ICTxQxVhZNeVJypXAmRauJXw7R+uptHPOtYQcykcxt6IqtTD4jrGpTi5yT6lJAryA1pe8i2U1Jm9WI9AoKfyHMbA6v5BF0tzKCNX7dlpaZMD32uQO/L9WFyHFpxOLFcBFTaV3arj86HzggVmUYTFozYIt5uEx0SvtZCbw79gR5gUUj1So4cnIdxv4eW9xVNBjAuTwgP3YmXKSQU5flOgSkesfKza8WlG+6AXmfLLXBmudg6GeX6K8FnEO9suzLa5LeQJfMDDPzNns+eVRAuF/Ns/TOgkneD9My7gfQMocmpL9WOGFaGjErtH+lotA68/O917NlRk7l4ZPqnJROgBOUSQRtwCXw54LMnAl/scts8oUV8I2MJGUUlWAbWTiG1Omv+b4qFo7TyM0KRKNLJ7/8Ki1dXjPJQoroTwWSbjVf4DpvfY1hP8COMoVHaQ8/+DHRmMvenN6jmfNH7z8Pn9oNP34nQf4hf+qE8zGD0lPnnHNrbT/PDzPzSx+DkhMtLZDP+3c68BtATo4rBqEWjgDWUgZG1k=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5433.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 529a82af-7f2a-44a0-9746-08ddadb6bc76
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jun 2025 15:50:51.3897 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qEAauNZCOU3uwHNJmS5kJGy74SFQWmawongoGPChuRwONcrEuDT7H9F0ak2kXZuTfQzkHpjTfWcMiJVE08ZYLQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB7056
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-17_07,2025-06-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- bulkscore=0
- phishscore=0 spamscore=0 suspectscore=0 malwarescore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2505160000 definitions=main-2506170124
-X-Proofpoint-GUID: Ca1XG7Bcl1mBTGj0haDM3jaRSoZ8saZi
-X-Proofpoint-ORIG-GUID: Ca1XG7Bcl1mBTGj0haDM3jaRSoZ8saZi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE3MDEyNCBTYWx0ZWRfX7ZMWRUqpdG/d
- Ny5Hjv93mBCzxOObRMynzFF9ZY8QvtE7zXgs5heUESu1THE8jKMuKiB9EaJ8joE+7EIG8txmoYc
- ZjbZFAHilRu9gV1tOFL+Ol/SmWxZVgQMU7OFjacGQn5aHuvvMc0bkNRusw20mWtdlzRn2YhyXkv
- 7elOJLMigO72qPWQBsUn/mCv5iFL4qwZQ+7+xxW4a4OlJC6cfCeL/bs+a4w2p1tgYsWEUf6bY2v
- +pQxoDOLHm2iRXz/aQ0XB3OmbzutiVUFAP8J4rxXPnd1t43YLUYoJTjSc4GcL+EpE59K6rXq405
- c6Tq+yPhg4H7aXa8nukncnmTmuoXbC/yIcbyHCemTMRTp7PWCuljulKwT7SYaNQS/c7k+/E+yDa
- dLkBxbfUQ1kj4i1+SOi7G4ngFWOA+yRP0Uc3fUyRZL82Si18OVobxNOaO1gmY/5Ml2zb639k
-X-Authority-Analysis: v=2.4 cv=XZGJzJ55 c=1 sm=1 tr=0 ts=68518ee0 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=GoEa3M9JfhUA:10
- a=20KFwNOVAAAA:8 a=KKAkSRfTAAAA:8 a=yPCof4ZbAAAA:8 a=8QYH4JqWqz5au_5320MA:9
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22 cc=ntf awl=host:14714
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=miguel.luis@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 5/8] qtest/bios-tables-test: Add test for when ITS is
+ off on aarch64
+Content-Language: en-US
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
+ philmd@linaro.org, mst@redhat.com
+Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, udo@hypervisor.org,
+ ajones@ventanamicro.com, peter.maydell@linaro.org, imammedo@redhat.com,
+ anisinha@redhat.com
+References: <20250616131824.425315-1-gustavo.romero@linaro.org>
+ <20250616131824.425315-6-gustavo.romero@linaro.org>
+ <fe166574-9e53-4e27-9c12-c91f3fc774c7@redhat.com>
+ <3881403f-c618-47d1-afec-27592bd7be99@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <3881403f-c618-47d1-afec-27592bd7be99@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.89,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -237,53 +116,206 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgRXJpYywNCg0KPiBPbiAxNyBKdW4gMjAyNSwgYXQgMTU6NDEsIEVyaWMgQXVnZXIgPGVyaWMu
-YXVnZXJAcmVkaGF0LmNvbT4gd3JvdGU6DQo+IA0KPiANCj4gDQo+IE9uIDYvMTcvMjUgNToyMyBQ
-TSwgTWlndWVsIEx1aXMgd3JvdGU6DQo+PiBIaSBBbHlzc2EsDQo+PiANCj4+PiBPbiAxNyBKdW4g
-MjAyNSwgYXQgMTQ6MTcsIEFseXNzYSBSb3NzIDxoaUBhbHlzc2EuaXM+IHdyb3RlOg0KPj4+IA0K
-Pj4+IEVyaWMgQXVnZXIgPGVyaWMuYXVnZXJAcmVkaGF0LmNvbT4gd3JpdGVzOg0KPj4+IA0KPj4+
-PiBGcm9tOiBIYWlibyBYdSA8aGFpYm8ueHVAbGluYXJvLm9yZz4NCj4+Pj4gDQo+Pj4+IFVwIHRv
-IG5vdyB2aXJ0IHN1cHBvcnQgb24gZ3Vlc3QgaGFzIGJlZW4gb25seSBzdXBwb3J0ZWQgd2l0aCBU
-Q0cuDQo+Pj4+IE5vdyBpdCBiZWNvbWVzIGZlYXNpYmxlIHRvIHVzZSBpdCB3aXRoIEtWTSBhY2Nl
-bGVyYXRpb24uDQo+Pj4+IA0KPj4+PiBBbHNvIGNoZWNrIG9ubHkgaW4ta2VybmVsIEdJQ3YzIGlz
-IHVzZWQgYWxvbmcgd2l0aCBLVk0gRUwyLg0KPj4+PiANCj4+Pj4gU2lnbmVkLW9mZi1ieTogSGFp
-Ym8gWHUgPGhhaWJvLnh1QGxpbmFyby5vcmc+DQo+Pj4+IFNpZ25lZC1vZmYtYnk6IE1pZ3VlbCBM
-dWlzIDxtaWd1ZWwubHVpc0BvcmFjbGUuY29tPg0KPj4+PiBTaWduZWQtb2ZmLWJ5OiBFcmljIEF1
-Z2VyIDxlcmljLmF1Z2VyQHJlZGhhdC5jb20+DQo+Pj4+IFJldmlld2VkLWJ5OiBSaWNoYXJkIEhl
-bmRlcnNvbiA8cmljaGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZz4NCj4+PiBIaSEgIEZyb20gd2hh
-dCBJIGNhbiB0ZWxsLCB0aGlzIHdpbGwgcHJvZHVjZSBhbiBlcnJvciBvbiBob3N0cyB0aGF0DQo+
-Pj4gZG9uJ3Qgc3VwcG9ydCBuZXN0ZWQgdmlydHVhbGl6YXRpb24gd2hlbiBRRU1VIGlzIGludm9r
-ZWQgd2l0aCAtYWNjZWwNCj4+PiBrdm06dGNnDQo+PiBJIGRpZG7igJl0IGtub3cgJy1hY2VsbCBr
-dm06dGNn4oCZIGNvdWxkIGJlIHVzZWQgYXMgYSBmYWxsYmFjayBtZWNoYW5pc20gYmV0d2Vlbg0K
-Pj4gYWNjZWxlcmF0aW9uIG1vZGVzLiBNYXkgSSBhc2sgd2hldGhlciBkbyB5b3UgbWFuYWdlIHRo
-ZSDigJgtY3B14oCZIHR5cGUgZm9yIOKAmC1hY2NlbA0KPj4ga3ZtOnRjZ+KAmSB3aXRoIGNwdSDi
-gJhtYXjigJkgPw0KPiBEb2VzIGl0IGV4aXN0Pw0KPiBxZW11LXN5c3RlbS1hYXJjaDY0OiAtYWNj
-ZWwga3ZtOnRjZzogaW52YWxpZCBhY2NlbGVyYXRvciBrdm06dGNnDQoNCk1heWJlIEFseXNzYSBp
-cyByZWZlcnJpbmcgdG8g4oCYLU0gdmlydCxhY2NlbD1rdm06dGNnLHZpcnR1YWxpemF0aW9uPW9u
-LGdpYy12ZXJzaW9uPTPigJkgPw0KDQpUaGUgYWJvdmUgZGlkbuKAmXQgdHJpZ2dlcmVkIGFueSBl
-cnJvci4gQW55aG93IGlmIHRoZSBhYm92ZSBkb2VzIHdoYXQgQWx5c3Nh4oCZcyBzYXlpbmcgDQp3
-ZSB3b3VsZCBqdXN0IGJlIG1pc3NpbmcgdGhlIGNoZWNrIGZvciB8fCAhdGNnX2VuYWJsZWQoKSBp
-biB0aGlzIHBhdGNoLCBJIGJlbGlldmUuDQoNCk1pZ3VlbA0KDQo+IA0KPiBBbHlzc2EsIGRpZG4n
-dCB5b3UgbWVhbiAtYWNjZWwga3ZtIG9yIC0tYWNjZWwgdGNnDQo+PiANCj4+IEJ1dCBtb3JlIGlt
-cG9ydGFudGx5LCBpcyB0aGlzIHdoYXQgeW914oCZcmUgcmVmZXJyaW5nIHRvPw0KPj4gDQo+PiBB
-bHRob3VnaCwNCj4+IA0KPj4+IC1tYWNoaW5lIHZpcnR1YWxpemF0aW9uPW9uLA0KPj4gc2hvdWxk
-IHdvcmsgZm9yIGJvdGggJy1hY2NlbCBrdm3igJkgYW5kIOKAmC1hY2NlbCB0Y2figJkuDQo+PiAN
-Cj4+PiBidXQgSSBkb24ndCB0aGluayB0aGF0J3MgdGhlIGlkZWFsDQo+Pj4gYmVoYXZpb3VyLiAg
-SXQgd291bGQgbWFrZSBtb3JlIHNlbnNlIGZvciBpdCB0byBmYWxsIGJhY2sgdG8gdGhlIGZpcnN0
-DQo+Pj4gcGVybWl0dGVkIGFjY2VsIG9wdGlvbiB0aGF0IGRvZXMgc3VwcG9ydCBydW5uaW5nIHRo
-ZSBtYWNoaW5lIGFzDQo+Pj4gY29uZmlndXJlZCwgc28gaWYgaGFyZHdhcmUgbmVzdGVkIHZpcnR1
-YWxpemF0aW9uIGlzIG5vdCBzdXBwb3J0ZWQsIGl0DQo+Pj4gc2hvdWxkIGZhbGwgYmFjayB0byBU
-Q0cuDQo+Pj4gDQo+Pj4gSSBtYWludGFpbiBhbiBPUyBkZXZlbG9wbWVudCBlbnZpcm9ubWVudCB0
-aGF0IGluY2x1ZGVzIHNjcmlwdHMgZm9yDQo+Pj4gcnVubmluZyBpbWFnZXMgaW4gUUVNVSwgd2hl
-cmUgcnVubmluZyBLVk0gb24gdGhvc2UgaW1hZ2VzIGlzIGENCj4+PiByZXF1aXJlbWVudC4gIEN1
-cnJlbnRseSwgdGhvc2Ugc2NyaXB0cyBzaW1wbHkgZm9yY2UgVENHIG9uIGFhcmNoNjQuDQo+Pj4g
-V2l0aCB0aGlzIGNoYW5nZSwgdG8gdGFrZSBhZHZhbnRhZ2Ugb2YgS1ZNIE5WIHN1cHBvcnQsIEkn
-ZCBoYXZlIHRvIHRyeQ0KPj4+IHRvIGlkZW50aWZ5IGluIHRoZSBzY3JpcHQgd2hldGhlciBOViB3
-b3VsZCBiZSBzdXBwb3J0ZWQuICBRRU1VIHdvdWxkIGJlDQo+Pj4gaW4gYSBtdWNoIGJldHRlciBw
-b3NpdGlvbiB0byBkZXRlcm1pbmUgdGhpcyBhbmQgZmFsbCBiYWNrIHRvIFRDRyBpZiBpdCdzDQo+
-Pj4gdW5zdXBwb3J0ZWQsIGxpa2UgaG93IHRoZSAtYWNjZWwgb3B0aW9uIHdpdGggbXVsdGlwbGUg
-dmFsdWVzIHVzdWFsbHkNCj4+PiB3b3Jrcy4NCj4+IFRoYW5rcywNCj4+IE1pZ3VlbA0KDQoNCg==
+
+
+On 6/17/25 5:12 PM, Gustavo Romero wrote:
+> Hi Eric,
+>
+> On 6/17/25 10:34, Eric Auger wrote:
+>> Hi Gustavo,
+>>
+>> On 6/16/25 3:18 PM, Gustavo Romero wrote:
+>>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>
+>>> Arm64 GIC ITS (Interrupt Translation Service) is an optional piece of
+>>> hardware introduced in GICv3 and, being optional, it can be disabled
+>>> in QEMU aarch64 VMs that support it using machine option "its=off",
+>>> like, for instance: "-M virt,its=off".
+>>>
+>>> In ACPI, the ITS is advertised, if present, in the MADT (aka APIC)
+>>> table and the remappings from the Root Complex (RC) and from the SMMU
+>> I would rephrase "and the remappings" by "while the RID mappings from
+>> ..."
+>
+> hmm true. Do you think it would be even better to say something like:
+>
+> "while the RID and StreamID mappings from the RC and from the SMMU nodes
+> to the ITS Group nodes are described in the IORT table."?
+>
+> I'm saying that because I understand the map from RC to ITS is from
+> a RID to a DeviceID, while map from the SMMU to ITS is from a StreamID to
+> a DeviceID, hence say "while the RID and StreamID". Does it make sense?
+I think I won't bother and would simply talk about "ID mappings" which
+is the generic term used in the IORT spec.
+>
+>
+>>> nodes to the ITS Group nodes are described in the IORT table.
+>>>
+>>> This new test verifies that when the "its=off" option is passed to the
+>>> machine the ITS-related data is correctly pruned from the ACPI tables.
+>>>
+>>> The new blobs for this test will be added in a following commit.
+>>>
+>>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   tests/qtest/bios-tables-test-allowed-diff.h |  2 ++
+>>>   tests/qtest/bios-tables-test.c              | 21
+>>> +++++++++++++++++++++
+>>>   2 files changed, 23 insertions(+)
+>>>
+>>> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h
+>>> b/tests/qtest/bios-tables-test-allowed-diff.h
+>>> index dfb8523c8b..a88198d5c2 100644
+>>> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+>>> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+>> I still fail to understand whether empty tables + update if the
+>>
+>> bios-tables-test-allowed-diff.h need to be done prior to adding the
+>> new test.
+>>
+>>   * How to add or update the tests or commit changes that affect ACPI
+>> tables:
+>>   * Contributor:
+>>   * 1. add empty files for new tables, if any, under tests/data/acpi
+>>   * 2. list any changed files in
+>> tests/qtest/bios-tables-test-allowed-diff.h
+>>   * 3. commit the above *before* making changes that affect the tables
+>
+> I think the best reference I have to it is the reply from Igor to me
+> here:
+>
+> https://lore.kernel.org/qemu-devel/20250506173640.5ed03a16@imammedo.users.ipa.redhat.com/
+>
+>
+> I understand there are two possibilities when adding a new test:
+>
+> 1) Like in the steps above, 1., 2., and 3., which are taken from the
+> bios-tables-test.c.
+>
+> That gives option A:
+>
+> A Patch 1: New empty files uuder tests/data/acpi + list of them in
+> tests/qtest/bios-tables-test-allowed-diff.h
+> A Patch 2: New test (since the blobs are wrong but we added them in
+> Patch 1 to allow list, there is no fail in test
+> A Patch 3: Update blobs (actually you are adding the real blobs, or
+> updating from empty to real one)
+>
+> or (what I'm doing here), option B:
+>
+> B Patch 1: (A Patch 1) + (A Patch 2)
+> B Patch 2: Like (A Patch 3), i.e., just update the blobs (add the real
+> ones)
+>
+> This is the sequence Igor confirmed it's ok:
+>
+>> - Patch 1     : Add the new test, add the empty blobs *.suffix files,
+>> whitelist such a blobs
+>> - Patch 2     : Update the blobs in Patch 1 with the ones that make
+>> the new test pass and remove them from the whitelist
+>
+> Also, Igor says it's ok to add to the allow list the blobs that change
+> at the same time
+> we add test that changes the very same blobs even when updating an
+> existing test (not adding a
+> new one, which is slight variation):
+>
+>> - Patch 3     : Add the APIC.suffix blob to the whitelist (the table
+>> that changes due to the fix)
+>> - Patch 4 - n : Fix(es)
+>
+> "3 is not binary so it can be folded into 4 or be a separate patch
+> (either way works for me)"
+>  
+> The important thingy is to follow the rules:
+>
+> 1) Don't make a commit which fails the tests
+> 2) Don't fold a blob with the commit that changes the blob
+>
+> That's my current understanding about it.
+>
+> Let me know if that makes sense to you. We need to reach a consensus
+> on this, confusing as
+> these acrobatics may be! :)
+
+Actually I checked your patch and effectively it does not produce any
+checkpatch error related to bios-tables-test rules so your patch is OK
+(yesterday I discovered with the ACPI PCI HP series that checkpatch
+points out infractions to bios-tables-test.c rules!). Since it results
+in less patches I think it is better. May be worth to clarify that
+directly in bios-tables-test.c though.
+
+Cheers
+
+Eric
+>
+>
+> Cheers,
+> Gustavo
+>
+>>> @@ -1 +1,3 @@
+>>>   /* List of comma-separated changed AML files to ignore */
+>>> +"tests/data/acpi/aarch64/virt/APIC.its_off",
+>>> +"tests/data/acpi/aarch64/virt/IORT.its_off",
+>>> diff --git a/tests/qtest/bios-tables-test.c
+>>> b/tests/qtest/bios-tables-test.c
+>>> index 0b2bdf9d0d..4201ec1131 100644
+>>> --- a/tests/qtest/bios-tables-test.c
+>>> +++ b/tests/qtest/bios-tables-test.c
+>>> @@ -2146,6 +2146,25 @@ static void
+>>> test_acpi_aarch64_virt_tcg_topology(void)
+>>>       free_test_data(&data);
+>>>   }
+>>>   +static void test_acpi_aarch64_virt_tcg_its_off(void)
+>>> +{
+>>> +    test_data data = {
+>>> +        .machine = "virt",
+>>> +        .arch = "aarch64",
+>>> +        .variant =".its_off",
+>> you have a checkpatch error here.
+>
+> ouch, thanks, will fix in v5.
+>
+>
+> Cheers,
+> Gustavo
+>
+>>> +        .tcg_only = true,
+>>> +        .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
+>>> +        .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
+>>> +        .cd =
+>>> "tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2",
+>>> +        .ram_start = 0x40000000ULL,
+>>> +        .scan_len = 128ULL * 1024 * 1024,
+>>> +    };
+>>> +
+>>> +    test_acpi_one("-cpu cortex-a57 "
+>>> +                  "-M gic-version=3,iommu=smmuv3,its=off", &data);
+>>> +    free_test_data(&data);
+>>> +}
+>>> +
+>>>   static void test_acpi_q35_viot(void)
+>>>   {
+>>>       test_data data = {
+>>> @@ -2577,6 +2596,8 @@ int main(int argc, char *argv[])
+>>>                              test_acpi_aarch64_virt_tcg_acpi_hmat);
+>>>               qtest_add_func("acpi/virt/topology",
+>>>                              test_acpi_aarch64_virt_tcg_topology);
+>>> +            qtest_add_func("acpi/virt/its_off",
+>>> +                           test_acpi_aarch64_virt_tcg_its_off);
+>>>               qtest_add_func("acpi/virt/numamem",
+>>>                              test_acpi_aarch64_virt_tcg_numamem);
+>>>               qtest_add_func("acpi/virt/memhp",
+>>> test_acpi_aarch64_virt_tcg_memhp);
+>> Thanks
+>>
+>> Eric
+>>
+>
+
 
