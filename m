@@ -2,72 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6521FADDC89
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 21:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8EDADDB7F
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 20:38:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRcBS-0004ty-Ng; Tue, 17 Jun 2025 15:41:26 -0400
+	id 1uRbB1-00081I-54; Tue, 17 Jun 2025 14:36:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eashurov@redhat.com>)
- id 1uRaQY-0006ux-Di
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 13:48:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eashurov@redhat.com>)
- id 1uRaQU-0001Dv-JG
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 13:48:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750182528;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=EzYtFa1YUKp//aYusIzs3ctNZNvbTt0+bjSRID6VUpE=;
- b=Jx2jlWjMKURK2+70hhVhVa0e3Y5DVgnGdJw4LQhLUaRV6ZiQlnGYiciL45pyMt5iqsprDn
- 2eCTAdWSgEJmRNmiKDNtOG4UyPgt7erEfIvbqInwrF/TqxZb31kvDyAFzOYfvoX1RkYs1F
- L/7KvQ6ZtCE+ZPVmiDe5awdjOwcWH3U=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-450-nOZGWet1PASGNQNUG-_GlQ-1; Tue,
- 17 Jun 2025 13:47:40 -0400
-X-MC-Unique: nOZGWet1PASGNQNUG-_GlQ-1
-X-Mimecast-MFC-AGG-ID: nOZGWet1PASGNQNUG-_GlQ_1750182459
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 30E801956094; Tue, 17 Jun 2025 17:47:39 +0000 (UTC)
-Received: from eashurov-thinkpadx1carbongen12.raanaii.csb (unknown
- [10.47.238.56])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2E766195608F; Tue, 17 Jun 2025 17:47:36 +0000 (UTC)
-From: Elizabeth Ashurov <eashurov@redhat.com>
+ (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
+ id 1uRbAy-00080r-9o
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 14:36:52 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
+ id 1uRbAw-0006Qj-MM
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 14:36:52 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-23633a6ac50so88203615ad.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 11:36:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1750185408; x=1750790208; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oSeq3zKyvNEH98Ef19TGp9ugIdv9/k6rVRDQBz3u+ao=;
+ b=RPIy4a7Bgac1RbNH2MXWwGDbYQJ+5VP7uJ13EoZkIOIFVRKpgOyqKHG3oLhYJZx+Dy
+ j5F02ZgMHhu3jpcyfEviRATl6/M6R6XKv1IfyH37sbzBAFBVIm0JCvv8Bq0A3XScu/PO
+ nEEf1XJCmQ0oIQ8SQup3azdVwg9QwfvuaCPbhdqYphBucn5riCXeKix4UEyLK5SpyiDd
+ Rbw3QYjgtOUbmikhiIbTSOriHkNNO+ZkVgWbqxuwlgQoUfMpvjrVVoEmRr1ZupgiupUN
+ LKBeGMLfZqJQRXLwarvKgm7LEiRQ61xGuuSmmiq8v5+ECVVC3etgpb1DlGTaqOkwyRqt
+ CnqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750185408; x=1750790208;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oSeq3zKyvNEH98Ef19TGp9ugIdv9/k6rVRDQBz3u+ao=;
+ b=US9H96NiabQfODys5uq/PmlzR5RBpE7OAiF+mSaMZb8358uZniyoaWRPyZCJuCI+/N
+ vVyXEnF73d3wMeyXrLWZk0HO3P9vzfQQrwFF6G/FZ+N2Djb7nD294vj5AGPJ7GTj1kLz
+ QVgUKEmAFtxvY+/ejIU7FuffVoP1yMqJ+K7CPu5bi5x1BlxeSxn76AGcX8RpQO9imNEn
+ l5DM0J33tHlVkYtIsNEuD1RhMbCt0EOjzI72rFVjWxHlFMxj4ZXndwoEIKcL7MXLHl0l
+ SRfDT3B9rv5Jy7e8B9M4I8AOqoT7ywPY6K9flb9MUZvGG3cTSMRXA28BxwpW0LzpuuTT
+ t3wQ==
+X-Gm-Message-State: AOJu0YzGRvXXOG2aA9jOkmaFla45dDn2wImlFNInRVYuQGdh0kmZ+lBt
+ uVd4Pd/KTEpx3DomsXSvrL/675f9Hr+tXHHcm7lcpARy2fDmxwzkMakIkr8WHJ+O3s8ovA==
+X-Gm-Gg: ASbGncsZ7wnIfMKkKAf8Gv5Ad8ydj3HGUSssiH8Q0s0cXocBcXgZdthQeQSuaqZqz+R
+ jc1Mk3D1x/XZuq3jOiUuYEHbhcS5wjoq2Av4rd16BXqe1zCawIf9n14+HEbGnFn4zDgCi/sYnze
+ 4ogy27tofmbOk3LXvuDSuMP7CGKgdH9rxzbWuu7EQfdI7FNYHw7cAEEXdlPPdoj/Dh6v0gkpyw1
+ tGaXLaVllMu6bdtJnPyqFezlXIM9hhoSxVSoo3HKIWgfRE4hHK+2OIHQ/fSZnJHaYVis+7WNNn9
+ GHlFWPbOYpnCXT6YdGs7ZWZh5sTU78PDoCUvHhkkHZHHoHGEyJYaExDcAP9maW+CVPRymThU
+X-Google-Smtp-Source: AGHT+IH5naVHOtCGNaWkBPJNIa7tBveQWc4NTRX5A1oXQk8YygQe+HIM1Mg/oCRFL8kZzRg2PFnYAA==
+X-Received: by 2002:a17:902:dacf:b0:235:f1e4:3383 with SMTP id
+ d9443c01a7336-2366b337fddmr180100125ad.7.1750185407932; 
+ Tue, 17 Jun 2025 11:36:47 -0700 (PDT)
+Received: from ubuntu.. ([49.207.59.144]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2365de78565sm83584295ad.124.2025.06.17.11.36.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Jun 2025 11:36:47 -0700 (PDT)
+From: Tanish Desai <tanishdesai37@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Michael Roth <michael.roth@amd.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>,
- Elizabeth Ashurov <eashurov@redhat.com>
-Subject: [PATCH] qga/vss-win32: Add VSS provider unregistration retry
-Date: Tue, 17 Jun 2025 20:47:33 +0300
-Message-ID: <20250617174733.156349-1-eashurov@redhat.com>
+Cc: pbonzini@redhat.com, mads@ynddal.dk, stefanha@redhat.com,
+ Tanish Desai <tanishdesai37@gmail.com>
+Subject: [PATCH v2] tracetool: removed the unused vcpu property
+Date: Tue, 17 Jun 2025 18:36:19 +0000
+Message-Id: <20250617183619.13581-1-tanishdesai37@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250617140725.GA117267@fedora>
+References: <20250617140725.GA117267@fedora>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eashurov@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.89,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=tanishdesai37@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 17 Jun 2025 15:41:22 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,46 +97,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit improves the QGA VSS provider installation flow
-by attempting to unregister the VSS provider if it's already
-found during installation. This allows for a retry of installation
-even if a previous unregistration failed or was not performed.
+The vcpu property is no longer used in these backends. Removing it avoids
+unnecessary checks and simplifies the code generation for these trace backends.
 
-Signed-off-by: Elizabeth Ashurov <eashurov@redhat.com>
+Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
 ---
- qga/vss-win32/install.cpp | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ scripts/tracetool/__init__.py       | 6 +++---
+ scripts/tracetool/backend/log.py    | 6 +-----
+ scripts/tracetool/backend/simple.py | 6 +-----
+ scripts/tracetool/backend/syslog.py | 6 +-----
+ 4 files changed, 6 insertions(+), 18 deletions(-)
 
-diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-index 5cea5bcf74..a136d46050 100644
---- a/qga/vss-win32/install.cpp
-+++ b/qga/vss-win32/install.cpp
-@@ -263,6 +263,7 @@ STDAPI COMRegister(void)
-     qga_debug_begin;
+diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+index bc03238c0f..e86c898a1e 100644
+--- a/scripts/tracetool/__init__.py
++++ b/scripts/tracetool/__init__.py
+@@ -216,9 +216,9 @@ class Event(object):
+                       r"\s*"
+                       r"(?:(?:(?P<fmt_trans>\".+),)?\s*(?P<fmt>\".+))?"
+                       r"\s*")
+-
+-    _VALID_PROPS = set(["disable", "vcpu"])
+-
++    
++    _VALID_PROPS = set(["disable"])
++    
+     def __init__(self, name, props, fmt, args, lineno, filename, orig=None,
+                  event_trans=None, event_exec=None):
+         """
+diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend/log.py
+index de27b7e62e..f24acad74c 100644
+--- a/scripts/tracetool/backend/log.py
++++ b/scripts/tracetool/backend/log.py
+@@ -31,11 +31,7 @@ def generate_h(event, group):
+     if len(event.args) > 0:
+         argnames = ", " + argnames
  
-     HRESULT hr;
-+    HRESULT unregisterHr;
-     COMInitializer initializer;
-     COMPointer<IUnknown> pUnknown;
-     COMPointer<ICOMAdminCatalog2> pCatalog;
-@@ -287,9 +288,13 @@ STDAPI COMRegister(void)
+-    if "vcpu" in event.properties:
+-        # already checked on the generic format code
+-        cond = "true"
+-    else:
+-        cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
++    cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
  
-     chk(QGAProviderFind(QGAProviderCount, (void *)&count));
-     if (count) {
--        errmsg(E_ABORT, "QGA VSS Provider is already installed");
--        qga_debug_end;
--        return E_ABORT;
-+        qga_debug("QGA VSS Provider is already installed. Attempting to unregister first.");
-+        unregisterHr = COMUnregister();
-+        if (FAILED(unregisterHr)) {
-+            errmsg(unregisterHr, "Failed to unregister existing QGA VSS Provider. Aborting installation.");
-+            qga_debug_end;
-+            return E_ABORT; 
-+        }
-     }
+     out('    if (%(cond)s && qemu_loglevel_mask(LOG_TRACE)) {',
+         '        if (message_with_timestamp) {',
+diff --git a/scripts/tracetool/backend/simple.py b/scripts/tracetool/backend/simple.py
+index 2688d4b64b..7c84c06b20 100644
+--- a/scripts/tracetool/backend/simple.py
++++ b/scripts/tracetool/backend/simple.py
+@@ -37,11 +37,7 @@ def generate_h_begin(events, group):
  
-     chk(CoCreateInstance(CLSID_COMAdminCatalog, NULL, CLSCTX_INPROC_SERVER,
+ def generate_h(event, group):
+     event_id = 'TRACE_' + event.name.upper()
+-    if "vcpu" in event.properties:
+-        # already checked on the generic format code
+-        cond = "true"
+-    else:
+-        cond = "trace_event_get_state(%s)" % event_id
++    cond = "trace_event_get_state(%s)" % event_id
+     out('    if (%(cond)s) {',
+         '        _simple_%(api)s(%(args)s);',
+         '    }',
+diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/backend/syslog.py
+index 012970f6cc..6fdc1142fb 100644
+--- a/scripts/tracetool/backend/syslog.py
++++ b/scripts/tracetool/backend/syslog.py
+@@ -30,11 +30,7 @@ def generate_h(event, group):
+     if len(event.args) > 0:
+         argnames = ", " + argnames
+ 
+-    if "vcpu" in event.properties:
+-        # already checked on the generic format code
+-        cond = "true"
+-    else:
+-        cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
++    cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
+ 
+     out('    if (%(cond)s) {',
+         '#line %(event_lineno)d "%(event_filename)s"',
 -- 
-2.49.0
+2.34.1
 
 
