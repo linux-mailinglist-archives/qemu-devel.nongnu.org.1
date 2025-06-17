@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813C3ADD25A
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 17:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9595ADD215
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 17:38:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRYIm-0001Xb-CC; Tue, 17 Jun 2025 11:32:44 -0400
+	id 1uRYIq-0001vW-BT; Tue, 17 Jun 2025 11:32:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uRYI7-0000vN-KB
+ id 1uRYI7-00015x-Rg
  for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:32:04 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uRXsQ-00076j-RV
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:05:33 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55HEXDZG012810;
- Tue, 17 Jun 2025 15:05:14 GMT
+ id 1uRXrb-0006sb-3Y
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:04:41 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55HEWwUj004226;
+ Tue, 17 Jun 2025 15:04:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=66pgN
- YGDKbghLS1TEv4zQ3PHBw3c2sjasWk8q2OjnXQ=; b=QXmAiipKaphBYq1Khf5+V
- uWBIJio00GSH8ZS2R5n/gK8fBEOeoWtrp5mkP5gkZMMB0TyiF7eC0/Jn8kWSpbXR
- sZ48lI9AOR2c8AQbXb0PBhiBgn6Ne7oGvc05YHwyHyfuDOxlPZFAaypwedQKkQO+
- 5Y08uTGHWAcCn5lXM/lC8eBo4P+LDch7/DDGFe4d7kBdLrK2Y33fvEdWiGux9nlg
- Hc2mTLhPn2Y27xslian3cRFiit5jRxPO0cPYfcSGB0C66iERpfGYPiDKrYkbAUc5
- nYTvBx0ZSG4ectg7xaJNRBheDlPoKDCVmyhy7XOgFXl8ssIl9Mwt4XBd2Bmzg78k
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=ojikV
+ WLUMcBpn4btb2F8/5qEmOrVoouT7d65GKlF7H0=; b=JAqPxs+LM0mz8TIJ0FPip
+ 665S/5p3rdQ1IiEX1R8Kl2RRHWYGKu4sEqsHVWyo2O9DUq9jnPJP8zPFyGxxnhyD
+ BWhfe+6qsbp7vEJjzYHHQ8ZOoQF9CGvoZ5yaq4V/+Zudq+S2v+BUntbPmqKh0EK8
+ Iqjs9FVffbpiQh/wsMQV4S1SgXobxcX2DAIvyhVUvUzTqOVozEbyOWlER2DlVBuR
+ mT9svNHEUN6oN0D/4okK6CmOtxVa9CzGO3Tnkq8wOn3wnNlg2WYwbRw1idsint10
+ DsYrtDMq+bkNh0xUQfJVIOoGP2dAX3uW3Tf5JEbSagDmdQYSA1lOm99L9Z+lI2Zj
  g==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47b23xs0wb-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 479q8r4k0b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Jun 2025 15:05:13 +0000 (GMT)
+ Tue, 17 Jun 2025 15:04:33 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 55HEedae000822; Tue, 17 Jun 2025 15:04:32 GMT
+ with ESMTP id 55HEFnN4000824; Tue, 17 Jun 2025 15:04:32 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 478yh9bxtj-1
+ 478yh9bxu3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Tue, 17 Jun 2025 15:04:32 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55HF4Svh014869;
- Tue, 17 Jun 2025 15:04:31 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55HF4Svj014869;
+ Tue, 17 Jun 2025 15:04:32 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 478yh9bxny-6; Tue, 17 Jun 2025 15:04:31 +0000
+ 478yh9bxny-7; Tue, 17 Jun 2025 15:04:31 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: ethan.milon@eviden.com, mst@redhat.com, pbonzini@redhat.com,
@@ -63,10 +63,9 @@ Cc: ethan.milon@eviden.com, mst@redhat.com, pbonzini@redhat.com,
  santosh.shukla@amd.com, sarunkod@amd.com, brijesh.singh@amd.com,
  joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  alejandro.j.jimenez@oracle.com, philmd@linaro.org
-Subject: [PATCH v4 5/8] amd_iommu: Fix mask to retrieve Interrupt Table Root
- Pointer from DTE
-Date: Tue, 17 Jun 2025 15:04:24 +0000
-Message-ID: <20250617150427.20585-6-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH v4 6/8] amd_iommu: Fix the calculation for Device Table size
+Date: Tue, 17 Jun 2025 15:04:25 +0000
+Message-ID: <20250617150427.20585-7-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250617150427.20585-1-alejandro.j.jimenez@oracle.com>
 References: <20250617150427.20585-1-alejandro.j.jimenez@oracle.com>
@@ -80,22 +79,22 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  mlxlogscore=999 mlxscore=0 bulkscore=0 spamscore=0 adultscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2505160000 definitions=main-2506170117
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE3MDExOCBTYWx0ZWRfX9lvUNp3uq9Ui
- Uhk5B9Y35QV47FIWRKbEmQ/YgE0oA9aeoph5CAJcTglxoBNuznHY4lLRsCHDPz8Bs8sdkOuTOBB
- zBAil2mE1dUNYHI8kWm1267U06W/uWLuht8tyQxW9cVx2nhdPWu+7nfhV8NdHtM4GdIS0m7ls1/
- 0lk5xdJ8IBaXT21MURo5O95rotpTbgMLvvhX7VnxC/Za8113dOuIhEGKipuLjfERpwUey/f74RF
- VKiBOy3pVJw4M7LnqUn7IasmwDwzSBeK755W0AkPMVAbL4tdgMB0gMYBCyyi/tSSbN94M9SYs52
- nj2zzhKZToQceku/5m9B959bBFzlmj8nuswtRuTb+6TUd/UJqu307xZpni5RTIHfI4hB1fViy35
- fOtC8c13CyTuaJOu8Imf+OkPkXvWXxzSbAoiP03uvWvLD4MTn2sHsGEZS7YhBrIiJSFhD76+
-X-Authority-Analysis: v=2.4 cv=DM2P4zNb c=1 sm=1 tr=0 ts=68518429 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE3MDExOCBTYWx0ZWRfX1XXxatMz+W2J
+ uQNCRqy+QtE5AN9L2D94ntgmbrtZRGbUGAjAckpJeCw/YTlKRGne6Vl3DVPs+9jZNrMajaatNUL
+ /Ps0vraDgT5DQb3qkduCG8O2UFryI/Uha0HCP4xpDbgZojXUtGsCQGdTBlHmtxPdXWzcN6wN4Xo
+ tQFTmyCj8yztliCi/cssVufwvk3bfh6wjcV2SsUZswY2dTFH/PhIPAIipeCGdBAduAtsI1sb+N2
+ k4lDoidVzDHUxcJdfF1lPH28K+luGipPic+gklwrILNcV4t9ONXXTBcC/Av+6S6qghP+ZihBELH
+ y4ymDdc4xL6EXWoCS8ssxY6Q4zlCXDL39eFCQmvNgy7a9szdSPFn3SFG6cch0v4Mo7dvGN9T0X/
+ MsrnaY3aS+FMpgGNvvufsuY4Y2+jpVU7rPFE8bTNqdvQ/Hh3NZL0xjBWNY7HvWEcjJqJ5vLe
+X-Proofpoint-GUID: J_h_sLxTqxYRmLQcF2_LKoCt4dqpUC5a
+X-Proofpoint-ORIG-GUID: J_h_sLxTqxYRmLQcF2_LKoCt4dqpUC5a
+X-Authority-Analysis: v=2.4 cv=dvLbC0g4 c=1 sm=1 tr=0 ts=68518401 b=1 cx=c_pps
  a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
  a=6IFa9wvqVegA:10 a=69wJf7TsAAAA:8 a=yPCof4ZbAAAA:8 a=zd2uoN0lAAAA:8
- a=VXbWx-IoamzKqho_xYMA:9
+ a=r9zmrm_j51NoiylAmAIA:9
  a=Fg1AiH1G6rFz08G2ETeA:22 cc=ntf awl=host:13206
-X-Proofpoint-GUID: Cg3HqFDKm4r5zuNbANtCHWJxyFafQj_s
-X-Proofpoint-ORIG-GUID: Cg3HqFDKm4r5zuNbANtCHWJxyFafQj_s
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -119,33 +118,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix an off-by-one error in the definition of AMDVI_IR_PHYS_ADDR_MASK. The
-current definition masks off the most significant bit of the Interrupt Table
-Root ptr i.e. it only generates a mask with bits [50:6] set. See the AMD I/O
-Virtualization Technology (IOMMU) Specification for the Interrupt Table
-Root Pointer[51:6] field in the Device Table Entry format.
+Correctly calculate the Device Table size using the format encoded in the
+Device Table Base Address Register (MMIO Offset 0000h).
 
 Cc: qemu-stable@nongnu.org
-Fixes: b44159fe0078 ("x86_iommu/amd: Add interrupt remap support when VAPIC is not enabled")
+Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 ---
- hw/i386/amd_iommu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/amd_iommu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 988a485f808cc..96fc5b621e609 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -231,7 +231,7 @@
- #define AMDVI_IR_INTCTL_PASS            1
- #define AMDVI_IR_INTCTL_REMAP           2
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 6e78047919cb6..92f94dc788c3d 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -665,8 +665,8 @@ static inline void amdvi_handle_devtab_write(AMDVIState *s)
+     uint64_t val = amdvi_readq(s, AMDVI_MMIO_DEVICE_TABLE);
+     s->devtab = (val & AMDVI_MMIO_DEVTAB_BASE_MASK);
  
--#define AMDVI_IR_PHYS_ADDR_MASK         (((1ULL << 45) - 1) << 6)
-+#define AMDVI_IR_PHYS_ADDR_MASK         GENMASK64(51, 6)
- 
- /* MSI data 10:0 bits (section 2.2.5.1 Fig 14) */
- #define AMDVI_IRTE_OFFSET               0x7ff
+-    /* set device table length */
+-    s->devtab_len = ((val & AMDVI_MMIO_DEVTAB_SIZE_MASK) + 1 *
++    /* set device table length (i.e. number of entries table can hold) */
++    s->devtab_len = (((val & AMDVI_MMIO_DEVTAB_SIZE_MASK) + 1) *
+                     (AMDVI_MMIO_DEVTAB_SIZE_UNIT /
+                      AMDVI_MMIO_DEVTAB_ENTRY_SIZE));
+ }
 -- 
 2.43.5
 
