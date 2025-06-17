@@ -2,71 +2,165 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53E4ADBFA9
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 05:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05CA4ADBFD1
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 05:24:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRMrd-0000tV-P9; Mon, 16 Jun 2025 23:19:57 -0400
+	id 1uRMv3-0002gb-Q6; Mon, 16 Jun 2025 23:23:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uRMra-0000tI-Tk
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 23:19:54 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uRMrX-00066h-7Y
- for qemu-devel@nongnu.org; Mon, 16 Jun 2025 23:19:54 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxlmnM3lBolx0YAQ--.55604S3;
- Tue, 17 Jun 2025 11:19:40 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowMBxLsfE3lBoatkdAQ--.29444S3;
- Tue, 17 Jun 2025 11:19:35 +0800 (CST)
-Subject: Re: [PATCH v3 00/13] hw/loongarch/virt: Add kernel irqchip support
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Huacai Chen
- <chenhuacai@kernel.org>, qemu-devel@nongnu.org,
- Xianglai Li <lixianglai@loongson.cn>
-References: <20250606063033.2557365-1-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <3a3608d2-30b0-dbcb-27d0-c19bb141f933@loongson.cn>
-Date: Tue, 17 Jun 2025 11:22:27 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1uRMv0-0002gL-JY
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 23:23:26 -0400
+Received: from mail-co1nam11on2061d.outbound.protection.outlook.com
+ ([2a01:111:f403:2416::61d]
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1uRMuy-0006nw-2G
+ for qemu-devel@nongnu.org; Mon, 16 Jun 2025 23:23:26 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Av7JO9yXN1DpdDWozqxeAJv1NLYVwoJ72WcWABL6qNaOnQV13fHIfWGT3BV9hXJ9jwCdcLhWzdp6VEUeo7hyK9vvFWemqT1G4pDGL9E/YJgcm40D6N3KfTlUkCSvAh9uVLk15Uo5L/09ZcV+j1RjVlU7Q8wnJ/Bw+sKb132Wx/Sszbt3LdQWXNBkBa9yyesn53UHNudLC8dIuXEnPK0RbrQNlvNNL1ye7anEHdeE4y7MXXkEmKsDHTzTfkh5FUVYpael83m35vYKgxNH+5ZFZ4Admgj3g5vG8ainU/nrHPq4VK/U5mybsof2d4r7jad6Of8bS69L+tSVjz3IzZo+fA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ztSwtwwL8jkkZtgH0zZ6v6OFTPH4Tc/Q78656KJFIj4=;
+ b=bHgKCQo2zNd+/Gp+xKnvaRIY9w2AW0kBkFQQ6DVcdFmjLHRzRWZ/NmyMXECbYfABUXE6lzdCxL3RTJfvwlfADzSEaHDeLNw4U76MbCasBLpvaVbwVB2AaMv8cCjHYKxHgvanJWihm1B2dg5nmxL3WByXT/QvPmIiS0ZXdSGqp3ACsxh7rsHu4oao4EiDt3BSJuxKltXWoPMgjW5wqT7SOwy82lNHWWEuOXr4zcp5ddUWOPhJMppSK9va3yNSzyPnBLMiiGCYCHUcKCGVIC+God9WbeqRHPwIITvXBI6fI1QKYJtxJ1b1PXshZvJ27u6ahcEpmq/kGQ57P+hGYP/WxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ztSwtwwL8jkkZtgH0zZ6v6OFTPH4Tc/Q78656KJFIj4=;
+ b=r4TSDDx4x+RXftzXxcC8FnF0TviqK1FdOTPIHiyiJp/WQmrBDjGrir4qmjNv8tskebOWCkzwvph+msP7ilSFxn/M/x9TNtpqGsXRV0tVmQMIKmnJ8h6jCrAubE5h+3GVHt2+XzBbX65aditpIRnMxuneFZ27kXyUdVGUbi10jA7f0tEi+p5pc4KPKxVma9BTq8SSugfBSceoFw2rPqdJRU+yQSls1yf6bQQfegoR+4QmRFx8wvDVEp4tbHl9PfiySZgmfBZ20mc+UdkjewCdbm8WSP7JD3hsNfnlcUNqq/zDxNbvzUAVmA57C7UBd5hkpV7DqpNSUf3JzgYsOtujhw==
+Received: from SJ0PR05CA0176.namprd05.prod.outlook.com (2603:10b6:a03:339::31)
+ by BL4PR12MB9478.namprd12.prod.outlook.com (2603:10b6:208:58e::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Tue, 17 Jun
+ 2025 03:23:17 +0000
+Received: from MWH0EPF000971E5.namprd02.prod.outlook.com
+ (2603:10b6:a03:339:cafe::f2) by SJ0PR05CA0176.outlook.office365.com
+ (2603:10b6:a03:339::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.19 via Frontend Transport; Tue,
+ 17 Jun 2025 03:23:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ MWH0EPF000971E5.mail.protection.outlook.com (10.167.243.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8835.15 via Frontend Transport; Tue, 17 Jun 2025 03:23:16 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 16 Jun
+ 2025 20:23:09 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 16 Jun 2025 20:23:08 -0700
+Received: from nvidia.com (10.127.8.10) by mail.nvidia.com (10.126.190.180)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Mon, 16 Jun 2025 20:22:51 -0700
+Date: Mon, 16 Jun 2025 20:22:44 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Yi Liu <yi.l.liu@intel.com>
+CC: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, Peter Xu
+ <peterx@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "clg@redhat.com"
+ <clg@redhat.com>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
+ <jasowang@redhat.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "shameerali.kolothum.thodi@huawei.com"
+ <shameerali.kolothum.thodi@huawei.com>, "joao.m.martins@oracle.com"
+ <joao.m.martins@oracle.com>, "clement.mathieu--drif@eviden.com"
+ <clement.mathieu--drif@eviden.com>, "Tian, Kevin" <kevin.tian@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH rfcv3 15/21] intel_iommu: Bind/unbind guest page table to
+ host
+Message-ID: <aFDfhI0zScBhy01j@nvidia.com>
+References: <20250521111452.3316354-16-zhenzhong.duan@intel.com>
+ <aC5YjHrv5EMDixzZ@Asurada-Nvidia>
+ <0f8087f4-0c97-440d-84d2-f3f017f81041@intel.com>
+ <aDDk1NYwJXaAdUQI@Asurada-Nvidia>
+ <29f5f434-1fe3-4b5e-91d1-f153e1e98602@intel.com>
+ <aDSmcvZ08jNOSr05@Asurada-Nvidia>
+ <SJ0PR11MB6744340B889FF65D3BD5B8459267A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <f6baaea1-a60c-41dc-a9a8-d2389ed14679@intel.com>
+ <aE+yvI2clKEZyoyz@nvidia.com>
+ <6f0cb11d-ab12-4ae1-98d0-eb44bb0a7f4f@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20250606063033.2557365-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowMBxLsfE3lBoatkdAQ--.29444S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxAF1DCFWkuw48KF17Ar4DWrX_yoWrJw4kpr
- WUuw1Y9r48Gry7Jrnay345uF98WFn7Wr4a93WakFyfCrW3tF1vvF18t3sxXFyUKw18G34q
- qF4rWw1jg3WDAFcCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
- wI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JV
- WxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUcrWF
- UUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-0.129, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <6f0cb11d-ab12-4ae1-98d0-eb44bb0a7f4f@intel.com>
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E5:EE_|BL4PR12MB9478:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96c7dfdf-36e4-4bf4-d8c5-08ddad4e4cff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|36860700013|1800799024|82310400026|7416014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Av06UDdZc3BczPmn/HU/fWKZZnxEbMPrxDg1KwWXvQYLTpTa+7RbZCRLDg2m?=
+ =?us-ascii?Q?TsfleNDeezF92kn4pXby5F9iLWQJ6MykvC5x0wcGDL2a6bCGw+mC+JhzDSiN?=
+ =?us-ascii?Q?qVRiMwGilBTQHc5V+Qs15VhQK50pq9FG+uVf0We9kQzmo28qU7qYzL9qoRK2?=
+ =?us-ascii?Q?u8d5Lesf1aMrZoHLzZ8wptVbltC0MciSwyU3Htx6+nXSpWoqGC7KLAZCkbvr?=
+ =?us-ascii?Q?YvZt79UiAHj1XlHwOP2tFwbUTToyBtpeGhaxKZyxEDCWMnUOet8Ec3MxKF4X?=
+ =?us-ascii?Q?ywrq03VENShkgsziB/q7t7uNsxWMbcD3sjfqqKtAP8KesCvtBBQhJnrmX1uv?=
+ =?us-ascii?Q?o1z+MbzscgUzpap3KJjdJ+QjepSwBSEWKxX4geWpIvwP2Vajpe9btXV4Vvx/?=
+ =?us-ascii?Q?TrIaNrnUyTipCbpPh1W0wEKdlzo71kAn+wIptGzWKvTUsnbHVMIvJeeNv/W5?=
+ =?us-ascii?Q?K+pXRU52g3hG+7FzCgcHABwJER7WsboSm/5ADDsWdzU4W9xvffGyTfYFQ31G?=
+ =?us-ascii?Q?dZtuFzkOgabG6V2xHfvoOPjrcx9nkg4FF9zv0H/dWwUWCQc1XKcS5HPIWFGH?=
+ =?us-ascii?Q?ySbvuP9ipGT+0ynS8jgZqAi7HhRuBh0fO4+4t/IH50rsTUeNWNTpPsBO46K/?=
+ =?us-ascii?Q?FWmZ7OU/z5I3K5BUjb22I/ULgwtIAsPYeA9bIPbPUccBj0TbP9d9IhMIOU2V?=
+ =?us-ascii?Q?X1K1XMFzWRgTLq+02byXZiMuPj1RpGr1Sd9GHYaDYiT5njPYLMJKG1USiERH?=
+ =?us-ascii?Q?7PJuScqRHLSjWsGRbsToYnmQTKwyXsA4Jz7Jix5PMWhX2l/d3g8/RGbtsPVC?=
+ =?us-ascii?Q?UC55Vg2tfr8p7I4iZAk4ARKaQmzCQH+cKw2wVVXVcYos6JAr93CJYbXoqZkC?=
+ =?us-ascii?Q?G90Nghix96I+EAQUkuBYx71UutE9aJIPKkmv5e3YEt7LwF/xplkwhK13C2xl?=
+ =?us-ascii?Q?6ehAyfMX4Wck1wUhfeJ/dNBs54xb/6+p1T0Whbv3JJVsv3MtLn3g1UKRAAM1?=
+ =?us-ascii?Q?JUbgcm9NJj0DBF3k8ApjlAIqmclBM4Nngznd3I8zLrZJJvF9bAAOEz49juE+?=
+ =?us-ascii?Q?7r8C55pzsePkAwUR6w0of5Pehhttdz/rzUD75KqvjP/JOM54QvgLdlr97JUF?=
+ =?us-ascii?Q?6hxtZGY7/sE4kG8XpTqY3zsMlgh4WEt8vNhOxByONW9I/Umkv4KCj/8gRe5S?=
+ =?us-ascii?Q?iHHpW0tOqK7WCEPBskERRrNFugxikHDSvM+Q6wxQ92TYlsmT25E6HyUAiIAu?=
+ =?us-ascii?Q?FHo2mpkJmBfYCj+91paYqVg5k9iPgubV4KCI/1YWx/qE/blJFx5h5fBCfusB?=
+ =?us-ascii?Q?QelICxUhJATyfux/cFLYDodsRfl7R5Z1Ds9/yvGWMfsv1FyuaHwktmbHQ8Ld?=
+ =?us-ascii?Q?li+n28qMP4uB+lfuQfagUvPbL44x40ErqkJXA6ozfWLAW6XPdwxRufgMdfme?=
+ =?us-ascii?Q?66bMM9XDpcl9k473Vdf4Y0EK7ZQntxe0uCgm/mXTv9O6VZpLlo08wiCGfSI6?=
+ =?us-ascii?Q?J4q+h+ACtljPgU+UoHCuH+qURoAOoiREBoJb?=
+X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
+ SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026)(7416014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 03:23:16.6980 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96c7dfdf-36e4-4bf4-d8c5-08ddad4e4cff
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E5.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9478
+Received-SPF: permerror client-ip=2a01:111:f403:2416::61d;
+ envelope-from=nicolinc@nvidia.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.892,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,86 +176,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2025/6/6 ÏÂÎç2:30, Bibo Mao Ð´µÀ:
-> If kernel irqchip is set such as kvm_irqchip_in_kernel() return true, there
-> is special operations with irqchips in such fields:
->    1. During irqchip object realization, kvm_create_device() is used here
->       to create irqchip in KVM kernel.
->    2. Add pre_save and post_load function, where register states can be
->       get and set from KVM kernel.
->    3. With reset function, register and software state is initialized
->       in qemu user space and set to KVM kernel with ioctl command.
->    4. Interrupt injection to kernel, IRQ line interrupt is injected with
->       API kvm_set_irq() and MSI interrupt is injected with API
->       kvm_irqchip_send_msi().
->
-> ---
-> v2 ... v3:
->    1. Implement reset function with kernel irqchip device, initialize the
->       registers and set to KVM kernel.
->    2. Use register offset address rather base address in function
->       kvm_pch_pic_save_load().
->    3. Rename kvm_xxx_save_load() with kvm_xxx_access().
->    4. Rename kvm_xxx_pre_save() with kvm_xxx_get(), kvm_xxx_post_load()
->       with kvm_xxx_put().
->    5. Macro KVM_IRQCHIP_NUM_PINS defined in UAPI header file is used
->       kvm_loongarch_init_irq_routing(), which means the maxinium irq line
->       number.
->
-> v1 ... v2:
->    1. Remove property irqchip-in-kernel with irqchip device driver, use
->       global API kvm_irqchip_in_kernel() directly.
->    2. Do not create memory map region if kernel irqchip is set.
->    3. Modify copy and paste typo issue in kvm_arch_irqchip_create().
->    4. Do not emulate MISC_FUNC_REG IOCSR register if kernel irqchip is
->       set since it access EXTIOI memory region, this register need be
->       emulated in kernel.
->
-> Bibo Mao (13):
->    hw/intc/loongarch_extioi: Add kernel irqchip realize function
->    hw/intc/loongarch_extioi: Add kernel irqchip save and restore function
->    hw/intc/loongarch_ipi: Add kernel irqchip realize function
->    hw/intc/loongson_ipi: Add load and save interface with ipi_common
->      class
->    hw/intc/loongarch_ipi: Add kernel irqchip save and restore function
->    hw/intc/loongarch_pch_msi: Inject MSI interrupt to kernel
->    hw/intc/loongarch_pch: Add kernel irqchip realize function
->    hw/intc/loongarch_pch: Add kernel irqchip save and restore function
->    hw/intc/loongarch_pch: Inject irq line interrupt to kernel
->    hw/loongarch/virt: Add reset support for kernel irqchip
->    target/loongarch: Report error with split kernel_irqchip option
->    hw/loongarch/virt: Disable emulation with IOCSR misc register
->    hw/loongarch/virt: Add kernel irqchip support
-hi,
+On Mon, Jun 16, 2025 at 03:38:26PM +0800, Yi Liu wrote:
+> On 2025/6/16 13:59, Nicolin Chen wrote:
+> > On Thu, Jun 12, 2025 at 08:53:40PM +0800, Yi Liu wrote:
+> > > > > That being said, IOMMU_NOTIFIER_IOTLB_EVENTS should not be needed
+> > > > > for passthrough devices, right?
+> > > > 
+> > > > No, even if x-flts=on is configured in QEMU cmdline, that only mean virtual vtd
+> > > > supports stage-1 translation, guest still can choose to run in legacy mode(stage2),
+> > > > e.g., with kernel cmdline intel_iommu=on,sm_off
+> > > > 
+> > > > So before guest run, we don't know which kind of page table either stage1 or stage2
+> > > > for this VFIO device by guest. So we have to use iommu AS to catch stage2's MAP event
+> > > > if guest choose stage2.
+> > > 
+> > > @Zheznzhong, if guest decides to use legacy mode then vIOMMU should switch
+> > > the MRs of the device's AS, hence the IOAS created by VFIO container would
+> > > be switched to using the IOMMU_NOTIFIER_IOTLB_EVENTS since the MR is
+> > > switched to IOMMU MR. So it should be able to support shadowing the guest
+> > > IO page table. Hence, this should not be a problem.
+> > > 
+> > > @Nicolin, I think your major point is making the VFIO container IOAS as a
+> > > GPA IOAS (always return system AS in get_address_space op) and reusing it
+> > > when setting nested translation. Is it? I think it should work if:
+> > > 1) we can let the vfio memory listener filter out the RO pages per vIOMMU's
+> > >     request.
+> > 
+> > Yes.
+> > 
+> > > But I don't want the get_address_space op always return system
+> > >     AS as the reason mentioned by Zhenzhong above.
+> > 
+> > So, you mean the VT-d model would need a runtime notification to
+> > switch the address space of the VFIO ioas?
+> 
+> It's not a notification. It's done by switching AS. Detail can be found
+> in vtd_switch_address_space().
 
-This series looks good to me. I will apply to loongarch.nexts
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+OK. I got confused about the "switch", thinking that was about
+the get_address_space() call.
 
-Thanks.
-Son Gao
->   hw/intc/loongarch_extioi.c             |  49 ++++++---
->   hw/intc/loongarch_extioi_kvm.c         | 140 +++++++++++++++++++++++++
->   hw/intc/loongarch_ipi.c                |  29 +++++
->   hw/intc/loongarch_ipi_kvm.c            |  85 +++++++++++++++
->   hw/intc/loongarch_pch_msi.c            |  10 ++
->   hw/intc/loongarch_pch_pic.c            |  45 +++++++-
->   hw/intc/loongarch_pic_kvm.c            |  89 ++++++++++++++++
->   hw/intc/loongson_ipi_common.c          |  33 ++++++
->   hw/intc/meson.build                    |   6 ++
->   hw/loongarch/virt.c                    |  65 +++++++-----
->   include/hw/intc/loongarch_extioi.h     |   5 +
->   include/hw/intc/loongarch_ipi.h        |   5 +
->   include/hw/intc/loongarch_pch_pic.h    |   5 +
->   include/hw/intc/loongarch_pic_common.h |   1 +
->   include/hw/intc/loongson_ipi_common.h  |   2 +
->   target/loongarch/cpu.h                 |   1 +
->   target/loongarch/kvm/kvm.c             |  23 +++-
->   17 files changed, 552 insertions(+), 41 deletions(-)
->   create mode 100644 hw/intc/loongarch_extioi_kvm.c
->   create mode 100644 hw/intc/loongarch_ipi_kvm.c
->   create mode 100644 hw/intc/loongarch_pic_kvm.c
->
->
-> base-commit: 09be8a511a2e278b45729d7b065d30c68dd699d0
+> > TBH, I am still unclear how many cases the VT-d model would need
+> > support here :-/
+> >
+> > > 2) we can disallow emulated/passthru devices behind the same pcie-pci
+> > >     bridge[1]. For emulated devices, AS should switch to iommu MR, while for
+> > >     passthru devices, it needs the AS stick with the system MR hence be able
+> > >     to keep the VFIO container IOAS as a GPA IOAS. To support this, let AS
+> > >     switch to iommu MR and have a separate GPA IOAS is needed. This separate
+> > >     GPA IOAS can be shared by all the passthru devices.
+> > 
+> > Yea, ARM is doing in a similar way.
+> > 
+> > > So basically, we are ok with your idea. But we should decide if it is
+> > > necessary to support the topology in 2). I think this is a general
+> > > question. TBH. I don't have much information to judge if it is valuable.
+> > > Perhaps, let's hear from more people.
+> > 
+> > I would be okay if VT-d decides to move on with its own listener,
+> > if it turns out to be the relatively better case. But for ARM, I'd
+> > like to see we can reuse the VFIO container IOAS.
+> 
+> I didn't see a problem so far on this part. Have you seen any?
 
+Probably no functional problem with that internal listener. ARM
+could work using one like that as well. The only problem is code
+duplication. It's not ideal for everybody to have an internal S2
+listener while wasting the VFIO one.
+
+But given that VT-d has more complicated use cases like runtime
+guest-level configuration that switches between nesting and non-
+nesting modes, perhaps having an internal listener is a better
+idea?
+
+Thanks
+Nicolin
 
