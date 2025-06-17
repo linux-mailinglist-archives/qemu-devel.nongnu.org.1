@@ -2,108 +2,217 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7B1ADD31C
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 17:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B93BADD38A
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 17:59:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRYbM-0003na-Fd; Tue, 17 Jun 2025 11:51:56 -0400
+	id 1uRYe0-0007Ms-5t; Tue, 17 Jun 2025 11:54:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uRYL3-0003yF-SI
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:35:10 -0400
-Received: from www62.your-server.de ([213.133.104.62])
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1uRYL9-0004LP-Lg
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:35:12 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uRVyU-00059B-0E
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 09:03:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
- :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=1jhAAkSL3qMooX86efjF+xgUXnH61++dFA0z7jcunOk=; b=DXGQaFoVcSlfZu2AROaijqSqri
- NdWHaILkpu6h23dSJRobGKC9rn9nuolb+B8IeDHhbaa/iUcwGQD7tUSyDfFXgPZvZ4QIgn5L04su1
- V3jIMtTAJ5NXLEkoXX3GsxMsNr0ZvnphsbrE41C1VULSbIOOsfB5bgpCWUT8OWcfsOHt0mvao/p2K
- ycRdc8CxA9rQniNbdDRzlDAYn6ulpoSLOBkkNAXdEHUlOWPnB629JOzCGAz5Qq1mz6v9uNUojDhm+
- BSwEw6QuMcWdOdLuHKuvIlszZpVIWQZhfWAsL6LJnPO1W/C4x0RFrEhUyYckLnkf7G06EgD5JmtLU
- ED9NHwOA==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
- by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <daniel@iogearbox.net>)
- id 1uRVyO-0006Wv-0O; Tue, 17 Jun 2025 15:03:32 +0200
-Received: from localhost ([127.0.0.1])
- by sslproxy01.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96) (envelope-from <daniel@iogearbox.net>)
- id 1uRVyM-000345-38; Tue, 17 Jun 2025 15:03:31 +0200
-Message-ID: <19099367-8d3d-4697-90e6-306bd133d0d7@iogearbox.net>
-Date: Tue, 17 Jun 2025 15:03:31 +0200
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1uRVsp-0004cG-H3
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 08:57:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1750165067; x=1781701067;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=H8VLOE2RlGBomreWRD7ZOGxknj8guWjHuC/q89agayw=;
+ b=PfBMZVNoRR8xZJ3hWAlE+JUhdzceGSdv5rkyGLZPOvkfBkyzz7SColJc
+ bm+x9ltUbb+TF743e/Z9L/+iNfLMHzPg8QCUUO3pLu5NymAT07QolsyB5
+ LzBkMorT7s9Rx2DAHWPhirffCps9u7T6x53UP4lmLeWAhxXzP+VPZr7rf
+ dXsjZ2aMuqn3xZls79OMeE7TG7mIS5qichSrsP7rL9NHfI3erF18X8DKt
+ wGhfFDy2UzGDzXSKoxYpt37Vabzp60T5ysMDtdI1kNFXYO89cd/VWKH7t
+ GxdPenK1hVjkQisL+EE5CtwT/hQq+ZwFVV5wYznkKxE3hNWvMEEkxmjYW Q==;
+X-CSE-ConnectionGUID: 2G6XOWvSRYaj95kRsTuT+w==
+X-CSE-MsgGUID: HcYxmjubT0uOWC/to4mJzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="51451054"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="51451054"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2025 05:57:43 -0700
+X-CSE-ConnectionGUID: vAl9pNA0QN2S5SIuojSmeA==
+X-CSE-MsgGUID: T4DUzfXBQXqjInCo2L8acA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="154060202"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2025 05:57:43 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 17 Jun 2025 05:57:42 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Tue, 17 Jun 2025 05:57:42 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.42)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 17 Jun 2025 05:57:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OI7i3odjdd9cUFcn7/Hzn94O5qKddXutMG/H/ilkumsf1NMpH7FJAapT9RoFj1/rrV6VZAb1G4d/3GYhWfcPPuU4h4kVYz1ujcQuhlx+HPQenS9JwGJkfzYeIipMxfcosM5SdAHdRN3yjiiWe+xoloDIGeR35JOEAnQOYx4MdWELCvv1uW5NnFQDFOXDyPV6QjKV5OV5qJiiOIeZGGe9qOnfgO7GfdIAFQVxzTBOeFvr9taR8LAtT9BKidp8nLDDvNuviIMzXAKhY8fsHh6gPqyDGRysUBo+P40Jm8IYHbKkkkqihNCyWKpdPX83VEciZ4getNLoOVSyclY+VJAUKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3W9fAOUarx2vroU6MzE/0ePFng9Ryul2vW8NpaVBgeg=;
+ b=a2Z1M+VMeJ2+l6MBhOqKve/WPfp9dea8TgM4wHOk3wCltXtQ+tfr7vHk3jh5AAEPfCjX/z93Qdu4OAi3zhVXtJ+20vL0jDOmgGXygvcCCeSmlY+BiCBmCkT/F7q8eGEdc69w8ssL7mYLkMrO6clzlXxCZUcK6pRQZ9tLrnHdeicRcvsbiT42alz3+ddzq42FSTTFnkm7cvUBNeAvTSz9NsYmS3lmxvxnamqfU+fCO0trQPhfosHuQ3Awje6Oc4v9aCk0eWlLohAbxHca2MREkqyhsvucPUBKiDQeSx4e20clfcCqBv7viGes0O2d6FmZSxM4D0XYUx5fZ6eRJi0ZOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com (2603:10b6:8:141::20)
+ by PH0PR11MB7635.namprd11.prod.outlook.com (2603:10b6:510:28e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Tue, 17 Jun
+ 2025 12:57:26 +0000
+Received: from DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a]) by DS0PR11MB7529.namprd11.prod.outlook.com
+ ([fe80::d244:15cd:1060:941a%7]) with mapi id 15.20.8835.027; Tue, 17 Jun 2025
+ 12:57:26 +0000
+Message-ID: <de5baefb-515a-47e3-9e4b-16bca4dbec5e@intel.com>
+Date: Tue, 17 Jun 2025 21:03:32 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] net/af-xdp: Fix up cleanup path upon failure in
- queue creation
-To: Ilya Maximets <i.maximets@ovn.org>, qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Anton Protopopov <aspsk@isovalent.com>
-References: <20250604112916.1195368-1-daniel@iogearbox.net>
- <20250604112916.1195368-2-daniel@iogearbox.net>
- <945f230c-052b-43b5-b1c3-b8c450c21327@ovn.org>
+Subject: Re: [PATCH rfcv3 15/21] intel_iommu: Bind/unbind guest page table to
+ host
+To: Jason Gunthorpe <jgg@nvidia.com>, Nicolin Chen <nicolinc@nvidia.com>
+CC: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, Peter Xu
+ <peterx@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "clg@redhat.com"
+ <clg@redhat.com>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
+ <jasowang@redhat.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "shameerali.kolothum.thodi@huawei.com"
+ <shameerali.kolothum.thodi@huawei.com>, "joao.m.martins@oracle.com"
+ <joao.m.martins@oracle.com>, "clement.mathieu--drif@eviden.com"
+ <clement.mathieu--drif@eviden.com>, "Tian, Kevin" <kevin.tian@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20250521111452.3316354-16-zhenzhong.duan@intel.com>
+ <aC5YjHrv5EMDixzZ@Asurada-Nvidia>
+ <0f8087f4-0c97-440d-84d2-f3f017f81041@intel.com>
+ <aDDk1NYwJXaAdUQI@Asurada-Nvidia>
+ <29f5f434-1fe3-4b5e-91d1-f153e1e98602@intel.com>
+ <aDSmcvZ08jNOSr05@Asurada-Nvidia>
+ <SJ0PR11MB6744340B889FF65D3BD5B8459267A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <aE+wCIG8KHb3u1lV@nvidia.com>
+ <IA3PR11MB91369A0E98CC76ABDBA365809270A@IA3PR11MB9136.namprd11.prod.outlook.com>
+ <aFDdkxPODYnyG0Vo@nvidia.com> <20250617123707.GW1174925@nvidia.com>
 Content-Language: en-US
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <945f230c-052b-43b5-b1c3-b8c450c21327@ovn.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <20250617123707.GW1174925@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27671/Tue Jun 17 10:47:08 2025)
-Received-SPF: pass client-ip=213.133.104.62; envelope-from=daniel@iogearbox.net;
- helo=www62.your-server.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+X-ClientProxiedBy: SI1PR02CA0047.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::15) To DS0PR11MB7529.namprd11.prod.outlook.com
+ (2603:10b6:8:141::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7529:EE_|PH0PR11MB7635:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67f62ed2-2b3f-4aef-4691-08ddad9e8256
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?OVVtSzdhTVJvOHBmRXZSVzI0Z0NFdEZqZHBGNld6Zm1MaFRKbkRsMkJQYzVz?=
+ =?utf-8?B?NnloM2lVMTUxNWJ1VmJnRzU4bHhHSmZMaDFDZW5BSXZTTmdRdVBXNkxQUEs3?=
+ =?utf-8?B?cnVJd0R5VldSMVFxTTdPeWRyT0tKQ1RTYVJraXhOSXdVTlRhbDF0TVdCSVIv?=
+ =?utf-8?B?akdWdmtpUnZieWtXT2c1STNuMnpPYXlXUytWVXdvdHpXc1orQ2hKaXNpdk52?=
+ =?utf-8?B?RDdVMDFMQWY2aXVVMitIWWFYc0EwRWlXM2JmYjZ0bGdGR2Q0MGNNbkZvWWg0?=
+ =?utf-8?B?VFlndVpHUHVDTmdtT0tDUVdqd2VTcEt4d0wySUN4Nk1JQ0YzQThqK1Z5MzZK?=
+ =?utf-8?B?UGQ1TmtLNzZ1cnpMV2NuN1A4NEdpQTFFdGF4NkhsV216MXhqSGlVbS9lMm9q?=
+ =?utf-8?B?dHZ2N3ZUa1BlcklMbVFRUURiRUQrTlh5SUVSbzdjZDhlRks3M3d2TkVkM3JO?=
+ =?utf-8?B?elIxNEc1VzJQT0c2RlZtd2hoa296UUVCNDZQTDJaa0ovQW5aNWxLeUZrSEU2?=
+ =?utf-8?B?TGlDTUF1bDRwcnZzT05jcWRXNjlzaXBmcTByTXV3M0tvMW03dGwrVnYxSkVZ?=
+ =?utf-8?B?SUVIdUZJY2tHQ2JRU1JBWGpldHVBOGR5dngvS2lyaE9zTGJta2VmOUdmU3FO?=
+ =?utf-8?B?N2QvbkJVZlZGalZteS80SmduQ0lSa0FWWlltT044aG9RdGNRZjVmand3RmFy?=
+ =?utf-8?B?ckFsUWFsQUxEYmZ3R25mK2pBQ1RXeGpiMmpUcUZYOVNOZ081Q1lXVGNzanlS?=
+ =?utf-8?B?dzFCZ3MxR3VsenFtaGZZUzJVTVdzRllvME9BMzJNVDBUanF4RVZVZk94d05C?=
+ =?utf-8?B?YU1UMnljVHVEUncvdUtuSTAyYWRQUGliN0lMMDdWUVQxNFlLQllNQXY5OEdl?=
+ =?utf-8?B?N3pmaStiWVNWaE5qVGNJc2Z4V0pJQUJtc0dkNXQ5U29tcVI5a0QrWjg5NTBB?=
+ =?utf-8?B?M3cvNW00N0dQVmZHcS9JNnVjUCtLRk9NQWdFenpiV3ZRYkR4eDR3US9UZWpC?=
+ =?utf-8?B?MUJjTTdrOHRFQzE3MGlSYmxPenllMU5TR1JtK043TzFCQWJQeVRUSDBwcEl3?=
+ =?utf-8?B?QmRNNTUwSDFCenF0SG1RcjczbXpRTEs3cnhyaStQbnhtQTdpWHZUZ3ZtT0RO?=
+ =?utf-8?B?bkFGWjFQaUNtcHh4R0Q1eXNOeHhRZ25CVGhYQWRvV2NSUjQrVFIveHlKaDNH?=
+ =?utf-8?B?bVRyZE5PTEJ2TmVIeWhzMmltbElxNVNtZXV0WHBjWFRsZW85YzlLT0trc1Ry?=
+ =?utf-8?B?SzJ4Nnk1UXZJdGJWeWhMUFdzT0RZTVYzNXhzeEx0YkFBS0Y2YmxtYUI1QW03?=
+ =?utf-8?B?UTZZRysxUXNnRWo1Rm5meFVCMVBsRSswZlN1UUNhWUxMVEhua2xBZE1lcnVv?=
+ =?utf-8?B?eDYvT0NXTzlJalNkcHVSRTBBQ0RwYnZiT3o3ZGNNeDZuZ0VjNzJ2UkVuWEtH?=
+ =?utf-8?B?bW10OXkya1pBd2RtK3dHUWtuRzNYL1pZV2ZodmlRU0hqcnEwMXYvVnMzQmRy?=
+ =?utf-8?B?L0VmaUd3MWxISXNybnZRNlp3STNRWjJHZDQzYWlHOEpYQUlsQWttYlVjSnlF?=
+ =?utf-8?B?eGZxTHJkd0pnL0c4NW1YQzFieFFZT2FhOURhNnh4TjF5ektuei9jYTFBb0Jw?=
+ =?utf-8?B?ZmJZeWhKZlRBVVFVZ0xvL3lvRFBMTkVKLzhmeGZYUEEwMjdQcERaZENZRTFT?=
+ =?utf-8?B?RHE3L01BT1hjbVlKZC9ZWkRHakxSQlB5aHZOMUJVQXpRQkt5ZGJwTktxV3lx?=
+ =?utf-8?B?TVN5RWd5NkYzOTROaUZlbmJDQ0dqaWNzemVSYS8rR214TmwveHJpU2R5dWNh?=
+ =?utf-8?B?NXVGeGxQNEpKWGhBZ2Q4aXE2VklOV0RnMzJ3R09qUHppTVVSeTV5WlEwWlY2?=
+ =?utf-8?B?OS9VSUh0T1djdXUyMEtkeHNPNjI4Z3VaSWl5VURaZm9xSDdYc0tLb0FhRyt2?=
+ =?utf-8?Q?cDYv/NsMrzs=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7529.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(7416014)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YUVWcGdJek55L2piSFM2OWdlb3lnYjdPbzlONnFxRWZVRFRVNkFpWkFrbkNO?=
+ =?utf-8?B?ZFdwMENxcWpoL1EyeVM4dit4cm5ramc1RWRaeFpSbjR6dXJ6U0JDVFI0czdq?=
+ =?utf-8?B?TFNvZVpKakVId1FreEVRd0wyL0hJVmJJSVpFeUtkcThtejJzWkRWYmlZNUM0?=
+ =?utf-8?B?SWhrK3R5L0RkSjdGSmV5WXB5SEl4RTMvZGtiWEZ3MEx3L2FlVU9GYThwSTBq?=
+ =?utf-8?B?UDUrQ2hDWWd4SHNQa2xoS0JaYzlIUmtKYjA2em1DYWg0Z2Q1QkxUcXZpTnVK?=
+ =?utf-8?B?ZmxNTEtvYXlDMVM5U21HNkJYQzBwdUpsYjJkWUd3SG51U1VWeERaNitHNENQ?=
+ =?utf-8?B?T0VxTy9yQ0NKSUxOc2xFK0pBcEpReHpsc3EwV1pjc0Y2L01iUkgyMjgrWnp1?=
+ =?utf-8?B?d0ZpcWJjaFdPWjlVUXgyTWViYTVnM3lGemJGaS9aYW1YUkJ4ei9nYk00amNi?=
+ =?utf-8?B?Z0ZzY2RYMlJ1SzdWK1RHbEoxbDZWRjk2UlQyQVVieGlOeHdhQU1ZL0EzZ3Zh?=
+ =?utf-8?B?d3huT0Jkc0JRR0FabytaNWZXTzg0blUzWUJQL1hRQkhBQS84azVaQ0QyYzd5?=
+ =?utf-8?B?Y2M1bnQ1Ny9zcEdzL0NsOWFYQnRqVzkzZWlyL3hzT1AwVGRKUDcvQWZqdlVk?=
+ =?utf-8?B?ZGIySzIxNitCVmUvTnl3bHRFcElUeVlSSmVuek5hMThvVWdiV1FHRkZyb2xX?=
+ =?utf-8?B?VzZYSmt1S2hnaTJkWXhwNGxzZkRUVERpbkl0Qy9kckhoQm9kQUd3eGEzVUVK?=
+ =?utf-8?B?UC9YejhRMTJNVkpPWjBPb3VpZEtkcmY4T1hEMEJKMFp5NW10Yk9WM3Q5ZHh6?=
+ =?utf-8?B?bFc3Y0N3RDVVVzBMRlhiVVFEOFIvb2F3Ri8wTlFGTGtpcDYzRTV2dUQxQnhr?=
+ =?utf-8?B?a0JKVU91ZFdqYlhJQWIzeFpIZHRxdDlORjh6N25kcFk4cjVaRERJN3JaQ21q?=
+ =?utf-8?B?NU4ybjVmYVBsUjRONDBMTytwbHpua3FuSkNaellrY2JTWi9Jb3lZaU9RS3Rn?=
+ =?utf-8?B?NSs2c1ZEUUJYWFU2QWljb3VwYWQvT29yK0IxTEM0S3ZjZC9xTHFyaXNrN1VS?=
+ =?utf-8?B?akYyeGJDaTlIU1JlUVZ3b1lpOThHQTBtUURPV1lZMUFiSHhLTzc1S2xWclNY?=
+ =?utf-8?B?cHNsRUcyR1MzRE1YT2pNREtKTjdDRDVTT3FBa2lrdEVDK3A2d05ySU0yaThi?=
+ =?utf-8?B?QmNFd1VVSlk4cUwxS1M0ZXQzRnNpVThzbTVWUEgrZVE0MllJQmlDN3VNYllF?=
+ =?utf-8?B?SXNWSG9EVlFaaXV0eUZKNUVTU01KS1ZtbjRReGkxU01oRWdQcWtadGN1MWwx?=
+ =?utf-8?B?Y3BPSkRVZlQvYVErVDdoeldlMmloVFROeG16WW82NWIxRlhuUTdjMnN6S3pH?=
+ =?utf-8?B?ajN4RVBtUkVjNHg3eVF4M3A4N0xTeU1PZTRwWndYNjkvNzZwNFB3NER6a2t4?=
+ =?utf-8?B?clJSSkJnNk9MTUZ0TjZmTkRnc0Fma3NLTzBTWDYycDVteTBoT2gvRjlHY0lO?=
+ =?utf-8?B?ZkxSbWJLSk1HTXZLdkluWjh2VnFNU2RidHdHemVnTW0wMStySnE5ZGdQVlVQ?=
+ =?utf-8?B?ZFlZeGx5aGFWZndBNDJxNUVhL3lFa1orUG5weURnTGNQemc1NjNmUWZISDhy?=
+ =?utf-8?B?Ukt5VjlrajJsRWJIbUUvN05pSW41ajgzc2t2Ty95b1U0eFdvbklWdzNEeGNl?=
+ =?utf-8?B?cmt4b2w3dVZuYjZmUHVQaWpGMHdFV1BRUFJlanBCeTI2dnErSk9YWVVnL0Zq?=
+ =?utf-8?B?Q09WS1JpSkNscDBYOGtTaTB2elZzaHp2MjhLRjZuVG9rdXpQcFZjTDhyS0V5?=
+ =?utf-8?B?UlZ2L0ZwcXgrcGlZVnRUTTd6S0RURlpNWTJ5eWpyMi9zYm1YUUNyUE9VM01K?=
+ =?utf-8?B?cis4dnFJSXk1T2RyakdvakNJbFFOWk9uVFpJV3RXRHRYOHRNRFFidFE1d1Qw?=
+ =?utf-8?B?RThJTm5RMnovbFkrWmNlcHlvUU5nTy9GK1JxeTZNdXZnR2x3WXBidWNYYlZZ?=
+ =?utf-8?B?MkU1eU5VVmRPOXdpbGFMcFJ0Mkkra2xTcVErcEhqUlFURkc2c0NUK3FnWWpV?=
+ =?utf-8?B?bG9FQVl3U0hvakgvZ1F0RlhyYlgrWkR1MzUwWFBMU1FGQnJqaHVBQkoweHFX?=
+ =?utf-8?Q?T1RgmqFHKWWfsx611q5YP5Cey?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67f62ed2-2b3f-4aef-4691-08ddad9e8256
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7529.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 12:57:26.0621 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bY4HUmH+RUJ8a6tuCcwpyT0A04b7X1pr+ytIAOINL6vYz4hfVaqoQ2sCW+tZaHumLwIM0c5SKGmtdZI+JhkFvg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7635
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=yi.l.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.89,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -118,75 +227,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Daniel Borkmann <daniel@iogearbox.net>
-From:  Daniel Borkmann via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/17/25 1:59 PM, Ilya Maximets wrote:
-> On 6/4/25 1:29 PM, Daniel Borkmann wrote:
->> While testing, it turned out that upon error in the queue creation loop,
->> we never trigger the af_xdp_cleanup() handler. This is because we pass
->> errp instead of a local err pointer into the various AF_XDP setup functions
->> instead of a scheme like:
+On 2025/6/17 20:37, Jason Gunthorpe wrote:
+> On Mon, Jun 16, 2025 at 08:14:27PM -0700, Nicolin Chen wrote:
+>> On Mon, Jun 16, 2025 at 08:15:11AM +0000, Duan, Zhenzhong wrote:
+>>>> IIUIC, the guest kernel cmdline can switch the mode between the
+>>>> stage1 (nesting) and stage2 (legacy/emulated VT-d), right?
+>>>
+>>> Right. E.g., kexec from "intel_iommu=on,sm_on" to "intel_iommu=on,sm_off",
+>>> Then first kernel will run in scalable mode and use stage1(nesting) and
+>>> second kernel will run in legacy mode and use stage2.
 >>
->>      bool fn(..., Error **errp)
->>      {
->>          Error *err = NULL;
+>> In scalable mode, guest kernel has a stage1 (nested) domain and
+>> host kernel has a stage2 (nesting parent) domain. In this case,
+>> the VFIO container IOAS could be the system AS corresponding to
+>> the kernel-managed stage2 domain.
 >>
->>          foo(arg, &err);
->>          if (err) {
->>              handle the error...
->>              error_propagate(errp, err);
->>              return false;
->>          }
->>          ...
->>      }
->>
->> With a conversion into the above format, the af_xdp_cleanup() handler is
->> called as expected.
+>> In legacy mode, guest kernel has a stage2 (normal) domain while
+>> host kernel has a stage2 (shadow) domain? In this case, the VFIO
+>> container IOAS should be the iommu AS corresponding to the kernel
+>> guest-level stage2 domain (or should it be shadow)?
 > 
-> How exactly this prevents calling the cleanup function?  I don't see the
-> errp being checked anywhere in the qemu_del_net_client() path.
-> 
-> Could you provide a more detailed call sequence description where the cleanup
-> is not called?
-> 
-> I agree thought that the local err variable is actually unused.  We should
-> be able to just remove it and remove the error_propagate() call as well.
+> What you want is to disable HW support for legacy mode in qemu so the
+> kernel rejects sm_off operation.
 
-Ok, I basically manually injected an error in af_xdp_{umem_create,socket_create,
-update_xsk_map} and noticed that in fact none of the af_xdp_cleanup() callback
-was called and qemu was exiting right away.
+that can be the future. :)
 
- From reading up on the qemu error handling patterns that should be used via
-include/qapi/error.h I noticed that this was due to passing in errp directly
-rather than a local error variable as done in many other places in qemu code.
+> The HW spec is really goofy, we get an ecap_slts but it only applies
+> to a PASID table entry (scalable mode). So the HW has to support
+> second stage for legacy always but can turn it off for PASID?
 
->> Also, making sure the XDP program will be removed does
->> require to set s->n_queues to i + 1 since the test is nc->queue_index ==
->> s->n_queues - 1, where nc->queue_index was set to i earlier.
+yes. legacy mode (page table following second stage format) is anyhow
+supported.
+
+> IMHO the intention was to allow the VMM to not support shadowing, but
+> it seems the execution was mangled.
 > 
-> The idea behind 'i' instead of 'i + 1' was that if either af_xdp_umem_create()
-> or af_xdp_socket_create() fails, we do not have xdp_flags initialized on the
-> last queue.  And without it we can't remove the program, so we remove it while
-> destroying the last actually configured queue.  And this is OK, because the
-> failed queue was not added to the program, and if the af_xdp_socket_create()
-> fails for the very first queue, then we don't have a program loaded at all.
-> 
-> With the new changes in this patch set, we have an extra function that can fail,
-> which is a new af_xdp_update_xsk_map(), and only if this one fails, we need to
-> remove the program while cleaning up the current failed queue, since it was
-> already created and xdp_flags are available.
-> 
-> If we get this patch as-is and the af_xdp_socket_create() fails, we will not
-> remove the program, AFAICT.
+> I suggest fixing the Linux driver to refuse to run in sm_on mode if
+> the HW supports scalable mode and ecap_slts = false. That may not be
+> 100% spec compliant but it seems like a reasonable approach.
 
-I'll double check this concern and see if it can be solved (iirc we do test for
-s->xdp_flags in the cleanup callback).. in case of xsk map, it should not detach
-anything from an XDP program PoV (given inhibit) but rather it should remove
-prior installed xsk sockets from the xsk map to not leave them around.
+running sm_on with only ecap_flts==true is what we want here. We want
+the guest use stage-1 page table hence it can be used by hw under the
+nested translation mode. While this page table is only available in sm_on
+mode.
 
-Best,
-Daniel
+If we want to drop the legacy mode usage in virtualization environment, we
+might let linux iommu driver refuse running legacy mode while ecap_slts is
+false. I suppose HW is going to advertise both ecap_slts and ecap_flts. So
+this will just let guest get rid of using legacy mode.
+
+But this is not necessary so far. As the discussion going here, we intend
+to reuse the GPA HWPT allocated by VFIO container as well.[1] This is now
+aligned with Nic and Shameer.
+
+[1] 
+https://lore.kernel.org/qemu-devel/b3d31287-4de5-4e0e-a81b-99f82edd5bcc@intel.com/
+
+>> The ARM model that Shameer is proposing only allows a nested SMMU
+>> when such a legacy mode is off. This simplifies a lot of things.
+>> But the difficulty of the VT-d model is that it has to rely on a
+>> guest bootcmd during runtime..
+> 
+> ARM is cleaner because it doesn't have these drivers issues. qemu can
+> reliably say not to use the S2 and all the existing guest kernels will
+> obey that.
+
+out of curious, does SMMU have legacy mode or a given version of SMMU
+only supports either legacy mode or newer mode?
+
+> AMD has the same issues, BTW, arguably even worse as I didn't notice
+> any way to specify if the v1 page table is supported :\
+> 
+> Jason
+
+-- 
+Regards,
+Yi Liu
 
