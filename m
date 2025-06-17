@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6DDADC0EB
+	by mail.lfdr.de (Postfix) with ESMTPS id 67AAEADC0E9
 	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 06:39:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRO5g-0002qC-J5; Tue, 17 Jun 2025 00:38:32 -0400
+	id 1uRO5j-0002rP-5M; Tue, 17 Jun 2025 00:38:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1uRO5e-0002pW-Qb
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 00:38:30 -0400
+ id 1uRO5f-0002pk-D8
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 00:38:31 -0400
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1uRO5b-0007je-EI
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 00:38:30 -0400
+ id 1uRO5d-0007ja-OY
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 00:38:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750135108; x=1781671108;
+ t=1750135110; x=1781671110;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IglXtui1Vatd43jD84nQ+rb4ziwGuJrvIl5/7WfV7Ng=;
- b=n52J+Q9FwaKD7n/lQD50S6uFlWczb8vG7c5tVa4I0zcQrb8hBe0U8R9E
- W9/s2O0O4r0388f7TiaDZD7u033DOgZi8dyXgcRtZXmjkoDJwdBTbL9JY
- g3VObYf143qpG9i6Jj/0OuwvfFi4Elf/YaU+WraYenrzr5kprG2442BsB
- KtouJqR2PIVr4/N5/e8VndnSaEnI7ngvC/7UKwR33SVnTNmmJw92RnvEE
- D/baVOAwLWoWBuIh7Hskelxf87oKCzCMJ+r907VTr5qtTVl/uwFsIZM2t
- a4Cuc7edyBxVZrQ8MVBLtU4RX81mWxj8Bx3JB3PMLpnznm+k00GgTvmma Q==;
-X-CSE-ConnectionGUID: G5+f97wZRfKxTvk3TKIABw==
-X-CSE-MsgGUID: cZgrbfGiSIGGJcaP8esFbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52432292"
-X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="52432292"
+ bh=N/hxLA1NKl77VClmHWfKHM7UOdeBh5dCwhVlxw8bnz8=;
+ b=TP7l1LVvu4P60yV4il8zRaPRJhHSGoKue/qQSQ7u6P34+XM/q6CFnIEx
+ Aav+IWtN/XTFUAXAMdpQB9u0ojenbi7/fBrUM0rkIGGwf2d9SI9DyJCgW
+ 0HUHchNzg2fMPPiu6OwkQHfy9P8Tr9cG68+Hwa2xtdZPZgR6r/aEaQRLk
+ vQhnVjnrlw/LUicroCPKT5jiWomq6TGzWSsLaW8m+Lzpa/Yoz6L7DtI2/
+ Mczw5MkGtVnLdIYTGEufXZmeOY7fCz1ahUTyfqp3MGaUkvjmXBzOSRLo/
+ VIgvZrbvy0cPg0+BbeVBdfypVrSkVoyZsNr016LKF4j0DM8INhkrWjSH1 g==;
+X-CSE-ConnectionGUID: ZzrJEi4KSpCoXeGhvYdMdw==
+X-CSE-MsgGUID: 8//Wg5JSSv6iec2je+oruw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52432300"
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="52432300"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Jun 2025 21:38:24 -0700
-X-CSE-ConnectionGUID: fEi7vHC9QH60ohAHmC5TQQ==
-X-CSE-MsgGUID: YYAS85NHQSmP8yDIC+/SZQ==
+X-CSE-ConnectionGUID: YiGgnWO2SkW8bkYovLf+eQ==
+X-CSE-MsgGUID: fn5azfjfSl6lWpBzyABr7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="149551038"
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="149551044"
 Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2025 21:38:22 -0700
+ 16 Jun 2025 21:38:23 -0700
 From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 To: qemu-devel@nongnu.org
 Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
@@ -51,11 +51,12 @@ Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>,
- Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-Subject: [PATCH v6 2/7] ui/spice: Enable gl=on option for non-local or remote
- clients
-Date: Mon, 16 Jun 2025 21:32:26 -0700
-Message-ID: <20250617043546.1022779-3-vivek.kasireddy@intel.com>
+ Michael Scherle <michael.scherle@rz.uni-freiburg.de>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v6 3/7] ui/spice: Add an option for users to provide a
+ preferred video codec
+Date: Mon, 16 Jun 2025 21:32:27 -0700
+Message-ID: <20250617043546.1022779-4-vivek.kasireddy@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617043546.1022779-1-vivek.kasireddy@intel.com>
 References: <20250617043546.1022779-1-vivek.kasireddy@intel.com>
@@ -87,12 +88,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Newer versions of Spice server should be able to accept dmabuf
-fds from Qemu for clients that are connected via the network.
-In other words, when this option is enabled, Qemu would share
-a dmabuf fd with Spice which would encode and send the data
-associated with the fd to a client that could be located on
-a different machine.
+Giving users an option to choose a particular codec will enable
+them to make an appropriate decision based on their hardware and
+use-case. Note that, the Spice server would use this codec with
+Gstreamer encoder and only when gl=on is specified.
+
+If no codec is provided, then the codec gstreamer:h264 would be used
+as default. And, for the case where gl=off, the default codec to be
+used is determined by the Spice server.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
@@ -100,56 +103,80 @@ Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Cc: Frediano Ziglio <freddy77@gmail.com>
 Cc: Dongwon Kim <dongwon.kim@intel.com>
 Cc: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 ---
- include/ui/spice-display.h | 1 +
- ui/spice-core.c            | 4 ++++
- ui/spice-display.c         | 1 +
- 3 files changed, 6 insertions(+)
+ qemu-options.hx |  8 ++++++++
+ ui/spice-core.c | 15 +++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/include/ui/spice-display.h b/include/ui/spice-display.h
-index e1a9b36185..6c55f38c8b 100644
---- a/include/ui/spice-display.h
-+++ b/include/ui/spice-display.h
-@@ -151,6 +151,7 @@ struct SimpleSpiceCursor {
- };
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 7eb8e02b4b..124c87311c 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2281,6 +2281,7 @@ DEF("spice", HAS_ARG, QEMU_OPTION_spice,
+     "       [,streaming-video=[off|all|filter]][,disable-copy-paste=on|off]\n"
+     "       [,disable-agent-file-xfer=on|off][,agent-mouse=[on|off]]\n"
+     "       [,playback-compression=[on|off]][,seamless-migration=[on|off]]\n"
++    "       [,video-codec=<codec>\n"
+     "       [,gl=[on|off]][,rendernode=<file>]\n"
+     "                enable spice\n"
+     "                at least one of {port, tls-port} is mandatory\n",
+@@ -2369,6 +2370,13 @@ SRST
+     ``seamless-migration=[on|off]``
+         Enable/disable spice seamless migration. Default is off.
  
- extern bool spice_opengl;
-+extern bool spice_remote_client;
++    ``video-codec=<codec>``
++        Provide the preferred codec the Spice server should use with the
++        Gstreamer encoder. This option is only relevant when gl=on is
++        specified. If no codec is provided, then the codec gstreamer:h264
++        would be used as default. And, for the case where gl=off, the
++        default codec to be used is determined by the Spice server.
++
+     ``gl=[on|off]``
+         Enable/disable OpenGL context. Default is off.
  
- int qemu_spice_rect_is_empty(const QXLRect* r);
- void qemu_spice_rect_union(QXLRect *dest, const QXLRect *r);
 diff --git a/ui/spice-core.c b/ui/spice-core.c
-index 0326c63bec..5acbdd3955 100644
+index 5acbdd3955..5e585ed958 100644
 --- a/ui/spice-core.c
 +++ b/ui/spice-core.c
-@@ -836,9 +836,13 @@ static void qemu_spice_init(void)
- #ifdef HAVE_SPICE_GL
-     if (qemu_opt_get_bool(opts, "gl", 0)) {
+@@ -488,6 +488,9 @@ static QemuOptsList qemu_spice_opts = {
+         },{
+             .name = "streaming-video",
+             .type = QEMU_OPT_STRING,
++        },{
++            .name = "video-codec",
++            .type = QEMU_OPT_STRING,
+         },{
+             .name = "agent-mouse",
+             .type = QEMU_OPT_BOOL,
+@@ -662,6 +665,8 @@ static void qemu_spice_init(void)
+     char *x509_key_file = NULL,
+         *x509_cert_file = NULL,
+         *x509_cacert_file = NULL;
++    const char *video_codec = NULL;
++    g_autofree char *enc_codec = NULL;
+     int port, tls_port, addr_flags;
+     spice_image_compression_t compression;
+     spice_wan_compression_t wan_compr;
+@@ -838,6 +843,16 @@ static void qemu_spice_init(void)
          if ((port != 0) || (tls_port != 0)) {
-+#if SPICE_SERVER_VERSION >= 0x000f03 /* release 0.15.3 */
-+            spice_remote_client = 1;
-+#else
+ #if SPICE_SERVER_VERSION >= 0x000f03 /* release 0.15.3 */
+             spice_remote_client = 1;
++
++            video_codec = qemu_opt_get(opts, "video-codec");
++            if (video_codec) {
++                enc_codec = g_strconcat("gstreamer:", video_codec, NULL);
++            }
++            if (spice_server_set_video_codecs(spice_server,
++                                              enc_codec ?: "gstreamer:h264")) {
++                error_report("invalid video codec");
++                exit(1);
++            }
+ #else
              error_report("SPICE GL support is local-only for now and "
                           "incompatible with -spice port/tls-port");
-             exit(1);
-+#endif
-         }
-         egl_init(qemu_opt_get(opts, "rendernode"), DISPLAY_GL_MODE_ON, &error_fatal);
-         spice_opengl = 1;
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 9c39d2c5c8..0fb72f6d6f 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -31,6 +31,7 @@
- #include "standard-headers/drm/drm_fourcc.h"
- 
- bool spice_opengl;
-+bool spice_remote_client;
- 
- int qemu_spice_rect_is_empty(const QXLRect* r)
- {
 -- 
 2.49.0
 
