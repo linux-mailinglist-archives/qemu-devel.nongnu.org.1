@@ -2,74 +2,170 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26139ADD366
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 17:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CDBADD314
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 17:53:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRYea-0001UR-Tn; Tue, 17 Jun 2025 11:55:16 -0400
+	id 1uRYbJ-0003k0-Ky; Tue, 17 Jun 2025 11:51:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uRYLO-0006Bx-1E
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:35:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1uRYLL-0001Fx-Jp
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:35:24 -0400
+Received: from mail-bn8nam11on2077.outbound.protection.outlook.com
+ ([40.107.236.77] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uRVWD-0002Da-K5
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 08:34:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750163660;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=VUhaNXnFBIIRi+RHB5CXO/kMQ0DnPMkle+LXwlTRRkw=;
- b=gx3aaJQ0kDSmCy5gISYgWUU3uJUd/hfJy3d5lfnbTWZ90A1tB1fNOwYTjp1pXfPPvKRQJo
- FPcpyWj8DGGh/YddmGYODxQ6ldkFg4VC2IL6TEwh3dgDDcAWCULixZmWQg7DiI3/C/6dBX
- aI2s/jw/OsLfK9etEUxhFb9SI1ZwDkI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-333-m-cmb4a0OtiP-HpZtUmD2Q-1; Tue,
- 17 Jun 2025 08:34:19 -0400
-X-MC-Unique: m-cmb4a0OtiP-HpZtUmD2Q-1
-X-Mimecast-MFC-AGG-ID: m-cmb4a0OtiP-HpZtUmD2Q_1750163658
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 45D101800286; Tue, 17 Jun 2025 12:34:18 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.11])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 82FB918002B7; Tue, 17 Jun 2025 12:34:17 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D4E4A21E6A27; Tue, 17 Jun 2025 14:34:14 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,  Daniel =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Peter
- Maydell <peter.maydell@linaro.org>,  Akihiko Odaki
- <akihiko.odaki@daynix.com>
-Subject: Re: Build platform guarantees, docs, tests, and snakes in the garden
-In-Reply-To: <CAFn=p-YuqzXvWF-cGLUc0LVVMe2Rinx9+LOjvpHRY-vRrPyJow@mail.gmail.com>
- (John Snow's message of "Thu, 5 Jun 2025 15:35:04 -0400")
-References: <CAFn=p-YuqzXvWF-cGLUc0LVVMe2Rinx9+LOjvpHRY-vRrPyJow@mail.gmail.com>
-Date: Tue, 17 Jun 2025 14:34:14 +0200
-Message-ID: <87sejytum1.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1uRVdp-00030A-2x
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 08:42:19 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ugW1kou6Du1ztQymwfj6XUV/m3b3Py2OGoVoarWcQtMF75u+fA/5LpPH3sA678eBzVs1D2/TD72GdVb0AdGKgPuXwZ/0LaDlWF78gNV+8RbRa/2zZJrgzJSnqX/Jff0SZ1tZeBhphRNmsQsQFQLLQ3ZWlS44/yYQ8k6p0uIUX/hT4QSPL26BMmwh/1l9oXvHWJbJqNctcHsk9RIf9CH23P9oJXznjusUIb1gKjv9qIxqYbJfKVNHxRDn5FZidXOF1MlW6u5hy2ncd5FNLqOgjxbejFx6KOk5Eo6gm7zbC0F+pgEvGLjJXgYCCqb5Xfd3qIXsdyII+SMjODNY01FHAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cM1Fi/6zKcxUPVHuNcq6B2cA6UXaFMC+FNQ+E95VxOo=;
+ b=r6rQeVZ1HpHv5saxl6aGJ4ODnADxqhb4wX7HyIaQfRBxANdbwEZQmKO60CGtdUMz1Udq70m2sL1S6HyIPDTxjYLdc6ObVNdQVReE2t0lKRpOy5Nk4Nlb81n9Hc5XoC1DTBulcZqa40/jFETf6/wu+ohi30fRI8NXt4kQIqZjOAGhPEbpZlmdlKslwgNjZLs81bGGpZ9lvCmAHEnQIYtck5LPUTjP13eEs250rciVPUM3DN/gJHDH6yTwfVx0U1+lpOJ0Hbkl3rF6QNGB254IdHU7JaMUEZ5RM3uC3sd5dBxAadKV+aknH6sO6CoVLL10CzrgOFnvLjsNaAokFCB5Qw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cM1Fi/6zKcxUPVHuNcq6B2cA6UXaFMC+FNQ+E95VxOo=;
+ b=iaUXnJLuXGnrl9i7zseEyVmqyNOri3TfxRyVyhkQcODRIYf0XdywFnWLiv9QVV9lm1q5uICY25LQiYh/Cao5rgaZsxYC7Wb0FfkV334LWcDXeD6BqhVPQWvkY1aZKGvy8wxCZC+p1kljpRJSJnfu2pigGyc5gersiyccCHtvxBUZmNezvtWKO90G1RNWVkacYq3qpXzIwPqT9krzf0u0t+37ffuUcn1HkMxzEusklUt58J+B2IP97Zoby69vMxF5RnjyYqE96/1w1fkS+EYp1PXTOdOyM+EtPuYDWNHALGG4osjEupA/RQT3yQ8OlcTjxNwnkzSfGELAjal/oO3m/Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by BL3PR12MB6569.namprd12.prod.outlook.com (2603:10b6:208:38c::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Tue, 17 Jun
+ 2025 12:37:08 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8835.023; Tue, 17 Jun 2025
+ 12:37:08 +0000
+Date: Tue, 17 Jun 2025 09:37:07 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "Liu, Yi L" <yi.l.liu@intel.com>, Peter Xu <peterx@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>,
+ "shameerali.kolothum.thodi@huawei.com" <shameerali.kolothum.thodi@huawei.com>, 
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+ "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH rfcv3 15/21] intel_iommu: Bind/unbind guest page table to
+ host
+Message-ID: <20250617123707.GW1174925@nvidia.com>
+References: <20250521111452.3316354-16-zhenzhong.duan@intel.com>
+ <aC5YjHrv5EMDixzZ@Asurada-Nvidia>
+ <0f8087f4-0c97-440d-84d2-f3f017f81041@intel.com>
+ <aDDk1NYwJXaAdUQI@Asurada-Nvidia>
+ <29f5f434-1fe3-4b5e-91d1-f153e1e98602@intel.com>
+ <aDSmcvZ08jNOSr05@Asurada-Nvidia>
+ <SJ0PR11MB6744340B889FF65D3BD5B8459267A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <aE+wCIG8KHb3u1lV@nvidia.com>
+ <IA3PR11MB91369A0E98CC76ABDBA365809270A@IA3PR11MB9136.namprd11.prod.outlook.com>
+ <aFDdkxPODYnyG0Vo@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aFDdkxPODYnyG0Vo@nvidia.com>
+X-ClientProxiedBy: YT4PR01CA0143.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d5::18) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|BL3PR12MB6569:EE_
+X-MS-Office365-Filtering-Correlation-Id: f256298a-adb4-4c91-6a70-08ddad9bac5c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?IDB/yOr/WcPVsX9Yenl34ISy0B5mDgF8pbk3hjn577cbNwslnfEylzH4/9Dl?=
+ =?us-ascii?Q?bq2omnBReDxqUpoXsFDtJbPXDKNzPWUkZHHi9ouKGz9+qfIvfZuUsqU/LPaw?=
+ =?us-ascii?Q?rVq66/k1JuvRI632gyIH2retFJQIfJs4aNhgOPpHlF/m46/doBTxutYu8nJi?=
+ =?us-ascii?Q?qXCa1BRMsySY0nOogRT+g37MnHsfHYXma3G2mEsrYiGCkE+VSWzvLT94Qfcv?=
+ =?us-ascii?Q?C3EE7Pi/r0sbosp3AVkFdabL9AuazE9ey2XklItOhoHXg+m2rLn1JrEbzqil?=
+ =?us-ascii?Q?3EKpw3FIkuOvjz9H/TuBSKQ0oYVoZ7+f9qhzq3MXC7qr1qaB4GANPBoT7aUX?=
+ =?us-ascii?Q?dC+A00o3kBd7eiwQM+iC1qAK0R7qjFtKAoTppHqjdZjUjzdiqMdldGbh/PGS?=
+ =?us-ascii?Q?4FpSxfzdVO/puAeF4gvcwdTfqOHtVKzTB/B1LC0/4Rv2i0pGpuphyAAalg8O?=
+ =?us-ascii?Q?ylZeZHxaRsXs+2mMB1NeAkp9W3jNpLYWKbARROtdHjeism98Asz3kcjZzqWs?=
+ =?us-ascii?Q?gu1CQBVJRCu0Gc/bZMphgdHA+zQ7GDUgXr9+gi1vNGs+KxyXHdckq3s9mjUX?=
+ =?us-ascii?Q?P81OuB4tFMF+fLd0iUPu1OBy6m5cyowpmfFfdgmRFK+BKAFtTFtm9KGOHXmi?=
+ =?us-ascii?Q?GrVHuCwrwW8/XKaRfDWs4W666OJnrWQokxXq4UgX2wLj04fkdZsrNWsHIf2E?=
+ =?us-ascii?Q?vFtdJNz77ctYjRmFIGftQOVKwhx6VJJI68l+QVrK1nMpFV338SBux5yYKc3F?=
+ =?us-ascii?Q?nOQdDsV6cOGbGyK13bF9CcPDYKPyUrJEBNiO2Zsyq5m3qADAIVS/1yW9FDHL?=
+ =?us-ascii?Q?F4Q9AmwF5Ga47NOkeK3AMNPz71ZvuyDz6FLV5nPJ8gmAQqEytUz9Q98B/CC5?=
+ =?us-ascii?Q?QUNNsSUBmmOvOMtg9A/rzzV618bIE6N3Dj4Vksj2KT3RVIwsceAFRp4HJB+N?=
+ =?us-ascii?Q?N+zIuKOivoc8Vai8s1WaBrk6O+QXCDGQJZPlFY9jSJCZ2ix9o0BeFy5YUbGQ?=
+ =?us-ascii?Q?TzSKjhXy9PzyMsZXX3S10TRdVK1do64OYO2uc6z7MMxAkXNr3T70KycTidyL?=
+ =?us-ascii?Q?dDBkI1ATty4oH1XctChRf4EJ10l/zE3riafk66Dq9Hc5KN4r85NNFOPJXpkd?=
+ =?us-ascii?Q?JaBbpBsTHiICwlb1xeEei4DczQOnE+h+ZPPwd5krxfStOTFrEu4KXYAMCIOI?=
+ =?us-ascii?Q?ANTfMt9U8KdgO8vjEbAi4pvXinakXPENCXN74RroQY0rOsu8gs4Ah4ryPIF8?=
+ =?us-ascii?Q?V0vzVd7fF3k7jd0W35H26wYdMx44/vj6s0yYbHMd69M7+cH5wKFlbOgVpVMR?=
+ =?us-ascii?Q?yPllqCwoqHheIXk/KZqhqdbMdpBctcPy9PH7NJFi4qGSXevwj/LLpfQdoEnU?=
+ =?us-ascii?Q?gEoO7+Lr8pc68fxhQKCji6+JFADiLcXl1/L2Fvie1JwkbLD1dQtTd8gTdeuk?=
+ =?us-ascii?Q?QDim7LHGcTI=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR12MB8659.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(7416014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RaMj7D1u7vm3hVBKLtVzIqHeXBn0eLMC3SYThMgyFq3jzZ3qV6nHmxNDhCQO?=
+ =?us-ascii?Q?jqlyPdajkM40Fy4i3RyNtJc9uIO3d0zXeuVDja4JYAaDPTDl3WJPDvUb+wVv?=
+ =?us-ascii?Q?dCI2h1+7zDXsoRE7DPHRsKMU7J35K8mjAfNUkxNxZV1NZ5GhaQvXMaoeooCv?=
+ =?us-ascii?Q?8PQcy87zGX4y0YPO94FdnoSBphovPQGAkGfgoWdW6AismYXJpymfwUyxKth2?=
+ =?us-ascii?Q?LJYmold2uEQIXESoM+L28J4NR+6oxzdIVhjCQ4TsAnn71OS1SsDCu9eTNVC/?=
+ =?us-ascii?Q?nf4ZdLs39sIUpr03o4SKIXM2V6SIrx8Nr8B7qxwGT92lhD25Igsu18r4TfKP?=
+ =?us-ascii?Q?/7iMcGu67ZqC2l/sj4ipEfzaORNJlDexk+WCAAljWctWFCBjS8dznioeNBt9?=
+ =?us-ascii?Q?lxAIVszZ1XON0eZAg/vAH21483xA3JINvIcmAifrRGgY0kb7bNVeIdu2vDSg?=
+ =?us-ascii?Q?3tvzhIzA+zuU2laA7lyc6uBraBnbmv9xNAohMuFYKY1M57MGilLHy8TeM6CB?=
+ =?us-ascii?Q?MbxfpBujEopFTZlsonkm/NVSjvdlmiEXfjLZhNDNebZKJ45iYuMux/ZP4u6H?=
+ =?us-ascii?Q?COkNaaky02xavwRLhrTXiqO7/uYwcsoUhA99x1DH53TYFBamX9+bXzQsqhLK?=
+ =?us-ascii?Q?0iuYa7DThl8jiADl3IEDtlGupPsSB18K77IDzykTpUrA6sqbg2Y6FhDx1SfY?=
+ =?us-ascii?Q?vE33cu7reELQhqNNt7IYJlTmeuO1DuODWC97fd9mHxiDyInxPtWgzztmjZCm?=
+ =?us-ascii?Q?PKUBfmeHCeTFKabg7gWrqCDqNILwcCgI7O9Gew1VtarsKzMRGR+CUVbq06yL?=
+ =?us-ascii?Q?9VBw8SnKQz1H9/hFlm3+GSaNTqZ3huTF8VtlkO1Olr5VJyo8rg7R9k52LPI8?=
+ =?us-ascii?Q?RgpUHcGNdppWraaZQbCuoIA7o7wl527f1wkU3kk3bGnExCZm+mURMuQ4OK/k?=
+ =?us-ascii?Q?RkI+HGGlnHtuk2AHStphQBXKIT64PlBp6wR5DdRTsRK7NlFCU3VpzUmY3pc5?=
+ =?us-ascii?Q?F3fG80s3bfV/YDVlx5296fpcG1ZFp+oc3kz4wFAGa5F38XxGU2RZYA4WszdN?=
+ =?us-ascii?Q?RSoGsZLden3EC4gqhzCfIylcTEQAmb2ou9/Vf6eRDOvitfG0sKf9UEx27Sfk?=
+ =?us-ascii?Q?bNao1f5tGmMnKddLL+L6GCbU5/RT4M9MGT1dIwzz6LmVhH/Epk4l8RpWKBbE?=
+ =?us-ascii?Q?uiBuXX4cr+I+Tmoa6kf+4/vhVRDSZ3mizQqxkLopRpzL9TAUpoViSR4XLrw7?=
+ =?us-ascii?Q?OeNdfFYomouWpf92yzZxnLAzX9GaoZEzm/5GQL75Xu3MNMBj5lGQSoGht5y4?=
+ =?us-ascii?Q?I7nH3/GXR99iB7r+zU0Rmpz1VJ2DFL0XwRnvhlEb3PYrFUMM6JooJxx6fBT3?=
+ =?us-ascii?Q?YP4kF1yn6qB6DwyUOi+EfQQXG9LuxTcRaz+DWVxfl+bxdpMzTMvJ7+z9QClf?=
+ =?us-ascii?Q?D53GSaRjJC4rK3J8HjqxEZpGOkRQaQmMSffZo3OYEJv0ISqeU6zw+prFBzAu?=
+ =?us-ascii?Q?404vNsYi5V2lHSaPewAytZyu0DeBb2erUJlbWtfIf2OdyOMZvKEYnox8Na3s?=
+ =?us-ascii?Q?j8NsAujd8XLiWDW8oXyOe2sI9a28WpfEATj3OgzH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f256298a-adb4-4c91-6a70-08ddad9bac5c
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 12:37:08.3938 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CfpwDHkBIr5fSROG2Y4Mz8wObGdw4VZrrqItlpx4wmaTYayL8v5MEHHJF4UnaZ94
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6569
+Received-SPF: permerror client-ip=40.107.236.77; envelope-from=jgg@nvidia.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -39
 X-Spam_score: -4.0
 X-Spam_bar: ----
 X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.89,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,121 +181,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+On Mon, Jun 16, 2025 at 08:14:27PM -0700, Nicolin Chen wrote:
+> On Mon, Jun 16, 2025 at 08:15:11AM +0000, Duan, Zhenzhong wrote:
+> > >IIUIC, the guest kernel cmdline can switch the mode between the
+> > >stage1 (nesting) and stage2 (legacy/emulated VT-d), right?
+> > 
+> > Right. E.g., kexec from "intel_iommu=on,sm_on" to "intel_iommu=on,sm_off",
+> > Then first kernel will run in scalable mode and use stage1(nesting) and
+> > second kernel will run in legacy mode and use stage2.
+> 
+> In scalable mode, guest kernel has a stage1 (nested) domain and
+> host kernel has a stage2 (nesting parent) domain. In this case,
+> the VFIO container IOAS could be the system AS corresponding to
+> the kernel-managed stage2 domain.
+> 
+> In legacy mode, guest kernel has a stage2 (normal) domain while
+> host kernel has a stage2 (shadow) domain? In this case, the VFIO
+> container IOAS should be the iommu AS corresponding to the kernel
+> guest-level stage2 domain (or should it be shadow)?
 
-> Hi, I've long been a little confused about the specifics of our build
-> platform guarantee and how it applies to documentation and testing.
+What you want is to disable HW support for legacy mode in qemu so the
+kernel rejects sm_off operation.
 
-"Guarantee" feels too strong.  See below.
+The HW spec is really goofy, we get an ecap_slts but it only applies
+to a PASID table entry (scalable mode). So the HW has to support
+second stage for legacy always but can turn it off for PASID?
 
-> My *current* understanding is that our build platform guarantee applies to
-> both unit tests and building documentation, but that this requirement may
-> not be as absolute as I imagine it.
->
-> The way I have endeavored to manage the Python tooling in our tree so far
-> is to preserve, without fail, our ability to perform fully offline builds
-> on all supported platforms (provided that the right distro repo packages
-> are available).
+IMHO the intention was to allow the VMM to not support shadowing, but
+it seems the execution was mangled.
 
-Relevant part of docs/about/build-platforms.rst:
+I suggest fixing the Linux driver to refuse to run in sm_on mode if
+the HW supports scalable mode and ecap_slts = false. That may not be
+100% spec compliant but it seems like a reasonable approach.
 
-    Some build dependencies may follow less conservative rules:
+> The ARM model that Shameer is proposing only allows a nested SMMU
+> when such a legacy mode is off. This simplifies a lot of things.
+> But the difficulty of the VT-d model is that it has to rely on a
+> guest bootcmd during runtime..
 
-    Python runtime
-      Distributions with long-term support often provide multiple versions
-      of the Python runtime.  While QEMU will initially aim to support the
-      distribution's default runtime, it may later increase its minimum version
-      to any newer python that is available as an option from the vendor.
-      In this case, it will be necessary to use the ``--python`` command line
-      option of the ``configure`` script to point QEMU to a supported
-      version of the Python runtime.
+ARM is cleaner because it doesn't have these drivers issues. qemu can
+reliably say not to use the S2 and all the existing guest kernels will
+obey that.
 
-      As of QEMU |version|, the minimum supported version of Python is 3.9.
+AMD has the same issues, BTW, arguably even worse as I didn't notice
+any way to specify if the v1 page table is supported :\
 
-    Python build dependencies
-      Some of QEMU's build dependencies are written in Python.  Usually these
-      are only packaged by distributions for the default Python runtime.
-      If QEMU bumps its minimum Python version and a non-default runtime is
-      required, it may be necessary to fetch python modules from the Python
-      Package Index (PyPI) via ``pip``, in order to build QEMU.
-
-We "initially aim to support the distribution's default runtime".  Once
-we don't, fetching from PyPI "may be necessary".  This seems to imply
-that such fetching will be necessary when we use the default runtime.
-
-I read "aim" as "make an effort".  This isn't exactly a "guarantee".
-It's much, much weaker than "to preserve, without fail, our ability to
-perform fully offline builds on all supported platforms".
-
-Keeping fully offline builds working is certainly desirable, but not
-regardless of cost.
-
->                 The Python virtual environment created at configure time
-> bends over backwards to use system packages *whenever possible*, and the
-> list of exceptions - notably Meson itself - uses vendored packages only in
-> very specific cases where it is possible to vendor such packages. Fetching
-> packages from PyPI is generally offered only as a convenience for developer
-> workstations to, in general, save developers from having to know anything
-> about Python. (I think I've done a good job there, to be honest!)
-
-You have: few people have noticed your work.
-
-> (Notably: Meson is pure python and has no dependencies, so it is possible
-> to vendor it for offline builds. Tools like Sphinx, however, have many
-> dependencies and are not so easily vendored. Thus, we have created a
-> tenuous arrangement where we are allowed to use versions of Meson that
-> otherwise would break our build platform guarantee.)
->
-> Lately, we've had some issues with the wide range of Sphinx versions we
-> support presenting various cross-platform difficulties. In particular,
-> Akihiko Odaki has sent patches to bump our Sphinx version to at least
-> 6.2.1, because platforms with Python 3.13.1 can no longer run Sphinx 3.x at
-> all, so having that be our "default install version" causes issues on newer
-> platforms.
->
-> However, if we take as iron-clad our commitment to the build platform
-> promise -- *and* guarantee offline/tarball builds as well -- then Debian 12
-
-I do not think such a commitment exists; see my reading of
-build-platforms.rst above.
-
-Even if it did, treating it as iron-clad would be foolish.  We need to
-consider cost vs. reward, always.
-
-> (as an example) only offers Sphinx 5.3.0 and not newer unless we allow
-> internet access to fetch Sphinx 6.2.1. This is not a problem for developer
-> workstations at all, but I am unclear on what problems this may cause for
-> tarball releases and downstream offline/isolated/reproducible builds, if
-> any.
->
-> In this case, we can (probably) "fix" the issue by continuing to allow
-> older Sphinx while preferring a newer Sphinx version when it is missing,
-> but then we lose the ability to make code cleanups and drop a lot of
-> back-compat crud. If memory serves, there were other issues recently where
-> older versions of Sphinx behaved differently from newer versions, causing
-> intermittent failures that were hard to track down.
->
-> What I'd like to know is: what precisely are our options in this scenario?
-> Do we consider it acceptable for some platforms to be unable to build docs
-> offline? How highly do we value the ability to locally build docs for any
-> given release?
-
-I believe the value of fully offline builds goes down as the build
-platform ages.
-
-Initially, the distribution will (hopefully!) want to package the then
-current version of QEMU.  We want to make that easy.  Enabling fully
-offline builds are part of that.
-
-Perhaps the distribution later wants to package / build newer versions
-of QEMU fully offline on the now aged release.  I'd expect this to
-happen less and less as the distribution ages.  Making it easy is still
-desirable, but worth less and less trouble to us.
-
-> Before I throw my weight behind any given option, I just want to know what
-> we consider our non-negotiable obligations to be.
-
-In my opinion: none.  We should consider the tradeoffs, and make
-pragmatic decisions.
-
+Jason
 
