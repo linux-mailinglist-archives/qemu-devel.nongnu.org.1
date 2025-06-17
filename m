@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3820BADD419
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 666C8ADD406
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:05:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRYeX-00016e-Nw; Tue, 17 Jun 2025 11:55:13 -0400
+	id 1uRYgt-0005Zm-9q; Tue, 17 Jun 2025 11:57:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uRYR8-0006fU-1j
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:41:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uRYRB-0006fq-5I
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:41:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uRYQz-0005l1-OX
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:41:17 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uRYR9-0005lm-8r
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:41:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750174872;
+ s=mimecast20190719; t=1750174881;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pbxMR4zpyo3J6LniePBWyJnj/wYIipfJzeHg05b32x8=;
- b=bEeC3+XsqVVJ+DWqQ5u5Nhr7HcHm6PFBv09qdigkmBLwbNpHDS4p+diBOmGkFKYYh6UcVr
- Z0kqTtsECdk1zKeIEHIIHibYRJ5fU7bJCjuS5i21QeBnMBdl5N9uljiSHZ400JHtrqjY/4
- uBD3yk5RJPGwBHLpPLcx1+4x1GYUh+Y=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=aSFgDrP9kHSG5CJCRypPsuwvrYcuRcBe7vg+Zrvp1qY=;
+ b=BB6uHH5xGQtI1XL63lHYSzRbZfTSwKEha5899JGGIyXCYRZ9VmzRgVes71nHyEQparE8UI
+ Sb+Y/uqu8JxdM+NbA8sWyvSfZc7mJGVm46qKuhAnxeJpZ27SE8JdjtfsLjJ6LvYyNeUfd7
+ +298UQAAjcjugzm0LInfSDEqe/ebuLY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-FaV9E22xOnSpzilSqE6qkw-1; Tue,
- 17 Jun 2025 11:41:08 -0400
-X-MC-Unique: FaV9E22xOnSpzilSqE6qkw-1
-X-Mimecast-MFC-AGG-ID: FaV9E22xOnSpzilSqE6qkw_1750174866
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-140-4FPw8sDeNuyYaJs4eO6ETg-1; Tue,
+ 17 Jun 2025 11:41:16 -0400
+X-MC-Unique: 4FPw8sDeNuyYaJs4eO6ETg-1
+X-Mimecast-MFC-AGG-ID: 4FPw8sDeNuyYaJs4eO6ETg_1750174872
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 234ED1828AC6; Tue, 17 Jun 2025 15:41:06 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0873B18001D6; Tue, 17 Jun 2025 15:41:12 +0000 (UTC)
 Received: from gondolin.str.redhat.com (pixel-6a.str.redhat.com
  [10.33.192.205])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4739E180035C; Tue, 17 Jun 2025 15:41:00 +0000 (UTC)
+ id 72300180035C; Tue, 17 Jun 2025 15:41:06 +0000 (UTC)
 From: Cornelia Huck <cohuck@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
@@ -54,16 +54,16 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  agraf@csgraf.de
 Cc: shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
  pbonzini@redhat.com, Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v8 13/14] arm/cpu: switch to a generated cpu-sysregs.h.inc
-Date: Tue, 17 Jun 2025 17:39:30 +0200
-Message-ID: <20250617153931.1330449-14-cohuck@redhat.com>
+Subject: [PATCH v8 14/14] arm/kvm: use fd instead of fdarray[2]
+Date: Tue, 17 Jun 2025 17:39:31 +0200
+Message-ID: <20250617153931.1330449-15-cohuck@redhat.com>
 In-Reply-To: <20250617153931.1330449-1-cohuck@redhat.com>
 References: <20250617153931.1330449-1-cohuck@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -88,83 +88,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Generated against Linux 6.15.
+We have fd, so might as well neaten things up.
 
-Reviewed-by: Sebastian Ott <sebott@redhat.com>
+Suggested-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Cornelia Huck <cohuck@redhat.com>
 ---
- target/arm/cpu-sysregs.h.inc | 43 +++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 13 deletions(-)
+ target/arm/kvm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/cpu-sysregs.h.inc b/target/arm/cpu-sysregs.h.inc
-index cb99286f7048..1dddd3d357eb 100644
---- a/target/arm/cpu-sysregs.h.inc
-+++ b/target/arm/cpu-sysregs.h.inc
-@@ -1,19 +1,10 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
--DEF(ID_AA64PFR0_EL1, 3, 0, 0, 4, 0)
--DEF(ID_AA64PFR1_EL1, 3, 0, 0, 4, 1)
--DEF(ID_AA64SMFR0_EL1, 3, 0, 0, 4, 5)
--DEF(ID_AA64DFR0_EL1, 3, 0, 0, 5, 0)
--DEF(ID_AA64DFR1_EL1, 3, 0, 0, 5, 1)
--DEF(ID_AA64ISAR0_EL1, 3, 0, 0, 6, 0)
--DEF(ID_AA64ISAR1_EL1, 3, 0, 0, 6, 1)
--DEF(ID_AA64ISAR2_EL1, 3, 0, 0, 6, 2)
--DEF(ID_AA64MMFR0_EL1, 3, 0, 0, 7, 0)
--DEF(ID_AA64MMFR1_EL1, 3, 0, 0, 7, 1)
--DEF(ID_AA64MMFR2_EL1, 3, 0, 0, 7, 2)
--DEF(ID_AA64MMFR3_EL1, 3, 0, 0, 7, 3)
-+/* GENERATED FILE, DO NOT EDIT */
-+/* use arm-gen-cpu-sysregs-header.awk to regenerate */
- DEF(ID_PFR0_EL1, 3, 0, 0, 1, 0)
- DEF(ID_PFR1_EL1, 3, 0, 0, 1, 1)
- DEF(ID_DFR0_EL1, 3, 0, 0, 1, 2)
-+DEF(ID_AFR0_EL1, 3, 0, 0, 1, 3)
- DEF(ID_MMFR0_EL1, 3, 0, 0, 1, 4)
- DEF(ID_MMFR1_EL1, 3, 0, 0, 1, 5)
- DEF(ID_MMFR2_EL1, 3, 0, 0, 1, 6)
-@@ -24,13 +15,39 @@ DEF(ID_ISAR2_EL1, 3, 0, 0, 2, 2)
- DEF(ID_ISAR3_EL1, 3, 0, 0, 2, 3)
- DEF(ID_ISAR4_EL1, 3, 0, 0, 2, 4)
- DEF(ID_ISAR5_EL1, 3, 0, 0, 2, 5)
--DEF(ID_MMFR4_EL1, 3, 0, 0, 2, 6)
- DEF(ID_ISAR6_EL1, 3, 0, 0, 2, 7)
-+DEF(ID_MMFR4_EL1, 3, 0, 0, 2, 6)
- DEF(MVFR0_EL1, 3, 0, 0, 3, 0)
- DEF(MVFR1_EL1, 3, 0, 0, 3, 1)
- DEF(MVFR2_EL1, 3, 0, 0, 3, 2)
- DEF(ID_PFR2_EL1, 3, 0, 0, 3, 4)
- DEF(ID_DFR1_EL1, 3, 0, 0, 3, 5)
- DEF(ID_MMFR5_EL1, 3, 0, 0, 3, 6)
-+DEF(ID_AA64PFR0_EL1, 3, 0, 0, 4, 0)
-+DEF(ID_AA64PFR1_EL1, 3, 0, 0, 4, 1)
-+DEF(ID_AA64PFR2_EL1, 3, 0, 0, 4, 2)
- DEF(ID_AA64ZFR0_EL1, 3, 0, 0, 4, 4)
-+DEF(ID_AA64SMFR0_EL1, 3, 0, 0, 4, 5)
-+DEF(ID_AA64FPFR0_EL1, 3, 0, 0, 4, 7)
-+DEF(ID_AA64DFR0_EL1, 3, 0, 0, 5, 0)
-+DEF(ID_AA64DFR1_EL1, 3, 0, 0, 5, 1)
-+DEF(ID_AA64DFR2_EL1, 3, 0, 0, 5, 2)
-+DEF(ID_AA64AFR0_EL1, 3, 0, 0, 5, 4)
-+DEF(ID_AA64AFR1_EL1, 3, 0, 0, 5, 5)
-+DEF(ID_AA64ISAR0_EL1, 3, 0, 0, 6, 0)
-+DEF(ID_AA64ISAR1_EL1, 3, 0, 0, 6, 1)
-+DEF(ID_AA64ISAR2_EL1, 3, 0, 0, 6, 2)
-+DEF(ID_AA64ISAR3_EL1, 3, 0, 0, 6, 3)
-+DEF(ID_AA64MMFR0_EL1, 3, 0, 0, 7, 0)
-+DEF(ID_AA64MMFR1_EL1, 3, 0, 0, 7, 1)
-+DEF(ID_AA64MMFR2_EL1, 3, 0, 0, 7, 2)
-+DEF(ID_AA64MMFR3_EL1, 3, 0, 0, 7, 3)
-+DEF(ID_AA64MMFR4_EL1, 3, 0, 0, 7, 4)
-+DEF(CCSIDR_EL1, 3, 1, 0, 0, 0)
-+DEF(CLIDR_EL1, 3, 1, 0, 0, 1)
-+DEF(CCSIDR2_EL1, 3, 1, 0, 0, 2)
-+DEF(GMID_EL1, 3, 1, 0, 0, 4)
-+DEF(SMIDR_EL1, 3, 1, 0, 0, 6)
- DEF(CTR_EL0, 3, 3, 0, 0, 1)
-+DEF(DCZID_EL0, 3, 3, 0, 0, 7)
-+
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 3df046b2b911..70919aedd0a4 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -348,11 +348,11 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+         err |= get_host_cpu_reg(fd, ahcf, ID_ISAR6_EL1_IDX);
+         err |= get_host_cpu_reg(fd, ahcf, ID_MMFR4_EL1_IDX);
+ 
+-        err |= read_sys_reg32(fdarray[2], &ahcf->isar.mvfr0,
++        err |= read_sys_reg32(fd, &ahcf->isar.mvfr0,
+                               ARM64_SYS_REG(3, 0, 0, 3, 0));
+-        err |= read_sys_reg32(fdarray[2], &ahcf->isar.mvfr1,
++        err |= read_sys_reg32(fd, &ahcf->isar.mvfr1,
+                               ARM64_SYS_REG(3, 0, 0, 3, 1));
+-        err |= read_sys_reg32(fdarray[2], &ahcf->isar.mvfr2,
++        err |= read_sys_reg32(fd, &ahcf->isar.mvfr2,
+                               ARM64_SYS_REG(3, 0, 0, 3, 2));
+         err |= get_host_cpu_reg(fd, ahcf, ID_PFR2_EL1_IDX);
+         err |= get_host_cpu_reg(fd, ahcf, ID_DFR1_EL1_IDX);
+@@ -390,7 +390,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+ 
+         if (pmu_supported) {
+             /* PMCR_EL0 is only accessible if the vCPU has feature PMU_V3 */
+-            err |= read_sys_reg64(fdarray[2], &ahcf->isar.reset_pmcr_el0,
++            err |= read_sys_reg64(fd, &ahcf->isar.reset_pmcr_el0,
+                                   ARM64_SYS_REG(3, 3, 9, 12, 0));
+         }
+ 
 -- 
 2.49.0
 
