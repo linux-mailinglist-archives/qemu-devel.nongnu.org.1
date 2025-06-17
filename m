@@ -2,62 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDD1ADC297
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 08:51:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A279ADC270
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 08:34:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRQ9h-0006RP-5Q; Tue, 17 Jun 2025 02:50:49 -0400
+	id 1uRPtC-0002l3-54; Tue, 17 Jun 2025 02:33:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stdcalllevi@yandex-team.ru>)
- id 1uRQ9a-0006QL-TM
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 02:50:43 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uRPt6-0002jo-2X; Tue, 17 Jun 2025 02:33:40 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stdcalllevi@yandex-team.ru>)
- id 1uRQ9X-0005Fo-1E
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 02:50:42 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c15:2b89:0:640:9815:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D50006105D;
- Tue, 17 Jun 2025 09:50:30 +0300 (MSK)
-Received: from smtpclient.apple (unknown [2a02:6bf:8080:441::1:d])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ToFnfY0Fda60-AwbcKzaL; Tue, 17 Jun 2025 09:50:30 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1750143030;
- bh=v/4rBN0yUepd3+AXXrnJdGClhUWqkeWTZKRJQuZbZY4=;
- h=Message-Id:To:Date:References:Cc:In-Reply-To:From:Subject;
- b=YW6xYZriZXWc/BgGaFGw6sTtrgQjbgE0G2+hVMRaI/KDkjUH5iIwyd/8mxGnc/6JN
- LF8BlFbo2uhZ+ZuNnvSVSNb5qkEZDOAVZHBNsI399fQloPNEqmY0C4bUzJZ9rkDMmI
- uH0UWvNzsIB2DiQa69TXlCXHhzPYZXzZ89xaYAGY=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH] x86/cpu: Handle SMM mode in x86_cpu_dump_state for softmmu
-From: Kirill Martynov <stdcalllevi@yandex-team.ru>
-In-Reply-To: <20250523154431.506993-1-stdcalllevi@yandex-team.ru>
-Date: Tue, 17 Jun 2025 09:50:19 +0300
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <673A5394-1E5A-4A08-86AD-7B5DF812E46A@yandex-team.ru>
-References: <20250523154431.506993-1-stdcalllevi@yandex-team.ru>
-To: qemu-devel@nongnu.org
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=stdcalllevi@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uRPt2-0003P4-Rq; Tue, 17 Jun 2025 02:33:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1750142017; x=1781678017;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=3fsG34tLQanptNPLfPigyxtSfCfes2V7D21oxBXw+0k=;
+ b=AKW7P9pGaJx8qIA7giMpIVxsIBrWNnp+mtGlokKlFexSq+zJf8o5Rkzs
+ oYQcgSEaaI4fEzUMSIYXcxIUxjGdahZnMNvvKRMN2GkCrnBZXS+2rT3PB
+ xFs2/irP6mK89aZJqM8MqF+agTAGEM2V0UeM5CMYYNFdjJLN7AG36c/Hs
+ gju1IJSXc767G7gVjK4Q1raO3zqLw9aCV6IX8r5Gw4JJQM+6fifm9PAa8
+ UcfBX5TAUrQxe7CR49hW5ipvrReYWo685U8rckOZTeEUNpukg65fR1dGl
+ R/fmX0pmPVs6k12vIz+gfwpkYGKbXzf/C0oll1/OFqBukBUFpa23MbYlA Q==;
+X-CSE-ConnectionGUID: c+HY+BaVSymekUJ7hyyfTw==
+X-CSE-MsgGUID: tBXgMu3QS22k0Yr2JXPdIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="51526293"
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="51526293"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2025 23:33:30 -0700
+X-CSE-ConnectionGUID: 2lQFbpAMRk2pBvQc6CJIOQ==
+X-CSE-MsgGUID: zIK50yEnTCyvAK5VdqNidg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="148673904"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa009.jf.intel.com with ESMTP; 16 Jun 2025 23:33:22 -0700
+Date: Tue, 17 Jun 2025 14:54:40 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Peter Krempa <pkrempa@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ kvm@vger.kernel.org, Sergio Lopez <slp@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Ani Sinha <anisinha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?utf-8?B?Q2zvv71tZW50?= Mathieu --Drif <clement.mathieu--drif@eviden.com>,
+ qemu-arm@nongnu.org,
+ =?utf-8?B?TWFyYy1BbmRy77+9?= Lureau <marcandre.lureau@redhat.com>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Jason Wang <jasowang@redhat.com>, devel@lists.libvirt.org
+Subject: Re: [PATCH v4 00/27] hw/i386/pc: Remove deprecated 2.6 and 2.7 PC
+ machines
+Message-ID: <aFERMEuJsTTJ4tuY@intel.com>
+References: <20250508133550.81391-1-philmd@linaro.org>
+ <20250513132338.4089736b@imammedo.users.ipa.redhat.com>
+ <20250530073524-mutt-send-email-mst@kernel.org>
+ <aDmfuVLXmfvJB0tX@angien.pipo.sk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aDmfuVLXmfvJB0tX@angien.pipo.sk>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.892,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -75,78 +105,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello there, would you be so kind to give some feedback on this patch?
+Hi Peter,
 
-> On 23 May 2025, at 18:44, Kirill Martynov <stdcalllevi@yandex-team.ru> =
-wrote:
->=20
-> Certain error conditions can trigger x86_cpu_dump_state() to output =
-CPU state
-> debug information e.g. KVM emulation failure due to misbehaving guest.
-> However, if the CPU is in System Management Mode (SMM) when the =
-assertion
-> in cpu_asidx_from_attrs failure happens because:
->=20
-> 1. In SMM mode (smm=3D1), the CPU must use multiple address spaces
->   with a dedicated SMM address space
-> 2. On machine types with softmmu, address spaces are hardcoded to 1
->   (no multiple address spaces available)
->=20
-> The assertion occurs in cpu_asidx_from_attrs() when trying to
-> access memory in SMM mode with insufficient address spaces.
->=20
-> Fix this by:
-> 1. If number of address spaces is 1 always use index 0
-> 2. In other cases use attr.secure for identified proper index
->=20
-> This prevents the assertion while still providing useful debug
-> output during VM shutdown errors.
->=20
-> Stack trace of the original issue:
-> #0  ... in raise () from /lib/x86_64-linux-gnu/libc.so.6
-> #1  ... in abort () from /lib/x86_64-linux-gnu/libc.so.6
-> #2  ... in ?? () from /lib/x86_64-linux-gnu/libc.so.6
-> #3  ... in __assert_fail () from /lib/x86_64-linux-gnu/libc.so.6
-> #4  ... in cpu_asidx_from_attrs (cpu=3Dcpu@entry=3D0x5578ca2eb340, =
-attrs=3D...)
->   at ../hw/core/cpu-sysemu.c:76
-> #5  ... in cpu_memory_rw_debug (cpu=3Dcpu@entry=3D0x5578ca2eb340,
->   addr=3Daddr@entry=3D2147258348, ptr=3Dptr@entry=3D0x7f5341ca373c, =
-len=3Dlen@entry=3D1,
->    is_write=3Dis_write@entry=3Dfalse) at ../softmmu/physmem.c:3529
-> #6  ... in x86_cpu_dump_state (cs=3D0x5578ca2eb340,
->   f=3D0x7f53434065c0 <_IO_2_1_stderr_>, flags=3D<optimized out>)
->   at ../target/i386/cpu-dump.c:560
-> #7  ... in kvm_cpu_exec (cpu=3Dcpu@entry=3D0x5578ca2eb340)
->   at ../accel/kvm/kvm-all.c:3000
-> #8  ... in kvm_vcpu_thread_fn (arg=3Darg@entry=3D0x5578ca2eb340)
->   at ../accel/kvm/kvm-accel-ops.c:51
-> #9  ... in qemu_thread_start (args=3D<optimized out>)
->   at ../util/qemu-thread-posix.c:505
-> #10 ... in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
-> #11 ... in clone () from /lib/x86_64-linux-gnu/libc.so.6
->=20
-> Signed-off-by: Kirill Martynov <stdcalllevi@yandex-team.ru>
-> ---
-> target/i386/cpu.h | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index c51e0a43d0..2616a61c87 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -2507,7 +2507,7 @@ void cpu_sync_avx_hflag(CPUX86State *env);
-> #ifndef CONFIG_USER_ONLY
-> static inline int x86_asidx_from_attrs(CPUState *cs, MemTxAttrs attrs)
-> {
-> -    return !!attrs.secure;
-> +    return cs->num_ases =3D=3D 1 ? 0 : (!!attrs.secure);
-> }
->=20
-> static inline AddressSpace *cpu_addressspace(CPUState *cs, MemTxAttrs =
-attrs)
-> --=20
-> 2.43.0
->=20
+> Finally there's
+> 
+>  DEFINE_PROP_BOOL("l3-cache", X86CPU, enable_l3_cache, true),
+> 
+> which is exposed to the users via cache mode setting of cpu:
+> 
+> https://www.libvirt.org/formatdomain.html#cpu-model-and-topology
+> 
+> look for 'cache'.
+
+I found this link doesn't mention "l3-cache", but it appears in
+libvirt's src/qemu/qemu_command.c.
+
+> Thus from libvirt's side 'page-per-vq' and 'l3-cache' will likely require
+> deprecation period. The rest except for CPU is fine to remove without
+> anything at least from our PoV.
+
+So I understand that the file qemu_command.c contains all the QEMU
+commands/properties/options used by libvirt, thereby in the future if
+one wants to remove other properties, he can just check that file,
+right?
+
+Thanks,
+Zhao
 
 
