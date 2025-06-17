@@ -2,109 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D89D8ADD45A
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B434ADD43D
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:08:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRYe2-0007hV-33; Tue, 17 Jun 2025 11:54:42 -0400
+	id 1uRYeK-0000Zh-RQ; Tue, 17 Jun 2025 11:55:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uRYLD-00061i-B6
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:35:24 -0400
-Received: from www62.your-server.de ([213.133.104.62])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uRYPo-0004rd-7c
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:40:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uRVfB-00033E-Me
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 08:43:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
- :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=cz7b/j9ULywcsa2Hf/dKrUVLoBF9ZgwPHOaWBTXxljc=; b=n+qieK6YZcO/Pced4Mf+WtW6MH
- 8/mq2ICSnuej4v8Hljie85u50wCyC1YSSt3luK+SFnMRiERnWK3gOQLC1MG+KqxdrOm+V8Ao+Q/P8
- fS6i3ZQxXCUNpJOSfv1I9kdcklD4eH+3hyQRPCssFc0ubGgzXDJ0Ea1w4msgtAN9FcVFPjJCxOC6/
- 7vmzvJzIlijmiiIG4AEH4hNDJz4NfJkc64L1llZywGRpBPtEI/ZtXldJeMVdIlKdXja13QgO3qr4T
- MIC9GZvjODhA1YI41PyTU+/uqQOgzniPsM9h6D9LT6EO7j30PHxojiJf/LHGbnoPQreAivvGSzWs0
- 4wFEAamQ==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
- by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <daniel@iogearbox.net>)
- id 1uRVey-0003sa-3D; Tue, 17 Jun 2025 14:43:29 +0200
-Received: from localhost ([127.0.0.1])
- by sslproxy06.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96) (envelope-from <daniel@iogearbox.net>)
- id 1uRVey-0006i8-2D; Tue, 17 Jun 2025 14:43:28 +0200
-Message-ID: <2e420055-3a1c-46fe-afac-4a15577f44fd@iogearbox.net>
-Date: Tue, 17 Jun 2025 14:43:28 +0200
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uRYPj-0005Da-KR
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 11:39:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750174789;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=snIE0Kxo+Asc1ZpCPVz5i7efIGpQ1hiprvFRa3bQLZQ=;
+ b=LKbTHvEYMAAILtvSaPaZ5N/JmwgkFpvhvttNRAuXsbOdBPdn9pmJuYuVAptK/d6eYhREF0
+ F33v9EfVO5U7F/CxW1Pvzq1rZZ+KsbXkozWVtMLjq/btqv0+jMX2xt+zfRPklkmUVtKcoL
+ SHKTV26HFryrGboaoHHzpEg6ygT+lrw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-OoLk3BFyOeepgyAsjOnptA-1; Tue,
+ 17 Jun 2025 11:39:47 -0400
+X-MC-Unique: OoLk3BFyOeepgyAsjOnptA-1
+X-Mimecast-MFC-AGG-ID: OoLk3BFyOeepgyAsjOnptA_1750174785
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B67861956046; Tue, 17 Jun 2025 15:39:43 +0000 (UTC)
+Received: from gondolin.str.redhat.com (pixel-6a.str.redhat.com
+ [10.33.192.205])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6EC8C180035C; Tue, 17 Jun 2025 15:39:36 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
+ agraf@csgraf.de
+Cc: shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
+ pbonzini@redhat.com, Cornelia Huck <cohuck@redhat.com>
+Subject: [PATCH v8 00/14] arm: rework id register storage
+Date: Tue, 17 Jun 2025 17:39:17 +0200
+Message-ID: <20250617153931.1330449-1-cohuck@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] net/af-xdp: Support pinned map path for AF_XDP
- sockets
-To: Ilya Maximets <i.maximets@ovn.org>, qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Anton Protopopov <aspsk@isovalent.com>
-References: <20250604112916.1195368-1-daniel@iogearbox.net>
- <36baa0a5-43ac-44c1-bf30-34f34ddfceba@ovn.org>
-Content-Language: en-US
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- xsFNBGNAkI0BEADiPFmKwpD3+vG5nsOznvJgrxUPJhFE46hARXWYbCxLxpbf2nehmtgnYpAN
- 2HY+OJmdspBntWzGX8lnXF6eFUYLOoQpugoJHbehn9c0Dcictj8tc28MGMzxh4aK02H99KA8
- VaRBIDhmR7NJxLWAg9PgneTFzl2lRnycv8vSzj35L+W6XT7wDKoV4KtMr3Szu3g68OBbp1TV
- HbJH8qe2rl2QKOkysTFRXgpu/haWGs1BPpzKH/ua59+lVQt3ZupePpmzBEkevJK3iwR95TYF
- 06Ltpw9ArW/g3KF0kFUQkGXYXe/icyzHrH1Yxqar/hsJhYImqoGRSKs1VLA5WkRI6KebfpJ+
- RK7Jxrt02AxZkivjAdIifFvarPPu0ydxxDAmgCq5mYJ5I/+BY0DdCAaZezKQvKw+RUEvXmbL
- 94IfAwTFA1RAAuZw3Rz5SNVz7p4FzD54G4pWr3mUv7l6dV7W5DnnuohG1x6qCp+/3O619R26
- 1a7Zh2HlrcNZfUmUUcpaRPP7sPkBBLhJfqjUzc2oHRNpK/1mQ/+mD9CjVFNz9OAGD0xFzNUo
- yOFu/N8EQfYD9lwntxM0dl+QPjYsH81H6zw6ofq+jVKcEMI/JAgFMU0EnxrtQKH7WXxhO4hx
- 3DFM7Ui90hbExlFrXELyl/ahlll8gfrXY2cevtQsoJDvQLbv7QARAQABzSZEYW5pZWwgQm9y
- a21hbm4gPGRhbmllbEBpb2dlYXJib3gubmV0PsLBkQQTAQoAOxYhBCrUdtCTcZyapV2h+93z
- cY/jfzlXBQJjQJCNAhsDBQkHhM4ACAsJCAcNDAsKBRUKCQgLAh4BAheAAAoJEN3zcY/jfzlX
- dkUQAIFayRgjML1jnwKs7kvfbRxf11VI57EAG8a0IvxDlNKDcz74mH66HMyhMhPqCPBqphB5
- ZUjN4N5I7iMYB/oWUeohbuudH4+v6ebzzmgx/EO+jWksP3gBPmBeeaPv7xOvN/pPDSe/0Ywp
- dHpl3Np2dS6uVOMnyIsvmUGyclqWpJgPoVaXrVGgyuer5RpE/a3HJWlCBvFUnk19pwDMMZ8t
- 0fk9O47HmGh9Ts3O8pGibfdREcPYeGGqRKRbaXvcRO1g5n5x8cmTm0sQYr2xhB01RJqWrgcj
- ve1TxcBG/eVMmBJefgCCkSs1suriihfjjLmJDCp9XI/FpXGiVoDS54TTQiKQinqtzP0jv+TH
- 1Ku+6x7EjLoLH24ISGyHRmtXJrR/1Ou22t0qhCbtcT1gKmDbTj5TcqbnNMGWhRRTxgOCYvG0
- 0P2U6+wNj3HFZ7DePRNQ08bM38t8MUpQw4Z2SkM+jdqrPC4f/5S8JzodCu4x80YHfcYSt+Jj
- ipu1Ve5/ftGlrSECvy80ZTKinwxj6lC3tei1bkI8RgWZClRnr06pirlvimJ4R0IghnvifGQb
- M1HwVbht8oyUEkOtUR0i0DMjk3M2NoZ0A3tTWAlAH8Y3y2H8yzRrKOsIuiyKye9pWZQbCDu4
- ZDKELR2+8LUh+ja1RVLMvtFxfh07w9Ha46LmRhpCzsFNBGNAkI0BEADJh65bNBGNPLM7cFVS
- nYG8tqT+hIxtR4Z8HQEGseAbqNDjCpKA8wsxQIp0dpaLyvrx4TAb/vWIlLCxNu8Wv4W1JOST
- wI+PIUCbO/UFxRy3hTNlb3zzmeKpd0detH49bP/Ag6F7iHTwQQRwEOECKKaOH52tiJeNvvyJ
- pPKSKRhmUuFKMhyRVK57ryUDgowlG/SPgxK9/Jto1SHS1VfQYKhzMn4pWFu0ILEQ5x8a0RoX
- k9p9XkwmXRYcENhC1P3nW4q1xHHlCkiqvrjmWSbSVFYRHHkbeUbh6GYuCuhqLe6SEJtqJW2l
- EVhf5AOp7eguba23h82M8PC4cYFl5moLAaNcPHsdBaQZznZ6NndTtmUENPiQc2EHjHrrZI5l
- kRx9hvDcV3Xnk7ie0eAZDmDEbMLvI13AvjqoabONZxra5YcPqxV2Biv0OYp+OiqavBwmk48Z
- P63kTxLddd7qSWbAArBoOd0wxZGZ6mV8Ci/ob8tV4rLSR/UOUi+9QnkxnJor14OfYkJKxot5
- hWdJ3MYXjmcHjImBWplOyRiB81JbVf567MQlanforHd1r0ITzMHYONmRghrQvzlaMQrs0V0H
- 5/sIufaiDh7rLeZSimeVyoFvwvQPx5sXhjViaHa+zHZExP9jhS/WWfFE881fNK9qqV8pi+li
- 2uov8g5yD6hh+EPH6wARAQABwsF8BBgBCgAmFiEEKtR20JNxnJqlXaH73fNxj+N/OVcFAmNA
- kI0CGwwFCQeEzgAACgkQ3fNxj+N/OVfFMhAA2zXBUzMLWgTm6iHKAPfz3xEmjtwCF2Qv/TT3
- KqNUfU3/0VN2HjMABNZR+q3apm+jq76y0iWroTun8Lxo7g89/VDPLSCT0Nb7+VSuVR/nXfk8
- R+OoXQgXFRimYMqtP+LmyYM5V0VsuSsJTSnLbJTyCJVu8lvk3T9B0BywVmSFddumv3/pLZGn
- 17EoKEWg4lraXjPXnV/zaaLdV5c3Olmnj8vh+14HnU5Cnw/dLS8/e8DHozkhcEftOf+puCIl
- Awo8txxtLq3H7KtA0c9kbSDpS+z/oT2S+WtRfucI+WN9XhvKmHkDV6+zNSH1FrZbP9FbLtoE
- T8qBdyk//d0GrGnOrPA3Yyka8epd/bXA0js9EuNknyNsHwaFrW4jpGAaIl62iYgb0jCtmoK/
- rCsv2dqS6Hi8w0s23IGjz51cdhdHzkFwuc8/WxI1ewacNNtfGnorXMh6N0g7E/r21pPeMDFs
- rUD9YI1Je/WifL/HbIubHCCdK8/N7rblgUrZJMG3W+7vAvZsOh/6VTZeP4wCe7Gs/cJhE2gI
- DmGcR+7rQvbFQC4zQxEjo8fNaTwjpzLM9NIp4vG9SDIqAm20MXzLBAeVkofixCsosUWUODxP
- owLbpg7pFRJGL9YyEHpS7MGPb3jSLzucMAFXgoI8rVqoq6si2sxr2l0VsNH5o3NgoAgJNIg=
-In-Reply-To: <36baa0a5-43ac-44c1-bf30-34f34ddfceba@ovn.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27671/Tue Jun 17 10:47:08 2025)
-Received-SPF: pass client-ip=213.133.104.62; envelope-from=daniel@iogearbox.net;
- helo=www62.your-server.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.89,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,67 +82,172 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Daniel Borkmann <daniel@iogearbox.net>
-From:  Daniel Borkmann via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/17/25 1:59 PM, Ilya Maximets wrote:
-> On 6/4/25 1:29 PM, Daniel Borkmann wrote:
->> Extend 'inhibit=on' setting with the option to specify a pinned XSK map
->> path along with a starting index (default 0) to push the created XSK
->> sockets into. Example usage:
->>
->>    # ./build/qemu-system-x86_64 [...] \
->>     -netdev af-xdp,ifname=enp2s0f0np0,id=net0,mode=native,queues=2,start-queue=14,inhibit=on,map-path=/sys/fs/bpf/xsks_map,map-start-index=14 \
->>     -device virtio-net-pci,netdev=net0 [...]
->>
->> This is useful for the case where an existing XDP program with XSK map
->> is present on the AF_XDP supported phys device and the XSK map is not
->> yet populated. For example, the former could have been pre-loaded onto
->> the netdevice by a control plane, which later launches qemu to populate
->> it with XSK sockets.
->>
->> Normally, the main idea behind 'inhibit=on' is that the qemu instance
->> doesn't need to have a lot of privileges to use the pre-loaded program
->> and the pre-created sockets, but this mentioned use-case here is different
->> where qemu still needs privileges to create the sockets.
->>
->> The 'map-start-index' parameter is optional and defaults to 0. It allows
->> flexible placement of the XSK sockets, and is up to the user to specify
->> when the XDP program with XSK map was already preloaded. In the simplest
->> case the queue-to-map-slot mapping is just 1:1 based on ctx->rx_queue_index
->> but the user might as well have a different scheme (or smaller map size,
->> e.g. ctx->rx_queue_index % max_size) to push the inbound traffic to one
->> of the XSK sockets.
->>
->> Note that the bpf_xdp_query_id() is now only tested for 'inhibit=off'
->> since only in the latter case the libxdp takes care of installing the
->> XDP program which was installed based on the s->xdp_flags pointing to
->> either driver or skb mode. For 'inhibit=on' we don't make any assumptions
->> and neither go down the path of probing all possible options in which
->> way the user installed the XDP program.
->>
->> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
->> Cc: Ilya Maximets <i.maximets@ovn.org>
->> Cc: Jason Wang <jasowang@redhat.com>
->> Cc: Anton Protopopov <aspsk@isovalent.com>
->> ---
->>   net/af-xdp.c    | 80 +++++++++++++++++++++++++++++++++++++++++++++----
->>   qapi/net.json   | 29 +++++++++++-------
->>   qemu-options.hx | 23 ++++++++++++--
->>   3 files changed, 114 insertions(+), 18 deletions(-)
-> 
-> Hi, Daniel.  Thanks for v3!
-> 
-> checkpatch complains about 2 issues in the patch - a missing braces and
-> onle too long line that can be wrapped.
+Mostly addressed Peter's feedback:
+- make sure every inbetween stage compiles (also fixed some bonus issues)
+- try to make the scripts more robust, add a note the generated file,
+  and make sure to grab only registers we actually want
+  - I did a half-hearted attempt to use python instead of awk, but I'm
+    out of my depth, especially with the script that will be used for
+    the register fields in the cpu models series
 
-Thanks for review, I wasn't aware of this, will fix these two in v4!
+Also available at
+https://gitlab.com/cohuck/qemu/-/commits/arm-rework-idreg-storage-v8
 
-> There also seems to be some issue on a cleanup path that you attempt to
-> fix in the second patch, so I reply about it there.
-> 
-> Best regards, Ilya Maximets.
+<v7 cover letter>
+Some small fixes, including fixing up/adding SPDX identifiers, keeping the
+series bisectable, and updating MAINTAINERS (please check if that's ok.)
+
+<v6 cover letter>
+Just some small changes:
+- fixed up some botched conversions noted by Eric (thanks!)
+- rebased to current master
+- new patch with a small cleanup suggested by Eric
+
+<v5 cover letter>
+Just a quick respin to fix a missed conversion in hvf.c.
+
+<v4 cover letter>
+Next iteration of the id register patches; only small changes.
+
+Changed from v3:
+- added R-bs (thanks!)
+- added missing SPDX header
+- merged patch introducing accessors for kvm to the first user
+- skip over sysregs outside of the id register range when generating
+  register definitions again
+
+Also available at
+https://gitlab.com/cohuck/qemu/-/commits/arm-rework-idreg-storage-v4
+
+<v3 cover letter>
+Yet another update of the id register series, less changes this time
+around.
+
+Changed from v2:
+- changed generation of the various register defines via the "DEF"
+  magic suggested by Richard
+- some kvm-only code moved to kvm.c; some code potentially useful to
+  non-kvm code stayed out of there (the cpu model code will make use
+  of it, and that one should be extendable outside of kvm -- a
+  revised version of those patches is still in the works, but I'll be
+  off for a few days and rather wanted to get this one out first)
+
+Also available at
+https://gitlab.com/cohuck/qemu/-/commits/arm-rework-idreg-storage-v3
+
+<v2 cover letter>
+
+Changed from v1:
+- Noticed that we missed the hvf code. Converted, compiled, but not tested
+  as I'm lacking an environment for testing.
+- Hopefully incorporated most of the suggested changes -- if I missed
+  something, it was unintentional unless mentioned below.
+  - fixed repeated inclusion of definitions
+  - hopefully made macros more robust
+  - removed distinction between reading 32/64 values, which was mostly
+    adding churn for little value
+  - postponed generating property definitions to the cpu model patches,
+    where they are actually used
+  - juggled hunks and moved them to the right patches
+  - fixed some typos
+- rebased to a more recent code base
+
+NOT changed from v1:
+- definitions are still generated from the Linux sysregs file
+  - I still think updating the generated files on demand (so that we can
+    double check the result) is the right thing to do
+  - I'm open to changing the source of the definitions from the sysregs
+    file to the JSON definitions published by Arm; however, I first wanted
+    to get the code using it right -- we can switch out the code generating
+    the file to use a different source easily later on, and I'd also like
+    to steal parts of the script from Linux once integrated (which I think
+    hasn't happened yet?)
+
+<v1 cover letter>
+
+[Note: I've kept the cc list from the last round of cpu model patches;
+so if you're confused as to why you're cc:ed here, take it as a
+heads-up that a new cpu model series will come along soon]
+
+This patch series contains patches extracted from the larger cpu model
+series (RFC v2 last posted at
+https://lore.kernel.org/qemu-devel/20241206112213.88394-1-cohuck@redhat.com/)
+and aims at providing a base upon which we can continue with building
+support for cpu models, but which is hopefully already an improvement
+on its own.
+
+Main changes from the patches in that series include:
+- post-pone the changes to handle KVM writable ID registers for cpu models
+  (I have a series including that on top of this one)
+- change how we store the list of ID registers, and access them
+  basically, use an enum for indexing, and an enum doing encodings in a
+  pattern similar to cpregs
+- move some hunks to different patches
+- update the scripts to generate the register descriptions, and run
+  them against a recent Linux sysregs file
+
+What I've kept:
+- generating the register descriptions from the Linux sysregs file
+  I think that file is still our best bet to generate the descriptions
+  easily, and updating the definitions is a manual step that can be checked
+  for unintended changes
+- most of the hard work that Eric had been doing; all new bugs in there
+  are my own :)
+
+</v1 cover letter>
+</v2 cover letter>
+</v3 cover letter>
+</v4 cover letter>
+</v5 cover letter>
+</v6 cover letter>
+</v7 cover letter>
+
+Cornelia Huck (2):
+  arm/cpu: switch to a generated cpu-sysregs.h.inc
+  arm/kvm: use fd instead of fdarray[2]
+
+Eric Auger (12):
+  arm/cpu: Add sysreg definitions in cpu-sysregs.h
+  arm/cpu: Store aa64isar0/aa64zfr0 into the idregs arrays
+  arm/cpu: Store aa64isar1/2 into the idregs array
+  arm/cpu: Store aa64pfr0/1 into the idregs array
+  arm/cpu: Store aa64mmfr0-3 into the idregs array
+  arm/cpu: Store aa64dfr0/1 into the idregs array
+  arm/cpu: Store aa64smfr0 into the idregs array
+  arm/cpu: Store id_isar0-7 into the idregs array
+  arm/cpu: Store id_pfr0/1/2 into the idregs array
+  arm/cpu: Store id_dfr0/1 into the idregs array
+  arm/cpu: Store id_mmfr0-5 into the idregs array
+  arm/cpu: Add sysreg generation scripts
+
+ MAINTAINERS                            |   1 +
+ hw/intc/armv7m_nvic.c                  |  27 +-
+ scripts/arm-gen-cpu-sysregs-header.awk |  37 ++
+ scripts/update-aarch64-sysreg-code.sh  |  32 ++
+ target/arm/cpu-features.h              | 317 ++++++++---------
+ target/arm/cpu-sysregs.h               |  42 +++
+ target/arm/cpu-sysregs.h.inc           |  53 +++
+ target/arm/cpu.c                       | 111 +++---
+ target/arm/cpu.h                       |  80 +++--
+ target/arm/cpu64.c                     | 128 ++++---
+ target/arm/helper.c                    |  68 ++--
+ target/arm/hvf/hvf.c                   |  39 ++-
+ target/arm/internals.h                 |   6 +-
+ target/arm/kvm.c                       | 139 ++++----
+ target/arm/ptw.c                       |   6 +-
+ target/arm/tcg/cpu-v7m.c               | 174 +++++-----
+ target/arm/tcg/cpu32.c                 | 320 ++++++++---------
+ target/arm/tcg/cpu64.c                 | 459 +++++++++++++------------
+ 18 files changed, 1114 insertions(+), 925 deletions(-)
+ create mode 100755 scripts/arm-gen-cpu-sysregs-header.awk
+ create mode 100755 scripts/update-aarch64-sysreg-code.sh
+ create mode 100644 target/arm/cpu-sysregs.h
+ create mode 100644 target/arm/cpu-sysregs.h.inc
+
+-- 
+2.49.0
 
 
