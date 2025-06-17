@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B53ADD6D7
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11599ADD6DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:37:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRZJF-0003n7-8Q; Tue, 17 Jun 2025 12:37:17 -0400
+	id 1uRZJ1-0002g2-Ia; Tue, 17 Jun 2025 12:37:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRZGD-0000mN-PP
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:10 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1uRZGF-0000n8-9S
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:15 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRZG5-0000ek-Dd
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:09 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-450dd065828so48835875e9.2
- for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 09:33:59 -0700 (PDT)
+ id 1uRZGC-0000fT-SL
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:11 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3a4ef2c2ef3so4913276f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 09:34:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750178038; x=1750782838; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750178039; x=1750782839; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aoMza4IYUrQ4pKhizFEWSlqdn80g7ODuwHDUZB6a5Mc=;
- b=vN0DXITT142R1G1HVYRZagx6SjIaDNtzCoLXWkYwCXFZ7CF3w1mIOYMFawT0JN5zLo
- ui1sOMnHfFb4nz86Ma17pN1K/8Vnv4/4/3q3p/eWe0NYBfXZd9t53E5S1R2EVSZyxIC0
- 1Pjme7CMArdwLIl3omtOoTl+iFQG+2BjCO7kpmJnhV7KTVPjY+ae+HHwnW3daAU0ACN/
- 64J1KJfgnxv4M7XRa/iD2SQrTvo0B47oXDAbY0mPPl8jnH6s0PD6ovN++RL+KjNbofMy
- SnjohHJdLFm1nILdU7QUIho0ij0Chi3mP7e72UuCdnFvBHURjMXk9bH8YAlCKTkPnAwR
- KdzQ==
+ bh=GncEdQO/d7gOZ9LM+QxKenzRx6813cX2TxyJIAl7x3Y=;
+ b=lwjeugSjNXojm8tIkAOD2mZRfEj7Ogkbcu/jJWH4hqFjJCL0caFeJctuezT8MUj6dF
+ 0c1MLdYt4no58+X1dsA4o9r7kuhzkWTZeCUSW5PJUoLjnI4z/U6IjYvI3GNoU/c+ZVMP
+ FoD6N9BJDnvxnWst8ah/cmJpp2Mt2HLYFeoqAiDuAzIc4uMwnX+pN4RyGxlZND3gSJwO
+ iIhVT4Hdh1gJ/2arD1VnjWx1xC43AdCZ72oqrYTocGM4puug5JqKG3vztUiPCMCuXEWp
+ Oo9geWdyTHWfR0zq2Gc4qubeedDW6m9aqsijp5ecTHKTCntAt7FVn5V9hcvaQI31FSSh
+ oh0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750178038; x=1750782838;
+ d=1e100.net; s=20230601; t=1750178039; x=1750782839;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aoMza4IYUrQ4pKhizFEWSlqdn80g7ODuwHDUZB6a5Mc=;
- b=e/glX/QxJiOxgy1jO7IEnMMycUDMshvYqp1RKNhD4GFwDV94Giwn68TlVTPB/sNXBy
- Bgwq/nOYsPEq+QAA2lhymKWWiMSpZJMuQcZND10472kVR0HRHn3UYvoYFRFEX6FYgRoU
- eXUBE0Vwf5CemQNMlxUrnkmSHkss8dhGvfWu5gC/QGrPVdHgdXdWu439j2c2bHc4ghgd
- 9siSeJ0P/anNagxdhwI82rmRLAfUS5sFyyWYKKgsa2akVWVXe5pdD6XwxdxF/gFv28kg
- kXa1S6pqZYNWhFjnbvG/IXaeQP+Z/Poc7YEB93Mk29FU1+UriDe7Og+FSVRV+H8D2/hf
- smGg==
-X-Gm-Message-State: AOJu0YxGJ3cbj9iLr8S9I7KOM9BYJbYRhX8fxCm5CBCCGsOx0og2ieyJ
- DI3wNLsM9p/qgmIXx2G0Q9Of6jw+iVqo1Q8ye5Ky/CClniYW+nVTtOjJeJd6PgZZzgU=
-X-Gm-Gg: ASbGncuCBipdKuX2glhbt4KTWtpNLeKqc92Y9TdTM2z0EilUHauocbzSeBzlgGtSb6w
- 1gJZwj/KDG/4V2LpRZ+3VQzwWKyVoetLXzt1ZQSlJw/Hb0TnN4ABOQlre88trxQWwBe0z/T7Vzl
- HJPba3GcoZ49Pm5F8b+1/ELcrHgGdxqj2r5IooLSinojuhfN+xGgfoDMSIs2d4YYgLR3E+7JXVB
- 0jOKTms+Z4lzJ3I6xToec9KEjxxGLIrQGwbPojUdF/AlTUo1PP+2MgEQ7ahI0UBB1hEnVvFk7Ym
- nf2PyDewlw2UdBOgCWF7Nsn/l5a3TSXFIes9HyQgfLdwFmHTv4M04nVHytdvWUA=
-X-Google-Smtp-Source: AGHT+IE6pt33ke9xpxkXCz0wErJ6OWj9AV5oeVpKv/9/pglk58bJEG+5/55asfXJBldZuJtVgP7Iyw==
-X-Received: by 2002:a05:600c:6095:b0:43c:fffc:7886 with SMTP id
- 5b1f17b1804b1-4535627dbe5mr19855865e9.8.1750178038202; 
- Tue, 17 Jun 2025 09:33:58 -0700 (PDT)
+ bh=GncEdQO/d7gOZ9LM+QxKenzRx6813cX2TxyJIAl7x3Y=;
+ b=eEgGYSONAd8VlS2REvyzqqGbt4xczU1GgGZM/NotvKwfhM1atbF/DQT152w1G0EEIe
+ fPJmV1rDY3Ee9gV9CgrJijMrYEYAeu7NyjyBMDt2k4a6iUAAP4B+1VGQGf8tIjZvLrHh
+ yrkAWme4UU5xevGiEdmUvnWqaM1p7WXCmmdCcB5/ds9woLJ+jxaiKvTcp5RUxVdSCQ4J
+ fjyU37dsa1VKc5W01z0CEvstER8IaPngm/Wk1XRUUz3gB2gnguVYe2U5w0qfX/xbY4GS
+ mVsub3/KX6bWXD8zcEXrfWSYZoRfQVR0cSVMqIcMb6VbrdTfv0Jk6HhHcKMyYsoOPCcq
+ 1dXg==
+X-Gm-Message-State: AOJu0Yynt8byAxnqh2B3BC7g9m/qr7rr9hs8FViqZdGs8vOGq4piGwmT
+ bcVq7/ENcNffORFFyig+8JJI0k59MaTtJn8i71EAJiw+INCQAjEAexL8iu8vdd4Pr9Y=
+X-Gm-Gg: ASbGnctprAGOG81EaTDpFlL2khrGhbTw22eljeh5tABlYru/woZnKLyje+xjUXRkn0a
+ FJMxiDKbTzpBbwtW9QfHj5lPRK5zuj+v2YmoZr9R8kCer75JBZFZ9iBAq/mg8iKhMYrRGKgHlKv
+ ZGFHvY0pe7eoLeIoVKlk8rTv+XDDaEJ113HF6KARYSAUmB3yj3yc9B0+KPnd6ThtWIMFTRx4VHx
+ vaUc28ZC097DLufJMA1QURNiazE99ygbIaqoqQPzP8bIhgnB9Ql+W4ofE1g8peK0nuhS+BTVIlX
+ 54+7itsIIsOkwuQhJt5a8bCtlRuyQhSM+v3boKH410a17VKZ711ow9amWCa765U=
+X-Google-Smtp-Source: AGHT+IEzrNJfJxccfvZ1/Dv81sv9ibMeIsZbIicjBJbFPPlnMb0UfYqycjSiQbPuRMjeJfXuxbG2YQ==
+X-Received: by 2002:a05:6000:400b:b0:3a4:f2ed:217e with SMTP id
+ ffacd0b85a97d-3a5723af786mr11907985f8f.42.1750178039291; 
+ Tue, 17 Jun 2025 09:33:59 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4532e232e4asm178682015e9.11.2025.06.17.09.33.54
+ ffacd0b85a97d-3a568b090b0sm14359958f8f.46.2025.06.17.09.33.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Jun 2025 09:33:55 -0700 (PDT)
+ Tue, 17 Jun 2025 09:33:58 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DC5DE5F924;
- Tue, 17 Jun 2025 17:33:52 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 01A2B5F929;
+ Tue, 17 Jun 2025 17:33:53 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>, qemu-arm@nongnu.org,
@@ -72,17 +72,17 @@ Cc: Cornelia Huck <cohuck@redhat.com>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 10/11] kvm/arm: implement a basic hypercall handler
-Date: Tue, 17 Jun 2025 17:33:50 +0100
-Message-ID: <20250617163351.2640572-11-alex.bennee@linaro.org>
+Subject: [RFC PATCH 11/11] kvm/arm: implement WFx traps for KVM
+Date: Tue, 17 Jun 2025 17:33:51 +0100
+Message-ID: <20250617163351.2640572-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250617163351.2640572-1-alex.bennee@linaro.org>
 References: <20250617163351.2640572-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -105,85 +105,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For now just deal with the basic version probe we see during startup.
+This allows the vCPU guest core to go to sleep on a WFx instruction.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/kvm.c        | 44 +++++++++++++++++++++++++++++++++++++++++
+ target/arm/kvm.c        | 28 ++++++++++++++++++++++++++++
  target/arm/trace-events |  1 +
- 2 files changed, 45 insertions(+)
+ 2 files changed, 29 insertions(+)
 
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 0a852af126..1280e2c1e8 100644
+index 1280e2c1e8..63ba8573a2 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -1507,6 +1507,43 @@ static int kvm_arm_handle_sysreg_trap(ARMCPU *cpu,
-     return -1;
+@@ -1544,6 +1544,32 @@ static int kvm_arm_handle_hypercall(ARMCPU *cpu,
+     return 0;
  }
  
 +/*
-+ * The guest is making a hypercall or firmware call. We can handle a
-+ * limited number of them (e.g. PSCI) but we can't emulate a true
-+ * firmware. This is an abbreviated version of
-+ * kvm_smccc_call_handler() in the kernel and the TCG only arm_handle_psci_call().
-+ *
-+ * In the SplitAccel case we would be transitioning to execute EL2+
-+ * under TCG.
++ * It would be perfectly fine to immediately return from any WFE/WFI
++ * trap however that would mean we spend a lot of time bouncing
++ * between the hypervisor and QEMU when things are idle.
 + */
-+static int kvm_arm_handle_hypercall(ARMCPU *cpu,
-+                                    int esr_ec)
++
++static const char * wfx_insn[] = {
++    "WFI",
++    "WFE",
++    "WFIT",
++    "WFET"
++};
++
++static int kvm_arm_handle_wfx(CPUState *cs, int esr_iss)
 +{
++    int ti = extract32(esr_iss, 0, 2);
++    ARMCPU *cpu = ARM_CPU(cs);
 +    CPUARMState *env = &cpu->env;
-+    int32_t ret = 0;
 +
-+    trace_kvm_hypercall(esr_ec, env->xregs[0]);
++    trace_kvm_wfx_trap(cs->cpu_index, wfx_insn[ti], env->pc);
 +
-+    switch (env->xregs[0]) {
-+    case QEMU_PSCI_0_2_FN_PSCI_VERSION:
-+        ret = QEMU_PSCI_VERSION_1_1;
-+        break;
-+    case QEMU_PSCI_0_2_FN_MIGRATE_INFO_TYPE:
-+        ret = QEMU_PSCI_0_2_RET_TOS_MIGRATION_NOT_REQUIRED; /* No trusted OS */
-+        break;
-+    case QEMU_PSCI_1_0_FN_PSCI_FEATURES:
-+        ret = QEMU_PSCI_RET_NOT_SUPPORTED;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "%s: unhandled hypercall %"PRIx64"\n",
-+                      __func__, env->xregs[0]);
-+        return -1;
-+    }
-+
-+    env->xregs[0] = ret;
-+    return 0;
++    /* stop the CPU, return to the top of the loop */
++    cs->stop = true;
++    return EXCP_YIELD;
 +}
 +
  /**
   * kvm_arm_handle_hard_trap:
   * @cpu: ARMCPU
-@@ -1538,6 +1575,13 @@ static int kvm_arm_handle_hard_trap(ARMCPU *cpu,
-     switch (esr_ec) {
-     case EC_SYSTEMREGISTERTRAP:
-         return kvm_arm_handle_sysreg_trap(cpu, esr_iss, elr);
-+    case EC_AA32_SVC:
-+    case EC_AA32_HVC:
-+    case EC_AA32_SMC:
-+    case EC_AA64_SVC:
-+    case EC_AA64_HVC:
-+    case EC_AA64_SMC:
-+        return kvm_arm_handle_hypercall(cpu, esr_ec);
+@@ -1582,6 +1608,8 @@ static int kvm_arm_handle_hard_trap(ARMCPU *cpu,
+     case EC_AA64_HVC:
+     case EC_AA64_SMC:
+         return kvm_arm_handle_hypercall(cpu, esr_ec);
++    case EC_WFX_TRAP:
++        return kvm_arm_handle_wfx(cs, esr_iss);
      default:
          qemu_log_mask(LOG_UNIMP, "%s: unhandled EC: %x/%x/%x/%d\n",
                  __func__, esr_ec, esr_iss, esr_iss2, esr_il);
 diff --git a/target/arm/trace-events b/target/arm/trace-events
-index 69bb4d370d..10cdba92a3 100644
+index 10cdba92a3..bb02da12ab 100644
 --- a/target/arm/trace-events
 +++ b/target/arm/trace-events
-@@ -15,3 +15,4 @@ arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
- kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is translated into 0x%"PRIx64
+@@ -16,3 +16,4 @@ kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is
  kvm_sysreg_read(const char *name, uint64_t val) "%s => 0x%" PRIx64
  kvm_sysreg_write(const char *name, uint64_t val) "%s <=  0x%" PRIx64
-+kvm_hypercall(int ec, uint64_t arg0) "%d: %"PRIx64
+ kvm_hypercall(int ec, uint64_t arg0) "%d: %"PRIx64
++kvm_wfx_trap(int vcpu, const char *insn, uint64_t vaddr) "%d: %s @ 0x%" PRIx64
 -- 
 2.47.2
 
