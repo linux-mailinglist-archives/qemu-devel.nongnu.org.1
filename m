@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC2CAADD6DA
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED76ADD6DD
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Jun 2025 18:37:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRZHH-0001Lr-AH; Tue, 17 Jun 2025 12:35:15 -0400
+	id 1uRZHH-0001Lo-9H; Tue, 17 Jun 2025 12:35:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRZG5-0000lQ-M7
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:08 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1uRZGC-0000m3-78
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:10 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uRZG0-0000d6-K5
- for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:33:59 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4531e146a24so36920995e9.0
+ id 1uRZG1-0000dB-5k
+ for qemu-devel@nongnu.org; Tue, 17 Jun 2025 12:34:00 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-450ce671a08so37702105e9.3
  for <qemu-devel@nongnu.org>; Tue, 17 Jun 2025 09:33:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1750178035; x=1750782835; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QKHVjbEZEAlGzEnK1mT5V15dOYDZALJJ9P4ZN2AdSHE=;
- b=vjOqLM4vNS0Lacmf4nB+l3uVgl5UZ/wJqJ+G8Xfu1u4pyrRFX45dzwXX74K9BFEfUk
- kem2uO0mjam3j9xFFvUG7gtfEDLMEGgMomL5O/VdXY98RxbpQ3J7JHR7mqlRe5xLKAdv
- cfxUZXDVPw1eVhMXIM7cADXw1hdBfN9GGvWi5ISs8XV95klaEe3zv3THqNT7dt5JQE80
- jR6iQa9NFK63Ir5bTWHEbC6Zf711861irRHIw3pcKFglvnw9hej12rHFiXvd/zQoeZEW
- OXGbomsa+OnbK9ljMHctDsF5HqyfioQSR0eXg5sUSSu4z0lC+ZJfPl3zuBSl9vbshkYo
- hjgw==
+ bh=t40bt1183UrSentyz3550cC0V6NSp0ZoskbuhIRXheY=;
+ b=iYZzXrooLEVABswjRyJcpawNukewtvdMUDWzFL8TEBSdYHqNbmU7R5p4fD0u6JxUAt
+ F5ycupFpXVopyi6nvRZDnY7LpjmqK5lqg5P+gEraJhS4W9HcwsKlO/+VT/RNSIRWdROr
+ iRirD3v+uRkFPsDO6IX5zNYzmgNWvv33pGpHBFRHT0JqEJ3/AQrv4jZokhPx93dujNu7
+ mmT+3SJgONekc6ZH47zjoCS6FNjJ0guXBBWAsPjWXbMpUmi+M3gTN3KS5C6IlWQdMI44
+ W7Mkuiz72bkpeWDjHxYxxxrjVwfhOT/JuMshPiPZzee62NJvUu/fWb9yHedh95t41Pfx
+ apzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750178035; x=1750782835;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QKHVjbEZEAlGzEnK1mT5V15dOYDZALJJ9P4ZN2AdSHE=;
- b=MaQGq3R7Rj+QQ1D6YH9kwCzNWy+luU+8Zv0wNCwd36p5V3qiSt/cfcuhT86SpA/II5
- Q2JqJXrP0jeSfH1wzjsxUKaki05ukIcNzb6zP4/dR+AtLY+G+H8Fuxq0Wwww3hLEbaOJ
- y3/0JFcZwB7DANueVq+PtEuymG64T/nysOg2RGJrtwOQJgC1b7vnfwWiCPHeVWanoqrb
- oHcRqEeHKUl4rSr0dM8L8X7iV8jlR0AhfkkwktVP5xvVQX6A2u+styYUAT8At+bWIBSf
- gDRa/fEBMvRD6lVBNhAvoF0j7d0R8IS2cVEi+RchuN5lNbNL7QOiNAZ4+LY4awp7TPYG
- JwwA==
-X-Gm-Message-State: AOJu0YzrbTXIuBI98DobomV+dl2rmWJ6L2zJnF2AsnS7s5LM6ltpadoF
- OUw9Qe1dsYK47ojhPqdB84/1RsVnXHCjb3fmIRTsN+8r7F/xWfGpkxEjXERgADKInkM=
-X-Gm-Gg: ASbGncsrnxdkZIrFHfd3Hui69QpGRy5WgZr1H3Q+tgRawqy3ty0EwkoNrHyq0siLu/t
- UciDrS/ayf0940oARIu9UkQK2xZzkysbZUXQh3elRuWg7nxGej3PcsyOtcIZxlzJalxMX2vErUL
- 17YVMpfvVxLO81Yx2mCiwKCmGAGjoa+iP6XrgypE4fsJLVD4lDRqaLrZf9hqzJZyyx4CY9tsV+m
- hiV4Jp5I5m3H0U3Akahb+1ARJi2J+uoe68iXRX+geVcGWai/zDmMdR1qan3fmK3+3CSO4zmdXUX
- T7tu6DXUM296Bz1K3RVJo70Gro9WWaOugO9Bwzintuvr6xX627G1HWZRtd1orYo=
-X-Google-Smtp-Source: AGHT+IEcabvh7yBYNUgPCbH5qrmXiMx66xje3D7cTPVNv24ZJ3XnrP+Kpx0AQ2nGH2YgxABhGdC5jA==
-X-Received: by 2002:a05:600c:1d06:b0:43c:e7ae:4bcf with SMTP id
- 5b1f17b1804b1-4533c9bf9e2mr148215485e9.0.1750178034971; 
- Tue, 17 Jun 2025 09:33:54 -0700 (PDT)
+ bh=t40bt1183UrSentyz3550cC0V6NSp0ZoskbuhIRXheY=;
+ b=hMegHgrL6sYqxm06KLY3gY1SHO+n/ffTlChTLHBwCdke3pnEHrTYou8z4HM5CmC5Q2
+ 2SIwRXpW2JhjIPuHBSaFd7JYZIxRr3gW2qG+bIYD2Hdr8pBArojEnuTc6PCNChlN7YS6
+ 2qQLfCkBYScheBx2i84BF1V/29T5/N3wk+G4Yvn7mi6hT3FVD0Jy7Gt+VDCta7bDK+tQ
+ uajabfzXGkbPAF72O/kdYhP/SwA32SluQb7jGJbduCB8boEhmGl5fd6BcXhcg97RNJW5
+ eZ57RUMzmAV5P4cnl4S70wfbVXtMVHV2qBAeDYu3YxuKxtUzTasBZbzoYIEgWK8dgajG
+ g+cg==
+X-Gm-Message-State: AOJu0Yy6+ucJWtc7KnNREhH9LNHamKIH1xnDAgeyUt4WDTbYPUkm3Mv8
+ FtiJAUOwJtI1A25VxefWdqZ8aYBiryE6TVoYmU2XEa7Yk5YNnV53ul/VUDbDH77C9Bg=
+X-Gm-Gg: ASbGncsjTI2tReuGKVBCO2LFtbxGtnCtyWmb4HRToX0POt5TN+08qaBRMMOa7zyHEr+
+ Cchs4xmqMa1Vh8zsfR7A8RU6ujgbjQsXyQKVsZAqysO5cp4iaf/a9Ct0nV7Hv/kfIn91Cm0JEHi
+ AXAkZ2s+SkFis/x7DdLFDQBENCLZhemBfkR368X2sC/i++GZuOi1p3CKwWV/9j7QsHEZ6Un/NBq
+ 68X0ni22MwbelwcJBsAXD8rk7OXYMmIHIK/JYzJWpKPm1KHvEG7rCerD/Hcv1spUqlfeCgHboaa
+ lDBMNEp/kKowwAEYUmnb3M8dy2cC8x3f3APfH4crTXUedQNl8Q6ZO/WtyB2zCr0=
+X-Google-Smtp-Source: AGHT+IG4cv90M94Tfw7iEiYjMpdDPcWxYkGMa/ll8ppjhP2edxc6v82sBNSLJWREvyzO/nD4jEsnAg==
+X-Received: by 2002:a05:6000:2913:b0:3a4:d4e5:498a with SMTP id
+ ffacd0b85a97d-3a5723af2e8mr12220518f8f.42.1750178035305; 
+ Tue, 17 Jun 2025 09:33:55 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a568a7e980sm14106592f8f.41.2025.06.17.09.33.52
+ ffacd0b85a97d-3a568b48564sm14222655f8f.82.2025.06.17.09.33.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 17 Jun 2025 09:33:53 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2E6FE5F878;
+ by draig.lan (Postfix) with ESMTP id 434E85F8A6;
  Tue, 17 Jun 2025 17:33:52 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,18 +72,17 @@ Cc: Cornelia Huck <cohuck@redhat.com>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 03/11] linux-headers: Update to Linux 6.15.1 with
- trap-mem-harder (WIP)
-Date: Tue, 17 Jun 2025 17:33:43 +0100
-Message-ID: <20250617163351.2640572-4-alex.bennee@linaro.org>
+Subject: [RFC PATCH 04/11] kvm: expose a trap-harder option to the command line
+Date: Tue, 17 Jun 2025 17:33:44 +0100
+Message-ID: <20250617163351.2640572-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250617163351.2640572-1-alex.bennee@linaro.org>
 References: <20250617163351.2640572-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -106,77 +105,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Import headers for trap-me-harder, based on 6.15.1.
+It would be nice to only have the variable for this is a KVM_ARM_STATE
+but currently everything is just held together in the common KVMState.
+Only KVM ARM can set the flag though.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/standard-headers/linux/virtio_pci.h | 1 +
- linux-headers/linux/kvm.h                   | 8 ++++++++
- linux-headers/linux/vhost.h                 | 4 ++--
- 3 files changed, 11 insertions(+), 2 deletions(-)
+ include/system/kvm_int.h |  4 ++++
+ target/arm/kvm.c         | 19 +++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/include/standard-headers/linux/virtio_pci.h b/include/standard-headers/linux/virtio_pci.h
-index 91fec6f502..09e964e6ee 100644
---- a/include/standard-headers/linux/virtio_pci.h
-+++ b/include/standard-headers/linux/virtio_pci.h
-@@ -246,6 +246,7 @@ struct virtio_pci_cfg_cap {
- #define VIRTIO_ADMIN_CMD_LIST_USE	0x1
+diff --git a/include/system/kvm_int.h b/include/system/kvm_int.h
+index 756a3c0a25..a1e306b7b7 100644
+--- a/include/system/kvm_int.h
++++ b/include/system/kvm_int.h
+@@ -122,6 +122,10 @@ struct KVMState
+     OnOffAuto kernel_irqchip_split;
+     bool sync_mmu;
+     bool guest_state_protected;
++
++    /* currently Arm only, but we have no KVMArmState */
++    bool trap_harder;
++
+     uint64_t manual_dirty_log_protect;
+     /*
+      * Older POSIX says that ioctl numbers are signed int, but in
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 74fda8b809..8b1719bfc1 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -1615,6 +1615,18 @@ static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
+     s->kvm_eager_split_size = value;
+ }
  
- /* Admin command group type. */
-+#define VIRTIO_ADMIN_GROUP_TYPE_SELF	0x0
- #define VIRTIO_ADMIN_GROUP_TYPE_SRIOV	0x1
++static bool kvm_arch_get_trap_harder(Object *obj, Error **errp)
++{
++    KVMState *s = KVM_STATE(obj);
++    return s->trap_harder;
++}
++
++static void kvm_arch_set_trap_harder(Object *obj, bool value, Error **errp)
++{
++    KVMState *s = KVM_STATE(obj);
++    s->trap_harder = value;
++}
++
+ void kvm_arch_accel_class_init(ObjectClass *oc)
+ {
+     object_class_property_add(oc, "eager-split-size", "size",
+@@ -1623,6 +1635,13 @@ void kvm_arch_accel_class_init(ObjectClass *oc)
  
- /* Transitional device admin command. */
-diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
-index 99cc82a275..bb51fb179b 100644
---- a/linux-headers/linux/kvm.h
-+++ b/linux-headers/linux/kvm.h
-@@ -178,6 +178,7 @@ struct kvm_xen_exit {
- #define KVM_EXIT_NOTIFY           37
- #define KVM_EXIT_LOONGARCH_IOCSR  38
- #define KVM_EXIT_MEMORY_FAULT     39
-+#define KVM_EXIT_ARM_TRAP_HARDER  40
+     object_class_property_set_description(oc, "eager-split-size",
+         "Eager Page Split chunk size for hugepages. (default: 0, disabled)");
++
++    object_class_property_add_bool(oc, "trap-harder",
++                                   kvm_arch_get_trap_harder,
++                                   kvm_arch_set_trap_harder);
++
++    object_class_property_set_description(oc, "trap-harder",
++        "Trap harder mode traps almost everything to QEMU (default: off)");
+ }
  
- /* For KVM_EXIT_INTERNAL_ERROR */
- /* Emulate instruction failed. */
-@@ -439,6 +440,12 @@ struct kvm_run {
- 			__u64 gpa;
- 			__u64 size;
- 		} memory_fault;
-+		/* KVM_EXIT_ARM_TRAP_HARDER */
-+		struct {
-+			__u64 esr;
-+			__u64 elr;
-+			__u64 far;
-+		} arm_trap_harder;
- 		/* Fix the size of the union. */
- 		char padding[256];
- 	};
-@@ -645,6 +652,7 @@ struct kvm_enable_cap {
- #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
- #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
- 	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
-+#define KVM_VM_TYPE_ARM_TRAP_ALL        0x10000ULL
- /*
-  * ioctls for /dev/kvm fds:
-  */
-diff --git a/linux-headers/linux/vhost.h b/linux-headers/linux/vhost.h
-index b95dd84eef..d4b3e2ae13 100644
---- a/linux-headers/linux/vhost.h
-+++ b/linux-headers/linux/vhost.h
-@@ -28,10 +28,10 @@
- 
- /* Set current process as the (exclusive) owner of this file descriptor.  This
-  * must be called before any other vhost command.  Further calls to
-- * VHOST_OWNER_SET fail until VHOST_OWNER_RESET is called. */
-+ * VHOST_SET_OWNER fail until VHOST_RESET_OWNER is called. */
- #define VHOST_SET_OWNER _IO(VHOST_VIRTIO, 0x01)
- /* Give up ownership, and reset the device to default values.
-- * Allows subsequent call to VHOST_OWNER_SET to succeed. */
-+ * Allows subsequent call to VHOST_SET_OWNER to succeed. */
- #define VHOST_RESET_OWNER _IO(VHOST_VIRTIO, 0x02)
- 
- /* Set up/modify memory layout */
+ int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
 -- 
 2.47.2
 
