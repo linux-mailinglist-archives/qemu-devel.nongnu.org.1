@@ -2,130 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EF6ADE516
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Jun 2025 10:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB6CADE57E
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Jun 2025 10:25:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRniR-0001DZ-Fe; Wed, 18 Jun 2025 04:00:15 -0400
+	id 1uRo5o-0008L9-3r; Wed, 18 Jun 2025 04:24:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets.ovn@gmail.com>)
- id 1uRniO-0001CL-Rt
- for qemu-devel@nongnu.org; Wed, 18 Jun 2025 04:00:12 -0400
-Received: from mail-ej1-f65.google.com ([209.85.218.65])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <i.maximets.ovn@gmail.com>)
- id 1uRniL-0006A7-U1
- for qemu-devel@nongnu.org; Wed, 18 Jun 2025 04:00:12 -0400
-Received: by mail-ej1-f65.google.com with SMTP id
- a640c23a62f3a-ade30256175so1302198466b.1
- for <qemu-devel@nongnu.org>; Wed, 18 Jun 2025 01:00:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1uRo5i-0008KH-GA
+ for qemu-devel@nongnu.org; Wed, 18 Jun 2025 04:24:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1uRo5g-0005xR-0q
+ for qemu-devel@nongnu.org; Wed, 18 Jun 2025 04:24:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750235049;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XOd/TwSeFf3sn9dmgp438m1OZfBUEXiJMJgYzBxE9cs=;
+ b=QLvJjlC92/s6LtEYtvYq1EQkt7CYVV9z99dcsU/+TSxmz/ZLWr56ZOTGE+hX+70ITO4Iik
+ As/3f8/IfC2rXO586BP4eraKk49ihiGyMyoS4W1NDohiQBUUTexcIgJhPw5vjhV3aj+nEs
+ wM3zEkqDjzdlgT6Ob2Tjb/Mp2xDV+20=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-262-G-iAP0DNP3mFo3VyOoX2uw-1; Wed, 18 Jun 2025 04:24:04 -0400
+X-MC-Unique: G-iAP0DNP3mFo3VyOoX2uw-1
+X-Mimecast-MFC-AGG-ID: G-iAP0DNP3mFo3VyOoX2uw_1750235044
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6fb32203ca6so143544196d6.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Jun 2025 01:24:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750233608; x=1750838408;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:to:subject:cc:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MbHxN0sFGh0ieCBQoVIh0y5xaKknMf8GwZMGLXbT70E=;
- b=GADASathILzul7oMXgJxvyeqAk44ZFibcRU0b5fxEy0K57MiKexNOSYVYb/JsqkMe+
- 0YSAvtXIM2Bf5pUZ/yag317RgPiovw7fLvHbRsjqQbFZNPmXlIZweX+HaWXJFmdKHYwm
- bwx9UTnPexvh8t0xvj7XKivgGXgMO2tLYHgUcxJFtAp4+phwmc5JhqnZBavmpa3cMtSw
- 88P1fN+t0s1Qk+cbKjEjw+sjPXW1fFc3DJv+QQRom/WKy3RI41meZ6xoYXZUAD7s0cxz
- XdBL74/891r6RF6+5ZFtvDVVa7u+7S48xeDYp7+PcsEaJawcqvXbsl8M6rIqptmN8Cs9
- J4qg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVA/5RXNqG/+rgaUaRN4UpVUDCYO8wSJlWAe0KYGgwd6hbc/Th9jcjmfUMu7hO2pzNWbYAuikN7VIzN@nongnu.org
-X-Gm-Message-State: AOJu0Yzi2o5WzlOf0oExxfHb5FUHefiWG2A15QinjwqrLqaEC6Gp/mFT
- VI5ztopHW5jQogRGtOGEY6P5ezquFfzLRV3Bb8bcZEkZYMvSyuxnMLAq
-X-Gm-Gg: ASbGnctkZjPl1/u5cDRGm/RvxP2IGzfIbThxDfsID1aW+MHa/1pg+ERXnaI84lmI6hL
- tRiWo3QtSdVigJuSjETScsgMoEGTfzeAUEqlf+4jh0nmnxIcUmWNcLAJ4ojThI5l+0a4+N078hM
- 0HASQMkOnWF7p39ydIRqzl6PsCOj3LfpoD1paFHNpcr1fpnLJbqpnqu3j8pMBUiUhwuD5/sAiie
- iSIuNYbPOI5IxFwHQbrnYZpchFRaUCVvbY4VIlnPqZlrE2NtMbcQgoxcZNdWAagRcBC6s+zzZQZ
- p6AeokKpvTtXzZi5a/kaDdsTbvhaxdqe0wkWmGMXlRFk33lCa900mzFfTrGhA2o2sJnBPk1pSNN
- hQBTJnohDeXx1Oc1Z8B66
-X-Google-Smtp-Source: AGHT+IF2qpSdF9PXhAjHgDrCSxn93NPlObyLjljMUaFi9uQ76tYeuY3zendueZiGPPVTGKzwxDG4Ug==
-X-Received: by 2002:a17:907:2da9:b0:ade:3bec:ea40 with SMTP id
- a640c23a62f3a-adfad277614mr1632874266b.10.1750233607488; 
- Wed, 18 Jun 2025 01:00:07 -0700 (PDT)
-Received: from [192.168.88.252] (78-80-97-102.customers.tmcz.cz.
- [78.80.97.102]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-adec8929d8bsm983164266b.122.2025.06.18.01.00.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Jun 2025 01:00:07 -0700 (PDT)
-Message-ID: <694b65a5-0820-4548-907b-9704d844174c@ovn.org>
-Date: Wed, 18 Jun 2025 10:00:06 +0200
+ d=1e100.net; s=20230601; t=1750235043; x=1750839843;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XOd/TwSeFf3sn9dmgp438m1OZfBUEXiJMJgYzBxE9cs=;
+ b=ifYlOWg45Fn0DYPPEYMIVBfiBx+8D/ePXwfEF1M5afZdLGlypl1/TFIjTzFpwgTUlg
+ 6uEwRM0whUYEEUtOSh3BvWCWxcXQMrhuFqPk/ce2Nr7bmeSBMACFWi9UYBpszEVduAre
+ OhJapqq4SFoiWp9a3nIQz23BIMAKqpIM1ihUY4N+VIpoIYqNDuzIuwheosOAIPz0vusF
+ XyAPh6K68LlmEnt9zKfbBs43KS7Ofmg9LLk2huvFvX1blYzvxK3wH1lE3AgYGzthdOtA
+ NDRvmKmD9GPVvNKCp+uYc/JWNRNrgWuNCzWJ6VU0z6hvEWjjMHRpZdi50r2+li7OSujl
+ Z9fw==
+X-Gm-Message-State: AOJu0YyX1ivYoIwrAGrjHrFhm2HZwxQgwS18eYD4IlB5Qp1pXAosuknG
+ SJtkVtEJq5g7GNLM20MYRC2c82kfK1TU5xOe9afVr3hhyVgNXB3mn/hv9rR/qrCX0xW3vTZnoIy
+ ukLibsS3qr825tYOzm9NwxyLYPrmPHcp2GmoSnrgZCX0br3S3hDkR7hqrVd3Nw1GZyK26t6eLEy
+ aToL39ebxIrQeFuo+6sMPbPGRYK3Cuqgo=
+X-Gm-Gg: ASbGncufef3TqJolFc/H8lYznHSLiIILuZkrYacEs1lNuVV+Gb0IjZwVcmoyCHIFnEW
+ /FfNCzn1w6XJr7Ri8xpPO19LkUjVbkXXo86FF5jw0eg3lo8kKw5aKnHIJT/coiJxfb0SmPwBlqI
+ SVFoKZfQ==
+X-Received: by 2002:a05:6214:485:b0:6fa:c166:d8b9 with SMTP id
+ 6a1803df08f44-6fb47773332mr237124896d6.2.1750235043676; 
+ Wed, 18 Jun 2025 01:24:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE9RSySQkWj3M/dahViG5Yq8tRNFP7oHvJC102e0mYJUCmRNiRzNUdyllZyxX0YHL21CNOxoWnWddivo7U4+5M=
+X-Received: by 2002:a05:6214:485:b0:6fa:c166:d8b9 with SMTP id
+ 6a1803df08f44-6fb47773332mr237124756d6.2.1750235043418; Wed, 18 Jun 2025
+ 01:24:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, Jason Wang <jasowang@redhat.com>,
- Anton Protopopov <aspsk@isovalent.com>
-Subject: Re: [PATCH v3 2/2] net/af-xdp: Fix up cleanup path upon failure in
- queue creation
-To: Daniel Borkmann <daniel@iogearbox.net>, qemu-devel@nongnu.org
-References: <20250604112916.1195368-1-daniel@iogearbox.net>
- <20250604112916.1195368-2-daniel@iogearbox.net>
- <945f230c-052b-43b5-b1c3-b8c450c21327@ovn.org>
- <19099367-8d3d-4697-90e6-306bd133d0d7@iogearbox.net>
- <6f043380-31c1-4b57-a912-e785af7faae9@ovn.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <6f043380-31c1-4b57-a912-e785af7faae9@ovn.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.218.65;
- envelope-from=i.maximets.ovn@gmail.com; helo=mail-ej1-f65.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.068, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250617174733.156349-1-eashurov@redhat.com>
+In-Reply-To: <20250617174733.156349-1-eashurov@redhat.com>
+From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Date: Wed, 18 Jun 2025 11:23:52 +0300
+X-Gm-Features: Ac12FXzIF8piB2BqUJql_PoQGJBdjq1X5VHTo-AbJgbq1Z_GgC5NW_JobpTy2os
+Message-ID: <CAPMcbCrW6XzVUYOoBnxZC4E3Ma7FZtKGOwWwKZ6A0_Hd4jJmQg@mail.gmail.com>
+Subject: Re: [PATCH] qga/vss-win32: Add VSS provider unregistration retry
+To: Elizabeth Ashurov <eashurov@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>
+Content-Type: multipart/alternative; boundary="0000000000000969050637d45adb"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.89,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -141,120 +99,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/17/25 11:41 PM, Ilya Maximets wrote:
-> On 6/17/25 3:03 PM, Daniel Borkmann wrote:
->> On 6/17/25 1:59 PM, Ilya Maximets wrote:
->>> On 6/4/25 1:29 PM, Daniel Borkmann wrote:
->>>> While testing, it turned out that upon error in the queue creation loop,
->>>> we never trigger the af_xdp_cleanup() handler. This is because we pass
->>>> errp instead of a local err pointer into the various AF_XDP setup functions
->>>> instead of a scheme like:
->>>>
->>>>      bool fn(..., Error **errp)
->>>>      {
->>>>          Error *err = NULL;
->>>>
->>>>          foo(arg, &err);
->>>>          if (err) {
->>>>              handle the error...
->>>>              error_propagate(errp, err);
->>>>              return false;
->>>>          }
->>>>          ...
->>>>      }
->>>>
->>>> With a conversion into the above format, the af_xdp_cleanup() handler is
->>>> called as expected.
->>>
->>> How exactly this prevents calling the cleanup function?  I don't see the
->>> errp being checked anywhere in the qemu_del_net_client() path.
->>>
->>> Could you provide a more detailed call sequence description where the cleanup
->>> is not called?
->>>
->>> I agree thought that the local err variable is actually unused.  We should
->>> be able to just remove it and remove the error_propagate() call as well.
->>
->> Ok, I basically manually injected an error in af_xdp_{umem_create,socket_create,
->> update_xsk_map} and noticed that in fact none of the af_xdp_cleanup() callback
->> was called and qemu was exiting right away.
->>
->>  From reading up on the qemu error handling patterns that should be used via
->> include/qapi/error.h I noticed that this was due to passing in errp directly
->> rather than a local error variable as done in many other places in qemu code.
-> 
-> Hmm, you're right.  I can reproduce this issue.
-> 
-> I think, this fix should be a first patch of the set and it should have
-> a Fixes tag on it, so it can be backported, if necessary.
-> 
->>
->>>> Also, making sure the XDP program will be removed does
->>>> require to set s->n_queues to i + 1 since the test is nc->queue_index ==
->>>> s->n_queues - 1, where nc->queue_index was set to i earlier.
->>>
->>> The idea behind 'i' instead of 'i + 1' was that if either af_xdp_umem_create()
->>> or af_xdp_socket_create() fails, we do not have xdp_flags initialized on the
->>> last queue.  And without it we can't remove the program, so we remove it while
->>> destroying the last actually configured queue.  And this is OK, because the
->>> failed queue was not added to the program, and if the af_xdp_socket_create()
->>> fails for the very first queue, then we don't have a program loaded at all.
->>>
->>> With the new changes in this patch set, we have an extra function that can fail,
->>> which is a new af_xdp_update_xsk_map(), and only if this one fails, we need to
->>> remove the program while cleaning up the current failed queue, since it was
->>> already created and xdp_flags are available.
->>>
->>> If we get this patch as-is and the af_xdp_socket_create() fails, we will not
->>> remove the program, AFAICT.
->>
->> I'll double check this concern and see if it can be solved (iirc we do test for
->> s->xdp_flags in the cleanup callback)..
-> 
-> Yes, we check 'nc->queue_index == s->n_queues - 1 && s->xdp_flags'.  And if the
-> last queue doesn't have xdp_flags (because it wasn't fully created), then the
-> program will not be detached.
-> 
-> But it seems that code is broken anyway even on the current main, because we're
-> setting n_queues into the last queue that never has xdp_flags on failure.
-> 
-> To fix that we need to do something like:
-> 
->   uint32_t xdp_flags = 0;
-> 
->   ...
->   for each queue {
->     if (failed) {
->       s->n_queues = i + 1;
->       s->xdp_flags = xdp_flags;
->     }
->     xdp_flags = s->xdp_flags;
->   }
-> 
-> This way we'll have xdp_flags set for the last queue and have a proper queue number
-> and will be able to call bpf_xdp_detach().
-> 
-> One thing I do not understand is why the program is actually getting removed even
-> if we do not call bpf_xdp_detach()...  We're not calling this function pretty much
-> at all, and yet, when qemu fails, there is no program left behind...  It looks like
-> the program gets automatically detached when we call xsk_socket__delete() for the
-> last successfully configured queue.  Which is strange, I don't remember it doing
-> this before.
+--0000000000000969050637d45adb
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-OK, I figured this one out.  This is a "new" behavior in libxdp 1.3.0:
-  https://github.com/xdp-project/xdp-tools/commit/38c2914988fd5c1ef65f2381fc8af9f3e8404e2b
-We require libxdp >= 1.4.0 for QEMU to build though, so we may probably just drop
-the bpf_xdp_detach() call together with the n_queues hack.  We're not loading the
-program from QEMU side, so not removing it manually makes sense.  Should be able
-to drop the n_queues field from the AFXDPState as well.
+Best Regards,
+Konstantin Kostiuk.
 
-> 
->> in case of xsk map, it should not detach
->> anything from an XDP program PoV (given inhibit) but rather it should remove
->> prior installed xsk sockets from the xsk map to not leave them around.
->>
->> Best,
->> Daniel
-> 
+
+On Tue, Jun 17, 2025 at 8:47=E2=80=AFPM Elizabeth Ashurov <eashurov@redhat.=
+com>
+wrote:
+
+> This commit improves the QGA VSS provider installation flow
+> by attempting to unregister the VSS provider if it's already
+> found during installation. This allows for a retry of installation
+> even if a previous unregistration failed or was not performed.
+>
+
+Please add:
+This will prevent inconsistencies between QGA and QGA-VSS versions.
+Before this commit, QGA can use QGA-VSS from the previous installation.
+
+
+>
+> Signed-off-by: Elizabeth Ashurov <eashurov@redhat.com>
+> ---
+>  qga/vss-win32/install.cpp | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
+> index 5cea5bcf74..a136d46050 100644
+> --- a/qga/vss-win32/install.cpp
+> +++ b/qga/vss-win32/install.cpp
+> @@ -263,6 +263,7 @@ STDAPI COMRegister(void)
+>      qga_debug_begin;
+>
+>      HRESULT hr;
+> +    HRESULT unregisterHr;
+>
+extra HRESULT is redundant; you can reuse existing one
+
+
+>      COMInitializer initializer;
+>      COMPointer<IUnknown> pUnknown;
+>      COMPointer<ICOMAdminCatalog2> pCatalog;
+> @@ -287,9 +288,13 @@ STDAPI COMRegister(void)
+>
+>      chk(QGAProviderFind(QGAProviderCount, (void *)&count));
+>      if (count) {
+> -        errmsg(E_ABORT, "QGA VSS Provider is already installed");
+> -        qga_debug_end;
+> -        return E_ABORT;
+> +        qga_debug("QGA VSS Provider is already installed. Attempting to
+> unregister first.");
+> +        unregisterHr =3D COMUnregister();
+> +        if (FAILED(unregisterHr)) {
+> +            errmsg(unregisterHr, "Failed to unregister existing QGA VSS
+> Provider. Aborting installation.");
+> +            qga_debug_end;
+> +            return E_ABORT;
+>
+
+.git/rebase-apply/patch:29: trailing whitespace.
+            return E_ABORT;
+warning: 1 line adds whitespace errors.
+please fix
+
+> +        }
+>      }
+>
+>      chk(CoCreateInstance(CLSID_COMAdminCatalog, NULL,
+> CLSCTX_INPROC_SERVER,
+> --
+> 2.49.0
+>
+>
+
+--0000000000000969050637d45adb
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div><br clear=3D"all"></div><div><div di=
+r=3D"ltr" class=3D"gmail_signature"><div dir=3D"ltr"><div>Best Regards,</di=
+v><div>Konstantin Kostiuk.</div></div></div></div><br></div><br><div class=
+=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr=
+">On Tue, Jun 17, 2025 at 8:47=E2=80=AFPM Elizabeth Ashurov &lt;<a href=3D"=
+mailto:eashurov@redhat.com">eashurov@redhat.com</a>&gt; wrote:<br></div><bl=
+ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
+t:1px solid rgb(204,204,204);padding-left:1ex">This commit improves the QGA=
+ VSS provider installation flow<br>
+by attempting to unregister the VSS provider if it&#39;s already<br>
+found during installation. This allows for a retry of installation<br>
+even if a previous unregistration failed or was not performed.<br></blockqu=
+ote><div><br></div><div>Please add:<br></div><div>This will prevent inconsi=
+stencies between QGA and QGA-VSS versions.</div><div>Before this commit, QG=
+A can use QGA-VSS from the previous installation.<br></div><div>=C2=A0</div=
+><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
+-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+Signed-off-by: Elizabeth Ashurov &lt;<a href=3D"mailto:eashurov@redhat.com"=
+ target=3D"_blank">eashurov@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0qga/vss-win32/install.cpp | 11 ++++++++---<br>
+=C2=A01 file changed, 8 insertions(+), 3 deletions(-)<br>
+<br>
+diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp<br>
+index 5cea5bcf74..a136d46050 100644<br>
+--- a/qga/vss-win32/install.cpp<br>
++++ b/qga/vss-win32/install.cpp<br>
+@@ -263,6 +263,7 @@ STDAPI COMRegister(void)<br>
+=C2=A0 =C2=A0 =C2=A0qga_debug_begin;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0HRESULT hr;<br>
++=C2=A0 =C2=A0 HRESULT unregisterHr;<br></blockquote><div>extra HRESULT is =
+redundant; you can reuse existing one<br></div><div>=C2=A0</div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">
+=C2=A0 =C2=A0 =C2=A0COMInitializer initializer;<br>
+=C2=A0 =C2=A0 =C2=A0COMPointer&lt;IUnknown&gt; pUnknown;<br>
+=C2=A0 =C2=A0 =C2=A0COMPointer&lt;ICOMAdminCatalog2&gt; pCatalog;<br>
+@@ -287,9 +288,13 @@ STDAPI COMRegister(void)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0chk(QGAProviderFind(QGAProviderCount, (void *)&amp;coun=
+t));<br>
+=C2=A0 =C2=A0 =C2=A0if (count) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 errmsg(E_ABORT, &quot;QGA VSS Provider is alre=
+ady installed&quot;);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 qga_debug_end;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 return E_ABORT;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qga_debug(&quot;QGA VSS Provider is already in=
+stalled. Attempting to unregister first.&quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 unregisterHr =3D COMUnregister();<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (FAILED(unregisterHr)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 errmsg(unregisterHr, &quot;Faile=
+d to unregister existing QGA VSS Provider. Aborting installation.&quot;);<b=
+r>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qga_debug_end;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return E_ABORT; <br></blockquote=
+><div><br></div><div>.git/rebase-apply/patch:29: trailing whitespace.<br>=
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return E_ABORT; <br>warning: 1 li=
+ne adds whitespace errors.</div><div>please fix<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0chk(CoCreateInstance(CLSID_COMAdminCatalog, NULL, CLSCT=
+X_INPROC_SERVER,<br>
+-- <br>
+2.49.0<br>
+<br>
+</blockquote></div></div>
+
+--0000000000000969050637d45adb--
 
 
