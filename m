@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2544ADEA18
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Jun 2025 13:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 024E0ADEA2E
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Jun 2025 13:33:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uRr1D-0005hM-6y; Wed, 18 Jun 2025 07:31:51 -0400
+	id 1uRr2n-0000Qk-VY; Wed, 18 Jun 2025 07:33:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uRr0r-0005Mi-CS
- for qemu-devel@nongnu.org; Wed, 18 Jun 2025 07:31:37 -0400
+ id 1uRr2L-0000IS-5B
+ for qemu-devel@nongnu.org; Wed, 18 Jun 2025 07:33:04 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uRr0m-00037g-1H
- for qemu-devel@nongnu.org; Wed, 18 Jun 2025 07:31:28 -0400
+ id 1uRr2J-0003T4-0N
+ for qemu-devel@nongnu.org; Wed, 18 Jun 2025 07:33:00 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bMhMg2FbPz6K9F4;
- Wed, 18 Jun 2025 19:29:03 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bMhPV2Dshz6K934;
+ Wed, 18 Jun 2025 19:30:38 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 41A0C140371;
- Wed, 18 Jun 2025 19:31:16 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 19678140371;
+ Wed, 18 Jun 2025 19:32:51 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 18 Jun
- 2025 13:31:15 +0200
-Date: Wed, 18 Jun 2025 12:31:14 +0100
+ 2025 13:32:50 +0200
+Date: Wed, 18 Jun 2025 12:32:48 +0100
 To: Arpit Kumar <arpit1.kumar@samsung.com>
 CC: <qemu-devel@nongnu.org>, <gost.dev@samsung.com>,
  <linux-cxl@vger.kernel.org>, <nifan.cxl@gmail.com>, <dave@stgolabs.net>,
  <vishak.g@samsung.com>, <krish.reddy@samsung.com>,
  <a.manzanares@samsung.com>, <alok.rathore@samsung.com>
-Subject: Re: [PATCH 1/3] hw/cxl: Storing physical ports info during enumeration
-Message-ID: <20250618123114.00002b98@huawei.com>
-In-Reply-To: <20250617094625.i2j7ewin7fy2b2nj@test-PowerEdge-R740xd>
+Subject: Re: [PATCH 3/3] hw/cxl: Add Physical Port Control (Opcode 5102h)
+Message-ID: <20250618123248.000004e4@huawei.com>
+In-Reply-To: <20250617101136.z4ityaayhuglrvqu@test-PowerEdge-R740xd>
 References: <20250602135942.2773823-1-arpit1.kumar@samsung.com>
- <CGME20250602140018epcas5p2de38473dfcc0369193dd826c6e0e3fac@epcas5p2.samsung.com>
- <20250602135942.2773823-2-arpit1.kumar@samsung.com>
- <20250610152121.00004dda@huawei.com>
- <20250617094625.i2j7ewin7fy2b2nj@test-PowerEdge-R740xd>
+ <CGME20250602140045epcas5p2445a99b249ba9588af027d59b0c8bd35@epcas5p2.samsung.com>
+ <20250602135942.2773823-4-arpit1.kumar@samsung.com>
+ <20250610154501.0000213b@huawei.com>
+ <20250617101136.z4ityaayhuglrvqu@test-PowerEdge-R740xd>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -77,72 +77,16 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-> >> +#define LINK_STATE_FLAG_PERST_ASSERTED   (1 << 1)
-> >> +#define LINK_STATE_FLAG_PRSNT            (1 << 2)
-> >> +#define LINK_STATE_FLAG_POWER_OFF        (1 << 3)
-> >> +
-> >> +/* physical port control info - CXL r3.2 table 7-19 */
-> >> +typedef enum {
-> >> +    PORT_DISABLED = 0,
-> >> +    BIND_IN_PROGRESS = 1,
-> >> +    UNBIND_IN_PROGRESS = 2,
-> >> +    DSP = 3,
-> >> +    USP = 4,
-> >> +    FABRIC_PORT = 5,
-> >> +    INVALID_PORT_ID = 15
-> >> +} current_port_config_state;  
+> >> +        /* Assert PERST involves physical port to be in  
+> >wrap at 80 chars.  
+> okay
+> >> +         * hold reset phase for minimum 100ms. No other calls
+> >> +         * are entertained until Deassert PERST command.
+> >> +         * https://patchwork.ozlabs.org/project/linux-pci/patch/20190523194409.17718-1-niklas.cassel@linaro.org/#2178369  
 > >
-> >These aren't used as types really but more as defines.
-> >Hence I'd be tempted to make them defines. Also provide
-> >defines for the masks.
-> >
-> >Namespace the defines so it is obvious which field
-> >they are in.
+> >Blocking other commands is fine but we should lock up emulation of other stuff
+> >in the system and I think you currently do.
 > >  
-> Will the below changes be the right way to proceed?
-> #define CXL_PORT_CONFIG_STATE_DISABLED           0x0
-> #define CXL_PORT_CONFIG_STATE_BIND_IN_PROGRESS   0x1 etc.
-
-Yes
-
-
-...
-
-> >For similar things we do have firmware update in there which
-> >is a mixture of device side stuff and CCI specific handling.
-> >That might ideally be split up.  Obviously not something for
-> >this patch, but maybe we can avoid making CCI more bloated?
-> >
-> >To me it seems reasonable to store this in the port and set
-> >it up whether or not the cci is connected.
-> >  
-> got it, will try the implementation accordingly. It will be helpful if could share some
-> reference on handling the same.
-
-+    /*physical ports information */
-+    struct phy_port pports;
-+
-
-Move this stuff to the CXLUpstreamPort.
-Query the data to fill it in will need to be late enough that
-everything is there to query. cxl_usp_reset() might work similar to how
-we fill in link registers etc there. 
-
-Then when you handle any of the CCI calls, use CXL_USP(cci->d) to
-get to that USP structure.  Check that you have the right type if necessary
-first though. 
-
-Jonathan
-
-
-
-
-> >> +
-> >>      /* background command handling (times in ms) */
-> >>      struct {
-> >>          uint16_t opcode;  
-> >  
-> 
-
+> got it. I think you meant 'we should *not lock up..'
+Absolutely!
 
