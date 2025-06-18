@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6ECADFCE4
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 07:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 854D4ADFCD9
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 07:22:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uS7ig-0003HN-PQ; Thu, 19 Jun 2025 01:21:50 -0400
+	id 1uS7ih-0003Hk-F8; Thu, 19 Jun 2025 01:21:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1uS1r7-0006uz-AP
+ id 1uS1r7-0006wU-PD
  for qemu-devel@nongnu.org; Wed, 18 Jun 2025 19:06:09 -0400
-Received: from mail-io1-xd31.google.com ([2607:f8b0:4864:20::d31])
+Received: from mail-io1-xd2e.google.com ([2607:f8b0:4864:20::d2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1uS1r5-00066G-7J
+ id 1uS1r6-00066d-7j
  for qemu-devel@nongnu.org; Wed, 18 Jun 2025 19:06:09 -0400
-Received: by mail-io1-xd31.google.com with SMTP id
- ca18e2360f4ac-86a464849c2so5503839f.1
- for <qemu-devel@nongnu.org>; Wed, 18 Jun 2025 16:06:06 -0700 (PDT)
+Received: by mail-io1-xd2e.google.com with SMTP id
+ ca18e2360f4ac-87611ac3456so4986539f.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Jun 2025 16:06:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1750287966; x=1750892766; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6SLCzEWpSBxp31R4JKsPKGH7xuaYhB4PdeuTSnMKsJc=;
- b=Zs30ZYLJYxvEcs0vkXluDXxqtDLfvXCJaJVyIQc6QYYXjyCfx3jsrWk3dQ0tXgxKZv
- jnC4wC4n8qpFh9qBjZBSR5T4rA+20EHUyQggcz/MW0a+rhDeX1MMqG7cUZViZb0QQPRf
- hFVr6bWtv50T3Tc16W3/zkgvXGuNdkzQkJNyBUozz1VvRKs2CFhZvNzmLe8F4MVG0zYp
- 0QlyDn4Fc7eAFIIoz2JrHIn80sjTJ3OqJtzsp7cjBfHN0LIBh41kwKIIYZzcX5x3Bg1R
- VeaMgH3k/L/0l7auo9i83UhNPJ0qV2TNQVB1W7WA8YNISM/Q7iVRGLXYBL9JiWHY/TeD
- 90Rg==
+ bh=AtSSDzCzP4vwLmL/8RerFdCo8WTmKn978LGUT6OIuTY=;
+ b=aHDcVB6bH1sh5X8Z8SYCO2/kSkti07IsunM+8ma6FFj6Zpv12IU/7I+MhDUYYJsjw6
+ SdoC+T0HY0bbkGUMjPXIs1+GpAtaF6OHlEcPCx3JpQNGXghM9+P6Oc727bGj9E8sz793
+ L+Rv0u4KsmqilXQL499YpVe5uLk5U9r+/vinyW8eTbFRHNqz5cotMAg4sAB2KWL5FAV8
+ 19B+WBcrrRHOOa7eNANYesyjubZB2/7+1mJaCeaAZe4ckhJNCAhccWfi/ExApfcaN7zJ
+ v/AJBSJbOj1YSC5bL01h7x5wVZtmyGXFu6/XIwjnOgwJ/NM2oUiDfNaSC6+rKU5/3uXu
+ wEFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750287966; x=1750892766;
+ d=1e100.net; s=20230601; t=1750287967; x=1750892767;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6SLCzEWpSBxp31R4JKsPKGH7xuaYhB4PdeuTSnMKsJc=;
- b=u0JSQu5Vwo172JjqiXY0ak6HfdmhPpNFBcPtlwwz7V5jiHD3EXK1X+I1sTQ16ZD3nH
- pYqu167sTQEkXUtRYWLpI30mXK/oiImGLSIX7frweL2CkhFtFvgmWunlWoCOzZumEpco
- BTADKRDR1y4TGuXgyi0IOK0XWQ5n18/vG47y9FPY7GhPmAQqi/s40bxRQE3nqYULQXIE
- PJGAafvI1EbXF7FOQHuC3qZtVIy/Pr1DMdzxqC0HoEWKmRSKMTpNV+MslsY9RjoLQo8V
- 3nsMDfkqjF0S1e/fq6e5J+pGNsgRHc2m+CgTW60HcdtFMEXDQFGzCZ2daFKk9M/c+00m
- QzSQ==
-X-Gm-Message-State: AOJu0Yxx4SydOdJ1VLVpOUGcbTVlnTfy+1Fr8gTKtWvZcUhD7Jsndzch
- 1BAAa45b/TpIaHnT9ZSTtKflppyWPE2xp/2zcLvkZ9FM1d/JLlb2xlY7EzNfSvfVk5M=
-X-Gm-Gg: ASbGncup6nCiE5v7jmzEPFO4XxtQlfU8kgsGx42a7THdMETzVSwDSa3L/KdBmveRRfK
- 0BwLrSeov7eeNztrI5oyGY7fGfKg0X0zDcHhNprp468ag+OwxcGPbvvy2aKD04sf9kAJ4ATaTvH
- jyIbg2mVR53ZgxFKpqYtdZamGY9OdFOpcuVEY4sbP40HcJ+dlO2rDRvUT7cvVCdHEiQtoWMCjOK
- aFVqIiDSdcMfgGzxlau/YsUbyetv29N+EX2L8PCkpd3YG/ZsFi5SwvlBTwlJ8bu84zyyeYqCMsN
- UpjSEXvAdar0orYQGbv18IWfip2SRuTvORqQ8q4asDB6fIzmsp//l7VS5NObqagmN3SiQu7CJuK
- zG9gS
-X-Google-Smtp-Source: AGHT+IEeVsRIAY6b+w4EK8/rSyU15l8sm4ydY8fPzNTFZA/AQ/0mN/l4PcBkNYvdEeJUSbPx/TTTlA==
-X-Received: by 2002:a05:6602:a108:b0:85e:d0ca:b635 with SMTP id
- ca18e2360f4ac-8761b670e64mr114269539f.2.1750287965686; 
- Wed, 18 Jun 2025 16:06:05 -0700 (PDT)
+ bh=AtSSDzCzP4vwLmL/8RerFdCo8WTmKn978LGUT6OIuTY=;
+ b=vcHeeLAexD6sxaofcmDQzG3mzFMpyWKJWjP1JeP5trEkR42ilWfQQYIgZgGw6OiNfd
+ H14qXJA9YHh25VRXFWEWy3asLdh1Wcwjb+uBlII8isEyDTMVpNfwDKdISXSpevXb1F/a
+ Ra1UTUFY4zE8haZhr5CNOIBIyNZ+c/g6dPyUzaxAdzdGAHnwcRzklE3mOviBhjnJ/DvU
+ xJ74QhBhsWo5d3lgCgSct36Q9resZgiaIVT1UdPVakg9Dzw08JaWefQHtMoI6eF2KTY3
+ XrZpbRpPoFj17IK99T9mUXhClsp+by1xc+zO1boFvgmfO4/8Ux9gdfRu6UiSVpQGecxv
+ inwA==
+X-Gm-Message-State: AOJu0Yz15qKvQmtb9Ft+MboUOxGlHHd10/hwh2BmyNCeDp0THbcltI8+
+ k2PMTFcalr9MFAd5cLIy8mm9IwjkXz1d2GcOxEhv8SNH6ynJu5hOdK+hXlPtibC8Uyo=
+X-Gm-Gg: ASbGncsXS1cyYbG2wujVntBrLKIqeJTRuGTaLCFz641jsK2YyEuDiZs0JeXWXdSFnHL
+ +KilWoZrAzP5EAOVK2wtKwSSuQcnroy8W1hwkdMJi6RZksV5vMW8m/KqLfvXAd3VSS1g/ZBV0Du
+ buXdplYCvgOav0pASLjU3IehAvhswVsHT+feQdEyuvEIkK+6hQ/aB/1AtBffxSmFMPtf9pdvusC
+ gqzwDlvGM+jY1AwhG72ouGDr5FPpB1zft/8B8p6tYgaFvAR2HfHfvV/peuCVfOqlhpEBobIy2xd
+ 2Z0sFv3BJpF422U9yIEL5cCx/47Mdk+T6idbkbkrmqScTbQZGgLHsFKm/NnxNavSTUOA2ZY1l5y
+ q16rl
+X-Google-Smtp-Source: AGHT+IHo0yEFki1gRFvQ5EKSSjYZrBmEJmnImnyeBI8P4L9ASnGvDAlflORZNPpLSvuH+5Rg5hl76Q==
+X-Received: by 2002:a05:6602:3d3:b0:86d:60:702f with SMTP id
+ ca18e2360f4ac-875dec74af9mr2171582439f.0.1750287966604; 
+ Wed, 18 Jun 2025 16:06:06 -0700 (PDT)
 Received: from user-jcksn.hsd1.mi.comcast.net
  ([2601:401:101:1070:b57:773f:14d7:807b])
  by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-50149b9df11sm3036915173.54.2025.06.18.16.06.04
+ 8926c6da1cb9f-50149b9df11sm3036915173.54.2025.06.18.16.06.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Jun 2025 16:06:05 -0700 (PDT)
+ Wed, 18 Jun 2025 16:06:06 -0700 (PDT)
 From: Jackson Donaldson <jackson88044@gmail.com>
 X-Google-Original-From: Jackson Donaldson <jcksn@duck.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 08/11] MAX78000: TRNG Implementation
-Date: Wed, 18 Jun 2025 19:05:46 -0400
-Message-Id: <20250618230549.3351152-9-jcksn@duck.com>
+Subject: [PATCH v2 09/11] MAX78000: Add TRNG to SOC
+Date: Wed, 18 Jun 2025 19:05:47 -0400
+Message-Id: <20250618230549.3351152-10-jcksn@duck.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250618230549.3351152-1-jcksn@duck.com>
 References: <20250618230549.3351152-1-jcksn@duck.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d31;
- envelope-from=jackson88044@gmail.com; helo=mail-io1-xd31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2e;
+ envelope-from=jackson88044@gmail.com; helo=mail-io1-xd2e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -101,277 +101,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit implements the True Random Number
-Generator for the MAX78000
+This commit adds TRNG to max78000_soc
 
-Signed-off-by: Jackson Donaldson <jcksn@duck.com>
+Signed-off-by: Jackson Donaldson
 ---
- hw/arm/Kconfig                  |   1 +
- hw/misc/Kconfig                 |   3 +
- hw/misc/max78000_gcr.c          |   6 ++
- hw/misc/max78000_trng.c         | 127 ++++++++++++++++++++++++++++++++
- hw/misc/meson.build             |   1 +
- include/hw/misc/max78000_gcr.h  |   1 +
- include/hw/misc/max78000_trng.h |  35 +++++++++
- 7 files changed, 174 insertions(+)
- create mode 100644 hw/misc/max78000_trng.c
- create mode 100644 include/hw/misc/max78000_trng.h
+ hw/arm/max78000_soc.c         | 10 +++++++++-
+ include/hw/arm/max78000_soc.h |  2 ++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 41bb64458f..fcac62be6f 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -369,6 +369,7 @@ config MAX78000_SOC
-     select MAX78000_ICC
-     select MAX78000_UART
-     select MAX78000_GCR
-+    select MAX78000_TRNG
+diff --git a/hw/arm/max78000_soc.c b/hw/arm/max78000_soc.c
+index 1a36bba2fc..09667b578c 100644
+--- a/hw/arm/max78000_soc.c
++++ b/hw/arm/max78000_soc.c
+@@ -41,6 +41,8 @@ static void max78000_soc_initfn(Object *obj)
+                                 TYPE_MAX78000_UART);
+     }
  
- config RASPI
-     bool
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index fde2266b8f..dd6a6e54da 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -53,6 +53,9 @@ config MAX78000_GCR
- config MAX78000_ICC
-     bool
- 
-+config MAX78000_TRNG
-+    bool
++    object_initialize_child(obj, "trng", &s->trng, TYPE_MAX78000_TRNG);
 +
- config MOS6522
-     bool
+     s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
+ }
  
-diff --git a/hw/misc/max78000_gcr.c b/hw/misc/max78000_gcr.c
-index 8c282f3916..5916ee615a 100644
---- a/hw/misc/max78000_gcr.c
-+++ b/hw/misc/max78000_gcr.c
+@@ -124,6 +126,13 @@ static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
+                                                        max78000_uart_irq[i]));
+     }
+ 
++    dev = DEVICE(&s->trng);
++    sysbus_realize(SYS_BUS_DEVICE(dev), errp);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x4004d000);
++    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(armv7m, 4));
++    dev->id = g_strdup("trng");
++    object_property_set_link(OBJECT(gcrdev), "trng", OBJECT(dev), &err);
++
+     dev = DEVICE(&s->gcr);
+     sysbus_realize(SYS_BUS_DEVICE(dev), errp);
+     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x40000000);
+@@ -168,7 +177,6 @@ static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
+     create_unimplemented_device("semaphore",            0x4003e000, 0x1000);
+ 
+     create_unimplemented_device("spi1",                 0x40046000, 0x2000);
+-    create_unimplemented_device("trng",                 0x4004d000, 0x1000);
+     create_unimplemented_device("i2s",                  0x40060000, 0x1000);
+     create_unimplemented_device("lowPowerControl",      0x40080000, 0x400);
+     create_unimplemented_device("gpio2",                0x40080400, 0x200);
+diff --git a/include/hw/arm/max78000_soc.h b/include/hw/arm/max78000_soc.h
+index 919aca0855..528598cfcb 100644
+--- a/include/hw/arm/max78000_soc.h
++++ b/include/hw/arm/max78000_soc.h
 @@ -14,6 +14,7 @@
- #include "migration/vmstate.h"
- #include "hw/qdev-properties.h"
+ #include "hw/misc/max78000_gcr.h"
+ #include "hw/misc/max78000_icc.h"
  #include "hw/char/max78000_uart.h"
 +#include "hw/misc/max78000_trng.h"
- #include "hw/misc/max78000_gcr.h"
+ #include "qom/object.h"
  
+ #define TYPE_MAX78000_SOC "max78000-soc"
+@@ -39,6 +40,7 @@ struct MAX78000State {
+     Max78000GcrState gcr;
+     Max78000IccState icc[MAX78000_NUM_ICC];
+     Max78000UartState uart[MAX78000_NUM_UART];
++    Max78000TrngState trng;
  
-@@ -157,6 +158,9 @@ static void max78000_gcr_write(void *opaque, hwaddr addr,
-         if (val & UART0_RESET) {
-             device_cold_reset(s->uart0);
-         }
-+        if (val & TRNG_RESET) {
-+            device_cold_reset(s->trng);
-+        }
-         /* TODO: As other devices are implemented, add them here */
-         break;
- 
-@@ -257,6 +261,8 @@ static const Property max78000_gcr_properties[] = {
-                      TYPE_MAX78000_UART, DeviceState*),
-     DEFINE_PROP_LINK("uart2", Max78000GcrState, uart2,
-                      TYPE_MAX78000_UART, DeviceState*),
-+    DEFINE_PROP_LINK("trng", Max78000GcrState, trng,
-+                        TYPE_MAX78000_TRNG, DeviceState*),
+     Clock *sysclk;
  };
- 
- static const MemoryRegionOps max78000_gcr_ops = {
-diff --git a/hw/misc/max78000_trng.c b/hw/misc/max78000_trng.c
-new file mode 100644
-index 0000000000..f406681730
---- /dev/null
-+++ b/hw/misc/max78000_trng.c
-@@ -0,0 +1,127 @@
-+/*
-+ * MAX78000 True Random Number Generator
-+ *
-+ * Copyright (c) 2025 Jackson Donaldson <jcksn@duck.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+#include "trace.h"
-+#include "hw/irq.h"
-+#include "migration/vmstate.h"
-+#include "hw/misc/max78000_trng.h"
-+#include "qemu/guest-random.h"
-+
-+static uint64_t max78000_trng_read(void *opaque, hwaddr addr,
-+                                    unsigned int size)
-+{
-+    uint32_t data;
-+
-+    Max78000TrngState *s = opaque;
-+    switch (addr) {
-+    case CTRL:
-+        return s->ctrl;
-+
-+    case STATUS:
-+        return 1;
-+
-+    case DATA:
-+        qemu_guest_getrandom_nofail(&data, sizeof(data));
-+        return data;
-+
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"
-+            HWADDR_PRIx "\n", __func__, addr);
-+        break;
-+    }
-+    return 0;
-+}
-+
-+static void max78000_trng_write(void *opaque, hwaddr addr,
-+                    uint64_t val64, unsigned int size)
-+{
-+    Max78000TrngState *s = opaque;
-+    uint32_t val = val64;
-+    switch (addr) {
-+    case CTRL:
-+        /* TODO: implement AES keygen */
-+        s->ctrl = val;
-+        if (val & RND_IE) {
-+            qemu_set_irq(s->irq, 1);
-+        } else{
-+            qemu_set_irq(s->irq, 0);
-+        }
-+        break;
-+
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"
-+            HWADDR_PRIx "\n", __func__, addr);
-+        break;
-+    }
-+}
-+
-+static void max78000_trng_reset_hold(Object *obj, ResetType type)
-+{
-+    Max78000TrngState *s = MAX78000_TRNG(obj);
-+    s->ctrl = 0;
-+    s->status = 0;
-+    s->data = 0;
-+}
-+
-+static const MemoryRegionOps max78000_trng_ops = {
-+    .read = max78000_trng_read,
-+    .write = max78000_trng_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 4,
-+};
-+
-+static const VMStateDescription max78000_trng_vmstate = {
-+    .name = TYPE_MAX78000_TRNG,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32(ctrl, Max78000TrngState),
-+        VMSTATE_UINT32(status, Max78000TrngState),
-+        VMSTATE_UINT32(data, Max78000TrngState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void max78000_trng_init(Object *obj)
-+{
-+    Max78000TrngState *s = MAX78000_TRNG(obj);
-+    sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq);
-+
-+    memory_region_init_io(&s->mmio, obj, &max78000_trng_ops, s,
-+                        TYPE_MAX78000_TRNG, 0x1000);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+
-+}
-+
-+static void max78000_trng_class_init(ObjectClass *klass, const void *data)
-+{
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    rc->phases.hold = max78000_trng_reset_hold;
-+    dc->vmsd = &max78000_trng_vmstate;
-+
-+}
-+
-+static const TypeInfo max78000_trng_info = {
-+    .name          = TYPE_MAX78000_TRNG,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(Max78000TrngState),
-+    .instance_init = max78000_trng_init,
-+    .class_init    = max78000_trng_class_init,
-+};
-+
-+static void max78000_trng_register_types(void)
-+{
-+    type_register_static(&max78000_trng_info);
-+}
-+
-+type_init(max78000_trng_register_types)
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 283d06dad4..c7c57d924b 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -72,6 +72,7 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files(
- ))
- system_ss.add(when: 'CONFIG_MAX78000_GCR', if_true: files('max78000_gcr.c'))
- system_ss.add(when: 'CONFIG_MAX78000_ICC', if_true: files('max78000_icc.c'))
-+system_ss.add(when: 'CONFIG_MAX78000_TRNG', if_true: files('max78000_trng.c'))
- system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files(
-   'npcm_clk.c',
-   'npcm_gcr.c',
-diff --git a/include/hw/misc/max78000_gcr.h b/include/hw/misc/max78000_gcr.h
-index f04c8a3ee7..23ddf0885b 100644
---- a/include/hw/misc/max78000_gcr.h
-+++ b/include/hw/misc/max78000_gcr.h
-@@ -123,6 +123,7 @@ struct Max78000GcrState {
-     DeviceState *uart0;
-     DeviceState *uart1;
-     DeviceState *uart2;
-+    DeviceState *trng;
- 
- };
- 
-diff --git a/include/hw/misc/max78000_trng.h b/include/hw/misc/max78000_trng.h
-new file mode 100644
-index 0000000000..c5a8129b6a
---- /dev/null
-+++ b/include/hw/misc/max78000_trng.h
-@@ -0,0 +1,35 @@
-+/*
-+ * MAX78000 True Random Number Generator
-+ *
-+ * Copyright (c) 2025 Jackson Donaldson <jcksn@duck.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef HW_MAX78000_TRNG_H
-+#define HW_MAX78000_TRNG_H
-+
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+
-+#define TYPE_MAX78000_TRNG "max78000-trng"
-+OBJECT_DECLARE_SIMPLE_TYPE(Max78000TrngState, MAX78000_TRNG)
-+
-+#define CTRL 0
-+#define STATUS 4
-+#define DATA 8
-+
-+#define RND_IE (1 << 1)
-+
-+struct Max78000TrngState {
-+    SysBusDevice parent_obj;
-+
-+    MemoryRegion mmio;
-+
-+    uint32_t ctrl;
-+    uint32_t status;
-+    uint32_t data;
-+
-+    qemu_irq irq;
-+};
-+
-+#endif
 -- 
 2.34.1
 
