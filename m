@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C41ADFDDE
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 08:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A8AADFDDB
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 08:42:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uS8y5-0002Xb-95; Thu, 19 Jun 2025 02:41:49 -0400
+	id 1uS8y5-0002YV-Ee; Thu, 19 Jun 2025 02:41:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uS8xv-0002WQ-AX; Thu, 19 Jun 2025 02:41:40 -0400
+ id 1uS8xz-0002Xa-AH; Thu, 19 Jun 2025 02:41:46 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uS8xs-0001s1-TQ; Thu, 19 Jun 2025 02:41:38 -0400
+ id 1uS8xx-0001s1-3q; Thu, 19 Jun 2025 02:41:42 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 19 Jun
- 2025 14:41:16 +0800
+ 2025 14:41:17 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Thu, 19 Jun 2025 14:41:16 +0800
+ Transport; Thu, 19 Jun 2025 14:41:17 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [RFC v5 3/4] hw/arm: Integrate ASPEED OTP memory support into AST10x0
- and AST2600 SoCs
-Date: Thu, 19 Jun 2025 14:41:12 +0800
-Message-ID: <20250619064115.4182202-4-kane_chen@aspeedtech.com>
+Subject: [RFC v5 4/4] tests/functional: Add integration tests for ASPEED OTP
+ memory model
+Date: Thu, 19 Jun 2025 14:41:13 +0800
+Message-ID: <20250619064115.4182202-5-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250619064115.4182202-1-kane_chen@aspeedtech.com>
 References: <20250619064115.4182202-1-kane_chen@aspeedtech.com>
@@ -67,168 +67,128 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-This patch exposes a new "otpmem" machine parameter to allow users to
-attach an OTP memory device to AST1030 and AST2600-based platforms.
+Introduce a functional test suite to validate the ASPEED OTP memory
+device integration under different machine configurations.
 
-The value of this parameter is passed as a QOM alias to the Secure Boot
-Controller (SBC), enabling binding to an aspeed.otpmem device created
-via -device. This allows emulation of secure boot flows that rely on
-fuse-based configuration stored in OTP memory.
+The following cases are covered:
+- AST2600 with blockdev + device + machine parameter (full binding)
+- AST2600 fallback with no machine parameter
+- AST2600 with only blockdev + device (no machine param)
+- AST2600 with only machine parameter (no backend/device)
+- AST1030 fallback test with Zephyr-based image
 
-The has_otpmem attribute is enabled in the SBC subclasses for AST10x0
-and AST2600 to control the presence of OTP support per SoC type.
-
-Users can preload a custom OTP memory image for boot-time behavior.
-For example:
-
-```bash
-for i in $(seq 1 2048); do
-  printf '\x00\x00\x00\x00\xff\xff\xff\xff'
-done > otpmem.img
-```
-
-Users can test OTP memory integration using the following command,
-which loads a file-backed OTP image into the emulated SoC:
-```bash
-qemu-system-arm -machine ast2600-evb,otpmem=otpmem-drive \
-  -blockdev driver=file,filename=otpmem.img,node-name=otpmem \
-  -device aspeed.otpmem,drive=otpmem,id=otpmem-drive \
-  ...
-```
+The tests ensure that the OTP model behaves correctly across boot-time
+binding variations and fallback paths, and that firmware boot is
+successful under each condition.
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 ---
- hw/arm/aspeed.c              | 20 ++++++++++++++++++++
- hw/arm/aspeed_ast10x0.c      |  2 +-
- hw/arm/aspeed_ast2600.c      |  2 +-
- hw/misc/aspeed_sbc.c         | 18 ++++++++++++++++++
- include/hw/misc/aspeed_sbc.h |  1 +
- 5 files changed, 41 insertions(+), 2 deletions(-)
+ tests/functional/meson.build           |  1 +
+ tests/functional/test_aspeed_otpmem.py | 82 ++++++++++++++++++++++++++
+ 2 files changed, 83 insertions(+)
+ create mode 100644 tests/functional/test_aspeed_otpmem.py
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index d0b333646e..734416c217 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -47,6 +47,7 @@ struct AspeedMachineState {
-     uint32_t uart_chosen;
-     char *fmc_model;
-     char *spi_model;
-+    char *otpmem;
-     uint32_t hw_strap1;
- };
- 
-@@ -1199,6 +1200,21 @@ static void aspeed_set_bmc_console(Object *obj, const char *value, Error **errp)
-     bmc->uart_chosen = val + ASPEED_DEV_UART0;
- }
- 
-+static char *aspeed_get_otpmem(Object *obj, Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index e9f19d54a2..ce999eeab1 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -41,6 +41,7 @@ test_timeouts = {
+   'arm_replay' : 240,
+   'arm_tuxrun' : 240,
+   'arm_sx1' : 360,
++  'aspeed_otpmem': 1200,
+   'intel_iommu': 300,
+   'mips_malta' : 480,
+   'mipsel_malta' : 420,
+diff --git a/tests/functional/test_aspeed_otpmem.py b/tests/functional/test_aspeed_otpmem.py
+new file mode 100644
+index 0000000000..67d2a7ecf6
+--- /dev/null
++++ b/tests/functional/test_aspeed_otpmem.py
+@@ -0,0 +1,82 @@
 +
-+    return g_strdup(bmc->otpmem);
-+}
++import os
++import time
++import tempfile
++import subprocess
 +
-+static void aspeed_set_otpmem(Object *obj, const char *value, Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
++from qemu_test import LinuxKernelTest, Asset
++from aspeed import AspeedTest
++from qemu_test import exec_command_and_wait_for_pattern, skipIfMissingCommands
 +
-+    g_free(bmc->otpmem);
-+    bmc->otpmem = g_strdup(value);
-+}
++class AspeedOtpMemoryTest(AspeedTest):
++    # AST2600 SDK image
++    ASSET_SDK_V906_AST2600 = Asset(
++        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2600-default-obmc.tar.gz',
++        '768d76e247896ad78c154b9cff4f766da2ce65f217d620b286a4a03a8a4f68f5')
 +
- static void aspeed_machine_class_props_init(ObjectClass *oc)
- {
-     object_class_property_add_bool(oc, "execute-in-place",
-@@ -1220,6 +1236,10 @@ static void aspeed_machine_class_props_init(ObjectClass *oc)
-                                    aspeed_set_spi_model);
-     object_class_property_set_description(oc, "spi-model",
-                                           "Change the SPI Flash model");
-+    object_class_property_add_str(oc, "otpmem", aspeed_get_otpmem,
-+                                   aspeed_set_otpmem);
-+    object_class_property_set_description(oc, "otpmem",
-+                                          "Set OTP Memory Drive");
- }
- 
- static void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
-diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
-index e6e1ee63c1..c446e70b24 100644
---- a/hw/arm/aspeed_ast10x0.c
-+++ b/hw/arm/aspeed_ast10x0.c
-@@ -154,7 +154,7 @@ static void aspeed_soc_ast1030_init(Object *obj)
- 
-     object_initialize_child(obj, "peci", &s->peci, TYPE_ASPEED_PECI);
- 
--    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_SBC);
-+    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_AST10X0_SBC);
- 
-     for (i = 0; i < sc->wdts_num; i++) {
-         snprintf(typename, sizeof(typename), "aspeed.wdt-%s", socname);
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index d12707f0ab..59ffd41a4a 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -261,7 +261,7 @@ static void aspeed_soc_ast2600_init(Object *obj)
- 
-     object_initialize_child(obj, "i3c", &s->i3c, TYPE_ASPEED_I3C);
- 
--    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_SBC);
-+    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_AST2600_SBC);
- 
-     object_initialize_child(obj, "iomem", &s->iomem, TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "video", &s->video, TYPE_UNIMPLEMENTED_DEVICE);
-diff --git a/hw/misc/aspeed_sbc.c b/hw/misc/aspeed_sbc.c
-index 8e192e9496..38f6d2745e 100644
---- a/hw/misc/aspeed_sbc.c
-+++ b/hw/misc/aspeed_sbc.c
-@@ -323,8 +323,10 @@ static const TypeInfo aspeed_sbc_info = {
- static void aspeed_ast2600_sbc_class_init(ObjectClass *klass, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedSBCClass *sc = ASPEED_SBC_CLASS(klass);
- 
-     dc->desc = "AST2600 Secure Boot Controller";
-+    sc->has_otpmem = true;
- }
- 
- static const TypeInfo aspeed_ast2600_sbc_info = {
-@@ -333,9 +335,25 @@ static const TypeInfo aspeed_ast2600_sbc_info = {
-     .class_init = aspeed_ast2600_sbc_class_init,
- };
- 
-+static void aspeed_ast10x0_sbc_class_init(ObjectClass *klass, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedSBCClass *sc = ASPEED_SBC_CLASS(klass);
++    # AST1030 Zephyr image
++    ASSET_ZEPHYR_3_00 = Asset(
++        ('https://github.com/AspeedTech-BMC'
++         '/zephyr/releases/download/v00.03.00/ast1030-evb-demo.zip'),
++        '37fe3ecd4a1b9d620971a15b96492a81093435396eeac69b6f3e384262ff555f')
++    def generate_otpmem_image(self):
++        path = self.scratch_file("otpmem.img")
++        pattern = b'\x00\x00\x00\x00\xff\xff\xff\xff' * (16 * 1024 // 8)
++        with open(path, "wb") as f:
++            f.write(pattern)
++        return path
 +
-+    dc->desc = "AST10X0 Secure Boot Controller";
-+    sc->has_otpmem = true;
-+}
++    def test_ast2600_otp_fallback(self):
++        image_path = self.archive_extract(self.ASSET_SDK_V906_AST2600)
++        bmc_image = self.scratch_file("ast2600-default", "image-bmc")
++        self.vm.set_machine("ast2600-evb")
++        self.vm.set_console()
++        self.do_test_arm_aspeed_sdk_start(
++            self.scratch_file("ast2600-default", "image-bmc"))
++        self.wait_for_console_pattern('ast2600-default login:')
 +
-+static const TypeInfo aspeed_ast10x0_sbc_info = {
-+    .name = TYPE_ASPEED_AST10X0_SBC,
-+    .parent = TYPE_ASPEED_SBC,
-+    .class_init = aspeed_ast10x0_sbc_class_init,
-+};
++    def test_ast2600_otp_blockdev_device(self):
++        image_path = self.archive_extract(self.ASSET_SDK_V906_AST2600)
++        otp_img = self.generate_otpmem_image()
++        self.vm.set_console()
++        self.vm.add_args(
++            "-blockdev", f"node-name=otpmem,driver=file,filename={otp_img}",
++            "-device", "aspeed.otpmem,drive=otpmem,id=otpmem-drive",
++            "-machine", "ast2600-evb,otpmem=otpmem-drive"
++        )
++        self.do_test_arm_aspeed_sdk_start(self.scratch_file("ast2600-default", "image-bmc"))
++        self.wait_for_console_pattern("ast2600-default login:")
 +
- static void aspeed_sbc_register_types(void)
- {
-     type_register_static(&aspeed_ast2600_sbc_info);
-+    type_register_static(&aspeed_ast10x0_sbc_info);
-     type_register_static(&aspeed_sbc_info);
- }
- 
-diff --git a/include/hw/misc/aspeed_sbc.h b/include/hw/misc/aspeed_sbc.h
-index 858e82861b..34ee949fad 100644
---- a/include/hw/misc/aspeed_sbc.h
-+++ b/include/hw/misc/aspeed_sbc.h
-@@ -14,6 +14,7 @@
- 
- #define TYPE_ASPEED_SBC "aspeed.sbc"
- #define TYPE_ASPEED_AST2600_SBC TYPE_ASPEED_SBC "-ast2600"
-+#define TYPE_ASPEED_AST10X0_SBC TYPE_ASPEED_SBC "-ast10X0"
- OBJECT_DECLARE_TYPE(AspeedSBCState, AspeedSBCClass, ASPEED_SBC)
- 
- #define ASPEED_SBC_NR_REGS (0x93c >> 2)
++    def test_ast2600_otp_only_blockdev(self):
++        image_path = self.archive_extract(self.ASSET_SDK_V906_AST2600)
++        otp_img = self.generate_otpmem_image()
++        self.vm.set_machine("ast2600-evb")
++        self.vm.set_console()
++        self.vm.add_args(
++            "-blockdev", f"node-name=otpmem,driver=file,filename={otp_img}",
++            "-device", "aspeed.otpmem,drive=otpmem,id=otpmem-drive",
++        )
++        self.do_test_arm_aspeed_sdk_start(self.scratch_file("ast2600-default", "image-bmc"))
++        self.wait_for_console_pattern("ast2600-default login:")
++
++    def test_ast2600_otp_only_machine_param(self):
++        image_path = self.archive_extract(self.ASSET_SDK_V906_AST2600)
++        self.vm.set_console()
++        self.vm.add_args(
++            "-machine", "ast2600-evb,otpmem=otpmem-drive"
++        )
++        self.do_test_arm_aspeed_sdk_start(self.scratch_file("ast2600-default", "image-bmc"))
++        self.wait_for_console_pattern("ast2600-default login:")
++
++    def test_ast1030_otp_fallback(self):
++        kernel_name = "ast1030-evb-demo/zephyr.elf"
++        kernel_file = self.archive_extract(self.ASSET_ZEPHYR_3_00, member=kernel_name)
++
++        self.vm.set_machine("ast1030-evb")
++        self.vm.set_console()
++        self.vm.add_args("-kernel", kernel_file)
++        self.vm.launch()
++        self.wait_for_console_pattern("Booting Zephyr OS")
++
++if __name__ == '__main__':
++    AspeedTest.main()
+\ No newline at end of file
 -- 
 2.43.0
 
