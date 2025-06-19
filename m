@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157C9ADFB92
+	by mail.lfdr.de (Postfix) with ESMTPS id 253C7ADFB93
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 05:04:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uS5YR-000743-FA; Wed, 18 Jun 2025 23:03:07 -0400
+	id 1uS5YR-000747-Q9; Wed, 18 Jun 2025 23:03:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uS5YM-000734-5g
- for qemu-devel@nongnu.org; Wed, 18 Jun 2025 23:03:02 -0400
+ id 1uS5YP-00073f-Cy
+ for qemu-devel@nongnu.org; Wed, 18 Jun 2025 23:03:06 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uS5YJ-0006AQ-Ke
- for qemu-devel@nongnu.org; Wed, 18 Jun 2025 23:03:01 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uS5YN-0006B3-AN
+ for qemu-devel@nongnu.org; Wed, 18 Jun 2025 23:03:05 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxQK3dfVNouY4ZAQ--.41523S3;
- Thu, 19 Jun 2025 11:02:53 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Bx63HffVNovY4ZAQ--.58551S3;
+ Thu, 19 Jun 2025 11:02:55 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMCxrhu7fVNoIXkgAQ--.48014S6;
- Thu, 19 Jun 2025 11:02:52 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMCxrhu7fVNoIXkgAQ--.48014S7;
+ Thu, 19 Jun 2025 11:02:53 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: maobibo@loongson.cn
 Cc: qemu-devel@nongnu.org,
 	philmd@linaro.org,
 	jiaxun.yang@flygoat.com
-Subject: [PATCH v2 4/9] target/loongarch: add msg interrupt CSR registers
-Date: Thu, 19 Jun 2025 10:39:39 +0800
-Message-Id: <20250619023944.1278716-5-gaosong@loongson.cn>
+Subject: [PATCH v2 5/9] hw/loongarch: AVEC controller add a MemoryRegion
+Date: Thu, 19 Jun 2025 10:39:40 +0800
+Message-Id: <20250619023944.1278716-6-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250619023944.1278716-1-gaosong@loongson.cn>
 References: <20250619023944.1278716-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxrhu7fVNoIXkgAQ--.48014S6
+X-CM-TRANSID: qMiowMCxrhu7fVNoIXkgAQ--.48014S7
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,77 +64,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-include CSR_MSGIS0-3, CSR_MSGIR and CSR_MSGIE.
+the AVEC controller use [2fe00000-2ff000000) Memory.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu.c     |  7 +++++++
- target/loongarch/cpu.h     | 10 ++++++++++
- target/loongarch/machine.c |  5 +++++
- 3 files changed, 22 insertions(+)
+ hw/intc/loongarch_avec.c         | 25 ++++++++++++++++++++
+ hw/loongarch/virt.c              | 39 +++++++++++++++++++++++++++++++-
+ include/hw/intc/loongarch_avec.h |  1 +
+ include/hw/loongarch/virt.h      |  1 +
+ include/hw/pci-host/ls7a.h       |  2 ++
+ 5 files changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index abad84c054..bde9f917fc 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -523,6 +523,13 @@ static void loongarch_la464_initfn(Object *obj)
-     env->CSR_PRCFG3 = FIELD_DP64(env->CSR_PRCFG3, CSR_PRCFG3, STLB_WAYS, 7);
-     env->CSR_PRCFG3 = FIELD_DP64(env->CSR_PRCFG3, CSR_PRCFG3, STLB_SETS, 8);
+diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
+index 5a3e7ecc03..4bd431220a 100644
+--- a/hw/intc/loongarch_avec.c
++++ b/hw/intc/loongarch_avec.c
+@@ -17,6 +17,24 @@
+ #include "trace.h"
+ #include "hw/qdev-properties.h"
  
-+    env->CSR_MSGIS[0] = 0;
-+    env->CSR_MSGIS[1] = 0;
-+    env->CSR_MSGIS[2] = 0;
-+    env->CSR_MSGIS[3] = 0;
-+    env->CSR_MSGIR = 0;
-+    env->CSR_MSGIE = 0;
++static uint64_t loongarch_avec_mem_read(void *opaque,
++                                        hwaddr addr, unsigned size)
++{
++    return 0;
++}
 +
-     loongarch_la464_init_csr(obj);
-     loongarch_cpu_post_init(obj);
++static void loongarch_avec_mem_write(void *opaque, hwaddr addr,
++                                     uint64_t val, unsigned size)
++{
++    return;
++}
++
++
++static const MemoryRegionOps loongarch_avec_ops = {
++    .read = loongarch_avec_mem_read,
++    .write = loongarch_avec_mem_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++};
+ 
+ static void loongarch_avec_realize(DeviceState *dev, Error **errp)
+ {
+@@ -39,6 +57,13 @@ static void loongarch_avec_unrealize(DeviceState *dev)
+ 
+ static void loongarch_avec_init(Object *obj)
+ {
++    LoongArchAVECState *s = LOONGARCH_AVEC(obj);
++    SysBusDevice *shd = SYS_BUS_DEVICE(obj);
++    memory_region_init_io(&s->avec_mmio, OBJECT(s), &loongarch_avec_ops,
++                          s, TYPE_LOONGARCH_AVEC, VIRT_AVEC_MSG_OFFSET);
++    sysbus_init_mmio(shd, &s->avec_mmio);
++    msi_nonbroken = true;
++
+     return;
  }
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 1169768632..231ad5a7cb 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -233,6 +233,12 @@ FIELD(TLB_MISC, ASID, 1, 10)
- FIELD(TLB_MISC, VPPN, 13, 35)
- FIELD(TLB_MISC, PS, 48, 6)
  
-+/*Msg interrupt registers */
-+FIELD(CSR_MSGIS, IS, 0, 63)
-+FIELD(CSR_MSGIR, INTNUM, 0, 8)
-+FIELD(CSR_MSGIR, ACTIVE, 31, 1)
-+FIELD(CSR_MSGIE, PT, 0, 8)
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 3ad165af36..664705ce6e 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -28,6 +28,7 @@
+ #include "hw/intc/loongarch_extioi.h"
+ #include "hw/intc/loongarch_pch_pic.h"
+ #include "hw/intc/loongarch_pch_msi.h"
++#include "hw/intc/loongarch_avec.h"
+ #include "hw/pci-host/ls7a.h"
+ #include "hw/pci-host/gpex.h"
+ #include "hw/misc/unimp.h"
+@@ -370,7 +371,7 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
+ static void virt_irq_init(LoongArchVirtMachineState *lvms)
+ {
+     DeviceState *pch_pic, *pch_msi;
+-    DeviceState *ipi, *extioi;
++    DeviceState *ipi, *extioi, *avec;
+     SysBusDevice *d;
+     int i, start, num;
+ 
+@@ -416,6 +417,33 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
+      *    +--------+ +---------+ +---------+
+      *    | UARTs  | | Devices | | Devices |
+      *    +--------+ +---------+ +---------+
++     *
++     *
++     *  Advanced Extended IRQ model
++     *
++     *  +-----+     +-----------------------+     +-------+
++     *  | IPI | --> |        CPUINTC        | <-- | Timer |
++     *  +-----+     +-----------------------+     +-------+
++     *               ^          ^          ^
++     *               |          |          |
++     *        +---------+ +----------+ +---------+     +-------+
++     *        | EIOINTC | | AVECINTC | | LIOINTC | <-- | UARTs |
++     *        +---------+ +----------+ +---------+     +-------+
++     *             ^            ^
++     *             |            |
++     *        +---------+  +---------+
++     *        | PCH-PIC |  | PCH-MSI |
++     *        +---------+  +---------+
++     *          ^     ^           ^
++     *          |     |           |
++     *  +---------+ +---------+ +---------+
++     *  | Devices | | PCH-LPC | | Devices |
++     *  +---------+ +---------+ +---------+
++     *                  ^
++     *                  |
++     *             +---------+
++     *             | Devices |
++     *             +---------+
+      */
+ 
+     /* Create IPI device */
+@@ -429,6 +457,15 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
+     memory_region_add_subregion(&lvms->system_iocsr, MAIL_SEND_ADDR,
+                    sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 1));
+ 
++    /* Create AVEC device*/
++    if (virt_is_avecintc_enabled(lvms)) {
++        avec = qdev_new(TYPE_LOONGARCH_AVEC);
++        lvms->avec = avec;
++        sysbus_realize_and_unref(SYS_BUS_DEVICE(avec), &error_fatal);
++        memory_region_add_subregion(get_system_memory(), VIRT_AVEC_BASE,
++                        sysbus_mmio_get_region(SYS_BUS_DEVICE(avec), 0));
++    }
 +
- #define LSX_LEN    (128)
- #define LASX_LEN   (256)
+     /* Create EXTIOI device */
+     extioi = qdev_new(TYPE_LOONGARCH_EXTIOI);
+     lvms->extioi = extioi;
+diff --git a/include/hw/intc/loongarch_avec.h b/include/hw/intc/loongarch_avec.h
+index 92e2ca9590..3e8cf7d2c1 100644
+--- a/include/hw/intc/loongarch_avec.h
++++ b/include/hw/intc/loongarch_avec.h
+@@ -23,6 +23,7 @@ typedef struct AVECCore {
  
-@@ -350,6 +356,10 @@ typedef struct CPUArchState {
-     uint64_t CSR_DBG;
-     uint64_t CSR_DERA;
-     uint64_t CSR_DSAVE;
-+    /* Msg interrupt registers */
-+    uint64_t CSR_MSGIS[4];
-+    uint64_t CSR_MSGIR;
-+    uint64_t CSR_MSGIE;
-     struct {
-         uint64_t guest_addr;
-     } stealtime;
-diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
-index 4e70f5c879..7d5ee34f90 100644
---- a/target/loongarch/machine.c
-+++ b/target/loongarch/machine.c
-@@ -231,6 +231,11 @@ const VMStateDescription vmstate_loongarch_cpu = {
-         VMSTATE_UINT64(env.CSR_DERA, LoongArchCPU),
-         VMSTATE_UINT64(env.CSR_DSAVE, LoongArchCPU),
+ struct LoongArchAVECState {
+     SysBusDevice parent_obj;
++    MemoryRegion avec_mmio;
+     AVECCore *cpu;
+     uint32_t num_cpu;
+ };
+diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+index c594421cd2..8811418b96 100644
+--- a/include/hw/loongarch/virt.h
++++ b/include/hw/loongarch/virt.h
+@@ -86,6 +86,7 @@ struct LoongArchVirtMachineState {
+     DeviceState *extioi;
+     uint64_t misc_feature;
+     uint64_t misc_status;
++    DeviceState *avec;
+ };
  
-+        /* Msg interrupt CSRs */
-+        VMSTATE_UINT64_ARRAY(env.CSR_MSGIS, LoongArchCPU, 4),
-+        VMSTATE_UINT64(env.CSR_MSGIR, LoongArchCPU),
-+        VMSTATE_UINT64(env.CSR_MSGIE, LoongArchCPU),
-+
-         VMSTATE_UINT64(kvm_state_counter, LoongArchCPU),
-         /* PV steal time */
-         VMSTATE_UINT64(env.stealtime.guest_addr, LoongArchCPU),
+ #define TYPE_LOONGARCH_VIRT_MACHINE  MACHINE_TYPE_NAME("virt")
+diff --git a/include/hw/pci-host/ls7a.h b/include/hw/pci-host/ls7a.h
+index 79d4ea8501..17f047c188 100644
+--- a/include/hw/pci-host/ls7a.h
++++ b/include/hw/pci-host/ls7a.h
+@@ -24,6 +24,8 @@
+ #define VIRT_PCH_REG_BASE        0x10000000UL
+ #define VIRT_IOAPIC_REG_BASE     (VIRT_PCH_REG_BASE)
+ #define VIRT_PCH_MSI_ADDR_LOW    0x2FF00000UL
++#define VIRT_AVEC_MSG_OFFSET     0x1000000
++#define VIRT_AVEC_BASE           (VIRT_PCH_MSI_ADDR_LOW - VIRT_AVEC_MSG_OFFSET)
+ #define VIRT_PCH_REG_SIZE        0x400
+ #define VIRT_PCH_MSI_SIZE        0x8
+ 
 -- 
 2.34.1
 
