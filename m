@@ -2,216 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D442ADFFDD
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9393AE0083
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:54:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSAif-0000lT-PG; Thu, 19 Jun 2025 04:34:01 -0400
+	id 1uSB1t-0000up-Us; Thu, 19 Jun 2025 04:53:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <miguel.luis@oracle.com>)
- id 1uSAib-0000l1-33; Thu, 19 Jun 2025 04:33:57 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <tan@siewert.io>)
+ id 1uSB1j-0000kk-Ct; Thu, 19 Jun 2025 04:53:45 -0400
+Received: from mail-germanynorthazlp170100001.outbound.protection.outlook.com
+ ([2a01:111:f403:c20b::1] helo=BEUP281CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <miguel.luis@oracle.com>)
- id 1uSAiY-0008RO-2N; Thu, 19 Jun 2025 04:33:56 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55J0hKcX022644;
- Thu, 19 Jun 2025 08:33:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-type:date:from:in-reply-to:message-id:mime-version
- :references:subject:to; s=corp-2025-04-25; bh=iuX8ycbGqWEcoUvCIT
- 0PRkqOi+qcoT9xWqd3Ql+96NY=; b=oYmHm6EjuT2Ck5SJ1LMI+mnK6mXJSk2qZG
- e8GvP5C0Ifz0RDztqcXWCckYmG98o2hlgb6Ogwe9eSlfevTGrk2BrxR8NCZvabFI
- cfU1lunRYJmNralruHkE2nUywnqAuoWXyR3DZBFhw4BS6ebheGZmNzP6aevePKOH
- 7AHuO9bFo9JGp9Q8vVAHophu/1fgqxXRrh0N6pJVHo6v6EQnOBUNERIppCnLx9I6
- FkGPWFTG5xeDeEK3ALM0+mBuzrA789Eu5MrDYVb7hCNF6ZEqMk8yQTF65Th/G2oU
- tl4202OhkfqFsAzQIQvg8qURmxt1drXbqb7laxmLgUOchVl01+AQ==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 478yv59e78-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Jun 2025 08:33:43 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 55J7hKtd026041; Thu, 19 Jun 2025 08:33:43 GMT
-Received: from ch4pr04cu002.outbound.protection.outlook.com
- (mail-northcentralusazon11013025.outbound.protection.outlook.com
- [40.107.201.25])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 478yhhwxev-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Jun 2025 08:33:42 +0000
+ (Exim 4.90_1) (envelope-from <tan@siewert.io>)
+ id 1uSB1h-0003AT-Mh; Thu, 19 Jun 2025 04:53:43 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iBwa8AE1AnXvJG9HE54bFgiTFwswJzbUn9Y3PG2mZCkBeSwYELFfKUJBMfYL+JCb+yDERExpqOEFPAgdnJQwKRK5htw1xAYygb/XbqW563qeEZrAdiCHf6i7Jf8yLbQ8UrKpLkzi81j0FgKrLjN3pJLZiabzryL2DDx93AXsSywqyc2UKmNHFIKf6rBlYWjHZtIiRu8FP96cq2emsjoUATK/uLBU/jAt7KDWyJWCXdLtlN6jXqo0V3dtF3chfSMcTUhXw7qbbPT4dHu267VSZVckVS+9XmDS8E1Ay7yNnxaSUGDocxvuOxbIS8wzQQ5tfI7UfB67rEVhxJ2Tsx0U+A==
+ b=KenZMLB/N3sXg1XTrF0a8Nnr0bRz4N0RgZm3mTVPFTYWlFUbxViaOzCt7jXGHdCZys9NLvXC04ZqC/gMi9wjMU58U6xBdhmVNn3PvAOMbn/wpojwv1aag4mXCMSkvWdN09Nupng0iVSNy6st0RylpNY67m4uOAzgiDImuO8ZOY424/IvLuY73icmMjuOOBXdkupephBE05NzC6OfHd6bGAYHe0UTXaIU8hVmNPDGa5ebuFsPSvJhmI9RBSXku79cLC+POTBRD4du/gFKvVLb+Vec8xjLRQaRzpgTJeTVfocrK7f2/Wb5QK5tY+x2FdPUGLZhz0+0zSsla0hrSgP2Dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iuX8ycbGqWEcoUvCIT0PRkqOi+qcoT9xWqd3Ql+96NY=;
- b=ldp70pm6W50SSyZ6pIaxlilIaBLgpbOYxTmjIUr2HeN2y5Hs7GP4UFpqQEosVCdMKZDhMsWUg0xfeGEDWreUskWRu5ZbbHbswcjiOo2HUa8XCqr64YRrYb3Zgv56WsZfMPHr1nSUt+rz/KPfbGUbWnchssazk1aj6P0gwFyNdCoaXZ8wg4uf1TSfCuFVfxzp+pQL/nor3xOBMYwWhPOXbK35kxY/V5IBYo/Z6t/Bsml2XpVb2c59ph3lAxQJr7uMi4LF7aCoKHw0z4HevagjKbqi8lzaqrwoEfmq4eOXkDWWxXHmAY4EQgfL7lBLYRizBCBf0XU1GJzEDSNuvgNF1Q==
+ bh=pJzJn4jm2xy9XTzvHex4H4aNNxduruxz0PuGDv8dR1s=;
+ b=mYunMbBTy0Y/hHM8A6RuHk+CDX1kVTwZCCQAenDEfq9A1h//PoE/Yd4v7wkuzFZkkeqWvALXCzS9713nESSZXi70HkgCmZJkuKyFXbSpdN12+NzQn8meM2jpmrxfO7StbV7g7nDhbbtClcVN4StQQPloona/Vf6FZDmx5tvlkk/wCUpyoL323IUEx8gbvSD08G/9ykYtZt1uBZTD+yeGIaZD5qQOX/ZQNB1Tv998ql7Ye17rp5Lkcjt9NzQwXWZCJrlYi6xoTRUXeJ73drcLtEZbUXjT+DwQdENFN9MnlF6TaqF3VtJZo3LutxaDjECfkRzvaIWQaeYQK/Ra1HjXwA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iuX8ycbGqWEcoUvCIT0PRkqOi+qcoT9xWqd3Ql+96NY=;
- b=P4g8HhueMZzfG3t2M/i1/WlxkKftKyzs0QyhJj0ja/4DUfSPJ2ArwHXx6cyXo/g7I4zDA2Vs/TbO2cje3k7u6I3z+P0Ft1r4Ycuvo+WxcX6srxneHv4YYfP30i4rGnzORkhTxswEZeks5k6yCQiD3fD3XPxTPKabnVQrl/dlUS0=
-Received: from PH0PR10MB5433.namprd10.prod.outlook.com (2603:10b6:510:e0::9)
- by DS4PPF742908B79.namprd10.prod.outlook.com (2603:10b6:f:fc00::d2b) with
+ smtp.mailfrom=siewert.io; dmarc=pass action=none header.from=siewert.io;
+ dkim=pass header.d=siewert.io; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siewert.io;
+Received: from FR3PPFB3D0CF1D2.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d18:2::182)
+ by FR0P281MB2447.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:27::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Thu, 19 Jun
- 2025 08:33:39 +0000
-Received: from PH0PR10MB5433.namprd10.prod.outlook.com
- ([fe80::47be:ad6e:e3be:ba80]) by PH0PR10MB5433.namprd10.prod.outlook.com
- ([fe80::47be:ad6e:e3be:ba80%7]) with mapi id 15.20.8857.019; Thu, 19 Jun 2025
- 08:33:39 +0000
-From: Miguel Luis <miguel.luis@oracle.com>
-To: "eric.auger@redhat.com" <eric.auger@redhat.com>, Marc Zyngier
- <maz@kernel.org>
-CC: "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "gkulkarni@amperecomputing.com" <gkulkarni@amperecomputing.com>,
- "gankulkarni@os.amperecomputing.com" <gankulkarni@os.amperecomputing.com>
-Subject: Re: [PATCH v5 0/5] ARM Nested Virt Support
-Thread-Topic: [PATCH v5 0/5] ARM Nested Virt Support
-Thread-Index: AQHbztA2f3Tkb/6RVECgRowZ7mB7d7PmF3GAgCQwr4CAAAOp0g==
-Date: Thu, 19 Jun 2025 08:33:39 +0000
-Message-ID: <PH0PR10MB543377F7B913909029199966917DA@PH0PR10MB5433.namprd10.prod.outlook.com>
-References: <20250527062534.1186004-1-eric.auger@redhat.com>
- <86msayec3a.wl-maz@kernel.org>
- <5813ae16-c898-4620-9622-3c12e8a7b22e@redhat.com>
-In-Reply-To: <5813ae16-c898-4620-9622-3c12e8a7b22e@redhat.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-GB
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-reactions: allow
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR10MB5433:EE_|DS4PPF742908B79:EE_
-x-ms-office365-filtering-correlation-id: 1688695e-c577-4955-fc22-08ddaf0bfdf1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|38070700018|7053199007|8096899003; 
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?uZU6z1o52IDTlW75IauJ7mrv7vTRK2wifGphNhvh3Zw8UT9o17q1u6TWsV?=
- =?iso-8859-1?Q?bT6T6L8/hi82imYQEk/eHNhfI9xlHwk540V2vuGlh3Twi6KfcFz9vqscE9?=
- =?iso-8859-1?Q?vLRmZcS3rsG9rLN0DelvBl3qDd3amtKnhkbSxUB52DdJFs514MjBhRct7r?=
- =?iso-8859-1?Q?VHerWHeEnBnpedtRIs+oZ+JovOflHBKMie9/QYsrigvpmqNmU4V7N0CKY8?=
- =?iso-8859-1?Q?229Kv44CNwAZg8m0wmRmybqYTxa8QtFAqJqsQeCHJfW2Duh8DEs5LY+VIO?=
- =?iso-8859-1?Q?finqbSPI+fWl54NJRvbkkIKUotod65VGGE+GXa0dpYlUV9tBGRSHJRrHP6?=
- =?iso-8859-1?Q?7eEnwfYHkJ4Oo1l84lxGBejzIt5apP20PU7xjvw2KK5qfY6j8Mwl0h5OAl?=
- =?iso-8859-1?Q?1/9KlTmraH2pnqMKguwmS13J5eWmnmZJYzAGBtiZtO+1A5PpmJEydnbztX?=
- =?iso-8859-1?Q?11geQWrcOb3z9jiAYuZoD5aCK4MypJV6nsA18JWTGOgcfMLvybJ+X0oYcS?=
- =?iso-8859-1?Q?pjUfYK4PeB9gQ4AuG5kPGZaIDu7jhkBBRPbN1q+LQSHP8ptWOQSAiA1Bwk?=
- =?iso-8859-1?Q?pJ6Q9uTSJQ6Kj87tr1y2wXancHE/AKOrwk0K514pch7sNRZYwbFvJpzZZv?=
- =?iso-8859-1?Q?9vAd5/jA/yYdTffzOCrbbeBfu5dhg/IjkfHycWTyEaRikxzh3Xvk5D5/rU?=
- =?iso-8859-1?Q?fQTA26GElHQxz6VW0qXYlyWPby2jVRS/tU4bTpxcmvszRf0rLVw/meU7fF?=
- =?iso-8859-1?Q?i6wwXGILmd4ZoXswr3Klw0DZFjOTtvOzGWNH+mxFPGS/QwPI303anyM+Ya?=
- =?iso-8859-1?Q?wenZH+tdR8A2aOWn/oi+VUFWyOyhBQfuEQj85m5/ulEyl5TUlIty+H5wJU?=
- =?iso-8859-1?Q?Czz1EkUU2s7d5qMAwTn1bydQp2C3g4c5hAkxLzJrRl2Wz+6buuy/LET4IW?=
- =?iso-8859-1?Q?7k0g4ZgBJf1NY6gr4xCmV+OjLuIWnDeat3NjhshSQJo3F+zn0eTBKQjuKN?=
- =?iso-8859-1?Q?07dZ0O3ZoPfOX8t+TVeDtAWA9k3CWTEqgSLcUO+XQSDM7cRKApnAmAVUUX?=
- =?iso-8859-1?Q?cNbuVr07puQy2JzEzhvnvRxo64qDmUJmG7McMWgx5DWfauLDNcSuvHSiPP?=
- =?iso-8859-1?Q?NLPv2EGwrox2vtMBQ+t890qwcJoewe8B+4270JnOv1smK9EwRQVqmw0SRT?=
- =?iso-8859-1?Q?UF3Knw8Db1hJx7NFRnbXi+Vrrir/IrrWPvtbNhpQrYyMh2yaimUNX+HvOd?=
- =?iso-8859-1?Q?c4I5ddywsmx1zDFtXbymGYcf2Z/CQjDBh/b7SBx8HZO0t76q41S/X70/oC?=
- =?iso-8859-1?Q?ZPc4tyKTv5/pH7BP8oG/Rt+3OE+8hLQxL0lrA3CNVA6v9QkTyWwhdzFxKL?=
- =?iso-8859-1?Q?sZARZx2WlVHUl5USpRNNMFSECV/LitibFXOLupEyFeQu2lLKBVlMjAhbPc?=
- =?iso-8859-1?Q?KclRCzqB2W87fFv3+gtb11wpV1NBFlmF0lJuWPJDd+BCPFIs5Wen6oI0Oq?=
- =?iso-8859-1?Q?AVFQE0zNguv9inm8Bjk77iRPbYq0J9y65LgmSnhCkhFNeDoUNJbv0Y2tFq?=
- =?iso-8859-1?Q?JoJrdB0=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR10MB5433.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(38070700018)(7053199007)(8096899003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?inqDXtfY3gfY4kBw5vQLT9XQSLmgI5Irvwuzv8V3BXXqzWg92B06vMfYg9?=
- =?iso-8859-1?Q?H5Tl8OSgoBYBDbI41YTJOrgKinUB7KN5xy1Vo9XquNwaIjRJN8TtOZEuok?=
- =?iso-8859-1?Q?enPBlUV3G2LmY0MUMW66vtkSqT9lZx60YHEsCaB5wzz25fSHl7F8BtwoBO?=
- =?iso-8859-1?Q?jlYZCKRAwbva2ATpZTAwGDn6CL55tlFjnYfJyC+/j+6fdx0jZu1DnifeMA?=
- =?iso-8859-1?Q?hJJoUwlishIUYXf+wu7jE9v8pB6jZe04N0kp//6iuNQqrGIe5olSxH+dwc?=
- =?iso-8859-1?Q?3idykUy1h/Ct0AB8nHoZ12C+yXI8Zr3JENbUc3SfYP5Uozt+nSDSzwJ/5q?=
- =?iso-8859-1?Q?Knf1JFcyX5qH84Q8mUJhMtuidUkZCEN00ynii385nb33MHq2fOBZWw5jhf?=
- =?iso-8859-1?Q?KuVeD7oXu32xuyk5m0PKWMhJ08RG3gG+5jwvWaE7BD1+MQl4Llx5/ztxRY?=
- =?iso-8859-1?Q?Er4C8mBPXoRlx5oVgyR8JuoK6R+4FMdJ4jlaHyYLy+/o6KQwsaAz4W1Wln?=
- =?iso-8859-1?Q?GHh+jToeW4OwJN40YcNbwSK2IzqGABKc9mxKPvtptbRHSm8celXAvfCzFG?=
- =?iso-8859-1?Q?jqbP8RFmI3/FU6fEK0o9ArB3ZSJezomn3/4BgqSLGqkcAKA5sqWO1fQHFV?=
- =?iso-8859-1?Q?nAs/OWw80So8T7RJsPinvHOvrVazfFEWFCx4laQhJLLmDoCvpe4Ni0qbj1?=
- =?iso-8859-1?Q?JPDKhcvKnSPgM6dV1luahY/KSFUPv+siCt/EhOoaSCnFgx48U0wC7eR6yu?=
- =?iso-8859-1?Q?g+DAtEceGqJNsI+v1D3trV8fQmR9H8EBjemtcDYUY8KIfrCJLquaINm/DA?=
- =?iso-8859-1?Q?WRh6kYkkdZNC1LdF4MNvVxeLJBXz/Wey7+P3o+DPTHuSxhXVO1R41SOhpU?=
- =?iso-8859-1?Q?8s+SHGVljFCoVQmDtbcsV2+RO13Gca/KiiituGw2R2ePgt2bjw8umdV41Q?=
- =?iso-8859-1?Q?m+qtjmscOIEHDq++6gi/jSAJ4XVTnDGZN+4RubEteKALBU4z3BAYPQJJTr?=
- =?iso-8859-1?Q?Mbv3tR2Q73x6P6OZwwyIT07/tn/1xSJjqnoda+trYaK2yl4FM4PET10CXR?=
- =?iso-8859-1?Q?S1nwG1OlBKpOCFVlBAkbS2p89ITTbcQWZL88IfbhFtNkVCevgfyukGCZm1?=
- =?iso-8859-1?Q?bC0jRgfkfym60q/h7XhVDzmJjlJBQlCL8iHygUyuo0ymB+qvatHL+f6Rj/?=
- =?iso-8859-1?Q?luDsdATc4vrjtv6GpiiK4PxaLb15A9kYWj3twkbgCIS2NkZv5/UczCAM27?=
- =?iso-8859-1?Q?Oi0HW7Pke3TVfBiqy0HcU1KqW/YNH7cCF8YksXLyUkqnvYCkZ7xrETjS6Z?=
- =?iso-8859-1?Q?Qjz74LNn5z5/yu1QVnW6syRjqensQmC0dITjPztPVkO8kkWmLodM2s23/0?=
- =?iso-8859-1?Q?H0mEyRVD9CunZOrdL3nd2THBoJ8wcd2FxaAGBv/XvIVw5209mF0G3vttFL?=
- =?iso-8859-1?Q?194w8UDuzQEXUsvIoTK1vN2SnMzn88vNxhrUr+lp/QLp8alAXgNVZwwl9w?=
- =?iso-8859-1?Q?rjLFe6lMtvWjNQHjeZes09HeVETKWmJozjddpA1yaKAiOolKNhL8BeJNv4?=
- =?iso-8859-1?Q?+nTWQm1fA3uroPAfqra5oqXuVGnz6MwVdhrRXF/4c0cvZzz697AAn8HWWQ?=
- =?iso-8859-1?Q?h+GuZjlEd+xuJ3Y9g8PPaORSJiDoETK0gXRRM4ubXzl+wyO83z5QACyw?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: multipart/alternative;
- boundary="_000_PH0PR10MB543377F7B913909029199966917DAPH0PR10MB5433namp_"
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.23; Thu, 19 Jun
+ 2025 08:53:34 +0000
+Received: from FR3PPFB3D0CF1D2.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::6ec7:ece3:1787:5e48]) by FR3PPFB3D0CF1D2.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::6ec7:ece3:1787:5e48%7]) with mapi id 15.20.8857.016; Thu, 19 Jun 2025
+ 08:53:34 +0000
+From: Tan Siewert <tan@siewert.io>
+To: qemu-devel@nongnu.org
+Cc: Tan Siewert <tan@siewert.io>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org
+Subject: [PATCH v4] hw/misc/aspeed_scu: Handle AST2600 protection key
+ registers correctly
+Date: Thu, 19 Jun 2025 10:53:27 +0200
+Message-ID: <20250619085329.42125-1-tan@siewert.io>
+X-Mailer: git-send-email 2.49.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA3P292CA0041.ESPP292.PROD.OUTLOOK.COM
+ (2603:10a6:250:46::16) To FR3PPFB3D0CF1D2.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d18:2::182)
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 84u4DkJjX9oQR+au778LX2rfq7FZA0AsqFhxnMeE8lDuoxRiZWy9ErK5Nub86Wpv8EgvQzHrMWf9+Ni67B4ktDEc0CwW4lu9DliQYNipogwqI8vVc1RrSUgtkqzj2it9fKlbgg2nzpUHELzjilMJMSBM5T5xefMr3kxA0XA1T1uDA+Y+q3HUCcq1pFYg81hCiFn5Sl9IcEusAVviC0E3/M7KZVSgNxPma6XFvqKQwNx9Y438Rumk7nufBsRzrzkNej0B94idX3Z2lvFedPDDtWwEx8oG+BMIn4UMTCYfGLOWOl+ecpudh/INCwCrRpsLWfde27xCXuMpzDvmY9ahEZgpFB1aPwluhKhc539FPThMnSbuRejoA3gVg30F9Obd6AjyN1pN6e5HOFxpHoJFnaa7jU/Noz20JmFlfXDSK1WOpQNjAuDHHkRD0EcoOQAfKKs2Hg5Zfw/HzMmjzrPDRbP/tt6wog7RdPphCMP/VMay2eNd+7sezQsTNyZvTFXHWktWt0UYXs3eCmXJ6EUger6kbvLaieNl1RMKR1R8yFEw3nEEXaEz2iZ8TQF4/MaXCotoFX3ia9vWF20A8fyKB3EEOCX/dROQ24OdBD2XW+w=
-X-OriginatorOrg: oracle.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: FR3PPFB3D0CF1D2:EE_|FR0P281MB2447:EE_
+X-MS-Office365-Filtering-Correlation-Id: 875ddce6-7b77-4cbf-ae8c-08ddaf0ec5a0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|52116014|376014|1800799024|366016|10070799003; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?JrtsTvjLnu523SNSUH8OZzpmPTShp0T1bYJ7WVQ+qcMdTvT1kcwx/HEQcOlb?=
+ =?us-ascii?Q?7UIBjIODRMsJPGxJtt6sY7JY3Ysj76tXtE7YGTgjzF0uMJSwSX8n7kJJqLfS?=
+ =?us-ascii?Q?Bc+FpEPKyTACxeoL8aV94PARURYmdv/hHIvKnAP+ObDn0cql41FP5eawTTYt?=
+ =?us-ascii?Q?tSHj9aVn6U/SYMMEBNWrNRhYv/H+6g9sJb1gzbwIvVySeAJhrPcIyWeU1VEa?=
+ =?us-ascii?Q?27m5xEqb+lFHNGxu72YCWv3XcvBPLDmKSsZR57hbhg4JPJV7NPA3iOWqnR9h?=
+ =?us-ascii?Q?oZifxDUR+L96GMM7JNOxYbV+dDhvIdPlWYI0g/SK8dNOE1xOVD2UrPnGSAkB?=
+ =?us-ascii?Q?4yTkbEzVQ/g4sbSRgeyt5UuK/l0MkRJyCzcVXGba8cztgmTsrrpo3U3FRiPF?=
+ =?us-ascii?Q?HQtn08/XUyi7iF7KbF0dQyExi1/udwYhN0TLMbYAEvTSVi0ufjh5ATSl/cgB?=
+ =?us-ascii?Q?bMsrRmsR72j3mdVFvnIbXupNrFJMFsTtSqd5x+6SD6O+8rfHC9KWtMCYupao?=
+ =?us-ascii?Q?kbP/UQdLbnR0fLWlwV4DLQidQJ1lwJEASSVylE6AmtTjYCwoD/8kpvHW26m3?=
+ =?us-ascii?Q?x1ISaK2bL2vkZRBNYmfSG4RI5bEfqoBz300RHnn4h8QpoOqyINPY3AolDl9E?=
+ =?us-ascii?Q?icYHCoWHRcytj9VfaPL7rA34/pBUic7c6IJ/HkCEStZ6umxdF+NyAom1+xKe?=
+ =?us-ascii?Q?Krac759a4vCs9pMyrTwqTw54cTi5GAksjuCxJtLUKO4cccFTlSQd174G3Mqx?=
+ =?us-ascii?Q?UirToMlbZErrZxGfFbMcCCytSqfFZxf7YRJ9vPUtz19IpIxaIHTyzyI9qt9m?=
+ =?us-ascii?Q?n5sxtNgbHF7X36F9UsE+rojkkFYXxsa5qrRw6bVZj910rA2zTuDE+es5RY+q?=
+ =?us-ascii?Q?Mja61hTsB+RAfl7d1GtfC6aZyqu7YNKMQHtrbYymJt6DfRO660ircKNj7tSt?=
+ =?us-ascii?Q?bPKsb6J2u9QRT9d5mu6lmCmmugWcU7GuIEZQFK1kif28V34uema5JDYqOjFO?=
+ =?us-ascii?Q?lCc49Db+wxr2HG+W+M2FUQ2uuWFLNJhB0FgJqjD0NdG+RCx48w2ZWs+6Mi6u?=
+ =?us-ascii?Q?WO0/MVopdmOlKmqURKCytzXBTjW/KG0VJm6u25Do6Marr8ppzJt8F8dhv7lE?=
+ =?us-ascii?Q?c73qgV0gtELa7mGtK8FGy4o166EmLL/e/KyR6Y4eM0GQjOJ7rFpgVJRW7ljt?=
+ =?us-ascii?Q?y5o+L8Zzj3Dq9Zzz0jifqbNnJI9KpT5/seWzDCEtT8mDxoYQot0OpC2n27h0?=
+ =?us-ascii?Q?NjBX8SNe6eC/9j6eKn2LBRnEedB30Ep8d4jpQkueDthARYKcbyb/6kSY6/13?=
+ =?us-ascii?Q?a95paHIn3+tNzLzHECZoaTc4v91eMjpMaLi7vAwogNAbnXbX0v17oFJYfAen?=
+ =?us-ascii?Q?gfEO3keNTo15yE4XlPWNPML/G5vUp2SNWPLQpb63oynk6rCMnaju2X1fDc0c?=
+ =?us-ascii?Q?kEey2t7hdjo=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:FR3PPFB3D0CF1D2.DEUP281.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230040)(52116014)(376014)(1800799024)(366016)(10070799003); DIR:OUT;
+ SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?5x6xu9/od9QwEWUaiPn0ZshyN6AOWZ9jPTVSndvkBh/0BhYQeO+/NyAh3MDy?=
+ =?us-ascii?Q?zytJlQzKjro4RaAqpldHCgfwuJPGKzv2b729alI4shsEG3Jv/aWuoYEj2P6u?=
+ =?us-ascii?Q?n3mgA4q4qe1rEuSsKKODN4NSoGKCPmbS8P6PQhaN8aY0wsWny4tfcOoEobCT?=
+ =?us-ascii?Q?wDo0ft8oKJI+NLJ23hFJ8C6byWsXKmIheYoK/FN1VpeE6VdDpvZL5Xr7tN+H?=
+ =?us-ascii?Q?t2a+BWzER0RyDVLyGONfqVezSq+JX4857isVKuESjQx5Cqyn1JhKQnkVfUWr?=
+ =?us-ascii?Q?T+e+REWEaQUEFieIzY3LDi74GhxRx/MNOnq1f6zumF6rfsTcGDBYSK7YQ4kx?=
+ =?us-ascii?Q?CkWbRwvpgM7GcXT25l+1eDliHKrpAJOGdD3RjKrvLBBzCyXoFrrYUsIcl7jI?=
+ =?us-ascii?Q?nrDpmve9RWmPw1JVTfo0uSG4n8EwQqxVD3OP5GUjfR3LRyK4JKDQHaUFNBNb?=
+ =?us-ascii?Q?i4WOeTysERruDuY5vUn9ugyMafwIxoFKHXX0gLcjGfznKNysC3gXo2qjPATv?=
+ =?us-ascii?Q?atcqeQZgOFeu+2vy81q3tG5OkSyybgeo+cdbt6EoD5XLB+VU9tf+QKc9yntr?=
+ =?us-ascii?Q?PvvThSddV+CEQ443VXPoO7VBfhFBhtmm3QxK6CcfddR4Yeq/D3/m5T3Dw0wb?=
+ =?us-ascii?Q?LyhYBxF5VwFjYSIdJv0h50YoljpKCDAGsIuh4FUzBcJIXJwQuL7uQWK5dPpc?=
+ =?us-ascii?Q?oeeIuoSazVagOW1MaxJeMS11TGH+B1wtGUARXkFZ2IDnzfqyfNKJlqeh2Yde?=
+ =?us-ascii?Q?8VSLcDwsZMsa+go6dzALicCNZfIlO+x14Rs25QCvvE7uej5cm5wQLDxCNoHs?=
+ =?us-ascii?Q?m0Vc8GsiYBMO2pFYJ4mqiAt3LFGZxE7DIxSdxmynNDDvfHSK6JTQTNeO8gG8?=
+ =?us-ascii?Q?XcRVWD2bJJOQSrbDmJAWmAP8+/UXsC0+RUc0WbWoYgY4StVfp0nIn+sa461Z?=
+ =?us-ascii?Q?Nko+UDEuO1p736FJxF5E0NbteW2BvKb/cKn6osh/IZ76M7GSAzbbCAxz25qO?=
+ =?us-ascii?Q?qEEjjOwvBdh3bsOJcJ0gglGyUIBPXRWd/T2l3Ks5BP/aNp2+rZw2CQuCF8wW?=
+ =?us-ascii?Q?lS/WSX0+++IfCC4Hoxl/WI42YDuxc3wdIkdRVsIYV3FGxa0X+7owyC6M4FWc?=
+ =?us-ascii?Q?OMxCTGHueYO0sZ2cFC3GPPunYdfGdiRykdY6xNKHFv/zc8H9yZ3rsGFETFiX?=
+ =?us-ascii?Q?lHH3jYgzZYdOuHzeSRElvPVRw/DVRNxt6UngdABpa6iLqdYunp35QzgHcg9Z?=
+ =?us-ascii?Q?J7c0Lgh90/u4qlzdKoxHKDwT0KMTeOxDvwwEzetb5kWLd/f9cG0szqfTiR0q?=
+ =?us-ascii?Q?Us4AK5lx02zzrCbgn0KBV1mM1Vo7kGCNFweRt3RRT4tmCoE46RbfRwQNbWMh?=
+ =?us-ascii?Q?kjJwF2seKvXAnmqLB12wBUXMOUFm0dHx80leauwcB3+8VufKKWPEjweoi5px?=
+ =?us-ascii?Q?yMddaPqAejLqAaTNnWhJDpE1VO8lMReM9iIVTb4hcy4CMtjskrVZL4WQTaTs?=
+ =?us-ascii?Q?FzIvh+Bp6iDlndraJjDR2U8gb1BYL4IopaxI8j+pfDkv3aPMzo2Q/0YoJj7w?=
+ =?us-ascii?Q?Ym3m68yPy5/fKvDeZDklKRZKuxIVxqzdp7dD5ttvEF85l2vsTSm9+4jyiugx?=
+ =?us-ascii?Q?aehE8Nh1NV8rFfw/4FJt61c=3D?=
+X-OriginatorOrg: siewert.io
+X-MS-Exchange-CrossTenant-Network-Message-Id: 875ddce6-7b77-4cbf-ae8c-08ddaf0ec5a0
+X-MS-Exchange-CrossTenant-AuthSource: FR3PPFB3D0CF1D2.DEUP281.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5433.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1688695e-c577-4955-fc22-08ddaf0bfdf1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jun 2025 08:33:39.6005 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9zXQXayqjKw5hzWUd8ND/8O3wOZvIbogXtzD7GncN6ib860ShcJZO2Kswb49ZUjiD44//5KsxOVkMpWHfhQogg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF742908B79
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-19_03,2025-06-18_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- spamscore=0 phishscore=0
- adultscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2506190072
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE5MDA3MiBTYWx0ZWRfXwTNu/jzNcc3U
- NiN5bjPdfi2bYqRybHwfQvtPqs2bmmSjA27yHOOL+qLleKeoxmWmC5DEogREfsiCdQfFB7ilAwn
- FIigeh+bi5ls60xIDmKGlZynVmb8UCFN2OzYAyIzYZ70GNp6TjRo6ekbcNuVXHlgOH4oyIgQ1J2
- VkT/R3+9qAC2C98XJue3R7QRLu7plTK/03xK6akLFXdyHbBBvC0AO+8qN1obdX5ogWpo2XoxvCk
- 9xRYB/oAHvpQSuuVLvpEPRIzOCDAsBzzkMkP+Y5DwX3wc6PPrbqa7faF0sCGbDrR6J2dBaMRMOV
- fy5rtyiitMmVEuv1Fl1Ns11glh2hjloxNAax4TwoQp/q+iYwh0tydggdHtTzjTgzKUHSJ+hw6Kj
- jVPfwjYOw1/wf+igVW1EQsx42w2A4RoUB/En4No6BIKacOijRL/gjVtOw+wRx2FLuwukCEgh
-X-Proofpoint-GUID: rnRJ9RcwFAa9RbQosJ073-GyGt3yYlj7
-X-Proofpoint-ORIG-GUID: rnRJ9RcwFAa9RbQosJ073-GyGt3yYlj7
-X-Authority-Analysis: v=2.4 cv=W9c4VQWk c=1 sm=1 tr=0 ts=6853cb67 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=6IFa9wvqVegA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=69wJf7TsAAAA:8 a=yPCof4ZbAAAA:8
- a=KKAkSRfTAAAA:8 a=vzhER2c_AAAA:8 a=9fjt9Anoo4Szz2tk6DIA:9 a=wPNLvfGTeEIA:10
- a=XSHmh91Bc4dkiI52WEEA:9
- a=rRsnvsVERtt1ZG5Q:21 a=_W_S_7VecoQA:10 a=Fg1AiH1G6rFz08G2ETeA:22
- a=cvBusfyB2V15izCimMoJ:22 a=0YTRHmU2iG2pZC6F1fw2:22 cc=ntf awl=host:13207
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=miguel.luis@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2025 08:53:33.9702 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e8b4abbe-444b-4835-b8fd-87ac97451a7e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NSP/fmLlnnNJkunbZqVQuVhS1rDgpIx+et/uwDkwUuHn65Vk8WpInvUJhLdEqrdi
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR0P281MB2447
+Received-SPF: pass client-ip=2a01:111:f403:c20b::1;
+ envelope-from=tan@siewert.io;
+ helo=BEUP281CU002.outbound.protection.outlook.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -227,162 +156,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_PH0PR10MB543377F7B913909029199966917DAPH0PR10MB5433namp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+The AST2600 SCU has two protection key registers (0x00 and 0x10) that
+both need to be unlocked. (Un-)locking 0x00 modifies both protection key
+registers, while modifying 0x10 only modifies itself.
 
+This commit updates the SCU write logic to reject writes unless both
+protection key registers are unlocked, matching the behaviour of
+real hardware.
 
+Signed-off-by: Tan Siewert <tan@siewert.io>
+---
+V4:
+  - Fix mis-understanding of or operator in lock check [Tan]
+  - Move SCU protection data variable outside of switch case [Cedric]
+  - Fix u32 -> uint32_t mistake (now bool as same result) [Cedric]
 
-________________________________
-De: Eric Auger <eric.auger@redhat.com>
-Enviado: quinta-feira, junho 19, 2025 8:19:47 da manh=E3
-Para: Marc Zyngier <maz@kernel.org>
-Cc: eric.auger.pro@gmail.com <eric.auger.pro@gmail.com>; qemu-devel@nongnu.=
-org <qemu-devel@nongnu.org>; qemu-arm@nongnu.org <qemu-arm@nongnu.org>; Mig=
-uel Luis <miguel.luis@oracle.com>; peter.maydell@linaro.org <peter.maydell@=
-linaro.org>; richard.henderson@linaro.org <richard.henderson@linaro.org>; g=
-kulkarni@amperecomputing.com <gkulkarni@amperecomputing.com>; gankulkarni@o=
-s.amperecomputing.com <gankulkarni@os.amperecomputing.com>
-Assunto: Re: [PATCH v5 0/5] ARM Nested Virt Support
+ hw/misc/aspeed_scu.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-Hi Marc, Miguel,
+diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
+index 4930e00fed..39832cd861 100644
+--- a/hw/misc/aspeed_scu.c
++++ b/hw/misc/aspeed_scu.c
+@@ -91,6 +91,7 @@
+ #define BMC_DEV_ID           TO_REG(0x1A4)
+ 
+ #define AST2600_PROT_KEY          TO_REG(0x00)
++#define AST2600_PROT_KEY2         TO_REG(0x10)
+ #define AST2600_SILICON_REV       TO_REG(0x04)
+ #define AST2600_SILICON_REV2      TO_REG(0x14)
+ #define AST2600_SYS_RST_CTRL      TO_REG(0x40)
+@@ -722,6 +723,8 @@ static void aspeed_ast2600_scu_write(void *opaque, hwaddr offset,
+     int reg = TO_REG(offset);
+     /* Truncate here so bitwise operations below behave as expected */
+     uint32_t data = data64;
++    bool prot_data_state = data == ASPEED_SCU_PROT_KEY;
++    bool unlocked = s->regs[AST2600_PROT_KEY] && s->regs[AST2600_PROT_KEY2];
+ 
+     if (reg >= ASPEED_AST2600_SCU_NR_REGS) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+@@ -730,15 +733,24 @@ static void aspeed_ast2600_scu_write(void *opaque, hwaddr offset,
+         return;
+     }
+ 
+-    if (reg > PROT_KEY && !s->regs[PROT_KEY]) {
++    if ((reg != AST2600_PROT_KEY && reg != AST2600_PROT_KEY2) && !unlocked) {
+         qemu_log_mask(LOG_GUEST_ERROR, "%s: SCU is locked!\n", __func__);
++        return;
+     }
+ 
+     trace_aspeed_scu_write(offset, size, data);
+ 
+     switch (reg) {
+     case AST2600_PROT_KEY:
+-        s->regs[reg] = (data == ASPEED_SCU_PROT_KEY) ? 1 : 0;
++        /*
++         * Writing a value to SCU000 will modify both protection
++         * registers to each protection register individually.
++         */
++        s->regs[AST2600_PROT_KEY] = prot_data_state;
++        s->regs[AST2600_PROT_KEY2] = prot_data_state;
++        return;
++    case AST2600_PROT_KEY2:
++        s->regs[AST2600_PROT_KEY2] = prot_data_state;
+         return;
+     case AST2600_HW_STRAP1:
+     case AST2600_HW_STRAP2:
+-- 
+2.49.0
 
-On 5/27/25 9:39 AM, Marc Zyngier wrote:
-> Hi Eric,
->
-> On Tue, 27 May 2025 07:24:32 +0100,
-> Eric Auger <eric.auger@redhat.com> wrote:
->> Now that ARM nested virt has landed in kvm/next, let's turn the series
->> into a PATCH series. The linux header update was made against kvm/next.
->>
->> For gaining virt functionality in KVM accelerated L1, The host needs to
->> be booted with "kvm-arm.mode=3Dnested" option and qemu needs to be invok=
-ed
->> with: -machine virt,virtualization=3Don.
-> Thanks for respinning this series.
->
-> Do you have any plan to support the non-VHE version of the NV support
-> (as advertised by KVM_CAP_ARM_EL2_E2H0)? It would allow running lesser
-> hypervisors (such as *cough* Xen *cough*), which completely rely on
-> HCR_EL2.E2H being 0?
-While respinning I'd rather not support KVM_ARM_VCPU_HAS_EL2_E2H0 in
-next respin. The code is mostly reviewed and I would rather add support
-for this in a separate series. It will most probably rely on a change of
-the virtualization property type to support a "restricted" enum value.
-
-Ack!
-Thank you.
-
-Miguel
-
-
-Thanks
-
-Eric
->
->
-> Thanks,
->
->        M.
->
-
-
-
---_000_PH0PR10MB543377F7B913909029199966917DAPH0PR10MB5433namp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-</head>
-<body>
-<div dir=3D"auto" style=3D"font-family: Aptos, Aptos_MSFontService, -apple-=
-system, Roboto, Arial, Helvetica, sans-serif; font-size: 12pt;">
-<br>
-</div>
-<div id=3D"ms-outlook-mobile-body-separator-line" dir=3D"auto"></div>
-<div id=3D"ms-outlook-mobile-signature" style=3D"font-family: Aptos, Aptos_=
-MSFontService, -apple-system, Roboto, Arial, Helvetica, sans-serif; font-si=
-ze: 12pt;" dir=3D"auto">
-</div>
-<div dir=3D"auto" id=3D"mail-editor-reference-message-container"><br>
-<hr style=3D"display: inline-block; width: 98%;">
-<div id=3D"divRplyFwdMsg" style=3D"font-size: 11pt;" dir=3D"auto"><b>De:</b=
->&nbsp;Eric Auger &lt;eric.auger@redhat.com&gt;<br>
-<b>Enviado:</b>&nbsp;quinta-feira, junho 19, 2025 8:19:47 da manh=E3<br>
-<b>Para:</b>&nbsp;Marc Zyngier &lt;maz@kernel.org&gt;<br>
-<b>Cc:</b>&nbsp;eric.auger.pro@gmail.com &lt;eric.auger.pro@gmail.com&gt;; =
-qemu-devel@nongnu.org &lt;qemu-devel@nongnu.org&gt;; qemu-arm@nongnu.org &l=
-t;qemu-arm@nongnu.org&gt;; Miguel Luis &lt;miguel.luis@oracle.com&gt;; pete=
-r.maydell@linaro.org &lt;peter.maydell@linaro.org&gt;; richard.henderson@li=
-naro.org
- &lt;richard.henderson@linaro.org&gt;; gkulkarni@amperecomputing.com &lt;gk=
-ulkarni@amperecomputing.com&gt;; gankulkarni@os.amperecomputing.com &lt;gan=
-kulkarni@os.amperecomputing.com&gt;<br>
-<b>Assunto:</b>&nbsp;Re: [PATCH v5 0/5] ARM Nested Virt Support<br>
-</div>
-<br>
-<meta name=3D"Generator" content=3D"Microsoft Exchange Server">
-<div dir=3D"auto" class=3D"PlainText" style=3D"font-size: 11pt;">Hi Marc, M=
-iguel,<br>
-<br>
-On 5/27/25 9:39 AM, Marc Zyngier wrote:<br>
-&gt; Hi Eric,<br>
-&gt;<br>
-&gt; On Tue, 27 May 2025 07:24:32 +0100,<br>
-&gt; Eric Auger &lt;eric.auger@redhat.com&gt; wrote:<br>
-&gt;&gt; Now that ARM nested virt has landed in kvm/next, let's turn the se=
-ries<br>
-&gt;&gt; into a PATCH series. The linux header update was made against kvm/=
-next.<br>
-&gt;&gt;<br>
-&gt;&gt; For gaining virt functionality in KVM accelerated L1, The host nee=
-ds to<br>
-&gt;&gt; be booted with &quot;kvm-arm.mode=3Dnested&quot; option and qemu n=
-eeds to be invoked<br>
-&gt;&gt; with: -machine virt,virtualization=3Don.<br>
-&gt; Thanks for respinning this series.<br>
-&gt;<br>
-&gt; Do you have any plan to support the non-VHE version of the NV support<=
-br>
-&gt; (as advertised by KVM_CAP_ARM_EL2_E2H0)? It would allow running lesser=
-<br>
-&gt; hypervisors (such as *cough* Xen *cough*), which completely rely on<br=
->
-&gt; HCR_EL2.E2H being 0?<br>
-While respinning I'd rather not support KVM_ARM_VCPU_HAS_EL2_E2H0 in<br>
-next respin. The code is mostly reviewed and I would rather add support<br>
-for this in a separate series. It will most probably rely on a change of<br=
->
-the virtualization property type to support a &quot;restricted&quot; enum v=
-alue.<br>
-<br>
-Ack!</div>
-<div dir=3D"auto" class=3D"PlainText" style=3D"font-size: 11pt;">Thank you.=
-</div>
-<div dir=3D"auto" class=3D"PlainText" style=3D"font-size: 11pt;"><br>
-</div>
-<div dir=3D"auto" class=3D"PlainText" style=3D"font-size: 11pt;">Miguel&nbs=
-p;<br>
-<br>
-<br>
-Thanks<br>
-<br>
-Eric<br>
-&gt;<br>
-&gt;<br>
-&gt; Thanks,<br>
-&gt;<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; M.<br>
-&gt;<br>
-<br>
-</div>
-<br>
-</div>
-</body>
-</html>
-
---_000_PH0PR10MB543377F7B913909029199966917DAPH0PR10MB5433namp_--
 
