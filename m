@@ -2,112 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453CFAE0234
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 12:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF5AAE02FA
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 12:56:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSC38-000064-Hr; Thu, 19 Jun 2025 05:59:14 -0400
+	id 1uSCvm-0005vG-Hg; Thu, 19 Jun 2025 06:55:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1uSC35-0008Vu-6e; Thu, 19 Jun 2025 05:59:11 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uSCvk-0005us-1E
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 06:55:40 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1uSC33-0007sO-8c; Thu, 19 Jun 2025 05:59:10 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55J7l3eE020941;
- Thu, 19 Jun 2025 09:59:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=0EeqV1ytio2oj4+eR
- uSsLtRAHiVutq8JhdWxsuPQVuo=; b=n5l+5CfLxUoren4OMGGvSLwhOosVdc6or
- NbYFPk26hL2Buv14QKxG70MTohDZ/5NKF5k98Gp/BBlVka1pF8ff1lyzqHrqwC6o
- E95kh3sEOqs8QRy3IzCaW0lU2l/2bMKtLEbsXx+mACQ1pbmILQaAHlYalkGHXiXh
- mc7Xbwg5m/ICe3Mdk2tx4qJQ/IYRwGc/fiuiNZWtXb4orUbldLrApp7771sQpUYo
- YTV5Y7uKOlwoS/ioWqorNijyP2vRul9S4nMFS+GLk1bcAWFGzA7pK4Nb2loYN3ZQ
- UYGPxDEDhYZyFemQnfg3TyOjebRsZL/juer9cmJvKA4cU8czZLmdg==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4790tecqqg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Jun 2025 09:59:06 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55J9x697008334;
- Thu, 19 Jun 2025 09:59:06 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4790tecqqb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Jun 2025 09:59:06 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55J709lU010853;
- Thu, 19 Jun 2025 09:59:05 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 479kdtns0k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Jun 2025 09:59:05 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 55J9x3wY45875488
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Jun 2025 09:59:03 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 996A520043;
- Thu, 19 Jun 2025 09:59:03 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1091120040;
- Thu, 19 Jun 2025 09:59:02 +0000 (GMT)
-Received: from li-18a0a34c-33fc-11b2-a85c-d9f1631c5692.in.ibm.com (unknown
- [9.79.200.241]) by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 19 Jun 2025 09:59:01 +0000 (GMT)
-From: Chinmay Rath <rathc@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, npiggin@gmail.com,
- danielhb413@gmail.com
-Cc: richard.henderson@linaro.org, harshpb@linux.ibm.com
-Subject: [PATCH 5/5] MAINTAINERS: Add myself as reviewer for PowerPC TCG CPUs
-Date: Thu, 19 Jun 2025 15:28:40 +0530
-Message-ID: <20250619095840.369351-6-rathc@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250619095840.369351-1-rathc@linux.ibm.com>
-References: <20250619095840.369351-1-rathc@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uSCvg-0002H8-Sk
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 06:55:39 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bNHSs63zJz6L6Ll;
+ Thu, 19 Jun 2025 18:50:37 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id D241C140446;
+ Thu, 19 Jun 2025 18:55:20 +0800 (CST)
+Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 19 Jun
+ 2025 12:55:19 +0200
+Date: Thu, 19 Jun 2025 11:55:18 +0100
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, <fan.ni@samsung.com>,
+ <qemu-devel@nongnu.org>, Alex =?ISO-8859-1?Q?Benn=E9e?=
+ <alex.bennee@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>, "Mahmoud
+ Mandour" <ma.mandourr@gmail.com>, Bowman Terry <terry.bowman@amd.com>
+CC: <linuxarm@huawei.com>, <rientjes@google.com>, <dave@stgolabs.net>,
+ <joshua.hahnjy@gmail.com>, <rkodsara@amd.com>, <sj@kernel.org>,
+ <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>, <ziy@nvidia.com>,
+ <weixugc@google.com>, Bharata B Rao <bharata@amd.com>
+Subject: Re: [RFC PATCH v2 QEMU 2/4] hw/cxl: Add emulation of a CXL Hotness
+ Monitoring Unit (CHMU)
+Message-ID: <20250619115518.00006e40@huawei.com>
+In-Reply-To: <20250612155724.1887266-3-Jonathan.Cameron@huawei.com>
+References: <20250612155724.1887266-1-Jonathan.Cameron@huawei.com>
+ <20250612155724.1887266-3-Jonathan.Cameron@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qE3LMDyROjclFn_Ru9Vyf1bHlbyPCd3X
-X-Proofpoint-GUID: PDUghQ2tA5QQZIBFUDawGqwAkumoqvmF
-X-Authority-Analysis: v=2.4 cv=c92rQQ9l c=1 sm=1 tr=0 ts=6853df6a cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=69wJf7TsAAAA:8
- a=DuJFUVMG8awct7Q4CXcA:9 a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE5MDA3OCBTYWx0ZWRfX1hdDyhlMXZCq
- j4tsCiesl7z9g8YO0mmDosjG3tKZM+3HjIggjLictGSTu0+M0d5jEPb7ASRu5IzE8L/yGLr7KiB
- Y4gd8C5ShKSGCud/11iz+4drid5Hudua2RAeF8Tu+RNWFv5KNEcYdwDrqI4tWxm7T2wcasq6+Fg
- aLH1Oim2m+KiqFCjHHWfNXoJuRDUcAeeB/DTH1xgXUt+TzeuPPH5r15DMQSWWR/p9O4T5WXQAWb
- 94QssV2iRgdg/LCmq0C5QX6PhLktTiSQ+KbArXZnGVkWJTzI4+AszfaKPhkdXXEHNy5wl5ioOPL
- aTQV9ZPZPLHvsuzH+hyiurDWVH7J4yrxopCMF8zUlMfeLeCrSBd3471k9UNYqtSxn+DenWPpDn6
- t4n5FhUfslj/gkcPZGb8v0q0kKJn9eaz1u3I/lb5w24wiLBWS6C/17WwMcrwPMPz7ERbSJBH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-19_03,2025-06-18_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
- mlxlogscore=965 mlxscore=0 adultscore=0 phishscore=0 suspectscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506190078
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rathc@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,33 +73,170 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I have been working on Power ISA for a long time now and have mostly
-contributed in TCG instruction translation area (moved 300+ instructions to
-decodetree as of yet) and would like to continue contributing to PPC TCG in
-best possible ways I can. I think it's time to step up and assist in reviewing
-related patches to enable myself contribute more effectively in this direction.
+On Thu, 12 Jun 2025 16:57:22 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+> CXL r3.2 defines a CXL Hotness Monitoring Unit. This allows for a CXL
+> device to do on device estimation of which 'granuals' of data are 'hot'
+> - that is accessed a lot. For a typical application hot data on a CXL
+> device both wastes potentially limited bandwidth and many have latency
+> impacts. Access counts are therefore a measurable proxy on which to base
+> memory placement decisions.
+> 
+> Typical use cases include:
+> 1 - Establishing which data to move to faster RAM in a tiered memory
+>     system. Discussions on how to do this in Linux are ongoing so likely
+>     use case 2 will happen first.
+> 2 - Provide detailed data (at low overhead) on what memory in an
+>     application is hot, allowing for optimization of initial data
+>     placement on future runs fo the application.
+> 
+> The focus of this emulation is providing a way to capture 'real' data
+> in order to help us develop and tune the kernel stack.
+> 
+> This emulated device will be fed with data from a QEMU plugin. That
+> plugin is responsible for the actual tracking and counting part of
+> hotness tracking. This device simply provides a timebase (epoch end
+> point) along with configuration and data retrieval.
+> 
+> The connection to the QEMU plugin providing the data is via a sockets.
+> Supply the cxl-type3 device parameter chmu-port=4443 to specify the
+> network port as 4443 and ensure the plugin is loaded (see later patch).
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 16af37986a..a2db7d72aa 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -295,6 +295,7 @@ F: tests/tcg/openrisc/
- PowerPC TCG CPUs
- M: Nicholas Piggin <npiggin@gmail.com>
- M: Daniel Henrique Barboza <danielhb413@gmail.com>
-+R: Chinmay Rath <rathc@linux.ibm.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: target/ppc/
--- 
-2.49.0
+Although we don't support downsampling the device is currently reporting that
+it does by a factor of 2.  Fix below.
+
+Yuquan Wang ran into some related problems.
+Note that with current posted rfc1 kernel driver best bet is just
+don't specify the downsampling parameter at all. It will default to none
+and doesn't run into the bug here (as we never check the value if not specified).
+
+Whilst testing this I did manage to trigger a double free in qemu, but
+I haven't replicated that yet. 
+
+Jonathan
+
+
+> ---
+
+> +static uint64_t chmu_read(void *opaque, hwaddr offset, unsigned size)
+> +{
+> +    const hwaddr chmu_stride = A_CXL_CHMU1_CAP0 - A_CXL_CHMU0_CAP0;
+> +    CHMUState *chmu = opaque;
+> +    CHMUInstance *chmui;
+> +    uint64_t val = 0;
+> +    int instance = 0;
+> +    int rc;
+> +
+> +    if (offset >= A_CXL_CHMU0_CAP0) {
+> +        instance = (offset - A_CXL_CHMU0_CAP0) / chmu_stride;
+> +        /*
+> +         * Offset allows register defs for CHMU instance 0 to be used
+> +         * for all instances. Includes COMMON_CAP.
+> +         */
+> +        offset -= chmu_stride * instance;
+> +    }
+> +
+> +    if (instance >= CXL_CHMU_INSTANCES_PER_BLOCK) {
+> +        return 0;
+> +    }
+> +
+> +    chmui = &chmu->inst[instance];
+> +    switch (offset) {
+> +    case A_CXL_CHMU_COMMON_CAP0:
+> +        val = FIELD_DP64(val, CXL_CHMU_COMMON_CAP0, VERSION, 1);
+> +        val = FIELD_DP64(val, CXL_CHMU_COMMON_CAP0, NUM_INSTANCES,
+> +                         CXL_CHMU_INSTANCES_PER_BLOCK);
+> +        break;
+> +    case A_CXL_CHMU_COMMON_CAP1:
+> +        val = FIELD_DP64(val, CXL_CHMU_COMMON_CAP1, INSTANCE_LENGTH,
+> +                         A_CXL_CHMU1_CAP0 - A_CXL_CHMU0_CAP0);
+> +        break;
+> +    case A_CXL_CHMU0_CAP0:
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, MSI_N, chmui->msi_n);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, OVERFLOW_INT, 1);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, LEVEL_INT, 1);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, EPOCH_TYPE,
+> +                         CXL_CHMU0_CAP0_EPOCH_TYPE_GLOBAL);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, TRACKED_M2S_REQ_NONTEE_R, 1);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, TRACKED_M2S_REQ_NONTEE_W, 1);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, TRACKED_M2S_REQ_NONTEE_RW, 1);
+> +        /* No emulation of TEE modes yet so don't pretend to support them */
+> +
+> +        /* Epoch length from 100 milliseconds to 100 second */
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, MAX_EPOCH_LENGTH_SCALE,
+> +                         CXL_CHMU_EPOCH_LENGTH_SCALE_1SEC);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, MAX_EPOCH_LENGTH_VAL, 100);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, MIN_EPOCH_LENGTH_SCALE,
+> +                         CXL_CHMU_EPOCH_LENGTH_SCALE_100MSEC);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, MIN_EPOCH_LENGTH_VAL, 1);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP0, HOTLIST_SIZE,
+> +                         CXL_HOTLIST_ENTRIES);
+> +        break;
+> +    case A_CXL_CHMU0_CAP1:
+> +        /* 4KiB and 8KiB only - 2^N * 256 for each bit set */
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP1, UNIT_SIZES, BIT(4) | BIT(5));
+> +        /* No downsampling  - 2^(N - 1) for each bit set */
+
+This spec is a bit confusing around this, but I think it is 2^N
+
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP1, DOWN_SAMPLING_FACTORS, BIT(1));
+Hence BIT(0) is appropriate here for no support (full rate only)
+
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP1, FLAGS_EPOCH_BASED, 1);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP1, FLAGS_ALWAYS_ON, 0);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP1, FLAGS_RANDOMIZED_DOWN_SAMPLING,
+> +                         1);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP1, FLAGS_OVERLAPPING_ADDRESS_RANGES,
+> +                         1);
+> +        /*
+> +         * Feature to enable a backlog of entries that immediately fill the list
+> +         * once space is available. Only relevant if reading list infrequently
+> +         * and concerned about stale data. (Not implemented)
+> +         */
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP1, FLAGS_INSERT_AFTER_CLEAR, 0);
+> +        break;
+> +    case A_CXL_CHMU0_CAP2:
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP2, BITMAP_REG_OFFSET,
+> +                         A_CXL_CHMU0_RANGE_CONFIG_BITMAP0 - A_CXL_CHMU0_CAP0);
+> +        break;
+> +    case A_CXL_CHMU0_CAP3:
+> +        val = FIELD_DP64(val, CXL_CHMU0_CAP3, HOTLIST_REG_OFFSET,
+> +                         A_CXL_CHMU0_HOTLIST0 - A_CXL_CHMU0_CAP0);
+> +        break;
+> +    case A_CXL_CHMU0_STATUS:
+> +        val = FIELD_DP64(val, CXL_CHMU0_STATUS, STATUS_ENABLED,
+> +                         chmui->enabled ? 1 : 0);
+> +        val = FIELD_DP64(val, CXL_CHMU0_STATUS, OPERATION_IN_PROG,
+> +                         0); /* All operations effectively instantaneous */
+> +        val = FIELD_DP64(val, CXL_CHMU0_STATUS, COUNTER_WIDTH, 16);
+> +        val = FIELD_DP64(val, CXL_CHMU0_STATUS, OVERFLOW_INT,
+> +                         chmui->overflow_set ? 1 : 0);
+> +        val = FIELD_DP64(val, CXL_CHMU0_STATUS, LEVEL_INT,
+> +                         chmui->fill_thresh_set ? 1 : 0);
+> +        break;
+> +    case A_CXL_CHMU0_CONF0:
+> +        val = FIELD_DP64(val, CXL_CHMU0_CONF0, M2S_REQ_TO_TRACK, chmui->what);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CONF0, FLAGS_RANDOMIZE_DOWNSAMPLING, 0);
+
+We hard code the value 0 here which corresponds to BIT(0) above.
+
+> +        val = FIELD_DP64(val, CXL_CHMU0_CONF0, FLAGS_INT_ON_OVERFLOW,
+> +                         chmui->int_on_overflow);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CONF0, FLAGS_INT_ON_FILL_THRESH,
+> +                         chmui->int_on_fill_thresh);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CONF0, CONTROL_ENABLE,
+> +                         chmui->enabled);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CONF0, CONTROL_RESET, 0);
+> +        val = FIELD_DP64(val, CXL_CHMU0_CONF0, HOTNESS_THRESHOLD,
+> +                         chmui->hotness_thresh);
+> +        break;
 
 
