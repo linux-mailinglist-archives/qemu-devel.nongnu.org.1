@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4C6AE06CB
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38759AE06C1
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:16:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSF6i-00050K-U1; Thu, 19 Jun 2025 09:15:09 -0400
+	id 1uSF6g-0004s6-Op; Thu, 19 Jun 2025 09:15:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6P-0004Xy-6B
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:51 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6R-0004YG-DW
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:52 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6M-00044e-Da
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:48 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-45348bff79fso9543035e9.2
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:14:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6P-00045J-8O
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:50 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3a54690d369so804223f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:14:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750338882; x=1750943682; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750338887; x=1750943687; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4TTsVWGK24wAjdPt8HIDq+esVA7ZY3jqwbKqWeNJBVE=;
- b=ag2NNtCdPHKpDlA0ZzHtuoJzQUUMom3xc66a5RiWx6riH38JOEceyalaMdCvKvJhfn
- qHsAvvA7LCIMvkZbTRCwhzFqVHEXRJRBl9HXSYaxyu41v/KghTYdDr23jsbhq1y6RzD5
- zfJR6+7iUW2sdsp1A7ENUn74gdpG/m0V5MATwLCXr/BNt6sSBIOSJVybvJLLb/Yq7uQ/
- nIV6R68qH8itK4qwIbme9Q2g9xPgtRlUF+FDP02pI84dv//5Uzjn+SYlQ8LAyC8Qsj1U
- p9MjICD9a113f69HyDQ+tHWgv7D+fDvVX4uixSHO25NVYMFdHge0PzlSJ1iR7l3W/AT5
- lzJg==
+ bh=qEhVLrdb7gQcxLJ9m8XmAJvi0CaJW+OAP6dVQwdaX2k=;
+ b=co7q2S5zL8CPzJxxoclKDk9sDlkWepTKCxbde9rcpi2wi48fAxRgtak5HevxKNHPlP
+ YF4cknyXNNkbOR91IqpCUnaU5tpbB3C4JWylSV7miW0axAZU71G99qcLxQjxsu97iLXm
+ w9JJewA19g2yAPTCxAxjcY5KaYBlEgxZhNunrDZMd/67j4gnWs2FdFQXVg2iNVrbB7E8
+ 7cETyEPMWTzVAgn5PVpzUgQ94+cgQLZA1Bh35NzYnVA3R/0vc6AMbRcPl7qJ4/JIzD4M
+ z0A8JyaLqI+cfBosWi3DlIqf9dUiURZf4bR1qGRcOLlsmGiRhji4VfXc5qEzdtK2sGE+
+ 1Ykw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750338882; x=1750943682;
+ d=1e100.net; s=20230601; t=1750338887; x=1750943687;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4TTsVWGK24wAjdPt8HIDq+esVA7ZY3jqwbKqWeNJBVE=;
- b=Z30dURnKyxAJ2LdfMRYh0qxYLLn7zdYxJuKtps2/dkGwbaEsO7ytp3fdWAa5V99fop
- rNYOVthKshlVbO4xiuqZVUjgVywQ+gLkFzPLf+w2ekPtMVFYb/Qy8uE8ufYd4heYTj3b
- fB5/anG5XZYDD5ynatBnRVZZbSbLD69Up6IGjrGQMcsRctmvQWqAxPNIBKq0muo57TBm
- vOHAxEvc5vevRPUgisk161tOvke/N0pu24c6i0VXeZxYyZGMkqMsSjCIDQiujiFEpSXH
- iskpeA/XLrhWk02srRFNJyH57Mb1jtuzV2HI/yacPC1+M49spHbmUuO4DCyoKuS6qV92
- 7LPQ==
-X-Gm-Message-State: AOJu0YyH3FCiq3QBJ7cUpqWntBfTJj/i2GQj413CcR46GhzsMP1fYcbF
- pwGm5Io7WrU/zxIz+KbsTvwxt9hJNb79gX9DoYj/rYf069GsUhIX1r/fKN+5G4pvvXufoHBT7l9
- rVQLRikc=
-X-Gm-Gg: ASbGncubCbuVzs/Hj06bZSGi0T4AnbZLY4QMbpHmk0GKo3Xw7fBRrzSzSVXoXq78dR2
- NwdYepx710eFdhmX5xT+xsxuGqU8R61L5v/WQx79PoW1XhpepWiohwH20S5UXBYx0KBO0WBY359
- UCkaNr+hnXKfLhVc8KmWTVSn9CRq+Flp9Wr621VQh87iFfU3DD5tyuKeCqDIQIszALZ7bZPRhvl
- 9fxJVLgv9xjxhB+aXs8f6/kSA0kf+4WaVmJeqrPlCjEZotfoapN+AAEN3NgbQfJmASebZZWZP/2
- d2Asehl7Gcj5Ef5nmAQfEtkt6aQrkhAHBsbUTQASNg94uAmQ+hyO5T+lQT1ZCngO0sKN4XbjNCB
- beW0mJFg4mGRcABVzbTMKxYcTNWX57aOOBkAStYI0bzgM0Uk=
-X-Google-Smtp-Source: AGHT+IE0UJ/OKRN13EAAVAiGqkOfuQ3hywjomt6DtP+BfeCmZE/SGHvtR8ilW3FX7DRO6yFsM24vUQ==
-X-Received: by 2002:a05:600c:1c28:b0:43c:ec97:75db with SMTP id
- 5b1f17b1804b1-4533caa35c3mr199299745e9.11.1750338882244; 
- Thu, 19 Jun 2025 06:14:42 -0700 (PDT)
+ bh=qEhVLrdb7gQcxLJ9m8XmAJvi0CaJW+OAP6dVQwdaX2k=;
+ b=CV0dguBoHZix477TeGKTSrhk3EkBQocGPuDMSJ3MMwvhciHq0ROlUkUFAy8+/nYA9Q
+ yj5o74Qm9s0qkl2T2dMg7QJTmWtU9eIaJNy/oxuUrIUl48YP0cXmXRMqSyNPuT4NJ30X
+ P0v9MbTPHfKqOFtGZL1/QUVL35wC7jXz9qvERTIyU/zgpElad7SCshuItHZykdhuWaL+
+ 1VbqittbXk4j95FzUds25E0Bwcandzkj0qO+mc4zWBGZXfcEE0ZMmf9bGaOblGDFQJdc
+ CzXVduHbh+xyt/WJqL9bgpf7EpkbMMYjW8UKcPK9Q/QXUZAkb6iEngT8IVLOv/mc0Ddt
+ Yqjw==
+X-Gm-Message-State: AOJu0YxCfAISo/ov9WVxRWesKGgqs2rIJh/xI57zRbL70kPJq6y9aaeB
+ +X1Zn0tkiZ0rHpNmOzSVOE/syfSWdWPDm978lgeqEMTI6zWWLsDLEMIXA7G7yrVyxR1KbnlPJvM
+ YZASOGPc=
+X-Gm-Gg: ASbGncs+jciGooxSeiqiRWunhjr8+gKSdIVKpS1bFmoohEU0FBItzXX+mnQKrPx/L54
+ vBLontxgGA2SQGw3E3YO9c3+XozBnOP9jT1uzIz2E9y5oa8OhmeirQTHNjn0et4/jRapkMN5vQI
+ A59ZBGt3Eqvln9Y0EZcFKltXmIH+qPXo1HwWw10ILA6pKsU9t3cq6rAO3+3AdqaNCn/uungoK1X
+ /U7Www+p3fkexhNOzhIlw0kHMmjvC5XQH7Kuhlc2Y0ruccqDX/8QnJtHW4Fj/yCq/AwFLu+pstE
+ vmaIX08SrYGWOuRq9kH/cmYksIPI4jCNhOxcvnjLf/pad8xXuV9P62tJQVxTOS1u+7mpWBSau6O
+ i17qqwfNZanEse2SgwS8Fj6Znm9mM3avWvJAB
+X-Google-Smtp-Source: AGHT+IFYyws/hie04Gs7cz38N8DD6RmjvKvx7LAHAf6xXnGxdc9ttG/TDPs6rEuwn9zHE+u/jqYJ/g==
+X-Received: by 2002:a05:6000:18ac:b0:3a4:f6fe:5244 with SMTP id
+ ffacd0b85a97d-3a572367b13mr17405974f8f.12.1750338887297; 
+ Thu, 19 Jun 2025 06:14:47 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4535ef6edbesm26382285e9.20.2025.06.19.06.14.40
+ ffacd0b85a97d-3a568b3c0d3sm19567460f8f.79.2025.06.19.06.14.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Jun 2025 06:14:41 -0700 (PDT)
+ Thu, 19 Jun 2025 06:14:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
@@ -77,18 +77,17 @@ Cc: Cameron Esfahani <dirty@apple.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>
-Subject: [PATCH 15/20] target/arm/hvf: Really set Generic Timer counter
- frequency
-Date: Thu, 19 Jun 2025 15:13:14 +0200
-Message-ID: <20250619131319.47301-16-philmd@linaro.org>
+Subject: [PATCH 16/20] hw/arm/virt: Only require TCG || QTest to use TrustZone
+Date: Thu, 19 Jun 2025 15:13:15 +0200
+Message-ID: <20250619131319.47301-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250619131319.47301-1-philmd@linaro.org>
 References: <20250619131319.47301-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,53 +110,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Setting ARMCPU::gt_cntfrq_hz in hvf_arch_init_vcpu() is
-not correct because the timers have already be initialized
-with the default frequency.
+We only need TCG (or QTest) to use TrustZone, whether
+KVM or HVF are used is not relevant.
 
-Set it earlier in the AccelOpsClass::cpu_target_realize()
-handler instead, and assert the value is correct when
-reaching hvf_arch_init_vcpu().
-
-Fixes: a1477da3dde ("hvf: Add Apple Silicon support")
+Reported-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/hvf/hvf.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ hw/arm/virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 632751d1eab..fce02d22ef9 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1008,12 +1008,16 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-     CPUARMState *env = &arm_cpu->env;
-     uint32_t sregs_match_len = ARRAY_SIZE(hvf_sreg_match);
-     uint32_t sregs_cnt = 0;
-+    uint64_t freq_hz = 0;
-     uint64_t pfr;
-     hv_return_t ret;
-     int i;
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 99fde5836c9..b49d8579161 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2203,7 +2203,7 @@ static void machvirt_init(MachineState *machine)
+         exit(1);
+     }
  
-     env->aarch64 = true;
--    asm volatile("mrs %0, cntfrq_el0" : "=r"(arm_cpu->gt_cntfrq_hz));
-+
-+    /* system count frequency sanity check */
-+    asm volatile("mrs %0, cntfrq_el0" : "=r"(freq_hz));
-+    assert(arm_cpu->gt_cntfrq_hz == freq_hz);
- 
-     /* Allocate enough space for our sysreg sync */
-     arm_cpu->cpreg_indexes = g_renew(uint64_t, arm_cpu->cpreg_indexes,
-@@ -1080,6 +1084,10 @@ int hvf_arch_init_vcpu(CPUState *cpu)
- 
- bool hvf_arch_cpu_realize(CPUState *cs, Error **errp)
- {
-+    ARMCPU *cpu = ARM_CPU(cs);
-+
-+    asm volatile("mrs %0, cntfrq_el0" : "=r"(cpu->gt_cntfrq_hz));
-+
-     return true;
- }
- 
+-    if (vms->secure && (kvm_enabled() || hvf_enabled())) {
++    if (vms->secure && !tcg_enabled() && !qtest_enabled()) {
+         error_report("mach-virt: %s does not support providing "
+                      "Security extensions (TrustZone) to the guest CPU",
+                      current_accel_name());
 -- 
 2.49.0
 
