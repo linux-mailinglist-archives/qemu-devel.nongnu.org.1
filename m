@@ -2,104 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF404AE05ED
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 14:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBEBAE06A9
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:14:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSEQf-0000zx-OH; Thu, 19 Jun 2025 08:31:41 -0400
+	id 1uSF58-0003Ve-U5; Thu, 19 Jun 2025 09:13:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1uSEQc-0000zS-9H; Thu, 19 Jun 2025 08:31:38 -0400
-Received: from fhigh-a1-smtp.messagingengine.com ([103.168.172.152])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <patrick@stwcx.xyz>)
- id 1uSEQZ-0004dh-HP; Thu, 19 Jun 2025 08:31:38 -0400
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal
- [10.202.2.42])
- by mailfhigh.phl.internal (Postfix) with ESMTP id BD20C114019A;
- Thu, 19 Jun 2025 08:31:32 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-02.internal (MEProxy); Thu, 19 Jun 2025 08:31:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwcx.xyz; h=cc
- :cc:content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:subject
- :subject:to:to; s=fm3; t=1750336292; x=1750422692; bh=DTuJ1Sywhv
- D1/8Ak7EOA6B+1P89kuNDOpEV88BsdxXc=; b=mwBwDilKyd9HkdaG2E0QPYl9Uu
- K+k5kqqAgkc89yblXOpPLG3BEDJvdiS8CvZ9zhygD5OBtqjRttVxbEH81Jz9yxEB
- ljUUFR0zw5EO3t9jelH3WcXo4xNIvdwqse1LjttdAbotN3slkQCzdzt4rn6/7j4Q
- ZpPBP1M0v5A7IKg68tgNxOoJPbwmk6XqRQ23iCR/ZRTBnXkvMG/0un17ZCUtBX4x
- 6tPQm7pylEUD+D3YD2YpGWxGHxxHgYpda5nLIfvAWEj/Ohqi5Fecyfd82LJJG1TO
- XTklvbjJgwsym6PNFNb8GCtUDjvM5hdM9FKWA86xAd4jBIwk2CfOe9fM70zQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
- 1750336292; x=1750422692; bh=DTuJ1SywhvD1/8Ak7EOA6B+1P89kuNDOpEV
- 88BsdxXc=; b=SdCOHrgOd2ApnGgJNKR6IU42FIMAYD4aT7OEXl6lfVFsmySOisg
- Bq0b/dyjCkN9Y4bIRCts7RfKfWGC+PbMy081D4BCwF/omvb3vSlTxJouKdd8bfBD
- PlL+HhuwwFhCTV5nE9EUWjXDHutirwRoyQUNz7PMfL8L6ZqpHSjc4Aq4AE9YHnz4
- CBeEk5U2SF8ASyvmJjjSbb84A4I+HxXH2rbIgR65cVb5F0Y3DSDj/T2i0TLZXeXc
- jixNcYH5uk8eniT9yRG3+2uLlBHyKYz3DmaM6WIchK1itORO69VdkLoaUKkSrWyz
- zN7fW0Hykw3VmS4x4Ln8yNQFkL6muPyoUWg==
-X-ME-Sender: <xms:IwNUaC-fH7HDUnccUPboWWZooU9T5j-MHf3KZ2JMXPwZ7IGfvAq88A>
- <xme:IwNUaCsdxZzPrqd-2ptDGaUQu4PCyPhyVKsslBF8WpGfgy4qvVJevJtW0t5RoJJZK
- aJNhNIarksHWeujZRY>
-X-ME-Received: <xmr:IwNUaIBlJv3xxu70d2n7drVDQxpbbQuEt9_iTSXkSYBre8hgHu-FE1vFwNw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdehheefucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
- lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegfrhhluc
- fvnfffucdljedtmdenucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttddunecu
- hfhrohhmpefrrghtrhhitghkucghihhllhhirghmshcuoehprghtrhhitghksehsthiftg
- igrdighiiiqeenucggtffrrghtthgvrhhnpedtjeejgfdugefhtedvudfghfejfeejfefh
- ffeffeelgeduveejleelffefvdffleenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
- grmhepmhgrihhlfhhrohhmpehprghtrhhitghksehsthiftgigrdighiiipdhnsggprhgt
- phhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghlgheskhgroh
- gurdhorhhgpdhrtghpthhtohepphgsohhniihinhhisehrvgguhhgrthdrtghomhdprhgt
- phhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtphhtth
- hopehsthgvvhgvnhgplhgvvgesrghsphgvvgguthgvtghhrdgtohhmpdhrtghpthhtohep
- lhgvvghtrhhohiesghhmrghilhdrtghomhdprhgtphhtthhopehjrghmihhnpghlihhnse
- grshhpvggvughtvggthhdrtghomhdprhgtphhtthhopegrnhgurhgvfiestghouggvtgho
- nhhsthhruhgtthdrtghomhdrrghupdhrtghpthhtohepjhhovghlsehjmhhsrdhiugdrrg
- hupdhrtghpthhtohepqhgvmhhuqdgrrhhmsehnohhnghhnuhdrohhrgh
-X-ME-Proxy: <xmx:IwNUaKejbR9LTBSWVje49i6e0mBOtRzvPY6FWhEFhRZN6aBKjMqsvg>
- <xmx:IwNUaHN87s4tgIWvbhePhOVz6oxqymJcP4r8OxUFj_hzvKRWtOINfw>
- <xmx:IwNUaEnrRFQ4Dtu0vCTDaINn9ELDRE26T-ShDpfC85N3zmWROHzx4w>
- <xmx:IwNUaJtVpXQ-xeM1lgsxRRgQbNIdkNJAF5EpyWL0hIT8hrh47FJmDw>
- <xmx:JANUaMz0s7nhrg2l1OOgO6GgQGKxfBvhhOhFMOVU3U1w52ya5VtnEWB5>
-Feedback-ID: i68a1478a:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Jun 2025 08:31:30 -0400 (EDT)
-Date: Thu, 19 Jun 2025 08:31:30 -0400
-From: Patrick Williams <patrick@stwcx.xyz>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF57-0003VE-1y
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:13:29 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF53-0003pp-Oy
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:13:27 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-45362b7adc9so1456135e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:13:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1750338803; x=1750943603; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jLfE9fOJifGBcyKWvwZ9c2lJf+BVklJMs4lfWx36NIY=;
+ b=UbE2pw+NtRfGCNU1tDKEHyTAW2pf6w3ZDf2I9hRN+DlhCPUWGeiVwNqdoDJYoC4sqd
+ pDNUPPoUvJjbQrlei/lArbD6OuPs9eDI/T1xsTnpz5md94VLUNjoSHbGpQHhWO3DcMbW
+ e1xxBvmQT76rzWEBi1HiYSDAxl0HeC9ZJn/20dC3L/zVDk1XyzQXokTO2DUjhOmeRRK2
+ wQUPI7l0qHCNvB61gGjdMEdS+AM9TnFNbVuXUrtG9eHuELChxUyEZd2E904aY5AkhOww
+ ppRA3nS4OZWg44UJaVSl2lhMUlWaxRQI7QJB4FZ/f3h+UcXT1NCAIWCU4TAtBoVo0lzg
+ PHRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750338803; x=1750943603;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jLfE9fOJifGBcyKWvwZ9c2lJf+BVklJMs4lfWx36NIY=;
+ b=uDV24RMoWUjRBO2V4d5Dczjkz9YdFAOvx+UzKfjouQmqHqMQiCCiJmt62OG9uC6O+l
+ Q/b/888UU33rATBya5+x48SxVr/YhnSYSxP0L206AMzEVxWhkEJVxSpaHS1Eq4/bzjCX
+ 2DgV92YgFiz+EDeYbtgu6Q70JBViRCc/oDovUFH7diEeVB+JZmoWzujIJ3wHereQ/fSl
+ FKD4379bwh1dMCfupeiCL2vOOEi/V7YorveB6iA5b4hupYnkI1ACcGRb0gZFEUyzZtR5
+ O/d/G+KRw5hYiTuxcNRkDgiyVkINM6Jr2xu50yAiAMkkMnd4KkkBDKVbdWPMB4PrR6T3
+ 20zA==
+X-Gm-Message-State: AOJu0YxNF3t712hUCmxYTAHjRMB18f17ZQ1jFxlWY7fY9HGbdfFOjvHn
+ IhdOvzjXwy8/Nxm9+kvV351yvg8Dwe8NVSkJduEXmimRGyOkUXCxJvtpxPpCAeSpeM2FTAFqgLG
+ FDtA9tjE=
+X-Gm-Gg: ASbGncte/847iSRROVxpsGBONpDSZFvLhk6zdglqz4ov+ldEpKwjvW5l/ZWe0jXnUnk
+ 27AQvLen01s9f3UZiC8EX27lpLnzkCy4Wb5K63jUqk4wKmKYlcQT9q7In5+cL1XreXf4PsHpmP4
+ Ia54SHmGZh1AaWaUTGZWMfkk1kJ0uEZyuC9k0XO7T4FfSEpoU9rQtPpnQ0t69/jIq67xfxtiP6K
+ B8JXfM2w1VaWD4A3Bo2672ngz/Pys/tXUBAJS/W/Wq2xY7KunwyIj9WYxYHTfRHySyYYxeOyjtn
+ 92F/pGXTa6hlKVEw5+Q+gL34XZj1wF3af2MffQYFRzEMOl7FdWnBCD5j/pOcYIs/B4a10qJV/X/
+ 7Phq40d/qU3A7aUSh9L9ZRtXYS/AFq0xuAyNz
+X-Google-Smtp-Source: AGHT+IFZta5PRVvj+E2GJ5o/dtJ2nlRFJisiMQh02QL8783nK8vqZBU6kAfypQFE9/oYtUYHjFX88A==
+X-Received: by 2002:a05:600c:83c3:b0:442:f4a3:a2c0 with SMTP id
+ 5b1f17b1804b1-4535ec8d13dmr38863525e9.13.1750338803340; 
+ Thu, 19 Jun 2025 06:13:23 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4535ead2449sm28200915e9.30.2025.06.19.06.13.21
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 19 Jun 2025 06:13:22 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Cameron Esfahani <dirty@apple.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Julian Armistead <julian.armistead@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>,
- Troy Lee <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/arm/aspeed: add Catalina machine type
-Message-ID: <aFQDIiJDCeavt57O@heinlein>
-References: <20250619034338.2678536-1-patrick@stwcx.xyz>
- <77c90f31-801f-48e7-b35c-db202a022769@kaod.org>
+ Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
+ Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>
+Subject: [PATCH 00/20] arm: Fixes and preparatory cleanups for split-accel
+Date: Thu, 19 Jun 2025 15:12:59 +0200
+Message-ID: <20250619131319.47301-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Ka2dZUjXQSmmKKYg"
-Content-Disposition: inline
-In-Reply-To: <77c90f31-801f-48e7-b35c-db202a022769@kaod.org>
-Received-SPF: pass client-ip=103.168.172.152; envelope-from=patrick@stwcx.xyz;
- helo=fhigh-a1-smtp.messagingengine.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_SUSPICIOUS_NTLD=0.499, PDS_OTHER_BAD_TLD=1.999, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,48 +107,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Omnibus series of ARM-related patches (noticed during the
+"split accel" PoC work).
 
---Ka2dZUjXQSmmKKYg
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+- Usual prototypes cleanups
+- Check TCG for EL2/EL3 features (and not !KVM or !HVF)
+- Improve HVF debugging
+- Correct HVF 'dtb_compatible' value for Linux
+- Fix HVF GTimer frequency (My M1 hardware has 24 MHz)
+  (this implies accel/ rework w.r.t. QDev vCPU REALIZE)
 
-On Thu, Jun 19, 2025 at 07:49:47AM +0200, C=E9dric Le Goater wrote:
-=20
-> Could you please also provide a functional test using this build ?
-> (same question for fuji-bmc and fby35-bmc if still possible)
+Regards,
 
-I can provide one for Catalina.  I just realized that the openbmc
-jenkins isn't building that like it should.  I fixed it and I'll point
-you to an image.
+Phil.
 
-I don't have a way to generate something for fuji or fby35 right now.
-Those aren't actually OpenBMC systems (they're the older "Facebook
-OpenBMC") so we don't have a public image build infrastructure set up
-for them.
+Philippe Mathieu-Daudé (20):
+  target/arm: Remove arm_handle_psci_call() stub
+  target/arm: Reduce arm_cpu_post_init() declaration scope
+  target/arm: Unify gen_exception_internal()
+  target/arm/hvf: Simplify GIC hvf_arch_init_vcpu()
+  target/arm/hvf: Directly re-lock BQL after hv_vcpu_run()
+  target/arm/hvf: Trace hv_vcpu_run() failures
+  accel/hvf: Trace VM memory mapping
+  target/arm/hvf: Log $pc in hvf_unknown_hvc() trace event
+  target/arm/hvf: Correct dtb_compatible value
+  target/arm: Restrict system register properties to system binary
+  target/arm: Create GTimers *after* features finalized / accel realized
+  accel: Keep reference to AccelOpsClass in AccelClass
+  accel: Introduce AccelOpsClass::cpu_target_realize() hook
+  accel/hvf: Add hvf_arch_cpu_realize() stubs
+  target/arm/hvf: Really set Generic Timer counter frequency
+  hw/arm/virt: Only require TCG || QTest to use TrustZone
+  hw/arm/virt: Only require TCG || QTest to use virtualization extension
+  hw/arm/virt: Rename cpu_post_init() -> post_cpus_gic_realized()
+  hw/arm/sbsa-ref: Tidy up use of RAMLIMIT_GB definition
+  tests/functional/sbsa-ref: Move where machine type is set
 
---=20
-Patrick Williams
+ meson.build                              |  1 +
+ accel/hvf/trace.h                        |  2 +
+ include/qemu/accel.h                     |  3 +
+ include/system/accel-ops.h               |  4 +-
+ include/system/hvf.h                     |  3 +
+ target/arm/cpu.h                         |  2 -
+ target/arm/internals.h                   |  6 +-
+ target/arm/tcg/translate.h               |  1 +
+ accel/accel-common.c                     |  4 ++
+ accel/accel-system.c                     |  3 +-
+ accel/hvf/hvf-accel-ops.c                |  8 +++
+ accel/tcg/tcg-accel-ops.c                |  4 +-
+ hw/arm/sbsa-ref.c                        |  8 ++-
+ hw/arm/virt.c                            |  9 +--
+ target/arm/cpu.c                         | 71 ++++++++++++------------
+ target/arm/hvf/hvf.c                     | 46 +++++++++++----
+ target/arm/tcg/translate-a64.c           |  6 --
+ target/arm/tcg/translate.c               |  2 +-
+ target/i386/hvf/hvf.c                    |  5 ++
+ accel/hvf/trace-events                   |  7 +++
+ target/arm/hvf/trace-events              |  3 +-
+ tests/functional/test_aarch64_sbsaref.py |  2 +-
+ 22 files changed, 129 insertions(+), 71 deletions(-)
+ create mode 100644 accel/hvf/trace.h
+ create mode 100644 accel/hvf/trace-events
 
---Ka2dZUjXQSmmKKYg
-Content-Type: application/pgp-signature; name=signature.asc
+-- 
+2.49.0
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEBGD9ii4LE9cNbqJBqwNHzC0AwRkFAmhUAyAACgkQqwNHzC0A
-wRkVoxAAjjHCC+WZ3VG2QZEv/g0dKm0/u7bZzTQjKv8EmWaIYyCht7kxJ6yfrb09
-SwOeptIGag8J+pWs8OohYhy8x6+QMK0PmAwGEhJFxoXGsJldJ4vIffRNff4FVyx3
-pQ/XOr+U7pEO41zo2nbfiHRFNorIP84TUDzxaL6QDpl/cJo78NJN42yoy9mxheCc
-IJrxt41IZh0g8MtVWBz14c0mO3nARPB0wB7Qqy5O7H87hWxdF4NdtN236huVV5UW
-WjiWiUZFp96CuRkls3aI7ubN1nIUh9iPqWFc7qk7y+VwQ2L43dRF/0nRdTjIKUel
-uQvTl0FW3ezK1rAcBCok1XqymGEE+DsanhlnxCrDrYlN0aRfih2R2Os2lavLm56s
-hA3dXe+WcShB6vaeJj0z1uDGbdV2fTM6JFkrwuIsb0LxJ9+mWz9cqAWaCzW3305N
-slxasbZatsixRPQm46xnS9OOg+9TADIgCSx9sbr7nvSdZduxfDJUEvNQ5EkkV7sQ
-NPaG3tKPtUBt7TZTwI2uqzL1oYI/+uHiVF+J9o1pfQnbATWH/o2bHWwIMh13g5g2
-g9KCcWgWWuhCXeFwAwVLbJGBR+qyNS+HZ1bCVTnGw0Ml60MxceMTiYwcQ9SB+Ulo
-dn4xkooaaI2RruISDzN6Em2W7q/ZiVjfVwWhrxDE1qd1iuEBUkU=
-=uAOK
------END PGP SIGNATURE-----
-
---Ka2dZUjXQSmmKKYg--
 
