@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74A6AE0080
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80849AE006E
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:52:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSAzV-0004RP-Pc; Thu, 19 Jun 2025 04:51:25 -0400
+	id 1uSAzl-0004Td-03; Thu, 19 Jun 2025 04:51:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uSAzR-0004QA-Jd
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:21 -0400
+ id 1uSAzW-0004Sw-SX
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:26 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uSAzM-0002wl-Rr
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:21 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uSAzU-0002yQ-CU
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:26 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxDGt_z1NogLUZAQ--.58633S3;
- Thu, 19 Jun 2025 16:51:11 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxHHKFz1NoibUZAQ--.58697S3;
+ Thu, 19 Jun 2025 16:51:17 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMAxDcVtz1NohtwgAQ--.30176S7;
- Thu, 19 Jun 2025 16:51:10 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMAxDcVtz1NohtwgAQ--.30176S8;
+ Thu, 19 Jun 2025 16:51:11 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 05/14] hw/intc/loongarch_ipi: Add kernel irqchip save and
- restore function
-Date: Thu, 19 Jun 2025 16:28:08 +0800
-Message-Id: <20250619082817.1517996-6-gaosong@loongson.cn>
+Subject: [PULL 06/14] hw/intc/loongarch_pch_msi: Inject MSI interrupt to kernel
+Date: Thu, 19 Jun 2025 16:28:09 +0800
+Message-Id: <20250619082817.1517996-7-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250619082817.1517996-1-gaosong@loongson.cn>
 References: <20250619082817.1517996-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxDcVtz1NohtwgAQ--.30176S7
+X-CM-TRANSID: qMiowMAxDcVtz1NohtwgAQ--.30176S8
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -66,134 +65,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-Add save and store funtction if kvm_irqchip_in_kernel() return true,
-it is to get and set IPI irqchip state from KVM kernel.
+If kvm_irqchip_in_kernel() return true, MSI interrupt can be injected
+with API kvm_irqchip_send_msi() to KVM.
 
 Reviewed-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <20250606063033.2557365-6-maobibo@loongson.cn>
+Message-ID: <20250606063033.2557365-7-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/loongarch_ipi.c         | 20 ++++++++++++
- hw/intc/loongarch_ipi_kvm.c     | 54 +++++++++++++++++++++++++++++++++
- include/hw/intc/loongarch_ipi.h |  2 ++
- 3 files changed, 76 insertions(+)
+ hw/intc/loongarch_pch_msi.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-index 159ba91fb6..0ea91ea054 100644
---- a/hw/intc/loongarch_ipi.c
-+++ b/hw/intc/loongarch_ipi.c
-@@ -171,6 +171,24 @@ static void loongarch_ipi_cpu_unplug(HotplugHandler *hotplug_dev,
-     core->cpu = NULL;
- }
+diff --git a/hw/intc/loongarch_pch_msi.c b/hw/intc/loongarch_pch_msi.c
+index 06eb944da0..f6d163158d 100644
+--- a/hw/intc/loongarch_pch_msi.c
++++ b/hw/intc/loongarch_pch_msi.c
+@@ -13,6 +13,7 @@
+ #include "hw/pci/msi.h"
+ #include "hw/misc/unimp.h"
+ #include "migration/vmstate.h"
++#include "system/kvm.h"
+ #include "trace.h"
  
-+static int loongarch_ipi_pre_save(void *opaque)
-+{
+ static uint64_t loongarch_msi_mem_read(void *opaque, hwaddr addr, unsigned size)
+@@ -26,6 +27,15 @@ static void loongarch_msi_mem_write(void *opaque, hwaddr addr,
+     LoongArchPCHMSI *s = (LoongArchPCHMSI *)opaque;
+     int irq_num;
+ 
 +    if (kvm_irqchip_in_kernel()) {
-+        return kvm_ipi_get(opaque);
++        MSIMessage msg;
++
++        msg.address = addr;
++        msg.data = val;
++        kvm_irqchip_send_msi(kvm_state, msg);
++        return;
 +    }
 +
-+    return 0;
-+}
-+
-+static int loongarch_ipi_post_load(void *opaque, int version_id)
-+{
-+    if (kvm_irqchip_in_kernel()) {
-+        return kvm_ipi_put(opaque, version_id);
-+    }
-+
-+    return 0;
-+}
-+
- static void loongarch_ipi_class_init(ObjectClass *klass, const void *data)
- {
-     LoongsonIPICommonClass *licc = LOONGSON_IPI_COMMON_CLASS(klass);
-@@ -187,6 +205,8 @@ static void loongarch_ipi_class_init(ObjectClass *klass, const void *data)
-     licc->cpu_by_arch_id = loongarch_cpu_by_arch_id;
-     hc->plug = loongarch_ipi_cpu_plug;
-     hc->unplug = loongarch_ipi_cpu_unplug;
-+    licc->pre_save = loongarch_ipi_pre_save;
-+    licc->post_load = loongarch_ipi_post_load;
- }
- 
- static const TypeInfo loongarch_ipi_types[] = {
-diff --git a/hw/intc/loongarch_ipi_kvm.c b/hw/intc/loongarch_ipi_kvm.c
-index 51e9c7ed1e..b615060d83 100644
---- a/hw/intc/loongarch_ipi_kvm.c
-+++ b/hw/intc/loongarch_ipi_kvm.c
-@@ -11,6 +11,60 @@
- #include "system/kvm.h"
- #include "target/loongarch/cpu.h"
- 
-+static void kvm_ipi_access_reg(int fd, uint64_t addr, uint32_t *val, bool write)
-+{
-+    kvm_device_access(fd, KVM_DEV_LOONGARCH_IPI_GRP_REGS,
-+                      addr, val, write, &error_abort);
-+}
-+
-+static void kvm_ipi_access_regs(void *opaque, bool write)
-+{
-+    LoongsonIPICommonState *ipi = (LoongsonIPICommonState *)opaque;
-+    LoongarchIPIState *lis = LOONGARCH_IPI(opaque);
-+    IPICore *core;
-+    uint64_t attr;
-+    int cpu, fd = lis->dev_fd;
-+
-+    for (cpu = 0; cpu < ipi->num_cpu; cpu++) {
-+        core = &ipi->cpu[cpu];
-+        attr = (cpu << 16) | CORE_STATUS_OFF;
-+        kvm_ipi_access_reg(fd, attr, &core->status, write);
-+
-+        attr = (cpu << 16) | CORE_EN_OFF;
-+        kvm_ipi_access_reg(fd, attr, &core->en, write);
-+
-+        attr = (cpu << 16) | CORE_SET_OFF;
-+        kvm_ipi_access_reg(fd, attr, &core->set, write);
-+
-+        attr = (cpu << 16) | CORE_CLEAR_OFF;
-+        kvm_ipi_access_reg(fd, attr, &core->clear, write);
-+
-+        attr = (cpu << 16) | CORE_BUF_20;
-+        kvm_ipi_access_reg(fd, attr, &core->buf[0], write);
-+
-+        attr = (cpu << 16) | CORE_BUF_28;
-+        kvm_ipi_access_reg(fd, attr, &core->buf[2], write);
-+
-+        attr = (cpu << 16) | CORE_BUF_30;
-+        kvm_ipi_access_reg(fd, attr, &core->buf[4], write);
-+
-+        attr = (cpu << 16) | CORE_BUF_38;
-+        kvm_ipi_access_reg(fd, attr, &core->buf[6], write);
-+    }
-+}
-+
-+int kvm_ipi_get(void *opaque)
-+{
-+    kvm_ipi_access_regs(opaque, false);
-+    return 0;
-+}
-+
-+int kvm_ipi_put(void *opaque, int version_id)
-+{
-+    kvm_ipi_access_regs(opaque, true);
-+    return 0;
-+}
-+
- void kvm_ipi_realize(DeviceState *dev, Error **errp)
- {
-     LoongarchIPIState *lis = LOONGARCH_IPI(dev);
-diff --git a/include/hw/intc/loongarch_ipi.h b/include/hw/intc/loongarch_ipi.h
-index 608cd09a78..5175a6b004 100644
---- a/include/hw/intc/loongarch_ipi.h
-+++ b/include/hw/intc/loongarch_ipi.h
-@@ -26,5 +26,7 @@ struct LoongarchIPIClass {
- };
- 
- void kvm_ipi_realize(DeviceState *dev, Error **errp);
-+int kvm_ipi_get(void *opaque);
-+int kvm_ipi_put(void *opaque, int version_id);
- 
- #endif
+     /*
+      * vector number is irq number from upper extioi intc
+      * need subtract irq base to get msi vector offset
 -- 
 2.47.0
 
