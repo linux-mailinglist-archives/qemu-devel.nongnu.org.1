@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC529AE007B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B964AE0082
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:53:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSAzV-0004Qx-2Y; Thu, 19 Jun 2025 04:51:25 -0400
+	id 1uSAzW-0004Rl-UV; Thu, 19 Jun 2025 04:51:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uSAzQ-0004PQ-1H
+ id 1uSAzQ-0004PS-3H
  for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:20 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uSAzM-0002we-IZ
+ (envelope-from <gaosong@loongson.cn>) id 1uSAzL-0002wU-Or
  for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:19 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxYa99z1NofLUZAQ--.18724S3;
- Thu, 19 Jun 2025 16:51:09 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxPuN+z1NofrUZAQ--.23861S3;
+ Thu, 19 Jun 2025 16:51:10 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMAxDcVtz1NohtwgAQ--.30176S5;
- Thu, 19 Jun 2025 16:51:06 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMAxDcVtz1NohtwgAQ--.30176S6;
+ Thu, 19 Jun 2025 16:51:09 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 03/14] hw/intc/loongarch_ipi: Add kernel irqchip realize
- function
-Date: Thu, 19 Jun 2025 16:28:06 +0800
-Message-Id: <20250619082817.1517996-4-gaosong@loongson.cn>
+Subject: [PULL 04/14] hw/intc/loongson_ipi: Add load and save interface with
+ ipi_common class
+Date: Thu, 19 Jun 2025 16:28:07 +0800
+Message-Id: <20250619082817.1517996-5-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250619082817.1517996-1-gaosong@loongson.cn>
 References: <20250619082817.1517996-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxDcVtz1NohtwgAQ--.30176S5
+X-CM-TRANSID: qMiowMAxDcVtz1NohtwgAQ--.30176S6
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -66,133 +66,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-Function kvm_ipi_realize() is added if kvm_irqchip_in_kernel() return true.
-It is to create and initialize IPI device in kernel mode.
+Add pre_save and post_load interfaces with ipi_common class, here only
+framework ipi_common adds these interfaces. The defailed implementation
+is LoongArchIPI child device in later.
 
 Reviewed-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <20250606063033.2557365-4-maobibo@loongson.cn>
+Message-ID: <20250606063033.2557365-5-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/loongarch_ipi.c         |  5 +++++
- hw/intc/loongarch_ipi_kvm.c     | 27 +++++++++++++++++++++++++++
- hw/intc/loongson_ipi_common.c   |  5 +++++
- hw/intc/meson.build             |  2 ++
- include/hw/intc/loongarch_ipi.h |  3 +++
- 5 files changed, 42 insertions(+)
- create mode 100644 hw/intc/loongarch_ipi_kvm.c
+ hw/intc/loongson_ipi_common.c         | 28 +++++++++++++++++++++++++++
+ include/hw/intc/loongson_ipi_common.h |  2 ++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-index 74372a2039..159ba91fb6 100644
---- a/hw/intc/loongarch_ipi.c
-+++ b/hw/intc/loongarch_ipi.c
-@@ -11,6 +11,7 @@
- #include "qapi/error.h"
- #include "hw/intc/loongarch_ipi.h"
- #include "hw/qdev-properties.h"
-+#include "system/kvm.h"
- #include "target/loongarch/cpu.h"
- 
- static AddressSpace *get_iocsr_as(CPUState *cpu)
-@@ -91,6 +92,10 @@ static void loongarch_ipi_realize(DeviceState *dev, Error **errp)
-         lics->cpu[i].ipi = lics;
-         qdev_init_gpio_out(dev, &lics->cpu[i].irq, 1);
-     }
-+
-+    if (kvm_irqchip_in_kernel()) {
-+        kvm_ipi_realize(dev, errp);
-+    }
- }
- 
- static void loongarch_ipi_reset_hold(Object *obj, ResetType type)
-diff --git a/hw/intc/loongarch_ipi_kvm.c b/hw/intc/loongarch_ipi_kvm.c
-new file mode 100644
-index 0000000000..51e9c7ed1e
---- /dev/null
-+++ b/hw/intc/loongarch_ipi_kvm.c
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * LoongArch IPI interrupt KVM support
-+ *
-+ * Copyright (C) 2025 Loongson Technology Corporation Limited
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/intc/loongarch_ipi.h"
-+#include "system/kvm.h"
-+#include "target/loongarch/cpu.h"
-+
-+void kvm_ipi_realize(DeviceState *dev, Error **errp)
-+{
-+    LoongarchIPIState *lis = LOONGARCH_IPI(dev);
-+    int ret;
-+
-+    ret = kvm_create_device(kvm_state, KVM_DEV_TYPE_LOONGARCH_IPI, false);
-+    if (ret < 0) {
-+        fprintf(stderr, "IPI KVM_CREATE_DEVICE failed: %s\n",
-+                strerror(-ret));
-+        abort();
-+    }
-+
-+    lis->dev_fd = ret;
-+}
 diff --git a/hw/intc/loongson_ipi_common.c b/hw/intc/loongson_ipi_common.c
-index f32661c40f..ff2cc8bc91 100644
+index ff2cc8bc91..8cd78d4858 100644
 --- a/hw/intc/loongson_ipi_common.c
 +++ b/hw/intc/loongson_ipi_common.c
-@@ -11,6 +11,7 @@
- #include "hw/irq.h"
- #include "qemu/log.h"
- #include "migration/vmstate.h"
-+#include "system/kvm.h"
- #include "trace.h"
+@@ -282,10 +282,38 @@ static void loongson_ipi_common_unrealize(DeviceState *dev)
+     g_free(s->cpu);
+ }
  
- MemTxResult loongson_ipi_core_readl(void *opaque, hwaddr addr, uint64_t *data,
-@@ -255,6 +256,10 @@ static void loongson_ipi_common_realize(DeviceState *dev, Error **errp)
-     LoongsonIPICommonState *s = LOONGSON_IPI_COMMON(dev);
-     SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
- 
-+    if (kvm_irqchip_in_kernel()) {
-+        return;
++static int loongson_ipi_common_pre_save(void *opaque)
++{
++    IPICore *ipicore = (IPICore *)opaque;
++    LoongsonIPICommonState *s = ipicore->ipi;
++    LoongsonIPICommonClass *licc = LOONGSON_IPI_COMMON_GET_CLASS(s);
++
++    if (licc->pre_save) {
++        return licc->pre_save(s);
 +    }
 +
-     memory_region_init_io(&s->ipi_iocsr_mem, OBJECT(dev),
-                           &loongson_ipi_iocsr_ops,
-                           s, "loongson_ipi_iocsr", 0x48);
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index 70e7548c52..1cc999771d 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -71,6 +71,8 @@ specific_ss.add(when: 'CONFIG_M68K_IRQC', if_true: files('m68k_irqc.c'))
- specific_ss.add(when: 'CONFIG_LOONGSON_IPI_COMMON', if_true: files('loongson_ipi_common.c'))
- specific_ss.add(when: 'CONFIG_LOONGSON_IPI', if_true: files('loongson_ipi.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_IPI', if_true: files('loongarch_ipi.c'))
-+specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_LOONGARCH_IPI'],
-+                if_true: files('loongarch_ipi_kvm.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_PIC', if_true: files('loongarch_pch_pic.c', 'loongarch_pic_common.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_MSI', if_true: files('loongarch_pch_msi.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_EXTIOI', if_true: files('loongarch_extioi.c', 'loongarch_extioi_common.c'))
-diff --git a/include/hw/intc/loongarch_ipi.h b/include/hw/intc/loongarch_ipi.h
-index a7c6bf85d3..608cd09a78 100644
---- a/include/hw/intc/loongarch_ipi.h
-+++ b/include/hw/intc/loongarch_ipi.h
-@@ -16,6 +16,7 @@ OBJECT_DECLARE_TYPE(LoongarchIPIState, LoongarchIPIClass, LOONGARCH_IPI)
- 
- struct LoongarchIPIState {
-     LoongsonIPICommonState parent_obj;
-+    int  dev_fd;
- };
- 
- struct LoongarchIPIClass {
-@@ -24,4 +25,6 @@ struct LoongarchIPIClass {
-     ResettablePhases parent_phases;
- };
- 
-+void kvm_ipi_realize(DeviceState *dev, Error **errp);
++    return 0;
++}
 +
- #endif
++static int loongson_ipi_common_post_load(void *opaque, int version_id)
++{
++    IPICore *ipicore = (IPICore *)opaque;
++    LoongsonIPICommonState *s = ipicore->ipi;
++    LoongsonIPICommonClass *licc = LOONGSON_IPI_COMMON_GET_CLASS(s);
++
++    if (licc->post_load) {
++        return licc->post_load(s, version_id);
++    }
++
++    return 0;
++}
++
+ static const VMStateDescription vmstate_ipi_core = {
+     .name = "ipi-single",
+     .version_id = 2,
+     .minimum_version_id = 2,
++    .pre_save  = loongson_ipi_common_pre_save,
++    .post_load = loongson_ipi_common_post_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(status, IPICore),
+         VMSTATE_UINT32(en, IPICore),
+diff --git a/include/hw/intc/loongson_ipi_common.h b/include/hw/intc/loongson_ipi_common.h
+index b587f9c571..e58ce2aa1c 100644
+--- a/include/hw/intc/loongson_ipi_common.h
++++ b/include/hw/intc/loongson_ipi_common.h
+@@ -48,6 +48,8 @@ struct LoongsonIPICommonClass {
+     AddressSpace *(*get_iocsr_as)(CPUState *cpu);
+     int (*cpu_by_arch_id)(LoongsonIPICommonState *lics, int64_t id,
+                           int *index, CPUState **pcs);
++    int (*pre_save)(void *opaque);
++    int (*post_load)(void *opaque, int version_id);
+ };
+ 
+ MemTxResult loongson_ipi_core_readl(void *opaque, hwaddr addr, uint64_t *data,
 -- 
 2.47.0
 
