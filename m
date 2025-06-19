@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6405CAE0079
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A111AE007D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:53:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSB0I-0004YQ-KV; Thu, 19 Jun 2025 04:52:14 -0400
+	id 1uSB0I-0004XX-9p; Thu, 19 Jun 2025 04:52:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uSAzh-0004Ur-EN
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:38 -0400
+ id 1uSAzt-0004WR-2i
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:50 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uSAze-00030O-Rt
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:37 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uSAzr-00030k-0X
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:48 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxOGqRz1NolrUZAQ--.62339S3;
- Thu, 19 Jun 2025 16:51:29 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Bx63GWz1NomrUZAQ--.58839S3;
+ Thu, 19 Jun 2025 16:51:34 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMAxDcVtz1NohtwgAQ--.30176S13;
- Thu, 19 Jun 2025 16:51:28 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMAxDcVtz1NohtwgAQ--.30176S14;
+ Thu, 19 Jun 2025 16:51:29 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 11/14] target/loongarch: Report error with split kernel_irqchip
- option
-Date: Thu, 19 Jun 2025 16:28:14 +0800
-Message-Id: <20250619082817.1517996-12-gaosong@loongson.cn>
+Subject: [PULL 12/14] hw/loongarch/virt: Disable emulation with IOCSR misc
+ register
+Date: Thu, 19 Jun 2025 16:28:15 +0800
+Message-Id: <20250619082817.1517996-13-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250619082817.1517996-1-gaosong@loongson.cn>
 References: <20250619082817.1517996-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxDcVtz1NohtwgAQ--.30176S13
+X-CM-TRANSID: qMiowMAxDcVtz1NohtwgAQ--.30176S14
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -66,35 +66,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-Option kernel_irqchip=split is not supported on LoongArch virt machine,
-report error and exit if detect split kernel_irqchip option.
+Register IOCSR MISC_FUNC_REG is to enable features about EXTIOI
+irqchip. If EXTIOI is emulated in kernel, MISC_FUNC_REG register
+should be emulated in kernel also.
 
 Reviewed-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <20250606063431.2557468-1-maobibo@loongson.cn>
+Message-ID: <20250606063523.2557513-1-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/kvm/kvm.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ hw/loongarch/virt.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index c66bdd5302..c5d488aa42 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -1253,7 +1253,12 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 34dfbd13e5..e5468b6af9 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -522,6 +522,10 @@ static MemTxResult virt_iocsr_misc_write(void *opaque, hwaddr addr,
  
- int kvm_arch_irqchip_create(KVMState *s)
- {
--    return 0;
-+    if (kvm_kernel_irqchip_split()) {
-+        error_report("kernel_irqchip=split is not supported on LoongArch");
-+        exit(1);
-+    }
+     switch (addr) {
+     case MISC_FUNC_REG:
++        if (kvm_irqchip_in_kernel()) {
++            return MEMTX_OK;
++        }
 +
-+    return kvm_check_extension(s, KVM_CAP_DEVICE_CTRL);
- }
- 
- void kvm_arch_pre_run(CPUState *cs, struct kvm_run *run)
+         if (!virt_is_veiointc_enabled(lvms)) {
+             return MEMTX_OK;
+         }
+@@ -572,6 +576,10 @@ static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
+         ret = 0x303030354133ULL;     /* "3A5000" */
+         break;
+     case MISC_FUNC_REG:
++        if (kvm_irqchip_in_kernel()) {
++            return MEMTX_OK;
++        }
++
+         if (!virt_is_veiointc_enabled(lvms)) {
+             ret |= BIT_ULL(IOCSRM_EXTIOI_EN);
+             break;
 -- 
 2.47.0
 
