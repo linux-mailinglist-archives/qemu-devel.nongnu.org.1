@@ -2,125 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D136AE078B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B400CAE0807
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:57:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSFSJ-0004AK-2N; Thu, 19 Jun 2025 09:37:27 -0400
+	id 1uSFkX-0004go-EC; Thu, 19 Jun 2025 09:56:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leif.lindholm@oss.qualcomm.com>)
- id 1uSFRw-00046r-Ql
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:37:05 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <roan.richmond@codethink.co.uk>)
+ id 1uSFkN-0004fc-Ay; Thu, 19 Jun 2025 09:56:07 -0400
+Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leif.lindholm@oss.qualcomm.com>)
- id 1uSFRu-0000Up-Fm
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:37:04 -0400
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55J5q6v0029581
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 13:36:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- 8Yw0pCK+yjsFyWICsC6tO8VSFWY/4YZhCmU+/h/OTjc=; b=l2vxXWjh02LBbxtO
- JGjaBro0ebbmcFV2TDr+Os2O1DI6HDj1iul82sq0ngHusUXcLbro/i63M+TSFDlL
- ODsBCXZYPWb/uktjcFyg+E6fAjaDk0IwIcmvb6sTLiyfWE/qMUpPwvFazJNWuQ3z
- HDuvBhi1kybjr1ftV0fdcVU+/15CXpVrpcprFZv12elSazl9qEmzGllv9svX7Zdl
- sUmtb9FF9fR/aTKSpkxjjKmeF+2BD3FkpPf4dHtdFCBetnpm57zR3CcPH5vHwkjW
- 7+TR8XLcYsCSJXnehMMPf/l/cxDEqATkOdeWT2pzqdMqyp6mKChOq1WZi0Aw35pA
- kEmafQ==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4791h9g30b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 13:36:57 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-311d670ad35so744034a91.3
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:36:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750340216; x=1750945016;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8Yw0pCK+yjsFyWICsC6tO8VSFWY/4YZhCmU+/h/OTjc=;
- b=Pzxm5CL6KHDtbzA2SO009eH3SeFRM/AWrtU1vpne/YFS4PNJCgmVeY9ovqNautvnh/
- F+HgyxVsqQ6zKoLD1+Jh4XHXmrCUrBhEK1VdwS/D99lAIlVbXjgu25DJnlz/ccArWxRK
- Ux+0FKnDcWI6JsKeH1WC9ijcTV44llxlanzlitBK5C5G96HbtvSOF/hfCpR7Hb9f22nO
- TwGZHSihP/nE5rgyuppxsbOirQQ1CROIm8Ko9hmIaHI8sHbDoY5J44jrRBwfigs58H9+
- 57beGkGTR5C/jJecNSaRtYX5gaxFyPzW4+myx8pCB+GUNy9vjopCcu1hr2Rn+cbzsFq1
- WHQQ==
-X-Gm-Message-State: AOJu0Yw4yX2MWHzkNA45ZCgfAcQIR9t5k4c3NOrH2DkuX6pRCpR7xMPB
- eIZZOxtiB6d9ocSuxWD9KT91+igU65lt8Z+U2uqLjAvhrJzhWAUCxRtX9O9OMwimfYH8KjGAQKT
- gLtwYJZ+455VeCySCqwGed9xdmJZp32ur7fYH2ts/Cuhi7PNAjYqDAAqsWFHPTMvTT9JFEsCLrp
- KEKWkxeaE8SVfNCOjB9z55jNoEtx0g76Ri
-X-Gm-Gg: ASbGncusaJLKQI1ZhQGfriXiLoxmoKDu4ZYGoddQf9veLhths/9VdJHnJl5IGlOofxX
- HBc5WiILgB8Ff+5nWZr1D9jAm4LmlDYBpIRKNOY3Bgt4JUn1xB37G6rvkrpM8WJai2cXvgU9fLV
- 4/FhXxrEOAUUUBCyvnbbPUu8XFK3o7c/rJL1pl
-X-Received: by 2002:a17:90b:3e43:b0:312:1d2d:18e1 with SMTP id
- 98e67ed59e1d1-313f1d52d85mr28143306a91.22.1750340216463; 
- Thu, 19 Jun 2025 06:36:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEL1Jhr0ZNa55jblw14p3se0kC8/uXBk2QsW0FG6l0DdQY6qBiOgnrLWDuN9hxt10liUT8ME2NlQ1lfNyomEU4=
-X-Received: by 2002:a17:90b:3e43:b0:312:1d2d:18e1 with SMTP id
- 98e67ed59e1d1-313f1d52d85mr28143274a91.22.1750340216029; Thu, 19 Jun 2025
- 06:36:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <roan.richmond@codethink.co.uk>)
+ id 1uSFkI-0004Ty-2R; Thu, 19 Jun 2025 09:56:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Jutczu6K8Py3B8oNLBGk8xVbzF/SrvYto3P/Uulchhk=; b=uoZ41bkVgxREJAuFjDShFnfdoo
+ AGKeD0h1RRDINz2iAa6dePpd12TnCsUygZBLUdduQgpcWDJ8zM570m9Jez6LmzTz7wIqeCfavkK6J
+ 6sDgGh0zuyg0p5YYzUTGIfNkzIN/eQSACQUk/Kw4Y5er9h7mXoiDFzzTy+lL4EUeNO+xhlsctcdy7
+ Coj842piwkNrBEVu/EJ4zn8/ooQuzB2tvjhlf5ufQsLP3dut/o5mOgXpyj2bpdqMhs5xPkHRjGfjg
+ g1QRKGOIIRTdwe0ZAQL2cvSbQLIu4H7T3vcjzdSm5ndNI1FpOWtBeVlOsaox68Aly8PQs6V2Rmfn7
+ Gl1PxsgQ==;
+Received: from [167.98.27.226] (helo=codethink.office.codethink.co.uk)
+ by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+ id 1uSFk9-000TSv-Oo; Thu, 19 Jun 2025 14:55:55 +0100
+From: Roan Richmond <roan.richmond@codethink.co.uk>
+To: qemu-riscv@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ qemu-devel@nongnu.org, alistair23@gmail.com,
+ Roan Richmond <roan.richmond@codethink.co.uk>
+Subject: [PATCH v3] Add RISCV ZALASR extension
+Date: Thu, 19 Jun 2025 14:55:31 +0100
+Message-ID: <20250619135545.61956-1-roan.richmond@codethink.co.uk>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20250619131319.47301-1-philmd@linaro.org>
- <20250619131319.47301-20-philmd@linaro.org>
-In-Reply-To: <20250619131319.47301-20-philmd@linaro.org>
-From: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
-Date: Thu, 19 Jun 2025 14:36:43 +0100
-X-Gm-Features: AX0GCFsnBB6aVSiaBdg8ecDaocgSDD4NQoJgBj-uckYPnF8vAxEIpm4PkwkAxgs
-Message-ID: <CAD=n3R2GC0vFxkpzwiieVGSptPYdAEz++d34Z5Qwmn=mKDdwGg@mail.gmail.com>
-Subject: Re: [PATCH 19/20] hw/arm/sbsa-ref: Tidy up use of RAMLIMIT_GB
- definition
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Cameron Esfahani <dirty@apple.com>,
- Julian Armistead <julian.armistead@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
- Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: tPuMs84c3PktAwtkFcdZed6I1BY1NpGl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE5MDExMyBTYWx0ZWRfXxXm0DxP7P7eh
- KEWlGTg7suUkDuufBsaG2/Z8ti6SiQOcp67KryRe3ls6K9n9TZ1LnuhnGGNp34fsuZSNRlsTuAc
- /fivmfb5GQbWX8ZLwo5Dtkn6AG/JjD0uxGBN02wA2G93QVFIzjPA0cSXiWRZN13kdFFFkARjjHM
- UdbXAHvWJf4eScJRoJFZqKYmN5IDsKcbkYsEJ1X4tycpvuE9sLKKIqll24O78sD08cdz9xxvm5g
- MueFjH4wiwsmOYYEnSvG8CE8UiLF8iKUWrnGR5eTZiBQOHxrNW3DYa7gsCEM9cA86Fn6Dwcz0LD
- eZYgNEpJHj+UJ1xQdQx0vnyJ+44R4+oiZkt99/w/1etsmzUo9jpjFBPFx2oxL9DkUVSNWd2gbMC
- 8Hl+f43/lOivHHG7707m+TSpkv84KLjbV69+VJ5eCuAh53Yy6s+xGypibAMiuLiAKY6wtm6C
-X-Authority-Analysis: v=2.4 cv=UL/dHDfy c=1 sm=1 tr=0 ts=68541279 cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10
- a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=_k9n5H8yiGyBNqQC-Y4A:9 a=QEXdDO2ut3YA:10
- a=uKXjsCUrEbL0IQVhDsJ9:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: tPuMs84c3PktAwtkFcdZed6I1BY1NpGl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-19_05,2025-06-18_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1015 suspectscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 phishscore=0 mlxlogscore=999
- malwarescore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506190113
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=leif.lindholm@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=188.40.203.114;
+ envelope-from=roan.richmond@codethink.co.uk; helo=imap4.hz.codethink.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -136,63 +67,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 19 Jun 2025 at 14:15, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Define RAMLIMIT_BYTES using the TiB definition and display
-> the error parsed with size_to_str():
->
->   $ qemu-system-aarch64-unsigned -M sbsa-ref -m 9T
->   qemu-system-aarch64-unsigned: sbsa-ref: cannot model more than 8 TiB of=
- RAM
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+This is based on version v0.8.3 of the ZALASR specification [1].
+The specification is listed as in Frozen state [2].
 
-Reviewed-by: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
+[1]: https://github.com/riscv/riscv-zalasr/tree/v0.8.3
+[2]: https://lf-riscv.atlassian.net/wiki/spaces/HOME/pages/16154882/All+RISC-V+Specifications+Under+Active+Development
 
-/
-    Leif
+Signed-off-by: Roan Richmond <roan.richmond@codethink.co.uk>
+---
 
-> ---
->  hw/arm/sbsa-ref.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index deae5cf9861..3b7d4e7bf1d 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -19,6 +19,7 @@
->   */
->
->  #include "qemu/osdep.h"
-> +#include "qemu/cutils.h"
->  #include "qemu/datadir.h"
->  #include "qapi/error.h"
->  #include "qemu/error-report.h"
-> @@ -53,8 +54,7 @@
->  #include "target/arm/cpu-qom.h"
->  #include "target/arm/gtimer.h"
->
-> -#define RAMLIMIT_GB 8192
-> -#define RAMLIMIT_BYTES (RAMLIMIT_GB * GiB)
-> +#define RAMLIMIT_BYTES (8 * TiB)
->
->  #define NUM_IRQS        256
->  #define NUM_SMMU_IRQS   4
-> @@ -756,7 +756,9 @@ static void sbsa_ref_init(MachineState *machine)
->      sms->smp_cpus =3D smp_cpus;
->
->      if (machine->ram_size > sbsa_ref_memmap[SBSA_MEM].size) {
-> -        error_report("sbsa-ref: cannot model more than %dGB RAM", RAMLIM=
-IT_GB);
-> +        g_autofree char *size_str =3D size_to_str(RAMLIMIT_BYTES);
-> +
-> +        error_report("sbsa-ref: cannot model more than %s of RAM", size_=
-str);
->          exit(1);
->      }
->
-> --
-> 2.49.0
->
+Ping! resending this as no movement on previous send.
+
+V3:
+  - rebased patch onto master branch
+  - added check for aq on Load Acquire, as pointed out by Alistair Francis
+  - added check for rl on Store Release, as mentioned by Alistair Francis
+
+ target/riscv/cpu.c                           |   1 +
+ target/riscv/insn32.decode                   |  10 ++
+ target/riscv/insn_trans/trans_rvzalasr.c.inc | 120 +++++++++++++++++++
+ target/riscv/translate.c                     |   1 +
+ 4 files changed, 132 insertions(+)
+ create mode 100644 target/riscv/insn_trans/trans_rvzalasr.c.inc
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 629ac37501..b52bbf0936 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -128,6 +128,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zabha, PRIV_VERSION_1_13_0, ext_zabha),
+     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
+     ISA_EXT_DATA_ENTRY(zama16b, PRIV_VERSION_1_13_0, ext_zama16b),
++    ISA_EXT_DATA_ENTRY(zalasr, PRIV_VERSION_1_12_0, ext_zalasr),
+     ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
+     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+     ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
+diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+index cd23b1f3a9..c848c0c1c5 100644
+--- a/target/riscv/insn32.decode
++++ b/target/riscv/insn32.decode
+@@ -1066,3 +1066,13 @@ amominu_h  11000 . . ..... ..... 001 ..... 0101111 @atom_st
+ amomaxu_h  11100 . . ..... ..... 001 ..... 0101111 @atom_st
+ amocas_b    00101 . . ..... ..... 000 ..... 0101111 @atom_st
+ amocas_h    00101 . . ..... ..... 001 ..... 0101111 @atom_st
++
++# *** Zalasr Standard Extension ***
++lb_aqrl  00110 . . ..... ..... 000 ..... 0101111 @atom_st
++lh_aqrl  00110 . . ..... ..... 001 ..... 0101111 @atom_st
++lw_aqrl  00110 . . ..... ..... 010 ..... 0101111 @atom_st
++ld_aqrl  00110 . . ..... ..... 011 ..... 0101111 @atom_st
++sb_aqrl  00111 . . ..... ..... 000 ..... 0101111 @atom_st
++sh_aqrl  00111 . . ..... ..... 001 ..... 0101111 @atom_st
++sw_aqrl  00111 . . ..... ..... 010 ..... 0101111 @atom_st
++sd_aqrl  00111 . . ..... ..... 011 ..... 0101111 @atom_st
+diff --git a/target/riscv/insn_trans/trans_rvzalasr.c.inc b/target/riscv/insn_trans/trans_rvzalasr.c.inc
+new file mode 100644
+index 0000000000..8761508de3
+--- /dev/null
++++ b/target/riscv/insn_trans/trans_rvzalasr.c.inc
+@@ -0,0 +1,120 @@
++/*
++ * RISC-V translation routines for the ZALASR (Load-Aquire and Store-Release)
++ * Extension.
++ *
++ * Copyright (c) 2025 Roan Richmond, roan.richmond@codethink.co.uk
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2 or later, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#define REQUIRE_ZALASR(ctx) do {     \
++    if (!ctx->cfg_ptr->ext_zalasr) { \
++        return false;                \
++    }                                \
++} while (0)
++
++static bool gen_load_acquire(DisasContext *ctx, arg_lb_aqrl *a, MemOp memop)
++{
++    decode_save_opc(ctx, 0);
++
++    TCGv addr = get_address(ctx, a->rs1, 0);
++    TCGv dest = get_gpr(ctx, a->rd, EXT_NONE);
++    TCGBar bar = (a->rl) ? TCG_BAR_STRL : 0;
++
++    /* Check that AQ is set, as this is mandatory */
++    if (!a->aq) {
++        return false;    
++    }
++
++    memop |= (ctx->cfg_ptr->ext_zama16b) ? MO_ATOM_WITHIN16 : 0;
++
++    tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, memop);
++    gen_set_gpr(ctx, a->rd, dest);
++
++    /* Add a memory barrier implied by AQ (mandatory) and RL (optional) */
++    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_LDAQ | bar);
++
++    return true;
++}
++
++static bool trans_lb_aqrl(DisasContext *ctx, arg_lb_aqrl *a)
++{
++    REQUIRE_ZALASR(ctx);
++    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_SB));
++}
++
++static bool trans_lh_aqrl(DisasContext *ctx, arg_lh_aqrl *a)
++{
++    REQUIRE_ZALASR(ctx);
++    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TESW));
++}
++
++static bool trans_lw_aqrl(DisasContext *ctx, arg_lw_aqrl *a)
++{
++    REQUIRE_ZALASR(ctx);
++    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TESL));
++}
++
++static bool trans_ld_aqrl(DisasContext *ctx, arg_ld_aqrl *a)
++{
++    REQUIRE_64BIT(ctx);
++    REQUIRE_ZALASR(ctx);
++    return gen_load_acquire(ctx, a, (MO_ALIGN | MO_TEUQ));
++}
++
++static bool gen_store_release(DisasContext *ctx, arg_sb_aqrl *a, MemOp memop)
++{
++    decode_save_opc(ctx, 0);
++
++    TCGv addr = get_address(ctx, a->rs1, 0);
++    TCGv data = get_gpr(ctx, a->rs2, EXT_NONE);
++    TCGBar bar = (a->aq) ? TCG_BAR_LDAQ : 0;
++
++    /* Check that RL is set, as this is mandatory */
++    if (!a->rl) {
++        return false;    
++    }
++
++    memop |= (ctx->cfg_ptr->ext_zama16b) ? MO_ATOM_WITHIN16 : 0;
++
++    /* Add a memory barrier implied by RL (mandatory) and AQ (optional) */
++    tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL | bar);
++
++    tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, memop);
++    return true;
++}
++
++static bool trans_sb_aqrl(DisasContext *ctx, arg_sb_aqrl *a)
++{
++    REQUIRE_ZALASR(ctx);
++    return gen_store_release(ctx, a, (MO_ALIGN | MO_SB));
++}
++
++static bool trans_sh_aqrl(DisasContext *ctx, arg_sh_aqrl *a)
++{
++    REQUIRE_ZALASR(ctx);
++    return gen_store_release(ctx, a, (MO_ALIGN | MO_TESW));
++}
++
++static bool trans_sw_aqrl(DisasContext *ctx, arg_sw_aqrl *a)
++{
++    REQUIRE_ZALASR(ctx);
++    return gen_store_release(ctx, a, (MO_ALIGN | MO_TESL));
++}
++
++static bool trans_sd_aqrl(DisasContext *ctx, arg_sd_aqrl *a)
++{
++    REQUIRE_64BIT(ctx);
++    REQUIRE_ZALASR(ctx);
++    return gen_store_release(ctx, a, (MO_ALIGN | MO_TEUQ));
++}
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index d7a6de02df..4cd2d68e46 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -1183,6 +1183,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
+ #include "insn_trans/trans_rvzicond.c.inc"
+ #include "insn_trans/trans_rvzacas.c.inc"
+ #include "insn_trans/trans_rvzabha.c.inc"
++#include "insn_trans/trans_rvzalasr.c.inc"
+ #include "insn_trans/trans_rvzawrs.c.inc"
+ #include "insn_trans/trans_rvzicbo.c.inc"
+ #include "insn_trans/trans_rvzimop.c.inc"
+-- 
+2.43.0
+
 
