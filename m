@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C74FAE0077
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD055AE0071
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 10:52:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSAza-0004TL-5U; Thu, 19 Jun 2025 04:51:32 -0400
+	id 1uSAzp-0004Uj-PU; Thu, 19 Jun 2025 04:51:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uSAzT-0004R1-Ob
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:23 -0400
+ id 1uSAzX-0004TS-HY
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:27 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uSAzR-0002xw-IR
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:23 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uSAzV-0002yY-0s
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 04:51:27 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxYa+Gz1NoirUZAQ--.18727S3;
- Thu, 19 Jun 2025 16:51:18 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxOGqKz1NojbUZAQ--.62338S3;
+ Thu, 19 Jun 2025 16:51:22 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMAxDcVtz1NohtwgAQ--.30176S9;
- Thu, 19 Jun 2025 16:51:17 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMAxDcVtz1NohtwgAQ--.30176S10;
+ Thu, 19 Jun 2025 16:51:18 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 07/14] hw/intc/loongarch_pch: Add kernel irqchip realize
- function
-Date: Thu, 19 Jun 2025 16:28:10 +0800
-Message-Id: <20250619082817.1517996-8-gaosong@loongson.cn>
+Subject: [PULL 08/14] hw/intc/loongarch_pch: Add kernel irqchip save and
+ restore function
+Date: Thu, 19 Jun 2025 16:28:11 +0800
+Message-Id: <20250619082817.1517996-9-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250619082817.1517996-1-gaosong@loongson.cn>
 References: <20250619082817.1517996-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxDcVtz1NohtwgAQ--.30176S9
+X-CM-TRANSID: qMiowMAxDcVtz1NohtwgAQ--.30176S10
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -66,130 +66,145 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-Function kvm_pic_realize() is added if kvm_irqchip_in_kernel() return true.
-It is to notify KVM kernel to create and initialize PCH PCI device in
-kernel mode.
+Add save and store funtction if kvm_irqchip_in_kernel() return true,
+it is to get and set PCH PCI irqchip state from KVM kernel.
 
 Reviewed-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <20250606063033.2557365-8-maobibo@loongson.cn>
+Message-ID: <20250606063033.2557365-9-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/loongarch_pch_pic.c         | 14 ++++++++---
- hw/intc/loongarch_pic_kvm.c         | 38 +++++++++++++++++++++++++++++
- hw/intc/meson.build                 |  2 ++
- include/hw/intc/loongarch_pch_pic.h |  3 +++
- 4 files changed, 53 insertions(+), 4 deletions(-)
- create mode 100644 hw/intc/loongarch_pic_kvm.c
+ hw/intc/loongarch_pch_pic.c            | 22 ++++++++++++
+ hw/intc/loongarch_pic_kvm.c            | 47 ++++++++++++++++++++++++++
+ include/hw/intc/loongarch_pch_pic.h    |  2 ++
+ include/hw/intc/loongarch_pic_common.h |  1 +
+ 4 files changed, 72 insertions(+)
 
 diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-index ebb33ed0b0..6ac3a72c31 100644
+index 6ac3a72c31..13b5766444 100644
 --- a/hw/intc/loongarch_pch_pic.c
 +++ b/hw/intc/loongarch_pch_pic.c
-@@ -10,6 +10,7 @@
- #include "qemu/log.h"
- #include "hw/irq.h"
- #include "hw/intc/loongarch_pch_pic.h"
-+#include "system/kvm.h"
- #include "trace.h"
- #include "qapi/error.h"
- 
-@@ -275,10 +276,15 @@ static void loongarch_pic_realize(DeviceState *dev, Error **errp)
- 
-     qdev_init_gpio_out(dev, s->parent_irq, s->irq_num);
-     qdev_init_gpio_in(dev, pch_pic_irq_handler, s->irq_num);
--    memory_region_init_io(&s->iomem, OBJECT(dev),
--                          &loongarch_pch_pic_ops,
--                          s, TYPE_LOONGARCH_PIC, VIRT_PCH_REG_SIZE);
--    sysbus_init_mmio(sbd, &s->iomem);
-+
-+    if (kvm_irqchip_in_kernel()) {
-+        kvm_pic_realize(dev, errp);
-+    } else {
-+        memory_region_init_io(&s->iomem, OBJECT(dev),
-+                              &loongarch_pch_pic_ops,
-+                              s, TYPE_LOONGARCH_PIC, VIRT_PCH_REG_SIZE);
-+        sysbus_init_mmio(sbd, &s->iomem);
-+    }
+@@ -287,16 +287,38 @@ static void loongarch_pic_realize(DeviceState *dev, Error **errp)
+     }
  }
  
- static void loongarch_pic_class_init(ObjectClass *klass, const void *data)
-diff --git a/hw/intc/loongarch_pic_kvm.c b/hw/intc/loongarch_pic_kvm.c
-new file mode 100644
-index 0000000000..ee77f04a13
---- /dev/null
-+++ b/hw/intc/loongarch_pic_kvm.c
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * LoongArch kvm pch pic interrupt support
-+ *
-+ * Copyright (C) 2025 Loongson Technology Corporation Limited
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/boards.h"
-+#include "hw/intc/loongarch_pch_pic.h"
-+#include "hw/loongarch/virt.h"
-+#include "hw/pci-host/ls7a.h"
-+#include "system/kvm.h"
-+
-+void kvm_pic_realize(DeviceState *dev, Error **errp)
++static int loongarch_pic_pre_save(LoongArchPICCommonState *opaque)
 +{
-+    LoongarchPICState *lps = LOONGARCH_PIC(dev);
-+    uint64_t pch_pic_base = VIRT_PCH_REG_BASE;
-+    int ret;
-+
-+    ret = kvm_create_device(kvm_state, KVM_DEV_TYPE_LOONGARCH_PCHPIC, false);
-+    if (ret < 0) {
-+        fprintf(stderr, "Create KVM_LOONGARCH_PCHPIC failed: %s\n",
-+                strerror(-ret));
-+        abort();
++    if (kvm_irqchip_in_kernel()) {
++        return kvm_pic_get(opaque);
 +    }
 +
-+    lps->dev_fd = ret;
-+    ret = kvm_device_access(lps->dev_fd, KVM_DEV_LOONGARCH_PCH_PIC_GRP_CTRL,
-+                            KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT,
-+                            &pch_pic_base, true, NULL);
-+    if (ret < 0) {
-+        fprintf(stderr, "KVM_LOONGARCH_PCH_PIC_INIT failed: %s\n",
-+                strerror(-ret));
-+        abort();
-+    }
++    return 0;
 +}
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index 1cc999771d..3137521a4a 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -74,6 +74,8 @@ specific_ss.add(when: 'CONFIG_LOONGARCH_IPI', if_true: files('loongarch_ipi.c'))
- specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_LOONGARCH_IPI'],
-                 if_true: files('loongarch_ipi_kvm.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_PIC', if_true: files('loongarch_pch_pic.c', 'loongarch_pic_common.c'))
-+specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_LOONGARCH_PCH_PIC'],
-+                if_true: files('loongarch_pic_kvm.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_MSI', if_true: files('loongarch_pch_msi.c'))
- specific_ss.add(when: 'CONFIG_LOONGARCH_EXTIOI', if_true: files('loongarch_extioi.c', 'loongarch_extioi_common.c'))
- specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_LOONGARCH_EXTIOI'],
++
++static int loongarch_pic_post_load(LoongArchPICCommonState *opaque,
++                                   int version_id)
++{
++    if (kvm_irqchip_in_kernel()) {
++        return kvm_pic_put(opaque, version_id);
++    }
++
++    return 0;
++}
++
+ static void loongarch_pic_class_init(ObjectClass *klass, const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     LoongarchPICClass *lpc = LOONGARCH_PIC_CLASS(klass);
++    LoongArchPICCommonClass *lpcc = LOONGARCH_PIC_COMMON_CLASS(klass);
+     ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
+     resettable_class_set_parent_phases(rc, NULL, loongarch_pic_reset_hold,
+                                        NULL, &lpc->parent_phases);
+     device_class_set_parent_realize(dc, loongarch_pic_realize,
+                                     &lpc->parent_realize);
++    lpcc->pre_save = loongarch_pic_pre_save;
++    lpcc->post_load = loongarch_pic_post_load;
+ }
+ 
+ static const TypeInfo loongarch_pic_types[] = {
+diff --git a/hw/intc/loongarch_pic_kvm.c b/hw/intc/loongarch_pic_kvm.c
+index ee77f04a13..3eef81a9bb 100644
+--- a/hw/intc/loongarch_pic_kvm.c
++++ b/hw/intc/loongarch_pic_kvm.c
+@@ -13,6 +13,53 @@
+ #include "hw/pci-host/ls7a.h"
+ #include "system/kvm.h"
+ 
++static void kvm_pch_pic_access_reg(int fd, uint64_t addr, void *val, bool write)
++{
++    kvm_device_access(fd, KVM_DEV_LOONGARCH_PCH_PIC_GRP_REGS,
++                      addr, val, write, &error_abort);
++}
++
++static void kvm_pch_pic_access(void *opaque, bool write)
++{
++    LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
++    LoongarchPICState *lps = LOONGARCH_PIC(opaque);
++    int fd = lps->dev_fd;
++    int addr, offset;
++
++    kvm_pch_pic_access_reg(fd, PCH_PIC_INT_MASK, &s->int_mask, write);
++    kvm_pch_pic_access_reg(fd, PCH_PIC_HTMSI_EN, &s->htmsi_en, write);
++    kvm_pch_pic_access_reg(fd, PCH_PIC_INT_EDGE, &s->intedge, write);
++    kvm_pch_pic_access_reg(fd, PCH_PIC_AUTO_CTRL0, &s->auto_crtl0, write);
++    kvm_pch_pic_access_reg(fd, PCH_PIC_AUTO_CTRL1, &s->auto_crtl1, write);
++
++    for (addr = PCH_PIC_ROUTE_ENTRY;
++        addr < PCH_PIC_ROUTE_ENTRY_END; addr++) {
++        offset = addr - PCH_PIC_ROUTE_ENTRY;
++        kvm_pch_pic_access_reg(fd, addr, &s->route_entry[offset], write);
++    }
++
++    for (addr = PCH_PIC_HTMSI_VEC; addr < PCH_PIC_HTMSI_VEC_END; addr++) {
++        offset = addr - PCH_PIC_HTMSI_VEC;
++        kvm_pch_pic_access_reg(fd, addr, &s->htmsi_vector[offset], write);
++    }
++
++    kvm_pch_pic_access_reg(fd, PCH_PIC_INT_REQUEST, &s->intirr, write);
++    kvm_pch_pic_access_reg(fd, PCH_PIC_INT_STATUS, &s->intisr, write);
++    kvm_pch_pic_access_reg(fd, PCH_PIC_INT_POL, &s->int_polarity, write);
++}
++
++int kvm_pic_get(void *opaque)
++{
++    kvm_pch_pic_access(opaque, false);
++    return 0;
++}
++
++int kvm_pic_put(void *opaque, int version_id)
++{
++    kvm_pch_pic_access(opaque, true);
++    return 0;
++}
++
+ void kvm_pic_realize(DeviceState *dev, Error **errp)
+ {
+     LoongarchPICState *lps = LOONGARCH_PIC(dev);
 diff --git a/include/hw/intc/loongarch_pch_pic.h b/include/hw/intc/loongarch_pch_pic.h
-index 839a59a43b..4b52f1165f 100644
+index 4b52f1165f..a46b6f8985 100644
 --- a/include/hw/intc/loongarch_pch_pic.h
 +++ b/include/hw/intc/loongarch_pch_pic.h
-@@ -16,6 +16,7 @@ OBJECT_DECLARE_TYPE(LoongarchPICState, LoongarchPICClass, LOONGARCH_PIC)
- 
- struct LoongarchPICState {
-     LoongArchPICCommonState parent_obj;
-+    int dev_fd;
+@@ -27,5 +27,7 @@ struct LoongarchPICClass {
  };
  
- struct LoongarchPICClass {
-@@ -25,4 +26,6 @@ struct LoongarchPICClass {
-     ResettablePhases parent_phases;
- };
+ void kvm_pic_realize(DeviceState *dev, Error **errp);
++int kvm_pic_get(void *opaque);
++int kvm_pic_put(void *opaque, int version_id);
  
-+void kvm_pic_realize(DeviceState *dev, Error **errp);
-+
  #endif /* HW_LOONGARCH_PCH_PIC_H */
+diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
+index 9349a055d0..f774c975d4 100644
+--- a/include/hw/intc/loongarch_pic_common.h
++++ b/include/hw/intc/loongarch_pic_common.h
+@@ -23,6 +23,7 @@
+ #define PCH_PIC_ROUTE_ENTRY_END         0x13f
+ #define PCH_PIC_HTMSI_VEC               0x200
+ #define PCH_PIC_HTMSI_VEC_END           0x23f
++#define PCH_PIC_INT_REQUEST             0x380
+ #define PCH_PIC_INT_STATUS              0x3a0
+ #define PCH_PIC_INT_POL                 0x3e0
+ 
 -- 
 2.47.0
 
