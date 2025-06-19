@@ -2,67 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8328FADFB02
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 03:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48593ADFB95
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 05:04:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uS4Lw-0001Rm-Qc; Wed, 18 Jun 2025 21:46:09 -0400
+	id 1uS5YU-00074O-4O; Wed, 18 Jun 2025 23:03:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1uS4Lg-0001Qa-Fy
- for qemu-devel@nongnu.org; Wed, 18 Jun 2025 21:45:55 -0400
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1uS5YK-00072U-8F
+ for qemu-devel@nongnu.org; Wed, 18 Jun 2025 23:03:01 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1uS4Ld-0002sf-4A
- for qemu-devel@nongnu.org; Wed, 18 Jun 2025 21:45:52 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8DxQK_Ba1NoWocZAQ--.23651S3;
- Thu, 19 Jun 2025 09:45:37 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowMAxj8W4a1NoAWcgAQ--.34687S3;
- Thu, 19 Jun 2025 09:45:30 +0800 (CST)
-Subject: Re: [PATCH v6] target/loongarch: fix vldi/xvldi raise wrong error
-To: gaosong <gaosong@loongson.cn>, qemu-devel@nongnu.org, philmd@linaro.org
-Cc: richard.henderson@linaro.org, lorenz.hetterich@cispa.de
-References: <20250605015332.537413-1-gaosong@loongson.cn>
- <6def6137-5a45-b597-4b43-4b12d8ec8872@loongson.cn>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <d6805a81-0695-6466-1994-aaf5ce5a8eac@loongson.cn>
-Date: Thu, 19 Jun 2025 09:44:04 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (envelope-from <gaosong@loongson.cn>) id 1uS5YG-00069E-K3
+ for qemu-devel@nongnu.org; Wed, 18 Jun 2025 23:02:59 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxlmnSfVNorY4ZAQ--.58200S3;
+ Thu, 19 Jun 2025 11:02:42 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMCxrhu7fVNoIXkgAQ--.48014S2;
+ Thu, 19 Jun 2025 11:02:19 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: maobibo@loongson.cn
+Cc: qemu-devel@nongnu.org,
+	philmd@linaro.org,
+	jiaxun.yang@flygoat.com
+Subject: [PATCH v2 0/9] hw/loongarch: add the advanced extended interrupt
+ controllers (AVECINTC) support
+Date: Thu, 19 Jun 2025 10:39:35 +0800
+Message-Id: <20250619023944.1278716-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-In-Reply-To: <6def6137-5a45-b597-4b43-4b12d8ec8872@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxj8W4a1NoAWcgAQ--.34687S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxWry3Zr13ZrykXr4rXr4rXrc_yoW5Gr4Dpr
- nYkrWUGrW8KF93Jr4rXw4UAFy5Jr18JanrXFn3t3WrCFWkAr1Ygr4jqrsF9F17GrW0qr1U
- XF1UZwnxZF42q3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jUsqXU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+X-CM-TRANSID: qMiowMCxrhu7fVNoIXkgAQ--.48014S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
  helo=mail.loongson.cn
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.694,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,73 +63,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It will be better if check_vldi_mode() is renamed as 
-check_valid_vldi_mode().
+ntroduce the advanced extended interrupt controllers (AVECINTC). This
+feature will allow each core to have 256 independent interrupt vectors
+and MSI interrupts can be independently routed to any vector on any CPU.
 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+The whole topology of irqchips in LoongArch machines looks like this if
+AVECINTC is supported:
 
-On 2025/6/18 下午3:49, gaosong wrote:
-> Ping ! :-)
-> 在 2025/6/5 上午9:53, Song Gao 写道:
->> on qemu we got an aborted error
->> **
->> ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: 
->> code should not be reached
->> Bail out! 
->> ERROR:../target/loongarch/tcg/insn_trans/trans_vec.c.inc:3574:vldi_get_value: 
->> code should not be reached
->> Aborted (core dumped)
->> but on 3A600/3A5000 we got a "Illegal instruction" error.
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2971
->>
->> Fixes: 29bb5d727ff ("target/loongarch: Implement vldi")
->>   Cc: qemu-stable@nongnu.org
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->> Signed-off-by: Song Gao <gaosong@loongson.cn>
->> ---
->>   target/loongarch/tcg/insn_trans/trans_vec.c.inc | 13 +++++++++++--
->>   1 file changed, 11 insertions(+), 2 deletions(-)
->>
->> diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc 
->> b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
->> index dff92772ad..7e50fa7541 100644
->> --- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
->> +++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
->> @@ -3465,7 +3465,7 @@ TRANS(xvmsknz_b, LASX, gen_xx, gen_helper_vmsknz_b)
->>   static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
->>   {
->>       int mode;
->> -    uint64_t data, t;
->> +    uint64_t data = 0, t;
->>       /*
->>        * imm bit [11:8] is mode, mode value is 0-12.
->> @@ -3570,17 +3570,26 @@ static uint64_t vldi_get_value(DisasContext 
->> *ctx, uint32_t imm)
->>           }
->>           break;
->>       default:
->> -        generate_exception(ctx, EXCCODE_INE);
->>           g_assert_not_reached();
->>       }
->>       return data;
->>   }
->> +static bool check_vldi_mode(arg_vldi *a)
->> +{
->> +   return  extract32(a->imm, 8, 4) <= 12;
->> +}
->> +
->>   static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
->>   {
->>       int sel, vece;
->>       uint64_t value;
->> +    if (!check_vldi_mode(a)) {
->> +        generate_exception(ctx, EXCCODE_INE);
->> +        return true;
->> +    }
->> +
->>       if (!check_vec(ctx, oprsz)) {
->>           return true;
->>       }
+  +-----+     +-----------------------+     +-------+
+  | IPI | --> |        CPUINTC        | <-- | Timer |
+  +-----+     +-----------------------+     +-------+
+               ^          ^          ^
+               |          |          |
+        +---------+ +----------+ +---------+     +-------+
+        | EIOINTC | | AVECINTC | | LIOINTC | <-- | UARTs |
+        +---------+ +----------+ +---------+     +-------+
+             ^            ^
+             |            |
+        +---------+  +---------+
+        | PCH-PIC |  | PCH-MSI |
+        +---------+  +---------+
+          ^     ^           ^
+          |     |           |
+  +---------+ +---------+ +---------+
+  | Devices | | PCH-LPC | | Devices |
+  +---------+ +---------+ +---------+
+                   ^
+                   |
+              +---------+
+              | Devices |
+              +---------+
+
+We can see more about AVECINTC on linux driver code[1]
+and loongarch msg interrupts on volI 6.2 Message-Interrupts
+
+Tested the code using the virion-net NIC the start scripts is kernel.sh at[3]
+
+[1]: https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-loongarch-avec.c
+[2]: https://github.com/loongson/LoongArch-Documentation/releases/download/2023.04.20/LoongArch-Vol1-v1.10-EN.pdf
+[3]: https://github.com/gaosong715/qemu/releases/download/pull-loongarch-20250514/kernel.sh
+
+v2:
+  1: Use one irqline for avec parent_irq;
+  2; Correct avec memroy area;
+  3; Pch-msi not connecet to avec when avec is enabled and drop patch 7;
+  4: Add misc_feature and misc_status for misc features an misc
+     fetures status
+  5: Define CSR_ESTAT and CSR_ECFG bit15 for msg interupt. clean patch9.
+  6: Fix test demsg error.
+
+Thanks.
+Song Gao
+
+Song Gao (9):
+  hw/loongarch: move some machine define to virt.h
+  loongarch: add virt feature avecintc support
+  loongarch: add a advance interrupt controller device
+  target/loongarch: add msg interrupt CSR registers
+  hw/loongarch: AVEC controller add a MemoryRegion
+  hw/loongarch: Implement avec controller imput and output pins
+  hw/loongarch: Implement avec set_irq
+  target/loongarch: loongarch CPU supoort avec irqs
+  target/loongarch: do_interrupt support msg interrupt
+
+ hw/intc/Kconfig                  |   3 +
+ hw/intc/loongarch_avec.c         | 143 +++++++++++++++++++++++++++++++
+ hw/intc/meson.build              |   1 +
+ hw/loongarch/Kconfig             |   1 +
+ hw/loongarch/virt.c              |  89 ++++++++++++++++++-
+ include/hw/intc/loongarch_avec.h |  36 ++++++++
+ include/hw/loongarch/virt.h      |  36 ++++++++
+ include/hw/pci-host/ls7a.h       |   2 +
+ target/loongarch/cpu-csr.h       |   6 +-
+ target/loongarch/cpu.c           |  17 ++++
+ target/loongarch/cpu.h           |  34 +++-----
+ target/loongarch/machine.c       |   5 ++
+ 12 files changed, 346 insertions(+), 27 deletions(-)
+ create mode 100644 hw/intc/loongarch_avec.c
+ create mode 100644 include/hw/intc/loongarch_avec.h
+
+-- 
+2.34.1
 
 
