@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB54AE06B8
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA63AE06C6
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:17:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSF6o-0005YP-KM; Thu, 19 Jun 2025 09:15:14 -0400
+	id 1uSF6s-00065N-Jf; Thu, 19 Jun 2025 09:15:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6c-0004rp-7y
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:15:02 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6h-00056c-AB
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:15:07 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6a-000474-J4
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:15:01 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-451dbe494d6so9424455e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:14:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6e-0004E1-QF
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:15:06 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-442fda876a6so6683755e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:15:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750338897; x=1750943697; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750338903; x=1750943703; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=y5LZcCqNpH4GazYoT4HEePjvcf7hcAUKrr97H91/oS0=;
- b=QosOga39clcQoPlNDz92XrkRfYUQXQx8Dcexm3Os4ANQ2W4C43xys7BPlUoW4vuhKB
- vzEpELRDD7ASdj3eG/ntKJ9rjgF4q8nxfN8IZdAiObzE+rqA5apawjgyQTwul7rP6mGr
- Hh/Xsk6lzFEdjap7djOhHAsMUzNu5ZgRakGVdi640o8scxEdlXYzyqROKFsxuJ8czJlA
- cmvN+CLTTUwphHlOcG4xW0PRJSmynedIL3/93+frCco+cUc0lsappsX0agK21FkTOGaz
- 76cyF9fIyR1vCoXxOXRE2k3veU3/vms0BHKLSATb1KGcUFeHh5ApnBvyw1GeJlIAUmyR
- c+/A==
+ bh=ZOrY1FO5kcbv6yzuU6OsNlHS46/lwsOolLM8hoDx0Ks=;
+ b=iN17VTZZoDmSEWfiUkxKk6tWVMWphdhNTttC7Ru1M2Bmb+ln+RnEytJI0+baLtC2PW
+ d0BZtxwBb/xpbr1MwnoK295dtgQV4mwEIZksFxGYdO511NtOfKM/1y6/j6TW8boGEyB9
+ xOmvLSSoloL9NtJdjK5ECL9XzFjJhCtGeK8zpI5OIpN2RU4gPhu/fv1XWKfmLZg/tabj
+ Jtja/Hq4UyWc3UxaR2qzNWUpTjH03/miLPKmG/Km0Spcn/uYuB2BbEPF+1F4y3hY2qmN
+ YmI6BJG65EHpOmuhO9qyanbdnpsxAU3Twx54jyMNx0uwwnkVe56a8EWhKFe92+CHBph0
+ 5zUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750338897; x=1750943697;
+ d=1e100.net; s=20230601; t=1750338903; x=1750943703;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y5LZcCqNpH4GazYoT4HEePjvcf7hcAUKrr97H91/oS0=;
- b=eSx1kvdyNp80qvcd/6Fvh61HnTxipUgtqTOym8dVQkbGRhkAf9nwaWGc3Sn8XMT6dq
- UZo93NzMyMvn4QtBcDbdgofuUTPRCIGJ6+XlcJ8vbKVILgE17HFQdeLaceRejrkTBPU4
- rzLpn/Uvf1WSL27K3UnFG70nQsByd1CFLFX/Y+FLsEeUi6FBF/8Lcz0PaS+wJTbq1Qg6
- lyaWFX0kRmHfmcMUkBoyFvtLlyk5JMHZzHyHLcEKRqQM54x9ODEtd/tURXTSkqzlmOlq
- nRdHAil+4NsWfRt2gDb1IaJ+dR82XGnXoGUxw8cgSKZaH3xawBbiDnTRBexOyT5KzgJx
- zing==
-X-Gm-Message-State: AOJu0YyUpo3NNokmRfd8q1FolPYl1IRCZhFg5MERN2K4j5LoCSrOppBk
- /8Igypn7nZtQ9K+XY0/5wKB3C0IxZqms7mdM9ya/ioVtgFgWNf1u6R5Kr3rjeMeZWoIUPbUwt0X
- 3d4Wa3PA=
-X-Gm-Gg: ASbGncsYv9rdnSO0VZUudEZEltMcTIAC4LCnXWKAslXMi95BawcDFyG2EHZdUNMufuv
- IH8bxVR+ljaefJE6FixqssKga92OpWv+btqXwSLIkuRGYKjBMJw8XHTnTxyljaNSsbko7LqciVP
- A6ab9tB4iCRHxqczDNduDChI32JQHWgxvz5gvJ466pZMB+FHuFurZ9xq2G0az+Dgjhla2DZKXtx
- Fy1ikRPSml0ah7J0d7TsAwPPkt5uH8pE03C8a3zY9bS4RIhULfmXJIOa1JYj42KS0ePOcExPzpJ
- O2Ln8G0n/DXsR4MbQWAFwc762iCycZ7uQ/7bgvTp3Ko+pB35/kXO7pyCZ9wttCtFVr35noJgwzf
- ch0bjmcyY1D3b4Z7G5CrUwqWf4rrwp7ihVXIR
-X-Google-Smtp-Source: AGHT+IGSPxsi1o1FNjNRdOKa4gLP4CvK5BiNLtp11Lll7xjWxOONtOoutqWpAjesn+xGjJ2lNdFzIQ==
-X-Received: by 2002:a05:6000:65b:b0:3a5:88cf:479e with SMTP id
- ffacd0b85a97d-3a588cf4d3cmr9235335f8f.48.1750338897594; 
- Thu, 19 Jun 2025 06:14:57 -0700 (PDT)
+ bh=ZOrY1FO5kcbv6yzuU6OsNlHS46/lwsOolLM8hoDx0Ks=;
+ b=aEvSwpJMd4n4u7K01dLuavq37VZ1zsLOvPCq2aPW/QnhV37xuoFKzcqzEe5zncISqe
+ Jn9cmx2AYX93W8q1VH4GAsCZ6BrJx6GZQwKUoWK6mx66kWbdZAmA33Io+gVDZvpN2E2O
+ wZqgZdDKXLI8PIfqmW6YS9Cw65v7ck1U3ObNtwU6ceJZ4wR/Eaesxjc2A+LoXJyd4tPq
+ Ep2fqmpwZ+OWO93RvsFCIjMA89fLFpxy8453fmv1ZO1hPdshWuU43i/U77quqcvJpyKl
+ m4dVNNU6MJEYcJDBNP8ABxD+fbxpplQjk96rK6bajV49U+zEtSSUe3t62Xlg8SxGBdhy
+ 2m5w==
+X-Gm-Message-State: AOJu0YymEoaCjpcRF24/T+TYWrYd5nX+WiHTkjPMRJAF2DbYcaIdstNA
+ dkFyaGYnYcv/CvuohWMrWIdSUxfUMX2hrc0CW+ZEn9klB76/o/95UC3xpUsKhSw+h7R6ghFoBmO
+ rZFqeAts=
+X-Gm-Gg: ASbGncsiu8P935Ijkl8toESiT4uPp5JQl10UuCsZ09Vsmt21y9tsBi2md3pKHYttgCk
+ xhxMVQWfwUOgXXIM5XwbHFYFcvemGSz1tp4HHF1juz2dBSQAhPNtddZn0b0TSUYVPqSL7eB1VEj
+ 4M2KfNfyLhGIZGN07XND2xH/dE3ZJMT3t5s4s3zPucri6rQoaEeJ9wnEFGUbeaztskbtXUM8+KT
+ EPMOtCMkzaTJ6Jyyla5h7uOfSwwRAgOgzX4dTd8P1+Vj1F5MN2bq0z3tL8jgdPLTbZP+ZigqdgE
+ T/iX9zYOWTTsM30M+szeun8i/w2ngs2wC82SULNWbdYW2GT8kuZwmnIWvNnDkvx+5w8M+9o7Ntm
+ eMRCmksiu7wbsdc9fuU4d4se/s8UDS8YFSKtd
+X-Google-Smtp-Source: AGHT+IFFj/4N5XELq/kLhF7E4qci2bJJhqg8HElhpm3KcUTcYoBlJ+rjYJOiQKm4H1fVjPvPjGO1Uw==
+X-Received: by 2002:a05:600c:a01:b0:453:6150:de41 with SMTP id
+ 5b1f17b1804b1-4536150e073mr16395235e9.17.1750338902687; 
+ Thu, 19 Jun 2025 06:15:02 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a568a6078csm19176121f8f.21.2025.06.19.06.14.56
+ 5b1f17b1804b1-4535eac8bb6sm28841155e9.25.2025.06.19.06.15.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Jun 2025 06:14:57 -0700 (PDT)
+ Thu, 19 Jun 2025 06:15:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
@@ -77,18 +77,17 @@ Cc: Cameron Esfahani <dirty@apple.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>
-Subject: [PATCH 18/20] hw/arm/virt: Rename cpu_post_init() ->
- post_cpus_gic_realized()
-Date: Thu, 19 Jun 2025 15:13:17 +0200
-Message-ID: <20250619131319.47301-19-philmd@linaro.org>
+Subject: [PATCH 19/20] hw/arm/sbsa-ref: Tidy up use of RAMLIMIT_GB definition
+Date: Thu, 19 Jun 2025 15:13:18 +0200
+Message-ID: <20250619131319.47301-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250619131319.47301-1-philmd@linaro.org>
 References: <20250619131319.47301-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,37 +110,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QDev uses _post_init() during instance creation, before being
-realized. Since here both vCPUs and GIC are REALIZED, rename
-as virt_post_cpus_gic_realized() for clarity.
+Define RAMLIMIT_BYTES using the TiB definition and display
+the error parsed with size_to_str():
+
+  $ qemu-system-aarch64-unsigned -M sbsa-ref -m 9T
+  qemu-system-aarch64-unsigned: sbsa-ref: cannot model more than 8 TiB of RAM
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/virt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/arm/sbsa-ref.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index a9099570faa..da453768cce 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2032,7 +2032,8 @@ static void finalize_gic_version(VirtMachineState *vms)
-  * virt_cpu_post_init() must be called after the CPUs have
-  * been realized and the GIC has been created.
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index deae5cf9861..3b7d4e7bf1d 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -19,6 +19,7 @@
   */
--static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
-+static void virt_post_cpus_gic_realized(VirtMachineState *vms,
-+                                        MemoryRegion *sysmem)
- {
-     int max_cpus = MACHINE(vms)->smp.max_cpus;
-     bool aarch64, pmu, steal_time;
-@@ -2349,7 +2350,7 @@ static void machvirt_init(MachineState *machine)
  
-     create_gic(vms, sysmem);
+ #include "qemu/osdep.h"
++#include "qemu/cutils.h"
+ #include "qemu/datadir.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+@@ -53,8 +54,7 @@
+ #include "target/arm/cpu-qom.h"
+ #include "target/arm/gtimer.h"
  
--    virt_cpu_post_init(vms, sysmem);
-+    virt_post_cpus_gic_realized(vms, sysmem);
+-#define RAMLIMIT_GB 8192
+-#define RAMLIMIT_BYTES (RAMLIMIT_GB * GiB)
++#define RAMLIMIT_BYTES (8 * TiB)
  
-     fdt_add_pmu_nodes(vms);
+ #define NUM_IRQS        256
+ #define NUM_SMMU_IRQS   4
+@@ -756,7 +756,9 @@ static void sbsa_ref_init(MachineState *machine)
+     sms->smp_cpus = smp_cpus;
+ 
+     if (machine->ram_size > sbsa_ref_memmap[SBSA_MEM].size) {
+-        error_report("sbsa-ref: cannot model more than %dGB RAM", RAMLIMIT_GB);
++        g_autofree char *size_str = size_to_str(RAMLIMIT_BYTES);
++
++        error_report("sbsa-ref: cannot model more than %s of RAM", size_str);
+         exit(1);
+     }
  
 -- 
 2.49.0
