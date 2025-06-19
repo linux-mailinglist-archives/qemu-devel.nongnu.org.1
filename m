@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9EDAE06B7
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FD9AE06D9
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:20:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSF5w-0003iJ-0d; Thu, 19 Jun 2025 09:14:20 -0400
+	id 1uSF5v-0003hG-0d; Thu, 19 Jun 2025 09:14:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF5k-0003fB-Hq
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:10 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF5l-0003fH-Ud
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:12 -0400
 Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF5e-0003vY-LG
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:07 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF5k-0003vt-AI
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:09 -0400
 Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-451d41e1ad1so5830605e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:14:01 -0700 (PDT)
+ 5b1f17b1804b1-451d3f72391so7806765e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:14:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750338840; x=1750943640; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750338845; x=1750943645; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zHGHBjHnm08XY2FWC1TeHuwJJyw8Eo3SwtB3aTyB57o=;
- b=D7haTk6W1wzVr76xrdfjuJP9FVlduEb0cjJYSlkGMbsM59S1DsXIW9BT/cbab35JgZ
- r4C1RwNDzO9SFr4Sn+Sjguh5CBCNIpxH1AJJXHNH2WkvPYjRIfHYy+S5hiB9zO3FaTWu
- NxyLjWlsAj1flYOVsCQstGluWTa9CUoPavrGbE3X9LUfkTABvWVvWbwGZgkyJq1PPJEM
- W7gHiYip01GyuNBd6SWI4o5VfQEUssZyy9ZGEbRphpLEI5svNZjSnO9onhfoPCGIiMas
- VcCNgehwRz63VHQzF5H5kvPuPMKeg2VN4TRsppud4L4ZhBN6s8iek48NoFUEpb9EShAc
- evCQ==
+ bh=V3vxCB8AF1OexrFi26RMBcdit/f0pHUtl0WDW3lo3q4=;
+ b=DMaUwi8UaqKiHT3XdYHdzvT8l3ni0strEsyePaZgEsgvrAxMas/pfdODI8xHDCyZ1A
+ 08vPfAkk7rcEA9e1S9xkH2NK6l2gxr3/hba0g/jz49O42Su+CNGtve36fqbrUSvSQHg2
+ tXLEm2jorJUJdhefBexmBNMdpKNXFiqqsTQcHp7m/jZfNwrj0/rM5u018OWn3OuOeH/Q
+ /zrpm72vYnQ+ZWgyPmmr6h/RZOEW1jRD8qHnGOaLFBFuueiMR0nALtfYlMKxK49HfvXR
+ aDZeb6jx+N/8fnFHY/DKq3i45yH1E98bCBlAHEHKSXMVfhUFvZYDPlyTdJba9/rmbIfs
+ hqeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750338840; x=1750943640;
+ d=1e100.net; s=20230601; t=1750338845; x=1750943645;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zHGHBjHnm08XY2FWC1TeHuwJJyw8Eo3SwtB3aTyB57o=;
- b=dUAGmdLy6T8RJE1F7RyVZUpmDIMxEENtNPOYs0ZCH+Z23PIRqe4mjKq1SY8v4Araqf
- hliCEyAz5Be4JlSUeTGBV24OK8P5yBNxo+EBus9+e+b9ePsOziPbgE+m8WiLuIjQnnDq
- EsQTwMrGHAz9K3SvDUx8iiMxL6jkQ5PW6yRCbovl9Mn7ycYJ6gShzUXxyI7+jNjAyeNL
- 94nmISt4G+lOeAIykM+UZd3UHUQeCCeFbLg4OzcYcgzte1zaGfPfL14xxSmEy5D0wf1o
- zafpbW9OADOoSeXZtfqh4iaCJ999zYnafkfVrXx+7ZEZrqs1ZmP3BK7iX7Nov1OTIgkC
- 7s8Q==
-X-Gm-Message-State: AOJu0YxvAcudtmIk81FpkmBej7nHJZdc0O9FX5JZ7duxEHMX9pFrFJ9T
- 81YIbhpl8ZJQ9MEYOX2RApM2mHyTlhnXY1jA7KN95mYKLPCgWjHi2OaUMXnweUXd47D7g4wqlCx
- 9FxnEqkw=
-X-Gm-Gg: ASbGnctBc9ThOhFlew4A0sFMhnz9sfUIyQDXGvXS1BPG/5ki89IkSGRDeLDlI4A/xVV
- v/SHUe4SvAQo9Png0dFaENszS76/zKiBIR2jOZs3+CGmPFJSl+QTaxf6/xTkl49GZ+CpTZjp2iM
- nw81Oe8Z3pNKls1sbeDbamo7JQSriDOxKMBP3J/AN3rg0k1WTdZVN87kDOeYLShVUPLTZPPldne
- +An1pMf1SlY+2i6KRzPacdnRjHaKz1APig7DJEUc3OKki9I6CSpTmo+EXUTno6hhB4SxGMauIFH
- B/WaSZF4q9aR5U3NDnhBSNpYWuGZSem48qIUbmXWfIsytPu0oZvPES1A1xejn0fMGWdhNGGx/1d
- rn1SN9VWIa6j+eZnQ/D37hy4Vow1rai7ijmJm
-X-Google-Smtp-Source: AGHT+IH0dt4iGJr6FYYNqBSMaXpFrU7CwfQvkc2Mt1yc9XX3BrxWP2rVzSQNRIHBHoy4vELO8HZkLA==
-X-Received: by 2002:a5d:5849:0:b0:3a4:dfc2:2a3e with SMTP id
- ffacd0b85a97d-3a5723aeb2cmr17281843f8f.39.1750338840330; 
- Thu, 19 Jun 2025 06:14:00 -0700 (PDT)
+ bh=V3vxCB8AF1OexrFi26RMBcdit/f0pHUtl0WDW3lo3q4=;
+ b=vcLOQ1LKnryc3dvsyk98SoqViH3Be5VKfXOLLWdtUD3+kB7OORHmmL5TQNODZt76M4
+ UEwyHXxZrBmdZGjP8pdeCAXzHo1O6m2vU49KvV0O8FiYkWWf70b+fj7x+5LsR0kAJX+M
+ dEM3PZ3hanUwKkPbbnjWy+DGgBa0YVfjxXcqyzoeEsNBsKR0mVcQSr9xuqu/abIqVfxf
+ 36Otzsk86swVT1lUWN4nJvn+071BoIvBSwhcwRiDJHN0gbWTGYldFj5WBrggAIDTuqiS
+ bpzxfn742R7qLEovHiYGRwECijwFRDnq+/+1abGD5pLyTeExm8NO+1pe8g6h5JMoRYxu
+ W+Sw==
+X-Gm-Message-State: AOJu0Yyp6gRE/S+IBNOQlZN1joPBnBBCDVDYq4o2MLSz7nwxwPUEYn1P
+ 98ZydsUJkQLMFD6quODu3KRunCy0C+WFDwvPwXIFmTLx35enjcFOpWG60Oq7wzxe3kmoz8p9MXv
+ V3SGefO8=
+X-Gm-Gg: ASbGncu5qQw0NI91iWLzGrCQKj8h6JORmySH1NlE6hjcHJHkT76t14H0AaStO9YYFwG
+ MlObkgED7fnh0gcTCbKBm5zjKxF9vjkvrgsgNZEb6nRYCxqYP+FaOGjZ27LEYIsr2dpdLf56GPp
+ Pa0r1MEUsGXUEAhHc8Y6ssyqHq34qDYlM0qzxZFVXa52lzLgrVm/6Ejz0/vCPbmE3PvX7fOCN9P
+ ento+ErOuy5zKqfyjFsyDww7Z1RNq4RBMHHNw357Vl889eutCxqQjID+Ef6cAhsUDtRP8pakJlM
+ u0i0uj3Im7lTZw5RFTJNN+xioFd3DbWHWBRczlcsJT0cRcYmj6j3pEsT3Gr5f0VgAtP5ZebW7ka
+ 9KG+Qd5AHUh/Kky8XT5HiC2N/md6URvVsTB5H
+X-Google-Smtp-Source: AGHT+IHelkidw/tQQ9RKP0VDtKPsH2g6yNSOnkNt0atUABraIjdPtrs1NJAkAu3tXReVPLd5lAEiMA==
+X-Received: by 2002:a05:600c:1e1d:b0:453:b44:eb69 with SMTP id
+ 5b1f17b1804b1-4533ca7518dmr224054745e9.13.1750338845548; 
+ Thu, 19 Jun 2025 06:14:05 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a568a547ecsm19782672f8f.17.2025.06.19.06.13.58
+ 5b1f17b1804b1-4535e97ac4asm28331335e9.3.2025.06.19.06.14.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Jun 2025 06:13:59 -0700 (PDT)
+ Thu, 19 Jun 2025 06:14:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
@@ -77,9 +77,9 @@ Cc: Cameron Esfahani <dirty@apple.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>
-Subject: [PATCH 07/20] accel/hvf: Trace VM memory mapping
-Date: Thu, 19 Jun 2025 15:13:06 +0200
-Message-ID: <20250619131319.47301-8-philmd@linaro.org>
+Subject: [PATCH 08/20] target/arm/hvf: Log $pc in hvf_unknown_hvc() trace event
+Date: Thu, 19 Jun 2025 15:13:07 +0200
+Message-ID: <20250619131319.47301-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250619131319.47301-1-philmd@linaro.org>
 References: <20250619131319.47301-1-philmd@linaro.org>
@@ -110,82 +110,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Trace memory mapped / unmapped in the guest.
+Tracing $PC for unknown HVC instructions to not have to
+look at the disassembled flow of instructions.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- meson.build               | 1 +
- accel/hvf/trace.h         | 2 ++
- accel/hvf/hvf-accel-ops.c | 6 ++++++
- accel/hvf/trace-events    | 7 +++++++
- 4 files changed, 16 insertions(+)
- create mode 100644 accel/hvf/trace.h
- create mode 100644 accel/hvf/trace-events
+ target/arm/hvf/hvf.c        | 4 ++--
+ target/arm/hvf/trace-events | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 34729c2a3dd..5004678a26b 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3633,6 +3633,7 @@ if have_block
- endif
- if have_system
-   trace_events_subdirs += [
-+    'accel/hvf',
-     'accel/kvm',
-     'audio',
-     'backends',
-diff --git a/accel/hvf/trace.h b/accel/hvf/trace.h
-new file mode 100644
-index 00000000000..83a1883343a
---- /dev/null
-+++ b/accel/hvf/trace.h
-@@ -0,0 +1,2 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#include "trace/trace-accel_hvf.h"
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index d60446b85b8..b38977207d2 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -59,6 +59,7 @@
- #include "system/hvf_int.h"
- #include "system/runstate.h"
- #include "qemu/guest-random.h"
-+#include "trace.h"
- 
- HVFState *hvf_state;
- 
-@@ -97,6 +98,7 @@ static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
-     if (macslot->present) {
-         if (macslot->size != slot->size) {
-             macslot->present = 0;
-+            trace_hvf_vm_unmap(macslot->gpa_start, macslot->size);
-             ret = hv_vm_unmap(macslot->gpa_start, macslot->size);
-             assert_hvf_ok(ret);
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 1ff3ff7b91a..ccdadce4766 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -2069,12 +2069,12 @@ int hvf_vcpu_exec(CPUState *cpu)
+         cpu_synchronize_state(cpu);
+         if (arm_cpu->psci_conduit == QEMU_PSCI_CONDUIT_HVC) {
+             if (!hvf_handle_psci_call(cpu)) {
+-                trace_hvf_unknown_hvc(env->xregs[0]);
++                trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
+                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
+                 env->xregs[0] = -1;
+             }
+         } else {
+-            trace_hvf_unknown_hvc(env->xregs[0]);
++            trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
+             hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
          }
-@@ -109,6 +111,10 @@ static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
-     macslot->present = 1;
-     macslot->gpa_start = slot->start;
-     macslot->size = slot->size;
-+    trace_hvf_vm_map(slot->start, slot->size, slot->mem, flags,
-+                     flags & HV_MEMORY_READ ?  'R' : '-',
-+                     flags & HV_MEMORY_WRITE ? 'W' : '-',
-+                     flags & HV_MEMORY_EXEC ?  'E' : '-');
-     ret = hv_vm_map(slot->mem, slot->start, slot->size, flags);
-     assert_hvf_ok(ret);
-     return 0;
-diff --git a/accel/hvf/trace-events b/accel/hvf/trace-events
-new file mode 100644
-index 00000000000..3c11f69f305
---- /dev/null
-+++ b/accel/hvf/trace-events
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+# See docs/devel/tracing.rst for syntax documentation.
-+
-+# hvf-accel-ops.c
-+hvf_vm_map(uint64_t paddr, uint64_t size, void *vaddr, uint8_t flags, const char r, const char w, const char e) "paddr:0x%016llx size:0x%08llx vaddr:%p flags:0x%02x/%c%c%c"
-+hvf_vm_unmap(uint64_t paddr, uint64_t size) "paddr:0x%016llx size:0x%08llx"
+         break;
+diff --git a/target/arm/hvf/trace-events b/target/arm/hvf/trace-events
+index a4870e0a5c4..245338c5bf4 100644
+--- a/target/arm/hvf/trace-events
++++ b/target/arm/hvf/trace-events
+@@ -5,7 +5,7 @@ hvf_inject_irq(void) "injecting IRQ"
+ hvf_data_abort(uint64_t pc, uint64_t va, uint64_t pa, bool isv, bool iswrite, bool s1ptw, uint32_t len, uint32_t srt) "data abort: [pc=0x%"PRIx64" va=0x%016"PRIx64" pa=0x%016"PRIx64" isv=%d iswrite=%d s1ptw=%d len=%d srt=%d]"
+ hvf_sysreg_read(uint32_t reg, uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2, uint64_t val) "sysreg read 0x%08x (op0=%d op1=%d crn=%d crm=%d op2=%d) = 0x%016"PRIx64
+ hvf_sysreg_write(uint32_t reg, uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2, uint64_t val) "sysreg write 0x%08x (op0=%d op1=%d crn=%d crm=%d op2=%d, val=0x%016"PRIx64")"
+-hvf_unknown_hvc(uint64_t x0) "unknown HVC! 0x%016"PRIx64
++hvf_unknown_hvc(uint64_t pc, uint64_t x0) "pc=0x%"PRIx64" unknown HVC! 0x%016"PRIx64
+ hvf_unknown_smc(uint64_t x0) "unknown SMC! 0x%016"PRIx64
+ hvf_exit(uint64_t syndrome, uint32_t ec, uint64_t pc) "exit: 0x%"PRIx64" [ec=0x%x pc=0x%"PRIx64"]"
+ hvf_psci_call(uint64_t x0, uint64_t x1, uint64_t x2, uint64_t x3, uint32_t cpuid) "PSCI Call x0=0x%016"PRIx64" x1=0x%016"PRIx64" x2=0x%016"PRIx64" x3=0x%016"PRIx64" cpu=0x%x"
 -- 
 2.49.0
 
