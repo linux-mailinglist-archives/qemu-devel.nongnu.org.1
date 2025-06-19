@@ -2,100 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D686AE06D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEB5AE06E8
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:23:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSF6v-0006Mp-JJ; Thu, 19 Jun 2025 09:15:21 -0400
+	id 1uSFEr-0001Nx-5A; Thu, 19 Jun 2025 09:23:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6m-0005Re-1o
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:15:12 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
+ id 1uSFEm-0001NJ-CJ
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:23:28 -0400
+Received: from mail-il1-x131.google.com ([2607:f8b0:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6k-0004Kv-3l
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:15:11 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-453426170b6so11665635e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:15:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
+ id 1uSFEk-0006Lg-Rz
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:23:28 -0400
+Received: by mail-il1-x131.google.com with SMTP id
+ e9e14a558f8ab-3de1875bfd4so2726315ab.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:23:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750338908; x=1750943708; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1750339404; x=1750944204; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yfbZh25j/JWcO06w+c80OaMwV9tGFnS1KSANu6xFbyE=;
- b=jzPjDWpj81RuWVYolYhuqpW7YwtCEiNw1hNEgp7QNgq6eQIG5cq9opLc9Lcj82WONJ
- oF5Sv6/27lKl90oC7+7dF7B5TAdR39hUIIKbsMjk3JfhDwZmvkG70jj2XdMPdXj3e/DD
- H1+fN12NMVyI/GRx0amm/irCWy0VspTdyTiefvyfeQK0oZwvQu2MilpCVu9fVZ2/nnHh
- Tjo+WA780JveA7jOlvoiHxfXdHzISM3RmDQnITrrRrif0Vs4XMGi9JI745blAjlJLDze
- bV/xCBMfD5j9pH2h9nSm32BuoVt8OEZzXrjpdQ+laWO5KEaJ5XPUK/iZqpsOeBQflS+V
- 5UWg==
+ bh=Z81gzf00YTkY/fBeXVt0/DuwssyllLL3hRkGPpJeRNY=;
+ b=YcpsWbhIM11d6ULk45O43ea9tyw8N97r/JEtXcOKO7/7Mk4GXMItT+a/luUklLVq7G
+ GOu/MnTdRy5aMARuSL56JaGBxQLFvXruVbFbbW6+h7UKUsGomR/Fj2ReFx5CuXlzUiD3
+ fU+0jNcMV8Bow21OY2YoJ5a7v3ug55ezrSjZUloeuASxip7ybKmIGN0+Xip1rZob1A5n
+ EZ52tnR0Yu7dqkeUGE8FdyLUy1Y/bHNmjab93SgU2us1nEeYJrDII0TyDSwbJajpWcIC
+ W/fRjWqmn4yn13cXoXXccVcVo2sxPnBDJ85xpNu7XgTY9oHOKUoLyLXVPGrv++JO4vzJ
+ hO1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750338908; x=1750943708;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1750339404; x=1750944204;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yfbZh25j/JWcO06w+c80OaMwV9tGFnS1KSANu6xFbyE=;
- b=c3hA1ykakaseDsyqm18qkfhYU93XOJG49bjrTUiB9V8tL5aYNjQb+LVNWeezIhIlpP
- dWX5CZTxQ1mnerp/8LJNz83D28Sy7y9UiYUsw3h/9ub/c9guQHnj6Cd7uGyRuM2cMyZi
- 7IxVypstHtzywbwEkrxDKSKBU7jEE8DQA+HAO6mVL1Z+wMevhmSjNDfrdbR0kOtAfTj+
- Seizb19RMuVW2A2Qp6K3WJ9Z6pXoB8IPSrOv6SaiL56AJD15341/2gh0hAEmrGJv3+A+
- qhyQ2tVImbl0r+fyder31h3bEyhYTET6ha02wv+CXSgoAKQiTT622QZmYGzzJbUxBFf/
- CXig==
-X-Gm-Message-State: AOJu0YzzuJB4K0jnu/yfRG5pkmW/g16EoVlC8OFXbEaqn+ChQO2K69n4
- k7Kd8QO8U7N+vJoWWu2kU3Czf/LM3xOCFyWrprSm8grmX4ILogiyaDIilR0RLGmEniZVLG0QQrI
- YJe2RkAM=
-X-Gm-Gg: ASbGnctPgM+2hptPleak3SmVKS+byTHeaA2pW/giCqgRLDZJ7+HIugswItpxEbPFHlO
- A0rRIiQ66/s66XbbzH4XF1RlcQ1GZ7cof1vf/PBt+ZbBrT+PN5PQmuS6a1LEFlbPobkwq6IajTY
- o7KLuro/t6tF77wGiV1nwNMzsiUyKKVA0D/T2ubW/y1tziwaMn8/ZxeL9H+cE2qBo4bNe0YC7Ph
- XBYaTB5XMMRCV+gQyI/WWpZnTuzlNfFTvSvOK2dCQxWNrJLu7VT+o2hPbY2e/sqy07MIDEt3EKo
- 2ZD9pMeQY2+UwdihVNBmaAWc8lkkl35RBuJrEganjkvIckLR4qh/H8n3CJvQuWlmYXuYw0HLwR+
- A/0Qzwi/+mvbSXZ5INEGpBMrog20crtFFx8Lr
-X-Google-Smtp-Source: AGHT+IFW6hA3yAKdFTUe8EEI5kic43ZIITMi78xKgEZunkyJSkx0t16xPuunedGwf+ZaxjadES0vkQ==
-X-Received: by 2002:a05:6000:648:b0:3a4:dfbe:2b14 with SMTP id
- ffacd0b85a97d-3a6c96c102bmr2506122f8f.16.1750338907890; 
- Thu, 19 Jun 2025 06:15:07 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a568b2f80asm19552864f8f.78.2025.06.19.06.15.06
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Jun 2025 06:15:07 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ bh=Z81gzf00YTkY/fBeXVt0/DuwssyllLL3hRkGPpJeRNY=;
+ b=YzKJFtEaXvSGBnS+E2qUpZ01vud+rcSOC6CJSHByLYZWbc4pkqTUCfmFCLk0QK+BT4
+ AlcmyRjJjJArAwfC0F7cHuZqyazsunHFYpiDsnhqkzqkqIJmGxTZWC284P3qfCFk4Brt
+ SCfK4i1IR7JMdq026YKVWieyF4ONvev+C23k3WOIH4HmXzh06lauTlQfW0D8BgN7uHzQ
+ 83dIRDDIJeCUzp5GohPsQf3+LdxeBq4cuQgNA0gh4dqQB5IF753Tza3zozUWuiOpOUCy
+ xBOIE24//XkCwKLanvJzBZaEL3AvlsxAQyUcznegJgur+6p52GBtGxwVUeAEz8u0krEa
+ pzew==
+X-Gm-Message-State: AOJu0Yy2Rdd4jMm9FtJO56YV5p7vJ1/Nh2FGgUq2kwVqTikoRCF8JSB3
+ yJxCEEoQYtOVuCRt8keNBshxb9886kXF/yn6YgDB2TLtt9NsQoTWzStO00KyJfeEDaGG25vAN2a
+ asq1a61XpZ60VYJ3/DYNWCiSuQBJonfX8yBNbSWYHH9xmbVsOkux87eDd2Q==
+X-Gm-Gg: ASbGncvEZT7ix06UC8+Bcxt/uAt1BVW/kDw7gRStuIeIMeEK3D/bG8E2a4+XxfcUqkF
+ pQnMOUv9MIVqdy6SpuMrMp7X+xLFMoYUxr6nti0IO6SqwuySChZMprg38bf1NTVdZ+q2lPL3JoT
+ E/braA+ymL3q3FUOMRpyGLeJuheV9ZkIlTgnOm/meBzIw=
+X-Google-Smtp-Source: AGHT+IHQux5BONbs+biKWvdH17zMCmnmXk/I0BfEe5F7pA7ZT7bha/W1MD5B0EJhN7nBoWpSXTZ2SAgZoBHpYqMNd34=
+X-Received: by 2002:a05:6e02:3304:b0:3dd:cc4f:d85a with SMTP id
+ e9e14a558f8ab-3de07d12d0bmr241002825ab.6.1750339404384; Thu, 19 Jun 2025
+ 06:23:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250619131319.47301-1-philmd@linaro.org>
+ <20250619131319.47301-21-philmd@linaro.org>
+In-Reply-To: <20250619131319.47301-21-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Date: Thu, 19 Jun 2025 15:23:13 +0200
+X-Gm-Features: AX0GCFtmRRy5I91doA1D2ea5i25Q9Xlua4nOtMjG5qC8LQzhcPW_VnpruYxsqJk
+Message-ID: <CAPMQPEJTTa4NiEvj9pmrubyn3dTB=13PW6scive=nfAGVtqMHw@mail.gmail.com>
+Subject: Re: [PATCH 20/20] tests/functional/sbsa-ref: Move where machine type
+ is set
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Julian Armistead <julian.armistead@linaro.org>,
+ Julian Armistead <julian.armistead@linaro.org>, 
  Radoslaw Biernacki <rad@semihalf.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
  Phil Dennis-Jordan <phil@philjordan.eu>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Leif Lindholm <leif.lindholm@oss.qualcomm.com>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org, 
  Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>
-Subject: [PATCH 20/20] tests/functional/sbsa-ref: Move where machine type is
- set
-Date: Thu, 19 Jun 2025 15:13:19 +0200
-Message-ID: <20250619131319.47301-21-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250619131319.47301-1-philmd@linaro.org>
-References: <20250619131319.47301-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::131;
+ envelope-from=philippe.mathieu-daude@linaro.org; helo=mail-il1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,35 +104,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-fetch_firmware() is only about fetching firmware.
-Set the machine type in test_sbsaref_edk2_firmware().
+On Thu, 19 Jun 2025 at 15:15, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> fetch_firmware() is only about fetching firmware.
+> Set the machine type in test_sbsaref_edk2_firmware().
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  tests/functional/test_aarch64_sbsaref.py | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tests/functional/test_aarch64_sbsaref.py b/tests/functional/=
+test_aarch64_sbsaref.py
+> index e6a55aecfac..5536ec622e6 100755
+> --- a/tests/functional/test_aarch64_sbsaref.py
+> +++ b/tests/functional/test_aarch64_sbsaref.py
+> @@ -40,7 +40,6 @@ def fetch_firmware(test):
+>          with open(path, "ab+") as fd:
+>              fd.truncate(256 << 20)  # Expand volumes to 256MiB
+>
+> -    test.set_machine('sbsa-ref')
+>      test.vm.set_console()
+>      test.vm.add_args(
+>          "-drive", f"if=3Dpflash,file=3D{fs0_path},format=3Draw",
+> @@ -70,6 +69,7 @@ def test_sbsaref_edk2_firmware(self):
+>
+>          fetch_firmware(self)
+>
+> +        self.set_machine('sbsa-ref')
+>          self.vm.add_args('-cpu', 'cortex-a57')
+>          self.vm.launch()
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/functional/test_aarch64_sbsaref.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sorry, last patch, I forgot to squash:
 
-diff --git a/tests/functional/test_aarch64_sbsaref.py b/tests/functional/test_aarch64_sbsaref.py
-index e6a55aecfac..5536ec622e6 100755
---- a/tests/functional/test_aarch64_sbsaref.py
-+++ b/tests/functional/test_aarch64_sbsaref.py
-@@ -40,7 +40,6 @@ def fetch_firmware(test):
-         with open(path, "ab+") as fd:
-             fd.truncate(256 << 20)  # Expand volumes to 256MiB
- 
--    test.set_machine('sbsa-ref')
-     test.vm.set_console()
-     test.vm.add_args(
-         "-drive", f"if=pflash,file={fs0_path},format=raw",
-@@ -70,6 +69,7 @@ def test_sbsaref_edk2_firmware(self):
- 
-         fetch_firmware(self)
- 
+-- >8 --
+diff --git a/tests/functional/test_aarch64_sbsaref_alpine.py
+b/tests/functional/test_aarch64_sbsaref_alpine.py
+index 6108ec65a54..98762eedb67 100755
+--- a/tests/functional/test_aarch64_sbsaref_alpine.py
++++ b/tests/functional/test_aarch64_sbsaref_alpine.py
+@@ -32,2 +32,3 @@ def boot_alpine_linux(self, cpu=3DNone):
+
 +        self.set_machine('sbsa-ref')
-         self.vm.add_args('-cpu', 'cortex-a57')
-         self.vm.launch()
- 
--- 
-2.49.0
+         self.vm.set_console()
+diff --git a/tests/functional/test_aarch64_sbsaref_freebsd.py
+b/tests/functional/test_aarch64_sbsaref_freebsd.py
+index 26dfc5878bb..1c243d0d459 100755
+--- a/tests/functional/test_aarch64_sbsaref_freebsd.py
++++ b/tests/functional/test_aarch64_sbsaref_freebsd.py
+@@ -32,2 +32,3 @@ def boot_freebsd14(self, cpu=3DNone):
 
++        self.set_machine('sbsa-ref')
+         self.vm.set_console()
+---
 
