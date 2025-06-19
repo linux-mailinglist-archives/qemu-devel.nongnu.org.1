@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DC2ADFB97
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 05:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25091ADFB98
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 05:05:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uS5YQ-00073I-OF; Wed, 18 Jun 2025 23:03:06 -0400
+	id 1uS5YQ-00073W-Og; Wed, 18 Jun 2025 23:03:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uS5YK-00072T-7m
+ id 1uS5YK-00072S-7n
  for qemu-devel@nongnu.org; Wed, 18 Jun 2025 23:03:01 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uS5YG-00069L-J0
+ (envelope-from <gaosong@loongson.cn>) id 1uS5YG-00069D-Go
  for qemu-devel@nongnu.org; Wed, 18 Jun 2025 23:02:59 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxqmrWfVNosI4ZAQ--.17718S3;
- Thu, 19 Jun 2025 11:02:46 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxrOLafVNos44ZAQ--.17418S3;
+ Thu, 19 Jun 2025 11:02:50 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMCxrhu7fVNoIXkgAQ--.48014S3;
- Thu, 19 Jun 2025 11:02:38 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMCxrhu7fVNoIXkgAQ--.48014S4;
+ Thu, 19 Jun 2025 11:02:46 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: maobibo@loongson.cn
 Cc: qemu-devel@nongnu.org,
 	philmd@linaro.org,
 	jiaxun.yang@flygoat.com
-Subject: [PATCH v2 1/9] hw/loongarch: move some machine define to virt.h
-Date: Thu, 19 Jun 2025 10:39:36 +0800
-Message-Id: <20250619023944.1278716-2-gaosong@loongson.cn>
+Subject: [PATCH v2 2/9] loongarch: add virt feature avecintc support
+Date: Thu, 19 Jun 2025 10:39:37 +0800
+Message-Id: <20250619023944.1278716-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250619023944.1278716-1-gaosong@loongson.cn>
 References: <20250619023944.1278716-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxrhu7fVNoIXkgAQ--.48014S3
+X-CM-TRANSID: qMiowMCxrhu7fVNoIXkgAQ--.48014S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,105 +64,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-move som machine define to virt.h and define avec feature and status bit.
-Use the IOCSRF_AVEC bit for avdance interrupt controller drivers
-avecintc_enable[1] and set the default value of the MISC_FUNC_REG bit IOCSRM_AVEC_EN.
-and set the default value of the MISC_FUNC_REG bit IOCSRM_AVEC_EN.
-
-[1]:https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-loongarch-avec.c
+LoongArchVirtMachinState add  avecintc features, and
+it use to check whether virt machine support advance interrupt controller
+and default set avecintc = ON_OFF_AUTO_ON.
+LoongArchVirtMachineState add misc_feature and misc_status for
+misc fetures and status. and set default avec feture bit.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/virt.c         |  4 ++++
- include/hw/loongarch/virt.h | 20 ++++++++++++++++++++
- target/loongarch/cpu.h      | 21 ---------------------
- 3 files changed, 24 insertions(+), 21 deletions(-)
+ hw/loongarch/virt.c         | 43 +++++++++++++++++++++++++++++++++----
+ include/hw/loongarch/virt.h | 15 +++++++++++++
+ 2 files changed, 54 insertions(+), 4 deletions(-)
 
 diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 1b504047db..90d4643721 100644
+index 90d4643721..3ad165af36 100644
 --- a/hw/loongarch/virt.c
 +++ b/hw/loongarch/virt.c
-@@ -548,6 +548,8 @@ static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
+@@ -47,6 +47,28 @@
+ #include "hw/virtio/virtio-iommu.h"
+ #include "qemu/error-report.h"
+ 
++static void virt_get_avecintc(Object *obj, Visitor *v, const char *name,
++                             void *opaque, Error **errp)
++{
++    LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(obj);
++    OnOffAuto avecintc = lvms->avecintc;
++
++    visit_type_OnOffAuto(v, name, &avecintc, errp);
++
++}
++static void virt_set_avecintc(Object *obj, Visitor *v, const char *name,
++                              void *opaque, Error **errp)
++{
++    LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(obj);
++
++    if (lvms->avecintc == ON_OFF_AUTO_OFF) {
++        lvms->misc_feature &= ~BIT(IOCSRF_AVEC);
++        lvms->misc_status &= ~BIT(IOCSRM_AVEC_EN);
++    }
++
++    visit_type_OnOffAuto(v, name, &lvms->avecintc, errp);
++}
++
+ static void virt_get_veiointc(Object *obj, Visitor *v, const char *name,
+                               void *opaque, Error **errp)
+ {
+@@ -523,6 +545,10 @@ static MemTxResult virt_iocsr_misc_write(void *opaque, hwaddr addr,
+             features |= BIT(EXTIOI_ENABLE_INT_ENCODE);
+         }
+ 
++        if (val & BIT(IOCSRM_AVEC_EN)) {
++            lvms->misc_status |= BIT(IOCSRM_AVEC_EN);
++        }
++
+         address_space_stl(&lvms->as_iocsr,
+                           EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
+                           features, attrs, NULL);
+@@ -548,8 +574,9 @@ static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
          break;
      case FEATURE_REG:
          ret = BIT(IOCSRF_MSI) | BIT(IOCSRF_EXTIOI) | BIT(IOCSRF_CSRIPI);
-+        /*TODO: check bit IOCSRF_AVEC with virt_is_avec_enabled */
-+        ret |= BIT(IOCSRF_AVEC);
+-        /*TODO: check bit IOCSRF_AVEC with virt_is_avec_enabled */
+-        ret |= BIT(IOCSRF_AVEC);
++        if (virt_is_avecintc_enabled(lvms)) {
++            ret |= BIT(IOCSRF_AVEC);
++        }
          if (kvm_enabled()) {
              ret |= BIT(IOCSRF_VM);
          }
-@@ -573,6 +575,8 @@ static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
+@@ -575,8 +602,10 @@ static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
          if (features & BIT(EXTIOI_ENABLE_INT_ENCODE)) {
              ret |= BIT_ULL(IOCSRM_EXTIOI_INT_ENCODE);
          }
-+        /* enable avec default */
-+        ret |= BIT_ULL(IOCSRM_AVEC_EN);
+-        /* enable avec default */
+-        ret |= BIT_ULL(IOCSRM_AVEC_EN);
++        if (virt_is_avecintc_enabled(lvms) &&
++            (lvms->misc_status & BIT(IOCSRM_AVEC_EN))) {
++            ret |= BIT_ULL(IOCSRM_AVEC_EN);
++        }
          break;
      default:
          g_assert_not_reached();
+@@ -820,6 +849,8 @@ static void virt_initfn(Object *obj)
+     if (tcg_enabled()) {
+         lvms->veiointc = ON_OFF_AUTO_OFF;
+     }
++    lvms->misc_feature = BIT(IOCSRF_AVEC);
++    lvms->avecintc = ON_OFF_AUTO_ON;
+     lvms->acpi = ON_OFF_AUTO_AUTO;
+     lvms->oem_id = g_strndup(ACPI_BUILD_APPNAME6, 6);
+     lvms->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
+@@ -1212,6 +1243,10 @@ static void virt_class_init(ObjectClass *oc, const void *data)
+         NULL, NULL);
+     object_class_property_set_description(oc, "v-eiointc",
+                             "Enable Virt Extend I/O Interrupt Controller.");
++    object_class_property_add(oc, "avecintc", "OnOffAuto",
++        virt_get_avecintc, virt_set_avecintc, NULL, NULL);
++    object_class_property_set_description(oc, "avecintc",
++                            "Enable Advance Interrupt Controller.");
+     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RAMFB_DEVICE);
+     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_UEFI_VARS_SYSBUS);
+ #ifdef CONFIG_TPM
 diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index 2b7d19953f..671b47a986 100644
+index 671b47a986..c594421cd2 100644
 --- a/include/hw/loongarch/virt.h
 +++ b/include/hw/loongarch/virt.h
-@@ -13,6 +13,26 @@
- #include "hw/block/flash.h"
- #include "hw/loongarch/boot.h"
+@@ -70,6 +70,7 @@ struct LoongArchVirtMachineState {
+     Notifier     powerdown_notifier;
+     OnOffAuto    acpi;
+     OnOffAuto    veiointc;
++    OnOffAuto    avecintc;
+     char         *oem_id;
+     char         *oem_table_id;
+     DeviceState  *acpi_ged;
+@@ -83,6 +84,8 @@ struct LoongArchVirtMachineState {
+     struct loongarch_boot_info bootinfo;
+     DeviceState *ipi;
+     DeviceState *extioi;
++    uint64_t misc_feature;
++    uint64_t misc_status;
+ };
  
-+#define IOCSRF_TEMP             0
-+#define IOCSRF_NODECNT          1
-+#define IOCSRF_MSI              2
-+#define IOCSRF_EXTIOI           3
-+#define IOCSRF_CSRIPI           4
-+#define IOCSRF_FREQCSR          5
-+#define IOCSRF_FREQSCALE        6
-+#define IOCSRF_DVFSV1           7
-+#define IOCSRF_GMOD             9
-+#define IOCSRF_VM               11
-+#define IOCSRF_AVEC             15
+ #define TYPE_LOONGARCH_VIRT_MACHINE  MACHINE_TYPE_NAME("virt")
+@@ -90,6 +93,18 @@ OBJECT_DECLARE_SIMPLE_TYPE(LoongArchVirtMachineState, LOONGARCH_VIRT_MACHINE)
+ void virt_acpi_setup(LoongArchVirtMachineState *lvms);
+ void virt_fdt_setup(LoongArchVirtMachineState *lvms);
+ 
++static inline bool virt_is_avecintc_enabled(LoongArchVirtMachineState *lvms)
++{
++    if (!(lvms->misc_feature & BIT(IOCSRF_AVEC))) {
++        return false;
++    }
 +
-+#define VERSION_REG             0x0
-+#define FEATURE_REG             0x8
-+#define VENDOR_REG              0x10
-+#define CPUNAME_REG             0x20
-+#define MISC_FUNC_REG           0x420
-+#define IOCSRM_EXTIOI_EN        48
-+#define IOCSRM_EXTIOI_INT_ENCODE 49
-+#define IOCSRM_AVEC_EN           51
- #define LOONGARCH_MAX_CPUS      256
- 
- #define VIRT_FWCFG_BASE         0x1e020000UL
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 262bf87f7b..1169768632 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -21,27 +21,6 @@
- #include "cpu-csr.h"
- #include "cpu-qom.h"
- 
--#define IOCSRF_TEMP             0
--#define IOCSRF_NODECNT          1
--#define IOCSRF_MSI              2
--#define IOCSRF_EXTIOI           3
--#define IOCSRF_CSRIPI           4
--#define IOCSRF_FREQCSR          5
--#define IOCSRF_FREQSCALE        6
--#define IOCSRF_DVFSV1           7
--#define IOCSRF_GMOD             9
--#define IOCSRF_VM               11
--
--#define VERSION_REG             0x0
--#define FEATURE_REG             0x8
--#define VENDOR_REG              0x10
--#define CPUNAME_REG             0x20
--#define MISC_FUNC_REG           0x420
--#define IOCSRM_EXTIOI_EN        48
--#define IOCSRM_EXTIOI_INT_ENCODE 49
--
--#define IOCSR_MEM_SIZE          0x428
--
- #define FCSR0_M1    0x1f         /* FCSR1 mask, Enables */
- #define FCSR0_M2    0x1f1f0000   /* FCSR2 mask, Cause and Flags */
- #define FCSR0_M3    0x300        /* FCSR3 mask, Round Mode */
++    if (lvms->avecintc == ON_OFF_AUTO_OFF) {
++        return false;
++    }
++    return true;
++}
++
+ static inline bool virt_is_veiointc_enabled(LoongArchVirtMachineState *lvms)
+ {
+     if (lvms->veiointc == ON_OFF_AUTO_OFF) {
 -- 
 2.34.1
 
