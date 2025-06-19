@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38759AE06C1
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB1AAE06CC
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:17:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSF6g-0004s6-Op; Thu, 19 Jun 2025 09:15:06 -0400
+	id 1uSF6q-0005gv-49; Thu, 19 Jun 2025 09:15:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6R-0004YG-DW
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:52 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6W-0004g3-F8
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:58 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6P-00045J-8O
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:50 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3a54690d369so804223f8f.3
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:14:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6U-00046S-IB
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:55 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-453398e90e9so5585665e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:14:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750338887; x=1750943687; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750338892; x=1750943692; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qEhVLrdb7gQcxLJ9m8XmAJvi0CaJW+OAP6dVQwdaX2k=;
- b=co7q2S5zL8CPzJxxoclKDk9sDlkWepTKCxbde9rcpi2wi48fAxRgtak5HevxKNHPlP
- YF4cknyXNNkbOR91IqpCUnaU5tpbB3C4JWylSV7miW0axAZU71G99qcLxQjxsu97iLXm
- w9JJewA19g2yAPTCxAxjcY5KaYBlEgxZhNunrDZMd/67j4gnWs2FdFQXVg2iNVrbB7E8
- 7cETyEPMWTzVAgn5PVpzUgQ94+cgQLZA1Bh35NzYnVA3R/0vc6AMbRcPl7qJ4/JIzD4M
- z0A8JyaLqI+cfBosWi3DlIqf9dUiURZf4bR1qGRcOLlsmGiRhji4VfXc5qEzdtK2sGE+
- 1Ykw==
+ bh=jKb7+45W8wr+DNWypSxWBKVEj0bAIAzVgg/1Er2vy8s=;
+ b=rxr+yNa5eBF0qgIw/DtjD31RT+nWC5fRCsQ6qa5h2TmeOu0tuqr2Coo/tUjc144Yni
+ hKuzft6AcywGlBl6ji0ynb8P2dMHlfqkwqUOGwBpoejkq13g3oEabGb8/0fIiNom3Wzk
+ DbUg9ht1gtZYK8YDBaMfap2FsoXnCGrBGXQMXCpscfYmLcSNaz9irY+tD7WVPff8AVZQ
+ pD5PRNDJIzLyTVoUT5bSJSmy4QBn41Db97yC7kT5Wa0nLnvj/J7WIbU8Hnno42utwoex
+ hag4/HavIxmK2NnRwspBVpgwr777xee8KqDcZbTQqgCdexi2movhgJcUWfsMAnYO6YzX
+ 9Gfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750338887; x=1750943687;
+ d=1e100.net; s=20230601; t=1750338892; x=1750943692;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qEhVLrdb7gQcxLJ9m8XmAJvi0CaJW+OAP6dVQwdaX2k=;
- b=CV0dguBoHZix477TeGKTSrhk3EkBQocGPuDMSJ3MMwvhciHq0ROlUkUFAy8+/nYA9Q
- yj5o74Qm9s0qkl2T2dMg7QJTmWtU9eIaJNy/oxuUrIUl48YP0cXmXRMqSyNPuT4NJ30X
- P0v9MbTPHfKqOFtGZL1/QUVL35wC7jXz9qvERTIyU/zgpElad7SCshuItHZykdhuWaL+
- 1VbqittbXk4j95FzUds25E0Bwcandzkj0qO+mc4zWBGZXfcEE0ZMmf9bGaOblGDFQJdc
- CzXVduHbh+xyt/WJqL9bgpf7EpkbMMYjW8UKcPK9Q/QXUZAkb6iEngT8IVLOv/mc0Ddt
- Yqjw==
-X-Gm-Message-State: AOJu0YxCfAISo/ov9WVxRWesKGgqs2rIJh/xI57zRbL70kPJq6y9aaeB
- +X1Zn0tkiZ0rHpNmOzSVOE/syfSWdWPDm978lgeqEMTI6zWWLsDLEMIXA7G7yrVyxR1KbnlPJvM
- YZASOGPc=
-X-Gm-Gg: ASbGncs+jciGooxSeiqiRWunhjr8+gKSdIVKpS1bFmoohEU0FBItzXX+mnQKrPx/L54
- vBLontxgGA2SQGw3E3YO9c3+XozBnOP9jT1uzIz2E9y5oa8OhmeirQTHNjn0et4/jRapkMN5vQI
- A59ZBGt3Eqvln9Y0EZcFKltXmIH+qPXo1HwWw10ILA6pKsU9t3cq6rAO3+3AdqaNCn/uungoK1X
- /U7Www+p3fkexhNOzhIlw0kHMmjvC5XQH7Kuhlc2Y0ruccqDX/8QnJtHW4Fj/yCq/AwFLu+pstE
- vmaIX08SrYGWOuRq9kH/cmYksIPI4jCNhOxcvnjLf/pad8xXuV9P62tJQVxTOS1u+7mpWBSau6O
- i17qqwfNZanEse2SgwS8Fj6Znm9mM3avWvJAB
-X-Google-Smtp-Source: AGHT+IFYyws/hie04Gs7cz38N8DD6RmjvKvx7LAHAf6xXnGxdc9ttG/TDPs6rEuwn9zHE+u/jqYJ/g==
-X-Received: by 2002:a05:6000:18ac:b0:3a4:f6fe:5244 with SMTP id
- ffacd0b85a97d-3a572367b13mr17405974f8f.12.1750338887297; 
- Thu, 19 Jun 2025 06:14:47 -0700 (PDT)
+ bh=jKb7+45W8wr+DNWypSxWBKVEj0bAIAzVgg/1Er2vy8s=;
+ b=XRBlXTinRI/r6esw4BPb5fwNwOeTih+4loZtKZfaOHKlvCQWDk050qFPdPfWl4C2vK
+ JXLDprFVZfvEBMxkoZlJQOJMapcz4TPw+4Y7p7U0trbT5Cjf+BogSaSdyQx+g88xQC4W
+ EcyFC6Q5LXYseqIZKZF8bdGEnJsOuGMFGjBbChY91rsfnF77GwzxhjAUPfcjaOTrqNK7
+ abCVtSnReBsjRT9yja5uyhgdjwvmJvg+4djLC73bgoyCi4Yzqy2Q955t0/fo1o52k2Nn
+ M6o34Hem7N63/wHObW3ROYUsug64jGbj+6vaF27HkP5DRDMN9bhUti3fYGXuIRhXci1J
+ teTw==
+X-Gm-Message-State: AOJu0YzPkx9uF8KEZu2mwhGS2WNu5aqkHEo8JE3sqJvSdnPsJK9HNKrA
+ 6BgGar3xQUSxQQLUJas+BqcwydU1bIFHW8kP3TGBmmEuLOPL1JaV0WcA++x70RLyvNZyDBJlqwN
+ G079gipc=
+X-Gm-Gg: ASbGnctrL5rxTnmfBPIvokPhL1QD5iRpgZCQk3krkLmMs/uvTKX1nwLq1l17I7/aAAS
+ tvcMw3CbCA4zGYi/fJ2FOLM/p9EFuys2efGs117l4cXGPwp+eF3lVz6/olr1sbSe3sewqn+YFj7
+ Ai0oH+0el39yv18I6gH0eiGWQJBpj3O0m1gJdWGhNkTJwq4fCwMRkbdN085lcsXd7kN2SGPKLtT
+ OPACCUau39C/n3LUvn0SiFXdmy3NQyCVILhZ6KT5yDLi4PCTDhyjRn9+YKsbdxwB7R3QeMZFf9Z
+ 9oed2TpNLsg0ulBFKs8Ql1EfOCkhKZ69K3117scqt4IA0Qgd+kryDqNcAnMGWsvYuQGuD7cTR8a
+ O3EUX30GvHhFUjhtnzjF8skkESxVjyj3D27Hn
+X-Google-Smtp-Source: AGHT+IFRzQ9UxBLRQDMQufclV3QAFXCf4Tt17IF9sdJksupv+14Rk4NJ6wBb4VS4a8pKINqsmbco+Q==
+X-Received: by 2002:a5d:64ce:0:b0:3a3:6b07:20a1 with SMTP id
+ ffacd0b85a97d-3a572e8c1dfmr16026113f8f.40.1750338892503; 
+ Thu, 19 Jun 2025 06:14:52 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a568b3c0d3sm19567460f8f.79.2025.06.19.06.14.46
+ ffacd0b85a97d-3a568b08a2bsm19821758f8f.62.2025.06.19.06.14.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Jun 2025 06:14:46 -0700 (PDT)
+ Thu, 19 Jun 2025 06:14:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
@@ -77,17 +77,18 @@ Cc: Cameron Esfahani <dirty@apple.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>
-Subject: [PATCH 16/20] hw/arm/virt: Only require TCG || QTest to use TrustZone
-Date: Thu, 19 Jun 2025 15:13:15 +0200
-Message-ID: <20250619131319.47301-17-philmd@linaro.org>
+Subject: [PATCH 17/20] hw/arm/virt: Only require TCG || QTest to use
+ virtualization extension
+Date: Thu, 19 Jun 2025 15:13:16 +0200
+Message-ID: <20250619131319.47301-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250619131319.47301-1-philmd@linaro.org>
 References: <20250619131319.47301-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,27 +111,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only need TCG (or QTest) to use TrustZone, whether
-KVM or HVF are used is not relevant.
+We can not start in EL2 / EL3 with anything but TCG (or QTest);
+whether KVM or HVF are used is not relevant.
 
-Reported-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
  hw/arm/virt.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 99fde5836c9..b49d8579161 100644
+index b49d8579161..a9099570faa 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -2203,7 +2203,7 @@ static void machvirt_init(MachineState *machine)
+@@ -2210,7 +2210,7 @@ static void machvirt_init(MachineState *machine)
          exit(1);
      }
  
--    if (vms->secure && (kvm_enabled() || hvf_enabled())) {
-+    if (vms->secure && !tcg_enabled() && !qtest_enabled()) {
+-    if (vms->virt && (kvm_enabled() || hvf_enabled())) {
++    if (vms->virt && !tcg_enabled() && !qtest_enabled()) {
          error_report("mach-virt: %s does not support providing "
-                      "Security extensions (TrustZone) to the guest CPU",
+                      "Virtualization extensions to the guest CPU",
                       current_accel_name());
 -- 
 2.49.0
