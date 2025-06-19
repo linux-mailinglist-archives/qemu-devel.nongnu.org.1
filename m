@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB1AAE06CC
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB54AE06B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Jun 2025 15:15:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSF6q-0005gv-49; Thu, 19 Jun 2025 09:15:16 -0400
+	id 1uSF6o-0005YP-KM; Thu, 19 Jun 2025 09:15:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6W-0004g3-F8
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:58 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6c-0004rp-7y
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:15:02 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6U-00046S-IB
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:14:55 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-453398e90e9so5585665e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:14:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSF6a-000474-J4
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 09:15:01 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-451dbe494d6so9424455e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 06:14:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750338892; x=1750943692; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750338897; x=1750943697; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jKb7+45W8wr+DNWypSxWBKVEj0bAIAzVgg/1Er2vy8s=;
- b=rxr+yNa5eBF0qgIw/DtjD31RT+nWC5fRCsQ6qa5h2TmeOu0tuqr2Coo/tUjc144Yni
- hKuzft6AcywGlBl6ji0ynb8P2dMHlfqkwqUOGwBpoejkq13g3oEabGb8/0fIiNom3Wzk
- DbUg9ht1gtZYK8YDBaMfap2FsoXnCGrBGXQMXCpscfYmLcSNaz9irY+tD7WVPff8AVZQ
- pD5PRNDJIzLyTVoUT5bSJSmy4QBn41Db97yC7kT5Wa0nLnvj/J7WIbU8Hnno42utwoex
- hag4/HavIxmK2NnRwspBVpgwr777xee8KqDcZbTQqgCdexi2movhgJcUWfsMAnYO6YzX
- 9Gfg==
+ bh=y5LZcCqNpH4GazYoT4HEePjvcf7hcAUKrr97H91/oS0=;
+ b=QosOga39clcQoPlNDz92XrkRfYUQXQx8Dcexm3Os4ANQ2W4C43xys7BPlUoW4vuhKB
+ vzEpELRDD7ASdj3eG/ntKJ9rjgF4q8nxfN8IZdAiObzE+rqA5apawjgyQTwul7rP6mGr
+ Hh/Xsk6lzFEdjap7djOhHAsMUzNu5ZgRakGVdi640o8scxEdlXYzyqROKFsxuJ8czJlA
+ cmvN+CLTTUwphHlOcG4xW0PRJSmynedIL3/93+frCco+cUc0lsappsX0agK21FkTOGaz
+ 76cyF9fIyR1vCoXxOXRE2k3veU3/vms0BHKLSATb1KGcUFeHh5ApnBvyw1GeJlIAUmyR
+ c+/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750338892; x=1750943692;
+ d=1e100.net; s=20230601; t=1750338897; x=1750943697;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jKb7+45W8wr+DNWypSxWBKVEj0bAIAzVgg/1Er2vy8s=;
- b=XRBlXTinRI/r6esw4BPb5fwNwOeTih+4loZtKZfaOHKlvCQWDk050qFPdPfWl4C2vK
- JXLDprFVZfvEBMxkoZlJQOJMapcz4TPw+4Y7p7U0trbT5Cjf+BogSaSdyQx+g88xQC4W
- EcyFC6Q5LXYseqIZKZF8bdGEnJsOuGMFGjBbChY91rsfnF77GwzxhjAUPfcjaOTrqNK7
- abCVtSnReBsjRT9yja5uyhgdjwvmJvg+4djLC73bgoyCi4Yzqy2Q955t0/fo1o52k2Nn
- M6o34Hem7N63/wHObW3ROYUsug64jGbj+6vaF27HkP5DRDMN9bhUti3fYGXuIRhXci1J
- teTw==
-X-Gm-Message-State: AOJu0YzPkx9uF8KEZu2mwhGS2WNu5aqkHEo8JE3sqJvSdnPsJK9HNKrA
- 6BgGar3xQUSxQQLUJas+BqcwydU1bIFHW8kP3TGBmmEuLOPL1JaV0WcA++x70RLyvNZyDBJlqwN
- G079gipc=
-X-Gm-Gg: ASbGnctrL5rxTnmfBPIvokPhL1QD5iRpgZCQk3krkLmMs/uvTKX1nwLq1l17I7/aAAS
- tvcMw3CbCA4zGYi/fJ2FOLM/p9EFuys2efGs117l4cXGPwp+eF3lVz6/olr1sbSe3sewqn+YFj7
- Ai0oH+0el39yv18I6gH0eiGWQJBpj3O0m1gJdWGhNkTJwq4fCwMRkbdN085lcsXd7kN2SGPKLtT
- OPACCUau39C/n3LUvn0SiFXdmy3NQyCVILhZ6KT5yDLi4PCTDhyjRn9+YKsbdxwB7R3QeMZFf9Z
- 9oed2TpNLsg0ulBFKs8Ql1EfOCkhKZ69K3117scqt4IA0Qgd+kryDqNcAnMGWsvYuQGuD7cTR8a
- O3EUX30GvHhFUjhtnzjF8skkESxVjyj3D27Hn
-X-Google-Smtp-Source: AGHT+IFRzQ9UxBLRQDMQufclV3QAFXCf4Tt17IF9sdJksupv+14Rk4NJ6wBb4VS4a8pKINqsmbco+Q==
-X-Received: by 2002:a5d:64ce:0:b0:3a3:6b07:20a1 with SMTP id
- ffacd0b85a97d-3a572e8c1dfmr16026113f8f.40.1750338892503; 
- Thu, 19 Jun 2025 06:14:52 -0700 (PDT)
+ bh=y5LZcCqNpH4GazYoT4HEePjvcf7hcAUKrr97H91/oS0=;
+ b=eSx1kvdyNp80qvcd/6Fvh61HnTxipUgtqTOym8dVQkbGRhkAf9nwaWGc3Sn8XMT6dq
+ UZo93NzMyMvn4QtBcDbdgofuUTPRCIGJ6+XlcJ8vbKVILgE17HFQdeLaceRejrkTBPU4
+ rzLpn/Uvf1WSL27K3UnFG70nQsByd1CFLFX/Y+FLsEeUi6FBF/8Lcz0PaS+wJTbq1Qg6
+ lyaWFX0kRmHfmcMUkBoyFvtLlyk5JMHZzHyHLcEKRqQM54x9ODEtd/tURXTSkqzlmOlq
+ nRdHAil+4NsWfRt2gDb1IaJ+dR82XGnXoGUxw8cgSKZaH3xawBbiDnTRBexOyT5KzgJx
+ zing==
+X-Gm-Message-State: AOJu0YyUpo3NNokmRfd8q1FolPYl1IRCZhFg5MERN2K4j5LoCSrOppBk
+ /8Igypn7nZtQ9K+XY0/5wKB3C0IxZqms7mdM9ya/ioVtgFgWNf1u6R5Kr3rjeMeZWoIUPbUwt0X
+ 3d4Wa3PA=
+X-Gm-Gg: ASbGncsYv9rdnSO0VZUudEZEltMcTIAC4LCnXWKAslXMi95BawcDFyG2EHZdUNMufuv
+ IH8bxVR+ljaefJE6FixqssKga92OpWv+btqXwSLIkuRGYKjBMJw8XHTnTxyljaNSsbko7LqciVP
+ A6ab9tB4iCRHxqczDNduDChI32JQHWgxvz5gvJ466pZMB+FHuFurZ9xq2G0az+Dgjhla2DZKXtx
+ Fy1ikRPSml0ah7J0d7TsAwPPkt5uH8pE03C8a3zY9bS4RIhULfmXJIOa1JYj42KS0ePOcExPzpJ
+ O2Ln8G0n/DXsR4MbQWAFwc762iCycZ7uQ/7bgvTp3Ko+pB35/kXO7pyCZ9wttCtFVr35noJgwzf
+ ch0bjmcyY1D3b4Z7G5CrUwqWf4rrwp7ihVXIR
+X-Google-Smtp-Source: AGHT+IGSPxsi1o1FNjNRdOKa4gLP4CvK5BiNLtp11Lll7xjWxOONtOoutqWpAjesn+xGjJ2lNdFzIQ==
+X-Received: by 2002:a05:6000:65b:b0:3a5:88cf:479e with SMTP id
+ ffacd0b85a97d-3a588cf4d3cmr9235335f8f.48.1750338897594; 
+ Thu, 19 Jun 2025 06:14:57 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a568b08a2bsm19821758f8f.62.2025.06.19.06.14.51
+ ffacd0b85a97d-3a568a6078csm19176121f8f.21.2025.06.19.06.14.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Jun 2025 06:14:51 -0700 (PDT)
+ Thu, 19 Jun 2025 06:14:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
@@ -77,25 +77,25 @@ Cc: Cameron Esfahani <dirty@apple.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>
-Subject: [PATCH 17/20] hw/arm/virt: Only require TCG || QTest to use
- virtualization extension
-Date: Thu, 19 Jun 2025 15:13:16 +0200
-Message-ID: <20250619131319.47301-18-philmd@linaro.org>
+Subject: [PATCH 18/20] hw/arm/virt: Rename cpu_post_init() ->
+ post_cpus_gic_realized()
+Date: Thu, 19 Jun 2025 15:13:17 +0200
+Message-ID: <20250619131319.47301-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250619131319.47301-1-philmd@linaro.org>
 References: <20250619131319.47301-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,29 +111,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can not start in EL2 / EL3 with anything but TCG (or QTest);
-whether KVM or HVF are used is not relevant.
+QDev uses _post_init() during instance creation, before being
+realized. Since here both vCPUs and GIC are REALIZED, rename
+as virt_post_cpus_gic_realized() for clarity.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- hw/arm/virt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/arm/virt.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index b49d8579161..a9099570faa 100644
+index a9099570faa..da453768cce 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -2210,7 +2210,7 @@ static void machvirt_init(MachineState *machine)
-         exit(1);
-     }
+@@ -2032,7 +2032,8 @@ static void finalize_gic_version(VirtMachineState *vms)
+  * virt_cpu_post_init() must be called after the CPUs have
+  * been realized and the GIC has been created.
+  */
+-static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
++static void virt_post_cpus_gic_realized(VirtMachineState *vms,
++                                        MemoryRegion *sysmem)
+ {
+     int max_cpus = MACHINE(vms)->smp.max_cpus;
+     bool aarch64, pmu, steal_time;
+@@ -2349,7 +2350,7 @@ static void machvirt_init(MachineState *machine)
  
--    if (vms->virt && (kvm_enabled() || hvf_enabled())) {
-+    if (vms->virt && !tcg_enabled() && !qtest_enabled()) {
-         error_report("mach-virt: %s does not support providing "
-                      "Virtualization extensions to the guest CPU",
-                      current_accel_name());
+     create_gic(vms, sysmem);
+ 
+-    virt_cpu_post_init(vms, sysmem);
++    virt_post_cpus_gic_realized(vms, sysmem);
+ 
+     fdt_add_pmu_nodes(vms);
+ 
 -- 
 2.49.0
 
