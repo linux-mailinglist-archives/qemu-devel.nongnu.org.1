@@ -2,92 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0C7AE1BC0
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD94AE1BC8
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:13:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSbWV-0008Qz-FT; Fri, 20 Jun 2025 09:11:15 -0400
+	id 1uSbXJ-0001wU-TY; Fri, 20 Jun 2025 09:12:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uSbVz-0007xK-5V
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:10:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uSbX2-0001k5-Cu
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:11:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uSbVx-0005N6-6y
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:10:42 -0400
+ id 1uSbWz-0005T9-1Q
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:11:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750425040;
+ s=mimecast20190719; t=1750425103;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b6E3ldKAHT76gzfPbKZDc3nqLlogjlvLORH7eAQ0qwM=;
- b=I+Hy79KgcMPUegGucOCfgFhfBhwNrvYcV+TjUnRqVnCXt6yS5OLlwX6piqFdtbfn1Clv/C
- Rk+5vMB9CHAZEJmRjej0Q2Ba5mxRF3MObVji9yyP8zR9pwAcY1i4t0T7LLl8Tdcos7Iw+n
- EqN2fI4xMUm5su//z4bIjVeTw4JdK6U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dJe2HBRJ/IQUNIxBb2aBkefCTkrhJFGgYNypf7axFYo=;
+ b=Q8gvDpFzmP7JdOb70lUfyt/dHOz92iF4MD7Cdmf/GWpyB5HqdhJhISzMjjqyPkTF3Le06y
+ bkTs+4AnAQcv3KvMm9d+T1/MIsOacFrKn14iwa0zeEJ+sIhHCvNaGMY0X6eaDzPvgCYvdW
+ eFP7YXwSap5eYlpBjviIdoNnEVCIwsU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-151-H39fxkCHPgGvF3vJaewhcw-1; Fri, 20 Jun 2025 09:10:38 -0400
-X-MC-Unique: H39fxkCHPgGvF3vJaewhcw-1
-X-Mimecast-MFC-AGG-ID: H39fxkCHPgGvF3vJaewhcw_1750425037
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43eed325461so11324945e9.3
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:10:37 -0700 (PDT)
+ us-mta-60-kglGW9JkPFSxJ8DVfyKgEg-1; Fri, 20 Jun 2025 09:11:42 -0400
+X-MC-Unique: kglGW9JkPFSxJ8DVfyKgEg-1
+X-Mimecast-MFC-AGG-ID: kglGW9JkPFSxJ8DVfyKgEg_1750425100
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-450d50eacafso11123445e9.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:11:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750425036; x=1751029836;
+ d=1e100.net; s=20230601; t=1750425100; x=1751029900;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b6E3ldKAHT76gzfPbKZDc3nqLlogjlvLORH7eAQ0qwM=;
- b=vlk0wWcmCrExLeYRdmymRK5Kktn3Az0pr5iSRVfzOYbJwayZFwu2vlH3g0CxbxTd0x
- GROkxMxjCZ8Py28iypxon7rv12hRXie+/+EgG3SDV6YV6RFu/MMOX2uvDv3Gj/s3wsW8
- MXqRBD6CSImn+WKiCCY6UYCJcEB4eNLLge8HhwAeZUDA2JE2sC+FBLr0I/p0M5/WHI4n
- DqbAyeVaDT0Vuj0CC22h13BBVJGoR8iKXEid8tWaVM5tAZhbMe4SakS/KbZABagB1iUN
- YtJ0V2s8dSn6v3pxX8A2ddapgQR+zG6AJIRwx2DUA+akxvdy5BgL20DzfcqHB/RmIJ9s
- fzFg==
+ bh=dJe2HBRJ/IQUNIxBb2aBkefCTkrhJFGgYNypf7axFYo=;
+ b=H+EIXvufYMhfZCNpjwBeOLBn92yN9YFuHgZBJELtbmDfGCTxPi01Kbq4qiWlSiSsIw
+ IoxnTOkheLa4ijWin0FiYUep6+ux+1H9crhpJrx2bwcylxDM+6K7QRGOjaPmLlOa/pRQ
+ U55ykhdKyYzK2yqeOydOicVXsayPurR/qhX9lS4rnLkX5nnga5xLLuWAJ7NbwYxcwoWW
+ VPWk5aqoPWfIrAAc+HWDiwnQJw2G9XGintTrNdN0ps8QCSq3Y7SIXeZsiN6h1nUmZWhq
+ 6J8wVEL+YXic5Kp+grfHHLx4BvPI8O4kKneaaQRKROUGnbb1SAJPwccUu5Kjm2nzWTsA
+ R/IQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWjt0zXt0OYh/br7Zph8mvkTYD4RyTn/h9oe6nnOy9A+18DeJGdqTroBL/IoyJistOyCKmsj0pa4PK1@nongnu.org
-X-Gm-Message-State: AOJu0YxZTmB8RLnCHdQedpTIhVDTM5/0BpWphnd67L6hBqt+8wOT4Gdk
- /HFbZ/5SAFBM7hkgMTemp5BZMEhQ7REiuxotEme/N6TBQRdOk82TQsihb7zzmScMt7Opz1HJyF2
- xJHMDwsuaBwPBuGWgiUc6StItG0WbKy/vrVrF+o+NWbWBgmkX8ifdglAU
-X-Gm-Gg: ASbGncutqnVg/+EGi0uiivUIITUxtadNiXsLMk77N9cxh2nGcrrX6MjpzYnlUyZOe0R
- 7ZhebpWhUMeIxQLhqlT8mrTdr91C/XmqDnsi0M+PAfiHZFHINUesYm+z4NNE2pT0nE5xhpeuGH8
- RoCSXKe/FFgW7X8fsjkyTdYQan5O+k1/yq58O8EsbVapdRidyGne+ebMuvSlhkmNBGyrhdTXgfq
- heD1Wiz8MkKv4Fp6FhRyKyozN1jtW6XGVV6EfedxsWJDlPjVsyk0Qer8wGqshUDQnL3kfcnALm8
- +p4krtASy83B
-X-Received: by 2002:a5d:5c04:0:b0:3a4:eb92:b5eb with SMTP id
- ffacd0b85a97d-3a6d12e5d82mr1959448f8f.50.1750425036489; 
- Fri, 20 Jun 2025 06:10:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2W0fmWOlLCAQljo1O/IiB2kjvffcVlNOtpbAbK+sla4NcBVH8/91OeTg+K8WJG/GRQjqkPQ==
-X-Received: by 2002:a5d:5c04:0:b0:3a4:eb92:b5eb with SMTP id
- ffacd0b85a97d-3a6d12e5d82mr1959414f8f.50.1750425036060; 
- Fri, 20 Jun 2025 06:10:36 -0700 (PDT)
+ AJvYcCWXUmWEH2dmL67KmvZpOVEnwXM8tqkQt6YPYHEFSYeRhbCPx4k95xCPisUuTZ223HEBKgTfOrAIk9wX@nongnu.org
+X-Gm-Message-State: AOJu0Yyy3iQLOvNpcRK7lvaPc58h3T+QDmV7JsjuyA4UluRCD1J53d9O
+ wofaU2f6VBDaxRuNH3DSIYXi8p9NMOaxd4ON8NmwXfOTMI4rO3U1qfH+XYbxzvu+7U5Ru36lFJl
+ 3FXmtN74rPPt9j1Qn73IAjdfFbfPdDwwdJQ+hEKj2yypoS1o6VX7eJJ+n
+X-Gm-Gg: ASbGncvd4JGCQ4nt5JLkHFTugh+rXLSdo94K3qJCIr4oHub6YdWekzKlJQwbNivLO4x
+ XlOdSFfiSIvJu1oGv2qeUbCFHWIlA7KmSEJQkUW3ooQeHyZCOjZr7IeTbf//5dDz7BvXoti0yT8
+ 9o683Mwj6PKZyRrLpj1ySJOn2U4NizyIsPBIVzkrAKVSrQgOjGWXEM07BAEJVPcG55YCc6yvnaw
+ IpxdO/0sPm4yukdhXV2iQPqVBpNzZRAQW6HAHZQeTlcV63suvhUkgaw4x8vxJjLK/gkWlJsgHHD
+ fSRQQjWeHncK
+X-Received: by 2002:a05:600c:a111:b0:43c:fc04:6d35 with SMTP id
+ 5b1f17b1804b1-45365c0678dmr21001275e9.4.1750425099818; 
+ Fri, 20 Jun 2025 06:11:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGNQM7Np2enqemYVMkCPCqzu3is3q23TkWsiA7wGt1GJsCxdkTMcBdYZtjV1Fdwrk5+e8wFmQ==
+X-Received: by 2002:a05:600c:a111:b0:43c:fc04:6d35 with SMTP id
+ 5b1f17b1804b1-45365c0678dmr21001015e9.4.1750425099451; 
+ Fri, 20 Jun 2025 06:11:39 -0700 (PDT)
 Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d117c6b2sm2041443f8f.46.2025.06.20.06.10.34
+ 5b1f17b1804b1-453647070cesm24972035e9.33.2025.06.20.06.11.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Jun 2025 06:10:35 -0700 (PDT)
-Date: Fri, 20 Jun 2025 15:10:33 +0200
+ Fri, 20 Jun 2025 06:11:39 -0700 (PDT)
+Date: Fri, 20 Jun 2025 15:11:38 +0200
 From: Igor Mammedov <imammedo@redhat.com>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- peter.maydell@linaro.org, gustavo.romero@linaro.org, anisinha@redhat.com,
- mst@redhat.com, shannon.zhaosl@gmail.com, pbonzini@redhat.com,
- Jonathan.Cameron@huawei.com, philmd@linaro.org, alex.bennee@linaro.org
-Subject: Re: [PATCH v3 26/29] hw/arm/virt: Plug pcihp hotplug/hotunplug
- callbacks
-Message-ID: <20250620151033.7fedf673@fedora>
-In-Reply-To: <20250616094903.885753-27-eric.auger@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Eric Auger <eric.auger@redhat.com>, <eric.auger.pro@gmail.com>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <peter.maydell@linaro.org>,
+ <gustavo.romero@linaro.org>, <anisinha@redhat.com>, <mst@redhat.com>,
+ <shannon.zhaosl@gmail.com>, <pbonzini@redhat.com>, <philmd@linaro.org>,
+ <alex.bennee@linaro.org>
+Subject: Re: [PATCH v3 27/29] tests/qtest/bios-tables-test: Prepare for
+ addition of acpi pci hp tests
+Message-ID: <20250620151138.01364280@fedora>
+In-Reply-To: <20250620113138.00007531@huawei.com>
 References: <20250616094903.885753-1-eric.auger@redhat.com>
- <20250616094903.885753-27-eric.auger@redhat.com>
+ <20250616094903.885753-28-eric.auger@redhat.com>
+ <20250620113138.00007531@huawei.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -112,154 +114,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Jun 2025 11:46:55 +0200
-Eric Auger <eric.auger@redhat.com> wrote:
+On Fri, 20 Jun 2025 11:31:38 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-
-why do we still need this?
-
-pcihp code should override native pcie bus handlers, and then
-when device_add calls bus hotplug handlers it will be pcihp ones.
-
-> ---
-> v2 -> v3:
-> - fix cohabitation with virtio-mem-pci device and tested
->   hotplug/unplug of this latter (Igor)
-> ---
->  hw/arm/virt.c | 72 ++++++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 69 insertions(+), 3 deletions(-)
+> On Mon, 16 Jun 2025 11:46:56 +0200
+> Eric Auger <eric.auger@redhat.com> wrote:
 > 
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 8c882e0794..06b87e1050 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -1747,6 +1747,22 @@ static void virt_build_smbios(VirtMachineState *vms)
->      }
->  }
+> > From: Gustavo Romero <gustavo.romero@linaro.org>
+> > 
+> > Soon we will introduce a new test related to ACPI PCI hotplug that
+> > will use a new reference blob:
+> > 
+> > tests/data/acpi/aarch64/virt/DSDT.acpipcihp
+> > 
+> > Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> > Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>  
+> 
+> Unusual sign off chain.  Eric is signing off as handling Gustavo's patch?
+> I'd expect Eric's sign off to be second.  Looks good in the next patch fo
+> instance.  With that fixed.
 >  
-> +static AcpiPciHpState *get_acpi_pcihp_state(VirtMachineState *vms)
-> +{
-> +    AcpiGedState *acpi_ged_state;
-> +    AcpiPciHpState *pcihp_state;
-> +
-> +    if (!vms->acpi_dev) {
-> +        return NULL;
-> +    }
-> +    acpi_ged_state = ACPI_GED(vms->acpi_dev);
-> +    pcihp_state = &acpi_ged_state->pcihp_state;
-> +    if (pcihp_state->use_acpi_hotplug_bridge) {
-> +        return pcihp_state;
-> +    }
-> +    return NULL;
-> +}
-> +
->  static
->  void virt_machine_done(Notifier *notifier, void *data)
->  {
-> @@ -2907,6 +2923,13 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
->  {
->      VirtMachineState *vms = VIRT_MACHINE(hotplug_dev);
->  
-> +    if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
-> +        if (get_acpi_pcihp_state(vms)) {
-> +            acpi_pcihp_device_pre_plug_cb(HOTPLUG_HANDLER(vms->acpi_dev),
-> +                                          dev, errp);
-> +        }
-> +    }
-> +
->      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          virt_memory_pre_plug(hotplug_dev, dev, errp);
->      } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-> @@ -2961,6 +2984,15 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
->          }
->      }
->  
-> +    if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
-> +        AcpiPciHpState *pcihp_state = get_acpi_pcihp_state(vms);
-> +
-> +        if (pcihp_state) {
-> +            acpi_pcihp_device_plug_cb(HOTPLUG_HANDLER(vms->acpi_dev),
-> +                                      pcihp_state, dev, errp);
-> +        }
-> +    }
-> +
->      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          virt_memory_plug(hotplug_dev, dev, errp);
->      } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-> @@ -3017,12 +3049,27 @@ out:
->  static void virt_machine_device_unplug_request_cb(HotplugHandler *hotplug_dev,
->                                            DeviceState *dev, Error **errp)
->  {
-> +    bool supported = false;
-> +
->      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          virt_dimm_unplug_request(hotplug_dev, dev, errp);
-> +        supported = true;
->      } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
->          virtio_md_pci_unplug_request(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev),
->                                       errp);
-> -    } else {
-> +        supported = true;
-> +    }
-> +    if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
-> +        VirtMachineState *vms = VIRT_MACHINE(hotplug_dev);
-> +        AcpiPciHpState *pcihp_state = get_acpi_pcihp_state(vms);
-> +
-> +        if (pcihp_state) {
-> +            acpi_pcihp_device_unplug_request_cb(HOTPLUG_HANDLER(vms->acpi_dev),
-> +                                                pcihp_state, dev, errp);
-> +            supported = true;
-> +        }
-> +    }
-> +    if (!supported) {
->          error_setg(errp, "device unplug request for unsupported device"
->                     " type: %s", object_get_typename(OBJECT(dev)));
->      }
-> @@ -3031,11 +3078,27 @@ static void virt_machine_device_unplug_request_cb(HotplugHandler *hotplug_dev,
->  static void virt_machine_device_unplug_cb(HotplugHandler *hotplug_dev,
->                                            DeviceState *dev, Error **errp)
->  {
-> +    bool supported = false;
-> +
->      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          virt_dimm_unplug(hotplug_dev, dev, errp);
-> +        supported = true;
->      } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
->          virtio_md_pci_unplug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-> -    } else {
-> +        supported = true;
-> +    }
-> +    if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
-> +        VirtMachineState *vms = VIRT_MACHINE(hotplug_dev);
-> +
-> +        AcpiPciHpState *pcihp_state = get_acpi_pcihp_state(vms);
-> +
-> +        if (pcihp_state) {
-> +            acpi_pcihp_device_unplug_cb(HOTPLUG_HANDLER(vms->acpi_dev),
-> +                                        pcihp_state, dev, errp);
-> +            supported = true;
-> +        }
-> +    }
-> +    if (!supported) {
->          error_setg(errp, "virt: device unplug for unsupported device"
->                     " type: %s", object_get_typename(OBJECT(dev)));
->      }
-> @@ -3045,11 +3108,14 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
->                                                          DeviceState *dev)
->  {
->      MachineClass *mc = MACHINE_GET_CLASS(machine);
-> +    VirtMachineState *vms = VIRT_MACHINE(machine);
->  
->      if (device_is_dynamic_sysbus(mc, dev) ||
->          object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) ||
->          object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI) ||
-> -        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-> +        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI) ||
-> +        (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE) &&
-> +                             get_acpi_pcihp_state(vms))) {
->          return HOTPLUG_HANDLER(machine);
->      }
->      return NULL;
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+
+> 
+> > ---
+> >  tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+> >  tests/data/acpi/aarch64/virt/DSDT.acpipcihp | 0
+> >  2 files changed, 1 insertion(+)
+> >  create mode 100644 tests/data/acpi/aarch64/virt/DSDT.acpipcihp
+> > 
+> > diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+> > index dfb8523c8b..dc3ab24d05 100644
+> > --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> > +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+> > @@ -1 +1,2 @@
+> >  /* List of comma-separated changed AML files to ignore */
+> > +"tests/data/acpi/aarch64/virt/DSDT.acpipcihp",
+> > diff --git a/tests/data/acpi/aarch64/virt/DSDT.acpipcihp b/tests/data/acpi/aarch64/virt/DSDT.acpipcihp
+> > new file mode 100644
+> > index 0000000000..e69de29bb2  
+> 
 
 
