@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364E5AE2566
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0265AE2550
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:24:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSk4Y-0000r4-HK; Fri, 20 Jun 2025 18:18:58 -0400
+	id 1uSk5N-0002Wc-2O; Fri, 20 Jun 2025 18:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcJ-00082y-Te
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:32 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcQ-00083x-Vj
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:39 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcI-0006ff-2J
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:31 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-451ebd3d149so13514895e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:33:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcP-0006fr-Hl
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:38 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3a4f71831abso1792449f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:33:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750440808; x=1751045608; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750440816; x=1751045616; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b9SQL4jNoEdh7B3HxMQlGzYytqro/3I9dxDIahK3Zis=;
- b=RjjSlMRj1EzsZgL45XowINjBQPQoqwh+npHslbJgXHZ7kLPFUk9wKIFMr3MRGngwNQ
- m+IcrwN/CluZy1ZnNaPZiYcgIxCml2UQqkFzSIaYxQyetKMjbJktwDT0pYTxZH6lxjMb
- jZX1kkOI1fEHLWjX8ZfpH9fIWHZpgAnyr33HgiGsg0uzX8Ja3JAsUKyQMjxqJVazbbGX
- 7XnpEPzm89vj2TZDvvS4vwK4sQa3FxAMrYK/+vlhRfUhxdqEKtfgbc6IeSw5T4w7b5uC
- RTXQQD9RfXmnmv2W9kn7GFCGRhP1RNpVTAc1wlphLqJk2nM6MKyD2oxMII5E9w3YoWfe
- zldg==
+ bh=rzubzSShF5xtg70wgMa4NT7f7l8/QI7hYdnu6JnrJk0=;
+ b=ITMBhULA7DRrjHE7ds3rlohyjmyf1u/CFVXZAnB42Eevx/VLcNg4FWcpmVwMr6Eit4
+ PBRsJUVI2NwA5JeLRNDFrPHqyqdrBCGH02kYfR2v6JjID8Qa9Zyivp8bF2jbONwlU2Sy
+ aQH5jt1fZj0rBk8ssxvOkmGQ5HokhQauum3G4SxqyxZ+xq1Te15sq8QQlTUBWC7+K5hc
+ hIWIA1PxbmlX/U0r+dvKR9rulWQ4pH2mesXEDaF03mPtB0Mtbjs7vm69h5laT2zYudAU
+ DhbJRI47UCtO0Cl7i81pMyCGwEKbT3mLEAWCkQEjZlbbB9tts9BaUr2XYI84gyvx9Qtv
+ XUgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750440808; x=1751045608;
+ d=1e100.net; s=20230601; t=1750440816; x=1751045616;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b9SQL4jNoEdh7B3HxMQlGzYytqro/3I9dxDIahK3Zis=;
- b=ac8MB9791Ieg/GWBySjkc3Gzpu/Q0cZPbmGghUkjTDYEW3abbkgRiEpsdOlf6tiHSr
- Mz9YMOG1hczbLxFXwn7X7wJtwiJP58rjpRE841AI0UGtT8pOO+bsVX+MynJ/0Mff/2L7
- 0cDyxvWhvYEkP+BcECy3pR9CPtzdo+SrNDz3NfGFtuOSSJbT3gMBE5334cf9WTQ630Ce
- IJ23D4wYKXeSTOIuJ2sqjzUiPkEwZvusTQLLNqe4s2FzFOV1VdZQWidz+39Ke+1sQ44Q
- 0wm67fq6pSH27x7XekCJA5Pk3RXVV/irgZKwl2p18ONYSsXb+uYHzAAYelifAeHXRNnQ
- Tf/w==
-X-Gm-Message-State: AOJu0YzKVGOleJV6+5dv5mhI5JrC7M6cRN8cs0Dbj9Hg+EWjsjxYCGM2
- 47uV3wVfeDmdjIlitr26wkuge2zIIV/WqpUm4RQeEMNwDbz+90yhM8NGWZpug7Md0coso3qa3Ao
- n+O1hRKHyUQ==
-X-Gm-Gg: ASbGnctMPYD2zwTAe80gsLc7n/PFvmhmmMTIxnFsANXXMtLg+zSku3J80JH5glUyYPG
- vUK9xVc9stI9GgRLqA3f2NrkY8h+28sKqV0Cr3Baa/9JUg2KAXpD96pScWAnJeOlmICrODFEc2O
- Blurf/6FXiLig7lZ+OICyXbPRd5ij6pOhM4jSWaJteY4MoJPmrz/FTeuE8aQbJTsyZ1R9bPc1pF
- WQHjL7c603yq5oagXwtlKfe9Elfh/pDhQihyoM7BuKv90VUwP0pc473olzzNeOmhzmHADWmurwp
- PRN1zEi3x56XRDExA9z0TKHgEoQWPH2X3eykz74K/eTI+nHpzoqZGU41coTlG+vr/lWn4VSN8f1
- Zg8U6gPfioRlrOBFL1OqnJch+YRb3+C3KXcMVAumrNhaLviyquFI3BQNw
-X-Google-Smtp-Source: AGHT+IEomomILrdSjX9hasuUlwmpD88LMxg68vR7HPDoZ2JaMXy+JhkSzogvBTCyGWjfkyYBftTBBg==
-X-Received: by 2002:a05:6000:718:b0:3a4:eed9:755d with SMTP id
- ffacd0b85a97d-3a6d12c2a8emr3561660f8f.3.1750440807886; 
- Fri, 20 Jun 2025 10:33:27 -0700 (PDT)
+ bh=rzubzSShF5xtg70wgMa4NT7f7l8/QI7hYdnu6JnrJk0=;
+ b=gqKtiXGDMmGfr6oOLVxs1UNwXuMOh8TnMubwdOxPD9yB9KZQ3W79mAt2UPZi4cWjZY
+ M4f2gKGHIlNdBzJZ5vrpqiqtzkjw7Dtb3lbp6e3va860gANpFPzAKES6477yC1lM2ZPE
+ 2aW8X8/YTYbwFG9Gy5bv6xyD4H0M7NclVWDu3roVWgkL1SZa8GRXZzH+xlfbmnBZ3Ggn
+ uXTZJpnDWfaif71K073Hu1mqCLxO17JLm5J5ttqF7FpwSP2/SgdiIbGhiez+nb9Nc42o
+ ycaDb3Njp6vPbaOxS1CNobs9w10gKXSe3Rk88wI2hix5QO089f7CpdXNthwG44gMXUwx
+ 22IA==
+X-Gm-Message-State: AOJu0YzC0Uxxoe6snQ9cQuK684zVKM29qWyc25AEr8qe15z7bpP6Hme+
+ /qW/TdccaaEYYIRgfI1WWRk+KUL6xIShtATnwP7KbIAoaBwq2VeY2f7BVn8OFZNoUvW8O3KLQ4S
+ aMBd/dueHDw==
+X-Gm-Gg: ASbGncvQ158X6WV0fPsy96/ebfeQmgcOPziFKrqg3VJTRMxTuqVZdkEJR/q/z1bvaQF
+ WZXgFEpAE/q/1zz8LEorYH84jfOo1ZQbCzjLXT1m+k2PwrJFUQGm4K0zB/4VeG70uZZ9D6OgWei
+ S6jSzuICArZycgrbhjzrFEYYhO4JaPgHxVl09UtlCCQxSKh5dkFj9tPdQb5UzH8G0ByeDXID5Jb
+ WuK9IuRMnNSQoOZm52SjJ9NkxSYLsUs8Bps2dubRUIz7UYr/jHKxwvcB1QbGmDyLbScPGPb6/mv
+ 2P2ll2PcMD378qIur5xwO+vHwOcl/5Iv+mVspJfufYwRgxf19kprKGf9x46hlY0NnWtrCglHZp8
+ eLtFuIv/jk23g6U6hYDYipCeVMGF1cdrjmtCvnAVm3+PHaYsN3ASK29Cg
+X-Google-Smtp-Source: AGHT+IG9uMMWzwFNWL4MjBihHUYZdtsgkR0rBJdgrmnLEj1gw0EQOSXrS8XU7cW1o4FCba7G5JP70w==
+X-Received: by 2002:a05:6000:657:b0:3a5:2599:4178 with SMTP id
+ ffacd0b85a97d-3a6d12de543mr2952627f8f.19.1750440815914; 
+ Fri, 20 Jun 2025 10:33:35 -0700 (PDT)
 Received: from localhost.localdomain
  (101.red-95-127-63.dynamicip.rima-tde.net. [95.127.63.101])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d117c0f1sm2659139f8f.53.2025.06.20.10.33.25
+ 5b1f17b1804b1-45364708297sm32138725e9.35.2025.06.20.10.33.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:33:27 -0700 (PDT)
+ Fri, 20 Jun 2025 10:33:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>,
@@ -75,18 +75,18 @@ Cc: Alexander Graf <agraf@csgraf.de>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH RESEND 39/42] target/arm: Implement
+Subject: [RFC PATCH RESEND 40/42] accel/split: Call
  TCGCPUOps::rebuild_tb_hflags()
-Date: Fri, 20 Jun 2025 19:27:47 +0200
-Message-ID: <20250620172751.94231-40-philmd@linaro.org>
+Date: Fri, 20 Jun 2025 19:27:48 +0200
+Message-ID: <20250620172751.94231-41-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620172751.94231-1-philmd@linaro.org>
 References: <20250620172751.94231-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,70 +109,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Call TCG rebuild_tb_hflags() when transitioning from
+hardware accelerator to TCG.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/cpu.h         | 2 ++
- target/arm/cpu.c         | 1 +
- target/arm/tcg/cpu-v7m.c | 1 +
- target/arm/tcg/hflags.c  | 5 +++++
- 4 files changed, 9 insertions(+)
+ accel/split/split-accel-ops.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index c31f69912b8..b703ec7edc9 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3160,9 +3160,11 @@ void arm_register_el_change_hook(ARMCPU *cpu, ARMELChangeHookFn *hook, void
+diff --git a/accel/split/split-accel-ops.c b/accel/split/split-accel-ops.c
+index 615faf1d96b..4b058034252 100644
+--- a/accel/split/split-accel-ops.c
++++ b/accel/split/split-accel-ops.c
+@@ -40,6 +40,8 @@ static void *split_cpu_thread_routine(void *arg)
+     assert(swc->allowed);
+     assert(hwc->allowed);
  
- /**
-  * arm_rebuild_hflags:
-+ * arm_cpu_rebuild_hflags:
-  * Rebuild the cached TBFLAGS for arbitrary changed processor state.
-  */
- void arm_rebuild_hflags(CPUARMState *env);
-+void arm_cpu_rebuild_hflags(CPUState *cpu);
- 
- /**
-  * aa32_vfp_dreg:
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 1a19e5cfb45..32a2e6c75e1 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2743,6 +2743,7 @@ static const TCGCPUOps arm_tcg_ops = {
- 
-     .initialize = arm_translate_init,
-     .translate_code = arm_translate_code,
-+    .rebuild_tb_hflags = arm_cpu_rebuild_hflags,
-     .get_tb_cpu_state = arm_get_tb_cpu_state,
-     .synchronize_from_tb = arm_cpu_synchronize_from_tb,
-     .debug_excp_handler = arm_debug_excp_handler,
-diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
-index 8e1a083b911..fa17029c65f 100644
---- a/target/arm/tcg/cpu-v7m.c
-+++ b/target/arm/tcg/cpu-v7m.c
-@@ -238,6 +238,7 @@ static const TCGCPUOps arm_v7m_tcg_ops = {
- 
-     .initialize = arm_translate_init,
-     .translate_code = arm_translate_code,
-+    .rebuild_tb_hflags = arm_cpu_rebuild_hflags,
-     .get_tb_cpu_state = arm_get_tb_cpu_state,
-     .synchronize_from_tb = arm_cpu_synchronize_from_tb,
-     .debug_excp_handler = arm_debug_excp_handler,
-diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
-index 1ccec63bbd4..ea1174c661c 100644
---- a/target/arm/tcg/hflags.c
-+++ b/target/arm/tcg/hflags.c
-@@ -453,6 +453,11 @@ void arm_rebuild_hflags(CPUARMState *env)
-     env->hflags = rebuild_hflags_internal(env);
- }
- 
-+void arm_cpu_rebuild_hflags(CPUState *cpu)
-+{
-+    arm_rebuild_hflags(cpu_env(cpu));
-+}
++    assert(swops->rebuild_tcg_tb_flags);
 +
- /*
-  * If we have triggered a EL state change we can't rely on the
-  * translator having passed it to us, we need to recompute.
+     rcu_register_thread();
+     sw_force_rcu = mttcg_vcpu_register(cpu);
+ 
+@@ -69,6 +71,7 @@ static void *split_cpu_thread_routine(void *arg)
+                 r = hwops->exec_vcpu_thread(cpu);
+                 trace_accel_split_exec_vcpu_thread_hw(r);
+             } else {
++                swops->rebuild_tcg_tb_flags(cpu);
+                 r = swops->exec_vcpu_thread(cpu);
+                 trace_accel_split_exec_vcpu_thread_sw(r);
+             }
 -- 
 2.49.0
 
