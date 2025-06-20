@@ -2,77 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2408AE1724
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 11:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D56AFAE1788
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 11:30:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSXjE-0003Zk-2T; Fri, 20 Jun 2025 05:08:08 -0400
+	id 1uSY3I-0006P5-AA; Fri, 20 Jun 2025 05:28:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uSXix-0003Ho-Sm
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 05:08:00 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uSY3G-0006On-DQ; Fri, 20 Jun 2025 05:28:50 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uSXiq-00055r-MG
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 05:07:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750410465; x=1781946465;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=TObZAbEWJ2CPPP3wgEr0dN5obTobFnYleyBjpYYTALU=;
- b=JwRILnbgdzf6vR0z5/MksS5y/kfD5KktxQAcMOnxz99tTJxZIpVxP0ym
- OVaZPbPXcQXg8nCBzWZK9y1SVexXkSPyBKCCRkeiMTowrDlmIVzjLo54I
- adol5KzKCFMfn9lErcq9pP4LVhVcG3YvlrhKq5HSBmM3/G0BXuk3Vm/mJ
- Ow+qMLEBlKjOXqssWGJYOLMFZvadaSqdMdCI+F4F6SJ25VSNBYC1QZAA8
- dbBpwP4jOX/cq9eju7SM18AoLezfCOH47SneM5z2RzeQZLqUqnwU5QREz
- rVvtFpbgvoBc9Em1E5S61tdj+2xniH6mX/CTgke2bdcjj20n0Vb6NhHYN A==;
-X-CSE-ConnectionGUID: 3IZ8j0/CRMiiXacSjuxWnw==
-X-CSE-MsgGUID: 0P0coZWVSIyyyiHj+edr7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="56466860"
-X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; d="scan'208";a="56466860"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2025 02:07:34 -0700
-X-CSE-ConnectionGUID: wm8HKNloTsWHheErUKlKqg==
-X-CSE-MsgGUID: wPYRgqVVSm6SMs4Z/8d5ig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; d="scan'208";a="156670210"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 20 Jun 2025 02:07:30 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
- Pu Wen <puwen@hygon.cn>, Tao Su <tao1.su@intel.com>,
- Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 16/16] i386/cpu: Use a unified cache_info in X86CPUState
-Date: Fri, 20 Jun 2025 17:27:34 +0800
-Message-Id: <20250620092734.1576677-17-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250620092734.1576677-1-zhao1.liu@intel.com>
-References: <20250620092734.1576677-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uSY39-0007o0-NT; Fri, 20 Jun 2025 05:28:50 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bNsZw2Qf3z6M56G;
+ Fri, 20 Jun 2025 17:27:52 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 3F43A140446;
+ Fri, 20 Jun 2025 17:28:30 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 20 Jun
+ 2025 11:28:29 +0200
+Date: Fri, 20 Jun 2025 10:28:28 +0100
+To: Eric Auger <eric.auger@redhat.com>
+CC: <eric.auger.pro@gmail.com>, <qemu-devel@nongnu.org>,
+ <qemu-arm@nongnu.org>, <peter.maydell@linaro.org>, <imammedo@redhat.com>,
+ <gustavo.romero@linaro.org>, <anisinha@redhat.com>, <mst@redhat.com>,
+ <shannon.zhaosl@gmail.com>, <pbonzini@redhat.com>, <philmd@linaro.org>,
+ <alex.bennee@linaro.org>
+Subject: Re: [PATCH v3 16/29] hw/i386/acpi-build: Move aml_pci_edsm to a
+ generic place
+Message-ID: <20250620102828.00005ea9@huawei.com>
+In-Reply-To: <20250620101936.00005f96@huawei.com>
+References: <20250616094903.885753-1-eric.auger@redhat.com>
+ <20250616094903.885753-17-eric.auger@redhat.com>
+ <20250620101936.00005f96@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -62
-X-Spam_score: -6.3
-X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.897,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,296 +70,199 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-At present, all cases using the cache model (CPUID 0x2, 0x4, 0x80000005,
-0x80000006 and 0x8000001D leaves) have been verified to be able to
-select either cache_info_intel or cache_info_amd based on the vendor.
+On Fri, 20 Jun 2025 10:19:36 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-Therefore, further merge cache_info_intel and cache_info_amd into a
-unified cache_info in X86CPUState, and during its initialization, set
-different legacy cache models based on the vendor.
+> On Mon, 16 Jun 2025 11:46:45 +0200
+> Eric Auger <eric.auger@redhat.com> wrote:
+> 
+> > Move aml_pci_edsm to pci-bridge.c since we want to reuse that for
+> > ARM and acpi-index support.
+> > 
+> > Signed-off-by: Eric Auger <eric.auger@redhat.com>  
+> 
+> A request for a bit of documentation inline.  aml_pci_edsm() sounds
+> like we should be able to grep the spec for edsm and find it but
+> that's just internal method naming in qemu.
+> 
+> 
+> More interesting is I don't think this will ever be called as
+> the kernel has no idea how to call it and unlike on x86 the
+> blobs don't show wrapping the call in a _DSM() (see aml_pci_static_endpoint_dsm())
+> 
+> Did EDSM usage get dropped as this set evolved leaving this behind?
+Doh. You moved and use build_append_pci_bus_devices().
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- target/i386/cpu.c | 150 ++++++++--------------------------------------
- target/i386/cpu.h |   5 +-
- 2 files changed, 27 insertions(+), 128 deletions(-)
+So this is fine.  Ignore me.
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 4e9ac37850c0..c1d1289ee9de 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7484,27 +7484,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         } else if (env->enable_legacy_vendor_cache) {
-             caches = &legacy_intel_cache_info;
-         } else {
--            /*
--             * FIXME: Temporarily select cache info model here based on
--             * vendor, and merge these 2 cache info models later.
--             *
--             * This condition covers the following cases (with
--             * enable_legacy_vendor_cache=false):
--             *  - When CPU model has its own cache model and doesn't use legacy
--             *    cache model (legacy_model=off). Then cache_info_amd and
--             *    cache_info_cpuid4 are the same.
--             *
--             *  - For v10.1 and newer machines, when CPU model uses legacy cache
--             *    model. Non-AMD CPUs use cache_info_cpuid4 like before and AMD
--             *    CPU will use cache_info_amd. But this doesn't matter for AMD
--             *    CPU, because this leaf encodes all-0 for AMD whatever its cache
--             *    model is.
--             */
--            if (IS_AMD_CPU(env)) {
--                caches = &env->cache_info_amd;
--            } else {
--                caches = &env->cache_info_cpuid4;
--            }
-+            caches = &env->cache_info;
-         }
- 
-         if (cpu->cache_info_passthrough) {
-@@ -7523,27 +7503,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (env->enable_legacy_vendor_cache) {
-             caches = &legacy_intel_cache_info;
-         } else {
--            /*
--             * FIXME: Temporarily select cache info model here based on
--             * vendor, and merge these 2 cache info models later.
--             *
--             * This condition covers the following cases (with
--             * enable_legacy_vendor_cache=false):
--             *  - When CPU model has its own cache model and doesn't use legacy
--             *    cache model (legacy_model=off). Then cache_info_amd and
--             *    cache_info_cpuid4 are the same.
--             *
--             *  - For v10.1 and newer machines, when CPU model uses legacy cache
--             *    model. Non-AMD CPUs use cache_info_cpuid4 like before and AMD
--             *    CPU will use cache_info_amd. But this doesn't matter for AMD
--             *    CPU, because this leaf encodes all-0 for AMD whatever its cache
--             *    model is.
--             */
--            if (IS_AMD_CPU(env)) {
--                caches = &env->cache_info_amd;
--            } else {
--                caches = &env->cache_info_cpuid4;
--            }
-+            caches = &env->cache_info;
-         }
- 
-         /* cache info: needed for Core compatibility */
-@@ -7951,27 +7911,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (env->enable_legacy_vendor_cache) {
-             caches = &legacy_amd_cache_info;
-         } else {
--            /*
--             * FIXME: Temporarily select cache info model here based on
--             * vendor, and merge these 2 cache info models later.
--             *
--             * This condition covers the following cases (with
--             * enable_legacy_vendor_cache=false):
--             *  - When CPU model has its own cache model and doesn't uses legacy
--             *    cache model (legacy_model=off). Then cache_info_amd and
--             *    cache_info_cpuid4 are the same.
--             *
--             *  - For v10.1 and newer machines, when CPU model uses legacy cache
--             *    model. AMD CPUs use cache_info_amd like before and non-AMD
--             *    CPU will use cache_info_cpuid4. But this doesn't matter,
--             *    because for Intel CPU, it will get all-0 leaf, and Zhaoxin CPU
--             *    will get correct cache info. Both are expected.
--             */
--            if (IS_AMD_CPU(env)) {
--                caches = &env->cache_info_amd;
--            } else {
--                caches = &env->cache_info_cpuid4;
--            }
-+            caches = &env->cache_info;
-         }
- 
-         if (cpu->cache_info_passthrough) {
-@@ -7998,25 +7938,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (env->enable_legacy_vendor_cache) {
-             caches = &legacy_amd_cache_info;
-         } else {
--            /*
--             * FIXME: Temporarily select cache info model here based on
--             * vendor, and merge these 2 cache info models later.
--             *
--             * This condition covers the following cases (with
--             * enable_legacy_vendor_cache=false):
--             *  - When CPU model has its own cache model and doesn't uses legacy
--             *    cache model (legacy_model=off). Then cache_info_amd and
--             *    cache_info_cpuid4 are the same.
--             *
--             *  - For v10.1 and newer machines, when CPU model uses legacy cache
--             *    model. AMD CPUs use cache_info_amd like before and non-AMD
--             *    CPU (Intel & Zhaoxin) will use cache_info_cpuid4 as expected.
--             */
--            if (IS_AMD_CPU(env)) {
--                caches = &env->cache_info_amd;
--            } else {
--                caches = &env->cache_info_cpuid4;
--            }
-+            caches = &env->cache_info;
-         }
- 
-         if (cpu->cache_info_passthrough) {
-@@ -8089,22 +8011,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *edx = 0;
-         }
-         break;
--    case 0x8000001D: {
--        const CPUCaches *caches;
--
--        /*
--         * FIXME: Temporarily select cache info model here based on
--         * vendor, and merge these 2 cache info models later.
--         *
--         * Intel doesn't support this leaf so that Intel Guests don't
--         * have this leaf. This change is harmless to Intel CPUs.
--         */
--        if (IS_AMD_CPU(env)) {
--            caches = &env->cache_info_amd;
--        } else {
--            caches = &env->cache_info_cpuid4;
--        }
--
-+    case 0x8000001D:
-         *eax = 0;
-         if (cpu->cache_info_passthrough) {
-             x86_cpu_get_cache_cpuid(index, count, eax, ebx, ecx, edx);
-@@ -8112,19 +8019,19 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         }
-         switch (count) {
-         case 0: /* L1 dcache info */
--            encode_cache_cpuid8000001d(caches->l1d_cache,
-+            encode_cache_cpuid8000001d(env->cache_info.l1d_cache,
-                                        topo_info, eax, ebx, ecx, edx);
-             break;
-         case 1: /* L1 icache info */
--            encode_cache_cpuid8000001d(caches->l1i_cache,
-+            encode_cache_cpuid8000001d(env->cache_info.l1i_cache,
-                                        topo_info, eax, ebx, ecx, edx);
-             break;
-         case 2: /* L2 cache info */
--            encode_cache_cpuid8000001d(caches->l2_cache,
-+            encode_cache_cpuid8000001d(env->cache_info.l2_cache,
-                                        topo_info, eax, ebx, ecx, edx);
-             break;
-         case 3: /* L3 cache info */
--            encode_cache_cpuid8000001d(caches->l3_cache,
-+            encode_cache_cpuid8000001d(env->cache_info.l3_cache,
-                                        topo_info, eax, ebx, ecx, edx);
-             break;
-         default: /* end of info */
-@@ -8135,7 +8042,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *edx &= CACHE_NO_INVD_SHARING | CACHE_INCLUSIVE;
-         }
-         break;
--    }
-     case 0x8000001E:
-         if (cpu->core_id <= 255) {
-             encode_topo_cpuid8000001e(cpu, topo_info, eax, ebx, ecx, edx);
-@@ -8825,46 +8731,34 @@ static bool x86_cpu_update_smp_cache_topo(MachineState *ms, X86CPU *cpu,
- 
-     level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D);
-     if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
--        env->cache_info_cpuid4.l1d_cache->share_level = level;
--        env->cache_info_amd.l1d_cache->share_level = level;
-+        env->cache_info.l1d_cache->share_level = level;
-     } else {
-         machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D,
--            env->cache_info_cpuid4.l1d_cache->share_level);
--        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1D,
--            env->cache_info_amd.l1d_cache->share_level);
-+            env->cache_info.l1d_cache->share_level);
-     }
- 
-     level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I);
-     if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
--        env->cache_info_cpuid4.l1i_cache->share_level = level;
--        env->cache_info_amd.l1i_cache->share_level = level;
-+        env->cache_info.l1i_cache->share_level = level;
-     } else {
-         machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I,
--            env->cache_info_cpuid4.l1i_cache->share_level);
--        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L1I,
--            env->cache_info_amd.l1i_cache->share_level);
-+            env->cache_info.l1i_cache->share_level);
-     }
- 
-     level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2);
-     if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
--        env->cache_info_cpuid4.l2_cache->share_level = level;
--        env->cache_info_amd.l2_cache->share_level = level;
-+        env->cache_info.l2_cache->share_level = level;
-     } else {
-         machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2,
--            env->cache_info_cpuid4.l2_cache->share_level);
--        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L2,
--            env->cache_info_amd.l2_cache->share_level);
-+            env->cache_info.l2_cache->share_level);
-     }
- 
-     level = machine_get_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3);
-     if (level != CPU_TOPOLOGY_LEVEL_DEFAULT) {
--        env->cache_info_cpuid4.l3_cache->share_level = level;
--        env->cache_info_amd.l3_cache->share_level = level;
-+        env->cache_info.l3_cache->share_level = level;
-     } else {
-         machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3,
--            env->cache_info_cpuid4.l3_cache->share_level);
--        machine_set_cache_topo_level(ms, CACHE_LEVEL_AND_TYPE_L3,
--            env->cache_info_amd.l3_cache->share_level);
-+            env->cache_info.l3_cache->share_level);
-     }
- 
-     if (!machine_check_smp_cache(ms, errp)) {
-@@ -9091,7 +8985,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-                        "CPU model '%s' doesn't support legacy-cache=off", name);
-             return;
-         }
--        env->cache_info_cpuid4 = env->cache_info_amd = *cache_info;
-+        env->cache_info = *cache_info;
-     } else {
-         /* Build legacy cache information */
-         if (!cpu->consistent_cache) {
-@@ -9101,8 +8995,12 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-         if (!cpu->vendor_cpuid_only_v2) {
-             env->enable_legacy_vendor_cache = true;
-         }
--        env->cache_info_cpuid4 = legacy_intel_cache_info;
--        env->cache_info_amd = legacy_amd_cache_info;
-+
-+        if (IS_AMD_CPU(env)) {
-+            env->cache_info = legacy_amd_cache_info;
-+        } else {
-+            env->cache_info = legacy_intel_cache_info;
-+        }
-     }
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 243383efd602..3f79db679888 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2072,11 +2072,12 @@ typedef struct CPUArchState {
-     /* Features that were explicitly enabled/disabled */
-     FeatureWordArray user_features;
-     uint32_t cpuid_model[12];
--    /* Cache information for CPUID.  When legacy-cache=on, the cache data
-+    /*
-+     * Cache information for CPUID.  When legacy-cache=on, the cache data
-      * on each CPUID leaf will be different, because we keep compatibility
-      * with old QEMU versions.
-      */
--    CPUCaches cache_info_cpuid4, cache_info_amd;
-+    CPUCaches cache_info;
-     bool enable_legacy_cpuid2_cache;
-     bool enable_legacy_vendor_cache;
- 
--- 
-2.34.1
+I'd still like a comment though - particularly as it turns up in the blobs
+with no callers because the examples don't use it yet.
+
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
+> 
+> 
+> 
+> >
+> > ---
+> > 
+> > v2 -> v3:
+> > - move to pci-bridge.c instead of pcihp.c (Igor)
+> > ---
+> >  include/hw/acpi/pci.h |  1 +
+> >  hw/acpi/pci-bridge.c  | 54 +++++++++++++++++++++++++++++++++++++++++++
+> >  hw/i386/acpi-build.c  | 53 ------------------------------------------
+> >  3 files changed, 55 insertions(+), 53 deletions(-)
+> > 
+> > diff --git a/include/hw/acpi/pci.h b/include/hw/acpi/pci.h
+> > index 69bae95eac..05e72815c8 100644
+> > --- a/include/hw/acpi/pci.h
+> > +++ b/include/hw/acpi/pci.h
+> > @@ -42,5 +42,6 @@ void build_pci_bridge_aml(AcpiDevAmlIf *adev, Aml *scope);
+> >  void build_srat_generic_affinity_structures(GArray *table_data);
+> >  
+> >  Aml *build_pci_host_bridge_osc_method(bool enable_native_pcie_hotplug);
+> > +Aml *aml_pci_edsm(void);
+> >  
+> >  #endif
+> > diff --git a/hw/acpi/pci-bridge.c b/hw/acpi/pci-bridge.c
+> > index 7baa7034a1..be68a98c34 100644
+> > --- a/hw/acpi/pci-bridge.c
+> > +++ b/hw/acpi/pci-bridge.c
+> > @@ -35,3 +35,57 @@ void build_pci_bridge_aml(AcpiDevAmlIf *adev, Aml *scope)
+> >          }
+> >      }
+> >  }
+> > +
+> > +Aml *aml_pci_edsm(void)  
+> 
+> Can we have some comments, or a more descriptive name than
+> the resulting method name?  There is stuff in the function obviously
+> that associates it with the naming DSM but given this is moving to
+> generic code maybe it needs a brief intro comment?
+> 
+> 
+> > +{
+> > +    Aml *method, *ifctx;
+> > +    Aml *zero = aml_int(0);
+> > +    Aml *func = aml_arg(2);
+> > +    Aml *ret = aml_local(0);
+> > +    Aml *aidx = aml_local(1);
+> > +    Aml *params = aml_arg(4);
+> > +
+> > +    method = aml_method("EDSM", 5, AML_SERIALIZED);
+> > +
+> > +    /* get supported functions */
+> > +    ifctx = aml_if(aml_equal(func, zero));
+> > +    {
+> > +        /* 1: have supported functions */
+> > +        /* 7: support for function 7 */
+> > +        const uint8_t caps = 1 | BIT(7);
+> > +        build_append_pci_dsm_func0_common(ifctx, ret);
+> > +        aml_append(ifctx, aml_store(aml_int(caps), aml_index(ret, zero)));
+> > +        aml_append(ifctx, aml_return(ret));
+> > +    }
+> > +    aml_append(method, ifctx);
+> > +
+> > +    /* handle specific functions requests */
+> > +    /*
+> > +     * PCI Firmware Specification 3.1
+> > +     * 4.6.7. _DSM for Naming a PCI or PCI Express Device Under
+> > +     *        Operating Systems
+> > +     */
+> > +    ifctx = aml_if(aml_equal(func, aml_int(7)));
+> > +    {
+> > +       Aml *pkg = aml_package(2);
+> > +       aml_append(pkg, zero);
+> > +       /* optional, if not impl. should return null string */
+> > +       aml_append(pkg, aml_string("%s", ""));
+> > +       aml_append(ifctx, aml_store(pkg, ret));
+> > +
+> > +       /*
+> > +        * IASL is fine when initializing Package with computational data,
+> > +        * however it makes guest unhappy /it fails to process such AML/.
+> > +        * So use runtime assignment to set acpi-index after initializer
+> > +        * to make OSPM happy.
+> > +        */
+> > +       aml_append(ifctx,
+> > +           aml_store(aml_derefof(aml_index(params, aml_int(0))), aidx));
+> > +       aml_append(ifctx, aml_store(aidx, aml_index(ret, zero)));
+> > +       aml_append(ifctx, aml_return(ret));
+> > +    }
+> > +    aml_append(method, ifctx);
+> > +
+> > +    return method;
+> > +}
+> > +
+> > diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> > index fe8bc62c03..6cf623392e 100644
+> > --- a/hw/i386/acpi-build.c
+> > +++ b/hw/i386/acpi-build.c
+> > @@ -338,59 +338,6 @@ build_facs(GArray *table_data)
+> >      g_array_append_vals(table_data, reserved, 40); /* Reserved */
+> >  }
+> >  
+> > -static Aml *aml_pci_edsm(void)
+> > -{
+> > -    Aml *method, *ifctx;
+> > -    Aml *zero = aml_int(0);
+> > -    Aml *func = aml_arg(2);
+> > -    Aml *ret = aml_local(0);
+> > -    Aml *aidx = aml_local(1);
+> > -    Aml *params = aml_arg(4);
+> > -
+> > -    method = aml_method("EDSM", 5, AML_SERIALIZED);
+> > -
+> > -    /* get supported functions */
+> > -    ifctx = aml_if(aml_equal(func, zero));
+> > -    {
+> > -        /* 1: have supported functions */
+> > -        /* 7: support for function 7 */
+> > -        const uint8_t caps = 1 | BIT(7);
+> > -        build_append_pci_dsm_func0_common(ifctx, ret);
+> > -        aml_append(ifctx, aml_store(aml_int(caps), aml_index(ret, zero)));
+> > -        aml_append(ifctx, aml_return(ret));
+> > -    }
+> > -    aml_append(method, ifctx);
+> > -
+> > -    /* handle specific functions requests */
+> > -    /*
+> > -     * PCI Firmware Specification 3.1
+> > -     * 4.6.7. _DSM for Naming a PCI or PCI Express Device Under
+> > -     *        Operating Systems
+> > -     */
+> > -    ifctx = aml_if(aml_equal(func, aml_int(7)));
+> > -    {
+> > -       Aml *pkg = aml_package(2);
+> > -       aml_append(pkg, zero);
+> > -       /* optional, if not impl. should return null string */
+> > -       aml_append(pkg, aml_string("%s", ""));
+> > -       aml_append(ifctx, aml_store(pkg, ret));
+> > -
+> > -       /*
+> > -        * IASL is fine when initializing Package with computational data,
+> > -        * however it makes guest unhappy /it fails to process such AML/.
+> > -        * So use runtime assignment to set acpi-index after initializer
+> > -        * to make OSPM happy.
+> > -        */
+> > -       aml_append(ifctx,
+> > -           aml_store(aml_derefof(aml_index(params, aml_int(0))), aidx));
+> > -       aml_append(ifctx, aml_store(aidx, aml_index(ret, zero)));
+> > -       aml_append(ifctx, aml_return(ret));
+> > -    }
+> > -    aml_append(method, ifctx);
+> > -
+> > -    return method;
+> > -}
+> > -
+> >  /*
+> >   * build_prt - Define interrupt routing rules
+> >   *  
+> 
 
 
