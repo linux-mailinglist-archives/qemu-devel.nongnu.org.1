@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58E0AE20C3
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC34AE20B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:20:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSfP5-0000pi-Qi; Fri, 20 Jun 2025 13:19:52 -0400
+	id 1uSfMl-0004qp-7k; Fri, 20 Jun 2025 13:17:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLq-0003Gf-RZ
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:32 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLz-0003Y8-SA
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:41 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLp-0004e7-3I
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:30 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-451d3f72391so19857125e9.3
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:16:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLx-0004gB-Oi
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:39 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-442e9c00bf4so17094225e9.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:16:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750439786; x=1751044586; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750439796; x=1751044596; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0chn/PFHrz+xSOI0jlEUFPBGrfliVmmZpEFFKJ3P4VU=;
- b=WDqcsAy+Ryi3y8F8A/VXP+hj66yqJoMUvMie2dA8ZXjbMEu8H5oYezHXbhDdlZ/kIU
- 6qnuejBDFhjeH1haxM+UjHQhw56pYARYTLOqG390qOW5xJOE6Bp0Vc57MxEn9G5nmLE9
- B150sLiRp7sXtokNctkpM49hXPb/T2wWdeWh988DVLnm07hH6q9ap/m8RAAmnwAbLoEJ
- v6VrPPQcMJIoLO/H4x490LAhHPF15Ci6uWbWDK9V9dDzKTuqvKEGHKFdatJhJJFBd6ou
- S2cvJxRUqMv2WA//akNlm9v5nSEGX+aPg2i2MJ9Xo/y7dskMm6nyLaA4w3DGg2zMX6i4
- N7pQ==
+ bh=bscCZhJPor6p9xOGYxKsyHkSJQbAuOk7LsWMwFm7sCY=;
+ b=NRNZLHw4/c3rizi8krRI6YzQwaFqPBbZZWLKCp2aHXE675QRht6WGMVkShK6W9+VkJ
+ mqoh0HOrprJuPbObSySYzPSf2xFStyzTTjjLJXxRWNiN2svgoy0Xr30XSCPBzG6nK5Af
+ nFuCtFhuxlwpMMKY7YLzHjBsGH/daPDvnViCLDcwtpAK810vtngW/79mSDyImiKuqCkc
+ 9ChPNQbZ+nwr5Y360VrbxDyU4nhS71oogF5LqblOLvPWbwa7v71Xkuh1r+5rNd9MLMl8
+ DTBqDEmqc3t7AbHa+8VwIqLlnCHP+Tyheiw2d0CVyJiBFBDjuwjmAWYJAC/C9z3Zi+n3
+ V+uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750439786; x=1751044586;
+ d=1e100.net; s=20230601; t=1750439796; x=1751044596;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0chn/PFHrz+xSOI0jlEUFPBGrfliVmmZpEFFKJ3P4VU=;
- b=Kykt3pcfhcOd1i7bwF40LcYNxB7GVmVtU39D8tWopE0czCoXZ6Tp1+ZQkj+0CpqJrW
- Ar6chJg1ZWscUJaNt9GlIS+nCP/dldVLt7yhdQzHHanfqrcXpCWTXIodVtOz7d43uFU4
- MJCImA/8Q7s9SYqSus+sKv67s3+XD+tEjpVkONItrWP2r4WEl5HJRJDNIpDAYlkjlcKj
- gUfeELhwpUVJbuaOK+WfosVQIeoy1K3dI2VCfazOQ0tDDBNxzCatuejypoS0qnBMceD5
- Odi7hHAt1elpg8gcESqNZGC6fwU8RQJ3012fTtsl5FaLh9UscmNWNlTyZYwf7YbCfzCo
- eY8A==
-X-Gm-Message-State: AOJu0YyugwkZIfNfvSRIC1zBO8vh7Qe9YSif8L30fS85YpvCOrcaBDzf
- Z1nKOraABbUkbplT5ATXmxvR//vJHBG+vjaJC2utVWOfFJKbSaCffG8qtSrFiXOOHujA0++zaB7
- UcsnlS0I=
-X-Gm-Gg: ASbGnctsJPbprz1wLpKCAGZw5EWzrLrTUDzJ9lZrgPpH8SqXLjawnRW10nmGNfXYmhW
- 9XK3nASs16RRLGr7E7mTpJEYKFHlCxlPXebo5gzMh6pXDTfdBTJ87HiP7D27uVVH1269Rb6Esq6
- rIkM2YIX+LLWyvQWcFKfs8AuvA51xgCvSbldrmF8K12EpHLiMcE+Jkynd+oP6H/c1rMt5LUt8SX
- ujXfFjc0weJPpJ+WTLciWh61aqJMJhI9/BJxjsPAopRWwtkGbyxdmLe0IyQpGlGkaJUpQ4bNryh
- 4hTCCcZNxyDV0YVDDS2HgvuaPgwjpaKJrdq/2te8uw4ecrLRPjD5Z4jJYK8jJUx7BsdjcAHRHMN
- r203pUaMqaaO+09VgI3V5Ulu28MM7bOQKN8r2
-X-Google-Smtp-Source: AGHT+IHoF6VuoePln54CqTE5ntReLP47+/6Ex3M/6Zpjnotqe+GTfgBvci8gOJYIr5vLpeXrh3lXYA==
-X-Received: by 2002:a05:600c:4fc5:b0:453:2066:4a26 with SMTP id
- 5b1f17b1804b1-453659ee9famr37781535e9.16.1750439786198; 
- Fri, 20 Jun 2025 10:16:26 -0700 (PDT)
+ bh=bscCZhJPor6p9xOGYxKsyHkSJQbAuOk7LsWMwFm7sCY=;
+ b=RmMrLMJhXQNRhFLyHnr0Zraz8KDHd5lppf78IVd84zZ5JqI/+cZarDOQ4127VucasS
+ GyBfbjU8ehs9hrHFsO3yuvGi3JU1GRCsyykzG2IFKUwkvTAR+6U/ECZAdKXAQ4AGldcb
+ qbL10mHpTNnMefXVRYXPs/B475KAKlTjeXRM5ejlbZ4FH8F8zFV/nFYPYjGmF0Y0BQvA
+ cgkZ05jNCD2zDNOVnim6hjDY9PYVGrVQ4Ry1VuDxmNHGdoTrxI2paNnWP8KdRKjAXayA
+ cmky4OHzcEYMAK1gVYFB76PcZk1fyyJY7/K5NbH795IQKBHRksn2M5inf3izUdh8L7h2
+ DkTA==
+X-Gm-Message-State: AOJu0Yw+PjfLOKXfFRnMofUCI8aCxs2wtuSq1Fs142APa5EWOqqsj1s2
+ P3jIqywJ0RnUtvGUM9svFCaZKruuwvbz3R5iKTtVRNbA++3DKN3xcuAyUlZ9dXDAKICQpxPfkPS
+ DEXxP4s8=
+X-Gm-Gg: ASbGncsLQcXhTiwHibmtueq0tQLVfLQ8lHtdHpjlaDTi0J3hKR/N0ALBXWfxr0dz72k
+ bM14poJg5UZwfLnU31c7S1ffX4Ala3b4ZbonXW8PR5RbXaNA7+PtjuUs9dvX1mGHll/jsdb20OI
+ soBMJ5TBoZysbMasdxD+j6/1Niq79IbPMyBToRK4z2DE8saviDsk6ddVinBEgLRt9B55yzeYDYI
+ 50tX3lK9KO9ol3e8C1xw1yD6ougfMJttZHsgynQNTioc8YUVO3xVC3Dkn9CiTXH2WyXj2qrhgK8
+ PQGDa0ragOcNCl2b6z4ej9ATw+zR9T9xHNseUEvcO0QrHZ8Fdw/IKJcES3gY9k818E8CcZTZi49
+ 6wi3RLpDWJuKr0j+e7qnilG9AOSMRxGOdSAQOCK/oi74+TA4=
+X-Google-Smtp-Source: AGHT+IHW4TOzsOZCNJMNEx4Adz4KtLDndz5p9iwamV7rd0SQLzyTQ42FpsKAxmdD8EwMt9JSqP2KwQ==
+X-Received: by 2002:a05:600c:3115:b0:440:9b1a:cd78 with SMTP id
+ 5b1f17b1804b1-453654cbfdbmr39329235e9.10.1750439795791; 
+ Fri, 20 Jun 2025 10:16:35 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d117c66esm2501112f8f.47.2025.06.20.10.16.25
+ 5b1f17b1804b1-453646d14ddsm30933445e9.10.2025.06.20.10.16.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:16:25 -0700 (PDT)
+ Fri, 20 Jun 2025 10:16:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -73,18 +73,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 33/48] accel/hvf: Convert to
+Subject: [RFC PATCH v2 35/48] accel/nvmm: Convert to
  AccelOpsClass::cpu_thread_routine
-Date: Fri, 20 Jun 2025 19:13:26 +0200
-Message-ID: <20250620171342.92678-34-philmd@linaro.org>
+Date: Fri, 20 Jun 2025 19:13:28 +0200
+Message-ID: <20250620171342.92678-36-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620171342.92678-1-philmd@linaro.org>
 References: <20250620171342.92678-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,45 +112,39 @@ let the common accel_create_vcpu_thread() create the thread.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/hvf/hvf-accel-ops.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ target/i386/nvmm/nvmm-accel-ops.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index 78bf0ac6cba..6bf7fcd7331 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -471,22 +471,6 @@ static void *hvf_cpu_thread_fn(void *arg)
+diff --git a/target/i386/nvmm/nvmm-accel-ops.c b/target/i386/nvmm/nvmm-accel-ops.c
+index 21443078b72..bef6f61b776 100644
+--- a/target/i386/nvmm/nvmm-accel-ops.c
++++ b/target/i386/nvmm/nvmm-accel-ops.c
+@@ -61,16 +61,6 @@ static void *qemu_nvmm_cpu_thread_fn(void *arg)
      return NULL;
  }
  
--static void hvf_start_vcpu_thread(CPUState *cpu)
+-static void nvmm_start_vcpu_thread(CPUState *cpu)
 -{
 -    char thread_name[VCPU_THREAD_NAME_SIZE];
 -
--    /*
--     * HVF currently does not support TCG, and only runs in
--     * unrestricted-guest mode.
--     */
--    assert(hvf_enabled());
--
--    snprintf(thread_name, VCPU_THREAD_NAME_SIZE, "CPU %d/HVF",
+-    snprintf(thread_name, VCPU_THREAD_NAME_SIZE, "CPU %d/NVMM",
 -             cpu->cpu_index);
--    qemu_thread_create(cpu->thread, thread_name, hvf_cpu_thread_fn,
+-    qemu_thread_create(cpu->thread, thread_name, qemu_nvmm_cpu_thread_fn,
 -                       cpu, QEMU_THREAD_JOINABLE);
 -}
 -
- static int hvf_insert_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+ /*
+  * Abort the call to run the virtual processor by another thread, and to
+  * return the control to that thread.
+@@ -85,7 +75,7 @@ static void nvmm_accel_ops_class_init(ObjectClass *oc, const void *data)
  {
-     struct hvf_sw_breakpoint *bp;
-@@ -605,7 +589,7 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
+     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
  
-     ops->cpu_target_realize = hvf_arch_cpu_realize;
+-    ops->create_vcpu_thread = nvmm_start_vcpu_thread;
++    ops->cpu_thread_routine = qemu_nvmm_cpu_thread_fn;
+     ops->kick_vcpu_thread = nvmm_kick_vcpu_thread;
  
--    ops->create_vcpu_thread = hvf_start_vcpu_thread;
-+    ops->cpu_thread_routine = hvf_cpu_thread_fn,
-     ops->kick_vcpu_thread = hvf_kick_vcpu_thread;
- 
-     ops->synchronize_post_reset = hvf_cpu_synchronize_post_reset;
+     ops->synchronize_post_reset = nvmm_cpu_synchronize_post_reset;
 -- 
 2.49.0
 
