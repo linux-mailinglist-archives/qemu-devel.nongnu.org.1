@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66B6AE1703
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 11:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB224AE170C
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 11:07:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSXhl-0000pT-Th; Fri, 20 Jun 2025 05:06:37 -0400
+	id 1uSXhn-0000rV-5I; Fri, 20 Jun 2025 05:06:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uSXhj-0000m9-9H
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 05:06:35 -0400
+ id 1uSXhl-0000pr-Bn
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 05:06:37 -0400
 Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uSXhg-0004zi-HS
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 05:06:34 -0400
+ id 1uSXhj-0004zi-9H
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 05:06:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750410393; x=1781946393;
+ t=1750410396; x=1781946396;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rP+3yIcVeLITlIOtxWUE53+6FM+a8wwBuKQISSU42FQ=;
- b=ahNPlHuPqEpSapTctKR17D+biHHg9iihYHXqujkwhhG22wsMDVMArSyQ
- UvxapnNP+1CD8qnk3WeS/pkK9BDkH7gmXqID954FLzUcFHWegu2TwrZEQ
- Oi2oPO4JVvU9Zv52cdJKMdbMwyC2W9jcQ+QG+FszahSRiuHGvoipRxQ/P
- z/XgF3MD/qTe9aXbU36nDto/egAwHLLMqW8ISzISp3dFe2473YGJXGMAE
- vkjuhB9FXojtwBcuzvntkPWeUkWLSPmIqC+JCbz16Fpu2I8Fx9/WgpV4K
- gooz8XyZ0gUIuRmaKXJmA/7wj8M5rGszj8Xb7c/fYPZSu4DYG59QmS35T w==;
-X-CSE-ConnectionGUID: Z1eHX2jQQEecTL5FfraJSg==
-X-CSE-MsgGUID: H53/NOqnQyKSS1EoisaVjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="56466542"
-X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; d="scan'208";a="56466542"
+ bh=/UaWvm7TqZVE24eodszyVbZ46tgQZ07UFSiLrizRDTM=;
+ b=VNURZ128VzqmCvyvb+TTMzByrCb7EBNSCt6S5X8kSabQ0EMe8tQv5x9N
+ BUYgmZHS2qgAzPt3OurDQRgxwmEftCBOvuKPQ5BE5F8MB2T1x5LIDpCn3
+ IYD/470d/xTAo7+nNP5VxWOu3wveA6EDufwwHmEKU810ccI4ETQ1UTtDK
+ IzyCGPCpr9f8muk8N1Tgq3LbC6BFNQ60aD5X1RNiYav9hzdOeVmDcPyQc
+ 4hzlrfGD4zFBCRAX9E4eeGQSW0HPGxBBytfDWPUXIuIjaNHt6Z8toPjNp
+ aked/a/aPRNnBl8LRv6Jc19QxSsX27GrP2ouzPddgqGJ3WLmI1uy9pbpy Q==;
+X-CSE-ConnectionGUID: dTOCzfaJSDqCYPXSPLYkiw==
+X-CSE-MsgGUID: ujHlwsoWQAel0DIHp9r12w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="56466562"
+X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; d="scan'208";a="56466562"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2025 02:06:30 -0700
-X-CSE-ConnectionGUID: QlVPWsGrQ9KlMS6Oe37+hQ==
-X-CSE-MsgGUID: dwkM4O6vRBqtU+YqP+El+Q==
+ 20 Jun 2025 02:06:35 -0700
+X-CSE-ConnectionGUID: V4s4attrReSLiNu1PEuN/w==
+X-CSE-MsgGUID: He37ufVcT3yAob1jJWhqnA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; d="scan'208";a="156669847"
+X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; d="scan'208";a="156669869"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 20 Jun 2025 02:06:26 -0700
+ by orviesa005.jf.intel.com with ESMTP; 20 Jun 2025 02:06:31 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
@@ -56,9 +56,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pu Wen <puwen@hygon.cn>, Tao Su <tao1.su@intel.com>,
  Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
  qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 02/16] i386/cpu: Add descriptor 0x49 for CPUID 0x2 encoding
-Date: Fri, 20 Jun 2025 17:27:20 +0800
-Message-Id: <20250620092734.1576677-3-zhao1.liu@intel.com>
+Subject: [PATCH 03/16] i386/cpu: Add default cache model for Intel CPUs with
+ level < 4
+Date: Fri, 20 Jun 2025 17:27:21 +0800
+Message-Id: <20250620092734.1576677-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250620092734.1576677-1-zhao1.liu@intel.com>
 References: <20250620092734.1576677-1-zhao1.liu@intel.com>
@@ -89,45 +90,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The legacy_l2_cache (2nd-level cache: 4 MByte, 16-way set associative,
-64 byte line size) corresponds to descriptor 0x49, but at present
-cpuid2_cache_descriptors doesn't support descriptor 0x49 because it has
-multiple meanings.
+Old Intel CPUs with CPUID level < 4, use CPUID 0x2 leaf (if available)
+to encode cache information.
 
-The 0x49 is necessary when CPUID 0x2 and 0x4 leaves have the consistent
-cache model, and use legacy_l2_cache as the default l2 cache.
+Introduce a cache model "legacy_intel_cpuid2_cache_info" for the CPUs
+with CPUID level < 4, based on legacy_l1d_cache, legacy_l1i_cache,
+legacy_l2_cache_cpuid2 and legacy_l3_cache. But for L2 cache, this
+cache model completes self_init, sets, partitions, no_invd_sharing and
+share_level fields, referring legacy_l2_cache, to avoid someone
+increases CPUID level manually and meets assert() error. But the cache
+information present in CPUID 0x2 leaf doesn't change.
 
-Therefore, add descriptor 0x49 to represent general l2 cache.
+This new cache model makes it possible to remove legacy_l2_cache_cpuid2
+in X86CPUState and help to clarify historical cache inconsistency issue.
+
+Furthermore, apply this legacy cache model to all Intel CPUs with CPUID
+level < 4. This includes not only "pentium2" and "pentium3" (which have
+0x2 leaf), but also "486" and "pentium" (which only have 0x1 leaf, and
+cache model won't be presented, just for simplicity).
+
+A legacy_intel_cpuid2_cache_info cache model doesn't change the cache
+information of the above CPUs, because they just depend on 0x2 leaf.
+
+Only when someone adjusts the min-level to >=4 will the cache
+information in CPUID leaf 4 differ from before: previously, the L2
+cache information in CPUID leaf 0x2 and 0x4 was different, but now with
+legacy_intel_cpuid2_cache_info, the information they present will be
+consistent. This case almost never happens, emulating a CPUID that is
+not supported by the "ancient" hardware is itself meaningless behavior.
+
+Therefore, even though there's the above difference (for really rare
+case) and considering these old CPUs ("486", "pentium", "pentium2" and
+"pentium3") won't be used for migration, there's no need to add new
+versioned CPU models
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index e398868a3f8d..995766c9d74c 100644
+index 995766c9d74c..0a2c32214cc3 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -127,7 +127,18 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-                .associativity = 8,  .line_size = 64, },
-     [0x48] = { .level = 2, .type = UNIFIED_CACHE,     .size =   3 * MiB,
-                .associativity = 12, .line_size = 64, },
--    /* Descriptor 0x49 depends on CPU family/model, so it is not included */
-+    /*
-+     * Descriptor 0x49 has 2 cases:
-+     *  - 2nd-level cache: 4 MByte, 16-way set associative, 64 byte line size.
-+     *  - 3rd-level cache: 4MB, 16-way set associative, 64-byte line size
-+     *    (Intel Xeon processor MP, Family 0FH, Model 06H).
-+     *
-+     * When it represents l3, then it depends on CPU family/model. Fortunately,
-+     * the legacy cache/CPU models don't have such special l3. So, just add it
-+     * to represent the general l2 case.
-+     */
-+    [0x49] = { .level = 2, .type = UNIFIED_CACHE,     .size =   4 * MiB,
-+               .associativity = 16, .line_size = 64, },
-     [0x4A] = { .level = 3, .type = UNIFIED_CACHE,     .size =   6 * MiB,
-                .associativity = 12, .line_size = 64, },
-     [0x4B] = { .level = 3, .type = UNIFIED_CACHE,     .size =   8 * MiB,
+@@ -710,6 +710,67 @@ static CPUCacheInfo legacy_l3_cache = {
+     .share_level = CPU_TOPOLOGY_LEVEL_DIE,
+ };
+ 
++/*
++ * Only used for the CPU models with CPUID level < 4.
++ * These CPUs (CPUID level < 4) only use CPUID leaf 2 to present
++ * cache information.
++ *
++ * Note: This cache model is just a default one, and is not
++ *       guaranteed to match real hardwares.
++ */
++static const CPUCaches legacy_intel_cpuid2_cache_info = {
++    .l1d_cache = &(CPUCacheInfo) {
++        .type = DATA_CACHE,
++        .level = 1,
++        .size = 32 * KiB,
++        .self_init = 1,
++        .line_size = 64,
++        .associativity = 8,
++        .sets = 64,
++        .partitions = 1,
++        .no_invd_sharing = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l1i_cache = &(CPUCacheInfo) {
++        .type = INSTRUCTION_CACHE,
++        .level = 1,
++        .size = 32 * KiB,
++        .self_init = 1,
++        .line_size = 64,
++        .associativity = 8,
++        .sets = 64,
++        .partitions = 1,
++        .no_invd_sharing = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l2_cache = &(CPUCacheInfo) {
++        .type = UNIFIED_CACHE,
++        .level = 2,
++        .size = 2 * MiB,
++        .self_init = 1,
++        .line_size = 64,
++        .associativity = 8,
++        .sets = 4096,
++        .partitions = 1,
++        .no_invd_sharing = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
++    },
++    .l3_cache = &(CPUCacheInfo) {
++        .type = UNIFIED_CACHE,
++        .level = 3,
++        .size = 16 * MiB,
++        .line_size = 64,
++        .associativity = 16,
++        .sets = 16384,
++        .partitions = 1,
++        .lines_per_tag = 1,
++        .self_init = true,
++        .inclusive = true,
++        .complex_indexing = true,
++        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
++    },
++};
++
+ /* TLB definitions: */
+ 
+ #define L1_DTLB_2M_ASSOC       1
+@@ -3043,6 +3104,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             I486_FEATURES,
+         .xlevel = 0,
+         .model_id = "",
++        .cache_info = &legacy_intel_cpuid2_cache_info,
+     },
+     {
+         .name = "pentium",
+@@ -3055,6 +3117,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             PENTIUM_FEATURES,
+         .xlevel = 0,
+         .model_id = "",
++        .cache_info = &legacy_intel_cpuid2_cache_info,
+     },
+     {
+         .name = "pentium2",
+@@ -3067,6 +3130,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             PENTIUM2_FEATURES,
+         .xlevel = 0,
+         .model_id = "",
++        .cache_info = &legacy_intel_cpuid2_cache_info,
+     },
+     {
+         .name = "pentium3",
+@@ -3079,6 +3143,7 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+             PENTIUM3_FEATURES,
+         .xlevel = 0,
+         .model_id = "",
++        .cache_info = &legacy_intel_cpuid2_cache_info,
+     },
+     {
+         .name = "athlon",
 -- 
 2.34.1
 
