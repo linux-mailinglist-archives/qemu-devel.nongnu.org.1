@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE352AE189F
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 12:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E0BAE18A0
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 12:14:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSYhX-0000TD-IG; Fri, 20 Jun 2025 06:10:27 -0400
+	id 1uSYkS-00023q-DB; Fri, 20 Jun 2025 06:13:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uSYhA-0000Dt-DS; Fri, 20 Jun 2025 06:10:04 -0400
+ id 1uSYkP-00023R-4Y; Fri, 20 Jun 2025 06:13:25 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uSYh5-0004Rt-SE; Fri, 20 Jun 2025 06:10:02 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bNtPp2vBLz6L68F;
- Fri, 20 Jun 2025 18:05:02 +0800 (CST)
+ id 1uSYkN-00058q-CF; Fri, 20 Jun 2025 06:13:24 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bNtZW59Jlz6M5Wt;
+ Fri, 20 Jun 2025 18:12:35 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 88B51140447;
- Fri, 20 Jun 2025 18:09:48 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id AB2661400D7;
+ Fri, 20 Jun 2025 18:13:13 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 20 Jun
- 2025 12:09:47 +0200
-Date: Fri, 20 Jun 2025 11:09:46 +0100
+ 2025 12:13:13 +0200
+Date: Fri, 20 Jun 2025 11:13:11 +0100
 To: Eric Auger <eric.auger@redhat.com>
 CC: <eric.auger.pro@gmail.com>, <qemu-devel@nongnu.org>,
  <qemu-arm@nongnu.org>, <peter.maydell@linaro.org>, <imammedo@redhat.com>,
  <gustavo.romero@linaro.org>, <anisinha@redhat.com>, <mst@redhat.com>,
  <shannon.zhaosl@gmail.com>, <pbonzini@redhat.com>, <philmd@linaro.org>,
  <alex.bennee@linaro.org>
-Subject: Re: [PATCH v3 21/29] hw/acpi/ged: Call pcihp plug callbacks in
- hotplug handler implementation
-Message-ID: <20250620110946.00007d64@huawei.com>
-In-Reply-To: <20250616094903.885753-22-eric.auger@redhat.com>
+Subject: Re: [PATCH v3 23/29] hw/core/sysbus: Introduce
+ sysbus_mmio_map_name() helper
+Message-ID: <20250620111311.00005da2@huawei.com>
+In-Reply-To: <20250616094903.885753-24-eric.auger@redhat.com>
 References: <20250616094903.885753-1-eric.auger@redhat.com>
- <20250616094903.885753-22-eric.auger@redhat.com>
+ <20250616094903.885753-24-eric.auger@redhat.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -74,16 +74,63 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Jun 2025 11:46:50 +0200
+On Mon, 16 Jun 2025 11:46:52 +0200
 Eric Auger <eric.auger@redhat.com> wrote:
 
-> Add PCI device related code in the TYPE_HOTPLUG_HANDLER
-> implementation.
-> 
-> For a PCI device hotplug/hotunplug event, the code routes to
-> acpi_pcihp_device callbacks (pre_plug_cb, plug_cb, unplug_request_cb,
-> unplug_cb).
+> Some sysbus devices have conditionnal mmio regions. This
+
+Spell check. conditional
+
+> happens for instance with the hw/acpi/ged device. In that case
+> it becomes difficult to predict which index a specific MMIO
+> region corresponds to when one needs to mmio map the region.
+> Introduce a new helper that takes the name of the region instead
+> of its index. If the region is not found this returns -1.
+> Otherwise it maps the corresponding index and returns this latter.
 > 
 > Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Nice helper.
+
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
+> ---
+>  include/hw/sysbus.h |  1 +
+>  hw/core/sysbus.c    | 11 +++++++++++
+>  2 files changed, 12 insertions(+)
+> 
+> diff --git a/include/hw/sysbus.h b/include/hw/sysbus.h
+> index 7dc88aaa27..18fde8a7b4 100644
+> --- a/include/hw/sysbus.h
+> +++ b/include/hw/sysbus.h
+> @@ -82,6 +82,7 @@ void sysbus_connect_irq(SysBusDevice *dev, int n, qemu_irq irq);
+>  bool sysbus_is_irq_connected(SysBusDevice *dev, int n);
+>  qemu_irq sysbus_get_connected_irq(SysBusDevice *dev, int n);
+>  void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr);
+> +int sysbus_mmio_map_name(SysBusDevice *dev, const char*name, hwaddr addr);
+>  void sysbus_mmio_map_overlap(SysBusDevice *dev, int n, hwaddr addr,
+>                               int priority);
+>  
+> diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
+> index e71367adfb..ec69e877a2 100644
+> --- a/hw/core/sysbus.c
+> +++ b/hw/core/sysbus.c
+> @@ -151,6 +151,17 @@ void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr)
+>      sysbus_mmio_map_common(dev, n, addr, false, 0);
+>  }
+>  
+> +int sysbus_mmio_map_name(SysBusDevice *dev, const char *name, hwaddr addr)
+> +{
+> +    for (int i = 0; i < dev->num_mmio; i++) {
+> +        if (!strcmp(dev->mmio[i].memory->name, name)) {
+> +            sysbus_mmio_map(dev, i, addr);
+> +            return i;
+> +        }
+> +    }
+> +    return -1;
+> +}
+> +
+>  void sysbus_mmio_map_overlap(SysBusDevice *dev, int n, hwaddr addr,
+>                               int priority)
+>  {
+
 
