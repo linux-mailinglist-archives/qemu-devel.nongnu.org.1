@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C06CAE25B0
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB8EAE255B
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:24:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSk6O-0004Cn-H3; Fri, 20 Jun 2025 18:20:54 -0400
+	id 1uSk4N-0000bo-C1; Fri, 20 Jun 2025 18:18:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfc3-00081w-Km
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:15 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcB-00082R-P5
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:24 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfc2-0006em-3Q
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:15 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-450dd065828so15681535e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:33:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcA-0006fP-22
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:23 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-451d6ade159so16817345e9.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:33:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750440792; x=1751045592; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750440800; x=1751045600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K5426YMMlpheSh4FU6UOd+lkxpX6kErFBSOpvyVvgmM=;
- b=V9S7yQ+rwSb+oAXIFfhi6tFQj4LvX3n86xIVadkaYzvz58NwhDUi02m3z4AA8og7gR
- bsYO4OnyC/pl5jwo6XK+dyoE7jmKFNPw3dl8mg3ROsjECD+7tukOmY4r/ZTKTeOupV9W
- BfwxUcJ4bfzmua3spFB/2htaP00Kkvbeizx/xF946vTtGAQpYuT45EsRo6hfAZNjV0QO
- 5LV6TwswzZOy/jx0X2u3eMwpwWoXa6yoXxzsiYghpNWihYkIIOJAb+5pJ//t7RgmJWeE
- EaLavCazbVBa0TiRJp2XLFC1XWjhIV8vVZ/10u1CYmZly4s8KZHcMoBj+Dgbvi9/DISt
- vz3A==
+ bh=Ee8LaeRodpj5Y59utJUbkpQXq+s3UXrcY7kjVMOzKm4=;
+ b=Kjhk9ftXqWDDTjjgVDLgA2Wd5jC2gQ9tIHyC13n0o8JEL6Sxrc8sEMzfeIln2cofCf
+ 0J0xLoe5yV4skLMaoOFYMeyYIS2p0swdZb57jjOz3xaJHUQe/lQ8Y2H1iTfwC7rJRkQj
+ BjtB/oh6u3rDOONcEGWYBOD3mOuqPTu/r+UP7Sx6GRUWRySl06VMZv/S8k1c85E7BOll
+ 3gVjiWkiJO9IGbuyw6R35rboLHRfJiDO/VY5nKnrjzyf6utKvdSNd3snpOVEGTwq3NYj
+ yEwkURmkWBcwYYtotjfCTgoGSm4zBJPYLk6Tyrj7NbmwbxlXU7AJE0RGNaOFzWdY3IRn
+ PQGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750440792; x=1751045592;
+ d=1e100.net; s=20230601; t=1750440800; x=1751045600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K5426YMMlpheSh4FU6UOd+lkxpX6kErFBSOpvyVvgmM=;
- b=gkVbMGM5F66tXbzLByVhspq2foUVlBXoYmD0teQcnTAHU2Pq1vMhSf6CCLFoO5NylD
- J+XQrK3DTSbHeFEvgMRch1BJjpY3DRFniimqBcR/t6QAjKiNNA+Ocdb4LuVU/2apn9jx
- ZGR7dwagA/GV2cRa7DcJDDwGnY8yjyHj1+M1Zyo18iDyFX6AbwIdsvJ3ODzDRN04iu90
- tDnLk1893mK2PGdKB89iDmKdOSZjkBmNgDq/qPmdJh5aqrgvmaWvdUMO0mr/drXyxoW9
- dp0jdpgbDFMjbb4YaMTfH/QrkH/KKWxseum+Os6Eko/W9kIV+D/gTxjxVIhvWovtpOk5
- 8auw==
-X-Gm-Message-State: AOJu0Yz+eed76EF+2+VFV131KqQTlHEbQ9PScFvdP9b42KLyzB2xjvUa
- SRqTdOH7UyzMW6b955qIoBCgn1v9OwTRb1qAY8jrfWXJJb6AVZNabNnzlxagO+uVnvjJI/8FZPY
- Ig8rMvMAj5Q==
-X-Gm-Gg: ASbGnctu8e/MpJ3tfwslnOmS5GZfKHLi93yYmOD4u1+rEb3iTIEjxw6bya6kLV39S4n
- WH0f1gUAuNUrhanNCynxD7OH+Ut962TKADetfg03zqH3e38q9dk7Wuzk9HNwR7hJ3WLt+CsJzv3
- 7Q5bhA0z4JRqctwhA7vebFi+/KXAlwGZFUowUFaSPgUUvTq0OV0Ki0wUIGZ5Ml6jjcrfCAFGNfQ
- 3nJB2IhKi44vcA+Y7aMhyWACjRRHFdH6pLezAXnkqtCOfs8Ky/FJumPFOhSm2NZM06HsnmchjXR
- D0FunYFq96lIS/yxXtUF5rf+dsnodo+PUrBSv0FSy8qVRimpKQwST4APMUN9uWEDCDmmPpNZsvH
- 9B0uOhOrCz4rioeACU72BSG2gZxheGonILeZgND6daGOAf/HnVTsM9DU0
-X-Google-Smtp-Source: AGHT+IHKan2VYxrVqiAyn2BBoZo+cirWMGMpaQj4jmSKGCvZQW6mIB2lxw0K+RhfxntU9tewZeIkdQ==
-X-Received: by 2002:a5d:64cd:0:b0:3a4:f90c:31e3 with SMTP id
- ffacd0b85a97d-3a6d12d7abdmr3236742f8f.31.1750440791974; 
- Fri, 20 Jun 2025 10:33:11 -0700 (PDT)
+ bh=Ee8LaeRodpj5Y59utJUbkpQXq+s3UXrcY7kjVMOzKm4=;
+ b=vuC7lKAGvyS8q+gw4jLssjDUgqJxgPKngFJTJvO0ndlRyDB9zIcZwC5X3B+ZXcC2Ud
+ +fau99UVRhyyyW9XPd6SQQKiCfWen1QCsIAjrHpgAq1wAKVexbz++x89x8e/zZ7EVeJa
+ jlu90KDHilptBPDLmAY13+EIPVTwbNQlHHxeElaehPfrOJJB0MOi1m6jvgTn5QRYpRm9
+ Hk6AXmDOlg3VGUHZjkgniYJdVhuKid4Y6e/gSMZeSeE0ty2IOwjqqgT46XQVya8bOaMO
+ U8Ctits0ddUA03sQRx3GsPBaPNQiUENRy0fM1mmRXxWd6WNi9zbvco8l3OT5/5BbFsny
+ mOVQ==
+X-Gm-Message-State: AOJu0YzPl2ikdBsZ8QYoGjqq86pi+nlvs7aNnuUTwM/56KkJKDBT/XW7
+ Ualf2F2NF6QRTKOrT91eN+oLCCyJ5LQmvPSDZI2g75KgX0T5pq9VIi8sPyKqqqWyFukfIUx0DgK
+ 8cKRcBu5pHw==
+X-Gm-Gg: ASbGncsrm5T+c6674Ddpx3mpJuCNvthsupJOs9a+CB2PSMSWI6xqDZCz2TeMN2hte9N
+ N+Rrgh+kwhzUgf2FHzc6cFsK0BeSUUiqGKNLYTk8Rraiap5iB32hpfKG72EXhUuKJP39hq1sTvE
+ 6XNTHNWBa+lERLeeKIFlFDf/9A0/Pwx54Llj3wiwruVxDcZdywj7EShY3l8E6uGIu0IRj3XtPwP
+ aCB4/gs/SWNi6TbZ56h02Bc8pSw/miZ05RapCXUEEUKi0nS0hJoaxeqk4uX53hJOhkuSh7N2w5x
+ FrIPGS5kqEJpqPpyuIpaEagPmwoXmrkA+mnxB0DV00WiZqmjNEQv4FW4afeBWZ4vwP7qnd2mH5z
+ yLMe3pkAJbv7FlmKwsoUQjrslLgQ4rdhGWiFlrKQ2+j6Lzd2P7t5d9j7Q
+X-Google-Smtp-Source: AGHT+IH8ZUfdUVwnVVjxW2LGFKTeS1zwGHu2Kjcblt28xo+0i0zDAnfcJrpXYI1wFBPB6Xol1LKxfw==
+X-Received: by 2002:a05:600c:c103:b0:43c:fffc:786c with SMTP id
+ 5b1f17b1804b1-45368787924mr14338455e9.19.1750440799956; 
+ Fri, 20 Jun 2025 10:33:19 -0700 (PDT)
 Received: from localhost.localdomain
  (101.red-95-127-63.dynamicip.rima-tde.net. [95.127.63.101])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d0f10502sm2671566f8f.18.2025.06.20.10.33.09
+ 5b1f17b1804b1-4535ead202asm65130995e9.27.2025.06.20.10.33.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:33:11 -0700 (PDT)
+ Fri, 20 Jun 2025 10:33:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>,
@@ -75,17 +75,18 @@ Cc: Alexander Graf <agraf@csgraf.de>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH RESEND 37/42] accel/hvf: Emulate HVC at EL2
-Date: Fri, 20 Jun 2025 19:27:45 +0200
-Message-ID: <20250620172751.94231-38-philmd@linaro.org>
+Subject: [RFC PATCH RESEND 38/42] accel/tcg: Introduce
+ TCGCPUOps::rebuild_tb_hflags handler
+Date: Fri, 20 Jun 2025 19:27:46 +0200
+Message-ID: <20250620172751.94231-39-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620172751.94231-1-philmd@linaro.org>
 References: <20250620172751.94231-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,42 +109,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In order to allow rebuilding target specific TB flags,
+introduce tcg_rebuild_tb_flags() which dispatches to
+a TCGCPUOps handler.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/hvf/hvf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ accel/tcg/internal-common.h | 1 +
+ include/accel/tcg/cpu-ops.h | 2 ++
+ include/system/accel-ops.h  | 8 ++++++++
+ accel/tcg/cpu-exec.c        | 9 +++++++++
+ accel/tcg/tcg-accel-ops.c   | 1 +
+ 5 files changed, 21 insertions(+)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 3907ea8791e..a4f823f834d 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -17,6 +17,7 @@
- #include "system/hvf.h"
- #include "system/hvf_int.h"
- #include "system/hw_accel.h"
-+#include "system/tcg.h"
- #include "hvf_arm.h"
- #include "cpregs.h"
+diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
+index fb265d0cefa..a3828e34145 100644
+--- a/accel/tcg/internal-common.h
++++ b/accel/tcg/internal-common.h
+@@ -54,6 +54,7 @@ void tb_reset_jump(TranslationBlock *tb, int n);
+ TranslationBlock *tb_link_page(TranslationBlock *tb);
+ void cpu_restore_state_from_tb(CPUState *cpu, TranslationBlock *tb,
+                                uintptr_t host_pc);
++void tcg_rebuild_tb_flags(CPUState *cpu);
  
-@@ -1117,6 +1118,8 @@ static void hvf_raise_exception(CPUState *cpu, uint32_t excp,
-     env->exception.syndrome = syndrome;
+ /**
+  * tlb_init - initialize a CPU's TLB
+diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
+index dd8ea300168..bb047461973 100644
+--- a/include/accel/tcg/cpu-ops.h
++++ b/include/accel/tcg/cpu-ops.h
+@@ -67,6 +67,8 @@ struct TCGCPUOps {
+      * Fill in all data required to select or compile a TranslationBlock.
+      */
+     TCGTBCPUState (*get_tb_cpu_state)(CPUState *cs);
++    /** @rebuild_tb_hflags: Callback to rebuild TB hflags.  */
++    void (*rebuild_tb_hflags)(CPUState *cpu);
+     /**
+      * @synchronize_from_tb: Synchronize state from a TCG #TranslationBlock
+      *
+diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
+index 29ebcf45928..20999033c89 100644
+--- a/include/system/accel-ops.h
++++ b/include/system/accel-ops.h
+@@ -71,6 +71,14 @@ struct AccelOpsClass {
+     void (*synchronize_pre_loadvm)(CPUState *cpu);
+     void (*synchronize_pre_resume)(bool step_pending);
  
-     arm_cpu_do_interrupt(cpu);
-+    cpu->interrupt_request &= ~CPU_INTERRUPT_EXITTB;
-+    cpu->exception_index = -1;
++    /**
++     * rebuild_tcg_tb_flags:
++     *
++     * Used to rebuild TCG TB flags when a hardware accelerator transitions
++     * to TCG, prior to calling TCG %exec_vcpu_thread() handler.
++     */
++    void (*rebuild_tcg_tb_flags)(CPUState *cpu);
++
+     void (*handle_interrupt)(CPUState *cpu, int mask);
+ 
+     void (*get_vcpu_stats)(CPUState *cpu, GString *buf);
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 713bdb20564..7ded765889c 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -1028,6 +1028,15 @@ int cpu_exec(CPUState *cpu)
+     return ret;
  }
  
- static void hvf_psci_cpu_off(ARMCPU *arm_cpu)
-@@ -2090,6 +2093,9 @@ int hvf_vcpu_exec(CPUState *cpu)
-                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
-                 env->xregs[0] = -1;
-             }
-+        } else if (tcg_enabled()) {
-+            /* FIXME check we are called from EL1 (so EL0 -> UDEF) ? */
-+            hvf_raise_exception(cpu, EXCP_HVC, syn_aa64_hvc(0), 2);
-         } else {
-             trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
-             hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized(), 1);
++void tcg_rebuild_tb_flags(CPUState *cpu)
++{
++    const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
++
++    if (tcg_ops->rebuild_tb_hflags) {
++        tcg_ops->rebuild_tb_hflags(cpu);
++    }
++}
++
+ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
+ {
+     static bool tcg_target_initialized;
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 0e4ef548f99..a141c4702e4 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -242,6 +242,7 @@ static void tcg_accel_ops_init(AccelClass *ac)
+     ops->insert_breakpoint = tcg_insert_breakpoint;
+     ops->remove_breakpoint = tcg_remove_breakpoint;
+     ops->remove_all_breakpoints = tcg_remove_all_breakpoints;
++    ops->rebuild_tcg_tb_flags = tcg_rebuild_tb_flags;
+ }
+ 
+ static void tcg_accel_ops_class_init(ObjectClass *oc, const void *data)
 -- 
 2.49.0
 
