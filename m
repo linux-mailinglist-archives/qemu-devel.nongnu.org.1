@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E46AE20BA
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B58E0AE20C3
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:21:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSfP2-0007pm-Rb; Fri, 20 Jun 2025 13:19:49 -0400
+	id 1uSfP5-0000pi-Qi; Fri, 20 Jun 2025 13:19:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLk-00032E-UP
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:28 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLq-0003Gf-RZ
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:32 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLj-0004dM-8H
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:24 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-451d6ade159so16731745e9.1
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:16:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLp-0004e7-3I
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:30 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-451d3f72391so19857125e9.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:16:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750439781; x=1751044581; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750439786; x=1751044586; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OeMttFNHwCeQPAcqGb56M6LDjrMo8+04+qvCxL+KWeo=;
- b=NwG5zyvmOUubSF3HucZX2+lA8537sGMUX1W0UVXD6zlTI+F9MUdkceB1z4BwFFGZdr
- Gye5NyDSKGLPst0kSzOsxgDpzRCf1hDpVemjAozULd/73V6KnfUJayhU8D7weihyFYBv
- gDopU9uooU2f9RBvHD2nb3qJG0xf5JDZF5YBdGJmrZQgi5OsK4ZHAvp8bTwTMg9UynZj
- zYNwDKP3grWWo61WDFs04bkBUwau+Q4EmhXu6W8bS6Z+n+Co2SC8pLrl+Th53yp35SSv
- gwBajGyNPyr/8hiZYSn1Gq6Wqhgc65ANqh58he3IzMKfieFO0mvoU3/Xkp2qqWf4v7kY
- Vjaw==
+ bh=0chn/PFHrz+xSOI0jlEUFPBGrfliVmmZpEFFKJ3P4VU=;
+ b=WDqcsAy+Ryi3y8F8A/VXP+hj66yqJoMUvMie2dA8ZXjbMEu8H5oYezHXbhDdlZ/kIU
+ 6qnuejBDFhjeH1haxM+UjHQhw56pYARYTLOqG390qOW5xJOE6Bp0Vc57MxEn9G5nmLE9
+ B150sLiRp7sXtokNctkpM49hXPb/T2wWdeWh988DVLnm07hH6q9ap/m8RAAmnwAbLoEJ
+ v6VrPPQcMJIoLO/H4x490LAhHPF15Ci6uWbWDK9V9dDzKTuqvKEGHKFdatJhJJFBd6ou
+ S2cvJxRUqMv2WA//akNlm9v5nSEGX+aPg2i2MJ9Xo/y7dskMm6nyLaA4w3DGg2zMX6i4
+ N7pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750439781; x=1751044581;
+ d=1e100.net; s=20230601; t=1750439786; x=1751044586;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OeMttFNHwCeQPAcqGb56M6LDjrMo8+04+qvCxL+KWeo=;
- b=n3uEQhngwdfhRYe4wELkBkdFI/b6Mcqe9PdLk4PEnGwkNyLleAEYrglgPnwCTaZBlU
- B5iiC84i7XBKnfE2mJiRGlVVs75NAoC38XrsfeNMNE511q4gBLqQwQOatow8WO/egz9A
- qQCH2JUM8GJc0qbC+6vHEJgYYyTYohs4YjPt1jJZaf9QQAPaexY4HGSG+KJgKtScjrCW
- W2isD6fg8tOK3qUMHxbPKB6RG15ITUjvgR/QproiE4pFznYSzpJr2VsyUiVb8zEdjnRA
- ED06X6hdEBKcC23kMyKDfs19oJmjMacpFR6jOKGdiEHF9yCy4yh3GOlo1XQG/hbZhBeU
- NjoQ==
-X-Gm-Message-State: AOJu0YySDgmmYJg7jBPDcce0JgZrUDryXOqRfmNQnN8p9nRqj8YZyIMT
- lsLBEiBdM5eXpAm5RAnhQPVBwnObifcP7aElXEwv3p5dp3/U7j8G004naWY4Px9WKRlDRDdOA3T
- 0cqT9qPk=
-X-Gm-Gg: ASbGncu/olLyOLCvs4gmDf8IM3aDMQN3imnBjf+AOtA0y8ewLz0g1WRydP3NW08p8OJ
- rudtcM/ePQKFGPVI9kxx1Vh9SRlorbCvLtlAHWvGESPazTHQrrOE3NXAnwgiyHC0PPbVwzsg02Q
- 15BXxCysXrHeYUoT1UaWCfMbihgUSwRDqHpTg/hd2T8j92CvIdIVVrRmtRIXTKLHppNVZUM9Cz6
- uwbBXa90gDKzGVNMqU4FEkSfU8YHzGGGbVP/tlY5X0t9VeYmZFxY2PfTc3P6G+NYjNxadnKhWJH
- XvInsIc7vSDn1CNWFLofaOPOHoIWzyZHRhQDiO7LZDhg7zbbeQbDQUVN/o/QqfzswRJBz5j8RBM
- aSXKvpdpJ9AetipwmlCJWieLQFWR6pju1mvCY
-X-Google-Smtp-Source: AGHT+IE0VY3QUekfpXz4Iu2ALicWylOPxF3lHwn4l21F8SFUEcOrWwqoY6tGlag/vGQB9igvOk4OWA==
-X-Received: by 2002:a05:600c:c103:b0:43c:fffc:786c with SMTP id
- 5b1f17b1804b1-45368787924mr13935475e9.19.1750439781406; 
- Fri, 20 Jun 2025 10:16:21 -0700 (PDT)
+ bh=0chn/PFHrz+xSOI0jlEUFPBGrfliVmmZpEFFKJ3P4VU=;
+ b=Kykt3pcfhcOd1i7bwF40LcYNxB7GVmVtU39D8tWopE0czCoXZ6Tp1+ZQkj+0CpqJrW
+ Ar6chJg1ZWscUJaNt9GlIS+nCP/dldVLt7yhdQzHHanfqrcXpCWTXIodVtOz7d43uFU4
+ MJCImA/8Q7s9SYqSus+sKv67s3+XD+tEjpVkONItrWP2r4WEl5HJRJDNIpDAYlkjlcKj
+ gUfeELhwpUVJbuaOK+WfosVQIeoy1K3dI2VCfazOQ0tDDBNxzCatuejypoS0qnBMceD5
+ Odi7hHAt1elpg8gcESqNZGC6fwU8RQJ3012fTtsl5FaLh9UscmNWNlTyZYwf7YbCfzCo
+ eY8A==
+X-Gm-Message-State: AOJu0YyugwkZIfNfvSRIC1zBO8vh7Qe9YSif8L30fS85YpvCOrcaBDzf
+ Z1nKOraABbUkbplT5ATXmxvR//vJHBG+vjaJC2utVWOfFJKbSaCffG8qtSrFiXOOHujA0++zaB7
+ UcsnlS0I=
+X-Gm-Gg: ASbGnctsJPbprz1wLpKCAGZw5EWzrLrTUDzJ9lZrgPpH8SqXLjawnRW10nmGNfXYmhW
+ 9XK3nASs16RRLGr7E7mTpJEYKFHlCxlPXebo5gzMh6pXDTfdBTJ87HiP7D27uVVH1269Rb6Esq6
+ rIkM2YIX+LLWyvQWcFKfs8AuvA51xgCvSbldrmF8K12EpHLiMcE+Jkynd+oP6H/c1rMt5LUt8SX
+ ujXfFjc0weJPpJ+WTLciWh61aqJMJhI9/BJxjsPAopRWwtkGbyxdmLe0IyQpGlGkaJUpQ4bNryh
+ 4hTCCcZNxyDV0YVDDS2HgvuaPgwjpaKJrdq/2te8uw4ecrLRPjD5Z4jJYK8jJUx7BsdjcAHRHMN
+ r203pUaMqaaO+09VgI3V5Ulu28MM7bOQKN8r2
+X-Google-Smtp-Source: AGHT+IHoF6VuoePln54CqTE5ntReLP47+/6Ex3M/6Zpjnotqe+GTfgBvci8gOJYIr5vLpeXrh3lXYA==
+X-Received: by 2002:a05:600c:4fc5:b0:453:2066:4a26 with SMTP id
+ 5b1f17b1804b1-453659ee9famr37781535e9.16.1750439786198; 
+ Fri, 20 Jun 2025 10:16:26 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4536470903asm31693965e9.40.2025.06.20.10.16.20
+ ffacd0b85a97d-3a6d117c66esm2501112f8f.47.2025.06.20.10.16.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:16:20 -0700 (PDT)
+ Fri, 20 Jun 2025 10:16:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -73,18 +73,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 32/48] accel/tcg: Convert to
+Subject: [RFC PATCH v2 33/48] accel/hvf: Convert to
  AccelOpsClass::cpu_thread_routine
-Date: Fri, 20 Jun 2025 19:13:25 +0200
-Message-ID: <20250620171342.92678-33-philmd@linaro.org>
+Date: Fri, 20 Jun 2025 19:13:26 +0200
+Message-ID: <20250620171342.92678-34-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620171342.92678-1-philmd@linaro.org>
 References: <20250620171342.92678-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,76 +112,45 @@ let the common accel_create_vcpu_thread() create the thread.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/tcg-accel-ops-mttcg.h |  3 +--
- accel/tcg/tcg-accel-ops-mttcg.c | 16 +---------------
- accel/tcg/tcg-accel-ops.c       |  3 ++-
- 3 files changed, 4 insertions(+), 18 deletions(-)
+ accel/hvf/hvf-accel-ops.c | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/accel/tcg/tcg-accel-ops-mttcg.h b/accel/tcg/tcg-accel-ops-mttcg.h
-index 8ffa7a9a9fe..8bf2452c886 100644
---- a/accel/tcg/tcg-accel-ops-mttcg.h
-+++ b/accel/tcg/tcg-accel-ops-mttcg.h
-@@ -13,7 +13,6 @@
- /* kick MTTCG vCPU thread */
- void mttcg_kick_vcpu_thread(CPUState *cpu);
- 
--/* start an mttcg vCPU thread */
--void mttcg_start_vcpu_thread(CPUState *cpu);
-+void *mttcg_cpu_thread_routine(void *arg);
- 
- #endif /* TCG_ACCEL_OPS_MTTCG_H */
-diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
-index 462be7596b9..96ce065eb59 100644
---- a/accel/tcg/tcg-accel-ops-mttcg.c
-+++ b/accel/tcg/tcg-accel-ops-mttcg.c
-@@ -61,7 +61,7 @@ static void mttcg_force_rcu(Notifier *notify, void *data)
-  * current CPUState for a given thread.
-  */
- 
--static void *mttcg_cpu_thread_fn(void *arg)
-+void *mttcg_cpu_thread_routine(void *arg)
- {
-     MttcgForceRcuNotifier force_rcu;
-     CPUState *cpu = arg;
-@@ -128,17 +128,3 @@ void mttcg_kick_vcpu_thread(CPUState *cpu)
- {
-     cpu_exit(cpu);
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index 78bf0ac6cba..6bf7fcd7331 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -471,22 +471,6 @@ static void *hvf_cpu_thread_fn(void *arg)
+     return NULL;
  }
--
--void mttcg_start_vcpu_thread(CPUState *cpu)
+ 
+-static void hvf_start_vcpu_thread(CPUState *cpu)
 -{
 -    char thread_name[VCPU_THREAD_NAME_SIZE];
 -
--    tcg_vcpu_thread_precreate(cpu);
+-    /*
+-     * HVF currently does not support TCG, and only runs in
+-     * unrestricted-guest mode.
+-     */
+-    assert(hvf_enabled());
 -
--    /* create a thread per vCPU with TCG (MTTCG) */
--    snprintf(thread_name, VCPU_THREAD_NAME_SIZE, "CPU %d/TCG",
+-    snprintf(thread_name, VCPU_THREAD_NAME_SIZE, "CPU %d/HVF",
 -             cpu->cpu_index);
--
--    qemu_thread_create(cpu->thread, thread_name, mttcg_cpu_thread_fn,
+-    qemu_thread_create(cpu->thread, thread_name, hvf_cpu_thread_fn,
 -                       cpu, QEMU_THREAD_JOINABLE);
 -}
-diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 861996649b7..4931e536beb 100644
---- a/accel/tcg/tcg-accel-ops.c
-+++ b/accel/tcg/tcg-accel-ops.c
-@@ -204,7 +204,7 @@ static void tcg_accel_ops_init(AccelClass *ac)
-     AccelOpsClass *ops = ac->ops;
+-
+ static int hvf_insert_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+ {
+     struct hvf_sw_breakpoint *bp;
+@@ -605,7 +589,7 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
  
-     if (qemu_tcg_mttcg_enabled()) {
--        ops->create_vcpu_thread = mttcg_start_vcpu_thread;
-+        ops->cpu_thread_routine = mttcg_cpu_thread_routine;
-         ops->kick_vcpu_thread = mttcg_kick_vcpu_thread;
-         ops->handle_interrupt = tcg_handle_interrupt;
-     } else {
-@@ -222,6 +222,7 @@ static void tcg_accel_ops_init(AccelClass *ac)
+     ops->cpu_target_realize = hvf_arch_cpu_realize;
  
-     ops->cpu_common_realize = tcg_exec_realizefn;
-     ops->cpu_common_unrealize = tcg_exec_unrealizefn;
-+    ops->thread_precreate = tcg_vcpu_thread_precreate;
-     ops->cpu_reset_hold = tcg_cpu_reset_hold;
-     ops->insert_breakpoint = tcg_insert_breakpoint;
-     ops->remove_breakpoint = tcg_remove_breakpoint;
+-    ops->create_vcpu_thread = hvf_start_vcpu_thread;
++    ops->cpu_thread_routine = hvf_cpu_thread_fn,
+     ops->kick_vcpu_thread = hvf_kick_vcpu_thread;
+ 
+     ops->synchronize_post_reset = hvf_cpu_synchronize_post_reset;
 -- 
 2.49.0
 
