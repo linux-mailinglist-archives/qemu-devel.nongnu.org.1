@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA78AE2518
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C06CAE25B0
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:29:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSk4Z-0000tO-AO; Fri, 20 Jun 2025 18:18:59 -0400
+	id 1uSk6O-0004Cn-H3; Fri, 20 Jun 2025 18:20:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfc0-00081d-Nc
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:12 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfc3-00081w-Km
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:15 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfby-0006eQ-Qc
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:12 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-451d3f72391so19974525e9.3
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:33:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfc2-0006em-3Q
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:15 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-450dd065828so15681535e9.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:33:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750440784; x=1751045584; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750440792; x=1751045592; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hN1JtRTCerNnjO9no3SYtbEkkfImhiND1eA7k0roPkM=;
- b=Egd+suXdfNAUAr1YhlKSr6q4JL85663lZ4gxrL4UsXeMSj4Gn86rBla5UM/VtdMx1u
- Lf4wAP1Ars2aNpIrhlH7pAhocBHg/fODi1ePXBlRN8VOCqBsviWMEoKxrCm21lRVRF5W
- W6eewnpHr7FU37nJXWZng08++acL1QZam7ptbbmzW76p4L1Q6uP45bU5Uf36ZL0x2lMS
- t0oEgMneGaZ1d7L7EDOPT87OYia9miWYMZFSQmremn64QWEBuMDp/c+PGUYbP88TdFw7
- OWmrdRq078rQSHGh2GXBaDs4+gBeje4AsZK8gnBdUTX7fMCYsVtsgnkGFtwWcxZ4/f2Y
- uGUg==
+ bh=K5426YMMlpheSh4FU6UOd+lkxpX6kErFBSOpvyVvgmM=;
+ b=V9S7yQ+rwSb+oAXIFfhi6tFQj4LvX3n86xIVadkaYzvz58NwhDUi02m3z4AA8og7gR
+ bsYO4OnyC/pl5jwo6XK+dyoE7jmKFNPw3dl8mg3ROsjECD+7tukOmY4r/ZTKTeOupV9W
+ BfwxUcJ4bfzmua3spFB/2htaP00Kkvbeizx/xF946vTtGAQpYuT45EsRo6hfAZNjV0QO
+ 5LV6TwswzZOy/jx0X2u3eMwpwWoXa6yoXxzsiYghpNWihYkIIOJAb+5pJ//t7RgmJWeE
+ EaLavCazbVBa0TiRJp2XLFC1XWjhIV8vVZ/10u1CYmZly4s8KZHcMoBj+Dgbvi9/DISt
+ vz3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750440784; x=1751045584;
+ d=1e100.net; s=20230601; t=1750440792; x=1751045592;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hN1JtRTCerNnjO9no3SYtbEkkfImhiND1eA7k0roPkM=;
- b=AERCC/1fVxQEYaPQInbm8OUeFXyVMXf2wP2yKOpaDA7LeKG/i9cilUXgYUP3jp/Lmf
- IsXC4dkHEBN9Pc63YQSMPd0v7vg00YeWLhZDbwCneey3sUAd9JgZiRsY7+l4O4uF65FB
- glPdlsbB1AomX6eaYlIIjno5fKHT5vgIxnynXNZdhpJDjMfHks9cmZOERBqT0oqsoI0l
- iJchAQ6uDwouX2fUgQf6gcKNx3OQvQ2MCiGbm0Cv4DraLq7qXaVP7HhaAu7ztFoG9g4G
- zpRlpDNR2ov2aVQ3ul4Wlw4dmvEuMIE56/Vqe2wLFYGwd73kaJefOeGLCpAztz4cpMll
- Enig==
-X-Gm-Message-State: AOJu0YzkBAxFdqKIy0aqmFmRJzNlt5X0U/Rp9bZ60urTfID6uaiJOUyv
- /lOE+wukBJrdi7+QdBHNEiFta+M6wtd4ahFl6XGkWAimwlrHeiBOY1CgquW+O4SMBGCRi9NNTCr
- vettp7meJgQ==
-X-Gm-Gg: ASbGncuwK/LQVKDZBM70ANsYkBAFEJ033LGmZdLVNh5JBnXk5yjFXTCoK60B7O33StA
- TbIIdpmsyWzxFVicgnrDhwif1rsh82D+jI+PTqMHTp68Twk7reVaM9yiO1SG97qsfzx2sUzj6HX
- bJ9zX9iPI1bk/ljRuuR3eqGTSNL8Wvvys0fTvQufkkNr3s9WUZ3+Esid2RyuMGtXi/iAlBPM1he
- 2AgThteJtEBVgb9+IZYlC/OcefqPD6pQjkcw4reN4jiRpoBg1XranLp6xB1gy/KhzLCC0sfZLes
- evJJ9Tvwor+ZNfEjN7lMw1TLKBZSMKWjA3sWm2WtBOpvCRxegyaWztXQP3TDCkac698CTCH9G6u
- 3CdW8ZMycmVk7H3SBDQT8vXGuNih1YEeb1pmrTmfkmMWNJXW/E1J1w/I9
-X-Google-Smtp-Source: AGHT+IE3atK2pRVb35gZUr7SsRFIJ25e2SxVnzGga6woXTZiKjW++Wo/G70UtF8boQXlSlWUP/kM0g==
-X-Received: by 2002:a05:600c:458b:b0:43c:ea36:9840 with SMTP id
- 5b1f17b1804b1-453659ef74bmr36392285e9.22.1750440784183; 
- Fri, 20 Jun 2025 10:33:04 -0700 (PDT)
+ bh=K5426YMMlpheSh4FU6UOd+lkxpX6kErFBSOpvyVvgmM=;
+ b=gkVbMGM5F66tXbzLByVhspq2foUVlBXoYmD0teQcnTAHU2Pq1vMhSf6CCLFoO5NylD
+ J+XQrK3DTSbHeFEvgMRch1BJjpY3DRFniimqBcR/t6QAjKiNNA+Ocdb4LuVU/2apn9jx
+ ZGR7dwagA/GV2cRa7DcJDDwGnY8yjyHj1+M1Zyo18iDyFX6AbwIdsvJ3ODzDRN04iu90
+ tDnLk1893mK2PGdKB89iDmKdOSZjkBmNgDq/qPmdJh5aqrgvmaWvdUMO0mr/drXyxoW9
+ dp0jdpgbDFMjbb4YaMTfH/QrkH/KKWxseum+Os6Eko/W9kIV+D/gTxjxVIhvWovtpOk5
+ 8auw==
+X-Gm-Message-State: AOJu0Yz+eed76EF+2+VFV131KqQTlHEbQ9PScFvdP9b42KLyzB2xjvUa
+ SRqTdOH7UyzMW6b955qIoBCgn1v9OwTRb1qAY8jrfWXJJb6AVZNabNnzlxagO+uVnvjJI/8FZPY
+ Ig8rMvMAj5Q==
+X-Gm-Gg: ASbGnctu8e/MpJ3tfwslnOmS5GZfKHLi93yYmOD4u1+rEb3iTIEjxw6bya6kLV39S4n
+ WH0f1gUAuNUrhanNCynxD7OH+Ut962TKADetfg03zqH3e38q9dk7Wuzk9HNwR7hJ3WLt+CsJzv3
+ 7Q5bhA0z4JRqctwhA7vebFi+/KXAlwGZFUowUFaSPgUUvTq0OV0Ki0wUIGZ5Ml6jjcrfCAFGNfQ
+ 3nJB2IhKi44vcA+Y7aMhyWACjRRHFdH6pLezAXnkqtCOfs8Ky/FJumPFOhSm2NZM06HsnmchjXR
+ D0FunYFq96lIS/yxXtUF5rf+dsnodo+PUrBSv0FSy8qVRimpKQwST4APMUN9uWEDCDmmPpNZsvH
+ 9B0uOhOrCz4rioeACU72BSG2gZxheGonILeZgND6daGOAf/HnVTsM9DU0
+X-Google-Smtp-Source: AGHT+IHKan2VYxrVqiAyn2BBoZo+cirWMGMpaQj4jmSKGCvZQW6mIB2lxw0K+RhfxntU9tewZeIkdQ==
+X-Received: by 2002:a5d:64cd:0:b0:3a4:f90c:31e3 with SMTP id
+ ffacd0b85a97d-3a6d12d7abdmr3236742f8f.31.1750440791974; 
+ Fri, 20 Jun 2025 10:33:11 -0700 (PDT)
 Received: from localhost.localdomain
  (101.red-95-127-63.dynamicip.rima-tde.net. [95.127.63.101])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4535ef6edbesm63351955e9.20.2025.06.20.10.33.01
+ ffacd0b85a97d-3a6d0f10502sm2671566f8f.18.2025.06.20.10.33.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:33:03 -0700 (PDT)
+ Fri, 20 Jun 2025 10:33:11 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>,
@@ -75,18 +75,17 @@ Cc: Alexander Graf <agraf@csgraf.de>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH RESEND 36/42] target/arm: Have ERET switch to hw accel for
- EL0/EL1
-Date: Fri, 20 Jun 2025 19:27:44 +0200
-Message-ID: <20250620172751.94231-37-philmd@linaro.org>
+Subject: [RFC PATCH RESEND 37/42] accel/hvf: Emulate HVC at EL2
+Date: Fri, 20 Jun 2025 19:27:45 +0200
+Message-ID: <20250620172751.94231-38-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620172751.94231-1-philmd@linaro.org>
 References: <20250620172751.94231-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,41 +108,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When hardware accelerator available, use it to
-directly run EL0 and EL1.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/tcg/helper-a64.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ target/arm/hvf/hvf.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 4f618ae390e..5962cff4e7a 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -29,6 +29,7 @@
- #include "internals.h"
- #include "qemu/crc32c.h"
- #include "exec/cpu-common.h"
-+#include "system/hw_accel.h"
- #include "accel/tcg/cpu-ldst.h"
- #include "accel/tcg/helper-retaddr.h"
- #include "accel/tcg/probe.h"
-@@ -761,6 +762,14 @@ void HELPER(exception_return)(CPUARMState *env, uint64_t new_pc)
-     arm_call_el_change_hook(cpu);
-     bql_unlock();
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 3907ea8791e..a4f823f834d 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -17,6 +17,7 @@
+ #include "system/hvf.h"
+ #include "system/hvf_int.h"
+ #include "system/hw_accel.h"
++#include "system/tcg.h"
+ #include "hvf_arm.h"
+ #include "cpregs.h"
  
-+    if (new_el < 2 && hwaccel_enabled()) {
-+        CPUState *cs = env_cpu(env);
-+
-+        cs->exception_index = EXCP_HWACCEL;
-+        cs->exit_request = 1;
-+        cpu_loop_exit(cs);
-+        /* never returns */
-+    }
-     return;
+@@ -1117,6 +1118,8 @@ static void hvf_raise_exception(CPUState *cpu, uint32_t excp,
+     env->exception.syndrome = syndrome;
  
- illegal_return:
+     arm_cpu_do_interrupt(cpu);
++    cpu->interrupt_request &= ~CPU_INTERRUPT_EXITTB;
++    cpu->exception_index = -1;
+ }
+ 
+ static void hvf_psci_cpu_off(ARMCPU *arm_cpu)
+@@ -2090,6 +2093,9 @@ int hvf_vcpu_exec(CPUState *cpu)
+                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
+                 env->xregs[0] = -1;
+             }
++        } else if (tcg_enabled()) {
++            /* FIXME check we are called from EL1 (so EL0 -> UDEF) ? */
++            hvf_raise_exception(cpu, EXCP_HVC, syn_aa64_hvc(0), 2);
+         } else {
+             trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
+             hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized(), 1);
 -- 
 2.49.0
 
