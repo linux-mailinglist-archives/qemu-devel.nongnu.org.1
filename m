@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E946DAE2591
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC2EAE25BA
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:30:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSk4l-0001EZ-Qv; Fri, 20 Jun 2025 18:19:12 -0400
+	id 1uSk5u-0003RD-IA; Fri, 20 Jun 2025 18:20:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfY0-00078T-K7
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:29:05 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfY9-000799-V4
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:29:14 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfXx-0005vb-M2
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:29:03 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3a52874d593so2035360f8f.0
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:29:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfY5-0005vs-FH
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:29:11 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-453634d8609so10078845e9.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:29:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750440539; x=1751045339; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750440547; x=1751045347; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bv/X12n6Kj9j99MOv3JQyKa9x/TcC6fyD7QWfzQDFrk=;
- b=WNae4O7FKYrqcIxa0Z/Yah3Yyih2fa0rvfYZ7n7qjAqtA0CEUmqyEMR2dhMVXfYWK8
- pXdt39rnY67FqgYLqe7pJZQs+AMQa34k8QoTJtH2NwYnLdsF/RzxY9CppeECL05tOeKx
- LN1whwmG2SNjBAAFBUsl0oKXCjvDFoEwG9yUwOE4eWS/V5xtJ8WkUAOjah7kFViLHTYS
- GcbzK87KrwmMY9UoyrJETuRdNkSi8tIeA7RJzV+fJuM9n7QyLkJwVwEen6ll3J0T2YKu
- EhCF/jX4UkAeM9b0bIlzjvO6/3NuGxWvxmCcTHGYJ0gz/5JSL4pbxAEqMh/d6d5EXC02
- 8qXg==
+ bh=Wzg/smp28gVGoOk/QXqAN9Gw07kWBQjfeMgpREuKWCc=;
+ b=FoveTgaqwtjaYbU/b1DB79FOzObtt9D1kWHtn93zASNdspxjDJUW6SrcPTvXGcrgSt
+ UZPkaLx9z5BTHW71+XIfnbIwyYIYObvUGzI7cmEvNoh4d4wOW5CzT9tF5600LxKZYlqw
+ 3GQxwofRyrHMFl+hDIlcSYBbBX9z7099V9ylsxDoiNXA0sM1lhAQkStuQib/0Is3LuiD
+ avuGDWmrcNgxCqPxLMRz3dsEmdmcI8SL6b3Zw6tZRWDcy1N/foFFOkmvzHDbAh5CGFrQ
+ JVJ3gBpxK1ldeCqDhLVEonQKcqxBHxq7yvFOoGclLYxbjvmow0xpFy2vrXhE92/ZhGlW
+ DZ5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750440539; x=1751045339;
+ d=1e100.net; s=20230601; t=1750440547; x=1751045347;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bv/X12n6Kj9j99MOv3JQyKa9x/TcC6fyD7QWfzQDFrk=;
- b=iyo/RNnJLU7kLXgrdqW2IPc/7sx2r3cYeaxuC9lkmEupIsTGuKrnbPOqsMnpmGSUt0
- fCCshwPmoEKs3Qgre//vcF6arTwqnSZyGGqYNq73+eMhSbjgrPyX7uQq4sDfKExiYEqk
- b2awiQzXuKIm33GIvjjjUAN0FBV1467WITM4712fpvoq+N2aEcq3PNGdyRwWJ5CG2t40
- dJR9c3gfMrxWdlIlm4SrXJGNLBP0IWLObdbc+jD8XsTdlwscOrxyIyMzJQregx73EJRm
- IaR/tazE64z17atSzGUg191i2LAtKDeXk2bDSb0y3tybxMqV/NOB/f8LZGSHgQzWksJ8
- mIrg==
-X-Gm-Message-State: AOJu0YyUX3Droasbsg4lwIutEB4CI2YmxkDHFIENBXPJvLXi0+sfw3kG
- OiECp/Kz6aif4KBKl7BF2NgZY7whUsb/kDYjeCo6lHWTcz6p1eCDo1c/Dnn1167SsGYBw5rbIMG
- GVfcDHrDkGA==
-X-Gm-Gg: ASbGncucMq+b4MfpWCY1IUrlsAgtAPfXOY9pOQRwSJj+Ud1vGjSs0prEdDuRhCmD37L
- H06PpqPKdOeQNB/netuS5Pbgy++VlPVQY1b7dLen5HmBKyb+08FPBVMrK6DTQtj5BTMS8mqoDpW
- T16jAC8uwQiQvWnHp4dr0FagWezNjZs8qzt7HDWQTEC6ZAUXGFQqNUPmp5+4/QlgL4eDvsrluPE
- 4o5M9c8lvOXi17RcvZdEwzWDQX/3i2fpflVo/tPPTfdhM+8YpBxm1m202FGD7qLJn4ZpPJMvVqy
- vf4HqVI470KDjeFty0m2NSBLLZ/c3sLYTUp69n8ngUjEI2eOnY4H/YCgTMYQ1V4tJnJbSi1IqTW
- UtdsC5CQ3tvoigoWOXXhcIdF3AhZ3X9j4LQIPKwq+LfU9JpbosT64ugMm
-X-Google-Smtp-Source: AGHT+IGrwYC0HGu7vvlCgYbe/gdP+oTZOo53e4uBjGWF+m70Mz78AdWH8TzIApTiDNmJ411hb9fzxQ==
-X-Received: by 2002:a05:6000:4109:b0:3a4:f892:de7f with SMTP id
- ffacd0b85a97d-3a6d13071e8mr3101777f8f.36.1750440539502; 
- Fri, 20 Jun 2025 10:28:59 -0700 (PDT)
+ bh=Wzg/smp28gVGoOk/QXqAN9Gw07kWBQjfeMgpREuKWCc=;
+ b=GzFmV9IaqP2c7Z1DuEYtlkPcM3olzHalXt/+EWJfx6hMbO2/ZpHQkYyWjv7MjcGBY4
+ OAp+/TUqVesodnrTYcaLraMLYgFFrmQ6gcQ4bWy39+ELZgF98Yz1P84+dq9bq4S8aF93
+ T42MkFszHzpi9qIVBVOMxvTEmaw5uqHkonqYRVLd3tUnO6xWAKIyjPivdOedQjO4dGwa
+ nuIYuRqdEf/NaQFS6Lkx/WOF9q1hHMAE+RluyIULysy0uyxphN2bR1hUK+vf4Udh0K1i
+ az9M4HxYid1KqU0t9YT0supF7ohP1bDbUCkeLj6lpbXa5fO/O4MEG2zGWOxTDSVoZSqk
+ aNKQ==
+X-Gm-Message-State: AOJu0YxcKa4YSV/gkoucw79Ue0fBM+aJ86chHaMRJkmxmaLv2NcNzWaD
+ IxzeTLJ76L0IATTS38Vewah0zfP0XFQPKPMnIZt8k8WSkovL33AaVSauyMJKOufi0pTJ4Zkbe4U
+ 2VXT6gzoFag==
+X-Gm-Gg: ASbGnctDWINNaU38c8xAIn1G3/2K5iqd8nLqRj5gcd2qFGtWUFnuB5QAqwD+j6kJv7F
+ s8+Rz5Z3hz6OiQT/v0jE2BWK/8mcGK8npie4eJ8BxsebTx4ig4fHeETSyCkR7ab44I6wikturfV
+ XQ4qfd47Elbaznqc1e9OZL9dEW+GZ76FYBLWxy7slRz3Iw49sZQtbDOpeExOYxgLc8VTAXLFuGM
+ ZQhsAmEPOo3BLshBzZ1Fy5MzxJeLU+gQx2hdftrCaTBgKAigsyuUypN0VjQPVuUoSe3vwM1qAKC
+ k+L9/lZwkM6Ac7KPLUoBqEexw6EX/sqA59SEkbaloR/UGfUQtU2fpPx2emnGWnjJBXdNF0s5Hak
+ kA+i6RbCt1+vN348MnULyUfGlcYkXuJ9KfiiFLFWKAuFK9RFzCa8ErUqnuGWlLJDRHho=
+X-Google-Smtp-Source: AGHT+IH3tEAqP1uqhaV/gRrHbPnq0ZhYpelYFjMFNOTFXNVM1PbNzDVPrRsjrDpStU4LdOQfahT0jQ==
+X-Received: by 2002:a5d:584c:0:b0:3a4:e6bb:2d32 with SMTP id
+ ffacd0b85a97d-3a6d12a2416mr3169478f8f.22.1750440547318; 
+ Fri, 20 Jun 2025 10:29:07 -0700 (PDT)
 Received: from localhost.localdomain
  (101.red-95-127-63.dynamicip.rima-tde.net. [95.127.63.101])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d117c19fsm2591121f8f.48.2025.06.20.10.28.56
+ ffacd0b85a97d-3a6d117c6a7sm2649591f8f.51.2025.06.20.10.29.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:28:59 -0700 (PDT)
+ Fri, 20 Jun 2025 10:29:06 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>,
@@ -75,18 +75,17 @@ Cc: Alexander Graf <agraf@csgraf.de>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH RESEND 08/42] accel/split: Implement
- gdbstub_supported_sstep_flags()
-Date: Fri, 20 Jun 2025 19:27:16 +0200
-Message-ID: <20250620172751.94231-9-philmd@linaro.org>
+Subject: [RFC PATCH RESEND 09/42] accel/split: Add cpu_thread_routine() stub
+Date: Fri, 20 Jun 2025 19:27:17 +0200
+Message-ID: <20250620172751.94231-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620172751.94231-1-philmd@linaro.org>
 References: <20250620172751.94231-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,34 +110,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/split/split-all.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ accel/split/split-accel-ops.c | 70 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 69 insertions(+), 1 deletion(-)
 
-diff --git a/accel/split/split-all.c b/accel/split/split-all.c
-index cb910300931..413954af96c 100644
---- a/accel/split/split-all.c
-+++ b/accel/split/split-all.c
-@@ -77,7 +77,19 @@ static bool split_supports_guest_debug(AccelState *as)
+diff --git a/accel/split/split-accel-ops.c b/accel/split/split-accel-ops.c
+index e5c1d51d426..294ea79420e 100644
+--- a/accel/split/split-accel-ops.c
++++ b/accel/split/split-accel-ops.c
+@@ -7,11 +7,79 @@
+  */
  
- static int split_gdbstub_supported_sstep_flags(AccelState *as)
+ #include "qemu/osdep.h"
++#include "qemu/main-loop.h"
++#include "qemu/guest-random.h"
++#include "exec/cpu-common.h"
+ #include "system/accel-ops.h"
++#include "system/cpus.h"
+ 
+ static void *split_cpu_thread_routine(void *arg)
  {
 -    g_assert_not_reached();
-+    SplitAccelState *sas = SPLIT_ACCEL(as);
-+    AccelClass *hwc = ACCEL_GET_CLASS(sas->hw);
-+    AccelClass *swc = ACCEL_GET_CLASS(sas->sw);
-+    int flags = -1;
++    CPUState *cpu = arg;
++    int r;
 +
-+    if (hwc->gdbstub_supported_sstep_flags) {
-+        flags &= hwc->gdbstub_supported_sstep_flags(sas->hw);
-+    }
-+    if (swc->gdbstub_supported_sstep_flags) {
-+        flags &= swc->gdbstub_supported_sstep_flags(sas->sw);
-+    }
++    /* TODO: check accel allowed */
 +
-+    return flags;
++    rcu_register_thread();
++
++    bql_lock();
++    qemu_thread_get_self(cpu->thread);
++
++    cpu->thread_id = qemu_get_thread_id();
++    current_cpu = cpu;
++
++    /* TODO: init_vcpu_thread() */
++    /* TODO: allocate AccelCPUState */
++
++    /* signal CPU creation */
++    cpu_thread_signal_created(cpu);
++    qemu_guest_random_seed_thread_part2(cpu->random_seed);
++
++    /* process any pending work */
++    cpu->exit_request = 1;
++
++    do {
++        r = 0;
++
++        if (cpu_can_run(cpu)) {
++            r = 0; /* TODO: exec_vcpu_thread() */
++            switch (r) {
++            case 0:
++                break;
++            case EXCP_INTERRUPT:
++                break;
++            case EXCP_YIELD:
++                break;
++            case EXCP_DEBUG:
++                cpu_handle_guest_debug(cpu);
++                break;
++            case EXCP_HALTED:
++                /*
++                 * Usually cpu->halted is set, but may have already been
++                 * reset by another thread by the time we arrive here.
++                 */
++                break;
++            case EXCP_ATOMIC:
++                bql_unlock();
++                cpu_exec_step_atomic(cpu);
++                bql_lock();
++                break;
++            default:
++                /* Ignore everything else? */
++                break;
++            }
++        }
++        qemu_wait_io_event(cpu);
++    } while (!cpu->unplug || cpu_can_run(cpu));
++
++    /* TODO: destroy_vcpu_thread() */
++
++    cpu_thread_signal_destroyed(cpu);
++    bql_unlock();
++
++    rcu_unregister_thread();
++
++    return NULL;
  }
  
- static void split_get_stats(AccelState *as, GString *buf)
+ static void split_ops_init(AccelClass *ac)
 -- 
 2.49.0
 
