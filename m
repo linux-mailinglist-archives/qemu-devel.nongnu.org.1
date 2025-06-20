@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0265AE2550
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C12ABAE2530
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:22:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSk5N-0002Wc-2O; Fri, 20 Jun 2025 18:19:50 -0400
+	id 1uSk6b-00056d-IP; Fri, 20 Jun 2025 18:21:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcQ-00083x-Vj
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:39 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcZ-00084Y-3z
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:47 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcP-0006fr-Hl
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:38 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3a4f71831abso1792449f8f.3
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:33:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfcX-0006gR-Ga
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:33:46 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-450dd065828so15684865e9.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:33:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750440816; x=1751045616; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750440824; x=1751045624; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rzubzSShF5xtg70wgMa4NT7f7l8/QI7hYdnu6JnrJk0=;
- b=ITMBhULA7DRrjHE7ds3rlohyjmyf1u/CFVXZAnB42Eevx/VLcNg4FWcpmVwMr6Eit4
- PBRsJUVI2NwA5JeLRNDFrPHqyqdrBCGH02kYfR2v6JjID8Qa9Zyivp8bF2jbONwlU2Sy
- aQH5jt1fZj0rBk8ssxvOkmGQ5HokhQauum3G4SxqyxZ+xq1Te15sq8QQlTUBWC7+K5hc
- hIWIA1PxbmlX/U0r+dvKR9rulWQ4pH2mesXEDaF03mPtB0Mtbjs7vm69h5laT2zYudAU
- DhbJRI47UCtO0Cl7i81pMyCGwEKbT3mLEAWCkQEjZlbbB9tts9BaUr2XYI84gyvx9Qtv
- XUgA==
+ bh=QfWWhjsYTEwf+OXuiGr5P2a/yneNzZ+GBAXkKsbcgoc=;
+ b=QVR8nF8fVOb9cB3pF3esZwoCMAQFseXzsKWNk8QQdXbIhph5gsiHMTXvi4FTDYlujj
+ aj/AFV+jwL6Ouf60MFERtHdsuR3OoELgGE7htSjxBApybwytZ7fQvxO/4l3yxSRnr/Uc
+ ch/40L7oAEN+19vcTI4+v8fWberayKsmb61G6OEpOv1jvpFZKvlmESvM7JMDz/VGDBHc
+ bcp5bYnrPf95Kai8lQaCH7dRoN/7/BkVPvWzL+BMdhfxPdo8zXtFu21X3liFRb6Ygc+6
+ zxJy+28Ll+Jdng4m5CIUXEGOePcPyhmXDuYty1n0W3hLch/SMUmBmCtbzWQT3MOOwrzp
+ 44yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750440816; x=1751045616;
+ d=1e100.net; s=20230601; t=1750440824; x=1751045624;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rzubzSShF5xtg70wgMa4NT7f7l8/QI7hYdnu6JnrJk0=;
- b=gqKtiXGDMmGfr6oOLVxs1UNwXuMOh8TnMubwdOxPD9yB9KZQ3W79mAt2UPZi4cWjZY
- M4f2gKGHIlNdBzJZ5vrpqiqtzkjw7Dtb3lbp6e3va860gANpFPzAKES6477yC1lM2ZPE
- 2aW8X8/YTYbwFG9Gy5bv6xyD4H0M7NclVWDu3roVWgkL1SZa8GRXZzH+xlfbmnBZ3Ggn
- uXTZJpnDWfaif71K073Hu1mqCLxO17JLm5J5ttqF7FpwSP2/SgdiIbGhiez+nb9Nc42o
- ycaDb3Njp6vPbaOxS1CNobs9w10gKXSe3Rk88wI2hix5QO089f7CpdXNthwG44gMXUwx
- 22IA==
-X-Gm-Message-State: AOJu0YzC0Uxxoe6snQ9cQuK684zVKM29qWyc25AEr8qe15z7bpP6Hme+
- /qW/TdccaaEYYIRgfI1WWRk+KUL6xIShtATnwP7KbIAoaBwq2VeY2f7BVn8OFZNoUvW8O3KLQ4S
- aMBd/dueHDw==
-X-Gm-Gg: ASbGncvQ158X6WV0fPsy96/ebfeQmgcOPziFKrqg3VJTRMxTuqVZdkEJR/q/z1bvaQF
- WZXgFEpAE/q/1zz8LEorYH84jfOo1ZQbCzjLXT1m+k2PwrJFUQGm4K0zB/4VeG70uZZ9D6OgWei
- S6jSzuICArZycgrbhjzrFEYYhO4JaPgHxVl09UtlCCQxSKh5dkFj9tPdQb5UzH8G0ByeDXID5Jb
- WuK9IuRMnNSQoOZm52SjJ9NkxSYLsUs8Bps2dubRUIz7UYr/jHKxwvcB1QbGmDyLbScPGPb6/mv
- 2P2ll2PcMD378qIur5xwO+vHwOcl/5Iv+mVspJfufYwRgxf19kprKGf9x46hlY0NnWtrCglHZp8
- eLtFuIv/jk23g6U6hYDYipCeVMGF1cdrjmtCvnAVm3+PHaYsN3ASK29Cg
-X-Google-Smtp-Source: AGHT+IG9uMMWzwFNWL4MjBihHUYZdtsgkR0rBJdgrmnLEj1gw0EQOSXrS8XU7cW1o4FCba7G5JP70w==
-X-Received: by 2002:a05:6000:657:b0:3a5:2599:4178 with SMTP id
- ffacd0b85a97d-3a6d12de543mr2952627f8f.19.1750440815914; 
- Fri, 20 Jun 2025 10:33:35 -0700 (PDT)
+ bh=QfWWhjsYTEwf+OXuiGr5P2a/yneNzZ+GBAXkKsbcgoc=;
+ b=Om2uCiJAwIemS2ibn0phu4XzG4pheNQCVGHrxaqGjfvjOBkCYPf/dw+k77doBdHNxg
+ 0n7hHzsMjCvTDCj1MW2uiyiCSw1PS4un7MM47VsexgFx/qzuwqLXbCLk6A9faCdJ/5TO
+ kaDFylih349X5O88MAa6m85ayONV26m4O8GL0APKMt61vRDI+E0TRfcIYysTSy8zCWde
+ q8HVRtHjuFu1ZMlZxqahPDqWqPHwqe2MQMrnbg5rZCeYIUvnJscuRAcs1h2OCQlh5kgG
+ HDc/9cOoElqD59LQZJO8sli/tOaVr31OUBzY3MyT8OowJdalM1U4q63dEYEctaC8xA9m
+ gKyg==
+X-Gm-Message-State: AOJu0YwO72y85dzakP0l8dlGTjlTrQ2NyUnG/1Iw89m5O76cddhmNTaV
+ CbVfrUdAf1ylFq+fDWbjA+mrWBCPdrkhCo1wh5XcqVCz/vxRFb7cIa68wHt/6cqhkfZtoaVq3Fs
+ K7Q3GVfwD9A==
+X-Gm-Gg: ASbGncvOvj/pwP07a/RyLmSUTU+5hoBKscpsPAGkSVTmIqtyU6sxRUAmXMuIxWZBuVo
+ dTXoxxo5P3GPLyxf0HfqZSkeGkMSDl2Rw7ACdDfG5IxXzPfCMx42DTE/B4oAt9wcMbwQcaAJWmP
+ 7/0pI5KGKgG/uHwNoNMyBb1+6L5t6xjKxe/UOrmgaAR9Aq+W6aqjmOtSPNL7iQoMip4Y17qTrNz
+ H0XnPReE6l1tFXDa6RPMPQ9efq0N27YrPmZ5ddSQ3n/+N/xCWhBnYoukTiqwH/k/xWp7bhIwkOA
+ YzTl8KvgGogvQvwnMs74+B+iJM22XECXTiPNAMmaQYdrMYc+7Yok+FmoOob2SIrry1U57O5HrWq
+ B4xcbBjr9C4MhsAeG20VhxRE4po7uulwALAiHuXuLFlcZucDIHCWLBJ/B
+X-Google-Smtp-Source: AGHT+IEkO1a0JCBcpYhzk2a8JAzVXYRTbhQvPhm1eDqHChIQG1lffcZ8QqSTbQsNUxTdNEbN9wM+aw==
+X-Received: by 2002:a05:6000:4203:b0:3a5:7991:ff6 with SMTP id
+ ffacd0b85a97d-3a6d11926bemr2996590f8f.1.1750440823802; 
+ Fri, 20 Jun 2025 10:33:43 -0700 (PDT)
 Received: from localhost.localdomain
  (101.red-95-127-63.dynamicip.rima-tde.net. [95.127.63.101])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45364708297sm32138725e9.35.2025.06.20.10.33.33
+ ffacd0b85a97d-3a6d117c068sm2672385f8f.54.2025.06.20.10.33.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:33:35 -0700 (PDT)
+ Fri, 20 Jun 2025 10:33:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>,
@@ -75,18 +75,18 @@ Cc: Alexander Graf <agraf@csgraf.de>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH RESEND 40/42] accel/split: Call
- TCGCPUOps::rebuild_tb_hflags()
-Date: Fri, 20 Jun 2025 19:27:48 +0200
-Message-ID: <20250620172751.94231-41-philmd@linaro.org>
+Subject: [RFC PATCH RESEND 41/42] tests/functional: Add split_available()
+ helper
+Date: Fri, 20 Jun 2025 19:27:49 +0200
+Message-ID: <20250620172751.94231-42-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620172751.94231-1-philmd@linaro.org>
 References: <20250620172751.94231-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,35 +109,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Call TCG rebuild_tb_hflags() when transitioning from
-hardware accelerator to TCG.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/split/split-accel-ops.c | 3 +++
- 1 file changed, 3 insertions(+)
+ python/qemu/utils/__init__.py          |  3 ++-
+ python/qemu/utils/accel.py             | 10 ++++++++++
+ tests/functional/qemu_test/testcase.py |  4 +++-
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/accel/split/split-accel-ops.c b/accel/split/split-accel-ops.c
-index 615faf1d96b..4b058034252 100644
---- a/accel/split/split-accel-ops.c
-+++ b/accel/split/split-accel-ops.c
-@@ -40,6 +40,8 @@ static void *split_cpu_thread_routine(void *arg)
-     assert(swc->allowed);
-     assert(hwc->allowed);
+diff --git a/python/qemu/utils/__init__.py b/python/qemu/utils/__init__.py
+index d2fe5db223c..74218b9f2c6 100644
+--- a/python/qemu/utils/__init__.py
++++ b/python/qemu/utils/__init__.py
+@@ -23,7 +23,8 @@
+ from typing import Optional
  
-+    assert(swops->rebuild_tcg_tb_flags);
+ # pylint: disable=import-error
+-from .accel import hvf_available, kvm_available, list_accel, tcg_available
++from .accel import hvf_available, kvm_available, list_accel, tcg_available, \
++                   split_available
+ 
+ 
+ __all__ = (
+diff --git a/python/qemu/utils/accel.py b/python/qemu/utils/accel.py
+index 376d1e30005..0f58998b2f7 100644
+--- a/python/qemu/utils/accel.py
++++ b/python/qemu/utils/accel.py
+@@ -90,3 +90,13 @@ def hvf_available(qemu_bin: str) -> bool:
+     @param qemu_bin (str): path to the QEMU binary
+     """
+     return 'hvf' in list_accel(qemu_bin)
 +
-     rcu_register_thread();
-     sw_force_rcu = mttcg_vcpu_register(cpu);
++def split_available(qemu_bin: str) -> bool:
++    """
++    Check if split accelerator is available.
++
++    @param qemu_bin (str): path to the QEMU binary
++    """
++    return 'split' in list_accel(qemu_bin) \
++           and tcg_available(qemu_bin) \
++           and hvf_available(qemu_bin)
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 2082c6fce43..b6a534a29f0 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -23,7 +23,8 @@
+ import uuid
  
-@@ -69,6 +71,7 @@ static void *split_cpu_thread_routine(void *arg)
-                 r = hwops->exec_vcpu_thread(cpu);
-                 trace_accel_split_exec_vcpu_thread_hw(r);
-             } else {
-+                swops->rebuild_tcg_tb_flags(cpu);
-                 r = swops->exec_vcpu_thread(cpu);
-                 trace_accel_split_exec_vcpu_thread_sw(r);
-             }
+ from qemu.machine import QEMUMachine
+-from qemu.utils import hvf_available, kvm_available, tcg_available
++from qemu.utils import hvf_available, kvm_available, tcg_available, \
++                       split_available
+ 
+ from .archive import archive_extract
+ from .asset import Asset
+@@ -319,6 +320,7 @@ def require_accelerator(self, accelerator):
+         checker = {'tcg': tcg_available,
+                    'kvm': kvm_available,
+                    'hvf': hvf_available,
++                   'split': split_available,
+                   }.get(accelerator)
+         if checker is None:
+             self.skipTest("Don't know how to check for the presence "
 -- 
 2.49.0
 
