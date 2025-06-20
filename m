@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B7FEAE2033
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8AAAE203A
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:42:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSeoB-0006bH-1I; Fri, 20 Jun 2025 12:41:43 -0400
+	id 1uSeoC-0006cD-OM; Fri, 20 Jun 2025 12:41:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSeo6-0006aG-Fw
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:38 -0400
+ id 1uSeo7-0006ar-QX
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSeo4-0000HB-Kp
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:38 -0400
+ id 1uSeo6-0000Hp-7u
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750437694;
+ s=mimecast20190719; t=1750437697;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m09gyrXVI69lguFqQqhapy6DhI44HdNH8ReXpoV/H/Y=;
- b=WQwZ/61/zHzjVHubL9Fs8RmrJ7Sb5IMtGknBuHKuREbnSt2psNz1ICuTcO4QTr+8M+PNWt
- wYRfvvcYcYJ6D7xh5cdLuVGkqUpKK4ebJWnw+n7kJ/4bw/TN+Ydi3ghxBdq8qwD9CLMd6e
- xeDoOAvSPvBZ5GLsvsfjwgniFYLhXHI=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XMGhYnZFHX5IefyrfK9nBnHDbZhTF5W9KaGEmJ1RYIY=;
+ b=Pb2iN/kGRtq/jtBEO2B8WzHD34aB6Qj55Kp4YNlTKNcQWcqm5sKHCaLn7dKgRt0U8Fgo9T
+ lFSmcbvSL9n+6ishB35y6D3WAhewYAmPW8Ew+a1IDJoLTm2WLBjJ5bA5032Ow/Q3wbpb7X
+ CzC8iKPOkirxj7Yty3TzHG9FM2OOYnw=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-qhjya6dHMq-RFeI4ZBak_A-1; Fri, 20 Jun 2025 12:41:32 -0400
-X-MC-Unique: qhjya6dHMq-RFeI4ZBak_A-1
-X-Mimecast-MFC-AGG-ID: qhjya6dHMq-RFeI4ZBak_A_1750437692
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-60785397a37so1970302a12.2
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:41:32 -0700 (PDT)
+ us-mta-518-uQgv9LSVMKmIfdX1XISmbA-1; Fri, 20 Jun 2025 12:41:36 -0400
+X-MC-Unique: uQgv9LSVMKmIfdX1XISmbA-1
+X-Mimecast-MFC-AGG-ID: uQgv9LSVMKmIfdX1XISmbA_1750437695
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-acb8f9f58ebso164354766b.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:41:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750437691; x=1751042491;
+ d=1e100.net; s=20230601; t=1750437694; x=1751042494;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m09gyrXVI69lguFqQqhapy6DhI44HdNH8ReXpoV/H/Y=;
- b=wTkWeENavxo+9WH9PsM574yU79JiM7TuM8rdPlWrrw0ZcAXzKty7TyfrHRCcsWVmct
- ZysJisV3JW1bNivQC9qZBLg79c30hDYzqQ7kFPh/AlxzNlPe4kpi9ZcslGGA+JhdrSKb
- mTWIBGWr/O4rwzeW43MoFXArf4bMS7ysxRGDQsW8D4CnZYyJ1993yMk66AYCUzWUYU9d
- BIFblbjSX1GllrbiVVgwdI2BASMBWjl3LtXnOGFtagommjGbRMOb1yyJYraiVnQXbubj
- iMr/RxaDi0ra4mJVtWKfsNcn1FSXrBHzvcAvSY8snwoP5lTZWRHSAGCG/ZyXiRMq41DT
- hvvw==
-X-Gm-Message-State: AOJu0YxRcO8HFf5KFmptE3Vdn1a+FRRFWI/96QpHv9WH+GurRHKrEEGh
- IB5a9BSP43ob4NrjGvhQB+crT7zUvuKVjyUenrKNJIkshYBeYZ//EO+yKy1DJaJBQfAhVBEMUra
- xZSo63kviG6WDgzp2CUY9it9NEo8xhPSKVfSUdnXcxtfdJZQa4CioSx2GRCVyTHMTA0+3x5kJaP
- kmfp1rqKklCIW+4K1EvhOSJubTVSfseJtxI22sR+0Z
-X-Gm-Gg: ASbGncsGcsM2km2zoi7Ynm096GyskuHFSu+JR8kZTumF1ksk4KQnPYS/IDDcPTKoGqv
- IRHrFUPGxZg5etKdlpSoYorGiqU176tEod8/GMawthLJM/sFTvgCrata511TwASiX+KkmfHSAIR
- arpNkS+dHhQzkI37DVKgBxEK6NuwsBS5CE5OYtMbl7738Ho9QKxvbktWbI3MAs89+QHTzuOvcTo
- Xd/xhD48iv+Fbdp5WrEytkxpNjHtWobB3TIFb1KCptLWb4DxUJMUhhEdNbDmX3zxjGveyLo8LgH
- Smt/mYUUxiYFWKiGeVxDuKf2mg==
-X-Received: by 2002:a05:6402:3546:b0:607:19a6:9f1d with SMTP id
- 4fb4d7f45d1cf-60a1cd3206dmr3413679a12.14.1750437691226; 
- Fri, 20 Jun 2025 09:41:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGR614FVv/R2yCgf5Ei0LXIAbyWz9IHUQeJln+17GXwTuLoGBhTb4d1DESDCiOMg1d5qLISGg==
-X-Received: by 2002:a05:6402:3546:b0:607:19a6:9f1d with SMTP id
- 4fb4d7f45d1cf-60a1cd3206dmr3413645a12.14.1750437690794; 
- Fri, 20 Jun 2025 09:41:30 -0700 (PDT)
+ bh=XMGhYnZFHX5IefyrfK9nBnHDbZhTF5W9KaGEmJ1RYIY=;
+ b=nMn5Plr5EyMtCnoNW4qEgsDyD6YyFInejsfkD4pLYYxFU6JfKJzg68llilhOF/ei7d
+ +7aw22222w++/Fuhha0VDwFzK/OfpbN0nPaPOFiitTcmlumuqT9/mdA0T/0FLcIurRSW
+ Wgxf82uFEa1h+vkEFJbYlI/jTRNNBoMVvIjn2HAnRkL+jWxJ48HfeWqS2Q2PKkjn6mXA
+ iVd1Tskg/4pBHCf4iZGx3w4J2atbtghnK+EArG0XqZDy90T/OCDYHQjGqkeLOSBhtcbi
+ YIfYRv2Kg5d0Lu+c4U6emA+wapUdjcx/zfg0wgwNzMcuRHKpcrOyUGIoQAPE2vQET2Dg
+ SsNA==
+X-Gm-Message-State: AOJu0YwWZ3tK5CPbKAbTN1CLF4bry0SGJTSdeqrDPqw3gSIZSZPfXA0b
+ o+4MCgsFw+4dGI123XabFQYnSitiEzGqSn3iWSfuJ4h7GY50t8exQaXwQ9Uf01ycXfny2Y2ewyZ
+ tDIB0ozy129jxvQwvziqv0Bi0gWuQoz+CoNXAzk4BodUNunOEATT1vRnMdzGrMUJV0ubydgpH79
+ 1b1e3wxYCJXqKRQjWsXMNOv8K3vTlxO8TSbxOb6tcJ
+X-Gm-Gg: ASbGnctDhC9a2x+ayK0Zic0Zoek9CkyJ9xxNlUPB/9ieCDHhjbKfaIyDoG/X26kcE3h
+ HKMORQzHsoFpabdezg5V0aRBtFXm+D58kSmd7BETalZyQ4HmKgnWkpoD0uqBRup+5l26jpxELOS
+ nXlU+qBZ2CFcpSpMTGkE1dLWWA2rvRh2FAi41hif+jjmVXoYqp4vvNQf6QsgEdtYLWQLedXa2js
+ h8UKIahaIKYC0q5++dfINqtwXIrfNgWUprQsZHKjJUaupKR44Hab30mKXH1kpeq1MmpoQ0IQBOT
+ jfzegZljGEHUVwkfpneRUAqsGQ==
+X-Received: by 2002:a17:907:db15:b0:ade:8d5a:cf37 with SMTP id
+ a640c23a62f3a-ae057f2166emr335957566b.44.1750437693806; 
+ Fri, 20 Jun 2025 09:41:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGPQJ5Dtib/VLX65pHAXxYw1y9ZXtr1SOopos6qQ00HYRWazdyrZ5sEuoeOrcGhyDruN2uNsg==
+X-Received: by 2002:a17:907:db15:b0:ade:8d5a:cf37 with SMTP id
+ a640c23a62f3a-ae057f2166emr335955366b.44.1750437693353; 
+ Fri, 20 Jun 2025 09:41:33 -0700 (PDT)
 Received: from [192.168.122.1] ([151.62.200.93])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae05408306fsm183794066b.84.2025.06.20.09.41.28
+ a640c23a62f3a-ae053e801ccsm185328666b.7.2025.06.20.09.41.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Jun 2025 09:41:28 -0700 (PDT)
+ Fri, 20 Jun 2025 09:41:31 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>
-Subject: [PULL 13/24] rust: pl011: Implement logging
-Date: Fri, 20 Jun 2025 18:40:41 +0200
-Message-ID: <20250620164053.579416-14-pbonzini@redhat.com>
+Subject: [PULL 14/24] rust: pl011: Add missing logging to match C version
+Date: Fri, 20 Jun 2025 18:40:42 +0200
+Message-ID: <20250620164053.579416-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620164053.579416-1-pbonzini@redhat.com>
 References: <20250620164053.579416-1-pbonzini@redhat.com>
@@ -108,60 +108,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Now that there is logging support in Rust for QEMU, use it in the pl011
-device.
-
+Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Link: https://lore.kernel.org/r/20250615112037.11992-3-shentey@gmail.com
+Link: https://lore.kernel.org/r/20250615112037.11992-4-shentey@gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/src/device.rs | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ rust/hw/char/pl011/src/device.rs | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 2d416cd9a3c..92dc295540e 100644
+index 92dc295540e..5b53f2649f1 100644
 --- a/rust/hw/char/pl011/src/device.rs
 +++ b/rust/hw/char/pl011/src/device.rs
-@@ -8,6 +8,8 @@
-     chardev::{CharBackend, Chardev, Event},
-     impl_vmstate_forward,
-     irq::{IRQState, InterruptSource},
-+    log::Log,
-+    log_mask_ln,
-     memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
-     prelude::*,
-     qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
-@@ -276,8 +278,7 @@ pub(self) fn write(
-             DMACR => {
-                 self.dmacr = value;
-                 if value & 3 > 0 {
--                    // qemu_log_mask(LOG_UNIMP, "pl011: DMA not implemented\n");
--                    eprintln!("pl011: DMA not implemented");
-+                    log_mask_ln!(Log::Unimp, "pl011: DMA not implemented");
-                 }
-             }
-         }
-@@ -534,7 +535,7 @@ fn read(&self, offset: hwaddr, _size: u32) -> u64 {
-                 u64::from(device_id[(offset - 0xfe0) >> 2])
-             }
-             Err(_) => {
--                // qemu_log_mask(LOG_GUEST_ERROR, "pl011_read: Bad offset 0x%x\n", (int)offset);
-+                log_mask_ln!(Log::GuestError, "PL011State::read: Bad offset {offset}");
-                 0
-             }
-             Ok(field) => {
-@@ -566,7 +567,10 @@ fn write(&self, offset: hwaddr, value: u64, _size: u32) {
-                 .borrow_mut()
-                 .write(field, value as u32, &self.char_backend);
-         } else {
--            eprintln!("write bad offset {offset} value {value}");
-+            log_mask_ln!(
-+                Log::GuestError,
-+                "PL011State::write: Bad offset {offset} value {value}"
-+            );
-         }
-         if update_irq {
-             self.update();
+@@ -305,6 +305,12 @@ fn read_data_register(&mut self, update: &mut bool) -> u32 {
+     }
+ 
+     fn write_data_register(&mut self, value: u32) -> bool {
++        if !self.control.enable_uart() {
++            log_mask_ln!(Log::GuestError, "PL011 data written to disabled UART");
++        }
++        if !self.control.enable_transmit() {
++            log_mask_ln!(Log::GuestError, "PL011 data written to disabled TX UART");
++        }
+         // interrupts always checked
+         let _ = self.loopback_tx(value.into());
+         self.int_level |= Interrupt::TX;
 -- 
 2.49.0
 
