@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE86EAE2563
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992C9AE24FE
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:19:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSk5p-0002rX-Dy; Fri, 20 Jun 2025 18:20:17 -0400
+	id 1uSk3e-0000ay-GI; Fri, 20 Jun 2025 18:18:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfTx-0006kh-PT
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:24:53 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfWz-00073V-0z
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:28:01 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfTv-0005aR-MU
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:24:53 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-45348bff79fso23846115e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:24:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfWx-0005sS-0c
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:28:00 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-450cf214200so19977165e9.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:27:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750440289; x=1751045089; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750440477; x=1751045277; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
  bh=Z58Mj9AHxYXEvEbVh057KHI5t4/Z8R9hueKfYcnEoHE=;
- b=IxGpHdCJEL0QLOJ/B5PYmNxEI6uoLf3xw9MkQyga2Q3vPUc50kFRkDJZ/ZRK9zyuUz
- TZC3mrSQ5oKx6dgVR6rWLJLJj9kUvXkJeohX+0QYm5Hym460ro9LHy0LH6rQMnLZa5DA
- Jx/Js9r/MRNh2Kinp0MdCPYEAtn6NwV08cdnk+l43TNQI2aX1cXFmv9zG8g6ty+T3+k1
- 0pgM0NvqTJOhHv8IbHgm722b8Fgkw+vGynYYaKDZ58VOyKrAk2Pi88y3bNeTM8pJpnSn
- MXK3wPjDLI9zbSsZ5rhOnDz3bjtUoYH/g1c1jbXh0COERmPs5Jv7l9Oi4BHZlNdI67dT
- v67Q==
+ b=qzfDIVNB8i+legobLa0U1mmd8tMuJ7bWG0fn3PrVvyqOTP0l63Vp9EnUOlW7XMG7A3
+ qTWI/KEL+bxdBrNxLoiL19M5ndeOFGTeCz4AmDlODbirejo+TMzQZjoqZzIwYomtXVmw
+ gU9U+i2OtUvjcMEcJhCqi9/tm67Q8XvEhXIFEq//vE7AVWrX1HZ7BcmiG9g5LplPyxMi
+ YlBN1TetZfdvLePNmCV2FO439J/GhZjMbVkVt4pX/pIV5JNeHfMGC253c5YHXM1YDa/p
+ g5CbV1rWSNyVPr4Dt20cMHzt+4xZM2xKo/YrmPDJxxNkNTeBLDAiAN2SIeE1/1pRwjQw
+ p7TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750440289; x=1751045089;
+ d=1e100.net; s=20230601; t=1750440477; x=1751045277;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
  bh=Z58Mj9AHxYXEvEbVh057KHI5t4/Z8R9hueKfYcnEoHE=;
- b=TGRY1U5yHBeqSG0NS8PDbfhWAq9wuVmrjIEBslJLdnEUgns5bftiXsrdsFIZDNJAoS
- Xjj25wZxwREX2Oj9Jyq7VuTAUigiTV11BqTuoV0mupkHWyjOBDf9sPdGYKyT9K86sPn0
- dIu8U3B7jWqHF8VqwQ2uP9xPZcoZyq+4jHhzmN0/zop0BxujQjyo/ZtQJWtTSioapcG4
- uM2D86ak0uTmMpBPQdxMqqFJMvBA+fVbOBiveKrbK1z3/kyhH75p1xEFEkWSqQbdKdu6
- o5Fv+LFN74sQsJ0dY00QbGgClQtnUqeGcq0Z90O6V0rIT2o9d4Obsxbc3VbhqMNYZVZn
- ddeA==
-X-Gm-Message-State: AOJu0Yzky2+vNzOhV+xv0EtxwFVEWYobrBIjG40FNaUeLR7yLd3bMtDM
- wskN/BN+of6xZq6DtwJatmQAVCLL3D4P/Kc8lgOda8DKIX0ORgQdtPDWuatuPeW65P7LOVvzSKD
- AoSGrjDw=
-X-Gm-Gg: ASbGnctEOeFcMC6pgyIgN4DcdsbFPkx26GMYoe7LjT8rCTTymtqqGk8ZkHU8Z5XNXi/
- FVm570wTgyRZZJnf2cJghKZgIk/gQMpk+XLzgTDP23IUvhGVkkPKoceSC35lXW07dff2W1PCRx6
- RRSc4WCewfDQomg69CcX+ATmdZ7dUo98UX5HF/rc1C8y/d/EhYhi8tdpOCSKy6vHY7iQbKLfh9N
- S/oBQfwKOJpSnEWKnaeOWTeWRzdVCb2CgSR5DLS9JjM/+A+hMdea1P2EpW7swybGd6zB2N6a5C7
- rO8xPTHQUDZF8Zjk4CLhNeljwGMg3oIBjsSO5uLipxuFfGnGXnwXjKuXcZi7ttvtxBnEd/wra1j
- jtSwdFiCeK5Y0EZRBNXE54Sx4G8k1Bx99c4Th
-X-Google-Smtp-Source: AGHT+IFxSvcq18TS9G6OIHqtblgNO/WT06KLqXJLHUI+L77yoo5MGoByuOgM9l57Y0YgQygfCuoqrw==
-X-Received: by 2002:a05:600c:1f0e:b0:450:cf42:7565 with SMTP id
- 5b1f17b1804b1-453659ebf1amr33566955e9.23.1750440289332; 
- Fri, 20 Jun 2025 10:24:49 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d0f104ebsm2605032f8f.6.2025.06.20.10.24.48
+ b=vpKHREcsjWlZ5/16+aEBRVuBT3N/7YoD4RXhfvA1CRR66F6xV7IprbNjdOqKsHUosp
+ FqibN+YAW254WFCNv2g7gvG3TiyMVYzizIAcVKvZJAzOZzjmUglgPhwqVEs3ZZZ7aQu6
+ 4gogs9XR0N1uOq87l9OkJEfF8kM6WocXj05NzptlqBwA+Y3FWl2iwFryVyXzo8SiA8Bs
+ vslNr4QDt/3YpWRwYggTnUGlA6I0IDsQqV6J1g0QQP6b/wusMkOC+VQfeoe6A7drKO1e
+ +AgWxOn1vYc6G9jT7/KnejtCJnKmAIFYC9TtVtUQXyBdELM8m0H+i2sjF/54zPXO521G
+ lxjw==
+X-Gm-Message-State: AOJu0YxhjgI0o23ChuKd+DrnDeqa8r0lS/2jw3XhwjTu1aL8lEw1nHhp
+ xr7nkz14JmgZOWptXSWTPWq+Y8vEePupbsCHmAFOYbOcGlst9Rd8SYSp1kpnLHlkHo4YgSygSGD
+ x9EzyU4Cwsw==
+X-Gm-Gg: ASbGncsZLIujEcHULPCtVTdclT9US/FB1saq9In2TAQzB3y6TvXZ+tP/GWcof2HPLXp
+ 5TGI6cauTBsFBPAlLNUX3mFvBFOVdmd5Ce05zMSXgYA7PtVzbX2Vi8CruzZOUgw7cStq1ncFrrw
+ wKPCwjxIDGPfoaBk4Y5SPsXZ7GWBckeCQI/jbMtIJm4X0Aq/lMP1nEjEMF00R44DiMn2+DD+N8u
+ W4UQe0DxpQIvH3h1Q0biFK3yyAOuTkGo21Xa0Tfac32U2g5lyJEqMv8buNvkU+/cZXSjyEzq3UJ
+ ng+S+MlTizB20TwoSXqIzk4asntgoSeHasLSsI2FDZlsZokJvNVajrIyEA7IOwFycvLlmp7v+kJ
+ MxeSAUZ1dPZdO+YS1k+JFlo17d5xVnLQXDIJVTsm8rUS0rFiHTpQMtWuN
+X-Google-Smtp-Source: AGHT+IELpMWEEJg2772d4kDJYxelxol+C3W5lX1LKEWw1gTabBQbE8A/kvszZ9A8u1AVv61B4xMJVQ==
+X-Received: by 2002:a05:600c:3b14:b0:43d:fa59:be39 with SMTP id
+ 5b1f17b1804b1-45365a0acfdmr33474415e9.33.1750440476612; 
+ Fri, 20 Jun 2025 10:27:56 -0700 (PDT)
+Received: from localhost.localdomain
+ (101.red-95-127-63.dynamicip.rima-tde.net. [95.127.63.101])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45364703f1esm31662015e9.32.2025.06.20.10.27.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:24:48 -0700 (PDT)
+ Fri, 20 Jun 2025 10:27:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Julian Armistead <julian.armistead@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Cameron Esfahani <dirty@apple.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
+Cc: Alexander Graf <agraf@csgraf.de>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mark Burton <mburton@qti.qualcomm.com>, Thomas Huth <thuth@redhat.com>,
- Alexander Graf <agraf@csgraf.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Julian Armistead <julian.armistead@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>, Mark Burton <mburton@qti.qualcomm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 00/42] accel/split/arm: Run EL2 using TCG and EL1/EL0 in
- hardware with HVF
-Date: Fri, 20 Jun 2025 19:24:04 +0200
-Message-ID: <20250620172447.93779-1-philmd@linaro.org>
+Subject: [RFC PATCH RESEND 00/42] accel/split/arm: Run EL2 using TCG and
+ EL1/EL0 in hardware with HVF
+Date: Fri, 20 Jun 2025 19:27:08 +0200
+Message-ID: <20250620172751.94231-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
