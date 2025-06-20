@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6999AE204B
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F41CAE2034
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:42:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSena-0006SW-Ek; Fri, 20 Jun 2025 12:41:06 -0400
+	id 1uSenZ-0006SJ-TL; Fri, 20 Jun 2025 12:41:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSenY-0006SF-R4
+ id 1uSenY-0006S3-0j
  for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSenV-0000Dc-0m
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:04 -0400
+ id 1uSenW-0000Dh-H2
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750437659;
+ s=mimecast20190719; t=1750437661;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=74X/SFDkJU/aMjcEUAksoZmBt6DzYhNI4J9Ot9oNbA8=;
- b=PnOsCueL9fp9jHQVae42uLv37x/K29JBWzgoqTtRhyPm1j7ZLqgIVp855d8+FhT38YyrQC
- ucvgRwXEknhdb+Xh7MePA1m+wJ3J+vlMMcthoC8a7dX2xMRICUjEEIehXQ0NcoOxqpI9Lh
- B6gIpIOYDhcoC/AB3KwiSWFqzMt86tA=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dg0lyWp/iYHR0SwtBFKYV9jsMjYg3PofI7llGsLHSMo=;
+ b=Ivse6f++J6dORJMzQ2RYxJJpO7LhAnKw7fQnT9bbQiy7V70XZQ+1V79AsAAZTjFR56G1C6
+ Q+9nRMSuxGQE4XzEV39WbROiLwXeGx72d3MrkvabKdZgHA/FPmEJ5G3yacWHr79peXooW9
+ ZB4538DTGcR1ePDawZ1aQPIzIlHPzX8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-PB-tIzJxMouRQbEmZ0OUFQ-1; Fri, 20 Jun 2025 12:40:57 -0400
-X-MC-Unique: PB-tIzJxMouRQbEmZ0OUFQ-1
-X-Mimecast-MFC-AGG-ID: PB-tIzJxMouRQbEmZ0OUFQ_1750437656
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-adb33457610so186294366b.3
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:40:57 -0700 (PDT)
+ us-mta-523-5hRGvIxhPZO3mPkV87cNbw-1; Fri, 20 Jun 2025 12:41:00 -0400
+X-MC-Unique: 5hRGvIxhPZO3mPkV87cNbw-1
+X-Mimecast-MFC-AGG-ID: 5hRGvIxhPZO3mPkV87cNbw_1750437659
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-6077833ae13so1591842a12.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:40:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750437656; x=1751042456;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=74X/SFDkJU/aMjcEUAksoZmBt6DzYhNI4J9Ot9oNbA8=;
- b=SWlkH6Cl2WlurkSwalljxCOjvVQchCoX++bCeyHy1V9K6AVJkJaS+PtUxE9zpiP3hS
- Bo2p2PKEtpnBZuJra89ur9HhhExbhtPJVH/XRGwGdtzd60qSTswwD1VRZb3Z0I/Sm4xY
- jGoBw9wX00XolS/KHrH4Rr2oUl53bN/xyyfEoQ8nRElXkrXR8Vfond3C0ouXiT5SHPgH
- iveqg/AwO+qFuL6lQceFtDjAUFX8vSmuwvngdkE5qEEAqTEfxehB4xPIhKzYvDKJk4+9
- ETan5PenPjTYBnPCf3IXUb+WykBDmzMG+diwfOUsI5BIf5HGd/uhVBHnQU5XMNFdtY6i
- VQxQ==
-X-Gm-Message-State: AOJu0YzVlVQ3y8Au/dB26Bz6FWb0b0UXwfv5BzLIsdQ7Bv5XcuYXKqqj
- vy8SRkq38DUo/uUeI6r4IBF/6EVWkpb0pifdahZt9+rVPiV3WjMXW9CYwm/JKt75+8Mk9JtXWXf
- 3sGZ4slkcrxg+bGGzJspGha5A2A0HE5OzeST49s61T60KLpa6Sj1H3I7PKFBnNJ8EA20p25L9KA
- osiBBMkBC6FmA0rE4gnrmFl8JxSABsoerJV+mVW/Ky
-X-Gm-Gg: ASbGncs7n7cenuxbrXg9axnXorehNsDtlxcaJLyasXpCWwSbTpqUm3MRrCUxMfTGun2
- 5x5IkiP5Ep6WovYn8toMrGNvbiHRlvrAzhNNXR+PnT/k4YCVAiBI/Q7je8gaCYWj0C2x6SqTCwo
- 22v/sstpoNkaxPkPdHrR033004BecwjWJNRKAu4R8VGWqeK6hBV6sduVfREWZCu4qIN6DlAEE1A
- 1XqQNi+ApD1plnYBP6f3CR2btQ1mkkKSg/5mpKS/Mfwtp9CMhnYWktvQqtaigIcapUdU1iqfnKd
- /5T0Ya5H6wt6ACgT53lbW+mXlw==
-X-Received: by 2002:a17:907:6088:b0:ad8:8529:4f9b with SMTP id
- a640c23a62f3a-ae057bc4354mr377984666b.38.1750437655812; 
- Fri, 20 Jun 2025 09:40:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFaBvHkbmK3fXARx+Q6V+nwoxADbkp97Pws/TpVTzMA8nrXVGEk6+SwKr6vB/r6ZtA9NMacKA==
-X-Received: by 2002:a17:907:6088:b0:ad8:8529:4f9b with SMTP id
- a640c23a62f3a-ae057bc4354mr377981866b.38.1750437655256; 
- Fri, 20 Jun 2025 09:40:55 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1750437658; x=1751042458;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dg0lyWp/iYHR0SwtBFKYV9jsMjYg3PofI7llGsLHSMo=;
+ b=R1VwaQ/l3DuyN8BqkTPWmJ2EBe6lw07t4M+f4oO4TAQQkrRIhhfEVXopl89jtCkjOY
+ dR4RXcuW7w1CQXkGYw20gl/oZFshuPPoUZsaoMC8UDBsZYo/aoe0H0hoeBUOUlAHLB6w
+ +6jgkCF/ezPn9mfcUg+mAKOgTcPSPK06hOW05qyOjYtfSSKgEtcg2XamRCVYc1DDeIzK
+ 8J+SwED90tnDVlqMtN1aQU9SEYI6/I+6pzAEwwwOdf8dhNqB3YalMo72lN+HonZujEys
+ C3g8t58DJYKBb9uhuE1wlipHmBdh++yNofpADzmluDKg5TA9vJ6kZZKnnpB6JesGq3Ng
+ j3kQ==
+X-Gm-Message-State: AOJu0Yzgymvd0icox0gHFfOUNQYFBooDwALJrq5Hgfcn6E4osrNvHIRB
+ 7y3HRCcxp6L4lXEt+Z1OkVToy36PI+pwK/EQxhZo22G30E8I9Rg0o6nZnP4luj/aYbLJ4Y+xSIp
+ JAnocbapwvv7oPBf+7ljhOn5uoA0ik/ZZM3J+wA1WSDYMxcqoSlZKaJeyVzLnRhW8muWz/HuLj1
+ X7s5nhK68DO6U7bbNlAtnydow9bJKOJaUtf1UiyBUQ
+X-Gm-Gg: ASbGncuekzB70p2fR2YadSRYnZAjxFr3RHs9MLSxRNRLeuWu8rRzG58yqjmpK1Mstby
+ i6Jv2NO2bwgzHuZfjakg9RxkKm5sWImkwSce9cvZzof7ecJa+8A4JsPUWY/j29higzENVwlRRYF
+ VXQLl6L4zohYqfB2Gfa6DE4CHC2ksLLXSvaUAGANJy1dWGUpKUAZ6I5U6ZusJdPXdBhHlYTic5y
+ 0dbqIdjVyyrB28XmjCbIt/DSOWsXbc5Pzkb8ObPr/sXWxXrdZ7TtuqHP2k5dwVcwq0wHi2gtEtH
+ aNXeQuHXnIg2lRC5sMZ0KnEU7w==
+X-Received: by 2002:a05:6402:1e89:b0:604:f62b:4118 with SMTP id
+ 4fb4d7f45d1cf-60a1cd1a88emr3115268a12.5.1750437657882; 
+ Fri, 20 Jun 2025 09:40:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHm2Vv9lHQkXerKFiYB2TIpO23tiNUC8NS/3eSZHdis7Z++pIOlykAucgDZysigDUg15X+mfQ==
+X-Received: by 2002:a05:6402:1e89:b0:604:f62b:4118 with SMTP id
+ 4fb4d7f45d1cf-60a1cd1a88emr3115246a12.5.1750437657375; 
+ Fri, 20 Jun 2025 09:40:57 -0700 (PDT)
 Received: from [192.168.122.1] ([151.62.200.93])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae053e7f2f5sm189623866b.15.2025.06.20.09.40.53
+ 4fb4d7f45d1cf-60a18cba650sm1591266a12.55.2025.06.20.09.40.55
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Jun 2025 09:40:53 -0700 (PDT)
+ Fri, 20 Jun 2025 09:40:56 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/24] i386 (TCG, TDX), Rust changes for 2025-06-20
-Date: Fri, 20 Jun 2025 18:40:28 +0200
-Message-ID: <20250620164053.579416-1-pbonzini@redhat.com>
+Subject: [PULL 01/24] meson: cleanup win32 library detection
+Date: Fri, 20 Jun 2025 18:40:29 +0200
+Message-ID: <20250620164053.579416-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250620164053.579416-1-pbonzini@redhat.com>
+References: <20250620164053.579416-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -103,117 +106,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a6f02277595136832c9e9bcaf447ab574f7b1128:
+As pointed out by Akihiko Odaki, all Win32 libraries in MinGW have lowercase
+names.  This means that on (case-insensitive) Windows you can use the mixed-case
+names suggested by Microsoft or all-lowercase names, while on Linux you need to
+make them lowercase.
 
-  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2025-06-12 14:16:11 -0400)
+QEMU was already using lowercase names, so there is no need to test the
+mixed-case name version of libSynchronization.  Remove the unnecessary test
+and while at it make all the tests use "required: true".
 
-are available in the Git repository at:
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ meson.build | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
-
-for you to fetch changes up to 40da501d8989913935660dc24953ece02c9e98b8:
-
-  i386/tdx: handle TDG.VP.VMCALL<GetQuote> (2025-06-20 13:25:59 +0200)
-
-----------------------------------------------------------------
-* cleanups for distributed DTB files
-* scripts/meson-buildoptions: Sort coroutine_backend choices lexicographically
-* rust/qemu-api: Add initial logging support
-: rust: pl011: Implement logging
-* target/i386: fix Win98
-* meson: cleanup win32 library detection
-* rust: safe(r) instance_init
-* rust: prepare for multiple bindgen invocations
-* rust: fix new warning
-* target/i386: Warn about why CPUID_EXT_PDCM is not available
-* target/i386: small TDX fixes and clarifications
-* target/i386: support for TDX quote generation
-
-----------------------------------------------------------------
-Bernhard Beschow (5):
-      hw: Fix type constant for DTB files
-      pc-bios/dtb/meson: Prefer target name to be outfile, not infile
-      rust/qemu-api: Add initial logging support based on C API
-      rust: pl011: Implement logging
-      rust: pl011: Add missing logging to match C version
-
-Binbin Wu (1):
-      i386/tdx: handle TDG.VP.VMCALL<GetTdVmCallInfo>
-
-Isaku Yamahata (1):
-      i386/tdx: handle TDG.VP.VMCALL<GetQuote>
-
-Mark Cave-Ayland (1):
-      target/i386: fix TB exit logic in gen_movl_seg() when writing to SS
-
-Paolo Bonzini (10):
-      meson: cleanup win32 library detection
-      rust: qemu_api: introduce MaybeUninit field projection
-      rust: hpet: fully initialize object during instance_init
-      rust: qom: introduce ParentInit
-      rust: qom: make ParentInit lifetime-invariant
-      rust: qom: change instance_init to take a ParentInit<>
-      rust: prepare variable definitions for multiple bindgen invocations
-      rust: move rust.bindgen to qemu-api crate
-      rust: hpet: fix new warning
-      update Linux headers to v6.16-rc3
-
-Xiaoyao Li (6):
-      i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check
-      i386/cpu: Warn about why CPUID_EXT_PDCM is not available
-      i386/tdx: Error and exit when named cpu model is requested
-      i386/cpu: Rename enable_cpuid_0x1f to force_cpuid_0x1f
-      i386/tdx: Fix the typo of the comment of struct TdxGuest
-      i386/tdx: Clarify the error message of mrconfigid/mrowner/mrownerconfig
-
- docs/devel/rust.rst                                |   1 +
- meson.build                                        |  65 +----
- qapi/qom.json                                      |   8 +-
- include/standard-headers/asm-x86/setup_data.h      |  13 +-
- include/standard-headers/drm/drm_fourcc.h          |  45 ++++
- include/standard-headers/linux/ethtool.h           | 124 ++++-----
- include/standard-headers/linux/fuse.h              |   6 +-
- include/standard-headers/linux/input-event-codes.h |   3 +-
- include/standard-headers/linux/pci_regs.h          |  12 +-
- include/standard-headers/linux/virtio_gpu.h        |   3 +-
- include/standard-headers/linux/virtio_pci.h        |   1 +
- linux-headers/asm-arm64/kvm.h                      |   9 +-
- linux-headers/asm-x86/kvm.h                        |   1 +
- linux-headers/linux/bits.h                         |   4 +-
- linux-headers/linux/kvm.h                          |  25 ++
- linux-headers/linux/vhost.h                        |   4 +-
- rust/{ => qemu-api}/wrapper.h                      |   2 +
- target/i386/cpu.h                                  |   4 +-
- target/i386/kvm/tdx-quote-generator.h              |  82 ++++++
- target/i386/kvm/tdx.h                              |  25 +-
- hw/arm/boot.c                                      |   2 +-
- hw/ppc/e500.c                                      |   2 +-
- target/i386/cpu.c                                  |  10 +-
- target/i386/kvm/kvm.c                              |  15 ++
- target/i386/kvm/tdx-quote-generator.c              | 300 +++++++++++++++++++++
- target/i386/kvm/tdx-stub.c                         |   8 +
- target/i386/kvm/tdx.c                              | 206 +++++++++++++-
- target/i386/tcg/translate.c                        |   7 +-
- pc-bios/dtb/meson.build                            |   2 +-
- rust/hw/char/pl011/src/device.rs                   |  52 ++--
- rust/hw/timer/hpet/src/device.rs                   |  58 ++--
- rust/meson.build                                   |   4 +-
- rust/qemu-api/build.rs                             |   2 +-
- rust/qemu-api/meson.build                          |  45 +++-
- rust/qemu-api/src/lib.rs                           |   2 +
- rust/qemu-api/src/log.rs                           |  73 +++++
- rust/qemu-api/src/memory.rs                        |  12 +-
- rust/qemu-api/src/prelude.rs                       |   2 +
- rust/qemu-api/src/qdev.rs                          |  49 ++--
- rust/qemu-api/src/qom.rs                           | 186 ++++++++++++-
- rust/qemu-api/src/uninit.rs                        |  85 ++++++
- target/i386/kvm/meson.build                        |   2 +-
- 42 files changed, 1334 insertions(+), 227 deletions(-)
- rename rust/{ => qemu-api}/wrapper.h (97%)
- create mode 100644 target/i386/kvm/tdx-quote-generator.h
- create mode 100644 target/i386/kvm/tdx-quote-generator.c
- create mode 100644 rust/qemu-api/src/log.rs
- create mode 100644 rust/qemu-api/src/uninit.rs
+diff --git a/meson.build b/meson.build
+index 34729c2a3dd..ed60be2a2d0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -843,15 +843,12 @@ host_dsosuf = '.so'
+ if host_os == 'windows'
+   midl = find_program('midl', required: false)
+   widl = find_program('widl', required: false)
+-  pathcch = cc.find_library('pathcch')
+-  synchronization = cc.find_library('Synchronization', required: false)
+-  if not synchronization.found()
+-    # The library name is lowercase on mingw
+-    synchronization = cc.find_library('synchronization', required: true)
+-  endif
+ 
+-  socket = cc.find_library('ws2_32')
+-  winmm = cc.find_library('winmm')
++  # MinGW uses lowercase for library names
++  pathcch = cc.find_library('pathcch', required: true)
++  synchronization = cc.find_library('synchronization', required: true)
++  socket = cc.find_library('ws2_32', required: true)
++  winmm = cc.find_library('winmm', required: true)
+ 
+   win = import('windows')
+   version_res = win.compile_resources('version.rc',
 -- 
 2.49.0
 
