@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC39AE204D
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D70FFAE203E
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:43:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSeo5-0006YW-4e; Fri, 20 Jun 2025 12:41:37 -0400
+	id 1uSeo7-0006Zx-2y; Fri, 20 Jun 2025 12:41:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSenx-0006YD-HW
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:30 -0400
+ id 1uSeo2-0006Yt-4y
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSenv-0000GP-UG
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:29 -0400
+ id 1uSenx-0000Gf-Kq
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750437686;
+ s=mimecast20190719; t=1750437688;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+h+zQtFRndjbbjZBH2HYw4tep2/IDavOmESW5qHH/2Y=;
- b=hqNQU4fBm8H16aP/cQRNCC6sKo9yQhTAzKpxEEyHPtfe8+y8u+ZPZGclfKm0hEd9Mw5hED
- zJ5tygsmOF8RGpVO1+evfRLClodkhGPEie8/Yw17o5SOTWtyz20wj4b4f83F0enlS2SCtR
- uwfshuFEJHshKOdZlTeXmJWw/UIeIQI=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=R8LqKOiEsRIuredeKj7XdSZiPDaNUwtzibDGBjeZOjk=;
+ b=jADsa4a3RXR62HrF/Nczknh8a72EVp/nOGM6mdcNNiE1lN0hVKkl8af15Ijfzk7YDApBPr
+ 3xAfyBzt3MBUtbMniHTxS8iGbr1T0RJ17+v5H0vIprf+4XcI1xOAFZzQRl3jxoTVb5X9BJ
+ G1LWWpzME5Fc/kDlkYiWN6XcmlaNFrY=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-Er2TqbB0PVif3rkLlJ_N0g-1; Fri, 20 Jun 2025 12:41:24 -0400
-X-MC-Unique: Er2TqbB0PVif3rkLlJ_N0g-1
-X-Mimecast-MFC-AGG-ID: Er2TqbB0PVif3rkLlJ_N0g_1750437683
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-60785397a37so1970158a12.2
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:41:24 -0700 (PDT)
+ us-mta-315-hUnglG2MMuenMqGTSepNLg-1; Fri, 20 Jun 2025 12:41:27 -0400
+X-MC-Unique: hUnglG2MMuenMqGTSepNLg-1
+X-Mimecast-MFC-AGG-ID: hUnglG2MMuenMqGTSepNLg_1750437686
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-addcea380fcso135777066b.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:41:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750437682; x=1751042482;
+ d=1e100.net; s=20230601; t=1750437686; x=1751042486;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+h+zQtFRndjbbjZBH2HYw4tep2/IDavOmESW5qHH/2Y=;
- b=Z2H9uecvfdCzFyOHsX9kjfk/+efy8WtynQgzCtUlVPLNhew1THLKMN5mRGXdDdugB7
- 3vMBwg11kLcC3/SZbSyp/qmlrb4Fcex+bAQ86QxriupUP4ttU5lC3qNabHDLo7t3ga5R
- OnQrZkg/j6PBsUx4dPNAjKoBJs2govQ985/j4l+lENgIuUpiyFsFdtweqdI4KWaD8Ckv
- 3XiGaCt0w7BK7ElfvNH7SaTJRnBR04YRhVc7+tJ+VLSPX/eWgCoDuGr2+d3WV/MtW7Cf
- Q3e2rhWFHrCeJu1aLGEGbjw9bkQM1ZH4qhq2P9fBXKMt7vuc7Acm9nwCcNeu4Y4AenCG
- iO+Q==
-X-Gm-Message-State: AOJu0YzxkcDqz5baNxg7pZbDlmY1bGZimOY6Z7zBr1Xg03dRvO9Bp74u
- FSNezghMv7hViBiCW7jSJRyOVJ/AykFDKPu8KNDO9WvCG5tCfbRfSbj/feRDtcm+9wv/kSj0Z8K
- bmzDNJ/qDwKqrqbqQmgxfbaZ1xYpKsHM7Rh/0o7Kkaj8Imtl6fEsWkYAruu6o4KGAyk2mfHUhuu
- 1kB38C9+6NdCx95+SHgT6rRwlHN3AxrFFhhTXs3Ic3
-X-Gm-Gg: ASbGnctDXHUGbXRMYGgvcfYlqGIOvAQfnonkMAl+BnpkcyK1q5cYndOW7BKbO72c5jI
- Oap+0eIn3vlOA49faRh2uewp/YcIi3E8Qzc3r6EMBKEKVkjjKMIQLIKQuWVncDAjCJggK3kNihw
- /BSUUtyZq0DG4jaE68IhEOEIk3acUjga264pzSoyEOxBh4Hhd/QtfC1+kJPPXsChffpqEazrUwz
- e2I3iQTieRyZq39RVoumvMdTBWGvgZmdaf/2bFVpL7CpJH3aHRc38vw3AWm30eqUatSG3Hi8unc
- qGZleG9RH/wMJjpFLgoK/Vao+A==
-X-Received: by 2002:a17:907:3e0f:b0:ad5:d597:561e with SMTP id
- a640c23a62f3a-ae057c33162mr343999366b.56.1750437682448; 
- Fri, 20 Jun 2025 09:41:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBt4goxrg26HjvrVHxQPAjVNFXay54U8lqmxWd+CFsofokxBMtYNKRhc8YRhMx84rlbMFvVA==
-X-Received: by 2002:a17:907:3e0f:b0:ad5:d597:561e with SMTP id
- a640c23a62f3a-ae057c33162mr343997066b.56.1750437681967; 
- Fri, 20 Jun 2025 09:41:21 -0700 (PDT)
+ bh=R8LqKOiEsRIuredeKj7XdSZiPDaNUwtzibDGBjeZOjk=;
+ b=X/HNCaISg8CY1fAJjg5yvDNLUV1UF73yBWOpq3VY3Ti3IN51UvnltS0payqhGpAoGZ
+ br15odiumkmv7fE9q9zBmrKDpZ+8on62iDyov1T+VmAusmjvwh1FfpYxc7lc9f0OEhz8
+ SNV4uUj295AD8J94bUFDc3fl5/q6Us/A8+yR/ipzMQhxJudVr7WoFzxbqNTF6SXJM/0/
+ AkbALbKw89mtHZ7bT+/lB+v8YQ2XmlnNSA2gDmUAzSSkRbjPBbo3GynECg1o+Yrt2Hhk
+ 4VT7YdM4IlWoNZqcwvrjV5gOB1Q/lvFwKhmfZL8AmVmOrN6PnlBJQXocgYEkKjnmUb12
+ outw==
+X-Gm-Message-State: AOJu0Yy8wmSixbyVes4dBQQYpZjxRSb0mDK6ERn1q45Eoxe00EX9rj4a
+ QqM3ZfCO8Rw9teFkjxZgBadSiEknO1reh6PjaMiSdwwnYGrMEqbBke5HFwXZTEbozGxbKV4udE6
+ L7LX1uaDIrikXyoXuUI6f0sj+RXdcJTPZyYbMtgSjKJhmML9Z77DtypPce4RkayOluSQbwqA+dz
+ fQsTiNA3OZNd+IjgfeM+S//2nlbmHddMHgdIXNmYgg
+X-Gm-Gg: ASbGncvbYA2F25OK8JIExVaz/ij1BuBkGmfitbifJXLjBjOZBXKR4rmD/pH2KyA0N9c
+ eRpapphfuPXW2ycrmj+owAaMlaJWSJAURd1/g0iK47nhp3E3Y3EYvBPRCwckpuQHFKQZTIfcWv4
+ 9zDkfpPIcSDenD7ZuJidZnNhHbtA8UHPImc+CpBuSCMf/sbizAPnpsdmnaNcdK+SIhgrv6mpQmw
+ rglC/qP+ZYAkj8mHhCKkFAwxp39Vb6xR+vx3punw+O+Lk1lTgLiZFSaGVlNBMVLnZEMYqDfmcJZ
+ zw1+6zbTzuCyAYfQI4CiMTKScQ==
+X-Received: by 2002:a17:907:3c82:b0:ad8:914b:7d0b with SMTP id
+ a640c23a62f3a-ae0579cd940mr362858166b.11.1750437685592; 
+ Fri, 20 Jun 2025 09:41:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEu/17NnkqKbjAXxzlATiQ2kZziRH1iekLIrNK3R4CQv64r90Bgl7KbERmN/niOUR/dgFtbew==
+X-Received: by 2002:a17:907:3c82:b0:ad8:914b:7d0b with SMTP id
+ a640c23a62f3a-ae0579cd940mr362855566b.11.1750437685074; 
+ Fri, 20 Jun 2025 09:41:25 -0700 (PDT)
 Received: from [192.168.122.1] ([151.62.200.93])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae053ecbe7dsm184578866b.49.2025.06.20.09.41.20
+ a640c23a62f3a-ae053e809d4sm184987966b.26.2025.06.20.09.41.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Jun 2025 09:41:20 -0700 (PDT)
+ Fri, 20 Jun 2025 09:41:23 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 10/24] rust: prepare variable definitions for multiple bindgen
- invocations
-Date: Fri, 20 Jun 2025 18:40:38 +0200
-Message-ID: <20250620164053.579416-11-pbonzini@redhat.com>
+Subject: [PULL 11/24] rust: move rust.bindgen to qemu-api crate
+Date: Fri, 20 Jun 2025 18:40:39 +0200
+Message-ID: <20250620164053.579416-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620164053.579416-1-pbonzini@redhat.com>
 References: <20250620164053.579416-1-pbonzini@redhat.com>
@@ -107,108 +106,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When splitting the QEMU Rust bindings into multiple crates, the
-bindgen-generated structs also have to be split so that it's
-possible to add "impl" blocks (e.g. for Sync/Send or Default,
-or even for utility methods in cases such as VMStateFlags).
+Once qemu-api is split in multiple crates, each of them will have
+its own invocation of bindgen.  There cannot be only one, because
+there are occasional "impl" blocks for the bindgen-generated
+structs (e.g. VMStateFlags or QOM classes) that have to
+reside in the same crate as the bindgen-generated code.
 
-Tweak various variable definitions in meson.build, to avoid naming
-conflicts once there will be multiple bindgen invocations.
+For now, prepare for this new organization by invoking bindgen
+within the qemu-api crate's build definitions; it's also a
+much better place to list enums that need specific treatment
+from bindgen.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build               | 21 ++++++++++++---------
- rust/meson.build          |  2 +-
- rust/qemu-api/meson.build |  2 +-
- 3 files changed, 14 insertions(+), 11 deletions(-)
+ meson.build                   | 41 -----------------------------------
+ rust/{ => qemu-api}/wrapper.h |  0
+ rust/meson.build              |  4 +++-
+ rust/qemu-api/build.rs        |  2 +-
+ rust/qemu-api/meson.build     | 41 +++++++++++++++++++++++++++++++++++
+ 5 files changed, 45 insertions(+), 43 deletions(-)
+ rename rust/{ => qemu-api}/wrapper.h (100%)
 
 diff --git a/meson.build b/meson.build
-index ed60be2a2d0..19ffa9cb34c 100644
+index 19ffa9cb34c..4676908dbb2 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -4200,10 +4200,11 @@ foreach target_base_arch, config_base_arch : config_base_arch_mak
- endforeach
- 
- if have_rust
-+  bindings_incdir = include_directories('.', 'include')
-   # We would like to use --generate-cstr, but it is only available
-   # starting with bindgen 0.66.0.  The oldest supported versions
-   # is 0.60.x (Debian 12 has 0.60.1) which introduces --allowlist-file.
--  bindgen_args = [
-+  bindgen_args_common = [
-     '--disable-header-comment',
-     '--raw-line', '// @generated',
-     '--ctypes-prefix', 'std::os::raw',
-@@ -4219,20 +4220,22 @@ if have_rust
-     ]
-   if not rustfmt.found()
-     if bindgen.version().version_compare('<0.65.0')
--      bindgen_args += ['--no-rustfmt-bindings']
-+      bindgen_args_common += ['--no-rustfmt-bindings']
-     else
--      bindgen_args += ['--formatter', 'none']
-+      bindgen_args_common += ['--formatter', 'none']
-     endif
-   endif
-   if bindgen.version().version_compare('>=0.66.0')
--    bindgen_args += ['--rust-target', '1.59']
-+    bindgen_args_common += ['--rust-target', '1.59']
-   endif
-   if bindgen.version().version_compare('<0.61.0')
-     # default in 0.61+
--    bindgen_args += ['--size_t-is-usize']
-+    bindgen_args_common += ['--size_t-is-usize']
+@@ -4234,47 +4234,6 @@ if have_rust
    else
--    bindgen_args += ['--merge-extern-blocks']
-+    bindgen_args_common += ['--merge-extern-blocks']
+     bindgen_args_common += ['--merge-extern-blocks']
    endif
-+
-+  bindgen_args = []
-   c_enums = [
-     'DeviceCategory',
-     'GpioPolarity',
-@@ -4264,13 +4267,13 @@ if have_rust
-   # this case you must pass the path to `clang` and `libclang` to your build
-   # command invocation using the environment variables CLANG_PATH and
-   # LIBCLANG_PATH
--  bindings_rs = rust.bindgen(
-+  _qemu_api_bindings_inc_rs = rust.bindgen(
-     input: 'rust/wrapper.h',
-     dependencies: common_ss.all_dependencies(),
-     output: 'bindings.inc.rs',
--    include_directories: include_directories('.', 'include'),
-+    include_directories: bindings_incdir,
-     bindgen_version: ['>=0.60.0'],
--    args: bindgen_args,
-+    args: bindgen_args_common + bindgen_args,
-     )
+-
+-  bindgen_args = []
+-  c_enums = [
+-    'DeviceCategory',
+-    'GpioPolarity',
+-    'MachineInitPhase',
+-    'MemoryDeviceInfoKind',
+-    'MigrationPolicy',
+-    'MigrationPriority',
+-    'QEMUChrEvent',
+-    'QEMUClockType',
+-    'ResetType',
+-    'device_endian',
+-    'module_init_type',
+-  ]
+-  foreach enum : c_enums
+-    bindgen_args += ['--rustified-enum', enum]
+-  endforeach
+-  c_bitfields = [
+-    'ClockEvent',
+-    'VMStateFlags',
+-  ]
+-  foreach enum : c_bitfields
+-    bindgen_args += ['--bitfield-enum', enum]
+-  endforeach
+-
+-  # TODO: Remove this comment when the clang/libclang mismatch issue is solved.
+-  #
+-  # Rust bindings generation with `bindgen` might fail in some cases where the
+-  # detected `libclang` does not match the expected `clang` version/target. In
+-  # this case you must pass the path to `clang` and `libclang` to your build
+-  # command invocation using the environment variables CLANG_PATH and
+-  # LIBCLANG_PATH
+-  _qemu_api_bindings_inc_rs = rust.bindgen(
+-    input: 'rust/wrapper.h',
+-    dependencies: common_ss.all_dependencies(),
+-    output: 'bindings.inc.rs',
+-    include_directories: bindings_incdir,
+-    bindgen_version: ['>=0.60.0'],
+-    args: bindgen_args_common + bindgen_args,
+-    )
    subdir('rust')
  endif
+ 
+diff --git a/rust/wrapper.h b/rust/qemu-api/wrapper.h
+similarity index 100%
+rename from rust/wrapper.h
+rename to rust/qemu-api/wrapper.h
 diff --git a/rust/meson.build b/rust/meson.build
-index 99ae7956cd0..e9f0879e296 100644
+index e9f0879e296..331f11b7e72 100644
 --- a/rust/meson.build
 +++ b/rust/meson.build
-@@ -33,5 +33,5 @@ if cargo.found()
+@@ -20,6 +20,8 @@ proc_macro2_rs_native = dependency('proc-macro2-1-rs', native: true)
+ 
+ qemuutil_rs = qemuutil.partial_dependency(link_args: true, links: true)
+ 
++genrs = []
++
+ subdir('qemu-api-macros')
+ subdir('bits')
+ subdir('qemu-api')
+@@ -33,5 +35,5 @@ if cargo.found()
      command: [config_host['MESON'], 'devenv',
                '--workdir', '@CURRENT_SOURCE_DIR@',
                cargo, 'fmt'],
--    depends: bindings_rs)
-+    depends: _qemu_api_bindings_inc_rs)
+-    depends: _qemu_api_bindings_inc_rs)
++    depends: genrs)
  endif
+diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
+index 1e720641d2b..7849486c1ba 100644
+--- a/rust/qemu-api/build.rs
++++ b/rust/qemu-api/build.rs
+@@ -14,7 +14,7 @@ fn main() -> Result<()> {
+     let path = env::var("MESON_BUILD_ROOT")
+         .unwrap_or_else(|_| format!("{}/src", env!("CARGO_MANIFEST_DIR")));
+ 
+-    let file = format!("{path}/bindings.inc.rs");
++    let file = format!("{path}/rust/qemu-api/bindings.inc.rs");
+     let file = Path::new(&file);
+     if !Path::new(&file).exists() {
+         panic!(concat!(
 diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index 33653b4a28e..64c04dfd74b 100644
+index 64c04dfd74b..5b8c7e5e8d5 100644
 --- a/rust/qemu-api/meson.build
 +++ b/rust/qemu-api/meson.build
-@@ -32,7 +32,7 @@ _qemu_api_rs = static_library(
-       'src/vmstate.rs',
-       'src/zeroable.rs',
-     ],
--    {'.' : bindings_rs},
-+    {'.' : _qemu_api_bindings_inc_rs},
-   ),
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
+@@ -7,6 +7,47 @@ if get_option('debug_mutex')
+   _qemu_api_cfg += ['--cfg', 'feature="debug_cell"']
+ endif
+ 
++c_enums = [
++  'DeviceCategory',
++  'GpioPolarity',
++  'MachineInitPhase',
++  'MemoryDeviceInfoKind',
++  'MigrationPolicy',
++  'MigrationPriority',
++  'QEMUChrEvent',
++  'QEMUClockType',
++  'ResetType',
++  'device_endian',
++  'module_init_type',
++]
++_qemu_api_bindgen_args = []
++foreach enum : c_enums
++  _qemu_api_bindgen_args += ['--rustified-enum', enum]
++endforeach
++c_bitfields = [
++  'ClockEvent',
++  'VMStateFlags',
++]
++foreach enum : c_bitfields
++  _qemu_api_bindgen_args += ['--bitfield-enum', enum]
++endforeach
++
++# TODO: Remove this comment when the clang/libclang mismatch issue is solved.
++#
++# Rust bindings generation with `bindgen` might fail in some cases where the
++# detected `libclang` does not match the expected `clang` version/target. In
++# this case you must pass the path to `clang` and `libclang` to your build
++# command invocation using the environment variables CLANG_PATH and
++# LIBCLANG_PATH
++_qemu_api_bindings_inc_rs = rust.bindgen(
++  input: 'wrapper.h',
++  dependencies: common_ss.all_dependencies(),
++  output: 'bindings.inc.rs',
++  include_directories: bindings_incdir,
++  bindgen_version: ['>=0.60.0'],
++  args: bindgen_args_common + _qemu_api_bindgen_args,
++  )
++
+ _qemu_api_rs = static_library(
+   'qemu_api',
+   structured_sources(
 -- 
 2.49.0
 
