@@ -2,99 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF59AE0FAE
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 00:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E79FAE1036
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 02:12:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSNww-0005rq-U4; Thu, 19 Jun 2025 18:41:38 -0400
+	id 1uSPLP-0000cq-Uk; Thu, 19 Jun 2025 20:10:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSNwv-0005rb-L0
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 18:41:37 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSNwt-0001lE-PY
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 18:41:37 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-450d668c2a1so15563265e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Jun 2025 15:41:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750372893; x=1750977693; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JYqfIDOo4Y81fOUls78kxCDhUADzm0w1A4KbE+kV/I0=;
- b=E+1BS+R92B7SRoJGdLeJ4IlV1Jvpbw/Ert3AAAeA8pk3aQm8kMs/RLmnxvV/9hYogL
- KgsSYOy2hVamTKQuJSpXh3dl9zEQR+BcL550uuAW82zugmXgDNcIVn08pIpquuOOtkJz
- JUNywCv5+Lk+7JBgTu8a5pzAXOmFTkKriU6GOPNVd90+lyySnngRftNz1GebffjRI01D
- KtSCoGwSmnybhRmBv7QQJXsTcFUa62DDCgc7Bp/1eLUm8vaA7NF4jVbteIcraJiGYx0d
- hbnJmnjgSsk4YNr8Xfmshq0lZE9T6I9aC1781wM4+dg+euieon4u7RAeeVm4BYvjdAks
- glEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750372893; x=1750977693;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JYqfIDOo4Y81fOUls78kxCDhUADzm0w1A4KbE+kV/I0=;
- b=hu2Wz/ZFaWQzh3iPf9yIX9lAN5oqzTTgec7hJsNvW12o1WfJLNySFW1kZEh9Bvtq9l
- 1bT8Ei364CreARtAfWiXs7P9tkMoTRhcA0e2epD31Sr5WZ0ppMD3jSJYrfCLhWSjFpg3
- IBgF4mA+4RoajkUf6OfVEKq37kHIJap3pmmZ7kb+MrF9iz2i8wmE8aXrWFKgBXVK3IUb
- 793fQ/fkmBBAyrjaYyRvBB9FyLqXR77jw1SD+DpHNBkXAPzfWaLLoo4RKRB4OKDn7liC
- EmX84w3iPICiF1lUFfCMClFa10oann9FhLJpJyxi56zprkpsf/5/amGGkwZyETYPo7l/
- zdYA==
-X-Gm-Message-State: AOJu0YzOolhJW2EbUFYeoU8yGlKAPA4FysRM6Y0odtSE0Bc9DS4HR9r0
- rDBlXhq1fLAdNYWxM9SqVp1WnBrhbCQHvKOGycKAV2giao0oQaVQJXCmfh+snjIuE4pU8zU77CZ
- AhNSgcCw=
-X-Gm-Gg: ASbGncsnDmPwxbjl4xDthbkAOWQrqkHMjn2mA8hA3hPmcuxWq9Xk33Ie/Vs6kHrAtHh
- MyXR5tLU9dEIfGw7KHirZ4SOCHQFeoUfxa6rtu5BvlIeMePQFzPJ7paEJi3XDjgt6gdzIXtO0E8
- FwlZugfjLSxJhBxQQxa2bjwq5lTSf/hnN9g5+oagzfNBGjaFRXCluaSQEE2Cy052TTZEXxp7tBb
- yomvQu+s6ECNK61IY/D0yYaV7mHYphAcOGDWRXdgVaMoFqGpjwMF3/EtrNkJSf19KZ0VvRxwkMa
- /viNmBqGzTqiXwN42UFIDjyJMq5V3t7g5BwMGdq6VwRK1s1Pk0VR2kY17PnNnaF+WLYXrUB0164
- 0C9dEb4cvmfxyq33nbcRamES9u7Pg8W6sAQAgi1qw
-X-Google-Smtp-Source: AGHT+IFOG69Fu52xgibwQRh423sguVXqU81Wbdf1PctRsPGbOo+7PRS9kZaDB3bYWW+JSGHhTFHzFA==
-X-Received: by 2002:a05:600c:4f81:b0:453:84a:e8d6 with SMTP id
- 5b1f17b1804b1-45365e42db3mr877825e9.1.1750372893345; 
- Thu, 19 Jun 2025 15:41:33 -0700 (PDT)
-Received: from [192.168.69.167] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4535eac8c16sm40202245e9.19.2025.06.19.15.41.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Jun 2025 15:41:32 -0700 (PDT)
-Message-ID: <47990a06-6867-4f5c-9c52-2770d2bba472@linaro.org>
-Date: Fri, 20 Jun 2025 00:41:31 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/20] accel/hvf: Trace VM memory mapping
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uSPLJ-0000bn-1Q
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 20:10:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uSPLH-0004pJ-8Z
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 20:10:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750378249;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=pYpNakpd/aCiEW7d1LZXQH/fJeShelw18jNWP5cJFt0=;
+ b=ATyIW+PZyrenAjk/qstOjL832byzLJPKsqSnTQgemzd+V8jiXaVb0eRrA/tS/n+f9g98Jg
+ af4GHlaRxeR4nkQJGtD4BDLONynmY/JyKxzJjHKTqAkEdGjDC0Jxyl3rD2zAYli3mnx+Bk
+ kNkV147pCx5U4IXMqJXJrEza0/5Ygis=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-266-46vNxYzUPgujR1d_Ud3RmQ-1; Thu,
+ 19 Jun 2025 20:10:45 -0400
+X-MC-Unique: 46vNxYzUPgujR1d_Ud3RmQ-1
+X-Mimecast-MFC-AGG-ID: 46vNxYzUPgujR1d_Ud3RmQ_1750378244
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 57E8F1956089; Fri, 20 Jun 2025 00:10:44 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.120])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 740681956094; Fri, 20 Jun 2025 00:10:43 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Cameron Esfahani <dirty@apple.com>,
- Julian Armistead <julian.armistead@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
- Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>
-References: <20250619131319.47301-1-philmd@linaro.org>
- <20250619131319.47301-8-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250619131319.47301-8-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, eblake@redhat.com,
+ Stefano Garzarella <sgarzare@redhat.com>, qemu-block@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Aarushi Mehta <mehta.aaru20@gmail.com>, hibriansong@gmail.com
+Subject: [PATCH v2 00/12] aio: add the aio_add_sqe() io_uring API
+Date: Thu, 19 Jun 2025 20:08:16 -0400
+Message-ID: <20250620000829.1426291-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.897,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,92 +84,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/6/25 15:13, Philippe Mathieu-Daudé wrote:
-> Trace memory mapped / unmapped in the guest.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   meson.build               | 1 +
->   accel/hvf/trace.h         | 2 ++
->   accel/hvf/hvf-accel-ops.c | 6 ++++++
->   accel/hvf/trace-events    | 7 +++++++
->   4 files changed, 16 insertions(+)
->   create mode 100644 accel/hvf/trace.h
->   create mode 100644 accel/hvf/trace-events
-> 
-> diff --git a/meson.build b/meson.build
-> index 34729c2a3dd..5004678a26b 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3633,6 +3633,7 @@ if have_block
->   endif
->   if have_system
->     trace_events_subdirs += [
-> +    'accel/hvf',
->       'accel/kvm',
->       'audio',
->       'backends',
-> diff --git a/accel/hvf/trace.h b/accel/hvf/trace.h
-> new file mode 100644
-> index 00000000000..83a1883343a
-> --- /dev/null
-> +++ b/accel/hvf/trace.h
-> @@ -0,0 +1,2 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +#include "trace/trace-accel_hvf.h"
-> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-> index d60446b85b8..b38977207d2 100644
-> --- a/accel/hvf/hvf-accel-ops.c
-> +++ b/accel/hvf/hvf-accel-ops.c
-> @@ -59,6 +59,7 @@
->   #include "system/hvf_int.h"
->   #include "system/runstate.h"
->   #include "qemu/guest-random.h"
-> +#include "trace.h"
->   
->   HVFState *hvf_state;
->   
-> @@ -97,6 +98,7 @@ static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
->       if (macslot->present) {
->           if (macslot->size != slot->size) {
->               macslot->present = 0;
-> +            trace_hvf_vm_unmap(macslot->gpa_start, macslot->size);
->               ret = hv_vm_unmap(macslot->gpa_start, macslot->size);
->               assert_hvf_ok(ret);
->           }
-> @@ -109,6 +111,10 @@ static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
->       macslot->present = 1;
->       macslot->gpa_start = slot->start;
->       macslot->size = slot->size;
-> +    trace_hvf_vm_map(slot->start, slot->size, slot->mem, flags,
-> +                     flags & HV_MEMORY_READ ?  'R' : '-',
-> +                     flags & HV_MEMORY_WRITE ? 'W' : '-',
-> +                     flags & HV_MEMORY_EXEC ?  'E' : '-');
->       ret = hv_vm_map(slot->mem, slot->start, slot->size, flags);
->       assert_hvf_ok(ret);
->       return 0;
-> diff --git a/accel/hvf/trace-events b/accel/hvf/trace-events
-> new file mode 100644
-> index 00000000000..3c11f69f305
-> --- /dev/null
-> +++ b/accel/hvf/trace-events
-> @@ -0,0 +1,7 @@
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +#
-> +# See docs/devel/tracing.rst for syntax documentation.
-> +
-> +# hvf-accel-ops.c
-> +hvf_vm_map(uint64_t paddr, uint64_t size, void *vaddr, uint8_t flags, const char r, const char w, const char e) "paddr:0x%016llx size:0x%08llx vaddr:%p flags:0x%02x/%c%c%c"
-> +hvf_vm_unmap(uint64_t paddr, uint64_t size) "paddr:0x%016llx size:0x%08llx"
+v2:
+- Performance improvements
+- Fix pre_sqe -> prep_sqe typo [Eric]
+- Add #endif terminator comment [Eric]
+- Fix spacing in aio_ctx_finalize() argument list [Eric]
+- Add new "block/io_uring: use non-vectored read/write when possible" patch [Eric]
+- Drop Patch 1 because multi-shot POLL_ADD has edge-triggered semantics instead
+  of level-triggered semantics required by QEMU's AioContext APIs. The
+  qemu-iotests 308 test case was hanging because block/export/fuse.c relies on
+  level-triggered semantics. Luckily the performance reason for switching from
+  one-shot to multi-shot has been solved by Patch 2 ("aio-posix: keep polling
+  enabled with fdmon-io_uring.c"), so it's okay to use single-shot.
+- Add a new Patch 1. It's a bug fix for a user-after-free in fdmon-io_uring.c
+  triggered by qemu-iotests iothreads-nbd-export.
 
-For some reason this is still cross-built as 32-bit (although HVF isn't
-supported there, see commit 7f800d34aa9c from 2021). Anyway, please read
-instead (and thanks Pierrick):
+This patch series contains io_uring improvements:
 
-hvf_vm_map(uint64_t paddr, uint64_t size, void *vaddr, uint8_t flags, 
-const char r, const char w, const char e) "paddr:0x%016"PRIx64" 
-size:0x%08"PRIx64" vaddr:%p flags:0x%02x/%c%c%c"
-hvf_vm_unmap(uint64_t paddr, uint64_t size) "paddr:0x%016"PRIx64" 
-size:0x%08"PRIx64
+1. Support the glib event loop in fdmon-io_uring.
+   - aio-posix: fix race between io_uring CQE and AioHandler deletion
+   - aio-posix: keep polling enabled with fdmon-io_uring.c
+   - tests/unit: skip test-nested-aio-poll with io_uring
+   - aio-posix: integrate fdmon into glib event loop
+
+2. Enable fdmon-io_uring on hosts where io_uring is available at runtime.
+   Otherwise continue using ppoll(2) or epoll(7).
+   - aio: remove aio_context_use_g_source()
+
+3. Add the new aio_add_sqe() API for submitting io_uring requests in the QEMU
+   event loop.
+   - aio: free AioContext when aio_context_new() fails
+   - aio: add errp argument to aio_context_setup()
+   - aio-posix: gracefully handle io_uring_queue_init() failure
+   - aio-posix: add aio_add_sqe() API for user-defined io_uring requests
+   - aio-posix: avoid EventNotifier for cqe_handler_bh
+
+4. Use aio_add_sqe() in block/io_uring.c instead of creating a dedicated
+   io_uring context for --blockdev aio=io_uring. This simplifies the code,
+   reduces the number of file descriptors, and demonstrates the aio_add_sqe()
+   API.
+   - block/io_uring: use aio_add_sqe()
+   - block/io_uring: use non-vectored read/write when possible
+
+The highlight is aio_add_sqe(), which is needed for the FUSE-over-io_uring
+Google Summer of Code project and other future QEMU features that natively use
+Linux io_uring functionality.
+
+rw        bs iodepth aio    iothread before after  diff
+randread  4k       1 native        0  78353  84860 +8.3%
+randread  4k      64 native        0 262370 269823 +2.8%
+randwrite 4k       1 native        0 142703 144348 +1.2%
+randwrite 4k      64 native        0 259947 263895 +1.5%
+randread  4k       1 io_uring      0  76883  78270 +1.8%
+randread  4k      64 io_uring      0 269712 250513 -7.1%
+randwrite 4k       1 io_uring      0 143657 131481 -8.5%
+randwrite 4k      64 io_uring      0 274461 264785 -3.5%
+randread  4k       1 native        1  84080  84097 0.0%
+randread  4k      64 native        1 314650 311193 -1.1%
+randwrite 4k       1 native        1 172463 159993 -7.2%
+randwrite 4k      64 native        1 303091 299726 -1.1%
+randread  4k       1 io_uring      1  83415  84081 +0.8%
+randread  4k      64 io_uring      1 324797 318429 -2.0%
+randwrite 4k       1 io_uring      1 174421 172809 -0.9%
+randwrite 4k      64 io_uring      1 323394 312286 -3.4%
+
+Performance is in the same ballpark as without fdmon-io_uring. Results vary
+from run to run due to the timing/batching of requests (even with iodepth=1 due
+to 8 vCPUs using a single IOThread).
+
+Here is the performance from v1 for reference:
+rw        bs iodepth aio    iothread before after  diff
+randread  4k       1 native        0  76281 79707  +4.5%
+randread  4k      64 native        0 255078 247293 -3.1%
+randwrite 4k       1 native        0 132706 123337 -7.1%
+randwrite 4k      64 native        0 275589 245192 -11%
+randread  4k       1 io_uring      0  75284 78023  +3.5%
+randread  4k      64 io_uring      0 254637 248222 -2.5%
+randwrite 4k       1 io_uring      0 126519 128641 +1.7%
+randwrite 4k      64 io_uring      0 258967 249266 -3.7%
+randread  4k       1 native        1  90557 88436  -2.3%
+randread  4k      64 native        1 290673 280456 -3.5%
+randwrite 4k       1 native        1 183015 169106 -7.6%
+randwrite 4k      64 native        1 281316 280078 -0.4%
+randread  4k       1 io_uring      1  92479 86983  -5.9%
+randread  4k      64 io_uring      1 304229 257730 -15.3%
+randwrite 4k       1 io_uring      1 183983 157425 -14.4%
+randwrite 4k      64 io_uring      1 299979 264156 -11.9%
+
+This series replaces the following older series that were held off from merging
+until the QEMU 10.1 development window opened and the performance results were
+collected:
+- "[PATCH 0/3] [RESEND] block: unify block and fdmon io_uring"
+- "[PATCH 0/4] aio-posix: integrate fdmon into glib event loop"
+
+Stefan Hajnoczi (12):
+  aio-posix: fix race between io_uring CQE and AioHandler deletion
+  aio-posix: keep polling enabled with fdmon-io_uring.c
+  tests/unit: skip test-nested-aio-poll with io_uring
+  aio-posix: integrate fdmon into glib event loop
+  aio: remove aio_context_use_g_source()
+  aio: free AioContext when aio_context_new() fails
+  aio: add errp argument to aio_context_setup()
+  aio-posix: gracefully handle io_uring_queue_init() failure
+  aio-posix: add aio_add_sqe() API for user-defined io_uring requests
+  aio-posix: avoid EventNotifier for cqe_handler_bh
+  block/io_uring: use aio_add_sqe()
+  block/io_uring: use non-vectored read/write when possible
+
+ include/block/aio.h               | 136 +++++++-
+ include/block/raw-aio.h           |   5 -
+ util/aio-posix.h                  |  18 +-
+ block/file-posix.c                |  40 +--
+ block/io_uring.c                  | 508 ++++++++----------------------
+ stubs/io_uring.c                  |  32 --
+ tests/unit/test-aio.c             |   7 +-
+ tests/unit/test-nested-aio-poll.c |  13 +-
+ util/aio-posix.c                  | 143 +++++----
+ util/aio-win32.c                  |   6 +-
+ util/async.c                      |  55 +---
+ util/fdmon-epoll.c                |  52 ++-
+ util/fdmon-io_uring.c             | 219 ++++++++++---
+ util/fdmon-poll.c                 |  88 +++++-
+ block/trace-events                |  12 +-
+ stubs/meson.build                 |   3 -
+ util/trace-events                 |   4 +
+ 17 files changed, 703 insertions(+), 638 deletions(-)
+ delete mode 100644 stubs/io_uring.c
+
+-- 
+2.49.0
 
 
