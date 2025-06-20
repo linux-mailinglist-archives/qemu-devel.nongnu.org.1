@@ -2,61 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DCEAE1704
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 11:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73363AE172E
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 11:10:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSXgz-0000O8-Kl; Fri, 20 Jun 2025 05:05:49 -0400
+	id 1uSXkz-000896-IG; Fri, 20 Jun 2025 05:09:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uSXgl-0000LJ-Cc; Fri, 20 Jun 2025 05:05:35 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <dbassey@redhat.com>)
+ id 1uSXko-00080n-6B
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 05:09:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uSXgh-0004lw-SK; Fri, 20 Jun 2025 05:05:35 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bNs2J4pG7z6L59y;
- Fri, 20 Jun 2025 17:03:04 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id BD3DA1402FE;
- Fri, 20 Jun 2025 17:05:22 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 20 Jun
- 2025 11:05:22 +0200
-Date: Fri, 20 Jun 2025 10:05:20 +0100
-To: Eric Auger <eric.auger@redhat.com>
-CC: <eric.auger.pro@gmail.com>, <qemu-devel@nongnu.org>,
- <qemu-arm@nongnu.org>, <peter.maydell@linaro.org>, <imammedo@redhat.com>,
- <gustavo.romero@linaro.org>, <anisinha@redhat.com>, <mst@redhat.com>,
- <shannon.zhaosl@gmail.com>, <pbonzini@redhat.com>, <philmd@linaro.org>,
- <alex.bennee@linaro.org>
-Subject: Re: [PATCH v3 15/29] hw/i386/acpi-build: Use AcpiPciHpState::root
- in acpi_set_pci_info
-Message-ID: <20250620100520.00006e4b@huawei.com>
-In-Reply-To: <20250616094903.885753-16-eric.auger@redhat.com>
-References: <20250616094903.885753-1-eric.auger@redhat.com>
- <20250616094903.885753-16-eric.auger@redhat.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <dbassey@redhat.com>)
+ id 1uSXkk-0005Jl-Ip
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 05:09:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750410579;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=RyiulEU030/U1hDHCh+D3w7yCk1IRUDLH2brxnYKOHw=;
+ b=E5dl77uFxLQKeCxngAPh+JNr3h6c9QFpR4NyculHHJYcZtFvpywGekyrSG40Df4+PjbN63
+ zNOBGt6bOlDbTBSLqd8/WeuxUGSqjxlGebMHwnhPLzKtFhdMi4OGl9k54UDbsZk/wfSbvr
+ cUGQUJIQWiy77TkBtwMREbxLAboN2mk=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-N4qA-ub2M-qwdjFtPPv37A-1; Fri, 20 Jun 2025 05:08:29 -0400
+X-MC-Unique: N4qA-ub2M-qwdjFtPPv37A-1
+X-Mimecast-MFC-AGG-ID: N4qA-ub2M-qwdjFtPPv37A_1750410508
+Received: by mail-io1-f72.google.com with SMTP id
+ ca18e2360f4ac-86d0aa2dc99so119629039f.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 02:08:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750410508; x=1751015308;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RyiulEU030/U1hDHCh+D3w7yCk1IRUDLH2brxnYKOHw=;
+ b=OhekYsR4+hCMB64S05QO+KMiWMuMAK6Foc7snxnvKGDZRl1iei6QNjy7KZrmLubKEe
+ xieHi+weyrI17Ju3Z69TL7ctY5Nf3zO+hXhZTHH33iwgVY6aTrWn7onaVknssybQQeBI
+ Otpq3mKFMpEL9+WQD+nLgnJ7vtv0YzbFATZrdYM8M3ds9fv72ZayxL2veUZfeFXKJ4zu
+ JCR0dQdu+/MtGaqIH6jwk++80un2uIuNSkrcIZIGIvwrWFpYBTITk87dgzsOVYeqRrRZ
+ IKAdmF1vU0agkZ5MxepqTnuobBjCHhtiXymh4FcXllUUi7zF2CP/xlcrOgeH8F3IpQyT
+ WS9Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWpaznBSiYp3KTWFT4WQ0nlfs+/N9dVh56WUV3w2GHjWOi3lAY82W9EXVNBliJPjkzQjpPsqHmAYo9Z@nongnu.org
+X-Gm-Message-State: AOJu0YzZ5+cnES2zQCzLdPajCbfk0qBHCyfK3vHoK5xqAiBHJ+UtO/Rh
+ BtirEgifuobUkB5MR5dccsAjqbdMayI5Y1wzvdZRB5M3jAL3CCF0+NKMleAwD0+8PIXQbe5XkoD
+ K1h3G5ksP4dzTcGB3SSnbz0ZWjTUzpA7CGTkaVq98PXhvEkuoHlv+QFqAF5JKX1JkiRt0cE0C3k
+ /jxg4jYXmBQ8UAifYVG1JMZ8oiupYdqF8=
+X-Gm-Gg: ASbGncuvOIN7Oe9MAeE2JKmwLh0/fCUnC3psjRdqYHzG5FjgXVmEtPC0bwjI3FqEuoT
+ o3DgkvDr1Gmkx5BosRF6eBjUg0It5QdC0Lw0EicwufKBebu64+8WMc+WspLFka72Tm6yAlsUEpL
+ 9yeVYVJQ==
+X-Received: by 2002:a05:6e02:1b07:b0:3dd:f745:1c1a with SMTP id
+ e9e14a558f8ab-3de38c1572dmr22891205ab.4.1750410508174; 
+ Fri, 20 Jun 2025 02:08:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHU6T84jNqWkrf1eei4tSZnrvxw5oTQmgjlddM0b8LEGr0R2+vETz7ewW3eBpEoa/TBQBN62qTbut81cec6P2Q=
+X-Received: by 2002:a05:6e02:1b07:b0:3dd:f745:1c1a with SMTP id
+ e9e14a558f8ab-3de38c1572dmr22890995ab.4.1750410507891; Fri, 20 Jun 2025
+ 02:08:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+From: Dorinda Bassey <dbassey@redhat.com>
+Date: Fri, 20 Jun 2025 11:08:17 +0200
+X-Gm-Features: AX0GCFsR3k1SPdTNqZB_DkmAzt3kAKBYrGuWQUb6NfWXrIuByknzSsYEStLMdHw
+Message-ID: <CACzuRyy7p6FPeu6qugzihecOE8ET-wA87+NTBGscdO4B=HLsrg@mail.gmail.com>
+Subject: Re: [PATCH v5 7/7] vhost-user-devive: Add shmem BAR
+To: Albert Esteve <aesteve@redhat.com>
+Cc: alex.bennee@linaro.org, David Hildenbrand <david@redhat.com>, hi@alyssa.is,
+ Jason Wang <jasowang@redhat.com>, Michael Tsirkin <mst@redhat.com>,
+ qemu-devel@nongnu.org, 
+ Stefano Garzarella <sgarzare@redhat.com>, Sergio Lopez Pascual <slp@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, stevensd@chromium.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=dbassey@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.897,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SORTED_RECIPS=2.499, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,77 +98,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Jun 2025 11:46:44 +0200
-Eric Auger <eric.auger@redhat.com> wrote:
+Hi Albert,
 
-> pcihp acpi_set_pci_info() generic code currently uses
-> acpi_get_i386_pci_host() to retrieve the pci host bridge.
-> 
-> To make it work also on ARM we get rid of that call and
-> directly use AcpiPciHpState::root.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Suggested-by: Igor Mammedov <imammedo@redhat.com>
-Nice
+Thank you for these patches, just a small issue you could add to your
+next series.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>
+> +
+> +            memory_region_init(virtio_new_shmem_region(vdev, i)->mr,
+> +                               OBJECT(vdev), "vub-shm-" + i,
+> +                               memory_sizes[i]);
 
-> 
-> ---
-> 
-> v2 -> v3:
-> - Use AcpiPciHpState::root
-> 
-> v1 -> v2
-> - described the fact we changed the implementation of
->   acpi_get_pci_host() in the commit msg.
-> ---
->  hw/acpi/pcihp.c | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-> index 236e175b69..e79a24b821 100644
-> --- a/hw/acpi/pcihp.c
-> +++ b/hw/acpi/pcihp.c
-> @@ -99,10 +99,10 @@ static void *acpi_set_bsel(PCIBus *bus, void *opaque)
->      return info;
->  }
->  
-> -static void acpi_set_pci_info(bool has_bridge_hotplug)
-> +static void acpi_set_pci_info(AcpiPciHpState *s)
->  {
->      static bool bsel_is_set;
-> -    Object *host = acpi_get_i386_pci_host();
-> +    bool has_bridge_hotplug = s->use_acpi_hotplug_bridge;
->      PCIBus *bus;
->      BSELInfo info = { .bsel_alloc = ACPI_PCIHP_BSEL_DEFAULT,
->                        .has_bridge_hotplug = has_bridge_hotplug };
-> @@ -112,11 +112,8 @@ static void acpi_set_pci_info(bool has_bridge_hotplug)
->      }
->      bsel_is_set = true;
->  
-> -    if (!host) {
-> -        return;
-> -    }
->  
-> -    bus = PCI_HOST_BRIDGE(host)->bus;
-> +    bus = s->root;
->      if (bus) {
->          /* Scan all PCI buses. Set property to enable acpi based hotplug. */
->          pci_for_each_bus_depth_first(bus, acpi_set_bsel, NULL, &info);
-> @@ -266,7 +263,7 @@ static void acpi_pcihp_update(AcpiPciHpState *s)
->  
->  void acpi_pcihp_reset(AcpiPciHpState *s)
->  {
-> -    acpi_set_pci_info(s->use_acpi_hotplug_bridge);
-> +    acpi_set_pci_info(s);
->      acpi_pcihp_update(s);
->  }
->  
+Here, `"vub-shm-" + i` looks like string concatenation but uses
+pointer arithmetic,
+which could cause a crash at runtime for e.g., when `i` is > 0. I
+believe you can use
+g_strdup_printf("vub-shm-%d", i) to fix this, it constructs a new
+null-terminated
+string like "vub-shm-0", "vub-shm-1", "vub-shm-2", etc. If that was
+your intention.
+
+BR,
+Dorinda.
 
 
