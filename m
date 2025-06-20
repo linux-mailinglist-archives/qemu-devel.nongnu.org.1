@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F608AE2099
+	by mail.lfdr.de (Postfix) with ESMTPS id 34014AE2097
 	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:15:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSfJL-0000Ns-7B; Fri, 20 Jun 2025 13:13:55 -0400
+	id 1uSfJN-0000ON-P7; Fri, 20 Jun 2025 13:13:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfJI-0000NF-CH
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:13:52 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfJM-0000OD-S0
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:13:56 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfJG-00048z-MX
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:13:52 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-453398e90e9so15071035e9.1
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:13:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfJL-00049O-Bk
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:13:56 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3a57c8e247cso1801852f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:13:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750439629; x=1751044429; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750439633; x=1751044433; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KWjItNWUmR5RGSyqchV2FSRpv7OZ5HV3ahAIHsZwTNE=;
- b=H6uiiVu0cCngSlFx6bMJ6S9jlj4ReY8uXKrokkHn9edk7zrEZ9zLBzAHNtv3gMhkWZ
- 6rjw74DHTsnrG4AEm3soiUWgrd+qvUnGyqJcO2AbNY0E6+fLGe7bp4txzXEzeyBoEEbQ
- PtdiTO9PsVyrnWAqKLkBunCe8KzQ+qUwimXBBTaBCewQNTIGfIJMchynNkdpCN9lNVPl
- e7PHWBjl9OfmDloWYt4OQ0O/UwTLlg/mVzUdsJBAbAUlGcq59SfbEa0waKpzX+CG0jUb
- TkTv6GZqdhzbzuIs5YKVex8qLKYiwDP8l6XEQid3uldrwKdi/LwSJoCcdk4BxivU5jfe
- N5jw==
+ bh=MLTCRodz0o5mysvOupAvvLEmxMjOqF4SQNNVOBDDWiw=;
+ b=DkyTHxMPyrU+Js/I1qfwF8faP7wGR0Fv+Q+H2W84dVxA8+ufY5XgtDIhX8Fx1L9VGy
+ PwQkCA7GwwKv7UyYvTia1nC4CnlBPRXWtwHZjq94I31AwelLHQcgHbdvgrZyY4u+R1ya
+ nq6EyIS5dd8H7M3qad6NGG0jCmoDfe1/Cw43Dahzy5zlW6BcDv0Dod+qYs75T1CNqepa
+ PnkdfbSmw1zL9019f4zrMd1Ulu+iwdy63K+LO9fDv4UFHLjNkUmapLYBcq4LSLnUsswR
+ hrCTgqNtXZ4+VpG3XZ3S7Co76yVytTQVAtR3prAqPQg1IVdoVA8iQzFIExQuxIvGjDub
+ ZnQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750439629; x=1751044429;
+ d=1e100.net; s=20230601; t=1750439633; x=1751044433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KWjItNWUmR5RGSyqchV2FSRpv7OZ5HV3ahAIHsZwTNE=;
- b=ofUOHTfvegksVfU9xbaq98ytcy53Jm5HG8zJ/QDFKqdRp2geqz+OaeCQpVHDlEJ04i
- u9ejZzqNrjaOC3L9p515ujl04weZpch5yVey0j9xMJLhXtzoNdU+8o1R6zCvcHYGcItg
- YvMI9xGNM3EP63MIZR6K+CbmxMtqAzuYt9gVFzY18s57xffKrip7QXaaE3RfEPNBUI3J
- RSUk1a8TO2OXX9UurT8VAyLkoc4ar2U7AIDwEc7jbeF2kq+gRbbzz/1KIAWdcMu89Vm0
- p2bbtauYVV0aHp586pO+WZoTkjRk//cUAyiB4+9qLwXtrHCmLrKStHBpFQkL9K/3iFV3
- ZPWg==
-X-Gm-Message-State: AOJu0YzdNtpBr4WdnA34wBnMnKqk9I24wyKWi2XCgHQdhnY4iRfCkwF2
- xzB4W+X7JfSo76cI5dYQ8m4eKuXmZW2e2dPLS5xeTVp5XEZaTNDx4DHgKmC1yyHBAXO5Bbee5iw
- 3MuOpv5Q=
-X-Gm-Gg: ASbGncvwEPupcCET1bNr/su0LCQZEroNYLNUMnnOWyrzIuotc+2EAgfRvDv0+RH/Pxx
- 8Ntv5pRC+szFKOCCQe5el67BZO4F5Z3S+LISvyo8ZGqB0/I0raDx7TgC0t2DORKyFNWJxdAbzCh
- nxr2PE6g3O5zo7kOe6aC58ir/petOzR6OAjhSev8plMWPbES6rv2kFqHLy+vwdR3BfrmkQIfWlM
- WxYMf5P2Nzw17UCE/KDgYDdLIZXcoJPCDjF73NX+V4GquUowGJJksEinxhFP18utTN/AcjpKWfC
- 6nnhbcOgvzZrRSJ+exOz+JSJ5sm7MZNA5LP+qgvQb110YPj7g9cWm/IAOIFBtX5dPDK09T5jHM+
- +y/Vaac7oR/wEuEJoc+M/ce5FHFayy4oYr9sz
-X-Google-Smtp-Source: AGHT+IEIaDC2UuVPruwF8/5erDvozr/H080GNw8uV3/Dtl+VXrelhfbqcK/qAj9S0ilpK/c+p/lLsw==
-X-Received: by 2002:a05:600c:871b:b0:43c:f6c6:578c with SMTP id
- 5b1f17b1804b1-453659d0a9bmr40538055e9.15.1750439628807; 
- Fri, 20 Jun 2025 10:13:48 -0700 (PDT)
+ bh=MLTCRodz0o5mysvOupAvvLEmxMjOqF4SQNNVOBDDWiw=;
+ b=eeBSLGmpj+qGKiHvU2kYp523RdwiGjH7OG13wt8lg5W4BWqdsi+xtDYzWw7qzgiJdZ
+ c5B6b9ETo0LZsoVVhhr0K4phdhhbQiJW38Op8K8iH3MtjQUtWsl3THQfi/Lee1Thsd4a
+ bePapPElc3NOgYWsRvxPNs0XdJh/6WljyCTmt0ewxtJsurVAyaNDsYEp2ShPIMklDVHa
+ TVRZKeg38vKavH7E+TDnRf+LAimqSj3/kNB4DJmArOxCXb4rWebXoTpeBG6oI5bG4YDI
+ O+vgw59IUlUOY9xtwltskbo8TznEfMyUCEHGjGxBaDyyer/dcrFu922iRYqfHTcMPZpj
+ Xrdw==
+X-Gm-Message-State: AOJu0YyqJ8wyZenfutT82bQea8cSt3pYrSCQIHQqv6Oh31MS3b8N2NDs
+ 0BOOgtAipa0Q50nFcIjqMx1UGOKV8njCAQuob77HOhwfyNcBzfChnOgg/j//tvhM8SRNK9rvQx7
+ 0ub/DQak=
+X-Gm-Gg: ASbGnctCELINqv1Axj37hQSnC5W2mR9OVQBTSC4SpJycQ+DHzhIX0VoMKHSK3vHS4VD
+ dHQb5bW7kX1hj+W6t2wU1gQi70XLCe6qNsS+xpFR96fP2gehhvOVQR/t17rZ2dFbBEzm0CO3Ibw
+ z+eoAi+upVI9Le5Z2X11Re70C7PgEqfNtn761UWCAwIWaN76DDXleffHUKHhZD8pd4pg8R+quoS
+ R32ViF/TV541CRqbQTTAdClD5Pu40/L/oJ2HJP2jBw+GOSHxIWR9FBfOVVdUz+fA0X4EvP09DK0
+ 1CIPSm6veExnvSTt32x7HKwA0R3WMg3uN7N3pOs0eLOKtk5NhhLy7hqktOftBXns9rzhaSMt+Kt
+ y3yuS6K3X8QbNLbjxagrTfx03VUqdwT4NxhyL
+X-Google-Smtp-Source: AGHT+IHe0qDpGZhRv+0c12EZzI+rlrjv+/k20MGv24cklyzD19GJoFw/Ub/AG738N+6wC6W6RY+uPg==
+X-Received: by 2002:a05:6000:70d:b0:3a4:ec32:e4f3 with SMTP id
+ ffacd0b85a97d-3a6d12e8d73mr2677942f8f.17.1750439633503; 
+ Fri, 20 Jun 2025 10:13:53 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d1190d13sm2565934f8f.90.2025.06.20.10.13.47
+ 5b1f17b1804b1-4535ebced8asm65478975e9.40.2025.06.20.10.13.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:13:48 -0700 (PDT)
+ Fri, 20 Jun 2025 10:13:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -73,18 +73,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 01/48] system/runstate: Document
- qemu_add_vm_change_state_handler()
-Date: Fri, 20 Jun 2025 19:12:54 +0200
-Message-ID: <20250620171342.92678-2-philmd@linaro.org>
+Subject: [RFC PATCH v2 02/48] system/cpus: Defer memory layout changes until
+ vCPUs are realized
+Date: Fri, 20 Jun 2025 19:12:55 +0200
+Message-ID: <20250620171342.92678-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620171342.92678-1-philmd@linaro.org>
 References: <20250620171342.92678-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,32 +107,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+vCPUs are not really usable until fully realized. Do not attempt
+to commit memory changes in the middle of vCPU realization. Defer
+until realization is completed and vCPU fully operational.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/system/runstate.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ system/physmem.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/system/runstate.h b/include/system/runstate.h
-index fdd5c4a5172..b6e8d6beab7 100644
---- a/include/system/runstate.h
-+++ b/include/system/runstate.h
-@@ -14,6 +14,16 @@ void runstate_replay_enable(void);
- typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
- typedef int VMChangeStateHandlerWithRet(void *opaque, bool running, RunState state);
+diff --git a/system/physmem.c b/system/physmem.c
+index a8a9ca309ea..7004de3992c 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -2773,6 +2773,14 @@ static void tcg_commit(MemoryListener *listener)
+     cpuas = container_of(listener, CPUAddressSpace, tcg_as_listener);
+     cpu = cpuas->cpu;
  
-+/**
-+ * qemu_add_vm_change_state_handler:
-+ * @cb: the callback to invoke
-+ * @opaque: user data passed to the callback
-+ *
-+ * Register a callback function that is invoked when the vm starts or stops
-+ * running.
-+ *
-+ * Returns: an entry to be freed using qemu_del_vm_change_state_handler()
-+ */
- VMChangeStateEntry *qemu_add_vm_change_state_handler(VMChangeStateHandler *cb,
-                                                      void *opaque);
- VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
++    if (!qdev_is_realized(DEVICE(cpu))) {
++        /*
++         * The listener is also called during realize, before
++         * all of the tcg machinery for run-on is initialized.
++         */
++        return;
++    }
++
+     /*
+      * Defer changes to as->memory_dispatch until the cpu is quiescent.
+      * Otherwise we race between (1) other cpu threads and (2) ongoing
 -- 
 2.49.0
 
