@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B90AE103B
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 02:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FDDAE1044
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 02:14:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSPLR-0000eP-Mp; Thu, 19 Jun 2025 20:11:01 -0400
+	id 1uSPLQ-0000dc-KL; Thu, 19 Jun 2025 20:11:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uSPLK-0000c6-Bo
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 20:10:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uSPLM-0000cX-EL
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 20:10:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uSPLI-0004pX-8W
- for qemu-devel@nongnu.org; Thu, 19 Jun 2025 20:10:54 -0400
+ id 1uSPLK-0004qK-Rv
+ for qemu-devel@nongnu.org; Thu, 19 Jun 2025 20:10:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750378251;
+ s=mimecast20190719; t=1750378254;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bWiuPdGNiw6hej+OSFD3Xs/rvRXOuQm8S9rKave5hhI=;
- b=PQtFQEYCtwKxqCJCXiXLVy5YokQJKZvxWd3FywjQLi84PrZrOR1ObzXgmCJvL6n/KFeMrD
- VTIb4ct9k1L/qpv3gjp3+26CsMQ2A8UqnbEYBzVr2XlmhXZWzRvjhGyYgEgTM49n2fwtwc
- vdI1VaX4Jaq3RzcyG8jFfc3+AWtP8UU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=ABjFHVE9PdYgMVctSBMt9rQQIoyVefcMDqx5SE750d4=;
+ b=E0iAdvzyCH2742Ukq/Y1Tp3lG1VWIrnGj/nrTWzdcXGRlMP03WBdUJdilRV0OdZVbSOHql
+ HKBohGaL5XmqCCw/d5AZjCrUhnRG5oezAsBTdVLFpzJHvDDuxhDOQN71Hdd793jL8ln3DS
+ q/aADevq3HBurZuHlKR4X3y4YSbRqo4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-27-wJvCWWfGNXKRgSQ36bGaQA-1; Thu,
- 19 Jun 2025 20:10:48 -0400
-X-MC-Unique: wJvCWWfGNXKRgSQ36bGaQA-1
-X-Mimecast-MFC-AGG-ID: wJvCWWfGNXKRgSQ36bGaQA_1750378247
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-Y9f75zWxM-mG3sDYUzfSVQ-1; Thu,
+ 19 Jun 2025 20:10:50 -0400
+X-MC-Unique: Y9f75zWxM-mG3sDYUzfSVQ-1
+X-Mimecast-MFC-AGG-ID: Y9f75zWxM-mG3sDYUzfSVQ_1750378249
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C7EE31801BD8; Fri, 20 Jun 2025 00:10:46 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D31D119560A2; Fri, 20 Jun 2025 00:10:48 +0000 (UTC)
 Received: from localhost (unknown [10.2.16.120])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BBC2518003FC; Fri, 20 Jun 2025 00:10:45 +0000 (UTC)
+ id 1E53018003FC; Fri, 20 Jun 2025 00:10:47 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
@@ -52,17 +52,17 @@ Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Fam Zheng <fam@euphon.net>, eblake@redhat.com,
  Stefano Garzarella <sgarzare@redhat.com>, qemu-block@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>,
- Aarushi Mehta <mehta.aaru20@gmail.com>, hibriansong@gmail.com
-Subject: [PATCH v2 01/12] aio-posix: fix race between io_uring CQE and
- AioHandler deletion
-Date: Thu, 19 Jun 2025 20:08:17 -0400
-Message-ID: <20250620000829.1426291-2-stefanha@redhat.com>
+ Aarushi Mehta <mehta.aaru20@gmail.com>, hibriansong@gmail.com,
+ Chao Gao <chao.gao@intel.com>
+Subject: [PATCH v2 02/12] aio-posix: keep polling enabled with fdmon-io_uring.c
+Date: Thu, 19 Jun 2025 20:08:18 -0400
+Message-ID: <20250620000829.1426291-3-stefanha@redhat.com>
 In-Reply-To: <20250620000829.1426291-1-stefanha@redhat.com>
 References: <20250620000829.1426291-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -87,84 +87,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When an AioHandler is enqueued on ctx->submit_list for removal, the
-fill_sq_ring() function will submit an io_uring POLL_REMOVE operation to
-cancel the in-flight POLL_ADD operation.
+Commit 816a430c517e ("util/aio: Defer disabling poll mode as long as
+possible") kept polling enabled when the event loop timeout is 0. Since
+there is no timeout the event loop will continue immediately and the
+overhead of disabling and re-enabling polling can be avoided.
 
-There is a race when another thread enqueues an AioHandler for deletion
-on ctx->submit_list when the POLL_ADD CQE has already appeared. In that
-case POLL_REMOVE is unnecessary. The code already handled this, but
-forgot that the AioHandler itself is still on ctx->submit_list when the
-POLL_ADD CQE is being processed. It's unsafe to delete the AioHandler at
-that point in time (use-after-free).
+fdmon-io_uring.c is unable to take advantage of this optimization
+because its ->need_wait() function returns true whenever there are new
+io_uring SQEs to submit:
 
-Solve this problem by keeping the AioHandler alive but setting a flag so
-that it will be deleted by fill_sq_ring() when it runs.
+  if (timeout || ctx->fdmon_ops->need_wait(ctx)) {
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Polling will be disabled even when timeout == 0.
+
+Extend the optimization to handle the case when need_wait() returns true
+and timeout == 0.
+
+Cc: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- util/fdmon-io_uring.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ util/aio-posix.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
-index b0d68bdc44..2e40fff09a 100644
---- a/util/fdmon-io_uring.c
-+++ b/util/fdmon-io_uring.c
-@@ -52,9 +52,10 @@ enum {
-     FDMON_IO_URING_ENTRIES  = 128, /* sq/cq ring size */
+diff --git a/util/aio-posix.c b/util/aio-posix.c
+index 2e0a5dadc4..824fdc34cc 100644
+--- a/util/aio-posix.c
++++ b/util/aio-posix.c
+@@ -559,7 +559,14 @@ static bool run_poll_handlers(AioContext *ctx, AioHandlerList *ready_list,
+         elapsed_time = qemu_clock_get_ns(QEMU_CLOCK_REALTIME) - start_time;
+         max_ns = qemu_soonest_timeout(*timeout, max_ns);
+         assert(!(max_ns && progress));
+-    } while (elapsed_time < max_ns && !ctx->fdmon_ops->need_wait(ctx));
++
++        if (ctx->fdmon_ops->need_wait(ctx)) {
++            if (fdmon_supports_polling(ctx)) {
++                *timeout = 0; /* stay in polling mode */
++            }
++            break;
++        }
++    } while (elapsed_time < max_ns);
  
-     /* AioHandler::flags */
--    FDMON_IO_URING_PENDING  = (1 << 0),
--    FDMON_IO_URING_ADD      = (1 << 1),
--    FDMON_IO_URING_REMOVE   = (1 << 2),
-+    FDMON_IO_URING_PENDING            = (1 << 0),
-+    FDMON_IO_URING_ADD                = (1 << 1),
-+    FDMON_IO_URING_REMOVE             = (1 << 2),
-+    FDMON_IO_URING_DELETE_AIO_HANDLER = (1 << 3),
- };
- 
- static inline int poll_events_from_pfd(int pfd_events)
-@@ -218,6 +219,9 @@ static void fill_sq_ring(AioContext *ctx)
-         if (flags & FDMON_IO_URING_REMOVE) {
-             add_poll_remove_sqe(ctx, node);
+     if (remove_idle_poll_handlers(ctx, ready_list,
+                                   start_time + elapsed_time)) {
+@@ -722,7 +729,7 @@ bool aio_poll(AioContext *ctx, bool blocking)
+          * up IO threads when some work becomes pending. It is essential to
+          * avoid hangs or unnecessary latency.
+          */
+-        if (poll_set_started(ctx, &ready_list, false)) {
++        if (timeout && poll_set_started(ctx, &ready_list, false)) {
+             timeout = 0;
+             progress = true;
          }
-+        if (flags & FDMON_IO_URING_DELETE_AIO_HANDLER) {
-+            QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_deleted);
-+        }
-     }
- }
- 
-@@ -241,7 +245,12 @@ static bool process_cqe(AioContext *ctx,
-      */
-     flags = qatomic_fetch_and(&node->flags, ~FDMON_IO_URING_REMOVE);
-     if (flags & FDMON_IO_URING_REMOVE) {
--        QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_deleted);
-+        if (flags & FDMON_IO_URING_PENDING) {
-+            /* Still on ctx->submit_list, defer deletion until fill_sq_ring() */
-+            qatomic_or(&node->flags, FDMON_IO_URING_DELETE_AIO_HANDLER);
-+        } else {
-+            QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_deleted);
-+        }
-         return false;
-     }
- 
-@@ -347,10 +356,13 @@ void fdmon_io_uring_destroy(AioContext *ctx)
-             unsigned flags = qatomic_fetch_and(&node->flags,
-                     ~(FDMON_IO_URING_PENDING |
-                       FDMON_IO_URING_ADD |
--                      FDMON_IO_URING_REMOVE));
-+                      FDMON_IO_URING_REMOVE |
-+                      FDMON_IO_URING_DELETE_AIO_HANDLER));
- 
--            if (flags & FDMON_IO_URING_REMOVE) {
--                QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_deleted);
-+            if ((flags & FDMON_IO_URING_REMOVE) ||
-+                (flags & FDMON_IO_URING_DELETE_AIO_HANDLER)) {
-+                QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers,
-+                                      node, node_deleted);
-             }
- 
-             QSLIST_REMOVE_HEAD_RCU(&ctx->submit_list, node_submitted);
 -- 
 2.49.0
 
