@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3963EAE253E
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BAAAE25B8
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:30:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSk4b-0000zA-HW; Fri, 20 Jun 2025 18:19:01 -0400
+	id 1uSk5O-0002Zp-QK; Fri, 20 Jun 2025 18:19:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfXU-00075w-6y
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:28:32 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfXb-00076U-LU
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:28:39 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfXS-0005u1-LC
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:28:31 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3a536ecbf6fso1272125f8f.2
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:28:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfXZ-0005uS-VS
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:28:39 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3a4fd1ba177so1389566f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:28:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750440508; x=1751045308; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750440516; x=1751045316; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=STDApn3eyG2Een3rx47c8ZSsM7JmhhtYi1atqcuJuGI=;
- b=hlv5Zoghj/aVYys0l1TfmNqpAuttmx7m7qc0iXW2gRLtRsKJ7/vamo3ihnZAv51kht
- EuhZVNQO+Pns+o0V75gUJT+bBuJ1UpdrY6/yRuoGPDy3Gzcg1hBEQW0+U5LHvOU92UYS
- 2qLAOXN2YwtH7iFsXaIuSnV717I0Boj9QpLxSc+LSewQbkbaaTmcXYrinhub9FZWTbpP
- RobMRLxQ/MPIl+9NxPl2QO/9uEEsjjKqDKFA3TI6LNEwfjrecz0d4Jj2p3fn/mqvcSBY
- zouMd5t7ZF+ho7HS+txizGph9GiDqgyXTxA/Gw+womN5Cn+H5IgzMF6rQMuLZ1fROL9Z
- AyGQ==
+ bh=BVfl4a7zvO8Yq+0ojWc2U1WLc+2IZ+gWS0XMhXqWu+I=;
+ b=vHEnxix22JjyjieKWX2fevIQEUEb0srNS9xKwdLZrka9CLDELYvG/Ivm4f75miMep+
+ vlpz1KAm+Ke+9L0Na4DHeqt2GyQIoPq+P2Lv2KnGALYK47WwsiaaFuD0ZLn7RorkIDVn
+ WSa8Tm6tnsTtPp0f48Ng2UfGfC4Eg5Rs99MVSeymhUV9G6OeuHuqAG5RzGxiPrh+7HOt
+ UwWKfPUQvIw0U26XuNwlLl9w7luloA3wIb6T7g4YgG3cPQgaS2QXHV/ySPSkeZLBm8gv
+ RKtzaZUrwgMIeyPhL7rXQdUoSTDc4z2WVAonyegrnx6TAQL4QK+RigIZP/OZ8BNiBc5u
+ c+BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750440508; x=1751045308;
+ d=1e100.net; s=20230601; t=1750440516; x=1751045316;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=STDApn3eyG2Een3rx47c8ZSsM7JmhhtYi1atqcuJuGI=;
- b=QlWDiSj+INIkKiPjVcia24EMLFvEPw1n7gHTLMyVThe8+B5RalYVOPZzrs1yd3s9LB
- z20n80ezfe8KCuxtIhZUB1wiFV1+1qY4cpFkTQauN8GBM6ESRI6h9zie6Ffl/hfC6XXs
- FULm9DdZ+CC5gf/cfOBVLCBAADoAFIa/p/ohXAd75BZPEPEWJd/RANCHM3M2v3lD/3C2
- ta3YPusvZBXYJztWS6lK1K++S0e0UR4+KmZf9SZlK96Zy7RGNnkHkfW8BO1ZuOpqYIEt
- bgZbldU5Fb2BVkIcv7K77fD66a1OqNBVhLUaEeXC4W2HEunlVZ/IrTVyWAo+LuEH/ky/
- 0aog==
-X-Gm-Message-State: AOJu0YxUgyL98ZQZ/ozo6trQ9mnHup9VVnlhv6xqkrJKnjTV6mCvkR3Y
- +1FeHTWpu8A9TGIMaiqRKtQ21wXR5YPZI1Rb6Ut+rfgbM9kGzv/gjQKNFXUrJVr88GNaxRjcV++
- YZAKsfaTD5w==
-X-Gm-Gg: ASbGncvDEumSMnCtQB6n5jMRwcK1deIYpEj1KgDauWF1+7t9m4Fn5KDhljnh1GlN/sJ
- 3NbZeraPzZf/VjzddCC6ADAwC7nTPFIqJTdXS5DR/nj0A4aUsGeZI4mW1zib8dhkOnGrh7jAWi4
- q1nyU12RI4HYBxylsM7p+bQrOviEQJ4LteRVGIyn379aI6AhXmiwX5X1Ep6ryjOAuYzsIvXaaH5
- 2HmQLWHWB+/WA986Dl0EFsXu9seG0oO0+HsJpMdn5o7JcLIhzk5a4y4aG+ezL+LHSBgaPf0aZ3J
- HD4gvUFpbfA6z6dMma9dBD1RXplwqCHYyWh2xVaYRb2wB/z1KYTj0ToF+sNvJ7PtPYU9TndSQwq
- EdNr3fLKi7MGhtP+l16+9rka2wwwd0uMljfrMxUhG6pD7vDVqJpA61zKC
-X-Google-Smtp-Source: AGHT+IHB3mVE6Ruqg0QMkCjhr801J+dk5vYQSO5tAz8i2qrqsLLTbK+g3FGhVhv341WIcSlzQ2syfg==
-X-Received: by 2002:a05:6000:4021:b0:3a6:d145:e2cc with SMTP id
- ffacd0b85a97d-3a6d145e448mr3121916f8f.15.1750440508210; 
- Fri, 20 Jun 2025 10:28:28 -0700 (PDT)
+ bh=BVfl4a7zvO8Yq+0ojWc2U1WLc+2IZ+gWS0XMhXqWu+I=;
+ b=d0HvZHscu32B99UZjqH1QU4hJrwwzydxLMFmvyPvkXcgBJ75YJnYV5ZV4rjWzViEiN
+ Ncd+If+I6iRWUnI8PlO08qHFGoGgZcAmYD4by47Nb+nUfJcLuin++mqp/AFFy82gdXNM
+ IM+8FvboG0ly5a2BzM8CX135vbtdoyQUW5NtC/M7TvIPeoIQ/vFyDgW8a10Hg63UKnfG
+ rOG93PsN0joTfCV9TOzB1fcFsFhV+/f1QHaGyEJLVgzyBOGwbUSr2ofuDIDle+DGbIUU
+ sI/1md2aoufbl7nbNZ3MbM5hFIhZGrEZBRdHT2qVM7XxBcWrlHYKspI1EyFM5yzVs1i+
+ Jo6Q==
+X-Gm-Message-State: AOJu0YwuqYiyBdMyGPYEeNrUb+mtNMBeLZZXSBs00bI0ZfMgJcHWCwnE
+ mNuAcN/8Ju+qwkvt0FUckPSaGMT5jlcFZ+eGsElcFLq4pBStHbwxB8MCb/0sfo3fTNeWeTkOsHw
+ NePHx7JP8SA==
+X-Gm-Gg: ASbGncsRPAjWsx9izFgoqudZPbSaUE1CTPZX7TfZG2GCBFVKBYmZ6tgfz512AuLzW+j
+ 1IR3EPPBH4IfGUUh5hE73tjQCN9JeQ55kpErstInjpRozDmhxggqz9OuP8KI/Jm6CGCp26rRjvq
+ 6P7wUtS8E+pN/JLHh6c5WDTzAB6qkrOVsUq0vt9+6XV25wEB1MiczjeV/dCYT0fmj4TZdIWaQ+7
+ qV6IK24qlWFuRiS0wC5dahWvLNJBJ/W9LoMT2VO2U78zNqNp2dNBuXYQUbQGieDycQwv3Vw6qcr
+ RAfiFDfAoZ7uzeRICFacuge3QOR+BshcgccHL584elDfGPLFC4K5bjNz7GiDuU07/I5EHmO/Qz1
+ PUxyYNrKIPiutburjCRCB/a3acw0DWatk/jO1swdsX9Ctu+3Vvza4QygfCiWYZ/pYrIg=
+X-Google-Smtp-Source: AGHT+IEAkv3Pa7GOZEsZM4opT+mJ556FcRV4bQ5YN9/6kGe/S/Znz5iGqPDz272WqKJH5NRx9Y/qyw==
+X-Received: by 2002:a05:6000:178d:b0:3a4:ebfc:8c7 with SMTP id
+ ffacd0b85a97d-3a6d278a2a8mr3083233f8f.8.1750440516113; 
+ Fri, 20 Jun 2025 10:28:36 -0700 (PDT)
 Received: from localhost.localdomain
  (101.red-95-127-63.dynamicip.rima-tde.net. [95.127.63.101])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4535e98b66asm64194555e9.17.2025.06.20.10.28.25
+ ffacd0b85a97d-3a6d117bfd9sm2647567f8f.57.2025.06.20.10.28.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:28:27 -0700 (PDT)
+ Fri, 20 Jun 2025 10:28:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>,
@@ -75,17 +75,17 @@ Cc: Alexander Graf <agraf@csgraf.de>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH RESEND 04/42] accel/split: Implement accel_init_machine()
-Date: Fri, 20 Jun 2025 19:27:12 +0200
-Message-ID: <20250620172751.94231-5-philmd@linaro.org>
+Subject: [RFC PATCH RESEND 05/42] accel/split: Expose 'hw' and 'sw' properties
+Date: Fri, 20 Jun 2025 19:27:13 +0200
+Message-ID: <20250620172751.94231-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620172751.94231-1-philmd@linaro.org>
 References: <20250620172751.94231-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,89 +108,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Force to TCG + HVF for now.
+In preparation of other accelerator (or potential emulator),
+expose the "hw" and "sw" keys. Only HVF and TCG allowed so far.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/split/split-accel.h |  3 +++
- accel/split/split-all.c   | 30 +++++++++++++++++++++++++++++-
- 2 files changed, 32 insertions(+), 1 deletion(-)
+ accel/split/split-all.c | 46 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/accel/split/split-accel.h b/accel/split/split-accel.h
-index cc825a92a6d..19fb530f207 100644
---- a/accel/split/split-accel.h
-+++ b/accel/split/split-accel.h
-@@ -33,6 +33,9 @@ struct SplitAccelState {
- 
-     AccelState *hw;
-     AccelState *sw;
-+
-+    char *hw_name;
-+    char *sw_name;
- };
- 
- #endif /* SPLIT_ACCEL_H */
 diff --git a/accel/split/split-all.c b/accel/split/split-all.c
-index c86d0e8583a..7cbe32ea768 100644
+index 7cbe32ea768..28f626d0ff4 100644
 --- a/accel/split/split-all.c
 +++ b/accel/split/split-all.c
-@@ -8,13 +8,32 @@
+@@ -8,6 +8,7 @@
  
  #include "qemu/osdep.h"
  #include "qemu/accel.h"
-+#include "hw/boards.h"
-+#include "accel/accel-internal.h"
++#include "qapi/error.h"
+ #include "hw/boards.h"
+ #include "accel/accel-internal.h"
  #include "split-accel.h"
- 
- bool split_allowed;
- 
- static int split_accel_init_machine(MachineState *ms, AccelState *as)
- {
--    g_assert_not_reached();
-+    SplitAccelState *sas = SPLIT_ACCEL(as);
-+    AccelClass *hwc;
-+    AccelClass *swc;
-+
-+    swc = accel_find(sas->sw_name);
-+    accel_init_ops_interfaces(swc);
-+    hwc = accel_find(sas->hw_name);
-+    accel_init_ops_interfaces(hwc);
-+
-+    sas->sw = ACCEL(object_new_with_class(OBJECT_CLASS(swc)));
-+    sas->hw = ACCEL(object_new_with_class(OBJECT_CLASS(hwc)));
-+
-+    accel_init_machine(sas->sw, ms);
-+    accel_init_machine(sas->hw, ms);
-+
-+    ms->accelerator = as;
-+
-+    return 0;
- }
- 
- static void split_setup_post(MachineState *ms, AccelState *accel)
-@@ -59,6 +78,14 @@ static void split_get_stats(AccelState *as, GString *buf)
+@@ -78,6 +79,42 @@ static void split_get_stats(AccelState *as, GString *buf)
      g_assert_not_reached();
  }
  
-+static void split_accel_instance_init(Object *obj)
++static char *split_get_hw(Object *obj, Error **errp)
 +{
-+    SplitAccelState *sas = SPLIT_ACCEL(obj);
++    SplitAccelState *s = SPLIT_ACCEL(obj);
 +
-+    sas->sw_name = g_strdup("tcg");
-+    sas->hw_name = g_strdup("hvf");
++    return g_strdup(s->hw_name);
 +}
 +
- static void split_accel_class_init(ObjectClass *oc, const void *data)
++static void split_set_hw(Object *obj, const char *value, Error **errp)
++{
++    SplitAccelState *s = SPLIT_ACCEL(obj);
++
++    if (strcmp(value, "hvf") == 0) {
++        s->hw_name = g_strdup(value);
++    } else {
++        error_setg(errp, "'%s' accelerator no supported", value);
++    }
++}
++
++static char *split_get_sw(Object *obj, Error **errp)
++{
++    SplitAccelState *s = SPLIT_ACCEL(obj);
++
++    return g_strdup(s->sw_name);
++}
++
++static void split_set_sw(Object *obj, const char *value, Error **errp)
++{
++    SplitAccelState *s = SPLIT_ACCEL(obj);
++
++    if (strcmp(value, "tcg") == 0) {
++        s->hw_name = g_strdup(value);
++    } else {
++        error_setg(errp, "'%s' emulator no supported", value);
++    }
++}
++
+ static void split_accel_instance_init(Object *obj)
  {
-     AccelClass *ac = ACCEL_CLASS(oc);
-@@ -79,6 +106,7 @@ static const TypeInfo split_accel_type = {
-     .name = TYPE_SPLIT_ACCEL,
-     .parent = TYPE_ACCEL,
-     .instance_size = sizeof(SplitAccelState),
-+    .instance_init  = split_accel_instance_init,
-     .class_size = sizeof(SplitAccelClass),
-     .class_init = split_accel_class_init,
- };
+     SplitAccelState *sas = SPLIT_ACCEL(obj);
+@@ -100,6 +137,15 @@ static void split_accel_class_init(ObjectClass *oc, const void *data)
+     ac->get_stats = split_get_stats;
+     ac->allowed = &split_allowed;
+     ac->compat_props = NULL;
++
++    object_class_property_add_str(oc, "hw",
++                                  split_get_hw,
++                                  split_set_hw);
++    object_class_property_set_description(oc, "hw", "Hardware accelerator");
++    object_class_property_add_str(oc, "sw",
++                                  split_get_sw,
++                                  split_set_sw);
++    object_class_property_set_description(oc, "sw", "Software emulator");
+ }
+ 
+ static const TypeInfo split_accel_type = {
 -- 
 2.49.0
 
