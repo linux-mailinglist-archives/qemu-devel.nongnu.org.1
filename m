@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50459AE1BAD
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D06AE1BB3
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:12:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSbUq-00063g-HA; Fri, 20 Jun 2025 09:09:32 -0400
+	id 1uSbV2-0006Cz-TK; Fri, 20 Jun 2025 09:09:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUe-00060Y-FC
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:09:20 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUj-00066K-AT
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:09:26 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUc-0004wU-HY
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:09:20 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3a50fc819f2so1494930f8f.2
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:09:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUh-0004yD-Sa
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:09:25 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-450cfb79177so9814495e9.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:09:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750424956; x=1751029756; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750424962; x=1751029762; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tlzGRKm85UWY2+8yyhfs+sQBrY+hIXBP3ETvuuIJ2dg=;
- b=Pht7qKYbs4PNh3+1sfSzreFNcmsSlficbWNgEYaQqnMWJ53RYjmk4ycvkeJn8SnAKp
- U4IKxlgwjv4ppwiiLvNSkjkoWRO0fHrqLjfM+MmYkIgo9q76syP1NOFY36uh2DMksbzQ
- cGyROTZianVReO27rd3vXGy5jnNx2p+aM7LBXJR91LkPPvV0Pfjb4jXcuAmKu5mfPVwJ
- eQUEpQI2sn6gLVMyPjq5G1YNYHwZMAjumEGddl/Rkk9q02NOSjdrZ1a446k/tz0n8kFS
- X81pjBD44jE07f2w7P9DEUzNXOTik9VQsMGaWnB2LHrqV4Gr9P2IdlvegGcyUnoEldhE
- ODVA==
+ bh=V640ljTD2H/6yk77CGg8pqgiDQ7Rk/byXNy/qGehgeE=;
+ b=kXEbevRhvpba/YdO1ed65S3u9QgjQRfftfnA4cF0WhM5bAhjDO2+zoD993uK0RHDsM
+ CzenPvDr/+kIKhC+mlOIsvdC1c6gFO/vyaMZrawroZnStV52cXDSTD2ZiEVBMC5+3kw5
+ BXUS0vFV1Jv+AZVsPZOxntkpJRnDuTtK054pPXLnaSGLSC3l6Pw36e8RPveA4kGgAijH
+ Cdn6AM3jH8VmBQAai/UFko+wqajrVWAP/7VJgt3GYdu+IHejg7s7+rpdsnV5I3Zr2fZ/
+ qK4hAx/zMCPGmB0Ftoj5E3UB0bAp63HjnAkdGiUf+C5n2WN1ScApdPuaQDKoNuZNIDqT
+ /VdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750424956; x=1751029756;
+ d=1e100.net; s=20230601; t=1750424962; x=1751029762;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tlzGRKm85UWY2+8yyhfs+sQBrY+hIXBP3ETvuuIJ2dg=;
- b=oS/udG7MJ4W+88Z5MLtxG5t/uIqC+Sxt1wc0t3JOa9dnD3z+dFJ8RMNnnJZbFVaOYD
- /24bIaDG3R63DWbTJheuGIGuzBS2dI7fApmt6z340tZtUnOPfawbyWZ96o/AYrcST+Hu
- 73wHUCy9T7e4nY9+Z4cAg8pgDF4WGDrYg537s8PiEqoyGfQ5DAZMdMN9dfv8o1aQEB95
- it/W9TiRqbT6L4ugmxTtN5qKaSzlJrNrhNAwwIu4RLdfvDeSYPfW7M/iNna+jshwUmP2
- zQCvUqUipfKz4Ef+XT+fS4cnCBA7COI5DZvxhg+mVOp6jGfCel3TeKS+xVRd7cr/VBvE
- bpdg==
-X-Gm-Message-State: AOJu0YzM4z5DuwwhLkdIncXEiRW7nHpCTHPumXhwsVY+7tkxxCC9e/Xt
- A0LNAIcZqxRg39ypb7MQsYdQMFtcKb9lD71nKLmtf9xNhJcAJWwbDOppAbUc1kcVabWp3Y99Rpv
- 8I+69cys=
-X-Gm-Gg: ASbGncsIA83Ym5x+DAYcSMeh4DCF5ozD27RWNsPXZo9zM2/QQ48+FsN0SgfpSMW0H/D
- +lmuC/yct9uWK215F8KoQ0fuYArKFVRuU0LQ3nAsClUymw/e9HSAQ54Jue5bO3ucJ0xColVEE7p
- C6GfLoFKDi1UF6Ss4zYupkTVR/fZMx/eZj6VvuSK72VCsQN1wqhB4nOqp1L/Kw+H6FafrVFhIRx
- s8VvNMgvDrzmBnZJnJLSStCZFyxNuqx91g5ge/vBfWPDZ5Knw1IqjgjyQuu/jEfuLfpIkpyvDJ4
- VxSXdlWUi6JOgChO4VpQ+uhTSeySOh0vfT6rsaDz660YRN4+dQphsROUVOHSQq6BD34FjVUgy+l
- UFGo21PywnP4aAEJ5ygniprKHnis7RgB/8rFB
-X-Google-Smtp-Source: AGHT+IF5uD/3snOQ4X+aLRPk1Xt/Xd4ZmVTTd6N1+20oIyEGbROy1hmGwi9rA/PwtOTLyfKem3s2JA==
-X-Received: by 2002:a05:6000:248a:b0:3a5:2fae:1348 with SMTP id
- ffacd0b85a97d-3a6d13129c6mr2233188f8f.51.1750424956479; 
- Fri, 20 Jun 2025 06:09:16 -0700 (PDT)
+ bh=V640ljTD2H/6yk77CGg8pqgiDQ7Rk/byXNy/qGehgeE=;
+ b=d3UamdwPAR9YNUgRvALkXqUwjcY0UWdVvT+0AYRvroz2JRSqwpcJmlByBNpL2IULBw
+ vJ61U/W+QMObYwsOqe8KBHi0XubiPc5ctn0ONQhF3r83glJyuBeAsUdAYeFvdBFfIwnR
+ sDSEaMtFGnHYRJ620Pw5xo62zsLycy5QTnyytKWc+xGIM0tXdSdqqAepFbC8hdMcnzJe
+ LkBA8rNCmiLFpwIxc9xWug3xGYJNxlQn5hwuajSZtzaLMWikJ4c7+CoVZ6EFaJ6xT/eU
+ qiZGtbv9lUyR2jmM5zZp4yD+JP5To5staxmtBhHOeqFGaK8B9IR8CbBhU/h++A7P/Hhd
+ EJ0w==
+X-Gm-Message-State: AOJu0Ywhwaxd8ef1lI77HaXxSw68euVZhfZWwlOiBMYWrH3xTkSW5JeQ
+ Ra9R12+V18Moio9LsaouteUK3UrUL7EaGeWO3ioojr2eB4DY6W8UtYsAjDCw8V4CVyo2vULUx3+
+ R+H4ARFE=
+X-Gm-Gg: ASbGncsHQWGBwDUWiD63aX/a6YUPqZ9EuPzFos2Ru8WIrzSWY712Pej4VD2cSvUKHO9
+ GrvlH+r7t/Ltj9L+shF+nNR6aVHisW59cB2sWdHUYC5PRIYfFPPkOogG4DmhEsZkWjNUy/+pURU
+ cljKiRgXI5LVcv7LAkUzTbkVcxcM+gyKkR43ays1qMjGJFljd5U8QU5Ueq5KF1ZMBX/T6c4HM3k
+ wN9sVts+RaBX9+qReO4IEDuH5nngcNSZfB5Y/HkN4Px5JQl5E7O7mLf3y0+t5QeonL0VJ9JSnP5
+ BJpc+hzLCQ4n0uI7JDCi3+KWgFl3f1x18GppLfgoN5WXWbxN5EBuukOXnbxSn9NKM3CWLDgAJDe
+ kAcI6duTkVSPi+YEanXShnoEr3gQHgwtM1rv7
+X-Google-Smtp-Source: AGHT+IGgGpF8T6F/eU2syTxh0rLMvaVCXrLMi432W+jy74ylNB4a4nTNwHJAEpagSMq8fk2NTIgxGQ==
+X-Received: by 2002:a05:6000:65a:b0:3a6:d579:b78e with SMTP id
+ ffacd0b85a97d-3a6d579b7f8mr393678f8f.46.1750424962155; 
+ Fri, 20 Jun 2025 06:09:22 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d2236452sm1791926f8f.59.2025.06.20.06.09.15
+ 5b1f17b1804b1-453646dc66fsm24808055e9.18.2025.06.20.06.09.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 06:09:15 -0700 (PDT)
+ Fri, 20 Jun 2025 06:09:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
@@ -78,25 +78,25 @@ Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 22/26] hw/arm/sbsa-ref: Tidy up use of RAMLIMIT_GB
- definition
-Date: Fri, 20 Jun 2025 15:07:05 +0200
-Message-ID: <20250620130709.31073-23-philmd@linaro.org>
+Subject: [PATCH v2 23/26] tests/functional: Restrict nexted Aarch64 Xen test
+ to TCG
+Date: Fri, 20 Jun 2025 15:07:06 +0200
+Message-ID: <20250620130709.31073-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620130709.31073-1-philmd@linaro.org>
 References: <20250620130709.31073-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,50 +112,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define RAMLIMIT_BYTES using the TiB definition and display
-the error parsed with size_to_str():
+On macOS this test fails:
 
-  $ qemu-system-aarch64-unsigned -M sbsa-ref -m 9T
-  qemu-system-aarch64-unsigned: sbsa-ref: cannot model more than 8 TiB of RAM
+  qemu-system-aarch64: mach-virt: HVF does not support providing Virtualization extensions to the guest CPU
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/sbsa-ref.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tests/functional/test_aarch64_xen.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index deae5cf9861..15c1ff4b140 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -19,6 +19,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/cutils.h"
- #include "qemu/datadir.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-@@ -53,8 +54,7 @@
- #include "target/arm/cpu-qom.h"
- #include "target/arm/gtimer.h"
- 
--#define RAMLIMIT_GB 8192
--#define RAMLIMIT_BYTES (RAMLIMIT_GB * GiB)
-+#define RAMLIMIT_BYTES (8 * TiB)
- 
- #define NUM_IRQS        256
- #define NUM_SMMU_IRQS   4
-@@ -756,7 +756,9 @@ static void sbsa_ref_init(MachineState *machine)
-     sms->smp_cpus = smp_cpus;
- 
-     if (machine->ram_size > sbsa_ref_memmap[SBSA_MEM].size) {
--        error_report("sbsa-ref: cannot model more than %dGB RAM", RAMLIMIT_GB);
-+        char *size_str = size_to_str(RAMLIMIT_BYTES);
-+
-+        error_report("sbsa-ref: cannot model more than %s of RAM", size_str);
-         exit(1);
-     }
- 
+diff --git a/tests/functional/test_aarch64_xen.py b/tests/functional/test_aarch64_xen.py
+index 339904221b0..261d796540d 100755
+--- a/tests/functional/test_aarch64_xen.py
++++ b/tests/functional/test_aarch64_xen.py
+@@ -33,6 +33,7 @@ def launch_xen(self, xen_path):
+         """
+         Launch Xen with a dom0 guest kernel
+         """
++        self.require_accelerator("tcg") # virtualization=on
+         self.set_machine('virt')
+         self.cpu = "cortex-a57"
+         self.kernel_path = self.ASSET_KERNEL.fetch()
 -- 
 2.49.0
 
