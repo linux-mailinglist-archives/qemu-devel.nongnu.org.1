@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F92CAE2579
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6D8AE24FC
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:19:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSk4h-000116-H0; Fri, 20 Jun 2025 18:19:08 -0400
+	id 1uSk4G-0000be-DZ; Fri, 20 Jun 2025 18:18:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfYk-0007GK-Ih
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:29:50 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfYx-0007JI-7S
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:30:07 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfYi-0005yv-Vn
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:29:50 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-451e2f0d9c2so15177065e9.1
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:29:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfYq-00061A-Vy
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:30:02 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-451d6ade159so16798685e9.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:29:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750440587; x=1751045387; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750440595; x=1751045395; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XWyZ+D51v+wrpcHQSJ9z/sxpKjgalwdAVH6zJ/8xGnU=;
- b=sH3IcivIA8ret8vGovCGFtAYcJNc4aKtBjUApi65jwcW65ijqgkJRAWmebC5ZHUYk0
- 8p9P7f+Hmdr15jFq9XSNfXHlFSlXzNYhdBiP0bSRcBTE8cyNzmBpIix2ipmXK9MX7vDO
- IAENFODEnUTmh7dk0+t4qnwYRuqFacF3+ryFZA7PVUU3bPli3Mkiu3mo//2ycbXRvfuA
- sZBQPOCJ0/WoHtKPxD/tqP8QxsmaweW5QYzaqbWPB7Qu1aojN1CNnHmtNfCsa30sUIGw
- hWW9NiPbnRZA7oe3H3NdB7HHSucWch4SFV6VswRQ2prbjkqNdsM7RLf9G//lFuOVDfl8
- VFSw==
+ bh=vThCFLHwdX0jozfNEMhw80T1SRG5zycaGSit+lftu24=;
+ b=Fh0Nw7Xb+cDSTozx6PgL1HQ/f384qCfbHgJJ0Zj+lVSqFoaPro8nlYEAHoDodoS2aT
+ psHj4rI69uYi/WPycu7bgNko0/FAXIVwnWPHWFsqJnkYslLD/IN/Pk5P5TGbWo4l2I4m
+ tIHDTT9SPmIeKzdNtxVRLDztmxjqLGDLpNo4fNczAIu6UXLuFTo0khRdXDc40LmkWAN6
+ YXN5ir/vuMwMJKM0QZr4xNVwKSDm86aA0xFBp4x+Du1h9cdPwrIfsV98XqwBwJLeI6mk
+ e2ITwS0/5KeAgTTBo0AU0ceFs8igyFgNV60iUdMyMIDXXNb614qemJRBs//zfETjYev0
+ Egog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750440587; x=1751045387;
+ d=1e100.net; s=20230601; t=1750440595; x=1751045395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XWyZ+D51v+wrpcHQSJ9z/sxpKjgalwdAVH6zJ/8xGnU=;
- b=POWvkadInfjXMMT+NPi7P0yzzsTjK+9f2tKrZ5EMal6PobBJXRwRbC23enpaio8AxB
- EgScv1h9s1BWRt7r3hFdebebsE8buu0+RX7EI6UdLIOHMBN9UtzMWmP/NBlIiuMi0eSf
- zLKOVFE3fwJsgkXNNrnNmJ0O6Id2DQHPB9jsw40pMfy0egwzflMPTek9jzFEJYx9b7vb
- CWuFaVHWfnIV3EfF+vpJiJEr/F+iRQKKzZlmtGH0PZq5otK6CK/9vD0pSjDHMX555Pgb
- bG6661P2pe313GTaNmmnDuBISmBkMIH5p+jRZr/CNKVqwXjopkjlHsYtbEQX+DmB8kLC
- 124Q==
-X-Gm-Message-State: AOJu0YxVpe/E/Mz/LFeDVDKzVV72vYHKC8pbGY39Ll3I1TxLGS/omMyE
- cpwF6zeeWCZnxK/x6HMqZ6kv2o1JK2p7lGBf0/jtjLP7qzr2fX1jPPQbCE+kvUKMYolzr2QJdWa
- ku3h9bapWHg==
-X-Gm-Gg: ASbGncs09We4pVm0tHDcXPnrL/T3XJimINY6RKjG3CqJ9l7oyrE7pr5USn1CRI+5klR
- 8iSCdasWl/HoQxYHk9veosUyVvzpZPgEvaI59Qp30cv/Jdwuh5eQi8k/m9gUDlUWdDkrLppRIfp
- M/xVTsGCpqTTnD66T1WE4dR1QiRkraxqN6dANg0gE0as1iDSBjNyvS2sF2/LTLuU5Jqtbfvr4hQ
- hUsd4BkpbsJlsIVv77w/teXywBkAQ3q/z9WiriWiN9PEumj4+PGHKteL3fEquDW6huLXXhgGqKM
- HUaP5hTwV19cQvyD9VKkDYgNSKCm+5NF2N1dzzgSbB1TKW3lR+t3iosPjNBt762fQnzU2otFehQ
- ymSAwofthDM0AiV8jo7PihVXgJBxf0yCa1NTxvY/TNqJgH45TxDiMKA67
-X-Google-Smtp-Source: AGHT+IHEubxwyWynYsD4Z90LpX/HVeIuzfVJPgIxD+VOqs8pRI1ltrZW/aBEL/T9eP6NZYwdAhzFHA==
-X-Received: by 2002:a05:600c:458d:b0:43b:4829:8067 with SMTP id
- 5b1f17b1804b1-45365e4f9e2mr33502375e9.6.1750440587007; 
- Fri, 20 Jun 2025 10:29:47 -0700 (PDT)
+ bh=vThCFLHwdX0jozfNEMhw80T1SRG5zycaGSit+lftu24=;
+ b=mUNZ/l66gYEukZVUTq8RHfGmQy1n6aFuwdJ6l59Wy/hy6RSWESIvO5rWk1Knmv4Oja
+ fBNbEv+FY5tlBSN+Vxld4bmwRfzjxHzdABnV6ke7+7AI4l7R+zdwU175kbl36MpdrvCs
+ NWYV9V6W1tCraiuC1QGSgEtG8DnoleU/+sJ11vktkk2786tTnC1nb0lk/JH17NXCqqDK
+ 2ZW5mA4I2WMF1/5WLMDqotYgIr41y6ynybCNabyBsj6QVJie3ZBo9XXIjrPdhXpoFrz2
+ n9DvBLvwYwmpLP4vt4/WlOsxGH3RChzGfXPCqBh3xSix8ym8dnkQ0rHiYj8To0MGFsw1
+ aBJw==
+X-Gm-Message-State: AOJu0YynnEkoA+QMEnbdj+1Voq77Kg/CggUjpnReyKUwrw2Z1wuhbADa
+ lbvksvOuTEmN0OtDRlwskaT0Tg8isG3X20z6sjTqJgajgjNzwTzguQ/l5xvlKG3dbv6/uhwpPkb
+ cnuuGUSwlIw==
+X-Gm-Gg: ASbGncuG8Lca2FPYYRd61Icj5Oqm/b+Y92WX/Bc82SpxZQxMtjvXwCmHNBMFcVOOAKL
+ jaiYQnKVDNPYUsG5Ae7YT45mWqhs89+m6WM5H5N20kPzvNRMVoC+mn07spR8NvoPVTRCetbzshT
+ nkg0DLPRmJnVkguRmHtAocoh4kWJmcBkTE6qqZwyXTXXD5+RRtVEuvy9ZAPxtj/a2Za+jRLgU6x
+ aNnxGaEKDam+G+rUbqTEz0tUV9jdTb+kxCOiE6NKSUagc9NGGK7kdHf82fwk50bo9Jf3LVS3ue8
+ 9af7fg83QO/M6ZSEapywWpvgnkDEurM2GjjwYLjwMpUrEsxT07NAUPqVHnhgED2Gwr3bZaXE7XO
+ dhuuoChfLuInisnKX3ZsSx3rRwwCUov7wgZonlOdyUi0YsjalDpsH/Z4U
+X-Google-Smtp-Source: AGHT+IFD6wcbe0inptceaX4+HnEDtMHMHmK8Q70KSUWQHISNCSdYxtoH5BeEBhHQltTUTpQr4/a4hg==
+X-Received: by 2002:a05:600c:5026:b0:43e:afca:808f with SMTP id
+ 5b1f17b1804b1-453657bfb1dmr41591125e9.31.1750440594991; 
+ Fri, 20 Jun 2025 10:29:54 -0700 (PDT)
 Received: from localhost.localdomain
  (101.red-95-127-63.dynamicip.rima-tde.net. [95.127.63.101])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-453632312a3sm41535905e9.1.2025.06.20.10.29.44
+ ffacd0b85a97d-3a6d1189977sm2531875f8f.82.2025.06.20.10.29.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:29:46 -0700 (PDT)
+ Fri, 20 Jun 2025 10:29:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Graf <agraf@csgraf.de>,
@@ -75,18 +75,18 @@ Cc: Alexander Graf <agraf@csgraf.de>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH RESEND 14/42] accel/split: Implement
- synchronize_post_init()
-Date: Fri, 20 Jun 2025 19:27:22 +0200
-Message-ID: <20250620172751.94231-15-philmd@linaro.org>
+Subject: [RFC PATCH RESEND 15/42] accel/split: Implement
+ synchronize_pre_resume()
+Date: Fri, 20 Jun 2025 19:27:23 +0200
+Message-ID: <20250620172751.94231-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620172751.94231-1-philmd@linaro.org>
 References: <20250620172751.94231-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,31 +111,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/split/split-accel-ops.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ accel/split/split-accel-ops.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/accel/split/split-accel-ops.c b/accel/split/split-accel-ops.c
-index d4fa07c2dec..6b3ddf21a17 100644
+index 6b3ddf21a17..65feb929404 100644
 --- a/accel/split/split-accel-ops.c
 +++ b/accel/split/split-accel-ops.c
-@@ -151,7 +151,16 @@ static void split_synchronize_post_reset(CPUState *cpu)
+@@ -175,7 +175,17 @@ static void split_synchronize_pre_loadvm(CPUState *cpu)
  
- static void split_synchronize_post_init(CPUState *cpu)
+ static void split_synchronize_pre_resume(bool step_pending)
  {
 -    g_assert_not_reached();
-+    SplitAccelState *sas = SPLIT_ACCEL(cpu->accel->accel);
++    AccelState *as = current_accel();
++    SplitAccelState *sas = SPLIT_ACCEL(as);
 +    AccelClass *hwc = ACCEL_GET_CLASS(sas->hw);
 +    AccelClass *swc = ACCEL_GET_CLASS(sas->sw);
 +
-+    if (hwc->ops->synchronize_post_init) {
-+        hwc->ops->synchronize_post_init(cpu);
++    if (hwc->ops->synchronize_pre_resume) {
++        hwc->ops->synchronize_pre_resume(step_pending);
 +    }
-+    if (swc->ops->synchronize_post_init) {
-+        swc->ops->synchronize_post_init(cpu);
++    if (swc->ops->synchronize_pre_resume) {
++        swc->ops->synchronize_pre_resume(step_pending);
 +    }
  }
  
- static void split_synchronize_state(CPUState *cpu)
+ static void split_handle_interrupt(CPUState *cpu, int mask)
 -- 
 2.49.0
 
