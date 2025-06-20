@@ -2,83 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240DFAE2015
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6999AE204B
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:44:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSeae-0002iy-BR; Fri, 20 Jun 2025 12:27:44 -0400
+	id 1uSena-0006SW-Ek; Fri, 20 Jun 2025 12:41:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
- id 1uSeab-0002iY-RA
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:27:41 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
- id 1uSeaZ-0007Df-KU
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:27:41 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-addda47ebeaso424217966b.1
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:27:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1750436858; x=1751041658; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=4SH49HlB7dLfYKSXDh4c3GoPJduj7RZ6tJyrE0QiBN4=;
- b=g/+dUOyD6kRw7t4KMCZaHh6B+hu/+wOokMjteClsPpdAS0Eg5tZVnSBxY5rs4gSpLp
- m4zEQEh1lRrtZhFGdnBh5qpbvxr1Co6QrNTuMyuUQXo6DvzX2incYetQwx4QcBrSRfZw
- deOCyCcK4bDmn39FXanP19gKg/ET4j1pPMqZ5qFGx7Q69T29BlVXfvAJgD3bLdxyr+oi
- aRvXpuWprxOJcmvWtHsPYg7xBq79lmYWzl2rVpYM1pMd4VlDkktEobADPJfX1uJ8aFPD
- 0lOSkA4wuGiNVskHgFPZr79AgbNcB+cYbTatL/DoUqNtbJP/Ratnz6eOHJO3PNDHjHDD
- D6TA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uSenY-0006SF-R4
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uSenV-0000Dc-0m
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750437659;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=74X/SFDkJU/aMjcEUAksoZmBt6DzYhNI4J9Ot9oNbA8=;
+ b=PnOsCueL9fp9jHQVae42uLv37x/K29JBWzgoqTtRhyPm1j7ZLqgIVp855d8+FhT38YyrQC
+ ucvgRwXEknhdb+Xh7MePA1m+wJ3J+vlMMcthoC8a7dX2xMRICUjEEIehXQ0NcoOxqpI9Lh
+ B6gIpIOYDhcoC/AB3KwiSWFqzMt86tA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-313-PB-tIzJxMouRQbEmZ0OUFQ-1; Fri, 20 Jun 2025 12:40:57 -0400
+X-MC-Unique: PB-tIzJxMouRQbEmZ0OUFQ-1
+X-Mimecast-MFC-AGG-ID: PB-tIzJxMouRQbEmZ0OUFQ_1750437656
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-adb33457610so186294366b.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:40:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750436858; x=1751041658;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4SH49HlB7dLfYKSXDh4c3GoPJduj7RZ6tJyrE0QiBN4=;
- b=jYhV88mKm6kLTV6i7hnydO9+vbD1PY1OYlRoHp9Q8fX+xcqcQ67ZhkdtSAxXcqzRUH
- 0QBC0x0WVQMIVnvfyuRPJRdXT5gaWDijYO0SA6C/zRp4wqSiJlHu4+XzZ77+yeKw56UQ
- aUp2h2nr2flnJXOezLYWrAqFra3QkI1xjNmSAdENifuYAKzIbeOSYHZ83lAXqEnf9VgK
- aAl4eGWRYHH/WLjsaiSPzNeUBfsEchzkdyRrwoYIKTpBFLX7UIWSjswZm2lTIRyAo9ky
- EvNRGGt2yIg7O4y3X4QIWmHg3qEXTESCmWstnYD3noPzujwdanT0rVSJIuLh48htrCWB
- hVHw==
-X-Gm-Message-State: AOJu0Yx0ZxGxJysqYpFxM7/uR1AL7V5F/yg9TSdNpPoNUesrOgzya80m
- V7QncmLYRxcQinkj/MNBtzfW/gqHhFd/6Ujm4jqbvBTaobdpkYLuhxM20YeAsgTup0IdR8TJzK/
- FhgcA2zpxneA7HB6OhrT+8BTcZvwOEB4=
-X-Gm-Gg: ASbGncumFcFdlr4pciInSHZIyXMVTcM8IkEs/mo121cJxUZriY7CeRacQKsKffgnxxM
- 3RSM4jKRDQ/opTZ+b2uRXe7sr6zAW6pZz1uPxR9KvPcYhf4jNf4GgwRs0r7AOkfk3Uf2Lm6NX1+
- 5I+KFzwg1ftoepblg5BQo+itL6pQaG6iB+lZc0wagN8NDAM967RLXSBjyc1zmln9VRjWxnP8N2Y
- yphvQ==
-X-Google-Smtp-Source: AGHT+IGzcGrNwYiW/GzVuIyFo/MM2VPfsfTyULt06RgZkzaIVaGX5/7yBnCw94f8OGYwPrjbmR1PuBrwc3KTr0N/qfQ=
-X-Received: by 2002:a17:907:d78a:b0:ad8:9257:5717 with SMTP id
- a640c23a62f3a-ae057915d41mr315935166b.13.1750436856911; Fri, 20 Jun 2025
- 09:27:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1750437656; x=1751042456;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=74X/SFDkJU/aMjcEUAksoZmBt6DzYhNI4J9Ot9oNbA8=;
+ b=SWlkH6Cl2WlurkSwalljxCOjvVQchCoX++bCeyHy1V9K6AVJkJaS+PtUxE9zpiP3hS
+ Bo2p2PKEtpnBZuJra89ur9HhhExbhtPJVH/XRGwGdtzd60qSTswwD1VRZb3Z0I/Sm4xY
+ jGoBw9wX00XolS/KHrH4Rr2oUl53bN/xyyfEoQ8nRElXkrXR8Vfond3C0ouXiT5SHPgH
+ iveqg/AwO+qFuL6lQceFtDjAUFX8vSmuwvngdkE5qEEAqTEfxehB4xPIhKzYvDKJk4+9
+ ETan5PenPjTYBnPCf3IXUb+WykBDmzMG+diwfOUsI5BIf5HGd/uhVBHnQU5XMNFdtY6i
+ VQxQ==
+X-Gm-Message-State: AOJu0YzVlVQ3y8Au/dB26Bz6FWb0b0UXwfv5BzLIsdQ7Bv5XcuYXKqqj
+ vy8SRkq38DUo/uUeI6r4IBF/6EVWkpb0pifdahZt9+rVPiV3WjMXW9CYwm/JKt75+8Mk9JtXWXf
+ 3sGZ4slkcrxg+bGGzJspGha5A2A0HE5OzeST49s61T60KLpa6Sj1H3I7PKFBnNJ8EA20p25L9KA
+ osiBBMkBC6FmA0rE4gnrmFl8JxSABsoerJV+mVW/Ky
+X-Gm-Gg: ASbGncs7n7cenuxbrXg9axnXorehNsDtlxcaJLyasXpCWwSbTpqUm3MRrCUxMfTGun2
+ 5x5IkiP5Ep6WovYn8toMrGNvbiHRlvrAzhNNXR+PnT/k4YCVAiBI/Q7je8gaCYWj0C2x6SqTCwo
+ 22v/sstpoNkaxPkPdHrR033004BecwjWJNRKAu4R8VGWqeK6hBV6sduVfREWZCu4qIN6DlAEE1A
+ 1XqQNi+ApD1plnYBP6f3CR2btQ1mkkKSg/5mpKS/Mfwtp9CMhnYWktvQqtaigIcapUdU1iqfnKd
+ /5T0Ya5H6wt6ACgT53lbW+mXlw==
+X-Received: by 2002:a17:907:6088:b0:ad8:8529:4f9b with SMTP id
+ a640c23a62f3a-ae057bc4354mr377984666b.38.1750437655812; 
+ Fri, 20 Jun 2025 09:40:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFaBvHkbmK3fXARx+Q6V+nwoxADbkp97Pws/TpVTzMA8nrXVGEk6+SwKr6vB/r6ZtA9NMacKA==
+X-Received: by 2002:a17:907:6088:b0:ad8:8529:4f9b with SMTP id
+ a640c23a62f3a-ae057bc4354mr377981866b.38.1750437655256; 
+ Fri, 20 Jun 2025 09:40:55 -0700 (PDT)
+Received: from [192.168.122.1] ([151.62.200.93])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ae053e7f2f5sm189623866b.15.2025.06.20.09.40.53
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 Jun 2025 09:40:53 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/24] i386 (TCG, TDX), Rust changes for 2025-06-20
+Date: Fri, 20 Jun 2025 18:40:28 +0200
+Message-ID: <20250620164053.579416-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-References: <20250620143720.3143-1-tanishdesai37@gmail.com>
- <20250620143720.3143-2-tanishdesai37@gmail.com>
- <87jz56s86s.fsf@draig.linaro.org>
-In-Reply-To: <87jz56s86s.fsf@draig.linaro.org>
-From: Tanish Desai <tanishdesai37@gmail.com>
-Date: Fri, 20 Jun 2025 21:57:24 +0530
-X-Gm-Features: AX0GCFvRM2RhdCXWVmE0GVZUNdQWZzfIOqMysPq-kUxdgvw4q232T4y0ebSGXx0
-Message-ID: <CAH_Y1jd56Ve0L2_3SGQafet5GacTPDLWeFe=vviC3Jc5+5iPnA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] tracetool: removed the unused vcpu property
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, 
- Mads Ynddal <mads@ynddal.dk>
-Content-Type: multipart/alternative; boundary="0000000000000ed94f06380357ee"
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=tanishdesai37@gmail.com; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.897,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,266 +103,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000000ed94f06380357ee
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The following changes since commit a6f02277595136832c9e9bcaf447ab574f7b1128:
 
-Noted will take care for all upcoming patches.
-For this patch should I resend it with r-b tags from v1 or this patch it=E2=
-=80=99s
-fine for now?
+  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2025-06-12 14:16:11 -0400)
 
+are available in the Git repository at:
 
-On Fri, 20 Jun 2025 at 9:43=E2=80=AFPM, Alex Benn=C3=A9e <alex.bennee@linar=
-o.org> wrote:
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-> Tanish Desai <tanishdesai37@gmail.com> writes:
->
-> > The vcpu property is no longer used in these backends. Removing it avoi=
-ds
-> > unnecessary checks and simplifies the code generation for these trace
-> > backends.
-> >
-> > Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
->
-> I think you forgot to collect the r-b tags from v1, see:
->
->
-> https://qemu.readthedocs.io/en/master/devel/submitting-a-patch.html#prope=
-r-use-of-reviewed-by-tags-can-aid-review
->
-> > ---
-> >  scripts/tracetool/__init__.py       | 6 +++---
-> >  scripts/tracetool/backend/log.py    | 6 +-----
-> >  scripts/tracetool/backend/simple.py | 6 +-----
-> >  scripts/tracetool/backend/syslog.py | 6 +-----
-> >  4 files changed, 6 insertions(+), 18 deletions(-)
-> >
-> > diff --git a/scripts/tracetool/__init__.py
-> b/scripts/tracetool/__init__.py
-> > index bc03238c0f..e86c898a1e 100644
-> > --- a/scripts/tracetool/__init__.py
-> > +++ b/scripts/tracetool/__init__.py
-> > @@ -216,9 +216,9 @@ class Event(object):
-> >                        r"\s*"
-> >                        r"(?:(?:(?P<fmt_trans>\".+),)?\s*(?P<fmt>\".+))?=
-"
-> >                        r"\s*")
-> > -
-> > -    _VALID_PROPS =3D set(["disable", "vcpu"])
-> > -
-> > +
-> > +    _VALID_PROPS =3D set(["disable"])
-> > +
-> >      def __init__(self, name, props, fmt, args, lineno, filename,
-> orig=3DNone,
-> >                   event_trans=3DNone, event_exec=3DNone):
-> >          """
-> > diff --git a/scripts/tracetool/backend/log.py
-> b/scripts/tracetool/backend/log.py
-> > index de27b7e62e..f24acad74c 100644
-> > --- a/scripts/tracetool/backend/log.py
-> > +++ b/scripts/tracetool/backend/log.py
-> > @@ -31,11 +31,7 @@ def generate_h(event, group):
-> >      if len(event.args) > 0:
-> >          argnames =3D ", " + argnames
-> >
-> > -    if "vcpu" in event.properties:
-> > -        # already checked on the generic format code
-> > -        cond =3D "true"
-> > -    else:
-> > -        cond =3D "trace_event_get_state(%s)" % ("TRACE_" +
-> event.name.upper())
-> > +    cond =3D "trace_event_get_state(%s)" % ("TRACE_" + event.name.uppe=
-r())
-> >
-> >      out('    if (%(cond)s && qemu_loglevel_mask(LOG_TRACE)) {',
-> >          '        if (message_with_timestamp) {',
-> > diff --git a/scripts/tracetool/backend/simple.py
-> b/scripts/tracetool/backend/simple.py
-> > index 2688d4b64b..7c84c06b20 100644
-> > --- a/scripts/tracetool/backend/simple.py
-> > +++ b/scripts/tracetool/backend/simple.py
-> > @@ -37,11 +37,7 @@ def generate_h_begin(events, group):
-> >
-> >  def generate_h(event, group):
-> >      event_id =3D 'TRACE_' + event.name.upper()
-> > -    if "vcpu" in event.properties:
-> > -        # already checked on the generic format code
-> > -        cond =3D "true"
-> > -    else:
-> > -        cond =3D "trace_event_get_state(%s)" % event_id
-> > +    cond =3D "trace_event_get_state(%s)" % event_id
-> >      out('    if (%(cond)s) {',
-> >          '        _simple_%(api)s(%(args)s);',
-> >          '    }',
-> > diff --git a/scripts/tracetool/backend/syslog.py
-> b/scripts/tracetool/backend/syslog.py
-> > index 012970f6cc..6fdc1142fb 100644
-> > --- a/scripts/tracetool/backend/syslog.py
-> > +++ b/scripts/tracetool/backend/syslog.py
-> > @@ -30,11 +30,7 @@ def generate_h(event, group):
-> >      if len(event.args) > 0:
-> >          argnames =3D ", " + argnames
-> >
-> > -    if "vcpu" in event.properties:
-> > -        # already checked on the generic format code
-> > -        cond =3D "true"
-> > -    else:
-> > -        cond =3D "trace_event_get_state(%s)" % ("TRACE_" +
-> event.name.upper())
-> > +    cond =3D "trace_event_get_state(%s)" % ("TRACE_" + event.name.uppe=
-r())
-> >
-> >      out('    if (%(cond)s) {',
-> >          '#line %(event_lineno)d "%(event_filename)s"',
->
-> --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
->
+for you to fetch changes up to 40da501d8989913935660dc24953ece02c9e98b8:
 
---0000000000000ed94f06380357ee
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  i386/tdx: handle TDG.VP.VMCALL<GetQuote> (2025-06-20 13:25:59 +0200)
 
-<div dir=3D"auto">Noted will take care for all upcoming patches.</div><div =
-dir=3D"auto">For this patch should I resend it with r-b tags from v1 or thi=
-s patch it=E2=80=99s fine for now?</div><div dir=3D"auto"><br clear=3D"all"=
-><div dir=3D"auto"><div dir=3D"ltr" class=3D"gmail_signature" data-smartmai=
-l=3D"gmail_signature"><br></div></div></div><div><div class=3D"gmail_quote =
-gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, 20 Jun=
- 2025 at 9:43=E2=80=AFPM, Alex Benn=C3=A9e &lt;<a href=3D"mailto:alex.benne=
-e@linaro.org">alex.bennee@linaro.org</a>&gt; wrote:<br></div><blockquote cl=
-ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px=
-;border-left-style:solid;padding-left:1ex;border-left-color:rgb(204,204,204=
-)">Tanish Desai &lt;<a href=3D"mailto:tanishdesai37@gmail.com" target=3D"_b=
-lank">tanishdesai37@gmail.com</a>&gt; writes:<br>
-<br>
-&gt; The vcpu property is no longer used in these backends. Removing it avo=
-ids<br>
-&gt; unnecessary checks and simplifies the code generation for these trace<=
-br>
-&gt; backends.<br>
-&gt;<br>
-&gt; Signed-off-by: Tanish Desai &lt;<a href=3D"mailto:tanishdesai37@gmail.=
-com" target=3D"_blank">tanishdesai37@gmail.com</a>&gt;<br>
-<br>
-I think you forgot to collect the r-b tags from v1, see:<br>
-<br>
-=C2=A0 <a href=3D"https://qemu.readthedocs.io/en/master/devel/submitting-a-=
-patch.html#proper-use-of-reviewed-by-tags-can-aid-review" rel=3D"noreferrer=
-" target=3D"_blank">https://qemu.readthedocs.io/en/master/devel/submitting-=
-a-patch.html#proper-use-of-reviewed-by-tags-can-aid-review</a><br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 scripts/tracetool/__init__.py=C2=A0 =C2=A0 =C2=A0 =C2=A0| 6 +++-=
---<br>
-&gt;=C2=A0 scripts/tracetool/backend/log.py=C2=A0 =C2=A0 | 6 +-----<br>
-&gt;=C2=A0 scripts/tracetool/backend/simple.py | 6 +-----<br>
-&gt;=C2=A0 scripts/tracetool/backend/syslog.py | 6 +-----<br>
-&gt;=C2=A0 4 files changed, 6 insertions(+), 18 deletions(-)<br>
-&gt;<br>
-&gt; diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init_=
-_.py<br>
-&gt; index bc03238c0f..e86c898a1e 100644<br>
-&gt; --- a/scripts/tracetool/__init__.py<br>
-&gt; +++ b/scripts/tracetool/__init__.py<br>
-&gt; @@ -216,9 +216,9 @@ class Event(object):<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 r&quot;\s*&quot;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 r&quot;(?:(?:(?P&lt;fmt_trans&gt;\&quot;.+),)?\s*(?P&lt;fmt&g=
-t;\&quot;.+))?&quot;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 r&quot;\s*&quot;)<br>
-&gt; -<br>
-&gt; -=C2=A0 =C2=A0 _VALID_PROPS =3D set([&quot;disable&quot;, &quot;vcpu&q=
-uot;])<br>
-&gt; -<br>
-&gt; +=C2=A0 =C2=A0 <br>
-&gt; +=C2=A0 =C2=A0 _VALID_PROPS =3D set([&quot;disable&quot;])<br>
-&gt; +=C2=A0 =C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 def __init__(self, name, props, fmt, args, lineno,=
- filename, orig=3DNone,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ev=
-ent_trans=3DNone, event_exec=3DNone):<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;&quot;&quot;<br>
-&gt; diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/back=
-end/log.py<br>
-&gt; index de27b7e62e..f24acad74c 100644<br>
-&gt; --- a/scripts/tracetool/backend/log.py<br>
-&gt; +++ b/scripts/tracetool/backend/log.py<br>
-&gt; @@ -31,11 +31,7 @@ def generate_h(event, group):<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 if len(event.args) &gt; 0:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 argnames =3D &quot;, &quot; + argnam=
-es<br>
-&gt;=C2=A0 <br>
-&gt; -=C2=A0 =C2=A0 if &quot;vcpu&quot; in event.properties:<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 # already checked on the generic format c=
-ode<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 cond =3D &quot;true&quot;<br>
-&gt; -=C2=A0 =C2=A0 else:<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 cond =3D &quot;trace_event_get_state(%s)&=
-quot; % (&quot;TRACE_&quot; + event.name.upper())<br>
-&gt; +=C2=A0 =C2=A0 cond =3D &quot;trace_event_get_state(%s)&quot; % (&quot=
-;TRACE_&quot; + event.name.upper())<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 out(&#39;=C2=A0 =C2=A0 if (%(cond)s &amp;&amp; qem=
-u_loglevel_mask(LOG_TRACE)) {&#39;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;=C2=A0 =C2=A0 =C2=A0 =C2=A0 if =
-(message_with_timestamp) {&#39;,<br>
-&gt; diff --git a/scripts/tracetool/backend/simple.py b/scripts/tracetool/b=
-ackend/simple.py<br>
-&gt; index 2688d4b64b..7c84c06b20 100644<br>
-&gt; --- a/scripts/tracetool/backend/simple.py<br>
-&gt; +++ b/scripts/tracetool/backend/simple.py<br>
-&gt; @@ -37,11 +37,7 @@ def generate_h_begin(events, group):<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 def generate_h(event, group):<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 event_id =3D &#39;TRACE_&#39; + event.name.upper()=
-<br>
-&gt; -=C2=A0 =C2=A0 if &quot;vcpu&quot; in event.properties:<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 # already checked on the generic format c=
-ode<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 cond =3D &quot;true&quot;<br>
-&gt; -=C2=A0 =C2=A0 else:<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 cond =3D &quot;trace_event_get_state(%s)&=
-quot; % event_id<br>
-&gt; +=C2=A0 =C2=A0 cond =3D &quot;trace_event_get_state(%s)&quot; % event_=
-id<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 out(&#39;=C2=A0 =C2=A0 if (%(cond)s) {&#39;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;=C2=A0 =C2=A0 =C2=A0 =C2=A0 _si=
-mple_%(api)s(%(args)s);&#39;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;=C2=A0 =C2=A0 }&#39;,<br>
-&gt; diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/b=
-ackend/syslog.py<br>
-&gt; index 012970f6cc..6fdc1142fb 100644<br>
-&gt; --- a/scripts/tracetool/backend/syslog.py<br>
-&gt; +++ b/scripts/tracetool/backend/syslog.py<br>
-&gt; @@ -30,11 +30,7 @@ def generate_h(event, group):<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 if len(event.args) &gt; 0:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 argnames =3D &quot;, &quot; + argnam=
-es<br>
-&gt;=C2=A0 <br>
-&gt; -=C2=A0 =C2=A0 if &quot;vcpu&quot; in event.properties:<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 # already checked on the generic format c=
-ode<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 cond =3D &quot;true&quot;<br>
-&gt; -=C2=A0 =C2=A0 else:<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 cond =3D &quot;trace_event_get_state(%s)&=
-quot; % (&quot;TRACE_&quot; + event.name.upper())<br>
-&gt; +=C2=A0 =C2=A0 cond =3D &quot;trace_event_get_state(%s)&quot; % (&quot=
-;TRACE_&quot; + event.name.upper())<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 out(&#39;=C2=A0 =C2=A0 if (%(cond)s) {&#39;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;#line %(event_lineno)d &quot;%(=
-event_filename)s&quot;&#39;,<br>
-<br>
--- <br>
-Alex Benn=C3=A9e<br>
-Virtualisation Tech Lead @ Linaro<br>
-</blockquote></div></div>
+----------------------------------------------------------------
+* cleanups for distributed DTB files
+* scripts/meson-buildoptions: Sort coroutine_backend choices lexicographically
+* rust/qemu-api: Add initial logging support
+: rust: pl011: Implement logging
+* target/i386: fix Win98
+* meson: cleanup win32 library detection
+* rust: safe(r) instance_init
+* rust: prepare for multiple bindgen invocations
+* rust: fix new warning
+* target/i386: Warn about why CPUID_EXT_PDCM is not available
+* target/i386: small TDX fixes and clarifications
+* target/i386: support for TDX quote generation
 
---0000000000000ed94f06380357ee--
+----------------------------------------------------------------
+Bernhard Beschow (5):
+      hw: Fix type constant for DTB files
+      pc-bios/dtb/meson: Prefer target name to be outfile, not infile
+      rust/qemu-api: Add initial logging support based on C API
+      rust: pl011: Implement logging
+      rust: pl011: Add missing logging to match C version
+
+Binbin Wu (1):
+      i386/tdx: handle TDG.VP.VMCALL<GetTdVmCallInfo>
+
+Isaku Yamahata (1):
+      i386/tdx: handle TDG.VP.VMCALL<GetQuote>
+
+Mark Cave-Ayland (1):
+      target/i386: fix TB exit logic in gen_movl_seg() when writing to SS
+
+Paolo Bonzini (10):
+      meson: cleanup win32 library detection
+      rust: qemu_api: introduce MaybeUninit field projection
+      rust: hpet: fully initialize object during instance_init
+      rust: qom: introduce ParentInit
+      rust: qom: make ParentInit lifetime-invariant
+      rust: qom: change instance_init to take a ParentInit<>
+      rust: prepare variable definitions for multiple bindgen invocations
+      rust: move rust.bindgen to qemu-api crate
+      rust: hpet: fix new warning
+      update Linux headers to v6.16-rc3
+
+Xiaoyao Li (6):
+      i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[] check
+      i386/cpu: Warn about why CPUID_EXT_PDCM is not available
+      i386/tdx: Error and exit when named cpu model is requested
+      i386/cpu: Rename enable_cpuid_0x1f to force_cpuid_0x1f
+      i386/tdx: Fix the typo of the comment of struct TdxGuest
+      i386/tdx: Clarify the error message of mrconfigid/mrowner/mrownerconfig
+
+ docs/devel/rust.rst                                |   1 +
+ meson.build                                        |  65 +----
+ qapi/qom.json                                      |   8 +-
+ include/standard-headers/asm-x86/setup_data.h      |  13 +-
+ include/standard-headers/drm/drm_fourcc.h          |  45 ++++
+ include/standard-headers/linux/ethtool.h           | 124 ++++-----
+ include/standard-headers/linux/fuse.h              |   6 +-
+ include/standard-headers/linux/input-event-codes.h |   3 +-
+ include/standard-headers/linux/pci_regs.h          |  12 +-
+ include/standard-headers/linux/virtio_gpu.h        |   3 +-
+ include/standard-headers/linux/virtio_pci.h        |   1 +
+ linux-headers/asm-arm64/kvm.h                      |   9 +-
+ linux-headers/asm-x86/kvm.h                        |   1 +
+ linux-headers/linux/bits.h                         |   4 +-
+ linux-headers/linux/kvm.h                          |  25 ++
+ linux-headers/linux/vhost.h                        |   4 +-
+ rust/{ => qemu-api}/wrapper.h                      |   2 +
+ target/i386/cpu.h                                  |   4 +-
+ target/i386/kvm/tdx-quote-generator.h              |  82 ++++++
+ target/i386/kvm/tdx.h                              |  25 +-
+ hw/arm/boot.c                                      |   2 +-
+ hw/ppc/e500.c                                      |   2 +-
+ target/i386/cpu.c                                  |  10 +-
+ target/i386/kvm/kvm.c                              |  15 ++
+ target/i386/kvm/tdx-quote-generator.c              | 300 +++++++++++++++++++++
+ target/i386/kvm/tdx-stub.c                         |   8 +
+ target/i386/kvm/tdx.c                              | 206 +++++++++++++-
+ target/i386/tcg/translate.c                        |   7 +-
+ pc-bios/dtb/meson.build                            |   2 +-
+ rust/hw/char/pl011/src/device.rs                   |  52 ++--
+ rust/hw/timer/hpet/src/device.rs                   |  58 ++--
+ rust/meson.build                                   |   4 +-
+ rust/qemu-api/build.rs                             |   2 +-
+ rust/qemu-api/meson.build                          |  45 +++-
+ rust/qemu-api/src/lib.rs                           |   2 +
+ rust/qemu-api/src/log.rs                           |  73 +++++
+ rust/qemu-api/src/memory.rs                        |  12 +-
+ rust/qemu-api/src/prelude.rs                       |   2 +
+ rust/qemu-api/src/qdev.rs                          |  49 ++--
+ rust/qemu-api/src/qom.rs                           | 186 ++++++++++++-
+ rust/qemu-api/src/uninit.rs                        |  85 ++++++
+ target/i386/kvm/meson.build                        |   2 +-
+ 42 files changed, 1334 insertions(+), 227 deletions(-)
+ rename rust/{ => qemu-api}/wrapper.h (97%)
+ create mode 100644 target/i386/kvm/tdx-quote-generator.h
+ create mode 100644 target/i386/kvm/tdx-quote-generator.c
+ create mode 100644 rust/qemu-api/src/log.rs
+ create mode 100644 rust/qemu-api/src/uninit.rs
+-- 
+2.49.0
+
 
