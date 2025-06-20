@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABE6AE20BD
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CD1AE20B0
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSfOA-0005tC-OO; Fri, 20 Jun 2025 13:18:56 -0400
+	id 1uSfO1-0005si-Lv; Fri, 20 Jun 2025 13:18:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLQ-0002OQ-Jo
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:06 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLa-0002m7-Hl
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:16 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLP-0004bC-0L
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:04 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-453608ed113so19665915e9.0
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:16:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfLY-0004c7-Ra
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:16:14 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3a6d1369d4eso565806f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:16:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750439761; x=1751044561; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750439771; x=1751044571; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2qi1v+rhQhzB0wXkGwXHpVQj60b4txNx12WYFBH8tbM=;
- b=VDqMuFv/OXkY0AW63joPyVMgu7QJZS9/YwRiH1+sjNg4dY6BypynP8CFAy7HUA4V8u
- F9z1Q6LsA7k3fNFbGGgNs+TAsIIVCwJYoCfkytvc0VspXfYsav8CWxE7TiNVFqMkoCB2
- y0sKMHohdr7crcUc/RV0VFurpk3mYfdT2Jy0HuIkO9Sq6VbXtIprLkX9fRUM152jCsSb
- ckh/dyqqZOPg4A9dUCljzGfgiMUQCmzVgeU42MFy404XLkgeL5StHK/jFjv0nGQqHFCp
- ZqqLNdQyxStKu6cMMBY5+k3uWNM4XvILwAxcDn0l1reUQzr2Po3R6VyKI43iuqYahq2g
- wQxQ==
+ bh=HifgVc2llHULzbFJYnx4Gjp/3KyzUdu7DTAkCNPmNJ4=;
+ b=Bgr1JFVOZSlM/OSDQrnEzQSpE7vbxydusdCiyLgzY/zqzSlMT8KakK6gDNJzzmuq2j
+ ep6vzw+nRRjghsDeTezXVo2hDAqtmmPuKmeXZ6sN+2bjgtNy8rtUSbLn8cGgSJBpkpr8
+ nd62DAqmmQv2rIpAbCpcltpIFCVoQ1zIsBJexk9PuQtDtJy0xOIP5V47gH+w800QkS5X
+ T7vNMsIcI6KfPfCo5RXlWmkMhoMQ3Qzb/Nv3knw6vM+YZsdmDO4aS/42UMjC/CN/AwMZ
+ +iZ4je4WWOFobO9/Jyb7siw7HLTXRBitTq0oRyV+nszAPGk5wKRQyQvwJHn08f6CxBqx
+ VFtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750439761; x=1751044561;
+ d=1e100.net; s=20230601; t=1750439771; x=1751044571;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2qi1v+rhQhzB0wXkGwXHpVQj60b4txNx12WYFBH8tbM=;
- b=dDjpqzspLFPC9jbdHJkWDmTAVVCwv9zf3sgK6nCJYVhYQoCrEliV39EkbneqfAVTd0
- QErQ5G730OoelXICLZ0DXxMuoxcSR4eS9t3xZROzIyW/qaavLU2km41lK/bYiJlrPEcI
- Cyem+yfMrulMTB0lU0WixyO9HVaHFZbdJxKcln3tpbVsys0gB48rsia3yIL3tg3sM+CW
- PR5C01RLwuU36WtvGfgvotH5yiRdp9X3dcy986RAbdyBKeuFWfs81rIJxG2v5GrTI9He
- gLA6VD6xNnCGNvd3vs23hgxQD+/ftcKquHptiCWbd3vqLag0M5/yf+1EdFTcg6KEE57v
- dN9g==
-X-Gm-Message-State: AOJu0YxllwIbNCzFjb+uODkClLp394HeTzTYIFBAuS6uydB3tT+mm6X7
- GuCvdl7QRDZPud7o+0/YCwMG4kwOOh6cA6id14X+UzcBvNorvzSDZgxfbJ5hxMSxZL+dStlgMUF
- LXGQCfQg=
-X-Gm-Gg: ASbGncvvTubR9IIyXx7t7wLGQ14CWjLFDK3jNiwEPU/c5PGK/TbPQLeCu+GMfysmFSD
- s9+jSEzgQx7NOPHAE+7fsQwQGBiEcIW7B52+m+XEmHJ3ZiWwApqRukrHBpUkPPAocnN0cZtmKeb
- zPS2k/Cz2bAsCX5PGU+dz6gqncmm6wHHcCIGscSU1lCfKvrPoPkVNdLWkG3vvIqyJTtFWzmsD1V
- CpYiJcz6lJy5OoWEFZH9qQDqYZhrhVE2ARmB+TTWI8+cFIQX58c5q6y7z81QJVIR1/dxGuGnmgh
- qt4JF23NbTSx82OLd2RL8ubQwfdLoP6tKeHTLf5c6YzTazZRdAb94luY6gDC2magHM1xgiVV3V3
- FNutDY+svNVbPrtXT5i9PKnEIr+nrVUqREtYs
-X-Google-Smtp-Source: AGHT+IEQq6HaQLqzewlCiIo0FiAPIW82X7045GWBJkcjw26Y78qbiA/ikMP4FEvvKY5au5QxFDGFUg==
-X-Received: by 2002:a05:600c:6206:b0:453:dbe:7574 with SMTP id
- 5b1f17b1804b1-453659caa7dmr35829875e9.12.1750439760968; 
- Fri, 20 Jun 2025 10:16:00 -0700 (PDT)
+ bh=HifgVc2llHULzbFJYnx4Gjp/3KyzUdu7DTAkCNPmNJ4=;
+ b=PDWT+nXzmKahT9eOe2mFi/29OxSjqwo0mtZ7gnuKw+M7ZoYqeZ7IVnHSB5cbGIWCcz
+ XwQ7hw2mSSeqKu68CSr+O3e90g8c8skuJRkUgt2Y0BW1jHed1Gun/Q2fpRxaZosCjWWg
+ HoWrKszLori4W5IK043YAxYMIf0DHaOViF1p2lp0KhFn/RJgJFH/4dfJL1scmBWUsT6j
+ alxgZYUWC6vQrf3NJI3bpUgnses2j5XFP2tpUtg8t9sY3wcMZOPJKCS5FuhmNSI/FGJV
+ n2TA977YOI9wSuAOjo4mWN1HSCn2C/d2jnS36J+DuvccRgl/PNBrBd4/h0SQdYQsksLY
+ 88kw==
+X-Gm-Message-State: AOJu0YzuIEr6sqx9Ru9gmkwuSdyIA3UBUk57VUuQbcSlNrXKms8vWyYk
+ 2vAO1r/jQd3FQl1G4rPWr4fFRGxrNIukSJEbcNaheJ8SUQbY4F/Lt5xqqJp6DaWu1GMkLpd9HcD
+ xg07aM84=
+X-Gm-Gg: ASbGncte07+W74+zN4bQbzGDl/eCkAVg6gZ7u/RYQ/dnekTage+N0r3h+4QDJe8E/Ln
+ iBAv0vicWeSxZz2h8YNnhCTi2v55QH8AesELSq92aNmsF257NRkYX+Jlcfx742PaJ8GLsNIA7+q
+ 1Q9ecy3WO2cqbgwDpu65PXV0v6wRyjot66/Q4SEeDowAnGuMP7LlasegvObzQIqGFrRWDJFKWah
+ 9VlLgTp3sAjBSzaJl64PrMWFreXQB+ftd0Gy/BFpniB6UZude0Vg36ve/3+nYSGCyEkE8Xn7R/y
+ jE9xLvRm6oc+kDojsRk0SfdVWTpede/zOBG1BWLy0pQlO0orNWUrGdzk2Ow3vVMePRnXaFR29CA
+ bb6LYXRWL0doP4oswfAs/REW3FxXOgidU+gLa
+X-Google-Smtp-Source: AGHT+IH2Fj32y2DdNYzoohJCbSnUJoO7LZlCeq5hiSTtFi2VV4bh6XkWi1Y6d8SbFuWwXaDi2dtA1A==
+X-Received: by 2002:a05:6000:4912:b0:3a6:cfca:efee with SMTP id
+ ffacd0b85a97d-3a6d12a15e6mr2690151f8f.17.1750439770776; 
+ Fri, 20 Jun 2025 10:16:10 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d117c71esm2579551f8f.61.2025.06.20.10.15.59
+ 5b1f17b1804b1-4535ebced8asm65530905e9.40.2025.06.20.10.16.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:16:00 -0700 (PDT)
+ Fri, 20 Jun 2025 10:16:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -73,18 +73,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 28/48] accel/dummy: Factor tcg_vcpu_thread_precreate()
- out
-Date: Fri, 20 Jun 2025 19:13:21 +0200
-Message-ID: <20250620171342.92678-29-philmd@linaro.org>
+Subject: [RFC PATCH v2 30/48] accel: Introduce
+ AccelOpsClass::cpu_thread_routine handler
+Date: Fri, 20 Jun 2025 19:13:23 +0200
+Message-ID: <20250620171342.92678-31-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620171342.92678-1-philmd@linaro.org>
 References: <20250620171342.92678-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,81 +107,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Factor tcg_vcpu_thread_precreate() out for re-use.
+In order to have a generic function creating threads,
+introduce the thread_precreate() and cpu_thread_routine()
+handlers.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/tcg-accel-ops.h       | 1 +
- accel/tcg/tcg-accel-ops-mttcg.c | 3 +--
- accel/tcg/tcg-accel-ops-rr.c    | 3 +--
- accel/tcg/tcg-accel-ops.c       | 7 +++++++
- 4 files changed, 10 insertions(+), 4 deletions(-)
+ include/system/accel-ops.h |  5 ++++-
+ accel/accel-common.c       | 16 +++++++++++++++-
+ system/cpus.c              |  2 +-
+ 3 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
-index 6feeb3f3e9b..129af89c3e7 100644
---- a/accel/tcg/tcg-accel-ops.h
-+++ b/accel/tcg/tcg-accel-ops.h
-@@ -14,6 +14,7 @@
+diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
+index b1b9dce27d0..b1a55ebe333 100644
+--- a/include/system/accel-ops.h
++++ b/include/system/accel-ops.h
+@@ -39,7 +39,10 @@ struct AccelOpsClass {
+     bool (*cpu_target_realize)(CPUState *cpu, Error **errp);
+     void (*cpu_reset_hold)(CPUState *cpu);
  
- #include "system/cpus.h"
+-    void (*create_vcpu_thread)(CPUState *cpu); /* MANDATORY NON-NULL */
++    /* Either cpu_thread_routine() or create_vcpu_thread() is mandatory */
++    void *(*cpu_thread_routine)(void *);
++    void (*thread_precreate)(CPUState *cpu);
++    void (*create_vcpu_thread)(CPUState *cpu);
+     void (*kick_vcpu_thread)(CPUState *cpu);
+     bool (*cpu_thread_is_idle)(CPUState *cpu);
  
-+void tcg_vcpu_thread_precreate(CPUState *cpu);
- void tcg_cpu_destroy(CPUState *cpu);
- int tcg_cpu_exec(CPUState *cpu);
- void tcg_handle_interrupt(CPUState *cpu, int mask);
-diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
-index dfcee30947e..462be7596b9 100644
---- a/accel/tcg/tcg-accel-ops-mttcg.c
-+++ b/accel/tcg/tcg-accel-ops-mttcg.c
-@@ -133,8 +133,7 @@ void mttcg_start_vcpu_thread(CPUState *cpu)
- {
-     char thread_name[VCPU_THREAD_NAME_SIZE];
+diff --git a/accel/accel-common.c b/accel/accel-common.c
+index d719917063e..24038acf4aa 100644
+--- a/accel/accel-common.c
++++ b/accel/accel-common.c
+@@ -11,6 +11,7 @@
+ #include "qemu/accel.h"
+ #include "qemu/target-info.h"
+ #include "system/accel-ops.h"
++#include "system/cpus.h"
+ #include "accel/accel-cpu.h"
+ #include "accel-internal.h"
  
--    g_assert(tcg_enabled());
--    tcg_cpu_init_cflags(cpu, current_machine->smp.max_cpus > 1);
-+    tcg_vcpu_thread_precreate(cpu);
- 
-     /* create a thread per vCPU with TCG (MTTCG) */
-     snprintf(thread_name, VCPU_THREAD_NAME_SIZE, "CPU %d/TCG",
-diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index 6eec5c9eee9..fc33a13e4e8 100644
---- a/accel/tcg/tcg-accel-ops-rr.c
-+++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -311,8 +311,7 @@ void rr_start_vcpu_thread(CPUState *cpu)
-     static QemuCond *single_tcg_halt_cond;
-     static QemuThread *single_tcg_cpu_thread;
- 
--    g_assert(tcg_enabled());
--    tcg_cpu_init_cflags(cpu, false);
-+    tcg_vcpu_thread_precreate(cpu);
- 
-     if (!single_tcg_cpu_thread) {
-         single_tcg_halt_cond = cpu->halt_cond;
-diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 95ff451c148..861996649b7 100644
---- a/accel/tcg/tcg-accel-ops.c
-+++ b/accel/tcg/tcg-accel-ops.c
-@@ -41,6 +41,7 @@
- #include "gdbstub/enums.h"
- 
- #include "hw/core/cpu.h"
-+#include "hw/boards.h"
- 
- #include "tcg-accel-ops.h"
- #include "tcg-accel-ops-mttcg.h"
-@@ -69,6 +70,12 @@ void tcg_cpu_init_cflags(CPUState *cpu, bool parallel)
-     tcg_cflags_set(cpu, cflags);
+@@ -104,7 +105,20 @@ void accel_create_vcpu_thread(AccelState *accel, CPUState *cpu)
+     if (ac->ops->create_vcpu_thread != NULL) {
+         ac->ops->create_vcpu_thread(cpu);
+     } else {
+-        g_assert_not_reached();
++        char thread_name[VCPU_THREAD_NAME_SIZE];
++
++        assert(ac->name);
++        assert(ac->ops->cpu_thread_routine);
++
++        if (ac->ops->thread_precreate) {
++            ac->ops->thread_precreate(cpu);
++        }
++
++        snprintf(thread_name, VCPU_THREAD_NAME_SIZE, "CPU %d/%s",
++                 cpu->cpu_index, ac->name);
++        qemu_thread_create(cpu->thread, thread_name,
++                           ac->ops->cpu_thread_routine,
++                           cpu, QEMU_THREAD_JOINABLE);
+     }
  }
  
-+void tcg_vcpu_thread_precreate(CPUState *cpu)
-+{
-+    g_assert(tcg_enabled());
-+    tcg_cpu_init_cflags(cpu, current_machine->smp.max_cpus > 1);
-+}
-+
- void tcg_cpu_destroy(CPUState *cpu)
+diff --git a/system/cpus.c b/system/cpus.c
+index 1721b32fc3f..bd3fd1b31b6 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -671,7 +671,7 @@ void cpu_remove_sync(CPUState *cpu)
+ void cpus_register_accel(const AccelOpsClass *ops)
  {
-     cpu_thread_signal_destroyed(cpu);
+     assert(ops != NULL);
+-    assert(ops->create_vcpu_thread != NULL); /* mandatory */
++    assert(ops->create_vcpu_thread || ops->cpu_thread_routine);
+     cpus_accel = ops;
+ }
+ 
 -- 
 2.49.0
 
