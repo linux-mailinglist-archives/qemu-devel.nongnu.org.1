@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4D5AE204E
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA54AE2047
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:44:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSeo5-0006Zq-T0; Fri, 20 Jun 2025 12:41:37 -0400
+	id 1uSeo0-0006XV-0E; Fri, 20 Jun 2025 12:41:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSeo2-0006Yu-5W
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uSens-0006X0-1u
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSenz-0000Gq-UU
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:33 -0400
+ id 1uSenq-0000Fk-8m
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750437691;
+ s=mimecast20190719; t=1750437681;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZbRxtT0IMJemouiEORMDGr9tGSaeLkY1c3ABjRf1eR8=;
- b=JP8UPdnXVuIB1I2RDw1Oi73mlJQNBDdRAtf4Uul2s7y/tn4Meo5Cy3Gfb0C5iyijkC6zLl
- RA1d8zsMRRiO3av5ZOO08nwdqKjoPX5tyJVg/9xqLmpNJaVBbM7XjxBgKi9aglraAg2wPC
- WQ23u4jX0wq03edIWFqR9V3oGak6FzQ=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=P0ToVja12+bxntDkM4pyBWaD2U29e/LsVsIKe4q19RE=;
+ b=TLwcbRKwPLCxW5XzClk8SD2EniBPmlnZN76esUnQ/dQQRvoW/Wi0tQXZEAMZ7mHkd84baH
+ Pkuf0g4y9v/uNg9ZWHBYsTbXFOehD2Ofho5FSTxuXfs065pIi0BFmvEXS3i8Xll14/LIzp
+ XWPiFJB7mHX7Us4/bNlgq5l+Z0/O+6E=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-v8-5ykeGP86BXIDR9iRdcA-1; Fri, 20 Jun 2025 12:41:16 -0400
-X-MC-Unique: v8-5ykeGP86BXIDR9iRdcA-1
-X-Mimecast-MFC-AGG-ID: v8-5ykeGP86BXIDR9iRdcA_1750437675
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-adb5f5f43dfso163930866b.3
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:41:16 -0700 (PDT)
+ us-mta-317-FcvnPXdGOOGAuNXNCHySiw-1; Fri, 20 Jun 2025 12:41:20 -0400
+X-MC-Unique: FcvnPXdGOOGAuNXNCHySiw-1
+X-Mimecast-MFC-AGG-ID: FcvnPXdGOOGAuNXNCHySiw_1750437679
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ad89a3bcc62so152222066b.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:41:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750437674; x=1751042474;
+ d=1e100.net; s=20230601; t=1750437678; x=1751042478;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZbRxtT0IMJemouiEORMDGr9tGSaeLkY1c3ABjRf1eR8=;
- b=o/pl0HHobNo+QbE2JIfeYXiHQJRNcGT0WVJR3d83+bA4pg3zUsiKaPfCFRcHyhN5o1
- Njoubpc2uR9Djq1J9dBGUHngRmnTvOAbcL7FdrrDnf8m9QqIHKLKI8Jp9gEqQ3VB9InP
- zeK3SJKTEQlnwBflp20swDjAz8R5EZZH0qZfY7WcxFq7HxYbk6cmeK1oUVdf/1xcNviW
- d1acTlOTh5v9C0awFWVTPiig7SxBeblVhcUgdYwlYSZ/avDRUPml508nMmp8MgLRJHx7
- 653kYccu+c3S0lSz5JYdC98Z8RlFJpxQCOzfX/UbWUtjIt+imi30BRChtUvxqC1WHnwX
- LByg==
-X-Gm-Message-State: AOJu0YxvDiVDJsB7YwlnN5xDDu9Xdbl1feOOf3jybf+pkD0c6jiilVAG
- xroewK14tR+9XSvJj5YnymlySO2NohLGqrdH2vAITBUU6De4YPf5R29a0QFfQji1MgEttJLXjUK
- m77Ho42qU2wXsnSZnn6yAeMT/lqL2EZSHiOKvuD3sdfuBSkOLRlgcy/aXke+2wriMkVdVwSV9hd
- XobWFIvFXx1A1PTJx5DnnsRpAHB1oL1n4U1hxiAHyD
-X-Gm-Gg: ASbGncvySDOnoaYHAePvN3YfJK3n5ywYRItonS82iqFEqRoFTGnxLtIg/MhA4PsYleE
- +x5k+5vTgIWtLgzUQ/Uy4+WIHYieh8iY46yAY7o70xqMRENxAdiYgl2FygNc6uUa96Hy7LALuYo
- hYAU7ilpw80kTEeKs0R/wJq6lxollkSaSqIgfs9Y6EZMkCmkRdVP1/wm7nPROuW9UFmIul6/oVV
- CtENLedXHIPTUc5mF3NfxMzojZrF0shZ3snOGQA1MtwNbdjfFu3exWPize/IqIDWY58ioGdWhFB
- 1hZ6ZMYGzYCQ+1QlkMmNAq347w==
-X-Received: by 2002:a17:907:9715:b0:ad8:9b5d:2c38 with SMTP id
- a640c23a62f3a-ae057d4d2a3mr350810166b.26.1750437674302; 
- Fri, 20 Jun 2025 09:41:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEjeaEMwqFfV9E8dSGQzWMqgp1qiygxRbnsjANyqiuxT+7P/gN4UDB8YsHXsV67tXWKOMAZGQ==
-X-Received: by 2002:a17:907:9715:b0:ad8:9b5d:2c38 with SMTP id
- a640c23a62f3a-ae057d4d2a3mr350807566b.26.1750437673789; 
- Fri, 20 Jun 2025 09:41:13 -0700 (PDT)
+ bh=P0ToVja12+bxntDkM4pyBWaD2U29e/LsVsIKe4q19RE=;
+ b=BibAXEYiKdY691R+7ysMNrO7B/onuaZTxHy7TY5HjC5js5KKyEQ/ppBRyBR1siRw2A
+ sGmSrWBFX79M/0pVFpFGFEMgOjCpFuwfoftzSZaD2RJ/MjeGHjRvig7zhNT309FR/UWY
+ VAnqrrXEAZV0y/W5z4G2QpUM6l7VVRQTaoKMPe1zCbVZGZQbBNC9X8CW75V/9Hz01zvo
+ 8kOLZm1lHffWlXLcUNs8tre7CoxneW6Glo1TyGE3pvfELEcDYpfdirY9FICLKnjewco4
+ DPA7tUZbqizlAYMd1SPqGU1TctjVzsYUiPJN5kxKHXKJEnp46DoWeeY7BkqbA7YqxwYq
+ ulAA==
+X-Gm-Message-State: AOJu0Yx/907Qaxakyz+P/SVkcHN0iWFAFsiVmbp9QER+46CmhByatHYK
+ IiVamvfCX8XdzymGhEWS2Bcb3OVPptYbmKkzO0F7DYSHMfbRy1BhoynEtpb0hqithCs7c+U+sax
+ Cthm7QOyDFjms9scbJrufp/PGTATwMrG5H+JaD21aw3p5qZc6FxZ9aWGv8PlKcbn4XUYSOdk6sz
+ R2hEBTngTcTINMG9yyiMpvkxvEhTjHlrp/98AWrU1r
+X-Gm-Gg: ASbGncvSZjyTim+4afLgT3akYaoefs8KxrGQtkiHuLZw0FOdYSBqcHyQoiCVJFPXBDY
+ O2GT649NzVNtv92TgZ0zVI+I+6VRm2dzi4QVUr3lU0t9Wtj04NY2EkqewFXw952Vylxv0Q7H085
+ gilbBaOnNvquyUal5NtE2eJJZD9BVfDd2mW4PifdENA6WenXsImEZxu5ogXYYSpbQkHEuPbxeeA
+ WiD2rSmg0+jbCa9nTdfswGy1pLVgFGrs8EECrnZBexxaPUQtfU+MjM4ZtNdVqjMsWPJExBs5dlJ
+ EtuWA6+tp+WzTKDv5aSmidyTmA==
+X-Received: by 2002:a17:907:1b29:b0:ad8:9257:573d with SMTP id
+ a640c23a62f3a-ae057a0826bmr325331966b.24.1750437677760; 
+ Fri, 20 Jun 2025 09:41:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHv+cX4lo9hxNHLN1cuQI0Zi/KLvmxBBXi8M9d4HlRrjFgbQzjm+HjNmik3eZjbeofkiwtadA==
+X-Received: by 2002:a17:907:1b29:b0:ad8:9257:573d with SMTP id
+ a640c23a62f3a-ae057a0826bmr325329366b.24.1750437677218; 
+ Fri, 20 Jun 2025 09:41:17 -0700 (PDT)
 Received: from [192.168.122.1] ([151.62.200.93])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae054209a2dsm190213166b.174.2025.06.20.09.41.11
+ a640c23a62f3a-ae053edc0e9sm188735466b.54.2025.06.20.09.41.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Jun 2025 09:41:11 -0700 (PDT)
+ Fri, 20 Jun 2025 09:41:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 07/24] rust: qom: introduce ParentInit
-Date: Fri, 20 Jun 2025 18:40:35 +0200
-Message-ID: <20250620164053.579416-8-pbonzini@redhat.com>
+Subject: [PULL 08/24] rust: qom: make ParentInit lifetime-invariant
+Date: Fri, 20 Jun 2025 18:40:36 +0200
+Message-ID: <20250620164053.579416-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620164053.579416-1-pbonzini@redhat.com>
 References: <20250620164053.579416-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -106,130 +106,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a smart pointer for MaybeUninit; it can be upcasted to the
-already-initialized parent classes, or dereferenced to a MaybeUninit
-for the class that is being initialized.
+This is the trick that allows the parent-field initializer to be used
+only for the object that it's meant to be initialized.  This way,
+the owner of a MemoryRegion must be the object that embeds it.
+
+More information is in the comments; it's best explained with a simplified
+example.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/qom.rs | 96 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 1 deletion(-)
+ rust/qemu-api/src/qom.rs | 89 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 85 insertions(+), 4 deletions(-)
 
 diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 14f98fee60a..ef966e570ca 100644
+index ef966e570ca..04d102591dc 100644
 --- a/rust/qemu-api/src/qom.rs
 +++ b/rust/qemu-api/src/qom.rs
-@@ -95,7 +95,7 @@
+@@ -95,6 +95,7 @@
  use std::{
      ffi::{c_void, CStr},
      fmt,
--    mem::ManuallyDrop,
-+    mem::{ManuallyDrop, MaybeUninit},
++    marker::PhantomData,
+     mem::{ManuallyDrop, MaybeUninit},
      ops::{Deref, DerefMut},
      ptr::NonNull,
- };
-@@ -206,6 +206,100 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+@@ -208,12 +209,92 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+ 
+ /// This struct knows that the superclasses of the object have already been
+ /// initialized.
+-pub struct ParentInit<'a, T>(&'a mut MaybeUninit<T>);
++///
++/// The declaration of `ParentInit` is.. *"a kind of magic"*.  It uses a
++/// technique that is found in several crates, the main ones probably being
++/// `ghost-cell` (in fact it was introduced by the [`GhostCell` paper](https://plv.mpi-sws.org/rustbelt/ghostcell/))
++/// and `generativity`.
++///
++/// The `PhantomData` makes the `ParentInit` type *invariant* with respect to
++/// the lifetime argument `'init`.  This, together with the `for<'...>` in
++/// `[ParentInit::with]`, block any attempt of the compiler to be creative when
++/// operating on types of type `ParentInit` and to extend their lifetimes.  In
++/// particular, it ensures that the `ParentInit` cannot be made to outlive the
++/// `rust_instance_init()` function that creates it, and therefore that the
++/// `&'init T` reference is valid.
++///
++/// This implementation of the same concept, without the QOM baggage, can help
++/// understanding the effect:
++///
++/// ```
++/// use std::marker::PhantomData;
++///
++/// #[derive(PartialEq, Eq)]
++/// pub struct Jail<'closure, T: Copy>(&'closure T, PhantomData<fn(&'closure ()) -> &'closure ()>);
++///
++/// impl<'closure, T: Copy> Jail<'closure, T> {
++///     fn get(&self) -> T {
++///         *self.0
++///     }
++///
++///     #[inline]
++///     fn with<U>(v: T, f: impl for<'id> FnOnce(Jail<'id, T>) -> U) -> U {
++///         let parent_init = Jail(&v, PhantomData);
++///         f(parent_init)
++///     }
++/// }
++/// ```
++///
++/// It's impossible to escape the `Jail`; `token1` cannot be moved out of the
++/// closure:
++///
++/// ```ignore
++/// let x = 42;
++/// let escape = Jail::with(&x, |token1| {
++///     println!("{}", token1.get());
++///     // fails to compile...
++///     token1
++/// });
++/// // ... so you cannot do this:
++/// println!("{}", escape.get());
++/// ```
++///
++/// Likewise, in the QOM case the `ParentInit` cannot be moved out of
++/// `instance_init()`. Without this trick it would be possible to stash a
++/// `ParentInit` and use it later to access uninitialized memory.
++///
++/// Here is another example, showing how separately-created "identities" stay
++/// isolated:
++///
++/// ```ignore
++/// impl<'closure, T: Copy> Clone for Jail<'closure, T> {
++///     fn clone(&self) -> Jail<'closure, T> {
++///         Jail(self.0, PhantomData)
++///     }
++/// }
++///
++/// fn main() {
++///     Jail::with(42, |token1| {
++///         // this works and returns true: the clone has the same "identity"
++///         println!("{}", token1 == token1.clone());
++///         Jail::with(42, |token2| {
++///             // here the outer token remains accessible...
++///             println!("{}", token1.get());
++///             // ... but the two are separate: this fails to compile:
++///             println!("{}", token1 == token2);
++///         });
++///     });
++/// }
++/// ```
++pub struct ParentInit<'init, T>(
++    &'init mut MaybeUninit<T>,
++    PhantomData<fn(&'init ()) -> &'init ()>,
++);
+ 
+-impl<'a, T> ParentInit<'a, T> {
++impl<'init, T> ParentInit<'init, T> {
+     #[inline]
+-    pub fn with(obj: &'a mut MaybeUninit<T>, f: impl FnOnce(ParentInit<'a, T>)) {
+-        let parent_init = ParentInit(obj);
++    pub fn with(obj: &'init mut MaybeUninit<T>, f: impl for<'id> FnOnce(ParentInit<'id, T>)) {
++        let parent_init = ParentInit(obj, PhantomData);
+         f(parent_init)
      }
  }
- 
-+/// This struct knows that the superclasses of the object have already been
-+/// initialized.
-+pub struct ParentInit<'a, T>(&'a mut MaybeUninit<T>);
-+
-+impl<'a, T> ParentInit<'a, T> {
-+    #[inline]
-+    pub fn with(obj: &'a mut MaybeUninit<T>, f: impl FnOnce(ParentInit<'a, T>)) {
-+        let parent_init = ParentInit(obj);
-+        f(parent_init)
-+    }
-+}
-+
-+impl<T: ObjectType> ParentInit<'_, T> {
-+    /// Return the receiver as a mutable raw pointer to Object.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Fields beyond `Object` could be uninitialized and it's your
-+    /// responsibility to avoid that they're used when the pointer is
-+    /// dereferenced, either directly or through a cast.
-+    pub fn as_object_mut_ptr(&self) -> *mut bindings::Object {
-+        self.as_object_ptr().cast_mut()
-+    }
-+
-+    /// Return the receiver as a mutable raw pointer to Object.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Fields beyond `Object` could be uninitialized and it's your
-+    /// responsibility to avoid that they're used when the pointer is
-+    /// dereferenced, either directly or through a cast.
-+    pub fn as_object_ptr(&self) -> *const bindings::Object {
-+        self.0.as_ptr().cast()
-+    }
-+}
-+
-+impl<'a, T: ObjectImpl> ParentInit<'a, T> {
-+    /// Convert from a derived type to one of its parent types, which
-+    /// have already been initialized.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Structurally this is always a safe operation; the [`IsA`] trait
-+    /// provides static verification trait that `Self` dereferences to `U` or
-+    /// a child of `U`, and only parent types of `T` are allowed.
-+    ///
-+    /// However, while the fields of the resulting reference are initialized,
-+    /// calls might use uninitialized fields of the subclass.  It is your
-+    /// responsibility to avoid this.
-+    pub unsafe fn upcast<U: ObjectType>(&self) -> &'a U
-+    where
-+        T::ParentType: IsA<U>,
-+    {
-+        // SAFETY: soundness is declared via IsA<U>, which is an unsafe trait;
-+        // the parent has been initialized before `instance_init `is called
-+        unsafe { &*(self.0.as_ptr().cast::<U>()) }
-+    }
-+
-+    /// Convert from a derived type to one of its parent types, which
-+    /// have already been initialized.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Structurally this is always a safe operation; the [`IsA`] trait
-+    /// provides static verification trait that `Self` dereferences to `U` or
-+    /// a child of `U`, and only parent types of `T` are allowed.
-+    ///
-+    /// However, while the fields of the resulting reference are initialized,
-+    /// calls might use uninitialized fields of the subclass.  It is your
-+    /// responsibility to avoid this.
-+    pub unsafe fn upcast_mut<U: ObjectType>(&mut self) -> &'a mut U
-+    where
-+        T::ParentType: IsA<U>,
-+    {
-+        // SAFETY: soundness is declared via IsA<U>, which is an unsafe trait;
-+        // the parent has been initialized before `instance_init `is called
-+        unsafe { &mut *(self.0.as_mut_ptr().cast::<U>()) }
-+    }
-+}
-+
-+impl<T> Deref for ParentInit<'_, T> {
-+    type Target = MaybeUninit<T>;
-+
-+    fn deref(&self) -> &Self::Target {
-+        self.0
-+    }
-+}
-+
-+impl<T> DerefMut for ParentInit<'_, T> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        self.0
-+    }
-+}
-+
- unsafe extern "C" fn rust_instance_init<T: ObjectImpl>(obj: *mut bindings::Object) {
-     let mut state = NonNull::new(obj).unwrap().cast::<T>();
-     // SAFETY: obj is an instance of T, since rust_instance_init<T>
 -- 
 2.49.0
 
