@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F123FAE20B2
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 267D3AE258C
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:28:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSfP9-0001Li-3a; Fri, 20 Jun 2025 13:19:55 -0400
+	id 1uSk4X-0000mJ-CD; Fri, 20 Jun 2025 18:18:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfMO-0004Kz-7N
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:17:04 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfKL-000122-CJ
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:15:00 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfMM-0004k3-KM
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:17:03 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3a50fc819f2so1686770f8f.2
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:17:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfKE-0004FL-Jd
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:14:54 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3a57c8e247cso1802339f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:14:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750439820; x=1751044620; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750439687; x=1751044487; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GRf9yAzhlgNVS6RKT148G9E3d3UkN9hZ1qj0XLXjjrQ=;
- b=s+h1tiQZpYzhCR08ynTfX+sHLsovzEC73BUwBGKa4/BAvYZ6491wZHPMBcqRcmr2o0
- d/SWmcCcc1QfWD/yfNvhgQKG+9fl8o5JKee1UjeQZF25TKWjxNkeQUBEV1JqIqWnDWud
- R1yTQiXAjJ36B+HbDhyHhQ69sCQagOt7DLk0dNKK+O5h2wotIzkmVMqh8SxlFvHJzBVU
- nMmP2vpPssDn18DxzCvn2BZZNDogu+uBizgzmpoS8LNMauq2w+dtlPej8MS5Ajdkmvm+
- dpW5wuJxC8J65h35Zp9yp7c0LIezr4d89CX9c3B1q7IBRRIZ2RfNZ4sol54uEQAh/l+w
- 9vLA==
+ bh=15D3isY4l+uwS25oxkiN7c++y0O/h98h4xMzv+uZTLM=;
+ b=dw9divZfakRx3L/ZXpqX0ATIauP+zS0lMTH3kA1UEg69eVt7jVCP1uVr76liIbzVun
+ C4U5RJ3BB1QS44jCSLi5Ro/B30yK6pcPAqNMuijnpbTHA+krCbqxvEyeHKkloXb7sbFo
+ SiIddZbdXe28WosQPNpB2wG0LPipHk3QRzYtd2ejqR481bxkvOI8GkN5eXRE/9U7oG3r
+ aj1V0TUdRT9xobhz0/6gn+MVOpdWsYCgaBlfoPxLjT5n6XjGOkoyMkCi2G2TceMOZzsY
+ Z6Sru/jE6y4wjFdG+kDXJZnKnAiIDW2b7JoruWCG1dTcQGRoQnQQMQfOKSfPyExrqRDq
+ OC3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750439820; x=1751044620;
+ d=1e100.net; s=20230601; t=1750439687; x=1751044487;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GRf9yAzhlgNVS6RKT148G9E3d3UkN9hZ1qj0XLXjjrQ=;
- b=tD/we5HyNH1WSdVY0c+fcpnBXN4L04iQRAAw1towJTMJqWpwIlj2Vgux+ySrgkxD3E
- HnDCFbkYWq0GS4LkV2W8zR9fzMWhJSKo39RN3zpsySj6HFt99J+ZnyKCuCz+CFc/rndR
- +9+Rf7hhjpaSQKZmjel2NcV0BlRUUzMEySYFKctM95uxjwRy29RkfmVKCRFz7xnJPH6o
- vk5YWFkaVKlToSCjmJ9/2TwcxCx/Ded9IgQupwkoogCcd5IpnlJZ9NrtKpIoRFzvi73T
- VsdqVSweguRzjshkv4TA6MgGZqi0i6vdFx1kCo2N0QwqnEhHd/uPmtZ9plNo2Oy5+OPG
- on/w==
-X-Gm-Message-State: AOJu0YznrUgRLp9pw7VO8WBx8dermPHq2NRk3YNmP/22kBmUPKBFrTqT
- x+uV57KBUDporh0yo79suLOGrJQn5WuMt1Bv318nFHMLcuchm4QLqauxqNT0sbFiRcRLrwZwTl1
- dXJhs+94=
-X-Gm-Gg: ASbGncthZE/ry30qjAELtggkDCjY7brOkqNu5gk+qpuH9tFydDE5Tgn6op5ry6pXO+U
- U+Kt2R/r9RZb0Kzfajd/cD6Zfm09Jt4qqi9uaQVw2DBu5zgPEX29f8sFJmC+RS5kVvEshcoc8ij
- g4bXYXmUzjg8nagMGc+r5ZjKnno1+QIXOLV9o6/DOeDhceCesqTKetDu5A4aHeDbbJc6CoDW4Hl
- qT+LHAXqsXNBMoHKaMsSSA8Ergf2FNLhtFw8/QUvRwpsj8k3CE+6X5rsNVblNpdEF40k2q5QcV7
- JOLx0NapPToB6QKjX/0T7t00Wb+9dRMcnBpxOUbr5Vi1icaZW0aVEdRcHJCWZ3NC1vdXZjQc6Oe
- bM2Cu9Jh3Yk93YzNUFdnVviUmFdCXLL89Nx7P
-X-Google-Smtp-Source: AGHT+IFM17ELLCe/FoMp7G+Z6ToDkg0Z0RlxNZCpiBo3At7lPnV8Kktpj3sw+njl+fx66IuXo8a79w==
-X-Received: by 2002:a05:6000:651:b0:3a5:39a8:199c with SMTP id
- ffacd0b85a97d-3a6d13129demr3286169f8f.53.1750439820568; 
- Fri, 20 Jun 2025 10:17:00 -0700 (PDT)
+ bh=15D3isY4l+uwS25oxkiN7c++y0O/h98h4xMzv+uZTLM=;
+ b=XvcvxEczHbHpgfqWNdl1FEAgCw9PjLLFzbYgiFkMMATIsiIT4QgtsC8SSxVG93qPST
+ YMX+urV2lKhqBcZ98WUXQAtjhgEVc2vYeLQbgfbf79hC2YiAB0LV/pnwgFuxXK7Zzkyd
+ e85ADaxHeq4pBfeadopwn3LfJNmIsLbzvSkdvhJrNidyEaJ+8Rnx4Y+fSDQAscbbFHDP
+ siFSTF3aBoTPiUAvkcfHGafFVUMBZc0tfi4mebcb5vuqYqYJUs++GTV149p/aYw2wnW/
+ 5KhU35OhKN1Udl3lFv8UvlgVbnfGZNAAXyiXinAYkCxgEG6neKRo4hIpB+bykumfmGb+
+ sAXQ==
+X-Gm-Message-State: AOJu0YySh9aEe5XGtfeMUGzEcNc6fdYzbSu2jREfAdhyPgj1vBGeYq6+
+ 7WjEdeaeBZ/DtPomFQyu8qSLDA7ZLXOzs6xlH+ClPW0kaTFbuQSVA/nVYRPiyP0ncUafits/+p/
+ F9XWw3D4=
+X-Gm-Gg: ASbGncsqcXdz7FnBzRaBx+aR93xCEC3RswheZlmR6p1BqAWre66NRgK3/ZzpXxSpba7
+ 7utNFnVSA3P8UopX6w3dd1jKzXIh2pg8O86T09pKLbXTEUJbDUAmVjrtcJ95n/VziojgdXmPqxI
+ Gzx2OBrtzjM89i2FZzwcZLA1LM99fnPA+XaJLO9fjaRCuxsP5YA6n1xrweAcLDFB9Hrx8r/hm9L
+ kchKZq5KxaAQWHblz+n9qwt4Jc8rM2D6mHKdwhTn2mvfvv9m3gltCTQOXI+eUdQJ9anf3E07Reu
+ hsvq2EpTHj85hxgLxlr+lDtiyZepgJUphHkC19shWEoFOY6iJBdw7NsShRS3iVQ+eUOc9PYNin6
+ Bw8tvnr2Gi8qQcsgy3GWAnCF4Wh8BcG+3gC+5
+X-Google-Smtp-Source: AGHT+IHExyLiz2129GUCSXtaD+vCib6+sbpI5YJ0gJYGGhiF/JKuIudRNmVOpZu05vpSTsPs3M109Q==
+X-Received: by 2002:a05:6000:4917:b0:3a4:fa09:d13b with SMTP id
+ ffacd0b85a97d-3a6d1333f71mr3804288f8f.59.1750439687161; 
+ Fri, 20 Jun 2025 10:14:47 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d0f1815dsm2522539f8f.28.2025.06.20.10.16.59
+ 5b1f17b1804b1-453632312a3sm41221035e9.1.2025.06.20.10.14.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:17:00 -0700 (PDT)
+ Fri, 20 Jun 2025 10:14:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -73,17 +73,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 40/48] accel: Factor accel_cpu_realize() out
-Date: Fri, 20 Jun 2025 19:13:33 +0200
-Message-ID: <20250620171342.92678-41-philmd@linaro.org>
+Subject: [RFC PATCH v2 13/48] accel: Move cpu_common_[un]realize()
+ declarations to AccelOpsClass
+Date: Fri, 20 Jun 2025 19:13:06 +0200
+Message-ID: <20250620171342.92678-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620171342.92678-1-philmd@linaro.org>
 References: <20250620171342.92678-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,60 +107,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Factor accel_cpu_realize() out of accel_cpu_common_realize()
-for re-use.
+AccelClass is for methods dealing with AccelState.
+When dealing with vCPUs, we want AccelOpsClass.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/accel-internal.h |  2 ++
- accel/accel-common.c   | 15 ++++++++++++---
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ include/qemu/accel.h       |  2 --
+ include/system/accel-ops.h |  2 ++
+ accel/accel-common.c       | 10 ++++++----
+ accel/tcg/tcg-accel-ops.c  |  3 +++
+ accel/tcg/tcg-all.c        |  2 --
+ 5 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/accel/accel-internal.h b/accel/accel-internal.h
-index d3a4422cbf7..b541377c349 100644
---- a/accel/accel-internal.h
-+++ b/accel/accel-internal.h
-@@ -14,4 +14,6 @@
+diff --git a/include/qemu/accel.h b/include/qemu/accel.h
+index 04d252d3d65..aee0a2e3309 100644
+--- a/include/qemu/accel.h
++++ b/include/qemu/accel.h
+@@ -41,8 +41,6 @@ typedef struct AccelClass {
+     AccelOpsClass *ops;
  
- void accel_init_ops_interfaces(AccelClass *ac);
+     int (*init_machine)(MachineState *ms, AccelState *as);
+-    bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
+-    void (*cpu_common_unrealize)(CPUState *cpu);
  
-+bool accel_cpu_realize(AccelState *accel, CPUState *cpu, Error **errp);
-+
- #endif /* ACCEL_SYSTEM_H */
+     /* system related hooks */
+     void (*setup_post)(MachineState *ms, AccelState *accel);
+diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
+index d854b84a66a..fb199dc78f0 100644
+--- a/include/system/accel-ops.h
++++ b/include/system/accel-ops.h
+@@ -34,6 +34,8 @@ struct AccelOpsClass {
+     /* initialization function called when accel is chosen */
+     void (*ops_init)(AccelClass *ac);
+ 
++    bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
++    void (*cpu_common_unrealize)(CPUState *cpu);
+     bool (*cpu_target_realize)(CPUState *cpu, Error **errp);
+     void (*cpu_reset_hold)(CPUState *cpu);
+ 
 diff --git a/accel/accel-common.c b/accel/accel-common.c
-index 24038acf4aa..0f2aa783ab2 100644
+index 1d04610f55e..d1a5f3ca3df 100644
 --- a/accel/accel-common.c
 +++ b/accel/accel-common.c
-@@ -122,10 +122,14 @@ void accel_create_vcpu_thread(AccelState *accel, CPUState *cpu)
+@@ -102,10 +102,12 @@ bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
+     }
+ 
+     /* generic realization */
+-    if (acc->cpu_common_realize && !acc->cpu_common_realize(cpu, errp)) {
++    if (acc->ops->cpu_common_realize
++        && !acc->ops->cpu_common_realize(cpu, errp)) {
+         return false;
+     }
+-    if (acc->ops->cpu_target_realize && !acc->ops->cpu_target_realize(cpu, errp)) {
++    if (acc->ops->cpu_target_realize
++        && !acc->ops->cpu_target_realize(cpu, errp)) {
+         return false;
+     }
+ 
+@@ -118,8 +120,8 @@ void accel_cpu_common_unrealize(CPUState *cpu)
+     AccelClass *acc = ACCEL_GET_CLASS(accel);
+ 
+     /* generic unrealization */
+-    if (acc->cpu_common_unrealize) {
+-        acc->cpu_common_unrealize(cpu);
++    if (acc->ops->cpu_common_unrealize) {
++        acc->ops->cpu_common_unrealize(cpu);
      }
  }
  
--bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
-+bool accel_cpu_realize(AccelState *accel, CPUState *cpu, Error **errp)
- {
--    AccelState *accel = current_accel();
--    AccelClass *acc = ACCEL_GET_CLASS(accel);
-+    AccelClass *acc;
-+
-+    if (!accel) {
-+        accel = current_accel();
-+    }
-+    acc = ACCEL_GET_CLASS(accel);
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 07b1ec4ea50..95ff451c148 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -46,6 +46,7 @@
+ #include "tcg-accel-ops-mttcg.h"
+ #include "tcg-accel-ops-rr.h"
+ #include "tcg-accel-ops-icount.h"
++#include "internal-common.h"
  
-     /* target specific realization */
-     if (cpu->cc->accel_cpu
-@@ -147,6 +151,11 @@ bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
-     return true;
- }
+ /* common functionality among all TCG variants */
  
-+bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
-+{
-+    return accel_cpu_realize(NULL, cpu, errp);
-+}
-+
- void accel_cpu_common_unrealize(CPUState *cpu)
- {
-     AccelState *accel = current_accel();
+@@ -212,6 +213,8 @@ static void tcg_accel_ops_init(AccelClass *ac)
+         }
+     }
+ 
++    ops->cpu_common_realize = tcg_exec_realizefn;
++    ops->cpu_common_unrealize = tcg_exec_unrealizefn;
+     ops->cpu_reset_hold = tcg_cpu_reset_hold;
+     ops->insert_breakpoint = tcg_insert_breakpoint;
+     ops->remove_breakpoint = tcg_remove_breakpoint;
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index 164bba41ed9..28206ca5e76 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -244,8 +244,6 @@ static void tcg_accel_class_init(ObjectClass *oc, const void *data)
+     AccelClass *ac = ACCEL_CLASS(oc);
+     ac->name = "tcg";
+     ac->init_machine = tcg_init_machine;
+-    ac->cpu_common_realize = tcg_exec_realizefn;
+-    ac->cpu_common_unrealize = tcg_exec_unrealizefn;
+     ac->allowed = &tcg_allowed;
+     ac->supports_guest_debug = tcg_supports_guest_debug;
+     ac->gdbstub_supported_sstep_flags = tcg_gdbstub_supported_sstep_flags;
 -- 
 2.49.0
 
