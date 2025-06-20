@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E645AE209D
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 161FDAE20AA
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 19:19:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSfK4-0000cA-3O; Fri, 20 Jun 2025 13:14:40 -0400
+	id 1uSfKo-0001Ck-Dn; Fri, 20 Jun 2025 13:15:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfK0-0000bS-9N
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:14:36 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfK6-0000do-DY
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:14:48 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfJy-0004EL-Ju
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:14:36 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3a52874d593so2023571f8f.0
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:14:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSfK3-0004En-GW
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 13:14:41 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-450dd065828so15563405e9.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 10:14:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750439673; x=1751044473; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750439678; x=1751044478; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vlBAvJidlTd0lWKONZB4JfLwR/GbdHPA4nQcc8Yttvg=;
- b=BqGK7QmDwCCKMwxQqWD4yRAXMCvOs50aF3s7bA8pE1qWuDifVsLglFLhr5tPHhlAlb
- wQTGdR8s5vl1GL1uy6PQ6l5Dq/3YbbigvWwbZPL5M7xzTHnMHxs7zJy6Dd1/h575I2GN
- f3GvR6Uzjzx5W6D7/5/izeezZoI0lMb2traNoA20bg5Ex/aJ8PWd0wG0ZncBJBxj02tm
- SAcSjU6VHudXyZ65ZCnE5YOXbHQ1rluUzDr/T1i/iD1bHqWBuDbFogPO5wk4CUwuO0c9
- Fp5d9mS6br0gYy+1h2/CILDsx3OZstm6KrBMWg00nnGoPamN2BW74EFGT/qZdGdgfo/V
- y89w==
+ bh=yKQzzq9lLqdwf03s1WVF2qDMjalaq94J2kEAmGiPnJg=;
+ b=ihpbS+aZ+2x3n1nlxK5R5adhGqpCkBJyiQriBcfi5tuUXQd4kKIqRUirTY7lW6Toa7
+ j+ikUNhJm4X404Lv0BY6+ZafqYPL1pKtCrUhGpN4Ye+RrSBw0nZbLCZQDh0PnMNW47nc
+ rn8CGJg79D9qaK5qnuBsSCrl4jOmmlTh1Kc/QnRrpMVLvmFHvJDZVR+3qaOlMvRziUKu
+ 8wbnzS4SKr9A3vzIg/9rkSnVNwc6EN1YaX+u54KpJQz9jA9CSFv+BO9oF9Ly8IUaxIRr
+ nXd9jGCK7MN1/XinZu3WqukvZ5QYCUGZ7CWcWzUg/62v1OwnkJAFqbwk/VdQlqF9ZW1q
+ MqGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750439673; x=1751044473;
+ d=1e100.net; s=20230601; t=1750439678; x=1751044478;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vlBAvJidlTd0lWKONZB4JfLwR/GbdHPA4nQcc8Yttvg=;
- b=JwCSC3RYa2GO3jp7R1Keyhc6kugzahubfuB2dEXuTnApwGI30d19dku/T/hv6i/TgJ
- kQg+pNYnUrchw3GocHzgEUx2e6nuQUJIBkopmBKqi6MnpaOajhVhObTHCi0mhFAvVUf2
- Bw+R34ROF7SfTbgwwPtV9lbtIatxm6LmWePIxshhAvk3rran3qfWmcyqeuPA0JmVfMo7
- 2GvVOIrjo9PVGLeR8cojf10n19PmltjWcrpN3s4Oh/kjZvwDkNxSlmiUDVU8UGqqOhoj
- CdNQdXg+tNxwCdpnG95g6de8hRR5sh/N7Y5LNLF+YQ8H5e/gqjxh3s+A94gqPVU/uroA
- 4HfA==
-X-Gm-Message-State: AOJu0YzKWdv+R+UayV1TqFloMSxsai5q1ceViBQ5zREAfquNJgGeNgCE
- cZvSHzGyx5kdQdrs26oR689nNEwkxyBwOUNkTsyHvmQzDtEGOBESfnR+vYOXWZm33Bj+qfgn8zW
- p6S+1jtQ=
-X-Gm-Gg: ASbGncvS9ZkoKGfjVhQIASjaBcZAwEjoKBSvP6YAEg3x4DZRWJqVSTh+sz6PfhgarvR
- VkgiTEllOhN9Q0is8qqZpAC6TftsRF21VdwC5i3dP5vowSz61U6OhlCHiC1MD4Z9J0UCD6aJRUt
- OypdXV7rthGbf3wIqvJst3n2dabiaDWnZxUtQGD/3za5pd1LPOBHcflUpX0hluqEM+CLo0X/XTs
- JJB1MVpBPSsOXHvvNJl3bMt0aZC9E7YTW5uLRpUN7pqRyTyYyRLLj2IH/eDgAiGedO+4LYhaWjB
- 7LIbjxz/az9LTeAq4Qaydr/c5waZ8mBJ26J3Mv5yPSn2Hpeh+0DdE7EN8Yf+a/ZgA/dIf3NGS70
- p2Pi487hjI/PfwgskHJ8bNHCH1ooDocbpnqHv
-X-Google-Smtp-Source: AGHT+IG3TuoWXd+fjRa3Qw+J6xlLFzSR5o0eFDsfdGMj05AZ0OinwWxEMzGp4DHqdR84VhgVKrOaZA==
-X-Received: by 2002:a05:6000:2308:b0:3a5:2f23:377d with SMTP id
- ffacd0b85a97d-3a6d1324f04mr2778464f8f.50.1750439672761; 
- Fri, 20 Jun 2025 10:14:32 -0700 (PDT)
+ bh=yKQzzq9lLqdwf03s1WVF2qDMjalaq94J2kEAmGiPnJg=;
+ b=U9BgMaF01GvoUJBujEmzeF5LqR4nk4Ar+HQbnagnDweCPKlxCvgmpAZ01hl/uw07HB
+ NpXhFEjX/u4Fft0y0eOtl+mPdV7OGkq07SoxYgYBxSvYOhi4g/reMw77Ck5JWF+Q+Yqz
+ GnUydSy3v+QpEsknfRfQ+7Fl4R4FNnihhGajInKvzd4yjt7DoBG7Kshzv7H2TbG5hkpC
+ cOpZ8Ay5zROe1pu9K0B9MYKcaxO1cdaHxvndJsjIHSw8Xt1AmSWw8ENkpHjNgeSspJfp
+ XGOkW88ZkgWTSDE6iW6FPRqioEZQuQy8kdrPqL5Cvx/D/soHJ6cKCvn/xumE9GXbouY0
+ pwEg==
+X-Gm-Message-State: AOJu0YzYQaFKAU/hP9YlC121kiLw64naSmET73x1DvBqU6PzeVrAyKQX
+ CO6/FmvGU9rWYgrMNZOv/SzucORpf9sjL0IT0GItAdyeo3TOIwM27zn+xpuzeCrvYePyzbBvAG+
+ 1ytFkiOQ=
+X-Gm-Gg: ASbGnctWi/L6GJ413H7gDe5zqnwwISdwyoDc4Kk81YJuDPFFplpX1Zw8/WlammM4Gli
+ UdZKCV5+fpVkKmTvYhmSuEG9R0GFX3hO0R2lApnrQGF+sx3oVZyo2Gz2DfCgGiIRcVZSlwmNbFp
+ 1z0TYl/5WYGOi3XCgpqP1tOLT9QpQN+ktrlRDeOmIsLZOs+RqhpahgyF1ih9FAc8PqKCG4dOVsr
+ mglYmsPJgIRE2mjOlHFn9Xf4nwb3fprttNdapPCk8mokx221hQsQV55i9CIUYpu/ePs0sjDWq6M
+ Cc/ITUM69ID7MHaduPzPq0AzIWxdyobNy+qQsz7WI1/GXd2EOptp+R4mY1taaNUHBP5fm8MyppF
+ 4FLsIc9xYtB/+O/WC4sPyEGfFaoIzQY1Zzmq6
+X-Google-Smtp-Source: AGHT+IHBpy1rtOp0zhDj9xbzdkOOZ6deJ3qkm8c7r0Kr49K8QEK/Tn2PIUc9H5NhbKotkGiBYbTaMQ==
+X-Received: by 2002:a05:600c:474b:b0:43d:b3:fb1 with SMTP id
+ 5b1f17b1804b1-453659badb1mr31933585e9.27.1750439677661; 
+ Fri, 20 Jun 2025 10:14:37 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d0f17c35sm2663454f8f.31.2025.06.20.10.14.31
+ 5b1f17b1804b1-4536470826fsm30586025e9.36.2025.06.20.10.14.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 10:14:31 -0700 (PDT)
+ Fri, 20 Jun 2025 10:14:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -73,18 +73,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 10/48] accel: Pass AccelState argument to
- gdbstub_supported_sstep_flags()
-Date: Fri, 20 Jun 2025 19:13:03 +0200
-Message-ID: <20250620171342.92678-11-philmd@linaro.org>
+Subject: [RFC PATCH v2 11/48] accel: Move supports_guest_debug() declaration
+ to AccelClass
+Date: Fri, 20 Jun 2025 19:13:04 +0200
+Message-ID: <20250620171342.92678-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620171342.92678-1-philmd@linaro.org>
 References: <20250620171342.92678-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,83 +107,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+AccelOpsClass is for methods dealing with vCPUs.
+When only dealing with AccelState, AccelClass is sufficient.
+
 In order to have AccelClass methods instrospect their state,
 we need to pass AccelState by argument.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/accel.h      | 2 +-
- accel/accel-common.c      | 2 +-
- accel/hvf/hvf-accel-ops.c | 2 +-
- accel/kvm/kvm-all.c       | 2 +-
- accel/tcg/tcg-all.c       | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ include/qemu/accel.h       | 1 +
+ include/system/accel-ops.h | 1 -
+ include/system/hvf.h       | 2 +-
+ accel/hvf/hvf-accel-ops.c  | 2 +-
+ accel/tcg/tcg-accel-ops.c  | 6 ------
+ accel/tcg/tcg-all.c        | 6 ++++++
+ gdbstub/system.c           | 7 ++++---
+ target/arm/hvf/hvf.c       | 2 +-
+ target/i386/hvf/hvf.c      | 2 +-
+ 9 files changed, 15 insertions(+), 14 deletions(-)
 
 diff --git a/include/qemu/accel.h b/include/qemu/accel.h
-index 39b52adc9cb..2831e61de08 100644
+index 2831e61de08..b807cca6678 100644
 --- a/include/qemu/accel.h
 +++ b/include/qemu/accel.h
-@@ -50,7 +50,7 @@ typedef struct AccelClass {
+@@ -50,6 +50,7 @@ typedef struct AccelClass {
                         hwaddr start_addr, hwaddr size);
  
      /* gdbstub related hooks */
--    int (*gdbstub_supported_sstep_flags)(void);
-+    int (*gdbstub_supported_sstep_flags)(AccelState *as);
++    bool (*supports_guest_debug)(AccelState *as);
+     int (*gdbstub_supported_sstep_flags)(AccelState *as);
  
      bool *allowed;
-     /*
-diff --git a/accel/accel-common.c b/accel/accel-common.c
-index 55d21b63a48..1d04610f55e 100644
---- a/accel/accel-common.c
-+++ b/accel/accel-common.c
-@@ -128,7 +128,7 @@ int accel_supported_gdbstub_sstep_flags(void)
-     AccelState *accel = current_accel();
-     AccelClass *acc = ACCEL_GET_CLASS(accel);
-     if (acc->gdbstub_supported_sstep_flags) {
--        return acc->gdbstub_supported_sstep_flags();
-+        return acc->gdbstub_supported_sstep_flags(accel);
-     }
-     return 0;
- }
+diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
+index a863fe59388..51faf47ac69 100644
+--- a/include/system/accel-ops.h
++++ b/include/system/accel-ops.h
+@@ -65,7 +65,6 @@ struct AccelOpsClass {
+     int64_t (*get_elapsed_ticks)(void);
+ 
+     /* gdbstub hooks */
+-    bool (*supports_guest_debug)(void);
+     int (*update_guest_debug)(CPUState *cpu);
+     int (*insert_breakpoint)(CPUState *cpu, int type, vaddr addr, vaddr len);
+     int (*remove_breakpoint)(CPUState *cpu, int type, vaddr addr, vaddr len);
+diff --git a/include/system/hvf.h b/include/system/hvf.h
+index 8c4409a13f1..7b9384d816c 100644
+--- a/include/system/hvf.h
++++ b/include/system/hvf.h
+@@ -71,7 +71,7 @@ void hvf_arch_update_guest_debug(CPUState *cpu);
+ /*
+  * Return whether the guest supports debugging.
+  */
+-bool hvf_arch_supports_guest_debug(void);
++bool hvf_arch_supports_guest_debug(AccelState *as);
+ 
+ bool hvf_arch_cpu_realize(CPUState *cpu, Error **errp);
+ 
 diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index 6a612599856..3797cab2bf6 100644
+index 3797cab2bf6..45dd4baa321 100644
 --- a/accel/hvf/hvf-accel-ops.c
 +++ b/accel/hvf/hvf-accel-ops.c
-@@ -353,7 +353,7 @@ static int hvf_accel_init(MachineState *ms, AccelState *as)
-     return hvf_arch_init();
+@@ -364,6 +364,7 @@ static void hvf_accel_class_init(ObjectClass *oc, const void *data)
+     ac->name = "HVF";
+     ac->init_machine = hvf_accel_init;
+     ac->allowed = &hvf_allowed;
++    ac->supports_guest_debug = hvf_arch_supports_guest_debug;
+     ac->gdbstub_supported_sstep_flags = hvf_gdbstub_sstep_flags;
  }
  
--static inline int hvf_gdbstub_sstep_flags(void)
-+static inline int hvf_gdbstub_sstep_flags(AccelState *as)
- {
-     return SSTEP_ENABLE | SSTEP_NOIRQ;
+@@ -600,7 +601,6 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
+     ops->remove_breakpoint = hvf_remove_breakpoint;
+     ops->remove_all_breakpoints = hvf_remove_all_breakpoints;
+     ops->update_guest_debug = hvf_update_guest_debug;
+-    ops->supports_guest_debug = hvf_arch_supports_guest_debug;
+ };
+ static const TypeInfo hvf_accel_ops_type = {
+     .name = ACCEL_OPS_NAME("hvf"),
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 37b4b21f882..07b1ec4ea50 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -106,11 +106,6 @@ void tcg_handle_interrupt(CPUState *cpu, int mask)
+     }
  }
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 8f6c0bf3888..2a44d9eaabb 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3974,7 +3974,7 @@ static void kvm_accel_instance_init(Object *obj)
-  * Returns: SSTEP_* flags that KVM supports for guest debug. The
-  * support is probed during kvm_init()
-  */
--static int kvm_gdbstub_sstep_flags(void)
-+static int kvm_gdbstub_sstep_flags(AccelState *as)
+ 
+-static bool tcg_supports_guest_debug(void)
+-{
+-    return true;
+-}
+-
+ /* Translate GDB watchpoint type to a flags value for cpu_watchpoint_* */
+ static inline int xlat_gdb_type(CPUState *cpu, int gdbtype)
  {
-     return kvm_sstep_flags;
- }
+@@ -218,7 +213,6 @@ static void tcg_accel_ops_init(AccelClass *ac)
+     }
+ 
+     ops->cpu_reset_hold = tcg_cpu_reset_hold;
+-    ops->supports_guest_debug = tcg_supports_guest_debug;
+     ops->insert_breakpoint = tcg_insert_breakpoint;
+     ops->remove_breakpoint = tcg_remove_breakpoint;
+     ops->remove_all_breakpoints = tcg_remove_all_breakpoints;
 diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index 4b1238ed345..4eb49c6407d 100644
+index 4eb49c6407d..164bba41ed9 100644
 --- a/accel/tcg/tcg-all.c
 +++ b/accel/tcg/tcg-all.c
-@@ -219,7 +219,7 @@ static void tcg_set_one_insn_per_tb(Object *obj, bool value, Error **errp)
+@@ -219,6 +219,11 @@ static void tcg_set_one_insn_per_tb(Object *obj, bool value, Error **errp)
      qatomic_set(&one_insn_per_tb, value);
  }
  
--static int tcg_gdbstub_supported_sstep_flags(void)
-+static int tcg_gdbstub_supported_sstep_flags(AccelState *as)
++static bool tcg_supports_guest_debug(AccelState *as)
++{
++    return true;
++}
++
+ static int tcg_gdbstub_supported_sstep_flags(AccelState *as)
  {
      /*
-      * In replay mode all events will come from the log and can't be
+@@ -242,6 +247,7 @@ static void tcg_accel_class_init(ObjectClass *oc, const void *data)
+     ac->cpu_common_realize = tcg_exec_realizefn;
+     ac->cpu_common_unrealize = tcg_exec_unrealizefn;
+     ac->allowed = &tcg_allowed;
++    ac->supports_guest_debug = tcg_supports_guest_debug;
+     ac->gdbstub_supported_sstep_flags = tcg_gdbstub_supported_sstep_flags;
+ 
+     object_class_property_add_str(oc, "thread",
+diff --git a/gdbstub/system.c b/gdbstub/system.c
+index 8a32d8e1a1d..bced226fd94 100644
+--- a/gdbstub/system.c
++++ b/gdbstub/system.c
+@@ -634,9 +634,10 @@ int gdb_signal_to_target(int sig)
+ 
+ bool gdb_supports_guest_debug(void)
+ {
+-    const AccelOpsClass *ops = cpus_get_accel();
+-    if (ops->supports_guest_debug) {
+-        return ops->supports_guest_debug();
++    AccelState *accel = current_accel();
++    AccelClass *acc = ACCEL_GET_CLASS(accel);
++    if (acc->supports_guest_debug) {
++        return acc->supports_guest_debug(accel);
+     }
+     return false;
+ }
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 87cd323c14d..48ce83eb8fc 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -2409,7 +2409,7 @@ void hvf_arch_update_guest_debug(CPUState *cpu)
+     hvf_arch_set_traps(cpu);
+ }
+ 
+-bool hvf_arch_supports_guest_debug(void)
++bool hvf_arch_supports_guest_debug(AccelState *as)
+ {
+     return true;
+ }
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 28484496710..bcf30662bec 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -1024,7 +1024,7 @@ void hvf_arch_update_guest_debug(CPUState *cpu)
+ {
+ }
+ 
+-bool hvf_arch_supports_guest_debug(void)
++bool hvf_arch_supports_guest_debug(AccelState *as)
+ {
+     return false;
+ }
 -- 
 2.49.0
 
