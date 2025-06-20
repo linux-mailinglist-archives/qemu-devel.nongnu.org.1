@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F41CAE2034
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08717AE2043
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 18:43:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSenZ-0006SJ-TL; Fri, 20 Jun 2025 12:41:06 -0400
+	id 1uSeng-0006UK-Oh; Fri, 20 Jun 2025 12:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSenY-0006S3-0j
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uSenf-0006U0-4j
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uSenW-0000Dh-H2
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:03 -0400
+ id 1uSend-0000EP-GF
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 12:41:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750437661;
+ s=mimecast20190719; t=1750437668;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dg0lyWp/iYHR0SwtBFKYV9jsMjYg3PofI7llGsLHSMo=;
- b=Ivse6f++J6dORJMzQ2RYxJJpO7LhAnKw7fQnT9bbQiy7V70XZQ+1V79AsAAZTjFR56G1C6
- Q+9nRMSuxGQE4XzEV39WbROiLwXeGx72d3MrkvabKdZgHA/FPmEJ5G3yacWHr79peXooW9
- ZB4538DTGcR1ePDawZ1aQPIzIlHPzX8=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aN7xXBZj4Ftx1dfcGboeMP703/cTHxafXoXtiLZOCMM=;
+ b=euvtBywRWLfNOPZfz317V1ZRRGCwNhbxNxJX5YsJoHAJwZVAudmNvcqZ+B90X4jwqUqiWe
+ V8CHAQ9t9GjMSLwATNGQ9ggCgP+jBvvETgUGHgBcAw4Ddmw0rpQiqnnYrN1dByqEfBCx4v
+ zN1SCXcWsn+zumyv0nZFERFzbIst61A=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-5hRGvIxhPZO3mPkV87cNbw-1; Fri, 20 Jun 2025 12:41:00 -0400
-X-MC-Unique: 5hRGvIxhPZO3mPkV87cNbw-1
-X-Mimecast-MFC-AGG-ID: 5hRGvIxhPZO3mPkV87cNbw_1750437659
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-6077833ae13so1591842a12.1
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:40:59 -0700 (PDT)
+ us-mta-42-AR6twZNIMkixfzurSRktig-1; Fri, 20 Jun 2025 12:41:02 -0400
+X-MC-Unique: AR6twZNIMkixfzurSRktig-1
+X-Mimecast-MFC-AGG-ID: AR6twZNIMkixfzurSRktig_1750437661
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-606f504f228so1769228a12.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 09:41:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750437658; x=1751042458;
+ d=1e100.net; s=20230601; t=1750437661; x=1751042461;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dg0lyWp/iYHR0SwtBFKYV9jsMjYg3PofI7llGsLHSMo=;
- b=R1VwaQ/l3DuyN8BqkTPWmJ2EBe6lw07t4M+f4oO4TAQQkrRIhhfEVXopl89jtCkjOY
- dR4RXcuW7w1CQXkGYw20gl/oZFshuPPoUZsaoMC8UDBsZYo/aoe0H0hoeBUOUlAHLB6w
- +6jgkCF/ezPn9mfcUg+mAKOgTcPSPK06hOW05qyOjYtfSSKgEtcg2XamRCVYc1DDeIzK
- 8J+SwED90tnDVlqMtN1aQU9SEYI6/I+6pzAEwwwOdf8dhNqB3YalMo72lN+HonZujEys
- C3g8t58DJYKBb9uhuE1wlipHmBdh++yNofpADzmluDKg5TA9vJ6kZZKnnpB6JesGq3Ng
- j3kQ==
-X-Gm-Message-State: AOJu0Yzgymvd0icox0gHFfOUNQYFBooDwALJrq5Hgfcn6E4osrNvHIRB
- 7y3HRCcxp6L4lXEt+Z1OkVToy36PI+pwK/EQxhZo22G30E8I9Rg0o6nZnP4luj/aYbLJ4Y+xSIp
- JAnocbapwvv7oPBf+7ljhOn5uoA0ik/ZZM3J+wA1WSDYMxcqoSlZKaJeyVzLnRhW8muWz/HuLj1
- X7s5nhK68DO6U7bbNlAtnydow9bJKOJaUtf1UiyBUQ
-X-Gm-Gg: ASbGncuekzB70p2fR2YadSRYnZAjxFr3RHs9MLSxRNRLeuWu8rRzG58yqjmpK1Mstby
- i6Jv2NO2bwgzHuZfjakg9RxkKm5sWImkwSce9cvZzof7ecJa+8A4JsPUWY/j29higzENVwlRRYF
- VXQLl6L4zohYqfB2Gfa6DE4CHC2ksLLXSvaUAGANJy1dWGUpKUAZ6I5U6ZusJdPXdBhHlYTic5y
- 0dbqIdjVyyrB28XmjCbIt/DSOWsXbc5Pzkb8ObPr/sXWxXrdZ7TtuqHP2k5dwVcwq0wHi2gtEtH
- aNXeQuHXnIg2lRC5sMZ0KnEU7w==
-X-Received: by 2002:a05:6402:1e89:b0:604:f62b:4118 with SMTP id
- 4fb4d7f45d1cf-60a1cd1a88emr3115268a12.5.1750437657882; 
- Fri, 20 Jun 2025 09:40:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHm2Vv9lHQkXerKFiYB2TIpO23tiNUC8NS/3eSZHdis7Z++pIOlykAucgDZysigDUg15X+mfQ==
-X-Received: by 2002:a05:6402:1e89:b0:604:f62b:4118 with SMTP id
- 4fb4d7f45d1cf-60a1cd1a88emr3115246a12.5.1750437657375; 
- Fri, 20 Jun 2025 09:40:57 -0700 (PDT)
+ bh=aN7xXBZj4Ftx1dfcGboeMP703/cTHxafXoXtiLZOCMM=;
+ b=cpeLWP6B7croz1avIEySROKNwqX93zH2889BQJlMUIhyygbnpEibtrGxeGIvPtSbfU
+ 1cMY4pAfO/I4fB/WsUXDQgD5x6vtKAwfVXG9tYXNbItXFGj+z3isDPiLoqNvbSH2VN/9
+ wwH4HqWr2+R8FQxDeKR1hYxP5b4QEW7CUbCrFqZRDIfTklR5Ctwpc8Bdj7zT3t0nqAk8
+ 3rdW0v/GegTLBmxRLJXzbsLzSMrtRzPQnyrwTkxlXcxeOjoCuGvw/smAYA323KET5Xrk
+ KIT7955VubNoFjaa8fBOKuz0O4l2P4nOva3byAevUQJIz42KVnNeU0rpWoyTpJIxGNoo
+ N/kw==
+X-Gm-Message-State: AOJu0YwpSSap0R/z/38QXkCiad9BmF6CoGs1BM9SVL1dgNIgHjAUmQxp
+ PHIflWToSw3pXumf57wXvto2S2YWqVu70Q1mLAk6iz3TEU7KsBmOrRxeZiGwE6FEQZNZHxcW6Gf
+ VPAMAtd3szKKg7sJafB4xGSje4ozoNWS/kS10w/fPIIJNYTyWpXaKzefOB9wZpBSnQc1TD9sxAg
+ cxQ0N8AgFNGVephrB7x3B+QJZJ4oXPaAICc4yGAo/v
+X-Gm-Gg: ASbGncsiQHn+nmtNBk1k+271txyqo8Wj2lRww6f2p3+Lu+SRPtY436aWdpH5gcrge4s
+ Puiw4llwFOJqv+2kWxNn0bxW3FbEeWAgZmrVBlxXx52oGTLJ0YJTmxWCK+HAvuIfu4HU8sOL77h
+ 7x5XWJbgPhg1JQzIx6/Z9SIYa4R6zx0uiZDuzwm4SYBb+oIVRjCHqq29IZVnWsNH5EK1OHAzslR
+ mBQrToMZ/L67k11B7JnA0oVaCn7fAD6i9yv4yQqFEqt0zeRmkqfdWE1GSFE44h5mH5KnbnGwoaV
+ 9vsf+AMjc/H5gsqy1fOi7/2VTg==
+X-Received: by 2002:a05:6402:34cc:b0:607:35d8:4cf8 with SMTP id
+ 4fb4d7f45d1cf-60a1ccbc846mr3361886a12.11.1750437660551; 
+ Fri, 20 Jun 2025 09:41:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3JFuqE+dcd5fdcKUjRpgdDxKTjtijkxVvb+SPO11XtYAxXv/TItUZ6edJWO0hoyAyQlOheA==
+X-Received: by 2002:a05:6402:34cc:b0:607:35d8:4cf8 with SMTP id
+ 4fb4d7f45d1cf-60a1ccbc846mr3361853a12.11.1750437659917; 
+ Fri, 20 Jun 2025 09:40:59 -0700 (PDT)
 Received: from [192.168.122.1] ([151.62.200.93])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-60a18cba650sm1591266a12.55.2025.06.20.09.40.55
- for <qemu-devel@nongnu.org>
+ 4fb4d7f45d1cf-60a185797bbsm1629935a12.35.2025.06.20.09.40.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Jun 2025 09:40:56 -0700 (PDT)
+ Fri, 20 Jun 2025 09:40:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/24] meson: cleanup win32 library detection
-Date: Fri, 20 Jun 2025 18:40:29 +0200
-Message-ID: <20250620164053.579416-2-pbonzini@redhat.com>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 02/24] target/i386: fix TB exit logic in gen_movl_seg() when
+ writing to SS
+Date: Fri, 20 Jun 2025 18:40:30 +0200
+Message-ID: <20250620164053.579416-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620164053.579416-1-pbonzini@redhat.com>
 References: <20250620164053.579416-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -106,45 +108,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As pointed out by Akihiko Odaki, all Win32 libraries in MinGW have lowercase
-names.  This means that on (case-insensitive) Windows you can use the mixed-case
-names suggested by Microsoft or all-lowercase names, while on Linux you need to
-make them lowercase.
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-QEMU was already using lowercase names, so there is no need to test the
-mixed-case name version of libSynchronization.  Remove the unnecessary test
-and while at it make all the tests use "required: true".
+Before commit e54ef98c8a ("target/i386: do not trigger IRQ shadow for LSS"), any
+write to SS in gen_movl_seg() would cause a TB exit. The changes introduced by
+this commit were intended to restrict the DISAS_EOB_INHIBIT_IRQ exit to the case
+where inhibit_irq is true, but missed that a DISAS_EOB_NEXT exit can still be
+required when writing to SS and inhibit_irq is false.
 
+Comparing the PE(s) && !VM86(s) section with the logic in x86_update_hflags(), we
+can see that the DISAS_EOB_NEXT exit is still required for the !CODE32 case when
+writing to SS in gen_movl_seg() because any change to the SS flags can affect
+hflags. Similarly we can see that the existing CODE32 case is still correct since
+a change to any of DS, ES and SS can affect hflags. Finally for the
+gen_op_movl_seg_real() case an explicit TB exit is not needed because the segment
+register selector does not affect hflags.
+
+Update the logic in gen_movl_seg() so that a write to SS with inhibit_irq set to
+false where PE(s) && !VM86(s) will generate a DISAS_EOB_NEXT exit along with the
+inline comment. This has the effect of allowing Win98SE to boot in QEMU once
+again.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Fixes: e54ef98c8a ("target/i386: do not trigger IRQ shadow for LSS")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2987
+Link: https://lore.kernel.org/r/20250611130315.383151-1-mark.cave-ayland@ilande.co.uk
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ target/i386/tcg/translate.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 34729c2a3dd..ed60be2a2d0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -843,15 +843,12 @@ host_dsosuf = '.so'
- if host_os == 'windows'
-   midl = find_program('midl', required: false)
-   widl = find_program('widl', required: false)
--  pathcch = cc.find_library('pathcch')
--  synchronization = cc.find_library('Synchronization', required: false)
--  if not synchronization.found()
--    # The library name is lowercase on mingw
--    synchronization = cc.find_library('synchronization', required: true)
--  endif
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 0fcddc2ec08..0cb87d02012 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -2033,8 +2033,11 @@ static void gen_movl_seg(DisasContext *s, X86Seg seg_reg, TCGv src, bool inhibit
+         tcg_gen_trunc_tl_i32(sel, src);
+         gen_helper_load_seg(tcg_env, tcg_constant_i32(seg_reg), sel);
  
--  socket = cc.find_library('ws2_32')
--  winmm = cc.find_library('winmm')
-+  # MinGW uses lowercase for library names
-+  pathcch = cc.find_library('pathcch', required: true)
-+  synchronization = cc.find_library('synchronization', required: true)
-+  socket = cc.find_library('ws2_32', required: true)
-+  winmm = cc.find_library('winmm', required: true)
- 
-   win = import('windows')
-   version_res = win.compile_resources('version.rc',
+-        /* For move to DS/ES/SS, the addseg or ss32 flags may change.  */
+-        if (CODE32(s) && seg_reg < R_FS) {
++        /*
++         * For moves to SS, the SS32 flag may change. For CODE32 only, changes
++         * to SS, DS and ES may change the ADDSEG flags.
++         */
++        if (seg_reg == R_SS || (CODE32(s) && seg_reg < R_FS)) {
+             s->base.is_jmp = DISAS_EOB_NEXT;
+         }
+     } else {
 -- 
 2.49.0
 
