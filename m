@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDA9AE1BC1
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70F58AE1BCC
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:14:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSbTO-0002Za-Pc; Fri, 20 Jun 2025 09:08:02 -0400
+	id 1uSbTU-0002nK-VZ; Fri, 20 Jun 2025 09:08:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbTM-0002YG-NE
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:08:00 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbTS-0002id-C9
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:08:06 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbTK-0004a6-VG
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:08:00 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4530921461aso15623115e9.0
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:07:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbTQ-0004bK-6G
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:08:06 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-442e9c00bf4so15034255e9.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:08:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750424877; x=1751029677; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750424882; x=1751029682; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qyHQEfn6inWyZRMUVI/8b1HegzN318xDx/IKxFDD3c0=;
- b=reQtFOxdZrO2AIStYH0aWZCh1TJOcskhZPBWMnOLhfty/lUoEGlSwigAXToc8ngw3m
- Om+nC8u4eYjH3EdQgeobe9f9c4GgbVciBKI5F1N03KTiAjBHF6Pj+LK+ZVctmA6/uUkH
- wl6A7jeKqxCHWZ2E0+8n8dC/ERX9oaMemhOCjg2ZMIe/UlVA/v7QbKzakPqVuq1xC6QH
- u1C+0/W9LB2ABHtrR2gxSu/CC0M7xsPLkt2mrQ6OsojSJprjXOIBCgoH66egUFiyBuWN
- zMUGlxFXWsnB3opCewYOqF09jFWT+mfId1QbSQY5kME5miwhSHfiztXpMpeLmwMjyZu3
- ysDw==
+ bh=DHkUxhiwznLnPGQ7CmoJiivDkUiQkmNfBetsY13UZBg=;
+ b=mzU5OT7wO27hiwOCswg96hP1vq46euSOASpTsIMB5hASXGmQJExy9ebNWCYAHU3rUg
+ IwagJOjAE2HukMuWgBfh0TIf/KT0QjQBVNJY5ZDicQFC/kBL60TJQR13Kj1roE5AjKcY
+ heuWOBFLz6L8L0dkJHF+8GAMqAgvJcpRSCpSFpYaeHPZJmwa947fq+I+oH0NdTQCWNC+
+ ZDrYAQvmnD2bE2AqXnqGqbu3viwzpQw+KfHY3dz1wiaIte5KWKoYwVu9rY6NWVe7uBud
+ p41Rb/cuKvo7A/cYbPdRLsGUWZdUkMnppclajLHwEFqM0y7uSH2iJSzCw/5shN/85Ml7
+ dFMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750424877; x=1751029677;
+ d=1e100.net; s=20230601; t=1750424882; x=1751029682;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qyHQEfn6inWyZRMUVI/8b1HegzN318xDx/IKxFDD3c0=;
- b=RiJlgFHbTrDllqkADWwcxzQObj/Jhu+bQICJ/GXtQyZYN/S/edqKtEmc0nUiucwm2C
- OffNHonNBH9fLp7tJ8I6qYKnPOxgjJ+Z9ynmLMYNDrKsMlPeGZ6r4MZqLCTm+hziSveW
- M1WV0MkcWLDlm2WxB4TaDb08oiklMXYA+mVaEPPZiT+KZSDC+KVq+spUM64xMOQQ9nYu
- sGNvBtLsVCoDk9CzY2IK2HHCjx0+JsOFYdt2/KRCFPg6FVaZ0kz0ZKOfI8aXvGbUwjTh
- 9/utX61JbK5Ncl/2vO//N6bqrdbU8YNbTRKX3lbleqnXbVbq0WccgS9soJ+8wprVCwHw
- nAXQ==
-X-Gm-Message-State: AOJu0YyK0q44wgzTqzH9ph5uyagGwca8yJBxIBcuO2q/417fefz3Sqr4
- t4NimUHLDPsOhCJaOTnG5MDMvPkCaKXUWOJYocF0SS6YWqEcpzuU7xwaGsqKQVKAdaPapUBJbWR
- AgLpRCZI=
-X-Gm-Gg: ASbGncuHP3BCbOeG6/Sa2UN/4OMJPlAnJpqeR9G6+y+mAnoiIFk5zKJyqc5F0gyMgS7
- UUyf44RTGJou3PqqVdipXTvmkG/f31KbJmPDFqcE9T1te7N6FpOtah+pn9uxrMJQ1pymUCO9qvN
- 6RlQIa4vD0BhFdY1hM/fTrL/6LE9LLSpNJeRXjFRMoi6vr0GXLcQV+enjZ8Wwr9AS7H9bvSHJG5
- dcljXaM+lHc2SyKV0tSwTLmtF0VPTGYW3VvY6/LFENFqIrecbQ66vRsP9mu7aELpzNpvg7b12Oz
- 42XGDzoCqH/XdHD26Y+6PsGXKKSRtbQgR4nshbT/6xgJy0TMq078t5PSqP17YErzG+Op6Z3eZIR
- TMoVjM2701PV7+WG+xgjRa93Gzu6FpNqQ1pJ9
-X-Google-Smtp-Source: AGHT+IGkXs40WMIJKGNMuEiJnfxX7/z7m/pHzk9ne+NytzMGvZpK0RzUyqBP8SLCEpCnawa9dPBjrg==
-X-Received: by 2002:a05:600c:3b14:b0:43d:2313:7b49 with SMTP id
- 5b1f17b1804b1-4536539c469mr27259205e9.12.1750424876897; 
- Fri, 20 Jun 2025 06:07:56 -0700 (PDT)
+ bh=DHkUxhiwznLnPGQ7CmoJiivDkUiQkmNfBetsY13UZBg=;
+ b=l1Mchcu1U+IoQeDRLR9EYlwfrNU9GE+OKgu/3TrIgpr3CyX+clVZ+bSHySceql2YUA
+ C95BiNmfiMAqHdazcdh5kazChiL0l35PTWqahM00NozBGWfLsV/5XZzB+5YTuCSIcmg8
+ CXNi6MGTO9Cdjh6RuOcwk/bnIPClaMV470033ev6LefocIcJ1DH6BwIYwXT5M9Nlcl3d
+ B9LOPBqHh4ZKaqGCdb6HLOlNUwfcBAZAeNtwr2rs3jAqfg0FuPY5isz0tUU+xMANGMJk
+ PNy0Ru+XHUo91Q8Ma/BXV+04xMAkAzSbL0Lfy44DMQLig61keHSKxkqT6eDNLYQz5pcU
+ HzfQ==
+X-Gm-Message-State: AOJu0YzwvsNIj5OzKKcRUigv/uARlETdJ36d0MCvrfdyMBCkvSQWgsAp
+ dBslSGQvg2RYEN8QCzL8eeRaJmv2JaZZhWY86CdrVBqNXDGyTSBXf3StDNFa3CZdCZEwb9yY8mK
+ kcjlMad4=
+X-Gm-Gg: ASbGncuP6d8nCkLJetZt7sc10gXOOLb1cbLtRRe1ZNfpvDLvoCcClMCkv3QTFaH5nl6
+ FzDutaCpLcMrQ5xVCDrjpZnBKRvw/Kh0gsqDbZ10/5mac9DPUDLF8zjHNXiZOovKY/eUuotRz7T
+ e6bbhJz4KaBbhSHLqOE+7KF6nZ4MHeV6GsyzacP2RqJ7PwjYjpHHPSayrIR/nu7FBn0bvru+vAx
+ YhJLelwZQsjGJCGEchq0CuVrtm7/2SnVfx0MDH4E/R85lFNzxWgVWBb3To/8VIAR5hk5jAjJ1uN
+ cvclif4qPVR1/A1H60O6piSGRl3sy2b5XMN5o0GEOhVVgkF5FIt3q+C2q4FF8706J5zcWjNirJ5
+ tOGkRxhpRRAyXIK52FPK19XayZImuTDGWNkFw
+X-Google-Smtp-Source: AGHT+IFIRA+QgEzXaz5Kv5aRlxYuLkZKTx/pYgPZDxWBgIRvFsRGsi3xvxXp90rTSlKsbLeeXas7Hg==
+X-Received: by 2002:a05:600c:3acf:b0:440:6a37:be0d with SMTP id
+ 5b1f17b1804b1-453655c3d4fmr28644125e9.15.1750424882015; 
+ Fri, 20 Jun 2025 06:08:02 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4535eac8c16sm58396345e9.19.2025.06.20.06.07.55
+ 5b1f17b1804b1-4535e98b66asm57984935e9.17.2025.06.20.06.08.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 06:07:56 -0700 (PDT)
+ Fri, 20 Jun 2025 06:08:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
@@ -78,25 +78,24 @@ Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 08/26] target/arm/hvf: Log $pc in hvf_unknown_hvc() trace
- event
-Date: Fri, 20 Jun 2025 15:06:51 +0200
-Message-ID: <20250620130709.31073-9-philmd@linaro.org>
+Subject: [PATCH v2 09/26] target/arm: Correct KVM & HVF dtb_compatible value
+Date: Fri, 20 Jun 2025 15:06:52 +0200
+Message-ID: <20250620130709.31073-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620130709.31073-1-philmd@linaro.org>
 References: <20250620130709.31073-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,52 +111,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tracing $PC for unknown HVC instructions to not have to
-look at the disassembled flow of instructions.
+Linux kernel knows how to parse "arm,armv8", not "arm,arm-v8".
 
+See arch/arm64/boot/dts/foundation-v8.dts:
+
+  https://github.com/torvalds/linux/commit/90556ca1ebdd
+
+Fixes: 26861c7ce06 ("target-arm: Add minimal KVM AArch64 support")
+Fixes: 585df85efea ("hvf: arm: Implement -cpu host")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/hvf/hvf.c        | 4 ++--
- target/arm/hvf/trace-events | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ target/arm/hvf/hvf.c | 2 +-
+ target/arm/kvm.c     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index cc5bbc155d2..d4c58516e8b 100644
+index d4c58516e8b..bf59b17dcb9 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -2071,12 +2071,12 @@ int hvf_vcpu_exec(CPUState *cpu)
-         cpu_synchronize_state(cpu);
-         if (arm_cpu->psci_conduit == QEMU_PSCI_CONDUIT_HVC) {
-             if (!hvf_handle_psci_call(cpu)) {
--                trace_hvf_unknown_hvc(env->xregs[0]);
-+                trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
-                 /* SMCCC 1.3 section 5.2 says every unknown SMCCC call returns -1 */
-                 env->xregs[0] = -1;
-             }
-         } else {
--            trace_hvf_unknown_hvc(env->xregs[0]);
-+            trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
-             hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
-         }
-         break;
-diff --git a/target/arm/hvf/trace-events b/target/arm/hvf/trace-events
-index a4870e0a5c4..b49746f28d1 100644
---- a/target/arm/hvf/trace-events
-+++ b/target/arm/hvf/trace-events
-@@ -5,10 +5,10 @@ hvf_inject_irq(void) "injecting IRQ"
- hvf_data_abort(uint64_t pc, uint64_t va, uint64_t pa, bool isv, bool iswrite, bool s1ptw, uint32_t len, uint32_t srt) "data abort: [pc=0x%"PRIx64" va=0x%016"PRIx64" pa=0x%016"PRIx64" isv=%d iswrite=%d s1ptw=%d len=%d srt=%d]"
- hvf_sysreg_read(uint32_t reg, uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2, uint64_t val) "sysreg read 0x%08x (op0=%d op1=%d crn=%d crm=%d op2=%d) = 0x%016"PRIx64
- hvf_sysreg_write(uint32_t reg, uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2, uint64_t val) "sysreg write 0x%08x (op0=%d op1=%d crn=%d crm=%d op2=%d, val=0x%016"PRIx64")"
--hvf_unknown_hvc(uint64_t x0) "unknown HVC! 0x%016"PRIx64
-+hvf_unknown_hvc(uint64_t pc, uint64_t x0) "pc=0x%"PRIx64" unknown HVC! 0x%016"PRIx64
- hvf_unknown_smc(uint64_t x0) "unknown SMC! 0x%016"PRIx64
- hvf_exit(uint64_t syndrome, uint32_t ec, uint64_t pc) "exit: 0x%"PRIx64" [ec=0x%x pc=0x%"PRIx64"]"
--hvf_psci_call(uint64_t x0, uint64_t x1, uint64_t x2, uint64_t x3, uint32_t cpuid) "PSCI Call x0=0x%016"PRIx64" x1=0x%016"PRIx64" x2=0x%016"PRIx64" x3=0x%016"PRIx64" cpu=0x%x"
-+hvf_psci_call(uint64_t x0, uint64_t x1, uint64_t x2, uint64_t x3, uint32_t cpuid) "PSCI Call x0=0x%016"PRIx64" x1=0x%016"PRIx64" x2=0x%016"PRIx64" x3=0x%016"PRIx64" cpuid=0x%x"
- hvf_vgic_write(const char *name, uint64_t val) "vgic write to %s [val=0x%016"PRIx64"]"
- hvf_vgic_read(const char *name, uint64_t val) "vgic read from %s [val=0x%016"PRIx64"]"
- hvf_illegal_guest_state(void) "HV_ILLEGAL_GUEST_STATE"
+@@ -879,7 +879,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     hv_vcpu_exit_t *exit;
+     int i;
+ 
+-    ahcf->dtb_compatible = "arm,arm-v8";
++    ahcf->dtb_compatible = "arm,armv8";
+     ahcf->features = (1ULL << ARM_FEATURE_V8) |
+                      (1ULL << ARM_FEATURE_NEON) |
+                      (1ULL << ARM_FEATURE_AARCH64) |
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 74fda8b8090..9a1b031556a 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -266,7 +266,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     }
+ 
+     ahcf->target = init.target;
+-    ahcf->dtb_compatible = "arm,arm-v8";
++    ahcf->dtb_compatible = "arm,armv8";
+ 
+     err = read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64pfr0,
+                          ARM64_SYS_REG(3, 0, 0, 4, 0));
 -- 
 2.49.0
 
