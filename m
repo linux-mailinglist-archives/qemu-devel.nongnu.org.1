@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFD4AE1D91
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 16:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9564FAE1D94
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 16:39:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uScsV-0000Kv-Jx; Fri, 20 Jun 2025 10:38:03 -0400
+	id 1uSctb-0002GN-AW; Fri, 20 Jun 2025 10:39:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
- id 1uScs7-0000IL-1A
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 10:37:41 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1uSctT-0002D7-4o
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 10:39:03 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tanishdesai37@gmail.com>)
- id 1uScs2-0001jP-W8
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 10:37:37 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b0b2d0b2843so1391654a12.2
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 07:37:33 -0700 (PDT)
+ id 1uSctR-0001nh-Bm
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 10:39:02 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-ae04d3d63e6so221855666b.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 07:38:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1750430252; x=1751035052; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rmgSEfeN8Rj2llj00/Kzt6ONzAD2UZfzQQNsTGfLFsw=;
- b=ZgxM3jPni/bRTipBHdriDL11w+Ec38jBy4kNXl91GoNZnbgkQtlNHKCHH8bFYrV26/
- tdf09h5F9ClNq1PQDD6gRLr/+WKNEf36AIur8SxbPt1QkiRG39l2a4pJ13z7NA06V6E4
- kbbdG/XSuB0bdhjtnI+iE9lERvod3M2Em9A4VOPp7onwVdDKMpVdT25uM8jSf+TfFwSV
- gz+f6TDxwkzUeg6FpVMb+Qp1wNDqRPVsRBPsa4D82DdesrkkQ+vBqWlGbCq8qzSbZXNQ
- QyyZgoP7B9t18FFHUamVKaSi0R/0V0KOaIzq4htrGsYmxj4st6mk3Ey3FOwYYjpFhL7T
- GRvQ==
+ d=gmail.com; s=20230601; t=1750430337; x=1751035137; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=phMSKdbahPARNWfkS7zIBhRvgxVfEs15lqcI5c+111I=;
+ b=GyONDFm97IkllUCQ8GGcWwpTV44AIvUsD9jBhJ5vZi3Qd48nNvrIdXEt2rnrp6RQlq
+ NTSe6SQ2gwMqFMsSW/CPGES/QiCs+aQA6MCaHsqOxjdUzeqSWjF1qxhrm7qo/27mxLGq
+ ZlX5hMiwKNv5c+nCpHCjTce2YDKGuG2bBwB+CVlwVfI1tYMon7Yl+Xhpl/IaUP9F1n4z
+ 7wj4hWjz0jmgPJc7CB8yCDNmNc49qL47J0zuFLjyOYOMgIbl5uLV42ZXxr4JTkjq0G8U
+ 1w0gJ0QDP8Ik0yOhvoMla35hN2HObhKTYY/zkzIfc4rz7sFNKrglzH6VAL9a6f10RJE4
+ MpjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750430252; x=1751035052;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rmgSEfeN8Rj2llj00/Kzt6ONzAD2UZfzQQNsTGfLFsw=;
- b=v0aJjd7NrbWJSC2B1h6Lqw7X3glbIIohkqDVFhjN84TQSge2fupqzVxHVu2XOz6nio
- igoqERHW/vpqzzt0Z4lnbm+A+2BW4ab7v1K4lr07i5Zxu0HaRtrOE7keECJn0Kq5OaFe
- zRsPt0WfYF4sl5RVp/mjaXn7IoL5cOczmTgIa2W+8RmvxfJ+k+kwMxN+zeOsDCri1bED
- TWxl7L3YSEMnNUX4USqhjo5QPlVeNeftsZj4rNopTy7hNu5i0dDfqIMJDYKljxIfe2kA
- XVnAF7oVR+awY7C9RYehyrWzQRu/7jAo3MMFbyjzUMiDoeDwEs+HwPBi09STLibWyE+A
- FsZw==
-X-Gm-Message-State: AOJu0Yyijhq9YEDvISQqAinwx+DjckzMtNBxvZho7AXCRcsN2nBDBXBL
- 4IGz9hubSPm+2B22lUYlAFX3juGhBmpMJk1dTMZkHRbhsitj7Xotvi+twwqwKV5F2Eu9Iw==
-X-Gm-Gg: ASbGncv4rMU851ZpYVCg3r7UTja54/jBVhOYP1dWtfifVDc0o0lGJ1Vkgf5Ygr2TS0l
- lA3Bpm6HGkk2bb5CHLDZ1gTfyoL3Sesmeg9vUKZm5FSL+tXYYA7IHrMi/V2A5prq7jMi6CGruyJ
- PeKDnFWDlNE3dPksSftDlPDINmqeEi4TXJRqY6Yz4w0jNKlrQwc8W6TRc1TDIWjoM1QiY23bL4f
- cax8VC5bvfjJ+usWUtFngLW+aJblGqH887lCqrEuS7Nq1/evs/79BbXsSgLaTCg1stb4egn4u05
- IyEXaVABg0B0GU3u8yuxzEsGNwAvVWNXCqHjeLG0soSF18QU2dVf9es4rBam7kRm9gyc1sBl
-X-Google-Smtp-Source: AGHT+IEk5cHIAeMx1rk5pi/nMZube8xkjZVXwrMsrLXfs1uN7epP8x/wRy4qidlNWOTy/DX73mzq0A==
-X-Received: by 2002:a17:90b:5826:b0:2fe:e9c6:689e with SMTP id
- 98e67ed59e1d1-3159d64432cmr5389429a91.8.1750430252213; 
- Fri, 20 Jun 2025 07:37:32 -0700 (PDT)
-Received: from ubuntu.. ([27.61.32.140]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3158a2f0cf5sm4368820a91.26.2025.06.20.07.37.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Jun 2025 07:37:31 -0700 (PDT)
-From: Tanish Desai <tanishdesai37@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- Tanish Desai <tanishdesai37@gmail.com>
-Subject: [PATCH v2 3/3] tracetool: remove redundant event_get_state checks
-Date: Fri, 20 Jun 2025 14:37:20 +0000
-Message-Id: <20250620143720.3143-4-tanishdesai37@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250620143720.3143-1-tanishdesai37@gmail.com>
-References: <20250620143720.3143-1-tanishdesai37@gmail.com>
+ d=1e100.net; s=20230601; t=1750430337; x=1751035137;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=phMSKdbahPARNWfkS7zIBhRvgxVfEs15lqcI5c+111I=;
+ b=tq/gtUzWDgB/yOVdcQ2FH/WWGZhcUwk7FFScw72dX3OyYVWvyI2Yf4MPQlByNGVJRS
+ tZCjpb3nAPFVZgCUG9t0uepS05RbjWZTZUG1vSsihnb/kP8TdDWz2TGQAywdbDzZomim
+ v/qv6bs3iMCGZAXvlMAtFpQwwMcZa5JFAp68PJUWaftpBtUVcqJgVpLhw1QKAfHhYB6D
+ orgEPESa1MFOiORCvjPR3Nw9KhCjDzXGKQ0+D4qHoXOMdy6NXRVUiZLte4DLWBan6/f2
+ GYXiAFxTAhJd9dkLdT8Ngr9WVueHtFovJyfWc1uVMdiK8tT42xZuXTRb7eNTLg6PILqP
+ ZxFw==
+X-Gm-Message-State: AOJu0Yyq24kjKlMLr4GQ/lHdoFb00aVSQ91hkqw88ME4QafUQ86s1NgE
+ F2L2wAToAXivGlDFswNyLoEt6acCLhEGYtnKYSLw0Qr78XKC/+YHFnFHA+fu7IsOG0BrtJTs2CY
+ pXxVkRD95VfsmIWV7Kp7re8Ns32Vbf50doRPD
+X-Gm-Gg: ASbGncvaUz+zkk8itamRBHIN+vtKyLTDZozPfHD5mIGbVCIbvuFbmSXS6yJsnAtLfix
+ kv5D8APiej9/gCvlwz8JhiVHrOEOqQqsfPcdiQKM3X+4MM4CMZFrZ8/HOpuEd10FdTzu2CV30+m
+ fI78iOHXJNQG4V/RG91KBQCXpaskEywWG8h2t5AaF2c9Y+h7iLOWKEQYgaibKU2+19JxNwIH3k3
+ LETMg==
+X-Google-Smtp-Source: AGHT+IHLtid/4ZTPOkRuqZBHCMRySj3SBJgQObIVHfJWCeWaAnGGvPpdAYnvoYWQC5FXhyGgkWgTDw/iiBRqKzkzSkg=
+X-Received: by 2002:a17:907:9612:b0:ad8:a935:b90f with SMTP id
+ a640c23a62f3a-ae057927b32mr325554166b.7.1750430337122; Fri, 20 Jun 2025
+ 07:38:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=tanishdesai37@gmail.com; helo=mail-pg1-x534.google.com
+References: <20250620143720.3143-1-tanishdesai37@gmail.com>
+In-Reply-To: <20250620143720.3143-1-tanishdesai37@gmail.com>
+From: Tanish Desai <tanishdesai37@gmail.com>
+Date: Fri, 20 Jun 2025 20:08:46 +0530
+X-Gm-Features: Ac12FXzbLgc38tom0Gcf2ntrE-lvhIXUk3r_-KUyN7ZopNxUYoVu-MbVjNYkOc4
+Message-ID: <CAH_Y1jc3Bx9hKD=hUG3_smpOVb_Q1iGuCpQ4HSGkng9nrp2bbQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] tracetool: cleanup "if(true)" check from
+ trace_foo()
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: multipart/alternative; boundary="00000000000072c649063801d2be"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=tanishdesai37@gmail.com; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
 X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,124 +94,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Moved trace_event_get_state check from _no_check_trace_foo to trace_foo,
-and removed if (true) checks.
+--00000000000072c649063801d2be
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The _no_check_trace_foo now only emits backend-specific core
-logic, avoiding trace event conditionals entirely.
+Sorry forgot to CC Alex and Paolo .
 
-This brings conditional logic in format/h.py, reducing duplication across
-backends and simplifying their code generation. 
 
-Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
----
- scripts/tracetool/backend/ftrace.py | 3 ---
- scripts/tracetool/backend/log.py    | 5 +----
- scripts/tracetool/backend/simple.py | 7 +------
- scripts/tracetool/backend/syslog.py | 7 +------
- scripts/tracetool/format/h.py       | 3 ++-
- 5 files changed, 5 insertions(+), 20 deletions(-)
+On Fri, 20 Jun 2025 at 8:07=E2=80=AFPM, Tanish Desai <tanishdesai37@gmail.c=
+om>
+wrote:
 
-diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/backend/ftrace.py
-index baed2ae61c..2d6d608add 100644
---- a/scripts/tracetool/backend/ftrace.py
-+++ b/scripts/tracetool/backend/ftrace.py
-@@ -34,18 +34,15 @@ def generate_h(event, group):
-         '        char ftrace_buf[MAX_TRACE_STRLEN];',
-         '        int unused __attribute__ ((unused));',
-         '        int trlen;',
--        '        if (trace_event_get_state(%(event_id)s)) {',
-         '#line %(event_lineno)d "%(event_filename)s"',
-         '            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,',
-         '                             "%(name)s " %(fmt)s "\\n" %(argnames)s);',
-         '#line %(out_next_lineno)d "%(out_filename)s"',
-         '            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);',
-         '            unused = write(trace_marker_fd, ftrace_buf, trlen);',
--        '        }',
-         '    }',
-         name=event.name,
-         args=event.args,
--        event_id="TRACE_" + event.name.upper(),
-         event_lineno=event.lineno,
-         event_filename=os.path.relpath(event.filename),
-         fmt=event.fmt.rstrip("\n"),
-diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend/log.py
-index f24acad74c..35a3aeee55 100644
---- a/scripts/tracetool/backend/log.py
-+++ b/scripts/tracetool/backend/log.py
-@@ -31,9 +31,7 @@ def generate_h(event, group):
-     if len(event.args) > 0:
-         argnames = ", " + argnames
- 
--    cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
--
--    out('    if (%(cond)s && qemu_loglevel_mask(LOG_TRACE)) {',
-+    out('    if (qemu_loglevel_mask(LOG_TRACE)) {',
-         '        if (message_with_timestamp) {',
-         '            struct timeval _now;',
-         '            gettimeofday(&_now, NULL);',
-@@ -49,7 +47,6 @@ def generate_h(event, group):
-         '#line %(out_next_lineno)d "%(out_filename)s"',
-         '        }',
-         '    }',
--        cond=cond,
-         event_lineno=event.lineno,
-         event_filename=os.path.relpath(event.filename),
-         name=event.name,
-diff --git a/scripts/tracetool/backend/simple.py b/scripts/tracetool/backend/simple.py
-index 7c84c06b20..ce8036f5da 100644
---- a/scripts/tracetool/backend/simple.py
-+++ b/scripts/tracetool/backend/simple.py
-@@ -36,13 +36,8 @@ def generate_h_begin(events, group):
- 
- 
- def generate_h(event, group):
--    event_id = 'TRACE_' + event.name.upper()
--    cond = "trace_event_get_state(%s)" % event_id
--    out('    if (%(cond)s) {',
--        '        _simple_%(api)s(%(args)s);',
--        '    }',
-+    out('        _simple_%(api)s(%(args)s);',
-         api=event.api(),
--        cond=cond,
-         args=", ".join(event.args.names()))
- 
- 
-diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/backend/syslog.py
-index 6fdc1142fb..f84cec641c 100644
---- a/scripts/tracetool/backend/syslog.py
-+++ b/scripts/tracetool/backend/syslog.py
-@@ -30,14 +30,9 @@ def generate_h(event, group):
-     if len(event.args) > 0:
-         argnames = ", " + argnames
- 
--    cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
--
--    out('    if (%(cond)s) {',
--        '#line %(event_lineno)d "%(event_filename)s"',
-+    out('#line %(event_lineno)d "%(event_filename)s"',
-         '        syslog(LOG_INFO, "%(name)s " %(fmt)s %(argnames)s);',
-         '#line %(out_next_lineno)d "%(out_filename)s"',
--        '    }',
--        cond=cond,
-         event_lineno=event.lineno,
-         event_filename=os.path.relpath(event.filename),
-         name=event.name,
-diff --git a/scripts/tracetool/format/h.py b/scripts/tracetool/format/h.py
-index 89d54b9aff..7bbe6d3148 100644
---- a/scripts/tracetool/format/h.py
-+++ b/scripts/tracetool/format/h.py
-@@ -71,7 +71,8 @@ def generate(events, backend, group):
- 
-         out('}')
- 
--        cond = "true"
-+        event_id = 'TRACE_' + e.name.upper()
-+        cond = "trace_event_get_state(%s)" % event_id
- 
-         out('',
-             'static inline void %(api)s(%(args)s)',
--- 
-2.34.1
+> This series of patch aims to removes the leftover if (true) condition
+> from trace_foo, a remnant from the TCG tracing feature removal.
+>
+> It replaces it with a proper trace_event_get_state(...)
+> check where necessary (for log/simple/syslog and ftrace backend).
+>
+> Additionally, this change centralizes the generation of
+> trace_event_get_state(...) calls into format/h.py,
+> eliminating redundant code across individual backends.
+>
+> This cleanup results in more consistent and less
+> repetitive backend code.
+>
+> Tanish Desai (3):
+>   tracetool: removed the unused vcpu property
+>   tracetool: introduce generate_unconditional
+>   tracetool: remove redundant event_get_state checks
+>
+>  scripts/tracetool/__init__.py         |  6 +++---
+>  scripts/tracetool/backend/__init__.py |  3 +++
+>  scripts/tracetool/backend/dtrace.py   |  3 ++-
+>  scripts/tracetool/backend/ftrace.py   |  3 ---
+>  scripts/tracetool/backend/log.py      |  9 +--------
+>  scripts/tracetool/backend/simple.py   | 11 +----------
+>  scripts/tracetool/backend/syslog.py   | 11 +----------
+>  scripts/tracetool/backend/ust.py      |  2 +-
+>  scripts/tracetool/format/h.py         | 13 +++++++++----
+>  9 files changed, 21 insertions(+), 40 deletions(-)
+>
+> --
+> 2.34.1
+>
+>
 
+--00000000000072c649063801d2be
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><br clear=3D"all">Sorry forgot to CC Alex and Paolo .</di=
+v><div><br></div><div><br><div class=3D"gmail_quote gmail_quote_container">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Fri, 20 Jun 2025 at 8:07=E2=80=AFP=
+M, Tanish Desai &lt;<a href=3D"mailto:tanishdesai37@gmail.com">tanishdesai3=
+7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;=
+padding-left:1ex;border-left-color:rgb(204,204,204)">This series of patch a=
+ims to removes the leftover if (true) condition<br>
+from trace_foo, a remnant from the TCG tracing feature removal.<br>
+<br>
+It replaces it with a proper trace_event_get_state(...)<br>
+check where necessary (for log/simple/syslog and ftrace backend).<br>
+<br>
+Additionally, this change centralizes the generation of<br>
+trace_event_get_state(...) calls into format/h.py,<br>
+eliminating redundant code across individual backends.<br>
+<br>
+This cleanup results in more consistent and less<br>
+repetitive backend code.<br>
+<br>
+Tanish Desai (3):<br>
+=C2=A0 tracetool: removed the unused vcpu property<br>
+=C2=A0 tracetool: introduce generate_unconditional<br>
+=C2=A0 tracetool: remove redundant event_get_state checks<br>
+<br>
+=C2=A0scripts/tracetool/__init__.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=
+=A0 6 +++---<br>
+=C2=A0scripts/tracetool/backend/__init__.py |=C2=A0 3 +++<br>
+=C2=A0scripts/tracetool/backend/dtrace.py=C2=A0 =C2=A0|=C2=A0 3 ++-<br>
+=C2=A0scripts/tracetool/backend/ftrace.py=C2=A0 =C2=A0|=C2=A0 3 ---<br>
+=C2=A0scripts/tracetool/backend/log.py=C2=A0 =C2=A0 =C2=A0 |=C2=A0 9 +-----=
+---<br>
+=C2=A0scripts/tracetool/backend/simple.py=C2=A0 =C2=A0| 11 +----------<br>
+=C2=A0scripts/tracetool/backend/syslog.py=C2=A0 =C2=A0| 11 +----------<br>
+=C2=A0scripts/tracetool/backend/ust.py=C2=A0 =C2=A0 =C2=A0 |=C2=A0 2 +-<br>
+=C2=A0scripts/tracetool/format/h.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 13 +=
+++++++++----<br>
+=C2=A09 files changed, 21 insertions(+), 40 deletions(-)<br>
+<br>
+-- <br>
+2.34.1<br>
+<br>
+</blockquote></div></div>
+
+--00000000000072c649063801d2be--
 
