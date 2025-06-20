@@ -2,148 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D946AE1616
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 10:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CFF0AE16A4
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 10:47:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSXAe-0005BR-OU; Fri, 20 Jun 2025 04:32:24 -0400
+	id 1uSXNV-0000yt-Hn; Fri, 20 Jun 2025 04:45:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uSXAY-0005BJ-IF
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 04:32:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uSXNR-0000yY-RP; Fri, 20 Jun 2025 04:45:37 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uSXAW-0000px-Gi
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 04:32:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750408335;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Q9EKifSmEvuEl272iBmK/uw8ii0ztmeiPBGFAWMVghY=;
- b=EczIuJVrS6vu59jVtYq4hpEcnfFukz8EfxCfsX2Xrvv2lStQu/RKWnpMT6yWznX0Cn/1aG
- ZQIy5khi6VJmHSDCLtA4ggJp4xA2kvz4IcXG44RCQn0ZjfwroGEEa6MTltBBVqIDwnpaRt
- Yo+hFnwGxMqRZuEW+K3B6itOJMmwawA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-484-7CLER4WGPXOtAoUhtUKPSw-1; Fri, 20 Jun 2025 04:32:13 -0400
-X-MC-Unique: 7CLER4WGPXOtAoUhtUKPSw-1
-X-Mimecast-MFC-AGG-ID: 7CLER4WGPXOtAoUhtUKPSw_1750408332
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-450d50eacafso9697315e9.3
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 01:32:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750408332; x=1751013132;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Q9EKifSmEvuEl272iBmK/uw8ii0ztmeiPBGFAWMVghY=;
- b=Jzw2MiC3oqputJ91k3wQfLvlsYLlvrKjGOUD+zP8RnH8k8b9m7pze1flizDOCiIez2
- UdFg5/mcgNGDBOj9Bl+HwFg8+uw2xyppuk/X2yYsNulvwcjw9yLkBVDxnC2FRXJZ/qeB
- ZzMK+1kXMy17FI/hzL0cAZkmizes12ekaB5KmFs7t6ORGPYNdb5nTdlgWJA4xU1buCDI
- ecGBdig4h1Y6xu5+xlNqxXyoGe1IvKqS5aSf6DORC2ig1qPKO7jr/xAp2pPN2XkCC9QE
- IxZYZKKtiaLRbQYuHUDh0tN2sij0BKGhReT4dlsqAiZUsH58sfhk9RFVDE9jrfytv5dU
- jlIA==
-X-Gm-Message-State: AOJu0YykTvTUYxVzY4hK52tE0XGnPVkCxh74o/nMSVcWiE+LVypdueFO
- igeleK+Tk2RzWOWXQtVvrx+8rlFabJgYI0ve6HFxuV7a00xQOosDOslCJwDFjfRLOPSkDpts89Z
- bOAWgQ78SdmXzzYWV68DC6uuvPm7n9x8R+zf/3To7Tl5o1SiKqPvPKVi9
-X-Gm-Gg: ASbGnctVPrt8qOaGmPagdNIOSeQ9ZCMNF7k6f3S9Fo3RohrRO4OvX3iSzOBKuh03BNz
- BuP3anlrZthxsqXjQUYH8cZXncVsQKboXmeSXsRCDI4A5O95iM30XxGWtUEWTlzpZJzsilImCmm
- +7DCwqGHxE78d+ykgsB9jyBl1KQ6sYlAJnCurQMxLv8+VUjchhfqwsMQf73pju8CxAJrqOpsm9B
- blhKsFZorTJcaHU/A2qvZNyNW0kBLlGuC6cWi4h6uEMTA041JdimiSqoZOd734VIPeZp+rrrwH3
- +veFnkMTzwZynT0TrwEfd+stizcHN4dIo5NZwsIpx1dmZklI1/whqd0ER7LN
-X-Received: by 2002:a05:600c:c4aa:b0:453:a95:f07d with SMTP id
- 5b1f17b1804b1-453654cb7b3mr20280885e9.10.1750408331952; 
- Fri, 20 Jun 2025 01:32:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGVwnHCidtF1hnQDPbE9yXd6xYTNRXnI0oholH0y39WzYqgeDyIRbgISkz0IgRPbFIMvUZJzA==
-X-Received: by 2002:a05:600c:c4aa:b0:453:a95:f07d with SMTP id
- 5b1f17b1804b1-453654cb7b3mr20280495e9.10.1750408331588; 
- Fri, 20 Jun 2025 01:32:11 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4535ebcecb5sm51855135e9.37.2025.06.20.01.32.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Jun 2025 01:32:11 -0700 (PDT)
-Message-ID: <65274f7d-59ee-407e-a57f-dbf9e47890b5@redhat.com>
-Date: Fri, 20 Jun 2025 10:32:10 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uSXNO-00026I-SL; Fri, 20 Jun 2025 04:45:37 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bNrb90crdz6L6Fc;
+ Fri, 20 Jun 2025 16:43:01 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 3823E140417;
+ Fri, 20 Jun 2025 16:45:19 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 20 Jun
+ 2025 10:45:18 +0200
+Date: Fri, 20 Jun 2025 09:45:17 +0100
+To: Eric Auger <eric.auger@redhat.com>
+CC: <eric.auger.pro@gmail.com>, <qemu-devel@nongnu.org>,
+ <qemu-arm@nongnu.org>, <peter.maydell@linaro.org>, <imammedo@redhat.com>,
+ <gustavo.romero@linaro.org>, <anisinha@redhat.com>, <mst@redhat.com>,
+ <shannon.zhaosl@gmail.com>, <pbonzini@redhat.com>, <philmd@linaro.org>,
+ <alex.bennee@linaro.org>
+Subject: Re: [PATCH v3 04/29] hw/pci-host/gpex-acpi: Add native_pci_hotplug
+ arg to acpi_dsdt_add_pci_osc
+Message-ID: <20250620094517.00007eed@huawei.com>
+In-Reply-To: <20250616094903.885753-5-eric.auger@redhat.com>
+References: <20250616094903.885753-1-eric.auger@redhat.com>
+ <20250616094903.885753-5-eric.auger@redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/23] vfio-user client
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- John Levon <john.levon@nutanix.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20250607001056.335310-1-john.levon@nutanix.com>
- <b6be1ca0-0ba0-4691-8a2c-f7d3ddc2f85e@redhat.com> <aErh-v3SfFo-2Br0@lent>
- <c18de4a2-63d0-4ad2-9547-fe8bc221a887@redhat.com>
- <3b311f79-fc87-4b1b-8ba5-728d696a14b3@nutanix.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <3b311f79-fc87-4b1b-8ba5-728d696a14b3@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.897,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -156,37 +69,80 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Mark,
+On Mon, 16 Jun 2025 11:46:33 +0200
+Eric Auger <eric.auger@redhat.com> wrote:
 
-On 6/20/25 10:20, Mark Cave-Ayland wrote:
-> On 19/06/2025 12:56, Cédric Le Goater wrote:
+> Add a new argument to acpi_dsdt_add_pci_osc to be able to disable
+> native pci hotplug.
 > 
->> Hi John,
->>
->>>> I *really* would prefer if we had functional tests although I don't how
->>>
->>> I agree it makes sense to have a working functional test before merging.
->>
->> Any progress ?
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+After discussion on earlier version I'm now fine with this.
+
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
 > 
-> I've had to look at some other bits and pieces this week, but the basic status is sadly still unchanged - I have a test with 2 VMs, a client and server, that works fine when run by hand yet hangs when run within the functional test framework.
+> ---
 > 
-> I do now have a VM with lots of extra debugging installed, but figuring out why I see these hangs is proving to be quite time intensive. If we could point you towards a manual image and some scripts, would that be sufficient for now?
-
-Before merging, I would like to be able to experiment a minimum.
-
-Does a dummy device (server side) implementation exist ? and a
-GH repo I could pull the code from.
-
-John,
-
-How do you test ?
-
-Thanks,
-
-C.
+> rfc -> v1:
+> - updated the "Allow OS control for all 5 features" comment
+> ---
+>  hw/pci-host/gpex-acpi.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
+> 
+> diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
+> index 0aba47c71c..f34b7cf25e 100644
+> --- a/hw/pci-host/gpex-acpi.c
+> +++ b/hw/pci-host/gpex-acpi.c
+> @@ -50,7 +50,7 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
+>      }
+>  }
+>  
+> -static void acpi_dsdt_add_pci_osc(Aml *dev)
+> +static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
+>  {
+>      Aml *method, *UUID, *ifctx, *ifctx1, *elsectx, *buf;
+>  
+> @@ -77,11 +77,12 @@ static void acpi_dsdt_add_pci_osc(Aml *dev)
+>      aml_append(ifctx, aml_store(aml_name("CDW3"), aml_name("CTRL")));
+>  
+>      /*
+> -     * Allow OS control for all 5 features:
+> -     * PCIeHotplug SHPCHotplug PME AER PCIeCapability.
+> +     * Allow OS control for SHPCHotplug, PME, AER, PCIeCapability,
+> +     * and PCIeHotplug depending on enable_native_pcie_hotplug
+>       */
+> -    aml_append(ifctx, aml_and(aml_name("CTRL"), aml_int(0x1F),
+> -                              aml_name("CTRL")));
+> +    aml_append(ifctx, aml_and(aml_name("CTRL"),
+> +               aml_int(0x1E | (enable_native_pcie_hotplug ? 0x1 : 0x0)),
+> +               aml_name("CTRL")));
+>  
+>      ifctx1 = aml_if(aml_lnot(aml_equal(aml_arg(1), aml_int(0x1))));
+>      aml_append(ifctx1, aml_or(aml_name("CDW1"), aml_int(0x08),
+> @@ -192,7 +193,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+>              if (is_cxl) {
+>                  build_cxl_osc_method(dev);
+>              } else {
+> -                acpi_dsdt_add_pci_osc(dev);
+> +                acpi_dsdt_add_pci_osc(dev, true);
+>              }
+>  
+>              aml_append(scope, dev);
+> @@ -267,7 +268,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+>      }
+>      aml_append(dev, aml_name_decl("_CRS", rbuf));
+>  
+> -    acpi_dsdt_add_pci_osc(dev);
+> +    acpi_dsdt_add_pci_osc(dev, true);
+>  
+>      Aml *dev_res0 = aml_device("%s", "RES0");
+>      aml_append(dev_res0, aml_name_decl("_HID", aml_string("PNP0C02")));
 
 
