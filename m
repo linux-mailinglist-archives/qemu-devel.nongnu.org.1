@@ -2,75 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C19AE252E
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7121AE2574
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Jun 2025 00:25:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSk4a-0000vE-0h; Fri, 20 Jun 2025 18:19:00 -0400
+	id 1uSk6p-0005VT-LD; Fri, 20 Jun 2025 18:21:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uSgEY-0006Ns-0A
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 14:13:02 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <zzyiwei@gmail.com>)
+ id 1uShgs-0007st-75; Fri, 20 Jun 2025 15:46:22 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uSgEW-0002Kw-AN
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 14:13:01 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-606fdbd20afso3934645a12.1
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 11:12:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zzyiwei@gmail.com>)
+ id 1uShgq-0006WW-F0; Fri, 20 Jun 2025 15:46:21 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-607cf70b00aso3915683a12.2; 
+ Fri, 20 Jun 2025 12:46:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1750443179; x=1751047979; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1750448778; x=1751053578; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q67CJf58ORykLyT/bLzexzt1GDtdjD5qmsU6LVD3Fc0=;
- b=AR6QQUD+SkrEAKCFuU9SWf8c8m5k3bnDe0ubkFW/9/lA+UOl/YdCp0wev235Lgvq5n
- Ec5dVcGAFuiANaPebSUryP+kqN2Ipo4RkvAirXW+bmCo0RU5K3fDkv7LORvxg4AtNY6B
- PdFb9GcklKDWI0ByLqkyVfLw4I/1ullnQKPpDRGO7QnQIYyVQ+KR0SGDBAgEaqA5DNM7
- 1ZeGsC7Dw7qZE4/amxMZzY/w9xoJkprS6XNKlTb+6RUi+9QIWDMfggYqKjxn4k02Nk34
- qMfsxbttFGC1x5i2ygrYsUJeVXBEQvkGi2jJf77Tk3PzarFMIYoVvfxigPaRMKuOCSNJ
- 4nzQ==
+ bh=OJ0pcPmPNxlXz5k55TMDmWuhtchWLUkYb+RZhz6ioek=;
+ b=HLPBPMFcIEpzH0LxbtfyXoBmhUgcel94k1Qx6W0gYLWKAGySB5VJHnpqJbDgvQ9pkF
+ EoGcuhD/P05R3LuZdORSiaW92nWws95Ns9tZnLCbq4O7lzuml1JgUTC2TIu8HTe7orAn
+ 5lqnjB4rQlrpA7qSov0yhtC03TYTMxr0DiNyhbZ4ImCnap6xk9x/qLU/whBBhiBfhEGA
+ Wafrhh1vssXwnwJ6NUN2WppsMoTLbZIu21L6xubFrATqqbwtD0hFmpfsw5xuZ6wAd784
+ bmxxd54N4vdfwU96uB0/BXEtTy/LSq9pbZijqwBZ8j2zNC1M9dYPGvU3m3C8A/4DW9R8
+ 7flw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750443179; x=1751047979;
+ d=1e100.net; s=20230601; t=1750448778; x=1751053578;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q67CJf58ORykLyT/bLzexzt1GDtdjD5qmsU6LVD3Fc0=;
- b=SIfQzuWbyVtMhY7bsJreB8QXYd83GyxwvUnJQSPH7BtoQz21vlzViyMXzT2jjKQMrr
- hNuRTpCH9XxAp2nj8Z0crijWEKy+df165tfghWPC3kS85mfk+9VYli6bswdavfPKXaPY
- gRCzvZv2KDYUMR7kJWD1D/TWs9JlqIfOVA+OM0N6htlB9VOoQmb1FU3gWVCo88LZv9GA
- i85zJalgX9DR7ZtV3l0zFA7ppplimdHXYY5YfjPSl5EVVTif33RDNDmKjH7SyGOY3hZK
- YKiqskeefiyE7c9SP84sQdoesYiYGaPfilU+mRvhMXa8hWVEYH8f4dwT0Wo+Hi3rT/Hi
- LXYg==
-X-Gm-Message-State: AOJu0Yzq7w/7jPH0IILraMCNw9qttMvNa5p95NTY1I7R/DU2MqaS5pSJ
- JgiUzJRwJg+FRa57FbmAR9Z5dvhxJT7UYgc31HPrENcK0sUL2NBkAssGBtdGH5xYHt6f423TWT/
- SWPXNSxFlLYikvxqX9tQFFEssE0qpNjYN6xPp
-X-Gm-Gg: ASbGncuWSJ9o/m+iHKW6ydF24b6iz+hj5+5KTS6cw+MEspZPbf2V1JnMzJyn1wa8Fti
- PjMgbh2ijnvmPnZS4XNBRhIJ1jc/BEWhmwDnYV+FTM6N9HDAPhKpMNO58lW8HesdGg+ZqFCHBso
- VRUAxWerD4wRki1v3YAsAFoYnyEru++QcaFPcrWjL3Iw==
-X-Google-Smtp-Source: AGHT+IH9b0EgaKfgKk4ySTSxFhJ+7OjqMVtsOJJ3txXd+x3YM9qcwMpiBGBSUZI86PvxdTtH8fcyemePQQHs7wiZCe8=
-X-Received: by 2002:a05:6402:4315:b0:608:8204:c600 with SMTP id
- 4fb4d7f45d1cf-60a1cca9c67mr3834590a12.3.1750443178333; Fri, 20 Jun 2025
- 11:12:58 -0700 (PDT)
+ bh=OJ0pcPmPNxlXz5k55TMDmWuhtchWLUkYb+RZhz6ioek=;
+ b=qtgxYOoNlT4m/I8wPcgnvOQIvEJNbaHxMJXgdXkFNfEJP0SYSosjlX8Y/qK5ZUOqQZ
+ ksggD6N4epc20iFVpMFBLkjJF24lP4F/Md1Hrq1+BOriXCJHqVHx3KFdBYkcxg8fNGnM
+ CoQpltz/m+lUbvYusVxYmjfPgQJ9yE5drs5tIjt/ICYQl9HhRBVcWHrtv9eQG1tGQDmD
+ TU2CD4GyiHAOtRbMPu1nz81MvdTCLExJ4vBRNG4ZB4qzGKLRzP7Awgp9NzLljsOohpIs
+ cJ45Bmg+79ajKEAN/49nzGXmL6KYZjWz1SY6oR9u228PJ2ZmXXUKZG+W03woPOOyvuWS
+ IVFQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVUpUah4U5SXhtDDOLSXYv2FH/UvGCuX3Q6h7Lk9NLiGeoOOTe5UETUi/AfF/CnK/V/2DiEdHumX0BkoA==@nongnu.org
+X-Gm-Message-State: AOJu0YzMsYud2snbThX0E5UrMzXrodTGofEQXDupxPnUMZiXJBWaftT3
+ 2vcD+LxI61Tq99UqOpR+VOO7swXjmzEwl7bUc9ke9dTK8uh1X0XqQKVA5uVWnfYP7Qc6YErjg8T
+ KhtNo9egH+ROYVYpGjsmhXTi4COVn94M=
+X-Gm-Gg: ASbGncs558tq82I45SiDyTBsW4v2vO1+7rAjTI6SnqvO8XB+bQQ3QQOyg/wC+wlwxiA
+ 37f38ifqJz+OpBuZGvkORlrLwik9hsm28oth1jp4vyXTKsZkYB42ZS/KJ8v+8H+BRXBjPc01U9x
+ ONel6CzcIPMEWy3Yh4Cg5tMRt/hLRBs0Wf8hLePtk8/y0/UFI2ToDR74rUPL+YzKcS2x14F5X+h
+ ue5
+X-Google-Smtp-Source: AGHT+IFTUsAi2KjyLrk55jgA9DmRTcLJNm5fppdOgPw0JxW2PZRqa0LVNp752FrrzQfeqUP757xtVkynnCHrYC8dCEc=
+X-Received: by 2002:a05:6402:524f:b0:602:bfc6:f99d with SMTP id
+ 4fb4d7f45d1cf-60a1d18ef14mr3692258a12.24.1750448777945; Fri, 20 Jun 2025
+ 12:46:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250619082817.1517996-1-gaosong@loongson.cn>
- <CAJSP0QWsFx8qcR4k4nb2fBH0Q1aFWwCUU4JEs+NFCGHKhSphMA@mail.gmail.com>
- <b9f57a29-b13b-cd94-dc92-bc9ea45cc077@loongson.cn>
-In-Reply-To: <b9f57a29-b13b-cd94-dc92-bc9ea45cc077@loongson.cn>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 20 Jun 2025 14:12:45 -0400
-X-Gm-Features: AX0GCFsOZB4EhdQTfM9vLc_8Ay4P5xmNFGcnTLa4Gt_m4L6N8fopZZd3z5SVhLY
-Message-ID: <CAJSP0QXGg9_hcdNVJ4LyVNB8ujFSX5jMfYSwbsfX2xQ2XAJdCw@mail.gmail.com>
-Subject: Re: [PULL 00/14] loongarch-to-apply queue
-To: gaosong <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
+References: <20250605162651.2614401-1-alex.bennee@linaro.org>
+ <20250605162651.2614401-13-alex.bennee@linaro.org>
+ <d504e5de-cb7f-4eda-a046-9edef5d23749@rsg.ci.i.u-tokyo.ac.jp>
+ <CAJ+hS_jUtitaeqYYxHN6q9ijqBu=Zyviid+EJc2sJ1yQLRxSDQ@mail.gmail.com>
+ <877c16ud1r.fsf@draig.linaro.org>
+In-Reply-To: <877c16ud1r.fsf@draig.linaro.org>
+From: Yiwei Zhang <zzyiwei@gmail.com>
+Date: Fri, 20 Jun 2025 12:47:59 -0700
+X-Gm-Features: Ac12FXy1GgU7Dny479F2x0oDs3ckWuuEu4HSoCjGpnQBdyvl50zBfYYE81-2hAQ
+Message-ID: <CAJ+hS_insLDZRmQhVWfbLxqzdA4oWXYGHHOkFVJTdz3TucYqjg@mail.gmail.com>
+Subject: Re: [PULL 12/17] virtio-gpu: support context init multiple timeline
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=zzyiwei@gmail.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,67 +99,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 19, 2025 at 11:11=E2=80=AFPM gaosong <gaosong@loongson.cn> wrot=
-e:
+On Thu, Jun 19, 2025 at 11:45=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@lina=
+ro.org> wrote:
 >
-> =E5=9C=A8 2025/6/20 =E4=B8=8A=E5=8D=884:39, Stefan Hajnoczi =E5=86=99=E9=
-=81=93:
-> > gpg:                using RSA key CA473C44D6A09C189A193FCD452B96852B268=
-216
-> > gpg: Can't check signature: No public key
+> Yiwei Zhang <zzyiwei@gmail.com> writes:
+>
+> > On Sun, Jun 8, 2025 at 1:24=E2=80=AFAM Akihiko Odaki
+> > <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+> >>
+> >> On 2025/06/06 1:26, Alex Benn=C3=A9e wrote:
+> >> > From: Yiwei Zhang <zzyiwei@gmail.com>
+> >> >
+> >> > Venus and later native contexts have their own fence context along w=
+ith
+> >> > multiple timelines within. Fences wtih VIRTIO_GPU_FLAG_INFO_RING_IDX=
+ in
+> >> > the flags must be dispatched to be created on the target context. Fe=
+nce
+> >> > signaling also has to be handled on the specific timeline within tha=
+t
+> >> > target context.
+> >> >
+> >> > Before this change, venus fencing is completely broken if the host
+> >> > driver doesn't support implicit fencing with external memory objects=
+.
+> >> > Frames can go backwards along with random artifacts on screen if the
+> >> > host driver doesn't attach an implicit fence to the render target. T=
+he
+> >> > symptom could be hidden by certain guest wsi backend that waits on a
+> >> > venus native VkFence object for the actual payload with limited pres=
+ent
+> >> > modes or under special configs. e.g. x11 mailbox or xwayland.
+> >> >
+> >> > After this change, everything related to venus fencing starts making
+> >> > sense. Confirmed this via guest and host side perfetto tracing.
+> >> >
+> >> > Cc: qemu-stable@nongnu.org
+> >> > Fixes: 94d0ea1c1928 ("virtio-gpu: Support Venus context")
+> >>
+> >> I suggest moving this in the front of the patch series to ease backpor=
+ting.
+> >>
+> >> I also wonder if "[PULL 11/17] ui/gtk-gl-area: Remove extra draw call =
+in
+> >> refresh" requires Cc: qemu-stable@nongnu.org. Fixing -display gtk,gl=
+=3Don
+> >> for Wayland sounds as important as this patch.
+> >>
+> >> Regards,
+> >> Akihiko Odaki
 > >
-> > Why has the GPG key changed? Your previous pull request was signed
-> > with key B8FF1DA0D2FDCB2DA09C6C2C40A2FFF239263EDF.
+> > Hi Alex,
 > >
-> > If you would like to change keys, please sign your new key using your
-> > old key and upload the new key to the key servers again. That way I
-> > know that the new key really belongs to you.
-> Hi, Stefan
+> > +1 for Akihiko's point. I'm also curious when will the venus fix land
+> > in-tree?
 >
-> I had  sign  new key using old key and send to the key server again
-> should I need pull again?
+> We have a problem that there are two contradictory bugs - one that shows
+> up in the x86/kvm case and one in the aarch64/tcg case. Both are caused
+> by the weird lifetime semantics of the virgl resource vs QEMU memory
+> region and we haven't found a solution that solves both yet.
 
-Thanks!
-
-The pull request does not need to be resent.
-
-I wasn't able to fetch your new key with the signature from the
-keyservers though. Did you `gpg --send-keys 0x452B96852B268216`?
-
-Alternatively, you could attach your new signed gpg key and send it as
-an email attachment.
-
-Stefan
+Sounds like irrelevant to the venus fix. Might be worth filing a
+virglrenderer issue with some details. More eyes would be helpful if
+this turns out to be some known kvm issue seen before on other vmms.
 
 >
-> Thanks.
-> Song Gao
+> I'm currently busy with other stuff and need to do a sweep of my other
+> maintainer trees for 10.1. Once I've done that I'll have another go at
+> coming up with a solution unless someone else beats me to it.
+
+Understood. Hope there's a chance to move the venus fix up in the
+queue to land first when you get to this again. Thanks!
+
 >
-> gpg --list-signatures
-> /home/gaosong/.gnupg/pubring.kbx
-> --------------------------------
-> pub   rsa1024 2022-09-16 [SC]
->        B8FF1DA0D2FDCB2DA09C6C2C40A2FFF239263EDF
-> uid           [ =E6=9C=AA=E7=9F=A5 ] Song Gao <m17746591750@163.com>
-> sig 3        40A2FFF239263EDF 2022-09-16  Song Gao <m17746591750@163.com>
-> sig          452B96852B268216 2025-06-20  Song Gao <gaosong@loongson.cn>
->
-> pub   rsa1024 2022-09-16 [SC]
->        CA473C44D6A09C189A193FCD452B96852B268216
-> uid           [ =E6=9C=AA=E7=9F=A5 ] Song Gao <gaosong@loongson.cn>
-> sig 3        452B96852B268216 2022-09-16  Song Gao <gaosong@loongson.cn>
-> sig          40A2FFF239263EDF 2025-06-20  Song Gao <m17746591750@163.com>
->
->
-> gpg --send-keys CA473C44D6A09C189A193FCD452B96852B268216
-> gpg: =E6=AD=A3=E5=9C=A8=E5=8F=91=E9=80=81=E5=AF=86=E9=92=A5 452B96852B268=
-216 =E5=88=B0 hkps://keys.openpgp.org
-> gpg --recv-keys CA473C44D6A09C189A193FCD452B96852B268216
-> gpg: =E5=AF=86=E9=92=A5 452B96852B268216=EF=BC=9A=E2=80=9CSong Gao <gaoso=
-ng@loongson.cn>=E2=80=9D =E6=9C=AA=E6=94=B9=E5=8F=98
-> gpg: =E5=A4=84=E7=90=86=E7=9A=84=E6=80=BB=E6=95=B0=EF=BC=9A1
-> gpg:              =E6=9C=AA=E6=94=B9=E5=8F=98=EF=BC=9A1
->
->
->
+> --
+> Alex Benn=C3=A9e
+> Virtualisation Tech Lead @ Linaro
 
