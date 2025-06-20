@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7C5AE1BC4
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D3AAE1BA6
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:12:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSbUH-0004Li-30; Fri, 20 Jun 2025 09:08:57 -0400
+	id 1uSbUK-0004hQ-Rs; Fri, 20 Jun 2025 09:09:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUB-0003uq-MJ
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:08:52 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUH-0004TP-1L
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:08:57 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUA-0004n5-4n
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:08:51 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-453398e90e9so13153315e9.1
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:08:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUF-0004pi-9g
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:08:56 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-45348bff79fso21167535e9.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:08:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750424928; x=1751029728; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750424933; x=1751029733; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NW0Hu04oFurHIvjEpsNrwT15qBihdHLv3c5t8qKFRhE=;
- b=o89ByaXz+Pps94E89f9dHuZPL5KCt6vEYrxACT9y/kTAahnwfAN4dItaqCrXGYtOzt
- 1ngW8ahYCs35i0r1XFmybGtgHAwegX5dAeLrLNRLdx7L2B9b+opwWfVoEiWaGIKmvGj+
- fe4datHUbRount2Ksf097RX17t/RJycuwGNrMZW9rdcItXTypCGqP+FI0wNZYPE8kIKp
- lqPNj/d+j3fA2xMEVgyYfm/kc/BM9rNJbpeiBmPtszerieETYhmANW7XDbU9oNPj2681
- j0v776IlU7uAfgYBXpbCSqQNYMt+DS67LM6xUiH1f+LvppNxwqByTMWE6q7feUehkAod
- WyQA==
+ bh=WoXZ8Al0R/es9sXpuEKkELf4IYQr/L/uwmOyRIHiR2c=;
+ b=VJPAWiUU8ZrAI7HUR7Fh+SH22S5+wfd7ob+3W4tCfr9AIxxOm6vyCudaDtnAd88KaQ
+ s8nuVtaTGV7P58LicYxqpX0cM1BrX4MLuU0p1qkSj3cIPecwS0LE8WUvQSbjwFFSC+uU
+ K0gN+RuEQsAVLOPT0cnyVSFu8wetqnr+Srqge6+oVr9I8PVQCOUXwtgD+5GQkWGgpNEK
+ tLAGLD53njoL0jwGg6gspT0rIsg4j6WjhBQIxoosPdUfb07ptfsgs5TGeu2UCjLBT04H
+ IWh19k+LkiB5bAT1fO4nnSMLcsNgFKMf1FsGnDeCEYiPNsSeOIViXq9sVxf5EbTVPj4l
+ 1q4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750424928; x=1751029728;
+ d=1e100.net; s=20230601; t=1750424933; x=1751029733;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NW0Hu04oFurHIvjEpsNrwT15qBihdHLv3c5t8qKFRhE=;
- b=ItSU1qlUoLDe9jtM66rEeBV8NxQqg3aDEofkfXnFH8iXIng7/m/LCj9PYfaovf5u5X
- 01myQot6O2dVpWb//O6+9F4yqIH8AVqQSb0T9nMux9BbkhgKLJiWiJREW0/qdzB4S66X
- /yAKrFZ34x2ErfeVXqFXzTGXuDKTNvQm9Jjhc8xgSpNhXlavgktv5mfvjFqQsxpoWLiA
- dhj/Tvker+rR7Frt6qDApUzipgyYC3cV1+J7LDP/QWR4QkdhGwwKD8hfkGtRBeBOYRtr
- OyskeLBFugYy0YXTEXckOZiYBq25W44z4qJiBeq7imxBgCf2NMjSeIrAlJecE9VotLRu
- nPFg==
-X-Gm-Message-State: AOJu0Yzu/WZ5R6yXg7f+1PGWMPLt1W+WlYKFgedIBdgEET5uyl/zjrLD
- p19cUoDqPmAyxTQuRXnoQw3OsG8gT5LeAbRFZIFcN2zNsbBeLqN+ueCSpu7fC1XfYkFLQCGKCuk
- 0OWbEdFw=
-X-Gm-Gg: ASbGncuVKjvT6tuMmZ/LrbkApGKezt/qLovZ5K0cER40YEGnj/wsifQmKzR1DBoWfC+
- /r0U2u5ewujZMdoJX2TOW/rpXSXwHPRwVOXQRINSX/BEjOVOcp1gIKg7oD3ahTnx3/kxvTDSFaB
- dzyIap7MNoUr5yMw7ERPURpWSX5gO2C2XcdRzVJEOaaW1Zijp0rAB9mhPW6g0uTYUyCNUx5a2WE
- mbnCx/x2vlQhCPVCkHZIf4CBVGYwCjd39GBZfrMt1S45TscCyIwF6nSW7aaKxwNteQeoD9jS5e7
- Y631Ufaqwbc4lKVUG8PsJY5GzMb9oA4k8aiXwnCb9GE4KUSR529vqfarXJnHAtBxRStq60n1Cs5
- NeWG1o9GWFY0vnSM2oCfG1KXTFQAm6QZqaJe9
-X-Google-Smtp-Source: AGHT+IGUxGQ9nSF7X2qks3F5L0LQ6lJ+WfpvhuThp4HFmarf7Jsr/FvLwKNQzlPqKQDhSjDBkrHhqg==
-X-Received: by 2002:a05:600c:1991:b0:444:c28f:e81a with SMTP id
- 5b1f17b1804b1-453659f5888mr23208755e9.27.1750424928234; 
- Fri, 20 Jun 2025 06:08:48 -0700 (PDT)
+ bh=WoXZ8Al0R/es9sXpuEKkELf4IYQr/L/uwmOyRIHiR2c=;
+ b=Py/w4cOQ3ZO1zbKxOk7ELqP023okKqhlQFEb3DA0aVwdDyBYNfMJ4kTQnoNboQjrcP
+ aMEOi3PsWF0Grc3wTrKiKJ3C7yvDLEwlIPsgDf6Ot+fOoapt4tFfcxUp2hcGZzZzxikG
+ hzVTlA6pzR+DMc6convCBurnL5XMn1xCflaDjrVAXyJFZ2CJ8GPqP8v6gu1+Dz//LF1s
+ S+tc7pWFuL8R7dlMw0Kq8OjDeOEbfD8CePo/2CVSjDdGgviu8d3uLGQjrBT5+gHADCVj
+ guKTU/DDI+NZlKhjpHrWCAy6rpdj2LbCUHwapkuTDFWO5F4f4PbQsLmNoIE8PzqmrPRk
+ NoEg==
+X-Gm-Message-State: AOJu0YwA6+4VqOL+R+gT0vx2J/7NLqdNzNRW4rvQEOfM9WcSgzskN/XB
+ cFXiygvpVMonLdH5nU5JDN6lnbceIvaxRx9Glv++nLQNIJv5eo3nFPLBWdzDYA1pP+E8Uz1+0YY
+ u2nW6+Ys=
+X-Gm-Gg: ASbGnctv9jXZQBqa/Vixu6DiiUIAGPc2wYiWrS/nrEvt9V9Dybqyqw2NDeetwm7We6y
+ /a5oGF875rhW8Ywdt2Ep1+3213/TbWA9HnMMDiql2L0Ugc93x+Cn/1ZDUxfrafLQGnGJsYeC9U+
+ INsijHlhUoWiG7VhCw/qtvOu4SINmkx+5fsqcXoob1e2gjulRZfRrHAmvrUEypsdWp48TNx9mDM
+ EpuL/LmsLIo35Laofjt4c4+FRLqFPVH6RDL0zp/8JW1aYzdFqxwsR8P6hZPKOcgTQSs/ZK0Do1u
+ YMuQufvQmiuvYkia6dBKfb9wCqa1FDA4UyDijHdANlrWnAoDcTHo2VuBie7HID0omddMxwGjq25
+ PEL6LvHaVP4suz3z8858WJ+Gj1zeAa3m2va9D
+X-Google-Smtp-Source: AGHT+IGEOZJZmS9VN7oJFrBpyPnyA04MJAIvpYC6GlxrITVRrfApyBG3DfPjsMvyvrXG11kPH2vwoA==
+X-Received: by 2002:a05:600c:8b52:b0:441:b19c:96fe with SMTP id
+ 5b1f17b1804b1-453659c05e5mr32757335e9.10.1750424933502; 
+ Fri, 20 Jun 2025 06:08:53 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d0f18152sm2006529f8f.27.2025.06.20.06.08.46
+ 5b1f17b1804b1-4536470826fsm24688205e9.36.2025.06.20.06.08.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 06:08:47 -0700 (PDT)
+ Fri, 20 Jun 2025 06:08:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
@@ -78,18 +78,17 @@ Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 17/26] target/arm/hvf: Really set Generic Timer counter
- frequency
-Date: Fri, 20 Jun 2025 15:07:00 +0200
-Message-ID: <20250620130709.31073-18-philmd@linaro.org>
+Subject: [PATCH v2 18/26] target/arm/hvf: Trace host processor features
+Date: Fri, 20 Jun 2025 15:07:01 +0200
+Message-ID: <20250620130709.31073-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620130709.31073-1-philmd@linaro.org>
 References: <20250620130709.31073-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,61 +111,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Setting ARMCPU::gt_cntfrq_hz in hvf_arch_init_vcpu() is
-not correct because the timers have already be initialized
-with the default frequency.
+Tracing an Apple M1 (Icestorm core, ARMv8.4-A):
 
-Set it earlier in the AccelOpsClass::cpu_target_realize()
-handler instead, and assert the value is correct when
-reaching hvf_arch_init_vcpu().
+  hvf_processor_feature_register EL0: 1
+  hvf_processor_feature_register EL1: 1
+  hvf_processor_feature_register EL2: 0
+  hvf_processor_feature_register FP: 1
+  hvf_processor_feature_register AdvSIMD: 1
+  hvf_processor_feature_register GIC: 0
+  hvf_processor_feature_register SVE: 0
+  hvf_processor_feature_register MTE: 0
+  hvf_processor_feature_register SME: 0
 
-Fixes: a1477da3dde ("hvf: Add Apple Silicon support")
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/hvf/hvf.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ target/arm/hvf/hvf.c        | 43 +++++++++++++++++++++++++++++++++++++
+ target/arm/hvf/trace-events |  1 +
+ 2 files changed, 44 insertions(+)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index fd493f45af1..52199c4ff9d 100644
+index 52199c4ff9d..87cd323c14d 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -1004,6 +1004,13 @@ cleanup:
-     return ret;
+@@ -2160,8 +2160,51 @@ static void hvf_vm_state_change(void *opaque, bool running, RunState state)
+     }
  }
  
-+static uint64_t get_cntfrq_el0(void)
++static void trace_processor_feature_register(void)
 +{
-+    uint64_t freq_hz = 0;
-+    asm volatile("mrs %0, cntfrq_el0" : "=r"(freq_hz));
-+    return freq_hz;
++    hv_return_t ret = HV_SUCCESS;
++    hv_vcpu_exit_t *exit;
++    hv_vcpu_t fd;
++    uint64_t pfr;
++
++    if (!trace_event_get_state_backends(TRACE_HVF_PROCESSOR_FEATURE_REGISTER)) {
++        return;
++    }
++
++    /* We set up a small vcpu to extract host registers */
++    ret = hv_vcpu_create(&fd, &exit, NULL);
++    assert_hvf_ok(ret);
++
++    ret = hv_vcpu_get_sys_reg(fd, HV_SYS_REG_ID_AA64PFR0_EL1, &pfr);
++    assert_hvf_ok(ret);
++    trace_hvf_processor_feature_register("EL0",
++                                         FIELD_EX64(pfr, ID_AA64PFR0, EL0));
++    trace_hvf_processor_feature_register("EL1",
++                                         FIELD_EX64(pfr, ID_AA64PFR0, EL1));
++    trace_hvf_processor_feature_register("EL2",
++                                         FIELD_EX64(pfr, ID_AA64PFR0, EL2));
++    trace_hvf_processor_feature_register("FP",
++                                         FIELD_EX64(pfr, ID_AA64PFR0, FP));
++    trace_hvf_processor_feature_register("AdvSIMD", FIELD_EX64(pfr,
++                                         ID_AA64PFR0, ADVSIMD));
++    trace_hvf_processor_feature_register("GIC", FIELD_EX64(pfr,
++                                         ID_AA64PFR0, GIC));
++    trace_hvf_processor_feature_register("SVE", FIELD_EX64(pfr,
++                                         ID_AA64PFR0, SVE));
++
++    ret = hv_vcpu_get_sys_reg(fd, HV_SYS_REG_ID_AA64PFR1_EL1, &pfr);
++    assert_hvf_ok(ret);
++    trace_hvf_processor_feature_register("MTE",
++                                         FIELD_EX64(pfr, ID_AA64PFR1, MTE));
++    trace_hvf_processor_feature_register("SME",
++                                         FIELD_EX64(pfr, ID_AA64PFR1, SME));
++    ret = hv_vcpu_destroy(fd);
++    assert_hvf_ok(ret);
 +}
 +
- int hvf_arch_init_vcpu(CPUState *cpu)
+ int hvf_arch_init(void)
  {
-     ARMCPU *arm_cpu = ARM_CPU(cpu);
-@@ -1015,7 +1022,9 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-     int i;
- 
-     env->aarch64 = true;
--    asm volatile("mrs %0, cntfrq_el0" : "=r"(arm_cpu->gt_cntfrq_hz));
-+
-+    /* system count frequency sanity check */
-+    assert(arm_cpu->gt_cntfrq_hz == get_cntfrq_el0());
- 
-     /* Allocate enough space for our sysreg sync */
-     arm_cpu->cpreg_indexes = g_renew(uint64_t, arm_cpu->cpreg_indexes,
-@@ -1084,6 +1093,10 @@ int hvf_arch_init_vcpu(CPUState *cpu)
- 
- bool hvf_arch_cpu_realize(CPUState *cs, Error **errp)
- {
-+    ARMCPU *cpu = ARM_CPU(cs);
-+
-+    cpu->gt_cntfrq_hz = get_cntfrq_el0();
-+
-     return true;
- }
- 
++    trace_processor_feature_register();
+     hvf_state->vtimer_offset = mach_absolute_time();
+     vmstate_register(NULL, 0, &vmstate_hvf_vtimer, &vtimer);
+     qemu_add_vm_change_state_handler(hvf_vm_state_change, &vtimer);
+diff --git a/target/arm/hvf/trace-events b/target/arm/hvf/trace-events
+index b49746f28d1..7ef75184901 100644
+--- a/target/arm/hvf/trace-events
++++ b/target/arm/hvf/trace-events
+@@ -12,3 +12,4 @@ hvf_psci_call(uint64_t x0, uint64_t x1, uint64_t x2, uint64_t x3, uint32_t cpuid
+ hvf_vgic_write(const char *name, uint64_t val) "vgic write to %s [val=0x%016"PRIx64"]"
+ hvf_vgic_read(const char *name, uint64_t val) "vgic read from %s [val=0x%016"PRIx64"]"
+ hvf_illegal_guest_state(void) "HV_ILLEGAL_GUEST_STATE"
++hvf_processor_feature_register(const char *regname, unsigned value) "%s: %u"
 -- 
 2.49.0
 
