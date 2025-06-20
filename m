@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D06AE1BB3
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4ABAE1BC6
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Jun 2025 15:13:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uSbV2-0006Cz-TK; Fri, 20 Jun 2025 09:09:48 -0400
+	id 1uSbVR-0006QI-Md; Fri, 20 Jun 2025 09:10:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUj-00066K-AT
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:09:26 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUq-0006Ad-1D
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:09:32 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUh-0004yD-Sa
- for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:09:25 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-450cfb79177so9814495e9.0
- for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:09:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uSbUo-0004zj-H4
+ for qemu-devel@nongnu.org; Fri, 20 Jun 2025 09:09:31 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-45348bff79fso21175135e9.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Jun 2025 06:09:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750424962; x=1751029762; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750424968; x=1751029768; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=V640ljTD2H/6yk77CGg8pqgiDQ7Rk/byXNy/qGehgeE=;
- b=kXEbevRhvpba/YdO1ed65S3u9QgjQRfftfnA4cF0WhM5bAhjDO2+zoD993uK0RHDsM
- CzenPvDr/+kIKhC+mlOIsvdC1c6gFO/vyaMZrawroZnStV52cXDSTD2ZiEVBMC5+3kw5
- BXUS0vFV1Jv+AZVsPZOxntkpJRnDuTtK054pPXLnaSGLSC3l6Pw36e8RPveA4kGgAijH
- Cdn6AM3jH8VmBQAai/UFko+wqajrVWAP/7VJgt3GYdu+IHejg7s7+rpdsnV5I3Zr2fZ/
- qK4hAx/zMCPGmB0Ftoj5E3UB0bAp63HjnAkdGiUf+C5n2WN1ScApdPuaQDKoNuZNIDqT
- /VdQ==
+ bh=2ho90gmr9LBnf0X5r6n+/qD5b6A/rnGinNhmNB6fBLQ=;
+ b=h5W6ZV+jJfjqLfkZoqArgbiag5+e5R0LmITY2mykPJJlfJVlhFuNlJjGm1lBrl+x6M
+ StKuwhG+0oOvrvcoMq+qroCshLhH6u58I1UgscJeh4oInrrqCpZvFBAW9WaLBbMt459N
+ 04Kh8Nao+O4zo82EqGb3DyW6H7JCvb1kkY9ndi1GNR5pXc4VYEKbwDF35HALDOlM0vxn
+ jKvm5F8hfQuRU89RYmPVlV3qow0+cbieyLLQ4bV9dg1tV2g87WfVPGpycqR69mUNtuu6
+ DBd7p2iefuBvw31hLaXHnWn+5bn+6mib57eAVWlBV4wn4CQIpql5w4Zg0AewcAmOvPku
+ uEqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750424962; x=1751029762;
+ d=1e100.net; s=20230601; t=1750424968; x=1751029768;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V640ljTD2H/6yk77CGg8pqgiDQ7Rk/byXNy/qGehgeE=;
- b=d3UamdwPAR9YNUgRvALkXqUwjcY0UWdVvT+0AYRvroz2JRSqwpcJmlByBNpL2IULBw
- vJ61U/W+QMObYwsOqe8KBHi0XubiPc5ctn0ONQhF3r83glJyuBeAsUdAYeFvdBFfIwnR
- sDSEaMtFGnHYRJ620Pw5xo62zsLycy5QTnyytKWc+xGIM0tXdSdqqAepFbC8hdMcnzJe
- LkBA8rNCmiLFpwIxc9xWug3xGYJNxlQn5hwuajSZtzaLMWikJ4c7+CoVZ6EFaJ6xT/eU
- qiZGtbv9lUyR2jmM5zZp4yD+JP5To5staxmtBhHOeqFGaK8B9IR8CbBhU/h++A7P/Hhd
- EJ0w==
-X-Gm-Message-State: AOJu0Ywhwaxd8ef1lI77HaXxSw68euVZhfZWwlOiBMYWrH3xTkSW5JeQ
- Ra9R12+V18Moio9LsaouteUK3UrUL7EaGeWO3ioojr2eB4DY6W8UtYsAjDCw8V4CVyo2vULUx3+
- R+H4ARFE=
-X-Gm-Gg: ASbGncsHQWGBwDUWiD63aX/a6YUPqZ9EuPzFos2Ru8WIrzSWY712Pej4VD2cSvUKHO9
- GrvlH+r7t/Ltj9L+shF+nNR6aVHisW59cB2sWdHUYC5PRIYfFPPkOogG4DmhEsZkWjNUy/+pURU
- cljKiRgXI5LVcv7LAkUzTbkVcxcM+gyKkR43ays1qMjGJFljd5U8QU5Ueq5KF1ZMBX/T6c4HM3k
- wN9sVts+RaBX9+qReO4IEDuH5nngcNSZfB5Y/HkN4Px5JQl5E7O7mLf3y0+t5QeonL0VJ9JSnP5
- BJpc+hzLCQ4n0uI7JDCi3+KWgFl3f1x18GppLfgoN5WXWbxN5EBuukOXnbxSn9NKM3CWLDgAJDe
- kAcI6duTkVSPi+YEanXShnoEr3gQHgwtM1rv7
-X-Google-Smtp-Source: AGHT+IGgGpF8T6F/eU2syTxh0rLMvaVCXrLMi432W+jy74ylNB4a4nTNwHJAEpagSMq8fk2NTIgxGQ==
-X-Received: by 2002:a05:6000:65a:b0:3a6:d579:b78e with SMTP id
- ffacd0b85a97d-3a6d579b7f8mr393678f8f.46.1750424962155; 
- Fri, 20 Jun 2025 06:09:22 -0700 (PDT)
+ bh=2ho90gmr9LBnf0X5r6n+/qD5b6A/rnGinNhmNB6fBLQ=;
+ b=q9cDXQrNPlDL+3qX4dIM1lXDSM8vckQPWJFybQ3K/DhFPlU1UBYP0jx+Q4dbCux4/c
+ +TzAtHW6fiT4lT8Xy4J7aM+ndgT90UxHeS/QYwoLe1WVug0gHa3cjRJbFaMYnN/1lU7J
+ /voTU7ZLcbj0rElg9pbbRFpNllS0VrNTGIGWAwx3kAuv9H8yF7/dYPxfR3TX9LikFV/4
+ 1ZLaTRLUbLdZAvWNE98LiGBkutSRwT9ZL7hhb4+2MuICjBdvJh0xAQ8nNErBXEZIMrUr
+ SM8Ozda+6bAfX8FaUsXzJbLfDS8F4WB/G62Qt3fwnDDnV/9I4t3KVHseqYp5oH/c6wyG
+ hQag==
+X-Gm-Message-State: AOJu0YyP9krknuXuFZzLNsid5hor1Ssf2wT69Dox0eN49V2aUqjmhgSA
+ CqpbxHBTUsBod4sTf88DAQYtLvw0y74pM7ivf7kTcnEz0q5dMUU7w0Fac1mW6pX8Vg//tiepI+d
+ y0JmPH7I=
+X-Gm-Gg: ASbGncshav3ygEclwQujY6aXatAVcFN5dN/GI8fPhqKh7M15P7LNwSV/A4nVTzSEktL
+ 3hkhO9JUnnOyXFMrSvFU64gqKF/+Lff5SgUQsjfB6+bb64SOp4IgROFAUD39XX3eAZZEl+6M8ZY
+ lnSpdd0PC8jqQLoXC19YRaawK6tx/+3LkKld5HPMkmH1uswXhmAjep8HbEhtgQMbNZK0GUDaJGQ
+ GYK4adYXb2JAqydbiNNupNPAu0E5hJNYWKQejLr7Kr0laFskNqTXp9RUyorsTuK3iauCf/lsHhb
+ JN0/3ap5NL/5u0K+/k0x/dlb9/ip+VkrR8AUTcP5v+WqrRZQtyBR0jQiiLjJM+HdCTWJzxaByRn
+ wFuJ7gjtVPXXqJ1YyfKbfH9ohUqgSRU1FdqZy
+X-Google-Smtp-Source: AGHT+IGF8bB+qSx4ZvZXQLjUAOyAVozgjbRUMGz4uRoQ08Z1w2S6A2LTzrO9vB7Kb0AUvy301GjaBg==
+X-Received: by 2002:a05:600c:4747:b0:450:d37c:9fc8 with SMTP id
+ 5b1f17b1804b1-453659c0a51mr22550685e9.13.1750424968380; 
+ Fri, 20 Jun 2025 06:09:28 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-453646dc66fsm24808055e9.18.2025.06.20.06.09.20
+ ffacd0b85a97d-3a6d1190c9asm2073452f8f.93.2025.06.20.06.09.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Jun 2025 06:09:21 -0700 (PDT)
+ Fri, 20 Jun 2025 06:09:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
@@ -78,18 +78,18 @@ Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 23/26] tests/functional: Restrict nexted Aarch64 Xen test
- to TCG
-Date: Fri, 20 Jun 2025 15:07:06 +0200
-Message-ID: <20250620130709.31073-24-philmd@linaro.org>
+Subject: [PATCH v2 24/26] tests/functional: Require TCG to run Aarch64
+ imx8mp-evk test
+Date: Fri, 20 Jun 2025 15:07:07 +0200
+Message-ID: <20250620130709.31073-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250620130709.31073-1-philmd@linaro.org>
 References: <20250620130709.31073-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,27 +112,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On macOS this test fails:
-
-  qemu-system-aarch64: mach-virt: HVF does not support providing Virtualization extensions to the guest CPU
+The imx8mp-evk machine is only built when TCG is available.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/functional/test_aarch64_xen.py | 1 +
+ tests/functional/test_aarch64_imx8mp_evk.py | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tests/functional/test_aarch64_xen.py b/tests/functional/test_aarch64_xen.py
-index 339904221b0..261d796540d 100755
---- a/tests/functional/test_aarch64_xen.py
-+++ b/tests/functional/test_aarch64_xen.py
-@@ -33,6 +33,7 @@ def launch_xen(self, xen_path):
-         """
-         Launch Xen with a dom0 guest kernel
-         """
-+        self.require_accelerator("tcg") # virtualization=on
-         self.set_machine('virt')
-         self.cpu = "cortex-a57"
-         self.kernel_path = self.ASSET_KERNEL.fetch()
+diff --git a/tests/functional/test_aarch64_imx8mp_evk.py b/tests/functional/test_aarch64_imx8mp_evk.py
+index 638bf9e1310..99ddcdef835 100755
+--- a/tests/functional/test_aarch64_imx8mp_evk.py
++++ b/tests/functional/test_aarch64_imx8mp_evk.py
+@@ -49,6 +49,7 @@ def setUp(self):
+                      self.DTB_OFFSET, self.DTB_SIZE)
+ 
+     def test_aarch64_imx8mp_evk_usdhc(self):
++        self.require_accelerator("tcg")
+         self.set_machine('imx8mp-evk')
+         self.vm.set_console(console_index=1)
+         self.vm.add_args('-m', '2G',
 -- 
 2.49.0
 
