@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC947AE2D5A
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 02:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9988AE2D6D
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 02:01:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT82l-0003XP-0j; Sat, 21 Jun 2025 19:54:43 -0400
+	id 1uT83K-0005Ng-MY; Sat, 21 Jun 2025 19:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82N-000287-D4
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:19 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1uT82N-00029f-PT
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:20 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82K-00052K-TP
+ id 1uT82L-00053U-KQ
  for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:19 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-742c7a52e97so2413095b3a.3
- for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:54:16 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-739b3fe7ce8so2101864b3a.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:54:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750550055; x=1751154855; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750550056; x=1751154856; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1UgSbZrHDe2KPMjo5VhLuY2lBWZX+CNGUta4uGapDuA=;
- b=enPuLHok3GgGxWGP1n8z+VnKa9T728No58Pl+zVo9M9WVpuL8tb1HqWAkhzdqeSHb/
- X1C/D7RrEqs27uDiINGUZi7j+h+uf16QC2wTEiCi+MzNLucazAZ42nCv7AFrDG8zMbIN
- IhXWERxJIqTEtr82wevNQUhoOY23J3YN3W9thZLgS2ld71LitouDpsZRE9nO4bw0K7YE
- xMzpbhy2MLcjqxvVdg4FeKDwMPB/0lAvgVevCMLRN2BDBMQanOt93aYupa2KF1nHxQEf
- GJmz/YnGbreMLlYc3bzoOFykIZ1CeBTMbv93UlN2Kg5ecUQfYY4olboQuzik8v0Cuh36
- Tvew==
+ :reply-to; bh=qB2fCZyqKRVWX4yWtUbC+1sPNjKEGeBmoyOL1s1O+Ig=;
+ b=AVh/19A4YEw9k0iTvbKNernFBMCxgNnYkvUBDliEG2WY/PNTx6Kl4RU3VkoNEMCfUi
+ SbmSykPYDAlNVINRSiUpWpdKfLFgpzFUoB3I8yq4AuZ89y/BEb81Y4SS2k4KjHspIN4w
+ 1QkWfidOEhSmFKLAOM8E1dLAckFDTJL9Eohrrr0g1AGPc2snTVglZ/2iLg5pdbmNY40o
+ SUxuBiMjeoeaNvy++l7ntytAMGcsEZTTLen5XPMq9MWeBQwkgoBQ7YIcuU/j11BUjtim
+ Vi5opUAMm4ICc1FeMyMxH5i7PaDfBquSDuV3kesPpIU/3VIwSotXtuy3eR5oFkN2/U01
+ KSmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750550055; x=1751154855;
+ d=1e100.net; s=20230601; t=1750550056; x=1751154856;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1UgSbZrHDe2KPMjo5VhLuY2lBWZX+CNGUta4uGapDuA=;
- b=vYkHk1OzSwV732HErxISMizMr2uyKgPvR12XxU3fM5dAPB3cvUjBpwNf9GvSWkm+Kg
- dZJdsmqQVPMugt8Zd1ZplB6hwouE+AJYNTe3GP2irTdvcfNszwCOdreYuoi2zMq/z/+7
- Z0NORO0w/iy338cC455bIUaGD4M/uAhQfP0QZnsdnXhshDa8Ir+QZ1IqU+nNUy09Pnqv
- flAW3wttAEMyX+TetuYbOFMaJR/mwLyXZ6mlW/Nge8KhlUIMQbnZhMg6zoEDjFZVY3EW
- OgCTFjQFPhdK87qmIaPYfZzZ/tgzWvD0frG4+Uv94S8T3Dd9eQlvGHF4sAdREncLPM//
- Ehbw==
-X-Gm-Message-State: AOJu0YyimQRu/jmNkT4N79lC7QbWWfdXBAf4QH51T4/jB4o6s44uguaI
- BOrtif9euFv9AWo7nWGaJl6UcjjTBHzVTaDEM7rPudR7Y+WvhvOmDBE2sObgjBZd7tFvN1UaFjs
- by34losw=
-X-Gm-Gg: ASbGncvjLpsh/SBeTyIiYbhubzRDdf2Z7xPW1J1dUItW39HaC8uD68QdS/ZqQHBKt0F
- L8zn0e8xyvgUI6TC5EAp3MCHz+/eIQ7PbnN1FYt9JuhwfBB9rPUoaxqW0rR45/m7D7HC5uhNdgM
- uZ4vnb3+otkQrrlW5fM2sfix+Er+kwA9y1wNLeJV1Eqk9q2T5tH+lP7Jq4y6QPevbaIMF8LuUUf
- tXzSnu/MJyxg/vL3e/eEtevMdjxVPrmpApS2PmxVRmThmEBDgYbgs71tI3UGp1zfl1gHwp0DOP1
- iYsuh8mkbcRJ3EKWWIuoZy2sf1t/i5HEXBqRTFiAkseS75eS8wPqFl5BbjfhvqatF69smOR7+cU
- 1J2r9Llk7+/JB5m1wzq7c
-X-Google-Smtp-Source: AGHT+IGc1EuGtgDbQlh5vEVSDxz9xLbIHp2hKgetAy2MiERABk4l5I+eZ4c+D++uL1U+vKsN4VQfxw==
-X-Received: by 2002:a05:6a21:158f:b0:21a:d503:f47c with SMTP id
- adf61e73a8af0-22026fa35c3mr10407980637.28.1750550055482; 
- Sat, 21 Jun 2025 16:54:15 -0700 (PDT)
+ bh=qB2fCZyqKRVWX4yWtUbC+1sPNjKEGeBmoyOL1s1O+Ig=;
+ b=nab3WKju/gHwrj+eydIUme8jCz+wgecHIkuW4G+IGTeOvcQATQyLwEsS0Xr3qwJKOA
+ FZCM+EgWeX0UOgbkn8dK0eqmGhwlirhKrsIceci0F3KvDzxctoFTsLi7GJlwHAE56DSh
+ TbWADhM+V79g9kKragcqPJoGdw+WVtoJX7WcMCZlqJjIDRG2276qla3Gqre6uKtkET1W
+ VLkc9HIQFYducdHNr3bbpWb5izTO5JmXd0UB2o1fPziNT/TY8B/IRj/clhCjQysQgAIe
+ 1Qc7jqN13vs+lNhPRZC69DwDTtCSWetlEds6z7vFF5Dpc3bpzh0YGBBhQWKDFOSR5HtP
+ Vprg==
+X-Gm-Message-State: AOJu0YwK/4OwQZMfxxNCY5YKxEZFakhd+Iz6NIA87QA+sMv/rln8JH5B
+ 98QRnZFRgGjhiFz1gZ1COt0YiC+LjTlj6iLZdoRi/aOsP2HR854k9WcODi1m7BRzle57Qrm1WjA
+ YgUn0Ex4=
+X-Gm-Gg: ASbGncshfAmOHzBf7OiHaC2gsqZsiDfLg2pY0fG/AIdvQEIPySMvJyUy55dC0U46K6z
+ 4KDJsdFBYH3I2RWxEaHsQV4Mtm3xq3491CnIX3oUii6ar/xVbY3qYopZMPvRq/n2s3KUgsb1d1X
+ bYWO2pxWephnBZCAXmiDeIt5o17i9y1sIvhG1QHqygk/Vt3ypckknSiJULy1mu+1YOIEZeRUtvP
+ YNb8g3+vAeQp51TAS8WToK97N1658mNT1jc+UHclp+HgTZvdlX6EDj5qQbbJQiMcI2V3R71QTi/
+ oabylOOm2KFRTftP09cmqNeHhPuic6Y3aITM1qyJZDqxO6gFmWzIUtQkj7ubp+iRYGrnjEsJLMy
+ RPj7d7VlM5bbEZyv4lqfRZE+iVlhWECk=
+X-Google-Smtp-Source: AGHT+IERe/v5znRqwC9KMASOBj+GQP3uh2fANNkZbbv67QscsFax1Jp74jf3hxR9aFlfzB8s2FD4Ng==
+X-Received: by 2002:a05:6a21:9996:b0:215:ef08:5555 with SMTP id
+ adf61e73a8af0-22026c2ecc2mr10974814637.11.1750550056114; 
+ Sat, 21 Jun 2025 16:54:16 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-7490a46b590sm4970051b3a.27.2025.06.21.16.54.15
@@ -65,16 +65,16 @@ Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  Sat, 21 Jun 2025 16:54:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 057/101] target/arm: Use do_[us]sat_[bhs] in sve_helper.c
-Date: Sat, 21 Jun 2025 16:49:53 -0700
-Message-ID: <20250621235037.74091-58-richard.henderson@linaro.org>
+Subject: [PATCH v2 058/101] target/arm: Implement SME2 SQCVT, UQCVT, SQCVTU
+Date: Sat, 21 Jun 2025 16:49:54 -0700
+Message-ID: <20250621235037.74091-59-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,216 +97,256 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace and remove do_sat_bhs.
-This avoids multiple repetitions of INT*_MIN/MAX.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/sve_helper.c | 116 +++++++++++++++---------------------
- 1 file changed, 48 insertions(+), 68 deletions(-)
+ target/arm/tcg/helper-sme.h    |  20 ++++++
+ target/arm/tcg/sme_helper.c    | 116 +++++++++++++++++++++++++++++++++
+ target/arm/tcg/translate-sme.c |  35 ++++++++++
+ target/arm/tcg/sme.decode      |  22 +++++++
+ 4 files changed, 193 insertions(+)
 
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index a2c363a4e1..67e1fe543c 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -527,14 +527,9 @@ DO_ZPZZ(sve2_uhsub_zpzz_h, uint16_t, H1_2, DO_HSUB_BHS)
- DO_ZPZZ(sve2_uhsub_zpzz_s, uint32_t, H1_4, DO_HSUB_BHS)
- DO_ZPZZ_D(sve2_uhsub_zpzz_d, uint64_t, DO_HSUB_D)
- 
--static inline int32_t do_sat_bhs(int64_t val, int64_t min, int64_t max)
--{
--    return val >= max ? max : val <= min ? min : val;
--}
--
--#define DO_SQADD_B(n, m) do_sat_bhs((int64_t)n + m, INT8_MIN, INT8_MAX)
--#define DO_SQADD_H(n, m) do_sat_bhs((int64_t)n + m, INT16_MIN, INT16_MAX)
--#define DO_SQADD_S(n, m) do_sat_bhs((int64_t)n + m, INT32_MIN, INT32_MAX)
-+#define DO_SQADD_B(n, m) do_ssat_b((int64_t)n + m)
-+#define DO_SQADD_H(n, m) do_ssat_h((int64_t)n + m)
-+#define DO_SQADD_S(n, m) do_ssat_s((int64_t)n + m)
- 
- static inline int64_t do_sqadd_d(int64_t n, int64_t m)
- {
-@@ -551,9 +546,9 @@ DO_ZPZZ(sve2_sqadd_zpzz_h, int16_t, H1_2, DO_SQADD_H)
- DO_ZPZZ(sve2_sqadd_zpzz_s, int32_t, H1_4, DO_SQADD_S)
- DO_ZPZZ_D(sve2_sqadd_zpzz_d, int64_t, do_sqadd_d)
- 
--#define DO_UQADD_B(n, m) do_sat_bhs((int64_t)n + m, 0, UINT8_MAX)
--#define DO_UQADD_H(n, m) do_sat_bhs((int64_t)n + m, 0, UINT16_MAX)
--#define DO_UQADD_S(n, m) do_sat_bhs((int64_t)n + m, 0, UINT32_MAX)
-+#define DO_UQADD_B(n, m) do_usat_b((int64_t)n + m)
-+#define DO_UQADD_H(n, m) do_usat_h((int64_t)n + m)
-+#define DO_UQADD_S(n, m) do_usat_s((int64_t)n + m)
- 
- static inline uint64_t do_uqadd_d(uint64_t n, uint64_t m)
- {
-@@ -566,9 +561,9 @@ DO_ZPZZ(sve2_uqadd_zpzz_h, uint16_t, H1_2, DO_UQADD_H)
- DO_ZPZZ(sve2_uqadd_zpzz_s, uint32_t, H1_4, DO_UQADD_S)
- DO_ZPZZ_D(sve2_uqadd_zpzz_d, uint64_t, do_uqadd_d)
- 
--#define DO_SQSUB_B(n, m) do_sat_bhs((int64_t)n - m, INT8_MIN, INT8_MAX)
--#define DO_SQSUB_H(n, m) do_sat_bhs((int64_t)n - m, INT16_MIN, INT16_MAX)
--#define DO_SQSUB_S(n, m) do_sat_bhs((int64_t)n - m, INT32_MIN, INT32_MAX)
-+#define DO_SQSUB_B(n, m) do_ssat_b((int64_t)n - m)
-+#define DO_SQSUB_H(n, m) do_ssat_h((int64_t)n - m)
-+#define DO_SQSUB_S(n, m) do_ssat_s((int64_t)n - m)
- 
- static inline int64_t do_sqsub_d(int64_t n, int64_t m)
- {
-@@ -585,9 +580,9 @@ DO_ZPZZ(sve2_sqsub_zpzz_h, int16_t, H1_2, DO_SQSUB_H)
- DO_ZPZZ(sve2_sqsub_zpzz_s, int32_t, H1_4, DO_SQSUB_S)
- DO_ZPZZ_D(sve2_sqsub_zpzz_d, int64_t, do_sqsub_d)
- 
--#define DO_UQSUB_B(n, m) do_sat_bhs((int64_t)n - m, 0, UINT8_MAX)
--#define DO_UQSUB_H(n, m) do_sat_bhs((int64_t)n - m, 0, UINT16_MAX)
--#define DO_UQSUB_S(n, m) do_sat_bhs((int64_t)n - m, 0, UINT32_MAX)
-+#define DO_UQSUB_B(n, m) do_usat_b((int64_t)n - m)
-+#define DO_UQSUB_H(n, m) do_usat_h((int64_t)n - m)
-+#define DO_UQSUB_S(n, m) do_usat_s((int64_t)n - m)
- 
- static inline uint64_t do_uqsub_d(uint64_t n, uint64_t m)
- {
-@@ -599,12 +594,9 @@ DO_ZPZZ(sve2_uqsub_zpzz_h, uint16_t, H1_2, DO_UQSUB_H)
- DO_ZPZZ(sve2_uqsub_zpzz_s, uint32_t, H1_4, DO_UQSUB_S)
- DO_ZPZZ_D(sve2_uqsub_zpzz_d, uint64_t, do_uqsub_d)
- 
--#define DO_SUQADD_B(n, m) \
--    do_sat_bhs((int64_t)(int8_t)n + m, INT8_MIN, INT8_MAX)
--#define DO_SUQADD_H(n, m) \
--    do_sat_bhs((int64_t)(int16_t)n + m, INT16_MIN, INT16_MAX)
--#define DO_SUQADD_S(n, m) \
--    do_sat_bhs((int64_t)(int32_t)n + m, INT32_MIN, INT32_MAX)
-+#define DO_SUQADD_B(n, m) do_ssat_b((int64_t)(int8_t)n + m)
-+#define DO_SUQADD_H(n, m) do_ssat_h((int64_t)(int16_t)n + m)
-+#define DO_SUQADD_S(n, m) do_ssat_s((int64_t)(int32_t)n + m)
- 
- static inline int64_t do_suqadd_d(int64_t n, uint64_t m)
- {
-@@ -634,12 +626,9 @@ DO_ZPZZ(sve2_suqadd_zpzz_h, uint16_t, H1_2, DO_SUQADD_H)
- DO_ZPZZ(sve2_suqadd_zpzz_s, uint32_t, H1_4, DO_SUQADD_S)
- DO_ZPZZ_D(sve2_suqadd_zpzz_d, uint64_t, do_suqadd_d)
- 
--#define DO_USQADD_B(n, m) \
--    do_sat_bhs((int64_t)n + (int8_t)m, 0, UINT8_MAX)
--#define DO_USQADD_H(n, m) \
--    do_sat_bhs((int64_t)n + (int16_t)m, 0, UINT16_MAX)
--#define DO_USQADD_S(n, m) \
--    do_sat_bhs((int64_t)n + (int32_t)m, 0, UINT32_MAX)
-+#define DO_USQADD_B(n, m) do_usat_b((int64_t)n + (int8_t)m)
-+#define DO_USQADD_H(n, m) do_usat_h((int64_t)n + (int16_t)m)
-+#define DO_USQADD_S(n, m) do_usat_s((int64_t)n + (int32_t)m)
- 
- static inline uint64_t do_usqadd_d(uint64_t n, int64_t m)
- {
-@@ -1226,37 +1215,29 @@ void HELPER(NAME)(void *vd, void *vn, uint32_t desc)                    \
-     }                                                                   \
+diff --git a/target/arm/tcg/helper-sme.h b/target/arm/tcg/helper-sme.h
+index 04db920299..cd8d5ea3a7 100644
+--- a/target/arm/tcg/helper-sme.h
++++ b/target/arm/tcg/helper-sme.h
+@@ -220,3 +220,23 @@ DEF_HELPER_FLAGS_4(sme2_fcvt_n, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(sme2_fcvtn, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(sme2_fcvt_w, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(sme2_fcvtl, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
++
++DEF_HELPER_FLAGS_3(sme2_sqcvt_sb, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_uqcvt_sb, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvtu_sb, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvt_sh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_uqcvt_sh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvtu_sh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvt_dh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_uqcvt_dh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvtu_dh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_3(sme2_sqcvtn_sb, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_uqcvtn_sb, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvtun_sb, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvtn_sh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_uqcvtn_sh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvtun_sh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvtn_dh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_uqcvtn_dh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(sme2_sqcvtun_dh, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
+index 2a6635010a..23dd03c77f 100644
+--- a/target/arm/tcg/sme_helper.c
++++ b/target/arm/tcg/sme_helper.c
+@@ -1532,6 +1532,64 @@ void HELPER(sme2_fcvt_n)(void *vd, void *vs, float_status *fpst, uint32_t desc)
+     }
  }
  
--#define DO_SQXTN_H(n)  do_sat_bhs(n, INT8_MIN, INT8_MAX)
--#define DO_SQXTN_S(n)  do_sat_bhs(n, INT16_MIN, INT16_MAX)
--#define DO_SQXTN_D(n)  do_sat_bhs(n, INT32_MIN, INT32_MAX)
-+DO_XTNB(sve2_sqxtnb_h, int16_t, do_ssat_b)
-+DO_XTNB(sve2_sqxtnb_s, int32_t, do_ssat_h)
-+DO_XTNB(sve2_sqxtnb_d, int64_t, do_ssat_s)
++#define SQCVT2(NAME, TW, TN, HW, HN, SAT)                       \
++void HELPER(NAME)(void *vd, void *vs, uint32_t desc)            \
++{                                                               \
++    ARMVectorReg scratch;                                       \
++    size_t oprsz = simd_oprsz(desc), n = oprsz / sizeof(TW);    \
++    TW *s0 = vs, *s1 = vs + sizeof(ARMVectorReg);               \
++    TN *d = vd;                                                 \
++    if ((vd - vs) < 2 * sizeof(ARMVectorReg)) {                 \
++        d = (TN *)&scratch;                                     \
++    }                                                           \
++    for (size_t i = 0; i < n; ++i) {                            \
++        d[HN(i)] = SAT(s0[HW(i)]);                              \
++        d[HN(i) + n] = SAT(s1[HW(i)]);                          \
++    }                                                           \
++    if (d != vd) {                                              \
++        memcpy(vd, d, oprsz);                                   \
++    }                                                           \
++}
++
++SQCVT2(sme2_sqcvt_sh, int32_t, int16_t, H4, H2, do_ssat_h)
++SQCVT2(sme2_uqcvt_sh, uint32_t, uint16_t, H4, H2, do_usat_h)
++SQCVT2(sme2_sqcvtu_sh, int32_t, uint16_t, H4, H2, do_usat_h)
++
++#undef SQCVT2
++
++#define SQCVT4(NAME, TW, TN, HW, HN, SAT)                       \
++void HELPER(NAME)(void *vd, void *vs, uint32_t desc)            \
++{                                                               \
++    ARMVectorReg scratch;                                       \
++    size_t oprsz = simd_oprsz(desc), n = oprsz / sizeof(TW);    \
++    TW *s0 = vs, *s1 = vs + sizeof(ARMVectorReg);               \
++    TW *s2 = vs + 2 * sizeof(ARMVectorReg);                     \
++    TW *s3 = vs + 3 * sizeof(ARMVectorReg);                     \
++    TN *d = vd;                                                 \
++    if ((vd - vs) < 4 * sizeof(ARMVectorReg)) {                 \
++        d = (TN *)&scratch;                                     \
++    }                                                           \
++    for (size_t i = 0; i < n; ++i) {                            \
++        d[HN(i)] = SAT(s0[HW(i)]);                              \
++        d[HN(i) + n] = SAT(s1[HW(i)]);                          \
++        d[HN(i) + 2 * n] = SAT(s2[HW(i)]);                      \
++        d[HN(i) + 3 * n] = SAT(s3[HW(i)]);                      \
++    }                                                           \
++    if (d != vd) {                                              \
++        memcpy(vd, d, oprsz);                                   \
++    }                                                           \
++}
++
++SQCVT4(sme2_sqcvt_sb, int32_t, int8_t, H4, H2, do_ssat_b)
++SQCVT4(sme2_uqcvt_sb, uint32_t, uint8_t, H4, H2, do_usat_b)
++SQCVT4(sme2_sqcvtu_sb, int32_t, uint8_t, H4, H2, do_usat_b)
++
++SQCVT4(sme2_sqcvt_dh, int64_t, int16_t, H8, H2, do_ssat_h)
++SQCVT4(sme2_uqcvt_dh, uint64_t, uint16_t, H8, H2, do_usat_h)
++SQCVT4(sme2_sqcvtu_dh, int64_t, uint16_t, H8, H2, do_usat_h)
++
++#undef SQCVT4
++
+ /* Convert and interleave */
+ void HELPER(sme2_bfcvtn)(void *vd, void *vs, float_status *fpst, uint32_t desc)
+ {
+@@ -1563,6 +1621,64 @@ void HELPER(sme2_fcvtn)(void *vd, void *vs, float_status *fpst, uint32_t desc)
+     }
+ }
  
--DO_XTNB(sve2_sqxtnb_h, int16_t, DO_SQXTN_H)
--DO_XTNB(sve2_sqxtnb_s, int32_t, DO_SQXTN_S)
--DO_XTNB(sve2_sqxtnb_d, int64_t, DO_SQXTN_D)
-+DO_XTNT(sve2_sqxtnt_h, int16_t, int8_t, H1, do_ssat_b)
-+DO_XTNT(sve2_sqxtnt_s, int32_t, int16_t, H1_2, do_ssat_h)
-+DO_XTNT(sve2_sqxtnt_d, int64_t, int32_t, H1_4, do_ssat_s)
- 
--DO_XTNT(sve2_sqxtnt_h, int16_t, int8_t, H1, DO_SQXTN_H)
--DO_XTNT(sve2_sqxtnt_s, int32_t, int16_t, H1_2, DO_SQXTN_S)
--DO_XTNT(sve2_sqxtnt_d, int64_t, int32_t, H1_4, DO_SQXTN_D)
-+DO_XTNB(sve2_uqxtnb_h, uint16_t, do_usat_b)
-+DO_XTNB(sve2_uqxtnb_s, uint32_t, do_usat_h)
-+DO_XTNB(sve2_uqxtnb_d, uint64_t, do_usat_s)
- 
--#define DO_UQXTN_H(n)  do_sat_bhs(n, 0, UINT8_MAX)
--#define DO_UQXTN_S(n)  do_sat_bhs(n, 0, UINT16_MAX)
--#define DO_UQXTN_D(n)  do_sat_bhs(n, 0, UINT32_MAX)
-+DO_XTNT(sve2_uqxtnt_h, uint16_t, uint8_t, H1, do_usat_b)
-+DO_XTNT(sve2_uqxtnt_s, uint32_t, uint16_t, H1_2, do_usat_h)
-+DO_XTNT(sve2_uqxtnt_d, uint64_t, uint32_t, H1_4, do_usat_s)
- 
--DO_XTNB(sve2_uqxtnb_h, uint16_t, DO_UQXTN_H)
--DO_XTNB(sve2_uqxtnb_s, uint32_t, DO_UQXTN_S)
--DO_XTNB(sve2_uqxtnb_d, uint64_t, DO_UQXTN_D)
-+DO_XTNB(sve2_sqxtunb_h, int16_t, do_usat_b)
-+DO_XTNB(sve2_sqxtunb_s, int32_t, do_usat_h)
-+DO_XTNB(sve2_sqxtunb_d, int64_t, do_usat_s)
- 
--DO_XTNT(sve2_uqxtnt_h, uint16_t, uint8_t, H1, DO_UQXTN_H)
--DO_XTNT(sve2_uqxtnt_s, uint32_t, uint16_t, H1_2, DO_UQXTN_S)
--DO_XTNT(sve2_uqxtnt_d, uint64_t, uint32_t, H1_4, DO_UQXTN_D)
--
--DO_XTNB(sve2_sqxtunb_h, int16_t, DO_UQXTN_H)
--DO_XTNB(sve2_sqxtunb_s, int32_t, DO_UQXTN_S)
--DO_XTNB(sve2_sqxtunb_d, int64_t, DO_UQXTN_D)
--
--DO_XTNT(sve2_sqxtunt_h, int16_t, int8_t, H1, DO_UQXTN_H)
--DO_XTNT(sve2_sqxtunt_s, int32_t, int16_t, H1_2, DO_UQXTN_S)
--DO_XTNT(sve2_sqxtunt_d, int64_t, int32_t, H1_4, DO_UQXTN_D)
-+DO_XTNT(sve2_sqxtunt_h, int16_t, int8_t, H1, do_usat_b)
-+DO_XTNT(sve2_sqxtunt_s, int32_t, int16_t, H1_2, do_usat_h)
-+DO_XTNT(sve2_sqxtunt_d, int64_t, int32_t, H1_4, do_usat_s)
- 
- #undef DO_XTNB
- #undef DO_XTNT
-@@ -2187,10 +2168,9 @@ DO_SHRNT(sve2_rshrnt_h, uint16_t, uint8_t, H1_2, H1, do_urshr)
- DO_SHRNT(sve2_rshrnt_s, uint32_t, uint16_t, H1_4, H1_2, do_urshr)
- DO_SHRNT(sve2_rshrnt_d, uint64_t, uint32_t, H1_8, H1_4, do_urshr)
- 
--#define DO_SQSHRUN_H(x, sh) do_sat_bhs((int64_t)(x) >> sh, 0, UINT8_MAX)
--#define DO_SQSHRUN_S(x, sh) do_sat_bhs((int64_t)(x) >> sh, 0, UINT16_MAX)
--#define DO_SQSHRUN_D(x, sh) \
--    do_sat_bhs((int64_t)(x) >> (sh < 64 ? sh : 63), 0, UINT32_MAX)
-+#define DO_SQSHRUN_H(x, sh) do_usat_b((int64_t)(x) >> sh)
-+#define DO_SQSHRUN_S(x, sh) do_usat_h((int64_t)(x) >> sh)
-+#define DO_SQSHRUN_D(x, sh) do_usat_s((int64_t)(x) >> (sh < 64 ? sh : 63))
- 
- DO_SHRNB(sve2_sqshrunb_h, int16_t, uint8_t, DO_SQSHRUN_H)
- DO_SHRNB(sve2_sqshrunb_s, int32_t, uint16_t, DO_SQSHRUN_S)
-@@ -2200,9 +2180,9 @@ DO_SHRNT(sve2_sqshrunt_h, int16_t, uint8_t, H1_2, H1, DO_SQSHRUN_H)
- DO_SHRNT(sve2_sqshrunt_s, int32_t, uint16_t, H1_4, H1_2, DO_SQSHRUN_S)
- DO_SHRNT(sve2_sqshrunt_d, int64_t, uint32_t, H1_8, H1_4, DO_SQSHRUN_D)
- 
--#define DO_SQRSHRUN_H(x, sh) do_sat_bhs(do_srshr(x, sh), 0, UINT8_MAX)
--#define DO_SQRSHRUN_S(x, sh) do_sat_bhs(do_srshr(x, sh), 0, UINT16_MAX)
--#define DO_SQRSHRUN_D(x, sh) do_sat_bhs(do_srshr(x, sh), 0, UINT32_MAX)
-+#define DO_SQRSHRUN_H(x, sh) do_usat_b(do_srshr(x, sh))
-+#define DO_SQRSHRUN_S(x, sh) do_usat_h(do_srshr(x, sh))
-+#define DO_SQRSHRUN_D(x, sh) do_usat_s(do_srshr(x, sh))
- 
- DO_SHRNB(sve2_sqrshrunb_h, int16_t, uint8_t, DO_SQRSHRUN_H)
- DO_SHRNB(sve2_sqrshrunb_s, int32_t, uint16_t, DO_SQRSHRUN_S)
-@@ -2212,9 +2192,9 @@ DO_SHRNT(sve2_sqrshrunt_h, int16_t, uint8_t, H1_2, H1, DO_SQRSHRUN_H)
- DO_SHRNT(sve2_sqrshrunt_s, int32_t, uint16_t, H1_4, H1_2, DO_SQRSHRUN_S)
- DO_SHRNT(sve2_sqrshrunt_d, int64_t, uint32_t, H1_8, H1_4, DO_SQRSHRUN_D)
- 
--#define DO_SQSHRN_H(x, sh) do_sat_bhs(x >> sh, INT8_MIN, INT8_MAX)
--#define DO_SQSHRN_S(x, sh) do_sat_bhs(x >> sh, INT16_MIN, INT16_MAX)
--#define DO_SQSHRN_D(x, sh) do_sat_bhs(x >> sh, INT32_MIN, INT32_MAX)
-+#define DO_SQSHRN_H(x, sh) do_ssat_b(x >> sh)
-+#define DO_SQSHRN_S(x, sh) do_ssat_h(x >> sh)
-+#define DO_SQSHRN_D(x, sh) do_ssat_s(x >> sh)
- 
- DO_SHRNB(sve2_sqshrnb_h, int16_t, uint8_t, DO_SQSHRN_H)
- DO_SHRNB(sve2_sqshrnb_s, int32_t, uint16_t, DO_SQSHRN_S)
-@@ -2224,9 +2204,9 @@ DO_SHRNT(sve2_sqshrnt_h, int16_t, uint8_t, H1_2, H1, DO_SQSHRN_H)
- DO_SHRNT(sve2_sqshrnt_s, int32_t, uint16_t, H1_4, H1_2, DO_SQSHRN_S)
- DO_SHRNT(sve2_sqshrnt_d, int64_t, uint32_t, H1_8, H1_4, DO_SQSHRN_D)
- 
--#define DO_SQRSHRN_H(x, sh) do_sat_bhs(do_srshr(x, sh), INT8_MIN, INT8_MAX)
--#define DO_SQRSHRN_S(x, sh) do_sat_bhs(do_srshr(x, sh), INT16_MIN, INT16_MAX)
--#define DO_SQRSHRN_D(x, sh) do_sat_bhs(do_srshr(x, sh), INT32_MIN, INT32_MAX)
-+#define DO_SQRSHRN_H(x, sh) do_ssat_b(do_srshr(x, sh))
-+#define DO_SQRSHRN_S(x, sh) do_ssat_h(do_srshr(x, sh))
-+#define DO_SQRSHRN_D(x, sh) do_ssat_s(do_srshr(x, sh))
- 
- DO_SHRNB(sve2_sqrshrnb_h, int16_t, uint8_t, DO_SQRSHRN_H)
- DO_SHRNB(sve2_sqrshrnb_s, int32_t, uint16_t, DO_SQRSHRN_S)
++#define SQCVTN2(NAME, TW, TN, HW, HN, SAT)                      \
++void HELPER(NAME)(void *vd, void *vs, uint32_t desc)            \
++{                                                               \
++    ARMVectorReg scratch;                                       \
++    size_t oprsz = simd_oprsz(desc), n = oprsz / sizeof(TW);    \
++    TW *s0 = vs, *s1 = vs + sizeof(ARMVectorReg);               \
++    TN *d = vd;                                                 \
++    if ((vd - vs) < 2 * sizeof(ARMVectorReg)) {                 \
++        d = (TN *)&scratch;                                     \
++    }                                                           \
++    for (size_t i = 0; i < n; ++i) {                            \
++        d[HN(2 * i + 0)] = SAT(s0[HW(i)]);                      \
++        d[HN(2 * i + 1)] = SAT(s1[HW(i)]);                      \
++    }                                                           \
++    if (d != vd) {                                              \
++        memcpy(vd, d, oprsz);                                   \
++    }                                                           \
++}
++
++SQCVTN2(sme2_sqcvtn_sh, int32_t, int16_t, H4, H2, do_ssat_h)
++SQCVTN2(sme2_uqcvtn_sh, uint32_t, uint16_t, H4, H2, do_usat_h)
++SQCVTN2(sme2_sqcvtun_sh, int32_t, uint16_t, H4, H2, do_usat_h)
++
++#undef SQCVTN2
++
++#define SQCVTN4(NAME, TW, TN, HW, HN, SAT)                      \
++void HELPER(NAME)(void *vd, void *vs, uint32_t desc)            \
++{                                                               \
++    ARMVectorReg scratch;                                       \
++    size_t oprsz = simd_oprsz(desc), n = oprsz / sizeof(TW);    \
++    TW *s0 = vs, *s1 = vs + sizeof(ARMVectorReg);               \
++    TW *s2 = vs + 2 * sizeof(ARMVectorReg);                     \
++    TW *s3 = vs + 3 * sizeof(ARMVectorReg);                     \
++    TN *d = vd;                                                 \
++    if ((vd - vs) < 4 * sizeof(ARMVectorReg)) {                 \
++        d = (TN *)&scratch;                                     \
++    }                                                           \
++    for (size_t i = 0; i < n; ++i) {                            \
++        d[HN(4 * i + 0)] = SAT(s0[HW(i)]);                      \
++        d[HN(4 * i + 1)] = SAT(s1[HW(i)]);                      \
++        d[HN(4 * i + 2)] = SAT(s2[HW(i)]);                      \
++        d[HN(4 * i + 3)] = SAT(s3[HW(i)]);                      \
++    }                                                           \
++    if (d != vd) {                                              \
++        memcpy(vd, d, oprsz);                                   \
++    }                                                           \
++}
++
++SQCVTN4(sme2_sqcvtn_sb, int32_t, int8_t, H4, H1, do_ssat_b)
++SQCVTN4(sme2_uqcvtn_sb, uint32_t, uint8_t, H4, H1, do_usat_b)
++SQCVTN4(sme2_sqcvtun_sb, int32_t, uint8_t, H4, H1, do_usat_b)
++
++SQCVTN4(sme2_sqcvtn_dh, int64_t, int16_t, H8, H2, do_ssat_h)
++SQCVTN4(sme2_uqcvtn_dh, uint64_t, uint16_t, H8, H2, do_usat_h)
++SQCVTN4(sme2_sqcvtun_dh, int64_t, uint16_t, H8, H2, do_usat_h)
++
++#undef SQCVTN4
++
+ /* Expand and convert */
+ void HELPER(sme2_fcvt_w)(void *vd, void *vs, float_status *fpst, uint32_t desc)
+ {
+diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
+index a96d5ace43..96838b19e7 100644
+--- a/target/arm/tcg/translate-sme.c
++++ b/target/arm/tcg/translate-sme.c
+@@ -1312,3 +1312,38 @@ TRANS_FEAT(FRINTM, aa64_sme2, do_zz_fpst, a, float_round_down,
+            FPST_A64, gen_helper_gvec_vrint_rm_s)
+ TRANS_FEAT(FRINTA, aa64_sme2, do_zz_fpst, a, float_round_ties_away,
+            FPST_A64, gen_helper_gvec_vrint_rm_s)
++
++static bool do_zz(DisasContext *s, arg_zz_n *a, int data,
++                  gen_helper_gvec_2 *fn)
++{
++    if (sme_sm_enabled_check(s)) {
++        int svl = streaming_vec_reg_size(s);
++
++        for (int i = 0, n = a->n; i < n; ++i) {
++            tcg_gen_gvec_2_ool(vec_full_reg_offset(s, a->zd + i),
++                               vec_full_reg_offset(s, a->zn + i),
++                               svl, svl, data, fn);
++        }
++    }
++    return true;
++}
++
++TRANS_FEAT(SQCVT_sh, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvt_sh)
++TRANS_FEAT(UQCVT_sh, aa64_sme2, do_zz, a, 0, gen_helper_sme2_uqcvt_sh)
++TRANS_FEAT(SQCVTU_sh, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvtu_sh)
++
++TRANS_FEAT(SQCVT_sb, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvt_sb)
++TRANS_FEAT(UQCVT_sb, aa64_sme2, do_zz, a, 0, gen_helper_sme2_uqcvt_sb)
++TRANS_FEAT(SQCVTU_sb, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvtu_sb)
++
++TRANS_FEAT(SQCVT_dh, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvt_dh)
++TRANS_FEAT(UQCVT_dh, aa64_sme2, do_zz, a, 0, gen_helper_sme2_uqcvt_dh)
++TRANS_FEAT(SQCVTU_dh, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvtu_dh)
++
++TRANS_FEAT(SQCVTN_sb, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvtn_sb)
++TRANS_FEAT(UQCVTN_sb, aa64_sme2, do_zz, a, 0, gen_helper_sme2_uqcvtn_sb)
++TRANS_FEAT(SQCVTUN_sb, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvtun_sb)
++
++TRANS_FEAT(SQCVTN_dh, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvtn_dh)
++TRANS_FEAT(UQCVTN_dh, aa64_sme2, do_zz, a, 0, gen_helper_sme2_uqcvtn_dh)
++TRANS_FEAT(SQCVTUN_dh, aa64_sme2, do_zz, a, 0, gen_helper_sme2_sqcvtun_dh)
+diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
+index dffd4f5ff8..491c6231ea 100644
+--- a/target/arm/tcg/sme.decode
++++ b/target/arm/tcg/sme.decode
+@@ -725,6 +725,8 @@ FMLS_nx_d       11000001 1101 .... 1 .. 00. ...00 10 ...    @azx_4x1_i1_o3
+ &zz_n           zd zn n
+ @zz_1x2         ........ ... ..... ...... ..... zd:5        \
+                 &zz_n n=1 zn=%zn_ax2
++@zz_1x4         ........ ... ..... ...... ..... zd:5        \
++                &zz_n n=1 zn=%zn_ax4
+ @zz_2x1         ........ ... ..... ...... zn:5  .....       \
+                 &zz_n n=1 zd=%zd_ax2
+ @zz_2x2         ........ ... ..... ...... .... . .....      \
+@@ -759,3 +761,23 @@ FRINTM          11000001 101 01010 111000 ....0 ....0       @zz_2x2
+ FRINTM          11000001 101 11010 111000 ...00 ...00       @zz_4x4
+ FRINTA          11000001 101 01100 111000 ....0 ....0       @zz_2x2
+ FRINTA          11000001 101 11100 111000 ...00 ...00       @zz_4x4
++
++SQCVT_sh        11000001 001 00011 111000 ....0 .....       @zz_1x2
++UQCVT_sh        11000001 001 00011 111000 ....1 .....       @zz_1x2
++SQCVTU_sh       11000001 011 00011 111000 ....0 .....       @zz_1x2
++
++SQCVT_sb        11000001 001 10011 111000 ...00 .....       @zz_1x4
++UQCVT_sb        11000001 001 10011 111000 ...01 .....       @zz_1x4
++SQCVTU_sb       11000001 011 10011 111000 ...00 .....       @zz_1x4
++
++SQCVT_dh        11000001 101 10011 111000 ...00 .....       @zz_1x4
++UQCVT_dh        11000001 101 10011 111000 ...01 .....       @zz_1x4
++SQCVTU_dh       11000001 111 10011 111000 ...00 .....       @zz_1x4
++
++SQCVTN_sb       11000001 001 10011 111000 ...10 .....       @zz_1x4
++UQCVTN_sb       11000001 001 10011 111000 ...11 .....       @zz_1x4
++SQCVTUN_sb      11000001 011 10011 111000 ...10 .....       @zz_1x4
++
++SQCVTN_dh       11000001 101 10011 111000 ...10 .....       @zz_1x4
++UQCVTN_dh       11000001 101 10011 111000 ...11 .....       @zz_1x4
++SQCVTUN_dh      11000001 111 10011 111000 ...10 .....       @zz_1x4
 -- 
 2.43.0
 
