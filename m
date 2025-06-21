@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1844AE2D5C
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 02:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 643E4AE2D72
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 02:02:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT85c-0004sY-JO; Sat, 21 Jun 2025 19:57:41 -0400
+	id 1uT85g-0005IV-SP; Sat, 21 Jun 2025 19:57:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT85V-0004a8-QV
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:57:33 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1uT85W-0004bb-Vl
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:57:35 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT85T-0006aK-HP
+ id 1uT85T-0006aQ-Pb
  for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:57:33 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-235ef62066eso39625545ad.3
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-747e41d5469so3130570b3a.3
  for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:57:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1750550250; x=1751155050; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5GEla+zi8zJhOMGLnJ1oFRvD0YvWJtoWeiKoccxwfsc=;
- b=uEiQgO2wWy6tPHuCE+b1vTUpk06Uwb1NXmHgEggTMYdflYKxkgJ7XQFQMdsly6oF6o
- Orop9hzg/QdrK7RQXJpoL4nIuh+x+cCNwNfTfOq49Py0JAXj58t6T6pk34r5GUVrZd30
- +VFmNKXmmJkW1WVWgsPy05T8zVPPRNjsHena2NKjY9xd7sE79rvICab8B2xfablT315A
- gkyUGdmKCbqxXnf0IbAXEaJFl8AR6AIPJoJh81d693SbGPtupDMdxzlhGml3w5zR4ORG
- 2TRSZpZNNl8pCujj0/5mrCs79cM51OZY7zZMiYbnFLYrdjuTuwRHZwiUnqinGmT+Ovxe
- H2hA==
+ :reply-to; bh=H5dlmRO0h/Lxo1bEJgGrBamVoHdhdsUfTqFbFAugTxY=;
+ b=hIfFLd6Vjh2D1MS/Mcm5OhsVSZMVr2WG6nqNOwPGRo/nWblf3q3wT8JaBp46fm73AW
+ MsD5zptBmyeHReiiZyUDuek9k7CzPjTUYIHR9dqH0wV0rYihOGvy8+vg8wTD3lxee5Fn
+ OIKnl37KZyUwMoPOX3PSrbVCU/aVYOmoIcJcyb7ovMiKlXpuSljlCZlHqhVet3uBWcZ8
+ PGhuM0hZS/yhLH3A81iSITaMFW7P9dadSgy8DXtgqLDn94SThIXDJZavtohGDevMD/qk
+ e8u97FyL6e0i3aAg/MfhyIOC2a0c/ZrWcv5MYPUlkliovT3gkU0etElpP8GOk1uMUZ+Q
+ MrhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750550250; x=1751155050;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5GEla+zi8zJhOMGLnJ1oFRvD0YvWJtoWeiKoccxwfsc=;
- b=JbVfHHoCuYmzIbD7mkRN9QlBjZ45nW8gZYlIWxYr7+XXLT0SLFy3NFTkFUQE0kw8bh
- v/8RSiWi9loSwv2P9Hv1g/5TQluCfipnI1A8dYUGxbSXxi2LkiJdQv8zb3RryrBT4e5o
- mhjh8QFNPuenpXskjojqkwunSdtocAlsBdR4RGltRd4GcTfnxpm1ELbcrfw0WFhoWo8h
- +9PuJZJipqmpUJp+7gUgnExvv6qWM8BDoHGAyVh1joSoP2/lVRm65o3RJReamokNi7UT
- vUkis2W/6CYJH4c2wgdEI7KcSj5Dog8/IrQBkrWsMwwq475E49JSCZxrHUtbzB4U5v8Y
- 3bLg==
-X-Gm-Message-State: AOJu0Yyjp/tG8VNCCk1yPzLJlBhqNs2hCMQ2ygSluIB9VvDMO9tNJmuX
- wISXIlTDw6Yghw3gUqSR8Q+UNVeMflWb06XdTJv065xviX+VGLOnbOGLhBB9yywPp/5IGAxZozO
- 2MFcKBsw=
-X-Gm-Gg: ASbGncuTUjJ3A1mdBjKHlFbdn2BsBQazr7r7GlLVtZ4YLvDnD9IvQeadcovNga6kJIb
- VKNQUJjIiAbQXhJ8dazV2tw2f65Jrt4ht68IS7VyCXFmeaEqa5DQWw26ZRTIRIMLnWtoYVWwMFg
- DVVCn2+2ievuUDMwoG1EmpeNqfuGk2ECLQ8IbYX1VrkeQp/0FVDNZ2sjsd+42q57mRzozhK7OoZ
- Dh/Sk7cCxqc4oHukzUc8wS+GGZVmQkW6dp/a1esk5Y34+Bf9kkTTPI3zkvQDD9d0TuIYVTs8XaR
- AAtcULDNLP7kz061Z0B7qWPkX7JwTRHBMQx+uNQ5zXoV0SGewnotV8KURlrzL7DK/M+6fQy3yli
- c0y1NqYWz2se6+FtdsNwq
-X-Google-Smtp-Source: AGHT+IE/bxn4o0XdxtfswJah42bWKoSesJcwsWjD/B41ynOPlAGA29SBZczD+qxuLrahn0mmzE/lag==
-X-Received: by 2002:a17:902:e54a:b0:234:d7b2:2aab with SMTP id
- d9443c01a7336-237d972fa09mr104030995ad.14.1750550249873; 
- Sat, 21 Jun 2025 16:57:29 -0700 (PDT)
+ bh=H5dlmRO0h/Lxo1bEJgGrBamVoHdhdsUfTqFbFAugTxY=;
+ b=nIbb+BI8zXkc2JxK283LlZa1QNq4VZMHFR9oBT3+i1cWt82koyZeCwV58kBJyrWZ6X
+ mkAyrYx9ppGvJTZkFfEDLFPtfDFF16o+hp/HFGwGIORf1ytsHISxZQIh8w3mqC9ul/Fj
+ sk8G+uleTuzhI5ENJSwHbxYB4bhCk6U77Cs4ULiKAZXi5zd76juV1WPnJZfh7LX8jbT+
+ zUWaTQ31U7cRyGS22QNr9UlztmwztjctcQiHox8fgq5ZN8vcf78ThJApP6sP7MMg5vz5
+ X/uJRd0hVDRemPgoihArIssdlV8gsrtV1SIbryN57lgxAluFfWtcI8CGmfxF8MF8/rum
+ Dbqg==
+X-Gm-Message-State: AOJu0YwlfsU8g6JwZkC/ljkBTlwYrOGuDJBKgtZh0CQmmjVlsqjUFLuC
+ raAiYdYfJ2A3two9ERT86YWgWKrnEKaLVq4jc3LWrIdfVbTo2P9vacytbOUdF6KzbZbdIuyWPLQ
+ 9OxH9ce0=
+X-Gm-Gg: ASbGnctqVEIo/7N+3Ofbqnf2vXEdmgRq+ydGsYbkg3qo4ZIAL2/z6+AJqtLcef49PK0
+ bafIhVtpQ+pjdL+XmBZsOZgVlyEvVfyEbdLzDAGcUU9PmFRyBgeirBjIP2QRpUYtQY8BDom2Mhy
+ OiCTvXB7hILJNT1fWjkjBdg3qlpbLOJhjRjJFDXZxkaTXFQdpQo1rRQSXlZZmHj0Sny7rRYaPEp
+ 2pB/ez7q+Lz64VyJ8PNwKhp0P1lNKIcGahc0bzW2Y7gfumwnvB/uqd3wRrcmGU019wEg1ub9fNU
+ Nrj8tghLAVbJ8SizWmK1jCD27TOC1uWLBbOrHcBjQ2nZfwvthHgPMn6yHV0N7dvWX/I785/CWlG
+ KdCR+g/jCuPPZbUte90uR
+X-Google-Smtp-Source: AGHT+IHCZbqlFAhN6OkbwXYXQkt3ujemRUlT7AiHN/1H4DKIHA+04h4AzBIZ1AOvQngszPtGqTQgEA==
+X-Received: by 2002:aa7:88c3:0:b0:748:de24:1ad5 with SMTP id
+ d2e1a72fcca58-7490d630822mr10277795b3a.11.1750550250432; 
+ Sat, 21 Jun 2025 16:57:30 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b31f12584cbsm4551790a12.55.2025.06.21.16.57.29
+ 41be03b00d2f7-b31f12584cbsm4551790a12.55.2025.06.21.16.57.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Jun 2025 16:57:29 -0700 (PDT)
+ Sat, 21 Jun 2025 16:57:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 080/101] target/arm: Implement {ADD, SMIN, SMAX, UMIN,
- UMAX}QV for SVE2p1
-Date: Sat, 21 Jun 2025 16:50:16 -0700
-Message-ID: <20250621235037.74091-81-richard.henderson@linaro.org>
+Subject: [PATCH v2 081/101] target/arm: Implement SVE2p1 PEXT
+Date: Sat, 21 Jun 2025 16:50:17 -0700
+Message-ID: <20250621235037.74091-82-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,166 +99,183 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-sve.h    | 25 ++++++++++++++++++
- target/arm/tcg/sve_helper.c    | 46 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/translate-sve.c | 35 ++++++++++++++++++++++++++
- target/arm/tcg/sve.decode      |  7 ++++++
- 4 files changed, 113 insertions(+)
+ target/arm/tcg/helper-sve.h    |  2 +
+ target/arm/tcg/sve_helper.c    | 82 ++++++++++++++++++++++++++++++++++
+ target/arm/tcg/translate-sve.c | 36 +++++++++++++++
+ target/arm/tcg/sve.decode      |  6 +++
+ 4 files changed, 126 insertions(+)
 
 diff --git a/target/arm/tcg/helper-sve.h b/target/arm/tcg/helper-sve.h
-index 74029c641b..5f5ecc2e0d 100644
+index 5f5ecc2e0d..ec82d0a4e7 100644
 --- a/target/arm/tcg/helper-sve.h
 +++ b/target/arm/tcg/helper-sve.h
-@@ -2928,3 +2928,28 @@ DEF_HELPER_FLAGS_4(sve2_sqshlu_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(sve2_sqshlu_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(sve2_sqshlu_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(sve2_sqshlu_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+@@ -2953,3 +2953,5 @@ DEF_HELPER_FLAGS_4(sve2p1_uminqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(sve2p1_uminqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(sve2p1_uminqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(sve2p1_uminqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 +
-+DEF_HELPER_FLAGS_4(sve2p1_addqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_addqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_addqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_addqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_4(sve2p1_smaxqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_smaxqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_smaxqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_smaxqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_4(sve2p1_sminqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_sminqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_sminqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_sminqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_4(sve2p1_umaxqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_umaxqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_umaxqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_umaxqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_4(sve2p1_uminqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_uminqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_uminqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(sve2p1_uminqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(pext, TCG_CALL_NO_RWG, void, ptr, i32, i32)
 diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index dfc3e5cabe..382c471aaa 100644
+index 382c471aaa..eaf9363c0a 100644
 --- a/target/arm/tcg/sve_helper.c
 +++ b/target/arm/tcg/sve_helper.c
-@@ -1814,6 +1814,52 @@ DO_VPZ_D(sve_uminv_d, uint64_t, uint64_t, -1, DO_MIN)
- #undef DO_VPZ
- #undef DO_VPZ_D
+@@ -7839,3 +7839,85 @@ DO_FCVTLT(sve2_fcvtlt_sd, uint64_t, uint32_t, H1_8, H1_4, float32_to_float64)
  
-+#define DO_VPQ(NAME, TYPE, H, INIT, OP) \
-+void HELPER(NAME)(void *vd, void *vn, void *vg, uint32_t desc)          \
-+{                                                                       \
-+    TYPE tmp[16 / sizeof(TYPE)] = { [0 ... 16 / sizeof(TYPE) - 1] = INIT }; \
-+    TYPE *n = vn; uint16_t *g = vg;                                     \
-+    uintptr_t oprsz = simd_oprsz(desc);                                 \
-+    uintptr_t nseg = oprsz / 16, nsegelt = 16 / sizeof(TYPE);           \
-+    for (uintptr_t s = 0; s < nseg; s++) {                              \
-+        uint16_t pg = g[H2(s)];                                         \
-+        for (uintptr_t e = 0; e < nsegelt; e++, pg >>= sizeof(TYPE)) {  \
-+            if (pg & 1) {                                               \
-+                tmp[e] = OP(tmp[H(e)], n[s * nsegelt + H(e)]);          \
-+            }                                                           \
-+        }                                                               \
-+    }                                                                   \
-+    memcpy(vd, tmp, 16);                                                \
-+    clear_tail(vd, 16, simd_maxsz(desc));                               \
+ #undef DO_FCVTLT
+ #undef DO_FCVTNT
++
++void HELPER(pext)(void *vd, uint32_t png, uint32_t desc)
++{
++    int pl = FIELD_EX32(desc, PREDDESC, OPRSZ);
++    int vl = pl * 8;
++    unsigned v_esz = FIELD_EX32(desc, PREDDESC, ESZ);
++    int part = FIELD_EX32(desc, PREDDESC, DATA);
++    unsigned p_esz;
++    uint64_t p_mask;
++    int p_count;
++    bool p_invert;
++
++    /* C.f. Arm pseudocode CounterToPredicate. */
++    if ((png & 0xf) == 0) {
++        /* Canonical false predicate. */
++        goto zeros;
++    }
++    p_esz = ctz32(png);
++
++    /*
++     * maxbit = log2(pl * 4)
++     *        = log2(vl / 8 * 4)
++     *        = log2(vl / 2)
++     *        = log2(vl) - 1
++     * maxbit_mask = ones<maxbit:0>
++     *             = (1 << (maxbit + 1)) - 1
++     *             = (1 << (log2(vl) - 1 + 1)) - 1
++     *             = (1 << log2(vl)) - 1
++     *             = pow2ceil(vl) - 1
++     * Note that we keep count in bytes, not elements.
++     */
++    p_count = (png & (pow2ceil(vl) - 1)) >> 1;
++    p_invert = (png >> 15) & 1;
++
++    /*
++     * If the esz encoded into the predicate is not larger than the
++     * vector operation esz, then the expanded predicate bit will
++     * be true for all vector elements.  If the predicate esz is
++     * larger than the vector esz, then only even multiples can be
++     * true, and the rest will be false.  This can be easily represented
++     * by taking the maximum esz for the pred_esz_mask.
++     */
++    p_mask = pred_esz_masks[MAX(v_esz, p_esz)];
++
++    if (p_count == 0) {
++        if (p_invert) {
++            /* Canonical true predicate: invert count zero. */
++            goto ones;
++        }
++        /* Non-canonical false predicate. */
++        goto zeros;
++    }
++
++    /* Adjust for the portion of the 4*VL counter to be extracted. */
++    p_count -= vl * part;
++
++    if (p_invert) {
++        if (p_count >= 0) {
++            goto ones;
++        }
++        if (p_count + vl <= 0) {
++            goto zeros;
++        }
++        do_whileg(vd, p_mask, p_count + vl, vl);
++    } else {
++        if (p_count <= 0) {
++            goto zeros;
++        }
++        if (p_count >= vl) {
++            goto ones;
++        }
++        do_whilel(vd, p_mask, p_count, vl);
++    }
++    return;
++
++ ones:
++    do_whilel(vd, p_mask, vl, vl);
++    return;
++ zeros:
++    memset(vd, 0, ROUND_UP(pl, 8));
++    return;
 +}
-+
-+DO_VPQ(sve2p1_addqv_b, uint8_t, H1, 0, DO_ADD)
-+DO_VPQ(sve2p1_addqv_h, uint16_t, H2, 0, DO_ADD)
-+DO_VPQ(sve2p1_addqv_s, uint32_t, H4, 0, DO_ADD)
-+DO_VPQ(sve2p1_addqv_d, uint64_t, H8, 0, DO_ADD)
-+
-+DO_VPQ(sve2p1_smaxqv_b, int8_t, H1, INT8_MIN, DO_MAX)
-+DO_VPQ(sve2p1_smaxqv_h, int16_t, H2, INT16_MIN, DO_MAX)
-+DO_VPQ(sve2p1_smaxqv_s, int32_t, H4, INT32_MIN, DO_MAX)
-+DO_VPQ(sve2p1_smaxqv_d, int64_t, H8, INT64_MIN, DO_MAX)
-+
-+DO_VPQ(sve2p1_sminqv_b, int8_t, H1, INT8_MAX, DO_MIN)
-+DO_VPQ(sve2p1_sminqv_h, int16_t, H2, INT16_MAX, DO_MIN)
-+DO_VPQ(sve2p1_sminqv_s, int32_t, H4, INT32_MAX, DO_MIN)
-+DO_VPQ(sve2p1_sminqv_d, int64_t, H8, INT64_MAX, DO_MIN)
-+
-+DO_VPQ(sve2p1_umaxqv_b, uint8_t, H1, 0, DO_MAX)
-+DO_VPQ(sve2p1_umaxqv_h, uint16_t, H2, 0, DO_MAX)
-+DO_VPQ(sve2p1_umaxqv_s, uint32_t, H4, 0, DO_MAX)
-+DO_VPQ(sve2p1_umaxqv_d, uint64_t, H8, 0, DO_MAX)
-+
-+DO_VPQ(sve2p1_uminqv_b, uint8_t, H1, -1, DO_MIN)
-+DO_VPQ(sve2p1_uminqv_h, uint16_t, H2, -1, DO_MIN)
-+DO_VPQ(sve2p1_uminqv_s, uint32_t, H4, -1, DO_MIN)
-+DO_VPQ(sve2p1_uminqv_d, uint64_t, H8, -1, DO_MIN)
-+
-+#undef DO_VPQ
-+
- /* Two vector operand, one scalar operand, unpredicated.  */
- #define DO_ZZI(NAME, TYPE, OP)                                       \
- void HELPER(NAME)(void *vd, void *vn, uint64_t s64, uint32_t desc)   \
 diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index e6e2f342ab..ade4914aba 100644
+index ade4914aba..98799298ba 100644
 --- a/target/arm/tcg/translate-sve.c
 +++ b/target/arm/tcg/translate-sve.c
-@@ -828,6 +828,41 @@ TRANS_FEAT(SXTW, aa64_sve, gen_gvec_ool_arg_zpz,
- TRANS_FEAT(UXTW, aa64_sve, gen_gvec_ool_arg_zpz,
-            a->esz == 3 ? gen_helper_sve_uxtw_d : NULL, a, 0)
+@@ -3319,6 +3319,42 @@ static bool trans_WHILE_ptr(DisasContext *s, arg_WHILE_ptr *a)
+     return true;
+ }
  
-+static gen_helper_gvec_3 * const addqv_fns[4] = {
-+    gen_helper_sve2p1_addqv_b, gen_helper_sve2p1_addqv_h,
-+    gen_helper_sve2p1_addqv_s, gen_helper_sve2p1_addqv_d,
-+};
-+TRANS_FEAT(ADDQV, aa64_sme2p1_or_sve2p1,
-+           gen_gvec_ool_arg_zpz, addqv_fns[a->esz], a, 0)
++static bool do_pext(DisasContext *s, arg_pext *a, int n)
++{
++    TCGv_i32 t_png;
++    TCGv_ptr t_pd;
++    int pl;
 +
-+static gen_helper_gvec_3 * const smaxqv_fns[4] = {
-+    gen_helper_sve2p1_smaxqv_b, gen_helper_sve2p1_smaxqv_h,
-+    gen_helper_sve2p1_smaxqv_s, gen_helper_sve2p1_smaxqv_d,
-+};
-+TRANS_FEAT(SMAXQV, aa64_sme2p1_or_sve2p1,
-+           gen_gvec_ool_arg_zpz, smaxqv_fns[a->esz], a, 0)
++    if (!sve_access_check(s)) {
++        return true;
++    }
 +
-+static gen_helper_gvec_3 * const sminqv_fns[4] = {
-+    gen_helper_sve2p1_sminqv_b, gen_helper_sve2p1_sminqv_h,
-+    gen_helper_sve2p1_sminqv_s, gen_helper_sve2p1_sminqv_d,
-+};
-+TRANS_FEAT(SMINQV, aa64_sme2p1_or_sve2p1,
-+           gen_gvec_ool_arg_zpz, sminqv_fns[a->esz], a, 0)
++    t_png = tcg_temp_new_i32();
++    tcg_gen_ld16u_i32(t_png, tcg_env,
++                      pred_full_reg_offset(s, a->rn) ^
++                      (HOST_BIG_ENDIAN ? 6 : 0));
 +
-+static gen_helper_gvec_3 * const umaxqv_fns[4] = {
-+    gen_helper_sve2p1_umaxqv_b, gen_helper_sve2p1_umaxqv_h,
-+    gen_helper_sve2p1_umaxqv_s, gen_helper_sve2p1_umaxqv_d,
-+};
-+TRANS_FEAT(UMAXQV, aa64_sme2p1_or_sve2p1,
-+           gen_gvec_ool_arg_zpz, umaxqv_fns[a->esz], a, 0)
++    t_pd = tcg_temp_new_ptr();
++    pl = pred_full_reg_size(s);
 +
-+static gen_helper_gvec_3 * const uminqv_fns[4] = {
-+    gen_helper_sve2p1_uminqv_b, gen_helper_sve2p1_uminqv_h,
-+    gen_helper_sve2p1_uminqv_s, gen_helper_sve2p1_uminqv_d,
-+};
-+TRANS_FEAT(UMINQV, aa64_sme2p1_or_sve2p1,
-+           gen_gvec_ool_arg_zpz, uminqv_fns[a->esz], a, 0)
++    for (int i = 0; i < n; ++i) {
++        int rd = (a->rd + i) % 16;
++        int part = a->imm * n + i;
++        unsigned desc = 0;
++
++        desc = FIELD_DP32(desc, PREDDESC, OPRSZ, pl);
++        desc = FIELD_DP32(desc, PREDDESC, ESZ, a->esz);
++        desc = FIELD_DP32(desc, PREDDESC, DATA, part);
++
++        tcg_gen_addi_ptr(t_pd, tcg_env, pred_full_reg_offset(s, rd));
++        gen_helper_pext(t_pd, t_png, tcg_constant_i32(desc));
++    }
++    return true;
++}
++
++TRANS_FEAT(PEXT_1, aa64_sme2_or_sve2p1, do_pext, a, 1)
++TRANS_FEAT(PEXT_2, aa64_sme2_or_sve2p1, do_pext, a, 2)
 +
  /*
-  *** SVE Integer Reduction Group
+  *** SVE Integer Wide Immediate - Unpredicated Group
   */
 diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
-index 13a76f773d..f16764a947 100644
+index f16764a947..39d7a29c06 100644
 --- a/target/arm/tcg/sve.decode
 +++ b/target/arm/tcg/sve.decode
-@@ -340,6 +340,13 @@ UMAXV           00000100 .. 001 001 001 ... ..... .....         @rd_pg_rn
- SMINV           00000100 .. 001 010 001 ... ..... .....         @rd_pg_rn
- UMINV           00000100 .. 001 011 001 ... ..... .....         @rd_pg_rn
+@@ -60,6 +60,7 @@
+ %rn_ax2         6:4 !function=times_2
  
-+# SVE2.1 segment reduction
-+ADDQV           00000100 .. 000 101 001 ... ..... .....         @rd_pg_rn
-+SMAXQV          00000100 .. 001 100 001 ... ..... .....         @rd_pg_rn
-+SMINQV          00000100 .. 001 110 001 ... ..... .....         @rd_pg_rn
-+UMAXQV          00000100 .. 001 101 001 ... ..... .....         @rd_pg_rn
-+UMINQV          00000100 .. 001 111 001 ... ..... .....         @rd_pg_rn
+ %pnd            0:3 !function=plus_8
++%pnn            5:3 !function=plus_8
+ 
+ ###########################################################################
+ # Named attribute sets.  These are used to make nice(er) names
+@@ -823,6 +824,11 @@ WHILE_lt_cnt4   00100101 .. 1 ..... 0110 . 1 ..... 1 . ...  @while_cnt
+ WHILE_gt_cnt2   00100101 .. 1 ..... 0100 . 0 ..... 1 . ...  @while_cnt
+ WHILE_gt_cnt4   00100101 .. 1 ..... 0110 . 0 ..... 1 . ...  @while_cnt
+ 
++# SVE2.1 extract mask predicate from predicate-as-counter
++&pext           rd rn esz imm
++PEXT_1          00100101 esz:2 1 00000 0111 00 imm:2 ... 1 rd:4  &pext rn=%pnn
++PEXT_2          00100101 esz:2 1 00000 0111 010 imm:1 ... 1 rd:4 &pext rn=%pnn
 +
- ### SVE Shift by Immediate - Predicated Group
+ ### SVE Integer Wide Immediate - Unpredicated Group
  
- # SVE bitwise shift by immediate (predicated)
+ # SVE broadcast floating-point immediate (unpredicated)
 -- 
 2.43.0
 
