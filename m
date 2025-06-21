@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0712AE2D4A
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:59:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB7BAE2D1D
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:52:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT7z7-00057d-HW; Sat, 21 Jun 2025 19:50:57 -0400
+	id 1uT7z9-00058e-Vl; Sat, 21 Jun 2025 19:51:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT7z4-00056M-H8
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:54 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1uT7z6-00057V-P0
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:56 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT7z3-0004Tu-3m
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:54 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-748f5a4a423so1829312b3a.1
- for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:50:52 -0700 (PDT)
+ id 1uT7z4-0004UH-V9
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:56 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-b2c4e46a89fso2372039a12.2
+ for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1750549852; x=1751154652; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tyvKoN2K28yYY2BAVom/mjyQ4IAay4Sv47eAXtGmzGo=;
- b=bIlIUZGqds6j0XPjh7/Nr0wVTb7HcmrqxMDWaFAcncsbj7hLexH5TIcJCD5ROr0YMP
- YcNRxUf5jBi8pMqtp23hRB87DhA/hZSZdME4g0r/96Ow5i4KedUCnR25XLkrxlN+hs9Z
- PBInO8KgUlusoNjasHbAI/85NsAPiHGq42vKZv0pMq01wMz53BAgJJ+B4f/T1EiiHKRk
- JrJay1NjIVVevf2nHEcynitu4vsJDmaIzFAyUpwE+QAIgW3VhgE0J0v5ilIOwJ6tuZbV
- 5Eaft5r9mKGzsxDurCK8k3Gky8PSe0glq5RCigUJcnOIDWBSnk/nXwMNvormmlziT/Hz
- q9Kg==
+ :reply-to; bh=K/KRFheEnFJgkLqHH8Ou/wv5NETcBB8J6PUtxw1iYZg=;
+ b=JH6+Z9jnqs4qb+1HSlQI+6Qd1CtLYqNbSQgfh/abC/OuyUw6tlbe1wbBDK7+5ULFm3
+ bE0bMH67DIzsbBbEsbG1moq1M9BTMwKGKfv067mpIC5z024cWjXHm4+DaEQxLulQYD3S
+ JXgFgoHvtChZS6ByUCU34pwQau/BMBrrj99Uq4dU0WJuaLyH+xcxmP0F70izZA9nhNPu
+ NAHh7vo6PMi7wQdpg00zXihNi1Je2ccBNIDRACGcwllM5yjlDZlbZ+r2r0n5DpKzaHlD
+ g988fp75iE98Dv5w6OLhgUGUhZjEvm+HE4foYhl4bpGWn2eYPNfXxiPoA65OWnQGEhdT
+ 52cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750549852; x=1751154652;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tyvKoN2K28yYY2BAVom/mjyQ4IAay4Sv47eAXtGmzGo=;
- b=q2hIWe5Dgsg6aYXWorkwrNwQvvi3uxyGnhpPLlfTUQZjE4fBTF67xKnqvDpvyGJpU4
- N+ll+MANHvb94HwOw6/jRJtIE74HoOhR/Q6BXe557yyd+OMSqsNjoUXZoqwfr6dvP4/T
- ZeN0rjvff0plALvY+ob/WogU24WPCdwxq6UYJlameMu9yP99eTasOyNe2Goh9Zy1TJWs
- ZjLEXOxRFJjpoSaEZ+lVgmd2S5XdUNKZIS8GdLr3LFmID+rNPVsIcwCPT4xpWELWhVpW
- 1UPN/V1Wp8dyiIvbym7Z+0qYL6W5tUgfG25Vau29UmL/Gqd84OUD25U6XpCju8+XK16r
- ZVkA==
-X-Gm-Message-State: AOJu0Yx5BE/YxjWgMH4Dobu3EOxCatCWGd2Ar8d53O7poHknIIOH1QLC
- xiqmjFbDuTm9QcZkmi06WwCvkIVKGdsZWjmZ7xK+L1bM7ABBwMXhoYh7yr1pxVrLOGrztEvqM6s
- pAyrv
-X-Gm-Gg: ASbGnctuALTnPz04Xa5QC6D1IzKusGm/gocyq5OO/e6YpYe6Ij9hJUoZA7pxKzLuPip
- EFCJ6JRCM+L/ik5iaw/Pg86Y8grTAzQ8f3Q0TbtnKzCW5Wl3+TF51EyufqJIiLSEqtBzeCJRtko
- MosTgmBIQUdrzLFR/VgJyG/GnYGH1xnkg6UIN9szgFFdrNOPbOcg9eC6a2TGgP6YHmA4R0u+jUd
- nkXhbzaDtn+oRcBqqhfqr6YiWm9NVWGqcfPxiFmiqYzx2GFGsI6PtzCznelrVN+VUxGw4TCRmVs
- ROlqkdMhXVUxvkC7+pf1LJ5PY1mFBXAm72TmtFqpf0wlggKBQ8VMZnmvVu/H4waGM52Jq/caZ8y
- pl250vFqtuwekATBgXnEU
-X-Google-Smtp-Source: AGHT+IHslgwlOjOvEN25CPun4sme0K4Ich6+4qVvpnIZWQfDiyYHUlfpw0ndFDBjKQCXg+tMd76MeA==
-X-Received: by 2002:a05:6a00:2d06:b0:748:68dd:eb8c with SMTP id
- d2e1a72fcca58-7490d7a9aa3mr11034754b3a.23.1750549851794; 
- Sat, 21 Jun 2025 16:50:51 -0700 (PDT)
+ bh=K/KRFheEnFJgkLqHH8Ou/wv5NETcBB8J6PUtxw1iYZg=;
+ b=CO8ONEqgxbGyhdUZV6cm2FQcGn9RnaZE1R5kKudTrHhlwzmiVnEJGVVT0S2TVrE4BU
+ ptixevPoksAjojYloZy8QLIt9pAQYqNfJv6KTyClR7e5kFsPFawx4+VgNkyptV45PLMV
+ gH/Slosi0LW/PgDW3dn3DG5rwgVkxvTx68fwlCrqp1AJ8sCjQ8tJC9/4Bv45bsQC4Y/p
+ EXhq/itEb32WBi7Y/wbbzTWkK5prBttbOqbTPrJP+LW/0WYAlMgV5ikZPBmuKrk1Iqo4
+ LCz7ieTlAar+v6Fo4hE9XM5x58GsjD/oRz0AX3b6HaWPW+QgZBSajVtxABhYYUILUm5L
+ Ye8A==
+X-Gm-Message-State: AOJu0YzeGMFQsRcl7Hd+VBFhLZZ4/ykjsUHrGJNVkoXOg9tW4sEvhXXO
+ avi3aprw/tEk0VXbf0A/LBQZpJVoqJrPcCJHq/4vBZkK24jPJ/7sMyQ8E8uwUX7Dr8Y0KmKeWeq
+ wPxiC
+X-Gm-Gg: ASbGncti4IgcVYIRx5iEt/mhml4XYV5NFQTWM28LByiSUw9/kNN0MN/2B/YhhIuHjOz
+ /3iSrbUC01uNPPA10R96X8s3tzWcoWO1hwmnKFonSa6ITS6ezLw9NEIG7CQH+OV1j06tCtafJmQ
+ SnHdUJZNHZNFsQkRE7650zAbumRPPR4ufqjk8Ptd0CFKfuZDTV1wZFrkctKxpJ/y9+g8IGz2502
+ hGSpGkzxhsVaIR8qZIXzPROHqO1JtUtwxvJ3pvKnLrvQJmrTTl+5hwAreuMsa8Mbv96c8NU3+e5
+ LA2W/yvyjzMcF2KHGTIDnEQ6FiPhCFeZr4RHXVa2F2XpT3hWMc8RmsNONl/WuRUZ6m51FWdQqDX
+ +goAV3jOG/hNZSwsc3gLF
+X-Google-Smtp-Source: AGHT+IE035fEgDyS/dGyYx5Ms7eU7eZfxcAfsoZkw9au/DB2vnag7M3rdQ1C3p6UAvnucwXr3AO5mw==
+X-Received: by 2002:a05:6a20:729b:b0:21d:a9d:ba3b with SMTP id
+ adf61e73a8af0-22026fe7577mr12213274637.39.1750549852518; 
+ Sat, 21 Jun 2025 16:50:52 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7490a49ebd0sm5073744b3a.55.2025.06.21.16.50.51
+ d2e1a72fcca58-7490a49ebd0sm5073744b3a.55.2025.06.21.16.50.52
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Jun 2025 16:50:51 -0700 (PDT)
+ Sat, 21 Jun 2025 16:50:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 020/101] target/arm: Implement SME2 MOVT
-Date: Sat, 21 Jun 2025 16:49:16 -0700
-Message-ID: <20250621235037.74091-21-richard.henderson@linaro.org>
+Subject: [PATCH v2 021/101] target/arm: Split get_tile_rowcol argument
+ tile_index
+Date: Sat, 21 Jun 2025 16:49:17 -0700
+Message-ID: <20250621235037.74091-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,52 +98,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Decode tile number and index offset beforehand and separately.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-sme.c | 13 +++++++++++++
- target/arm/tcg/sme.decode      |  5 +++++
- 2 files changed, 18 insertions(+)
+ target/arm/tcg/translate-sme.c | 17 +++++--------
+ target/arm/tcg/sme.decode      | 46 +++++++++++++++++++++++-----------
+ 2 files changed, 38 insertions(+), 25 deletions(-)
 
 diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index 8b0a33e2ae..13314c5cd7 100644
+index 13314c5cd7..bd6095ffb6 100644
 --- a/target/arm/tcg/translate-sme.c
 +++ b/target/arm/tcg/translate-sme.c
-@@ -210,6 +210,19 @@ static bool trans_MOVA(DisasContext *s, arg_MOVA *a)
+@@ -41,15 +41,10 @@ static bool sme2_zt0_enabled_check(DisasContext *s)
      return true;
  }
  
-+static bool do_movt(DisasContext *s, arg_MOVT_rzt *a,
-+                    void (*func)(TCGv_i64, TCGv_ptr, tcg_target_long))
-+{
-+    if (sme2_zt0_enabled_check(s)) {
-+        func(cpu_reg(s, a->rt), tcg_env,
-+             offsetof(CPUARMState, za_state.zt0) + a->off * 8);
-+    }
-+    return true;
-+}
-+
-+TRANS_FEAT(MOVT_rzt, aa64_sme2, do_movt, a, tcg_gen_ld_i64)
-+TRANS_FEAT(MOVT_ztr, aa64_sme2, do_movt, a, tcg_gen_st_i64)
-+
- static bool trans_LDST1(DisasContext *s, arg_LDST1 *a)
+-/*
+- * Resolve tile.size[index] to a host pointer, where tile and index
+- * are always decoded together, dependent on the element size.
+- */
++/* Resolve tile.size[rs+imm] to a host pointer. */
+ static TCGv_ptr get_tile_rowcol(DisasContext *s, int esz, int rs,
+-                                int tile_index, bool vertical)
++                                int tile, int imm, bool vertical)
  {
-     typedef void GenLdSt1(TCGv_env, TCGv_ptr, TCGv_ptr, TCGv, TCGv_i32);
+-    int tile = tile_index >> (4 - esz);
+-    int index = esz == MO_128 ? 0 : extract32(tile_index, 0, 4 - esz);
+     int pos, len, offset;
+     TCGv_i32 tmp;
+     TCGv_ptr addr;
+@@ -57,7 +52,7 @@ static TCGv_ptr get_tile_rowcol(DisasContext *s, int esz, int rs,
+     /* Compute the final index, which is Rs+imm. */
+     tmp = tcg_temp_new_i32();
+     tcg_gen_trunc_tl_i32(tmp, cpu_reg(s, rs));
+-    tcg_gen_addi_i32(tmp, tmp, index);
++    tcg_gen_addi_i32(tmp, tmp, imm);
+ 
+     /* Prepare a power-of-two modulo via extraction of @len bits. */
+     len = ctz32(streaming_vec_reg_size(s)) - esz;
+@@ -185,7 +180,7 @@ static bool trans_MOVA(DisasContext *s, arg_MOVA *a)
+         return true;
+     }
+ 
+-    t_za = get_tile_rowcol(s, a->esz, a->rs, a->za_imm, a->v);
++    t_za = get_tile_rowcol(s, a->esz, a->rs, a->za, a->off, a->v);
+     t_zr = vec_full_reg_ptr(s, a->zr);
+     t_pg = pred_full_reg_ptr(s, a->pg);
+ 
+@@ -264,7 +259,7 @@ static bool trans_LDST1(DisasContext *s, arg_LDST1 *a)
+         return true;
+     }
+ 
+-    t_za = get_tile_rowcol(s, a->esz, a->rs, a->za_imm, a->v);
++    t_za = get_tile_rowcol(s, a->esz, a->rs, a->za, a->off, a->v);
+     t_pg = pred_full_reg_ptr(s, a->pg);
+     addr = tcg_temp_new_i64();
+ 
+@@ -295,7 +290,7 @@ static bool do_ldst_r(DisasContext *s, arg_ldstr *a, GenLdStR *fn)
+     }
+ 
+     /* ZA[n] equates to ZA0H.B[n]. */
+-    base = get_tile_rowcol(s, MO_8, a->rv, imm, false);
++    base = get_tile_rowcol(s, MO_8, a->rv, 0, imm, false);
+ 
+     fn(s, base, 0, svl, a->rn, imm * svl);
+     return true;
 diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
-index cef49c3b29..83ca6a9104 100644
+index 83ca6a9104..efe369e079 100644
 --- a/target/arm/tcg/sme.decode
 +++ b/target/arm/tcg/sme.decode
-@@ -39,6 +39,11 @@ MOVA            11000000 esz:2 00001 0 v:1 .. pg:3 0 za_imm:4 zr:5  \
- MOVA            11000000 11    00001 1 v:1 .. pg:3 0 za_imm:4 zr:5  \
-                 &mova to_vec=1 rs=%mova_rs esz=4
+@@ -27,17 +27,29 @@ ZERO_zt0        11000000 01 001 00000000000 00000001
+ ### SME Move into/from Array
  
-+### SME Move into/from ZT0
-+
-+MOVT_rzt        1100 0000 0100 1100 0 off:3 00 11111 rt:5
-+MOVT_ztr        1100 0000 0100 1110 0 off:3 00 11111 rt:5
-+
+ %mova_rs        13:2 !function=plus_12
+-&mova           esz rs pg zr za_imm v:bool to_vec:bool
++&mova           esz rs pg zr za off v:bool to_vec:bool
+ 
+-MOVA            11000000 esz:2 00000 0 v:1 .. pg:3 zr:5 0 za_imm:4  \
+-                &mova to_vec=0 rs=%mova_rs
+-MOVA            11000000 11    00000 1 v:1 .. pg:3 zr:5 0 za_imm:4  \
+-                &mova to_vec=0 rs=%mova_rs esz=4
++MOVA            11000000 00 00000 0 v:1 .. pg:3 zr:5 0 off:4  \
++                &mova to_vec=0 rs=%mova_rs esz=0 za=0
++MOVA            11000000 01 00000 0 v:1 .. pg:3 zr:5 0 za:1 off:3  \
++                &mova to_vec=0 rs=%mova_rs esz=1
++MOVA            11000000 10 00000 0 v:1 .. pg:3 zr:5 0 za:2 off:2  \
++                &mova to_vec=0 rs=%mova_rs esz=2
++MOVA            11000000 11 00000 0 v:1 .. pg:3 zr:5 0 za:3 off:1  \
++                &mova to_vec=0 rs=%mova_rs esz=3
++MOVA            11000000 11 00000 1 v:1 .. pg:3 zr:5 0 za:4  \
++                &mova to_vec=0 rs=%mova_rs esz=4 off=0
+ 
+-MOVA            11000000 esz:2 00001 0 v:1 .. pg:3 0 za_imm:4 zr:5  \
+-                &mova to_vec=1 rs=%mova_rs
+-MOVA            11000000 11    00001 1 v:1 .. pg:3 0 za_imm:4 zr:5  \
+-                &mova to_vec=1 rs=%mova_rs esz=4
++MOVA            11000000 00 00001 0 v:1 .. pg:3 0 off:4      zr:5  \
++                &mova to_vec=1 rs=%mova_rs esz=0 za=0
++MOVA            11000000 01 00001 0 v:1 .. pg:3 0 za:1 off:3 zr:5  \
++                &mova to_vec=1 rs=%mova_rs esz=1
++MOVA            11000000 10 00001 0 v:1 .. pg:3 0 za:2 off:2 zr:5  \
++                &mova to_vec=1 rs=%mova_rs esz=2
++MOVA            11000000 11 00001 0 v:1 .. pg:3 0 za:3 off:1 zr:5  \
++                &mova to_vec=1 rs=%mova_rs esz=3
++MOVA            11000000 11 00001 1 v:1 .. pg:3 0 za:4       zr:5  \
++                &mova to_vec=1 rs=%mova_rs esz=4 off=0
+ 
+ ### SME Move into/from ZT0
+ 
+@@ -46,12 +58,18 @@ MOVT_ztr        1100 0000 0100 1110 0 off:3 00 11111 rt:5
+ 
  ### SME Memory
  
- &ldst           esz rs pg rn rm za_imm v:bool st:bool
+-&ldst           esz rs pg rn rm za_imm v:bool st:bool
++&ldst           esz rs pg rn rm za off v:bool st:bool
+ 
+-LDST1           1110000 0 esz:2 st:1 rm:5 v:1 .. pg:3 rn:5 0 za_imm:4  \
+-                &ldst rs=%mova_rs
+-LDST1           1110000 111     st:1 rm:5 v:1 .. pg:3 rn:5 0 za_imm:4  \
+-                &ldst esz=4 rs=%mova_rs
++LDST1           1110000 0 00 st:1 rm:5 v:1 .. pg:3 rn:5 0 off:4  \
++                &ldst rs=%mova_rs esz=0 za=0
++LDST1           1110000 0 01 st:1 rm:5 v:1 .. pg:3 rn:5 0 za:1 off:3  \
++                &ldst rs=%mova_rs esz=1
++LDST1           1110000 0 10 st:1 rm:5 v:1 .. pg:3 rn:5 0 za:2 off:2  \
++                &ldst rs=%mova_rs esz=2
++LDST1           1110000 0 11 st:1 rm:5 v:1 .. pg:3 rn:5 0 za:3 off:1  \
++                &ldst rs=%mova_rs esz=3
++LDST1           1110000 1 11 st:1 rm:5 v:1 .. pg:3 rn:5 0 za:4  \
++                &ldst rs=%mova_rs esz=4 off=0
+ 
+ &ldstr          rv rn imm
+ @ldstr          ....... ... . ...... .. ... rn:5 . imm:4 \
 -- 
 2.43.0
 
