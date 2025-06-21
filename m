@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A6CAE2D32
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94816AE2D22
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:53:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT7z5-00056F-1C; Sat, 21 Jun 2025 19:50:55 -0400
+	id 1uT7z6-000579-J5; Sat, 21 Jun 2025 19:50:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT7z1-00053x-P5
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:51 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1uT7z2-000542-1z
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:52 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT7yz-0004Sk-0A
+ id 1uT7z0-0004Su-61
  for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:51 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-748e63d4b05so1747131b3a.2
- for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:50:48 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-73972a54919so2371907b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:50:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1750549848; x=1751154648; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=yfWoDmMqg4SiYulb4TQLprO2zdsAlngjZxSl98TgkMU=;
- b=Ca9HfIDGlyXqKd7TDuwnOO6LoKFEigaXsycQ1JTTZAPLRlU3m8rcPKp/efpwpSomEn
- es3yr0/XA1SfMjDYkcqqXxkGlf3EeB/Kala75Hb+lSKhiiuJ7vklJ0TOYeNWvtvVz9Ad
- vjsfqYk+RAzjQAqhHwDcBecYOeYC3G3FsW0OkgG2q4hhSXMTlpcwlYdRpkHPuZm5UcU3
- oDtvbOuQiuEsT+E/+DavPA4EHg657U4sk/cUxxT0y7954LrcDrhvVGhZ5Ti8q97JBAdm
- HUoOB6GzbQMUyH0utlaoHHFbneDuBAFcjvubx8qcOK3nbg4OIsZAOj1FOW37x6ed/D3L
- msEw==
+ :reply-to; bh=ONnF7KIJ7ETHocZYtwFGKXvqkiNlcZnmqi/31gImezo=;
+ b=yndgb6Q/rpF+cvWXyigWaOsetq6e2gXlqZQ1mN1L8bzeJC5q5iJBaizjU0ki5ZDT9m
+ Qq0lBtnnfTyRAeIBRGQSYnnmHvY92Jn/bcMoV81wjvEOmjdmlwjBymoz0mbVt0ufZSpY
+ 1rQV152c/zZ4b/4b81KEjcUOLsAlptaqfEVC6/DUUyE0w9vK/THq6LAvqXyPmkL7y+wV
+ QaSSBoX6su1D3D2zU++bKYdqppqDZmODZAXBLiafeBdQvSLctet/1koMdhyixbNE5RUG
+ fezsim3wehL3faD6g5ySWJczFovahKpIa1UJJnP+7ylF1XcH4y36nY8TyHrjtTBm1VLo
+ e7oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750549848; x=1751154648;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yfWoDmMqg4SiYulb4TQLprO2zdsAlngjZxSl98TgkMU=;
- b=Q0O3Mk4u4yRPfVntGGxdfD2Y4ZrWVwlnaOz0mR3aZbDAljwAcMobqDE0VqA8k4HwMP
- oebOA9R0/eCVUtdUO79YzZUmSsPxbxwsY9GER7SLV7T42+JUpwLziOANrlL/v8fRbW9j
- TmGT5BhgjdUp6u62T2j6KLuH0iBrvdkkOZu4gDb+UOaut467l8KGXq60GoQa3t4jnZ29
- bdr+hNd3m5D97djOrs6w39ppQJDAd+L/uNrcG5RepQ7LYu3ViPFaRfeDmHN1X8wDf65B
- /QbBCtPrRCn1g58NvVkaE++tSrpPz9MRj11dSs8cp/gFMNeEhgvB6NoL75cIhlpdYRj+
- 9p7A==
-X-Gm-Message-State: AOJu0YwvM/E19MyEDFIfNoD+OgjW6Ui68pUZHS0++HSI/stc3Q/ZwjxG
- Twg8mjEsKOKmxiC/Lb9NWKH/ikWC+QfxV3cUvJ1JyHNqXjo5lHjgg9fvzDaj59hPpLsuPm0jJQR
- 2ASk8
-X-Gm-Gg: ASbGncuWXltvNKsP7BA9GyuflCvYFJC+thaWdePcQgg8RYUPprwtU+jmjoURrENhCvm
- Sqdjxb4xxJrMmvGMsZs0i68E1YHxF2ON8cWzVi8hx3II+uosu1tT38cbEFn40b13sQqmVds1/3z
- k/l5GA8dZXDvB7WFyAK1raC38jH/C8BmeyE6x/QDEpfDxE1u/SsEU5Wg8o2irs8rSrLTwO72cd2
- Av3wXcSA0YMwI79+oqt0Y1Zfo94YEdIGTTzwnek/db/gJgHsk0WMuWcsYsRT+86sDNFl1TdUFbR
- 0dB37i878kio1ZkwoFRbZTLS1gf6ZozDmuxN4FEYoA5Bo8BJxUqpocSLvcu9cbovUNYzw2Xb0jh
- 5L0/dE/G6e9e+vqyV6+yXu2c2uH9Qhqo=
-X-Google-Smtp-Source: AGHT+IFl+L7CGRYTrFOAS4kTDG1/7lCetkKTUp9/5C1GwVrDRjDR9FsAusjSBJw7h/NBbqJDARgEbg==
-X-Received: by 2002:a05:6a00:4b56:b0:748:3a1a:ba72 with SMTP id
- d2e1a72fcca58-7490d74c28dmr11548205b3a.20.1750549847601; 
- Sat, 21 Jun 2025 16:50:47 -0700 (PDT)
+ bh=ONnF7KIJ7ETHocZYtwFGKXvqkiNlcZnmqi/31gImezo=;
+ b=j/Jre6oUgf+kS0G8n3vLKAaxEnnVDgB7D0eMfKr4Djyq9yqurA+dgzvZW7gOORDWJE
+ hIUhF2IgKcfuLLTndEoJPGT1iA0D4tGXMsnffQ1TDKWJYPJAz5Yt10uF0mbuEvNiCaK9
+ Gl0XlMRhPczlk+ZNsn9f9GOzOLjR7SxRLaJra7jeOMw3h5Lbc4YnY2kfPOFxfqExyL2F
+ xrP526qWhsY4/UqBsXCIfwoGxHwRC0hg/u6muGc7n+KN2QgGLx/S1fkovzmpN/D/gt/x
+ cA0BW+5xJ1wDU/11eJw67RWc/RTj9BDIg6Tl854NMMxpJbhn+geTFftgiI+w5ILn+uBk
+ eKmA==
+X-Gm-Message-State: AOJu0Yx1rqrueeQ0/npmhW0KE8QtqAdkzol/q9SKyuSaIXOl9YFwvEua
+ bSbxUlyvW8FsTHfN4VY1lZHgEKh4lGNOMkRAiPMi8EjcrI/g8YhVhrJmnbeUXQAf7OrKeRHLpPs
+ thEha
+X-Gm-Gg: ASbGncs2hzv7N5S5gcBZ5+oTZ572vAmD7I/LJNuVCUFS209ewlrjluD9rtHP9wlrjcX
+ jWCDbwsHib35Cu957bihZ6JnP+JO0/xYvr48pA6+HLC8RlZwvyvSCi3hXCGRxp3pd91QdyVbqrT
+ SUZAnJxiwomjxbfzjnDMHTDJI72rvJ+/3h6T5GEUEgdDL6mHtt7UB28mE3Qd/0W2ogZ9j09l4pF
+ X/tVBRR5E+op/Aa/NEHQ7zjZO3mSqVTlJ+MRT7EU4eS7XpJvktWKrMQGSB/bRvWCMbpbUwFhvK7
+ FzVo0pqt7CfauG7+nEbks1p1Lm2WcRYGcJqLR8vsBvzimOwOfjVd5ATj8CkZOCcJNMoUSKNOUIE
+ MvBFI7gKULfdzP/0A3h0e5F6i2PWmcZo=
+X-Google-Smtp-Source: AGHT+IGWLJ6x2eE+x/hitEE6UMMNKUFxuiq3vQFfSLLHFl2ItvpHrCrqa8o+cNR5QcZyZbIsu1K+xA==
+X-Received: by 2002:a05:6a00:4b56:b0:748:fe3a:49f2 with SMTP id
+ d2e1a72fcca58-7490db4e78bmr11486183b3a.21.1750549848245; 
+ Sat, 21 Jun 2025 16:50:48 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-7490a49ebd0sm5073744b3a.55.2025.06.21.16.50.47
@@ -65,16 +65,16 @@ Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  Sat, 21 Jun 2025 16:50:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 013/101] target/arm: Use FPST_ZA for sme_fmopa_[hsd]
-Date: Sat, 21 Jun 2025 16:49:09 -0700
-Message-ID: <20250621235037.74091-14-richard.henderson@linaro.org>
+Subject: [PATCH v2 014/101] target/arm: Rename zarray to za_state.za
+Date: Sat, 21 Jun 2025 16:49:10 -0700
+Message-ID: <20250621235037.74091-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,121 +97,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The whole ZA state will also contain ZT0.
+Make things easier in aarch64_set_svcr to zero both
+by wrapping them in a common structure.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/sme_helper.c    | 37 ++++++++--------------------------
- target/arm/tcg/translate-sme.c |  4 ++--
- 2 files changed, 10 insertions(+), 31 deletions(-)
+ target/arm/cpu.h               | 48 +++++++++++++++++++---------------
+ linux-user/aarch64/signal.c    |  4 +--
+ target/arm/cpu.c               |  4 +--
+ target/arm/helper.c            |  2 +-
+ target/arm/machine.c           |  2 +-
+ target/arm/tcg/sme_helper.c    |  6 ++---
+ target/arm/tcg/translate-sme.c |  4 +--
+ 7 files changed, 38 insertions(+), 32 deletions(-)
 
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index de0c6e54d4..e3ed03a294 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -904,20 +904,11 @@ void HELPER(sme_addva_d)(void *vzda, void *vzn, void *vpn,
- }
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index c5060bcb97..052ca20283 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -714,27 +714,33 @@ typedef struct CPUArchState {
  
- void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
--                         void *vpm, float_status *fpst_in, uint32_t desc)
-+                         void *vpm, float_status *fpst, uint32_t desc)
- {
-     intptr_t row, col, oprsz = simd_maxsz(desc);
-     uint32_t neg = simd_data(desc) << 31;
-     uint16_t *pn = vpn, *pm = vpm;
--    float_status fpst;
--
+     uint64_t scxtnum_el[4];
+ 
 -    /*
--     * Make a copy of float_status because this operation does not
--     * update the cumulative fp exception status.  It also produces
--     * default nans.
+-     * SME ZA storage -- 256 x 256 byte array, with bytes in host word order,
+-     * as we do with vfp.zregs[].  This corresponds to the architectural ZA
+-     * array, where ZA[N] is in the least-significant bytes of env->zarray[N].
+-     * When SVL is less than the architectural maximum, the accessible
+-     * storage is restricted, such that if the SVL is X bytes the guest can
+-     * see only the bottom X elements of zarray[], and only the least
+-     * significant X bytes of each element of the array. (In other words,
+-     * the observable part is always square.)
+-     *
+-     * The ZA storage can also be considered as a set of square tiles of
+-     * elements of different sizes. The mapping from tiles to the ZA array
+-     * is architecturally defined, such that for tiles of elements of esz
+-     * bytes, the Nth row (or "horizontal slice") of tile T is in
+-     * ZA[T + N * esz]. Note that this means that each tile is not contiguous
+-     * in the ZA storage, because its rows are striped through the ZA array.
+-     *
+-     * Because this is so large, keep this toward the end of the reset area,
+-     * to keep the offsets into the rest of the structure smaller.
 -     */
--    fpst = *fpst_in;
--    set_default_nan_mode(true, &fpst);
+-    ARMVectorReg zarray[ARM_MAX_VQ * 16];
++    struct {
++        /*
++         * SME ZA storage -- 256 x 256 byte array, with bytes in host
++         * word order, as we do with vfp.zregs[].  This corresponds to
++         * the architectural ZA array, where ZA[N] is in the least
++         * significant bytes of env->za_state.za[N].
++         *
++         * When SVL is less than the architectural maximum, the accessible
++         * storage is restricted, such that if the SVL is X bytes the guest
++         * can see only the bottom X elements of zarray[], and only the least
++         * significant X bytes of each element of the array. (In other words,
++         * the observable part is always square.)
++         *
++         * The ZA storage can also be considered as a set of square tiles of
++         * elements of different sizes. The mapping from tiles to the ZA array
++         * is architecturally defined, such that for tiles of elements of esz
++         * bytes, the Nth row (or "horizontal slice") of tile T is in
++         * ZA[T + N * esz]. Note that this means that each tile is not
++         * contiguous in the ZA storage, because its rows are striped through
++         * the ZA array.
++         *
++         * Because this is so large, keep this toward the end of the
++         * reset area, to keep the offsets into the rest of the structure
++         * smaller.
++         */
++        ARMVectorReg za[ARM_MAX_VQ * 16];
++    } za_state;
  
-     for (row = 0; row < oprsz; ) {
-         uint16_t pa = pn[H2(row >> 4)];
-@@ -932,7 +923,7 @@ void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
-                         if (pb & 1) {
-                             uint32_t *a = vza_row + H1_4(col);
-                             uint32_t *m = vzm + H1_4(col);
--                            *a = float32_muladd(n, *m, *a, 0, &fpst);
-+                            *a = float32_muladd(n, *m, *a, 0, fpst);
-                         }
-                         col += 4;
-                         pb >>= 4;
-@@ -946,15 +937,12 @@ void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
+     struct CPUBreakpoint *cpu_breakpoint[16];
+     struct CPUWatchpoint *cpu_watchpoint[16];
+diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
+index bc7a13800d..d50cab78d8 100644
+--- a/linux-user/aarch64/signal.c
++++ b/linux-user/aarch64/signal.c
+@@ -248,7 +248,7 @@ static void target_setup_za_record(struct target_za_context *za,
+     for (i = 0; i < vl; ++i) {
+         uint64_t *z = (void *)za + TARGET_ZA_SIG_ZAV_OFFSET(vq, i);
+         for (j = 0; j < vq * 2; ++j) {
+-            __put_user_e(env->zarray[i].d[j], z + j, le);
++            __put_user_e(env->za_state.za[i].d[j], z + j, le);
+         }
+     }
  }
- 
- void HELPER(sme_fmopa_d)(void *vza, void *vzn, void *vzm, void *vpn,
--                         void *vpm, float_status *fpst_in, uint32_t desc)
-+                         void *vpm, float_status *fpst, uint32_t desc)
- {
-     intptr_t row, col, oprsz = simd_oprsz(desc) / 8;
-     uint64_t neg = (uint64_t)simd_data(desc) << 63;
-     uint64_t *za = vza, *zn = vzn, *zm = vzm;
-     uint8_t *pn = vpn, *pm = vpm;
--    float_status fpst = *fpst_in;
--
--    set_default_nan_mode(true, &fpst);
- 
-     for (row = 0; row < oprsz; ++row) {
-         if (pn[H1(row)] & 1) {
-@@ -964,7 +952,7 @@ void HELPER(sme_fmopa_d)(void *vza, void *vzn, void *vzm, void *vpn,
-             for (col = 0; col < oprsz; ++col) {
-                 if (pm[H1(col)] & 1) {
-                     uint64_t *a = &za_row[col];
--                    *a = float64_muladd(n, zm[col], *a, 0, &fpst);
-+                    *a = float64_muladd(n, zm[col], *a, 0, fpst);
-                 }
+@@ -397,7 +397,7 @@ static bool target_restore_za_record(CPUARMState *env,
+     for (i = 0; i < vl; ++i) {
+         uint64_t *z = (void *)za + TARGET_ZA_SIG_ZAV_OFFSET(vq, i);
+         for (j = 0; j < vq * 2; ++j) {
+-            __get_user_e(env->zarray[i].d[j], z + j, le);
++            __get_user_e(env->za_state.za[i].d[j], z + j, le);
+         }
+     }
+     return true;
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 6111b9db91..f7cbdd6814 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1335,8 +1335,8 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+             qemu_fprintf(f, "ZA[%0*d]=", svl_lg10, i);
+             for (j = zcr_len; j >= 0; --j) {
+                 qemu_fprintf(f, "%016" PRIx64 ":%016" PRIx64 "%c",
+-                             env->zarray[i].d[2 * j + 1],
+-                             env->zarray[i].d[2 * j],
++                             env->za_state.za[i].d[2 * j + 1],
++                             env->za_state.za[i].d[2 * j],
+                              j ? ':' : '\n');
              }
          }
-@@ -1035,19 +1023,8 @@ void HELPER(sme_fmopa_h)(void *vza, void *vzn, void *vzm, void *vpn,
-     intptr_t row, col, oprsz = simd_maxsz(desc);
-     uint32_t neg = simd_data(desc) * 0x80008000u;
-     uint16_t *pn = vpn, *pm = vpm;
--    float_status fpst_odd, fpst_std, fpst_f16;
-+    float_status fpst_odd = env->vfp.fp_status[FPST_ZA];
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 889d308807..617097a9e7 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6663,7 +6663,7 @@ void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask)
+      * when disabled either.
+      */
+     if (change & new & R_SVCR_ZA_MASK) {
+-        memset(env->zarray, 0, sizeof(env->zarray));
++        memset(&env->za_state, 0, sizeof(env->za_state));
+     }
  
--    /*
--     * Make copies of the fp status fields we use, because this operation
--     * does not update the cumulative fp exception status.  It also
--     * produces default NaNs. We also need a second copy of fp_status with
--     * round-to-odd -- see above.
--     */
--    fpst_f16 = env->vfp.fp_status[FPST_A64_F16];
--    fpst_std = env->vfp.fp_status[FPST_A64];
--    set_default_nan_mode(true, &fpst_std);
--    set_default_nan_mode(true, &fpst_f16);
--    fpst_odd = fpst_std;
-     set_float_rounding_mode(float_round_to_odd, &fpst_odd);
+     if (tcg_enabled()) {
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index e442d48524..6e73368ef9 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -315,7 +315,7 @@ static const VMStateDescription vmstate_za = {
+     .minimum_version_id = 1,
+     .needed = za_needed,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_STRUCT_ARRAY(env.zarray, ARMCPU, ARM_MAX_VQ * 16, 0,
++        VMSTATE_STRUCT_ARRAY(env.za_state.za, ARMCPU, ARM_MAX_VQ * 16, 0,
+                              vmstate_vreg, ARMVectorReg),
+         VMSTATE_END_OF_LIST()
+     }
+diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
+index e3ed03a294..6e212aec49 100644
+--- a/target/arm/tcg/sme_helper.c
++++ b/target/arm/tcg/sme_helper.c
+@@ -39,12 +39,12 @@ void helper_sme_zero(CPUARMState *env, uint32_t imm, uint32_t svl)
+     uint32_t i;
  
-     for (row = 0; row < oprsz; ) {
-@@ -1067,7 +1044,9 @@ void HELPER(sme_fmopa_h)(void *vza, void *vzn, void *vzm, void *vpn,
+     /*
+-     * Special case clearing the entire ZA space.
++     * Special case clearing the entire ZArray.
+      * This falls into the CONSTRAINED UNPREDICTABLE zeroing of any
+      * parts of the ZA storage outside of SVL.
+      */
+     if (imm == 0xff) {
+-        memset(env->zarray, 0, sizeof(env->zarray));
++        memset(env->za_state.za, 0, sizeof(env->za_state.za));
+         return;
+     }
  
-                         m = f16mop_adj_pair(m, pcol, 0);
-                         *a = f16_dotadd(*a, n, m,
--                                        &fpst_f16, &fpst_std, &fpst_odd);
-+                                        &env->vfp.fp_status[FPST_ZA_F16],
-+                                        &env->vfp.fp_status[FPST_ZA],
-+                                        &fpst_odd);
-                     }
-                     col += 4;
-                     pcol >>= 4;
+@@ -54,7 +54,7 @@ void helper_sme_zero(CPUARMState *env, uint32_t imm, uint32_t svl)
+      */
+     for (i = 0; i < svl; i++) {
+         if (imm & (1 << (i % 8))) {
+-            memset(&env->zarray[i], 0, svl);
++            memset(&env->za_state.za[i], 0, svl);
+         }
+     }
+ }
 diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index fcbb350016..51175c923e 100644
+index 51175c923e..e8b3578174 100644
 --- a/target/arm/tcg/translate-sme.c
 +++ b/target/arm/tcg/translate-sme.c
-@@ -358,9 +358,9 @@ static bool do_outprod_env(DisasContext *s, arg_op *a, MemOp esz,
- TRANS_FEAT(FMOPA_h, aa64_sme, do_outprod_env, a,
-            MO_32, gen_helper_sme_fmopa_h)
- TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a,
--           MO_32, FPST_A64, gen_helper_sme_fmopa_s)
-+           MO_32, FPST_ZA, gen_helper_sme_fmopa_s)
- TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a,
--           MO_64, FPST_A64, gen_helper_sme_fmopa_d)
-+           MO_64, FPST_ZA, gen_helper_sme_fmopa_d)
+@@ -92,7 +92,7 @@ static TCGv_ptr get_tile_rowcol(DisasContext *s, int esz, int rs,
+     offset = tile * sizeof(ARMVectorReg);
  
- TRANS_FEAT(BFMOPA, aa64_sme, do_outprod_env, a, MO_32, gen_helper_sme_bfmopa)
+     /* Include the byte offset of zarray to make this relative to env. */
+-    offset += offsetof(CPUARMState, zarray);
++    offset += offsetof(CPUARMState, za_state.za);
+     tcg_gen_addi_i32(tmp, tmp, offset);
  
+     /* Add the byte offset to env to produce the final pointer. */
+@@ -112,7 +112,7 @@ static TCGv_ptr get_tile(DisasContext *s, int esz, int tile)
+     TCGv_ptr addr = tcg_temp_new_ptr();
+     int offset;
+ 
+-    offset = tile * sizeof(ARMVectorReg) + offsetof(CPUARMState, zarray);
++    offset = tile * sizeof(ARMVectorReg) + offsetof(CPUARMState, za_state.za);
+ 
+     tcg_gen_addi_ptr(addr, tcg_env, offset);
+     return addr;
 -- 
 2.43.0
 
