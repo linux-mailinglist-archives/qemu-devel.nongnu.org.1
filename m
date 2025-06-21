@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EFCAE2D39
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29178AE2D20
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:53:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT7z0-00053S-Hk; Sat, 21 Jun 2025 19:50:50 -0400
+	id 1uT7yu-0004zr-Hv; Sat, 21 Jun 2025 19:50:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT7yv-00050c-V1
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:45 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1uT7yt-0004ze-3l
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:43 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT7yr-0004QO-8a
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:45 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-742c7a52e97so2412533b3a.3
+ id 1uT7yr-0004QQ-ET
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:42 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-7425bd5a83aso2537381b3a.0
  for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:50:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1750549839; x=1751154639; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=CBaro+H443Ytkco4iye7Zj196ZSDqOXADhzcAwHlLRY=;
- b=umBw76mQxT4JKjlkqBJnhQCpS+mq01JO8snaXA31LZEGtfDoCGvRhZZRsE8W2ahN8L
- c5bj+gPFQB3uMar9YHv7F0o1jUeiKM+B+kVPKfy7n1Lma47VdSGjKHzQGyxWnqNnIsXR
- XdE3GVcj0Qkv998jxP67C34EajM9x3did7NomeS67zTuv3nSRJLsIKpcI4LCg2qUHuct
- 3Uv5vOsaV9mvwRDgRgikyKXOVXV6jisa5fMAcc2frfQr2nTfrTekgpJ3Y3KYz+6vy5tq
- mccv4USRO1JRWtzJd5D+cxcSBUqcSvc9g9WEZG/7PyjT+/S6iwPKLbzyHdPnFoVZeUAb
- R30A==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Xtlbbj3ba3c2YlVvb2qqUXYeWTRl+FoyWyAeHsAMccs=;
+ b=kPz6uTdgIIK5ImKbNemN2c+CHEG+bcZZpapAB+DWDHjRU/xrjbLB48u54z2gUOgQXL
+ 4Jlp+rJfEfobd6AFfXOjRfW1FX7JYXGoogi9A38/j+S9eeqEvy5goHVUcH3FFZfvZ55q
+ fqM8mIf6rKxcAEr2lXMPTNFJwcegw9KWhXmBwj6o3YGDvHyuLTtoUyHOngFOtp8Q/AcH
+ dKhzRgngJN23T+FMSglVAsEIWnuMUS5lc59QsAerk7GPQMtd+uj+BfNukUUqjfOGrs+r
+ JGgUPmjvNt9luqhZ9mlJBT3Xx6aLRShDm7Y2kD0b7rUjSDIUCQuNAbYvbyB8vCxcWubJ
+ Nobw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750549839; x=1751154639;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CBaro+H443Ytkco4iye7Zj196ZSDqOXADhzcAwHlLRY=;
- b=K3krhHJE+9/u40G+FVDePSz/wRJZQk0kMrz/nWSek0UJYodbNX5Z+l+E6vDrBNTCjd
- x5ROElFoGN/rHpmt2J1vrF4t59WryvXWusUmHzoRswiTJ7Zimhg/rBKSIicsNXafIBIQ
- kFqoIpYhixUHpVbx1n39bugg7FQGemwG4i7nrJwXN7cwNQ6pOAH2RN9tkMLwdB0mqdj8
- EyYFbNkEFPmFKoe6w3VxmGOAr8BlozRpwv+T55U08XaVtTn36cXaJDlq5+oSO8f5Ot4Q
- pwd0WgOpKsdIpixIBcx0I4KLuiT9Tx0RT9V4JEA4i5G8LzEU5DAI4VexPUHu0dSzJXOe
- QtVA==
-X-Gm-Message-State: AOJu0YyYZGe2yydjucWehvbWe2wE4+tsrIalQb1tTcVRv74ScZkWIlGi
- BqocAnMB3fLmGX9hoOYhINR4eEqkk9q9BhxznV1YUR2Q7DAwvQH0r4+gBvCCNuOQaiEjcV49V8u
- 8g0iz
-X-Gm-Gg: ASbGncsKLgof2VJWfObUzw0lluqDWcleHGDM739fSxiuGNhfgpQ5dCZKV7qr+Q/0aZz
- SzKJXRgdAOmLjntjUGJ+m2nmCIpiBkJrKUObEIl02Tt6NczLWiJIWbwP3soz9Jm9gH5jWoq0PL/
- U8QlKzlhE2P2JA8i5FlxnReu9lRRbORDotRnwR6YtAMrth1QNuQZ5cmnbtFPqVh3L3kgsV3NzfD
- vzEfxIgyJiaCnwwOOGR1BThRhu7CZMbmgMK/5zinf0jTQZDkAA8B9bYOHNuvuueFPgIDNNK5uKA
- u2x2y64AWoi2JWJm5vtlf7DAXhgcO202EW89N7FAxGAi9wyhp1T4nCk7mI9mrPChqEArqWnn4j3
- M3MmL8b0LEjE0TMyBwhkK
-X-Google-Smtp-Source: AGHT+IEVmisAki919tEU/6KLtfQrwhgHVGKHjuDrqEQHNB3UsoO258lXRZoCH8RKkbzzUujzdBjzOw==
-X-Received: by 2002:a05:6a20:938a:b0:215:e1cc:6360 with SMTP id
- adf61e73a8af0-22026e926d0mr11092904637.11.1750549838745; 
- Sat, 21 Jun 2025 16:50:38 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Xtlbbj3ba3c2YlVvb2qqUXYeWTRl+FoyWyAeHsAMccs=;
+ b=iZR+FkGL+NKBBbBClnjXBbVznmEpcbxR0TcsK7aNxBtINJvB1TfibekxMY0IeuYQi+
+ jCdaDkWNYorQarYVdMgbJhPCuoKpbBT5NJh7zwV33FrJ0E8m+YNBRJan5eQrdP76WHzL
+ 6HNC/JD5PpULY4WBCii6VvjuoCT0diQlbUT6mBRaL3kFJt3wCNW0Ykxc0xVZDVAnzpvE
+ +qlhdsZM8roXFFjEJ/aKxp/2EAbwYpcY6fycouexJCeT6Gf2xmH5M51b9HSxo09m2EYa
+ iTNSJ+CbPwNeudlKpKZsxwQjCNA/6Fc9Dw3TnpUbr/wFzwU6kCdGTYq7TLSny0uwch9y
+ lN8Q==
+X-Gm-Message-State: AOJu0YwKxZiUAF4lv3bfuxuzNJC+XI3xqzcyNngLOz7/sHt7gn2c/zYJ
+ ypTkIg75qzbKeukF+vS2kpND0Ww/bu6Y8aD1PnMZAcCpCuy3wd+u6LGygOyrm70BUs5KuCDI2aK
+ 3ZOZ8
+X-Gm-Gg: ASbGnctfc9QuYKVSPooaQQeXC75aUOhwXDd/1iTAOSecni77JKo0A6yub0MZYlsFLAT
+ KKEmzOGu12NZ4xlyk+8/KeclbrXnvit2dSa0M/YjrFeoiGNvOZ0l6vo6BbGjJsFd2qcympbJTP2
+ +tkjtVLlK8jFpHPY6gh4A0zMjzAOjvZ6Wm6HUTKWepzRt3qTjIR/X4NX/3DpGQfC7mf72/GG7TV
+ 01560Ctly1fYwT/ekgOHwGUbOPrlK1WrMRwFN+BHAdjn7INFRTHL0JoNgifM5rzfAqcFnEjLPq/
+ YZAShCSSqQyFpk4Z4JPXp3X8rY3b88GABtPFm2xtviFyrFqz9UzecY6E+jo3MzBbr/OlsEue0oK
+ Wpsegc8QU+ZGkg58xcBxb
+X-Google-Smtp-Source: AGHT+IGH65pwBJniH7q82f/ifBBkd5pKc4xtfFwKiA/63BzqlQojc2I5BPxpj4hkDesz3e5MeBL/2w==
+X-Received: by 2002:a05:6a20:3948:b0:220:3a5:43e9 with SMTP id
+ adf61e73a8af0-22026ef7865mr15408355637.32.1750549839459; 
+ Sat, 21 Jun 2025 16:50:39 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-7490a49ebd0sm5073744b3a.55.2025.06.21.16.50.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Jun 2025 16:50:38 -0700 (PDT)
+ Sat, 21 Jun 2025 16:50:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 000/101] target/arm: Implement FEAT_SME2p1
-Date: Sat, 21 Jun 2025 16:48:56 -0700
-Message-ID: <20250621235037.74091-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 001/101] tcg: Add dbase argument to do_dup_store
+Date: Sat, 21 Jun 2025 16:48:57 -0700
+Message-ID: <20250621235037.74091-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
+References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,175 +97,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1: 20250206195715.2150758-1-richard.henderson@linaro.org
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/tcg-op-gvec.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-This implements the Scalar Matrix Extensions, version 2.1.
-
-Version 1 only implemented FEAT_SME2, but it turns out that
-all of the example code expects FEAT_SVE2p1 as well.
-Since the presence of both SME2 and SVE2p1 requires SME2p1,
-I've gone all the way to a point of consistency.
-
-SME2 is the first vector-like extension we've had that has dynamic
-indexing of registers: ZArray[(rv + offset) % svl], where RV is a
-general register.  So the first thing I do is extend TCG's gvec
-support to handle TCGv_ptr base + offset addressing.  I only changed
-enough to handle what I needed within SME2; changing it all would be
-a big job, and it would (at least for the moment) remain unused.
-
-This has been only lightly tested, with the testcase in the
-final patch.  I intend to do more testing next week, but as
-there is significant interest, I wanted to get this out earlier.
-
-
-r~
-
-
-Richard Henderson (101):
-  tcg: Add dbase argument to do_dup_store
-  tcg: Add dbase argument to do_dup
-  tcg: Add dbase argument to expand_clr
-  tcg: Add base arguments to check_overlap_[234]
-  tcg: Split out tcg_gen_gvec_2_var
-  tcg: Split out tcg_gen_gvec_3_var
-  tcg: Split out tcg_gen_gvec_mov_var
-  tcg: Split out tcg_gen_gvec_{add,sub}_var
-  tcg: Split out tcg_gen_gvec_dup_imm_var
-  linux-user/aarch64: Update hwcap bits from 6.14
-  target/arm: Remove CPUARMState.vfp.scratch
-  target/arm: Introduce FPST_ZA, FPST_ZA_F16
-  target/arm: Use FPST_ZA for sme_fmopa_[hsd]
-  target/arm: Rename zarray to za_state.za
-  target/arm: Add isar feature tests for SME2, SVE2p1
-  target/arm: Add ZT0
-  target/arm: Add zt0_excp_el to DisasContext
-  target/arm: Implement SME2 ZERO ZT0
-  target/arm: Implement SME2 LDR/STR ZT0
-  target/arm: Implement SME2 MOVT
-  target/arm: Split get_tile_rowcol argument tile_index
-  target/arm: Rename MOVA for translate
-  target/arm: Implement SME2 MOVA to/from tile, multiple registers
-  target/arm: Split out get_zarray
-  target/arm: Implement SME2 MOVA to/from array, multiple registers
-  target/arm: Implement SME2 BMOPA
-  target/arm: Implement SME2 SMOPS, UMOPS (2-way)
-  target/arm: Introduce gen_gvec_sve2_sqdmulh
-  target/arm: Implement SME2 Multiple and Single SVE Destructive
-  target/arm: Implement SME2 Multiple Vectors SVE Destructive
-  target/arm: Implement SME2 ADD/SUB (array results, multiple and single
-    vector)
-  target/arm: Implement SME2 ADD/SUB (array results, multiple vectors)
-  target/arm: Pass ZA to helper_sve2_fmlal_zz[zx]w_s
-  target/arm: Implement SME2 FMLAL, BFMLAL
-  target/arm: Implement SME2 FDOT
-  target/arm: Implement SME2 BFDOT
-  target/arm: Implement SME2 FVDOT, BFVDOT
-  target/arm: Rename helper_gvec_*dot_[bh] to *_4[bh]
-  target/arm: Remove helper_gvec_sudot_idx_4b
-  target/arm: Implemement SME2 SDOT, UDOT, USDOT, SUDOT
-  target/arm: Rename SVE SDOT and UDOT patterns
-  target/arm: Tighten USDOT (vectors) decode
-  target/arm: Implement SDOT, UDOT (2-way) for SME2/SVE2p1
-  target/arm: Implement SME2 SVDOT, UVDOT, SUVDOT, USVDOT
-  target/arm: Implement SME2 SMLAL, SMLSL, UMLAL, UMLSL
-  target/arm: Implement SME2 SMLALL, SMLSLL, UMLALL, UMLSLL
-  target/arm: Rename gvec_fml[as]_[hs] with _nf_ infix
-  target/arm: Implement SME2 FMLA, FMLS
-  target/arm: Implement SME2 BFMLA, BFMLS
-  target/arm: Implement SME2 FADD, FSUB, BFADD, BFSUB
-  target/arm: Implement SME2 BFCVT, BFCVTN, FCVT, FCVTN
-  target/arm: Implement SME2 FCVT (widening), FCVTL
-  target/arm: Implement SME2 FCVTZS, FCVTZU
-  target/arm: Implement SME2 SCVTF, UCVTF
-  target/arm: Implement SME2 FRINTN, FRINTP, FRINTM, FRINTA
-  target/arm: Introduce do_[us]sat_[bhs] macros
-  target/arm: Use do_[us]sat_[bhs] in sve_helper.c
-  target/arm: Implement SME2 SQCVT, UQCVT, SQCVTU
-  target/arm: Implement SQCVTN, UQCVTN, SQCVTUN for SME2/SVE2p1
-  target/arm: Implement SME2 SUNPK, UUNPK
-  target/arm: Implement SME2 ZIP, UZP (four registers)
-  target/arm: Move do_urshr, do_srshr to vec_internal.h
-  target/arm: Implement SME2 SQRSHR, UQRSHR, SQRSHRN
-  target/arm: Implement SME2 ZIP, UZP (two registers)
-  target/arm: Implement SME2 FCLAMP, SCLAMP, UCLAMP
-  target/arm: Enable SCLAMP, UCLAMP for SVE2p1
-  target/arm: Implement FCLAMP for SME2, SVE2p1
-  target/arm: Implement SME2 SEL
-  target/arm: Implement SME2p1 Multiple Zero
-  target/arm: Introduce pred_count_test
-  target/arm: Fold predtest_ones into helper_sve_brkns
-  target/arm: Split out do_whilel from helper_sve_whilel
-  target/arm: Split out do_whileg from helper_sve_whileg
-  target/arm: Move scale by esz into helper_sve_while*
-  target/arm: Split trans_WHILE to lt and gt
-  target/arm: Implement SVE2p1 WHILE (predicate pair)
-  target/arm: Implement SVE2p1 WHILE (predicate as counter)
-  target/arm: Implement SVE2p1 PTRUE (predicate as counter)
-  target/arm: Enable PSEL for SVE2p1
-  target/arm: Implement {ADD,SMIN,SMAX,UMIN,UMAX}QV for SVE2p1
-  target/arm: Implement SVE2p1 PEXT
-  target/arm: Implement ANDQV, ORQV, EORQV for SVE2p1
-  target/arm: Implement FADDQV, F{MIN,MAX}{NM}QV for SVE2p1
-  target/arm: Implement BFMLSLB{L,T} for SME2/SVE2p1
-  target/arm: Implement CNTP (predicate as counter) for SME2/SVE2p1
-  target/arm: Implement DUPQ for SME2p1/SVE2p1
-  target/arm: Implement EXTQ for SME2p1/SVE2p1
-  target/arm: Implement PMOV for SME2p1/SVE2p1
-  target/arm: Implement ZIPQ, UZPQ for SME2p1/SVE2p1
-  target/arm: Implement TBLQ, TBXQ for SME2p1/SVE2p1
-  target/arm: Implement SME2 counted predicate register load/store
-  target/arm: Split the ST_zpri and ST_zprr patterns
-  target/arm: Implement {LD1,ST1}{W,D} (128-bit element) for SVE2p1
-  target/arm: Move ld1qq and st1qq primitives to sve_ldst_internal.h
-  target/arm: Implement {LD,ST}[234]Q for SME2p1/SVE2p1
-  target/arm: Implement LD1Q, ST1Q for SVE2p1
-  target/arm: Implement LUTI2, LUTI4 for SME2/SME2p1
-  target/arm: Implement MOVAZ for SME2p1
-  linux-user/aarch64: Set hwcap bits for SME2p1/SVE2p1
-  target/arm: Enable FEAT_SME2p1 on -cpu max
-  tests/tcg/aarch64: Add sme2-matmul test case
-
- include/tcg/tcg-op-gvec-common.h   |   23 +
- target/arm/cpu-features.h          |   55 +
- target/arm/cpu.h                   |   68 +-
- target/arm/syndrome.h              |    1 +
- target/arm/tcg/helper-sme.h        |  198 ++++
- target/arm/tcg/helper-sve.h        |  212 ++++
- target/arm/tcg/helper.h            |   57 +-
- target/arm/tcg/sve_ldst_internal.h |   89 ++
- target/arm/tcg/translate-a64.h     |    4 +
- target/arm/tcg/translate.h         |   11 +
- target/arm/tcg/vec_internal.h      |   47 +
- linux-user/aarch64/signal.c        |    4 +-
- linux-user/elfload.c               |   83 +-
- target/arm/cpu.c                   |   11 +-
- target/arm/helper.c                |    2 +-
- target/arm/machine.c               |   22 +-
- target/arm/tcg/cpu64.c             |   10 +-
- target/arm/tcg/gengvec.c           |    6 +
- target/arm/tcg/gengvec64.c         |   11 +
- target/arm/tcg/helper-a64.c        |    2 +
- target/arm/tcg/hflags.c            |   34 +-
- target/arm/tcg/mve_helper.c        |   21 -
- target/arm/tcg/sme_helper.c        | 1081 +++++++++++++++++--
- target/arm/tcg/sve_helper.c        | 1568 ++++++++++++++++++++++++----
- target/arm/tcg/translate-a64.c     |   15 +-
- target/arm/tcg/translate-neon.c    |   18 +-
- target/arm/tcg/translate-sme.c     | 1359 +++++++++++++++++++++++-
- target/arm/tcg/translate-sve.c     |  895 ++++++++++++++--
- target/arm/tcg/vec_helper.c        |  218 +++-
- target/arm/tcg/vfp_helper.c        |   10 +
- tcg/tcg-op-gvec.c                  |  371 ++++---
- tests/tcg/aarch64/sme2-matmul-0.c  |  236 +++++
- docs/system/arm/emulation.rst      |    6 +
- target/arm/tcg/sme.decode          |  928 +++++++++++++++-
- target/arm/tcg/sve.decode          |  281 ++++-
- tests/tcg/aarch64/Makefile.target  |   11 +-
- tests/tcg/aarch64/sme2-matmul-1.S  |  321 ++++++
- 37 files changed, 7598 insertions(+), 691 deletions(-)
- create mode 100644 tests/tcg/aarch64/sme2-matmul-0.c
- create mode 100644 tests/tcg/aarch64/sme2-matmul-1.S
-
+diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
+index d32a4f146d..1aad7b0864 100644
+--- a/tcg/tcg-op-gvec.c
++++ b/tcg/tcg-op-gvec.c
+@@ -483,8 +483,8 @@ static TCGType choose_vector_type(const TCGOpcode *list, unsigned vece,
+     return 0;
+ }
+ 
+-static void do_dup_store(TCGType type, uint32_t dofs, uint32_t oprsz,
+-                         uint32_t maxsz, TCGv_vec t_vec)
++static void do_dup_store(TCGType type, TCGv_ptr dbase, uint32_t dofs,
++                         uint32_t oprsz, uint32_t maxsz, TCGv_vec t_vec)
+ {
+     uint32_t i = 0;
+ 
+@@ -496,7 +496,7 @@ static void do_dup_store(TCGType type, uint32_t dofs, uint32_t oprsz,
+      * are misaligned wrt the maximum vector size, so do that first.
+      */
+     if (dofs & 8) {
+-        tcg_gen_stl_vec(t_vec, tcg_env, dofs + i, TCG_TYPE_V64);
++        tcg_gen_stl_vec(t_vec, dbase, dofs + i, TCG_TYPE_V64);
+         i += 8;
+     }
+ 
+@@ -508,17 +508,17 @@ static void do_dup_store(TCGType type, uint32_t dofs, uint32_t oprsz,
+          * that e.g. size == 80 would be expanded with 2x32 + 1x16.
+          */
+         for (; i + 32 <= oprsz; i += 32) {
+-            tcg_gen_stl_vec(t_vec, tcg_env, dofs + i, TCG_TYPE_V256);
++            tcg_gen_stl_vec(t_vec, dbase, dofs + i, TCG_TYPE_V256);
+         }
+         /* fallthru */
+     case TCG_TYPE_V128:
+         for (; i + 16 <= oprsz; i += 16) {
+-            tcg_gen_stl_vec(t_vec, tcg_env, dofs + i, TCG_TYPE_V128);
++            tcg_gen_stl_vec(t_vec, dbase, dofs + i, TCG_TYPE_V128);
+         }
+         break;
+     case TCG_TYPE_V64:
+         for (; i < oprsz; i += 8) {
+-            tcg_gen_stl_vec(t_vec, tcg_env, dofs + i, TCG_TYPE_V64);
++            tcg_gen_stl_vec(t_vec, dbase, dofs + i, TCG_TYPE_V64);
+         }
+         break;
+     default:
+@@ -574,7 +574,7 @@ static void do_dup(unsigned vece, uint32_t dofs, uint32_t oprsz,
+         } else {
+             tcg_gen_dupi_vec(vece, t_vec, in_c);
+         }
+-        do_dup_store(type, dofs, oprsz, maxsz, t_vec);
++        do_dup_store(type, tcg_env, dofs, oprsz, maxsz, t_vec);
+         return;
+     }
+ 
+@@ -1731,7 +1731,7 @@ void tcg_gen_gvec_dup_mem(unsigned vece, uint32_t dofs, uint32_t aofs,
+         if (type != 0) {
+             TCGv_vec t_vec = tcg_temp_new_vec(type);
+             tcg_gen_dup_mem_vec(vece, t_vec, tcg_env, aofs);
+-            do_dup_store(type, dofs, oprsz, maxsz, t_vec);
++            do_dup_store(type, tcg_env, dofs, oprsz, maxsz, t_vec);
+         } else if (vece <= MO_32) {
+             TCGv_i32 in = tcg_temp_ebb_new_i32();
+             switch (vece) {
 -- 
 2.43.0
 
