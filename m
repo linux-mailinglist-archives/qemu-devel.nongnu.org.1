@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF02AE2D1F
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B0A6AE2D1E
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:52:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT7yw-00050a-Es; Sat, 21 Jun 2025 19:50:46 -0400
+	id 1uT7yw-00050v-VA; Sat, 21 Jun 2025 19:50:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT7yu-0004zt-Dl
+ id 1uT7yu-0004zx-Gg
  for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:44 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT7yr-0004QY-Qs
+ id 1uT7ys-0004Qa-F1
  for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:50:44 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-7fd35b301bdso3526371a12.2
- for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:50:41 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-747fba9f962so2272919b3a.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:50:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750549840; x=1751154640; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750549841; x=1751154641; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PdvwNl7JiFORoJKfG82WHoJWKQvzz977qK5CdHrmdQk=;
- b=q+bfkXjn9FzxzoxjHQ+6uC1XZ4+JQlpRb155Rina9CLHx97QxYJbGfK6RvcEVvAhpB
- gdCYChJ1oQlQ754RMdXMm4oTWej7Qw0Vc4e0UtViYBjQ9vddZCgMYICX3PiUd49JxK1+
- UiO/syncEXSoNwsy3vTQjl+E3+v+xoIP6HENEhgYaqqkgfAD7kuWuUJwqyEnE2PB1s05
- cdT/57I5DkILnxEIlpKLS2r8SkriqUK8aTfp6tNfWdDUaWfOjxplTpdSMB3fETF75dMG
- 1wPXVN8akPgaqMUp+uCdtV5Ya1eb2dSWReyxBJ9FjEMaTOW+8NQgEjwMo8wt3ZiJCUEp
- 5kkw==
+ :reply-to; bh=lGhhjzHgdaB2j6jJXVcSFxfC86zQCbWbwi8vUso1KsA=;
+ b=NXYC2SigMMEmqrM65FOJp/B427AP3SrkKG8BsN282VP+xJIRS9d2XJjo7UCAFFH5Fj
+ L3D8q1l5iBfPM0MZyc8sh+G2zJHOwYwD4MtJJNqVDsvxnTcPBlklZWeVdyhTwuRlGojm
+ Erd2UbD2Tz72iRmdV1LYoUTlNgWr58DQzQmNge+rZyvMgVKpcnNv4APuLpQ0n7ArWWQI
+ 8ulL7u3Osvcd6JNK22lH5hGIUdT0ZUsmLT5fr0x2WluArysJAvRIgTKspeBL3SUQPIL1
+ 2LnSeU5dpbTQ8GouNR94lS5lsmBfRXoWuC6zxTYdTYzreNclbWxp5vBa6ISP4TneVgIe
+ JTcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750549840; x=1751154640;
+ d=1e100.net; s=20230601; t=1750549841; x=1751154641;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PdvwNl7JiFORoJKfG82WHoJWKQvzz977qK5CdHrmdQk=;
- b=DSMYqgicbBgYUbpgWcAD4A8yVKWv+s4FQUI8VdQrC1829Uhu3Ig/+/kCVgdQ18upwg
- cay/+O1nJTcAImeLPLHvGDSJKtvn+MwQZe3Dem4ZSZoBgSh3NkEQhep+Z7yGmKYZgByX
- TGKsVQddZoZC1Q9pzcH7KFPUpoTM1B7STODhvwLXoa+bYzs7I7eOcT8seOcxII+tY+W1
- 1/SND8ZKf0rfozJqp631GP5I6PPnkw07RX3amYLJe15jZmebgo12ruimRPPZ7fQ3gLdn
- dZuBCb9zQN5U2auIQsoAC9rcp8x55N0VAbcnHvAshvzh0vrUZNiyNEtWo6Wi5GfoTcTw
- R/2w==
-X-Gm-Message-State: AOJu0Yx0WvUsqLuPxVh2QeG6iMPSvfy8CxWTjYIw0CyfT0NliD+AQ9Yb
- fQHFbmuV+GlbowvsmJmn5Y4NURkBBKVGcwTDqXPM3XYuifgHO+GiMIBidr3oGrzkn0wbIVr5N9b
- SnH+v
-X-Gm-Gg: ASbGncsNr7JY1cLv6PvZKgwsgotJCX9F+UR80hFoGPTRRZ2HW1lJtU8tnFWDrzlpcjX
- k3LnJb4RSJtryfaQ43L3TBPN/JxPQXY7GNg6rxvfpRh8fRv4Wh2bmFfN39yqGXU+L1d8U1/AaNQ
- n7g7PGzPiwS5qzQe+oQ8Rl5esnqDifsfBJlxgi+n48WNxW9rvbXZHZpJG5jrl27Xai7xY0312FF
- 2JOQIlX0OjL4rPz7msuQ1NHlJOIZcWUeJ3h3HF95Dboybt8+MRmtK++v2zQGkGQEu/s4m3cD2pg
- STx3vxRCoZRAApCSgxos5EWocgCGc/yfFNzcwqkQOSgbianMR66sC2d9Yd/q38Hp1fXDayhqIuH
- DQE4VxlGJr4PvG4EP4GQELiFjO5pXBXE=
-X-Google-Smtp-Source: AGHT+IEKdwjRaTG5hX6pb+hkYLlUddT8DSxY6ckt3Rhf7Bfeln8f+Oa6jQ18IBc2bWS1QyUHktN8qQ==
-X-Received: by 2002:a05:6a20:1595:b0:1f5:8a1d:3904 with SMTP id
- adf61e73a8af0-22026e131dfmr13605606637.7.1750549840166; 
+ bh=lGhhjzHgdaB2j6jJXVcSFxfC86zQCbWbwi8vUso1KsA=;
+ b=EHPOpVCzjew0dvhP+DsjGIrz1sTfhEbM4JYpOomFjuLBQkxWWL2FnbuiL7Ce98gGJb
+ a7ydodnFDgJHl4gHtuvgrKoozk03aEAl9h+966x9LzIx8zgdbjmgjKr9WKnDC2Npxt+E
+ 4pcBgSqzLCYBv0upAmH/4Ch7kEongtvO0phFfXX98FZKD2Ir5NcJqvJVaDCJZd1ZMmCg
+ ywZhGQLPxe0rOS5NDuQsLejrFTzFmMC8WwrQ8hfVUqMdL4y1E6HI7suJJD1Lk7lHvxyI
+ N9jpDYj2Dn6/bghynbHf2MQ/qIfaXJ2Jk3cPUt7y7lxqyZHMYEjO4q8fO4jKcszsLClc
+ e3/w==
+X-Gm-Message-State: AOJu0YzXK0vCIR43++6+zuRqs1S4wixg+JQsLLaxjwiehr9ec/n65rDa
+ DE86x1Crr6HqR4IXei1H/jcsle4fF+FG+6gQkKFEHVSVuXkIEMKPSEui/oJBvswrCIEQSGZ+Ge2
+ 96ace
+X-Gm-Gg: ASbGncsJKWRUe+B2a59iE/oHuFHi4EFNPAHOwDHe2jcfXScnHvpHpne89qwtR3zvcEv
+ W9FV/b/rMiFwRnouWMcAICkYsGBAXrWhNrp1t2dc7i2p/pWSVRQSquudJVIcAVMqZgeQ9t3E698
+ j7Vt2KBAmsQpGDOoQkbNFXmcYwzon40hQtx9wLWL/pGvdkS+o0Zr5Non55flyfpISY4JANWhA9o
+ HvEZTO3jJLQAGh1uR3CiiCnR/7zv/up2wJ/ua46RlN8wP/vcLKreveuijTHpiLgUUq2FE4RBWS1
+ Td76JBGyd4dB55qQGJLoU1Ds9CwULMTtfLFgrk9/zHE+3UqjjyZLtQUaMe2mA80Wdmld0WEPU9w
+ wY/9uAaYcGbs0AFzDyc0KY6E7eN0xP10=
+X-Google-Smtp-Source: AGHT+IHmloiy8LA010NIyMAIOhpiTzZbot+xgp0xyqU/TtZie/WP7p3z4iCtOHZhatRmuQUb9d31Ag==
+X-Received: by 2002:a05:6a00:4fce:b0:746:25d1:b712 with SMTP id
+ d2e1a72fcca58-7490f5487b8mr10044719b3a.7.1750549840924; 
  Sat, 21 Jun 2025 16:50:40 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7490a49ebd0sm5073744b3a.55.2025.06.21.16.50.39
+ d2e1a72fcca58-7490a49ebd0sm5073744b3a.55.2025.06.21.16.50.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Jun 2025 16:50:39 -0700 (PDT)
+ Sat, 21 Jun 2025 16:50:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 002/101] tcg: Add dbase argument to do_dup
-Date: Sat, 21 Jun 2025 16:48:58 -0700
-Message-ID: <20250621235037.74091-3-richard.henderson@linaro.org>
+Subject: [PATCH v2 003/101] tcg: Add dbase argument to expand_clr
+Date: Sat, 21 Jun 2025 16:48:59 -0700
+Message-ID: <20250621235037.74091-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,130 +99,166 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg-op-gvec.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ tcg/tcg-op-gvec.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
 diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-index 1aad7b0864..451091753d 100644
+index 451091753d..c26cfb24cc 100644
 --- a/tcg/tcg-op-gvec.c
 +++ b/tcg/tcg-op-gvec.c
-@@ -534,9 +534,9 @@ static void do_dup_store(TCGType type, TCGv_ptr dbase, uint32_t dofs,
-  * Only one of IN_32 or IN_64 may be set;
-  * IN_C is used if IN_32 and IN_64 are unset.
-  */
--static void do_dup(unsigned vece, uint32_t dofs, uint32_t oprsz,
--                   uint32_t maxsz, TCGv_i32 in_32, TCGv_i64 in_64,
--                   uint64_t in_c)
-+static void do_dup(unsigned vece, TCGv_ptr dbase, uint32_t dofs,
-+                   uint32_t oprsz, uint32_t maxsz,
-+                   TCGv_i32 in_32, TCGv_i64 in_64, uint64_t in_c)
- {
-     TCGType type;
-     TCGv_i64 t_64;
-@@ -574,7 +574,7 @@ static void do_dup(unsigned vece, uint32_t dofs, uint32_t oprsz,
-         } else {
-             tcg_gen_dupi_vec(vece, t_vec, in_c);
-         }
--        do_dup_store(type, tcg_env, dofs, oprsz, maxsz, t_vec);
-+        do_dup_store(type, dbase, dofs, oprsz, maxsz, t_vec);
-         return;
+@@ -380,7 +380,7 @@ static inline bool check_size_impl(uint32_t oprsz, uint32_t lnsz)
+     return q <= MAX_UNROLL;
+ }
+ 
+-static void expand_clr(uint32_t dofs, uint32_t maxsz);
++static void expand_clr(TCGv_ptr dbase, uint32_t dofs, uint32_t maxsz);
+ 
+ /* Duplicate C as per VECE.  */
+ uint64_t (dup_const)(unsigned vece, uint64_t c)
+@@ -526,7 +526,7 @@ static void do_dup_store(TCGType type, TCGv_ptr dbase, uint32_t dofs,
      }
  
-@@ -618,14 +618,14 @@ static void do_dup(unsigned vece, uint32_t dofs, uint32_t oprsz,
-         /* Implement inline if we picked an implementation size above.  */
-         if (t_32) {
-             for (i = 0; i < oprsz; i += 4) {
--                tcg_gen_st_i32(t_32, tcg_env, dofs + i);
-+                tcg_gen_st_i32(t_32, dbase, dofs + i);
-             }
-             tcg_temp_free_i32(t_32);
-             goto done;
-         }
-         if (t_64) {
-             for (i = 0; i < oprsz; i += 8) {
--                tcg_gen_st_i64(t_64, tcg_env, dofs + i);
-+                tcg_gen_st_i64(t_64, dbase, dofs + i);
-             }
-             tcg_temp_free_i64(t_64);
-             goto done;
-@@ -634,7 +634,7 @@ static void do_dup(unsigned vece, uint32_t dofs, uint32_t oprsz,
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(dbase, dofs + oprsz, maxsz - oprsz);
+     }
+ }
  
-     /* Otherwise implement out of line.  */
-     t_ptr = tcg_temp_ebb_new_ptr();
--    tcg_gen_addi_ptr(t_ptr, tcg_env, dofs);
-+    tcg_gen_addi_ptr(t_ptr, dbase, dofs);
+@@ -703,14 +703,14 @@ static void do_dup(unsigned vece, TCGv_ptr dbase, uint32_t dofs,
  
-     /*
-      * This may be expand_clr for the tail of an operation, e.g.
-@@ -710,7 +710,7 @@ static void do_dup(unsigned vece, uint32_t dofs, uint32_t oprsz,
+  done:
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(dbase, dofs + oprsz, maxsz - oprsz);
+     }
+ }
+ 
  /* Likewise, but with zero.  */
- static void expand_clr(uint32_t dofs, uint32_t maxsz)
+-static void expand_clr(uint32_t dofs, uint32_t maxsz)
++static void expand_clr(TCGv_ptr dbase, uint32_t dofs, uint32_t maxsz)
  {
--    do_dup(MO_8, dofs, maxsz, maxsz, NULL, NULL, 0);
-+    do_dup(MO_8, tcg_env, dofs, maxsz, maxsz, NULL, NULL, 0);
+-    do_dup(MO_8, tcg_env, dofs, maxsz, maxsz, NULL, NULL, 0);
++    do_dup(MO_8, dbase, dofs, maxsz, maxsz, NULL, NULL, 0);
  }
  
  /* Expand OPSZ bytes worth of two-operand operations using i32 elements.  */
-@@ -1711,7 +1711,7 @@ void tcg_gen_gvec_dup_i32(unsigned vece, uint32_t dofs, uint32_t oprsz,
- {
-     check_size_align(oprsz, maxsz, dofs);
-     tcg_debug_assert(vece <= MO_32);
--    do_dup(vece, dofs, oprsz, maxsz, in, NULL, 0);
-+    do_dup(vece, tcg_env, dofs, oprsz, maxsz, in, NULL, 0);
+@@ -1255,7 +1255,7 @@ void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
+     tcg_swap_vecop_list(hold_list);
+ 
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+     }
  }
  
- void tcg_gen_gvec_dup_i64(unsigned vece, uint32_t dofs, uint32_t oprsz,
-@@ -1719,7 +1719,7 @@ void tcg_gen_gvec_dup_i64(unsigned vece, uint32_t dofs, uint32_t oprsz,
- {
-     check_size_align(oprsz, maxsz, dofs);
-     tcg_debug_assert(vece <= MO_64);
--    do_dup(vece, dofs, oprsz, maxsz, NULL, in, 0);
-+    do_dup(vece, tcg_env, dofs, oprsz, maxsz, NULL, in, 0);
+@@ -1324,7 +1324,7 @@ void tcg_gen_gvec_2i(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
+     tcg_swap_vecop_list(hold_list);
+ 
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+     }
  }
  
- void tcg_gen_gvec_dup_mem(unsigned vece, uint32_t dofs, uint32_t aofs,
-@@ -1745,12 +1745,12 @@ void tcg_gen_gvec_dup_mem(unsigned vece, uint32_t dofs, uint32_t aofs,
-                 tcg_gen_ld_i32(in, tcg_env, aofs);
-                 break;
-             }
--            do_dup(vece, dofs, oprsz, maxsz, in, NULL, 0);
-+            do_dup(vece, tcg_env, dofs, oprsz, maxsz, in, NULL, 0);
-             tcg_temp_free_i32(in);
-         } else {
-             TCGv_i64 in = tcg_temp_ebb_new_i64();
-             tcg_gen_ld_i64(in, tcg_env, aofs);
--            do_dup(vece, dofs, oprsz, maxsz, NULL, in, 0);
-+            do_dup(vece, tcg_env, dofs, oprsz, maxsz, NULL, in, 0);
-             tcg_temp_free_i64(in);
+@@ -1401,7 +1401,7 @@ void tcg_gen_gvec_2s(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
+     }
+ 
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+     }
+ }
+ 
+@@ -1467,7 +1467,7 @@ void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+     tcg_swap_vecop_list(hold_list);
+ 
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+     }
+ }
+ 
+@@ -1536,7 +1536,7 @@ void tcg_gen_gvec_3i(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+     tcg_swap_vecop_list(hold_list);
+ 
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+     }
+ }
+ 
+@@ -1605,7 +1605,7 @@ void tcg_gen_gvec_4(uint32_t dofs, uint32_t aofs, uint32_t bofs, uint32_t cofs,
+     tcg_swap_vecop_list(hold_list);
+ 
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+     }
+ }
+ 
+@@ -1674,7 +1674,7 @@ void tcg_gen_gvec_4i(uint32_t dofs, uint32_t aofs, uint32_t bofs, uint32_t cofs,
+     tcg_swap_vecop_list(hold_list);
+ 
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+     }
+ }
+ 
+@@ -1701,7 +1701,7 @@ void tcg_gen_gvec_mov(unsigned vece, uint32_t dofs, uint32_t aofs,
+     } else {
+         check_size_align(oprsz, maxsz, dofs);
+         if (oprsz < maxsz) {
+-            expand_clr(dofs + oprsz, maxsz - oprsz);
++            expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
          }
-     } else if (vece == 4) {
-@@ -1833,7 +1833,7 @@ void tcg_gen_gvec_dup_imm(unsigned vece, uint32_t dofs, uint32_t oprsz,
-                           uint32_t maxsz, uint64_t x)
- {
-     check_size_align(oprsz, maxsz, dofs);
--    do_dup(vece, dofs, oprsz, maxsz, NULL, NULL, x);
-+    do_dup(vece, tcg_env, dofs, oprsz, maxsz, NULL, NULL, x);
+     }
+ }
+@@ -1779,7 +1779,7 @@ void tcg_gen_gvec_dup_mem(unsigned vece, uint32_t dofs, uint32_t aofs,
+             tcg_temp_free_i64(in1);
+         }
+         if (oprsz < maxsz) {
+-            expand_clr(dofs + oprsz, maxsz - oprsz);
++            expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+         }
+     } else if (vece == 5) {
+         /* 256-bit duplicate.  */
+@@ -1822,7 +1822,7 @@ void tcg_gen_gvec_dup_mem(unsigned vece, uint32_t dofs, uint32_t aofs,
+             }
+         }
+         if (oprsz < maxsz) {
+-            expand_clr(dofs + oprsz, maxsz - oprsz);
++            expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+         }
+     } else {
+         g_assert_not_reached();
+@@ -3255,7 +3255,7 @@ do_gvec_shifts(unsigned vece, uint32_t dofs, uint32_t aofs, TCGv_i32 shift,
+ 
+  clear_tail:
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+     }
  }
  
- void tcg_gen_gvec_not(unsigned vece, uint32_t dofs, uint32_t aofs,
-@@ -3772,7 +3772,7 @@ void tcg_gen_gvec_cmp(TCGCond cond, unsigned vece, uint32_t dofs,
-     check_overlap_3(dofs, aofs, bofs, maxsz);
+@@ -3834,7 +3834,7 @@ void tcg_gen_gvec_cmp(TCGCond cond, unsigned vece, uint32_t dofs,
+     tcg_swap_vecop_list(hold_list);
  
-     if (cond == TCG_COND_NEVER || cond == TCG_COND_ALWAYS) {
--        do_dup(MO_8, dofs, oprsz, maxsz,
-+        do_dup(MO_8, tcg_env, dofs, oprsz, maxsz,
-                NULL, NULL, -(cond == TCG_COND_ALWAYS));
-         return;
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
      }
-@@ -3892,7 +3892,7 @@ void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
-     check_overlap_2(dofs, aofs, maxsz);
+ }
  
-     if (cond == TCG_COND_NEVER || cond == TCG_COND_ALWAYS) {
--        do_dup(MO_8, dofs, oprsz, maxsz,
-+        do_dup(MO_8, tcg_env, dofs, oprsz, maxsz,
-                NULL, NULL, -(cond == TCG_COND_ALWAYS));
-         return;
+@@ -3975,7 +3975,7 @@ void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
      }
+ 
+     if (oprsz < maxsz) {
+-        expand_clr(dofs + oprsz, maxsz - oprsz);
++        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
+     }
+ }
+ 
 -- 
 2.43.0
 
