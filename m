@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904EBAE2D26
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 187B3AE2D69
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 02:01:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT82S-0002FP-Sk; Sat, 21 Jun 2025 19:54:25 -0400
+	id 1uT82U-0002Jh-0o; Sat, 21 Jun 2025 19:54:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82L-00027G-Rs
+ id 1uT82M-00027I-2U
  for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:19 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82J-00051g-Ma
+ id 1uT82K-000525-5j
  for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:17 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-748f5a4a423so1829680b3a.1
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-7425bd5a83aso2538000b3a.0
  for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:54:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750550054; x=1751154854; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750550055; x=1751154855; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=OpkbFbMGSOhybuGYn+mQ7FijZZl7dQi0hDdIn4qmOA4=;
- b=UJu55X++FD59ivsGAVS3hPz7Deg4VcvTne24/WULewnCm+RLWHUFwEyISsgD3XtpQX
- YSSAKV31azjRB+wHMUSm1SHu/LJP+m2mJiobv7eghqBOwv4zY3rn4+SONYtu+G8g49eE
- DD9TPSqQH9zNMY2jmiP03wPnf2UWHBLkzYvRBJRM2TFnXLW0vgr2wpzCz1sbjFgogjDn
- o8VpEN1qznomOoSdBBuwOinuF/o/TdUR8JPtcdYp/HAhsQ9YUf/5m9KQG4lNmgYoI1oz
- YYyNMz1N/CXDRt+HqSBzSBux71WLDcd5u7D+Rww5YtlB8G40pcAnV4iC2kTbzcsFmirL
- j37g==
+ :reply-to; bh=+3cqECiVR2tg+Fz3JMivkL65UkvEtN1qjo705uznv9o=;
+ b=wEa1LyapauaH0nwSYRbnkIqqsmvAhd/5VN9ESjlW50Unqhx1csZdmsNntjz+cVu3I2
+ 0zTAYbhalN6iMPA7Ceb4lGvpIbAKUCtFG37x5PTlz4Wy65afCQP87fQ2uCmmCm9mPRZ7
+ vQa+u6bTKd2F3Ri4wpCC5FIOZmopGx2oN1Binn81SbNgkyPv3gOk+VMYv8lm08fPsVFl
+ DycRvt2W1h5aT8J4m6SrLM5V2xSq9zEkp1vnZL/gaWdnPnllUK7JdAYg8jzMp/HPY1AF
+ HmphXvYFp+4G8KBGppuIL/LRs4Lhry38gHdp85Z3TNHWe/mTX4Ovz25iGVixCVc1+9Mj
+ ksaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750550054; x=1751154854;
+ d=1e100.net; s=20230601; t=1750550055; x=1751154855;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OpkbFbMGSOhybuGYn+mQ7FijZZl7dQi0hDdIn4qmOA4=;
- b=lznsTZcWPwDM9UfJY7exabCX9GFSxKSBJ4ixupBZjJGmtBo3hSnL7tJ3BJA0KNVUK/
- lPfCbdGMNlC+QECaOXejAOvYE3iWRDdZb8m9fv3xerJW2BKMhsYVPkkgAeLSrXpvug8M
- G3fBCJ7WHAKk9Os2S54hHM1eAxi0JHKh0wF0uusuLueRmioPha4zbnNM5LQjO3SGzhzp
- MRFhAMeaEkji+CCayYJLCzLsA+TqwBq+6r4ZmSCjrJdBaA1UcAYteaqB5AZd9D2Y0zDS
- 2X8n6Yjcx1zNnxQxgGVuNm3CCuubVfZdcwnczOAZY1SvNseul5jqjFvggt/wW5CQhTfo
- /svw==
-X-Gm-Message-State: AOJu0YzlBZ4tGtwFRxYXtT4W465LBilH44oIBd2FVtWgh2n5n5spAwnC
- jGfvbdpuGfnB9UHX25xzygEhdXZopxiQBMCbtBeX9o0JTW2484c4R7xl+AaSrDzS/dEHGNiXqwS
- klJV4Tjs=
-X-Gm-Gg: ASbGncsNeeFlAo41KIt4Sd1ERdt8djqXMqQKoczePg9C1k7vb/wCK2fflUPERcN9NQj
- oMPJq4MOx951o2KAkCBgn1qZOLTv2MklTYjByX7s3ymKv3UeZqlOzmtO1a7PjVgKSqmOJTf7FTA
- oFZCY/hsk28LI+lv0pVSYczpO49+Hnyvp1r09MtX/T6ld3H9AGkZBdjZFxxoxPDHEgbILYWpk80
- hDID3g0WDu0571oW1x/lyUpJMDT7XYRGkW9d/sWbMyRlQrcBrBlYK+IreJFMIsbJFUS6PCaKMOP
- 0UbgPSeUD0cjcaiX1ZDvjX1EkNsgkysmyQY5jfRekDwAfXEZdcMZRmJjneZer82mJycK/Hut2I1
- wYiZjZbrzct7OuwjdQIbW
-X-Google-Smtp-Source: AGHT+IEdHV4jMJDeZOLe13H7yAy89+EPFONAsXipwlzKQ7AEmZF0tMJjdHl0l2mq0VX/YDjoNXOyJQ==
-X-Received: by 2002:a05:6a00:1990:b0:740:a023:5d60 with SMTP id
- d2e1a72fcca58-7490d74b176mr10307966b3a.19.1750550054238; 
+ bh=+3cqECiVR2tg+Fz3JMivkL65UkvEtN1qjo705uznv9o=;
+ b=q7uNqfVWDWbvAgjQAm17ji1w+4zDhbwbCJxheYy/rZzFcuRGkSib7EWVa/wvX9wSEu
+ Mocm693BGBpGGYCRApNQoy5/59ssSCFgR436HN741gzveiWjcqqZ3PnmJdRtZjhDtP86
+ h5ReUzPBSi4AJojmaHOYIZb1Rr/1qeJc91WJ2py1DAQARU+UjCcIVc1NEfoGsVSnSMOW
+ bfq80qgG5p3tz9KJu2mJ/LRuJSll5vgzX/N9REJcezf6xdNcWu0VVNtXmqN3yeyDabjN
+ EFtvTgpQvdTvcJTdbAhf2GKir5LfjdSDuCgGmM68iTIPMdnK9Yj02nSMR2o5TDxn3ApQ
+ 5K6Q==
+X-Gm-Message-State: AOJu0YyCa/OXdArW6f25XkfinzA8WfP97Slpw7NRTIXo4UaR5jVjAHld
+ CCRaB/pzPJIYyVrFEM3f0dKeN9ChkyzAOSOqtggh42UZBbOCS5ljUExxVRTe7J1iLF/Et5W8RZ0
+ bNns+veM=
+X-Gm-Gg: ASbGncudasBDdaqQhvmczY1Fa0dLMlvHM8N5BmZ/AzapefUIJ2kMoAM2SpKHVzVzNcB
+ DprtVPEteCC3aUHsmCdkGUYxVwxY0pfBCbbN4t2wC55qS8wpEbOW0JL7/1HEYSjSN+lwZeD4SnP
+ wQ+Sf0SXFhDEiTzx3oEfft64w4pREMaVVeu8yy9fc6QmdsPfg2xW6vedPGGlT7iKM2wa4aXO0Xd
+ jjLr/B2ovimW2YkrFFzEKjyn5tg38WHBHvV1pz5DOvY94u4ryGmuhfK4dNzopwM+1vTrNIjBZQV
+ xtn2piJBCGDh7w9NkVMFrKSbpmVYUl5UI4kB0euagN/iCp8gB8EH3YejA46USr9MlZee/McU7uF
+ 005pBYON9l+eeNZFgEsVI
+X-Google-Smtp-Source: AGHT+IFFBzpCUkkEDJgy4F4KNuti3xqkVdvl8zkqU3YqAgBd/BmGopLwCdHyz6zqeT8DDcmrAPkDGQ==
+X-Received: by 2002:a05:6a00:2e88:b0:742:a77b:8bc with SMTP id
+ d2e1a72fcca58-7490d5c1d0cmr11257038b3a.2.1750550054832; 
  Sat, 21 Jun 2025 16:54:14 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7490a46b590sm4970051b3a.27.2025.06.21.16.54.13
+ d2e1a72fcca58-7490a46b590sm4970051b3a.27.2025.06.21.16.54.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Jun 2025 16:54:13 -0700 (PDT)
+ Sat, 21 Jun 2025 16:54:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 055/101] target/arm: Implement SME2 FRINTN, FRINTP, FRINTM,
- FRINTA
-Date: Sat, 21 Jun 2025 16:49:51 -0700
-Message-ID: <20250621235037.74091-56-richard.henderson@linaro.org>
+Subject: [PATCH v2 056/101] target/arm: Introduce do_[us]sat_[bhs] macros
+Date: Sat, 21 Jun 2025 16:49:52 -0700
+Message-ID: <20250621235037.74091-57-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,46 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Inputs are a wider type of indeterminate sign.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-sme.c | 9 +++++++++
- target/arm/tcg/sme.decode      | 9 +++++++++
- 2 files changed, 18 insertions(+)
+ target/arm/tcg/vec_internal.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index 733b7a0743..a96d5ace43 100644
---- a/target/arm/tcg/translate-sme.c
-+++ b/target/arm/tcg/translate-sme.c
-@@ -1303,3 +1303,12 @@ TRANS_FEAT(SCVTF, aa64_sme2, do_zz_fpst, a, 0,
-            FPST_A64, gen_helper_gvec_vcvt_sf)
- TRANS_FEAT(UCVTF, aa64_sme2, do_zz_fpst, a, 0,
-            FPST_A64, gen_helper_gvec_vcvt_uf)
+diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
+index 64a7249d01..c0ccf6da7a 100644
+--- a/target/arm/tcg/vec_internal.h
++++ b/target/arm/tcg/vec_internal.h
+@@ -223,6 +223,13 @@ int16_t do_sqrdmlah_h(int16_t, int16_t, int16_t, bool, bool, uint32_t *);
+ int32_t do_sqrdmlah_s(int32_t, int32_t, int32_t, bool, bool, uint32_t *);
+ int64_t do_sqrdmlah_d(int64_t, int64_t, int64_t, bool, bool);
+ 
++#define do_ssat_b(val)  MIN(MAX(val, INT8_MIN), INT8_MAX)
++#define do_ssat_h(val)  MIN(MAX(val, INT16_MIN), INT16_MAX)
++#define do_ssat_s(val)  MIN(MAX(val, INT32_MIN), INT32_MAX)
++#define do_usat_b(val)  MIN(MAX(val, 0), UINT8_MAX)
++#define do_usat_h(val)  MIN(MAX(val, 0), UINT16_MAX)
++#define do_usat_s(val)  MIN(MAX(val, 0), UINT32_MAX)
 +
-+TRANS_FEAT(FRINTN, aa64_sme2, do_zz_fpst, a, float_round_nearest_even,
-+           FPST_A64, gen_helper_gvec_vrint_rm_s)
-+TRANS_FEAT(FRINTP, aa64_sme2, do_zz_fpst, a, float_round_up,
-+           FPST_A64, gen_helper_gvec_vrint_rm_s)
-+TRANS_FEAT(FRINTM, aa64_sme2, do_zz_fpst, a, float_round_down,
-+           FPST_A64, gen_helper_gvec_vrint_rm_s)
-+TRANS_FEAT(FRINTA, aa64_sme2, do_zz_fpst, a, float_round_ties_away,
-+           FPST_A64, gen_helper_gvec_vrint_rm_s)
-diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
-index e2d3668567..dffd4f5ff8 100644
---- a/target/arm/tcg/sme.decode
-+++ b/target/arm/tcg/sme.decode
-@@ -750,3 +750,12 @@ SCVTF           11000001 001 00010 111000 ....0 ....0       @zz_2x2
- SCVTF           11000001 001 10010 111000 ...00 ...00       @zz_4x4
- UCVTF           11000001 001 00010 111000 ....1 ....0       @zz_2x2
- UCVTF           11000001 001 10010 111000 ...01 ...00       @zz_4x4
-+
-+FRINTN          11000001 101 01000 111000 ....0 ....0       @zz_2x2
-+FRINTN          11000001 101 11000 111000 ...00 ...00       @zz_4x4
-+FRINTP          11000001 101 01001 111000 ....0 ....0       @zz_2x2
-+FRINTP          11000001 101 11001 111000 ...00 ...00       @zz_4x4
-+FRINTM          11000001 101 01010 111000 ....0 ....0       @zz_2x2
-+FRINTM          11000001 101 11010 111000 ...00 ...00       @zz_4x4
-+FRINTA          11000001 101 01100 111000 ....0 ....0       @zz_2x2
-+FRINTA          11000001 101 11100 111000 ...00 ...00       @zz_4x4
+ /**
+  * bfdotadd:
+  * @sum: addend
 -- 
 2.43.0
 
