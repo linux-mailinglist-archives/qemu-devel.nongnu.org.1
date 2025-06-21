@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB487AE2D3D
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DE5AE2D3B
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:57:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT82t-0003hO-3s; Sat, 21 Jun 2025 19:54:52 -0400
+	id 1uT83B-00050G-Pk; Sat, 21 Jun 2025 19:55:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82W-0002eh-7b
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:28 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1uT82W-0002gn-SE
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:29 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82U-0005CS-A6
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:27 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-747fba9f962so2273502b3a.0
- for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:54:25 -0700 (PDT)
+ id 1uT82U-0005Cp-QZ
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:28 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-74924255af4so606106b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:54:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1750550065; x=1751154865; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KSMYEPMmFHBsuW15JHYPo//vS6oU9zg++I26gTjYMvo=;
- b=mwG3yHkkz1YdiIlsStAHEbC77n51nd2bOCkX/O6mcZ0RjEuXHXdKWID7SUHXHG2xkP
- 5x/1o5EVESL+or+Sus/9S7lVz5aBJLE7H5yft+GCbXpZ2X2adTOdwsKJaWMdV5cQlCCV
- n4g+uduXOEGLe8DlLPj/leIEU1NFgSEdTlCO2hWd0J8SZf0yI3Nfpr8S4+jfnT50dP8o
- 0lsVzQfdFB3XdejMpUJq7yBhsZ2fb9LW1NWbqjmgxAi9CAfvniIOdsFFfd+6R12XiH19
- /hCurLjAdZsxA7zxjYXC266Tqr+c7i4XijGu8SI7ax4OTrHGgirgA5A1dvES2BPZ+uDg
- l99Q==
+ :reply-to; bh=s8p0SktSL4fF18XZNBUS8dNzNdzT2jjZNDd3cNk6e+s=;
+ b=HwN6JKuxA+1WbN6htLNzXx1qJeGqpxS57uQZLKslApWNnt2g6Dlgfc0fsnbr0CNS8w
+ N5qFScY2ytvW6wPiaFTi26RXYBab4MTqYFI0xzZ0rALH0UEXAYfL+eIbwjEnpJr8grgK
+ f2jN5men20ZSwGXKJTYr2/psp9zsrD56jnI7mR9JwhwlGJDdmhPqcJkKknlx5TAw/M0r
+ mSjdfULJA7mIDXZ+A79iKor7+3fipFCf1MRqm8kKpOrv/aEHCUNVP7lTT9rvnfC2VtTr
+ soGpLRjDvex54Hj75pKTOUQEq1Ie2i9op1C1IoPAVZkRv7cdCVMTAbGAAMdN+yDne44B
+ qwVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750550065; x=1751154865;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KSMYEPMmFHBsuW15JHYPo//vS6oU9zg++I26gTjYMvo=;
- b=pX4FtM0ksHCG2L9Zn6mvt5Hb4hom84q/d65mF0hKLlerMGyamjDYaKXpevZRHLEvxK
- DT0OshtZmCc2XqmErfOccK6UdcIZbofeaypi+1A3s20Df0FqCLFkSUNgYX2RyGeh61WC
- yN0+SpQ6JfLNeR19Advz8uKY0wo2YhZmjxIndZY+o/Wexam+aPj0Mu7WA2OQyJAGwX0I
- QD2s4eYyp+Ne4j8Y0OCMyy5UPX65WwuOO1hyLKVN8NkFuHAkZh1w58AK2/dBQ1g2lMyP
- 1USwqUBqRLwukmkRcn976Pwktca8KWdCh3ppdPE2GrZz+m2Blbti0ATSm+KLawR0f2ix
- JuWA==
-X-Gm-Message-State: AOJu0Yzb/f8y8zMrlV4250zx8+gDWq+EpigrtGHvWRDLRIyU9e6AhpHG
- ZXDG+3xF8Zs+Hi6+V2PdlJZuWPtKDWoHsE7yThpaCaRgLMckjA+CUYt+dGgWyqEORPiRFpvAPS5
- gHMnDOg4=
-X-Gm-Gg: ASbGnct2LFbtptoEcOrGZsrMX66iLhcGAQIpjz9A5p82K3DJ4Qc1co01FyI0z7wKBTK
- n9fRWdjbBf/z+Dc4/NzLgS54nVvpeuwctQVZoliJ9g3SmQdmE/rp0kDal0vU765mKXS0UWFBW2t
- BrLcCh8lXUwkOmDzYii99uJHWtXfXNzYtl3vmGif6Y6oaexSSdZyEv+ny/sk+AED7bKEdUn/B24
- XH08mJc3byP3Mmk1mhXWUi6rsDJJHcPWoHsgBbWesU9i8ddc1BlqEEZioAgIGJlbiz2omddSitE
- YeDqjT9o3UtMSlAUZlcVhNlvaXFnnkRxCxuFmrrBuuZM5rB2JhoETGNoGz72/D9Qaz5xPNcaSrA
- D09RLNgc3u9J8cKoFQ7AT
-X-Google-Smtp-Source: AGHT+IHZAH944svGZB54r2KSz5IPaVzcVangGJv5zaZz9eZ2RsDQYFmj6I2QzUndj82Cg8zXzHbpfw==
-X-Received: by 2002:a05:6a20:7350:b0:21f:56d0:65dc with SMTP id
- adf61e73a8af0-220292bc007mr10204933637.13.1750550064874; 
- Sat, 21 Jun 2025 16:54:24 -0700 (PDT)
+ bh=s8p0SktSL4fF18XZNBUS8dNzNdzT2jjZNDd3cNk6e+s=;
+ b=AZYTuucQXXfi7xnm9h+dDW+6+8R0awU19U/YG2ZbGu75yozK3tthf+llfrZbwXtWKD
+ ctJQUwGY6Zi+ZF6UCV/8rnjbYgKpCXw446llRTcZfRWuLTluWVYmrA+sDpKdNxEpe3Jx
+ ALh6Z6cgPhub7WfvqXY4m+mqK8tEGdyxGZySuYL9oe8gLs6UGbHQb3Q/csfoQivlwDps
+ K8xBetxJJOqDT9vsbH1gfElPLTROdpXucEBDO4eb8r/0HYCn3mvNmCcffEJEEMoc4ypY
+ oRCp1nmK+6DL71M5K0h6q+FqIZEkOxhuuFsUgseG3aEwIZFeAWRZ0x1KxtO9NsgHICXo
+ f8DQ==
+X-Gm-Message-State: AOJu0YzpUFAT/0kYt/I+DIFZxwDnfRftm/b56CCkpOSh2ZxmfGJbApIe
+ 6X7UUYK33WDNh/KMuu/3lyKhY0qva8aNbTA1/AF4E9+4Np6iT720wRRaivPh3RwzrKoHbUQTxMb
+ VN4bhOu8=
+X-Gm-Gg: ASbGncuqg6nmzb6AJ3924AAL99ygRv5VQNGByw66gBhDewdhXEtc41i/AtndsVJ2ADK
+ F2EA3y+cLK5GLrbHuLwrzijxUfsxDXxxrAf8LT8poCfF8F9WJwea/O+tqOV/ZMFQfzkuIbeQ8EK
+ NyCeWnKHxHuZq79Plu7KMWlZxZWhcICW7lOI5h83NQgEoxmrD00TS1zsP/34B79am7SPTYpEpQi
+ QzU1KpHZDz3xvgkhyVugX4T+p4oqj5Xaz7uZ8lmZWwprs2Hnxbu14EdgKprasatsnv9iiWnviZI
+ Depdx4kvr55EaTUieVbIx8A6py/EYp+P+v9LGPsaqWdmA2eLG/oRgG4ZdngUJpBuvuG3zDLFNn/
+ faRpeIkmhyhF9lt5C2SUw
+X-Google-Smtp-Source: AGHT+IFmNi3J5hegpqit9Tm5+UMrAP0kYWe9mdioJdlHGAywk9d1IMbBwu6XoFkdecJAGW7BOYzXLw==
+X-Received: by 2002:aa7:88c3:0:b0:748:de24:1ad5 with SMTP id
+ d2e1a72fcca58-7490d630822mr10271559b3a.11.1750550065508; 
+ Sat, 21 Jun 2025 16:54:25 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7490a46b590sm4970051b3a.27.2025.06.21.16.54.24
+ d2e1a72fcca58-7490a46b590sm4970051b3a.27.2025.06.21.16.54.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Jun 2025 16:54:24 -0700 (PDT)
+ Sat, 21 Jun 2025 16:54:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 072/101] target/arm: Split out do_whilel from
- helper_sve_whilel
-Date: Sat, 21 Jun 2025 16:50:08 -0700
-Message-ID: <20250621235037.74091-73-richard.henderson@linaro.org>
+Subject: [PATCH v2 073/101] target/arm: Split out do_whileg from
+ helper_sve_whileg
+Date: Sat, 21 Jun 2025 16:50:09 -0700
+Message-ID: <20250621235037.74091-74-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,26 +100,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/sve_helper.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ target/arm/tcg/sve_helper.c | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
 diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 789c9ce3a5..0d16c318cf 100644
+index 0d16c318cf..c32354142a 100644
 --- a/target/arm/tcg/sve_helper.c
 +++ b/target/arm/tcg/sve_helper.c
-@@ -4128,26 +4128,30 @@ static uint32_t pred_count_test(uint32_t elements, uint32_t count, bool invert)
-     return flags;
+@@ -4156,32 +4156,34 @@ uint32_t HELPER(sve_whilel)(void *vd, uint32_t count, uint32_t pred_desc)
+     return pred_count_test(oprbits, count, false);
  }
  
--uint32_t HELPER(sve_whilel)(void *vd, uint32_t count, uint32_t pred_desc)
-+static void do_whilel(uint64_t *d, uint64_t esz_mask,
+-uint32_t HELPER(sve_whileg)(void *vd, uint32_t count, uint32_t pred_desc)
++static void do_whileg(uint64_t *d, uint64_t esz_mask,
 +                      uint32_t count, uint32_t oprbits)
  {
 -    intptr_t oprsz = FIELD_EX32(pred_desc, PREDDESC, OPRSZ);
 -    intptr_t esz = FIELD_EX32(pred_desc, PREDDESC, ESZ);
 -    uint64_t esz_mask = pred_esz_masks[esz];
 -    ARMPredicateReg *d = vd;
--    intptr_t i, oprbits = oprsz * 8;
+-    intptr_t i, invcount, oprbits = oprsz * 8;
+-    uint64_t bits;
++    uint32_t invcount = oprbits - count;
++    uint64_t bits = esz_mask;
 +    uint32_t i;
  
      tcg_debug_assert(count <= oprbits);
@@ -128,17 +131,23 @@ index 789c9ce3a5..0d16c318cf 100644
 -    do_zero(d, oprsz);
 -
 -    /* Set all of the requested bits.  */
-     for (i = 0; i < count / 64; ++i) {
--        d->p[i] = esz_mask;
-+        d[i] = esz_mask;
+-    bits = esz_mask;
+     if (oprbits & 63) {
+         bits &= MAKE_64BIT_MASK(0, oprbits & 63);
      }
-     if (count & 63) {
--        d->p[i] = MAKE_64BIT_MASK(0, count & 63) & esz_mask;
-+        d[i] = MAKE_64BIT_MASK(0, count & 63) & esz_mask;
+-
+-    invcount = oprbits - count;
+-    for (i = (oprsz - 1) / 8; i > invcount / 64; --i) {
+-        d->p[i] = bits;
++    for (i = (oprbits - 1) / 64; i > invcount / 64; --i) {
++        d[i] = bits;
+         bits = esz_mask;
      }
+-    d->p[i] = bits & MAKE_64BIT_MASK(invcount & 63, 64);
++    d[i] = bits & MAKE_64BIT_MASK(invcount & 63, 64);
 +}
 +
-+uint32_t HELPER(sve_whilel)(void *vd, uint32_t count, uint32_t pred_desc)
++uint32_t HELPER(sve_whileg)(void *vd, uint32_t count, uint32_t pred_desc)
 +{
 +    uint32_t oprsz = FIELD_EX32(pred_desc, PREDDESC, OPRSZ);
 +    uint32_t esz = FIELD_EX32(pred_desc, PREDDESC, ESZ);
@@ -146,9 +155,9 @@ index 789c9ce3a5..0d16c318cf 100644
 +    uint64_t esz_mask = pred_esz_masks[esz];
 +
 +    do_zero(vd, oprsz);
-+    do_whilel(vd, esz_mask, count, oprbits);
++    do_whileg(vd, esz_mask, count, oprbits);
  
-     return pred_count_test(oprbits, count, false);
+     return pred_count_test(oprbits, count, true);
  }
 -- 
 2.43.0
