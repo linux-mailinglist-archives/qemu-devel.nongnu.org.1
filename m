@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC34AE2D68
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 02:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4A6AE2D3F
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:58:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT83g-0006m5-OQ; Sat, 21 Jun 2025 19:55:40 -0400
+	id 1uT835-0004WM-Ne; Sat, 21 Jun 2025 19:55:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82U-0002Oe-2V
+ id 1uT82U-0002Sq-R0
  for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:26 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82S-0005BV-EP
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:25 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7490acf57b9so1423943b3a.2
- for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:54:23 -0700 (PDT)
+ id 1uT82T-0005C2-0q
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:26 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-7399a2dc13fso3410424b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:54:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750550063; x=1751154863; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750550064; x=1751154864; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=OXrVKV8yo29+fdQbU0WV4uup/oeMvwjfooz8b7kJn6c=;
- b=je6iJowmoZx0bl4AoYbhl19B7s5HFFVgQWV9p18erlNPVOWgOzFLbLM16wODUGy9sk
- afukhwOFMLwayLd8UZDA9A9tUZpqM/si5Bkzp/LUMrIAHz/4LuVlA4Itil96mTTl/egE
- 36D7UecUdwI/h9k/JZjMJG8d6axpkMqPrUgeb1AOlyUKjGWqC/8j0M1b6tR92KiEGij/
- lcvVAdJROmlpO/C/0/xVV7PLhta484m0hHwrIda9P6aj8e5t/QwQ35XNVIMDbJDU6YQJ
- +BetJW0rheadhYoSYwXEF3i0f0i3P9ys1cmu24gZqGa+EyFmQi7kU/L3gGZKJY25icY1
- FqPA==
+ :reply-to; bh=PUsGQeaVWdzEfLA4ZPf0L7EaF69nxGnusl9ChC//h68=;
+ b=S9CcQRArHthPSzuw45vKnARCXq1XDF0IWrK20PtT6NCsCPGPo519WW8TJmbO31xfq8
+ 8PW9sfQfsYszn8oOKnabbQObl6rFDNjBfAAsMQChWQUqkwJmvTtZH52UzhQAlAx156kx
+ Z/1jKQpk5aWtnP0dCac/0ERwY6uj/dVG9IiUDuRX+ovl7++dGKihDZrwIn77lPZP0K3v
+ +eobSDcva4/xSFkWLBOoWzS89sza4mQmprCt0PwPXERmlvrngHSHcB8eXBgURvDi56B4
+ ttXZi6/u96i+r7XA7p4fGFdoUoa4ZOhGV8JzjYAF85SVnS7avNZdmouSZYV6dihstzPB
+ k5zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750550063; x=1751154863;
+ d=1e100.net; s=20230601; t=1750550064; x=1751154864;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OXrVKV8yo29+fdQbU0WV4uup/oeMvwjfooz8b7kJn6c=;
- b=RAb/zQMkjj/XxFPx1KiP5l9q2Hy1peAhi0LQdjHhQOEMnLJCm6Ls40LIPC90RlW1qk
- ixaJUuS3+lRnmEj3lRpChBArb40hBzDP2ItUE0OJqpcYcnO5wHSng2JbqsTR77RGqXj7
- YuYej+O/q/f9aGLKr660nHyt5ktwWAI/NP/JZ2gKsDGBjPxyJulnORX/fnnmzSt7S0pf
- 0ye97MKgvldrNPlYVxUTa3EDY4CZCLGsHmRJFlbOd0vf+kFO5sky/qsBOg4FZiDqQd/I
- XkGH24MN+1DWbGm+MtHV1kzvyD3/fm1v3Dd3DvLKTLgne4tVnvd8uDgoPYCK7Dq9LjNM
- RLrg==
-X-Gm-Message-State: AOJu0Yzdm8ZKlbPiXoVxDaTNRu10QT9mYbshNcIbljgodAFYSArmVLsn
- DCbJ3lesc/e+xMzn8Hm1vdrSTfN8yYqqWL5130VAsBzjkjlQVMrRlFdSY5KYIu6ZLu18O+KuzQX
- wk893aJ4=
-X-Gm-Gg: ASbGncsphJUUXI8JA/2h5I6EkvgJoOxkov1OoO3UfDiZR6yuT4gZqiX9nMIN9AvJZPB
- Mhl5HnYqX155IS1cyVZZVf85wlaKZdQ0/3onARB+y1ZWC/E8eZWESO5mg+z6RBgmBo9fWLDbpx1
- uFV6T7VX74c8thJ03JElcUT+0MROxEQqz0HV9/aS9BLxgXHAbyxnVZ4PFR3XkBzjh1PuArYBXcF
- nqq0qZv1pGYa0fgY/qTBaRwHXr4kBNXvOSZqrrN1q4NxnF2FtjkUW39jUDrIURTCoczXV4AKHrq
- theIROyC55lF6NNnWTnQq+bxPa3g234wuF+sacYn+XjOQ7G+P9jBI5oOvYWpuuQAG91QVt9fDzb
- VMN8Cx7dgoBfu3fP4iDJt2946IiLd1iI=
-X-Google-Smtp-Source: AGHT+IEgRDStiTWbH8QCrwCA82QM4qKpTwoJJswRfvz3xJJ6BDqk+qncwwlacbJfc6CzBgPVNNE4iw==
-X-Received: by 2002:a05:6a00:4f8e:b0:730:9946:5973 with SMTP id
- d2e1a72fcca58-7490d663722mr8968090b3a.5.1750550063031; 
+ bh=PUsGQeaVWdzEfLA4ZPf0L7EaF69nxGnusl9ChC//h68=;
+ b=pso4nuOTtOGVX7XKgUQ+PfTWut9LyclN5Yz+ruo7L+XioEcdNHNy3fRqXroA/u3rM8
+ F4q3YLg6iWyEcWjoZ0A0P/qFsG6wXTew++ZwHyJpt0q3VDulPIfoMEJRx2SdbYdV90kv
+ oEAwfCmvBSMGxXqihqaF30v381wy1htEgZTZs0ZaMFI4SpbWwWsFSynJPxQ0kxKYwNFo
+ ErGYrRv9SS5Ntgx4Z4AOkDH1azJ0fR6SYab04TOoc/NAf5K1hFob973ek7FvxmNnMtBB
+ 3j/PWIWLsPwfVWEpPRbhaLPqcmriX8iFN/FE7HQS1PEYvwfzPGy3T8TAAit902fx6xTA
+ H2EQ==
+X-Gm-Message-State: AOJu0Yz5FhFi5igH0eKRL8AQ4LxuIZXxMQ0kpixVzhI3n8mpqzAh5rGv
+ HukbdyeAq+E6EbQTTVI8WmtNCfFSkjbkD+bJJGqFhRoy+M+uL4emZSLyR/7aQk67y6p/J4TyAVn
+ 6z0hpm+0=
+X-Gm-Gg: ASbGnctYziK79aRlki9dncZGGTb9S7wv9cKE6oSkBK3xfHTH2nPmVDSKujGjCwEbsvR
+ ujBXEycyMR1ZLvtpisTdH53MKDTyTrsd+wmqDTCfDgEm7vuVGLR9dsWwsUrrBqgT7sXkWBpWi4J
+ UIpHJTeGytabp8H/EWhLRgPVR+pGV3uZOcwV/N1yVPjzjlF38Swm4hQ/O2ZsmZ52maF4pFIjWxg
+ YQa9AQFGg91HgVJsKj32C2JaWfYOh9EYdosveNFu5ZsMNw61o84gqxsdiavKU3vi1NNoYwW5L2I
+ Zhgk8ezEdE2J8aV3R3JT2LuOhJGUDNsrMZsDVn/eWh5tAq2w8GSP/4fTZNZPRcL6RMra+kfwS4i
+ 3I5JGFTWgL8mg4zifgdrj
+X-Google-Smtp-Source: AGHT+IHLhU+rmoZu2xe6Vc2GxktmzTzA1YPANbQKcbsaiIbH/GHlmlyinqRj3ERrWjU1OuJ2YnYPyg==
+X-Received: by 2002:a05:6a00:2e95:b0:746:3200:620 with SMTP id
+ d2e1a72fcca58-7490d6a9d84mr10732227b3a.9.1750550063658; 
  Sat, 21 Jun 2025 16:54:23 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7490a46b590sm4970051b3a.27.2025.06.21.16.54.22
+ d2e1a72fcca58-7490a46b590sm4970051b3a.27.2025.06.21.16.54.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Jun 2025 16:54:22 -0700 (PDT)
+ Sat, 21 Jun 2025 16:54:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 069/101] target/arm: Implement SME2p1 Multiple Zero
-Date: Sat, 21 Jun 2025 16:50:05 -0700
-Message-ID: <20250621235037.74091-70-richard.henderson@linaro.org>
+Subject: [PATCH v2 070/101] target/arm: Introduce pred_count_test
+Date: Sat, 21 Jun 2025 16:50:06 -0700
+Message-ID: <20250621235037.74091-71-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,74 +97,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+For WHILE, we have the count of enabled predicates, so we don't
+need to search to compute the PredTest result.  Reuse the logic
+that will shortly be required for counted predicates.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-sme.c | 20 ++++++++++++++++++++
- target/arm/tcg/sme.decode      | 23 +++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ target/arm/tcg/sve_helper.c | 62 +++++++++++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 19 deletions(-)
 
-diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index 186d46ecbf..4d82666d84 100644
---- a/target/arm/tcg/translate-sme.c
-+++ b/target/arm/tcg/translate-sme.c
-@@ -158,6 +158,26 @@ static bool trans_ZERO_zt0(DisasContext *s, arg_ZERO_zt0 *a)
-     return true;
+diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
+index e78d807ce1..df2cbf9b6e 100644
+--- a/target/arm/tcg/sve_helper.c
++++ b/target/arm/tcg/sve_helper.c
+@@ -4102,20 +4102,50 @@ uint64_t HELPER(sve_cntp)(void *vn, void *vg, uint32_t pred_desc)
+     return sum;
  }
  
-+static bool trans_ZERO_za(DisasContext *s, arg_ZERO_za *a)
++/* C.f. Arm pseudocode PredCountTest */
++static uint32_t pred_count_test(uint32_t elements, uint32_t count, bool invert)
 +{
-+    if (!dc_isar_feature(aa64_sme2p1, s)) {
-+        return false;
-+    }
-+    if (sme_sm_enabled_check(s)) {
-+        int svl = streaming_vec_reg_size(s);
-+        int vstride = svl / a->ngrp;
-+        TCGv_ptr t_za = get_zarray(s, a->rv, a->off, a->ngrp);
++    uint32_t flags;
 +
-+        for (int r = 0; r < a->ngrp; ++r) {
-+            for (int i = 0; i < a->nvec; ++i) {
-+                int o_za = (r * vstride + i) * sizeof(ARMVectorReg);
-+                tcg_gen_gvec_dup_imm_var(MO_64, t_za, o_za, svl, svl, 0);
-+            }
-+        }
++    if (count == 0) {
++        /*
++         * N = 0  !(first active)
++         * Z = 1  (none active)
++         * C = 1  !(not last active)
++         */
++        flags = 1;
++    } else if (!invert) {
++        /*
++         * N = 1  (first active)
++         * Z = 0  !(none active)
++         * C = ?  (not last active)
++         */
++        flags = (1u << 31) | 2;      /* N, Z */
++        flags |= count == elements;  /* C */
++    } else {
++        /*
++         * N = ?  (first active)
++         * Z = 0  !(none active)
++         * C = 0  !(not last active)
++         */
++        flags = 2;  /* Z, C */
++        flags |= (count == elements) << 31;  /* N */
 +    }
-+    return true;
++    return flags;
 +}
 +
- static bool do_mova_tile(DisasContext *s, arg_mova_p *a, bool to_vec)
+ uint32_t HELPER(sve_whilel)(void *vd, uint32_t count, uint32_t pred_desc)
  {
-     static gen_helper_gvec_4 * const h_fns[5] = {
-diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
-index 80fe02190c..d0dce75a0d 100644
---- a/target/arm/tcg/sme.decode
-+++ b/target/arm/tcg/sme.decode
-@@ -885,3 +885,26 @@ SEL             11000001 esz:2 1 ....0 100 ... ....0 ....0  \
-                 n=2 zd=%zd_ax2 zn=%zn_ax2 zm=%zm_ax2 pg=%sel_pg
- SEL             11000001 esz:2 1 ...01 100 ... ...00 ...00  \
-                 n=4 zd=%zd_ax4 zn=%zn_ax4 zm=%zm_ax4 pg=%sel_pg
+     intptr_t oprsz = FIELD_EX32(pred_desc, PREDDESC, OPRSZ);
+     intptr_t esz = FIELD_EX32(pred_desc, PREDDESC, ESZ);
+     uint64_t esz_mask = pred_esz_masks[esz];
+     ARMPredicateReg *d = vd;
+-    uint32_t flags;
+-    intptr_t i;
++    intptr_t i, oprbits = oprsz * 8;
 +
-+### SME Multiple Zero
++    tcg_debug_assert(count <= oprbits);
+ 
+     /* Begin with a zero predicate register.  */
+-    flags = do_zero(d, oprsz);
+-    if (count == 0) {
+-        return flags;
+-    }
++    do_zero(d, oprsz);
+ 
+     /* Set all of the requested bits.  */
+     for (i = 0; i < count / 64; ++i) {
+@@ -4125,7 +4155,7 @@ uint32_t HELPER(sve_whilel)(void *vd, uint32_t count, uint32_t pred_desc)
+         d->p[i] = MAKE_64BIT_MASK(0, count & 63) & esz_mask;
+     }
+ 
+-    return predtest_ones(d, oprsz, esz_mask);
++    return pred_count_test(oprbits, count, false);
+ }
+ 
+ uint32_t HELPER(sve_whileg)(void *vd, uint32_t count, uint32_t pred_desc)
+@@ -4134,16 +4164,15 @@ uint32_t HELPER(sve_whileg)(void *vd, uint32_t count, uint32_t pred_desc)
+     intptr_t esz = FIELD_EX32(pred_desc, PREDDESC, ESZ);
+     uint64_t esz_mask = pred_esz_masks[esz];
+     ARMPredicateReg *d = vd;
+-    intptr_t i, invcount, oprbits;
++    intptr_t i, invcount, oprbits = oprsz * 8;
+     uint64_t bits;
+ 
+-    if (count == 0) {
+-        return do_zero(d, oprsz);
+-    }
+-
+-    oprbits = oprsz * 8;
+     tcg_debug_assert(count <= oprbits);
+ 
++    /* Begin with a zero predicate register.  */
++    do_zero(d, oprsz);
 +
-+&zero_za        rv off ngrp nvec
-+
-+ZERO_za         11000000 000011 000 .. 0000000000 off:3 \
-+                &zero_za ngrp=2 nvec=1 rv=%mova_rv
-+ZERO_za         11000000 000011 100 .. 0000000000 off:3 \
-+                &zero_za ngrp=4 nvec=1 rv=%mova_rv
-+
-+ZERO_za         11000000 000011 001 .. 0000000000 ...   \
-+                &zero_za ngrp=1 nvec=2 rv=%mova_rv off=%off3_x2
-+ZERO_za         11000000 000011 010 .. 0000000000 0..   \
-+                &zero_za ngrp=2 nvec=2 rv=%mova_rv off=%off2_x2
-+ZERO_za         11000000 000011 011 .. 0000000000 0..   \
-+                &zero_za ngrp=4 nvec=2 rv=%mova_rv off=%off2_x2
-+
-+ZERO_za         11000000 000011 101 .. 0000000000 0..   \
-+                &zero_za ngrp=1 nvec=4 rv=%mova_rv off=%off2_x4
-+ZERO_za         11000000 000011 110 .. 0000000000 00.   \
-+                &zero_za ngrp=2 nvec=4 rv=%mova_rv off=%off1_x4
-+ZERO_za         11000000 000011 111 .. 0000000000 00.   \
-+                &zero_za ngrp=4 nvec=4 rv=%mova_rv off=%off1_x4
++    /* Set all of the requested bits.  */
+     bits = esz_mask;
+     if (oprbits & 63) {
+         bits &= MAKE_64BIT_MASK(0, oprbits & 63);
+@@ -4154,14 +4183,9 @@ uint32_t HELPER(sve_whileg)(void *vd, uint32_t count, uint32_t pred_desc)
+         d->p[i] = bits;
+         bits = esz_mask;
+     }
+-
+     d->p[i] = bits & MAKE_64BIT_MASK(invcount & 63, 64);
+ 
+-    while (--i >= 0) {
+-        d->p[i] = 0;
+-    }
+-
+-    return predtest_ones(d, oprsz, esz_mask);
++    return pred_count_test(oprbits, count, true);
+ }
+ 
+ /* Recursive reduction on a function;
 -- 
 2.43.0
 
