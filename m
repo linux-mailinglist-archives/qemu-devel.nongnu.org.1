@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3163AE2D43
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38315AE2D4D
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 01:59:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT82R-0002CU-Lu; Sat, 21 Jun 2025 19:54:23 -0400
+	id 1uT82z-00040r-JW; Sat, 21 Jun 2025 19:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82E-00020f-02
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:11 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1uT82H-00022w-9L
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:13 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT82A-0004u5-KB
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:08 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-748f5a4a423so1829658b3a.1
+ id 1uT82A-0004uP-TF
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 19:54:09 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-739b3fe7ce8so2101846b3a.0
  for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 16:54:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1750550045; x=1751154845; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fEE7C7n35S8bJ5u3EgumxTfAtwNM+J8UROeFiGVpH6w=;
- b=vVjWk02D50dsktlNB3KcUcHzuVyud9Fr4/3gpCpk9EV7U9vLjYEMvtEdXm4Tp4JXZw
- Dkceokt6Y538xenW8PnRAjLjH9USFjzJ/wDG7JRobTGFK6e99P2zFWwDa4vSAjJfZzDz
- H4AhLh3TTuf3iIyCgY4rlW46v0gh+gkWu6PV6/yjc8wqmIXHiM+Ejvj84bzeZFt4J0rz
- EIE4qf2hHppwMaOr1BkrlOR8q38FidqptyjesSSdaCv1mTAQAxaty6ceH+B2jOEojXd9
- qemg2dFgDOJr31DmpyYBIwl+OGiu1+sIK3GUyYY4EuiW6tDEZ4h5JlJCFXRWwsAx7azu
- qgeg==
+ :reply-to; bh=gZSLBhgJh7gyAPJ4SzRuq9SK6xpy7DpbA9oPtrsNHzU=;
+ b=rUUcSTVBR4PI0mBGUpcUflbONdPehYJIB3C2qedOU2hVbQ+MPcd0WZTyd2qP2zNyOJ
+ WGVs0lFuheMneIB3Inj6TVZqrWaEv0/dCeZipTiGkIAEGKPNNOuNI8Lx4LDM+8ZszZpZ
+ 6+//VbLGzILGpyDtzxrU3ZpSAsSKIXNLaBSgIsI2u1fyfqJx24ZG8MELfidpvuQl/ORt
+ hOyeN4Qx1Gu4+Qo2IdJ2RalMz6ZnazEeEYdQOABOHrEpIQkNi1tFGNMushkTlmGd3/3z
+ J9NnhqV7N++0MAUXiRv/mZqSTrsPyt4x2pk9SHUTbd2Wz4uqRTr0wWAfF/vsz7+wjz+j
+ U7ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750550045; x=1751154845;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fEE7C7n35S8bJ5u3EgumxTfAtwNM+J8UROeFiGVpH6w=;
- b=WK/T+r5KA0JCWQhxRqxHEPaA5p8iBrFfQVfPpIVzoLq+CnJEXO8uGlZadV+Igjdwcs
- Mb/7v0gIU76IYzdveXobK12MbmMEHpSZk1fSCK5UM9decYG58aVdC4nhBBwaRCYQy9JP
- OzZ7EN53tn1SzSeo3Z4aNwHyJ2EIip2TwaKdbWohCs7gKlVT5ejGm/WR19jx/xmaqFXM
- /g2zLv9vXvWMe0qGxPoeY+QfMcuU+ui7YrCRU6uItv9WhUtALusSIH1IrdKdUy5iL7c3
- yYVRTMxq52Go+qWyjkkgx2oy/PQ9gr1wHVVjngBHGWP58EHxxShwFtg6W3SRbk81zlIa
- 3XTQ==
-X-Gm-Message-State: AOJu0YyUssKhXGlKIgxNKYKtFw8YrXp23ahXV80ffJVxnAtZF9QYI2g1
- ZNkLG7r8Hao/TVsqF7e1nlE+9sG7IEfhAoSkdizFEO0XtTLJLNDS6p0s8amsK7sMgdXueqZ9SI1
- fZJ2iAOA=
-X-Gm-Gg: ASbGnctVGjvMxdDub/HxYCbxn15khBOwew8lZ80ksu/Ek6fIH3sUSz+ml4y5KUElZrl
- tRPIhpRQpBS1tskPcCIuAUvZ0/Fd8TqWWmWk4QjSda9icierKeAHUVbb6g2CyllfaH97/OEMGsE
- mjRAzAqv4kVE4xGrhQo5u1TugrprbLkN/5vEk6kjH/w28MdGyTRxuQyDyp705pl5XFRD5DNqsZs
- j0OPrfzCujFvLWCV1jOme+KwDwJo4H0jtzKnzfI1XlXNcayiwCxeoLC4XFnSIp857v6DikldIvs
- pc1sHRTpM+q1IzaSaGlTA2PJ60HsQBhYXCv6F55Gb0xDGhu6BqAASBt+5jW+qKC1iC94i87gU+v
- yBgiV4Wx8UJrnF1uAQ2gC
-X-Google-Smtp-Source: AGHT+IHyoW2XZZS7Rv7Z/jBYT4Y00rHwucWL2MP0D5c+C2DsuVhS6wb5YqNVNgcR0tULT0te0aKYwQ==
-X-Received: by 2002:a05:6a20:3948:b0:220:3a5:43e9 with SMTP id
- adf61e73a8af0-22026ef7865mr15418227637.32.1750550044940; 
- Sat, 21 Jun 2025 16:54:04 -0700 (PDT)
+ bh=gZSLBhgJh7gyAPJ4SzRuq9SK6xpy7DpbA9oPtrsNHzU=;
+ b=cTy3un1vot86+T28DsyeWu6rqL3XpID3eO6iH7I3E3G+MUYMvKvVCTl/F/rYtIoPlE
+ rgF/p5HZo4SoJZLJtUnTmOMZPUsTnu9bXFjHhaCm3RTSDlIAyquRQqndnDgNn4l6quk6
+ DXgFF7n+php5fjegUu+EQjRr+sp7IJNk0QAW5YFT6Ok6LLHTFBUH/4cFtIV9LY23KKx7
+ ue9R131NrdRW003IrD4qjFIC2qb7320BL/9V32jSb8jjkESylJPWwrMQUOI7BO49/sF5
+ 2gVXpQyl9FZdKhCtQYtG2ELPmyQOPlvkn+fxFYU/Zh843R3DVKNadgm0LLyseDDzngcS
+ Kehw==
+X-Gm-Message-State: AOJu0YwKrAQnOZBUfw9ix4bIfvj8tDn32au7cr0PV6gP5EbM9jDGZfA1
+ cd0YDlEoXv4Hx5BOktlK/z4EXpnP0ytD3p3Xt4mXU7tpX6ZQ/TsPSQBPR5Bg92kWrs7UNBURnQ8
+ tRO1jSLI=
+X-Gm-Gg: ASbGncvt1RFXG7nJvy2PG8sHWSSxu+0rTrDjPwfqlhmKmqh37tGVupVdfJFZpbHSY5Y
+ zv0MKkICvTtfLMmIxSqJ8+0orZMEj6faZPrqKUQxABHkeAad2GvMPiW68hHDulVpaYh5cTi1GOB
+ XQEhYsYBcJCtEWOhKCUmsiUeYIKhCJBHj9jZ0OxuAZO+C0VeI5mhCmeHWhM3XgBgs81c/bOM+4L
+ 17HmMXpp0W1stiPQUle+I3GvUARqo8U9EyIkEihqqoba2yxOLMf/lzBtpxUV87gqx6hdjYUvF5N
+ 9ZQdIOFA24S3BCmRCmgIdNgjaGh1rFw+GksQ77/va9I+4GMv0gWLG0asbI1/VJ26EIdsVofULvU
+ 4Q1TCcMx6ylicW36Pmq/l
+X-Google-Smtp-Source: AGHT+IF8FonP2Jnr/sK9zO8esNRCjnWS8dsGXIgQd9ASFZXHFW7sQteiFZMoINLdQ0aqBZv734c6hA==
+X-Received: by 2002:a05:6a20:729d:b0:21f:5409:32f4 with SMTP id
+ adf61e73a8af0-22026be01f0mr12517044637.8.1750550045550; 
+ Sat, 21 Jun 2025 16:54:05 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7490a46b590sm4970051b3a.27.2025.06.21.16.54.04
+ d2e1a72fcca58-7490a46b590sm4970051b3a.27.2025.06.21.16.54.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Jun 2025 16:54:04 -0700 (PDT)
+ Sat, 21 Jun 2025 16:54:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 040/101] target/arm: Implemement SME2 SDOT, UDOT, USDOT,
- SUDOT
-Date: Sat, 21 Jun 2025 16:49:36 -0700
-Message-ID: <20250621235037.74091-41-richard.henderson@linaro.org>
+Subject: [PATCH v2 041/101] target/arm: Rename SVE SDOT and UDOT patterns
+Date: Sat, 21 Jun 2025 16:49:37 -0700
+Message-ID: <20250621235037.74091-42-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250621235037.74091-1-richard.henderson@linaro.org>
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,287 +97,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Emphasize the 4-way nature of these dot products.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper.h        |  8 ++++
- target/arm/tcg/translate-sme.c | 85 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/vec_helper.c    | 51 ++++++++++++++++++++
- target/arm/tcg/sme.decode      | 63 ++++++++++++++++++++++++-
- 4 files changed, 206 insertions(+), 1 deletion(-)
+ target/arm/tcg/translate-sve.c | 12 ++++++------
+ target/arm/tcg/sve.decode      | 12 ++++++------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/target/arm/tcg/helper.h b/target/arm/tcg/helper.h
-index 2702627eab..fa44b34dd5 100644
---- a/target/arm/tcg/helper.h
-+++ b/target/arm/tcg/helper.h
-@@ -614,6 +614,9 @@ DEF_HELPER_FLAGS_5(gvec_sdot_4h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_udot_4h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_usdot_4b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 867acb36ec..20b73cd572 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -3395,18 +3395,18 @@ TRANS_FEAT(DOT_zzzz, aa64_sve, gen_gvec_ool_zzzz,
+  * SVE Multiply - Indexed
+  */
  
-+DEF_HELPER_FLAGS_5(gvec_sdot_2h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_5(gvec_udot_2h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-+
- DEF_HELPER_FLAGS_5(gvec_sdot_idx_4b, TCG_CALL_NO_RWG,
-                    void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_udot_idx_4b, TCG_CALL_NO_RWG,
-@@ -625,6 +628,11 @@ DEF_HELPER_FLAGS_5(gvec_udot_idx_4h, TCG_CALL_NO_RWG,
- DEF_HELPER_FLAGS_5(gvec_usdot_idx_4b, TCG_CALL_NO_RWG,
-                    void, ptr, ptr, ptr, ptr, i32)
+-TRANS_FEAT(SDOT_zzxw_s, aa64_sve, gen_gvec_ool_arg_zzxz,
++TRANS_FEAT(SDOT_zzxw_4s, aa64_sve, gen_gvec_ool_arg_zzxz,
+            gen_helper_gvec_sdot_idx_4b, a)
+-TRANS_FEAT(SDOT_zzxw_d, aa64_sve, gen_gvec_ool_arg_zzxz,
++TRANS_FEAT(SDOT_zzxw_4d, aa64_sve, gen_gvec_ool_arg_zzxz,
+            gen_helper_gvec_sdot_idx_4h, a)
+-TRANS_FEAT(UDOT_zzxw_s, aa64_sve, gen_gvec_ool_arg_zzxz,
++TRANS_FEAT(UDOT_zzxw_4s, aa64_sve, gen_gvec_ool_arg_zzxz,
+            gen_helper_gvec_udot_idx_4b, a)
+-TRANS_FEAT(UDOT_zzxw_d, aa64_sve, gen_gvec_ool_arg_zzxz,
++TRANS_FEAT(UDOT_zzxw_4d, aa64_sve, gen_gvec_ool_arg_zzxz,
+            gen_helper_gvec_udot_idx_4h, a)
  
-+DEF_HELPER_FLAGS_5(gvec_sdot_idx_2h, TCG_CALL_NO_RWG,
-+                   void, ptr, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_5(gvec_udot_idx_2h, TCG_CALL_NO_RWG,
-+                   void, ptr, ptr, ptr, ptr, i32)
-+
- DEF_HELPER_FLAGS_5(gvec_fcaddh, TCG_CALL_NO_RWG,
-                    void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(gvec_fcadds, TCG_CALL_NO_RWG,
-diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index 5d6fd4cd03..ea1aff004c 100644
---- a/target/arm/tcg/translate-sme.c
-+++ b/target/arm/tcg/translate-sme.c
-@@ -895,3 +895,88 @@ static bool trans_BFVDOT(DisasContext *s, arg_azx_n *a)
-                          a->idx, 2, false, FPST_ENV,
-                          gen_helper_sme2_bfvdot_idx);
- }
-+
-+/*
-+ * Expand array multi-vector single (n1), array multi-vector (nn),
-+ * and array multi-vector indexed (nx), for integer accumulate.
-+ *   multi: true for nn, false for n1.
-+ *   data: stuff for simd_data, including any index.
-+ */
-+static bool do_azz_acc(DisasContext *s, int nreg, int nsel,
-+                       int rv, int off, int zn, int zm,
-+                       int data, int shsel, bool multi,
-+                       gen_helper_gvec_4 *fn)
-+{
-+    if (sme_sm_enabled_check(s)) {
-+        int svl = streaming_vec_reg_size(s);
-+        int vstride = svl / nreg;
-+        TCGv_ptr t_za = get_zarray(s, rv, off, nreg);
-+        TCGv_ptr t = tcg_temp_new_ptr();
-+
-+        for (int r = 0; r < nreg; ++r) {
-+            TCGv_ptr t_zn = vec_full_reg_ptr(s, zn);
-+            TCGv_ptr t_zm = vec_full_reg_ptr(s, zm);
-+
-+            for (int i = 0; i < nsel; ++i) {
-+                int o_za = (r * vstride + i) * sizeof(ARMVectorReg);
-+                int desc = simd_desc(svl, svl, data | (i << shsel));
-+
-+                tcg_gen_addi_ptr(t, t_za, o_za);
-+                fn(t, t_zn, t_zm, t, tcg_constant_i32(desc));
-+            }
-+
-+            /*
-+             * For multiple-and-single vectors, Zn may wrap.
-+             * For multiple vectors, both Zn and Zm are aligned.
-+             */
-+            zn = (zn + 1) % 32;
-+            zm += multi;
-+        }
-+    }
-+    return true;
-+}
-+
-+static bool do_dot(DisasContext *s, arg_azz_n *a, bool multi,
-+                   gen_helper_gvec_4 *fn)
-+{
-+    return do_azz_acc(s, a->n, 1, a->rv, a->off, a->zn, a->zm,
-+                      0, 0, multi, fn);
-+}
-+
-+static void gen_helper_gvec_sudot_4b(TCGv_ptr d, TCGv_ptr n, TCGv_ptr m,
-+                                     TCGv_ptr a, TCGv_i32 desc)
-+{
-+    gen_helper_gvec_usdot_4b(d, m, n, a, desc);
-+}
-+
-+TRANS_FEAT(USDOT_n1, aa64_sme, do_dot, a, false, gen_helper_gvec_usdot_4b)
-+TRANS_FEAT(SUDOT_n1, aa64_sme, do_dot, a, false, gen_helper_gvec_sudot_4b)
-+TRANS_FEAT(SDOT_n1_2h, aa64_sme, do_dot, a, false, gen_helper_gvec_sdot_2h)
-+TRANS_FEAT(UDOT_n1_2h, aa64_sme, do_dot, a, false, gen_helper_gvec_udot_2h)
-+TRANS_FEAT(SDOT_n1_4b, aa64_sme, do_dot, a, false, gen_helper_gvec_sdot_4b)
-+TRANS_FEAT(UDOT_n1_4b, aa64_sme, do_dot, a, false, gen_helper_gvec_udot_4b)
-+TRANS_FEAT(SDOT_n1_4h, aa64_sme2_i16i64, do_dot, a, false, gen_helper_gvec_sdot_4h)
-+TRANS_FEAT(UDOT_n1_4h, aa64_sme2_i16i64, do_dot, a, false, gen_helper_gvec_udot_4h)
-+
-+TRANS_FEAT(USDOT_nn, aa64_sme, do_dot, a, true, gen_helper_gvec_usdot_4b)
-+TRANS_FEAT(SDOT_nn_2h, aa64_sme, do_dot, a, true, gen_helper_gvec_sdot_2h)
-+TRANS_FEAT(UDOT_nn_2h, aa64_sme, do_dot, a, true, gen_helper_gvec_udot_2h)
-+TRANS_FEAT(SDOT_nn_4b, aa64_sme, do_dot, a, true, gen_helper_gvec_sdot_4b)
-+TRANS_FEAT(UDOT_nn_4b, aa64_sme, do_dot, a, true, gen_helper_gvec_udot_4b)
-+TRANS_FEAT(SDOT_nn_4h, aa64_sme2_i16i64, do_dot, a, true, gen_helper_gvec_sdot_4h)
-+TRANS_FEAT(UDOT_nn_4h, aa64_sme2_i16i64, do_dot, a, true, gen_helper_gvec_udot_4h)
-+
-+static bool do_dot_nx(DisasContext *s, arg_azx_n *a, gen_helper_gvec_4 *fn)
-+{
-+    return do_azz_acc(s, a->n, 1, a->rv, a->off, a->zn, a->zm,
-+                      a->idx, 0, false, fn);
-+}
-+
-+TRANS_FEAT(USDOT_nx, aa64_sme, do_dot_nx, a, gen_helper_gvec_usdot_idx_4b)
-+TRANS_FEAT(SUDOT_nx, aa64_sme, do_dot_nx, a, gen_helper_gvec_sudot_idx_4b)
-+TRANS_FEAT(SDOT_nx_2h, aa64_sme, do_dot_nx, a, gen_helper_gvec_sdot_idx_2h)
-+TRANS_FEAT(UDOT_nx_2h, aa64_sme, do_dot_nx, a, gen_helper_gvec_udot_idx_2h)
-+TRANS_FEAT(SDOT_nx_4b, aa64_sme, do_dot_nx, a, gen_helper_gvec_sdot_idx_4b)
-+TRANS_FEAT(UDOT_nx_4b, aa64_sme, do_dot_nx, a, gen_helper_gvec_udot_idx_4b)
-+TRANS_FEAT(SDOT_nx_4h, aa64_sme2_i16i64, do_dot_nx, a, gen_helper_gvec_sdot_idx_4h)
-+TRANS_FEAT(UDOT_nx_4h, aa64_sme2_i16i64, do_dot_nx, a, gen_helper_gvec_udot_idx_4h)
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index 7904159d57..ce7f55bfc8 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -871,6 +871,57 @@ DO_DOT_IDX(gvec_usdot_idx_4b, int32_t, uint8_t, int8_t, H4)
- DO_DOT_IDX(gvec_sdot_idx_4h, int64_t, int16_t, int16_t, H8)
- DO_DOT_IDX(gvec_udot_idx_4h, uint64_t, uint16_t, uint16_t, H8)
+-TRANS_FEAT(SUDOT_zzxw_s, aa64_sve_i8mm, gen_gvec_ool_arg_zzxz,
++TRANS_FEAT(SUDOT_zzxw_4s, aa64_sve_i8mm, gen_gvec_ool_arg_zzxz,
+            gen_helper_gvec_sudot_idx_4b, a)
+-TRANS_FEAT(USDOT_zzxw_s, aa64_sve_i8mm, gen_gvec_ool_arg_zzxz,
++TRANS_FEAT(USDOT_zzxw_4s, aa64_sve_i8mm, gen_gvec_ool_arg_zzxz,
+            gen_helper_gvec_usdot_idx_4b, a)
  
-+#undef DO_DOT
-+#undef DO_DOT_IDX
-+
-+/* Similar for 2-way dot product */
-+#define DO_DOT(NAME, TYPED, TYPEN, TYPEM) \
-+void HELPER(NAME)(void *vd, void *vn, void *vm, void *va, uint32_t desc)  \
-+{                                                                         \
-+    intptr_t i, opr_sz = simd_oprsz(desc);                                \
-+    TYPED *d = vd, *a = va;                                               \
-+    TYPEN *n = vn;                                                        \
-+    TYPEM *m = vm;                                                        \
-+    for (i = 0; i < opr_sz / sizeof(TYPED); ++i) {                        \
-+        d[i] = (a[i] +                                                    \
-+                (TYPED)n[i * 2 + 0] * m[i * 2 + 0] +                      \
-+                (TYPED)n[i * 2 + 1] * m[i * 2 + 1]);                      \
-+    }                                                                     \
-+    clear_tail(d, opr_sz, simd_maxsz(desc));                              \
-+}
-+
-+#define DO_DOT_IDX(NAME, TYPED, TYPEN, TYPEM, HD) \
-+void HELPER(NAME)(void *vd, void *vn, void *vm, void *va, uint32_t desc)  \
-+{                                                                         \
-+    intptr_t i = 0, opr_sz = simd_oprsz(desc);                            \
-+    intptr_t opr_sz_n = opr_sz / sizeof(TYPED);                           \
-+    intptr_t segend = MIN(16 / sizeof(TYPED), opr_sz_n);                  \
-+    intptr_t index = simd_data(desc);                                     \
-+    TYPED *d = vd, *a = va;                                               \
-+    TYPEN *n = vn;                                                        \
-+    TYPEM *m_indexed = (TYPEM *)vm + HD(index) * 2;                       \
-+    do {                                                                  \
-+        TYPED m0 = m_indexed[i * 2 + 0];                                  \
-+        TYPED m1 = m_indexed[i * 2 + 1];                                  \
-+        do {                                                              \
-+            d[i] = (a[i] +                                                \
-+                    n[i * 4 + 0] * m0 +                                   \
-+                    n[i * 4 + 1] * m1);                                   \
-+        } while (++i < segend);                                           \
-+        segend = i + (16 / sizeof(TYPED));                                \
-+    } while (i < opr_sz_n);                                               \
-+    clear_tail(d, opr_sz, simd_maxsz(desc));                              \
-+}
-+
-+DO_DOT(gvec_sdot_2h, int32_t, int16_t, int16_t)
-+DO_DOT(gvec_udot_2h, uint32_t, uint16_t, uint16_t)
-+
-+DO_DOT_IDX(gvec_sdot_idx_2h, int32_t, int16_t, int16_t, H4)
-+DO_DOT_IDX(gvec_udot_idx_2h, uint32_t, uint16_t, uint16_t, H4)
-+
-+#undef DO_DOT
-+#undef DO_DOT_IDX
-+
- void HELPER(gvec_fcaddh)(void *vd, void *vn, void *vm,
-                          float_status *fpst, uint32_t desc)
- {
-diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
-index 7c057bcad2..338637decd 100644
---- a/target/arm/tcg/sme.decode
-+++ b/target/arm/tcg/sme.decode
-@@ -291,6 +291,26 @@ FDOT_n1         11000001 001 1 .... 0 .. 100 ..... 00 ...   @azz_nx1_o3 n=4
- BFDOT_n1        11000001 001 0 .... 0 .. 100 ..... 10 ...   @azz_nx1_o3 n=2
- BFDOT_n1        11000001 001 1 .... 0 .. 100 ..... 10 ...   @azz_nx1_o3 n=4
+ #define DO_SVE2_RRX(NAME, FUNC) \
+diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
+index 3a0ee429a8..bd06a1bdf0 100644
+--- a/target/arm/tcg/sve.decode
++++ b/target/arm/tcg/sve.decode
+@@ -851,10 +851,10 @@ CDOT_zzzz       01000100 esz:2 0 rm:5 0001 rot:2 rn:5 rd:5  ra=%reg_movprfx
+ #### SVE Multiply - Indexed
  
-+USDOT_n1        11000001 001 0 .... 0 .. 101 ..... 01 ...   @azz_nx1_o3 n=2
-+USDOT_n1        11000001 001 1 .... 0 .. 101 ..... 01 ...   @azz_nx1_o3 n=4
-+
-+SUDOT_n1        11000001 001 0 .... 0 .. 101 ..... 11 ...   @azz_nx1_o3 n=2
-+SUDOT_n1        11000001 001 1 .... 0 .. 101 ..... 11 ...   @azz_nx1_o3 n=4
-+
-+SDOT_n1_4b      11000001 001 0 .... 0 .. 101 ..... 00 ...   @azz_nx1_o3 n=2
-+SDOT_n1_4b      11000001 001 1 .... 0 .. 101 ..... 00 ...   @azz_nx1_o3 n=4
-+SDOT_n1_4h      11000001 011 0 .... 0 .. 101 ..... 00 ...   @azz_nx1_o3 n=2
-+SDOT_n1_4h      11000001 011 1 .... 0 .. 101 ..... 00 ...   @azz_nx1_o3 n=4
-+SDOT_n1_2h      11000001 011 0 .... 0 .. 101 ..... 01 ...   @azz_nx1_o3 n=2
-+SDOT_n1_2h      11000001 011 1 .... 0 .. 101 ..... 01 ...   @azz_nx1_o3 n=4
-+
-+UDOT_n1_4b      11000001 001 0 .... 0 .. 101 ..... 10 ...   @azz_nx1_o3 n=2
-+UDOT_n1_4b      11000001 001 1 .... 0 .. 101 ..... 10 ...   @azz_nx1_o3 n=4
-+UDOT_n1_4h      11000001 011 0 .... 0 .. 101 ..... 10 ...   @azz_nx1_o3 n=2
-+UDOT_n1_4h      11000001 011 1 .... 0 .. 101 ..... 10 ...   @azz_nx1_o3 n=4
-+UDOT_n1_2h      11000001 011 0 .... 0 .. 101 ..... 11 ...   @azz_nx1_o3 n=2
-+UDOT_n1_2h      11000001 011 1 .... 0 .. 101 ..... 11 ...   @azz_nx1_o3 n=4
-+
- ### SME2 Multi-vector Multiple Array Vectors
+ # SVE integer dot product (indexed)
+-SDOT_zzxw_s     01000100 10 1 ..... 000000 ..... .....   @rrxr_2 esz=2
+-SDOT_zzxw_d     01000100 11 1 ..... 000000 ..... .....   @rrxr_1 esz=3
+-UDOT_zzxw_s     01000100 10 1 ..... 000001 ..... .....   @rrxr_2 esz=2
+-UDOT_zzxw_d     01000100 11 1 ..... 000001 ..... .....   @rrxr_1 esz=3
++SDOT_zzxw_4s    01000100 10 1 ..... 000000 ..... .....   @rrxr_2 esz=2
++SDOT_zzxw_4d    01000100 11 1 ..... 000000 ..... .....   @rrxr_1 esz=3
++UDOT_zzxw_4s    01000100 10 1 ..... 000001 ..... .....   @rrxr_2 esz=2
++UDOT_zzxw_4d    01000100 11 1 ..... 000001 ..... .....   @rrxr_1 esz=3
  
- %zn_ax2         6:4 !function=times_2
-@@ -334,6 +354,23 @@ FDOT_nn         11000001 101 ...01 0 .. 100 ...00 00 ...    @azz_4x4_o3
- BFDOT_nn        11000001 101 ....0 0 .. 100 ....0 10 ...    @azz_2x2_o3
- BFDOT_nn        11000001 101 ...01 0 .. 100 ...00 10 ...    @azz_4x4_o3
+ # SVE2 integer multiply-add (indexed)
+ MLA_zzxz_h      01000100 0. 1 ..... 000010 ..... .....   @rrxr_3 esz=1
+@@ -873,8 +873,8 @@ SQRDMLSH_zzxz_s 01000100 10 1 ..... 000101 ..... .....   @rrxr_2 esz=2
+ SQRDMLSH_zzxz_d 01000100 11 1 ..... 000101 ..... .....   @rrxr_1 esz=3
  
-+USDOT_nn        11000001 101 ....0 0 .. 101 ....0 01 ...    @azz_2x2_o3
-+USDOT_nn        11000001 101 ...01 0 .. 101 ...00 01 ...    @azz_4x4_o3
-+
-+SDOT_nn_4b      11000001 101 ....0 0 .. 101 ....0 00 ...    @azz_2x2_o3
-+SDOT_nn_4b      11000001 101 ...01 0 .. 101 ...00 00 ...    @azz_4x4_o3
-+SDOT_nn_4h      11000001 111 ....0 0 .. 101 ....0 00 ...    @azz_2x2_o3
-+SDOT_nn_4h      11000001 111 ...01 0 .. 101 ...00 00 ...    @azz_4x4_o3
-+SDOT_nn_2h      11000001 111 ....0 0 .. 101 ....0 01 ...    @azz_2x2_o3
-+SDOT_nn_2h      11000001 111 ...01 0 .. 101 ...00 01 ...    @azz_4x4_o3
-+
-+UDOT_nn_4b      11000001 101 ....0 0 .. 101 ....0 10 ...    @azz_2x2_o3
-+UDOT_nn_4b      11000001 101 ...01 0 .. 101 ...00 10 ...    @azz_4x4_o3
-+UDOT_nn_4h      11000001 111 ....0 0 .. 101 ....0 10 ...    @azz_2x2_o3
-+UDOT_nn_4h      11000001 111 ...01 0 .. 101 ...00 10 ...    @azz_4x4_o3
-+UDOT_nn_2h      11000001 111 ....0 0 .. 101 ....0 11 ...    @azz_2x2_o3
-+UDOT_nn_2h      11000001 111 ...01 0 .. 101 ...00 11 ...    @azz_4x4_o3
-+
- ### SME2 Multi-vector Indexed
+ # SVE mixed sign dot product (indexed)
+-USDOT_zzxw_s    01000100 10 1 ..... 000110 ..... .....   @rrxr_2 esz=2
+-SUDOT_zzxw_s    01000100 10 1 ..... 000111 ..... .....   @rrxr_2 esz=2
++USDOT_zzxw_4s   01000100 10 1 ..... 000110 ..... .....   @rrxr_2 esz=2
++SUDOT_zzxw_4s   01000100 10 1 ..... 000111 ..... .....   @rrxr_2 esz=2
  
- &azx_n          n off rv zn zm idx
-@@ -367,7 +404,11 @@ BFMLSL_nx       11000001 1001 .... 1 .. 1 .. ...00 11 ...   @azx_4x1_o2x2
- @azx_2x1_i2_o3  ........ .... zm:4 . .. . idx:2 .... ... off:3 \
-                 &azx_n n=2 rv=%mova_rv zn=%zn_ax2
- @azx_4x1_i2_o3  ........ .... zm:4 . .. . idx:2 .... ... off:3 \
--                &azx_n n=2 rv=%mova_rv zn=%zn_ax4
-+                &azx_n n=4 rv=%mova_rv zn=%zn_ax4
-+@azx_2x1_i1_o3  ........ .... zm:4 . .. .. idx:1 .... ... off:3 \
-+                &azx_n n=2 rv=%mova_rv zn=%zn_ax2
-+@azx_4x1_i1_o3  ........ .... zm:4 . .. .. idx:1 .... ... off:3 \
-+                &azx_n n=4 rv=%mova_rv zn=%zn_ax4
- 
- FDOT_nx         11000001 0101 .... 0 .. 1 .. ....0 01 ...   @azx_2x1_i2_o3
- FDOT_nx         11000001 0101 .... 1 .. 1 .. ...00 01 ...   @azx_4x1_i2_o3
-@@ -377,3 +418,23 @@ BFDOT_nx        11000001 0101 .... 1 .. 1 .. ...00 11 ...   @azx_4x1_i2_o3
- 
- FVDOT           11000001 0101 .... 0 .. 0 .. ....0 01 ...   @azx_2x1_i2_o3
- BFVDOT          11000001 0101 .... 0 .. 0 .. ....0 11 ...   @azx_2x1_i2_o3
-+
-+SDOT_nx_2h      11000001 0101 .... 0 .. 1 .. ....0 00 ...   @azx_2x1_i2_o3
-+SDOT_nx_2h      11000001 0101 .... 1 .. 1 .. ...00 00 ...   @azx_4x1_i2_o3
-+SDOT_nx_4b      11000001 0101 .... 0 .. 1 .. ....1 00 ...   @azx_2x1_i2_o3
-+SDOT_nx_4b      11000001 0101 .... 1 .. 1 .. ...01 00 ...   @azx_4x1_i2_o3
-+SDOT_nx_4h      11000001 1101 .... 0 .. 00 . ....0 01 ...   @azx_2x1_i1_o3
-+SDOT_nx_4h      11000001 1101 .... 1 .. 00 . ...00 01 ...   @azx_4x1_i1_o3
-+
-+UDOT_nx_2h      11000001 0101 .... 0 .. 1 .. ....0 10 ...   @azx_2x1_i2_o3
-+UDOT_nx_2h      11000001 0101 .... 1 .. 1 .. ...00 10 ...   @azx_4x1_i2_o3
-+UDOT_nx_4b      11000001 0101 .... 0 .. 1 .. ....1 10 ...   @azx_2x1_i2_o3
-+UDOT_nx_4b      11000001 0101 .... 1 .. 1 .. ...01 10 ...   @azx_4x1_i2_o3
-+UDOT_nx_4h      11000001 1101 .... 0 .. 00 . ....0 11 ...   @azx_2x1_i1_o3
-+UDOT_nx_4h      11000001 1101 .... 1 .. 00 . ...00 11 ...   @azx_4x1_i1_o3
-+
-+USDOT_nx        11000001 0101 .... 0 .. 1 .. ....1 01 ...   @azx_2x1_i2_o3
-+USDOT_nx        11000001 0101 .... 1 .. 1 .. ...01 01 ...   @azx_4x1_i2_o3
-+
-+SUDOT_nx        11000001 0101 .... 0 .. 1 .. ....1 11 ...   @azx_2x1_i2_o3
-+SUDOT_nx        11000001 0101 .... 1 .. 1 .. ...01 11 ...   @azx_4x1_i2_o3
+ # SVE2 saturating multiply-add (indexed)
+ SQDMLALB_zzxw_s 01000100 10 1 ..... 0010.0 ..... .....   @rrxr_3a esz=2
 -- 
 2.43.0
 
