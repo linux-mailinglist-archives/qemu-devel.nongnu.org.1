@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9246EAE2DE4
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 03:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2AFAE2DE5
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 03:49:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uT9nD-0000ut-Vj; Sat, 21 Jun 2025 21:46:47 -0400
+	id 1uT9px-0002oH-TY; Sat, 21 Jun 2025 21:49:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT9nB-0000uU-Gm
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 21:46:45 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1uT9pw-0002o8-Un
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 21:49:36 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uT9nA-0004NO-3Z
- for qemu-devel@nongnu.org; Sat, 21 Jun 2025 21:46:45 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-747e41d5469so3174991b3a.3
- for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 18:46:43 -0700 (PDT)
+ id 1uT9pv-0004Vn-1K
+ for qemu-devel@nongnu.org; Sat, 21 Jun 2025 21:49:36 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-23602481460so26801595ad.0
+ for <qemu-devel@nongnu.org>; Sat, 21 Jun 2025 18:49:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750556803; x=1751161603; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750556973; x=1751161773; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=i3AcVeavouZy/xtvabJOaNet5h/MsugBbtcJnXkg8fA=;
- b=xv3LRSYa+JHbMUXFk8P3zI2Y7ioVJ/WGA3xKTW+KEMG8gc0C/MDwILI1FxH6tt4+Dc
- 6SoKFd7dbScNKbFJ59DMsnEuZwRPMulf1Hj0Pr/GJIB9dawQKQq1JyC01FXuJd7sv+tb
- +gr93PhsZYoDuXFNyuvuQlIdO5Yq15v7mW0FX1paiFhbA+N1IGxn/0TqQ/NRdpAdnjYt
- Rp/+XD4RwIQrvFwsvwVPfunitK/YlTYEsWeH9YBtiSPZ3uwgYrbocDPq5dOvfMF7vm2q
- uEzEgBquC4orSaSK+Yb35IcbX2xoBitPl4S+iQ/sLhS3CmdpZNLpe3/zxJiN8BGYFIff
- x5vg==
+ bh=EwZDLw9ht2YbOsBYuiu/Zn7Mgtun6ZqJR/Etn1hwXYk=;
+ b=kAmzi73kFM6fMVTMPSZUjukOsA4JI79Fnd+0eKoTkWpNrT/r2bUqOyL8wwkFCiNi3F
+ aqVKlUZHj6vnX7UETqqCWmG1U8qnEHGmPwDXAe+v0Es/Wcesh6uRR5MCkhePsb5uqeSC
+ lznn+Lbyi9oRaxK7ABhMD2ldnEl6U0QhCtxr66JyI5FyUFTMwdPAbrNjVTX8iu3DKpXk
+ S9f187amWs5JS2GQfVi238YkKqfygGdeWKdYYAlRDyrhOd1lg2VejLbRPseHbXce7xlt
+ UKH7/eNYlmZnF4yyCF/NuyFvKMn/wRyG4Zt5Vb1z4Iob1TsrNqKrVN60mKnWRixGOA/o
+ 1f5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750556803; x=1751161603;
+ d=1e100.net; s=20230601; t=1750556973; x=1751161773;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i3AcVeavouZy/xtvabJOaNet5h/MsugBbtcJnXkg8fA=;
- b=TeCm0OAWhzDTzZ2zxrJP8IhQj16W7TWFEwIGX3G69CroQpoFWK1OdDmle6fI1TtA/H
- 7etJwkkNhYfK/0iALiHjNow70eEgOJAQF9ALTP+zWIuKC6V24SmxG3dymZ/X45D+4RWd
- 4CduRLL2dfRg+x7ZU0+PzLFJMI33Xzbcdnh4faubBn95NJVjFF8Np2bW3Jt24UU5uL1m
- bOjUVH6uOFMqaCA6Udm5xQ1dIKjRd5iNbMRcskR9fjpLLTfrV6EkaYsVeOEHB5L0AULH
- w+Q+e960kCW5gwLF9xq74EP/7feMK8QcWnu85z9mppkxy+odqcbxXCBdneZRnAflBbI3
- 78Aw==
+ bh=EwZDLw9ht2YbOsBYuiu/Zn7Mgtun6ZqJR/Etn1hwXYk=;
+ b=aBFdMbcPk/0v69dizG9AlWDx+lCXsSMjan9zJOFu/vnt491X1Wb1No6jisIP+H11O/
+ bVm9ae9qR9oru72c6NBAPtq8bZiu3PRrLWjpXn98NThew5tpG+BxRV88RqQVA9myxHnJ
+ X79C00je8mjYIh7LMOTqGabUSwWU1LxvhoQB+mjEnN6jCANFEHZA/rqYRINfTEP74hLL
+ abiDewp2ECSKEtNzzw3hAGreWVn/7fJhKeA7Rqmqx6v4wbcXFbE30ZDpRrSZEg+5jvmq
+ GZ2FsmBTngPQv+pjTSO/d4TOaF3iweJg9p+fyu53aBMB/DI/O4pB6gxXGoBa2AdVP0y4
+ J/IA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVv57SuKx40O55EB/9cJMWFavYq1l5zl/BvusziZRat3P+E8INDCmy9WwOsjBFiTQnLQE43ZGkgrZtR@nongnu.org
-X-Gm-Message-State: AOJu0Yy4PJE/OoFC9kEp9hKZGdb8kYakHP6s8GnA/aqW8U0woQ1dmS09
- KUzukhAS/I0+R0jgAnv7TtVe/q+Lval4NVPSM27F2LeIA6EsEXwettgD6s/ZZ1bmJCsUg+hE9xF
- KGJzNi4c=
-X-Gm-Gg: ASbGncufUZdTq9+asDIUw4pa+bxIUKW74vH++mLXc2iyZyWn6cG5NCzclPM6S/q7wen
- VF5twFNowM/+HHdKRPslFt8fKgSrNKGBY4JAJQtP1xBu7VCOzy9Om6IDvZw8A2jWJaSvffcILOh
- b7fQzGaDDE/Vp7XAFIBtbX3t4ZqQnrk9eYYeTEpnjSUuOl4eMJpeRmw0CBmNzWoJ99nYiXdG3PC
- QvdhiIBBjKdo9kEPQ7bNw3C5FUj1BWgb/VA67s8K/Fq8NcqEoxnhGflkj+DclX89ajO5oXHNpeT
- u4EQL5uRDiSXu+Cdgr5EhhggoQG+O2/zCEvrWnFVGp6OflwBqYEUJmvFhN84bR8XHnEeOsJBeqr
- X1sSi8y1yp6bwDwwqBqjvwvHqrojjvRhWznltsoQ=
-X-Google-Smtp-Source: AGHT+IECnXGewTfRGbRuWMvriD3nYa3uaNvRrH82X4E7liSyfPZ1taEBmH88zOzIX37odG6K/X+DXA==
-X-Received: by 2002:a05:6a00:1914:b0:747:ee09:1fd2 with SMTP id
- d2e1a72fcca58-7490d630890mr11714826b3a.12.1750556802702; 
- Sat, 21 Jun 2025 18:46:42 -0700 (PDT)
+ AJvYcCUV+ATqMDIw/I/NMRjBMB2b9NDwZnzSuRA3zUGVH7s4KmECcN5U0mJ27C8L8BGE/VOZcuk0x6xcwS7g@nongnu.org
+X-Gm-Message-State: AOJu0Yxi1F7RFoSWMJLA+U72HYMJWrb8z45utH+/s0yu+nEG0u4Ovmhr
+ oisBIdTcGCi7hp+8s3UHDSwRAd2eHFthOZKNCcCAmpBvboPPxAuwIznlhEJVpwRdSpc=
+X-Gm-Gg: ASbGncsYccDxqdk27QETIR8WWYOCiUnW7iT9McFwwOz0YesNAfIhTTKKBwhXAts8QmD
+ gnGgmvnoib33M7Udq8lghNkIrUd40TMrD8pDmE0wAfUwCTfjoo6JCF0EsSS1smjUClq9HzeK5Av
+ yg9JZ4eWMHozmupLYnPZxZkT266cGXun/6T3LJ+TIDGO/kgIA5n1iJUUItNRZ928f1PBy5Yw0ny
+ pieCUE9/R61L5y0e/IRapQY2lq2FAJKRRNlPXh0/uD7SdsEgRORDy4FosUJcywdyESUPdiZc7i0
+ xJbfJ5yvEYGW8hIo+I/Jgx3yOemRnEsdc4ytRPT6svBWwVuk2I23PqkMTy3EsnKxav/4nkR8xGw
+ Kn09o7lhimYdCpcQcjquwzOhIxYM9
+X-Google-Smtp-Source: AGHT+IEBXvTex53x17/89M9aaV/vlLxwGtd0ehjiZ/xGAMFiEJoOtmIYaO3ZnBrelNwOzMt92hveXg==
+X-Received: by 2002:a17:902:f647:b0:236:7333:f183 with SMTP id
+ d9443c01a7336-237d9871fa9mr123574605ad.19.1750556973532; 
+ Sat, 21 Jun 2025 18:49:33 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7490a49ea32sm5274838b3a.60.2025.06.21.18.46.42
+ d9443c01a7336-237d86101ebsm50997505ad.113.2025.06.21.18.49.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 21 Jun 2025 18:46:42 -0700 (PDT)
-Message-ID: <8ee00533-a25f-4e2a-8706-bc3a8f562d69@linaro.org>
-Date: Sat, 21 Jun 2025 18:46:41 -0700
+ Sat, 21 Jun 2025 18:49:33 -0700 (PDT)
+Message-ID: <4dbe33a2-b30f-46a3-87e2-a8eb797c81bf@linaro.org>
+Date: Sat, 21 Jun 2025 18:49:31 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 26/48] accel/system: Document
- cpu_synchronize_state_post_init/reset()
+Subject: Re: [RFC PATCH v2 28/48] accel/dummy: Factor
+ tcg_vcpu_thread_precreate() out
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20250620171342.92678-1-philmd@linaro.org>
- <20250620171342.92678-27-philmd@linaro.org>
+ <20250620171342.92678-29-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250620171342.92678-27-philmd@linaro.org>
+In-Reply-To: <20250620171342.92678-29-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,30 +104,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/20/25 10:13, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/system/accel-ops.h | 8 ++++++++
->   1 file changed, 8 insertions(+)
+> Factor tcg_vcpu_thread_precreate() out for re-use.
 > 
-> diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
-> index f40098c1c92..b1b9dce27d0 100644
-> --- a/include/system/accel-ops.h
-> +++ b/include/system/accel-ops.h
-> @@ -43,6 +43,14 @@ struct AccelOpsClass {
->       void (*kick_vcpu_thread)(CPUState *cpu);
->       bool (*cpu_thread_is_idle)(CPUState *cpu);
->   
-> +    /**
-> +     * synchronize_post_reset:
-> +     * synchronize_post_init:
-> +     * @cpu: The vCPU to synchronize.
-> +     *
-> +     * Request to synchronize QEMU vCPU registers to the hardware accelerator
-> +     * (QEMU is the reference).
-> +     */
->       void (*synchronize_post_reset)(CPUState *cpu);
->       void (*synchronize_post_init)(CPUState *cpu);
->       /**
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   accel/tcg/tcg-accel-ops.h       | 1 +
+>   accel/tcg/tcg-accel-ops-mttcg.c | 3 +--
+>   accel/tcg/tcg-accel-ops-rr.c    | 3 +--
+>   accel/tcg/tcg-accel-ops.c       | 7 +++++++
+>   4 files changed, 10 insertions(+), 4 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
