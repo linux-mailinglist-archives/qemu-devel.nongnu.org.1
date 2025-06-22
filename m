@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6599EAE321C
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 22:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64424AE3272
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 23:36:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTRhj-0002Fa-Gd; Sun, 22 Jun 2025 16:54:19 -0400
+	id 1uTSLR-0007SF-7o; Sun, 22 Jun 2025 17:35:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uTRhg-0002FI-42
- for qemu-devel@nongnu.org; Sun, 22 Jun 2025 16:54:16 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1uTSLL-0007Qh-EN
+ for qemu-devel@nongnu.org; Sun, 22 Jun 2025 17:35:15 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uTRhe-0008Dd-Nk
- for qemu-devel@nongnu.org; Sun, 22 Jun 2025 16:54:15 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-b3182c6d03bso4169183a12.0
- for <qemu-devel@nongnu.org>; Sun, 22 Jun 2025 13:54:07 -0700 (PDT)
+ id 1uTSLI-00058v-P2
+ for qemu-devel@nongnu.org; Sun, 22 Jun 2025 17:35:13 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-747fba9f962so2598659b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Jun 2025 14:35:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750625647; x=1751230447; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YZckxj0XXhWUaGy4NvMc4tGfkjutE2z/XM3wOKKH5eQ=;
- b=YTr24SNqT4LYSXRxFfi8zM8Xblh60hVKp9rySjTdPvBWR5+FkFJKVmY6D1QL/M9G7r
- /HZWW2VeUTx5HW3Z/5/WN2gtLWuahQWJu3FaV/NfSie7IKzkPN4RJH+fXgf19rWS0V0x
- AbjQ7OD92RIqk6u3m2TysdIIpDCDjzvFIVOC9uDjALyUKN1foF2wsP4iRht+MYmg3XxT
- AmrKyHrkIYlnK3Tt/tagTMJwbJWWHk4O0Khbp+RfMCn01bBSvvE5wvqPzQ54vXMn4mNC
- cGf+4nzMeKB7DQRDsnkY0GlBagajnWWT0qZ0SNy27422l9DWUxvizt5tJfTxEffXex3k
- 83Nw==
+ d=linaro.org; s=google; t=1750628110; x=1751232910; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=25BK3mEW4G1zMeuhH0wNV8gaIgnu+hHyrT3N/EdWX7c=;
+ b=BHlh2FwPIExKCtw4oC2Afb3P+BSnnbPTJAAt7TTnl8UWX6FFSNqDJUYgJ6LXYYigj3
+ 7V7AUMP2Gc3hR3YTiwuGCEhJiX81XgP5VRO/B/cNdvTURgarTD0fHgZ6vcLhsDnbYZ72
+ iQd/sNLx6HYMoa/uoPMoISfs+iSOdnCBBGYCAr3nNCN/jDnuWsiZXaewAzu04YEa1o2E
+ ZCyrYBjfPERACRUvJ9yDL7v29bXxAKMWidnZzmfsmk+HhhjagMmk/gb6N6e12hzr3dBd
+ zdb5hdOGmUlMEzO7SISc8NvJHRKb306XXRk832OqYEtGkOr9rQ/Ag5pKfLVxyQsDeCpv
+ NEQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750625647; x=1751230447;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YZckxj0XXhWUaGy4NvMc4tGfkjutE2z/XM3wOKKH5eQ=;
- b=GFE3EJdYKiPmw2YXLvdsKLCLVuqsMxxwToWyXWiHp+gxmApGb6VLDAf4ZWJgx3wOMa
- 1FZODilz3u3gNDHdtJHWBYmEK6nj8cOvMY/gSbuTI/SBCdfYJHLsySYuBCZGq0e6lTNJ
- erJpejTJFt90QBN7SijZE+Tr8kxq+uJ9TUSTazZhuvlDzwFz3apZ0OWYLDjLllJ6okEN
- 6vzALcIImyWTGEmEh/WMLaOodzbiIkI+Cg1BrGDBJSTOmTy91WAhC2dgvzOVSXUUcalB
- vE9YKw5eg7Pp0ruhcEH94Z4qP1ADf7uBLsXMw8rnK4DjBBRwPJmGj2wFNYnoAoCR/h7k
- hLUA==
-X-Gm-Message-State: AOJu0Yyf07lr2IrBI889hUmf8YZhmvawcSvugFgCo1Vyp7xu4fPeuBxj
- oQ3gQI1/oHvbhb5epCwlwDKk/4+iNcoG2L0KlVX5WNS6b+Dimko4/GJ3rDwCmBDo5lmm7PAPBjo
- q074eXG4=
-X-Gm-Gg: ASbGncty7VlgGUzrnId80RCb1Bj1lDkKoat3kzxXajADQbbSwz3sZ6hGrB2f67Dzzoo
- XzkuWFHTRzQ+dgM+rmmCJ5P4s8wZm2wBNtX+HhzsZwTkhotCv1GXcVSeGf/V7YqmgDEVmAGkH4w
- P6yV6fFuKk6LLJ2cEsdvVZp8mczuCjXkt1TxFnRBGicegggozJLHTFaKHJvrS65ACJm/T3+UZM9
- qME3Jt++/1fhYYj6ssgBSM0M+p6d6H0BSMRoc0HOz7r10J+aoLFcdiNWJPm8LXZ9knwHnj4msuB
- UpZkG68DKFDp54lUZapim8eoS+4saWCRZ5GGzI9S7QrRpqiGF18ykzUuZqJw4z2dRAArwkyes/n
- Cl30oPeQxAoih3DayEbMgmLURBk8N
-X-Google-Smtp-Source: AGHT+IE8BdogXDX8TICc/AhZ4I8QCQ9jNadn/FAMqZvh8ZHYLKKDPEStF02b4kyHuEBQ4KDMPbthag==
-X-Received: by 2002:a05:6a21:1587:b0:1f5:6e71:e55 with SMTP id
- adf61e73a8af0-22026d33126mr16909262637.6.1750625646685; 
- Sun, 22 Jun 2025 13:54:06 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-67-243.tukw.qwest.net. [174.21.67.243])
+ d=1e100.net; s=20230601; t=1750628110; x=1751232910;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=25BK3mEW4G1zMeuhH0wNV8gaIgnu+hHyrT3N/EdWX7c=;
+ b=Cw1ic+HBQmMEqWUzNOSKj6pd8ASRzQ6GZ9TWRTvL0MrE86Y+2o/TNo7nGgDlmub0ni
+ vYxz5t9aRiyEbkVQd2Rz+RwYsrur8Ik5xQ28gem1TelgJUWrzk4bX1aLufSaSUF0NDF4
+ qMkm9Zho6wTzPoi/udqX1tSAn/ahHTW8PKyoTsLHEbZG6aNR3Ul934gF++qaMbJkpmUJ
+ +pJ5sHFUaH09oB8jXvaXDbkf0ANFRhS8/khTgm3xy9yyWKLc09PHjPemGDJuQHq7fMTP
+ olgwo8imMfeDbshe8KuMbgMFybur3jD6YSfJylnHc0E/9Qn+NrnFscIzVeLDyjnFNoKH
+ 4DFw==
+X-Gm-Message-State: AOJu0YyVPE68aJPK8oyMwi/orXbrzxeLIMPMPhXxchpToq26orj8mZsn
+ NKYBelZaPeLyYnGUqqFawPrHDDPIjV4J2jLGSVecOPdXZwazAD/PYi5K/CZUyQAP9WQjcksMEvn
+ VC5ssYec=
+X-Gm-Gg: ASbGncuQNT1F2uanfPbpjpovtLSZaUtCB3aZP/lL3PJP3SBeVfncX3mGeAU/pOSUJQ1
+ kGblfN3b6VDuIxEdfEB1gbnpaTzriVLXZ+C9UCeCRFox/hU5QrOx3TNMcWQU3VBKp1V+eL6G7N6
+ BJF07KTVDugvvHnBZyezyFZ/jU/Cw1LjZq0EDbuwRuh5lUxUFnqRxyWgBsZ7XJHPIbCFwrx+Ogp
+ R7wWIKGTaww4t/jwFHeSlfdn9vxiNPBemSt++6O14OqZTS7gesV1quPcvCIcRjV0N5o4i8rZ4pW
+ G+CGZsPuWZDWxETbV8EcqQOA8wM1ij2H0MjC/ELjaJLRofNx4SpTay+6s9vCIjyOt2VLUpFQQYo
+ NSH8pUShJt7DiGNz1jpvoZLmecwWGKSc=
+X-Google-Smtp-Source: AGHT+IH2qUEjebEvxrOBnyk06GyAxYJR+VGzraBJx61kdwNBUGRd3tqJRHhUxCNQboswZWv0daY9iA==
+X-Received: by 2002:a05:6a00:1393:b0:736:9f2e:1357 with SMTP id
+ d2e1a72fcca58-7490f592146mr13183697b3a.12.1750628110327; 
+ Sun, 22 Jun 2025 14:35:10 -0700 (PDT)
+Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b31f1242bfasm5219869a12.46.2025.06.22.13.54.06
+ d2e1a72fcca58-7490a69f3e2sm6479842b3a.159.2025.06.22.14.35.09
  for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Jun 2025 13:54:06 -0700 (PDT)
-Message-ID: <629c93ff-5849-4937-9b52-3d2116f90035@linaro.org>
-Date: Sun, 22 Jun 2025 13:54:04 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 065/101] target/arm: Implement SME2 FCLAMP, SCLAMP,
- UCLAMP
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 22 Jun 2025 14:35:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-References: <20250621235037.74091-1-richard.henderson@linaro.org>
- <20250621235037.74091-66-richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250621235037.74091-66-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
+Subject: [PATCH v2 0/3] target/arm: SME1/SVE2 fixes
+Date: Sun, 22 Jun 2025 14:35:06 -0700
+Message-ID: <20250622213509.277798-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,25 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/21/25 16:50, Richard Henderson wrote:
-> +static bool trans_FCLAMP(DisasContext *s, arg_zzz_en *a)
-> +{
-> +    static gen_helper_gvec_3_ptr * const fn[] = {
-> +        gen_helper_sme2_bfclamp,
-> +        gen_helper_sme2_fclamp_h,
-> +        gen_helper_sme2_fclamp_s,
-> +        gen_helper_sme2_fclamp_d,
-> +    };
-> +    TCGv_ptr fpst;
-> +    int vl;
-> +
-> +    /* This insn uses MO_8 to encode BFloat16. */
-> +    if (a->esz == MO_8
-> +        ? dc_isar_feature(aa64_sme2_b16b16, s)
-> +        : dc_isar_feature(aa64_sme2, s)) {
+Supercedes: 20250622175052.180728-1-richard.henderson@linaro.org
+("target/arm: Fix SME vs AdvSIMD exception priority")
 
-Missing !'s.
+A couple of fixes for EC_SMETRAP, plus some insns that missed
+being updated for non-streaming.
 
 
 r~
+
+
+Richard Henderson (3):
+  target/arm: Fix SME vs AdvSIMD exception priority
+  target/arm: Fix sve_access_check for SME
+  target/arm: Fix 128-bit element ZIP, UZP, TRN
+
+ target/arm/tcg/translate-a64.c | 30 +++++++++++++++++-------
+ target/arm/tcg/translate-sve.c | 43 ++++++++++++++++++++++++----------
+ 2 files changed, 51 insertions(+), 22 deletions(-)
+
+-- 
+2.43.0
+
 
