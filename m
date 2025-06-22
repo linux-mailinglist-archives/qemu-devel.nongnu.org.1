@@ -2,58 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192AFAE2EE5
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 10:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1988AE3004
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Jun 2025 15:00:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTGVJ-0005vp-9S; Sun, 22 Jun 2025 04:56:45 -0400
+	id 1uTKIr-0005UW-A8; Sun, 22 Jun 2025 09:00:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zenghui.yu@linux.dev>)
- id 1uTGVH-0005vR-0P
- for qemu-devel@nongnu.org; Sun, 22 Jun 2025 04:56:43 -0400
-Received: from out-189.mta1.migadu.com ([2001:41d0:203:375::bd])
+ (Exim 4.90_1) (envelope-from <mclark@anarch128.org>)
+ id 1uTDZ2-0007Hy-DO
+ for qemu-devel@nongnu.org; Sun, 22 Jun 2025 01:48:35 -0400
+Received: from anarch128.org ([2001:4801:7825:104:be76:4eff:fe10:52ae])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zenghui.yu@linux.dev>)
- id 1uTGVD-0007ok-As
- for qemu-devel@nongnu.org; Sun, 22 Jun 2025 04:56:42 -0400
-Message-ID: <816aeea6-34c3-461c-b596-f8701a9d1557@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1750582594;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I5+wsnavqjrNt65TA2neNKeG2mkyqrA9F4stbFQXeNQ=;
- b=ppO4HumKtmF+/3pfesOhkTQhbwGUzUx5gXbHFKbXMXbHkiz8goZwK0YkYfTLw49jCNheaN
- HWErfSsDYuADtvoNzfpea50bWaXF3gTbnCmPCaKuRq7uFUtVskbGXi/8Rm0AlDnvKOQUIN
- E2G/2VHLPIWkLNGD+KXv0MmbWAanUqo=
-Date: Sun, 22 Jun 2025 16:56:27 +0800
+ (Exim 4.90_1) (envelope-from <mclark@anarch128.org>)
+ id 1uTDZ0-00081I-Db
+ for qemu-devel@nongnu.org; Sun, 22 Jun 2025 01:48:24 -0400
+Received: from [192.168.1.4] (dynamic-cpe-pool.orcon.net.nz [121.99.116.25]
+ (may be forged)) (authenticated bits=0)
+ by anarch128.org (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTPSA id
+ 55M5m7Qm3751675
+ (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+ Sun, 22 Jun 2025 05:48:10 GMT
+Authentication-Results: anarch128.org; auth=pass;
+ dkim=pass (2048-bit rsa key sha256) header.d=anarch128.org
+ header.i=@anarch128.org header.b=c1luRnUR header.a=rsa-sha256 header.s=100003;
+ x-return-mx=pass header.domain=anarch128.org policy.is_org=yes (MX Records
+ found: mail.anarch128.org); 
+ x-return-mx=pass smtp.domain=anarch128.org policy.is_org=yes (MX Records
+ found: mail.anarch128.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anarch128.org;
+ s=100003; t=1750571291;
+ bh=75qRPSqE0IRcLzXvjNkPrHwZqT53Z7bcQBGrgxOuTJc=;
+ h=Date:To:From:Subject:From;
+ b=c1luRnURAuA7+dUcRKo64gI016PL389DdlBzwUfiQOt4ABffglywwMt+c2VyRwVuF
+ 45oleLs+cA2ky2/ARX34AI9I+VkOzQOWzMngFSHk8Hw0UR7oLhYK1+BvB0Q/pva6ln
+ tawnUQ2pdBFTrgaICWwqUwICXigx63ESWuA+jXKBYHUCRekoCtCNA3hFY966o8CGNb
+ xtDBCiifRonPxto8KVphEHZCGv4Fye/dlXBoaSvH8cUAeQlqW+X5XkUrvv+Zy8zewr
+ E514MVtjJ7BRMoAfK4OFdaI32CqQSjskJ02vHfzSUVcQBy/37X3aq+sJkBmi4Kmazv
+ ly+4JVnrlV1zw==
+Message-ID: <ab97be8b-70b4-441c-ad1e-148327f10afb@anarch128.org>
+Date: Sun, 22 Jun 2025 17:48:01 +1200
 MIME-Version: 1.0
-Subject: Re: [PATCH] hvf: arm: Emulate ICC_RPR_EL1 accesses properly
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-From: Zenghui Yu <zenghui.yu@linux.dev>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, agraf@csgraf.de
-References: <20250315132030.95209-1-zenghui.yu@linux.dev>
- <CAFEAcA9YUmXA=bA4FERwqSEP86RFUhUKUcLvVVSV64p_QJKnbA@mail.gmail.com>
- <d9c8d200-4453-48d7-b14a-8e15a7cf6602@linux.dev>
+User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-In-Reply-To: <d9c8d200-4453-48d7-b14a-8e15a7cf6602@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+To: qemu-devel <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+From: Michael Clark <mclark@anarch128.org>
+Subject: page coloring and accelerated shadow paging
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=2001:41d0:203:375::bd;
- envelope-from=zenghui.yu@linux.dev; helo=out-189.mta1.migadu.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2001:4801:7825:104:be76:4eff:fe10:52ae;
+ envelope-from=mclark@anarch128.org; helo=anarch128.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sun, 22 Jun 2025 08:59:45 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,80 +78,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+Hi QEMU Folks,
 
-Sorry for the long delay..
+# background
 
-On 2025/3/21 00:55, Zenghui Yu wrote:
-> On 2025/3/19 00:56, Peter Maydell wrote:
-> >
-> > ICC_RPR_EL1 is a read-only register.
-> 
-> Yup! Writes to it should result in an UNDEFINED exception. I completely
-> missed that point..
-> 
-> > But hvf_sysreg_read_cp()
-> > and hvf_sysreg_write_cp() do not check the .access field of the
-> > ARMCPRegInfo to ensure that they forbid writes to registers that
-> > are marked with a .access field that says they're read-only
-> > (and ditto reads to write-only registers). So either we should
-> > not list ICC_RPR_EL1 in this list in hvf_sysreg_write(), or
-> > else we should add the .access checks to hvf_sysreg_read_cp()
-> > and hvf_sysreg_write_cp().
-> >
-> > I would favour the second of those two options, because it's
-> > more robust and means we only need to care about the access
-> > permissions of a register in one place. Plus we already get
-> > this wrong for some registers: for instance ICC_SGI1R_EL1
-> > is write-only but we will permit the guest to read it.
-> >
-> > So I suggest a 2-patch series:
-> >  * patch 1: add the checks on .access to hvf_sysreg_read_cp()
-> >    and hvf_sysreg_write_cp(): they need to call
-> >    cp_access_ok() to check this
-> 
-> Thanks for your detailed suggestion Peter! I come up with something like
-> 
-> diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-> index 650b7f4256..a7ca7975e0 100644
-> --- a/target/arm/hvf/hvf.c
-> +++ b/target/arm/hvf/hvf.c
-> @@ -1264,6 +1264,9 @@ static bool hvf_sysreg_read_cp(CPUState *cpu, uint32_t reg, uint64_t *val)
-> 
->      ri = get_arm_cp_reginfo(arm_cpu->cp_regs, hvf_reg2cp_reg(reg));
->      if (ri) {
-> +        if (!cp_access_ok(arm_current_el(env), ri, true)) {
+I'm sending this out here because if I was a QEMU developer I'd like
+to read about this, as it is informed by working on QEMU and other
+simulators and emulators. this work is by-no-means complete. in fact,
+it is just the beginning, but there is enough present for feedback.
+in particular an early revision of the virtual memory system design.
 
-I wonder if arm_current_el() can be used at it to determine the current
-exception EL.
+# overview
 
-|static inline int arm_current_el(CPUARMState *env)
-|{
-|    // ...
-|
-|    if (is_a64(env)) {
-|        return extract32(env->pstate, 2, 2);
-|    }
+a new system that is not yet in a simulator but documents some
+interesting concepts such as canonicalized 'translation addresses'
+possessing address space prefixes to ease meta-circular emulation of
+physical and virtual memory. the core is designed to make shadow-paging
+efficient as a foreign page table architecture, but there are
+extended 'features' that would need to be in hardware to be fast.
+the intention is that the address space prefixes are in registers to
+address the "address space narrowing problem". there is also an
+intention to add an as yet undefined MIPS-inspired TLB miss handler,
+so that the page walker logic can be in software. this is to to make
+adding support for foreign page table formats much easier. and when
+translated to native code most of it will be cache miss latency anyway.
 
-I failed to find where env->pstate gets updated on vcpu exit. Please fix
-me up if I've missed any obvious points.
+btw this started as a sketch in a gist in June 20th of last year:
 
-> +            return false;
-> +        }
->          if (ri->accessfn) {
->              if (ri->accessfn(env, ri, true) != CP_ACCESS_OK) {
->                  return false;
-> @@ -1545,6 +1548,9 @@ static bool hvf_sysreg_write_cp(CPUState *cpu, uint32_t reg, uint64_t val)
->      ri = get_arm_cp_reginfo(arm_cpu->cp_regs, hvf_reg2cp_reg(reg));
-> 
->      if (ri) {
-> +        if (!cp_access_ok(arm_current_el(env), ri, false)) {
-> +            return false;
-> +        }
->          if (ri->accessfn) {
->              if (ri->accessfn(env, ri, false) != CP_ACCESS_OK) {
->                  return false;
+https://gist.github.com/michaeljclark/8f9b81e5e40488035dc252c9da3ecc2e
 
-Thanks,
-Zenghui
+# the glyph architecture
+
+current: https://metaparadigm.com/~mclark/glyph.pdf
+latest: https://metaparadigm.com/~mclark/glyph-20250622.pdf
+
+a clean-slate, portable virtual machine designed for efficient binary
+translation to X86 system mode targeting features like SMAP, SMEP,
+APIC, TSC, and PCI-style message signaled interrupts, with a system
+model that favors simplicity e.g., only supervisor/user modes and no
+interrupt delegation. the fundamental architectural design elements,
+such as the variable length instruction packet format and split
+instruction and constant streams are in place, the 16-bit compressed
+opcodes are fully specified, and there is now the beginnings of a
+system or protected mode. yet there is still a lot of work for it to
+virtualize a target like X86+AVX-512 with address translation.
+
+## address translation
+
+adopts a page table format desgined for shadow paging on X86. the page
+translation system has a physical address permission check feature and
+adds PTE.T (translate bit) for optional hardware zoning of translation
+pages. in addition to virtual memory, the translation system performs
+optional per-page physical permission checks, and physical self-mapping
+validation with zoning for PTE pages that have the PTE.T bit set.
+
+the architecture introduces the concept of a translation address which
+are addresses boxed with an address space prefix (AS) designed to
+provide a canonical address form for user and supervisor virtual
+addresses as well as physical addresses, to make it easier to implement
+meta-circular emulation for nested page translation with translation
+agnostic source and destination address spaces.
+
+## capabilities checks
+
+adds overlay permissions for page table colors 'colorperms' which cause
+faults during address translation. also 'colorcaps' and 'colormatrix'
+add capability checks at execute time and are not part of page table
+translation. colorcaps is used to control use of system instructions
+based on page color. colormatrix is used to control source and target
+page capabilities for loads, stores, and branches. goal: allow load,
+store, and branch permission restrictions via source and destination
+page color pair forwarding. requires the micro-architecture to track
+source:target page colors for branch retirement permission checks.
+
+## toolchain and debug strategy
+
+developing three simulators (Python, C, Go) for cross-validation, with
+plans for a Python assembler mainly to avoid binutils during early
+bring-up. the assembler and linker need to support capabilities with
+graph coloring to augment section permissions with section colors.
+operating system kernels and runtime loaders will also need support.
+
+Regards,
+Michael.
 
