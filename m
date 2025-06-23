@@ -2,81 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21EFFAE39CD
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 11:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E73CAE37FA
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 10:11:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTdL0-00050S-US; Mon, 23 Jun 2025 05:19:38 -0400
+	id 1uTcGB-0006F1-KM; Mon, 23 Jun 2025 04:10:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uTdKn-0004zg-QI
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 05:19:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1uTcG8-0006EX-OG
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 04:10:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uTdKh-0007eH-Ja
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 05:19:22 -0400
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1uTcG6-0006XT-C0
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 04:10:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750670355;
+ s=mimecast20190719; t=1750666227;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
- references:references; bh=nGTT93GFIgi0onFBnIob8qgmJSfPXq9LCtC+ny3feUU=;
- b=PHz7oMgK2cMYyUkvzp1r60p96H68HkdfXJ/XaDXErWx6CMLvU6CH+aIBLsZtzMZxhI0/5P
- 2PMCrpTtXQxpEwm/7kTfTxgZR7ox5mYwv2yL0Lho2daJYym6SgWGYlzt1E7TU3kYtd+t3D
- S4mdqwI3i0TiPPLMJeylQnJMtfoVwXI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-eGe_iNTWNtGa7j7qOrlIQw-1; Mon,
- 23 Jun 2025 05:19:12 -0400
-X-MC-Unique: eGe_iNTWNtGa7j7qOrlIQw-1
-X-Mimecast-MFC-AGG-ID: eGe_iNTWNtGa7j7qOrlIQw_1750670350
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3E6C51809C85; Mon, 23 Jun 2025 09:19:10 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B304C30001A1; Mon, 23 Jun 2025 09:19:09 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 412EE21E6A27; Mon, 23 Jun 2025 11:19:07 +0200 (CEST)
-Resent-To: richard.henderson@linaro.org, borntraeger@linux.ibm.com,
- farman@linux.ibm.com, iii@linux.ibm.com, jjherne@linux.ibm.com,
- jrossi@linux.ibm.com, pasic@linux.ibm.com, walling@linux.ibm.com,
- zycai@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Mon, 23 Jun 2025 11:19:07 +0200
-Resent-Message-ID: <871pran7ck.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: Zhuoying Cai <zycai@linux.ibm.com>
-Cc: Markus Armbruster <armbru@redhat.com>,  thuth@redhat.com,
- berrange@redhat.com,  richard.henderson@linaro.org,  david@redhat.com,
- pbonzini@redhat.com,  walling@linux.ibm.com,  jjherne@linux.ibm.com,
- jrossi@linux.ibm.com,  pasic@linux.ibm.com,  borntraeger@linux.ibm.com,
- farman@linux.ibm.com,  iii@linux.ibm.com,  eblake@redhat.com,
- qemu-s390x@nongnu.org,  qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 02/28] crypto/x509-utils: Add helper functions for
- certificate store
-In-Reply-To: <935581ef-1cb2-4e2f-9c3f-23203b556ca8@linux.ibm.com> (Zhuoying
- Cai's message of "Wed, 18 Jun 2025 11:34:17 -0400")
-References: <20250604215657.528142-1-zycai@linux.ibm.com>
- <20250604215657.528142-3-zycai@linux.ibm.com>
- <87sejyskgj.fsf@pond.sub.org>
- <41e788ad-77e2-46d2-a384-2c8f524391c2@linux.ibm.com>
- <87wm99r3rh.fsf@pond.sub.org>
- <935581ef-1cb2-4e2f-9c3f-23203b556ca8@linux.ibm.com>
-Date: Mon, 23 Jun 2025 08:15:16 +0200
-Message-ID: <87ikkndlvv.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=z/G8R9KgRlW786UvzNeVbL7F/Oa3LtmSpMCATJg/C4w=;
+ b=P4CDi3G7K1b2ooKXTt4J1qvoMYWQDG75ZDL/fJvyISajNzUrxIw5kZW13E/EXOZySFRbVp
+ w73PPe/Hgf0ZwxbhrWHB225B3v+4iaPTAjjHq4UNto3auCHRW/FRrYKzfdkbz3ubv4FJ2E
+ zluX0L1Y2vaAs3/Y5YTQcsSu3BxD9L4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465-yAIFmOSZMeK66ndk74Ovlw-1; Mon, 23 Jun 2025 04:10:25 -0400
+X-MC-Unique: yAIFmOSZMeK66ndk74Ovlw-1
+X-Mimecast-MFC-AGG-ID: yAIFmOSZMeK66ndk74Ovlw_1750666224
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a50816ccc6so2416250f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 01:10:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750666224; x=1751271024;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=z/G8R9KgRlW786UvzNeVbL7F/Oa3LtmSpMCATJg/C4w=;
+ b=mLnDv/3kAO3CrpiJggqsQSpe+LBFQHbIY2NTwTYgnLjfqrJFSVAXMn1uxW38h5oUe/
+ i3D5AliKCe35l8erytXTkAh03pL+U2+uW23NOdPpT3hiQwKKST332HylqDySLqWsFMPL
+ rqOnyw/UkDIDAulGXlhtrGh+IgROu/BoEoNVYs+yCA5fK/mNDA3a3JLieXwWPx01ORBd
+ Ak7fGOGQd02k1/QKKMQxCSwKCkxGgRMwrU4hgfdz4vmSfSEHS+CYfWSF/rItVtBdfZ+/
+ xIbqtnk53Sd+QFUb/NVKvu2ls4mfL7dl+yVFBuUuoS0IPa9lBNivCg+sb5VpNE88ahsw
+ 1mZQ==
+X-Gm-Message-State: AOJu0YwHKyNxkpCZaOpKXD3vNTwUOdeTNjAm41bIffBPnj9xee2oyikm
+ 5MrQhkuBhIdwBYIU86qyhBJNiaF9cvXuJBCUVNbdonxzUDpD7C2bXEEc4QAkmwYmvZZW7RY70IL
+ kVvo63j7TCsfqK1I8t/0yw9M1zRnvOsa+9KvzOCiVldE00pZJlkpuX0BU
+X-Gm-Gg: ASbGncu750eW9DnRnHQxM6DI3vs6T6XDh+JeJP1+0wqZkYvI4FOxKpD+kSnH0jvFUMe
+ I+mLKvCnyIpquOLAqeezXCYTt8ACv5+FhBOJhVd2FDoHzM+QSkD8CmJ0hEEoICXVIkWzwAFpGsV
+ cxckFyDWp7M8ZLxQ/JW1aQdPQECI9nX5QSvd5leX9h22oSW/5CHdlv3B4CiEDVynZUkyIXccd+p
+ 6vjHhSwegffXlE3VTDoPz2Q5kKAfo3Y9bRlROfJBoWTZGplpj26Rmx5bO3vXBEpBfAs2PZkpgqe
+ AdELs8HEM5LpJZswfzjc2gWY6PSVh69aMuBg2F7jGImEuz2TVMrtxkMQkOvYfA==
+X-Received: by 2002:adf:9dd1:0:b0:3a4:f655:8c4d with SMTP id
+ ffacd0b85a97d-3a6d131787bmr7709448f8f.27.1750666224285; 
+ Mon, 23 Jun 2025 01:10:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGPAS+6ua/GIQB41nMRPnYl4724wUmxPEKf0KmxV0lwboVbD2h0KDZRTctiOPD5DW+QWIEwSw==
+X-Received: by 2002:adf:9dd1:0:b0:3a4:f655:8c4d with SMTP id
+ ffacd0b85a97d-3a6d131787bmr7709413f8f.27.1750666223829; 
+ Mon, 23 Jun 2025 01:10:23 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:e10:ef90:343a:68f:2e91:95c?
+ ([2a01:e0a:e10:ef90:343a:68f:2e91:95c])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a6d0f18215sm8642468f8f.29.2025.06.23.01.10.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 23 Jun 2025 01:10:23 -0700 (PDT)
+Message-ID: <b1a9b090-e8f2-4e80-943a-001db1229707@redhat.com>
+Date: Mon, 23 Jun 2025 10:10:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Lines: 99
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] net: Add passt netdev backend
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20250618083930.451313-1-lvivier@redhat.com>
+ <CACGkMEv1r+-MUpoPZ2Va-b-dkjB2prHYhtZEtUB7-s1CZCBFdA@mail.gmail.com>
+Content-Language: en-US
+From: Laurent Vivier <lvivier@redhat.com>
+Autocrypt: addr=lvivier@redhat.com; keydata=
+ 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
+In-Reply-To: <CACGkMEv1r+-MUpoPZ2Va-b-dkjB2prHYhtZEtUB7-s1CZCBFdA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -101,104 +159,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zhuoying Cai <zycai@linux.ibm.com> writes:
+On 23/06/2025 10:03, Jason Wang wrote:
+> On Wed, Jun 18, 2025 at 4:39 PM Laurent Vivier <lvivier@redhat.com> wrote:
+>>
+>> This series introduces support for passt as a new network backend for
+>> QEMU.
+>>
+>> passt is a modern, unprivileged, user-mode networking solution that
+>> provides guest connectivity by launching an external helper process. This
+>> series adds the core backend and integrates it with vhost-user for
+>> high-performance, accelerated networking.
+>>
+>> The series is structured to first improve the general networking code
+>> before adding the new feature. The first patch extracts from the stream
+>> backend the functions that will be reused in the passt backend. The
+>> following patches are a preparatory refactoring to decouple the generic
+>> vhost layer from specific backend implementations (tap, vhost-user, etc.).
+>> This is achieved by replacing hardcoded type checks with a callback-based
+>> system in NetClientInfo, making the vhost infrastructure more modular and
+>> extensible.
+>>
+>> With the refactoring in place, subsequent patches introduce the passt
+>> backend itself, reusing the generic stream handling logic. The final
+>> patch adds vhost-user support to passt, which plugs cleanly into the
+>> newly refactored vhost layer.
+>>
+>> Some benchmarks:
+>>
+>>   Reference '-net user':
+>>
+>>    -net user,hostfwd=tcp::10001-:10001
+>>
+>>      iperf3 -c localhost -p 10001  -t 60 -4
+>>
+>>      [ ID] Interval           Transfer     Bitrate         Retr
+>>      [  5]   0.00-60.00  sec  14.2 GBytes  2.03 Gbits/sec    1            sender
+>>      [  5]   0.00-60.00  sec  14.2 GBytes  2.03 Gbits/sec                  receiver
+>>
+>>   New backend '-netdev passt'
+>>
+>>    -netdev passt,vhost-user=off,tcp-ports=10001
+>>
+>>      iperf3 -c localhost -p 10001  -t 60 -4
+>>
+>>      [ ID] Interval           Transfer     Bitrate         Retr
+>>      [  5]   0.00-60.00  sec  27.1 GBytes  3.88 Gbits/sec    0            sender
+>>      [  5]   0.00-60.03  sec  27.1 GBytes  3.88 Gbits/sec                  receiver
+>>
+>>    -netdev passt,vhost-user=on,tcp-ports=10001
+>>
+>>      iperf3 -c localhost -p 10001  -t 60 -4
+>>
+>>      [ ID] Interval           Transfer     Bitrate         Retr
+>>      [  5]   0.00-60.00  sec   224 GBytes  32.1 Gbits/sec    4            sender
+>>      [  5]   0.00-60.05  sec   224 GBytes  32.0 Gbits/sec                  receiver
+> 
+> Do we have latency numbers of even PPS?
 
-> On 6/18/25 1:57 AM, Markus Armbruster wrote:
->> Zhuoying Cai <zycai@linux.ibm.com> writes:
->> 
->>> On 6/17/25 6:58 AM, Markus Armbruster wrote:
->>>> Zhuoying Cai <zycai@linux.ibm.com> writes:
->>>>
->>>>> Add helper functions for x509 certificate which will be used in the next
->>>>> patch for the certificate store.
->>>>>
->>>>> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
->> 
->> [...]
->> 
->>>> Ignorant question: why are these QAPI enums?
->>>>
->>>> If they need to be QAPI enums, then I'll have some requests on the doc
->>>> comments.
->>>>
->>>
->>> Hi, thanks for the feedback.
->>>
->>> The helper functions in x509-utils.c either take QAPI enum values as
->>> parameters or return them. These enums are used later within QEMU.
->> 
->> Let's look at the first one I found:
->> 
->>     int qcrypto_check_x509_cert_fmt(uint8_t *cert, size_t size,
->>                                     QCryptoCertFmt fmt, Error **errp)
->>     {
->>         int rc;
->>         int ret = -1;
->>         gnutls_x509_crt_t crt;
->>         gnutls_datum_t datum = {.data = cert, .size = size};
->> 
->>         if (fmt >= G_N_ELEMENTS(qcrypto_to_gnutls_cert_fmt_map)) {
->>             error_setg(errp, "Unknown certificate format");
->>             return ret;
->>         }
->> 
->>         if (gnutls_x509_crt_init(&crt) < 0) {
->>             error_setg(errp, "Failed to initialize certificate");
->>             return ret;
->>         }
->> 
->>         rc = gnutls_x509_crt_import(crt, &datum, qcrypto_to_gnutls_cert_fmt_map[fmt]);
->>         if (rc == GNUTLS_E_ASN1_TAG_ERROR) {
->>             goto cleanup;
->>         }
->> 
->>         ret = 0;
->> 
->>     cleanup:
->>         gnutls_x509_crt_deinit(crt);
->>         return ret;
->>     }
->> 
->> All it does with its @fmt argument is map it to the matching
->> GNUTLS_X509_FMT_*.
->> 
->> There's just one caller, init_cert_x509_der() in hw/s390x/cert-store.c:
->> 
->>     is_der = qcrypto_check_x509_cert_fmt((uint8_t *)raw, size,
->>                                          QCRYPTO_CERT_FMT_DER, &err);
->> 
->> QCRYPTO_CERT_FMT_DER gets mapped to GNUTLS_X509_FMT_DER.  Why not pass
->> that directly?  We don't need enum QCryptoCertFmt then.
->> 
->
-> I received feedback on a previous patch series that directly using
-> GNUTLS in QEMU code is discouraged, except for under the crypto/
-> directory. Internal APIs should be defined to access GNUTLS
-> functionality instead.
->
->> If we need enum QCryptoCertFmt for some reason I can't see, why does it
->> have to be a QAPI type?  Why not a plain C enum?
->
-> While implementing the new helper functions, I referred to
-> qcrypto_get_x509_cert_fingerprint() in crypto/x509-utils.c, which takes
-> QCryptoHashAlgo as a parameter. Following this, I added corresponding
-> QCRYPTO enums to map to GNUTLS enums.
->
-> If using plain C enums is preferred, I can update the code accordingly
-> in the next version.
+Could you propose tools and tests I can run to have these numbers?
 
-Use plain C enums when practical.
-
-Reasons for making a type a QAPI type include:
-
-* Some QAPI command or event needs it.
-
-* Something (typically QOM property accessors) needs the generated
-  visitor.
-
-* For enums: something could use the generated QEnumLookup / ENUM_str()
-  macro.
-
->> Similar questions for the other QAPI enums added in this series.
+Thanks,
+Laurent
 
 
