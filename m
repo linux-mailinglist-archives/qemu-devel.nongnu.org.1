@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC7FAE3F9E
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 14:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6136AE3FC5
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 14:23:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTg9b-0001hM-Jt; Mon, 23 Jun 2025 08:20:03 -0400
+	id 1uTg9d-0001nM-PL; Mon, 23 Jun 2025 08:20:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTg9V-0001b7-F9
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:19:57 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTg9Y-0001ga-H5
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:20:00 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTg9Q-0000bi-C7
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:19:57 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-451d54214adso27146515e9.3
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 05:19:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTg9W-0000dG-DO
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:20:00 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3a5123c1533so2047569f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 05:19:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750681189; x=1751285989; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750681194; x=1751285994; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MZYDDWvDMspPzhkKxydUFPlizzWHJdNmtQlGNWnBP18=;
- b=iWRCF/b4+BQ24h2Uym/MHFwa8Um1pzsEFVvv0rjtFvWA0JV9q8yk/efMuHdm8UxFqH
- J57Bnyq2J8DtkonoRX5AP/B0zC564EbVN4wzAJEbnVOdTGc+cc/hRKRv4pX9GiEi/thQ
- wYys/oktfvIy0DBIFktCTKvNDAlzaC8PVL6NROLAXEBf+4AM4mgtaOlKciZYe32zIzf6
- FFzJOox6BMAWF0ZX4CKhby6g4FRzEHfQlNAF25g/AD1UEQ0X/udgozL3fZTz8X/RafE6
- pgnFdcDfBp78LSb/vBwPyC/cidQJxzMz1RUCsEMHiIEh+Gdk7EBAW4l1UjUxO3LxhJ2M
- XNqg==
+ bh=n9TcP7uZ8sj3k25ApWupc8E4+ydRbD8zQYT0ugNh7kc=;
+ b=x0a+n3xsCkbXf+3bMpES750By6XlLaP2v+7WFgtu95XgvW8nEk0A47TaHGkTbmZ7w8
+ rMpOt9jt3N/JbPrPLByBUZuMdOnXbjLzrF3z5kfoNvTzS8NYdyMfYyjBbVccsI7sWSHD
+ YKwUrl9nYRBDaQY1TJUN7nNS/7R5j0kaJ220SJEQHQBuxs/ANgyfXmw8a/HIxfzRAQJU
+ 8wSmUP46V6maUxp4tqf64+XpFTa4DFZhFKf9XGmqD+hWhYPskYP9ubfQlpMhTnWaH4AH
+ B/rGWZJHqKjqxAtRH+h3KRPmD2NTMZukqbVX4NX2YuHIrp2CEsni5fbAF22NP9yUZMfV
+ 8PRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750681189; x=1751285989;
+ d=1e100.net; s=20230601; t=1750681194; x=1751285994;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MZYDDWvDMspPzhkKxydUFPlizzWHJdNmtQlGNWnBP18=;
- b=uBNPygar0ixw2lVXt+94S8HKDWQSNwinyApUi8r5DxrKXw24AHIdfMKDPNp3pZocR+
- JcqkyjQEy3rCIMfIJZxPnPonwMd+ZEXrQm/BrAN2C2Uxte56+xHWcHfWgntpsWCJBgU1
- R/DFtcDz9kFhvMkJnMq7HGx5JC99iYGivSzBezFtUi69cJ1e+0QmS2ZyQZ8qt934a0Ae
- c2lgP0CfgsqS16DRPPNCOBcKtE4dDmU5ltrSNxsYGQu4OB5BdKSknRBS08lVsnfNNWTb
- upWvlAhvoDgYRxUZVRtO4W6kod1ZodO48k4WqZLKvxhzajpQFYzm8xfV4IuiEXzLO+Wc
- OW/A==
-X-Gm-Message-State: AOJu0YxWqEZ5BUW1n30Vb1uWpuEktm5ZRFDucN0ULuI1Hugyiyz2zwLR
- +B/gntGMIFwX7z/VNRDbSfQhpvrzAaqzO3J5K0XP4uxpoLI9FNe5GLhBBZjmOOjWACqTw/S34Nb
- PZxmc
-X-Gm-Gg: ASbGnctiUxlOJdLzJKpUVGSRhmAs3eSX4sndKlPMq6WQW8kgCqQk8wRfZbss9BPEqBp
- Tvx96kJNmi0fw/owbpFUY2HB53DyVcZNxXvEj58O8JdioczofNN//gfqyLWlcB1XWESQ6Tw+8Js
- MdDDgokWCZWejxpbgZThSVBhBcfKN83OVMpmHhm+U9a7dFQ44OFC/iMdfpxhu+fP5fR9ctBEGIY
- x420J/bXnBL+ewugu/xh8mgJzum/Qc+TF5XuwsPH3LQ2KN8lYM1+7zNCZiHBqj4GDu38c8t2zIt
- K6vz3eBX1qmiM1JFKJrWKzZTiBQqsE1/ySFcmfG4qgyPNVfL2IJ4giXlc7ZC+EGkaoexVAX6wF5
- agvE3u3ZAm9Iwifycv/Dk7cAucwswxQ7uTlLM
-X-Google-Smtp-Source: AGHT+IGt+hN6QhdH8hKFCVkO4jTWulC9IJ1I0tIA0BlYCZoOOrf5ORdSOfgPjNgKAX8CHSeqYE/nlA==
-X-Received: by 2002:a05:600c:1d14:b0:43c:e7ae:4bcf with SMTP id
- 5b1f17b1804b1-4536b4be314mr77860915e9.0.1750681189099; 
- Mon, 23 Jun 2025 05:19:49 -0700 (PDT)
+ bh=n9TcP7uZ8sj3k25ApWupc8E4+ydRbD8zQYT0ugNh7kc=;
+ b=vGuoiIPFB/lnGfWGQkUGlMW5o1vvD1n2SLvBxMMD5iRafUaAanuWQ1G4KOBsODbeR3
+ JQS4GbdKjsYynGF5LWflaTW4RjEATCo0SCskVGgagoywBoPXJwTJCh10nZL6v8VU9v75
+ gXpkEHXEwQ/yJ6yKbwZFTSFszu0lCzSVBOZGmZ1fmM0aaGWO0LSK5InlQAr3ug4Zry7F
+ E7iULL2PNQngih+T3Weh93TUeK48GaLvQAaIbLxrXlg0sE/VH1cEAl8uQ5tPLTdl90RU
+ l+SPyBEPvdJgYdCRUrNWfTFAYiatlaMTXglbgR7T7e4xBliIxYlZllPdNu9rPS6wMF71
+ /tCw==
+X-Gm-Message-State: AOJu0YyoWbXzGhJaQYYLZX++Wgnb/L1Vw1CZoi5OfT7grnK6NcM/Q/5t
+ cG8RXW0As77z8wi3GdXPNjQimVtUHtndhMS9V7Ku+JnoH7kdeZlyWrtnrxdkpe7WZQBopP4tjZw
+ cdu7M
+X-Gm-Gg: ASbGnctDhrHIrCw6RdG25virl1XlPxWfhlHzFSXH8FVYGMoGNNDbZTY06/r2kYaHtPj
+ TmObWO3rsb+Ec22K/JvWgUWjdSUm7ykJJhLE8MSvS7cPqYxrCWOGQ+Xc47p6LT7bK5N1MpBV9VQ
+ wfVqSIYT83ORGha/Gydf88jQyBxXGvahAgOJEnOJXl1adNPjIaRos329vqXX8RWkMyGY4nphmom
+ zKvES7JQRpbEALbVDVJshUrldFr/f4VQ6pBKeXKrkKLfH5DWcydpUWvVRNONQ3doysCRk+Soadw
+ e79GydfDPph5u6LPQhAe8WiOzxmzuFBgTj7j1dhN25yaO7hmvSaj32pbWqoHgkPoMsgzwOQQAPM
+ ykX/zpf61ubsWSKkemgLH57PhqStmMdEUPUX4
+X-Google-Smtp-Source: AGHT+IEHiq/SjlZG6KJQYhM0dN6HzIW1qJU45zGcdqrFfg265NhL0FAhAnfqOQcq/6jydwJBpJn65g==
+X-Received: by 2002:adf:e187:0:b0:3a4:f723:3e73 with SMTP id
+ ffacd0b85a97d-3a6d129ccdbmr8492187f8f.16.1750681194323; 
+ Mon, 23 Jun 2025 05:19:54 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-453646cb57fsm110694655e9.1.2025.06.23.05.19.47
+ ffacd0b85a97d-3a6d0f10385sm9537215f8f.17.2025.06.23.05.19.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 23 Jun 2025 05:19:48 -0700 (PDT)
+ Mon, 23 Jun 2025 05:19:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>, qemu-arm@nongnu.org,
@@ -77,25 +77,25 @@ Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>, qemu-arm@nongnu.org,
  Phil Dennis-Jordan <phil@philjordan.eu>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 12/26] target/arm: Restrict system register properties to
- system binary
-Date: Mon, 23 Jun 2025 14:18:31 +0200
-Message-ID: <20250623121845.7214-13-philmd@linaro.org>
+Subject: [PATCH v3 13/26] target/arm: Create GTimers *after* features
+ finalized / accel realized
+Date: Mon, 23 Jun 2025 14:18:32 +0200
+Message-ID: <20250623121845.7214-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250623121845.7214-1-philmd@linaro.org>
 References: <20250623121845.7214-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,111 +111,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not expose the following system-specific properties on user-mode
-binaries:
-
- - psci-conduit
- - cntfrq (ARM_FEATURE_GENERIC_TIMER)
- - rvbar (ARM_FEATURE_V8)
- - has-mpu (ARM_FEATURE_PMSA)
- - pmsav7-dregion (ARM_FEATURE_PMSA)
- - reset-cbar (ARM_FEATURE_CBAR)
- - reset-hivecs (ARM_FEATURE_M)
- - init-nsvtor (ARM_FEATURE_M)
- - init-svtor (ARM_FEATURE_M_SECURITY)
- - idau (ARM_FEATURE_M_SECURITY)
+Call generic (including accelerator) cpu_realize() handlers
+*before* setting @gt_cntfrq_hz default
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ target/arm/cpu.c | 65 ++++++++++++++++++++++++------------------------
+ 1 file changed, 33 insertions(+), 32 deletions(-)
 
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index eb0639de719..e5b70f5de81 100644
+index e5b70f5de81..ab5fbd9b40b 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -1500,6 +1500,7 @@ static void arm_cpu_initfn(Object *obj)
-  * 0 means "unset, use the default value". That default might vary depending
-  * on the CPU type, and is set in the realize fn.
-  */
-+#ifndef CONFIG_USER_ONLY
- static const Property arm_cpu_gt_cntfrq_property =
-             DEFINE_PROP_UINT64("cntfrq", ARMCPU, gt_cntfrq_hz, 0);
- 
-@@ -1509,7 +1510,6 @@ static const Property arm_cpu_reset_cbar_property =
- static const Property arm_cpu_reset_hivecs_property =
-             DEFINE_PROP_BOOL("reset-hivecs", ARMCPU, reset_hivecs, false);
- 
--#ifndef CONFIG_USER_ONLY
- static const Property arm_cpu_has_el2_property =
-             DEFINE_PROP_BOOL("has_el2", ARMCPU, has_el2, true);
- 
-@@ -1532,6 +1532,7 @@ static const Property arm_cpu_has_neon_property =
- static const Property arm_cpu_has_dsp_property =
-             DEFINE_PROP_BOOL("dsp", ARMCPU, has_dsp, true);
- 
-+#ifndef CONFIG_USER_ONLY
- static const Property arm_cpu_has_mpu_property =
-             DEFINE_PROP_BOOL("has-mpu", ARMCPU, has_mpu, true);
- 
-@@ -1544,6 +1545,7 @@ static const Property arm_cpu_pmsav7_dregion_property =
-             DEFINE_PROP_UNSIGNED_NODEFAULT("pmsav7-dregion", ARMCPU,
-                                            pmsav7_dregion,
-                                            qdev_prop_uint32, uint32_t);
-+#endif
- 
- static bool arm_get_pmu(Object *obj, Error **errp)
- {
-@@ -1731,6 +1733,7 @@ static void arm_cpu_post_init(Object *obj)
-                                         "Set on/off to enable/disable aarch64 "
-                                         "execution state ");
-     }
-+#ifndef CONFIG_USER_ONLY
-     if (arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
-         arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO)) {
-         qdev_property_add_static(DEVICE(obj), &arm_cpu_reset_cbar_property);
-@@ -1746,7 +1749,6 @@ static void arm_cpu_post_init(Object *obj)
-                                        OBJ_PROP_FLAG_READWRITE);
+@@ -1985,26 +1985,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
      }
  
--#ifndef CONFIG_USER_ONLY
-     if (arm_feature(&cpu->env, ARM_FEATURE_EL3)) {
-         /* Add the has_el3 state CPU property only if EL3 is allowed.  This will
-          * prevent "has_el3" from existing on CPUs which cannot support EL3.
-@@ -1818,6 +1820,7 @@ static void arm_cpu_post_init(Object *obj)
-         qdev_property_add_static(DEVICE(obj), &arm_cpu_has_dsp_property);
-     }
- 
-+#ifndef CONFIG_USER_ONLY
-     if (arm_feature(&cpu->env, ARM_FEATURE_PMSA)) {
-         qdev_property_add_static(DEVICE(obj), &arm_cpu_has_mpu_property);
-         if (arm_feature(&cpu->env, ARM_FEATURE_V7)) {
-@@ -1854,8 +1857,6 @@ static void arm_cpu_post_init(Object *obj)
-                                    &cpu->psci_conduit,
-                                    OBJ_PROP_FLAG_READWRITE);
- 
--    qdev_property_add_static(DEVICE(obj), &arm_cpu_cfgend_property);
+-    if (!cpu->gt_cntfrq_hz) {
+-        /*
+-         * 0 means "the board didn't set a value, use the default". (We also
+-         * get here for the CONFIG_USER_ONLY case.)
+-         * ARMv8.6 and later CPUs architecturally must use a 1GHz timer; before
+-         * that it was an IMPDEF choice, and QEMU initially picked 62.5MHz,
+-         * which gives a 16ns tick period.
+-         *
+-         * We will use the back-compat value:
+-         *  - for QEMU CPU types added before we standardized on 1GHz
+-         *  - for versioned machine types with a version of 9.0 or earlier
+-         */
+-        if (arm_feature(env, ARM_FEATURE_BACKCOMPAT_CNTFRQ) ||
+-            cpu->backcompat_cntfrq) {
+-            cpu->gt_cntfrq_hz = GTIMER_BACKCOMPAT_HZ;
+-        } else {
+-            cpu->gt_cntfrq_hz = GTIMER_DEFAULT_HZ;
+-        }
+-    }
 -
-     if (arm_feature(&cpu->env, ARM_FEATURE_GENERIC_TIMER)) {
-         qdev_property_add_static(DEVICE(cpu), &arm_cpu_gt_cntfrq_property);
-     }
-@@ -1864,7 +1865,6 @@ static void arm_cpu_post_init(Object *obj)
-         kvm_arm_add_vcpu_properties(cpu);
-     }
- 
--#ifndef CONFIG_USER_ONLY
-     if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64) &&
-         cpu_isar_feature(aa64_mte, cpu)) {
-         object_property_add_link(obj, "tag-memory",
-@@ -1882,6 +1882,7 @@ static void arm_cpu_post_init(Object *obj)
+ #ifndef CONFIG_USER_ONLY
+     /* The NVIC and M-profile CPU are two halves of a single piece of
+      * hardware; trying to use one without the other is a command line
+@@ -2051,7 +2031,40 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+             return;
          }
      }
- #endif
-+    qdev_property_add_static(DEVICE(obj), &arm_cpu_cfgend_property);
- }
++#endif
  
- static void arm_cpu_finalizefn(Object *obj)
++    cpu_exec_realizefn(cs, &local_err);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        return;
++    }
++
++    arm_cpu_finalize_features(cpu, &local_err);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        return;
++    }
++
++#ifndef CONFIG_USER_ONLY
++    if (!cpu->gt_cntfrq_hz) {
++        /*
++         * 0 means "the board didn't set a value, use the default". (We also
++         * get here for the CONFIG_USER_ONLY case.)
++         * ARMv8.6 and later CPUs architecturally must use a 1GHz timer; before
++         * that it was an IMPDEF choice, and QEMU initially picked 62.5MHz,
++         * which gives a 16ns tick period.
++         *
++         * We will use the back-compat value:
++         *  - for QEMU CPU types added before we standardized on 1GHz
++         *  - for versioned machine types with a version of 9.0 or earlier
++         */
++        if (arm_feature(env, ARM_FEATURE_BACKCOMPAT_CNTFRQ) ||
++            cpu->backcompat_cntfrq) {
++            cpu->gt_cntfrq_hz = GTIMER_BACKCOMPAT_HZ;
++        } else {
++            cpu->gt_cntfrq_hz = GTIMER_DEFAULT_HZ;
++        }
++    }
+     {
+         uint64_t scale = gt_cntfrq_period_ns(cpu);
+ 
+@@ -2072,18 +2085,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
+ #endif
+ 
+-    cpu_exec_realizefn(cs, &local_err);
+-    if (local_err != NULL) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
+-
+-    arm_cpu_finalize_features(cpu, &local_err);
+-    if (local_err != NULL) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
+-
+ #ifdef CONFIG_USER_ONLY
+     /*
+      * User mode relies on IC IVAU instructions to catch modification of
 -- 
 2.49.0
 
