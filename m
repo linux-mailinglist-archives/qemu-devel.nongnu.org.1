@@ -2,100 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7239EAE3FF7
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 14:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4EC4AE3FFB
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 14:26:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTgCf-0005qo-B9; Mon, 23 Jun 2025 08:23:13 -0400
+	id 1uTgCV-0004ti-9U; Mon, 23 Jun 2025 08:23:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTgAd-0003wM-6N
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:21:09 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uTgB6-0004BG-2A
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:21:40 -0400
+Received: from mail-yb1-xb31.google.com ([2607:f8b0:4864:20::b31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTgAY-00018W-Vq
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:21:06 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-450cf214200so37523495e9.1
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 05:21:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uTgB4-0001Fr-02
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:21:35 -0400
+Received: by mail-yb1-xb31.google.com with SMTP id
+ 3f1490d57ef6-e733cd55f9eso3393828276.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 05:21:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750681260; x=1751286060; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=udXllEXY1gPSi8pgPr+YWAsY2WGcZfddjVlJVNiCuOE=;
- b=p4iThvalXLPbHqb4TmUXgPVR6yY51PhtEWDHf+AVUILJsIDbybhuvI/ZID0LsZofuB
- 8tyPatkaum8NYxOs8zfoQFgX5yZJqHzOmhQ1gUjhVh8FWFPTbMON52EYB/xdwHbyk1bz
- m4/+GGG8n+K6xybfo5clXVdhgUu6t8cRKZmZz4mfpoKG1QYlrlxTUptqlF6wHg64eZ4D
- FjAkCj2zniBEkbed1x802DDXjxm5DfRqff2Ko6cIfJcuKbHDT5up13+tXX4IDS/x4Tdk
- ljVarDLayp87kBV7PTXTJS5kIbmjBSfT8mssYaKDiOfXKsQvVp3+lwDIB1EzC+g8Fiyx
- ftgQ==
+ d=linaro.org; s=google; t=1750681292; x=1751286092; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Rb0Nma2Ov+KRCaB1a/tt2nPEQS4hhjWwzL/eYwV/cWM=;
+ b=XyvbtL6sOGGRtuQc30PUGfX6DFAOE8+9B/l34feMOerYrmH2Y4k9z7srHsOzbuahY2
+ HReiNiP2WaXmZfranBQNfye5dOrT+m8cuVIV+M0MDLMy9N1fsy01vJi5wmIZ/0KkflAn
+ MOMdnWDSrr+xBiL1SP4IYgrFg6yFHQoHRQbX4wbPiosVVTw0pcscVISoZ9tt0w+EQx9y
+ E618teqrs600ANrzMYUBYWYCSkzAZz6b+UrH5rARK8Em42Gpkxw8HGwN1HrvvbEkeDjW
+ wLYmMymqPBWkLB11VjMo1QYAH4PtFE35c0T2NaKlSXeHjpQwNrESA4/ypGVFiSOVDh4t
+ WCqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750681260; x=1751286060;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=udXllEXY1gPSi8pgPr+YWAsY2WGcZfddjVlJVNiCuOE=;
- b=Aa1IF5ohJJkn35X1r1W9RIoQjDUVrJxnayqibD+zYgD4YQMH6co89X/J4Q8zBxm296
- MOTw/G/PhqjO1/o52v431H6XfbBh29m6MYVqaSwJUM46tekqWwBq8+P4okkaMxwWw9lH
- TFr+Z/Nvk5NJcf9pyp+02XohFAVptFsY4Mt6ChX2z86SoJ2gu8CyoxsBXjqilxC6gLIX
- is4SP9fL22GABGU3DQk+HccPmJt5l2vRZHqxkP9l3+JLJvJ9lqnGlFmosIvxJddxHg+I
- OF8+1YZeN0JBd8BXUJ/2md+qZkG1aEHHG2gE6fO/xE/LVYE0qlrcvQE6ib2Y39wFedyI
- 8GAw==
-X-Gm-Message-State: AOJu0YwZFputHv5xnR4zBxnWTqoqgxqRZputHOcpd7ybcF3WmJM9T1EF
- zyS08YgXsXSxOwd4unZHShm1rkQtnVUCdPmENbpZPm/ihi8DTTJ8tVhgOUo63TA6Kt7bc3LJJW8
- NgJd2
-X-Gm-Gg: ASbGncvr1nITaBupmn701OEvxVHnuXG3a2o3PVebmxO9jJU2i6MM69JfwHrFQGdtxZk
- rcHowBfC8uBUQ9teWvz4Owwdk3dxV5INFfyBMKjVBR9zKMdWBZGP7bw68IU3UJv/h1nEQ1dt9od
- thNm/6VUEgBNsj2RH5Z9bbhRuyqCcjeCg4W7R39dJmmb36s/XX7xSNtBqe/RwjtSTV5vFj8toGE
- t4V3sWBo6o59ZUywLv6LH9HJBCZdXrJKHGFBRCuKLz9tT9FluqvdUl5kza3DwUZqlqLVruLcXkW
- lEcUsYoHYPPoPzu9ZAjZiHGJ9uLQZA7wiYVvnETUHi+QO36VT7fNS7aghZmEY44IBrFJN8sOgPu
- JIVvm6rS3M/RDj5SUsSiAdNWAtrefbcLJxW+j
-X-Google-Smtp-Source: AGHT+IGSZgVi8a4ONdtjF7+uNRguyN8Xn3B71Lmx7xCfC5fcG/JmZoeL4oP6TQwKjqTxGU0oRlOa5A==
-X-Received: by 2002:a05:6000:2d11:b0:3a4:e1e1:7779 with SMTP id
- ffacd0b85a97d-3a6d130707cmr5965156f8f.32.1750681260192; 
- Mon, 23 Jun 2025 05:21:00 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d0ec947fsm9340220f8f.0.2025.06.23.05.20.58
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 23 Jun 2025 05:20:59 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>, qemu-arm@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Alexander Graf <agraf@csgraf.de>, Bernhard Beschow <shentey@gmail.com>,
- John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- kvm@vger.kernel.org, Eric Auger <eric.auger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Cleber Rosa <crosa@redhat.com>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 26/26] tests/functional: Expand Aarch64 SMMU tests to run
- on HVF accelerator
-Date: Mon, 23 Jun 2025 14:18:45 +0200
-Message-ID: <20250623121845.7214-27-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250623121845.7214-1-philmd@linaro.org>
-References: <20250623121845.7214-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1750681292; x=1751286092;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Rb0Nma2Ov+KRCaB1a/tt2nPEQS4hhjWwzL/eYwV/cWM=;
+ b=IVYCdLIGXx+Uan/eU9ej3+j4zEVrF0yBrcXjqDefdtsZgwK2lCrGtG0RDVbGpt5VWC
+ FNO0IKlm2RyLoWYPAB0R5BPoU+DB1G3EiXbeAc7St8RiYNpXcgRRXSM/EWz4nSHj/Kgf
+ Ufwr4SF7BSglqClndrqg2jj8iAggA5vqLWaXnBIgx6AWtJwn/RfytnsWlTEdwxYa8uGT
+ n0k86bcHCYP6fZmszmY0zu9fneUQZoFVHDnzUZ/RTDz6VumdhwJwhy51u7XHD8a+6NPZ
+ bXCODHbrIQ8b3arylnnkoblbpe/kClrFt/8rqmS7+6gUaq8m0hJOPAo2XXUvNrv4f/sg
+ wgFg==
+X-Gm-Message-State: AOJu0YxV9oA7wmDyquKtmkxWev3ZXThonYh2Rm1Vt15FDICSayVQZSx+
+ Cbq3LlXQTXtNt1iIweysNhyKYzSbtnq7vYrPDDJisPyfGPEoEup4UNTD1A9pG2exxIbxwAsdb94
+ t0ISOQtzTbEOylvpjdzwdY7ubysBrkIfHGJ9N4c+kyA==
+X-Gm-Gg: ASbGnctc2r1lokeojVeA2IynkVrID+zE6HNuZIzmNS6aaR/w5FKtFrAUn0x7c3aq9Ic
+ etd2iIAv1DAXWJl1fIj5VdNt6NEokB2dm+sZmQSPJAnklqCl9Wj0x4GRgYupOv2jSM51AceI3J8
+ srqOqChKigXDHUmyRJugK8ulv6pLMmS0HGKDqNVJ2E/JW6kLdiBbjkcKA=
+X-Google-Smtp-Source: AGHT+IEWkEOs1FUN9pDS+WmPfJkRUoV4mUwdi+3ZOeedhjKVQ/rBpaVhv3/yppF2m2JWfb118GKbaNDnn+FapzSA5i0=
+X-Received: by 2002:a05:690c:48c8:b0:710:f470:154f with SMTP id
+ 00721157ae682-712c68cc6f4mr166474107b3.34.1750681292144; Mon, 23 Jun 2025
+ 05:21:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+References: <20250621235037.74091-1-richard.henderson@linaro.org>
+ <20250621235037.74091-20-richard.henderson@linaro.org>
+In-Reply-To: <20250621235037.74091-20-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 23 Jun 2025 13:21:20 +0100
+X-Gm-Features: AX0GCFtUox1z6NVCNoCfZ5etV7T-qLXfCYfxh8rYKhT4qotk1lO8Ll5HWWXSRd8
+Message-ID: <CAFEAcA98aZhdE6=564tB0bn8DvStzHrM6ihn=duvdTJhoodwOA@mail.gmail.com>
+Subject: Re: [PATCH v2 019/101] target/arm: Implement SME2 LDR/STR ZT0
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b31;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,45 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/functional/test_aarch64_smmu.py | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+On Sun, 22 Jun 2025 at 00:52, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/tcg/translate-sme.c | 12 ++++++++++++
+>  target/arm/tcg/sme.decode      |  6 ++++++
+>  2 files changed, 18 insertions(+)
+>
+> diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
+> index 37f4d341f0..8b0a33e2ae 100644
+> --- a/target/arm/tcg/translate-sme.c
+> +++ b/target/arm/tcg/translate-sme.c
+> @@ -291,6 +291,18 @@ static bool do_ldst_r(DisasContext *s, arg_ldstr *a, GenLdStR *fn)
+>  TRANS_FEAT(LDR, aa64_sme, do_ldst_r, a, gen_sve_ldr)
+>  TRANS_FEAT(STR, aa64_sme, do_ldst_r, a, gen_sve_str)
+>
+> +static bool do_ldst_zt0(DisasContext *s, arg_ldstzt0 *a, GenLdStR *fn)
+> +{
+> +    if (sme2_zt0_enabled_check(s)) {
+> +        fn(s, tcg_env, offsetof(CPUARMState, za_state.zt0),
+> +           sizeof_field(CPUARMState, za_state.zt0), a->rn, 0);
+> +    }
+> +    return true;
+> +}
+> +
+> +TRANS_FEAT(LDR_zt0, aa64_sme2, do_ldst_zt0, a, gen_sve_ldr)
+> +TRANS_FEAT(STR_zt0, aa64_sme2, do_ldst_zt0, a, gen_sve_str)
 
-diff --git a/tests/functional/test_aarch64_smmu.py b/tests/functional/test_aarch64_smmu.py
-index c65d0f28178..e0f4a922176 100755
---- a/tests/functional/test_aarch64_smmu.py
-+++ b/tests/functional/test_aarch64_smmu.py
-@@ -17,7 +17,7 @@
- 
- from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
- from qemu_test import BUILD_DIR
--from qemu.utils import kvm_available
-+from qemu.utils import kvm_available, hvf_available
- 
- 
- class SMMU(LinuxKernelTest):
-@@ -45,11 +45,17 @@ def set_up_boot(self, path):
-         self.vm.add_args('-device', 'virtio-net,netdev=n1' + self.IOMMU_ADDON)
- 
-     def common_vm_setup(self, kernel, initrd, disk):
--        self.require_accelerator("kvm")
-+        if hvf_available(self.qemu_bin):
-+            accel = "hvf"
-+        elif kvm_available(self.qemu_bin):
-+            accel = "kvm"
-+        else:
-+            self.skipTest("Neither HVF nor KVM accelerator is available")
-+        self.require_accelerator(accel)
-         self.require_netdev('user')
-         self.set_machine("virt")
-         self.vm.add_args('-m', '1G')
--        self.vm.add_args("-accel", "kvm")
-+        self.vm.add_args("-accel", accel)
-         self.vm.add_args("-cpu", "host")
-         self.vm.add_args("-machine", "iommu=smmuv3")
-         self.vm.add_args("-d", "guest_errors")
--- 
-2.49.0
+The alignment check the pseudocode requires happens inside
+gen_sve_ldr/str, right? I don't entirely understand why, though,
+because those functions don't seem to use MO_ALIGN.
 
+Anyway, given that these insns have the same alignment
+check requirement as the SVE LDR (vector) and SME LDR (array vector)
+this patch is fine:
+
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
+-- PMM
 
