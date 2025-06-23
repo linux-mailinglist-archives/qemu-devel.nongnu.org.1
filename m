@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA42AE3C3B
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 12:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D87F6AE3C3D
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 12:27:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTeNy-00062e-0f; Mon, 23 Jun 2025 06:26:46 -0400
+	id 1uTeNs-0005xY-PM; Mon, 23 Jun 2025 06:26:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uTeNt-0005yN-HU; Mon, 23 Jun 2025 06:26:41 -0400
+ id 1uTeNp-0005wS-3K
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 06:26:37 -0400
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uTeNk-0000kV-Mw; Mon, 23 Jun 2025 06:26:41 -0400
+ id 1uTeNl-0000l4-VM
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 06:26:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750674392; x=1782210392;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=q2VQBL7Mh+cxs+WNQGG/PLk4d6ldYIcloZMCG49WyTw=;
- b=Qh7FFPtMBQKREWlhla2H4eIqmUQHsQRlvuCNr84+OeMo1PCHk8S0tePH
- MCgh1+3iMVqGwn1kDCUlrJMxRI/wOoBxrwUml7OFgqfxpGEbCkdNw3Kux
- PuJzQNsd23woifSFe1JSwcPyuyq17/D8oeW/+VauXJIvWxH3yeQrnnc0H
- Ed+JuB4guIME4KqXpAfZ12FgcNhzpOxJqJd7lX6MWOc8Ru0mWX+heDtry
- FmzmbRV3t2Qtp3WGNInrCnmMv0LmLnIzkhNRl7r6EIrvvkA0dKsNFDB9+
- eQkjA1wCkIIZr17Q1d90RaGjcFj0FyOCYOkGUt0zoXxFcWDPyxChm7tmD A==;
-X-CSE-ConnectionGUID: IA+dNZV0Q2i294Uo7t02Ag==
-X-CSE-MsgGUID: RC3ECSnNQseXmJKHS70k/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="63565446"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="63565446"
+ t=1750674394; x=1782210394;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=TC0z9Q1FwXllaKpGPNdMbhIi47tz2jGUovh6tzE2h5w=;
+ b=AuZGz5A1nKnTGLUsXEgE85OUcO2tNxFcirPQs+fh2Mt0nDgLZROLfSss
+ YmE1vz/6atEqo7IMHUxDAqAJ4ggNCeypFRWJdFzIZGV4svbYOdxZYUWhL
+ BFWAmuAT3HYk8fc2saRhhaVQ7DVGUzG0tXwbjf5G6ZMxognx2iMsGGoS6
+ zWZAOAxHEm/1R/KNpGgNoQhVu/Nmr9wCX8uxB3op1W4MJNvKUcBZ/KsP3
+ gjTK7tsgatcJob1esZAYc0Ol8WfwQwJ16SqGNSUSNJdFYPFLR2kWhlksv
+ y30PIJsZi790JlZac98h/DgW6GBPdaYiZOo+Hukzpu8kmFiTsm+DLdmus w==;
+X-CSE-ConnectionGUID: Eh/H8FeOTeyWF/zfZ8RG7A==
+X-CSE-MsgGUID: ssAOnNHXRCWDKo/wusNEeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="63565451"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="63565451"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 03:26:29 -0700
-X-CSE-ConnectionGUID: ijBtim1+TjyvAi65ncgvsQ==
-X-CSE-MsgGUID: vbLLatrDRrW14D0CnS01OQ==
+ 23 Jun 2025 03:26:31 -0700
+X-CSE-ConnectionGUID: oZo9Bd+CTFG2X1mhhzNnLw==
+X-CSE-MsgGUID: QLsLFPmCRgi1Y2qnxV1G4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="182427932"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="182427937"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 03:26:26 -0700
+ 23 Jun 2025 03:26:29 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  steven.sistare@oracle.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
- qemu-trivial@nongnu.org (open list:Trivial patches)
-Subject: [PATCH 0/4] Some trivial live update fixes
-Date: Mon, 23 Jun 2025 18:22:31 +0800
-Message-Id: <20250623102235.94877-1-zhenzhong.duan@intel.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH 1/4] vfio/container: Fix SIGSEGV when open container file fails
+Date: Mon, 23 Jun 2025 18:22:32 +0800
+Message-Id: <20250623102235.94877-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250623102235.94877-1-zhenzhong.duan@intel.com>
+References: <20250623102235.94877-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.9;
@@ -80,30 +82,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+When open /dev/vfio/vfio fails, SIGSEGV triggers because
+vfio_listener_unregister() doesn't support a NULL bcontainer
+pointer.
 
-These are trivial VFIO live update fixes in corner cases.
+Fixes: a1f267a7d4d9 ("vfio/container: reform vfio_container_connect cleanup")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ hw/vfio/container.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-1) open /dev/vfio/vfio fail trigger SIGSEGV
-2) mdev hotplug trigger qemu abort
-3) potential SIGSEGV when unmap-all-vaddr failed
-3) potential vfio_container_post_load failure
-
-Thanks
-Zhenzhong
-
-Zhenzhong Duan (4):
-  vfio/container: Fix SIGSEGV when open container file fails
-  vfio/container: fails mdev hotplug if add migration blocker failed
-  vfio/container: Fix potential SIGSEGV when recover from
-    unmap-all-vaddr failure
-  vfio/container: Fix vfio_container_post_load()
-
- include/hw/vfio/vfio-cpr.h |  7 ++++---
- hw/vfio/container.c        | 12 +++++++++---
- hw/vfio/cpr-legacy.c       | 23 +++++++++--------------
- 3 files changed, 22 insertions(+), 20 deletions(-)
-
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 3e8d645ebb..2853f6f08b 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -710,7 +710,9 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+     return true;
+ 
+ fail:
+-    vfio_listener_unregister(bcontainer);
++    if (new_container) {
++        vfio_listener_unregister(bcontainer);
++    }
+ 
+     if (group_was_added) {
+         vfio_container_group_del(container, group);
 -- 
 2.34.1
 
