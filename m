@@ -2,115 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE842AE3FF3
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 14:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA20AE403B
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 14:29:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTgEB-0002Aq-7k; Mon, 23 Jun 2025 08:24:47 -0400
+	id 1uTgFa-0004RZ-7S; Mon, 23 Jun 2025 08:26:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anushree.mathur@linux.ibm.com>)
- id 1uTgDn-0001zF-Vm; Mon, 23 Jun 2025 08:24:24 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anushree.mathur@linux.ibm.com>)
- id 1uTgDg-0001ZU-Pj; Mon, 23 Jun 2025 08:24:23 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N64Bf1017551;
- Mon, 23 Jun 2025 12:24:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=lRPEgU
- mljfTmyd/9jVJyGOsd4NRVAOGCrzW4NY7b4Kk=; b=DT6yhnvhY3BP5DhLNx/GxF
- JV3lHWeo4JlUuIC24SlE1sOTyzUD0Y7ZeA228+pxmNFOpfKfgl+ukUqdR6lEXBi9
- R3eORUPF/2eQ6pIq92IZv88C1W5BscXdz9v5QjVPZVu/0M7Y0woD0QqW7ZH59B8t
- YjwUuhraQXEDHpkubfStax5OmDSGKBYmVayy1NFznF7aAFh9PjoA02r+X4SLz7Jt
- lBbw4DEDd6UDe+kIcyeyH9mNlLhgnr9xxFZPDopCYrwv0i3o527GmgFQ6fSRoZFJ
- 07rgVMqZtL0a2x/zxTLxyqrojYWp+Qt8JskccrvYI2UT3K2K8tl4l4Acbpu8GMWg
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmf2sfa4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Jun 2025 12:24:11 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55NCNnGa020931;
- Mon, 23 Jun 2025 12:24:11 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmf2sf9x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Jun 2025 12:24:11 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55NB7ZjH014988;
- Mon, 23 Jun 2025 12:24:10 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e72tem2r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Jun 2025 12:24:10 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 55NCO9va14287444
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Jun 2025 12:24:09 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E69FF58058;
- Mon, 23 Jun 2025 12:24:08 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 777255805B;
- Mon, 23 Jun 2025 12:24:06 +0000 (GMT)
-Received: from [9.61.246.2] (unknown [9.61.246.2])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 23 Jun 2025 12:24:06 +0000 (GMT)
-Message-ID: <888a0d9d-ed0d-4a9c-81b6-0b3f3e6fc0db@linux.ibm.com>
-Date: Mon, 23 Jun 2025 17:54:05 +0530
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uTgF3-0004D3-Fa
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:25:41 -0400
+Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uTgF0-0001uY-AS
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:25:41 -0400
+Received: by mail-yw1-x1131.google.com with SMTP id
+ 00721157ae682-70f94fe1e40so39947167b3.1
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 05:25:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1750681531; x=1751286331; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=iOtuCzhi55Q0saX8rrN1nyWE5gkK0uW5WLHzEHJcXF4=;
+ b=voNRKg7rfEbvYkqVuGPiZbK5+jWRyUkJ3H7b1/jBy5PaNrG/Q8+dCxWAaFK0AsD0aR
+ waqyAm+47fXtRv3zXXwU3PJulmVTqJmtiKBdANmm0u2p9a6VksfZ70lm02LEg4LtrhtH
+ edpcIKTc/XTjRktcwHBi69c89mdj1KYOByp+8i8xtEQ30Y68cNc1jElP6Po95HZ+2wte
+ O5cStnWGxK0xKYMXjjSa/DAmXdkbhIlsU+6JG48q2Klp0mcweNJpg3eGkOgv+2quQtA8
+ g2rr65QhfB3gXQ6uK8MmSvQJDNqh7GV1LeQa8J+a9IQ88srfQrd/8d3cxDftBgqUpbx/
+ hr7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750681531; x=1751286331;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iOtuCzhi55Q0saX8rrN1nyWE5gkK0uW5WLHzEHJcXF4=;
+ b=RWH/dwDF12tJVnV3N6NleAop9j8mv1XJcDWOjKnGuaXrR7Oc9KyJ0QxoUzBYSSR2tB
+ BjuXb/o2fcUGbtJE9Z6avKhiskE7IMzzM7BAevzmFn2t1JP27LwN1Ojih4BdH+pREx1U
+ 4PpG4mo9p+1MNV2pPIUIbxv0KsxJCxJNDB3dTNwVmcjtAQa/na7wmwTepYpVZeaBeeEt
+ gFO2xos/zCU6WP0wt4kj+8NWT7w/rccPouC1tyQVY1ZBk2j8XIPF5qc/McutxiH9vdID
+ SmCh3WU/tkJAK0T5d/dHWzGyAKNuBdyj0WYKCx78TspRTP3fWR9bXB1ezOCfvFNzGitN
+ oqmA==
+X-Gm-Message-State: AOJu0YztsYAfvh24DNWuSX/VnorBgr6Ea1L+4FszMRBR5HS/IBPdil+j
+ mf7sdMu2rualxppY9w+tcQ0rikqGItBAX/iVrt29yR9JugA4goNRGaGQ/xdHM44YQ5JZIy2vXlu
+ AehKKZ6DIG4uT/XFRKZO3njyb4hMFveF+Eedv98uBTZmG11uDcMR0
+X-Gm-Gg: ASbGncs1J05yhVE8VnQXiQZ93pra0Duk0VHwE6OxdxYpe2UwDea/lDE9u33HC7xkQUU
+ o9Y2NrbajyZTgFbNecJiMV6Q1gKWKxtzkLvONTqRieHpUZobXzAvG857xk91IhFFdQ9Emp4aAMa
+ SV9L++OMQIyehKopinb61dmba6CBpFIsT3C6a4Rn13J9MW
+X-Google-Smtp-Source: AGHT+IGfa2Yx6j0hETW+n0hhz8UfWme2sFx64UDlgIRu8DJ1ll6n9yRRo3I8BiUCZEwdtWf+v33s6yne9DtevE3L4nU=
+X-Received: by 2002:a05:690c:498c:b0:70e:6c9c:e123 with SMTP id
+ 00721157ae682-712ca337320mr152276417b3.0.1750681531496; Mon, 23 Jun 2025
+ 05:25:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: CPU hotplug crashed the guest when using virt-type as qemu!
-From: Anushree Mathur <anushree.mathur@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, richard.henderson@linaro.org
-Cc: npiggin@gmail.com, danielhb413@gmail.com, harshpb@linux.ibm.com,
- rathc@linux.ibm.com
-References: <96ce3e34-6d4e-4d92-a852-6eee5063140d@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <96ce3e34-6d4e-4d92-a852-6eee5063140d@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=M5FNKzws c=1 sm=1 tr=0 ts=6859476b cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=p0WdMEafAAAA:8 a=-0eX4HzcuYmkXvSIhdUA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA3NCBTYWx0ZWRfXx7bRa88VilQe
- w5ppb1YpG8vVmEjrrv6SPampqxiBN1ZbiDAGMzthjKfz/vE+x/+cLJEl16v3JbII5YcNTDVVVI3
- S1fL5D4G0FNTx1mWioIvjCxe8k4PuirORWSN/7xdmP9Y/rBwq71e3EYXcBTR3POrscakRZ0xXSM
- aMBe3qYz7D8nGhvEPJuOC8ITyZtbBJamV8rVkBs46YpB8YQq26KskjxJe6deXxCFs4U/EhG/39P
- sn7zgZuJVoqv6vG7MRyN0XdIMjVdulLMt87IN4v66sAShydAueBwdqhL9zq1N0XBFotakXlw4DC
- /xaQpwRnbU+vi2E8655fPmbYcZeIsq3p0xwdc6U+Y38eGogkt9KmYw132c8BR//gAB1/ucx7mHq
- hqcP7yvesG4FxhOEt5GNwY4Dod3D40+8Kj855mt8/65AH+zFfwNL94f+3BgqybnxxqAek1pY
-X-Proofpoint-GUID: gh0GNVxrsZeZoPpJ_X-Gj4wJMag1ZM3N
-X-Proofpoint-ORIG-GUID: M5Xiet4mJ_rOuF8b2XcK_tKauWFrW7Q1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-23_03,2025-06-23_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 spamscore=0 clxscore=1015 adultscore=0
- mlxscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506230074
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=anushree.mathur@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20250621235037.74091-1-richard.henderson@linaro.org>
+ <20250621235037.74091-21-richard.henderson@linaro.org>
+In-Reply-To: <20250621235037.74091-21-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 23 Jun 2025 13:25:19 +0100
+X-Gm-Features: AX0GCFtzYrcdNCLa7ouEbfLwQ7KfFwrSiAF9e-EgIRnTkz1iLA3fSXeYG9znvjI
+Message-ID: <CAFEAcA_MXNMiPau+udbxefNX3waPj5dM2gnpzxkTGPm=oKM=5Q@mail.gmail.com>
+Subject: Re: [PATCH v2 020/101] target/arm: Implement SME2 MOVT
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1131.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,118 +90,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
-Any updates on this issue? Would really appreciate your inputs here. 
-Thanks in advance!
+On Sun, 22 Jun 2025 at 00:59, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/tcg/translate-sme.c | 13 +++++++++++++
+>  target/arm/tcg/sme.decode      |  5 +++++
+>  2 files changed, 18 insertions(+)
 
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-Regards,
-Anushree-Mathur
-
-On 28/05/25 7:04 PM, Anushree Mathur wrote:
-> Hi all,
-> I have reported this issue on gitlab at 
-> https://gitlab.com/qemu-project/qemu/-/issues/2984.
->
-> Steps to reproduce:
->
-> 1) Start a guest with virt-type as qemu
-> <domain type='qemu'>
->   <name>linux</name>
->   <uuid>cba9037f-2a62-41f9-98c1-0780b2ff49b9</uuid>
->   <maxMemory slots='16' unit='KiB'>419430400</maxMemory>
->   <memory unit='KiB'>20971520</memory>
->   <currentMemory unit='KiB'>10485760</currentMemory>
->   <memoryBacking>
->     <locked/>
->   </memoryBacking>
->   <vcpu placement='static' current='4'>1024</vcpu>
->
->
-> 2) lscpu on host:
-> lscpu
-> Architecture:             ppc64le
->   Byte Order:             Little Endian
-> CPU(s):                   40
->   On-line CPU(s) list:    0-39
-> Model name:               POWER10 (architected), altivec supported
->   Model:                  2.0 (pvr 0080 0200)
->   Thread(s) per core:     8
->   Core(s) per socket:     5
->   Socket(s):              1
->   Physical sockets:       4
->   Physical chips:         1
->   Physical cores/chip:    12
->
-> 3) [On host] virsh setvcpus linux 800
-> error: Unable to read from monitor: Connection reset by peer
->
-> 4) Guest is getting into shutoff state
->
-> 5) I am seeing this issue on upstream qemu also
->
->
->
-> Tried reproducing while attaching gdb shows below backtrace which 
-> happened after hotplugging 249 CPUs in TCG mode:
->
-> Thread 261 "CPU 249/TCG" received signal SIGABRT, Aborted.
-> [Switching to Thread 0x7ff97c00ea20 (LWP 51567)]
-> 0x00007fff84cac3e8 in __pthread_kill_implementation () from 
-> target:/lib64/glibc-hwcaps/power10/libc.so.6
-> (gdb) bt
-> #0  0x00007fff84cac3e8 in __pthread_kill_implementation () from 
-> target:/lib64/glibc-hwcaps/power10/libc.so.6
-> #1  0x00007fff84c46ba0 in raise () from 
-> target:/lib64/glibc-hwcaps/power10/libc.so.6
-> #2  0x00007fff84c29354 in abort () from 
-> target:/lib64/glibc-hwcaps/power10/libc.so.6
-> #3  0x00007fff850f1e30 in g_assertion_message () from 
-> target:/lib64/libglib-2.0.so.0
-> #4  0x00007fff850f1ebc in g_assertion_message_expr () from 
-> target:/lib64/libglib-2.0.so.0
-> #5  0x00000001376c6f00 in tcg_region_initial_alloc__locked 
-> (s=0x7fff7c000f30) at ../tcg/region.c:396
-> #6  0x00000001376c6fa8 in tcg_region_initial_alloc (s=0x7fff7c000f30) 
-> at ../tcg/region.c:402
-> #7  0x00000001376dae08 in tcg_register_thread () at ../tcg/tcg.c:1011
-> #8  0x000000013768b7e4 in mttcg_cpu_thread_fn (arg=0x143e884f0) at 
-> ../accel/tcg/tcg-accel-ops-mttcg.c:77
-> #9  0x0000000137bbb2d0 in qemu_thread_start (args=0x143b4aff0) at 
-> ../util/qemu-thread-posix.c:542
-> #10 0x00007fff84ca9be0 in start_thread () from 
-> target:/lib64/glibc-hwcaps/power10/libc.so.6
-> #11 0x00007fff84d4ef3c in __clone3 () from 
-> target:/lib64/glibc-hwcaps/power10/libc.so.6
-> (gdb)
->
->
-> which points to below code:
->
-> /*
->  * Perform a context's first region allocation.
->  * This function does _not_ increment region.agg_size_full.
->  */
-> static void tcg_region_initial_alloc__locked(TCGContext *s)
-> {
->     bool err = tcg_region_alloc__locked(s);
->     g_assert(!err);
-> }
->
-> Here, tcg_region_alloc__locked is defined as below:
->
->
-> static bool tcg_region_alloc__locked(TCGContext *s)
-> {
->     if (region.current == region.n) {
->         return true;
->     }
->     tcg_region_assign(s, region.current);
->     region.current++;
->     return false;
-> }
->
-> Thanks,
-> Anushree-Mathur
-
+thanks
+-- PMM
 
