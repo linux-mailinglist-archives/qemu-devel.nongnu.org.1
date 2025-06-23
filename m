@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3504DAE4DE3
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 22:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C1EEAE4DDF
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 22:08:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTnRk-00061L-V0; Mon, 23 Jun 2025 16:07:16 -0400
+	id 1uTnRk-000602-1P; Mon, 23 Jun 2025 16:07:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uTnRi-0005zm-7X
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uTnRi-0005zn-7d
  for qemu-devel@nongnu.org; Mon, 23 Jun 2025 16:07:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uTnRg-0003WE-CY
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uTnRg-0003Wa-PW
  for qemu-devel@nongnu.org; Mon, 23 Jun 2025 16:07:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750709231;
+ s=mimecast20190719; t=1750709232;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S0hAo7uObo/yCTF5mbeDUJEe0VzTLQTBlXgVDJht0Fk=;
- b=B6Zyxuz8bgqRpxxbx2R0BhtvC9eQEV2B6BUAjfoBP+zDZIrAc1K+Qr7zdeyDGihYOpxOuW
- 7HWKMW8hVqsiU0nyVnL6TvGbPofN7HlZ0IejS6ZCYgnUzgUt/Uq4bZak/PiKrjV1NwDLjv
- SbKpEwt+8t/SIgN0KFVezgUf5uwOnYc=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JPAbS7kbUQ6XF3VFXAZzn4GVMjZi6hGPV20GzFZdjtU=;
+ b=eeI58a7I0UJOSOOuU3DaSGa0X9r5IXBQ9bPtqLBzZJfVaWckudUq+CtMBp3gT3TKOoAjPN
+ f+7vaufxYsjQ+45Ud3PrXfM5yEwglEyD5O2Y/B5XN7P+gFAaPWKqrXGyzB8ChrBNNoAq5M
+ H1v57v0YKjmMRetGIVqGYJXQXmT+syk=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-YydpmtMEOmiDWv412om_mg-1; Mon, 23 Jun 2025 16:07:09 -0400
-X-MC-Unique: YydpmtMEOmiDWv412om_mg-1
-X-Mimecast-MFC-AGG-ID: YydpmtMEOmiDWv412om_mg_1750709228
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6fb3466271fso73772056d6.0
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 13:07:08 -0700 (PDT)
+ us-mta-198-g1OqxblbOemHS4cXVOnwpw-1; Mon, 23 Jun 2025 16:07:10 -0400
+X-MC-Unique: g1OqxblbOemHS4cXVOnwpw-1
+X-Mimecast-MFC-AGG-ID: g1OqxblbOemHS4cXVOnwpw_1750709229
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6fb4eed1914so101735176d6.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 13:07:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1750709228; x=1751314028;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S0hAo7uObo/yCTF5mbeDUJEe0VzTLQTBlXgVDJht0Fk=;
- b=gZuEGQ8L8NwqT2DCwgfrZE5HqU2elSkhhchc0d7QMgRoz25a+j4TquPCWYeFhaW46i
- xu4g2PX0JJDD83I4/D4sYfOuIKJGzRe94F7apD3R9/Q3Fm5PEeZ8VOQR1BLH4H4K2aUY
- mpWLm+QOjjpy3iTD+ZONOcw04g3knn5RF3fs8KJSP7Gj5w9iYVDEpXCp10jG2uDb0wol
- 38Jtbt35ms1w2Dxyk21WGhw8rGKUWZuG764P2EeoKZbRvnRvQnmJzPmupqXTRQeTtt9d
- FaqhZuGrE2W//Ifr9z0ZebZ/3l28Jo1/BVVOV8uWpwu5dzrfSxjmCa9lS0Qbz+ydBvDz
- BhXA==
-X-Gm-Message-State: AOJu0Ywc7yvrimUzd1EfdmB7ZC9xGdjla62sSxywTdsrsrLFp+A5qmvo
- 4oKH7lDbj9luiRMw+E88f9lMD7e+cGhdnBQe4vF7coLQnrc2FFZZ71WikEN3g0vCgbIwWGMzAKU
- bHTRwqGwA5Zd0yyQh4uMf0dEcMpXlx5WApUlM9aN6fH9XQCZjsORXhKBmeGIwcE4R0Bet5GrSWJ
- qyK43myc9hHoF4eAQ6P626RfXosAb3O5pcKLY1Ig==
-X-Gm-Gg: ASbGncvyHF3HoTK48yjXPYxDUNdGKS5ofR/GpPKkw2x5YuIGODt96hD1JaArdGxYxKr
- NigsDfRDl5YFhi+eZVfksvkwo1G2ZbfgBApzyW1paNb8plE/ZTsUSj2zOoSVDAmNTAjdjO3BpsZ
- TFlck3m5XzAN2SzFNYTfbPyNDAK9Rwu+ZiKm35+gxg9hJzxyAotS1V8+P2deBYY+qhJBfUU6SqK
- oClVHymuEvwGsKhCO6wiI8ignkeHF/3ZX+Hb+eb+N5Zzjypa7xwNORbmSGEIrLCBTsa3+jO45PK
- zczn/dJFglk=
-X-Received: by 2002:a05:6214:2685:b0:6fa:fc4b:8ea7 with SMTP id
- 6a1803df08f44-6fd3889809emr12340226d6.21.1750709227592; 
- Mon, 23 Jun 2025 13:07:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE8WGyXrgpUhkjz4fkFrFvMntq1BPtDJ/A5tMfg0LDz4blDM8G6kgLS4da+VP3COftIKWfueg==
-X-Received: by 2002:a05:6214:2685:b0:6fa:fc4b:8ea7 with SMTP id
- 6a1803df08f44-6fd3889809emr12339696d6.21.1750709227044; 
- Mon, 23 Jun 2025 13:07:07 -0700 (PDT)
+ bh=JPAbS7kbUQ6XF3VFXAZzn4GVMjZi6hGPV20GzFZdjtU=;
+ b=qDxaQc3qHa1pQCLJQaAvvolvdH0GLhmXEUfUEl6svJmT3z4mEB/lfr8gmkm8IhexuZ
+ +6AVT/znLBuXda27GloR9wrsyT5R41N5JNRklPfiMU3Zhyt4Dn6YNMn2FWz6JQ6PLl2T
+ 2ObFzv+VQiSZDyHLfhtmMIql/fjp/XvvMFWPkSBfYwUd1Zp8934R30nt+Ny3VdVdzSOc
+ Jb2QGh7BMsjHdVKImg34heZk63ryZK2sPCV+GMaslVpAKgZuiKFy5tmYwT+4L6Ucm/lR
+ OAVs8q/WXgYuDl7H7wSR7sqLST+6d6SKV7UvXNhjvq2RSfvFk6vg9H5iPsxORJ370ccN
+ yGbA==
+X-Gm-Message-State: AOJu0YxzQwwTfUWkR7Gm+X4iyh1Qg/Zyckit2QrEmXVLU7oOgtPTgzFD
+ V7n8eXcpWv2WPAaV4XkXDyx2gjajP0j0X0z8OKah/ynVSXG1uUAFK0/GK5E+VrpTgBHxNM2sut4
+ Ptjo+tCXOTILwwVOrr66nPMVZNdYyuHYjGYHJS+R/hQWDeIfvq8hf/wWQgNQViyHvyxgUvX7QFF
+ pafUXiDAcVLX174tH1EcZmrPdzfmX5y4p+478UXg==
+X-Gm-Gg: ASbGncsCrBFbgEwjWooR3xGkWP8cN7zeLSikXkMeiXqWD7H62iGV4del1psOOTMUQVN
+ Q6HTdbR9QhNntAqKdZKinYAewqb5x0ALawZ5dHv59pOclDs4U5nc5gRdpFg4Wzp6QPtXkfMC/q+
+ D/0GC9Km7XUBS+8O+IF9c5EEaGSHVqlqnMASq/apKs6Mi55sBrRpXRYUb6LwY5lbIcytMv4g+by
+ 37HSFehXIKiizioldHAZ5dPKCrVfiUlMHfTUaLfv7rwD4ouJnz3REIJzn5tRx+NlRsvI/MJhnv+
+ BEb4ZZ3O+IE=
+X-Received: by 2002:a05:6214:4b11:b0:6f5:426c:1d1 with SMTP id
+ 6a1803df08f44-6fd0a57a411mr228481396d6.34.1750709228583; 
+ Mon, 23 Jun 2025 13:07:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdEHpYd1fnxyu2z6UdQOpxBhS4MkasrO9OTK306GaXLjJou91TYcK6DhaU5cTT5riboBG2HQ==
+X-Received: by 2002:a05:6214:4b11:b0:6f5:426c:1d1 with SMTP id
+ 6a1803df08f44-6fd0a57a411mr228481036d6.34.1750709228131; 
+ Mon, 23 Jun 2025 13:07:08 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6fd095a775bsm48427976d6.112.2025.06.23.13.07.06
+ 6a1803df08f44-6fd095a775bsm48427976d6.112.2025.06.23.13.07.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Jun 2025 13:07:06 -0700 (PDT)
+ Mon, 23 Jun 2025 13:07:07 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Jaehoon Kim <jhkim@linux.ibm.com>,
- "Jason J. Herne" <jjherne@linux.ibm.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 05/11] tests/migration: Setup pre-listened cpr.sock to remove
- race-condition.
-Date: Mon, 23 Jun 2025 16:06:50 -0400
-Message-ID: <20250623200656.1882674-6-peterx@redhat.com>
+ "Chaney, Ben" <bchaney@akamai.com>
+Subject: [PULL 06/11] migration: Don't sync volatile memory after migration
+ completes
+Date: Mon, 23 Jun 2025 16:06:51 -0400
+Message-ID: <20250623200656.1882674-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250623200656.1882674-1-peterx@redhat.com>
 References: <20250623200656.1882674-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,64 +107,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jaehoon Kim <jhkim@linux.ibm.com>
+From: "Chaney, Ben" <bchaney@akamai.com>
 
-When the source VM attempts to connect to the destination VM's Unix
-domain socket (cpr.sock) during a cpr-transfer test, race conditions can
-occur if the socket file isn't ready. This can lead to connection
-failures when running tests.
+Syncing volatile memory provides no benefit, instead it can cause
+performance issues in some cases.  Only sync memory that is marked as
+non-volatile after migration completes on destination.
 
-This patch creates and listens on the socket in advance, and passes the
-pre-listened FD directly. This avoids timing issues and improves the
-reliability of CPR tests.
-
-Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
-Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
-Reviewed-by: Steve Sistare <steven.sistare@oracle.com>
-Link: https://lore.kernel.org/r/20250611205610.147008-2-jhkim@linux.ibm.com
-[peterx: null-initialize opts_target, per Steve]
+Signed-off-by: Ben Chaney <bchaney@akamai.com>
+Fixes: bd108a44bc29 (migration: ram: Switch to ram block writeback)
+Link: https://lore.kernel.org/r/1CC43F59-336F-4A12-84AD-DB89E0A17A95@akamai.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration/cpr-tests.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ migration/ram.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
-index 5536e14610..5e764a6787 100644
---- a/tests/qtest/migration/cpr-tests.c
-+++ b/tests/qtest/migration/cpr-tests.c
-@@ -60,13 +60,12 @@ static void test_mode_transfer_common(bool incoming_defer)
-     g_autofree char *cpr_path = g_strdup_printf("%s/cpr.sock", tmpfs);
-     g_autofree char *mig_path = g_strdup_printf("%s/migsocket", tmpfs);
-     g_autofree char *uri = g_strdup_printf("unix:%s", mig_path);
-+    g_autofree char *opts_target = NULL;
+diff --git a/migration/ram.c b/migration/ram.c
+index fd8d83b63c..024d8b3d03 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3680,7 +3680,9 @@ static int ram_load_cleanup(void *opaque)
+     RAMBlock *rb;
  
-     const char *opts = "-machine aux-ram-share=on -nodefaults";
-     g_autofree const char *cpr_channel = g_strdup_printf(
-         "cpr,addr.transport=socket,addr.type=unix,addr.path=%s",
-         cpr_path);
--    g_autofree char *opts_target = g_strdup_printf("-incoming %s %s",
--                                                   cpr_channel, opts);
+     RAMBLOCK_FOREACH_NOT_IGNORED(rb) {
+-        qemu_ram_block_writeback(rb);
++        if (memory_region_is_nonvolatile(rb->mr)) {
++            qemu_ram_block_writeback(rb);
++        }
+     }
  
-     g_autofree char *connect_channels = g_strdup_printf(
-         "[ { 'channel-type': 'main',"
-@@ -75,6 +74,17 @@ static void test_mode_transfer_common(bool incoming_defer)
-         "              'path': '%s' } } ]",
-         mig_path);
- 
-+    /*
-+     * Set up a UNIX domain socket for the CPR channel before
-+     * launching the destination VM, to avoid timing issues
-+     * during connection setup.
-+     */
-+    int cpr_sockfd = qtest_socket_server(cpr_path);
-+    g_assert(cpr_sockfd >= 0);
-+
-+    opts_target = g_strdup_printf("-incoming cpr,addr.transport=socket,"
-+                                  "addr.type=fd,addr.str=%d %s",
-+                                  cpr_sockfd, opts);
-     MigrateCommon args = {
-         .start.opts_source = opts,
-         .start.opts_target = opts_target,
+     xbzrle_load_cleanup();
 -- 
 2.49.0
 
