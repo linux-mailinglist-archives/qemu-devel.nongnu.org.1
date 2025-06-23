@@ -2,105 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F97AE3F1F
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 14:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC06AE3FA2
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 14:20:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTfwm-0007T8-DW; Mon, 23 Jun 2025 08:06:48 -0400
+	id 1uTg8h-0001BF-1J; Mon, 23 Jun 2025 08:19:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTfvp-0007KJ-J3
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:05:51 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTg8V-00019y-Vm
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:19:00 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTfvh-0006hR-Jn
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:05:48 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3a4e742dc97so3029150f8f.0
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 05:05:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uTg8S-0000PB-0q
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 08:18:54 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3a50fc819f2so3251708f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 05:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750680337; x=1751285137; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=LhVmC7Ptr86082iSVP3tCUv3mxHNuSnJ7XLqXn+lKmI=;
- b=rvtZ//nS7KVdXEBg2bBDstD3Fc6/HMuW70+dA+T3AdmM+qCCMR49nZmKkJ/Um+VINq
- GB5NErfvi7OF7szvajnslPWU6JLPJOm3YPqRhOvRpRrFGGA7ZNJahFWmA5MqMOOP+rBq
- 6T2fuYT9FxO8CRwQ/5QdUicgJvGdvMYCqhvuZ6F0wMMYZyRPh1Gz5m61ch+Hjqn1EfX/
- 2xITOaQ/QZmGsi5W2nVauztUcDtysnjOd7+h3LzPEQ9yChBSTbzljr+yQNr7FYkJCRh6
- Z02q5PlpB/fXSk4CjvfkeLPuB4JTNH/aYmqB9cG5SyqAfiAkW+AHvMiLFqbD/QpgxH9d
- u8sA==
+ d=linaro.org; s=google; t=1750681128; x=1751285928; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7t8GepafkJeMN/Zl0RDAcmDhcsq3WRAaImUu4o56bag=;
+ b=LytyFpZGbC/WWcHz6Aek2TaFAbqRcYl2tCbc8QMq1bzIthuimFcwWjGIMY05dIuXCb
+ GM0YUsqebdjOr+IwmoCmJJOaXOPUL/t/F5kqqhDlsLb1wlIOf+Mqm9F0Q5xpuDgVar0x
+ iuKh03pQw6wLZnAmclUe2xBreOIrePosJWWzkzVuk+irOVf9qz16FO521vIAQBwqL8I7
+ TlRlzMmNQ5RNl3n8QO8U6wKcQmeE7Rng3ZlUHk5STD84eUqDSUQGifD5evRCtfJxcrOw
+ 0Sb1y80W35YwoH2v2uy6Qka/vBsTop6qtkx8i655VM8Z3gqc6qnbCQ9Zm5p8CjQMLRNE
+ K7Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750680337; x=1751285137;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LhVmC7Ptr86082iSVP3tCUv3mxHNuSnJ7XLqXn+lKmI=;
- b=H5O1D+y9bU/0GlZ/+yUhW9X7plpcH4Id72zeVe17EYQ/DGmvlaBkgCh9gc1N7dGOYv
- IZMqwiNnr6kQy7Htxlb4JxN4u+cZw5U84JhPXcWaC7PaXXUUsE6nsuBQe7P7BXzDMvkn
- eU4kblnRgYt9Ty2+DcdUnIqbmzv6AnbzueprjEO4YbwWYHebFU+nr4dZZqkriUw//rCB
- a+6OVKCeBdRKqLmMUTQUD4u2NfRprKjKKjs9oYenIBLX7LTo7717Z8byHdfeVF4ObP/S
- oCA0vRD0xQ46sTtkkrM9tuKgHjFS1J7DWmDHO/8W0GzAhMt6UyjSzKLlO7ocWm/Hr42J
- hgfw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUXIY512LTBkOqrp8IBJ5+SL/vsKdJlDRWSfGlF3jKc9adhd05/a74naAokYobL5HN4WjOYgRWMY/PG@nongnu.org
-X-Gm-Message-State: AOJu0Yy5AtobUtlszrhnfStFk2bvYyYioluxxWG2Q0lJkx1SlcUY/hXV
- MDF9ouSuS+weoPVFYQeDU9xNl77ruAMEXXsFP0b9LWJak3+y3tsq9LZcrRubLFLiONQ=
-X-Gm-Gg: ASbGncuSbVcQyIsThcYrrfOJIFy5Uny1Zi1EcGFTjUr38ygb+0NgbtbyCCStA9fk3VU
- N7aMdDV7dMrkq9BUWTNs1iQ3tumbrTm/Q7z0+rqIvcXrFb/vu8679Un8Ecjdy1YnUwLyJaFCxjM
- Iu0wCSrndjTAWxxPmqddlNV42Zyxn6xi4JqNpW5ZEq+zES8fAvTgiApS7/NZN9pL/itMmS/pRJp
- sdAepLRgxXfBSVi25uQRu1Oyzf6YEHTIf8TRPqU8HKyCb6/EGqcRBTkoxU04boIGrCif/Lxu1aE
- dMJxAKtcDsKhFHJ+ya4KMOCgUneH/WirFXZMm64IU98cI5ZNiQTYyZMSJ0ZHMf5Isf8GRSjKfLR
- 76aFefqVkvmji9Y4xkBgjM7gqNAXmZQ==
-X-Google-Smtp-Source: AGHT+IFqbtwF21H6pWk34kjB74g+vaQ792b2mQtfrzzfV/L7m1oPbaWH1vPXMofzQKaBoxU+8UO20g==
-X-Received: by 2002:a5d:5f93:0:b0:3a4:e238:6496 with SMTP id
- ffacd0b85a97d-3a6d27e17c2mr9044838f8f.18.1750680336753; 
- Mon, 23 Jun 2025 05:05:36 -0700 (PDT)
-Received: from [192.168.69.167] (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1750681128; x=1751285928;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7t8GepafkJeMN/Zl0RDAcmDhcsq3WRAaImUu4o56bag=;
+ b=a3oL120O5IEV//vMwITVH3vbZJ1QeU9V3K8Q84ZjsAf3T6MJcNRoR+daRSYFkY/iWg
+ RlBxzSvyw4WNQgh1bh+ElvkE8HnA24rypWU8qWS4McK6sl+m3w8m7B9hMWVrOUlPOEo4
+ roI9smsYmTJWNT6rYTgEAdjK/84MNWPf8OGLYi62bD0nC046H28bKBy229djgYU+6TB4
+ kkwst8b9pCITQLiElXP4I0fSrvaN5gsHy+4gVx44RGKTVWtfddfogA+Q25KCcjr4JPaI
+ zQI3GLy3jMo3VQaAxHqF4JXx6UoNBqD8z1NQuth2dSzi0XDaL3p3mHgLZedGzxcI8CW9
+ 4t6w==
+X-Gm-Message-State: AOJu0YyVqlE9XhGCVhaVpH1e9bYmjwLUszzn62/dcDIp58O1tGKO2KzL
+ om1LFmHmzR+hzSVE+ooDJRnEMQqo2wwMcj92TY+g1clGjc7qcLxUDHfNNZJWNETcNd/JtQ/qKzY
+ opAPy
+X-Gm-Gg: ASbGncvebajYT3C/e7HJeaY9leoEJbVofMuZKUsWbTqDzUQxdpPKYscoAd+/Qh2xNlZ
+ vvu3bbLWqkkS9pAX88wuDGdaxFmXzTi4b829ZGmx/GXqJUIHetgPlOOMpeZDwUUZQKc3ABtwrQl
+ nw9yUm8pNRuZIHMdT0bgg5ljh9iCbdZy2CBUNekH1S8yU4c/4wOMwv22iA0sBxpgnbwxbUpKcNA
+ 7vVWy2yp227OsWdC7gB9XJJqtwggRw4tXs82sJJprhkztODRVJQmxtsmg2nFHsJgEVjSisTBkIO
+ hURI7Vd2DpSWcvZxxz+Cr9UpHmL3rYFtHdIwzY9UfPILTJRkVPdHEd+9eFvnlL9K+hYzRnKe9sH
+ 7xjrzC4YaHCewkcaqTjrnP1PKZskKRvc+RjB/
+X-Google-Smtp-Source: AGHT+IFM1NS/tC9WBk7I3nX53LY2i9vYAhCY9oXhCQwhmOzZQ3Cjx1W2PBOvVDeh1+H7KqoU9pMS+Q==
+X-Received: by 2002:a05:6000:248a:b0:3a5:2fae:1348 with SMTP id
+ ffacd0b85a97d-3a6d13129c6mr9113300f8f.51.1750681128074; 
+ Mon, 23 Jun 2025 05:18:48 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4535e97a908sm142235035e9.4.2025.06.23.05.05.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Jun 2025 05:05:36 -0700 (PDT)
-Message-ID: <424c91ee-f5cb-40a1-b1bd-3f0648ae83f5@linaro.org>
-Date: Mon, 23 Jun 2025 14:05:35 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 23/26] tests/functional: Restrict nexted Aarch64 Xen
- test to TCG
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>,
- David Woodhouse <dwmw2@infradead.org>
-Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
+ ffacd0b85a97d-3a6d117c66esm9121303f8f.47.2025.06.23.05.18.46
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 23 Jun 2025 05:18:47 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Alexander Graf <agraf@csgraf.de>, Bernhard Beschow <shentey@gmail.com>,
+ John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ kvm@vger.kernel.org, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>, Cleber Rosa <crosa@redhat.com>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
  Richard Henderson <richard.henderson@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>, Alexander Graf <agraf@csgraf.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Bernhard Beschow <shentey@gmail.com>,
- Cleber Rosa <crosa@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, kvm@vger.kernel.org,
- qemu-arm@nongnu.org, Eric Auger <eric.auger@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, John Snow <jsnow@redhat.com>
-References: <20250620130709.31073-1-philmd@linaro.org>
- <20250620130709.31073-24-philmd@linaro.org>
- <497fc7b1-dfd2-49ad-938c-47fca1153590@redhat.com>
- <be71c7cc-a5ba-4ba5-b697-60814b712eea@linaro.org>
-Content-Language: en-US
-In-Reply-To: <be71c7cc-a5ba-4ba5-b697-60814b712eea@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v3 00/26] arm: Fixes and preparatory cleanups for split-accel
+Date: Mon, 23 Jun 2025 14:18:19 +0200
+Message-ID: <20250623121845.7214-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,43 +107,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/6/25 13:59, Philippe Mathieu-Daudé wrote:
-> On 23/6/25 10:11, Thomas Huth wrote:
->> On 20/06/2025 15.07, Philippe Mathieu-Daudé wrote:
->>> On macOS this test fails:
->>>
->>>    qemu-system-aarch64: mach-virt: HVF does not support providing 
->>> Virtualization extensions to the guest CPU
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   tests/functional/test_aarch64_xen.py | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/tests/functional/test_aarch64_xen.py b/tests/functional/ 
->>> test_aarch64_xen.py
->>> index 339904221b0..261d796540d 100755
->>> --- a/tests/functional/test_aarch64_xen.py
->>> +++ b/tests/functional/test_aarch64_xen.py
->>> @@ -33,6 +33,7 @@ def launch_xen(self, xen_path):
->>>           """
->>>           Launch Xen with a dom0 guest kernel
->>>           """
->>> +        self.require_accelerator("tcg") # virtualization=on
->>
->> What about kvm (or xen) as accelerator? Would that work?
-> 
-> IIUC this tests boots a nested Xen guest running at Aarch64 EL2,
-> and at this point we can only run EL2/EL3 on TCG. HVF and KVM
-> can not for now (we are working on it).
+Only the last patch is missing review (#26)
 
-I'll update the description with:
+Since v2:
+- Addressed thuth review comments
 
-   Currently QEMU only support accelerating EL0 and EL1, so features
-   requiring EL2 (like virtualization) or EL3 must be emulated with TCG.
+Since v1:
+- Addressed rth's review comments
 
-> I don't know if Xen can accelerate EL2, it would need support for
-> such hardware (like the Apple Silicon M4). Cc'ing Xen folks to
-> figure it out.
+Omnibus series of ARM-related patches (noticed during the
+"split accel" PoC work).
+
+- Usual prototypes cleanups
+- Check TCG for EL2/EL3 features (and not !KVM or !HVF)
+- Improve HVF debugging
+- Correct HVF 'dtb_compatible' value for Linux
+- Fix HVF GTimer frequency (My M1 hardware has 24 MHz)
+  (this implies accel/ rework w.r.t. QDev vCPU REALIZE)
+- Expand functional tests w.r.t. HVF
+
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (26):
+  target/arm: Remove arm_handle_psci_call() stub
+  target/arm: Reduce arm_cpu_post_init() declaration scope
+  target/arm: Unify gen_exception_internal()
+  target/arm/hvf: Simplify GIC hvf_arch_init_vcpu()
+  target/arm/hvf: Directly re-lock BQL after hv_vcpu_run()
+  target/arm/hvf: Trace hv_vcpu_run() failures
+  accel/hvf: Trace VM memory mapping
+  target/arm/hvf: Log $pc in hvf_unknown_hvc() trace event
+  target/arm: Correct KVM & HVF dtb_compatible value
+  accel/hvf: Model PhysTimer register
+  target/arm/hvf: Pass @target_el argument to hvf_raise_exception()
+  target/arm: Restrict system register properties to system binary
+  target/arm: Create GTimers *after* features finalized / accel realized
+  accel: Keep reference to AccelOpsClass in AccelClass
+  accel: Introduce AccelOpsClass::cpu_target_realize() hook
+  accel/hvf: Add hvf_arch_cpu_realize() stubs
+  target/arm/hvf: Really set Generic Timer counter frequency
+  hw/arm/virt: Only require TCG || QTest to use TrustZone
+  hw/arm/virt: Only require TCG || QTest to use virtualization extension
+  hw/arm/virt: Rename cpu_post_init() -> post_cpus_gic_realized()
+  hw/arm/sbsa-ref: Tidy up use of RAMLIMIT_GB definition
+  tests/functional: Set sbsa-ref machine type in each test function
+  tests/functional: Restrict nested Aarch64 Xen test to TCG
+  tests/functional: Require TCG to run Aarch64 imx8mp-evk test
+  tests/functional: Add hvf_available() helper
+  tests/functional: Expand Aarch64 SMMU tests to run on HVF accelerator
+
+ meson.build                                   |  1 +
+ accel/hvf/trace.h                             |  2 +
+ include/qemu/accel.h                          |  3 +
+ include/system/accel-ops.h                    |  4 +-
+ include/system/hvf.h                          |  3 +
+ target/arm/cpu.h                              |  2 -
+ target/arm/internals.h                        |  6 +-
+ target/arm/tcg/translate.h                    |  1 +
+ accel/accel-common.c                          |  4 +
+ accel/accel-system.c                          |  3 +-
+ accel/hvf/hvf-accel-ops.c                     |  8 ++
+ accel/tcg/tcg-accel-ops.c                     |  4 +-
+ hw/arm/sbsa-ref.c                             |  8 +-
+ hw/arm/virt.c                                 |  9 +-
+ target/arm/cpu.c                              | 78 +++++++++--------
+ target/arm/hvf/hvf.c                          | 86 ++++++++++++-------
+ target/arm/kvm.c                              |  2 +-
+ target/arm/tcg/translate-a64.c                |  6 --
+ target/arm/tcg/translate.c                    |  2 +-
+ target/i386/hvf/hvf.c                         |  5 ++
+ accel/hvf/trace-events                        |  7 ++
+ python/qemu/utils/__init__.py                 |  2 +-
+ python/qemu/utils/accel.py                    |  8 ++
+ target/arm/hvf/trace-events                   |  5 +-
+ tests/functional/qemu_test/testcase.py        |  6 +-
+ tests/functional/test_aarch64_imx8mp_evk.py   |  1 +
+ tests/functional/test_aarch64_sbsaref.py      |  5 +-
+ .../functional/test_aarch64_sbsaref_alpine.py |  3 +-
+ .../test_aarch64_sbsaref_freebsd.py           |  3 +-
+ tests/functional/test_aarch64_smmu.py         | 12 ++-
+ tests/functional/test_aarch64_xen.py          |  1 +
+ 31 files changed, 186 insertions(+), 104 deletions(-)
+ create mode 100644 accel/hvf/trace.h
+ create mode 100644 accel/hvf/trace-events
+
+-- 
+2.49.0
 
 
