@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C1EEAE4DDF
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 22:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2291DAE4DE2
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 22:08:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTnRk-000602-1P; Mon, 23 Jun 2025 16:07:16 -0400
+	id 1uTnRl-00061Z-PE; Mon, 23 Jun 2025 16:07:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uTnRi-0005zn-7d
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 16:07:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uTnRj-00060X-HE
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 16:07:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uTnRg-0003Wa-PW
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 16:07:13 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uTnRh-0003Wm-BO
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 16:07:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1750709232;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JPAbS7kbUQ6XF3VFXAZzn4GVMjZi6hGPV20GzFZdjtU=;
- b=eeI58a7I0UJOSOOuU3DaSGa0X9r5IXBQ9bPtqLBzZJfVaWckudUq+CtMBp3gT3TKOoAjPN
- f+7vaufxYsjQ+45Ud3PrXfM5yEwglEyD5O2Y/B5XN7P+gFAaPWKqrXGyzB8ChrBNNoAq5M
- H1v57v0YKjmMRetGIVqGYJXQXmT+syk=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sa8C9j/5zo9gPDkTFjiv5qUB1g2PT33c0z+8t2nsN4g=;
+ b=PDI+2/9KRtoPlNpE8THY1Fy3K715+x3YTT+RDHsB0I67VA1y4O/MQNN8HrUgrfoJDO8tSk
+ djNqF0vCGxx7VO8od5G/arNM673AfEk4ykhSNdLFl0lSad6zaqOI0AfFUMRfVtmpahSc9G
+ GHtQKiMN0oHLykLjBTWtRnJCVNYtICE=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-198-g1OqxblbOemHS4cXVOnwpw-1; Mon, 23 Jun 2025 16:07:10 -0400
-X-MC-Unique: g1OqxblbOemHS4cXVOnwpw-1
-X-Mimecast-MFC-AGG-ID: g1OqxblbOemHS4cXVOnwpw_1750709229
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6fb4eed1914so101735176d6.0
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 13:07:09 -0700 (PDT)
+ us-mta-477-L3EqyVKaOL-g2dBihDU1rw-1; Mon, 23 Jun 2025 16:07:11 -0400
+X-MC-Unique: L3EqyVKaOL-g2dBihDU1rw-1
+X-Mimecast-MFC-AGG-ID: L3EqyVKaOL-g2dBihDU1rw_1750709230
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6facf4cf5e1so81558966d6.2
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 13:07:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750709228; x=1751314028;
+ d=1e100.net; s=20230601; t=1750709230; x=1751314030;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JPAbS7kbUQ6XF3VFXAZzn4GVMjZi6hGPV20GzFZdjtU=;
- b=qDxaQc3qHa1pQCLJQaAvvolvdH0GLhmXEUfUEl6svJmT3z4mEB/lfr8gmkm8IhexuZ
- +6AVT/znLBuXda27GloR9wrsyT5R41N5JNRklPfiMU3Zhyt4Dn6YNMn2FWz6JQ6PLl2T
- 2ObFzv+VQiSZDyHLfhtmMIql/fjp/XvvMFWPkSBfYwUd1Zp8934R30nt+Ny3VdVdzSOc
- Jb2QGh7BMsjHdVKImg34heZk63ryZK2sPCV+GMaslVpAKgZuiKFy5tmYwT+4L6Ucm/lR
- OAVs8q/WXgYuDl7H7wSR7sqLST+6d6SKV7UvXNhjvq2RSfvFk6vg9H5iPsxORJ370ccN
- yGbA==
-X-Gm-Message-State: AOJu0YxzQwwTfUWkR7Gm+X4iyh1Qg/Zyckit2QrEmXVLU7oOgtPTgzFD
- V7n8eXcpWv2WPAaV4XkXDyx2gjajP0j0X0z8OKah/ynVSXG1uUAFK0/GK5E+VrpTgBHxNM2sut4
- Ptjo+tCXOTILwwVOrr66nPMVZNdYyuHYjGYHJS+R/hQWDeIfvq8hf/wWQgNQViyHvyxgUvX7QFF
- pafUXiDAcVLX174tH1EcZmrPdzfmX5y4p+478UXg==
-X-Gm-Gg: ASbGncsCrBFbgEwjWooR3xGkWP8cN7zeLSikXkMeiXqWD7H62iGV4del1psOOTMUQVN
- Q6HTdbR9QhNntAqKdZKinYAewqb5x0ALawZ5dHv59pOclDs4U5nc5gRdpFg4Wzp6QPtXkfMC/q+
- D/0GC9Km7XUBS+8O+IF9c5EEaGSHVqlqnMASq/apKs6Mi55sBrRpXRYUb6LwY5lbIcytMv4g+by
- 37HSFehXIKiizioldHAZ5dPKCrVfiUlMHfTUaLfv7rwD4ouJnz3REIJzn5tRx+NlRsvI/MJhnv+
- BEb4ZZ3O+IE=
-X-Received: by 2002:a05:6214:4b11:b0:6f5:426c:1d1 with SMTP id
- 6a1803df08f44-6fd0a57a411mr228481396d6.34.1750709228583; 
- Mon, 23 Jun 2025 13:07:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGdEHpYd1fnxyu2z6UdQOpxBhS4MkasrO9OTK306GaXLjJou91TYcK6DhaU5cTT5riboBG2HQ==
-X-Received: by 2002:a05:6214:4b11:b0:6f5:426c:1d1 with SMTP id
- 6a1803df08f44-6fd0a57a411mr228481036d6.34.1750709228131; 
- Mon, 23 Jun 2025 13:07:08 -0700 (PDT)
+ bh=sa8C9j/5zo9gPDkTFjiv5qUB1g2PT33c0z+8t2nsN4g=;
+ b=PTAsBqqqNOqnNP6U2ZdXr91wH8WpJ6VjbEohWVQnY0al/JrmUhe+oaprhFVcT1pvxQ
+ 0pifXlY8ksG+0SjzJ7zbPOV1UTOiJx0TYlbzu8qsmCbbNEH+iQiP8Ediknq/gsOXWCdK
+ V4s5cuKjz1gDq75y9Gaj8b5wkK2UjqC85hq27R85Q71n6XiGT/70b2+UBJHeV2/EXEMP
+ VJN7zwg+6V+w9n2lAR7TFRxVOfbWXL/Vtprg/EHkJ0fmMUiVwIGDH6W3LMPFwg9kN1zg
+ sl8lYCYoDEEdVrbk2Z6tijgRvj4VsXeWhztm1jjVaBlw8DI8xE53zRDpd/2c9SxjshEp
+ bbow==
+X-Gm-Message-State: AOJu0Yzm65Iyj9TbWibpqj99mUr+r2dhllTkRu1rgEvmhD0VmgKCLicz
+ KbGzqt4xF4oc985Cwl6UWrXN6FpemJNXC1FR6DZysCMA1GBFdcLd6h8166ibNf2gc03KalHZUl2
+ H7xfQpb13h2+BLHTjdoo9GoqfMW3VXNxqkeKqy5J3AnMle8YN+YG1IcF2+TD2FInm/Xc8+6XO04
+ zg1whanlgk+6QEmtO+vLrTYQA4M+rR0KyQalU4BQ==
+X-Gm-Gg: ASbGnctgyRcb2WrZt5NQRZooCpTR7BUh5MNAuykHwo6H5Nq4q+aMvIegtGcekfSrV6B
+ 0mZgJ3npuy1+Wnwb9k7xojwea9ZiFT9lrLfY3wojnjOd11ha3jfwb1Tne1Xm7dui7/IID64CWs6
+ 4UhkRkoVJtFEW8EV8tkHE2Jpf53jAG1IaewOLR2paOaTdElfMgd49+3b4jYY7/JSyrDw1WhXIES
+ AhOzag4GFAGCQ/1TQtyfgciTRA+zNH8aUZovI5dDM9Y8BW9mJXGtJsA8VGmAkZpACInMJ/9xlyY
+ mOmhaXF6q0g=
+X-Received: by 2002:a05:6214:21ef:b0:6fa:c6e6:11f9 with SMTP id
+ 6a1803df08f44-6fd0a4aa3d3mr200507506d6.11.1750709230057; 
+ Mon, 23 Jun 2025 13:07:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IElNXihsJbWDTH0G7V8Yo16+7C6fXN5aUPZlP9N15mlyikHefQXzEVUQ68REoCDlMfBCqrtYA==
+X-Received: by 2002:a05:6214:21ef:b0:6fa:c6e6:11f9 with SMTP id
+ 6a1803df08f44-6fd0a4aa3d3mr200507076d6.11.1750709229624; 
+ Mon, 23 Jun 2025 13:07:09 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6fd095a775bsm48427976d6.112.2025.06.23.13.07.07
+ 6a1803df08f44-6fd095a775bsm48427976d6.112.2025.06.23.13.07.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Jun 2025 13:07:07 -0700 (PDT)
+ Mon, 23 Jun 2025 13:07:08 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
 Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- "Chaney, Ben" <bchaney@akamai.com>
-Subject: [PULL 06/11] migration: Don't sync volatile memory after migration
- completes
-Date: Mon, 23 Jun 2025 16:06:51 -0400
-Message-ID: <20250623200656.1882674-7-peterx@redhat.com>
+ Chenyi Qiang <chenyi.qiang@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+ Pankaj Gupta <pankaj.gupta@amd.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 07/11] memory: Export a helper to get intersection of a
+ MemoryRegionSection with a given range
+Date: Mon, 23 Jun 2025 16:06:52 -0400
+Message-ID: <20250623200656.1882674-8-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250623200656.1882674-1-peterx@redhat.com>
 References: <20250623200656.1882674-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,35 +109,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Chaney, Ben" <bchaney@akamai.com>
+From: Chenyi Qiang <chenyi.qiang@intel.com>
 
-Syncing volatile memory provides no benefit, instead it can cause
-performance issues in some cases.  Only sync memory that is marked as
-non-volatile after migration completes on destination.
+Rename the helper to memory_region_section_intersect_range() to make it
+more generic. Meanwhile, define the @end as Int128 and replace the
+related operations with Int128_* format since the helper is exported as
+a wider API.
 
-Signed-off-by: Ben Chaney <bchaney@akamai.com>
-Fixes: bd108a44bc29 (migration: ram: Switch to ram block writeback)
-Link: https://lore.kernel.org/r/1CC43F59-336F-4A12-84AD-DB89E0A17A95@akamai.com
+Suggested-by: Alexey Kardashevskiy <aik@amd.com>
+Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+Link: https://lore.kernel.org/r/20250612082747.51539-2-chenyi.qiang@intel.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/ram.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/system/memory.h | 30 ++++++++++++++++++++++++++++++
+ hw/virtio/virtio-mem.c  | 32 +++++---------------------------
+ 2 files changed, 35 insertions(+), 27 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index fd8d83b63c..024d8b3d03 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3680,7 +3680,9 @@ static int ram_load_cleanup(void *opaque)
-     RAMBlock *rb;
+diff --git a/include/system/memory.h b/include/system/memory.h
+index 0848690ea4..da97753e28 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -1211,6 +1211,36 @@ MemoryRegionSection *memory_region_section_new_copy(MemoryRegionSection *s);
+  */
+ void memory_region_section_free_copy(MemoryRegionSection *s);
  
-     RAMBLOCK_FOREACH_NOT_IGNORED(rb) {
--        qemu_ram_block_writeback(rb);
-+        if (memory_region_is_nonvolatile(rb->mr)) {
-+            qemu_ram_block_writeback(rb);
-+        }
-     }
++/**
++ * memory_region_section_intersect_range: Adjust the memory section to cover
++ * the intersection with the given range.
++ *
++ * @s: the #MemoryRegionSection to be adjusted
++ * @offset: the offset of the given range in the memory region
++ * @size: the size of the given range
++ *
++ * Returns false if the intersection is empty, otherwise returns true.
++ */
++static inline bool memory_region_section_intersect_range(MemoryRegionSection *s,
++                                                         uint64_t offset,
++                                                         uint64_t size)
++{
++    uint64_t start = MAX(s->offset_within_region, offset);
++    Int128 end = int128_min(int128_add(int128_make64(s->offset_within_region),
++                                       s->size),
++                            int128_add(int128_make64(offset),
++                                       int128_make64(size)));
++
++    if (int128_le(end, int128_make64(start))) {
++        return false;
++    }
++
++    s->offset_within_address_space += start - s->offset_within_region;
++    s->offset_within_region = start;
++    s->size = int128_sub(end, int128_make64(start));
++    return true;
++}
++
+ /**
+  * memory_region_init: Initialize a memory region
+  *
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index a3d1a676e7..b3c126ea1e 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -244,28 +244,6 @@ static int virtio_mem_for_each_plugged_range(VirtIOMEM *vmem, void *arg,
+     return ret;
+ }
  
-     xbzrle_load_cleanup();
+-/*
+- * Adjust the memory section to cover the intersection with the given range.
+- *
+- * Returns false if the intersection is empty, otherwise returns true.
+- */
+-static bool virtio_mem_intersect_memory_section(MemoryRegionSection *s,
+-                                                uint64_t offset, uint64_t size)
+-{
+-    uint64_t start = MAX(s->offset_within_region, offset);
+-    uint64_t end = MIN(s->offset_within_region + int128_get64(s->size),
+-                       offset + size);
+-
+-    if (end <= start) {
+-        return false;
+-    }
+-
+-    s->offset_within_address_space += start - s->offset_within_region;
+-    s->offset_within_region = start;
+-    s->size = int128_make64(end - start);
+-    return true;
+-}
+-
+ typedef int (*virtio_mem_section_cb)(MemoryRegionSection *s, void *arg);
+ 
+ static int virtio_mem_for_each_plugged_section(const VirtIOMEM *vmem,
+@@ -287,7 +265,7 @@ static int virtio_mem_for_each_plugged_section(const VirtIOMEM *vmem,
+                                       first_bit + 1) - 1;
+         size = (last_bit - first_bit + 1) * vmem->block_size;
+ 
+-        if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
++        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+             break;
+         }
+         ret = cb(&tmp, arg);
+@@ -319,7 +297,7 @@ static int virtio_mem_for_each_unplugged_section(const VirtIOMEM *vmem,
+                                  first_bit + 1) - 1;
+         size = (last_bit - first_bit + 1) * vmem->block_size;
+ 
+-        if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
++        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+             break;
+         }
+         ret = cb(&tmp, arg);
+@@ -355,7 +333,7 @@ static void virtio_mem_notify_unplug(VirtIOMEM *vmem, uint64_t offset,
+     QLIST_FOREACH(rdl, &vmem->rdl_list, next) {
+         MemoryRegionSection tmp = *rdl->section;
+ 
+-        if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
++        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+             continue;
+         }
+         rdl->notify_discard(rdl, &tmp);
+@@ -371,7 +349,7 @@ static int virtio_mem_notify_plug(VirtIOMEM *vmem, uint64_t offset,
+     QLIST_FOREACH(rdl, &vmem->rdl_list, next) {
+         MemoryRegionSection tmp = *rdl->section;
+ 
+-        if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
++        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+             continue;
+         }
+         ret = rdl->notify_populate(rdl, &tmp);
+@@ -388,7 +366,7 @@ static int virtio_mem_notify_plug(VirtIOMEM *vmem, uint64_t offset,
+             if (rdl2 == rdl) {
+                 break;
+             }
+-            if (!virtio_mem_intersect_memory_section(&tmp, offset, size)) {
++            if (!memory_region_section_intersect_range(&tmp, offset, size)) {
+                 continue;
+             }
+             rdl2->notify_discard(rdl2, &tmp);
 -- 
 2.49.0
 
