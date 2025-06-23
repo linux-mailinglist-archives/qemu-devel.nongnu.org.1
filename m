@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452CFAE3841
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 10:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A329AAE3842
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 10:21:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTcP1-0008ML-Tn; Mon, 23 Jun 2025 04:19:44 -0400
+	id 1uTcQZ-0000XJ-6r; Mon, 23 Jun 2025 04:21:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uTcOx-0008Li-Cv
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 04:19:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uTcQA-0000QL-Bn
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 04:20:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uTcOv-0007mv-8N
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 04:19:38 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uTcQ3-00086O-9H
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 04:20:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750666776;
+ s=mimecast20190719; t=1750666842;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8XX5DDD8hC5pLsDuzu/Mi8zN3wXHrIluVW5N+ZopIaA=;
- b=ipMCCf/UkEn5Tv88kKq+lamfUSLquOC6fyHINy4f2Bl1wsWwQM+4uTQYvJjsgWn+GtlVMn
- 7fLsD58UgUHlj5ZHsKRoAK1xyGEQWOct6QYGzSTk7dz4NQGq4GG4FtCzhFQZvRyd3kmAna
- V2a3xt7VqDC3zUTtmjXWB0bhjkkoiXo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GBbPkcJ+cqTlKtkPkEOBLY6Eme/Qi2QlGOOm0lPBfy8=;
+ b=YLdnT5A3lc6DrIyM4Vhi3DOcra9P42TovF1NxaB3igUZQf4NSXJBJrLKbwyLcmSoYMZ3tK
+ ZWWj3w/Nc6TU2Uxn/fwnxLHZhplskz2AKVdPqF9CqmPddnQsIqChHlmISbLN6YnNBRgqjA
+ LTtHVgnTJbmdIDYTkEgLEWU8+C/5oFU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-GG5ozJuTPQK7jE4nG6ebaA-1; Mon, 23 Jun 2025 04:19:34 -0400
-X-MC-Unique: GG5ozJuTPQK7jE4nG6ebaA-1
-X-Mimecast-MFC-AGG-ID: GG5ozJuTPQK7jE4nG6ebaA_1750666773
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a6df0c67a6so669831f8f.3
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 01:19:34 -0700 (PDT)
+ us-mta-646-WNcFfqDuO_2R-umJ6Qm5VA-1; Mon, 23 Jun 2025 04:20:36 -0400
+X-MC-Unique: WNcFfqDuO_2R-umJ6Qm5VA-1
+X-Mimecast-MFC-AGG-ID: WNcFfqDuO_2R-umJ6Qm5VA_1750666830
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a3696a0d3aso1654576f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 01:20:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750666773; x=1751271573;
+ d=1e100.net; s=20230601; t=1750666830; x=1751271630;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=8XX5DDD8hC5pLsDuzu/Mi8zN3wXHrIluVW5N+ZopIaA=;
- b=kH1MzjF8vW9pag+DXDlic2MyuBhQs9X39kMkGGZz0GgdvWk4deniDFec1jAxkivs1v
- cJvncYq5duiM2FMZjQM6vfFNRvziUsnfT4clTuq2o4Q9buCrq6zPHkbgKAmJ1CL9q+3/
- RyZ2jAYDjVuIVmeAp8PSdWI2tBBmO2Awshtb6WqvceliVcmEziHggPk897vYFmG0eQ/M
- K7F/cr9kaEGq1sWlG82bqm5nJtU1tD2w7fdfuOmJDVyiZvp/XapEMB9FG2UOCIaK3J+6
- qoBY3yiWo6CPRv6ItqT41m9O4kZpnRKh/EKg0fPi8JjK+/8oEDWlwQBZvPEGzqVnpR+S
- 2UCw==
+ bh=GBbPkcJ+cqTlKtkPkEOBLY6Eme/Qi2QlGOOm0lPBfy8=;
+ b=EL6FaSCmcnR8iedeowpVpIxYx5Vm5fvSUNEiO2/DkFwBuZa7KlhAcHaPV/7wOzy5RC
+ lNBf6FpeGzy7ZBEgF19qpkttsY9zeKP3fYtAwt82/MC2OQvcvnTh7o0+yW0Gx7mC4XfA
+ S8eHvbSF38MPea5gmIqcQ1meSTrHtFNovbldgi68PXJ3FooBL2ILLyUtZ9LzNmXyrK0l
+ lk+PW875iI+jsGiIZ7KbI8X+Bv8cskRZQU9UolmTA2hL6nSJgd4fTWgxDVPHK1k9TcWK
+ l8KaekxFQo90cEwmKz0ub7xMo9LOCjfyYmNndrQP382+nW+gr7p4mSN5mV2snMulG/58
+ yHWQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXmqKDIKCtaWRbky1E3JFXgn3WE6BMf7X/Ofu57pYlaZ/fqlYpj2uvtw1rnA46vT3xvR/uklMWbP7ZX@nongnu.org
-X-Gm-Message-State: AOJu0YxvDeXNlRdKihUbgfmR5Ywd3+k+CzxUFDlE1q2WBw3yA/JoC1Uz
- O55eaxXsLk6zD/hOPGjuMgNesLxtpSAobkYXjfH6rt0l271vZDH50hfd69yxbUaTbvTfnsvcTDK
- R1xFo75PoCKk/HdKUpP2gxgk7HL3iSnLxymnuaW9C7gIoINuH+akh1eHM
-X-Gm-Gg: ASbGncuWJeQSGipdJKQDBtm148rCiZoImxVfjyQkijr9pIUUiYOFKIweknDvTUAALSj
- 7Mf4lIdejLAKOxH56OEZhtbpculE7sp4qnk0ueGSJtPR9/bOK25qSRIwLwVMsGWKVj/IlXgVNGu
- 5QOfYIV1bUoASbTnzLVHf46UB7OXcKXxY1k2FpEBDYnak+t3CAzyZ/kjdDTA3Jydv1sobhGLh4y
- 6O7jalZdYPGm8vnm/3ApA08Ft8O/RL9lhNE8oGp5m1Wsg5oL8U13Smz/3zuIneBrs5/jA4mHZrz
- zA0Motz9LH8bBvTcsrD2Zde2ArLwBEYgrwvKOaODPB79eDYy/pfDjpCuq/+tn7I=
-X-Received: by 2002:a05:6000:178f:b0:3a4:f038:af76 with SMTP id
- ffacd0b85a97d-3a6d1331ef9mr10090465f8f.53.1750666773233; 
- Mon, 23 Jun 2025 01:19:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHB3OnZIUN6Z1pfd2Ko5M98DIFDS9f+w2C6Oai+OOVuvFK9Bb/v2T9UJg150rrspCRwaQVMtw==
-X-Received: by 2002:a05:6000:178f:b0:3a4:f038:af76 with SMTP id
- ffacd0b85a97d-3a6d1331ef9mr10090434f8f.53.1750666772820; 
- Mon, 23 Jun 2025 01:19:32 -0700 (PDT)
+ AJvYcCWzlOOpFnTApxl3WapKJGgGYjSDnXt1nKuEHMR6YxYwQYCxd6/lOxh1m8QjhmBexJeqXHSSyc7H2o3i@nongnu.org
+X-Gm-Message-State: AOJu0YywC3im3pp9LziS1pN19pw7ZVvUCjEAJtxxcNHg1ruPV0OA9lYD
+ Zu/iQWUauIwOhBakxfqYif63Dd7uV8++sEZfFSR+9omWvo6jGt3wWbfevHEFdQas+faKLmxW0NI
+ IlQ9ZlKFUxVGt9mbYOX2WnJ+Z56Im9JRtl4DNBOwd85Hq3tBiRsZ7MrV4
+X-Gm-Gg: ASbGncuGxW/xgQ+lELiOqd0OAgNcHaviT3zsMlKdrBGUfSvgGlL0G0zRluVEPpzDkG2
+ xYwEJdPlf/r/QuFRLWVwK789N3HikvXRDAEqffUAQfwlVkivbBcyj2nWAfETBhiE4B6EbsujJvS
+ ffn7bc3G8KdBhI+/BAKFcRfm2qfIShXuDkHNJAz4CIoTLk9uMiTPNreT9+/nhl0QXp780ukiEiS
+ M5/4Vn0IeRb4G4c2xFJ9fWWy0YF++ROIvTLd3pM5KyhiREZS+zab6NL0MuWmuVNMi6wbSkK30z9
+ 87VrrMMkTHAEzXfgkBih8Dn886YjrXrttAfQBavUnHdz5Hb8qgIUaxYDEYJTBQg=
+X-Received: by 2002:a05:6000:4605:b0:3a4:f6b7:8b07 with SMTP id
+ ffacd0b85a97d-3a6d12e39famr8683851f8f.48.1750666830073; 
+ Mon, 23 Jun 2025 01:20:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG/Uj5nWePqNYKo9LSNAcTJLy/FnRdV1bFqZ8no0/cHAlOiRtvPb7HGQmp5kR7f9BItTqveRw==
+X-Received: by 2002:a05:6000:4605:b0:3a4:f6b7:8b07 with SMTP id
+ ffacd0b85a97d-3a6d12e39famr8683830f8f.48.1750666829696; 
+ Mon, 23 Jun 2025 01:20:29 -0700 (PDT)
 Received: from [192.168.0.7] (ltea-047-064-114-166.pools.arcor-ip.net.
  [47.64.114.166]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6d0f1d902sm8609481f8f.43.2025.06.23.01.19.31
+ 5b1f17b1804b1-453647f29bdsm101598745e9.18.2025.06.23.01.20.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Jun 2025 01:19:32 -0700 (PDT)
-Message-ID: <3896c4a8-8b25-45e0-978c-1539648ab4cc@redhat.com>
-Date: Mon, 23 Jun 2025 10:19:30 +0200
+ Mon, 23 Jun 2025 01:20:29 -0700 (PDT)
+Message-ID: <5ce9667b-3e88-4882-9e70-f5511f9cbe07@redhat.com>
+Date: Mon, 23 Jun 2025 10:20:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 24/26] tests/functional: Require TCG to run Aarch64
- imx8mp-evk test
+Subject: Re: [PATCH v2 25/26] tests/functional: Add hvf_available() helper
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
@@ -91,7 +90,7 @@ Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Roman Bolshakov <rbolshakov@ddn.com>, John Snow <jsnow@redhat.com>
 References: <20250620130709.31073-1-philmd@linaro.org>
- <20250620130709.31073-25-philmd@linaro.org>
+ <20250620130709.31073-26-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -136,10 +135,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250620130709.31073-25-philmd@linaro.org>
+In-Reply-To: <20250620130709.31073-26-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -148,7 +147,7 @@ X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -165,34 +164,67 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/06/2025 15.07, Philippe Mathieu-Daudé wrote:
-> The imx8mp-evk machine is only built when TCG is available.
-
-The rationale here sounds wrong. If the machine is only built with TCG, then 
-the set_machine() should be good enough to check whether it's available.
-So I'd rather say:
-
-"The imx8mp-evk machine can only run with the TCG accelerator".
-
-With that update:
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-
-
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   tests/functional/test_aarch64_imx8mp_evk.py | 1 +
->   1 file changed, 1 insertion(+)
+>   python/qemu/utils/__init__.py          | 2 +-
+>   python/qemu/utils/accel.py             | 8 ++++++++
+>   tests/functional/qemu_test/testcase.py | 6 ++++--
+>   3 files changed, 13 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/functional/test_aarch64_imx8mp_evk.py b/tests/functional/test_aarch64_imx8mp_evk.py
-> index 638bf9e1310..99ddcdef835 100755
-> --- a/tests/functional/test_aarch64_imx8mp_evk.py
-> +++ b/tests/functional/test_aarch64_imx8mp_evk.py
-> @@ -49,6 +49,7 @@ def setUp(self):
->                        self.DTB_OFFSET, self.DTB_SIZE)
+> diff --git a/python/qemu/utils/__init__.py b/python/qemu/utils/__init__.py
+> index 017cfdcda75..d2fe5db223c 100644
+> --- a/python/qemu/utils/__init__.py
+> +++ b/python/qemu/utils/__init__.py
+> @@ -23,7 +23,7 @@
+>   from typing import Optional
 >   
->       def test_aarch64_imx8mp_evk_usdhc(self):
-> +        self.require_accelerator("tcg")
->           self.set_machine('imx8mp-evk')
->           self.vm.set_console(console_index=1)
->           self.vm.add_args('-m', '2G',
+>   # pylint: disable=import-error
+> -from .accel import kvm_available, list_accel, tcg_available
+> +from .accel import hvf_available, kvm_available, list_accel, tcg_available
+>   
+>   
+>   __all__ = (
+> diff --git a/python/qemu/utils/accel.py b/python/qemu/utils/accel.py
+> index 386ff640ca8..376d1e30005 100644
+> --- a/python/qemu/utils/accel.py
+> +++ b/python/qemu/utils/accel.py
+> @@ -82,3 +82,11 @@ def tcg_available(qemu_bin: str) -> bool:
+>       @param qemu_bin (str): path to the QEMU binary
+>       """
+>       return 'tcg' in list_accel(qemu_bin)
+> +
+> +def hvf_available(qemu_bin: str) -> bool:
+> +    """
+> +    Check if HVF is available.
+> +
+> +    @param qemu_bin (str): path to the QEMU binary
+> +    """
+> +    return 'hvf' in list_accel(qemu_bin)
+> diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+> index 50c401b8c3c..2082c6fce43 100644
+> --- a/tests/functional/qemu_test/testcase.py
+> +++ b/tests/functional/qemu_test/testcase.py
+> @@ -23,7 +23,7 @@
+>   import uuid
+>   
+>   from qemu.machine import QEMUMachine
+> -from qemu.utils import kvm_available, tcg_available
+> +from qemu.utils import hvf_available, kvm_available, tcg_available
+>   
+>   from .archive import archive_extract
+>   from .asset import Asset
+> @@ -317,7 +317,9 @@ def require_accelerator(self, accelerator):
+>           :type accelerator: str
+>           """
+>           checker = {'tcg': tcg_available,
+> -                   'kvm': kvm_available}.get(accelerator)
+> +                   'kvm': kvm_available,
+> +                   'hvf': hvf_available,
+> +                  }.get(accelerator)
+>           if checker is None:
+>               self.skipTest("Don't know how to check for the presence "
+>                             "of accelerator %s" % accelerator)
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
