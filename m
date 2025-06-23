@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8221CAE45B1
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 15:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A1C9AE45B6
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 16:00:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uThh6-0008Fv-R7; Mon, 23 Jun 2025 09:58:44 -0400
+	id 1uThhZ-0008Po-As; Mon, 23 Jun 2025 09:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uThh4-0008FS-AY
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 09:58:42 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1uThhA-0008Gt-4w
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 09:58:48 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uThh0-0007Hj-Qw
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 09:58:42 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-7490702fc7cso2138162b3a.1
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 06:58:38 -0700 (PDT)
+ id 1uThh5-0007IA-D3
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 09:58:47 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-7399a2dc13fso4883941b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 06:58:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750687117; x=1751291917; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750687121; x=1751291921; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QHmEaaRegYwFGlGoVTGRYvzmrkIrypDwOG7loJLMkas=;
- b=Tv2cBmAONAeOiVmp3jTu7az+lR9QWIVg4qa4HOZ2BxWaiYPgUOLSuXtWpJPvjMp1W4
- JmCBvzCAb1dQocbavhLpZ1/Qh1/3wUBcrXGsU21iahi+lQ3jatDp3bbnx9v9FgT6y773
- FCBiQKe6TBdgEbfmRd6vQAtjRa2TTznDZqrqxPvzc1A7LC8gv27lghtFCr87+DP2ZRZS
- 1e0/8CyLH9QADC9xC6ka8oegbYHL+e/MzgFM1aWsozbtq4hi+Mp9r63H19Gq28TCdiCf
- QhvsOqHDXXdkl+8w3Wy2Wz6Jj4uP4Owwnx/2zpJBwxkPYNEJPEMwBv9AIUSQ+IOLb/d7
- 7BAQ==
+ bh=tWwtJe7sGsUGEueqmsN3PVBl6pSQ948gCik+Qy6mwyc=;
+ b=F0cNz4wjTLppFhMHQFPclwPGqV87cx3u9fuCusGtta1cbn+1TKIAaN+CeQXMLQq1K2
+ iwYIi0PMB3gmGQNUPXUIfx8J5GWo1hd2LjzHFXwSod3HSaDu0DQQMXt22OR38w6WBAbq
+ jz4eHinCwE0o0f3l4Sqs7mooWKbCgrNVvRDYGKpQrDJcmARhntAwqIw3aUA+zlThdl+f
+ Do8LbqA/uJwUZuMdZk3bjE38Zn0e5UzKg5vta1m7yJbbg1x+52pcZOw6auZla2+W7RIC
+ Ard7wlDjT9npXzcN05MKuKpTQLnj2Gv3iHcYaD8thR0/oFeKlsIroJHUNKDK2iUtBlfn
+ p6rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750687117; x=1751291917;
+ d=1e100.net; s=20230601; t=1750687121; x=1751291921;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QHmEaaRegYwFGlGoVTGRYvzmrkIrypDwOG7loJLMkas=;
- b=lR7MShJ4rQMqiPnQHPKtHV8Tw0cN/VpQ5QIja+ZPUu1UxRsntGYQsl321d5lsvOMHi
- M2e7h1o2wkrIg01a30zPA3VjCFdZJNYfMDyr4JHc6/wrOTyVGz1kgmLKzm7o7+Oi8vCY
- 5Xv2XQB9BkrWLUgD5vuvzCWNPYLdALX9Xow+Eqbm2nfF6mGZeUP/tz8KGL2aksO+x98g
- p60LYxnfRo+opz3QgKPaxRdpadGwypBPFj5OtCzUSEV/oXLlzIDjh0ZoQDa8tmty5Rse
- oykQ7QiV/KgYK0m09wWXbBP9XhBB17T8EL+YrRfygzeE3lzCQ2KzC3WOpiecvMv/OdS1
- RrWg==
-X-Gm-Message-State: AOJu0Yw+4HyiFbZPLk8pbvohf70dpCgF8FLZ1qv5rJ9WljEg6m2AM7+W
- 9gZkc0h4sN6azmICPMiDr+9sWSZ7BTcwIRQEOnI6AnPL6qIu9HouOIIx0oD9ou4m9WrEB9Bi6I0
- utSrV
-X-Gm-Gg: ASbGnctdcMt/PPOnrxuB/Zes+WQMDfibtU1MsYz21UmvIJGI0tIdGvgjgueugsc67cd
- R1FqiUdlG8cwO1r0oU8pNrW/gxaelJnUKFAtopmGh4OhclhzB07CvGELlgoHDlGamd+3wnYbnY5
- aOB6o4mpG7aOrnLec9zjW7br0knmNhRGvlGqwEcoojzcmNGCZGi50jRF5nJ2WFVJANK+qTyr4T1
- vliW/eXjz6o+yYAnmJ/MWw+ZMxS7S0N4BWqnefvy//8KEnmsQsWzNmZJn/6JdZBHakblkHg8mdr
- It/NeR/bhJyvcYXEYw9gstDDOMGt89PDZT7btNxxPCrAH4JQ34mqFN7t2OfiP2/GpXM=
-X-Google-Smtp-Source: AGHT+IErWAFwMzcz/MjBmkN38EukFVknW17niV69zGOxvdKP40Jbzg6+ebXlnwGxu8z2XQPLIQXvZw==
-X-Received: by 2002:a05:6a21:a342:b0:21f:53a9:b72c with SMTP id
- adf61e73a8af0-22026e9c88cmr19082150637.38.1750687117248; 
- Mon, 23 Jun 2025 06:58:37 -0700 (PDT)
+ bh=tWwtJe7sGsUGEueqmsN3PVBl6pSQ948gCik+Qy6mwyc=;
+ b=cKyguhY6xlezafNf9rnxGPtGZS2e6IepVWOoAA7EkCrsc/Cnv5HzwITrSkUtsnwfpg
+ 7ltJ4FG0T2VjZaimFBc26VLAPT+NjPTxVBesk4+KzfmHdM6V+gddaeQ4HsfdWyHUY+VU
+ HFIHQ4Qerk3a5uv3o769sV/CpedN81hsxeLuYr9xDvq5jZ4Rs9apbkKXzGqiQXYuLpyx
+ soyWxMTpKT0B0fL3hG6IsdFfK4amMAhMowrnAU0SkBsi0kxGImnrQXY+YARep8Fii/bI
+ x9oy+v6+Az1f4uAv21kgdqkkjbn2OxLS7TW6zy0If250NJM4qgW20HYqbwg+1VoAZDb5
+ 54sA==
+X-Gm-Message-State: AOJu0Yw+3oRJyHbvr8CAWMIbOm8ALlrXGR3teKg/5rdsZHnNSdee+iU7
+ WKTl3Ec3FB44PfUug1m/ozgtKQ69lwIEz+7zJ1wWrGH3K3ySnKlTXazs0a/NssirCJq/WtXcODj
+ GOdrh
+X-Gm-Gg: ASbGncuzkhYsNfJYZ1p/OIQtvPUzbmr1FW1mgxMa5m8fHya5BF8chL1XGBRy8om5HAW
+ hNT6FrNezNluqc7lf/cymY3oXnm+oNwyL2DK/2R7MC01rEN1kNTnRM1zleHvbp6w1pVJ9xkiZYp
+ aiW8DXrx58pB9SSPtEWIn7I2oEaBH7DwqJu/vl42KO7LrAR3y1q/RJ+yTsO7bmKBmSsd+T1gqpJ
+ FZV07//eSjkkeR5HodwfB5T65ntqzSolMrIzFhoRdwGvC/5GdlwRx78zLsJF+L/6pV4IA88PZae
+ n4qP1I7ecn1zsgYNNQELOsTqVZvuyTAUHsOw4INBmH76t4lW1Yim1vE/Y+DnxQKMliY=
+X-Google-Smtp-Source: AGHT+IEP5weTA9lYRUWvac9OZPElw8rZVoWde3YML9FuBKQ3hKjUCj61HEYec5CnNc434BOKk7xUmA==
+X-Received: by 2002:a05:6a00:3c90:b0:736:2a73:6756 with SMTP id
+ d2e1a72fcca58-7490da07100mr18027642b3a.21.1750687120824; 
+ Mon, 23 Jun 2025 06:58:40 -0700 (PDT)
 Received: from gromero0.. ([186.215.58.88]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b31f119eb64sm8063490a12.31.2025.06.23.06.58.33
+ 41be03b00d2f7-b31f119eb64sm8063490a12.31.2025.06.23.06.58.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Jun 2025 06:58:36 -0700 (PDT)
+ Mon, 23 Jun 2025 06:58:40 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, eric.auger@redhat.com, philmd@linaro.org,
  mst@redhat.com
 Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, gustavo.romero@linaro.org,
  udo@hypervisor.org, ajones@ventanamicro.com, peter.maydell@linaro.org,
  imammedo@redhat.com, anisinha@redhat.com
-Subject: [PATCH v5 4/9] hw/arm/virt-acpi-build: Improve comment in build_iort
-Date: Mon, 23 Jun 2025 13:57:44 +0000
-Message-Id: <20250623135749.691137-5-gustavo.romero@linaro.org>
+Subject: [PATCH v5 5/9] hw/arm/virt-acpi-build: Factor out create_its_idmaps
+Date: Mon, 23 Jun 2025 13:57:45 +0000
+Message-Id: <20250623135749.691137-6-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250623135749.691137-1-gustavo.romero@linaro.org>
 References: <20250623135749.691137-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,73 +100,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When building the Root Complex table, the comment about the code that
-maps the RC node to SMMU node is misleading because it reads
-"RC -> SMMUv3 -> ITS", but the code is only mapping the RCs IDs to the
-SMMUv3 node. The step of mapping from the SMMUv3 IDs to the ITS Group
-node is actually defined in another table (in the SMMUv3 node). So
-change the comment to read "RC -> SMMUv3" instead.
+Factor out a new function, create_its_idmaps(), from the current
+build_iort code. Add proper comments to it clarifying how the ID ranges
+that go directly to the ITS Group node are computed based on the ones
+that go to the SMMU node.
 
-Signed-off-by Gustavo Romero <gustavo.romero@linaro.org>
+Suggested-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- hw/arm/virt-acpi-build.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ hw/arm/virt-acpi-build.c | 64 +++++++++++++++++++++++++---------------
+ 1 file changed, 41 insertions(+), 23 deletions(-)
 
 diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 9eee284c80..e9cd3fb351 100644
+index e9cd3fb351..40a782a498 100644
 --- a/hw/arm/virt-acpi-build.c
 +++ b/hw/arm/virt-acpi-build.c
-@@ -370,7 +370,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         /* DeviceID mapping index (ignored since interrupts are GSIV based) */
-         build_append_int_noprefix(table_data, 0, 4);
+@@ -266,6 +266,42 @@ static int iort_idmap_compare(gconstpointer a, gconstpointer b)
+     return idmap_a->input_base - idmap_b->input_base;
+ }
  
--        /* output IORT node is the ITS group node (the first node) */
-+        /* Output IORT node is the ITS Group node (the first node) */
-         build_iort_id_mapping(table_data, 0, 0x10000, IORT_NODE_OFFSET);
-     }
++/* Compute ID ranges (RIDs) from RC that do directly to the ITS Group node */
++static void create_its_idmaps(GArray *its_idmaps, GArray *smmu_idmaps)
++{
++    AcpiIortIdMapping *idmap;
++    AcpiIortIdMapping next_range = {0};
++
++    /*
++     * Based on the RID ranges that go to the SMMU, determine the bypassed RID
++     * ranges, i.e., the ones that go directly to the ITS Group node, by
++     * subtracting the SMMU-bound ranges from the full RID range, 0x0000–0xFFFF.
++     */
++     for (int i = 0; i < smmu_idmaps->len; i++) {
++        idmap = &g_array_index(smmu_idmaps, AcpiIortIdMapping, i);
++
++        if (next_range.input_base < idmap->input_base) {
++            next_range.id_count = idmap->input_base - next_range.input_base;
++            g_array_append_val(its_idmaps, next_range);
++        }
++
++        next_range.input_base = idmap->input_base + idmap->id_count;
++    }
++
++    /*
++     * Append the last RC -> ITS ID mapping.
++     *
++     * RIDs are 16-bit, according to the PCI Express 2.0 Base Specification, rev
++     * 0.9, section 2.2.6.2, "Transaction Descriptor - Transaction ID Field",
++     * hence, the end of the range is 0x10000.
++     */
++    if (next_range.input_base < 0x10000) {
++        next_range.id_count = 0x10000 - next_range.input_base;
++        g_array_append_val(its_idmaps, next_range);
++    }
++}
++
++
+ /*
+  * Input Output Remapping Table (IORT)
+  * Conforms to "IO Remapping Table System Software on ARM Platforms",
+@@ -276,7 +312,6 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+ {
+     int i, nb_nodes, rc_mapping_count;
+     size_t node_size, smmu_offset = 0;
+-    AcpiIortIdMapping *idmap;
+     uint32_t id = 0;
+     GArray *smmu_idmaps = g_array_new(false, true, sizeof(AcpiIortIdMapping));
+     GArray *its_idmaps = g_array_new(false, true, sizeof(AcpiIortIdMapping));
+@@ -287,34 +322,17 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     acpi_table_begin(&table, table_data);
  
-@@ -407,23 +407,36 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
      if (vms->iommu == VIRT_IOMMU_SMMUV3) {
-         AcpiIortIdMapping *range;
+-        AcpiIortIdMapping next_range = {0};
+-
+         object_child_foreach_recursive(object_get_root(),
+                                        iort_host_bridges, smmu_idmaps);
  
--        /* translated RIDs connect to SMMUv3 node: RC -> SMMUv3 -> ITS */
-+        /*
-+         * Map RIDs (input) from RC to SMMUv3 nodes: RC -> SMMUv3.
-+         *
-+         * N.B.: The mapping from SMMUv3 to ITS Group node (SMMUv3 -> ITS) is
-+         * defined in the SMMUv3 table, where all SMMUv3 IDs are mapped to the
-+         * ITS Group node.
-+         */
-         for (i = 0; i < smmu_idmaps->len; i++) {
-             range = &g_array_index(smmu_idmaps, AcpiIortIdMapping, i);
--            /* output IORT node is the smmuv3 node */
-+            /* Output IORT node is the SMMUv3 node. */
-             build_iort_id_mapping(table_data, range->input_base,
-                                   range->id_count, smmu_offset);
-         }
+         /* Sort the smmu idmap by input_base */
+         g_array_sort(smmu_idmaps, iort_idmap_compare);
  
--        /* bypassed RIDs connect to ITS group node directly: RC -> ITS */
-+        /*
-+         * Map bypassed (don't go throught the SMMU) RIDs (input) to ITS Group
-+         * node directly: RC -> ITS.
-+         */
-         for (i = 0; i < its_idmaps->len; i++) {
-             range = &g_array_index(its_idmaps, AcpiIortIdMapping, i);
--            /* output IORT node is the ITS group node (the first node) */
-+            /* Output IORT node is the ITS Group node (the first node). */
-             build_iort_id_mapping(table_data, range->input_base,
-                                   range->id_count, IORT_NODE_OFFSET);
-         }
-     } else {
--        /* output IORT node is the ITS group node (the first node) */
-+        /*
-+         * Map all RIDs (input) to ITS Group node directly, since there is no
-+         * SMMU: RC -> ITS.
-+         * Output IORT node is the ITS Group node (the first node).
-+         */
-         build_iort_id_mapping(table_data, 0, 0x10000, IORT_NODE_OFFSET);
-     }
+-        /*
+-         * Split the whole RIDs by mapping from RC to SMMU,
+-         * build the ID mapping from RC to ITS directly.
+-         */
+-        for (i = 0; i < smmu_idmaps->len; i++) {
+-            idmap = &g_array_index(smmu_idmaps, AcpiIortIdMapping, i);
+-
+-            if (next_range.input_base < idmap->input_base) {
+-                next_range.id_count = idmap->input_base - next_range.input_base;
+-                g_array_append_val(its_idmaps, next_range);
+-            }
+-
+-            next_range.input_base = idmap->input_base + idmap->id_count;
+-        }
+-
+-        /* Append the last RC -> ITS ID mapping */
+-        if (next_range.input_base < 0x10000) {
+-            next_range.id_count = 0x10000 - next_range.input_base;
+-            g_array_append_val(its_idmaps, next_range);
+-        }
++	/*
++	 * Knowing the ID ranges from the RC to the SMMU, it's possible to
++	 * determine the ID ranges from RC that go directly to ITS.
++	 */
++        create_its_idmaps(its_idmaps, smmu_idmaps);
  
+         nb_nodes = 3; /* RC, ITS, SMMUv3 */
+         rc_mapping_count = smmu_idmaps->len + its_idmaps->len;
 -- 
 2.34.1
 
