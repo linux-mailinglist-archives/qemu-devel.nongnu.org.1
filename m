@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506BCAE4B76
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 18:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E21CBAE4B77
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 18:55:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTkQg-0000pT-2S; Mon, 23 Jun 2025 12:53:58 -0400
+	id 1uTkRt-0001Fi-TV; Mon, 23 Jun 2025 12:55:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uTkQX-0000op-0s
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 12:53:49 -0400
+ id 1uTkRT-000174-Jn
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 12:54:47 -0400
 Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uTkQQ-00087c-St
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 12:53:46 -0400
+ id 1uTkRR-0008Ih-Og
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 12:54:47 -0400
 Received: by mail-yw1-x112a.google.com with SMTP id
- 00721157ae682-70e1d8c2dc2so40498187b3.3
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 09:53:42 -0700 (PDT)
+ 00721157ae682-70e447507a0so33191977b3.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 09:54:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750697621; x=1751302421; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750697685; x=1751302485; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=SM5s2yfTsPaxKw+Zimuw1twYcBHdG3Ow5gG+Cm+jkjk=;
- b=I20YTm6MVEZ3wDqCg7cznsIVYpYfG1RYUjigdvcAbyoEeksJ4ppDCDMXayYyK3UECn
- yDkqk+oKC19JA/lQMHt05B20PPNmxEqA8qevlz+ospZTskjOUXjcsDcflCL2vWSb4sfL
- gwCSsuy7SQEB/VCjx20jeY9xgWJ244HqrQKcajc3KSV520g74i0EQ4sbB8pf1jlFhFLw
- nKDlKBBilzYX4/e3lWRiAbvKpvcxyxN0on55eKWTrUfjz4/39pnizD5SM05NbDtCco8i
- PjG3zMUxCDJpcXp8CniEMT7yPDVHUjg1dQdEHnTB/OQ/yVZx37UmEAJW44oZLO6XO0Py
- XokQ==
+ bh=EJnApwJeyU8WjULXW91COnPvAcKQzP9dOx4NnVDDB/c=;
+ b=OIbggy1Ie8egSiMFU1F6HdpiqbI5Dn5hDbvnh/Xu/xx4SQq4DcHXAAsDxSOM1Xi2RW
+ qQSLP7e2PIYeEB4PKLytB4vnTSn8PIYQWSui50Vyx7ZJxIGzeep+6BK8vnQCLv+4VWeJ
+ i3qVkF1JHXLwb6LjFVy2NH/O4QWhZkusQqptSgwbQQ/aAMse8TtPslwa1XGYG6MBK3RV
+ zZKROub6SlZuW976quYH2nch86aJ5ckUGZlm7Dlx49aYnSMy2YGMpw2Sikox47FwPX24
+ gbEOhgwQxGLGKVpRNRPeGZBzwz/oAesk3yL28kEvttdPFdBy8XkFk2O8JnmLvN3hrfWU
+ J+Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750697621; x=1751302421;
+ d=1e100.net; s=20230601; t=1750697685; x=1751302485;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=SM5s2yfTsPaxKw+Zimuw1twYcBHdG3Ow5gG+Cm+jkjk=;
- b=QGxSSB9PmIKy7LoJNlsJgyoySOlDpPaeZSVTVWSwRb7xl7pq/lRDh6HbAppr5ZuOQW
- 5VOXxJm2Lq8PRMKYXiu/aHRSw0GX775QFJ4sMzUzGbNYEuEoCebKzz8O00sRbdGWpwBj
- 9ZpUmQ2vptBZcpJ1MZYv70ps4Oe5+UhD4TgC287OJK2tsKfdSrDdEHYCdgGM9Ka7eIpm
- rqyk+fzQdnrTAOEoC3Q4o2WcsGIq4vsCVJw01tRwS6uCPNIPXCxRxbMaKHN4bxC5ZGAf
- WBOdfo2Wxb2U4atsYl7UqV6TraQjbiJbY7gYL2uHxx8NhjjbvqKTGm1YBH3obe5if5dZ
- yohQ==
-X-Gm-Message-State: AOJu0Yw+s9EGYkz3pXLo0EGA3vV1J+uLSbDIMJPNrpaf50Jv9xYl8nzV
- YO8uxB+2v70V4v8r4jlAo1sEcvwP/lBFbFjFkeqvaU/s3l8JP6lUc3m9N/X1wH9SpeTVXpq+ywR
- ahyfr0Dp/lKQxWh9qq2hUWgBTQBi24C2rS+KNeDrH5QplNHpjxjpZ
-X-Gm-Gg: ASbGncvVLg4qX4ZdHB9Iee/hPVRpym8kU9YJkzP2cGY8uqXTDP64st3icfxomx7fZze
- dXvsc13tj26gE++t5/A7GaXyXUJa2d+YK5pJrS7f6Cxyx3JyDOWoJNGr2GN5b6/QDI3iHlF9g5s
- 5yUo2W0Wd+0omxtcMiZvLk/XtKdAVavJSvxFp2Nc1miuOc
-X-Google-Smtp-Source: AGHT+IEgA7os6zOXlE2YjwCG8EhcpGjNdg0HJJirKqrW9++EKr1V+oe50XlltOnzNtoxKB2xH2wgcaaCVg1OLPKZp8Y=
-X-Received: by 2002:a05:690c:c1b:b0:70c:a57c:94a3 with SMTP id
- 00721157ae682-712c64fbf57mr201291937b3.19.1750697621474; Mon, 23 Jun 2025
- 09:53:41 -0700 (PDT)
+ bh=EJnApwJeyU8WjULXW91COnPvAcKQzP9dOx4NnVDDB/c=;
+ b=U8XWEe7T2gux4Hzk/62LCwJibuOzY+o2YqjZQikHjdrsV3UvhM4sLTPFsAjSStsEZu
+ St4p0Ti46yFjT2UA84XqqY6Jl4rXyGHeF386hq14rULrJSJcI7kpXf795tXzNSdz5kW4
+ JwQYkdqjf1n67fr54bdMq8d2h0sXUuXqBL8Ok4gXUg5QWDlf9KYp90PtkpUxUILDxU6t
+ lr9356irlScsC4f59fxrQUuE6WLI/pVvjo7Z6O0md3FhoeAQRtAmKMfUkyf06AcHkVqC
+ PqSMN/PWTdaDBFfLRvIAs+qgUH9Z1hjyiqDzAGjORj6aBirvaeJeVe3M08O68x4Ns0oo
+ 0TEw==
+X-Gm-Message-State: AOJu0YyWyth1Cbcl3wG1/0XplI64v3fvrPZmAFJ3QC/abRdC5m3Y/2d7
+ BKhBZDQIq6KRsLAw7jLGLZAsbzF1S5T7jHv0qc7oN9qsZasMuM9GshmMJsxjj3ltPcKpDtEU33L
+ lWKb8Klw7uit6mMb4p3RmUgqfN6QJYiixaMkdnc97ilT1lcq/cjub
+X-Gm-Gg: ASbGncvdLkswyBcIkQZLPSFih9/l6BerzeAdFe9ZbjYnkV1fg9CoXD5osCowBeG1tdv
+ Q45wDyTkqEXkuI9mYb5BUYIf0K7lxNuwKsapHBh8YocNyRcUYab3zlSgjH5t8XvIVPuTTxHfaP+
+ rH1NlZFQzFC+Ei4jc2d5/WF9M0+JHSNXyaRlF6EsCopbJk
+X-Google-Smtp-Source: AGHT+IHanSQatj6UUWuVO2BF6ZvPVJIIZvpaYmgT7p7Va2el2a9T1XmxljWeorZII5dPUyUvLgYnB42ZdvGbiT/RK0c=
+X-Received: by 2002:a05:690c:28f:b0:710:f564:5071 with SMTP id
+ 00721157ae682-712c63b17e8mr210565587b3.11.1750697684646; Mon, 23 Jun 2025
+ 09:54:44 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
- <20250621235037.74091-38-richard.henderson@linaro.org>
-In-Reply-To: <20250621235037.74091-38-richard.henderson@linaro.org>
+ <20250621235037.74091-39-richard.henderson@linaro.org>
+In-Reply-To: <20250621235037.74091-39-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 23 Jun 2025 17:53:30 +0100
-X-Gm-Features: AX0GCFuAxpZq2zsvVaCkGB7nbHEBCE_biejIyLkDBXwUdmZ9W6rkwAz8NxjRcpE
-Message-ID: <CAFEAcA8aPdKLHcLub6_hCnDHRQZ-Nx7D1FU_1sJz=ye8qKn_Sg@mail.gmail.com>
-Subject: Re: [PATCH v2 037/101] target/arm: Implement SME2 FVDOT, BFVDOT
+Date: Mon, 23 Jun 2025 17:54:32 +0100
+X-Gm-Features: AX0GCFuENpS2pqKrx194LF5iLFberrGMKchEZD8OH-DVLMBgF18P3OMMwPINdPI
+Message-ID: <CAFEAcA9izgncq6ofRAnMNLHZM+KLMeYb-prymKMfv4yBK4WArw@mail.gmail.com>
+Subject: Re: [PATCH v2 038/101] target/arm: Rename helper_gvec_*dot_[bh] to
+ *_4[bh]
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
@@ -90,11 +91,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 22 Jun 2025 at 00:53, Richard Henderson
+On Sun, 22 Jun 2025 at 00:51, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
+> Emphasize that these are 4-way dot products.
+>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
