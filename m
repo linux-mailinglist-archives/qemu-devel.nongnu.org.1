@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645C8AE3C42
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 12:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C0BAE3C3E
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 12:27:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTeNw-00060J-Fa; Mon, 23 Jun 2025 06:26:44 -0400
+	id 1uTeNw-00061x-AQ; Mon, 23 Jun 2025 06:26:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uTeNr-0005xa-Fu
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 06:26:39 -0400
+ id 1uTeNu-0005yO-J4
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 06:26:42 -0400
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uTeNp-0000l4-FV
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 06:26:39 -0400
+ id 1uTeNr-0000l4-Lj
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 06:26:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750674397; x=1782210397;
+ t=1750674399; x=1782210399;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yr+7s6bCyo7u5kYfwpM0Ju13ecCPRGK8h7Rg4MDQSfo=;
- b=Svv0LQcoKQDqOsyT+Pi+w0EfZH81wbiZpftqDLxO9nGrpI+AasxtESjt
- ifkDOWjMZet9j+6P0wLPjw8IfHUdcWu40GGcsl5mwuCGpy44TSgO3vNY1
- e5TWO/G9n+6JQsWc44gGXzKK8syldhrg8GIrkZS4qlmE9tQIyxj5FS5BE
- 2qhnlLpIpTmuOO0t2zFx36UGdvjig3Rpe4isw/Ko8htlJZyLBalGHz914
- vz5q0EzS5KEbj1zgebg+OZed7RkgQTsKu9DZZdW2iJBKYk8hyXOSjoKjJ
- FaZ6coruPjRqwZyCfmvvXzHeaRtcp4APpTpHMuumolSRqS/rnYveM5Ve3 Q==;
-X-CSE-ConnectionGUID: s4N7/rkAS7Cjj87Ho+ChBQ==
-X-CSE-MsgGUID: vRKklP2kSHaPmeMw1HpfCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="63565466"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="63565466"
+ bh=JV8/tKIjtQekCcqphu512/XnCCpL9Gbwuue5YmsnoZE=;
+ b=H3fzKKp7uBV73YoWDHwWqX4TQVEDX157B1vm6CGa8PDIZbftgJI2UfZ+
+ UO+wxrcdjVLQzbK+b6FxV9f8jINgHP0P6kpuf56DDW6RLmV2oqxrRXfpq
+ qye1TtBIWm6ur4etUqYQb/xY7DpveN0aINPQfuQbzM3QCKQvOW3ISqTvv
+ IsiwQmX8V/SMYjM60+Sn197YQ9GwLTzH5re3e4UCcqVqMKqYOl+JDie/5
+ EQqV+ZLOzq3GhLMNOyPTazgX1NMUeoxlD4m8dJKhORycgOsJ6iDwQc6oK
+ iQFdiKu9E0YOhmiFSouMISD7/yNek99XQ34bIG/9sdNMwsT9ys2QYoIvH A==;
+X-CSE-ConnectionGUID: SDhFbfwURb2DwhYmdVunmA==
+X-CSE-MsgGUID: 9koHa9vRRYyQLYdkURqGXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="63565469"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="63565469"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 03:26:35 -0700
-X-CSE-ConnectionGUID: WO350kWCQ4iXP3VsYRCxKg==
-X-CSE-MsgGUID: KPKd2TP6TjWhrK3WTDys4Q==
+ 23 Jun 2025 03:26:37 -0700
+X-CSE-ConnectionGUID: cUj+0b/yS2uJRtiaPt8Leg==
+X-CSE-MsgGUID: AB91I+O7Rs6X46vTeja4RQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="182427954"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="182427963"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 03:26:33 -0700
+ 23 Jun 2025 03:26:35 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  steven.sistare@oracle.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 3/4] vfio/container: Fix potential SIGSEGV when recover from
- unmap-all-vaddr failure
-Date: Mon, 23 Jun 2025 18:22:34 +0800
-Message-Id: <20250623102235.94877-4-zhenzhong.duan@intel.com>
+Subject: [PATCH 4/4] vfio/container: Fix vfio_container_post_load()
+Date: Mon, 23 Jun 2025 18:22:35 +0800
+Message-Id: <20250623102235.94877-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250623102235.94877-1-zhenzhong.duan@intel.com>
 References: <20250623102235.94877-1-zhenzhong.duan@intel.com>
@@ -83,63 +82,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpr.saved_dma_map isn't initialized in source qemu which lead to vioc->dma_map
-assigned a NULL value, this will trigger SIGSEGV.
+When there are multiple VFIO containers, vioc->dma_map is restored
+multiple times, this made only first container work and remaining
+containers using vioc->dma_map restored by first container.
 
-Fix it by save and restore vioc->dma_map locally.
+Fix it by save and restore vioc->dma_map locally. saved_dma_map in
+VFIOContainerCPR becomes useless and is removed.
 
-Fixes: eba1f657cbb1 ("vfio/container: recover from unmap-all-vaddr failure")
+Fixes: 7e9f21411302 ("vfio/container: restore DMA vaddr")
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/vfio/vfio-cpr.h | 8 +++++---
- hw/vfio/cpr-legacy.c       | 3 ++-
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ include/hw/vfio/vfio-cpr.h |  1 -
+ hw/vfio/cpr-legacy.c       | 20 +++++++-------------
+ 2 files changed, 7 insertions(+), 14 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-index 8bf85b9f4e..aef542e93c 100644
+index aef542e93c..71a1c1a70c 100644
 --- a/include/hw/vfio/vfio-cpr.h
 +++ b/include/hw/vfio/vfio-cpr.h
-@@ -16,14 +16,16 @@ struct VFIOContainer;
- struct VFIOContainerBase;
- struct VFIOGroup;
- 
-+typedef int (*DMA_MAP_FUNC)(const struct VFIOContainerBase *bcontainer,
-+                            hwaddr iova, ram_addr_t size, void *vaddr,
-+                            bool readonly, MemoryRegion *mr);
-+
- typedef struct VFIOContainerCPR {
-     Error *blocker;
+@@ -25,7 +25,6 @@ typedef struct VFIOContainerCPR {
      bool vaddr_unmapped;
      NotifierWithReturn transfer_notifier;
      MemoryListener remap_listener;
--    int (*saved_dma_map)(const struct VFIOContainerBase *bcontainer,
--                         hwaddr iova, ram_addr_t size,
--                         void *vaddr, bool readonly, MemoryRegion *mr);
-+    DMA_MAP_FUNC saved_dma_map;
+-    DMA_MAP_FUNC saved_dma_map;
  } VFIOContainerCPR;
  
  typedef struct VFIODeviceCPR {
 diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-index a84c3247b7..100a8db74d 100644
+index 100a8db74d..ff45a5128f 100644
 --- a/hw/vfio/cpr-legacy.c
 +++ b/hw/vfio/cpr-legacy.c
-@@ -148,6 +148,7 @@ static int vfio_cpr_fail_notifier(NotifierWithReturn *notifier,
-          */
+@@ -99,20 +99,21 @@ static int vfio_container_post_load(void *opaque, int version_id)
+ {
+     VFIOContainer *container = opaque;
+     VFIOContainerBase *bcontainer = &container->bcontainer;
+-    VFIOGroup *group;
++    VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
++    DMA_MAP_FUNC saved_dma_map = vioc->dma_map;
+     Error *local_err = NULL;
  
-         VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
-+        DMA_MAP_FUNC saved_dma_map = vioc->dma_map;
-         vioc->dma_map = vfio_legacy_cpr_dma_map;
- 
-         container->cpr.remap_listener = (MemoryListener) {
-@@ -158,7 +159,7 @@ static int vfio_cpr_fail_notifier(NotifierWithReturn *notifier,
-                                  bcontainer->space->as);
-         memory_listener_unregister(&container->cpr.remap_listener);
-         container->cpr.vaddr_unmapped = false;
--        vioc->dma_map = container->cpr.saved_dma_map;
-+        vioc->dma_map = saved_dma_map;
++    /* During incoming CPR, divert calls to dma_map. */
++    vioc->dma_map = vfio_legacy_cpr_dma_map;
++
+     if (!vfio_listener_register(bcontainer, &local_err)) {
+         error_report_err(local_err);
+         return -1;
      }
+ 
+-    QLIST_FOREACH(group, &container->group_list, container_next) {
+-        VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
++    /* Restore original dma_map function */
++    vioc->dma_map = saved_dma_map;
+ 
+-        /* Restore original dma_map function */
+-        vioc->dma_map = container->cpr.saved_dma_map;
+-    }
      return 0;
  }
+ 
+@@ -180,13 +181,6 @@ bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
+ 
+     vmstate_register(NULL, -1, &vfio_container_vmstate, container);
+ 
+-    /* During incoming CPR, divert calls to dma_map. */
+-    if (cpr_is_incoming()) {
+-        VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
+-        container->cpr.saved_dma_map = vioc->dma_map;
+-        vioc->dma_map = vfio_legacy_cpr_dma_map;
+-    }
+-
+     migration_add_notifier_mode(&container->cpr.transfer_notifier,
+                                 vfio_cpr_fail_notifier,
+                                 MIG_MODE_CPR_TRANSFER);
 -- 
 2.34.1
 
