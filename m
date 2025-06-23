@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B119BAE3C3F
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 12:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 645C8AE3C42
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 12:27:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTeNv-0005yp-Mg; Mon, 23 Jun 2025 06:26:43 -0400
+	id 1uTeNw-00060J-Fa; Mon, 23 Jun 2025 06:26:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uTeNs-0005y5-88
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 06:26:40 -0400
+ id 1uTeNr-0005xa-Fu
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 06:26:39 -0400
 Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uTeNn-0000lQ-6u
+ id 1uTeNp-0000l4-FV
  for qemu-devel@nongnu.org; Mon, 23 Jun 2025 06:26:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750674395; x=1782210395;
+ t=1750674397; x=1782210397;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MxMVveEJ4lElsNDpu96M/mDOZpSh974jvh00HM5eCIM=;
- b=VOpiQPwiX071fM34lm7n/zOFV5MGjeOUzwcPuGALAzUCoUy34z3tah5N
- tPEll98v8XYGqDq7qfrdbV5mrJeN4wYDImfD46YXkGaZNBpLp4pPLbdKw
- ccKWIjqZwTv8iMdhAv0BiVqHETBThS+jnRyPFcKzyQutvzuSKJ/O72279
- B13tSHptG/6XyqjqDJO9xT8vx1OzEKonS6r+XPskg/xRyVxs+FMvyGCh+
- yiF1xcOEH+w9cnNFsR9WpcvqgZhPLNmmcMRx8v0Y9rRLMo4ndgcKIxZL5
- UGVrlMEvTbnqomKhqaUO1+JTbV53U58GRGO6p76yO+2z9iJ8A+tbEmW30 w==;
-X-CSE-ConnectionGUID: VusGftHmS5u41vyfalMqjg==
-X-CSE-MsgGUID: FGP9y6ZuQ7i0SRSrqfybUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="63565460"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="63565460"
+ bh=yr+7s6bCyo7u5kYfwpM0Ju13ecCPRGK8h7Rg4MDQSfo=;
+ b=Svv0LQcoKQDqOsyT+Pi+w0EfZH81wbiZpftqDLxO9nGrpI+AasxtESjt
+ ifkDOWjMZet9j+6P0wLPjw8IfHUdcWu40GGcsl5mwuCGpy44TSgO3vNY1
+ e5TWO/G9n+6JQsWc44gGXzKK8syldhrg8GIrkZS4qlmE9tQIyxj5FS5BE
+ 2qhnlLpIpTmuOO0t2zFx36UGdvjig3Rpe4isw/Ko8htlJZyLBalGHz914
+ vz5q0EzS5KEbj1zgebg+OZed7RkgQTsKu9DZZdW2iJBKYk8hyXOSjoKjJ
+ FaZ6coruPjRqwZyCfmvvXzHeaRtcp4APpTpHMuumolSRqS/rnYveM5Ve3 Q==;
+X-CSE-ConnectionGUID: s4N7/rkAS7Cjj87Ho+ChBQ==
+X-CSE-MsgGUID: vRKklP2kSHaPmeMw1HpfCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="63565466"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="63565466"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 03:26:33 -0700
-X-CSE-ConnectionGUID: QMyG46dgTWeX31r7d2ukVw==
-X-CSE-MsgGUID: 8BfRjpIASwuSv2yFwOOBWA==
+ 23 Jun 2025 03:26:35 -0700
+X-CSE-ConnectionGUID: WO350kWCQ4iXP3VsYRCxKg==
+X-CSE-MsgGUID: KPKd2TP6TjWhrK3WTDys4Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="182427947"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="182427954"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 03:26:31 -0700
+ 23 Jun 2025 03:26:33 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  steven.sistare@oracle.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 2/4] vfio/container: fails mdev hotplug if add migration
- blocker failed
-Date: Mon, 23 Jun 2025 18:22:33 +0800
-Message-Id: <20250623102235.94877-3-zhenzhong.duan@intel.com>
+Subject: [PATCH 3/4] vfio/container: Fix potential SIGSEGV when recover from
+ unmap-all-vaddr failure
+Date: Mon, 23 Jun 2025 18:22:34 +0800
+Message-Id: <20250623102235.94877-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250623102235.94877-1-zhenzhong.duan@intel.com>
 References: <20250623102235.94877-1-zhenzhong.duan@intel.com>
@@ -67,7 +67,7 @@ X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,39 +83,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's aggressive to abort a running QEMU process when hotplug a mdev
-and it fails migration blocker adding.
+cpr.saved_dma_map isn't initialized in source qemu which lead to vioc->dma_map
+assigned a NULL value, this will trigger SIGSEGV.
 
-Fix by just failing mdev hotplug itself.
+Fix it by save and restore vioc->dma_map locally.
 
+Fixes: eba1f657cbb1 ("vfio/container: recover from unmap-all-vaddr failure")
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/container.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/hw/vfio/vfio-cpr.h | 8 +++++---
+ hw/vfio/cpr-legacy.c       | 3 ++-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 2853f6f08b..68b4fdb401 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -992,12 +992,16 @@ static bool vfio_legacy_attach_device(const char *name, VFIODevice *vbasedev,
-     if (vbasedev->mdev) {
-         error_setg(&vbasedev->cpr.mdev_blocker,
-                    "CPR does not support vfio mdev %s", vbasedev->name);
--        migrate_add_blocker_modes(&vbasedev->cpr.mdev_blocker, &error_fatal,
--                                  MIG_MODE_CPR_TRANSFER, -1);
-+        if (migrate_add_blocker_modes(&vbasedev->cpr.mdev_blocker, errp,
-+                                      MIG_MODE_CPR_TRANSFER, -1)) {
-+            goto hiod_unref_exit;
-+        }
+diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
+index 8bf85b9f4e..aef542e93c 100644
+--- a/include/hw/vfio/vfio-cpr.h
++++ b/include/hw/vfio/vfio-cpr.h
+@@ -16,14 +16,16 @@ struct VFIOContainer;
+ struct VFIOContainerBase;
+ struct VFIOGroup;
+ 
++typedef int (*DMA_MAP_FUNC)(const struct VFIOContainerBase *bcontainer,
++                            hwaddr iova, ram_addr_t size, void *vaddr,
++                            bool readonly, MemoryRegion *mr);
++
+ typedef struct VFIOContainerCPR {
+     Error *blocker;
+     bool vaddr_unmapped;
+     NotifierWithReturn transfer_notifier;
+     MemoryListener remap_listener;
+-    int (*saved_dma_map)(const struct VFIOContainerBase *bcontainer,
+-                         hwaddr iova, ram_addr_t size,
+-                         void *vaddr, bool readonly, MemoryRegion *mr);
++    DMA_MAP_FUNC saved_dma_map;
+ } VFIOContainerCPR;
+ 
+ typedef struct VFIODeviceCPR {
+diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
+index a84c3247b7..100a8db74d 100644
+--- a/hw/vfio/cpr-legacy.c
++++ b/hw/vfio/cpr-legacy.c
+@@ -148,6 +148,7 @@ static int vfio_cpr_fail_notifier(NotifierWithReturn *notifier,
+          */
+ 
+         VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
++        DMA_MAP_FUNC saved_dma_map = vioc->dma_map;
+         vioc->dma_map = vfio_legacy_cpr_dma_map;
+ 
+         container->cpr.remap_listener = (MemoryListener) {
+@@ -158,7 +159,7 @@ static int vfio_cpr_fail_notifier(NotifierWithReturn *notifier,
+                                  bcontainer->space->as);
+         memory_listener_unregister(&container->cpr.remap_listener);
+         container->cpr.vaddr_unmapped = false;
+-        vioc->dma_map = container->cpr.saved_dma_map;
++        vioc->dma_map = saved_dma_map;
      }
- 
-     return true;
- 
-+hiod_unref_exit:
-+    object_unref(vbasedev->hiod);
- device_put_exit:
-     vfio_device_put(vbasedev);
- group_put_exit:
+     return 0;
+ }
 -- 
 2.34.1
 
