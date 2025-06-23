@@ -2,121 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807DEAE4551
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 15:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFB2AE45B4
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 15:59:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uThZT-00072F-4v; Mon, 23 Jun 2025 09:50:51 -0400
+	id 1uThgt-0008CQ-C7; Mon, 23 Jun 2025 09:58:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1uThZN-00071j-Kx
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 09:50:45 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1uThZK-000637-9u
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 09:50:45 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55NBMEqt007523;
- Mon, 23 Jun 2025 13:50:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=00rZ/v
- B+GiQOBvr+MCQoAA+AZOOxQtSQ34RvG4VCl9g=; b=UT1GezeMVM9LnPM0O92c1O
- 5g60g8JPpRPNThFcuDMG5819NA1tdXZmQzrqNAOVILI6zc7aMqwvO36S0/1pi7nk
- QOm/faf4JymymZh+mrziJv59dJqW0C5HWMrlRKNAsX/yysYUlllHmJOlakS55hbW
- dFDOYoga0XxrbvC+xcve5hIdiFpxhgIFQyeF4o7aWpb8T1VgvbIc9UM/Bj5lkxOO
- lDWQ+Nzpd/9uPv2s4cYpSbx6il0kRsWmPKj5zTb3vNKjE2+u54CEjFtC9qB4r3jO
- JHNhALmBQGsJwwkpV1wE55niNt6urEq0LcwWgrJyR0DdmAqyzKOFsRNqiHQts4Uw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmf2t53e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Jun 2025 13:50:35 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55NDCqRU023145;
- Mon, 23 Jun 2025 13:50:35 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmf2t538-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Jun 2025 13:50:35 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55NCb9Vo014748;
- Mon, 23 Jun 2025 13:50:34 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e9s26q4h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Jun 2025 13:50:34 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 55NDoSD129753996
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Jun 2025 13:50:28 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 82D775805B;
- Mon, 23 Jun 2025 13:50:33 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 51D2258055;
- Mon, 23 Jun 2025 13:50:32 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.77.138]) by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 23 Jun 2025 13:50:32 +0000 (GMT)
-Message-ID: <0a0ff51b023df5e627981225bf229b4de0f9112b.camel@linux.ibm.com>
-Subject: Re: [PATCH V5 27/38] vfio/iommufd: add vfio_device_free_name
-From: Eric Farman <farman@linux.ibm.com>
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Cedric Le Goater	
- <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>, Eric Auger
- <eric.auger@redhat.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum	
- <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>, Fabiano Rosas	
- <farosas@suse.de>
-Date: Mon, 23 Jun 2025 09:50:31 -0400
-In-Reply-To: <1749569991-25171-28-git-send-email-steven.sistare@oracle.com>
-References: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
- <1749569991-25171-28-git-send-email-steven.sistare@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uThgq-0008BZ-SD
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 09:58:28 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uThgo-0007Fl-Fh
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 09:58:28 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-747fc7506d4so3257370b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 06:58:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1750687102; x=1751291902; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FjqjwOShSvL5ZiDHvWdQfdLkebsd1QtRSET7cdjduQM=;
+ b=iY4sC5A7RGzhl4Tt258Pldie4fo+AL+LvUUsCXd1A06laSx/8qe9zC9xy6aJ5ovjLH
+ k79HBP5hlaWz/cYtUrCDzL8hOphygB+MvGLCUbU5Wm60tUwwCAbxzDd2YASHztBrOQG+
+ nn8xOX1xIRE40TmqxmyC9Of+L5kp6uW9oM/P7p149iNkMySpTu1yuRTLHk8ThMD4uxYZ
+ kBfL5KaAmDYFdQx6dEgLoIeECVgb0C6nI+e/SONJb9fssoGMKOwIa00Eg5Y3ZW4X/TVb
+ GUfpWmXFKj8O0EWQxrwtOQCnou1m/N5otnCJseuJOeH2aUymxdmaWbF4Am0bBrger7/r
+ jCWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750687102; x=1751291902;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FjqjwOShSvL5ZiDHvWdQfdLkebsd1QtRSET7cdjduQM=;
+ b=gKmnKVbhsQETyOOlNOQ7Fy8uCJWTBLRpUj0k/a3wZGGo3Ecfye5rwPyoEDh27Kx4CX
+ aXx+zKNz6yhPuenAU9vbaZK2IuzDEwoPkBVrefkDqhO9MuB+zFFHMcPODz9LKucohmWu
+ 3iNXnB3DhtqYP+EfatZ5nx6q2gaZBeb3VF6xKDrPBlFKTuSGK7iwjl9WALdGirEnKZa7
+ ZMK/hKEFOkdbCKEFLxwrccLgHPeINxhF4QT9ylu7KfgSttBaklxX4hMO9z8fhhLzUt4j
+ rlJHTFdT15xSYlDTu53DYRssNUOh168dvrE8dKVDaasrBY1mrXjdGoV0U1sX4CKIr7I/
+ 06Kw==
+X-Gm-Message-State: AOJu0Yydua/PPDdtH2LDzL0Zdn51snE0FN0JRhCUaIWYp+9fZvm0cSxY
+ wtDEhdDbzKxmy9IeRhyaJPRW2HrjJTy/n0x1NIJ5ABPkNRyxLODGYhqwsxVXEVJQ2Kjeg6U16ea
+ b/VWm
+X-Gm-Gg: ASbGncuJ5kgppeqYkytpxfcDZ1u1I7GGjvVkinkGhIT8RfyOjQsRIKTp8mAf2u9GHxt
+ Z6ht5ngIkSrm390m/UYx2ZpHvwMVjP8kQgMxFQqN5OlHj3jqY/nEtYsLacleZ8NNdjBKVMMKxlN
+ rz9gttMzvrIjl/a9nYP4m5ZFsaJ8sz3HFQuvr2/cUhMztf9+Br7HH2VZwVOzkSlhjSqIcRda1OI
+ v+PeeMB3u3fol2u5YY81Utxp6fw7k0jMmsbigYa/OOShuLV/kGV0ima3NJJFNaBiK0/zdfZKT44
+ yDc95tTV+jEwkrGFtKU8Jh8+R7Oc9eTe//VifKMHdAAT4HiQZFwZKPQnTeoycPiCfyU=
+X-Google-Smtp-Source: AGHT+IHaA3Yci2lOBcHNqVah8h5dJVMn2TwdFADEDLj0ezLFm7ojgfI/ihv3C+IjezMknXl6Qtfe3g==
+X-Received: by 2002:a05:6a21:6daa:b0:216:5f67:98f7 with SMTP id
+ adf61e73a8af0-22026fb9b57mr16047428637.33.1750687102509; 
+ Mon, 23 Jun 2025 06:58:22 -0700 (PDT)
+Received: from gromero0.. ([186.215.58.88]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b31f119eb64sm8063490a12.31.2025.06.23.06.58.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 Jun 2025 06:58:21 -0700 (PDT)
+From: Gustavo Romero <gustavo.romero@linaro.org>
+To: qemu-devel@nongnu.org, eric.auger@redhat.com, philmd@linaro.org,
+ mst@redhat.com
+Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, gustavo.romero@linaro.org,
+ udo@hypervisor.org, ajones@ventanamicro.com, peter.maydell@linaro.org,
+ imammedo@redhat.com, anisinha@redhat.com
+Subject: [PATCH-for-10.1 v5 0/9] hw/arm: GIC 'its=off' ACPI table fixes
+Date: Mon, 23 Jun 2025 13:57:40 +0000
+Message-Id: <20250623135749.691137-1-gustavo.romero@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=M5FNKzws c=1 sm=1 tr=0 ts=68595bab cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=SK52Fxje_ui11fC3wEIA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA4MiBTYWx0ZWRfX09lhJLmvEL3y
- 9LiTkWdbK8Jkb7Jd7l02XOdyxZlfx5I1LkF82LFkyPfSYl7l5++Wm8SDYvWNHpw8gbuQj5Zi+Si
- INjQA02dZTVMYT43nfsUr40IqMU2yEgrd6K9pLV9tdTpw6FndgOjXygoH7UwvlEvpG+w+Wh/wMt
- HDbfFYSTg4l7THiNmCYPUxaFVA2fPjmQgTMPVG/H9qql9P6XkeyqQI5bTgymkQ65X6uWOqd03+D
- a7YH8ayq+ezuFua4nlw1aBQvsqKATpkcAXA2qz4kZ2XqsRSwzkJcuTT1/kt+iT9BQLj3LcGNC5p
- v69J25UuJkt4cct1tnHd0WXC83WqcZbADJ0uFea25xfIZBSzU9citya9rIdfmSU4ss2et7ZV8GY
- 3mzNFdWwrLyIE4HPiETGulGRyU/YURT1pgUK8K9jqcDbWHALLRiDp0x1uxFq/NKldPK/fny8
-X-Proofpoint-GUID: NxSbDFh3LBLaEtOHAzWZyF6t_4_jFxYv
-X-Proofpoint-ORIG-GUID: 8rsiJx9_qIoXp7v9WFPLaGdyXfnfLsjl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-23_04,2025-06-23_05,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 spamscore=0 clxscore=1011 adultscore=0
- mlxscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506230082
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,72 +97,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2025-06-10 at 08:39 -0700, Steve Sistare wrote:
-> Define vfio_device_free_name to free the name created by
-> vfio_device_get_name.  A subsequent patch will do more there.
-> No functional change.
->=20
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->  include/hw/vfio/vfio-device.h | 1 +
->  hw/vfio/ap.c                  | 2 +-
->  hw/vfio/ccw.c                 | 2 +-
->  hw/vfio/device.c              | 5 +++++
->  hw/vfio/pci.c                 | 2 +-
->  hw/vfio/platform.c            | 2 +-
->  6 files changed, 10 insertions(+), 4 deletions(-)
->=20
-> diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.=
-h
-> index 6eb6f21..321b442 100644
-> --- a/include/hw/vfio/vfio-device.h
-> +++ b/include/hw/vfio/vfio-device.h
-> @@ -227,6 +227,7 @@ int vfio_device_get_irq_info(VFIODevice *vbasedev, in=
-t index,
-> =20
->  /* Returns 0 on success, or a negative errno. */
->  bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
-> +void vfio_device_free_name(VFIODevice *vbasedev);
->  void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **e=
-rrp);
->  void vfio_device_init(VFIODevice *vbasedev, int type, VFIODeviceOps *ops=
-,
->                        DeviceState *dev, bool ram_discard);
-> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-> index 785c0a0..013bd59 100644
-> --- a/hw/vfio/ap.c
-> +++ b/hw/vfio/ap.c
-> @@ -180,7 +180,7 @@ static void vfio_ap_realize(DeviceState *dev, Error *=
-*errp)
-> =20
->  error:
->      error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
-> -    g_free(vbasedev->name);
-> +    vfio_device_free_name(vbasedev);
->  }
-> =20
->  static void vfio_ap_unrealize(DeviceState *dev)
+Since v3:
+- Fixed remappings in the IORT table when ITS is no present
+- Rebased on master and resoled conflics, like no more "no_its"
+  flag in VirtMachineClass
+- Dropped patch 1/9 because we actually want the instance flags,
+  not only the class flags, and the instance flags are the ones
+  to be used often when deciding about the presence/absence of a
+  machine feature, instead of the negated class flags ("no_*")
+- Adapted the other patches that depended on 1/9
+- Dropped patch 4/9 in favor of using the instance flag for
+  checking if ITS is on or off
+- Simplified VM options for the new "its=off" test
 
-^^^
-I suspect you want to convert the g_free call of the VFIODevice name here a=
-s well.
+Since v4:
+- Fixed/restored commit authorship and author tags (philmd)
+- Factored out create_its_idmaps to clarify how ID ranges that
+  go direct to ITS Group node are created (eauger)
+- Addressed all remaining minor review comments (eauger)
 
-> diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-> index cea9d6e..903b8b0 100644
-> --- a/hw/vfio/ccw.c
-> +++ b/hw/vfio/ccw.c
-> @@ -619,7 +619,7 @@ out_io_notifier_err:
->  out_region_err:
->      vfio_device_detach(vbasedev);
->  out_attach_dev_err:
-> -    g_free(vbasedev->name);
-> +    vfio_device_free_name(vbasedev);
->  out_unrealize:
->      if (cdc->unrealize) {
->          cdc->unrealize(cdev);
 
-Similarly, the matching g_free call in vfio_ccw_unrealize
+v1: https://lists.gnu.org/archive/html/qemu-devel/2025-03/msg07080.html
+v2: https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg00495.html (Patches 6/14 -> 14/14 in the series)
+v3: https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg00567.html
+v4: https://mail.gnu.org/archive/html/qemu-devel/2025-06/msg02583.html
 
-Thanks,
-Eric
+Fix ACPI tables for '-M its=off' CLI option and resolve the issue:
+
+https://gitlab.com/qemu-project/qemu/-/issues/2886
+
+Cheers,
+Gustavo
+
+Gustavo Romero (6):
+  hw/arm/virt: Simplify logic for setting instance's 'tcg_its' variable
+  hw/arm/virt-acpi-build: Improve comment in build_iort
+  hw/arm/virt-acpi-build: Factor out create_its_idmaps
+  qtest/bios-tables-test: Add blobs for its=off test on aarch64
+  hw/arm/virt-acpi-build: Fix ACPI IORT and MADT tables when its=off
+  qtest/bios-tables-test: Update blobs for its=off test on aarch64
+
+Philippe Mathieu-Daudé (3):
+  hw/intc/gicv3_its: Do not check its_class_name()
+  hw/arm/virt: Simplify create_its()
+  qtest/bios-tables-test: Add test for when ITS is off on aarch64
+
+ hw/arm/virt-acpi-build.c                  | 169 ++++++++++++++--------
+ hw/arm/virt.c                             |  25 ++--
+ include/hw/intc/arm_gicv3_its_common.h    |   2 +-
+ tests/data/acpi/aarch64/virt/APIC.its_off | Bin 0 -> 164 bytes
+ tests/data/acpi/aarch64/virt/IORT.its_off | Bin 0 -> 172 bytes
+ tests/qtest/bios-tables-test.c            |  21 +++
+ 6 files changed, 143 insertions(+), 74 deletions(-)
+ create mode 100644 tests/data/acpi/aarch64/virt/APIC.its_off
+ create mode 100644 tests/data/acpi/aarch64/virt/IORT.its_off
+
+-- 
+2.34.1
+
 
