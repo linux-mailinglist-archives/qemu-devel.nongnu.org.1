@@ -2,59 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F4EAE37C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 10:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21EFFAE39CD
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 11:20:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTc9X-0003jP-Kt; Mon, 23 Jun 2025 04:03:43 -0400
+	id 1uTdL0-00050S-US; Mon, 23 Jun 2025 05:19:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uTc9V-0003he-6A
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 04:03:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uTdKn-0004zg-QI
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 05:19:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uTc9T-0005R4-Kz
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 04:03:40 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uTdKh-0007eH-Ja
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 05:19:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750665818;
+ s=mimecast20190719; t=1750670355;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=KlwW7rHPzgnSyCV2eeGFhISA6m3Qw0iFumgdKkgm52Y=;
- b=KTocSDPDK0obPtlMBPffkb2cMHoonhbBxsjL/5Gg8Bl7BPIcKxGBFrL8EVztDp38KQbtBi
- ZLQAmLV81NPruCfdxo+luayBohtJ7xbC76dHtGDUAJ473L1u/8hH/cXmHrppDSY4VpyKCS
- GWHcEiYPiExPY8IpVhgWTY8pX91IgSE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+ references:references; bh=nGTT93GFIgi0onFBnIob8qgmJSfPXq9LCtC+ny3feUU=;
+ b=PHz7oMgK2cMYyUkvzp1r60p96H68HkdfXJ/XaDXErWx6CMLvU6CH+aIBLsZtzMZxhI0/5P
+ 2PMCrpTtXQxpEwm/7kTfTxgZR7ox5mYwv2yL0Lho2daJYym6SgWGYlzt1E7TU3kYtd+t3D
+ S4mdqwI3i0TiPPLMJeylQnJMtfoVwXI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-91-BxMdjGyOP6uyutf5U2RSRQ-1; Mon,
- 23 Jun 2025 04:03:32 -0400
-X-MC-Unique: BxMdjGyOP6uyutf5U2RSRQ-1
-X-Mimecast-MFC-AGG-ID: BxMdjGyOP6uyutf5U2RSRQ_1750665811
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-eGe_iNTWNtGa7j7qOrlIQw-1; Mon,
+ 23 Jun 2025 05:19:12 -0400
+X-MC-Unique: eGe_iNTWNtGa7j7qOrlIQw-1
+X-Mimecast-MFC-AGG-ID: eGe_iNTWNtGa7j7qOrlIQw_1750670350
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 68AB31956095; Mon, 23 Jun 2025 08:03:30 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.44.32.51])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EA5CB1956096; Mon, 23 Jun 2025 08:03:27 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH] i386/tdx: Fix build on 32-bit host
-Date: Mon, 23 Jun 2025 10:03:25 +0200
-Message-ID: <20250623080325.462255-1-clg@redhat.com>
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3E6C51809C85; Mon, 23 Jun 2025 09:19:10 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B304C30001A1; Mon, 23 Jun 2025 09:19:09 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 412EE21E6A27; Mon, 23 Jun 2025 11:19:07 +0200 (CEST)
+Resent-To: richard.henderson@linaro.org, borntraeger@linux.ibm.com,
+ farman@linux.ibm.com, iii@linux.ibm.com, jjherne@linux.ibm.com,
+ jrossi@linux.ibm.com, pasic@linux.ibm.com, walling@linux.ibm.com,
+ zycai@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Resent-From: Markus Armbruster <armbru@redhat.com>
+Resent-Date: Mon, 23 Jun 2025 11:19:07 +0200
+Resent-Message-ID: <871pran7ck.fsf@pond.sub.org>
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhuoying Cai <zycai@linux.ibm.com>
+Cc: Markus Armbruster <armbru@redhat.com>,  thuth@redhat.com,
+ berrange@redhat.com,  richard.henderson@linaro.org,  david@redhat.com,
+ pbonzini@redhat.com,  walling@linux.ibm.com,  jjherne@linux.ibm.com,
+ jrossi@linux.ibm.com,  pasic@linux.ibm.com,  borntraeger@linux.ibm.com,
+ farman@linux.ibm.com,  iii@linux.ibm.com,  eblake@redhat.com,
+ qemu-s390x@nongnu.org,  qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 02/28] crypto/x509-utils: Add helper functions for
+ certificate store
+In-Reply-To: <935581ef-1cb2-4e2f-9c3f-23203b556ca8@linux.ibm.com> (Zhuoying
+ Cai's message of "Wed, 18 Jun 2025 11:34:17 -0400")
+References: <20250604215657.528142-1-zycai@linux.ibm.com>
+ <20250604215657.528142-3-zycai@linux.ibm.com>
+ <87sejyskgj.fsf@pond.sub.org>
+ <41e788ad-77e2-46d2-a384-2c8f524391c2@linux.ibm.com>
+ <87wm99r3rh.fsf@pond.sub.org>
+ <935581ef-1cb2-4e2f-9c3f-23203b556ca8@linux.ibm.com>
+Date: Mon, 23 Jun 2025 08:15:16 +0200
+Message-ID: <87ikkndlvv.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain
+Lines: 99
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -79,81 +101,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- target/i386/kvm/tdx-quote-generator.c |  6 +++---
- target/i386/kvm/tdx.c                 | 12 ++++++------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+Zhuoying Cai <zycai@linux.ibm.com> writes:
 
-diff --git a/target/i386/kvm/tdx-quote-generator.c b/target/i386/kvm/tdx-quote-generator.c
-index f59715f61751..3a31a4a68365 100644
---- a/target/i386/kvm/tdx-quote-generator.c
-+++ b/target/i386/kvm/tdx-quote-generator.c
-@@ -113,7 +113,7 @@ static gboolean tdx_get_quote_read(QIOChannel *ioc, GIOCondition condition,
-                                      task->receive_buf_received);
-         if (len == 0 ||
-             len > (task->payload_len - HEADER_SIZE)) {
--            error_report("Message len %u must be non-zero & less than %zu",
-+            error_report("Message len %u must be non-zero & less than %"PRIu64,
-                          len, (task->payload_len - HEADER_SIZE));
-             task->status_code = TDX_VP_GET_QUOTE_ERROR;
-             goto end;
-@@ -143,7 +143,7 @@ static gboolean tdx_get_quote_read(QIOChannel *ioc, GIOCondition condition,
-             goto end;
-         }
-         if (hdr->size > (task->payload_len - HEADER_SIZE)) {
--            error_report("QGS message size %d exceeds payload capacity %zu",
-+            error_report("QGS message size %d exceeds payload capacity %"PRIu64,
-                          hdr->size, task->payload_len);
-             task->status_code = TDX_VP_GET_QUOTE_ERROR;
-             goto end;
-@@ -166,7 +166,7 @@ static gboolean tdx_get_quote_read(QIOChannel *ioc, GIOCondition condition,
- 
-         if ((task->payload_len - HEADER_SIZE - sizeof(qgs_msg_get_quote_resp_t)) !=
-             msg->quote_size) {
--            error_report("QGS quote size %d should be %zu",
-+            error_report("QGS quote size %d should be %"PRIu64,
-                          msg->quote_size,
-                          (task->payload_len - sizeof(qgs_msg_get_quote_resp_t)));
-             task->status_code = TDX_VP_GET_QUOTE_ERROR;
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index e809e4b2dfa2..c98109dadc2e 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -1035,8 +1035,8 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-             return -1;
-         }
-         if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
--            error_setg(errp, "TDX 'mrconfigid' sha384 digest was %ld bytes, "
--                             "expected %d bytes", data_len,
-+            error_setg(errp, "TDX 'mrconfigid' sha384 digest was %"PRId64" bytes, "
-+                             "expected %d bytes", (uint64_t)data_len,
-                              QCRYPTO_HASH_DIGEST_LEN_SHA384);
-             return -1;
-         }
-@@ -1050,8 +1050,8 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-             return -1;
-         }
-         if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
--            error_setg(errp, "TDX 'mrowner' sha384 digest was %ld bytes, "
--                             "expected %d bytes", data_len,
-+            error_setg(errp, "TDX 'mrowner' sha384 digest was %"PRId64" bytes, "
-+                             "expected %d bytes", (uint64_t)data_len,
-                              QCRYPTO_HASH_DIGEST_LEN_SHA384);
-             return -1;
-         }
-@@ -1065,8 +1065,8 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-             return -1;
-         }
-         if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
--            error_setg(errp, "TDX 'mrownerconfig' sha384 digest was %ld bytes, "
--                             "expected %d bytes", data_len,
-+            error_setg(errp, "TDX 'mrownerconfig' sha384 digest was %"PRId64" bytes, "
-+                             "expected %d bytes", (uint64_t)data_len,
-                              QCRYPTO_HASH_DIGEST_LEN_SHA384);
-             return -1;
-         }
--- 
-2.49.0
+> On 6/18/25 1:57 AM, Markus Armbruster wrote:
+>> Zhuoying Cai <zycai@linux.ibm.com> writes:
+>> 
+>>> On 6/17/25 6:58 AM, Markus Armbruster wrote:
+>>>> Zhuoying Cai <zycai@linux.ibm.com> writes:
+>>>>
+>>>>> Add helper functions for x509 certificate which will be used in the next
+>>>>> patch for the certificate store.
+>>>>>
+>>>>> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+>> 
+>> [...]
+>> 
+>>>> Ignorant question: why are these QAPI enums?
+>>>>
+>>>> If they need to be QAPI enums, then I'll have some requests on the doc
+>>>> comments.
+>>>>
+>>>
+>>> Hi, thanks for the feedback.
+>>>
+>>> The helper functions in x509-utils.c either take QAPI enum values as
+>>> parameters or return them. These enums are used later within QEMU.
+>> 
+>> Let's look at the first one I found:
+>> 
+>>     int qcrypto_check_x509_cert_fmt(uint8_t *cert, size_t size,
+>>                                     QCryptoCertFmt fmt, Error **errp)
+>>     {
+>>         int rc;
+>>         int ret = -1;
+>>         gnutls_x509_crt_t crt;
+>>         gnutls_datum_t datum = {.data = cert, .size = size};
+>> 
+>>         if (fmt >= G_N_ELEMENTS(qcrypto_to_gnutls_cert_fmt_map)) {
+>>             error_setg(errp, "Unknown certificate format");
+>>             return ret;
+>>         }
+>> 
+>>         if (gnutls_x509_crt_init(&crt) < 0) {
+>>             error_setg(errp, "Failed to initialize certificate");
+>>             return ret;
+>>         }
+>> 
+>>         rc = gnutls_x509_crt_import(crt, &datum, qcrypto_to_gnutls_cert_fmt_map[fmt]);
+>>         if (rc == GNUTLS_E_ASN1_TAG_ERROR) {
+>>             goto cleanup;
+>>         }
+>> 
+>>         ret = 0;
+>> 
+>>     cleanup:
+>>         gnutls_x509_crt_deinit(crt);
+>>         return ret;
+>>     }
+>> 
+>> All it does with its @fmt argument is map it to the matching
+>> GNUTLS_X509_FMT_*.
+>> 
+>> There's just one caller, init_cert_x509_der() in hw/s390x/cert-store.c:
+>> 
+>>     is_der = qcrypto_check_x509_cert_fmt((uint8_t *)raw, size,
+>>                                          QCRYPTO_CERT_FMT_DER, &err);
+>> 
+>> QCRYPTO_CERT_FMT_DER gets mapped to GNUTLS_X509_FMT_DER.  Why not pass
+>> that directly?  We don't need enum QCryptoCertFmt then.
+>> 
+>
+> I received feedback on a previous patch series that directly using
+> GNUTLS in QEMU code is discouraged, except for under the crypto/
+> directory. Internal APIs should be defined to access GNUTLS
+> functionality instead.
+>
+>> If we need enum QCryptoCertFmt for some reason I can't see, why does it
+>> have to be a QAPI type?  Why not a plain C enum?
+>
+> While implementing the new helper functions, I referred to
+> qcrypto_get_x509_cert_fingerprint() in crypto/x509-utils.c, which takes
+> QCryptoHashAlgo as a parameter. Following this, I added corresponding
+> QCRYPTO enums to map to GNUTLS enums.
+>
+> If using plain C enums is preferred, I can update the code accordingly
+> in the next version.
+
+Use plain C enums when practical.
+
+Reasons for making a type a QAPI type include:
+
+* Some QAPI command or event needs it.
+
+* Something (typically QOM property accessors) needs the generated
+  visitor.
+
+* For enums: something could use the generated QEnumLookup / ENUM_str()
+  macro.
+
+>> Similar questions for the other QAPI enums added in this series.
 
 
