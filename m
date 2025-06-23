@@ -2,94 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF86AE39DD
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 11:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE44AE39E3
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Jun 2025 11:23:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTdNU-0005on-4R; Mon, 23 Jun 2025 05:22:12 -0400
+	id 1uTdOV-0006Jc-Dd; Mon, 23 Jun 2025 05:23:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1uTdNN-0005oQ-Mb
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 05:22:05 -0400
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1uTdOL-0006IC-FR
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 05:23:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1uTdNL-0008IT-PC
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 05:22:05 -0400
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1uTdOI-0008OU-CE
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 05:23:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750670521;
+ s=mimecast20190719; t=1750670581;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1RLjvLo9PYYy57mfCXQd3/XShT3kTBFNG+hcvgAyfRg=;
- b=f3tpEfShMMQ1l/I4w+pPv/uq49HX2WByVtl62h11I+g1f0Rh/BPAtmroj62AT8MUYsgZ0B
- B2EdxFp3O11aKeZl2vfRmtgA4WDw0gtwjNvTAconirJ2Tw/zqD/2eVuO5w9f+V4uOQTywb
- pkkf2s/tnlCSEUN6CQmkhhTPjsXeROM=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7VSgSGwq8wrw3DnPUbktkgQZidTx6uhtariuiUH0CA0=;
+ b=OHxlUTTTq7pBl1qB4rk/iptE4lSponruiCpAVONV6tTPsauRFDAK6GxcnhjN79AzrNUgPp
+ 1Xl8zyxwpnhmsFaLhAkSayrAjpXI1Vkc1hZSAIRirSFS9hSokYtAyAeqyElJLhQ82C/n6L
+ h4oJaGdiOIuY/aaliWkplhrIwm37gkc=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-343-1mzqNY4ePgq9-z5nCbkzTQ-1; Mon, 23 Jun 2025 05:20:45 -0400
-X-MC-Unique: 1mzqNY4ePgq9-z5nCbkzTQ-1
-X-Mimecast-MFC-AGG-ID: 1mzqNY4ePgq9-z5nCbkzTQ_1750670444
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a5780e8137so2456358f8f.1
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 02:20:44 -0700 (PDT)
+ us-mta-96-HGBb6LQVMlqC0iJlYx-_MA-1; Mon, 23 Jun 2025 05:21:01 -0400
+X-MC-Unique: HGBb6LQVMlqC0iJlYx-_MA-1
+X-Mimecast-MFC-AGG-ID: HGBb6LQVMlqC0iJlYx-_MA_1750670457
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45359bfe631so21439985e9.0
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 02:20:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750670444; x=1751275244;
+ d=1e100.net; s=20230601; t=1750670456; x=1751275256;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1RLjvLo9PYYy57mfCXQd3/XShT3kTBFNG+hcvgAyfRg=;
- b=IbJs96eSXJs6zLZbLsMER5/D0s2wfdgMk8D+e0MNL69jYq+7gFK2iXkw0lCnZsfgvm
- Oukl/6oxpOTnz/Mof98YEc268vLwUa6daH+8I2TwLvX+bvK1GJTrmTGdGljiKzlq9lkt
- 9PBfAWsQtJeuxhkFrx7VxG+0JhfCoRxJ89uzOkQkmT8Iip9IugoEdNd+O7t1+ty0vuRd
- AdJisZHtR/g+BlLNb3Kr+40+NKlLf8qKV+Se1gqhXNg7hQ5FNqCofjzAHHf3VfLTDc6R
- dBz+3aPHRsgW71e6PrrVTBruBeE29XlZe6fHaL8QKM3vGSngJhICTK59DNz00kb9iJU6
- xMPQ==
+ bh=7VSgSGwq8wrw3DnPUbktkgQZidTx6uhtariuiUH0CA0=;
+ b=R+cycFyLjfXT+PwmvNmtRKCfUfwZ4iARi419siHLMZxWY/+wyOCqA6ajzkHprXpVoS
+ k1i+Jh1SCg8eVDG1m2iwjMkTEFeiGsa3el84XRWk2Ng6tlxzlQU/+gatPxMEXAVhsTCB
+ OWg/JnCkJetmBWnOqOwaaTid8YjutaYU0N2gBkGyOudX3mlM6DYjI2bu6VfP4sYyPnNE
+ T5pcn1f14QPBGBDV0R3FO75PSjNSm0x12T6dKUXwA/BhsQY3CohHC0HDM9zHiXl19HEn
+ QkeozpQVioJtmxLIY77WayXBzC4GXnXF4D6g1a5givL+fhSz44ymucvu3ioMa6f8sPFp
+ oDAg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXBm5Hdds5SVRTeUZ5ZHfJEr68l6JGBTl4WDVsMzbPLkXpnL/KVHqQWrE0HsoGbDN0VanuwtPgM2hoU@nongnu.org
-X-Gm-Message-State: AOJu0YzoMDczqJsstpGAkwvQpMJKIe2MJT0lf3tnXlDTo3WnJRehJmoc
- YNrF4ZWpAFCI+57FuYG2rQU6L71zKCWD2UZwESc4n9pnHB+gGQl90EGZaPqyw/e3OqAVVj5JCyl
- hTEVG8i2rtXtVuoFUnOC36SH7OG8T+ruATfjXJVqvxQk2zCZ2Ap/bUz14
-X-Gm-Gg: ASbGncsudbJxFlSgZLghqV9UwLhU0u/Vtt7uJsGYdGmng78sqhMbd4wROwMVUsWdl8v
- 9bjJfNwGnzoSnQ3rsfyIzy1BNzDLn9U/QOJx2UhKJjSMpvWuXz3QoRADFwYqRC9FKulaNcp3W1w
- fmtXmOfdZLWsV6IOrvcRWYZn4n0LDY7pr9pVza1B865cD4CXLo0zb0vOpPg34OI/FRZzaeU8/MX
- t4a1tH+gKQNU8amAO1AqEbI1pldiJZATn2RJOlBYXAy7XoxnhZ5hOK7pink3rlxthsJ4AuFQAhN
- bYEZbp5l1nAETfFP+Dx3HDSNRTR/JzymAhPUJqEsWIymqkOXm5o1Dr3ZfJbOitiP
-X-Received: by 2002:a05:6000:bd1:b0:3a4:ce5c:5e8d with SMTP id
- ffacd0b85a97d-3a6d27ec99emr6976407f8f.20.1750670443865; 
- Mon, 23 Jun 2025 02:20:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEnvVOh0TtjnrxbyPJmyuxRJBwhqTF48Gmz2PPoHjVRrKmB5VKmAS0bs7l/rnc8/wIyFu2/iw==
-X-Received: by 2002:a05:6000:bd1:b0:3a4:ce5c:5e8d with SMTP id
- ffacd0b85a97d-3a6d27ec99emr6976384f8f.20.1750670443462; 
- Mon, 23 Jun 2025 02:20:43 -0700 (PDT)
+ AJvYcCVfbPbKgFZB3wAu1dtZ0q2zDj5xvcB37b7UipxdNloF28ExkzI5aitg4tIuedEWZZhzNdGmU3mfK67i@nongnu.org
+X-Gm-Message-State: AOJu0YzuXhd+zf+t5YWr4QtDWHAAvqNWZOPt6tFkPjyOY0FnhevYUZxD
+ QiQnBFGQ6vc6pTGaIJrtvWuAmhn/DSVXCUri7/VCEZD+UbnAd7PtNpIFCz7FqQh/1yfHROrO3Qn
+ hKfv7eq0p99jr2lTG9YVhX9eiw5ILMQTfYVyPR3xlop/2sdDPxN4ywCmY
+X-Gm-Gg: ASbGncvnz0UMQLhACZLkX96xXtrsxA7RYCBdLmlBK2b7dvJebSE+uZFQ71KFOhUFyP1
+ I8uTlwcJD9FjXQmZw99QSu1W23BsP9Wm09iYUBuOw6MwECtObY3XthVawzpfnnGG7O4pRtFgFea
+ apUIyuGMHRgvXUVw99cCqiKLqZS+abR7AtEr6+bviW7ZyEfgb+73qLu1fLzElLUznalmLChD5aQ
+ bFWf3eUWo7AfDwKbgTxm5UMjzVzfgX32Lm+EIyfsZKpnTNvNt7LCploG7Zd6RPnsBT+p0fu00NY
+ nxnyB4Ca8dKLVMiwqwaI5SdIOTvVPG9nAYCGwO8XODbGSEEBxlfPOIMxcyzit1Ik
+X-Received: by 2002:a05:6000:22c1:b0:3a5:3b03:3bc6 with SMTP id
+ ffacd0b85a97d-3a6d1322bdcmr10431204f8f.28.1750670456494; 
+ Mon, 23 Jun 2025 02:20:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGq7mAeNuppUuYYV3/demhTJt4ngGSI7EwbRRfvcoZScbGRcZGkDlpTd8fLvB1XFXiCuPxYfQ==
+X-Received: by 2002:a05:6000:22c1:b0:3a5:3b03:3bc6 with SMTP id
+ ffacd0b85a97d-3a6d1322bdcmr10431179f8f.28.1750670456068; 
+ Mon, 23 Jun 2025 02:20:56 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
  ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-453646cb5ecsm107086065e9.8.2025.06.23.02.20.42
+ 5b1f17b1804b1-4535eac8e0asm137760265e9.23.2025.06.23.02.20.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Jun 2025 02:20:42 -0700 (PDT)
-Message-ID: <aa4ef145-9e08-4ad9-a152-dd8fa2371436@redhat.com>
-Date: Mon, 23 Jun 2025 11:20:41 +0200
+ Mon, 23 Jun 2025 02:20:55 -0700 (PDT)
+Message-ID: <8c1870b3-d13d-4918-b0f6-6f41659a807d@redhat.com>
+Date: Mon, 23 Jun 2025 11:20:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] hw/i386: Add the ramfb romfile compatatibility
+Subject: Re: [PATCH v4 1/2] ramfb: Add property to control if load the romfile
 Content-Language: en-US
 To: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org
 Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
 References: <20250617030521.2109305-1-shahuang@redhat.com>
- <20250617030521.2109305-3-shahuang@redhat.com>
+ <20250617030521.2109305-2-shahuang@redhat.com>
 From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <20250617030521.2109305-3-shahuang@redhat.com>
+In-Reply-To: <20250617030521.2109305-2-shahuang@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eauger@redhat.com;
@@ -101,7 +96,7 @@ X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,81 +112,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
+Hi Shaoqin,
 On 6/17/25 5:05 AM, Shaoqin Huang wrote:
-> Set the "use-legacy-x86-rom" property to false by default, and only set
-> it to true on x86 since only x86 will need it.
-s/compatatibility/compatibility in the title
+> Now the ramfb will load the vgabios-ramfb.bin unconditionally, but only
+Currently the ramfb device loads ...
+> the x86 need the vgabios-ramfb.bin, this can cause that when use the
+> release package on arm64 it can't find the vgabios-ramfb.bin.
+> 
+> Because only seabios will use the vgabios-ramfb.bin, load the rom logic
+> is x86-specific. For other !x86 platforms, the edk2 ships an EFI driver
+> for ramfb, so they don't need to load the romfile.
+> 
+> So add a new property use_legacy_x86_rom in both ramfb and vfio_pci
+was renamed with - instead of _
+> device, because the vfio display also use the ramfb_setup() to load
+> the vgabios-ramfb.bin file.
+> 
+> After have this property, the machine type can set the compatibility to
+> not load the vgabios-ramfb.bin if the arch doesn't need it.
+
+Please add in the commit message that for now the default value is true
+but it will be turned off by default in subsequent patch when compats
+get properly handled.
 > 
 > Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
 > ---
->  hw/display/ramfb-standalone.c | 2 +-
->  hw/i386/pc_q35.c              | 3 +++
->  hw/vfio/pci.c                 | 2 +-
->  3 files changed, 5 insertions(+), 2 deletions(-)
+>  hw/display/ramfb-standalone.c | 4 +++-
+>  hw/display/ramfb-stubs.c      | 2 +-
+>  hw/display/ramfb.c            | 6 ++++--
+>  hw/vfio/display.c             | 4 ++--
+>  hw/vfio/pci.c                 | 1 +
+>  hw/vfio/pci.h                 | 1 +
+>  include/hw/display/ramfb.h    | 2 +-
+>  7 files changed, 13 insertions(+), 7 deletions(-)
 > 
 > diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
-> index af1175bf96..ddbf42f181 100644
+> index 1be106b57f..af1175bf96 100644
 > --- a/hw/display/ramfb-standalone.c
 > +++ b/hw/display/ramfb-standalone.c
-> @@ -63,7 +63,7 @@ static const VMStateDescription ramfb_dev_vmstate = {
+> @@ -17,6 +17,7 @@ struct RAMFBStandaloneState {
+>      QemuConsole *con;
+>      RAMFBState *state;
+>      bool migrate;
+> +    bool use_legacy_x86_rom;
+>  };
+>  
+>  static void display_update_wrapper(void *dev)
+> @@ -39,7 +40,7 @@ static void ramfb_realizefn(DeviceState *dev, Error **errp)
+>      RAMFBStandaloneState *ramfb = RAMFB(dev);
+>  
+>      ramfb->con = graphic_console_init(dev, 0, &wrapper_ops, dev);
+> -    ramfb->state = ramfb_setup(errp);
+> +    ramfb->state = ramfb_setup(ramfb->use_legacy_x86_rom, errp);
+>  }
+>  
+>  static bool migrate_needed(void *opaque)
+> @@ -62,6 +63,7 @@ static const VMStateDescription ramfb_dev_vmstate = {
 >  
 >  static const Property ramfb_properties[] = {
 >      DEFINE_PROP_BOOL("x-migrate", RAMFBStandaloneState, migrate,  true),
-> -    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState, use_legacy_x86_rom, true),
-> +    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState, use_legacy_x86_rom, false),
+> +    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState, use_legacy_x86_rom, true),
 >  };
 >  
 >  static void ramfb_class_initfn(ObjectClass *klass, void *data)
-> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index fd96d0345c..f6d89578d0 100644
-> --- a/hw/i386/pc_q35.c
-> +++ b/hw/i386/pc_q35.c
-> @@ -45,6 +45,7 @@
->  #include "hw/i386/pc.h"
->  #include "hw/i386/amd_iommu.h"
->  #include "hw/i386/intel_iommu.h"
-> +#include "hw/vfio/pci.h"
->  #include "hw/virtio/virtio-iommu.h"
->  #include "hw/display/ramfb.h"
->  #include "hw/ide/pci.h"
-> @@ -67,6 +68,8 @@
+> diff --git a/hw/display/ramfb-stubs.c b/hw/display/ramfb-stubs.c
+> index cf64733b10..b83551357b 100644
+> --- a/hw/display/ramfb-stubs.c
+> +++ b/hw/display/ramfb-stubs.c
+> @@ -8,7 +8,7 @@ void ramfb_display_update(QemuConsole *con, RAMFBState *s)
+>  {
+>  }
 >  
->  static GlobalProperty pc_q35_compat_defaults[] = {
->      { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "39" },
-> +    { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
-> +    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
-this will only keep the legacy behavior along with q35 machine type but
-not on other machines being used for x86. what about pc-i440fx? Doesn't
-it apply to it as well? Are there other machine types also impacted.
-
-Also what about Daniel's comment in v3:
-https://lore.kernel.org/all/aEak8utPPkHepVfR@redhat.com/
-"For non-x86, historical versioned machine types will need
-likely it set to true, in order to avoid the memory layout
-being changed IIUC."
-
-Is it actually needed?
-
-Thanks
-
-Eric
+> -RAMFBState *ramfb_setup(Error **errp)
+> +RAMFBState *ramfb_setup(bool romfile, Error **errp)
+>  {
+>      error_setg(errp, "ramfb support not available");
+>      return NULL;
+> diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
+> index 8c0f907673..9a17d97d07 100644
+> --- a/hw/display/ramfb.c
+> +++ b/hw/display/ramfb.c
+> @@ -135,7 +135,7 @@ const VMStateDescription ramfb_vmstate = {
+>      }
 >  };
->  static const size_t pc_q35_compat_defaults_len =
->      G_N_ELEMENTS(pc_q35_compat_defaults);
+>  
+> -RAMFBState *ramfb_setup(Error **errp)
+> +RAMFBState *ramfb_setup(bool romfile, Error **errp)
+>  {
+>      FWCfgState *fw_cfg = fw_cfg_find();
+>      RAMFBState *s;
+> @@ -147,7 +147,9 @@ RAMFBState *ramfb_setup(Error **errp)
+>  
+>      s = g_new0(RAMFBState, 1);
+>  
+> -    rom_add_vga("vgabios-ramfb.bin");
+> +    if (romfile) {
+> +        rom_add_vga("vgabios-ramfb.bin");
+> +    }
+>      fw_cfg_add_file_callback(fw_cfg, "etc/ramfb",
+>                               NULL, ramfb_fw_cfg_write, s,
+>                               &s->cfg, sizeof(s->cfg), false);
+> diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+> index ea87830fe0..8bfd8eb1e3 100644
+> --- a/hw/vfio/display.c
+> +++ b/hw/vfio/display.c
+> @@ -365,7 +365,7 @@ static bool vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
+>                                            &vfio_display_dmabuf_ops,
+>                                            vdev);
+>      if (vdev->enable_ramfb) {
+> -        vdev->dpy->ramfb = ramfb_setup(errp);
+> +        vdev->dpy->ramfb = ramfb_setup(vdev->use_legacy_x86_rom, errp);
+>          if (!vdev->dpy->ramfb) {
+>              return false;
+>          }
+> @@ -494,7 +494,7 @@ static bool vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
+>                                            &vfio_display_region_ops,
+>                                            vdev);
+>      if (vdev->enable_ramfb) {
+> -        vdev->dpy->ramfb = ramfb_setup(errp);
+> +        vdev->dpy->ramfb = ramfb_setup(vdev->use_legacy_x86_rom, errp);
+>          if (!vdev->dpy->ramfb) {
+>              return false;
+>          }
 > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index ff0d93fae0..a529500b70 100644
+> index 7f1532fbed..ff0d93fae0 100644
 > --- a/hw/vfio/pci.c
 > +++ b/hw/vfio/pci.c
-> @@ -3564,7 +3564,7 @@ static const TypeInfo vfio_pci_dev_info = {
+> @@ -3564,6 +3564,7 @@ static const TypeInfo vfio_pci_dev_info = {
 >  
 >  static const Property vfio_pci_dev_nohotplug_properties[] = {
 >      DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
-> -    DEFINE_PROP_BOOL("use-legacy-x86-rom", VFIOPCIDevice, use_legacy_x86_rom, true),
-> +    DEFINE_PROP_BOOL("use-legacy-x86-rom", VFIOPCIDevice, use_legacy_x86_rom, false),
+> +    DEFINE_PROP_BOOL("use-legacy-x86-rom", VFIOPCIDevice, use_legacy_x86_rom, true),
 >      DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate,
 >                              ON_OFF_AUTO_AUTO),
 >  };
+> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+> index d94ecaba68..713956157e 100644
+> --- a/hw/vfio/pci.h
+> +++ b/hw/vfio/pci.h
+> @@ -177,6 +177,7 @@ struct VFIOPCIDevice {
+>      bool no_kvm_ioeventfd;
+>      bool no_vfio_ioeventfd;
+>      bool enable_ramfb;
+> +    bool use_legacy_x86_rom;
+>      OnOffAuto ramfb_migrate;
+>      bool defer_kvm_irq_routing;
+>      bool clear_parent_atomics_on_exit;
+> diff --git a/include/hw/display/ramfb.h b/include/hw/display/ramfb.h
+> index a7e0019144..172aa6dc89 100644
+> --- a/include/hw/display/ramfb.h
+> +++ b/include/hw/display/ramfb.h
+> @@ -6,7 +6,7 @@
+>  /* ramfb.c */
+>  typedef struct RAMFBState RAMFBState;
+>  void ramfb_display_update(QemuConsole *con, RAMFBState *s);
+> -RAMFBState *ramfb_setup(Error **errp);
+> +RAMFBState *ramfb_setup(bool romfile, Error **errp);
+>  
+>  extern const VMStateDescription ramfb_vmstate;
+>  
+Thanks
+
+Eric
 
 
