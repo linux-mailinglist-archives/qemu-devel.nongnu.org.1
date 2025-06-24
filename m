@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2E4AE6969
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 16:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4033FAE69C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 16:56:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uU4uR-00018B-5N; Tue, 24 Jun 2025 10:46:03 -0400
+	id 1uU53W-0004FZ-E5; Tue, 24 Jun 2025 10:55:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uU4uM-00017N-8D
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:45:59 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1uU53R-0004CM-Gh
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:55:21 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uU4uK-00009J-Fj
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:45:58 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-23694cec0feso6020995ad.2
- for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 07:45:53 -0700 (PDT)
+ id 1uU53P-0001FE-Iv
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:55:21 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-b31e0ead80eso554885a12.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 07:55:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750776352; x=1751381152; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750776918; x=1751381718; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ODBmitI/0MMzGttdFqYT7jEoIYibHI8H5fbSfW3QObo=;
- b=iZZ4MMnGERB5ne8lND0KVXjALTcF75/KUm4K6KHl9itnU8GYf4HWMc5Pj+crjJlSzn
- iHko7RW5zdwkP90TTEjmhgWpA6mXETfQa3oUptztSxFJCPU4aqMZkwbWS2KhXxyOEDRy
- WBCXvTrv/Nt0/OYc6BwsEnp6ymIMtJ2L0cU1VaB0WzmYs6hDV5d0jmiz/qi8nTv7P3Za
- lapRaxF+F07zdKkwL1ItmkuzX5brdTL0+83srsf3QLcGn10cVz5v1t70qvaWKJWju4gd
- vSFpG6XEBTNUFfjGkYMrt7A+3SEVBb4IvAmj+C1mhu6QLp7a9tN08n7br9W8GXQZaC36
- RVaw==
+ bh=j+ncAe3sExGJLsk0fG8h6nFy9mYtBg2eqpju7iERKSI=;
+ b=FI/yt2BRYx7upK/mPOMHlI8a05bG2o2Kd7GmCONiE6KL/A0xEVFJfp4Ob2jRqPoNOQ
+ SM5bb00yitn57QpakDiJmLIVhMZ0FFxUkvBZQCqxXTaCSfRvlZcMnxdwxuAq60pD8nSM
+ ToGmuYyuYG+/YiaC70iZbX5+S/gP3M9/j5PqUT9VFYNO+nh0rOGpOJlxgzmR5N4pqObB
+ wyIAvYobmC//0HCwUXPKY+4xQZ0+Lry/pSdPCn4oOFwyoRfpt4quRxIHA8ZjQRRVcNPs
+ fnW+AMCFUtaZim7XzD902zBs3RCFKvhGPIaVa95l0iIGSYi9kKFew6KN8QZpZxK0TyyH
+ Zaqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750776352; x=1751381152;
+ d=1e100.net; s=20230601; t=1750776918; x=1751381718;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ODBmitI/0MMzGttdFqYT7jEoIYibHI8H5fbSfW3QObo=;
- b=agIQOSo6bZpN+1ojdeYv92rx0RIiHA/jxIKM59Mz0evEu32KqwRC6zbLYGcpG9geUd
- zY0MyrvFYBegYkYi5AFMFPjdYqX801EIjEKx83Y2FlvcyrXWTY7Rqhz1MxKGROUwbFox
- xDpPmpbhqBhp6Qqv+vYR0F+tVSR8I/hEZm74dYTw8kwqTRgmRFChJ0AAXeqEEkSMxYHq
- Ck4U7BBRHWlW1Vmbxy5VX11IvehTGh0ImbHLYeWWIm1qXIYZAyjmBvK8loDqy7Rko2ml
- oei9q02LMQBG7xhwipzK8m6R7BnNjGjzfx95DBT1zcycO3FCinQOcCzyYzXBLosyDAss
- x1QA==
-X-Gm-Message-State: AOJu0YwsFtolE8dSF1chQLq0/w6FrH8IxbHFbqUFyWJ7SomgOZBbcS2u
- SO53uPuM7DC5aKJtmpU91jkXJEpb0CsswAvgbfjRccpGxBAuUEsLZHgAKSxt7YYb8/A=
-X-Gm-Gg: ASbGnctvI7bswEnYrmvhafYzbtxdnA5kfd1egDXHbvK+IbvfGi4J+2sVFhqnRGMk4ws
- knUs7SFOrSliYEu1JBEYIAUr6UXoj/fjg812pi3EuFIvVexZdG07jbk8RyjLcV0a16JJT3N+CWg
- f3sv8+f5HjT0PX+D/9FEZAgbJMcml5KPqPr0FL57OWKE24R2gHvJS/t2Gat8gSJHDVAfu8jIyG1
- 7l923Lgna3ptlPvmvpNJ01YVi1Fn0JdHWZAek0ra/5LzbK1KhCKl+swup7TjDlT4E8BfJ7kIU3w
- MTJVteufUyHvP6+pyoNlypYn5tllNkC9kV3LGmOL4qOnqS/qbf7dcSg/Z0ruMmBkFIGqwxZ+KcU
- rzC8Z+aFrUbCyJ7joSpktYjo6bl45
-X-Google-Smtp-Source: AGHT+IHUsdAq36jvqtI2drFhkZ+kYzh4ix3nGgDD/vSY5sgus1hnI5NawxYK2LxuBsAOpELJlNesXA==
-X-Received: by 2002:a17:903:320e:b0:234:e8db:431d with SMTP id
- d9443c01a7336-237d9764d8cmr252942195ad.20.1750776352127; 
- Tue, 24 Jun 2025 07:45:52 -0700 (PDT)
+ bh=j+ncAe3sExGJLsk0fG8h6nFy9mYtBg2eqpju7iERKSI=;
+ b=bq+BoHq6/kQ4HVcETrOrXadbXJUeWJtrn/ORQfz8IOZhE9Ao3Xz1PW8yDO68sg5EhM
+ bEM//HlVe0ee6Q0tVz9f8BchBaQGliehDuvGeezFKDiwyl3C7c7TF23+zJRlk9RcWBrG
+ 1r5a+2EY0n1z391SeI1HDg4xIwAAvTP2xH8XEoHrd3U+0ItzLdyKJDM8+iyDyprYw2Ua
+ siImUEM3ZwEq97nGxZnS9lqIU8yEVG70hRbBrCqlHyOClZydy9rQ/yk65B8CATP3VufF
+ OGmHjl3sTk/QyboaQhT5tUfTjrXX/LLxN1Bc4dFISb9D2a0pZn/JUoOhSmiVzFbUXw5z
+ vd8w==
+X-Gm-Message-State: AOJu0Ywjez296oe7m5zP2rAfq6E4CPJRu69uncNsD1ucu0F8ZmHvYhtG
+ FB8IEsp9Xu7btySn3j3UGrBauik+cXjyllGzRbzyWeu9lufAWbwP26CPft3kjZT8Mq0=
+X-Gm-Gg: ASbGnctIUirG0KCIvuxiVRfZOqmaZboYsalb+eNF8IviGc7m+dw4RLiLfK5Y7oiRr7I
+ v0Yuiw7G7qRNrfMnDQ1zfb1T0ZvN6+pCh4icDUTvkkIrW9mOae0sFg9URMCi75crpKOIP5k3uGu
+ Fu2sgv/RIjb3rAwFm6QNbWOxieKT77ehoCZ69p1fRAo4XV/Rlc76waPEzOEbs1X2IwPeLrRNGVE
+ CZLkchkRXqcXpnOkownV0GeN40++R0SefbegfvIYcHO2Gq2vYxFTQsxfvyyJ3cM2onjZohE1Mxq
+ UgIwcuqwBoXokGwqLKza0gKTThud/GFq/3l9VfuuHVLAAKsvD4kMNfJOGJpZ9t72gLx53lG5dBd
+ E2cyaC9zpLmTryFY0SSwaR88ShJgz
+X-Google-Smtp-Source: AGHT+IGSSn6OYEDVnZlvRw8xsxUxFT7AthS0Jdx9UtuaL37WmnpzT0vNQYTauDdWckmyoJafsgek3A==
+X-Received: by 2002:a05:6a00:4b56:b0:748:e1e4:71ec with SMTP id
+ d2e1a72fcca58-7490da69762mr25216075b3a.12.1750776917682; 
+ Tue, 24 Jun 2025 07:55:17 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-237d860b619sm112160715ad.102.2025.06.24.07.45.51
+ d2e1a72fcca58-749b5e21136sm2125882b3a.47.2025.06.24.07.55.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Jun 2025 07:45:51 -0700 (PDT)
-Message-ID: <b7e787e9-4e4a-45d1-8cd6-d06bcb86880f@linaro.org>
-Date: Tue, 24 Jun 2025 07:45:50 -0700
+ Tue, 24 Jun 2025 07:55:17 -0700 (PDT)
+Message-ID: <a10ad9ac-1a0c-4d6b-b5db-ec10423f5236@linaro.org>
+Date: Tue, 24 Jun 2025 07:55:15 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 034/101] target/arm: Implement SME2 FMLAL, BFMLAL
+Subject: Re: [PATCH v2 040/101] target/arm: Implemement SME2 SDOT, UDOT,
+ USDOT, SUDOT
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org
 References: <20250621235037.74091-1-richard.henderson@linaro.org>
- <20250621235037.74091-35-richard.henderson@linaro.org>
- <CAFEAcA-FziWjBk6_QYVfcoyPkwOwnNOPNFugkSBBxsjCOPHEzA@mail.gmail.com>
+ <20250621235037.74091-41-richard.henderson@linaro.org>
+ <CAFEAcA9=Nix2pj6Sc6-Ar=em6LAPhXa69bcSyZzW2jJfBmmUCA@mail.gmail.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA-FziWjBk6_QYVfcoyPkwOwnNOPNFugkSBBxsjCOPHEzA@mail.gmail.com>
+In-Reply-To: <CAFEAcA9=Nix2pj6Sc6-Ar=em6LAPhXa69bcSyZzW2jJfBmmUCA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,20 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/24/25 07:28, Peter Maydell wrote:
->> +static bool do_azz_acc_fp(DisasContext *s, int nreg, int nsel,
->> +                          int rv, int off, int zn, int zm,
->> +                          int data, int shsel, bool multi, int fpst,
->> +                          gen_helper_gvec_4_ptr *fn)
->> +{
->> +    if (sme_sm_enabled_check(s)) {
+On 6/24/25 03:02, Peter Maydell wrote:
+> On Sun, 22 Jun 2025 at 00:58, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/arm/tcg/helper.h        |  8 ++++
+>>   target/arm/tcg/translate-sme.c | 85 ++++++++++++++++++++++++++++++++++
+>>   target/arm/tcg/vec_helper.c    | 51 ++++++++++++++++++++
+>>   target/arm/tcg/sme.decode      | 63 ++++++++++++++++++++++++-
+>>   4 files changed, 206 insertions(+), 1 deletion(-)
+>>
 > 
-> Looking more closely, this isn't the right check: these
-> insns all call CheckStreamingSVEAndZAEnabled(), so we want
-> sme_smza_enabled_check(). (Which makes sense, as we're
-> accessing the zarray.)
+> 
+>> +static void gen_helper_gvec_sudot_4b(TCGv_ptr d, TCGv_ptr n, TCGv_ptr m,
+>> +                                     TCGv_ptr a, TCGv_i32 desc)
+>> +{
+>> +    gen_helper_gvec_usdot_4b(d, m, n, a, desc);
+>> +}
+> 
+> This one also needs its own helper, rather than a wrapper of usdot.
 
-Whoops, yes indeed.
+Why?  There's no index.  Other than sign, the vector shapes are symmetric.
+
+The SUDOT (4-way multiple and single vector) instruction isn't symmetric, but this helper 
+is only handling a single vector.  We call it 4 times to implement
+
+     sudot  za.s[w8, 0, vgx4], { z0.b-z3.b }, z4.b
+
 
 r~
 
