@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC99BAE5D16
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 08:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BF7AE5D6D
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 09:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTxPn-0005JG-Cz; Tue, 24 Jun 2025 02:45:55 -0400
+	id 1uTxkf-00013c-B9; Tue, 24 Jun 2025 03:07:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uTxPj-0005Iw-8n
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 02:45:51 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uTxkd-000128-Jg
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 03:07:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uTxPh-0003M1-1U
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 02:45:51 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uTxkb-00018m-Fz
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 03:07:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750747542;
+ s=mimecast20190719; t=1750748841;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+gl2eVRWupQxN9pftpts+krIIpMZ52R49Wt5Ud8ucIs=;
- b=I5ra0Nz5GUoGmRT2/CArOGcSvEWlbOSztz2RoLlELnPHN/8TrfSgOC0Wbpl1h1+ZK1uMTO
- 2+2Qh6uxA51pewywocQSrHOhtYKsjStyhy141ST//zbwV8sl6ZBa7ZqzWsS86DK8/t5eHp
- gzX56shyMv7W8F3EYykEQevd+OR867Y=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=iyI6VxsX3m+C1CJm9Dqdm8u1xvtdFED9m5ykMjVXMsM=;
+ b=dAFw7TS+lCXMQJlikQ3uPoMgDe7rEtO6/rRYgRSN/WDg1VL3iN8Yg77acJ5QFyqV3TVXtq
+ 7gZj+AFq0J0u+saw177fR4PLSxI7Q12Omt4ssfjzNdv11kkag2GC0HJkGmRVD5bEn0DNO4
+ Catijk6DY8aP0ambaXYzx/P0ZXh4KJ4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-CfMVev0oN0-fhEsBvXTeiw-1; Tue,
- 24 Jun 2025 02:45:35 -0400
-X-MC-Unique: CfMVev0oN0-fhEsBvXTeiw-1
-X-Mimecast-MFC-AGG-ID: CfMVev0oN0-fhEsBvXTeiw_1750747534
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-I2h0sklCNLmjwAYzrHq-SA-1; Tue,
+ 24 Jun 2025 03:07:17 -0400
+X-MC-Unique: I2h0sklCNLmjwAYzrHq-SA-1
+X-Mimecast-MFC-AGG-ID: I2h0sklCNLmjwAYzrHq-SA_1750748836
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5FBE118002E4; Tue, 24 Jun 2025 06:45:34 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F2C791956096; Tue, 24 Jun 2025 06:45:33 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4EE8421E6A27; Tue, 24 Jun 2025 08:45:31 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: John Snow <jsnow@redhat.com>,  qemu-devel <qemu-devel@nongnu.org>,
- Daniel =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: Build platform guarantees, docs, tests, and snakes in the garden
-In-Reply-To: <23559c8d-149a-4ec6-adaa-fe0a8f8533f1@redhat.com> (Paolo
- Bonzini's message of "Wed, 18 Jun 2025 09:53:11 +0200")
-References: <CAFn=p-YuqzXvWF-cGLUc0LVVMe2Rinx9+LOjvpHRY-vRrPyJow@mail.gmail.com>
- <23559c8d-149a-4ec6-adaa-fe0a8f8533f1@redhat.com>
-Date: Tue, 24 Jun 2025 08:45:31 +0200
-Message-ID: <87qzz9myd0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 04FF21800289; Tue, 24 Jun 2025 07:07:16 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.45.226.80])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6BB9D195608D; Tue, 24 Jun 2025 07:07:14 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 0810218000BA; Tue, 24 Jun 2025 09:07:12 +0200 (CEST)
+Date: Tue, 24 Jun 2025 09:07:11 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org, 
+ mst@redhat.com, anisinha@redhat.com, elena.ufimtseva@oracle.com, 
+ jag.raman@oracle.com, pbonzini@redhat.com, david@redhat.com, philmd@linaro.org
+Subject: Re: [PATCH 1/3] memory: reintroduce BQL-free fine-grained PIO/MMIO
+Message-ID: <uyuhe6pvmqtkb3ruywgsvwc3hh4hu27c454an4avme6xxfrls4@fwoathup2su4>
+References: <20250620151418.1166195-1-imammedo@redhat.com>
+ <20250620151418.1166195-2-imammedo@redhat.com>
+ <aFWR8rM7-4y1R0GG@x1.local> <20250623145146.4462bf59@fedora>
+ <aFlYRWc7rRwBGM8S@x1.local>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aFlYRWc7rRwBGM8S@x1.local>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,60 +86,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+  Hi,
 
-> On 6/5/25 21:35, John Snow wrote:
->> However, if we take as iron-clad our commitment to the build platform promise -- *and* guarantee offline/tarball builds as well -- then Debian 12 (as an example) only offers Sphinx 5.3.0 and not newer unless we allow internet access to fetch Sphinx 6.2.1. This is not a problem for developer workstations at all, but I am unclear on what problems this may cause for tarball releases and downstream offline/isolated/ reproducible builds, if any.
->> In this case, we can (probably) "fix" the issue by continuing to allow older Sphinx while preferring a newer Sphinx version when it is missing, but then we lose the ability to make code cleanups and drop a lot of back-compat crud. If memory serves, there were other issues recently where older versions of Sphinx behaved differently from newer versions, causing intermittent failures that were hard to track down.
->
-> The *ideal* solution would be to:
->
-> - accept: 4.3.2 or newer, which is what Ubuntu 22.04 has
->
-> - install: 6.2.1, which is what supports Python 3.13
+> Gerd mentioned this in the relevant bz:
+> 
+>         Note: root cause for the initrd issue noted in comment 5 is seabios
+>         running into problems with ehci -> io errors -> corrupted initrd.
+>         Sometimes it doesn't boot at all, probably in case the io errors
+>         happen to hit the kernel not the initrd.
+> 
+> This seems to be the last piece of information we have had that is closest
+> to the root cause.
 
-I guess this relates to pythondeps.toml line
+seabios used to prefer pmtimer back then for timekeeping then because it
+has a fixed frequency.  Doing tsc calibration can easily be /way/ off in
+a virtual machine on a loaded host.
 
-    sphinx = { accepted = ">=3.4.3", installed = "5.3.0", canary = "sphinx-build" }
+Meanwhile seabios got support for reading the tsc frequency via cpuid
+(if invtsc is available) or via kvmclock.  If that works seabios will
+prefer the tsc for timekeeping.
 
-I further guess "accepted" means "reject anything older", and
-"installed" means "preferred version".
+So, when trying to reproduce the failure for analysis you have to either
+use an old seabios version, or turn off kvmclock + invtsc support,
+otherwise seabios will not use the pmtimer in the first place.
 
-> This lets all supported distros build documentation if they use the default Python runtime.  It would still require a couple hacks in compat.py: SOURCE_LOCATION_FIX and nested_parse_with_titles().
->
-> I am not sure however whether to count the latter, for two reasons. First, it has this:
->
->     # necessary so that the child nodes get the right source/line set
->     content_node.document = directive.state.document
->
-> so it is not a pure compatibility hack.  Second, and opposite, currently none of the uses of nested_parse_with_titles() go through compat.py's version, therefore it probably can be removed altogether.
->
-> That leaves only SOURCE_LOCATION_FIX.
->
-> As an aside, if the compat.py hacks survive, I would add comments to document which distros need the hacks.
->
->> What I'd like to know is: what precisely are our options in this scenario? Do we consider it acceptable for some platforms to be unable to build docs offline?
->
-> Certainly for platforms not using the default Python runtime, which right now is only SLES.  For others...
->
->> How highly do we value the ability to locally build docs for any given release?
+You should have this line in the firmware log:
 
-Purely offline, or not?
+    Using pmtimer, ioport 0x608
 
-> ... I think I value this a bit higher than Markus, but not really because of offline builds.  Rather, keeping the "accepted" key lower (i.e. supporting the packaged sphinx on a wide range of distros) makes it easier to bump the "installed" key when needed, as in this failure to run 5.3.0 under Python 3.13.
-
-Showing my ignorance again...  I don't understand how keeping "accepted"
-lower helps.
-
-> This time there was a version that works on both the oldest and newest Python that we support, but there may not always be one because sphinx is all too happy at dropping support for EOL'd versions of Python.
-
-Pretty strong hint we shouldn't try to support EOL'd versions of Python
-either.
-
-> Paolo
->
->> Before I throw my weight behind any given option, I just want to know what we consider our non-negotiable obligations to be.
->> Thanks,
->> --js
+HTH & take care,
+  Gerd
 
 
