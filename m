@@ -2,80 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55087AE685D
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 16:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E292AE688F
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 16:27:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uU4XP-0005H1-Is; Tue, 24 Jun 2025 10:22:15 -0400
+	id 1uU4bf-0006CQ-Or; Tue, 24 Jun 2025 10:26:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uU4XI-0005G8-4J
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:22:10 -0400
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uU4XB-000425-0G
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:22:07 -0400
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-70e5e6ab7b8so5587017b3.1
- for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 07:21:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750774918; x=1751379718; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=N6ERwjSwc4Lvfs6V+g6dO5+AgbvIJfeKB0vOKAA/zDQ=;
- b=bu55ROvUtlQBgmHspVE6WShRjb/Mmr/aeEGYCPVHNDRd1EWl4F3E5jn/4obxo8FcBI
- oNiyzPr0B3wBIkuKqFDxdPjT87fpKfoc5+oyYhhYlUxu7FWd+7DLeoa0g8fB7KZEBXzp
- +hxLJbqjBor4LvwfuOBvpa+QsrPOKgG9s5z2SRaVdU8sMeQgIMQmIYCvlHfMpXNEMBar
- 1JAkZmOl+3qabCKpZCwyDl+aCiKD7tskuvN5kRm8Tsa1c+OzenRSjkEo8nl7e4tmq6CS
- qzi30Y1m58/G22LCNcMIAfLBCIs3qfmp5iGITqzYhLAv+a5Nvj57G7AV5LD3GZwRemy2
- YOJg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uU4bZ-0006BL-KV
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:26:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uU4bS-0004qF-Uu
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:26:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750775183;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=eu+B+N/ewWxC60XSSpDbg7tc8ZeIeBvsO6fyf+FrIJw=;
+ b=P+te6UD1y3uivgWkwowC3oRfQxHBliL7mAdJCbqJWK7txw4vmGOenUpOunWwmX+dXaWfHR
+ 70DMXxj0L7+Gc0HfQ2OYPa2aJX1cOunknkmTZvWxek7FBZ+zUWHB5vfZuZOtTznMsYMj7V
+ g1tE9QMQ/i4EvyEB697+Iphs7kl3An4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-eNxZNsLWMiuoRzJo15Xojw-1; Tue, 24 Jun 2025 10:26:21 -0400
+X-MC-Unique: eNxZNsLWMiuoRzJo15Xojw-1
+X-Mimecast-MFC-AGG-ID: eNxZNsLWMiuoRzJo15Xojw_1750775180
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-450eaae2934so46598945e9.2
+ for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 07:26:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750774918; x=1751379718;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1750775180; x=1751379980;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=N6ERwjSwc4Lvfs6V+g6dO5+AgbvIJfeKB0vOKAA/zDQ=;
- b=axQvvks9stXFGnYyGq9tZFr0tKRvu0xHq2RJpKT9JtAPfKJSXIqtsMw7Ipnr/5nqBi
- docKl8k5PS3OYkoZKGOZTph9W1Z/hoFycYNkl2mveGk0tuV78wWnYPLRdmRAitwuAgTV
- 9WuewJY/cxA+XoTk+Zeko0vjz88bjn+5AH0tRxEeBaLyfo30ncXJvQWiRQFTfY9xSnop
- 4+IWA2XiypASSgcDegCbxNHFC2sFFPJ5aTIrj79dNmqpB20AKmK58hSjSX2K5HI8MTbZ
- SNlVc9gSuYQemfELR5QuaPrCb9Bc9Q40ewJJpONfI8bch+hoTPMJo7AKQv/5dr/YHLn9
- ppxQ==
-X-Gm-Message-State: AOJu0Yx89nwn1GNBBothSAEuLmgSKplQQORq0oF7GBTZBuTcJiogImdy
- 4hstHZr/fn5qMqSpIDMejtkZHda0QctBAcjyK2RNi6hdZ43XhrYw4PKktrvK9tfMz8Vb4lsyad/
- bUo7QG7b4kiLg7LU6+QJkg9S6o/0ZyXguhqMjajJFWg==
-X-Gm-Gg: ASbGncsuBttQiR1eaEMVXOTqt8WutXqPmIvscuV/RgVN1H0OARLCv7LQS62zaFweZHP
- h1OLdP81uY/EU7AMQ8/GdBJxa9riRbjnguRG/dfyEufXsSyvZ4gnia1PavUc30H4Nt48pMObp69
- OeQ5Bey06KA3p7ljEdY0cyH/kyEd8qdLDVpmBcTSs7ac34
-X-Google-Smtp-Source: AGHT+IHj+LGGja7CFE2e8BwG66OX8RLc1si+Dg1i5bnw2qfRzHYK3ZT/6S+MV//Qh24F30Pto5EFq1z+jaTYt7A+R50=
-X-Received: by 2002:a05:690c:fca:b0:70e:21be:a6c5 with SMTP id
- 00721157ae682-71404771bd2mr390397b3.26.1750774918219; Tue, 24 Jun 2025
- 07:21:58 -0700 (PDT)
+ bh=eu+B+N/ewWxC60XSSpDbg7tc8ZeIeBvsO6fyf+FrIJw=;
+ b=VZTon2t4th0wgj4uZSVMxM8XiQVi/wBMuzOyZG83jQXTnNWFHMgMeyaXGT+kBjhFXG
+ l0FlfUeNi2bAQ6bxBzm6aC2R1bLGf76XsmDuYzhajI7V5GBvNFZtmDk4KxuqvoBFJerr
+ 2RBITYFJ0wqOlQZAsyu3FRzW9tjjMGQc+WcQo/s8Y6lJmrEDmsBVnmJ+BfNiA9ZL4me9
+ 7CeOuM7pJMd9DlmnrDM6xs+3+wiym6TaprSaMji3CLEG83AhtbKPdcRpR9wuRWQ2gAny
+ ivgOMBAW9GYHoHHzRftpHcLoFKLy9hlZTKw3C+6UgLsDp437CAiZWt7eJ/E48aB+x8ry
+ i1xw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU7CJP3T1nkByjeuD+nzKGJ48mmZtlDjyvXcSVnjVu3QkxXaYFThEJEsn+UZW5aotwQu83Pg/W9VfJ5@nongnu.org
+X-Gm-Message-State: AOJu0Yzm7I+R9zMSHWCXnX01twqeZ8VfdCgMd4kCN4o7zfp0cFuxpiGa
+ CvSx7OfamhWiAii0Z2mJz1oOri3z0ZaJV+68fznVWLVumBFvsL26V5lFPyWo7GjJ9/BSAPBkEHP
+ hcfD3SLw4kNQgQGjwIeZvsIpRv8mujgPBpsJDwPhWH32JRtj/QezP2vtQ
+X-Gm-Gg: ASbGncs6XJDyhGW5UMkdi8St0I0tPV1t53gAGomsrV4p0hbbatcvxTau0qDIChDbZ98
+ onxi3pWkxKFSUc9nP7tKOIltJy3cBhB5aKjJL3GEakrIrNC/J6KeE3Wv/aHmT+gNl4HpMk3YmMa
+ ssuYTHStZ9fdB2r3qbZ9m5VI8SyJFn+etNv9l19wSPkUpjhF9Eu/W5w7Xo4ywz81dojjghdrvGN
+ HAfUMUznyWiGXJzI63XZxXRbiZi4l5MmHNY43FuyVXaqChLNROxyIdkwSq5q6maeE2X/zub/x9t
+ YcpelKsMjMc2XZKrlBsp7n3k/aV351xZkT65SZXtdxmf88XbkWMwBZt9STRGlug=
+X-Received: by 2002:a05:600c:458b:b0:43c:ea36:9840 with SMTP id
+ 5b1f17b1804b1-453659ef74bmr154627375e9.22.1750775180303; 
+ Tue, 24 Jun 2025 07:26:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEr1Ux5V6+kjdiqy8m6lC5M3GfPKtcz8rp8Os1k72405GO3AC9iuiNyz5vQiAjJyaBvbq4VAQ==
+X-Received: by 2002:a05:600c:458b:b0:43c:ea36:9840 with SMTP id
+ 5b1f17b1804b1-453659ef74bmr154627035e9.22.1750775179921; 
+ Tue, 24 Jun 2025 07:26:19 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-115-198.pools.arcor-ip.net.
+ [47.64.115.198]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45364703f1esm144649985e9.32.2025.06.24.07.26.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 24 Jun 2025 07:26:19 -0700 (PDT)
+Message-ID: <ac5282d5-0b23-40f8-8625-472fc7844303@redhat.com>
+Date: Tue, 24 Jun 2025 16:26:17 +0200
 MIME-Version: 1.0
-References: <20250621235037.74091-1-richard.henderson@linaro.org>
- <20250621235037.74091-92-richard.henderson@linaro.org>
-In-Reply-To: <20250621235037.74091-92-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 24 Jun 2025 15:21:47 +0100
-X-Gm-Features: AX0GCFtmaRr2XHILKDl-DBL2eACHEXZzVeIUWLYW7_3eUr29KrE-n02N35C2F7I
-Message-ID: <CAFEAcA95y+y_uXM0mhRY3VqHtV8Uagd38pBDmvrWO6WrBgf0ag@mail.gmail.com>
-Subject: Re: [PATCH v2 091/101] target/arm: Implement SME2 counted predicate
- register load/store
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: add reviewers for some s390 areas
+To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: pasic@linux.ibm.com, borntraeger@linux.ibm.com, farman@linux.ibm.com,
+ alifm@linux.ibm.com, jjherne@linux.ibm.com, walling@linux.ibm.com,
+ jrossi@linux.ibm.com, qemu-devel@nongnu.org, zycai@linux.ibm.com
+References: <20250623160030.98281-1-mjrosato@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250623160030.98281-1-mjrosato@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,54 +152,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 22 Jun 2025 at 01:00, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Implement the SVE2p1 consecutive register LD1/ST1,
-> and the SME2 strided register LD1/ST1.
->
+On 23/06/2025 18.00, Matthew Rosato wrote:
+> To improve review coverage, assign additional people as reviewers for
+> multiple s390 sections.
+> 
+> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+> ---
+>   MAINTAINERS | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
 
+Thanks for your help, guys!
 
+I've queued the patch now for my next pull request.
 
-> +static bool gen_ldst_zcrr_c(DisasContext *s, arg_zcrr_ldst *a,
-> +                            bool is_write, bool strided)
-> +{
-> +    TCGv_i64 addr = tcg_temp_new_i64();
-> +
-> +    tcg_gen_shli_i64(addr, cpu_reg(s, a->rm), a->esz);
-> +    tcg_gen_add_i64(addr, addr, cpu_reg_sp(s, a->rn));
-> +    return gen_ldst_c(s, addr, a->rd, a->png, a->esz, is_write,
-> +                      a->nreg, strided);
-> +}
-> +
-> +static bool gen_ldst_zcri_c(DisasContext *s, arg_zcri_ldst *a,
-> +                            bool is_write, bool strided)
-> +{
-> +    TCGv_i64 addr = tcg_temp_new_i64();
-> +
-> +    tcg_gen_addi_i64(addr, cpu_reg_sp(s, a->rn),
-> +                     a->imm * vec_full_reg_size(s));
-> +    return gen_ldst_c(s, addr, a->rd, a->png, a->esz, is_write,
-> +                      a->nreg, strided);
-> +}
-> +
-> +TRANS_FEAT(LD1_zcrr, aa64_sme2_or_sve2p1, gen_ldst_zcrr_c, a, false, false)
-> +TRANS_FEAT(LD1_zcri, aa64_sme2_or_sve2p1, gen_ldst_zcri_c, a, false, false)
-> +TRANS_FEAT(ST1_zcrr, aa64_sme2_or_sve2p1, gen_ldst_zcrr_c, a, true, false)
-> +TRANS_FEAT(ST1_zcri, aa64_sme2_or_sve2p1, gen_ldst_zcri_c, a, true, false)
-> +
-> +TRANS_FEAT(LD1_zcrr_stride, aa64_sme2, gen_ldst_zcrr_c, a, false, true)
-> +TRANS_FEAT(LD1_zcri_stride, aa64_sme2, gen_ldst_zcri_c, a, false, true)
-> +TRANS_FEAT(ST1_zcrr_stride, aa64_sme2, gen_ldst_zcrr_c, a, true, true)
-> +TRANS_FEAT(ST1_zcri_stride, aa64_sme2, gen_ldst_zcri_c, a, true, true)
+  Thomas
 
-These seem to be missing the
-
-  if IsFeatureImplemented(FEAT_SVE2p1) then CheckSVEEnabled(); else
-CheckStreamingSVEEnabled();
-
-SVE-enabled checks that the pseudocode has?
-
-thanks
--- PMM
 
