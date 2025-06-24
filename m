@@ -2,99 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0306AE631B
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 12:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9371AE637F
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 13:23:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uU1L5-0006GC-8f; Tue, 24 Jun 2025 06:57:19 -0400
+	id 1uU1iN-00044W-Ve; Tue, 24 Jun 2025 07:21:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uU1L1-0006Fp-6y
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 06:57:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uU1Kx-0003tr-Dj
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 06:57:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750762628;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kXyjj4iGn7X5bUj9ONNCvQXQsREXpb8azLRY7Kn/NXY=;
- b=XqcQyPyQ5KEdOJPoSM8Kg9MXQpD24WCLnQ6/l5lyElEJfOr/ey0R+saD5uynBiS7P+Itty
- e2NnT8OSPz9AqrAJejws4QBBv496iwAGwBLqV6OQXbnRJgQhUZWLkmcvEYRjI1Nr5lSYSD
- zyCP/m7x4F8xb0mDSlxPeabycz5hsMY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-189-1cl7AnvHMjyKFNp97ZjkUg-1; Tue, 24 Jun 2025 06:57:07 -0400
-X-MC-Unique: 1cl7AnvHMjyKFNp97ZjkUg-1
-X-Mimecast-MFC-AGG-ID: 1cl7AnvHMjyKFNp97ZjkUg_1750762626
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45311704d22so33978325e9.2
- for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 03:57:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uU1iJ-00044M-T4
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 07:21:20 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uU1iC-0000fE-Fu
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 07:21:17 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-60bfcada295so1964638a12.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 04:21:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1750764067; x=1751368867; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iRCVTfa8VuthZDRkWLHlmhFG8lrtRPaTCVONYiV0HNo=;
+ b=YIFMLav/EqlGXMxrFSjlVunV+6gJMsfZwn6iLpSJFBsOC+XMTr7PToyBNBL/O2/lqK
+ RXupJ61teYhlZZh/+8vVeeK+SUPhoZdMgoWNYUxly/2EhRCdUII/OzuP0Rbti/axOVvK
+ MCyvOWOdJ8lvbGCI2jAguoG6/ruxm964csRRJL3ebkElwsXKQRRaTazVuMmypzqaX5Zk
+ KgcvEQuz1dly5drr+5bSQqGJElv14meRbApdu08JAcnnQqhyC3kUnnAf7bshjN8AVdz+
+ AsOu3JKcvtd3x+beY+DJsG2qy2CQG5NURsvrPq/Jcc1kFnm1XSHocX0BTs553sV7z9Yb
+ YEDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750762626; x=1751367426;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kXyjj4iGn7X5bUj9ONNCvQXQsREXpb8azLRY7Kn/NXY=;
- b=KZ46/4ZBPY9nItq4TMd7EdNZGBTLc2Qb8AMffT9aAJ0d6w+q56M952TUIDCQ5t83dK
- 0WAUNof/1WBvUYOzLbTdMYafpM5cfPXxZpMpTZVw++yRMuBQcQrBgu/gZHJzEutwki61
- 7NEIqIVl95E6ZMuCH3aKSoVLZwJWX0wBZ5VRDzX3aGcoY4vL4Js3dAyazam+4E+RoDi8
- 9mbNaWJXGuUqN+D2xC3+rAdjhzePYrr07mYSG8PP6fwR8kuav1BY2kvjFNDezak/raLJ
- dlKZrbvNS96hWHP/WX2YIQN6zBqF0MBREyS4E2IlA3JeZoPHFJNFvwOxbapB6EnI6rml
- 0Ssg==
-X-Gm-Message-State: AOJu0YztI35csZJszlwp2MtyfrSWbDc4ZBZZwInSTVQFAtrxSe92cMjQ
- MkTrbouSSP2pHuuo60COFMAJDWsIvbZq8hedx8quCNkAXrwxetVCzIZqqBICQEmNmLmHL/aGaDd
- ziRNaQvKGqtIa1q7wCPP0KzsVhAyBJfZSuImugK1VFVDzND+3dbVXYYDQ
-X-Gm-Gg: ASbGncsIrstXEVuwwm1Z+FqUB7kNZhklUQZAH1iOIad/FWBJNordNveV5Fak/q8qe8j
- xbNPJ319SxavmIAaUaWYL2r1OI+9fRdNYPt7Ehi7mJg20JFGh962eBLFAJH97TFW0+f+ceNhkxm
- ARLHmQUu+Pz2z6OC9/KSzPovxdjG/mBoohxU6IlgMMoVbcwC6cl4n8BJbzzEn3Ci5ohnaYZ/Ymy
- ktMrS559Ya2RBAgCIsumJjgDgrBusVMv93g4hIxS+cmtYUNSKqv9HRFKSV6FkdITU5/wDnFW1Wb
- 1blK9QY5MaXP
-X-Received: by 2002:a05:600c:138e:b0:442:f4a3:8c5c with SMTP id
- 5b1f17b1804b1-453653b02c3mr195106105e9.10.1750762626054; 
- Tue, 24 Jun 2025 03:57:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2RyIwsA0Ou23emkocoUn0m0az7hs1B7A7hSRovjCb1XzUO8ElxSXdoNl7hqMEjJg5NUWcag==
-X-Received: by 2002:a05:600c:138e:b0:442:f4a3:8c5c with SMTP id
- 5b1f17b1804b1-453653b02c3mr195105685e9.10.1750762625600; 
- Tue, 24 Jun 2025 03:57:05 -0700 (PDT)
-Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45361461375sm155787415e9.14.2025.06.24.03.57.04
+ d=1e100.net; s=20230601; t=1750764067; x=1751368867;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=iRCVTfa8VuthZDRkWLHlmhFG8lrtRPaTCVONYiV0HNo=;
+ b=X2j0qG9oN6CXQJMWn8fhpcbeBBqRvlT+AtoCSqSKAvPFPCcGvOpcxRuAKeCfHrnmN6
+ zNEI7v6/TjkNmqTyDsfgWCxKrbdzbqa5FtLeh9x6q4IH5NsQFxqU7BnWxrSj4zKa7TU/
+ JAw/+NQUM1QSwgLAIJqxAAjOJyB196rtPNOYQ3bsTaqAdUm8zf+itV13z2+hkEWyygYC
+ Pxd1aEJmmjPLiHnUKqNiRvJ0u4KiVdbDMlVW68B44qlQqiqLqAhNwVVh9Q9OuTQcxc4z
+ jusXHqS/efJic2hPldhQ9icLJG682kM/n3SPv0g63ymsnzpVBullhcgBNMymGbodnR/T
+ oMQQ==
+X-Gm-Message-State: AOJu0YynMQqj2QaOQa5ALWqNAjxe2pJf9bDAAnPK6LB51eeLUx/ZkQym
+ 9itbpUQK1a+uP5bTczSKt4yXglBzTZpWgakn2DyB1zUN5iTmtSvglkCMrdLqJg8PyHI=
+X-Gm-Gg: ASbGncsrZ7Ql/hxAz1t19gJ7uRDAPGm43dEw99iSNwnPDhxv31HFm7hhGcdvdsyeUwH
+ iwJU6JIPaSNeiPQY4Jjdfv1rw0B9dVy4gz3UFPakrw52k/aS8gQVFQ5+HFB7zqxUz1Ovy1pftAF
+ 5jq3SZZv3XWUYlkkEnGfWZPQLsqG96RuS6DGWbn79DE+ywYgDpyXQeCPPJryex94aHgEj9W7Kc9
+ kHDPT9mmLHmXeYdr23vxnD758XoIn5UMpLmmZ6fQ2nptQj9grHeOSCQiu31sQUMlYi0JgQx36JT
+ yPaDu62kxNLjIRvCd7GggA/z+3LZHU5xbVNmafvEkJlZjcg8PJ1lhFhXNDPfbuo=
+X-Google-Smtp-Source: AGHT+IE7kwiBsKrIYZMAaEaXAzibbGHJ/jV6wJBJ1XNYa5yeUB65YR5B0D7/9MIxJAj3wgUAo4ZZBA==
+X-Received: by 2002:a17:907:3f18:b0:ade:4339:9367 with SMTP id
+ a640c23a62f3a-ae057a222b4mr1558397766b.26.1750764066878; 
+ Tue, 24 Jun 2025 04:21:06 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ae053e7fbd9sm858446366b.33.2025.06.24.04.21.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Jun 2025 03:57:05 -0700 (PDT)
-Date: Tue, 24 Jun 2025 12:57:04 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, mst@redhat.com,
- anisinha@redhat.com, elena.ufimtseva@oracle.com, jag.raman@oracle.com,
- pbonzini@redhat.com, david@redhat.com, philmd@linaro.org
-Subject: Re: [PATCH 1/3] memory: reintroduce BQL-free fine-grained PIO/MMIO
-Message-ID: <20250624125704.40f635fd@fedora>
-In-Reply-To: <aFlYRWc7rRwBGM8S@x1.local>
-References: <20250620151418.1166195-1-imammedo@redhat.com>
- <20250620151418.1166195-2-imammedo@redhat.com>
- <aFWR8rM7-4y1R0GG@x1.local> <20250623145146.4462bf59@fedora>
- <aFlYRWc7rRwBGM8S@x1.local>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+ Tue, 24 Jun 2025 04:21:05 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 03D525F7C6;
+ Tue, 24 Jun 2025 12:21:05 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Rowan Hart <rowanbhart@gmail.com>
+Cc: qemu-devel@nongnu.org,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Zhao Liu
+ <zhao1.liu@intel.com>,  Richard Henderson <richard.henderson@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,  Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@linaro.org>,  Yanan Wang <wangyanan55@huawei.com>,  Eduardo
+ Habkost <eduardo@habkost.net>,  Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v13 0/7] Add additional plugin API functions to read and
+ write memory and registers
+In-Reply-To: <20250619161547.1401448-1-rowanbhart@gmail.com> (Rowan Hart's
+ message of "Thu, 19 Jun 2025 09:15:40 -0700")
+References: <20250619161547.1401448-1-rowanbhart@gmail.com>
+User-Agent: mu4e 1.12.11; emacs 30.1
+Date: Tue, 24 Jun 2025 12:21:04 +0100
+Message-ID: <87bjqd1j33.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,85 +108,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 23 Jun 2025 09:36:05 -0400
-Peter Xu <peterx@redhat.com> wrote:
+Rowan Hart <rowanbhart@gmail.com> writes:
 
-> On Mon, Jun 23, 2025 at 02:51:46PM +0200, Igor Mammedov wrote:
-> > On Fri, 20 Jun 2025 12:53:06 -0400
-> > Peter Xu <peterx@redhat.com> wrote:
-> >   
-> > > On Fri, Jun 20, 2025 at 05:14:16PM +0200, Igor Mammedov wrote:  
-> > > > This patch brings back Jan's idea [1] of BQL-free IO access,
-> > > > with a twist that whitelist read access only.
-> > > > 
-> > > > (as BQL-free write access in [1] used to cause issues [2]
-> > > > and still does (Windows crash) if write path is not lock protected)    
-> > > 
-> > > Can we add some explanation on why it would fail on lockless writes?
-> > > 
-> > > I saw that acpi_pm_tmr_write() is no-op, so I don't yet understand what
-> > > raced, and also why guest writes to it at all..  
-> > 
-> > root cause wasn't diagnosed back then, and I haven't able to
-> > reproduce that as well. So I erred on side of caution and
-> > implemented RO only.  
-> 
-> Ah OK, I think I got that feeling it can be reproduced as above mentioned
-> "still does (Windows crash) if write ...".
+> This patch series adds several new API functions focused on enabling use
+> cases around reading and writing guest memory from QEMU plugins. To suppo=
+rt
+> these new APIs, some utility functionality around retrieving information =
+about
+> address spaces is added as well.
 
-that is leftover from experiments with lockless split irqchip,
-as we need to use it with more then 255 vCPU, and then we are back
-BQL contention as every IO exit will also trigger taking BQL
-for non-in-kernel irqchip.
+I think we are almost there but I ran into a problem with the test:
 
-So this series addresses unboottable Windows issue only upto
-255 vCPU. If I manage to make split irqchip checks lockless,
-it will be a separate series on top.
+  =E2=9E=9C  make run-tcg-tests-x86_64-softmmu
+    BUILD   x86_64-softmmu guest-tests
+    RUN     x86_64-softmmu guest-tests
+    TEST    hello on x86_64
+    TEST    interrupt on x86_64
+    TEST    memory on x86_64
+    TEST    hello-with-libbb.so on x86_64
+    TEST    interrupt-with-libbb.so on x86_64
+    TEST    memory-with-libbb.so on x86_64
+    TEST    hello-with-libempty.so on x86_64
+    TEST    interrupt-with-libempty.so on x86_64
+    TEST    memory-with-libempty.so on x86_64
+    TEST    hello-with-libinline.so on x86_64
+    TEST    interrupt-with-libinline.so on x86_64
+    TEST    memory-with-libinline.so on x86_64
+    TEST    hello-with-libinsn.so on x86_64
+    TEST    interrupt-with-libinsn.so on x86_64
+    TEST    memory-with-libinsn.so on x86_64
+    TEST    hello-with-libmem.so on x86_64
+    TEST    interrupt-with-libmem.so on x86_64
+    TEST    memory-with-libmem.so on x86_64
+    TEST    check plugin libmem.so output with memory
+    TEST    hello-with-libreset.so on x86_64
+    TEST    interrupt-with-libreset.so on x86_64
+    TEST    memory-with-libreset.so on x86_64
+    TEST    hello-with-libsyscall.so on x86_64
+    TEST    interrupt-with-libsyscall.so on x86_64
+    TEST    memory-with-libsyscall.so on x86_64
+    TEST    softmmu gdbstub support on x86_64
+  qemu-system-x86_64: -gdb unix:path=3D/tmp/tmp01eq35b3qemu-gdbstub/gdbstub=
+.socket,server=3Don: info: QEMU waiting for connection on: disconnected:uni=
+x:/tmp/tmp01eq35b3qemu-gdbstub/gdbstub.socket,server=3Don
+  qemu-system-x86_64: QEMU: Terminated via GDBstub
+    TEST    softmmu gdbstub support on x86_64
+  qemu-system-x86_64: -gdb unix:path=3D/tmp/tmp4wf7k1fwqemu-gdbstub/gdbstub=
+.socket,server=3Don: info: QEMU waiting for connection on: disconnected:uni=
+x:/tmp/tmp4wf7k1fwqemu-gdbstub/gdbstub.socket,server=3Don
+  qemu-system-x86_64: QEMU: Terminated via GDBstub
+    TEST    softmmu gdbstub untimely packets on x86_64
+  qemu-system-x86_64: -gdb unix:path=3D/tmp/tmpnagp6w_mqemu-gdbstub/gdbstub=
+.socket,server=3Don: info: QEMU waiting for connection on: disconnected:uni=
+x:/tmp/tmpnagp6w_mqemu-gdbstub/gdbstub.socket,server=3Don
+    GREP    file untimely-packet.gdb.err
+    TEST    softmmu gdbstub support on x86_64
+  qemu-system-x86_64: -gdb unix:path=3D/tmp/tmpnkn1fbmsqemu-gdbstub/gdbstub=
+.socket,server=3Don: info: QEMU waiting for connection on: disconnected:uni=
+x:/tmp/tmpnkn1fbmsqemu-gdbstub/gdbstub.socket,server=3Don
+  qemu-system-x86_64: QEMU: Terminated via GDBstub
+  make[1]: *** No rule to make target 'patch-target', needed by 'run-plugin=
+-patch-target-with-libpatch.so'.  Stop.
+  make: *** [/home/alex/lsrc/qemu.git/tests/Makefile.include:56: run-tcg-te=
+sts-x86_64-softmmu] Error 2
 
-> 
-> > 
-> > Theoretically write should be fine too, but I don't have
-> > an idea how to test that.  
-> 
-> Then the question is how do we justify it will work this time..
-> 
-> If nobody can reproduce it anymore, there's indeed one way to go if we
-> strongly want to have the optimization, which is to apply it again and wait
-> for the reproducer to pop up once more.  Just like to double check is this
-> the case, and we have no way to reproduce?
+You need to ensure vpath is set, something like:
 
-I'd prefer to reproduce issue if possible, but if that won't workout
-it might be better to try and see it explodes elsewhere.
-Let's see if I could reproduce with old Seabios as per Gerd's suggestions. 
- 
-> I also wonder whether it's still a bit late because such experiment might
-> be better done at the start of release cycle.  Now we have roughly 3 weeks
-> to soft-freeze (July 15).  I had a look, last time it was pretty late when
-> reverting the change:
-> 
-> 975eb6a547 (tag: v2.6.0-rc4) Update version for v2.6.0-rc4 release
-> 1beb99f787 Revert "acpi: mark PMTIMER as unlocked"
-> 
-> So there's also the question of whether we should land this for this
-> release or next when open.
+modified   tests/tcg/x86_64/Makefile.softmmu-target
+@@ -1,13 +1,11 @@
+ #
+-# x86 system tests
+-#
+-# This currently builds only for i386. The common C code is built
+-# with standard compiler flags however so we can support both by
+-# adding additional boot files for x86_64.
++# x86-64 system tests
+ #
+=20
+-I386_SYSTEM_SRC=3D$(SRC_PATH)/tests/tcg/i386/system
+ X64_SYSTEM_SRC=3D$(SRC_PATH)/tests/tcg/x86_64/system
++X64_SYSTEM_TESTS=3D $(patsubst $(X64_SYSTEM_SRC)/%.c, %, $(wildcard $(X64_=
+SYSTEM_SRC)/*.c))
++
++VPATH+=3D$(X64_SYSTEM_SRC)
+=20
+ # These objects provide the basic boot code and helper functions for all t=
+ests
+ CRT_OBJS=3Dboot.o
+@@ -18,7 +16,7 @@ LDFLAGS=3D-Wl,-T$(LINK_SCRIPT) -Wl,-melf_x86_64
+ CFLAGS+=3D-nostdlib -ggdb -O0 $(MINILIB_INC)
+ LDFLAGS+=3D-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
+=20
+-TESTS+=3D$(MULTIARCH_TESTS)
++TESTS+=3D$(X64_SYSTEM_TESTS) $(MULTIARCH_TESTS)
+ EXTRA_RUNS+=3D$(MULTIARCH_RUNS)
+=20
+ # building head blobs
+@@ -41,4 +39,4 @@ run-plugin-patch-target-with-libpatch.so:		\
+ run-plugin-patch-target-with-libpatch.so:		\
+ 	CHECK_PLUGIN_OUTPUT_COMMAND=3D$(X64_SYSTEM_SRC)/validate-patch.py $@.out
+ run-plugin-patch-target-with-libpatch.so: patch-target libpatch.so
+-EXTRA_RUNS+=3Drun-plugin-patch-target-with-libpatch.so
+\ No newline at end of file
++EXTRA_RUNS+=3Drun-plugin-patch-target-with-libpatch.so
 
-I don't see the need to rush this, so
-+1 to the next cycle.
+<snip>
+>
+> Rowan Hart (1):
+>   plugins: Add enforcement of QEMU_PLUGIN_CB flags in register R/W
+>     callbacks
+>
+> novafacing (6):
+>   gdbstub: Expose gdb_write_register function to consumers of gdbstub
+>   plugins: Add register write API
+>   plugins: Add memory virtual address write API
+>   plugins: Add memory hardware address read/write API
+>   plugins: Add patcher plugin and test
+>   plugins: Update plugin version and add notes
 
+Could you update the Author fields so the Author matches the s-o-b tags
+please and is consistent please.
 
-> Gerd mentioned this in the relevant bz:
-> 
->         Note: root cause for the initrd issue noted in comment 5 is seabios
->         running into problems with ehci -> io errors -> corrupted initrd.
->         Sometimes it doesn't boot at all, probably in case the io errors
->         happen to hit the kernel not the initrd.
-> 
-> This seems to be the last piece of information we have had that is closest
-> to the root cause.  I sincerely wished there's still some way to move
-> forward, as it looks really close, but it might be that it was just too
-> late for 2.6 so we didn't got time to keep looking back then.
-> 
-> Thanks,
-> 
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
