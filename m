@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81BCAE5918
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 03:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4869BAE5921
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 03:20:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTsJc-0000Zw-6t; Mon, 23 Jun 2025 21:19:12 -0400
+	id 1uTsJd-0000aS-U0; Mon, 23 Jun 2025 21:19:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uTsJa-0000ZW-L2
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 21:19:10 -0400
+ id 1uTsJb-0000Zg-2E
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 21:19:11 -0400
 Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uTsJY-0005oA-Ky
+ id 1uTsJZ-0005oQ-5P
  for qemu-devel@nongnu.org; Mon, 23 Jun 2025 21:19:10 -0400
 Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7481600130eso6024549b3a.3
+ d2e1a72fcca58-748e63d4b05so2865456b3a.2
  for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 18:19:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750727947; x=1751332747; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750727948; x=1751332748; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iw3Inm/qmovJ+SsJA+SUz5rt3h/FMqvN9mRE2hwkWpQ=;
- b=EWXMcFGkcNNaCI31ADo1d5MfnK/tEB0VBylecRVFDOykZk66KDMhpV5R8Bk83yACKt
- nOm+PRWYxijMAPgRqSs0GeNgj5/eGqkxXvP9QZS0Zs8OAy41DwDMTQpM2zkozJI2ALXw
- dCNCvpuTJb/UrlSe5ktr5pYtHDvGmfmiJnrwFxEMLdnThCbIjJJ0K0VPr0REBZHLZs/l
- soAhCt9LyDBwfLDYjEdTIVaH6Xeq8Rk/Yz2r+sAVxQL1l8WPiw1a7TZqJkwx++RT0sg1
- L6u65rj9+///ipGN8NPvBrdQLCA0kARfJvcIBHUcBB3Gy4P6RFUwBJLj5/kaGePdrf4j
- 8WFg==
+ bh=S67UPro4B0nfkkspRfqxPQxazBoANRUB0NMG6SLVuGQ=;
+ b=QPDpfX1FbhXmP9aSRhm1ciHrMvAK1g4vjyvnxZeTfxjTtVVxJdFlzVbHZkJIGLDMc2
+ 55Em3MDTx+O/sO/2sbXWyXwUXwQ9oCSTPjBoiHSrcOLlLMbFuX8cx33QgE801nyQ2Ubw
+ Li9xAZj2UVKTCA7B7LsxvxarxOcum2C+f6j9NU9LUZFZYgGCAF+GGQISgDjkeVZ6uOZQ
+ fwoMkhLBoLBML3Z9bogg6R6TAuxy8OVvxQWASbzlC/1Kd9Ij9qXTUyi0Is2hEthFSnEe
+ DpEUzZYigj2PXfBKBVRHgenNR/+RyznBcfyll2/bK2JEq+8B1ncsD2Sq8KE4k3eIcB9d
+ tHKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750727947; x=1751332747;
+ d=1e100.net; s=20230601; t=1750727948; x=1751332748;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iw3Inm/qmovJ+SsJA+SUz5rt3h/FMqvN9mRE2hwkWpQ=;
- b=h25KtFnnbbI5LugUK/a5uIy7fn8sxW5Z2Gv1OnxJkV/o4pIJBIFS/SDn/jTEmIcqBS
- 7gJOk5aoekt+feOvwl5IdgC0q3PPNWBba6VypFXuuKfqy3Iw7j0nJPBqr0dEdaA+CJJ8
- k6fZ2PwDNhDRk7GEzz+B0qIdbpWZ9/EBKgTLctBIsBGPOUiICr+VR5+09mdlI256Qtfw
- s0xl2be/UEiZKaMoTmuh0MHKXHTXCZgATSz0KhuTSkRl1xLU3ZkvmGszHKwboffVJUs8
- 3KwrpyW049qPl72DN8LjqmeedfmdQdoJw9MbyRH9ZIJGS2c6Ec9I7sXuxBGkDx2zGxe/
- IeIQ==
-X-Gm-Message-State: AOJu0YyOmwJIeRAT+NRK6aJPf48Hn3CB9/txlrClqiOZa+KdffEoynrK
- ASwmtdoYRgQsLJY5N9lupL0saXoM06BUNFjJWZyL5SShpw3gDTc8mCyJ5B3yRWean5pZRxDPE1P
- x8hhMClI=
-X-Gm-Gg: ASbGncvavR0wfDIKuAVEQRos396482MFMgun8wV06yrFVi2BbbJToklQBsvXU8aR8X+
- QosoKUsyHLQWWT3heZZPwzDwm/XM8xkIyCLmk/zUzxMGfl2vsCVvimXvU9LievncSEeRJ+Xaj6M
- e3GLp49ViQ5+TOtKlfBtgwfISSuLj9GxDp0iJL4KaI3s0Kmr4ezut6DHYTxRH8iTSvqVoEyyhh9
- RK0jj/MvMD98XjGY5K/9BaiHxwm/BHFiz9LjI2f9sI1Xw7rLRBmWm8dRKobCgYKeatI5rrlnpQw
- m1+1ig7RmrEgC+rfMGvd6rDSZXWHAbYmYt3dQkBhGzFdk9OD2baPto/qBuLgRqomkS2Ado8+Y3t
- kl/mvmb8Hox5s4OhtMrc0
-X-Google-Smtp-Source: AGHT+IFU+HaEQafWqUV3Eplay7FIHUvYyV1BcdtXVUMlGnqs5yQ2GYMKc5wf0KYTyHRYnfqkL1pk+g==
-X-Received: by 2002:a05:6a20:5481:b0:1f5:9024:3254 with SMTP id
- adf61e73a8af0-22026e13463mr24798394637.6.1750727947131; 
+ bh=S67UPro4B0nfkkspRfqxPQxazBoANRUB0NMG6SLVuGQ=;
+ b=TYSXEZj77FhY/UlKoa9xOgbON69zi1RpGupXMWy0rhx2z9Lj018j1en60m488f8dXx
+ D18T/oBhDW6UZ42QzZt+LCBHYtD4BkcpAtokaULMRPHTxbUEK3V6P5zeWyL0HeFrvDCQ
+ 5PuWGc8Iu735pGIQwAIJZ7H60q7D2wbiTVejmP5LAEYveM4AsrVG7pRvVjchifX3xG7X
+ 4IRw1regDvuyPJMgGJFWtTuvLGI0U0NyRV6WYGGHoRJQZ5lXQG/FkyYiHl1dTZSrm7Hx
+ 2/fWoRgXEPx5RiiXx4XT9ZuIU4rGzt1ywVy5SFUEDlYgLM5ccv+MmB2SGXz3vJn/hi+t
+ pDvw==
+X-Gm-Message-State: AOJu0YwSaERfYIXV9hmB3mu+dIatB8H11zw0SI1Ym3URsXPP1pzgF4x5
+ B7IlnvbNXzPhCbbe8yUkJtMQNpCVf7Az7v0scuAS5QxTHkUjVqhAkCZsNyujmzkRSsw4iuwxnjk
+ greoEz2U=
+X-Gm-Gg: ASbGncsEvq30ofkOe7/729hg7vjx3+DtcPHDkwPdM8jxYLyVts4s+bLrsrzqq48oyzk
+ xMRV36keo8tX35ijZ3Qmdy0aldyJkelJq5dIJu0jeJgKcYWN9s7s/fjGZ/g4iqv4s/i1myupWlo
+ VBjKKaaeW1MDG3jf6f+mAKlIo7pVXEpn+k4tRZRySQ/p+8d7LQWOY9fhVKN+dt5EpP/4+nv8I89
+ idtLrjUMKsBmHb0mupF1jWLPtAUMwTisuVyO4gAr9zc+m8eZgJnOfriIYYexhh06jkRNN26F86r
+ uhx8vd528zw2EQZRe5zrzsViDrCC6/27P8M0sBKJHdMFdfniFL4c1orySGBWw8x7y6Z8STqWVC2
+ X7alnpjBV4tFHifrdDumwJwhCRPWB0r4=
+X-Google-Smtp-Source: AGHT+IHtS89juOAlQwcnBgeZqKXlipsFgYQfCM/rE6p999D0zkGNSwWxu9gr+ThmamkKR7ZMTK01Uw==
+X-Received: by 2002:a05:6a00:1903:b0:748:f1ba:9b0d with SMTP id
+ d2e1a72fcca58-7490d6fae3bmr20331243b3a.11.1750727947726; 
  Mon, 23 Jun 2025 18:19:07 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-749b5e08d28sm412080b3a.28.2025.06.23.18.19.06
+ d2e1a72fcca58-749b5e08d28sm412080b3a.28.2025.06.23.18.19.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Jun 2025 18:19:06 -0700 (PDT)
+ Mon, 23 Jun 2025 18:19:07 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 10/11] linux-user/aarch64: Update hwcap bits from 6.14
-Date: Mon, 23 Jun 2025 18:18:58 -0700
-Message-ID: <20250624011859.112010-11-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Arusekk <floss@arusekk.pl>
+Subject: [PULL 11/11] linux-user: fix resource leaks in gen-vdso
+Date: Mon, 23 Jun 2025 18:18:59 -0700
+Message-ID: <20250624011859.112010-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250624011859.112010-1-richard.henderson@linaro.org>
 References: <20250624011859.112010-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
  envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
@@ -98,133 +100,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/elfload.c | 75 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 72 insertions(+), 3 deletions(-)
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 82ebf6a212..2add1665c7 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -751,7 +751,23 @@ enum {
-     ARM_HWCAP_A64_SSBS          = 1 << 28,
-     ARM_HWCAP_A64_SB            = 1 << 29,
-     ARM_HWCAP_A64_PACA          = 1 << 30,
--    ARM_HWCAP_A64_PACG          = 1UL << 31,
-+    ARM_HWCAP_A64_PACG          = 1ULL << 31,
-+    ARM_HWCAP_A64_GCS           = 1ULL << 32,
-+    ARM_HWCAP_A64_CMPBR         = 1ULL << 33,
-+    ARM_HWCAP_A64_FPRCVT        = 1ULL << 34,
-+    ARM_HWCAP_A64_F8MM8         = 1ULL << 35,
-+    ARM_HWCAP_A64_F8MM4         = 1ULL << 36,
-+    ARM_HWCAP_A64_SVE_F16MM     = 1ULL << 37,
-+    ARM_HWCAP_A64_SVE_ELTPERM   = 1ULL << 38,
-+    ARM_HWCAP_A64_SVE_AES2      = 1ULL << 39,
-+    ARM_HWCAP_A64_SVE_BFSCALE   = 1ULL << 40,
-+    ARM_HWCAP_A64_SVE2P2        = 1ULL << 41,
-+    ARM_HWCAP_A64_SME2P2        = 1ULL << 42,
-+    ARM_HWCAP_A64_SME_SBITPERM  = 1ULL << 43,
-+    ARM_HWCAP_A64_SME_AES       = 1ULL << 44,
-+    ARM_HWCAP_A64_SME_SFEXPA    = 1ULL << 45,
-+    ARM_HWCAP_A64_SME_STMOP     = 1ULL << 46,
-+    ARM_HWCAP_A64_SME_SMOP4     = 1ULL << 47,
+There are a number of resource leaks in gen-vdso. In theory they are
+harmless because this is a short lived process, but when building QEMU
+with --extra-cflags="-fsanitize=address" problems ensure. The gen-vdso
+program is run as part of the build, and that aborts due to the
+sanitizer identifying memory leaks, leaving QEMU unbuildable.
+
+FAILED: libqemu-x86_64-linux-user.a.p/vdso.c.inc
+/var/home/berrange/src/virt/qemu/build/linux-user/gen-vdso -o libqemu-x86_64-linux-user.a.p/vdso.c.inc ../linux-user/x86_64/vdso.so
+
+=================================================================
+==1696332==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 2968 byte(s) in 1 object(s) allocated from:
+    #0 0x56495873f1f3  (/var/home/berrange/src/virt/qemu/build/linux-user/gen-vdso+0xa11f3) (BuildId: b69e241ad44719b6f3934f3c71dfc6727e8bdb12)
+    #1 0x564958780b90  (/var/home/berrange/src/virt/qemu/build/linux-user/gen-vdso+0xe2b90) (BuildId: b69e241ad44719b6f3934f3c71dfc6727e8bdb12)
+
+This complaint is about the 'buf' variable, however, the FILE objects
+are also leaked in some error scenarios, so this fix refactors the
+cleanup paths to fix all leaks. For completeness it also reports an
+error if fclose() fails on 'inf'.
+
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Tested-by: Arusekk <floss@arusekk.pl>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250513150346.1328217-1-berrange@redhat.com>
+---
+ linux-user/gen-vdso.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
+
+diff --git a/linux-user/gen-vdso.c b/linux-user/gen-vdso.c
+index 721f38d5a3..fce9d5cbc3 100644
+--- a/linux-user/gen-vdso.c
++++ b/linux-user/gen-vdso.c
+@@ -56,13 +56,14 @@ static unsigned rt_sigreturn_addr;
  
-     ARM_HWCAP2_A64_DCPODP       = 1 << 0,
-     ARM_HWCAP2_A64_SVE2         = 1 << 1,
-@@ -798,6 +814,25 @@ enum {
-     ARM_HWCAP2_A64_SME_F16F16   = 1ULL << 42,
-     ARM_HWCAP2_A64_MOPS         = 1ULL << 43,
-     ARM_HWCAP2_A64_HBC          = 1ULL << 44,
-+    ARM_HWCAP2_A64_SVE_B16B16   = 1ULL << 45,
-+    ARM_HWCAP2_A64_LRCPC3       = 1ULL << 46,
-+    ARM_HWCAP2_A64_LSE128       = 1ULL << 47,
-+    ARM_HWCAP2_A64_FPMR         = 1ULL << 48,
-+    ARM_HWCAP2_A64_LUT          = 1ULL << 49,
-+    ARM_HWCAP2_A64_FAMINMAX     = 1ULL << 50,
-+    ARM_HWCAP2_A64_F8CVT        = 1ULL << 51,
-+    ARM_HWCAP2_A64_F8FMA        = 1ULL << 52,
-+    ARM_HWCAP2_A64_F8DP4        = 1ULL << 53,
-+    ARM_HWCAP2_A64_F8DP2        = 1ULL << 54,
-+    ARM_HWCAP2_A64_F8E4M3       = 1ULL << 55,
-+    ARM_HWCAP2_A64_F8E5M2       = 1ULL << 56,
-+    ARM_HWCAP2_A64_SME_LUTV2    = 1ULL << 57,
-+    ARM_HWCAP2_A64_SME_F8F16    = 1ULL << 58,
-+    ARM_HWCAP2_A64_SME_F8F32    = 1ULL << 59,
-+    ARM_HWCAP2_A64_SME_SF8FMA   = 1ULL << 60,
-+    ARM_HWCAP2_A64_SME_SF8DP4   = 1ULL << 61,
-+    ARM_HWCAP2_A64_SME_SF8DP2   = 1ULL << 62,
-+    ARM_HWCAP2_A64_POE          = 1ULL << 63,
- };
- 
- #define ELF_HWCAP   get_elf_hwcap()
-@@ -886,7 +921,7 @@ uint64_t get_elf_hwcap2(void)
- 
- const char *elf_hwcap_str(uint32_t bit)
+ int main(int argc, char **argv)
  {
--    static const char *hwcap_str[] = {
-+    static const char * const hwcap_str[] = {
-     [__builtin_ctz(ARM_HWCAP_A64_FP      )] = "fp",
-     [__builtin_ctz(ARM_HWCAP_A64_ASIMD   )] = "asimd",
-     [__builtin_ctz(ARM_HWCAP_A64_EVTSTRM )] = "evtstrm",
-@@ -919,6 +954,22 @@ const char *elf_hwcap_str(uint32_t bit)
-     [__builtin_ctz(ARM_HWCAP_A64_SB      )] = "sb",
-     [__builtin_ctz(ARM_HWCAP_A64_PACA    )] = "paca",
-     [__builtin_ctz(ARM_HWCAP_A64_PACG    )] = "pacg",
-+    [__builtin_ctzll(ARM_HWCAP_A64_GCS   )] = "gcs",
-+    [__builtin_ctzll(ARM_HWCAP_A64_CMPBR )] = "cmpbr",
-+    [__builtin_ctzll(ARM_HWCAP_A64_FPRCVT)] = "fprcvt",
-+    [__builtin_ctzll(ARM_HWCAP_A64_F8MM8 )] = "f8mm8",
-+    [__builtin_ctzll(ARM_HWCAP_A64_F8MM4 )] = "f8mm4",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SVE_F16MM)] = "svef16mm",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SVE_ELTPERM)] = "sveeltperm",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SVE_AES2)] = "sveaes2",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SVE_BFSCALE)] = "svebfscale",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SVE2P2)] = "sve2p2",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SME2P2)] = "sme2p2",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SME_SBITPERM)] = "smesbitperm",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SME_AES)] = "smeaes",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SME_SFEXPA)] = "smesfexpa",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SME_STMOP)] = "smestmop",
-+    [__builtin_ctzll(ARM_HWCAP_A64_SME_SMOP4)] = "smesmop4",
-     };
+-    FILE *inf, *outf;
++    FILE *inf = NULL, *outf = NULL;
+     long total_len;
+     const char *prefix = "vdso";
+     const char *inf_name;
+     const char *outf_name = NULL;
+-    unsigned char *buf;
++    unsigned char *buf = NULL;
+     bool need_bswap;
++    int ret = EXIT_FAILURE;
  
-     return bit < ARRAY_SIZE(hwcap_str) ? hwcap_str[bit] : NULL;
-@@ -926,7 +977,7 @@ const char *elf_hwcap_str(uint32_t bit)
+     while (1) {
+         int opt = getopt(argc, argv, "o:p:r:s:");
+@@ -129,7 +130,6 @@ int main(int argc, char **argv)
+         fprintf(stderr, "%s: incomplete read\n", inf_name);
+         return EXIT_FAILURE;
+     }
+-    fclose(inf);
  
- const char *elf_hwcap2_str(uint32_t bit)
- {
--    static const char *hwcap_str[] = {
-+    static const char * const hwcap_str[] = {
-     [__builtin_ctz(ARM_HWCAP2_A64_DCPODP       )] = "dcpodp",
-     [__builtin_ctz(ARM_HWCAP2_A64_SVE2         )] = "sve2",
-     [__builtin_ctz(ARM_HWCAP2_A64_SVEAES       )] = "sveaes",
-@@ -972,6 +1023,24 @@ const char *elf_hwcap2_str(uint32_t bit)
-     [__builtin_ctzll(ARM_HWCAP2_A64_SME_F16F16 )] = "smef16f16",
-     [__builtin_ctzll(ARM_HWCAP2_A64_MOPS       )] = "mops",
-     [__builtin_ctzll(ARM_HWCAP2_A64_HBC        )] = "hbc",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_SVE_B16B16 )] = "sveb16b16",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_LRCPC3     )] = "lrcpc3",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_LSE128     )] = "lse128",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_FPMR       )] = "fpmr",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_LUT        )] = "lut",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_FAMINMAX   )] = "faminmax",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_F8CVT      )] = "f8cvt",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_F8FMA      )] = "f8fma",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_F8DP4      )] = "f8dp4",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_F8DP2      )] = "f8dp2",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_F8E4M3     )] = "f8e4m3",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_F8E5M2     )] = "f8e5m2",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_SME_LUTV2  )] = "smelutv2",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_SME_F8F16  )] = "smef8f16",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_SME_F8F32  )] = "smef8f32",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_SME_SF8DP4 )] = "smesf8dp4",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_SME_SF8DP2 )] = "smesf8dp2",
-+    [__builtin_ctzll(ARM_HWCAP2_A64_POE        )] = "poe",
-     };
+     /*
+      * Identify which elf flavor we're processing.
+@@ -205,19 +205,24 @@ int main(int argc, char **argv)
+     fprintf(outf, "    .rt_sigreturn_ofs = 0x%x,\n", rt_sigreturn_addr);
+     fprintf(outf, "};\n");
  
-     return bit < ARRAY_SIZE(hwcap_str) ? hwcap_str[bit] : NULL;
+-    /*
+-     * Everything should have gone well.
+-     */
+-    if (fclose(outf)) {
+-        goto perror_outf;
++    ret = EXIT_SUCCESS;
++
++ cleanup:
++    free(buf);
++
++    if (outf && fclose(outf) != 0) {
++        ret = EXIT_FAILURE;
+     }
+-    return EXIT_SUCCESS;
++    if (inf && fclose(inf) != 0) {
++        ret = EXIT_FAILURE;
++    }
++    return ret;
+ 
+  perror_inf:
+     perror(inf_name);
+-    return EXIT_FAILURE;
++    goto cleanup;
+ 
+  perror_outf:
+     perror(outf_name);
+-    return EXIT_FAILURE;
++    goto cleanup;
+ }
 -- 
 2.43.0
 
