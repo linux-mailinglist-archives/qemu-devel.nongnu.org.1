@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA621AE5919
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 03:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C98AE5924
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 03:21:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTsJZ-0000YF-2Y; Mon, 23 Jun 2025 21:19:09 -0400
+	id 1uTsJn-0000ch-GQ; Mon, 23 Jun 2025 21:19:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uTsJW-0000XW-Is
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 21:19:06 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1uTsJk-0000c2-IR
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 21:19:20 -0400
+Received: from mail-qv1-xf35.google.com ([2607:f8b0:4864:20::f35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uTsJU-0005n9-4G
- for qemu-devel@nongnu.org; Mon, 23 Jun 2025 21:19:06 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-b31d8dd18cbso5219246a12.3
- for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 18:19:03 -0700 (PDT)
+ id 1uTsJf-0005qA-J5
+ for qemu-devel@nongnu.org; Mon, 23 Jun 2025 21:19:20 -0400
+Received: by mail-qv1-xf35.google.com with SMTP id
+ 6a1803df08f44-6fb0a05b56cso101321706d6.3
+ for <qemu-devel@nongnu.org>; Mon, 23 Jun 2025 18:19:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750727942; x=1751332742; darn=nongnu.org;
+ d=linaro.org; s=google; t=1750727954; x=1751332754; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pmYH1WddXU4bWR5PssEGHGwYJIjgJGXWoY5n/9icTwA=;
- b=jABvRRjUPvoRcVBIXJCZsjlBpEh3cip6XNjDZlXFO9wCPvLWcBkubny6fEMUwibjKx
- FuvtSuom75DyE4t7rI5Z+6jJqndXC5cn8GbILma89+HviKKPKoOBDLj8jQjbp3nKPYMn
- t2tM9Cro/09iEbxsg69YmoGRgHEfOhx7YArPWL4W5Nf15bR4CqIorWXURfsOurD/sMb5
- c2PrKDjojbLi+2x6o3/y2SoDjHtM44QgqwcVM3bSBzgyUEbjTJ2d9zhaiQdIbQ1x1NCM
- H8oVZnT3De/IcOSIlowlVCavV0pV97iliL21Ad5u3nAlLoPYA1oGabb86YnoDR7kcyLs
- vn+A==
+ bh=yuydYiohJjAYeAfLOI6h5c9kv5DQU5vOeyLn5vjXhmM=;
+ b=dscb4V1d5P4Bq9xhM2S3jvDQC4sq+8PxdUX42O72lC04pTs5oT/o059wxzmGqsC60P
+ uKnNfB/6j/14Z45jjJZps6AR1/wW24n98CZ8rIhMShAlsXhYfzL8nePRO1BWY2u59EI2
+ X8nR1gW/Ke2QCokshKsLY1R0/RinvFcRULgrFk2Nc62lMrgUVCmBNhheqS3I4kmRT4Zp
+ VSS04jGZRUqopphFWliEfoe0uOmm04A061tk0RAKWraSDhKxbL1q2OkU3+qQR5BlWVXT
+ 1hn+LOWC8LXprCMev8KrNcz1hUCmk4nFF+iWI/NwSQpOaHc2/gvzNAPZyqX8nMUzw8ot
+ OcNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750727942; x=1751332742;
+ d=1e100.net; s=20230601; t=1750727954; x=1751332754;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pmYH1WddXU4bWR5PssEGHGwYJIjgJGXWoY5n/9icTwA=;
- b=bU4cUAA+xmSlAM7fwNjUVNgm1LxVOWjy74jnL3NhR0r/K0yoj63dBit/g4rct9Jubg
- so9dxum8t3Q9UH3gV4iQOYbDlIbudmgNjcY7Hl8M9yycwwhfOi4ABkqTdRkraexKcbWI
- WmVinefV0vyYcAAqbdgP+PWzAEgFdjmKULe8noSxbsI3bPKM/oDp1QQ5KNJjF45OoKZR
- RhJ0gZYAcMryWroBwnPsdFOaX3S7HyOUdkjEz4sIkc+/OP0rEHoAf2ZARE9QsTTm+dXw
- 4/149s8AG6lvpPmUAhtwA3Wr5bLH0DDWWo/NLy3oeU9QHWSIdRuJrh0D3Fnlcsajn+8D
- pPlw==
-X-Gm-Message-State: AOJu0YzJBOjE4Ecpzlm2x4DvFT4EAQSk4ZN6DU2dEKPefQ8a6E7m3pj/
- JVrmmWjnkCdRA76whkOworGTiBF8J3IDEw80kXNGdX6Lamu9uojiMbBHUNjti94AkGwRGxD2Jr6
- wcUlxHPU=
-X-Gm-Gg: ASbGncvf0NwIbyFeovlVq44gmClrnmxIgRJI5q39q9767eMgMNaHMTODbqchYtAy255
- R7D1dwqqs+IsEWkNFa658KKkEsng1RupSp3X4Bd5vO24yjTZOOPamazSOUiQZxoVueiETP9yGmm
- XO8TlqP7RHsY773bnBBy55j/nGQufJ0Ax1N/vrbkI1AXRCPFfIOo11kyofMHh0+6vRkGm/eayV6
- HUnET/uB9wi6BSnCfK+85m4on0mIxpFM7UI9SpP6QKb1l9DZWLw0/BrAVfOSqgyvAMOugvO67Cd
- AqP0MEMhRxcNCI8qwkXQY+p8kdD1n8GTF5oxSEXH8zc8peA03oL2Yy8dBtJGrj6aia6tJw+yMu8
- 2R3/riXIbQAiN5QM0m2/mgREg3d8ARQk=
-X-Google-Smtp-Source: AGHT+IE/aInwLQGz5EHcQU364Yq/Cl7D+fqGANqaxk5sKmjJ3h44iQlIfPOWhgJzUPmSbqMsFv3A9w==
-X-Received: by 2002:a05:6a21:6d90:b0:21a:ede2:2ea3 with SMTP id
- adf61e73a8af0-22026da21ddmr21945563637.17.1750727942628; 
- Mon, 23 Jun 2025 18:19:02 -0700 (PDT)
+ bh=yuydYiohJjAYeAfLOI6h5c9kv5DQU5vOeyLn5vjXhmM=;
+ b=uisq5k2NLWcs1WrMjn65oZQtnGhLZmQi+y2XI/oJbP0S6FDyckuwp+foacP9z3jUsQ
+ 79abvSrwU2HNYxA0if3R7pHPPJ1HAwsW528AJ4d8PNKE20Erv0gPzG6/rQPaWnstpk+7
+ k10uX0r3KsM+552Ey12bElatnOSySKPGr0yC2kV7NDLrRwqBjx7hwPy/2v2fRKmDF4Nn
+ KHU2Kfp76JkdYvzQtxr/vgyi/KcMfy391TPLssS2qJjpX5nLlig+jVWKnRG+wDzaT0z6
+ NJrHvuWD8Y59zLKDQ/XW2Gumwkm2flXTYVSEpcA9OgoCq0V8qZG7ikWpPw8oQp06Vunl
+ dfRw==
+X-Gm-Message-State: AOJu0YyHnakDKGBamIQ8XoffQ2CQ/RTbz2fOBbngCW6StjyhE/TTwwxG
+ PSmXGTMRsh4TUs8ZOCDTtH+3vSWV9SGzoIEvCvkowYsYovcJa5v2oKE40ZIXWLvDbRXZTTacIld
+ RrzaTb0M=
+X-Gm-Gg: ASbGncvsEY+tSSj+9ymgPF62eAPqsWSej7tfPZfCzQX90nm8WReWarJ85WAMIJrJ9B8
+ oojJ2az5uCiOx/ADBvsdd6fHNuMq3kV6k0wOolTZQ7zEf+K5CND+soGMMX/b2vsTA1UDxMx4hap
+ +RSMgmGwd6wt7a2azrwBc/v7x2SDNSk7Yt+vjzNhcRdRIc8L28NvpQslEmPwm//sxSnH76eDVry
+ ntdbQC2CfC1ITogEn1y2aWCdmwy4H92l//vvL8qxSEYd5YNw7eQCPCL66sX8OtS35IdZ6xwcxwn
+ BfUEjg/dtyuCCY9oPxY7/d6QFu+xyZM9O5jo17YMz085Bfg9xqMHIXO60jqDtn2eRrbWPmMkP53
+ wL3SRTEeMVaVIdLyncKXQ
+X-Google-Smtp-Source: AGHT+IEWakOlwHPqgwj6Cxzo5fJvbaewbRy3QG3FJEsU5+ghanBRQHGaghDL8spyduW4Xw/apY9xng==
+X-Received: by 2002:a05:6a00:4f8c:b0:732:2484:e0ce with SMTP id
+ d2e1a72fcca58-7490da9cd1amr32981876b3a.17.1750727943274; 
+ Mon, 23 Jun 2025 18:19:03 -0700 (PDT)
 Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-749b5e08d28sm412080b3a.28.2025.06.23.18.19.02
@@ -66,16 +66,16 @@ Received: from stoup.. (174-21-67-243.tukw.qwest.net. [174.21.67.243])
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 03/11] tcg: Add dbase argument to expand_clr
-Date: Mon, 23 Jun 2025 18:18:51 -0700
-Message-ID: <20250624011859.112010-4-richard.henderson@linaro.org>
+Subject: [PULL 04/11] tcg: Add base arguments to check_overlap_[234]
+Date: Mon, 23 Jun 2025 18:18:52 -0700
+Message-ID: <20250624011859.112010-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250624011859.112010-1-richard.henderson@linaro.org>
 References: <20250624011859.112010-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,166 +101,160 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg-op-gvec.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ tcg/tcg-op-gvec.c | 61 ++++++++++++++++++++++++++++-------------------
+ 1 file changed, 36 insertions(+), 25 deletions(-)
 
 diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-index b100dd66ab..f5edadb992 100644
+index f5edadb992..0e6b42476e 100644
 --- a/tcg/tcg-op-gvec.c
 +++ b/tcg/tcg-op-gvec.c
-@@ -380,7 +380,7 @@ static inline bool check_size_impl(uint32_t oprsz, uint32_t lnsz)
-     return q <= MAX_UNROLL;
+@@ -57,30 +57,39 @@ static void check_size_align(uint32_t oprsz, uint32_t maxsz, uint32_t ofs)
+     tcg_debug_assert((ofs & max_align) == 0);
  }
  
--static void expand_clr(uint32_t dofs, uint32_t maxsz);
-+static void expand_clr(TCGv_ptr dbase, uint32_t dofs, uint32_t maxsz);
- 
- /* Duplicate C as per VECE.  */
- uint64_t (dup_const)(unsigned vece, uint64_t c)
-@@ -526,7 +526,7 @@ static void do_dup_store(TCGType type, TCGv_ptr dbase, uint32_t dofs,
-     }
- 
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(dbase, dofs + oprsz, maxsz - oprsz);
-     }
- }
- 
-@@ -704,14 +704,14 @@ static void do_dup(unsigned vece, TCGv_ptr dbase, uint32_t dofs,
- 
-  done:
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(dbase, dofs + oprsz, maxsz - oprsz);
-     }
- }
- 
- /* Likewise, but with zero.  */
--static void expand_clr(uint32_t dofs, uint32_t maxsz)
-+static void expand_clr(TCGv_ptr dbase, uint32_t dofs, uint32_t maxsz)
+-/* Verify vector overlap rules for two operands.  */
+-static void check_overlap_2(uint32_t d, uint32_t a, uint32_t s)
++/*
++ * Verify vector overlap rules for two operands.
++ * When dbase and abase are not the same pointer, we cannot check for
++ * overlap at compile-time, but the runtime restrictions remain.
++ */
++static void check_overlap_2(TCGv_ptr dbase, uint32_t d,
++                            TCGv_ptr abase, uint32_t a, uint32_t s)
  {
--    do_dup(MO_8, tcg_env, dofs, maxsz, maxsz, NULL, NULL, 0);
-+    do_dup(MO_8, dbase, dofs, maxsz, maxsz, NULL, NULL, 0);
+-    tcg_debug_assert(d == a || d + s <= a || a + s <= d);
++    tcg_debug_assert(dbase != abase || d == a || d + s <= a || a + s <= d);
  }
  
- /* Expand OPSZ bytes worth of two-operand operations using i32 elements.  */
-@@ -1256,7 +1256,7 @@ void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
-     tcg_swap_vecop_list(hold_list);
- 
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
+ /* Verify vector overlap rules for three operands.  */
+-static void check_overlap_3(uint32_t d, uint32_t a, uint32_t b, uint32_t s)
++static void check_overlap_3(TCGv_ptr dbase, uint32_t d,
++                            TCGv_ptr abase, uint32_t a,
++                            TCGv_ptr bbase, uint32_t b, uint32_t s)
+ {
+-    check_overlap_2(d, a, s);
+-    check_overlap_2(d, b, s);
+-    check_overlap_2(a, b, s);
++    check_overlap_2(dbase, d, abase, a, s);
++    check_overlap_2(dbase, d, bbase, b, s);
++    check_overlap_2(abase, a, bbase, b, s);
  }
  
-@@ -1325,7 +1325,7 @@ void tcg_gen_gvec_2i(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
-     tcg_swap_vecop_list(hold_list);
- 
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
+ /* Verify vector overlap rules for four operands.  */
+-static void check_overlap_4(uint32_t d, uint32_t a, uint32_t b,
+-                            uint32_t c, uint32_t s)
++static void check_overlap_4(TCGv_ptr dbase, uint32_t d,
++                            TCGv_ptr abase, uint32_t a,
++                            TCGv_ptr bbase, uint32_t b,
++                            TCGv_ptr cbase, uint32_t c, uint32_t s)
+ {
+-    check_overlap_2(d, a, s);
+-    check_overlap_2(d, b, s);
+-    check_overlap_2(d, c, s);
+-    check_overlap_2(a, b, s);
+-    check_overlap_2(a, c, s);
+-    check_overlap_2(b, c, s);
++    check_overlap_2(dbase, d, abase, a, s);
++    check_overlap_2(dbase, d, bbase, b, s);
++    check_overlap_2(dbase, d, cbase, c, s);
++    check_overlap_2(abase, a, bbase, b, s);
++    check_overlap_2(abase, a, cbase, c, s);
++    check_overlap_2(bbase, b, cbase, c, s);
  }
  
-@@ -1402,7 +1402,7 @@ void tcg_gen_gvec_2s(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
-     }
+ /* Create a descriptor from components.  */
+@@ -1206,7 +1215,7 @@ void tcg_gen_gvec_2(uint32_t dofs, uint32_t aofs,
+     uint32_t some;
  
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
- }
+     check_size_align(oprsz, maxsz, dofs | aofs);
+-    check_overlap_2(dofs, aofs, maxsz);
++    check_overlap_2(tcg_env, dofs, tcg_env, aofs, maxsz);
  
-@@ -1468,7 +1468,7 @@ void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
-     tcg_swap_vecop_list(hold_list);
+     type = 0;
+     if (g->fniv) {
+@@ -1270,7 +1279,7 @@ void tcg_gen_gvec_2i(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
+     uint32_t some;
  
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
- }
+     check_size_align(oprsz, maxsz, dofs | aofs);
+-    check_overlap_2(dofs, aofs, maxsz);
++    check_overlap_2(tcg_env, dofs, tcg_env, aofs, maxsz);
  
-@@ -1537,7 +1537,7 @@ void tcg_gen_gvec_3i(uint32_t dofs, uint32_t aofs, uint32_t bofs,
-     tcg_swap_vecop_list(hold_list);
+     type = 0;
+     if (g->fniv) {
+@@ -1336,7 +1345,7 @@ void tcg_gen_gvec_2s(uint32_t dofs, uint32_t aofs, uint32_t oprsz,
+     TCGType type;
  
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
- }
+     check_size_align(oprsz, maxsz, dofs | aofs);
+-    check_overlap_2(dofs, aofs, maxsz);
++    check_overlap_2(tcg_env, dofs, tcg_env, aofs, maxsz);
  
-@@ -1606,7 +1606,7 @@ void tcg_gen_gvec_4(uint32_t dofs, uint32_t aofs, uint32_t bofs, uint32_t cofs,
-     tcg_swap_vecop_list(hold_list);
+     type = 0;
+     if (g->fniv) {
+@@ -1416,7 +1425,7 @@ void tcg_gen_gvec_3(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+     uint32_t some;
  
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
- }
+     check_size_align(oprsz, maxsz, dofs | aofs | bofs);
+-    check_overlap_3(dofs, aofs, bofs, maxsz);
++    check_overlap_3(tcg_env, dofs, tcg_env, aofs, tcg_env, bofs, maxsz);
  
-@@ -1675,7 +1675,7 @@ void tcg_gen_gvec_4i(uint32_t dofs, uint32_t aofs, uint32_t bofs, uint32_t cofs,
-     tcg_swap_vecop_list(hold_list);
+     type = 0;
+     if (g->fniv) {
+@@ -1483,7 +1492,7 @@ void tcg_gen_gvec_3i(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+     uint32_t some;
  
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
- }
+     check_size_align(oprsz, maxsz, dofs | aofs | bofs);
+-    check_overlap_3(dofs, aofs, bofs, maxsz);
++    check_overlap_3(tcg_env, dofs, tcg_env, aofs, tcg_env, bofs, maxsz);
  
-@@ -1702,7 +1702,7 @@ void tcg_gen_gvec_mov(unsigned vece, uint32_t dofs, uint32_t aofs,
-     } else {
-         check_size_align(oprsz, maxsz, dofs);
-         if (oprsz < maxsz) {
--            expand_clr(dofs + oprsz, maxsz - oprsz);
-+            expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-         }
-     }
- }
-@@ -1780,7 +1780,7 @@ void tcg_gen_gvec_dup_mem(unsigned vece, uint32_t dofs, uint32_t aofs,
-             tcg_temp_free_i64(in1);
-         }
-         if (oprsz < maxsz) {
--            expand_clr(dofs + oprsz, maxsz - oprsz);
-+            expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-         }
-     } else if (vece == 5) {
-         /* 256-bit duplicate.  */
-@@ -1823,7 +1823,7 @@ void tcg_gen_gvec_dup_mem(unsigned vece, uint32_t dofs, uint32_t aofs,
-             }
-         }
-         if (oprsz < maxsz) {
--            expand_clr(dofs + oprsz, maxsz - oprsz);
-+            expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-         }
-     } else {
-         g_assert_not_reached();
-@@ -3256,7 +3256,7 @@ do_gvec_shifts(unsigned vece, uint32_t dofs, uint32_t aofs, TCGv_i32 shift,
+     type = 0;
+     if (g->fniv) {
+@@ -1551,7 +1560,8 @@ void tcg_gen_gvec_4(uint32_t dofs, uint32_t aofs, uint32_t bofs, uint32_t cofs,
+     uint32_t some;
  
-  clear_tail:
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
- }
+     check_size_align(oprsz, maxsz, dofs | aofs | bofs | cofs);
+-    check_overlap_4(dofs, aofs, bofs, cofs, maxsz);
++    check_overlap_4(tcg_env, dofs, tcg_env, aofs,
++                    tcg_env, bofs, tcg_env, cofs, maxsz);
  
-@@ -3835,7 +3835,7 @@ void tcg_gen_gvec_cmp(TCGCond cond, unsigned vece, uint32_t dofs,
-     tcg_swap_vecop_list(hold_list);
+     type = 0;
+     if (g->fniv) {
+@@ -1621,7 +1631,8 @@ void tcg_gen_gvec_4i(uint32_t dofs, uint32_t aofs, uint32_t bofs, uint32_t cofs,
+     uint32_t some;
  
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
- }
+     check_size_align(oprsz, maxsz, dofs | aofs | bofs | cofs);
+-    check_overlap_4(dofs, aofs, bofs, cofs, maxsz);
++    check_overlap_4(tcg_env, dofs, tcg_env, aofs,
++                    tcg_env, bofs, tcg_env, cofs, maxsz);
  
-@@ -3976,7 +3976,7 @@ void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
-     }
+     type = 0;
+     if (g->fniv) {
+@@ -3150,7 +3161,7 @@ do_gvec_shifts(unsigned vece, uint32_t dofs, uint32_t aofs, TCGv_i32 shift,
+     uint32_t some;
  
-     if (oprsz < maxsz) {
--        expand_clr(dofs + oprsz, maxsz - oprsz);
-+        expand_clr(tcg_env, dofs + oprsz, maxsz - oprsz);
-     }
- }
+     check_size_align(oprsz, maxsz, dofs | aofs);
+-    check_overlap_2(dofs, aofs, maxsz);
++    check_overlap_2(tcg_env, dofs, tcg_env, aofs, maxsz);
  
+     /* If the backend has a scalar expansion, great.  */
+     type = choose_vector_type(g->s_list, vece, oprsz, vece == MO_64);
+@@ -3770,7 +3781,7 @@ void tcg_gen_gvec_cmp(TCGCond cond, unsigned vece, uint32_t dofs,
+     uint32_t some;
+ 
+     check_size_align(oprsz, maxsz, dofs | aofs | bofs);
+-    check_overlap_3(dofs, aofs, bofs, maxsz);
++    check_overlap_3(tcg_env, dofs, tcg_env, aofs, tcg_env, bofs, maxsz);
+ 
+     if (cond == TCG_COND_NEVER || cond == TCG_COND_ALWAYS) {
+         do_dup(MO_8, tcg_env, dofs, oprsz, maxsz,
+@@ -3890,7 +3901,7 @@ void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
+     TCGType type;
+ 
+     check_size_align(oprsz, maxsz, dofs | aofs);
+-    check_overlap_2(dofs, aofs, maxsz);
++    check_overlap_2(tcg_env, dofs, tcg_env, aofs, maxsz);
+ 
+     if (cond == TCG_COND_NEVER || cond == TCG_COND_ALWAYS) {
+         do_dup(MO_8, tcg_env, dofs, oprsz, maxsz,
 -- 
 2.43.0
 
