@@ -2,63 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76817AE6899
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 16:28:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2A4AE68A7
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 16:29:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uU4bd-0006Bx-3q; Tue, 24 Jun 2025 10:26:37 -0400
+	id 1uU4dx-0007b0-1U; Tue, 24 Jun 2025 10:29:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uU4bZ-0006BN-Pn
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:26:34 -0400
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1uU4dp-0007ab-GP
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:28:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uU4bT-0004qN-EG
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:26:33 -0400
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1uU4dj-0005AB-Dr
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:28:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750775184;
+ s=mimecast20190719; t=1750775323;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=4+J65IVGtR1gDn8xQSIJp50m2P3zyAbtTN2UNQmCV3E=;
- b=HRjQRBsRrFbKfUOgcyKl1qmc6k7NtOyI9k2a9JVsKCjsfgAtzD7JNTe1AP3W00BK44sIRN
- 2kGg5o/LbmH/kLwpXhf7pUxczTpCWEYd2xwKFV8KUB1nAKNieqHhDRKvemvyGF7VwXNOjr
- 3S46zahP54Cycn2zwJcxAwrHLa14ZZQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-46-UXDKFL3OMPCDR_aQnMwZuw-1; Tue,
- 24 Jun 2025 10:26:22 -0400
-X-MC-Unique: UXDKFL3OMPCDR_aQnMwZuw-1
-X-Mimecast-MFC-AGG-ID: UXDKFL3OMPCDR_aQnMwZuw_1750775181
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3ECE71800368; Tue, 24 Jun 2025 14:26:21 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.122])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 878BB19560AF; Tue, 24 Jun 2025 14:26:20 +0000 (UTC)
-Date: Tue, 24 Jun 2025 10:26:19 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Tanish Desai <tanishdesai37@gmail.com>
-Cc: qemu-devel@nongnu.org, Mads Ynddal <mads@ynddal.dk>
-Subject: Re: [PATCH v2 3/3] tracetool: remove redundant event_get_state checks
-Message-ID: <20250624142619.GA5027@fedora>
-References: <20250620143720.3143-1-tanishdesai37@gmail.com>
- <20250620143720.3143-4-tanishdesai37@gmail.com>
+ bh=86er4zDBwoN4OLiniiAwU4qG2Nssjuqxo6burDew3l8=;
+ b=fp+rxQOltw5yF15/HJ92uA/EG7Br/2dMzFxuiE7OXQBYyv7AbA/NfK3lCbUsQu5QE0tGzt
+ TsLpBrN9CZNN12xyNCk9ZsD2L78v2nwJ2QfZNzdSYiSgdnDkJ7xMkvJUrnLwgLBCYntQ8L
+ 8yN+N8x0WZB2cL/Q2MNOYcSjeiFmFX8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-232-yInpKLo4PWGq9m-qyM9JDQ-1; Tue, 24 Jun 2025 10:28:42 -0400
+X-MC-Unique: yInpKLo4PWGq9m-qyM9JDQ-1
+X-Mimecast-MFC-AGG-ID: yInpKLo4PWGq9m-qyM9JDQ_1750775321
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45311704cdbso37307185e9.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 07:28:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750775321; x=1751380121;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=86er4zDBwoN4OLiniiAwU4qG2Nssjuqxo6burDew3l8=;
+ b=RRNxD9sfWS5zXoRW+ZIqlSABJGdofLO+4AVVv8fgU/2uc8NEiiqn7YyH8N58CoIyaf
+ 1M8h2ICrYj+OvluF+yZY74WA7CP86TGOKJ6A55ydaVSIv69EwrMxmHBr242GkpCtTfZo
+ tO7Yup8zyxvodumyoFUxtk+/ZbUqlfpHzAP7B7Jt7eHTtRf6o5pOlKq8L8/058HTkQHJ
+ 2BgGIEIkAjMAuGBGmp70cz/+PgS2nLbOHjNqCtotWIIfwLjcpu/iNVDbq+Tk9de9JK8R
+ n1vKuHghRoJ4fp3i0ANNLI21MCU18rcWq1FBxqeNKurZpmnSLxHvRja903TRaNYJQ50J
+ B3xQ==
+X-Gm-Message-State: AOJu0YyTOWszbznobkbw7qxKvA90UxN4wAktnomDKcjYhvvd1nElwHjk
+ cy4Dl8kmen16QwGioj4TJnmnbNkhQHmqBycW/nx2NR2ii88tA05hzlArPmi4NCLjMoSBrdmaLMO
+ Xnm71yDeDixRoPwNd/WGXbLVpPchoOiimbGQhHpYWo4mFGpLA4eFU3MVE
+X-Gm-Gg: ASbGnctdDbvMk7hPsDCHgID8rdoCvgAVr1qVAtB5vMkjOQGKAiOuLiZJJUKg6i78Lyb
+ DCNVlGiwFELt+PgJVEb5zSg4B+xeI6wgs5N2uV/YO3mwkXPy7Ss2jRcONKD6foA3PVGPomgVxh+
+ fX48WGwruVD1xTreZXqTEr+ZkZQX23Y0uALxVBxkwkTud5GXZIXKa1rgS9MxWQwUpOOEPsfAtKy
+ TnPDVxJsr5/nXj3IGsrS258VJBC3XwjOvDCrknlB2b1fCXkpdAsyjkKA8TRf5xSeJShyjnjFG2m
+ Mcb4dRSTH6E=
+X-Received: by 2002:a05:6000:4809:b0:3a4:f7ae:77ca with SMTP id
+ ffacd0b85a97d-3a6d128a60bmr15184589f8f.3.1750775320884; 
+ Tue, 24 Jun 2025 07:28:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHA7NSZZMFwCZKH49DbCPrDJqZTOod0mJQN98OTXGt3BGOgiWFBpiAr1bdNm9ZKkoyzg3EVuw==
+X-Received: by 2002:a05:6000:4809:b0:3a4:f7ae:77ca with SMTP id
+ ffacd0b85a97d-3a6d128a60bmr15184563f8f.3.1750775320514; 
+ Tue, 24 Jun 2025 07:28:40 -0700 (PDT)
+Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a6e80f279dsm2147404f8f.64.2025.06.24.07.28.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Jun 2025 07:28:39 -0700 (PDT)
+Date: Tue, 24 Jun 2025 16:28:37 +0200
+From: Juraj Marcin <jmarcin@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Mario Casquero <mcasquer@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, "Dr . David Alan Gilbert" <dave@treblig.org>, 
+ Alexey Perevalov <a.perevalov@samsung.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v3 02/11] migration/hmp: Fix postcopy-blocktime per-vCPU
+ results
+Message-ID: <3nscucdwhilkjdal2taucpn4mikizh2x5wqym6rhb2jai2kwqc@r7j6re4dtv5p>
+References: <20250613140801.474264-1-peterx@redhat.com>
+ <20250613140801.474264-3-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="jz22eiZSklO55hFA"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250620143720.3143-4-tanishdesai37@gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+In-Reply-To: <20250613140801.474264-3-peterx@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,7 +92,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,44 +108,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 2025-06-13 10:07, Peter Xu wrote:
+> Unfortunately, it was never correctly shown..
+> 
+> This is only found when I started to look into making the blocktime feature
+> more useful (so as to avoid using bpftrace, even though I'm not sure which
+> one will be harder to use..).
+> 
+> So the old dump would look like this:
+> 
+>   Postcopy vCPU Blocktime: 0-1,4,10,21,33,46,48,59
+> 
+> Even though there're actually 40 vcpus, and the string will merge same
+> elements and also sort them.
+> 
+> To fix it, simply loop over the uint32List manually.  Now it looks like:
+> 
+>   Postcopy vCPU Blocktime (ms):
+>    [15, 0, 0, 43, 29, 34, 36, 29, 37, 41,
+>     33, 37, 45, 52, 50, 38, 40, 37, 40, 49,
+>     40, 35, 35, 35, 81, 19, 18, 19, 18, 30,
+>     22, 3, 0, 0, 0, 0, 0, 0, 0, 0]
+> 
+> Cc: Dr. David Alan Gilbert <dave@treblig.org>
+> Cc: Alexey Perevalov <a.perevalov@samsung.com>
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Tested-by: Mario Casquero <mcasquer@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
 
---jz22eiZSklO55hFA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Fri, Jun 20, 2025 at 02:37:20PM +0000, Tanish Desai wrote:
-> diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/backend/ftrace.py
-> index baed2ae61c..2d6d608add 100644
-> --- a/scripts/tracetool/backend/ftrace.py
-> +++ b/scripts/tracetool/backend/ftrace.py
-> @@ -34,18 +34,15 @@ def generate_h(event, group):
->          '        char ftrace_buf[MAX_TRACE_STRLEN];',
->          '        int unused __attribute__ ((unused));',
->          '        int trlen;',
-> -        '        if (trace_event_get_state(%(event_id)s)) {',
->          '#line %(event_lineno)d "%(event_filename)s"',
->          '            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,',
->          '                             "%(name)s " %(fmt)s "\\n" %(argnames)s);',
-
-Please unindent lines now that "if (trace_event_get_state(...)) {" is
-gone and deeper indentation is not necessary anymore. There are more
-instances below in this patch.
-
---jz22eiZSklO55hFA
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhatYoACgkQnKSrs4Gr
-c8hy3wf/Yq0fwEGsGg7rDk6e59IEajmL9BJB6Cs7HswmjiDqFv7DH81gDG88R7vM
-8QfchUkIr6wFPvjXKN5uPskVsUtryE0vNo7zgNuOjn7Y8XKsPP3L7gMRVdCkwbJf
-vt+Z7Ip4WpmGk4TZ3QNA6XWAXFWkWIUOB25RtgIoiwG8N7/OGzRC/05HxY/9qZ56
-FubJq2urMKbIEwLQd98kMbO56dzLV1d/3So7ZRF5onq5ysUY0fw1aNwx0q9qO8Km
-ctKZHolHdJobG9njM0YKWHp/fiVSoFro5RxV2wMy7wwF4qvSUaxEn0r3q6MrqNBb
-4TCr/4WCE8CMk9s8rig8oBWH8uyeow==
-=pdnv
------END PGP SIGNATURE-----
-
---jz22eiZSklO55hFA--
+Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
 
 
