@@ -2,188 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDBAAE60A6
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 11:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BC5AE60B9
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 11:21:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTzoT-0005ZF-5O; Tue, 24 Jun 2025 05:19:33 -0400
+	id 1uTzqF-0006s3-4b; Tue, 24 Jun 2025 05:21:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1uTzoL-0005XW-L2
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 05:19:25 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uTzqD-0006rt-7h
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 05:21:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1uTzoJ-0007Xy-Ca
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 05:19:25 -0400
-Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55O4Zcfe020135;
- Tue, 24 Jun 2025 02:19:18 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=PgbXBIb+++T0ZNMJL8WruanDkNWubquG3PregCYkc
- vA=; b=nb4sQwCqG2K7aMdNY5LSze/nzCG9a74Y4pQbi2753bFjQO169WUFhUY4E
- TqMWkwEbpyyc4/e0V5U6kUrEufCoEmEhcuhhX70K3y6LV9Ps9Wkif465cAKck/bc
- SopSO5CtQ+t0uFyhJiKctfHj0+Kduo/gkx8G5knb6Y6tkH2B4f/6PjkNPVYT6OUS
- jHC6p8RUKcpItLgBPXloFXw49I6IT0WzI4mtwt5JXMr7XMs5PyKy5HwIHxKpwTOR
- hkeGtMYBkBHJSp3B5o0t47MSVSZhnLrDSY2ygoiRcKJMUHYC0tgfnO7LWRzFWi8F
- ET165isvohVVOg6AGFjJeukilufjQ==
-Received: from nam12-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2139.outbound.protection.outlook.com [40.107.244.139])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 47dva0dcuk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Jun 2025 02:19:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eLXs+cd/7Za6zqMD7S9a/Wna+xE+BOcaWmVL0oVyLw5ZzzMv++apFUBzG/KQE1Fle73NSF1loi5R8rLBVDJWYeSdi96dxXRvEyiL1UvEo/Ty4rwywb1isMZMg9ZBN3YuRT1OAUvm3hbEf9u6K6ZuvQTYtH8zI4DN/lCAbHZPembp/l9QRGnz+fhhj9mHh125t0fjxn946jT837NIlXavOiwaF04zGzrlhjlnT9Vi/CRZ2AYTAgQh4nsA1Pyc76m0LtbydMOclPp09fls/m7/Wi+9ihNy+neF3rJp7fp2/mlONxrzaWSir60kJR4gYrCWaj3LtRqEtq2wRgzPkx8Khw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lP5ZCYu5AUTHUq8IlovqFtfPGc3k/XcO+YOtMeugHXs=;
- b=TrnHlqiPNYzqKQH8qw+xwwpK9yCCO6okrBhLvXTN5MM3CYQVOt4QPJ5Sah+TSVokOY5QFUsV85cp8WBzAGp8T6I3r9BQXLG9TPTVHBBqHIxs7DmJ05L61pBE2Z8qg3ba7wKyiFpaaeQ4ERdtHLorHP/OUZYFbS/n8QwKyeYZy7y8AXjF1P79q5SqdiPcl9sSfjaQZHmWt5ypNPQc5LiS7hMc/t88CesYuJyqG2s1hR1gCW7VfVhlMwTtK4k+Y2wF8qlXDn2u1AYDWqYYsMPkuULixRAxYJm4iw6c9DBwjwTpMU2Dh737nkMViSFWZ/Ir0smTi+wwULG6Gh0r80NN4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lP5ZCYu5AUTHUq8IlovqFtfPGc3k/XcO+YOtMeugHXs=;
- b=tIWlkJBPrMRHiduKo5pqKbWmgYGFPVwXh9QIrDdMIhu3NDINeHWrDj223mY3rVhVv/llRmrpCks3Hhbk8eitln+3AFnDmJ5kgGZd63swlBgJOmQUhk0U8JBt/2ipuxR+FYBOQ3gAsFDac8Gi9f5iH0XzAraGaNVNQFePUbyXOV5BZb5nJMlX5uAASDwUh7Wmwi3K7Lkx6kHNvcgcvSo02Y0EbE8D2ZJZeDrJQmtZtdoo+2179FfirHRnkCbd1OFuwcWJJ1OpksMKwmScn4jz8qtYhwASHewR6CjK+lEokzG99lonJyzUA5+YzLTfxiFODQQAtWtPL0vv8FcQOo8FCA==
-Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
- by PH0PR02MB7573.namprd02.prod.outlook.com (2603:10b6:510:4e::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.29; Tue, 24 Jun
- 2025 09:19:15 +0000
-Received: from CH2PR02MB6760.namprd02.prod.outlook.com
- ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
- ([fe80::fd77:ea65:a159:ef51%2]) with mapi id 15.20.8880.015; Tue, 24 Jun 2025
- 09:19:15 +0000
-Date: Tue, 24 Jun 2025 10:19:11 +0100
-From: John Levon <john.levon@nutanix.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>
-Subject: Re: [PATCH] vfio: add license tag to some files
-Message-ID: <aFptjwzxKjvwYUgP@lent>
-References: <20250623093053.1495509-1-john.levon@nutanix.com>
- <78fc7bed-75cb-4d9a-b6e2-86b95319bcfa@redhat.com>
- <aFpqaC8HGEK5A7dV@redhat.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aFpqaC8HGEK5A7dV@redhat.com>
-X-Url: http://www.movementarian.org/
-X-ClientProxiedBy: AM4PR05CA0011.eurprd05.prod.outlook.com (2603:10a6:205::24)
- To CH2PR02MB6760.namprd02.prod.outlook.com
- (2603:10b6:610:7f::9)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uTzqB-00082m-MF
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 05:21:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750756878;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=dIdsKlja9YzbaYLsd1yetLx2VV7bJ52NM+kuOpVcSYk=;
+ b=CZ3ccQS6nJzbiSBp34ud0+y+RU8I6jBMNHDfgVgC3al3BzR3QSEVdJoq/pztOeQ4n7qku6
+ ZCBYzrdTXf5YDUo8S3lP0Cqu09vWQJNhtEeEg0sMxO/aUSA5pTQooJPwKYe3R0viiR80n3
+ eKod84/ZUTqADWvpfE2A+U3OB2En4wk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-304--FtvsQHtP02DGivd6wiw-A-1; Tue, 24 Jun 2025 05:21:16 -0400
+X-MC-Unique: -FtvsQHtP02DGivd6wiw-A-1
+X-Mimecast-MFC-AGG-ID: -FtvsQHtP02DGivd6wiw-A_1750756875
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a50049f8eeso125696f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 02:21:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750756875; x=1751361675;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dIdsKlja9YzbaYLsd1yetLx2VV7bJ52NM+kuOpVcSYk=;
+ b=DqY9rvigd9heI6qRCbcDwauBuWPulhi9eyE7pWv/GdFcPSgKFNcc1WyNbVOcTq2jkf
+ HpFTA7QhFsOZeGX9SC9JWTyLMqMdT3DT6cW697ZS9cegzLJI2UzxG26EGMaVv6UjVruT
+ K8BrI7uQ591cUNX47Pu2cX98oV461nj9fFAHTJ3jzSVgc4vqEPdJGrxIpDlZR7ruAnln
+ yQpQALHj1BL05sz9XMwTasH+QUeuEg890LNRaFedCPDL9t/DMDRHKtp7np1p60sWgym5
+ nsqgJcIZYDxzlybt0EsqC5zscW9sAhGaXHngGUGLubNZBgl1ubjm6Iy52Vku2XSuBngB
+ BJGA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVycTZgpgn2AStksIqE5cCX4qNlUn7562quA6WZAD9JfCWUQGOYlUJzyfUVrE6SBN+okm+Hdi20fnBs@nongnu.org
+X-Gm-Message-State: AOJu0Yxr6R8MbhHScICBA+UQYepCWBSIpWG/yknwrOdYJ9KsEzJZAYx1
+ tsoaOWj4KaVMnUxAbS/JvhPCJwRQtfGBREIJUTIVt4zpIOSSb16ZJsVcllXoV3Tmwp6ZQweOLaJ
+ UtepAwgIiPO36I0I1kDp7+gkpMi8QpQX6aCO8R3thznPcTaG96WOusc+F
+X-Gm-Gg: ASbGncuhe7R1s51VMkYxkMZ2MC8TnxJ3nRSXgm/UyHo4j2IwRuIWXyUvHmf9H+cx1WN
+ mHFBnm+lZdcniIWhDwj/3W4BTy0n4kc2IuyvWH/Y7Drk0awO0ZRxeL9g0Is/6+kpiD666T+8VYI
+ Aq0aAfM0jwWAsR6NK8dT7Vc78Xv5fNQGlWyqIBcCuEmRWuoRLrAquCjNKpriN7MVTB9xiNKAkVs
+ zcXNni9lKxs8FnoMOfBd7TOImkkev6Lq2TdTdeNjfcfORHJindFz9GcV5zuJP6pEslQa2frANfS
+ oHmFBVdf9akRNrhSimSmGxYTKwh8nbE4tq1t7OI7qzq0kqMZyV8weJIcbdvt
+X-Received: by 2002:a05:6000:288d:b0:3a4:eec5:443d with SMTP id
+ ffacd0b85a97d-3a6d12d8f21mr12380771f8f.29.1750756875027; 
+ Tue, 24 Jun 2025 02:21:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFuCqlkErXSy2TOyeEuigR9JtweWc8cCzweUVBYpXbe9pqH1yid7CuN4mUIkyhT/v9UBuA1aw==
+X-Received: by 2002:a05:6000:288d:b0:3a4:eec5:443d with SMTP id
+ ffacd0b85a97d-3a6d12d8f21mr12380739f8f.29.1750756874574; 
+ Tue, 24 Jun 2025 02:21:14 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a6e80f2b8fsm1440743f8f.59.2025.06.24.02.21.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 24 Jun 2025 02:21:14 -0700 (PDT)
+Message-ID: <afc6b039-4569-460f-a15e-ac000bd44d5f@redhat.com>
+Date: Tue, 24 Jun 2025 11:21:13 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|PH0PR02MB7573:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb639b85-b17c-44e3-f7eb-08ddb3003051
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?YuCMgc/3k1USNC1gAS4Y1Fc5EoSc4++08CgYNhsI3bHuuy8c6/tcPVLW7U?=
- =?iso-8859-1?Q?r+H9vrtQKHkQ8DtVDThAqY4h6YtGyK1lP7oa648jbHaTc5N2q4kjbtsng4?=
- =?iso-8859-1?Q?KVnVsVMNHaM0D+uTO8sMTNncsWtMhNXjnRR2hGTWGdfTxHIiRjbbtDAflq?=
- =?iso-8859-1?Q?KKz1V7O8ZF2gYphV3qYO0euBJkxFW2k2WyOBTOuZevZnk+EZlJWazyDxJz?=
- =?iso-8859-1?Q?cxf1VvkuPpIreiBzFyyjbCaHc7gVj0wwGGtu7wKocKLKR3swoEcyh9Kbf3?=
- =?iso-8859-1?Q?2gFv5hA9Bxve4VoNsGbZ9TEfuTmJXAaL1JwvXESVXAdWO8zc4nm3lr8SpS?=
- =?iso-8859-1?Q?8DSPvXnsiZME576vTf/oXd6beUz3KPjKr+94MD5zJc1QBRqnKFql+wycaf?=
- =?iso-8859-1?Q?ZwFDnc62SiQWPrFDwTidLevipJDT3AzrdnOD6t0Yto8YNsgXXV3hNbD72/?=
- =?iso-8859-1?Q?3+Lq2x6Lgv9L4MNuFRiZoKmuwF4vHMAeA3ivNaj2I0aXAhBlFlTb3q0gIP?=
- =?iso-8859-1?Q?R+VwTxNggvb9OVdT1eLILLPiNggr1MxBAq0Tx5UOMYyhw0YXJDGcquvlM5?=
- =?iso-8859-1?Q?YpoJ6trP8NcseKpNT1oOhEye7eukINUlTOv8SJFdRCFZwFGQOwaQD8iyyb?=
- =?iso-8859-1?Q?DOeeI41H1/NldB+UQDRnj+P8tmjn0KYlfNv7msnmeI4vsDuo4HJ3+UDy+E?=
- =?iso-8859-1?Q?ogc8FYjc4fxq8IQoCQOVF+k+ZboyrqAOeNgPtoZUUFqBu1WwT6Pt/T4Lrt?=
- =?iso-8859-1?Q?aQkwqU6UZUt9q2DGvEztHcqlsSaxwVoTTdyx23Vfx//w1hw1eDAgqhrcZr?=
- =?iso-8859-1?Q?yTWsBq67gmlo0jnlk//zCb4Ux6lp0awsnXbWPxgMTttwEmzrPcxJX01XUE?=
- =?iso-8859-1?Q?qVPMTJA9I++Wf2YQaybVjVtJ1H9u7xfriiOt97VOGVUQbbSXYPlsiNzEWi?=
- =?iso-8859-1?Q?okIlRNM0cmEqh0+cISW6nhcRo5FIIDszidC1JJ9pXf9a3ezuYz6ZlbAVdd?=
- =?iso-8859-1?Q?P0KZ9KMydi76fUDbIenkk1oILdZrMCV5VxuqX5N5XZ4Kn5hmXoaqsuGmYw?=
- =?iso-8859-1?Q?+9yk1972AWljwuA8uSanVBpcWVu8s6jsJPBKreprsKwStwIkqpeb8mbTfJ?=
- =?iso-8859-1?Q?1sSC9QkEiwrjIQQGX4ASbO+NGcWp3TLyJb9+tkGs1TE3znwAT5+Y5BRWX1?=
- =?iso-8859-1?Q?Fv+8OhpxqAss0xy+IppWTMgY9trMMBEfLQfvKcyPEGexYhw9DcaR6f0aob?=
- =?iso-8859-1?Q?mQzlxo2tUt5Y1eEHAg3/I+NgpnQjqkzBK6MeZdLg5Yf1Qi1qDKgKZBahaS?=
- =?iso-8859-1?Q?qP2Gi54PS6kEYg1Ix+w1adlCo2ChWw8YAsQiVXIY86i5/au7Ud6CPnwvHS?=
- =?iso-8859-1?Q?X2jzVDcu2rpEhX+59tCRriroxAxEPZI0hfled42dW+4IpZrdecxjUuXt4f?=
- =?iso-8859-1?Q?hfixiaJdHTScJir/7Wtki3QBFf/uNe5SHLh6Eoag2NbTqKWGhKJbkan0A3?=
- =?iso-8859-1?Q?E=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?IQOvC+Ofvs66WeR7vzGHGbK0jY88z4CH5+WzAMpLdm7nH+YnL/ji9FA6jy?=
- =?iso-8859-1?Q?qZenuOigvb8YxbZIxv49UV9Upu9/n1fm3PzzxxiISkbNY4yyLo5MBm73EA?=
- =?iso-8859-1?Q?oGXPoQSSlWT/pDzZ5KeT8c/Wyfo3D9xorrABaM62v6m/rrVLXAZafTGEBC?=
- =?iso-8859-1?Q?zwRSUzkbOmGKETeww7NSdIbrfn6wuahbl/rrPETszm3prAwheYU2ExqucK?=
- =?iso-8859-1?Q?n5msaRDGzWeQGlhMOZjLqxWEArabM3v9Rf16ehYNzUOm1Wf6e8SYyP34XB?=
- =?iso-8859-1?Q?oHdThC6X46wXoR2tf0Fppb0khFUKpI17QLnQg4X6eBJnI353vuAAU5BPij?=
- =?iso-8859-1?Q?ytOyKBUo1usSSRsegzbVOS0sz1/rlmJ70KVd4qYUcYnWEGGlXnUGV8bBww?=
- =?iso-8859-1?Q?HI27n3jIBHifHAoPuxf3djFFXqMUdos5/5XNwdWqgjCSJA/QK/5+jF35xp?=
- =?iso-8859-1?Q?eHDlT6QBZR5/ZcqzcX7cySCgQt8D0sHkJrp/jaJNX4j3IQkeL/Qc8h/zcw?=
- =?iso-8859-1?Q?tyiqfqdY0xDInF+DMcaWMyjdR0RgUHdlDi4Ta7VikOhny20h4lFdvx8PDm?=
- =?iso-8859-1?Q?z/YT/2UbciNy+7wqoIneA4r8WHs87BPvTFlbcPgvFHbOjwXP45yDm5fr0R?=
- =?iso-8859-1?Q?VR2dSe+O2uKMEcQcfMmybncSCxiszg948b5xiRmh3802T30vKKJKixLC1H?=
- =?iso-8859-1?Q?k2MZxI8Is0kQfrRNJRYvmUVQQeRRUOpdCFh98egQdjJRCjuuIewfd+cFjn?=
- =?iso-8859-1?Q?qXvuMIXKCGLQ7XYSutxEO/Iwlk3RhySdpxo+AX20Q9ca2jyZaa+X/0rcSZ?=
- =?iso-8859-1?Q?O9iMSCCdYncobTV0XrRnsyBkUDtCRcyvQDE9gO0ft4vgWvObFZFEyKOFLT?=
- =?iso-8859-1?Q?G2Sa3n+JQzkhG238XAsQWfSuWxxbQvmJfULBO9BaB50YEJ3+9gMN7bZghn?=
- =?iso-8859-1?Q?teUbrL/SGNQW5T2cTG7y5GTCXSUsP+L+rIRmdgVwVwZN13ZwYo5cHar4u7?=
- =?iso-8859-1?Q?O+cM1eSz+mrBYnqzjoNJ1O+j39vvotay8V00kq0I2bjwfMMAPbYS/5hK4J?=
- =?iso-8859-1?Q?rpiL6aTNCHhOGlQ7dtEbHiWcTxbfFikz+f0X5zv+yWgu4v+JR8m+iajg11?=
- =?iso-8859-1?Q?x3Mvk+l27IZ+mo6knr0TH2hjaTxGuKY3RVgdgLpdEK58J18tg9+DgVa8+p?=
- =?iso-8859-1?Q?bvrH1gGByQTvkEIF8WGaFqRvic6HcERv0kM65RR1B8DFNwNwwJTS+aw0Ev?=
- =?iso-8859-1?Q?Ylc5uJFIRUkC60jJVhoJHzH3Ta+d4HaMqAK0+9JxpYXV24AqP0fdqkQy7P?=
- =?iso-8859-1?Q?045H44wwZmt1gdELEF+PNukl4QYcBZdLIphQSa/g3oYvE6JITxbZiPTk1b?=
- =?iso-8859-1?Q?rbor1W/assru4RfIqw0bhl2K/WPaUSUSLPk4dsoMIjeZOBSwL7oqd1r/0U?=
- =?iso-8859-1?Q?4FDBrhON9nSnDHcQ7uf2pL6LjHFjk1qC3gdk6PuA9CRVwSVfu6uqEDHqqz?=
- =?iso-8859-1?Q?TSIH6rxXKEBOMPXBjrW/TWseFS4tFGkmJXZ2iyb4ZzW0GRTbBFyFJGTx2G?=
- =?iso-8859-1?Q?a7viwPPW2WwmukL4kUStfcxvfbQIUXJHm8+wVZJN89GH/vTx7b8qNSN2MC?=
- =?iso-8859-1?Q?59pjv7OiVnsL52JsEdY/dZ1KRdc4OrYbuO?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb639b85-b17c-44e3-f7eb-08ddb3003051
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 09:19:15.1532 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oNrPNJQ2lvCiuUmpmsj769z0W4FRpUknHxnrcPWZdDlxyUPxPr/piOWSV+9M1P3E+/+D9lZi85aynYg/IlTV9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB7573
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI0MDA3OSBTYWx0ZWRfXzwqUBZE1AjlG
- oz9qm71nQeBIlCGHzmBn7Kjl/1TiK03/oL29GvYsecwyeomoN5ktMC3XRDphtdxr6bE1Z0WBiQA
- WjN8kSJpD1cf1Y5446/6YdzxsH00P/ODhOYW2O2uiIDcjjSiq9Qm4du2j/br/3ShJdCuavmh+Sg
- fAENvkISTrwedry8xGndzw8H0Q7GBXsOFgvA87EtppFkkLBY6R5uxMg89wfsHX6Cy4WapJ/uIE1
- A1BNOiFdeVSX4gQkW3f0Po+cWpf+buo1SsaKPFvJs6LsHP03I+GdMRIBhPAn+4EeM9WD3TjcOud
- pjZlTOUYm51elQWYoojg42wBviL5YAWtf/7G0M5tNm9PcBdbV4feiQI/ElUWwepxh3FYcqAlmK+
- UPpJEappPUl6jU/GlXIUFt/+9rIlrGZolX8CwqXta6UAp4W34xtN/21YrRHm5hnXvgJYNqby
-X-Proofpoint-GUID: j6ItHSVZjS9kfAjEK06Ng8H2o9urmJhd
-X-Authority-Analysis: v=2.4 cv=Qohe3Uyd c=1 sm=1 tr=0 ts=685a6d95 cx=c_pps
- a=6qud4lu4mg9qS+0J/69KWA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=6IFa9wvqVegA:10 a=0kUYKlekyDsA:10
- a=64Cc0HZtAAAA:8 a=s5MZ7A6MmFmyC_u5YEcA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
-X-Proofpoint-ORIG-GUID: j6ItHSVZjS9kfAjEK06Ng8H2o9urmJhd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-24_03,2025-06-23_07,2025-03-28_01
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68;
- envelope-from=john.levon@nutanix.com; helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] vfio/container: fails mdev hotplug if add migration
+ blocker failed
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, eric.auger@redhat.com,
+ steven.sistare@oracle.com, chao.p.peng@intel.com
+References: <20250623102235.94877-1-zhenzhong.duan@intel.com>
+ <20250623102235.94877-3-zhenzhong.duan@intel.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250623102235.94877-3-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -199,31 +155,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 24, 2025 at 10:05:44AM +0100, Daniel P. Berrangé wrote:
+On 6/23/25 12:22, Zhenzhong Duan wrote:
+> It's aggressive to abort a running QEMU process when hotplug a mdev
+> and it fails migration blocker adding.
+> 
+> Fix by just failing mdev hotplug itself.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   hw/vfio/container.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 2853f6f08b..68b4fdb401 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -992,12 +992,16 @@ static bool vfio_legacy_attach_device(const char *name, VFIODevice *vbasedev,
+>       if (vbasedev->mdev) {
+>           error_setg(&vbasedev->cpr.mdev_blocker,
+>                      "CPR does not support vfio mdev %s", vbasedev->name);
+> -        migrate_add_blocker_modes(&vbasedev->cpr.mdev_blocker, &error_fatal,
+> -                                  MIG_MODE_CPR_TRANSFER, -1);
+> +        if (migrate_add_blocker_modes(&vbasedev->cpr.mdev_blocker, errp,
+> +                                      MIG_MODE_CPR_TRANSFER, -1)) {
 
-> On Tue, Jun 24, 2025 at 10:34:40AM +0200, Cédric Le Goater wrote:
-> > + Daniel
-> > 
-> > On 6/23/25 11:30, John Levon wrote:
-> > > Add SPDX-License-Identifier to some files missing it in hw/vfio/.
-> > > 
-> > > Signed-off-by: John Levon <john.levon@nutanix.com>
-> > > ---
-> > >   hw/vfio/trace.h      | 3 +++
-> > >   hw/vfio/Kconfig      | 2 ++
-> > >   hw/vfio/meson.build  | 2 ++
-> > >   hw/vfio/trace-events | 2 ++
-> > >   4 files changed, 9 insertions(+)
-> > 
-> > Daniel, What would be our position on such files ?
+migrate_add_blocker_modes() returns -errno. Testing with '< 0' would be
+better.
 
-> TL;DR: this patch looks reasonable, and we might as well take it, but
-> there is no expectation that people need to extend this work across the
-> code tree unless they love doing historical code tracing :-)
 
-I was required to send this patch, as Cédric wanted the same files in
-hw/vfio-user/ to have the identifier.
+Thanks,
 
-thanks
-john
+C.
+
+
+
+> +            goto hiod_unref_exit;
+> +        }
+>       }
+>   
+>       return true;
+>   
+> +hiod_unref_exit:
+> +    object_unref(vbasedev->hiod);
+>   device_put_exit:
+>       vfio_device_put(vbasedev);
+>   group_put_exit:
+
 
