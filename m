@@ -2,134 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8037BAE5F88
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 10:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7774AE5F92
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 10:38:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTz7L-0004g0-I8; Tue, 24 Jun 2025 04:34:59 -0400
+	id 1uTz9x-000641-6M; Tue, 24 Jun 2025 04:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uTz7J-0004fq-3k
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 04:34:57 -0400
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1uTz9d-00062V-6E
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 04:37:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uTz7D-0006TQ-2Y
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 04:34:56 -0400
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1uTz9b-0006zp-BJ
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 04:37:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750754087;
+ s=mimecast20190719; t=1750754237;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=zhi7gKDyEXBFIyLUoXiDoNyk7C8y4NcDTzWfXoLTuys=;
- b=WV0D1mhXcwLX9DQIfHefNePhb+LXR0TUXUpSyxJ/Ml2Dogqll2PaRrSiZo55o7ug77aT1Y
- IxnnTjQdxxy6oCgyxhRdi/fR0Uux1M/58BvEyWq+WlneepHFPumrLzXOtwLxCtaV9dCxjY
- e61qvWbTGQl3cLiy/+nEMWwAdlNUpq0=
+ bh=C8DBmhW7rePeH1J1v+NnWuwz3YBYy1IS4WhvrtwoY7A=;
+ b=M6H6TvQ9Og3vgGBR3jI/13bZfRH7rVeWKXArHwfFuOA4UpgTCsxLUQj+YRp6bNwPvSJz0w
+ 1qlm8LGcLADRAhgMyZgPCUKo1pbcHBiWTJ8rAAgvmMWXqUim1OB9RccUJstyL94QVvpYKd
+ MoGAkbFMpgr/y7s/TMy14gj4QjJCLms=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-Jm3dV0TEM_qIqkMxNbbn1g-1; Tue, 24 Jun 2025 04:34:43 -0400
-X-MC-Unique: Jm3dV0TEM_qIqkMxNbbn1g-1
-X-Mimecast-MFC-AGG-ID: Jm3dV0TEM_qIqkMxNbbn1g_1750754082
+ us-mta-80-Zm84SMH2NMSX1akxnBEiBA-1; Tue, 24 Jun 2025 04:37:15 -0400
+X-MC-Unique: Zm84SMH2NMSX1akxnBEiBA-1
+X-Mimecast-MFC-AGG-ID: Zm84SMH2NMSX1akxnBEiBA_1750754235
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4532ff43376so41550845e9.3
- for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 01:34:43 -0700 (PDT)
+ 5b1f17b1804b1-451ac1b43c4so1195375e9.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 01:37:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750754082; x=1751358882;
+ d=1e100.net; s=20230601; t=1750754234; x=1751359034;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zhi7gKDyEXBFIyLUoXiDoNyk7C8y4NcDTzWfXoLTuys=;
- b=Co7FgcTrsOZpvY+E+6wlE3Gwe1/mJ5CSuqWm7hx6WzztxlIKSS+26QjYziiG1eWgc0
- 7ytX85vpqcVIGnpLmDOk7TBDviGW6DIIYvR8VboLDGew5N4O+YXm1c3lMBO7i06fcIKs
- FjADFnMC1BrNOfWTUekAUe7hdigCmWrMtOeCwzK0DcggVZdb/y1Umktj4f2Ul8GRH/IS
- gp5ctX1e5bVw/r8qwu0zAPOhyfKug3yYYlBn3Dtt774Jm5gMWWtbP/XRzqzQW5ODMeSj
- Q9gbSHAU5fFJr40b3w0mjlinKCJu4T4gZ1GA8hkbWgyAnUfy4gAsIdFcoauNpX9x/8k1
- NeaQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXccKZ/L+zK1x0ucxcQnWYWghQSk++Mj6RYXU3MYOs4fC0Lp7zl1JUKVf/4JesELwFonzOKy3QkFDpz@nongnu.org
-X-Gm-Message-State: AOJu0YzMDNRc7+fwYriUzS6iTxXv6BzmfJtglFXcPea6gj2n7C+tDZUx
- HNNzafCc3s99T6dkWADl+5WmwCQ4ZEWrQNPCrswDh+IoyZLfyxmHoJzwSl5k6tmQ9oPQIgacojq
- y3cYN1eIGc0HBRyQ4kvYRre008DKq7PoDbpq1vW11RUANMnF7yg49Ynz0
-X-Gm-Gg: ASbGnctsY+IdG3DaXDD71pa0ysEkQ4+4o47koJeNOHETm3p1OLNdO3I4PMRagnhMl4z
- Fpc3EBRBAnrFpxWbOnDqS3Vrd2Xz00VrXgMSeQquhVaYMGlYRwv8JHUOmNftYKjxTPyJpkNrR2C
- IadUxNx2m21mF6GZMUQaw3YoGXTbf7/MFElgATrcbNtK3gN1/jycWY7xFB5hiImylPWjNTf4fim
- E7qwU/ndXgrXTBKt0UERHaW0CqHJmVHm4y4IzjwWTwX41azHyyBpMpF7vFn2UNv4t8UDgQ39WmZ
- bilpxiEenDiT0V4XyGCxMtHBY9N8KcNdYsAJGl4G+7Iaahaob0NnJsrwSk8R
-X-Received: by 2002:a05:600c:4ed1:b0:43c:fcbc:9680 with SMTP id
- 5b1f17b1804b1-453659ec030mr128910925e9.25.1750754081860; 
- Tue, 24 Jun 2025 01:34:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHed1fNjG0nOWCWGlBzuwIiBTy0Oy2F1aoTDbb/HZ3Qd2vFztSp746RK88K1yFsE5kTYaTM8g==
-X-Received: by 2002:a05:600c:4ed1:b0:43c:fcbc:9680 with SMTP id
- 5b1f17b1804b1-453659ec030mr128910615e9.25.1750754081410; 
- Tue, 24 Jun 2025 01:34:41 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ bh=C8DBmhW7rePeH1J1v+NnWuwz3YBYy1IS4WhvrtwoY7A=;
+ b=py35TPMHPY8te23mzQ4TbABHVglRv1jVJGrPBvSq2ok5kIlYJhoFYQ24fdN7UrufQp
+ cJM1pYDrv1D4KsA36A1eFXhJiw7rAiV0RYDUAJwk2Ttd2tIT/seO5HowuvZw8pc3Rz5B
+ dRkbC4416PT1cHjMW/4lB62djIOm+Ifusin+N9KCbxAw8KEBJEhVMJ4enbahBbbBLKK6
+ xq1O7dK+rwfMQG883Pmduj6/+9z0GGkNnNxyvDLbmL/FKosHs3ZtUVxeXjwDIBxOsshc
+ cAWtqE9qW7uGW82KUQ94CWKDpiHr77RBOo21Yl1sfHrAkxAG4/FRs4ipRm8zrWM6c2P5
+ irkg==
+X-Gm-Message-State: AOJu0YxNDWrSNt6+UgkI3nCpMKmMeR5X/rBHxqkEtIGs8Qdr1eb4nHP3
+ 3Gr6Xq5V5pRe9ADEs0oQJd+46G/ooblHPBCS2lBw3DosM67srdBAW2vZnZybwP3COIElCLYHAWC
+ DxXW87Deuo+rXE0DNHtUIrwOtMryjJtWVGCR6RDrJj9EGaQ2gLqMpwq0H
+X-Gm-Gg: ASbGncsHEmqrjr+IBj8Iss0E25MveCEBMpaH2z53oHvNN2WOr+zTeZ8eLbrJD1Wko2z
+ xRLaXV3QkQViIYT5QEUXSb2fYNf9oCeQB9mmLYvitkgmkev6gJbmiWLQYebu0FMvADtnE2b0IRn
+ vLfrFQFaK3YTPf1x6kkN7ipw+jYDSbUNeLAoQaCd1/pnySM3U80aRwm7MVHrpIzgRmOihyvaY/A
+ lpwNoJJvksF4YEcxTpIa+9Wh19f8ReiZrqmhR4trIsyvl7WHvByUHu/LSZo0+NtmttS4cJAucr7
+ R/KjZX+BbLHPpSIr28d2S/nr5R+DSApQp6Z0UJtaSQbLjBXeTiDqURwKBsd24Q==
+X-Received: by 2002:a05:600c:6995:b0:450:d367:c385 with SMTP id
+ 5b1f17b1804b1-453658ba6c1mr137174185e9.16.1750754234563; 
+ Tue, 24 Jun 2025 01:37:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPIsnChN8M5GhmCxZUfZSitaEWggiBeTEs+uTzV1fPSwVYoU9/b4zckoVaJaoPVPGz7ck35Q==
+X-Received: by 2002:a05:600c:6995:b0:450:d367:c385 with SMTP id
+ 5b1f17b1804b1-453658ba6c1mr137173895e9.16.1750754234204; 
+ Tue, 24 Jun 2025 01:37:14 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:e10:ef90:343a:68f:2e91:95c?
+ ([2a01:e0a:e10:ef90:343a:68f:2e91:95c])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6e8050cc1sm1378421f8f.10.2025.06.24.01.34.40
+ 5b1f17b1804b1-4536c77b980sm92606935e9.23.2025.06.24.01.37.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Jun 2025 01:34:40 -0700 (PDT)
-Message-ID: <78fc7bed-75cb-4d9a-b6e2-86b95319bcfa@redhat.com>
-Date: Tue, 24 Jun 2025 10:34:40 +0200
+ Tue, 24 Jun 2025 01:37:13 -0700 (PDT)
+Message-ID: <957e1b39-bb40-4752-9d61-84f2b1ca7aa2@redhat.com>
+Date: Tue, 24 Jun 2025 10:37:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio: add license tag to some files
-To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-References: <20250623093053.1495509-1-john.levon@nutanix.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250623093053.1495509-1-john.levon@nutanix.com>
+Subject: Re: [PATCH v2 09/10] net: Add passt network backend
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, Eric Blake <eblake@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20250618155718.550968-1-lvivier@redhat.com>
+ <20250618155718.550968-10-lvivier@redhat.com> <87pletlflp.fsf@pond.sub.org>
+Content-Language: en-US
+From: Laurent Vivier <lvivier@redhat.com>
+Autocrypt: addr=lvivier@redhat.com; keydata=
+ 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
+In-Reply-To: <87pletlflp.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -154,74 +159,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-+ Daniel
-
-On 6/23/25 11:30, John Levon wrote:
-> Add SPDX-License-Identifier to some files missing it in hw/vfio/.
+On 24/06/2025 10:16, Markus Armbruster wrote:
+> Laurent Vivier <lvivier@redhat.com> writes:
 > 
-> Signed-off-by: John Levon <john.levon@nutanix.com>
-> ---
->   hw/vfio/trace.h      | 3 +++
->   hw/vfio/Kconfig      | 2 ++
->   hw/vfio/meson.build  | 2 ++
->   hw/vfio/trace-events | 2 ++
->   4 files changed, 9 insertions(+)
+>> This commit introduces support for passt as a new network backend.
+>> passt is an unprivileged, user-mode networking solution that provides
+>> connectivity for virtual machines by launching an external helper process.
+>>
+>> The implementation reuses the generic stream data handling logic. It
+>> launches the passt binary using GSubprocess, passing it a file
+>> descriptor from a socketpair() for communication. QEMU connects to
+>> the other end of the socket pair to establish the network data stream.
+>>
+>> The PID of the passt daemon is tracked via a temporary file to
+>> ensure it is terminated when QEMU exits.
+>>
+>> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> 
+> [...]
+> 
+>> diff --git a/qapi/net.json b/qapi/net.json
+>> index 97ea1839813b..76d7654414f7 100644
+>> --- a/qapi/net.json
+>> +++ b/qapi/net.json
+>> @@ -112,6 +112,125 @@
+>>     'data': {
+>>       'str': 'str' } }
+>>   
+>> +##
+>> +# @NetDevPasstOptions:
+>> +#
+>> +# Unprivileged user-mode network connectivity using passt
+>> +#
+>> +# @path: path to passt binary
+> 
+> I'd prefer a more descriptive name.
+> 
+> Elsewhere in this file, we refer to programs like this:
+> 
+>     # @script: script to initialize the interface
+>     #
+>     # @downscript: script to shut down the interface
+> 
+> passt isn't a script, of course.
+> 
+> I don't know, perhaps
+> 
+>     # @passt-filename: the passt program to run.
+> 
+> or even
+> 
+>     # @passt: Filename of the passt program to run.
+> 
+>> +#
+>> +# @quiet: don't print informational messages
+> 
+> What does the printing?  A peek at the code I snipped suggests this flag
+> is passed to the passt binary as --quiet.  Correct?
+> 
+>> +#
+>> +# @debug: be verbose
+>> +#
+>> +# @trace: extra verbose
+> 
+> Likewise for these two.
+> 
+>> +#
+>> +# @vhost-user: enable vhost-user
+>> +#
+>> +# @pcap-file: log traffic to pcap file
+>> +#
+>> +# @mtu: assign MTU via DHCP/NDP
+>> +#
+>> +# @address: IPv4 or IPv6 address
+>> +#
+>> +# @netmask: IPv4 mask
+>> +#
+>> +# @mac: source MAC address
+>> +#
+>> +# @gateway: IPv4 or IPv6 address as gateway
+>> +#
+>> +# @interface: interface for addresses and routes
+>> +#
+>> +# @outbound: bind to address as outbound source
+>> +#
+>> +# @outbound-if4: bind to outbound interface for IPv4
+>> +#
+>> +# @outbound-if6: bind to outbound interface for IPv6
+>> +#
+>> +# @dns: IPv4 or IPv6 address as DNS
+>> +#
+>> +# @search: search domains
+>> +#
+>> +# @fqdn: FQDN to configure client with
+>> +#
+>> +# @dhcp-dns: enable/disable DNS list in DHCP/DHCPv6/NDP
+>> +#
+>> +# @dhcp-search: enable/disable list in DHCP/DHCPv6/NDP
+>> +#
+>> +# @map-host-loopback: addresse to refer to host
+>> +#
+>> +# @map-guest-addr: addr to translate to guest's address
+>> +#
+>> +# @dns-forward: forward DNS queries sent to
+>> +#
+>> +# @dns-host: host nameserver to direct queries to
+>> +#
+>> +# @tcp: enable/disable TCP
+>> +#
+>> +# @udp: enable/disable UDP
+>> +#
+>> +# @icmp: enable/disable ICMP
+>> +#
+>> +# @dhcp: enable/disable DHCP
+>> +#
+>> +# @ndp: enable/disable NDP
+>> +#
+>> +# @dhcpv6: enable/disable DHCPv6
+>> +#
+>> +# @ra: enable/disable route advertisements
+>> +#
+>> +# @freebind: bind to any address for forwarding
+>> +#
+>> +# @ipv4: enable/disable IPv4
+>> +#
+>> +# @ipv6: enable/disable IPv6
+>> +#
+>> +# @tcp-ports: TCP ports to forward
+>> +#
+>> +# @udp-ports: UDP ports to forward
+> 
+> Is there anything in this struct that configures qemu-system-FOO itself,
+> i.e. isn't just passed to passt?
+> 
 
-I think that's OK to add a GPL-2.0-or-later SPDX tag on these files
-because they are simple infrastructure files, and we know when they
-come from. How useful it is ? that I don't know.
+Yes, all parameters are just passed to passt.
 
-For other source files, without a license, if we have any, I think
-the answer would be much more complex.
-
-Daniel, What would be our position on such files ?
+Do you think it's better not to add all these parameters to netdev backend but only one 
+generic containing the passt command line parameters?
 
 Thanks,
-
-C.
-
-
-
-
-> diff --git a/hw/vfio/trace.h b/hw/vfio/trace.h
-> index 5a343aa59c..b34b61ddb2 100644
-> --- a/hw/vfio/trace.h
-> +++ b/hw/vfio/trace.h
-> @@ -1 +1,4 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
->   #include "trace/trace-hw_vfio.h"
-> diff --git a/hw/vfio/Kconfig b/hw/vfio/Kconfig
-> index 7cdba0560a..91d9023b79 100644
-> --- a/hw/vfio/Kconfig
-> +++ b/hw/vfio/Kconfig
-> @@ -1,3 +1,5 @@
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
->   config VFIO
->       bool
->       depends on LINUX
-> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-> index 73d29f925f..63ea393076 100644
-> --- a/hw/vfio/meson.build
-> +++ b/hw/vfio/meson.build
-> @@ -1,3 +1,5 @@
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
->   vfio_ss = ss.source_set()
->   vfio_ss.add(files(
->     'listener.c',
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index f06236f37b..e1728c4ef6 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -1,4 +1,6 @@
->   # See docs/devel/tracing.rst for syntax documentation.
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
->   
->   # pci.c
->   vfio_intx_interrupt(const char *name, char line) " (%s) Pin %c"
+Laurent
 
 
