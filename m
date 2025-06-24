@@ -2,75 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BF7AE5D6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 09:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA64AE5D4F
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 09:01:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTxkf-00013c-B9; Tue, 24 Jun 2025 03:07:29 -0400
+	id 1uTxdZ-00075y-3d; Tue, 24 Jun 2025 03:00:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uTxkd-000128-Jg
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 03:07:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uTxdU-00074X-OL; Tue, 24 Jun 2025 03:00:05 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uTxkb-00018m-Fz
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 03:07:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750748841;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iyI6VxsX3m+C1CJm9Dqdm8u1xvtdFED9m5ykMjVXMsM=;
- b=dAFw7TS+lCXMQJlikQ3uPoMgDe7rEtO6/rRYgRSN/WDg1VL3iN8Yg77acJ5QFyqV3TVXtq
- 7gZj+AFq0J0u+saw177fR4PLSxI7Q12Omt4ssfjzNdv11kkag2GC0HJkGmRVD5bEn0DNO4
- Catijk6DY8aP0ambaXYzx/P0ZXh4KJ4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-I2h0sklCNLmjwAYzrHq-SA-1; Tue,
- 24 Jun 2025 03:07:17 -0400
-X-MC-Unique: I2h0sklCNLmjwAYzrHq-SA-1
-X-Mimecast-MFC-AGG-ID: I2h0sklCNLmjwAYzrHq-SA_1750748836
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 04FF21800289; Tue, 24 Jun 2025 07:07:16 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.226.80])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6BB9D195608D; Tue, 24 Jun 2025 07:07:14 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 0810218000BA; Tue, 24 Jun 2025 09:07:12 +0200 (CEST)
-Date: Tue, 24 Jun 2025 09:07:11 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org, 
- mst@redhat.com, anisinha@redhat.com, elena.ufimtseva@oracle.com, 
- jag.raman@oracle.com, pbonzini@redhat.com, david@redhat.com, philmd@linaro.org
-Subject: Re: [PATCH 1/3] memory: reintroduce BQL-free fine-grained PIO/MMIO
-Message-ID: <uyuhe6pvmqtkb3ruywgsvwc3hh4hu27c454an4avme6xxfrls4@fwoathup2su4>
-References: <20250620151418.1166195-1-imammedo@redhat.com>
- <20250620151418.1166195-2-imammedo@redhat.com>
- <aFWR8rM7-4y1R0GG@x1.local> <20250623145146.4462bf59@fedora>
- <aFlYRWc7rRwBGM8S@x1.local>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uTxdS-0008HF-Im; Tue, 24 Jun 2025 03:00:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1750748403; x=1782284403;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=RycR102Wtr4p7SMK586lhgFL+Zx3BzOWjdXsAILJ25s=;
+ b=ai88y5FNIuQhfyWeW5slVIu50WX20yEYm7035WRe1RFtM98oOyjBarT1
+ trjqfe/cQ9+bv6GzE/reK7MnGtfGETLoCpiiCwvcuRtZTjgi17k+DH9Um
+ 4SCtH4kdJyTJUrPrYy/nq3pIr5kadvhjTa0nDkynzK/aLyTQUVdzn18xG
+ 0hF5j882Q+NaJ7yCXhFPhEidcWaXh1QBim7EMqV8KM9xwT5hAetl2V3w4
+ UgfSv3d2itt9O3H5X9bJyia3qB+avgiwZ8nfoAA6YISXgCSpBedvsUWu8
+ P4HOlnnJjrGhZemtNWpJpyiuDe/6BV05ymLSTWg1Yn1g3BGbAA2N43Qro g==;
+X-CSE-ConnectionGUID: dJ/mKxytQjyqluTkM3+0RQ==
+X-CSE-MsgGUID: T+I8trecSjWiEGlAIc4iOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="70397824"
+X-IronPort-AV: E=Sophos;i="6.16,260,1744095600"; d="scan'208";a="70397824"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2025 00:00:00 -0700
+X-CSE-ConnectionGUID: olZOwTzrS/eWuP2XHptNQw==
+X-CSE-MsgGUID: bBLeFKxuTxymoVsO5Msp/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,260,1744095600"; d="scan'208";a="152532379"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa010.fm.intel.com with ESMTP; 23 Jun 2025 23:59:58 -0700
+Date: Tue, 24 Jun 2025 15:21:19 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ manos.pitsidianakis@linaro.org, shentey@gmail.com
+Subject: Re: [PATCH] rust: log: implement io::Write
+Message-ID: <aFpR7+RMBlgt5DTD@intel.com>
+References: <20250617081213.115329-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aFlYRWc7rRwBGM8S@x1.local>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20250617081213.115329-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,35 +79,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+>  /// A macro to log messages conditionally based on a provided mask.
+> @@ -24,6 +96,8 @@ pub enum Log {
+>  /// log level and, if so, formats and logs the message. It is the Rust
+>  /// counterpart of the `qemu_log_mask()` macro in the C implementation.
+>  ///
+> +/// Errors from writing to the log are ignored.
+> +///
+>  /// # Parameters
+>  ///
+>  /// - `$mask`: A log level mask. This should be a variant of the `Log` enum.
+> @@ -62,12 +136,9 @@ macro_rules! log_mask_ln {
+>          if unsafe {
+>              (::qemu_api::bindings::qemu_loglevel & ($mask as std::os::raw::c_int)) != 0
+>          } {
+> -            let formatted_string = format!("{}\n", format_args!($fmt $($args)*));
+> -            let c_string = std::ffi::CString::new(formatted_string).unwrap();
+> -
+> -            unsafe {
+> -                ::qemu_api::bindings::qemu_log(c_string.as_ptr());
+> -            }
+> +            #[allow(unused_must_use)]
 
-> Gerd mentioned this in the relevant bz:
+I found this doesn't work :-( :
+
+error: unused `Result` that must be used
+   --> ../rust/hw/char/pl011/src/device.rs:281:21
+    |
+281 |                     log_mask_ln!(Log::Unimp, "pl011: DMA not implemented");
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this `Result` may be an `Err` variant, which should be handled
+    = note: `-D unused-must-use` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(unused_must_use)]`
+    = note: this error originates in the macro `log_mask_ln` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+I understand meson sets `-D warings` so that `allow` can't work...
+
+What about just ignoring the return value? Afterall pl011 doesn't care
+the returned value.
+
+@@ -136,8 +137,7 @@ macro_rules! log_mask_ln {
+         if unsafe {
+             (::qemu_api::bindings::qemu_loglevel & ($mask as std::os::raw::c_int)) != 0
+         } {
+-            #[allow(unused_must_use)]
+-            ::qemu_api::log::LogGuard::log_fmt(
++            let _ = ::qemu_api::log::LogGuard::log_fmt(
+                 format_args!("{}\n", format_args!($fmt $($args)*)));
+         }
+     }};
+
+Thanks,
+Zhao
+
+> +            ::qemu_api::log::LogGuard::log_fmt(
+> +                format_args!("{}\n", format_args!($fmt $($args)*)));
+>          }
+>      }};
+>  }
+> -- 
+> 2.49.0
 > 
->         Note: root cause for the initrd issue noted in comment 5 is seabios
->         running into problems with ehci -> io errors -> corrupted initrd.
->         Sometimes it doesn't boot at all, probably in case the io errors
->         happen to hit the kernel not the initrd.
 > 
-> This seems to be the last piece of information we have had that is closest
-> to the root cause.
-
-seabios used to prefer pmtimer back then for timekeeping then because it
-has a fixed frequency.  Doing tsc calibration can easily be /way/ off in
-a virtual machine on a loaded host.
-
-Meanwhile seabios got support for reading the tsc frequency via cpuid
-(if invtsc is available) or via kvmclock.  If that works seabios will
-prefer the tsc for timekeeping.
-
-So, when trying to reproduce the failure for analysis you have to either
-use an old seabios version, or turn off kvmclock + invtsc support,
-otherwise seabios will not use the pmtimer in the first place.
-
-You should have this line in the firmware log:
-
-    Using pmtimer, ioport 0x608
-
-HTH & take care,
-  Gerd
-
 
