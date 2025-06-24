@@ -2,66 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A32AE5F8B
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 10:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB802AE5FC0
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 10:45:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTz8Z-0005Hk-Am; Tue, 24 Jun 2025 04:36:15 -0400
+	id 1uTzGb-0007xX-B3; Tue, 24 Jun 2025 04:44:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uTz8V-0005HV-QC
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 04:36:11 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
+ id 1uTzGW-0007wj-K6; Tue, 24 Jun 2025 04:44:28 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uTz8Q-0006pW-FO
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 04:36:11 -0400
+ id 1uTzGR-0000C4-17; Tue, 24 Jun 2025 04:44:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750754166; x=1782290166;
+ t=1750754663; x=1782290663;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=2p03nju186D2pcoSuj3B2zzww3XAybxwZM5HBLWRFbA=;
- b=fA2P/oT/KfADuaaRI1rz0vlQ6eMNqo5Z0kl33KJtfve88nM9Zb9Fk9kv
- 0sxThK6B1Qd8lubtrSKywQ7UjJTZIjt9lwl6pcUx1QLfVUQpZjELZdes9
- eC/D/u92GtRYwUl5XpLk0ot/IWm6NbWNQto34c0ftKIAENNUQ1sg9NzTT
- tDHXwsAiTiPSfNq7oy0tlANGDY0P/owbfWJVNqVo7ilo2Y0+g+8SxaPEo
- Tt6LboI6KK2HSI6QqZ9zJnF6Qr1i2a9nDcgD/wIb9LvOCK4bRnFhdu6dd
- ysgvYPcG2zhC9FnTfLJOAmzR6rT3X1cn4YzlvF+ktc4dglA2leHTUG9s1 Q==;
-X-CSE-ConnectionGUID: vts4EPuxQre0JiKEZGmnhg==
-X-CSE-MsgGUID: oWQtJfVFRouHLmSSuqSZ4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="53076092"
-X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="53076092"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2025 01:36:01 -0700
-X-CSE-ConnectionGUID: JPT+e1x1QbaZbEsyNo/yoQ==
-X-CSE-MsgGUID: 8pDkwIYeSEWAakCOQ9D1bw==
+ bh=54wPzwcU/d63mPvQQx2hn5D56Z6ahGjNKMh0mdv8/KI=;
+ b=c7k9sxg2u6HjnzCGOYxyMOeBuEA0/o+sk+dlytxxI4kpT4VzQIW2H+i4
+ pcOXGy36HKX5tIxROrtJgWlpEy6Gjw09G+rOcz3R7PLTZqonXx1kPXzb2
+ whyAm7RNbhObxVWWQZqQlvxOTuqXYxc0fsAR07uPwpyXWClYXps/rgBD+
+ gr132OhOlgjhI5r7XYNsS+0QbMsIdGW+kdPJu7H4imeHxWk/yChxQ8MvU
+ 9g91bVgNNJi/7QIZTBNz8OgBS9UxA6tvHzWG39y4ls9/+8xv674l31xAe
+ QfFFXySr8hWDG0xihH/7s/RKqbUCxjarw4cSqYPmbhj/73s4cSK4nbU5l g==;
+X-CSE-ConnectionGUID: 1fmy0blgRXiMEZ8Tpd2amA==
+X-CSE-MsgGUID: /IdbaYnOR2m7AbTLGpTQkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="64415668"
+X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="64415668"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2025 01:44:17 -0700
+X-CSE-ConnectionGUID: eisIKi4cS1yi/BBYlFvTaA==
+X-CSE-MsgGUID: 8gQhIpaXRBWTM3cwBSvHwA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="155879562"
+X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="157358580"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa003.fm.intel.com with ESMTP; 24 Jun 2025 01:36:00 -0700
-Date: Tue, 24 Jun 2025 16:57:21 +0800
+ by fmviesa004.fm.intel.com with ESMTP; 24 Jun 2025 01:44:16 -0700
+Date: Tue, 24 Jun 2025 17:05:37 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- Like Xu <like.xu.linux@gmail.com>
-Subject: Re: [Regression] Re: [PULL 35/35] qom: reverse order of
- instance_post_init calls
-Message-ID: <aFpocfTpBLB34N3l@intel.com>
-References: <20250520110530.366202-1-pbonzini@redhat.com>
- <20250520110530.366202-36-pbonzini@redhat.com>
- <d429b6f5-b59c-4884-b18f-8db71cb8dc7b@oracle.com>
+ qemu-rust@nongnu.org, shentey@gmail.com
+Subject: Re: [PATCH] rust: log: implement io::Write
+Message-ID: <aFpqYTBLaf8GEd0v@intel.com>
+References: <20250617081213.115329-1-pbonzini@redhat.com>
+ <aFpR7+RMBlgt5DTD@intel.com>
+ <CAAjaMXZvi7FxdOgC8xpw5O1sQD3ncZSpRQpNEetNDMR3MdfhvA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d429b6f5-b59c-4884-b18f-8db71cb8dc7b@oracle.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <CAAjaMXZvi7FxdOgC8xpw5O1sQD3ncZSpRQpNEetNDMR3MdfhvA@mail.gmail.com>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -86,60 +81,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 23, 2025 at 09:56:14AM -0700, Dongli Zhang wrote:
-> Date: Mon, 23 Jun 2025 09:56:14 -0700
-> From: Dongli Zhang <dongli.zhang@oracle.com>
-> Subject: [Regression] Re: [PULL 35/35] qom: reverse order of
->  instance_post_init calls
-> 
-> This commit may broken the "vendor=" configuration.
-> 
-> For instance, the hypervisor CPU vendor is AMD.
-> 
-> I am going to use "-cpu Skylake-Server,vendor=GenuineIntel".
-> 
-> 
-> Because of the commit, the vendor is still AMD.
-> 
-> [root@vm ~]# cpuid -1 -l 0x0
-> CPU:
->    vendor_id = "AuthenticAMD"
+> > @@ -136,8 +137,7 @@ macro_rules! log_mask_ln {
+> >          if unsafe {
+> >              (::qemu_api::bindings::qemu_loglevel & ($mask as std::os::raw::c_int)) != 0
+> >          } {
+> > -            #[allow(unused_must_use)]
+> > -            ::qemu_api::log::LogGuard::log_fmt(
+> > +            let _ = ::qemu_api::log::LogGuard::log_fmt(
+> >                  format_args!("{}\n", format_args!($fmt $($args)*)));
+> >          }
+> >      }};
 > 
 > 
-> If I revert this patch, the vendor because the expected Intel.
-> 
-> [root@vm ~]# cpuid -1 -l 0x0
-> CPU:
->    vendor_id = "GenuineIntel"
-> 
-> 
-> Thank you very much!
+> Just `_ = ::qemu_api::log::LogGuard::log_fmt(...);` is sufficient, no
+> `let` needed.
 
-Thank you Dongli!
+Good catch! Thank you Manos.
 
-(+Like)
-
-While testing my cache model series, I also noticed the similar behavior
-for KVM. Additionally, Like Xu reported to me that this commit caused
-a failure in a KVM unit test case. Your report helped me connect these
-two issues I met (though due to my environment issues, I haven't
-confirmed yet).
-
-The "vendor" property from cli is registered as the global property in
-x86_cpu_parse_featurestr(), and is applied to x86 CPUs in
-device_post_init().
-
-With this commit, now KVM will override the "vendor" in
-host_cpu_instance_init() (called in x86_cpu_post_initfn()) after
-device_post_init(), regardless the previous global "vendor" property.
-
-Back to this commit, I think current order of post_init  makes sense.
-Instead, the place of host_cpu_instance_init() doesn't seem quite
-right. So, I think this commit might have exposed some drawbacks in the
-previous x86 CPU initialization order:
-
-f5cc5a5c1686 ("i386: split cpu accelerators from cpu.c, using AccelCPUClass")
-5b8978d80426 ("i386: do not call cpudef-only models functions for max, host, base")
-
+Regards,
+Zhao
 
 
