@@ -2,79 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52753AE5D53
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 09:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE71AE5E2F
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 09:42:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uTxf9-0007zM-23; Tue, 24 Jun 2025 03:01:47 -0400
+	id 1uTyH8-0005yF-I7; Tue, 24 Jun 2025 03:41:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uTxf2-0007y9-LM
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 03:01:41 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uTyGW-0005ja-Na
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 03:40:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uTxez-00009n-HK
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 03:01:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750748498; x=1782284498;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=HCIpBO8RVhB6SPtV/1F7eCuEBsj1EdkXSwTS7kOxR+M=;
- b=KtOZA0h+PkwvlBfSUYAe/BDh0v7IE1zSdzRe5Tx1OCCTvhLYR0949KE/
- a4nRISCRISLq2eWbvvB0ZFeVqFOpXluSN8pzNWE/oWpDTYbnOlXrr0bsb
- w2Tp3NpjbW2xdo/Kk4XZ5tKgHPmipFhkfpodGiyXa8/FJ3K+aS3fW9cb0
- LbGWcFYUKrE6+aCPRO5TXP+35lUVJsGAHVlQOB7K/7CSO7A5KR9gqZ+10
- CGS/kjghTmJjtkq8RWH9ZpRSnAHvL8JIND6eqfOeSOAbDcBjsAiNK85Ql
- pg2lEu9zeUxQbmRNTNeebWoKOJRjD7IspA6v97zxF+ZSRPD4j1ij7joW6 w==;
-X-CSE-ConnectionGUID: UJFau2BBQFO0ocsZPV8ZAQ==
-X-CSE-MsgGUID: 0JE8l6quTQirqoO0LqJD7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="70398455"
-X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="70398455"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2025 00:01:35 -0700
-X-CSE-ConnectionGUID: kM+CfAgQS9C3FHusfWzYkw==
-X-CSE-MsgGUID: EGW2vSRiRPihw7mhTeAC1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="152533837"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa010.fm.intel.com with ESMTP; 24 Jun 2025 00:01:10 -0700
-Date: Tue, 24 Jun 2025 15:22:31 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Babu Moger <babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Tejus GK <tejus.gk@nutanix.com>, Jason Zeng <jason.zeng@intel.com>,
- Manish Mishra <manish.mishra@nutanix.com>,
- Tao Su <tao1.su@intel.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for Intel
-Message-ID: <aFpSN+zEgJl72V46@intel.com>
-References: <20250423114702.1529340-1-zhao1.liu@intel.com>
- <20250423114702.1529340-2-zhao1.liu@intel.com>
- <fa16f7a8-4917-4731-9d9f-7d4c10977168@zhaoxin.com>
- <aDWCxhsCMavTTzkE@intel.com>
- <3318af5c-8a46-4901-91f2-0b2707e0a573@zhaoxin.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uTyGB-0005cU-2v
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 03:40:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750750801;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jq44Z2zwbgcBqtfTirT5nLheLYiyc6cOV9sFWrSjdZA=;
+ b=dLxrN1YUqf5y3DKs395gcLY9A1G2Tt2jAcV5qdZzDg91J9PrlKM5jWeutcy0460nzuHMpc
+ n4KmtJRlAPf2JI8svzZKH1zopfsk5P3q+1A2kf7h0myQmomkZcjPsxMNMBylzX3K/78YRa
+ TeWwk9Lnl2JInbdMkp2FNPMe5qqGD2g=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-299-hNeMNkewOqm9aLZiD0mV1g-1; Tue,
+ 24 Jun 2025 03:34:21 -0400
+X-MC-Unique: hNeMNkewOqm9aLZiD0mV1g-1
+X-Mimecast-MFC-AGG-ID: hNeMNkewOqm9aLZiD0mV1g_1750750457
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8193E19560B2; Tue, 24 Jun 2025 07:34:14 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F1F2B1956096; Tue, 24 Jun 2025 07:34:09 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4E5A821E6A27; Tue, 24 Jun 2025 09:34:07 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Joel Stanley <joel@jms.id.au>,  Yi Liu
+ <yi.l.liu@intel.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  Helge Deller
+ <deller@gmx.de>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Andrew
+ Jeffery <andrew@codeconstruct.com.au>,  Fabiano Rosas <farosas@suse.de>,
+ Alexander Bulekov <alxndr@bu.edu>,  Darren Kenny
+ <darren.kenny@oracle.com>,  Leif Lindholm
+ <leif.lindholm@oss.qualcomm.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@kaod.org>,  Ed
+ Maste <emaste@freebsd.org>,  Gerd Hoffmann <kraxel@redhat.com>,  Warner
+ Losh <imp@bsdimp.com>,  Kevin Wolf <kwolf@redhat.com>,  Tyrone Ting
+ <kfting@nuvoton.com>,  Eric Blake <eblake@redhat.com>,  Palmer Dabbelt
+ <palmer@dabbelt.com>,  Yoshinori Sato <ysato@users.sourceforge.jp>,  Troy
+ Lee <leetroy@gmail.com>,  Halil Pasic <pasic@linux.ibm.com>,  Akihiko
+ Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,  Michael Roth
+ <michael.roth@amd.com>,  Laurent Vivier <laurent@vivier.eu>,  Ani Sinha
+ <anisinha@redhat.com>,  Weiwei Li <liwei1518@gmail.com>,  Eric Farman
+ <farman@linux.ibm.com>,  Steven Lee <steven_lee@aspeedtech.com>,  Brian
+ Cain <brian.cain@oss.qualcomm.com>,  Li-Wen Hsu <lwhsu@freebsd.org>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,  qemu-s390x@nongnu.org,  Vladimir
+ Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  qemu-block@nongnu.org,
+ Bernhard Beschow <shentey@gmail.com>,  =?utf-8?Q?Cl=C3=A9ment?=
+ Mathieu--Drif <clement.mathieu--drif@eviden.com>,  Maksim Davydov
+ <davydov-max@yandex-team.ru>,  Niek Linnenbank <nieklinnenbank@gmail.com>,
+ =?utf-8?Q?Herv=C3=A9?= Poussineau <hpoussin@reactos.org>,  Christian
+ Borntraeger
+ <borntraeger@linux.ibm.com>,  Paul Durrant <paul@xen.org>,  Manos
+ Pitsidianakis <manos.pitsidianakis@linaro.org>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  Igor Mitsyanko <i.mitsyanko@gmail.com>,  Max
+ Filippov <jcmvbkbc@gmail.com>,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>,  "Michael S. Tsirkin" <mst@redhat.com>,
+ Anton Johansson <anjo@rev.ng>,  Peter Maydell <peter.maydell@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>,  Eric Auger <eric.auger@redhat.com>,
+ Yanan Wang <wangyanan55@huawei.com>,  qemu-arm@nongnu.org,  Hao Wu
+ <wuhaotsh@google.com>,  Mads Ynddal <mads@ynddal.dk>,  Sriram Yagnaraman
+ <sriram.yagnaraman@ericsson.com>,  qemu-riscv@nongnu.org,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Jason Wang <jasowang@redhat.com>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Michael Rolnik <mrolnik@gmail.com>,  Zhao Liu
+ <zhao1.liu@intel.com>,  Alessandro Di Federico <ale@rev.ng>,  Thomas Huth
+ <thuth@redhat.com>,  Antony Pavlov <antonynpavlov@gmail.com>,  Jiaxun Yang
+ <jiaxun.yang@flygoat.com>,  Hanna Reitz <hreitz@redhat.com>,  Ilya
+ Leoshkevich <iii@linux.ibm.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,  Daniel Henrique Barboza
+ <danielhb413@gmail.com>,  Qiuhao Li <Qiuhao.Li@outlook.com>,  Hyman Huang
+ <yong.huang@smartx.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Magnus Damm <magnus.damm@gmail.com>,  qemu-rust@nongnu.org,  Bandan Das
+ <bsd@redhat.com>,  Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Philippe =?utf-8?Q?Ma?=
+ =?utf-8?Q?thieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  kvm@vger.kernel.org,  Fam Zheng <fam@euphon.net>,
+ Jia Liu <proljc@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Alistair Francis <alistair@alistair23.me>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>,  Kyle Evans
+ <kevans@freebsd.org>,  Song Gao <gaosong@loongson.cn>,  Alexandre Iooss
+ <erdnaxe@crans.org>,  Aurelien Jarno <aurelien@aurel32.net>,  Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,  Peter Xu <peterx@redhat.com>,  Stefan
+ Hajnoczi <stefanha@redhat.com>,  BALATON Zoltan <balaton@eik.bme.hu>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,  "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>,  =?utf-8?B?RnLDqWTDqXJpYw==?= Barrat
+ <fbarrat@linux.ibm.com>,
+ qemu-ppc@nongnu.org,  Radoslaw Biernacki <rad@semihalf.com>,  Beniamino
+ Galvani <b.galvani@gmail.com>,  David Hildenbrand <david@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,  David Woodhouse
+ <dwmw2@infradead.org>,  Eduardo Habkost <eduardo@habkost.net>,  Ahmed
+ Karaman <ahmedkhaledkaraman@gmail.com>,  Huacai Chen
+ <chenhuacai@kernel.org>,  Mahmoud Mandour <ma.mandourr@gmail.com>,  Harsh
+ Prateek Bora <harshpb@linux.ibm.com>
+Subject: Re: [PATCH v2 06/12] python: upgrade to python3.9+ syntax
+In-Reply-To: <20250612205451.1177751-7-jsnow@redhat.com> (John Snow's message
+ of "Thu, 12 Jun 2025 16:54:44 -0400")
+References: <20250612205451.1177751-1-jsnow@redhat.com>
+ <20250612205451.1177751-7-jsnow@redhat.com>
+Date: Tue, 24 Jun 2025 09:34:07 +0200
+Message-ID: <87cyatmw40.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3318af5c-8a46-4901-91f2-0b2707e0a573@zhaoxin.com>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,92 +152,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 27, 2025 at 05:56:07PM +0800, Ewan Hai wrote:
-> Date: Tue, 27 May 2025 17:56:07 +0800
-> From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-> Subject: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for
->  Intel
-> 
-> 
-> 
-> On 5/27/25 5:15 PM, Zhao Liu wrote:
-> > 
-> > > On 4/23/25 7:46 PM, Zhao Liu wrote:
-> > > > 
-> > > > Per SDM, 0x80000005 leaf is reserved for Intel CPU, and its current
-> > > > "assert" check blocks adding new cache model for non-AMD CPUs.
-> > > > 
-> > > > Therefore, check the vendor and encode this leaf as all-0 for Intel
-> > > > CPU. And since Zhaoxin mostly follows Intel behavior, apply the vendor
-> > > > check for Zhaoxin as well.
-> > > > 
-> > > > Note, for !vendor_cpuid_only case, non-AMD CPU would get the wrong
-> > > > information, i.e., get AMD's cache model for Intel or Zhaoxin CPUs.
-> > > > For this case, there is no need to tweak for non-AMD CPUs, because
-> > > > vendor_cpuid_only has been turned on by default since PC machine v6.1.
-> > > > 
-> > > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > > > ---
-> > > >    target/i386/cpu.c | 16 ++++++++++++++--
-> > > >    1 file changed, 14 insertions(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > > > index 1b64ceaaba46..8fdafa8aedaf 100644
-> [snip]>>> +
-> > > >            *eax = (L1_DTLB_2M_ASSOC << 24) | (L1_DTLB_2M_ENTRIES << 16) |
-> > > >                   (L1_ITLB_2M_ASSOC <<  8) | (L1_ITLB_2M_ENTRIES);
-> > > >            *ebx = (L1_DTLB_4K_ASSOC << 24) | (L1_DTLB_4K_ENTRIES << 16) |
-> > > 
-> > > I've reviewed the cache-related CPUID path and noticed an oddity: every AMD
-> > > vCPU model still reports identical hard-coded values for the L1 ITLB and L1
-> > > DTLB fields in leaf 0x8000_0005. Your patch fixes this for Intel(and
-> > > Zhaoxin), but all AMD models continue to receive the same constants in
-> > > EAX/EBX.
-> > 
-> > Yes, TLB info is hardcoded here. Previously, Babu and Eduardo cleaned up
-> > the cache info but didn't cover TLB [*]. I guess one reason would there
-> > are very few use cases related to TLB's info, and people are more
-> > concerned about the cache itself.
-> > 
-> > [*]: https://lore.kernel.org/qemu-devel/20180510204148.11687-2-babu.moger@amd.com/
-> 
-> Understood. Keeping the L1 I/D-TLB fields hard-coded for every vCPU model is
-> acceptable.
-> 
-> > > Do you know the reason for this choice? Is the guest expected to ignore
-> > > those L1 TLB numbers? If so, I'll prepare a patch that adjusts only the
-> > > Zhaoxin defaults in leaf 0x8000_0005 like below, matching real YongFeng
-> > > behaviour in ecx and edx, but keep eax and ebx following AMD's behaviour.
-> > 
-> > This way is fine for me.
-> > 
-> 
-> Thanks for confirming. I'll post the YongFeng cache-info series once your
-> refactor lands.
+John Snow <jsnow@redhat.com> writes:
 
-Hi Ewan,
+> This patch is fully automated, using pymagic, isort and autoflake.
+>
+> Create a script named pymagic.sh:
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+>
+> pyupgrade --exit-zero-even-if-changed --keep-percent-format \
+>           --py39-plus "$@"
+>
+> autoflake -i "$@"
+>
+> isort --settings-file python/setup.cfg \
+>       -p compat -p qapidoc_legacy -p iotests -o qemu "$@"
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+>
+> Then, from qemu.git root:
+>
+>> find . -type f -name '*.py' | xargs pymagic
+>> git grep --name-only "#!/usr/bin/env python" | xargs pymagic
+>
+> This changes a lot of old Pythonisms, but in particular it upgrades the
+> old Python type hint paradigm to the new 3.9+ paradigm wherein you no
+> longer need to import List, Dict, Tuple, Set, etc from the Typing module
+> and instead directly subscript the built-in types list, dict, tuple,
+> set, etc. The old-style annotations are deprecated as of 3.9 and are
+> eligible for removal starting in Python 3.14, though the exact date of
+> their removal is not yet known.
+>
+> pyupgrade updates the imports and type hint paradigms (as well as
+> updating other old 'isms, such as removing the unicode string
+> prefix). autoflake in turn then removes any unused import statements,
+> possibly left behind by pyupgrade. Lastly, isort fixes the import order
+> and formatting to the standard we use in qemu.git/python and
+> scripts/qapi in particular.
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
 
-By this patch:
+[...]
 
-https://lore.kernel.org/qemu-devel/20250620092734.1576677-14-zhao1.liu@intel.com/
+>  448 files changed, 1959 insertions(+), 1631 deletions(-)
 
-I fixed the 0x80000005 leaf for Intel and Zhaoxin based on your feedback
-by the way.
+*=C3=84chz*
 
-It looks like the unified cache_info would be very compatible with
-various vendor needs and corner cases. So I'll respin this series based
-on that cache_info series.
+I hate it when people ask me to split up my mechanical patches...
 
-Before sending the patch, I was thinking that maybe I could help you
-rebase and include your Yongfeng cache model patch you added into my v2
-series, or you could rebase and send it yourself afterward. Which way do
-you like?
+One split is by subsystem / maintainer.  I've done this a few times, and
+it's quite a bother.  Questionable use of your time if you ask me.
 
-And for TLB, we can wait and see what maintainers think. Maybe it is
-possible, considering that the cache also transitioned from hardcoding
-to a cache model (since commit 7e3482f82480).
+There's another split here...  Your pymagic.sh runs three tools.  If you
+commit after each one, the patch splits into three.
 
-Thanks,
-Zhao
+I understand you pass --py39-plus to pyupgrade to get the type hints
+modernized.  If you run it without --py39-plus for all the miscellaneous
+upgrades, commit, then run it with --py39-plus for just the type hint
+upgrades, commit, the last patch splits again.
+
+Thoughts?
 
 
