@@ -2,91 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23D0AE6935
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 16:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCFBAE6968
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Jun 2025 16:47:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uU4pv-0007fl-DV; Tue, 24 Jun 2025 10:41:23 -0400
+	id 1uU4uO-00017K-5m; Tue, 24 Jun 2025 10:46:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uU4pq-0007ee-L6
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:41:19 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uU4tu-00014P-Hb
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:45:30 -0400
+Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uU4pn-0007qy-75
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:41:18 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-235d6de331fso78870615ad.3
- for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 07:41:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uU4ts-00006d-8Y
+ for qemu-devel@nongnu.org; Tue, 24 Jun 2025 10:45:30 -0400
+Received: by mail-yw1-x112a.google.com with SMTP id
+ 00721157ae682-712cba3c6dcso36168887b3.2
+ for <qemu-devel@nongnu.org>; Tue, 24 Jun 2025 07:45:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1750776071; x=1751380871; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5OwbS5zbiB0CjJOMj2vgpQYOF3JsiZ5A0Zkjye7Emjw=;
- b=NeGvENpqy9hAbZ7wP3ta2sTCY4W/C6ZUTtRtfnqMHJqJTmrR17GavN0DbnVhZ1GXgX
- +GAQ29ptp+Z14LDk2ASr2TTY8wzwXQrl4FAwaljdseUiyrUkXH+uJGvCXuS05jrt/rYz
- tFYv3Uozmsd1nd6v6eUXJ2mh14FYcD13+8DFlQpVpxRVTXnYsk64y0F1p2R8gBJiAwqE
- u+cDVAVvQHuvDaUJieN2VlmurLEdykm6bGsRiv44o9pH5X/QeIgTkaLap5DfQ45YerrF
- koIws8Sq6ZQr9jFLUcvXkfg2LkdIAFicZwnswh0in6fwe9mbha+O974J1fMr6Ntpz242
- td0A==
+ d=linaro.org; s=google; t=1750776324; x=1751381124; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=EFnGkFkO+hdQTtxXsJn7OU+AILNYhDMFhyhNUzhm1LU=;
+ b=Wqz7og1We0f3FAlDpxR/8hO6WkcE18Y0WPLFOOMqpPKbBUXzlStGSE2JQnzFWqdqz3
+ 4kipkjIprfGImV/z5kF9UIMdBknfADW/wELA118RzYRhPsItb8rLEjkEIWWvQNG/zHPs
+ 1PHNv6x7bjJ4IQzGgQDDHWXZl386QLgzRvBMbSbN8cBi9cAr61oC6P63zHmGeFnKKCw6
+ 2eIM3drqgTG1LDKKgRhPvgcJWIBhnVxgd1qrogKXr2gkifch4z/kvAXoS75tqk5vvZJk
+ hx+CsZNIwSJUzVcryBzEGal3ZA7mPAM33oYfMNhjKfGWg1Opi7hc6mwyO/GtNDQwdUXg
+ h5Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750776071; x=1751380871;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5OwbS5zbiB0CjJOMj2vgpQYOF3JsiZ5A0Zkjye7Emjw=;
- b=hYmhVRZnlS6s9kcjj5rsmhPBdLQCqK0kuCuxklpgI7OtSArXNIqTpRBr0NQI7H12Gz
- 4EbPn5YL0lpXqff6ufOe+42uvm0g60OD/SNUt6he7McJf3d/GZBK7KwlwXp4t03PA92H
- 1nPK/kG/o1sD9cFDxbQF0x3lxvXD8BZ+W1TlWW1tyeOKeWzFeNKbBHeiAbILzF5LeyRh
- ClILEyxM8e+8/TiorRDqTDI7OPHfmcODX7e75wcisHraeffOsDUthPSq95z1NdKrevJl
- SIGtCQx2zMQ62d9lqEuWsXnjwWtAKV7KYIl7Ao08J0CsuFF2OeXRu/XMj3gzS36lIROK
- h8Yg==
-X-Gm-Message-State: AOJu0YzQiIh8m97hNFl8jT+0B+NWPCdV8xzbL/NHm8KdSbUh+1vf6Hqi
- k3E2XBbuldrS3nnXmMv3hB3utK9ns5CAFy9i3SeTM6GM+PS6wv+/ubTOTL2it3gXwmmNzGfhAcz
- Sw8NoQfY=
-X-Gm-Gg: ASbGncvmEiiaRoq7Rt9tHDBVguUe5EAU009l0lpJMiOB1URz+BmHupNiOLSAMbUpcnF
- QNLMZq1E9x1KZLLKrmEriyjuyQQG/KNI4NOCLtGtQiWksJXHxsIwug9Aw8nrD+e12p+83WehxDd
- LkVR65OM5bqPQVm0ubhJKyEe6Dkl/+sJNBvOUdV25B/ojTZR2NN2BZJuap0kpn9vhP6qgv+Jcg1
- Vb9ZgpDMu0D1fFZYtyD1lJTSL9ZW6PkE88+HGQg1AVKYub9ZO6kdM7TehYx4KaaKsXeS61E4A+4
- 74vCMIc9iUQyFf4vyoEGQ6MGbS9V0UaZU1LTV9xdJUGwNIDbguiNp0ocqlegpd+o9XrT8Nqt5l3
- VsqkVcNd10aIWWWxwozMTdvrHYAYz
-X-Google-Smtp-Source: AGHT+IFl1ryAguo6SZxiNdzbnz4oAWzN6ZYPtvST84Nikv3MxUERmCWqVXQDZpSE8rSc3C8Ombs9Nw==
-X-Received: by 2002:a17:903:198d:b0:235:711:f810 with SMTP id
- d9443c01a7336-237d991fb70mr248561935ad.23.1750776071566; 
- Tue, 24 Jun 2025 07:41:11 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-67-243.tukw.qwest.net. [174.21.67.243])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-237d86a3083sm109332115ad.195.2025.06.24.07.41.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 24 Jun 2025 07:41:11 -0700 (PDT)
-Message-ID: <4cbf06d0-9bf3-4bfb-afb3-09098e0be105@linaro.org>
-Date: Tue, 24 Jun 2025 07:41:09 -0700
+ d=1e100.net; s=20230601; t=1750776324; x=1751381124;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EFnGkFkO+hdQTtxXsJn7OU+AILNYhDMFhyhNUzhm1LU=;
+ b=s2PyeURLoSdtkBIP41dL1kZ/hJRqxHezuEMUGF6n0GWMqBgTc1pF+9Wb1fZl10JaQw
+ jROd+7u/nU9v14zeVdZGUlKKlxIBHO9W68WHHW3zQcw9FLFQuzm0/+OZwcqgW6Q5764k
+ xKJJVRp8Z/D99Y6odHqY+1I225/joKo5H314af4D3O0KAPbfl9hiSGhe7zVi05V9QEgV
+ IRz1fAD2wu+N+ndC9PeRkoEyKI+xxm6kAd9S5zOdaRp+pNd/jcT2k4c9h2itPXqsvJS7
+ V24XM9zASULPXgYBdScdG2YUQn98Bxgckn/BP8/gmzfq45daL13NIv2PTtj4qGRkp06M
+ zvxA==
+X-Gm-Message-State: AOJu0YxRf/neN9KI8y6LUX+B4h9Qm1wlkr1hOdsYzbC5thDlODNdTzZe
+ FJH+4ob1PgY5Xkx7+GhPa5J8ycrvHbqpwDCHT9BBMMg2QPNjzdZ3HhRjSZWyuAzeAQbTGfhlm0Q
+ PKMlqQT6UAgvpJZ8cdNQEm9SSyK6+yPN+SwmpS8+40nukZxayNuvb
+X-Gm-Gg: ASbGncvWHF89tIXJRnItTDiWkb4LjTcBQuyB7TT6VJiQ31R1zPcpH+e/6fikFIPb3n/
+ rHlz8f1zHpZQ7p27Hzz+DuzWHRpkLFlQgbuq9o4UpLby/orPQY1r0i5GJpTDhigAsTRBj+xVDjU
+ tENHMVNDn+QM3B/kxhq42u+XXqmQltovdjtvwoJ1vPdtMd
+X-Google-Smtp-Source: AGHT+IG0KXzgAmbk5Yk6HQS9xExxSAPyvNF2QeCpQKD2akVQGa0mbD4OCcphJBQlUmUULBWln7AVh1mLq8O+9ugYdG4=
+X-Received: by 2002:a05:690c:9418:10b0:712:e333:d3a6 with SMTP id
+ 00721157ae682-712e333d882mr116150227b3.19.1750776323616; Tue, 24 Jun 2025
+ 07:45:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] target/arm: Fix sve_access_check for SME
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20250622213509.277798-1-richard.henderson@linaro.org>
- <20250622213509.277798-3-richard.henderson@linaro.org>
- <CAFEAcA8uoBSSro3CCfM6KWseZX52ZtgMvCkpbH4WczNxNKknkg@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA8uoBSSro3CCfM6KWseZX52ZtgMvCkpbH4WczNxNKknkg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+References: <20250621235037.74091-1-richard.henderson@linaro.org>
+ <20250621235037.74091-24-richard.henderson@linaro.org>
+ <CAFEAcA_+nS5jJxaOdoLD=mQSUatL01+NckO-dTZqrti3JqzYiA@mail.gmail.com>
+ <8eb7082e-d125-446b-a14c-eaa9642178df@linaro.org>
+In-Reply-To: <8eb7082e-d125-446b-a14c-eaa9642178df@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 24 Jun 2025 15:45:12 +0100
+X-Gm-Features: AX0GCFtsnW60ZYSsd8ZbCnxJxWzNawB9zVMLNOyBXQSB-AdZ_lqxaAgAA2IozfQ
+Message-ID: <CAFEAcA_YsNLMfDG5CtYyrWcfaOLMS_OenRhVBpnt+SsfipxQVQ@mail.gmail.com>
+Subject: Re: [PATCH v2 023/101] target/arm: Implement SME2 MOVA to/from tile, 
+ multiple registers
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,34 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/24/25 06:58, Peter Maydell wrote:
->> +    switch (dc_isar_feature(aa64_sme, s)) {
->> +    case true:
-> 
-> Why this rather than
->         if (dc_isar_feature(aa64_sme, s)) {
-> 
-> ?
-> 
->> +        if (s->pstate_sm) {
->> +            ret = sme_enabled_check(s);
->> +        } else if (!dc_isar_feature(aa64_sve, s)) {
->> +            ret = sme_sm_enabled_check(s);
->> +        } else {
->> +            break;
->> +        }
+On Mon, 23 Jun 2025 at 16:42, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 6/23/25 07:20, Peter Maydell wrote:
+> > Exceedingly nitpicky nit: the pseudocode seems to require
+> > that if the SVL is < 256 bits because the implementation
+> > doesn't support any larger SVL then this UNDEF should take
+> > precedence over the SVE/ZA-enabled check, but if the SVL
+> > is < 256 bits because software has set it that way then
+> > that UNDEF check happens after the SVE/ZA-enabled check.
+> > (The former happens in the decode-pseudocode, the latter
+> > in the operation-pseudocode.)
+>
+> Gotcha.  Will fix.
+>
+> Not all insns seem to have this split. For instance, FEAT_F64MM
+> ZIP[12] w/ Q operands only has the second operation test.
 
-I used break instead of a goto, or replicating
+That's because all of FEAT_F64MM's insns require 256 bit vector
+lengths, so an implementation with only 128 bit VL
+can't implement FEAT_F64MM at all, and we get the UNDEF
+from the IsFeatureImplemented(FEAT_F64MM) check.
 
-
->> +        if (ret) {
->> +            ret = nonstreaming_check(s);
->> +        }
->>           s->sve_access_checked = (ret ? 1 : -1);
->>           return ret;
-
-this block.
-
-
-r~
+thanks
+-- PMM
 
