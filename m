@@ -2,139 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B42AE8965
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 18:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 118C5AE8991
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 18:21:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUSlw-0006VX-D3; Wed, 25 Jun 2025 12:14:52 -0400
+	id 1uUSqe-0007ih-R7; Wed, 25 Jun 2025 12:19:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUSlt-0006VD-JK
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 12:14:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uUSqb-0007hX-0h; Wed, 25 Jun 2025 12:19:41 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUSll-00054g-Q1
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 12:14:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750868076;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=HtbGLSt/Y8dho6FP87GhFqZjG+wSTT5omAoXASAT+c8=;
- b=USvZYD5uV19MxD8hAo24A42L3YFllrBi0X50HTqaL801HWlRs0V9CRvv0FV31fNSegCX7n
- QRu1zmU7X+MEy6TTz4+LAm0jcd9dW6qE7G+c9AOYWD6H01yrkhMDz6C3ESnW1RE/3cLC9x
- j6s7NVyZE4AGVfOvcIdqO8jaTbi2OiI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-602-kAkn15S0NliMKhTZkgF51g-1; Wed, 25 Jun 2025 12:14:35 -0400
-X-MC-Unique: kAkn15S0NliMKhTZkgF51g-1
-X-Mimecast-MFC-AGG-ID: kAkn15S0NliMKhTZkgF51g_1750868074
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a4fac7fa27so2781333f8f.0
- for <qemu-devel@nongnu.org>; Wed, 25 Jun 2025 09:14:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750868074; x=1751472874;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HtbGLSt/Y8dho6FP87GhFqZjG+wSTT5omAoXASAT+c8=;
- b=PUNIB45Ykyfp5gpS8L5dyO7Zu730ypimugtRQ5JadqCKomY1TqbumZkwkYr1oGFVqi
- UpHK055Uw3ejRVfZ21GqA3eCyj62XsVRdLe2F9+mVMCkZLKKjEac+D89EhaNEZflaiBe
- CAlH6+xtFCsDXVVQo0h9fc11f/syDdUtxAoJL0uzBudoGMgEMAczuO0KxAd5qmOjFXgP
- mkWmsMlrfJoEsNx+0+CjWvD8NUJpZCPZLjHIrNo73PNAigJn1YCix7oKJdk15J3tKzJ5
- Z6pLMBjQDwgLkfwxdCq6W5YNnoSeiTcP4Wxgs+NJ1uBQQPsVjNubnZmsS7v3D3zLZiw9
- lUjA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX/GDBrfOZ9b2gSihcoPRSuB69fmMxq+4zOn8WHRUsKLxU2QGpfp1f4h8dSyRFkW9BxKspN26KHG7o1@nongnu.org
-X-Gm-Message-State: AOJu0YwumX/vewcTgK4IYI2ZyRSd0h4BIOpK+0qhTFadCMlBF3wtxYEp
- 2GvMlEnH60ZXQsS59BOSKhp4FXpqxKVx09AsJTBVpqLK2SVcvBHXcMJwy+oEzDnAO2XPjFd0dfl
- Rt1sDbdLDL3CWdUh4vKUt4TiK29twV4WuUn0BB0oQTdIICic91TSs9TKBD9rH/KED
-X-Gm-Gg: ASbGncthjBU0+0htosdBDKsQt668Ia3/gehLNyNCQDeujlEjeRaEQtjRU3uc+C2CEkR
- IpAEJunGwoAw1zQnxKXJp1aAfDkyK4JR4m6nSdfne4UEMJjzQv+Sp/AB0BPqgZLKCMpt+D+0Gkk
- Cjcj8gi/v8ELLoKbXXa11CqzLc2ZqmpH9Kru13mepyGMkC5SkiZe9CFSYz3piMf+5+wdyky63Bm
- eHsJAVdrfDaaPF0sU8YZNkjfKiycLAfh6Oti68bPo9pHBpRZnFCJnpfxOURGgkMxT8BdDhPMUE2
- 1HnQHHI1Dv4/LIAibStw+H80E3KUPuWHlOx1h5zIsMk1tr2Htv46bOE5D7vhKBU=
-X-Received: by 2002:a05:6000:25c5:b0:3a4:f900:21c4 with SMTP id
- ffacd0b85a97d-3a6ed643899mr3385823f8f.26.1750868073902; 
- Wed, 25 Jun 2025 09:14:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEH1CL6lXp2n4a0RTOyEIgv62rPxIuAtcKWDsFhbQJ2BgJ85lq/4yeX6MtoItWHB9PzjP9Uxw==
-X-Received: by 2002:a05:6000:25c5:b0:3a4:f900:21c4 with SMTP id
- ffacd0b85a97d-3a6ed643899mr3385797f8f.26.1750868073543; 
- Wed, 25 Jun 2025 09:14:33 -0700 (PDT)
-Received: from [192.168.0.7] (ltea-047-064-115-198.pools.arcor-ip.net.
- [47.64.115.198]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6e806916esm4993500f8f.43.2025.06.25.09.14.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Jun 2025 09:14:32 -0700 (PDT)
-Message-ID: <adf47487-83fc-4e2f-bfed-1a608fd4263a@redhat.com>
-Date: Wed, 25 Jun 2025 18:14:31 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uUSqX-0005qq-JO; Wed, 25 Jun 2025 12:19:40 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bS6TS2qdFz6DKst;
+ Thu, 26 Jun 2025 00:19:24 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 16D891404A9;
+ Thu, 26 Jun 2025 00:19:28 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 25 Jun 2025 18:19:27 +0200
+To: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>, Peter Maydell
+ <peter.maydell@linaro.org>, <mst@redhat.com>, Zhijian Li
+ <lizhijian@fujitsu.com>, Itaru Kitayama <itaru.kitayama@linux.dev>
+CC: <linuxarm@huawei.com>, <linux-cxl@vger.kernel.org>, <qemu-arm@nongnu.org>, 
+ Yuquan Wang <wangyuquan1236@phytium.com.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH qemu v16 0/5] arm/virt: CXL support via pxb_cxl
+Date: Wed, 25 Jun 2025 17:19:21 +0100
+Message-ID: <20250625161926.549812-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/12] Replace FSF postal address with licenses URL
-To: Sean Wei <me@sean.taipei>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-References: <20250613.qemu.patch@sean.taipei>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250613.qemu.patch@sean.taipei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,38 +66,123 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/06/2025 18.30, Sean Wei wrote:
-> The boiler-plate licence headers in several parts of QEMU still contain
-> the obsolete “51 Franklin Street" contact line.
-> 
-> The Free Software Foundation now recommends using the canonical URL:
-> 
->      https://www.gnu.org/licenses/
-> 
-> 
-> This patch updates those headers. The patches are comment-only;
-> no source code changes.
-> 
-> Please review and let me know if any patch should be split, squashed
-> or dropped. This is my first patch for the QEMU project, so any
-> feedback is greatly appreciated.
-> 
-> Thanks to Thomas Huth <thuth@redhat.com> for proposing this issue and
-> outlining the steps, and to Daniel P. Berrangé <berrange@redhat.com>
-> for the clarifications.
-> 
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2438
+v16:
+- Mostly additional documentation and descriptive text in
+  patch titles.
+- Update test to reflect changes to other tests.
+- Update physmem_max in virt to include the CXL memory.
 
-It's rather https://gitlab.com/qemu-project/qemu/-/issues/2974 instead, but 
-anyway, thanks for tackling this!
+Updated cover letter
 
-I'll queue the patches (except the one that updates linux-headers) for my 
-next pull request.
+Back in 2022, this series stalled on the absence of a solution to device
+tree support for PCI Expander Bridges (PXB) and we ended up only having
+x86 support upstream. I've been carrying the arm64 support out of tree
+since then, with occasional nasty surprises (e.g. UNIMP + DT issue seen
+a few weeks ago) and a fair number of fiddly rebases.
+gitlab.com/jic23/qemu cxl-<latest date>.  Will update shortly with this
+series.
 
-  Thomas
+A recent discussion with Peter Maydell indicated that there are various
+other ACPI only features now, so in general he might be more relaxed
+about DT support being necessary. The upcoming vSMMUv3 support would
+run into this problem as well.
+
+I presented the background to the PXB issue at Linaro connect 2022. In
+short the issue is that PXBs steal MMIO space from the main PCI root
+bridge. The challenge is knowing how much to steal.
+
+On ACPI platforms, we can rely on EDK2 to perform an enumeration and
+configuration of the PCI topology and QEMU can update the ACPI tables
+after EDK2 has done this when it can simply read the space used by the
+root ports. On device tree, there is no entity to figure out that
+enumeration so we don't know how to size the stolen region.
+
+Three approaches were discussed:
+1) Enumerating in QEMU. Horribly complex and the last thing we want is a
+   3rd enumeration implementation that ends up out of sync with EDK2 and
+   the kernel (there are frequent issues because of how those existing
+   implementations differ.
+2) Figure out how to enumerate in kernel. I never put a huge amount of work
+   into this, but it seemed likely to involve a nasty dance with similar
+   very specific code to that EDK2 is carrying and would very challenging
+   to upstream (given the lack of clarity on real use cases for PXBs and
+   DT).
+3) Hack it based on the control we have which is bus numbers.
+   No one liked this but it worked :)
+
+The other little wrinkle would be the need to define full bindings for CXL
+on DT + implement a fairly complex kernel stack as equivalent in ACPI
+involves a static table, CEDT, new runtime queries via _DSM and a description
+of various components. Doable, but so far there is no interest on physical
+platforms. Worth noting that for now, the QEMU CXL emulation is all about
+testing and developing the OS stack, not about virtualization (performance
+is terrible except in some very contrived situations!)
+
+There is only a very simple test in here, because my intent is not to
+duplicate what we have on x86, but just to do a smoke test that everything
+is hooked up.  In general we need much more comprehensive end to end CXL
+tests but that requires a reaonsably stable guest software stack. A few
+people have expressed interest in working on that, but we aren't there yet.
+
+Note that this series has a very different use case to that in the proposed
+SBSA-ref support:
+https://lore.kernel.org/qemu-devel/20250117034343.26356-1-wangyuquan1236@phytium.com.cn/
+
+SBSA-ref is a good choice if you want a relatively simple mostly fixed
+configuration.  That works well with the limited host system
+discoverability etc as EDK2 can be build against a known configuration.
+
+My interest with this support in arm/virt is support host software stack
+development (we have a wide range of contributors, most of whom are working
+on emulation + the kernel support). I care about the weird corners. As such
+I need to be able to bring up variable numbers of host bridges, multiple CXL
+Fixed Memory Windows with varying characteristics (interleave etc), complex
+NUMA topologies with wierd performance characteristics etc. We can do that
+on x86 upstream today, or my gitlab tree. Note that we need arm support
+for some arch specific features in the near future (cache flushing).
+Doing kernel development with this need for flexibility on SBSA-ref is not
+currently practical. SBSA-ref CXL support is an excellent thing, just
+not much use to me for this work.
+
+Also, we are kicking off some work on DCD virtualization, particularly to
+support inter-host shared memory being presented up into a VM. That
+will need upstream support on arm64 as it is built on top of the existing
+CXL emulation to avoid the need for a separate guest software stack.
+
+Note this is TCG only - it is possible to support limited use with KVM but
+that needs additional patches not yet ready for upstream.  The challenge
+is interleave - and the solution is don't interleave if you want to run
+with KVM.
+
+Jonathan Cameron (5):
+  hw/cxl-host: Add an index field to CXLFixedMemoryWindow
+  hw/cxl: Make the CXL fixed memory windows devices.
+  hw/arm/virt: Basic CXL enablement on pci_expander_bridge instances
+    pxb-cxl
+  docs/cxl: Add an arm/virt example.
+  qtest/cxl: Add aarch64 virt test for CXL
+
+ docs/system/arm/virt.rst    |   9 ++
+ docs/system/devices/cxl.rst |  10 +++
+ include/hw/arm/virt.h       |   4 +
+ include/hw/cxl/cxl.h        |   5 +-
+ include/hw/cxl/cxl_host.h   |   5 +-
+ hw/acpi/cxl.c               |  76 ++++++++--------
+ hw/arm/virt-acpi-build.c    |  34 +++++++
+ hw/arm/virt.c               |  29 ++++++
+ hw/cxl/cxl-host-stubs.c     |   7 +-
+ hw/cxl/cxl-host.c           | 174 +++++++++++++++++++++++++++++-------
+ hw/i386/pc.c                |  50 +++++------
+ tests/qtest/cxl-test.c      |  58 +++++++++---
+ tests/qtest/meson.build     |   1 +
+ 13 files changed, 352 insertions(+), 110 deletions(-)
+
+-- 
+2.48.1
 
 
