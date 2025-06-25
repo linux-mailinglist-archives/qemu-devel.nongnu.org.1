@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498D8AE7B15
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 10:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 795FEAE7C91
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 11:25:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uULxH-0003JS-DL; Wed, 25 Jun 2025 04:58:07 -0400
+	id 1uUMMU-00028f-HX; Wed, 25 Jun 2025 05:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uULxE-0003JH-Qo
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 04:58:04 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uUMMF-00028W-9Q
+ for qemu-devel@nongnu.org; Wed, 25 Jun 2025 05:23:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uULx8-0007au-5O
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 04:58:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750841878; x=1782377878;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=cNUWp/su5E8gasVSvmBLENE8Yn54Ci8OpCjOk0fFPfg=;
- b=TqCBGE/DAlCE+ntA5EZXeEn/M4K8xWlTawUOfR/8Eb/of+Aya4SZyZZe
- bZdnYwsWro6q70hufzWqZ2nIZ8BmiPSDCfUlZLRgNc8QkdJ/zboFIXwEI
- //Zy6HaUtrkgPvkLfGsNDU6jbPlimuU+Y+PxibUSqo6WFXdS0Z1buc3/L
- TZRS35PZvqXy+VQlys95duujiFtKpXzqFCnCPamYgp45IjROhUL6xmPzY
- V6Xp99igFqin8yonoZ30LjAmOf+EpDeapjOxbADzYVFNLNvKgsc3TzomD
- vKhz+nSrIHT4dj+4LOkn/ISfVSPF/TfdqGyttWtYlPNisiPzhxe2R0Rhb w==;
-X-CSE-ConnectionGUID: 1rm9Z5l9S9mqCahXgI5riA==
-X-CSE-MsgGUID: E17yHEqQTzaJOnj7l7ExfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="53035123"
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; d="scan'208";a="53035123"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2025 01:57:52 -0700
-X-CSE-ConnectionGUID: 3U+gfcE6QfKN+X/jTsoDLg==
-X-CSE-MsgGUID: JnAz04dgSwStc0XJF9MjTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; d="scan'208";a="151771934"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 25 Jun 2025 01:57:50 -0700
-Date: Wed, 25 Jun 2025 17:19:12 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Babu Moger <babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Tejus GK <tejus.gk@nutanix.com>, Jason Zeng <jason.zeng@intel.com>,
- Manish Mishra <manish.mishra@nutanix.com>,
- Tao Su <tao1.su@intel.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for Intel
-Message-ID: <aFu/EED7BNJgIXqH@intel.com>
-References: <20250423114702.1529340-1-zhao1.liu@intel.com>
- <20250423114702.1529340-2-zhao1.liu@intel.com>
- <fa16f7a8-4917-4731-9d9f-7d4c10977168@zhaoxin.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uUMMA-0000lc-5S
+ for qemu-devel@nongnu.org; Wed, 25 Jun 2025 05:23:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750843427;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=bZ+XYuox0wC95cywpvr8h67ROsM30izGhUHLxDsrux8=;
+ b=EbAlDXl84z+ilfUPAc2V8escLTLxP81D9jk05dVxfYxl+V9ffb8JHTfMIDiSWHZWaMi3Jk
+ 0zg+OEZbbr7v7VE4OAR3uCtFPi75pHYHZ2H7127tNkS6nm8z+uAidMhKZBmdqWMR3b1a2B
+ 01J6nvO+ZSaWqTw2zZVm90xZXFyO2h0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-pPsRU3IcO_eApNH12hmkAQ-1; Wed,
+ 25 Jun 2025 05:23:43 -0400
+X-MC-Unique: pPsRU3IcO_eApNH12hmkAQ-1
+X-Mimecast-MFC-AGG-ID: pPsRU3IcO_eApNH12hmkAQ_1750843422
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D8E331809C89; Wed, 25 Jun 2025 09:23:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.177])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 91DCC19560A3; Wed, 25 Jun 2025 09:23:33 +0000 (UTC)
+Date: Wed, 25 Jun 2025 10:23:29 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
+ peter.maydell@linaro.org, richard.henderson@linaro.org,
+ alex.bennee@linaro.org, maz@kernel.org, oliver.upton@linux.dev,
+ sebott@redhat.com, shameerali.kolothum.thodi@huawei.com,
+ armbru@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
+ agraf@csgraf.de, shahuang@redhat.com, mark.rutland@arm.com,
+ philmd@linaro.org, pbonzini@redhat.com
+Subject: Re: [PATCH v8 12/14] arm/cpu: Add sysreg generation scripts
+Message-ID: <aFvAEXWi7PUbVAud@redhat.com>
+References: <20250617153931.1330449-1-cohuck@redhat.com>
+ <20250617153931.1330449-13-cohuck@redhat.com>
+ <87h60e1ies.fsf@redhat.com>
+ <de402ecb-8d45-4e42-a805-cd3aaef8dc93@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <fa16f7a8-4917-4731-9d9f-7d4c10977168@zhaoxin.com>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <de402ecb-8d45-4e42-a805-cd3aaef8dc93@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,109 +89,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just want to confirm with the "lines_per_tag" field, which is related
-about how to handle current "assert(lines_per_tag > 0)":
-
-> --- patch prototype start ---
+On Wed, Jun 25, 2025 at 11:16:22AM +0200, Eric Auger wrote:
+> Hi Connie,
 > 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 7b223642ba..8a17e5ffe9 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -2726,6 +2726,66 @@ static const CPUCaches xeon_srf_cache_info = {
->      },
->  };
+> On 6/17/25 5:45 PM, Cornelia Huck wrote:
+> > On Tue, Jun 17 2025, Cornelia Huck <cohuck@redhat.com> wrote:
+> >
+> >> diff --git a/scripts/arm-gen-cpu-sysregs-header.awk b/scripts/arm-gen-cpu-sysregs-header.awk
+> >> new file mode 100755
+> >> index 000000000000..f92bbbafa727
+> >> --- /dev/null
+> >> +++ b/scripts/arm-gen-cpu-sysregs-header.awk
+> >> @@ -0,0 +1,37 @@
+> >> +#!/bin/awk -f
+> >> +# SPDX-License-Identifier: GPL-2.0-or-later
+> >> +# arm-gen-cpu-sysregs-header.awk: arm64 sysreg header include generator
+> >> +#
+> >> +# Usage: awk -f arm-gen-cpu-sysregs-header.awk $LINUX_PATH/arch/arm64/tools/sysreg
+> >> +
+> >> +BEGIN {
+> >> +    print "/* SPDX-License-Identifier: GPL-2.0-or-later */"
+> > FWIW, checkpatch.pl chokes on this:
+> >
+> > ^* matches null string many times in regex; marked by <-- HERE in m/^* <-- HERE /"$/ at scripts/checkpatch.pl line 1389.
+> > ERROR: Saw unacceptable licenses '*/"', valid choices for QEMU are:
+> > GPL-2.0-or-later
+> > GPL-2.0-only
+> > LGPL-2.1-only
+> > LGPL-2.1-or-later
+> > BSD-2-Clause
+> > BSD-3-Clause
+> > MIT
+> > total: 1 errors, 0 warnings, 76 lines checked
 > 
-> +static const CPUCaches yongfeng_cache_info = {
-> +    .l1d_cache = &(CPUCacheInfo) {
-> +        .type = DATA_CACHE,
-> +        .level = 1,
-> +        .size = 32 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 8,
-> +        .partitions = 1,
-> +        .sets = 64,
-> +        .lines_per_tag = 1,
+> so don't we need to improve checkpatch.pl to silence this error?
 
-This fits AMD APM, and is fine.
+Its regex gets confused by the trailing " after the comment end. We
+could fix it, but ignoring the error is also valid as this is a
+highly unusual file that's not likely to be common through our
+source tree.
 
-> +        .inclusive = false,
-> +        .self_init = true,
-> +        .no_invd_sharing = false,
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l1i_cache = &(CPUCacheInfo) {
-> +        .type = INSTRUCTION_CACHE,
-> +        .level = 1,
-> +        .size = 64 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 16,
-> +        .partitions = 1,
-> +        .sets = 64,
-> +        .lines_per_tag = 1,
 
-Fine, too.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-> +        .inclusive = false,
-> +        .self_init = true,
-> +        .no_invd_sharing = false,
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l2_cache = &(CPUCacheInfo) {
-> +        .type = UNIFIED_CACHE,
-> +        .level = 2,
-> +        .size = 256 * KiB,
-> +        .line_size = 64,
-> +        .associativity = 8,
-> +        .partitions = 1,
-> +        .sets = 512,
-> +        .lines_per_tag = 1,
-
-SDM reserves this field:
-
-For 0x80000006 ECX:
-
-Bits 11-08: Reserved.
-
-So I think this field should be 0, to align with "Reserved".
-
-In this patch:
-
-https://lore.kernel.org/qemu-devel/20250620092734.1576677-9-zhao1.liu@intel.com/
-
-I add an argument (lines_per_tag_supported) in encode_cache_cpuid80000006(),
-and for the case that lines_per_tag_supported=false, I assert
-"lines_per_tag == 0" to align with "Reserved".
-
-> +        .inclusive = true,
-> +        .self_init = true,
-> +        .no_invd_sharing = false,
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l3_cache = &(CPUCacheInfo) {
-> +        .type = UNIFIED_CACHE,
-> +        .level = 3,
-> +        .size = 8 * MiB,
-> +        .line_size = 64,
-> +        .associativity = 16,
-> +        .partitions = 1,
-> +        .sets = 8192,
-> +        .lines_per_tag = 1,
-
-The 0x80000006 EDX is also reserved in SDM. So I think this field should
-be 0, too.
-
-Do you agree?
-
-> +        .self_init = true,
-> +        .inclusive = true,
-> +        .no_invd_sharing = true,
-> +        .complex_indexing = false,
-> +        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
-> +    },
-> +};
-> +
 
