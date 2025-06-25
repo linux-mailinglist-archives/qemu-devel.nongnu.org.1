@@ -2,105 +2,202 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34A8AE8E66
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 21:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 586D1AE8EB7
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 21:31:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUVcQ-00056T-N0; Wed, 25 Jun 2025 15:17:15 -0400
+	id 1uUVpF-0007yk-O1; Wed, 25 Jun 2025 15:30:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uUVcL-00055X-6U
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 15:17:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uUVpC-0007yC-Qw
+ for qemu-devel@nongnu.org; Wed, 25 Jun 2025 15:30:27 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uUVcJ-00078c-0l
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 15:17:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750879021;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kw0DlxWGd8ypdEKrTwqtxV3qjtemMX85iv2o6/m6TKA=;
- b=GAm+/ijTUhPWh3ub7kvk/WbKRZF2Skb2dPo+mArbTKea9YBf+KmeaVniEv6x6RolqVD2UZ
- CfFdxtqe1mhHNn+pFA+H4B4+pmKuT7Iubq8ElPSMXhBEB+gQID4Lrdb0YdBOgufQVJkXyf
- yaCSLlN42i3w7u2F9O0Iw2UZ5tBuwVQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-OC-ucnk3Oim0_lAxt9y3Bg-1; Wed, 25 Jun 2025 15:16:58 -0400
-X-MC-Unique: OC-ucnk3Oim0_lAxt9y3Bg-1
-X-Mimecast-MFC-AGG-ID: OC-ucnk3Oim0_lAxt9y3Bg_1750879017
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a4ff581df3so109587f8f.1
- for <qemu-devel@nongnu.org>; Wed, 25 Jun 2025 12:16:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750879016; x=1751483816;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kw0DlxWGd8ypdEKrTwqtxV3qjtemMX85iv2o6/m6TKA=;
- b=nFCh5TsooPcnauP84BfhQat6GqMC4cU9h/gZiizXu1T8zYalOG5Z6IJkc+0sbnmleo
- taA0aQkIWwFPXtZFpQcPMtbWEUAeh3RY8i9OBjz33CTL0iAgPKLuFhROJErky+sB6mNu
- GZcFEpY5VUP8FRy7lXxHS6UJvX4AM0sZGHtuUSv6IYI9nQ651eAHuNQiOhMHPpc5X6WC
- 6ubybhK8ZcD5ty67+c38Zeu/We8Nu/vUGv3mOaueguFomOqFvf5dRZYpvg3eiE7qPTEk
- f92bq+aTONNk9z9UHfdYVlxyNFzsfDrDGRFKL+Teud2aNX0DOs5PmWOVsBksBLmHXR8c
- mFwQ==
-X-Gm-Message-State: AOJu0YzOBVJBJMuMtXOAZasK5FT7VGGVD87ozeyPtu9W1irR3U8kCoeQ
- ZJ5RqibNXJuFBgHw4t2wlXCBAFBVjqIILFBswqrRniBbM1KY22v3ZRndkar9e/MSzpppXwUSVQB
- io3Cr50Iz9P2UYFPEcteT3gHXouSjhi7TWKQ+7cDoN/74lFWfyZ9+TmqW
-X-Gm-Gg: ASbGncuPqJ+fPJc/McQ7v8/+xAbT7Wd69D5CBUtyEZEd3r9EKBWEV5WEwxkqQzXP46R
- QA84VVzbKDyQp/846K0O/C2UMR7DPQowmLpua6h6ppVLnKWXYdRSNsRoOakDz86MA/fWvAB45Iq
- qfO2imwCFjP02ps5TtKUA+4WuYfcjBhAWNFCRma2sBnuf7OlIN+O4RadWqCg4ObBuZJPo5s/q73
- QP5QIp73w1gP45DmGORTEn81EmN+x+wx4+l0zFn3GHVtNF+IHt0asKZV0TE2Q/VJ8wXVEnIQvgB
- 6fCOKQLzbjkatLXO
-X-Received: by 2002:adf:9cc9:0:b0:3a5:271e:c684 with SMTP id
- ffacd0b85a97d-3a6f3153609mr594895f8f.24.1750879016205; 
- Wed, 25 Jun 2025 12:16:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJmlrFATq9ZKXjbJIe/P3gVe3cLOn1Xapn8ChTdC04MYtjp+xWUfWm1YdQKNiSjRnWvcN2Hw==
-X-Received: by 2002:adf:9cc9:0:b0:3a5:271e:c684 with SMTP id
- ffacd0b85a97d-3a6f3153609mr594876f8f.24.1750879015731; 
- Wed, 25 Jun 2025 12:16:55 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73ea:4300:f7cc:3f8:48e8:2142])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a6e8068f63sm5329996f8f.39.2025.06.25.12.16.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Jun 2025 12:16:55 -0700 (PDT)
-Date: Wed, 25 Jun 2025 15:16:52 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v5 3/3] docs: define policy forbidding use of AI code
- generators
-Message-ID: <20250625150941-mutt-send-email-mst@kernel.org>
-References: <20250616092241.212898-1-armbru@redhat.com>
- <20250616092241.212898-4-armbru@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uUVpA-0003ER-CN
+ for qemu-devel@nongnu.org; Wed, 25 Jun 2025 15:30:26 -0400
+Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55PECg0G020023;
+ Wed, 25 Jun 2025 12:30:20 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=proofpoint20171006; bh=zsYxzGKPziKrs
+ DnG+EpOiV0AD5jzmZwF4KmUykFdjzo=; b=2I52eKakzyBXlRSZYHM/rBfrrRfUk
+ BkFKDC01lSLY3FXOQBrVifcw58cRNKXj7uPuRQzjohW1ftbZ7MJAUi+XrXeCcoor
+ B+3p21l4twdqpOvXzwrO3Kl7uJjQUcXoiL2xIlu7xTC7LxqnvqkIIXQ5/SKMRF1V
+ zOUMYEBhbXRRFV7tMxKrGElziLsdGjia3MaRg4G9trm5AUuRi7OF3tMqpjv7jhtV
+ 9VSbdDTAD0Egq8kNp9t94fmDU8Y4BRlA2/c+/YB8+zwR50+JzR16wdjUgdP+bg5C
+ TCkvl+tGlwm1uloa9m7eRP4uk5Sm2seMmc65FDAQxo49beh/0/CgvHWxg==
+Received: from nam04-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam04on2104.outbound.protection.outlook.com [40.107.100.104])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 47dtuhaqmt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 25 Jun 2025 12:30:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XgEu84FnESNTe5Og0Zv98CeMfkI6Aq2b4YI+Xqe8AqguN+vBjm5cCOsp24h5IP7BiAFKM0CWwbPmLkFFlzeZgpX4M+h0Msm5p7aGh2zGnhf35HJUY+yVJlDIX8LUWCzFGz3g9Y2YwI0L7u8DBUAYpBfY69iHbJF4k39T4avG0oLSW0qLD2H/PyivOD6I+U7uaX3xWiYMgauwgDkbEzqZnA4tb1dSX3J4oxBAmAjlqxVAqWlh8pigxdQsEOLeIgGoxtumaUvF3Fn31CF6LE4X1qMNmu04zsgsETpuRvF/gK9t96A05Wmhi1AoR/bB/WjO9uj604FB4yYpAcPyryIfZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zsYxzGKPziKrsDnG+EpOiV0AD5jzmZwF4KmUykFdjzo=;
+ b=c/aJN308K3vI2el/jcLg/4OH25VK1TpIxTLWrQ0fKt6KyTRU5iZzOZcm8hy43m3xZhX0+TZ1TXd5Vd0PaM/U0wWsEdOtgjLUaILAD2zq9878aGJ6DPgSWkkQNZmPfj4uewM3Jt6IpaUZ7DHuQ+SBSTwYjEKaE6VHXV4myZJ7fLPIluDwogayrc9c3ORhn04vCdyzQVye8FUXyVyFuXP00mJXdPiVOS6pLsFz0/8ZJLfbGjRs/wGalPWyCwcRAqKzX+F74qwHlhqyF6A/EoKUzO0fcO9xsK1Oad1BYYf89XAxOL+yxPJIsbMFQ59MeVnos6FnQC2CdIF4yh37oO2k5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zsYxzGKPziKrsDnG+EpOiV0AD5jzmZwF4KmUykFdjzo=;
+ b=PUhuy+ZcBTiBEE6Tfvdugy7ECHAYjJTMEeS6HskviaUMinXUAWr3oj7N50JIAYt45tpjT+7iDPjEyJhdDjKod+7T3G28j7AYlOkS60rJxxDtEzLk9BBVNNxD5pqKmoqiP3hy8cOG9zndBGDaZtzQe0r9Im5gqb96JrSFqQErk3aZPauZ5BughGvdZ7c+bjB5a3S6r56bdePTaEFS/0KJ+bE6zPVxrjp4f7K+KP58Fi4PgvXsv5bqNnni0qqOZGlX88PHLOsaEDTz4j2SLzPMBTFETCKExv95k1+PTh7GM23v68OUXL59VuAqWxQttQAo7BwYT2ArBxNcnbHvdZ8hRw==
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
+ by PH0PR02MB8535.namprd02.prod.outlook.com (2603:10b6:510:dd::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.28; Wed, 25 Jun
+ 2025 19:30:18 +0000
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51%2]) with mapi id 15.20.8880.015; Wed, 25 Jun 2025
+ 19:30:17 +0000
+From: John Levon <john.levon@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 00/19] vfio-user client
+Date: Wed, 25 Jun 2025 20:29:52 +0100
+Message-ID: <20250625193012.2316242-1-john.levon@nutanix.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250616092241.212898-4-armbru@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-ClientProxiedBy: AS4P190CA0019.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d0::18) To CH2PR02MB6760.namprd02.prod.outlook.com
+ (2603:10b6:610:7f::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|PH0PR02MB8535:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5beba085-7e4f-4853-69ab-08ddb41eb6fa
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?aUFvMmhwSTcwd3NUQ0RJZ21xQVlxd3VralVqT0cyQnIyMTFtWG9Ld1J6T1dL?=
+ =?utf-8?B?L3A3MERGU1piQ0Ywc0YxQlg0RHNnK1V6RDVIY281QUZHcGpDLzRKcno4OGVu?=
+ =?utf-8?B?NGViU0QrMEJXdjBtSyttUklmRGE5SkJlb2FmVEhXb0FPVFB3RlQxcU9pSUMz?=
+ =?utf-8?B?Y2FJQmZvWmJWdTREbWhZeXZQaEF0cm9ITXN2WUhGVDhIbm1SRXZYZ25PdmRB?=
+ =?utf-8?B?RXNkdnE2Ynkwd2Ixc2dLanFVeHYzNHhKdjh5WXlLYlIxazI3MmVaMjFSSEJp?=
+ =?utf-8?B?QkF0OGhBTDgwOFZOYnZwa3RrSmpxT29RS1plK3duS1JBMUFUUVlOa2x3ZXpm?=
+ =?utf-8?B?Q0Y5NnFZTHAxakMwSEQvNmpaaGU1cmdmeUhWL1BhdkFzYnFjMm4yQVZTUGxj?=
+ =?utf-8?B?eTBQRU9uSTFlaDRNTlRnUGZIMXdSaC9PSWhxQmVpYWF2TjJ0MGZJYXhrNHNp?=
+ =?utf-8?B?RC81MlZSZXlxS1dHcWgvbWVqTVdPSXAxWlhkc1A4Ukd6TlkzY3YrSUZtRFps?=
+ =?utf-8?B?ZWJYeUh4U0JLdFNKc2wvbEZ4NURjRUgvdHFQSUZxU04vbnRadTYzYVZWWUd1?=
+ =?utf-8?B?VkxVeHpXKy9tZ0RSREYrN3FvZTAybkxXMFQ1TFp4ZDdxNTd3aWwvYTdURHI1?=
+ =?utf-8?B?TmlCMUpudWJhTGcxd0xmM2ErZ3BxYmErS2FvaEJzQ3ZiQyttOFp1Q3phZ2xZ?=
+ =?utf-8?B?ejh6K0VIaG5qVVZ3c3VEVU9KQy9pUUlYa29aMjBJdkRlSzBjTkoyaFQzbk91?=
+ =?utf-8?B?MDI3T0Erb0FiekZFTWx2V29aN2UyR29qTnF5NWZCWms3cXc0a0M1Q1VRa2c5?=
+ =?utf-8?B?Tng4UTc1L2xtSU85ZkRXWlFOaW4vSzZORm1jdEVLdDd1U2hqblhFS1duRDRw?=
+ =?utf-8?B?NFdkNlpiai9LRUpVTVAzNk4zemJLdFV1d3RqRWR2UkNuWlloNXA5RTJJbUo3?=
+ =?utf-8?B?WDBEU29jN0dIVHdTZEFZcmN2MVlzM3V1NTRkWDJVTkZabllrcW9vN3ZWZjVJ?=
+ =?utf-8?B?OTUzVXRiMUdJVisrcElNT0l5ZkVNUVpxOVdEVkFDa1pGV2k3aVloZzdIQlRs?=
+ =?utf-8?B?c0xMa1pLSnBsRVArbmQ1VnRLdGRmWWN5UTRvVVJDbkJycFBEb3lmRm9rU01r?=
+ =?utf-8?B?Mk4yd2E1TUZKM2VZWWw5NVJVejViQWR3QWtFdm5XQVR2eXdNN1pTek9mY3ZG?=
+ =?utf-8?B?Sk9GR3pTdDcwWFVwMlVtekxMdjV4K3pGaWplOFhNV0ZRR3d0Yi9XaVhsRSsx?=
+ =?utf-8?B?U1dKVkpjdXBSaVlxbnJQSDBkY0o1THFKbEZUWHU3SzJhL1RjRDZva3BpZGZM?=
+ =?utf-8?B?Mm9YUk9lTCt1N04vdTREZkdDd0oxUUZMWTcxZTUzTVFya282SWtQNHp4amYv?=
+ =?utf-8?B?TmkvM3NvQlF2OFRCa2dZM1ZzZGY0U0tHbFRjRWZ2b0YrQXBGa3JoWk9PMitj?=
+ =?utf-8?B?aUs2SHhqTk9lTGRTZlRVL3JNQjZsMWRZKytTYktuWGdFd1c5Rm9rVjZhczJk?=
+ =?utf-8?B?dS93ckNEcGpJL05zK2tnR0NmNnBJaW8wMWhsR3lTM2d4UkhNMHptT3ZXQlpR?=
+ =?utf-8?B?UVVad2RZUEdtTDVHL3lVbDdTRGFZcVZEdW9rbTdZOVFYTSs4eUs5OFVVOE5T?=
+ =?utf-8?B?V0NhT1NNc3J0VEtOTURCTFg3cnhveVhBMzJNM1d0Vk5oT2d4VzFNeXVPS21l?=
+ =?utf-8?B?czlNSGVKNmtic2p4d0k1M1RqNjNITWk4bG1iM3JVYjNPNldYbTlENE1zcEJq?=
+ =?utf-8?B?WHdrYnpzREZ0aXVwT1BWZStaUXdTcGJUZDFuTTFHVnlWVm5tdG9SMEsvcHRu?=
+ =?utf-8?B?ODRWOEJxZ0lMdUlUSFliN1ZhYzdBbVJPS0d1dDVZNFlodGErM05NWHhmL1Fl?=
+ =?utf-8?B?a3ZCM2V6UkwxUERYNlpDcy9aa0ZPWkNkYU1ZOFdzdDFuKzlGMFJkczZXL3pk?=
+ =?utf-8?Q?srqLrYFPDpE=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WEg4dmpySGQreU13aGpIVURVOFhJVHJiZllaUi9XT0ZaRmtkU3NwS1AzZGpT?=
+ =?utf-8?B?eVNia3hEQWJpcXJZU3J2dnE1aXJtT2RKcE1PZytDMWZXeUt6b2F4QkdaMlhP?=
+ =?utf-8?B?b1Nod2ZvVXNoMWhwdWh6bHVVeVVxZXB5OVEzUWxmVnk1R1BXTmRPTG5KUDFp?=
+ =?utf-8?B?YXlicFZJQUZ1eEo2SzRQQkRWckc4a084SDY0dnBLNjE5UVhZMndwY0x6WVZx?=
+ =?utf-8?B?YWpXSEhQTkNEWU1PUkhIekpJM1Z0L25QbmNidmgyWUlWeXc5QWxsN3k5Umwx?=
+ =?utf-8?B?RHM3S0lBYW5MSEl3VGdobWdVb0pWYVFJTU1EQUUyUjVrT0JSUy85VHVTSWhu?=
+ =?utf-8?B?M1lnZ2pMN0pZMXhJQk9wc08wTFNVemJQTVlLZTNkRmVzUzFkYlZyeWRWdG1C?=
+ =?utf-8?B?US9kSzZaa01IeWhRb2owWDV2WGJkSkp5cGlzUmM3MFlNWExOZWlqWmE0aEZM?=
+ =?utf-8?B?U0NrT3Z2R3Fla2JjQnhpNTZ3eEJxaHR3R0VwOTJJdlpHSForNk9tdmE3clc2?=
+ =?utf-8?B?RnRPeWVVVjFJZDIzYW96VUltKzZuOE1MbW1scTQyK0c0WTJSS3Z2SFQyMTZM?=
+ =?utf-8?B?ekJoczlVQ05XOTJnbnN2bVZhVUtRVXJRN21LY1V4Wm93UGpaMW9ycTF0RWRD?=
+ =?utf-8?B?ZGxGNCtleHRnQXBOL0ZtOWdIOVNEaWorREh6ZmJyaGpYZ2JURUI3M0ZFWXVU?=
+ =?utf-8?B?VUFUdFFKRzZWUjh3OVBpYUk4cFg4Z1Q1ODNOaVhTdDduckh2ODRYVXZqUVRW?=
+ =?utf-8?B?VFlaUmd2eklxUWNLT0h3eWdqZFZyeHo5Rys3MWlmOTg0UjlLOFBNc1I3ZU92?=
+ =?utf-8?B?SWtKeEdJcnQycG1aRmk1MnBxV2E2ZEVnbW10V1N6Y3NuckxKS200V0h0U0wv?=
+ =?utf-8?B?YnZFRHRHVnR4ZkJVYVRCY1ZTaHRNczJXTWd4NW9KOTFpdE03ZG1XZDlNREFi?=
+ =?utf-8?B?NFo1LzZWWGxaWWhzbzFTTkFmbE85R1hKWFFXSTRLZlh1M3pvOGZrdiswaVBv?=
+ =?utf-8?B?TTIySEt6K1hERVB3eWg0SFVaNkd3Rm5SSUVHY2xLNUppVWNkM3VEQ1h0eVZl?=
+ =?utf-8?B?c2RTZE5BZkRqdkpPTnB6N2tJUlFSMXJ3Y0N0R0s3OWdLNmh0OWVUNWFSamND?=
+ =?utf-8?B?Tm5VdHZMRVkxTitaRWQxVnAxTGJlSmVoRVRzbjM4SFM4RHdUTlMwbzlCOUkx?=
+ =?utf-8?B?dEpGakFCUTIyRmFvTjc4dHd4UXZodGpIdlhqWUZSWTdmbXJwemNCaTBROE51?=
+ =?utf-8?B?YldzNHB5RmdjQjlUYTBDZ2ZwUzRwZVVGS1c5T29xeUNyZ3BTUGpPdWhMUGJz?=
+ =?utf-8?B?MVcxdVMrVUVLSnRkNnlIbU5kRFpOYzZiZVNOWjl5WXV5WDJkVCs4aUNDd3Vh?=
+ =?utf-8?B?QlZwY3Erdm9vQ1FSQUd5Z1JDWHRrT2Yxdy9CYnM4S2NPRlYwK2xsS0I0bDVI?=
+ =?utf-8?B?Yk9EQTVwdjdWSnh3djBqNllWdnd5WWZDNkxBWXdpU21yRjM0ZXBieG5YNDBL?=
+ =?utf-8?B?ZHVsQ0xxM2ZPdkxjMGZjdzNORWRQdzhVaHNWSmhIemNFandyQ1N3aERUem52?=
+ =?utf-8?B?cUFuNTYwak9ubEk3c1pnV1BKSDdTbkVOcG1WOFBIOWVuVzNQNGpQR0xYRnhE?=
+ =?utf-8?B?UFd4dXBSaXJrRkNnS1FudXhyWnhnOFBXS3N2b3YwdnBRME5MN3ZiNWVaQ2cr?=
+ =?utf-8?B?TjlmUHY4TnVybkYvT3lPVUZndXVIOE9zQlVwa1VEemRmYUpXeFFrYWgxL25v?=
+ =?utf-8?B?alNLMEtUN0d3ZXV6bllyR1BZcVBOYncybkJ3bm00UFdEZWl1TThFMEdtWEtv?=
+ =?utf-8?B?Tlp6d0U3QjduZFRMYUJGdGZpdSt6NjZPa3FwVkpmQWthVklKMFlYL3c1emdN?=
+ =?utf-8?B?cE1jLzg0bEI1cFhZbHU4WmFGQXVoTUR2d2dyUW9hV3hXNHlYUFVoRkxpSEts?=
+ =?utf-8?B?NVNNZDhsSENtNWFMSE90dE5wRkdzNjZKUnIxNm8wN3ZvYTRFOXpTK2lVZG1r?=
+ =?utf-8?B?U1FGa1E1UURjZm93RFowOHJ5WjFGZkNvSlljRDYxbGdOcUx5MXA5L0FPYU1E?=
+ =?utf-8?B?ckRZRGFMTEY5UGtKSndoczliSzNFaCtGcTEwY3FZZTBQL1FEdzRpN2YrWXIv?=
+ =?utf-8?Q?9b9E7OYCpxYRUDzz3MDsiAtUT?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5beba085-7e4f-4853-69ab-08ddb41eb6fa
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2025 19:30:17.3539 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Oi4gsgTyc+7kwVbIUkCybpYLTLYhk0bqAtMjk0I2Xw+smgzuR8S5qyaxTk+X+hPeQbKkJ+E57qSDy3IuckF2xg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB8535
+X-Authority-Analysis: v=2.4 cv=UK3dHDfy c=1 sm=1 tr=0 ts=685c4e4b cx=c_pps
+ a=5gyuRtdJujVkdqj/J6De9Q==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=0kUYKlekyDsA:10
+ a=VwQbUJbxAAAA:8 a=64Cc0HZtAAAA:8 a=JNVa9dCp4ZnOD5rxRnsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 4nJWfYPpGRRzUvgctnw5-d4z6v4uIY3M
+X-Proofpoint-ORIG-GUID: 4nJWfYPpGRRzUvgctnw5-d4z6v4uIY3M
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDE0NyBTYWx0ZWRfX2ylO2xZV9gFk
+ P0O8/9niZbRDz9QH6SQ6wxSyWXNzvr0vopL4u2KCEWB+sPqESRoRWJP6ZdlWHCtR0pTd2ZDrmtb
+ tT9sGCWVdydP4jL7M2XwjmRT9sZ5ANO8w4cVaOdj0NaRlGwTbXarEdoXjzkwNHktrvPTno2KUdo
+ pSLtwaajrghc34kkeRRVIXzgqRb6LV+tiuWzLeUrfLNZY2AYsFRIIXPidtt9dFHyXH5CMdGe5iQ
+ DtlFu8zZaxTtBcp/ymLqcRasPpLmbTgujY9he+yeiShKjoc8lSw+7kkLOQiwmUl3AKDDjnwvhrG
+ F7vyvwNfMCI+xFFhc37ddd9vaSFWBtManSTz1ZLnDG6uO2c5DlklYEeXocZ929GlvqK27+yWpm1
+ u8jExq+wsWwFnnL4H6KnJ9+bHLy7Ybku3pT0JhF/vuPDy7iNk0kTinT0Pfd/KuR0od8/Oa2b
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-25_06,2025-06-25_01,2025-03-28_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12;
+ envelope-from=john.levon@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,128 +213,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 16, 2025 at 11:22:41AM +0200, Markus Armbruster wrote:
-> From: Daniel P. Berrangé <berrange@redhat.com>
-> 
-> There has been an explosion of interest in so called AI code
-> generators. Thus far though, this is has not been matched by a broadly
-> accepted legal interpretation of the licensing implications for code
-> generator outputs. While the vendors may claim there is no problem and
-> a free choice of license is possible, they have an inherent conflict
-> of interest in promoting this interpretation. More broadly there is,
-> as yet, no broad consensus on the licensing implications of code
-> generators trained on inputs under a wide variety of licenses
-> 
-> The DCO requires contributors to assert they have the right to
-> contribute under the designated project license. Given the lack of
-> consensus on the licensing of AI code generator output, it is not
-> considered credible to assert compliance with the DCO clause (b) or (c)
-> where a patch includes such generated code.
-> 
-> This patch thus defines a policy that the QEMU project will currently
-> not accept contributions where use of AI code generators is either
-> known, or suspected.
-> 
-> These are early days of AI-assisted software development. The legal
-> questions will be resolved eventually. The tools will mature, and we
-> can expect some to become safely usable in free software projects.
-> The policy we set now must be for today, and be open to revision. It's
-> best to start strict and safe, then relax.
-> 
-> Meanwhile requests for exceptions can also be considered on a case by
-> case basis.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+The series contains an implementation of a vfio-user client in QEMU.
 
-Sorry about only reacting now, was AFK.
+The vfio-user protocol allows for implementing (PCI) devices in another
+userspace process; SPDK is one example, which includes a virtual NVMe
+implementation.
 
-So one usecase that to me seems entirely valid, is refactoring.
+The vfio-user framework consists of 3 parts:
+ 1) The VFIO user protocol specification.
+ 2) A client - the VFIO device in QEMU that encapsulates VFIO messages
+    and sends them to the server.
+ 3) A server - a remote process that emulates a device.
 
-For example, change a function prototype, or a structure,
-and have an LLM update all callers.
+This patchset implements parts 1 and 2.
 
-The only part of the patch that is expressive is the
-actual change, the rest is a technicality and has IMHO nothing to do with
-copyright. LLMs can just do it with no hassle.
+It has been tested against libvfio-user test servers as well as SPDK.
+A functional test is still being worked on.
 
+A previous version of this series can be found at
+https://lore.kernel.org/qemu-devel/20250619133154.264786-1-john.levon@nutanix.com/
 
-Can we soften this to only apply to expressive code?
+Changes since last series:
 
-I feel a lot of cleanups would be enabled by this.
+ - fixed SPDX identifier nits
+ - code review changes for error handling
 
+thanks
+john
 
-> ---
->  docs/devel/code-provenance.rst | 55 +++++++++++++++++++++++++++++++++-
->  1 file changed, 54 insertions(+), 1 deletion(-)
-> 
-> diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
-> index c25afed98d..b5aae2e253 100644
-> --- a/docs/devel/code-provenance.rst
-> +++ b/docs/devel/code-provenance.rst
-> @@ -282,4 +282,57 @@ boilerplate code template which is then filled in to produce the final patch.
->  The output of such a tool would still be considered the "preferred format",
->  since it is intended to be a foundation for further human authored changes.
->  Such tools are acceptable to use, provided there is clearly defined copyright
-> -and licensing for their output.
-> +and licensing for their output. Note in particular the caveats applying to AI
-> +content generators below.
-> +
-> +Use of AI content generators
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +TL;DR:
-> +
-> +  **Current QEMU project policy is to DECLINE any contributions which are
-> +  believed to include or derive from AI generated content. This includes
-> +  ChatGPT, Claude, Copilot, Llama and similar tools.**
-> +
-> +The increasing prevalence of AI-assisted software development results in a
-> +number of difficult legal questions and risks for software projects, including
-> +QEMU.  Of particular concern is content generated by `Large Language Models
-> +<https://en.wikipedia.org/wiki/Large_language_model>`__ (LLMs).
-> +
-> +The QEMU community requires that contributors certify their patch submissions
-> +are made in accordance with the rules of the `Developer's Certificate of
-> +Origin (DCO) <dco>`.
-> +
-> +To satisfy the DCO, the patch contributor has to fully understand the
-> +copyright and license status of content they are contributing to QEMU. With AI
-> +content generators, the copyright and license status of the output is
-> +ill-defined with no generally accepted, settled legal foundation.
-> +
-> +Where the training material is known, it is common for it to include large
-> +volumes of material under restrictive licensing/copyright terms. Even where
-> +the training material is all known to be under open source licenses, it is
-> +likely to be under a variety of terms, not all of which will be compatible
-> +with QEMU's licensing requirements.
-> +
-> +How contributors could comply with DCO terms (b) or (c) for the output of AI
-> +content generators commonly available today is unclear.  The QEMU project is
-> +not willing or able to accept the legal risks of non-compliance.
-> +
-> +The QEMU project thus requires that contributors refrain from using AI content
-> +generators on patches intended to be submitted to the project, and will
-> +decline any contribution if use of AI is either known or suspected.
-> +
-> +This policy does not apply to other uses of AI, such as researching APIs or
-> +algorithms, static analysis, or debugging, provided their output is not to be
-> +included in contributions.
-> +
-> +Examples of tools impacted by this policy includes GitHub's CoPilot, OpenAI's
-> +ChatGPT, Anthropic's Claude, and Meta's Code Llama, and code/content
-> +generation agents which are built on top of such tools.
-> +
-> +This policy may evolve as AI tools mature and the legal situation is
-> +clarifed. In the meanwhile, requests for exceptions to this policy will be
-> +evaluated by the QEMU project on a case by case basis. To be granted an
-> +exception, a contributor will need to demonstrate clarity of the license and
-> +copyright status for the tool's output in relation to its training model and
-> +code, to the satisfaction of the project maintainers.
-> -- 
-> 2.49.0
+John Levon (18):
+  vfio-user: add vfio-user class and container
+  vfio-user: connect vfio proxy to remote server
+  vfio-user: implement message receive infrastructure
+  vfio-user: implement message send infrastructure
+  vfio-user: implement VFIO_USER_DEVICE_GET_INFO
+  vfio-user: implement VFIO_USER_DEVICE_GET_REGION_INFO
+  vfio-user: implement VFIO_USER_REGION_READ/WRITE
+  vfio-user: set up PCI in vfio_user_pci_realize()
+  vfio-user: implement VFIO_USER_DEVICE_GET/SET_IRQ*
+  vfio-user: forward MSI-X PBA BAR accesses to server
+  vfio-user: set up container access to the proxy
+  vfio-user: implement VFIO_USER_DEVICE_RESET
+  vfio-user: implement VFIO_USER_DMA_MAP/UNMAP
+  vfio-user: implement VFIO_USER_DMA_READ/WRITE
+  vfio-user: add 'x-msg-timeout' option
+  vfio-user: support posted writes
+  vfio-user: add coalesced posted writes
+  docs: add vfio-user documentation
+
+Thanos Makatos (1):
+  vfio-user: introduce vfio-user protocol specification
+
+ MAINTAINERS                           |   11 +-
+ docs/interop/index.rst                |    1 +
+ docs/interop/vfio-user.rst            | 1520 +++++++++++++++++++++++++
+ docs/system/device-emulation.rst      |    1 +
+ docs/system/devices/vfio-user.rst     |   26 +
+ meson.build                           |    1 +
+ hw/vfio-user/container.h              |   23 +
+ hw/vfio-user/device.h                 |   24 +
+ hw/vfio-user/protocol.h               |  242 ++++
+ hw/vfio-user/proxy.h                  |  135 +++
+ hw/vfio-user/trace.h                  |    4 +
+ hw/vfio/pci.h                         |    1 +
+ include/hw/vfio/vfio-container-base.h |    1 +
+ include/hw/vfio/vfio-device.h         |    2 +
+ hw/vfio-user/container.c              |  370 ++++++
+ hw/vfio-user/device.c                 |  441 +++++++
+ hw/vfio-user/pci.c                    |  475 ++++++++
+ hw/vfio-user/proxy.c                  | 1356 ++++++++++++++++++++++
+ hw/Kconfig                            |    1 +
+ hw/meson.build                        |    1 +
+ hw/vfio-user/Kconfig                  |    7 +
+ hw/vfio-user/meson.build              |   11 +
+ hw/vfio-user/trace-events             |   20 +
+ 23 files changed, 4673 insertions(+), 1 deletion(-)
+ create mode 100644 docs/interop/vfio-user.rst
+ create mode 100644 docs/system/devices/vfio-user.rst
+ create mode 100644 hw/vfio-user/container.h
+ create mode 100644 hw/vfio-user/device.h
+ create mode 100644 hw/vfio-user/protocol.h
+ create mode 100644 hw/vfio-user/proxy.h
+ create mode 100644 hw/vfio-user/trace.h
+ create mode 100644 hw/vfio-user/container.c
+ create mode 100644 hw/vfio-user/device.c
+ create mode 100644 hw/vfio-user/pci.c
+ create mode 100644 hw/vfio-user/proxy.c
+ create mode 100644 hw/vfio-user/Kconfig
+ create mode 100644 hw/vfio-user/meson.build
+ create mode 100644 hw/vfio-user/trace-events
+
+-- 
+2.43.0
 
 
