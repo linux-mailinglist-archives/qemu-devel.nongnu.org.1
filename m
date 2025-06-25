@@ -2,62 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E34AE7592
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 05:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98681AE75A3
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 06:03:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUHFG-0002sx-NP; Tue, 24 Jun 2025 23:56:22 -0400
+	id 1uUHLQ-00056o-Lp; Wed, 25 Jun 2025 00:02:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uUHFE-0002se-Ad
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 23:56:20 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ id 1uUHLN-00056b-NB
+ for qemu-devel@nongnu.org; Wed, 25 Jun 2025 00:02:41 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uUHFC-0002EY-GY
- for qemu-devel@nongnu.org; Tue, 24 Jun 2025 23:56:20 -0400
+ id 1uUHLL-0003Lv-PY
+ for qemu-devel@nongnu.org; Wed, 25 Jun 2025 00:02:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750823778; x=1782359778;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Qynfft1D3oOHzHCeV9CxuYI60grWqkunhRCqIXpNJ6k=;
- b=lymCWWlvbwFNjYvZ7DC4ZkQC+fABTrZnGcA1/2MowosxndZew3f0/vUW
- ZetZL4ZhkK32fGYV/z0N2dMWDrkRq88gyT4BlH57BcPd6oivajIXfAWKW
- NNUQTLgfJVwLKwDgDifehIzX78v9MW91LS90UfBPu30BDDsbmlwqpbLRy
- 8bqzp5XkzTakmUn+efi4AhOVjsr0Vj/f/OvZ8CXKDbCzwi5Izl7Ia4soN
- GnK7G+rpJ63iaE8s0gfUjn/ocxuyM6+lliO4RcecAD1HkUO6wVWoGpcvP
- YB/4XGh8HxCdhZCnk3ivMjSFFa0cCC8QiTjpbo+xrJNp3tC6wioMXk0tF Q==;
-X-CSE-ConnectionGUID: VpUqlwzyQPWhWedxr27BaQ==
-X-CSE-MsgGUID: xD+7da4ITX+A3MPC5kJb/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="52800075"
-X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; d="scan'208";a="52800075"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2025 20:56:16 -0700
-X-CSE-ConnectionGUID: uMk9+b7ERd+C3ycx2YwpAg==
-X-CSE-MsgGUID: BcOAbfXdSledAxHk3fLgqQ==
+ t=1750824160; x=1782360160;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=42nRR0KrbdmqvkZGe4dz55Pz3JwJ3F4EGtg8zANaY3M=;
+ b=GDtR/w3AQj9EBn1zMZ9Vd4xMNf6eLjT+pmBfZwePHjlJWgf46YDlGhvF
+ SuOxDTUYa6iWshlCL9rH/07wRR4mbigA7sBq92bAAacG+xedA6/uG4vE/
+ jBynBcziHVc82ywOCE12B/iYlciXRA65O+HxB62s98p5xwzR4dHK6Fizq
+ c/vMx0k3O2Jt7qsO1tV8kP8tvqGvdGenzpVjodnEzn2eX2my70uJBwoyR
+ JlC3UEDSe5egDNXAlk7T3mQ1iGNn6fJ+pIUjD9IBBp2XJtjZv1VAuvWLu
+ GTR/OVz7gHblzAQIN1cy/WyfK/BCXnXMBNGaT8djQNw15nAdnyPWmngJm w==;
+X-CSE-ConnectionGUID: AtTAsko8RiaAftFSm0Ouig==
+X-CSE-MsgGUID: oDtpR8bGQ0mj6nCVS8eCZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="53222453"
+X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; d="scan'208";a="53222453"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2025 21:02:14 -0700
+X-CSE-ConnectionGUID: VnTpLUnmQ7K7vQwQwWpYQQ==
+X-CSE-MsgGUID: eowW5MzbSCm6lRmrFqMETw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; d="scan'208";a="151848924"
+X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; d="scan'208";a="156380636"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa009.jf.intel.com with ESMTP; 24 Jun 2025 20:56:15 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 24 Jun 2025 21:02:13 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- xiaoyao.li@intel.com, qemu-devel@nongnu.org
-Subject: [PATCH 2/2] i386/tdx: Don't build TDX for 32bit target
-Date: Wed, 25 Jun 2025 11:49:03 +0800
-Message-ID: <20250625034903.2770272-3-xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	xiaoyao.li@intel.com
+Subject: [PATCH] i386/tdx: Remove task->watch only when it's valid
+Date: Wed, 25 Jun 2025 11:55:05 +0800
+Message-ID: <20250625035505.2770580-1-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250625034903.2770272-1-xiaoyao.li@intel.com>
-References: <20250625034903.2770272-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=xiaoyao.li@intel.com;
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
@@ -82,29 +78,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX cannot work on 32-bit host. It's also not worth supported TDX with
-32-bit QEMU.
+In some case (e.g., failed to connect to QGS socket),
+tdx_generate_quote_cleanup() is called with task->watch invalid. It
+triggers assertion of
 
-Thus, make TDX depends on !I386.
+  qemu-system-x86_64: GLib: g_source_remove: assertion 'tag > 0' failed
 
+Fix it by checking task->watch.
+
+Fixes: 40da501d8989 ("i386/tdx: handle TDG.VP.VMCALL<GetQuote>")
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- hw/i386/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/kvm/tdx-quote-generator.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index 6fc353930985..c58802462a45 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -13,7 +13,7 @@ config SGX
- config TDX
-     bool
-     select X86_FW_OVMF
--    depends on KVM
-+    depends on KVM && !I386
+diff --git a/target/i386/kvm/tdx-quote-generator.c b/target/i386/kvm/tdx-quote-generator.c
+index f59715f61751..dee8334b27ac 100644
+--- a/target/i386/kvm/tdx-quote-generator.c
++++ b/target/i386/kvm/tdx-quote-generator.c
+@@ -75,7 +75,9 @@ static void tdx_generate_quote_cleanup(TdxGenerateQuoteTask *task)
+ {
+     timer_del(&task->timer);
  
- config PC
-     bool
+-    g_source_remove(task->watch);
++    if (task->watch) {
++        g_source_remove(task->watch);
++    }
+     qio_channel_close(QIO_CHANNEL(task->sioc), NULL);
+     object_unref(OBJECT(task->sioc));
+ 
 -- 
 2.43.0
 
