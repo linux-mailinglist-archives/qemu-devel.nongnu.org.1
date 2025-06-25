@@ -2,115 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39461AE8223
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 13:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B5BAE83FB
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 15:11:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUOj0-0002Cq-HR; Wed, 25 Jun 2025 07:55:34 -0400
+	id 1uUPtG-0000yC-71; Wed, 25 Jun 2025 09:10:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1uUOiu-00029T-S6
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 07:55:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1uUOin-00074d-3Y
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 07:55:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750852520;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=htp6uz79nt3n3kEPS6Nnn/JEUKxAsXlzamotwo6W3fs=;
- b=Tmka1MiEyphZIZBxubG9nKrSXId6uYyWYVVgWI9vqq7omsMLYhozWpcE8bPWaTvdcQ+Ept
- Vnssu94liIS1zWT7l1U+FsehV3xiHtHKVJk8fp46A2otZ/P9XO8UNhZZdE7rbEDSFfWOEr
- Nj3+vwwyX14omDLD8YOW8EoYyGixuPY=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-281-v4K0xIHtNdOPOPL_GKzHmg-1; Wed, 25 Jun 2025 07:54:22 -0400
-X-MC-Unique: v4K0xIHtNdOPOPL_GKzHmg-1
-X-Mimecast-MFC-AGG-ID: v4K0xIHtNdOPOPL_GKzHmg_1750852462
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-7491814d6f2so1650587b3a.3
- for <qemu-devel@nongnu.org>; Wed, 25 Jun 2025 04:54:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
+ id 1uUNqX-0003m0-Ni; Wed, 25 Jun 2025 06:59:17 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
+ id 1uUNqU-0001WN-3f; Wed, 25 Jun 2025 06:59:17 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-74801bc6dc5so637566b3a.1; 
+ Wed, 25 Jun 2025 03:59:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1750849150; x=1751453950; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DfTlTxK1dlkaot0V6gSP9zmhbaUrUlY5kLppezkfyDY=;
+ b=UirR6gxqxGo3w7+ohvUwnC7AjpPPOclg1JkDzqM5/e1fQDGadk+oKr0sKtrdG9tFPZ
+ ZZok43Eco4W4pYguA1TD8Cx+27YyRVtaVyg7lF+BW0Sy7cJu+YMeLq7PwaJuLmB+haUc
+ liJAlQq9snx/QzTpzkShbXFoOWsAj2WAlZAyMBDu0FA7xWH6QJWK9XU6yhzHAjkxIybV
+ CI78lAi7sF+cTvPvgybam85rOPC7Yx81rJ/6r5x6envC0GwUHR1qHoVc3ikEe2/xzpPt
+ o9oNKo4FihImfSmoOu2uG9VCOSHyMrv9KW3CiFhBM8rrBsZwXPrS1OaXdXe5wTNOA3PG
+ OCPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750852461; x=1751457261;
- h=in-reply-to:content-disposition:mime-version:references:reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=htp6uz79nt3n3kEPS6Nnn/JEUKxAsXlzamotwo6W3fs=;
- b=u1/ioMlgTvCt+BUoJBX7mjkUYQ+QOsMneS3AOePKOhczHk+f/xk7Ti3p0nBzhpp5Ip
- BnDviPJMj9x9nVsF9FUX2DYmxDApQxOzLhmHcWJsEpU7qV0nQ3re2wfIvlB1JT2pnb+R
- z8lFXWVxXHuviyDKNCCNqzzVYZz4j+vsBnkxbXdwFAFQDbYhJ94EbC6ZJMZz+zP6kzw4
- FJfqI44pGd3MWPajvgcN5CZ4FJ/hrJequGNfRbvHmj9+4jeFGLbd70/2X/0Uj3XkPATo
- +OaoxddzrWUmPVZ++REDkW8MHxfIpDf25nmrRC2//JEEmtJl+OxSVFBn86fpytaAvA51
- IGZg==
-X-Gm-Message-State: AOJu0YzksxVuUmdj5n/yiFBusiG4DSAmg4ZeQVwYvMcnk1MGKoCrTQQa
- d6RYGEObvXLRb6JRhQJY6zOgBd3hyKERhxe29uGgjl7w7QYHZKeiAzNHTExo5nEurB34IU9CbuJ
- JYo6OjyoTzFyJz9iOkYlCDkkELGNV0fTteeDyWXs70KmmBv07zpD0Aj/W
-X-Gm-Gg: ASbGncuNW/s4bTsP1dmqct5GoZXPlrMQHf9tJ4PDzkk8mLIQvJNYrC3Krgdcap3h4n8
- faC0MNwr+pr0OxY8MAqswe4eZLvJqAR6UnpHtdPWbzhcC4JSPvnAdvAkoKAoqShvcGtyZw4cpXW
- mjdRf49knY3tCkkN3ylNgQR4/2rQz6UDAFfvViCfHMiJKeSQeaxFjHfgQfJd1BR5cz0mSAepfc+
- ytzRJxwffDM82knHpQoR0Yv/tN9GPvyxWNhZMek7nU7/+4heZY9eBVdkhTA16PerhLoZtiRPO1V
- 6rGWCgU+QFReKUWGmh0Ka7vI/dfI+iSB1qo=
-X-Received: by 2002:a05:6a21:3399:b0:21f:7430:148a with SMTP id
- adf61e73a8af0-2207f2858c1mr4349096637.28.1750852461349; 
- Wed, 25 Jun 2025 04:54:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEgvJf7IOXxd6BMSqzpz77PJn4qUUyKRGtw2BSXNvi7TcF5Ipknqt7fiOY/W8Co2Viyot+Gkw==
-X-Received: by 2002:a05:6a21:3399:b0:21f:7430:148a with SMTP id
- adf61e73a8af0-2207f2858c1mr4349025637.28.1750852460638; 
- Wed, 25 Jun 2025 04:54:20 -0700 (PDT)
-Received: from armenon-kvm.bengluru.csb ([49.36.103.63])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b31f119c94dsm12443377a12.24.2025.06.25.04.54.13
+ d=1e100.net; s=20230601; t=1750849150; x=1751453950;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DfTlTxK1dlkaot0V6gSP9zmhbaUrUlY5kLppezkfyDY=;
+ b=tyASX9AO7rymzENVYe5z7UrEuwU2JJ6W/RbsPC90bWNIbiLrkWdwuSTYOmTEDn3PHl
+ EcUjB9AOscCdP6hVozCBLW/kazKqF36zTdEoF5G/sxKQ5o531kjMsPPHLDc3a65kAe8I
+ JS+P4f6UuicYdJD0TIDHE2DwgBKcJhkUPYjQNmvfMz7Bi0hOb4c2Uti0s3vHHHP6fhdC
+ W+UfStUaQnMBdSs00OEfUWbfTIjC7j/C9h9kfZL+ensHLl46rxzSV3x13IM+Qwb9RByi
+ 8W36aatvzEOUbtaZ5Ilb+0PdxbahhtT1A6z1q82hCJenttaV7ro7Gq+YpQNCTrjxgSs6
+ JQFA==
+X-Gm-Message-State: AOJu0YwRhRVw/MGl5sjG2d/4V6gOyNJhiBlCKOiBjbejRM0z6AGStqcS
+ AAi7FfreRCpvvz4bliPGJBNvBzr3a1zy/3rC7X9Kjv2ZWSeOgptwXEc3lTzULJ4/nCw=
+X-Gm-Gg: ASbGncuZMf2T3s6GwAe76COhMDeWFRCcd4OgPqI/5I/k3ZvBmr9abw+6cL+uRVJB1ki
+ 8HD8PW1dicLcXKEVuLZCN0pLjEzbb+eGKyA+Wul1uQrDe7EGK9lOR85hyEMzaVqvZEZ9fDo5pFH
+ 0XjcaoawX5vKAcMU55WZukOT8ECgyxofhn7u+maC8e7580Pcdrn95AGh8Sc7vk9Bhur1E8qgtVU
+ tHCZ7zBLKiuxDXNfWEn8OjpvixY0kII+FEX0OSl9UxohBU6W7FTWsgPxRL5XYvsEzx5WMs0yRuL
+ 5eLy3tsEpL12C2TqXsw3tmZLbK5GmiM1aevR8ztpHSUwpABLs4WkfC9DMGZNcqBF5xqcr0YxGgv
+ lyfqngNa16eyiKRNFI8GPFPTkJHV1jpbgPMvKYN3JnCI=
+X-Google-Smtp-Source: AGHT+IFJbo9+sJVsXNNJ0MKnKQCGHQVNJpDWiaS+/P5ieZrTB3gKp4auvRfIAWaU7Qo/2tRoiBCV2Q==
+X-Received: by 2002:a05:6a00:999:b0:748:e289:6bc with SMTP id
+ d2e1a72fcca58-74ad4ad64cfmr3911742b3a.1.1750849149720; 
+ Wed, 25 Jun 2025 03:59:09 -0700 (PDT)
+Received: from localhost (pa49-178-74-199.pa.nsw.optusnet.com.au.
+ [49.178.74.199]) by smtp.gmail.com with UTF8SMTPSA id
+ d2e1a72fcca58-749c882ceb3sm4147619b3a.76.2025.06.25.03.59.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Jun 2025 04:54:20 -0700 (PDT)
-Date: Wed, 25 Jun 2025 17:24:10 +0530
-From: Arun Menon <armenon@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PATCH 1/3] migration: Pass error object to report it to the
- caller
-Message-ID: <aFvjYivVnQYT4YPs@armenon-kvm.bengluru.csb>
-References: <20250624-propagate_tpm_error-v1-0-2171487a593d@redhat.com>
- <20250624-propagate_tpm_error-v1-1-2171487a593d@redhat.com>
- <aFqsSFv5poQxYvkz@x1.local>
+ Wed, 25 Jun 2025 03:59:09 -0700 (PDT)
+From: William Kosasih <kosasihwilliam4@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ William Kosasih <kosasihwilliam4@gmail.com>
+Subject: [PATCH] target/arm: Fix M-profile helper loads/stores alignment checks
+Date: Wed, 25 Jun 2025 20:28:32 +0930
+Message-ID: <20250625105832.1277378-1-kosasihwilliam4@gmail.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFqsSFv5poQxYvkz@x1.local>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=kosasihwilliam4@gmail.com; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 25 Jun 2025 09:10:04 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -122,822 +91,761 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: armenon@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+Historically, M-profile helper functions in m_helper.c and mve_helper.c
+used the unaligned cpu_*_data_ra() routines to perform guest memory
+accesses. This meant we had no way to enforce alignment constraints
+when executing helper-based loads/stores. With the addition of the
+cpu_*_mmu() APIs, we can now combine the current MMU state
+(cpu_mmu_index(env, false)) with MO_ALIGN flags to build a MemOpIdx
+that enforces alignment at the helper level.
 
-Thank you so much for the review.
-I shall squash patches 1 and 2 and add error_prepend()
-where I missed them; also adding a null check.
+This patch:
+- Replaces all calls to cpu_ldl_data_ra(), cpu_ldst_data_ra(), etc.,
+  in the M-profile helpers (m_helper.c) and the MVE helpers
+  (mve_helper.c) with their cpu_*_mmu() equivalents.
+- Leaves SME and SVE helper code untouched, as those extensions
+  support unaligned accesses by design.
+- Retains the manual alignment checks in the vlldm/vlstm helpers
+  because those instructions enforce an 8-byte alignment requirement
+  (instead of the 4-byte alignment for ordinary long loads/stores).
+  References to cpu_*_data_* are still replaced with cpu_*_mmu(), so
+  that the individual word accesses themselves also perform the standard
+  alignment checks, in keeping with the ARM pseudocode.
 
-On Tue, Jun 24, 2025 at 09:46:48AM -0400, Peter Xu wrote:
-> Hi, Arun,
-> 
-> On Tue, Jun 24, 2025 at 05:53:04PM +0530, Arun Menon wrote:
-> > - This is an incremental step in converting vmstate loading
-> >   code to report errors.
-> > - Minimal changes to the signature and body of the following
-> >   functions are done,
-> >   - vmstate_load()
-> >   - vmstate_load_state()
-> >   - vmstate_subsection_load()
-> >   - qemu_load_device_state()
-> >   - qemu_loadvm_state()
-> >   - qemu_loadvm_section_start_full()
-> >   - qemu_loadvm_section_part_end()
-> >   - qemu_loadvm_state_header()
-> >   - qemu_loadvm_state_main()
-> > 
-> > Signed-off-by: Arun Menon <armenon@redhat.com>
-> > ---
-> >  hw/display/virtio-gpu.c     |  2 +-
-> >  hw/pci/pci.c                |  2 +-
-> >  hw/s390x/virtio-ccw.c       |  2 +-
-> >  hw/scsi/spapr_vscsi.c       |  2 +-
-> >  hw/vfio/pci.c               |  2 +-
-> >  hw/virtio/virtio-mmio.c     |  2 +-
-> >  hw/virtio/virtio-pci.c      |  2 +-
-> >  hw/virtio/virtio.c          |  4 ++--
-> >  include/migration/vmstate.h |  2 +-
-> >  migration/colo.c            |  4 ++--
-> >  migration/cpr.c             |  2 +-
-> >  migration/migration.c       |  2 +-
-> >  migration/savevm.c          | 52 +++++++++++++++++++++++----------------------
-> >  migration/savevm.h          |  7 +++---
-> >  migration/vmstate-types.c   | 10 ++++-----
-> >  migration/vmstate.c         | 16 ++++++++------
-> >  tests/unit/test-vmstate.c   | 18 ++++++++--------
-> >  17 files changed, 68 insertions(+), 63 deletions(-)
-> > 
-> > diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> > index 0a1a625b0ea6cf26cb0d799171a57ed3d3ab2442..5d2ca8d8b864350133a674802d7316abd379591c 100644
-> > --- a/hw/display/virtio-gpu.c
-> > +++ b/hw/display/virtio-gpu.c
-> > @@ -1343,7 +1343,7 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
-> >      }
-> >  
-> >      /* load & apply scanout state */
-> > -    vmstate_load_state(f, &vmstate_virtio_gpu_scanouts, g, 1);
-> > +    vmstate_load_state(f, &vmstate_virtio_gpu_scanouts, g, 1, NULL);
-> >  
-> >      return 0;
-> >  }
-> > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> > index c70b5ceebaf1f2b10768bd030526cbb518da2b8d..2ab5d30bb3c319ac1c7bfc9a2acf6a2b38082066 100644
-> > --- a/hw/pci/pci.c
-> > +++ b/hw/pci/pci.c
-> > @@ -934,7 +934,7 @@ void pci_device_save(PCIDevice *s, QEMUFile *f)
-> >  int pci_device_load(PCIDevice *s, QEMUFile *f)
-> >  {
-> >      int ret;
-> > -    ret = vmstate_load_state(f, &vmstate_pci_device, s, s->version_id);
-> > +    ret = vmstate_load_state(f, &vmstate_pci_device, s, s->version_id, NULL);
-> >      /* Restore the interrupt status bit. */
-> >      pci_update_irq_status(s);
-> >      return ret;
-> > diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
-> > index d2f85b39f30f7fc82e0c600144c0a958e1269b2c..2f6feff2b0a22d7d7f6aecfd7e7870d8362f1a73 100644
-> > --- a/hw/s390x/virtio-ccw.c
-> > +++ b/hw/s390x/virtio-ccw.c
-> > @@ -1136,7 +1136,7 @@ static void virtio_ccw_save_config(DeviceState *d, QEMUFile *f)
-> >  static int virtio_ccw_load_config(DeviceState *d, QEMUFile *f)
-> >  {
-> >      VirtioCcwDevice *dev = VIRTIO_CCW_DEVICE(d);
-> > -    return vmstate_load_state(f, &vmstate_virtio_ccw_dev, dev, 1);
-> > +    return vmstate_load_state(f, &vmstate_virtio_ccw_dev, dev, 1, NULL);
-> >  }
-> >  
-> >  static void virtio_ccw_pre_plugged(DeviceState *d, Error **errp)
-> > diff --git a/hw/scsi/spapr_vscsi.c b/hw/scsi/spapr_vscsi.c
-> > index 20f70fb2729de78b9636a6b8c869695dab4f8902..573fdea668536b464bca11f001e9e0288e781493 100644
-> > --- a/hw/scsi/spapr_vscsi.c
-> > +++ b/hw/scsi/spapr_vscsi.c
-> > @@ -648,7 +648,7 @@ static void *vscsi_load_request(QEMUFile *f, SCSIRequest *sreq)
-> >      assert(!req->active);
-> >  
-> >      memset(req, 0, sizeof(*req));
-> > -    rc = vmstate_load_state(f, &vmstate_spapr_vscsi_req, req, 1);
-> > +    rc = vmstate_load_state(f, &vmstate_spapr_vscsi_req, req, 1, NULL);
-> >      if (rc) {
-> >          fprintf(stderr, "VSCSI: failed loading request tag#%u\n", sreq->tag);
-> >          return NULL;
-> > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> > index fa25bded25c51f8efb6c5ad31bd90506cd69745c..87aee0a5701087f9a68ea435bb96e9d6b07b0c24 100644
-> > --- a/hw/vfio/pci.c
-> > +++ b/hw/vfio/pci.c
-> > @@ -2715,7 +2715,7 @@ static int vfio_pci_load_config(VFIODevice *vbasedev, QEMUFile *f)
-> >          old_addr[bar] = pdev->io_regions[bar].addr;
-> >      }
-> >  
-> > -    ret = vmstate_load_state(f, &vmstate_vfio_pci_config, vdev, 1);
-> > +    ret = vmstate_load_state(f, &vmstate_vfio_pci_config, vdev, 1, NULL);
-> >      if (ret) {
-> >          return ret;
-> >      }
-> > diff --git a/hw/virtio/virtio-mmio.c b/hw/virtio/virtio-mmio.c
-> > index 532c67107ba1d2978a76cf49f9cdc1de1dea3e11..9058b1563462d4464dcba799643a583c93fb5683 100644
-> > --- a/hw/virtio/virtio-mmio.c
-> > +++ b/hw/virtio/virtio-mmio.c
-> > @@ -619,7 +619,7 @@ static int virtio_mmio_load_extra_state(DeviceState *opaque, QEMUFile *f)
-> >  {
-> >      VirtIOMMIOProxy *proxy = VIRTIO_MMIO(opaque);
-> >  
-> > -    return vmstate_load_state(f, &vmstate_virtio_mmio, proxy, 1);
-> > +    return vmstate_load_state(f, &vmstate_virtio_mmio, proxy, 1, NULL);
-> >  }
-> >  
-> >  static bool virtio_mmio_has_extra_state(DeviceState *opaque)
-> > diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> > index fba2372c93bfd648736b07e4bc83e7097baa58cb..50a1f5701754b88e8a1ee062d6eeedfd848cb4f5 100644
-> > --- a/hw/virtio/virtio-pci.c
-> > +++ b/hw/virtio/virtio-pci.c
-> > @@ -160,7 +160,7 @@ static int virtio_pci_load_extra_state(DeviceState *d, QEMUFile *f)
-> >  {
-> >      VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
-> >  
-> > -    return vmstate_load_state(f, &vmstate_virtio_pci, proxy, 1);
-> > +    return vmstate_load_state(f, &vmstate_virtio_pci, proxy, 1, NULL);
-> >  }
-> >  
-> >  static void virtio_pci_save_queue(DeviceState *d, int n, QEMUFile *f)
-> > diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> > index 82a285a31d1c0427d55f7cb73398adfc94e678fe..66d5941f68a4b9e1e5390bb0aa45fc6cd34e2a1e 100644
-> > --- a/hw/virtio/virtio.c
-> > +++ b/hw/virtio/virtio.c
-> > @@ -3317,14 +3317,14 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
-> >      }
-> >  
-> >      if (vdc->vmsd) {
-> > -        ret = vmstate_load_state(f, vdc->vmsd, vdev, version_id);
-> > +        ret = vmstate_load_state(f, vdc->vmsd, vdev, version_id, NULL);
-> >          if (ret) {
-> >              return ret;
-> >          }
-> >      }
-> >  
-> >      /* Subsections */
-> > -    ret = vmstate_load_state(f, &vmstate_virtio, vdev, 1);
-> > +    ret = vmstate_load_state(f, &vmstate_virtio, vdev, 1, NULL);
-> >      if (ret) {
-> >          return ret;
-> >      }
-> > diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-> > index 1ff7bd9ac425ba67cd5ca7ad97bcf570f9e19abe..056781b1c21e737583f081594d9f88b32adfd674 100644
-> > --- a/include/migration/vmstate.h
-> > +++ b/include/migration/vmstate.h
-> > @@ -1196,7 +1196,7 @@ extern const VMStateInfo vmstate_info_qlist;
-> >      }
-> >  
-> >  int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-> > -                       void *opaque, int version_id);
-> > +                       void *opaque, int version_id, Error **errp);
-> >  int vmstate_save_state(QEMUFile *f, const VMStateDescription *vmsd,
-> >                         void *opaque, JSONWriter *vmdesc);
-> >  int vmstate_save_state_with_err(QEMUFile *f, const VMStateDescription *vmsd,
-> > diff --git a/migration/colo.c b/migration/colo.c
-> > index e0f713c837f5da25d67afbd02ceb6c54024ca3af..c7779683f0aad33cd071030ac553da69d6a5e60d 100644
-> > --- a/migration/colo.c
-> > +++ b/migration/colo.c
-> > @@ -686,7 +686,7 @@ static void colo_incoming_process_checkpoint(MigrationIncomingState *mis,
-> >  
-> >      bql_lock();
-> >      cpu_synchronize_all_states();
-> > -    ret = qemu_loadvm_state_main(mis->from_src_file, mis);
-> > +    ret = qemu_loadvm_state_main(mis->from_src_file, mis, &local_err);
-> >      bql_unlock();
-> >  
-> >      if (ret < 0) {
-> 
-> Here the diff didn't show, but it's:
-> 
->     if (ret < 0) {
->         error_setg(errp, "Load VM's live state (ram) error");
->         return;
->     }
-> 
-> Note that error_setg() asserts *errp==NULL.  I think this will crash qemu
-> when load fails for COLO.  AFAIU we need to use error_prepend() for such
-> cases.
-Agreed.
-> 
-> > @@ -729,7 +729,7 @@ static void colo_incoming_process_checkpoint(MigrationIncomingState *mis,
-> >      bql_lock();
-> >      vmstate_loading = true;
-> >      colo_flush_ram_cache();
-> > -    ret = qemu_load_device_state(fb);
-> > +    ret = qemu_load_device_state(fb, &local_err);
-> >      if (ret < 0) {
-> >          error_setg(errp, "COLO: load device state failed");
-> 
-> Same here.
-Agreed.
-> 
-> >          
-vmstate_loading = false;
-> > diff --git a/migration/cpr.c b/migration/cpr.c
-> > index a50a57edca754b50e68fa9c294b3c89791e62ba8..0fb9fadac905c83689eed2b1193b282da679b6ef 100644
-> > --- a/migration/cpr.c
-> > +++ b/migration/cpr.c
-> > @@ -235,7 +235,7 @@ int cpr_state_load(MigrationChannel *channel, Error **errp)
-> >          return -ENOTSUP;
-> >      }
-> >  
-> > -    ret = vmstate_load_state(f, &vmstate_cpr_state, &cpr_state, 1);
-> > +    ret = vmstate_load_state(f, &vmstate_cpr_state, &cpr_state, 1, errp);
-> >      if (ret) {
-> >          error_setg(errp, "vmstate_load_state error %d", ret);
-> 
-> Same here.
-Agreed.
-> 
-> >          qemu_fclose(f);
-> > diff --git a/migration/migration.c b/migration/migration.c
-> > index 4098870bce33ffdc57b5972fc5b106d88abb237e..5cabb4e7307323159241ff35781db7f1c665a75b 100644
-> > --- a/migration/migration.c
-> > +++ b/migration/migration.c
-> > @@ -876,7 +876,7 @@ process_incoming_migration_co(void *opaque)
-> >                        MIGRATION_STATUS_ACTIVE);
-> >  
-> >      mis->loadvm_co = qemu_coroutine_self();
-> > -    ret = qemu_loadvm_state(mis->from_src_file);
-> > +    ret = qemu_loadvm_state(mis->from_src_file, &local_err);
-> 
-> Same.  This one you need to scroll a bit until:
-> 
->     if (ret < 0) {
->         error_setg(&local_err, "load of migration failed: %s", strerror(-ret));
->         goto fail;
->     }
-Yes, agreed.
-> 
-> >      mis->loadvm_co = NULL;
-> >  
-> >      trace_vmstate_downtime_checkpoint("dst-precopy-loadvm-completed");
-> > diff --git a/migration/savevm.c b/migration/savevm.c
-> > index bb04a4520df9a443d90cf6cb52a383a5f053aaff..9bcc0935781b73e209dc57945f9dbb381283cad5 100644
-> > --- a/migration/savevm.c
-> > +++ b/migration/savevm.c
-> > @@ -963,13 +963,14 @@ void vmstate_unregister(VMStateIf *obj, const VMStateDescription *vmsd,
-> >      }
-> >  }
-> >  
-> > -static int vmstate_load(QEMUFile *f, SaveStateEntry *se)
-> > +static int vmstate_load(QEMUFile *f, SaveStateEntry *se, Error **errp)
-> >  {
-> >      trace_vmstate_load(se->idstr, se->vmsd ? se->vmsd->name : "(old)");
-> >      if (!se->vmsd) {         /* Old style */
-> >          return se->ops->load_state(f, se->opaque, se->load_version_id);
-> >      }
-> > -    return vmstate_load_state(f, se->vmsd, se->opaque, se->load_version_id);
-> > +    return vmstate_load_state(f, se->vmsd, se->opaque, se->load_version_id,
-> > +                              errp);
-> >  }
-> >  
-> >  static void vmstate_save_old_style(QEMUFile *f, SaveStateEntry *se,
-> > @@ -2071,6 +2072,7 @@ static void *postcopy_ram_listen_thread(void *opaque)
-> >  {
-> >      MigrationIncomingState *mis = migration_incoming_get_current();
-> >      QEMUFile *f = mis->from_src_file;
-> > +    Error *local_err = NULL;
-> >      int load_res;
-> >      MigrationState *migr = migrate_get_current();
-> >  
-> > @@ -2089,7 +2091,7 @@ static void *postcopy_ram_listen_thread(void *opaque)
-> >      qemu_file_set_blocking(f, true);
-> >  
-> >      /* TODO: sanity check that only postcopiable data will be loaded here */
-> > -    load_res = qemu_loadvm_state_main(f, mis);
-> > +    load_res = qemu_loadvm_state_main(f, mis, &local_err);
-> 
-> Here we captured the error but ignored it.  AFAIU it'll be the same as
-> NULL..
-> 
-> Not sure if you tried to trigger such vTPM migration failure with postcopy
-> yet.  AFAIU this path will be for that.  To achieve your goal and make sure
-> the error appears for postcopy too, you may want to make use of this
-> local_err, probably by converting below (outside the diff context):
-> 
->         qemu_file_set_error(f, load_res);
->         ...
->         
->         } else {
->             error_report("%s: loadvm failed: %d", __func__, load_res);
->             migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
->                                            MIGRATION_STATUS_FAILED);
->         }
-> 
-> Into:
-> 
->         error_prepend(...);
->         migrate_set_error(s, local_err);
-> 
-> Some test will be needed to make sure it works.
-> 
-> Side note: we really should have some migration failure tests on mismatched
-> devices or device states / configs.  We have a bunch of tests under
-> migration-test.c.  Feel free to have a look if you like to add precopy /
-> postcopy unit tests for such case.  It's also ok to leave that for later -
-> I don't want to keep piling up work for you, and I already appreciate your
-> help. :)
-> 
-Yes, the postcopy errors also need to be propagated.
-I still need to figure out to build a test case around post-copy.
-Maybe we can do that in another commit/ticket.
-> >  
-> >      /*
-> >       * This is tricky, but, mis->from_src_file can change after it
-> > @@ -2394,6 +2396,7 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis)
-> >      int ret;
-> >      size_t length;
-> >      QIOChannelBuffer *bioc;
-> > +    Error *local_error;
-> >  
-> >      length = qemu_get_be32(mis->from_src_file);
-> >      trace_loadvm_handle_cmd_packaged(length);
-> > @@ -2440,7 +2443,7 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis)
-> >          qemu_coroutine_yield();
-> >      } while (1);
-> >  
-> > -    ret = qemu_loadvm_state_main(packf, mis);
-> > +    ret = qemu_loadvm_state_main(packf, mis, &local_error);
-> 
-> This is another piece of error report that will need to be done to the
-> upper layer for postcopy.  So if you want to try postcopy error reporting
-> this needs to be propagated to caller too.
-> 
-Yes, the postcopy errors need to be propagated.
+With this change, all M-profile and MVE helper-based loads and stores
+will now correctly honor their alignment requirements.
 
-> >      trace_loadvm_handle_cmd_packaged_main(ret);
-> >      qemu_fclose(packf);
-> >      object_unref(OBJECT(bioc));
-> > @@ -2674,7 +2677,7 @@ static bool check_section_footer(QEMUFile *f, SaveStateEntry *se)
-> >  }
-> >  
-> >  static int
-> > -qemu_loadvm_section_start_full(QEMUFile *f, uint8_t type)
-> > +qemu_loadvm_section_start_full(QEMUFile *f, uint8_t type, Error **errp)
-> >  {
-> >      bool trace_downtime = (type == QEMU_VM_SECTION_FULL);
-> >      uint32_t instance_id, version_id, section_id;
-> > @@ -2731,7 +2734,7 @@ qemu_loadvm_section_start_full(QEMUFile *f, uint8_t type)
-> >          start_ts = qemu_clock_get_us(QEMU_CLOCK_REALTIME);
-> >      }
-> >  
-> > -    ret = vmstate_load(f, se);
-> > +    ret = vmstate_load(f, se, errp);
-> >      if (ret < 0) {
-> >          error_report("error while loading state for instance 0x%"PRIx32" of"
-> >                       " device '%s'", instance_id, idstr);
-> 
-> We should try our best to keep this line. As I mentioned in the bz this
-> line is the most important.  We could also use error_prepend() here
-> instead of error_report() when we have an Error**.
-Yes.
-> 
-> > @@ -2752,7 +2755,7 @@ qemu_loadvm_section_start_full(QEMUFile *f, uint8_t type)
-> >  }
-> >  
-> >  static int
-> > -qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type)
-> > +qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type, Error **errp)
-> >  {
-> >      bool trace_downtime = (type == QEMU_VM_SECTION_END);
-> >      int64_t start_ts, end_ts;
-> > @@ -2784,7 +2787,7 @@ qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type)
-> >          start_ts = qemu_clock_get_us(QEMU_CLOCK_REALTIME);
-> >      }
-> >  
-> > -    ret = vmstate_load(f, se);
-> > +    ret = vmstate_load(f, se, errp);
-> >      if (ret < 0) {
-> >          error_report("error while loading state section id %d(%s)",
-> >                       section_id, se->idstr);
-> 
-> Same here to use error_prepend().
-Agreed.
-> 
-> > @@ -2804,7 +2807,7 @@ qemu_loadvm_section_part_end(QEMUFile *f, uint8_t type)
-> >      return 0;
-> >  }
-> >  
-> > -static int qemu_loadvm_state_header(QEMUFile *f)
-> > +static int qemu_loadvm_state_header(QEMUFile *f, Error **errp)
-> >  {
-> >      unsigned int v;
-> >      int ret;
-> > @@ -2830,7 +2833,8 @@ static int qemu_loadvm_state_header(QEMUFile *f)
-> >              error_report("Configuration section missing");
-> >              return -EINVAL;
-> >          }
-> > -        ret = vmstate_load_state(f, &vmstate_configuration, &savevm_state, 0);
-> > +        ret = vmstate_load_state(f, &vmstate_configuration, &savevm_state, 0,
-> > +                                 errp);
-> 
-> Ideally when we allow one function to use Error**, we'd better convert all
-> the error_report()s into error_setg() or other error_*() APIs.  I forgot to
-> check that part in previous calls, but here qemu_loadvm_state_header() is
-> one such case.  Similar comment may apply elsewhere.
+Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
 
-I added error_setg() or error_prepend() in functions
-where errp was passed in the savevm.c file, more or less everywhere.
-I shall recheck.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
+---
+ target/arm/tcg/m_helper.c   |  33 +--
+ target/arm/tcg/mve_helper.c | 408 ++++++++++++++++++++----------------
+ 2 files changed, 254 insertions(+), 187 deletions(-)
 
-> 
-> >  
-> >          if (ret) {
-> >              return ret;
-> > @@ -3019,7 +3023,8 @@ static bool postcopy_pause_incoming(MigrationIncomingState *mis)
-> >      return true;
-> >  }
-> >  
-> > -int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis)
-> > +int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis,
-> > +                           Error **errp)
-> >  {
-> >      uint8_t section_type;
-> >      int ret = 0;
-> > @@ -3037,14 +3042,14 @@ retry:
-> >          switch (section_type) {
-> >          case QEMU_VM_SECTION_START:
-> >          case QEMU_VM_SECTION_FULL:
-> > -            ret = qemu_loadvm_section_start_full(f, section_type);
-> > +            ret = qemu_loadvm_section_start_full(f, section_type, errp);
-> >              if (ret < 0) {
-> >                  goto out;
-> >              }
-> >              break;
-> >          case QEMU_VM_SECTION_PART:
-> >          case QEMU_VM_SECTION_END:
-> > -            ret = qemu_loadvm_section_part_end(f, section_type);
-> > +            ret = qemu_loadvm_section_part_end(f, section_type, errp);
-> >              if (ret < 0) {
-> >                  goto out;
-> >              }
-> 
-> Similar here, we'll need to convert current error_report() into
-> error_setg() for "default".
-
-Agreed. I missed this in patch 2
-
-> 
-> > @@ -3094,27 +3099,24 @@ out:
-> >      return ret;
-> >  }
-> >  
-> > -int qemu_loadvm_state(QEMUFile *f)
-> > +int qemu_loadvm_state(QEMUFile *f, Error **errp)
-> >  {
-> >      MigrationState *s = migrate_get_current();
-> >      MigrationIncomingState *mis = migration_incoming_get_current();
-> > -    Error *local_err = NULL;
-> >      int ret;
-> >  
-> > -    if (qemu_savevm_state_blocked(&local_err)) {
-> > -        error_report_err(local_err);
-> > +    if (qemu_savevm_state_blocked(errp)) {
-> 
-> Another thing to be careful here: I didn't check whether errp can be NULL
-> here, likely it can.
-> 
-> In that case we'd better keep local_err, because error_setg() (inside of
-> qemu_savevm_state_blocked) will ignore the error otherwise..
-> 
-> static void error_setv(Error **errp,
->                        const char *src, int line, const char *func,
->                        ErrorClass err_class, const char *fmt, va_list ap,
->                        const char *suffix)
-> {
->     Error *err;
->     int saved_errno = errno;
-> 
->     if (errp == NULL) {
->         return;
->     }
->     assert(*errp == NULL);
->     ...
-> }
-> 
-> So here we can keep local_err but use error_propagate().
-
-Please correct me if I am wrong, as far as I have checked,
-qemu_loadvm_state() is called at 3 places
- - load_snapshot
- - qmp_xen_load_devices_state
- - process_incoming_migration_co
-and in all these functions, Error **errp is passed.
-I did not find a function that passes NULL.
-Is it still required to declare and pass a local_err object?
-
-> 
-> >          return -EINVAL;
-> >      }
-> >  
-> >      qemu_loadvm_thread_pool_create(mis);
-> >  
-> > -    ret = qemu_loadvm_state_header(f);
-> > +    ret = qemu_loadvm_state_header(f, errp);
-> >      if (ret) {
-> >          return ret;
-> >      }
-> >  
-> > -    if (qemu_loadvm_state_setup(f, &local_err) != 0) {
-> > -        error_report_err(local_err);
-> > +    if (qemu_loadvm_state_setup(f, errp) != 0) {
-> >          return -EINVAL;
-> >      }
-> >  
-> > @@ -3124,7 +3126,7 @@ int qemu_loadvm_state(QEMUFile *f)
-> >  
-> >      cpu_synchronize_all_pre_loadvm();
-> >  
-> > -    ret = qemu_loadvm_state_main(f, mis);
-> > +    ret = qemu_loadvm_state_main(f, mis, errp);
-> >      qemu_event_set(&mis->main_thread_load_event);
-> >  
-> >      trace_qemu_loadvm_state_post_main(ret);
-> > @@ -3192,13 +3194,13 @@ int qemu_loadvm_state(QEMUFile *f)
-> >      return ret;
-> >  }
-> >  
-> > -int qemu_load_device_state(QEMUFile *f)
-> > +int qemu_load_device_state(QEMUFile *f, Error **errp)
-> >  {
-> >      MigrationIncomingState *mis = migration_incoming_get_current();
-> >      int ret;
-> >  
-> >      /* Load QEMU_VM_SECTION_FULL section */
-> > -    ret = qemu_loadvm_state_main(f, mis);
-> > +    ret = qemu_loadvm_state_main(f, mis, errp);
-> >      if (ret < 0) {
-> >          error_report("Failed to load device state: %d", ret);
-> 
-> Prone to merge errors using error_prepend().
-
-Agreed.
-> 
-> >          return ret;
-> > @@ -3429,7 +3431,7 @@ void qmp_xen_load_devices_state(const char *filename, Error **errp)
-> >      f = qemu_file_new_input(QIO_CHANNEL(ioc));
-> >      object_unref(OBJECT(ioc));
-> >  
-> > -    ret = qemu_loadvm_state(f);
-> > +    ret = qemu_loadvm_state(f, errp);
-> >      qemu_fclose(f);
-> >      if (ret < 0) {
-> >          error_setg(errp, "loading Xen device state failed");
-> 
-> Prone to crash when errp set.
-
-Agreed.
-> 
-> > @@ -3503,7 +3505,7 @@ bool load_snapshot(const char *name, const char *vmstate,
-> >          ret = -EINVAL;
-> >          goto err_drain;
-> >      }
-> > -    ret = qemu_loadvm_state(f);
-> > +    ret = qemu_loadvm_state(f, errp);
-> 
-> Prone to crash, see lines below.
-
-Agreed.
-> 
-> >      migration_incoming_state_destroy();
-> >  
-> >      bdrv_drain_all_end();
-> > diff --git a/migration/savevm.h b/migration/savevm.h
-> > index 2d5e9c716686f06720325e82fe90c75335ced1de..c337e3e3d111a7f28a57b90f61e8f70b71803d4e 100644
-> > --- a/migration/savevm.h
-> > +++ b/migration/savevm.h
-> > @@ -64,10 +64,11 @@ void qemu_savevm_send_colo_enable(QEMUFile *f);
-> >  void qemu_savevm_live_state(QEMUFile *f);
-> >  int qemu_save_device_state(QEMUFile *f);
-> >  
-> > -int qemu_loadvm_state(QEMUFile *f);
-> > +int qemu_loadvm_state(QEMUFile *f, Error **errp);
-> >  void qemu_loadvm_state_cleanup(MigrationIncomingState *mis);
-> > -int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis);
-> > -int qemu_load_device_state(QEMUFile *f);
-> > +int qemu_loadvm_state_main(QEMUFile *f, MigrationIncomingState *mis,
-> > +                           Error **errp);
-> > +int qemu_load_device_state(QEMUFile *f, Error **errp);
-> >  int qemu_loadvm_approve_switchover(void);
-> >  int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-> >          bool in_postcopy);
-> > diff --git a/migration/vmstate-types.c b/migration/vmstate-types.c
-> > index 741a588b7e18c6d37724b08a0101edc8bc74a0a5..1c5b76e1dd198030847971bc35637867c9d54fc0 100644
-> > --- a/migration/vmstate-types.c
-> > +++ b/migration/vmstate-types.c
-> > @@ -549,7 +549,7 @@ static int get_tmp(QEMUFile *f, void *pv, size_t size,
-> >  
-> >      /* Writes the parent field which is at the start of the tmp */
-> >      *(void **)tmp = pv;
-> > -    ret = vmstate_load_state(f, vmsd, tmp, version_id);
-> > +    ret = vmstate_load_state(f, vmsd, tmp, version_id, NULL);
-> >      g_free(tmp);
-> >      return ret;
-> >  }
-> > @@ -649,7 +649,7 @@ static int get_qtailq(QEMUFile *f, void *pv, size_t unused_size,
-> >  
-> >      while (qemu_get_byte(f)) {
-> >          elm = g_malloc(size);
-> > -        ret = vmstate_load_state(f, vmsd, elm, version_id);
-> > +        ret = vmstate_load_state(f, vmsd, elm, version_id, NULL);
-> >          if (ret) {
-> >              return ret;
-> >          }
-> > @@ -803,7 +803,7 @@ static int get_gtree(QEMUFile *f, void *pv, size_t unused_size,
-> >              key = (void *)(uintptr_t)qemu_get_be64(f);
-> >          } else {
-> >              key = g_malloc0(key_size);
-> > -            ret = vmstate_load_state(f, key_vmsd, key, version_id);
-> > +            ret = vmstate_load_state(f, key_vmsd, key, version_id, NULL);
-> >              if (ret) {
-> >                  error_report("%s : failed to load %s (%d)",
-> >                               field->name, key_vmsd->name, ret);
-> > @@ -811,7 +811,7 @@ static int get_gtree(QEMUFile *f, void *pv, size_t unused_size,
-> >              }
-> >          }
-> >          val = g_malloc0(val_size);
-> > -        ret = vmstate_load_state(f, val_vmsd, val, version_id);
-> > +        ret = vmstate_load_state(f, val_vmsd, val, version_id, NULL);
-> >          if (ret) {
-> >              error_report("%s : failed to load %s (%d)",
-> >                           field->name, val_vmsd->name, ret);
-> > @@ -892,7 +892,7 @@ static int get_qlist(QEMUFile *f, void *pv, size_t unused_size,
-> >  
-> >      while (qemu_get_byte(f)) {
-> >          elm = g_malloc(size);
-> > -        ret = vmstate_load_state(f, vmsd, elm, version_id);
-> > +        ret = vmstate_load_state(f, vmsd, elm, version_id, NULL);
-> >          if (ret) {
-> >              error_report("%s: failed to load %s (%d)", field->name,
-> >                           vmsd->name, ret);
-> > diff --git a/migration/vmstate.c b/migration/vmstate.c
-> > index 5feaa3244d259874f03048326b2497e7db32e47c..177c563ff103ada2e494c14173fa773d52adb800 100644
-> > --- a/migration/vmstate.c
-> > +++ b/migration/vmstate.c
-> > @@ -25,7 +25,7 @@ static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
-> >                                     void *opaque, JSONWriter *vmdesc,
-> >                                     Error **errp);
-> >  static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
-> > -                                   void *opaque);
-> > +                                   void *opaque, Error **errp);
-> >  
-> >  /* Whether this field should exist for either save or load the VM? */
-> >  static bool
-> > @@ -132,7 +132,7 @@ static void vmstate_handle_alloc(void *ptr, const VMStateField *field,
-> >  }
-> >  
-> >  int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-> > -                       void *opaque, int version_id)
-> > +                       void *opaque, int version_id, Error **errp)
-> >  {
-> >      const VMStateField *field = vmsd->fields;
-> >      int ret = 0;
-> > @@ -192,10 +192,12 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-> >  
-> >                  if (inner_field->flags & VMS_STRUCT) {
-> >                      ret = vmstate_load_state(f, inner_field->vmsd, curr_elem,
-> > -                                             inner_field->vmsd->version_id);
-> > +                                             inner_field->vmsd->version_id,
-> > +                                             errp);
-> >                  } else if (inner_field->flags & VMS_VSTRUCT) {
-> >                      ret = vmstate_load_state(f, inner_field->vmsd, curr_elem,
-> > -                                             inner_field->struct_version_id);
-> > +                                             inner_field->struct_version_id,
-> > +                                             errp);
-> >                  } else {
-> >                      ret = inner_field->info->get(f, curr_elem, size,
-> >                                                   inner_field);
-> > @@ -225,7 +227,7 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-> >          field++;
-> >      }
-> >      assert(field->flags == VMS_END);
-> > -    ret = vmstate_subsection_load(f, vmsd, opaque);
-> > +    ret = vmstate_subsection_load(f, vmsd, opaque, errp);
-> >      if (ret != 0) {
-> >          qemu_file_set_error(f, ret);
-> >          return ret;
-> 
-> Need to convert all error_reports() in this function.
-
-Yes, should be done after squash.
-> 
-> > @@ -566,7 +568,7 @@ vmstate_get_subsection(const VMStateDescription * const *sub,
-> >  }
-> >  
-> >  static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
-> > -                                   void *opaque)
-> > +                                   void *opaque, Error **errp)
-> >  {
-> >      trace_vmstate_subsection_load(vmsd->name);
-> >  
-> > @@ -605,7 +607,7 @@ static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
-> >          qemu_file_skip(f, len); /* idstr */
-> >          version_id = qemu_get_be32(f);
-> >  
-> > -        ret = vmstate_load_state(f, sub_vmsd, opaque, version_id);
-> > +        ret = vmstate_load_state(f, sub_vmsd, opaque, version_id, errp);
-> >          if (ret) {
-> >              trace_vmstate_subsection_load_bad(vmsd->name, idstr, "(child)");
-> >              return ret;
-> > diff --git a/tests/unit/test-vmstate.c b/tests/unit/test-vmstate.c
-> > index 63f28f26f45691a70936d33e7341d16477a3471f..ca5e0ba1e3e5e2bb0a1ce39143a292f2c6f9420a 100644
-> > --- a/tests/unit/test-vmstate.c
-> > +++ b/tests/unit/test-vmstate.c
-> > @@ -114,7 +114,7 @@ static int load_vmstate_one(const VMStateDescription *desc, void *obj,
-> >      qemu_fclose(f);
-> >  
-> >      f = open_test_file(false);
-> > -    ret = vmstate_load_state(f, desc, obj, version);
-> > +    ret = vmstate_load_state(f, desc, obj, version, NULL);
-> >      if (ret) {
-> >          g_assert(qemu_file_get_error(f));
-> >      } else{
-> > @@ -365,7 +365,7 @@ static void test_load_v1(void)
-> >  
-> >      QEMUFile *loading = open_test_file(false);
-> >      TestStruct obj = { .b = 200, .e = 500, .f = 600 };
-> > -    vmstate_load_state(loading, &vmstate_versioned, &obj, 1);
-> > +    vmstate_load_state(loading, &vmstate_versioned, &obj, 1, NULL);
-> >      g_assert(!qemu_file_get_error(loading));
-> >      g_assert_cmpint(obj.a, ==, 10);
-> >      g_assert_cmpint(obj.b, ==, 200);
-> > @@ -391,7 +391,7 @@ static void test_load_v2(void)
-> >  
-> >      QEMUFile *loading = open_test_file(false);
-> >      TestStruct obj;
-> > -    vmstate_load_state(loading, &vmstate_versioned, &obj, 2);
-> > +    vmstate_load_state(loading, &vmstate_versioned, &obj, 2, NULL);
-> >      g_assert_cmpint(obj.a, ==, 10);
-> >      g_assert_cmpint(obj.b, ==, 20);
-> >      g_assert_cmpint(obj.c, ==, 30);
-> > @@ -480,7 +480,7 @@ static void test_load_noskip(void)
-> >  
-> >      QEMUFile *loading = open_test_file(false);
-> >      TestStruct obj = { .skip_c_e = false };
-> > -    vmstate_load_state(loading, &vmstate_skipping, &obj, 2);
-> > +    vmstate_load_state(loading, &vmstate_skipping, &obj, 2, NULL);
-> >      g_assert(!qemu_file_get_error(loading));
-> >      g_assert_cmpint(obj.a, ==, 10);
-> >      g_assert_cmpint(obj.b, ==, 20);
-> > @@ -504,7 +504,7 @@ static void test_load_skip(void)
-> >  
-> >      QEMUFile *loading = open_test_file(false);
-> >      TestStruct obj = { .skip_c_e = true, .c = 300, .e = 500 };
-> > -    vmstate_load_state(loading, &vmstate_skipping, &obj, 2);
-> > +    vmstate_load_state(loading, &vmstate_skipping, &obj, 2, NULL);
-> >      g_assert(!qemu_file_get_error(loading));
-> >      g_assert_cmpint(obj.a, ==, 10);
-> >      g_assert_cmpint(obj.b, ==, 20);
-> > @@ -773,7 +773,7 @@ static void test_load_q(void)
-> >      TestQtailq tgt;
-> >  
-> >      QTAILQ_INIT(&tgt.q);
-> > -    vmstate_load_state(fload, &vmstate_q, &tgt, 1);
-> > +    vmstate_load_state(fload, &vmstate_q, &tgt, 1, NULL);
-> >      char eof = qemu_get_byte(fload);
-> >      g_assert(!qemu_file_get_error(fload));
-> >      g_assert_cmpint(tgt.i16, ==, obj_q.i16);
-> > @@ -1127,7 +1127,7 @@ static void test_gtree_load_domain(void)
-> >  
-> >      fload = open_test_file(false);
-> >  
-> > -    vmstate_load_state(fload, &vmstate_domain, dest_domain, 1);
-> > +    vmstate_load_state(fload, &vmstate_domain, dest_domain, 1, NULL);
-> >      eof = qemu_get_byte(fload);
-> >      g_assert(!qemu_file_get_error(fload));
-> >      g_assert_cmpint(orig_domain->id, ==, dest_domain->id);
-> > @@ -1241,7 +1241,7 @@ static void test_gtree_load_iommu(void)
-> >      qemu_fclose(fsave);
-> >  
-> >      fload = open_test_file(false);
-> > -    vmstate_load_state(fload, &vmstate_iommu, dest_iommu, 1);
-> > +    vmstate_load_state(fload, &vmstate_iommu, dest_iommu, 1, NULL);
-> >      eof = qemu_get_byte(fload);
-> >      g_assert(!qemu_file_get_error(fload));
-> >      g_assert_cmpint(orig_iommu->id, ==, dest_iommu->id);
-> > @@ -1376,7 +1376,7 @@ static void test_load_qlist(void)
-> >      qemu_fclose(fsave);
-> >  
-> >      fload = open_test_file(false);
-> > -    vmstate_load_state(fload, &vmstate_container, dest_container, 1);
-> > +    vmstate_load_state(fload, &vmstate_container, dest_container, 1, NULL);
-> >      eof = qemu_get_byte(fload);
-> >      g_assert(!qemu_file_get_error(fload));
-> >      g_assert_cmpint(eof, ==, QEMU_VM_EOF);
-> > 
-> > -- 
-> > 2.49.0
-> > 
-> 
-> -- 
-> Peter Xu
-> 
-
-Regards,
-Arun
+diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
+index 6614719832..28307b5615 100644
+--- a/target/arm/tcg/m_helper.c
++++ b/target/arm/tcg/m_helper.c
+@@ -632,8 +632,11 @@ void HELPER(v7m_blxns)(CPUARMState *env, uint32_t dest)
+     }
+ 
+     /* Note that these stores can throw exceptions on MPU faults */
+-    cpu_stl_data_ra(env, sp, nextinst, GETPC());
+-    cpu_stl_data_ra(env, sp + 4, saved_psr, GETPC());
++    ARMMMUIdx mmu_idx = arm_mmu_idx(env);
++    MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN,
++                                 arm_to_core_mmu_idx(mmu_idx));
++    cpu_stl_mmu(env, sp, nextinst, oi, GETPC());
++    cpu_stl_mmu(env, sp + 4, saved_psr, oi, GETPC());
+ 
+     env->regs[13] = sp;
+     env->regs[14] = 0xfeffffff;
+@@ -1048,6 +1051,9 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
+     bool s = env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_S_MASK;
+     bool lspact = env->v7m.fpccr[s] & R_V7M_FPCCR_LSPACT_MASK;
+     uintptr_t ra = GETPC();
++    ARMMMUIdx mmu_idx = arm_mmu_idx(env);
++    MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN,
++                                 arm_to_core_mmu_idx(mmu_idx));
+ 
+     assert(env->v7m.secure);
+ 
+@@ -1073,7 +1079,7 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
+      * Note that we do not use v7m_stack_write() here, because the
+      * accesses should not set the FSR bits for stacking errors if they
+      * fail. (In pseudocode terms, they are AccType_NORMAL, not AccType_STACK
+-     * or AccType_LAZYFP). Faults in cpu_stl_data_ra() will throw exceptions
++     * or AccType_LAZYFP). Faults in cpu_stl_mmu() will throw exceptions
+      * and longjmp out.
+      */
+     if (!(env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_LSPEN_MASK)) {
+@@ -1089,12 +1095,12 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
+             if (i >= 16) {
+                 faddr += 8; /* skip the slot for the FPSCR */
+             }
+-            cpu_stl_data_ra(env, faddr, slo, ra);
+-            cpu_stl_data_ra(env, faddr + 4, shi, ra);
++            cpu_stl_mmu(env, faddr, slo, oi, ra);
++            cpu_stl_mmu(env, faddr + 4, shi, oi, ra);
+         }
+-        cpu_stl_data_ra(env, fptr + 0x40, vfp_get_fpscr(env), ra);
++        cpu_stl_mmu(env, fptr + 0x40, vfp_get_fpscr(env), oi, ra);
+         if (cpu_isar_feature(aa32_mve, cpu)) {
+-            cpu_stl_data_ra(env, fptr + 0x44, env->v7m.vpr, ra);
++            cpu_stl_mmu(env, fptr + 0x44, env->v7m.vpr, oi, ra);
+         }
+ 
+         /*
+@@ -1121,6 +1127,9 @@ void HELPER(v7m_vlldm)(CPUARMState *env, uint32_t fptr)
+ {
+     ARMCPU *cpu = env_archcpu(env);
+     uintptr_t ra = GETPC();
++    ARMMMUIdx mmu_idx = arm_mmu_idx(env);
++    MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN,
++                                 arm_to_core_mmu_idx(mmu_idx));
+ 
+     /* fptr is the value of Rn, the frame pointer we load the FP regs from */
+     assert(env->v7m.secure);
+@@ -1155,16 +1164,16 @@ void HELPER(v7m_vlldm)(CPUARMState *env, uint32_t fptr)
+                 faddr += 8; /* skip the slot for the FPSCR and VPR */
+             }
+ 
+-            slo = cpu_ldl_data_ra(env, faddr, ra);
+-            shi = cpu_ldl_data_ra(env, faddr + 4, ra);
++            slo = cpu_ldl_mmu(env, faddr, oi, ra);
++            shi = cpu_ldl_mmu(env, faddr + 4, oi, ra);
+ 
+             dn = (uint64_t) shi << 32 | slo;
+             *aa32_vfp_dreg(env, i / 2) = dn;
+         }
+-        fpscr = cpu_ldl_data_ra(env, fptr + 0x40, ra);
++        fpscr = cpu_ldl_mmu(env, fptr + 0x40, oi, ra);
+         vfp_set_fpscr(env, fpscr);
+         if (cpu_isar_feature(aa32_mve, cpu)) {
+-            env->v7m.vpr = cpu_ldl_data_ra(env, fptr + 0x44, ra);
++            env->v7m.vpr = cpu_ldl_mmu(env, fptr + 0x44, oi, ra);
+         }
+     }
+ 
+@@ -1937,7 +1946,7 @@ static bool do_v7m_function_return(ARMCPU *cpu)
+          * do them as secure, so work out what MMU index that is.
+          */
+         mmu_idx = arm_v7m_mmu_idx_for_secstate(env, true);
+-        oi = make_memop_idx(MO_LEUL, arm_to_core_mmu_idx(mmu_idx));
++        oi = make_memop_idx(MO_LEUL | MO_ALIGN, arm_to_core_mmu_idx(mmu_idx));
+         newpc = cpu_ldl_mmu(env, frameptr, oi, 0);
+         newpsr = cpu_ldl_mmu(env, frameptr + 4, oi, 0);
+ 
+diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
+index 506d1c3475..2a4521e1fa 100644
+--- a/target/arm/tcg/mve_helper.c
++++ b/target/arm/tcg/mve_helper.c
+@@ -147,62 +147,85 @@ static void mve_advance_vpt(CPUARMState *env)
+     env->v7m.vpr = vpr;
+ }
+ 
++/* Mapping of LDTYPE/STTYPE to the number of bytes accessed */
++#define MSIZE_b 1
++#define MSIZE_w 2
++#define MSIZE_l 4
++
++/* Mapping of LDTYPE/STTYPE to MemOp flag */
++#define MFLAG_b MO_UB
++#define MFLAG_w MO_TEUW
++#define MFLAG_l MO_TEUL
++
++#define MSIZE(t)  MSIZE_##t
++#define MFLAG(t)  MFLAG_##t
++
++#define SIGN_EXT(v, T, B) \
++    ((T)(v) << (sizeof(T) * 8 - (B))) >> (sizeof(T) * 8 - (B))
++
+ /* For loads, predicated lanes are zeroed instead of keeping their old values */
+-#define DO_VLDR(OP, MSIZE, LDTYPE, ESIZE, TYPE)                         \
+-    void HELPER(mve_##OP)(CPUARMState *env, void *vd, uint32_t addr)    \
+-    {                                                                   \
+-        TYPE *d = vd;                                                   \
+-        uint16_t mask = mve_element_mask(env);                          \
+-        uint16_t eci_mask = mve_eci_mask(env);                          \
+-        unsigned b, e;                                                  \
+-        /*                                                              \
+-         * R_SXTM allows the dest reg to become UNKNOWN for abandoned   \
+-         * beats so we don't care if we update part of the dest and     \
+-         * then take an exception.                                      \
+-         */                                                             \
+-        for (b = 0, e = 0; b < 16; b += ESIZE, e++) {                   \
+-            if (eci_mask & (1 << b)) {                                  \
+-                d[H##ESIZE(e)] = (mask & (1 << b)) ?                    \
+-                    cpu_##LDTYPE##_data_ra(env, addr, GETPC()) : 0;     \
+-            }                                                           \
+-            addr += MSIZE;                                              \
+-        }                                                               \
+-        mve_advance_vpt(env);                                           \
++#define DO_VLDR(OP, MSIZE, LDTYPE, ESIZE, TYPE)                               \
++    void HELPER(mve_##OP)(CPUARMState *env, void *vd, uint32_t addr)          \
++    {                                                                         \
++        TYPE *d = vd;                                                         \
++        uint16_t mask = mve_element_mask(env);                                \
++        uint16_t eci_mask = mve_eci_mask(env);                                \
++        unsigned b, e;                                                        \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));                  \
++        MemOpIdx oi = make_memop_idx(MFLAG(LDTYPE) | MO_ALIGN, mmu_idx);      \
++        /*                                                                    \
++         * R_SXTM allows the dest reg to become UNKNOWN for abandoned         \
++         * beats so we don't care if we update part of the dest and           \
++         * then take an exception.                                            \
++         */                                                                   \
++        for (b = 0, e = 0; b < 16; b += ESIZE, e++) {                         \
++            if (eci_mask & (1 << b)) {                                        \
++                d[H##ESIZE(e)] = (mask & (1 << b)) ?                          \
++                    SIGN_EXT(cpu_ld##LDTYPE##_mmu(env, addr, oi, GETPC()),    \
++                             TYPE,                                            \
++                             MSIZE * 8)                                       \
++                    : 0;                                                      \
++            }                                                                 \
++            addr += MSIZE;                                                    \
++        }                                                                     \
++        mve_advance_vpt(env);                                                 \
+     }
+ 
+-#define DO_VSTR(OP, MSIZE, STTYPE, ESIZE, TYPE)                         \
+-    void HELPER(mve_##OP)(CPUARMState *env, void *vd, uint32_t addr)    \
+-    {                                                                   \
+-        TYPE *d = vd;                                                   \
+-        uint16_t mask = mve_element_mask(env);                          \
+-        unsigned b, e;                                                  \
+-        for (b = 0, e = 0; b < 16; b += ESIZE, e++) {                   \
+-            if (mask & (1 << b)) {                                      \
+-                cpu_##STTYPE##_data_ra(env, addr, d[H##ESIZE(e)], GETPC()); \
+-            }                                                           \
+-            addr += MSIZE;                                              \
+-        }                                                               \
+-        mve_advance_vpt(env);                                           \
++#define DO_VSTR(OP, MSIZE, STTYPE, ESIZE, TYPE)                               \
++    void HELPER(mve_##OP)(CPUARMState *env, void *vd, uint32_t addr)          \
++    {                                                                         \
++        TYPE *d = vd;                                                         \
++        uint16_t mask = mve_element_mask(env);                                \
++        unsigned b, e;                                                        \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));                  \
++        MemOpIdx oi = make_memop_idx(MFLAG(STTYPE) | MO_ALIGN, mmu_idx);      \
++        for (b = 0, e = 0; b < 16; b += ESIZE, e++) {                         \
++            if (mask & (1 << b)) {                                            \
++                cpu_st##STTYPE##_mmu(env, addr, d[H##ESIZE(e)], oi, GETPC()); \
++            }                                                                 \
++            addr += MSIZE;                                                    \
++        }                                                                     \
++        mve_advance_vpt(env);                                                 \
+     }
+ 
+-DO_VLDR(vldrb, 1, ldub, 1, uint8_t)
+-DO_VLDR(vldrh, 2, lduw, 2, uint16_t)
+-DO_VLDR(vldrw, 4, ldl, 4, uint32_t)
++DO_VLDR(vldrb, 1, b, 1, uint8_t)
++DO_VLDR(vldrh, 2, w, 2, uint16_t)
++DO_VLDR(vldrw, 4, l, 4, uint32_t)
+ 
+-DO_VSTR(vstrb, 1, stb, 1, uint8_t)
+-DO_VSTR(vstrh, 2, stw, 2, uint16_t)
+-DO_VSTR(vstrw, 4, stl, 4, uint32_t)
++DO_VSTR(vstrb, 1, b, 1, uint8_t)
++DO_VSTR(vstrh, 2, w, 2, uint16_t)
++DO_VSTR(vstrw, 4, l, 4, uint32_t)
+ 
+-DO_VLDR(vldrb_sh, 1, ldsb, 2, int16_t)
+-DO_VLDR(vldrb_sw, 1, ldsb, 4, int32_t)
+-DO_VLDR(vldrb_uh, 1, ldub, 2, uint16_t)
+-DO_VLDR(vldrb_uw, 1, ldub, 4, uint32_t)
+-DO_VLDR(vldrh_sw, 2, ldsw, 4, int32_t)
+-DO_VLDR(vldrh_uw, 2, lduw, 4, uint32_t)
++DO_VLDR(vldrb_sh, 1, b, 2, int16_t)
++DO_VLDR(vldrb_sw, 1, b, 4, int32_t)
++DO_VLDR(vldrb_uh, 1, b, 2, uint16_t)
++DO_VLDR(vldrb_uw, 1, b, 4, uint32_t)
++DO_VLDR(vldrh_sw, 2, w, 4, int32_t)
++DO_VLDR(vldrh_uw, 2, w, 4, uint32_t)
+ 
+-DO_VSTR(vstrb_h, 1, stb, 2, int16_t)
+-DO_VSTR(vstrb_w, 1, stb, 4, int32_t)
+-DO_VSTR(vstrh_w, 2, stw, 4, int32_t)
++DO_VSTR(vstrb_h, 1, b, 2, int16_t)
++DO_VSTR(vstrb_w, 1, b, 4, int32_t)
++DO_VSTR(vstrh_w, 2, w, 4, int32_t)
+ 
+ #undef DO_VLDR
+ #undef DO_VSTR
+@@ -214,54 +237,61 @@ DO_VSTR(vstrh_w, 2, stw, 4, int32_t)
+  * For loads, predicated lanes are zeroed instead of retaining
+  * their previous values.
+  */
+-#define DO_VLDR_SG(OP, LDTYPE, ESIZE, TYPE, OFFTYPE, ADDRFN, WB)        \
+-    void HELPER(mve_##OP)(CPUARMState *env, void *vd, void *vm,         \
+-                          uint32_t base)                                \
+-    {                                                                   \
+-        TYPE *d = vd;                                                   \
+-        OFFTYPE *m = vm;                                                \
+-        uint16_t mask = mve_element_mask(env);                          \
+-        uint16_t eci_mask = mve_eci_mask(env);                          \
+-        unsigned e;                                                     \
+-        uint32_t addr;                                                  \
+-        for (e = 0; e < 16 / ESIZE; e++, mask >>= ESIZE, eci_mask >>= ESIZE) { \
+-            if (!(eci_mask & 1)) {                                      \
+-                continue;                                               \
+-            }                                                           \
+-            addr = ADDRFN(base, m[H##ESIZE(e)]);                        \
+-            d[H##ESIZE(e)] = (mask & 1) ?                               \
+-                cpu_##LDTYPE##_data_ra(env, addr, GETPC()) : 0;         \
+-            if (WB) {                                                   \
+-                m[H##ESIZE(e)] = addr;                                  \
+-            }                                                           \
+-        }                                                               \
+-        mve_advance_vpt(env);                                           \
++#define DO_VLDR_SG(OP, LDTYPE, ESIZE, TYPE, OFFTYPE, ADDRFN, WB)              \
++    void HELPER(mve_##OP)(CPUARMState *env, void *vd, void *vm,               \
++                          uint32_t base)                                      \
++    {                                                                         \
++        TYPE *d = vd;                                                         \
++        OFFTYPE *m = vm;                                                      \
++        uint16_t mask = mve_element_mask(env);                                \
++        uint16_t eci_mask = mve_eci_mask(env);                                \
++        unsigned e;                                                           \
++        uint32_t addr;                                                        \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));                  \
++        MemOpIdx oi = make_memop_idx(MFLAG(LDTYPE) | MO_ALIGN, mmu_idx);      \
++        for (e = 0; e < 16 / ESIZE; e++, mask >>= ESIZE, eci_mask >>= ESIZE) {\
++            if (!(eci_mask & 1)) {                                            \
++                continue;                                                     \
++            }                                                                 \
++            addr = ADDRFN(base, m[H##ESIZE(e)]);                              \
++            d[H##ESIZE(e)] = (mask & 1) ?                                     \
++                SIGN_EXT(cpu_ld##LDTYPE##_mmu(env, addr, oi, GETPC()),        \
++                         TYPE,                                                \
++                         MSIZE(LDTYPE) * 8)                                   \
++                : 0;                                                          \
++            if (WB) {                                                         \
++                m[H##ESIZE(e)] = addr;                                        \
++            }                                                                 \
++        }                                                                     \
++        mve_advance_vpt(env);                                                 \
+     }
+ 
+ /* We know here TYPE is unsigned so always the same as the offset type */
+-#define DO_VSTR_SG(OP, STTYPE, ESIZE, TYPE, ADDRFN, WB)                 \
+-    void HELPER(mve_##OP)(CPUARMState *env, void *vd, void *vm,         \
+-                          uint32_t base)                                \
+-    {                                                                   \
+-        TYPE *d = vd;                                                   \
+-        TYPE *m = vm;                                                   \
+-        uint16_t mask = mve_element_mask(env);                          \
+-        uint16_t eci_mask = mve_eci_mask(env);                          \
+-        unsigned e;                                                     \
+-        uint32_t addr;                                                  \
+-        for (e = 0; e < 16 / ESIZE; e++, mask >>= ESIZE, eci_mask >>= ESIZE) { \
+-            if (!(eci_mask & 1)) {                                      \
+-                continue;                                               \
+-            }                                                           \
+-            addr = ADDRFN(base, m[H##ESIZE(e)]);                        \
+-            if (mask & 1) {                                             \
+-                cpu_##STTYPE##_data_ra(env, addr, d[H##ESIZE(e)], GETPC()); \
+-            }                                                           \
+-            if (WB) {                                                   \
+-                m[H##ESIZE(e)] = addr;                                  \
+-            }                                                           \
+-        }                                                               \
+-        mve_advance_vpt(env);                                           \
++#define DO_VSTR_SG(OP, STTYPE, ESIZE, TYPE, ADDRFN, WB)                       \
++    void HELPER(mve_##OP)(CPUARMState *env, void *vd, void *vm,               \
++                          uint32_t base)                                      \
++    {                                                                         \
++        TYPE *d = vd;                                                         \
++        TYPE *m = vm;                                                         \
++        uint16_t mask = mve_element_mask(env);                                \
++        uint16_t eci_mask = mve_eci_mask(env);                                \
++        unsigned e;                                                           \
++        uint32_t addr;                                                        \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));                  \
++        MemOpIdx oi = make_memop_idx(MFLAG(STTYPE) | MO_ALIGN, mmu_idx);      \
++        for (e = 0; e < 16 / ESIZE; e++, mask >>= ESIZE, eci_mask >>= ESIZE) {\
++            if (!(eci_mask & 1)) {                                            \
++                continue;                                                     \
++            }                                                                 \
++            addr = ADDRFN(base, m[H##ESIZE(e)]);                              \
++            if (mask & 1) {                                                   \
++                cpu_st##STTYPE##_mmu(env, addr, d[H##ESIZE(e)], oi, GETPC()); \
++            }                                                                 \
++            if (WB) {                                                         \
++                m[H##ESIZE(e)] = addr;                                        \
++            }                                                                 \
++        }                                                                     \
++        mve_advance_vpt(env);                                                 \
+     }
+ 
+ /*
+@@ -272,54 +302,58 @@ DO_VSTR(vstrh_w, 2, stw, 4, int32_t)
+  * Address writeback happens on the odd beats and updates the address
+  * stored in the even-beat element.
+  */
+-#define DO_VLDR64_SG(OP, ADDRFN, WB)                                    \
+-    void HELPER(mve_##OP)(CPUARMState *env, void *vd, void *vm,         \
+-                          uint32_t base)                                \
+-    {                                                                   \
+-        uint32_t *d = vd;                                               \
+-        uint32_t *m = vm;                                               \
+-        uint16_t mask = mve_element_mask(env);                          \
+-        uint16_t eci_mask = mve_eci_mask(env);                          \
+-        unsigned e;                                                     \
+-        uint32_t addr;                                                  \
+-        for (e = 0; e < 16 / 4; e++, mask >>= 4, eci_mask >>= 4) {      \
+-            if (!(eci_mask & 1)) {                                      \
+-                continue;                                               \
+-            }                                                           \
+-            addr = ADDRFN(base, m[H4(e & ~1)]);                         \
+-            addr += 4 * (e & 1);                                        \
+-            d[H4(e)] = (mask & 1) ? cpu_ldl_data_ra(env, addr, GETPC()) : 0; \
+-            if (WB && (e & 1)) {                                        \
+-                m[H4(e & ~1)] = addr - 4;                               \
+-            }                                                           \
+-        }                                                               \
+-        mve_advance_vpt(env);                                           \
++#define DO_VLDR64_SG(OP, ADDRFN, WB)                                          \
++    void HELPER(mve_##OP)(CPUARMState *env, void *vd, void *vm,               \
++                          uint32_t base)                                      \
++    {                                                                         \
++        uint32_t *d = vd;                                                     \
++        uint32_t *m = vm;                                                     \
++        uint16_t mask = mve_element_mask(env);                                \
++        uint16_t eci_mask = mve_eci_mask(env);                                \
++        unsigned e;                                                           \
++        uint32_t addr;                                                        \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));                  \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);            \
++        for (e = 0; e < 16 / 4; e++, mask >>= 4, eci_mask >>= 4) {            \
++            if (!(eci_mask & 1)) {                                            \
++                continue;                                                     \
++            }                                                                 \
++            addr = ADDRFN(base, m[H4(e & ~1)]);                               \
++            addr += 4 * (e & 1);                                              \
++            d[H4(e)] = (mask & 1) ? cpu_ldl_mmu(env, addr, oi, GETPC()) : 0;  \
++            if (WB && (e & 1)) {                                              \
++                m[H4(e & ~1)] = addr - 4;                                     \
++            }                                                                 \
++        }                                                                     \
++        mve_advance_vpt(env);                                                 \
+     }
+ 
+-#define DO_VSTR64_SG(OP, ADDRFN, WB)                                    \
+-    void HELPER(mve_##OP)(CPUARMState *env, void *vd, void *vm,         \
+-                          uint32_t base)                                \
+-    {                                                                   \
+-        uint32_t *d = vd;                                               \
+-        uint32_t *m = vm;                                               \
+-        uint16_t mask = mve_element_mask(env);                          \
+-        uint16_t eci_mask = mve_eci_mask(env);                          \
+-        unsigned e;                                                     \
+-        uint32_t addr;                                                  \
+-        for (e = 0; e < 16 / 4; e++, mask >>= 4, eci_mask >>= 4) {      \
+-            if (!(eci_mask & 1)) {                                      \
+-                continue;                                               \
+-            }                                                           \
+-            addr = ADDRFN(base, m[H4(e & ~1)]);                         \
+-            addr += 4 * (e & 1);                                        \
+-            if (mask & 1) {                                             \
+-                cpu_stl_data_ra(env, addr, d[H4(e)], GETPC());          \
+-            }                                                           \
+-            if (WB && (e & 1)) {                                        \
+-                m[H4(e & ~1)] = addr - 4;                               \
+-            }                                                           \
+-        }                                                               \
+-        mve_advance_vpt(env);                                           \
++#define DO_VSTR64_SG(OP, ADDRFN, WB)                                          \
++    void HELPER(mve_##OP)(CPUARMState *env, void *vd, void *vm,               \
++                          uint32_t base)                                      \
++    {                                                                         \
++        uint32_t *d = vd;                                                     \
++        uint32_t *m = vm;                                                     \
++        uint16_t mask = mve_element_mask(env);                                \
++        uint16_t eci_mask = mve_eci_mask(env);                                \
++        unsigned e;                                                           \
++        uint32_t addr;                                                        \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));                  \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);            \
++        for (e = 0; e < 16 / 4; e++, mask >>= 4, eci_mask >>= 4) {            \
++            if (!(eci_mask & 1)) {                                            \
++                continue;                                                     \
++            }                                                                 \
++            addr = ADDRFN(base, m[H4(e & ~1)]);                               \
++            addr += 4 * (e & 1);                                              \
++            if (mask & 1) {                                                   \
++                cpu_stl_mmu(env, addr, d[H4(e)], oi, GETPC());                \
++            }                                                                 \
++            if (WB && (e & 1)) {                                              \
++                m[H4(e & ~1)] = addr - 4;                                     \
++            }                                                                 \
++        }                                                                     \
++        mve_advance_vpt(env);                                                 \
+     }
+ 
+ #define ADDR_ADD(BASE, OFFSET) ((BASE) + (OFFSET))
+@@ -327,40 +361,40 @@ DO_VSTR(vstrh_w, 2, stw, 4, int32_t)
+ #define ADDR_ADD_OSW(BASE, OFFSET) ((BASE) + ((OFFSET) << 2))
+ #define ADDR_ADD_OSD(BASE, OFFSET) ((BASE) + ((OFFSET) << 3))
+ 
+-DO_VLDR_SG(vldrb_sg_sh, ldsb, 2, int16_t, uint16_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrb_sg_sw, ldsb, 4, int32_t, uint32_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrh_sg_sw, ldsw, 4, int32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_sh, b, 2, int16_t, uint16_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_sw, b, 4, int32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrh_sg_sw, w, 4, int32_t, uint32_t, ADDR_ADD, false)
+ 
+-DO_VLDR_SG(vldrb_sg_ub, ldub, 1, uint8_t, uint8_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrb_sg_uh, ldub, 2, uint16_t, uint16_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrb_sg_uw, ldub, 4, uint32_t, uint32_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrh_sg_uh, lduw, 2, uint16_t, uint16_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrh_sg_uw, lduw, 4, uint32_t, uint32_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrw_sg_uw, ldl, 4, uint32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_ub, b, 1, uint8_t, uint8_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_uh, b, 2, uint16_t, uint16_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_uw, b, 4, uint32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrh_sg_uh, w, 2, uint16_t, uint16_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrh_sg_uw, w, 4, uint32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrw_sg_uw, l, 4, uint32_t, uint32_t, ADDR_ADD, false)
+ DO_VLDR64_SG(vldrd_sg_ud, ADDR_ADD, false)
+ 
+-DO_VLDR_SG(vldrh_sg_os_sw, ldsw, 4, int32_t, uint32_t, ADDR_ADD_OSH, false)
+-DO_VLDR_SG(vldrh_sg_os_uh, lduw, 2, uint16_t, uint16_t, ADDR_ADD_OSH, false)
+-DO_VLDR_SG(vldrh_sg_os_uw, lduw, 4, uint32_t, uint32_t, ADDR_ADD_OSH, false)
+-DO_VLDR_SG(vldrw_sg_os_uw, ldl, 4, uint32_t, uint32_t, ADDR_ADD_OSW, false)
++DO_VLDR_SG(vldrh_sg_os_sw, w, 4, int32_t, uint32_t, ADDR_ADD_OSH, false)
++DO_VLDR_SG(vldrh_sg_os_uh, w, 2, uint16_t, uint16_t, ADDR_ADD_OSH, false)
++DO_VLDR_SG(vldrh_sg_os_uw, w, 4, uint32_t, uint32_t, ADDR_ADD_OSH, false)
++DO_VLDR_SG(vldrw_sg_os_uw, l, 4, uint32_t, uint32_t, ADDR_ADD_OSW, false)
+ DO_VLDR64_SG(vldrd_sg_os_ud, ADDR_ADD_OSD, false)
+ 
+-DO_VSTR_SG(vstrb_sg_ub, stb, 1, uint8_t, ADDR_ADD, false)
+-DO_VSTR_SG(vstrb_sg_uh, stb, 2, uint16_t, ADDR_ADD, false)
+-DO_VSTR_SG(vstrb_sg_uw, stb, 4, uint32_t, ADDR_ADD, false)
+-DO_VSTR_SG(vstrh_sg_uh, stw, 2, uint16_t, ADDR_ADD, false)
+-DO_VSTR_SG(vstrh_sg_uw, stw, 4, uint32_t, ADDR_ADD, false)
+-DO_VSTR_SG(vstrw_sg_uw, stl, 4, uint32_t, ADDR_ADD, false)
++DO_VSTR_SG(vstrb_sg_ub, b, 1, uint8_t, ADDR_ADD, false)
++DO_VSTR_SG(vstrb_sg_uh, b, 2, uint16_t, ADDR_ADD, false)
++DO_VSTR_SG(vstrb_sg_uw, b, 4, uint32_t, ADDR_ADD, false)
++DO_VSTR_SG(vstrh_sg_uh, w, 2, uint16_t, ADDR_ADD, false)
++DO_VSTR_SG(vstrh_sg_uw, w, 4, uint32_t, ADDR_ADD, false)
++DO_VSTR_SG(vstrw_sg_uw, l, 4, uint32_t, ADDR_ADD, false)
+ DO_VSTR64_SG(vstrd_sg_ud, ADDR_ADD, false)
+ 
+-DO_VSTR_SG(vstrh_sg_os_uh, stw, 2, uint16_t, ADDR_ADD_OSH, false)
+-DO_VSTR_SG(vstrh_sg_os_uw, stw, 4, uint32_t, ADDR_ADD_OSH, false)
+-DO_VSTR_SG(vstrw_sg_os_uw, stl, 4, uint32_t, ADDR_ADD_OSW, false)
++DO_VSTR_SG(vstrh_sg_os_uh, w, 2, uint16_t, ADDR_ADD_OSH, false)
++DO_VSTR_SG(vstrh_sg_os_uw, w, 4, uint32_t, ADDR_ADD_OSH, false)
++DO_VSTR_SG(vstrw_sg_os_uw, l, 4, uint32_t, ADDR_ADD_OSW, false)
+ DO_VSTR64_SG(vstrd_sg_os_ud, ADDR_ADD_OSD, false)
+ 
+-DO_VLDR_SG(vldrw_sg_wb_uw, ldl, 4, uint32_t, uint32_t, ADDR_ADD, true)
++DO_VLDR_SG(vldrw_sg_wb_uw, l, 4, uint32_t, uint32_t, ADDR_ADD, true)
+ DO_VLDR64_SG(vldrd_sg_wb_ud, ADDR_ADD, true)
+-DO_VSTR_SG(vstrw_sg_wb_uw, stl, 4, uint32_t, ADDR_ADD, true)
++DO_VSTR_SG(vstrw_sg_wb_uw, l, 4, uint32_t, ADDR_ADD, true)
+ DO_VSTR64_SG(vstrd_sg_wb_ud, ADDR_ADD, true)
+ 
+ /*
+@@ -387,13 +421,15 @@ DO_VSTR64_SG(vstrd_sg_wb_ud, ADDR_ADD, true)
+         uint16_t mask = mve_eci_mask(env);                              \
+         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
+         uint32_t addr, data;                                            \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+                 continue;                                               \
+             }                                                           \
+             addr = base + off[beat] * 4;                                \
+-            data = cpu_ldl_le_data_ra(env, addr, GETPC());              \
++            data = cpu_ldl_mmu(env, addr, oi, GETPC());                 \
+             for (e = 0; e < 4; e++, data >>= 8) {                       \
+                 uint8_t *qd = (uint8_t *)aa32_vfp_qreg(env, qnidx + e); \
+                 qd[H1(off[beat])] = data;                               \
+@@ -411,13 +447,15 @@ DO_VSTR64_SG(vstrd_sg_wb_ud, ADDR_ADD, true)
+         uint32_t addr, data;                                            \
+         int y; /* y counts 0 2 0 2 */                                   \
+         uint16_t *qd;                                                   \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0, y = 0; beat < 4; beat++, mask >>= 4, y ^= 2) {   \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+                 continue;                                               \
+             }                                                           \
+             addr = base + off[beat] * 8 + (beat & 1) * 4;               \
+-            data = cpu_ldl_le_data_ra(env, addr, GETPC());              \
++            data = cpu_ldl_mmu(env, addr, oi, GETPC());                 \
+             qd = (uint16_t *)aa32_vfp_qreg(env, qnidx + y);             \
+             qd[H2(off[beat])] = data;                                   \
+             data >>= 16;                                                \
+@@ -436,13 +474,15 @@ DO_VSTR64_SG(vstrd_sg_wb_ud, ADDR_ADD, true)
+         uint32_t addr, data;                                            \
+         uint32_t *qd;                                                   \
+         int y;                                                          \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+                 continue;                                               \
+             }                                                           \
+             addr = base + off[beat] * 4;                                \
+-            data = cpu_ldl_le_data_ra(env, addr, GETPC());              \
++            data = cpu_ldl_mmu(env, addr, oi, GETPC());                 \
+             y = (beat + (O1 & 2)) & 3;                                  \
+             qd = (uint32_t *)aa32_vfp_qreg(env, qnidx + y);             \
+             qd[H4(off[beat] >> 2)] = data;                              \
+@@ -473,13 +513,15 @@ DO_VLD4W(vld43w, 6, 7, 8, 9)
+         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
+         uint32_t addr, data;                                            \
+         uint8_t *qd;                                                    \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+                 continue;                                               \
+             }                                                           \
+             addr = base + off[beat] * 2;                                \
+-            data = cpu_ldl_le_data_ra(env, addr, GETPC());              \
++            data = cpu_ldl_mmu(env, addr, oi, GETPC());                 \
+             for (e = 0; e < 4; e++, data >>= 8) {                       \
+                 qd = (uint8_t *)aa32_vfp_qreg(env, qnidx + (e & 1));    \
+                 qd[H1(off[beat] + (e >> 1))] = data;                    \
+@@ -497,13 +539,15 @@ DO_VLD4W(vld43w, 6, 7, 8, 9)
+         uint32_t addr, data;                                            \
+         int e;                                                          \
+         uint16_t *qd;                                                   \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+                 continue;                                               \
+             }                                                           \
+             addr = base + off[beat] * 4;                                \
+-            data = cpu_ldl_le_data_ra(env, addr, GETPC());              \
++            data = cpu_ldl_mmu(env, addr, oi, GETPC());                 \
+             for (e = 0; e < 2; e++, data >>= 16) {                      \
+                 qd = (uint16_t *)aa32_vfp_qreg(env, qnidx + e);         \
+                 qd[H2(off[beat])] = data;                               \
+@@ -520,13 +564,15 @@ DO_VLD4W(vld43w, 6, 7, 8, 9)
+         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
+         uint32_t addr, data;                                            \
+         uint32_t *qd;                                                   \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+                 continue;                                               \
+             }                                                           \
+             addr = base + off[beat];                                    \
+-            data = cpu_ldl_le_data_ra(env, addr, GETPC());              \
++            data = cpu_ldl_mmu(env, addr, oi, GETPC());                 \
+             qd = (uint32_t *)aa32_vfp_qreg(env, qnidx + (beat & 1));    \
+             qd[H4(off[beat] >> 3)] = data;                              \
+         }                                                               \
+@@ -549,6 +595,8 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+         uint16_t mask = mve_eci_mask(env);                              \
+         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
+         uint32_t addr, data;                                            \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+@@ -560,7 +608,7 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+                 uint8_t *qd = (uint8_t *)aa32_vfp_qreg(env, qnidx + e); \
+                 data = (data << 8) | qd[H1(off[beat])];                 \
+             }                                                           \
+-            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
++            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
+         }                                                               \
+     }
+ 
+@@ -574,6 +622,8 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+         uint32_t addr, data;                                            \
+         int y; /* y counts 0 2 0 2 */                                   \
+         uint16_t *qd;                                                   \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0, y = 0; beat < 4; beat++, mask >>= 4, y ^= 2) {   \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+@@ -584,7 +634,7 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+             data = qd[H2(off[beat])];                                   \
+             qd = (uint16_t *)aa32_vfp_qreg(env, qnidx + y + 1);         \
+             data |= qd[H2(off[beat])] << 16;                            \
+-            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
++            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
+         }                                                               \
+     }
+ 
+@@ -598,6 +648,8 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+         uint32_t addr, data;                                            \
+         uint32_t *qd;                                                   \
+         int y;                                                          \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+@@ -607,7 +659,7 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+             y = (beat + (O1 & 2)) & 3;                                  \
+             qd = (uint32_t *)aa32_vfp_qreg(env, qnidx + y);             \
+             data = qd[H4(off[beat] >> 2)];                              \
+-            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
++            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
+         }                                                               \
+     }
+ 
+@@ -635,6 +687,8 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
+         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
+         uint32_t addr, data;                                            \
+         uint8_t *qd;                                                    \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+@@ -646,7 +700,7 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
+                 qd = (uint8_t *)aa32_vfp_qreg(env, qnidx + (e & 1));    \
+                 data = (data << 8) | qd[H1(off[beat] + (e >> 1))];      \
+             }                                                           \
+-            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
++            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
+         }                                                               \
+     }
+ 
+@@ -660,6 +714,8 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
+         uint32_t addr, data;                                            \
+         int e;                                                          \
+         uint16_t *qd;                                                   \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+@@ -671,7 +727,7 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
+                 qd = (uint16_t *)aa32_vfp_qreg(env, qnidx + e);         \
+                 data = (data << 16) | qd[H2(off[beat])];                \
+             }                                                           \
+-            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
++            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
+         }                                                               \
+     }
+ 
+@@ -684,6 +740,8 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
+         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
+         uint32_t addr, data;                                            \
+         uint32_t *qd;                                                   \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+             if ((mask & 1) == 0) {                                      \
+                 /* ECI says skip this beat */                           \
+@@ -692,7 +750,7 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
+             addr = base + off[beat];                                    \
+             qd = (uint32_t *)aa32_vfp_qreg(env, qnidx + (beat & 1));    \
+             data = qd[H4(off[beat] >> 3)];                              \
+-            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
++            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
+         }                                                               \
+     }
+ 
+-- 
+2.48.1
 
 
