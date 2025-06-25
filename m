@@ -2,88 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0162AAE78CC
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 09:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C651EAE78FA
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Jun 2025 09:44:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUKh6-00039V-Nk; Wed, 25 Jun 2025 03:37:22 -0400
+	id 1uUKnP-0005Cn-GD; Wed, 25 Jun 2025 03:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexghiti@rivosinc.com>)
- id 1uUKgk-00039E-Dp
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 03:36:59 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alexghiti@rivosinc.com>)
- id 1uUKgh-0006ER-CS
- for qemu-devel@nongnu.org; Wed, 25 Jun 2025 03:36:58 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-ad574992fcaso1107511966b.1
- for <qemu-devel@nongnu.org>; Wed, 25 Jun 2025 00:36:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1750837012; x=1751441812;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BbWLVMD8aqO9UkiITCDU+b8qdjCijrEjch6RSbRo28M=;
- b=JXIAL/Bz6UAkR0q6U9U0uSzFDCFPSAPsbtARdtoLkUFUGWwFViTCMWPlAcaZspz4ez
- W3Iqvo+MfTrQOK6MBAUb3ziuDxKyunIlMudF6rH/2osqF5fA6NMFwDUPkt3vcH0J3/T1
- /0Y2cXiUwaVqzSvFX1mUunQqsYMEAN49ZdK6ekEWObokwdOYeuuryCQLNKEeXTJMYoiq
- Ef5hCSrIaKa8eVVkQ1+tdAvCjN/Iw6fh8Ys7LxGRrDgCGYdHSfEzaSyyDLwPzm8UaFyX
- GhuR4Fv5JaAhBI0pi9h9j/uUM8PC0UPdxdQqTPDnPHH5LhkEwRwW6idHwnamvDycV8AC
- 9itw==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUKnA-0005Ah-7w
+ for qemu-devel@nongnu.org; Wed, 25 Jun 2025 03:43:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUKn7-0001EL-JI
+ for qemu-devel@nongnu.org; Wed, 25 Jun 2025 03:43:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1750837410;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=aVnnBQi2Cfm5kIFTVNkmi/IfslHVkPnhcV0cMifqxg0=;
+ b=BGuMerY4oHygiU2h1h18wPfi3bJC4UPXj2djVcRJPIRHFGoETz+cLeagQxgYQYRUrrAaGx
+ 8c1Z7iiRvm65r8jYb4RNCdFa6hEkOZeCdyRED077S53nUKTIFEH8OuxtPl9gs84D168L0B
+ qzhzIowXoGIlkJtbnX/hXnFNTQ5beGY=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-298-S-fE6t-5M9G0utyEmzbIFA-1; Wed, 25 Jun 2025 03:43:28 -0400
+X-MC-Unique: S-fE6t-5M9G0utyEmzbIFA-1
+X-Mimecast-MFC-AGG-ID: S-fE6t-5M9G0utyEmzbIFA_1750837407
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a4f858bc5eso3579631f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Jun 2025 00:43:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750837012; x=1751441812;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BbWLVMD8aqO9UkiITCDU+b8qdjCijrEjch6RSbRo28M=;
- b=ZwPQGfLwMaFdocSDb6RbEIf+yPrJ80OUGwZHpQtTcQ0M2cPGCfX1+sAzqpBOjzsQF4
- cdTEK4QX3C86avga9E/qe3huKZUFe+siBkenrYKqevJqzyUIoBHelIwfAD1Z8Ra7nnEe
- uGT4XYjjrEZTjJJttTP0Duin3tn6wHVBkFPkY7g70zjJ9jWYfFzNCtYX2QaJl+SyEHp6
- U/B3QJwXb0ijSMoz7eX+B73V6t/uTv5GjxHWhqZubUWq6usdCVVd5ldm8qAhJq+CtZy/
- fiWBrvMNcN6RhP96JbVBr4SVJLkzErIyi+1OaFxw+T7jKf0vsnZxpA/bpGjw6/Bu6LGN
- 13eQ==
+ d=1e100.net; s=20230601; t=1750837407; x=1751442207;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aVnnBQi2Cfm5kIFTVNkmi/IfslHVkPnhcV0cMifqxg0=;
+ b=OmW9FRFuuQS0rj3MbfEXVdxvnFg6J4X2lJS/0oBVIcgTbtbq903DMnIv8uuGpERqBD
+ 5/SWnA6TvrQ371ny3PGLDZMFVMBetMkN5lGSexIVocnhs5L0TbyNfUL99Ma53FYYxXwR
+ ZMC2uQ6D1fhtI880yyLEVOtoBaaN05IzIR2nh5H16gNaveoJuwJ9sfqpqVEYbSSvzwTm
+ UH9XsIWyT0HjQfPzeuZO64wuVU9TYbkIg7gNy4gbUTyDW07w1NWRej2a6RRaEMzccnBK
+ Kqp3LVWfsKNFyZTzzKShfaCtBK4Zrs0jVvys7HDYijhcrpbkHsxEVJflCwpXeJPF7UR/
+ cp/A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVeskW5HH/mXUbUbCT4jkEvdy02dbUBFCYm0uX5rvMm0HbJgz8Ex9CoWU4/uuXUCakFc/a5TlAhx23d@nongnu.org
-X-Gm-Message-State: AOJu0YwujkGB4KvCsrNTs5JKLd2jnsh82Da9YPMHtXlGI9CAknmTY2VK
- J3v3K3UV+AKrefdIz/eO1DiTyqYKKKXLPa7HFvEt8pLnA70KKJ806dNkoOVHpsxFVx2dpQLk+Hp
- AvIhxG8AX7zovWmKHvZa6zBYlshouJB54lfl4znYTKg==
-X-Gm-Gg: ASbGncu0tAoCXXcKj9FQ95EsGvjIGsrBQznVffOidZEedwHVMJ2B2nIzl8YK6lha/6v
- jwOWfT/jxdUvDJpoExnN5bRWRP6XJixJ7792jXJxUtPTY3R1FA1ISPUGXqa+kvmQCmoqxrCh+/z
- rdzIXEOfDc2Usy36VhHuKebfZiKH+1/UQ5ePt7tUWhJLLqoTNwFL4M80zqrGDBHLMae2Kz8hlCs
- k0g
-X-Google-Smtp-Source: AGHT+IFuiuEE2q8m0VJ0O4Z913gqpAo8WSi1jpbT3TB+z0OGETp35Ed2QCktFhETtbOe1K4Tnxz4wvrApIQ/qCHzo60=
-X-Received: by 2002:a17:906:115a:b0:ae0:bdc2:994d with SMTP id
- a640c23a62f3a-ae0bea627a0mr177621366b.55.1750837012315; Wed, 25 Jun 2025
- 00:36:52 -0700 (PDT)
+ AJvYcCWkd/3UNRCgavqcCaGhKeJL5F/AuWmrXvc2gi1p1v5En77ZCoxFplH1H8ETBn4tKikx7xTivdd/BNd3@nongnu.org
+X-Gm-Message-State: AOJu0Yz9Ut/Cd7k9smoXyiXW4ja4/RU8vzrVkwiBBUzYp0prBCwXkGeb
+ 5za9hviZw7MJaAXImwdyx+9IxQTk7SU7pE+Z6ciGSExF9K7SJJOs5n5V3HzAAVZL72HiXGGtJmy
+ jG+0ViOCFpsK+QSUhivAm2A2/gEHHQpP2VacaqHMhCXcT5KXmXL9d1+zi
+X-Gm-Gg: ASbGncttvFOs+qj7hNg8Fh6URVeWFLA7IG4pX23bZkMkXJmn6NJQU6Z8LRRMZW2drhi
+ aIApdQWu/EjJtYulTtWJl2d5yes4TsgRzkms2KZ+x0TG08zbjN5Z8yLatFg8e5EsawwTrNPZa35
+ DFbIa02QIjn8Lc6QGKfX6zbq4S6rHv2dkYsUnSovT7F6SA5+6EeuGYsVx3NUsvMBj1jMeD+rfN/
+ PFhFuXClF3rSUpKDQW98YYq3WmLt9sPiuDK31K5bURnESuh6p9igtRwJRw979o7bmc/QCX7doJS
+ 0zRP4+2/eHkwkPnIKG3ZSjaaEh6Himpmy53XPPRQvesKyDSg4lKdVMJhW8z8
+X-Received: by 2002:a05:6000:230c:b0:3a5:2cb5:63fd with SMTP id
+ ffacd0b85a97d-3a6ed5d64b7mr1314733f8f.10.1750837406920; 
+ Wed, 25 Jun 2025 00:43:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEinEQQPziD6JrQ4uICJ/RTmVohzA2oaxlxWUK7R6uc6jOOFLICWxbYhPvC6yC7lZHqs4/ADA==
+X-Received: by 2002:a05:6000:230c:b0:3a5:2cb5:63fd with SMTP id
+ ffacd0b85a97d-3a6ed5d64b7mr1314711f8f.10.1750837406452; 
+ Wed, 25 Jun 2025 00:43:26 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a6e8050e1fsm3800156f8f.8.2025.06.25.00.43.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Jun 2025 00:43:25 -0700 (PDT)
+Message-ID: <7bdd9aea-8c98-4d5f-8518-30071ba4421f@redhat.com>
+Date: Wed, 25 Jun 2025 09:43:25 +0200
 MIME-Version: 1.0
-References: <20250605142126.1939798-1-alexghiti@rivosinc.com>
- <4990220d-a4a6-49b4-a8db-929cf1100e31@ventanamicro.com>
-In-Reply-To: <4990220d-a4a6-49b4-a8db-929cf1100e31@ventanamicro.com>
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-Date: Wed, 25 Jun 2025 09:36:41 +0200
-X-Gm-Features: Ac12FXyJ4HXMIL1CSYgqGir7Cf_VfVJhM7A8y82Ruq1zgjiV0Bip0jTA_spZXIs
-Message-ID: <CAHVXubg3DM52H_1z1Yg5SSk2nZq3VL8xBREBP9Np9aC0OTAAuw@mail.gmail.com>
-Subject: Re: [PATCH] target: riscv: Add Svrsw60t59b extension support
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, debug@rivosinc.com,
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=alexghiti@rivosinc.com; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] i386/tdx: Build TDX only for 64-bit target
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20250625073310.2796298-1-xiaoyao.li@intel.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250625073310.2796298-1-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,237 +154,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
+On 6/25/25 09:33, Xiaoyao Li wrote:
+> Build errors related to TDX were reported when QEMU built on 32-bit
+> host[1][2].
+> 
+> Since TDX cannot work on 32-bit host and it's also not worth supporting
+> TDX with 32-bit QEMU, limit TDX to 64-bit target only.
+> 
+> [1] https://lore.kernel.org/qemu-devel/20250602173101.1052983-1-clg@redhat.com/
+> [2] https://lore.kernel.org/qemu-devel/b8171c39-6a92-4078-a59a-a63d7452e1e9@kaod.org/
+> 
+> Suggested-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>   hw/i386/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+> index eb65bda6e071..14d23e27b580 100644
+> --- a/hw/i386/Kconfig
+> +++ b/hw/i386/Kconfig
+> @@ -13,7 +13,7 @@ config SGX
+>   config TDX
+>       bool
+>       select X86_FW_OVMF
+> -    depends on KVM
+> +    depends on KVM && X86_64
+>   
+>   config PC
+>       bool
 
-On Sat, Jun 7, 2025 at 7:54=E2=80=AFPM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
->
->
-> On 6/5/25 11:21 AM, Alexandre Ghiti wrote:
-> > The Svrsw60t59b extension allows to free the PTE reserved bits 60 and 5=
-9
-> > for software to use.
-> >
-> > Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> > ---
-> >
-> > Changes in v2:
-> >   - Add support for IOMMU
-> >   - Make svrsw60t59b depend on sv39 (deepak)
-> >
-> > Open question: svrsw60t59b in IOMMU should also depend on 64bit, but I
-> > did not find an easy to way in riscv_iommu_realize() to detect that, ho=
-w
-> > should I do?
->
->
-> What controls the IOMMU behavior is the set of IOMMU capabilities that th=
-e driver
-> chooses to use. Other than that the device should be oblivious to the CPU=
- word
-> size.
->
->  From what I see in this patch you did the right thing: you added a new c=
-apability
-> to be advertised to software and that's it. It's up to software to decide=
- whether
-> it's going to use it or not. You can advertise a 64 bit only IOMMU capabi=
-lity running
-> in a 32 bit CPU and it's up to the OS to not use/ignore it. In fact we al=
-ready do
-> that: satp_mode related caps (e.g. RISCV_IOMMU_CAP_SV32X4) are 32/64 bits=
- exclusive
-> but are always advertised.
->
->
->
-> Now, Svrsw60t59b being a 32 bit only extension requires special handling =
-in
-> riscv_init_max_cpu_extensions() because the 'max' CPU has a 32 bit varian=
-t and
-> enabled everything by default. You can use this diff:
->
->
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index f93cd53f37..96201e15c6 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -1612,6 +1612,8 @@ static void riscv_init_max_cpu_extensions(Object *o=
-bj)
->
->       if (env->misa_mxl !=3D MXL_RV32) {
->           isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcf), false);
-> +    } else {
-> +        isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_svrsw60t59b), fal=
-se);
->       }
->
->       /*
->
->
-> To fix this test break in 'make check-functional':
->
->         Command: /home/danielhb/work/qemu/build/qemu-system-riscv32 -disp=
-lay none -vga none -chardev socket,id=3Dmon,fd=3D5 -mon chardev=3Dmon,mode=
-=3Dcontrol -machine virt -chardev socket,id=3Dconsole,fd=3D10 -serial chard=
-ev:console -cpu max -kernel /home/danielhb/.cache/qemu/download/872bc8f8e0d=
-4661825d5f47f7bec64988e9d0a8bd5db8917d57e16f66d83b329 -append printk.time=
-=3D0 root=3D/dev/vda console=3DttyS0 -blockdev driver=3Draw,file.driver=3Df=
-ile,file.filename=3D/home/danielhb/work/qemu/build/tests/functional/riscv32=
-/test_riscv32_tuxrun.TuxRunRiscV32Test.test_riscv32_maxcpu/scratch/511ad34e=
-63222db08d6c1da16fad224970de36517a784110956ba6a24a0ee5f6,node-name=3Dhd0 -d=
-evice virtio-blk-device,drive=3Dhd0
->         Output: qemu-system-riscv32: svrsw60t59b is not supported on RV32=
- and MMU-less platforms
 
-Sorry for the late answer and thanks for the fix ^! I have just sent the v2=
-.
+Tested-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
-Alex
+C.
 
->
->
-> Thanks,
->
-> Daniel
->
->
-> >
-> >   hw/riscv/riscv-iommu-bits.h       | 1 +
-> >   hw/riscv/riscv-iommu.c            | 3 ++-
-> >   target/riscv/cpu.c                | 2 ++
-> >   target/riscv/cpu_bits.h           | 3 ++-
-> >   target/riscv/cpu_cfg_fields.h.inc | 1 +
-> >   target/riscv/cpu_helper.c         | 3 ++-
-> >   target/riscv/tcg/tcg-cpu.c        | 6 ++++++
-> >   7 files changed, 16 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/hw/riscv/riscv-iommu-bits.h b/hw/riscv/riscv-iommu-bits.h
-> > index 1017d73fc6..47fe01bee5 100644
-> > --- a/hw/riscv/riscv-iommu-bits.h
-> > +++ b/hw/riscv/riscv-iommu-bits.h
-> > @@ -79,6 +79,7 @@ struct riscv_iommu_pq_record {
-> >   #define RISCV_IOMMU_CAP_SV39            BIT_ULL(9)
-> >   #define RISCV_IOMMU_CAP_SV48            BIT_ULL(10)
-> >   #define RISCV_IOMMU_CAP_SV57            BIT_ULL(11)
-> > +#define RISCV_IOMMU_CAP_SVRSW60T59B     BIT_ULL(14)
-> >   #define RISCV_IOMMU_CAP_SV32X4          BIT_ULL(16)
-> >   #define RISCV_IOMMU_CAP_SV39X4          BIT_ULL(17)
-> >   #define RISCV_IOMMU_CAP_SV48X4          BIT_ULL(18)
-> > diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-> > index a877e5da84..36eda95a1c 100644
-> > --- a/hw/riscv/riscv-iommu.c
-> > +++ b/hw/riscv/riscv-iommu.c
-> > @@ -2355,7 +2355,8 @@ static void riscv_iommu_realize(DeviceState *dev,=
- Error **errp)
-> >       }
-> >       if (s->enable_g_stage) {
-> >           s->cap |=3D RISCV_IOMMU_CAP_SV32X4 | RISCV_IOMMU_CAP_SV39X4 |
-> > -                  RISCV_IOMMU_CAP_SV48X4 | RISCV_IOMMU_CAP_SV57X4;
-> > +                  RISCV_IOMMU_CAP_SV48X4 | RISCV_IOMMU_CAP_SV57X4 |
-> > +                  RISCV_IOMMU_CAP_SVRSW60T59B;
-> >       }
-> >
-> >       if (s->hpm_cntrs > 0) {
-> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > index 629ac37501..13f1f56d95 100644
-> > --- a/target/riscv/cpu.c
-> > +++ b/target/riscv/cpu.c
-> > @@ -228,6 +228,7 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
-> >       ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
-> >       ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
-> >       ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
-> > +    ISA_EXT_DATA_ENTRY(svrsw60t59b, PRIV_VERSION_1_13_0, ext_svrsw60t5=
-9b),
-> >       ISA_EXT_DATA_ENTRY(svukte, PRIV_VERSION_1_13_0, ext_svukte),
-> >       ISA_EXT_DATA_ENTRY(svvptc, PRIV_VERSION_1_13_0, ext_svvptc),
-> >       ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
-> > @@ -1282,6 +1283,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions=
-[] =3D {
-> >       MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
-> >       MULTI_EXT_CFG_BOOL("svnapot", ext_svnapot, false),
-> >       MULTI_EXT_CFG_BOOL("svpbmt", ext_svpbmt, false),
-> > +    MULTI_EXT_CFG_BOOL("svrsw60t59b", ext_svrsw60t59b, false),
-> >       MULTI_EXT_CFG_BOOL("svvptc", ext_svvptc, true),
-> >
-> >       MULTI_EXT_CFG_BOOL("zicntr", ext_zicntr, true),
-> > diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-> > index a30317c617..51eb7114da 100644
-> > --- a/target/riscv/cpu_bits.h
-> > +++ b/target/riscv/cpu_bits.h
-> > @@ -675,7 +675,8 @@ typedef enum {
-> >   #define PTE_SOFT            0x300 /* Reserved for Software */
-> >   #define PTE_PBMT            0x6000000000000000ULL /* Page-based memor=
-y types */
-> >   #define PTE_N               0x8000000000000000ULL /* NAPOT translatio=
-n */
-> > -#define PTE_RESERVED        0x1FC0000000000000ULL /* Reserved bits */
-> > +#define PTE_RESERVED(svrsw60t59b)            \
-> > +             (svrsw60t59b ? 0x07C0000000000000ULL : 0x1FC0000000000000=
-ULL) /* Reserved bits */
-> >   #define PTE_ATTR            (PTE_N | PTE_PBMT) /* All attributes bits=
- */
-> >
-> >   /* Page table PPN shift amount */
-> > diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_f=
-ields.h.inc
-> > index 59f134a419..ab61c1ccf2 100644
-> > --- a/target/riscv/cpu_cfg_fields.h.inc
-> > +++ b/target/riscv/cpu_cfg_fields.h.inc
-> > @@ -57,6 +57,7 @@ BOOL_FIELD(ext_svadu)
-> >   BOOL_FIELD(ext_svinval)
-> >   BOOL_FIELD(ext_svnapot)
-> >   BOOL_FIELD(ext_svpbmt)
-> > +BOOL_FIELD(ext_svrsw60t59b)
-> >   BOOL_FIELD(ext_svvptc)
-> >   BOOL_FIELD(ext_svukte)
-> >   BOOL_FIELD(ext_zdinx)
-> > diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> > index 2ed69d7c2d..3479a62cc7 100644
-> > --- a/target/riscv/cpu_helper.c
-> > +++ b/target/riscv/cpu_helper.c
-> > @@ -1309,6 +1309,7 @@ static int get_physical_address(CPURISCVState *en=
-v, hwaddr *physical,
-> >       bool svade =3D riscv_cpu_cfg(env)->ext_svade;
-> >       bool svadu =3D riscv_cpu_cfg(env)->ext_svadu;
-> >       bool adue =3D svadu ? env->menvcfg & MENVCFG_ADUE : !svade;
-> > +    bool svrsw60t59b =3D riscv_cpu_cfg(env)->ext_svrsw60t59b;
-> >
-> >       if (first_stage && two_stage && env->virt_enabled) {
-> >           pbmte =3D pbmte && (env->henvcfg & HENVCFG_PBMTE);
-> > @@ -1376,7 +1377,7 @@ static int get_physical_address(CPURISCVState *en=
-v, hwaddr *physical,
-> >           if (riscv_cpu_sxl(env) =3D=3D MXL_RV32) {
-> >               ppn =3D pte >> PTE_PPN_SHIFT;
-> >           } else {
-> > -            if (pte & PTE_RESERVED) {
-> > +            if (pte & PTE_RESERVED(svrsw60t59b)) {
-> >                   qemu_log_mask(LOG_GUEST_ERROR, "%s: reserved bits set=
- in PTE: "
-> >                                 "addr: 0x%" HWADDR_PRIx " pte: 0x" TARG=
-ET_FMT_lx "\n",
-> >                                 __func__, pte_addr, pte);
-> > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> > index 305912b8dd..886006abc3 100644
-> > --- a/target/riscv/tcg/tcg-cpu.c
-> > +++ b/target/riscv/tcg/tcg-cpu.c
-> > @@ -804,6 +804,12 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *c=
-pu, Error **errp)
-> >           cpu->cfg.ext_ssctr =3D false;
-> >       }
-> >
-> > +    if (cpu->cfg.ext_svrsw60t59b &&
-> > +        (!cpu->cfg.mmu || mcc->def->misa_mxl_max =3D=3D MXL_RV32)) {
-> > +        error_setg(errp, "svrsw60t59b is not supported on RV32 and MMU=
--less platforms");
-> > +        return;
-> > +    }
-> > +
-> >       /*
-> >        * Disable isa extensions based on priv spec after we
-> >        * validated and set everything we need.
->
+
 
