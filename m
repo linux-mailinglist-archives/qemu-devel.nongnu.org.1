@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A727AEA9A1
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 00:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42605AEA9A5
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 00:31:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUv5L-0006PW-4p; Thu, 26 Jun 2025 18:28:47 -0400
+	id 1uUv5M-0006Om-2C; Thu, 26 Jun 2025 18:28:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
- id 1uUv57-0006LN-1L
+ id 1uUv54-0006LJ-9N
  for qemu-devel@nongnu.org; Thu, 26 Jun 2025 18:28:39 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
- id 1uUv4y-0000t6-H7
+ id 1uUv51-0000tI-E3
  for qemu-devel@nongnu.org; Thu, 26 Jun 2025 18:28:30 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-23636167afeso17563135ad.3
- for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 15:28:23 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2363e973db1so23201615ad.0
+ for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 15:28:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1750976901; x=1751581701; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1750976903; x=1751581703; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0+GGKtwzBUfn14ahXvUOzUJbIbHLEyGrCz9OblHISOk=;
- b=G0p+58tRqeN3FjdhNSDxSFUff6ycmuH5pYBebthKvPcev9cx+x2ndJz+w49ZrJHlxf
- 1Q9BbKjuprIe7Stz7F+YH8Gs+gjZDg0iyK1zGshQeFQnfTZKPbXMb1MjJbUlDfSQRrPY
- YXALurarLckoqyjpP7qWgdvtnELXSd8FcApHX3/MUZmrhBmIg7ojCUyQSft7348G0W1L
- dDakG3omcsy051RHYT1rqaxF8XuNAAbcBZbK76773qnkMMkQTu/SbbTIFlpxiL9XLVnz
- DapnLK5TdVcjGgpujn9KbEz1EgNN4LfbMmMw5AUkb/ih2ia30xcqqp99Jcujhi39N7az
- giNw==
+ bh=dlJ/ihmtY/Bs+6QNasQQE5ci8/VnkGAsX6ch1ZEqQ/Y=;
+ b=NBO7dvO9m2N8SgCq6oCaig59nFcTbCQnIGgb2WI1sSN7zP0drYklMQ1AYUWtX0/1VD
+ vYugRAg7feQRr+sGwxL4oYx3wKYkmjFCyRa94gXkSgi9lQlxIIZ7e6xke+mschaROGSl
+ NrANpHCcLiCQJYABWe0PWiFPTlDj8pVv+vVZ0L3XSjBpSrhemFFVUlcWsdSAvtpztVoW
+ ALDiWCZDvoEPNbejoulo8zZz9B1zvPNWn+JBKN8hvsWjNBj5yEaCQ0vLI09Rg4cs4JLF
+ 7Wpq/7k8sMLGptqYxp9/2y4f4Fr4M/aZycxHc6dQb7KvwagJQFL+HHyQZZCbt+1050o1
+ zj1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750976901; x=1751581701;
+ d=1e100.net; s=20230601; t=1750976903; x=1751581703;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0+GGKtwzBUfn14ahXvUOzUJbIbHLEyGrCz9OblHISOk=;
- b=G90g3/8yD+kzU3aEDeXqg15f7ihAvGcTlrfuBnH6AG5s7/d7EitkaUJoZ1RG+ZGnqQ
- ciy3cYGdhd8ZRdgKBIF17piO077pVmUd4ikUw075F+ILAD8Wf9XYV48Jcc5fZ2+sAcqe
- ivJ5gRCz0YZRZVyifYF6R+R9DhyXJSLWAVb5X8VUJae+EFjWS2IRiNysQiUDMRxattqN
- S8WkfRy5RKSrM5gDUTWBkOKj6aPDe3B6DgrXmpVBCPbA9NLPj2fJYjdh4Hl9u+XJVphn
- 4oLJ1GAxASbJqiBa4re7BmrFKpRSFwFkoqgXelRE+h0xhTf+nC4jtLDdHM0Y1NrvwTTA
- XpWg==
-X-Gm-Message-State: AOJu0Yy+xSfgjf0ySBOMP9p3nlM6Eo9tckXc+uiwaLJ7RTMsOUAC66bt
- wZCWyi4bj1DRkgeAtsVyP8vmiq3334vQdWs5DIqenL2ccJX2s6vZ9+P3SUErKw==
-X-Gm-Gg: ASbGncvjxF+nWtGbeZ3A88xBSDi9JNa9qJGYg0zl6on+HqRaBvIwU4G5OjT3b7MidmZ
- qCQ8vQ/q0/bHp392m/uVGdS8ItPBwAfUNdv2/5mKM+g+9p0M/L+9puXM4syEIC5lLC1E43RRu8y
- F6b9Rvx1VmcmFO3MKT9ED7hokWK/AOmKOyasexbD0iAFupx5USgFmWCoCaBDX/k6FXc6x+qiapy
- fyZte0pt2RqDaYCf9LYimPCTOphjseLeSxri+4b6VLadcRWRb7DB8Pp11DRMS2x2q5Rn/F5kxp8
- kus4nGJCWE715e79Fi3RTApxa6yWi9pv6RFWmCGh/04CsXOIy25v14g5LR75XOtkE1OGRF5+gEw
- lp6/eCBQ=
-X-Google-Smtp-Source: AGHT+IEXv04antYorBEAkJ0OQO4gMHB5P6HUZXaOyXNr/drr5XPtQtIJi7p4+d/5UHqi+dTKqu35TQ==
-X-Received: by 2002:a17:903:22cf:b0:234:8e78:ce8a with SMTP id
- d9443c01a7336-23ac4636e48mr13604335ad.48.1750976901408; 
- Thu, 26 Jun 2025 15:28:21 -0700 (PDT)
+ bh=dlJ/ihmtY/Bs+6QNasQQE5ci8/VnkGAsX6ch1ZEqQ/Y=;
+ b=htBNCAIv9lOFmxHnVP2N9Xb2OjnhFxAb2cXhXNVPdj3+sy9FxQT0XI15vOmp/XS6Kl
+ 98mTjCVJUDzbpLTKrzDDriOpWqMYX++OQ02inxXOiobqe+ONyS7GeZrvot+B3+dv71vC
+ NQnDicyu8hpRY/u1Y4zwwP1imrUMs5wRem90GYRSAoDJ/Kw6VK2Xjcy+ledr6EFViVGb
+ 2nMo6iwxyRKuaH2bca90njlwqzh0yP+WTzeK/hw0ifAox979n9DZd9dczS1knKmirWl7
+ kmSSXVaGkbZ2Vxu2huys8IWe5cp4yjaxXnX5smaZeMSeKJ1t/qSc6DMCr1fBcv4oSCn3
+ yyIg==
+X-Gm-Message-State: AOJu0YxKhk828wZk0G9INBAzaY064dctK5JLNwvIhAW+8y2h8TNsmgGq
+ bnnUDoiVoW0W3KDgLh+tEUR5spU5m4g4LfTM/InfR0OkhtDEHdg1gg3uM6lC+Q==
+X-Gm-Gg: ASbGncub5bp7/06VX1J1vi0JZhLmRfvNuNz8jM5tBqxGsHcsdOcdWHUH5u3SlmVQpw+
+ NE68UyUMNQkLDYikK++LRvyNPrLpQI2edUtrLU9yBW1XkEjh8MCdiSQuozWw0Eo6gLLt9UqtTug
+ /DwRyfo1NkB3ixaZ59IxXiJP0alUXnJqemdiIuq4oPAB9sDTmQn3HSvzamCS/lfJ4oW7W2jyq1X
+ OwV8mufafl0ABjKLGX54NP134LPxeM+/xYOLMQJPtNg3T9RXQFSE8OgBJE3V4arYAxgYoOKbRDA
+ NWLnY2JC1PEiLSdrqmEmnIFZIDDUYxkBfC2eRmq4rxlDW4Re2pKQ6Xvua+JDAhy75aFSztJ9rPL
+ JYS5svmg=
+X-Google-Smtp-Source: AGHT+IH3JDlsQy+VzeCP6XavKPgibPAly4QUpzv/KCtsAmiIQzL44pbquOf0jrrKRll8b2m1y7/L2g==
+X-Received: by 2002:a17:903:807:b0:234:1e11:95a3 with SMTP id
+ d9443c01a7336-2390a4a8832mr60381845ad.13.1750976903096; 
+ Thu, 26 Jun 2025 15:28:23 -0700 (PDT)
 Received: from deb-101020-bm01.dtc.local ([149.97.161.244])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23acb3c4b23sm870365ad.214.2025.06.26.15.28.20
+ d9443c01a7336-23acb3c4b23sm870365ad.214.2025.06.26.15.28.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Jun 2025 15:28:21 -0700 (PDT)
+ Thu, 26 Jun 2025 15:28:22 -0700 (PDT)
 From: anisa.su887@gmail.com
 To: qemu-devel@nongnu.org
 Cc: Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com, dave@stgolabs.net,
  alok.a.tiwari@oracle.com, linux-cxl@vger.kernel.org,
  Anisa Su <anisa.su@samsung.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [QEMU PATCH v4 03/10] cxl-mailbox-utils: 0x5601 - FMAPI Get Host
- Region Config
-Date: Thu, 26 Jun 2025 22:23:26 +0000
-Message-ID: <20250626222743.1766404-4-anisa.su887@gmail.com>
+Subject: [QEMU PATCH v4 04/10] cxl_events.h: Move definition for
+ dynamic_capacity_uuid and enum for DC event types
+Date: Thu, 26 Jun 2025 22:23:27 +0000
+Message-ID: <20250626222743.1766404-5-anisa.su887@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250626222743.1766404-1-anisa.su887@gmail.com>
 References: <20250626222743.1766404-1-anisa.su887@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=anisa.su887@gmail.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=anisa.su887@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
 X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,142 +103,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anisa Su <anisa.su@samsung.com>
 
-FM DCD Management command 0x5601 implemented per CXL r3.2 Spec Section 7.6.7.6.2
+Move definition/enum to cxl_events.h for shared use in next patch
 
 Reviewed-by: Fan Ni <fan.ni@samsung.com>
 Signed-off-by: Anisa Su <anisa.su@samsung.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 103 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 103 insertions(+)
+ hw/mem/cxl_type3.c          | 15 ---------------
+ include/hw/cxl/cxl_events.h | 15 +++++++++++++++
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 9a0f8bd2fc..7f0709a27f 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -120,6 +120,7 @@ enum {
-         #define MANAGEMENT_COMMAND     0x0
-     FMAPI_DCD_MGMT = 0x56,
-         #define GET_DCD_INFO    0x0
-+        #define GET_HOST_DC_REGION_CONFIG   0x1
- };
- 
- /* CCI Message Format CXL r3.1 Figure 7-19 */
-@@ -3286,6 +3287,106 @@ static CXLRetCode cmd_fm_get_dcd_info(const struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 0fccd22800..cdd60079c4 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1876,21 +1876,6 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
+     }
  }
  
-+static void build_dsmas_flags(uint8_t *flags, CXLDCRegion *region)
-+{
-+    *flags = 0;
-+
-+    if (region->nonvolatile) {
-+        *flags |= BIT(CXL_DSMAS_FLAGS_NONVOLATILE);
-+    }
-+    if (region->sharable) {
-+        *flags |= BIT(CXL_DSMAS_FLAGS_SHARABLE);
-+    }
-+    if (region->hw_managed_coherency) {
-+        *flags |= BIT(CXL_DSMAS_FLAGS_HW_MANAGED_COHERENCY);
-+    }
-+    if (region->ic_specific_dc_management) {
-+        *flags |= BIT(CXL_DSMAS_FLAGS_IC_SPECIFIC_DC_MANAGEMENT);
-+    }
-+    if (region->rdonly) {
-+        *flags |= BIT(CXL_DSMAS_FLAGS_RDONLY);
-+    }
-+}
-+
-+/* CXL r3.2 section 7.6.7.6.2: Get Host DC Region Configuration (Opcode 5601h) */
-+static CXLRetCode cmd_fm_get_host_dc_region_config(const struct cxl_cmd *cmd,
-+                                                   uint8_t *payload_in,
-+                                                   size_t len_in,
-+                                                   uint8_t *payload_out,
-+                                                   size_t *len_out,
-+                                                   CXLCCI *cci)
-+{
-+    struct {
-+        uint16_t host_id;
-+        uint8_t region_cnt;
-+        uint8_t start_rid;
-+    } QEMU_PACKED *in = (void *)payload_in;
-+    struct {
-+        uint16_t host_id;
-+        uint8_t num_regions;
-+        uint8_t regions_returned;
-+        struct {
-+            uint64_t base;
-+            uint64_t decode_len;
-+            uint64_t region_len;
-+            uint64_t block_size;
-+            uint8_t flags;
-+            uint8_t rsvd1[3];
-+            uint8_t sanitize;
-+            uint8_t rsvd2[3];
-+        } QEMU_PACKED records[];
-+    } QEMU_PACKED *out = (void *)payload_out;
-+    struct {
-+        uint32_t num_extents_supported;
-+        uint32_t num_extents_available;
-+        uint32_t num_tags_supported;
-+        uint32_t num_tags_available;
-+    } QEMU_PACKED *extra_out;
-+    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-+    uint16_t record_count, out_pl_len, i;
-+
-+    if (in->start_rid >= ct3d->dc.num_regions) {
-+        return CXL_MBOX_INVALID_INPUT;
-+    }
-+    record_count = MIN(ct3d->dc.num_regions - in->start_rid, in->region_cnt);
-+
-+    out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
-+    extra_out = (void *)out + out_pl_len;
-+    out_pl_len += sizeof(*extra_out);
-+
-+    assert(out_pl_len <= CXL_MAILBOX_MAX_PAYLOAD_SIZE);
-+
-+    stw_le_p(&out->host_id, 0);
-+    out->num_regions = ct3d->dc.num_regions;
-+    out->regions_returned = record_count;
-+
-+    for (i = 0; i < record_count; i++) {
-+        stq_le_p(&out->records[i].base,
-+                 ct3d->dc.regions[in->start_rid + i].base);
-+        stq_le_p(&out->records[i].decode_len,
-+                 ct3d->dc.regions[in->start_rid + i].decode_len /
-+                 CXL_CAPACITY_MULTIPLIER);
-+        stq_le_p(&out->records[i].region_len,
-+                 ct3d->dc.regions[in->start_rid + i].len);
-+        stq_le_p(&out->records[i].block_size,
-+                 ct3d->dc.regions[in->start_rid + i].block_size);
-+        build_dsmas_flags(&out->records[i].flags,
-+                          &ct3d->dc.regions[in->start_rid + i]);
-+        /* Sanitize is bit 0 of flags. */
-+        out->records[i].sanitize =
-+            ct3d->dc.regions[in->start_rid + i].flags & BIT(0);
-+    }
-+
-+    stl_le_p(&extra_out->num_extents_supported, CXL_NUM_EXTENTS_SUPPORTED);
-+    stl_le_p(&extra_out->num_extents_available, CXL_NUM_EXTENTS_SUPPORTED -
-+             ct3d->dc.total_extent_count);
-+    stl_le_p(&extra_out->num_tags_supported, CXL_NUM_TAGS_SUPPORTED);
-+    stl_le_p(&extra_out->num_tags_available, CXL_NUM_TAGS_SUPPORTED);
-+
-+    *len_out = out_pl_len;
-+    return CXL_MBOX_SUCCESS;
-+}
-+
- static const struct cxl_cmd cxl_cmd_set[256][256] = {
-     [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
-         cmd_infostat_bg_op_abort, 0, 0 },
-@@ -3402,6 +3503,8 @@ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
- static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
-     [FMAPI_DCD_MGMT][GET_DCD_INFO] = { "GET_DCD_INFO",
-         cmd_fm_get_dcd_info, 0, 0 },
-+    [FMAPI_DCD_MGMT][GET_HOST_DC_REGION_CONFIG] = { "GET_HOST_DC_REGION_CONFIG",
-+        cmd_fm_get_host_dc_region_config, 4, 0 },
- };
- 
+-/* CXL r3.1 Table 8-50: Dynamic Capacity Event Record */
+-static const QemuUUID dynamic_capacity_uuid = {
+-    .data = UUID(0xca95afa7, 0xf183, 0x4018, 0x8c, 0x2f,
+-                 0x95, 0x26, 0x8e, 0x10, 0x1a, 0x2a),
+-};
+-
+-typedef enum CXLDCEventType {
+-    DC_EVENT_ADD_CAPACITY = 0x0,
+-    DC_EVENT_RELEASE_CAPACITY = 0x1,
+-    DC_EVENT_FORCED_RELEASE_CAPACITY = 0x2,
+-    DC_EVENT_REGION_CONFIG_UPDATED = 0x3,
+-    DC_EVENT_ADD_CAPACITY_RSP = 0x4,
+-    DC_EVENT_CAPACITY_RELEASED = 0x5,
+-} CXLDCEventType;
+-
  /*
+  * Check whether the range [dpa, dpa + len - 1] has overlaps with extents in
+  * the list.
+diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
+index 38cadaa0f3..758b075a64 100644
+--- a/include/hw/cxl/cxl_events.h
++++ b/include/hw/cxl/cxl_events.h
+@@ -184,4 +184,19 @@ typedef struct CXLEventDynamicCapacity {
+     uint32_t tags_avail;
+ } QEMU_PACKED CXLEventDynamicCapacity;
+ 
++/* CXL r3.1 Table 8-50: Dynamic Capacity Event Record */
++static const QemuUUID dynamic_capacity_uuid = {
++    .data = UUID(0xca95afa7, 0xf183, 0x4018, 0x8c, 0x2f,
++                 0x95, 0x26, 0x8e, 0x10, 0x1a, 0x2a),
++};
++
++typedef enum CXLDCEventType {
++    DC_EVENT_ADD_CAPACITY = 0x0,
++    DC_EVENT_RELEASE_CAPACITY = 0x1,
++    DC_EVENT_FORCED_RELEASE_CAPACITY = 0x2,
++    DC_EVENT_REGION_CONFIG_UPDATED = 0x3,
++    DC_EVENT_ADD_CAPACITY_RSP = 0x4,
++    DC_EVENT_CAPACITY_RELEASED = 0x5,
++} CXLDCEventType;
++
+ #endif /* CXL_EVENTS_H */
 -- 
 2.47.2
 
