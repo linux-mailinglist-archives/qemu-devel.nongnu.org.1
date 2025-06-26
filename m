@@ -2,62 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425C2AEA6F3
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 21:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2B7AEA54F
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 20:24:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUsRV-00061H-7W; Thu, 26 Jun 2025 15:39:29 -0400
+	id 1uUrFf-0002xm-PB; Thu, 26 Jun 2025 14:23:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <unisono@quyllur.org>)
- id 1uUqjN-0006O0-SC
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 13:49:50 -0400
-Received: from quyllur.org ([185.247.226.42])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
- (Exim 4.90_1) (envelope-from <unisono@quyllur.org>)
- id 1uUqjK-0003My-Kw
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 13:49:49 -0400
-Received: from quyllur.org (localhost [127.0.0.1])
- by quyllur.org (OpenSMTPD) with ESMTP id 44a084c1
- for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 20:49:16 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=quyllur.org; h=message-id
- :date:mime-version:to:from:subject:content-type
- :content-transfer-encoding; s=dkimselector; bh=ohDy2Pb/0xkdaoDuu
- /K+6q5Rzn8=; b=Ih5uf73lmMfCoHBu3QvWywqOkInAxZGtEeM3ErQ7ts1XnKuNl
- PVUVBmpgUjR7eDmD5sR4Ya55x4gMjnGTXW24GXu8LcG36WlueA4O3vIjES0h2n+7
- MgfEmF1yFAvfj2asj1ZZDILagnRfaViPmbp5JirgPzucXXpTHUGh1ayzjI=
-DomainKey-Signature: a=rsa-sha1; c=nofws; d=quyllur.org; h=message-id
- :date:mime-version:to:from:subject:content-type
- :content-transfer-encoding; q=dns; s=dkimselector; b=w/b4rQMivFG
- lTVKG74NJrmkHZ+bg9ryfVkgnQ4FHJ+GsUNQqxSu7FYpjQCvYG5rAj8m1t3t9xL7
- igMH7As0onJUsh5mes/qLRHpLFZ4mQIGgYovgA3N9gLQmN+AENl61X8TZrstspF7
- fPlhyyRPKw3dE8YSyzndrPI/QOI+iDhQ=
-Received: from [10.137.0.57] (<unknown> [185.65.134.217])
- by quyllur.org (OpenSMTPD) with ESMTPSA id 16f0f22e
- (TLSv1.3:TLS_CHACHA20_POLY1305_SHA256:256:NO)
- for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 20:49:05 +0300 (EEST)
-Message-ID: <76c629ab-7ffd-48e7-b442-1afe74e58180@quyllur.org>
-Date: Thu, 26 Jun 2025 12:48:59 -0500
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uUrFd-0002xU-IM
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 14:23:09 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uUrFb-0000W4-EY
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 14:23:09 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-313bb9b2f5bso1503082a91.3
+ for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 11:23:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1750962185; x=1751566985; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Wq5pu/GRz4Z5nVAeOru2uq9wwPu3hY1UcDyYgEYFKj0=;
+ b=Y7A31/zJWM4C94HuNehaZsRv4R/TjHcB0T8SIdZPLyIeany7lf/xEwHXtQiQmFObh3
+ dXBd/BviD0PAAthIBJvBgRLGNHF5gJoJoUBTlae2amfwPpYe15BXR8Z3ouRxC5/hZZRI
+ 9NXQ+wWHk7fuzvVfDbsh/zWqJXN+P44y1WdycqPrwyd3EeknvhdRTxzx00FznIY2N8BT
+ UZrbELEVYQ16/GFdUnwppLPLn1ippum3kNuyppzPQMmPv//144yo8AFuslV7tnBS6nRl
+ rIrSpafYbW6v0cQacNlvQqshZc9rsb3R3P+Tq7GUkCZ8ezlsgXP6S9pvbxT5IHUKKx9g
+ aFOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750962185; x=1751566985;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Wq5pu/GRz4Z5nVAeOru2uq9wwPu3hY1UcDyYgEYFKj0=;
+ b=KeTU8V+0tfYkMnZG+Q7fDQfWoxX/mzpSCqDnhjplvlKOW1N+NNoaGLNzdRI+wD8F+T
+ nFl78warZNY7d9+607acWrVi5OmYignNiuUEKP3OLwBLuT3SsEz0rn+4p0CTlAGacLLZ
+ kF1vh+NJCSpZZN/4iddJjCeGSVWjq5j7wuiz9x7FuvF7yD/PqWzJ6/RXJhidkj2AVTwk
+ cDKH+noc1CKC35dl83fhzg/DBNt8Z4PZaUi2nEowv1Q/N9CnurC3O7+0hgEhdy9R/i5m
+ mulNlqMIDg3LEKngTVaiClS+4N8TPRh1XjZgUy0eC5FVLyad+CNM4OUJNfpeXNQLZY17
+ HAEA==
+X-Gm-Message-State: AOJu0YyaLEHUj9Lqedq2jvNbZHs/O4Oj/RJrxW0nFlGZE6s7k4JcGNGm
+ SnA/zmFmG+1n17bucHV+WmnitdibOAtdj4Sp2C5WgRVFNT5DvAtrol7G5Yjr6qvEV20=
+X-Gm-Gg: ASbGnctWkGl8u0ETPUXbD3w6aKE2rBJXPl0DcSvjYC1FqOrsdf57xkzKfMRWobEFJE6
+ tjek/UjsmlUMEssb6UXGdEnMrbYupzcdvpi2+2k64H8Yr2YSrCSqHujNeDo4cb4g7dTnfHh6h8m
+ oWLGGUzMhdn79rZI+kpnLJwJMIpBGCH9tOM7/OHS+YPTFyb2cbgiKH506Ghl0lth4DcVZE2bZrJ
+ WX3R0d7XjtM7VBtfi9O9NmD4gTeIcg/zNBWG7gAAstM8tPQgMT1vQokhBZK5Hh9aS9l+AoyZSdA
+ RF/mJspvIRLL8rDuUFPnksTOsuLyU1xI7ws2YaC/2IhP9nlL9h5qh7KZ7QooolFtncxhSrOqXAY
+ =
+X-Google-Smtp-Source: AGHT+IFqAye0oYvWI20M1Tar6f8aqJrPwveFe2IpwEuT2QUx4YvcNFefSoJDJO9PfMvc8K+NnQ6L3Q==
+X-Received: by 2002:a17:90b:4ad0:b0:308:7270:d6ea with SMTP id
+ 98e67ed59e1d1-318c9322912mr42534a91.30.1750962184619; 
+ Thu, 26 Jun 2025 11:23:04 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-315f5384140sm5167359a91.7.2025.06.26.11.23.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Jun 2025 11:23:04 -0700 (PDT)
+Message-ID: <5606f27e-48c1-40fa-9453-f76f87fecd2e@linaro.org>
+Date: Thu, 26 Jun 2025 11:23:03 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 0/8] Add additional plugin API functions to read and
+ write memory and registers
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-From: Rot127 <unisono@quyllur.org>
-Subject: TCG plugins segfault for Sparc, seemingly related to -d plugin
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Rowan Hart <rowanbhart@gmail.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250624175351.440780-1-rowanbhart@gmail.com>
+ <87o6ubzxfw.fsf@draig.linaro.org> <87cyaqzcft.fsf@draig.linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <87cyaqzcft.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.247.226.42; envelope-from=unisono@quyllur.org;
- helo=quyllur.org
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 26 Jun 2025 15:39:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,50 +107,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sparc QEMU segfaults directly if a TCG plugin is used but no logging is 
-specified via `-d plugin`.
-If logging is enabled it segfaults also. But a little later.
+On 6/26/25 9:37 AM, Alex Bennée wrote:
+> Alex Bennée <alex.bennee@linaro.org> writes:
+> 
+>> Rowan Hart <rowanbhart@gmail.com> writes:
+>>
+>>> This patch series adds several new API functions focused on enabling use
+>>> cases around reading and writing guest memory from QEMU plugins. To support
+>>> these new APIs, some utility functionality around retrieving information about
+>>> address spaces is added as well.
+>>
+>> Queued to plugins/next, thanks.
+> 
+> So this fails a number of the CI tests, mostly due to 32 bit issues:
+> 
+>    https://gitlab.com/stsquad/qemu/-/pipelines/1890883927/failures
+> 
+> The tci failure is easy enough:
+> 
+> --8<---------------cut here---------------start------------->8---
+> modified   tests/tcg/x86_64/Makefile.softmmu-target
+> @@ -34,9 +34,11 @@ memory: CFLAGS+=-DCHECK_UNALIGNED=1
+>   # Running
+>   QEMU_OPTS+=-device isa-debugcon,chardev=output -device isa-debug-exit,iobase=0xf4,iosize=0x4 -kernel
+>   
+> +ifeq ($(CONFIG_PLUGIN),y)
+>   run-plugin-patch-target-with-libpatch.so:		\
+>   	PLUGIN_ARGS=$(COMMA)target=ffc0$(COMMA)patch=9090$(COMMA)use_hwaddr=true
+>   run-plugin-patch-target-with-libpatch.so:		\
+>   	CHECK_PLUGIN_OUTPUT_COMMAND=$(X64_SYSTEM_SRC)/validate-patch.py $@.out
+>   run-plugin-patch-target-with-libpatch.so: patch-target libpatch.so
+>   EXTRA_RUNS+=run-plugin-patch-target-with-libpatch.so
+> +endif
+> --8<---------------cut here---------------end--------------->8---
+> 
+> The other problem is trying to stuff a uint64_t into a void * on 32 bit.
+> We did disable plugins for 32 bit but then reverted because we were able
+> to fixup the cases:
+> 
+>   cf2a78cbbb (deprecation: don't enable TCG plugins by default on 32 bit hosts)
+>   db7a06ade1 (configure: reenable plugins by default for 32-bit hosts)
+> 
+> So I don't what is easier:
+> 
+>   - re-deprecate for 32 bit systems
+>   - only build libpatch on 64 bit systems
+>   - fix libpatch to handle being built on 32 bit systems
+> 
 
-I tested it also with PPC32 and Hexagon. They seem to work fine.
+More context:
+../tests/tcg/plugins/patch.c: In function ‘patch_hwaddr’:
+../tests/tcg/plugins/patch.c:50:21: error: cast from pointer to integer 
+of different size [-Werror=pointer-to-int-cast]
+    50 |     uint64_t addr = (uint64_t)userdata;
+       |                     ^
+../tests/tcg/plugins/patch.c: In function ‘patch_vaddr’:
+../tests/tcg/plugins/patch.c:93:21: error: cast from pointer to integer 
+of different size [-Werror=pointer-to-int-cast]
+    93 |     uint64_t addr = (uint64_t)userdata;
+       |                     ^
+../tests/tcg/plugins/patch.c: In function ‘vcpu_tb_trans_cb’:
+../tests/tcg/plugins/patch.c:159:54: error: cast to pointer from integer 
+of different size [-Werror=int-to-pointer-cast]
+   159 |                                                      (void *)addr);
+       |                                                      ^
+../tests/tcg/plugins/patch.c:163:54: error: cast to pointer from integer 
+of different size [-Werror=int-to-pointer-cast]
+   163 |                                                      (void *)addr);
+       |
 
-Host: Fedora 41 - Linux 6.12.25-1.qubes.fc37.x86_64
+Since we disabled 64 bit targets on 32 bit hosts, and that data passed 
+by pointers concern addresses, it should be safe to cast values to 
+(uintptr_t) instead of (uint64_t).
 
-Anyone had this problem before as well?
-
-## Steps to reproduce
-
-Build
-```bash
-mkdir build
-cd build
-../configure --disable-capstone  --enable-plugins --enable-asan 
---enable-debug 
---target-list=sparc-linux-user,sparc64-linux-user,hexagon-linux-user,ppc-linux-user
-ninja
-```
-
-Run with `execlog` plugin:
-
-```
-./qemu-sparc64 -plugin file=./contrib/plugins/libexeclog.so 
-~/Downloads/base77/bin/ls
-Segmentation fault (core dumped)
-./qemu-sparc64 -plugin file=./contrib/plugins/libexeclog.so -d plugin 
-~/Downloads/base77/bin/ls
-0, 0x7160e0600380, 0x10bc, "mov  %g0, %fp"
-0, 0x7160e0600384, 0xb0a0239c, "sub  %sp, 0xb0, %sp"
-0, 0x7160e0600388, 0xafa803a6, "add  %sp, 0x8af, %l3"
-# snip ...
-0, 0x7160e0600608, 0x440a180, "cmp  %g5, %g4"
-0, 0x7160e060060c, 0x19006008, "bleu,pn   %xcc, "
-0, 0x7160e0600610, 0xff3f1082, "mov  -1, %g1"
-0, 0x7160e0600614, 0x2070309b, "srlx  %g1, 0x20, %o5"
-0, 0x7160e0600618, 0x82059c6, "ldx  [ %g4 + 8 ], %g3"
-Segmentation fault (core dumped)
-```
-
-Sparc binaries: 
-https://ftp2.eu.openbsd.org/pub/OpenBSD/7.7/sparc64/base77.tgz
-Gitlab issue: https://gitlab.com/qemu-project/qemu/-/issues/3008
-
+Pierrick
 
