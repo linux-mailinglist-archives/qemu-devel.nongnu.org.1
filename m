@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F2FAE957D
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 07:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C82AE9580
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 07:59:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUfZ0-0003tO-87; Thu, 26 Jun 2025 01:54:22 -0400
+	id 1uUfYz-0003sk-2c; Thu, 26 Jun 2025 01:54:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfYj-0003rR-MX
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfYk-0003rX-4l
  for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfYg-00015c-HJ
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:04 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfYh-00015k-6C
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750917239;
+ s=mimecast20190719; t=1750917242;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cmNyivhSuy/9S7VXrwAd6e2ZoNFywTMv55r7KUqitd0=;
- b=EawO41aWDvSLjcQQbcRXObSEH8EiDIV3WjMjxnu1vBpwUFrEoXYG56mlNzt8acvlulxflb
- oroWgKqKjlBlAzBbCYk/QfjkShFm1gFDYDTnzv39Tq0zxZPl4p+VwvkRpSAKJ5jXweLXLr
- d+H9j7TrKmwTvnu2+1KelOfnzQSmgHg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=aKQbCeQW50tNmFeDtknxhuk7vsTcs3007HhCJhXcJuM=;
+ b=awGdKayjXAiUxJ8E1tyAFCEKaK6ZbelKWU/v6/3+7+w8Bpw8irdOWOXWWKk273DgiaPOjp
+ RHBeguOCD9oI8ArpOV6vacLOu1ietNNPqY0w4PaNgSBcMkS6PLCve+sHR+MEZyrq/2Z5sN
+ i8zUNdSqEJ+ekl+ZNN9VlxCDGWO3vw4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-191-q-zTwk0APrG2f8yle8uoZw-1; Thu,
- 26 Jun 2025 01:53:57 -0400
-X-MC-Unique: q-zTwk0APrG2f8yle8uoZw-1
-X-Mimecast-MFC-AGG-ID: q-zTwk0APrG2f8yle8uoZw_1750917236
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-b4Q4WHRXOnKRn-sSPXJ_PA-1; Thu,
+ 26 Jun 2025 01:54:00 -0400
+X-MC-Unique: b4Q4WHRXOnKRn-sSPXJ_PA-1
+X-Mimecast-MFC-AGG-ID: b4Q4WHRXOnKRn-sSPXJ_PA_1750917239
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 47495195608F
- for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 05:53:56 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E831F18011FB; Thu, 26 Jun 2025 05:53:58 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.129])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0A64219560A3; Thu, 26 Jun 2025 05:53:54 +0000 (UTC)
+ id 254CF19560A3; Thu, 26 Jun 2025 05:53:56 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 01/19] tests/functional/test_pc_cpu_hotplug_props: Set 'pc'
- machine type explicitly
-Date: Thu, 26 Jun 2025 07:53:32 +0200
-Message-ID: <20250626055350.218271-2-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Yoshinori Sato <yoshinori.sato@nifty.com>
+Subject: [PULL 02/19] MAINTAINERS: Yoshinori Sato email address has been
+ updated
+Date: Thu, 26 Jun 2025 07:53:33 +0200
+Message-ID: <20250626055350.218271-3-thuth@redhat.com>
 In-Reply-To: <20250626055350.218271-1-thuth@redhat.com>
 References: <20250626055350.218271-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,31 +81,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Yoshinori Sato <yoshinori.sato@nifty.com>
 
-In case the default machine has not been compiled into the QEMU
-binary, the cpu_hotplug_props test is currently failing. Add a
-set_machine('pc') here to make sure that the tests are correctly
-skipped in case the machine is not available.
+The email address <ysato@users.sourceforge.jp> has been suspended.
+I have prepared a new email address.
 
+Signed-off-by: Yoshinori Sato <yoshinori.sato@nifty.com>
+Message-ID: <20250612131632.137155-1-yoshinori.sato@nifty.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250606092033.506736-1-thuth@redhat.com>
 ---
- tests/functional/test_pc_cpu_hotplug_props.py | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/functional/test_pc_cpu_hotplug_props.py b/tests/functional/test_pc_cpu_hotplug_props.py
-index 9d5a37cb170..2bed8ada023 100755
---- a/tests/functional/test_pc_cpu_hotplug_props.py
-+++ b/tests/functional/test_pc_cpu_hotplug_props.py
-@@ -26,6 +26,7 @@
- class OmittedCPUProps(QemuSystemTest):
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 27f4fe3f259..5b8b314c8c6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -352,7 +352,7 @@ F: target/riscv/insn_trans/trans_xventanacondops.c.inc
+ F: disas/riscv-xventana*
  
-     def test_no_die_id(self):
-+        self.set_machine('pc')
-         self.vm.add_args('-nodefaults', '-S')
-         self.vm.add_args('-smp', '1,sockets=2,cores=2,threads=2,maxcpus=8')
-         self.vm.add_args('-device', 'qemu64-x86_64-cpu,socket-id=1,core-id=0,thread-id=0')
+ RENESAS RX CPUs
+-R: Yoshinori Sato <ysato@users.sourceforge.jp>
++R: Yoshinori Sato <yoshinori.sato@nifty.com>
+ S: Orphan
+ F: target/rx/
+ 
+@@ -368,7 +368,7 @@ F: tests/tcg/s390x/
+ L: qemu-s390x@nongnu.org
+ 
+ SH4 TCG CPUs
+-R: Yoshinori Sato <ysato@users.sourceforge.jp>
++R: Yoshinori Sato <yoshinori.sato@nifty.com>
+ S: Orphan
+ F: target/sh4/
+ F: hw/sh4/
+@@ -1696,7 +1696,7 @@ F: docs/system/riscv/microblaze-v-generic.rst
+ RX Machines
+ -----------
+ rx-gdbsim
+-R: Yoshinori Sato <ysato@users.sourceforge.jp>
++R: Yoshinori Sato <yoshinori.sato@nifty.com>
+ S: Orphan
+ F: docs/system/target-rx.rst
+ F: hw/rx/rx-gdbsim.c
+@@ -1705,7 +1705,7 @@ F: tests/functional/test_rx_gdbsim.py
+ SH4 Machines
+ ------------
+ R2D
+-R: Yoshinori Sato <ysato@users.sourceforge.jp>
++R: Yoshinori Sato <yoshinori.sato@nifty.com>
+ R: Magnus Damm <magnus.damm@gmail.com>
+ S: Odd Fixes
+ F: hw/char/sh_serial.c
+@@ -2756,7 +2756,7 @@ F: tests/qtest/*xive*
+ F: docs/*/*xive*
+ 
+ Renesas peripherals
+-R: Yoshinori Sato <ysato@users.sourceforge.jp>
++R: Yoshinori Sato <yoshinori.sato@nifty.com>
+ R: Magnus Damm <magnus.damm@gmail.com>
+ S: Odd Fixes
+ F: hw/char/renesas_sci.c
+@@ -2768,7 +2768,7 @@ F: include/hw/sh4/sh.h
+ F: include/hw/timer/renesas_*.h
+ 
+ Renesas RX peripherals
+-R: Yoshinori Sato <ysato@users.sourceforge.jp>
++R: Yoshinori Sato <yoshinori.sato@nifty.com>
+ S: Orphan
+ F: hw/intc/rx_icu.c
+ F: hw/rx/
 -- 
 2.50.0
 
