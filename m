@@ -2,71 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92E7AE9721
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F92AE9720
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:48:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUhJx-00064H-Dt; Thu, 26 Jun 2025 03:46:57 -0400
+	id 1uUhKq-0008Jv-Aw; Thu, 26 Jun 2025 03:47:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhJt-0005xH-FO
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:46:53 -0400
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1uUhKZ-00088f-0i
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:47:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhJr-00022U-6G
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:46:53 -0400
+ (Exim 4.90_1) (envelope-from <demeng@redhat.com>) id 1uUhKF-00025N-D0
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:47:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750924009;
+ s=mimecast20190719; t=1750924034;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IErTZzC51n5Uhzt0ReIfXt+k26ISLRH++xMSba06ZjI=;
- b=iSbvGkXj+booGIY2gImmmDjaA5EhQL0ytOVFKYmlju+kCAoQDvrrSbCh76dpDKWygdJgMm
- vtSpweCdcmmlmuvRiFFVFjhW6Myv8flTgmpfFwXmIXtbMYN+veqAd6X9PYgqFUX6mD2krn
- cmVh7W8PJEZCgHtwyGh92FEO8Hs0SJU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-2-fBjaM1PUevB3jQYYgVRA-1; Thu,
- 26 Jun 2025 03:46:45 -0400
-X-MC-Unique: 2-fBjaM1PUevB3jQYYgVRA-1
-X-Mimecast-MFC-AGG-ID: 2-fBjaM1PUevB3jQYYgVRA_1750924004
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 42D8718DA5CA; Thu, 26 Jun 2025 07:46:44 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.44.32.51])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3500D180045B; Thu, 26 Jun 2025 07:46:41 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- John Levon <john.levon@nutanix.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 24/25] docs: add vfio-user documentation
-Date: Thu, 26 Jun 2025 09:45:28 +0200
-Message-ID: <20250626074529.1384114-25-clg@redhat.com>
-In-Reply-To: <20250626074529.1384114-1-clg@redhat.com>
-References: <20250626074529.1384114-1-clg@redhat.com>
+ bh=bVqmY5gfOpbF8eV+8qqV6iOYtrnyVuPieMCnlFGT9Os=;
+ b=EMMORNKcqyffy3EyEYsdr4Rs7zdaOpSEq+gbtq86IQv1QLqtuE8sFYBn1CCZ7KgaVrVxsg
+ nWagP5UiWvQtHUxT+N5OnRe4vkl+iuJa16c27a5rnJ7e/k+yPcsMlrdlkOui8zJ3EIMqji
+ kZB/oCMlHpvB5wIxhQwJhJT7156r238=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-j93CmvflOR6OPsDNXuaFFg-1; Thu, 26 Jun 2025 03:45:43 -0400
+X-MC-Unique: j93CmvflOR6OPsDNXuaFFg-1
+X-Mimecast-MFC-AGG-ID: j93CmvflOR6OPsDNXuaFFg_1750923942
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ae0c11adcd2so46754066b.3
+ for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 00:45:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750923942; x=1751528742;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bVqmY5gfOpbF8eV+8qqV6iOYtrnyVuPieMCnlFGT9Os=;
+ b=WuosdF97j/wvVJA3XhWB2wZJDRQxuo/FxWyzAZzaU5OF1i7bqJe70j0+T9n5igwXB2
+ 3k5DSjYA1+5w96QW3gLtLpsyXR/WqSOv2328VlM3Aa60KRWRjKxoaaE/WLqEe94EQB5s
+ eascYbgAIub1qivswMt622/5FxwMtPkiXSbCoFmYd7iT6B5tzGUGBdLdsY5G/+A/eZWY
+ qEwsRg3XfEnm9kJs4fteoqHcRAhh/XsFAEfpE/6UGv6puJAxzhxEdArLKgVJxEeDSLj9
+ khyOn2TrSpwwc9TVq1llfPpjXnBc2FxuExBJDG5i2fUVfzbjwb02R6gHmbcT08u/Olp7
+ y21Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWgiLt0vNpNJ5gSSQouypqqvtA7tgY0qDgRzHDdCgZd3+A+aBTwxGkRtl93bXsDNLNlty6GJ0BOuplQ@nongnu.org
+X-Gm-Message-State: AOJu0Yx6kfHGgBP1jtcL0eCA4X5M8ddh3C9hsbwjm6p8fbmBdMe8EiMA
+ V3JoEi1HENNmDYO8W870fYYIUbKVIbBtJQ9+JdiQY3B2xA9p4owvPmUtfK7MKz9zx3/Hs3xOYWJ
+ X3UXZSKhRxuJgqzxK5sGg2tLGX2+CikNfLaz2nrR+9LbOXrpI6XH6axoeO0Gg30gMRj8jUE5Htu
+ Gt5qp3u1WQKLqa39CDepi7tCptQqVvA2c=
+X-Gm-Gg: ASbGncu1EphrEaAFWloZQIcxGPTQMG8V6fOvV28G8l+pI1Z1zVYpzKyauqXBXOKAw6X
+ 0lBaTpCqnuxD4KX5WtsffKfg1dO6FJd8wwW6or5d8ei7YyOQp5JTwBs6ac/mTNgKiJRZ+J9nFyx
+ fTPYbG
+X-Received: by 2002:a17:907:7e5d:b0:ae0:a351:61ff with SMTP id
+ a640c23a62f3a-ae0be9c12f5mr600363466b.32.1750923941698; 
+ Thu, 26 Jun 2025 00:45:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRoNtTW2YBh0eBmzx4T8gmtVXIleoFXn7tfMH2aTVRt9/+GQsx/yUEGvkxFiRz/G7SpGeO5aZVp9lp3zE+6Go=
+X-Received: by 2002:a17:907:7e5d:b0:ae0:a351:61ff with SMTP id
+ a640c23a62f3a-ae0be9c12f5mr600360966b.32.1750923941201; Thu, 26 Jun 2025
+ 00:45:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+References: <20250620083132.28347-1-kkostiuk@redhat.com>
+ <CAGoVJZw0-ShHSc3cLkO4tcUjAwifOFksWLF3mFmX-x3bWk5oVg@mail.gmail.com>
+In-Reply-To: <CAGoVJZw0-ShHSc3cLkO4tcUjAwifOFksWLF3mFmX-x3bWk5oVg@mail.gmail.com>
+From: Dehan Meng <demeng@redhat.com>
+Date: Thu, 26 Jun 2025 15:45:29 +0800
+X-Gm-Features: Ac12FXynhD_SKbqKzNKx8iDLmOFTUk_5pwsYphmy0wmPikw6b1VUmsJgPSMr7d0
+Message-ID: <CA+kPPJzAS27TOkmqsYRaieqoyJLEsFmVqs6hPwbQaQmOrBopWA@mail.gmail.com>
+Subject: Re: [PATCH] qga-vss: Exit with non-zero code when register fail
+To: Yan Vugenfirer <yvugenfi@redhat.com>
+Cc: Kostiantyn Kostiuk <kkostiuk@redhat.com>, qemu-devel@nongnu.org, 
+ Michael Roth <michael.roth@amd.com>
+Content-Type: multipart/alternative; boundary="0000000000008be874063874bf0b"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=demeng@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,65 +101,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Levon <john.levon@nutanix.com>
+--0000000000008be874063874bf0b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add some basic documentation on vfio-user usage.
+Tested-by: Dehan Meng <*demeng@redhat.com <demeng@redhat.com>*>
 
-Signed-off-by: John Levon <john.levon@nutanix.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250625193012.2316242-19-john.levon@nutanix.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- docs/system/device-emulation.rst  |  1 +
- docs/system/devices/vfio-user.rst | 26 ++++++++++++++++++++++++++
- 2 files changed, 27 insertions(+)
- create mode 100644 docs/system/devices/vfio-user.rst
+On Fri, Jun 20, 2025 at 8:31=E2=80=AFPM Yan Vugenfirer <yvugenfi@redhat.com=
+> wrote:
 
-diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
-index a1b0d7997e04f781484a0d48085858f39ee17e35..911381643f1c617dca1021962bc4446dbec73ec1 100644
---- a/docs/system/device-emulation.rst
-+++ b/docs/system/device-emulation.rst
-@@ -85,6 +85,7 @@ Emulated Devices
-    devices/can.rst
-    devices/ccid.rst
-    devices/cxl.rst
-+   devices/vfio-user.rst
-    devices/ivshmem.rst
-    devices/ivshmem-flat.rst
-    devices/keyboard.rst
-diff --git a/docs/system/devices/vfio-user.rst b/docs/system/devices/vfio-user.rst
-new file mode 100644
-index 0000000000000000000000000000000000000000..b6dcaa5615e5354e80e63925f0a37537ca9e9371
---- /dev/null
-+++ b/docs/system/devices/vfio-user.rst
-@@ -0,0 +1,26 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+=========
-+vfio-user
-+=========
-+
-+QEMU includes a ``vfio-user`` client. The ``vfio-user`` specification allows for
-+implementing (PCI) devices in userspace outside of QEMU; it is similar to
-+``vhost-user`` in this respect (see :doc:`vhost-user`), but can emulate arbitrary
-+PCI devices, not just ``virtio``. Whereas ``vfio`` is handled by the host
-+kernel, ``vfio-user``, while similar in implementation, is handled entirely in
-+userspace.
-+
-+For example, SPDK includes a virtual PCI NVMe controller implementation; by
-+setting up a ``vfio-user`` UNIX socket between QEMU and SPDK, a VM can send NVMe
-+I/O to the SPDK process.
-+
-+Presuming a suitable ``vfio-user`` server has opened a socket at
-+``/tmp/vfio-user.sock``, a device can be configured with for example:
-+
-+.. code-block:: console
-+
-+-device '{"driver": "vfio-user-pci","socket": {"path": "/tmp/vfio-user.sock", "type": "unix"}}'
-+
-+See `libvfio-user <https://github.com/nutanix/libvfio-user/>`_ for further
-+information.
--- 
-2.49.0
+> On Fri, Jun 20, 2025 at 12:33=E2=80=AFPM Kostiantyn Kostiuk <kkostiuk@red=
+hat.com>
+> wrote:
+> >
+> > QGA installer uses rundll32 to run the DLLCOMRegister function
+> > from qga-vss.dll and perform VSS provider registration.
+> > rundll32 ignores the return value of the function and always
+> > exits with a zero exit code. This causes a situation where
+> > the installer does not know the status of VSS provider registration.
+> >
+> > This commit forces to change exit code when the VSS provider
+> > registration fails.
+> >
+> >
+> https://learn.microsoft.com/en-us/windows-server/administration/windows-c=
+ommands/rundll32
+> >
+> > Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+> > ---
+> >  qga/vss-win32/install.cpp | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
+> > index 5cea5bcf74..6ee2f44a10 100644
+> > --- a/qga/vss-win32/install.cpp
+> > +++ b/qga/vss-win32/install.cpp
+> > @@ -385,7 +385,10 @@ out:
+> >  STDAPI_(void) CALLBACK DLLCOMRegister(HWND, HINSTANCE, LPSTR, int);
+> >  STDAPI_(void) CALLBACK DLLCOMRegister(HWND, HINSTANCE, LPSTR, int)
+> >  {
+> > -    COMRegister();
+> > +    HRESULT hr =3D COMRegister();
+> > +    if (FAILED(hr)) {
+> > +        exit(hr);
+> > +    }
+> >  }
+> >
+> >  STDAPI_(void) CALLBACK DLLCOMUnregister(HWND, HINSTANCE, LPSTR, int);
+> > --
+> > 2.48.1
+> >
+> >
+>
+> Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
+>
+>
+>
+
+--0000000000008be874063874bf0b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Tested-by: Dehan Meng &lt;<u><font color=3D"#0b5394"><a hr=
+ef=3D"mailto:demeng@redhat.com">demeng@redhat.com</a></font></u>&gt;</div><=
+br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=
+=3D"gmail_attr">On Fri, Jun 20, 2025 at 8:31=E2=80=AFPM Yan Vugenfirer &lt;=
+<a href=3D"mailto:yvugenfi@redhat.com">yvugenfi@redhat.com</a>&gt; wrote:<b=
+r></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
+;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Fri, Jun 20, 2=
+025 at 12:33=E2=80=AFPM Kostiantyn Kostiuk &lt;<a href=3D"mailto:kkostiuk@r=
+edhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; QGA installer uses rundll32 to run the DLLCOMRegister function<br>
+&gt; from qga-vss.dll and perform VSS provider registration.<br>
+&gt; rundll32 ignores the return value of the function and always<br>
+&gt; exits with a zero exit code. This causes a situation where<br>
+&gt; the installer does not know the status of VSS provider registration.<b=
+r>
+&gt;<br>
+&gt; This commit forces to change exit code when the VSS provider<br>
+&gt; registration fails.<br>
+&gt;<br>
+&gt; <a href=3D"https://learn.microsoft.com/en-us/windows-server/administra=
+tion/windows-commands/rundll32" rel=3D"noreferrer" target=3D"_blank">https:=
+//learn.microsoft.com/en-us/windows-server/administration/windows-commands/=
+rundll32</a><br>
+&gt;<br>
+&gt; Signed-off-by: Kostiantyn Kostiuk &lt;<a href=3D"mailto:kkostiuk@redha=
+t.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 qga/vss-win32/install.cpp | 5 ++++-<br>
+&gt;=C2=A0 1 file changed, 4 insertions(+), 1 deletion(-)<br>
+&gt;<br>
+&gt; diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp<br>
+&gt; index 5cea5bcf74..6ee2f44a10 100644<br>
+&gt; --- a/qga/vss-win32/install.cpp<br>
+&gt; +++ b/qga/vss-win32/install.cpp<br>
+&gt; @@ -385,7 +385,10 @@ out:<br>
+&gt;=C2=A0 STDAPI_(void) CALLBACK DLLCOMRegister(HWND, HINSTANCE, LPSTR, in=
+t);<br>
+&gt;=C2=A0 STDAPI_(void) CALLBACK DLLCOMRegister(HWND, HINSTANCE, LPSTR, in=
+t)<br>
+&gt;=C2=A0 {<br>
+&gt; -=C2=A0 =C2=A0 COMRegister();<br>
+&gt; +=C2=A0 =C2=A0 HRESULT hr =3D COMRegister();<br>
+&gt; +=C2=A0 =C2=A0 if (FAILED(hr)) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(hr);<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 }<br>
+&gt;<br>
+&gt;=C2=A0 STDAPI_(void) CALLBACK DLLCOMUnregister(HWND, HINSTANCE, LPSTR, =
+int);<br>
+&gt; --<br>
+&gt; 2.48.1<br>
+&gt;<br>
+&gt;<br>
+<br>
+Reviewed-by: Yan Vugenfirer &lt;<a href=3D"mailto:yvugenfi@redhat.com" targ=
+et=3D"_blank">yvugenfi@redhat.com</a>&gt;<br>
+<br>
+<br>
+</blockquote></div>
+
+--0000000000008be874063874bf0b--
 
 
