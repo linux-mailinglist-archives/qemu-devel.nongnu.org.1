@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5784AAE958E
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 08:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C50BAE9572
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 07:56:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUfZE-0003xS-GP; Thu, 26 Jun 2025 01:54:36 -0400
+	id 1uUfZF-0003xt-Kd; Thu, 26 Jun 2025 01:54:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZ9-0003wI-Ev
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:31 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZA-0003wq-9S
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZ7-00018A-FY
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:31 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZ8-00018G-KI
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750917268;
+ s=mimecast20190719; t=1750917269;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XZ9QICknluBmUezrPCElYQwYs2ViKwqLAcd4ByFmfAg=;
- b=b1BWloetYAeaZHWrjyfMg70Xjsm4aOSFRKPZEaYbCKpitmvBoNIa0+L8Aq3pV2EvTgiN5B
- z1oa/mcnF1LmwuVvOkN9qDlEByY2izsGftAKRaQ3CGVXe/8pjlIwGOQU5jLP3y5IxcVX/k
- B6adrqqt3uGbSpJSAI/c7z70qE6oLkw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=a7osfbKkBSE9Tfbt17TtAApj5p+1C6n2XEcC60fhTwU=;
+ b=gJF483W6e2Ny7E3IoC8JZWb9M68ysxRy1vPP7piB9jTs6s4VTAkT3lfVlFSGKz+C1EPRBT
+ xTG7yiAm+OYudKay4lhJoN/rmjfkBBFrWnBk5vlMQKZ6YBfG916a5gYru0QURmrH3iI2/z
+ 91iP4KO/Hv5qCG0jDOq27FJvB2b9rcU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-rfChUDFTNoSsDBZtRFAq2Q-1; Thu,
- 26 Jun 2025 01:54:24 -0400
-X-MC-Unique: rfChUDFTNoSsDBZtRFAq2Q-1
-X-Mimecast-MFC-AGG-ID: rfChUDFTNoSsDBZtRFAq2Q_1750917263
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-Xe5IP6cqP6iGkT01D-oClA-1; Thu,
+ 26 Jun 2025 01:54:27 -0400
+X-MC-Unique: Xe5IP6cqP6iGkT01D-oClA-1
+X-Mimecast-MFC-AGG-ID: Xe5IP6cqP6iGkT01D-oClA_1750917266
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5776519560BA; Thu, 26 Jun 2025 05:54:23 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 40D0519560A3; Thu, 26 Jun 2025 05:54:26 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.129])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2011B19560A3; Thu, 26 Jun 2025 05:54:20 +0000 (UTC)
+ id 2B0FC19560AF; Thu, 26 Jun 2025 05:54:23 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
 	Sean Wei <me@sean.taipei>
-Subject: [PULL 09/19] COPYING: replace FSF postal address with licenses URL
-Date: Thu, 26 Jun 2025 07:53:40 +0200
-Message-ID: <20250626055350.218271-10-thuth@redhat.com>
+Subject: [PULL 10/19] libdecnumber: replace FSF postal address with licenses
+ URL
+Date: Thu, 26 Jun 2025 07:53:41 +0200
+Message-ID: <20250626055350.218271-11-thuth@redhat.com>
 In-Reply-To: <20250626055350.218271-1-thuth@redhat.com>
 References: <20250626055350.218271-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,68 +83,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sean Wei <me@sean.taipei>
 
-The license text in COPYING (GPLv2), COPYING.LIB (LGPLv2.1),
-and the linux-headers/LICENSES/preferred/GPL-2.0 file are
-referenced to the obsolete FSF postal address.
+Some of the GPLv2 boiler-plate still contained the
+obsolete "51 Franklin Street" postal address.
 
 Replace it with the canonical GNU licenses URL recommended by the FSF:
 https://www.gnu.org/licenses/
 
 Signed-off-by: Sean Wei <me@sean.taipei>
-Message-ID: <20250613.qemu.patch.01@sean.taipei>
-[thuth: dropped the changes to the linux-headers folder]
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250613.qemu.patch.03@sean.taipei>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- COPYING     | 5 ++---
- COPYING.LIB | 5 ++---
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ libdecnumber/decContext.c     | 5 ++---
+ libdecnumber/decNumber.c      | 5 ++---
+ libdecnumber/dpd/decimal128.c | 5 ++---
+ libdecnumber/dpd/decimal32.c  | 5 ++---
+ libdecnumber/dpd/decimal64.c  | 5 ++---
+ 5 files changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/COPYING b/COPYING
-index 00ccfbb6288..8095135d50d 100644
---- a/COPYING
-+++ b/COPYING
-@@ -2,7 +2,7 @@
- 		       Version 2, June 1991
+diff --git a/libdecnumber/decContext.c b/libdecnumber/decContext.c
+index 1956edf0a7a..d99b08026c2 100644
+--- a/libdecnumber/decContext.c
++++ b/libdecnumber/decContext.c
+@@ -24,9 +24,8 @@
+    for more details.
  
-  Copyright (C) 1989, 1991 Free Software Foundation, Inc.,
-- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
-+ <https://fsf.org/>
-  Everyone is permitted to copy and distribute verbatim copies
-  of this license document, but changing it is not allowed.
+    You should have received a copy of the GNU General Public License
+-   along with GCC; see the file COPYING.  If not, write to the Free
+-   Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA
+-   02110-1301, USA.  */
++   along with GCC; see the file COPYING.  If not, see
++   <https://www.gnu.org/licenses/>.  */
  
-@@ -304,8 +304,7 @@ the "copyright" line and a pointer to where the full notice is found.
-     GNU General Public License for more details.
+ /* ------------------------------------------------------------------ */
+ /* Decimal Context module					      */
+diff --git a/libdecnumber/decNumber.c b/libdecnumber/decNumber.c
+index 31282adafdc..4b57d8a6fe2 100644
+--- a/libdecnumber/decNumber.c
++++ b/libdecnumber/decNumber.c
+@@ -24,9 +24,8 @@
+    for more details.
  
-     You should have received a copy of the GNU General Public License along
--    with this program; if not, write to the Free Software Foundation, Inc.,
--    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-+    with this program; if not, see <https://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+-   along with GCC; see the file COPYING.  If not, write to the Free
+-   Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA
+-   02110-1301, USA.  */
++   along with GCC; see the file COPYING.  If not, see
++   <https://www.gnu.org/licenses/>.  */
  
- Also add information on how to contact you by electronic and paper mail.
+ /* ------------------------------------------------------------------ */
+ /* Decimal Number arithmetic module				      */
+diff --git a/libdecnumber/dpd/decimal128.c b/libdecnumber/dpd/decimal128.c
+index ca4764e5471..1064fb25e01 100644
+--- a/libdecnumber/dpd/decimal128.c
++++ b/libdecnumber/dpd/decimal128.c
+@@ -24,9 +24,8 @@
+    for more details.
  
-diff --git a/COPYING.LIB b/COPYING.LIB
-index 4362b49151d..99f47575b5b 100644
---- a/COPYING.LIB
-+++ b/COPYING.LIB
-@@ -2,7 +2,7 @@
-                        Version 2.1, February 1999
+    You should have received a copy of the GNU General Public License
+-   along with GCC; see the file COPYING.  If not, write to the Free
+-   Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA
+-   02110-1301, USA.  */
++   along with GCC; see the file COPYING.  If not, see
++   <https://www.gnu.org/licenses/>.  */
  
-  Copyright (C) 1991, 1999 Free Software Foundation, Inc.
-- 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-+ <https://fsf.org/>
-  Everyone is permitted to copy and distribute verbatim copies
-  of this license document, but changing it is not allowed.
+ /* ------------------------------------------------------------------ */
+ /* Decimal 128-bit format module				      */
+diff --git a/libdecnumber/dpd/decimal32.c b/libdecnumber/dpd/decimal32.c
+index 53f29789d75..34ff0fe9599 100644
+--- a/libdecnumber/dpd/decimal32.c
++++ b/libdecnumber/dpd/decimal32.c
+@@ -24,9 +24,8 @@
+    for more details.
  
-@@ -484,8 +484,7 @@ convey the exclusion of warranty; and each file should have at least the
-     Lesser General Public License for more details.
+    You should have received a copy of the GNU General Public License
+-   along with GCC; see the file COPYING.  If not, write to the Free
+-   Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA
+-   02110-1301, USA.  */
++   along with GCC; see the file COPYING.  If not, see
++   <https://www.gnu.org/licenses/>.  */
  
-     You should have received a copy of the GNU Lesser General Public
--    License along with this library; if not, write to the Free Software
--    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-+    License along with this library; if not, see <https://www.gnu.org/licenses/>.
+ /* ------------------------------------------------------------------ */
+ /* Decimal 32-bit format module					      */
+diff --git a/libdecnumber/dpd/decimal64.c b/libdecnumber/dpd/decimal64.c
+index 290dbe81771..11e0674fa7c 100644
+--- a/libdecnumber/dpd/decimal64.c
++++ b/libdecnumber/dpd/decimal64.c
+@@ -24,9 +24,8 @@
+    for more details.
  
- Also add information on how to contact you by electronic and paper mail.
+    You should have received a copy of the GNU General Public License
+-   along with GCC; see the file COPYING.  If not, write to the Free
+-   Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA
+-   02110-1301, USA.  */
++   along with GCC; see the file COPYING.  If not, see
++   <https://www.gnu.org/licenses/>.  */
  
+ /* ------------------------------------------------------------------ */
+ /* Decimal 64-bit format module					      */
 -- 
 2.50.0
 
