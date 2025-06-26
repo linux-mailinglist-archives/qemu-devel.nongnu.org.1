@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42156AE966A
+	by mail.lfdr.de (Postfix) with ESMTPS id ACFA7AE966B
 	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 08:41:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUgIC-0004RJ-8m; Thu, 26 Jun 2025 02:41:04 -0400
+	id 1uUgIE-0004Rz-1T; Thu, 26 Jun 2025 02:41:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUgI8-0004Qt-UV
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 02:41:00 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUgIA-0004RE-BG
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 02:41:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUgI1-0003UN-Qy
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 02:41:00 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUgI8-0003VK-Ne
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 02:41:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750920051;
+ s=mimecast20190719; t=1750920058;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=WitCzWMujOvTH6JTyow1zMRQaLT/0v+9LpX+HVqVNHQ=;
- b=FKnJs7RZcqFmc8zxbXoQuVBE6d8QzkKnY0o5K6+VXxyIUo7Ovz1267FixWx3wbZQjIBzl8
- wfgnFM/RSwqTDQrFEI3gAteyF4wNI1wD5JsVO7aUYocJWHHMOmJWraxllXI3q3DRRI6cnj
- T6LvzTjfsw0P86XtAm28EkEOdD0dfGo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rNcK2oh+lDY1CePY7ThfJexZU8gg3ZZ5jyT7rX3Vf9s=;
+ b=QendJDOsNSUXGoyLsuSQNprgjAtJS1Oa85A3dUaggFy+i1ECl1Qcfeco7cb6eAkW0nJ1bW
+ QjgGY4yAV9rNfCgjkNuWt4WNcTAsww5MHF3dDJKhUyhi+8Mm1KOMsDeA3laCVQuKnOtVLK
+ FutTQSqAT4sdBBMJAPMWj+dCGBbulZU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-9bT8hSdLMO-HImVX0a2GdA-1; Thu, 26 Jun 2025 02:40:45 -0400
-X-MC-Unique: 9bT8hSdLMO-HImVX0a2GdA-1
-X-Mimecast-MFC-AGG-ID: 9bT8hSdLMO-HImVX0a2GdA_1750920043
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-450eaae2934so4463795e9.2
- for <qemu-devel@nongnu.org>; Wed, 25 Jun 2025 23:40:45 -0700 (PDT)
+ us-mta-639-djQZPZxKPGOhTaQjPWmFbA-1; Thu, 26 Jun 2025 02:40:54 -0400
+X-MC-Unique: djQZPZxKPGOhTaQjPWmFbA-1
+X-Mimecast-MFC-AGG-ID: djQZPZxKPGOhTaQjPWmFbA_1750920053
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a4f55ea44dso209503f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Jun 2025 23:40:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750920043; x=1751524843;
+ d=1e100.net; s=20230601; t=1750920053; x=1751524853;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WitCzWMujOvTH6JTyow1zMRQaLT/0v+9LpX+HVqVNHQ=;
- b=YxU7MpUlJUjd35p3rHfnGqQaBp9xXKNsh1S2N/Jt0ZVwrbM0wN7fuu0EEI5+LTpi+1
- m7xjzXQQ+AfqcXMgGoLLQD/KCk/c71cc5m8D0793gyz9H2gtEPziHd/kv/c+kihrh0y+
- kefxRW5iJkljzEZzH+5uvBi30/Ps+NmVtROQheigUxWs71gKu/oes+KDiWVWpe9ie7Xq
- JYEA+r43QcQKyq6vJ9j2h9e3vfGIT7apsuaKdUE++B8SbUs9G1yqz7cNXjYCJobAl4wh
- 6lzMcfOb3xykNXq6DDbLeO+Hp5iuuzaGMiGU7S4azNxi2iPylUb42+zBb/TeP8gLylyo
- yf8w==
+ bh=rNcK2oh+lDY1CePY7ThfJexZU8gg3ZZ5jyT7rX3Vf9s=;
+ b=BOZcY9TzwnlvVERh0E3juLfrshsJ4EcQArMIGafWtHS3vfva3KNJ3XP9ZIeKdfq1qF
+ Sweg95f3od20wqEQlocMiHQXSLcM1IMB7iAUR/aZrm5+0HPQIY9fZ8AOlHK7na64GoAt
+ B8NJYmaHY+oaFzU0b2nQouTkhf3iOxS65pk2VpMgG/7XZdH60zEipiB/Omq2JF9je9hM
+ lMmj5ou9anOB/KwKYLNNgal/gHeup4+kWoutobgiFFDmRxZ6SLmbjlDcTs4PvnKvskXJ
+ 7Ea0u0i/comH2HP83VmLM7EiXZ0zHHTDhCK/EMK4BQmX/8ar1F8oPO1Y2JylD94cYlzu
+ FZYw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVTS6ld+PN95cu0m1CTTlZEgNh76l02avav+pS8C5WkJDJggNbzNl6YrBZs3XH8F6HZAcwuin6nQ/jC@nongnu.org
-X-Gm-Message-State: AOJu0YxheJBsaH/iD9ryAqRKK666V4tL92zM/4j7tmwa2hibxY1OByu1
- BOXgdFTSv00emqMQ5BuSmEkTys2KTNKNs8qW5mY8uQUpigkrc09sHZljJHdD/2Jjy7SsqcRodIL
- zalw5JHqeQAdoOtyI76CK2HioMnR2dXvEZ3GjcMkT063lOfxAGiq2rWwg
-X-Gm-Gg: ASbGnctMt2rzCuP2kd+vFDmgQudQ7kytGhQ0dLZaYKwo4KZffxP8Tj9PPvReeZ5NMyI
- 1w7XingYEJ71zhIsUgMduBgS/FZhcjK2OIMPhjsK2ZK68cFvzmlukqmtYTuvG36jnJZj9HZMqb3
- x619pHqbwOEPKK2r+f6xz5bFqQDJCx3ujuQRydE0NHKsNXyjhp0RS7ULwAwJhCD6itKvqak5b/X
- j31+KS967YesvMhOYjxyoc2gqT4TlkuhETH39+7jrQyXiXOQAXMDHuzT3OOnFTpxDsJB3ilOv79
- i1Vgn/qzBdd39cRRButaGu6QavWjl+8BoGHD+/yxr41MgZvtagxt8yIdP45x
-X-Received: by 2002:a05:6000:985:b0:3a4:eb7a:2cda with SMTP id
- ffacd0b85a97d-3a6ed637857mr3820077f8f.30.1750920043015; 
- Wed, 25 Jun 2025 23:40:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGu+ebrLmHiNQfYoGiVZ7cU4U0BfyacJhtmgUBRL468Zw5GebFMVL1qJgFULSin/eQvP6ou4w==
-X-Received: by 2002:a05:6000:985:b0:3a4:eb7a:2cda with SMTP id
- ffacd0b85a97d-3a6ed637857mr3820047f8f.30.1750920042616; 
- Wed, 25 Jun 2025 23:40:42 -0700 (PDT)
+ AJvYcCVCxU5jZ+7QUTChNAFkBA0uKpY5OlQxW6d2C1wGLClmzoIOgtzcF2aVC4JZ+15IrflN2YndADGfq5vl@nongnu.org
+X-Gm-Message-State: AOJu0Yws9Gnkv2eKmPpxVRO9dQe7xudTT91p7eO5f4t2UdN0VU6I8pO3
+ t2sjyFMZtErdmlRadl6GJIkHszPnRIFPgMUvRV9zlojGhK+q+bkL9TqTl+/76lIAu7FsI01CPzM
+ ph/R+Me3GIOt62xGnIDJSqlKrr4DLZFYc55Z5bG3XU3MB3Y9xQTeTZDBu
+X-Gm-Gg: ASbGncsGd+BzoD9SiUoXWFnp4AKyCisErf/XauLbg/mhd7Y7PhhQb9Pzd6n5jrZ/tWw
+ Ko04nb2MJJvFTfJ4v7Zy9//1nHUiQpJoHLR3Nqh7Mc0XYJoKR6DsVDSFZ+i5QDZEEBC8MJkwW+T
+ efeAnQ4KnLUVUqxN5pMUXfpxyyF7B8R1zVMfeyyfzkt9tZD2TJ4uInZcQTzow9mcWNnXZYtShao
+ hMi0pwJLIPFEIfl8afWA/wWdjs6oktIlV+qWg5LiB9J4LnjuUq/DWx+dXjES/7G54fq8pDQBHBW
+ /ADvcSxnoMgbhAtgrA9fAwYOODizMEO+AGiu4UTNdtuSi5VbN4RIJPpcrGKa
+X-Received: by 2002:a05:6000:4105:b0:3a4:edf5:b952 with SMTP id
+ ffacd0b85a97d-3a6ed66a540mr4075960f8f.36.1750920053407; 
+ Wed, 25 Jun 2025 23:40:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGC3AuQ2OO/RmqOODS6KBnMqmqhzCqM2DHg5FoYQzDaRlCpYe3oRRYm7dTMiNYXWt5V6MMfiQ==
+X-Received: by 2002:a05:6000:4105:b0:3a4:edf5:b952 with SMTP id
+ ffacd0b85a97d-3a6ed66a540mr4075938f8f.36.1750920053005; 
+ Wed, 25 Jun 2025 23:40:53 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4538233c49fsm39783185e9.7.2025.06.25.23.40.41
+ ffacd0b85a97d-3a6e8051018sm6661409f8f.16.2025.06.25.23.40.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Jun 2025 23:40:42 -0700 (PDT)
-Message-ID: <42193ef3-ed57-4a36-b9d8-360a05218859@redhat.com>
-Date: Thu, 26 Jun 2025 08:40:41 +0200
+ Wed, 25 Jun 2025 23:40:52 -0700 (PDT)
+Message-ID: <00bf1ed0-a994-41e4-8ef9-a8c9de81330e@redhat.com>
+Date: Thu, 26 Jun 2025 08:40:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/19] vfio-user: forward MSI-X PBA BAR accesses to
- server
+Subject: Re: [PATCH v5 11/19] vfio-user: set up container access to the proxy
 To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
@@ -88,7 +87,7 @@ Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  Jagannathan Raman <jag.raman@oracle.com>
 References: <20250625193012.2316242-1-john.levon@nutanix.com>
- <20250625193012.2316242-11-john.levon@nutanix.com>
+ <20250625193012.2316242-12-john.levon@nutanix.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -134,7 +133,7 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250625193012.2316242-11-john.levon@nutanix.com>
+In-Reply-To: <20250625193012.2316242-12-john.levon@nutanix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
@@ -163,25 +162,25 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/25/25 21:30, John Levon wrote:
-> For vfio-user, the server holds the pending IRQ state; set up an I/O
-> region for the MSI-X PBA so we can ask the server for this state on a
-> PBA read.
+> The user container will shortly need access to the underlying vfio-user
+> proxy; set this up.
 > 
 > Originally-by: John Johnson <john.g.johnson@oracle.com>
 > Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 > Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
 > Signed-off-by: John Levon <john.levon@nutanix.com>
 > ---
->   hw/vfio/pci.h      |  1 +
->   hw/vfio-user/pci.c | 64 ++++++++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 65 insertions(+)
-> 
+>   hw/vfio-user/container.h |  2 ++
+>   hw/vfio-user/container.c | 43 +++++++++++++++++++++++++++++++---------
+>   2 files changed, 36 insertions(+), 9 deletions(-)
+
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
+
 
 
 
