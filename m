@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FF3AE9574
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CEAEAE9573
 	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 07:56:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUfZ9-0003wB-VG; Thu, 26 Jun 2025 01:54:33 -0400
+	id 1uUfZC-0003wz-FL; Thu, 26 Jun 2025 01:54:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZ2-0003uJ-Gt
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZ6-0003vB-Em
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfYy-00017A-QW
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZ4-00017d-RQ
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750917260;
+ s=mimecast20190719; t=1750917264;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m+12byIfwQX5pnOnN1+H6T3oSqEPWyHmk0GKOjF34Vg=;
- b=RzMN+idOgH5TQhzMdOmNlbmSdZ0RWcoJGOqYNB8M6rcmmlc6N96YnW6I6q0yXm49TCo0vY
- dG5SK/KTa809z2cCt6YTZ3C7TEUHCntAz2h3wnJFyxBQRuPhKMQf7hYaMZ4wGIsIHVMBoU
- mMh0q+qyw3FAESwETCZlTs5WGbXuIVc=
+ bh=a4a4SJ37Dzx1GR9kszHcP48UK0vjozj4/Ppd2Xg/XHs=;
+ b=Ha86de+Qqk3Et4mlQRQAQYRtUWQEgM/vd6Ys6tGRa2jkWPxJPI0SOgsvxxzr0j1Hcps/5t
+ qMwMmuYGYIAQsC7W6LU++93CMYXGEEQscXlqKeuJUS36lsnfBUAyFkQETeVsPwZGQvyv2v
+ 2J1hUPiJ83QGSVYM5kGQ8xtYn/whX1k=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-EgymzTNeMN-niL2DKXg98w-1; Thu,
- 26 Jun 2025 01:54:17 -0400
-X-MC-Unique: EgymzTNeMN-niL2DKXg98w-1
-X-Mimecast-MFC-AGG-ID: EgymzTNeMN-niL2DKXg98w_1750917256
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-8bDVRl-WMHi5-oocoGk6yg-1; Thu,
+ 26 Jun 2025 01:54:21 -0400
+X-MC-Unique: 8bDVRl-WMHi5-oocoGk6yg-1
+X-Mimecast-MFC-AGG-ID: 8bDVRl-WMHi5-oocoGk6yg_1750917260
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CBA5919560B2; Thu, 26 Jun 2025 05:54:16 +0000 (UTC)
+ id 5B20A1955F37; Thu, 26 Jun 2025 05:54:20 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.129])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 516B019560A3; Thu, 26 Jun 2025 05:54:13 +0000 (UTC)
+ id 6D43019560A3; Thu, 26 Jun 2025 05:54:17 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-stable@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>
-Subject: [PULL 07/19] hw/s390x/ccw-device: Fix memory leak in loadparm setter
-Date: Thu, 26 Jun 2025 07:53:38 +0200
-Message-ID: <20250626055350.218271-8-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Haseung Bong <hasueng@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 08/19] tests/vm: update openbsd image to 7.7
+Date: Thu, 26 Jun 2025 07:53:39 +0200
+Message-ID: <20250626055350.218271-9-thuth@redhat.com>
 In-Reply-To: <20250626055350.218271-1-thuth@redhat.com>
 References: <20250626055350.218271-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,37 +81,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Haseung Bong <hasueng@gmail.com>
 
-Commit bdf12f2a fixed the setter for the "loadparm" machine property,
-which gets a string from a visitor, passes it to s390_ipl_fmt_loadparm()
-and then forgot to free it. It left another instance of the same problem
-unfixed in the "loadparm" device property. Fix it.
+Update tests/vm/openbsd to release 7.7
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20250625082751.24896-1-kwolf@redhat.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Haseung Bong <hasueng@gmail.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20250615003249.310160-1-hasueng@gmail.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/ccw-device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/vm/openbsd | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
-index 19c2238f760..8be1813b9e7 100644
---- a/hw/s390x/ccw-device.c
-+++ b/hw/s390x/ccw-device.c
-@@ -57,7 +57,7 @@ static void ccw_device_set_loadparm(Object *obj, Visitor *v,
-                                  Error **errp)
- {
-     CcwDevice *dev = CCW_DEVICE(obj);
--    char *val;
-+    g_autofree char *val = NULL;
-     int index;
+diff --git a/tests/vm/openbsd b/tests/vm/openbsd
+index 5e4f76f3988..2ea86a01bad 100755
+--- a/tests/vm/openbsd
++++ b/tests/vm/openbsd
+@@ -22,8 +22,8 @@ class OpenBSDVM(basevm.BaseVM):
+     name = "openbsd"
+     arch = "x86_64"
  
-     index = object_property_get_int(obj, "bootindex", NULL);
+-    link = "https://cdn.openbsd.org/pub/OpenBSD/7.6/amd64/install76.iso"
+-    csum = "60cba8cb391b50bba8fa10fc768bd0529636f5345d82133c93e22c798d8e5269"
++    link = "https://cdn.openbsd.org/pub/OpenBSD/7.7/amd64/install77.iso"
++    csum = "da0106e39463f015524dca806f407c37a9bdd17e6dfffe533b06a2dd2edd8a27"
+     size = "20G"
+     pkgs = [
+         # tools
 -- 
 2.50.0
 
