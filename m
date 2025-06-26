@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20BEAE972A
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2977EAE9724
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:49:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUhIu-0004No-AX; Thu, 26 Jun 2025 03:45:52 -0400
+	id 1uUhIv-0004ON-TS; Thu, 26 Jun 2025 03:45:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhIr-0004NU-Na
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:45:49 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhIt-0004Nf-3u
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:45:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhIp-0001vG-TN
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:45:49 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhIn-0001ut-62
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:45:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750923946;
+ s=mimecast20190719; t=1750923944;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RGinRN5UYQIQXdu8qzSrfoWxXQNkX7kh8kvKzxPuFBc=;
- b=NI7Pptnap2WC71XInHXosjXnR+zXU/ZcR3r8z0dAMlsQluiwNw09yIJ1v4nPkKC6zU3HBj
- tDdtyF11WCha0jT6+pC+e9RQ8IRL1ldwfNdqRrnLYnxOvYI7+8tGA4EuYdP6xHS3HA45hf
- f1yPU3qoBipX5xakV9MFtEW1yP4phJY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=80aDPKkAGNekjZlBd3D72tmzWAavOYeI6L2XeZYLnsc=;
+ b=I7uSjKGqvooQKxeGRqxSzfsTM5cc/Hy7xPlghR+5+wsTulzjKXN0NNq7409vECAFfZ0hrC
+ zFGKQ2ue5/m2K0xarSsE3+MxzZgmjhEEEMQAHt/U2FUzmWhVyeND9R9aOUNKT+FI1fdzGS
+ IOMeM91u2yn33E0YjVXNOhYXE0y+lxM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-zoaH5A2DOqKu6jGsQYIJTg-1; Thu,
- 26 Jun 2025 03:45:40 -0400
-X-MC-Unique: zoaH5A2DOqKu6jGsQYIJTg-1
-X-Mimecast-MFC-AGG-ID: zoaH5A2DOqKu6jGsQYIJTg_1750923939
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-136-BBW83-kiPi6epugieGjgmw-1; Thu,
+ 26 Jun 2025 03:45:42 -0400
+X-MC-Unique: BBW83-kiPi6epugieGjgmw-1
+X-Mimecast-MFC-AGG-ID: BBW83-kiPi6epugieGjgmw_1750923942
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7851C18002ED; Thu, 26 Jun 2025 07:45:39 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B1E771956048; Thu, 26 Jun 2025 07:45:41 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.51])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 60B59180035C; Thu, 26 Jun 2025 07:45:36 +0000 (UTC)
+ id 1AFC0180035C; Thu, 26 Jun 2025 07:45:39 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  John Levon <john.levon@nutanix.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/25] vfio: add vfio_device_get_region_fd()
-Date: Thu, 26 Jun 2025 09:45:06 +0200
-Message-ID: <20250626074529.1384114-3-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 03/25] vfio: add documentation for posted write argument
+Date: Thu, 26 Jun 2025 09:45:07 +0200
+Message-ID: <20250626074529.1384114-4-clg@redhat.com>
 In-Reply-To: <20250626074529.1384114-1-clg@redhat.com>
 References: <20250626074529.1384114-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,76 +84,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Levon <john.levon@nutanix.com>
 
-This keeps the existence of ->region_fds private to hw/vfio/device.c.
-
 Signed-off-by: John Levon <john.levon@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/20250616101337.3190027-1-john.levon@nutanix.com
+Link: https://lore.kernel.org/qemu-devel/20250616101314.3189793-1-john.levon@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-device.h | 12 ++++++++++++
- hw/vfio/device.c              |  7 +++++++
- hw/vfio/region.c              |  5 +----
- 3 files changed, 20 insertions(+), 4 deletions(-)
+ include/hw/vfio/vfio-device.h | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index d45e5a68a24e7990fa93ce6549f5710b4f25a037..1926adb0a35c7d61ea84fb63de8a83f719578053 100644
+index 1926adb0a35c7d61ea84fb63de8a83f719578053..959e458d7f7e9facd8216fbd3695d9d97dbc667a 100644
 --- a/include/hw/vfio/vfio-device.h
 +++ b/include/hw/vfio/vfio-device.h
-@@ -256,6 +256,18 @@ int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
-                                 struct vfio_region_info **info);
- int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
-                                      uint32_t subtype, struct vfio_region_info **info);
-+
-+/**
-+ * Return the fd for mapping this region. This is either the device's fd (for
-+ * e.g. kernel vfio), or a per-region fd (for vfio-user).
-+ *
-+ * @vbasedev: #VFIODevice to use
-+ * @index: region index
-+ *
-+ * Returns the fd.
-+ */
-+int vfio_device_get_region_fd(VFIODevice *vbasedev, int index);
-+
- bool vfio_device_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type);
- 
- int vfio_device_get_irq_info(VFIODevice *vbasedev, int index,
-diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index d32600eda1a282adaa4c58cfeb80c19c6489ee92..d91c695b69b67ff8f09f590d3fcca8f30f259170 100644
---- a/hw/vfio/device.c
-+++ b/hw/vfio/device.c
-@@ -243,6 +243,13 @@ retry:
-     return 0;
- }
- 
-+int vfio_device_get_region_fd(VFIODevice *vbasedev, int index)
-+{
-+        return vbasedev->region_fds ?
-+               vbasedev->region_fds[index] :
-+               vbasedev->fd;
-+}
-+
- int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
-                                      uint32_t subtype, struct vfio_region_info **info)
- {
-diff --git a/hw/vfio/region.c b/hw/vfio/region.c
-index f5b8e3cbf100f4f1b9fb916075653d3a6e1ca8d4..d04c57db630f3742ea90730e5b58d9aa8b60ffed 100644
---- a/hw/vfio/region.c
-+++ b/hw/vfio/region.c
-@@ -273,10 +273,7 @@ int vfio_region_mmap(VFIORegion *region)
-             goto no_mmap;
-         }
- 
--        /* Use the per-region fd if set, or the shared fd. */
--        fd = region->vbasedev->region_fds ?
--             region->vbasedev->region_fds[region->nr] :
--             region->vbasedev->fd,
-+        fd = vfio_device_get_region_fd(region->vbasedev, region->nr);
- 
-         map_align = (void *)ROUND_UP((uintptr_t)map_base, (uintptr_t)align);
-         munmap(map_base, map_align - map_base);
+@@ -240,6 +240,7 @@ struct VFIODeviceIOOps {
+      * @off: offset within the region
+      * @size: size in bytes to write
+      * @data: buffer to write from
++     * @post: true if this is a posted write
+      *
+      * Returns number of bytes write on success or -errno.
+      */
 -- 
 2.49.0
 
