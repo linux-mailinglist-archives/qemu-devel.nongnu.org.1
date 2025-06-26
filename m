@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B9DBAE9675
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 08:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67072AE96A2
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:14:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUgKJ-0006Fj-M6; Thu, 26 Jun 2025 02:43:15 -0400
+	id 1uUgn9-0006oT-Iv; Thu, 26 Jun 2025 03:13:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUgJU-0005f7-72
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 02:42:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUgn7-0006nk-Ls
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:13:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUgJR-0003ec-QE
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 02:42:23 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUgn5-0002Wm-Fl
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:13:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750920140;
+ s=mimecast20190719; t=1750921976;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KAZXdk40FLAd1559S0hIVauuh/w7lHZ2Iw4QxfarxE0=;
- b=MVmE0igqSx3Q5ixpxInmotuSJdcIg2nQK6muXomtrEGSDVf6/32ghb4ScQM7JtoN7XbBE3
- LA5snkYDzQi4v/slUfkbVJjxvVFN02LEnoTZmo6YnrTDWWaco7oir3wif+tvdAOPuNjjip
- l2Me7zkbSJ8ifwc6NI7ZeZS9U4HnUpw=
+ bh=h1v1feE3nJ6gEdfXh0mcEEZvNzG8nt8E4Z2RlaQL5SU=;
+ b=OZd3e83WGNaV0Q5InM4F/qE8h7db0ImbbAqsSf/+piEM6JQXtHg1x4j1BKr5VKHLBWI/oo
+ xQ5cEDNsd2WBRd1+7guQfa1Tw6rL5/2gaO2k3yFqRN/DwIc+IDOgkJhZGB9ZTSM3ayZG7Z
+ Occ0YlXPnlKsK3Rxs6F/yb499ZALxns=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-204-8JDHBAzrOpuhMsM_soUl7g-1; Thu, 26 Jun 2025 02:42:18 -0400
-X-MC-Unique: 8JDHBAzrOpuhMsM_soUl7g-1
-X-Mimecast-MFC-AGG-ID: 8JDHBAzrOpuhMsM_soUl7g_1750920137
+ us-mta-669-QyBFv2ZTN0GymgUq6VFv5A-1; Thu, 26 Jun 2025 03:12:53 -0400
+X-MC-Unique: QyBFv2ZTN0GymgUq6VFv5A-1
+X-Mimecast-MFC-AGG-ID: QyBFv2ZTN0GymgUq6VFv5A_1750921972
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43e9b0fd00cso3253745e9.0
- for <qemu-devel@nongnu.org>; Wed, 25 Jun 2025 23:42:18 -0700 (PDT)
+ 5b1f17b1804b1-450db029f2aso2328555e9.3
+ for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 00:12:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750920137; x=1751524937;
+ d=1e100.net; s=20230601; t=1750921972; x=1751526772;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KAZXdk40FLAd1559S0hIVauuh/w7lHZ2Iw4QxfarxE0=;
- b=WTGVIT8y4IytMj6K6JXK/ZxgVa8+jKUdYfHqVrrORDthDy8BXHyjXjxbfg8VtcxsW+
- Gcu8YejNRR5yx73LiMVMTJDzfDVhWorV0TgmaaXcx+SXXftPJxc2NhJ4S6Cct7Zyt6i8
- 4tZeo/RO/XlpHwZdI90V3VVKk85Gx/pQddCiOW4hgGAnjexrIPpyStsozyg3acfCf31v
- KEONUf37dmki1l0KeNWAhRxrfOPPGZQzukYF/WmOJkyusHBGqISVjbOXcxHxSNZxp/Co
- BQFC0MNs4jpytRPAEpVWq9yw1OZ+TwtXblmdd8hiER343SbclAKcKeX3iAiCgO/4Vlzf
- Y5QQ==
+ bh=h1v1feE3nJ6gEdfXh0mcEEZvNzG8nt8E4Z2RlaQL5SU=;
+ b=p/mnSre/lrIw22/QndHiCRagqIjvwfTj1vRGJaRKl3ERwtCwJmaYFgKahfN04ni+YX
+ tM1kk4CFU3RbXUH1ZSIG3EjVuCjo2Ik2Ddpav4zIs3Et8jycIHfmljdrT3MjgI2vC6Hf
+ s7WQcGqYjtJBZMhd2TJNF6nJEvpjoOhq5sqmp6VkgnWlzRkbryCc1eTJebGkp7g8tgkm
+ PCJJOgzI9Nu1EdBIqXUSVWMGhJgZl51w1/2sMjVkmH2UlgXLdPMDDcBA4hlj6TsWci4F
+ PzjzVaW3avGyZJn74fnljFQwdCsxlyJhv0zdjH6nyUskq0NtLa+l3w7pbQA8anaQxtlf
+ PwdQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWSY2/MLh7UueCc4tiRJhK9T6OLffteU7bwT/N1UdDasSVw3Ygnu0dtNxk0jbjBD8gxfFsFG/7sAp0y@nongnu.org
-X-Gm-Message-State: AOJu0Yy/eSQ8jm3ojbyhSGnCq6C54Tqpf/NPRI6Ma3MFi4/jO2/v5rIy
- pm6nwhDnR+X6kVa9P/pFBf/st61aXcvSTNL7xMZXyLEbOlsLHjNVkdO7LD+k4YnMj8irhnocFhs
- IartL/bTNCVCz1w4VpwkzoySNo+4GHuA2/HsInoqCnOOEXHKbK/VrzLOL
-X-Gm-Gg: ASbGncsD6tIhwl2kAvDmiMCRWhjD+bGxXpZFSHEhYV4NdgwWp7k5YoB0VkA2AY4JoS1
- cuIRrsq1CY82LvQR0J4/KnwXyzG2dSVdVC8rdJk4VmE6W16LYm7oQTclsXPr29i77YgJhgQWdVU
- epBhMGjej6IGO4HFpbDbI3fFr3wCHewq6sLomXnvq0Q/06G6rUYk0OGVczaxAs3dZFJ8hetvTNM
- YauYBNs+ni0swaaGR6VRmJ5P9J8eWa+rUN1v/xfkfYBrznhC3+dq5ZplZ/5k7f5gK6DkS+velrG
- WZfpNiptWH7P8xk1lSowUNyi1N3jNziy1Xvz8vtn3LFHJDZkUPyMzHTOmLHE
-X-Received: by 2002:a05:600c:a01:b0:451:df07:d8e0 with SMTP id
- 5b1f17b1804b1-453889d0d93mr21357425e9.11.1750920137243; 
- Wed, 25 Jun 2025 23:42:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGY0J6HsHX2S8AHS8618fx9buu3OgtoFLUeV+lzPYSAJrReDKVC54clGOpi5gpKFtlpzKlYxQ==
-X-Received: by 2002:a05:600c:a01:b0:451:df07:d8e0 with SMTP id
- 5b1f17b1804b1-453889d0d93mr21357115e9.11.1750920136754; 
- Wed, 25 Jun 2025 23:42:16 -0700 (PDT)
+ AJvYcCWHDpEAa4zs5Lr6ajVpzriiuVYvWvZWeRU3lY5JerGWYxtkKsrfHaZzMXA3YXkWFraRat+oVyu92TWd@nongnu.org
+X-Gm-Message-State: AOJu0YyZhyUAWeBEPPF0e76Hm01eyhHK7Ryof1AhX9ZcQeySrnqNS8d+
+ XUz5kAGtEcAZyGC0MLowrpBvSZ+jTNlERelvaInftsovhitHcyjg7p7G7HmdfUF4d1F0FYvQ4JX
+ aCsntTDZ32JE9bsn4RuwrALdLb68feQHjrlXhKLt1Y7taEbaIr0WCohLY
+X-Gm-Gg: ASbGncuHZu3zMuDzxpfUDk8rsSp6o945Al7zfo5cAYdgN0qHTqP1Q0fC4CQ2xJ40x+d
+ tuuOf+dcqdqZgdRB5XLt/QQ3j3YYPJg8RNHcumRLASkvAWlknNTw2SsRo0FBHB3UuzwkOIssLP6
+ w8fi0Izc1CxOs9udj4kQ8yDLH69HxaaoygS7kXLWMGXzBuFQMQHhLb2bpGYWLNt8SaEAqARmshy
+ SgnmfTlZL/L+AWjFgyvD/WfqiPbfVWQKID3bjG+RxbZkesof5uZawIzCCnOVrcH8jlQwJBsVyT5
+ pub4gPD7TxyTyV/JMUsR1lRbDp82fJ19fUSu5w5fgcq4LCCHWl2HRZ7/lAUB
+X-Received: by 2002:a05:6000:2b06:b0:3a4:dc32:6cbc with SMTP id
+ ffacd0b85a97d-3a6ed638214mr3316077f8f.20.1750921971827; 
+ Thu, 26 Jun 2025 00:12:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF7V2amDr6eot22iLAQiG6KH+PLlvDZdaF4XxDaXgvsjOOiTr8YZuxahdk6tuhOuy7OZhlm5w==
+X-Received: by 2002:a05:6000:2b06:b0:3a4:dc32:6cbc with SMTP id
+ ffacd0b85a97d-3a6ed638214mr3316056f8f.20.1750921971371; 
+ Thu, 26 Jun 2025 00:12:51 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4538a3a5b7fsm9716235e9.10.2025.06.25.23.42.16
+ ffacd0b85a97d-3a6f3a79377sm1326959f8f.20.2025.06.26.00.12.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Jun 2025 23:42:16 -0700 (PDT)
-Message-ID: <215a0489-79b3-4e69-9235-4ad8853471ea@redhat.com>
-Date: Thu, 26 Jun 2025 08:42:15 +0200
+ Thu, 26 Jun 2025 00:12:50 -0700 (PDT)
+Message-ID: <0398b04a-7fa6-498e-a674-619de2227b11@redhat.com>
+Date: Thu, 26 Jun 2025 09:12:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 19/19] vfio-user: introduce vfio-user protocol
- specification
+Subject: Re: [PATCH v5 00/19] vfio-user client
 To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
@@ -85,7 +84,6 @@ Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 References: <20250625193012.2316242-1-john.levon@nutanix.com>
- <20250625193012.2316242-20-john.levon@nutanix.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -131,10 +129,10 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250625193012.2316242-20-john.levon@nutanix.com>
+In-Reply-To: <20250625193012.2316242-1-john.levon@nutanix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -159,31 +157,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/25/25 21:30, John Levon wrote:
-> From: Thanos Makatos <thanos.makatos@nutanix.com>
+On 6/25/25 21:29, John Levon wrote:
+> The series contains an implementation of a vfio-user client in QEMU.
 > 
-> This patch introduces the vfio-user protocol specification (formerly
-> known as VFIO-over-socket), which is designed to allow devices to be
-> emulated outside QEMU, in a separate process. vfio-user reuses the
-> existing VFIO defines, structs and concepts.
+> The vfio-user protocol allows for implementing (PCI) devices in another
+> userspace process; SPDK is one example, which includes a virtual NVMe
+> implementation.
 > 
-> It has been earlier discussed as an RFC in:
-> "RFC: use VFIO over a UNIX domain socket to implement device offloading"
+> The vfio-user framework consists of 3 parts:
+>   1) The VFIO user protocol specification.
+>   2) A client - the VFIO device in QEMU that encapsulates VFIO messages
+>      and sends them to the server.
+>   3) A server - a remote process that emulates a device.
 > 
-> Signed-off-by: Thanos Makatos <thanos.makatos@nutanix.com>
-> Signed-off-by: John Levon <john.levon@nutanix.com>
-> ---
->   MAINTAINERS                |    3 +-
->   docs/interop/index.rst     |    1 +
->   docs/interop/vfio-user.rst | 1520 ++++++++++++++++++++++++++++++++++++
->   3 files changed, 1523 insertions(+), 1 deletion(-)
+> This patchset implements parts 1 and 2.
+> 
+> It has been tested against libvfio-user test servers as well as SPDK.
+> A functional test is still being worked on.
+> 
+> A previous version of this series can be found at
+> https://lore.kernel.org/qemu-devel/20250619133154.264786-1-john.levon@nutanix.com/
+> 
+> Changes since last series:
+> 
+>   - fixed SPDX identifier nits
+>   - code review changes for error handling
+> 
+> thanks
+> john
+> 
+> John Levon (18):
+>    vfio-user: add vfio-user class and container
+>    vfio-user: connect vfio proxy to remote server
+>    vfio-user: implement message receive infrastructure
+>    vfio-user: implement message send infrastructure
+>    vfio-user: implement VFIO_USER_DEVICE_GET_INFO
+>    vfio-user: implement VFIO_USER_DEVICE_GET_REGION_INFO
+>    vfio-user: implement VFIO_USER_REGION_READ/WRITE
+>    vfio-user: set up PCI in vfio_user_pci_realize()
+>    vfio-user: implement VFIO_USER_DEVICE_GET/SET_IRQ*
+>    vfio-user: forward MSI-X PBA BAR accesses to server
+>    vfio-user: set up container access to the proxy
+>    vfio-user: implement VFIO_USER_DEVICE_RESET
+>    vfio-user: implement VFIO_USER_DMA_MAP/UNMAP
+>    vfio-user: implement VFIO_USER_DMA_READ/WRITE
+>    vfio-user: add 'x-msg-timeout' option
+>    vfio-user: support posted writes
+>    vfio-user: add coalesced posted writes
+>    docs: add vfio-user documentation
+> 
+> Thanos Makatos (1):
+>    vfio-user: introduce vfio-user protocol specification
+> 
+>   MAINTAINERS                           |   11 +-
+>   docs/interop/index.rst                |    1 +
+>   docs/interop/vfio-user.rst            | 1520 +++++++++++++++++++++++++
+>   docs/system/device-emulation.rst      |    1 +
+>   docs/system/devices/vfio-user.rst     |   26 +
+>   meson.build                           |    1 +
+>   hw/vfio-user/container.h              |   23 +
+>   hw/vfio-user/device.h                 |   24 +
+>   hw/vfio-user/protocol.h               |  242 ++++
+>   hw/vfio-user/proxy.h                  |  135 +++
+>   hw/vfio-user/trace.h                  |    4 +
+>   hw/vfio/pci.h                         |    1 +
+>   include/hw/vfio/vfio-container-base.h |    1 +
+>   include/hw/vfio/vfio-device.h         |    2 +
+>   hw/vfio-user/container.c              |  370 ++++++
+>   hw/vfio-user/device.c                 |  441 +++++++
+>   hw/vfio-user/pci.c                    |  475 ++++++++
+>   hw/vfio-user/proxy.c                  | 1356 ++++++++++++++++++++++
+>   hw/Kconfig                            |    1 +
+>   hw/meson.build                        |    1 +
+>   hw/vfio-user/Kconfig                  |    7 +
+>   hw/vfio-user/meson.build              |   11 +
+>   hw/vfio-user/trace-events             |   20 +
+>   23 files changed, 4673 insertions(+), 1 deletion(-)
 >   create mode 100644 docs/interop/vfio-user.rst
+>   create mode 100644 docs/system/devices/vfio-user.rst
+>   create mode 100644 hw/vfio-user/container.h
+>   create mode 100644 hw/vfio-user/device.h
+>   create mode 100644 hw/vfio-user/protocol.h
+>   create mode 100644 hw/vfio-user/proxy.h
+>   create mode 100644 hw/vfio-user/trace.h
+>   create mode 100644 hw/vfio-user/container.c
+>   create mode 100644 hw/vfio-user/device.c
+>   create mode 100644 hw/vfio-user/pci.c
+>   create mode 100644 hw/vfio-user/proxy.c
+>   create mode 100644 hw/vfio-user/Kconfig
+>   create mode 100644 hw/vfio-user/meson.build
+>   create mode 100644 hw/vfio-user/trace-events
+> 
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Applied to vfio-next.
 
 Thanks,
 
 C.
+
 
 
 
