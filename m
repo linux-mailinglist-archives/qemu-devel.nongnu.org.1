@@ -2,88 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA053AEAAE5
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 01:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C474AEAC03
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 02:51:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUwN8-00061T-L6; Thu, 26 Jun 2025 19:51:14 -0400
+	id 1uUxIU-0007Rf-Fa; Thu, 26 Jun 2025 20:50:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
- id 1uUwN5-000615-Sr
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 19:51:12 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
- id 1uUwN2-0002IC-Qs
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 19:51:11 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2349f096605so24869055ad.3
- for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 16:51:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1750981867; x=1751586667; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=p+mRXGA+oZiP4fjp2MK0XrnzBc/2v3Dfz4xLuPxj0Xk=;
- b=Veu43iHY/JL0ifEPBdGNvL+WO97QmBQzPMachvS0dVGqke5VgR3Tnt5GwSJBlfPvmB
- bhm4AFKyvDddRZISzCuhHWKs+g/wQTEwDgWalj2Kh49fa5op93eR6whZGkRVN+r37KzC
- My5z/aHDPTIiORknirwnDKm0pprNFF4S5swkDo79r0fZ7ScIk+PZRq73ZRAT/e5xJn3B
- +7S22nQpku+q6OiQagwzn1XY+iG7rysZ6ZNeC67x4WiF66LhwnqPfai9vL7ZM7qoE8h2
- OlBNiVUXIJB0I7EBJkmUnWdP9lU6/76KN39fJHPDOzCFSlurq8l4N+/9K7uYFFqkYI4v
- 28lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750981867; x=1751586667;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=p+mRXGA+oZiP4fjp2MK0XrnzBc/2v3Dfz4xLuPxj0Xk=;
- b=hpr5k7UjydWZHBoZQUjp5ACnWrIz/1xYaxzMO0MNrv69yRD5lWxckM6JeZmAzz7HTS
- z/U9ESC3p0/Xt+Us/avp/ehTfuhrT1ivOTPugUZhyhwT+AVseXkhoQmnZ6hIDlgV7F+q
- qkFYKLMqLNRlLfmgyWTDywqNi3bo3Ftwg+lBn9nr3j3iLh/cEDcf8V1KxRM0aEMFiu/b
- gYbHjx8P2FVIjQKRxOE3Mmb3rn8h29mj+FG2ygGYGi1bZTQuc/JDwkfBx5BFNP3xMvu4
- KcToVlDfjmntUF9ohkFv6zi/2R8t1xZFnAo51A+BagQL0seXpqpugzX3JWL6x0eRWCnj
- imOw==
-X-Gm-Message-State: AOJu0Yzx0fjNOE0D1oqwufJICauEB7vsiKz8cYtYMz3j7910Zzz2Hahq
- nQhoNF/nDe7fu6ww5qsnSNvg3NfwKHP3K53I/98iP9Yc75GF9Nark7Vo9Wj2jw==
-X-Gm-Gg: ASbGnctCPxk4U20kjpxc6vBy0I7IBBw1NO29RpoeIVUXOeCdfkZf//qjaR5lMZjdw2C
- 8qHzsYrJNiMnR6H3NAC/HXO9oE+v0geaE6M+iDvK9TCjkN8ck14U6XksoEIRRPcFbrEE6A7A98o
- 0B2XZEfCbahVkRvHlrbqiYy6wYdZMtFtaPPycvnLrrnm3/scjQlHL2RJroctpCXHqcP8jWrPjEZ
- DhUDu+L5g7wikPoUdsapL/R5DmDcwcTQUAnXvgmEcFiJYV2+KtqAL52vkqdNoyuDCawYZMZfOZ7
- C0pO6CFTNyY824V4s13+Aus34maTSN+PxxIvoG1YcZdiS5Z8OmvaOZeG1LdaunrgYFOY4oZJ1p0
- pRGL+c5U=
-X-Google-Smtp-Source: AGHT+IFk1j3vtXbBWNlT2vcqJ5ZknXNg0xSy5kSmp6B//qv1X7OMGPGbO60HZ9QiizvCOo2uKxsY4w==
-X-Received: by 2002:a17:903:1aac:b0:234:db06:ac0 with SMTP id
- d9443c01a7336-23ac46835b6mr15381595ad.45.1750981867096; 
- Thu, 26 Jun 2025 16:51:07 -0700 (PDT)
-Received: from deb-101020-bm01.dtc.local ([149.97.161.244])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23acb2f1845sm2081055ad.70.2025.06.26.16.51.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Jun 2025 16:51:06 -0700 (PDT)
-From: anisa.su887@gmail.com
-To: qemu-devel@nongnu.org
-Cc: Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com, dave@stgolabs.net,
- linux-cxl@vger.kernel.org, Anisa Su <anisa.su@samsung.com>
-Subject: [HACK QEMU PATCH v1 1/1] hw/cxl: Fix MCTP Binding Check
-Date: Thu, 26 Jun 2025 23:41:15 +0000
-Message-ID: <20250626235102.1902427-2-anisa.su887@gmail.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250626235102.1902427-1-anisa.su887@gmail.com>
-References: <20250626235102.1902427-1-anisa.su887@gmail.com>
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1uUxIO-0007RC-C2
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 20:50:25 -0400
+Received: from mx2.zhaoxin.com ([61.152.208.219])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1uUxIK-00026Z-Lw
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 20:50:23 -0400
+X-ASG-Debug-ID: 1750985404-1eb14e1c391de10001-jgbH7p
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by
+ mx2.zhaoxin.com with ESMTP id zUOfYFMVZuZId9by (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Fri, 27 Jun 2025 08:50:04 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Fri, 27 Jun
+ 2025 08:50:03 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([::1]) by ZXSHMBX1.zhaoxin.com
+ ([fe80::2c07:394e:4919:4dc1%7]) with mapi id 15.01.2507.044; Fri, 27 Jun 2025
+ 08:50:03 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from [192.168.31.91] (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Thu, 26 Jun
+ 2025 20:07:07 +0800
+Message-ID: <0d038476-e7c6-4e7a-add2-aeb4d715c202@zhaoxin.com>
+Date: Thu, 26 Jun 2025 20:07:06 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=anisa.su887@gmail.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/8] i386/cpu: Add a "x-force-cpuid-0x1f" property
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+X-ASG-Orig-Subj: Re: [PATCH 5/8] i386/cpu: Add a "x-force-cpuid-0x1f" property
+CC: Jason Zeng <jason.zeng@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, "Tao
+ Su" <tao1.su@intel.com>, Yi Lai <yi1.lai@intel.com>, Dapeng Mi
+ <dapeng1.mi@intel.com>, Tejus GK <tejus.gk@nutanix.com>, Manish Mishra
+ <manish.mishra@nutanix.com>, <qemu-devel@nongnu.org>
+References: <20250626083105.2581859-1-zhao1.liu@intel.com>
+ <20250626083105.2581859-6-zhao1.liu@intel.com>
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+In-Reply-To: <20250626083105.2581859-6-zhao1.liu@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.28.66.62]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 6/27/2025 8:50:02 AM
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1750985404
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 3379
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -1.42
+X-Barracuda-Spam-Status: No,
+ SCORE=-1.42 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=BSF_SC0_SA085b, PR0N_SUBJECT
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.143446
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+ 0.20 PR0N_SUBJECT Subject has letters around special characters (pr0n)
+ 0.40 BSF_SC0_SA085b         Custom Rule SA085b
+Received-SPF: pass client-ip=61.152.208.219;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,249 +101,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anisa Su <anisa.su@samsung.com>
 
-Per the spec, FMAPI commands (0x51-0x59) must be bound with
-MCTP_MT_CXL_FMAPI. Fix the conditions ensuring this in i2c_mctp_cxl.c
-and dev-mctp.c
 
-Move the opcode enum from cxl-mailbox-utils.c to cxl_mailbox.h to
-allow i2c_mctp_cxl.c and dev-mctp.c to use the enum instead of
-hardcoding the values.
+On 6/26/25 4:31 PM, Zhao Liu wrote:
+> 
+> 
+> From: Manish Mishra <manish.mishra@nutanix.com>
+> 
+> Add a "x-force-cpuid-0x1f" property so that CPU models can enable it and
+> have 0x1f CPUID leaf natually as the Host CPU.
+> 
+> The advantage is that when the CPU model's cache model is already
+> consistent with the Host CPU, for example, SRF defaults to l2 per
+> module & l3 per package, 0x1f can better help users identify the
+> topology in the VM.
+> 
+> Adding 0x1f for specific CPU models should not cause any trouble in
+> principle. This property is only enabled for CPU models that already
+> have 0x1f leaf on the Host, so software that originally runs normally on
+> the Host won't encounter issues in the Guest with corresponding CPU
+> model. Conversely, some software that relies on checking 0x1f might
+> have problems in the Guest due to the lack of 0x1f [*]. In
+> summary, adding 0x1f is also intended to further emulate the Host CPU
+> environment.
+> 
+> [*]: https://lore.kernel.org/qemu-devel/PH0PR02MB738410511BF51B12DB09BE6CF6AC2@PH0PR02MB7384.namprd02.prod.outlook.com/
+> 
+> Signed-off-by: Manish Mishra <manish.mishra@nutanix.com>
+> Co-authored-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> [Integrated and rebased 2 previous patches (ordered by post time)]
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+> Note:
+>    This patch integrates the idea from 2 previous posted patches (ordered
+> by post time)[1] [2], following the s-o-b policy of "Re-starting
+> abandoned work" in docs/devel/code-provenance.rst.
+> 
+> [1]: From Manish: https://lore.kernel.org/qemu-devel/20240722101859.47408-1-manish.mishra@nutanix.com/
+> [2]: From Xiaoyao: https://lore.kernel.org/qemu-devel/20240813033145.279307-1-xiaoyao.li@intel.com/
+> ---
+> Changes since RFC:
+>   * Rebase and rename the property as "x-force-cpuid-0x1f". (Igor)
+> ---
+>   target/i386/cpu.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 08c84ba90f52..ee36f7ee2ccc 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -9934,6 +9934,7 @@ static const Property x86_cpu_properties[] = {
+>       DEFINE_PROP_BOOL("x-intel-pt-auto-level", X86CPU, intel_pt_auto_level,
+>                        true),
+>       DEFINE_PROP_BOOL("x-l1-cache-per-thread", X86CPU, l1_cache_per_core, true),
+> +    DEFINE_PROP_BOOL("x-force-cpuid-0x1f", X86CPU, force_cpuid_0x1f, false),
+>   };
 
-Signed-off-by: Anisa Su <anisa.su@samsung.com>
----
- hw/cxl/cxl-mailbox-utils.c   | 74 +-----------------------------------
- hw/cxl/i2c_mctp_cxl.c        |  6 ++-
- hw/usb/dev-mctp.c            |  6 ++-
- include/hw/cxl/cxl_mailbox.h | 73 +++++++++++++++++++++++++++++++++++
- 4 files changed, 82 insertions(+), 77 deletions(-)
+After applying these patches to QEMU mainline at commit 6e1571533fd9:
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 4c01b25110..7f84e147f7 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -37,7 +37,7 @@
- 
- /*
-  * How to add a new command, example. The command set FOO, with cmd BAR.
-- *  1. Add the command set and cmd to the enum.
-+ *  1. Add the command set and cmd to the enum in cxl_mailbox.h.
-  *     FOO    = 0x7f,
-  *          #define BAR 0
-  *  2. Implement the handler
-@@ -60,78 +60,6 @@
-  *  a register interface that already deals with it.
-  */
- 
--enum {
--    INFOSTAT    = 0x00,
--        #define IS_IDENTIFY   0x1
--        #define BACKGROUND_OPERATION_STATUS    0x2
--        #define GET_RESPONSE_MSG_LIMIT         0x3
--        #define SET_RESPONSE_MSG_LIMIT         0x4
--        #define BACKGROUND_OPERATION_ABORT     0x5
--    EVENTS      = 0x01,
--        #define GET_RECORDS   0x0
--        #define CLEAR_RECORDS   0x1
--        #define GET_INTERRUPT_POLICY   0x2
--        #define SET_INTERRUPT_POLICY   0x3
--    FIRMWARE_UPDATE = 0x02,
--        #define GET_INFO      0x0
--        #define TRANSFER      0x1
--        #define ACTIVATE      0x2
--    TIMESTAMP   = 0x03,
--        #define GET           0x0
--        #define SET           0x1
--    LOGS        = 0x04,
--        #define GET_SUPPORTED 0x0
--        #define GET_LOG       0x1
--        #define GET_LOG_CAPABILITIES   0x2
--        #define CLEAR_LOG     0x3
--        #define POPULATE_LOG  0x4
--    FEATURES    = 0x05,
--        #define GET_SUPPORTED 0x0
--        #define GET_FEATURE   0x1
--        #define SET_FEATURE   0x2
--    IDENTIFY    = 0x40,
--        #define MEMORY_DEVICE 0x0
--    CCLS        = 0x41,
--        #define GET_PARTITION_INFO     0x0
--        #define GET_LSA       0x2
--        #define SET_LSA       0x3
--    HEALTH_INFO_ALERTS = 0x42,
--        #define GET_ALERT_CONFIG 0x1
--        #define SET_ALERT_CONFIG 0x2
--    SANITIZE    = 0x44,
--        #define OVERWRITE     0x0
--        #define SECURE_ERASE  0x1
--        #define MEDIA_OPERATIONS 0x2
--    PERSISTENT_MEM = 0x45,
--        #define GET_SECURITY_STATE     0x0
--    MEDIA_AND_POISON = 0x43,
--        #define GET_POISON_LIST        0x0
--        #define INJECT_POISON          0x1
--        #define CLEAR_POISON           0x2
--        #define GET_SCAN_MEDIA_CAPABILITIES 0x3
--        #define SCAN_MEDIA             0x4
--        #define GET_SCAN_MEDIA_RESULTS 0x5
--    DCD_CONFIG  = 0x48,
--        #define GET_DC_CONFIG          0x0
--        #define GET_DYN_CAP_EXT_LIST   0x1
--        #define ADD_DYN_CAP_RSP        0x2
--        #define RELEASE_DYN_CAP        0x3
--    PHYSICAL_SWITCH = 0x51,
--        #define IDENTIFY_SWITCH_DEVICE      0x0
--        #define GET_PHYSICAL_PORT_STATE     0x1
--    TUNNEL = 0x53,
--        #define MANAGEMENT_COMMAND     0x0
--    MHD = 0x55,
--        #define GET_MHD_INFO 0x0
--    FMAPI_DCD_MGMT = 0x56,
--        #define GET_DCD_INFO    0x0
--        #define GET_HOST_DC_REGION_CONFIG   0x1
--        #define SET_DC_REGION_CONFIG        0x2
--        #define GET_DC_REGION_EXTENT_LIST   0x3
--        #define INITIATE_DC_ADD             0x4
--        #define INITIATE_DC_RELEASE         0x5
--};
--
- /* CCI Message Format CXL r3.1 Figure 7-19 */
- typedef struct CXLCCIMessage {
-     uint8_t category;
-diff --git a/hw/cxl/i2c_mctp_cxl.c b/hw/cxl/i2c_mctp_cxl.c
-index 1714f36e8e..3f17779562 100644
---- a/hw/cxl/i2c_mctp_cxl.c
-+++ b/hw/cxl/i2c_mctp_cxl.c
-@@ -29,6 +29,7 @@
- #include "hw/pci/pcie_port.h"
- #include "hw/qdev-properties.h"
- #include "hw/registerfields.h"
-+#include "hw/cxl/cxl_mailbox.h"
- 
- #define TYPE_I2C_MCTP_CXL "i2c_mctp_cxl"
- 
-@@ -198,9 +199,10 @@ static void i2c_mctp_cxl_handle_message(MCTPI2CEndpoint *mctp)
-          */
- 
-         if (!(msg->message_type == MCTP_MT_CXL_TYPE3 &&
--              msg->command_set < 0x51) &&
-+              msg->command_set < PHYSICAL_SWITCH) &&
-             !(msg->message_type == MCTP_MT_CXL_FMAPI &&
--              msg->command_set >= 0x51 && msg->command_set < 0x56)) {
-+              msg->command_set >= PHYSICAL_SWITCH &&
-+              msg->command_set < GLOBAL_MEM_ACCESS_EP_MGMT)) {
-             buf->rc = CXL_MBOX_UNSUPPORTED;
-             st24_le_p(buf->pl_length, len_out);
-             s->len = s->pos;
-diff --git a/hw/usb/dev-mctp.c b/hw/usb/dev-mctp.c
-index aafb9e7e96..b82a269561 100644
---- a/hw/usb/dev-mctp.c
-+++ b/hw/usb/dev-mctp.c
-@@ -25,6 +25,7 @@
- #include "hw/usb.h"
- #include "hw/usb/desc.h"
- #include "net/mctp.h"
-+#include "hw/cxl/cxl_mailbox.h"
- 
- /* TODO: Move to header */
- 
-@@ -504,9 +505,10 @@ static void usb_cxl_mctp_handle_data(USBDevice *dev, USBPacket *p)
-          * onwards.
-          */
-         if (!(req->message_type == MCTP_MT_CXL_TYPE3 &&
--              req->command_set < 0x51) &&
-+              req->command_set < PHYSICAL_SWITCH) &&
-             !(req->message_type == MCTP_MT_CXL_FMAPI &&
--              req->command_set >= 0x51 && req->command_set < 0x56)) {
-+              req->command_set >= PHYSICAL_SWITCH &&
-+              req->command_set < GLOBAL_MEM_ACCESS_EP_MGMT)) {
-             len_out = 0;
-             usb_pkt_len = sizeof(MCTPUSBPacket) + sizeof(CXLMCTPMessage) +
-                 len_out;
-diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
-index 820c411cbb..209a11ecbc 100644
---- a/include/hw/cxl/cxl_mailbox.h
-+++ b/include/hw/cxl/cxl_mailbox.h
-@@ -27,4 +27,77 @@
- #define CXL_LOG_CAP_AUTO_POPULATE_SUPPORTED (1 << 2)
- #define CXL_LOG_CAP_PERSISTENT_COLD_RESET_SUPPORTED (1 << 3)
- 
-+enum {
-+    INFOSTAT    = 0x00,
-+        #define IS_IDENTIFY   0x1
-+        #define BACKGROUND_OPERATION_STATUS    0x2
-+        #define GET_RESPONSE_MSG_LIMIT         0x3
-+        #define SET_RESPONSE_MSG_LIMIT         0x4
-+        #define BACKGROUND_OPERATION_ABORT     0x5
-+    EVENTS      = 0x01,
-+        #define GET_RECORDS   0x0
-+        #define CLEAR_RECORDS   0x1
-+        #define GET_INTERRUPT_POLICY   0x2
-+        #define SET_INTERRUPT_POLICY   0x3
-+    FIRMWARE_UPDATE = 0x02,
-+        #define GET_INFO      0x0
-+        #define TRANSFER      0x1
-+        #define ACTIVATE      0x2
-+    TIMESTAMP   = 0x03,
-+        #define GET           0x0
-+        #define SET           0x1
-+    LOGS        = 0x04,
-+        #define GET_SUPPORTED 0x0
-+        #define GET_LOG       0x1
-+        #define GET_LOG_CAPABILITIES   0x2
-+        #define CLEAR_LOG     0x3
-+        #define POPULATE_LOG  0x4
-+    FEATURES    = 0x05,
-+        #define GET_SUPPORTED 0x0
-+        #define GET_FEATURE   0x1
-+        #define SET_FEATURE   0x2
-+    IDENTIFY    = 0x40,
-+        #define MEMORY_DEVICE 0x0
-+    CCLS        = 0x41,
-+        #define GET_PARTITION_INFO     0x0
-+        #define GET_LSA       0x2
-+        #define SET_LSA       0x3
-+    HEALTH_INFO_ALERTS = 0x42,
-+        #define GET_ALERT_CONFIG 0x1
-+        #define SET_ALERT_CONFIG 0x2
-+    SANITIZE    = 0x44,
-+        #define OVERWRITE     0x0
-+        #define SECURE_ERASE  0x1
-+        #define MEDIA_OPERATIONS 0x2
-+    PERSISTENT_MEM = 0x45,
-+        #define GET_SECURITY_STATE     0x0
-+    MEDIA_AND_POISON = 0x43,
-+        #define GET_POISON_LIST        0x0
-+        #define INJECT_POISON          0x1
-+        #define CLEAR_POISON           0x2
-+        #define GET_SCAN_MEDIA_CAPABILITIES 0x3
-+        #define SCAN_MEDIA             0x4
-+        #define GET_SCAN_MEDIA_RESULTS 0x5
-+    DCD_CONFIG  = 0x48,
-+        #define GET_DC_CONFIG          0x0
-+        #define GET_DYN_CAP_EXT_LIST   0x1
-+        #define ADD_DYN_CAP_RSP        0x2
-+        #define RELEASE_DYN_CAP        0x3
-+    PHYSICAL_SWITCH = 0x51,
-+        #define IDENTIFY_SWITCH_DEVICE      0x0
-+        #define GET_PHYSICAL_PORT_STATE     0x1
-+    TUNNEL = 0x53,
-+        #define MANAGEMENT_COMMAND     0x0
-+    MHD = 0x55,
-+        #define GET_MHD_INFO 0x0
-+    FMAPI_DCD_MGMT = 0x56,
-+        #define GET_DCD_INFO    0x0
-+        #define GET_HOST_DC_REGION_CONFIG   0x1
-+        #define SET_DC_REGION_CONFIG        0x2
-+        #define GET_DC_REGION_EXTENT_LIST   0x3
-+        #define INITIATE_DC_ADD             0x4
-+        #define INITIATE_DC_RELEASE         0x5
-+    GLOBAL_MEM_ACCESS_EP_MGMT = 0X59,
-+};
-+
- #endif
--- 
-2.47.2
+$ git am 
+patches-from-https://lore.kernel.org/qemu-devel/20250620092734.1576677-1-zhao1.liu@intel.com/
+$ git am 
+patches-from-https://lore.kernel.org/all/20250626083105.2581859-6-zhao1.liu@intel.com/
+
+and configure && make qemu with:
+
+$ ./configure --target-list=x86_64-softmmu --enable-debug --enable-kvm 
+--enable-sdl --enable-gtk --enable-spice --prefix=/usr --enable-libusb 
+--enable-usb-redir --enable-trace-backends=simple && make -j32
+
+I ran into this build error:
+
+target/i386/cpu.c:9942:52: error: 'X86CPU' {aka 'struct ArchCPU'} has no member 
+named 'force_cpuid_0x1f' ; did you mean 'enable_cpuid_0x1f' ?
+
+I haven't debug it yet, because it seems like a simple mistake, asking you 
+directly might be quicker.
+
+> 
+>   #ifndef CONFIG_USER_ONLY
+> --
+> 2.34.1
+> 
 
 
