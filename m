@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9B2AE9582
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 07:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25854AE9581
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 07:59:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUfZQ-00041G-Nv; Thu, 26 Jun 2025 01:54:48 -0400
+	id 1uUfZl-0004IJ-Tp; Thu, 26 Jun 2025 01:55:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZO-00040b-Ef
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZX-00049m-Td
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZM-00019h-P8
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZR-0001AG-Vd
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750917284;
+ s=mimecast20190719; t=1750917288;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a5VbMESPBvChD/KhYN2rZqzFyjFHgm9J5uEay01p7Ug=;
- b=Gws3/WynTqZfAKFcZ+V3Ge3JZ55xwM4vry9KZdeXcM/p5dy2twJJTf1TZPwQICFx1/89g7
- IQFTEV8xUbDZ6ShKnSyLNg24EweZ9BvE8oVT5Go66r6ty/akcUJbZzGJkOix5C1VNcm09m
- H9Q7J9NTt+oIsJlCbDmheD8UrAYYbzE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=r0QO8NqekrUXfzVPd61NePr8DXyv3zOBB+jtDEvgF6o=;
+ b=hgzavoietRHqPqQ4SGEj9cQxLJyybxn+7VNDQwrVRMoSU69eQSRN3xlKvCNhqhqhEkBFiu
+ bPyZBWukBDT/Y7Z7e2dBtyppRt21ReiuzlhXxrUSI+3yATYZtyMaRvnuefsbPus98bJ51l
+ 1AOIRB7AGMMDREPHPRu+HYecB+M+2Pw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-421-a7PhhJU1N_GAX7Vve3BmmA-1; Thu,
- 26 Jun 2025 01:54:41 -0400
-X-MC-Unique: a7PhhJU1N_GAX7Vve3BmmA-1
-X-Mimecast-MFC-AGG-ID: a7PhhJU1N_GAX7Vve3BmmA_1750917280
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-393-Say0KFuyNZaFxhlzPbvZiA-1; Thu,
+ 26 Jun 2025 01:54:44 -0400
+X-MC-Unique: Say0KFuyNZaFxhlzPbvZiA-1
+X-Mimecast-MFC-AGG-ID: Say0KFuyNZaFxhlzPbvZiA_1750917283
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 52BCC180120B; Thu, 26 Jun 2025 05:54:40 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 737D218002ED; Thu, 26 Jun 2025 05:54:43 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.129])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5ACE519560A3; Thu, 26 Jun 2025 05:54:38 +0000 (UTC)
+ id 504AC19560A3; Thu, 26 Jun 2025 05:54:40 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
 	Sean Wei <me@sean.taipei>
-Subject: [PULL 15/19] hw: replace FSF postal address with licenses URL
-Date: Thu, 26 Jun 2025 07:53:46 +0200
-Message-ID: <20250626055350.218271-16-thuth@redhat.com>
+Subject: [PULL 16/19] scripts: replace FSF postal address with licenses URL
+Date: Thu, 26 Jun 2025 07:53:47 +0200
+Message-ID: <20250626055350.218271-17-thuth@redhat.com>
 In-Reply-To: <20250626055350.218271-1-thuth@redhat.com>
 References: <20250626055350.218271-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,7 +82,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sean Wei <me@sean.taipei>
 
-The GPLv2 boiler-plate in vmxnet3.h and vmw_pvscsi.h still
+The GPLv2 boiler-plate in scripts/device-crash-test still
 contained the obsolete "51 Franklin Street" postal address.
 
 Replace it with the canonical GNU licenses URL recommended by the FSF:
@@ -90,43 +90,26 @@ https://www.gnu.org/licenses/
 
 Signed-off-by: Sean Wei <me@sean.taipei>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250613.qemu.patch.08@sean.taipei>
+Message-ID: <20250613.qemu.patch.09@sean.taipei>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/net/vmxnet3.h     | 4 ++--
- hw/scsi/vmw_pvscsi.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ scripts/device-crash-test | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/net/vmxnet3.h b/hw/net/vmxnet3.h
-index f9283f9e7b6..dbc69d5fb66 100644
---- a/hw/net/vmxnet3.h
-+++ b/hw/net/vmxnet3.h
-@@ -63,8 +63,8 @@
-  * details.
-  *
-  * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
-+ * along with this program; if not, see
-+ * <https://www.gnu.org/licenses/>.
-  *
-  * The full GNU General Public License is included in this distribution in
-  * the file called "COPYING".
-diff --git a/hw/scsi/vmw_pvscsi.h b/hw/scsi/vmw_pvscsi.h
-index 17fcf662730..a3ae517e199 100644
---- a/hw/scsi/vmw_pvscsi.h
-+++ b/hw/scsi/vmw_pvscsi.h
-@@ -14,8 +14,8 @@
-  * details.
-  *
-  * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
-+ * along with this program; if not, see
-+ * <https://www.gnu.org/licenses/>.
-  *
-  * Maintained by: Arvind Kumar <arvindkumar@vmware.com>
-  *
+diff --git a/scripts/device-crash-test b/scripts/device-crash-test
+index da8b56edd99..1ecb9663ae8 100755
+--- a/scripts/device-crash-test
++++ b/scripts/device-crash-test
+@@ -16,8 +16,7 @@
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License along
+-# with this program; if not, write to the Free Software Foundation, Inc.,
+-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++# with this program; if not, see <https://www.gnu.org/licenses/>.
+ 
+ """
+ Run QEMU with all combinations of -machine and -device types,
 -- 
 2.50.0
 
