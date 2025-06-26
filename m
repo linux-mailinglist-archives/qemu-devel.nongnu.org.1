@@ -2,89 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9160BAE96F0
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6940AE9718
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:47:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUhBB-0002qZ-9Y; Thu, 26 Jun 2025 03:37:53 -0400
+	id 1uUhIm-0004Mb-75; Thu, 26 Jun 2025 03:45:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1uUhB8-0002qM-Ud
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:37:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhIk-0004MK-FB
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:45:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1uUhB6-0008Go-3S
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:37:50 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhIi-0001te-7u
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:45:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750923465;
+ s=mimecast20190719; t=1750923938;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aSKuvqB7mWTkt/+jK/99JOKGjffVHFgCnc1sXQaEoeA=;
- b=iSFKcRAEEyKYYRqZzS7MIGcSYIVS/hpMFHez7EAPblP2HfIZNBYyvL+BVsBJIw6yTM7J6J
- 563mNpVybRQ7MuWP85enu4oSOOsEvHCCWQPLehANjyM/KuEW8jWdX37stH4RZQ8LPMOnDe
- awQO4PLxD52vk0mF/Ej1iYRwxo3iTgY=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-uta6IU3kN3-e5SXCmQIRaA-1; Thu, 26 Jun 2025 03:37:41 -0400
-X-MC-Unique: uta6IU3kN3-e5SXCmQIRaA-1
-X-Mimecast-MFC-AGG-ID: uta6IU3kN3-e5SXCmQIRaA_1750923460
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-311ef4fb5fdso717856a91.1
- for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 00:37:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1750923460; x=1751528260;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aSKuvqB7mWTkt/+jK/99JOKGjffVHFgCnc1sXQaEoeA=;
- b=SXCSwofw1S9rvHTX2LYsCcjtlt/dMz+6LiVFEhQO/skKc3iuukvVt8QiLbXcNAsfha
- 2Sdj2+iHuDMmjSbcAZb6cayhRCwqJgE9mDyUnXgD5xqV0Ca/10snxAVzTccJjEDEYBtL
- +3EPHHptxjdVXdE9SRpdHubTzbrXGiGi06wvl+9mlQMtUGXtevb75C7ZOPq/7+XUXydi
- SxBJETd3t2ZumiT0Yc4xqbV8O7xCexALBO5AYLcC3hwZjycoJFgU8met485KWTVyN9Ht
- hWERrPROo3wzawG7woYi1/nvynJzAboJHAQLqPqwg2MWWLo0P9ITKobKK+SKGt0zpP40
- l8Mg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVWeAEnit7JacYjoeu5vO3ajL4o0qI5tD+odXRXSL5CKjKbG3zEuf3konjhsmJtnb1WIf0u7qCv86Gh@nongnu.org
-X-Gm-Message-State: AOJu0YzD4pW8UJZfQx0U5d26reyJZD126hxO/UF9ogapNmh7mtVpQ4FW
- U5YYe5kHpEMtAPvNZcg8eJrwNvde7xEhEzrb1qzWF4ky6efcgKqTqXuFoU9xQxKxl0WvXLKj327
- SA6nj7VhvKQe1odIgggz+vvmT2dhBZmrQGMTyuHltcyiI0aCAu+gzkXx3PjNDRxjIdWGtECoaP4
- +yp55+GBxkg5uzTHxFADYEQ5yugCohF64=
-X-Gm-Gg: ASbGnctPHtdoVLQloYT4CGz8vs8pT5fzLWZp8RS568E1ss0w6ZCcW24RQNUBi9V/mt5
- wCMnbswlV9l/OGrH0GNIuohS7T/EnRWrCtURVgurQ1fW8pvLXClwZ2AliwGEjhas7T/Ak7plcca
- BF4Q==
-X-Received: by 2002:a17:90b:5484:b0:311:ad7f:3299 with SMTP id
- 98e67ed59e1d1-315f268aa55mr7260940a91.25.1750923460311; 
- Thu, 26 Jun 2025 00:37:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDgoNbc6h72SgS09BiYB6PDuktOoBxJntnhUdBYbXCqZx8JehiaiAb51PLKdLsfoCF7KApIyd+IFkcq1aukAM=
-X-Received: by 2002:a17:90b:5484:b0:311:ad7f:3299 with SMTP id
- 98e67ed59e1d1-315f268aa55mr7260908a91.25.1750923459847; Thu, 26 Jun 2025
- 00:37:39 -0700 (PDT)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/Hmx7hHYO+FQFa7w8a59ububIYSGd0vgwTzGpL6L7+g=;
+ b=W/CZ8FKun6QdbZUD+8EZWfnoXywaMoiXCpCbQAcCVg3Of2ZVJyxz3uO/gUbTulm8RtOY/P
+ kyc5hMhmfbHfo9AY8rpZPwoO3Xtxe8Ux58gkUjMeemP0qi8yNzBdOlOZiMpVhOAS1QCRkU
+ fSIC8B6vmIqBFsti9FQz1eDZRR8txtE=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-WOPoPL9-PcSRnX_1eyaj3Q-1; Thu,
+ 26 Jun 2025 03:45:35 -0400
+X-MC-Unique: WOPoPL9-PcSRnX_1eyaj3Q-1
+X-Mimecast-MFC-AGG-ID: WOPoPL9-PcSRnX_1eyaj3Q_1750923934
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 48E141956086
+ for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 07:45:34 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.32.51])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6CF0E180035C; Thu, 26 Jun 2025 07:45:32 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/25] vfio queue
+Date: Thu, 26 Jun 2025 09:45:04 +0200
+Message-ID: <20250626074529.1384114-1-clg@redhat.com>
 MIME-Version: 1.0
-References: <20250324135929.74945-1-sahilcdq@proton.me>
- <CAJaqyWdXat-ugJHEcZyB5dbTuwGgvrO2+DdDd9YneS0=j-99NA@mail.gmail.com>
- <f1354888-74fb-44d8-8b48-c6a6a13db1a7@gmail.com>
- <CAJaqyWd=ssa5fkmV7Z=tzJvFeciC1P2U2pYheaSrZ2PZCaejHg@mail.gmail.com>
- <9a7c409f-cd7e-4906-812b-c8a4d77cfc4d@gmail.com>
- <CAJaqyWdme4GSTQr-mbGiWvV5Wu0Mnjc467ptWFoX2i3zHygf3g@mail.gmail.com>
- <97eafb50-492a-4571-92de-503fbc0d06fd@gmail.com>
-In-Reply-To: <97eafb50-492a-4571-92de-503fbc0d06fd@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Thu, 26 Jun 2025 09:37:02 +0200
-X-Gm-Features: Ac12FXw7OHfPUqmtjQ_9W4XePqKQNmRz82r7e8pE15lQUVXLcRs8DVmjFCqchAg
-Message-ID: <CAJaqyWeG2n=BhjNhQzMagjh5t-dgno6q-esVjzqrw8z3_sUrHA@mail.gmail.com>
-Subject: Re: [RFC v5 0/7] Add packed format to shadow virtqueue
-To: Sahil Siddiq <icegambit91@gmail.com>
-Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- sahilcdq@proton.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,285 +79,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 26, 2025 at 7:16=E2=80=AFAM Sahil Siddiq <icegambit91@gmail.com=
-> wrote:
->
-> Hi,
->
-> It's been a while since I sent an email. I thought I would send an update
-> to keep you in the loop.
->
-> I have been comparing svq's mechanism for split and packed vqs hoping to
-> find something that might lead to the source of the issue.
->
-> One thing worth noting is that when I use kernel version 6.8.5 for testin=
-g,
-> the crashes are far more frequent. In kernel version 6.15.0-rc3+, it's mu=
-ch
-> harder to reproduce.
->
-> On 5/15/25 11:49 AM, Eugenio Perez Martin wrote:
-> > On Wed, May 14, 2025 at 8:22=E2=80=AFAM Sahil Siddiq <icegambit91@gmail=
-.com> wrote:
-> >> On 4/16/25 12:50 PM, Eugenio Perez Martin wrote:
-> >>> On Mon, Apr 14, 2025 at 11:20=E2=80=AFAM Sahil Siddiq <icegambit91@gm=
-ail.com> wrote:
-> >>>> On 3/26/25 1:05 PM, Eugenio Perez Martin wrote:
-> >>>>> On Mon, Mar 24, 2025 at 2:59=E2=80=AFPM Sahil Siddiq <icegambit91@g=
-mail.com> wrote:
-> >>>>>> I managed to fix a few issues while testing this patch series.
-> >>>>>> There is still one issue that I am unable to resolve. I thought
-> >>>>>> I would send this patch series for review in case I have missed
-> >>>>>> something.
-> >>>>>>
-> >>>>>> The issue is that this patch series does not work every time. I
-> >>>>>> am able to ping L0 from L2 and vice versa via packed SVQ when it
-> >>>>>> works.
-> >>>>>>
-> >>>>>> When this doesn't work, both VMs throw a "Destination Host
-> >>>>>> Unreachable" error. This is sometimes (not always) accompanied
-> >>>>>> by the following kernel error (thrown by L2-kernel):
-> >>>>>>
-> >>>>>> virtio_net virtio1: output.0:id 1 is not a head!
-> >>>>>>
-> >>
-> >> The TX queue seems to be problematic. More on this below.
->
-> Sometimes RX also results in this crash, but it seems to be less frequent=
-.
->
-> >>>> This was filled while L2
-> >>>> was booting. In the case when the ctrl vq is disabled, I am not sure
-> >>>> what is responsible for filling the vqs in the data plane during
-> >>>> booting.
-> >>>>
-> >>> The nested guest's driver fills the rx queue at startup. After that,
-> >>> that nested guest kicks and SVQ receives the descriptors. It copies
-> >>> the descriptors to the shadow virtqueue and then kicks L0 QEMU.
-> >>
-> >> Understood.
-> >>
-> >>>> The other vq (vq_idx=3D1) is not filled completely before the issue =
-is
-> >>>> hit.
-> >>>> I have been noting down the numbers and here is an example:
-> >>>>
-> >>>> 295 descriptors were added individually to the queues i.e., there we=
-re no chains (vhost_svq_add_packed)
-> >>>> |_ 256 additions in vq_idx =3D 0, all with unique ids
-> >>>>        |---- 27 descriptors (ids 0 through 26) were received later f=
-rom the device (vhost_svq_get_buf_packed)
-> >>>> |_ 39 additions in vq_idx =3D 1
-> >>>>        |_ 13 descriptors had id =3D 0
-> >>>>        |_ 26 descriptors had id =3D 1
-> >>>>        |---- All descriptors were received at some point from the de=
-vice (vhost_svq_get_buf_packed)
-> >>>>
-> >>>> There was one case in which vq_idx=3D0 had wrapped around. I verifie=
-d
-> >>>> that flags were set appropriately during the wrap (avail and used fl=
-ags
-> >>>> were flipped as expected).
-> >>>>
-> >>>
-> >>> Ok sounds like you're able to reach it before filling the queue. I'd
-> >>> go for debugging notifications for this one then. More on this below.
-> >>>
-> >>>> =3D=3D=3D=3D=3D
-> >>>> The next common situation where this issue is hit is during startup.
-> >>>> Before L2 can finish booting successfully, this error is thrown:
-> >>>>
-> >>>> virtio_net virtio1: output.0:id 0 is not a head!
-> >>>>
-> >>>> 258 descriptors were added individually to the queues during startup=
- (there were no chains) (vhost_svq_add_packed)
-> >>>> |_ 256 additions in vq_idx =3D 0, all with unique ids
-> >>>>       |---- None of them were received by the device (vhost_svq_get_=
-buf_packed)
-> >>>> |_ 2 additions in vq_idx =3D 1
-> >>>>       |_ id =3D 0 in index 0
-> >>>>       |_ id =3D 1 in index 1
-> >>>>       |---- Both descriptors were received at some point during star=
-tup from the device (vhost_svq_get_buf_packed)
-> >>>>
-> >>>> =3D=3D=3D=3D=3D
-> >>>> Another case is after several seconds of pinging L0 from L2.
-> >>>>
-> >>>> [   99.034114] virtio_net virtio1: output.0:id 0 is not a head!
-> >>>>
-> >>>
-> >>> So the L2 guest sees a descriptor it has not made available
-> >>> previously. This can be caused because SVQ returns the same descripto=
-r
-> >>> twice, or it doesn't fill the id or flags properly. It can also be
-> >>> caused because we're not protecting the write ordering in the ring,
-> >>> but I don't see anything obviously wrong by looking at the code.
-> >>>
-> >>>> 366 descriptors were added individually to the queues i.e., there we=
-re no chains (vhost_svq_add_packed)
-> >>>> |_ 289 additions in vq_idx =3D 0, wrap-around was observed with avai=
-l and used flags inverted for 33 descriptors
-> >>>> |   |---- 40 descriptors (ids 0 through 39) were received from the d=
-evice (vhost_svq_get_buf_packed)
-> >>>> |_ 77 additions in vq_idx =3D 1
-> >>>>        |_ 76 descriptors had id =3D 0
-> >>>>        |_ 1 descriptor had id =3D 1
-> >>>>        |---- all 77 descriptors were received at some point from the=
- device (vhost_svq_get_buf_packed)
-> >>>>
-> >>>>
-> >>>> "id is not a head" is being thrown because vq->packed.desc_state[id]=
-.data
-> >>>> doesn't exist for the corresponding id in Linux [1]. But QEMU seems =
-to have
-> >>>> stored some data for this id via vhost_svq_add() [2]. Linux sets the=
- value
-> >>>> of vq->packed.desc_state[id].data in its version of virtqueue_add_pa=
-cked() [3].
-> >>>>
-> >>>
-> >>> Let's keep debugging further. Can you trace the ids that the L2 kerne=
-l
-> >>> makes available, and then the ones that it uses? At the same time, ca=
-n
-> >>> you trace the ids that the svq sees in vhost_svq_get_buf and the ones
-> >>> that flushes? This allows us to check the set of available descriptor=
-s
-> >>> at any given time.
-> >>>
-> >> In the linux kernel, I am printing which descriptor is received in whi=
-ch
-> >> queue in drivers/virtio/virtio_ring.c:virtqueue_get_buf_ctx_packed() [=
-1].
-> >> I see the following lines getting printed for the TX queue:
-> >>
-> >> [  192.101591] output.0 -> id: 0
-> >> [  213.737417] output.0 -> id: 0
-> >> [  213.738714] output.0 -> id: 1
-> >> [  213.740093] output.0 -> id: 0
-> >> [  213.741521] virtio_net virtio1: output.0:id 0 is not a head!
-> >>
-> >
-> > I find it particular that it is the first descriptor with id 1. Do you
-> > have any other descriptor with id 1 previously? Does it fail
-> > consistently with id 1?
->
-> Yes, the descriptor with id 1 was used previously in TX. It varies betwee=
-n
-> test runs. It has failed with other ids as well during some test runs. In
-> one test run, it failed with id 17. I think there's an off-by-one bug her=
-e.
-> It crashes when it receives id 'x - 1' instead of 'x'.
-> > You should have descriptors with id 1 and more in the rx queue and the
-> > code should not be able to tell the difference, so it seems weird it
-> > fails with tx. But who knows :).
-> Oh, I thought it would be able to differentiate between them since it kno=
-ws
-> which vq->idx it's coming from.
->
-> I think there's something off in the way "free_head", "last_used_idx" and
-> "desc_next" values are calculated in vhost_svq_get_buf_packed() [1].
->
-> In the latest test run, QEMU sent ids 0 through 28 to L2. L2 started rece=
-iving
-> them in order till id 8. At this point it received id 7 again for some re=
-ason
-> and then crashed.
->
-> L2:
->
-> [ 1641.129218] (prepare_packed) output.0 -> needs_kick: 1
-> [ 1641.130621] (notify) output.0 -> function will return true
-> [ 1641.132022] output.0 -> id: 0
-> [ 1739.502358] input.0 -> id: 0
-> [ 1739.503003] input.0 -> id: 1
-> [ 1739.562024] input.0 -> id: 2
-> [ 1739.578682] input.0 -> id: 3
-> [ 1739.661913] input.0 -> id: 4
-> [ 1739.828796] input.0 -> id: 5
-> [ 1739.829789] input.0 -> id: 6
-> [ 1740.078757] input.0 -> id: 7
-> [ 1740.079749] input.0 -> id: 8
-> [ 1740.080382] input.0 -> id: 7    <----Received 7 again
-> [ 1740.081614] virtio_net virtio1: input.0:id 7 is not a head!
->
-> QEMU logs (vhost_svq_get_buf_packed):
-> ------
-> size              : svq->vring.num
-> len               : svq->vring_packed.vring.desc[last_used].len
-> id                : svq->vring_packed.vring.desc[last_used].id
-> num               : svq->desc_state[id].ndescs
-> last_used_chain   : Result of vhost_svq_last_desc_of_chain(svq, num, id) =
-[2]
-> free_head         : svq->free_head
-> last_used         : (last_used_idx & ~(1 << VRING_PACKED_EVENT_F_WRAP_CTR=
-)) + num
-> used_wrap_counter : !!(last_used_idx & (1 << VRING_PACKED_EVENT_F_WRAP_CT=
-R))
-> ------
->
-> size: 256, len: 102, id: 0, vq idx: 0
-> id: 0, last_used_chain: 0, free_head: 0, vq idx: 0
-> num: 1, free_head: 0, id: 0, last_used: 1, used_wrap_counter: 1, vq idx: =
-0
-> ------
-> size: 256, len: 74, id: 1, vq idx: 0
-> id: 1, last_used_chain: 1, free_head: 0, vq idx: 0
-> num: 1, free_head: 1, id: 1, last_used: 2, used_wrap_counter: 1, vq idx: =
-0
-> ------
-> size: 256, len: 102, id: 2, vq idx: 0
-> id: 2, last_used_chain: 2, free_head: 1, vq idx: 0
-> num: 1, free_head: 2, id: 2, last_used: 3, used_wrap_counter: 1, vq idx: =
-0
-> ------
-> size: 256, len: 82, id: 3, vq idx: 0
-> id: 3, last_used_chain: 3, free_head: 2, vq idx: 0
-> num: 1, free_head: 3, id: 3, last_used: 4, used_wrap_counter: 1, vq idx: =
-0
-> ------
-> size: 256, len: 74, id: 4, vq idx: 0
-> id: 4, last_used_chain: 4, free_head: 3, vq idx: 0
-> num: 1, free_head: 4, id: 4, last_used: 5, used_wrap_counter: 1, vq idx: =
-0
-> ------
-> size: 256, len: 82, id: 5, vq idx: 0
-> id: 5, last_used_chain: 5, free_head: 4, vq idx: 0
-> num: 1, free_head: 5, id: 5, last_used: 6, used_wrap_counter: 1, vq idx: =
-0
-> ------
-> size: 256, len: 104, id: 6, vq idx: 0
-> id: 6, last_used_chain: 6, free_head: 5, vq idx: 0
-> num: 1, free_head: 6, id: 6, last_used: 7, used_wrap_counter: 1, vq idx: =
-0
-> ------
-> size: 256, len: 82, id: 7, vq idx: 0
-> id: 7, last_used_chain: 7, free_head: 6, vq idx: 0
-> num: 1, free_head: 7, id: 7, last_used: 8, used_wrap_counter: 1, vq idx: =
-0
-> ------
-> size: 256, len: 104, id: 8, vq idx: 0
-> id: 8, last_used_chain: 8, free_head: 7, vq idx: 0
-> num: 1, free_head: 8, id: 8, last_used: 9, used_wrap_counter: 1, vq idx: =
-0
-> ------
-> size: 256, len: 98, id: 9, vq idx: 0
-> id: 9, last_used_chain: 9, free_head: 8, vq idx: 0
-> num: 1, free_head: 9, id: 9, last_used: 10, used_wrap_counter: 1, vq idx:=
- 0
-> ------
-> size: 256, len: 104, id: 10, vq idx: 0
-> id: 10, last_used_chain: 10, free_head: 9, vq idx: 0
-> num: 1, free_head: 10, id: 10, last_used: 11, used_wrap_counter: 1, vq id=
-x: 0
->
-> I have a few more ideas of what to do. I'll let you know if I find someth=
-ing
-> else.
->
+The following changes since commit f9a3def17b2a57679902c33064cf7853263db0ef:
 
-I cannot find anything just by inspection. What about printing all the
-desc_state and all desc_next to check for incoherencies in each
-svq_add and get_buf?
+  Merge tag 'pull-tcg-20250623' of https://gitlab.com/rth7680/qemu into staging (2025-06-24 10:38:38 -0400)
+
+are available in the Git repository at:
+
+  https://github.com/legoater/qemu/ tags/pull-vfio-20250626
+
+for you to fetch changes up to da198e8f0f99cd8539f3072ad2071f9dc01680d6:
+
+  vfio-user: introduce vfio-user protocol specification (2025-06-26 08:55:38 +0200)
+
+----------------------------------------------------------------
+vfio queue:
+
+* Added several small fixes and cleanups
+* Added support for vfio-user client device
+
+----------------------------------------------------------------
+John Levon (21):
+      vfio: add vfio_device_get_region_fd()
+      vfio: add documentation for posted write argument
+      vfio: add license tag to some files
+      vfio-user: add vfio-user class and container
+      vfio-user: connect vfio proxy to remote server
+      vfio-user: implement message receive infrastructure
+      vfio-user: implement message send infrastructure
+      vfio-user: implement VFIO_USER_DEVICE_GET_INFO
+      vfio-user: implement VFIO_USER_DEVICE_GET_REGION_INFO
+      vfio-user: implement VFIO_USER_REGION_READ/WRITE
+      vfio-user: set up PCI in vfio_user_pci_realize()
+      vfio-user: implement VFIO_USER_DEVICE_GET/SET_IRQ*
+      vfio-user: forward MSI-X PBA BAR accesses to server
+      vfio-user: set up container access to the proxy
+      vfio-user: implement VFIO_USER_DEVICE_RESET
+      vfio-user: implement VFIO_USER_DMA_MAP/UNMAP
+      vfio-user: implement VFIO_USER_DMA_READ/WRITE
+      vfio-user: add 'x-msg-timeout' option
+      vfio-user: support posted writes
+      vfio-user: add coalesced posted writes
+      docs: add vfio-user documentation
+
+Rorie Reyes (1):
+      hw/vfio/ap: attribute constructor for cfg_chg_events_lock
+
+Thanos Makatos (1):
+      vfio-user: introduce vfio-user protocol specification
+
+Zhenzhong Duan (2):
+      vfio/container: Fix SIGSEGV when open container file fails
+      vfio/container: fails mdev hotplug if add migration blocker failed
+
+ MAINTAINERS                           |   11 +-
+ docs/interop/index.rst                |    1 +
+ docs/interop/vfio-user.rst            | 1520 +++++++++++++++++++++++++++++++++
+ docs/system/device-emulation.rst      |    1 +
+ docs/system/devices/vfio-user.rst     |   26 +
+ meson.build                           |    1 +
+ hw/vfio-user/container.h              |   23 +
+ hw/vfio-user/device.h                 |   24 +
+ hw/vfio-user/protocol.h               |  242 ++++++
+ hw/vfio-user/proxy.h                  |  135 +++
+ hw/vfio-user/trace.h                  |    4 +
+ hw/vfio/pci.h                         |    1 +
+ hw/vfio/trace.h                       |    3 +
+ include/hw/vfio/vfio-container-base.h |    1 +
+ include/hw/vfio/vfio-device.h         |   15 +
+ hw/vfio-user/container.c              |  370 ++++++++
+ hw/vfio-user/device.c                 |  441 ++++++++++
+ hw/vfio-user/pci.c                    |  475 +++++++++++
+ hw/vfio-user/proxy.c                  | 1356 +++++++++++++++++++++++++++++
+ hw/vfio/ap.c                          |   12 +-
+ hw/vfio/container.c                   |   12 +-
+ hw/vfio/device.c                      |    7 +
+ hw/vfio/region.c                      |    5 +-
+ hw/Kconfig                            |    1 +
+ hw/meson.build                        |    1 +
+ hw/vfio-user/Kconfig                  |    7 +
+ hw/vfio-user/meson.build              |   11 +
+ hw/vfio-user/trace-events             |   20 +
+ hw/vfio/Kconfig                       |    2 +
+ hw/vfio/meson.build                   |    2 +
+ hw/vfio/trace-events                  |    2 +
+ 31 files changed, 4717 insertions(+), 15 deletions(-)
+ create mode 100644 docs/interop/vfio-user.rst
+ create mode 100644 docs/system/devices/vfio-user.rst
+ create mode 100644 hw/vfio-user/container.h
+ create mode 100644 hw/vfio-user/device.h
+ create mode 100644 hw/vfio-user/protocol.h
+ create mode 100644 hw/vfio-user/proxy.h
+ create mode 100644 hw/vfio-user/trace.h
+ create mode 100644 hw/vfio-user/container.c
+ create mode 100644 hw/vfio-user/device.c
+ create mode 100644 hw/vfio-user/pci.c
+ create mode 100644 hw/vfio-user/proxy.c
+ create mode 100644 hw/vfio-user/Kconfig
+ create mode 100644 hw/vfio-user/meson.build
+ create mode 100644 hw/vfio-user/trace-events
 
 
