@@ -2,90 +2,169 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B875AE9DCC
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 14:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C23DAE9DF6
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 14:58:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUm0o-0004Q5-Ky; Thu, 26 Jun 2025 08:47:30 -0400
+	id 1uUmBC-0007Bu-VL; Thu, 26 Jun 2025 08:58:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5272304780=rmudimadugul@marvell.com>)
- id 1uUlf9-0001Bp-3G
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 08:25:08 -0400
-Received: from mx0b-0016f401.pphosted.com ([67.231.156.173])
+ (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
+ id 1uUmB9-0007Bj-7Y
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 08:58:11 -0400
+Received: from mail-bn8nam12on20600.outbound.protection.outlook.com
+ ([2a01:111:f403:2418::600]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5272304780=rmudimadugul@marvell.com>)
- id 1uUlf3-0006Ay-Dl
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 08:25:06 -0400
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
- by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55QARnZO032042;
- Thu, 26 Jun 2025 05:24:55 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
- cc:content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=pfpt0220; bh=93DsU75GNxQFAnfZw+KjtTj
- XvdDdy4FE9C09G2xNI1M=; b=VRaatanbzinPFNdqGIOazs4NuWchOKpyceYpDDc
- DfN4LQ/wrBKC//h1R9S/gmh0fXAkfkqMZccVRmIj/x5bIqeOH/WNvkHsXk0NpQGs
- xej4JFN9AkE6M8JCGOyJaY1TErOT5yR6v4cqk8jGt8Ezb7M3hmyEfTA2VAxSFL2V
- 7WJLB/67mlZQ2IuAX0jut2R1XHiO4lbWOsnv2F2fLkb2d0ccBAip9cIQCSjBInLJ
- Hd+yvRJKg4u18bwIJ8xh3o/uMJIAmlORrp7CMmZSPLextKcKEJNO6BIcKunoDuNd
- P6nW3or6Te4vhHGFMTg4D09V8ca8wPb0HnSFI/oG6TTzBsQ==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
- by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 47h4f786f3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Jun 2025 05:24:54 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 26 Jun 2025 05:24:53 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Thu, 26 Jun 2025 05:24:53 -0700
-Received: from Dell640-transport-1.sclab.marvell.com (unknown [10.106.48.36])
- by maili.marvell.com (Postfix) with ESMTP id 78A773F706B;
- Thu, 26 Jun 2025 05:24:53 -0700 (PDT)
-From: Rajesh Mudimadugula <rmudimadugul@marvell.com>
-To: <qemu-devel@nongnu.org>
-CC: <mst@redhat.com>, <pizhenwei@bytedance.com>, <gmuthukrishn@marvell.com>,
- Rajesh Mudimadugula <rmudimadugul@marvell.com>
-Subject: [PATCH] vhost-user: enable asym capabilities for user backend
-Date: Thu, 26 Jun 2025 12:24:51 +0000
-Message-ID: <20250626122451.908205-1-rmudimadugul@marvell.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <Vasant.Hegde@amd.com>)
+ id 1uUmB6-0003PX-QS
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 08:58:10 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qzrgygF35Ib3GgzNP3AIOHJox/+6Cso6QxN/hlitLqCodTIoSBo24yTobaZVlgKdK7pfAcdZkanZMFVdn8iEs7hWg/9xGibuSh+v2m+K+dU4eF2yiYokC56uOq0bcDQIpJzIsAUzWQqzyjlw7+lFd+Iaq/X6QnXlCkiAsT2ItVTCbTDyxvzBWpP20CtG0tfabjhZ5wOace3UHOrcCy6tzq7E8s4nrTwZuKPwIBiFw+KGGn6sEYPYm2qrEq0vzTjnCOpW1ZpHczg7IXkjSyQYuED8FP2UTuB5L2koVRlYfgQnzAbndV4vvQHY+lBtnNDBpoOxN4TwceKHKlLcp5Jydg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gdX2Q5ABUIKtNvLkzSKdvJKt8LuBtDCrM7d8aJnZpsw=;
+ b=p1rMrk+oXzuqqwoNa3yIFCNfHEZqGBvE8W6pT7PbvK7xBRVVQvDUAPhH1z+SeEFRMLLXEU2fhtF8WoRrk0F6fCZykyMAZbFwHuSE16MSFNv/VlPx2p507QLs0k0eMsKJ9sKnU8gkoI33FcYT8AHIcm9TO46cvVQswl8gOw4zIyTQlvTkcPVaXRDAfy7bhQ1gNuFlcOtbEoymXpYsrO23DIuqERsxCmGMymrWQ9lxEuK6jSOaN5e7IwTgyvmfvT/dn5WCKHbqmT4yuITVZDtwy5DQIH73+JpliXw76O7WRMc6V/eJr79sENEOBoMFXo7cK/mGTUdkcOy2XyFji+WMqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gdX2Q5ABUIKtNvLkzSKdvJKt8LuBtDCrM7d8aJnZpsw=;
+ b=fF0+BGo2OItyjjzoXYfnwYTcmG883kOIujkojK9h+d1zcE4G8rbZcD6291xwwZt2f4baKKGkFkAGdHBlmqSJwSL08MgNMlgizz0omHwhVYGASCGK3OAOUAAyoXL/Rp+/3Paa2iDtAt0mQ9R9TG1e8bISFalwL9d6PNNE/0OfJrU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
+ PH7PR12MB7355.namprd12.prod.outlook.com (2603:10b6:510:20e::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.25; Thu, 26 Jun
+ 2025 12:36:21 +0000
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5]) by DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5%5]) with mapi id 15.20.8857.022; Thu, 26 Jun 2025
+ 12:36:21 +0000
+Message-ID: <2412d030-2732-4bd3-9009-e76d5fa9ba29@amd.com>
+Date: Thu, 26 Jun 2025 18:06:11 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 8/8] amd_iommu: Fix truncation of oldval in amdvi_writeq
+To: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, qemu-devel@nongnu.org
+Cc: ethan.milon@eviden.com, mst@redhat.com, pbonzini@redhat.com,
+ mjt@tls.msk.ru, marcel.apfelbaum@gmail.com, richard.henderson@linaro.org,
+ eduardo@habkost.net, suravee.suthikulpanit@amd.com, santosh.shukla@amd.com,
+ sarunkod@amd.com, brijesh.singh@amd.com, joao.m.martins@oracle.com,
+ boris.ostrovsky@oracle.com, philmd@linaro.org
+References: <20250617150427.20585-1-alejandro.j.jimenez@oracle.com>
+ <20250617150427.20585-9-alejandro.j.jimenez@oracle.com>
+Content-Language: en-US
+From: Vasant Hegde <vasant.hegde@amd.com>
+In-Reply-To: <20250617150427.20585-9-alejandro.j.jimenez@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0172.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:de::16) To DS7PR12MB6048.namprd12.prod.outlook.com
+ (2603:10b6:8:9f::5)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=AZexH2XG c=1 sm=1 tr=0 ts=685d3c16 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=6IFa9wvqVegA:10 a=M5GUcnROAAAA:8 a=M0aHttIpEyw3PdpNef4A:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: d5MgdsZs4pXi7YAQTaYzL3_NA_bJ7L99
-X-Proofpoint-ORIG-GUID: d5MgdsZs4pXi7YAQTaYzL3_NA_bJ7L99
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI2MDEwNCBTYWx0ZWRfX8eTGhXlSW02b
- YD6tcAGwV4p0hrpsxDisriwObGUewr6OACIgTtDcOKBrOswXYj3QWQ49845lQRTKlV1aVgbkbdT
- NCrofrs5O5oEn3c89X4BBPm6cA0VXS2MKwFrPufW4wLkqbgBcn6DHvVWJG07o/idKhHh+ippX/o
- wUMjFIlCjTMyaZllSz8aWeU5ksx0Y2OqaO0qOBJSw5QfZ+gzr4JwanxUUHxKb3EQmfpcgDpquYU
- dJzQfUBywwQWyv6kNF6UaF1SKMBt4hKirnHP9Z5tLk4LXrUPCmIltqbYY/lcQ3Va8acsLq8X21o
- WE8ZM0eIhaac2+DjEH4XnUqGfBUHY2lM1C0SHpqL34DilLP/HCoccNEPguBSIeOYCVbwaErC/lz
- ldDWoUW4/QwwwwSQYGa8X/uDVHsCPW1aAiniyyn/q+CmycgfCkFV3owxqHiCrgTpJn8LJ8g4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-26_05,2025-06-26_02,2025-03-28_01
-Received-SPF: pass client-ip=67.231.156.173;
- envelope-from=prvs=5272304780=rmudimadugul@marvell.com;
- helo=mx0b-0016f401.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|PH7PR12MB7355:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed164a20-f426-467e-409d-08ddb4ae0de2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dXhNczl4cEp2YU9rbm53SElrdHV0YkdnS3NkM1pLVlJ6TWNQMWROeEJRV3FE?=
+ =?utf-8?B?Rk1GZUs5U3FRUDczdEJmRmNyd1hyUmY4RDZLNkxSRTlQL3N0MmRsTHkvRWtR?=
+ =?utf-8?B?RGNWWHpoQUk3QmZ3azYxM1hUTVVmNTZzclV5ZCtlWUtaUTQvN2lVNHJyM2xl?=
+ =?utf-8?B?dXJYZEt1QkM3QzhIdEdzK253QVVqalZWKzkvdEM3L1dYTithY2FsZ0dyOWd1?=
+ =?utf-8?B?M3ZlQ0NEQjA3VVdCVGRJQzNZWXlQYk9CY2gwdE1xOHRWWDRlQjN3VmxiNEFn?=
+ =?utf-8?B?eVROTHBaYTFZd1k2YWlCZGpvSnhKbVh4ejFpOWlwS2VTMkZVMFZTVTBseGZQ?=
+ =?utf-8?B?eEwwdVdVbTgyM0NpRE9XOHBlVkE1bGxOWjZoL3p0YzRncFRXdC8xbm9wOW1S?=
+ =?utf-8?B?OENsRGE5WkF6ekZOdGtORUN1T1BZdERxelJqYTVOSFNlK29mbFIzUGRneERN?=
+ =?utf-8?B?cW96S1ZhOEZOam42ZXp1eGZLS1VHMlFEYUZkcjBmclZmTkl3cG00T21LRXJW?=
+ =?utf-8?B?NmFLSkovOXhXTEp2ZkZOd1JYaml3cmlqS3Z5Wm1PcUNRN0Q4NUp0aGI5OHJR?=
+ =?utf-8?B?b0RUdGg2SmVCcUdObCtDSzhYQjg5bG8reTdycVlTaEg2YlVhc1FuWUhEUHNF?=
+ =?utf-8?B?RzlzUVk5cmxzbWYzT01VbFhoUjZsTzl5SzZQSkNxTjRVQ0I0WUdsN09yYlAr?=
+ =?utf-8?B?VTU4aUtra0c4UEJNVTNucVUxKzJjQnVYM3FtcDIveXZCMkYvY1VvVHB1RTBF?=
+ =?utf-8?B?Q3dPQmhrU2xnSmZFR2d0T0x3MmJVd3lZNkJoNUVXRzJpQ3Vqd2NBT25sYk5l?=
+ =?utf-8?B?eWRSd3NWTm5raVBuVHEvdDVEeEp0Z2ppT3pWbWNjY24rOVUxVTl1NElxakdo?=
+ =?utf-8?B?TVpIZ0NKeUg5aTMrUkJycVJUZ0xSVllFTXQ0UG1kbUduWG9WMGg1ZDJaTlRq?=
+ =?utf-8?B?VXlPY2dMYjcrUTVhZDNiaUpCdTJBQlpmcjlyQlRPQ2V2Ty9MZURxYmhTeVJY?=
+ =?utf-8?B?RDhwdWpYRkppU3dTRW5tbHFJNTR6SnVmZXNCWUx3b05Rc2xjUHR0QkZvMzFH?=
+ =?utf-8?B?TnM4ZGJjNWVDTWlmanJ2bzRzb3QzMDNCSGtqRWNUOEwrT0F5WWRwSHNvc3do?=
+ =?utf-8?B?ci9HZG9RNlRQY2tZQ2o0MEtUN0JkMGxmanVVUkNMVG9sQUszYzVPeG5zN1hy?=
+ =?utf-8?B?WFZJVGlUcTByUHQxU3NjUytDSG5vSGNGUDJ4dzhXdDRsYWR6RHlZWGVlYWN2?=
+ =?utf-8?B?T1grWVlzZS9OTWJ2NmFxOGVJd09qNXBYcllNRmxlMjFYUnkyeTh3clBOZVNM?=
+ =?utf-8?B?UHEwR1o5cDdpbDI2TmZkTGhYb05WRU1GOGtwS3hCd0NYQjJsQjlwUHhyZktB?=
+ =?utf-8?B?TmNLZ2htZGxoWm5CTC85OTE2d0czQXpXd1Nnc2JZbVlBdkhZTlJ2V3BUN3Vn?=
+ =?utf-8?B?UkNmcnZWMHNET2FpT0tkcmJ1WDBMYnROUGVvTXVJNjVIWHFMb3VManV1Smk2?=
+ =?utf-8?B?ZmU2ZFo5UE83NHNzSnlFdjF0M2VlSitNS0NIMG1mT2JlWUlGbFJjUXcraTU4?=
+ =?utf-8?B?U1MyL3k0MkRLNTFHYW5JYmUwRlJScFJkWHZKTWVITGZMNjVTRUpyT2xTdlJX?=
+ =?utf-8?B?SGoxT0krSG1DczFGL1Q3dTR6YUVjVlE3RWRrdHB4eXpaNXZUMWs2d1dOZVli?=
+ =?utf-8?B?Z3FvdmUvWHJxWDA0TEZ2dVdmT1dJU09RUDJiTzhRakxaalV3SlhqdzZCWEQw?=
+ =?utf-8?B?YW50TWpiMTU0NlIrQTE3SFRuMVFvM3pjeVRLVXVVcXQvakdQWDVSanNMVml6?=
+ =?utf-8?B?WndoY1hxek9YcTRUa3RzM0Z5VHZ4a3dRS1FmT0dYZlBkdllMckNCVlZoR0Ex?=
+ =?utf-8?B?cDNFdUFjRVNJZ0QzcTQ2ajUrSVVsSGpGbk51SlFFZzJFUS9uT0dka3pnSkg1?=
+ =?utf-8?Q?m0pr1Fl/aPA=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS7PR12MB6048.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(7416014)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VWM4OU5JUkJqN2tjNmN0UUNaVmxsbzNvYnZYTWhNaXZCZ2F0ZXF1Ti9HRStw?=
+ =?utf-8?B?VHFjcUFqN2VYZ1ViY1lzYndFM2FaMlFvcHY3Q3h4T21VMVoyZVVwRC9uK0FM?=
+ =?utf-8?B?Z0J4dkVZQUtMWlFkaG1NT2JlVjE4elplZy93MXJMUmxqMzY3d1orZGk2R3FJ?=
+ =?utf-8?B?eG5zUW9iazJyZTNPSG1UZTVuVVJkYzN4SlMvenFJS0gxK3U0dFpLMnUrZlBU?=
+ =?utf-8?B?bjJieDBVQ04velZxSlo4MU0rR002NEhia3dFT0dGRURTWktVd0drUFRtNnlw?=
+ =?utf-8?B?SG1lQ0tOUGZOWGRZaCtSTERsdjF1bklSWDlNYmdvM1duV3hUTEkxYk1WVE1Z?=
+ =?utf-8?B?RjdvaU4yaUpVLzZjeUFnVUtSL2Fsa1A5ZGpNSHlXaTBsZ1ZXQlA3V2h3bVUr?=
+ =?utf-8?B?dDB0Z3F3WXRraFUwenMzb2pMSVh0VXlKSFN0SXp5djhYaVY3V29Pdmw1eE5B?=
+ =?utf-8?B?cHBjUFZ5ZDExL2o0K1Vpc2FYZTZSY254dnJXTVUyaHlOdjZsU1BoVTBwSXg2?=
+ =?utf-8?B?NnJsZWxiZEZlTWRLNm9ERER2K1N3VnNrWWltYXVZOGpJeHh0eDNqYkV1N3Vy?=
+ =?utf-8?B?dURXQ0x5dUd4b3BINkRleWJFYnMzQjM2NCt6UUZQczNJOUJHMlQwQUNWclhr?=
+ =?utf-8?B?eUVXWVUyUU9HdkNqVEFiSExYLzUxTFhobUtWRHA5cG5qWnNvdmN2WHNsdzBJ?=
+ =?utf-8?B?MHQyM25zZHlYMDNldW1kUkgzVlJkcWs1TGlyd1ZVb2s3alJZc1BXbDIwKzl6?=
+ =?utf-8?B?Yk4ydGNNb2duaW8zNHBrSDFvbW1qdWV6aHlySVRZbVg4bGowY1pyUDNMN0Z3?=
+ =?utf-8?B?Y09kWW5PdDlZT2UzajB6djdKSGdiWmtMQTNhbWJSSjJiZnJGWW01bi9rNmFP?=
+ =?utf-8?B?TU5BNjNwcEJlRmR1T1IydXZqVk1kcnorYmpUbis4ZytMbnoxVk1rWkpCVDEr?=
+ =?utf-8?B?b3lUa1I4L0ppamdSRTZTYm9RWVBYcnkxd3RRK3VQeTlmdkhDQUFNaTRoaEVN?=
+ =?utf-8?B?YUZlWE1VS0I0c3FUMUQwdVNOZnd5OVVabkZpSHR2Y2xXL1pnNjFyY1FVWlpN?=
+ =?utf-8?B?TVJrdmJOR0x0UUhhRk1yUlJ5Umx5VGorWFNQTTVMUTl5RWk5V1BPOFpqODQv?=
+ =?utf-8?B?L0I5dmgzelBYNjg5VlZuQUdoU2lHTEI2Rk5VMEFzVHNBZTd4aXJxczlMaC9r?=
+ =?utf-8?B?ZUcxYnFVSGRZbUxoZ25CZWlBV0ROVUQ3TGFFK1AxaElJUncxdThzRnJ2REZo?=
+ =?utf-8?B?SkFpR2l2QWxrZ2lHTUFGVG5BYnZLUzExTG9sUlQ4bzE2NHRlZXZEbVZWbHdp?=
+ =?utf-8?B?UC9LeGdFd2tOVjdqdTM1QkxnNTUrQ0cvQXFlaTA0Z0ptK0NIWGtNRmszZVFq?=
+ =?utf-8?B?SElIT0R6NlNRbFJUaldqNk9mWEpGTW14VDhnbGdqeS9BZndnZmVRWCtEUFRO?=
+ =?utf-8?B?bWJ6YnMwdW5BRE9Pci9LeXNadmFQVDFua0UvbjYrTmUwZHNneXdnbTdncEl2?=
+ =?utf-8?B?MSthcHN0d25zYlh2RU1hTGxDSjBya1dIT3lORGRGS0YwbnNlM0w0SzRJLytF?=
+ =?utf-8?B?L1JEWHc1WkFJbXJzRVBWVjZ4NVRiTm9hRzZCamxGL0lzNS8vRUJrQU1DallG?=
+ =?utf-8?B?czQzLzBmMldpRmZzbFh1alJxYm1QMDlMV2wxcUNoYTZyNWpUQ3NwREdoOWQx?=
+ =?utf-8?B?NG5pTVAwdGVSQklMWElXZFN2RC8vMWV5VnUrQU0ydWx6UDlRMGt0M0tYWGNx?=
+ =?utf-8?B?M2VSWEtTb3QrWlhqS1ZGQUpjaDdySXNrc3BFQ2VpeXZGbnZXTEh5MC82eUxB?=
+ =?utf-8?B?R0ltRWZ2WDZiSG9kcnRhNDZjU0V2aFVhencrTld6M1RQa2Y0WDN3WHdROHBx?=
+ =?utf-8?B?RTRhWFRYbHNuczNJVno4R2YyTXJOTndXb1dWWWZERzlsblJaeThnOTlUWTFO?=
+ =?utf-8?B?ZXo2VjdLckFQcVVTeVY2WlZyRzlwWCsxYjJuY3VoRWpySW16dnh5MFNVdlBZ?=
+ =?utf-8?B?M3dHRHFqWmZDbkhwNlFiVzhVRXVkT2RiSlo2dEs2QmdjcHNLZjVaczFRcG83?=
+ =?utf-8?B?bjlsU0tiejZIdlJianpLZzQrRHhDbC95bDlFejc4MUd1QzBBUSthdDhFY1ds?=
+ =?utf-8?Q?fE0w7z+TLoQ1484/adxH+SWzg?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed164a20-f426-467e-409d-08ddb4ae0de2
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 12:36:21.0641 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Qgwv7xOYUOfUtVcmqwyx+ZlpJWjt4bHNDadOhnQymt5NU+lFAIkbkgfiqaZPifEhm60TlzTDQ698RQpKq5PF4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7355
+X-OriginatorOrg: amd.com
+Received-SPF: permerror client-ip=2a01:111:f403:2418::600;
+ envelope-from=Vasant.Hegde@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 26 Jun 2025 08:47:25 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,29 +179,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch enables and advertises asym capabilties
-for backend user application.
 
-Signed-off-by: Rajesh Mudimadugula <rmudimadugul@marvell.com>
----
- backends/cryptodev-vhost-user.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost-user.c
-index cb04e68b02..f9dec14a4a 100644
---- a/backends/cryptodev-vhost-user.c
-+++ b/backends/cryptodev-vhost-user.c
-@@ -230,6 +230,9 @@ static void cryptodev_vhost_user_init(
-     backend->conf.max_size = UINT64_MAX;
-     backend->conf.max_cipher_key_len = VHOST_USER_MAX_CIPHER_KEY_LEN;
-     backend->conf.max_auth_key_len = VHOST_USER_MAX_AUTH_KEY_LEN;
-+    backend->conf.crypto_services |=
-+	    1u << QCRYPTODEV_BACKEND_SERVICE_TYPE_AKCIPHER;
-+    backend->conf.akcipher_algo = 1u << VIRTIO_CRYPTO_AKCIPHER_RSA;
- }
- 
- static int64_t cryptodev_vhost_user_crypto_create_session(
--- 
-2.34.1
+On 6/17/2025 8:34 PM, Alejandro Jimenez wrote:
+> From: Ethan Milon <ethan.milon@eviden.com>
+> 
+> The variable `oldval` was incorrectly declared as a 32-bit `uint32_t`.
+> This could lead to truncation and incorrect behavior where the upper
+> read-only 32 bits are significant.
+> 
+> Fix the type of `oldval` to match the return type of `ldq_le_p()`.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: d29a09ca6842 ("hw/i386: Introduce AMD IOMMU")
+> Signed-off-by: Ethan Milon <ethan.milon@eviden.com>
+
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+
+-Vasant
 
 
