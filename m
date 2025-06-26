@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D462BAE958C
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 08:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F2FAE957D
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 07:58:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUfZ7-0003us-SB; Thu, 26 Jun 2025 01:54:30 -0400
+	id 1uUfZ0-0003tO-87; Thu, 26 Jun 2025 01:54:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfYp-0003s8-GQ
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfYj-0003rR-MX
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfYg-00015g-VD
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfYg-00015c-HJ
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750917241;
+ s=mimecast20190719; t=1750917239;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=MNZUOdZ+jKwE+wLuOTNqCTlalWYEgbu8QtolA3b0XAU=;
- b=bmxNtoYaQVJf6yGTFCe0HaXdrSW9QwDHDlePi/56ueMf8m2fcClV5UkaNb1jzcVGLw+191
- GmzLda/RGL4fHcksayNYFhuhCkK+UmyMaS7SUXxodko0mxAH7iFEIcenUSpfFOYPc5OkZK
- nKRGA1uybVqBex2g1A+Fq5J6dr6WAPo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cmNyivhSuy/9S7VXrwAd6e2ZoNFywTMv55r7KUqitd0=;
+ b=EawO41aWDvSLjcQQbcRXObSEH8EiDIV3WjMjxnu1vBpwUFrEoXYG56mlNzt8acvlulxflb
+ oroWgKqKjlBlAzBbCYk/QfjkShFm1gFDYDTnzv39Tq0zxZPl4p+VwvkRpSAKJ5jXweLXLr
+ d+H9j7TrKmwTvnu2+1KelOfnzQSmgHg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-25MsUw7uNSyhQdM4lihoHQ-1; Thu,
- 26 Jun 2025 01:53:55 -0400
-X-MC-Unique: 25MsUw7uNSyhQdM4lihoHQ-1
-X-Mimecast-MFC-AGG-ID: 25MsUw7uNSyhQdM4lihoHQ_1750917234
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-191-q-zTwk0APrG2f8yle8uoZw-1; Thu,
+ 26 Jun 2025 01:53:57 -0400
+X-MC-Unique: q-zTwk0APrG2f8yle8uoZw-1
+X-Mimecast-MFC-AGG-ID: q-zTwk0APrG2f8yle8uoZw_1750917236
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1E9331808993
- for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 05:53:54 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 47495195608F
+ for <qemu-devel@nongnu.org>; Thu, 26 Jun 2025 05:53:56 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.129])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8E39519560A3; Thu, 26 Jun 2025 05:53:52 +0000 (UTC)
+ id 0A64219560A3; Thu, 26 Jun 2025 05:53:54 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 00/19] s390x and misc patches
-Date: Thu, 26 Jun 2025 07:53:31 +0200
-Message-ID: <20250626055350.218271-1-thuth@redhat.com>
+Subject: [PULL 01/19] tests/functional/test_pc_cpu_hotplug_props: Set 'pc'
+ machine type explicitly
+Date: Thu, 26 Jun 2025 07:53:32 +0200
+Message-ID: <20250626055350.218271-2-thuth@redhat.com>
+In-Reply-To: <20250626055350.218271-1-thuth@redhat.com>
+References: <20250626055350.218271-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -60,9 +63,9 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,104 +81,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Stefan!
+From: Thomas Huth <thuth@redhat.com>
 
-The following changes since commit f9a3def17b2a57679902c33064cf7853263db0ef:
+In case the default machine has not been compiled into the QEMU
+binary, the cpu_hotplug_props test is currently failing. Add a
+set_machine('pc') here to make sure that the tests are correctly
+skipped in case the machine is not available.
 
-  Merge tag 'pull-tcg-20250623' of https://gitlab.com/rth7680/qemu into staging (2025-06-24 10:38:38 -0400)
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250606092033.506736-1-thuth@redhat.com>
+---
+ tests/functional/test_pc_cpu_hotplug_props.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-are available in the Git repository at:
-
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-06-26
-
-for you to fetch changes up to fd68168e0af14546117705176ace84d2c6c52416:
-
-  target/i386/emulate: replace FSF postal address with licenses URL (2025-06-26 00:42:37 +0200)
-
-----------------------------------------------------------------
-* Implement the "Control Program Identification" feature on s390x
-* Fix memory leak in loadparm setter on s390x
-* Update OpenBSD image to 7.7
-* Replace the invalid address of the Free Software Foundation
-* Some updates to the MAINTAINERS file
-
-----------------------------------------------------------------
-Haseung Bong (1):
-      tests/vm: update openbsd image to 7.7
-
-Kevin Wolf (1):
-      hw/s390x/ccw-device: Fix memory leak in loadparm setter
-
-Matthew Rosato (1):
-      MAINTAINERS: add reviewers for some s390 areas
-
-Sean Wei (11):
-      COPYING: replace FSF postal address with licenses URL
-      libdecnumber: replace FSF postal address with licenses URL
-      include/libdecnumber: replace FSF postal address with licenses URL
-      include/hw: replace FSF postal address with licenses URL
-      include/qemu: replace FSF postal address with licenses URL
-      util/rcu.c: replace FSF postal address with licenses URL
-      hw: replace FSF postal address with licenses URL
-      scripts: replace FSF postal address with licenses URL
-      contrib: replace FSF postal address with licenses URL
-      target/xtensa: replace FSF postal address with licenses URL
-      target/i386/emulate: replace FSF postal address with licenses URL
-
-Shalini Chellathurai Saroja (3):
-      hw/s390x: add SCLP event type CPI
-      hw/s390x: add Control-Program Identification to QOM
-      hw/s390x: support migration of CPI data
-
-Thomas Huth (1):
-      tests/functional/test_pc_cpu_hotplug_props: Set 'pc' machine type explicitly
-
-Yoshinori Sato (1):
-      MAINTAINERS: Yoshinori Sato email address has been updated
-
- MAINTAINERS                                    |  24 ++-
- hw/net/vmxnet3.h                               |   4 +-
- hw/scsi/vmw_pvscsi.h                           |   4 +-
- include/hw/i2c/aspeed_i2c.h                    |   3 +-
- include/hw/pci/pci_bridge.h                    |   4 +-
- include/hw/s390x/event-facility.h              |  17 ++
- include/hw/s390x/s390-virtio-ccw.h             |   1 +
- include/hw/timer/aspeed_timer.h                |   3 +-
- include/libdecnumber/dconfig.h                 |   5 +-
- include/libdecnumber/decContext.h              |   5 +-
- include/libdecnumber/decDPD.h                  |   5 +-
- include/libdecnumber/decNumber.h               |   5 +-
- include/libdecnumber/decNumberLocal.h          |   5 +-
- include/libdecnumber/dpd/decimal128.h          |   5 +-
- include/libdecnumber/dpd/decimal128Local.h     |   5 +-
- include/libdecnumber/dpd/decimal32.h           |   5 +-
- include/libdecnumber/dpd/decimal64.h           |   5 +-
- include/qemu/rcu.h                             |   4 +-
- include/qemu/rcu_queue.h                       |   4 +-
- target/i386/emulate/x86_flags.h                |   4 +-
- contrib/elf2dmp/pdb.c                          |   4 +-
- hw/s390x/ccw-device.c                          |   2 +-
- hw/s390x/event-facility.c                      |   2 +
- hw/s390x/s390-virtio-ccw.c                     |  22 +++
- hw/s390x/sclpcpi.c                             | 212 +++++++++++++++++++++++++
- libdecnumber/decContext.c                      |   5 +-
- libdecnumber/decNumber.c                       |   5 +-
- libdecnumber/dpd/decimal128.c                  |   5 +-
- libdecnumber/dpd/decimal32.c                   |   5 +-
- libdecnumber/dpd/decimal64.c                   |   5 +-
- target/i386/emulate/x86_emu.c                  |   4 +-
- target/i386/emulate/x86_flags.c                |   4 +-
- util/rcu.c                                     |   4 +-
- target/xtensa/core-dc232b/gdb-config.c.inc     |   5 +-
- target/xtensa/core-dc232b/xtensa-modules.c.inc |   5 +-
- target/xtensa/core-fsf/xtensa-modules.c.inc    |   5 +-
- COPYING                                        |   5 +-
- COPYING.LIB                                    |   5 +-
- hw/s390x/meson.build                           |   1 +
- scripts/device-crash-test                      |   3 +-
- tests/functional/test_pc_cpu_hotplug_props.py  |   1 +
- tests/vm/openbsd                               |   4 +-
- 42 files changed, 338 insertions(+), 92 deletions(-)
- create mode 100644 hw/s390x/sclpcpi.c
+diff --git a/tests/functional/test_pc_cpu_hotplug_props.py b/tests/functional/test_pc_cpu_hotplug_props.py
+index 9d5a37cb170..2bed8ada023 100755
+--- a/tests/functional/test_pc_cpu_hotplug_props.py
++++ b/tests/functional/test_pc_cpu_hotplug_props.py
+@@ -26,6 +26,7 @@
+ class OmittedCPUProps(QemuSystemTest):
+ 
+     def test_no_die_id(self):
++        self.set_machine('pc')
+         self.vm.add_args('-nodefaults', '-S')
+         self.vm.add_args('-smp', '1,sockets=2,cores=2,threads=2,maxcpus=8')
+         self.vm.add_args('-device', 'qemu64-x86_64-cpu,socket-id=1,core-id=0,thread-id=0')
+-- 
+2.50.0
 
 
