@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D24AE9719
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D83FAE9729
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:49:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUhJh-00050M-EC; Thu, 26 Jun 2025 03:46:41 -0400
+	id 1uUhJl-0005MY-Hp; Thu, 26 Jun 2025 03:46:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhJJ-0004Zt-P0
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:46:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhJU-0004kk-Po
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:46:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhJH-0001yC-Ck
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:46:17 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhJP-0001ys-Ji
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:46:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750923974;
+ s=mimecast20190719; t=1750923981;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E6D6Z+DLkGDP2rfLDxxYiy5ZSAQnqxmvOdaY+vUUigg=;
- b=jL9eZdjpQ+UUWwyjBudPTOJunx7/2K1LGm78P5OfkFPtwcbDPZ9b1CTsh5Eir8eP11qrYu
- W+PE/zZvbQ08Poekoedzdjnbwy+LzRoT4QKgrqn04O5gdhox9B0QeRt7uA27kYoC6/yH11
- JCOa+V3WRFm9HPnhLRmdHLYgj/sudmY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=otGVkjCf0opn+vETCAGncq2bMRafF3DOvc1cBsAO+2s=;
+ b=KEpINegZEm/0xlYZKWKFrW8uJL47kG9L0Ynuc/JACWRF0weeJREv1fxks/fPvbQvSq887d
+ KvLHSw1LB5ycZNVLoanCxQASsMxoYNp4S+763WO5CFRHEs8D2trWNGNdBkQsb0Wf7gli36
+ L9UkMsSJEAuD394KrRpaQIN4tUatX0A=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-396-N5sGj4mGOHOmKxd5XNaVnw-1; Thu,
- 26 Jun 2025 03:46:12 -0400
-X-MC-Unique: N5sGj4mGOHOmKxd5XNaVnw-1
-X-Mimecast-MFC-AGG-ID: N5sGj4mGOHOmKxd5XNaVnw_1750923971
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-347-P1n4hmnePDiMmlmkC1o09g-1; Thu,
+ 26 Jun 2025 03:46:15 -0400
+X-MC-Unique: P1n4hmnePDiMmlmkC1o09g-1
+X-Mimecast-MFC-AGG-ID: P1n4hmnePDiMmlmkC1o09g_1750923974
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 815891944AAD; Thu, 26 Jun 2025 07:46:11 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 70D3A18001D1; Thu, 26 Jun 2025 07:46:14 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.51])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D7B3D180035C; Thu, 26 Jun 2025 07:46:08 +0000 (UTC)
+ id 06FA3180045B; Thu, 26 Jun 2025 07:46:11 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -51,16 +51,16 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  Jagannathan Raman <jag.raman@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 13/25] vfio-user: implement VFIO_USER_REGION_READ/WRITE
-Date: Thu, 26 Jun 2025 09:45:17 +0200
-Message-ID: <20250626074529.1384114-14-clg@redhat.com>
+Subject: [PULL 14/25] vfio-user: set up PCI in vfio_user_pci_realize()
+Date: Thu, 26 Jun 2025 09:45:18 +0200
+Message-ID: <20250626074529.1384114-15-clg@redhat.com>
 In-Reply-To: <20250626074529.1384114-1-clg@redhat.com>
 References: <20250626074529.1384114-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,142 +87,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Levon <john.levon@nutanix.com>
 
+Re-use PCI setup functions from hw/vfio/pci.c to realize the vfio-user
+PCI device.
+
 Originally-by: John Johnson <john.g.johnson@oracle.com>
 Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: John Levon <john.levon@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250625193012.2316242-8-john.levon@nutanix.com
+Link: https://lore.kernel.org/qemu-devel/20250625193012.2316242-9-john.levon@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio-user/protocol.h   | 12 ++++++
- hw/vfio-user/device.c     | 79 +++++++++++++++++++++++++++++++++++++++
- hw/vfio-user/trace-events |  1 +
- 3 files changed, 92 insertions(+)
+ hw/vfio-user/pci.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/hw/vfio-user/protocol.h b/hw/vfio-user/protocol.h
-index db88f5fcb17647613151684894f72b2cc77a3c44..0cd32ad71ae8e6767f613f9ef73aaf1858c80f90 100644
---- a/hw/vfio-user/protocol.h
-+++ b/hw/vfio-user/protocol.h
-@@ -138,4 +138,16 @@ typedef struct {
-     uint64_t offset;
- } VFIOUserRegionInfo;
+diff --git a/hw/vfio-user/pci.c b/hw/vfio-user/pci.c
+index d704e3d390c71444c9d913e38c4dc064ff1c6625..b49f42b980017d61a2676c5dd7e01a869a63ac50 100644
+--- a/hw/vfio-user/pci.c
++++ b/hw/vfio-user/pci.c
+@@ -126,10 +126,39 @@ static void vfio_user_pci_realize(PCIDevice *pdev, Error **errp)
+         goto error;
+     }
  
-+/*
-+ * VFIO_USER_REGION_READ
-+ * VFIO_USER_REGION_WRITE
-+ */
-+typedef struct {
-+    VFIOUserHdr hdr;
-+    uint64_t offset;
-+    uint32_t region;
-+    uint32_t count;
-+    char data[];
-+} VFIOUserRegionRW;
++    if (!vfio_pci_populate_device(vdev, errp)) {
++        goto error;
++    }
 +
- #endif /* VFIO_USER_PROTOCOL_H */
-diff --git a/hw/vfio-user/device.c b/hw/vfio-user/device.c
-index d90232a08f4b0d8320028796935b8c59506da69d..4ef6a2d850c282cd8bf4a07659e7b751b1432735 100644
---- a/hw/vfio-user/device.c
-+++ b/hw/vfio-user/device.c
-@@ -121,9 +121,88 @@ static int vfio_user_device_io_get_region_info(VFIODevice *vbasedev,
-     return 0;
++    if (!vfio_pci_config_setup(vdev, errp)) {
++        goto error;
++    }
++
++    /*
++     * vfio_pci_config_setup will have registered the device's BARs
++     * and setup any MSIX BARs, so errors after it succeeds must
++     * use out_teardown
++     */
++
++    if (!vfio_pci_add_capabilities(vdev, errp)) {
++        goto out_teardown;
++    }
++
++    if (!vfio_pci_interrupt_setup(vdev, errp)) {
++        goto out_teardown;
++    }
++
++    vfio_pci_register_err_notifier(vdev);
++    vfio_pci_register_req_notifier(vdev);
++
+     return;
+ 
++out_teardown:
++    vfio_pci_teardown_msi(vdev);
++    vfio_pci_bars_exit(vdev);
+ error:
+     error_prepend(errp, VFIO_MSG_PREFIX, vdev->vbasedev.name);
++    vfio_pci_put_device(vdev);
  }
  
-+static int vfio_user_device_io_region_read(VFIODevice *vbasedev, uint8_t index,
-+                                           off_t off, uint32_t count,
-+                                           void *data)
-+{
-+    g_autofree VFIOUserRegionRW *msgp = NULL;
-+    VFIOUserProxy *proxy = vbasedev->proxy;
-+    int size = sizeof(*msgp) + count;
-+    Error *local_err = NULL;
-+
-+    if (count > proxy->max_xfer_size) {
-+        return -EINVAL;
-+    }
-+
-+    msgp = g_malloc0(size);
-+    vfio_user_request_msg(&msgp->hdr, VFIO_USER_REGION_READ, sizeof(*msgp), 0);
-+    msgp->offset = off;
-+    msgp->region = index;
-+    msgp->count = count;
-+    trace_vfio_user_region_rw(msgp->region, msgp->offset, msgp->count);
-+
-+    if (!vfio_user_send_wait(proxy, &msgp->hdr, NULL, size, &local_err)) {
-+        error_prepend(&local_err, "%s: ", __func__);
-+        error_report_err(local_err);
-+        return -EFAULT;
-+    }
-+
-+    if (msgp->hdr.flags & VFIO_USER_ERROR) {
-+        return -msgp->hdr.error_reply;
-+    } else if (msgp->count > count) {
-+        return -E2BIG;
-+    } else {
-+        memcpy(data, &msgp->data, msgp->count);
-+    }
-+
-+    return msgp->count;
-+}
-+
-+static int vfio_user_device_io_region_write(VFIODevice *vbasedev, uint8_t index,
-+                                            off_t off, unsigned count,
-+                                            void *data, bool post)
-+{
-+    g_autofree VFIOUserRegionRW *msgp = NULL;
-+    VFIOUserProxy *proxy = vbasedev->proxy;
-+    int size = sizeof(*msgp) + count;
-+    Error *local_err = NULL;
-+    int ret;
-+
-+    if (count > proxy->max_xfer_size) {
-+        return -EINVAL;
-+    }
-+
-+    msgp = g_malloc0(size);
-+    vfio_user_request_msg(&msgp->hdr, VFIO_USER_REGION_WRITE, size, 0);
-+    msgp->offset = off;
-+    msgp->region = index;
-+    msgp->count = count;
-+    memcpy(&msgp->data, data, count);
-+    trace_vfio_user_region_rw(msgp->region, msgp->offset, msgp->count);
-+
-+    /* Ignore post: all writes are synchronous/non-posted. */
-+
-+    if (!vfio_user_send_wait(proxy, &msgp->hdr, NULL, 0, &local_err)) {
-+        error_prepend(&local_err, "%s: ", __func__);
-+        error_report_err(local_err);
-+        return -EFAULT;
-+    }
-+
-+    if (msgp->hdr.flags & VFIO_USER_ERROR) {
-+        ret = -msgp->hdr.error_reply;
-+    } else {
-+        ret = count;
-+    }
-+
-+    return ret;
-+}
-+
- /*
-  * Socket-based io_ops
-  */
- VFIODeviceIOOps vfio_user_device_io_ops_sock = {
-     .get_region_info = vfio_user_device_io_get_region_info,
-+    .region_read = vfio_user_device_io_region_read,
-+    .region_write = vfio_user_device_io_region_write,
-+
- };
-diff --git a/hw/vfio-user/trace-events b/hw/vfio-user/trace-events
-index ef3f14c74dd5a6a3c0870795e9ab9291d26dc925..733313cd1f60de37d24f6e0801aa72fb4717bda6 100644
---- a/hw/vfio-user/trace-events
-+++ b/hw/vfio-user/trace-events
-@@ -10,3 +10,4 @@ vfio_user_send_write(uint16_t id, int wrote) " id 0x%x wrote 0x%x"
- vfio_user_version(uint16_t major, uint16_t minor, const char *caps) " major %d minor %d caps: %s"
- vfio_user_get_info(uint32_t nregions, uint32_t nirqs) " #regions %d #irqs %d"
- vfio_user_get_region_info(uint32_t index, uint32_t flags, uint64_t size) " index %d flags 0x%x size 0x%"PRIx64
-+vfio_user_region_rw(uint32_t region, uint64_t off, uint32_t count) " region %d offset 0x%"PRIx64" count %d"
+ static void vfio_user_instance_init(Object *obj)
 -- 
 2.49.0
 
