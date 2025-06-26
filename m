@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E439AE971B
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AE7AE972C
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 09:49:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUhJ2-0004PL-TS; Thu, 26 Jun 2025 03:46:00 -0400
+	id 1uUhJE-0004RC-ME; Thu, 26 Jun 2025 03:46:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhIx-0004Og-Iq
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:45:55 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhJ4-0004Q3-Gk
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:46:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhIq-0001vV-Vg
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:45:55 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uUhIu-0001vt-0M
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 03:46:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750923948;
+ s=mimecast20190719; t=1750923951;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UIa3DkdPiYbEQRu+bEiCZZDWHR5v/uJ1aistawXdiBM=;
- b=UFU5jF+Jv9wnvEwdUFGUOuLdFymxymHgKJ+JMlJxCDK1S1RFVBKqAtm82XO9QbPtUXcyov
- FKHTdCBsw8b3kWJLf/zIqdtqHz2SAkJAo1kJ41Y50DlaU7nFnGKFvd0PyqOsuPexvtpQSm
- dnsMigx55B0XyLtmX+hne28XIl2Pqrw=
+ bh=ByhnffEcIoi804d7Url3PJ2rw+ryQ3F85UYi3x35kkM=;
+ b=hr6oBZkiBMnDfrTFvH2xur/uR5zsjzxbBV8P0U15fyRMimNZ5fgLDY4lkxOdQDCoBp3cjR
+ WWxLuMyKIa4wCs4sxumHxY3a3m5fVvuceT0ZQbm31exIQzH5SU7pUi1CvWGdgh5VXO72zY
+ j8wbjp0EdWD/3t9LPkt/soRlsQ4EXgA=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-hoi7p12ROfSxZpSsb9b2Mw-1; Thu,
- 26 Jun 2025 03:45:45 -0400
-X-MC-Unique: hoi7p12ROfSxZpSsb9b2Mw-1
-X-Mimecast-MFC-AGG-ID: hoi7p12ROfSxZpSsb9b2Mw_1750923944
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-28-yQL7QovrM2SSC1pj_gLtPA-1; Thu,
+ 26 Jun 2025 03:45:47 -0400
+X-MC-Unique: yQL7QovrM2SSC1pj_gLtPA-1
+X-Mimecast-MFC-AGG-ID: yQL7QovrM2SSC1pj_gLtPA_1750923946
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4A4DB1808985; Thu, 26 Jun 2025 07:45:44 +0000 (UTC)
+ id B63D81808985; Thu, 26 Jun 2025 07:45:46 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.51])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5A610180045B; Thu, 26 Jun 2025 07:45:42 +0000 (UTC)
+ id C87C518002B0; Thu, 26 Jun 2025 07:45:44 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- John Levon <john.levon@nutanix.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 04/25] vfio: add license tag to some files
-Date: Thu, 26 Jun 2025 09:45:08 +0200
-Message-ID: <20250626074529.1384114-5-clg@redhat.com>
+Subject: [PULL 05/25] vfio/container: Fix SIGSEGV when open container file
+ fails
+Date: Thu, 26 Jun 2025 09:45:09 +0200
+Message-ID: <20250626074529.1384114-6-clg@redhat.com>
 In-Reply-To: <20250626074529.1384114-1-clg@redhat.com>
 References: <20250626074529.1384114-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -67,7 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,61 +83,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Levon <john.levon@nutanix.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Add SPDX-License-Identifier to some files missing it in hw/vfio/.
+When open /dev/vfio/vfio fails, SIGSEGV triggers because
+vfio_listener_unregister() doesn't support a NULL bcontainer
+pointer.
 
-Signed-off-by: John Levon <john.levon@nutanix.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250623093053.1495509-1-john.levon@nutanix.com
+Fixes: a1f267a7d4d9 ("vfio/container: reform vfio_container_connect cleanup")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250623102235.94877-2-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/trace.h      | 3 +++
- hw/vfio/Kconfig      | 2 ++
- hw/vfio/meson.build  | 2 ++
- hw/vfio/trace-events | 2 ++
- 4 files changed, 9 insertions(+)
+ hw/vfio/container.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/vfio/trace.h b/hw/vfio/trace.h
-index 5a343aa59cc9b7aa76df9d900acbeec17a95f046..b34b61ddb285cedc250f35a2b77966b0d64e463b 100644
---- a/hw/vfio/trace.h
-+++ b/hw/vfio/trace.h
-@@ -1 +1,4 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
- #include "trace/trace-hw_vfio.h"
-diff --git a/hw/vfio/Kconfig b/hw/vfio/Kconfig
-index 7cdba0560aa821c88d3420b36f86020575834202..91d9023b79b594975c6c5f65273011b89240691c 100644
---- a/hw/vfio/Kconfig
-+++ b/hw/vfio/Kconfig
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- config VFIO
-     bool
-     depends on LINUX
-diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-index 73d29f925ff5c668518698effc3e48cdf71c3a9a..63ea39307601cce4b0783766f68c4cf8d9af71f9 100644
---- a/hw/vfio/meson.build
-+++ b/hw/vfio/meson.build
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- vfio_ss = ss.source_set()
- vfio_ss.add(files(
-   'listener.c',
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index f06236f37b72cc64868456be3a5a58fdb5beb829..e1728c4ef64acfc4a377dfc4711cad35c03a51b7 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -1,4 +1,6 @@
- # See docs/devel/tracing.rst for syntax documentation.
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 3e8d645ebbd7b13c55625f38f4250670a63df124..2853f6f08b5d3f199b7f2c22de884ec6b57279ce 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -710,7 +710,9 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+     return true;
  
- # pci.c
- vfio_intx_interrupt(const char *name, char line) " (%s) Pin %c"
+ fail:
+-    vfio_listener_unregister(bcontainer);
++    if (new_container) {
++        vfio_listener_unregister(bcontainer);
++    }
+ 
+     if (group_was_added) {
+         vfio_container_group_del(container, group);
 -- 
 2.49.0
 
