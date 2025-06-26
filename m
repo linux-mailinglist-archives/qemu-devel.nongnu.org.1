@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E956BAE957B
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 07:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731C8AE958D
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Jun 2025 08:01:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUfZK-0003yY-Kv; Thu, 26 Jun 2025 01:54:42 -0400
+	id 1uUfZO-000400-2M; Thu, 26 Jun 2025 01:54:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZF-0003yF-Oi
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZM-0003z0-Hn
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZD-00018v-Sc
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:37 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uUfZK-00019I-VY
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 01:54:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1750917275;
+ s=mimecast20190719; t=1750917281;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Tj9eQ8Fc2nbx4gT31uI4b5TqJrlHiBciXKe2NV+JKp4=;
- b=QwEceukplXYluQkWwti7wAsBOyRzm4RkzZBxodw01LtQnd0wNXI1LRn54YvIUUUtixBIzC
- JPox+I0JOKfbDCnF0U4QzJt8oVCbLSYox2MLT+LwwaKhEVUlanXfflGhTGOv+yH6IdYtc3
- uJxHB/SSSCgqcAIRvES3hd96TaraxeQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=xC2rFKwkSnnzstno4tF6U3Akz3i5fiRQmEL8V+SmwoQ=;
+ b=g7GmTbY/TH8g1fzD8c9hiDtkIgb+/8I8dnqtUyDfIWKxGVcJBKayAxR/iigl/XO7VOeguG
+ tw9oHJsA4A8GKwK/ms5fA5zJyqrQGyqCOZjO2pm2nSyO8UZRXUtD0rz8OJX43pCZzEQ9gW
+ SO8DuP5QHNNtWInrznfDSqwbhnlhP8M=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-O9WubHfWPkqLnHReYuUv3g-1; Thu,
- 26 Jun 2025 01:54:33 -0400
-X-MC-Unique: O9WubHfWPkqLnHReYuUv3g-1
-X-Mimecast-MFC-AGG-ID: O9WubHfWPkqLnHReYuUv3g_1750917272
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-_E70XruZM3-sfK0gIF2BYA-1; Thu,
+ 26 Jun 2025 01:54:36 -0400
+X-MC-Unique: _E70XruZM3-sfK0gIF2BYA-1
+X-Mimecast-MFC-AGG-ID: _E70XruZM3-sfK0gIF2BYA_1750917275
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 49BFA180120B; Thu, 26 Jun 2025 05:54:32 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1A50819560B7; Thu, 26 Jun 2025 05:54:35 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.129])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BFFF019560B2; Thu, 26 Jun 2025 05:54:29 +0000 (UTC)
+ id F3D2819560A3; Thu, 26 Jun 2025 05:54:32 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Sean Wei <me@sean.taipei>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 12/19] include/hw: replace FSF postal address with licenses URL
-Date: Thu, 26 Jun 2025 07:53:43 +0200
-Message-ID: <20250626055350.218271-13-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+	Sean Wei <me@sean.taipei>
+Subject: [PULL 13/19] include/qemu: replace FSF postal address with licenses
+ URL
+Date: Thu, 26 Jun 2025 07:53:44 +0200
+Message-ID: <20250626055350.218271-14-thuth@redhat.com>
 In-Reply-To: <20250626055350.218271-1-thuth@redhat.com>
 References: <20250626055350.218271-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,65 +83,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sean Wei <me@sean.taipei>
 
-Some of the GPLv2 boiler-plate still contained the
-obsolete "51 Franklin Street" postal address.
+The LGPLv2.1 boiler-plate in rcu.h and rcu_queue.h still
+contained the obsolete "51 Franklin Street" postal address.
 
 Replace it with the canonical GNU licenses URL recommended by the FSF:
 https://www.gnu.org/licenses/
 
 Signed-off-by: Sean Wei <me@sean.taipei>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-ID: <20250613.qemu.patch.05@sean.taipei>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250613.qemu.patch.06@sean.taipei>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/i2c/aspeed_i2c.h     | 3 +--
- include/hw/pci/pci_bridge.h     | 4 ++--
- include/hw/timer/aspeed_timer.h | 3 +--
- 3 files changed, 4 insertions(+), 6 deletions(-)
+ include/qemu/rcu.h       | 4 ++--
+ include/qemu/rcu_queue.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/i2c/aspeed_i2c.h b/include/hw/i2c/aspeed_i2c.h
-index 2c4c81bd209..2daacc10ce0 100644
---- a/include/hw/i2c/aspeed_i2c.h
-+++ b/include/hw/i2c/aspeed_i2c.h
-@@ -14,8 +14,7 @@
-  *  GNU General Public License for more details.
+diff --git a/include/qemu/rcu.h b/include/qemu/rcu.h
+index fea058aa9f8..020dbe4d8b7 100644
+--- a/include/qemu/rcu.h
++++ b/include/qemu/rcu.h
+@@ -17,8 +17,8 @@
+  * Lesser General Public License for more details.
   *
-  *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-+ *  with this program; if not, see <https://www.gnu.org/licenses/>.
-  */
- 
- #ifndef ASPEED_I2C_H
-diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
-index b0f5204d80f..8cdacbc4e16 100644
---- a/include/hw/pci/pci_bridge.h
-+++ b/include/hw/pci/pci_bridge.h
-@@ -14,8 +14,8 @@
-  * GNU General Public License for more details.
-  *
-  * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-+ * along with this program; if not, see
+  * You should have received a copy of the GNU Lesser General Public
+- * License along with this library; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
++ * License along with this library; if not, see
 + * <https://www.gnu.org/licenses/>.
   *
-  * split out pci bus specific stuff from pci.[hc] to pci_bridge.[hc]
-  * Copyright (c) 2009 Isaku Yamahata <yamahata at valinux co jp>
-diff --git a/include/hw/timer/aspeed_timer.h b/include/hw/timer/aspeed_timer.h
-index 767cae4b05b..a850625a055 100644
---- a/include/hw/timer/aspeed_timer.h
-+++ b/include/hw/timer/aspeed_timer.h
-@@ -16,8 +16,7 @@
-  *  GNU General Public License for more details.
-  *
-  *  You should have received a copy of the GNU General Public License along
-- *  with this program; if not, write to the Free Software Foundation, Inc.,
-- *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-+ *  with this program; if not, see <https://www.gnu.org/licenses/>.
+  * IBM's contributions to this file may be relicensed under LGPLv2 or later.
   */
- #ifndef ASPEED_TIMER_H
- #define ASPEED_TIMER_H
+diff --git a/include/qemu/rcu_queue.h b/include/qemu/rcu_queue.h
+index 4e6298d4730..bfd5900fda0 100644
+--- a/include/qemu/rcu_queue.h
++++ b/include/qemu/rcu_queue.h
+@@ -17,8 +17,8 @@
+  * Lesser General Public License for more details.
+  *
+  * You should have received a copy of the GNU Lesser General Public
+- * License along with this library; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
++ * License along with this library; if not, see
++ * <https://www.gnu.org/licenses/>.
+  *
+  * Copyright (c) 2013 Mike D. Day, IBM Corporation.
+  *
 -- 
 2.50.0
 
