@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40275AEAD4C
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 05:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F93AEAD43
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 05:25:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUzhj-0005I0-K3; Thu, 26 Jun 2025 23:24:43 -0400
+	id 1uUzhe-0005Fm-Ok; Thu, 26 Jun 2025 23:24:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uUzhg-0005Gp-Vs
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 23:24:40 -0400
+ id 1uUzhc-0005Ek-1i
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 23:24:36 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uUzhY-00066f-1P
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 23:24:40 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uUzhY-00066N-0D
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 23:24:35 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxquDpDl5osQgeAQ--.25938S3;
+ by gateway (Coremail) with SMTP id _____8DxbKzpDl5otAgeAQ--.1474S3;
  Fri, 27 Jun 2025 11:24:25 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxn8XiDl5oz10sAQ--.3598S9;
+ by front1 (Coremail) with SMTP id qMiowMBxn8XiDl5oz10sAQ--.3598S10;
  Fri, 27 Jun 2025 11:24:25 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: maobibo@loongson.cn
 Cc: qemu-devel@nongnu.org,
 	philmd@linaro.org,
 	jiaxun.yang@flygoat.com
-Subject: [PATCH v3 7/9] hw/loongarch: Implement avec set irq
-Date: Fri, 27 Jun 2025 11:01:36 +0800
-Message-Id: <20250627030138.2482055-8-gaosong@loongson.cn>
+Subject: [PATCH v3 8/9] target/loongarch: CPU enable msg interrupts.
+Date: Fri, 27 Jun 2025 11:01:37 +0800
+Message-Id: <20250627030138.2482055-9-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250627030138.2482055-1-gaosong@loongson.cn>
 References: <20250627030138.2482055-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxn8XiDl5oz10sAQ--.3598S9
+X-CM-TRANSID: qMiowMBxn8XiDl5oz10sAQ--.3598S10
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,79 +64,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement avec set irq and update CSR_MSIS and CSR_MSGIR.
+when loongarch cpu set irq is INT_AVEC, we need set CSR_ESTAT.MSGINT bit
+and CSR_ECFG.MSGINT bit.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/loongarch_avec.c | 44 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 42 insertions(+), 2 deletions(-)
+ target/loongarch/cpu-csr.h |  6 ++++--
+ target/loongarch/cpu.c     | 10 ++++++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
-index c686ac9483..5959d05d13 100644
---- a/hw/intc/loongarch_avec.c
-+++ b/hw/intc/loongarch_avec.c
-@@ -16,6 +16,12 @@
- #include "migration/vmstate.h"
- #include "trace.h"
- #include "hw/qdev-properties.h"
-+#include "target/loongarch/cpu.h"
-+
-+/* msg addr field */
-+FIELD(MSG_ADDR, IRQ_NUM, 4, 8)
-+FIELD(MSG_ADDR, CPU_NUM, 12, 8)
-+FIELD(MSG_ADDR, FIX, 28, 12)
+diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
+index 4792677086..6ec13d13d1 100644
+--- a/target/loongarch/cpu-csr.h
++++ b/target/loongarch/cpu-csr.h
+@@ -34,11 +34,13 @@ FIELD(CSR_MISC, ALCL, 12, 4)
+ FIELD(CSR_MISC, DWPL, 16, 3)
  
- static uint64_t loongarch_avec_mem_read(void *opaque,
-                                         hwaddr addr, unsigned size)
-@@ -23,12 +29,46 @@ static uint64_t loongarch_avec_mem_read(void *opaque,
-     return 0;
- }
+ #define LOONGARCH_CSR_ECFG           0x4 /* Exception config */
+-FIELD(CSR_ECFG, LIE, 0, 13)
++FIELD(CSR_ECFG, LIE, 0, 15)        /*bit 15 is msg interrupt enabled */
++FIELD(CSR_ECFG, MSGINT, 14, 1)
+ FIELD(CSR_ECFG, VS, 16, 3)
  
-+static void avec_set_irq(LoongArchAVECState *s, int cpu_num, int irq_num, int level)
-+{
-+    MachineState *machine = MACHINE(qdev_get_machine());
-+    MachineClass *mc = MACHINE_GET_CLASS(machine);
-+    const CPUArchIdList *id_list = NULL;
-+    CPUState *cpu;
-+    CPULoongArchState *env;
-+    int i;
-+
-+    assert(mc->possible_cpu_arch_ids(machine));
-+    id_list = mc->possible_cpu_arch_ids(machine);
-+    cpu = id_list->cpus[cpu_num].cpu;
-+    env = &LOONGARCH_CPU(cpu)->env;
-+
-+    if (level) {
-+        set_bit(irq_num, &env->CSR_MSGIS[irq_num / 64]);
-+        env->CSR_MSGIR = FIELD_DP64(env->CSR_MSGIR, CSR_MSGIR, INTNUM, irq_num);
-+        env->CSR_MSGIR = FIELD_DP64(env->CSR_MSGIR, CSR_MSGIR, ACTIVE, 0);
-+
-+        for (i = 0; i < ARRAY_SIZE(env->CSR_MSGIS); i++) {
-+            if (env->CSR_MSGIS[i]) {
-+                return;
+ #define LOONGARCH_CSR_ESTAT          0x5 /* Exception status */
+-FIELD(CSR_ESTAT, IS, 0, 13)
++FIELD(CSR_ESTAT, IS, 0, 15)        /*bit 15 is msg interrupt enabled */
++FIELD(CSR_ESTAT, MSGINT, 14, 1)
+ FIELD(CSR_ESTAT, ECODE, 16, 6)
+ FIELD(CSR_ESTAT, ESUBCODE, 22, 9)
+ 
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index bde9f917fc..c5924bb94f 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -127,6 +127,16 @@ void loongarch_cpu_set_irq(void *opaque, int irq, int level)
+         return;
+     }
+ 
++    /* do INTC_AVEC irqs */
++    if (irq == INT_AVEC) {
++        for (int i = 256; i >= 0; i--) {
++            if (test_bit(i, &(env->CSR_MSGIS[i / 64]))) {
++                env->CSR_ESTAT = FIELD_DP64(env->CSR_ESTAT, CSR_ESTAT, MSGINT, 1);
++                env->CSR_ECFG = FIELD_DP64(env->CSR_ECFG, CSR_ECFG, MSGINT, 1);
 +            }
 +        }
-+        qemu_set_irq(s->cpu[cpu_num].parent_irq, 0);
 +    }
-+    qemu_set_irq(s->cpu[cpu_num].parent_irq, level);
-+}
 +
- static void loongarch_avec_mem_write(void *opaque, hwaddr addr,
-                                      uint64_t val, unsigned size)
- {
--    return;
--}
-+    int irq_num, cpu_num = 0;
-+    LoongArchAVECState *s = LOONGARCH_AVEC(opaque);
-+    uint64_t msg_addr = addr + VIRT_AVEC_BASE;
- 
-+    cpu_num = FIELD_EX64(msg_addr, MSG_ADDR, CPU_NUM);
-+    irq_num = FIELD_EX64(msg_addr, MSG_ADDR, IRQ_NUM);
-+    avec_set_irq(s, cpu_num, irq_num, 1);
-+}
- 
- static const MemoryRegionOps loongarch_avec_ops = {
-     .read = loongarch_avec_mem_read,
+     if (kvm_enabled()) {
+         kvm_loongarch_set_interrupt(cpu, irq, level);
+     } else if (tcg_enabled()) {
 -- 
 2.34.1
 
