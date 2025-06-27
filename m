@@ -2,69 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E792AEACF1
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 04:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E300AEAD4F
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 05:30:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUz4x-0005yO-B7; Thu, 26 Jun 2025 22:44:40 -0400
+	id 1uUznB-0002gS-1K; Thu, 26 Jun 2025 23:30:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uUz4u-0005xy-EB
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 22:44:36 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
+ id 1uUzn7-0002fo-Ob
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 23:30:18 -0400
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uUz4s-0004EX-2e
- for qemu-devel@nongnu.org; Thu, 26 Jun 2025 22:44:36 -0400
+ id 1uUzn5-0007Kq-KW
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 23:30:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750992274; x=1782528274;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Yegej79wYfqDMWs9mZssB6fXngFv2T2RYAUAL2pkxD0=;
- b=fTVU9Jb5sEUpd93DWG8yo3pgSec6jdX5gbHDYseawrldklMOyKaTj3ih
- I8mpdfh45VB1J4Lreq6EgQJdQXDKw66MSNGhm/uuqBJtvsmz0fBorYnrp
- oYfIWTfP2fRh/CrkuzGwnLCchFmCSA9xoXqZNQkcowBez1kJV9S8+bCj4
- YwFvp3a5l3Dim4H9ZEt15C9fXXQ9lzDuczzP2t6kvbJ9LPyEyW0lxw74A
- tWkEu+/HNde63FvKgQFi1Y/4sueeRPL2iV5umQkKxQwBHTnWdyWGMN/eZ
- 7RsEBOAB2V+1FjaP9qh1FidbNnpeo9lSZyQGd6o1g8JRVpkN/N8WMKsMP w==;
-X-CSE-ConnectionGUID: F9qhTIquThqfQd5i9OQnrA==
-X-CSE-MsgGUID: ScmleZfQSWawAthfequTAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="57086918"
-X-IronPort-AV: E=Sophos;i="6.16,269,1744095600"; d="scan'208";a="57086918"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2025 19:44:30 -0700
-X-CSE-ConnectionGUID: ygNjwef8T+iFLOOF1ICoQQ==
-X-CSE-MsgGUID: BKM2uZAeRrOa4vmA4hLGXw==
+ t=1750995016; x=1782531016;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=MMHEypOCGay//pIEw6oqN4EZyX4dUB6L7V+HG7w/k+s=;
+ b=dncznUtTdN81pBbJUw8yUCzGpt43JNpV5ShJIN0xGJlHpLplr+Qz8AwO
+ zTLX1ixxaMeWdsegHvGeip+vI2jTrcs1EBJ+57kjlKmNaBGNSTMIAJMvL
+ VqQAl+K7ia2mgklr9GK53TqJWAsSbP5vjLQdDRw8uo+7X1owqfHeLygvY
+ arkX7uUZCn5qVXQqI6MBy3Dd09hmpXn+pdXf5qPRb+/QnYr4V4jGy4AT7
+ zkJJKSkNPfpJmb5SSE2mkOvjkpqJxqM2zy+7AqndQldiVuVZi1AIzrOqf
+ UI64vgQhxCRY10oHNIX5eSG4QI2P8yU5+jpwJq9Vx37nOkGxSoSKfpGiz w==;
+X-CSE-ConnectionGUID: fR/pPhqYQIOg5QxRywT53w==
+X-CSE-MsgGUID: XikkrPWwSCWOBkvgKTpmPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="53247132"
+X-IronPort-AV: E=Sophos;i="6.16,269,1744095600"; d="scan'208";a="53247132"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2025 20:30:13 -0700
+X-CSE-ConnectionGUID: tnIYW8epRsSgzQue2Qrw7w==
+X-CSE-MsgGUID: OMSLsCMVSbWwTmVnGZPGjg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,269,1744095600"; d="scan'208";a="152309735"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 26 Jun 2025 19:44:26 -0700
-Date: Fri, 27 Jun 2025 11:05:49 +0800
+X-IronPort-AV: E=Sophos;i="6.16,269,1744095600"; d="scan'208";a="157084613"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 26 Jun 2025 20:30:11 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Jason Zeng <jason.zeng@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Tao Su <tao1.su@intel.com>,
- Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- Tejus GK <tejus.gk@nutanix.com>,
- Manish Mishra <manish.mishra@nutanix.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 5/8] i386/cpu: Add a "x-force-cpuid-0x1f" property
-Message-ID: <aF4Kjf7iGhEORMSL@intel.com>
-References: <20250626083105.2581859-1-zhao1.liu@intel.com>
- <20250626083105.2581859-6-zhao1.liu@intel.com>
- <0d038476-e7c6-4e7a-add2-aeb4d715c202@zhaoxin.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>
+Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Tao Su <tao1.su@intel.com>, Yi Lai <yi1.lai@intel.com>,
+ Dapeng Mi <dapeng1.mi@intel.com>, qemu-devel@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 0/4] i386/cpu: Clean Up Reserved CPUID Leaves for Intel
+Date: Fri, 27 Jun 2025 11:51:25 +0800
+Message-Id: <20250627035129.2755537-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d038476-e7c6-4e7a-add2-aeb4d715c202@zhaoxin.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -89,33 +82,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> After applying these patches to QEMU mainline at commit 6e1571533fd9:
+Hi,
 
-Ah, I forgot I've rebased these patches...Now you can rebase all the
-patches at the latest master branch.
+Since the previsor unified cache model series has already introduced a
+new compat property "x-vendor-cpuid-only-v2", it's a chance to once
+again consolidate more vendor-specific CPUIDs.
 
-Or, you can try this repo - I just created it to make it easier for you:
+I also checked the CPUID leaves currently supported by Intel & AMD and
+found that since the previous "x-vendor-cpuid-only," AMD has already
+cleaned up the Intel-specific CPUIDs quite well.
+
+As for Intel, the only cleanup needed is for the "extended function
+CPUID" leaves (0x80000000~0x80000008). That's what this series does.
+
+This series is based on:
+
+<20250626083105.2581859-1-zhao1.liu@intel.com>
+
+Or you can find the code at:
 
 https://gitlab.com/zhao.liu/qemu/-/tree/cache-model-v2.6-rebase-06-23-2025
 
-Thanks,
+Thanks and Best Regards,
 Zhao
+---
+Zhao Liu (4):
+  i386/cpu: Mark EBX/ECX/EDX in CPUID 0x80000000 leaf as reserved for
+    Intel
+  i386/cpu: Mark CPUID 0x80000007[EBX] as reserved for Intel
+  i386/cpu: Mark ECX/EDX in CPUID 0x80000008 leaf as reserved for Intel
+  i386/cpu: Reorder CPUID leaves in cpu_x86_cpuid()
 
-> $ git am patches-from-https://lore.kernel.org/qemu-devel/20250620092734.1576677-1-zhao1.liu@intel.com/
-> $ git am patches-from-https://lore.kernel.org/all/20250626083105.2581859-6-zhao1.liu@intel.com/
-> 
-> and configure && make qemu with:
-> 
-> $ ./configure --target-list=x86_64-softmmu --enable-debug --enable-kvm
-> --enable-sdl --enable-gtk --enable-spice --prefix=/usr --enable-libusb
-> --enable-usb-redir --enable-trace-backends=simple && make -j32
-> 
-> I ran into this build error:
-> 
-> target/i386/cpu.c:9942:52: error: 'X86CPU' {aka 'struct ArchCPU'} has no
-> member named 'force_cpuid_0x1f' ; did you mean 'enable_cpuid_0x1f' ?
-> 
-> I haven't debug it yet, because it seems like a simple mistake, asking you
-> directly might be quicker.
-> 
+ target/i386/cpu.c | 83 ++++++++++++++++++++++++++++-------------------
+ 1 file changed, 49 insertions(+), 34 deletions(-)
+
+-- 
+2.34.1
+
 
