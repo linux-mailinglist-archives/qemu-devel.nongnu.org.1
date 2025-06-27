@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53FCAEB655
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 13:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D045AEB64D
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 13:26:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uV7DD-0005DZ-DU; Fri, 27 Jun 2025 07:25:43 -0400
+	id 1uV7DF-0005GJ-D4; Fri, 27 Jun 2025 07:25:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uV7Ct-00056A-P6
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 07:25:30 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1uV7D1-00057W-7P
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 07:25:32 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uV7Cq-00078Z-Qy
+ id 1uV7Cr-00078y-24
  for qemu-devel@nongnu.org; Fri, 27 Jun 2025 07:25:23 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-453066fad06so12578435e9.2
- for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 04:25:18 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4538bc1cffdso14228505e9.0
+ for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 04:25:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751023517; x=1751628317; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=T0Rp0sE1uEAGKm72kO0j4pZeSVakgo90rCJ0WNe2vbE=;
- b=ZF6O5tQLACfcEq2Tyb7hkeQsSd58QFSZPndauhdu452UmUUNAall5y73UeF0/5N10K
- MuuUsgWdGAw0JhNn/f02phwpSWvVbFOvZYW2ryx2ArBRyPhbcGOdApW06YJIlAzymS7x
- zV0nRt73vYM0FKhIByeJC5CdPgeWKwVqw1bXc5UIGVKXgV9roK3E+uWzUlBXOdnldkVD
- G8jPAfO4wv1uyZh0TI64X0osbVKhNLI57j/YdIfUbUKlIYK2oGfbawqt7Q2Hiny5FPQV
- rJWrPohSVjb/Bm1OB3TO/8hy9omu6pUdv6OB52tGlnCW4hIuxm4MV5jMuUPykU/6soWK
- aE2A==
+ d=linaro.org; s=google; t=1751023519; x=1751628319; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=txtxvpFKqLbhHoA+0Zwk16dKiYOy0riI4nuHvojvgGs=;
+ b=JGabJglUIZ6Ei/YISpdmEzMfk5LKZpz36KxcM2Mq8fI56aZx1pa0AcD8Y7mMBMShaQ
+ UrumqKEZ7x3fBilT+wAkw94NPEGYz3g9MnscKkf0mbJEo0DkCPBcDqnKJvwi2LJU2Qtg
+ i4/PrhLacGrnfsDEXU2zRxGwGkPdDWCbVgdGOGORfa5ezuBOlp0aIuvt2wH6iaHBThCv
+ LrGTWjjyWKp8EZjW0fYDIbfJ6cvnzJzr0jd3iMQo5zBCsrApMRRNrk5vdAHZTOtWSZCr
+ 5n9BCp3Q5VwzDjWFgJ1rTzXqXXSs3JPYAdZRZJHrR5R8hW0zCVaxVnt4B7zCAwJ8aaGD
+ FUUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751023517; x=1751628317;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=T0Rp0sE1uEAGKm72kO0j4pZeSVakgo90rCJ0WNe2vbE=;
- b=YNWFc1eTOUT/s1lwvM7tHkGKJCcKAoaDILLzsBkzMXBbN7LM7QVF01iGlEP6X12RAI
- Yag+b+VOU+yIcNl70p8yJbLK0L/QWOpp4A+sUD5FDBsxoDnBKD3BYyoSXIiQcKltV9L8
- m5Uz2BtQsO7109WEFaUZi2WTrkxSTvWVn9XVM7J5MMIAP8Oa2PITt3s+yOi/kABUH8i2
- Jizfacw1WugZjqy46WfdP0qgVGr3h68t+JRjfuNNKnMHuXR0ff/0Bor8yWbbR7HZimsV
- jQHMZ2kUT/q76qy/E90ryXKt9E/AqIYqpmgzxdKnAqtateGkO90W0yij0wGqaqRjcNOe
- ZHEw==
-X-Gm-Message-State: AOJu0YxLPTW7S8xQ+pKVvo/4/yhUhkgCK6qeK0x4XRIFUeyNhKEFm3KL
- YVDDpzMAt3OdALu3kAeteBesLTAh80tdl10e1VcgO+DksFdjXt8vyBCctBRkRSb0nt8=
-X-Gm-Gg: ASbGncsYyUQ/UZss63LkTHmGSZr+forDBm+6wo/hjDEk9vKlT795j1bvsWY0NUeuiJT
- IzyXH/ZkbPSBkuyKETFIcQkQLVbNmw+zteW9fuxwS59YN6wwlNZBxFTpYDQMe+qfNDsh8wl3RL/
- +6obpRqE+JB4aVLF3BuQubjTdznOP0Y6WXsyBzxPMjJQK1bDymnRzu8Tm07HwH7NRfesiQSxXHc
- 2UpVbIoVBB3prRaf9MLAdIQTxaP5c1YOqsP8Z1dOie+mT8owtHS+Wg9Xi0ZNagPc+13L+xpRkOT
- etOzH0tPaJk9vveSY3qnI0XoxTQa3FYIwvPCvTpI7/Q9O5Ebz8kqBxGc0JqFILfrzUuyRtLjiw=
- =
-X-Google-Smtp-Source: AGHT+IEj6ccMTq51dYmPMnWNWuCf/1eVEyzdnuR0LolKyxFGls/B/4HZrIANPQt7rKaeK88t2SUzuw==
-X-Received: by 2002:a05:600c:1552:b0:442:e0f9:394d with SMTP id
- 5b1f17b1804b1-4538f8836a6mr23478405e9.24.1751023517456; 
- Fri, 27 Jun 2025 04:25:17 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1751023519; x=1751628319;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=txtxvpFKqLbhHoA+0Zwk16dKiYOy0riI4nuHvojvgGs=;
+ b=In69VWFg3xUofLqlpI9tZJ+P/+Eow26rzt3JbB+IZhmwUY5N6dPeiUJmRAsqamXv6J
+ p/Wjxu4/XIt/AbuFOjq+2WXlUIxVkbp7qyMU3fljf6tdC1vtam+nUhvVV1s5QLybpPPy
+ iAGeAuX9myjqAQ0teBSRcBSRw+dy73FlSXNg+RhQEJtTCa30ILeGYtZZMy+96NNYT6+h
+ qjD58JxFLXhsKsDrY2LfGs7inPvbBdLO8es+wSK49D1aMUvDTLfa7EZ5DVsbFVQ32jNB
+ kv1b4qUbI8FZNt08Zww6veMktR1hgJ307YA4LNkBd088vBwzSmimYUG7NNl1N9YZAPew
+ 6i6g==
+X-Gm-Message-State: AOJu0Yz+ThaFrAixMOtf1gTr5JnR1o7JX+9uCzl42mz3z0RlbuUwX3Pg
+ 3rWYNSkPsp52kmdduUYqoVrc/KKYVs73SthoDX767yDB+LJ5X6wBPjwyqXVG4MSdMNc=
+X-Gm-Gg: ASbGncsnlpW68oz9TW5q0HL4FXBd/MMqnbPBK/pn8oz5Y9Z1E8PSmyzGPOUGK7mPxoo
+ b/Ck9C/yqH/8ggda4X52y8HaBtGbJ1445Ar2XQGUKgiFx427wHP/QRWn7FwqNNY4gIpnFSPxHgo
+ AX6C72HbcnPTAztkbTfpLMUvDKxMok+XxtCXYDex9CoXXL7LITBBtVTqf0nuiOOrifA3r4Do+j+
+ Ar9legqvdZAlUmBMAlL6DSl70rmwuH/OhjcI5k6Ys05Nc+3VzuCV/TgftQ5w8l9FcylhbtbxSUr
+ NXP/jkfFonF20OtWQ5p5HaZy4ZoN9AlnOHxniE70GFGoL7ysbmEDve/u0UncmMo=
+X-Google-Smtp-Source: AGHT+IEhVIm8vEHDZm6fAJOpOCs46al681NpBj7cp9gb0EZ9lFbDFa4bvgmk8nEGUiJqRym+ggXQ2g==
+X-Received: by 2002:a05:600c:3ba1:b0:450:d04e:22d6 with SMTP id
+ 5b1f17b1804b1-4538ee565damr29613675e9.7.1751023519193; 
+ Fri, 27 Jun 2025 04:25:19 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e62144sm2475188f8f.92.2025.06.27.04.25.13
+ ffacd0b85a97d-3a892e5f8a0sm2478892f8f.96.2025.06.27.04.25.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 27 Jun 2025 04:25:13 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2F5A25F82D;
+ by draig.lan (Postfix) with ESMTP id 4616F5F860;
  Fri, 27 Jun 2025 12:25:12 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,23 +80,24 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  Alexandre Iooss <erdnaxe@crans.org>
-Subject: [PATCH 00/15] Maintainer updates for June (tests, semihosting, plugins,
- gpu) pre-PR
-Date: Fri, 27 Jun 2025 12:24:56 +0100
-Message-ID: <20250627112512.1880708-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/15] gitlab: mark s390x-system to allow failures
+Date: Fri, 27 Jun 2025 12:24:57 +0100
+Message-ID: <20250627112512.1880708-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250627112512.1880708-1-alex.bennee@linaro.org>
+References: <20250627112512.1880708-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,97 +113,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The system tests (usually qos-test or migration-test) prove to be very
+susceptible on the s390x runners. Although we have boosted memory and
+virtual CPUs on the runners problems persist. For now mark test as
+allow_failure so the its clear on the CI UI when checking test
+results.
 
-Here is the rolled up set of patches from my various maintainer trees.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ .gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-From testing/next:
-
-  - new pci hotplug tests
-
-From semihosting/next
-
-  - compile once updates
-
-From plugins/next
-
-  - register write support for plugins
-  - memory read/write support (see caveats in APIs)
-
-I've also been tracking the discontinuity changes but I don't know if
-they will be ready by 10.1 softfreeze.
-
-From virtio-gpu/next:
-
-  - MAINTAINER updates
-  - context init
-
-I've left the other patches which try to untangle the various
-memory race conditions until we have a clear path forward.
-
-Only one patch needs review:
-
-  gitlab: mark s390x-system to allow failures
-
-I intend to send the PR in next week.
-
-Alex.
-
-Alex Bennée (3):
-  gitlab: mark s390x-system to allow failures
-  MAINTAINERS: add myself to virtio-gpu for Odd Fixes
-  MAINTAINERS: add Akihiko and Dmitry as reviewers
-
-Gustavo Romero (1):
-  tests/functional: Add PCI hotplug test for aarch64
-
-Philippe Mathieu-Daudé (2):
-  semihosting/uaccess: Remove uses of target_ulong type
-  semihosting/uaccess: Compile once
-
-Rowan Hart (8):
-  gdbstub: Expose gdb_write_register function to consumers of gdbstub
-  plugins: Add register write API
-  plugins: Add enforcement of QEMU_PLUGIN_CB flags in register R/W
-    callbacks
-  plugins: Add memory virtual address write API
-  plugins: Add memory hardware address read/write API
-  tests/tcg: Remove copy-pasted notes and from i386 and add x86_64
-    system tests to tests
-  plugins: Add patcher plugin and test
-  plugins: Update plugin version and add notes
-
-Yiwei Zhang (1):
-  virtio-gpu: support context init multiple timeline
-
- MAINTAINERS                                   |  11 +-
- include/exec/gdbstub.h                        |  14 +
- include/hw/core/cpu.h                         |   1 +
- include/qemu/plugin.h                         |  15 ++
- include/qemu/qemu-plugin.h                    | 176 +++++++++++-
- include/semihosting/uaccess.h                 |  12 +-
- accel/tcg/plugin-gen.c                        |  30 +++
- gdbstub/gdbstub.c                             |   2 +-
- hw/display/virtio-gpu-virgl.c                 |  44 +++
- plugins/api.c                                 | 135 +++++++++-
- plugins/core.c                                |  33 +++
- semihosting/uaccess.c                         |  10 +-
- tests/tcg/plugins/patch.c                     | 251 ++++++++++++++++++
- tests/tcg/x86_64/system/patch-target.c        |  22 ++
- .../custom-runners/ubuntu-22.04-s390x.yml     |   2 +
- semihosting/meson.build                       |   5 +-
- tests/functional/meson.build                  |   1 +
- tests/functional/test_aarch64_hotplug_pci.py  |  71 +++++
- tests/tcg/Makefile.target                     |   7 +-
- tests/tcg/plugins/meson.build                 |   2 +-
- tests/tcg/x86_64/Makefile.softmmu-target      |  21 +-
- tests/tcg/x86_64/system/validate-patch.py     |  39 +++
- 22 files changed, 862 insertions(+), 42 deletions(-)
- create mode 100644 tests/tcg/plugins/patch.c
- create mode 100644 tests/tcg/x86_64/system/patch-target.c
- create mode 100755 tests/functional/test_aarch64_hotplug_pci.py
- create mode 100755 tests/tcg/x86_64/system/validate-patch.py
-
+diff --git a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
+index ca374acb8c..e62ff1763f 100644
+--- a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
++++ b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
+@@ -31,7 +31,9 @@ ubuntu-22.04-s390x-all-system:
+  timeout: 75m
+  rules:
+  - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
++   allow_failure: true
+  - if: "$S390X_RUNNER_AVAILABLE"
++   allow_failure: true
+  script:
+  - mkdir build
+  - cd build
 -- 
 2.47.2
 
