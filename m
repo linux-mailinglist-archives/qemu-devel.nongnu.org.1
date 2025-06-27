@@ -2,113 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AAC5AEB81B
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 14:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E391AEB866
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 15:04:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uV8Ue-0002Kq-Hv; Fri, 27 Jun 2025 08:47:49 -0400
+	id 1uV8ij-0005zT-CO; Fri, 27 Jun 2025 09:02:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1uV8Uc-0002KX-Kr
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 08:47:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uV8ig-0005yh-Pg
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 09:02:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1uV8UX-00019e-FA
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 08:47:46 -0400
+ id 1uV8ia-0005ny-P4
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 09:02:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751028459;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vuWJM0+F8B5absd6Si1Su4ADKtTJVbXncgvEgJSNOQo=;
- b=ikaWm0Rab2FzzmZeNS6NkZu7xaHJBwWsww3zDxgGXEWIY/4zXWKAzCaoBoPWD88yLF62Za
- nMYhdoNPEwRVE2FI3p9v5IAPV1uz9wDSrNQIknRBtaGtqVKbmb6OjPyUo3ZFuzgot+470j
- fqUfrFjh/JL+oqMOq8/OUR3hKPv4tEM=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1751029330;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=qYtnGXfWycl1Zi5Xt1fWTjVwNn6Etd4q+emR+q+5ees=;
+ b=iWm5Jys3q+foBv5lmx3+igyI9E87HepHWhL+I6Ku+eNTfLcnqkIiIVtyIXHsg/5YB+FGfE
+ RwUaLeFTyTn+8fa/y2fX7/G3eHhRFyIaPZlGH/YlhibveCYDdT1Lwx9FKI193NBauYd9j4
+ pqvR38yk9xs5sohCr0w7/+tkQE2JJEU=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-nA8-_wd9OnWkSviEKNJW0Q-1; Fri, 27 Jun 2025 08:47:37 -0400
-X-MC-Unique: nA8-_wd9OnWkSviEKNJW0Q-1
-X-Mimecast-MFC-AGG-ID: nA8-_wd9OnWkSviEKNJW0Q_1751028457
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-2369dd58602so18145485ad.1
- for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 05:47:37 -0700 (PDT)
+ us-mta-680-jyOqVdo1PlawaNybh0qMxA-1; Fri, 27 Jun 2025 09:02:09 -0400
+X-MC-Unique: jyOqVdo1PlawaNybh0qMxA-1
+X-Mimecast-MFC-AGG-ID: jyOqVdo1PlawaNybh0qMxA_1751029328
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-74880a02689so1798514b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 06:02:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751028457; x=1751633257;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1751029328; x=1751634128;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vuWJM0+F8B5absd6Si1Su4ADKtTJVbXncgvEgJSNOQo=;
- b=r+Ua0jnwiHbSO2klGwC9PX6B3Lc4XNpw3gp4ThtElz3GHYafbBwtS5aAYqo2P72i4M
- HA6I1LzEoFSyUyhYQUq/hFAg9Y9E82m8y9/VY2frpMbgN5UT4LDYLMAheevY7pgZgFR9
- KF8UdWJTMH93sm4K8RgVmsDKiilbzlT8DQrRSf9og9imBLWKUmnQ8UpgLWrEDrKVPB8T
- NpQe8ydDj0GGpHVen+oBiVwfDCDmuNSJPQXnUJgs0dpeDALSwPSJfyPPFujKfIQcoCm3
- O/xkCgOLjFxHt9DJrOIoW4ZwAVWnYmuj6REiJ6oaEv3EvnVI+qFH5TgFJuYOxJ0BjALt
- SoXw==
-X-Gm-Message-State: AOJu0YwVLfsMFPeaNiyvNXSOAeXY7q7bvqZpcgvymi4d4cU4Pd186vVT
- vsAFsZpBMDzbt62vrGSzMFURx7rGzI78o5bpdOqxNRNaXo8IOHvWH1WZzcujXcl9PeEVAapvbDF
- f9ncnbyisT40Wlxwk3FgdhdrCW5Fe2z/6xcL2j1saUeiTXmDTIl0q9N6P
-X-Gm-Gg: ASbGnctF+n2a+4JR2rUex8nXw3JCzqcaH+t4I8qgusYigX8QEPN32MnM2oTUzmJGlnr
- Ca+Sim8E6sXQQk6ov2ylWkDVCToobnl2f4yUIMm6x73DpnR/3Xzm8xGRGjMfTzIyqr0/WbvWURg
- jrhk7ahd5DihCAl+vRMIrOjP0mMnthJr1kCKA6dARd2PZspNInKW4PLnCpXidJwQnYEDupiGdjZ
- 83yAidl4Pz+wdFqcyWbEBDf2HpF3lBQ7Q5XGRS5zBu0zxyTQHNV2qM5jOwElg6P7UgYMj0KvNSN
- Y3u8TOSVtyTk+aLLt0sOIZsblaCKDUgI
-X-Received: by 2002:a17:902:fc8f:b0:235:737:7ba with SMTP id
- d9443c01a7336-23ac460753bmr53506665ad.44.1751028456822; 
- Fri, 27 Jun 2025 05:47:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHDA+GhWES2/Q3RITXzFqguPC7i6aXc+ehphiHBrf+dIsDDFY+7DHAkEQRa/cof6lzoadHRpw==
-X-Received: by 2002:a17:902:fc8f:b0:235:737:7ba with SMTP id
- d9443c01a7336-23ac460753bmr53506125ad.44.1751028456407; 
- Fri, 27 Jun 2025 05:47:36 -0700 (PDT)
+ bh=qYtnGXfWycl1Zi5Xt1fWTjVwNn6Etd4q+emR+q+5ees=;
+ b=N/jQSeGbzhrsD1mJjc2dmreWpKYoHFuYxcn+EvaRmSE7udwn5UCP2NwgBlSQO7Q1Nm
+ n/19rvRXCXkFgjqvaRNbAa8LYXDDT5jPQyhMhO5oLsKk8Kq3L+36dvxaiYyiUzW1adRQ
+ dfpSHiVgtEkX6+yxJNJpmjltwjFLPvYXBkaDa5tPu7E155bedrs6CLeNgBzciDxZuE1j
+ C7cX9+umcRKyyKr5aNAK3gvUAj4RwV8dduSAv3dgu1azvH7+BXsQpf1QWAT1c0fYpgSF
+ apYWBWblvspgqQbSNbk49HtcL/6WL226m0geGE92hSg4+a/Spe61VRZcgkoPWphwAihD
+ ieqA==
+X-Gm-Message-State: AOJu0YwUPDvkfNwtxV8lP17utLohU/9Mv7lK8YeTT6snDBDxPqDcyMxr
+ ByhvOPnVv/+6aZEtYQwVYnPBc5xi3ku0nJ6tpIEbwOPY9utfovVGyVzhmm+2MQR2jbATFlZYrV4
+ vLy+0FoiH+d1CEL+GwTH+ktjwsRkn1iTX4jwW8RevIxpxFObikuv9zxm5
+X-Gm-Gg: ASbGncskBFeGnzAP3lJ5ooTrhQtnioxeEbJ0YreXvs1IURicghtfus7+LOf5suxD+Ct
+ rYbEU3Ci2geYEZDLKO2Cy9f24a7Zp9Tq/VCK7X8rI91pVnA/kAodpojB6VBZaBaxR+X64iUjbXy
+ gb4deA8wdTUxzC7923RoG8oDNt4oUSI3olJXi5oEDrOq5k74ZIohS6GHwzBDZavBc2mjcFWUTEl
+ 4dff5Tvco75cOpfS4JrzknWKbBqzKgNg0l8t7Zy/OK/bF5ZN7zhIY4o8yrLfEeVUOrY2xyg+8Nf
+ fuZdXHbV25zcWsQIJmaRbuUUTyINrk5s
+X-Received: by 2002:a05:6a20:1582:b0:1f5:7ea8:a791 with SMTP id
+ adf61e73a8af0-220a12b94bdmr4838149637.10.1751029327822; 
+ Fri, 27 Jun 2025 06:02:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEPoqjTydjTEovNlXlODY/rv3leUG6Rb2IeQ6otQGiu9a/Dc+GI4+IvDTQD5gOS+IwWsc2SBw==
+X-Received: by 2002:a05:6a20:1582:b0:1f5:7ea8:a791 with SMTP id
+ adf61e73a8af0-220a12b94bdmr4838056637.10.1751029327056; 
+ Fri, 27 Jun 2025 06:02:07 -0700 (PDT)
 Received: from armenon-kvm.bengluru.csb ([49.36.99.3])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23acb39bfcesm16731575ad.135.2025.06.27.05.47.29
+ d2e1a72fcca58-74af57efae1sm2260951b3a.163.2025.06.27.06.01.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Jun 2025 05:47:36 -0700 (PDT)
+ Fri, 27 Jun 2025 06:02:06 -0700 (PDT)
+Date: Fri, 27 Jun 2025 18:31:56 +0530
 From: Arun Menon <armenon@redhat.com>
-Date: Fri, 27 Jun 2025 18:16:59 +0530
-Subject: [PATCH v2 2/2] backends/tpm: Propagate vTPM error on migration failure
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [PATCH 1/3] migration: Pass error object to report it to the
+ caller
+Message-ID: <aF6WRKeLeRShB9OP@armenon-kvm.bengluru.csb>
+References: <20250624-propagate_tpm_error-v1-0-2171487a593d@redhat.com>
+ <20250624-propagate_tpm_error-v1-1-2171487a593d@redhat.com>
+ <aFqsSFv5poQxYvkz@x1.local>
+ <aFvjYivVnQYT4YPs@armenon-kvm.bengluru.csb>
+ <aFv2iVkq1gkpBeUD@x1.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250627-propagate_tpm_error-v2-2-85990c89da29@redhat.com>
-References: <20250627-propagate_tpm_error-v2-0-85990c89da29@redhat.com>
-In-Reply-To: <20250627-propagate_tpm_error-v2-0-85990c89da29@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, 
- Eric Farman <farman@linux.ibm.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
- Thomas Huth <thuth@redhat.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- Hailiang Zhang <zhanghailiang@xfusion.com>, 
- Steve Sistare <steven.sistare@oracle.com>, qemu-s390x@nongnu.org, 
- qemu-ppc@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Arun Menon <armenon@redhat.com>, Stefan Berger <stefanb@linux.vnet.ibm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7204; i=armenon@redhat.com;
- h=from:subject:message-id; bh=WsVU/9NBhRGrVqgURcGwuX9m1ptUgPf3rVjADOG97dM=;
- b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ0bcpEvn3weenCe8jGfl9MNm3Zr1cW8DL7XyyM38dU3gA
- tupEwL/O0pZGMS4GGTFFFkavgbINgUURkTavrwOM4eVCWQIAxenAEwkYhbD/7r9558vkT5/Kapz
- q+WlJZc6px7Xlp3aFL9UZccUae6FsXMY/pluv7izs6o3na+jXtzbbV2A0qvFKdkmG8XrsxZ+4Np
- 4jxkA
-X-Developer-Key: i=armenon@redhat.com; a=openpgp;
- fpr=80F5501D82507158593DE9D76A7A2538D90F328E
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aFv2iVkq1gkpBeUD@x1.local>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armenon@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -117,7 +111,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,165 +124,176 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: armenon@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Introduce a new post_load_with_error() hook that will
-  take in the Error object as a parameter.
-- This error object is set if the loading of state fails.
-- The error can then be retrieved using QMP command
-  {"execute" : "query-migrate"}
+Hi Peter,
 
-Buglink: https://issues.redhat.com/browse/RHEL-82826
+Thanks for the comments.
+Updated in v2. 
+Note: I have included a null check in the fail statement of
+migration coroutine as well.
+This is so that there are no dereferencing
+issue in case local_err is not set in any of the paths.
+(error_report_err call dereferences the err->msg)
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Arun Menon <armenon@redhat.com>
----
- backends/tpm/tpm_emulator.c | 39 ++++++++++++++++++++-------------------
- include/migration/vmstate.h |  1 +
- migration/vmstate.c         |  4 +++-
- 3 files changed, 24 insertions(+), 20 deletions(-)
 
-diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
-index 4a234ab2c0b19b2604bf0dd8cb5f4540c72a9438..816134d7b4de00a75a3d0b928d160595b17be810 100644
---- a/backends/tpm/tpm_emulator.c
-+++ b/backends/tpm/tpm_emulator.c
-@@ -819,7 +819,8 @@ static int tpm_emulator_get_state_blobs(TPMEmulator *tpm_emu)
- static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-                                        uint32_t type,
-                                        TPMSizedBuffer *tsb,
--                                       uint32_t flags)
-+                                       uint32_t flags,
-+                                       Error **errp)
- {
-     ssize_t n;
-     ptm_setstate pss;
-@@ -838,17 +839,17 @@ static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-     /* write the header only */
-     if (tpm_emulator_ctrlcmd(tpm_emu, CMD_SET_STATEBLOB, &pss,
-                              offsetof(ptm_setstate, u.req.data), 0, 0) < 0) {
--        error_report("tpm-emulator: could not set state blob type %d : %s",
--                     type, strerror(errno));
-+        error_setg(errp, "tpm-emulator: could not set state blob type %d : %s",
-+                   type, strerror(errno));
-         return -1;
-     }
- 
-     /* now the body */
-     n = qemu_chr_fe_write_all(&tpm_emu->ctrl_chr, tsb->buffer, tsb->size);
-     if (n != tsb->size) {
--        error_report("tpm-emulator: Writing the stateblob (type %d) "
--                     "failed; could not write %u bytes, but only %zd",
--                     type, tsb->size, n);
-+        error_setg(errp, "tpm-emulator: Writing the stateblob (type %d) "
-+                   "failed; could not write %u bytes, but only %zd",
-+                   type, tsb->size, n);
-         return -1;
-     }
- 
-@@ -856,17 +857,17 @@ static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-     n = qemu_chr_fe_read_all(&tpm_emu->ctrl_chr,
-                              (uint8_t *)&pss, sizeof(pss.u.resp));
-     if (n != sizeof(pss.u.resp)) {
--        error_report("tpm-emulator: Reading response from writing stateblob "
--                     "(type %d) failed; expected %zu bytes, got %zd", type,
--                     sizeof(pss.u.resp), n);
-+        error_setg(errp, "tpm-emulator: Reading response from writing "
-+                   "stateblob (type %d) failed; expected %zu bytes, "
-+                   "got %zd", type, sizeof(pss.u.resp), n);
-         return -1;
-     }
- 
-     tpm_result = be32_to_cpu(pss.u.resp.tpm_result);
-     if (tpm_result != 0) {
--        error_report("tpm-emulator: Setting the stateblob (type %d) failed "
--                     "with a TPM error 0x%x %s", type, tpm_result,
--                     tpm_emulator_strerror(tpm_result));
-+        error_setg(errp, "tpm-emulator: Setting the stateblob (type %d) "
-+                   "failed with a TPM error 0x%x %s", type, tpm_result,
-+                   tpm_emulator_strerror(tpm_result));
-         return -1;
-     }
- 
-@@ -880,7 +881,7 @@ static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-  *
-  * Returns a negative errno code in case of error.
-  */
--static int tpm_emulator_set_state_blobs(TPMBackend *tb)
-+static int tpm_emulator_set_state_blobs(TPMBackend *tb, Error **errp)
- {
-     TPMEmulator *tpm_emu = TPM_EMULATOR(tb);
-     TPMBlobBuffers *state_blobs = &tpm_emu->state_blobs;
-@@ -894,13 +895,13 @@ static int tpm_emulator_set_state_blobs(TPMBackend *tb)
- 
-     if (tpm_emulator_set_state_blob(tpm_emu, PTM_BLOB_TYPE_PERMANENT,
-                                     &state_blobs->permanent,
--                                    state_blobs->permanent_flags) < 0 ||
-+                                    state_blobs->permanent_flags, errp) < 0 ||
-         tpm_emulator_set_state_blob(tpm_emu, PTM_BLOB_TYPE_VOLATILE,
-                                     &state_blobs->volatil,
--                                    state_blobs->volatil_flags) < 0 ||
-+                                    state_blobs->volatil_flags, errp) < 0 ||
-         tpm_emulator_set_state_blob(tpm_emu, PTM_BLOB_TYPE_SAVESTATE,
-                                     &state_blobs->savestate,
--                                    state_blobs->savestate_flags) < 0) {
-+                                    state_blobs->savestate_flags, errp) < 0) {
-         return -EIO;
-     }
- 
-@@ -948,12 +949,12 @@ static void tpm_emulator_vm_state_change(void *opaque, bool running,
-  *
-  * Returns negative errno codes in case of error.
-  */
--static int tpm_emulator_post_load(void *opaque, int version_id)
-+static int tpm_emulator_post_load(void *opaque, int version_id, Error **errp)
- {
-     TPMBackend *tb = opaque;
-     int ret;
- 
--    ret = tpm_emulator_set_state_blobs(tb);
-+    ret = tpm_emulator_set_state_blobs(tb, errp);
-     if (ret < 0) {
-         return ret;
-     }
-@@ -969,7 +970,7 @@ static const VMStateDescription vmstate_tpm_emulator = {
-     .name = "tpm-emulator",
-     .version_id = 0,
-     .pre_save = tpm_emulator_pre_save,
--    .post_load = tpm_emulator_post_load,
-+    .post_load_with_error = tpm_emulator_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(state_blobs.permanent_flags, TPMEmulator),
-         VMSTATE_UINT32(state_blobs.permanent.size, TPMEmulator),
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index 056781b1c21e737583f081594d9f88b32adfd674..1c6e89c3b08a3914cde6dce3be5955978b6b7d0b 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -207,6 +207,7 @@ struct VMStateDescription {
-     MigrationPriority priority;
-     int (*pre_load)(void *opaque);
-     int (*post_load)(void *opaque, int version_id);
-+    int (*post_load_with_error)(void *opaque, int version_id, Error **errp);
-     int (*pre_save)(void *opaque);
-     int (*post_save)(void *opaque);
-     bool (*needed)(void *opaque);
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 158dcc3fcddfe70ab268dc5ace6e4573fa1ccbab..0048c4e1e7ee1d6ff3a3349abb0dc1578985a56e 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -236,7 +236,9 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-         }
-         return ret;
-     }
--    if (vmsd->post_load) {
-+    if (vmsd->post_load_with_error) {
-+        ret = vmsd->post_load_with_error(opaque, version_id, errp);
-+    } else if (vmsd->post_load) {
-         ret = vmsd->post_load(opaque, version_id);
-     }
-     trace_vmstate_load_state_end(vmsd->name, "end", ret);
+On Wed, Jun 25, 2025 at 09:15:53AM -0400, Peter Xu wrote:
+> On Wed, Jun 25, 2025 at 05:24:10PM +0530, Arun Menon wrote:
+> > Hi Peter,
+> 
+> Hi, Arun,
+> 
+> [...]
+> 
+> > > >  static void vmstate_save_old_style(QEMUFile *f, SaveStateEntry *se,
+> > > > @@ -2071,6 +2072,7 @@ static void *postcopy_ram_listen_thread(void *opaque)
+> > > >  {
+> > > >      MigrationIncomingState *mis = migration_incoming_get_current();
+> > > >      QEMUFile *f = mis->from_src_file;
+> > > > +    Error *local_err = NULL;
+> > > >      int load_res;
+> > > >      MigrationState *migr = migrate_get_current();
+> > > >  
+> > > > @@ -2089,7 +2091,7 @@ static void *postcopy_ram_listen_thread(void *opaque)
+> > > >      qemu_file_set_blocking(f, true);
+> > > >  
+> > > >      /* TODO: sanity check that only postcopiable data will be loaded here */
+> > > > -    load_res = qemu_loadvm_state_main(f, mis);
+> > > > +    load_res = qemu_loadvm_state_main(f, mis, &local_err);
+> > > 
+> > > Here we captured the error but ignored it.  AFAIU it'll be the same as
+> > > NULL..
+> > > 
+> > > Not sure if you tried to trigger such vTPM migration failure with postcopy
+> > > yet.  AFAIU this path will be for that.  To achieve your goal and make sure
+> > > the error appears for postcopy too, you may want to make use of this
+> > > local_err, probably by converting below (outside the diff context):
+> > > 
+> > >         qemu_file_set_error(f, load_res);
+> > >         ...
+> > >         
+> > >         } else {
+> > >             error_report("%s: loadvm failed: %d", __func__, load_res);
+> > >             migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+> > >                                            MIGRATION_STATUS_FAILED);
+> > >         }
+> > > 
+> > > Into:
+> > > 
+> > >         error_prepend(...);
+> > >         migrate_set_error(s, local_err);
+> > > 
+> > > Some test will be needed to make sure it works.
+> > > 
+> > > Side note: we really should have some migration failure tests on mismatched
+> > > devices or device states / configs.  We have a bunch of tests under
+> > > migration-test.c.  Feel free to have a look if you like to add precopy /
+> > > postcopy unit tests for such case.  It's also ok to leave that for later -
+> > > I don't want to keep piling up work for you, and I already appreciate your
+> > > help. :)
+> > > 
+> > Yes, the postcopy errors also need to be propagated.
+> > I still need to figure out to build a test case around post-copy.
+> > Maybe we can do that in another commit/ticket.
+> 
+> Yes, for now it'll be good enough if the fix can cover postcopy for the
+> same issue.  Manual test should be OK to switch postcopy rightaway in the
+> wrong vTPM setup, and one should observe failure already, checking the
+> query-migrate on dest on errors.
 
--- 
-2.49.0
+I need to package this version of qemu and try it on beaker machine,
+in order to have 2 bare metal instances for migration.
+I tried locally, running 2 QEMU instances, but it fails because of 
+a file descriptor error, probably because I am using the same 
+qcow2 image to spin the vm.
+If there is any better way to do it, please let me know. 
+Up until now I was saving the state in to a file and restoring from it.
+I suppose postcopy requires the migration to be "live", and 2 running
+qemu instances are necessary.
+
+> 
+> It's possible that postcopy may still have an issue that might hang src
+> QEMU if it fails exactly at device transfer stage; I may need to have a
+> closer look later and see whether it's true and if it's fixable - I think
+> it is.  The ideal way is if device state migration failed when
+> postcopy_start(), then we should fail the migration and continue on src
+> QEMU (like a precopy failure, as postcopy hasn't yet really started).
+
+Yes the source QEMU hangs while trying with 2 qemu instances on the same machine,
+attached to 2 separate vTPM devices (encrypted with differen secrets).
+I suppose exit-on-error does not apply to the postcopy-ram capability because
+the destination QEMU exited.
+
+> 
+> For this specific issue, as long as the error will pop up correctly on dest
+> after postcopy failed, it should be good.
+> 
+> The auto test case can be for later.
+> 
+> [...]
+> 
+> > > > @@ -3094,27 +3099,24 @@ out:
+> > > >      return ret;
+> > > >  }
+> > > >  
+> > > > -int qemu_loadvm_state(QEMUFile *f)
+> > > > +int qemu_loadvm_state(QEMUFile *f, Error **errp)
+> > > >  {
+> > > >      MigrationState *s = migrate_get_current();
+> > > >      MigrationIncomingState *mis = migration_incoming_get_current();
+> > > > -    Error *local_err = NULL;
+> > > >      int ret;
+> > > >  
+> > > > -    if (qemu_savevm_state_blocked(&local_err)) {
+> > > > -        error_report_err(local_err);
+> > > > +    if (qemu_savevm_state_blocked(errp)) {
+> > > 
+> > > Another thing to be careful here: I didn't check whether errp can be NULL
+> > > here, likely it can.
+> > > 
+> > > In that case we'd better keep local_err, because error_setg() (inside of
+> > > qemu_savevm_state_blocked) will ignore the error otherwise..
+> > > 
+> > > static void error_setv(Error **errp,
+> > >                        const char *src, int line, const char *func,
+> > >                        ErrorClass err_class, const char *fmt, va_list ap,
+> > >                        const char *suffix)
+> > > {
+> > >     Error *err;
+> > >     int saved_errno = errno;
+> > > 
+> > >     if (errp == NULL) {
+> > >         return;
+> > >     }
+> > >     assert(*errp == NULL);
+> > >     ...
+> > > }
+> > > 
+> > > So here we can keep local_err but use error_propagate().
+> > 
+> > Please correct me if I am wrong, as far as I have checked,
+> > qemu_loadvm_state() is called at 3 places
+> >  - load_snapshot
+> >  - qmp_xen_load_devices_state
+> >  - process_incoming_migration_co
+> > and in all these functions, Error **errp is passed.
+> > I did not find a function that passes NULL.
+> > Is it still required to declare and pass a local_err object?
+> 
+> In that case (this should include all the callers of the three call sites
+> never passing in NULL) we're almost asserting errp!=NULL, then it should be
+> OK.
+> 
+> Thanks,
+> 
+> -- 
+> Peter Xu
+> 
+
+
+Thanks,
+Arun
 
 
