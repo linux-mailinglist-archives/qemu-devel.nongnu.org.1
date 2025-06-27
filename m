@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EECAEB64E
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 13:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7198AEB677
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 13:33:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uV7DO-0005OH-4A; Fri, 27 Jun 2025 07:25:54 -0400
+	id 1uV7Kn-0000Se-1F; Fri, 27 Jun 2025 07:33:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uV7DC-0005Et-UZ
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 07:25:43 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1uV7KT-0000NF-2F
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 07:33:13 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uV7D6-0007EG-3A
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 07:25:42 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-453749aef9eso7555445e9.3
- for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 04:25:35 -0700 (PDT)
+ id 1uV7KP-0001Vr-63
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 07:33:12 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3a50fc819f2so1456530f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 04:33:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751023534; x=1751628334; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751023987; x=1751628787; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QF6hdZWmESZx/oo7D4Z38KZfMJLBNKw+PdVmoS4LcNc=;
- b=IVS7drpofj61UQqc08ybulXbLTQtOap4QPQCDY6L73gPaPUOKRvgjBBNztVXFRHFdj
- 7jrHYN2egHiMAVVZ4GoL4SCQBMNaDdKH5TghXf+wEoEI2dqizwnXu0WkGC7tuQL6ZMic
- um/Draoow4jUmU9LywO30RAzwMPm5WskM3oE6sfd5pC9S4m/BFPje0Ss7RUDAAD0lZBz
- TsSyxGgBDOpoNI2w6fjBOiyRNgigPv9LtBGw9qYQeQEbCei51ZryUTLxb4u46RNTAM92
- WI2SVqL24pCw4M3E0PMvcwucl+q8GNcC4nKQaY3d71uHxho3iDxJeFqQYc60FU1oZ7n2
- Krcg==
+ bh=soWxuif64h/OC65E1QvfLFWlQOaNN3QDI4MloSvMEPg=;
+ b=dcXLxxlNuF9/coLBX23SNN7ses5WPCmRExq/H8SGDGFjqnAgapEKPX3deD17byb7ls
+ 7qlTXCfBQ0UoCXIzGbGL4BGLeyVOSGOm5Nn9Rh0++9z1yezCKR01a3/H4nSQeAIMyfgT
+ rol7Jcr2Kkf91TZaeCE5NM/Y12oJChq8Sb2wgUzpi1mNxrHZ+3ck6dKbM3tcShQx3Aae
+ 38D/+NDYqyKpaXiz8vZvIhxc0RDYm5/igcYBHY1v77eCbdtKzMXBbWY4FCSdwZu5Ntgv
+ 3C/UKkB5Y0hKOo4NZBl+cAiNBdIAuxJPjDfYfH/bIQxzzMMgWmYoqleXiRuOHKq9V1zS
+ nsyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751023534; x=1751628334;
+ d=1e100.net; s=20230601; t=1751023987; x=1751628787;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QF6hdZWmESZx/oo7D4Z38KZfMJLBNKw+PdVmoS4LcNc=;
- b=Oq4cf9k56YwNOEq6GAtvVVeZKDurgYiskFH8rUw723QGBANPkCEj0kWgn4c0VOvcO8
- 7b6Y9uWf6cfyRW4MYhxQkZITsipvc1g/EDLM0hvn42p3yO9bvKFR55PFj3MBEm9BUvIC
- oPpm+JctpImgFXTpMyW8nKJAQIlizBiAgbck+KcLQUELUms7SCWxXjiLr/JpPvWG/I3s
- p2/Jm4tJeNUEz8hbAjXI4UR79BGi2olvJ83M8OiF1SIX8LOl9SW1yBa9Kk5tcML5cY9X
- UQm2kJv3F4a4V5WfsZWhoH4At8FBUMNJYf62psg5bJtcy6yZZRlrn84R3Bs1gJ75HzCg
- UtPg==
-X-Gm-Message-State: AOJu0YxXWhDmovmy/v7Yk+G6TZWpQaNlBU/qCpd1EHkQfjKgyZv70Dg9
- aXlbOc+levcU5b3DE/z1T9fTTzodLu6ipCTy7d2oxLNYgqFsmsnc8QseoUIBurmrwCA=
-X-Gm-Gg: ASbGncs+/89prJ8CI8A86TLjwlo53npaj5FSwho298p4Ia9orCAwsiY3IDjD/pyvyIy
- fwGJ4d9Z1ZFy3KOjTFtRu0+yoiAKdzvgck0TWB58k+fOkU583x5IZH2nX9o1TgIbIsv5IYUa7mv
- zGLJQ/DrpV994EeYi3X+YzMzZIwMJc+JywMvoXYFxnjNVMX/FLcGuBxLYOKdcY66FJ/1qVBYOiK
- IKfAulLxqrK9fE8NkL3N8euLRhDxCxBdRRPZKLUX7i/Mo2er1z1ea9AafqdxEE75ucmszLqcay/
- +qV85LVovEy8JatkL5QQY6ByJQayVecl92eji+km7r6+ZG83APkeoxJcbHDxgiQ=
-X-Google-Smtp-Source: AGHT+IGJf2WH30sWNSgwa0EBA8wpipWnFhJvCXFNSdBgRZn5W0Cs2ytvG1IbuXnhLzLQpznMYh1maA==
-X-Received: by 2002:a05:600c:4e11:b0:453:7713:546a with SMTP id
- 5b1f17b1804b1-4538f758197mr24870115e9.14.1751023534254; 
- Fri, 27 Jun 2025 04:25:34 -0700 (PDT)
+ bh=soWxuif64h/OC65E1QvfLFWlQOaNN3QDI4MloSvMEPg=;
+ b=ucLWO33JMGSAMMMGBbx1LbA+ZDm/s+a5Lq0+9xgQcR3VhIFxL7oWu8ST99yqgSg5Fe
+ fnvHxrWXJzVtf2FfNSyCjyV2kBomgbkh/LsHcGGL36tRa981sXz/j1jrVmGoesV+oveO
+ oNqwEj8FFPsgFUvq6YXjiSg5Q54kQ7FTLH5ld6QTNE/8TKKCmv14PtDWAij3cPMjA+kO
+ VBOTzZOq78P+4YhVBpOKh317ULK0rHTcEnvThOEhmkca1gbtuJpqRUaCFFzOngNr2keD
+ OMhZeo/WqUgAKxd7FqD5gODUr2pJmiwxbFG/awA8u74gCSvCa4ENg7beQQlxln/+0VEM
+ YKhw==
+X-Gm-Message-State: AOJu0Yynb7aMGEufA60/JIcEsYFfsk1oJfOlExDTIxFXNKD5WsI+OxrM
+ 6RtvfgEAF28aSowAOQWkgIRMfz+8EXQjPqkYgNR8jF8LqsVTrZyFlBArxMwSTWtXOiY=
+X-Gm-Gg: ASbGncsyIODX1gcQh7SAKcL1eIuN1dV2KyFZ0QOkyRyKJESw05vjZaXv6JLqygGs4N8
+ HuOXO7f1TuGwj7VkbokKd7cOJ13hj8ViN8tHvOOKVCUZuuo84yCpjD4vYEHE0vAwpklhw+F36WD
+ nzEH9GbzbOZDfryvyWbof3ZW4k7hYdWceOvvJ9SbizIqSFlDXt5A3IOCoamBoQ3WrG5SVWL9IJZ
+ TUlzGGSVtUE/xJRc5TuMJQdg7YfVxWzD+CUG1J9gs71VB8DFSx0L+/wpStBwDezRbVz72qmT870
+ Jv7PMn4u3u9q96xnZRaOBJCr1q4Em1ga95BpSVcYXZDTc6B5jNN6gnRnpggAMjmqKaf3161hrw=
+ =
+X-Google-Smtp-Source: AGHT+IEraiR9fU256rtMKCUJ5oYR82VOMyqYS7B5g9SZnIsu9lH2V56HIcyhtm3ZWv1SvRrrM/2l/w==
+X-Received: by 2002:a05:6000:490a:b0:3a5:2949:6c38 with SMTP id
+ ffacd0b85a97d-3a91846d660mr2762903f8f.52.1751023986998; 
+ Fri, 27 Jun 2025 04:33:06 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45380705351sm70294515e9.0.2025.06.27.04.25.21
+ 5b1f17b1804b1-45380d0f15esm69934365e9.1.2025.06.27.04.33.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Jun 2025 04:25:31 -0700 (PDT)
+ Fri, 27 Jun 2025 04:33:04 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9447B5F91D;
+ by draig.lan (Postfix) with ESMTP id AD1A35F924;
  Fri, 27 Jun 2025 12:25:13 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,18 +80,19 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Alexandre Iooss <erdnaxe@crans.org>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH 14/15] MAINTAINERS: add Akihiko and Dmitry as reviewers
-Date: Fri, 27 Jun 2025 12:25:10 +0100
-Message-ID: <20250627112512.1880708-15-alex.bennee@linaro.org>
+ Alexandre Iooss <erdnaxe@crans.org>, Yiwei Zhang <zzyiwei@gmail.com>,
+ qemu-stable@nongnu.org
+Subject: [PATCH 15/15] virtio-gpu: support context init multiple timeline
+Date: Fri, 27 Jun 2025 12:25:11 +0100
+Message-ID: <20250627112512.1880708-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250627112512.1880708-1-alex.bennee@linaro.org>
 References: <20250627112512.1880708-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -113,32 +115,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks for volunteering to help.
+From: Yiwei Zhang <zzyiwei@gmail.com>
 
-Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Venus and later native contexts have their own fence context along with
+multiple timelines within. Fences wtih VIRTIO_GPU_FLAG_INFO_RING_IDX in
+the flags must be dispatched to be created on the target context. Fence
+signaling also has to be handled on the specific timeline within that
+target context.
+
+Before this change, venus fencing is completely broken if the host
+driver doesn't support implicit fencing with external memory objects.
+Frames can go backwards along with random artifacts on screen if the
+host driver doesn't attach an implicit fence to the render target. The
+symptom could be hidden by certain guest wsi backend that waits on a
+venus native VkFence object for the actual payload with limited present
+modes or under special configs. e.g. x11 mailbox or xwayland.
+
+After this change, everything related to venus fencing starts making
+sense. Confirmed this via guest and host side perfetto tracing.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 94d0ea1c1928 ("virtio-gpu: Support Venus context")
+Signed-off-by: Yiwei Zhang <zzyiwei@gmail.com>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Message-Id: <20250518152651.334115-1-zzyiwei@gmail.com>
+[AJB: remove version history from commit message]
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250603110204.838117-9-alex.bennee@linaro.org>
+Message-ID: <20250603110204.838117-13-alex.bennee@linaro.org>
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/display/virtio-gpu-virgl.c | 44 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0f96a8d956..83719f1309 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2678,6 +2678,8 @@ F: include/hw/display/ramfb.h
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index 145a0b3879..94ddc01f91 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -970,6 +970,15 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
+     }
  
- virtio-gpu
- M: Alex Bennée <alex.bennee@linaro.org>
-+R: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-+R: Dmitry Osipenko <dmitry.osipenko@collabora.com>
- S: Odd Fixes
- F: hw/display/virtio-gpu*
- F: hw/display/virtio-vga.*
+     trace_virtio_gpu_fence_ctrl(cmd->cmd_hdr.fence_id, cmd->cmd_hdr.type);
++#if VIRGL_VERSION_MAJOR >= 1
++    if (cmd->cmd_hdr.flags & VIRTIO_GPU_FLAG_INFO_RING_IDX) {
++        virgl_renderer_context_create_fence(cmd->cmd_hdr.ctx_id,
++                                            VIRGL_RENDERER_FENCE_FLAG_MERGEABLE,
++                                            cmd->cmd_hdr.ring_idx,
++                                            cmd->cmd_hdr.fence_id);
++        return;
++    }
++#endif
+     virgl_renderer_create_fence(cmd->cmd_hdr.fence_id, cmd->cmd_hdr.type);
+ }
+ 
+@@ -983,6 +992,11 @@ static void virgl_write_fence(void *opaque, uint32_t fence)
+          * the guest can end up emitting fences out of order
+          * so we should check all fenced cmds not just the first one.
+          */
++#if VIRGL_VERSION_MAJOR >= 1
++        if (cmd->cmd_hdr.flags & VIRTIO_GPU_FLAG_INFO_RING_IDX) {
++            continue;
++        }
++#endif
+         if (cmd->cmd_hdr.fence_id > fence) {
+             continue;
+         }
+@@ -997,6 +1011,29 @@ static void virgl_write_fence(void *opaque, uint32_t fence)
+     }
+ }
+ 
++#if VIRGL_VERSION_MAJOR >= 1
++static void virgl_write_context_fence(void *opaque, uint32_t ctx_id,
++                                      uint32_t ring_idx, uint64_t fence_id) {
++    VirtIOGPU *g = opaque;
++    struct virtio_gpu_ctrl_command *cmd, *tmp;
++
++    QTAILQ_FOREACH_SAFE(cmd, &g->fenceq, next, tmp) {
++        if (cmd->cmd_hdr.flags & VIRTIO_GPU_FLAG_INFO_RING_IDX &&
++            cmd->cmd_hdr.ctx_id == ctx_id && cmd->cmd_hdr.ring_idx == ring_idx &&
++            cmd->cmd_hdr.fence_id <= fence_id) {
++            trace_virtio_gpu_fence_resp(cmd->cmd_hdr.fence_id);
++            virtio_gpu_ctrl_response_nodata(g, cmd, VIRTIO_GPU_RESP_OK_NODATA);
++            QTAILQ_REMOVE(&g->fenceq, cmd, next);
++            g_free(cmd);
++            g->inflight--;
++            if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
++                trace_virtio_gpu_dec_inflight_fences(g->inflight);
++            }
++        }
++    }
++}
++#endif
++
+ static virgl_renderer_gl_context
+ virgl_create_context(void *opaque, int scanout_idx,
+                      struct virgl_renderer_gl_ctx_param *params)
+@@ -1031,11 +1068,18 @@ static int virgl_make_context_current(void *opaque, int scanout_idx,
+ }
+ 
+ static struct virgl_renderer_callbacks virtio_gpu_3d_cbs = {
++#if VIRGL_VERSION_MAJOR >= 1
++    .version             = 3,
++#else
+     .version             = 1,
++#endif
+     .write_fence         = virgl_write_fence,
+     .create_gl_context   = virgl_create_context,
+     .destroy_gl_context  = virgl_destroy_context,
+     .make_current        = virgl_make_context_current,
++#if VIRGL_VERSION_MAJOR >= 1
++    .write_context_fence = virgl_write_context_fence,
++#endif
+ };
+ 
+ static void virtio_gpu_print_stats(void *opaque)
 -- 
 2.47.2
 
