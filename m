@@ -2,98 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B59DAEB3A2
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 12:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAADAEB3EA
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 12:13:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uV5td-0007Sk-Id; Fri, 27 Jun 2025 06:01:25 -0400
+	id 1uV63U-00014Q-Tl; Fri, 27 Jun 2025 06:11:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uV5tJ-0007MQ-RO
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 06:01:10 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1uV63T-00014F-1G
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 06:11:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uV5tH-0000WA-PK
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 06:01:05 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1uV63R-0005u3-5Y
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 06:11:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751018463;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1751019090;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ftOQTU+H1GTSx78MzXNxfoxlD/TQU1QHzV8siU4sn64=;
- b=ONSuQUZ/GHsKGnmlPTbEHUPu2G0ktdoUyG9G3BePr0zNZ6EXyeYkJrOTZRlJEuXq6gPz7S
- yMzoZ/i1ZLuvzM/1UctgpioXRXCk67dhKF5+zwh//s8VC4fo8e0aUPD6yW5JtcAiVsn8Tl
- aNtrrnWDTSUAs7uyk83xyQGBm803HeY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Z7m9SALfHf+PhpUtkQ46UmR8dLcfaAOpQnXAGOpxYKg=;
+ b=WLAqRo1GmG1p2hi5l+ffqRPVhAw6O9e36P2UwdQ/kKIyBP2/3hzksqP8JBKXfh9Uo1ukq1
+ JWY4Q0YK/JHL2LIzOJw2EEOZ5k9gCOSY1WJYQ0Ij7XytnAnEGCk92PxZlGEUO8XSCN8gX/
+ YXFeBIebijUSTRpEJWK9JMx1xdBvzRY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-349-NsDQu271OnuhVTkUgUhVJA-1; Fri, 27 Jun 2025 06:01:00 -0400
-X-MC-Unique: NsDQu271OnuhVTkUgUhVJA-1
-X-Mimecast-MFC-AGG-ID: NsDQu271OnuhVTkUgUhVJA_1751018459
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a6d90929d6so832752f8f.2
- for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 03:01:00 -0700 (PDT)
+ us-mta-155-n1iZkLkvNyekEQR21KcJtw-1; Fri, 27 Jun 2025 06:11:28 -0400
+X-MC-Unique: n1iZkLkvNyekEQR21KcJtw-1
+X-Mimecast-MFC-AGG-ID: n1iZkLkvNyekEQR21KcJtw_1751019088
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ae35e271028so28066466b.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 03:11:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751018457; x=1751623257;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ftOQTU+H1GTSx78MzXNxfoxlD/TQU1QHzV8siU4sn64=;
- b=UP8+WmlRRC9aev6KpeVvBvl+cl0iJKM1W4IMO68mWXBKHMIsJphauGbsYFQvL4GVBY
- DfQrg+ARwIXrSObmPfChDRSbXaHEE5YE4EC1aRMeXd+sMmp2Or4MA1xH7c5vm5YRkuka
- WtnnmRXPWVOwh+MXaDXy4363NUlW7pZ6GbvPwpH16K2LrshOKg4pkphQK9DR9lnio2Dv
- AaMbU3vcoPE1JQTU1yvLYSCO0nRHfsWh9+embsTw9aaqumST1WOxvxeLXmmGeWobbkOM
- EK8NhgvbFQwBGBWv/BoBN/eDcKefl/EREJ0jK/jcrPtGeoIADdcNq6aliMXIHR66/nsj
- TXgw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWwhBR+yH6IgqE5Jc2p4VwkVGgwaCU2beXR5gpXYTUqPc7dOn2PknNyFu0nHBmhUIg1n590Bkayz1x+@nongnu.org
-X-Gm-Message-State: AOJu0YzDo0uFvkKRf43ucmAWlKjJUxBc06qJOuUUOCHs9tyKDBO0N6ZX
- 1+ZexeYNWh+32KQuC1xCkQxDe5ki+h7qgrxwU8buOwamyrhb5Sq4d2MqwugkswnL+IZ3vuK28DW
- hdT4dTBFNlTgYt1hR7M7+ciQR1xFvp02lUvimCnAIiaU1fJpfN6Y1Q3YW
-X-Gm-Gg: ASbGnctGXSpxnMJdK5zKA2jWbB6jBGghkRlxLm9pbWW4l+yu2dFiwvG3WXW18U+m5Dr
- E5GANa+G7qTRgPl49tvxXzHsIICAhO6UklPU7AFSNN1QHS4LmAp1cWfLyBwtegEQo99MjdfvIcM
- /xcRpSWeh5vZDFzNYLm30kAkSSrcpBGCQcSLUZVg9k5XJn8Ma5YeFr3TB+hkifHUWOfZwx+giWP
- ohJKq1n2qXeYDtr2aaZBf/hpuRMGOTVNyes2loMf3tmFDcnCV7TTUeQoEPd0GYFGjvbEedz6k1c
- vnfY1NlwPfR4rDC4a4iapoeUWy5osjKV87wzQ/9U4dZ2rhTgF4oAUc8R7xiXpwSXOcu76Q==
-X-Received: by 2002:a05:6000:652:b0:3a4:d0fe:42b2 with SMTP id
- ffacd0b85a97d-3a8fdb2a48amr1949922f8f.19.1751018455266; 
- Fri, 27 Jun 2025 03:00:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHEaEPioX+cPthgf8j/Wewywxia8pqsJQM9kNEbt3J8ndZcFqdbPcvICMOj/2hMd225D7K02A==
-X-Received: by 2002:a05:6000:652:b0:3a4:d0fe:42b2 with SMTP id
- ffacd0b85a97d-3a8fdb2a48amr1949844f8f.19.1751018454409; 
- Fri, 27 Jun 2025 03:00:54 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-453923a22fbsm5359955e9.34.2025.06.27.03.00.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 27 Jun 2025 03:00:53 -0700 (PDT)
-Message-ID: <f502c91e-ffea-4b39-bedf-9503fc45e568@redhat.com>
-Date: Fri, 27 Jun 2025 12:00:51 +0200
+ d=1e100.net; s=20230601; t=1751019088; x=1751623888;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Z7m9SALfHf+PhpUtkQ46UmR8dLcfaAOpQnXAGOpxYKg=;
+ b=C9gqsHR6It2CAi1hPqhSNRBqM1wC2toaTsLQw80/i8PeA5DtRRwcswJhi8SZWjv1QX
+ lq80P/jSyHu/zNNUnZYCDS3RSURQPmYLaphbL1DGTviyGDzJvulnSCzNUMCYrOEUkkYp
+ wrSojTLIWb3J+Dr+ucTvshWkLKnTLkG0K9L68DYaP0w0eCLgZqTLqeID1kzhPAXOeV1x
+ b3/CDgOegMnQkV5FXqpLR+jMLh6C7H00yy2pOKoeKZCzhw/T5KNVZonjyP2x3ajHUeDe
+ Hwdkyw0JdFNRFB/GEIrv+95ZbwgQwCBK4EvkcT+2uwkFXqtILlfLyRFC5xIXgdYqAHzq
+ 7KQQ==
+X-Gm-Message-State: AOJu0YwSxlxCJ31TFL2jSz2vAszXTKl3cru96vZVks6es+oQrZ6//J2H
+ cFjX/vaEoIfoZNUTq3Yhsm8iATRO//fGJKqcxIB6fVoWfIxmosLt/2BB1+JbH/FAkDj8WCMtLJ6
+ Mm5TbfhVWrrotkASE1pZnd861tonNI7pgnV5MfZY4ZCCqR0d62fH9VD0hCcpDGKfK7f6kOM6hU8
+ tLa0SjrN2TUoGwyfre5tLhkwvgfkOoJjg=
+X-Gm-Gg: ASbGncupa28qAVqZWGrOFmKsUNXMrSG238ABeXbIAuYHkmkQsBotKTD0ypAEJCihDJZ
+ 4Rt6qp7aUcVeypJQjGm7alM+9yzCtrB43icOqZOmZXbF1hrAnuRJ2PxNz0aNRKT04zYUtE5b5ZA
+ PGpWzm
+X-Received: by 2002:a17:907:3e04:b0:ae0:4820:244c with SMTP id
+ a640c23a62f3a-ae34fcf462emr182248766b.8.1751019087541; 
+ Fri, 27 Jun 2025 03:11:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmoQqOVoheYXIqAflPdG6LXRV7mNvk6NuTepzgp70zD/2DF6xlSRxd4OCxYBTtEHIiUc15QQ/9gDLcsFRYxEY=
+X-Received: by 2002:a17:907:3e04:b0:ae0:4820:244c with SMTP id
+ a640c23a62f3a-ae34fcf462emr182245566b.8.1751019087096; Fri, 27 Jun 2025
+ 03:11:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 19/32] tests/qtest/bios-tables-test: Update ARM DSDT
- reference blobs
-To: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- peter.maydell@linaro.org, imammedo@redhat.com, gustavo.romero@linaro.org,
- anisinha@redhat.com, mst@redhat.com, shannon.zhaosl@gmail.com
-Cc: pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org,
- alex.bennee@linaro.org
-References: <20250627095620.3300028-1-eric.auger@redhat.com>
- <20250627095620.3300028-20-eric.auger@redhat.com>
-Content-Language: en-US
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250627095620.3300028-20-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+References: <cover.1749820158.git.roy.hopkins@randomman.co.uk>
+ <faf5775bd7d83b023e14f6c04cccec78a8a80037.1749820158.git.roy.hopkins@randomman.co.uk>
+In-Reply-To: <faf5775bd7d83b023e14f6c04cccec78a8a80037.1749820158.git.roy.hopkins@randomman.co.uk>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Fri, 27 Jun 2025 15:41:14 +0530
+X-Gm-Features: Ac12FXwmk5SlC8ydVwKwq4EHfpzXRZGIvusW2kRscsWIw-S9nHxknXxW39kTAGo
+Message-ID: <CAK3XEhM0V=UmqLxhSjO_5Z-mi4VBWQWKvdhwG30DKgw-+ZmmNg@mail.gmail.com>
+Subject: Re: [PATCH v8 03/16] backends/igvm: Add IGVM loader and configuration
+To: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Marcelo Tosatti <mtosatti@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez <slp@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, 
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+ Michael Roth <michael.roth@amd.com>, Gerd Hoffman <kraxel@redhat.com>, 
+ Pankaj Gupta <pankaj.gupta@amd.com>, Joerg Roedel <joro@8bytes.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,259 +109,188 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-
-On 6/27/25 11:55 AM, Eric Auger wrote:
-> Changes relate to the introduction of pieces related to
-> acpi-index static support along with root ports with no hotplug.
+On Fri, Jun 13, 2025 at 7:24=E2=80=AFPM Roy Hopkins <roy.hopkins@randomman.=
+co.uk> wrote:
 >
+> Adds an IGVM loader to QEMU which processes a given IGVM file and
+> applies the directives within the file to the current guest
+> configuration.
+>
+> The IGVM loader can be used to configure both confidential and
+> non-confidential guests. For confidential guests, the
+> ConfidentialGuestSupport object for the system is used to encrypt
+> memory, apply the initial CPU state and perform other confidential guest
+> operations.
+>
+> The loader is configured via a new IgvmCfg QOM object which allows the
+> user to provide a path to the IGVM file to process.
+>
+> Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> Acked-by: Gerd Hoffman <kraxel@redhat.com>
+> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+>  backends/igvm-cfg.c       |  51 +++
+>  backends/igvm.c           | 807 ++++++++++++++++++++++++++++++++++++++
+>  backends/igvm.h           |  22 ++
+>  backends/meson.build      |   2 +
+>  include/system/igvm-cfg.h |  46 +++
+>  qapi/qom.json             |  17 +
+>  6 files changed, 945 insertions(+)
+>  create mode 100644 backends/igvm-cfg.c
+>  create mode 100644 backends/igvm.c
+>  create mode 100644 backends/igvm.h
+>  create mode 100644 include/system/igvm-cfg.h
+>
+
+<snip>
+
 > +
-> +    Scope (\_SB.PCI0)
-> +    {
-> +        Method (EDSM, 5, Serialized)
-> +        {
-> +            If ((Arg2 == Zero))
-> +            {
-> +                Local0 = Buffer (One)
-> +                    {
-> +                         0x00                                             // .
-> +                    }
-> +                If ((Arg0 != ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
-> +                {
-> +                    Return (Local0)
-> +                }
+> +static int qigvm_process_mem_region(QIgvm *ctx, unsigned start_index,
+> +                                    uint64_t gpa_start, unsigned page_co=
+unt,
+> +                                    const IgvmPageDataFlags *flags,
+> +                                    const IgvmPageDataType page_type,
+> +                                    Error **errp)
+> +{
+> +    uint8_t *region;
+> +    IgvmHandle data_handle;
+> +    const void *data;
+> +    uint32_t data_size;
+> +    unsigned page_index;
+> +    bool zero =3D true;
+> +    const uint64_t page_size =3D flags->is_2mb_page ? 0x200000 : 0x1000;
+> +    int result;
+> +    int cgs_page_type;
 > +
-> +                If ((Arg1 < 0x02))
-> +                {
-> +                    Return (Local0)
-> +                }
+> +    region =3D qigvm_prepare_memory(ctx, gpa_start, page_count * page_si=
+ze,
+> +                                  start_index, errp);
+> +    if (!region) {
+> +        return -1;
+> +    }
 > +
-> +                Local0 [Zero] = 0x81
-> +                Return (Local0)
+> +    for (page_index =3D 0; page_index < page_count; page_index++) {
+> +        data_handle =3D igvm_get_header_data(
+> +            ctx->file, IGVM_HEADER_SECTION_DIRECTIVE, page_index + start=
+_index);
+> +        if (data_handle =3D=3D IGVMAPI_NO_DATA) {
+> +            /* No data indicates a zero page */
+> +            memset(&region[page_index * page_size], 0, page_size);
+> +        } else if (data_handle < 0) {
+> +            error_setg(
+> +                errp,
+> +                "IGVM file contains invalid page data for directive with=
+ "
+> +                "index %d",
+> +                page_index + start_index);
+> +            return -1;
+> +        } else {
+> +            zero =3D false;
+> +            data_size =3D igvm_get_buffer_size(ctx->file, data_handle);
+> +            if (data_size < page_size) {
+> +                memset(&region[page_index * page_size], 0, page_size);
+> +            } else if (data_size > page_size) {
+> +                error_setg(errp,
+> +                           "IGVM file contains page data with invalid si=
+ze for "
+> +                           "directive with index %d",
+> +                           page_index + start_index);
+> +                return -1;
 > +            }
-> +
-> +            If ((Arg2 == 0x07))
-> +            {
-> +                Local0 = Package (0x02)
-> +                    {
-> +                        Zero,
-> +                        ""
-> +                    }
-> +                Local1 = DerefOf (Arg4 [Zero])
-> +                Local0 [Zero] = Local1
-> +                Return (Local0)
-> +            }
-> +        }
-> +
-> +        Device (S00)
-> +        {
-> +            Name (_ADR, Zero)  // _ADR: Address
-> +        }
-> +
-> +        Device (S08)
-> +        {
-> +            Name (_ADR, 0x00010000)  // _ADR: Address
-> +        }
-> +
-> +        Device (S10)
-> +        {
-> +            Name (_ADR, 0x00020000)  // _ADR: Address
+> +            data =3D igvm_get_buffer(ctx->file, data_handle);
+> +            memcpy(&region[page_index * page_size], data, data_size);
+> +            igvm_free_buffer(ctx->file, data_handle);
 > +        }
 > +    }
-after regenerating the blobs using
+> +
+> +    /*
+> +     * If a confidential guest support object is provided then use it to=
+ set the
+> +     * guest state.
+> +     */
+> +    if (ctx->cgs) {
+> +        cgs_page_type =3D
+> +            qigvm_type_to_cgs_type(page_type, flags->unmeasured, zero);
+> +        if (cgs_page_type < 0) {
+> +            error_setg(errp,
+> +                       "Invalid page type in IGVM file. Directives: %d t=
+o %d, "
+> +                       "page type: %d",
+> +                       start_index, start_index + page_count, page_type)=
+;
+> +            return -1;
+> +        }
+> +
+> +        result =3D ctx->cgsc->set_guest_state(
+> +            gpa_start, region, page_size * page_count, cgs_page_type, 0,=
+ errp);
+> +        if (result < 0) {
+> +            return result;
+> +        }
+> +    }
+> +    return 0;
+> +}
+> +
+> +static int qigvm_process_mem_page(QIgvm *ctx,
+> +                                  const IGVM_VHS_PAGE_DATA *page_data,
+> +                                  Error **errp)
+> +{
+> +    if (page_data) {
+> +        if (ctx->region_page_count =3D=3D 0) {
+> +            ctx->region_start =3D page_data->gpa;
+> +            ctx->region_start_index =3D ctx->current_header_index;
+> +        } else {
+> +            if (!qigvm_page_attrs_equal(ctx->file, ctx->current_header_i=
+ndex,
+> +                                        page_data,
+> +                                        &ctx->region_prev_page_data) ||
+> +                ((ctx->region_prev_page_data.gpa +
+> +                  (ctx->region_prev_page_data.flags.is_2mb_page ? 0x2000=
+00 :
+> +                                                                  0x1000=
+)) !=3D
+> +                 page_data->gpa) ||
+> +                (ctx->region_last_index !=3D (ctx->current_header_index =
+- 1))) {
+> +                /* End of current region */
+> +                if (qigvm_process_mem_region(
+> +                        ctx, ctx->region_start_index, ctx->region_start,
+> +                        ctx->region_page_count,
+> +                        &ctx->region_prev_page_data.flags,
+> +                        ctx->region_prev_page_data.data_type, errp) < 0)=
+ {
+> +                    return -1;
+> +                }
+> +                ctx->region_page_count =3D 0;
+> +                ctx->region_start =3D page_data->gpa;
+> +                ctx->region_start_index =3D ctx->current_header_index;
 
-../tests/data/acpi/rebuild-expected-aml.sh
+Should we return here? Is there any need for the memcpy() below?
 
-I still get an error :
-Using expected file 'tests/data/acpi/aarch64/virt/DSDT'
-acpi-test: Warning! DSDT binary file mismatch. Actual
-[aml:/tmp/aml-2YB972], Expected [aml:tests/data/acpi/aarch64/virt/DSDT].
-See source file tests/qtest/bios-tables-test.c for instructions on how
-to update expected files.
-acpi-test: Warning! DSDT mismatch. Actual [asl:/tmp/asl-O0B972.dsl,
-aml:/tmp/aml-2YB972], Expected [asl:/tmp/asl-NO6872.dsl,
-aml:tests/data/acpi/aarch64/virt/DSDT].
-
-../..
-
--
--        Device (S10)
--        {
--            Name (_ADR, 0x00020000)  // _ADR: Address
--        }
-     }
- }
- 
-**
-ERROR:../tests/qtest/bios-tables-test.c:554:test_acpi_asl: assertion
-failed: (all_tables_match)
-
-(test program exited with status code -6)
-
-
-I don't get what is wrong.
-
-Thoughts?
-
-Eric
->  }
->
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->
-> ---
->
-> above changes are reported after running make check V=2
-> then I launched ../tests/data/acpi/rebuild-expected-aml.sh from the
-> build directory and it putput those reference blobs.
->
-> But I run make check V=2 after committing those changes I get and error
-> which looks totally unexpected to me:
->
-> acpi-test: Warning! DSDT binary file mismatch. Actual [aml:/tmp/aml-LZSL82], Expected [aml:tests/data/acpi/aarch64/virt/DSDT].
-> See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
-> acpi-test: Warning! DSDT mismatch. Actual [asl:/tmp/asl-FTSL82.dsl, aml:/tmp/aml-LZSL82], Expected [asl:/tmp/asl-ZAWL82.dsl, aml:tests/data/acpi/aarch64/virt/DSDT].
-> --- /tmp/asl-ZAWL82.dsl	2025-06-27 03:34:45.518848387 -0400
-> +++ /tmp/asl-FTSL82.dsl	2025-06-27 03:34:45.514848036 -0400
-> @@ -1,30 +1,30 @@
->  /*
->   * Intel ACPI Component Architecture
->   * AML/ASL+ Disassembler version 20210604 (64-bit version)
->   * Copyright (c) 2000 - 2021 Intel Corporation
->   *
->   * Disassembling to symbolic ASL+ operators
->   *
-> - * Disassembly of tests/data/acpi/aarch64/virt/DSDT, Fri Jun 27 03:34:45 2025
-> + * Disassembly of /tmp/aml-LZSL82, Fri Jun 27 03:34:45 2025
->   *
->   * Original Table Header:
->   *     Signature        "DSDT"
-> - *     Length           0x000014BE (5310)
-> + *     Length           0x000014AD (5293)
->   *     Revision         0x02
-> - *     Checksum         0x8C
-> + *     Checksum         0xEA
->   *     OEM ID           "BOCHS "
->   *     OEM Table ID     "BXPC    "
->   *     OEM Revision     0x00000001 (1)
->   *     Compiler ID      "BXPC"
->   *     Compiler Version 0x00000001 (1)
->   */
->  DefinitionBlock ("", "DSDT", 2, "BOCHS ", "BXPC    ", 0x00000001)
->  {
->      Scope (\_SB)
->      {
->          Device (C000)
->          {
->              Name (_HID, "ACPI0007" /* Processor Device */)  // _HID: Hardware ID
->              Name (_UID, Zero)  // _UID: Unique ID
->          }
->
-> @@ -1929,24 +1929,19 @@
->                      }
->                  Local1 = DerefOf (Arg4 [Zero])
->                  Local0 [Zero] = Local1
->                  Return (Local0)
->              }
->          }
->
->          Device (S00)
->          {
->              Name (_ADR, Zero)  // _ADR: Address
->          }
->
->          Device (S08)
->          {
->              Name (_ADR, 0x00010000)  // _ADR: Address
->          }
-> -
-> -        Device (S10)
-> -        {
-> -            Name (_ADR, 0x00020000)  // _ADR: Address
-> -        }
->      }
->  }
-> ---
->  tests/qtest/bios-tables-test-allowed-diff.h   |   5 -----
->  tests/data/acpi/aarch64/virt/DSDT             | Bin 5158 -> 5310 bytes
->  .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5244 -> 5379 bytes
->  tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6519 -> 6654 bytes
->  tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7603 -> 7768 bytes
->  tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5360 -> 5495 bytes
->  6 files changed, 5 deletions(-)
->
-> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-> index abe00ad4ee..dfb8523c8b 100644
-> --- a/tests/qtest/bios-tables-test-allowed-diff.h
-> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
-> @@ -1,6 +1 @@
->  /* List of comma-separated changed AML files to ignore */
-> -"tests/data/acpi/aarch64/virt/DSDT",
-> -"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
-> -"tests/data/acpi/aarch64/virt/DSDT.memhp",
-> -"tests/data/acpi/aarch64/virt/DSDT.pxb",
-> -"tests/data/acpi/aarch64/virt/DSDT.topology",
-> diff --git a/tests/data/acpi/aarch64/virt/DSDT b/tests/data/acpi/aarch64/virt/DSDT
-> index acab6e65febbc210158d4c39be0680bbb90250f5..b897d667971500da4732000091a6f0828d05d89e 100644
-> GIT binary patch
-> delta 173
-> zcmZ3cu}_oBCD<iop9lj3Q_n^&8IgJccg`5S_+Y2_0B27F5pPykmtbGs1!j}87zzZL
-> z85t55NKKlYAt=lxaKZfK(_qso--+U{d?gP%`z}dXz&<sTi)l$h0as&30t3U6gatB_
-> zv$)s`gjksvco`B3nmckB7!nH-A(GKe+`$G0@f`7vE<p^@P5i+I7V#YMl8!DxJPZts
-> OU=c&8G!Fv<69WJ)j4yfs
->
-> delta 19
-> acmdm|xlDu0CD<iIO@x7g>C8qh84&<COa$Tp
->
-> diff --git a/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt b/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt
-> index 54c27e7d95b4956ed1b5dee0d299ccb08dc2a73e..2cef095bcc1bb404f8cd9ec77a879ed81c191875 100644
-> GIT binary patch
-> delta 156
-> zcmeyP(X7Sg66_MfEXu&Zv}_|+kx0FO8%K;@e6Uk|fU~E8h&QXNORz8R0<+0k3<ZMB
-> zj0_12q$W+y5ESMTxL|(rX|QRP??mxezLJNXeU~IGV4s@F#k3@$fUB`1fq`L3!UCDe
-> zSzPP|Laa;-ybK8i%^f)m42cDa5XtB!?qCChc#e2Smmr4dCjMXpi+GNB4o8<D9tH+R
-> F1_1j$EA9XQ
->
-> delta 19
-> acmZqH`lG?+66_LEBf`MI)VYzXNCW^oYz1ck
->
-> diff --git a/tests/data/acpi/aarch64/virt/DSDT.memhp b/tests/data/acpi/aarch64/virt/DSDT.memhp
-> index 4330bc97cba0950191c45ac833533db7a190db81..372ca3d7fb1e2927c7c12f97eec406d597f294ab 100644
-> GIT binary patch
-> delta 156
-> zcmexv^v{^fCD<k8pCkhV6Zb~0T*-O?H;x#+_+Y2_0B27F5pPykmtbGs1!j}87zzZL
-> z85t55NKKlYAt=lxaKZfK(_qso--+U{d?gP%`z}dXz&<sTi)l$h0as&30t3U6gatB_
-> zv$)s`gjksvco`B3nmckB7!nH-A(GKe+`$G0@f`7vE<p^@P5i+I7V#YM9F8tQJPZts
-> F3;>E4EZYD8
->
-> delta 19
-> acmexo{N0GlCD<jTT#|u->Fq|YTuA^&WCm0K
->
-> diff --git a/tests/data/acpi/aarch64/virt/DSDT.pxb b/tests/data/acpi/aarch64/virt/DSDT.pxb
-> index 7fdbc03e2bf9fb7d35704779253de36e362f0bf9..c2779882494e16920787b8ab7b4cb3c3b70f224b 100644
-> GIT binary patch
-> delta 168
-> zcmdmNeZz*!CD<h-LXLrf$!jCmN?BzA7p@q+_+Y2_0B27F5pPykmtbGs1!j}87zzZL
-> z85t55NKKl&K}IZRNx}m5shM0%OA-pW8aomg7?va~keQst#a<x9%EZ9SkWkRvk;A}{
-> uSda*jjBer%HZX|ih<9`eVu)^%2{y2RaCjIP7#YxH`GXCiN_iL<m>2+L6)WZd
->
-> delta 19
-> acmca%v)P)<CD<iovn&Gx)9sC1D`f#g-Uey_
->
-> diff --git a/tests/data/acpi/aarch64/virt/DSDT.topology b/tests/data/acpi/aarch64/virt/DSDT.topology
-> index 969b4f6560d3ae39f5b7e0064b7122905476fce8..ebbeedc1ed30d811315c350f4cb42f8aa265af73 100644
-> GIT binary patch
-> delta 156
-> zcmeyM`CW_4CD<jTT$F)<>HJ2nXCn0iZX7Xs@xe~<0nVNVBHpa7F2TOM3(O{GF%$?g
-> zGcqJBkeW0(Lr|DY;DY(dr@^LGz7xe?`AQyk_Fa;&fPHEv7t@l20<Ol61O|pB2@7N<
-> zXK}F?2(dCT@G>M6G<W1MFeDZvLL{S`xPuK0;yL0SU4j^*oA`qbEaExhIUHSrco-NM
-> F8359@EocA$
->
-> delta 19
-> acmeya^+A)%CD<k8g9rly)25AF&qM%8i3Z^S
->
+> +            }
+> +        }
+> +        memcpy(&ctx->region_prev_page_data, page_data,
+> +               sizeof(ctx->region_prev_page_data));
+> +        ctx->region_last_index =3D ctx->current_header_index;
+> +        ctx->region_page_count++;
+> +    } else {
+> +        if (ctx->region_page_count > 0) {
+> +            if (qigvm_process_mem_region(
+> +                    ctx, ctx->region_start_index, ctx->region_start,
+> +                    ctx->region_page_count, &ctx->region_prev_page_data.=
+flags,
+> +                    ctx->region_prev_page_data.data_type, errp) < 0) {
+> +                return -1;
+> +            }
+> +            ctx->region_page_count =3D 0;
+> +        }
+> +    }
+> +    return 0;
+> +}
+> +
 
 
