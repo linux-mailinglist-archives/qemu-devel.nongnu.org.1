@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE432AEAFF8
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 09:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAF9AEB322
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 11:40:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uV3Jj-0004yD-Vi; Fri, 27 Jun 2025 03:16:12 -0400
+	id 1uV5Z5-0005pl-Db; Fri, 27 Jun 2025 05:40:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uV3Jh-0004xu-Kg
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 03:16:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1uV5Z1-0005mU-Bp
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 05:40:07 -0400
+Received: from mx2.zhaoxin.com ([61.152.208.219])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uV3Ja-0001UZ-5a
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 03:16:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751008559;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RUX86QuLkGfEhzHI3W2THyEIAS6wLpO8cXysEh9kOCU=;
- b=hxmMCboCgfv3+qH7mNkXfhFUEAMlr4Fvj/rghtdf4bGgUI2uWZpquUCq9coAx4VOlWbsd4
- geJ7gdXq3XmBE6fGaWD2E/GN/qfhoaf0WSb9ndLBZHQJxTDOb9MXyVRz8Vkt1GwtUMobfn
- 37YwJxefOxuFk3RIY1ZR004iePew8BM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-161-tZyOmKDYPjqTFiE8l8QesA-1; Fri,
- 27 Jun 2025 03:15:55 -0400
-X-MC-Unique: tZyOmKDYPjqTFiE8l8QesA-1
-X-Mimecast-MFC-AGG-ID: tZyOmKDYPjqTFiE8l8QesA_1751008553
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 501AB1955F38; Fri, 27 Jun 2025 07:15:53 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.75])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BA01C180035C; Fri, 27 Jun 2025 07:15:47 +0000 (UTC)
-Date: Fri, 27 Jun 2025 08:15:44 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Shaoqin Huang <shahuang@redhat.com>
-Cc: Eric Auger <eauger@redhat.com>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 2/2] hw/i386: Add the ramfb romfile compatatibility
-Message-ID: <aF5FD-mvsh5-eMcX@redhat.com>
-References: <20250617030521.2109305-1-shahuang@redhat.com>
- <20250617030521.2109305-3-shahuang@redhat.com>
- <aa4ef145-9e08-4ad9-a152-dd8fa2371436@redhat.com>
- <ba75ac62-db52-491e-8944-2bf27106d0a6@redhat.com>
- <8c3cce88-fab5-4bf1-bc6b-804730e9889d@redhat.com>
- <0d59875a-88a0-41f2-99d4-4e7a19de0e14@redhat.com>
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1uV5Yy-0001LJ-P3
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 05:40:07 -0400
+X-ASG-Debug-ID: 1751017194-1eb14e1c3a1fa40001-jgbH7p
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by
+ mx2.zhaoxin.com with ESMTP id hjHWuGLffw1Dhp5h (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Fri, 27 Jun 2025 17:39:54 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Fri, 27 Jun
+ 2025 17:39:54 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([::1]) by ZXSHMBX1.zhaoxin.com
+ ([fe80::2c07:394e:4919:4dc1%7]) with mapi id 15.01.2507.044; Fri, 27 Jun 2025
+ 17:39:54 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from [192.168.31.91] (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Fri, 27 Jun
+ 2025 13:52:35 +0800
+Message-ID: <d16b665f-8d37-4c20-b578-4bb8f87b120e@zhaoxin.com>
+Date: Fri, 27 Jun 2025 13:52:33 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0d59875a-88a0-41f2-99d4-4e7a19de0e14@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Subject: Re: [PATCH 3/4] i386/cpu: Mark ECX/EDX in CPUID 0x80000008 leaf as
+ reserved for Intel
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>
+X-ASG-Orig-Subj: Re: [PATCH 3/4] i386/cpu: Mark ECX/EDX in CPUID 0x80000008
+ leaf as reserved for Intel
+CC: Xiaoyao Li <xiaoyao.li@intel.com>, Tao Su <tao1.su@intel.com>, Yi Lai
+ <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
+ <qemu-devel@nongnu.org>
+References: <20250627035129.2755537-1-zhao1.liu@intel.com>
+ <20250627035129.2755537-4-zhao1.liu@intel.com>
+In-Reply-To: <20250627035129.2755537-4-zhao1.liu@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.28.66.62]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 6/27/2025 5:39:53 PM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1751017194
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1470
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.143463
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+Received-SPF: pass client-ip=61.152.208.219;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,114 +97,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 27, 2025 at 01:37:55PM +0800, Shaoqin Huang wrote:
-> Hi Eric,
-> 
-> On 6/26/25 4:01 PM, Eric Auger wrote:
-> > 
-> > 
-> > On 6/26/25 4:05 AM, Shaoqin Huang wrote:
-> > > Hi Eric,
-> > > 
-> > > On 6/23/25 5:20 PM, Eric Auger wrote:
-> > > > 
-> > > > 
-> > > > On 6/17/25 5:05 AM, Shaoqin Huang wrote:
-> > > > > Set the "use-legacy-x86-rom" property to false by default, and only set
-> > > > > it to true on x86 since only x86 will need it.
-> > > > s/compatatibility/compatibility in the title
-> > > 
-> > > Ok. Will fix it.
-> > > 
-> > > > > 
-> > > > > Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
-> > > > > ---
-> > > > >    hw/display/ramfb-standalone.c | 2 +-
-> > > > >    hw/i386/pc_q35.c              | 3 +++
-> > > > >    hw/vfio/pci.c                 | 2 +-
-> > > > >    3 files changed, 5 insertions(+), 2 deletions(-)
-> > > > > 
-> > > > > diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-
-> > > > > standalone.c
-> > > > > index af1175bf96..ddbf42f181 100644
-> > > > > --- a/hw/display/ramfb-standalone.c
-> > > > > +++ b/hw/display/ramfb-standalone.c
-> > > > > @@ -63,7 +63,7 @@ static const VMStateDescription ramfb_dev_vmstate = {
-> > > > >      static const Property ramfb_properties[] = {
-> > > > >        DEFINE_PROP_BOOL("x-migrate", RAMFBStandaloneState, migrate,
-> > > > > true),
-> > > > > -    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState,
-> > > > > use_legacy_x86_rom, true),
-> > > > > +    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState,
-> > > > > use_legacy_x86_rom, false),
-> > > > >    };
-> > > > >      static void ramfb_class_initfn(ObjectClass *klass, void *data)
-> > > > > diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> > > > > index fd96d0345c..f6d89578d0 100644
-> > > > > --- a/hw/i386/pc_q35.c
-> > > > > +++ b/hw/i386/pc_q35.c
-> > > > > @@ -45,6 +45,7 @@
-> > > > >    #include "hw/i386/pc.h"
-> > > > >    #include "hw/i386/amd_iommu.h"
-> > > > >    #include "hw/i386/intel_iommu.h"
-> > > > > +#include "hw/vfio/pci.h"
-> > > > >    #include "hw/virtio/virtio-iommu.h"
-> > > > >    #include "hw/display/ramfb.h"
-> > > > >    #include "hw/ide/pci.h"
-> > > > > @@ -67,6 +68,8 @@
-> > > > >      static GlobalProperty pc_q35_compat_defaults[] = {
-> > > > >        { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "39" },
-> > > > > +    { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
-> > > > > +    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
-> > > > this will only keep the legacy behavior along with q35 machine type but
-> > > > not on other machines being used for x86. what about pc-i440fx? Doesn't
-> > > > it apply to it as well? Are there other machine types also impacted.
-> > > 
-> > > Ok I will also add it with pc-i440fx. I think only q35 and i440fx are
-> > > impacted.
-> > > 
-> > > > 
-> > > > Also what about Daniel's comment in v3:
-> > > > https://lore.kernel.org/all/aEak8utPPkHepVfR@redhat.com/
-> > > > "For non-x86, historical versioned machine types will need
-> > > > likely it set to true, in order to avoid the memory layout
-> > > > being changed IIUC."
-> > > > 
-> > > > Is it actually needed?
-> > > 
-> > > If those machine types need to set it to true. I think they can set it
-> > > after they have this property.
-> > nope it does not work like that. In case we really need to take care of
-> > this, this must be handled by compats.
-> 
-> If so. Why don't we still keep the "use-legacy-x86-rom" default to true, and
-> only set it to false to those arch which doesn't need it just like my
-> original implementation.
-> 
-> Because I don't really know how other arch's memoery layout was impacted by
-> this property set to false. I think keep their original behavior and only
-> change it on arm64 is a good idea.
-> 
-> How do you think about it?
-
-No, the default value of the property shoudl reflect the long
-term desired behaviour - in this case 'use-legacy-x86-rom = false'.
-
-We must then reverse this default to 'true' for ALL historical versioned
-machine types on ALL architectures, where this device is built, or any
-specific machines where we want to keep the historical behaviour going
-forward.
 
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+On 6/27/25 11:51 AM, Zhao Liu wrote:
+> 
+> 
+> Per SDM,
+> 
+> 80000008H EAX Linear/Physical Address size.
+>                Bits 07-00: #Physical Address Bits*.
+>                Bits 15-08: #Linear Address Bits.
+>                Bits 31-16: Reserved = 0.
+>            EBX Bits 08-00: Reserved = 0.
+>                Bit 09: WBNOINVD is available if 1.
+>                Bits 31-10: Reserved = 0.
+>            ECX Reserved = 0.
+>            EDX Reserved = 0.
+> 
+> ECX/EDX in CPUID 0x80000008 leaf are reserved. Encode these 2 registers
+> as 0 for Intel.
+> 
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>   target/i386/cpu.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 6d590a9af389..5d5a227d4c8a 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -8391,6 +8391,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>                *eax |= (cpu->guest_phys_bits << 16);
+>           }
+>           *ebx = env->features[FEAT_8000_0008_EBX];
+> +
+> +        if (cpu->vendor_cpuid_only_v2 && IS_INTEL_CPU(env)) {
+
+Please add IS_ZHAOXIN_CPU(env), Zhaoxin follow SDM's definition on cpuid leaf 
+0x8000_0008.
+
+> +            *ecx = *edx = 0;
+> +            break;
+> +        }
+> +
+>           if (threads_per_pkg > 1) {
+>               /*
+>                * Bits 15:12 is "The number of bits in the initial
+> --
+> 2.34.1
+> 
 
 
