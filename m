@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FBBEAEAD10
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 04:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40636AEAD48
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 05:26:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uUzGM-0007gY-BZ; Thu, 26 Jun 2025 22:56:26 -0400
+	id 1uUzhh-0005Gf-7E; Thu, 26 Jun 2025 23:24:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uUzGK-0007gK-Na; Thu, 26 Jun 2025 22:56:24 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uUzGJ-0006B6-5z; Thu, 26 Jun 2025 22:56:24 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 27 Jun
- 2025 10:56:07 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Fri, 27 Jun 2025 10:56:07 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
- list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v2 3/3] hw/arm: Integrate ASPEED OTP memory support into
- AST2600 SoCs
-Date: Fri, 27 Jun 2025 10:56:05 +0800
-Message-ID: <20250627025606.631167-4-kane_chen@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250627025606.631167-1-kane_chen@aspeedtech.com>
-References: <20250627025606.631167-1-kane_chen@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1uUzhd-0005Fe-LF
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 23:24:37 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1uUzhY-00065T-J0
+ for qemu-devel@nongnu.org; Thu, 26 Jun 2025 23:24:37 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxJHDmDl5omggeAQ--.25680S3;
+ Fri, 27 Jun 2025 11:24:22 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMBxn8XiDl5oz10sAQ--.3598S2;
+ Fri, 27 Jun 2025 11:24:18 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: maobibo@loongson.cn
+Cc: qemu-devel@nongnu.org,
+	philmd@linaro.org,
+	jiaxun.yang@flygoat.com
+Subject: [PATCH v3 0/9] hw/loongarch: add the advanced extended interrupt
+ controllers (AVECINTC) support
+Date: Fri, 27 Jun 2025 11:01:29 +0800
+Message-Id: <20250627030138.2482055-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=kane_chen@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-CM-TRANSID: qMiowMBxn8XiDl5oz10sAQ--.3598S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,51 +60,102 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Kane Chen <kane_chen@aspeedtech.com>
-From:  Kane Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+ntroduce the advanced extended interrupt controllers (AVECINTC). This
+feature will allow each core to have 256 independent interrupt vectors
+and MSI interrupts can be independently routed to any vector on any CPU.
 
-The has_otpmem attribute is enabled in the SBC subclasses for AST2600
-to control the presence of OTP support per SoC type.
+The whole topology of irqchips in LoongArch machines looks like this if
+AVECINTC is supported:
 
-Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
----
- hw/arm/aspeed_ast2600.c | 2 +-
- hw/misc/aspeed_sbc.c    | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+  +-----+     +-----------------------+     +-------+
+  | IPI | --> |        CPUINTC        | <-- | Timer |
+  +-----+     +-----------------------+     +-------+
+               ^          ^          ^
+               |          |          |
+        +---------+ +----------+ +---------+     +-------+
+        | EIOINTC | | AVECINTC | | LIOINTC | <-- | UARTs |
+        +---------+ +----------+ +---------+     +-------+
+             ^            ^
+             |            |
+        +---------+  +---------+
+        | PCH-PIC |  | PCH-MSI |
+        +---------+  +---------+
+          ^     ^           ^
+          |     |           |
+  +---------+ +---------+ +---------+
+  | Devices | | PCH-LPC | | Devices |
+  +---------+ +---------+ +---------+
+                   ^
+                   |
+              +---------+
+              | Devices |
+              +---------+
 
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index d12707f0ab..59ffd41a4a 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -261,7 +261,7 @@ static void aspeed_soc_ast2600_init(Object *obj)
- 
-     object_initialize_child(obj, "i3c", &s->i3c, TYPE_ASPEED_I3C);
- 
--    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_SBC);
-+    object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_AST2600_SBC);
- 
-     object_initialize_child(obj, "iomem", &s->iomem, TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "video", &s->video, TYPE_UNIMPLEMENTED_DEVICE);
-diff --git a/hw/misc/aspeed_sbc.c b/hw/misc/aspeed_sbc.c
-index 2f5b83a3f2..f2ceec9ab5 100644
---- a/hw/misc/aspeed_sbc.c
-+++ b/hw/misc/aspeed_sbc.c
-@@ -279,8 +279,10 @@ static const TypeInfo aspeed_sbc_info = {
- static void aspeed_ast2600_sbc_class_init(ObjectClass *klass, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedSBCClass *sc = ASPEED_SBC_CLASS(klass);
- 
-     dc->desc = "AST2600 Secure Boot Controller";
-+    sc->has_otp = true;
- }
- 
- static const TypeInfo aspeed_ast2600_sbc_info = {
+We can see more about AVECINTC on linux driver code[1]
+and loongarch msg interrupts on volI 6.2 Message-Interrupts
+
+Tested the code using the virion-net NIC the start scripts is kernel.sh at[3] and then 
+run 'ifconfig eth0 192.168.122.12'
+
+[1]: https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-loongarch-avec.c
+[2]: https://github.com/loongson/LoongArch-Documentation/releases/download/2023.04.20/LoongArch-Vol1-v1.10-EN.pdf
+[3]: https://github.com/gaosong715/qemu/releases/download/pull-loongarch-20250514/kernel.sh
+
+
+v3: 
+  1: Implement the read-clear feature for CSR_MSGIR register
+  2: Fix some code style;
+  3: Merge patch8 and patch9 into one patch8;
+  4: Fix patch7 get wrong cpu_num and irq_num;
+  5: Add vmstate_msg for messag-interrupt registers migrate;
+  6: Update test scripts use  '-bios', because kernel use avec need acpi
+support. the bios is qemu/pc_bios/edk2-loongarch64-code.fd.bz2.  
+
+v2:
+  1: Use one irqline for avec parent_irq;
+  2; Correct avec memroy area;
+  3; Pch-msi not connecet to avec when avec is enabled and drop patch 7;
+  4: Add misc_feature and misc_status for misc features an misc
+
+Thanks.
+Song Gao
+
+
+Song Gao (9):
+  hw/loongarch: move some machine define to virt.h
+  hw/loongarch: add virt feature avecintc support
+  loongarch: add a advance interrupt controller device
+  target/loongarch: add msg interrupt CSR registers
+  hw/loongarch: AVEC controller add a MemoryRegion
+  hw/loongarch: Implement avec controller imput and output pins
+  hw/loongarch: Implement avec set irq
+  target/loongarch: CPU enable msg interrupts.
+  target/loongarch:Implement csrrd CSR_MSGIR register
+
+ hw/intc/Kconfig                               |   3 +
+ hw/intc/loongarch_avec.c                      | 153 ++++++++++++++++++
+ hw/intc/meson.build                           |   1 +
+ hw/loongarch/Kconfig                          |   1 +
+ hw/loongarch/virt.c                           |  89 +++++++++-
+ include/hw/intc/loongarch_avec.h              |  36 +++++
+ include/hw/loongarch/virt.h                   |  36 +++++
+ include/hw/pci-host/ls7a.h                    |   2 +
+ target/loongarch/cpu-csr.h                    |   9 +-
+ target/loongarch/cpu.c                        |  17 ++
+ target/loongarch/cpu.h                        |  34 ++--
+ target/loongarch/csr.c                        |   5 +
+ target/loongarch/machine.c                    |  25 ++-
+ target/loongarch/tcg/csr_helper.c             |  21 +++
+ target/loongarch/tcg/helper.h                 |   1 +
+ .../tcg/insn_trans/trans_privileged.c.inc     |   1 +
+ 16 files changed, 405 insertions(+), 29 deletions(-)
+ create mode 100644 hw/intc/loongarch_avec.c
+ create mode 100644 include/hw/intc/loongarch_avec.h
+
 -- 
-2.43.0
+2.34.1
 
 
