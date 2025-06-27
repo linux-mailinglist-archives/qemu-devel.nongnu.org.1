@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8EF1AEB122
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 10:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A69CEAEB134
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 10:23:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uV4KF-0006hY-29; Fri, 27 Jun 2025 04:20:47 -0400
+	id 1uV4MW-000810-V1; Fri, 27 Jun 2025 04:23:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uV4KB-0006h3-NJ
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 04:20:43 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ id 1uV4MI-0007zu-61
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 04:22:56 -0400
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uV4KA-00019L-0c
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 04:20:43 -0400
+ id 1uV4MA-0001Q1-1F
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 04:22:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751012442; x=1782548442;
+ t=1751012566; x=1782548566;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=JyE/yLf4DE3qc+N+050QL38zwb48BICA6MLmRQiLpL8=;
- b=kSWDLpZGS3Ke1UINiFSWqCrdWSKKt05X1q+dH2WKckniiwZuOMByF+Im
- qMyP6M/Z/p28UQGxuKSrnDKuee+9R2zIqOga0QiW6Wiv5v0vW/wVIq54R
- K/R8H84L1GG11BLf2FP+FHz42hK792KnHQQwq2ZQvDm8QWM8O0O5ek2/8
- HUKsxQBv1iCLpcCRrbsFOP1K6n4UDRysRFdlYQPbzAp6hLL9EK2qgDU1T
- /TKRky3kfHMX5jrdTiD/j08puFABiDodMco4po1xJg0bLoq0HONG1Ou81
- mE4VEdPu7kNIEdE5tC92zXFc+JDKo/8iG1u8L1OImdNeikepws6GitHp+ A==;
-X-CSE-ConnectionGUID: 175GsTYASP+pVPqQcPIyrQ==
-X-CSE-MsgGUID: RKzssHx5QsekvOf0aK72zA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="63920519"
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="63920519"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2025 01:20:39 -0700
-X-CSE-ConnectionGUID: XzaErk13SRyQTUFFUMY97A==
-X-CSE-MsgGUID: 62KEuEPqSTivOf1Wuzrulg==
+ bh=Kbz47DuMnWT0v9tfwC0nho0rIfl4eEfmfBomwBJYoKA=;
+ b=A12aqH3w0LjcFncnNOlTSybDsEzzDYMQhrXX9IJcel9J647K7LiOD/yk
+ QLyS5xvT5dn4NTFa+t62odb1Pgekeki1AKQheeLAxLcNK42/+PIuIYmDf
+ BHmsv8KyqV33L2CnjtXy0l5Ur9Yty4QIn4l5nFp83ej5mRTILjdxU47ri
+ VDFFyutEPnlxWtVpvcZ40PQT3A0UuzgpSfL0bnQ2aNTKRIFJquyFy2ssY
+ wzvsk3SYLAJ58bfdE3bJjPfyMWtGHlPwjons+6KL+5eQsiwgRlwGnjJ2+
+ wyXjLjSeZc394ZZSn+PrjJSKTSAvnn4eLT5w+cWnWgRRtgWQGcLkkU051 w==;
+X-CSE-ConnectionGUID: U81rmcAcQy2wNA0JwEnuAA==
+X-CSE-MsgGUID: V438YjZQQcWjy96D8AgMaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="57000815"
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="57000815"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2025 01:22:43 -0700
+X-CSE-ConnectionGUID: Yy3HybgzQI6OBoEZwlTfXg==
+X-CSE-MsgGUID: mlLRaNBtSFOc+PXLlxDLmQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="158480883"
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="153456758"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 27 Jun 2025 01:20:38 -0700
-Date: Fri, 27 Jun 2025 16:42:01 +0800
+ by fmviesa010.fm.intel.com with ESMTP; 27 Jun 2025 01:22:41 -0700
+Date: Fri, 27 Jun 2025 16:44:03 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] i386/tdx: Remove task->watch only when it's valid
-Message-ID: <aF5ZWUZvls6l2RDI@intel.com>
-References: <20250625035505.2770580-1-xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] i386/tdx: Don't mask off CPUID_EXT_PDCM
+Message-ID: <aF5Z02o1BFDZSqLS@intel.com>
+References: <20250625035710.2770679-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250625035505.2770580-1-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250625035710.2770679-1-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -81,24 +80,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 25, 2025 at 11:55:05AM +0800, Xiaoyao Li wrote:
-> Date: Wed, 25 Jun 2025 11:55:05 +0800
+On Wed, Jun 25, 2025 at 11:57:10AM +0800, Xiaoyao Li wrote:
+> Date: Wed, 25 Jun 2025 11:57:10 +0800
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH] i386/tdx: Remove task->watch only when it's valid
+> Subject: [PATCH] i386/tdx: Don't mask off CPUID_EXT_PDCM
 > X-Mailer: git-send-email 2.43.0
 > 
-> In some case (e.g., failed to connect to QGS socket),
-> tdx_generate_quote_cleanup() is called with task->watch invalid. It
-> triggers assertion of
+> It gets below warning when booting TDX VMs:
 > 
->   qemu-system-x86_64: GLib: g_source_remove: assertion 'tag > 0' failed
+>   warning: TDX forcibly sets the feature: CPUID[eax=01h].ECX.pdcm [bit 15]
 > 
-> Fix it by checking task->watch.
+> Because CPUID_EXT_PDCM is fixed1 for TDX, and MSR_IA32_PERF_CAPABILITIES is
+> supported for TDX guest unconditioanlly.
 > 
-> Fixes: 40da501d8989 ("i386/tdx: handle TDG.VP.VMCALL<GetQuote>")
+> Don't mask off CPUID_EXT_PDCM for TDX.
+> 
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->  target/i386/kvm/tdx-quote-generator.c | 4 +++-
+>  target/i386/cpu.c | 4 +++-
 >  1 file changed, 3 insertions(+), 1 deletion(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
