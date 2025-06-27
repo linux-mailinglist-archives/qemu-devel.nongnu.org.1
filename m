@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEC7AEC17A
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCA4AEC17B
 	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 22:51:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uVG1H-0005KJ-4s; Fri, 27 Jun 2025 16:49:59 -0400
+	id 1uVG1H-0005KU-M7; Fri, 27 Jun 2025 16:49:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yodel.eldar@gmail.com>)
- id 1uVG1E-0005Je-SY
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 16:49:56 -0400
-Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+ id 1uVG1F-0005Jn-M6
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 16:49:57 -0400
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yodel.eldar@gmail.com>)
- id 1uVG1D-0005Gr-1X
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 16:49:56 -0400
-Received: by mail-pf1-x442.google.com with SMTP id
- d2e1a72fcca58-74924255af4so462015b3a.1
- for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 13:49:54 -0700 (PDT)
+ id 1uVG1E-0005Gx-2p
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 16:49:57 -0400
+Received: by mail-pf1-x444.google.com with SMTP id
+ d2e1a72fcca58-7424ccbef4eso460236b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 13:49:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751057393; x=1751662193; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=55pIi7kf6Zis72VmkGKSzNIxzpZaUxSaUCgdQZi2+Sc=;
- b=HgGGMDGjvT1/V9GK9KJ9wxY+8uNlTxKs+VChnQAXu3Cr08cb697O1lVLc9oi1Q+duy
- Hp7hNUQH2SykXzIZO1u0SN93s8Bq1gNpKRcyDFPTY3PvjInLHJzrfNgW5tDLuaVj9qd9
- 7ERnepiKeGMwbYxNbDyQBCRmE61GCZ4mjv4NZNZjolSCz8ytLsfv/y7B5k2pxlgLQaY8
- 6LDH8RM5DzJHVjkuBi5nJVThb5G6UFYmFUiUwfwXoerAlSUiYlhm/h7qYL8YeVQgDCAc
- Ou25ucxx9mHQ5hJc6D+m72vk42ox08j8XQYmZiULVNuAVxYOZGfbuGCkYY3FSbYDQfvD
- 2tGg==
+ d=gmail.com; s=20230601; t=1751057394; x=1751662194; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0gSz33xHmaVtu30g6vxInvrZ9e8pSFX2qbDlfLsKI7Y=;
+ b=D89J2BCTJUIE/n9SUNjlyFxTEDzjJdq2mwWyg7QzIxLzDDvor1dWPW66rxMzkmmKjC
+ sZl4w3ICm7nFs0jLKq9G7U/cxgvUUOVM2gIspfqX0OnDTmVRnvp57UZX2HkzUW+l7H5C
+ 4/OpUBLfmwIJzWmrvVOfmTwmcz0Y5WfstT+OVFb3Gv1IEYsobKhbJmm6wHLw8ptWDFzp
+ vC87DhlN20ouzcL+FA8OMCekht4plrZoWZmrjjV8D/XzmZURPdABoLyPswNjLl0+OSxD
+ m+UEdezk0fKaoS/h5FjHZ/P69HqFJEAt54cPM+kOg2wYwHniLKmZYrTlmkUWi3QxgaJq
+ 23NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751057393; x=1751662193;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=55pIi7kf6Zis72VmkGKSzNIxzpZaUxSaUCgdQZi2+Sc=;
- b=ri1ooWjsSjUThQZ2f3jqnzKVMTk9jOsh8PMJ/9gSjsWzTBHXACKFyETqdXdHdKW8+Y
- pcoUJdJknDUxeVPqSyqH/h0NX6lueTmesAl6EvSNSSUCW1Q+YDCg0oHv+P8DPyvPVLHx
- mLBUGe0prlU0HVpHsBhChdAnBk/w7uWaXjMzBlWDH4kp3stCboutW7TpoP0ngr/v7fH1
- ma/U2Ro3vxazKhPv7cnYChWALjG8ZjPkt6SiudagbBH2CfD44BIY8515Gfm+zWEmskdA
- 8ZufOOraozu2DG5FVmScC+vufIjm7lkFs/8na9j1O2L+HCadQ+Z1b0ccdeiFEa5pY6l0
- 72Fg==
-X-Gm-Message-State: AOJu0YyGGdcqQIx0H4N5NwpwW3oLA0NX4OFfSBI5OwJ+yRBI00Gu9fLn
- fYWNRytbVrzD19Drobq8fAFU91CjwiPR0QJh1G5Fu8lAv1MCROmNkIzAnf4U94XK
-X-Gm-Gg: ASbGncu1NQXrG1Lanhi9yqOUiVDxOuIvPNxR1k1RZ+LlFD1AWGgWBqDWMEt3ceJjAdx
- WauVZgR3NOugxdi8xS2aEDZFFcHoqxRZeVUyFAwlkmTdQOz2LK/Rl/Grhi1zDeS2y+22cbCwYza
- GbMscFtJKdjmQ2/B5Gp0BUPUHYl5l16dq35MFpOD7jsRPvxbKYDAwfDjGZfu4vCHYzCl0cRfx7K
- TOrCSVvk4AvlmScr8UEThTbQLBeiFC6J+5FmNVE2cwZodnWCFeIVZ6mziQjtXM2leLpqC20UEJH
- i1kOkiuw3m37KpWvQscDuUag1wthG152XtIrDfPIQe2bhc591HsUCm7Lew==
-X-Google-Smtp-Source: AGHT+IEQQrPxXOxR7o0tJixk+SjDUuiHtNynIthBiDnl2HROtL7iVc9FMtsqqbxa76oxQRfh7aUM0w==
-X-Received: by 2002:a05:6a20:a11c:b0:218:59b:b2f4 with SMTP id
- adf61e73a8af0-220a17f7369mr6142906637.42.1751057393373; 
- Fri, 27 Jun 2025 13:49:53 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1751057394; x=1751662194;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0gSz33xHmaVtu30g6vxInvrZ9e8pSFX2qbDlfLsKI7Y=;
+ b=pNCczYHFpgmMVKIxrADT2t1/CAea6ibTtEPtuzrTDJIMqJjnspRITCepW6Cpof+vDL
+ QKXZHJ2kd/lpby1jQlDfaw4hITuY8Mu5fInrzw9CFpmOZiPg40ESp2O85xHMmpioypqk
+ dREI+AdU0tHA1X5uef9E/1pQze4LZyyKSvvpB6nR2xrZDgcVmkAnZEHnzw58scITEbGk
+ 8BU4ropqrwVTdx0lWv37iNHrswBgprcbBcjW/OvR+lQ66V6C+eQyUo7wHng7NQv428PJ
+ COP+9bjKOcPxd0cHzJWyxbGh5SYZP/Y5ddShgZMp3MRK3AG1nnW6e3mWnIvj0YQlUJsk
+ Ot4Q==
+X-Gm-Message-State: AOJu0YwZ5h7C81HRj3PKfYx8q1bRnuF2uHR83a232uK1EapryD48hxi7
+ i1D3wCqEv+PF0e9YdP/qo0VNbbGZZtIrjMHPVeng5++6Tr+Q4QOtFR9+BCaFR9SE
+X-Gm-Gg: ASbGnctNO5HIEGYoOla3HIyxWfiBWhQmLvoO60u2Oo2sfQI8j3dZdS5ufKetRpx63PI
+ asMnyHEifMWPbG8mLGLjNRw9Yg0KjWeCxeun5ELcnc5BCaCHSMBH38yW9isjtQspDW14Ltw1wfp
+ LZC7oayhFskaeOeDQONRm/+cqFBPTybd202BbO5raiGISAG3QVstC8ZDTi/yWY8CxQg43TOSjqH
+ hxd3NrGOdPjppsQOYNElE0Yycbg5BkLYvOA7uKxuOjw0pXCa3utB/Rhd7B/qDBT8d/GypAsoN/r
+ imLejIOABO7gTDeI7zETAodl6QNz2ab/nzENcNaCwEGY9myIlgyEBwu9Bw==
+X-Google-Smtp-Source: AGHT+IHNHnE5n184IoXzFk0mUO1CUl5fl/zwGo3fARm7ohp4TdgowSTtvsb//f3+ffj5WhVnT148aA==
+X-Received: by 2002:a05:6a20:9194:b0:1ee:8435:6b69 with SMTP id
+ adf61e73a8af0-220a129b630mr6343737637.1.1751057394513; 
+ Fri, 27 Jun 2025 13:49:54 -0700 (PDT)
 Received: from darlin ([89.187.185.165]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74af557b3bcsm2977538b3a.101.2025.06.27.13.49.52
+ d2e1a72fcca58-74af557b3bcsm2977538b3a.101.2025.06.27.13.49.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Jun 2025 13:49:52 -0700 (PDT)
+ Fri, 27 Jun 2025 13:49:54 -0700 (PDT)
 From: Yodel Eldar <yodel.eldar@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, richard.henderson@linaro.org, laurent@vivier.eu,
  Yodel Eldar <yodel.eldar@gmail.com>
-Subject: [PATCH 0/2] target/alpha: Add TCG plugin register tracking support
-Date: Fri, 27 Jun 2025 15:47:57 -0500
-Message-ID: <20250627204817.47595-1-yodel.eldar@gmail.com>
+Subject: [PATCH 1/2] contrib/plugins/execlog: Add tab to the separator search
+ of insn_disas
+Date: Fri, 27 Jun 2025 15:47:58 -0500
+Message-ID: <20250627204817.47595-2-yodel.eldar@gmail.com>
 X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250627204817.47595-1-yodel.eldar@gmail.com>
+References: <20250627204817.47595-1-yodel.eldar@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
- envelope-from=yodel.eldar@gmail.com; helo=mail-pf1-x442.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::444;
+ envelope-from=yodel.eldar@gmail.com; helo=mail-pf1-x444.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,62 +97,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds TCG plugin register tracking support for the Alpha
-target and resolves gitlab issue #2569:
+Currently, execlog searches for a space separator between the
+instruction mnemonic and operands, but some disassemblers, e.g. Alpha's,
+use a tab separator instead; this results in a null pointer being passed
+as the haystack in g_strstr during a subsequent register search, i.e.
+undefined behavior, because of a missing null check.
 
-  https://gitlab.com/qemu-project/qemu/-/issues/2569
+This patch adds tab to the separator search and a null check on the
+result.
 
-As mentioned in the bug report by Alex Bennée, the register list is
-built using the target's corresponding GDB XML feature file, but the
-Alpha target does not have one. The second patch introduces the missing
-feature file and the necessary plumbing for it.
+Also, existing, affected pointers are changed to const.
 
-While testing the second patch, I noticed the following error:
+Lastly, a break statement was added to immediately terminate the
+register search when a user-requested register is found in the current
+instruction as a trivial optimization, because searching for the
+remaining requested registers is unnecessary once one is found.
 
-  qemu-alpha: GLib: g_strrstr: assertion 'haystack != NULL' failed
+Signed-off-by: Yodel Eldar <yodel.eldar@gmail.com>
+---
+ contrib/plugins/execlog.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-when running:
-
-  ./qemu-alpha -d plugin \
-  -plugin ./contrib/plugins/libexeclog.so,reg=*,rdisas=on \
-  ./tests/tcg/alpha-linux-user/linux-test
-
-and discovered an issue with execlog.c that the first patch resolves:
-a missing null check after execlog searches a disassembled instruction
-for a space separator between the mnemonic and the operands. Execlog
-assumes that disassembled instructions will contain a space, but some
-disassemblers use tabs (like Alpha).
-
-Besides adding the null check, the execlog patch also adds tab to the
-separator search by replacing the g_strstr_len call with a call to
-strpbrk, so that the plugin would operate as intended for Alpha.
-
-Two pointers in the immediate area of the changed code were converted to
-const pointers in keeping with the QEMU Coding Style. Also, as a trivial
-optimization, I took the liberty of adding a break statement to the
-register search loop that immediately follows the separator search, so
-that it breaks out of the loop as soon as a relevant register is found
-in the instruction; please let me know if either of these minor changes
-should be moved to a separate patch file.
-
-Lastly, this is my first submission to QEMU, and I want to thank
-every past, present, and future contributor to this project that has
-kept my system secure as I tinker with weird machines in the ultimate
-sandbox. QEMU is truly mind-blowing technology, and I have all of
-you to thank for it: Thanks!
-
-Yodel Eldar (2):
-  contrib/plugins/execlog: Add tab to the separator search of insn_disas
-  target/alpha: Add GDB XML feature file
-
- configs/targets/alpha-linux-user.mak |   1 +
- configs/targets/alpha-softmmu.mak    |   1 +
- contrib/plugins/execlog.c            |  15 +--
- gdb-xml/alpha-core.xml               | 136 +++++++++++++++++++++++++++
- target/alpha/cpu.c                   |   1 +
- 5 files changed, 148 insertions(+), 6 deletions(-)
- create mode 100644 gdb-xml/alpha-core.xml
-
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index d67d010761..08fc1f12d4 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -232,12 +232,15 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+          */
+         if (disas_assist && rmatches) {
+             check_regs_next = false;
+-            gchar *args = g_strstr_len(insn_disas, -1, " ");
+-            for (int n = 0; n < all_reg_names->len; n++) {
+-                gchar *reg = g_ptr_array_index(all_reg_names, n);
+-                if (g_strrstr(args, reg)) {
+-                    check_regs_next = true;
+-                    skip = false;
++            const gchar *args = strpbrk(insn_disas, " \t");
++            if (args) {
++                for (int n = 0; n < all_reg_names->len; n++) {
++                    const gchar *reg = g_ptr_array_index(all_reg_names, n);
++                    if (g_strrstr(args, reg)) {
++                        check_regs_next = true;
++                        skip = false;
++                        break;
++                    }
+                 }
+             }
+         }
 -- 
 2.50.0
 
