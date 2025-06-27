@@ -2,91 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD31DAEB305
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 11:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA71AEB119
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 10:19:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uV5SG-0003Vm-PM; Fri, 27 Jun 2025 05:33:08 -0400
+	id 1uV4HZ-0005wY-OD; Fri, 27 Jun 2025 04:18:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1uV5Rx-0003S3-L1
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 05:32:52 -0400
-Received: from mx2.zhaoxin.com ([61.152.208.219])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uV4HX-0005wJ-KM
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 04:17:59 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1uV5Rt-0007ry-Bg
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 05:32:49 -0400
-X-ASG-Debug-ID: 1751016755-1eb14e1c381f990001-jgbH7p
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by
- mx2.zhaoxin.com with ESMTP id IH3OK6T2MqlSMejE (version=TLSv1.2
- cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Fri, 27 Jun 2025 17:32:35 +0800 (CST)
-X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Fri, 27 Jun
- 2025 17:32:35 +0800
-Received: from ZXSHMBX1.zhaoxin.com ([::1]) by ZXSHMBX1.zhaoxin.com
- ([fe80::2c07:394e:4919:4dc1%7]) with mapi id 15.01.2507.044; Fri, 27 Jun 2025
- 17:32:35 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from [192.168.31.91] (10.28.66.62) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Fri, 27 Jun
- 2025 14:48:06 +0800
-Message-ID: <22fe027d-b426-4682-aec5-dca12fa15bdb@zhaoxin.com>
-Date: Fri, 27 Jun 2025 14:48:05 +0800
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uV4HV-0006zS-Dt
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 04:17:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751012278; x=1782548278;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=8V/K4usUwieMu46RJaL0JU5FflRxXMlRqbZCzyci71w=;
+ b=kAiNQF83Bg5jgzS2YnWJtq5penVrM1ji/5bgpztBvNy5n4Bv7rQppL9V
+ X1cNXZS4iEnQ4ktbKtHmtPuHR4+NvJqcljJ33vX7vKYrKeHW9Lcqmst8e
+ iROVYguVS9U0G6mDpPs9WevgukQscG8oNWq801h3iGP0deQpswRQrCBd5
+ zmb+993kisCbGQp6nF/WcE0R0AC/Zv/5y27wZG7Kn/r1ZRXWBjcyy0l+S
+ a9MHl1CYw1cdyM1O/ETWyj8jUlLwxmwohFJftLTPMJs+kpvt3HtuFpV9+
+ BkETgwDkmIMXMHkCiWp7mPM4dsITeYoJQmFWHeFrGMCeQPQrBufYmTgQO w==;
+X-CSE-ConnectionGUID: +a4MFTF/R+uE4oGRF+9iUg==
+X-CSE-MsgGUID: 1UugWEKZSAGNGb+WCBa7GQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="78761678"
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="78761678"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2025 01:17:52 -0700
+X-CSE-ConnectionGUID: eaMgwebpT5yxVRKhtLp2NA==
+X-CSE-MsgGUID: aqr7yh1WS6StfW/b+T8FGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="152925371"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2025 01:17:50 -0700
+Message-ID: <fffd0d18-5272-4250-a3a5-c450286f5449@intel.com>
+Date: Fri, 27 Jun 2025 16:17:46 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/8] i386/cpu: Add a "x-force-cpuid-0x1f" property
-To: Zhao Liu <zhao1.liu@intel.com>
-X-ASG-Orig-Subj: Re: [PATCH 5/8] i386/cpu: Add a "x-force-cpuid-0x1f" property
-CC: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, Jason Zeng <jason.zeng@intel.com>, Xiaoyao Li
- <xiaoyao.li@intel.com>, Tao Su <tao1.su@intel.com>, Yi Lai
- <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>, Tejus GK
- <tejus.gk@nutanix.com>, Manish Mishra <manish.mishra@nutanix.com>,
- <qemu-devel@nongnu.org>
-References: <20250626083105.2581859-1-zhao1.liu@intel.com>
- <20250626083105.2581859-6-zhao1.liu@intel.com>
- <0d038476-e7c6-4e7a-add2-aeb4d715c202@zhaoxin.com>
- <aF4Kjf7iGhEORMSL@intel.com>
-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-In-Reply-To: <aF4Kjf7iGhEORMSL@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH 0/4] i386/cpu: Clean Up Reserved CPUID Leaves for Intel
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>
+Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>, Tao Su <tao1.su@intel.com>,
+ Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
+ qemu-devel@nongnu.org
+References: <20250627035129.2755537-1-zhao1.liu@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250627035129.2755537-1-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.28.66.62]
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Moderation-Data: 6/27/2025 5:32:33 PM
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1751016755
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1087
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -1.72
-X-Barracuda-Spam-Status: No,
- SCORE=-1.72 using global scores of TAG_LEVEL=1000.0
- QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=BSF_SC0_SA085, PR0N_SUBJECT
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.143463
- Rule breakdown below
- pts rule name              description
- ---- ---------------------- --------------------------------------------------
- 0.20 PR0N_SUBJECT Subject has letters around special characters (pr0n)
- 0.10 BSF_SC0_SA085          Custom Rule SA085
-Received-SPF: pass client-ip=61.152.208.219;
- envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,39 +87,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 6/27/2025 11:51 AM, Zhao Liu wrote:
+> Hi,
+> 
+> Since the previsor unified cache model series has already introduced a
+> new compat property "x-vendor-cpuid-only-v2", it's a chance to once
+> again consolidate more vendor-specific CPUIDs.
+
+Please provide the link to the patch that introduced 
+"x-vendor-cpuid-only-v2"
+
+When talking about vendor-specific CPUIDs, there are multiple vendors 
+for x86, including Intel, AMD, Hygon and Zhaoxin. From the patches, you 
+are only dealing with Intel specifically. So a basic question is, why 
+not rename "x-vendor-cpuid-only-v2" to "x-intel-cpuid-only"?
 
 
-On 6/27/25 11:05 AM, Zhao Liu wrote:
+> I also checked the CPUID leaves currently supported by Intel & AMD and
+> found that since the previous "x-vendor-cpuid-only," AMD has already
+> cleaned up the Intel-specific CPUIDs quite well.
 > 
+> As for Intel, the only cleanup needed is for the "extended function
+> CPUID" leaves (0x80000000~0x80000008). That's what this series does.
 > 
->> After applying these patches to QEMU mainline at commit 6e1571533fd9:
+> This series is based on:
 > 
-> Ah, I forgot I've rebased these patches...Now you can rebase all the
-> patches at the latest master branch.
+> <20250626083105.2581859-1-zhao1.liu@intel.com>
 > 
-> Or, you can try this repo - I just created it to make it easier for you:
+> Or you can find the code at:
 > 
 > https://gitlab.com/zhao.liu/qemu/-/tree/cache-model-v2.6-rebase-06-23-2025
 > 
-
-I cloned the repo and then ran:
-
-$ git am 20250620_zhao1_liu_i386_cpu_unify_the_cache_model_in_x86cpustate.mbx
-
-The *.mbx is got from b4 tool.
-
-That applied several patches successfully, but on patch #11 I got this error:
-
-error: patch failed: target/i386/cpu.c:7482
-error: target/i386/cpu.c: patch does not apply
-Patch failed at 0011 i386/cpu: Select legacy cache model based on vendor in 
-CPUID 0x2
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-
-This error also occured on qemu master when I do 'git am 
-20250620_zhao1_liu_i386_cpu_unify_the_cache_model_in_x86cpustate.mbx'.
-
-Have you run into this before, or did I miss any steps?
-
+> Thanks and Best Regards,
+> Zhao
+> ---
+> Zhao Liu (4):
+>    i386/cpu: Mark EBX/ECX/EDX in CPUID 0x80000000 leaf as reserved for
+>      Intel
+>    i386/cpu: Mark CPUID 0x80000007[EBX] as reserved for Intel
+>    i386/cpu: Mark ECX/EDX in CPUID 0x80000008 leaf as reserved for Intel
+>    i386/cpu: Reorder CPUID leaves in cpu_x86_cpuid()
+> 
+>   target/i386/cpu.c | 83 ++++++++++++++++++++++++++++-------------------
+>   1 file changed, 49 insertions(+), 34 deletions(-)
+> 
 
 
