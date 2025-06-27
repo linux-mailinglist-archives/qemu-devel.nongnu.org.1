@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4190AEBED8
+	by mail.lfdr.de (Postfix) with ESMTPS id E82C7AEBED9
 	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 20:05:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uVDQT-0005cU-Vn; Fri, 27 Jun 2025 14:03:50 -0400
+	id 1uVDQT-0005cE-0G; Fri, 27 Jun 2025 14:03:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dkg@fifthhorseman.net>)
- id 1uVDQP-0005av-S3
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 14:03:45 -0400
+ id 1uVDQQ-0005b0-0Z
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 14:03:46 -0400
 Received: from che.mayfirst.org ([2001:470:1:116::7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dkg@fifthhorseman.net>)
- id 1uVDQM-0006kV-Tc
+ id 1uVDQM-0006kT-Tf
  for qemu-devel@nongnu.org; Fri, 27 Jun 2025 14:03:45 -0400
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/simple;
  d=fifthhorseman.net; i=@fifthhorseman.net; q=dns/txt; s=2019;
  t=1751047420; h=from : to : cc : subject : date : message-id :
- mime-version : content-transfer-encoding : from;
- bh=YC0JwlsNMTtvx1kttMqBE+p9QGUV2YD78aqRMGVIo84=;
- b=3mzPT7NqSNQIA/e85OIxcCiWfAufpop1LD7mt91NnwrTccD4nCzLfRT4nZf0juKCI//53
- /usiPQoBEe5bjZmBQ==
+ in-reply-to : references : mime-version : content-transfer-encoding :
+ from; bh=Rnq4OXExIRcpJC5EcSJGqi0uLZAj07LEbvHF4zFuOns=;
+ b=W4vx/EPVGX18JTQxluJ2ANK657vwOKnNQct/p6Ig2rsdCMnP7BXVssmR08aDm8QFzy2sk
+ +y3RTBR/E45W34ZDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fifthhorseman.net;
  i=@fifthhorseman.net; q=dns/txt; s=2019rsa; t=1751047420; h=from : to
- : cc : subject : date : message-id : mime-version :
- content-transfer-encoding : from;
- bh=YC0JwlsNMTtvx1kttMqBE+p9QGUV2YD78aqRMGVIo84=;
- b=RLzm5qxVETickh28vIM1ne4OsrzJN9OxjgWn9ny/aJyIveP2T5qC44rvJYU7v19dIDqkk
- GuOEHlk1/jaEUEBB8MfnaJwrrUviAyoAWQx0OQ9czDU67nrzfgKMNgQoHGxlZExOAt1sZl9
- rN5oQ9ZcDnAhcV1A1036wY38Mp6H6zk2n9Cz+cjRTba5bHkKQP4pdXvDUVSMj6dIxaLIe3Z
- t2uUeRhRjQH5X7xlCfm957jQH56QfakoUtjaT7P2zphjFzJl7G2d624NIpfyBw38KaJT7sk
- 5ykAOKa1Zk9/Z3GL0r0o3oK7TwP/cJOMyGptp7oojIalIcvjAdqqpNcDRG/A==
+ : cc : subject : date : message-id : in-reply-to : references :
+ mime-version : content-transfer-encoding : from;
+ bh=Rnq4OXExIRcpJC5EcSJGqi0uLZAj07LEbvHF4zFuOns=;
+ b=sYl7/kXOvVaKwN9hdxA7fuQQmfV87UTVBMvxu4+/vM/fD8I7EwRLN6UAx1WWqcugYyk81
+ HjqROS7bQopSk94WgnGXgE/Djq4B8qVTlVONQuUZM/iV/ulKj1GKpReOtG1Z2nR9PdT3p8S
+ 5kUrZdr9ysBHkU917CgdGUHRXDHDgk/Mw35adEt2/sthab09W+aUciXUiVIqSPL6HbANOtw
+ mHuKITBzmMEiFHRV5JhHCXh1uH0GZV/VpIcmRVYH27QTx7JuoSDJZ+PUMCgdP1X0FWun+UG
+ tvtEO58pzuNryfYhawGOHUt7DQSD6tmLpJAuG3U1BUTtn8exLHD0O6NzGFnw==
 Received: from fifthhorseman.net (lair.fifthhorseman.net [108.58.6.98])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
  (No client certificate requested)
- by che.mayfirst.org (Postfix) with ESMTPSA id 55A9DF9B3;
+ by che.mayfirst.org (Postfix) with ESMTPSA id 475D9F9B2;
  Fri, 27 Jun 2025 14:03:40 -0400 (EDT)
 Received: by fifthhorseman.net (Postfix, from userid 1000)
- id 67B8213F6B3; Fri, 27 Jun 2025 14:03:31 -0400 (EDT)
+ id 6A03513F6BB; Fri, 27 Jun 2025 14:03:31 -0400 (EDT)
 From: Daniel Kahn Gillmor <dkg@fifthhorseman.net>
 To: qemu-devel@nongnu.org
 Cc: dkg@fifthhorseman.net
-Subject: [PATCH 1/3] Socket Activation: stash $LISTEN_FDNAMES
-Date: Fri, 27 Jun 2025 14:03:29 -0400
-Message-ID: <20250627180331.1370235-1-dkg@fifthhorseman.net>
+Subject: [PATCH 2/3] Socket activation: get FD by label
+Date: Fri, 27 Jun 2025 14:03:30 -0400
+Message-ID: <20250627180331.1370235-2-dkg@fifthhorseman.net>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250627180331.1370235-1-dkg@fifthhorseman.net>
+References: <20250627180331.1370235-1-dkg@fifthhorseman.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2001:470:1:116::7;
@@ -75,110 +77,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By recording a copy of LISTEN_FDNAMES, we make it possible to learn
-mappings from file descriptor labels (e.g., as set by
-FileDescriptorName= in systemd.socket(5)).
+This uses the cached copy of LISTEN_FDNAMES to find the first file
+descriptorlabel with a matching label.
 
-This also makes it possible to invoke check_socket_activation() more
-than once and have it return the same value each time.
+Note that if two file descriptors are given the same label this will
+ignore all but the first.
 
-This is one step toward addressing
+This is another step toward addressing
 https://gitlab.com/qemu-project/qemu/-/issues/3011
-
-Since we can't count on the buffer returned from getenv
-persisting (getenv is documented as non-re-entrant), we need to keep a
-copy of it around in case multiple subsystems want to interrogate it.
-
-This proposed implementation uses a static buffer, and breaks socket
-activation with a visible error_report if LISTEN_FDNAMES is too large.
-Another approach would be to g_strdup the value returned by getenv,
-which would have failure modes on heap exhaustion, and would introduce
-a memory leak as there's no clear opportunity to g_free the copy.
 
 Signed-off-by: Daniel Kahn Gillmor <dkg@fifthhorseman.net>
 ---
- util/systemd.c | 33 +++++++++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
+ include/qemu/systemd.h | 15 +++++++++++++++
+ util/systemd.c         | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 50 insertions(+)
 
+diff --git a/include/qemu/systemd.h b/include/qemu/systemd.h
+index f0ea1266d5..9f2bfdc7c7 100644
+--- a/include/qemu/systemd.h
++++ b/include/qemu/systemd.h
+@@ -23,4 +23,19 @@
+  */
+ unsigned int check_socket_activation(void);
+ 
++
++/*
++ * Check if socket activation indicates named file descriptor based on
++ * the colon-delimited LISTEN_FDNAMES.  The "label" must not be NULL,
++ * and should be a simple text string that does not contain a colon,
++ * matching the FileDescriptorName= directive in systemd.socket(5)
++ *
++ * It is acceptable to ask for the empty string as a label.
++ *
++ * Returns -1 if no socket activation is in use, or if the label does
++ * not match any file descriptor.  Otherwise, returns the lowest
++ * numeric value for a file descriptor matching the label exactly.
++ */
++unsigned int socket_activated_fd_by_label(const char *label);
++
+ #endif
 diff --git a/util/systemd.c b/util/systemd.c
-index ced518f771..1eca2bd69f 100644
+index 1eca2bd69f..d6675725be 100644
 --- a/util/systemd.c
 +++ b/util/systemd.c
-@@ -16,37 +16,62 @@
- #include "qemu/error-report.h"
- 
- #ifndef _WIN32
-+static char fdnames[256];
-+
- unsigned int check_socket_activation(void)
- {
-+    static unsigned int nr_fds = -1;
-     const char *s;
-     unsigned long pid;
--    unsigned long nr_fds;
-+    unsigned long nr_fdsl;
-     unsigned int i;
-     int fd;
-     int f;
-     int err;
- 
-+    if (nr_fds != -1) {
-+        return nr_fds;
-+    }
-     s = getenv("LISTEN_PID");
-     if (s == NULL) {
-+        nr_fds = 0;
-         return 0;
-     }
-     err = qemu_strtoul(s, NULL, 10, &pid);
-     if (err) {
-+        nr_fds = 0;
-         return 0;
-     }
-     if (pid != getpid()) {
-+        nr_fds = 0;
-         return 0;
-     }
- 
-     s = getenv("LISTEN_FDS");
-     if (s == NULL) {
-+        nr_fds = 0;
-         return 0;
-     }
--    err = qemu_strtoul(s, NULL, 10, &nr_fds);
-+    err = qemu_strtoul(s, NULL, 10, &nr_fdsl);
-     if (err) {
-+        nr_fds = 0;
-         return 0;
-     }
--    assert(nr_fds <= UINT_MAX);
-+    assert(nr_fdsl <= UINT_MAX);
-+    nr_fds = (unsigned int) nr_fdsl;
-+    s = getenv("LISTEN_FDNAMES");
-+    if (s != NULL) {
-+        size_t fdnames_len = strlen(s);
-+        if (fdnames_len + 1 > sizeof(fdnames)) {
-+            error_report("LISTEN_FDNAMES is larger than %ldu bytes, "
-+                         "ignoring socket activation.",
-+                         sizeof(fdnames));
-+            nr_fds = 0;
-+            return 0;
-+        } else {
-+            memcpy(fdnames, s, fdnames_len + 1);
-+        }
-+    }
- 
-     /* So these are not passed to any child processes we might start. */
-     unsetenv("LISTEN_FDS");
-@@ -69,7 +94,7 @@ unsigned int check_socket_activation(void)
-         }
-     }
- 
--    return (unsigned int) nr_fds;
-+    return nr_fds;
+@@ -97,9 +97,44 @@ unsigned int check_socket_activation(void)
+     return nr_fds;
  }
  
++unsigned int socket_activated_fd_by_label(const char *label)
++{
++    int nr_fds = check_socket_activation();
++    if (!nr_fds) {
++        return -1;
++    }
++    int curfd;
++    const char *nameend;
++    const char *nameptr;
++    size_t labellen, namelen;
++
++    labellen = sizeof(label);
++    curfd = 0;
++    nameptr = fdnames;
++    do {
++        nameend = strchr(nameptr, ':');
++        if (nameend) {
++            namelen = nameend - nameptr;
++            nameend++;
++        } else {
++            namelen = strlen(nameptr);
++        }
++        if (labellen == namelen && memcmp(nameptr, label, namelen) == 0) {
++            return curfd + FIRST_SOCKET_ACTIVATION_FD;
++        }
++        curfd++;
++        nameptr = nameend;
++    } while (nameptr && curfd < nr_fds);
++    return -1;
++}
++
  #else /* !_WIN32 */
+ unsigned int check_socket_activation(void)
+ {
+     return 0;
+ }
++unsigned int socket_activated_fd_by_label(const char *label)
++{
++    return 0;
++}
+ #endif
 -- 
 2.47.2
 
