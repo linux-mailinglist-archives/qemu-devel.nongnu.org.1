@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF25AEC385
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Jun 2025 02:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FC4AEC383
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Jun 2025 02:25:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uVJN7-0006Kx-0w; Fri, 27 Jun 2025 20:24:45 -0400
+	id 1uVJN8-0006LX-If; Fri, 27 Jun 2025 20:24:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uVJN5-0006Ko-BL
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 20:24:43 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1uVJN6-0006Kw-34
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 20:24:44 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uVJN3-0000qe-Ow
+ id 1uVJN4-0000qi-1p
  for qemu-devel@nongnu.org; Fri, 27 Jun 2025 20:24:43 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-747fba9f962so2819745b3a.0
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-7490cb9a892so2251255b3a.0
  for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 17:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1751070280; x=1751675080; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VRJZppcUw0sSJGJMIzcFuLbUi7mAY//+2Rb+QyfSrxY=;
- b=i1SxFXpDoXHTUxregjuYZWdkUcxWDQRaSCEgqlQGWXGwtNUjjfg8kNFJt4zrtrHLRO
- NJFs5OZ30ny/K/q0U8JqJEBAj0vLhRBPlsIbH7Rti31cd7zpPGNKmgX1aBotA1lnbz4q
- TNcbUbfsbYHqCixrVmRV0Xn8mGKdjWITlBxYGTaDLp4OxPdDHg1ci9CKrNeQ7ptHVz8S
- R/oLKLfGuPAcdJYMZHgj6CIn7ZJ3s+cyO8IlqQDU96KfQLuq2Vm6lUQukc0ub2RO7MBH
- PxUCnyBM0tsKTHODzcxpJoB4QL+yGwQ6Q3fBCYY9y1qPcN9h6ETZuASAH9Kf3W/LrqQZ
- cFxg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lZZyfIWWTCUW5B+tWLq1OrTS8PV+HjtfL+6A4Tz8SxQ=;
+ b=OIqghFCV5XmrAPyA39VgLGGJK4P30LojQjXyNaPQr1iK+y7kdkoKLDjVuq97GCpeN4
+ EQ6eqhSNkp3ruyQF64/9zuXd7716n9Ebk+Sn4XJe1qa7m+mmfrJczkIh64k3iGBe7pmb
+ Ja8g259YDrVnxURJLTURWlSLl/eYBxJPl2nplnViMneTAEkFwUuoCem1hnaCaSw4YAUM
+ YZusjiz3gGRU9JhcIJT4YUa26ZWAih3OfIJ/Gta4iuHqS+ElJa1OytWh4iiHMSwBOX6H
+ 9xlVA/RmdOpdU85ZczBju0sWtXHDenYmS0rZps6ry/KGy8foIAw1Lo66YFLQMUxs3xZk
+ fT5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1751070280; x=1751675080;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VRJZppcUw0sSJGJMIzcFuLbUi7mAY//+2Rb+QyfSrxY=;
- b=ljnTo28zMgbg69CwqhIYpZKyh6/U8EyavO83PZPrNY9ZYquaDnxvfPaT0VPBZ83VyP
- FOH/Udl5gXFSwbWCUIbKrtrcJeRSluGeryLeoX0q/YPmNzm0l6Ba8px8fJMTGEpDvzMo
- MTdFJemoRdjlJMMrhnaURq9KPXj5edl1gRuZUGt1ieupXJFkDTkvU1iRRR5K/STsHDQE
- FzHjRXebjkJhAg4i38uDr94B7WtKMzDh8bKyuy9epYXLKvjvA/Vo5wsZHcGAVVKDS5Wx
- ZC3t4ynI4wxsy3dfzcLQ2dluOtXaxJsKA4AauM7anCRSLXzYzsM4RMQIpr3nMk4g/L2O
- JNhw==
-X-Gm-Message-State: AOJu0YwH+Sxy+MGlw9iTJObKwIEUgltltY0+FbCONpxqEXQCk9luDDxb
- eiMqsuGaOOmIlxBUqIn2NuCKGWpLqi3u8anjHkAVA2OLaHjbIZ+1kqZml5Z40ISfH0DNP9dCrLN
- l561I
-X-Gm-Gg: ASbGncvEp06WlIYweJ/edyX21aCq9x9bmLUSiovi9RqoOtWnvZNQAfFbHO/1lWAk14R
- j0Ks2qXqDtxY0iTnL18wW1Ey5/QA+F+Wz4zsVpO+WHp9AFRi1p9fVFgReH+FD8MJxNZNNIT9ouy
- Z4E2uM/hVhY6oUfKfxrlbZmXPxnkMiru1T98iXzP3K3nVnqUVINpzRvCXvWHf0LWALgf4YSOj3h
- J23yatf4UDUHsVmzcU+nM8RjMm0xjMltFB3h0AcxfE0kOPH35tDwIsyfW4fff4TWn/yytLUVM/m
- yapWXvQPub33EzzGOAOxMPFfTe5MlQ4CQNiyc6unJQc+zTNvXqpEtM94buJvIg==
-X-Google-Smtp-Source: AGHT+IF7oqTiPsM96zvyS+Dt2L47GwuysGPz3MrA1Vl2vNLw4PSw38scOUo69umRYPEqIV+Glc21IA==
-X-Received: by 2002:a05:6a00:218b:b0:736:9f2e:1357 with SMTP id
- d2e1a72fcca58-74af7b0902amr6823756b3a.12.1751070279600; 
- Fri, 27 Jun 2025 17:24:39 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lZZyfIWWTCUW5B+tWLq1OrTS8PV+HjtfL+6A4Tz8SxQ=;
+ b=geon2Cos6fQIy4EcbVV868FLDy2XX0vl3/QeUqgwRasgJZ1+ra3ROPChBJcwCoaZyH
+ ULn25EPc4QXnrG2/ia6PnMgMklVx15umX8GxJ7GfbWkjF4hbKv5ukT6VNdlVIrI6112E
+ k+r10+F9eZXyNg6wShqCAGC/ikm7CdOwj4aXcs/9gDHTHPtQLgYAKbzdMdK2wpn1zHLG
+ bWggSq3yPCi6yhKQTEcG4myY6X/Voexby3rIkmsRMdQKysAtfpkDGwBG83ruq64BBDLU
+ rlTO0uxAFuHfML0cP+/29Z+eeFhdY1hUykt6zU+FUcsBQ7mP1HDlgbGXfoKCG8ENDxdP
+ 5rrQ==
+X-Gm-Message-State: AOJu0YxWUDw7nhphJtRN/juZQ0sDKubiSf/R8ii/GqT0z9EuSj4kEd42
+ YtRi2TKB4p0kfKl2sOMho9Yuxyktc9eJNdRKMZEWE+i8Dl9iTDrs9WoU7O1ILWYd8EaRpqHw1nQ
+ q5NLR
+X-Gm-Gg: ASbGncs3YYeWpb98mDNN4vh9RYxQdvR22JqT21+bR0Ue+p7rKDqR+gq+cBJwOx45O7N
+ e18Gih16eQ9CBqlVPsEMnQSdjXR7F8TD1ps34uODJWzKcgoaBXMtdIOjIMZLlgV1RiyLzi/jVDA
+ /tBfwXBsl2OTuxTvqpxZPYUqaPrBdHdxI5GXJKTQ2n0tQHgnTFj1h5cLPEAl/iU/Mg49bdk47fn
+ J3i/Rq2vHgGHbSbLtLkpfcey3S5nv1hb0PNYIvWuJCUJJTjW/m9R9zf8b5Ae3S0P/PPEK+wRN61
+ Lg2Z92XmpY9ijdFmDYhhdTSnatQWJGDcMxinUSL216FAKtBbMNt0tmChOhHeBQ==
+X-Google-Smtp-Source: AGHT+IHV1zrka7Vt4QgDDD1O9uHbzIpUhz1EsKQx8N+Y64bT7qaMSe7hsWuO7PzXjD18wE9Ke6XP0g==
+X-Received: by 2002:a05:6a00:a87:b0:748:fcfa:8bd5 with SMTP id
+ d2e1a72fcca58-74af6e2f4f3mr8007283b3a.3.1751070280528; 
+ Fri, 27 Jun 2025 17:24:40 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74af5579d37sm3025751b3a.81.2025.06.27.17.24.38
+ d2e1a72fcca58-74af5579d37sm3025751b3a.81.2025.06.27.17.24.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Jun 2025 17:24:39 -0700 (PDT)
+ Fri, 27 Jun 2025 17:24:40 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, richard.henderson@linaro.org,
@@ -67,15 +68,16 @@ Cc: berrange@redhat.com, richard.henderson@linaro.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, peter.maydell@linaro.org,
  philmd@linaro.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 0/2] control guest time using a dilation factor
-Date: Fri, 27 Jun 2025 17:24:29 -0700
-Message-ID: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 1/2] qemu/timer: introduce time dilation factor
+Date: Fri, 27 Jun 2025 17:24:30 -0700
+Message-ID: <20250628002431.41823-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
+References: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +100,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Depending on host cpu speed, and QEMU optimization level, it may sometimes be
-needed to slow or accelerate time guest is perceiving. A common scenario is
-hitting a timeout during a boot process, because some operations were not
-finished on time.
+This factor is applied to time spent since we initialized clocks.
+It impacts value returned by get_clock(), get_clock_realtime() and
+get_cpu_host_ticks();
 
-An existing solution for that is -icount shift=X, with low values, which will
-roughly map virtual time to how many instructions were executed.
+< 1: time goes slower.
+> 1: time goes faster.
+1 by default.
 
-This series introduces another approach, based on faking host time returned to
-the guest, by applying a time-dilation factor. Time will go slower/faster for
-the guest, without impacting QEMU emulation speed.
-
-It may eventually be used to fix some of the timeouts we hit in CI, by slowing
-down time in VM, to be less sensitive to varying cpu performance.
-
-v2
---
-
-In review, Paolo mentioned timers deadline should redilated in the other
-direction. After going through this part, it seems that arrival is always based
-on one of the clocks we have (which is dilated already), so I don't think we
-should redilate that, as this would create a discordance between time set, and
-real time when this happen. Feel free to correct me if this is wrong.
-
-- keep start time per clock and apply accordingly
-- apply time dilation for cpu_get_host_ticks as well
-- use a default factor of 1.0
-- rename cli option to -rtc speed-factor
-- forbid to use option with kvm, as time is not provided by QEMU for guest
-
-Pierrick Bouvier (2):
-  qemu/timer: introduce time dilation factor
-  system/rtc: introduce -rtc speed-factor option
-
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
  include/qemu/timer.h     | 60 ++++++++++++++++++++++++++++------------
- system/rtc.c             | 11 ++++++++
- system/vl.c              |  9 ++++++
  util/qemu-timer-common.c |  7 +++++
- qemu-options.hx          |  7 ++++-
- 5 files changed, 75 insertions(+), 19 deletions(-)
+ 2 files changed, 49 insertions(+), 18 deletions(-)
 
+diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+index abd2204f3be..ee1877d5cd9 100644
+--- a/include/qemu/timer.h
++++ b/include/qemu/timer.h
+@@ -801,6 +801,23 @@ static inline int64_t get_max_clock_jump(void)
+     return 60 * NANOSECONDS_PER_SECOND;
+ }
+ 
++extern int64_t clock_start;
++extern int64_t clock_realtime_start;
++extern int64_t host_ticks_start;
++extern double clock_time_dilation;
++
++static inline int64_t dilate_time(int64_t start, int64_t now)
++{
++    if (start == 0) {
++        /* start value is getting fetched */
++        return now;
++    }
++    g_assert(now >= start);
++    int64_t elapsed = now - start;
++    int64_t elapsed_dilated = elapsed * clock_time_dilation;
++    return start + elapsed_dilated;
++}
++
+ /*
+  * Low level clock functions
+  */
+@@ -811,11 +828,10 @@ static inline int64_t get_clock_realtime(void)
+     struct timeval tv;
+ 
+     gettimeofday(&tv, NULL);
+-    return tv.tv_sec * 1000000000LL + (tv.tv_usec * 1000);
++    int64_t now = tv.tv_sec * 1000000000LL + (tv.tv_usec * 1000);
++    return dilate_time(clock_realtime_start, now);
+ }
+ 
+-extern int64_t clock_start;
+-
+ /* Warning: don't insert tracepoints into these functions, they are
+    also used by simpletrace backend and tracepoints would cause
+    an infinite recursion! */
+@@ -826,7 +842,8 @@ static inline int64_t get_clock(void)
+ {
+     LARGE_INTEGER ti;
+     QueryPerformanceCounter(&ti);
+-    return muldiv64(ti.QuadPart, NANOSECONDS_PER_SECOND, clock_freq);
++    int64_t now = muldiv64(ti.QuadPart, NANOSECONDS_PER_SECOND, clock_freq);
++    return dilate_time(clock_start, now);
+ }
+ 
+ #else
+@@ -838,10 +855,11 @@ static inline int64_t get_clock(void)
+     if (use_rt_clock) {
+         struct timespec ts;
+         clock_gettime(CLOCK_MONOTONIC, &ts);
+-        return ts.tv_sec * 1000000000LL + ts.tv_nsec;
++        int64_t now = ts.tv_sec * 1000000000LL + ts.tv_nsec;
++        return dilate_time(clock_start, now);
+     } else {
+         /* XXX: using gettimeofday leads to problems if the date
+-           changes, so it should be avoided. */
++           changes, so it should be avoided. Time is already dilated. */
+         return get_clock_realtime();
+     }
+ }
+@@ -852,7 +870,7 @@ static inline int64_t get_clock(void)
+ 
+ #if defined(_ARCH_PPC)
+ 
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     int64_t retval;
+ #ifdef _ARCH_PPC64
+@@ -878,7 +896,7 @@ static inline int64_t cpu_get_host_ticks(void)
+ 
+ #elif defined(__i386__)
+ 
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     int64_t val;
+     asm volatile ("rdtsc" : "=A" (val));
+@@ -887,7 +905,7 @@ static inline int64_t cpu_get_host_ticks(void)
+ 
+ #elif defined(__x86_64__)
+ 
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     uint32_t low,high;
+     int64_t val;
+@@ -900,7 +918,7 @@ static inline int64_t cpu_get_host_ticks(void)
+ 
+ #elif defined(__hppa__)
+ 
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     int val;
+     asm volatile ("mfctl %%cr16, %0" : "=r"(val));
+@@ -909,7 +927,7 @@ static inline int64_t cpu_get_host_ticks(void)
+ 
+ #elif defined(__s390__)
+ 
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     int64_t val;
+     asm volatile("stck 0(%1)" : "=m" (val) : "a" (&val) : "cc");
+@@ -918,7 +936,7 @@ static inline int64_t cpu_get_host_ticks(void)
+ 
+ #elif defined(__sparc__)
+ 
+-static inline int64_t cpu_get_host_ticks (void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+ #if defined(_LP64)
+     uint64_t        rval;
+@@ -956,7 +974,7 @@ static inline int64_t cpu_get_host_ticks (void)
+                               : "=r" (value));          \
+     }
+ 
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     /* On kernels >= 2.6.25 rdhwr <reg>, $2 and $3 are emulated */
+     uint32_t count;
+@@ -972,7 +990,7 @@ static inline int64_t cpu_get_host_ticks(void)
+ 
+ #elif defined(__alpha__)
+ 
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     uint64_t cc;
+     uint32_t cur, ofs;
+@@ -984,7 +1002,7 @@ static inline int64_t cpu_get_host_ticks(void)
+ }
+ 
+ #elif defined(__riscv) && __riscv_xlen == 32
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     uint32_t lo, hi, tmph;
+     do {
+@@ -997,7 +1015,7 @@ static inline int64_t cpu_get_host_ticks(void)
+ }
+ 
+ #elif defined(__riscv) && __riscv_xlen > 32
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     int64_t val;
+ 
+@@ -1006,7 +1024,7 @@ static inline int64_t cpu_get_host_ticks(void)
+ }
+ 
+ #elif defined(__loongarch64)
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     uint64_t val;
+ 
+@@ -1018,10 +1036,16 @@ static inline int64_t cpu_get_host_ticks(void)
+ /* The host CPU doesn't have an easily accessible cycle counter.
+    Just return a monotonically increasing value.  This will be
+    totally wrong, but hopefully better than nothing.  */
+-static inline int64_t cpu_get_host_ticks(void)
++static inline int64_t _cpu_get_host_ticks(void)
+ {
+     return get_clock();
+ }
+ #endif
+ 
++static inline int64_t cpu_get_host_ticks(void)
++{
++    int64_t now = _cpu_get_host_ticks();
++    return dilate_time(host_ticks_start, now);
++}
++
+ #endif
+diff --git a/util/qemu-timer-common.c b/util/qemu-timer-common.c
+index cc1326f7264..5cb36032bc8 100644
+--- a/util/qemu-timer-common.c
++++ b/util/qemu-timer-common.c
+@@ -28,6 +28,9 @@
+ /* real time host monotonic timer */
+ 
+ int64_t clock_start;
++int64_t clock_realtime_start;
++int64_t host_ticks_start;
++double clock_time_dilation = 1.0f;
+ 
+ #ifdef _WIN32
+ 
+@@ -44,6 +47,8 @@ static void __attribute__((constructor)) init_get_clock(void)
+     }
+     clock_freq = freq.QuadPart;
+     clock_start = get_clock();
++    clock_realtime_start = get_clock_realtime();
++    host_ticks_start = cpu_get_host_ticks();
+ }
+ 
+ #else
+@@ -59,5 +64,7 @@ static void __attribute__((constructor)) init_get_clock(void)
+         use_rt_clock = 1;
+     }
+     clock_start = get_clock();
++    clock_realtime_start = get_clock_realtime();
++    host_ticks_start = cpu_get_host_ticks();
+ }
+ #endif
 -- 
 2.47.2
 
