@@ -2,101 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36874AEC187
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Jun 2025 22:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF25AEC385
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Jun 2025 02:26:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uVG48-0007LL-J4; Fri, 27 Jun 2025 16:52:56 -0400
+	id 1uVJN7-0006Kx-0w; Fri, 27 Jun 2025 20:24:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uVG46-0007Ki-Hd
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 16:52:54 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uVJN5-0006Ko-BL
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 20:24:43 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uVG44-0005mG-RG
- for qemu-devel@nongnu.org; Fri, 27 Jun 2025 16:52:54 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 232EC21134;
- Fri, 27 Jun 2025 20:52:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751057571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FhtVvdQ4xBMZ/b+A2+k9vl0MEDJyZSSSBXoytq758ck=;
- b=1EBTmjBDKAhrN3TMGl2Ychfu1kYaMg9THn+lZNjfr0oBLkBiNkcm884lrpSM5j/3GfQ1b1
- WY3VgVz0AfQxZyA1TDwy7q9gtbZ5eCln4/ZoCj1TJP/vqFdHEpQWCNZgUEjLm3HEqb/SYt
- nVSRN135xbFjh5cnoUYe8IQt4nWdT1c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751057571;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FhtVvdQ4xBMZ/b+A2+k9vl0MEDJyZSSSBXoytq758ck=;
- b=n5QLt+Md9SBH/GW0wcFDnj5iDJguAvbWtb8N+F9+dlEZNgahZmWBA4cnZnEY2ibaazpknf
- epXDvyuTNFbzReBw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751057571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FhtVvdQ4xBMZ/b+A2+k9vl0MEDJyZSSSBXoytq758ck=;
- b=1EBTmjBDKAhrN3TMGl2Ychfu1kYaMg9THn+lZNjfr0oBLkBiNkcm884lrpSM5j/3GfQ1b1
- WY3VgVz0AfQxZyA1TDwy7q9gtbZ5eCln4/ZoCj1TJP/vqFdHEpQWCNZgUEjLm3HEqb/SYt
- nVSRN135xbFjh5cnoUYe8IQt4nWdT1c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751057571;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FhtVvdQ4xBMZ/b+A2+k9vl0MEDJyZSSSBXoytq758ck=;
- b=n5QLt+Md9SBH/GW0wcFDnj5iDJguAvbWtb8N+F9+dlEZNgahZmWBA4cnZnEY2ibaazpknf
- epXDvyuTNFbzReBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9619F13786;
- Fri, 27 Jun 2025 20:52:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 4iX/FaIEX2hhOAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 27 Jun 2025 20:52:50 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: xjdeng <micro6947@gmail.com>, qemu-devel@nongnu.org
-Cc: xjdeng <micro6947@gmail.com>
-Subject: Re: [PATCH] qtest/migration: Fix potential NPD through getenv
-In-Reply-To: <20250627024226.1767-1-micro6947@gmail.com>
-References: <20250627024226.1767-1-micro6947@gmail.com>
-Date: Fri, 27 Jun 2025 17:52:47 -0300
-Message-ID: <87qzz46h5s.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uVJN3-0000qe-Ow
+ for qemu-devel@nongnu.org; Fri, 27 Jun 2025 20:24:43 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-747fba9f962so2819745b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 27 Jun 2025 17:24:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751070280; x=1751675080; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VRJZppcUw0sSJGJMIzcFuLbUi7mAY//+2Rb+QyfSrxY=;
+ b=i1SxFXpDoXHTUxregjuYZWdkUcxWDQRaSCEgqlQGWXGwtNUjjfg8kNFJt4zrtrHLRO
+ NJFs5OZ30ny/K/q0U8JqJEBAj0vLhRBPlsIbH7Rti31cd7zpPGNKmgX1aBotA1lnbz4q
+ TNcbUbfsbYHqCixrVmRV0Xn8mGKdjWITlBxYGTaDLp4OxPdDHg1ci9CKrNeQ7ptHVz8S
+ R/oLKLfGuPAcdJYMZHgj6CIn7ZJ3s+cyO8IlqQDU96KfQLuq2Vm6lUQukc0ub2RO7MBH
+ PxUCnyBM0tsKTHODzcxpJoB4QL+yGwQ6Q3fBCYY9y1qPcN9h6ETZuASAH9Kf3W/LrqQZ
+ cFxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751070280; x=1751675080;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VRJZppcUw0sSJGJMIzcFuLbUi7mAY//+2Rb+QyfSrxY=;
+ b=ljnTo28zMgbg69CwqhIYpZKyh6/U8EyavO83PZPrNY9ZYquaDnxvfPaT0VPBZ83VyP
+ FOH/Udl5gXFSwbWCUIbKrtrcJeRSluGeryLeoX0q/YPmNzm0l6Ba8px8fJMTGEpDvzMo
+ MTdFJemoRdjlJMMrhnaURq9KPXj5edl1gRuZUGt1ieupXJFkDTkvU1iRRR5K/STsHDQE
+ FzHjRXebjkJhAg4i38uDr94B7WtKMzDh8bKyuy9epYXLKvjvA/Vo5wsZHcGAVVKDS5Wx
+ ZC3t4ynI4wxsy3dfzcLQ2dluOtXaxJsKA4AauM7anCRSLXzYzsM4RMQIpr3nMk4g/L2O
+ JNhw==
+X-Gm-Message-State: AOJu0YwH+Sxy+MGlw9iTJObKwIEUgltltY0+FbCONpxqEXQCk9luDDxb
+ eiMqsuGaOOmIlxBUqIn2NuCKGWpLqi3u8anjHkAVA2OLaHjbIZ+1kqZml5Z40ISfH0DNP9dCrLN
+ l561I
+X-Gm-Gg: ASbGncvEp06WlIYweJ/edyX21aCq9x9bmLUSiovi9RqoOtWnvZNQAfFbHO/1lWAk14R
+ j0Ks2qXqDtxY0iTnL18wW1Ey5/QA+F+Wz4zsVpO+WHp9AFRi1p9fVFgReH+FD8MJxNZNNIT9ouy
+ Z4E2uM/hVhY6oUfKfxrlbZmXPxnkMiru1T98iXzP3K3nVnqUVINpzRvCXvWHf0LWALgf4YSOj3h
+ J23yatf4UDUHsVmzcU+nM8RjMm0xjMltFB3h0AcxfE0kOPH35tDwIsyfW4fff4TWn/yytLUVM/m
+ yapWXvQPub33EzzGOAOxMPFfTe5MlQ4CQNiyc6unJQc+zTNvXqpEtM94buJvIg==
+X-Google-Smtp-Source: AGHT+IF7oqTiPsM96zvyS+Dt2L47GwuysGPz3MrA1Vl2vNLw4PSw38scOUo69umRYPEqIV+Glc21IA==
+X-Received: by 2002:a05:6a00:218b:b0:736:9f2e:1357 with SMTP id
+ d2e1a72fcca58-74af7b0902amr6823756b3a.12.1751070279600; 
+ Fri, 27 Jun 2025 17:24:39 -0700 (PDT)
+Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-74af5579d37sm3025751b3a.81.2025.06.27.17.24.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 27 Jun 2025 17:24:39 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com, richard.henderson@linaro.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, peter.maydell@linaro.org,
+ philmd@linaro.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 0/2] control guest time using a dilation factor
+Date: Fri, 27 Jun 2025 17:24:29 -0700
+Message-ID: <20250628002431.41823-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.47.2
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[]; MISSING_XM_UA(0.00)[];
- FREEMAIL_ENVRCPT(0.00)[gmail.com]; MIME_TRACE(0.00)[0:+];
- RCVD_VIA_SMTP_AUTH(0.00)[]; TO_DN_SOME(0.00)[];
- FREEMAIL_TO(0.00)[gmail.com,nongnu.org];
- MID_RHS_MATCH_FROM(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; FREEMAIL_CC(0.00)[gmail.com];
- RCPT_COUNT_THREE(0.00)[3]; FROM_EQ_ENVFROM(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,98 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-xjdeng <micro6947@gmail.com> writes:
+Depending on host cpu speed, and QEMU optimization level, it may sometimes be
+needed to slow or accelerate time guest is perceiving. A common scenario is
+hitting a timeout during a boot process, because some operations were not
+finished on time.
 
-Hi, thanks for the interest in fixing this. However, the analysis it not
-quite right:
+An existing solution for that is -icount shift=X, with low values, which will
+roughly map virtual time to how many instructions were executed.
 
-> In `find_common_machine_version`, the code previously assumed that
-> `getenv(var1)` and `getenv(var2)` would always return non-NULL values.
+This series introduces another approach, based on faking host time returned to
+the guest, by applying a time-dilation factor. Time will go slower/faster for
+the guest, without impacting QEMU emulation speed.
 
-That's not true. qtest_qemu_binary() has:
+It may eventually be used to fix some of the timeouts we hit in CI, by slowing
+down time in VM, to be less sensitive to varying cpu performance.
 
-    if (var) {
-        qemu_bin = getenv(var);
-        if (qemu_bin) {        <--- HERE
-            return qemu_bin;
-        }
-    }
+v2
+--
 
-> However, if either environment variable is not set, `getenv` returns
-> NULL, which could lead to a null pointer dereference.
->
-> Tracing upstream usage: `find_common_machine_version` is called by
-> `resolve_machine_version` with `QEMU_ENV_SRC` and `QEMU_ENV_DST`.
-> `resolve_machine_version` is used by `migrate_start`, which is called
-> by `migrate_postcopy_prepare`, and ultimately by `test_postcopy_common`.
->
-> In `test_postcopy_common`, after `migrate_postcopy_prepare`, the
-> function `migrate_postcopy_complete` is called. Inside, 
-> `migration_get_env` checks if `QEMU_ENV_SRC` and `QEMU_ENV_DST` are
-> set before use. Thus, these variables can be NULL, leading to a
-> potential null pointer dereference in `find_common_machine_version`.
+In review, Paolo mentioned timers deadline should redilated in the other
+direction. After going through this part, it seems that arrival is always based
+on one of the clocks we have (which is dilated already), so I don't think we
+should redilate that, as this would create a discordance between time set, and
+real time when this happen. Feel free to correct me if this is wrong.
 
-There's no dereference happening anywhere, just a g_test_message(),
-which would show "(null)".
+- keep start time per clock and apply accordingly
+- apply time dilation for cpu_get_host_ticks as well
+- use a default factor of 1.0
+- rename cli option to -rtc speed-factor
+- forbid to use option with kvm, as time is not provided by QEMU for guest
 
->
-> Signed-off-by: xjdeng <micro6947@gmail.com>
-> ---
->  tests/qtest/migration/migration-util.c | 21 +++++++++++++++++++--
->  1 file changed, 19 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/qtest/migration/migration-util.c b/tests/qtest/migration/migration-util.c
-> index 642cf50c8d..45c9e164e2 100644
-> --- a/tests/qtest/migration/migration-util.c
-> +++ b/tests/qtest/migration/migration-util.c
-> @@ -203,8 +203,25 @@ char *find_common_machine_version(const char *mtype, const char *var1,
->          return g_strdup(type2);
->      }
->  
-> -    g_test_message("No common machine version for machine type '%s' between "
-> -                   "binaries %s and %s", mtype, getenv(var1), getenv(var2));
+Pierrick Bouvier (2):
+  qemu/timer: introduce time dilation factor
+  system/rtc: introduce -rtc speed-factor option
 
-I don't think we'll ever reach here in case one var is NULL. It would
-have been replaced with QTEST_QEMU_BINARY and either asserted or exited
-in the if below:
+ include/qemu/timer.h     | 60 ++++++++++++++++++++++++++++------------
+ system/rtc.c             | 11 ++++++++
+ system/vl.c              |  9 ++++++
+ util/qemu-timer-common.c |  7 +++++
+ qemu-options.hx          |  7 ++++-
+ 5 files changed, 75 insertions(+), 19 deletions(-)
 
-    g_autofree char *type1 = qtest_resolve_machine_alias(var1, mtype);
-    g_autofree char *type2 = qtest_resolve_machine_alias(var2, mtype);
+-- 
+2.47.2
 
-    g_assert(type1 && type2);
-
-    if (g_str_equal(type1, type2)) {
-        /* either can be used */
-        return g_strdup(type1);
-    }
-
-Can you provide a test command line that exposes the issue? Something
-like:
-
-QTEST_QEMU_BINARY=./qemu-system-<arch> QTEST_QEMU_BINARY_DST=<some other
-qemu version here> ../tests/qtest/migration-test --full
-
-Thanks
-
-> +    char *varstring1 = getenv(var1);
-> +    char *varstring2 = getenv(var2);
-> +    if (varstring1 && varstring2) {
-> +        g_test_message("No common machine version for machine type '%s' "
-> +                       "between binaries %s and %s",
-> +                       mtype, varstring1, varstring2);
-> +    } else if (varstring1) {
-> +        g_test_message("No common machine version for machine type '%s' "
-> +                       "between binary %s and environment variable %s",
-> +                       mtype, varstring1, var2);
-> +    } else if (varstring2) {
-> +        g_test_message("No common machine version for machine type '%s' "
-> +                       "between binary %s and environment variable %s",
-> +                       mtype, varstring2, var1);
-> +    } else {
-> +        g_test_message("No common machine version for machine type '%s' "
-> +                       "between environment variables %s and %s",
-> +                       mtype, var1, var2);
-> +    }
->      g_assert_not_reached();
->  }
 
