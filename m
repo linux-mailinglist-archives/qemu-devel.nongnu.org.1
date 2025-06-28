@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496A0AECA2C
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Jun 2025 21:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE2EAECA2B
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Jun 2025 21:59:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uVbgZ-0003Gc-6s; Sat, 28 Jun 2025 15:58:03 -0400
+	id 1uVbgg-0003Hc-OB; Sat, 28 Jun 2025 15:58:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uVbgQ-0003F7-4V
- for qemu-devel@nongnu.org; Sat, 28 Jun 2025 15:57:54 -0400
-Received: from mail-qk1-x734.google.com ([2607:f8b0:4864:20::734])
+ id 1uVbgS-0003G2-SX
+ for qemu-devel@nongnu.org; Sat, 28 Jun 2025 15:57:58 -0400
+Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uVbgN-0000Ja-L7
- for qemu-devel@nongnu.org; Sat, 28 Jun 2025 15:57:53 -0400
-Received: by mail-qk1-x734.google.com with SMTP id
- af79cd13be357-7d3f5796755so313449885a.1
- for <qemu-devel@nongnu.org>; Sat, 28 Jun 2025 12:57:51 -0700 (PDT)
+ id 1uVbgR-0000KP-GZ
+ for qemu-devel@nongnu.org; Sat, 28 Jun 2025 15:57:56 -0400
+Received: by mail-qk1-x72b.google.com with SMTP id
+ af79cd13be357-7d41cd4114aso558986685a.2
+ for <qemu-devel@nongnu.org>; Sat, 28 Jun 2025 12:57:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751140670; x=1751745470; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751140674; x=1751745474; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Sh9BBAUKCRRchEMhh1wAwvgv0ZLAu/7PDYQAsn4UYuo=;
- b=xtji0o9g2QIap+pTOo3RrOD/dUObhvUSznHsvHdeWMuvybGL7sFklEwubHwvTE3tt0
- DEfV1YqrvvHSCJ1MCzns6nmpU1nAM4G/aNJ/xUuuqW3zDDIUlnY8FcibZ6zoBSm4mPmH
- 4mLIoYcYmYziNTQUNbzSg8AGQ7Ax5cMLSXCQsqPczhBn80O5pOOBShHut7el4ONfE5TV
- VYdnS8zc3vuN6W7ksDQj7M1DeeGaZMrN4KMDoKxCjfSbihDcOMem9wH0p4ERLJiaXSct
- +vlf7ru4BXe0/RxOmPgytyny+1GISSBe1ED6/NLpsFEEccp7NjTrAy3F2uid0yx1IXHG
- +YaQ==
+ bh=N8RNDG58fu6VATaaftZTVcVDja/cJV1L/ku3KjsPqaI=;
+ b=LJPw4U0qZNt2wInZ7TZ/vLBYrzQshgE8sMdehw+RkXq/u/EsAIG4GBk+CjZZp8jliq
+ Mx0mvSngDavIe/hnsaLb4Clii1281Ixkki2rkMPbKwvbLi1xaSgv5PNpFTpzCvIhJzeq
+ 7xcEbhWub8ltNb2r39C1UITGshc6BLUFX2HDShLL0rkh28t0V6lrt35PNjkCdTcLoA/9
+ T7eQOHCf4w2Vj6aW1sYCYADxPG1OfmeeDthledwWC1tbzgOhrKS0BBrte2WmwaQBqEhQ
+ ZIFSbn8FYOXlXBdr3+earcBjieBwJtlspHmnYJ5VPknWuYsSH+dWoWxG/MnsN3EQ5ttQ
+ TITw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751140670; x=1751745470;
+ d=1e100.net; s=20230601; t=1751140674; x=1751745474;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Sh9BBAUKCRRchEMhh1wAwvgv0ZLAu/7PDYQAsn4UYuo=;
- b=dWSCXl2I8Uf+D9I8T8KV2F7SsBgUrXp4UB30o4FTpUR4mdIJk3bW+vV413X6cFmSaD
- 76YfzEutju/RdmWubKdxtdL2f7SiE7RUucwnYkdRtBzIHc33MOVzYLN0feIUKZL435GU
- 9omslCmto62FTmj91Me2Tml9ZwsLgrLEauOwMPLmyUDpre/8IEVcTWNmL2EvR9y55J1k
- iY4PlDe/FuOL4GwqmAig/sIVktVBDiLVjaJySVqTLH7ViXyJTKEtNdF02S/l1dZrOD3V
- CaomOUSqx9amrCq8Dq7yT3XoQE6KzO+IbzEOMayPRlu5hff2bMn7c/w7atAspX0u9w3i
- yvtg==
-X-Gm-Message-State: AOJu0YwADLePxeZrw4wGVopQxgr35R2lgzpoxvnEDnkYxBpMqB3WoAOa
- VTLqDkG5Qfg64zjRqi8wvBoZ1wCJLsDsO5T2Yhhz4OfYpGF908JKEvH7Ey0BRhoYiaD+Z+7+qas
- laYJ2
-X-Gm-Gg: ASbGncvd5J8NQpKLk1V7nzqM9mmN7XJopqWu08bpZTXQwcUcj/CVwo7AbQKJ7QDFkY5
- 5Z51G3DsKIru6rXUTegPTbgGUiPnMnv3LrRxKaiTvbkp2kusE9TInbWfOlC8G4KovnLQK5hJ6Xh
- 2sdbzg/NTIk6ogByfuyrAO2u2B0gC7dzW9K9z77KQ2zb7bUG/ECCi4fCoZi555sQ95PbWYPcpDi
- UUDHxs1V7XRSkwApSIShwdmn+5wBay3kQFyWCIa0nTgG/Fx/r9yPTYIRcZGIJWbbUEmSoNQVkkY
- Vim69FXRtQYRO7Eaxrv7io0jbOFYErQIm0NffNYIjb3ekPzy5pN09KgwSiX4yvfN7ENP5JOVvvp
- EEw==
-X-Google-Smtp-Source: AGHT+IEokQlorS1v4Gz7zCFH/PUm0ODxAYiyCE6aFtz1gJB0afwNAjlfXOvvrvcQgadQe/yJmqRJ0Q==
-X-Received: by 2002:a05:620a:4541:b0:7c5:4b18:c4c3 with SMTP id
- af79cd13be357-7d443979161mr1158238485a.30.1751140670338; 
- Sat, 28 Jun 2025 12:57:50 -0700 (PDT)
+ bh=N8RNDG58fu6VATaaftZTVcVDja/cJV1L/ku3KjsPqaI=;
+ b=pC+S1bZtyGE4r35WKBmQGIV+zRqGYX/Ucwu9AkXoezcSC00Dc0YNg16Ac+31AOIbjF
+ Y6tvapOnUGv5tmmBy0YbBQuodrFE0d6iQJeBVKd3WKDzpwD1oehJeoL/cxVfOIb4RMe1
+ HmfP2JDIXEgd2And/f2Cb3DMBRvzIVZD8zA93P8+hFf+erjohjXIczrpmjJjqcpPUae+
+ Fssz4m1XXyTbrYyGOoS9Vx3qjRRFZkfkiFbKg2gD1hoW3OYZr7lR8m0B0TwRJonhgmAf
+ G7NeCBENfMuJO+MoEzZ93L2wYislviGAQogDYFowh5W99Rwnyannpdu8UpxStNETjmP/
+ mqQg==
+X-Gm-Message-State: AOJu0YzGcorSiwbJ14229HJ8UVzdiUXqpr8N5Y+MM74TFJ+jZVy5qWCM
+ tEFAAoEQORQ4pC7WL2umC97ly3zuv//gyvCwaboM9/3MwBqybZMcANtleHz7YqqhLldC0OsWGPg
+ 0PhwS
+X-Gm-Gg: ASbGnctUA3OnY7mtCwu2GVYTybrhxC+2ohDLx6BqBSQhwOZaS20ukbUZwJ31aa/Yi6Z
+ SmONIug1Wr2UgzGMpUy/8XMrUefGKLsEvFAyktMHBX/rL60foqsgo3Y1dHpWKUWsGfkgq1Muoa2
+ E/hu0T1Z+kAvCZBqEB1T0ZBn3kll/nj6i0TMXC7qcsbbPSr4Hsi2PF5np+ZqPeiMDrOyrDUxjr7
+ UP4KLl3kdmOYmGqQbzafe/MHuth5Ceinqz1PJh0YWsIiRvQTYqJFenO0OKWTCYNv7yOHX1iijzu
+ N4RGCPgSJ6UgW2HT3kt/fHh20LR6AjsLqpp1MdlIxNd2cvRQj31rBd/rqTQxx0fwHj4=
+X-Google-Smtp-Source: AGHT+IGmfJpIieB66+GPziD/5Xt1TwlHhJgbB0RykGlKeLuCWkL+IVFNwDP6UPT92V+kq9drrhJXXA==
+X-Received: by 2002:a05:620a:25cf:b0:7c5:9fd3:a90b with SMTP id
+ af79cd13be357-7d4439a6782mr1350631385a.47.1751140674015; 
+ Sat, 28 Jun 2025 12:57:54 -0700 (PDT)
 Received: from gromero0.. ([186.215.58.88]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7d443136907sm334395585a.14.2025.06.28.12.57.46
+ af79cd13be357-7d443136907sm334395585a.14.2025.06.28.12.57.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Jun 2025 12:57:49 -0700 (PDT)
+ Sat, 28 Jun 2025 12:57:53 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, eric.auger@redhat.com, philmd@linaro.org,
  mst@redhat.com
 Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, gustavo.romero@linaro.org,
  udo@hypervisor.org, ajones@ventanamicro.com, peter.maydell@linaro.org,
- imammedo@redhat.com, anisinha@redhat.com
-Subject: [PATCH v6 2/9] hw/arm/virt: Simplify logic for setting instance's
- 'tcg_its' variable
-Date: Sat, 28 Jun 2025 19:57:15 +0000
-Message-Id: <20250628195722.977078-3-gustavo.romero@linaro.org>
+ imammedo@redhat.com, anisinha@redhat.com,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v6 3/9] hw/arm/virt: Simplify create_its()
+Date: Sat, 28 Jun 2025 19:57:16 +0000
+Message-Id: <20250628195722.977078-4-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250628195722.977078-1-gustavo.romero@linaro.org>
 References: <20250628195722.977078-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::734;
- envelope-from=gustavo.romero@linaro.org; helo=mail-qk1-x734.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-qk1-x72b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,36 +101,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because 'tcg_its' in the machine instance is set based on the machine
-class’s negated variable 'no_tcg_its', 'tcg_its' is the opposite of
-'no_tcg_its' and hence the code in question can be simplified as:
-tcg_its = !no_tcg_its.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+No need to strstr() check the class name when we can use
+kvm_irqchip_in_kernel() to check if the ITS from the host can be used.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- hw/arm/virt.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ hw/arm/virt.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 99fde5836c..6d9256a525 100644
+index 6d9256a525..ae419e8671 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -3342,12 +3342,8 @@ static void virt_instance_init(Object *obj)
+@@ -705,21 +705,18 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
  
-     /* Default allows ITS instantiation */
-     vms->its = true;
--
--    if (vmc->no_tcg_its) {
--        vms->tcg_its = false;
--    } else {
--        vms->tcg_its = true;
+ static void create_its(VirtMachineState *vms)
+ {
+-    const char *itsclass = its_class_name();
+     DeviceState *dev;
+ 
+-    if (!strcmp(itsclass, "arm-gicv3-its")) {
+-        if (!vms->tcg_its) {
+-            itsclass = NULL;
+-        }
 -    }
-+    /* Allow ITS emulation if the machine version supports it */
-+    vms->tcg_its = !vmc->no_tcg_its;
+-
+-    if (!itsclass) {
+-        /* Do nothing if not supported */
++    assert(vms->its);
++    if (!kvm_irqchip_in_kernel() && !vms->tcg_its) {
++        /*
++         * Do nothing if ITS is neither supported by the host nor emulated by
++         * the machine.
++         */
+         return;
+     }
  
-     /* Default disallows iommu instantiation */
-     vms->iommu = VIRT_IOMMU_NONE;
+-    dev = qdev_new(itsclass);
++    dev = qdev_new(its_class_name());
+ 
+     object_property_set_link(OBJECT(dev), "parent-gicv3", OBJECT(vms->gic),
+                              &error_abort);
 -- 
 2.34.1
 
