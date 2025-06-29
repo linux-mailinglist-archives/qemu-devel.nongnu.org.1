@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E13AED10E
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Jun 2025 22:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3139FAED10D
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Jun 2025 22:50:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uVyxX-0003ev-4z; Sun, 29 Jun 2025 16:49:07 -0400
+	id 1uVyxX-0003ei-1W; Sun, 29 Jun 2025 16:49:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uVyxV-0003eB-Dz; Sun, 29 Jun 2025 16:49:05 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1uVyxV-0003eC-EE; Sun, 29 Jun 2025 16:49:05 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uVyxT-0000Rl-Oh; Sun, 29 Jun 2025 16:49:05 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-60780d74c8cso2658653a12.2; 
- Sun, 29 Jun 2025 13:49:02 -0700 (PDT)
+ id 1uVyxU-0000Rn-1Q; Sun, 29 Jun 2025 16:49:05 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-ae0b2ead33cso678500266b.0; 
+ Sun, 29 Jun 2025 13:49:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1751230141; x=1751834941; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Vv37XWZJ4hRc87onzyCYSd7bqnPUH/zjri+WbnLb8WQ=;
- b=SmhAuGYR+qvS5GAiD687gw7iPiIXaY+X0Uif5FBfwBJE2Cf54iLeKv9nZpfzliOxlO
- DwfHzqHG/MVPjHxfzYTBubMx4qFvG9+7ZKdbUadqzKuDh0rycmYznDTZPLTyKMfkodX4
- 4KYrjFok31vtXAISvydDcTsgry7SMdyM6OVS7ho2dLfKgtd3C5mCxk7ugV7LP+xIxY71
- ZnfMc5rg30z53GjVz6czKakuRZDfYALZhHr6IvtNvr06tcTpKJwno6j6WdJiLTccTPci
- VZJRUtctUfn5NNIW7zZ6ZnlFnPrlo+sCHoXBjJwLntSnB6ywFi20wdI6ccEhoJPCB4Op
- fPgg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LQOw7AHWnconnv7IJtYR9CMfxMCXTEspg6v7zFVpGKE=;
+ b=dVYeuqkcuBagkpsDhSzVQWJyAgLr5F2TJEYjM8qEpTgKvBUmPh0EK8oUKUuDihu95s
+ FrnWSlrv9Hyl6vNKUcHWjhJvb+09ZGtFDof+YE+aFboQjaUsCl6udKZemxvOuI4J52G0
+ 7UTQi/Ffg4UNykJAlZ9FyMw+bxgf/Y34nwFyHBviJdZRIdj7D6VNYtwbV0sl+Lc9DOp1
+ E6hWGq6gvBKpRUGlVxyEVHgGDAPT1JhOSVa3jK4uJlm7/QrW7E3fmaeY9CLyOPmAjWSi
+ 1NmFpc0ZDelqAqYTncm54xlXriff60O5DmPZb43H5aS4GOjvKVr9ZtR5ncPYkReX8V5a
+ dQfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1751230141; x=1751834941;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Vv37XWZJ4hRc87onzyCYSd7bqnPUH/zjri+WbnLb8WQ=;
- b=IRBqITg+yETQI0CYJA1e4+sut9wbIhR/Sgig8OHt0hPUKJZEk9v4ReGjCkomX2Rt+Q
- ORch5/NxTAnA1kuqAj21iEUf0F1kaiERpPROH/00nzPTa19HLHcuDqDAKcFjYzhHF3LV
- u/Wpk8PDg7Eoim0nacqkWMmoAV+czAwX4Q0Wx2mwaBdIVEkLB4deSoGw4+L/gXMIyN9f
- dEPM3Co1LOhfqKjQiAUgDkuxKk51o8NZXyCFHSkiMRKM95hRDR8+woyzgb8PXXfuGGGM
- 8hO/wVNXXBjU/gIJgQDYqClUI00nIV5NAq0LaMfspGUaCPHSfwLC2H5aHtrhc/xHcfXo
- 3Ryg==
-X-Gm-Message-State: AOJu0Ywab0xQB5jHR2xfQxofFC1xHB+FoTKAYbugOv5SpV1OOQeLYp8V
- BIvJTSA/HdcBtyKWZwpSsGsuJGhmxVyv2MfruJZ35bdDJJUpE/YhJQ0MDSX1PQ==
-X-Gm-Gg: ASbGncvJs8hBc2BG1HHm/3wySEFLHRRCVi9eUhP2Z9IUuLzhyOyqXNRReVPCHSTdae9
- 5vJIiz2q5Izh1wrhqrlQmc8gvkf3GrZJvhw1kYilta586KQei8Uii/djDWT7r+/fkshHBLWIRXN
- ToktIUeG0AzSsAQJheGuARdP4h+K/tzRSGg86vxW/DzBG6zI/vGYiqGwuuHj7YemAelKHILgdMr
- 5nNKDLUGGfagEaj2Hlq4C5rHqwI3HIixa/iOgAB6ewMqe2BjILBeSHZdcNBeo9jN506m22dP1Ew
- yBo0DiygvP1WjFQcIw3OmRgweivlJaqv8iGbv9VTUagstVqI4ldCMsp9eVBusDsoK03HaphEpi+
- LnX28lvaJFmsZRY4pIEKFCcDmTOBiVfAHyUkpReaGTh+9F3x0LM3a+VBwNaFJiKhGRA==
-X-Google-Smtp-Source: AGHT+IFk0lFZbw+HLqEHkuRiFlu3GnyEjDDAh7lMLDe/JgRJPrf4TRQzrm/i6Oeq6yQsWRIqQ59jEw==
-X-Received: by 2002:a17:906:9f92:b0:ade:484d:1518 with SMTP id
- a640c23a62f3a-ae34fdcaf35mr884945666b.26.1751230140618; 
- Sun, 29 Jun 2025 13:49:00 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LQOw7AHWnconnv7IJtYR9CMfxMCXTEspg6v7zFVpGKE=;
+ b=rsQtiE7Jm02UGQyIZTNIT2Iu7Va+BUSlSg72fYGEH5qqmPax1lqyHkeLnEYyjr5nXe
+ mljSvIoh+cRoqK/P3M389xW4b7l6ojbF7MuUAFbH0RwZno4gex6kcQYa4uev+8GynhJh
+ iF1fhNJmJJRg5v9aIJUrtrEj3D5KmlNvZqEXWX8hLiNldG67UmHWfzoxgzBOtEyTgsKi
+ gsujSX8dD1AHWao8WRLYeTEfzvYNaYDhKYa9vo2aCd3s7jEdHN8ZdIzPKGO7UBJn7tSP
+ 1a8NDW+Daq6HeQPG6gVwj7fCdHdHrWJ2GwFBJ12DBExS0eFbPvzfN+W2TpCieX+faJgg
+ dGNg==
+X-Gm-Message-State: AOJu0YwQTBb2LbS+v+hwVyYxaw4fygDkKr71xXg9DvXWWEccYluI0dtt
+ 0LLJ6sTfrG1E2TIgaMQ0JnHwItwzQt4YU5olLY8tST/B/I/1SSyg5tTuTDpZEw==
+X-Gm-Gg: ASbGncua3U5trXyaaGCq8EToV2dDsBzrpTStNCQ8s8ULqpJdk4powxK7bNi39Moj9XM
+ FFIq3o/2jY9X3sxRJc8u1DFDKvGxxE3lZ3WGYWPB4usd9vVruyGZRiGcAhOI/IUKULOhbETRzXh
+ jYtsvg9H9LssMOv4so4c7bXWN2S7uf7LUyYSM7w84ppCW2qCNTNEKJnCxVkgm06eh3F9bnKlExr
+ ubW6Mvr6HLnCvcrZ8M37Ig5rgb1CmvlA9qu1fWUXV8x/7JLcw2aSqcuIC9Dm3UPx9ygGM4up4HD
+ X+cqnypgglCAAxnIpokzS8W9vbNH1G8PppsdW98BLDjZniG8b1jeAXjy4PNOMKI2kUUsTprLuJ2
+ AbarJO/jfOZ6Ac7VDXQ18r4A4d1y/zyMmTAf8pjT+LKkV0/2d/Rsu8UrhnCOmwJePpw==
+X-Google-Smtp-Source: AGHT+IFMfXIpJbgmQAE7ZwsWVtoK1YAjL8z+OjDo0/mkoYKcc/0kuMXrHWwP0eyF7MDi1tS+Dp8Tdg==
+X-Received: by 2002:a17:907:94c8:b0:ae0:6621:2f69 with SMTP id
+ a640c23a62f3a-ae0d262937emr1704713166b.13.1751230141268; 
+ Sun, 29 Jun 2025 13:49:01 -0700 (PDT)
 Received: from Provence
  (dynamic-2a02-3100-2f97-a200-0219-99ff-feb2-2458.310.pool.telefonica.de.
  [2a02:3100:2f97:a200:219:99ff:feb2:2458])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae353659e06sm535709566b.44.2025.06.29.13.48.59
+ a640c23a62f3a-ae353659e06sm535709566b.44.2025.06.29.13.49.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 29 Jun 2025 13:49:00 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 0/2] KVM Support for imx8mp-evk Machine
-Date: Sun, 29 Jun 2025 22:48:49 +0200
-Message-ID: <20250629204851.1778-1-shentey@gmail.com>
+Subject: [PATCH 1/2] hw/arm/fsl-imx8mp: Wire VIRQ and VFIQ
+Date: Sun, 29 Jun 2025 22:48:50 +0200
+Message-ID: <20250629204851.1778-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.50.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250629204851.1778-1-shentey@gmail.com>
+References: <20250629204851.1778-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,31 +98,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds KVM support to the imx8mp-evk machine, both as a guest and as a
-KVM host. Turning imx8mp-evk into a KVM host just required wiring up two
-interrupts (patch 1) while implementing `-accel kvm` required more work, drawing
-inspiration from the virt machine (patch 2).
+Allows to run KVM guests inside the imx8mp-evk machine.
 
-Testing done:
-* Run `qemu-system-aarch64 -M virt -accel kvm -cpu host" and
-  `qemu-system-aarch64 -M imx8mp-evk -accel kvm -cpu host -smp 4` under
-  `qemu-system-aarch64 -M imx8mp-evk -accel tcg -smp 4`
-* Run `qemu-system-aarch64 -M imx8mp-evk -accel kvm -cpu host -smp 4` under
-  `qemu-system-aarch64 -M virt,secure=on,virtualization=on,gic-version=4 \
-  -cpu cortex-a72 -smp 4 -accel tcg` and `qemu-system-aarch64 -M imx8mp-evk \
-  -accel tcg -smp 4"
+Fixes: a4eefc69b237 ("hw/arm: Add i.MX 8M Plus EVK board")
+CC: qemu-stable
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/arm/fsl-imx8mp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Bernhard Beschow (2):
-  hw/arm/fsl-imx8mp: Wire VIRQ and VFIQ
-  hw/arm/imx8mp-evk: Add KVM support
-
- docs/system/arm/imx8mp-evk.rst |  7 +++++++
- hw/arm/fsl-imx8mp.c            | 37 +++++++++++++++++++++++++++++-----
- hw/arm/imx8mp-evk.c            | 11 ++++++++++
- hw/arm/Kconfig                 |  3 ++-
- hw/arm/meson.build             |  2 +-
- 5 files changed, 53 insertions(+), 7 deletions(-)
-
+diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
+index 23e662c16c..866f4d1d74 100644
+--- a/hw/arm/fsl-imx8mp.c
++++ b/hw/arm/fsl-imx8mp.c
+@@ -356,6 +356,10 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
+                                qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
+             sysbus_connect_irq(gicsbd, i + ms->smp.cpus,
+                                qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
++            sysbus_connect_irq(gicsbd, i + 2 * ms->smp.cpus,
++                               qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
++            sysbus_connect_irq(gicsbd, i + 3 * ms->smp.cpus,
++                               qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
+         }
+     }
+ 
 -- 
 2.50.0
 
