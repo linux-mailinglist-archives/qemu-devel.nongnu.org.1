@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8B0AECFBD
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Jun 2025 20:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E13AED10E
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Jun 2025 22:50:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uVx7N-0004xj-7o; Sun, 29 Jun 2025 14:51:09 -0400
+	id 1uVyxX-0003ev-4z; Sun, 29 Jun 2025 16:49:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uVx7K-0004xX-V3
- for qemu-devel@nongnu.org; Sun, 29 Jun 2025 14:51:07 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1uVyxV-0003eB-Dz; Sun, 29 Jun 2025 16:49:05 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uVx7I-0000qM-Sl
- for qemu-devel@nongnu.org; Sun, 29 Jun 2025 14:51:06 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-60c9d8a16e5so3293332a12.0
- for <qemu-devel@nongnu.org>; Sun, 29 Jun 2025 11:51:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1uVyxT-0000Rl-Oh; Sun, 29 Jun 2025 16:49:05 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-60780d74c8cso2658653a12.2; 
+ Sun, 29 Jun 2025 13:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751223061; x=1751827861; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zLq6/4RxcSJfEghBO0gACi7Caox0/R7AEh1EL2jb81o=;
- b=Eupeehgqs9Hf5lyt8lCjB0R5Yh8drk9BNsCIsPgoj4rF/R3RaYdQc5TFj8HBQM8fEu
- bQy3z/1xpd7EALlaF3o++WRH7dWFgVZvxHWcVnGxP/qnzryxT015xAEf2YwoP/b9i3BJ
- AZ1c0VGyOuPok4k8LfnpWD2pHYQUOZYwEcY2JSCz2tbLCRMmfqPRmZvAaM+/hJ3+56FH
- obzKCzfgno18SjbK4y0XolYA8xtQlr2DRHSdrGBXi7F2TDdhPBqo1QVLgSyNn6SxYOPQ
- J8pF2a+T98wq/pUUSJjeGwsztE0OgOe/0j6kfbHdbMrQ9vuO/ClMYrbC0N1rU13iBedG
- pTWg==
+ d=gmail.com; s=20230601; t=1751230141; x=1751834941; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Vv37XWZJ4hRc87onzyCYSd7bqnPUH/zjri+WbnLb8WQ=;
+ b=SmhAuGYR+qvS5GAiD687gw7iPiIXaY+X0Uif5FBfwBJE2Cf54iLeKv9nZpfzliOxlO
+ DwfHzqHG/MVPjHxfzYTBubMx4qFvG9+7ZKdbUadqzKuDh0rycmYznDTZPLTyKMfkodX4
+ 4KYrjFok31vtXAISvydDcTsgry7SMdyM6OVS7ho2dLfKgtd3C5mCxk7ugV7LP+xIxY71
+ ZnfMc5rg30z53GjVz6czKakuRZDfYALZhHr6IvtNvr06tcTpKJwno6j6WdJiLTccTPci
+ VZJRUtctUfn5NNIW7zZ6ZnlFnPrlo+sCHoXBjJwLntSnB6ywFi20wdI6ccEhoJPCB4Op
+ fPgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751223061; x=1751827861;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=zLq6/4RxcSJfEghBO0gACi7Caox0/R7AEh1EL2jb81o=;
- b=YbBFqVt+gDJOUJ/cqynmR1gOC7+bS1ItqJLK7yO2rjAaVilyifKIFHpBqKgcIkobAX
- 7PQui83PxGmvauXKw/b6zAAQ0dwoGV8wAWUsLYb8TDy0hPsWCibbEVMd7VBpZLNSli6g
- OR3Yi5EwaiKxAYyIAH4pHl5sWaD6IRNoPBQFLFB8d9joFircU0AnXnCXIE6abfnKDzyB
- 0jA6n4Jx2mkZgvwzhtX9RaipZcW70gG2+8Dj6ciMYh3Ddu9u/IZj6jg6CISH9xOBb66x
- TpXjEccum5IkhECsDEeozIf7ItTeVYKs66wltcFb/x9p+FZs+NYGu3GRAnfRsfypZQ29
- cq4g==
-X-Gm-Message-State: AOJu0YyUZFJNKUjcxycy8RA6p11FbFS3RzVCBPfSB1yj1b+ACQ6s0y3E
- 085wMZDu1ozpzLUW2IwoboNl+naMtQ+j7wvENt0sYaoEghrcgAOv8RKxxwLrmF2HscU=
-X-Gm-Gg: ASbGnctWK8OergxKURcWFZYf9fFdNuoHFZwoXvFJLkpL0r8Agx7zLx82Gu+Xkhkw6GC
- 3mnQE+pzjIKZ6NXWirhlUxe7Nv2AJN2Uqu2725AdcxUmc7PfyfZkPvEomGCbyZwGdzg9Y/n8+tb
- mCVJJ2NO38BujGJR9Wf/PBsmKLBssheDJkO+BsA7kDWSq2R5O5FEHejKucoT/O8dlNPQqn8CWKl
- TIibsetLpr38PFoIJWCzjhKBZdQ1Ssd7bt2JYbwg67bjn9EOYVkXXmMJI8YedS+JzwqTBM77t/J
- s41jt0onh8FCvuPvE9Qt7fe+fDPL4wBMz0gM6CLcnl6O6svDAFGWNOpJFal5trE=
-X-Google-Smtp-Source: AGHT+IGUfXWKyFM4XefxQiHYXGjmm4q9W12PYU83RLQz5voi/ViBCXutPx60TMYvUbiG93as5aKp7w==
-X-Received: by 2002:a17:906:dc89:b0:ae0:a483:39bc with SMTP id
- a640c23a62f3a-ae35017d967mr1012078166b.46.1751223061356; 
- Sun, 29 Jun 2025 11:51:01 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae35365a923sm542221866b.68.2025.06.29.11.51.00
+ d=1e100.net; s=20230601; t=1751230141; x=1751834941;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Vv37XWZJ4hRc87onzyCYSd7bqnPUH/zjri+WbnLb8WQ=;
+ b=IRBqITg+yETQI0CYJA1e4+sut9wbIhR/Sgig8OHt0hPUKJZEk9v4ReGjCkomX2Rt+Q
+ ORch5/NxTAnA1kuqAj21iEUf0F1kaiERpPROH/00nzPTa19HLHcuDqDAKcFjYzhHF3LV
+ u/Wpk8PDg7Eoim0nacqkWMmoAV+czAwX4Q0Wx2mwaBdIVEkLB4deSoGw4+L/gXMIyN9f
+ dEPM3Co1LOhfqKjQiAUgDkuxKk51o8NZXyCFHSkiMRKM95hRDR8+woyzgb8PXXfuGGGM
+ 8hO/wVNXXBjU/gIJgQDYqClUI00nIV5NAq0LaMfspGUaCPHSfwLC2H5aHtrhc/xHcfXo
+ 3Ryg==
+X-Gm-Message-State: AOJu0Ywab0xQB5jHR2xfQxofFC1xHB+FoTKAYbugOv5SpV1OOQeLYp8V
+ BIvJTSA/HdcBtyKWZwpSsGsuJGhmxVyv2MfruJZ35bdDJJUpE/YhJQ0MDSX1PQ==
+X-Gm-Gg: ASbGncvJs8hBc2BG1HHm/3wySEFLHRRCVi9eUhP2Z9IUuLzhyOyqXNRReVPCHSTdae9
+ 5vJIiz2q5Izh1wrhqrlQmc8gvkf3GrZJvhw1kYilta586KQei8Uii/djDWT7r+/fkshHBLWIRXN
+ ToktIUeG0AzSsAQJheGuARdP4h+K/tzRSGg86vxW/DzBG6zI/vGYiqGwuuHj7YemAelKHILgdMr
+ 5nNKDLUGGfagEaj2Hlq4C5rHqwI3HIixa/iOgAB6ewMqe2BjILBeSHZdcNBeo9jN506m22dP1Ew
+ yBo0DiygvP1WjFQcIw3OmRgweivlJaqv8iGbv9VTUagstVqI4ldCMsp9eVBusDsoK03HaphEpi+
+ LnX28lvaJFmsZRY4pIEKFCcDmTOBiVfAHyUkpReaGTh+9F3x0LM3a+VBwNaFJiKhGRA==
+X-Google-Smtp-Source: AGHT+IFk0lFZbw+HLqEHkuRiFlu3GnyEjDDAh7lMLDe/JgRJPrf4TRQzrm/i6Oeq6yQsWRIqQ59jEw==
+X-Received: by 2002:a17:906:9f92:b0:ade:484d:1518 with SMTP id
+ a640c23a62f3a-ae34fdcaf35mr884945666b.26.1751230140618; 
+ Sun, 29 Jun 2025 13:49:00 -0700 (PDT)
+Received: from Provence
+ (dynamic-2a02-3100-2f97-a200-0219-99ff-feb2-2458.310.pool.telefonica.de.
+ [2a02:3100:2f97:a200:219:99ff:feb2:2458])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ae353659e06sm535709566b.44.2025.06.29.13.48.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Jun 2025 11:51:00 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 358695F7DD;
- Sun, 29 Jun 2025 19:50:59 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Yodel Eldar <yodel.eldar@gmail.com>
-Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,  laurent@vivier.eu
-Subject: Re: [PATCH 1/2] contrib/plugins/execlog: Add tab to the separator
- search of insn_disas
-In-Reply-To: <20250627204817.47595-2-yodel.eldar@gmail.com> (Yodel Eldar's
- message of "Fri, 27 Jun 2025 15:47:58 -0500")
-References: <20250627204817.47595-1-yodel.eldar@gmail.com>
- <20250627204817.47595-2-yodel.eldar@gmail.com>
-User-Agent: mu4e 1.12.11; emacs 30.1
-Date: Sun, 29 Jun 2025 19:50:59 +0100
-Message-ID: <87wm8uwfe4.fsf@draig.linaro.org>
+ Sun, 29 Jun 2025 13:49:00 -0700 (PDT)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 0/2] KVM Support for imx8mp-evk Machine
+Date: Sun, 29 Jun 2025 22:48:49 +0200
+Message-ID: <20250629204851.1778-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.50.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,86 +96,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Yodel Eldar <yodel.eldar@gmail.com> writes:
+This series adds KVM support to the imx8mp-evk machine, both as a guest and as a
+KVM host. Turning imx8mp-evk into a KVM host just required wiring up two
+interrupts (patch 1) while implementing `-accel kvm` required more work, drawing
+inspiration from the virt machine (patch 2).
 
-> Currently, execlog searches for a space separator between the
-> instruction mnemonic and operands, but some disassemblers, e.g. Alpha's,
-> use a tab separator instead; this results in a null pointer being passed
-> as the haystack in g_strstr during a subsequent register search, i.e.
-> undefined behavior, because of a missing null check.
->
-> This patch adds tab to the separator search and a null check on the
-> result.
->
-> Also, existing, affected pointers are changed to const.
->
-> Lastly, a break statement was added to immediately terminate the
-> register search when a user-requested register is found in the current
-> instruction as a trivial optimization, because searching for the
-> remaining requested registers is unnecessary once one is found.
->
-> Signed-off-by: Yodel Eldar <yodel.eldar@gmail.com>
-> ---
->  contrib/plugins/execlog.c | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
->
-> diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-> index d67d010761..08fc1f12d4 100644
-> --- a/contrib/plugins/execlog.c
-> +++ b/contrib/plugins/execlog.c
-> @@ -232,12 +232,15 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, stru=
-ct qemu_plugin_tb *tb)
->           */
->          if (disas_assist && rmatches) {
->              check_regs_next =3D false;
-> -            gchar *args =3D g_strstr_len(insn_disas, -1, " ");
-> -            for (int n =3D 0; n < all_reg_names->len; n++) {
-> -                gchar *reg =3D g_ptr_array_index(all_reg_names, n);
-> -                if (g_strrstr(args, reg)) {
-> -                    check_regs_next =3D true;
-> -                    skip =3D false;
-> +            const gchar *args =3D strpbrk(insn_disas, " \t");
+Testing done:
+* Run `qemu-system-aarch64 -M virt -accel kvm -cpu host" and
+  `qemu-system-aarch64 -M imx8mp-evk -accel kvm -cpu host -smp 4` under
+  `qemu-system-aarch64 -M imx8mp-evk -accel tcg -smp 4`
+* Run `qemu-system-aarch64 -M imx8mp-evk -accel kvm -cpu host -smp 4` under
+  `qemu-system-aarch64 -M virt,secure=on,virtualization=on,gic-version=4 \
+  -cpu cortex-a72 -smp 4 -accel tcg` and `qemu-system-aarch64 -M imx8mp-evk \
+  -accel tcg -smp 4"
 
-We have a general preference for glib here, could we use g_strsplit_set?
+Bernhard Beschow (2):
+  hw/arm/fsl-imx8mp: Wire VIRQ and VFIQ
+  hw/arm/imx8mp-evk: Add KVM support
 
-Something like:
+ docs/system/arm/imx8mp-evk.rst |  7 +++++++
+ hw/arm/fsl-imx8mp.c            | 37 +++++++++++++++++++++++++++++-----
+ hw/arm/imx8mp-evk.c            | 11 ++++++++++
+ hw/arm/Kconfig                 |  3 ++-
+ hw/arm/meson.build             |  2 +-
+ 5 files changed, 53 insertions(+), 7 deletions(-)
 
-modified   contrib/plugins/execlog.c
-@@ -232,12 +232,14 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct=
- qemu_plugin_tb *tb)
-          */
-         if (disas_assist && rmatches) {
-             check_regs_next =3D false;
--            gchar *args =3D g_strstr_len(insn_disas, -1, " ");
--            for (int n =3D 0; n < all_reg_names->len; n++) {
--                gchar *reg =3D g_ptr_array_index(all_reg_names, n);
--                if (g_strrstr(args, reg)) {
--                    check_regs_next =3D true;
--                    skip =3D false;
-+            g_auto(GStrv) args =3D g_strsplit_set(insn_disas, " \t", 2);
-+            if (args && args[1]) {
-+                for (int n =3D 0; n < all_reg_names->len; n++) {
-+                    gchar *reg =3D g_ptr_array_index(all_reg_names, n);
-+                    if (g_strrstr(args[1], reg)) {
-+                        check_regs_next =3D true;
-+                        skip =3D false;
-+                    }
+-- 
+2.50.0
 
-
-> +            if (args) {
-> +                for (int n =3D 0; n < all_reg_names->len; n++) {
-> +                    const gchar *reg =3D g_ptr_array_index(all_reg_names=
-, n);
-> +                    if (g_strrstr(args, reg)) {
-> +                        check_regs_next =3D true;
-> +                        skip =3D false;
-> +                        break;
-> +                    }
->                  }
->              }
->          }
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
