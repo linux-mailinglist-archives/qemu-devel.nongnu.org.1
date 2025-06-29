@@ -2,89 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9337FAECA28
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Jun 2025 21:59:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 884CBAECAEB
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Jun 2025 04:22:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uVbhB-0003TD-J8; Sat, 28 Jun 2025 15:58:42 -0400
+	id 1uVhf6-00009K-7A; Sat, 28 Jun 2025 22:20:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uVbgo-0003LL-JH
- for qemu-devel@nongnu.org; Sat, 28 Jun 2025 15:58:18 -0400
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
+ (Exim 4.90_1) (envelope-from <micro6947@gmail.com>)
+ id 1uVhf0-000091-2u
+ for qemu-devel@nongnu.org; Sat, 28 Jun 2025 22:20:51 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uVbgm-0000P8-QL
- for qemu-devel@nongnu.org; Sat, 28 Jun 2025 15:58:18 -0400
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-7d3dd14a7edso141983785a.2
- for <qemu-devel@nongnu.org>; Sat, 28 Jun 2025 12:58:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <micro6947@gmail.com>)
+ id 1uVhey-0006fC-6N
+ for qemu-devel@nongnu.org; Sat, 28 Jun 2025 22:20:49 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-747c2cc3419so3453186b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 28 Jun 2025 19:20:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751140695; x=1751745495; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+F6nN8jVuJ9x9ikMI93e1pxkuyZDDe/xC+x/t6zowT4=;
- b=QvJQIi0LYlts4Idm5czlUjI22CIbKklXFkl2UUjWAsHnsAhyVlo6zw/RyotC3ZJ4dH
- /mJu3uTge0xa3oBvYoRhInyLcb6KUaJsqdBPbj0YYM7Kg2cH7zeCxxJVg7Vg5yBpBg0H
- vDQMZcv6ATA5nwLi7e9zAmegnfBVRCKRJU1aTC5D92ldidYuVjJINkrduzUldeTiyWFZ
- nfH4qxjgPnBAhbd8lFuGxCWHug3w8idi+1wFwYb2kiewhlfoyctgW1/boDDmUfGCyQYh
- 9XBBlxN7u84D3PyETOvkcxHFrek/XHiHHxRGSzJLUqN5E77eQYIqmVhIvP3GeP5dhcai
- asnw==
+ d=gmail.com; s=20230601; t=1751163646; x=1751768446; darn=nongnu.org;
+ h=to:subject:message-id:date:from:reply-to:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ctDS3yUrrzq8mSm1jN0BsJvpGJzKTs2nrDhWg8mL3KI=;
+ b=IuEiXj3EzJ4ea7/yfHe5/pTwT3pzS9v0/y+0xEL8OtyJ/nYG3OzRrEEZrhnzWb+cSX
+ hGs7GOkEhKmHs72PZPWoy7KlE5WMrxlWI48P32a0XCFifo6XZnCOohn6pBeBGiiks2Xd
+ 7MqzB6oJJ7LtB8beEfI8Js53jWMWeNPiMuaQVwmOocFmJc3ypFsdIO4Yr9FtNEOsVDEB
+ ljKY0a/L6tMUu/i+Tz3lcT19yMVBGNJDmLeYklwvMKnRQFN5Ycc+4RY4lxtLURVv06Hf
+ uqR61NntUfSvc7XXjDSEt53ZrHybwFqwCbgz+mSIcoJcPKPkXZkYcUL/h1hs/KEo3vEf
+ 1p6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751140695; x=1751745495;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+F6nN8jVuJ9x9ikMI93e1pxkuyZDDe/xC+x/t6zowT4=;
- b=QyQmiBQkbWKuWOG7tnb/uoO1FlhiBTNpBru8RHEEfsEUg7WiNfmr6DPYOAWW1eJwk2
- zeU+f32T8Naqf5ucjukBVujJ2pKjy2wb2+t94F+lQjMZIxJX7C+0lDuZf15uMc2wRJp3
- +7HAM0gLjv7aiDPQ74gk9KUHJggaW9sAule5rbT+PMQOwTmvwc3fxTDAKb0Ug0boKIfO
- 7yNYFu3/x53tqG/icgZ/8V9VCCA41VcEzwaSaF1Uv+vC2U2sumaF/2hUqAZyETefwcoF
- son8oq3yCMhg96UYtFdCi37GN+qUxk+mdVYVl7QUZ/7bf5CnZ6nD+3B0JWTU7jP7aN4j
- yRKg==
-X-Gm-Message-State: AOJu0YznFU6Q298R4UMz7N8SLU11X3uObQsB7cNVwk16cBO0kDLsQjzY
- jk1FzmrdsCnXnzLRFRWgB/8922LqMYz4NPw48g6YEiqLp3s3hzV7A9Ht+ZNOtr5WXUtg4rJYEZR
- /crxj
-X-Gm-Gg: ASbGnct2OHYKCt1qPqa5X5yYoHfu0zgl1e57/iXmedFcRXqN6+ao2B5LfFhfqlGKBbt
- UlT66Zd/2LlkY/DSIhsh/bYZdGdTeCMfQFCmKzKe7VLBofVPQXnJN879NlUXvJLuACUhzjIZvi1
- k739DlDpx0SIKOQVZkds5rcQuzj6hc4FFk07KmMr01T/Vg6Ppwj6GMMy5Zx5YKitdtNWlbkwAPL
- YogbzARz4WqNBNAvlu7xiHCZ15Ia6kCfUxAxO9/13xdOXWPSE+uVKgrrKcOKFamwevC9r8nKwR1
- xQgst6FgSxtnihniGrfd7PjkobQYLRQwZl4gos5+4TuMVKDMDNzfJesGm2pJF2rwTcE=
-X-Google-Smtp-Source: AGHT+IEM2K2QwZG0uMnpZVZqVPWCYCy4HGDusOH2tzw4wWfbrvz1DcFZ29qe2fqn5sFPZU6Ra8On5Q==
-X-Received: by 2002:a05:620a:444d:b0:7d4:4596:d6a5 with SMTP id
- af79cd13be357-7d44596dcabmr1050929385a.55.1751140695521; 
- Sat, 28 Jun 2025 12:58:15 -0700 (PDT)
-Received: from gromero0.. ([186.215.58.88]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7d443136907sm334395585a.14.2025.06.28.12.58.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Jun 2025 12:58:14 -0700 (PDT)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org, eric.auger@redhat.com, philmd@linaro.org,
- mst@redhat.com
-Cc: qemu-arm@nongnu.org, alex.bennee@linaro.org, gustavo.romero@linaro.org,
- udo@hypervisor.org, ajones@ventanamicro.com, peter.maydell@linaro.org,
- imammedo@redhat.com, anisinha@redhat.com
-Subject: [PATCH v6 9/9] qtest/bios-tables-test: Update blobs for its=off test
- on aarch64
-Date: Sat, 28 Jun 2025 19:57:22 +0000
-Message-Id: <20250628195722.977078-10-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250628195722.977078-1-gustavo.romero@linaro.org>
-References: <20250628195722.977078-1-gustavo.romero@linaro.org>
+ d=1e100.net; s=20230601; t=1751163646; x=1751768446;
+ h=to:subject:message-id:date:from:reply-to:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ctDS3yUrrzq8mSm1jN0BsJvpGJzKTs2nrDhWg8mL3KI=;
+ b=EKeNWTA7WMHETm5XrYkB3FqwV523G7yNYtANzb95yJIBuA8cjngvvWSSvUGH4/tSAQ
+ G75c1H8iNGODMhYKYeCQMQHrpqWN6bgYv2W/oyeHxsCfkdXmPRWP7/YqTlX/Xsjf2/kD
+ IRnw/xqJQeHk5LkYMbNMJXBkyRcq72LGuLUYpNV4APB6bweC7q1v6JTplsIZGhl3OTao
+ EYa3nc3PAYjkWXTdTz8dpIN+N3WgZwbhy8srEkj2DMhckSD3mKW/37i/BvXf3+ZTDVQE
+ 5VVkAyU/Jyd12Hnv2CwWS+mMmaI+EL77tOvTzNmv5zZF6ItsinlI4Hz32agwgITsE3yv
+ Dk0w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW5NA54XMPn9BukgXQfCkk2B8xJiwxdEG9Q02JLnJMafPQmfa3hOadnlz1iQYFCdMtj5AQOZmDPDArO@nongnu.org
+X-Gm-Message-State: AOJu0YyOsxdkaZlBe7o2Eje8XY8foFoVihZgneif5PuR3M7ovUAXGqXc
+ g26TbaAA55E0ou8mkJHzHVVUhzw76wognYRf8Bwcvjg//sZo57FSiB+4VW02Gr5cGfhh3G4YLU7
+ oJYv5uJz2XLUg/nrJ+VLBKevkWIs7u+E=
+X-Gm-Gg: ASbGncuGIe/bmUmz5jJfSdiV38R4ZaA6qxea2vyWyiQ+FBpZCxRcdY67BG/liNHwXig
+ A9XJYUfsp+9MbaNi09OqoOWebXVoxR+wQzD1p53/TLaqhhenWp2sSkjeSrYgwwAPDpN3Jx3GlAP
+ 2bpa9U/PTIMLJrLngtYX8ZkvNIAxQqKorcaJ35E0pDcJyC
+X-Google-Smtp-Source: AGHT+IGZIYyImhFCNa8X8duoPh8DZPin+w5wHfSPp3AdTe3sFFZDdbQ8DuqtiC55ocRjNmnT7ztvM1zYOL3zUiHs3oQ=
+X-Received: by 2002:a05:6a00:17a8:b0:747:ab61:e4fa with SMTP id
+ d2e1a72fcca58-74af6f08162mr10863564b3a.14.1751163646192; Sat, 28 Jun 2025
+ 19:20:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
- envelope-from=gustavo.romero@linaro.org; helo=mail-qk1-x731.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20250627024226.1767-1-micro6947@gmail.com>
+ <87qzz46h5s.fsf@suse.de>
+In-Reply-To: <87qzz46h5s.fsf@suse.de>
+From: Xingjing Deng <micro6947@gmail.com>
+Date: Sun, 29 Jun 2025 10:20:35 +0800
+X-Gm-Features: Ac12FXwUcz1QSJGwiWXEQgyBrqj7Bh4iOPzkVYGS15XcMS9eEjakVT8zj6F28Ek
+Message-ID: <CAK+ZN9q_ORcL3puNiQDs=zPagrvkZMgLquC5aWUaJZt-bT=sqQ@mail.gmail.com>
+Subject: Re: [PATCH] qtest/migration: Fix potential NPD through getenv
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000001331ee0638ac8f80"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=micro6947@gmail.com; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ FREEMAIL_REPLYTO_END_DIGIT=0.25, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,233 +90,308 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: micro6947@gmail.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update blobs for the its=off test on aarch64 after fix.
+--0000000000001331ee0638ac8f80
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Basically, all structs related to ITS are gone in MADT and IORT
-tables after the fix (previously ITS was not properly disabled
-when "its=off" option was passed to the machine).
+Hi, thank you for getting back to me.
 
-MADT diff:
+During my data mining, I came across the following operation:
+migration_get_env, which is called after find_common_machine_version. Based
+on this, I initially suspected there might be a bug. Here's the relevant
+code inside  migration_get_env.
 
- [000h 0000   4]                    Signature : "APIC"    [Multiple APIC Description Table (MADT)]
--[004h 0004   4]                 Table Length : 000000B8
-+[004h 0004   4]                 Table Length : 000000A4
- [008h 0008   1]                     Revision : 04
--[009h 0009   1]                     Checksum : C1
-+[009h 0009   1]                     Checksum : 08
- [00Ah 0010   6]                       Oem ID : "BOCHS "
- [010h 0016   8]                 Oem Table ID : "BXPC    "
- [018h 0024   4]                 Oem Revision : 00000001
- [01Ch 0028   4]              Asl Compiler ID : "BXPC"
- [020h 0032   4]        Asl Compiler Revision : 00000001
+env->qemu_src =3D getenv(QEMU_ENV_SRC);
+env->qemu_dst =3D getenv(QEMU_ENV_DST);
 
- [024h 0036   4]           Local Apic Address : 00000000
- [028h 0040   4]        Flags (decoded below) : 00000000
-                          PC-AT Compatibility : 0
+/*
+ * The default QTEST_QEMU_BINARY must always be provided because
+ * that is what helpers use to query the accel type and
+ * architecture.
+ */
+if (env->qemu_src && env->qemu_dst) {
+    g_test_message("Only one of %s, %s is allowed",
+                   QEMU_ENV_SRC, QEMU_ENV_DST);
+    exit(1);
+}
 
- [02Ch 0044   1]                Subtable Type : 0C [Generic Interrupt Distributor]
- [02Dh 0045   1]                       Length : 18
- [02Eh 0046   2]                     Reserved : 0000
- [030h 0048   4]        Local GIC Hardware ID : 00000000
- [034h 0052   8]                 Base Address : 0000000008000000
- [03Ch 0060   4]               Interrupt Base : 00000000
-@@ -48,37 +48,29 @@
- [064h 0100   8]                 Base Address : 0000000000000000
- [06Ch 0108   8]     Virtual GIC Base Address : 0000000000000000
- [074h 0116   8]  Hypervisor GIC Base Address : 0000000000000000
- [07Ch 0124   4]        Virtual GIC Interrupt : 00000000
- [080h 0128   8]   Redistributor Base Address : 0000000000000000
- [088h 0136   8]                    ARM MPIDR : 0000000000000000
- [090h 0144   1]             Efficiency Class : 00
- [091h 0145   1]                     Reserved : 00
- [092h 0146   2]       SPE Overflow Interrupt : 0000
+However, after considering your explanation, I believe you've convinced me
+otherwise. I appreciate your input, and I=E2=80=99m sorry for the delayed r=
+esponse
+and any inconvenience caused.
 
- [094h 0148   1]                Subtable Type : 0E [Generic Interrupt Redistributor]
- [095h 0149   1]                       Length : 10
- [096h 0150   2]                     Reserved : 0000
- [098h 0152   8]                 Base Address : 00000000080A0000
- [0A0h 0160   4]                       Length : 00F60000
+Fabiano Rosas <farosas@suse.de> =E4=BA=8E2025=E5=B9=B46=E6=9C=8828=E6=97=A5=
+=E5=91=A8=E5=85=AD 04:52=E5=86=99=E9=81=93=EF=BC=9A
 
--[0A4h 0164   1]                Subtable Type : 0F [Generic Interrupt Translator]
--[0A5h 0165   1]                       Length : 14
--[0A6h 0166   2]                     Reserved : 0000
--[0A8h 0168   4]               Translation ID : 00000000
--[0ACh 0172   8]                 Base Address : 0000000008080000
--[0B4h 0180   4]                     Reserved : 00000000
+> xjdeng <micro6947@gmail.com> writes:
+>
+> Hi, thanks for the interest in fixing this. However, the analysis it not
+> quite right:
+>
+> > In `find_common_machine_version`, the code previously assumed that
+> > `getenv(var1)` and `getenv(var2)` would always return non-NULL values.
+>
+> That's not true. qtest_qemu_binary() has:
+>
+>     if (var) {
+>         qemu_bin =3D getenv(var);
+>         if (qemu_bin) {        <--- HERE
+>             return qemu_bin;
+>         }
+>     }
+>
+> > However, if either environment variable is not set, `getenv` returns
+> > NULL, which could lead to a null pointer dereference.
+> >
+> > Tracing upstream usage: `find_common_machine_version` is called by
+> > `resolve_machine_version` with `QEMU_ENV_SRC` and `QEMU_ENV_DST`.
+> > `resolve_machine_version` is used by `migrate_start`, which is called
+> > by `migrate_postcopy_prepare`, and ultimately by `test_postcopy_common`=
+.
+> >
+> > In `test_postcopy_common`, after `migrate_postcopy_prepare`, the
+> > function `migrate_postcopy_complete` is called. Inside,
+> > `migration_get_env` checks if `QEMU_ENV_SRC` and `QEMU_ENV_DST` are
+> > set before use. Thus, these variables can be NULL, leading to a
+> > potential null pointer dereference in `find_common_machine_version`.
+>
+> There's no dereference happening anywhere, just a g_test_message(),
+> which would show "(null)".
+>
+> >
+> > Signed-off-by: xjdeng <micro6947@gmail.com>
+> > ---
+> >  tests/qtest/migration/migration-util.c | 21 +++++++++++++++++++--
+> >  1 file changed, 19 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/tests/qtest/migration/migration-util.c
+> b/tests/qtest/migration/migration-util.c
+> > index 642cf50c8d..45c9e164e2 100644
+> > --- a/tests/qtest/migration/migration-util.c
+> > +++ b/tests/qtest/migration/migration-util.c
+> > @@ -203,8 +203,25 @@ char *find_common_machine_version(const char
+> *mtype, const char *var1,
+> >          return g_strdup(type2);
+> >      }
+> >
+> > -    g_test_message("No common machine version for machine type '%s'
+> between "
+> > -                   "binaries %s and %s", mtype, getenv(var1),
+> getenv(var2));
+>
+> I don't think we'll ever reach here in case one var is NULL. It would
+> have been replaced with QTEST_QEMU_BINARY and either asserted or exited
+> in the if below:
+>
+>     g_autofree char *type1 =3D qtest_resolve_machine_alias(var1, mtype);
+>     g_autofree char *type2 =3D qtest_resolve_machine_alias(var2, mtype);
+>
+>     g_assert(type1 && type2);
+>
+>     if (g_str_equal(type1, type2)) {
+>         /* either can be used */
+>         return g_strdup(type1);
+>     }
+>
+> Can you provide a test command line that exposes the issue? Something
+> like:
+>
+> QTEST_QEMU_BINARY=3D./qemu-system-<arch> QTEST_QEMU_BINARY_DST=3D<some ot=
+her
+> qemu version here> ../tests/qtest/migration-test --full
+>
+> Thanks
+>
+> > +    char *varstring1 =3D getenv(var1);
+> > +    char *varstring2 =3D getenv(var2);
+> > +    if (varstring1 && varstring2) {
+> > +        g_test_message("No common machine version for machine type '%s=
+'
+> "
+> > +                       "between binaries %s and %s",
+> > +                       mtype, varstring1, varstring2);
+> > +    } else if (varstring1) {
+> > +        g_test_message("No common machine version for machine type '%s=
+'
+> "
+> > +                       "between binary %s and environment variable %s"=
+,
+> > +                       mtype, varstring1, var2);
+> > +    } else if (varstring2) {
+> > +        g_test_message("No common machine version for machine type '%s=
+'
+> "
+> > +                       "between binary %s and environment variable %s"=
+,
+> > +                       mtype, varstring2, var1);
+> > +    } else {
+> > +        g_test_message("No common machine version for machine type '%s=
+'
+> "
+> > +                       "between environment variables %s and %s",
+> > +                       mtype, var1, var2);
+> > +    }
+> >      g_assert_not_reached();
+> >  }
+>
 
-IORT diff:
+--0000000000001331ee0638ac8f80
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
- [000h 0000   4]                    Signature : "IORT"    [IO Remapping Table]
--[004h 0004   4]                 Table Length : 000000EC
-+[004h 0004   4]                 Table Length : 000000AC
- [008h 0008   1]                     Revision : 03
--[009h 0009   1]                     Checksum : 57
-+[009h 0009   1]                     Checksum : 97
- [00Ah 0010   6]                       Oem ID : "BOCHS "
- [010h 0016   8]                 Oem Table ID : "BXPC    "
- [018h 0024   4]                 Oem Revision : 00000001
- [01Ch 0028   4]              Asl Compiler ID : "BXPC"
- [020h 0032   4]        Asl Compiler Revision : 00000001
+<div dir=3D"ltr"><div><p>Hi, thank you for getting back to me.</p>
+<p>During my data mining, I came across the following operation:=C2=A0=C2=
+=A0<code>migration_get_env</code>, which is called after <code>find_common_=
+machine_version</code>. Based on this, I initially suspected there might be=
+ a bug. Here&#39;s the relevant code inside=C2=A0=C2=A0<code>migration_get_=
+env.</code></p><p><code>env-&gt;qemu_src =3D getenv(QEMU_ENV_SRC);<br>env-&=
+gt;qemu_dst =3D getenv(QEMU_ENV_DST);<br><br>/*<br>=C2=A0* The default QTES=
+T_QEMU_BINARY must always be provided because<br>=C2=A0* that is what helpe=
+rs use to query the accel type and<br>=C2=A0* architecture.<br>=C2=A0*/<br>=
+if (env-&gt;qemu_src &amp;&amp; env-&gt;qemu_dst) {<br>=C2=A0 =C2=A0 g_test=
+_message(&quot;Only one of %s, %s is allowed&quot;,<br>=C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0QEMU_ENV_SRC, QEMU_ENV_DST=
+);<br>=C2=A0 =C2=A0 exit(1);<br>}<br></code></p><p>However, after consideri=
+ng your explanation, I believe you&#39;ve convinced me otherwise. I appreci=
+ate your input, and I=E2=80=99m sorry for the delayed response and any inco=
+nvenience caused.</p></div><div><div><br><div class=3D"gmail_quote gmail_qu=
+ote_container"><div dir=3D"ltr" class=3D"gmail_attr">Fabiano Rosas &lt;<a h=
+ref=3D"mailto:farosas@suse.de">farosas@suse.de</a>&gt; =E4=BA=8E2025=E5=B9=
+=B46=E6=9C=8828=E6=97=A5=E5=91=A8=E5=85=AD 04:52=E5=86=99=E9=81=93=EF=BC=9A=
+<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
+ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">xjdeng &lt;<a h=
+ref=3D"mailto:micro6947@gmail.com" target=3D"_blank">micro6947@gmail.com</a=
+>&gt; writes:<br>
+<br>
+Hi, thanks for the interest in fixing this. However, the analysis it not<br=
+>
+quite right:<br>
+<br>
+&gt; In `find_common_machine_version`, the code previously assumed that<br>
+&gt; `getenv(var1)` and `getenv(var2)` would always return non-NULL values.=
+<br>
+<br>
+That&#39;s not true. qtest_qemu_binary() has:<br>
+<br>
+=C2=A0 =C2=A0 if (var) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_bin =3D getenv(var);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (qemu_bin) {=C2=A0 =C2=A0 =C2=A0 =C2=A0 &lt;=
+--- HERE<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return qemu_bin;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 }<br>
+<br>
+&gt; However, if either environment variable is not set, `getenv` returns<b=
+r>
+&gt; NULL, which could lead to a null pointer dereference.<br>
+&gt;<br>
+&gt; Tracing upstream usage: `find_common_machine_version` is called by<br>
+&gt; `resolve_machine_version` with `QEMU_ENV_SRC` and `QEMU_ENV_DST`.<br>
+&gt; `resolve_machine_version` is used by `migrate_start`, which is called<=
+br>
+&gt; by `migrate_postcopy_prepare`, and ultimately by `test_postcopy_common=
+`.<br>
+&gt;<br>
+&gt; In `test_postcopy_common`, after `migrate_postcopy_prepare`, the<br>
+&gt; function `migrate_postcopy_complete` is called. Inside, <br>
+&gt; `migration_get_env` checks if `QEMU_ENV_SRC` and `QEMU_ENV_DST` are<br=
+>
+&gt; set before use. Thus, these variables can be NULL, leading to a<br>
+&gt; potential null pointer dereference in `find_common_machine_version`.<b=
+r>
+<br>
+There&#39;s no dereference happening anywhere, just a g_test_message(),<br>
+which would show &quot;(null)&quot;.<br>
+<br>
+&gt;<br>
+&gt; Signed-off-by: xjdeng &lt;<a href=3D"mailto:micro6947@gmail.com" targe=
+t=3D"_blank">micro6947@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 tests/qtest/migration/migration-util.c | 21 +++++++++++++++++++-=
+-<br>
+&gt;=C2=A0 1 file changed, 19 insertions(+), 2 deletions(-)<br>
+&gt;<br>
+&gt; diff --git a/tests/qtest/migration/migration-util.c b/tests/qtest/migr=
+ation/migration-util.c<br>
+&gt; index 642cf50c8d..45c9e164e2 100644<br>
+&gt; --- a/tests/qtest/migration/migration-util.c<br>
+&gt; +++ b/tests/qtest/migration/migration-util.c<br>
+&gt; @@ -203,8 +203,25 @@ char *find_common_machine_version(const char *mty=
+pe, const char *var1,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return g_strdup(type2);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt; -=C2=A0 =C2=A0 g_test_message(&quot;No common machine version for mach=
+ine type &#39;%s&#39; between &quot;<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+&quot;binaries %s and %s&quot;, mtype, getenv(var1), getenv(var2));<br>
+<br>
+I don&#39;t think we&#39;ll ever reach here in case one var is NULL. It wou=
+ld<br>
+have been replaced with QTEST_QEMU_BINARY and either asserted or exited<br>
+in the if below:<br>
+<br>
+=C2=A0 =C2=A0 g_autofree char *type1 =3D qtest_resolve_machine_alias(var1, =
+mtype);<br>
+=C2=A0 =C2=A0 g_autofree char *type2 =3D qtest_resolve_machine_alias(var2, =
+mtype);<br>
+<br>
+=C2=A0 =C2=A0 g_assert(type1 &amp;&amp; type2);<br>
+<br>
+=C2=A0 =C2=A0 if (g_str_equal(type1, type2)) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* either can be used */<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return g_strdup(type1);<br>
+=C2=A0 =C2=A0 }<br>
+<br>
+Can you provide a test command line that exposes the issue? Something<br>
+like:<br>
+<br>
+QTEST_QEMU_BINARY=3D./qemu-system-&lt;arch&gt; QTEST_QEMU_BINARY_DST=3D&lt;=
+some other<br>
+qemu version here&gt; ../tests/qtest/migration-test --full<br>
+<br>
+Thanks<br>
+<br>
+&gt; +=C2=A0 =C2=A0 char *varstring1 =3D getenv(var1);<br>
+&gt; +=C2=A0 =C2=A0 char *varstring2 =3D getenv(var2);<br>
+&gt; +=C2=A0 =C2=A0 if (varstring1 &amp;&amp; varstring2) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_test_message(&quot;No common machine ve=
+rsion for machine type &#39;%s&#39; &quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0&quot;between binaries %s and %s&quot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0mtype, varstring1, varstring2);<br>
+&gt; +=C2=A0 =C2=A0 } else if (varstring1) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_test_message(&quot;No common machine ve=
+rsion for machine type &#39;%s&#39; &quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0&quot;between binary %s and environment variable %s&quot;,<br=
+>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0mtype, varstring1, var2);<br>
+&gt; +=C2=A0 =C2=A0 } else if (varstring2) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_test_message(&quot;No common machine ve=
+rsion for machine type &#39;%s&#39; &quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0&quot;between binary %s and environment variable %s&quot;,<br=
+>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0mtype, varstring2, var1);<br>
+&gt; +=C2=A0 =C2=A0 } else {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_test_message(&quot;No common machine ve=
+rsion for machine type &#39;%s&#39; &quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0&quot;between environment variables %s and %s&quot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0mtype, var1, var2);<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 g_assert_not_reached();<br>
+&gt;=C2=A0 }<br>
+</blockquote></div></div></div></div>
 
--[024h 0036   4]                   Node Count : 00000003
-+[024h 0036   4]                   Node Count : 00000002
- [028h 0040   4]                  Node Offset : 00000030
- [02Ch 0044   4]                     Reserved : 00000000
-
--[030h 0048   1]                         Type : 00
--[031h 0049   2]                       Length : 0018
--[033h 0051   1]                     Revision : 01
-+[030h 0048   1]                         Type : 04
-+[031h 0049   2]                       Length : 0044
-+[033h 0051   1]                     Revision : 04
- [034h 0052   4]                     Reserved : 00000000
- [038h 0056   4]                Mapping Count : 00000000
- [03Ch 0060   4]               Mapping Offset : 00000000
-
--[040h 0064   4]                     ItsCount : 00000001
--[044h 0068   4]                  Identifiers : 00000000
--
--[048h 0072   1]                         Type : 04
--[049h 0073   2]                       Length : 0058
--[04Bh 0075   1]                     Revision : 04
--[04Ch 0076   4]                     Reserved : 00000001
--[050h 0080   4]                Mapping Count : 00000001
--[054h 0084   4]               Mapping Offset : 00000044
--
--[058h 0088   8]                 Base Address : 0000000009050000
--[060h 0096   4]        Flags (decoded below) : 00000001
-+[040h 0064   8]                 Base Address : 0000000009050000
-+[048h 0072   4]        Flags (decoded below) : 00000001
-                              COHACC Override : 1
-                                HTTU Override : 0
-                       Proximity Domain Valid : 0
--[064h 0100   4]                     Reserved : 00000000
--[068h 0104   8]                VATOS Address : 0000000000000000
--[070h 0112   4]                        Model : 00000000
--[074h 0116   4]                   Event GSIV : 0000006A
--[078h 0120   4]                     PRI GSIV : 0000006B
--[07Ch 0124   4]                    GERR GSIV : 0000006D
--[080h 0128   4]                    Sync GSIV : 0000006C
--[084h 0132   4]             Proximity Domain : 00000000
--[088h 0136   4]      Device ID Mapping Index : 00000000
--
--[08Ch 0140   4]                   Input base : 00000000
--[090h 0144   4]                     ID Count : 0000FFFF
--[094h 0148   4]                  Output Base : 00000000
--[098h 0152   4]             Output Reference : 00000030
--[09Ch 0156   4]        Flags (decoded below) : 00000000
--                              Single Mapping : 0
--
--[0A0h 0160   1]                         Type : 02
--[0A1h 0161   2]                       Length : 004C
--[0A3h 0163   1]                     Revision : 03
--[0A4h 0164   4]                     Reserved : 00000002
--[0A8h 0168   4]                Mapping Count : 00000002
--[0ACh 0172   4]               Mapping Offset : 00000024
--
--[0B0h 0176   8]            Memory Properties : [IORT Memory Access Properties]
--[0B0h 0176   4]              Cache Coherency : 00000001
--[0B4h 0180   1]        Hints (decoded below) : 00
-+[04Ch 0076   4]                     Reserved : 00000000
-+[050h 0080   8]                VATOS Address : 0000000000000000
-+[058h 0088   4]                        Model : 00000000
-+[05Ch 0092   4]                   Event GSIV : 0000006A
-+[060h 0096   4]                     PRI GSIV : 0000006B
-+[064h 0100   4]                    GERR GSIV : 0000006D
-+[068h 0104   4]                    Sync GSIV : 0000006C
-+[06Ch 0108   4]             Proximity Domain : 00000000
-+[070h 0112   4]      Device ID Mapping Index : 00000000
-+
-+[074h 0116   1]                         Type : 02
-+[075h 0117   2]                       Length : 0038
-+[077h 0119   1]                     Revision : 03
-+[078h 0120   4]                     Reserved : 00000001
-+[07Ch 0124   4]                Mapping Count : 00000001
-+[080h 0128   4]               Mapping Offset : 00000024
-+
-+[084h 0132   8]            Memory Properties : [IORT Memory Access Properties]
-+[084h 0132   4]              Cache Coherency : 00000001
-+[088h 0136   1]        Hints (decoded below) : 00
-                                    Transient : 0
-                               Write Allocate : 0
-                                Read Allocate : 0
-                                     Override : 0
--[0B5h 0181   2]                     Reserved : 0000
--[0B7h 0183   1] Memory Flags (decoded below) : 03
-+[089h 0137   2]                     Reserved : 0000
-+[08Bh 0139   1] Memory Flags (decoded below) : 03
-                                    Coherency : 1
-                             Device Attribute : 1
--[0B8h 0184   4]                ATS Attribute : 00000000
--[0BCh 0188   4]           PCI Segment Number : 00000000
--[0C0h 0192   1]            Memory Size Limit : 40
--[0C1h 0193   3]                     Reserved : 000000
--
--[0C4h 0196   4]                   Input base : 00000000
--[0C8h 0200   4]                     ID Count : 000000FF
--[0CCh 0204   4]                  Output Base : 00000000
--[0D0h 0208   4]             Output Reference : 00000048
--[0D4h 0212   4]        Flags (decoded below) : 00000000
--                              Single Mapping : 0
--
--[0D8h 0216   4]                   Input base : 00000100
--[0DCh 0220   4]                     ID Count : 0000FEFF
--[0E0h 0224   4]                  Output Base : 00000100
--[0E4h 0228   4]             Output Reference : 00000030
--[0E8h 0232   4]        Flags (decoded below) : 00000000
-+[08Ch 0140   4]                ATS Attribute : 00000000
-+[090h 0144   4]           PCI Segment Number : 00000000
-+[094h 0148   1]            Memory Size Limit : 40
-+[095h 0149   3]                     Reserved : 000000
-+
-+[098h 0152   4]                   Input base : 00000000
-+[09Ch 0156   4]                     ID Count : 000000FF
-+[0A0h 0160   4]                  Output Base : 00000000
-+[0A4h 0164   4]             Output Reference : 00000030
-+[0A8h 0168   4]        Flags (decoded below) : 00000000
-                               Single Mapping : 0
-
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
----
- tests/data/acpi/aarch64/virt/APIC.its_off   | Bin 184 -> 164 bytes
- tests/data/acpi/aarch64/virt/IORT.its_off   | Bin 236 -> 172 bytes
- tests/qtest/bios-tables-test-allowed-diff.h |   2 --
- 3 files changed, 2 deletions(-)
-
-diff --git a/tests/data/acpi/aarch64/virt/APIC.its_off b/tests/data/acpi/aarch64/virt/APIC.its_off
-index 37d82e970b1331cb5b259f0bd2d3654bacb2d623..6130cb7d07103b326feb4dcd7034f85808bebadf 100644
-GIT binary patch
-delta 18
-ZcmdnNxP+0*F~HM#2?GNI3&%vRSpY2+1Zw~Q
-
-delta 39
-jcmZ3&xPy_)F~HM#2Ll5G%fX3UvqbnsfJ`vp;DE6JqX7kf
-
-diff --git a/tests/data/acpi/aarch64/virt/IORT.its_off b/tests/data/acpi/aarch64/virt/IORT.its_off
-index 0fceb820d509e852ca0849baf568a8e93e426738..c10da4e61dd00e7eb062558a2735d49ca0b20620 100644
-GIT binary patch
-delta 69
-zcmaFExQ3C-(?2L=4FdxM^Yn>aQj$zSmH`lh0E-I)3xowECx)7HGFdP%GXmL+6IZHp
-Hz*GSMclZc%
-
-literal 236
-zcmebD4+?q1z`(#9?&R<65v<@85#X!<1dKp25F11@1F-=RgMkDCNC*yK9F_<M77!bR
-zUBI%eoFED&4;F$FSwK1)h;xBB2Py`m{{M%tVD>TjFfcO#g+N#Zh@s|zoCF3AP#UU@
-R!2`+%Dg6Hr$N|zYvjDIZ5CH%H
-
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index a88198d5c2..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,3 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/aarch64/virt/APIC.its_off",
--"tests/data/acpi/aarch64/virt/IORT.its_off",
--- 
-2.34.1
-
+--0000000000001331ee0638ac8f80--
 
