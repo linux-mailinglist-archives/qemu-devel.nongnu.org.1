@@ -2,87 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99B1AED10C
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Jun 2025 22:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F0DAED1AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 00:51:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uVyxY-0003fr-Ku; Sun, 29 Jun 2025 16:49:08 -0400
+	id 1uW0pr-0004HP-LZ; Sun, 29 Jun 2025 18:49:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uVyxW-0003f1-OH; Sun, 29 Jun 2025 16:49:06 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <yodel.eldar@gmail.com>)
+ id 1uW0pn-0004HF-8X
+ for qemu-devel@nongnu.org; Sun, 29 Jun 2025 18:49:15 -0400
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uVyxU-0000Rs-By; Sun, 29 Jun 2025 16:49:06 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-ad574992fcaso246731666b.1; 
- Sun, 29 Jun 2025 13:49:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yodel.eldar@gmail.com>)
+ id 1uW0ph-0007B6-3z
+ for qemu-devel@nongnu.org; Sun, 29 Jun 2025 18:49:15 -0400
+Received: by mail-pl1-x643.google.com with SMTP id
+ d9443c01a7336-2353a2bc210so10113865ad.2
+ for <qemu-devel@nongnu.org>; Sun, 29 Jun 2025 15:49:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751230142; x=1751834942; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6ZwtYW+m6w4oQmOf8ZPSw+Fz8ib8szmgXYuwZPtcG1c=;
- b=CMK6iZTkbf8lLL+hRjHdIgCUuiUEFbqTK+qseOAkz54Lmo/084LnGp7g+McWo/ImHj
- n5u2dPjZgfIAYm67ALJ/h1CvJKobSQQXlNVfNkTmerivrgLpngUBvlNuk8/CfaFUkxc+
- BvFmZR/7eVuZQJpH7J6OX0tmo9XMaU/XYzBuVAdhHUQKtRQTWBMFUPB/PLX7CVimnDYj
- sqvi8Od4tNcRjNhYLFNnRzvqhofvHt1J/u+WiPAn/s86IfdrTVpFc0wG/ujsw818HXHu
- Ae6KrWEa42Rx4751Ioa5g2lr5+z2+Chiuif2kf2j0ry3WovPgGhYfoVe3wTC9WlUZxv+
- 28BQ==
+ d=gmail.com; s=20230601; t=1751237346; x=1751842146; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=h4776ZRPh8s1TSb9wlB2pGqAS1FZErQkBzJZnqKxiPo=;
+ b=X48l2dsCEJboVxgfbmlK6YWriKCnMn7nB+xu3qMe8IvEro8m6CH1Gqu+HwFMV+fu8s
+ B7RmOOJ2r71Z46G3mElAZf47RhEI7qi7ukZxSPGExwRUpJXdC1VdqVwaI2GymoNfcg69
+ Q0ak6wn5714GO5AQcp2UwVqVXzu2yhxhDkkjg6Lakm7eDf42zR0B3GpUakX8SA6BUsl7
+ 87nWSqFew1K76Lh2v7F85SvF+37eauokaNseLfP7aPNei2WVYGrNISrxHJyg+TaZjaaa
+ ZGQ2Zm6b8c/60wevlHIQ1tzdLV/nSAbp4AkV2n781mAna34Gerk1qpC52RSARYM+SWWa
+ POCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751230142; x=1751834942;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6ZwtYW+m6w4oQmOf8ZPSw+Fz8ib8szmgXYuwZPtcG1c=;
- b=xII6Ab657BcuBBALHU8QbE/06rKGkFPPvfeH2i3bsHXq+s/NoqudyfvsBOTf1lVhAL
- VXBFap5nu8Io95KkSmIXJ6XOV7cvVUTMacLul89Og+pio77XwPh83nZqYyedPZNqiK/Q
- I51QpKCpPikjghAZXjthahiAFJYImcR2WGQD9I1cYjIkIthiXwt65nVZbwLosUKReyvY
- 8n0GVWQ7QY6QNOVKVjtmcHu13mwsdvmzpB+Qaqp/J17q5iOk6wuS6rbYrwvpSrSK1jiZ
- 3X7aPszbBtoyiVikf97rl3gPu93AliaMIJ8sWtAdxM2T+yMJJp1ObSeDlrYNfebJTU8f
- JAMw==
-X-Gm-Message-State: AOJu0YyPRwF1Z8l2xmYuG4pVF/LNgQY1B788es85LVYwJg+oRTdOZ75T
- +N0HoQLLublqZxc2hkmfbo4P3nBBAr3ii6GTUPoVp2e7fJyK5pqOnLJDerjvYA==
-X-Gm-Gg: ASbGnctzpgk+6bhUtTTtYChlhq2vFxtdK1hq7CrbyP75n87cnmxBetpScfPS8AyQtOA
- WxA3A+yokCJj+yefO/JkY3PrWF8Y1FkvYfPFkhbmHXtzruhE4VMcJLdaOvYF15K08RIHqvv3k66
- PVZD9rqrMu0eyeBnlG6xm3qWvGk9j2ZeudoffUvI5PL2v53U12Xg0vgJTFYcIom+wsYQzSgbWw2
- 8pPo0zwwYdo/4IW2fuL25ueDHbA8kggzdZxdeKu9+MDZWQmQBynLRWcEc5hfi5pErTymMJDPIvA
- 1AIPdN30Qnr6AQEjxcguBwnInYv73bt3LApA/pHT2RorDXTWkDnu8QRvuc9m4X1hvho5Q+brNnD
- IB39d+DujP2zKWVcgOoN6jmd2UkXQtcA3VU9oMIvnCjKAzBV9oFiOYywfa/UPFEk1xQ==
-X-Google-Smtp-Source: AGHT+IGOKjC8J/uC/oucGHcGtp6vbIJkNsADCG8KvjfUamwbZIRXrnnBRgtfw1sL/NOgPPsIYrtE1A==
-X-Received: by 2002:a17:907:9603:b0:ae0:cf36:ea81 with SMTP id
- a640c23a62f3a-ae34fd1837fmr957999566b.5.1751230141999; 
- Sun, 29 Jun 2025 13:49:01 -0700 (PDT)
-Received: from Provence
- (dynamic-2a02-3100-2f97-a200-0219-99ff-feb2-2458.310.pool.telefonica.de.
- [2a02:3100:2f97:a200:219:99ff:feb2:2458])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae353659e06sm535709566b.44.2025.06.29.13.49.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Jun 2025 13:49:01 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 2/2] hw/arm/imx8mp-evk: Add KVM support
-Date: Sun, 29 Jun 2025 22:48:51 +0200
-Message-ID: <20250629204851.1778-3-shentey@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250629204851.1778-1-shentey@gmail.com>
-References: <20250629204851.1778-1-shentey@gmail.com>
+ d=1e100.net; s=20230601; t=1751237346; x=1751842146;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=h4776ZRPh8s1TSb9wlB2pGqAS1FZErQkBzJZnqKxiPo=;
+ b=CmTpAvGmfd25Ln8k29Tgz7MTPvNhZfQAuVRVGFn77YrK9DJKRJ1RIaFRQXOncynuIT
+ 01W80XmREEpBG49kGDyfztNRET3q5SwuE+vLsd0+leaSB2HkpO/wDKF+adF6xWaralXu
+ EqzMcTT+owiSzS2lo6cdmdocCDLxVzODm0oQYu9pmxCY7uEquPgrr8L80rQt0j872hiB
+ bb+RMlXOlLNNDwjlVvCrMvj6oFjtjlKoEy8D2m7qen4eqpjMw0PB9Sn6sZtUapw3XKu1
+ DvO71y+sodBn2sG23rwUoA1L8rN9uwIqHa5aMPK69ffQyOqASv1ixQRpI2NBQD3cmDsh
+ Xk0A==
+X-Gm-Message-State: AOJu0YwGTMMt41CDr3z6z6rltf+Ok7aaCeAry8hj85G670XYGlzKOIN5
+ Wvku/sUrLJbmSBy10oioYwtIfS3+ybpHp3K1e5a3n1STrrSTvqs/rIcN
+X-Gm-Gg: ASbGncuKpfkZK0WalXGezT9vZqbG9JvXjRo8W7JHH/r3r5RWJZnsOGsMNoPzmD4dZW4
+ G44uWthDEIE+RkP1Y0YyeDxpm3UeU40EAwtCQTywhKK6Yh4X1OR0dUnQ/DvOW/h+uNfzZLqR2KP
+ aBxxUd2jbLMm0skc1zP+flnW4ISgyJZgBe5yvbYQLPk/IM0BzD8tVhHsRS1dXnChTbPEbnfynDX
+ E9aH2+crWllRuSGMiM4K0OOzi/VUoTl+r3m0Xsn+69d3kFU4YfQBJaOi7EDmQjT1ayM+3/5aMow
+ qj3YKVeFFvtTqUdek0U3qVDugUBLjWMY36RL2e834SPwHJjbDFpDZ8U3xTuhvIo=
+X-Google-Smtp-Source: AGHT+IF437pg+3f1tHocVLxEGr/0jP1flbrRtpSwazW1aS+vdRtO5y1rJ9hFHg97gQjIoN//RmiADw==
+X-Received: by 2002:a17:902:ebc7:b0:234:a139:120d with SMTP id
+ d9443c01a7336-23ac3817845mr160235285ad.7.1751237345571; 
+ Sun, 29 Jun 2025 15:49:05 -0700 (PDT)
+Received: from [10.2.0.2] ([89.187.185.165]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-23acb39b928sm65897245ad.111.2025.06.29.15.49.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 29 Jun 2025 15:49:05 -0700 (PDT)
+Message-ID: <4932277d-ae7c-469a-93bb-db44913c1a1b@gmail.com>
+Date: Sun, 29 Jun 2025 17:49:02 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] contrib/plugins/execlog: Add tab to the separator
+ search of insn_disas
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, laurent@vivier.eu,
+ Yodel Eldar <yodel.eldar@gmail.com>
+References: <20250627204817.47595-1-yodel.eldar@gmail.com>
+ <20250627204817.47595-2-yodel.eldar@gmail.com>
+ <87wm8uwfe4.fsf@draig.linaro.org>
+Content-Language: en-US
+From: Yodel Eldar <yodel.eldar@gmail.com>
+Autocrypt: addr=yodel.eldar@gmail.com; keydata=
+ xjMEZxqXdhYJKwYBBAHaRw8BAQdAkletQdG3CLyANZyuf2t7Z9PK4b6HiT+DdSPUB2mHzmPN
+ N1lvZGVsIEVsZGFyIChZb2RlbCBPcGVuUEdQIGtleSkgPHlvZGVsLmVsZGFyQGdtYWlsLmNv
+ bT7ClgQTFggAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBNPNGM1AbbuKZqn435Xu
+ T7c2ZU2sBQJnI9xJBQkB6nhTAAoJEJXuT7c2ZU2sSQABANuu74MJKexa8V8kVNLhw68loN4x
+ 2ZbojcfUOWd8Pf5HAQDn1XxmQFPMIUYahlXMMrwRyQE1m6HjtrolOELICzwxDM44BGcal3YS
+ CisGAQQBl1UBBQEBB0Ao8jLdb8MoWybV77fXOiqY5jSmrPy+MgzzjrAzqURjZAMBCAfCfgQY
+ FggAJgIbDBYhBNPNGM1AbbuKZqn435XuT7c2ZU2sBQJnI9wMBQkB6ngWAAoJEJXuT7c2ZU2s
+ BlUA/0ZfDDmzKdC1khPMaRIv/gWedFd5Z8jWqh0rswF2LyeNAQD6PjBgliBhL1xTto+juM1b
+ jctqRusjtyMyzG8/ps2iDQ==
+In-Reply-To: <87wm8uwfe4.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::643;
+ envelope-from=yodel.eldar@gmail.com; helo=mail-pl1-x643.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,170 +111,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allows the imx8mp-evk machine to be run with KVM acceleration as a guest.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- docs/system/arm/imx8mp-evk.rst |  7 +++++++
- hw/arm/fsl-imx8mp.c            | 33 ++++++++++++++++++++++++++++-----
- hw/arm/imx8mp-evk.c            | 11 +++++++++++
- hw/arm/Kconfig                 |  3 ++-
- hw/arm/meson.build             |  2 +-
- 5 files changed, 49 insertions(+), 7 deletions(-)
+On 6/29/25 1:50 PM, Alex Bennée wrote:
+> Yodel Eldar <yodel.eldar@gmail.com> writes:
+>
+>> Currently, execlog searches for a space separator between the
+>> instruction mnemonic and operands, but some disassemblers, e.g. Alpha's,
+>> use a tab separator instead; this results in a null pointer being passed
+>> as the haystack in g_strstr during a subsequent register search, i.e.
+>> undefined behavior, because of a missing null check.
+>>
+>> This patch adds tab to the separator search and a null check on the
+>> result.
+>>
+>> Also, existing, affected pointers are changed to const.
+>>
+>> Lastly, a break statement was added to immediately terminate the
+>> register search when a user-requested register is found in the current
+>> instruction as a trivial optimization, because searching for the
+>> remaining requested registers is unnecessary once one is found.
+>>
+>> Signed-off-by: Yodel Eldar <yodel.eldar@gmail.com>
+>> ---
+>>   contrib/plugins/execlog.c | 15 +++++++++------
+>>   1 file changed, 9 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+>> index d67d010761..08fc1f12d4 100644
+>> --- a/contrib/plugins/execlog.c
+>> +++ b/contrib/plugins/execlog.c
+>> @@ -232,12 +232,15 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+>>            */
+>>           if (disas_assist && rmatches) {
+>>               check_regs_next = false;
+>> -            gchar *args = g_strstr_len(insn_disas, -1, " ");
+>> -            for (int n = 0; n < all_reg_names->len; n++) {
+>> -                gchar *reg = g_ptr_array_index(all_reg_names, n);
+>> -                if (g_strrstr(args, reg)) {
+>> -                    check_regs_next = true;
+>> -                    skip = false;
+>> +            const gchar *args = strpbrk(insn_disas, " \t");
+> We have a general preference for glib here, could we use g_strsplit_set?
+>
+> Something like:
+>
+> modified   contrib/plugins/execlog.c
+> @@ -232,12 +232,14 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+>            */
+>           if (disas_assist && rmatches) {
+>               check_regs_next = false;
+> -            gchar *args = g_strstr_len(insn_disas, -1, " ");
+> -            for (int n = 0; n < all_reg_names->len; n++) {
+> -                gchar *reg = g_ptr_array_index(all_reg_names, n);
+> -                if (g_strrstr(args, reg)) {
+> -                    check_regs_next = true;
+> -                    skip = false;
+> +            g_auto(GStrv) args = g_strsplit_set(insn_disas, " \t", 2);
+> +            if (args && args[1]) {
+> +                for (int n = 0; n < all_reg_names->len; n++) {
+> +                    gchar *reg = g_ptr_array_index(all_reg_names, n);
+> +                    if (g_strrstr(args[1], reg)) {
+> +                        check_regs_next = true;
+> +                        skip = false;
+> +                    }
+>
 
-diff --git a/docs/system/arm/imx8mp-evk.rst b/docs/system/arm/imx8mp-evk.rst
-index b2f7d29ade..1399820163 100644
---- a/docs/system/arm/imx8mp-evk.rst
-+++ b/docs/system/arm/imx8mp-evk.rst
-@@ -60,3 +60,10 @@ Now that everything is prepared the machine can be started as follows:
-       -dtb imx8mp-evk.dtb \
-       -append "root=/dev/mmcblk2p2" \
-       -drive file=sdcard.img,if=sd,bus=2,format=raw,id=mmcblk2
-+
-+
-+KVM Virtualization
-+------------------
-+
-+To enable hardware-assisted acceleration via KVM, append
-+``-accel kvm -cpu host`` to the command line.
-diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
-index 866f4d1d74..7e61392abb 100644
---- a/hw/arm/fsl-imx8mp.c
-+++ b/hw/arm/fsl-imx8mp.c
-@@ -12,11 +12,13 @@
- #include "system/address-spaces.h"
- #include "hw/arm/bsa.h"
- #include "hw/arm/fsl-imx8mp.h"
--#include "hw/intc/arm_gicv3.h"
- #include "hw/misc/unimp.h"
- #include "hw/boards.h"
-+#include "system/kvm.h"
- #include "system/system.h"
-+#include "target/arm/cpu.h"
- #include "target/arm/cpu-qom.h"
-+#include "target/arm/kvm_arm.h"
- #include "qapi/error.h"
- #include "qobject/qlist.h"
- 
-@@ -197,11 +199,10 @@ static void fsl_imx8mp_init(Object *obj)
- 
-     for (i = 0; i < MIN(ms->smp.cpus, FSL_IMX8MP_NUM_CPUS); i++) {
-         g_autofree char *name = g_strdup_printf("cpu%d", i);
--        object_initialize_child(obj, name, &s->cpu[i],
--                                ARM_CPU_TYPE_NAME("cortex-a53"));
-+        object_initialize_child(obj, name, &s->cpu[i], ms->cpu_type);
-     }
- 
--    object_initialize_child(obj, "gic", &s->gic, TYPE_ARM_GICV3);
-+    object_initialize_child(obj, "gic", &s->gic, gicv3_class_name());
- 
-     object_initialize_child(obj, "ccm", &s->ccm, TYPE_IMX8MP_CCM);
- 
-@@ -274,7 +275,8 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-     /* CPUs */
-     for (i = 0; i < ms->smp.cpus; i++) {
-         /* On uniprocessor, the CBAR is set to 0 */
--        if (ms->smp.cpus > 1) {
-+        if (ms->smp.cpus > 1 &&
-+                object_property_find(OBJECT(&s->cpu[i]), "reset-cbar")) {
-             object_property_set_int(OBJECT(&s->cpu[i]), "reset-cbar",
-                                     fsl_imx8mp_memmap[FSL_IMX8MP_GIC_DIST].addr,
-                                     &error_abort);
-@@ -286,6 +288,16 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-         object_property_set_int(OBJECT(&s->cpu[i]), "cntfrq", 8000000,
-                                 &error_abort);
- 
-+        if (object_property_find(OBJECT(&s->cpu[i]), "has_el2")) {
-+            object_property_set_bool(OBJECT(&s->cpu[i]), "has_el2",
-+                                     !kvm_enabled(), &error_abort);
-+        }
-+
-+        if (object_property_find(OBJECT(&s->cpu[i]), "has_el3")) {
-+            object_property_set_bool(OBJECT(&s->cpu[i]), "has_el3",
-+                                     !kvm_enabled(), &error_abort);
-+        }
-+
-         if (i) {
-             /*
-              * Secondary CPUs start in powered-down state (and can be
-@@ -304,6 +316,7 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-     {
-         SysBusDevice *gicsbd = SYS_BUS_DEVICE(&s->gic);
-         QList *redist_region_count;
-+        bool pmu = object_property_get_bool(OBJECT(first_cpu), "pmu", NULL);
- 
-         qdev_prop_set_uint32(gicdev, "num-cpu", ms->smp.cpus);
-         qdev_prop_set_uint32(gicdev, "num-irq",
-@@ -360,6 +373,16 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
-                                qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
-             sysbus_connect_irq(gicsbd, i + 3 * ms->smp.cpus,
-                                qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
-+
-+            if (kvm_enabled()) {
-+                if (pmu) {
-+                    assert(arm_feature(&s->cpu[i].env, ARM_FEATURE_PMU));
-+                    if (kvm_irqchip_in_kernel()) {
-+                        kvm_arm_pmu_set_irq(&s->cpu[i], VIRTUAL_PMU_IRQ);
-+                    }
-+                    kvm_arm_pmu_init(&s->cpu[i]);
-+                }
-+            }
-         }
-     }
- 
-diff --git a/hw/arm/imx8mp-evk.c b/hw/arm/imx8mp-evk.c
-index b3082fa60d..30eb57318d 100644
---- a/hw/arm/imx8mp-evk.c
-+++ b/hw/arm/imx8mp-evk.c
-@@ -95,9 +95,20 @@ static void imx8mp_evk_init(MachineState *machine)
- 
- static void imx8mp_evk_machine_init(MachineClass *mc)
- {
-+    static const char *const valid_cpu_types[] = {
-+        ARM_CPU_TYPE_NAME("cortex-a53"),
-+#ifdef CONFIG_KVM
-+        ARM_CPU_TYPE_NAME("host"),
-+#endif /* CONFIG_KVM */
-+        NULL
-+    };
-+
-     mc->desc = "NXP i.MX 8M Plus EVK Board";
-     mc->init = imx8mp_evk_init;
-     mc->max_cpus = FSL_IMX8MP_NUM_CPUS;
-+    mc->valid_cpu_types = valid_cpu_types;
-+    mc->default_cpu_type = mc->valid_cpu_types[0];
-     mc->default_ram_id = "imx8mp-evk.ram";
- }
-+
- DEFINE_MACHINE("imx8mp-evk", imx8mp_evk_machine_init)
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index f543d944c3..d35f41331f 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -604,7 +604,8 @@ config FSL_IMX8MP
- config FSL_IMX8MP_EVK
-     bool
-     default y
--    depends on TCG && AARCH64
-+    depends on AARCH64
-+    depends on TCG || KVM
-     select FSL_IMX8MP
- 
- config ARM_SMMUV3
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index d90be8f4c9..a4212a6ab2 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -59,7 +59,7 @@ arm_common_ss.add(when: 'CONFIG_MUSCA', if_true: files('musca.c'))
- arm_common_ss.add(when: 'CONFIG_ARMSSE', if_true: files('armsse.c'))
- arm_common_ss.add(when: 'CONFIG_FSL_IMX7', if_true: files('fsl-imx7.c', 'mcimx7d-sabre.c'))
- arm_common_ss.add(when: 'CONFIG_FSL_IMX8MP', if_true: files('fsl-imx8mp.c'))
--arm_common_ss.add(when: 'CONFIG_FSL_IMX8MP_EVK', if_true: files('imx8mp-evk.c'))
-+arm_ss.add(when: 'CONFIG_FSL_IMX8MP_EVK', if_true: files('imx8mp-evk.c'))
- arm_common_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
- arm_common_ss.add(when: 'CONFIG_FSL_IMX6UL', if_true: files('fsl-imx6ul.c', 'mcimx6ul-evk.c'))
- arm_common_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_soc.c'))
--- 
-2.50.0
+Certainly, and thanks for the suggestion! May I credit you with a
+"Suggested-by" or "Co-authored-by" tag in v2 of the patch?
 
+
+>> +            if (args) {
+>> +                for (int n = 0; n < all_reg_names->len; n++) {
+>> +                    const gchar *reg = g_ptr_array_index(all_reg_names, n);
+>> +                    if (g_strrstr(args, reg)) {
+>> +                        check_regs_next = true;
+>> +                        skip = false;
+>> +                        break;
+>> +                    }
+>>                   }
+>>               }
+>>           }
 
