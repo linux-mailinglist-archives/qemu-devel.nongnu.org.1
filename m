@@ -2,97 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80770AEE7D5
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 22:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD35AEE7D8
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 22:00:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWKfG-0002YQ-Mc; Mon, 30 Jun 2025 15:59:42 -0400
+	id 1uWKfU-0002iC-8D; Mon, 30 Jun 2025 15:59:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKfD-0002YF-Dm
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:39 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKfP-0002fC-8E
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:52 -0400
 Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKfA-0007TI-HA
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:38 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKfI-0007Tr-Oi
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:49 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 7A67E21162;
- Mon, 30 Jun 2025 19:59:24 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C701B2115E;
+ Mon, 30 Jun 2025 19:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751313564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1751313567; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RDvcSIXfqYxA+umokAr0UpiFTPC5+l3e0ZJItgJfC9E=;
- b=xuIn/zFlp+DWTvNgo1faRfJhD8Dch2L7UaDs/RgPiVAFRqkaFUNPgIErYK+SSp3xpuTvzd
- mogUhTt5hl8reA9gNsTbggAcyXgrSySnyW0PtJ0rLhs5nSGiGJEZ1+yyYheX/WxkEVu4ah
- wvX423oLdypc5v69kyvQG1iOa5B9RZ8=
+ bh=8I9/g8PQ1WCYmeOD3mjrCAm9CXTbjIpjJls6Evrlddg=;
+ b=i43nTX8UZMXbqnglqNjxW4nlWwodHLsZX0vTB7NjqVbz6NWtkFSy6cGpDhIDAr1GvEHEL3
+ cv654gUSjbXbWYfy5aCrpuDHC5M32sfJI312+UiMsl4++8R3VzppUNjZyIAcR/YneYY3iT
+ smTSbMgzJl86GZsnMmwijhvwRz2whOg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751313564;
+ s=susede2_ed25519; t=1751313567;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RDvcSIXfqYxA+umokAr0UpiFTPC5+l3e0ZJItgJfC9E=;
- b=dbOVAG29v7KFNXV6ayU5Jgxjf0FwCW3qLkPcXzyUBej/dUmd98znwAExS9DkPs/lb5jnsH
- spDOqFvfvBo0slBw==
+ bh=8I9/g8PQ1WCYmeOD3mjrCAm9CXTbjIpjJls6Evrlddg=;
+ b=KpHJV9fvTxNyI4M157uu4ryYl65YdF5wsRwqfVVtrXWS3UbtllXK6vM+eNaMZLESZ+Nj8N
+ iraXtWIgmTzcWdCw==
 Authentication-Results: smtp-out1.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eVwDYrP9;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rC8Jg7Et
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751313564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1751313566; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RDvcSIXfqYxA+umokAr0UpiFTPC5+l3e0ZJItgJfC9E=;
- b=xuIn/zFlp+DWTvNgo1faRfJhD8Dch2L7UaDs/RgPiVAFRqkaFUNPgIErYK+SSp3xpuTvzd
- mogUhTt5hl8reA9gNsTbggAcyXgrSySnyW0PtJ0rLhs5nSGiGJEZ1+yyYheX/WxkEVu4ah
- wvX423oLdypc5v69kyvQG1iOa5B9RZ8=
+ bh=8I9/g8PQ1WCYmeOD3mjrCAm9CXTbjIpjJls6Evrlddg=;
+ b=eVwDYrP9V4UZhp72pA3WQHpiEXukGYG2nfj6ozATIf54PJDIMznzO4gxpweQNIlz67i5fC
+ /A6EUdJhokdxLEyJO4oCcBgyg/ErKauPjJEo1QZSJTh5Y0GLiSbRXP0JsQWQWSUujfV+BW
+ kzZlmHC2zIDGTPnHdNA/FNlhEab4V5o=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751313564;
+ s=susede2_ed25519; t=1751313566;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RDvcSIXfqYxA+umokAr0UpiFTPC5+l3e0ZJItgJfC9E=;
- b=dbOVAG29v7KFNXV6ayU5Jgxjf0FwCW3qLkPcXzyUBej/dUmd98znwAExS9DkPs/lb5jnsH
- spDOqFvfvBo0slBw==
+ bh=8I9/g8PQ1WCYmeOD3mjrCAm9CXTbjIpjJls6Evrlddg=;
+ b=rC8Jg7EtWRFybarXBSMGnyvzBVNKGy4+HNqqWqhIkfkUFRDZMusyrLC3XJERbd4+b9mGAe
+ wAYGpTEUNfGILODg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ADC901399F;
- Mon, 30 Jun 2025 19:59:22 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 087411399F;
+ Mon, 30 Jun 2025 19:59:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id aJeyG5rsYmhQUAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 30 Jun 2025 19:59:22 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id +AfRLpzsYmhQUAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 30 Jun 2025 19:59:24 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Eric Blake <eblake@redhat.com>
-Subject: [PATCH v2 03/24] migration: Normalize tls arguments
-Date: Mon, 30 Jun 2025 16:58:52 -0300
-Message-Id: <20250630195913.28033-4-farosas@suse.de>
+Subject: [PATCH v2 04/24] migration: Remove MigrateSetParameters
+Date: Mon, 30 Jun 2025 16:58:53 -0300
+Message-Id: <20250630195913.28033-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250630195913.28033-1-farosas@suse.de>
 References: <20250630195913.28033-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.999];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: C701B2115E
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; MIME_TRACE(0.00)[0:+]; TO_DN_SOME(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ ARC_NA(0.00)[];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_TLS_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:dkim,suse.de:email];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
- RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -3.01
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
  envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
@@ -116,398 +125,361 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The migration parameters tls_creds, tls_authz and tls_hostname
-currently have a non-uniform handling. When used as arguments to
-migrate-set-parameters, their type is StrOrNull and when used as
-return value from query-migrate-parameters their type is a plain
-string.
+Now that the TLS options have been made the same between
+migrate-set-parameters and query-migrate-parameters, a single type can
+be used. Remove MigrateSetParameters.
 
-Not only having to convert between the types is cumbersome, but it
-also creates the issue of requiring two different QAPI types to be
-used, one for each command. MigrateSetParameters is used for
-migrate-set-parameters with the TLS arguments as StrOrNull while
-MigrationParameters is used for query-migrate-parameters with the TLS
-arguments as str.
-
-Since StrOrNull could be considered a superset of str, change the type
-of the TLS arguments in MigrationParameters to StrOrNull. Also ensure
-that QTYPE_QNULL is never used.
-
-1) migrate-set-parameters will always write QTYPE_QSTRING to
-  s->parameters, either an empty or non-empty string.
-
-2) query-migrate-parameters will always return a QTYPE_QSTRING, either
-  empty or non-empty.
-
-3) the migrate_tls_* helpers will always return a non-empty string or
-  NULL, for the internal migration code's consumption.
-
-Points (1) and (2) above help simplify the parameters validation and
-the query command handling because s->parameters is already kept in
-the format that query-migrate-parameters (and info migrate_paramters)
-expect. Point (3) is so people don't need to care about StrOrNull in
-migration code.
-
-This will allow the type duplication to be removed in the next
-patches.
-
-Note that the type of @tls_creds, @tls-hostname, @tls-authz changes
-from str to StrOrNull in introspection of the query-migrate-parameters
-command. We accept this imprecision to enable de-duplication.
-
-There's no need to free the TLS options in
-migration_instance_finalize() because they're freed by the qdev
-properties .release method.
-
-Temporary in this patch:
-migrate_params_test_apply() copies s->parameters into a temporary
-structure, so it's necessary to drop the references to the TLS options
-if they were not set by the user to avoid double-free. This is fixed
-in the next patches.
+The TLS options documentation from MigrationParameters were replaced
+with the ones from MigrateSetParameters which was more complete.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration-hmp-cmds.c |   7 +-
- migration/options.c            | 156 ++++++++++++++++++++-------------
- migration/options.h            |   1 +
- migration/tls.c                |   2 +-
- qapi/migration.json            |   6 +-
- 5 files changed, 106 insertions(+), 66 deletions(-)
+ migration/migration-hmp-cmds.c |   4 +-
+ migration/options.c            |   6 +-
+ qapi/migration.json            | 232 +++------------------------------
+ 3 files changed, 24 insertions(+), 218 deletions(-)
 
 diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index e8a563c7d8..547384edb5 100644
+index 547384edb5..82cd2dcb8e 100644
 --- a/migration/migration-hmp-cmds.c
 +++ b/migration/migration-hmp-cmds.c
-@@ -279,11 +279,11 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-         assert(params->tls_creds);
-         monitor_printf(mon, "%s: '%s'\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_TLS_CREDS),
--            params->tls_creds);
-+                       params->tls_creds->u.s);
-         assert(params->tls_hostname);
-         monitor_printf(mon, "%s: '%s'\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_TLS_HOSTNAME),
--            params->tls_hostname);
-+                       params->tls_hostname->u.s);
-         assert(params->has_max_bandwidth);
-         monitor_printf(mon, "%s: %" PRIu64 " bytes/second\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_MAX_BANDWIDTH),
-@@ -317,9 +317,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "%s: %" PRIu64 "\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_MAX_POSTCOPY_BANDWIDTH),
-             params->max_postcopy_bandwidth);
-+        assert(params->tls_authz);
-         monitor_printf(mon, "%s: '%s'\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_TLS_AUTHZ),
--            params->tls_authz);
-+                       params->tls_authz->u.s);
+@@ -493,7 +493,7 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+     const char *param = qdict_get_str(qdict, "parameter");
+     const char *valuestr = qdict_get_str(qdict, "value");
+     Visitor *v = string_input_visitor_new(valuestr);
+-    MigrateSetParameters *p = g_new0(MigrateSetParameters, 1);
++    MigrationParameters *p = g_new0(MigrationParameters, 1);
+     uint64_t valuebw = 0;
+     uint64_t cache_size;
+     Error *err = NULL;
+@@ -659,7 +659,7 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+     qmp_migrate_set_parameters(p, &err);
  
-         if (params->has_block_bitmap_mapping) {
-             const BitmapMigrationNodeAliasList *bmnal;
+  cleanup:
+-    qapi_free_MigrateSetParameters(p);
++    qapi_free_MigrationParameters(p);
+     visit_free(v);
+     hmp_handle_error(mon, err);
+ }
 diff --git a/migration/options.c b/migration/options.c
-index 384ef9e421..f7bbdba5fc 100644
+index f7bbdba5fc..295367ce92 100644
 --- a/migration/options.c
 +++ b/migration/options.c
-@@ -167,9 +167,10 @@ const Property migration_properties[] = {
-     DEFINE_PROP_SIZE("announce-step", MigrationState,
-                       parameters.announce_step,
-                       DEFAULT_MIGRATE_ANNOUNCE_STEP),
--    DEFINE_PROP_STRING("tls-creds", MigrationState, parameters.tls_creds),
--    DEFINE_PROP_STRING("tls-hostname", MigrationState, parameters.tls_hostname),
--    DEFINE_PROP_STRING("tls-authz", MigrationState, parameters.tls_authz),
-+    DEFINE_PROP_STR_OR_NULL("tls-creds", MigrationState, parameters.tls_creds),
-+    DEFINE_PROP_STR_OR_NULL("tls-hostname", MigrationState,
-+                            parameters.tls_hostname),
-+    DEFINE_PROP_STR_OR_NULL("tls-authz", MigrationState, parameters.tls_authz),
-     DEFINE_PROP_UINT64("x-vcpu-dirty-limit-period", MigrationState,
-                        parameters.x_vcpu_dirty_limit_period,
-                        DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD),
-@@ -241,6 +242,11 @@ static void release_StrOrNull(Object *obj, const char *name, void *opaque)
+@@ -1270,7 +1270,7 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+     return true;
+ }
  
- static void set_default_value_tls_opt(ObjectProperty *op, const Property *prop)
+-static void migrate_params_test_apply(MigrateSetParameters *params,
++static void migrate_params_test_apply(MigrationParameters *params,
+                                       MigrationParameters *dest)
  {
-+    /*
-+     * Initialization to the empty string here is important so
-+     * query-migrate-parameters doesn't need to deal with a NULL value
-+     * when it's called before any TLS option has been set.
-+     */
-     object_property_set_default_str(op, "");
+     *dest = migrate_get_current()->parameters;
+@@ -1393,7 +1393,7 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+     }
  }
  
-@@ -426,13 +432,6 @@ bool migrate_rdma(void)
-     return s->rdma_migration;
- }
- 
--bool migrate_tls(void)
--{
--    MigrationState *s = migrate_get_current();
--
--    return s->parameters.tls_creds && *s->parameters.tls_creds;
--}
--
- typedef enum WriteTrackingSupport {
-     WT_SUPPORT_UNKNOWN = 0,
-     WT_SUPPORT_ABSENT,
-@@ -881,21 +880,38 @@ const char *migrate_tls_authz(void)
+-static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
++static void migrate_params_apply(MigrationParameters *params, Error **errp)
  {
      MigrationState *s = migrate_get_current();
  
--    return s->parameters.tls_authz;
-+    if (*s->parameters.tls_authz->u.s) {
-+        return s->parameters.tls_authz->u.s;
-+    }
-+
-+    return NULL;
+@@ -1523,7 +1523,7 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+     }
  }
  
- const char *migrate_tls_creds(void)
- {
-     MigrationState *s = migrate_get_current();
- 
--    return s->parameters.tls_creds;
-+    if (*s->parameters.tls_creds->u.s) {
-+        return s->parameters.tls_creds->u.s;
-+    }
-+
-+    return NULL;
- }
- 
- const char *migrate_tls_hostname(void)
- {
-     MigrationState *s = migrate_get_current();
- 
--    return s->parameters.tls_hostname;
-+    if (*s->parameters.tls_hostname->u.s) {
-+        return s->parameters.tls_hostname->u.s;
-+    }
-+
-+    return NULL;
-+}
-+
-+bool migrate_tls(void)
-+{
-+    return !!migrate_tls_creds();
- }
- 
- uint64_t migrate_vcpu_dirty_limit_period(void)
-@@ -935,6 +951,37 @@ AnnounceParameters *migrate_announce_params(void)
-     return &ap;
- }
- 
-+void migrate_tls_opts_free(MigrationParameters *params)
-+{
-+    qapi_free_StrOrNull(params->tls_creds);
-+    qapi_free_StrOrNull(params->tls_hostname);
-+    qapi_free_StrOrNull(params->tls_authz);
-+}
-+
-+/* either non-empty or empty string */
-+static void tls_opt_to_str(StrOrNull **tls_opt)
-+{
-+    StrOrNull *opt = *tls_opt;
-+
-+    if (!opt) {
-+        return;
-+    }
-+
-+    switch (opt->type) {
-+    case QTYPE_QSTRING:
-+        return;
-+    case QTYPE_QNULL:
-+        qobject_unref(opt->u.n);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    opt->type = QTYPE_QSTRING;
-+    opt->u.s = g_strdup("");
-+    *tls_opt = opt;
-+}
-+
- MigrationParameters *qmp_query_migrate_parameters(Error **errp)
- {
-     MigrationParameters *params;
-@@ -950,10 +997,9 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-     params->cpu_throttle_increment = s->parameters.cpu_throttle_increment;
-     params->has_cpu_throttle_tailslow = true;
-     params->cpu_throttle_tailslow = s->parameters.cpu_throttle_tailslow;
--    params->tls_creds = g_strdup(s->parameters.tls_creds);
--    params->tls_hostname = g_strdup(s->parameters.tls_hostname);
--    params->tls_authz = g_strdup(s->parameters.tls_authz ?
--                                 s->parameters.tls_authz : "");
-+    params->tls_creds = QAPI_CLONE(StrOrNull, s->parameters.tls_creds);
-+    params->tls_hostname = QAPI_CLONE(StrOrNull, s->parameters.tls_hostname);
-+    params->tls_authz = QAPI_CLONE(StrOrNull, s->parameters.tls_authz);
-     params->has_max_bandwidth = true;
-     params->max_bandwidth = s->parameters.max_bandwidth;
-     params->has_avail_switchover_bandwidth = true;
-@@ -1010,9 +1056,6 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
- 
- void migrate_params_init(MigrationParameters *params)
- {
--    params->tls_hostname = g_strdup("");
--    params->tls_creds = g_strdup("");
--
-     /* Set has_* up only for parameter checks */
-     params->has_throttle_trigger_threshold = true;
-     params->has_cpu_throttle_initial = true;
-@@ -1189,7 +1232,7 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
- #ifdef CONFIG_LINUX
-     if (migrate_zero_copy_send() &&
-         ((params->has_multifd_compression && params->multifd_compression) ||
--         (params->tls_creds && *params->tls_creds))) {
-+         *params->tls_creds->u.s)) {
-         error_setg(errp,
-                    "Zero copy only available for non-compressed non-TLS multifd migration");
-         return false;
-@@ -1251,18 +1294,24 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-     }
- 
-     if (params->tls_creds) {
--        assert(params->tls_creds->type == QTYPE_QSTRING);
--        dest->tls_creds = params->tls_creds->u.s;
-+        dest->tls_creds = QAPI_CLONE(StrOrNull, params->tls_creds);
-+    } else {
-+        /* drop the reference, it's owned by s->parameters */
-+        dest->tls_creds = NULL;
-     }
- 
-     if (params->tls_hostname) {
--        assert(params->tls_hostname->type == QTYPE_QSTRING);
--        dest->tls_hostname = params->tls_hostname->u.s;
-+        dest->tls_hostname = QAPI_CLONE(StrOrNull, params->tls_hostname);
-+    } else {
-+        /* drop the reference, it's owned by s->parameters */
-+        dest->tls_hostname = NULL;
-     }
- 
-     if (params->tls_authz) {
--        assert(params->tls_authz->type == QTYPE_QSTRING);
--        dest->tls_authz = params->tls_authz->u.s;
-+        dest->tls_authz = QAPI_CLONE(StrOrNull, params->tls_authz);
-+    } else {
-+        /* drop the reference, it's owned by s->parameters */
-+        dest->tls_authz = NULL;
-     }
- 
-     if (params->has_max_bandwidth) {
-@@ -1367,21 +1416,19 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-     }
- 
-     if (params->tls_creds) {
--        g_free(s->parameters.tls_creds);
--        assert(params->tls_creds->type == QTYPE_QSTRING);
--        s->parameters.tls_creds = g_strdup(params->tls_creds->u.s);
-+        qapi_free_StrOrNull(s->parameters.tls_creds);
-+        s->parameters.tls_creds = QAPI_CLONE(StrOrNull, params->tls_creds);
-     }
- 
-     if (params->tls_hostname) {
--        g_free(s->parameters.tls_hostname);
--        assert(params->tls_hostname->type == QTYPE_QSTRING);
--        s->parameters.tls_hostname = g_strdup(params->tls_hostname->u.s);
-+        qapi_free_StrOrNull(s->parameters.tls_hostname);
-+        s->parameters.tls_hostname = QAPI_CLONE(StrOrNull,
-+                                                params->tls_hostname);
-     }
- 
-     if (params->tls_authz) {
--        g_free(s->parameters.tls_authz);
--        assert(params->tls_authz->type == QTYPE_QSTRING);
--        s->parameters.tls_authz = g_strdup(params->tls_authz->u.s);
-+        qapi_free_StrOrNull(s->parameters.tls_authz);
-+        s->parameters.tls_authz = QAPI_CLONE(StrOrNull, params->tls_authz);
-     }
- 
-     if (params->has_max_bandwidth) {
-@@ -1480,32 +1527,23 @@ void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
+-void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
++void qmp_migrate_set_parameters(MigrationParameters *params, Error **errp)
  {
      MigrationParameters tmp;
  
--    /* TODO Rewrite "" to null instead for all three tls_* parameters */
--    if (params->tls_creds
--        && params->tls_creds->type == QTYPE_QNULL) {
--        qobject_unref(params->tls_creds->u.n);
--        params->tls_creds->type = QTYPE_QSTRING;
--        params->tls_creds->u.s = strdup("");
--    }
--    if (params->tls_hostname
--        && params->tls_hostname->type == QTYPE_QNULL) {
--        qobject_unref(params->tls_hostname->u.n);
--        params->tls_hostname->type = QTYPE_QSTRING;
--        params->tls_hostname->u.s = strdup("");
--    }
--    if (params->tls_authz
--        && params->tls_authz->type == QTYPE_QNULL) {
--        qobject_unref(params->tls_authz->u.n);
--        params->tls_authz->type = QTYPE_QSTRING;
--        params->tls_authz->u.s = strdup("");
--    }
-+    /*
-+     * Convert QTYPE_QNULL and NULL to the empty string (""). Even
-+     * though NULL is cleaner to deal with in C code, that would force
-+     * query-migrate-parameters to convert it once more to the empty
-+     * string, so avoid that. The migrate_tls_*() helpers that expose
-+     * the options to the rest of the migration code already use
-+     * return NULL when the empty string is found.
-+     */
-+    tls_opt_to_str(&params->tls_creds);
-+    tls_opt_to_str(&params->tls_hostname);
-+    tls_opt_to_str(&params->tls_authz);
- 
-     migrate_params_test_apply(params, &tmp);
- 
--    if (!migrate_params_check(&tmp, errp)) {
--        /* Invalid parameter */
--        return;
-+    if (migrate_params_check(&tmp, errp)) {
-+        migrate_params_apply(params, errp);
-     }
- 
--    migrate_params_apply(params, errp);
-+    migrate_tls_opts_free(&tmp);
- }
-diff --git a/migration/options.h b/migration/options.h
-index 82d839709e..999eee6f3b 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -91,4 +91,5 @@ ZeroPageDetection migrate_zero_page_detection(void);
- 
- bool migrate_params_check(MigrationParameters *params, Error **errp);
- void migrate_params_init(MigrationParameters *params);
-+void migrate_tls_opts_free(MigrationParameters *params);
- #endif
-diff --git a/migration/tls.c b/migration/tls.c
-index 5cbf952383..8a89d3f767 100644
---- a/migration/tls.c
-+++ b/migration/tls.c
-@@ -126,7 +126,7 @@ QIOChannelTLS *migration_tls_client_create(QIOChannel *ioc,
-     }
- 
-     const char *tls_hostname = migrate_tls_hostname();
--    if (tls_hostname && *tls_hostname) {
-+    if (tls_hostname) {
-         hostname = tls_hostname;
-     }
- 
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 4963f6ca12..97bb022c45 100644
+index 97bb022c45..3788c39857 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -1293,9 +1293,9 @@
-             '*cpu-throttle-initial': 'uint8',
-             '*cpu-throttle-increment': 'uint8',
-             '*cpu-throttle-tailslow': 'bool',
--            '*tls-creds': 'str',
--            '*tls-hostname': 'str',
--            '*tls-authz': 'str',
-+            '*tls-creds': 'StrOrNull',
-+            '*tls-hostname': 'StrOrNull',
-+            '*tls-authz': 'StrOrNull',
-             '*max-bandwidth': 'size',
-             '*avail-switchover-bandwidth': 'size',
-             '*downtime-limit': 'uint64',
+@@ -914,206 +914,10 @@
+            'zero-page-detection',
+            'direct-io'] }
+ 
+-##
+-# @MigrateSetParameters:
+-#
+-# @announce-initial: Initial delay (in milliseconds) before sending
+-#     the first announce (Since 4.0)
+-#
+-# @announce-max: Maximum delay (in milliseconds) between packets in
+-#     the announcement (Since 4.0)
+-#
+-# @announce-rounds: Number of self-announce packets sent after
+-#     migration (Since 4.0)
+-#
+-# @announce-step: Increase in delay (in milliseconds) between
+-#     subsequent packets in the announcement (Since 4.0)
+-#
+-# @throttle-trigger-threshold: The ratio of bytes_dirty_period and
+-#     bytes_xfer_period to trigger throttling.  It is expressed as
+-#     percentage.  The default value is 50.  (Since 5.0)
+-#
+-# @cpu-throttle-initial: Initial percentage of time guest cpus are
+-#     throttled when migration auto-converge is activated.  The
+-#     default value is 20.  (Since 2.7)
+-#
+-# @cpu-throttle-increment: throttle percentage increase each time
+-#     auto-converge detects that migration is not making progress.
+-#     The default value is 10.  (Since 2.7)
+-#
+-# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage.
+-#     At the tail stage of throttling, the Guest is very sensitive to
+-#     CPU percentage while the @cpu-throttle -increment is excessive
+-#     usually at tail stage.  If this parameter is true, we will
+-#     compute the ideal CPU percentage used by the Guest, which may
+-#     exactly make the dirty rate match the dirty rate threshold.
+-#     Then we will choose a smaller throttle increment between the one
+-#     specified by @cpu-throttle-increment and the one generated by
+-#     ideal CPU percentage.  Therefore, it is compatible to
+-#     traditional throttling, meanwhile the throttle increment won't
+-#     be excessive at tail stage.  The default value is false.
+-#     (Since 5.1)
+-#
+-# @tls-creds: ID of the 'tls-creds' object that provides credentials
+-#     for establishing a TLS connection over the migration data
+-#     channel.  On the outgoing side of the migration, the credentials
+-#     must be for a 'client' endpoint, while for the incoming side the
+-#     credentials must be for a 'server' endpoint.  Setting this to a
+-#     non-empty string enables TLS for all migrations.  An empty
+-#     string means that QEMU will use plain text mode for migration,
+-#     rather than TLS.  This is the default.  (Since 2.7)
+-#
+-# @tls-hostname: migration target's hostname for validating the
+-#     server's x509 certificate identity.  If empty, QEMU will use the
+-#     hostname from the migration URI, if any.  A non-empty value is
+-#     required when using x509 based TLS credentials and the migration
+-#     URI does not include a hostname, such as fd: or exec: based
+-#     migration.  (Since 2.7)
+-#
+-#     Note: empty value works only since 2.9.
+-#
+-# @tls-authz: ID of the 'authz' object subclass that provides access
+-#     control checking of the TLS x509 certificate distinguished name.
+-#     This object is only resolved at time of use, so can be deleted
+-#     and recreated on the fly while the migration server is active.
+-#     If missing, it will default to denying access (Since 4.0)
+-#
+-# @max-bandwidth: maximum speed for migration, in bytes per second.
+-#     (Since 2.8)
+-#
+-# @avail-switchover-bandwidth: to set the available bandwidth that
+-#     migration can use during switchover phase.  **Note:** this does
+-#     not limit the bandwidth during switchover, but only for
+-#     calculations when making decisions to switchover.  By default,
+-#     this value is zero, which means QEMU will estimate the bandwidth
+-#     automatically.  This can be set when the estimated value is not
+-#     accurate, while the user is able to guarantee such bandwidth is
+-#     available when switching over.  When specified correctly, this
+-#     can make the switchover decision much more accurate.
+-#     (Since 8.2)
+-#
+-# @downtime-limit: set maximum tolerated downtime for migration.
+-#     maximum downtime in milliseconds (Since 2.8)
+-#
+-# @x-checkpoint-delay: The delay time (in ms) between two COLO
+-#     checkpoints in periodic mode.  (Since 2.8)
+-#
+-# @multifd-channels: Number of channels used to migrate data in
+-#     parallel.  This is the same number that the number of sockets
+-#     used for migration.  The default value is 2 (since 4.0)
+-#
+-# @xbzrle-cache-size: cache size to be used by XBZRLE migration.  It
+-#     needs to be a multiple of the target page size and a power of 2
+-#     (Since 2.11)
+-#
+-# @max-postcopy-bandwidth: Background transfer bandwidth during
+-#     postcopy.  Defaults to 0 (unlimited).  In bytes per second.
+-#     (Since 3.0)
+-#
+-# @max-cpu-throttle: maximum cpu throttle percentage.  Defaults to 99.
+-#     (Since 3.1)
+-#
+-# @multifd-compression: Which compression method to use.  Defaults to
+-#     none.  (Since 5.0)
+-#
+-# @multifd-zlib-level: Set the compression level to be used in live
+-#     migration, the compression level is an integer between 0 and 9,
+-#     where 0 means no compression, 1 means the best compression
+-#     speed, and 9 means best compression ratio which will consume
+-#     more CPU.  Defaults to 1.  (Since 5.0)
+-#
+-# @multifd-qatzip-level: Set the compression level to be used in live
+-#     migration.  The level is an integer between 1 and 9, where 1 means
+-#     the best compression speed, and 9 means the best compression
+-#     ratio which will consume more CPU.  Defaults to 1.  (Since 9.2)
+-#
+-# @multifd-zstd-level: Set the compression level to be used in live
+-#     migration, the compression level is an integer between 0 and 20,
+-#     where 0 means no compression, 1 means the best compression
+-#     speed, and 20 means best compression ratio which will consume
+-#     more CPU.  Defaults to 1.  (Since 5.0)
+-#
+-# @block-bitmap-mapping: Maps block nodes and bitmaps on them to
+-#     aliases for the purpose of dirty bitmap migration.  Such aliases
+-#     may for example be the corresponding names on the opposite site.
+-#     The mapping must be one-to-one, but not necessarily complete: On
+-#     the source, unmapped bitmaps and all bitmaps on unmapped nodes
+-#     will be ignored.  On the destination, encountering an unmapped
+-#     alias in the incoming migration stream will result in a report,
+-#     and all further bitmap migration data will then be discarded.
+-#     Note that the destination does not know about bitmaps it does
+-#     not receive, so there is no limitation or requirement regarding
+-#     the number of bitmaps received, or how they are named, or on
+-#     which nodes they are placed.  By default (when this parameter
+-#     has never been set), bitmap names are mapped to themselves.
+-#     Nodes are mapped to their block device name if there is one, and
+-#     to their node name otherwise.  (Since 5.2)
+-#
+-# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+-#     limit during live migration.  Should be in the range 1 to
+-#     1000ms.  Defaults to 1000ms.  (Since 8.1)
+-#
+-# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+-#     Defaults to 1.  (Since 8.1)
+-#
+-# @mode: Migration mode.  See description in @MigMode.  Default is
+-#     'normal'.  (Since 8.2)
+-#
+-# @zero-page-detection: Whether and how to detect zero pages.
+-#     See description in @ZeroPageDetection.  Default is 'multifd'.
+-#     (since 9.0)
+-#
+-# @direct-io: Open migration files with O_DIRECT when possible.  This
+-#     only has effect if the @mapped-ram capability is enabled.
+-#     (Since 9.1)
+-#
+-# Features:
+-#
+-# @unstable: Members @x-checkpoint-delay and
+-#     @x-vcpu-dirty-limit-period are experimental.
+-#
+-# TODO: either fuse back into MigrationParameters, or make
+-#     MigrationParameters members mandatory
+-#
+-# Since: 2.4
+-##
+-{ 'struct': 'MigrateSetParameters',
+-  'data': { '*announce-initial': 'size',
+-            '*announce-max': 'size',
+-            '*announce-rounds': 'size',
+-            '*announce-step': 'size',
+-            '*throttle-trigger-threshold': 'uint8',
+-            '*cpu-throttle-initial': 'uint8',
+-            '*cpu-throttle-increment': 'uint8',
+-            '*cpu-throttle-tailslow': 'bool',
+-            '*tls-creds': 'StrOrNull',
+-            '*tls-hostname': 'StrOrNull',
+-            '*tls-authz': 'StrOrNull',
+-            '*max-bandwidth': 'size',
+-            '*avail-switchover-bandwidth': 'size',
+-            '*downtime-limit': 'uint64',
+-            '*x-checkpoint-delay': { 'type': 'uint32',
+-                                     'features': [ 'unstable' ] },
+-            '*multifd-channels': 'uint8',
+-            '*xbzrle-cache-size': 'size',
+-            '*max-postcopy-bandwidth': 'size',
+-            '*max-cpu-throttle': 'uint8',
+-            '*multifd-compression': 'MultiFDCompression',
+-            '*multifd-zlib-level': 'uint8',
+-            '*multifd-qatzip-level': 'uint8',
+-            '*multifd-zstd-level': 'uint8',
+-            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
+-            '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
+-                                            'features': [ 'unstable' ] },
+-            '*vcpu-dirty-limit': 'uint64',
+-            '*mode': 'MigMode',
+-            '*zero-page-detection': 'ZeroPageDetection',
+-            '*direct-io': 'bool' } }
+-
+ ##
+ # @migrate-set-parameters:
+ #
+-# Set various migration parameters.
++# Set migration parameters.  All fields are optional.
+ #
+ # Since: 2.4
+ #
+@@ -1124,13 +928,11 @@
+ #     <- { "return": {} }
+ ##
+ { 'command': 'migrate-set-parameters', 'boxed': true,
+-  'data': 'MigrateSetParameters' }
++  'data': 'MigrationParameters' }
+ 
+ ##
+ # @MigrationParameters:
+ #
+-# The optional members aren't actually optional.
+-#
+ # @announce-initial: Initial delay (in milliseconds) before sending
+ #     the first announce (Since 4.0)
+ #
+@@ -1148,12 +950,12 @@
+ #     percentage.  The default value is 50.  (Since 5.0)
+ #
+ # @cpu-throttle-initial: Initial percentage of time guest cpus are
+-#     throttled when migration auto-converge is activated.
+-#     (Since 2.7)
++#     throttled when migration auto-converge is activated.  The
++#     default value is 20.  (Since 2.7)
+ #
+ # @cpu-throttle-increment: throttle percentage increase each time
+ #     auto-converge detects that migration is not making progress.
+-#     (Since 2.7)
++#     The default value is 10.  (Since 2.7)
+ #
+ # @cpu-throttle-tailslow: Make CPU throttling slower at tail stage.
+ #     At the tail stage of throttling, the Guest is very sensitive to
+@@ -1172,21 +974,25 @@
+ #     for establishing a TLS connection over the migration data
+ #     channel.  On the outgoing side of the migration, the credentials
+ #     must be for a 'client' endpoint, while for the incoming side the
+-#     credentials must be for a 'server' endpoint.  An empty string
+-#     means that QEMU will use plain text mode for migration, rather
+-#     than TLS.  (Since 2.7)
+-#
+-#     Note: 2.8 omits empty @tls-creds instead.
++#     credentials must be for a 'server' endpoint.  Setting this to a
++#     non-empty string enables TLS for all migrations.  An empty
++#     string means that QEMU will use plain text mode for migration,
++#     rather than TLS.  This is the default.  (Since 2.7)
+ #
+ # @tls-hostname: migration target's hostname for validating the
+ #     server's x509 certificate identity.  If empty, QEMU will use the
+-#     hostname from the migration URI, if any.  (Since 2.7)
++#     hostname from the migration URI, if any.  A non-empty value is
++#     required when using x509 based TLS credentials and the migration
++#     URI does not include a hostname, such as fd: or exec: based
++#     migration.  (Since 2.7)
+ #
+-#     Note: 2.8 omits empty @tls-hostname instead.
++#     Note: empty value works only since 2.9.
+ #
+ # @tls-authz: ID of the 'authz' object subclass that provides access
+ #     control checking of the TLS x509 certificate distinguished name.
+-#     (Since 4.0)
++#     This object is only resolved at time of use, so can be deleted
++#     and recreated on the fly while the migration server is active.
++#     If missing, it will default to denying access (Since 4.0)
+ #
+ # @max-bandwidth: maximum speed for migration, in bytes per second.
+ #     (Since 2.8)
+@@ -1205,8 +1011,8 @@
+ # @downtime-limit: set maximum tolerated downtime for migration.
+ #     maximum downtime in milliseconds (Since 2.8)
+ #
+-# @x-checkpoint-delay: the delay time between two COLO checkpoints.
+-#     (Since 2.8)
++# @x-checkpoint-delay: the delay time between two COLO checkpoints in
++#     periodic mode.  (Since 2.8)
+ #
+ # @multifd-channels: Number of channels used to migrate data in
+ #     parallel.  This is the same number that the number of sockets
 -- 
 2.35.3
 
