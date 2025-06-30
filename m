@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59EAAED377
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 06:34:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AD3AED37C
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 06:35:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uW6Ch-0004VM-Mr; Mon, 30 Jun 2025 00:33:16 -0400
+	id 1uW6Cj-0004Wf-Us; Mon, 30 Jun 2025 00:33:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uW6Ca-0004UC-MA
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 00:33:09 -0400
-Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
+ id 1uW6Cc-0004UZ-9B
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 00:33:10 -0400
+Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uW6CU-00053W-Cr
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 00:33:03 -0400
-Received: by mail-qt1-x829.google.com with SMTP id
- d75a77b69052e-4a442a3a2bfso34207091cf.1
- for <qemu-devel@nongnu.org>; Sun, 29 Jun 2025 21:32:59 -0700 (PDT)
+ id 1uW6CU-00053t-Du
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 00:33:04 -0400
+Received: by mail-qt1-x82d.google.com with SMTP id
+ d75a77b69052e-4a58ba6c945so29157981cf.2
+ for <qemu-devel@nongnu.org>; Sun, 29 Jun 2025 21:33:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751257979; x=1751862779; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=xwg4/mGs9AWU01hT2+1uM8Iz4xoWbdqsFjVaCRRcKlo=;
- b=QqYCQe8Hs1Fs//1Sfqa2lGCQMMRGlYO+k5SoSbifeqOmZhqb5FeKWRVwXxqEBqhIJE
- 7z5VGxR3ZpcVYwmvIgqeU2ylg/qwWqA6KlIpui3Z4CHvyhUzf7YQl2xGSFj9e5Tmkavc
- DskKQ4ktxSfgHf8r0lhZ4bK9VPIwNXP6p0m1iooNP/rJ9WywrVcZ3JU0Xm++I7zLeHLC
- rAa52HCer0awgehKuo+lTy1yfP8NyOoyZ+vhR68lK4c3iLm3ICLfMTxcmPpZBj9LKPiW
- ZpSApJJ84dhXjkNk7o04CKWJow+fi+PoOhN+9N84ap8JKYgQjqEMZVKrNoUxgtzGLXbQ
- tjrA==
+ d=linaro.org; s=google; t=1751257981; x=1751862781; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NElkJwQRf1CyYZ1pLfGMEkRff1YKnUUmnNhqdv4yZE4=;
+ b=iuxfAfzs7q3dQts3Y2Jz7aFBUJMIZSSY9613x1t8miYCqXKHjE2QhZGHSNsScYJh8M
+ 6vnebPDqqM5Nh/TVt53SFRhmyqVuPKDIQFAEJJDT8pl41YmvUY0h7F0QHTZIMXwQkmFZ
+ nHzqqLqDSgHwj4L9Oac0cdq5tP01THUICvDcFRM2CsGb0H4EJn3eS56cNWKGVcjwOH4H
+ YuIHh3kcrHVfw/eCoFWdNzIk2D8lx7YLj3OUKgal6NWlcM7LNrF/k1zppKuvaMiEu5iw
+ kodt3uKQj6dxhdYrEl3wZp1DHkidkm7VgBikrtk6FxRR3k2uScgh3nRSinvtYNhXJvv6
+ sUSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751257979; x=1751862779;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xwg4/mGs9AWU01hT2+1uM8Iz4xoWbdqsFjVaCRRcKlo=;
- b=WStRXDikLowoeyi33KVopELg9Q8mhn9utWZBPHVlz9tdTfGhtJjSooH7zsGeQvZslU
- xjYh8LTJavBZgHtcig9+iYk0BlzYGDx7j5viw/BHNcTkx9KsqVeTOSZVqgNuhu9leuwC
- Aw/frU0VFDSKZ+iGBKkyX5HI/Fx27TsvWyJoWXyNmdzLc5NArzwE5RAkAxwb2JexjevF
- ax63vZbytQhfc1usALIoYEj2zsf8UJxXVX+YgN+OQMkgS5HlpimVXDldRaaMEr5XMOoC
- 2I1T4R7r/SNXhdLLa4k1lYDbVE6zwXG+nqSMRH+qfn3QxEguSCwXNyYwbrMvPZBmJLFu
- jIdg==
-X-Gm-Message-State: AOJu0Yzt5cVC+hR66GxbEYy7KiJ1nQc9dh+oU6+KRZbmcXzyK/FVF/yU
- vjKvz7qbJZpUGbU5e1iu/Xp4QRk0vWd3Nn73qHwKxEUQPAOa1ff83GSj/ur12Axf6/o=
-X-Gm-Gg: ASbGncur94UgIeuVuSFjXwF6fAjQdx02FLcJjYaPHZoNprKPNC48zqCg5mtF0v5Fo9Y
- F2ceUJ5Et9eGipmnKmui1H2xCuByiaqeKePOKvC2HfxwgRj1X2szGBa5t0NKxOitltmK31ChrCB
- A13gx6kZSLHEefv2e3HGsYHLkslBo8GHzz7hB9nfFoloDYLKRFiLNsDYn7k3RMq1QqeoIevdRn2
- 021OklIuaXhQMcyLgTzlU/PzB9ZhSSS4z6hrcdvsoEWIipomzr1Fpi2qaCfVbrlALkf4c96e/Jm
- Nmk3YS5Z3am3J5wRmDIfPfJJk941p2bLFjFz6FBNS/BUXIRu75vlOuo89sTitUOB5Pw=
-X-Google-Smtp-Source: AGHT+IFHnkvJlPZGoYIy5ZOVjm6Excfd1PisbneTFkOA2RRZnH1Q/nxBwevrtm1F2aCa0VzIkb4gdQ==
-X-Received: by 2002:a05:622a:8b:b0:4a7:fbd0:79b3 with SMTP id
- d75a77b69052e-4a7fc8bb4c1mr183691361cf.0.1751257978871; 
- Sun, 29 Jun 2025 21:32:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1751257981; x=1751862781;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NElkJwQRf1CyYZ1pLfGMEkRff1YKnUUmnNhqdv4yZE4=;
+ b=r2Ckvfjs2dJRjmGIAN0GwcfqvJDiYza3fK/S8ggI+sPY8yEyWfdEP+SxQB3TeFJDQ9
+ Z/IRhp+wNh/p3BC6VbGCJglxLqaKOhr1jNchWqlKtPGnnI39eLO1fbGKcPHpLumsHaUT
+ 4ddn2Y2u3fEcQTeiOF+UrVbo1u8gD7OwQbpZurtd3ahwcQqx2tZq71diP8D5REoSmNgf
+ g2VdzOtlmO8CSXhOPMVNHQA91W8mlixEscoM9qe57t9OgdWznuwcoO/n5bDoCl4W/ux7
+ mmd2ovPLUkZ/pHZE0OTvek9zK2pyJHSSAGtZ8c6VpveWGq/R64HelpM26faPN1C2jxmx
+ ECMg==
+X-Gm-Message-State: AOJu0YzT344ZH5MXH3v5Nsj5YCgW0CVFu1uEXBplP9ML2XW0J53udCtS
+ XpPJl6sluso5LzhdGB5KS8TkmexkglTE8Q5ufzJlFJX/OC0+iVNULJ6pR0YDaAaXFP2H1Yiy5d9
+ sSb4N
+X-Gm-Gg: ASbGncs3eo8IAI8/c/nIKjZ3Yvyahb+H9dUZxu8fH39ZgZXV/pWb9PFa54ggn7R+AvG
+ Ircx8MECtx5PAScaNOR8/tTruMBSkMmL8cPFGYf5xip8crATyoz9YYmqS7DQWPqyfk5mz7s01vH
+ yidnCIR2Vg7oCjIKaWOmWqnVaFsBNFQnRrMH0MqFu/KjNuujeZ7pwXCm6DJ7V7Cx6NXyR9c7pi7
+ L6j8S7iIq+Oh2v6oIEWMA+VsUPtOVqub58G/n6e9tvECibIqGsJFFj+NAPixxGMNIFSHgFh5wPi
+ XLiOiJInadu5Y9mBd+O1w19LLYJz6tmHQbtkajA+ZpuwGFEU81OIk7u0dMA79UcIkho=
+X-Google-Smtp-Source: AGHT+IHVfyDFenWheXr6gxrFqO5swCx1BFaOdEsGs+vJnNU4yAPok30BqXoy6P++i6BxgdOU9F1tLA==
+X-Received: by 2002:ac8:7d0d:0:b0:476:95dd:521c with SMTP id
+ d75a77b69052e-4a814226439mr58055621cf.45.1751257980989; 
+ Sun, 29 Jun 2025 21:33:00 -0700 (PDT)
 Received: from gromero0.. ([186.215.58.88]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4a7fc13971fsm53470171cf.20.2025.06.29.21.32.56
+ d75a77b69052e-4a7fc13971fsm53470171cf.20.2025.06.29.21.32.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Jun 2025 21:32:58 -0700 (PDT)
+ Sun, 29 Jun 2025 21:33:00 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, gustavo.romero@linaro.org
-Subject: [WIP-for-10.1 0/3] target/arm: Add FEAT_MEC to max cpu
-Date: Mon, 30 Jun 2025 04:32:34 +0000
-Message-Id: <20250630043237.996788-1-gustavo.romero@linaro.org>
+Subject: [PATCH 1/3] target/arm: Add the MECEn SCR_EL3 bit
+Date: Mon, 30 Jun 2025 04:32:35 +0000
+Message-Id: <20250630043237.996788-2-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250630043237.996788-1-gustavo.romero@linaro.org>
+References: <20250630043237.996788-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
- envelope-from=gustavo.romero@linaro.org; helo=mail-qt1-x829.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-qt1-x82d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,28 +96,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series a WIP for adding full FEAT_MEC support to arm max cpu.
+The MECEn bit in SCR_EL3 enables access to the EL2 MECID registers from
+EL2, so add it to the SCR mask list to use it later on.
 
-It adds the FEAT_MEC registers but does not touch the translation regimes to
-support the MECIDs. I'm currently looking at the possibilies to support it in
-QEMU for the various translation regimes we have on Arm64.
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+---
+ target/arm/cpu.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-
-Cheers,
-Gustavo
-
-Gustavo Romero (3):
-  target/arm: Add the MECEn SCR_EL3 bit
-  target/arm: Advertise FEAT_MEC in cpu max
-  target/arm: Add FEAT_MEC registers
-
- docs/system/arm/emulation.rst |  1 +
- target/arm/cpu-features.h     |  5 ++
- target/arm/cpu.h              | 15 ++++++
- target/arm/helper.c           | 98 +++++++++++++++++++++++++++++++++++
- target/arm/tcg/cpu64.c        |  1 +
- 5 files changed, 120 insertions(+)
-
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 302c24e232..8ce30ca857 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1683,6 +1683,7 @@ static inline void xpsr_write(CPUARMState *env, uint32_t val, uint32_t mask)
+ #define SCR_TRNDR             (1ULL << 40)
+ #define SCR_ENTP2             (1ULL << 41)
+ #define SCR_GPF               (1ULL << 48)
++#define SCR_MECEN             (1ULL << 49)
+ #define SCR_NSE               (1ULL << 62)
+ 
+ /* Return the current FPSCR value.  */
 -- 
 2.34.1
 
