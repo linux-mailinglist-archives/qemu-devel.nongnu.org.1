@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB687AED6DC
+	by mail.lfdr.de (Postfix) with ESMTPS id A0962AED6DA
 	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 10:15:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uW9e9-0003vE-RC; Mon, 30 Jun 2025 04:13:49 -0400
+	id 1uW9eB-0003yz-SA; Mon, 30 Jun 2025 04:13:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uW9e6-0003v2-Sx
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 04:13:46 -0400
+ id 1uW9eA-0003vd-24
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 04:13:50 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uW9e1-0008FC-DZ
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 04:13:46 -0400
+ id 1uW9e3-0008Fh-CM
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 04:13:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751271221; x=1782807221;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=kNtZV9/4wlO7pqV3WzMD6Mjh7KpcJBsVr0n4r4zy9PY=;
- b=P4oMrrGKMvRd7fw2CHj4uCHN/ovCUcOgmekS77dzdAWjFGAEvaKgAUL/
- B8RDd1SW6P9Vw3cPGwvORB08s75mGXUfZq8hzbZb1nVcGiDMJYf+BJLu+
- H1OiHtw5UErUsEc4gp1vwnSFcv9U2Z93ttM2hKeR9nj9a4of63MtDyS+v
- Lp1Rpynj/h+C7NpWpP4zlZ0yqwsTEnDXGNVh7gcF2GuJ+mCLX2+Rb77Ck
- EuX8dTi0LnJoXKVEsf0Tt7iSdM5CCYvTF8OH33PhWJSkS7o6zRctHlXCU
- n8sXGIq8g9gKcNkFql3Z6xQHjo0lkb/TBJepGpkgtzj4qLdpdMonKnNWj g==;
-X-CSE-ConnectionGUID: lvheu0rXRIq4F+LwqZjv+A==
-X-CSE-MsgGUID: xUgEzGeTTN+P42l8/nPTGQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11479"; a="53637391"
-X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="53637391"
+ t=1751271223; x=1782807223;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=huJnZK6/VFdFTS+MtsTCfXogRK27ANF61hUOOHmIvh0=;
+ b=GHKUw2Jf1g+xa8govwK9PHBcbtiflgFf5efEI+zSxNSsMW3ty61sypMb
+ Az4mKeJtT9u6cFTXB+UPX68q87GXpj8vQicwX5CpzXQAVgf5UGD30UQi0
+ brn6CH1XeRyOJusYS+tV4W9bBnP55FTgB7Eo0oSJ+9mpoNY7mZ9USHOtF
+ dr6966EIhFZ6vrvrTNQyy3KQf2ljdp61VGTp+jKplzkQj+zby1SzLoejH
+ envGmQf1Mte4gZEec8u/eRcIJK+6+lULPfbU18xyOOjvYf7i7oXg2S6Ap
+ BIVJfwJ6M7r6Vyh3qzqSObn+UpnwpMWOP7X0Z21jUDUHk7XrrwANe9IY/ g==;
+X-CSE-ConnectionGUID: 9DaoTr13QQe61R1YEw95CA==
+X-CSE-MsgGUID: hDs72dupTN+2eW0jbHcHnw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11479"; a="53637397"
+X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="53637397"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2025 01:13:36 -0700
-X-CSE-ConnectionGUID: 0OplDfk6RQW8QVB8mJbI7Q==
-X-CSE-MsgGUID: DIw/qoHeTg63ZwxRSpxmgQ==
+ 30 Jun 2025 01:13:37 -0700
+X-CSE-ConnectionGUID: KrpeSJEhTNqnmt//GeESdA==
+X-CSE-MsgGUID: qNkGmzTSTTaNHEGwCXxPzw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="152777280"
+X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="152777285"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa010.jf.intel.com with ESMTP; 30 Jun 2025 01:13:34 -0700
+ by orviesa010.jf.intel.com with ESMTP; 30 Jun 2025 01:13:36 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
  xiaoyao.li@intel.com
-Subject: [PATCH 0/4] i386: Misc cleanup and fix  
-Date: Mon, 30 Jun 2025 16:06:06 +0800
-Message-ID: <20250630080610.3151956-1-xiaoyao.li@intel.com>
+Subject: [PATCH 1/4] i386/cpu: Use CPUID_MODEL_ID_SZ instead of hardcoded 48
+Date: Mon, 30 Jun 2025 16:06:07 +0800
+Message-ID: <20250630080610.3151956-2-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250630080610.3151956-1-xiaoyao.li@intel.com>
+References: <20250630080610.3151956-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.15; envelope-from=xiaoyao.li@intel.com;
@@ -79,26 +81,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a misc sereis.
+There is already the MACRO CPUID_MODEL_ID_SZ defined in QEMU. Use it to
+replace all the hardcoded 48.
 
-The first 3 patches are cleanup and they are simple.
+Opportunistically fix the indentation of CPUID_VENDOR_SZ.
 
-The last one is cleanup as well as a fix.
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+---
+ target/i386/cpu.c      | 8 ++++----
+ target/i386/cpu.h      | 3 ++-
+ target/i386/host-cpu.c | 1 -
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-Xiaoyao Li (4):
-  i386/cpu: Use CPUID_MODEL_ID_SZ instead of hardcoded 48
-  i386: Cleanup the usage of CPUID_VENDOR_INTEL_1
-  i386/kvm-cpu: Fix the indentation inside kvm_cpu_realizefn()
-  i386/cpu: Unify family, model and stepping calculation for x86 CPU
-
- target/i386/cpu.c                | 22 +++++++++------------
- target/i386/cpu.h                | 33 +++++++++++++++++++++++++++++++-
- target/i386/host-cpu.c           |  7 +++----
- target/i386/kvm/kvm-cpu.c        |  2 +-
- target/i386/kvm/kvm.c            |  2 +-
- target/i386/tcg/decode-new.c.inc |  4 ++--
- 6 files changed, 48 insertions(+), 22 deletions(-)
-
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0d35e95430fe..d80e57d0cc0d 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6468,11 +6468,11 @@ static char *x86_cpuid_get_model_id(Object *obj, Error **errp)
+     char *value;
+     int i;
+ 
+-    value = g_malloc(48 + 1);
+-    for (i = 0; i < 48; i++) {
++    value = g_malloc(CPUID_MODEL_ID_SZ + 1);
++    for (i = 0; i < CPUID_MODEL_ID_SZ; i++) {
+         value[i] = env->cpuid_model[i >> 2] >> (8 * (i & 3));
+     }
+-    value[48] = '\0';
++    value[CPUID_MODEL_ID_SZ] = '\0';
+     return value;
+ }
+ 
+@@ -6487,7 +6487,7 @@ static void x86_cpuid_set_model_id(Object *obj, const char *model_id,
+         model_id = "";
+     }
+     len = strlen(model_id);
+-    memset(env->cpuid_model, 0, 48);
++    memset(env->cpuid_model, 0, CPUID_MODEL_ID_SZ);
+     for (i = 0; i < 48; i++) {
+         if (i >= len) {
+             c = '\0';
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 51e10139dfdf..b83c521d9fbb 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1159,7 +1159,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ /* PMM enabled */
+ #define CPUID_C000_0001_EDX_PMM_EN             (1U << 13)
+ 
+-#define CPUID_VENDOR_SZ      12
++#define CPUID_VENDOR_SZ     12
++#define CPUID_MODEL_ID_SZ   48
+ 
+ #define CPUID_VENDOR_INTEL_1 0x756e6547 /* "Genu" */
+ #define CPUID_VENDOR_INTEL_2 0x49656e69 /* "ineI" */
+diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
+index 7512567298bc..16c236478e2b 100644
+--- a/target/i386/host-cpu.c
++++ b/target/i386/host-cpu.c
+@@ -80,7 +80,6 @@ bool host_cpu_realizefn(CPUState *cs, Error **errp)
+     return true;
+ }
+ 
+-#define CPUID_MODEL_ID_SZ 48
+ /**
+  * cpu_x86_fill_model_id:
+  * Get CPUID model ID string from host CPU.
 -- 
 2.43.0
 
