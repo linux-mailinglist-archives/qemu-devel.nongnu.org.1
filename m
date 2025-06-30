@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF209AED6DB
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 10:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28ED3AED6DD
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 10:15:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uW9eD-00041w-Ow; Mon, 30 Jun 2025 04:13:53 -0400
+	id 1uW9eD-00040W-2f; Mon, 30 Jun 2025 04:13:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uW9eB-0003yy-0P
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 04:13:51 -0400
+ id 1uW9eA-0003wc-Dv
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 04:13:50 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uW9e4-0008Fu-PQ
+ id 1uW9e7-0008FC-8H
  for qemu-devel@nongnu.org; Mon, 30 Jun 2025 04:13:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751271225; x=1782807225;
+ t=1751271227; x=1782807227;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yQgKgn2Ex9EvBdQ8riuYt22CkUp1eI23OAyzDnMSZkw=;
- b=ZtSYHAXxnx39IJpKdDPVmGxI1BeR839YhdRex09+/UY3pxZEGEWOjUkO
- wDQ6/UgPdk3eSRd06P5nfLmcg0XV0aA9eHPEvWq/hMMe9E3uCc9HUWURV
- ZAXnIQvduio8HftKVenmfMr+A1wp0k+G2kqyBkTL1RgWCLnQNrCycaCvn
- WGjWo1Jiu5vouIHHwxf5d4OaI+JU2HX+IQSqSXuwMMtzkmpvQAbVk206m
- cZRkUiBgp0i4Vj9q6MZf7yIpIJItKjaWn6ftwOPWr8eBxxrl7PZxzQXY7
- OoEwr+l4PO64lLYTgdzaHT0dvT3C7xFHOifbvJpws6FimHMQkfDt53uh8 A==;
-X-CSE-ConnectionGUID: m8SeCVJyQvaU8B/KY88gtQ==
-X-CSE-MsgGUID: 9uJZh4nuSheX2Wp27vLlIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11479"; a="53637401"
-X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="53637401"
+ bh=nCRHuUYhe42P6UuwE38kZ1hSX8NACPLufNZ+MC6x+3s=;
+ b=FSdyjsypCD9fwhcN82UWAvZLEpO0NM2QSPOCWmlmGWx2k6VVTz5iu/wi
+ KM5qRhWGy+TAESA/BQ0u9IdBwvCT6Bdn9LTy1/7nS1EJI5mV0/OtQwz+x
+ R6wEx1KzVVpxAY/1ctp0CWXdopLL8pdd8aT0CyaYnX3iAXUHU0e9EnOtn
+ R5QYkxgsrTvVD2yoW/pYMR0iC/UIRKbNz7MzOljgfhZfZ0cvtweLmEV+F
+ sLie6TjHRAtSgcc6sBWc3+K3gCKCdnSDDWv2Let8RN41ox2ZXPd1Kkscb
+ sHC6IooBuzuroHuxGKk8s2vvN2RZ5IrMDS2oCg+H/rYmM/ZMhLc5Z0hoo w==;
+X-CSE-ConnectionGUID: 8WPZonCHRDOZdnXe+A3vzw==
+X-CSE-MsgGUID: 7GKb5hkBQeuQCeZfC25wRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11479"; a="53637405"
+X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="53637405"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2025 01:13:39 -0700
-X-CSE-ConnectionGUID: TF7/saBLTPmbty4ccvWQ6g==
-X-CSE-MsgGUID: VmayMKPESu+teMMwxiCvqg==
+ 30 Jun 2025 01:13:41 -0700
+X-CSE-ConnectionGUID: otzw2sJqRgSlhlujdF7OSA==
+X-CSE-MsgGUID: m44nY6AmR6Wkl0r5QVa0vA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="152777291"
+X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="152777295"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa010.jf.intel.com with ESMTP; 30 Jun 2025 01:13:38 -0700
+ by orviesa010.jf.intel.com with ESMTP; 30 Jun 2025 01:13:39 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
  xiaoyao.li@intel.com
-Subject: [PATCH 2/4] i386: Cleanup the usage of CPUID_VENDOR_INTEL_1
-Date: Mon, 30 Jun 2025 16:06:08 +0800
-Message-ID: <20250630080610.3151956-3-xiaoyao.li@intel.com>
+Subject: [PATCH 3/4] i386/kvm-cpu: Fix the indentation inside
+ kvm_cpu_realizefn()
+Date: Mon, 30 Jun 2025 16:06:09 +0800
+Message-ID: <20250630080610.3151956-4-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250630080610.3151956-1-xiaoyao.li@intel.com>
 References: <20250630080610.3151956-1-xiaoyao.li@intel.com>
@@ -81,49 +82,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are code using "env->cpuid_vendor1 == CPUID_VENDOR_INTEL_1" to
-check if it is Intel vcpu. Cleanup them to just use IS_INTEL_CPU()
+The indentation of one of the } inside kvm_cpu_realizefn() isn'f
+correct. fix it.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/cpu.c                | 2 +-
- target/i386/tcg/decode-new.c.inc | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ target/i386/kvm/kvm-cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index d80e57d0cc0d..83858358f5ec 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7760,7 +7760,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         *ecx = env->features[FEAT_8000_0001_ECX];
-         *edx = env->features[FEAT_8000_0001_EDX];
- 
--        if (tcg_enabled() && env->cpuid_vendor1 == CPUID_VENDOR_INTEL_1 &&
-+        if (tcg_enabled() && IS_INTEL_CPU(env) &&
-             !(env->hflags & HF_LMA_MASK)) {
-             *edx &= ~CPUID_EXT2_SYSCALL;
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 16bde4de01e5..6df92dc6d703 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -72,7 +72,7 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+             if (env->features[FEAT_1_ECX] & CPUID_EXT_MONITOR) {
+                 host_cpuid(5, 0, &cpu->mwait.eax, &cpu->mwait.ebx,
+                            &cpu->mwait.ecx, &cpu->mwait.edx);
+-	    }
++            }
          }
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 55216e0d2490..853b1c8bf95e 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -2722,14 +2722,14 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
-             if (decode.e.check & X86_CHECK_i64) {
-                 goto illegal_op;
-             }
--            if ((decode.e.check & X86_CHECK_i64_amd) && env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1) {
-+            if ((decode.e.check & X86_CHECK_i64_amd) && !IS_INTEL_CPU(env)) {
-                 goto illegal_op;
-             }
-         } else {
-             if (decode.e.check & X86_CHECK_o64) {
-                 goto illegal_op;
-             }
--            if ((decode.e.check & X86_CHECK_o64_intel) && env->cpuid_vendor1 == CPUID_VENDOR_INTEL_1) {
-+            if ((decode.e.check & X86_CHECK_o64_intel) && IS_INTEL_CPU(env)) {
-                 goto illegal_op;
-             }
-         }
+         if (cpu->ucode_rev == 0) {
+             cpu->ucode_rev =
 -- 
 2.43.0
 
