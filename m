@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C66FAEE523
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 19:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6305AEE4C9
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 18:38:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWHrM-0001r9-LD; Mon, 30 Jun 2025 13:00:00 -0400
+	id 1uWHVE-0000tj-Ne; Mon, 30 Jun 2025 12:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andi@complang.tuwien.ac.at>)
- id 1uWHN5-00084j-NA
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 12:28:45 -0400
-Received: from secgw2.intern.tuwien.ac.at ([2001:629:1005:30::72])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uWHV8-0000t2-5J
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 12:37:02 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andi@complang.tuwien.ac.at>)
- id 1uWHMy-00073k-77
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 12:28:43 -0400
-Received: from Kiteworks (kwmta2.intern.tuwien.ac.at [128.130.30.92])
- by secgw2.intern.tuwien.ac.at (8.14.7/8.14.7) with ESMTP id 55UGSPpa005482;
- Mon, 30 Jun 2025 18:28:25 +0200
-Received: from secgw2.intern.tuwien.ac.at ([128.130.30.72])
- by totemomail.intern.tuwien.ac.at (Totemo SMTP Server) with SMTP ID 982;
- Mon, 30 Jun 2025 16:28:24 +0000 (GMT)
-Received: from edge19a.intern.tuwien.ac.at (edge19a.intern.tuwien.ac.at
- [IPv6:2001:629:1005:30::45])
- by secgw2.intern.tuwien.ac.at (8.14.7/8.14.7) with ESMTP id 55UGSOBS005467
- (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL); 
- Mon, 30 Jun 2025 18:28:24 +0200
-Received: from mbx19b.intern.tuwien.ac.at (2001:629:1005:30::82) by
- edge19a.intern.tuwien.ac.at (2001:629:1005:30::45) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 30 Jun 2025 18:28:24 +0200
-Received: from smtpclient.apple (2001:4bc9:80b:6944:48da:4807:fb25:a8f9) by
- mbx19b.intern.tuwien.ac.at (2001:629:1005:30::82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 30 Jun 2025 18:28:23 +0200
-From: Andreas Krall <andi@complang.tuwien.ac.at>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_F1A87DAE-AFC8-4DEE-8868-E22A1AD0F3D4"
-MIME-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.10\))
-Subject: [ANNOUNCE] OpenVADL 0.2.0
-Message-ID: <3728A3AB-1D9A-4D0C-8778-70AE2B01A0D1@complang.tuwien.ac.at>
-Date: Mon, 30 Jun 2025 18:28:23 +0200
-CC: "Zottele, Johannes" <e11911133@student.tuwien.ac.at>
-To: <qemu-devel@nongnu.org>
-X-ClientProxiedBy: mbx19a.intern.tuwien.ac.at (2001:629:1005:30::81) To
- mbx19b.intern.tuwien.ac.at (2001:629:1005:30::82)
-Received-SPF: pass client-ip=2001:629:1005:30::72;
- envelope-from=andi@complang.tuwien.ac.at; helo=secgw2.intern.tuwien.ac.at
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
- SPF_HELO_PASS=-0.001, T_KAM_HTML_FONT_INVALID=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uWHV3-0007wl-Ps
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 12:37:01 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bWBYy2phTz6L5RG;
+ Tue,  1 Jul 2025 00:33:58 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 5E9951402F0;
+ Tue,  1 Jul 2025 00:36:46 +0800 (CST)
+Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 30 Jun
+ 2025 18:36:45 +0200
+Date: Mon, 30 Jun 2025 17:36:44 +0100
+To: <anisa.su887@gmail.com>
+CC: <qemu-devel@nongnu.org>, <nifan.cxl@gmail.com>, <dave@stgolabs.net>,
+ <alok.a.tiwari@oracle.com>, <linux-cxl@vger.kernel.org>, Anisa Su
+ <anisa.su@samsung.com>, Fan Ni <fan.ni@samsung.com>
+Subject: Re: [QEMU PATCH v4 03/10] cxl-mailbox-utils: 0x5601 - FMAPI Get
+ Host Region Config
+Message-ID: <20250630173644.00000c87@huawei.com>
+In-Reply-To: <20250626222743.1766404-4-anisa.su887@gmail.com>
+References: <20250626222743.1766404-1-anisa.su887@gmail.com>
+ <20250626222743.1766404-4-anisa.su887@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 30 Jun 2025 12:59:56 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,180 +69,158 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Apple-Mail=_F1A87DAE-AFC8-4DEE-8868-E22A1AD0F3D4
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+On Thu, 26 Jun 2025 22:23:26 +0000
+anisa.su887@gmail.com wrote:
 
-Generation of a QEMU based instruction set simulator from a processor =
-description in OpenVADL (SAMOS=E2=80=9925)
+> From: Anisa Su <anisa.su@samsung.com>
+> 
+> FM DCD Management command 0x5601 implemented per CXL r3.2 Spec Section 7.6.7.6.2
+> 
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> Signed-off-by: Anisa Su <anisa.su@samsung.com>
+> ---
+>  hw/cxl/cxl-mailbox-utils.c | 103 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 103 insertions(+)
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index 9a0f8bd2fc..7f0709a27f 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -120,6 +120,7 @@ enum {
+>          #define MANAGEMENT_COMMAND     0x0
+>      FMAPI_DCD_MGMT = 0x56,
+>          #define GET_DCD_INFO    0x0
+> +        #define GET_HOST_DC_REGION_CONFIG   0x1
+>  };
+>  
+>  /* CCI Message Format CXL r3.1 Figure 7-19 */
+> @@ -3286,6 +3287,106 @@ static CXLRetCode cmd_fm_get_dcd_info(const struct cxl_cmd *cmd,
+>      return CXL_MBOX_SUCCESS;
+>  }
+>  
+> +static void build_dsmas_flags(uint8_t *flags, CXLDCRegion *region)
+> +{
+> +    *flags = 0;
+> +
+> +    if (region->nonvolatile) {
+> +        *flags |= BIT(CXL_DSMAS_FLAGS_NONVOLATILE);
+> +    }
+> +    if (region->sharable) {
+> +        *flags |= BIT(CXL_DSMAS_FLAGS_SHARABLE);
+> +    }
+> +    if (region->hw_managed_coherency) {
+> +        *flags |= BIT(CXL_DSMAS_FLAGS_HW_MANAGED_COHERENCY);
+> +    }
+> +    if (region->ic_specific_dc_management) {
+> +        *flags |= BIT(CXL_DSMAS_FLAGS_IC_SPECIFIC_DC_MANAGEMENT);
+> +    }
+> +    if (region->rdonly) {
+> +        *flags |= BIT(CXL_DSMAS_FLAGS_RDONLY);
+> +    }
+> +}
+> +
+> +/* CXL r3.2 section 7.6.7.6.2: Get Host DC Region Configuration (Opcode 5601h) */
+Trivial but this line annoys checkpatch.pl
 
-QEMU (Quick EMUlator) is a generic and open source machine emulator and =
-virtualizer which employs
-Dynamic Binary Translation (DBT) to emulate a guest architecture on a =
-host architecture. OpenVADL is
-an open source implementation of the Vienna Architecture Description =
-Language (VADL), a processor
-description language developed for rapid design space exploration in the =
-area of processor design.
-OpenVADL automatically generates various essential artifacts. One such =
-artifact is the Instruction Set
-Simulator (ISS), which enables the execution of programs compiled for =
-the described processor on
-different host systems. To achieve high-performance simulation with =
-broad platform support,
-OpenVADL's ISS generator produces a QEMU frontend, seamlessly =
-integrating into the QEMU system.
-This integration leverages QEMU's DBT, along with built-in features such =
-as GDB debugging. Optimized
-generation of QEMU's TCG intermediate representation ensures competitive =
-performance, even when
-compared to manually written and optimized frontends. Benchmark results =
-show that the
-OpenVADL-generated QEMU based ISS achieves a speedup of up to 1.77 =
-compared to the official
-handwritten QEMU frontend for the RISC-V RV64IM instruction set =
-architecture.
+I'll break it up as.
+/*
+ * CXL r3.2 section 7.6.7.6.2:
+ * Get Host DC Region Configuration (Opcode 5601h)
+ */
+> +static CXLRetCode cmd_fm_get_host_dc_region_config(const struct cxl_cmd *cmd,
+> +                                                   uint8_t *payload_in,
+> +                                                   size_t len_in,
+> +                                                   uint8_t *payload_out,
+> +                                                   size_t *len_out,
+> +                                                   CXLCCI *cci)
+> +{
+> +    struct {
+> +        uint16_t host_id;
+> +        uint8_t region_cnt;
+> +        uint8_t start_rid;
+> +    } QEMU_PACKED *in = (void *)payload_in;
+> +    struct {
+> +        uint16_t host_id;
+> +        uint8_t num_regions;
+> +        uint8_t regions_returned;
+> +        struct {
+> +            uint64_t base;
+> +            uint64_t decode_len;
+> +            uint64_t region_len;
+> +            uint64_t block_size;
+> +            uint8_t flags;
+> +            uint8_t rsvd1[3];
+> +            uint8_t sanitize;
+> +            uint8_t rsvd2[3];
+> +        } QEMU_PACKED records[];
+> +    } QEMU_PACKED *out = (void *)payload_out;
+> +    struct {
+> +        uint32_t num_extents_supported;
+> +        uint32_t num_extents_available;
+> +        uint32_t num_tags_supported;
+> +        uint32_t num_tags_available;
+> +    } QEMU_PACKED *extra_out;
+> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+> +    uint16_t record_count, out_pl_len, i;
+> +
+> +    if (in->start_rid >= ct3d->dc.num_regions) {
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+> +    record_count = MIN(ct3d->dc.num_regions - in->start_rid, in->region_cnt);
+> +
+> +    out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
+> +    extra_out = (void *)out + out_pl_len;
+> +    out_pl_len += sizeof(*extra_out);
+> +
+> +    assert(out_pl_len <= CXL_MAILBOX_MAX_PAYLOAD_SIZE);
+> +
+> +    stw_le_p(&out->host_id, 0);
+> +    out->num_regions = ct3d->dc.num_regions;
+> +    out->regions_returned = record_count;
+> +
+> +    for (i = 0; i < record_count; i++) {
+> +        stq_le_p(&out->records[i].base,
+> +                 ct3d->dc.regions[in->start_rid + i].base);
+> +        stq_le_p(&out->records[i].decode_len,
+> +                 ct3d->dc.regions[in->start_rid + i].decode_len /
+> +                 CXL_CAPACITY_MULTIPLIER);
+> +        stq_le_p(&out->records[i].region_len,
+> +                 ct3d->dc.regions[in->start_rid + i].len);
+> +        stq_le_p(&out->records[i].block_size,
+> +                 ct3d->dc.regions[in->start_rid + i].block_size);
+> +        build_dsmas_flags(&out->records[i].flags,
+> +                          &ct3d->dc.regions[in->start_rid + i]);
+> +        /* Sanitize is bit 0 of flags. */
+> +        out->records[i].sanitize =
+> +            ct3d->dc.regions[in->start_rid + i].flags & BIT(0);
+> +    }
+> +
+> +    stl_le_p(&extra_out->num_extents_supported, CXL_NUM_EXTENTS_SUPPORTED);
+> +    stl_le_p(&extra_out->num_extents_available, CXL_NUM_EXTENTS_SUPPORTED -
+> +             ct3d->dc.total_extent_count);
+> +    stl_le_p(&extra_out->num_tags_supported, CXL_NUM_TAGS_SUPPORTED);
+> +    stl_le_p(&extra_out->num_tags_available, CXL_NUM_TAGS_SUPPORTED);
+> +
+> +    *len_out = out_pl_len;
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+>  static const struct cxl_cmd cxl_cmd_set[256][256] = {
+>      [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
+>          cmd_infostat_bg_op_abort, 0, 0 },
+> @@ -3402,6 +3503,8 @@ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
+>  static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
+>      [FMAPI_DCD_MGMT][GET_DCD_INFO] = { "GET_DCD_INFO",
+>          cmd_fm_get_dcd_info, 0, 0 },
+> +    [FMAPI_DCD_MGMT][GET_HOST_DC_REGION_CONFIG] = { "GET_HOST_DC_REGION_CONFIG",
+> +        cmd_fm_get_host_dc_region_config, 4, 0 },
+>  };
+>  
+>  /*
 
-Full article: =
-https://www.complang.tuwien.ac.at/vadl/papers/samos25Acknowledge.pdf
-GitHub: https://github.com/OpenVADL/openvadl
-Information: https://www.openvadl.org <https://www.openvadl.org/>
-
-In OpenVADL version 0.2.0 a QEMU frontend for the integer subset of =
-RISC-V RV**IM and AArch64
-frontend can be automatically generated from a VADL specification. =
-Limited compiler generation for
-RISC-V is available, for AArch64 it is work in progress. Power and AMD64 =
-is work in progress.
-Specification of tensor instructions is work in progress. Floating point =
-support is not available.
-Hardware generation is work in progress.
-
-Andreas
-
---=20
-andi@complang.tuwien.ac.at <mailto:andi@complang.tuwien.ac.at>      =
-Andreas Krall
-www.complang.tuwien.ac.at/andi <http://www.complang.tuwien.ac.at/andi>  =
-Compilers and Languages, TU Wien
-tel: (+431) 58801/18511         Argentinierstr. 8/4/194-5
-fax: (+431) 58801/18598         A-1040 Wien    AUSTRIA    EUROPE
-
-
-
-
-
-
-
---Apple-Mail=_F1A87DAE-AFC8-4DEE-8868-E22A1AD0F3D4
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset="utf-8"
-
-<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; =
-charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;" class=3D""><div =
-class=3D"">
-	=09
-=09
-=09
-		<div class=3D"page" title=3D"Page 1">
-			<div class=3D"layoutArea">
-				<div class=3D"column"><p class=3D""><b =
-class=3D"">Generation of a QEMU based instruction set
-simulator from a processor description in
-OpenVADL</b>&nbsp;(SAMOS=E2=80=9925)</p>
-				</div>
-			</div>
-		</div></div><div class=3D""><div class=3D"">QEMU (Quick =
-EMUlator) is a generic and open source machine emulator and virtualizer =
-which employs</div><div class=3D"">Dynamic Binary Translation (DBT) to =
-emulate a guest architecture on a host architecture. OpenVADL =
-is</div><div class=3D"">an open source implementation of the Vienna =
-Architecture Description Language (VADL), a processor</div><div =
-class=3D"">description language developed for rapid design space =
-exploration in the area of processor design.</div><div class=3D"">OpenVADL=
- automatically generates various essential artifacts. One such artifact =
-is the Instruction Set</div><div class=3D"">Simulator (ISS), which =
-enables the execution of programs compiled for the described processor =
-on</div><div class=3D"">different host systems. To achieve =
-high-performance simulation with broad platform support,</div><div =
-class=3D"">OpenVADL's ISS generator produces a QEMU frontend, seamlessly =
-integrating into the QEMU system.</div><div class=3D"">This integration =
-leverages QEMU's DBT, along with built-in features such as GDB =
-debugging. Optimized</div><div class=3D"">generation of QEMU's TCG =
-intermediate representation ensures competitive performance, even =
-when</div><div class=3D"">compared to manually written and optimized =
-frontends. Benchmark results show that the</div><div =
-class=3D"">OpenVADL-generated QEMU based ISS achieves a speedup of up to =
-1.77 compared to the official</div><div class=3D"">handwritten QEMU =
-frontend for the RISC-V RV64IM instruction set =
-architecture.</div></div><div class=3D""><br class=3D""></div><div =
-class=3D"">Full article:&nbsp;<a =
-href=3D"https://www.complang.tuwien.ac.at/vadl/papers/samos25Acknowledge.p=
-df" =
-class=3D"">https://www.complang.tuwien.ac.at/vadl/papers/samos25Acknowledg=
-e.pdf</a></div><div class=3D"">GitHub:&nbsp;<a =
-href=3D"https://github.com/OpenVADL/openvadl" =
-class=3D"">https://github.com/OpenVADL/openvadl</a></div><div =
-class=3D"">Information:&nbsp;<a rel=3D"nofollow" itemprop=3D"url" =
-class=3D"Link--primary" title=3D"https://www.openvadl.org" =
-href=3D"https://www.openvadl.org" style=3D"box-sizing: border-box; =
-text-decoration: none; caret-color: rgb(31, 35, 40); white-space: =
-nowrap; color: var(--fgColor-default) =
-!important;">https://www.openvadl.org</a></div><div class=3D""><br =
-class=3D""></div><div class=3D"">In OpenVADL version 0.2.0 a QEMU =
-frontend for the integer subset of RISC-V RV**IM and AArch64</div><div =
-class=3D"">frontend can be automatically generated from a VADL =
-specification. Limited compiler generation for</div><div class=3D"">RISC-V=
- is available, for AArch64 it is work in progress. Power and AMD64 is =
-work in progress.</div><div class=3D"">Specification of tensor =
-instructions is work in progress. Floating point support is not =
-available.</div><div class=3D"">Hardware generation is work in =
-progress.</div><div class=3D""><br class=3D""></div><div =
-class=3D"">Andreas</div><div class=3D""><br class=3D""></div><div =
-class=3D"">
-<div style=3D"color: rgb(0, 0, 0); letter-spacing: normal; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; word-wrap: =
-break-word; -webkit-nbsp-mode: space; line-break: after-white-space;" =
-class=3D""><div style=3D"color: rgb(0, 0, 0); letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; word-wrap: =
-break-word; -webkit-nbsp-mode: space; line-break: after-white-space;" =
-class=3D""><span class=3D"Apple-style-span" style=3D"border-collapse: =
-separate; color: rgb(0, 0, 0); font-family: Helvetica; font-style: =
-normal; font-variant-ligatures: normal; font-variant-caps: normal; =
-font-variant-east-asian: normal; font-variant-position: normal; =
-font-weight: normal; letter-spacing: normal; line-height: normal; =
-orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; border-spacing: =
-0px; -webkit-text-decorations-in-effect: none; =
--webkit-text-stroke-width: 0px;"><div style=3D"word-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;" class=3D""><div =
-class=3D""><div class=3D""><div class=3D""><div class=3D""><font =
-class=3D"Apple-style-span" face=3D"Monaco">--&nbsp;<br class=3D""><a =
-href=3D"mailto:andi@complang.tuwien.ac.at" =
-class=3D"">andi@complang.tuwien.ac.at</a>&nbsp; &nbsp; =
-&nbsp;&nbsp;Andreas Krall<br class=3D""><a =
-href=3D"http://www.complang.tuwien.ac.at/andi" =
-class=3D"">www.complang.tuwien.ac.at/andi</a>&nbsp;&nbsp;Compilers and =
-Languages, TU Wien<br class=3D"">tel: (+431) 58801/18511 &nbsp; &nbsp; =
-&nbsp; &nbsp;&nbsp;Argentinierstr.&nbsp;</font><span style=3D"font-family:=
- Monaco;" class=3D"">8/4/194-5</span><font class=3D"Apple-style-span" =
-face=3D"Monaco"><br class=3D"">fax: (+431) 58801/18598 &nbsp; &nbsp; =
-&nbsp; &nbsp;&nbsp;A-1040 Wien &nbsp; &nbsp;AUSTRIA &nbsp; =
-&nbsp;EUROPE<br class=3D""></font></div></div></div></div><div =
-class=3D""><font class=3D"Apple-style-span" face=3D"Monaco"><br =
-class=3D""></font></div></div></span><br =
-class=3D"Apple-interchange-newline"></div><br =
-class=3D"Apple-interchange-newline"></div><br =
-class=3D"Apple-interchange-newline"><br =
-class=3D"Apple-interchange-newline">
-</div>
-<br class=3D""></body></html>=
-
---Apple-Mail=_F1A87DAE-AFC8-4DEE-8868-E22A1AD0F3D4--
 
