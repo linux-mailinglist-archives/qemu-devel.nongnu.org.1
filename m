@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DFC3AEDB16
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 13:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAFCAEDB11
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 13:32:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWCjL-000614-U1; Mon, 30 Jun 2025 07:31:23 -0400
+	id 1uWCjE-0005yU-TL; Mon, 30 Jun 2025 07:31:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uWCiz-0005uC-Ml; Mon, 30 Jun 2025 07:31:02 -0400
+ id 1uWCis-0005t9-Gl; Mon, 30 Jun 2025 07:30:55 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uWCio-0004kI-Bu; Mon, 30 Jun 2025 07:31:00 -0400
+ id 1uWCio-0004kN-A3; Mon, 30 Jun 2025 07:30:53 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id CAAD9441F2;
- Mon, 30 Jun 2025 13:30:39 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 35BC444243;
+ Mon, 30 Jun 2025 13:30:40 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
  stefanha@redhat.com, fam@euphon.net
-Subject: [PATCH 1/4] include/block/block_int-common: document when resize
- callback is used
-Date: Mon, 30 Jun 2025 13:27:30 +0200
-Message-ID: <20250630113035.820557-2-f.ebner@proxmox.com>
+Subject: [PATCH 2/4] block: make bdrv_co_parent_cb_resize() a proper IO API
+ function
+Date: Mon, 30 Jun 2025 13:27:31 +0200
+Message-ID: <20250630113035.820557-3-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250630113035.820557-1-f.ebner@proxmox.com>
 References: <20250630113035.820557-1-f.ebner@proxmox.com>
@@ -39,7 +39,7 @@ X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -55,29 +55,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'resize' callback is only called by bdrv_parent_cb_resize() which
-is only called by bdrv_co_write_req_finish() to notify the parent(s)
-that the child was resized.
+In preparation for calling it via the bdrv_child_cb_resize() callback
+that will be added by the next commit. Rename it to include the "_co_"
+part while at it.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- include/block/block_int-common.h | 3 +++
- 1 file changed, 3 insertions(+)
+ block/io.c                   | 9 +++------
+ include/block/block_int-io.h | 6 ++++++
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 925a3e7353..692a9696d1 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -1020,6 +1020,9 @@ struct BdrvChildClass {
-      * the I/O API.
-      */
+diff --git a/block/io.c b/block/io.c
+index ac5c7174f6..2e153364a9 100644
+--- a/block/io.c
++++ b/block/io.c
+@@ -46,9 +46,6 @@
+ /* Maximum read size for checking if data reads as zero, in bytes */
+ #define MAX_ZERO_CHECK_BUFFER (128 * KiB)
  
-+    /*
-+     * Notifies the parent that the child was resized.
-+     */
-     void (*resize)(BdrvChild *child);
+-static void coroutine_fn GRAPH_RDLOCK
+-bdrv_parent_cb_resize(BlockDriverState *bs);
+-
+ static int coroutine_fn bdrv_co_do_pwrite_zeroes(BlockDriverState *bs,
+     int64_t offset, int64_t bytes, BdrvRequestFlags flags);
  
-     /*
+@@ -2041,7 +2038,7 @@ bdrv_co_write_req_finish(BdrvChild *child, int64_t offset, int64_t bytes,
+          end_sector > bs->total_sectors) &&
+         req->type != BDRV_TRACKED_DISCARD) {
+         bs->total_sectors = end_sector;
+-        bdrv_parent_cb_resize(bs);
++        bdrv_co_parent_cb_resize(bs);
+         bdrv_dirty_bitmap_truncate(bs, end_sector << BDRV_SECTOR_BITS);
+     }
+     if (req->bytes) {
+@@ -3573,11 +3570,11 @@ int coroutine_fn bdrv_co_copy_range(BdrvChild *src, int64_t src_offset,
+                                    bytes, read_flags, write_flags);
+ }
+ 
+-static void coroutine_fn GRAPH_RDLOCK
+-bdrv_parent_cb_resize(BlockDriverState *bs)
++void coroutine_fn bdrv_co_parent_cb_resize(BlockDriverState *bs)
+ {
+     BdrvChild *c;
+ 
++    IO_CODE();
+     assert_bdrv_graph_readable();
+ 
+     QLIST_FOREACH(c, &bs->parents, next_parent) {
+diff --git a/include/block/block_int-io.h b/include/block/block_int-io.h
+index 4f94eb3c5a..ed8b5657d6 100644
+--- a/include/block/block_int-io.h
++++ b/include/block/block_int-io.h
+@@ -191,4 +191,10 @@ void bdrv_bsc_invalidate_range(BlockDriverState *bs,
+  */
+ void bdrv_bsc_fill(BlockDriverState *bs, int64_t offset, int64_t bytes);
+ 
++/*
++ * Notify all parents that the size of the child changed.
++ */
++void coroutine_fn GRAPH_RDLOCK
++bdrv_co_parent_cb_resize(BlockDriverState *bs);
++
+ #endif /* BLOCK_INT_IO_H */
 -- 
 2.47.2
 
