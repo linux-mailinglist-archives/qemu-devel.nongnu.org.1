@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2B5AEDB0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 13:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1F5AEDB13
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 13:32:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWCjK-00060f-7l; Mon, 30 Jun 2025 07:31:22 -0400
+	id 1uWCjE-0005uX-5c; Mon, 30 Jun 2025 07:31:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uWCiw-0005tn-0W; Mon, 30 Jun 2025 07:30:58 -0400
+ id 1uWCir-0005sZ-Bf; Mon, 30 Jun 2025 07:30:53 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uWCio-0004kL-9n; Mon, 30 Jun 2025 07:30:57 -0400
+ id 1uWCio-0004kO-9i; Mon, 30 Jun 2025 07:30:52 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 2D44E4423D;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 76E8844212;
  Mon, 30 Jun 2025 13:30:40 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
  stefanha@redhat.com, fam@euphon.net
-Subject: [PATCH 3/4] block: implement 'resize' callback for child_of_bds class
-Date: Mon, 30 Jun 2025 13:27:32 +0200
-Message-ID: <20250630113035.820557-4-f.ebner@proxmox.com>
+Subject: [PATCH 4/4] iotests: add test for resizing a node below filters
+Date: Mon, 30 Jun 2025 13:27:33 +0200
+Message-ID: <20250630113035.820557-5-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250630113035.820557-1-f.ebner@proxmox.com>
 References: <20250630113035.820557-1-f.ebner@proxmox.com>
@@ -54,58 +54,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If a node below a filter node is resized, the size of the filter node
-is now also refreshed (recursively for filter parents).
-
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- block.c                          | 12 ++++++++++++
- include/block/block_int-common.h |  2 +-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ tests/qemu-iotests/tests/resize-below-filter  | 73 +++++++++++++++++++
+ .../tests/resize-below-filter.out             |  5 ++
+ 2 files changed, 78 insertions(+)
+ create mode 100755 tests/qemu-iotests/tests/resize-below-filter
+ create mode 100644 tests/qemu-iotests/tests/resize-below-filter.out
 
-diff --git a/block.c b/block.c
-index bfd4340b24..449f814ebe 100644
---- a/block.c
-+++ b/block.c
-@@ -1497,6 +1497,17 @@ static void GRAPH_WRLOCK bdrv_child_cb_detach(BdrvChild *child)
-     }
- }
- 
-+static void coroutine_fn GRAPH_RDLOCK bdrv_child_cb_resize(BdrvChild *child)
-+{
-+    BlockDriverState *bs = child->opaque;
+diff --git a/tests/qemu-iotests/tests/resize-below-filter b/tests/qemu-iotests/tests/resize-below-filter
+new file mode 100755
+index 0000000000..f55619cf34
+--- /dev/null
++++ b/tests/qemu-iotests/tests/resize-below-filter
+@@ -0,0 +1,73 @@
++#!/usr/bin/env python3
++# group: rw quick
++#
++# Test what happens when a node below filter nodes is resized.
++#
++# Copyright (C) Proxmox Server Solutions GmbH
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+    if (bs->drv && bs->drv->is_filter) {
-+        /* Best effort, ignore errors. */
-+        bdrv_co_refresh_total_sectors(bs, bs->total_sectors);
-+        bdrv_co_parent_cb_resize(bs);
-+    }
-+}
++import os
++import iotests
++from iotests import imgfmt, qemu_img_create, QMPTestCase
 +
- static int bdrv_child_cb_update_filename(BdrvChild *c, BlockDriverState *base,
-                                          const char *filename,
-                                          bool backing_mask_protocol,
-@@ -1529,6 +1540,7 @@ const BdrvChildClass child_of_bds = {
-     .detach          = bdrv_child_cb_detach,
-     .inactivate      = bdrv_child_cb_inactivate,
-     .change_aio_ctx  = bdrv_child_cb_change_aio_ctx,
-+    .resize          = bdrv_child_cb_resize,
-     .update_filename = bdrv_child_cb_update_filename,
-     .get_parent_aio_context = child_of_bds_get_parent_aio_context,
- };
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 692a9696d1..6670db2f85 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -1023,7 +1023,7 @@ struct BdrvChildClass {
-     /*
-      * Notifies the parent that the child was resized.
-      */
--    void (*resize)(BdrvChild *child);
-+    void GRAPH_RDLOCK_PTR (*resize)(BdrvChild *child);
- 
-     /*
-      * Returns a name that is supposedly more useful for human users than the
++image_size = 1 * 1024 * 1024
++image = os.path.join(iotests.test_dir, 'test.img')
++
++class TestResizeBelowFilter(QMPTestCase):
++    def setUp(self) -> None:
++        qemu_img_create('-f', imgfmt, image, str(image_size))
++
++        self.vm = iotests.VM()
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': imgfmt,
++            'node-name': 'node0',
++            'file': {
++                'driver': 'file',
++                'filename': image,
++            }
++        }))
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': 'compress',
++            'node-name': 'comp0',
++            'file': 'node0',
++        }))
++        self.vm.add_object('throttle-group,id=thrgr0')
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': 'throttle',
++            'node-name': 'thr0',
++            'throttle-group': 'thrgr0',
++            'file': 'comp0',
++        }))
++        self.vm.add_object('throttle-group,id=thrgr1')
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': 'throttle',
++            'node-name': 'thr1',
++            'throttle-group': 'thrgr1',
++            'file': 'node0',
++        }))
++        self.vm.launch()
++
++    def tearDown(self) -> None:
++        self.vm.shutdown()
++        os.remove(image)
++
++    def assert_size(self, size: int) -> None:
++        nodes = self.vm.qmp('query-named-block-nodes', flat=True)['return']
++        self.assertEqual(len(nodes), 5)
++        for node in nodes:
++            if node['drv'] == 'file':
++                continue
++            self.assertEqual(node['image']['virtual-size'], size)
++
++    def test_resize_below_filter(self) -> None:
++        self.assert_size(image_size)
++        self.vm.qmp('block_resize', node_name='thr0', size=2*image_size)
++        self.assert_size(2*image_size)
++        self.vm.qmp('block_resize', node_name='comp0', size=3*image_size)
++        self.assert_size(3*image_size)
++        self.vm.qmp('block_resize', node_name='node0', size=4*image_size)
++        self.assert_size(4*image_size)
++
++if __name__ == '__main__':
++    iotests.main(supported_fmts=['qcow2'], supported_protocols=['file'])
+diff --git a/tests/qemu-iotests/tests/resize-below-filter.out b/tests/qemu-iotests/tests/resize-below-filter.out
+new file mode 100644
+index 0000000000..ae1213e6f8
+--- /dev/null
++++ b/tests/qemu-iotests/tests/resize-below-filter.out
+@@ -0,0 +1,5 @@
++.
++----------------------------------------------------------------------
++Ran 1 tests
++
++OK
 -- 
 2.47.2
 
