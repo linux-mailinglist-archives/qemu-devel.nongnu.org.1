@@ -2,92 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F52AEDFB9
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 15:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3D6AEE0EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 16:36:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWEzf-00033Q-0n; Mon, 30 Jun 2025 09:56:23 -0400
+	id 1uWFaz-00037h-Db; Mon, 30 Jun 2025 10:34:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWEzd-000338-52
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 09:56:21 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWEzb-0003tW-5R
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 09:56:20 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-2d09d495c6cso772033fac.3
- for <qemu-devel@nongnu.org>; Mon, 30 Jun 2025 06:56:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751291777; x=1751896577; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=XGFOiZa0zREV29yy8MdZoT3iiirrIep9pVPiA23b/cE=;
- b=tyuJnjbyJXlckDUK8fBZ9UXDE0SGcUeq779TIdKfIx9DJ/xSQeyl+o60kUVCAQnFry
- zlMn6E2rmC4ghKlVRclQN9v76vfzW6gBdcJobb+WdE5rapphZUytoji9EG4aoSR0XID4
- 7dQg63MgD7zVayaY/NyeVLDSiPfN2OYXK4G2/6rB8nc4sKSSx/RT1LnwpgZn+9xDwX14
- DbLXupkjjLvzSjqbS7uwLnzZx4fwd+iXav+qr8kPsAqKEHH8m/dZQUay7iJTxD6dMI7t
- 3nfnNANmAb0lIZbefunmnB/+QCeDEvVgDN3Oq9HpG1roiQ3FrYSCCSyP/iRH61ra98Zu
- 2fXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751291777; x=1751896577;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XGFOiZa0zREV29yy8MdZoT3iiirrIep9pVPiA23b/cE=;
- b=lk4LVr2zBn2rxl7EFJ+QCbla4QovwD2tSPPwDLZowU23M71GMTcVrweJ+V9vJVVloo
- 0AqdX7goOWiF9Qc0dVMCsQYFqrPtYprQph6j1zV/+uxXJVh1yBgC9vIUcQfCWJMrlG2m
- A/zvHJ8ZGRoFdauexoMk7P/NSeKw2rG0hEVCKzk7g4U0ZoVFH8Hbzt+YJsJPlMm1XbpS
- wWuKXGgnZcqhzcmlYWXu/Hnls0NnndvSdNQ1+9IQ4UY3Xx6wofBzZEfnilCNntF4RenA
- KuQYUp8e0FSEROYeXna18MXDNVke7NF04r7SBFB8+LMGZSzJSBgBPWR39JrdW9rApXBc
- gBnQ==
-X-Gm-Message-State: AOJu0YxdD+z7eFakNHVoswhvvRVXVM+1SDA2GtIASJUwjk5dBhRiycyC
- btx7Gv78ac4/COYBG7YnqwJAOAlr/W2ToFDzDvRrR/rud0BAqZt4PhyXunWM046zrDCTe5tOcOL
- 3+apA
-X-Gm-Gg: ASbGnctuFukuYT4y5rVvjpREatZZVeKbkoCM08v8dLTBtySFF5uwK+qlGgySiAeT2QU
- h1QfW4FpDIhj6+c0OZGxMe7O3n+MRLYlHyIWwMGw+EzrJdSJWDQ+mGMrr9//INrUVAIEPGJgSnb
- 484dSN24RB+GhUXOiQODS3VuczwU5DI3JXo0ywNjntgTPxu0anJL2BLrB2Erpr6osUCN6Z4Ztbh
- yqJWXr9Y9WrHE//s4VlDgtPr07oJZnrSzm5aWqon/WUvX0lEWbE8wLkNgF70VqQpkX61YTd5HdB
- DtOvN/CFPdokFm97FTkc7+T3ssuJInxPOVTv/MyxASNJXtNZjSKXKTlS3Q6l8XswezeG0YGYeBu
- MR/FrvTVDxjc=
-X-Google-Smtp-Source: AGHT+IF4Ymi8lmyuZJODt19HOT4QxbGoUKoOifXKDWsaoU3kw9Or4JAsy1K8g95vTOaxSl49XSApWQ==
-X-Received: by 2002:a05:6870:d92:b0:2ea:70ad:4517 with SMTP id
- 586e51a60fabf-2efed4f4f3emr8253925fac.15.1751291777136; 
- Mon, 30 Jun 2025 06:56:17 -0700 (PDT)
-Received: from [10.25.7.25] ([187.210.107.185])
- by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-73afb02ad29sm1670694a34.29.2025.06.30.06.56.16
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Jun 2025 06:56:16 -0700 (PDT)
-Message-ID: <8141d048-42e5-4b79-a90d-0ef1857d5857@linaro.org>
-Date: Mon, 30 Jun 2025 07:56:14 -0600
+ (Exim 4.90_1) (envelope-from <alexandre.chartre@oracle.com>)
+ id 1uWEam-0004aa-8a; Mon, 30 Jun 2025 09:30:40 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alexandre.chartre@oracle.com>)
+ id 1uWEai-0008Dx-TQ; Mon, 30 Jun 2025 09:30:39 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55UDBfNE000806;
+ Mon, 30 Jun 2025 13:30:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2025-04-25; bh=B7IKr9oZj7qYdfJs4YEnvRbaGnAA3
+ CJxLzUSvOJ03p8=; b=H+qR59CNQnLQ8Tu+bWWfqwolKnh7ZTpVn4cZFE4IfpUCB
+ vRVSEaWBjW7yKY9mWh0djxXHIPdJk+r28btrkRqxqcQ7b7OPVhsF48/tS+I03358
+ AAbwaIy32c9waK7S9/nd8JVzf4JNjGbc4SlHyzkpY6747FokyRbbPtCcswWnMF4z
+ v7En7KwOajcmYcivwHEEm+uekLJpmjrwa4JcV0/87wPcX7V9IZr+Z2xdOqr9pNyN
+ +YMToBgRvb2vomDOaVis5lVdHb8iBGTCi0rWOclIP4Q9u0o8CI8hZ2z42BMQ37MM
+ OBMeJakGb2tRXo89O1DBysj1jvUjGMT/u2enVpeEA==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j80w2ghe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 30 Jun 2025 13:30:29 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 55UCEDZJ011807; Mon, 30 Jun 2025 13:30:28 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 47j6u83kwn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 30 Jun 2025 13:30:28 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55UDUSPi038390;
+ Mon, 30 Jun 2025 13:30:28 GMT
+Received: from laptop-dell-latitude7430.nl.oracle.com
+ (dhcp-10-154-171-177.vpn.oracle.com [10.154.171.177])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 47j6u83ksy-1; Mon, 30 Jun 2025 13:30:28 +0000
+From: Alexandre Chartre <alexandre.chartre@oracle.com>
+To: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com
+Cc: qemu-stable@nongnu.org, zhao1.liu@intel.com, konrad.wilk@oracle.com,
+ boris.ostrovsky@oracle.com, maciej.szmigiero@oracle.com,
+ alexandre.chartre@oracle.com
+Subject: [PATCH] i386/cpu: ARCH_CAPABILITIES should not be advertised on AMD
+Date: Mon, 30 Jun 2025 15:30:25 +0200
+Message-ID: <20250630133025.4189544-1-alexandre.chartre@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] target/arm: Allow arm_cpu_tlb_fill_align optionally
- set CPUTLBEntryFull
-To: qemu-devel@nongnu.org
-References: <20250630130937.3487-1-philmd@linaro.org>
- <20250630130937.3487-7-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250630130937.3487-7-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-30_03,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ phishscore=0
+ suspectscore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2506300110
+X-Proofpoint-GUID: 33l6VizfbN-F3TTganpPn07u3t0H-ToV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDExMCBTYWx0ZWRfXwPyU0bN7sUZI
+ yN+utnedimTWQfKlUEPLr9PpUmui/HGyjsSOoIPvcG2vc9//TQ2nLpd8OWSpKr5pzSZAF8GxUXr
+ R72BRJTfaDkgvgoe9SQNPSoPqtZL3/qNYKF5+7PYvN0UohDSsWYkAA3wisyddsuK1x2U+AWAqrG
+ U/h/yns4BomLrbvclOrXDeOQzrXE4E+3A6GpQpwY7pRqW4fjS/Vl+et8QD3TGlaZNulvwwOG3uU
+ IcyqoTzHgHZboj3gaDLQxYqfRgTrOyL9WrjP4GUt74pmvS35i7CrYPPgOxoLOfHtlGQHSC7DpNt
+ H1qA/wdHTiQVOr4cDczAyHIR6bh8cFFnhE5R4+HPDiN3lMKvCPbzAMWkud6fpUAUrgtDjDuCozp
+ IL+NeZTnhnl8FzotgB/3Ea+uk0mZKcv3Rcd8QKlPr9GcWrU4sV6dBI90AmM7mOa/CT3crkhY
+X-Authority-Analysis: v=2.4 cv=D6hHKuRj c=1 sm=1 tr=0 ts=68629175 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=12CMx0NIz8uwtlTLpWMA:9
+X-Proofpoint-ORIG-GUID: 33l6VizfbN-F3TTganpPn07u3t0H-ToV
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alexandre.chartre@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 30 Jun 2025 10:34:53 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,31 +107,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/25 07:09, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/arm/tcg/tlb_helper.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-> index 23c72a99f5c..df04ef351d1 100644
-> --- a/target/arm/tcg/tlb_helper.c
-> +++ b/target/arm/tcg/tlb_helper.c
-> @@ -349,7 +349,9 @@ bool arm_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr address,
->                                 &res, fi)) {
->           res.f.extra.arm.pte_attrs = res.cacheattrs.attrs;
->           res.f.extra.arm.shareability = res.cacheattrs.shareability;
-> -        *out = res.f;
-> +        if (out) {
-> +            *out = res.f;
-> +        }
->           return true;
->       }
->       if (probe) {
+KVM emulates the ARCH_CAPABILITIES on x86 for both Intel and AMD
+cpus, although the IA32_ARCH_CAPABILITIES MSR is an Intel-specific
+MSR and it makes no sense to emulate it on AMD.
 
-Why?  There's no other way to get the phys addr result.
-Are you only calling this for the raise-exception side effect?
+As a consequence, VMs created on AMD with qemu -cpu host and using
+KVM will advertise the ARCH_CAPABILITIES feature and provide the
+IA32_ARCH_CAPABILITIES MSR. This can cause issues (like Windows BSOD)
+as the guest OS might not expect this MSR to exist on such cpus (the
+AMD documentation specifies that ARCH_CAPABILITIES feature and MSR
+are not defined on the AMD architecture).
 
+A fix was proposed in KVM code, however KVM maintainers don't want to
+change this behavior that exists for 6+ years and suggest changes to be
+done in qemu instead.
 
-r~
+So this commit changes the behavior in qemu so that ARCH_CAPABILITIES
+is not provided by default on AMD cpus when the hypervisor emulates it,
+but it can still be provided by explicitly setting arch-capabilities=on.
+
+Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+---
+ target/i386/cpu.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0d35e95430..7e136c48df 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -8324,6 +8324,20 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+         }
+     }
+ 
++    /*
++     * For years, KVM has inadvertently emulated the ARCH_CAPABILITIES
++     * MSR on AMD although this is an Intel-specific MSR; and KVM will
++     * continue doing so to not change its ABI for existing setups.
++     *
++     * So ensure that the ARCH_CAPABILITIES MSR is disabled on AMD cpus
++     * to prevent providing a cpu with an MSR which is not supposed to
++     * be there, unless it was explicitly requested by the user.
++     */
++    if (IS_AMD_CPU(env) &&
++        !(env->user_features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
++        env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
++    }
++
+     if (x86_threads_per_pkg(&env->topo_info) > 1) {
+         env->features[FEAT_1_EDX] |= CPUID_HT;
+ 
+-- 
+2.43.5
+
 
