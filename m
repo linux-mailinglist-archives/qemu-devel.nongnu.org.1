@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF216AEE7EB
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 22:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B31AEE7F5
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 22:05:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWKgb-0005x6-1L; Mon, 30 Jun 2025 16:01:05 -0400
+	id 1uWKgX-0005gH-BK; Mon, 30 Jun 2025 16:01:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKgU-0005Ys-Be
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 16:00:58 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKgN-0005P3-O9
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 16:00:52 -0400
 Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKgR-0007p3-RJ
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 16:00:57 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKgL-0007ns-A6
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 16:00:51 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2FEBB21163;
- Mon, 30 Jun 2025 20:00:12 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 9DC3121169;
+ Mon, 30 Jun 2025 20:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751313612; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1751313609; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NoYIazTUb7UYgrEprPOq7hGNgqCYvNkOKEt64gj1Gz4=;
- b=myYFL2WslFFtinQgHJMWM8YJ/ZR0caW2tKtP5LEkYHo0/nqiL677Ro2BXiuCBhKMel6Ga+
- EziW3GXoXawP0Bn4aqw+fdMYgdidN4Ud2Anzr6Rgn6lUF/5FlmZN19q0Pqm/7uMAJ5IpH+
- Tr3LocHuBFNF8jJUVZtHgnTKRGg/WPg=
+ bh=S8MF+wD18+4fRDDS0/kCDVD6uI4fVXKX+iEWE73RBPk=;
+ b=uQ2+W4x9AzoPRZb6gKlPqShn4nwgFhVfQ8Y0hiPiJh1kKSB80x23W7fS8QRXH39muTcK6X
+ n+3BPhtu23R7RIKQxm8kXisdo2JIPLlrxNNRyOAZ4zREWFIbU3KGlWA0sstem+PX7YJERB
+ le+CHFv2So6GKCMndduCXi5PBu+rlAg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751313612;
+ s=susede2_ed25519; t=1751313609;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NoYIazTUb7UYgrEprPOq7hGNgqCYvNkOKEt64gj1Gz4=;
- b=udjGE/YZyYu1g9vOTvMRz/BZGBokgzK5SfrFcXUKMuNiHyY297SvVujw+xLyIqzpoZe4h8
- AHazBAdcxiWB4yBw==
+ bh=S8MF+wD18+4fRDDS0/kCDVD6uI4fVXKX+iEWE73RBPk=;
+ b=Qqx8eXwZHi9k4s7xoVM7lIpWh6Cxs56xe4TrBo4UPuGhvMmLzuapj7fnsYRFhlMtP1f879
+ 5Sm3KhSC5aWBAXDQ==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751313612; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1751313609; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NoYIazTUb7UYgrEprPOq7hGNgqCYvNkOKEt64gj1Gz4=;
- b=myYFL2WslFFtinQgHJMWM8YJ/ZR0caW2tKtP5LEkYHo0/nqiL677Ro2BXiuCBhKMel6Ga+
- EziW3GXoXawP0Bn4aqw+fdMYgdidN4Ud2Anzr6Rgn6lUF/5FlmZN19q0Pqm/7uMAJ5IpH+
- Tr3LocHuBFNF8jJUVZtHgnTKRGg/WPg=
+ bh=S8MF+wD18+4fRDDS0/kCDVD6uI4fVXKX+iEWE73RBPk=;
+ b=uQ2+W4x9AzoPRZb6gKlPqShn4nwgFhVfQ8Y0hiPiJh1kKSB80x23W7fS8QRXH39muTcK6X
+ n+3BPhtu23R7RIKQxm8kXisdo2JIPLlrxNNRyOAZ4zREWFIbU3KGlWA0sstem+PX7YJERB
+ le+CHFv2So6GKCMndduCXi5PBu+rlAg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751313612;
+ s=susede2_ed25519; t=1751313609;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NoYIazTUb7UYgrEprPOq7hGNgqCYvNkOKEt64gj1Gz4=;
- b=udjGE/YZyYu1g9vOTvMRz/BZGBokgzK5SfrFcXUKMuNiHyY297SvVujw+xLyIqzpoZe4h8
- AHazBAdcxiWB4yBw==
+ bh=S8MF+wD18+4fRDDS0/kCDVD6uI4fVXKX+iEWE73RBPk=;
+ b=Qqx8eXwZHi9k4s7xoVM7lIpWh6Cxs56xe4TrBo4UPuGhvMmLzuapj7fnsYRFhlMtP1f879
+ 5Sm3KhSC5aWBAXDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 29BDA1399F;
- Mon, 30 Jun 2025 20:00:09 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 904CB1399F;
+ Mon, 30 Jun 2025 20:00:07 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 6F/0NsnsYmhQUAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 30 Jun 2025 20:00:09 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id YFxwFMfsYmhQUAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 30 Jun 2025 20:00:07 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 24/24] tests/qtest/migration: Pass the migration config to
- file tests
-Date: Mon, 30 Jun 2025 16:59:13 -0300
-Message-Id: <20250630195913.28033-25-farosas@suse.de>
+Subject: [PATCH v2 23/24] tests/qtest/migration: Adapt convergence routines to
+ config
+Date: Mon, 30 Jun 2025 16:59:12 -0300
+Message-Id: <20250630195913.28033-24-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250630195913.28033-1-farosas@suse.de>
 References: <20250630195913.28033-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
 X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.999];
@@ -93,9 +94,8 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
  RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
  envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
@@ -119,228 +119,245 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the existing file tests to test the new way of passing parameters
-to the migration via the config argument to qmp_migrate*.
+Adapt the convergence routines migrate_ensure_[non_]converge to
+receive a config argument and set the convergence parameters in it
+instead of using migrate-set-parameters.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration/file-tests.c    | 68 +++++++++++----------------
- tests/qtest/migration/framework.c     |  9 ++--
- tests/qtest/migration/precopy-tests.c |  1 +
- 3 files changed, 34 insertions(+), 44 deletions(-)
+ tests/qtest/migration/framework.c     | 10 +++++-----
+ tests/qtest/migration/migration-qmp.c | 22 ++++++++++++++++------
+ tests/qtest/migration/migration-qmp.h |  4 ++--
+ tests/qtest/migration/misc-tests.c    |  4 ++--
+ tests/qtest/migration/precopy-tests.c | 22 +++++++++++-----------
+ 5 files changed, 36 insertions(+), 26 deletions(-)
 
-diff --git a/tests/qtest/migration/file-tests.c b/tests/qtest/migration/file-tests.c
-index 4d78ce0855..656d6527e8 100644
---- a/tests/qtest/migration/file-tests.c
-+++ b/tests/qtest/migration/file-tests.c
-@@ -27,6 +27,7 @@ static void test_precopy_file(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
-+        .start.config = qdict_new(),
-     };
- 
-     test_file_common(&args, true);
-@@ -74,6 +75,7 @@ static void test_precopy_file_offset_fdset(void)
-         .connect_uri = uri,
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_file_offset_fdset,
-+        .start.config = qdict_new(),
-     };
- 
-     test_file_common(&args, false);
-@@ -88,6 +90,7 @@ static void test_precopy_file_offset(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
-+        .start.config = qdict_new(),
-     };
- 
-     test_file_common(&args, false);
-@@ -102,6 +105,7 @@ static void test_precopy_file_offset_bad(void)
-         .connect_uri = uri,
-         .listen_uri = "defer",
-         .result = MIG_TEST_QMP_ERROR,
-+        .start.config = qdict_new(),
-     };
- 
-     test_file_common(&args, false);
-@@ -114,11 +118,10 @@ static void test_precopy_file_mapped_ram_live(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .start = {
--            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
--        },
-+        .start.config = qdict_new(),
-     };
- 
-+    qdict_put_bool(args.start.config, "mapped-ram", true);
-     test_file_common(&args, false);
- }
- 
-@@ -129,11 +132,9 @@ static void test_precopy_file_mapped_ram(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .start = {
--            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
--        },
-+        .start.config = qdict_new(),
-     };
--
-+    qdict_put_bool(args.start.config, "mapped-ram", true);
-     test_file_common(&args, true);
- }
- 
-@@ -144,12 +145,11 @@ static void test_multifd_file_mapped_ram_live(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .start = {
--            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
--            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
--        },
-+        .start.config = qdict_new(),
-     };
- 
-+    qdict_put_bool(args.start.config, "mapped-ram", true);
-+    qdict_put_bool(args.start.config, "multifd", true);
-     test_file_common(&args, false);
- }
- 
-@@ -160,24 +160,13 @@ static void test_multifd_file_mapped_ram(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .start = {
--            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
--            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
--        },
-+        .start.config = qdict_new(),
-     };
--
-+    qdict_put_bool(args.start.config, "mapped-ram", true);
-+    qdict_put_bool(args.start.config, "multifd", true);
-     test_file_common(&args, true);
- }
- 
--static void *migrate_hook_start_multifd_mapped_ram_dio(QTestState *from,
--                                                       QTestState *to)
--{
--    migrate_set_parameter_bool(from, "direct-io", true);
--    migrate_set_parameter_bool(to, "direct-io", true);
--
--    return NULL;
--}
--
- static void test_multifd_file_mapped_ram_dio(void)
- {
-     g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-@@ -185,13 +174,13 @@ static void test_multifd_file_mapped_ram_dio(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .start_hook = migrate_hook_start_multifd_mapped_ram_dio,
--        .start = {
--            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
--            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
--        },
-+        .start.config = qdict_new(),
-     };
- 
-+    qdict_put_bool(args.start.config, "direct-io", true);
-+    qdict_put_bool(args.start.config, "mapped-ram", true);
-+    qdict_put_bool(args.start.config, "multifd", true);
-+
-     if (!probe_o_direct_support(tmpfs)) {
-         g_test_skip("Filesystem does not support O_DIRECT");
-         return;
-@@ -235,9 +224,6 @@ static void *migrate_hook_start_multifd_mapped_ram_fdset_dio(QTestState *from,
-     fdset_add_fds(from, file, O_WRONLY, 2, true);
-     fdset_add_fds(to, file, O_RDONLY, 2, true);
- 
--    migrate_set_parameter_bool(from, "direct-io", true);
--    migrate_set_parameter_bool(to, "direct-io", true);
--
-     return NULL;
- }
- 
-@@ -261,12 +247,11 @@ static void test_multifd_file_mapped_ram_fdset(void)
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_mapped_ram_fdset,
-         .end_hook = migrate_hook_end_multifd_mapped_ram_fdset,
--        .start = {
--            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
--            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
--        },
-+        .start.config = qdict_new(),
-     };
- 
-+    qdict_put_bool(args.start.config, "mapped-ram", true);
-+    qdict_put_bool(args.start.config, "multifd", true);
-     test_file_common(&args, true);
- }
- 
-@@ -279,12 +264,13 @@ static void test_multifd_file_mapped_ram_fdset_dio(void)
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_mapped_ram_fdset_dio,
-         .end_hook = migrate_hook_end_multifd_mapped_ram_fdset,
--        .start = {
--            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
--            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
--        },
-+        .start.config = qdict_new(),
-     };
- 
-+    qdict_put_bool(args.start.config, "direct-io", true);
-+    qdict_put_bool(args.start.config, "mapped-ram", true);
-+    qdict_put_bool(args.start.config, "multifd", true);
-+
-     if (!probe_o_direct_support(tmpfs)) {
-         g_test_skip("Filesystem does not support O_DIRECT");
-         return;
 diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 5025299d6a..37c5c884af 100644
+index 9ff5576328..5025299d6a 100644
 --- a/tests/qtest/migration/framework.c
 +++ b/tests/qtest/migration/framework.c
-@@ -974,18 +974,21 @@ void test_file_common(MigrateCommon *args, bool stop_src)
+@@ -513,7 +513,7 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
+         args->postcopy_data = args->start_hook(from, to);
      }
  
-     if (args->result == MIG_TEST_QMP_ERROR) {
--        migrate_qmp_fail(from, args->connect_uri, NULL, "{}");
-+        migrate_qmp_fail(from, args->connect_uri, NULL, "{ 'config': %p }",
-+                         args->start.config);
-         goto finish;
+-    migrate_ensure_non_converge(from);
++    migrate_ensure_non_converge(from, args->start.config);
+     migrate_prepare_for_dirty_mem(from);
+     qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
+                              "  'arguments': { "
+@@ -791,7 +791,7 @@ void test_precopy_common(MigrateCommon *args)
      }
  
--    migrate_qmp(from, to, args->connect_uri, NULL, "{}");
-+    migrate_qmp(from, to, args->connect_uri, NULL, "{ 'config': %p }",
-+                args->start.config);
-     wait_for_migration_complete(from);
+     if (args->live) {
+-        migrate_ensure_non_converge(from);
++        migrate_ensure_non_converge(from, args->start.config);
+         migrate_prepare_for_dirty_mem(from);
+     } else {
+         /*
+@@ -803,7 +803,7 @@ void test_precopy_common(MigrateCommon *args)
+         if (args->result == MIG_TEST_SUCCEED) {
+             qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
+             wait_for_stop(from, &src_state);
+-            migrate_ensure_converge(from);
++            migrate_ensure_converge(from, args->start.config);
+         }
+     }
  
-     /*
-      * We need to wait for the source to finish before starting the
-      * destination.
-      */
--    migrate_incoming_qmp(to, args->connect_uri, NULL, "{}");
-+    migrate_incoming_qmp(to, args->connect_uri, NULL, "{ 'config': %p }",
-+                         args->start.config);
-     wait_for_migration_complete(to);
+@@ -862,7 +862,7 @@ void test_precopy_common(MigrateCommon *args)
+             }
+             migrate_wait_for_dirty_mem(from, to);
+ 
+-            migrate_ensure_converge(from);
++            migrate_ensure_converge(from, args->start.config);
+ 
+             /*
+              * We do this first, as it has a timeout to stop us
+@@ -965,7 +965,7 @@ void test_file_common(MigrateCommon *args, bool stop_src)
+         data_hook = args->start_hook(from, to);
+     }
+ 
+-    migrate_ensure_converge(from);
++    migrate_ensure_converge(from, args->start.config);
+     wait_for_serial("src_serial");
  
      if (stop_src) {
+diff --git a/tests/qtest/migration/migration-qmp.c b/tests/qtest/migration/migration-qmp.c
+index d82ac8c750..8918ce87d8 100644
+--- a/tests/qtest/migration/migration-qmp.c
++++ b/tests/qtest/migration/migration-qmp.c
+@@ -471,18 +471,28 @@ void migrate_set_parameter_bool(QTestState *who, const char *parameter,
+     migrate_check_parameter_bool(who, parameter, value);
+ }
+ 
+-void migrate_ensure_non_converge(QTestState *who)
++void migrate_ensure_non_converge(QTestState *who, QDict *config)
+ {
+     /* Can't converge with 1ms downtime + 3 mbs bandwidth limit */
+-    migrate_set_parameter_int(who, "max-bandwidth", 3 * 1000 * 1000);
+-    migrate_set_parameter_int(who, "downtime-limit", 1);
++    if (config) {
++        qdict_put_int(config, "max-bandwidth", 3 * 1000 * 1000);
++        qdict_put_int(config, "downtime-limit", 1);
++    } else {
++        migrate_set_parameter_int(who, "max-bandwidth", 3 * 1000 * 1000);
++        migrate_set_parameter_int(who, "downtime-limit", 1);
++    }
+ }
+ 
+-void migrate_ensure_converge(QTestState *who)
++void migrate_ensure_converge(QTestState *who, QDict *config)
+ {
+     /* Should converge with 30s downtime + 1 gbs bandwidth limit */
+-    migrate_set_parameter_int(who, "max-bandwidth", 1 * 1000 * 1000 * 1000);
+-    migrate_set_parameter_int(who, "downtime-limit", 30 * 1000);
++    if (config) {
++        qdict_put_int(config, "max-bandwidth", 1 * 1000 * 1000 * 1000);
++        qdict_put_int(config, "downtime-limit", 30 * 1000);
++    } else {
++        migrate_set_parameter_int(who, "max-bandwidth", 1 * 1000 * 1000 * 1000);
++        migrate_set_parameter_int(who, "downtime-limit", 30 * 1000);
++    }
+ }
+ 
+ void migrate_pause(QTestState *who)
+diff --git a/tests/qtest/migration/migration-qmp.h b/tests/qtest/migration/migration-qmp.h
+index faa8181d91..a80546a258 100644
+--- a/tests/qtest/migration/migration-qmp.h
++++ b/tests/qtest/migration/migration-qmp.h
+@@ -36,8 +36,8 @@ void migrate_set_parameter_str(QTestState *who, const char *parameter,
+                                const char *value);
+ void migrate_set_parameter_bool(QTestState *who, const char *parameter,
+                                 int value);
+-void migrate_ensure_non_converge(QTestState *who);
+-void migrate_ensure_converge(QTestState *who);
++void migrate_ensure_non_converge(QTestState *who, QDict *config);
++void migrate_ensure_converge(QTestState *who, QDict *config);
+ void migrate_pause(QTestState *who);
+ void migrate_continue(QTestState *who, const char *state);
+ void migrate_recover(QTestState *who, const char *uri);
+diff --git a/tests/qtest/migration/misc-tests.c b/tests/qtest/migration/misc-tests.c
+index 54995256d8..abbbf966e9 100644
+--- a/tests/qtest/migration/misc-tests.c
++++ b/tests/qtest/migration/misc-tests.c
+@@ -70,7 +70,7 @@ static void test_analyze_script(void)
+     file = g_strdup_printf("%s/migfile", tmpfs);
+     uri = g_strdup_printf("exec:cat > %s", file);
+ 
+-    migrate_ensure_converge(from);
++    migrate_ensure_converge(from, args.config);
+     migrate_qmp(from, to, uri, NULL, "{}");
+     wait_for_migration_complete(from);
+ 
+@@ -105,7 +105,7 @@ static void test_ignore_shared(void)
+         return;
+     }
+ 
+-    migrate_ensure_non_converge(from);
++    migrate_ensure_non_converge(from, args.config);
+     migrate_prepare_for_dirty_mem(from);
+ 
+     /* Wait for the first serial output from the source */
 diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index 35d4274c69..9606dc1d02 100644
+index bb38292550..35d4274c69 100644
 --- a/tests/qtest/migration/precopy-tests.c
 +++ b/tests/qtest/migration/precopy-tests.c
-@@ -338,6 +338,7 @@ static void test_precopy_fd_file(void)
-         .connect_uri = "fd:fd-mig",
-         .start_hook = migrate_hook_start_precopy_fd_file,
-         .end_hook = migrate_hook_end_fd,
-+        .start.config = qdict_new(),
-     };
-     test_file_common(&args, true);
- }
+@@ -387,7 +387,7 @@ static void test_auto_converge(void)
+      * Set the initial parameters so that the migration could not converge
+      * without throttling.
+      */
+-    migrate_ensure_non_converge(from);
++    migrate_ensure_non_converge(from, args.config);
+ 
+     /* To check remaining size after precopy */
+     migrate_set_capability(from, "pause-before-switchover", true);
+@@ -440,7 +440,7 @@ static void test_auto_converge(void)
+     g_assert_cmpint(hit, ==, 1);
+ 
+     /* Now, when we tested that throttling works, let it converge */
+-    migrate_ensure_converge(from);
++    migrate_ensure_converge(from, args.config);
+ 
+     /*
+      * Wait for pre-switchover status to check last throttle percentage
+@@ -580,7 +580,7 @@ static void test_multifd_tcp_cancel(bool postcopy_ram)
+         return;
+     }
+ 
+-    migrate_ensure_non_converge(from);
++    migrate_ensure_non_converge(from, args.config);
+     migrate_prepare_for_dirty_mem(from);
+ 
+     if (postcopy_ram) {
+@@ -640,13 +640,13 @@ static void test_multifd_tcp_cancel(bool postcopy_ram)
+     /* Start incoming migration from the 1st socket */
+     migrate_incoming_qmp(to2, "tcp:127.0.0.1:0", NULL, "{}");
+ 
+-    migrate_ensure_non_converge(from);
++    migrate_ensure_non_converge(from, args.config);
+ 
+     migrate_qmp(from, to2, NULL, NULL, "{}");
+ 
+     migrate_wait_for_dirty_mem(from, to2);
+ 
+-    migrate_ensure_converge(from);
++    migrate_ensure_converge(from, args.config);
+ 
+     wait_for_stop(from, get_src());
+     qtest_qmp_eventwait(to2, "RESUME");
+@@ -675,7 +675,7 @@ static void test_cancel_src_after_failed(QTestState *from, QTestState *to,
+      */
+ 
+     wait_for_serial("src_serial");
+-    migrate_ensure_converge(from);
++    migrate_ensure_converge(from, NULL);
+ 
+     migrate_qmp(from, to, uri, NULL, "{}");
+ 
+@@ -699,7 +699,7 @@ static void test_cancel_src_after_cancelled(QTestState *from, QTestState *to,
+     migrate_incoming_qmp(to, uri, NULL, "{ 'exit-on-error': false }");
+ 
+     wait_for_serial("src_serial");
+-    migrate_ensure_converge(from);
++    migrate_ensure_converge(from, NULL);
+ 
+     migrate_qmp(from, to, uri, NULL, "{}");
+ 
+@@ -723,7 +723,7 @@ static void test_cancel_src_after_complete(QTestState *from, QTestState *to,
+     migrate_incoming_qmp(to, uri, NULL, "{ 'exit-on-error': false }");
+ 
+     wait_for_serial("src_serial");
+-    migrate_ensure_converge(from);
++    migrate_ensure_converge(from, NULL);
+ 
+     migrate_qmp(from, to, uri, NULL, "{}");
+ 
+@@ -752,7 +752,7 @@ static void test_cancel_src_after_none(QTestState *from, QTestState *to,
+ 
+     migrate_incoming_qmp(to, uri, NULL, "{ 'exit-on-error': false }");
+ 
+-    migrate_ensure_converge(from);
++    migrate_ensure_converge(from, NULL);
+     migrate_qmp(from, to, uri, NULL, "{}");
+ 
+     wait_for_migration_complete(from);
+@@ -771,7 +771,7 @@ static void test_cancel_src_pre_switchover(QTestState *from, QTestState *to,
+     migrate_incoming_qmp(to, uri, NULL, "{ 'exit-on-error': false }");
+ 
+     wait_for_serial("src_serial");
+-    migrate_ensure_converge(from);
++    migrate_ensure_converge(from, NULL);
+ 
+     migrate_qmp(from, to, uri, NULL, "{}");
+ 
+@@ -1080,7 +1080,7 @@ static void migrate_dirty_limit_wait_showup(QTestState *from,
+     migrate_set_parameter_int(from, "vcpu-dirty-limit", value);
+ 
+     /* Make sure migrate can't converge */
+-    migrate_ensure_non_converge(from);
++    migrate_ensure_non_converge(from, NULL);
+ 
+     /* To check limit rate after precopy */
+     migrate_set_capability(from, "pause-before-switchover", true);
 -- 
 2.35.3
 
