@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCD2AEE7D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 22:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB14AEE7DB
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 22:00:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWKf9-0002X2-E5; Mon, 30 Jun 2025 15:59:35 -0400
+	id 1uWKfA-0002Xh-Ci; Mon, 30 Jun 2025 15:59:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKf0-0002W5-Jl
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:26 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKf6-0002Wt-5t
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:32 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKey-0007S7-HI
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:26 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKf4-0007St-CA
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:31 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2086D2115E;
- Mon, 30 Jun 2025 19:59:20 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 33C9521161;
+ Mon, 30 Jun 2025 19:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751313560; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1751313562; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R8sBxHCz6UsEHsBrqDBr0hFHfzK51JJaKNlFGGAXLwU=;
- b=n0Mj1B0nvKXgmPoqjldpRFmOzPEsL9wt+0QSFiAZbuU3wU+G6H4pbnLtBs7//3UT2wt6T2
- rf1xVCaT9XESYxbTteOImxbAhMW65BHuj9jS0jgJ9O3A+4oxWrHcSo+cXr6zq1Pp+iSx5X
- ZhbI/wOk3gDWG0S7bTUKc+vc78Myt9M=
+ bh=DqJoHTBSRcc/4YjI8DdE3M7UxBxe/r5RCR2ucSwG+oE=;
+ b=WK9XlLMYZOr05baFzcMDCRGn+Q8r5RYKN3isWlPefcTSbd8MlnEt6PbUDrKwLy+Xh0yFIn
+ ESTDcV6IodIrFYr9E+oTTBuSKNjVPXtoAs8DzUkv+kaNtrnHoAKM1GNmX/DtuIeLaQLDQ7
+ opg5YkGDO6KeNg2VUMjRF6dNKm5pAOY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751313560;
+ s=susede2_ed25519; t=1751313562;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R8sBxHCz6UsEHsBrqDBr0hFHfzK51JJaKNlFGGAXLwU=;
- b=BU2th09RJ4BRLkUXmmt/UH88rarzsMx5QfQ/gIiGXKQgjz9fcODz84g9+dkdqHEbIryCGg
- 6/3MulkFvMkNI/AQ==
+ bh=DqJoHTBSRcc/4YjI8DdE3M7UxBxe/r5RCR2ucSwG+oE=;
+ b=+UaFsfVLwir9bLtc1uSHCv9t83Jeb5hCt6vtiCJPpu5V5C4NJhDlmGy9dBBcqTXnIYYzwK
+ Y68IFxL8cOTTq+Cg==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751313560; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1751313562; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R8sBxHCz6UsEHsBrqDBr0hFHfzK51JJaKNlFGGAXLwU=;
- b=n0Mj1B0nvKXgmPoqjldpRFmOzPEsL9wt+0QSFiAZbuU3wU+G6H4pbnLtBs7//3UT2wt6T2
- rf1xVCaT9XESYxbTteOImxbAhMW65BHuj9jS0jgJ9O3A+4oxWrHcSo+cXr6zq1Pp+iSx5X
- ZhbI/wOk3gDWG0S7bTUKc+vc78Myt9M=
+ bh=DqJoHTBSRcc/4YjI8DdE3M7UxBxe/r5RCR2ucSwG+oE=;
+ b=WK9XlLMYZOr05baFzcMDCRGn+Q8r5RYKN3isWlPefcTSbd8MlnEt6PbUDrKwLy+Xh0yFIn
+ ESTDcV6IodIrFYr9E+oTTBuSKNjVPXtoAs8DzUkv+kaNtrnHoAKM1GNmX/DtuIeLaQLDQ7
+ opg5YkGDO6KeNg2VUMjRF6dNKm5pAOY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751313560;
+ s=susede2_ed25519; t=1751313562;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R8sBxHCz6UsEHsBrqDBr0hFHfzK51JJaKNlFGGAXLwU=;
- b=BU2th09RJ4BRLkUXmmt/UH88rarzsMx5QfQ/gIiGXKQgjz9fcODz84g9+dkdqHEbIryCGg
- 6/3MulkFvMkNI/AQ==
+ bh=DqJoHTBSRcc/4YjI8DdE3M7UxBxe/r5RCR2ucSwG+oE=;
+ b=+UaFsfVLwir9bLtc1uSHCv9t83Jeb5hCt6vtiCJPpu5V5C4NJhDlmGy9dBBcqTXnIYYzwK
+ Y68IFxL8cOTTq+Cg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 952541399F;
- Mon, 30 Jun 2025 19:59:18 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9DAC11399F;
+ Mon, 30 Jun 2025 19:59:20 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id iAySFZbsYmhQUAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 30 Jun 2025 19:59:18 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id sKSxF5jsYmhQUAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 30 Jun 2025 19:59:20 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	armbru@redhat.com,
 	Peter Xu <peterx@redhat.com>
-Subject: [PATCH v2 01/24] migration: Fix leak of block_bitmap_mapping
-Date: Mon, 30 Jun 2025 16:58:50 -0300
-Message-Id: <20250630195913.28033-2-farosas@suse.de>
+Subject: [PATCH v2 02/24] migration: Add a qdev property for StrOrNull
+Date: Mon, 30 Jun 2025 16:58:51 -0300
+Message-Id: <20250630195913.28033-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250630195913.28033-1-farosas@suse.de>
 References: <20250630195913.28033-1-farosas@suse.de>
@@ -92,17 +92,15 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
  RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,38 +117,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Caught by inspection, but ASAN also reports:
+The MigrationState is a QOM object with TYPE_DEVICE as a parent. This
+was done about eight years ago so the migration code could make use of
+qdev properties to define the defaults for the migration parameters
+and to be able to expose migration knobs for debugging via the
+'-global migration' command line option.
 
-Direct leak of 16 byte(s) in 1 object(s) allocated from:
- #0 in malloc
- #1 in g_malloc
- #2 in g_memdup
- #3 in qapi_clone_start_struct ../qapi/qapi-clone-visitor.c:40:12
- #4 in qapi_clone_start_list ../qapi/qapi-clone-visitor.c:59:12
- #5 in visit_start_list ../qapi/qapi-visit-core.c:80:10
- #6 in visit_type_BitmapMigrationNodeAliasList qapi/qapi-visit-migration.c:639:10
- #7 in migrate_params_apply ../migration/options.c:1407:13
- #8 in qmp_migrate_set_parameters ../migration/options.c:1463:5
- #9 in qmp_marshal_migrate_set_parameters qapi/qapi-commands-migration.c:214:5
- #10 in do_qmp_dispatch_bh ../qapi/qmp-dispatch.c:128:5
+Due to unrelated historical reasons, three of the migration parameters
+(TLS options) received different types when used via the
+query-migrate-parameters QMP command than with the
+migrate-set-parameters command. This has created a lot of duplication
+in the migration code and in the QAPI documentation because the whole
+of MigrationParameters had to be duplicated as well.
+
+The migration code is now being fixed to remove the duplication and
+for that to happen the offending fields need to be reconciled into a
+single type. The StrOrNull type is going to be used.
+
+To keep the command line compatibility, the parameters need to
+continue being exposed via qdev properties accessible from the command
+line. Introduce a qdev property StrOrNull just for that.
+
+Note that this code is being kept in migration/options.c because this
+version of StrOrNull doesn't need to handle QNULL because it was never
+a valid option in the previous command line, which took a string.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 1 +
- 1 file changed, 1 insertion(+)
+ migration/options.c | 47 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 4098870bce..7ec60d97f9 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -4050,6 +4050,7 @@ static void migration_instance_finalize(Object *obj)
- {
-     MigrationState *ms = MIGRATION_OBJ(obj);
+diff --git a/migration/options.c b/migration/options.c
+index 162c72cda4..384ef9e421 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -83,6 +83,11 @@
+ #define DEFINE_PROP_MIG_CAP(name, x)             \
+     DEFINE_PROP_BOOL(name, MigrationState, capabilities[x], false)
  
-+    qapi_free_BitmapMigrationNodeAliasList(ms->parameters.block_bitmap_mapping);
-     qemu_mutex_destroy(&ms->error_mutex);
-     qemu_mutex_destroy(&ms->qemu_file_lock);
-     qemu_sem_destroy(&ms->wait_unplug_sem);
++const PropertyInfo qdev_prop_StrOrNull;
++#define DEFINE_PROP_STR_OR_NULL(_name, _state, _field)                  \
++    DEFINE_PROP(_name, _state, _field, qdev_prop_StrOrNull, StrOrNull *, \
++                .set_default = true)
++
+ #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD     1000    /* milliseconds */
+ #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT            1       /* MB/s */
+ 
+@@ -204,6 +209,48 @@ const Property migration_properties[] = {
+ };
+ const size_t migration_properties_count = ARRAY_SIZE(migration_properties);
+ 
++/*
++ * qdev property for TLS options handling via '-global migration'
++ * command line.
++ */
++static void set_StrOrNull(Object *obj, Visitor *v, const char *name,
++                          void *opaque, Error **errp)
++{
++    const Property *prop = opaque;
++    StrOrNull **ptr = object_field_prop_ptr(obj, prop);
++    StrOrNull *str_or_null = g_new0(StrOrNull, 1);
++
++    /*
++     * Only str to keep compatibility, QNULL was never used via
++     * command line.
++     */
++    str_or_null->type = QTYPE_QSTRING;
++    if (!visit_type_str(v, name, &str_or_null->u.s, errp)) {
++        return;
++    }
++
++    qapi_free_StrOrNull(*ptr);
++    *ptr = str_or_null;
++}
++
++static void release_StrOrNull(Object *obj, const char *name, void *opaque)
++{
++    const Property *prop = opaque;
++    qapi_free_StrOrNull(*(StrOrNull **)object_field_prop_ptr(obj, prop));
++}
++
++static void set_default_value_tls_opt(ObjectProperty *op, const Property *prop)
++{
++    object_property_set_default_str(op, "");
++}
++
++const PropertyInfo qdev_prop_StrOrNull = {
++    .type  = "StrOrNull",
++    .set = set_StrOrNull,
++    .release = release_StrOrNull,
++    .set_default_value = set_default_value_tls_opt,
++};
++
+ bool migrate_auto_converge(void)
+ {
+     MigrationState *s = migrate_get_current();
 -- 
 2.35.3
 
