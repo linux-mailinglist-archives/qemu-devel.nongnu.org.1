@@ -2,116 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B699AED4E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 08:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AE8AED51C
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 09:03:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uW8Gu-0006EU-5p; Mon, 30 Jun 2025 02:45:44 -0400
+	id 1uW8Wz-0002Vt-Gn; Mon, 30 Jun 2025 03:02:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1uW8GZ-00067C-TS; Mon, 30 Jun 2025 02:45:24 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uW8Wk-0002Ts-Py; Mon, 30 Jun 2025 03:02:06 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1uW8GY-0000g8-1F; Mon, 30 Jun 2025 02:45:23 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55TMHM29023695;
- Mon, 30 Jun 2025 06:45:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=KCuSkz
- OfSwVkbEBAsISXMZ2aewSZEGLupp4ZgobTG0Q=; b=HdT348fHOxYtcDSSSOWA1V
- 3Nosr3xPUCH1OWgCf3c+5/mvl3zerm8OiLuIGWuCE39ZcL9ab+DRzNDifVMhA8Ch
- 9p1W5Wrbs2O8vWpwya960OXssBfRIYEu3b32wvF7RjFF203tuMzyT4V87qCCH5mK
- S08SxXjHqGQOQbl2sjne5jEpoKTZfTU5SJj/DRXT7MhxW7odosiM3tkmEJF4Q3nK
- MDAldb5/5f9YuQqYDaOtQE4SYoo9P+mYjwYqymNHyarcGZCvvjwV2IcU8lDb2vys
- zSIYzH3AjKdEpQ79XT13d0Fqcrm53qHkWXFfWT3JnFNdXR6obnSZeDlHMf46bZ2A
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j5tsyyy8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Jun 2025 06:45:19 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55U6amrX032558;
- Mon, 30 Jun 2025 06:45:18 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j5tsyyy6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Jun 2025 06:45:18 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55U5cTkE021914;
- Mon, 30 Jun 2025 06:45:17 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47juqpcntp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Jun 2025 06:45:17 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 55U6jGdn61407502
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Jun 2025 06:45:16 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8EC0758056;
- Mon, 30 Jun 2025 06:45:16 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 491BD58052;
- Mon, 30 Jun 2025 06:45:14 +0000 (GMT)
-Received: from [9.39.23.32] (unknown [9.39.23.32])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 30 Jun 2025 06:45:13 +0000 (GMT)
-Message-ID: <0f092966-8471-45b1-bff3-3319a3d538b3@linux.ibm.com>
-Date: Mon, 30 Jun 2025 12:15:11 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: CPU hotplug crashed the guest when using virt-type as qemu!
-To: Anushree Mathur <anushree.mathur@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, richard.henderson@linaro.org
-Cc: npiggin@gmail.com, danielhb413@gmail.com, harshpb@linux.ibm.com
-References: <96ce3e34-6d4e-4d92-a852-6eee5063140d@linux.ibm.com>
- <888a0d9d-ed0d-4a9c-81b6-0b3f3e6fc0db@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uW8Wg-0002me-Cu; Mon, 30 Jun 2025 03:02:05 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bVxpH3G4tz6L56p;
+ Mon, 30 Jun 2025 14:58:47 +0800 (CST)
+Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
+ by mail.maildlp.com (Postfix) with ESMTPS id 41CE71404F9;
+ Mon, 30 Jun 2025 15:01:34 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 30 Jun 2025 09:01:34 +0200
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Mon, 30 Jun 2025 09:01:34 +0200
+To: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>, "berrange@redhat.com"
+ <berrange@redhat.com>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "nathanc@nvidia.com" <nathanc@nvidia.com>, "mochs@nvidia.com"
+ <mochs@nvidia.com>, "smostafa@google.com" <smostafa@google.com>,
+ "gustavo.romero@linaro.org" <gustavo.romero@linaro.org>, Linuxarm
+ <linuxarm@huawei.com>, "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
+ <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
+Subject: RE: [PATCH v5 01/11] hw/arm/smmu-common: Check SMMU has PCIe Root
+ Complex association
+Thread-Topic: [PATCH v5 01/11] hw/arm/smmu-common: Check SMMU has PCIe Root
+ Complex association
+Thread-Index: AQHb5DEr1suXs2EpZkOF8l8kChjVYbQWyeSAgASGELA=
+Date: Mon, 30 Jun 2025 07:01:33 +0000
+Message-ID: <5a0ee9d2e27e47e6a4b443ef6e645b52@huawei.com>
+References: <20250623094230.76084-1-shameerali.kolothum.thodi@huawei.com>
+ <20250623094230.76084-2-shameerali.kolothum.thodi@huawei.com>
+ <ce1d4b22-d613-4143-9b50-bd3e8047bff8@redhat.com>
+In-Reply-To: <ce1d4b22-d613-4143-9b50-bd3e8047bff8@redhat.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-From: Chinmay Rath <rathc@linux.ibm.com>
-In-Reply-To: <888a0d9d-ed0d-4a9c-81b6-0b3f3e6fc0db@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fxMr93r8hvgVvYoDEY7tL8z5Qf9gZvRX
-X-Authority-Analysis: v=2.4 cv=UtNjN/wB c=1 sm=1 tr=0 ts=6862327f cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=sPlpsh3DtUFHNmM4cxgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: -PEedfkPPxf0WEJmXkRvJ5ylPx51hY9Q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDA1MSBTYWx0ZWRfX/WwsyHLdVH1t
- NHW3vkMwxBxgpE1YIbhle2EGanAhNv9BsimMh8mejyUCwQ/NzZLh4jy8S9gMGCTCxYTz+YMP0yq
- FJiY2/RPDEtmh//dICNhyhkZPv9MEybTDTAecUFMuop4GXGCRJQgRoSN5sIvi97yZWyh4hmIIqu
- U+huw4Q7QYb0hFrwJeWvokTvJWnNrQFTBs1d+nGYcEbVuUbi5ErjOHkgCmDZnTbIhzzON9IS+n8
- KyKAPBnb84Mmrh6Zv6q+3hfJnDKMN/cRAAc2aIBeTxaryk8O0kGT0pDvpbmX7IiCTqGUJshz8XU
- reI4g96c68d3574BeLERH5BXCCB6yUuRbsf+OQrvLjnOaeXCt6rn9VczfSgsJ7uZZAUM3iP6jQd
- tJFVzzzlKIs98OQ30yGgAKctaDaTRMp5uqbWRWaqS++y4aIA3xvdLrzGUWgS3xUsrbsnLZBq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-30_01,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- priorityscore=1501 phishscore=0 mlxscore=0 spamscore=0 mlxlogscore=860
- adultscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 impostorscore=0
- malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506300051
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=rathc@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,25 +84,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 6/23/25 17:54, Anushree Mathur wrote:
-> Hi Richard,
-> Any updates on this issue? Would really appreciate your inputs here. 
-> Thanks in advance!
->
->
-> Regards,
-> Anushree-Mathur
-
-Hi Richard,
-
-Could you please share some inputs to investigate/debug this further ?
-
-Thanks,
-
-Chinmay
-
+SGkgRXJpYywNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBFcmljIEF1
+Z2VyIDxlcmljLmF1Z2VyQHJlZGhhdC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgSnVuZSAyNywgMjAy
+NSAxMjo1MiBQTQ0KPiBUbzogU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiA8c2hhbWVlcmFs
+aS5rb2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPjsgcWVtdS1hcm1Abm9uZ251Lm9yZzsNCj4gcWVt
+dS1kZXZlbEBub25nbnUub3JnDQo+IENjOiBwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc7IGpnZ0Bu
+dmlkaWEuY29tOyBuaWNvbGluY0BudmlkaWEuY29tOw0KPiBkZHV0aWxlQHJlZGhhdC5jb207IGJl
+cnJhbmdlQHJlZGhhdC5jb207IGltYW1tZWRvQHJlZGhhdC5jb207DQo+IG5hdGhhbmNAbnZpZGlh
+LmNvbTsgbW9jaHNAbnZpZGlhLmNvbTsgc21vc3RhZmFAZ29vZ2xlLmNvbTsNCj4gZ3VzdGF2by5y
+b21lcm9AbGluYXJvLm9yZzsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+OyBXYW5nemhv
+dQ0KPiAoQikgPHdhbmd6aG91MUBoaXNpbGljb24uY29tPjsgamlhbmdrdW5rdW4gPGppYW5na3Vu
+a3VuQGh1YXdlaS5jb20+Ow0KPiBKb25hdGhhbiBDYW1lcm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1
+YXdlaS5jb20+Ow0KPiB6aGFuZ2ZlaS5nYW9AbGluYXJvLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BB
+VENIIHY1IDAxLzExXSBody9hcm0vc21tdS1jb21tb246IENoZWNrIFNNTVUgaGFzDQo+IFBDSWUg
+Um9vdCBDb21wbGV4IGFzc29jaWF0aW9uDQo+IA0KPiBIaSBTaGFtZWVyLA0KPiANCj4gT24gNi8y
+My8yNSAxMTo0MiBBTSwgU2hhbWVlciBLb2xvdGh1bSB3cm90ZToNCj4gPiBXZSBvbmx5IGFsbG93
+IGRlZmF1bHQgUENJZSBSb290IENvbXBsZXgocGNpZS4wKSBvciBweGItcGNpZSBiYXNlZCBleHRy
+YQ0KPiA+IHJvb3QgY29tcGxleGVzIHRvIGJlIGFzc29jaWF0ZWQgd2l0aCBTTU1VLg0KPiA+DQo+
+ID4gQWx0aG91Z2ggdGhpcyBjaGFuZ2UgZG9lcyBub3QgYWZmZWN0IGZ1bmN0aW9uYWxpdHkgYXQg
+cHJlc2VudCwgaXQgaXMNCj4gPiByZXF1aXJlZCB3aGVuIHdlIGFkZCBzdXBwb3J0IGZvciB1c2Vy
+LWNyZWF0YWJsZSBTTU1VdjMgZGV2aWNlcyBpbg0KPiA+IGZ1dHVyZSBwYXRjaGVzLg0KPiA+DQo+
+ID4gU2lnbmVkLW9mZi1ieTogU2hhbWVlciBLb2xvdGh1bQ0KPiA8c2hhbWVlcmFsaS5rb2xvdGh1
+bS50aG9kaUBodWF3ZWkuY29tPg0KPiA+IC0tLQ0KPiA+ICBody9hcm0vc21tdS1jb21tb24uYyAg
+ICAgICAgICAgICAgICB8IDI5ICsrKysrKysrKysrKysrKysrKysrKysrKysrLS0tDQo+ID4gIGh3
+L3BjaS1icmlkZ2UvcGNpX2V4cGFuZGVyX2JyaWRnZS5jIHwgIDEgLQ0KPiA+ICBpbmNsdWRlL2h3
+L3BjaS9wY2lfYnJpZGdlLmggICAgICAgICB8ICAxICsNCj4gPiAgMyBmaWxlcyBjaGFuZ2VkLCAy
+NyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2h3
+L2FybS9zbW11LWNvbW1vbi5jIGIvaHcvYXJtL3NtbXUtY29tbW9uLmMNCj4gPiBpbmRleCBmMzli
+OTllNTI2Li5iMTVlN2ZkMGU0IDEwMDY0NA0KPiA+IC0tLSBhL2h3L2FybS9zbW11LWNvbW1vbi5j
+DQo+ID4gKysrIGIvaHcvYXJtL3NtbXUtY29tbW9uLmMNCj4gPiBAQCAtMjAsNiArMjAsNyBAQA0K
+PiA+ICAjaW5jbHVkZSAidHJhY2UuaCINCj4gPiAgI2luY2x1ZGUgImV4ZWMvdGFyZ2V0X3BhZ2Uu
+aCINCj4gPiAgI2luY2x1ZGUgImh3L2NvcmUvY3B1LmgiDQo+ID4gKyNpbmNsdWRlICJody9wY2kv
+cGNpX2JyaWRnZS5oIg0KPiA+ICAjaW5jbHVkZSAiaHcvcWRldi1wcm9wZXJ0aWVzLmgiDQo+ID4g
+ICNpbmNsdWRlICJxYXBpL2Vycm9yLmgiDQo+ID4gICNpbmNsdWRlICJxZW11L2poYXNoLmgiDQo+
+ID4gQEAgLTkyNSw2ICs5MjYsNyBAQCBzdGF0aWMgdm9pZCBzbW11X2Jhc2VfcmVhbGl6ZShEZXZp
+Y2VTdGF0ZSAqZGV2LA0KPiBFcnJvciAqKmVycnApDQo+ID4gIHsNCj4gPiAgICAgIFNNTVVTdGF0
+ZSAqcyA9IEFSTV9TTU1VKGRldik7DQo+ID4gICAgICBTTU1VQmFzZUNsYXNzICpzYmMgPSBBUk1f
+U01NVV9HRVRfQ0xBU1MoZGV2KTsNCj4gPiArICAgIFBDSUJ1cyAqcGNpX2J1cyA9IHMtPnByaW1h
+cnlfYnVzOw0KPiA+ICAgICAgRXJyb3IgKmxvY2FsX2VyciA9IE5VTEw7DQo+ID4NCj4gPiAgICAg
+IHNiYy0+cGFyZW50X3JlYWxpemUoZGV2LCAmbG9jYWxfZXJyKTsNCj4gPiBAQCAtOTM3LDExICs5
+MzksMzIgQEAgc3RhdGljIHZvaWQgc21tdV9iYXNlX3JlYWxpemUoRGV2aWNlU3RhdGUNCj4gKmRl
+diwgRXJyb3IgKiplcnJwKQ0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgZ19mcmVlLCBnX2ZyZWUpOw0KPiA+ICAgICAgcy0+c21tdV9wY2lidXNfYnlfYnVzcHRyID0g
+Z19oYXNoX3RhYmxlX25ldyhOVUxMLCBOVUxMKTsNCj4gPg0KPiA+IC0gICAgaWYgKHMtPnByaW1h
+cnlfYnVzKSB7DQo+ID4gLSAgICAgICAgcGNpX3NldHVwX2lvbW11KHMtPnByaW1hcnlfYnVzLCAm
+c21tdV9vcHMsIHMpOw0KPiA+IC0gICAgfSBlbHNlIHsNCj4gPiArICAgIGlmICghcGNpX2J1cykg
+ew0KPiA+ICAgICAgICAgIGVycm9yX3NldGcoZXJycCwgIlNNTVUgaXMgbm90IGF0dGFjaGVkIHRv
+IGFueSBQQ0kgYnVzISIpOw0KPiA+ICsgICAgICAgIHJldHVybjsNCj4gPiArICAgIH0NCj4gPiAr
+DQo+ID4gKyAgICAvKg0KPiA+ICsgICAgICogV2Ugb25seSBhbGxvdyBkZWZhdWx0IFBDSWUgUm9v
+dCBDb21wbGV4KHBjaWUuMCkgb3IgcHhiLXBjaWUgYmFzZWQNCj4gZXh0cmENCj4gPiArICAgICAq
+IHJvb3QgY29tcGxleGVzIHRvIGJlIGFzc29jaWF0ZWQgd2l0aCBTTU1VLg0KPiA+ICsgICAgICov
+DQo+ID4gKyAgICBpZiAocGNpX2J1c19pc19leHByZXNzKHBjaV9idXMpICYmIHBjaV9idXNfaXNf
+cm9vdChwY2lfYnVzKSAmJg0KPiA+ICsgICAgICAgIG9iamVjdF9keW5hbWljX2Nhc3QoT0JKRUNU
+KHBjaV9idXMpLT5wYXJlbnQsDQo+IFRZUEVfUENJX0hPU1RfQlJJREdFKSkgew0KPiA+ICsgICAg
+ICAgIC8qDQo+ID4gKyAgICAgICAgICogRm9yIHB4Yi1wY2llLCBwYXJlbnRfZGV2IHdpbGwgYmUg
+c2V0LiBNYWtlIHN1cmUgaXQgaXMNCj4gPiArICAgICAgICAgKiBweGItcGNpZSBpbmRlZWQuDQo+
+ID4gKyAgICAgICAgICovDQo+ID4gKyAgICAgICAgaWYgKHBjaV9idXMtPnBhcmVudF9kZXYpIHsN
+Cj4gPiArICAgICAgICAgICAgaWYgKCFvYmplY3RfZHluYW1pY19jYXN0KE9CSkVDVChwY2lfYnVz
+KSwgVFlQRV9QWEJfUENJRV9CVVMpKSB7DQo+ID4gKyAgICAgICAgICAgICAgICBnb3RvIG91dF9l
+cnI7DQo+ID4gKyAgICAgICAgICAgIH0NCj4gSSBzdGlsbCB3b25kZXIgd2hldGhlciB0aGUgYWJv
+dmUgY2hlY2sgd2FzIG1hbmRhdGVkIGFzIGl0IHdvcmtzIGZvciB3aGF0DQo+IGl0IGlzIG1lYW50
+Og0KDQpBZGRlZCB0aGF0IGNoZWNrIHRvIG1ha2Ugc3VyZSB3ZSBkb24ndCBzdXBwb3J0IHB4Yi1j
+eGwgd2hpY2ggaXMgb2YgdHlwZQ0KUENJX0hPU1RfQlJJREdFLiBPbmNlIHRoZSBjeGwgc3VwcG9y
+dCBmb3IgQVJNIGlzIHVwIHN0cmVhbWVkIGFuZCB0ZXN0ZWQNCndpdGggU01NVXYzLCB3ZSBjYW4g
+cmVsYXggdGhpcyBpZiByZXF1aXJlZC4NCg0KPiBSZXZpZXdlZC1ieTogRXJpYyBBdWdlciA8ZXJp
+Yy5hdWdlckByZWRoYXQuY29tPg0KDQpUaGFua3MsDQpTaGFtZWVyDQoNCg==
 
