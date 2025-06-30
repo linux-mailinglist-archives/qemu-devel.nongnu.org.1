@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB515AEE7DF
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 22:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CDDAEE7DE
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 22:01:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWKfI-0002Yv-QQ; Mon, 30 Jun 2025 15:59:46 -0400
+	id 1uWKfU-0002jQ-NY; Mon, 30 Jun 2025 15:59:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKfE-0002YN-Hs
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:40 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKfL-0002dC-6D
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:49 -0400
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKf8-0007T5-7Y
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:39 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWKfI-0007U1-EP
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 15:59:45 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 2D1DA1F388;
- Mon, 30 Jun 2025 19:59:31 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 7906A1F393;
+ Mon, 30 Jun 2025 19:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751313571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1751313574; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HlUhl75o55wh5KXBSY2jvo6E9h5pDmOs/SQ2i3GvtJ4=;
- b=Iw1lfa/CaUf5gkvewCrrQG4v1u3+78Q7qO8fjt5lZ4Ax38b6wPika2ErjZDKHn7GzdorB5
- PdCaCNWk71vzYn0yeB1kNHeOyTAExP6cP7teIKH/URUFrXUTbAg7yOMbvwNeBPP9AEaBTh
- 2HZuL3sQgykVQta0oOFyJ0mPh+s3rmA=
+ bh=MUB/IZD2jkUuleGLSl99i/f1/dQ8eMW7zGyUow/gd5k=;
+ b=eco0fj8QmGM0ZyO9yLAUo7vvdhJX4AkZb8ftx8Cp7Vw6UWDXnWAGWOioSqaLllr4rEcVDz
+ O5jwHI8uBJylZnqRM6VVXtnkQapo2P8sFGY3kilXpxworV6q2LPtTRF3u4SC0PkgJyQJPk
+ zIL5KSGHzkEn8gHb/JGx/zHLTVEV3xU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751313571;
+ s=susede2_ed25519; t=1751313574;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HlUhl75o55wh5KXBSY2jvo6E9h5pDmOs/SQ2i3GvtJ4=;
- b=E5UuvQDSPMWBNiUk4VFdC+oEWRExY4iPVejA9YQHhsi2ncjLbmPoDkXFqe0QUnsxlBhCHY
- McrvbWLZ49mffICQ==
+ bh=MUB/IZD2jkUuleGLSl99i/f1/dQ8eMW7zGyUow/gd5k=;
+ b=Yq43iG+T7xoGci1/id7FGrG0wLi8J1UdL3SxlrpExN1l/kHxN+El+15rWF79ZgOosjWWfd
+ ZZAaEJJ7Qp9+4vBQ==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1751313571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1751313573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HlUhl75o55wh5KXBSY2jvo6E9h5pDmOs/SQ2i3GvtJ4=;
- b=Iw1lfa/CaUf5gkvewCrrQG4v1u3+78Q7qO8fjt5lZ4Ax38b6wPika2ErjZDKHn7GzdorB5
- PdCaCNWk71vzYn0yeB1kNHeOyTAExP6cP7teIKH/URUFrXUTbAg7yOMbvwNeBPP9AEaBTh
- 2HZuL3sQgykVQta0oOFyJ0mPh+s3rmA=
+ bh=MUB/IZD2jkUuleGLSl99i/f1/dQ8eMW7zGyUow/gd5k=;
+ b=SHH7rllYEae0mqdHrzzRyi1avl9WSFJbI0DtdfNgUIN5ljady2blLdwnmZBzFFz/gQmTuN
+ Tm4EjFzj9LZJ6Nroau9zK2PhnaCcwi97e8nkeMJq33n1ONC7ugneRPeA++19qC3DK2mzA5
+ v9BzqX0wMduLkLjOLl3EQx8luEiCT9w=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1751313571;
+ s=susede2_ed25519; t=1751313573;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HlUhl75o55wh5KXBSY2jvo6E9h5pDmOs/SQ2i3GvtJ4=;
- b=E5UuvQDSPMWBNiUk4VFdC+oEWRExY4iPVejA9YQHhsi2ncjLbmPoDkXFqe0QUnsxlBhCHY
- McrvbWLZ49mffICQ==
+ bh=MUB/IZD2jkUuleGLSl99i/f1/dQ8eMW7zGyUow/gd5k=;
+ b=Ltr+FmnUjVRZKi0Ck2xDuIScnl5MrkbkXK2a6s5pjBlgCP3c1ia4DTCXspikTOmhqT1mb6
+ tIHu0nTYauhsq2Bg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9FDC31399F;
- Mon, 30 Jun 2025 19:59:29 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC6E21399F;
+ Mon, 30 Jun 2025 19:59:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id SKnAFqHsYmhQUAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 30 Jun 2025 19:59:29 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id iIwvG6PsYmhQUAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 30 Jun 2025 19:59:31 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com,
-	armbru@redhat.com,
-	Peter Xu <peterx@redhat.com>
-Subject: [PATCH v2 06/24] migration: Run a post update routine after setting
- parameters
-Date: Mon, 30 Jun 2025 16:58:55 -0300
-Message-Id: <20250630195913.28033-7-farosas@suse.de>
+Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: [PATCH v2 07/24] migration: Add a flag to track block-bitmap-mapping
+ input
+Date: Mon, 30 Jun 2025 16:58:56 -0300
+Message-Id: <20250630195913.28033-8-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20250630195913.28033-1-farosas@suse.de>
 References: <20250630195913.28033-1-farosas@suse.de>
@@ -91,7 +90,7 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
  RCVD_TLS_ALL(0.00)[]
@@ -120,119 +119,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some migration parameters are updated immediately once they are set
-via migrate-set-parameters. Move that work outside of
-migrate_params_apply() and leave that function with the single
-responsibility of setting s->parameters and not doing any
-side-effects.
+The QAPI converts an empty list on the block-bitmap-mapping input into
+a NULL BitmapMigrationNodeAliasList. The empty list is a valid input
+for the block-bitmap-mapping option, so commit 3cba22c9ad ("migration:
+Fix block_bitmap_mapping migration") started using the
+s->parameters.has_block_bitmap_mapping field to tell when the user has
+passed in an empty list vs. when no list has been passed at all.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Using s->parameters.has_block_bitmap_mapping field is only possible
+because MigrationParameters has had its members made optional due to
+historical reasons.
+
+In order to make improvements to the way configuration options are set
+for a migration, we'd like to reduce the open-coded usage of the has_*
+fields of the global configuration object (s->parameters).
+
+Add a separate boolean to track the status of the block_bitmap_mapping
+option.
+
+No functional change intended.
+
+(this was verified to not regress iotest 300, which is the test that
+3cba22c9ad refers to)
+
+CC: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/options.c | 38 ++++++++++++++++++++++++++++----------
- migration/ram.c     |  2 +-
- 2 files changed, 29 insertions(+), 11 deletions(-)
+ migration/migration-hmp-cmds.c | 3 ++-
+ migration/migration.h          | 7 +++++++
+ migration/options.c            | 6 +++---
+ 3 files changed, 12 insertions(+), 4 deletions(-)
 
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 82cd2dcb8e..f29bdc12a8 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -240,6 +240,7 @@ void hmp_info_migrate_capabilities(Monitor *mon, const QDict *qdict)
+ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+ {
+     MigrationParameters *params;
++    MigrationState *s = migrate_get_current();
+ 
+     params = qmp_query_migrate_parameters(NULL);
+ 
+@@ -322,7 +323,7 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+             MigrationParameter_str(MIGRATION_PARAMETER_TLS_AUTHZ),
+                        params->tls_authz->u.s);
+ 
+-        if (params->has_block_bitmap_mapping) {
++        if (s->has_block_bitmap_mapping) {
+             const BitmapMigrationNodeAliasList *bmnal;
+ 
+             monitor_printf(mon, "%s:\n",
+diff --git a/migration/migration.h b/migration/migration.h
+index 739289de93..84c3007ab8 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -510,6 +510,13 @@ struct MigrationState {
+     bool rdma_migration;
+ 
+     GSource *hup_source;
++
++    /*
++     * The block-bitmap-mapping option is allowed to be an emtpy list,
++     * therefore we need a way to know whether the user has given
++     * anything as input.
++     */
++    bool has_block_bitmap_mapping;
+ };
+ 
+ void migrate_set_state(MigrationStatus *state, MigrationStatus old_state,
 diff --git a/migration/options.c b/migration/options.c
-index 295367ce92..1f8a977865 100644
+index 1f8a977865..cb5855303a 100644
 --- a/migration/options.c
 +++ b/migration/options.c
-@@ -1083,6 +1083,31 @@ void migrate_params_init(MigrationParameters *params)
-     params->has_direct_io = true;
- }
- 
-+static void migrate_post_update_params(MigrationParameters *new, Error **errp)
-+{
-+    MigrationState *s = migrate_get_current();
-+
-+    if (new->has_max_bandwidth) {
-+        if (s->to_dst_file && !migration_in_postcopy()) {
-+            migration_rate_set(new->max_bandwidth);
-+        }
-+    }
-+
-+    if (new->has_x_checkpoint_delay) {
-+        colo_checkpoint_delay_set();
-+    }
-+
-+    if (new->has_xbzrle_cache_size) {
-+        xbzrle_cache_resize(new->xbzrle_cache_size, errp);
-+    }
-+
-+    if (new->has_max_postcopy_bandwidth) {
-+        if (s->to_dst_file && migration_in_postcopy()) {
-+            migration_rate_set(new->max_postcopy_bandwidth);
-+        }
-+    }
-+}
-+
- /*
-  * Check whether the parameters are valid. Error will be put into errp
-  * (if provided). Return true if valid, otherwise false.
-@@ -1393,7 +1418,7 @@ static void migrate_params_test_apply(MigrationParameters *params,
-     }
- }
- 
--static void migrate_params_apply(MigrationParameters *params, Error **errp)
-+static void migrate_params_apply(MigrationParameters *params)
+@@ -736,7 +736,7 @@ bool migrate_has_block_bitmap_mapping(void)
  {
      MigrationState *s = migrate_get_current();
  
-@@ -1433,9 +1458,6 @@ static void migrate_params_apply(MigrationParameters *params, Error **errp)
+-    return s->parameters.has_block_bitmap_mapping;
++    return s->has_block_bitmap_mapping;
+ }
  
-     if (params->has_max_bandwidth) {
-         s->parameters.max_bandwidth = params->max_bandwidth;
--        if (s->to_dst_file && !migration_in_postcopy()) {
--            migration_rate_set(s->parameters.max_bandwidth);
--        }
-     }
+ uint32_t migrate_checkpoint_delay(void)
+@@ -1033,7 +1033,7 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->has_announce_step = true;
+     params->announce_step = s->parameters.announce_step;
  
-     if (params->has_avail_switchover_bandwidth) {
-@@ -1448,7 +1470,6 @@ static void migrate_params_apply(MigrationParameters *params, Error **errp)
+-    if (s->parameters.has_block_bitmap_mapping) {
++    if (s->has_block_bitmap_mapping) {
+         params->has_block_bitmap_mapping = true;
+         params->block_bitmap_mapping =
+             QAPI_CLONE(BitmapMigrationNodeAliasList,
+@@ -1513,7 +1513,7 @@ static void migrate_params_apply(MigrationParameters *params)
+         qapi_free_BitmapMigrationNodeAliasList(
+             s->parameters.block_bitmap_mapping);
  
-     if (params->has_x_checkpoint_delay) {
-         s->parameters.x_checkpoint_delay = params->x_checkpoint_delay;
--        colo_checkpoint_delay_set();
-     }
- 
-     if (params->has_multifd_channels) {
-@@ -1468,13 +1489,9 @@ static void migrate_params_apply(MigrationParameters *params, Error **errp)
-     }
-     if (params->has_xbzrle_cache_size) {
-         s->parameters.xbzrle_cache_size = params->xbzrle_cache_size;
--        xbzrle_cache_resize(params->xbzrle_cache_size, errp);
-     }
-     if (params->has_max_postcopy_bandwidth) {
-         s->parameters.max_postcopy_bandwidth = params->max_postcopy_bandwidth;
--        if (s->to_dst_file && migration_in_postcopy()) {
--            migration_rate_set(s->parameters.max_postcopy_bandwidth);
--        }
-     }
-     if (params->has_max_cpu_throttle) {
-         s->parameters.max_cpu_throttle = params->max_cpu_throttle;
-@@ -1542,7 +1559,8 @@ void qmp_migrate_set_parameters(MigrationParameters *params, Error **errp)
-     migrate_params_test_apply(params, &tmp);
- 
-     if (migrate_params_check(&tmp, errp)) {
--        migrate_params_apply(params, errp);
-+        migrate_params_apply(params);
-+        migrate_post_update_params(params, errp);
-     }
- 
-     migrate_tls_opts_free(&tmp);
-diff --git a/migration/ram.c b/migration/ram.c
-index 2140785a05..7432f82bdd 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -174,7 +174,7 @@ static void XBZRLE_cache_unlock(void)
- /**
-  * xbzrle_cache_resize: resize the xbzrle cache
-  *
-- * This function is called from migrate_params_apply in main
-+ * This function is called from migrate_post_update_config in main
-  * thread, possibly while a migration is in progress.  A running
-  * migration may be using the cache and might finish during this call,
-  * hence changes to the cache are protected by XBZRLE.lock().
+-        s->parameters.has_block_bitmap_mapping = true;
++        s->has_block_bitmap_mapping = true;
+         s->parameters.block_bitmap_mapping =
+             QAPI_CLONE(BitmapMigrationNodeAliasList,
+                        params->block_bitmap_mapping);
 -- 
 2.35.3
 
