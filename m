@@ -2,43 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1F5AEDB13
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 13:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC071AEDB22
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 13:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWCjE-0005uX-5c; Mon, 30 Jun 2025 07:31:16 -0400
+	id 1uWClo-0000n4-0R; Mon, 30 Jun 2025 07:33:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uWCir-0005sZ-Bf; Mon, 30 Jun 2025 07:30:53 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uWCll-0000mJ-1s; Mon, 30 Jun 2025 07:33:53 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uWCio-0004kO-9i; Mon, 30 Jun 2025 07:30:52 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 76E8844212;
- Mon, 30 Jun 2025 13:30:40 +0200 (CEST)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
- stefanha@redhat.com, fam@euphon.net
-Subject: [PATCH 4/4] iotests: add test for resizing a node below filters
-Date: Mon, 30 Jun 2025 13:27:33 +0200
-Message-ID: <20250630113035.820557-5-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250630113035.820557-1-f.ebner@proxmox.com>
-References: <20250630113035.820557-1-f.ebner@proxmox.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uWClg-00053M-9v; Mon, 30 Jun 2025 07:33:52 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bW3r20kYdz6L5MR;
+ Mon, 30 Jun 2025 19:30:42 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 7B2B01404C4;
+ Mon, 30 Jun 2025 19:33:29 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 30 Jun
+ 2025 13:33:28 +0200
+Date: Mon, 30 Jun 2025 12:33:27 +0100
+To: Eric Auger <eric.auger@redhat.com>
+CC: <eric.auger.pro@gmail.com>, <qemu-devel@nongnu.org>,
+ <qemu-arm@nongnu.org>, <peter.maydell@linaro.org>, <imammedo@redhat.com>,
+ <gustavo.romero@linaro.org>, <anisinha@redhat.com>, <mst@redhat.com>,
+ <shannon.zhaosl@gmail.com>, <pbonzini@redhat.com>, <philmd@linaro.org>,
+ <alex.bennee@linaro.org>
+Subject: Re: [PATCH v4 07/32] hw/pci-host/gpex-acpi: Use GED acpi pcihp
+ property
+Message-ID: <20250630123327.00004dcf@huawei.com>
+In-Reply-To: <20250627095620.3300028-8-eric.auger@redhat.com>
+References: <20250627095620.3300028-1-eric.auger@redhat.com>
+ <20250627095620.3300028-8-eric.auger@redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -51,109 +69,19 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
----
- tests/qemu-iotests/tests/resize-below-filter  | 73 +++++++++++++++++++
- .../tests/resize-below-filter.out             |  5 ++
- 2 files changed, 78 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/resize-below-filter
- create mode 100644 tests/qemu-iotests/tests/resize-below-filter.out
+On Fri, 27 Jun 2025 11:54:56 +0200
+Eric Auger <eric.auger@redhat.com> wrote:
 
-diff --git a/tests/qemu-iotests/tests/resize-below-filter b/tests/qemu-iotests/tests/resize-below-filter
-new file mode 100755
-index 0000000000..f55619cf34
---- /dev/null
-+++ b/tests/qemu-iotests/tests/resize-below-filter
-@@ -0,0 +1,73 @@
-+#!/usr/bin/env python3
-+# group: rw quick
-+#
-+# Test what happens when a node below filter nodes is resized.
-+#
-+# Copyright (C) Proxmox Server Solutions GmbH
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import os
-+import iotests
-+from iotests import imgfmt, qemu_img_create, QMPTestCase
-+
-+image_size = 1 * 1024 * 1024
-+image = os.path.join(iotests.test_dir, 'test.img')
-+
-+class TestResizeBelowFilter(QMPTestCase):
-+    def setUp(self) -> None:
-+        qemu_img_create('-f', imgfmt, image, str(image_size))
-+
-+        self.vm = iotests.VM()
-+        self.vm.add_blockdev(self.vm.qmp_to_opts({
-+            'driver': imgfmt,
-+            'node-name': 'node0',
-+            'file': {
-+                'driver': 'file',
-+                'filename': image,
-+            }
-+        }))
-+        self.vm.add_blockdev(self.vm.qmp_to_opts({
-+            'driver': 'compress',
-+            'node-name': 'comp0',
-+            'file': 'node0',
-+        }))
-+        self.vm.add_object('throttle-group,id=thrgr0')
-+        self.vm.add_blockdev(self.vm.qmp_to_opts({
-+            'driver': 'throttle',
-+            'node-name': 'thr0',
-+            'throttle-group': 'thrgr0',
-+            'file': 'comp0',
-+        }))
-+        self.vm.add_object('throttle-group,id=thrgr1')
-+        self.vm.add_blockdev(self.vm.qmp_to_opts({
-+            'driver': 'throttle',
-+            'node-name': 'thr1',
-+            'throttle-group': 'thrgr1',
-+            'file': 'node0',
-+        }))
-+        self.vm.launch()
-+
-+    def tearDown(self) -> None:
-+        self.vm.shutdown()
-+        os.remove(image)
-+
-+    def assert_size(self, size: int) -> None:
-+        nodes = self.vm.qmp('query-named-block-nodes', flat=True)['return']
-+        self.assertEqual(len(nodes), 5)
-+        for node in nodes:
-+            if node['drv'] == 'file':
-+                continue
-+            self.assertEqual(node['image']['virtual-size'], size)
-+
-+    def test_resize_below_filter(self) -> None:
-+        self.assert_size(image_size)
-+        self.vm.qmp('block_resize', node_name='thr0', size=2*image_size)
-+        self.assert_size(2*image_size)
-+        self.vm.qmp('block_resize', node_name='comp0', size=3*image_size)
-+        self.assert_size(3*image_size)
-+        self.vm.qmp('block_resize', node_name='node0', size=4*image_size)
-+        self.assert_size(4*image_size)
-+
-+if __name__ == '__main__':
-+    iotests.main(supported_fmts=['qcow2'], supported_protocols=['file'])
-diff --git a/tests/qemu-iotests/tests/resize-below-filter.out b/tests/qemu-iotests/tests/resize-below-filter.out
-new file mode 100644
-index 0000000000..ae1213e6f8
---- /dev/null
-+++ b/tests/qemu-iotests/tests/resize-below-filter.out
-@@ -0,0 +1,5 @@
-+.
-+----------------------------------------------------------------------
-+Ran 1 tests
-+
-+OK
--- 
-2.47.2
+> Retrieve the acpi pcihp property value from the ged. In case this latter
+> is not set, PCI native hotplug is used on pci0. For expander bridges we
+> keep pci native hotplug, as done on x86 q35.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
 
-
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
