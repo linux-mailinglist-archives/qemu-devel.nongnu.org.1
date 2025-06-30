@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9781AED3C3
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 07:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6D1AED3C2
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 07:19:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uW6th-0005X7-Po; Mon, 30 Jun 2025 01:17:41 -0400
+	id 1uW6th-0005X8-Pb; Mon, 30 Jun 2025 01:17:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uW6tc-0005VL-9W; Mon, 30 Jun 2025 01:17:37 -0400
+ id 1uW6te-0005Vl-Tq; Mon, 30 Jun 2025 01:17:38 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uW6tZ-0003fn-Ty; Mon, 30 Jun 2025 01:17:36 -0400
+ id 1uW6td-0003fn-5Z; Mon, 30 Jun 2025 01:17:38 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 30 Jun
@@ -30,11 +30,13 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v3 0/3] Add QEMU model for ASPEED OTP memory and integrate
- with SoC
-Date: Mon, 30 Jun 2025 13:17:17 +0800
-Message-ID: <20250630051721.254207-1-kane_chen@aspeedtech.com>
+Subject: [PATCH v3 1/3] hw/misc/aspeed_otp: Add OTP device model with fallback
+ RAM storage
+Date: Mon, 30 Jun 2025 13:17:18 +0800
+Message-ID: <20250630051721.254207-2-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250630051721.254207-1-kane_chen@aspeedtech.com>
+References: <20250630051721.254207-1-kane_chen@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -65,59 +67,195 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-This patch series introduces a QEMU model for the ASPEED OTP (One-Time
-Programmable) memory, along with its integration into the Secure Boot
-Controller (SBC) and supported SoC (AST2600).
+This patch introduces a QEMU model of the ASPEED One-Time Programmable
+(OTP) memory, used for secure fuse storage. The model simulates a
+word-addressable OTP region with a memory-like interface via a dedicated
+AddressSpace.
 
-The OTP model emulates a simple fuse array used for secure boot or
-device configuration, implemented with internal buffers; external
-file/device support not included in this version. It exposes an
-AddressSpace to support transaction-based access from controllers
-like the SBC.
+If no external block backend is provided via the "drive" property, the
+model automatically allocates an internal RAM-backed storage buffer
+to hold OTP data, enabling simplified usage without CLI configuration.
 
-This series includes:
-  - OTP memory device implementation
-  - SBC integration with command decoding (READ/PROG)
-  - Direct integration in AST2600 SoC without requiring user parameters
-
-Any feedback or suggestions are appreciated!
-
-Kane
+Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 ---
-
-ChangeLog
----------
-v3:
-- Switched to object_property_set_int() for setting "size"
-- Simplified qdev_realize() error handling by passing errp directly
-- Added "drive" property to OTP model for future extensibility
-
-v2:
-- Rename device from 'aspeed_otpmem' to 'aspeed_otp' and move it to hw/nvram/
-- Move OTP device realization from instance_init to the realize function
-- Improve error logging with qemu_log_mask() and remove unused error propagation
-
-v1:
-- Initial version
-
----
-
-Kane-Chen-AS (3):
-  hw/misc/aspeed_otp: Add OTP device model with fallback RAM storage
-  hw/misc/aspeed_sbc: Connect ASPEED OTP memory device to SBC
-  hw/arm: Integrate ASPEED OTP memory support into AST2600 SoCs
-
- include/hw/misc/aspeed_sbc.h  |   5 ++
  include/hw/nvram/aspeed_otp.h |  33 ++++++++++
- hw/arm/aspeed_ast2600.c       |   2 +-
- hw/misc/aspeed_sbc.c          | 113 ++++++++++++++++++++++++++++++++++
  hw/nvram/aspeed_otp.c         | 113 ++++++++++++++++++++++++++++++++++
- hw/misc/trace-events          |   5 ++
  hw/nvram/meson.build          |   4 ++
- 7 files changed, 274 insertions(+), 1 deletion(-)
+ 3 files changed, 150 insertions(+)
  create mode 100644 include/hw/nvram/aspeed_otp.h
  create mode 100644 hw/nvram/aspeed_otp.c
 
+diff --git a/include/hw/nvram/aspeed_otp.h b/include/hw/nvram/aspeed_otp.h
+new file mode 100644
+index 0000000000..22b2195a00
+--- /dev/null
++++ b/include/hw/nvram/aspeed_otp.h
+@@ -0,0 +1,33 @@
++/*
++ *  ASPEED OTP (One-Time Programmable) memory
++ *
++ *  Copyright (C) 2025 Aspeed
++ *
++ *  SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef ASPEED_OTP_H
++#define ASPEED_OTP_H
++
++#include "system/memory.h"
++#include "hw/block/block.h"
++#include "system/address-spaces.h"
++
++#define TYPE_ASPEED_OTP "aspeed.otp"
++OBJECT_DECLARE_SIMPLE_TYPE(AspeedOTPState, ASPEED_OTP)
++
++typedef struct AspeedOTPState {
++    DeviceState parent_obj;
++
++    BlockBackend *blk;
++
++    uint64_t size;
++
++    AddressSpace as;
++
++    MemoryRegion mmio;
++
++    uint8_t *storage;
++} AspeedOTPState;
++
++#endif /* ASPEED_OTP_H */
+diff --git a/hw/nvram/aspeed_otp.c b/hw/nvram/aspeed_otp.c
+new file mode 100644
+index 0000000000..f018c58713
+--- /dev/null
++++ b/hw/nvram/aspeed_otp.c
+@@ -0,0 +1,113 @@
++/*
++ *  ASPEED OTP (One-Time Programmable) memory
++ *
++ *  Copyright (C) 2025 Aspeed
++ *
++ *  SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "qapi/error.h"
++#include "system/block-backend-global-state.h"
++#include "system/block-backend-io.h"
++#include "hw/qdev-properties.h"
++#include "hw/nvram/aspeed_otp.h"
++
++static uint64_t aspeed_otp_read(void *opaque, hwaddr offset, unsigned size)
++{
++    AspeedOTPState *s = opaque;
++    uint64_t val = 0;
++
++    memcpy(&val, s->storage + offset, size);
++
++    return val;
++}
++
++static void aspeed_otp_write(void *opaque, hwaddr offset,
++                                uint64_t val, unsigned size)
++{
++    AspeedOTPState *s = opaque;
++
++    memcpy(s->storage + offset, &val, size);
++}
++
++static bool aspeed_otp_init_storage(AspeedOTPState *s, Error **errp)
++{
++    uint32_t *p;
++    int i, num;
++    uint64_t perm;
++
++    if (s->blk) {
++        perm = BLK_PERM_CONSISTENT_READ |
++               (blk_supports_write_perm(s->blk) ? BLK_PERM_WRITE : 0);
++        if (blk_set_perm(s->blk, perm, BLK_PERM_ALL, errp) < 0) {
++            return false;
++        }
++        if (blk_pread(s->blk, 0, s->size, s->storage, 0) < 0) {
++            error_setg(errp, "Failed to read the initial flash content");
++            return false;
++        }
++    } else {
++        num = s->size / sizeof(uint32_t);
++        p = (uint32_t *)s->storage;
++        for (i = 0; i < num; i++) {
++            p[i] = (i % 2 == 0) ? 0x00000000 : 0xFFFFFFFF;
++        }
++    }
++    return true;
++}
++
++static const MemoryRegionOps aspeed_otp_ops = {
++    .read = aspeed_otp_read,
++    .write = aspeed_otp_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid.min_access_size = 1,
++    .valid.max_access_size = 4,
++};
++
++static void aspeed_otp_realize(DeviceState *dev, Error **errp)
++{
++    AspeedOTPState *s = ASPEED_OTP(dev);
++
++    if (s->size == 0) {
++        error_setg(errp, "aspeed.otp: 'size' property must be set");
++        return;
++    }
++
++    s->storage = blk_blockalign(s->blk, s->size);
++
++    if (!aspeed_otp_init_storage(s, errp)) {
++        return;
++    }
++
++    memory_region_init_io(&s->mmio, OBJECT(dev), &aspeed_otp_ops,
++                          s, "aspeed.otp", s->size);
++    address_space_init(&s->as, &s->mmio, NULL);
++}
++
++static const Property aspeed_otp_properties[] = {
++    DEFINE_PROP_UINT64("size", AspeedOTPState, size, 0),
++    DEFINE_PROP_DRIVE("drive", AspeedOTPState, blk),
++};
++
++static void aspeed_otp_class_init(ObjectClass *klass, const void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    dc->realize = aspeed_otp_realize;
++    device_class_set_props(dc, aspeed_otp_properties);
++}
++
++static const TypeInfo aspeed_otp_info = {
++    .name          = TYPE_ASPEED_OTP,
++    .parent        = TYPE_DEVICE,
++    .instance_size = sizeof(AspeedOTPState),
++    .class_init    = aspeed_otp_class_init,
++};
++
++static void aspeed_otp_register_types(void)
++{
++    type_register_static(&aspeed_otp_info);
++}
++
++type_init(aspeed_otp_register_types)
+diff --git a/hw/nvram/meson.build b/hw/nvram/meson.build
+index 10f3639db6..b66f23605b 100644
+--- a/hw/nvram/meson.build
++++ b/hw/nvram/meson.build
+@@ -19,3 +19,7 @@ system_ss.add(when: 'CONFIG_XLNX_BBRAM', if_true: files('xlnx-bbram.c'))
+ 
+ specific_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr_nvram.c'))
+ specific_ss.add(when: 'CONFIG_ACPI', if_true: files('fw_cfg-acpi.c'))
++
++system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
++  'aspeed_otp.c',
++  ))
+\ No newline at end of file
 -- 
 2.43.0
 
