@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFE5AEE2C2
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 17:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8271BAEE2D3
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 17:40:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWGV4-0005vF-FY; Mon, 30 Jun 2025 11:32:55 -0400
+	id 1uWGXW-00025q-CV; Mon, 30 Jun 2025 11:35:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWGUY-0005eX-1H
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 11:32:25 -0400
-Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
+ id 1uWGWz-0001rk-SC
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 11:34:57 -0400
+Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWGUR-0000Kn-2l
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 11:32:20 -0400
-Received: by mail-yw1-x112a.google.com with SMTP id
- 00721157ae682-714078015edso23920017b3.2
- for <qemu-devel@nongnu.org>; Mon, 30 Jun 2025 08:32:13 -0700 (PDT)
+ id 1uWGWv-0000Te-9k
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 11:34:53 -0400
+Received: by mail-yw1-x1134.google.com with SMTP id
+ 00721157ae682-7086dcab64bso20294427b3.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Jun 2025 08:34:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751297531; x=1751902331; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751297684; x=1751902484; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BBv5z/VpiWqm6TUtxvPZN70k+f7CGqEYeEiw2nVISzY=;
- b=GQaP1ajrwi2MxcOS0whhzOgb7kVFhlNBRSoXJPWFtAz/1r7EHhtAUtQ3+XUd7rJJ4s
- Ylr845FGeWf1iLelv7Dgl/IloLavlC1H/VPSbRJxSqq9sYO6kZCZ+yOJ8WxXvQcAE/i3
- Vxb7ONOHtx773bKYcjAv23PQ1pNpZPJs6T30gOyfH+JEeJOou+6vvsMUBiMHZHIAY+bf
- 7sd3ogL/12StSJtjybREKCVMN1pLSsTqo+4bK/4b7T+wVYVA5JuY1EU8R7cCO6rBUF75
- IMhDf9CSEc/C58nJRabJBUniIELOA7dGwe6sKnneGkO5DHF9NF+7qDT9TCJzK39IBZ7x
- H0vg==
+ bh=DzC/oii9o7rPIbYU7tLpYjy4/LYNBCTnqw6z2ZXkL0s=;
+ b=p2RA4p3gphMpWD2MHq2uuELtfZUtaKMc+wWHepQKHhgrfxuAxLWd37DcbmfdB9MF+G
+ eKaKx6rQigcXIyvfwE0fgMUv0tjDFS6w9jo/OrT925PNnQW9I+pUOH77gwBhG1fBBPwa
+ CGNEFcsUPmhFt3vwzCd9lVa03nchrtfjgMUbrszJOvw+cbNHmrcAK2wbG7lXkIIKLbz5
+ A5o5AKyCQVETM4gYw9cKO9rbqRgqWGDA879qHv8eTek0BQxyVt0fdabe6xj8Wqns9/GG
+ 8DE4w93rHVqKdemwcftMxfNMFZ0mVDcCSLCGurnWLkZP5XiiaczzlWqvF97K3NA/i1l9
+ 2x/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751297531; x=1751902331;
+ d=1e100.net; s=20230601; t=1751297684; x=1751902484;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BBv5z/VpiWqm6TUtxvPZN70k+f7CGqEYeEiw2nVISzY=;
- b=j14+AB8IqmxetO4vnunwCARZBrPxQE97b5UasTchfARliM/SGBlaNGxKmqhhF1LlWb
- q9d3Qdpdbvah63rQ8sXAxkXSkz/fqLvs+McssV5GjBJ+5DB4JfPic6W9eTZqTEV/0x8m
- 18LYh2LjrlCEOEorDirjtnk3tbvCg9EKAjCvDIa6VIBQDci2SUjdq4J4gQp61lZtllj3
- V/xEjTvYCzbeI+x++QHW7g/q1Eg3n60Oi7q5J4SG//qU93M+RHSM8ltl+8+yiRZ8Mycm
- AgzVfgrFH+JoYz8RlymSGrIpux7QnUIhrE/ny0NgH3dGl/Hak9GXBmC0VcQZY40fOoy1
- KpbA==
-X-Gm-Message-State: AOJu0Yx+F7KvWVxuFYpeVGObWnk1ryo00WH9qfJb5tzVRrwvjNnqKWzk
- FBdhDU/Godk1ZUkl4ksWZTz4waMoRQHmjsH1saFWiXmlqJ4mljdUzQy+mIuSEImdhPil/ZMIepq
- SINmS0w6A3va5euzXxU0qkZZug814XlkQTmg2hD+uaw==
-X-Gm-Gg: ASbGncvZX/xR5AajeosGh6qKsI1TqzdFwFjZ5m6/mUh9WFoWMQzKBO0PdH2dJnBsAPI
- YegmObQJzqjHiG+nSIeRzpAg2+9H5PPc0b43dF0uZ+t+UrumNmQ91oUPN3ULp9tU9nl4+izLkJD
- +Q+jBPIAUgADh5+Ewys/br03DPysxSjVcCIjwMi313ABdN
-X-Google-Smtp-Source: AGHT+IHy8nnqmhTcZqN296zS/GH2AzcmKJFgjhBGMvlHCoJRvN7kCBoPACAJDbr1konLbK5VYHH+YUoYt2nSk6mM5yk=
-X-Received: by 2002:a05:690c:4b8c:b0:710:edf9:d93b with SMTP id
- 00721157ae682-71517158331mr260393347b3.11.1751297531250; Mon, 30 Jun 2025
- 08:32:11 -0700 (PDT)
+ bh=DzC/oii9o7rPIbYU7tLpYjy4/LYNBCTnqw6z2ZXkL0s=;
+ b=KtXeYjvhchU9UYO9SvnHJoKT3ofRO8RbUE91mLV+X4fHlPAsb30LBWL2rXFMVGXeUC
+ cUimMalwVSiWCFm+hOaA6Q5J4MJT6yHfpwarBuVtpnOKZDhm1XUxCgCKjMDzytRaMSNt
+ vH+yAeklPm97zFOvayqfEb5PeDj9XbeeX6tXerKBIuZ5jswp4mZuIE285xX/roWGpF8Q
+ ShLp3FoyivYFpGxaBIF6oT2eGnow3nkoUBa3u99dcggqGKokii81A7lpeaJF/A6e4P28
+ E5vAyeG0cMv97y1gBTRQTizH4xNJQmiYX/DPx+qRh1VM3zENHeYAOS5wC0VILKOyoYy/
+ bNgg==
+X-Gm-Message-State: AOJu0YwBriPnLpmmqdKWi5MTCMUM/YfcyV6gH1MFe36Qsf+LMy9mscBj
+ 2sSafF4WKfEHy9NuCc6l+cGC6R+3dmT5fY6wQIigIAyqIUtlz0UbXM74K4CwE0E2Tgx4FNc2sRI
+ IVJw+0I7R0EEkYq0vx8/bY23i1Vz/DuDtM0hSBQrvGg==
+X-Gm-Gg: ASbGncsM29z7PhY7Etx6eJ6hz72k/yTg7KsMlq7ruLsLOrj16A90j0eTE+vRdGJf0GL
+ xlOGlIBeoNZk2Nr6b+T6YVznrDpHpj9yCa2mBSe8PPbj4ZFZZj9Vhx5skBvLeCH4YvrfR619q9u
+ 6zbublcQyU3DwVgz7VLgRW8kq77jxyxvrv9t9WoeBQmgrH
+X-Google-Smtp-Source: AGHT+IH+iwwqTU7zlX2I945lgbnNlrrxF9cxMU8gMHe6Vd7HsmOmqSLMequo3znfXJSEumDV7EvriQUoY33Fxg3xTNc=
+X-Received: by 2002:a05:690c:d85:b0:70f:8884:17af with SMTP id
+ 00721157ae682-7151714d14emr228157307b3.6.1751297684555; Mon, 30 Jun 2025
+ 08:34:44 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250623121845.7214-1-philmd@linaro.org>
- <20250623121845.7214-11-philmd@linaro.org>
-In-Reply-To: <20250623121845.7214-11-philmd@linaro.org>
+ <20250623121845.7214-21-philmd@linaro.org>
+In-Reply-To: <20250623121845.7214-21-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 30 Jun 2025 16:31:59 +0100
-X-Gm-Features: Ac12FXxL7r8Fqtmkx3bL2CVmkkdzP7qpLkzAMPTSCdtXWbBVYPe4zZUG2yIbwZA
-Message-ID: <CAFEAcA-fe_8qZFWjTAB3EGFpR6vO=fHj-yB7cV=CYgjsVgLOcg@mail.gmail.com>
-Subject: Re: [PATCH v3 10/26] accel/hvf: Model PhysTimer register
+Date: Mon, 30 Jun 2025 16:34:32 +0100
+X-Gm-Features: Ac12FXygwnSXLP-ZPonXcEmOAhgztcCBXBn2LNuOkJFkl9HoaCecpnHthAmLnYw
+Message-ID: <CAFEAcA_xqu1oDLThHBp5T_srQs2+2oxWTXF=sQzBjKDduc0cfw@mail.gmail.com>
+Subject: Re: [PATCH v3 20/26] hw/arm/virt: Rename cpu_post_init() ->
+ post_cpus_gic_realized()
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Leif Lindholm <leif.lindholm@oss.qualcomm.com>, 
  qemu-arm@nongnu.org,
@@ -79,14 +80,15 @@ Cc: qemu-devel@nongnu.org, Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
  =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112a.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,55 +104,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 23 Jun 2025 at 13:19, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+On Mon, 23 Jun 2025 at 13:20, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
-> Emulate PhysTimer dispatching to TCG, like we do with GIC registers.
+> QDev uses _post_init() during instance creation, before being
+> realized. Since here both vCPUs and GIC are REALIZED, rename
+> as virt_post_cpus_gic_realized() for clarity.
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/arm/hvf/hvf.c | 19 ++++++++-----------
->  1 file changed, 8 insertions(+), 11 deletions(-)
+>  hw/arm/virt.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index a9099570faa..da453768cce 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -2032,7 +2032,8 @@ static void finalize_gic_version(VirtMachineState *=
+vms)
+>   * virt_cpu_post_init() must be called after the CPUs have
 
+You forgot to update the function name in this comment :-)
 
-> @@ -1639,16 +1640,12 @@ static int hvf_sysreg_write(CPUState *cpu, uint32=
-_t reg, uint64_t val)
->      case SYSREG_OSLAR_EL1:
->          env->cp15.oslsr_el1 =3D val & 1;
->          return 0;
-> -    case SYSREG_CNTP_CTL_EL0:
-> -        /*
-> -         * Guests should not rely on the physical counter, but macOS emi=
-ts
-> -         * disable writes to it. Let it do so, but ignore the requests.
-> -         */
-> -        qemu_log_mask(LOG_UNIMP, "Unsupported write to CNTP_CTL_EL0\n");
-> -        return 0;
->      case SYSREG_OSDLR_EL1:
->          /* Dummy register */
->          return 0;
-> +    case SYSREG_CNTP_CTL_EL0:
-> +    case SYSREG_CNTP_CVAL_EL0:
-> +    case SYSREG_CNTP_TVAL_EL0:
->      case SYSREG_ICC_AP0R0_EL1:
->      case SYSREG_ICC_AP0R1_EL1:
->      case SYSREG_ICC_AP0R2_EL1:
-
-This adds three registers which aren't GICv3 registers to
-a code path which has a comment
-
-        /* Call the TCG sysreg handler. This is only safe for GICv3 regs. *=
-/
-
-In general the TCG sysreg implementations aren't expecting
-to be called for non-TCG accelerators. I would like to see
-some analysis of why this is OK for the timer, please.
-(Compare commit a2260983c65 which notes the limitations under
-which this works for the GIC registers and had to make some
-minor changes to the GIC code both noting that it might be
-called for non-TCG accelerators and adjusting things so
-that would work.)
+>   * been realized and the GIC has been created.
+>   */
+> -static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysm=
+em)
+> +static void virt_post_cpus_gic_realized(VirtMachineState *vms,
+> +                                        MemoryRegion *sysmem)
 
 thanks
 -- PMM
