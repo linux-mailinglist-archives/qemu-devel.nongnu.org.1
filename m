@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DF8AEDE6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 15:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6A0AEDF3B
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 15:36:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWEI5-0006c7-DT; Mon, 30 Jun 2025 09:11:22 -0400
+	id 1uWEeh-00059d-AZ; Mon, 30 Jun 2025 09:34:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWEH4-00065Y-5N
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 09:10:19 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uWEed-00054G-8E
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 09:34:39 -0400
+Received: from mail-qk1-x729.google.com ([2607:f8b0:4864:20::729])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWEH1-0004HX-Hh
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 09:10:17 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-45377776935so24245125e9.3
- for <qemu-devel@nongnu.org>; Mon, 30 Jun 2025 06:10:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uWEeZ-0000Vp-IA
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 09:34:38 -0400
+Received: by mail-qk1-x729.google.com with SMTP id
+ af79cd13be357-7d45b80368dso118119685a.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Jun 2025 06:34:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751289013; x=1751893813; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=H+FJk0a0cgOcCeztwLwPBBSDzF3OpAdthXdeLrgGRTg=;
- b=XTpQt4bvJzM3pVhKFj/Mk7MJGqCB079O7nMagqoF1LO2T3LfZ+eUvvys2YKTJ0xH0o
- AeBGgB3005wKKxRkhJNZbOjB0RpPA9TjtphpC6PYuRmucfNX0D3LimoXLFR80Ziwmmbu
- d6dLNFZaIKnxamcaftC3hUqlIOh4dp9F04Ut3MMHSjmlgWvXbjbBF4IF1uhoXDjH8f+P
- /K88FOW+zfV29hpctz9bfmswe5SV33kHiSDaJ8EH0zovkVFBPwmVyT4udkuWGRaGKemQ
- QyeQ+uS19ugBzRe4nZtlbBYv4dTPRw5Asf/WDG063+imJnbp7pIZv5wpZvH4m+592VcO
- 1/OQ==
+ d=ventanamicro.com; s=google; t=1751290473; x=1751895273; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BJHmyagZgSRthH9fu6ABDOGhNEkejt6dd0IXbVCsbQo=;
+ b=V8yGCdr11XNig2/np5k5G2E7YY5ZlonS3OZMikYz/Z8c5efHBkN+YtxyDQj6gZUcPZ
+ eLoC26tBKDSqEEgD2uXZyZp5kc0tE2+Yxomt7FXQPEu36DTRO9Dq033iJntMZSpupg+/
+ a5bXqR4j5Hsw3LnxxeJ4P6O42anO0kFUxPpJlpaCUYjJw0Asid2Yw3HOeWbubsQb6zFZ
+ t7TZ1f/SzTz64D8eHYAQw03+imAVXOhOXsSSUERLLxwEOlaKgmMfGPgH1HtyN1/yqsFN
+ 8G1APNSfsbCbNNd2E6Zi9sGHLGWxup9wDDdvrjiL7/OxHSldHyuBRzeUiYhNOWYwgiGv
+ +2eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751289013; x=1751893813;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=H+FJk0a0cgOcCeztwLwPBBSDzF3OpAdthXdeLrgGRTg=;
- b=lVrVcrVxPPzhSKYOhrcg+MWuOrez/qoFR4NMdVKjTSb3RPlIAtkyaiI/uz8h8aBx2u
- ANdZE/bvgiyNZ4YJgwNWWQA0KpdJeMbxInztg9Edw8n2lpkDKYEr+bwiJw8fT7Nbgc/6
- aEoZBUAhHo1zBLEHPIJuDrLQsnZt0GNSHuBkjTx3aIpDm3pLSFR+p5JThhr4KQm4siax
- OOe+28qCbi17HV5jkGTAdAZtK6Sb+pNtK/rTJbKjXZT79mOj1mKz4XfqpzZvQ4j+sTO8
- S0V/tYQ+anmLGFDjjlHBUZWJK+o+RKaXwBFvegrOlSYHBEUzWXNDVMD3MGwltFBQ1k9H
- CGrw==
-X-Gm-Message-State: AOJu0YxJXQ5EtUBV/1OUAreOd/q33FfraW6nyIY9Ky/FgvKBjjdFTKLD
- IeEx2kTeUDUlcQtrfvWG1xDKMLZ65tgvkwv0GGmjk8pS8jkbr+GNKruED1PuxjRM+MkD0aqsWvc
- HErFk
-X-Gm-Gg: ASbGncv/GWbpE9dE/ciM4jfhxAPKeGXeGW2S+knEwiymhQ7bbrYF4mTRhtqVdQjsD8V
- YfJITfJa/U28xQrV6Yni1GuIrmMhQXa0+JFbc5PBVP7Qlmuj6o7im9sEfb5yG/cNRH85+EoC1D8
- 8CLI3HX/gf1LmQGojgFENhTez2uhdCmpCxz6wumSAfJ6oPaYpYrsunvhlUUVWXNp5q3H2cuWSek
- R3xmI8bCPgVnF06lqivXmhnc5bx8VdP1MJRj+i0YtsgWeWfgylONIE1Ls+l4OAIELYml3/4xh5d
- ph1A/8gqDiJS/O6OYbH5RyVKks7hZW7XFOkEkfIOfiZykAJQ6J5Pst3G8xHRHzDjvFSRVvKZwTL
- c9reRMXvcsOIjwmCqyjeXwkiuck0P9oeMkEC+
-X-Google-Smtp-Source: AGHT+IEByqu72FkfcvT5uo05D7E1vi0yvvlmhmF3Uteu/Agpq6RjqYSA3xSu6GHZbwfK+UN8hGdH/g==
-X-Received: by 2002:a05:600c:c0d7:b0:442:ccfa:fa with SMTP id
- 5b1f17b1804b1-4538f516210mr90896245e9.27.1751289012845; 
- Mon, 30 Jun 2025 06:10:12 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e52a35sm10549142f8f.57.2025.06.30.06.10.11
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Jun 2025 06:10:12 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1751290473; x=1751895273;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BJHmyagZgSRthH9fu6ABDOGhNEkejt6dd0IXbVCsbQo=;
+ b=sGsEHXigerqX/8kGMqX6W6Z+s64p3nx+X/Lk2TpYeE5GhlanwTqf9LzXYZddF7tcd8
+ MbVYG2AJvqThHztF7SVlUVPm/VyvL3iducCoDFLRLWvlgWRUofLD1qrylMFDlTQnDjEc
+ d/jgpHtUSeW5F5RjwDdOLWiJbCtfGJ2SWHcL9KAJCetH31QkL6/03Uool/IG7K+vTvcX
+ EfjVqT+LxwWcHnsvifuuSnuSFWSsxDdmGKFgBMhCw+UMBvUEYRESY43nqBNu6/j70wZz
+ ENMbrUh1/23A/hYY5pM9IMx++hJ+1z8bfsD6/2KP13uKuIYqDJOOtnMNWMyD6Aypzf1i
+ b6TA==
+X-Gm-Message-State: AOJu0YywyKUaM/QhvtbndJyq8oSrxyO7hbtnOgsn5o34M2KOna6xXpNo
+ 0Ip6b0SK40Y9+3xMLr+o1J5dCpy1S2A7SYmRvx5fhvNrM48OuQP5fdskYv02VUFC3aU3/ot2Jph
+ 4kMGt
+X-Gm-Gg: ASbGnctRylRjyzFY3YGzvL0VnlA6UtnqnOZUl9LbOuj8mqga2VRBGz/3SoLXfClO7bE
+ 3bWecOocQ0WZogl/kdysx0TpEFZgV2WicX9fQoP6Nlm78zLBK+KKFjnaUd1M7JvnOU7mjHcCwAN
+ +5XGzmmVVyoFaYbjX177GuTVrPgyBo6/RAEvCKvsnQ2pvi7TPes+AMgIZtD+cuzpDcQ2GluE8gs
+ 9THzKDowhuffIpP72HHw3Fm7DXG1x2crItnVULj4ze5Rl9XihIq03JbY9L+m0nhXWjaFdSRvwwl
+ WUDe9PuKQG6ksx9gJ8vNpFNy95hBGOB7pM6vzCQj12nj7rhsqDTh9ePZKefNriQ=
+X-Google-Smtp-Source: AGHT+IF/rkADL2Gvk3VHHG/Fl4omjLMNoohJZT5PxXM5S+otftNQYDBLH3OsM85JKpPCZVyEMh7YOg==
+X-Received: by 2002:a05:620a:3f85:b0:7d2:265:c2c1 with SMTP id
+ af79cd13be357-7d443969610mr2056103485a.27.1751289755138; 
+ Mon, 30 Jun 2025 06:22:35 -0700 (PDT)
+Received: from grind.. ([179.93.20.232]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7d45a7b35edsm203807785a.13.2025.06.30.06.22.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Jun 2025 06:22:34 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, qemu-arm@nongnu.org,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 6/6] target/arm: Allow arm_cpu_tlb_fill_align optionally set
- CPUTLBEntryFull
-Date: Mon, 30 Jun 2025 15:09:37 +0200
-Message-ID: <20250630130937.3487-7-philmd@linaro.org>
+Subject: [PATCH] hmp-cmds-target, target/riscv: add 'info register'
+Date: Mon, 30 Jun 2025 10:22:28 -0300
+Message-ID: <20250630132228.1276838-1-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250630130937.3487-1-philmd@linaro.org>
-References: <20250630130937.3487-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::729;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-qk1-x729.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,26 +99,246 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/arm/tcg/tlb_helper.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+The RISC-V target has *a lot* of CPU registers, with more registers
+being added along the way when new extensions are added. In this world,
+'info registers' will throw a wall of text that can be annoying to deal
+with when the user wants to verify the value of just a couple of
+registers.
 
-diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-index 23c72a99f5c..df04ef351d1 100644
---- a/target/arm/tcg/tlb_helper.c
-+++ b/target/arm/tcg/tlb_helper.c
-@@ -349,7 +349,9 @@ bool arm_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr address,
-                               &res, fi)) {
-         res.f.extra.arm.pte_attrs = res.cacheattrs.attrs;
-         res.f.extra.arm.shareability = res.cacheattrs.shareability;
--        *out = res.f;
-+        if (out) {
-+            *out = res.f;
-+        }
-         return true;
+Add a new 'info register' HMP command that prints a specific register.
+The semantics, and implementation, is similar to what 'info registers'
+already does, i.e. '-a' will print a register for all VCPUs and it's
+possible to print a reg for a specific VCPU.
+
+A RISC-V implementation is included via riscv_cpu_dump_register().
+
+Here's an example:
+
+Welcome to Buildroot
+buildroot login: QEMU 10.0.50 monitor - type 'help' for more information
+(qemu) info register mstatus
+
+CPU#0
+ mstatus  0000000a000000a0
+(qemu) info register mstatus -a
+
+CPU#0
+ mstatus  0000000a000000a0
+
+CPU#1
+ mstatus  0000000a000000a0
+(qemu)
+
+The API is introduced as TARGET_RISCV only.
+
+Cc: Dr. David Alan Gilbert <dave@treblig.org>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ hmp-commands-info.hx         | 17 +++++++++++++
+ hw/core/cpu-common.c         |  8 ++++++
+ include/hw/core/cpu.h        | 11 +++++++++
+ include/monitor/hmp-target.h |  1 +
+ monitor/hmp-cmds-target.c    | 30 ++++++++++++++++++++++
+ target/riscv/cpu.c           | 48 ++++++++++++++++++++++++++++++++++++
+ 6 files changed, 115 insertions(+)
+
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index 639a450ee5..f3561e4a02 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -113,6 +113,23 @@ SRST
+     Show the cpu registers.
+ ERST
+ 
++#if defined(TARGET_RISCV)
++    {
++        .name       = "register",
++        .args_type  = "register:s,cpustate_all:-a,vcpu:i?",
++        .params     = "[register|-a|vcpu]",
++        .help       = "show a cpu register (-a: show the register value for all cpus;"
++                      " vcpu: specific vCPU to query; show the current CPU's register if"
++                      " no vcpu is specified)",
++        .cmd        = hmp_info_register,
++    },
++
++SRST
++  ``info register``
++    Show a cpu register.
++ERST
++#endif
++
+ #if defined(TARGET_I386)
+     {
+         .name       = "lapic",
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 39e674aca2..9c65ce1537 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -108,6 +108,14 @@ void cpu_dump_state(CPUState *cpu, FILE *f, int flags)
      }
-     if (probe) {
+ }
+ 
++void cpu_dump_register(CPUState *cpu, const char *reg, FILE *f)
++{
++    if (cpu->cc->dump_register) {
++        cpu_synchronize_state(cpu);
++        cpu->cc->dump_register(cpu, reg, f);
++    }
++}
++
+ void cpu_reset(CPUState *cpu)
+ {
+     device_cold_reset(DEVICE(cpu));
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 33296a1c08..b9ddce22bd 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -160,6 +160,7 @@ struct CPUClass {
+     int (*memory_rw_debug)(CPUState *cpu, vaddr addr,
+                            uint8_t *buf, size_t len, bool is_write);
+     void (*dump_state)(CPUState *cpu, FILE *, int flags);
++    void (*dump_register)(CPUState *cpu, const char *reg, FILE *);
+     void (*query_cpu_fast)(CPUState *cpu, CpuInfoFast *value);
+     int64_t (*get_arch_id)(CPUState *cpu);
+     void (*set_pc)(CPUState *cpu, vaddr value);
+@@ -693,6 +694,16 @@ enum CPUDumpFlags {
+  */
+ void cpu_dump_state(CPUState *cpu, FILE *f, int flags);
+ 
++/**
++ * cpu_dump_register:
++ * @cpu: The CPU whose register state is to be dumped.
++ * @reg: CPU register name to be dumped.
++ * @f: If non-null, dump to this stream, else to current print sink.
++ *
++ * Dumps CPU register state.
++ */
++void cpu_dump_register(CPUState *cpu, const char *reg, FILE *f);
++
+ /**
+  * cpu_get_phys_page_attrs_debug:
+  * @cpu: The CPU to obtain the physical page address for.
+diff --git a/include/monitor/hmp-target.h b/include/monitor/hmp-target.h
+index b679aaebbf..da9d690f89 100644
+--- a/include/monitor/hmp-target.h
++++ b/include/monitor/hmp-target.h
+@@ -57,6 +57,7 @@ void hmp_info_via(Monitor *mon, const QDict *qdict);
+ void hmp_memory_dump(Monitor *mon, const QDict *qdict);
+ void hmp_physical_memory_dump(Monitor *mon, const QDict *qdict);
+ void hmp_info_registers(Monitor *mon, const QDict *qdict);
++void hmp_info_register(Monitor *mon, const QDict *qdict);
+ void hmp_gva2gpa(Monitor *mon, const QDict *qdict);
+ void hmp_gpa2hva(Monitor *mon, const QDict *qdict);
+ void hmp_gpa2hpa(Monitor *mon, const QDict *qdict);
+diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
+index 8eaf70d9c9..43f509aa60 100644
+--- a/monitor/hmp-cmds-target.c
++++ b/monitor/hmp-cmds-target.c
+@@ -121,6 +121,36 @@ void hmp_info_registers(Monitor *mon, const QDict *qdict)
+     }
+ }
+ 
++/*
++ * Based on hmp_info_registers().
++ */
++void hmp_info_register(Monitor *mon, const QDict *qdict)
++{
++    const char *reg = qdict_get_try_str(qdict, "register");
++    bool all_cpus = qdict_get_try_bool(qdict, "cpustate_all", false);
++    int vcpu = qdict_get_try_int(qdict, "vcpu", -1);
++    CPUState *cs;
++
++    if (all_cpus) {
++        CPU_FOREACH(cs) {
++            cpu_dump_register(cs, reg, NULL);
++        }
++    } else {
++        cs = vcpu >= 0 ? qemu_get_cpu(vcpu) : mon_get_cpu(mon);
++
++        if (!cs) {
++            if (vcpu >= 0) {
++                monitor_printf(mon, "CPU#%d not available\n", vcpu);
++            } else {
++                monitor_printf(mon, "No CPU available\n");
++            }
++            return;
++        }
++
++        cpu_dump_register(cs, reg, NULL);
++    }
++}
++
+ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+                         hwaddr addr, int is_physical)
+ {
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index e3f8ecef68..8b3edf7b23 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -640,6 +640,53 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+     }
+ }
+ 
++static void riscv_cpu_dump_register(CPUState *cs, const char *reg, FILE *f)
++{
++    RISCVCPU *cpu = RISCV_CPU(cs);
++    CPURISCVState *env = &cpu->env;
++    bool match_found = false;
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(csr_ops); i++) {
++        RISCVException res;
++        target_ulong val = 0;
++        int csrno = i;
++
++        /*
++         * Early skip when possible since we're going
++         * through a lot of NULL entries.
++         */
++        if (csr_ops[csrno].predicate == NULL) {
++            continue;
++        }
++
++        /*
++         * We're doing partial register name matching,
++         * e.g. 'mhpm' will match all registers that
++         * starts with 'mhpm'.
++         */
++        if (strncasecmp(csr_ops[csrno].name, reg, strlen(reg)) != 0) {
++            continue;
++        }
++
++        res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
++
++        /*
++         * Rely on the smode, hmode, etc, predicates within csr.c
++         * to do the filtering of the registers that are present.
++         */
++        if (res == RISCV_EXCP_NONE) {
++            if (!match_found) {
++                match_found = true;
++                qemu_fprintf(f, "\nCPU#%d\n", cs->cpu_index);
++            }
++
++            qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
++                         csr_ops[csrno].name, val);
++        }
++    }
++}
++
+ static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+@@ -2690,6 +2737,7 @@ static void riscv_cpu_common_class_init(ObjectClass *c, const void *data)
+ 
+     cc->class_by_name = riscv_cpu_class_by_name;
+     cc->dump_state = riscv_cpu_dump_state;
++    cc->dump_register = riscv_cpu_dump_register;
+     cc->set_pc = riscv_cpu_set_pc;
+     cc->get_pc = riscv_cpu_get_pc;
+     cc->gdb_read_register = riscv_cpu_gdb_read_register;
 -- 
 2.49.0
 
