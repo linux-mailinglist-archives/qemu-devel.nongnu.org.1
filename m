@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91482AEE2D6
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 17:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E72AEE2F3
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Jun 2025 17:44:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWGZZ-00068B-3k; Mon, 30 Jun 2025 11:37:33 -0400
+	id 1uWGff-0005Tg-RR; Mon, 30 Jun 2025 11:43:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWGZR-0005ka-4E
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 11:37:25 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uWGfW-0005T9-PH
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 11:43:42 -0400
+Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWGZK-0000qA-Rm
- for qemu-devel@nongnu.org; Mon, 30 Jun 2025 11:37:23 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4531e146a24so27409225e9.0
- for <qemu-devel@nongnu.org>; Mon, 30 Jun 2025 08:37:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uWGfP-0001e0-3a
+ for qemu-devel@nongnu.org; Mon, 30 Jun 2025 11:43:42 -0400
+Received: by mail-yw1-x112a.google.com with SMTP id
+ 00721157ae682-714066c7bbbso51187837b3.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Jun 2025 08:43:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751297836; x=1751902636; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JOJ+rde49eR2UU0+SWNXcIZNdjGp05r03y3MCEvfDcs=;
- b=g0f7PIsq7aRyPvkZ4KPWVirS5OIrs7nZygqkWM0l0+5AictbXz+BgIma4XX5UwahTS
- 17Y2SVJFGXk/vNvlSb0EH0fsRS5lrshWiB3D1fPBPzQrUQlbDPLgyYaFvfvmyqlzrTvH
- rNAqJr4a5CtJC3eD4K46YDJLu0jsLZ87SIZlzEPN9QttjPYEP03F97l2tqPQyTGiTuA0
- wHLcVlBPaH0tf67b5S4vvtaPA/2+OKnhe58u3zQMilaX7ewSpKuzM5vjdxC3vt1IV2cB
- dZKC5HtzFlmpTLm5o73wb/uqZicjGd6eHcH6mLVxbNX0+ZtoU+ncqwE4kFqrrZvXaEgT
- Weyw==
+ d=linaro.org; s=google; t=1751298213; x=1751903013; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=tpgMN9h+M63CoPGwNEgkGRr9c5WoBO81ddlM3dhheL8=;
+ b=UVuHYTyUFvvCBMDDgr8qyv+hq3PLXcCZWmaqVNlGHVFcWE9LEyYBJhF8rqke+cV0sJ
+ cnTKDgtBTtFt3opoCf04ZPL0B35Bd/oXb403KeTjJBrgGQbJLQ2bg8LuSMrUkEwesCBB
+ 8Zbg8SRkpys6oFgSkA+b7gVxzNESBAIxX5DrS6tQYOUxKzByQLDLyzDgmziUp/9HZfE3
+ 92u1bX62y8AUNNFOxSfFsazzfcCwsiHOCYOLCqEkHK1jqMMEexg66cqwCGQf5r+uV3wO
+ BTMultIdfggpuu8Ms7Rl8cF4LJL95V/3Y5gBDlJqVNQXvQqMSoGXWhr+qApmz61RkbTb
+ mNTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751297836; x=1751902636;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JOJ+rde49eR2UU0+SWNXcIZNdjGp05r03y3MCEvfDcs=;
- b=NsHvfHA6Pp6DlrQ8Wxsya03U4hM1R8V6HRwybdbhEdcZrhwWNx46ukMY1/OLwNJaJi
- jjxaKpqOSD9dqVNkyx4e2M/hGJKwoIE66JCoRWUwoi+m82c5WQEz2LVbYr2h4sKTn1Qv
- 3TVqWXMscs1wUWIwkiHTzRbxuCme6r1CDSPqxSgedjsBg0/kDMrmKb2t4YKAhUlTC/SV
- o4qqRtjR56sngOXAjtJ7/t7McDA3BCunZ6wCh3nfsT03kX9eWaHT4tJUwifdvjJFXLX8
- kYh70bS3ONrL7TYDNue2TfpZwK2oENwR2hy6P/HSrvLwSDLDE/lpX6YCOEHN5SMRWM6Q
- wTzw==
-X-Gm-Message-State: AOJu0YyR9wR7M44m4kk3Ja7HfReB5elo0KBcq0EzwjOwAWxiulWMpzdQ
- E3IWJCiZ81QBzQUT8R0HbUJiw1pQWZorQzKXOgHYZjnXA7kk0dUlI9WX/EWImv9R77o=
-X-Gm-Gg: ASbGnctg4UKU/95kpolXC2FcUwZZIobF82MrHgPIg64pyf4v5G88IcXbRKbjJz+Gnyh
- SYE+KL/5gDMTg/imsaL6E3MVgKjTR2AlLZ5S8/R3GDHXS9U4IDa7eTvZPJiai2Dmc/7fk326fUh
- cbuyXnEZEVxPaWHofcGqXmj8QE69LrlsKI6daoZB8lWGATJ052NWIeH0t5T0uHRwKWW29yE3KU3
- I8YsVZtbUlVquMr8Nqd0wF/mBWGfT8wnI1vL3A1Xgx45/CTx8l1Buidg18wzeNk7fj0/KXDP1hG
- p7pxdaXT5T4RluqpAMvGCUgnUz+NPPP7H2yaTALB8ATMpGZ6RzlDccvE2iM8ohnFFQ2jiY7Nyv2
- 9cxkWomXhrfylaPh1aBGDUenTG7vnrA==
-X-Google-Smtp-Source: AGHT+IGYHbO+RoFCZ8oKzQQkHeU05WvVBJlsvKY11qoLtZr2ZpLBYau/zHcgBKs4bF/U6gCnhASbMg==
-X-Received: by 2002:a05:600c:5246:b0:441:ac58:ead5 with SMTP id
- 5b1f17b1804b1-4539a843575mr83278015e9.31.1751297835988; 
- Mon, 30 Jun 2025 08:37:15 -0700 (PDT)
-Received: from [192.168.69.218] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e599bdsm10489394f8f.84.2025.06.30.08.37.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Jun 2025 08:37:15 -0700 (PDT)
-Message-ID: <d1d84b1f-3409-4292-82ac-5bdf65e3980e@linaro.org>
-Date: Mon, 30 Jun 2025 17:37:14 +0200
+ d=1e100.net; s=20230601; t=1751298213; x=1751903013;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tpgMN9h+M63CoPGwNEgkGRr9c5WoBO81ddlM3dhheL8=;
+ b=dCaWTOlmXUHFazvsizi6k00BxEenS9UT2vIzbRPUpVuZhF193AAX4IicJ+H5cT/bPE
+ WREulQqLqeY6oW15p0HoRO+2PCAQl11MS7+PvhQ6VixU1ocPWow4m+tR7E+Deoop7HnG
+ 4oY4GYe5ORAn0vrfz0bTROT20ZowyXfu3ytscCB1Oh+NDjc2fizBZFfzRsy9swNkLD8y
+ mZMCf47RTzt2KFB9Xz5jdl8k4Wb6hQRKX1iPfvqTL8vfYu5aZd8KU8evpHQlS2TBFI/O
+ iCQ33UWSEZNZkLfdJNTJvzmMkD8ouI8o1X7RKuERo88FhSqfFCjtEGz/IDL4pdQtcg48
+ iw8w==
+X-Gm-Message-State: AOJu0YxytVJHfrF6hO4q3Wb0KkQHqBPhe/4Y+R+ecAmupWi/mKFH8cZS
+ 27LfrCxV+9MyLBca6zcUomzYz4WPBjCh91OeFW0H2TUJQEPMoWeTOCgs8R+p99ji6vN2BpdvAlE
+ MWmVt1ULg0mIf5D0EB+Gf27PzypZD1B1Ta/ftVg9g8MhMof2gN56U
+X-Gm-Gg: ASbGncsZTBYc1KxNH9ayFu0i35SKb+tSR8CAwCROl5CPFHMRxadYx6ENPcu5hAkd7eU
+ Tj79W6eLd7IcIhYYLBrqiwTibcHJkQkf2INNgf0TvG0Tzr7ggK5dVX1PPV7KUu7OCeuoRqXRXm2
+ bw2VQQYxJt2qOWEkGW4+QXralv2fWiuwNRH7ztjxqDUU7J
+X-Google-Smtp-Source: AGHT+IEiZM5Wh+E+EOww6Wf0WqooOXE82xa6bcndGhsB51eX9CbAdwXweodGrWiWiIpFOEalLjDhFfkXMbvM1R69a6A=
+X-Received: by 2002:a05:690c:8:b0:710:f39f:a2bc with SMTP id
+ 00721157ae682-715171582damr173292087b3.8.1751298212786; Mon, 30 Jun 2025
+ 08:43:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: add myself as reviewer for Apple Silicon HVF
-To: Peter Maydell <peter.maydell@linaro.org>, Mads Ynddal <mads@ynddal.dk>
-Cc: qemu-devel@nongnu.org, Cameron Esfahani <dirty@apple.com>,
- Alexander Graf <agraf@csgraf.de>, Roman Bolshakov <rbolshakov@ddn.com>
-References: <20250617093001.70080-1-mads@ynddal.dk>
- <CAFEAcA-QZjmmkD1wo+hs4wQr94u--J0qm8arQbnR9VH2tuT-mQ@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA-QZjmmkD1wo+hs4wQr94u--J0qm8arQbnR9VH2tuT-mQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+References: <20250625105832.1277378-1-kosasihwilliam4@gmail.com>
+In-Reply-To: <20250625105832.1277378-1-kosasihwilliam4@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 30 Jun 2025 16:43:21 +0100
+X-Gm-Features: Ac12FXzRNKfDSUYL9PHn7gSiA3g1lzHF_hkG8ZIGyFqYrUIZA6mRN-US7EuQz6Q
+Message-ID: <CAFEAcA9X8B8cUbv2hj8dXEnu5OgBW=mzO47PBO9HEDzAVOnGCg@mail.gmail.com>
+Subject: Re: [PATCH] target/arm: Fix M-profile helper loads/stores alignment
+ checks
+To: William Kosasih <kosasihwilliam4@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,26 +90,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/6/25 16:38, Peter Maydell wrote:
-> On Tue, 17 Jun 2025 at 10:30, Mads Ynddal <mads@ynddal.dk> wrote:
->>
->> I've both publicly and private been digging around the Apple Silicon HVF code,
->> and use it daily as part of my job. I feel I have a solid understanding of it,
->> so I thought I'd step up and assist.
->>
->> I've added myself as reviewer to the common "HVF" as well, to be informed of
->> changes that might affect the Apple Silicon HVF code, which will be my primary
->> focus.
->>
->> Signed-off-by: Mads Ynddal <mads@ynddal.dk>
+On Wed, 25 Jun 2025 at 11:59, William Kosasih <kosasihwilliam4@gmail.com> wrote:
+>
+> Historically, M-profile helper functions in m_helper.c and mve_helper.c
+> used the unaligned cpu_*_data_ra() routines to perform guest memory
+> accesses. This meant we had no way to enforce alignment constraints
+> when executing helper-based loads/stores. With the addition of the
+> cpu_*_mmu() APIs, we can now combine the current MMU state
+> (cpu_mmu_index(env, false)) with MO_ALIGN flags to build a MemOpIdx
+> that enforces alignment at the helper level.
+>
+> This patch:
+> - Replaces all calls to cpu_ldl_data_ra(), cpu_ldst_data_ra(), etc.,
+>   in the M-profile helpers (m_helper.c) and the MVE helpers
+>   (mve_helper.c) with their cpu_*_mmu() equivalents.
+> - Leaves SME and SVE helper code untouched, as those extensions
+>   support unaligned accesses by design.
+> - Retains the manual alignment checks in the vlldm/vlstm helpers
+>   because those instructions enforce an 8-byte alignment requirement
+>   (instead of the 4-byte alignment for ordinary long loads/stores).
+>   References to cpu_*_data_* are still replaced with cpu_*_mmu(), so
+>   that the individual word accesses themselves also perform the standard
+>   alignment checks, in keeping with the ARM pseudocode.
+>
+> With this change, all M-profile and MVE helper-based loads and stores
+> will now correctly honor their alignment requirements.
+>
+> Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
+> ---
+>  target/arm/tcg/m_helper.c   |  33 +--
+>  target/arm/tcg/mve_helper.c | 408 ++++++++++++++++++++----------------
+>  2 files changed, 254 insertions(+), 187 deletions(-)
 
-Thank you Mads :)
+Hi; thanks for doing this work, this is something that it's definitely
+nice to see fixed.
 
-> 
-> Thanks for volunteering! I've applied this MAINTAINERS
-> patch to target-arm.next.
-> 
-> -- PMM
-> 
+My main comment here is that this patch is really too large
+at 400+ lines to review easily. Could you split it up into
+a multi-patch series where each patch does one coherent
+thing, please? (For instance "honour alignment requirements in
+vlldm and vlstm" could be one patch, and so on.) This will
+make it easier to review, and also easier to track down any
+problems in it by bisecting to the relevant commit if we get
+reports of a regression.
 
+thanks
+-- PMM
 
