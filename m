@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCD2AEF6F5
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 13:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4070AEF6FB
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 13:47:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWZQF-0005CP-ED; Tue, 01 Jul 2025 07:45:11 -0400
+	id 1uWZQG-0005Cj-2p; Tue, 01 Jul 2025 07:45:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uWZQ6-00059p-5r
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 07:45:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uWZQA-0005Ay-QG
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 07:45:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uWZQ2-0003Fd-6f
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 07:45:01 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uWZQ7-0003Gn-7u
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 07:45:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751370296;
+ s=mimecast20190719; t=1751370301;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Xnb6fY77tTZ5nf3Ugq1ke10+nz2hG2kWSwmOHbAyR9g=;
- b=F9mtPScTMHzlq0gd5Lef7arunFOoxIxhqPI97LJfbSsOxTcJtNaCU2zO37PDU82NUqrMvI
- h5+/ZKBkxgLybNnW1R4a6jw8kyUvh3nfN/Mk2LF8UFiVUZUVdf2n7qUQYkKZIOVYnWZC/t
- /K0JmRcyd8gXnDoNC2Jkw3V2g1grKBQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7vKpmgPjmhYXTuu7BvlQEe4nDt+V2FcjCdZIcprXjuI=;
+ b=DnLKSwc0yc0Njdd+XFQuzZpODYkbj9gVOG5utZ12UBbj6+jvQbCpDbVCDnsmBywJD5acTU
+ W5XkGPe8urDnydGCmeEnGI15BoIs3JWpJIxu7nylkXQD6uGASJfDKM4MhJvimj4lzbt5Ug
+ WWab1GmBkcy/EqysOH6WvKwr7Laq2Ck=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-519-6r_JqRcGM7-JECYHY1dCiw-1; Tue, 01 Jul 2025 07:44:55 -0400
-X-MC-Unique: 6r_JqRcGM7-JECYHY1dCiw-1
-X-Mimecast-MFC-AGG-ID: 6r_JqRcGM7-JECYHY1dCiw_1751370294
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a4f7ebfd00so2808055f8f.2
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 04:44:54 -0700 (PDT)
+ us-mta-284-X4mlzZbNMVCjoQ7-8TznqA-1; Tue, 01 Jul 2025 07:45:00 -0400
+X-MC-Unique: X4mlzZbNMVCjoQ7-8TznqA-1
+X-Mimecast-MFC-AGG-ID: X4mlzZbNMVCjoQ7-8TznqA_1751370299
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-453a190819bso13754785e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 04:44:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751370294; x=1751975094;
+ d=1e100.net; s=20230601; t=1751370296; x=1751975096;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Xnb6fY77tTZ5nf3Ugq1ke10+nz2hG2kWSwmOHbAyR9g=;
- b=H6lpwCFtbYDenPfln1MWKMvxfLaS9pBXrh2JRHj8mZ2fwwqG6w0d2tKsF+cMwAvzL5
- 53Kc4a0D4sa9neUbiGl//LLzBDhVXi0cGmi2JUhyYQQPJXrytW6u7AkwfYfNZ/KxHm4K
- eiZBYXeyF4C5pynDIVyGC2BQxj9axZ1P1MQSb2eo+/CYoZ/8jbbHjRgpmaeuZitRvYOq
- P+GiII7qCjPGuxXAQFVb52AvhLAHVVDe8cxRasmVVdPIKgrqIc3l2hL/JrXWG3EqvjbI
- DmMXcM1jNy0l+l1WIHT28aRUiPAkomlvD9flYOqmO4B34eyb9Jjrsn6G/erKs+6m/ddU
- 9Baw==
-X-Gm-Message-State: AOJu0YxTvooY56NHLDJtsTpnFAjYiGy5XDnnf1irSC9LCy6t5/xwaUdM
- qe5UaCU1inxE2M3I0KQvzcxVGG0vTIgk9BPFhPybS3RSY/BXOJtRQ0hCycS8rfbWpIqz0pkQcyr
- Wij292czg0gjGs/+Xh+KAmNVvgmx+A6cDGDz12KSGf+NoTz/2SU2AQLsf
-X-Gm-Gg: ASbGncvtaRiNf64XJ0M959kdr/l6Cwo7gBbbVsIWmnIbVPLMzGVIx6mzQOu/SEvvdIx
- MCCycglIFeSJTrDwUEcHctrZ3cX78s9KYNxHBVK5gFd/YUGEWxpqk0jshJ8JOkfU9y+TRFaCMPk
- gzrfgGO07BNlY0gIfom/b3yYrH3VI24NiTzAej4S2/SGT3EjJGeS1+e1JqD5O/6oIltUny9tvSl
- EXrqyUodU7Q2ydipbtzDqw50dDTlLoTxfahgfRI0Wdh9Uz6PxslcHYKWC+4lb9v3NBK0cIQeRLq
- sdFZ2UDLNAkreI4slMjQd3KBfWjW+lVr0Y+RL+/7h4iBVRwdaMfY6f3ycchO3oCkG7hXLWNmJWB
- YZ9+6
-X-Received: by 2002:a05:6000:25e8:b0:3a4:e8c4:7a78 with SMTP id
- ffacd0b85a97d-3a90bc9e3eamr12601742f8f.52.1751370293822; 
- Tue, 01 Jul 2025 04:44:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFSNOWJQyimuD7LPvKUBTfe6V4kPOXuANgbtrBAWCiOMYuVHrcDGYZwRx4dbM251wKQUMI4UQ==
-X-Received: by 2002:a05:6000:25e8:b0:3a4:e8c4:7a78 with SMTP id
- ffacd0b85a97d-3a90bc9e3eamr12601722f8f.52.1751370293379; 
- Tue, 01 Jul 2025 04:44:53 -0700 (PDT)
+ bh=7vKpmgPjmhYXTuu7BvlQEe4nDt+V2FcjCdZIcprXjuI=;
+ b=lhUqJ1t5+5tNf9SZtq5nU4miSgC2bDXLG37GdsEyrdEYs3TG2r0pKMPw6PJa2k33K4
+ GZ/YBVlGh5fvgWLxufqVWX9RvogwoDavBs1mlqQCi3zX15bSiCbwszK7SUR0aTA4FMG8
+ ajLrzWg35QeD9k7ZUMq/NZGXcZ2/AcVXHxsIXTid51TYaL5rAzSxbxpu8gBwxWIXlrY5
+ YZo18/+uSBJlpH1YtUFtQ53xg5jTkn1uChkeGuL9MnDj8sO//WrosO/hrC0SbxU4JxFy
+ U/tFOXcO1EwHVEN7caRvg0+TqPs9aKSvd/vVWxyn8Qro94w1TnScPN07BrdhF9LyEOHI
+ HvOQ==
+X-Gm-Message-State: AOJu0YzZDuUyOV4F//zQZNhea5zg4NiMXjgNL3KRjzC7elsQaj1Ucg5w
+ oFTMYiy17qdFDzj5f8zpqZokSxqtXuuCqLoVWpo5vFDAeo8e8hxw14VC3oL3LiYHCcm/mpKnjVh
+ iFfc2fndyg8oNbu/nxBN5qNi7qajBgs8xEAQTOQI+qBRLtibDaYTf+IDKkkDg5nUG
+X-Gm-Gg: ASbGncsgiNJd2+Y9RLvOnUuzLv5CDbT3IymWt4zwFTHq/Un/M4zlVLSHwSm1okJ7/Ig
+ edPoKu8zlQHR/GF0cU7MBGhrOoWqfS4/MihUSLY8P9qg9Ne/JZPM6XrRekX/KB3c6MEsd6mJ6SR
+ BRDoMcY2rl2qvVu3t3cRwd39u8jtQjVkX969ben1jvKj2a19VN2Z1PsEuO2+StabBtmHBSOLJTa
+ iQJL80n6DpOKBTneoA31qXwN1znhfy745THbrEXjX7sfVK4uvMiWtviRLT5N+KFEIPy8r6qYhTA
+ yCptF7t/q6pJ8NC0Ocz0iClqFN0A/iIu+l6RScRwm8FIf+iyk2uW7WuelrFJs+EBK/IEKyvlqys
+ UQJwK
+X-Received: by 2002:a05:600c:8709:b0:453:d3d:d9fd with SMTP id
+ 5b1f17b1804b1-4538ee2786dmr171246055e9.12.1751370296493; 
+ Tue, 01 Jul 2025 04:44:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGFnVhx8+S9QGIssPmVdFf2ggMvJmYrd9b7sgyt89dbVdhE/K2xro+o+esmdMZUNda9jdmdag==
+X-Received: by 2002:a05:600c:8709:b0:453:d3d:d9fd with SMTP id
+ 5b1f17b1804b1-4538ee2786dmr171245865e9.12.1751370296118; 
+ Tue, 01 Jul 2025 04:44:56 -0700 (PDT)
 Received: from localhost
  (p200300cfd700f38d3df6a1ca7d40fe1f.dip0.t-ipconnect.de.
  [2003:cf:d700:f38d:3df6:a1ca:7d40:fe1f])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e5f92esm13149118f8f.90.2025.07.01.04.44.50
+ 5b1f17b1804b1-453823ad0fesm198409125e9.25.2025.07.01.04.44.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 04:44:51 -0700 (PDT)
+ Tue, 01 Jul 2025 04:44:54 -0700 (PDT)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
-Subject: [PATCH v3 03/21] fuse: Remove superfluous empty line
-Date: Tue,  1 Jul 2025 13:44:19 +0200
-Message-ID: <20250701114437.207419-4-hreitz@redhat.com>
+Subject: [PATCH v3 04/21] fuse: Explicitly set inode ID to 1
+Date: Tue,  1 Jul 2025 13:44:20 +0200
+Message-ID: <20250701114437.207419-5-hreitz@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250701114437.207419-1-hreitz@redhat.com>
 References: <20250701114437.207419-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,24 +109,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Setting .st_ino to the FUSE inode ID is kind of arbitrary.  While in
+practice it is going to be fixed (to FUSE_ROOT_ID, which is 1) because
+we only have the root inode, that is not obvious in fuse_getattr().
+
+Just explicitly set it to 1 (i.e. no functional change).
+
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/export/fuse.c | 1 -
- 1 file changed, 1 deletion(-)
+ block/export/fuse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index b224ce591d..a93316e1f4 100644
+index a93316e1f4..60d68d8fdd 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -464,7 +464,6 @@ static int fuse_do_truncate(const FuseExport *exp, int64_t size,
+@@ -432,7 +432,7 @@ static void fuse_getattr(fuse_req_t req, fuse_ino_t inode,
      }
  
-     if (add_resize_perm) {
--
-         if (!qemu_in_main_thread()) {
-             /* Changing permissions like below only works in the main thread */
-             return -EPERM;
+     statbuf = (struct stat) {
+-        .st_ino     = inode,
++        .st_ino     = 1,
+         .st_mode    = exp->st_mode,
+         .st_nlink   = 1,
+         .st_uid     = exp->st_uid,
 -- 
 2.49.0
 
