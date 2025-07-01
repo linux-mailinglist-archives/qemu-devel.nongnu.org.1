@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47ED8AF01EA
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC99AF0214
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:40:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeoP-0005B8-Vo; Tue, 01 Jul 2025 13:30:30 -0400
+	id 1uWeoN-00053K-P2; Tue, 01 Jul 2025 13:30:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uWeo7-0004ae-OR
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:30:15 -0400
+ id 1uWeoJ-0004qY-QD
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:30:23 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uWeo1-00074k-Jx
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:30:11 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uWeoF-0007CK-Dn
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:30:22 -0400
 Received: from localhost.localdomain (unknown [167.220.208.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 5ED352112239;
- Tue,  1 Jul 2025 10:29:59 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5ED352112239
+ by linux.microsoft.com (Postfix) with ESMTPSA id 5AEDE211223E;
+ Tue,  1 Jul 2025 10:30:03 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5AEDE211223E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1751391002;
- bh=g4T8hjfmlC+E5NLakuoBJUixqAkV+uy2hfu/eDEiWoU=;
+ s=default; t=1751391007;
+ bh=C+7n42woL/2+vR6WztTsm5hGebodSG3pZWyoUwEkXhA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=P1uXv4oNsmV7+ALwoLQn4gekK2KOKzQWQWZ3KRA2hsq+mkzEhyuiKj1jyF4/gjUU+
- 9ogS7xCmcjXLl0sgKjkU/0EP33TYW5WQ35Z24PB0BBxlKpzcBuSM16KZgqGW0uFqqX
- c64t5+79pcqzqs4xbEYuE4Gd/GFmj4zKJt2Qthls=
+ b=Rat76WuM0Nhji7YcwgK8wNL1O2t2VWAGjtiYFxMgiIMSM4gGj7/xCtxPdBNbhTHYW
+ L8r76aumOPgZkJf4YjHUWiE5+XyXGG7D4kl2uP7oynVBJh6OUiTcXkkfO56PmidNiD
+ xhPkWZl3yPkh0i1i/9eXiR9twANow2cM1Flho2lQ=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
@@ -43,9 +43,9 @@ Cc: Cameron Esfahani <dirty@apple.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 15/27] target/i386/mshv: Implement mshv_store_regs()
-Date: Tue,  1 Jul 2025 19:28:22 +0200
-Message-Id: <20250701172834.44849-16-magnuskulke@linux.microsoft.com>
+Subject: [PATCH v2 16/27] target/i386/mshv: Implement mshv_get_standard_regs()
+Date: Tue,  1 Jul 2025 19:28:23 +0200
+Message-Id: <20250701172834.44849-17-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250701172834.44849-1-magnuskulke@linux.microsoft.com>
 References: <20250701172834.44849-1-magnuskulke@linux.microsoft.com>
@@ -75,128 +75,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for writing general-purpose registers to MSHV vCPUs
-during initialization or migration using the MSHV register interface. A
-generic set_register call is introduced to abstract the HV call over
-the various register types.
+Fetch standard register state from MSHV vCPUs to support debugging,
+migration, and other introspection features in QEMU.
+
+Fetch standard register state from a MHSV vCPU's. A generic get_regs()
+function and a mapper to map the different register representations are
+introduced.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
  include/system/mshv.h       |  1 +
- target/i386/mshv/mshv-cpu.c | 84 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 83 insertions(+), 2 deletions(-)
+ target/i386/mshv/mshv-cpu.c | 69 +++++++++++++++++++++++++++++++++++--
+ 2 files changed, 68 insertions(+), 2 deletions(-)
 
 diff --git a/include/system/mshv.h b/include/system/mshv.h
-index 0ff19d4eb5..adce4153d9 100644
+index adce4153d9..65f7fa15a0 100644
 --- a/include/system/mshv.h
 +++ b/include/system/mshv.h
-@@ -91,6 +91,7 @@ void mshv_remove_vcpu(int vm_fd, int cpu_fd);
+@@ -88,6 +88,7 @@ typedef enum MshvVmExit {
+ void mshv_init_cpu_logic(void);
+ int mshv_create_vcpu(int vm_fd, uint8_t vp_index, int *cpu_fd);
+ void mshv_remove_vcpu(int vm_fd, int cpu_fd);
++int mshv_get_standard_regs(CPUState *cpu);
  int mshv_run_vcpu(int vm_fd, CPUState *cpu, hv_message *msg, MshvVmExit *exit);
  int mshv_load_regs(CPUState *cpu);
  int mshv_store_regs(CPUState *cpu);
-+int mshv_set_generic_regs(int cpu_fd, hv_register_assoc *assocs, size_t n_regs);
- int mshv_arch_put_registers(const CPUState *cpu);
- void mshv_arch_init_vcpu(CPUState *cpu);
- void mshv_arch_destroy_vcpu(CPUState *cpu);
 diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
-index 7a6965d7fb..4bd4e29b72 100644
+index 4bd4e29b72..cb59d74eb4 100644
 --- a/target/i386/mshv/mshv-cpu.c
 +++ b/target/i386/mshv/mshv-cpu.c
-@@ -30,12 +30,92 @@
+@@ -61,6 +61,18 @@ int mshv_set_generic_regs(int cpu_fd, hv_register_assoc *assocs, size_t n_regs)
+     return ioctl(cpu_fd, MSHV_SET_VP_REGISTERS, &input);
+ }
  
- #include <sys/ioctl.h>
- 
-+static enum hv_register_name STANDARD_REGISTER_NAMES[18] = {
-+    HV_X64_REGISTER_RAX,
-+    HV_X64_REGISTER_RBX,
-+    HV_X64_REGISTER_RCX,
-+    HV_X64_REGISTER_RDX,
-+    HV_X64_REGISTER_RSI,
-+    HV_X64_REGISTER_RDI,
-+    HV_X64_REGISTER_RSP,
-+    HV_X64_REGISTER_RBP,
-+    HV_X64_REGISTER_R8,
-+    HV_X64_REGISTER_R9,
-+    HV_X64_REGISTER_R10,
-+    HV_X64_REGISTER_R11,
-+    HV_X64_REGISTER_R12,
-+    HV_X64_REGISTER_R13,
-+    HV_X64_REGISTER_R14,
-+    HV_X64_REGISTER_R15,
-+    HV_X64_REGISTER_RIP,
-+    HV_X64_REGISTER_RFLAGS,
-+};
-+
-+int mshv_set_generic_regs(int cpu_fd, hv_register_assoc *assocs, size_t n_regs)
++static int get_generic_regs(int cpu_fd, struct hv_register_assoc *assocs,
++                            size_t n_regs)
 +{
 +    struct mshv_vp_registers input = {
 +        .count = n_regs,
 +        .regs = assocs,
 +    };
 +
-+    return ioctl(cpu_fd, MSHV_SET_VP_REGISTERS, &input);
++    return ioctl(cpu_fd, MSHV_GET_VP_REGISTERS, &input);
 +}
 +
-+static int set_standard_regs(const CPUState *cpu)
++
+ static int set_standard_regs(const CPUState *cpu)
+ {
+     X86CPU *x86cpu = X86_CPU(cpu);
+@@ -115,11 +127,64 @@ int mshv_store_regs(CPUState *cpu)
+     return 0;
+ }
+ 
++static void populate_standard_regs(const hv_register_assoc *assocs,
++                                   CPUX86State *env)
 +{
++    env->regs[R_EAX] = assocs[0].value.reg64;
++    env->regs[R_EBX] = assocs[1].value.reg64;
++    env->regs[R_ECX] = assocs[2].value.reg64;
++    env->regs[R_EDX] = assocs[3].value.reg64;
++    env->regs[R_ESI] = assocs[4].value.reg64;
++    env->regs[R_EDI] = assocs[5].value.reg64;
++    env->regs[R_ESP] = assocs[6].value.reg64;
++    env->regs[R_EBP] = assocs[7].value.reg64;
++    env->regs[R_R8]  = assocs[8].value.reg64;
++    env->regs[R_R9]  = assocs[9].value.reg64;
++    env->regs[R_R10] = assocs[10].value.reg64;
++    env->regs[R_R11] = assocs[11].value.reg64;
++    env->regs[R_R12] = assocs[12].value.reg64;
++    env->regs[R_R13] = assocs[13].value.reg64;
++    env->regs[R_R14] = assocs[14].value.reg64;
++    env->regs[R_R15] = assocs[15].value.reg64;
++
++    env->eip = assocs[16].value.reg64;
++    env->eflags = assocs[17].value.reg64;
++    rflags_to_lflags(env);
++}
++
++int mshv_get_standard_regs(CPUState *cpu)
++{
++    struct hv_register_assoc assocs[ARRAY_SIZE(STANDARD_REGISTER_NAMES)];
++    int ret;
 +    X86CPU *x86cpu = X86_CPU(cpu);
 +    CPUX86State *env = &x86cpu->env;
-+    hv_register_assoc assocs[ARRAY_SIZE(STANDARD_REGISTER_NAMES)];
-+    int ret;
 +    int cpu_fd = mshv_vcpufd(cpu);
 +    size_t n_regs = ARRAY_SIZE(STANDARD_REGISTER_NAMES);
 +
-+    /* set names */
-+    for (size_t i = 0; i < ARRAY_SIZE(STANDARD_REGISTER_NAMES); i++) {
++    for (size_t i = 0; i < n_regs; i++) {
 +        assocs[i].name = STANDARD_REGISTER_NAMES[i];
 +    }
-+    assocs[0].value.reg64 = env->regs[R_EAX];
-+    assocs[1].value.reg64 = env->regs[R_EBX];
-+    assocs[2].value.reg64 = env->regs[R_ECX];
-+    assocs[3].value.reg64 = env->regs[R_EDX];
-+    assocs[4].value.reg64 = env->regs[R_ESI];
-+    assocs[5].value.reg64 = env->regs[R_EDI];
-+    assocs[6].value.reg64 = env->regs[R_ESP];
-+    assocs[7].value.reg64 = env->regs[R_EBP];
-+    assocs[8].value.reg64 = env->regs[R_R8];
-+    assocs[9].value.reg64 = env->regs[R_R9];
-+    assocs[10].value.reg64 = env->regs[R_R10];
-+    assocs[11].value.reg64 = env->regs[R_R11];
-+    assocs[12].value.reg64 = env->regs[R_R12];
-+    assocs[13].value.reg64 = env->regs[R_R13];
-+    assocs[14].value.reg64 = env->regs[R_R14];
-+    assocs[15].value.reg64 = env->regs[R_R15];
-+    assocs[16].value.reg64 = env->eip;
-+    lflags_to_rflags(env);
-+    assocs[17].value.reg64 = env->eflags;
-+
-+    ret = mshv_set_generic_regs(cpu_fd, assocs, n_regs);
++    ret = get_generic_regs(cpu_fd, assocs, n_regs);
 +    if (ret < 0) {
-+        error_report("failed to set standard registers");
-+        return -errno;
++        error_report("failed to get standard registers");
++        return -1;
 +    }
++
++    populate_standard_regs(assocs, env);
 +    return 0;
 +}
-+
- int mshv_store_regs(CPUState *cpu)
+ 
+ int mshv_load_regs(CPUState *cpu)
  {
 -    error_report("unimplemented");
 -    abort();
 +    int ret;
 +
-+    ret = set_standard_regs(cpu);
++    ret = mshv_get_standard_regs(cpu);
 +    if (ret < 0) {
-+        error_report("Failed to store standard registers");
++        error_report("Failed to load standard registers");
 +        return -1;
 +    }
 +
 +    return 0;
  }
  
-+
- int mshv_load_regs(CPUState *cpu)
- {
-     error_report("unimplemented");
+ int mshv_arch_put_registers(const CPUState *cpu)
 -- 
 2.34.1
 
