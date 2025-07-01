@@ -2,88 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A48AAF0212
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADAEAF01B4
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:24:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeud-0005tg-HU; Tue, 01 Jul 2025 13:36:56 -0400
+	id 1uWeia-0007i4-8Z; Tue, 01 Jul 2025 13:24:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWeuN-0005no-NL
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:36:40 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWeiX-0007hV-Fw
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:24:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWeuG-0000Gw-TG
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:36:39 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWeiO-0004SF-QD
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:24:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751391390;
+ s=mimecast20190719; t=1751390653;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=luy9hP+C1+jCcXEoM0Q3nN3pMN/n+lvKWFy0GZW2BMM=;
- b=UKYTSV+m5MCRhrdi1k2coBWjxV7K+IZBMvm1z5LrW/x52gCijW/53ffN6Bp+kRQrPJ3ZtA
- GKirDPOFA0jtTXW/DVli1ymQZCeSVYnYMadwyHMxMudxnOeO06BNLY1TOyMgLHwCIz1JnN
- COmjvKbd9/kTBW+65P39AJpvVA6/Mqo=
+ bh=PfxcjmcCSdo1CxPAI9WSRQhBwa1aIy3/oCqfjVmlP9c=;
+ b=Uaw11UtBRV3D7l++aqsjUF/nZzoLA9+DyM9ekM86bRAKxeiSipw/jtBDYnpWTv2A+AKWsr
+ UVs/7HLwiN68q4tYTl91sjs1aV24hDN518Uq4MKZVXHK+YqDBWnw6GTVCv4318Bd+sT0ZF
+ UhdXZxE5HFq0g1aOhjMw9Vm9lYPw68Q=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-600-cLjngP3tPqqt6veHpvNZSw-1; Tue, 01 Jul 2025 13:18:10 -0400
-X-MC-Unique: cLjngP3tPqqt6veHpvNZSw-1
-X-Mimecast-MFC-AGG-ID: cLjngP3tPqqt6veHpvNZSw_1751390290
+ us-mta-412--Cgl0OowN4iPmH8bTwyk0Q-1; Tue, 01 Jul 2025 13:24:12 -0400
+X-MC-Unique: -Cgl0OowN4iPmH8bTwyk0Q-1
+X-Mimecast-MFC-AGG-ID: -Cgl0OowN4iPmH8bTwyk0Q_1751390651
 Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a4f6ff23ccso3974234f8f.2
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:18:10 -0700 (PDT)
+ ffacd0b85a97d-3a4e713e05bso1773080f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:24:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751390289; x=1751995089;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=luy9hP+C1+jCcXEoM0Q3nN3pMN/n+lvKWFy0GZW2BMM=;
- b=JsCgMP5lvqcXszt3khCpzqOTYCXhOzaDhcvm/geQIJopsVCdTX78qPYkoIjiycuYY4
- L3afmHJGuPXl7K7cnOdC9BQ8T2Xr3zScnh2+LA4W8bLnM9V2SGMluJas8a0ce/eKrqOE
- lICIlg17IcNu65s5ACnBXrlsXWmDUWasp6Ta0i+R53N1wZM9ci+nydBsGENQv+sE2cux
- 35U+7P8bjXFr7JC/6wSm5DXA226Uqz59ru4RcZXdzXeJKa9NnaeOg588v5OP4jtSpdZ+
- HPVvBHTGJ0fromZaS2nmL1nCZaOk5g8IB5Y9PRSHkMyOKGW+UXefr+KYuP3+Gg5ftaVZ
- cv8g==
+ d=1e100.net; s=20230601; t=1751390651; x=1751995451;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PfxcjmcCSdo1CxPAI9WSRQhBwa1aIy3/oCqfjVmlP9c=;
+ b=TOs3l5bvzv4Kfy6WTblgZKVlsf5P/8+SzgdPfEvfzUlc638XrFq9hA26k5ITMM97Ta
+ xp/R31faDCHUeNPbK1PCA4ZBa2IxtF1AI2rWxF67Ct25XVY9SpzgT8dnbFj+utJwSE9P
+ N7mANU8e2ZftUjXwHPcfqwQcemyqmQDPzb3Uf6MGBBQr63YG2RFXyHgZifJ4HdFVT7PL
+ EwE+746xabo7DGtqccBVc+lQDjkNpWvuCpx1NQmbwhcOhOyvLQRjccjTMuwJibKH4xxh
+ Eb1Yp8ducABnfdP3TVqDTIxpyRW/oUaIM1DYTekcnoncvzU1mFH/dOduTqufj9gwbPrh
+ fy9A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUH/lNpLShKPY3qqj2FWYVewCTNmk7USexv8PG7bVEfU06nz0iT9JATXn07YDnOaQt8XaUlu8v0nl8I@nongnu.org
-X-Gm-Message-State: AOJu0Yymqt2U7CvEnKskExOAiSKeARZLmTpml/rKMpVUm6mls5JiuL4p
- tRgmffeExIXydsR/TVHNfMILwZ24MlVRcWlGmkctuTPbkTSHYHnmNGJMxL8i3/xobd3wRzA7Jl2
- 80UCQQHni+tjznMFCvuyaW+JjVHKeWZukEjRG6DYDr2L62AwXcyZ8mdPFumOV81Qs
-X-Gm-Gg: ASbGncuU5qMzuAvaqmJkTx1Dp8YUYzT6fJ77UMx+5Dwzfj32fob2U/88I9Y8+m5o1j7
- dPP4ZpiNkA96kj5/RUx1534xX1DjkFI1V85Bqd2hS1beA208qzsx2SD5LhhEa+lKEYa/TQ/re2m
- nD7ZwGRl1vlYsgIcwLaz/rNj4CaPVSYTcxIRblYolFRB9LTAiUi7hSRPsAnLCQ15Z3fmEbC45C8
- Ehq4Ii7zb1yoCpVW0dDR0zI7lsQBeDFcScoizqYtJFlD3eZwpLKKiIgwNdTu6CcQPOjKwaKbdS8
- 03Wrgyl3U3fPJ8t6v2qIRFJsbFpIL7dtbf7KYx6v35qgUzcCBWqPkMB7J8m6WA==
-X-Received: by 2002:adf:b651:0:b0:3a6:ec41:b9df with SMTP id
- ffacd0b85a97d-3a91818bdeemr13312633f8f.49.1751390289407; 
- Tue, 01 Jul 2025 10:18:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHTZr20L8Trh5Mcysi6zvPyYngKNIPyUIOFWpmzOc6YPN4r9bXaH+FmM8OAXF3atCsq7i+Pjg==
-X-Received: by 2002:adf:b651:0:b0:3a6:ec41:b9df with SMTP id
- ffacd0b85a97d-3a91818bdeemr13312603f8f.49.1751390288931; 
- Tue, 01 Jul 2025 10:18:08 -0700 (PDT)
+ AJvYcCWi8e+p+5jn/OQQw51u1+xYdWbPc7p+RBgde1dAsw5eVsLi/dc/n82jjjy2Sv8hCrjHnTBOn2mb97xW@nongnu.org
+X-Gm-Message-State: AOJu0Yy1HsebAF12rvt0gpboKOoHO2MVI7T2BbpcYLZ+MJYNHu4xCHjc
+ 4i53rThxcPgkO4PwI645e9kCDNe+CrjUR561DvgexAR2MLCebOJb1fq6W0q+tkd7wKZLRcbN0kE
+ lFy4rgceyBfcQkNzceF2GOFvBb8ttRWiHd44pRMO9Mp/9HanGHMUWbJeK
+X-Gm-Gg: ASbGncstyejyLsLtQ9pjGfyH2jLyb0q5FABW3D0yDVSAciaymeiZfIddYmEST9kNRJ1
+ 8gKPJ9RdVXwqM7Vf5hU6Q+OYZVlwXONiC1sJy9jLjiIoOBiY3SOOwDFyBKblHG5bnpNTMsbTre6
+ vxJZe3xQ2MlCCYJxUVcNiP3gnhmLoW2dYBtXaObO9oIXre/jTf21k1xBbK0LkkDYbKIJbTAmxlc
+ ZZlWQD2DCtjgsBI78myigQtPSvKeqvwMH91hvYqUehtsv0+dhrfGhUiaTTPQS4t96jYUp3f1asC
+ voFaLEkM/P5s+WBa8It/0foVGloD8SRuvs30vHad/HmpMQZh0qmGwmoVYIYv6g==
+X-Received: by 2002:a05:6000:41eb:b0:3a5:8a68:b839 with SMTP id
+ ffacd0b85a97d-3a8ffeb4c25mr16556435f8f.45.1751390651220; 
+ Tue, 01 Jul 2025 10:24:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHk2vf/GIOErsWT0/+wBhRnKnUlQfEKfhEFP1RfMTF2IlrqgTK/REwAyszZ9lP7EOAqXdaxg==
+X-Received: by 2002:a05:6000:41eb:b0:3a5:8a68:b839 with SMTP id
+ ffacd0b85a97d-3a8ffeb4c25mr16556419f8f.45.1751390650756; 
+ Tue, 01 Jul 2025 10:24:10 -0700 (PDT)
 Received: from [192.168.0.6] (ltea-047-064-114-041.pools.arcor-ip.net.
  [47.64.114.41]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45391c6aa0asm135323155e9.26.2025.07.01.10.18.07
+ 5b1f17b1804b1-4538a390c88sm181242445e9.8.2025.07.01.10.24.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Jul 2025 10:18:08 -0700 (PDT)
-Message-ID: <cf8846e8-24b1-4c76-acfe-88a62913c8e9@redhat.com>
-Date: Tue, 1 Jul 2025 19:18:07 +0200
+ Tue, 01 Jul 2025 10:24:10 -0700 (PDT)
+Message-ID: <ff8a559e-f1d7-45a8-a292-20c9ab697646@redhat.com>
+Date: Tue, 1 Jul 2025 19:24:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] MAINTAINERS: update docs file extensions (.txt ->
- .rst)
+Subject: Re: [PATCH 2/6] MAINTAINERS: fix paths for relocated files
 To: Sean Wei <me@sean.taipei>, qemu-devel@nongnu.org
-Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Jason Wang <jasowang@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>
 References: <20250616.qemu.relocated@sean.taipei>
- <20250616.qemu.relocated.01@sean.taipei>
-Content-Language: en-US
+ <20250616.qemu.relocated.02@sean.taipei>
 From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -126,9 +128,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250616.qemu.relocated.01@sean.taipei>
+In-Reply-To: <20250616.qemu.relocated.02@sean.taipei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -138,7 +140,8 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,46 +157,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/06/2025 17.47, Sean Wei wrote:
-> The documentation tree has been converted to reStructuredText, but
-> two entries in MAINTAINERS still point to the removed *.txt files.
+On 16/06/2025 17.48, Sean Wei wrote:
+> Several files were renamed in previous commits, causing their entries
+> in MAINTAINERS to reference outdated paths.
+> This prevents scripts/get_maintainer.pl from correctly matching
+> these files to their maintainers.
 > 
-> This prevents scripts/get_maintainer.pl from matching the documents.
+> Update the filenames to reflect their current locations so that
+> maintainer lookup works properly.
 > 
-> Update those entries to *.rst so the maintainer script works again.
+> Related commits
+> ---------------
 > 
-> Related commits:
->    8472cc5dbe6 (Sep 2023): docs/specs/vmw_pvscsi-spec: Convert to rST
->    8e72ceee5cd (Jun 2022): Rename docs/specs/fw_cfg.txt to .rst
+>    c45460decbd (Oct 2023)
+>      hw/input/stellaris_input: Rename to stellaris_gamepad
+>      Rename  include/hw/input/{gamepad.h => stellaris_gamepad.h}
+> 
+>    4faf359accb (Nov 2020)
+>      docs: Move virtio-net-failover.rst into the system manual
+>      Rename  docs/{ => system}/virtio-net-failover.rst
+> 
+>    89857312f32 (Apr 2024)
+>      hw/usb: move stubs out of stubs/
+>      Rename  stubs/usb-dev-stub.c => hw/usb/bus-stub.c
+> 
+>    f2604d8508a (Apr 2024)
+>      hw/virtio: move stubs out of stubs/
+>      Rename  stubs/virtio-md-pci.c => hw/virtio/virtio-md-stubs.c
+> 
+>    2c888febdfa (Apr 2024)
+>      memory-device: move stubs out of stubs/
+>      Rename  stubs/memory_device.c => hw/mem/memory-device-stubs.c
+> 
+>    d481cec7565 (Oct 2024)
+>      migration: Move cpu-throttle.c from system to migration
+>      Rename  {system => migration}/cpu-throttle.c
+> 
+>    864a3fa4392 (Jan 2023)
+>      monitor: Rename misc.c to hmp-target.c
+>      Rename  monitor/{misc.c => hmp-target.c}
 > 
 > Signed-off-by: Sean Wei <me@sean.taipei>
 > ---
->   MAINTAINERS | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   MAINTAINERS | 14 +++++++-------
+>   1 file changed, 7 insertions(+), 7 deletions(-)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 28b3dd2684..fed8619874 100644
+> index fed8619874..0477e124d1 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -2531,7 +2531,7 @@ F: hw/net/net_tx_pkt*
->   Vmware
->   M: Dmitry Fleytman <dmitry.fleytman@gmail.com>
->   S: Maintained
-> -F: docs/specs/vmw_pvscsi-spec.txt
-> +F: docs/specs/vmw_pvscsi-spec.rst
->   F: hw/display/vmware_vga.c
->   F: hw/net/vmxnet*
->   F: hw/scsi/vmw_pvscsi*
-> @@ -2736,7 +2736,7 @@ Firmware configuration (fw_cfg)
->   M: Philippe Mathieu-Daudé <philmd@linaro.org>
->   R: Gerd Hoffmann <kraxel@redhat.com>
->   S: Supported
-> -F: docs/specs/fw_cfg.txt
-> +F: docs/specs/fw_cfg.rst
->   F: hw/nvram/fw_cfg*.c
->   F: stubs/fw_cfg.c
->   F: include/hw/nvram/fw_cfg.h
+> @@ -1002,7 +1002,7 @@ L: qemu-arm@nongnu.org
+>   S: Odd Fixes
+>   F: hw/*/stellaris*
+>   F: hw/display/ssd03*
+> -F: include/hw/input/gamepad.h
+> +F: include/hw/input/stellaris_gamepad.h
+>   F: include/hw/timer/stellaris-gptm.h
+>   F: docs/system/arm/stellaris.rst
+>   F: tests/functional/test_arm_stellaris.py
+> @@ -2163,7 +2163,7 @@ F: hw/net/
+>   F: include/hw/net/
+>   F: tests/qtest/virtio-net-test.c
+>   F: tests/functional/test_info_usernet.py
+> -F: docs/virtio-net-failover.rst
+> +F: docs/system/virtio-net-failover.rst
+>   T: git https://github.com/jasowang/qemu.git net
+>   
+>   Parallel NOR Flash devices
+> @@ -2214,7 +2214,7 @@ F: tests/qtest/sdhci-test.c
+>   USB
+>   S: Orphan
+>   F: hw/usb/*
+> -F: stubs/usb-dev-stub.c
+> +F: hw/usb/bus-stub.c
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I think we could simply drop this line now completely since it is already 
+covered by the previous hw/usb/* wildcard line.
+
+>   F: tests/qtest/usb-*-test.c
+>   F: docs/system/devices/usb.rst
+>   F: include/hw/usb.h
+> @@ -2469,7 +2469,7 @@ F: hw/s390x/virtio-ccw-md.h
+>   F: hw/s390x/virtio-ccw-md-stubs.c
+>   F: hw/virtio/virtio-md-pci.c
+>   F: include/hw/virtio/virtio-md-pci.h
+> -F: stubs/virtio-md-pci.c
+> +F: hw/virtio/virtio-md-stubs.c
+
+Could be merged with the hw/virtio/virtio-md-pci.c line by turning it into:
+
+F: hw/virtio/virtio-md-*.c
+
+>   virtio-mem
+>   M: David Hildenbrand <david@redhat.com>
+> @@ -3187,7 +3187,7 @@ F: hw/mem/pc-dimm.c
+>   F: include/hw/mem/memory-device.h
+>   F: include/hw/mem/nvdimm.h
+>   F: include/hw/mem/pc-dimm.h
+> -F: stubs/memory_device.c
+> +F: hw/mem/memory-device-stubs.c
+
+This could be merged with the preceeding "hw/mem/memory-device.c" line, too, 
+by turning it into:
+
+F: hw/mem/memory-device*.c
+
+  Thomas
 
 
