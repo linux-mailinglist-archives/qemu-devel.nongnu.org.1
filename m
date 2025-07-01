@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49584AEF460
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 12:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EA2AEF464
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 12:06:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWXqk-0003BK-5U; Tue, 01 Jul 2025 06:04:28 -0400
+	id 1uWXs9-00040R-Ot; Tue, 01 Jul 2025 06:05:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWXqd-0003A0-Iz
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 06:04:19 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uWXrq-0003jq-LB
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 06:05:36 -0400
+Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWXqX-0008JF-Bo
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 06:04:19 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-450ccda1a6eso25914255e9.2
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 03:04:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uWXrn-0000EQ-KM
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 06:05:34 -0400
+Received: by mail-yb1-xb2a.google.com with SMTP id
+ 3f1490d57ef6-e818a572828so3658947276.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 03:05:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751364251; x=1751969051; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HLQ4lbWS09FtfHl3Qk3gA2j755T2lzvZSEUiWspkTiM=;
- b=Rni1bNtBIWC8KykbdIZDJhSD8UHe7PQrSUwXw1SrW5wnFsZUNwi71f66NoUTd7VNXP
- RQZCpxtDdSd87oho+YDg/Mk23+1QRxyb9Z3LMWREKTfsVoPb0bh5YYxHksXB+Pwm/q6W
- wgxfDyPizEiindlg870ryVWIz2lgeuNcUEA/eqDvOIVsahD7WvewvXD8VWu5sCuW1/iA
- swy8qHuMoNYjyrXD+81Qm0nBBuSH4TlhxndZMegsOs3JmkZZ8bI/FMTKf8CEVqr11Cke
- Z2xzEaBEFOjaaXXOsMg4Q5Pehg+gkqeiTUZCKQHskIb/JfuordRFdMjaeOOsdLprLe5W
- /ZjQ==
+ d=linaro.org; s=google; t=1751364330; x=1751969130; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8kfjRtLV5ssMj94wMWxrtiAx9c7qnsX2Z+NOkWxYACI=;
+ b=MfF/3Wj+CqOd7lur4z6B0iTxWo+5vjGz4oc6MiOg9lkSsRQE68YtpcbmVnYK2hIuNG
+ avFc2zLcKutnmRAz1tkAsbbAJURo6o8x4hYX00Jo2f9ahAIy4sLKjmGCmxNntukzuNPo
+ nO2FDVKyWf9rZi0PAlV1LcSF8ZjXKVCDqRuURZdRjjtl0S66EAcAQzDgYvWUwsdkeA60
+ twexwabhCkzy/vLLRiFMVBQjZzZ9eyvNKjSijV89P2mSfh7fFA+9CzcXWDLhoFGc+/TU
+ igO0xSGQ/+FY9TuElVt3ObGey/bGTXNGOpUJ4aeiZg9rFfIsIjuq1xiuvjbU7Iwn6ph1
+ WKUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751364251; x=1751969051;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HLQ4lbWS09FtfHl3Qk3gA2j755T2lzvZSEUiWspkTiM=;
- b=fV/5qX/OUaOjuSkqt29VjQWRRtlN+2KU4oZ7C+A4k2LVwflyXdKPepuoN+wAcsHZAF
- DUcnq09YosKwgBI1ERPfxvIRz61muNX3dRwCcD8W4571LHIQt6ecAnW+OAIv3UfXgkKf
- PLDpFyIWO6Mfcybq4PuSqYZBr9hd9oYe2P4JJ4SNT3NCDTbYC8IIk1egyJn517hT9UzL
- MYbYJKbmyIZbwPx5Fhhx7/wzsfYM+tHM+4A/fFmx9ngY51BhwtueO0Ny2FH3fdY6QF+S
- n20OetjUBjXa4E6NRlsxjCFt+s+P/ZokURTNqYEuvKMxPoDsiZxOKcwIt75i/kNoHEOg
- oGxg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXREz9g+nDwOqXNQvzL95aylWJL+1gCo1/Wnt3oYaRT32OiUywvdXKTKLFt+zd0XEiC/fuGAvP6Tejh@nongnu.org
-X-Gm-Message-State: AOJu0YyoZ6+8N+wVvewIztta6hnP+Jjk/vVOUfkQxau20hvHcsJUiEjU
- +C96aAWO2EcNOvatSsBL+bR6MfwlTFGU9nY6LBcObYiBAP6wplBE8nS5MXgZvn0ROMw=
-X-Gm-Gg: ASbGnct4Odi0mmT7AKuLONwdkesduCnzFXF+h7g6f/cJswg7gejMfc1fC3PHXPRQxsq
- nAtiFD8uy6xt3K81eKxTIy3hbO138BxMZieSKZkJ5k7tY17Vg+QOgvFyv1KYLn39LsgcDfOZrGh
- p8g3yDNetQGqrm0eqPirtK7DFQG0SOp6o/zJm6iw7Skahw/sin0dcqV4A8PR35TFkgAlqQrqkK8
- gLBynXrXK92stn9AQ5OTv3ctyL4eUPULxDXG+9pefFJMa1JEuY4qZbP8m/EXlOjMzeBk0FBFtfk
- ZUlk3gqNfqHyHc3v2puwp9nDLwE3XmOH2FzLPB3Ow+DEJ6wbKoQhVv/sS6MEcdtXorgcwyUtZtA
- TbuikMKu2qmxqbXGHwIHr7fdC4YPfSB8zEAIhgn7M
-X-Google-Smtp-Source: AGHT+IGEAGjZric2dT4Y3S/1c0v1r0290cj+Uu3daT3gHwsvsNT6WcFL2/gM+y8CkqGKGvjK+4ZC4Q==
-X-Received: by 2002:a05:600c:3ba0:b0:453:aca:4d05 with SMTP id
- 5b1f17b1804b1-454a07dac04mr7526115e9.31.1751364250668; 
- Tue, 01 Jul 2025 03:04:10 -0700 (PDT)
-Received: from [192.168.69.166] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c7fa8aasm12620751f8f.27.2025.07.01.03.04.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Jul 2025 03:04:09 -0700 (PDT)
-Message-ID: <23065936-513e-4240-afaf-3d25de747dcd@linaro.org>
-Date: Tue, 1 Jul 2025 12:04:08 +0200
+ d=1e100.net; s=20230601; t=1751364330; x=1751969130;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8kfjRtLV5ssMj94wMWxrtiAx9c7qnsX2Z+NOkWxYACI=;
+ b=xAtglbHYXFij+WmyIxwMeLFe/f5l13rnW2YjBLZb7OxyPEMuusGUSEH1eRYf5CMdtq
+ VNzyip7U20PCOk0+qookz3ds0SHaudUmvl0mIm1tNSYvqnWVnYiDUYJPQk7SEfhX04YV
+ uLwMdCjKUO1hOFzNiaNJFhqLJFtnN6Lv0I5jyxBnqAHZqn1C4QICM4tV7aWkRJFvPpUk
+ C9CPTuoZfIvxOQK3ioOXSZCcMaI+oBRr4zpYBeP7L4bpwFKDCgUGpypzxRzpk3NfBRpN
+ 442hqfdMSGvJpxyZwxiiXe5IkPcrA0ciEnDh/5MR7HHSxR/RvInWoHO13lk3Oia+QIwM
+ /ZUQ==
+X-Gm-Message-State: AOJu0YwSqZCtA2WOfdyAq7Vg6NsUw7vHUqAhxq4Mqxfbuh45sKJs0G09
+ A3JeNZhuwa1GO4ha1ou0asS9JSx1zuFg9ajC28Ax+BSUMDpMWYM1Q6FHTTWfnxEURILsimofAfi
+ oArWifxRLz2MU48Wru85z7HhNh6e80DtVav33q+NVjA==
+X-Gm-Gg: ASbGnctksCpKVrp+Mubd7qa86z1mER19Lma/hMn8V3ilNkesexVLPramKGLLEaDUq9i
+ KN1TrO1R4d9LYVoKsfcUJe+3GNe4jTyN54pw+74EN3TRifHF7WhqKnJ2w55KhaKs/p/tsvrMEHh
+ 9/Fs8UhGD9MiKaxmGQVnewEwp0WC30bukydTaPdxmLVH0L
+X-Google-Smtp-Source: AGHT+IGOpIzUKfVZ51suWX9MeleA4XpykzcLNH+i6xXehvun3Xncgjy5GjPloXM/LCbq34wBW2AkLyClhKEvOdHIBxM=
+X-Received: by 2002:a05:690c:6109:b0:711:9770:161f with SMTP id
+ 00721157ae682-7151715b6f0mr247333597b3.2.1751364329873; Tue, 01 Jul 2025
+ 03:05:29 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] b4: Drop linktrailermask
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20250630172301.519848-1-clg@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250630172301.519848-1-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+References: <20250623121845.7214-1-philmd@linaro.org>
+ <20250623121845.7214-19-philmd@linaro.org>
+In-Reply-To: <20250623121845.7214-19-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 1 Jul 2025 11:05:18 +0100
+X-Gm-Features: Ac12FXwOiStkTc29Xq_uInkklsV0tTSFUxB5oz_6xMzY-cgZwTpqcNIDDEe6VkY
+Message-ID: <CAFEAcA_M+nXYL5HaN7QUUwWywJw8VaxU3T54YCMQsVd42PQ+PA@mail.gmail.com>
+Subject: Re: [PATCH v3 18/26] hw/arm/virt: Only require TCG || QTest to use
+ TrustZone
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Leif Lindholm <leif.lindholm@oss.qualcomm.com>, 
+ qemu-arm@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Roman Bolshakov <rbolshakov@ddn.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Alexander Graf <agraf@csgraf.de>, Bernhard Beschow <shentey@gmail.com>,
+ John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ kvm@vger.kernel.org, Eric Auger <eric.auger@redhat.com>, 
+ Cameron Esfahani <dirty@apple.com>, Cleber Rosa <crosa@redhat.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, Phil Dennis-Jordan <phil@philjordan.eu>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,31 +104,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/6/25 19:23, Cédric Le Goater wrote:
-> 
-> When grabbing a patch series, the link trailer is replaced with a
-> Message-ID, which is not useful compared to an URL. Fix that by
-> dropping the linktrailermask config.
-> 
-> Cc: Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Hmm :)
-
-> Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> Fixes: 838cf72b5d2c ("Add a b4 configuration file")
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+On Mon, 23 Jun 2025 at 13:20, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> We only need TCG (or QTest) to use TrustZone, whether
+> KVM or HVF are used is not relevant.
+>
+> Reported-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   .b4-config | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/.b4-config b/.b4-config
-> index 4b9b2fe290f9..126f503ded74 100644
-> --- a/.b4-config
-> +++ b/.b4-config
-> @@ -11,4 +11,3 @@
->       prep-perpatch-check-cmd = scripts/checkpatch.pl -q --terse --no-summary --mailback -
->       searchmask = https://lore.kernel.org/qemu-devel/?x=m&t=1&q=%s
->       linkmask = https://lore.kernel.org/qemu-devel/%s
-> -    linktrailermask = Message-ID: <%s>
+>  hw/arm/virt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 99fde5836c9..b49d8579161 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -2203,7 +2203,7 @@ static void machvirt_init(MachineState *machine)
+>          exit(1);
+>      }
+>
+> -    if (vms->secure && (kvm_enabled() || hvf_enabled())) {
+> +    if (vms->secure && !tcg_enabled() && !qtest_enabled()) {
+>          error_report("mach-virt: %s does not support providing "
+>                       "Security extensions (TrustZone) to the guest CPU",
+>                       current_accel_name());
 
+The change is fine, but the commit message is odd. You
+only get to pick one accelerator. The reason for preferring
+"fail unless accelerator A or B" over "fail if accelerator
+C or D" is that if/when we add a new accelerator type E
+we want the default to be "fail". Then the person implementing
+the new accelerator can add E to the accept-list if they
+implement support for an EL3 guest.
+
+For the not-yet-implemented case of a hybrid hvf+TCG
+accelerator, it's not clear what to do: in some cases
+where we check the accelerator type you'll want it to
+act like TCG, and sometimes like hvf.
+
+I'll take these patches, with an updated commit message.
+
+-- PMM
 
