@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422B0AF014D
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C7FAF0177
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:14:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSj-0005lP-4Z; Tue, 01 Jul 2025 13:08:05 -0400
+	id 1uWeSk-0005mN-9S; Tue, 01 Jul 2025 13:08:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSf-0005jP-P6
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:08:02 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1uWeSh-0005kH-6k
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:08:03 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSd-0003hW-J9
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:08:01 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4537edf2c3cso59055445e9.3
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:59 -0700 (PDT)
+ id 1uWeSf-0003iY-5L
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:08:02 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3a548a73ff2so5264928f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:08:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751389678; x=1751994478; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751389679; x=1751994479; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/DJBJh8TrP9nUNYIuMCuVv0lIVyAFjDZ5LeEIS1A2hs=;
- b=NP+On352uk9XxY5EWB6SyeR7lIwaft4AwmaYHacGk0jrrOVemV4FNBM4SYWvv/WGjD
- h0pVwwcUk8KjEijjDBjDjek2rtxXs3knnDyRUG9eUWB9scX8nWm0gE5NkmQH8J5LU16d
- RL2cvIJk/2GTB9MXg0EPhxCH+03kIt4z2ZU0s7vumFepJ+EwfttA1FFsuiUEuCsZrZmi
- PCN7dijsXqOIvs80e0i42X//PfOauqHmVN02Z4SUCte56/HOuiv/QPGOxjCdP6d6rJwq
- c/nHTqIKe+s8l462Il2dtmHhSVW/sa9LtX0sKSPMb/8v/vRmIR9IDDyEx9qbPFKK0AFM
- MNnQ==
+ :reply-to; bh=6rHpAA90Bjb+Ii0ByCKVJS29gi/VuqiHc6GuPotvdhc=;
+ b=UveNdawnhhnSKBo1rZxSMaV6HdJyYrbNWjWYsobfXFGHTlBL/m3KbHoDcKghZpE5Q4
+ 5HUq4jQ8iF8hixrc8HJoJLtYsqinBG0B67F3rCDvLQtaz7vZzdoe/qRtAuxujXnahPib
+ mXbAzvwVkEEPdhzadRbi+Uhwd1lnFd2jx37fDG4Z1uFMSeEBCQKN0YMVLv4YmO7apdm7
+ no6mCRpni7NhjQd5IySRgIxeBGPZ6f9UdCM90RJ4ivPIHRvIKp7r+QD0Iqwb1ECjcHcT
+ VEwykzjb34x/fmtPyPmhn1LfamqGMpwmAkc4nKz66zO7jI5GNMXX9XsPlTOqmQliRQDK
+ pxhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751389678; x=1751994478;
+ d=1e100.net; s=20230601; t=1751389679; x=1751994479;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/DJBJh8TrP9nUNYIuMCuVv0lIVyAFjDZ5LeEIS1A2hs=;
- b=ONUl+PILRFmEThc+6RiHNu1ePJUDRxhSUqhdUDwVtqiHUM0iqGgPVRQxIU/bRqRJSy
- v91lmzEfhTv6zeVhtd03m7iutPWR6WnGHsc0ZvuFUDDjhxP1HDNE2q+Be3KBK2t+bvwe
- zL26NfiwwyaP22dqWWbheFOOrwPAVqu9vODVfdGlDCHk2eKKITGLA2Tzfa8G0LnrdND7
- Rdg5v3y0GNmEFcFRGugUaQhKY2jpzE3kw1fXmfRv4c7XJytchtEXLA9MWmigzlF5VMx8
- N4n2wPcK5+dYHL+mNbME7bXl+ZYYkjmL6C/A8Iw1UH5hJpkffrTt5ICjSTwA1NNrWX26
- PCxA==
-X-Gm-Message-State: AOJu0YwsypsqlTvUx90VCtir3Qyc5LeJl1/fX0XNlQJ89kyJRcz3hkfn
- VfghXkjTpyenne4nNKwYqfGNpCrJMDaIzb7SqPBrueR7kkoKzgg2qHMA4lzRRjgGymmuwygnQKN
- WHw8M
-X-Gm-Gg: ASbGncsqPAvzINgnFTjLA4BBuTJiTTtXX0+eJVh0c/YRKNQ22q7zFZGTTU70lqZsKTC
- HYzf+QpDxstI3ZZKkjXgzNrXuFHtiUW8+HKg2FI4R7jIHUKV2Ww5Utj/8LMGFFYPI34P6B8l5/+
- L8GZhCnrrFipDeF5AzrLRsG5IyEc+t22+TvaS8IjXPpbK0PNhSJ8iV7RvYGMn4E3kKBc1xPIqXP
- Jjw/F6wfWhP5r8bMZeNEHYfUODgU9qJuraJvyYUU2j3e1OvnBhwB4Na+NCZDlHYvAUStxQzZ5vU
- M0yJHV50YgfMUZUtSqlK7Q+iwIpwxyPGPED1y3oVXLlTnIe8cG1QJZRpZgZyMxjLpUaZ
-X-Google-Smtp-Source: AGHT+IGP43PWGmrE7psT6MXrxh+XXLSx++nBtTqW3Zd0Zyfz8u3MDnK4G0F3SHHYbSqZmyGd492Z2g==
-X-Received: by 2002:a5d:58d5:0:b0:3a5:8cc2:10aa with SMTP id
- ffacd0b85a97d-3a917603a95mr12757804f8f.32.1751389677919; 
- Tue, 01 Jul 2025 10:07:57 -0700 (PDT)
+ bh=6rHpAA90Bjb+Ii0ByCKVJS29gi/VuqiHc6GuPotvdhc=;
+ b=kPoEHbZZq221/MUQQrmJLxxaVWyiGZVDcp0j6Vg/HWkOGGTw7YZrYRMh0KmfSx7otk
+ q6g0dybMmlRIy33X83aORHAw+XPppuRB560UhkPnBANmNRPa58/B1QSrXuNRj+fwWrx/
+ a1Jn+LM0tkIyOWY3qhLixQ8wBlHi8CCq+ROWC3xvBAQc9q8Y52MNN4xvtwNy8Z5MiOd0
+ nC6zYO/S0/Dqz+QNboacvVXcKCJIGeLOm4utef11ijqs43dLhl8k12x2wwiI3qu4FvNh
+ bDPo7WNbYBqgGISfNLgdDslX7iDptu4Mro7qIPFmFqmpD6WEGbhxSsQC+rqkooJhDx8l
+ Gq7w==
+X-Gm-Message-State: AOJu0YxuHISog5HHmcBC02Tn1MhRgvMZfL1B4egtnAC9w58R66T/jbhk
+ rMvQl3t2Szpo7sgIZpdhPuVIRmJ+HV9GWgHV9dig5jwt/da50cajfcD0PF3XSThm+OuLfeaZS7T
+ VCvlM
+X-Gm-Gg: ASbGncvAi6Jy3lVNp895oBKxdLA0JALjHUL0zJ1aOiNJRUzdT4FfRR+jMHcSyO+6sOg
+ ku57PGTvLDYvG+fLR46j5VXDBLHqRYe3MOUTOFtJGmWKGPPOTxvn6D37G9LMhrThgwpmWvHAZ+I
+ ZB5opr7nGhyR1GNixC5gE1gnPHFyFan+Xp7DqYKWsaYXChNFHaWOsfBid37bC3eUOcGEn+wF9av
+ 80kkY+DaGD24qRGHAoTKcuoLjZ/K6078SNjHZs10jsZlOB7NiFlMaZGNCWgNVDRf3f8mY7YYnpD
+ I02XN1H3Z1I3OAfVuxkJXinhJ4978+kbcaIGKh6Qxfn4l2tUwFyBhoCugyMCau8oFYHC
+X-Google-Smtp-Source: AGHT+IEVi4r9bo9u4dEJdsJ2l1/K7SfRZ0sihlNpohm8SLtq4zvKzGbClB08cWrwVN28NTouI9ytBw==
+X-Received: by 2002:a05:6000:104e:b0:3a4:f513:7f03 with SMTP id
+ ffacd0b85a97d-3a917bc827cmr13193667f8f.44.1751389678879; 
+ Tue, 01 Jul 2025 10:07:58 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.57
+ ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 10:07:57 -0700 (PDT)
+ Tue, 01 Jul 2025 10:07:58 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 36/43] hw/arm/virt: Rename cpu_post_init() ->
- post_cpus_gic_realized()
-Date: Tue,  1 Jul 2025 18:07:12 +0100
-Message-ID: <20250701170720.4072660-37-peter.maydell@linaro.org>
+Subject: [PULL 37/43] hw/arm/sbsa-ref: Tidy up use of RAMLIMIT_GB definition
+Date: Tue,  1 Jul 2025 18:07:13 +0100
+Message-ID: <20250701170720.4072660-38-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
 References: <20250701170720.4072660-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,46 +99,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-QDev uses _post_init() during instance creation, before being
-realized. Since here both vCPUs and GIC are REALIZED, rename
-as virt_post_cpus_gic_realized() for clarity.
+Define RAMLIMIT_BYTES using the TiB definition and display
+the error parsed with size_to_str():
+
+  $ qemu-system-aarch64-unsigned -M sbsa-ref -m 9T
+  qemu-system-aarch64-unsigned: sbsa-ref: cannot model more than 8 TiB of RAM
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250623121845.7214-21-philmd@linaro.org
-[PMM: also fixed up comment]
+Message-id: 20250623121845.7214-22-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/virt.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ hw/arm/sbsa-ref.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 30f91bcfb3c..3bcdf92e2ff 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2026,10 +2026,11 @@ static void finalize_gic_version(VirtMachineState *vms)
- }
- 
- /*
-- * virt_cpu_post_init() must be called after the CPUs have
-- * been realized and the GIC has been created.
-+ * virt_post_cpus_gic_realized() must be called after the CPUs and
-+ * the GIC have both been realized.
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index deae5cf9861..15c1ff4b140 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -19,6 +19,7 @@
   */
--static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
-+static void virt_post_cpus_gic_realized(VirtMachineState *vms,
-+                                        MemoryRegion *sysmem)
- {
-     int max_cpus = MACHINE(vms)->smp.max_cpus;
-     bool aarch64, pmu, steal_time;
-@@ -2346,7 +2347,7 @@ static void machvirt_init(MachineState *machine)
  
-     create_gic(vms, sysmem);
+ #include "qemu/osdep.h"
++#include "qemu/cutils.h"
+ #include "qemu/datadir.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+@@ -53,8 +54,7 @@
+ #include "target/arm/cpu-qom.h"
+ #include "target/arm/gtimer.h"
  
--    virt_cpu_post_init(vms, sysmem);
-+    virt_post_cpus_gic_realized(vms, sysmem);
+-#define RAMLIMIT_GB 8192
+-#define RAMLIMIT_BYTES (RAMLIMIT_GB * GiB)
++#define RAMLIMIT_BYTES (8 * TiB)
  
-     fdt_add_pmu_nodes(vms);
+ #define NUM_IRQS        256
+ #define NUM_SMMU_IRQS   4
+@@ -756,7 +756,9 @@ static void sbsa_ref_init(MachineState *machine)
+     sms->smp_cpus = smp_cpus;
+ 
+     if (machine->ram_size > sbsa_ref_memmap[SBSA_MEM].size) {
+-        error_report("sbsa-ref: cannot model more than %dGB RAM", RAMLIMIT_GB);
++        char *size_str = size_to_str(RAMLIMIT_BYTES);
++
++        error_report("sbsa-ref: cannot model more than %s of RAM", size_str);
+         exit(1);
+     }
  
 -- 
 2.43.0
