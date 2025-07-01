@@ -2,216 +2,212 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00096AEFC32
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B35AEFC3C
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:28:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWbwP-0005TC-Rv; Tue, 01 Jul 2025 10:26:33 -0400
+	id 1uWbwM-0005Q4-78; Tue, 01 Jul 2025 10:26:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uWbwL-0005Ru-PK
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:26:29 -0400
+ id 1uWbwG-0005Ou-KE
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:26:25 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uWbwH-000279-HN
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:26:27 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 561D9Uuf027100;
- Tue, 1 Jul 2025 14:26:20 GMT
+ id 1uWbwD-00026o-8S
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:26:24 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 561D9PWv024325;
+ Tue, 1 Jul 2025 14:26:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=YCXL4IlTeDwUdjbYBessnLch+W9GT/7ujXOw551yB0o=; b=
- KaEBzKRfdkrXfLDhKnK4IAezbJTmUyqIg/MU7lpLMqTT3cOjzaWeLjmuM7iiOE9V
- BLGt+8T89moQsdqzGkQPrh7Tv0lZybFtV4sxOHhKz1T/0e+seGi7Jq0gBCt9aOLL
- Fg1SAfKnhlVVKT0wLp0qTl128YVpyxbNSB9cmm11x0Zn5+Mmm9lfEib+Xsk6ZFNA
- 4xhcUiqs5nG+1PZg1dyjb8IaHYqLuJe3z8uEDF36l9EwvuG6ZZZxHrlJB80Dg9vw
- WYStw2w7NbeUuOYHptWpUYl0HbDb6RU9LmIhpuJQlojBPcSCpNEqq4mENHO6QKe4
- ckkbSEjlN0YymmFCMFxClw==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47jum7v6jv-1
+ corp-2025-04-25; bh=WHSPwUz9wXIu7O1cfDNksh184LuHML4EF5BJCgO0h+I=; b=
+ bri9FrrfGxoKtaFxph1dfJaAgPOHu8u714+NjTHscsfzjflSbE7qYTaG43+UdMZm
+ 799vMCntLg5Yvunmyqdj2z1n2I1D8A/EM6uWlN5Ck7RXEEQC7SHwDgCE4Q/LZpOM
+ PYiQi6emn03F26nSkXzBvWbcCaIvWunohQ0UagaBJtDL+PQhctmTn8NP8sBc94NW
+ gZL+rhxw7mVh4KR4kmE8hnkCy9QbJZk1bTDz3KkOHmGWduo9866HWtb156Gj4mfO
+ xrHOUJ0f9WRqt4ybR+e3Hya3EmWNnxjwf2uEJe3itIy5hU967Dg8/CLCYwvZOOPx
+ 4NTiMun/4vERjdll9wuUhA==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j704cx0r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 01 Jul 2025 14:26:18 +0000 (GMT)
+ Tue, 01 Jul 2025 14:26:13 +0000 (GMT)
 Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 561DWIS8019320; Tue, 1 Jul 2025 14:25:54 GMT
-Received: from nam02-sn1-obe.outbound.protection.outlook.com
- (mail-sn1nam02on2064.outbound.protection.outlook.com [40.107.96.64])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 47jy1ekn2w-1
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 561DWIG3019568; Tue, 1 Jul 2025 14:26:04 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2041.outbound.protection.outlook.com [40.107.93.41])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 47j6u9kkpu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 01 Jul 2025 14:25:54 +0000
+ Tue, 01 Jul 2025 14:26:04 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WQM1BTfaRU4roISpgI0ZAIVtPJ283y+chcXQY9G4oIR+H6Nqid5xRjmhy/giZprzjMPya2iCAajC6/LqtIx83tNbFIcZVqmEABzYaLMYxdyV5SGYNL5TfhtGNjDVN4aBbAap7KV5ofw82HTmW4d6JsumV+RuFmB2xDNDeyF70G4ifq+aOUrH2kTCxgrCdroDi9Xlktnaykg8uYBWoM026gUPYxPvnzYM+O9kjHRA5zPN2E/RhFP5dc/hlCsvfgZQR6AvmlbDIZQY+Vq6l6RQ7+UEho9tNt0pSaRrxWE++I8uDwfTl3KekCuraVo48DaUpR+6vjhqlJfr0425sJaNOg==
+ b=EOMeXOh2ZykEav/WqnVXDAJ6IvXC9VweHrQp/7nhcKJ6yRlcBaZtt41FfntjnnI6ZNc3wOuAz3+SawUsv/0sEXaZSD0eUARNhKZrUbiv+i6iENXUWAk/2rm9vTmv8k7+f1wFZjXn/wFnTSCoajG1esTyxb/0QxUSFhl2kRWA2EEOZm1AO1jUqHhGX3oDM2Hcpo5UsJ1k6vG3Tzdzn/XoZvxNwtpldmfk2JJj6SF8njsyc7DqOXrne+T+eajDBxEwj50d/eCa9JUcNMBYZd8wB/MofDTfG2Rik1C7RCdMzOZ3yw5PqWPlN4wgM/VEw6n/Z8U0jgCFPHCgBg2y0cDdTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YCXL4IlTeDwUdjbYBessnLch+W9GT/7ujXOw551yB0o=;
- b=jeYgxPw+dT/6Pc1C8o/2OerCRW0empFkeQOBnK5jixaD0rLODV39IgkvB6qtu2hrUboi7a/San45aKBTCF4SJesFecyvcIzEDh8hPw8aDeQqVKMcxLLOsnkQGmaLeA/tmLqxiUMiaW7tnrztj7AmxcTqxdg+PUYuSM1Yg7xRZ07T5yChSB24VhMl3f1Ey2m/V9jRpVlgiRBkKHTaHslTuB1VXl9Svck34v87RZp2QlxuBnFocVk5xJSj4rYJ7L/mfLpyzrOcmCEQUGJahWrBZ2LgCcW+oNwN/UXwMKx1pRKqQsSfsMW2957TCc8F1r7rFsWw338SNBIf+COWwPTshg==
+ bh=WHSPwUz9wXIu7O1cfDNksh184LuHML4EF5BJCgO0h+I=;
+ b=QQX6xXSEgfn454F1jqp3pGuD3cnb3m9CZJTFKEmHDcqo/jZyTIOid8Aj/wbJyoeu8BhM4v++llABWJjkIodrNRBGv85UZjg00D6RCmMK3gTUvj7CrTRw1uMJw7DYrFYJc4oWm4atbCAJGSzFm61bQjzSEpbwSwjlK9tLZEy3X6QqlOntAzSrEhuUX/qc9aVXCf0iOKCOw/tbPr6t8jEi1qPJoQrJ7lb2SI3v1mWnAd612RS9BSuhR3PdCDG2h9Ii0r4OzkWkitr/Bx/ByhI9djRHp5u9kBtFMI2ManArJdmpHx3ribzTLKMXGCZuGXy5aVYl6nfRocmG2780SimKqA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YCXL4IlTeDwUdjbYBessnLch+W9GT/7ujXOw551yB0o=;
- b=Iq6w7t6bQ3Y+x1L9h0Ad070CKJsHlklrX1AOvxw1Etzi2CGaaBFKhDmDLnTYd9GaD/9SP0e8HlklF03IKNAS/tAk+p+30k4SKKVyUsZs20f00GML4kZRPsAJbSir1o2GG65KiSAVKZKo3Iu6VfRDx3fBLUoGTUBtwbDAt7lwgGM=
+ bh=WHSPwUz9wXIu7O1cfDNksh184LuHML4EF5BJCgO0h+I=;
+ b=depNrXytnDBG1HpjWc7HVeE3rCkzNQbTBGXyaKWyb/O5EiYn5vZPElgpQ3PWEspQI2qEi2IRUdU/7vAioalo1J1qxs2fbrHc36Olx1MsduAEC1KKqdBVpPnTug6zHHJdbFt92AfNWtn7XeqJ8ZFl7QYVMg55zCcWE4e9er1rCts=
 Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
  by PH7PR10MB7088.namprd10.prod.outlook.com (2603:10b6:510:268::18)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.27; Tue, 1 Jul
- 2025 14:25:50 +0000
+ 2025 14:26:01 +0000
 Received: from IA1PR10MB7447.namprd10.prod.outlook.com
  ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
  ([fe80::f2fe:d6c6:70c4:4572%3]) with mapi id 15.20.8880.027; Tue, 1 Jul 2025
- 14:25:50 +0000
-Message-ID: <9386dfd2-6793-46ab-a2a0-c50f98379530@oracle.com>
-Date: Tue, 1 Jul 2025 10:25:45 -0400
+ 14:26:01 +0000
+Message-ID: <a9ec6164-3c4b-4807-8954-b3cf1ffe3bbd@oracle.com>
+Date: Tue, 1 Jul 2025 10:25:55 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 04/38] vfio/container: preserve descriptors
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH V5 29/38] vfio/iommufd: register container for cpr
+To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>, Zhenzhong Duan
+ <zhenzhong.duan@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
 References: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
- <1749569991-25171-5-git-send-email-steven.sistare@oracle.com>
- <IA3PR11MB9136FA577AEC8E5D138B0E249279A@IA3PR11MB9136.namprd11.prod.outlook.com>
+ <1749569991-25171-30-git-send-email-steven.sistare@oracle.com>
 Content-Language: en-US
 From: Steven Sistare <steven.sistare@oracle.com>
-In-Reply-To: <IA3PR11MB9136FA577AEC8E5D138B0E249279A@IA3PR11MB9136.namprd11.prod.outlook.com>
+In-Reply-To: <1749569991-25171-30-git-send-email-steven.sistare@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0141.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::26) To IA1PR10MB7447.namprd10.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0131.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c6::16) To IA1PR10MB7447.namprd10.prod.outlook.com
  (2603:10b6:208:44c::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|PH7PR10MB7088:EE_
-X-MS-Office365-Filtering-Correlation-Id: c91143ea-8310-47bd-f49e-08ddb8ab2dd8
+X-MS-Office365-Filtering-Correlation-Id: eb29f08e-c92b-4e59-9fb6-08ddb8ab3442
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|7416014|366016|7053199007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?K01TaUlHNEZkaU9EWWdwRFh0dE01KzlhUnNnN1NPVHpzdXBxRmNIK2dJQlBG?=
- =?utf-8?B?ckw0YUw2L1NrZW14dHFjbnpta0JOTTc5NVhaOVlSUTFSK09TMjhQTEF0Yisv?=
- =?utf-8?B?NUpxSitJRHc4aFVPMFR2ZHRFV0Z1M0JTSHV1dWxOazFxcnNvNG55NDRnODNW?=
- =?utf-8?B?VlhXQS9BQ0tLR3V4MVZ6Z0ZMVng3TWY1Zk9Ka2UwQkhGQXVoL0lTRVE1NU9O?=
- =?utf-8?B?OGRpMnM3Yld6UmpFRC83S0RlYlRqTnRvalRaM0tZdXZYTUdNdHZhRlJXMWxX?=
- =?utf-8?B?dHRCNUl3V0gyWUdURWc3T2dqYXYzVHFLU240Sll1MzRDcE50SytpYUtheTNv?=
- =?utf-8?B?anVSeXNWZVlOZnNBNVpGVHRGQVlQSXJCb25CajNiZGo4amROQ2JNMU8rczFk?=
- =?utf-8?B?dXJXcXVGekdhN085V3BwTTd4YkVIajNIbkl0UUdmK3NudUdyL3BoNUlQN3V3?=
- =?utf-8?B?YmJ3b2V5SGRvTVEzbEVickY5WmpxY09RU05uS1JtaHJneGFpM1RpVVZQNTlp?=
- =?utf-8?B?bUhpNUNONTIxNzVla1ZLMnhadksvUHJVOXBHMUZqSzZ6djFwY3VpUlprdWZM?=
- =?utf-8?B?aW0wa0dQWXhvdXZjVk9lbXUzbmVLT2xCME5kb2ZEMDhGdEhuYzF0aDkwdkxR?=
- =?utf-8?B?aFgyNStxSk12SjVpeVVqTXZucVRmbUZPWlZ0WDRRTUw4SkFqc3JMMVY2WGJq?=
- =?utf-8?B?T0tkTm1jbEN1WUUyVDlQUHNsYlBpcFZiUzRTVkNuUWRadHNhM1phMVJkRTNS?=
- =?utf-8?B?Ti9UaEVibUV4VjVvaUhseXNzZnY3Y3prTWNLaVRJZVRzdzZSb29Bc21EVnBJ?=
- =?utf-8?B?N1lGRDd5SUFmUVI3Zy8vR0Q1T0N1eXh3S3BXY09vYjRIMzR5N0laTldpa0o2?=
- =?utf-8?B?Tk5WeDNkbFRSZmxNT04vSGVSbmV6a3U3bGdRUXVwaDA1aU85UE1LREdNdUJ0?=
- =?utf-8?B?Z3paSUZSNFgreEJMT2s0cndhb3V1U3RESXVLdHIvcHpJOHo4d1Z2cUhINm9N?=
- =?utf-8?B?T2RuWk5RU1NFT0lhUVR1THhDNDFNcWp1SENRSzhDQ3plbzRVUzVCRGhyUWlw?=
- =?utf-8?B?ODB0bTB6bnVkOXEzMzdWS1VkcDNXd3JTQU04VWQwS2pVZHZWQ1IyQWoxQXMv?=
- =?utf-8?B?TUJBSTE4ODFHR0xxUzA4TkNrZ3ZNS1F1bVM3eXFnQWJmdUZPc0JVUlV1TGly?=
- =?utf-8?B?dkdHeVBvelFkTU9QVE5vc0VNM2dzcjV4NU1EajBnZkZQZzhySDl4L1A2b2Zi?=
- =?utf-8?B?K1F6VXZ3V2huTnRxR2c1dFpUbmx4NWNUM09rVldUdjAyVWppZHlvVlZ4djR6?=
- =?utf-8?B?VEVrUHRJb1lSY000Y0JJdjhQODlkeUozZ3FLTk9McFUwL1paUU90M093Wmdh?=
- =?utf-8?B?ZlVReUpFa2tyVW8zUkVmK2dNUHlESVl2K3V3ZXIyMUpaMjIxcHlEZmMrNkw1?=
- =?utf-8?B?a2xvdjlrRVhzZnNnQmIyRGtQT1ZKd00yOXExem43b1JNMXBCcDZvYTdJYjRO?=
- =?utf-8?B?Y3ZUSHA0aHdwVytSa0JrZExxbWhHSElWczNCNUw0emdNdkE5cTBXM2RibXRQ?=
- =?utf-8?B?TDY4c3c4ekdtQStGUFJoNG93MTVtYlZPeWxWK2t6QlUrRHRkZGJVL1p4TTk4?=
- =?utf-8?B?ZzhuaE5WUE5nL2t4OTlMNVB4SUVsa05NWnNXUElyekEzQWZrTzBTVDFHYTAv?=
- =?utf-8?B?QVc1cWsvVGwzU3IxSmZ1VTBzUS8yS0ZLYW0xM3RCUk9FWk9TaEJDTzRPVkFo?=
- =?utf-8?B?eEJmRElVRk9Xakk4ck83K2dCdnNVRks5dkVnazVmWk1ndnJ4THF1YkRycHkz?=
- =?utf-8?B?bk8rYnVUUEdlTUpzNVRvdnBXdG5RUXhGYzkrTnhRSUp0RWZyemhVQ3Jkb3VR?=
- =?utf-8?B?OFhHcWk3aUNZQ2NRdXNTV0xjaGNJMW8wM1pFaDczUUV0WFJ5ZGVtdHlaT25n?=
- =?utf-8?Q?ziQwPR401+I=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?N1pQdUp0SWtkcWZrR3ZJbnNzZXNPS2RCWFpGc0ZPZ0JLSTBleWpiOUFPM2dR?=
+ =?utf-8?B?bGprY3JjUTBCQUdDdGY0bEROWUYvdkV2WWpidXhQZXlaVjZHMWlmaDU3MFNz?=
+ =?utf-8?B?SmM2ZFptRjFjT1RVZUNZVFBTbzhFRnlvZi9GK0Q3S0RwVEtHM0U5NGZJRnVN?=
+ =?utf-8?B?YXZ6K0RzTjhRWU1SdzRocmVxbHkya1F2L0NIV3RJQXVDNjg5QUlhV0dYa1li?=
+ =?utf-8?B?Vmh4UnlEZVc3TTBwa0E1L0lQaDAwd1ZmbWd4b1JKNlRaSjFxRngxU3NFcjVz?=
+ =?utf-8?B?ODFrR1haWi91WlBZU2ltRVorSkYvRG9EMDJuRk1sRkdKSSt0ZTNlYkYvVFhM?=
+ =?utf-8?B?QUxiS2pTNW1VTThHZ3BjK3B0TDBUUkR0SFRQMmF1NjRuWDkyUlRVMDl6TVZT?=
+ =?utf-8?B?RkpUQlB2N3RlMlJRUkNHSFREdlJ4L1ZXZ0JYeS8xc0ZzS0Fma2ltNml0NnRk?=
+ =?utf-8?B?OFk3VWhjT1lhTVBRV0NiL29YaG9PWW5rcitmY2NZTE52TkFCcVlUL1Fici9a?=
+ =?utf-8?B?cUtFOE5BaHcwQkFBNndVakVBUXRCVEJMMUM5ZFBURE1lcTFjL2tXSTFaSjFF?=
+ =?utf-8?B?aVFUSlpGckxEQk5qYk10RlBkWU8ySUVMS3pCalpHU241bnJIZnNrVlNoRjll?=
+ =?utf-8?B?RmFWM25KWVQ4OEJtcTNYRjJUamNPekRuRFFvWEM0QnVEaDNmbUZFbXNnMG91?=
+ =?utf-8?B?VVRoVXlVMitObkhBK2h4RHBiQ25wTysrZ1hoNTJZa0xoeDk5WmtZY0pxQ1NC?=
+ =?utf-8?B?UDRuNldpR2NXR3BBdEl6TVdOdVhYREZJbWluZHZVY2xuYTJQZWM2WklpWDha?=
+ =?utf-8?B?cFRXTGQ2ckZqMkhYVnFZRlNPSEFzbEN4UTlEK1QzWTRtR1FPMVZGTzJDOTJr?=
+ =?utf-8?B?RENubzRMNFVoZEZ4RXF6dzV5czRONDVGZ000ZlZ1RElSQTJ1Y1p5TGZyeVdz?=
+ =?utf-8?B?a0Q0NUdiSzRkVmJZK3ZwNmEvdTJVMDBKSVRQWVhLcmlsVWNzSjFrd0U2b3F6?=
+ =?utf-8?B?TXhiNkJrc290SGR1VlFxdDJyN2pGckoxOG1QUEV5K3ZEZ0dZcEplMXJ1STlW?=
+ =?utf-8?B?WjQwWFJWd3duY3p4ZFArYU14dWpIT3VwQmE1R3d5VWk2ckJidVFZYUlIeEhs?=
+ =?utf-8?B?Z3B4RG40Y2xTNDBTTU1PMG1vR20rbit0NENQbmZ6cG4rK1Vqdm4vdXJaVWRR?=
+ =?utf-8?B?L0xBRG9zSnpHVEJlOVRqMnlBNDE1UXFIMzJvVDRJc3pHZVg3S0xPSmlIdnNT?=
+ =?utf-8?B?YkcxTWdmRW0zZVNUQmVUVUxGdEZrOURMN1VyczRFcW0xTDBtcHpIRzVuMGJL?=
+ =?utf-8?B?bWpKNGNUZVRwazFtRWxIOW8zNTNSTi9zV3FqU2tvMXJVWjFwa1UzNjMrT0hl?=
+ =?utf-8?B?eEZpbWZTVjdCNitnMVNSek1iN3lMMnFUMGVvOGNLVFhJQnFPVXIyOHBpSDlR?=
+ =?utf-8?B?akRDR05hQTdoKzFlSkx1NktFL01UVG9tUWlvS2ZuYXEwVURCdlJnWWJNaHY5?=
+ =?utf-8?B?dEpPM24wajRlMG5mRnRwUEJJcGVGN0FjMUtOaUZGRzFnSCt4TzdJN3dmanlt?=
+ =?utf-8?B?d1pxYkE1REJrN3NjbVhKUmVjV0FXMVNNaUJoQWprcklXLzVrSkFVU1BWS250?=
+ =?utf-8?B?V29PK0xoV1dacGpBaVl5RDNONmt4eFhFWXVQWlF1Vlh5OUdFdjBneFNQR1pa?=
+ =?utf-8?B?cU0yOTRkbFJLR2xFVWNHczlEQ0kyWnk2VGUxQ002WnVFWjBqa0JXMnE3T3dW?=
+ =?utf-8?B?ZlhJZ1UreklqS3hKcFlCZmxxdG90ZnNDRXNyeDlpeUcxZlpXaDdUUGhzMGRi?=
+ =?utf-8?B?MTJldGFnODQ0YTgxZU1YcHQwS2dzdFN4TEwvYVpJR2VnZ2Jsc0c5ZHphYmJu?=
+ =?utf-8?B?UTNLUEpuMStqYStZT2czUG5qQ01oNkhDWjd5dCtnSU9KNkVGWDVELzFWRkpS?=
+ =?utf-8?Q?njt7LHDvbFU=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007); DIR:OUT;
- SFP:1101; 
+ SFS:(13230040)(1800799024)(376014)(7416014)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZXZWcE95emdSSjAvN0FUV2ZpbUM5S2Z1cmxac3YyWXpyVzZyanRLL0FMSGhl?=
- =?utf-8?B?ZkdmNlNqOWtoZDNTVmJaWkpTQ3VjaVN1RmlGMnBPcysrcll5UTE2L3BHMlhr?=
- =?utf-8?B?WkduQ2lsU3dIQXdCMW5FWlkwTnBHZ1J6aGU0YXR3UkZXTTNRR3NYa1dPajdM?=
- =?utf-8?B?NTZXcHVpU3J4WGovU0J2RExYdGVBNXM0VmlEU2RlVC9MeXlGMVNjMEFDaC90?=
- =?utf-8?B?V21ML0lnUkRjcU10VkxScWtBV1UwemRQcG81TnZaOXAyVFBiNEVlazZaZ1V3?=
- =?utf-8?B?SFZtNytqenV4OHlBQkR2VkNlRTlYSkFUYWV1OGorMVJWL1dUUTNwWHlsUUJk?=
- =?utf-8?B?dFBrZ0t4ckx0VXIvNTJJVFlweEgrK2sxeGYyMkRMRTZmMms2YVJYSndxa1Qv?=
- =?utf-8?B?ZDRKTk93WUZyN2FHVWptK1BmcXBkeTdOWjArbmlLckZRZWVxSExsQzFScXBs?=
- =?utf-8?B?VCtOM3A3OHZlQmRVemVCVXZ5SzFTckk5MFVhZjN4YjlkaWp1aXVxbXdnT0Qx?=
- =?utf-8?B?eFIzcSt2VWNQRkwzOFdjMWs3d0lHckQvSngwVzhmbWhtQnh6T3Zkb0tyN1VX?=
- =?utf-8?B?YUJ4QXBlbWxyY1ZIR0MzaGQycjQ1R0RMa2tBbi85OFFCSUIrNitRc044VGxD?=
- =?utf-8?B?eStTNlh6T21XYnFHcG1wTkt5bmN1WlRKYnZKU25zZ0hSVnpvUGlsRWhScWNH?=
- =?utf-8?B?eUMrRVE4T0JFWEhFUmU3Z2taTGQ5T1BHNGZHbUNQUWVZVU01d2Z1TklTUjFp?=
- =?utf-8?B?SlJaZm8yOUp0UENWc0twMENldXpDRnFYSWh4WWZ3enlBRGFKU1ZoU1RGOHJq?=
- =?utf-8?B?M1NFTmFQS0UxS1dOVkVhTTc5WkZDM0YvSFY4OHNsR0tqcDRZQmN6SGI2VFFa?=
- =?utf-8?B?V0l3OWVRaktBVE1Uam1OQjZmOEkycSsvTktMaVZIeHJBanlrcnZtN2RJd0hF?=
- =?utf-8?B?NWJ2THNubVp3MWxldUVRb3pCNytXQ25mQW42ZmJObXFMc01vSnRlZE00aXd3?=
- =?utf-8?B?VXhJeVg1VFZBLzdsZzlPSkdqNGNKZTgxbkd2Nmk0K2FTWCtla2N3cTBQVlpr?=
- =?utf-8?B?Q0NHSmd0TU5SN21WdmxwQmpsK2JOR0JSQ0w5aEJsTGhiWFBHUktmKzFXazZx?=
- =?utf-8?B?QWVHeTNKOXRPSVl1QnFubFNWRVowRjEzMnc5RWhZZUQxWmYvY0tnejJTbGVr?=
- =?utf-8?B?OWJIQ0lNL3RpbEgzMkhaUnR3WE44YkZiMEZWakFqa0JiL0ZBK1FyNVNLd2Nr?=
- =?utf-8?B?R0QxdnJrR1B2VmJiZEZOcnlRNzBUOTVGWEo4ckxFM2g3ZWRxOEpZcndKYUtx?=
- =?utf-8?B?TnY1OFhiUy9MQXVML0l3SmRKUnRuUDdJYTM2dWhJNUIrWllQNE5NS3ByekFC?=
- =?utf-8?B?a3JTWnpFcVUyQ0lRcWJiQkpaMXg4eU1qWWIyeDZBQjJacDhuUy96Yk1QWnVP?=
- =?utf-8?B?K3lBQ0JUZjRMck5EakV4OTFFRkV1eEJFODhjRDN6ekt0eHc1QWtiTU5aYUhK?=
- =?utf-8?B?cFJWZVhMdXBnYW5LNHJaRjNRZnE2aUV5QU94d1JtaG85UFUvdFBlK2trQjNG?=
- =?utf-8?B?Y3ptc1NiUEVCaXg2cEpEakpxTnh4UENldUc4ckdIYUhiZHI3eS83cGY0ZGRG?=
- =?utf-8?B?a2pRNk90RVZCQTZoelpPcFJWbTRxdzY4bXVnM2xQTDhYeWJWRCtzTmtQRXZw?=
- =?utf-8?B?RlAzQzlWMFl1SkFkNmlNK3ZYNlJTd3hrZVJOMWc0dGg2b21ERXdzWGkyMG5U?=
- =?utf-8?B?bXdyY0grMit1N083dUkvZzcvODNYK282elBpNVkzVUptK0xLNkQ5ekhzRGdh?=
- =?utf-8?B?dUNENEF4SFpHWmprNnBCWUQydDY1TEEzazh4aWVDRWgzLy94Z0VLSW5yZG96?=
- =?utf-8?B?VExXZmxhZnRzU0h3TC9UV1ZLbGFkeXJxeElCOEZoajZSaXFPcWZ5QjBXZEtB?=
- =?utf-8?B?OThHTlFsMHFLMmJZWURocU9PSmhzMy82c2x2Y2JjdUxWMDdxc2h1WHNJVjNz?=
- =?utf-8?B?R1ZxT1pNaVdoNmFydmQ1eGthM0luUURrSUpxVlAwK0J6Qzg3amdBd08vdm5J?=
- =?utf-8?B?ako1WVc5MXRiUDRJbXlzclNlRGc1TW9PbFdUblkwNmRLNVpJSFVWaTJvVnht?=
- =?utf-8?B?eVJBS2FDcHlTd2VjNGExU0psZ1krUlZESTFPZll3NUdoNmM4TFU2ZitWeGxi?=
- =?utf-8?B?ckE9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YklZa1BBdEIxcEZWM2VYcEdtZmFZVHJ0Z0tadHQvc2NRcEY1cEhYeXY0SWc2?=
+ =?utf-8?B?R2ZtT0lpOEozdlY1aFpvMnVtSWJqcS9DelJFdHVpYUROaU5QTzIxU0MwTC9t?=
+ =?utf-8?B?UU9nNHpJNXhBSytKcHVyR1FHUDh6Y0V1bml4YnYrbW1PSFB6REMxNGdudUMw?=
+ =?utf-8?B?VUxOdUFJWmI1T01mYjZ2UjdwV0JzVUh3dU9lYXgxZzVzOXRGQ3RKVmJkRlZ1?=
+ =?utf-8?B?bjRyN0RHNFJ4aUIyMzJZTFJvVCtVa2Y5L0J4bDFSNVVOWEV2elNGTUhuSC9p?=
+ =?utf-8?B?NEJ2ZTcxMHJCR0hreGMvTDYya0x6RWl1bmQ3OEkyblM4WWJsK1BRWjNHN1Nh?=
+ =?utf-8?B?MENkd2hmc2lGditpTkNiVFAyKytoNnNwWEo3NUZQdkdYbkQ2QTZZQ3RlQm9Y?=
+ =?utf-8?B?Q2ZWaGtZS2x2WEYwMjZhMG9UVVdCWlJhQkFiN3JLcFVXbndqSGMvWi8xYm9y?=
+ =?utf-8?B?M1VySXlVZmlIUXRqL2RIeVdhYVRwZzFEZTlyVUtiSHlsc0JDNFFKUDI5Vlp6?=
+ =?utf-8?B?VFpIMVZmbHU1SlZWRHhzaHlodGNIYzFtTTJqaDcxaXA4VG05UWVZRzJnSUoy?=
+ =?utf-8?B?Mmx3cWxPeWVaMjl6b2xkSDVrWngrUmNMTXV4RHUyeENCK0haNExjV25aVkk4?=
+ =?utf-8?B?QkMycCtkQUhhb1VFempEZXNqT1pXeHEwenBGWFpveWo5YlJuOHJQbmlqMVkz?=
+ =?utf-8?B?bFl3RG01TVJXUzl1Uml5M3dSeUo1aEpaaGxmbXdycVpyMW1mSjNnc29QYkg3?=
+ =?utf-8?B?emcvQjBNQTBQalo4d0IzN0EvOFVBTkRMSUhFZ2dpbmZFL1VYS3drVnVvRnFJ?=
+ =?utf-8?B?VlZFeXdWSi9WeGMydXRLazl4Ri9QWlRpY2haMTNZSUcrUk9uOWJlZjNObXFs?=
+ =?utf-8?B?dWlzazdCeVFSTTFpWlVVQWtjdjVFMjVGM2FTMnl1eDIxUEg0V00rR2VzbEJ6?=
+ =?utf-8?B?Tk5pa01DUk1tQzB0RjRPL0U4aFRoL1ZMU1NzcFJXdmQvSHpsL0ZJMklYbDUv?=
+ =?utf-8?B?a0oyMVV0NEQ3ZlhsdFRtb3ZVQTRxeUx0SlFCQTJYOU1FQ0xudi9KeXNoN0Rq?=
+ =?utf-8?B?S3Qvc1QxbERHTms4SjhEWHBDZWNZTzcxTjVCNkhuL3JvWlpjMUdFa0ZlYVlB?=
+ =?utf-8?B?R1NJS2VrRDRCbjByVWd6cmhKazR2SzFScUxHV0lBcWh5NzBLcVVIeG9wUjMr?=
+ =?utf-8?B?SG82WWo5Z1MrRXZxM2tZT0tWWVRMa2JuaFc2T0xscjdEb3pWaWFJeCt2eGtM?=
+ =?utf-8?B?cHM1VjJySmswNUcyUlQ0cm1OL3JPRFNTVFY5Yk1sRFdtZk9meTh6aEFlRm5N?=
+ =?utf-8?B?S1A1NmJSOUVqRVI0OTloTXZiVDBuNzErQkc5Yklab29WbXZRcGFOTUp4YmU2?=
+ =?utf-8?B?T2ZUYldHYmFCTE1nYjZRcFIvU0g3ZDNUaVdhMXk4cytGRlh6SjFTc2FzTWlo?=
+ =?utf-8?B?aEczcFBvWGNwbk1EajdiNHBFRGdCNVlNdWhTUHlMY05SY3VEbjRZd2tpN0x4?=
+ =?utf-8?B?ZCs1WkVYNWMrK1dlVmVvUTloWGdQNjM3WGpXQXdKOXQ2KzV1dlIxZmNsN0JW?=
+ =?utf-8?B?K2ZDNnhjSTUrWmdJQjFYZEoyeXU3UkNQQXhVNHZpVDJlTFc2aTR6SzVoNjVQ?=
+ =?utf-8?B?QWZtbTRkU3RmdTVTQXpYeWFMNDBHempablYzb2JHMFZKd1Q4a2lYcGhETGJk?=
+ =?utf-8?B?QzNscWN4ZStYVlpybkRyZmNOZGdmaVl0QTVCdEhzVmUzNmdKbUxIWGY0VkUx?=
+ =?utf-8?B?d1B1QTJyR2NsTFJPQ1dZRU52T2U0SFRIZzRRbERGeWFjMU5tRExKZHdvU2ta?=
+ =?utf-8?B?d01lbmNrSE5qWHRlWEJVbXZnY2VVVmpiRC9ZQTNlcENDeVVlY2lUWm9TR3VJ?=
+ =?utf-8?B?UzVXSi81K3pYZUxIR1N4NkxqbVQ0ZVlueEl2WVlpZ2NsVjhoUzMxalBSSUdj?=
+ =?utf-8?B?TUF6MmhwbWtiam1FUUFqTDJFaFlIWjBWSGNqcUZ5cStTK0RXMTFBZjNVUGdQ?=
+ =?utf-8?B?NjMvTkhCMDNVVkloWEN1blJQTmNzK3JWR1VhUThlL3VmbDFSeUtVenlXUGhv?=
+ =?utf-8?B?Q2JqYmlEK3hjd1hJR2hZSDRPUmlQRmZHYnVPTUFrL0NnUGZxMUFkN284V0VE?=
+ =?utf-8?B?Qm5ZTXJhbnJsRG9yUzRLaXhoNDhNV1FnZ1U0d1F5ZTJ2ZzhxQkJIUjE2dllG?=
+ =?utf-8?B?NkE9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: uCrdULiSNxXRtdRm1zlFAU/h+6b0pbYo3dozYNw+57uAKE3oeOxpQrmgD//cLZKgLaITkyva4icpSa5D0dlhQO9fYjAnnWRNsvhEEpOl78PjXOdtlGiscVBq6HVLlYMvAEzMF3BM417jxo9vIzLA9NYs5UtjkYE81xx7RLjnX11g7APhwn9IfmMw8IxmfPVTMEQigqph3Q8kQqUuEkcJgI4fNzHEY1KmKluF9ur7tkUyDl+Mg8ydDftRvpD082vLf5fh+SiuKDYAwlWDf+GGjpDgCUXkTMCmwFmuC3kuwk/aETTKfs5R0KTmAV0DH3iwpSDUc+h1OGUe7/cLX59SjebTwPaSuZOsc0ewI8gWaBAMzcxW9SfkFrw2uU+VjrcH/b2It4w9mxqlc8JblnIJaSsTYZGelXol3U11MWAqEmTdjVK0QpFln6vJIiydW9mYO0bpv1ff0YSNXypwKgpbYyfFkDod+K5aV4zxYQGQn5U62e+g7L7tPVhzHtq0n5bLExToX8D0ff4FTOsDH+svbVUGxZ0fk1aZeMPmZVSFLyzus0N3fbUu2ZvIbJpL4YdPRyXQds84CHzhrlM4W9qwYcMPQYlKTJtYhd+B3gBm0vk=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: NYltQ7JonJ68wN7WlaoR2P06BO6FpvlbFzE1x3KOOgums39Vl2yd2C1APr6JAMqkzNXOPtUdPlSnp4k8hasCIhr61/3fuLa+oL6t87TIWHorvyiEAuAeTcgblo87iuT0P4e79Onve6CltG+T8pdUxuqfMkUtAAIugkalZZ4RZmzJSDFtzn6PtyurRaf1b4Z6IZgKk4bhVk5Kx5qCZmlJ/zj8yZFa/UF4uVzljRlTrmAMdJ0WOdy+7VqHz7DetVbwAXUwSlJenpAZ2w4ZieH+dqCXwdTpOwqS5wz1qagoQI4Rh1TZR0iD/xZRuaCLgreimilkCfaZ6rLbRExNyhAzu884HbUrr4DheBBEq0dMUYeyuRYbP0UWoU0RBwYDXNrq7wRRE0YXCrmdRKmPwe28FJusWDAdZaz+Q6gTCcli84Ms/JWPYBVnvOaoNMOAMjCh5s4bmR1ULRvCmKso2dElBpAkC0M+HyK9NTC7YkVFarZc37nqneZX14U3hm+hIucbzEbcEi2bjrswNeSjltQaBsF05wyhhiGywX5dcKfzeZ0gXwiMSguWxM2pjzrfv2ZKc5/qNW1pkL/FIRgEQ8gaj06vga4LnNeIO1VIHAyObvE=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c91143ea-8310-47bd-f49e-08ddb8ab2dd8
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb29f08e-c92b-4e59-9fb6-08ddb8ab3442
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2025 14:25:50.6961 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2025 14:26:01.3905 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FtHE4j8hypGXbJ+AugyZK//OMVgB5MzcHtySpUV38PrQHcX/WG9slbsEJ50rZeH1DF9M0EX6oesENRRVOz5xmahYmiupEP53szAZxGa3HIg=
+X-MS-Exchange-CrossTenant-UserPrincipalName: kyDjUfdpI9nYHuU0sFFpZB7Kx0Z27AoDZuX+82U7Hjh4I4QLVLag9VWDR0ZQWLrX8ZAACcRmKK6n4SkF6cpDSQQyGpab8SDrmeS9R576USI=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB7088
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-01_02,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- mlxscore=0 malwarescore=0
- bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507010094
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDA5NSBTYWx0ZWRfX3sCSTTRR+VpQ
- figDPaXyFuFaHbKpWLNO6NnSTnxUOEpBOFT6uU6n8JERvlOdTlGK053imDCztEsZjZ0/2DdhJyb
- SzlpWOHtoPoTzfLJA4gw+r7WgQylAjlggl1m9QeCnVd2TZUKWk1KilFQvhND3U0nQZeosTFSdCq
- HzLyhU/HokwuEBgQFspYvziCx1pJ3eAJRf6DqaVBuc3oEJo5kk6bb0WeDMyLvlrcSq/5hOXHc5o
- JImndzy0fs8qksb1FJ5GWp0xQ0t+I4zncQR4VE6pJmqRVheCEwWBLJo7O/O2eTgYU3TkR733KwF
- gBq8EBVDJRgZHDv7vKuBW4kmfVMBqdEU5vRRRZjds32m1PP564FAdSXbRg+IZzfouSrkbEUECxn
- 0XmyKwG6Isdi17Ft1uSf3+Ruam0h5KrI97PxLrVUBaW+wHlEJEs6oHrGVwXNI1XZyiHPYG2y
-X-Authority-Analysis: v=2.4 cv=MvBS63ae c=1 sm=1 tr=0 ts=6863f00a b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ phishscore=0
+ suspectscore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2507010094
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDA5NSBTYWx0ZWRfXxDzII6BGBvay
+ DOBFy9SUEVjfD/ZjKBKiDhQZTF2W35Bm+iiqB54IqqAgHBi45ft3yaNw7QTnMrQNEnZLphWZ7qy
+ EEEGpMFB7vYT/Y7Ldd+g1Gb+frGRnscA+DyPmkFa++EDVwb50WN/olWpKzwMlw0CD9KLayx2/KL
+ vHqFeyRXjf4Hmg3TLz7vn7PBFoJD0zb52vSrDcHPePBvIrTRh5TRDaEz+F/+N9P2hezq6j2UbLJ
+ aSwPeLIXCeuKVcZtbKlzpH0kvU15mULvuKe/qENC+fLWG21KbLXvjfy9JQ5mtSWSXcNmSDj7a9P
+ 7JlihpSpi9BoWgxZ5QeEo68jDxHVJBkc+uidporn5B1FKIiHrlO1DOVGgCWemP6A1go6BxQMuAk
+ rH3HX/PME3bVL5l08I1RE36U+SeYPcOBd1HbC+LQZ+Oon+HnX9+j1u3SETJhFu+lL8FU1cYU
+X-Authority-Analysis: v=2.4 cv=LcU86ifi c=1 sm=1 tr=0 ts=6863f005 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
  a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
  a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8
- a=QyXUC8HyAAAA:8 a=nBBuJgXPqx_nvrQxjDgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- cc=ntf awl=host:13216
-X-Proofpoint-ORIG-GUID: xN_Q83yjVINAKVLuckOAzWa1PY3LAzGx
-X-Proofpoint-GUID: xN_Q83yjVINAKVLuckOAzWa1PY3LAzGx
+ a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=twEcGank5lYH7YUZZjQA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 5PWMzWl2DvNtVbAuBNxHs3xVeRd5ekZ7
+X-Proofpoint-ORIG-GUID: 5PWMzWl2DvNtVbAuBNxHs3xVeRd5ekZ7
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -237,98 +233,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/23/2025 5:07 AM, Duan, Zhenzhong wrote:
->> -----Original Message-----
->> From: Steve Sistare <steven.sistare@oracle.com>
->> Subject: [PATCH V5 04/38] vfio/container: preserve descriptors
->>
->> At vfio creation time, save the value of vfio container, group, and device
->> descriptors in CPR state.  On qemu restart, vfio_realize() finds and uses
->> the saved descriptors.
->>
->> During reuse, device and iommu state is already configured, so operations
->> in vfio_realize that would modify the configuration, such as vfio ioctl's,
->> are skipped.  The result is that vfio_realize constructs qemu data
->> structures that reflect the current state of the device.
->>
->> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> Reviewed-by: Cédric Le Goater <clg@redhat.com>
->> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->> include/hw/vfio/vfio-cpr.h |  6 +++++
->> hw/vfio/container.c        | 67 +++++++++++++++++++++++++++++++++++----------
->> -
->> hw/vfio/cpr-legacy.c       | 42 +++++++++++++++++++++++++++++
->> 3 files changed, 100 insertions(+), 15 deletions(-)
->>
->> diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
->> index d4e0bd5..5a2e5f6 100644
->> --- a/include/hw/vfio/vfio-cpr.h
->> +++ b/include/hw/vfio/vfio-cpr.h
->> @@ -13,6 +13,7 @@
->>
->> struct VFIOContainer;
->> struct VFIOContainerBase;
->> +struct VFIOGroup;
->>
->> typedef struct VFIOContainerCPR {
->>      Error *blocker;
->> @@ -30,4 +31,9 @@ bool vfio_cpr_register_container(struct VFIOContainerBase
->> *bcontainer,
->>                                   Error **errp);
->> void vfio_cpr_unregister_container(struct VFIOContainerBase *bcontainer);
->>
->> +int vfio_cpr_group_get_device_fd(int d, const char *name);
->> +
->> +bool vfio_cpr_container_match(struct VFIOContainer *container,
->> +                              struct VFIOGroup *group, int fd);
->> +
->> #endif /* HW_VFIO_VFIO_CPR_H */
->> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
->> index 93cdf80..5caae4c 100644
->> --- a/hw/vfio/container.c
->> +++ b/hw/vfio/container.c
->> @@ -31,6 +31,8 @@
->> #include "system/reset.h"
->> #include "trace.h"
->> #include "qapi/error.h"
->> +#include "migration/cpr.h"
->> +#include "migration/blocker.h"
->> #include "pci.h"
->> #include "hw/vfio/vfio-container.h"
->> #include "vfio-helpers.h"
->> @@ -425,7 +427,12 @@ static VFIOContainer *vfio_create_container(int fd,
->> VFIOGroup *group,
->>          return NULL;
->>      }
->>
->> -    if (!vfio_set_iommu(fd, group->fd, &iommu_type, errp)) {
->> +    /*
->> +     * During CPR, just set the container type and skip the ioctls, as the
->> +     * container and group are already configured in the kernel.
->> +     */
->> +    if (!cpr_is_incoming() &&
->> +        !vfio_set_iommu(fd, group->fd, &iommu_type, errp)) {
->>          return NULL;
->>      }
->>
->> @@ -592,6 +599,11 @@ static bool vfio_container_group_add(VFIOContainer
->> *container, VFIOGroup *group,
->>      group->container = container;
->>      QLIST_INSERT_HEAD(&container->group_list, group, container_next);
->>      vfio_group_add_kvm_device(group);
->> +    /*
->> +     * Remember the container fd for each group, so we can attach to the same
->> +     * container after CPR.
->> +     */
->> +    cpr_resave_fd("vfio_container_for_group", group->groupid, container->fd);
+Hi Zhenzhong, this is the only iommufd patch you have not reviewed yet - steve
+
+On 6/10/2025 11:39 AM, Steve Sistare wrote:
+> Register a vfio iommufd container and device for CPR, replacing the generic
+> CPR register call with a more specific iommufd register call.  Add a
+> blocker if the kernel does not support IOMMU_IOAS_CHANGE_PROCESS.
 > 
-> I know this is already merged. Just out of curious, It looks cpr_save_fd is enough?
-
-vfio_container_group_add is called from multiple places.  In some, we know that the fd
-is being saved for the first time, in others we do not know.  resave avoids creating
-a duplicate entry.
-
-- Steve
+> This is mostly boiler plate.  The fields to to saved and restored are added
+> in subsequent patches.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> ---
+>   include/hw/vfio/vfio-cpr.h | 12 +++++++
+>   include/system/iommufd.h   |  1 +
+>   backends/iommufd.c         | 10 ++++++
+>   hw/vfio/cpr-iommufd.c      | 84 ++++++++++++++++++++++++++++++++++++++++++++++
+>   hw/vfio/iommufd.c          |  6 ++--
+>   hw/vfio/meson.build        |  1 +
+>   6 files changed, 112 insertions(+), 2 deletions(-)
+>   create mode 100644 hw/vfio/cpr-iommufd.c
+> 
+> diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
+> index 170a116..b9b77ae 100644
+> --- a/include/hw/vfio/vfio-cpr.h
+> +++ b/include/hw/vfio/vfio-cpr.h
+> @@ -15,7 +15,10 @@
+>   struct VFIOContainer;
+>   struct VFIOContainerBase;
+>   struct VFIOGroup;
+> +struct VFIODevice;
+>   struct VFIOPCIDevice;
+> +struct VFIOIOMMUFDContainer;
+> +struct IOMMUFDBackend;
+>   
+>   typedef struct VFIOContainerCPR {
+>       Error *blocker;
+> @@ -43,6 +46,15 @@ bool vfio_cpr_register_container(struct VFIOContainerBase *bcontainer,
+>                                    Error **errp);
+>   void vfio_cpr_unregister_container(struct VFIOContainerBase *bcontainer);
+>   
+> +bool vfio_iommufd_cpr_register_container(struct VFIOIOMMUFDContainer *container,
+> +                                         Error **errp);
+> +void vfio_iommufd_cpr_unregister_container(
+> +    struct VFIOIOMMUFDContainer *container);
+> +bool vfio_iommufd_cpr_register_iommufd(struct IOMMUFDBackend *be, Error **errp);
+> +void vfio_iommufd_cpr_unregister_iommufd(struct IOMMUFDBackend *be);
+> +void vfio_iommufd_cpr_register_device(struct VFIODevice *vbasedev);
+> +void vfio_iommufd_cpr_unregister_device(struct VFIODevice *vbasedev);
+> +
+>   int vfio_cpr_group_get_device_fd(int d, const char *name);
+>   
+>   bool vfio_cpr_container_match(struct VFIOContainer *container,
+> diff --git a/include/system/iommufd.h b/include/system/iommufd.h
+> index db5f2c7..c9c72ff 100644
+> --- a/include/system/iommufd.h
+> +++ b/include/system/iommufd.h
+> @@ -32,6 +32,7 @@ struct IOMMUFDBackend {
+>       /*< protected >*/
+>       int fd;            /* /dev/iommu file descriptor */
+>       bool owned;        /* is the /dev/iommu opened internally */
+> +    Error *cpr_blocker;/* set if be does not support CPR */
+>       uint32_t users;
+>   
+>       /*< public >*/
+> diff --git a/backends/iommufd.c b/backends/iommufd.c
+> index 87f81a0..c554ce5 100644
+> --- a/backends/iommufd.c
+> +++ b/backends/iommufd.c
+> @@ -108,6 +108,13 @@ bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
+>           }
+>           be->fd = fd;
+>       }
+> +    if (!be->users && !vfio_iommufd_cpr_register_iommufd(be, errp)) {
+> +        if (be->owned) {
+> +            close(be->fd);
+> +            be->fd = -1;
+> +        }
+> +        return false;
+> +    }
+>       be->users++;
+>   
+>       trace_iommufd_backend_connect(be->fd, be->owned, be->users);
+> @@ -125,6 +132,9 @@ void iommufd_backend_disconnect(IOMMUFDBackend *be)
+>           be->fd = -1;
+>       }
+>   out:
+> +    if (!be->users) {
+> +        vfio_iommufd_cpr_unregister_iommufd(be);
+> +    }
+>       trace_iommufd_backend_disconnect(be->fd, be->users);
+>   }
+>   
+> diff --git a/hw/vfio/cpr-iommufd.c b/hw/vfio/cpr-iommufd.c
+> new file mode 100644
+> index 0000000..60bd7e8
+> --- /dev/null
+> +++ b/hw/vfio/cpr-iommufd.c
+> @@ -0,0 +1,84 @@
+> +/*
+> + * Copyright (c) 2024-2025 Oracle and/or its affiliates.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qapi/error.h"
+> +#include "hw/vfio/vfio-cpr.h"
+> +#include "migration/blocker.h"
+> +#include "migration/cpr.h"
+> +#include "migration/migration.h"
+> +#include "migration/vmstate.h"
+> +#include "system/iommufd.h"
+> +#include "vfio-iommufd.h"
+> +
+> +static bool vfio_cpr_supported(IOMMUFDBackend *be, Error **errp)
+> +{
+> +    if (!iommufd_change_process_capable(be)) {
+> +        if (errp) {
+> +            error_setg(errp, "vfio iommufd backend does not support "
+> +                       "IOMMU_IOAS_CHANGE_PROCESS");
+> +        }
+> +        return false;
+> +    }
+> +    return true;
+> +}
+> +
+> +static const VMStateDescription iommufd_cpr_vmstate = {
+> +    .name = "iommufd",
+> +    .version_id = 0,
+> +    .minimum_version_id = 0,
+> +    .needed = cpr_incoming_needed,
+> +    .fields = (VMStateField[]) {
+> +        VMSTATE_END_OF_LIST()
+> +    }
+> +};
+> +
+> +bool vfio_iommufd_cpr_register_iommufd(IOMMUFDBackend *be, Error **errp)
+> +{
+> +    Error **cpr_blocker = &be->cpr_blocker;
+> +
+> +    if (!vfio_cpr_supported(be, cpr_blocker)) {
+> +        return migrate_add_blocker_modes(cpr_blocker, errp,
+> +                                         MIG_MODE_CPR_TRANSFER, -1) == 0;
+> +    }
+> +
+> +    vmstate_register(NULL, -1, &iommufd_cpr_vmstate, be);
+> +
+> +    return true;
+> +}
+> +
+> +void vfio_iommufd_cpr_unregister_iommufd(IOMMUFDBackend *be)
+> +{
+> +    vmstate_unregister(NULL, &iommufd_cpr_vmstate, be);
+> +    migrate_del_blocker(&be->cpr_blocker);
+> +}
+> +
+> +bool vfio_iommufd_cpr_register_container(VFIOIOMMUFDContainer *container,
+> +                                         Error **errp)
+> +{
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+> +
+> +    migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
+> +                                vfio_cpr_reboot_notifier,
+> +                                MIG_MODE_CPR_REBOOT);
+> +
+> +    return true;
+> +}
+> +
+> +void vfio_iommufd_cpr_unregister_container(VFIOIOMMUFDContainer *container)
+> +{
+> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+> +
+> +    migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
+> +}
+> +
+> +void vfio_iommufd_cpr_register_device(VFIODevice *vbasedev)
+> +{
+> +}
+> +
+> +void vfio_iommufd_cpr_unregister_device(VFIODevice *vbasedev)
+> +{
+> +}
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index 962a1e2..ff291be 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -446,7 +446,7 @@ static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer *container)
+>       if (!QLIST_EMPTY(&bcontainer->device_list)) {
+>           return;
+>       }
+> -    vfio_cpr_unregister_container(bcontainer);
+> +    vfio_iommufd_cpr_unregister_container(container);
+>       vfio_listener_unregister(bcontainer);
+>       iommufd_backend_free_id(container->be, container->ioas_id);
+>       object_unref(container);
+> @@ -592,7 +592,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+>           goto err_listener_register;
+>       }
+>   
+> -    if (!vfio_cpr_register_container(bcontainer, errp)) {
+> +    if (!vfio_iommufd_cpr_register_container(container, errp)) {
+>           goto err_listener_register;
+>       }
+>   
+> @@ -623,6 +623,7 @@ found_container:
+>       }
+>   
+>       vfio_device_prepare(vbasedev, bcontainer, &dev_info);
+> +    vfio_iommufd_cpr_register_device(vbasedev);
+>   
+>       trace_iommufd_cdev_device_info(vbasedev->name, devfd, vbasedev->num_irqs,
+>                                      vbasedev->num_regions, vbasedev->flags);
+> @@ -660,6 +661,7 @@ static void iommufd_cdev_detach(VFIODevice *vbasedev)
+>       iommufd_cdev_container_destroy(container);
+>       vfio_address_space_put(space);
+>   
+> +    vfio_iommufd_cpr_unregister_device(vbasedev);
+>       iommufd_cdev_unbind_and_disconnect(vbasedev);
+>       close(vbasedev->fd);
+>   }
+> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+> index 98134a7..56373e3 100644
+> --- a/hw/vfio/meson.build
+> +++ b/hw/vfio/meson.build
+> @@ -31,6 +31,7 @@ system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+>   ))
+>   system_ss.add(when: ['CONFIG_VFIO', 'CONFIG_IOMMUFD'], if_true: files(
+>     'iommufd.c',
+> +  'cpr-iommufd.c',
+>   ))
+>   system_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
+>     'display.c',
 
 
