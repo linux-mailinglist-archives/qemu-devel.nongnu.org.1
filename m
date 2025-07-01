@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD06AEF85D
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 14:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D7EAEF81F
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 14:16:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWa4V-0007UN-1o; Tue, 01 Jul 2025 08:26:47 -0400
+	id 1uWZth-0007x9-VX; Tue, 01 Jul 2025 08:15:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1uWa4D-0007RI-3N
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 08:26:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uWZte-0007vd-KR; Tue, 01 Jul 2025 08:15:34 -0400
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1uWa43-0007IO-1O
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 08:26:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751372776;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3OLHN4+BZ2OHzqalRV2YRaGJ6fy4BS9UhG9Jq56005w=;
- b=dMnyPrXWf917h26uPdEkE6vymKL0z/G8Yr6MksOooQVEuc7S9DvJ0xwI32h8eIGKQmLf7D
- n29aFmtcVDa06cu9c5WV4nGt0OBqxfVBueIgRXHZCV/BxgBuqqXKyKmyd9IsdZDGhgpJs5
- tMYq6Ih5iLOosCPLpOxtb6bqn036ZmM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-549-IKj1N02hOsiZhTxtUlfm8g-1; Tue,
- 01 Jul 2025 08:26:15 -0400
-X-MC-Unique: IKj1N02hOsiZhTxtUlfm8g-1
-X-Mimecast-MFC-AGG-ID: IKj1N02hOsiZhTxtUlfm8g_1751372774
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C98AD19560A2; Tue,  1 Jul 2025 12:26:14 +0000 (UTC)
-Received: from srv1.redhat.com (unknown [10.45.225.98])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2735619560A7; Tue,  1 Jul 2025 12:26:10 +0000 (UTC)
-From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Yan Vugenfirer <yvugenfi@redhat.com>, Dehan Meng <demeng@redhat.com>,
- Elizabeth Ashurov <eashurov@redhat.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Subject: [PULL 3/3] qga/vss-win32: Add VSS provider unregistration retry
-Date: Tue,  1 Jul 2025 15:25:58 +0300
-Message-ID: <20250701122558.31556-4-kkostiuk@redhat.com>
-In-Reply-To: <20250701122558.31556-1-kkostiuk@redhat.com>
-References: <20250701122558.31556-1-kkostiuk@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uWZtY-0004dL-NO; Tue, 01 Jul 2025 08:15:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751372129; x=1782908129;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=+8OWmjwP/2bYJlYBUultibyNB+P9/EIDBMLVEEFej3o=;
+ b=j6JdgQot3ma8nmye267WcyuEicVTcYBmTdbRTVo7PNDqFxJEcvGVeYbN
+ yNTPMByIkDJuLz+Ipg4oCIUyX1W2RoHLcmIciNhyLpJsjoqPV2mPCaZzu
+ P7LkSF75pT9oXCvZ3Xd7l23gmlEGpFEruvLH00Ft1APJSkCAKw1z0IsWN
+ oQvV53aNj1tLkmqE0bIt75cTdu4aYDoqeCsKe0meEC4HajPXPEa3reJeb
+ Rifz2AanqcrQJdTVf3S8XdmaFjc8JGpyYx2vQXiMK+admqzerRlnEsJdD
+ WHRQrgSEDsvO8452NQcN2CvgKhi44tTOpYsL8STRa1i/Qje4LxlXAJ2Ws Q==;
+X-CSE-ConnectionGUID: vP44EOncThe/oNddYQSitQ==
+X-CSE-MsgGUID: QQi7W5rpRFiKhJQZ9hVUKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="57314838"
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; d="scan'208";a="57314838"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2025 05:15:21 -0700
+X-CSE-ConnectionGUID: RPuwhi74RuaLHkGVvKCWPA==
+X-CSE-MsgGUID: t/tWrUs9ThG5f4jyYfWgZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; d="scan'208";a="153530875"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa009.jf.intel.com with ESMTP; 01 Jul 2025 05:15:18 -0700
+Date: Tue, 1 Jul 2025 20:36:43 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Alexandre Chartre <alexandre.chartre@oracle.com>, qemu-devel@nongnu.org,
+ pbonzini@redhat.com, qemu-stable@nongnu.org, konrad.wilk@oracle.com,
+ boris.ostrovsky@oracle.com, maciej.szmigiero@oracle.com,
+ Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH] i386/cpu: ARCH_CAPABILITIES should not be advertised on
+ AMD
+Message-ID: <aGPWW/joFfohy05y@intel.com>
+References: <20250630133025.4189544-1-alexandre.chartre@oracle.com>
+ <aGO3vOfHUfjgvBQ9@intel.com>
+ <c6a79077-024f-4d2f-897c-118ac8bb9b58@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c6a79077-024f-4d2f-897c-118ac8bb9b58@intel.com>
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,43 +84,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Elizabeth Ashurov <eashurov@redhat.com>
+On Tue, Jul 01, 2025 at 07:12:44PM +0800, Xiaoyao Li wrote:
+> Date: Tue, 1 Jul 2025 19:12:44 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH] i386/cpu: ARCH_CAPABILITIES should not be advertised
+>  on AMD
+> 
+> On 7/1/2025 6:26 PM, Zhao Liu wrote:
+> > > unless it was explicitly requested by the user.
+> > But this could still break Windows, just like issue #3001, which enables
+> > arch-capabilities for EPYC-Genoa. This fact shows that even explicitly
+> > turning on arch-capabilities in AMD Guest and utilizing KVM's emulated
+> > value would even break something.
+> > 
+> > So even for named CPUs, arch-capabilities=on doesn't reflect the fact
+> > that it is purely emulated, and is (maybe?) harmful.
+> 
+> It is because Windows adds wrong code. So it breaks itself and it's just the
+> regression of Windows.
 
-This commit improves the QGA VSS provider installation flow by attempting to unregister the VSS provider if it's already
-found during installation. This allows for a retry of installation even if a previous unregistration failed or was not performed.
-This will prevent inconsistencies between QGA and QGA-VSS versions.
-Before this commit, QGA can use QGA-VSS from the previous installation.
+Could you please tell me what the Windows's wrong code is? And what's
+wrong when someone is following the hardware spec?
 
-Signed-off-by: Elizabeth Ashurov <eashurov@redhat.com>
-Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Message-ID: <20250618091806.170110-1-eashurov@redhat.com>
-Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
----
- qga/vss-win32/install.cpp | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Do you expect software developers to make special modifications for QEMU
+after following the hardware spec? Or do you categorize this behavior as
+paravirtualization?
 
-diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-index 6ee2f44a10..7b25d9098b 100644
---- a/qga/vss-win32/install.cpp
-+++ b/qga/vss-win32/install.cpp
-@@ -287,9 +287,13 @@ STDAPI COMRegister(void)
- 
-     chk(QGAProviderFind(QGAProviderCount, (void *)&count));
-     if (count) {
--        errmsg(E_ABORT, "QGA VSS Provider is already installed");
--        qga_debug_end;
--        return E_ABORT;
-+        qga_debug("QGA VSS Provider is already installed. Attempting to unregister first.");
-+        hr = COMUnregister();
-+        if (FAILED(hr)) {
-+            errmsg(hr, "Failed to unregister existing QGA VSS Provider. Aborting installation.");
-+            qga_debug_end;
-+            return E_ABORT;
-+        }
-     }
- 
-     chk(CoCreateInstance(CLSID_COMAdminCatalog, NULL, CLSCTX_INPROC_SERVER,
--- 
-2.48.1
+Resolving this issue within QEMU is already a win-win approach. I don't
+understand why you're shifting the blame onto Windows.
+
+> KVM and QEMU are not supposed to be blamed.
+
+I do not think I'm blaming anything. So many people report
+this bug issue in QEMU community, and maintainer suggested a solution.
+
+I totally agree on this way, and provide feedback to help thoroughly
+resolve the issue and prevent similar situations from happening again.
+
+That's all.
+
+Thanks,
+Zhao
+
 
 
