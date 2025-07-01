@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D12AEF52F
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 12:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FE8AEF533
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 12:35:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWYII-0004Zg-AI; Tue, 01 Jul 2025 06:32:54 -0400
+	id 1uWYII-0004aF-B6; Tue, 01 Jul 2025 06:32:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
- id 1uWYI6-0004UR-CA; Tue, 01 Jul 2025 06:32:42 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1uWYIE-0004Wd-JF; Tue, 01 Jul 2025 06:32:51 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
- id 1uWYI3-0002Eo-HX; Tue, 01 Jul 2025 06:32:41 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-73c17c770a7so3889710b3a.2; 
- Tue, 01 Jul 2025 03:32:36 -0700 (PDT)
+ id 1uWYIB-0002GN-OL; Tue, 01 Jul 2025 06:32:49 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-3138e64b3fcso2196931a91.2; 
+ Tue, 01 Jul 2025 03:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751365954; x=1751970754; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751365963; x=1751970763; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i5xqQGmlWDxi1LmZ2ClirqJ/75e4RmGThjr5rHPhrog=;
- b=GT4FFM6+X9ygT5xq8Qd5gOKrQY/vVzgmLUV4hjo/6JR+XzAMCw8F3H+EX1z4E14xw8
- u36B+N3+xB7XBBN7i5NaPNZ73UlNfvnoutBfD8poMcwGaaz5WYz+iAJoCSnyCFOXe+8x
- 2BXUgEeVDRGsNcM1UPwSv0AGDQrfhvQ9oZjc+1H8VFB6pQk9lYibo25piAiY2+/T508M
- YHt2A5gOVm5f+WaC4LegbcthRxMsAcZDs+KG07/UymUPAQCzjMNIkxiq8dWkvfhdD7iZ
- LiQJQCQhCoOtVlbmJdeD5H5m9wp6balF4pjx26WIHXQdSdQ+v+PE8C8qsdwnnktIyJ4j
- zQmw==
+ bh=XxWORJNR5cWeeNL6wFpxR5xESZhNAoZLn5RWItiQ610=;
+ b=XE1LMpodA4PFMcFTZpLfg/uH8A8ZUmy8o+3LLqsLW3MIatvQb+FrRFhTPfmeMJb9QZ
+ vUb/6b45mFDN15M4BTPIYH/kKFuOLwu0aKl/bbB7gUyNum/AGCxk4MP4Xi5yAaeumL2k
+ EI127pQ4vAJFmarKfBtMhNOYd/5YzfC3ee/sIRoaKFFzrWpONCICW55JzUe7WRSvfVsn
+ IIvpeRyyhmAvMYjCao1mKwGxbZMvG09ctldCS7+6Zebt0KaYPghoant9/D3HmjPCPvwS
+ RRAfBTV+ksaadp3/E2dVo1+k1cy7QgKQTZ/6U2I3uKuvCI51rLV3AVO3qqQ5AMcncOdi
+ 2HSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751365954; x=1751970754;
+ d=1e100.net; s=20230601; t=1751365963; x=1751970763;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i5xqQGmlWDxi1LmZ2ClirqJ/75e4RmGThjr5rHPhrog=;
- b=Ydu+1cvYwdrsyuBP98ROtLJxw3FSfEgpbf2hqSqCBqNGsVxwCOkwoilfl3/1RXOD7u
- P9mLZa61LwQzolbDH9nM4neXXuBcbqngssMhYnNw2lyeB5cEvkp0HYmoeUz60wUa3K9N
- KOsrBW5/XoxLrOXHFlDeE19g4n5K9qSFtWs0JFRcQkb9jkHH66l+qHDO8d6L9HlZtUoz
- rOY9vm8myWIj/LXjU7xOWDGIDUMUmEhtfGXX0dasFTA5OQd6mh0rlVwlMxT1hB4TnUIr
- BTfKziLKzibmVoSGioADn//YNKq99qF3Oer79vTbry/NZu7TVSl8GmcBUpZwLQ2TwPFy
- aInA==
-X-Gm-Message-State: AOJu0Yybsd3zzpL+fwQYM3+miegtsWV/LNGyleSP8JmnIsXKaZnk+svW
- oJ+NPAmGYZwPOr+MHEf/g64k4H9Q3EvUtlG3BE+vhbsp7oygwcR2/gZqbJaTiWMTjfk=
-X-Gm-Gg: ASbGnctLVT9cIILAghUXxP3EjmxMWPOx0YHwaCei++hzpYJN8LAK2iMI9CJODrjAEZH
- 7TOY9SyEEb6Al2Dh0wYxaiXS1xC7rNXdmwNP7IUBUjuzDHAxCyjpV4jEs7lUqPMR3rAbu5jYfhk
- 1uOvR8ze6AtBcKFkKG/IOyzSpYX//kDg96dBWRtW1JiJmxxyMBPi+gib/D9MFvj4DpICTtHfQia
- 9+KYaxNe1dX0p+8VGOtcOoUd8fplV6IKfXPYbv/XYRJI8HdJdE+4rUOwReKP6bbuttcCDuA2jcr
- Tn+nmlAJN/z0XVh0anbzKjki9oMx3BGEy+eywJorJh6rQAvVOzPvfO7K7KiplK3lURHZKMXmIdw
- zHT9V9VKt7GPu9MNjxKsIsIrCs+7Kedpthpc29P7E5dI=
-X-Google-Smtp-Source: AGHT+IG6uvXGmSbxW5lroVeFT11dBMl3BemDxljnjeavGNgNvSorTBzUTWNzfn4rg7C0szEO0UXzFg==
-X-Received: by 2002:a05:6a20:2d0b:b0:215:dee4:4808 with SMTP id
- adf61e73a8af0-220a1292cb0mr29649925637.18.1751365954395; 
- Tue, 01 Jul 2025 03:32:34 -0700 (PDT)
+ bh=XxWORJNR5cWeeNL6wFpxR5xESZhNAoZLn5RWItiQ610=;
+ b=TuL0T92NMS0jliRpWBdn9ykZxyOnLPRTufv08NEHaxUSGDEom3n8rrfw3fi7v+5hcy
+ N7jpHw5q8b65pLqdfzoV68+5lOD4iiNlacn8V52eG9tj7dDHrrIOG6k0qhzrYyzlvmxV
+ H8eCuGoCm1Fdq+thyXzetQUidu9rF9F7A7RR+vbfsIdvuELbCMS61+OCbYyYCkMW1f94
+ warNf1523GnflL1eHfCgHgsAZr0Iv3MGkMOMLuMTHL6jP5cWfC+8sSxyTe+YHbhOlj8f
+ hqBR63xb8/Tb/i+8BQUaYBqHxXjFAoUTtkCvsc4+TorTaQZyJaSLZUpdLjKr04KFQAIS
+ fc7g==
+X-Gm-Message-State: AOJu0Yw/6zHg4G/pDDAsymBJHoE6wjexCbmh6dFC6sqsLd9mf/Eaz3sf
+ iHg2w73/M8S1jNi5uugk4l2ITzGbqOZyS3jFU95UtX7vK/PaZMXcPG7RcqlZq/DvOXo=
+X-Gm-Gg: ASbGncsXZYdH/0Fogkooh3eDWj2ULIzD2LUf91swvBHxLnNE73FbIH3RmbJ1vfAlqrd
+ GW99plr4r8X6+IeBZWFXuYwEUJ6L30jiW2nxcbO2aUiMhdcR7Ca8vEf0lc46K/zZlsMmvmPLrQY
+ dhBCVcwtCUi+d/eLoppoBr77vRBP3lC5raRIu4X/BRYxC4THPzEoUMdNoXPcpKg+Wx0J0RP5Mvu
+ ky5pNnOBviPNn5oLIWRg0H9COV5+/Q0WtzotXc1QDAsV7x1durZNSY+vQN+aavHnQNmtfh2wwqH
+ +LdrEwwGkuo3quOi4OheP/DyXO2zNcQ2M4fgOKY0A+FpV45VVYBsc22Vd42/yGW+IhlgZk7alhm
+ 2FQV89BweyzmYweuqpm1JI/8aS/4JK8gNbwUVx4X78yE=
+X-Google-Smtp-Source: AGHT+IGDcxJUxgcHCmT8Qy4Y041NEpkE9gvknd5PWsVcxlnB1QJSG/k8gY7DS5awUjv9faRJd0qxDg==
+X-Received: by 2002:a17:90b:4e8f:b0:313:fab4:1df6 with SMTP id
+ 98e67ed59e1d1-318c9280acfmr21462390a91.32.1751365963281; 
+ Tue, 01 Jul 2025 03:32:43 -0700 (PDT)
 Received: from localhost (pa49-178-74-199.pa.nsw.optusnet.com.au.
  [49.178.74.199]) by smtp.gmail.com with UTF8SMTPSA id
- 41be03b00d2f7-b34e31db02esm10172589a12.63.2025.07.01.03.32.33
+ 98e67ed59e1d1-315f5382f0dsm17009961a91.3.2025.07.01.03.32.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 03:32:33 -0700 (PDT)
+ Tue, 01 Jul 2025 03:32:42 -0700 (PDT)
 From: William Kosasih <kosasihwilliam4@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  William Kosasih <kosasihwilliam4@gmail.com>
-Subject: [PATCH v2 01/12] target/arm: Fix VLSTM/VLLDM helper load/store
- alignment checks
-Date: Tue,  1 Jul 2025 20:01:48 +0930
-Message-ID: <20250701103159.62661-2-kosasihwilliam4@gmail.com>
+Subject: [PATCH v2 02/12] target/arm: Fix BLXNS helper store alignment checks
+Date: Tue,  1 Jul 2025 20:01:49 +0930
+Message-ID: <20250701103159.62661-3-kosasihwilliam4@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250701103159.62661-1-kosasihwilliam4@gmail.com>
 References: <20250701103159.62661-1-kosasihwilliam4@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=kosasihwilliam4@gmail.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=kosasihwilliam4@gmail.com; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,92 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds alignment checks in the load operations in the VLLDM
-instruction, and in the store operations in the VLSTM instruction.
-
-Manual alignment checks in the both helpers are retained because they
-enforce an 8-byte alignment requirement (instead of the 4-byte alignment for
-ordinary long loads/stores). References to cpu_*_data_* are still replaced
-with cpu_*_mmu(), so that the individual word accesses themselves also
-perform the standard alignment checks, in keeping with the ARM pseudocode.
+This patch adds alignment checks in the store operations (when stacking the
+return pc and psr) in the BLXNS instruction.
 
 Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
 Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
 ---
- target/arm/tcg/m_helper.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ target/arm/tcg/m_helper.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
-index 6614719832..251e12edf9 100644
+index 251e12edf9..f342d93489 100644
 --- a/target/arm/tcg/m_helper.c
 +++ b/target/arm/tcg/m_helper.c
-@@ -1048,6 +1048,9 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
-     bool s = env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_S_MASK;
-     bool lspact = env->v7m.fpccr[s] & R_V7M_FPCCR_LSPACT_MASK;
-     uintptr_t ra = GETPC();
-+    ARMMMUIdx mmu_idx = arm_mmu_idx(env);
-+    MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN,
-+                                 arm_to_core_mmu_idx(mmu_idx));
- 
-     assert(env->v7m.secure);
- 
-@@ -1073,7 +1076,7 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
-      * Note that we do not use v7m_stack_write() here, because the
-      * accesses should not set the FSR bits for stacking errors if they
-      * fail. (In pseudocode terms, they are AccType_NORMAL, not AccType_STACK
--     * or AccType_LAZYFP). Faults in cpu_stl_data_ra() will throw exceptions
-+     * or AccType_LAZYFP). Faults in cpu_stl_mmu() will throw exceptions
-      * and longjmp out.
-      */
-     if (!(env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_LSPEN_MASK)) {
-@@ -1089,12 +1092,12 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
-             if (i >= 16) {
-                 faddr += 8; /* skip the slot for the FPSCR */
-             }
--            cpu_stl_data_ra(env, faddr, slo, ra);
--            cpu_stl_data_ra(env, faddr + 4, shi, ra);
-+            cpu_stl_mmu(env, faddr, slo, oi, ra);
-+            cpu_stl_mmu(env, faddr + 4, shi, oi, ra);
-         }
--        cpu_stl_data_ra(env, fptr + 0x40, vfp_get_fpscr(env), ra);
-+        cpu_stl_mmu(env, fptr + 0x40, vfp_get_fpscr(env), oi, ra);
-         if (cpu_isar_feature(aa32_mve, cpu)) {
--            cpu_stl_data_ra(env, fptr + 0x44, env->v7m.vpr, ra);
-+            cpu_stl_mmu(env, fptr + 0x44, env->v7m.vpr, oi, ra);
-         }
- 
-         /*
-@@ -1121,6 +1124,9 @@ void HELPER(v7m_vlldm)(CPUARMState *env, uint32_t fptr)
- {
-     ARMCPU *cpu = env_archcpu(env);
-     uintptr_t ra = GETPC();
-+    ARMMMUIdx mmu_idx = arm_mmu_idx(env);
-+    MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN,
-+                                 arm_to_core_mmu_idx(mmu_idx));
- 
-     /* fptr is the value of Rn, the frame pointer we load the FP regs from */
-     assert(env->v7m.secure);
-@@ -1155,16 +1161,16 @@ void HELPER(v7m_vlldm)(CPUARMState *env, uint32_t fptr)
-                 faddr += 8; /* skip the slot for the FPSCR and VPR */
-             }
- 
--            slo = cpu_ldl_data_ra(env, faddr, ra);
--            shi = cpu_ldl_data_ra(env, faddr + 4, ra);
-+            slo = cpu_ldl_mmu(env, faddr, oi, ra);
-+            shi = cpu_ldl_mmu(env, faddr + 4, oi, ra);
- 
-             dn = (uint64_t) shi << 32 | slo;
-             *aa32_vfp_dreg(env, i / 2) = dn;
-         }
--        fpscr = cpu_ldl_data_ra(env, fptr + 0x40, ra);
-+        fpscr = cpu_ldl_mmu(env, fptr + 0x40, oi, ra);
-         vfp_set_fpscr(env, fpscr);
-         if (cpu_isar_feature(aa32_mve, cpu)) {
--            env->v7m.vpr = cpu_ldl_data_ra(env, fptr + 0x44, ra);
-+            env->v7m.vpr = cpu_ldl_mmu(env, fptr + 0x44, oi, ra);
-         }
+@@ -632,8 +632,11 @@ void HELPER(v7m_blxns)(CPUARMState *env, uint32_t dest)
      }
  
+     /* Note that these stores can throw exceptions on MPU faults */
+-    cpu_stl_data_ra(env, sp, nextinst, GETPC());
+-    cpu_stl_data_ra(env, sp + 4, saved_psr, GETPC());
++    ARMMMUIdx mmu_idx = arm_mmu_idx(env);
++    MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN,
++                                 arm_to_core_mmu_idx(mmu_idx));
++    cpu_stl_mmu(env, sp, nextinst, oi, GETPC());
++    cpu_stl_mmu(env, sp + 4, saved_psr, oi, GETPC());
+ 
+     env->regs[13] = sp;
+     env->regs[14] = 0xfeffffff;
 -- 
 2.48.1
 
