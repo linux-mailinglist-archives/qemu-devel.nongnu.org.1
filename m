@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C0FAF0185
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DC0AF017D
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:14:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSh-0005jU-Hx; Tue, 01 Jul 2025 13:08:03 -0400
+	id 1uWeSj-0005lX-8E; Tue, 01 Jul 2025 13:08:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSc-0005hj-9K
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:58 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1uWeSb-0005h9-UC
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:57 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSY-0003eG-VN
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:56 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3a582e09144so2659673f8f.1
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:54 -0700 (PDT)
+ id 1uWeSZ-0003eu-WD
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:57 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3a4fd1ba177so3890463f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751389673; x=1751994473; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751389674; x=1751994474; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SK6A8clbB22J0MzblVefPn0yu0hM761EUxAP6vsqlrI=;
- b=W6v+t8Hqwzi0uPyPdMBoj4fE8Y3LJSHMsdQj1LPX3yHJOpCpdc3Mu+5VGVbLGNGD2X
- 9pMH0i9ufAJ90TklGyUAbWbqQS1Pl1obphKPOOSgYTX0zVilCC2NJ6JWunWFOl0QK02f
- vRNPM8BTVQ9zn2Ee7XF5UModkBLx57oAjDwZjps6gnG6ie+R6tOqViHDVKIqEcwZpHqx
- 7Y4By+y7b92JAMMAlEh/F5y0idNpLxN+lv/KxS2BE4Rd/65wQas0DJxPFM8yqt2IzSyO
- USifhILI0VfLwe4viDFNGeQaSPP91LMOBhkafEsptLYnCAwSVFyCVvs/6kFPsvu3UzaN
- TA9w==
+ :reply-to; bh=oWq+MsMuHkvLIcOj3T9lPNr1c6oazCfcCQPJVuth2lo=;
+ b=waegaM7lIf7kQwnhsxpVghq8AQYTLCDCK5dmS8TYujUr1iDp0t7VtAWUK6euUOafMk
+ ZI3qSRuc74mByfwkGRHhTFQ1ie6rMPkbyIbEDQ7Fq2kfzGkpS7djw1jksMqZVKKaauk+
+ volHygp2G6NU/8zrI+D8gVEPWawyj7vnb5D80GEit6Ly3hhvS8O+J0x3BgC8Cp466cyI
+ mwEk+Fd3cC8H0PxMDIU7wrjQtYU+/3pBQf/nXn6FrZYkE5K6onA49PeJEER6frcIA2UN
+ +eL0Z204pjUtd44/b2+VbDEiPLjtnWBJe/k6vaAZIdawpfFCbo5KqHk4FyYWMR51ztDg
+ Z7+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751389673; x=1751994473;
+ d=1e100.net; s=20230601; t=1751389674; x=1751994474;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SK6A8clbB22J0MzblVefPn0yu0hM761EUxAP6vsqlrI=;
- b=vS6XD3FM+qq3joetHAD96aOY7lVVhVxoMWySlOeSI68vLNzpX5e48craWVDm+Muc9/
- 7WkEegplW6CBaMTzhE3dUs51UUSeqsp9Yc9TEOX48+yZ/Y/s8AxPrYpY4DK9oBeNzu3q
- JKifQUwKUyROyPX0i6g9K+vwIGdfjI67CS7mLA+pUBsdMqQPCnX6sOilyayZ12LT6m9X
- On+7LiNnvjITtgTutUGOj/WcVjrvNg6KqdPwlhFdAWJBgKW1zVU1fUXU1WXkduo+tnKQ
- Hl4wphlq3gbcfwpYu/f5iIz2JQgT6cyNU2xE3rgNtC1ptCUZln1IgCNJYfKa0XzmN+EO
- qn1Q==
-X-Gm-Message-State: AOJu0YyRU4Su3g1Xxh0KpBBSRZjfq7A5O4MLPKibXa9nGhqpKQ7rrih/
- lJagczaR1ck4h6gCG0RWulaSgXH/CqtdEJUPhgwcEsLuivIHqh18mhfWtzoPy+3yp5fjLMP4Xib
- k7bhX
-X-Gm-Gg: ASbGnctDVgiojHZcX1sqzOJEtskgM4V/ZU97hzCwtbz4UpkPuKaWXFew7pWM+MNxjDv
- qU48HrB2dAyEzswjC4QHG2gXDkH/jZ1oRG62jFdIONkNYJ5GSwv9xhp8OZvoViDlNA/Fd/1Y1o+
- tzQ2S9Xe5yBxmOwBScDDLBLton1VZe135IuUNs23bkHd6mhg2sHKzHQwOZj/ruElaytvTiWVgHF
- mBMqNy/tRV0Mk/qZ1Xz0wULBJIU5DNXxCvVQblatIs/qAMPoH2JVv6dUH7AN75lsNW05hQ8lcM8
- kdYSR/AVC32lx0hjfCWW0XyMZieHqaqG1MvQTkJKKz90rfx/kfRZDIi9tIh0sphmyW3X
-X-Google-Smtp-Source: AGHT+IH+nUKcV7dcFCdWh8V1SAwwkrk/oD/Hrb0FSK16CKo87eY9/stOHfAfAv3XL5WbDTgRl4V3UA==
-X-Received: by 2002:adf:fccb:0:b0:3a5:3930:f57 with SMTP id
- ffacd0b85a97d-3a9004801acmr13424825f8f.51.1751389673232; 
- Tue, 01 Jul 2025 10:07:53 -0700 (PDT)
+ bh=oWq+MsMuHkvLIcOj3T9lPNr1c6oazCfcCQPJVuth2lo=;
+ b=m9T4s28NxUwOYPmoRQg/kOJrtE01mNzEL4j4/G+resHwG6rxWDqLfxzidq3naTqUS8
+ BYlXDaz5RPynMus3YuaEST1isZrKP3T7gWjaGoF0m5otqheqql2Nbk/3tppmVHOeZeae
+ HwcbO/cKiig6XjhzFELFMqUDHkUdjWGjhXDk4mbD6plRrpvhrjlkMj3DGz2Rxw1+JdAE
+ MGJY36qyyYpoHdYuceTJ64vYJ9Ts7t840W/Owq8QXGt6PpCgZeWR7Yz4MYB5JeNwLSJe
+ RAlXq6usZvqtD3ryoaIjng+F+wdBAQTDyJPGDzh/NcSLHauoHDu8tGlQzpJLuQJhgecK
+ k03Q==
+X-Gm-Message-State: AOJu0YzxSYklGhbKMq9VPevngvQX87iDCSd4yvHFaYJ+kFkYqAw/RtSZ
+ 2g0zViM7v6DkJ61GIep4pdapDVQzJ/6aI+F0tGr/YYllIS7EejP3n8tYFREqnNOaOw9OUNEqtrQ
+ KeQTA
+X-Gm-Gg: ASbGnctSoy8zvafozKATvDsYTfiQGd1B7aeByb9hpeMUY5ePx/V8o/533xD+0Rn8HJd
+ UL/0NrP+6ylXFBiCeBE4E4yOk9gv93ciAbuKdfS9wqCF+goXa1TJUPuyrR8q3O3j3nu+GOq0l5w
+ 35P2P0LI7sEHmGZAoqPGi5iQZtwruNRn5nm328V7tXnUPfLWNa+dTqZ2f5WrOuVYWqcy6OnJy9H
+ e4SAql8KqKp0Al/aMmJGRy84XKtEK0EuW1285kxZbTqVDpjslgpwRyNXJgdJmSx/qskXv58brRo
+ 5nSvJ/CxfYG0kj9vZCaJ57nXQYAoewMlcweC4R2DNFG1hNhhIkiLlwigSIUwGEZ93W21
+X-Google-Smtp-Source: AGHT+IEjCua3g+eRN9RRwvt7X7Zka/gtKuJq55wiER3xWTmLwkc0k3ohJOeW2OxLadzbBGJvvUVSBg==
+X-Received: by 2002:a05:6000:643:b0:3a6:d95e:f37c with SMTP id
+ ffacd0b85a97d-3afa162e3eamr2732776f8f.2.1751389674151; 
+ Tue, 01 Jul 2025 10:07:54 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.52
+ ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 10:07:52 -0700 (PDT)
+ Tue, 01 Jul 2025 10:07:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 31/43] target/arm: Correct KVM & HVF dtb_compatible value
-Date: Tue,  1 Jul 2025 18:07:07 +0100
-Message-ID: <20250701170720.4072660-32-peter.maydell@linaro.org>
+Subject: [PULL 32/43] target/arm/hvf: Pass @target_el argument to
+ hvf_raise_exception()
+Date: Tue,  1 Jul 2025 18:07:08 +0100
+Message-ID: <20250701170720.4072660-33-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
 References: <20250701170720.4072660-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,50 +100,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Linux kernel knows how to parse "arm,armv8", not "arm,arm-v8".
+In preparation of raising exceptions at EL2, add the 'target_el'
+argument to hvf_raise_exception().
 
-See arch/arm64/boot/dts/foundation-v8.dts:
-
-  https://github.com/torvalds/linux/commit/90556ca1ebdd
-
-Cc: qemu-stable@nongnu.org
-Fixes: 26861c7ce06 ("target-arm: Add minimal KVM AArch64 support")
-Fixes: 585df85efea ("hvf: arm: Implement -cpu host")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250623121845.7214-10-philmd@linaro.org
+Message-id: 20250623121845.7214-12-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/hvf/hvf.c | 2 +-
- target/arm/kvm.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ target/arm/hvf/hvf.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index f36973a32eb..ebde4c6f183 100644
+index ebde4c6f183..7b6d291e79c 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -883,7 +883,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     hv_vcpu_exit_t *exit;
-     int i;
+@@ -1088,13 +1088,13 @@ void hvf_kick_vcpu_thread(CPUState *cpu)
+ }
  
--    ahcf->dtb_compatible = "arm,arm-v8";
-+    ahcf->dtb_compatible = "arm,armv8";
-     ahcf->features = (1ULL << ARM_FEATURE_V8) |
-                      (1ULL << ARM_FEATURE_NEON) |
-                      (1ULL << ARM_FEATURE_AARCH64) |
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 70919aedd0a..426f8b159e8 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -289,7 +289,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+ static void hvf_raise_exception(CPUState *cpu, uint32_t excp,
+-                                uint32_t syndrome)
++                                uint32_t syndrome, int target_el)
+ {
+     ARMCPU *arm_cpu = ARM_CPU(cpu);
+     CPUARMState *env = &arm_cpu->env;
+ 
+     cpu->exception_index = excp;
+-    env->exception.target_el = 1;
++    env->exception.target_el = target_el;
+     env->exception.syndrome = syndrome;
+ 
+     arm_cpu_do_interrupt(cpu);
+@@ -1454,7 +1454,7 @@ static int hvf_sysreg_read(CPUState *cpu, uint32_t reg, uint64_t *val)
+                                     SYSREG_CRN(reg),
+                                     SYSREG_CRM(reg),
+                                     SYSREG_OP2(reg));
+-    hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
++    hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized(), 1);
+     return 1;
+ }
+ 
+@@ -1764,7 +1764,7 @@ static int hvf_sysreg_write(CPUState *cpu, uint32_t reg, uint64_t val)
+                                      SYSREG_CRN(reg),
+                                      SYSREG_CRM(reg),
+                                      SYSREG_OP2(reg));
+-    hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
++    hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized(), 1);
+     return 1;
+ }
+ 
+@@ -1967,7 +1967,7 @@ int hvf_vcpu_exec(CPUState *cpu)
+         if (!hvf_find_sw_breakpoint(cpu, env->pc)) {
+             /* Re-inject into the guest */
+             ret = 0;
+-            hvf_raise_exception(cpu, EXCP_BKPT, syn_aa64_bkpt(0));
++            hvf_raise_exception(cpu, EXCP_BKPT, syn_aa64_bkpt(0), 1);
+         }
+         break;
      }
- 
-     ahcf->target = init.target;
--    ahcf->dtb_compatible = "arm,arm-v8";
-+    ahcf->dtb_compatible = "arm,armv8";
-     int fd = fdarray[2];
- 
-     err = get_host_cpu_reg(fd, ahcf, ID_AA64PFR0_EL1_IDX);
+@@ -2078,7 +2078,7 @@ int hvf_vcpu_exec(CPUState *cpu)
+             }
+         } else {
+             trace_hvf_unknown_hvc(env->pc, env->xregs[0]);
+-            hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
++            hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized(), 1);
+         }
+         break;
+     case EC_AA64_SMC:
+@@ -2093,7 +2093,7 @@ int hvf_vcpu_exec(CPUState *cpu)
+             }
+         } else {
+             trace_hvf_unknown_smc(env->xregs[0]);
+-            hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized());
++            hvf_raise_exception(cpu, EXCP_UDEF, syn_uncategorized(), 1);
+         }
+         break;
+     default:
 -- 
 2.43.0
 
