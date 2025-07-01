@@ -2,104 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CD0AEEF43
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 08:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE50AEEF7D
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 09:10:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWUpo-0001SU-Mu; Tue, 01 Jul 2025 02:51:16 -0400
+	id 1uWV6j-0004w7-8g; Tue, 01 Jul 2025 03:08:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uWUpl-0001P3-MO
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 02:51:13 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uWV6Y-0004vp-98
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 03:08:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uWUpa-0006ry-1A
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 02:51:12 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uWV6P-0005E1-QR
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 03:08:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751352657;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1751353702;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Gf4lggQswakfca9ShW+YSv63cYv0Ld0SFqUv8ep8JCQ=;
- b=Kk4WlToViLolfFN+56Ast0YFJmrgkNHf8IYnGibiDhHbzgU5YggnetxDyarmT8qlS+rwOb
- pZr0hvwXX408WBL1Dh3yMZbdWkFk1Twv90Cx5j5b4G7ARPJ0z3bK8R+mwYyqACuPWR2T1x
- 1SghOF8JVpIg0VBGA0hLb9saYJ6kVVI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-fk88G0slPraVn-odO9hbRw-1; Tue, 01 Jul 2025 02:50:56 -0400
-X-MC-Unique: fk88G0slPraVn-odO9hbRw-1
-X-Mimecast-MFC-AGG-ID: fk88G0slPraVn-odO9hbRw_1751352655
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45311704d22so20386205e9.2
- for <qemu-devel@nongnu.org>; Mon, 30 Jun 2025 23:50:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751352654; x=1751957454;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Gf4lggQswakfca9ShW+YSv63cYv0Ld0SFqUv8ep8JCQ=;
- b=frslb7xYv8+Vhdnp1hviYhB/WVpnQEuqOc8yDmdvRWSDUQ9xZ1jodVsVOm3kjug8ed
- kQrzEZsNs9r07JmfjK9vBOxAvX0YDFcd/hJPWlI1sOY5T1m6DxkrxlE8Y617LFuM//yp
- k/TmR/BgiXYg264OtgYoRC8ONMeRUJ0YaFyKrcl0+Wh9u4mzxHIf38R/3VLPOHF27m70
- snsVWZ2HnJ1noyFXpuDSKwNkqsuxhU8Lc1NHG8YPbQYurB4QXiNN2OxdwkJyUh5bjrnW
- v+DV9t4wQRK634k8SF7JL4MIfK5gFYOj9yIlO+oQbpvK5UxxyNFdO0Pcu7r25kjfRIhK
- nqlg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXAKp3TKKeYg46EMSbdo63w7R56xCTXec6ijbblHpJsPynGBSPCwrQy+yA9u+GTnpqDmjcuRl+IrUN8@nongnu.org
-X-Gm-Message-State: AOJu0YwPlcGWDtyn2UsY7I00mCeBWVLenwU4J/Sddoot4UnPBikZKoMi
- 14hYKAfMshSyHNUZbA56hICmvf+k5tB6EbsHT7E48KQn0lTOUmBc+ndHUdoDoLAx3/3jKmeBdMY
- +hPfbQ8aAtPlPzpZntQvv146frT7vINuhjPUIenX8iFNWTN0tibRBLrmuyRsSYe6p
-X-Gm-Gg: ASbGncuq8SuzdOGRvH6F9+cnhtjO43iQli/L84/tWj3kFvILv6EIe534EjpuCHvTDGG
- 7k8AWJ0PtYd0ZEYA2cFzTrSn/6TgLe5AVrw4BbPe4vpJplxGT2R/lOSZvL+TO3WAiRltavwN7/E
- 3/WzTdpQaSRTjwSQ9qeuErCJmkTvOvGErl/v70mg1s8BXGuQm9zsUMPv3+jh/lssJPhYQew/pc+
- Le6LBVkPkK7YwzGxMIzIBW6TGYHe2/fPaAL1lCMj5b2YoZ4UtndRujhEG5KMX9jXKDA2Xw5qGgZ
- ZUbld0/oKYoJ7uKYgqcJN0o5rwZurv65g6ePPxbb2egIJe1oyTDcyB35d2ipAPLtjs+OOg==
-X-Received: by 2002:a05:600c:4fc5:b0:43e:bdf7:7975 with SMTP id
- 5b1f17b1804b1-4538f88349amr142832475e9.32.1751352654129; 
- Mon, 30 Jun 2025 23:50:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQRQAI0aZChlXhUe3EfpIYL5wXaSCtwaVaywwsVk20ZkLqg140tNArVF6gtCKld3YusmlhYQ==
-X-Received: by 2002:a05:600c:4fc5:b0:43e:bdf7:7975 with SMTP id
- 5b1f17b1804b1-4538f88349amr142832255e9.32.1751352653687; 
- Mon, 30 Jun 2025 23:50:53 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-453b3542838sm7454985e9.1.2025.06.30.23.50.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Jun 2025 23:50:52 -0700 (PDT)
-Message-ID: <531385a3-0117-420b-a401-a9ddbff6d5f9@redhat.com>
-Date: Tue, 1 Jul 2025 08:50:51 +0200
+ bh=BStXMMxRw1s8W9xNcjZ1l9zKliX7yn/dh9DAkD6FBbo=;
+ b=VgEVidngZdOA9ea+2Pssrz/pD0yjt+fEEq4SxuSp2xX8QKMdClPvDZVJDgkrszCW6ey5H0
+ AfSrs32i5IUFBQJCAz/k7YgVFsSvkL6DeJGcBDvBHQJ/FVid8pF3mBV3enXvX0LUTzLYum
+ Uu038a0ZpiqgUD5u3+5hMD55l3YDS4w=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-470-jS2-SD-HNUituZKHsdv3Tg-1; Tue,
+ 01 Jul 2025 03:08:17 -0400
+X-MC-Unique: jS2-SD-HNUituZKHsdv3Tg-1
+X-Mimecast-MFC-AGG-ID: jS2-SD-HNUituZKHsdv3Tg_1751353696
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6A76E180120D; Tue,  1 Jul 2025 07:08:16 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C634119560AB; Tue,  1 Jul 2025 07:08:15 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 2FFBB21E6A27; Tue, 01 Jul 2025 09:08:13 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Daniel P .
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH 01/21] migration: Normalize tls arguments
+In-Reply-To: <87tt4153ql.fsf@suse.de> (Fabiano Rosas's message of "Fri, 27 Jun
+ 2025 17:28:02 -0300")
+References: <20250603013810.4772-1-farosas@suse.de>
+ <20250603013810.4772-2-farosas@suse.de> <87cyas88gg.fsf@pond.sub.org>
+ <878qlf7nc0.fsf@suse.de> <87o6uayh9r.fsf@pond.sub.org>
+ <87zfdu5zf4.fsf@suse.de> <877c0xpsli.fsf@pond.sub.org>
+ <87tt4153ql.fsf@suse.de>
+Date: Tue, 01 Jul 2025 09:08:13 +0200
+Message-ID: <8734bg4cde.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/5] ARM Nested Virt Support
-Content-Language: en-US
-To: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- miguel.luis@oracle.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, maz@kernel.org, gkulkarni@amperecomputing.com,
- gankulkarni@os.amperecomputing.com
-Cc: hi@alyssa.is
-References: <20250619145047.1669471-1-eric.auger@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250619145047.1669471-1-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,84 +84,139 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-On 6/19/25 4:49 PM, Eric Auger wrote:
-> The only change compared to v5 is the linux header update against
-> kvm main branch. As discussed on the mailing list, KVM_ARM_VCPU_EL2_E2H0
-> (non VHE version of the NV support) will be dealt with in a separate
-> add-on series. Also the fallback to TCG does not apply if the host
-> does not support nested and virtualization=on (which is aligned
-> with the behavior along with other arm virt machine properties such as
-> secure, mte, ...).
->
-> For gaining virt functionality in KVM accelerated L1, The host needs to
-> be booted with "kvm-arm.mode=nested" option and qemu needs to be invoked
-> with: -machine virt,virtualization=on.
-Gentle ping on this series. Any other comment? Missing R-b's/A-b's on
-the 2 first patches.
+Fabiano Rosas <farosas@suse.de> writes:
 
-Thanks
+> Markus Armbruster <armbru@redhat.com> writes:
+>
+>> Fabiano Rosas <farosas@suse.de> writes:
+>>
+>>> Markus Armbruster <armbru@redhat.com> writes:
+>>>
+>>>> Fabiano Rosas <farosas@suse.de> writes:
+>>>>
+>>>>> Markus Armbruster <armbru@redhat.com> writes:
+>>>>>
+>>>>>> Fabiano Rosas <farosas@suse.de> writes:
 
-Eric
+[...]
+
+>> There more than one way to skin this cat.  I like to keep state
+>> normalized.
+>>
+>> State is an optional StrOrNull.  Possible values:
+>>
+>> * NULL
+>>
+>> * QNull, i.e. non-NULL, ->type is QTYPE_QNULL
+>>
+>> * Empty string, i.e. non-NULL, ->type is QTYPE_QSTRING, ->u.s is ""
+>>
+>> * Non-empty string, i.e. non-NULL, -> type is QTYPE_QSTRING, ->u.s is
+>>   not "" (and cannot be NULL)
+>>
+>> As far as I understand, we have just two cases semantically:
+>>
+>> * Set, value is a non-empty string (empty makes no sense)
+>>
+>> * Unset
+>>
+>> I'd normalize the state to "either NULL, or (non-empty) string".
+>>
 >
-> This series can be found at:
-> https://github.com/eauger/qemu/tree/v10.0.0-nv-v6
+> This is what I wanted to do (in the next version), but it results in
+> more complex and less readable code:
+
+[...]
+
+> If we instead normalize to "either non-empty string or empty string"
+> then:
+
+[...]
+
+> The query methods get simpler because s->parameters already contains
+> data in the format they expect, we can normalize earlier in [2], which
+> means data is always in the same format throughout
+> qmp_migrate_set_parameters() and lastly, we already have the getter
+> methods [1] which can expose "abc"|NULL to the rest of the code anyway.
+
+I'd like the possible states to be clearly visible, and suggest to guard
+them with assertions.  Details, such as how exactly the states are
+encoded, are up to you.  You're in a better position to judge them than
+I am.
+
+>> When writing state, we need to normalize.
+>>
+>> When reading state, we can rely on it being normalized.  Asserting it is
+>> seems prudent, and should help readers.
+>>
 >
-> Original version from Miguel:
-> [1] https://lore.kernel.org/all/20230227163718.62003-1-miguel.luis@oracle.com/
-> version from Haibo:
-> [2] https://lore.kernel.org/qemu-devel/cover.1617281290.git.haibo.xu@linaro.org/
+> My main concern is that reading can rely on it being normalized, but the
+> query methods cannot, so they need to do an "extra conversion", which
+> from the reader's POV, will look nonsensical. It's not as simple as
+> using a ternary because the StrOrNull object needs to be allocated.
+
+[...]
+
+>>> There are two external interfaces actually.
+>>>
+>>> -global migration.some_compat_option=on (stored in MigrationState):
+>>>
+>>> seems intentional and I believe we'd lose the ability to get out of some
+>>> tricky situations if we ditched it.
+>>>
+>>> -global migation.some_random_option=on (stored in MigrationParameters):
+>>>
+>>> has become a debugging *feature*, which I personally don't use, but
+>>> others do. And worse: we don't know if anyone uses it in production.
+>>
+>> Accidental external interface.
+>>
+>>> We also arbitrarily put x- in front of options for some reason. There is
+>>> an argument to drop those because x- is scary and no one should be using
+>>> them.
+>>
+>> We pretty much ditched the x- convention in the QAPI schema.
+>> docs/devel/qapi-code-gen.rst:
+>>
+>>     Names beginning with ``x-`` used to signify "experimental".  This
+>>     convention has been replaced by special feature "unstable".
+>>
+>> Goes back to
+>>
+>> commit a3c45b3e62962f99338716b1347cfb0d427cea44
+>> Author: Markus Armbruster <armbru@redhat.com>
+>> Date:   Thu Oct 28 12:25:12 2021 +0200
+>>
+>>     qapi: New special feature flag "unstable"
+>>     
+>>     By convention, names starting with "x-" are experimental.  The parts
+>>     of external interfaces so named may be withdrawn or changed
+>>     incompatibly in future releases.
 >
-> History:
-> v5 -> v6:
-> - linux header update against v6.16-rc2
+> This allows dropping about half of the parameters we expose. Deprecate
+> the other half, move the remaining legitimate compat options into
+> MigrationParameters, (which can be set by migrate-set-parameters) and
+> maybe we can remove the TYPE_DEVICE from MigrationState anytime this
+> decade.
+
+I'd love to get rid of the pseudo-device.
+
+> Moving all qdev properties to their own TYPE_DEVICE object and putting
+> it under --enable-debug is also an idea.
 >
-> v4 -> v5:
-> - rebase on top of v10.0.0
->
-> v3 -> v4:
-> - fix: only set maint_irq if vms->virt
->
-> v2 -> v3:
-> - KVM EL2 only is set if virtualization option is set
-> - fixes regression with virtualization=off
-> - Add checks against unsupported GIC configs until the kernel does
->
->
-> Eric Auger (1):
->   linux-headers: Update against  v6.16-rc2
->
-> Haibo Xu (4):
->   hw/arm: Allow setting KVM vGIC maintenance IRQ
->   target/arm/kvm: Add helper to detect EL2 when using KVM
->   target/arm: Enable feature ARM_FEATURE_EL2 if EL2 is supported
->   hw/arm/virt: Allow virt extensions with KVM
->
->  include/hw/intc/arm_gicv3_common.h            |   1 +
->  include/standard-headers/asm-x86/setup_data.h |  13 +-
->  include/standard-headers/drm/drm_fourcc.h     |  45 +++++++
->  include/standard-headers/linux/ethtool.h      | 124 +++++++++---------
->  include/standard-headers/linux/fuse.h         |   6 +-
->  .../linux/input-event-codes.h                 |   3 +-
->  include/standard-headers/linux/pci_regs.h     |  12 +-
->  include/standard-headers/linux/virtio_gpu.h   |   3 +-
->  include/standard-headers/linux/virtio_pci.h   |   1 +
->  linux-headers/asm-arm64/kvm.h                 |   9 +-
->  linux-headers/asm-x86/kvm.h                   |   1 +
->  linux-headers/linux/bits.h                    |   4 +-
->  linux-headers/linux/kvm.h                     |   3 +
->  linux-headers/linux/vhost.h                   |   4 +-
->  target/arm/kvm_arm.h                          |   7 +
->  hw/arm/virt.c                                 |  13 +-
->  hw/intc/arm_gicv3_common.c                    |   1 +
->  hw/intc/arm_gicv3_kvm.c                       |  21 +++
->  target/arm/kvm-stub.c                         |   5 +
->  target/arm/kvm.c                              |  21 +++
->  20 files changed, 223 insertions(+), 74 deletions(-)
->
+> I'm willing to do the work if we ever reach a consensus about this.
+
+I'd like migration to work more like other long-running tasks: pass the
+entire configuration with the command starting it, provide commands and
+events to manage the task while it runs.
+
+This is advice, not a demand.  I'm not going to block change the
+migration maintainers want.  I may ask you to do the QAPI schema part in
+certain ways, but that's detail.
+
+[...]
 
 
