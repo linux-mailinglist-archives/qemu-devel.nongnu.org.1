@@ -2,140 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A29AF01B7
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A693AF01CC
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:29:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWekF-00006D-Ed; Tue, 01 Jul 2025 13:26:11 -0400
+	id 1uWen9-0002Pw-1U; Tue, 01 Jul 2025 13:29:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWekA-00005n-9b
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:26:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWek7-0005Dw-QW
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:26:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751390762;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=WxcHr28t5jXpHEtEJ4zOymFtqgR4RQWN8A7dLIEWgfI=;
- b=gyZcU0sX8xGzkW66/rvK/d5Lhk4PIqFVxyW9jE5UIqz23M4gQ62oSCU+vGzhnANyOzraCR
- FL9oZueXevDM/EeJDfHEvOAOBAC21NgheHJFTRFrIV6T6Cv3Ckl3GTctvgkQjGnN3iTaZ7
- wJB979sPsZODm6se+r4u095YnHPfupQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-258-Q9MO7mRvMTOaJbWxHGSGCg-1; Tue, 01 Jul 2025 13:26:01 -0400
-X-MC-Unique: Q9MO7mRvMTOaJbWxHGSGCg-1
-X-Mimecast-MFC-AGG-ID: Q9MO7mRvMTOaJbWxHGSGCg_1751390760
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a4f65a705dso2144586f8f.2
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:26:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751390760; x=1751995560;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WxcHr28t5jXpHEtEJ4zOymFtqgR4RQWN8A7dLIEWgfI=;
- b=Yd0gSVpZ7klnYG/F34U3lgIllEtJvmTgk4MkBLvJLI8+/U1ik08Pp5D6vrVfObTMIG
- ulHouepqUPlgNvlr0Aazwf1tnTxUPMOGhMg8Ris80EMBu4126EMLaRtvRSrRN0cpcacF
- RfsLsbjz4mveaoRLnKgVvNmtO+8xU35vBVWKcfo9ae6ensRDkjUo/ZbpVqU13sM9ctDX
- 4uAnFnyjR+ScWbuSlsskTCey5vfszuegHoPVQorxkSzlkmVs9JLnVUXj+ZFMknDKya/I
- 9YXdMF6wN5ntt9fIY3Ev4MjUHhx20/gcg+mQbBFvWq1ykRI/XM8xeAPAQzuHcBqB+1qs
- EtQQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUcSvdhUwAzFTCDuJsmKqZBNmUiqIyXmAopVQTYMSfAVdwn7T/dRVDuFamc2ktOlkbPAiyqqzYJ7dGI@nongnu.org
-X-Gm-Message-State: AOJu0Yy5VcZg0GIaGq4iMfwxcKrjE0Sr/+mdv4ohJiRCUMWubkeIzWe1
- slpABzsfPfCFm5Nmug9VMQf3NLEywoQ2xxWZKCazTqVrMRvpCJ3h38+GIph11bH0uKia2khAS0J
- hRkGlkv8zAU9hInyQxuti+uako6kiBrCNTLNdwwK891/UioSrZnWO14Sz
-X-Gm-Gg: ASbGncu0nzEhwtO1LVJ9/jGG7SmAwm+L9SBGFn6KhlRHpk8POyrZoTfUxd45qhSR5wT
- 3eYX+iEyxvT+kGBiuxvmckKQ9VsSHF5cB8tr9b13vkDrqlHKSizh4vL7lltcxK+3ZCWt1XEzUeM
- TdJblkcKDBBf46XkeMsh5AS4SPMev4gbKg65patrd+RlLprO4onb9oules5HC6rM7rWhPe35A2a
- H6DMZhViRrGn0CgZD6+JJBmfMBg4mzgSUUI8Qe3rzSoScyt6gTp7nEa2By38fkxCtwqv23PN4vq
- zgxXNNlTRpdru045HhVlZbWVHZ4Rcw1AzuafHFmWfixYEPvTqt8JVwTG+gndOg==
-X-Received: by 2002:a05:6000:2a85:b0:3a5:2848:2445 with SMTP id
- ffacd0b85a97d-3a8f482bfebmr12267848f8f.16.1751390760071; 
- Tue, 01 Jul 2025 10:26:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6RSFP8Q6K2E0RNXqHd4iin/PR30OxJt8Y5BW9QmnohZkAfMOT37xOMdCRJMOoNz99teMn4g==
-X-Received: by 2002:a05:6000:2a85:b0:3a5:2848:2445 with SMTP id
- ffacd0b85a97d-3a8f482bfebmr12267836f8f.16.1751390759605; 
- Tue, 01 Jul 2025 10:25:59 -0700 (PDT)
-Received: from [192.168.0.6] (ltea-047-064-114-041.pools.arcor-ip.net.
- [47.64.114.41]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e52ad2sm13631500f8f.48.2025.07.01.10.25.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Jul 2025 10:25:59 -0700 (PDT)
-Message-ID: <f74b1242-b97c-4b09-a663-9c6b96b23968@redhat.com>
-Date: Tue, 1 Jul 2025 19:25:58 +0200
+ (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
+ id 1uWen7-0002On-2E
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:29:09 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uWen1-0006R2-Jw
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:29:07 -0400
+Received: from localhost.localdomain (unknown [167.220.208.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id AAB4920415BD;
+ Tue,  1 Jul 2025 10:28:58 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AAB4920415BD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1751390942;
+ bh=BfGNjaPbLXQC4E1juiq724yLDptvY78mIT0tFav6nkc=;
+ h=From:To:Cc:Subject:Date:From;
+ b=qE2V/XbqQpKgN9XGuawreqLwyLRZ+ogCV1yOF8LCUqeMoMZWGUncHiRnZyIPg7Zlc
+ 7IeouMxmzpFkDbGJLeSzGUsTSWiP1b3p9VzeFCnHOGreGy99ofboRHMoH8sMkiVNpH
+ 955N1HZME8pO5TD1BLalrhOBSTUCS/oTp035X9t8=
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+To: qemu-devel@nongnu.org
+Cc: Cameron Esfahani <dirty@apple.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Thomas Huth <thuth@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Wei Liu <wei.liu@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Wei Liu <liuwe@microsoft.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Magnus Kulke <magnuskulke@microsoft.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 00/27] Implementing a MSHV (Microsoft Hypervisor)
+ accelerator
+Date: Tue,  1 Jul 2025 19:28:07 +0200
+Message-Id: <20250701172834.44849-1-magnuskulke@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] MAINTAINERS: fix VMware filename typo (vwm -> vmw)
-To: Sean Wei <me@sean.taipei>, qemu-devel@nongnu.org
-Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>
-References: <20250616.qemu.relocated@sean.taipei>
- <20250616.qemu.relocated.04@sean.taipei>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250616.qemu.relocated.04@sean.taipei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,28 +74,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/06/2025 17.50, Sean Wei wrote:
-> The entry for the VMware PVSCSI spec uses "vwm" instead of "vmw",
-> which does not match any file in the tree.
-> 
-> Correct the path so scripts/get_maintainer.pl can match the file.
-> 
-> Signed-off-by: Sean Wei <me@sean.taipei>
-> ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 7428217361..ad82fa4d9a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2539,7 +2539,7 @@ F: pc-bios/efi-vmxnet3.rom
->   F: pc-bios/vgabios-vmware.bin
->   F: roms/config.vga-vmware
->   F: tests/qtest/vmxnet3-test.c
-> -F: docs/specs/vwm_pvscsi-spec.rst
-> +F: docs/specs/vmw_pvscsi-spec.rst
+Hey all,
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+This is the second revision of an accelerator implemented for the MSHV
+kernel driver, exposing HyperV to Linux "Dom0" hosts. Thanks for the
+helpful and quick feedback on the RFC patch. I attempted to address all
+comments and we worked on fixing some of the limitation that we
+identified in internal testing.
+
+Best,
+
+Magnus
+
+Changelog:
+
+v1 (RFC) => v2
+
+- Addressed code review comments (style, consilidation).
+- Rewrote the logic that handles overlap-in-userspace mappings to use
+  a static list of slots, inspired by the HVF accelerator code.
+- Fixed a bug that wrote corrupt payload in a MSHV_SET_MSI_ROUTING
+  call, preventing vhost=on to work on tap network devices.
+- Removed an erronous truncation of guest addresses to 32bit when
+  registering ioeventfd's using MSHV_IOEVENTFD. This resulted in
+  shadowing of low memory when ioevents were registered with
+  addresses beyond the 4gb barrier and thus unexpected "unmapped gpa"
+  vm exits in lower mem regions (impacting io performance).
+- Fixed problem in which the MSI routing table was committed for KVM
+  KVM instead of MSHV in virtio-pci bus initialization.
+- Added some "mshv" strings to the documentation.
+- The above fixes removed a few limitation present in the previous
+  revision:
+  - Guest with machine type "pc" are booting (testing is still mostly
+    performed with q35)
+  - Tap network devices can be used with vhost=on option.
+  - Seabios can be used with >2.75G memory and multiple virtio-pci
+    devices
+  - I/O performance improvement as extranous MMIO vm exits are avoided
+    by registering ioevents with a correct address.
+
+Notes:
+
+- Changes to the mshv kernel driver that would allow to map regions of
+  userspace multiple times into the guest are still being discussed.
+  For now commit #26 will work around this limitation.
+- A kernel ioctl "set_immediate_exit" will be added to the mshv driver
+  to avoid a race condition when handling signals (like ctrl-a x).
+
+Magnus Kulke (27):
+  accel: Add Meson and config support for MSHV accelerator
+  target/i386/emulate: Allow instruction decoding from stream
+  target/i386/mshv: Add x86 decoder/emu implementation
+  hw/intc: Generalize APIC helper names from kvm_* to accel_*
+  include/hw/hyperv: Add MSHV ABI header definitions
+  accel/mshv: Add accelerator skeleton
+  accel/mshv: Register memory region listeners
+  accel/mshv: Initialize VM partition
+  accel/mshv: Register guest memory regions with hypervisor
+  accel/mshv: Add ioeventfd support
+  accel/mshv: Add basic interrupt injection support
+  accel/mshv: Add vCPU creation and execution loop
+  accel/mshv: Add vCPU signal handling
+  target/i386/mshv: Add CPU create and remove logic
+  target/i386/mshv: Implement mshv_store_regs()
+  target/i386/mshv: Implement mshv_get_standard_regs()
+  target/i386/mshv: Implement mshv_get_special_regs()
+  target/i386/mshv: Implement mshv_arch_put_registers()
+  target/i386/mshv: Set local interrupt controller state
+  target/i386/mshv: Register CPUID entries with MSHV
+  target/i386/mshv: Register MSRs with MSHV
+  target/i386/mshv: Integrate x86 instruction decoder/emulator
+  target/i386/mshv: Write MSRs to the hypervisor
+  target/i386/mshv: Implement mshv_vcpu_run()
+  target/i386/mshv: Handle HVMSG_X64_HALT vm exit
+  accel/mshv: Workaround for overlappig mem mappings
+  docs: Add mshv to documentation
+
+ accel/Kconfig                    |    3 +
+ accel/accel-irq.c                |   95 ++
+ accel/meson.build                |    3 +-
+ accel/mshv/irq.c                 |  369 +++++++
+ accel/mshv/mem.c                 |  415 ++++++++
+ accel/mshv/meson.build           |    9 +
+ accel/mshv/mshv-all.c            |  727 +++++++++++++
+ accel/mshv/msr.c                 |  372 +++++++
+ accel/mshv/trace-events          |   29 +
+ accel/mshv/trace.h               |    1 +
+ docs/devel/codebase.rst          |    2 +-
+ hw/intc/apic.c                   |    9 +
+ hw/intc/ioapic.c                 |   20 +-
+ hw/virtio/virtio-pci.c           |   21 +-
+ include/hw/hyperv/hvgdk.h        |   19 +
+ include/hw/hyperv/hvhdk.h        |  164 +++
+ include/hw/hyperv/hvhdk_mini.h   |  105 ++
+ include/system/accel-irq.h       |   26 +
+ include/system/mshv.h            |  184 ++++
+ linux-headers/linux/mshv.h       | 1038 ++++++++++++++++++
+ meson.build                      |   11 +
+ meson_options.txt                |    2 +
+ qemu-options.hx                  |   16 +-
+ scripts/meson-buildoptions.sh    |    3 +
+ scripts/update-linux-headers.sh  |    2 +-
+ target/i386/cpu.h                |    4 +-
+ target/i386/emulate/meson.build  |    7 +-
+ target/i386/emulate/x86_decode.c |   31 +-
+ target/i386/emulate/x86_decode.h |   10 +
+ target/i386/emulate/x86_emu.c    |    3 +-
+ target/i386/emulate/x86_emu.h    |    1 +
+ target/i386/meson.build          |    2 +
+ target/i386/mshv/meson.build     |    8 +
+ target/i386/mshv/mshv-cpu.c      | 1699 ++++++++++++++++++++++++++++++
+ target/i386/mshv/x86.c           |  297 ++++++
+ 35 files changed, 5671 insertions(+), 36 deletions(-)
+ create mode 100644 accel/accel-irq.c
+ create mode 100644 accel/mshv/irq.c
+ create mode 100644 accel/mshv/mem.c
+ create mode 100644 accel/mshv/meson.build
+ create mode 100644 accel/mshv/mshv-all.c
+ create mode 100644 accel/mshv/msr.c
+ create mode 100644 accel/mshv/trace-events
+ create mode 100644 accel/mshv/trace.h
+ create mode 100644 include/hw/hyperv/hvgdk.h
+ create mode 100644 include/hw/hyperv/hvhdk.h
+ create mode 100644 include/hw/hyperv/hvhdk_mini.h
+ create mode 100644 include/system/accel-irq.h
+ create mode 100644 include/system/mshv.h
+ create mode 100644 linux-headers/linux/mshv.h
+ create mode 100644 target/i386/mshv/meson.build
+ create mode 100644 target/i386/mshv/mshv-cpu.c
+ create mode 100644 target/i386/mshv/x86.c
+
+-- 
+2.34.1
 
 
