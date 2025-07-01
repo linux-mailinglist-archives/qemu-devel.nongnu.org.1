@@ -2,111 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99F7AEF973
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 14:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBDFAEFDE7
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 17:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWaXi-0001XJ-TZ; Tue, 01 Jul 2025 08:56:58 -0400
+	id 1uWckm-0004yp-LQ; Tue, 01 Jul 2025 11:18:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1uWaXZ-0001Wr-2N
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 08:56:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alok.rathore@samsung.com>)
+ id 1uWbcG-0008Do-W3
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:05:45 -0400
+Received: from mailout1.samsung.com ([203.254.224.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1uWaXV-0000Pz-56
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 08:56:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751374601;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Q1wS2L/KM4IhtQPrW9Iuevb5MkghEZ7QX7EPNbtSoRM=;
- b=EFOJOdeypUQtxNL1t/NGVF2ZUWqb7qzX5RMf1ql9hhDnlGFhmbPiM+T7Ngb48OE4W0yuxf
- TWr30WV/2hvt6dVQ5O0dXgJiainqulYpxCcbQQuRqo83Bxxk180szU81uUXOxhrOA+ngfI
- cx0cuaqHsUGx8tNvkAt/D9aiqXhnc/I=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-417-W0Pp7fHXNQSBRj7FNkD9gQ-1; Tue, 01 Jul 2025 08:56:40 -0400
-X-MC-Unique: W0Pp7fHXNQSBRj7FNkD9gQ-1
-X-Mimecast-MFC-AGG-ID: W0Pp7fHXNQSBRj7FNkD9gQ_1751374599
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a523ce0bb2so1785770f8f.0
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 05:56:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751374599; x=1751979399;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Q1wS2L/KM4IhtQPrW9Iuevb5MkghEZ7QX7EPNbtSoRM=;
- b=l9fIXfLt6f84+FHZU6OI0I8Yh1A5U9P3J9PFF3twfDtGS/5XTaP2+NWT6dqN1DOBBs
- f8iVhQS1AdD8vjgmn/oen34UQIC14sBUtFXANrJAxJtIiQC223lGwq5oZ7XCkgZwBtPf
- 6Eb0AxG7ecji6XyysHVAZ1bc4TkV2KY9nhQXeYF1hIzd0Vw+hVacMZZboj0ckXM/BAq1
- bKwj1Yjqkd1noMMU2GHHKfjMuhyeGdVGV6u+JnEk+MVnm3+38ad2niGti8e1A/mzIoei
- J5ucEPvuleVdUvx/ELQxdFo8GlJaXN4DK0t+/HbaGVBsTE9+CRzYAtsJl+7LgVLONKyi
- ACiQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXr72Q/etsHpXfti9UYdFXztSGdXVK9dad6f3oQjGFgwHYwmWdZE/JhYnVCWHOhO1Nay/xNJsRdJrV/@nongnu.org
-X-Gm-Message-State: AOJu0Yxlv1bGUGsUL2i2xE1DNS4hVld9WlK+36nbwjeLpptNk2IiGHey
- qeylGqmcfe1aWCMbjVTxptSlZv+aanBRVu3RdvzXBIu/TAgd3CVPA6rRMXQb2kp6tfTay3onI6N
- FsVVgIFUJegik4kJ5J+lPX8YXE9wqFrX4CDY+NHtSKQK2YLoScO1uVeeb
-X-Gm-Gg: ASbGncvZ2BuTTkR8R/Uyjfo9W66Zj8WSjuHwY2Rryzj2DvkdnXxtVfBF73kK/58lR7x
- zANHCMmCLy1Rp23pWCTOydWPljN/E369qoQETNPACnGJgKKgtUtxJdxp+AiJwGrkMiHiAvmZ0I4
- FZVxKdEgGWxYoxpoW8GMe2//Upa4fI7SMxtURD+ITKPJdTy4+SpkIZX1+rFEHHDW0miOPYYsBFP
- ClzVM8HmIi8c00/6t8lXUMWInKyD1RsLv9Pbmkfc1QUTt80WoN9GMo8dytl++JBR20U5HHYpRzD
- AWlHBMko+JttQA4pCFdH9u4hdTyKBKtCyDnVWmY1yjfkK+1CTTL6l7Z3b5j5Z8YX
-X-Received: by 2002:a05:6000:23c4:b0:3a4:f038:af74 with SMTP id
- ffacd0b85a97d-3a8feb70384mr10419135f8f.51.1751374598866; 
- Tue, 01 Jul 2025 05:56:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFhY6fY0vW0A1tRTCKngCcUlYQb+E48N59lMhA7r02PzqgdYQvyiDJ6Pbl4GwMVVgLxbQg2VQ==
-X-Received: by 2002:a05:6000:23c4:b0:3a4:f038:af74 with SMTP id
- ffacd0b85a97d-3a8feb70384mr10419115f8f.51.1751374598346; 
- Tue, 01 Jul 2025 05:56:38 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e52c23sm13320882f8f.52.2025.07.01.05.56.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Jul 2025 05:56:37 -0700 (PDT)
-Message-ID: <5618feb5-f826-4436-993d-4486465dc877@redhat.com>
-Date: Tue, 1 Jul 2025 14:56:36 +0200
+ (Exim 4.90_1) (envelope-from <alok.rathore@samsung.com>)
+ id 1uWbc6-0003Nf-4v
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:05:42 -0400
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+ by mailout1.samsung.com (KnoxPortal) with ESMTP id
+ 20250701140511epoutp0109291c91bcef686452bb17fe4c7e8ca2~OJaiYfMKd2457124571epoutp01_
+ for <qemu-devel@nongnu.org>; Tue,  1 Jul 2025 14:05:11 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
+ 20250701140511epoutp0109291c91bcef686452bb17fe4c7e8ca2~OJaiYfMKd2457124571epoutp01_
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1751378711;
+ bh=nB+oPxvGdY5WDKUI3ZuIzRpW7qHJsx76Yp55t6Aezcw=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=M4phBxy/ITYXWkM2u3NFA17mD9et5Om/6UImeOmFmcx6+OHe4xWqxetMtPz3vu/2O
+ IKLNVngx7Vcb8ehvsl+tnSgubSIiwvUiDB8qVyTV4E6fgqEgPuD5Vf+oAkYDV3gyKq
+ J39YA2J7CR1SRdqN9SxHInjZeN0EkmqdgpHAQiSM=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+ epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
+ 20250701140510epcas5p22a37f25258781eb52cbf8b001b39d843~OJaiHL9cP2585325853epcas5p2D;
+ Tue,  1 Jul 2025 14:05:10 +0000 (GMT)
+Received: from epcas5p4.samsung.com (unknown [182.195.38.174]) by
+ epsnrtp02.localdomain (Postfix) with ESMTP id 4bWlCn3gqHz2SSKY; Tue,  1 Jul
+ 2025 14:05:09 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+ 20250701125932epcas5p3283f2e1bca3eeb34104b44b11d7f8cd9~OIhOnoABJ2734327343epcas5p3s;
+ Tue,  1 Jul 2025 12:59:32 +0000 (GMT)
+Received: from test-PowerEdge-R740xd (unknown [107.99.41.79]) by
+ epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+ 20250701125931epsmtip2d8355ff2489cfed03a2b92bcfdd77266~OIhNlSMHm2456524565epsmtip2a;
+ Tue,  1 Jul 2025 12:59:31 +0000 (GMT)
+Date: Tue, 1 Jul 2025 18:29:09 +0530
+From: Alok Rathore <alok.rathore@samsung.com>
+To: Fan Ni <nifan.cxl@gmail.com>
+Cc: qemu-devel@nongnu.org, gost.dev@samsung.com, linux-cxl@vger.kernel.org,
+ dave@stgolabs.net, vishak.g@samsung.com, krish.reddy@samsung.com,
+ a.manzanares@samsung.com
+Subject: Re: [PATCH] Add support for FMAPI Get Mutliheaded Head info opcode
+ (5501h)
+Message-ID: <20250701125909.jmpc6eptgejvlic4@test-PowerEdge-R740xd>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] hw/i386: Add the ramfb romfile compatatibility
-Content-Language: en-US
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-References: <20250617030521.2109305-1-shahuang@redhat.com>
- <20250617030521.2109305-3-shahuang@redhat.com>
- <aa4ef145-9e08-4ad9-a152-dd8fa2371436@redhat.com>
- <ba75ac62-db52-491e-8944-2bf27106d0a6@redhat.com>
- <8c3cce88-fab5-4bf1-bc6b-804730e9889d@redhat.com>
- <3s45ekea2lotfcyrldxjmaybxujmfjrxemozoivnc2tq3qxfew@naef2yhuealw>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <3s45ekea2lotfcyrldxjmaybxujmfjrxemozoivnc2tq3qxfew@naef2yhuealw>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eauger@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <682f5543.170a0220.2bc644.8b61@mx.google.com>
+X-CMS-MailID: 20250701125932epcas5p3283f2e1bca3eeb34104b44b11d7f8cd9
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+ boundary="----nR.o9xAt.CKA9Q2_7V_sz8FZ15p3Iy14m0uxA3-zFK6OxaPG=_e1d27_"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250522063149epcas5p13719600aa8f59313ff3dc2570c996aec
+References: <CGME20250522063149epcas5p13719600aa8f59313ff3dc2570c996aec@epcas5p1.samsung.com>
+ <20250522063135.366295-1-vinayak.kh@samsung.com>
+ <682f5543.170a0220.2bc644.8b61@mx.google.com>
+Received-SPF: pass client-ip=203.254.224.24;
+ envelope-from=alok.rathore@samsung.com; helo=mailout1.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 01 Jul 2025 11:18:30 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,47 +95,327 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Gerd,
+------nR.o9xAt.CKA9Q2_7V_sz8FZ15p3Iy14m0uxA3-zFK6OxaPG=_e1d27_
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Disposition: inline
 
-On 7/1/25 2:04 PM, Gerd Hoffmann wrote:
->   Hi,
-> 
->>> If those machine types need to set it to true. I think they can set it
->>> after they have this property.
->> nope it does not work like that. In case we really need to take care of
->> this, this must be handled by compats.
-> 
-> ramfb is a sysbus device so it can only used for machine types where it
-> is explicitly enabled:
-> 
->   # git grep machine_class_allow_dynamic_sysbus_dev.*TYPE_RAMFB_DEVICE
->   hw/arm/virt.c:    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RAMFB_DEVICE);
->   hw/i386/microvm.c:    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RAMFB_DEVICE);
->   hw/i386/pc_piix.c:    machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
->   hw/i386/pc_q35.c:    machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
->   hw/loongarch/virt.c:    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RAMFB_DEVICE);
->   hw/riscv/virt.c:    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RAMFB_DEVICE);
-> 
-> So these six are the only machine types we have to worry about.
-> 
-> The three x86 machine types (pc, q35, microvm) will actually use the rom
-> (when booting with seabios).
-makes total sense. So microvm is needed as well.
+On 22/05/25 09:48AM, Fan Ni wrote:
+>On Thu, May 22, 2025 at 12:01:35PM +0530, Vinayak Holikatti wrote:
+>> CXL spec 3.2 section 7.6.7.5.2  describes Get Head Info.
+>>
+>> Signed-off-by: Vinayak Holikatti <vinayak.kh@samsung.com>
+>> ---
+>> This patch is generated against Jonathan Cameron's branch cxl-2025-03-20
+>>
+>>  hw/cxl/cxl-mailbox-utils.c  | 21 +++++++++
+>>  hw/cxl/mhsld/mhsld.c        | 92 ++++++++++++++++++++++++++++++++++++-
+>>  hw/cxl/mhsld/mhsld.h        | 26 +++++++++++
+>>  include/hw/cxl/cxl_device.h |  6 +++
+>>  4 files changed, 144 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+>> index a02d130926..4f25caecea 100644
+>> --- a/hw/cxl/cxl-mailbox-utils.c
+>> +++ b/hw/cxl/cxl-mailbox-utils.c
+>> @@ -122,6 +122,7 @@ enum {
+>>          #define MANAGEMENT_COMMAND     0x0
+>>      MHD = 0x55,
+>>          #define GET_MHD_INFO 0x0
+>> +        #define GET_MHD_HEAD_INFO 0x1
+>>  };
+>>
+>>  /* CCI Message Format CXL r3.1 Figure 7-19 */
+>> @@ -267,6 +268,23 @@ static CXLRetCode cmd_mhd_get_info(const struct cxl_cmd *cmd,
+>>      return CXL_MBOX_UNSUPPORTED;
+>>  }
+>>
+>> +/*
+>> + * CXL r3.2 section 7.6.7.5.2 - Get Multi-Headed Head Info (Opcode 5501h)
+>That does not match the section subject of the spec
+>Get Head Info (...
 
-Thank you for the confirmation!
+Thanks Fan Ni. Will fix in V1 patch.
 
-Eric
-> 
-> For arm/riscv/loongarch virt we want disable the rom.
-> 
-> Everything else doesn't matter much because ramfb can not be used in the
-> first place, you'll get an error like this when trying:
-> 
->   # qemu-default -M isapc -device ramfb
->   qemu-system-x86_64: -device ramfb: Parameter 'driver' expects a dynamic sysbus device type for the machine
-> 
-> HTH & take care,
->   Gerd
-> 
+>> + */
+>> +static CXLRetCode cmd_mhd_get_head_info(const struct cxl_cmd *cmd,
+>> +                                   uint8_t *payload_in, size_t len_in,
+>> +                                   uint8_t *payload_out, size_t *len_out,
+>> +                                   CXLCCI *cci)
+>The indent here is not right.
 
+Okay. Will fix in V1 patch.
+
+>> +static CXLRetCode cmd_mhd_get_head_info(const struct cxl_cmd *cmd,
+>> +                                        uint8_t *payload_in, size_t len_in,
+>
+>> +{
+>> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+>> +    CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
+>> +    if (cvc->mhd_get_head_info) {
+>> +        return cvc->mhd_get_head_info(cmd, payload_in, len_in, payload_out,
+>> +                                 len_out, cci);
+>
+>indent needs fix.
+
+Okay. Will fix in V1 patch.
+
+>
+>> +    }
+>> +    return CXL_MBOX_UNSUPPORTED;
+>> +}
+>> +
+>>  static CXLRetCode cmd_events_get_records(const struct cxl_cmd *cmd,
+>>                                           uint8_t *payload_in, size_t len_in,
+>>                                           uint8_t *payload_out, size_t *len_out,
+>> @@ -3429,6 +3447,7 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+>>          "MEDIA_AND_POISON_GET_SCAN_MEDIA_RESULTS",
+>>          cmd_media_get_scan_media_results, 0, 0 },
+>>      [MHD][GET_MHD_INFO] = { "GET_MULTI_HEADED_INFO", cmd_mhd_get_info, 2, 0},
+>> +    [MHD][GET_MHD_HEAD_INFO] = { "GET_MULTI_HEADED_INFO", cmd_mhd_get_head_info, 2, 0},
+>>  };
+>>
+>>  static const struct cxl_cmd cxl_cmd_set_dcd[256][256] = {
+>> @@ -3761,6 +3780,8 @@ static const struct cxl_cmd cxl_cmd_set_t3_fm_owned_ld_mctp[256][256] = {
+>>      [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
+>>      [TUNNEL][MANAGEMENT_COMMAND] = { "TUNNEL_MANAGEMENT_COMMAND",
+>>                                       cmd_tunnel_management_cmd, ~0, 0 },
+>> +    [MHD][GET_MHD_INFO] = { "GET_MULTI_HEADED_INFO", cmd_mhd_get_info, 2, 0},
+>> +    [MHD][GET_MHD_HEAD_INFO] = { "GET_MULTI_HEADED_INFO", cmd_mhd_get_head_info, 2, 0},
+>>  };
+>>
+>>  void cxl_initialize_t3_fm_owned_ld_mctpcci(CXLCCI *cci, DeviceState *d,
+>> diff --git a/hw/cxl/mhsld/mhsld.c b/hw/cxl/mhsld/mhsld.c
+>> index 9f633b3bed..981546b5ff 100644
+>> --- a/hw/cxl/mhsld/mhsld.c
+>> +++ b/hw/cxl/mhsld/mhsld.c
+>> @@ -61,9 +61,57 @@ static CXLRetCode cmd_mhd_get_info(const struct cxl_cmd *cmd,
+>>      return CXL_MBOX_SUCCESS;
+>>  }
+>>
+>> +/*
+>> + * CXL r3.2 section 7.6.7.5.2 - Get Head Info (Opcode 5501h)
+>> + *
+>> + * This command retrieves the number of heads, number of supported LDs,
+>> + * and Head-to-LD mapping of a Multi-Headed device.
+>> + */
+>> +static CXLRetCode cmd_mhd_get_head_info(const struct cxl_cmd *cmd,
+>> +                                        uint8_t *payload_in, size_t len_in,
+>> +                                        uint8_t *payload_out, size_t *len_out,
+>> +                                        CXLCCI *cci)
+>> +{
+>> +    CXLMHSLDState *s = CXL_MHSLD(cci->d);
+>> +    MHDGetHeadInfoInput *input = (void *)payload_in;
+>> +    MHDGetHeadInfoOutput *output = (void *)payload_out;
+>> +    int i = 0;
+>> +
+>> +    if (input->start_head > MHSLD_HEADS) {
+>
+>Should be ">=" ?
+
+Right. Head index starts from 0, so this condition should be there.
+
+>
+>Also, per the spec, we need also check the "number of heads" field, if
+>start_head and number of heads together point to a non-exist head, we
+>should return invalid input.
+
+Yes. Will add this check in V1 patch.
+
+>
+>> +        return CXL_MBOX_INVALID_INPUT;
+>> +    }
+>> +
+>> +    output->nr_heads = MIN((MHSLD_HEADS - input->start_head), input->nr_heads);
+>> +    for (i = input->start_head; i < input->start_head + output->nr_heads; i++) {
+>> +        output->head_info_list[i].port_number =
+>> +                                 s->mhd_state->head_info_blocks[i].port_number;
+>> +        output->head_info_list[i].max_link_width =
+>> +                              s->mhd_state->head_info_blocks[i].max_link_width;
+>> +        output->head_info_list[i].nego_link_width =
+>> +                             s->mhd_state->head_info_blocks[i].nego_link_width;
+>> +        output->head_info_list[i].supp_link_speeds_vector =
+>> +                     s->mhd_state->head_info_blocks[i].supp_link_speeds_vector;
+>> +        output->head_info_list[i].max_link_speed =
+>> +                              s->mhd_state->head_info_blocks[i].max_link_speed;
+>> +        output->head_info_list[i].current_link_speed =
+>> +                          s->mhd_state->head_info_blocks[i].current_link_speed;
+>> +        output->head_info_list[i].ltssm_state =
+>> +                                 s->mhd_state->head_info_blocks[i].ltssm_state;
+>> +        output->head_info_list[i].first_nego_lane_num =
+>> +                         s->mhd_state->head_info_blocks[i].first_nego_lane_num;
+>> +        output->head_info_list[i].link_state_flags =
+>> +                            s->mhd_state->head_info_blocks[i].link_state_flags;
+>> +    }
+>> +
+>> +    *len_out = sizeof(*output) + output->nr_heads * sizeof(MHDHeadInfoBlock);
+>> +    return CXL_MBOX_SUCCESS;
+>> +}
+>> +
+>>  static const struct cxl_cmd cxl_cmd_set_mhsld[256][256] = {
+>>      [MHSLD_MHD][GET_MHD_INFO] = {"GET_MULTI_HEADED_INFO",
+>>          cmd_mhd_get_info, 2, 0},
+>> +    [MHSLD_MHD][GET_MHD_HEAD_INFO] = {"GET_HEAD_INFO",
+>> +        cmd_mhd_get_head_info, 2, 0},
+>>  };
+>>
+>>  static const Property cxl_mhsld_props[] = {
+>> @@ -166,6 +214,47 @@ static void cxl_mhsld_state_initialize(CXLMHSLDState *s, size_t dc_size)
+>>      s->mhd_state->nr_blocks = dc_size / MHSLD_BLOCK_SZ;
+>>  }
+>>
+>> +
+>> +static void cxl_mhsld_init_head_info(CXLMHSLDState *s, PCIDevice *pdev)
+>> +{
+>> +    uint16_t lnksta = 0;
+>> +    uint16_t current_link_speed = 0;
+>> +    uint16_t negotiated_link_width = 0;
+>> +    uint16_t lnkcap = 0, lnkcap2 = 0;
+>> +    uint16_t max_link_width = 0;
+>> +    uint16_t max_link_speed = 0;
+>> +    uint16_t supported_link_speeds_vector = 0;
+>> +
+>> +    lnksta = pdev->config_read(pdev,
+>> +                               pdev->exp.exp_cap + PCI_EXP_LNKSTA,
+>> +                               sizeof(lnksta));
+>> +    lnkcap = pdev->config_read(pdev,
+>> +                               pdev->exp.exp_cap + PCI_EXP_LNKCAP,
+>> +                               sizeof(lnkcap));
+>> +    lnkcap2 = pdev->config_read(pdev,
+>> +                                pdev->exp.exp_cap + PCI_EXP_LNKCAP2,
+>> +                                sizeof(lnkcap2));
+>> +    supported_link_speeds_vector = (lnkcap2 & 0xFE) >> 1;
+>> +    max_link_width = (lnkcap & PCI_EXP_LNKCAP_MLW) >> 4;
+>> +    max_link_speed = lnkcap & PCI_EXP_LNKCAP_SLS;
+>> +    current_link_speed = lnksta & PCI_EXP_LNKSTA_CLS;
+>> +    negotiated_link_width = (lnksta & PCI_EXP_LNKSTA_NLW) >> 4;
+>> +
+>> +    s->mhd_state->head_info_blocks[s->mhd_head].port_number = s->mhd_head;
+>> +    s->mhd_state->head_info_blocks[s->mhd_head].max_link_width = max_link_width;
+>> +    s->mhd_state->head_info_blocks[s->mhd_head].nego_link_width =
+>> +                                                          negotiated_link_width;
+>> +    s->mhd_state->head_info_blocks[s->mhd_head].supp_link_speeds_vector =
+>> +                                                   supported_link_speeds_vector;
+>> +    s->mhd_state->head_info_blocks[s->mhd_head].max_link_speed =
+>> +                                                                 max_link_speed;
+>> +    s->mhd_state->head_info_blocks[s->mhd_head].current_link_speed =
+>> +                                                             current_link_speed;
+>> +    s->mhd_state->head_info_blocks[s->mhd_head].ltssm_state = 0x7;
+>> +    s->mhd_state->head_info_blocks[s->mhd_head].first_nego_lane_num = 0;
+>> +    s->mhd_state->head_info_blocks[s->mhd_head].link_state_flags = 0;
+>> +}
+>> +
+>>  /* Returns starting index of region in MHD map. */
+>>  static inline size_t cxl_mhsld_find_dc_region_start(PCIDevice *d,
+>>                                                      CXLDCRegion *r)
+>> @@ -376,7 +465,7 @@ static void cxl_mhsld_realize(PCIDevice *pci_dev, Error **errp)
+>>      }
+>>
+>>      cxl_mhsld_state_initialize(s, dc_size);
+>> -
+>> +    cxl_mhsld_init_head_info(s, pci_dev);
+>>      /* Set the LD ownership for this head to this system */
+>>      s->mhd_state->ldmap[s->mhd_head] = s->mhd_head;
+>>      return;
+>> @@ -428,6 +517,7 @@ static void cxl_mhsld_class_init(ObjectClass *klass, void *data)
+>>
+>>      CXLType3Class *cvc = CXL_TYPE3_CLASS(klass);
+>>      cvc->mhd_get_info = cmd_mhd_get_info;
+>> +    cvc->mhd_get_head_info = cmd_mhd_get_head_info;
+>>      cvc->mhd_access_valid = cxl_mhsld_access_valid;
+>>      cvc->mhd_reserve_extents = cxl_mhsld_reserve_extents;
+>>      cvc->mhd_reclaim_extents = cxl_mhsld_reclaim_extents;
+>> diff --git a/hw/cxl/mhsld/mhsld.h b/hw/cxl/mhsld/mhsld.h
+>> index e7ead1f0d2..c9fbec71ca 100644
+>> --- a/hw/cxl/mhsld/mhsld.h
+>> +++ b/hw/cxl/mhsld/mhsld.h
+>> @@ -23,6 +23,18 @@
+>>   */
+>>  #define MHSLD_HEADS  (8)
+>>
+>> +typedef struct MHDHeadInfoBlock {
+>> +    uint8_t port_number;
+>> +    uint8_t max_link_width;
+>> +    uint8_t nego_link_width;
+>> +    uint8_t supp_link_speeds_vector;
+>> +    uint8_t max_link_speed;
+>> +    uint8_t current_link_speed;
+>> +    uint8_t ltssm_state;
+>> +    uint8_t first_nego_lane_num;
+>> +    uint8_t link_state_flags;
+>> +} QEMU_PACKED MHDHeadInfoBlock;
+>> +
+>>  /*
+>>   * The shared state cannot have 2 variable sized regions
+>>   * so we have to max out the ldmap.
+>> @@ -32,6 +44,7 @@ typedef struct MHSLDSharedState {
+>>      uint8_t nr_lds;
+>>      uint8_t ldmap[MHSLD_HEADS];
+>>      uint64_t nr_blocks;
+>> +    MHDHeadInfoBlock head_info_blocks[MHSLD_HEADS];
+>>      uint8_t blocks[];
+>>  } MHSLDSharedState;
+>>
+>> @@ -52,6 +65,7 @@ struct CXLMHSLDClass {
+>>  enum {
+>>      MHSLD_MHD = 0x55,
+>>          #define GET_MHD_INFO 0x0
+>> +        #define GET_MHD_HEAD_INFO 0x1
+>>  };
+>>
+>>  /*
+>> @@ -72,4 +86,16 @@ typedef struct MHDGetInfoOutput {
+>>      uint16_t resv2;
+>>      uint8_t ldmap[];
+>>  } QEMU_PACKED MHDGetInfoOutput;
+>> +
+>> +typedef struct MHDGetHeadInfoInput {
+>> +    uint8_t start_head;
+>> +    uint8_t nr_heads;
+>> +} QEMU_PACKED MHDGetHeadInfoInput;
+>> +
+>> +typedef struct MHDGetHeadInfoOutput {
+>> +    uint8_t nr_heads;
+>> +    uint8_t rsvd[3];
+>> +    MHDHeadInfoBlock head_info_list[];
+>
+>s/head_info_list/head_info/
+
+Okay. Will use head_info in V1 patch.
+
+>
+>Fan
+
+Thanks Fan Ni for reviewing the patch.
+
+Alok
+>
+>> +} QEMU_PACKED MHDGetHeadInfoOutput;
+>> +
+>>  #endif
+>> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+>> index ca515cab13..c93c71c45d 100644
+>> --- a/include/hw/cxl/cxl_device.h
+>> +++ b/include/hw/cxl/cxl_device.h
+>> @@ -732,6 +732,12 @@ struct CXLType3Class {
+>>                                 uint8_t *payload_out,
+>>                                 size_t *len_out,
+>>                                 CXLCCI *cci);
+>> +    CXLRetCode (*mhd_get_head_info)(const struct cxl_cmd *cmd,
+>> +                               uint8_t *payload_in,
+>> +                               size_t len_in,
+>> +                               uint8_t *payload_out,
+>> +                               size_t *len_out,
+>> +                               CXLCCI *cci);
+>>      bool (*mhd_access_valid)(PCIDevice *d, uint64_t addr, unsigned int size);
+>>      bool (*mhd_reserve_extents)(PCIDevice *d,
+>>                                  CxlDynamicCapacityExtentList *records,
+>> --
+>> 2.34.1
+>>
+
+------nR.o9xAt.CKA9Q2_7V_sz8FZ15p3Iy14m0uxA3-zFK6OxaPG=_e1d27_
+Content-Type: text/plain; charset="utf-8"
+
+
+------nR.o9xAt.CKA9Q2_7V_sz8FZ15p3Iy14m0uxA3-zFK6OxaPG=_e1d27_--
 
