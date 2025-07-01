@@ -2,65 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCBBAEF6B7
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 13:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B302AEF6F6
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 13:46:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWZIx-0003gZ-Na; Tue, 01 Jul 2025 07:37:39 -0400
+	id 1uWZQD-00059m-1p; Tue, 01 Jul 2025 07:45:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uWZIr-0003g8-00
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 07:37:33 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uWZQ3-00058t-Fo
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 07:44:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uWZIn-00024U-6t
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 07:37:31 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uWZPw-0003EE-Hr
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 07:44:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751369845;
+ s=mimecast20190719; t=1751370287;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vw5O4lMVxeF8wcY5LvDDfJqxCwiPzAWKcuF+9FH0pxE=;
- b=h4t5bfobRHdVqEaPTmiAZM+FKyvnFIKmPyjgs4wTKLqlZeEcIYYkrCk6sw1iS0MESmg0BX
- 5DmrKFlXtjbsokOJm9nOdynce9nLONrmcDhEZrVmFkoBCmjIcVXw7Hu2wkgZa75msZQ69y
- Hd+0vNThJRXcu1ur5/kFtNaqwNP7j3I=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-153-6UyDl35rNMmEEnclqVAofg-1; Tue,
- 01 Jul 2025 07:37:22 -0400
-X-MC-Unique: 6UyDl35rNMmEEnclqVAofg-1
-X-Mimecast-MFC-AGG-ID: 6UyDl35rNMmEEnclqVAofg_1751369840
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8F87B1808984; Tue,  1 Jul 2025 11:37:19 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.34.118])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ABA2730001B1; Tue,  1 Jul 2025 11:37:13 +0000 (UTC)
-Date: Tue, 1 Jul 2025 13:37:10 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, den@virtuozzo.com,
- andrey.drobyshev@virtuozzo.com, hreitz@redhat.com,
- stefanha@redhat.com, eblake@redhat.com, jsnow@redhat.com,
- vsementsov@yandex-team.ru, xiechanglong.d@gmail.com,
- wencongyang2@huawei.com, berto@igalia.com, fam@euphon.net, ari@tuxera.com
-Subject: Re: [PATCH v4 24/48] block: add bdrv_graph_wrlock_drained()
- convenience wrapper
-Message-ID: <aGPIZvQwejyjRPKw@redhat.com>
-References: <20250530151125.955508-1-f.ebner@proxmox.com>
- <20250530151125.955508-25-f.ebner@proxmox.com>
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=X230xMRuC2AZJb8px0TMmN2N+5uco+uzUp9uzbplB0s=;
+ b=FH9VgT1IDbwTwRgZfIn/j0cEwefp0J3krm9HgPnFlsEe43Ou+gWF+iUcNRbjgIhZcXyl8O
+ HJs8vWyxL8K42BORPGKjFLFwODL8L9diWkQ3797PTmDucBzPZQh20VrToKkfdrceBaKPRh
+ MA8GSsTw8Mq8UTOWfPTByeJVYRWhVOw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-427-E7T52Kc6M-661Sq5rmtf_Q-1; Tue, 01 Jul 2025 07:44:46 -0400
+X-MC-Unique: E7T52Kc6M-661Sq5rmtf_Q-1
+X-Mimecast-MFC-AGG-ID: E7T52Kc6M-661Sq5rmtf_Q_1751370285
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a4f3796779so3027835f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 04:44:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751370285; x=1751975085;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=X230xMRuC2AZJb8px0TMmN2N+5uco+uzUp9uzbplB0s=;
+ b=jVqiZFlh/3Y0lxyroZmJfi3pVVFi+339Jk2k5AlnRHAc9gx57H9e7OFtE6GFSgTgYG
+ aDKalgPKBtG/TfnyxpZ5pbPotL/yO/wbqqJ+KxD2JROfO3bJqXPzcJsmoHZVQIA3pb0G
+ xpZRbNj6SY5AG3zr7vWvHcRKeYWFvW/J4L0atrIz0Ac5cek5+WAqBBl9CB2ZUioJVU5N
+ lpVUlUd1+enLYyy7EfZK5rY4zIsyAxw6QGPmuOP6P4XU2L+Kpl3EiFm0nbZQpW1eMtpy
+ acp+2M4wDYD/Zr3qZIjNpo2Xmb/C2ziHHWtN+pqAkrtCD08KFnpTxC3JT31K1blF9yBk
+ 1MIA==
+X-Gm-Message-State: AOJu0Yw8mu88U034rHq9APRxv0N4/Uurq21t63dJh9Ymec385+fOKyV0
+ vIihs6U6iaYgLUKZt8CSJRPh85xvAJhi8BULOnp5i6A/md0Vb3WEPi4Za4tWQjtzzp/Vmhaq5sP
+ qAV5JhzfKp1H/1t4jcjsZDAOxpxl/sb9kOFOBtbFbgryxqlP0WgARIHUE
+X-Gm-Gg: ASbGnctzZm7Bh6UjdF6nqChHH6wH93l9xVMe/bXKafszjx1VijwH/lYYmMtfjuVkq5f
+ lwK+b6YxUAkLfbKeTy31vpK1VHJhtLPtNuMZC+XGQ5YB3ZaUIxPJOv+By3dxukFW4HieTHgZAqT
+ ETctZvLnecg1prq8qpw002ZK6Hj+k7hQRtm0vb1cJbtixzaSw5+7ik+hd3C3CdFrgYyGvZx9OsR
+ t0N5eVetrhoNBnvg0aXPUtCWhQ8CdsYxC9yD+6FqlAWKm4/rjLnEDVxAneflfptfixi51EthFvZ
+ /EZO0Gpk5dGdWgD3FpOuXs184zKmcbXcDwatj48dLwwN9ZYPrwpSd+vL3kWDL4udyJQq8wkpeOi
+ MaF5u
+X-Received: by 2002:adf:ba4b:0:b0:3a5:39d5:d962 with SMTP id
+ ffacd0b85a97d-3a917bc78demr9960428f8f.41.1751370284678; 
+ Tue, 01 Jul 2025 04:44:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFd8QvK2nqeWJKgeZQuko/9UqHOCAsAZvTFS+mUD5LKBhfg2P1T1S0P2TZcwPSHjuJL21d94g==
+X-Received: by 2002:adf:ba4b:0:b0:3a5:39d5:d962 with SMTP id
+ ffacd0b85a97d-3a917bc78demr9960409f8f.41.1751370284236; 
+ Tue, 01 Jul 2025 04:44:44 -0700 (PDT)
+Received: from localhost
+ (p200300cfd700f38d3df6a1ca7d40fe1f.dip0.t-ipconnect.de.
+ [2003:cf:d700:f38d:3df6:a1ca:7d40:fe1f])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-453883d81besm176542325e9.38.2025.07.01.04.44.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Jul 2025 04:44:43 -0700 (PDT)
+From: Hanna Czenczek <hreitz@redhat.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Brian Song <hibriansong@gmail.com>
+Subject: [PATCH v3 00/21] export/fuse: Use coroutines and multi-threading
+Date: Tue,  1 Jul 2025 13:44:16 +0200
+Message-ID: <20250701114437.207419-1-hreitz@redhat.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250530151125.955508-25-f.ebner@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,52 +107,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 30.05.2025 um 17:11 hat Fiona Ebner geschrieben:
-> Many write-locked sections are also drained sections. A new
-> bdrv_graph_wrunlock_drained() wrapper around bdrv_graph_wrunlock() is
-> introduced, which will begin a drained section first. A global
-> variable is used so bdrv_graph_wrunlock() knows if it also needs
-> to end such a drained section. Both the aio_poll call in
-> bdrv_graph_wrlock() and the aio_bh_poll() in bdrv_graph_wrunlock()
-> can re-enter a write-locked section. While for the latter, ending the
-> drain could be moved to before the call, the former requires that the
-> variable is a counter and not just a boolean.
-> 
-> Since the wrapper calls bdrv_drain_all_begin(), which must be called
-> with the graph unlocked, mark the wrapper as GRAPH_UNLOCKED too.
-> 
-> The switch to the new helpers was generated with the following
-> commands and then manually checked:
-> find . -name '*.c' -exec sed -i -z 's/bdrv_drain_all_begin();\n\s*bdrv_graph_wrlock();/bdrv_graph_wrlock_drained();/g' {} ';'
-> find . -name '*.c' -exec sed -i -z 's/bdrv_graph_wrunlock();\n\s*bdrv_drain_all_end();/bdrv_graph_wrunlock();/g' {} ';'
-> 
-> Suggested-by: Kevin Wolf <kwolf@redhat.com>
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> ---
-> 
-> Changes in v4:
-> * Adapt to context changes from earlier patch.
-> * Mark the wrapper as GRAPH_UNLOCKED itself
+Hi,
 
-> diff --git a/include/block/graph-lock.h b/include/block/graph-lock.h
-> index 2c26c72108..b564cba2c0 100644
-> --- a/include/block/graph-lock.h
-> +++ b/include/block/graph-lock.h
-> @@ -112,10 +112,21 @@ void unregister_aiocontext(AioContext *ctx);
->  void no_coroutine_fn TSA_ACQUIRE(graph_lock) TSA_NO_TSA
->  bdrv_graph_wrlock(void);
->  
-> +/*
-> + * bdrv_graph_wrlock_drained:
-> + * Similar to bdrv_graph_wrlock, but will begin a drained section before
-> + * locking.
-> + */
-> +void no_coroutine_fn TSA_ACQUIRE(graph_lock) TSA_NO_TSA GRAPH_UNLOCKED
-> +bdrv_graph_wrlock_drained(void);
+This series:
+- Fixes some bugs/minor inconveniences,
+- Removes libfuse from the request processing path,
+- Make the FUSE export use coroutines for request handling,
+- Introduces multi-threading into the FUSE export.
 
-GRAPH_UNLOCKED is redundant. TSA_ACQUIRE(graph_lock) already means that
-you can't call the function while holding the lock.
+More detail on the v1 cover letter:
+https://lists.nongnu.org/archive/html/qemu-block/2025-03/msg00359.html
 
-Kevin
+v2 cover letter:
+https://lists.nongnu.org/archive/html/qemu-block/2025-06/msg00040.html
+
+
+Changes from v2:
+- Patch 12: Moved qemu_fcntl_addfl() into the #ifndef _WIN32 section
+  where other fcntl() wrappers reside
+- Patch 13: Fixed comment to say `export` instead of `exp`; kept
+  Stefan’s R-b
+- Patch 15: Same as patch 13
+- Patch 18: In macro, use correct parameter `queue` instead of the
+  non-existing `q`
+
+
+git-backport-diff from v2:
+
+Key:
+[----] : patches are identical
+[####] : number of functional differences between upstream/downstream patch
+[down] : patch is downstream-only
+The flags [FC] indicate (F)unctional and (C)ontextual differences, respectively
+
+001/21:[----] [--] 'fuse: Copy write buffer content before polling'
+002/21:[----] [--] 'fuse: Ensure init clean-up even with error_fatal'
+003/21:[----] [--] 'fuse: Remove superfluous empty line'
+004/21:[----] [--] 'fuse: Explicitly set inode ID to 1'
+005/21:[----] [--] 'fuse: Change setup_... to mount_fuse_export()'
+006/21:[----] [--] 'fuse: Fix mount options'
+007/21:[----] [--] 'fuse: Set direct_io and parallel_direct_writes'
+008/21:[----] [--] 'fuse: Introduce fuse_{at,de}tach_handlers()'
+009/21:[----] [--] 'fuse: Introduce fuse_{inc,dec}_in_flight()'
+010/21:[----] [--] 'fuse: Add halted flag'
+011/21:[----] [--] 'fuse: Rename length to blk_len in fuse_write()'
+012/21:[----] [-C] 'block: Move qemu_fcntl_addfl() into osdep.c'
+013/21:[0008] [FC] 'fuse: Manually process requests (without libfuse)'
+014/21:[----] [--] 'fuse: Reduce max read size'
+015/21:[0008] [FC] 'fuse: Process requests in coroutines'
+016/21:[----] [--] 'block/export: Add multi-threading interface'
+017/21:[----] [--] 'iotests/307: Test multi-thread export interface'
+018/21:[0016] [FC] 'fuse: Implement multi-threading'
+019/21:[----] [--] 'qapi/block-export: Document FUSE's multi-threading'
+020/21:[----] [--] 'iotests/308: Add multi-threading sanity test'
+021/21:[----] [--] 'fuse: Increase MAX_WRITE_SIZE with a second buffer'
+
+
+Hanna Czenczek (21):
+  fuse: Copy write buffer content before polling
+  fuse: Ensure init clean-up even with error_fatal
+  fuse: Remove superfluous empty line
+  fuse: Explicitly set inode ID to 1
+  fuse: Change setup_... to mount_fuse_export()
+  fuse: Fix mount options
+  fuse: Set direct_io and parallel_direct_writes
+  fuse: Introduce fuse_{at,de}tach_handlers()
+  fuse: Introduce fuse_{inc,dec}_in_flight()
+  fuse: Add halted flag
+  fuse: Rename length to blk_len in fuse_write()
+  block: Move qemu_fcntl_addfl() into osdep.c
+  fuse: Manually process requests (without libfuse)
+  fuse: Reduce max read size
+  fuse: Process requests in coroutines
+  block/export: Add multi-threading interface
+  iotests/307: Test multi-thread export interface
+  fuse: Implement multi-threading
+  qapi/block-export: Document FUSE's multi-threading
+  iotests/308: Add multi-threading sanity test
+  fuse: Increase MAX_WRITE_SIZE with a second buffer
+
+ qapi/block-export.json               |   39 +-
+ include/block/export.h               |   12 +-
+ include/qemu/osdep.h                 |    1 +
+ block/export/export.c                |   48 +-
+ block/export/fuse.c                  | 1181 ++++++++++++++++++++------
+ block/export/vduse-blk.c             |    7 +
+ block/export/vhost-user-blk-server.c |    8 +
+ block/file-posix.c                   |   17 +-
+ nbd/server.c                         |    6 +
+ util/osdep.c                         |   18 +
+ tests/qemu-iotests/307               |   47 +
+ tests/qemu-iotests/307.out           |   18 +
+ tests/qemu-iotests/308               |   55 +-
+ tests/qemu-iotests/308.out           |   61 +-
+ 14 files changed, 1213 insertions(+), 305 deletions(-)
+
+-- 
+2.49.0
 
 
