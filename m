@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6344AF016E
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1298FAF0179
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:14:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSa-0005gL-RR; Tue, 01 Jul 2025 13:07:56 -0400
+	id 1uWeSc-0005ga-8N; Tue, 01 Jul 2025 13:07:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSX-0005dX-J8
+ id 1uWeSX-0005dl-V6
  for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:53 -0400
 Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSV-0003bf-Rs
+ id 1uWeSW-0003c6-8A
  for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:53 -0400
 Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3a5257748e1so2351973f8f.2
+ ffacd0b85a97d-3a6d77b43c9so3260663f8f.3
  for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1751389670; x=1751994470; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=AzcsRGchl752kffQ5Y7VHDcNl2gOJzVVBkDGDtDpFlc=;
- b=oK9tCB9Teu3ZpFpDL/qJvij2dGAXxqehR3fLM9wLiCcKgVcpv9Et1Q4YkKJ7uf/u7A
- bEYWIVb+4yHOh5Nm98WVo1tgKG2idGVfe/0nXKeLpPVzrYkqfoIun4kcM3JyYMVrdMR0
- ef+7UZs0yN6Z1pqg+pynrQ5i4MGzQqGkNO8+iSuiEQbMIKT6YDENcPpC60A7JnUl/UJ1
- YhIJ/LpNeFWYD47Dxr1glcM9kE9R5+88WBUYSykLhtKBvIhdni/GMNzLi4yQcxJANeXc
- t3eAqY0rN9Fha+FG82Rs7c5AEgu9QSmOfakqyYaGGMhucKtMP4aMg4xS+OSE99rxNexc
- clJg==
+ :reply-to; bh=il8MRx0ocqoWHUPwZJiya0xTcuVfrmMJ7yc2s+LkZk4=;
+ b=gNuRDoOwtGnPxfg6pnuw++6cEmVsvW19K/ffHt1Mqli8CMKZRITAYYOpIhIN3I0rRe
+ E+1kTGpCk3qulu1wWHZ3244weFmNraMwao8bS1HDHQ9Cm5GbVdiQN4ZIphygRAHmK4ZM
+ vvBix94XrvhAHFUEFh3pKdV3fWjhhrcipmE79i5f/i7S5trmQbeTkwPF2fin0uAN/PS/
+ xgWSzuWwIhxpYjkOuC5fJZ3aNEx6Hhg6Osq0oLElZdSIUBfVD3fjBoHOnf7G/ePCfB+x
+ eNuk/zehfml9TT1gPa93ET7zogddJ/v8iDxpn5Gdfn6Uv9dy3bGrttEEYSsIyZml9Gmf
+ 4UPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1751389670; x=1751994470;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AzcsRGchl752kffQ5Y7VHDcNl2gOJzVVBkDGDtDpFlc=;
- b=vmllf7ejh18y9Lm6EQkeekc4GtUZPDHHU3Y/YTMbgFSZfZVcqUWjQhO9/4ZPZynOru
- 261uF6PM/WB80NPGelXYOvhcbpv0MqYgVAnA4HF9aGAsYpUzl0kKzFR7FjVFEjlYpKmF
- yzMIUbQ9UgLjtZAz8c+8FsZ6yQA8ud8lbM//75wZ8zsEyf/eM2aelWFSs/lTAJrSX93T
- eO+zJbisxqO5RYIjXBBVAhPOiExSh6xJz4JXFR3+b603VVN9OHJSaB0VjZyF7S+vgq4a
- 29mH1E53pF47NNVmrqZHAJyXAEDqxccwiMtDh8k6jJhA6p4dOdjgcsqJNLm1NudctZLk
- OlBA==
-X-Gm-Message-State: AOJu0YxPnKxlWF6VTmNOBysG5DXubf1iOiyBukDQWjIZziIhkHHWh2rB
- N0DaU4WSR+V1KsQvq2XJxBoQL8flrcamYbqOH6tVlhnxUlW4qjsR53O9vUk0OkLslsGvIAfhTAl
- DFiY3
-X-Gm-Gg: ASbGncv6XXq66YjlAZLNEq10G5yBedGCrLS2p5fGBBc1ml6zMkfzrABsZuaVkDAyoDz
- a6ka8vrSzrDQlsEy1+jggpBFCGdyATopE5vKEgZ5LbkKEZzPx8Z1R4mE3ILIV1j0dQsb8N02h7u
- 1EFtEMz2lEZKV2q9IyP9q3XOOY9oMk+RnXA+UJ8iCLD8MB3Ub/ZSez1nqvjCY2afetunikMJoRg
- b7hGTFLjgTglTAzBbbkhJVfcfTHDaxCNNfezqhviePbHXDtIO4ZveNhU7xa3NqWQW+A4AszWkbA
- ZM6EEbXazHZiATgINXgRBQCi1+CTQn5QGGcJNXhyF+LHKY1rGRZnnxUXJeQSeqKdI7ez
-X-Google-Smtp-Source: AGHT+IHQtkRRRCB/uVDHo2GlbxTSd+JlM4ZSyjRA1JQ2FnITyZCmr1JUldG9cM/2DliwOown+KLNVg==
-X-Received: by 2002:a05:6000:4404:b0:3a4:f66a:9d31 with SMTP id
- ffacd0b85a97d-3a8fdb2a034mr11222132f8f.16.1751389669593; 
- Tue, 01 Jul 2025 10:07:49 -0700 (PDT)
+ bh=il8MRx0ocqoWHUPwZJiya0xTcuVfrmMJ7yc2s+LkZk4=;
+ b=waeF7y1IV3BN/Ba45P50fu/d8HJeTmhVgqtlkypUAu3aK52SH73YUGor6/V7EpfZaZ
+ xTYb+5BQou6N/HoMOfy96ZlCe5ynpnaT5HubtZ8dBRXr9ZOGTA9hG/e9fOXF2kFHUmO2
+ dS6Zt4v0auwR/3Amggw7VTZF+VEV7lXrFuBE0VWTUgI3vPEOvw81Pu9hK/J0GRZIiTKw
+ T/gpyZewKu3Qb0dr4p3bUmTYODkTYVblXgYTydiu0JFDkFzkwCnKnEAOZ3dWr2tuQufg
+ pAlNEPSGE2O/b0JBHOA8M9i+yS7LCYFJoGFstiDcm/kw2fdhCGBZNuNgATFB9BddAxHy
+ BgOA==
+X-Gm-Message-State: AOJu0YyHxOD79uZNcQ31RQNycM49SmupYXCghSzNpTrpmJiNpA4mJ0DI
+ qZV/YBRn/vmhwL1OK+tdcXsnA0a445F6kFjlKkm9x7HpuyeKGfgnKFj+Ndo3xQM0by1gJj0Qdhg
+ II0fp
+X-Gm-Gg: ASbGncstSTUpyTNK53+RvQYA8ta6ss0sQlRziZO7tBqV2LOfhjjZ5XUAObIU/K6eMUg
+ e1DtpEEmEMsOuaZNFmDX0ov0+P3aXlLilbvlQyawGzOmk61MDTkqAS69c8K1uKWzyAJYQ/lkvAM
+ lARMKSAx+9V/pQSKjcw9Q9FrVulq7Z7bdOU8wQPCSVZ5cSJ142FtSykl/xah3gaC1PyFC7vPZZ8
+ CADT0j0vmop2xfgZ8bmx5+SY7LZSR/k9zv5DdsEe8fOZNVCNB0jeVpgmREhXsrwmTd5nekzJ9tR
+ 40rXN8osn+N35YM6iWWpqy+uNQpQM3/+NVJm+iqJukbkq9yX21wa2VTVi8rz4LtHQ4G+
+X-Google-Smtp-Source: AGHT+IGkKkf4tOCZu4mKECBwrAIeXocZCtNnBQhoRgIA0HSbynB3LM2H8ULCay9YSujCnPGvxZk6xg==
+X-Received: by 2002:a05:6000:1a8c:b0:3a5:1240:6802 with SMTP id
+ ffacd0b85a97d-3a90066a6e4mr16545566f8f.57.1751389670520; 
+ Tue, 01 Jul 2025 10:07:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.48
+ ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 01 Jul 2025 10:07:49 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 27/43] target/arm/hvf: Directly re-lock BQL after hv_vcpu_run()
-Date: Tue,  1 Jul 2025 18:07:03 +0100
-Message-ID: <20250701170720.4072660-28-peter.maydell@linaro.org>
+Subject: [PULL 28/43] target/arm/hvf: Trace hv_vcpu_run() failures
+Date: Tue,  1 Jul 2025 18:07:04 +0100
+Message-ID: <20250701170720.4072660-29-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
 References: <20250701170720.4072660-1-peter.maydell@linaro.org>
@@ -99,40 +99,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Keep bql_unlock() / bql_lock() close.
+Allow distinguishing HV_ILLEGAL_GUEST_STATE in trace events.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250623121845.7214-6-philmd@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250623121845.7214-7-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/hvf/hvf.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ target/arm/hvf/hvf.c        | 10 +++++++++-
+ target/arm/hvf/trace-events |  1 +
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 5c95ccc5b8d..3c234f7b112 100644
+index 3c234f7b112..0943365a681 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -1915,7 +1915,9 @@ int hvf_vcpu_exec(CPUState *cpu)
-     flush_cpu_state(cpu);
- 
+@@ -1917,7 +1917,15 @@ int hvf_vcpu_exec(CPUState *cpu)
      bql_unlock();
--    assert_hvf_ok(hv_vcpu_run(cpu->accel->fd));
-+    r = hv_vcpu_run(cpu->accel->fd);
-+    bql_lock();
-+    assert_hvf_ok(r);
+     r = hv_vcpu_run(cpu->accel->fd);
+     bql_lock();
+-    assert_hvf_ok(r);
++    switch (r) {
++    case HV_SUCCESS:
++        break;
++    case HV_ILLEGAL_GUEST_STATE:
++        trace_hvf_illegal_guest_state();
++        /* fall through */
++    default:
++        g_assert_not_reached();
++    }
  
      /* handle VMEXIT */
      uint64_t exit_reason = hvf_exit->reason;
-@@ -1923,7 +1925,6 @@ int hvf_vcpu_exec(CPUState *cpu)
-     uint32_t ec = syn_get_ec(syndrome);
- 
-     ret = 0;
--    bql_lock();
-     switch (exit_reason) {
-     case HV_EXIT_REASON_EXCEPTION:
-         /* This is the main one, handle below. */
+diff --git a/target/arm/hvf/trace-events b/target/arm/hvf/trace-events
+index 4fbbe4b45ec..a4870e0a5c4 100644
+--- a/target/arm/hvf/trace-events
++++ b/target/arm/hvf/trace-events
+@@ -11,3 +11,4 @@ hvf_exit(uint64_t syndrome, uint32_t ec, uint64_t pc) "exit: 0x%"PRIx64" [ec=0x%
+ hvf_psci_call(uint64_t x0, uint64_t x1, uint64_t x2, uint64_t x3, uint32_t cpuid) "PSCI Call x0=0x%016"PRIx64" x1=0x%016"PRIx64" x2=0x%016"PRIx64" x3=0x%016"PRIx64" cpu=0x%x"
+ hvf_vgic_write(const char *name, uint64_t val) "vgic write to %s [val=0x%016"PRIx64"]"
+ hvf_vgic_read(const char *name, uint64_t val) "vgic read from %s [val=0x%016"PRIx64"]"
++hvf_illegal_guest_state(void) "HV_ILLEGAL_GUEST_STATE"
 -- 
 2.43.0
 
