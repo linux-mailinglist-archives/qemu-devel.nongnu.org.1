@@ -2,85 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6A5AEFDE6
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 17:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31018AEFA77
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 15:28:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWckp-00050Y-TI; Tue, 01 Jul 2025 11:18:40 -0400
+	id 1uWb0U-0001VH-UN; Tue, 01 Jul 2025 09:26:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alok.rathore@samsung.com>)
- id 1uWbj9-0001g7-Gr
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:12:51 -0400
-Received: from mailout4.samsung.com ([203.254.224.34])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uWb0Q-0001Uj-Gy
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 09:26:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alok.rathore@samsung.com>)
- id 1uWbiy-00063h-LD
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:12:47 -0400
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
- by mailout4.samsung.com (KnoxPortal) with ESMTP id
- 20250701141231epoutp04b3feb779ea2b024327b889d8d633c801~OJg8uBO4d1085510855epoutp04R
- for <qemu-devel@nongnu.org>; Tue,  1 Jul 2025 14:12:31 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com
- 20250701141231epoutp04b3feb779ea2b024327b889d8d633c801~OJg8uBO4d1085510855epoutp04R
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1751379151;
- bh=oMqwRA0BuFQSGoKP9WQQfybT8xfLVslYMJnSFZ2NF54=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=hl584sE2KI4lHe2OONXo+kBAVNOasEAuX7qHemoAMhBxuWiB0FioxW2/VESOBSTd/
- cfxaSedte7yBlN4acxAdttbTBOaXbZHYjPNmIb8ZHrNB57WU0Pk60D7pGLTxTD1Xgc
- QiiximrYLNoAYvSC2SuEpT2AQvCiTE5iYCrk24hQ=
-Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
- epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
- 20250701141231epcas5p394df7f3797ad21742c312565e9a81f4e~OJg8Vk5W90748207482epcas5p3h;
- Tue,  1 Jul 2025 14:12:31 +0000 (GMT)
-Received: from epcas5p4.samsung.com (unknown [182.195.38.175]) by
- epsnrtp01.localdomain (Postfix) with ESMTP id 4bWlNF6k5Pz6B9m5; Tue,  1 Jul
- 2025 14:12:29 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
- epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
- 20250701131950epcas5p3f977cca555243ae726922f864d2fced5~OIy8ldrmi1263712637epcas5p3p;
- Tue,  1 Jul 2025 13:19:50 +0000 (GMT)
-Received: from test-PowerEdge-R740xd (unknown [107.99.41.79]) by
- epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
- 20250701131949epsmtip122dcc4ca354f57ea3fa2df1cdb50792e~OIy7U3JG23002830028epsmtip1P;
- Tue,  1 Jul 2025 13:19:49 +0000 (GMT)
-Date: Tue, 1 Jul 2025 18:49:34 +0530
-From: Alok Rathore <alok.rathore@samsung.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-devel@nongnu.org, gost.dev@samsung.com, linux-cxl@vger.kernel.org,
- nifan.cxl@gmail.com, dave@stgolabs.net, vishak.g@samsung.com,
- krish.reddy@samsung.com, a.manzanares@samsung.com, alokrathore20@gmail.com
-Subject: Re: [PATCH] Add support for FMAPI Get Mutliheaded Head info opcode
- (5501h)
-Message-ID: <20250701131934.gohv3ztfcxil6pyt@test-PowerEdge-R740xd>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uWb0M-0008H2-JU
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 09:26:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751376391;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bou7FKm/m/RGyqtwnJb91mXKHDSa7A/zUMQL2caUxSU=;
+ b=IE0iOoQIEHlmfo0s7HKpYLoRs7/VsbJObzzVYhY11nOfHvma1H/0kLnFYyuRuYqGdg1P6U
+ EFbKdOGLJPbebeGxO6e4V/Fe2hdXPy/fuZ5UlX13tWBPtbG7S7dHbVQzsUDjR6MPB7quKG
+ t7P8uRQQiE1ZzjfrBb4TGY/zoOzIK6M=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-380-WKKHJvXHNwqKdGKzvurUsQ-1; Tue, 01 Jul 2025 09:26:30 -0400
+X-MC-Unique: WKKHJvXHNwqKdGKzvurUsQ-1
+X-Mimecast-MFC-AGG-ID: WKKHJvXHNwqKdGKzvurUsQ_1751376389
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a4f7ebfd00so2870987f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 06:26:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751376389; x=1751981189;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bou7FKm/m/RGyqtwnJb91mXKHDSa7A/zUMQL2caUxSU=;
+ b=tGPUbQISsE6iPceVIgPQ2DpaM01alZCc54HwbUmKPvhTZYcW1SLelSEBk2eQJ/2HbM
+ uVcP5prYFfV6HL/scaPheLrKBNwOYIVl0EVP3gkxHMd47xdVh5xpN8/CKweUNu0HvCBI
+ xTr4ZPJBc7RqYZy+ZPegjAvpn2adO38CRwTCUpFjbfEesGk6L3oJkdG9kGHWWDWLuZzu
+ fBspbpygB9HI0antFakKBQVjbbEXeyANfIWLkOs2biPug3flCECpfEOr6bZFJFO1l0I6
+ o7DV2nYDVmh9a5A0x0wdBhvPsMjuSxyrFlucpchcLHhlsUHqoZuxZmlFwf8Lec00b/5x
+ QKDQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVY/dZ0bnqA7DXVtDgyjHJxmlSFexHCLBcpE9iHAqTT46mrWZESJJ7VwUa/EI3Ol+Bl4lq0EtaCMjR5@nongnu.org
+X-Gm-Message-State: AOJu0YxvJDyNxHwuqjoBd6dXRoHcg89klKKpHvZx1oynKNG9Y4X34yaP
+ XhIuOII6gPLzNtKbFMJQwJmk0dOOhdnowSTNRgTgfoyXPjnYXPP10YuZ5ssCcmro5W0kJlNnOVk
+ eAvGVyy6IYJ4eanwqt1WYiwHTcKSYMsYehUApGU+i4clp3HUzRnkJ+F6u
+X-Gm-Gg: ASbGncui824InMnvnr4qn4BXnUNWbVWaSoCb06fYfMCnbTuOczPE5UtM6tKrZsFMe6b
+ nEQnNc1ivC1zeqH2MXa16YT1oYLSZXyRSc9qoogDW4ubwLZHqHtVzYB6Ql+Wzn/Yfs4wvHlrcgX
+ Wf89kHy+HkxGZqc4OLAtYkxxEdgxPgQPcTsxBl8FDlng7VWUmf03nYaflyqgSB38mBg09f6bMxh
+ 22jZZ2J1CjFxELrbHYWShKo8wdHiQNCT5dc8lWVT9oFiEsoM6cnA9zFE/visLTojIuoZrp7s7o/
+ 5uWbPLL9S+NQwJnxRT8zjaIR5GUiZFM9OMOSVNWeU/uVGmo3M4cTkoyYONR3FggNZFIaEg==
+X-Received: by 2002:a5d:5050:0:b0:3a5:8a68:b836 with SMTP id
+ ffacd0b85a97d-3a90075ffa3mr12468175f8f.44.1751376388806; 
+ Tue, 01 Jul 2025 06:26:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFAzLNK0sPuAtgjR5EW0TUpQ7Y14237d0SjwSdNoOf424uhzhuTiItUmao5SSpIpFAteyoLpA==
+X-Received: by 2002:a5d:5050:0:b0:3a5:8a68:b836 with SMTP id
+ ffacd0b85a97d-3a90075ffa3mr12468141f8f.44.1751376388185; 
+ Tue, 01 Jul 2025 06:26:28 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4538233c5fasm199975025e9.8.2025.07.01.06.26.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Jul 2025 06:26:27 -0700 (PDT)
+Message-ID: <4ceea721-b633-499e-9fcd-735990ee0704@redhat.com>
+Date: Tue, 1 Jul 2025 15:26:26 +0200
 MIME-Version: 1.0
-In-Reply-To: <20250529131352.00007aaf@huawei.com>
-X-CMS-MailID: 20250701131950epcas5p3f977cca555243ae726922f864d2fced5
-X-Msg-Generator: CA
-Content-Type: multipart/mixed;
- boundary="----K5ZVV-zrPS8y8iJelFUsagW7KEVVNg7wn3oh2ZJRPRpX678s=_e2361_"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250522063149epcas5p13719600aa8f59313ff3dc2570c996aec
-References: <CGME20250522063149epcas5p13719600aa8f59313ff3dc2570c996aec@epcas5p1.samsung.com>
- <20250522063135.366295-1-vinayak.kh@samsung.com>
- <20250529131352.00007aaf@huawei.com>
-Received-SPF: pass client-ip=203.254.224.34;
- envelope-from=alok.rathore@samsung.com; helo=mailout4.samsung.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH qemu v16 3/5] hw/arm/virt: Basic CXL enablement on
+ pci_expander_bridge instances pxb-cxl
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
+ Fan Ni <fan.ni@samsung.com>, Peter Maydell <peter.maydell@linaro.org>,
+ mst@redhat.com, Zhijian Li <lizhijian@fujitsu.com>,
+ Itaru Kitayama <itaru.kitayama@linux.dev>
+Cc: linuxarm@huawei.com, linux-cxl@vger.kernel.org, qemu-arm@nongnu.org,
+ Yuquan Wang <wangyuquan1236@phytium.com.cn>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250625161926.549812-1-Jonathan.Cameron@huawei.com>
+ <20250625161926.549812-4-Jonathan.Cameron@huawei.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250625161926.549812-4-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 01 Jul 2025 11:18:30 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,206 +117,301 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-------K5ZVV-zrPS8y8iJelFUsagW7KEVVNg7wn3oh2ZJRPRpX678s=_e2361_
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
-Content-Disposition: inline
+Hi Jonathan,
 
-On 29/05/25 01:13PM, Jonathan Cameron wrote:
->On Thu, 22 May 2025 12:01:35 +0530
->Vinayak Holikatti <vinayak.kh@samsung.com> wrote:
->
->> CXL spec 3.2 section 7.6.7.5.2  describes Get Head Info.
->>
->> Signed-off-by: Vinayak Holikatti <vinayak.kh@samsung.com>
->
->Hi Vinayak,
->
->Some code simplification suggestions below.
+On 6/25/25 6:19 PM, Jonathan Cameron via wrote:
+> Code based on i386/pc enablement.
+> The memory layout places space for 16 host bridge register regions after
+> the GIC_REDIST2 in the extended memmap. This is a hole in the current
+> map so adding them here has no impact on placement of other memory regions
+> (tested with enough CPUs for GIC_REDIST2 to be in use.)
 
-Thanks Jonathan for reviewing the patch.
-
-Alok
->
->> ---
->> This patch is generated against Jonathan Cameron's branch cxl-2025-03-20
->>
->>  hw/cxl/cxl-mailbox-utils.c  | 21 +++++++++
->>  hw/cxl/mhsld/mhsld.c        | 92 ++++++++++++++++++++++++++++++++++++-
->>  hw/cxl/mhsld/mhsld.h        | 26 +++++++++++
->>  include/hw/cxl/cxl_device.h |  6 +++
->>  4 files changed, 144 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
->> index a02d130926..4f25caecea 100644
->> --- a/hw/cxl/cxl-mailbox-utils.c
->> +++ b/hw/cxl/cxl-mailbox-utils.c
->
->> diff --git a/hw/cxl/mhsld/mhsld.c b/hw/cxl/mhsld/mhsld.c
->> index 9f633b3bed..981546b5ff 100644
->> --- a/hw/cxl/mhsld/mhsld.c
->> +++ b/hw/cxl/mhsld/mhsld.c
->> @@ -61,9 +61,57 @@ static CXLRetCode cmd_mhd_get_info(const struct cxl_cmd *cmd,
->>      return CXL_MBOX_SUCCESS;
->>  }
->>
->> +/*
->> + * CXL r3.2 section 7.6.7.5.2 - Get Head Info (Opcode 5501h)
->> + *
->> + * This command retrieves the number of heads, number of supported LDs,
->> + * and Head-to-LD mapping of a Multi-Headed device.
->> + */
->> +static CXLRetCode cmd_mhd_get_head_info(const struct cxl_cmd *cmd,
->> +                                        uint8_t *payload_in, size_t len_in,
->> +                                        uint8_t *payload_out, size_t *len_out,
->> +                                        CXLCCI *cci)
->> +{
->> +    CXLMHSLDState *s = CXL_MHSLD(cci->d);
->> +    MHDGetHeadInfoInput *input = (void *)payload_in;
->> +    MHDGetHeadInfoOutput *output = (void *)payload_out;
->> +    int i = 0;
->> +
->> +    if (input->start_head > MHSLD_HEADS) {
->> +        return CXL_MBOX_INVALID_INPUT;
->> +    }
->> +
->> +    output->nr_heads = MIN((MHSLD_HEADS - input->start_head), input->nr_heads);
->> +    for (i = input->start_head; i < input->start_head + output->nr_heads; i++) {
->
->Can we get away with a memcpy()?  Any endian issues on any of these?
-
-Sure, I’ll check with memcpy()
-
->
->> +        output->head_info_list[i].port_number =
->> +                                 s->mhd_state->head_info_blocks[i].port_number;
->> +        output->head_info_list[i].max_link_width =
->> +                              s->mhd_state->head_info_blocks[i].max_link_width;
->> +        output->head_info_list[i].nego_link_width =
->> +                             s->mhd_state->head_info_blocks[i].nego_link_width;
->> +        output->head_info_list[i].supp_link_speeds_vector =
->> +                     s->mhd_state->head_info_blocks[i].supp_link_speeds_vector;
->> +        output->head_info_list[i].max_link_speed =
->> +                              s->mhd_state->head_info_blocks[i].max_link_speed;
->> +        output->head_info_list[i].current_link_speed =
->> +                          s->mhd_state->head_info_blocks[i].current_link_speed;
->> +        output->head_info_list[i].ltssm_state =
->> +                                 s->mhd_state->head_info_blocks[i].ltssm_state;
->> +        output->head_info_list[i].first_nego_lane_num =
->> +                         s->mhd_state->head_info_blocks[i].first_nego_lane_num;
->> +        output->head_info_list[i].link_state_flags =
->> +                            s->mhd_state->head_info_blocks[i].link_state_flags;
->> +    }
->> +
->> +    *len_out = sizeof(*output) + output->nr_heads * sizeof(MHDHeadInfoBlock);
->> +    return CXL_MBOX_SUCCESS;
->> +}
->
->>  static const Property cxl_mhsld_props[] = {
->> @@ -166,6 +214,47 @@ static void cxl_mhsld_state_initialize(CXLMHSLDState *s, size_t dc_size)
->>      s->mhd_state->nr_blocks = dc_size / MHSLD_BLOCK_SZ;
->>  }
->>
->> +
->> +static void cxl_mhsld_init_head_info(CXLMHSLDState *s, PCIDevice *pdev)
->> +{
->> +    uint16_t lnksta = 0;
->
->No need to initialize when they are always set below.
-
-Sure, I’ll fix in V1 patch.
-
->
->> +    uint16_t current_link_speed = 0;
->> +    uint16_t negotiated_link_width = 0;
->> +    uint16_t lnkcap = 0, lnkcap2 = 0;
->> +    uint16_t max_link_width = 0;
->> +    uint16_t max_link_speed = 0;
->
->Once you drop the unnecessary init combine width and speed on one line.
->Or as below, get rid of most of these local variables entirely.
->
->> +    uint16_t supported_link_speeds_vector = 0;
->> +
->> +    lnksta = pdev->config_read(pdev,
->> +                               pdev->exp.exp_cap + PCI_EXP_LNKSTA,
->> +                               sizeof(lnksta));
->> +    lnkcap = pdev->config_read(pdev,
->> +                               pdev->exp.exp_cap + PCI_EXP_LNKCAP,
->> +                               sizeof(lnkcap));
->> +    lnkcap2 = pdev->config_read(pdev,
->> +                                pdev->exp.exp_cap + PCI_EXP_LNKCAP2,
->> +                                sizeof(lnkcap2));
->> +    supported_link_speeds_vector = (lnkcap2 & 0xFE) >> 1;
->Worth considering adding defines for that to incluw/hw/pci/pcie_regs.h
-
-Okay. I’ll add in V1 patch.
->
->> +    max_link_width = (lnkcap & PCI_EXP_LNKCAP_MLW) >> 4;
->
->Use PCI_EXP_LNK_MLW_SHIFT to extract that.
->(we should also tidy this up in physical port state.
-
-Sure. I’ll fix in V1 patch.
-
->
->
->> +    max_link_speed = lnkcap & PCI_EXP_LNKCAP_SLS;
->> +    current_link_speed = lnksta & PCI_EXP_LNKSTA_CLS;
->> +    negotiated_link_width = (lnksta & PCI_EXP_LNKSTA_NLW) >> 4;
->Similar - there should be a suitable define for that shift.
->> +
->> +    s->mhd_state->head_info_blocks[s->mhd_head].port_number = s->mhd_head;
->
->I would use something like
->
->    s->mhd_state->head_info_blocks[s->mhd_head] = (MHDHeadInfoBlock) {
->        .max_link_width = lnkcap & PCI_EXP_LNKCAP_SLS,
->        .nego_link_width = (lnksta & PCI_EXP_LNKSTA_NLW) >> 4, //with the define
->        .supp_link_speeds_vector = (lnkcap2 & 0xFE) >> 1,
->etc
->    };
-
-Sure, I’ll remove local variable and assign in this way.
-
->> +    s->mhd_state->head_info_blocks[s->mhd_head].max_link_width = max_link_width;
->> +    s->mhd_state->head_info_blocks[s->mhd_head].nego_link_width =
->> +                                                          negotiated_link_width;
->> +    s->mhd_state->head_info_blocks[s->mhd_head].supp_link_speeds_vector =
->> +                                                   supported_link_speeds_vector;
->> +    s->mhd_state->head_info_blocks[s->mhd_head].max_link_speed =
->> +                                                                 max_link_speed;
->> +    s->mhd_state->head_info_blocks[s->mhd_head].current_link_speed =
->> +                                                             current_link_speed;
->> +    s->mhd_state->head_info_blocks[s->mhd_head].ltssm_state = 0x7;
->> +    s->mhd_state->head_info_blocks[s->mhd_head].first_nego_lane_num = 0;
->> +    s->mhd_state->head_info_blocks[s->mhd_head].link_state_flags = 0;
->> +}
->> +
->>  /* Returns starting index of region in MHD map. */
->>  static inline size_t cxl_mhsld_find_dc_region_start(PCIDevice *d,
->>                                                      CXLDCRegion *r)
->> @@ -376,7 +465,7 @@ static void cxl_mhsld_realize(PCIDevice *pci_dev, Error **errp)
->>      }
->>
->>      cxl_mhsld_state_initialize(s, dc_size);
->> -
->> +    cxl_mhsld_init_head_info(s, pci_dev);
->Avoid the white space noise by leaving a blank line here.
-
-Okay, Will fix in V1 patch
-
->
->>      /* Set the LD ownership for this head to this system */
->>      s->mhd_state->ldmap[s->mhd_head] = s->mhd_head;
->>      return;
-
-------K5ZVV-zrPS8y8iJelFUsagW7KEVVNg7wn3oh2ZJRPRpX678s=_e2361_
-Content-Type: text/plain; charset="utf-8"
+Doesn't it depend on the init RAM size setting.
+if the init RAM top + REDIST2 aligns to a 256MB boundary (size of the
+PCI ECAM) aren't you likely to have no hole?
 
 
-------K5ZVV-zrPS8y8iJelFUsagW7KEVVNg7wn3oh2ZJRPRpX678s=_e2361_--
+>
+> The CFMWs are placed above the extended memmap.  Note the confusing
+> existing variable highest_gpa is the highest_gpa that has been allocated
+> at a particular point in setting up the memory map.
+what kind of improvement would you foresee wrt highest_gpa?
+
+Thanks
+
+Eric
+>
+> The cxl_devices_state.host_mr is provides a small space in which to place
+> the individual host bridge register regions for whatever host bridges are
+> allocated via -device pxb-cxl on the command line. The existing dynamic
+> sysbus infrastructure is not reused because pxb-cxl is a PCI device not
+> a sysbus one but these registers are directly in the main memory map,
+> not the PCI address space.
+>
+> Only create the CEDT table if cxl=on set for the machine. Default to off.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> v16: Some additional comments on the memory map in the patch description.
+>      Added an 'off by default' statement to he patch description.
+>      Update highest_gpa to include CXL Fixed Memory Windows. It is not
+>      used after this point but cleaner to set it anyway.
+>
+> Perhaps unresolved feedback.  Peter raised a concern about the direct
+> initialization of vms->cxl_devices_state.host_mr. I've added more
+> commentary about that to the patch description. Whilst it seems
+> unnecessary I could wrap the relevant 3 lines of code up in a utility
+> function rather than open coding them here and in i386/pc.
+> ---
+>  docs/system/arm/virt.rst |  9 +++++++++
+>  include/hw/arm/virt.h    |  4 ++++
+>  hw/arm/virt-acpi-build.c | 34 ++++++++++++++++++++++++++++++++++
+>  hw/arm/virt.c            | 29 +++++++++++++++++++++++++++++
+>  4 files changed, 76 insertions(+)
+>
+> diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
+> index 6a719b9586..10cbffc8a7 100644
+> --- a/docs/system/arm/virt.rst
+> +++ b/docs/system/arm/virt.rst
+> @@ -31,6 +31,7 @@ Supported devices
+>  The virt board supports:
+>  
+>  - PCI/PCIe devices
+> +- CXL Fixed memory windows, root bridges and devices.
+>  - Flash memory
+>  - Either one or two PL011 UARTs for the NonSecure World
+>  - An RTC
+> @@ -189,6 +190,14 @@ ras
+>  acpi
+>    Set ``on``/``off``/``auto`` to enable/disable ACPI.
+>  
+> +cxl
+> +  Set  ``on``/``off`` to enable/disable CXL. More details in
+> +  :doc:`../devices/cxl`. The default is off.
+> +
+> +cxl-fmw
+> +  Array of CXL fixed memory windows describing fixed address routing to
+> +  target CXL host bridges. See :doc:`../devices/cxl`.
+> +
+>  dtb-randomness
+>    Set ``on``/``off`` to pass random seeds via the guest DTB
+>    rng-seed and kaslr-seed nodes (in both "/chosen" and
+> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+> index 9a1b0f53d2..4375819ea0 100644
+> --- a/include/hw/arm/virt.h
+> +++ b/include/hw/arm/virt.h
+> @@ -36,6 +36,7 @@
+>  #include "hw/arm/boot.h"
+>  #include "hw/arm/bsa.h"
+>  #include "hw/block/flash.h"
+> +#include "hw/cxl/cxl.h"
+>  #include "system/kvm.h"
+>  #include "hw/intc/arm_gicv3_common.h"
+>  #include "qom/object.h"
+> @@ -85,6 +86,7 @@ enum {
+>  /* indices of IO regions located after the RAM */
+>  enum {
+>      VIRT_HIGH_GIC_REDIST2 =  VIRT_LOWMEMMAP_LAST,
+> +    VIRT_CXL_HOST,
+>      VIRT_HIGH_PCIE_ECAM,
+>      VIRT_HIGH_PCIE_MMIO,
+>  };
+> @@ -140,6 +142,7 @@ struct VirtMachineState {
+>      bool secure;
+>      bool highmem;
+>      bool highmem_compact;
+> +    bool highmem_cxl;
+>      bool highmem_ecam;
+>      bool highmem_mmio;
+>      bool highmem_redists;
+> @@ -174,6 +177,7 @@ struct VirtMachineState {
+>      char *oem_id;
+>      char *oem_table_id;
+>      bool ns_el2_virt_timer_irq;
+> +    CXLState cxl_devices_state;
+>  };
+>  
+>  #define VIRT_ECAM_ID(high) (high ? VIRT_HIGH_PCIE_ECAM : VIRT_PCIE_ECAM)
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index 7e8e0f0298..589e221b89 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -39,10 +39,12 @@
+>  #include "hw/acpi/aml-build.h"
+>  #include "hw/acpi/utils.h"
+>  #include "hw/acpi/pci.h"
+> +#include "hw/acpi/cxl.h"
+>  #include "hw/acpi/memory_hotplug.h"
+>  #include "hw/acpi/generic_event_device.h"
+>  #include "hw/acpi/tpm.h"
+>  #include "hw/acpi/hmat.h"
+> +#include "hw/cxl/cxl.h"
+>  #include "hw/pci/pcie_host.h"
+>  #include "hw/pci/pci.h"
+>  #include "hw/pci/pci_bus.h"
+> @@ -119,10 +121,29 @@ static void acpi_dsdt_add_flash(Aml *scope, const MemMapEntry *flash_memmap)
+>      aml_append(scope, dev);
+>  }
+>  
+> +static void build_acpi0017(Aml *table)
+> +{
+> +    Aml *dev, *scope, *method;
+> +
+> +    scope =  aml_scope("_SB");
+> +    dev = aml_device("CXLM");
+> +    aml_append(dev, aml_name_decl("_HID", aml_string("ACPI0017")));
+> +
+> +    method = aml_method("_STA", 0, AML_NOTSERIALIZED);
+> +    aml_append(method, aml_return(aml_int(0x0B)));
+> +    aml_append(dev, method);
+> +    build_cxl_dsm_method(dev);
+> +
+> +    aml_append(scope, dev);
+> +    aml_append(table, scope);
+> +}
+> +
+>  static void acpi_dsdt_add_pci(Aml *scope, const MemMapEntry *memmap,
+>                                uint32_t irq, VirtMachineState *vms)
+>  {
+>      int ecam_id = VIRT_ECAM_ID(vms->highmem_ecam);
+> +    bool cxl_present = false;
+> +    PCIBus *bus = vms->bus;
+>      struct GPEXConfig cfg = {
+>          .mmio32 = memmap[VIRT_PCIE_MMIO],
+>          .pio    = memmap[VIRT_PCIE_PIO],
+> @@ -136,6 +157,14 @@ static void acpi_dsdt_add_pci(Aml *scope, const MemMapEntry *memmap,
+>      }
+>  
+>      acpi_dsdt_add_gpex(scope, &cfg);
+> +    QLIST_FOREACH(bus, &vms->bus->child, sibling) {
+> +        if (pci_bus_is_cxl(bus)) {
+> +            cxl_present = true;
+> +        }
+> +    }
+> +    if (cxl_present) {
+> +        build_acpi0017(scope);
+> +    }
+>  }
+>  
+>  static void acpi_dsdt_add_gpio(Aml *scope, const MemMapEntry *gpio_memmap,
+> @@ -963,6 +992,11 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+>          }
+>      }
+>  
+> +    if (vms->cxl_devices_state.is_enabled) {
+> +        cxl_build_cedt(table_offsets, tables_blob, tables->linker,
+> +                       vms->oem_id, vms->oem_table_id, &vms->cxl_devices_state);
+> +    }
+> +
+>      if (ms->nvdimms_state->is_enabled) {
+>          nvdimm_build_acpi(table_offsets, tables_blob, tables->linker,
+>                            ms->nvdimms_state, ms->ram_slots, vms->oem_id,
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 99fde5836c..025b4cdc54 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -57,6 +57,7 @@
+>  #include "qemu/error-report.h"
+>  #include "qemu/module.h"
+>  #include "hw/pci-host/gpex.h"
+> +#include "hw/pci-bridge/pci_expander_bridge.h"
+>  #include "hw/virtio/virtio-pci.h"
+>  #include "hw/core/sysbus-fdt.h"
+>  #include "hw/platform-bus.h"
+> @@ -86,6 +87,8 @@
+>  #include "hw/virtio/virtio-md-pci.h"
+>  #include "hw/virtio/virtio-iommu.h"
+>  #include "hw/char/pl011.h"
+> +#include "hw/cxl/cxl.h"
+> +#include "hw/cxl/cxl_host.h"
+>  #include "qemu/guest-random.h"
+>  
+>  static GlobalProperty arm_virt_compat[] = {
+> @@ -220,6 +223,7 @@ static const MemMapEntry base_memmap[] = {
+>  static MemMapEntry extended_memmap[] = {
+>      /* Additional 64 MB redist region (can contain up to 512 redistributors) */
+>      [VIRT_HIGH_GIC_REDIST2] =   { 0x0, 64 * MiB },
+> +    [VIRT_CXL_HOST] =           { 0x0, 64 * KiB * 16 }, /* 16 UID */
+>      [VIRT_HIGH_PCIE_ECAM] =     { 0x0, 256 * MiB },
+>      /* Second PCIe window */
+>      [VIRT_HIGH_PCIE_MMIO] =     { 0x0, DEFAULT_HIGH_PCIE_MMIO_SIZE },
+> @@ -1626,6 +1630,17 @@ static void create_pcie(VirtMachineState *vms)
+>      }
+>  }
+>  
+> +static void create_cxl_host_reg_region(VirtMachineState *vms)
+> +{
+> +    MemoryRegion *sysmem = get_system_memory();
+> +    MemoryRegion *mr = &vms->cxl_devices_state.host_mr;
+> +
+> +    memory_region_init(mr, OBJECT(vms), "cxl_host_reg",
+> +                       vms->memmap[VIRT_CXL_HOST].size);
+> +    memory_region_add_subregion(sysmem, vms->memmap[VIRT_CXL_HOST].base, mr);
+> +    vms->highmem_cxl = true;
+> +}
+> +
+>  static void create_platform_bus(VirtMachineState *vms)
+>  {
+>      DeviceState *dev;
+> @@ -1742,6 +1757,12 @@ void virt_machine_done(Notifier *notifier, void *data)
+>      struct arm_boot_info *info = &vms->bootinfo;
+>      AddressSpace *as = arm_boot_address_space(cpu, info);
+>  
+> +    cxl_hook_up_pxb_registers(vms->bus, &vms->cxl_devices_state,
+> +                              &error_fatal);
+> +
+> +    if (vms->cxl_devices_state.is_enabled) {
+> +        cxl_fmws_link_targets(&error_fatal);
+> +    }
+>      /*
+>       * If the user provided a dtb, we assume the dynamic sysbus nodes
+>       * already are integrated there. This corresponds to a use case where
+> @@ -1788,6 +1809,7 @@ static inline bool *virt_get_high_memmap_enabled(VirtMachineState *vms,
+>  {
+>      bool *enabled_array[] = {
+>          &vms->highmem_redists,
+> +        &vms->highmem_cxl,
+>          &vms->highmem_ecam,
+>          &vms->highmem_mmio,
+>      };
+> @@ -1895,6 +1917,9 @@ static void virt_set_memmap(VirtMachineState *vms, int pa_bits)
+>      if (device_memory_size > 0) {
+>          machine_memory_devices_init(ms, device_memory_base, device_memory_size);
+>      }
+> +    vms->highest_gpa = cxl_fmws_set_memmap(ROUND_UP(vms->highest_gpa + 1,
+> +                                                    256 * MiB),
+> +                                           BIT_ULL(pa_bits)) - 1;
+>  }
+>  
+>  static VirtGICType finalize_gic_version_do(const char *accel_name,
+> @@ -2345,6 +2370,8 @@ static void machvirt_init(MachineState *machine)
+>      memory_region_add_subregion(sysmem, vms->memmap[VIRT_MEM].base,
+>                                  machine->ram);
+>  
+> +    cxl_fmws_update_mmio();
+> +
+>      virt_flash_fdt(vms, sysmem, secure_sysmem ?: sysmem);
+>  
+>      create_gic(vms, sysmem);
+> @@ -2400,6 +2427,7 @@ static void machvirt_init(MachineState *machine)
+>      create_rtc(vms);
+>  
+>      create_pcie(vms);
+> +    create_cxl_host_reg_region(vms);
+>  
+>      if (has_ged && aarch64 && firmware_loaded && virt_is_acpi_enabled(vms)) {
+>          vms->acpi_dev = create_acpi_ged(vms);
+> @@ -3370,6 +3398,7 @@ static void virt_instance_init(Object *obj)
+>  
+>      vms->oem_id = g_strndup(ACPI_BUILD_APPNAME6, 6);
+>      vms->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
+> +    cxl_machine_init(obj, &vms->cxl_devices_state);
+>  }
+>  
+>  static const TypeInfo virt_machine_info = {
+
 
