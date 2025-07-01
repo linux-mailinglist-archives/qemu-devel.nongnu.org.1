@@ -2,75 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F11AF01FD
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 981BBAF020E
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:39:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeqc-0008WT-27; Tue, 01 Jul 2025 13:32:46 -0400
+	id 1uWetp-0004bv-MA; Tue, 01 Jul 2025 13:36:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uWeqN-00086I-At
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:32:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uWeqJ-0007mq-Un
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:32:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751391146;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VoFn0RB4KSTG4vLlw/0Pdh/GkxQugPFiMH/x+lHcwFQ=;
- b=R9S4Sa7tXDB1Tm0RRamRY2q4tisP8068NUiLJ6PcrAEOAYMg/ESS9wpkWpoWemtWVBuJlU
- lM2P9LgWVDS8Rzv29KY+ph2ZZzgQuA+6DKdPdEuSVUTDgH+y5l071uPaDMIdfRVt5kE5nU
- QjcnDEJdz8+QBJ68dQiMvMN+XehqkP8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-494-WCG4TOuNNVWy_HRf4kNwTw-1; Tue,
- 01 Jul 2025 13:32:23 -0400
-X-MC-Unique: WCG4TOuNNVWy_HRf4kNwTw-1
-X-Mimecast-MFC-AGG-ID: WCG4TOuNNVWy_HRf4kNwTw_1751391142
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWetc-0004Ka-HP
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:35:52 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uWetV-0000A3-Eu
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:35:51 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2E696195FCC2; Tue,  1 Jul 2025 17:32:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.34.118])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 468AE19560A7; Tue,  1 Jul 2025 17:32:19 +0000 (UTC)
-Date: Tue, 1 Jul 2025 19:32:16 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: Fiona Ebner <f.ebner@proxmox.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, stefanha@redhat.com, fam@euphon.net
-Subject: Re: [PATCH 3/4] block: implement 'resize' callback for child_of_bds
- class
-Message-ID: <aGQboEwTVS5sYxa_@redhat.com>
-References: <20250630113035.820557-1-f.ebner@proxmox.com>
- <20250630113035.820557-4-f.ebner@proxmox.com>
- <18f6275a-dee0-4df4-85e3-efaf81a7724d@redhat.com>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id CAEA321174;
+ Tue,  1 Jul 2025 17:35:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1751391343; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jAogss75G+8WOyNzABCTp4Q7N33UdWP3rfHYyFQRI/g=;
+ b=Gso4f0vraooNdJRifSKlZFzadcUeSI5gqpfWiwq1LcZzQ8FkMb/iEZOT0IaqRzD19EOXNu
+ Q9Fhl00xCFLsNbUigUPZiWfTZ48XBzATsQ94CK2+y3Y+TytD1In569fdRBCSTyadwaB3Ec
+ Hy+zhta/Zd5D1Mcx3VgAr2hjZtuXPbk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1751391343;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jAogss75G+8WOyNzABCTp4Q7N33UdWP3rfHYyFQRI/g=;
+ b=pzTeFyXKSldjyhIztXqzSqJhmvLJ1WnhuTGGMsf+d+w3HcRigjVOwuryobWsFIwongp7+N
+ IKpvwQ34lrQOH0BQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1751391341; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jAogss75G+8WOyNzABCTp4Q7N33UdWP3rfHYyFQRI/g=;
+ b=cVSfn+M97Rhbe2ChsEhVnwVszAbypCRvpV2CHdnFdP0AJHYFmYERKoBi1z9BHP5GbkADBV
+ Y/0/QL87NC8e9WADytkrINpboJCw6mzNZNpOxB1k8bU3Lp7K+C50lZYqXFvDMB1D8uS05C
+ RWCWu8OE+79o/vA3DwJVniRkZXOUQ5Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1751391341;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jAogss75G+8WOyNzABCTp4Q7N33UdWP3rfHYyFQRI/g=;
+ b=Y5oBMmeAt57WxQYO5j5AYYPJkFhTh58qnNJuv68ogRIvVvXPefZwE597Omj9fCj1NNaK5i
+ KPZuBkX5mJwngvBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 41A8B13890;
+ Tue,  1 Jul 2025 17:35:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id r7lrAG0cZGhHSQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 01 Jul 2025 17:35:41 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Juraj Marcin <jmarcin@redhat.com>, peterx@redhat.com, "Dr . David Alan
+ Gilbert" <dave@treblig.org>
+Subject: Re: [PATCH v2 10/11] migration: Rewrite the migration complete
+ detect logic
+In-Reply-To: <20250609161855.6603-11-peterx@redhat.com>
+References: <20250609161855.6603-1-peterx@redhat.com>
+ <20250609161855.6603-11-peterx@redhat.com>
+Date: Tue, 01 Jul 2025 14:35:38 -0300
+Message-ID: <87a55n6cgl.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <18f6275a-dee0-4df4-85e3-efaf81a7724d@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid, suse.de:email,
+ imap1.dmz-prg2.suse.org:helo]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,79 +117,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 01.07.2025 um 16:46 hat Hanna Czenczek geschrieben:
-> On 30.06.25 13:27, Fiona Ebner wrote:
-> > If a node below a filter node is resized, the size of the filter node
-> > is now also refreshed (recursively for filter parents).
-> > 
-> > Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> > ---
-> >   block.c                          | 12 ++++++++++++
-> >   include/block/block_int-common.h |  2 +-
-> >   2 files changed, 13 insertions(+), 1 deletion(-)
-> 
-> What does this do for block job filter nodes, like mirror?  If they changed
-> their length, we might have to consider whether the job also needs to be
-> amended somehow.
+Peter Xu <peterx@redhat.com> writes:
 
-mirror doesn't share BLK_PERM_RESIZE in its block_job_create() call, so
-can this even happen? (If yes, that sounds bad.)
+> There're a few things off here in that logic, rewrite it.  When at it, add
+> rich comment to explain each of the decisions.
+>
+> Since this is very sensitive path for migration, below are the list of
+> things changed with their reasonings.
+>
+>   (1) Exact pending size is only needed for precopy not postcopy
+>
+>       Fundamentally it's because "exact" version only does one more deep
+>       sync to fetch the pending results, while in postcopy's case it's
+>       never going to sync anything more than estimate as the VM on source
+>       is stopped.
+>
+>   (2) Do _not_ rely on threshold_size anymore to decide whether postcopy
+>       should complete
+>
+>       threshold_size was calculated from the expected downtime and
+>       bandwidth only during precopy as an efficient way to decide when to
+>       switchover.  It's not sensible to rely on threshold_size in postcopy.
+>
+>       For precopy, if switchover is decided, the migration will complete
+>       soon.  It's not true for postcopy.  Logically speaking, postcopy
+>       should only complete the migration if all pending data is flushed.
+>
+>       Here it used to work because save_complete() used to implicitly
+>       contain save_live_iterate() when there's pending size.
+>
+>       Even if that looks benign, having RAMs to be migrated in postcopy's
+>       save_complete() has other bad side effects:
+>
+>       (a) Since save_complete() needs to be run once at a time, it means
+>       when moving RAM there's no way moving other things (rather than
+>       round-robin iterating the vmstate handlers like what we do with
+>       ITERABLE phase).  Not an immediate concern, but it may stop working
+>       in the future when there're more than one iterables (e.g. vfio
+>       postcopy).
+>
+>       (b) postcopy recovery, unfortunately, only works during ITERABLE
+>       phase. IOW, if src QEMU moves RAM during postcopy's save_complete()
+>       and network failed, then it'll crash both QEMUs... OTOH if it failed
+>       during iteration it'll still be recoverable.  IOW, this change should
+>       further reduce the window QEMU split brain and crash in extreme cases.
+>
+>       If we enable the ram_save_complete() tracepoints, we'll see this
+>       before this patch:
+>
+>       1267959@1748381938.294066:ram_save_complete dirty=9627, done=0
+>       1267959@1748381938.308884:ram_save_complete dirty=0, done=1
+>
+>       It means in this migration there're 9627 pages migrated at complete()
+>       of postcopy phase.
+>
+>       After this change, all the postcopy RAM should be migrated in iterable
+>       phase, rather than save_complete():
+>
+>       1267959@1748381938.294066:ram_save_complete dirty=0, done=0
+>       1267959@1748381938.308884:ram_save_complete dirty=0, done=1
+>
+>   (3) Adjust when to decide to switch to postcopy
+>
+>       This shouldn't be super important, the movement makes sure there's
+>       only one in_postcopy check, then we are clear on what we do with the
+>       two completely differnt use cases (precopy v.s. postcopy).
+>
+>   (4) Trivial touch up on threshold_size comparision
+>
+>       Which changes:
+>
+>       "(!pending_size || pending_size < s->threshold_size)"
+>
+>       into:
+>
+>       "(pending_size <= s->threshold_size)"
+>
+> Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-> However, I assume it’s a safe (conservative) change for them because such
-> drivers don’t implement bdrv_co_getlength(), so
-> bdrv_co_refresh_total_sectors() will not change anything.  Is that right and
-> intended?
-> 
-> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-> 
-> (Babbling below.)
-> 
-> > diff --git a/block.c b/block.c
-> > index bfd4340b24..449f814ebe 100644
-> > --- a/block.c
-> > +++ b/block.c
-> > @@ -1497,6 +1497,17 @@ static void GRAPH_WRLOCK bdrv_child_cb_detach(BdrvChild *child)
-> >       }
-> >   }
-> > +static void coroutine_fn GRAPH_RDLOCK bdrv_child_cb_resize(BdrvChild *child)
-> > +{
-> > +    BlockDriverState *bs = child->opaque;
-> > +
-> > +    if (bs->drv && bs->drv->is_filter) {
-> 
-> Checking the role for BDRV_CHILD_FILTERED would be more generic; but it
-> would cause 'raw' nodes to be updated, too.  But I don’t know whether we
-> want that or not, and excluding raw (i.e. not changing behavior there) is
-> certainly the safe option.
-
-If the size is not explicitly overridden in the node configuration, I
-would certainly expect that a raw node reflects the size of its file
-node.
-
-Seems this is exactly the condition that makes it use
-BDRV_CHILD_FILTERED, so it would probably be a good change?
-
-> > +        /* Best effort, ignore errors. */
-> > +        bdrv_co_refresh_total_sectors(bs, bs->total_sectors);
-> > +        bdrv_co_parent_cb_resize(bs);
-> 
-> This makes me wonder whether bdrv_co_refresh_total_sectors() should itself
-> call bdrv_co_parent_cb_resize().  Still not quite sure; if the underlying
-> image file is resized by an external party (and we notice this by accident,
-> more or less), maybe the guest device should be informed.
-> 
-> (One thing to consider, maybe, are nodes that unshare the resize permission
-> for a child.  It’s probably not clever to call the resize CB if that
-> permission is unshared, so maybe just from that perspective, we should keep
-> that CB strictly inside of that explicit truncate path that checks that
-> permission (at least when growing images...).)
-> 
-> Anyway, again, this is the safe option.
-
-The traditional solution for nodes that unshare resize, but get resized
-in the background anyway would be bs->drv = NULL, and we probably still
-aren't certain what happens after that. :-)
-
-Kevin
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
