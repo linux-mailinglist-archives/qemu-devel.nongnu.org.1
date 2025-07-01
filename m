@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DABAF0165
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B1EAF013E
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:09:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSh-0005jT-IF; Tue, 01 Jul 2025 13:08:03 -0400
+	id 1uWeSf-0005id-Dm; Tue, 01 Jul 2025 13:08:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSP-0005UW-PD
+ id 1uWeSP-0005UX-PB
  for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:45 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSH-0003QP-8r
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:45 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3a6e2d85705so3284132f8f.0
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:36 -0700 (PDT)
+ id 1uWeSI-0003Rl-AX
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:43 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-450cf0120cdso36015875e9.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751389655; x=1751994455; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751389656; x=1751994456; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=VkcC/6HdEeSglld81pIIFbWGMKXGbw2aBdIeTePjnOM=;
- b=h4VYaj89r+v2IM2foBPA9bGKAOSSlW2Wsq9gP8vVhEennOVmMcLAdDc6I8bLyeddM7
- b3WV2Y/6evN6zkiFp7nvw8ZaRfnIdmBgBFjS4TqPQoYw2VEuMySCrsuCnG/V5rEOATBX
- OSKu7QNnuDt/kLiIOuopfZKEthGf1NNPC+uLDfvZh4pwCd/eqOU/3IbstRkFgYVSzEpt
- bvGXEeDMn54LgsFirRJKseMvIuFIOsyNjkh7AcWiO0RJnjMy2C4LUv0OB1Bdd54zBU2X
- OfKs2vV8/IAeUOqJKG7JB9D/7s4TVgKYSuJlzSdyvRVZI27so5q1GwHPlQ5yM0bhh1dD
- rzsg==
+ :reply-to; bh=zycRU7lHOi2PNxNUKlO7GYurAhRMg/o+383vPotyJ+U=;
+ b=Um1r9SzLXPHcJrPU+b17uqQ+kiQJsEiwGi47AVJRVIIFNrUm3NTui0kK8QArIgzsuw
+ 1uESpqNlMYhjTloeNVzJ3nRjs1ZYHeX5BheujuOCLdw0SPAiEI2KuMiltKbPS56QwBRH
+ e0D+JmjApsxEAyc+/xZEgOx68bq83kvIx0Iy5tjL2JwSI9oMD55BOPk+9QJhl5uh1If8
+ P2bucUDuRprqR9qFOspeMY3FhfsW0zlTOaTIpiKq3qN9RcZkBOEXhoYu0iTwRNAskNJm
+ 70DqDmaSvc+2yzMx+4ZOR0XZISDa+Moz+mwtc6YE4pieZMdrw/PCCjpICp971fra8fiM
+ pofA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751389655; x=1751994455;
+ d=1e100.net; s=20230601; t=1751389656; x=1751994456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VkcC/6HdEeSglld81pIIFbWGMKXGbw2aBdIeTePjnOM=;
- b=PK7HOyTMG8Wa2Ijyvn3k+YdVPDDkotQK9865Ey/dBIdpM0DstC3gPe8n7Eib64KMLK
- 72mgVWihnr/ey3iTNVxyOuNOkPGb2fwtAldPjwJh+eIjcQsG88wfD+CUmVUVn6UBTtTc
- t+9sdjyzkHZcvUn6wdZ28RD/10RTA6gFVZk8nHMvU2n2SviQPI6bw+yvuF+dE9n3oMVW
- 47u1TgSEYgApJvWRx5gyA3Vha7cOh4Bt2RarTrNZV0t3EDDCTnFDY9a60YlrcPMlQkN4
- oCx+aHI+p/Ym2ilU5IO3Uhfm5tmJkx2Fim/1zoUJJ/U8biAv9QBffYzv+WsOxb1SdnkV
- LqlQ==
-X-Gm-Message-State: AOJu0Yynqdr/mI8XrDi8ACH4UO+JhOPiV/nN8CL2j4IQy06/3L3ud//D
- 7xeEn3i5PDjTnulUooU1pdM5cJQI2tE/mGnSfog1RGdS/Zy65f2qOM+BSyOwPUY0yia9teZR16H
- mr2ZH
-X-Gm-Gg: ASbGncvbM1JT12wZnRaGNO4jDvMHNXXBrPfEpLGM8CMw+hF92Q5/sTdB3F5nTX9UV1H
- 6Yn+Ue2ZraNAW42EeoLzRAIpw4Mp+ZSjSubImR9BvfSZeDQ+ZHsPm6snk2GshFueNeBDGBYnx0Y
- TlAmrzd4YQp7BQW9Jx65tKf+zG36zwpxaaT21oHjxC7N+hbYcpUl75Lpc8yXmoSp0PT/t0tq4iF
- +gqYlm9LQT6W7ewbAcX7RPma/Quea32II+znKjML92l65T3yAiPA5cyrw9yd6Fhm3+1HgJcD5hB
- SJDpnoZdxLnVkGCvIqDGSuZI9Ms7eFiGE7UkzLhGpKJZjEzYJjE1TRnwafezJxxJyc3cFKSeBo0
- +H88=
-X-Google-Smtp-Source: AGHT+IEz8zne9mqaz5219RAaERY5A1IApLjAFVtwjC8xL3v1JGtGGiaJh7m0nX4dPuuQXeSnOmJQyA==
-X-Received: by 2002:adf:9cc9:0:b0:3a3:67bb:8f3f with SMTP id
- ffacd0b85a97d-3a902f70a1cmr14855438f8f.53.1751389655060; 
- Tue, 01 Jul 2025 10:07:35 -0700 (PDT)
+ bh=zycRU7lHOi2PNxNUKlO7GYurAhRMg/o+383vPotyJ+U=;
+ b=oBbtjbpm5GaafWm3r6Um6GVZhJUdA3ztPPolI63UlOfk9KN1Z7Yn3VGTNduOkwdkrD
+ ZVwsRWcIS/BhAZUyxU24/lp/TLYVyI/pFz6l8A983RrDH7Mg2K7lM5irkWhNscze9ZP1
+ yRfkXv5DO/2clmyRYCwNobp+3pO0uQWzPU0LmxYnWSnwoPmlfRxEa4ncNseOROVCETGt
+ 45GzV+afqcaABcyZ/7G5pDTLGiD7zWMMTQOyoZl+R/GDEcPqDn8NJxjQslPc/kjyC7Po
+ rXcDEhwcpOn5ErqcUCYH3KDwfr/4j93AIlbVwVYlyTZmP0ubBBraliRHoKf/K0FGwGPH
+ L1lQ==
+X-Gm-Message-State: AOJu0YxYXXjIBTLFP/ooVDR9EZ/lUplgNHZpY2ELN4UHMnIfH+nKlVbG
+ zRyxDtv9tl2xH11/vUb2GAqCKlrdgyOYIw+BW8Gx2z+QnNXZeGsGIj1H3Q1YLCuOVc+vQ5YAX4L
+ PlJqr
+X-Gm-Gg: ASbGncuCfnBM9aJrEoYxOOCYcqz4Bcx+2rnHxNBjiovsOcELKVsKIf8S8E1mJivwXyp
+ OsgsD+DXheg8zAaI9NP+R41uYWffPdDrwTuYsr3qPMs+dw/G4GWpYawTmkHQHfWPg81EVFx6UmP
+ 6HLGjwRLJoP43q8L+RziztcilDOyN9XI6xgogBxP3+Ul5oVwps93o25X7VRnFs/gS0/Tixs/clY
+ BK/3rpifx/7cb2bBGpTa4jZlUCGJyIPQ9V7kyrv5MvINrm/d9L1pHkosEGRmyAX2kmm2tC0FSJM
+ k1XpYJRH8C2o4YRoOIfBH0/uBFbSjqhTEqkZXbuSjIj5aG/RL+ehx8qRV4ePVLznN0vp
+X-Google-Smtp-Source: AGHT+IGLtf5JGi5vceIBE4mrtCB7GsaMn1zQnoTwioHJDVjzHDEIy2cAoFsFrrTPcwAYSHrEIjviUw==
+X-Received: by 2002:a5d:5f4e:0:b0:3a4:dd8e:e16d with SMTP id
+ ffacd0b85a97d-3a8f482bbb0mr17373603f8f.15.1751389656126; 
+ Tue, 01 Jul 2025 10:07:36 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.34
+ ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.35
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 10:07:34 -0700 (PDT)
+ Tue, 01 Jul 2025 10:07:35 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/43] arm/cpu: Store id_dfr0/1 into the idregs array
-Date: Tue,  1 Jul 2025 18:06:48 +0100
-Message-ID: <20250701170720.4072660-13-peter.maydell@linaro.org>
+Subject: [PULL 13/43] arm/cpu: Store id_mmfr0-5 into the idregs array
+Date: Tue,  1 Jul 2025 18:06:49 +0100
+Message-ID: <20250701170720.4072660-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
 References: <20250701170720.4072660-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,466 +102,689 @@ Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Sebastian Ott <sebott@redhat.com>
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-Message-id: 20250617153931.1330449-11-cohuck@redhat.com
+Message-id: 20250617153931.1330449-12-cohuck@redhat.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu-features.h | 16 ++++++++--------
- target/arm/cpu.h          |  2 --
- hw/intc/armv7m_nvic.c     |  2 +-
- target/arm/cpu.c          | 13 +++++--------
- target/arm/cpu64.c        |  4 ++--
- target/arm/helper.c       |  4 ++--
- target/arm/kvm.c          |  6 ++----
- target/arm/tcg/cpu-v7m.c  | 12 ++++++------
- target/arm/tcg/cpu32.c    | 30 ++++++++++++++----------------
- target/arm/tcg/cpu64.c    | 16 ++++++++--------
- 10 files changed, 48 insertions(+), 57 deletions(-)
+ target/arm/cpu-features.h | 18 ++++----
+ target/arm/cpu.h          |  6 ---
+ hw/intc/armv7m_nvic.c     |  8 ++--
+ target/arm/cpu64.c        | 16 +++----
+ target/arm/helper.c       | 12 ++---
+ target/arm/kvm.c          | 18 +++-----
+ target/arm/tcg/cpu-v7m.c  | 48 ++++++++++----------
+ target/arm/tcg/cpu32.c    | 94 +++++++++++++++++++--------------------
+ target/arm/tcg/cpu64.c    | 76 +++++++++++++++----------------
+ 9 files changed, 140 insertions(+), 156 deletions(-)
 
 diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index a34378577f0..0292a7cd6ec 100644
+index 0292a7cd6ec..5d8adfb73b6 100644
 --- a/target/arm/cpu-features.h
 +++ b/target/arm/cpu-features.h
-@@ -300,22 +300,22 @@ static inline bool isar_feature_aa32_ats1e1(const ARMISARegisters *id)
+@@ -284,17 +284,17 @@ static inline bool isar_feature_aa32_vminmaxnm(const ARMISARegisters *id)
+ 
+ static inline bool isar_feature_aa32_pxn(const ARMISARegisters *id)
+ {
+-    return FIELD_EX32(id->id_mmfr0, ID_MMFR0, VMSA) >= 4;
++    return FIELD_EX32_IDREG(id, ID_MMFR0, VMSA) >= 4;
+ }
+ 
+ static inline bool isar_feature_aa32_pan(const ARMISARegisters *id)
+ {
+-    return FIELD_EX32(id->id_mmfr3, ID_MMFR3, PAN) != 0;
++    return FIELD_EX32_IDREG(id, ID_MMFR3, PAN) != 0;
+ }
+ 
+ static inline bool isar_feature_aa32_ats1e1(const ARMISARegisters *id)
+ {
+-    return FIELD_EX32(id->id_mmfr3, ID_MMFR3, PAN) >= 2;
++    return FIELD_EX32_IDREG(id, ID_MMFR3, PAN) >= 2;
+ }
+ 
  static inline bool isar_feature_aa32_pmuv3p1(const ARMISARegisters *id)
- {
-     /* 0xf means "non-standard IMPDEF PMU" */
--    return FIELD_EX32(id->id_dfr0, ID_DFR0, PERFMON) >= 4 &&
--        FIELD_EX32(id->id_dfr0, ID_DFR0, PERFMON) != 0xf;
-+    return FIELD_EX32_IDREG(id, ID_DFR0, PERFMON) >= 4 &&
-+        FIELD_EX32_IDREG(id, ID_DFR0, PERFMON) != 0xf;
- }
- 
- static inline bool isar_feature_aa32_pmuv3p4(const ARMISARegisters *id)
- {
-     /* 0xf means "non-standard IMPDEF PMU" */
--    return FIELD_EX32(id->id_dfr0, ID_DFR0, PERFMON) >= 5 &&
--        FIELD_EX32(id->id_dfr0, ID_DFR0, PERFMON) != 0xf;
-+    return FIELD_EX32_IDREG(id, ID_DFR0, PERFMON) >= 5 &&
-+        FIELD_EX32_IDREG(id, ID_DFR0, PERFMON) != 0xf;
- }
- 
- static inline bool isar_feature_aa32_pmuv3p5(const ARMISARegisters *id)
- {
-     /* 0xf means "non-standard IMPDEF PMU" */
--    return FIELD_EX32(id->id_dfr0, ID_DFR0, PERFMON) >= 6 &&
--        FIELD_EX32(id->id_dfr0, ID_DFR0, PERFMON) != 0xf;
-+    return FIELD_EX32_IDREG(id, ID_DFR0, PERFMON) >= 6 &&
-+        FIELD_EX32_IDREG(id, ID_DFR0, PERFMON) != 0xf;
- }
+@@ -320,32 +320,32 @@ static inline bool isar_feature_aa32_pmuv3p5(const ARMISARegisters *id)
  
  static inline bool isar_feature_aa32_hpd(const ARMISARegisters *id)
-@@ -360,12 +360,12 @@ static inline bool isar_feature_aa32_ssbs(const ARMISARegisters *id)
- 
- static inline bool isar_feature_aa32_debugv7p1(const ARMISARegisters *id)
  {
--    return FIELD_EX32(id->id_dfr0, ID_DFR0, COPDBG) >= 5;
-+    return FIELD_EX32_IDREG(id, ID_DFR0, COPDBG) >= 5;
+-    return FIELD_EX32(id->id_mmfr4, ID_MMFR4, HPDS) != 0;
++    return FIELD_EX32_IDREG(id, ID_MMFR4, HPDS) != 0;
  }
  
- static inline bool isar_feature_aa32_debugv8p2(const ARMISARegisters *id)
+ static inline bool isar_feature_aa32_ac2(const ARMISARegisters *id)
  {
--    return FIELD_EX32(id->id_dfr0, ID_DFR0, COPDBG) >= 8;
-+    return FIELD_EX32_IDREG(id, ID_DFR0, COPDBG) >= 8;
+-    return FIELD_EX32(id->id_mmfr4, ID_MMFR4, AC2) != 0;
++    return FIELD_EX32_IDREG(id, ID_MMFR4, AC2) != 0;
  }
  
- static inline bool isar_feature_aa32_doublelock(const ARMISARegisters *id)
+ static inline bool isar_feature_aa32_ccidx(const ARMISARegisters *id)
+ {
+-    return FIELD_EX32(id->id_mmfr4, ID_MMFR4, CCIDX) != 0;
++    return FIELD_EX32_IDREG(id, ID_MMFR4, CCIDX) != 0;
+ }
+ 
+ static inline bool isar_feature_aa32_tts2uxn(const ARMISARegisters *id)
+ {
+-    return FIELD_EX32(id->id_mmfr4, ID_MMFR4, XNX) != 0;
++    return FIELD_EX32_IDREG(id, ID_MMFR4, XNX) != 0;
+ }
+ 
+ static inline bool isar_feature_aa32_half_evt(const ARMISARegisters *id)
+ {
+-    return FIELD_EX32(id->id_mmfr4, ID_MMFR4, EVT) >= 1;
++    return FIELD_EX32_IDREG(id, ID_MMFR4, EVT) >= 1;
+ }
+ 
+ static inline bool isar_feature_aa32_evt(const ARMISARegisters *id)
+ {
+-    return FIELD_EX32(id->id_mmfr4, ID_MMFR4, EVT) >= 2;
++    return FIELD_EX32_IDREG(id, ID_MMFR4, EVT) >= 2;
+ }
+ 
+ static inline bool isar_feature_aa32_dit(const ARMISARegisters *id)
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 30401926e11..c799105eeb2 100644
+index c799105eeb2..8744922330d 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -1059,8 +1059,6 @@ struct ArchCPU {
+@@ -1050,12 +1050,6 @@ struct ArchCPU {
+      * field by reading the value from the KVM vCPU.
+      */
+     struct ARMISARegisters {
+-        uint32_t id_mmfr0;
+-        uint32_t id_mmfr1;
+-        uint32_t id_mmfr2;
+-        uint32_t id_mmfr3;
+-        uint32_t id_mmfr4;
+-        uint32_t id_mmfr5;
          uint32_t mvfr0;
          uint32_t mvfr1;
          uint32_t mvfr2;
--        uint32_t id_dfr0;
--        uint32_t id_dfr1;
-         uint32_t dbgdidr;
-         uint32_t dbgdevid;
-         uint32_t dbgdevid1;
 diff --git a/hw/intc/armv7m_nvic.c b/hw/intc/armv7m_nvic.c
-index 330205fa342..2566dd63431 100644
+index 2566dd63431..6d85720f1b4 100644
 --- a/hw/intc/armv7m_nvic.c
 +++ b/hw/intc/armv7m_nvic.c
-@@ -1274,7 +1274,7 @@ static uint32_t nvic_readl(NVICState *s, uint32_t offset, MemTxAttrs attrs)
+@@ -1284,22 +1284,22 @@ static uint32_t nvic_readl(NVICState *s, uint32_t offset, MemTxAttrs attrs)
          if (!arm_feature(&cpu->env, ARM_FEATURE_M_MAIN)) {
              goto bad_offset;
          }
--        return cpu->isar.id_dfr0;
-+        return GET_IDREG(isar, ID_DFR0);
-     case 0xd4c: /* AFR0.  */
+-        return cpu->isar.id_mmfr0;
++        return GET_IDREG(isar, ID_MMFR0);
+     case 0xd54: /* MMFR1.  */
          if (!arm_feature(&cpu->env, ARM_FEATURE_M_MAIN)) {
              goto bad_offset;
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 62c06c7269c..8e77414c2b9 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2318,7 +2318,7 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-          * feature registers as well.
-          */
-         FIELD_DP32_IDREG(isar, ID_PFR1, SECURITY, 0);
--        cpu->isar.id_dfr0 = FIELD_DP32(cpu->isar.id_dfr0, ID_DFR0, COPSDBG, 0);
-+        FIELD_DP32_IDREG(isar, ID_DFR0, COPSDBG, 0);
-         FIELD_DP64_IDREG(isar, ID_AA64PFR0, EL3, 0);
- 
-         /* Disable the realm management extension, which requires EL3. */
-@@ -2346,7 +2346,7 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
- #endif
-     } else {
-         FIELD_DP64_IDREG(isar, ID_AA64DFR0, PMUVER, 0);
--        cpu->isar.id_dfr0 = FIELD_DP32(cpu->isar.id_dfr0, ID_DFR0, PERFMON, 0);
-+        FIELD_DP32_IDREG(isar, ID_DFR0, PERFMON, 0);
-         cpu->pmceid0 = 0;
-         cpu->pmceid1 = 0;
-     }
-@@ -2409,15 +2409,12 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-         FIELD_DP64_IDREG(isar, ID_AA64DFR0, TRACEBUFFER, 0);
-         /* FEAT_TRF (Self-hosted Trace Extension) */
-         FIELD_DP64_IDREG(isar, ID_AA64DFR0, TRACEFILT, 0);
--        cpu->isar.id_dfr0 =
--            FIELD_DP32(cpu->isar.id_dfr0, ID_DFR0, TRACEFILT, 0);
-+        FIELD_DP32_IDREG(isar, ID_DFR0, TRACEFILT, 0);
-         /* Trace Macrocell system register access */
-         FIELD_DP64_IDREG(isar, ID_AA64DFR0, TRACEVER, 0);
--        cpu->isar.id_dfr0 =
--            FIELD_DP32(cpu->isar.id_dfr0, ID_DFR0, COPTRC, 0);
-+        FIELD_DP32_IDREG(isar, ID_DFR0, COPTRC, 0);
-         /* Memory mapped trace */
--        cpu->isar.id_dfr0 =
--            FIELD_DP32(cpu->isar.id_dfr0, ID_DFR0, MMAPTRC, 0);
-+        FIELD_DP32_IDREG(isar, ID_DFR0, MMAPTRC, 0);
-         /* FEAT_AMU (Activity Monitors Extension) */
-         FIELD_DP64_IDREG(isar, ID_AA64PFR0, AMU, 0);
-         FIELD_DP32_IDREG(isar, ID_PFR0, AMU, 0);
+         }
+-        return cpu->isar.id_mmfr1;
++        return GET_IDREG(isar, ID_MMFR1);
+     case 0xd58: /* MMFR2.  */
+         if (!arm_feature(&cpu->env, ARM_FEATURE_M_MAIN)) {
+             goto bad_offset;
+         }
+-        return cpu->isar.id_mmfr2;
++        return GET_IDREG(isar, ID_MMFR2);
+     case 0xd5c: /* MMFR3.  */
+         if (!arm_feature(&cpu->env, ARM_FEATURE_M_MAIN)) {
+             goto bad_offset;
+         }
+-        return cpu->isar.id_mmfr3;
++        return GET_IDREG(isar, ID_MMFR3);
+     case 0xd60: /* ISAR0.  */
+         if (!arm_feature(&cpu->env, ARM_FEATURE_M_MAIN)) {
+             goto bad_offset;
 diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 5b628aa7ebf..47c2eed3c99 100644
+index 47c2eed3c99..1f3406708bd 100644
 --- a/target/arm/cpu64.c
 +++ b/target/arm/cpu64.c
-@@ -654,7 +654,7 @@ static void aarch64_a57_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00c50838;
-     SET_IDREG(isar, ID_PFR0, 0x00000131);
+@@ -656,10 +656,10 @@ static void aarch64_a57_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00011011);
--    cpu->isar.id_dfr0 = 0x03010066;
-+    SET_IDREG(isar, ID_DFR0, 0x03010066);
+     SET_IDREG(isar, ID_DFR0, 0x03010066);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x10101105;
-     cpu->isar.id_mmfr1 = 0x40000000;
-@@ -716,7 +716,7 @@ static void aarch64_a53_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00c50838;
-     SET_IDREG(isar, ID_PFR0, 0x00000131);
+-    cpu->isar.id_mmfr0 = 0x10101105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02102211;
++    SET_IDREG(isar, ID_MMFR0, 0x10101105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02102211);
+     SET_IDREG(isar, ID_ISAR0, 0x02101110);
+     SET_IDREG(isar, ID_ISAR1, 0x13112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232042);
+@@ -718,10 +718,10 @@ static void aarch64_a53_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00011011);
--    cpu->isar.id_dfr0 = 0x03010066;
-+    SET_IDREG(isar, ID_DFR0, 0x03010066);
+     SET_IDREG(isar, ID_DFR0, 0x03010066);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x10101105;
-     cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr0 = 0x10101105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02102211;
++    SET_IDREG(isar, ID_MMFR0, 0x10101105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02102211);
+     SET_IDREG(isar, ID_ISAR0, 0x02101110);
+     SET_IDREG(isar, ID_ISAR1, 0x13112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232042);
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 03299238224..4d90ff7fd51 100644
+index 4d90ff7fd51..c311d2df217 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -7800,7 +7800,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 1, .opc2 = 2,
+@@ -7810,22 +7810,22 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 1, .opc2 = 4,
                .access = PL1_R, .type = ARM_CP_CONST,
                .accessfn = access_aa32_tid3,
--              .resetvalue = cpu->isar.id_dfr0 },
-+              .resetvalue = GET_IDREG(isar, ID_DFR0)},
-             { .name = "ID_AFR0", .state = ARM_CP_STATE_BOTH,
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 1, .opc2 = 3,
+-              .resetvalue = cpu->isar.id_mmfr0 },
++              .resetvalue = GET_IDREG(isar, ID_MMFR0)},
+             { .name = "ID_MMFR1", .state = ARM_CP_STATE_BOTH,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 1, .opc2 = 5,
                .access = PL1_R, .type = ARM_CP_CONST,
-@@ -8135,7 +8135,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 3, .opc2 = 5,
+               .accessfn = access_aa32_tid3,
+-              .resetvalue = cpu->isar.id_mmfr1 },
++              .resetvalue = GET_IDREG(isar, ID_MMFR1)},
+             { .name = "ID_MMFR2", .state = ARM_CP_STATE_BOTH,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 1, .opc2 = 6,
                .access = PL1_R, .type = ARM_CP_CONST,
-               .accessfn = access_aa64_tid3,
--              .resetvalue = cpu->isar.id_dfr1 },
-+              .resetvalue = GET_IDREG(isar, ID_DFR1)},
-             { .name = "ID_MMFR5", .state = ARM_CP_STATE_BOTH,
+               .accessfn = access_aa32_tid3,
+-              .resetvalue = cpu->isar.id_mmfr2 },
++              .resetvalue = GET_IDREG(isar, ID_MMFR2)},
+             { .name = "ID_MMFR3", .state = ARM_CP_STATE_BOTH,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 1, .opc2 = 7,
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa32_tid3,
+-              .resetvalue = cpu->isar.id_mmfr3 },
++              .resetvalue = GET_IDREG(isar, ID_MMFR3)},
+             { .name = "ID_ISAR0", .state = ARM_CP_STATE_BOTH,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 2, .opc2 = 0,
+               .access = PL1_R, .type = ARM_CP_CONST,
+@@ -7860,7 +7860,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 2, .opc2 = 6,
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa32_tid3,
+-              .resetvalue = cpu->isar.id_mmfr4 },
++              .resetvalue = GET_IDREG(isar, ID_MMFR4)},
+             { .name = "ID_ISAR6", .state = ARM_CP_STATE_BOTH,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 2, .opc2 = 7,
+               .access = PL1_R, .type = ARM_CP_CONST,
+@@ -8140,7 +8140,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
                .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 3, .opc2 = 6,
                .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa64_tid3,
+-              .resetvalue = cpu->isar.id_mmfr5 },
++              .resetvalue = GET_IDREG(isar, ID_MMFR5)},
+             { .name = "RES_0_C0_C3_7", .state = ARM_CP_STATE_BOTH,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 3, .opc2 = 7,
+               .access = PL1_R, .type = ARM_CP_CONST,
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index d945e652b3e..2a6a5329b43 100644
+index 2a6a5329b43..3df046b2b91 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -334,8 +334,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-          */
+@@ -335,14 +335,10 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
          err |= get_host_cpu_reg(fd, ahcf, ID_PFR0_EL1_IDX);
          err |= get_host_cpu_reg(fd, ahcf, ID_PFR1_EL1_IDX);
--        err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_dfr0,
--                              ARM64_SYS_REG(3, 0, 0, 1, 2));
-+        err |= get_host_cpu_reg(fd, ahcf, ID_DFR0_EL1_IDX);
-         err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_mmfr0,
-                               ARM64_SYS_REG(3, 0, 0, 1, 4));
-         err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_mmfr1,
-@@ -361,8 +360,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-         err |= read_sys_reg32(fdarray[2], &ahcf->isar.mvfr2,
+         err |= get_host_cpu_reg(fd, ahcf, ID_DFR0_EL1_IDX);
+-        err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_mmfr0,
+-                              ARM64_SYS_REG(3, 0, 0, 1, 4));
+-        err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_mmfr1,
+-                              ARM64_SYS_REG(3, 0, 0, 1, 5));
+-        err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_mmfr2,
+-                              ARM64_SYS_REG(3, 0, 0, 1, 6));
+-        err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_mmfr3,
+-                              ARM64_SYS_REG(3, 0, 0, 1, 7));
++        err |= get_host_cpu_reg(fd, ahcf, ID_MMFR0_EL1_IDX);
++        err |= get_host_cpu_reg(fd, ahcf, ID_MMFR1_EL1_IDX);
++        err |= get_host_cpu_reg(fd, ahcf, ID_MMFR2_EL1_IDX);
++        err |= get_host_cpu_reg(fd, ahcf, ID_MMFR3_EL1_IDX);
+         err |= get_host_cpu_reg(fd, ahcf, ID_ISAR0_EL1_IDX);
+         err |= get_host_cpu_reg(fd, ahcf, ID_ISAR1_EL1_IDX);
+         err |= get_host_cpu_reg(fd, ahcf, ID_ISAR2_EL1_IDX);
+@@ -350,8 +346,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+         err |= get_host_cpu_reg(fd, ahcf, ID_ISAR4_EL1_IDX);
+         err |= get_host_cpu_reg(fd, ahcf, ID_ISAR5_EL1_IDX);
+         err |= get_host_cpu_reg(fd, ahcf, ID_ISAR6_EL1_IDX);
+-        err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_mmfr4,
+-                              ARM64_SYS_REG(3, 0, 0, 2, 6));
++        err |= get_host_cpu_reg(fd, ahcf, ID_MMFR4_EL1_IDX);
+ 
+         err |= read_sys_reg32(fdarray[2], &ahcf->isar.mvfr0,
+                               ARM64_SYS_REG(3, 0, 0, 3, 0));
+@@ -361,8 +356,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
                                ARM64_SYS_REG(3, 0, 0, 3, 2));
          err |= get_host_cpu_reg(fd, ahcf, ID_PFR2_EL1_IDX);
--        err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_dfr1,
--                              ARM64_SYS_REG(3, 0, 0, 3, 5));
-+        err |= get_host_cpu_reg(fd, ahcf, ID_DFR1_EL1_IDX);
-         err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_mmfr5,
-                               ARM64_SYS_REG(3, 0, 0, 3, 6));
+         err |= get_host_cpu_reg(fd, ahcf, ID_DFR1_EL1_IDX);
+-        err |= read_sys_reg32(fdarray[2], &ahcf->isar.id_mmfr5,
+-                              ARM64_SYS_REG(3, 0, 0, 3, 6));
++        err |= get_host_cpu_reg(fd, ahcf, ID_MMFR5_EL1_IDX);
  
+         /*
+          * DBGDIDR is a bit complicated because the kernel doesn't
 diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
-index 4a2c3bd01a3..9697c362c19 100644
+index 9697c362c19..eddd7117d5b 100644
 --- a/target/arm/tcg/cpu-v7m.c
 +++ b/target/arm/tcg/cpu-v7m.c
-@@ -61,7 +61,7 @@ static void cortex_m0_initfn(Object *obj)
-      */
-     SET_IDREG(isar, ID_PFR0, 0x00000030);
+@@ -63,10 +63,10 @@ static void cortex_m0_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00000200);
--    cpu->isar.id_dfr0 = 0x00100000;
-+    SET_IDREG(isar, ID_DFR0, 0x00100000);
+     SET_IDREG(isar, ID_DFR0, 0x00100000);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x00000030;
-     cpu->isar.id_mmfr1 = 0x00000000;
-@@ -87,7 +87,7 @@ static void cortex_m3_initfn(Object *obj)
-     cpu->pmsav7_dregion = 8;
-     SET_IDREG(isar, ID_PFR0, 0x00000030);
+-    cpu->isar.id_mmfr0 = 0x00000030;
+-    cpu->isar.id_mmfr1 = 0x00000000;
+-    cpu->isar.id_mmfr2 = 0x00000000;
+-    cpu->isar.id_mmfr3 = 0x00000000;
++    SET_IDREG(isar, ID_MMFR0, 0x00000030);
++    SET_IDREG(isar, ID_MMFR1, 0x00000000);
++    SET_IDREG(isar, ID_MMFR2, 0x00000000);
++    SET_IDREG(isar, ID_MMFR3, 0x00000000);
+     SET_IDREG(isar, ID_ISAR0, 0x01141110);
+     SET_IDREG(isar, ID_ISAR1, 0x02111000);
+     SET_IDREG(isar, ID_ISAR2, 0x21112231);
+@@ -89,10 +89,10 @@ static void cortex_m3_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00000200);
--    cpu->isar.id_dfr0 = 0x00100000;
-+    SET_IDREG(isar, ID_DFR0, 0x00100000);
+     SET_IDREG(isar, ID_DFR0, 0x00100000);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x00000030;
-     cpu->isar.id_mmfr1 = 0x00000000;
-@@ -118,7 +118,7 @@ static void cortex_m4_initfn(Object *obj)
-     cpu->isar.mvfr2 = 0x00000000;
-     SET_IDREG(isar, ID_PFR0, 0x00000030);
+-    cpu->isar.id_mmfr0 = 0x00000030;
+-    cpu->isar.id_mmfr1 = 0x00000000;
+-    cpu->isar.id_mmfr2 = 0x00000000;
+-    cpu->isar.id_mmfr3 = 0x00000000;
++    SET_IDREG(isar, ID_MMFR0, 0x00000030);
++    SET_IDREG(isar, ID_MMFR1, 0x00000000);
++    SET_IDREG(isar, ID_MMFR2, 0x00000000);
++    SET_IDREG(isar, ID_MMFR3, 0x00000000);
+     SET_IDREG(isar, ID_ISAR0, 0x01141110);
+     SET_IDREG(isar, ID_ISAR1, 0x02111000);
+     SET_IDREG(isar, ID_ISAR2, 0x21112231);
+@@ -120,10 +120,10 @@ static void cortex_m4_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00000200);
--    cpu->isar.id_dfr0 = 0x00100000;
-+    SET_IDREG(isar, ID_DFR0, 0x00100000);
+     SET_IDREG(isar, ID_DFR0, 0x00100000);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x00000030;
-     cpu->isar.id_mmfr1 = 0x00000000;
-@@ -149,7 +149,7 @@ static void cortex_m7_initfn(Object *obj)
-     cpu->isar.mvfr2 = 0x00000040;
-     SET_IDREG(isar, ID_PFR0, 0x00000030);
+-    cpu->isar.id_mmfr0 = 0x00000030;
+-    cpu->isar.id_mmfr1 = 0x00000000;
+-    cpu->isar.id_mmfr2 = 0x00000000;
+-    cpu->isar.id_mmfr3 = 0x00000000;
++    SET_IDREG(isar, ID_MMFR0, 0x00000030);
++    SET_IDREG(isar, ID_MMFR1, 0x00000000);
++    SET_IDREG(isar, ID_MMFR2, 0x00000000);
++    SET_IDREG(isar, ID_MMFR3, 0x00000000);
+     SET_IDREG(isar, ID_ISAR0, 0x01141110);
+     SET_IDREG(isar, ID_ISAR1, 0x02111000);
+     SET_IDREG(isar, ID_ISAR2, 0x21112231);
+@@ -151,10 +151,10 @@ static void cortex_m7_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00000200);
--    cpu->isar.id_dfr0 = 0x00100000;
-+    SET_IDREG(isar, ID_DFR0, 0x00100000);
+     SET_IDREG(isar, ID_DFR0, 0x00100000);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x00100030;
-     cpu->isar.id_mmfr1 = 0x00000000;
-@@ -182,7 +182,7 @@ static void cortex_m33_initfn(Object *obj)
-     cpu->isar.mvfr2 = 0x00000040;
-     SET_IDREG(isar, ID_PFR0, 0x00000030);
+-    cpu->isar.id_mmfr0 = 0x00100030;
+-    cpu->isar.id_mmfr1 = 0x00000000;
+-    cpu->isar.id_mmfr2 = 0x01000000;
+-    cpu->isar.id_mmfr3 = 0x00000000;
++    SET_IDREG(isar, ID_MMFR0, 0x00100030);
++    SET_IDREG(isar, ID_MMFR1, 0x00000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01000000);
++    SET_IDREG(isar, ID_MMFR3, 0x00000000);
+     SET_IDREG(isar, ID_ISAR0, 0x01101110);
+     SET_IDREG(isar, ID_ISAR1, 0x02112000);
+     SET_IDREG(isar, ID_ISAR2, 0x20232231);
+@@ -184,10 +184,10 @@ static void cortex_m33_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00000210);
--    cpu->isar.id_dfr0 = 0x00200000;
-+    SET_IDREG(isar, ID_DFR0, 0x00200000);
+     SET_IDREG(isar, ID_DFR0, 0x00200000);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x00101F40;
-     cpu->isar.id_mmfr1 = 0x00000000;
-@@ -220,7 +220,7 @@ static void cortex_m55_initfn(Object *obj)
-     cpu->isar.mvfr2 = 0x00000040;
-     SET_IDREG(isar, ID_PFR0, 0x20000030);
+-    cpu->isar.id_mmfr0 = 0x00101F40;
+-    cpu->isar.id_mmfr1 = 0x00000000;
+-    cpu->isar.id_mmfr2 = 0x01000000;
+-    cpu->isar.id_mmfr3 = 0x00000000;
++    SET_IDREG(isar, ID_MMFR0, 0x00101F40);
++    SET_IDREG(isar, ID_MMFR1, 0x00000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01000000);
++    SET_IDREG(isar, ID_MMFR3, 0x00000000);
+     SET_IDREG(isar, ID_ISAR0, 0x01101110);
+     SET_IDREG(isar, ID_ISAR1, 0x02212000);
+     SET_IDREG(isar, ID_ISAR2, 0x20232232);
+@@ -222,10 +222,10 @@ static void cortex_m55_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00000230);
--    cpu->isar.id_dfr0 = 0x10200000;
-+    SET_IDREG(isar, ID_DFR0, 0x10200000);
+     SET_IDREG(isar, ID_DFR0, 0x10200000);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x00111040;
-     cpu->isar.id_mmfr1 = 0x00000000;
+-    cpu->isar.id_mmfr0 = 0x00111040;
+-    cpu->isar.id_mmfr1 = 0x00000000;
+-    cpu->isar.id_mmfr2 = 0x01000000;
+-    cpu->isar.id_mmfr3 = 0x00000011;
++    SET_IDREG(isar, ID_MMFR0, 0x00111040);
++    SET_IDREG(isar, ID_MMFR1, 0x00000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01000000);
++    SET_IDREG(isar, ID_MMFR3, 0x00000011);
+     SET_IDREG(isar, ID_ISAR0, 0x01103110);
+     SET_IDREG(isar, ID_ISAR1, 0x02212000);
+     SET_IDREG(isar, ID_ISAR2, 0x20232232);
 diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-index 56374db2692..bec69fe52e4 100644
+index bec69fe52e4..942b636aa5b 100644
 --- a/target/arm/tcg/cpu32.c
 +++ b/target/arm/tcg/cpu32.c
-@@ -82,11 +82,11 @@ void aa32_max_features(ARMCPU *cpu)
-     t = FIELD_DP32(t, ID_PFR2, SSBS, 1);          /* FEAT_SSBS */
-     SET_IDREG(isar, ID_PFR2, t);
+@@ -55,21 +55,17 @@ void aa32_max_features(ARMCPU *cpu)
+     t = FIELD_DP32(t, MVFR2, FPMISC, 4);          /* FP MaxNum */
+     cpu->isar.mvfr2 = t;
  
--    t = cpu->isar.id_dfr0;
-+    t = GET_IDREG(isar, ID_DFR0);
-     t = FIELD_DP32(t, ID_DFR0, COPDBG, 10);       /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, ID_DFR0, COPSDBG, 10);      /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, ID_DFR0, PERFMON, 6);       /* FEAT_PMUv3p5 */
--    cpu->isar.id_dfr0 = t;
-+    SET_IDREG(isar, ID_DFR0, t);
+-    t = cpu->isar.id_mmfr3;
+-    t = FIELD_DP32(t, ID_MMFR3, PAN, 2);          /* FEAT_PAN2 */
+-    cpu->isar.id_mmfr3 = t;
++    FIELD_DP32_IDREG(isar, ID_MMFR3, PAN, 2);          /* FEAT_PAN2 */
  
-     /* Debug ID registers. */
+-    t = cpu->isar.id_mmfr4;
++    t = GET_IDREG(isar, ID_MMFR4);
+     t = FIELD_DP32(t, ID_MMFR4, HPDS, 2);         /* FEAT_HPDS2 */
+     t = FIELD_DP32(t, ID_MMFR4, AC2, 1);          /* ACTLR2, HACTLR2 */
+     t = FIELD_DP32(t, ID_MMFR4, CNP, 1);          /* FEAT_TTCNP */
+     t = FIELD_DP32(t, ID_MMFR4, XNX, 1);          /* FEAT_XNX */
+     t = FIELD_DP32(t, ID_MMFR4, EVT, 2);          /* FEAT_EVT */
+-    cpu->isar.id_mmfr4 = t;
++    SET_IDREG(isar, ID_MMFR4, t);
  
-@@ -116,9 +116,7 @@ void aa32_max_features(ARMCPU *cpu)
-     t = FIELD_DP32(t, DBGDEVID1, PCSROFFSET, 2);
-     cpu->isar.dbgdevid1 = t;
+-    t = cpu->isar.id_mmfr5;
+-    t = FIELD_DP32(t, ID_MMFR5, ETS, 2);          /* FEAT_ETS2 */
+-    cpu->isar.id_mmfr5 = t;
++    FIELD_DP32_IDREG(isar, ID_MMFR5, ETS, 2);          /* FEAT_ETS2 */
  
--    t = cpu->isar.id_dfr1;
--    t = FIELD_DP32(t, ID_DFR1, HPMN0, 1);         /* FEAT_HPMN0 */
--    cpu->isar.id_dfr1 = t;
-+    FIELD_DP32_IDREG(isar, ID_DFR1, HPMN0, 1);         /* FEAT_HPMN0 */
- }
- 
- /* CPU models. These are not needed for the AArch64 linux-user build. */
-@@ -230,7 +228,7 @@ static void arm1136_r2_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00050078;
-     SET_IDREG(isar, ID_PFR0, 0x111);
+     t = GET_IDREG(isar, ID_PFR0);
+     t = FIELD_DP32(t, ID_PFR0, CSV2, 2);          /* FEAT_CSV2 */
+@@ -230,9 +226,9 @@ static void arm1136_r2_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x1);
--    cpu->isar.id_dfr0 = 0x2;
-+    SET_IDREG(isar, ID_DFR0, 0x2);
+     SET_IDREG(isar, ID_DFR0, 0x2);
      cpu->id_afr0 = 0x3;
-     cpu->isar.id_mmfr0 = 0x01130003;
-     cpu->isar.id_mmfr1 = 0x10030302;
-@@ -262,7 +260,7 @@ static void arm1136_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00050078;
-     SET_IDREG(isar, ID_PFR0, 0x111);
+-    cpu->isar.id_mmfr0 = 0x01130003;
+-    cpu->isar.id_mmfr1 = 0x10030302;
+-    cpu->isar.id_mmfr2 = 0x01222110;
++    SET_IDREG(isar, ID_MMFR0, 0x01130003);
++    SET_IDREG(isar, ID_MMFR1, 0x10030302);
++    SET_IDREG(isar, ID_MMFR2, 0x01222110);
+     SET_IDREG(isar, ID_ISAR0, 0x00140011);
+     SET_IDREG(isar, ID_ISAR1, 0x12002111);
+     SET_IDREG(isar, ID_ISAR2, 0x11231111);
+@@ -262,9 +258,9 @@ static void arm1136_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x1);
--    cpu->isar.id_dfr0 = 0x2;
-+    SET_IDREG(isar, ID_DFR0, 0x2);
+     SET_IDREG(isar, ID_DFR0, 0x2);
      cpu->id_afr0 = 0x3;
-     cpu->isar.id_mmfr0 = 0x01130003;
-     cpu->isar.id_mmfr1 = 0x10030302;
-@@ -295,7 +293,7 @@ static void arm1176_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00050078;
-     SET_IDREG(isar, ID_PFR0, 0x111);
+-    cpu->isar.id_mmfr0 = 0x01130003;
+-    cpu->isar.id_mmfr1 = 0x10030302;
+-    cpu->isar.id_mmfr2 = 0x01222110;
++    SET_IDREG(isar, ID_MMFR0, 0x01130003);
++    SET_IDREG(isar, ID_MMFR1, 0x10030302);
++    SET_IDREG(isar, ID_MMFR2, 0x01222110);
+     SET_IDREG(isar, ID_ISAR0, 0x00140011);
+     SET_IDREG(isar, ID_ISAR1, 0x12002111);
+     SET_IDREG(isar, ID_ISAR2, 0x11231111);
+@@ -295,9 +291,9 @@ static void arm1176_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x11);
--    cpu->isar.id_dfr0 = 0x33;
-+    SET_IDREG(isar, ID_DFR0, 0x33);
+     SET_IDREG(isar, ID_DFR0, 0x33);
      cpu->id_afr0 = 0;
-     cpu->isar.id_mmfr0 = 0x01130003;
-     cpu->isar.id_mmfr1 = 0x10030302;
-@@ -325,7 +323,7 @@ static void arm11mpcore_initfn(Object *obj)
-     cpu->ctr = 0x1d192992; /* 32K icache 32K dcache */
-     SET_IDREG(isar, ID_PFR0, 0x111);
+-    cpu->isar.id_mmfr0 = 0x01130003;
+-    cpu->isar.id_mmfr1 = 0x10030302;
+-    cpu->isar.id_mmfr2 = 0x01222100;
++    SET_IDREG(isar, ID_MMFR0, 0x01130003);
++    SET_IDREG(isar, ID_MMFR1, 0x10030302);
++    SET_IDREG(isar, ID_MMFR2, 0x01222100);
+     SET_IDREG(isar, ID_ISAR0, 0x0140011);
+     SET_IDREG(isar, ID_ISAR1, 0x12002111);
+     SET_IDREG(isar, ID_ISAR2, 0x11231121);
+@@ -325,9 +321,9 @@ static void arm11mpcore_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x1);
--    cpu->isar.id_dfr0 = 0;
-+    SET_IDREG(isar, ID_DFR0, 0);
+     SET_IDREG(isar, ID_DFR0, 0);
      cpu->id_afr0 = 0x2;
-     cpu->isar.id_mmfr0 = 0x01100103;
-     cpu->isar.id_mmfr1 = 0x10020302;
-@@ -365,7 +363,7 @@ static void cortex_a8_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00c50078;
-     SET_IDREG(isar, ID_PFR0, 0x1031);
+-    cpu->isar.id_mmfr0 = 0x01100103;
+-    cpu->isar.id_mmfr1 = 0x10020302;
+-    cpu->isar.id_mmfr2 = 0x01222000;
++    SET_IDREG(isar, ID_MMFR0, 0x01100103);
++    SET_IDREG(isar, ID_MMFR1, 0x10020302);
++    SET_IDREG(isar, ID_MMFR2, 0x01222000);
+     SET_IDREG(isar, ID_ISAR0, 0x00100011);
+     SET_IDREG(isar, ID_ISAR1, 0x12002111);
+     SET_IDREG(isar, ID_ISAR2, 0x11221011);
+@@ -365,10 +361,10 @@ static void cortex_a8_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x11);
--    cpu->isar.id_dfr0 = 0x400;
-+    SET_IDREG(isar, ID_DFR0, 0x400);
+     SET_IDREG(isar, ID_DFR0, 0x400);
      cpu->id_afr0 = 0;
-     cpu->isar.id_mmfr0 = 0x31100003;
-     cpu->isar.id_mmfr1 = 0x20000000;
-@@ -441,7 +439,7 @@ static void cortex_a9_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00c50078;
-     SET_IDREG(isar, ID_PFR0, 0x1031);
+-    cpu->isar.id_mmfr0 = 0x31100003;
+-    cpu->isar.id_mmfr1 = 0x20000000;
+-    cpu->isar.id_mmfr2 = 0x01202000;
+-    cpu->isar.id_mmfr3 = 0x11;
++    SET_IDREG(isar, ID_MMFR0, 0x31100003);
++    SET_IDREG(isar, ID_MMFR1, 0x20000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01202000);
++    SET_IDREG(isar, ID_MMFR3, 0x11);
+     SET_IDREG(isar, ID_ISAR0, 0x00101111);
+     SET_IDREG(isar, ID_ISAR1, 0x12112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232031);
+@@ -441,10 +437,10 @@ static void cortex_a9_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x11);
--    cpu->isar.id_dfr0 = 0x000;
-+    SET_IDREG(isar, ID_DFR0, 0x000);
+     SET_IDREG(isar, ID_DFR0, 0x000);
      cpu->id_afr0 = 0;
-     cpu->isar.id_mmfr0 = 0x00100103;
-     cpu->isar.id_mmfr1 = 0x20000000;
-@@ -507,7 +505,7 @@ static void cortex_a7_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00c50078;
-     SET_IDREG(isar, ID_PFR0, 0x00001131);
+-    cpu->isar.id_mmfr0 = 0x00100103;
+-    cpu->isar.id_mmfr1 = 0x20000000;
+-    cpu->isar.id_mmfr2 = 0x01230000;
+-    cpu->isar.id_mmfr3 = 0x00002111;
++    SET_IDREG(isar, ID_MMFR0, 0x00100103);
++    SET_IDREG(isar, ID_MMFR1, 0x20000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01230000);
++    SET_IDREG(isar, ID_MMFR3, 0x00002111);
+     SET_IDREG(isar, ID_ISAR0, 0x00101111);
+     SET_IDREG(isar, ID_ISAR1, 0x13112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232041);
+@@ -507,10 +503,10 @@ static void cortex_a7_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00011011);
--    cpu->isar.id_dfr0 = 0x02010555;
-+    SET_IDREG(isar, ID_DFR0, 0x02010555);
+     SET_IDREG(isar, ID_DFR0, 0x02010555);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x10101105;
-     cpu->isar.id_mmfr1 = 0x40000000;
-@@ -559,7 +557,7 @@ static void cortex_a15_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00c50078;
-     SET_IDREG(isar, ID_PFR0, 0x00001131);
+-    cpu->isar.id_mmfr0 = 0x10101105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01240000;
+-    cpu->isar.id_mmfr3 = 0x02102211;
++    SET_IDREG(isar, ID_MMFR0, 0x10101105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01240000);
++    SET_IDREG(isar, ID_MMFR3, 0x02102211);
+     /*
+      * a7_mpcore_r0p5_trm, page 4-4 gives 0x01101110; but
+      * table 4-41 gives 0x02101110, which includes the arm div insns.
+@@ -559,10 +555,10 @@ static void cortex_a15_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00011011);
--    cpu->isar.id_dfr0 = 0x02010555;
-+    SET_IDREG(isar, ID_DFR0, 0x02010555);
+     SET_IDREG(isar, ID_DFR0, 0x02010555);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x10201105;
-     cpu->isar.id_mmfr1 = 0x20000000;
-@@ -603,7 +601,7 @@ static void cortex_r5_initfn(Object *obj)
-     cpu->midr = 0x411fc153; /* r1p3 */
-     SET_IDREG(isar, ID_PFR0, 0x0131);
+-    cpu->isar.id_mmfr0 = 0x10201105;
+-    cpu->isar.id_mmfr1 = 0x20000000;
+-    cpu->isar.id_mmfr2 = 0x01240000;
+-    cpu->isar.id_mmfr3 = 0x02102211;
++    SET_IDREG(isar, ID_MMFR0, 0x10201105);
++    SET_IDREG(isar, ID_MMFR1, 0x20000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01240000);
++    SET_IDREG(isar, ID_MMFR3, 0x02102211);
+     SET_IDREG(isar, ID_ISAR0, 0x02101110);
+     SET_IDREG(isar, ID_ISAR1, 0x13112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232041);
+@@ -603,10 +599,10 @@ static void cortex_r5_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x001);
--    cpu->isar.id_dfr0 = 0x010400;
-+    SET_IDREG(isar, ID_DFR0, 0x010400);
+     SET_IDREG(isar, ID_DFR0, 0x010400);
      cpu->id_afr0 = 0x0;
-     cpu->isar.id_mmfr0 = 0x0210030;
-     cpu->isar.id_mmfr1 = 0x00000000;
-@@ -750,7 +748,7 @@ static void cortex_r52_initfn(Object *obj)
-     cpu->reset_sctlr = 0x30c50838;
-     SET_IDREG(isar, ID_PFR0, 0x00000131);
+-    cpu->isar.id_mmfr0 = 0x0210030;
+-    cpu->isar.id_mmfr1 = 0x00000000;
+-    cpu->isar.id_mmfr2 = 0x01200000;
+-    cpu->isar.id_mmfr3 = 0x0211;
++    SET_IDREG(isar, ID_MMFR0, 0x0210030);
++    SET_IDREG(isar, ID_MMFR1, 0x00000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01200000);
++    SET_IDREG(isar, ID_MMFR3, 0x0211);
+     SET_IDREG(isar, ID_ISAR0, 0x02101111);
+     SET_IDREG(isar, ID_ISAR1, 0x13112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232141);
+@@ -750,11 +746,11 @@ static void cortex_r52_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x10111001);
--    cpu->isar.id_dfr0 = 0x03010006;
-+    SET_IDREG(isar, ID_DFR0, 0x03010006);
+     SET_IDREG(isar, ID_DFR0, 0x03010006);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x00211040;
-     cpu->isar.id_mmfr1 = 0x40000000;
-@@ -982,7 +980,7 @@ static void arm_max_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00c50838;
-     SET_IDREG(isar, ID_PFR0, 0x00000131);
+-    cpu->isar.id_mmfr0 = 0x00211040;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01200000;
+-    cpu->isar.id_mmfr3 = 0xf0102211;
+-    cpu->isar.id_mmfr4 = 0x00000010;
++    SET_IDREG(isar, ID_MMFR0, 0x00211040);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01200000);
++    SET_IDREG(isar, ID_MMFR3, 0xf0102211);
++    SET_IDREG(isar, ID_MMFR4, 0x00000010);
+     SET_IDREG(isar, ID_ISAR0, 0x02101110);
+     SET_IDREG(isar, ID_ISAR1, 0x13112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232142);
+@@ -982,10 +978,10 @@ static void arm_max_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00011011);
--    cpu->isar.id_dfr0 = 0x03010066;
-+    SET_IDREG(isar, ID_DFR0, 0x03010066);
+     SET_IDREG(isar, ID_DFR0, 0x03010066);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x10101105;
-     cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr0 = 0x10101105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02102211;
++    SET_IDREG(isar, ID_MMFR0, 0x10101105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02102211);
+     SET_IDREG(isar, ID_ISAR0, 0x02101110);
+     SET_IDREG(isar, ID_ISAR1, 0x13112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232042);
 diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index c3f90e9d135..aeaade488fe 100644
+index aeaade488fe..937f29e253d 100644
 --- a/target/arm/tcg/cpu64.c
 +++ b/target/arm/tcg/cpu64.c
-@@ -51,7 +51,7 @@ static void aarch64_a35_initfn(Object *obj)
-     cpu->ctr = 0x84448004;
-     SET_IDREG(isar, ID_PFR0, 0x00000131);
+@@ -53,10 +53,10 @@ static void aarch64_a35_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00011011);
--    cpu->isar.id_dfr0 = 0x03010066;
-+    SET_IDREG(isar, ID_DFR0, 0x03010066);
+     SET_IDREG(isar, ID_DFR0, 0x03010066);
      cpu->id_afr0 = 0;
-     cpu->isar.id_mmfr0 = 0x10201105;
-     cpu->isar.id_mmfr1 = 0x40000000;
-@@ -228,7 +228,7 @@ static void aarch64_a55_initfn(Object *obj)
-     SET_IDREG(isar, ID_AA64PFR0, 0x0000000010112222ull);
-     SET_IDREG(isar, ID_AA64PFR1, 0x0000000000000010ull);
-     cpu->id_afr0       = 0x00000000;
--    cpu->isar.id_dfr0  = 0x04010088;
-+    SET_IDREG(isar, ID_DFR0, 0x04010088);
+-    cpu->isar.id_mmfr0 = 0x10201105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02102211;
++    SET_IDREG(isar, ID_MMFR0, 0x10201105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02102211);
      SET_IDREG(isar, ID_ISAR0, 0x02101110);
      SET_IDREG(isar, ID_ISAR1, 0x13112111);
      SET_IDREG(isar, ID_ISAR2, 0x21232042);
-@@ -297,7 +297,7 @@ static void aarch64_a72_initfn(Object *obj)
-     cpu->reset_sctlr = 0x00c50838;
-     SET_IDREG(isar, ID_PFR0, 0x00000131);
+@@ -236,11 +236,11 @@ static void aarch64_a55_initfn(Object *obj)
+     SET_IDREG(isar, ID_ISAR4, 0x00011142);
+     SET_IDREG(isar, ID_ISAR5, 0x01011121);
+     SET_IDREG(isar, ID_ISAR6, 0x00000010);
+-    cpu->isar.id_mmfr0 = 0x10201105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02122211;
+-    cpu->isar.id_mmfr4 = 0x00021110;
++    SET_IDREG(isar, ID_MMFR0, 0x10201105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02122211);
++    SET_IDREG(isar, ID_MMFR4, 0x00021110);
+     SET_IDREG(isar, ID_PFR0, 0x10010131);
      SET_IDREG(isar, ID_PFR1, 0x00011011);
--    cpu->isar.id_dfr0 = 0x03010066;
-+    SET_IDREG(isar, ID_DFR0, 0x03010066);
+     SET_IDREG(isar, ID_PFR2, 0x00000011);
+@@ -299,10 +299,10 @@ static void aarch64_a72_initfn(Object *obj)
+     SET_IDREG(isar, ID_PFR1, 0x00011011);
+     SET_IDREG(isar, ID_DFR0, 0x03010066);
      cpu->id_afr0 = 0x00000000;
-     cpu->isar.id_mmfr0 = 0x10201105;
-     cpu->isar.id_mmfr1 = 0x40000000;
-@@ -361,7 +361,7 @@ static void aarch64_a76_initfn(Object *obj)
-     SET_IDREG(isar, ID_AA64PFR0, 0x1100000010111112ull); /* GIC filled in later */
-     SET_IDREG(isar, ID_AA64PFR1, 0x0000000000000010ull);
-     cpu->id_afr0       = 0x00000000;
--    cpu->isar.id_dfr0  = 0x04010088;
-+    SET_IDREG(isar, ID_DFR0, 0x04010088);
+-    cpu->isar.id_mmfr0 = 0x10201105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02102211;
++    SET_IDREG(isar, ID_MMFR0, 0x10201105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02102211);
      SET_IDREG(isar, ID_ISAR0, 0x02101110);
      SET_IDREG(isar, ID_ISAR1, 0x13112111);
      SET_IDREG(isar, ID_ISAR2, 0x21232042);
-@@ -609,7 +609,7 @@ static void aarch64_neoverse_n1_initfn(Object *obj)
-     SET_IDREG(isar, ID_AA64PFR0, 0x1100000010111112ull); /* GIC filled in later */
-     SET_IDREG(isar, ID_AA64PFR1, 0x0000000000000020ull);
-     cpu->id_afr0       = 0x00000000;
--    cpu->isar.id_dfr0  = 0x04010088;
-+    SET_IDREG(isar, ID_DFR0, 0x04010088);
-     SET_IDREG(isar, ID_ISAR0, 0x02101110);
-     SET_IDREG(isar, ID_ISAR1, 0x13112111);
-     SET_IDREG(isar, ID_ISAR2, 0x21232042);
-@@ -688,7 +688,7 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
-     SET_IDREG(isar, ID_AA64PFR0, 0x1101110120111112ull); /* GIC filled in later */
-     SET_IDREG(isar, ID_AA64PFR1, 0x0000000000000020ull);
-     cpu->id_afr0       = 0x00000000;
--    cpu->isar.id_dfr0  = 0x15011099;
-+    SET_IDREG(isar, ID_DFR0, 0x15011099);
-     SET_IDREG(isar, ID_ISAR0, 0x02101110);
-     SET_IDREG(isar, ID_ISAR1, 0x13112111);
-     SET_IDREG(isar, ID_ISAR2, 0x21232042);
-@@ -904,7 +904,7 @@ static void aarch64_a710_initfn(Object *obj)
-     cpu->revidr        = 0;
+@@ -369,11 +369,11 @@ static void aarch64_a76_initfn(Object *obj)
+     SET_IDREG(isar, ID_ISAR4, 0x00010142);
+     SET_IDREG(isar, ID_ISAR5, 0x01011121);
+     SET_IDREG(isar, ID_ISAR6, 0x00000010);
+-    cpu->isar.id_mmfr0 = 0x10201105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02122211;
+-    cpu->isar.id_mmfr4 = 0x00021110;
++    SET_IDREG(isar, ID_MMFR0, 0x10201105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02122211);
++    SET_IDREG(isar, ID_MMFR4, 0x00021110);
+     SET_IDREG(isar, ID_PFR0, 0x10010131);
+     SET_IDREG(isar, ID_PFR1, 0x00010000); /* GIC filled in later */
+     SET_IDREG(isar, ID_PFR2, 0x00000011);
+@@ -617,11 +617,11 @@ static void aarch64_neoverse_n1_initfn(Object *obj)
+     SET_IDREG(isar, ID_ISAR4, 0x00010142);
+     SET_IDREG(isar, ID_ISAR5, 0x01011121);
+     SET_IDREG(isar, ID_ISAR6, 0x00000010);
+-    cpu->isar.id_mmfr0 = 0x10201105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02122211;
+-    cpu->isar.id_mmfr4 = 0x00021110;
++    SET_IDREG(isar, ID_MMFR0, 0x10201105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02122211);
++    SET_IDREG(isar, ID_MMFR4, 0x00021110);
+     SET_IDREG(isar, ID_PFR0, 0x10010131);
+     SET_IDREG(isar, ID_PFR1, 0x00010000); /* GIC filled in later */
+     SET_IDREG(isar, ID_PFR2, 0x00000011);
+@@ -696,11 +696,11 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
+     SET_IDREG(isar, ID_ISAR4, 0x00010142);
+     SET_IDREG(isar, ID_ISAR5, 0x11011121);
+     SET_IDREG(isar, ID_ISAR6, 0x01100111);
+-    cpu->isar.id_mmfr0 = 0x10201105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02122211;
+-    cpu->isar.id_mmfr4 = 0x01021110;
++    SET_IDREG(isar, ID_MMFR0, 0x10201105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02122211);
++    SET_IDREG(isar, ID_MMFR4, 0x01021110);
      SET_IDREG(isar, ID_PFR0, 0x21110131);
      SET_IDREG(isar, ID_PFR1, 0x00010000); /* GIC filled in later */
--    cpu->isar.id_dfr0  = 0x16011099;
-+    SET_IDREG(isar, ID_DFR0, 0x16011099);
-     cpu->id_afr0       = 0;
-     cpu->isar.id_mmfr0 = 0x10201105;
-     cpu->isar.id_mmfr1 = 0x40000000;
-@@ -1006,7 +1006,7 @@ static void aarch64_neoverse_n2_initfn(Object *obj)
-     cpu->revidr        = 0;
-     SET_IDREG(isar, ID_PFR0, 0x21110131);
+     SET_IDREG(isar, ID_PFR2, 0x00000011);
+@@ -906,17 +906,17 @@ static void aarch64_a710_initfn(Object *obj)
      SET_IDREG(isar, ID_PFR1, 0x00010000); /* GIC filled in later */
--    cpu->isar.id_dfr0  = 0x16011099;
-+    SET_IDREG(isar, ID_DFR0, 0x16011099);
+     SET_IDREG(isar, ID_DFR0, 0x16011099);
      cpu->id_afr0       = 0;
-     cpu->isar.id_mmfr0 = 0x10201105;
-     cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr0 = 0x10201105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02122211;
++    SET_IDREG(isar, ID_MMFR0, 0x10201105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02122211);
+     SET_IDREG(isar, ID_ISAR0, 0x02101110);
+     SET_IDREG(isar, ID_ISAR1, 0x13112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232042);
+     SET_IDREG(isar, ID_ISAR3, 0x01112131);
+     SET_IDREG(isar, ID_ISAR4, 0x00010142);
+     SET_IDREG(isar, ID_ISAR5, 0x11011121); /* with Crypto */
+-    cpu->isar.id_mmfr4 = 0x21021110;
++    SET_IDREG(isar, ID_MMFR4, 0x21021110);
+     SET_IDREG(isar, ID_ISAR6, 0x01111111);
+     cpu->isar.mvfr0    = 0x10110222;
+     cpu->isar.mvfr1    = 0x13211111;
+@@ -1008,17 +1008,17 @@ static void aarch64_neoverse_n2_initfn(Object *obj)
+     SET_IDREG(isar, ID_PFR1, 0x00010000); /* GIC filled in later */
+     SET_IDREG(isar, ID_DFR0, 0x16011099);
+     cpu->id_afr0       = 0;
+-    cpu->isar.id_mmfr0 = 0x10201105;
+-    cpu->isar.id_mmfr1 = 0x40000000;
+-    cpu->isar.id_mmfr2 = 0x01260000;
+-    cpu->isar.id_mmfr3 = 0x02122211;
++    SET_IDREG(isar, ID_MMFR0, 0x10201105);
++    SET_IDREG(isar, ID_MMFR1, 0x40000000);
++    SET_IDREG(isar, ID_MMFR2, 0x01260000);
++    SET_IDREG(isar, ID_MMFR3, 0x02122211);
+     SET_IDREG(isar, ID_ISAR0, 0x02101110);
+     SET_IDREG(isar, ID_ISAR1, 0x13112111);
+     SET_IDREG(isar, ID_ISAR2, 0x21232042);
+     SET_IDREG(isar, ID_ISAR3, 0x01112131);
+     SET_IDREG(isar, ID_ISAR4, 0x00010142);
+     SET_IDREG(isar, ID_ISAR5, 0x11011121); /* with Crypto */
+-    cpu->isar.id_mmfr4 = 0x01021110;
++    SET_IDREG(isar, ID_MMFR4, 0x01021110);
+     SET_IDREG(isar, ID_ISAR6, 0x01111111);
+     cpu->isar.mvfr0    = 0x10110222;
+     cpu->isar.mvfr1    = 0x13211111;
 -- 
 2.43.0
 
