@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63279AEFCE6
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03146AEFCE7
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:44:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWcDF-0002q7-JX; Tue, 01 Jul 2025 10:43:57 -0400
+	id 1uWcDI-0002uf-Lw; Tue, 01 Jul 2025 10:44:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcD1-0002Xe-7h
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:43:43 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcD3-0002ac-6X
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:43:45 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcCs-00075S-S4
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:43:42 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-45348bff79fso33270475e9.2
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 07:43:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcCx-00075x-99
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:43:44 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-451dbe494d6so36169525e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 07:43:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751381011; x=1751985811; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751381016; x=1751985816; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zOj2l0QjwiOWVtDmZos93I73sy6okOj775eGXYWLug4=;
- b=CXxQHAkeRXxb2aXxpDkrP9TniwfePunpRwLYpHtpkl5fXgcAxm3f/1R0BBD57QlCS6
- s5/XHvJ8Ma3mpPeQ5ypch2gpQV4x+Tx94UaZTXCo1VUihAYMGNjPW4lmEUbPT5fPGY15
- au4g22YRrV+A6eoyDWbSpwwxRoWCbpNrCxm+RbGbvdNz84CdVgNkZTMMcraPPRujlz9B
- qB1F+Himb4LAebvyRNQXaDFtXpyyTRswsV+kvvd3k+17imLN9d4s1HJ+1cMJ+XSmdGxO
- cmq7PqSl0xxPE77vf9+hs+ynxz+L4juQxlUB3NBwGIBWSSOIuwaWvd5inmibxAHHL7tZ
- qMcQ==
+ bh=4LMdB5rdj7iJY8MWJoU9iJ4flVpEl2P/b1SOEUaavlU=;
+ b=dV+vzAOgBfeoDbQQH0HAyxqxyquOPBdV21SglErwhDGb9TTBBxqte9UetONQLnrVBl
+ wfqOlQgFTE89m5z6h62OjKt/CNE3J4KTz9PKhk9afJvM7ExKLGbJV7bRNUp4zJIG4Tqg
+ U1cubGeVPKClRLmgkZafM7Hbf6hOfmw0zccfub39Ths5GK/IBl4mDF/TKGX375DFA+mJ
+ By38tdvW3iakSzS14t4ULTiwULP5pSyB5TANtJY1Jfy/EhX7jfps8UvMMTOEg58d52vl
+ EvYfZiPf/RR8uk4hKPX0Q5x+6tyZIVQA5hPdE5iiUQnxxY4FcYgVFO4qGsfrmWBRux/A
+ HNjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751381011; x=1751985811;
+ d=1e100.net; s=20230601; t=1751381016; x=1751985816;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zOj2l0QjwiOWVtDmZos93I73sy6okOj775eGXYWLug4=;
- b=X8a2T1lavO4F0WsCWYA5MfMVJqU+pc+Oca83cZ4vDN03F9dBtbO0m9H37Ae8PQPyyw
- WViaa6M0TZKFr63coIlKkWsqUmYzJ+cum7b3BNc9BotVg2U9vFnXvf7dN/6ndTyvdtkM
- OpUjrdbjhmnFvCmw0D0nLmMEnkxYaV2xGYjZczSDsT2IXhDPcPiwiZJxdiZnh85dtlaT
- S7rcMcgjvpoCpjygZvprNBKhg8B2KMLei9uQU0ISaZuxiddn+lhUR0fvBvVeQsbjLs6M
- Lt05moR6Zz+RPGnvu4h5ViBXaaXauLPgZ5sNzGDXUHU/Hft+As2mQ2YKs856yFF4evq7
- 3X/g==
-X-Gm-Message-State: AOJu0YzZ00mVlqPgsZBQ4hwQH7/XL4xa2is89AY5Mpazx8V5y5lLnu4V
- NUy5apWI1jAVggvYstJ9MurZC5/sme0EuNSpJZP/t5lzYmdn0LoUpYO5tguBPfepLOXH5ppbgb2
- tKr7Y
-X-Gm-Gg: ASbGnctTdVfFX3jeD6jXD0q9jnWjIjMJmqPkcXxlXdwr0SHy5nqCFJKLnjLh1PT3Enf
- cDT9EiERq0+pkUu7HGdTqaoUwIIfH6K5//KejaydLDZkE6jZs+l6zcdGg8BCenqR2ZDj2YnE8ew
- XlFSyeBXzZQ4nMqaknrO0HiybRqKA88wxFIamgJURatGDMOOZYYHHVcroP5x9sMwLudR4AcJVrs
- xwxIYefLP3NgK0QNvs2IBB1Cin4wivEZkklvghXNJeUQfH3WLFx+5SrlXyNSB56D+8zzzL+j9IM
- llwBxWYOnHl7Qv3Sojn0g13NfrmsubsT79rysRl0gl/2N32B8iwFVW/qmn+8MaoaHg/wvpwmq+h
- Wv5caFCm0IdKKrmFiQ0FR931SpitLWk00uOW1
-X-Google-Smtp-Source: AGHT+IFDgs27rF5aT3DZSi9tV0BJMuNSr5Rf8VyHqKO1wPRfB/7Xyhej5iiOtcfCWNGxOG1HbD8w2g==
-X-Received: by 2002:a05:6000:1a8f:b0:3a5:541c:b40f with SMTP id
- ffacd0b85a97d-3a8f435e1c6mr15395089f8f.9.1751381011234; 
- Tue, 01 Jul 2025 07:43:31 -0700 (PDT)
+ bh=4LMdB5rdj7iJY8MWJoU9iJ4flVpEl2P/b1SOEUaavlU=;
+ b=CGhJDRnQs1YjMyKAywm5HTWv7EY2SnSvtHhLQezL0iHk5FUA/Sr6p/vslZH9tQbmLk
+ R5ZYwWvkxn6jHpsc3+TXT5LE6fsIuCJOqXZ/a45tbjVmzwQztgARkm3TprEdo0j33LU4
+ teGqFifpTH9Zs9lL5hQrPvs5/v7a8CXJGPYvLE1RuhdVp/eCQM0l5xrHXOY5WRubv3Of
+ 6VknqKp3UB0Wdn5NCQeTkMdAKyXyruulO7ZdYdvM4LJHBPC0i4uvJMO9rz0hFcA06Cb8
+ JBcVk+lQ/yWSQJCOylai36GQO0K61+6FgkUb+TPRSrEJN74+ME17t8EWWHwWzUbQ1mGL
+ G/xA==
+X-Gm-Message-State: AOJu0YwTFpZ39k6dtCESCoxEc6xHMvQn1wQBcmaSBarwMA70IefIHfAx
+ GEUc0a2uM4eAp0gTUd5oAX3XTT0S6LwnQAnu7nq/FKie5YfGCg9uItVNK/MrJgOoEr2elQd7B1L
+ TrHNc
+X-Gm-Gg: ASbGncvmIg/miPxuwkEnT1+zFrx4hhACHUJbr2cLYs3Ls7j4tGXdRNK5tyIzRGBgVhE
+ EshNmWqX11Oxg+R87gm6JIQxC1mPN3PaXd9K4r6RLhx9fUeDrORtfdIEB2LcXjnUBIpegSSSqv2
+ 3HkuCBh0TQUMfDsMIUKrmh7gqqiZsuW+zPp0b8DV4gkNM9XyBai1V4AogVoEMhSfG8egJVrMXAK
+ 8HW8a7ywE3gHKxYooT+MYOKkoK+pV8dZyJL9QMOLmT87waz/SVBAVM+Qmi8vq3qhmqj3XnXmKym
+ duhDv2RE1hnxuG9cLcSUtJFJmuI0k2ZFolh0o7fhIE9ChIt19EltZggUJeY81zP4nlSmGnmbqnI
+ ve76+fd5Ts8+FyH2Z3ZXpGb124B6z5ItbbpCogR1suCN+61I=
+X-Google-Smtp-Source: AGHT+IH4ZZLhjc2gVnqZh+GSOZDENGbz7RXFOsXUA3DiG7THYsRRTJ8RD4CVR3hmlThnxlnfP/A9xw==
+X-Received: by 2002:a05:600c:444e:b0:450:cf00:20f5 with SMTP id
+ 5b1f17b1804b1-453a7c18ecdmr46522295e9.9.1751381016016; 
+ Tue, 01 Jul 2025 07:43:36 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4538233c49fsm196722935e9.7.2025.07.01.07.43.30
+ 5b1f17b1804b1-4538234be76sm198394635e9.15.2025.07.01.07.43.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 01 Jul 2025 07:43:30 -0700 (PDT)
+ Tue, 01 Jul 2025 07:43:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -69,17 +69,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Julian Armistead <julian.armistead@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 36/68] accel/kvm: Remove kvm_cpu_synchronize_state() stub
-Date: Tue,  1 Jul 2025 16:39:44 +0200
-Message-ID: <20250701144017.43487-37-philmd@linaro.org>
+Subject: [PATCH v3 37/68] accel/system: Document cpu_synchronize_state()
+Date: Tue,  1 Jul 2025 16:39:45 +0200
+Message-ID: <20250701144017.43487-38-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250701144017.43487-1-philmd@linaro.org>
 References: <20250701144017.43487-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,32 +102,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 57038a92bb0 ("cpus: extract out kvm-specific code
-to accel/kvm") the kvm_cpu_synchronize_state() stub is not
-necessary.
-
-Fixes: e0715f6abce ("kvm: remove kvm specific functions from global includes")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/stubs/kvm-stub.c | 4 ----
- 1 file changed, 4 deletions(-)
+ include/system/accel-ops.h |  8 ++++++++
+ include/system/hw_accel.h  | 13 +++++++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-index b9b4427c919..68cd33ba973 100644
---- a/accel/stubs/kvm-stub.c
-+++ b/accel/stubs/kvm-stub.c
-@@ -29,10 +29,6 @@ void kvm_flush_coalesced_mmio_buffer(void)
- {
- }
+diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
+index 106ff56d880..6f9aebbee8f 100644
+--- a/include/system/accel-ops.h
++++ b/include/system/accel-ops.h
+@@ -45,6 +45,14 @@ struct AccelOpsClass {
  
--void kvm_cpu_synchronize_state(CPUState *cpu)
--{
--}
--
- bool kvm_has_sync_mmu(void)
- {
-     return false;
+     void (*synchronize_post_reset)(CPUState *cpu);
+     void (*synchronize_post_init)(CPUState *cpu);
++    /**
++     * synchronize_state:
++     * synchronize_pre_loadvm:
++     * @cpu: The vCPU to synchronize.
++     *
++     * Request to synchronize QEMU vCPU registers from the hardware accelerator
++     * (the hardware accelerator is the reference).
++     */
+     void (*synchronize_state)(CPUState *cpu);
+     void (*synchronize_pre_loadvm)(CPUState *cpu);
+ 
+diff --git a/include/system/hw_accel.h b/include/system/hw_accel.h
+index 380e9e640b6..574c9738408 100644
+--- a/include/system/hw_accel.h
++++ b/include/system/hw_accel.h
+@@ -17,9 +17,18 @@
+ #include "system/whpx.h"
+ #include "system/nvmm.h"
+ 
++/**
++ * cpu_synchronize_state:
++ * cpu_synchronize_pre_loadvm:
++ * @cpu: The vCPU to synchronize.
++ *
++ * Request to synchronize QEMU vCPU registers from the hardware accelerator
++ * (the hardware accelerator is the reference).
++ */
+ void cpu_synchronize_state(CPUState *cpu);
+-void cpu_synchronize_post_reset(CPUState *cpu);
+-void cpu_synchronize_post_init(CPUState *cpu);
+ void cpu_synchronize_pre_loadvm(CPUState *cpu);
+ 
++void cpu_synchronize_post_reset(CPUState *cpu);
++void cpu_synchronize_post_init(CPUState *cpu);
++
+ #endif /* QEMU_HW_ACCEL_H */
 -- 
 2.49.0
 
