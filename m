@@ -2,74 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483E8AEF12A
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 10:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2699AEF14B
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 10:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWWOD-0005sO-LR; Tue, 01 Jul 2025 04:30:53 -0400
+	id 1uWWT3-0007Mv-Ar; Tue, 01 Jul 2025 04:35:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uWWO5-0005rw-5w
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 04:30:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uWWNx-0007mK-MT
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 04:30:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751358635;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SJm1g+ozJ4DDYxFxHDA1HTYs3w7iLHtWg1xD7MZnffo=;
- b=BZ+tae+aFg1UwgVVcRvwqRwMyFrvEkgobZiHt9M0FABCfnfyCgxNSGx3APp8NhGwuoUD3W
- FNlMjos78ffYN9pMgyIf2CVqG/ICgk7LACIh4MTBtRM86HXvGF3JJb40p8841+OThgqlNU
- 5dB0ezT8EiwXNgKlHs/MekTaVESgNiU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-oLSum4sgNQC-2VgSN9tGbw-1; Tue,
- 01 Jul 2025 04:30:31 -0400
-X-MC-Unique: oLSum4sgNQC-2VgSN9tGbw-1
-X-Mimecast-MFC-AGG-ID: oLSum4sgNQC-2VgSN9tGbw_1751358631
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C2E9A1944AAD; Tue,  1 Jul 2025 08:30:30 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5AF82180045B; Tue,  1 Jul 2025 08:30:30 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id BEE3A21E6A27; Tue, 01 Jul 2025 10:30:27 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  Peter Xu
- <peterx@redhat.com>,  devel@lists.libvirt.org,  Eric Blake
- <eblake@redhat.com>
-Subject: Re: [PATCH v2 18/24] qapi/migration: Deprecate capabilities commands
-In-Reply-To: <20250630195913.28033-19-farosas@suse.de> (Fabiano Rosas's
- message of "Mon, 30 Jun 2025 16:59:07 -0300")
-References: <20250630195913.28033-1-farosas@suse.de>
- <20250630195913.28033-19-farosas@suse.de>
-Date: Tue, 01 Jul 2025 10:30:27 +0200
-Message-ID: <87bjq4z524.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
+ id 1uWWSw-0007Md-PN
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 04:35:47 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uWWSu-0003nh-Lm
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 04:35:46 -0400
+Received: from example.com (unknown [167.220.208.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 42592203B861;
+ Tue,  1 Jul 2025 01:35:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 42592203B861
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1751358940;
+ bh=6Ix4wyg63y8xKUSfFGGu1KmA1N2QFN9vTiFhxgUi2eM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=jgwBw3hJzw+qpzP+8CaQlMFZZ/Yw18OKHTYfaSEV9SfiEfT4HhIclAJxeL6Ckj1kI
+ Cs16rPOvIo33oQ5JEsCDKmz5CESNlyRaooGRyBeV8VETomQaGxJ/x5CQWOEuOCclSi
+ Jm/QaBQoPo7QeeSmQi2j20RDYNlo44fNuTNWKhmE=
+Date: Tue, 1 Jul 2025 10:35:34 +0200
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+To: Wei Liu <wei.liu@kernel.org>
+Cc: magnuskulke@microsoft.com, qemu-devel@nongnu.org, liuwe@microsoft.com,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [RFC PATCH 24/25] target/i386/mshv: Implement mshv_vcpu_run()
+Message-ID: <aGOd1jSBsAMQ3OSj@example.com>
+References: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
+ <20250520113018.49569-25-magnuskulke@linux.microsoft.com>
+ <aC0Ht-541wBzrUoc@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aC0Ht-541wBzrUoc@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,133 +74,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+On Tue, May 20, 2025 at 10:52:39PM +0000, Wei Liu wrote:
+> On Tue, May 20, 2025 at 01:30:17PM +0200, Magnus Kulke wrote:
+> > +    default:
+> > +        msg = &exit_msg;
+> 
+> Do you not get any HALT exit? How are you going to shut down the VM?
+> 
 
-> The concept of capabilities is being merged into the concept of
-> parameters. From now on, the commands that handle capabilities are
-> deprecated in favor of the commands that handle parameters.
->
-> Affected commands:
->
-> - migrate-set-capabilities
-> - query-migrate-capabilities
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  docs/about/deprecated.rst      | 12 ++++++++++++
->  migration/migration-hmp-cmds.c |  6 ++++++
->  qapi/migration.json            | 16 ++++++++++++++--
->  3 files changed, 32 insertions(+), 2 deletions(-)
->
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 42037131de..15474833ea 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -605,3 +605,15 @@ command documentation for details on the ``fdset`` usage.
->  
->  The ``zero-blocks`` capability was part of the block migration which
->  doesn't exist anymore since it was removed in QEMU v9.1.
-> +
-> +``migrate-set-capabilities`` command (since 10.1)
-> +'''''''''''''''''''''''''''''''''''''''''''''''''
-> +
-> +This command was deprecated. Use ``migrate-set-parameters`` instead
-> +which now supports setting capabilities.
-> +
-> +``query-migrate-capabilities`` command (since 10.1)
-> +'''''''''''''''''''''''''''''''''''''''''''''''''''
-> +
-> +This command was deprecated. Use ``query-migrate-parameters`` instead
-> +which now supports querying capabilities.
+In the WHPX accelerator there is this comment:
 
-Scratch "This command was deprecated."
+	case WHvRunVpExitReasonX64Halt:
+		/*
+		 * WARNING: as of build 19043.1526 (21H1), this exit reason is no
+		 * longer used.
+		 */
+		ret = whpx_handle_halt(cpu);
+		break;
 
-Could also scratch "which now supports..."  Up to you.
-
-> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-> index 8615340a6b..7f234d5aa8 100644
-> --- a/migration/migration-hmp-cmds.c
-> +++ b/migration/migration-hmp-cmds.c
-> @@ -229,6 +229,9 @@ void hmp_info_migrate_capabilities(Monitor *mon, const QDict *qdict)
->  {
->      MigrationCapabilityStatusList *caps, *cap;
->  
-> +    warn_report("info migrate_capabilities is deprecated;"
-> +                " use info migrate_parameters instead");
-> +
->      caps = qmp_query_migrate_capabilities(NULL);
->  
->      if (caps) {
-> @@ -616,6 +619,9 @@ void hmp_migrate_set_capability(Monitor *mon, const QDict *qdict)
->      MigrationCapabilityStatus *value;
->      int val;
->  
-> +    warn_report("migrate_set_capability is deprecated;"
-> +                " use migrate_set_parameter instead");
-> +
->      val = qapi_enum_parse(&MigrationCapability_lookup, cap, -1, &err);
->      if (val < 0) {
->          goto end;
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 3d3f5624c5..c5e6ea1a2d 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -521,6 +521,11 @@
->  #
->  # @capabilities: json array of capability modifications to make
->  #
-> +# Features:
-> +#
-> +# @deprecated: This command is deprecated in favor of
-> +# migrate-set-parameters.
-
-For consistency with existing deprecation notes:
-
-   # @deprecated: This command is deprecated.  Use migrate-set-parameters
-   # instead.
-
-> +#
->  # Since: 1.2
->  #
->  # .. qmp-example::
-> @@ -530,7 +535,8 @@
->  #     <- { "return": {} }
->  ##
->  { 'command': 'migrate-set-capabilities',
-> -  'data': { 'capabilities': ['MigrationCapabilityStatus'] } }
-> +  'data': { 'capabilities': ['MigrationCapabilityStatus'] },
-> +  'features': ['deprecated'] }
->  
->  ##
->  # @query-migrate-capabilities:
-> @@ -539,6 +545,11 @@
->  #
->  # Returns: @MigrationCapabilityStatus
->  #
-> +# Features:
-> +#
-> +# @deprecated: This command is deprecated in favor of
-> +# query-migrate-parameters.
-
-Likewise.
-
-> +#
->  # Since: 1.2
->  #
->  # .. qmp-example::
-> @@ -554,7 +565,8 @@
->  #           {"state": false, "capability": "x-colo"}
->  #        ]}
->  ##
-> -{ 'command': 'query-migrate-capabilities', 'returns':   ['MigrationCapabilityStatus']}
-> +{ 'command': 'query-migrate-capabilities', 'returns':   ['MigrationCapabilityStatus'],
-> +  'features': ['deprecated'] }
->  
->  ##
->  # @MultiFDCompression:
-
-With that:
-
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-
+I wonder if this also applies to HVMSG_X64_HALT from the MSHV driver?
 
