@@ -2,64 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F679AEEF21
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 08:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C48AEEF42
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 08:52:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWUk6-0006YT-EC; Tue, 01 Jul 2025 02:45:22 -0400
+	id 1uWUoy-00019r-LY; Tue, 01 Jul 2025 02:50:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liujingqi@lanxincomputing.com>)
- id 1uWUjO-0006MQ-NW
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 02:44:39 -0400
-Received: from sg-3-17.ptr.tlmpb.com ([101.45.255.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <liujingqi@lanxincomputing.com>)
- id 1uWUjH-0005T8-Er
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 02:44:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1751352262;
- h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=+RWATnOMQAgcgPbpXo+CqAUJzR9cf2W8DwFLMlOXr0A=;
- b=xqmBJYz7IjFlm7VRfK67M2wZcoeOYiQO3giG0bKK7VGF7QaRQr0N1/RPZBg/zlpwdaxabe
- b/a09mUQ8BsHzL7tn3hKzUK0Bjtgp/D0iIruFySpy7vV6sVJB1xJ90m+PgbSr112r1H0Vg
- q/j/jWv3T9rumlF+yZNne1UqLMiW6uNRBVvUsUweQZVwzRQkuqJltDNTTZe+aD92HXrIAC
- JyAU7xg2rRdHyfbBFBNknl0po0H/Vy14PgMz6Y+11ji8EORmN8es+W14VO/90sLnWLX2xE
- VN620z8X/hNugCY1t4ZRpeyCZ/hFuveCA9IsgFUp8q/8Z8krhN6O4+yZmfNW2g==
-In-Reply-To: <20250627132022.439315-4-max.chou@sifive.com>
-Subject: Re: [PATCH v2 3/3] target/riscv: vadc and vsbc are vm=0 instructions
-X-Original-From: Nutty Liu <liujingqi@lanxincomputing.com>
-Content-Language: en-US
-References: <20250627132022.439315-1-max.chou@sifive.com>
- <20250627132022.439315-4-max.chou@sifive.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uWUon-00018r-Ms
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 02:50:13 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uWUok-0006nA-2N
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 02:50:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751352610; x=1782888610;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=bfIgNabme3lWjnyhb85FNuwrnZ3Hbn/38kMllrUwWnM=;
+ b=jAQ3FS5xAKJkLZHAneFneMzGQDwF/dbi5pztK409W2rNGMIYCZo+lElf
+ 7uyoWfPy0e1mbIsXopIrXKyXHq75LuyXiZ6r/o7Ssu+NH7ocBvR+tleWW
+ xiTOdMM+x61+6GktKwN7QwCP0FmyT/2tAt5pDCvWNgwyauZ0C44xUWDWc
+ reoo2LqqmmzyaQEI2hSrFVlxRzuhuMb4a/IlJGeDgAJKw2r561uT4Q+ZT
+ FOxalOcABBZYnDPkUIl57OHEB88Z7wm5mByDfZsXKCmI859crNShn1HeD
+ VZImf32e2df7YZaltKL9Cu7SijihowwLARMLnI9fXh6VBO491/TGN7SQX A==;
+X-CSE-ConnectionGUID: CTCqP2LYSQS+kUvrPjw64Q==
+X-CSE-MsgGUID: HE7sBN+GR8GLP2bGC8jojg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="53744954"
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; d="scan'208";a="53744954"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2025 23:50:07 -0700
+X-CSE-ConnectionGUID: QzGA+o1LT7+GBG4WhwPd3A==
+X-CSE-MsgGUID: NOlxvFbyTk6Q++F4AmFYsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; d="scan'208";a="159189878"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2025 23:50:06 -0700
+Message-ID: <690b5bca-4345-4ee9-a332-4c2e38532309@intel.com>
+Date: Tue, 1 Jul 2025 14:50:02 +0800
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Received: from [127.0.0.1] ([116.237.111.137]) by smtp.feishu.cn with ESMTPS;
- Tue, 01 Jul 2025 14:44:19 +0800
-To: "Max Chou" <max.chou@sifive.com>, <qemu-devel@nongnu.org>, 
- <qemu-riscv@nongnu.org>
-Cc: "Palmer Dabbelt" <palmer@dabbelt.com>, 
- "Alistair Francis" <alistair.francis@wdc.com>, 
- "Weiwei Li" <liwei1518@gmail.com>, 
- "Daniel Henrique Barboza" <dbarboza@ventanamicro.com>, 
- "Liu Zhiwei" <zhiwei_liu@linux.alibaba.com>, <antonb@tenstorrent.com>
-Date: Tue, 1 Jul 2025 14:44:18 +0800
-From: "Nutty Liu" <liujingqi@lanxincomputing.com>
-Message-Id: <93e9c3c4-a405-4409-a8e7-ff69ac39c977@lanxincomputing.com>
-X-Lms-Return-Path: <lba+2686383c4+306335+nongnu.org+liujingqi@lanxincomputing.com>
-Mime-Version: 1.0
+Subject: Re: [Regression] Re: [PULL 35/35] qom: reverse order of
+ instance_post_init calls
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Dongli Zhang <dongli.zhang@oracle.com>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=EF=BF=BD?= <philmd@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Like Xu <like.xu.linux@gmail.com>
+References: <20250520110530.366202-1-pbonzini@redhat.com>
+ <20250520110530.366202-36-pbonzini@redhat.com>
+ <d429b6f5-b59c-4884-b18f-8db71cb8dc7b@oracle.com>
+ <aFpocfTpBLB34N3l@intel.com> <aGKryLSGlFTMSKHv@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <aGKryLSGlFTMSKHv@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=UTF-8
-Received-SPF: pass client-ip=101.45.255.17;
- envelope-from=liujingqi@lanxincomputing.com; helo=sg-3-17.ptr.tlmpb.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,47 +92,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/27/2025 9:20 PM, Max Chou wrote:
-> From: Anton Blanchard <antonb@tenstorrent.com>
->
-> We were marking vadc and vsbc as vm=1 instructions, which meant
-> vext_check_input_eew wouldn't detect mask vs source register
-> overlaps.
->
-> Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
-> Reviewed-by: Max Chou <max.chou@sifive.com>
-> Signed-off-by: Max Chou <max.chou@sifive.com>
-> ---
->   target/riscv/insn32.decode | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-> index cd23b1f3a9b..5442203ecaa 100644
-> --- a/target/riscv/insn32.decode
-> +++ b/target/riscv/insn32.decode
-> @@ -451,14 +451,14 @@ vwsubu_wv       110110 . ..... ..... 010 ..... 1010111 @r_vm
->   vwsubu_wx       110110 . ..... ..... 110 ..... 1010111 @r_vm
->   vwsub_wv        110111 . ..... ..... 010 ..... 1010111 @r_vm
->   vwsub_wx        110111 . ..... ..... 110 ..... 1010111 @r_vm
-> -vadc_vvm        010000 0 ..... ..... 000 ..... 1010111 @r_vm_1
-> -vadc_vxm        010000 0 ..... ..... 100 ..... 1010111 @r_vm_1
-> -vadc_vim        010000 0 ..... ..... 011 ..... 1010111 @r_vm_1
-> +vadc_vvm        010000 0 ..... ..... 000 ..... 1010111 @r_vm_0
-> +vadc_vxm        010000 0 ..... ..... 100 ..... 1010111 @r_vm_0
-> +vadc_vim        010000 0 ..... ..... 011 ..... 1010111 @r_vm_0
->   vmadc_vvm       010001 . ..... ..... 000 ..... 1010111 @r_vm
->   vmadc_vxm       010001 . ..... ..... 100 ..... 1010111 @r_vm
->   vmadc_vim       010001 . ..... ..... 011 ..... 1010111 @r_vm
-> -vsbc_vvm        010010 0 ..... ..... 000 ..... 1010111 @r_vm_1
-> -vsbc_vxm        010010 0 ..... ..... 100 ..... 1010111 @r_vm_1
-> +vsbc_vvm        010010 0 ..... ..... 000 ..... 1010111 @r_vm_0
-> +vsbc_vxm        010010 0 ..... ..... 100 ..... 1010111 @r_vm_0
->   vmsbc_vvm       010011 . ..... ..... 000 ..... 1010111 @r_vm
->   vmsbc_vxm       010011 . ..... ..... 100 ..... 1010111 @r_vm
->   vand_vv         001001 . ..... ..... 000 ..... 1010111 @r_vm
+On 6/30/2025 11:22 PM, Zhao Liu wrote:
+> (cc Thomas for bug reporting on kvm-unit-test...)
+> 
+> On Tue, Jun 24, 2025 at 04:57:21PM +0800, Zhao Liu wrote:
+>> Date: Tue, 24 Jun 2025 16:57:21 +0800
+>> From: Zhao Liu <zhao1.liu@intel.com>
+>> Subject: Re: [Regression] Re: [PULL 35/35] qom: reverse order of
+>>   instance_post_init calls
+>>
+>> On Mon, Jun 23, 2025 at 09:56:14AM -0700, Dongli Zhang wrote:
+>>> Date: Mon, 23 Jun 2025 09:56:14 -0700
+>>> From: Dongli Zhang <dongli.zhang@oracle.com>
+>>> Subject: [Regression] Re: [PULL 35/35] qom: reverse order of
+>>>   instance_post_init calls
+>>>
+>>> This commit may broken the "vendor=" configuration.
+>>>
+>>> For instance, the hypervisor CPU vendor is AMD.
+>>>
+>>> I am going to use "-cpu Skylake-Server,vendor=GenuineIntel".
+>>>
+>>>
+>>> Because of the commit, the vendor is still AMD.
+>>>
+>>> [root@vm ~]# cpuid -1 -l 0x0
+>>> CPU:
+>>>     vendor_id = "AuthenticAMD"
+>>>
+>>>
+>>> If I revert this patch, the vendor because the expected Intel.
+>>>
+>>> [root@vm ~]# cpuid -1 -l 0x0
+>>> CPU:
+>>>     vendor_id = "GenuineIntel"
+>>>
+>>>
+>>> Thank you very much!
+>>
+>> Thank you Dongli!
+>>
+>> (+Like)
+>>
+>> While testing my cache model series, I also noticed the similar behavior
+>> for KVM. Additionally, Like Xu reported to me that this commit caused
+>> a failure in a KVM unit test case. Your report helped me connect these
+>> two issues I met (though due to my environment issues, I haven't
+>> confirmed yet).
+> 
+> Ok, now I can confirm this commit cause KUT failure:
+>   * On AMD platform, the "msr.flat" case fails since this case requires
+>     vendor=GenuineIntel (tested by Like).
+>   * On Intel platform, the "syscall.flat" case fails because it requires
+>     vendor=AuthenticAMD (tested by myself).
+> 
+>> The "vendor" property from cli is registered as the global property in
+>> x86_cpu_parse_featurestr(), and is applied to x86 CPUs in
+>> device_post_init().
+>>
+>> With this commit, now KVM will override the "vendor" in
+>> host_cpu_instance_init() (called in x86_cpu_post_initfn()) after
+>> device_post_init(), regardless the previous global "vendor" property.
+> 
+> This is the root cause for the above failure.
+> 
+>> Back to this commit, I think current order of post_init  makes sense.
+>> Instead, the place of host_cpu_instance_init() doesn't seem quite
+>> right. So, I think this commit might have exposed some drawbacks in the
+>> previous x86 CPU initialization order:
+>>
+>> f5cc5a5c1686 ("i386: split cpu accelerators from cpu.c, using AccelCPUClass")
+>> 5b8978d80426 ("i386: do not call cpudef-only models functions for max, host, base")
+> 
+> To fix this issue, we need to initialize "vendor" property in the initfn
+> of max/host/named CPUs instead of current post_initfn.
+> 
+> This will need to split the cpu_instance_init() of x86 kvm (and maybe hvf/tcg)
+> into 2 hooks:
+>   * AccelCPUClass.cpu_instance_init() - called in x86 CPUs' initfn.
+>   * AccelCPUClass.cpu_instance_post_init() - called in x86 CPUs'
+>     post_initfn.
 
-Reviewed-by: Nutty Liu<liujingqi@lanxincomputing.com>
+Split accel.cpu_instance_init() into cpu's instance_init() and 
+post_instance_init() does not seem right way to go.
 
-Thanks,
-Nutty
+The reason .post_instance_init() was implemented and put 
+accel_cpu_instance_init() in it for x86 cpu was that, we don't want to 
+scatter acceletor specific instance_init operation into different 
+subclass of x86 cpu (max/host/named cpu model).
+
+I think something like below should be enough.
+
+-----------8<-------------
+Author: Xiaoyao Li <xiaoyao.li@intel.com>
+Date:   Tue Jul 1 13:33:43 2025 +0800
+
+     i386/cpu: Re-apply the global props as the last step of post_init
+
+     Commit 220c739903ce ("qom: reverse order of instance_post_init calls")
+     reverses the order instance_post_init calls, which leads to
+     device_post_init() called before x86 cpu specific 
+.instance_post_init().
+
+     However, x86 cpu replies on qdev_prop_set_globals() (inside
+     device_post_init()) to apply the cpu option like "feature[=foo]" passed
+     via '-cpu' as the last step to make the '-cpu' option highest priority.
+
+     After the order change of .instance_post_init(), x86_cpu_post_initfn()
+     is called after device_post_init(), and it will change some property
+     value even though "-cpu" option specify a different one.
+
+     Re-apply the global props as the last step to ensure "-cpu" option
+     always takes highest priority.
+
+     Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0d35e95430fe..bf290262cbfe 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -9044,6 +9044,12 @@ static void x86_cpu_post_initfn(Object *obj)
+              X86_CONFIDENTIAL_GUEST(current_machine->cgs), (CPU(obj)));
+      }
+  #endif
++
++    /*
++     * Re-apply the "feature[=foo]" from '-cpu' option since they might
++     * be overwritten by above
++     */
++    qdev_prop_set_globals(DEVICE(obj));
+  }
+
+  static void x86_cpu_init_default_topo(X86CPU *cpu)
+
+
 
