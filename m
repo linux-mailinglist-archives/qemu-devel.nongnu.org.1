@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1298FAF0179
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F933AF0184
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:15:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSc-0005ga-8N; Tue, 01 Jul 2025 13:07:58 -0400
+	id 1uWeSc-0005gX-48; Tue, 01 Jul 2025 13:07:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSX-0005dl-V6
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:53 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1uWeSZ-0005fx-KD
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:55 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSW-0003c6-8A
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:53 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3a6d77b43c9so3260663f8f.3
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:51 -0700 (PDT)
+ id 1uWeSX-0003cs-N5
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:55 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-450ccda1a6eso29782355e9.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751389670; x=1751994470; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751389671; x=1751994471; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=il8MRx0ocqoWHUPwZJiya0xTcuVfrmMJ7yc2s+LkZk4=;
- b=gNuRDoOwtGnPxfg6pnuw++6cEmVsvW19K/ffHt1Mqli8CMKZRITAYYOpIhIN3I0rRe
- E+1kTGpCk3qulu1wWHZ3244weFmNraMwao8bS1HDHQ9Cm5GbVdiQN4ZIphygRAHmK4ZM
- vvBix94XrvhAHFUEFh3pKdV3fWjhhrcipmE79i5f/i7S5trmQbeTkwPF2fin0uAN/PS/
- xgWSzuWwIhxpYjkOuC5fJZ3aNEx6Hhg6Osq0oLElZdSIUBfVD3fjBoHOnf7G/ePCfB+x
- eNuk/zehfml9TT1gPa93ET7zogddJ/v8iDxpn5Gdfn6Uv9dy3bGrttEEYSsIyZml9Gmf
- 4UPA==
+ :reply-to; bh=5oBh13H1TdU88xyMHvWj3WuPRavIjEcQBhtY7QPCsZ0=;
+ b=OZJwecNvY9f5fYIsGu3MXfkhlsV61p/blWi3cQo6RJ0cQD9pDoC9MN1DxFVla8zjPq
+ VLxnQnXwRiLbzniIwLNale/ccTslAuyxMIlz3c7eabknQy8AF//xNzi12dT5GqzOj40+
+ CfLBtF6hGU8MNnNncgoGpxg8DcS9Ige0MCkMr07EUlby2lyfc370GMLkqWQculHCTmmu
+ UkM9HoLJJhJCpuvI7w5Hq6TeHYU0Wz7tE8AAGZL6X/HnpQfEqCN2J6HsMqLmqPYai4Qc
+ XvdnAUhdWn7FC8cYfZaTcQu765ohn4ryExUFeWfjxn42e8xWFdbvILEGoYs9BOckIwFu
+ epZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751389670; x=1751994470;
+ d=1e100.net; s=20230601; t=1751389671; x=1751994471;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=il8MRx0ocqoWHUPwZJiya0xTcuVfrmMJ7yc2s+LkZk4=;
- b=waeF7y1IV3BN/Ba45P50fu/d8HJeTmhVgqtlkypUAu3aK52SH73YUGor6/V7EpfZaZ
- xTYb+5BQou6N/HoMOfy96ZlCe5ynpnaT5HubtZ8dBRXr9ZOGTA9hG/e9fOXF2kFHUmO2
- dS6Zt4v0auwR/3Amggw7VTZF+VEV7lXrFuBE0VWTUgI3vPEOvw81Pu9hK/J0GRZIiTKw
- T/gpyZewKu3Qb0dr4p3bUmTYODkTYVblXgYTydiu0JFDkFzkwCnKnEAOZ3dWr2tuQufg
- pAlNEPSGE2O/b0JBHOA8M9i+yS7LCYFJoGFstiDcm/kw2fdhCGBZNuNgATFB9BddAxHy
- BgOA==
-X-Gm-Message-State: AOJu0YyHxOD79uZNcQ31RQNycM49SmupYXCghSzNpTrpmJiNpA4mJ0DI
- qZV/YBRn/vmhwL1OK+tdcXsnA0a445F6kFjlKkm9x7HpuyeKGfgnKFj+Ndo3xQM0by1gJj0Qdhg
- II0fp
-X-Gm-Gg: ASbGncstSTUpyTNK53+RvQYA8ta6ss0sQlRziZO7tBqV2LOfhjjZ5XUAObIU/K6eMUg
- e1DtpEEmEMsOuaZNFmDX0ov0+P3aXlLilbvlQyawGzOmk61MDTkqAS69c8K1uKWzyAJYQ/lkvAM
- lARMKSAx+9V/pQSKjcw9Q9FrVulq7Z7bdOU8wQPCSVZ5cSJ142FtSykl/xah3gaC1PyFC7vPZZ8
- CADT0j0vmop2xfgZ8bmx5+SY7LZSR/k9zv5DdsEe8fOZNVCNB0jeVpgmREhXsrwmTd5nekzJ9tR
- 40rXN8osn+N35YM6iWWpqy+uNQpQM3/+NVJm+iqJukbkq9yX21wa2VTVi8rz4LtHQ4G+
-X-Google-Smtp-Source: AGHT+IGkKkf4tOCZu4mKECBwrAIeXocZCtNnBQhoRgIA0HSbynB3LM2H8ULCay9YSujCnPGvxZk6xg==
-X-Received: by 2002:a05:6000:1a8c:b0:3a5:1240:6802 with SMTP id
- ffacd0b85a97d-3a90066a6e4mr16545566f8f.57.1751389670520; 
- Tue, 01 Jul 2025 10:07:50 -0700 (PDT)
+ bh=5oBh13H1TdU88xyMHvWj3WuPRavIjEcQBhtY7QPCsZ0=;
+ b=dR5ug0ZMN7HjIigpJHylG1A+OeYLwYLraGGKX3swqzQ/KGmMnY9mqQXNY68HV1flf0
+ ORYQAWixlMXeAbd5lZhZX3BOKe9vuMksHtQOZC+wL9LvcQ6KcAA0LLsLa1jDqknwNBvO
+ q/R34BmkSzYvL2Q1/ou9t17qk8BaFZPRbkGf6AonIWq1IVzZq5Wrvj9ZeDTeGyjrkGKQ
+ QHKk7A7DUOBGNnf+oHz4/342b5I0TixCZW2vI98vuNqnQJYTM/cb5mEZoJ5C/R4j90H+
+ jUdjXiBXuJ85BdwRrzlDtw3V4bBgIt369hQcew5yYsGgMhXOXw7PqHLunY8l7Pt0eh/m
+ gXTg==
+X-Gm-Message-State: AOJu0YzsBzH0eDGkFuYfQGi02JMJB667zEsi9BYSxhrZevtNdSDYVZxF
+ 8hcpRhNm/dESRrfUzAav4+CXRwDuoO9OHqsuEUbINB/sBSp7gnO7Ym4YZKBXgOu6rGRxQ2B2Dqo
+ 7EpOu
+X-Gm-Gg: ASbGncv/6sx6D4J8X97LzzlEYfI+J8G+KRomCc4EXtEfkhuiOGg8Cp3WkdEbK1fYjdl
+ jIgXgAuj44UcdoUkUiM41yfk+80ojk27h5T0m+hCbaFBDfOfaFrJmQIe4Uiia9os+5pQWiwFqw7
+ Nl0SAxPK1DTkgiaOtXIuHhcbFVuy+/fGCEImpr0mOu4yAmm7zm9HUiN8SRnJB8z35JQrfD/v1ou
+ tuO2lyjkfgXUOm5yY1yLmvrCHPoqQBSrLgPXtsd7Tgc7u1uKPUbGA18ipZVTmDffB4jflfGHhH3
+ q9yHMqn4z1s7CMydN2aTjci07CYt0VXkyqBpjSNyuSyiPNsuOPXMruJB/tkLWVXwYXdL
+X-Google-Smtp-Source: AGHT+IH/Ua17eq+goyvC5ptbIe684OdpLiLI60DdX52B3BAO5zVOHM9CLR9O1XseRE/U9J9xBQ8E8A==
+X-Received: by 2002:a05:600c:1d18:b0:444:34c7:3ed9 with SMTP id
+ 5b1f17b1804b1-4538ee7995emr172366715e9.26.1751389671365; 
+ Tue, 01 Jul 2025 10:07:51 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.49
+ ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 10:07:49 -0700 (PDT)
+ Tue, 01 Jul 2025 10:07:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/43] target/arm/hvf: Trace hv_vcpu_run() failures
-Date: Tue,  1 Jul 2025 18:07:04 +0100
-Message-ID: <20250701170720.4072660-29-peter.maydell@linaro.org>
+Subject: [PULL 29/43] accel/hvf: Trace VM memory mapping
+Date: Tue,  1 Jul 2025 18:07:05 +0100
+Message-ID: <20250701170720.4072660-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
 References: <20250701170720.4072660-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,47 +99,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Allow distinguishing HV_ILLEGAL_GUEST_STATE in trace events.
+Trace memory mapped / unmapped in the guest.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250623121845.7214-7-philmd@linaro.org
+Message-id: 20250623121845.7214-8-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/hvf/hvf.c        | 10 +++++++++-
- target/arm/hvf/trace-events |  1 +
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ meson.build               | 1 +
+ accel/hvf/trace.h         | 2 ++
+ accel/hvf/hvf-accel-ops.c | 6 ++++++
+ accel/hvf/trace-events    | 7 +++++++
+ 4 files changed, 16 insertions(+)
+ create mode 100644 accel/hvf/trace.h
+ create mode 100644 accel/hvf/trace-events
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 3c234f7b112..0943365a681 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1917,7 +1917,15 @@ int hvf_vcpu_exec(CPUState *cpu)
-     bql_unlock();
-     r = hv_vcpu_run(cpu->accel->fd);
-     bql_lock();
--    assert_hvf_ok(r);
-+    switch (r) {
-+    case HV_SUCCESS:
-+        break;
-+    case HV_ILLEGAL_GUEST_STATE:
-+        trace_hvf_illegal_guest_state();
-+        /* fall through */
-+    default:
-+        g_assert_not_reached();
-+    }
+diff --git a/meson.build b/meson.build
+index dbc97bfdf7a..b5f74aa37a7 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3630,6 +3630,7 @@ if have_block
+ endif
+ if have_system
+   trace_events_subdirs += [
++    'accel/hvf',
+     'accel/kvm',
+     'audio',
+     'backends',
+diff --git a/accel/hvf/trace.h b/accel/hvf/trace.h
+new file mode 100644
+index 00000000000..83a1883343a
+--- /dev/null
++++ b/accel/hvf/trace.h
+@@ -0,0 +1,2 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#include "trace/trace-accel_hvf.h"
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index d60446b85b8..b38977207d2 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -59,6 +59,7 @@
+ #include "system/hvf_int.h"
+ #include "system/runstate.h"
+ #include "qemu/guest-random.h"
++#include "trace.h"
  
-     /* handle VMEXIT */
-     uint64_t exit_reason = hvf_exit->reason;
-diff --git a/target/arm/hvf/trace-events b/target/arm/hvf/trace-events
-index 4fbbe4b45ec..a4870e0a5c4 100644
---- a/target/arm/hvf/trace-events
-+++ b/target/arm/hvf/trace-events
-@@ -11,3 +11,4 @@ hvf_exit(uint64_t syndrome, uint32_t ec, uint64_t pc) "exit: 0x%"PRIx64" [ec=0x%
- hvf_psci_call(uint64_t x0, uint64_t x1, uint64_t x2, uint64_t x3, uint32_t cpuid) "PSCI Call x0=0x%016"PRIx64" x1=0x%016"PRIx64" x2=0x%016"PRIx64" x3=0x%016"PRIx64" cpu=0x%x"
- hvf_vgic_write(const char *name, uint64_t val) "vgic write to %s [val=0x%016"PRIx64"]"
- hvf_vgic_read(const char *name, uint64_t val) "vgic read from %s [val=0x%016"PRIx64"]"
-+hvf_illegal_guest_state(void) "HV_ILLEGAL_GUEST_STATE"
+ HVFState *hvf_state;
+ 
+@@ -97,6 +98,7 @@ static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
+     if (macslot->present) {
+         if (macslot->size != slot->size) {
+             macslot->present = 0;
++            trace_hvf_vm_unmap(macslot->gpa_start, macslot->size);
+             ret = hv_vm_unmap(macslot->gpa_start, macslot->size);
+             assert_hvf_ok(ret);
+         }
+@@ -109,6 +111,10 @@ static int do_hvf_set_memory(hvf_slot *slot, hv_memory_flags_t flags)
+     macslot->present = 1;
+     macslot->gpa_start = slot->start;
+     macslot->size = slot->size;
++    trace_hvf_vm_map(slot->start, slot->size, slot->mem, flags,
++                     flags & HV_MEMORY_READ ?  'R' : '-',
++                     flags & HV_MEMORY_WRITE ? 'W' : '-',
++                     flags & HV_MEMORY_EXEC ?  'E' : '-');
+     ret = hv_vm_map(slot->mem, slot->start, slot->size, flags);
+     assert_hvf_ok(ret);
+     return 0;
+diff --git a/accel/hvf/trace-events b/accel/hvf/trace-events
+new file mode 100644
+index 00000000000..2fd3e127c74
+--- /dev/null
++++ b/accel/hvf/trace-events
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# See docs/devel/tracing.rst for syntax documentation.
++
++# hvf-accel-ops.c
++hvf_vm_map(uint64_t paddr, uint64_t size, void *vaddr, uint8_t flags, const char r, const char w, const char e) "paddr:0x%016"PRIx64" size:0x%08"PRIx64" vaddr:%p flags:0x%02x/%c%c%c"
++hvf_vm_unmap(uint64_t paddr, uint64_t size) "paddr:0x%016"PRIx64" size:0x%08"PRIx64
 -- 
 2.43.0
 
