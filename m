@@ -2,64 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6F0AF0204
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 447BBAF01FE
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:36:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWepe-0006zL-Ev; Tue, 01 Jul 2025 13:31:46 -0400
+	id 1uWeqU-0007vg-JM; Tue, 01 Jul 2025 13:32:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uWep1-0006YL-1D
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:31:08 -0400
-Received: from linux.microsoft.com ([13.77.154.182])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uWeov-0007Ji-IA
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:31:06 -0400
-Received: from localhost.localdomain (unknown [167.220.208.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 4EC232119398;
- Tue,  1 Jul 2025 10:30:47 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4EC232119398
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1751391050;
- bh=+Y//l1YbBSWT9WUeIyoAcZdX9+ugwF8RlxPl7j64R+M=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=LRwTvdREwCG6AuL6pDHKagwUPecqGRmAYAXx4ZAecA/N1NYnS5fQQCFgTfcR36Uju
- ZGVh9lEFMtqB1eBJwf0COfdS7IjHliBaXp+CAHZlFsdLQOGhqdalzwapg05l4R2TV8
- M39j5WCxo6Tj1GRkPOMPDj0KffbPGsGfIDjCCIa4=
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
-To: qemu-devel@nongnu.org
-Cc: Cameron Esfahani <dirty@apple.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Roman Bolshakov <rbolshakov@ddn.com>, Thomas Huth <thuth@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, Wei Liu <wei.liu@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Wei Liu <liuwe@microsoft.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Magnus Kulke <magnuskulke@microsoft.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 27/27] docs: Add mshv to documentation
-Date: Tue,  1 Jul 2025 19:28:34 +0200
-Message-Id: <20250701172834.44849-28-magnuskulke@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250701172834.44849-1-magnuskulke@linux.microsoft.com>
-References: <20250701172834.44849-1-magnuskulke@linux.microsoft.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWeqB-0007qn-Dd
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:32:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWeq8-0007jS-Lu
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:32:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751391134;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=+oSMyrCsd9PQmvJAo8VtpC0GfICKT3Ea3CYydX0cp8s=;
+ b=cdxmadMVCRc4HuxmYGYAQff/RPXxRZgLJ2QyLR1KPRV403yPF6Rg7VtNO88c7RbeUhkbDD
+ zorzxV5V0ZCFrydof4qSB0563hDPMn+197s1RPtDtfYh9ZKLwh1BZhTl4R9qXIfouBJiNZ
+ /Yiw5fXPDG2FYVYSE/8vlMgBT3eDdPg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-570-FzQD2spwOrG6J4TZi2_SKQ-1; Tue, 01 Jul 2025 13:32:13 -0400
+X-MC-Unique: FzQD2spwOrG6J4TZi2_SKQ-1
+X-Mimecast-MFC-AGG-ID: FzQD2spwOrG6J4TZi2_SKQ_1751391132
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-453a5d50b81so13202345e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:32:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751391132; x=1751995932;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+oSMyrCsd9PQmvJAo8VtpC0GfICKT3Ea3CYydX0cp8s=;
+ b=oPKjdBN1Y+ScFNYvh+pRvtvXZIDkV6DrPdaVbXuCdFka7atDNlnVciDYvdRYvqsWO/
+ cdKTQDNsLj4yCL21jlF/0zoy8Cbyioo0N4VXmeLj0NeiPJtd+qcnFFvNzCX39oW07gr6
+ Hkuymawc8QfuXV3iwZPklg2phnjozt1mPSAZ+6vhDs65xQ9F0s5YTVFqljUVJNruXYOe
+ 4xbHorK2fcVmPQ1squBA+h2wLqJzNygF9yiAfJqHwjPJBG34XSgzLlfnWLzYEiyo9bVO
+ ciKegch74lLBU38/fhoU7ydu3iJrvsQHBPSSns+W75Wq4twGJKZJVH2Q2W3sPJ80KIFA
+ uBWA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWXnxk/A5+KhtsM7RAlssnKuE+PDn0nSnFpRDWK8jx8Xei/k3sO9gOJxS8ViPapuuAVc47/EvbimWGP@nongnu.org
+X-Gm-Message-State: AOJu0YyFt6mHcwG9iL4eaC3swJivjgSm83ICnQfP5ckJb9jJ+p7bbMZa
+ /hrLaosJOWodw/hVT9aR0VdmEjDYubkm0SWZ/2Bv3D2lAVVjzUmCB3LZmOs2gTZiBE16/R3QL4H
+ 7BjxjAijSTWAPk5U8EugIHcnXUv9ktZpLLKPVpj5ITCyo0JN/BUDdhue+
+X-Gm-Gg: ASbGncu+WOrz/y6C/N6Plo02OQabjr/RgQ1eHnhGRP1GFjg/DafV3u2mB1RZBfAGHKF
+ mnvIrjpYAtDJ2HDIYbd3E0jJUAFyOr5aMQ1E9phi/VMVAk+zOlVfFVU4F43AoAtR5PU+Fa6gT2F
+ qd+zSUZ0tLryck2BraPAOiShCj9sJmn0FNZVyvFT9szwz9N1hZjrr9hXKz/v4wr1a+cb8SvdtU8
+ qnNTHkOZ1LW6KuJlw7ff6ai6IoXM425d1Iqbx73P1oIaxqdQe6mE84dFK2oyl8yAuDhWJvvjeGC
+ xy39h0pS81Bwnt84KKW9py1YNeyDHS/DMqd/dtNL6eILYCKamDJj0rHOuACoEw==
+X-Received: by 2002:a05:600c:698c:b0:441:b076:fce8 with SMTP id
+ 5b1f17b1804b1-4538ee5db08mr203962285e9.14.1751391131947; 
+ Tue, 01 Jul 2025 10:32:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFrDi1kdke+sinF7xSSSY+sFf1D6wdSqaIqUHRyD1XBs3e3Zvpcc8AVESdpb/V1u1kVCGm/mQ==
+X-Received: by 2002:a05:600c:698c:b0:441:b076:fce8 with SMTP id
+ 5b1f17b1804b1-4538ee5db08mr203961915e9.14.1751391131467; 
+ Tue, 01 Jul 2025 10:32:11 -0700 (PDT)
+Received: from [192.168.0.6] (ltea-047-064-114-041.pools.arcor-ip.net.
+ [47.64.114.41]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a88c7e74fbsm14023459f8f.10.2025.07.01.10.32.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Jul 2025 10:32:10 -0700 (PDT)
+Message-ID: <55f15763-9b67-418f-a670-9a1bbd55d3f8@redhat.com>
+Date: Tue, 1 Jul 2025 19:32:09 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=13.77.154.182;
- envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/6] treewide: fix paths for relocated files in comments
+To: Sean Wei <me@sean.taipei>, qemu-devel@nongnu.org
+Cc: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ Jesper Devantier <foss@defmacro.it>, Peter Maydell
+ <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>,
+ "open list:nvme" <qemu-block@nongnu.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+References: <20250616.qemu.relocated@sean.taipei>
+ <20250616.qemu.relocated.06@sean.taipei>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250616.qemu.relocated.06@sean.taipei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,76 +155,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added mshv to the list of accelerators in doc text.
+On 16/06/2025 17.51, Sean Wei wrote:
+> After the docs directory restructuring, several comments
+> refer to paths that no longer exist.
+> 
+> Replace these references to the current file locations
+> so readers can find the correct files.
+> 
+> Related commits
+> ---------------
+> 
+>    189c099f75f (Jul 2021)
+>      docs: collect the disparate device emulation docs into one section
+>      Rename  docs/system/{ => devices}/nvme.rst
+> 
+>    5f4c96b779f (Feb 2023)
+>      docs/system/loongarch: update loongson3.rst and rename it to virt.rst
+>      Rename  docs/system/loongarch/{loongson3.rst => virt.rst}
+> 
+>    fe0007f3c1d (Sep 2023)
+>      exec: Rename cpu.c -> cpu-target.c
+>      Rename  cpus-common.c => cpu-common.c
+> 
+>    42fa9665e59 (Apr 2025)
+>      exec: Restrict 'cpu_ldst.h' to accel/tcg/
+>      Rename  include/{exec/cpu_ldst.h => accel/tcg/cpu-ldst.h}
+> 
+> Signed-off-by: Sean Wei <me@sean.taipei>
+> ---
+>   docs/spin/tcg-exclusive.promela | 4 ++--
+>   hw/nvme/ctrl.c                  | 2 +-
+>   target/arm/cpu.c                | 2 +-
+>   target/loongarch/README         | 2 +-
+>   4 files changed, 5 insertions(+), 5 deletions(-)
 
-Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
----
- docs/devel/codebase.rst |  2 +-
- qemu-options.hx         | 16 ++++++++--------
- 2 files changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
-index 2a3143787a..69d8827117 100644
---- a/docs/devel/codebase.rst
-+++ b/docs/devel/codebase.rst
-@@ -48,7 +48,7 @@ yet, so sometimes the source code is all you have.
- * `accel <https://gitlab.com/qemu-project/qemu/-/tree/master/accel>`_:
-   Infrastructure and architecture agnostic code related to the various
-   `accelerators <Accelerators>` supported by QEMU
--  (TCG, KVM, hvf, whpx, xen, nvmm).
-+  (TCG, KVM, hvf, whpx, xen, nvmm, mshv).
-   Contains interfaces for operations that will be implemented per
-   `target <https://gitlab.com/qemu-project/qemu/-/tree/master/target>`_.
- * `audio <https://gitlab.com/qemu-project/qemu/-/tree/master/audio>`_:
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 1f862b19a6..a749edff04 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -28,7 +28,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
-     "-machine [type=]name[,prop[=value][,...]]\n"
-     "                selects emulated machine ('-machine help' for list)\n"
-     "                property accel=accel1[:accel2[:...]] selects accelerator\n"
--    "                supported accelerators are kvm, xen, hvf, nvmm, whpx or tcg (default: tcg)\n"
-+    "                supported accelerators are kvm, xen, hvf, nvmm, whpx, mshv or tcg (default: tcg)\n"
-     "                vmport=on|off|auto controls emulation of vmport (default: auto)\n"
-     "                dump-guest-core=on|off include guest memory in a core dump (default=on)\n"
-     "                mem-merge=on|off controls memory merge support (default: on)\n"
-@@ -65,10 +65,10 @@ SRST
- 
-     ``accel=accels1[:accels2[:...]]``
-         This is used to enable an accelerator. Depending on the target
--        architecture, kvm, xen, hvf, nvmm, whpx or tcg can be available.
--        By default, tcg is used. If there is more than one accelerator
--        specified, the next one is used if the previous one fails to
--        initialize.
-+        architecture, kvm, xen, hvf, nvmm, whpx, mshv or tcg can be
-+        available. By default, tcg is used. If there is more than one
-+        accelerator specified, the next one is used if the previous one
-+        fails to initialize.
- 
-     ``vmport=on|off|auto``
-         Enables emulation of VMWare IO port, for vmmouse etc. auto says
-@@ -221,7 +221,7 @@ ERST
- 
- DEF("accel", HAS_ARG, QEMU_OPTION_accel,
-     "-accel [accel=]accelerator[,prop[=value][,...]]\n"
--    "                select accelerator (kvm, xen, hvf, nvmm, whpx or tcg; use 'help' for a list)\n"
-+    "                select accelerator (kvm, xen, hvf, nvmm, whpx, mshv or tcg; use 'help' for a list)\n"
-     "                igd-passthru=on|off (enable Xen integrated Intel graphics passthrough, default=off)\n"
-     "                kernel-irqchip=on|off|split controls accelerated irqchip support (default=on)\n"
-     "                kvm-shadow-mem=size of KVM shadow MMU in bytes\n"
-@@ -236,8 +236,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
- SRST
- ``-accel name[,prop=value[,...]]``
-     This is used to enable an accelerator. Depending on the target
--    architecture, kvm, xen, hvf, nvmm, whpx or tcg can be available. By
--    default, tcg is used. If there is more than one accelerator
-+    architecture, kvm, xen, hvf, nvmm, whpx, mshv or tcg can be available.
-+    By default, tcg is used. If there is more than one accelerator
-     specified, the next one is used if the previous one fails to
-     initialize.
- 
--- 
-2.34.1
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
