@@ -2,61 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F404AEFEB2
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 17:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F166FAEFF13
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 18:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWdIT-0003Ey-Vw; Tue, 01 Jul 2025 11:53:26 -0400
+	id 1uWdVx-0002tz-Dx; Tue, 01 Jul 2025 12:07:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uWdIR-0003Cm-Ej
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 11:53:23 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uWdVo-0002sC-87
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 12:07:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uWdIP-00039t-55
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 11:53:22 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uWdVj-0000Mn-5R
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 12:07:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751385199;
+ s=mimecast20190719; t=1751386021;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=8QXwFjRIHs0pUvwU7CzS2qXsyJk4zCyLuvRLWkWxqIw=;
- b=FCKaEo12b+Gq2YO6VByIep2TTxfE70rzUJJJapZPictji0IIRgfvnR19NW0f1U5Kga6ACm
- FjgCq5/Ox2/y8Mxr0wP67AFcj9OakeFC/Jm2sHv48kxeS6BxQhx9D9EMLlYXg3mWG1R/io
- sxdt70AAWj2AcmYBcq/sW+50dEbt4MY=
+ bh=OANjoBvVLf6xMXLThwWS0hhZV0+SpHpMDNDI4sHOTSQ=;
+ b=Hc5+2dN7V8XkC5EBUV/OnLQh31TIfLYehl1CSEDfR+ZAumc5V+gm3KqXmHWPuH7/MqdWGy
+ PryDP/GjF5MrIvut7lcQ3NMQeE5iulpSLjT/9P1/kkY7zX+S3QepZMfCBQj4kPUf7fE7Dz
+ 3TjAxTvbEKw/T410D0E3mGKPHFdqmtk=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-32-8dFdZcrZPzO_YEYiDvduzg-1; Tue,
- 01 Jul 2025 11:53:16 -0400
-X-MC-Unique: 8dFdZcrZPzO_YEYiDvduzg-1
-X-Mimecast-MFC-AGG-ID: 8dFdZcrZPzO_YEYiDvduzg_1751385195
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-568-0VCybmYhOPOIp4N0ampxqw-1; Tue,
+ 01 Jul 2025 12:06:57 -0400
+X-MC-Unique: 0VCybmYhOPOIp4N0ampxqw-1
+X-Mimecast-MFC-AGG-ID: 0VCybmYhOPOIp4N0ampxqw_1751386015
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3CB1F19560AE; Tue,  1 Jul 2025 15:53:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.34.118])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE7121944CE7; Tue,  1 Jul 2025 15:53:12 +0000 (UTC)
-Date: Tue, 1 Jul 2025 17:53:10 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: Fiona Ebner <f.ebner@proxmox.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, eblake@redhat.com, armbru@redhat.com
-Subject: Re: [PATCH] block: include 'file' child node name in block device info
-Message-ID: <aGQEZiOSyQLMMEW7@redhat.com>
-References: <20250630141421.1558724-1-f.ebner@proxmox.com>
- <81cb7080-cf5e-4049-82f8-e009aac93cdc@redhat.com>
+ id 2832719560A2; Tue,  1 Jul 2025 16:06:54 +0000 (UTC)
+Received: from localhost (dhcp-192-236.str.redhat.com [10.33.192.236])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BEC191800284; Tue,  1 Jul 2025 16:06:51 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, richard.henderson@linaro.org,
+ alex.bennee@linaro.org, maz@kernel.org, oliver.upton@linux.dev,
+ sebott@redhat.com, shameerali.kolothum.thodi@huawei.com,
+ armbru@redhat.com, berrange@redhat.com, abologna@redhat.com,
+ jdenemar@redhat.com, agraf@csgraf.de, shahuang@redhat.com,
+ mark.rutland@arm.com, philmd@linaro.org, pbonzini@redhat.com
+Subject: Re: [PATCH v8 13/14] arm/cpu: switch to a generated cpu-sysregs.h.inc
+In-Reply-To: <CAFEAcA9OXi4v+hdBMamQv85HYp2EqxOA5=nfsdZ5E3nf8RP_pw@mail.gmail.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Avril Crosse O'Flaherty"
+References: <20250617153931.1330449-1-cohuck@redhat.com>
+ <20250617153931.1330449-14-cohuck@redhat.com>
+ <CAFEAcA9OXi4v+hdBMamQv85HYp2EqxOA5=nfsdZ5E3nf8RP_pw@mail.gmail.com>
+User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
+Date: Tue, 01 Jul 2025 18:06:49 +0200
+Message-ID: <87bjq3rj3a.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <81cb7080-cf5e-4049-82f8-e009aac93cdc@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -65,7 +76,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,38 +92,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 01.07.2025 um 15:04 hat Hanna Czenczek geschrieben:
-> On 30.06.25 16:06, Fiona Ebner wrote:
-> > In combination with using a throttle filter to enforce IO limits for
-> > a guest device, knowing the 'file' child of a block device can be
-> > useful. If the throttle filter is only intended for guest IO, block
-> > jobs should not also be limited by the throttle filter, so the
-> > block operations need to be done with the 'file' child of the top
-> > throttle node as the target. In combination with mirroring, the name
-> > of that child is not fixed.
-> > 
-> > Another scenario is when unplugging a guest device after mirroring
-> > below a top throttle node, where the mirror target is added explicitly
-> > via blockdev-add. After mirroring, the target becomes the new 'file'
-> > child of the throttle node. For unplugging, both the top throttle node
-> > and the mirror target need to be deleted, because only implicitly
-> > added child nodes are deleted automatically, and the current 'file'
-> > child of the throttle node was explicitly added (as the mirror
-> > target).
-> 
-> Why not return a map of all children?
+On Mon, Jun 30 2025, Peter Maydell <peter.maydell@linaro.org> wrote:
 
-I had the same thought, just didn't get around to actually replying. I
-think "a map" in this context will be a list of objects, like this:
+> On Tue, 17 Jun 2025 at 16:41, Cornelia Huck <cohuck@redhat.com> wrote:
+>>
+>> Generated against Linux 6.15.
+>>
+>> Reviewed-by: Sebastian Ott <sebott@redhat.com>
+>> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+>> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+>
+> Stripping out all the lines that just moved around,
+> here are the additions:
+>
+>> +DEF(ID_AFR0_EL1, 3, 0, 0, 1, 3)
+>
+> This is ARMCPU::id_afr0. If we want to store this in
+> the idregs[] array that's fine but we ought to move it.
+>
 
-    "children": [
-        { "child": "file", "node-name": "foo" },
-        { "child": "backing", "node-name": "bar" }
-    ]
+I guess the *afr* regs fell into the cracks because they were not in the
+isar struct -- makes sense to move them.
 
-Which as a side effect automatically gives us extensibility if we ever
-want to expose more details of BdrvChild.
+(This reg "must be interpreted with" MIDR_EL1; I'm wondering if that has
+any implications once we enlighten guests with possible midr/revidr/aidr
+values.)
 
-Kevin
+
+>> +DEF(ID_AA64PFR2_EL1, 3, 0, 0, 4, 2)
+>
+>> +DEF(ID_AA64FPFR0_EL1, 3, 0, 0, 4, 7)
+>
+>> +DEF(ID_AA64DFR2_EL1, 3, 0, 0, 5, 2)
+>
+> These are all ID registers we don't implement yet
+> because we don't implement any features that are
+> described in them (i.e. our implementation is RAZ/WI).
+> I guess it's OK to list them here, though we won't
+> do anything with the array entry.
+
+I don't think it hurts to include them, it makes things easier when we
+want to deal with non-zero values in there via kvm.
+
+>
+>> +DEF(ID_AA64AFR0_EL1, 3, 0, 0, 5, 4)
+>
+> ARMCPU::id_aa64afr0
+>
+>> +DEF(ID_AA64AFR1_EL1, 3, 0, 0, 5, 5)
+>
+> ARMCPU::id_aa64afr1
+>
+>> +DEF(ID_AA64ISAR3_EL1, 3, 0, 0, 6, 3)
+>
+>> +DEF(ID_AA64MMFR4_EL1, 3, 0, 0, 7, 4)
+>
+> More ID regs for features we don't implement yet.
+>
+>> +DEF(CCSIDR_EL1, 3, 1, 0, 0, 0)
+>
+> CCSIDR_EL1 isn't a single ID register, it's an array
+> of them (indexed by CCSELR_EL1). We keep them in
+> ARMCPU::ccsidr[]. I don't think it makes sense to
+> have an entry in isar.idregs[] for this.
+
+Hm, IIUC, kvm gets the correct CCSIDR_EL1 under the covers already
+(i.e. no array).
+
+>
+>> +DEF(CLIDR_EL1, 3, 1, 0, 0, 1)
+>
+> ARMCPU::clidr
+>
+>> +DEF(CCSIDR2_EL1, 3, 1, 0, 0, 2)
+>
+> This is an array too.
+
+Currently, kvm handles this as undef.
+
+(I think the whole cache stuff might be a bit of a headache.)
+
+>
+>> +DEF(GMID_EL1, 3, 1, 0, 0, 4)
+>
+> Another ID register for a feature we don't yet implement
+> (and a slightly oddball one in that it should UNDEF
+> until we do implement FEAT_MTE2).
+>
+>> +DEF(SMIDR_EL1, 3, 1, 0, 0, 6)
+>
+> We implement this as a fixed zero in helper.c.
+
+Undef in kvm.
+
+>
+>> +DEF(DCZID_EL0, 3, 3, 0, 0, 7)
+>
+> We construct the value of this one in aa64_dczid_read()
+> based on ARMCPU::dcz_blocksize plus some runtime info.
+
+That one's another bit of a headache (I didn't manage to spot kvm code
+dealing with it.)
+
+I'll move the *afr* ones, not yet quite sure how to deal with the cache
+related ones.
 
 
