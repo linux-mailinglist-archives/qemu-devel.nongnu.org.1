@@ -2,64 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90ED1AEFD5D
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 045E9AEFD0E
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:49:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWcBL-0006fz-5S; Tue, 01 Jul 2025 10:41:59 -0400
+	id 1uWcH4-00008p-4Z; Tue, 01 Jul 2025 10:47:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uWcAv-0006H5-QQ; Tue, 01 Jul 2025 10:41:33 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uWcG6-0007vc-JB
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:47:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uWcAs-0006sh-Cj; Tue, 01 Jul 2025 10:41:33 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bWm0x4y7Bz6L52Z;
- Tue,  1 Jul 2025 22:40:49 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 962CE14027A;
- Tue,  1 Jul 2025 22:41:12 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 1 Jul
- 2025 16:41:11 +0200
-Date: Tue, 1 Jul 2025 15:41:10 +0100
-To: Eric Auger <eric.auger@redhat.com>
-CC: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>, Peter Maydell
- <peter.maydell@linaro.org>, <mst@redhat.com>, Zhijian Li
- <lizhijian@fujitsu.com>, Itaru Kitayama <itaru.kitayama@linux.dev>,
- <linuxarm@huawei.com>, <linux-cxl@vger.kernel.org>, <qemu-arm@nongnu.org>,
- "Yuquan Wang" <wangyuquan1236@phytium.com.cn>, Philippe
- =?ISO-8859-1?Q?Mathieu-Dau?= =?ISO-8859-1?Q?d=E9?= <philmd@linaro.org>, Alex
- =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH qemu v16 3/5] hw/arm/virt: Basic CXL enablement on
- pci_expander_bridge instances pxb-cxl
-Message-ID: <20250701154110.00007675@huawei.com>
-In-Reply-To: <4ceea721-b633-499e-9fcd-735990ee0704@redhat.com>
-References: <20250625161926.549812-1-Jonathan.Cameron@huawei.com>
- <20250625161926.549812-4-Jonathan.Cameron@huawei.com>
- <4ceea721-b633-499e-9fcd-735990ee0704@redhat.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uWcG0-0007Wt-QT
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:46:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751381204;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UMC/A6RAs43ZKJp/HNwTuRg/0+rMwp9YxcboB6r83i0=;
+ b=LWhblFzOkY+LyHxT5wga1rkJlC6eniHuSrm9FOaqlBc5opGlaz4CJEiZs2JJl9aThm9rxs
+ jfAKYgEAhFn2Li6UWNDflAlH4CauM7NDzSjNv6EKxLYM8P3VN6kpnEJh2r3lnenARZviKq
+ 7i+AjBnhLyoIOMY7f7254/AOekZhbX4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-LZVLWg9nNY2RSCYceWSwQQ-1; Tue, 01 Jul 2025 10:46:42 -0400
+X-MC-Unique: LZVLWg9nNY2RSCYceWSwQQ-1
+X-Mimecast-MFC-AGG-ID: LZVLWg9nNY2RSCYceWSwQQ_1751381201
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-450d290d542so36974735e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 07:46:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751381201; x=1751986001;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UMC/A6RAs43ZKJp/HNwTuRg/0+rMwp9YxcboB6r83i0=;
+ b=gXIFvk8KA6APoAThahqSXtvXN7Q77jfeA8DM+cZZO38dkBTZ19KOaaYEfleh06StPU
+ tGvDuFZIbn66Hj9RqyxE0vm9i7+xMwVmeyIXtCNo5k8MteCPp9fNLfSn8hIID1C2susN
+ cRsR5N5BWzXXrYhQSf/CmwOOlRr70Ijk9Sb5jNHtLU7zrANEQdZbqMBT4GtSxA6G6G+x
+ v/w7zcWxdAhJLBd7oMcbR8Ja6oJ2XtYr8Ofc2vJlyxAUaAECsttCW8hsltqMX0Wsf7Y6
+ wAvCrRIe7e4us6Aft9umA1C2r8J6NnPRyvhyxqWem0XGtbJGe2Cp/mUH7M7F8UjIzB3L
+ FAzg==
+X-Gm-Message-State: AOJu0Yy5yHsic0OO4owA9OkACaO7/rnOwh/dLECcPAQMVYId4nugoe5M
+ nTeH4Nc0R2bwMghneD1lNu85kOLnF3+QXnPyIOuXtzCXiGusmNfBk2xnVvcEV500NXYk/YO3hOt
+ 7EiUonyClSGIzWOA1KCkCUnEEDaqYR3o/Ma2cwhly9IYZ6McYhJUzkYYR
+X-Gm-Gg: ASbGncv8BSyMhIYBakUQIhRtJ/gpB8i+yxs5aaGDHupwbL/l9SKFU7M9LAAA2LjrCCo
+ J1hps6w6oqiGcSedA4hie7s6IbT18adJRknrQM3o8qblxHFLeDwVKhg09x2IOkPOmRvOpct7fmt
+ 4u8e95OITticTtge3/H3ZZRTA/S58VlSBphzpWogAXG5Pfp2Ipn8zhrAWEaN/0DP1swFSvAIdii
+ l4qdO6yJ+YlWxTKSNnVnNuuMlwfuSQyMH4ROl96CqLgROdewaevMOOxv9cK4CDLDcyU2YhknHk0
+ y6NB+EzHDWG4UxmPLWOPwCCFEGD8fQIULN22BrmwrNRe5Mz7zHEB1jm94g8mJFsx4XxowvCd5NG
+ 1c+eMFBBgeLYvllhrZlGKqQJoVEpzBs4pM9vBAp0YAvJslfmxVoU=
+X-Received: by 2002:a05:600c:190b:b0:44b:eb56:1d48 with SMTP id
+ 5b1f17b1804b1-4538ee4f88cmr199617435e9.4.1751381201013; 
+ Tue, 01 Jul 2025 07:46:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMeT/YY3inTBxyQTVgKTSbxEEAcLrxTan0VXaWX4UKFD0XhfIh5lEoacPC6K7bTh61p79v7w==
+X-Received: by 2002:a05:600c:190b:b0:44b:eb56:1d48 with SMTP id
+ 5b1f17b1804b1-4538ee4f88cmr199617085e9.4.1751381200512; 
+ Tue, 01 Jul 2025 07:46:40 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d700:f3aa:cbe1:b363:ae39:fc99?
+ (p200300cfd700f3aacbe1b363ae39fc99.dip0.t-ipconnect.de.
+ [2003:cf:d700:f3aa:cbe1:b363:ae39:fc99])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-453823ad03asm200375865e9.23.2025.07.01.07.46.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Jul 2025 07:46:39 -0700 (PDT)
+Message-ID: <18f6275a-dee0-4df4-85e3-efaf81a7724d@redhat.com>
+Date: Tue, 1 Jul 2025 16:46:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] block: implement 'resize' callback for child_of_bds
+ class
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, stefanha@redhat.com,
+ fam@euphon.net
+References: <20250630113035.820557-1-f.ebner@proxmox.com>
+ <20250630113035.820557-4-f.ebner@proxmox.com>
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20250630113035.820557-4-f.ebner@proxmox.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,74 +108,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 1 Jul 2025 15:26:26 +0200
-Eric Auger <eric.auger@redhat.com> wrote:
+On 30.06.25 13:27, Fiona Ebner wrote:
+> If a node below a filter node is resized, the size of the filter node
+> is now also refreshed (recursively for filter parents).
+>
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> ---
+>   block.c                          | 12 ++++++++++++
+>   include/block/block_int-common.h |  2 +-
+>   2 files changed, 13 insertions(+), 1 deletion(-)
 
-> Hi Jonathan,
-> 
-> On 6/25/25 6:19 PM, Jonathan Cameron via wrote:
-> > Code based on i386/pc enablement.
-> > The memory layout places space for 16 host bridge register regions after
-> > the GIC_REDIST2 in the extended memmap. This is a hole in the current
-> > map so adding them here has no impact on placement of other memory regions
-> > (tested with enough CPUs for GIC_REDIST2 to be in use.)  
-> 
-> Doesn't it depend on the init RAM size setting.
-> if the init RAM top + REDIST2 aligns to a 256MB boundary (size of the
-> PCI ECAM) aren't you likely to have no hole?
+What does this do for block job filter nodes, like mirror?  If they 
+changed their length, we might have to consider whether the job also 
+needs to be amended somehow.
 
-Hi Eric,
+However, I assume it’s a safe (conservative) change for them because 
+such drivers don’t implement bdrv_co_getlength(), so 
+bdrv_co_refresh_total_sectors() will not change anything.  Is that right 
+and intended?
 
-Is that possible?  I think the device_memory_base being force to align
-to a 1 GiB means that never happens.  That seems to occur even
-if there is no device_memory.  
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
-    device_memory_base =
-        ROUND_UP(vms->memmap[VIRT_MEM].base + ms->ram_size, GiB);
-    device_memory_size = ms->maxram_size - ms->ram_size + ms->ram_slots * GiB;
+(Babbling below.)
 
-    /* Base address of the high IO region */
-    memtop = base = device_memory_base + ROUND_UP(device_memory_size, GiB);
-//So here we are GiB aligned.
-...
+> diff --git a/block.c b/block.c
+> index bfd4340b24..449f814ebe 100644
+> --- a/block.c
+> +++ b/block.c
+> @@ -1497,6 +1497,17 @@ static void GRAPH_WRLOCK bdrv_child_cb_detach(BdrvChild *child)
+>       }
+>   }
+>   
+> +static void coroutine_fn GRAPH_RDLOCK bdrv_child_cb_resize(BdrvChild *child)
+> +{
+> +    BlockDriverState *bs = child->opaque;
+> +
+> +    if (bs->drv && bs->drv->is_filter) {
 
-    if (base < vms->memmap[VIRT_MEM].base + LEGACY_RAMLIMIT_BYTES) {
-        base = vms->memmap[VIRT_MEM].base + LEGACY_RAMLIMIT_BYTES;
-    }
+Checking the role for BDRV_CHILD_FILTERED would be more generic; but it 
+would cause 'raw' nodes to be updated, too.  But I don’t know whether we 
+want that or not, and excluding raw (i.e. not changing behavior there) 
+is certainly the safe option.
 
-//That's 256 GiB in or leave it alone as more than that but GiB aligned.
+> +        /* Best effort, ignore errors. */
+> +        bdrv_co_refresh_total_sectors(bs, bs->total_sectors);
+> +        bdrv_co_parent_cb_resize(bs);
 
-   /* We know for sure that at least the memory fits in the PA space */
-    vms->highest_gpa = memtop - 1;
+This makes me wonder whether bdrv_co_refresh_total_sectors() should 
+itself call bdrv_co_parent_cb_resize().  Still not quite sure; if the 
+underlying image file is resized by an external party (and we notice 
+this by accident, more or less), maybe the guest device should be informed.
 
-    virt_set_high_memmap(vms, base, pa_bits);
+(One thing to consider, maybe, are nodes that unshare the resize 
+permission for a child.  It’s probably not clever to call the resize CB 
+if that permission is unshared, so maybe just from that perspective, we 
+should keep that CB strictly inside of that explicit truncate path that 
+checks that permission (at least when growing images...).)
 
+Anyway, again, this is the safe option.
 
-So I think I'm fine. I should call out that REDIST2 is GiB
-aligned though in this patch description.
-> 
-> 
-> >
-> > The CFMWs are placed above the extended memmap.  Note the confusing
-> > existing variable highest_gpa is the highest_gpa that has been allocated
-> > at a particular point in setting up the memory map.  
-> what kind of improvement would you foresee wrt highest_gpa?
+Hanna
 
-This was mostly a response to Peter expressed that he was expecting
-highest_gpa to reflect the limit, not the highest yet seen.
-
-I'm not sure how to resolve that without having awkward naming
-like highest_gpa_sofar. There are existing comments where it is updated
-so I'm not thinking we need to change anything for this.
-
-
-Thanks for taking a look,
-
-Jonathan
+> +    }
+> +}
+> +
+>   static int bdrv_child_cb_update_filename(BdrvChild *c, BlockDriverState *base,
+>                                            const char *filename,
+>                                            bool backing_mask_protocol,
+> @@ -1529,6 +1540,7 @@ const BdrvChildClass child_of_bds = {
+>       .detach          = bdrv_child_cb_detach,
+>       .inactivate      = bdrv_child_cb_inactivate,
+>       .change_aio_ctx  = bdrv_child_cb_change_aio_ctx,
+> +    .resize          = bdrv_child_cb_resize,
+>       .update_filename = bdrv_child_cb_update_filename,
+>       .get_parent_aio_context = child_of_bds_get_parent_aio_context,
+>   };
+> diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+> index 692a9696d1..6670db2f85 100644
+> --- a/include/block/block_int-common.h
+> +++ b/include/block/block_int-common.h
+> @@ -1023,7 +1023,7 @@ struct BdrvChildClass {
+>       /*
+>        * Notifies the parent that the child was resized.
+>        */
+> -    void (*resize)(BdrvChild *child);
+> +    void GRAPH_RDLOCK_PTR (*resize)(BdrvChild *child);
+>   
+>       /*
+>        * Returns a name that is supposedly more useful for human users than the
 
 
