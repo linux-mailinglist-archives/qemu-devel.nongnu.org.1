@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129E9AF01E1
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AC4AF01D9
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:30:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWenm-0003ww-16; Tue, 01 Jul 2025 13:29:50 -0400
+	id 1uWenn-0003y7-3S; Tue, 01 Jul 2025 13:29:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uWeni-0003iM-Ii
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:29:46 -0400
+ id 1uWenj-0003np-Mp
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:29:47 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uWenc-0006jf-7a
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:29:46 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uWeng-0006ln-5d
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:29:47 -0400
 Received: from localhost.localdomain (unknown [167.220.208.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 4C1632112234;
- Tue,  1 Jul 2025 10:29:35 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4C1632112234
+ by linux.microsoft.com (Postfix) with ESMTPSA id 6F53C2112236;
+ Tue,  1 Jul 2025 10:29:39 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6F53C2112236
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1751390979;
- bh=zf2TV5FOzkuzCPJD7r+iNLBabEyrEw/LvBzD8827WT8=;
+ s=default; t=1751390983;
+ bh=Y4vhPW1L/apWF7A2PygowCDp5jO99b8a9HgfYCjLboI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=J3a4DYeIan81StTRhJu3Bx+xoCIwt0Wb62hrTRbgALSL7GG+4FU79Sm4uqCdPHHXj
- Cd4ZtK+PoicjR7JmkMHrG+Xw/8qJYI3vmJH7EWgrDI4L1sQzrTcVxpgAuSmGnRcYgH
- gvrJyLzPa1UP+exyq/vKF3MhB/eEMmnzk6KXI4ac=
+ b=hycZXmQZF60SDp6nNrn1MYE18EJXtTfFFU1NarpNWbg/EuM1KC/ZhBIzdniwggSjb
+ gwM7RytFV6O74eg37fLRDjm83RSdohXNxDZLe0Q2gaJwVGadaD7qNoqbkgqQ3mVLtK
+ SjxAYfdzQx6gKJmawKtjpV3wltEo50cWmZ0S2Z08=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: Cameron Esfahani <dirty@apple.com>,
@@ -43,10 +43,9 @@ Cc: Cameron Esfahani <dirty@apple.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 09/27] accel/mshv: Register guest memory regions with
- hypervisor
-Date: Tue,  1 Jul 2025 19:28:16 +0200
-Message-Id: <20250701172834.44849-10-magnuskulke@linux.microsoft.com>
+Subject: [PATCH v2 10/27] accel/mshv: Add ioeventfd support
+Date: Tue,  1 Jul 2025 19:28:17 +0200
+Message-Id: <20250701172834.44849-11-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250701172834.44849-1-magnuskulke@linux.microsoft.com>
 References: <20250701172834.44849-1-magnuskulke@linux.microsoft.com>
@@ -76,216 +75,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle region_add events by invoking the MSHV memory registration
-ioctl to map guest memory into the hypervisor partition. This allows
-the guest to access memory through MSHV-managed mappings.
-
-Note that this assumes the hypervisor will accept regions that overlap
-in userspace_addr. Currently that's not the case, it will be addressed
-in a later commit in the series.
+Implement ioeventfd registration in the MSHV accelerator backend to
+handle guest-triggered events. This enables integration with QEMU's
+eventfd-based I/O mechanism.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- accel/mshv/mem.c        | 127 +++++++++++++++++++++++++++++++++++++++-
- accel/mshv/trace-events |  16 +++++
- include/system/mshv.h   |  11 ++++
- 3 files changed, 151 insertions(+), 3 deletions(-)
+ accel/mshv/mshv-all.c   | 116 ++++++++++++++++++++++++++++++++++++++++
+ accel/mshv/trace-events |   3 ++
+ include/system/mshv.h   |   8 +++
+ 3 files changed, 127 insertions(+)
 
-diff --git a/accel/mshv/mem.c b/accel/mshv/mem.c
-index eddd83ae83..f51e9fee8e 100644
---- a/accel/mshv/mem.c
-+++ b/accel/mshv/mem.c
-@@ -13,13 +13,134 @@
+diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
+index 712e651627..2ae9d1cffa 100644
+--- a/accel/mshv/mshv-all.c
++++ b/accel/mshv/mshv-all.c
+@@ -7,6 +7,7 @@
+  *  Ziqiao Zhou       <ziqiaozhou@microsoft.com>
+  *  Magnus Kulke      <magnuskulke@microsoft.com>
+  *  Jinank Jain       <jinankjain@microsoft.com>
++ *  Wei Liu           <liuwe@microsoft.com>
+  *
+  * This work is licensed under the terms of the GNU GPL, version 2 or later.
+  * See the COPYING file in the top-level directory.
+@@ -236,11 +237,126 @@ static void mem_region_del(MemoryListener *listener,
+     memory_region_unref(section->mr);
+ }
  
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
-+#include "linux/mshv.h"
- #include "system/address-spaces.h"
- #include "system/mshv.h"
-+#include "exec/memattrs.h"
-+#include <sys/ioctl.h>
-+#include "trace.h"
++typedef enum {
++    DATAMATCH_NONE,
++    DATAMATCH_U32,
++    DATAMATCH_U64,
++} DatamatchTag;
 +
-+static int set_guest_memory(int vm_fd, const mshv_user_mem_region *region)
++typedef struct {
++    DatamatchTag tag;
++    union {
++        uint32_t u32;
++        uint64_t u64;
++    } value;
++} Datamatch;
++
++/* flags: determine whether to de/assign */
++static int ioeventfd(int vm_fd, int event_fd, uint64_t addr, Datamatch dm,
++                     uint32_t flags)
 +{
-+    int ret;
++    mshv_user_ioeventfd args = {0};
++    args.fd = event_fd;
++    args.addr = addr;
++    args.flags = flags;
 +
-+    ret = ioctl(vm_fd, MSHV_SET_GUEST_MEMORY, region);
-+    if (ret < 0) {
-+        error_report("failed to set guest memory");
-+        return -errno;
-+    }
-+
-+    return 0;
-+}
-+
-+static int map_or_unmap(int vm_fd, const MshvMemoryRegion *mr, bool map)
-+{
-+    struct mshv_user_mem_region region = {0};
-+
-+    region.guest_pfn = mr->guest_phys_addr >> MSHV_PAGE_SHIFT;
-+    region.size = mr->memory_size;
-+    region.userspace_addr = mr->userspace_addr;
-+
-+    if (!map) {
-+        region.flags |= (1 << MSHV_SET_MEM_BIT_UNMAP);
-+        trace_mshv_unmap_memory(mr->userspace_addr, mr->guest_phys_addr,
-+                                mr->memory_size);
-+        return set_guest_memory(vm_fd, &region);
-+    }
-+
-+    region.flags = BIT(MSHV_SET_MEM_BIT_EXECUTABLE);
-+    if (!mr->readonly) {
-+        region.flags |= BIT(MSHV_SET_MEM_BIT_WRITABLE);
-+    }
-+
-+    trace_mshv_map_memory(mr->userspace_addr, mr->guest_phys_addr,
-+                          mr->memory_size);
-+    return set_guest_memory(vm_fd, &region);
-+}
-+
-+static int set_memory(const MshvMemoryRegion *mshv_mr, bool add)
-+{
-+    int ret = 0;
-+
-+    if (!mshv_mr) {
-+        error_report("Invalid mshv_mr");
-+        return -1;
-+    }
-+
-+    trace_mshv_set_memory(add, mshv_mr->guest_phys_addr,
-+                          mshv_mr->memory_size,
-+                          mshv_mr->userspace_addr, mshv_mr->readonly,
-+                          ret);
-+    return map_or_unmap(mshv_state->vm, mshv_mr, add);
-+}
-+
-+/*
-+ * Calculate and align the start address and the size of the section.
-+ * Return the size. If the size is 0, the aligned section is empty.
-+ */
-+static hwaddr align_section(MemoryRegionSection *section, hwaddr *start)
-+{
-+    hwaddr size = int128_get64(section->size);
-+    hwaddr delta, aligned;
-+
-+    /*
-+     * works in page size chunks, but the function may be called
-+     * with sub-page size and unaligned start address. Pad the start
-+     * address to next and truncate size to previous page boundary.
-+     */
-+    aligned = ROUND_UP(section->offset_within_address_space,
-+                       qemu_real_host_page_size());
-+    delta = aligned - section->offset_within_address_space;
-+    *start = aligned;
-+    if (delta > size) {
-+        return 0;
-+    }
-+
-+    return (size - delta) & qemu_real_host_page_mask();
-+}
- 
- void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
-                        bool add)
- {
--	error_report("unimplemented");
--	abort();
--}
-+    int ret = 0;
-+    MemoryRegion *area = section->mr;
-+    bool writable = !area->readonly && !area->rom_device;
-+    hwaddr start_addr, mr_offset, size;
-+    void *ram;
-+    MshvMemoryRegion mshv_mr = {0};
-+
-+    trace_mshv_set_phys_mem(add, section->mr->name);
-+
-+    /* If the memory device is a writable non-ram area, we do not
-+     * want to map it into the guest memory. If it is not a ROM device,
-+     * we want to remove mshv memory mapping, so accesses will trap.
-+     */
-+    if (!memory_region_is_ram(area)) {
-+        if (writable) {
-+            return;
-+        } else if (!area->romd_mode) {
-+            add = false;
++    if (dm.tag == DATAMATCH_NONE) {
++        args.datamatch = 0;
++    } else {
++        flags |= BIT(MSHV_IOEVENTFD_BIT_DATAMATCH);
++        args.flags = flags;
++        if (dm.tag == DATAMATCH_U64) {
++            args.len = sizeof(uint64_t);
++            args.datamatch = dm.value.u64;
++        } else {
++            args.len = sizeof(uint32_t);
++            args.datamatch = dm.value.u32;
 +        }
 +    }
 +
-+    size = align_section(section, &start_addr);
-+    if (!size) {
-+        return;
++    return ioctl(vm_fd, MSHV_IOEVENTFD, &args);
++}
++
++static int unregister_ioevent(int vm_fd, int event_fd, uint64_t mmio_addr)
++{
++    uint32_t flags = 0;
++    Datamatch dm = {0};
++
++    flags |= BIT(MSHV_IOEVENTFD_BIT_DEASSIGN);
++    dm.tag = DATAMATCH_NONE;
++
++    return ioeventfd(vm_fd, event_fd, mmio_addr, dm, flags);
++}
++
++static int register_ioevent(int vm_fd, int event_fd, uint64_t mmio_addr,
++                            uint64_t val, bool is_64bit, bool is_datamatch)
++{
++    uint32_t flags = 0;
++    Datamatch dm = {0};
++
++    if (!is_datamatch) {
++        dm.tag = DATAMATCH_NONE;
++    } else if (is_64bit) {
++        dm.tag = DATAMATCH_U64;
++        dm.value.u64 = val;
++    } else {
++        dm.tag = DATAMATCH_U32;
++        dm.value.u32 = val;
 +    }
- 
-+    mr_offset = section->offset_within_region + start_addr -
-+                section->offset_within_address_space;
 +
-+    ram = memory_region_get_ram_ptr(area) + mr_offset;
++    return ioeventfd(vm_fd, event_fd, mmio_addr, dm, flags);
++}
 +
-+    mshv_mr.guest_phys_addr = start_addr;
-+    mshv_mr.memory_size = size;
-+    mshv_mr.readonly = !writable;
-+    mshv_mr.userspace_addr = (uint64_t)ram;
++static void mem_ioeventfd_add(MemoryListener *listener,
++                              MemoryRegionSection *section,
++                              bool match_data, uint64_t data,
++                              EventNotifier *e)
++{
++    int fd = event_notifier_get_fd(e);
++    int ret;
++    bool is_64 = int128_get64(section->size) == 8;
++    uint64_t addr = section->offset_within_address_space;
 +
-+    ret = set_memory(&mshv_mr, add);
++    trace_mshv_mem_ioeventfd_add(addr, int128_get64(section->size), data);
++
++    ret = register_ioevent(mshv_state->vm, fd, addr, data, is_64, match_data);
++
 +    if (ret < 0) {
-+        error_report("Failed to set memory region");
++        error_report("Failed to register ioeventfd: %s (%d)", strerror(-ret),
++                     -ret);
 +        abort();
 +    }
 +}
++
++static void mem_ioeventfd_del(MemoryListener *listener,
++                              MemoryRegionSection *section,
++                              bool match_data, uint64_t data,
++                              EventNotifier *e)
++{
++    int fd = event_notifier_get_fd(e);
++    int ret;
++    uint64_t addr = section->offset_within_address_space;
++
++    trace_mshv_mem_ioeventfd_del(section->offset_within_address_space,
++                                 int128_get64(section->size), data);
++
++    ret = unregister_ioevent(mshv_state->vm, fd, addr);
++    if (ret < 0) {
++        error_report("Failed to unregister ioeventfd: %s (%d)", strerror(-ret),
++                     -ret);
++        abort();
++    }
++}
++
+ static MemoryListener mshv_memory_listener = {
+     .name = "mshv",
+     .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
+     .region_add = mem_region_add,
+     .region_del = mem_region_del,
++#ifdef MSHV_USE_IOEVENTFD
++    .eventfd_add = mem_ioeventfd_add,
++    .eventfd_del = mem_ioeventfd_del,
++#endif
+ };
+ 
+ static MemoryListener mshv_io_listener = {
 diff --git a/accel/mshv/trace-events b/accel/mshv/trace-events
-index f99e8c5a41..9a3af6b8be 100644
+index 9a3af6b8be..b49a5b1702 100644
 --- a/accel/mshv/trace-events
 +++ b/accel/mshv/trace-events
-@@ -1,3 +1,19 @@
+@@ -1,6 +1,9 @@
  # See docs/devel/tracing.rst for syntax documentation.
  
-+mshv_set_memory(bool add, uint64_t gpa, uint64_t size, uint64_t user_addr, bool readonly, int ret) "[add = %d] gpa = %lx size = %lx user = %lx readonly = %d result = %d"
+ mshv_set_memory(bool add, uint64_t gpa, uint64_t size, uint64_t user_addr, bool readonly, int ret) "[add = %d] gpa = %lx size = %lx user = %lx readonly = %d result = %d"
++mshv_mem_ioeventfd_add(uint64_t addr, uint32_t size, uint32_t data) "addr %lx size %d data %x"
++mshv_mem_ioeventfd_del(uint64_t addr, uint32_t size, uint32_t data) "addr %lx size %d data %x"
++
  mshv_hvcall_args(const char* hvcall, uint16_t code, uint16_t in_sz) "built args for '%s' code: %d in_sz: %d"
-+
-+mshv_set_msi_routing(uint32_t gsi, uint64_t addr, uint32_t data) "gsi=%d addr=%lx data=%x"
-+mshv_remove_msi_routing(uint32_t gsi) "gsi=%d"
-+mshv_add_msi_routing(uint64_t addr, uint32_t data) "addr=%lx data=%x"
-+mshv_commit_msi_routing_table(int vm_fd, int len) "vm_fd=%d table_size=%d"
-+mshv_register_irqfd(int vm_fd, int event_fd, uint32_t gsi) "vm_fd=%d event_fd=%d gsi=%d"
-+mshv_irqchip_update_irqfd_notifier_gsi(int event_fd, int resample_fd, int virq, bool add) "event_fd=%d resample_fd=%d virq=%d add=%d"
-+
-+mshv_insn_fetch(uint64_t addr, size_t size) "gpa=%lx size=%lu"
-+mshv_mem_write(uint64_t addr, size_t size) "\tgpa=%lx size=%lu"
-+mshv_mem_read(uint64_t addr, size_t size) "\tgpa=%lx size=%lu"
-+mshv_map_memory(uint64_t userspace_addr, uint64_t gpa, uint64_t size) "\tu_a=%lx gpa=%010lx size=%08lx"
-+mshv_unmap_memory(uint64_t userspace_addr, uint64_t gpa, uint64_t size) "\tu_a=%lx gpa=%010lx size=%08lx"
-+mshv_set_phys_mem(bool add, const char *name) "\tadd=%d name=%s"
-+mshv_handle_mmio(uint64_t gva, uint64_t gpa, uint64_t size, uint8_t access_type) "\tgva=%lx gpa=%010lx size=%lx access_type=%d"
+ 
+ mshv_set_msi_routing(uint32_t gsi, uint64_t addr, uint32_t data) "gsi=%d addr=%lx data=%x"
 diff --git a/include/system/mshv.h b/include/system/mshv.h
-index 2ac594d0aa..3624d9477f 100644
+index 3624d9477f..c2b0414c85 100644
 --- a/include/system/mshv.h
 +++ b/include/system/mshv.h
-@@ -30,6 +30,8 @@
+@@ -30,6 +30,14 @@
  #define CONFIG_MSHV_IS_POSSIBLE
  #endif
  
-+#define MSHV_PAGE_SHIFT 12
++/*
++ * Set to 0 if we do not want to use eventfd to optimize the MMIO events.
++ * Set to 1 so that mshv kernel driver receives doorbell when the VM access
++ * MMIO memory and then signal eventfd to notify the qemu device
++ * without extra switching to qemu to emulate mmio access.
++ */
++#define MSHV_USE_IOEVENTFD 1
 +
+ #define MSHV_PAGE_SHIFT 12
+ 
  #ifdef CONFIG_MSHV_IS_POSSIBLE
- extern bool mshv_allowed;
- #define mshv_enabled() (mshv_allowed)
-@@ -77,6 +79,15 @@ int mshv_arch_post_init_vm(int vm_fd);
- int mshv_hvcall(int mshv_fd, const struct mshv_root_hvcall *args);
- 
- /* memory */
-+typedef struct MshvMemoryRegion {
-+    uint64_t guest_phys_addr;
-+    uint64_t memory_size;
-+    uint64_t userspace_addr;
-+    bool readonly;
-+} MshvMemoryRegion;
-+
-+int mshv_add_mem(int vm_fd, const MshvMemoryRegion *mr);
-+int mshv_remove_mem(int vm_fd, const MshvMemoryRegion *mr);
- void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
-                        bool add);
- 
 -- 
 2.34.1
 
