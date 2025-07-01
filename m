@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBEAAF0169
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186B0AF017B
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:14:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSY-0005dd-AR; Tue, 01 Jul 2025 13:07:54 -0400
+	id 1uWeSZ-0005fR-Sq; Tue, 01 Jul 2025 13:07:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSV-0005b6-PS
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:51 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1uWeSW-0005cd-Jm
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:52 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeST-0003a8-MX
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:51 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-453749aef9eso22607165e9.3
+ id 1uWeSU-0003ap-NH
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:52 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3a522224582so3131546f8f.3
  for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751389668; x=1751994468; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751389669; x=1751994469; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LjPg1QfOBbDglyOlkTx99ANQnGLjk1OTG3KagRxzjyU=;
- b=u82T1diAzHUIYTCc15ih1IgDSa4qpfc3dNNEm6ffhf41Mccd+AJsVhc2mnIHQxyfyA
- 02CbQCH2yJUjQvAgryICwAM4mZhX2HmkfhfCJJiO7PDJcH8u2hkGKX8HFlKOlULkSDG9
- 1BfrslatFBcdioH4zW/67LbztsfigbUaGxTsSydnYMCdY6Y9P9gNuIYHGSongxwjwvAD
- H0kZy3RlM+qCExhCqn+K7H3FKq4kC03q3Yitln/JfJWJo2VxPWWa+HJLrqZISAfFeLhF
- u5VAUmCOPr+h7IQTyS9fwTEd7NSymk6lW2ifVnkw67ezzZ4N4PyVy6xrpfQ4lfWfBmsc
- WLyA==
+ :reply-to; bh=h3fZQFPQ4yVXaabIEx5Nimz04SLji8Cx5nJ315vJZ3Y=;
+ b=Eujdbmao+kqJgWWahwmx3JY4DIpTMvCK9HAq5RHoZY986QchNXi5GdBeyps397ZgmP
+ npOA4JJbyCs+IgacpmHvR3ZoRZOg21h9HkcAAxq7fbLglcWz5v4INE6WErNn6FEsBwpF
+ 5eXqWIE9tV/lhMc6OOyl7+KMu4m96sq0rjokrKe+blHl9i3IW4yVXzRaEhsHCWFFhxRZ
+ 2SPZhe/zvKxu7WyruteyvNJV6jN8yQAzlkw4gfSstVOCZelj2/vedaHsQvKwkQlqpNlN
+ bRzDaWVrgauTxVNOXKBud0cwzBXisTVss67VYazghbUIfns8GpNHcVmwhOzelTm8D0kR
+ iFRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751389668; x=1751994468;
+ d=1e100.net; s=20230601; t=1751389669; x=1751994469;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LjPg1QfOBbDglyOlkTx99ANQnGLjk1OTG3KagRxzjyU=;
- b=M54/sFsWeAQ8tnNLVgJT0eeYYw0Z+o5Az6MbhjoyF9kUdk02VyzDa1aJTJTba9Wiv5
- LrWyzYB1dJ8Jp3Xs7QBuq3w//MGLgDYkBeu+pX5EmmOV0/5QTE3QXF05AbQJmsYo5Nau
- bYOw1mgOGEp1l+xvdiH+YgtF80GfbsbGqetjuwISn1xpsbrzUYw8a46u5SCN/ekVLBSp
- Jcbl2s2gNEalXCtcrnvc3akAICF+GM9naZhrdd1UHaKY6dS2YE1MCq/RTskqJRQteXX8
- kryhrVLyVEKnGo8j4RDevOm5DBxSlWn6xHeHOlSuwDNLlYb5kByWZDM7px1Lo0cshtCA
- N6Zw==
-X-Gm-Message-State: AOJu0YxBKaryYiICDG0q1YtVpvbIrEj08TfL8Zop6GHBgcSiyRawDMij
- d5zagZFNk7BQfA82FEVgBHSL+oQaP/THIYzz7Qk24b3FYiaCg4UrfSH1IRzYHuGCApR02J2PUDd
- jMusn
-X-Gm-Gg: ASbGncsszeMbxXRvOziF4J54Xbxn1JRRl/NjxHM+3m5qlYfBANoR6cUAn59VcyuZkPa
- g+TV6swRhGko6OcQxnJwkvFZW2yqbJAp06za7FNLPwMzs3TqmtJJine1Q4bCO29wLrJmouVgtb1
- 1Hs8qFhe6iMeKz0KBnUvBZbsJcJ3hCjwBFFjqUAIS2r8+QHQkfpt1Ds1+hoGpQCIysAPA45k28y
- Sn28Z+LUbDsNHS8TprKdb8OAOesqdEbmQDbBowgyhRsgyr6hTTlVh94eND9E6VvyohsXWhMKs7B
- 8/J3lX2V5oXgjenVxbE0BO30Eyh2GyGeQoR8HOKWaidipZ3WY20B8GjAeyLxZYl0zK3a
-X-Google-Smtp-Source: AGHT+IH58ODinTQdBnd3KpZikR9SXrkYNjVSN+N/eGSbAj4pJQDD2K71e5vuHRwlZqzHzoRVUloo9Q==
-X-Received: by 2002:a5d:4d11:0:b0:3a5:51a3:3a2 with SMTP id
- ffacd0b85a97d-3a90038ac3dmr14070867f8f.45.1751389667806; 
- Tue, 01 Jul 2025 10:07:47 -0700 (PDT)
+ bh=h3fZQFPQ4yVXaabIEx5Nimz04SLji8Cx5nJ315vJZ3Y=;
+ b=u6nAHDH0T8z25K0kOyoF9vuEps7UbeR8HMrFhRDpqFHWqTEPARfbxFo7h8ttZnawZ6
+ 6AqlmBLLlJM9N0gVMuIwAD+jJcvLddje0n9knPN8bPl48m08EVZBh23oYr1AbdiPsHAq
+ Tnk1Ev2HzQVEeAfpngz9JfacIUB3BODnYfawUU1iR4OsUpQw32AFrOtLOazyndfvUFnx
+ dp1X1EmPuaNeCXw1walKS3DEa1y2lVTd+3Ripy6RVkuoqbWnboWTN0s5eIDt/xwo834j
+ UWUtmodtvG7fWupEjva5qKHlcY15aZHycxZOSb5BsPYXPFgmykGkeOC2jEzuRpqK1TBw
+ f1Ow==
+X-Gm-Message-State: AOJu0YwrTvYtd3bnYGuq16Ti00c3aDpYnsGdjDVgPz8hrVXTBQhmlXpP
+ 53EXwzcbZJv10mjQaGXxlwrH0eppLajdkAfFs3hgCoUuKaqa/xu0naN3phaz/pYRUSoKSoH/k2P
+ udVPj
+X-Gm-Gg: ASbGncuVO6G+DiO0m+b0XbRP02ZewGmpZrE65cfgKIV35f38Ia4YxiqFCfxNr0wSQfW
+ 0HGkToBErem8gT7pur7yDTWN/Nw7A8zYxDXHyIK/yds/zAnL2cJy3eaWFEHORRNXk+7lOkDnvWY
+ hr4Xg4zRGy6Erms6+eTTioq2VYZcC1wqG8kLSAthu1gLtCuk1SjeK1de8KEtzRPYIKHzRBvD/GG
+ 6O3L1Gj6mjmCpibiyFmuSNMOme3O/wj/kVUS6enHCUeOYa2TuhICWl2an8ZONu7UPDI4hX0tNWM
+ vcrJB6DcM9pgF5WYlpSSsdkeVV5HJE/KTvZfX+L8wPHvSUt2m87yFgT9eBMepdp7hLY2
+X-Google-Smtp-Source: AGHT+IGBwfJPcmOwPVVuX7A68FitwOCm++VkfzlPhC3Kd2oIquWByb4GOUscsVc1d1YNCl6NBisd1Q==
+X-Received: by 2002:a05:6000:4408:b0:3a4:d8b6:ca3f with SMTP id
+ ffacd0b85a97d-3a8ffdbefd5mr11291532f8f.30.1751389668671; 
+ Tue, 01 Jul 2025 10:07:48 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 10:07:47 -0700 (PDT)
+ Tue, 01 Jul 2025 10:07:48 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 25/43] target/arm: Reduce arm_cpu_post_init() declaration scope
-Date: Tue,  1 Jul 2025 18:07:01 +0100
-Message-ID: <20250701170720.4072660-26-peter.maydell@linaro.org>
+Subject: [PULL 26/43] target/arm: Unify gen_exception_internal()
+Date: Tue,  1 Jul 2025 18:07:02 +0100
+Message-ID: <20250701170720.4072660-27-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
 References: <20250701170720.4072660-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,43 +99,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-arm_cpu_post_init() is only used within the same file unit.
+Same code, use the generic variant.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250623121845.7214-3-philmd@linaro.org
+Message-id: 20250623121845.7214-4-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.h | 2 --
- target/arm/cpu.c | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ target/arm/tcg/translate.h     | 1 +
+ target/arm/tcg/translate-a64.c | 6 ------
+ target/arm/tcg/translate.c     | 2 +-
+ 3 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 8744922330d..03381539238 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1168,8 +1168,6 @@ void arm_gt_sel2vtimer_cb(void *opaque);
- unsigned int gt_cntfrq_period_ns(ARMCPU *cpu);
- void gt_rme_post_el_change(ARMCPU *cpu, void *opaque);
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 1bfdb0fb9bb..0004a97219b 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -347,6 +347,7 @@ void arm_jump_cc(DisasCompare *cmp, TCGLabel *label);
+ void arm_gen_test_cc(int cc, TCGLabel *label);
+ MemOp pow2_align(unsigned i);
+ void unallocated_encoding(DisasContext *s);
++void gen_exception_internal(int excp);
+ void gen_exception_insn_el(DisasContext *s, target_long pc_diff, int excp,
+                            uint32_t syn, uint32_t target_el);
+ void gen_exception_insn(DisasContext *s, target_long pc_diff,
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index d0719b5665f..815225b1301 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -433,12 +433,6 @@ static void gen_rebuild_hflags(DisasContext *s)
+     gen_helper_rebuild_hflags_a64(tcg_env, tcg_constant_i32(s->current_el));
+ }
  
--void arm_cpu_post_init(Object *obj);
+-static void gen_exception_internal(int excp)
+-{
+-    assert(excp_is_internal(excp));
+-    gen_helper_exception_internal(tcg_env, tcg_constant_i32(excp));
+-}
 -
- #define ARM_AFF0_SHIFT 0
- #define ARM_AFF0_MASK  (0xFFULL << ARM_AFF0_SHIFT)
- #define ARM_AFF1_SHIFT 8
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 8e77414c2b9..7030540f91f 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1713,7 +1713,7 @@ static void arm_cpu_propagate_feature_implications(ARMCPU *cpu)
+ static void gen_exception_internal_insn(DisasContext *s, int excp)
+ {
+     gen_a64_update_pc(s, 0);
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 9962f43b1d0..f7d6d8ce196 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -372,7 +372,7 @@ static void gen_rebuild_hflags(DisasContext *s, bool new_el)
      }
  }
  
--void arm_cpu_post_init(Object *obj)
-+static void arm_cpu_post_init(Object *obj)
+-static void gen_exception_internal(int excp)
++void gen_exception_internal(int excp)
  {
-     ARMCPU *cpu = ARM_CPU(obj);
- 
+     assert(excp_is_internal(excp));
+     gen_helper_exception_internal(tcg_env, tcg_constant_i32(excp));
 -- 
 2.43.0
 
