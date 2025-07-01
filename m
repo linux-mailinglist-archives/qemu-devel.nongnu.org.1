@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB31CAEFD56
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6213EAEFD58
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:58:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWcCO-0000v9-Vc; Tue, 01 Jul 2025 10:43:05 -0400
+	id 1uWcCO-00019I-0k; Tue, 01 Jul 2025 10:43:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcCI-0000ZN-Pl
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:42:58 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcCG-0000Zl-QW
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:42:57 -0400
 Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcC6-00071Z-Ub
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:42:53 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcCD-00072B-R2
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:42:56 -0400
 Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4538bc1cffdso32594625e9.0
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 07:42:43 -0700 (PDT)
+ 5b1f17b1804b1-453643020bdso50231025e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 07:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751380962; x=1751985762; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751380967; x=1751985767; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NlBOE8V4jVPken7WCnMtNpY/1Zbf/V//8TkK0yzKABw=;
- b=qdC6myM4BtOz7rNBS4HkDPNXNf/DSIU/n3ik3HyU8VaY7zh3xNQf/okSpxfscnNWg0
- Z5fgupG5fz1xKFppjv5Q+ncNSmMsFjjYzd34BqMBEP29Vw8NLd74MnYVJxk/g6ODsOs7
- EcpBPNZV3tc+AtFEyWjCIjrNjFyVifrCcozdtC95yoHsN590hQuV2xQw4f+TlDCG9yFC
- gxO0nfGEAif/6bDU3ln4B5OYJIMoBTUWNTXhL1k9m401lHNNYTOqLj7UcwA0QuGQ/TP6
- qPC0REXZ8/1Haba0nks40kIX2rFj42jyDZWrXTglyUz7aqg9YBo22HokwvyZhric0+wI
- P3YA==
+ bh=zyDwPMt6YxbjjGXo86a69tBngv13ZljrHl0yFXEhOMk=;
+ b=Bice8yNjNA0P4hVy6bU9ibOdz8WUuJWprvVCyyXwG8d1jCwdYRU/MKObiOCbEIPkf7
+ cxTzag03sarjVAuG2vkwiIpANQqzEg6KxUg/T42zDTrVPqpCFjUEU8bmfFvwYXmWQNxm
+ ZIm8aRmYLsM8YXPuagNrwXPL9eRTWRLvNqaNykUdOYVhIYPhXtCSkxV5xlLpUdUryleS
+ mWh6ndBrAoFFth3UbJbdP9L0TCsjYZ6OQKZ5cjS0IozBpwDAJyg1vqa6kLc736QcKWk7
+ lxnL3exKObjM11RudlAmS1irzvld+viLhtUcDm6cbTe19gzhI4+rTTn6Rk8xkm/I9uJf
+ bttA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751380962; x=1751985762;
+ d=1e100.net; s=20230601; t=1751380967; x=1751985767;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NlBOE8V4jVPken7WCnMtNpY/1Zbf/V//8TkK0yzKABw=;
- b=w2rA2Eo+JFXywgO3DbRNVp7psKqT98H/jW1pE2JbQ4lOeyFiYG6tB0xWxSSopVatMT
- Wn2RItQSvcnGnJHgtkxZGU42l+0DmA8wG/OUYDvuUTT1G9UxAUY/zEuQkquKrpPNrXLj
- cV7ACnPnbqQtQig/hPfWdcBiIHPTnDuDlmk1koeli5oFZq+BLn9+jQK9MWWhlJJmJ0wR
- 1zlAmVQAYYFUlevQ74XaK4CWkQIw0evwq/fSE1fBUcaYKMdhO8yIxO1pDlYO+DBM4ovJ
- kSeYGS30tU86LaACUiMB2pfe1ehBegVBQiYZ7Hh5WdB1buO/34HiHEj6kQOZElRekAwF
- JAuw==
-X-Gm-Message-State: AOJu0YxQ2QXijI7cOlsi2uHXFMXJX/tnB5gec76oAYPu/RFsz8QrHU+9
- euqPFJ+oKT08dBoc2PnKrZ9IaCWYR4Bg/Ywp9rGm8kRtdexXspMqdoASM4GT5KmLW9BYKNw3NIH
- AZT5x
-X-Gm-Gg: ASbGncuMJF71vMTilKqNl9jJKa1BobDdb0CW5oxVfDQU/2c9AiSAwfrZ62aMg93siFV
- ljMqjdCajZIUw46MPvT4/iEZn8gdtqvgmfqf7HhqNuQgsnSJzBEflTVfGs7sE1+ZCdzeHV92s8o
- 1E80KXglC+5BdtfRtr/E8puvT1Ki/Szb65y7qE1y8AXnuFs4tyowp+tD9co+7rP+OEiwaI49Gd1
- 4fvIBIMH7jOThyCWxeXgIikD11OBolzvrwk12S89nQJxoxaka1Nryz0RNHyYd98Can8jCsD1YAV
- BC+NoxUWAd6pXLkraGxenrwK7YulKE5/7n+MPETsMLqtuXNwlbJZ3k/3vMZvCoMFMHUSh3EvAq0
- Ebxs3Jv7KP4/mhMlBFEsCHsFGpiuzH9+2mupy
-X-Google-Smtp-Source: AGHT+IEwTRDJbNzYZH79wUbixBg5SHr84V0InY6n3JHu9/TmxHzTiuujDwOiBoHzOImgvvfDI15Mfg==
-X-Received: by 2002:a05:600c:3b01:b0:453:745:8534 with SMTP id
- 5b1f17b1804b1-4539605125bmr142294465e9.12.1751380961666; 
- Tue, 01 Jul 2025 07:42:41 -0700 (PDT)
+ bh=zyDwPMt6YxbjjGXo86a69tBngv13ZljrHl0yFXEhOMk=;
+ b=VA0Il7OYMKuS3hcRbNNLEmT2jP6FoUHgNs075vk5LfA7WZ+Dol+nVlzzntA1dcorJt
+ +jZUg8jwXJZVruYNhGju1vGSs6513wrDiA11vj2W1qIKRnk5wCpieT5Bx7yRPqEF2QyU
+ ZXk0QfkO7RPFUvgXCv6cXZptprqh0ht7rGbOBH0rDWyc46sU+oOMCfOxHm7mqNYLSM35
+ OXP2WcUjvAi5Vf6XD0EAS0/jNR1qrqCNk8liXCKYRVNh1OJc0bxsgpB6gAv0YXLOWVcq
+ RFPonaMGBYIj8tZGRk3PXENbJDjTUMefyB2rQA/yrr3q3NpBJWYmdUSCZa3Su/DSt234
+ Yj1w==
+X-Gm-Message-State: AOJu0Yw73Rwgx7yrCWwEHofKLsX4NhAtv5nw03Q+I4lD4l5wjQSN3+AR
+ dwWQGIIiiPWr37HE7ZCe6fSnl3Cpzq8Tn/uJqBt6qhtjASFmLiNsNglCOsCm+3rysKCGibZZIX0
+ cHNBZ
+X-Gm-Gg: ASbGncs7Zi21nLpTaxi1LgXCjiggttOEzMn/lGwpmQRNPybQNHIPl6rldiWVkS1eN6o
+ VoNH+xV1rr8KFCodHZC9pO45r7ND0Pr0sR6kZTUAjKbzqTHdb6yBf1TIrpn0xa29SvlKsQ1EnvF
+ SUj+5PCLweE3Mz3y1cxODqWsIJFbzPjCmrnEHF9fYQJkXJcNPj+zI+f84lyz223bV7Ho2/Pt7Kj
+ ol3KXJdgQkJ9UUydLjygQW7VYjojipZyb7tBATdiAY8n8AyngIvKV7YN/6uRJ+4kuvLwyrMkZaK
+ LLOlWlxFuxaBpe/KawZgxz00FNSZQJk42ZUwRJjjl+gIAugwZ/X9EYHzt93ldU4zMMTOgdzB6uv
+ /dlDd8etEgCh6xt+Sg2/rK6OkM6OW92/VHjNx
+X-Google-Smtp-Source: AGHT+IF/ghJgw3V/Yrak0VimZ4GXm36KLrzWsMS4M8xrB1+yTav3Atw7uZoCQh/ykgIuo1C4UiYwaQ==
+X-Received: by 2002:a05:600c:1547:b0:453:cd0:903c with SMTP id
+ 5b1f17b1804b1-453a8fc441emr30712075e9.2.1751380966625; 
+ Tue, 01 Jul 2025 07:42:46 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c7e7518sm13271565f8f.2.2025.07.01.07.42.40
+ ffacd0b85a97d-3a88c8013b3sm13451048f8f.39.2025.07.01.07.42.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 01 Jul 2025 07:42:41 -0700 (PDT)
+ Tue, 01 Jul 2025 07:42:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -69,9 +69,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Julian Armistead <julian.armistead@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 26/68] accel/tcg: Implement get_[vcpu]_stats()
-Date: Tue,  1 Jul 2025 16:39:34 +0200
-Message-ID: <20250701144017.43487-27-philmd@linaro.org>
+Subject: [PATCH v3 27/68] accel/hvf: Implement get_vcpu_stats()
+Date: Tue,  1 Jul 2025 16:39:35 +0200
+Message-ID: <20250701144017.43487-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250701144017.43487-1-philmd@linaro.org>
 References: <20250701144017.43487-1-philmd@linaro.org>
@@ -105,31 +105,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tcg-all.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ accel/hvf/hvf-accel-ops.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index ae83ca0bd10..d49d2b3b0fa 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -239,11 +239,17 @@ static int tcg_gdbstub_supported_sstep_flags(AccelState *as)
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index a2e0f890463..ca85922356b 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -352,6 +352,12 @@ static inline int hvf_gdbstub_sstep_flags(AccelState *as)
+     return SSTEP_ENABLE | SSTEP_NOIRQ;
+ }
+ 
++static void do_hvf_get_vcpu_exec_time(CPUState *cpu, run_on_cpu_data arg)
++{
++    int r = hv_vcpu_get_exec_time(cpu->accel->fd, arg.host_ptr);
++    assert_hvf_ok(r);
++}
++
+ static void hvf_accel_class_init(ObjectClass *oc, const void *data)
+ {
+     AccelClass *ac = ACCEL_CLASS(oc);
+@@ -577,6 +583,16 @@ static void hvf_remove_all_breakpoints(CPUState *cpu)
      }
  }
  
-+static void tcg_get_stats(AccelState *as, GString *buf)
++static void hvf_get_vcpu_stats(CPUState *cpu, GString *buf)
 +{
-+    tcg_dump_flush_info(buf);
++    uint64_t time_us; /* units of mach_absolute_time() */
++
++    run_on_cpu(cpu, do_hvf_get_vcpu_exec_time, RUN_ON_CPU_HOST_PTR(&time_us));
++
++    g_string_append_printf(buf, "HVF cumulative execution time: %llu.%.3llus\n",
++                                time_us / 1000000, (time_us % 1000000) / 1000);
 +}
 +
- static void tcg_accel_class_init(ObjectClass *oc, const void *data)
+ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
  {
-     AccelClass *ac = ACCEL_CLASS(oc);
-     ac->name = "tcg";
-     ac->init_machine = tcg_init_machine;
-+    ac->get_stats = tcg_get_stats;
-     ac->allowed = &tcg_allowed;
-     ac->supports_guest_debug = tcg_supports_guest_debug;
-     ac->gdbstub_supported_sstep_flags = tcg_gdbstub_supported_sstep_flags;
+     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
+@@ -595,7 +611,10 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
+     ops->remove_breakpoint = hvf_remove_breakpoint;
+     ops->remove_all_breakpoints = hvf_remove_all_breakpoints;
+     ops->update_guest_debug = hvf_update_guest_debug;
++
++    ops->get_vcpu_stats = hvf_get_vcpu_stats;
+ };
++
+ static const TypeInfo hvf_accel_ops_type = {
+     .name = ACCEL_OPS_NAME("hvf"),
+ 
 -- 
 2.49.0
 
