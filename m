@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F75AF0191
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB951AF0170
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:12:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSR-0005Uu-1y; Tue, 01 Jul 2025 13:07:47 -0400
+	id 1uWeSd-0005iP-Ph; Tue, 01 Jul 2025 13:07:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSG-0005RN-J9
+ id 1uWeSG-0005RL-IE
  for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:39 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeS8-0003KC-JR
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:32 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3a52874d593so3027087f8f.0
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:24 -0700 (PDT)
+ id 1uWeSB-0003KU-0b
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:34 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3a50956e5d3so5017143f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1751389643; x=1751994443; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=QOHnZnuZkLefFPPn38bCNhPbcEbOkcGXJg0OrwCx5aE=;
- b=w1fuKuwxly2BOdn7bbFAlGPqEAtbzgZxRC2crijXBGG0GsAWYG9kQSDdh1IhP0IzHw
- ZnvvIVin9zoiwrqYQHe9+KvcnAA9S5gGSOsebNhw/ziKw4Ib06/0ecDn7adjcy9qrF8a
- j22E23lazWHOuhleRUzfHol3WqnFgoILxi414oW+cl8llhOE/2Arb2HpwBPr9TALnLGq
- NHb45zpSGmOBg5il7ekN+qshjkEgicPjDTjon93bEAqAqb/vyW1VMPfjAs4xx/674ZGy
- /iJQA03ZRzA0zXLAxcEuJlyinZrqnlwuNAwHdovonfjnS3N4QIjZHbpcGU2PMGIBNRV4
- bEBg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=bO/eRE0oLZeR5GcJzymVIXIdadc1wAcqQphyP71Niqg=;
+ b=T3w7VavbYkhgsK00Yvi4EW08c2Lj0qJryjuhM16A5YFDWdZr3GPlFl0Sa+1O+0sxwW
+ JEMZvsI23PiNmgwAmPkJ4jG+3FOgOu2xEPHZaz7q6ZOkfEriCc6ZHjpB0KUTJB3hif5U
+ 7S/mrOmvUbFyXa56YLeojiJ+SUrzKg7408ytfL/Y0DK5mlIV2wVa2niemGQrdr06adCq
+ ApR6pfeEe8PU42EpZhP2hq7HlCUTgoMrayGkFJcJr1bP3c+VPL4wEJgrNkvdYZx4boYK
+ 3VW2WRJwrd+LiDx0hzzj+12UOQGJspbWWb8GRKcCXDhD6rtBgv2P9XgkBJ/BW/dG5z1A
+ UujA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1751389643; x=1751994443;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QOHnZnuZkLefFPPn38bCNhPbcEbOkcGXJg0OrwCx5aE=;
- b=Vuk6JS7n4sPeS+JzSpphjm8uxp7YoZD4fyaZI1q1jUW9Bdj2/HRkYfmVb3/Mte3/cy
- XQks1MWwHcCBPWJsNQs3YRUZssBNA54wGZL3Ix73wbgNqZ8pEO6NH94HlOCz+Tuut7iI
- kSoxIcQtgrkMFJ8zQlS4BDl9LDkeI6urqXirHR/qQpFEwi3/RNjBQq+l4s9TqyfvTGh4
- xuxVV0VuNgpMfAWZbb6MbZFBVZzp3gA479POgX11+JFuBabciL6SuLIYsL2vZaap+53U
- 7pogpOTUn+R5JkKuv0IPejsNtfcsbTegVwuY/tX5FQD6xxnTSwXs6i5G5baXNt9M+XVh
- pu+Q==
-X-Gm-Message-State: AOJu0Yw9wmmosoRt7+rK1aCCkW/Db726Y0OWEklExabuMBWN6Dd8VgCo
- rgYqi4B4VZH5/YLiEmKsvnO1fY68SS0FTaX1jOjwpiUkGoNJNgTUL02WCd3K3EjjS75b/R9NR7C
- ZSLAe
-X-Gm-Gg: ASbGncvo1OCf6LinX6mfL0XffwE9D3jrWzQqXwfDZ5u2Cp4MlmzRg0LE43UmmHXgObL
- ZIFr5CIp6Mw48aCYhGCkn6hUh4v6h7OkLlKrWsOdpPWy1HfA+71U46X+HnVjZJqrVBN2TdZ/KhX
- s6nwewWKWJsb3IFVGFWCM9Km9tIoJ3aTw0XWlbvACwgQv/NGvMbRlKicybWqGagP3dCwsyTMsmq
- xX5eTiJIxdwwhTvjoagYquLQObJTtmjizGBGvQNFjFrO9G9lGP6U4hUDllY4mQ/j8oE1kmBi+Ij
- vS329y341586hdRqj7GZkYOWJdJSfZ7xfRNG3ho0ByiU5DdNeBIiJAcSr/nwHrbVbKjSwRIoyzn
- l/14=
-X-Google-Smtp-Source: AGHT+IFDF6fLP/1mwvAonXjZvg2qeSfdGXk6hg4xo0Z2btLdtKL8uqQPn59DMtDSCB1BefW29gIfkw==
-X-Received: by 2002:a05:6000:440f:b0:3a4:efbb:6df3 with SMTP id
- ffacd0b85a97d-3a8f454904fmr12265452f8f.10.1751389642526; 
- Tue, 01 Jul 2025 10:07:22 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bO/eRE0oLZeR5GcJzymVIXIdadc1wAcqQphyP71Niqg=;
+ b=mv+Sg0/MJFzgZB2d8qK+fo90sW8GybDOsAQ4eQv2g0lIB7Wpa1UqdzLpH2XYtNEQ2D
+ tqCI53Nrhq4mqm3M7wDUjI0Wgjp8e3r8Fx59GLQ7Tb+pK/QOhoeV8O6QmTStWIOkwVzj
+ lTJtv4prZPZzrmbpx3x7YS5rp8ds46/GrrgkijsZLjYk8DRh3KrbHN8QS3lJOagfwxk0
+ 1Nwin2k+98pxi9n74ZDynniJR7DrqCdORSH/S+O/4m41W3XOGpcKy+0fma1SIjx5aXQg
+ AsoYzMZiBRGjoMjE9FdUe2L/RjR5g/3x9CakglLGRC3Jg8qZbNilMjmkA4rvULIZa76i
+ h9zA==
+X-Gm-Message-State: AOJu0YyYd6DGZ+qfhKSnpr15ZY3IqNuW/EtBRQdJ+Yxz/WaclEtsGe44
+ wjelhLxFSJDqlDaN0QXlGboOMsVvbGvIr3s2e9WFwhi361oqlqxR1Haovr6eJPzzINja19cNTpU
+ Q8agf
+X-Gm-Gg: ASbGncv17jePxWMRhq3oJem+yI9/P3sV1LyF97MeEwG4DpLLur/GrIXiZ0EBZkQiL7L
+ mnIBhGieG+kYB1BVVKeEUW9wvIiJDOCUOwnz7oqVlIgsyVQTVzup7fMZuNCzkHAfUT0iC/SAWJk
+ R0QJ57w+Ig5sp+BBbubQC/biY1JtpmyBt/HHO9fOxUvYwwSbR1DFDsQkYAAyKjAILSQLiJALKvb
+ YmczQ6IA1CDe0zuDI+lH4WIL7lUx4pnYfmlfIsZgrPHQ9QOcUZCv0fJltdJmw7WjN/pUPDtLkFr
+ ObrNCVL8zEzr4UApqzkp7ESrC3R7yCCZ3r0oytJgDGSCJo2iffa5RyzYj0YliW1d0oGO
+X-Google-Smtp-Source: AGHT+IEYWLZxdobjA8crRmR+FwWhkomues9TZK+twHaLr9sCQp8g9mNHsqLY7Zr3JfWhZIWThh4CQA==
+X-Received: by 2002:adf:ea50:0:b0:3a5:52b3:103b with SMTP id
+ ffacd0b85a97d-3a90d0d6d11mr13527678f8f.4.1751389643455; 
+ Tue, 01 Jul 2025 10:07:23 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.21
+ ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 10:07:21 -0700 (PDT)
+ Tue, 01 Jul 2025 10:07:22 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/43] target-arm queue
-Date: Tue,  1 Jul 2025 18:06:36 +0100
-Message-ID: <20250701170720.4072660-1-peter.maydell@linaro.org>
+Subject: [PULL 01/43] MAINTAINERS: add myself as reviewer for Apple Silicon HVF
+Date: Tue,  1 Jul 2025 18:06:37 +0100
+Message-ID: <20250701170720.4072660-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
+References: <20250701170720.4072660-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,144 +96,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; here's an arm pullreq. Most of it is refactoring and similar
-cleanup type patches. I just switched to using gitlab as the
-host for pullreq tags; I think I got the config change right but
-let me know if this is broken somehow.
+From: Mads Ynddal <mads@ynddal.dk>
 
-thanks
--- PMM
+I've both publicly and private been digging around the Apple Silicon HVF code,
+and use it daily as part of my job. I feel I have a solid understanding of it,
+so I thought I'd step up and assist.
 
-The following changes since commit 6138e72b7e33e0240ee955a2754dd038ee99494d:
+I've added myself as reviewer to the common "HVF" as well, to be informed of
+changes that might affect the Apple Silicon HVF code, which will be my primary
+focus.
 
-  Merge tag 'pull-tcg-20250630' of https://gitlab.com/rth7680/qemu into staging (2025-07-01 04:25:08 -0400)
+Signed-off-by: Mads Ynddal <mads@ynddal.dk>
+Message-id: 20250617093001.70080-1-mads@ynddal.dk
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-are available in the Git repository at:
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d1672fda8dd..b3b2a112073 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -511,6 +511,7 @@ F: system/cpus.c
+ 
+ Apple Silicon HVF CPUs
+ M: Alexander Graf <agraf@csgraf.de>
++R: Mads Ynddal <mads@ynddal.dk>
+ S: Maintained
+ F: target/arm/hvf/
+ F: target/arm/hvf-stub.c
+@@ -527,6 +528,7 @@ HVF
+ M: Cameron Esfahani <dirty@apple.com>
+ M: Roman Bolshakov <rbolshakov@ddn.com>
+ R: Phil Dennis-Jordan <phil@philjordan.eu>
++R: Mads Ynddal <mads@ynddal.dk>
+ W: https://wiki.qemu.org/Features/HVF
+ S: Maintained
+ F: accel/hvf/
+-- 
+2.43.0
 
-  https://gitlab.com/pm215/qemu.git tags/pull-target-arm-20250701-1
-
-for you to fetch changes up to 7bc86ccbb59f2022014e132327a33b94a7ed00fe:
-
-  tests/functional: test device passthrough on aarch64 (2025-07-01 17:22:31 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * MAINTAINERS update for arm hvf
- * target/arm: Make RETA[AB] UNDEF when pauth is not implemented
- * target/arm: Refactoring of ID register value storage
- * target/arm: Various refactoring/cleanup patches
- * virt: Don't show an ITS in ACPI tables when no ITS is present
- * tests/functional: test device passthrough on aarch64
- * tests/functional: Expand Aarch64 SMMU tests to run on HVF accelerator
-
-----------------------------------------------------------------
-Cornelia Huck (1):
-      arm/kvm: use fd instead of fdarray[2]
-
-Eric Auger (11):
-      arm/cpu: Add sysreg definitions in cpu-sysregs.h
-      arm/cpu: Store aa64isar0/aa64zfr0 into the idregs arrays
-      arm/cpu: Store aa64isar1/2 into the idregs array
-      arm/cpu: Store aa64pfr0/1 into the idregs array
-      arm/cpu: Store aa64mmfr0-3 into the idregs array
-      arm/cpu: Store aa64dfr0/1 into the idregs array
-      arm/cpu: Store aa64smfr0 into the idregs array
-      arm/cpu: Store id_isar0-7 into the idregs array
-      arm/cpu: Store id_pfr0/1/2 into the idregs array
-      arm/cpu: Store id_dfr0/1 into the idregs array
-      arm/cpu: Store id_mmfr0-5 into the idregs array
-
-Gustavo Romero (6):
-      hw/arm/virt: Simplify logic for setting instance's 'tcg_its' variable
-      hw/arm/virt-acpi-build: Improve comment in build_iort
-      hw/arm/virt-acpi-build: Factor out create_its_idmaps
-      qtest/bios-tables-test: Add blobs for its=off test on aarch64
-      hw/arm/virt-acpi-build: Fix ACPI IORT and MADT tables when its=off
-      qtest/bios-tables-test: Update blobs for its=off test on aarch64
-
-Mads Ynddal (1):
-      MAINTAINERS: add myself as reviewer for Apple Silicon HVF
-
-Peter Maydell (1):
-      tests/functional: Add hvf_available() helper
-
-Philippe Mathieu-Daudé (21):
-      hw/intc/gicv3_its: Do not check its_class_name()
-      hw/arm/virt: Simplify create_its()
-      qtest/bios-tables-test: Add test for when ITS is off on aarch64
-      target/arm: Remove arm_handle_psci_call() stub
-      target/arm: Reduce arm_cpu_post_init() declaration scope
-      target/arm: Unify gen_exception_internal()
-      target/arm/hvf: Directly re-lock BQL after hv_vcpu_run()
-      target/arm/hvf: Trace hv_vcpu_run() failures
-      accel/hvf: Trace VM memory mapping
-      target/arm/hvf: Log $pc in hvf_unknown_hvc() trace event
-      target/arm: Correct KVM & HVF dtb_compatible value
-      target/arm/hvf: Pass @target_el argument to hvf_raise_exception()
-      target/arm: Restrict system register properties to system binary
-      hw/arm/virt: Make EL3-guest accel check an accept-list
-      hw/arm/virt: Make EL2 accelerator check an accept-list
-      hw/arm/virt: Rename cpu_post_init() -> post_cpus_gic_realized()
-      hw/arm/sbsa-ref: Tidy up use of RAMLIMIT_GB definition
-      tests/functional: Set sbsa-ref machine type in each test function
-      tests/functional: Restrict nested Aarch64 Xen test to TCG
-      tests/functional: Require TCG to run Aarch64 imx8mp-evk test
-      tests/functional: Expand Aarch64 SMMU tests to run on HVF accelerator
-
-Pierrick Bouvier (1):
-      tests/functional: test device passthrough on aarch64
-
-Solomon Tan (1):
-      target/arm: Make RETA[AB] UNDEF when pauth is not implemented
-
- MAINTAINERS                                        |   2 +
- meson.build                                        |   1 +
- accel/hvf/trace.h                                  |   2 +
- include/hw/intc/arm_gicv3_its_common.h             |   2 +-
- target/arm/cpu-features.h                          | 317 +++++++-------
- target/arm/cpu-sysregs.h                           |  42 ++
- target/arm/cpu.h                                   |  82 ++--
- target/arm/internals.h                             |  12 +-
- target/arm/tcg/translate.h                         |   1 +
- target/arm/cpu-sysregs.h.inc                       |  36 ++
- accel/hvf/hvf-accel-ops.c                          |   6 +
- hw/arm/sbsa-ref.c                                  |   8 +-
- hw/arm/virt-acpi-build.c                           | 186 ++++++---
- hw/arm/virt.c                                      |  38 +-
- hw/intc/armv7m_nvic.c                              |  27 +-
- target/arm/cpu.c                                   | 124 +++---
- target/arm/cpu64.c                                 | 128 +++---
- target/arm/helper.c                                |  68 +--
- target/arm/hvf/hvf.c                               |  72 ++--
- target/arm/kvm.c                                   | 139 +++----
- target/arm/ptw.c                                   |   6 +-
- target/arm/tcg/cpu-v7m.c                           | 174 ++++----
- target/arm/tcg/cpu32.c                             | 320 +++++++-------
- target/arm/tcg/cpu64.c                             | 459 +++++++++++----------
- target/arm/tcg/translate-a64.c                     |  10 +-
- target/arm/tcg/translate.c                         |   2 +-
- tests/qtest/bios-tables-test.c                     |  21 +
- accel/hvf/trace-events                             |   7 +
- python/qemu/utils/__init__.py                      |   8 +-
- python/qemu/utils/accel.py                         |   9 +
- target/arm/hvf/trace-events                        |   5 +-
- tests/data/acpi/aarch64/virt/APIC.its_off          | Bin 0 -> 164 bytes
- tests/data/acpi/aarch64/virt/IORT.its_off          | Bin 0 -> 172 bytes
- tests/functional/meson.build                       |   2 +
- tests/functional/qemu_test/testcase.py             |   6 +-
- .../functional/test_aarch64_device_passthrough.py  | 142 +++++++
- tests/functional/test_aarch64_imx8mp_evk.py        |   1 +
- tests/functional/test_aarch64_sbsaref.py           |   5 +-
- tests/functional/test_aarch64_sbsaref_alpine.py    |   3 +-
- tests/functional/test_aarch64_sbsaref_freebsd.py   |   3 +-
- tests/functional/test_aarch64_smmu.py              |  12 +-
- tests/functional/test_aarch64_xen.py               |   1 +
- 42 files changed, 1432 insertions(+), 1057 deletions(-)
- create mode 100644 accel/hvf/trace.h
- create mode 100644 target/arm/cpu-sysregs.h
- create mode 100644 target/arm/cpu-sysregs.h.inc
- create mode 100644 accel/hvf/trace-events
- create mode 100644 tests/data/acpi/aarch64/virt/APIC.its_off
- create mode 100644 tests/data/acpi/aarch64/virt/IORT.its_off
- create mode 100755 tests/functional/test_aarch64_device_passthrough.py
 
