@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A82AF0143
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16203AF0168
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:11:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSp-0005rP-AB; Tue, 01 Jul 2025 13:08:11 -0400
+	id 1uWeSo-0005qn-0g; Tue, 01 Jul 2025 13:08:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSj-0005mP-Sf
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:08:05 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1uWeSk-0005mT-0p
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:08:06 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSh-0003kK-7Z
+ id 1uWeSh-0003kl-U5
  for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:08:05 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3a4f72cba73so4483663f8f.1
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:08:02 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3a525eee2e3so3770841f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:08:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751389681; x=1751994481; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751389682; x=1751994482; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KxWPsSs+27QX8v3jrIStt0DlCSv+fp9Zyr2gtQ2zORA=;
- b=fhpz7Jwrsu5+zyIqeiU0I2znLfvM1Kpj/86ubQzp7Aomx1dpbFX9Qan9neyrPHuZSv
- hxiVKVuqxMkmXcB/OTaAxpZt4CGatg4ugtsEGHrEQtkGbTrxhT4xNWt4gLOWXIlIPZKb
- /ZyIKkU8cd0xCh7gHxXHZo/RZhLpREgPiUtlFuLYwyOCfsO23gzztCoFHwVl/wKrxDyj
- f7JomEGNDhZoC73kfhyOBfs3fRkm3aiCClHsr1mBUxL6oko83lAvS9Y6BIix4Hd6XG29
- Co7W/g461HJjqmEM5hHH+NFfr18Qq3gFd+8b9lFWVcK0v26nx3UaH/ZBkh7K84E7wXv7
- LBIQ==
+ :reply-to; bh=glY6a1QW0oSKa+BPVnL2cNWYrq6lfNT2K+pLM2j25qk=;
+ b=yH94nALA22vJZ6M9+FruDuIzj9kDELEIx+7FjOBSno5pLrJi5kjuro1BlE/QjMxs2I
+ lnpfE4olQKySO6H3spD8NkWRx5+ZnKhFhiyCYJtDeb9gMPWCVldjxmJJtgjrWDNOFGyO
+ AD6oEOixel/KTyON0C92+2k6To56UBfuunE4P1F8t2TsO+hiunh5Iv8jf25S0I8DiYRF
+ NLrwkbe5IVi3zklxvk8HUSwUh2ehEeLjWp8Ct4ZsVwDMO3hLbn5JOTnaUMcQcqADPXje
+ btoBk3g2SI0TPmeN4imdcuUK3ng0NwBv+Uvd09NP6ulvHXZMSmLPd92L4HvRxW5eiP51
+ Xr/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751389681; x=1751994481;
+ d=1e100.net; s=20230601; t=1751389682; x=1751994482;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KxWPsSs+27QX8v3jrIStt0DlCSv+fp9Zyr2gtQ2zORA=;
- b=ooMA9702mYjKzXA6G++SqANGZbKXhAdJ8KbHO9oIy3nVofU/tEU4q5PvaNaBf/ex9j
- ZjMg+5MQf9hOkvUDG9Spjois9dDSOoDT+O9DkGD0jm+k/6IKnnraPn5ObSBYqgw1reow
- 08wx5sgkuUF5K7h++eEuOUxwJ86rhKSsxZwPVaQYNvtH9m+a95t5glx6MygtJY0LYsHU
- fF2SOI+1y75Syd7f8mFbk4LgHtQ9iKRCkNS4Ywf8FPUlOcE3G426eBYWLdo9bOAz1Tnt
- lSNuA01ACGKnnqCoyQPvBD1IvvnL2PK+FYCrPg6j/f4RF7ju78pgl47iGlSGYjyOt4Ng
- D0sA==
-X-Gm-Message-State: AOJu0Yxcq27QeXBgnNJ5vqfE4SoNb9I6bs8r7WFGpLI34z9Jfh3KYp6Y
- fWCRa60Gr5exqNeKJONMlgffcqDHSKgpyTCTcDjplNkvwNkar0D3My7CYuVkhHFyLHP1qa0VMHs
- j2wZs
-X-Gm-Gg: ASbGncvRbKbavdcOmymp8Gqih74sz0dcNVSxL0/guUqWLjyNmJfuXDEGRSF7FTl/x2E
- hyLeo6KvtjMgFT6zJNzzy+8MNSdKubUf0Hlfn1kVl39pTHOjqff/N3TLmdXKVLlxRMpGce4VA+4
- 0aL4NcYfzHq/XzcTGkCstf47A9j+3XLmouwBSrWQKWoeAKhsE/42e8jcwUPC0V4fpngBemUtKuI
- V0z3wJDGAHR8Boxc6Y7ZBF0umV2XEAVpbFsTlQsCYs+HBWdHRjvnxTMjYiF5eQYcemd9WgzbJAB
- ZMa6NP4PO/XdbNDFaIwInpDRxHkNvsWzcdjHp93bSQRIFli4j5OVKWHww35IrbX3/dFh
-X-Google-Smtp-Source: AGHT+IGPziVZyr6NmYXTa6ceJM2mT0A2T4ru/RVIM22EqpWq/JB6oRMRrcdJBZDmvfVmqMZLpei7Xg==
-X-Received: by 2002:a05:6000:290f:b0:3a4:e624:4ec9 with SMTP id
- ffacd0b85a97d-3afa162b562mr3259577f8f.3.1751389681491; 
- Tue, 01 Jul 2025 10:08:01 -0700 (PDT)
+ bh=glY6a1QW0oSKa+BPVnL2cNWYrq6lfNT2K+pLM2j25qk=;
+ b=NseTuSSVtZ7nec8Z1vfUCaGnFlBMbYF2ticFGe2bTAM5hCvkFZinl6h7k/cc1aR1Wn
+ yrf4Vslxx1GOjSGNQ0fl0mlsdlQYYVFrzoukKvt9/Vi2OllKhhBxq4jKGpO1hEHwrPuE
+ eRv5F9q97BgOGnmlHuSqHYXc5Ch9GT9nKHabW1r9hYZzRfLb98v76i6Y60wq/P6xjIJL
+ IngkaaWdVXbMbm3j3/21b4+A59q9ni9aHz0Mk8Cy85vJF+HN7PNKlrUzHeeViESrXal1
+ 2yDw9/t4uYYGgpzSVbhXj85MQWrBbtlwpbEYmJUKCUfCXUnDTmMp6k59iKei6s+l+WP1
+ PP8A==
+X-Gm-Message-State: AOJu0Yx/DbDs9ZG32bD96VRxZ1LPsI6o8MhXhqxOYvlzJAIYGUPOD7jI
+ U2XAJ/xQNoecsau5kxIiuwGgzhEG1AuiuGdj7TdCxo62iZUIx/85nRw0ADwQJ9ipKHFX8cotct7
+ u9a95
+X-Gm-Gg: ASbGncvI5jeGLW2Igm8sUiiEBMBsOkZMwrMZhKMIaOGWobWiucaoX6WTMYTkODgKM9P
+ ou0ahlx19pQAe7XbnrDhGm3T/Ce9c87JxlQLtGOKYqI+FddifX6WyhHWl9Y1UCHvXtEHfKckrai
+ 19d00nYezBMlCyj/M+mlx1PKM/0OD5cAyDYvHlcQG41UMRvLpDAr06dGjHMrJa54NuBCFVkEehT
+ ike6UFH17OdXkL3kosCLiYj1FVeYGIakVUGFBZKyITwXUXX0UU1CDVogeraILZdzPM/fU9PFyIA
+ Hk/SaanwH8l380mhBYSqTtdKJzOr6+ZcGW62S7EfMOPv35EPO5QQbBS3MlCwb1ARfXG7SLicf9g
+ V7rg=
+X-Google-Smtp-Source: AGHT+IGDjHjcMWczVbfhf7aGrvSGV/OBxdbXzEnTW69A8WuZKy682IxH9vSHxQxDOhtoxeHexoCGmw==
+X-Received: by 2002:adf:f4c9:0:b0:3a5:39d7:3f17 with SMTP id
+ ffacd0b85a97d-3a900760066mr13971684f8f.47.1751389682342; 
+ Tue, 01 Jul 2025 10:08:02 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.08.00
+ ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.08.01
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 10:08:00 -0700 (PDT)
+ Tue, 01 Jul 2025 10:08:01 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 40/43] tests/functional: Require TCG to run Aarch64 imx8mp-evk
- test
-Date: Tue,  1 Jul 2025 18:07:16 +0100
-Message-ID: <20250701170720.4072660-41-peter.maydell@linaro.org>
+Subject: [PULL 41/43] tests/functional: Add hvf_available() helper
+Date: Tue,  1 Jul 2025 18:07:17 +0100
+Message-ID: <20250701170720.4072660-42-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
 References: <20250701170720.4072660-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,31 +98,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-The imx8mp-evk machine can only run with the TCG accelerator.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20250623121845.7214-25-philmd@linaro.org
+Message-id: 20250623121845.7214-26-philmd@linaro.org
+[PMM: tweaks to satisfy the python linter CI job]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/functional/test_aarch64_imx8mp_evk.py | 1 +
- 1 file changed, 1 insertion(+)
+ python/qemu/utils/__init__.py          | 8 +++++++-
+ python/qemu/utils/accel.py             | 9 +++++++++
+ tests/functional/qemu_test/testcase.py | 6 ++++--
+ 3 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/tests/functional/test_aarch64_imx8mp_evk.py b/tests/functional/test_aarch64_imx8mp_evk.py
-index 638bf9e1310..99ddcdef835 100755
---- a/tests/functional/test_aarch64_imx8mp_evk.py
-+++ b/tests/functional/test_aarch64_imx8mp_evk.py
-@@ -49,6 +49,7 @@ def setUp(self):
-                      self.DTB_OFFSET, self.DTB_SIZE)
+diff --git a/python/qemu/utils/__init__.py b/python/qemu/utils/__init__.py
+index 017cfdcda75..be5daa83634 100644
+--- a/python/qemu/utils/__init__.py
++++ b/python/qemu/utils/__init__.py
+@@ -23,13 +23,19 @@
+ from typing import Optional
  
-     def test_aarch64_imx8mp_evk_usdhc(self):
-+        self.require_accelerator("tcg")
-         self.set_machine('imx8mp-evk')
-         self.vm.set_console(console_index=1)
-         self.vm.add_args('-m', '2G',
+ # pylint: disable=import-error
+-from .accel import kvm_available, list_accel, tcg_available
++from .accel import (
++    hvf_available,
++    kvm_available,
++    list_accel,
++    tcg_available,
++)
+ 
+ 
+ __all__ = (
+     'VerboseProcessError',
+     'add_visual_margin',
+     'get_info_usernet_hostfwd_port',
++    'hvf_available',
+     'kvm_available',
+     'list_accel',
+     'tcg_available',
+diff --git a/python/qemu/utils/accel.py b/python/qemu/utils/accel.py
+index 386ff640ca8..f915b646692 100644
+--- a/python/qemu/utils/accel.py
++++ b/python/qemu/utils/accel.py
+@@ -82,3 +82,12 @@ def tcg_available(qemu_bin: str) -> bool:
+     @param qemu_bin (str): path to the QEMU binary
+     """
+     return 'tcg' in list_accel(qemu_bin)
++
++
++def hvf_available(qemu_bin: str) -> bool:
++    """
++    Check if HVF is available.
++
++    @param qemu_bin (str): path to the QEMU binary
++    """
++    return 'hvf' in list_accel(qemu_bin)
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 50c401b8c3c..2082c6fce43 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -23,7 +23,7 @@
+ import uuid
+ 
+ from qemu.machine import QEMUMachine
+-from qemu.utils import kvm_available, tcg_available
++from qemu.utils import hvf_available, kvm_available, tcg_available
+ 
+ from .archive import archive_extract
+ from .asset import Asset
+@@ -317,7 +317,9 @@ def require_accelerator(self, accelerator):
+         :type accelerator: str
+         """
+         checker = {'tcg': tcg_available,
+-                   'kvm': kvm_available}.get(accelerator)
++                   'kvm': kvm_available,
++                   'hvf': hvf_available,
++                  }.get(accelerator)
+         if checker is None:
+             self.skipTest("Don't know how to check for the presence "
+                           "of accelerator %s" % accelerator)
 -- 
 2.43.0
 
