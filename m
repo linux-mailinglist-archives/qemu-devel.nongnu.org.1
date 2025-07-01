@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB951AF0170
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E228AF0193
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:17:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSd-0005iP-Ph; Tue, 01 Jul 2025 13:07:59 -0400
+	id 1uWeSR-0005V9-0g; Tue, 01 Jul 2025 13:07:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSG-0005RL-IE
+ id 1uWeSG-0005RI-Gx
  for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:39 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSB-0003KU-0b
+ id 1uWeSA-0003Ks-Aa
  for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:07:34 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3a50956e5d3so5017143f8f.1
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:25 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3a6cdc27438so3016749f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:07:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751389643; x=1751994443; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751389644; x=1751994444; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bO/eRE0oLZeR5GcJzymVIXIdadc1wAcqQphyP71Niqg=;
- b=T3w7VavbYkhgsK00Yvi4EW08c2Lj0qJryjuhM16A5YFDWdZr3GPlFl0Sa+1O+0sxwW
- JEMZvsI23PiNmgwAmPkJ4jG+3FOgOu2xEPHZaz7q6ZOkfEriCc6ZHjpB0KUTJB3hif5U
- 7S/mrOmvUbFyXa56YLeojiJ+SUrzKg7408ytfL/Y0DK5mlIV2wVa2niemGQrdr06adCq
- ApR6pfeEe8PU42EpZhP2hq7HlCUTgoMrayGkFJcJr1bP3c+VPL4wEJgrNkvdYZx4boYK
- 3VW2WRJwrd+LiDx0hzzj+12UOQGJspbWWb8GRKcCXDhD6rtBgv2P9XgkBJ/BW/dG5z1A
- UujA==
+ :reply-to; bh=qVAzEalqJxujtmncmmPvxYDDmAvLtGutu9NBUWptPQA=;
+ b=QA08r9Aisdh1F1vaib+3ukBHhOAxztldWecm8I8bI42XOmy9HCbT1DE/tIW51+g/kY
+ 7Tby5GxTh5N+fcXtNBa/fq7OzWyBgWMbFORkbLteyYrbJ0czy9fftZ8VSMBS5bYUAyVA
+ IQlH5MnNsNAFGeJcm5d9B+JnihEe9T2oZfCsnf1yIvoItINb3hq884kOP9SH6AJIE9UF
+ KqFqAN2AlO3cG4aPjEpIT+LBkXEsqEwhQTipLOZpxPSXlMTUMesKRRVOL2ZO4byOjjBF
+ HZKpu+G4M3i/+Zsot18jVuOhcc53JL1AY9AayWlxDYrTRwMHnnSdtd8r9vfZZlBhjOVo
+ czpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751389643; x=1751994443;
+ d=1e100.net; s=20230601; t=1751389644; x=1751994444;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bO/eRE0oLZeR5GcJzymVIXIdadc1wAcqQphyP71Niqg=;
- b=mv+Sg0/MJFzgZB2d8qK+fo90sW8GybDOsAQ4eQv2g0lIB7Wpa1UqdzLpH2XYtNEQ2D
- tqCI53Nrhq4mqm3M7wDUjI0Wgjp8e3r8Fx59GLQ7Tb+pK/QOhoeV8O6QmTStWIOkwVzj
- lTJtv4prZPZzrmbpx3x7YS5rp8ds46/GrrgkijsZLjYk8DRh3KrbHN8QS3lJOagfwxk0
- 1Nwin2k+98pxi9n74ZDynniJR7DrqCdORSH/S+O/4m41W3XOGpcKy+0fma1SIjx5aXQg
- AsoYzMZiBRGjoMjE9FdUe2L/RjR5g/3x9CakglLGRC3Jg8qZbNilMjmkA4rvULIZa76i
- h9zA==
-X-Gm-Message-State: AOJu0YyYd6DGZ+qfhKSnpr15ZY3IqNuW/EtBRQdJ+Yxz/WaclEtsGe44
- wjelhLxFSJDqlDaN0QXlGboOMsVvbGvIr3s2e9WFwhi361oqlqxR1Haovr6eJPzzINja19cNTpU
- Q8agf
-X-Gm-Gg: ASbGncv17jePxWMRhq3oJem+yI9/P3sV1LyF97MeEwG4DpLLur/GrIXiZ0EBZkQiL7L
- mnIBhGieG+kYB1BVVKeEUW9wvIiJDOCUOwnz7oqVlIgsyVQTVzup7fMZuNCzkHAfUT0iC/SAWJk
- R0QJ57w+Ig5sp+BBbubQC/biY1JtpmyBt/HHO9fOxUvYwwSbR1DFDsQkYAAyKjAILSQLiJALKvb
- YmczQ6IA1CDe0zuDI+lH4WIL7lUx4pnYfmlfIsZgrPHQ9QOcUZCv0fJltdJmw7WjN/pUPDtLkFr
- ObrNCVL8zEzr4UApqzkp7ESrC3R7yCCZ3r0oytJgDGSCJo2iffa5RyzYj0YliW1d0oGO
-X-Google-Smtp-Source: AGHT+IEYWLZxdobjA8crRmR+FwWhkomues9TZK+twHaLr9sCQp8g9mNHsqLY7Zr3JfWhZIWThh4CQA==
-X-Received: by 2002:adf:ea50:0:b0:3a5:52b3:103b with SMTP id
- ffacd0b85a97d-3a90d0d6d11mr13527678f8f.4.1751389643455; 
- Tue, 01 Jul 2025 10:07:23 -0700 (PDT)
+ bh=qVAzEalqJxujtmncmmPvxYDDmAvLtGutu9NBUWptPQA=;
+ b=qWpPsd64GeEvThAwGYu/jlt0xN2E8r0sfnMMufZJ7mqwwV19WV9EpMB2C9xMmbysEk
+ TXw8rjqJA+ceJ2K/VZ4Ki9F3eNsuDaQGswsj1CoEjiKe+RADlO6vOV0HqMT7o0U05JJl
+ IuJe6gTxd/zXmlgXV16OAqR04yHPx4SlrDg++9WeRML8bR5S2tH5ary0qJOBCLYSOndR
+ OW50U/IwZ0Qew/iIqPH3j8hsXKvs+lSVw+G+z6Q+NS7aD/1OcC7z3Ch0MJkyY0OJ3UeX
+ D/AtOLWZ6XyEBkf1K1KG6QU4zN8Rev+q6NNsnGxKcIm+OFueyS+dc98PV6UZ5icIdZIH
+ V25Q==
+X-Gm-Message-State: AOJu0YxaBNfEdb0Dh2J+QPmFVZUEKQQBdPUd8o6dtOFi49i6Nbx1VCFS
+ fheeQsf0U1Pj3pfaT3dvkDGnmg0s7P900ZMyIkrh1Vrzinbik/CZ7v6pU9dexmrpivwKBLbtQ1P
+ sZQ9J
+X-Gm-Gg: ASbGncsxt4qapF2dc91r1xVV2EVEfTBFdLq3w4oxoUBrImdL4YEblxT+4B2UUsmwVYo
+ 8QcHDZ0LhfUCysYZPTzIGUgSqpddDyUwzXWxtVgxKD+csEAtcx6ugjWdG6zzucvtFWELpSa+IMv
+ 9Inha3ZeOSeq1LJKPE87tFR/TybFdIjCcNK7EbgSfUCPxX7QW5N90bMMoCaxKunCfkhflBpLL+d
+ NZQgrJvOxHntD47UcBsnLSNC1yGm9GMT9OGNaSOsKXMddSFL2Pp+iLB1Ch9jjOMsn4VJmNFwzKV
+ NOkiWqlTbscaC7XH4AS0jP1FIxpd2rGOcGTRf4mt/5eO9NQw/WsCgWhOitOXCUm6s95f
+X-Google-Smtp-Source: AGHT+IEg8T5mGcjdQ9YcXXleR92TI4j2iB9+NXY/sKR52wvGJCY+hXjOCMVpor/r4o64LcgyNFqyDw==
+X-Received: by 2002:a05:6000:2188:b0:3a4:d79a:35a6 with SMTP id
+ ffacd0b85a97d-3a8f482c094mr12665995f8f.14.1751389644508; 
+ Tue, 01 Jul 2025 10:07:24 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.22
+ ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 10:07:22 -0700 (PDT)
+ Tue, 01 Jul 2025 10:07:23 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/43] MAINTAINERS: add myself as reviewer for Apple Silicon HVF
-Date: Tue,  1 Jul 2025 18:06:37 +0100
-Message-ID: <20250701170720.4072660-2-peter.maydell@linaro.org>
+Subject: [PULL 02/43] target/arm: Make RETA[AB] UNDEF when pauth is not
+ implemented
+Date: Tue,  1 Jul 2025 18:06:38 +0100
+Message-ID: <20250701170720.4072660-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
 References: <20250701170720.4072660-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,43 +98,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mads Ynddal <mads@ynddal.dk>
+From: Solomon Tan <root@wjsota.com>
 
-I've both publicly and private been digging around the Apple Silicon HVF code,
-and use it daily as part of my job. I feel I have a solid understanding of it,
-so I thought I'd step up and assist.
+According to the Arm A-profile A64 Instruction Set Architecture,
+RETA[AB] should be decoded as UNDEF if the pauth feature is not
+implemented.
 
-I've added myself as reviewer to the common "HVF" as well, to be informed of
-changes that might affect the Apple Silicon HVF code, which will be my primary
-focus.
+We got this right in the initial implementation, but accidentally
+dropped the feature-check when we converted these insns to
+decodetree.
 
-Signed-off-by: Mads Ynddal <mads@ynddal.dk>
-Message-id: 20250617093001.70080-1-mads@ynddal.dk
+Cc: qemu-stable@nongnu.org
+Fixes: 0ebbe9021254f ("target/arm: Convert BRA[AB]Z, BLR[AB]Z, RETA[AB] to decodetree")
+Signed-off-by: Solomon Tan <root@wjsota.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250616171549.59190-1-root@wjsota.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+ target/arm/tcg/translate-a64.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d1672fda8dd..b3b2a112073 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -511,6 +511,7 @@ F: system/cpus.c
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index ac80f572a2d..d0719b5665f 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -1816,6 +1816,10 @@ static bool trans_RETA(DisasContext *s, arg_reta *a)
+ {
+     TCGv_i64 dst;
  
- Apple Silicon HVF CPUs
- M: Alexander Graf <agraf@csgraf.de>
-+R: Mads Ynddal <mads@ynddal.dk>
- S: Maintained
- F: target/arm/hvf/
- F: target/arm/hvf-stub.c
-@@ -527,6 +528,7 @@ HVF
- M: Cameron Esfahani <dirty@apple.com>
- M: Roman Bolshakov <rbolshakov@ddn.com>
- R: Phil Dennis-Jordan <phil@philjordan.eu>
-+R: Mads Ynddal <mads@ynddal.dk>
- W: https://wiki.qemu.org/Features/HVF
- S: Maintained
- F: accel/hvf/
++    if (!dc_isar_feature(aa64_pauth, s)) {
++        return false;
++    }
++
+     dst = auth_branch_target(s, cpu_reg(s, 30), cpu_X[31], !a->m);
+     gen_a64_set_pc(s, dst);
+     s->base.is_jmp = DISAS_JUMP;
 -- 
 2.43.0
 
