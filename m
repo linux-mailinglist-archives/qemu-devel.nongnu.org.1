@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B83AEF52D
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 12:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D19CAEF535
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 12:35:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWYJ4-0005WM-Qm; Tue, 01 Jul 2025 06:33:43 -0400
+	id 1uWYJ8-0005lH-0O; Tue, 01 Jul 2025 06:33:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
- id 1uWYIu-0005PL-Rq; Tue, 01 Jul 2025 06:33:36 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1uWYJ2-0005bP-NS; Tue, 01 Jul 2025 06:33:40 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
- id 1uWYIs-0002Ni-JU; Tue, 01 Jul 2025 06:33:32 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-23602481460so55691665ad.0; 
- Tue, 01 Jul 2025 03:33:29 -0700 (PDT)
+ id 1uWYIx-0002OD-Gb; Tue, 01 Jul 2025 06:33:40 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-23636167b30so27519295ad.1; 
+ Tue, 01 Jul 2025 03:33:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751366007; x=1751970807; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751366012; x=1751970812; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7aRIcodaoxwPOVqLMAiD3Xs6uLadGOPk1WBQF+3EBdA=;
- b=C5u+RIgWcMaJUTSwBeneo74yAfQQzh+tOsFefx9jFakGXJwt8zQQ8s3hx5fgk4Wjw4
- yO5aal9jU257JNtXTJTKLuU7PHxyQybLRnFwpgBe0cWi+APWt7mBcyYaFQl7C1ybStBT
- +e+7A2FeJ4mqT3yZv4ItqcfXmAepA0AznxfuCZoi5mwGSYUiZmUwnQdUBtlx0VQX4lZh
- r885kfT3U00lULLTQZSV+JuuuoTMkul8gmUnJKC5x1TzVIwMcJsiRMgldQkTDb4WU9uO
- PbT9U9+OxYk34fCE/sUzwqjXdjHUnUf/XmQJLq3wdebj2LljTXmcpj8A2R2d/EyEKhPP
- hBRg==
+ bh=YaRnx40pfqe2LWdyO+Phw71MFavCwwYSk+ZdTDx9hxA=;
+ b=kiwd5gHoGdsLocZzEXP8oBANVFtQLEaDep9xrvypZMNUPGL+0B0/aUvZJsKOGjsjD8
+ XDAg3gww7Yxj1MXMkZ5LnEFOSA14FX8iyThKceXyN0+CKbnjHE6pOyFYy6WsSlCc6Puz
+ E9pKspG9Jw/S1MPCoGLkc3ATQRc39+K15lEc6hicn688p566LhDQ3TFURaajOI5gnMJi
+ HgOudJ4LRt6cURtx7bSvJwIOetsI/sVYd400QQbcGwQk0mw3RkxW/oeH0h+jEADFVZpz
+ YzH3yTKDAwIz24k5IKDh+6tRvn8KW0ev+I0OpJi1QpNCFvUKlfK5zwSvf5M3+2w/Gl8l
+ 7NzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751366007; x=1751970807;
+ d=1e100.net; s=20230601; t=1751366012; x=1751970812;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7aRIcodaoxwPOVqLMAiD3Xs6uLadGOPk1WBQF+3EBdA=;
- b=aSYu1vnwYgi4CwlqgCqfk4ZaXIIDLI/R93IlaAoL2dT16MmdXSB1ordI2LATL0roEc
- P0c58gOulKBejjAkW8xVYDaFMq77C4KulVSqF/14AiVtPHGp8kyZPo96R4MSSWKsKZbk
- O3fcbbzptKve1nqU4j2rL/zz56LngPyggo+2u3y1Lnsp+a/RKTly6Ox5yayU+QCyyI1U
- JpAG8mLYgViElN2xI+9wivsv0WhSjr7yo0DzRMprK+9q+l+3zopzJ09SDSijC5tZFUBP
- qL/Q9lgH1lZ6022a3d2SeWGMfviCiaKgHV2WZ8uYia05mQo3+xcy7Cf7N+W1Izu6Pjw/
- ju7A==
-X-Gm-Message-State: AOJu0YxGbnpuvn9IxAVgJL5asnwes2lRM31JSjw22EXEo33YrqipA2Dj
- w5LXOI/pqwwrUl3FGNqfWn64yyZ/Uu/FAG/2iTL40fgGfOR4N0Bp89Xk4/WyY2Dt9pc=
-X-Gm-Gg: ASbGncv9H+09ltNLpkKFZuL/MCDd34HWSwPGS5uWSU228cXxoTDxjQTaPKeSwflZJZF
- kRo+ll1dhAHM026+2aMeEc7gPnOMdIlCf8GC4Oh5pK0xQvAc8vjm2R1edHwiC1YLgGErfAJgj2M
- K+BlsIGaCyw77sTE5iAqeRi+a+8WI/lD96lSUzmr+vBS3NtlX4kI7mrtikwVA3dlUylQsq3PKGl
- K05kUnwp8+64hoCgNus4J2N7EAQH0zkOrTNuoe1ME/9G9eAL3tFdsftKU71WMdDuhUc3MFv6w7J
- mpY3vFz96YzCB5yovfb6SccweHMg13UTlEtcyck7reBxeSal4vRUqO7c8qc6QlLSvDKj+DpEN2l
- IPlyEOGI38/nJTtiSC5y5f9T3DEMaKibTvGgIrt9J/hA=
-X-Google-Smtp-Source: AGHT+IGM3ppVDuzRwXOuBF6/7ine2kkFnd3QIiy1osrAHX94x6RbrBd1KeYYf3dEOSKYIjydoBhSgA==
-X-Received: by 2002:a17:903:1a67:b0:236:7333:f183 with SMTP id
- d9443c01a7336-23ac3afd8e4mr245773125ad.19.1751366007307; 
- Tue, 01 Jul 2025 03:33:27 -0700 (PDT)
+ bh=YaRnx40pfqe2LWdyO+Phw71MFavCwwYSk+ZdTDx9hxA=;
+ b=ff59mpAyCsZVKxeBhgqT4WRQppNb+WOI9J6rBApDQSUEgXtIbYy64cbu/uW2r95Pv5
+ lNQKWekjKKTjeFnMHb7G+A1xmp5yWYePINO/INjmer6yaJ+VR7oMpkHtpMJg5jYVvws1
+ Dml6WZhH++yDhpG9o49kxTCrkOX89LYC8N9aVrgWOwVihZ4mhm/49ghE3o0d8crCvEEI
+ jlSqdv7fIpT7h6MXFne6KwWK3P4EcYCTMah5K51mQQjPd87QucAQMRdxAoXMmsgViQux
+ qMKUZ7nZL3lURKkF3w5PoH3VPDCtCQq09F4zP+lK3BXODIrxbIvQzxXso5s73tRze7OM
+ DpOg==
+X-Gm-Message-State: AOJu0YwAgxyGly6gB+clMS4nTndTjyi+cKha0zucnfktr89neD56vuIV
+ Uqq3ByIBfIP/TN8MOOIhl10pUzG7YwCAJvyjJ9kJ85s6dvAmc4SRu2iwajJbyFojNIg=
+X-Gm-Gg: ASbGnct/S1dlRJdMJwEsiZ5iEwGEiaN0DMTnx/hVfdo/2PWx8sV+k9kv2Zx66kWRfgn
+ 4FX9NHnPbBVq3S+8/F7K5/m7eSMD6B5FgsrwvphtH1edqL5Jld/KXetYwbLI7yRnB4AFHIawObs
+ Gx+dzJ99KExvw2UuI8EQfw2/ncio5yPkVBZisq02yD3WhxcpcblVAde4vGyY0MDK11nLim7YfnM
+ V2ZO+wtXdBq54Da2co4DIRzH2CV4i0He9Nu+EUekd4bF4s50+jv3AUY272ssjZxL+6EdFjIvuen
+ +icEdGf2FR4mr/6r11mQ3Taa+LeJIqUZ6iPJqfjkUxIVPGKtnUplnanzFuRRl/heVY1HYiIOO7t
+ tG5WIgqvvIErFJr56rz63EkDU/KqIROAvbYq1iL1FsoI=
+X-Google-Smtp-Source: AGHT+IG3J3CPFENhldOUjXYuQsOculAHuS0R7o9ec7yY+KFAmQQi2I/TBYJ9I7GUVEUJyYONBDCjbg==
+X-Received: by 2002:a17:903:1ac8:b0:235:225d:30a2 with SMTP id
+ d9443c01a7336-23ac4664161mr255766415ad.48.1751366011834; 
+ Tue, 01 Jul 2025 03:33:31 -0700 (PDT)
 Received: from localhost (pa49-178-74-199.pa.nsw.optusnet.com.au.
  [49.178.74.199]) by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-23acb2f1c40sm104476955ad.67.2025.07.01.03.33.26
+ d9443c01a7336-23acb3acc00sm99523915ad.142.2025.07.01.03.33.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 03:33:26 -0700 (PDT)
+ Tue, 01 Jul 2025 03:33:31 -0700 (PDT)
 From: William Kosasih <kosasihwilliam4@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  William Kosasih <kosasihwilliam4@gmail.com>
-Subject: [PATCH v2 09/12] target/arm: Fix VLD2 helper load alignment checks
-Date: Tue,  1 Jul 2025 20:01:56 +0930
-Message-ID: <20250701103159.62661-10-kosasihwilliam4@gmail.com>
+Subject: [PATCH v2 10/12] target/arm: Fix VST4 helper store alignment checks
+Date: Tue,  1 Jul 2025 20:01:57 +0930
+Message-ID: <20250701103159.62661-11-kosasihwilliam4@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250701103159.62661-1-kosasihwilliam4@gmail.com>
 References: <20250701103159.62661-1-kosasihwilliam4@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=kosasihwilliam4@gmail.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=kosasihwilliam4@gmail.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,7 +96,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds alignment checks in the load operations in the VLD2
+This patch adds alignment checks in the store operations in the VST4
 instruction.
 
 Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
@@ -107,60 +106,63 @@ Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
  1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
-index 2d2936abde..9e8ea04074 100644
+index 9e8ea04074..f16877ba45 100644
 --- a/target/arm/tcg/mve_helper.c
 +++ b/target/arm/tcg/mve_helper.c
-@@ -513,13 +513,15 @@ DO_VLD4W(vld43w, 6, 7, 8, 9)
+@@ -595,6 +595,8 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+         uint16_t mask = mve_eci_mask(env);                              \
          static const uint8_t off[4] = { O1, O2, O3, O4 };               \
          uint32_t addr, data;                                            \
-         uint8_t *qd;                                                    \
 +        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
 +        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
          for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
              if ((mask & 1) == 0) {                                      \
                  /* ECI says skip this beat */                           \
-                 continue;                                               \
+@@ -606,7 +608,7 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+                 uint8_t *qd = (uint8_t *)aa32_vfp_qreg(env, qnidx + e); \
+                 data = (data << 8) | qd[H1(off[beat])];                 \
              }                                                           \
-             addr = base + off[beat] * 2;                                \
--            data = cpu_ldl_le_data_ra(env, addr, GETPC());              \
-+            data = cpu_ldl_mmu(env, addr, oi, GETPC());                 \
-             for (e = 0; e < 4; e++, data >>= 8) {                       \
-                 qd = (uint8_t *)aa32_vfp_qreg(env, qnidx + (e & 1));    \
-                 qd[H1(off[beat] + (e >> 1))] = data;                    \
-@@ -537,13 +539,15 @@ DO_VLD4W(vld43w, 6, 7, 8, 9)
+-            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
++            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
+         }                                                               \
+     }
+ 
+@@ -620,6 +622,8 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
          uint32_t addr, data;                                            \
-         int e;                                                          \
+         int y; /* y counts 0 2 0 2 */                                   \
          uint16_t *qd;                                                   \
 +        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
 +        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
-         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
+         for (beat = 0, y = 0; beat < 4; beat++, mask >>= 4, y ^= 2) {   \
              if ((mask & 1) == 0) {                                      \
                  /* ECI says skip this beat */                           \
-                 continue;                                               \
-             }                                                           \
-             addr = base + off[beat] * 4;                                \
--            data = cpu_ldl_le_data_ra(env, addr, GETPC());              \
-+            data = cpu_ldl_mmu(env, addr, oi, GETPC());                 \
-             for (e = 0; e < 2; e++, data >>= 16) {                      \
-                 qd = (uint16_t *)aa32_vfp_qreg(env, qnidx + e);         \
-                 qd[H2(off[beat])] = data;                               \
-@@ -560,13 +564,15 @@ DO_VLD4W(vld43w, 6, 7, 8, 9)
-         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
+@@ -630,7 +634,7 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+             data = qd[H2(off[beat])];                                   \
+             qd = (uint16_t *)aa32_vfp_qreg(env, qnidx + y + 1);         \
+             data |= qd[H2(off[beat])] << 16;                            \
+-            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
++            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
+         }                                                               \
+     }
+ 
+@@ -644,6 +648,8 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
          uint32_t addr, data;                                            \
          uint32_t *qd;                                                   \
+         int y;                                                          \
 +        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
 +        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
          for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
              if ((mask & 1) == 0) {                                      \
                  /* ECI says skip this beat */                           \
-                 continue;                                               \
-             }                                                           \
-             addr = base + off[beat];                                    \
--            data = cpu_ldl_le_data_ra(env, addr, GETPC());              \
-+            data = cpu_ldl_mmu(env, addr, oi, GETPC());                 \
-             qd = (uint32_t *)aa32_vfp_qreg(env, qnidx + (beat & 1));    \
-             qd[H4(off[beat] >> 3)] = data;                              \
+@@ -653,7 +659,7 @@ DO_VLD2W(vld21w, 8, 12, 16, 20)
+             y = (beat + (O1 & 2)) & 3;                                  \
+             qd = (uint32_t *)aa32_vfp_qreg(env, qnidx + y);             \
+             data = qd[H4(off[beat] >> 2)];                              \
+-            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
++            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
          }                                                               \
+     }
+ 
 -- 
 2.48.1
 
