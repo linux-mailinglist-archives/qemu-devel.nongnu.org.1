@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9AEAF0142
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 174B6AF0175
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 19:14:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWeSm-0005oq-2C; Tue, 01 Jul 2025 13:08:08 -0400
+	id 1uWeSk-0005n4-Tz; Tue, 01 Jul 2025 13:08:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSi-0005lj-QV
+ id 1uWeSi-0005lQ-GC
  for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:08:04 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uWeSh-0003jG-0t
+ id 1uWeSg-0003jk-KW
  for qemu-devel@nongnu.org; Tue, 01 Jul 2025 13:08:04 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3a6d77b43c9so3260780f8f.3
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:08:00 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3a54700a463so3623242f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 10:08:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751389680; x=1751994480; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751389681; x=1751994481; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HBsbE/TrRmGaC5yb0jy251zZHsHyCp+NU1gxrZ4fEQc=;
- b=dk1faEvkJn0n191P5mUjvN3EtCG8SXBkPoKlfQYMPKQYfCGU9lTM2z4Dtx+FPYaMpy
- w80jkd3EDQDcpFhPsQZarraj/0IvqKqg+h19ImS3neytaBJ0/pgEhLEbk8ZEErXK34NB
- g1jbli9KBLTK6voyRVTSTfe4O5hQNbxtFqRvZpxX3MhOdl5f6G3Lc48XYlTuWalupnnh
- kUrHr7TEm9KgiL95HnnvAS881maolQ16zzEhP0G2I967RQWLMHiIYUiJXX8YJt3MR5VQ
- j2gcJiTe8r897Osqbm0N76eAkfd3pkyzlyTHw0HZOZ91Zpwj4mBuuZ+5q4XzNj/0xeSj
- UO1Q==
+ :reply-to; bh=EGJGSXijrkKuptWT9xhB3UrOoEMpHnMUKPvnMJKERYM=;
+ b=ClQNmybHexf+y5Xap7x/VITtLGkWk8N5mDNiK00qRpfVQg0ezUiafG2KaTS6tlT0vR
+ ctblPPuLKutv59gtP6gDnglFtAvFbaxMBxDsoF34J2bVTARkQcZXvSduwhymCoHUEORI
+ 1jRHgVSvKQ3auyk9mhLu94NTLUj3ikpBtfZrc5g8x7dnKqygGqUK4nhIYLf0R3FbBw8C
+ M1INzQUECHl5Ocf5NweENW1bfYeXkmBhUu+TKyzj2k1jOJJLSGnCqjSXNx3C6ZtSSsu7
+ Z5wM0N65jDv3HtxoBGsGVI7bOd8rNLmlPLu8xT3hDPbgeJ5T5dk3LcCL8SSQzaMbKa+z
+ LnCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751389680; x=1751994480;
+ d=1e100.net; s=20230601; t=1751389681; x=1751994481;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HBsbE/TrRmGaC5yb0jy251zZHsHyCp+NU1gxrZ4fEQc=;
- b=hhpc2CP9wAqJ4KtO2xMpAoBgIbTkyKXggPo92+/o1+6dh1tj8Ybs69s1qv/cygZ+3/
- 5BgN7E1fNg8zngqDgh3oz+8LkJmozhnACCG+V/n4blnkZdcPRbMUAyMt/3vbpbTmaiZ3
- wXqB+9khAkyFYDYpDJtgHu8hWtUW9Ve1DoFenO9q6iE+4ci2UyBTfauMNidmL5Y3MAp3
- 7yUmlu4T2j6yOLMS2ZbW6qNljohiiEyhLj2V3UZ+mra1NknGjlio+Qx5zG3EZVI9IPD3
- 7BPyuBXr8AdnupGDG8S2/7W0s8Xa7ODJHRLNJ5n5Cddoo+vo/V3vQex92kLS1oR44Avn
- AQQg==
-X-Gm-Message-State: AOJu0YzCE9eQtw+PdEu/B9XUYcEEL1lYbYWMTbJF4BoqPP/c2MCKn4GH
- 3Rh3Fe0LcOMR6SSmGdlEPzLaSvSGZYY5ZKsy9EVR3j8QJXBc/8LJvHtWazySyYkP7w3OReh/Rsk
- +DqCm
-X-Gm-Gg: ASbGncvnimci7Q+CerRCagSS78635eMoY6WJEyRfDDWN89jSvor1eXXG/SVigrlfMF2
- 6lCPPfC1mY90bLKxgVw5rHMhQ5IWZY3o6l/FaEUQx2whXSHCNDuSps4o1ReSMCIfZkIJSLRxg7o
- MwvHP+x6bxq8WYw8prgDRFU2WlESKfgPnPUkXHIXGMk18S9kvWPyTm/c4xzyPl+N8FKCzin8jag
- 7vwphXtXEdgJWiidyS+0JliEAKdtq23QtffmGsDV8F9V6J3BIx9NRE0SY6W7KbBNz+Y9sffyyvP
- mACnPlYcNhZJUgfCwGCVD1EDtfr2LaavRDJjx8pZzia0uB2ziRZ/+IbLgrswoZX1pCtJ
-X-Google-Smtp-Source: AGHT+IGSZnTZogZAyPgZhEeHePSmiz0VLWq9qw/f0pkMc1JFKNcAJY5Y4w6IolKl/peXK2qaKfGfEQ==
-X-Received: by 2002:a05:6000:4a09:b0:3a4:f7dd:234b with SMTP id
- ffacd0b85a97d-3a8e842ffdbmr14608690f8f.0.1751389679806; 
- Tue, 01 Jul 2025 10:07:59 -0700 (PDT)
+ bh=EGJGSXijrkKuptWT9xhB3UrOoEMpHnMUKPvnMJKERYM=;
+ b=R9M2acXHkegKa64n40cZRH3U4PGjsYKvvlve+XQ7Zgxn5XV7QS4cFWXHwSVqXIR37a
+ 0ZgREYN+3pvN9nAEfLrYKVftXp9TZBdlrUcnsUrsrO2Vt/yltfN3tINbzPYoSQN0o9yf
+ qUfseiJWpLPep4/iA1nLmpCDwZhDzEhIur+iWf8+BdctMfp6hqp3CnH+SQhF+wG1N2au
+ ao/zVy2TE3onAlrWoeP7D0MHE+nkxn5FEsVhNBpKMKhIT9ILFzapa5FJL9IftRJjtTxF
+ 9quctFgz4KflL+/N0xGquAWdBh6vnOMMEo9sNUI0aYa2mAwbJtN84KSJ+0F9PlXLfc/t
+ DYxg==
+X-Gm-Message-State: AOJu0YzCSVX76wXhujjMZ0Ye4ctn/Bp7xZgUfL6xdz/6eSM17kYLm0mU
+ EzNM7i3EJPImY25AnEiLsGeWQJPdNOFjMwgQl+vmgyMjarw5q9uh2m0oMT5+wif5wO5h6UbO9AS
+ xzZUm
+X-Gm-Gg: ASbGncvW+KvTYHQiUJ23GqoNd6zXdhu9exvS42LtKkZeMpRtj+OVZTkWaeX+XHipcK+
+ o09jcIAldLDFjgp2jD1T18ytUMlTp5eoPr1JLIJFS2PNmol5D5EwF7IcFNuIKIaA4WvinXts4+7
+ 2NJ6rcNIypHHjRWjy1mL6F/tIdcAInHQ182z+IRWfhMWTGDtb8y/8a3uZjMrKK2qesnQguRvJ+p
+ LJ4f0CdJ1xHoKPpksmnBAaDSH+NhktsjiADhl025C+AG+CQl+krNOrzaRXjaEjIDxF+9y8VEKgp
+ JP+Ai58vxLxNryHBo0DWh6Bqme/HiNmHtF8ev2daqdbEYV0pFvx02H01CWpVkyvBelcseShlJ0K
+ ZxKw=
+X-Google-Smtp-Source: AGHT+IGteTB8Oar82/5wnE99Mnhrc7sz9iunpmpGaWEzwXNvQtLtUHOfS7IR1RdBq6whMlhGcH+UgQ==
+X-Received: by 2002:adf:ea10:0:b0:3a5:270e:7d3 with SMTP id
+ ffacd0b85a97d-3af100ae56cmr3282079f8f.13.1751389680645; 
+ Tue, 01 Jul 2025 10:08:00 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.58
+ ffacd0b85a97d-3a88c80bb28sm13475658f8f.43.2025.07.01.10.07.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Jul 2025 10:07:59 -0700 (PDT)
+ Tue, 01 Jul 2025 10:08:00 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 38/43] tests/functional: Set sbsa-ref machine type in each test
- function
-Date: Tue,  1 Jul 2025 18:07:14 +0100
-Message-ID: <20250701170720.4072660-39-peter.maydell@linaro.org>
+Subject: [PULL 39/43] tests/functional: Restrict nested Aarch64 Xen test to TCG
+Date: Tue,  1 Jul 2025 18:07:15 +0100
+Message-ID: <20250701170720.4072660-40-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701170720.4072660-1-peter.maydell@linaro.org>
 References: <20250701170720.4072660-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,75 +100,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-fetch_firmware() is only about fetching firmware.
-Set the machine type and its default console in
-test_sbsaref_edk2_firmware().
+Currently QEMU only support accelerating EL0 and EL1, so features
+requiring EL2 (like virtualization) or EL3 must be emulated with TCG.
+
+On macOS this test fails:
+
+  qemu-system-aarch64: mach-virt: HVF does not support providing Virtualization extensions to the guest CPU
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Leif Lindholm <leif.lindholm@oss.qualcomm.com>
-Message-id: 20250623121845.7214-23-philmd@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250623121845.7214-24-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/functional/test_aarch64_sbsaref.py         | 5 +++--
- tests/functional/test_aarch64_sbsaref_alpine.py  | 3 ++-
- tests/functional/test_aarch64_sbsaref_freebsd.py | 3 ++-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ tests/functional/test_aarch64_xen.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/functional/test_aarch64_sbsaref.py b/tests/functional/test_aarch64_sbsaref.py
-index e6a55aecfac..d3402f5080a 100755
---- a/tests/functional/test_aarch64_sbsaref.py
-+++ b/tests/functional/test_aarch64_sbsaref.py
-@@ -40,8 +40,6 @@ def fetch_firmware(test):
-         with open(path, "ab+") as fd:
-             fd.truncate(256 << 20)  # Expand volumes to 256MiB
- 
--    test.set_machine('sbsa-ref')
--    test.vm.set_console()
-     test.vm.add_args(
-         "-drive", f"if=pflash,file={fs0_path},format=raw",
-         "-drive", f"if=pflash,file={fs1_path},format=raw",
-@@ -68,8 +66,11 @@ class Aarch64SbsarefMachine(QemuSystemTest):
- 
-     def test_sbsaref_edk2_firmware(self):
- 
-+        self.set_machine('sbsa-ref')
-+
-         fetch_firmware(self)
- 
-+        self.vm.set_console()
-         self.vm.add_args('-cpu', 'cortex-a57')
-         self.vm.launch()
- 
-diff --git a/tests/functional/test_aarch64_sbsaref_alpine.py b/tests/functional/test_aarch64_sbsaref_alpine.py
-index 6108ec65a54..87769993831 100755
---- a/tests/functional/test_aarch64_sbsaref_alpine.py
-+++ b/tests/functional/test_aarch64_sbsaref_alpine.py
-@@ -26,8 +26,9 @@ class Aarch64SbsarefAlpine(QemuSystemTest):
-     # We only boot a whole OS for the current top level CPU and GIC
-     # Other test profiles should use more minimal boots
-     def boot_alpine_linux(self, cpu=None):
--        fetch_firmware(self)
-+        self.set_machine('sbsa-ref')
- 
-+        fetch_firmware(self)
-         iso_path = self.ASSET_ALPINE_ISO.fetch()
- 
-         self.vm.set_console()
-diff --git a/tests/functional/test_aarch64_sbsaref_freebsd.py b/tests/functional/test_aarch64_sbsaref_freebsd.py
-index 26dfc5878bb..3cddc082f3b 100755
---- a/tests/functional/test_aarch64_sbsaref_freebsd.py
-+++ b/tests/functional/test_aarch64_sbsaref_freebsd.py
-@@ -26,8 +26,9 @@ class Aarch64SbsarefFreeBSD(QemuSystemTest):
-     # We only boot a whole OS for the current top level CPU and GIC
-     # Other test profiles should use more minimal boots
-     def boot_freebsd14(self, cpu=None):
--        fetch_firmware(self)
-+        self.set_machine('sbsa-ref')
- 
-+        fetch_firmware(self)
-         img_path = self.ASSET_FREEBSD_ISO.fetch()
- 
-         self.vm.set_console()
+diff --git a/tests/functional/test_aarch64_xen.py b/tests/functional/test_aarch64_xen.py
+index 339904221b0..261d796540d 100755
+--- a/tests/functional/test_aarch64_xen.py
++++ b/tests/functional/test_aarch64_xen.py
+@@ -33,6 +33,7 @@ def launch_xen(self, xen_path):
+         """
+         Launch Xen with a dom0 guest kernel
+         """
++        self.require_accelerator("tcg") # virtualization=on
+         self.set_machine('virt')
+         self.cpu = "cortex-a57"
+         self.kernel_path = self.ASSET_KERNEL.fetch()
 -- 
 2.43.0
 
