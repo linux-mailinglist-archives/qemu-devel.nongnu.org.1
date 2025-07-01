@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1ABAEFCED
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C25AEFCDA
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Jul 2025 16:43:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWcCG-0000PE-CD; Tue, 01 Jul 2025 10:42:56 -0400
+	id 1uWcCF-0000HI-LH; Tue, 01 Jul 2025 10:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcBx-0008Rx-JI
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:42:41 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcBz-0008Tw-NN
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:42:45 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcBq-0006zf-BU
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:42:37 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-453749af004so31491235e9.1
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 07:42:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWcBr-00070B-FM
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 10:42:39 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4538a2fc7ffso38407325e9.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 07:42:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751380940; x=1751985740; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751380946; x=1751985746; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p7czh0UpphEfhU1XJFzgghIJVXGp1wbIMbp91nI0b7w=;
- b=XsctoRyMwRFjWe3WM7goYqxQzyhGek9HTy1oxfV2w5OQJriEre0+3ZjnycfuE0F1fW
- 97y6UPytE001wPJvLytawN+/urCte64SAhTs0ufx/XPXvPkAIUQTR+Em43o09nKcVzvy
- Jc6vx5L0Z80eDbhe7JTqidu8NxqYfaeivR/kr6PPEYdqP1mO4gP3b2ctP6fER/Epkuee
- Cn4sQq93q2MomQWGpvJ1InX3X3BGrbzwhIIm7SA5/To9xNYaUki1wWsdstR0JiExW0fK
- tuQ27C1fSK2CuCAHETUderkcEC129qii6Vtlc+VKRmyjGwD4oUgUJnObtV72Dxx1f2Zo
- qNpg==
+ bh=I1OZb9Kl+4lZDh9KBCT1cYYDblubQbpp2G1iwduVoYo=;
+ b=yr2+/lOVXhTqJE4qC820cQwa+1L9AsYe2l5JvIoiddhGaq9IM9bZuQ5RxH4sqOiUs2
+ CpO+t7euRwzVtTInlWq+TXbQ2cURTU9EjxP0qoA4SGhuo10+AULaZGnKfyrVL2fkyiAg
+ oHNJRFAjJpmpSIIP7pkCfREnuamWBgNoE3aSRLDbSO1pKA4FWKv8BhEDoadVGSkyElHN
+ boBxrvLEs9xyVyF0XOtn7c193/A8qV0myfz5LeYcGFPDl0TLZN4vO0hnGZsmvqcO9GBv
+ sUCIJBEkKevstbkv2G1xls7C5SOET4pckv4ew32QMEPRj22qsplutowSo66ZIAwtml/9
+ ytjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751380940; x=1751985740;
+ d=1e100.net; s=20230601; t=1751380946; x=1751985746;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p7czh0UpphEfhU1XJFzgghIJVXGp1wbIMbp91nI0b7w=;
- b=S50WfZBDiv9Vd0/vLevGHRB5Tjpwa7wdLVmVXzsQ9MrENLXs/LXp2LfCbUaU8fPrr0
- vwv0Kz9U6C9IJO51dKzEywmtQUA19rSwDDQ1glxgISokH43E/2fZAbpV+wQBUS/llVxz
- dQWBmQTqPTxyfhMiadG6KQbBLhbDOIVXdROoA5Opwym8VwVshmjTdtZp+fEY8If8O78T
- lRWgRgPZOv3Df7JufOJfLpZgOXy8qN+CcOKYWzT59QDla6FmJqS/bxIVvfnoVnGPwjlc
- Wjq1z7prq+CyVf3kKEy1jfKPLPrCRrvmH3SOh7w2/sKVrZPmlMgzxs6ufJqMjoeztepT
- TwDA==
-X-Gm-Message-State: AOJu0YziStm9AdONqkQIjz2aTa5WQIdjRr8GAqRtiMBv4ruUeFl5sfzr
- 5fZsstgStHSXEJ12uIh4uT1mi1kdLqu/HM2U1eBJUySRheKGct2Jb+/zkT6ZWvS/PgdfAa524rq
- JDi5V
-X-Gm-Gg: ASbGncsOB3bWC0Ub/728eFPmMWOi1gKnKswE5CoWkWXA++cl978ca1yT9K5mV+O5fBV
- 7KAz5UeeiK+uHfZSEdXyohO2sYF7VKH5STKuL7Oi82WQDSjg07nqkrNlP23d4UUpG8VBVKa0+z9
- P6+x6ntDbi3zdFnMcqTu+M1QCFBdst8MWfXKpP8vg5oIVT2HkK5isBAcDdb+MorL8UY/Xa6gRPp
- ZcrDrwbaAvxMIsPW1kG4mIz5t6OOHbbKafDY16xMoZOPLcJtkVAbz06ZoVSn8tpbKgjjW1RYSbF
- 3eT2fBJKG9R0+xgyDLsWJ0ED7TCcLM98qpjmBcbYNwQLAlwGguDF++OIUxAM02YsUU/UC5PcTgF
- +nrF4+XsX4yprzZ0iAdQo8jXCJQHhsLTJ1WOT
-X-Google-Smtp-Source: AGHT+IGTmEw5CpiuoqoKCuB4ef1Buqx1fcm/24fB8+6JKolsDHnB1MyExyLovfIzA/p2FNXlI3PuXQ==
-X-Received: by 2002:a05:600c:138d:b0:442:f97f:8174 with SMTP id
- 5b1f17b1804b1-45394de29aamr153470745e9.18.1751380940355; 
- Tue, 01 Jul 2025 07:42:20 -0700 (PDT)
+ bh=I1OZb9Kl+4lZDh9KBCT1cYYDblubQbpp2G1iwduVoYo=;
+ b=NE29XeqwAuYOCe2y0J0xSeNMuWJn7lxJswv1L3jyIJSMDj6+ZQxoFNwSpf2l0BLjta
+ QiXkVL0jQRAQYiMJCzFKXG9ytIkoa48QnleNPsQOeWSWL7lY/kewn2m/S2QWmKwS0mYL
+ dfZZTukBZAjWz84wPcj5w+xedZ2p9V1sjtHe8UqO+kPe1VWURRXOR8PxfRK1wJNtmpDt
+ U+//m3z4CwoEVS5xca1w4ayrm7vU9xBH4iIe+69e14v5XCU3lRIV84753xMhNt1NNepr
+ pVMP6fmy5I5mr+W8rRrMbaQgsUJt2E82KEGi8ZYrsXIMDBx2H+7pM8o0WpSxHba+cAlG
+ 7+IQ==
+X-Gm-Message-State: AOJu0YzjOLeqhc4OyipRFU3JuYe9v78HQ8jDfzkK/838CRwCqrFrdNuG
+ 8G7/Z4l1nmMin49o/cLOrCQP/nxivzeOR8gCkcN6ku1Lzt2XWvYmPNAu86tOhaXhrpXMustd1M4
+ JBoMS
+X-Gm-Gg: ASbGncsRwxvg5GzIEVdaoprMUSLL+LB+TS4CwEyTwzjGNbLeHY7/lCYmKGIO/7JNnr7
+ p2KYRzMZcyKqHotpezoQFjQ51cA1Cft3+FHQljQbIQwp4lalKXqX+jYKdXZEGrw2zrhIWjRp4d7
+ uHmJlfDDtatClcy8ydzHdAUPT3UWvV3VYi40bgxu3z+rdPZQj6zhU6VUHZSzjVazlpZw+2s/nKT
+ 9WrMl4uoZH/SoB42/408PCtjqG6DyuoB0A60LQAVnhVlWSvNRBz3sM00TR1iK1zIFes/U1Yet2r
+ C2ilcbu0qVOacnH4qZL/Q9WaZKdWvEpLK28P0Ai4F1CV+R4xg118JHFaR3vsH7GzxbZAKHIfRJO
+ +qbiM54tEYYoMhofhrujtONnT2Jb/gelG9Q4L
+X-Google-Smtp-Source: AGHT+IHwKkT2ZOaapDzSpT+XG+VDyQuPaXyh0D/HJBnATBYYTY20yeVzDGAKfXqXXlE4+oS5wm56Vg==
+X-Received: by 2002:a05:600c:a119:b0:453:45f1:9c96 with SMTP id
+ 5b1f17b1804b1-453a7c8fc79mr30674785e9.14.1751380945936; 
+ Tue, 01 Jul 2025 07:42:25 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4538a421434sm170100685e9.37.2025.07.01.07.42.19
+ 5b1f17b1804b1-4538a3a5b7fsm171981125e9.10.2025.07.01.07.42.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 01 Jul 2025 07:42:19 -0700 (PDT)
+ Tue, 01 Jul 2025 07:42:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -69,18 +69,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Julian Armistead <julian.armistead@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 22/68] accel/system: Remove
- AccelOpsClass::synchronize_pre_resume()
-Date: Tue,  1 Jul 2025 16:39:30 +0200
-Message-ID: <20250701144017.43487-23-philmd@linaro.org>
+Subject: [PATCH v3 23/68] hw/core/machine: Display CPU model name in 'info
+ cpus' command
+Date: Tue,  1 Jul 2025 16:39:31 +0200
+Message-ID: <20250701144017.43487-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250701144017.43487-1-philmd@linaro.org>
 References: <20250701144017.43487-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,38 +103,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Display the CPU model in 'info cpus'. Example before:
+
+ $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
+ QEMU 10.0.0 monitor - type 'help' for more information
+ (qemu) info cpus
+ * CPU #0: thread_id=42924
+   CPU #1: thread_id=42924
+   CPU #2: thread_id=42924
+   CPU #3: thread_id=42924
+ (qemu) q
+
+and after:
+
+ $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
+ QEMU 10.0.50 monitor - type 'help' for more information
+ (qemu) info cpus
+ * CPU #0: thread_id=42916 (cortex-a72)
+   CPU #1: thread_id=42916 (cortex-a72)
+   CPU #2: thread_id=42916 (cortex-r5f)
+   CPU #3: thread_id=42916 (cortex-r5f)
+ (qemu)
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/system/accel-ops.h | 1 -
- system/cpus.c              | 3 ---
- 2 files changed, 4 deletions(-)
+ qapi/machine.json          | 3 +++
+ hw/core/machine-hmp-cmds.c | 3 ++-
+ hw/core/machine-qmp-cmds.c | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
-index fb199dc78f0..af54302409c 100644
---- a/include/system/accel-ops.h
-+++ b/include/system/accel-ops.h
-@@ -47,7 +47,6 @@ struct AccelOpsClass {
-     void (*synchronize_post_init)(CPUState *cpu);
-     void (*synchronize_state)(CPUState *cpu);
-     void (*synchronize_pre_loadvm)(CPUState *cpu);
--    void (*synchronize_pre_resume)(bool step_pending);
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 0650b8de71a..d5bbb5e367e 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -80,6 +80,8 @@
+ #
+ # @thread-id: ID of the underlying host thread
+ #
++# @model: CPU model name (since 10.1)
++#
+ # @props: properties associated with a virtual CPU, e.g. the socket id
+ #
+ # @target: the QEMU system emulation target, which determines which
+@@ -91,6 +93,7 @@
+   'base'          : { 'cpu-index'    : 'int',
+                       'qom-path'     : 'str',
+                       'thread-id'    : 'int',
++                      'model'        : 'str',
+                       '*props'       : 'CpuInstanceProperties',
+                       'target'       : 'SysEmuTarget' },
+   'discriminator' : 'target',
+diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+index c6325cdcaaa..65eeb5e9cc2 100644
+--- a/hw/core/machine-hmp-cmds.c
++++ b/hw/core/machine-hmp-cmds.c
+@@ -40,7 +40,8 @@ void hmp_info_cpus(Monitor *mon, const QDict *qdict)
  
-     void (*handle_interrupt)(CPUState *cpu, int mask);
+         monitor_printf(mon, "%c CPU #%" PRId64 ":", active,
+                        cpu->value->cpu_index);
+-        monitor_printf(mon, " thread_id=%" PRId64 "\n", cpu->value->thread_id);
++        monitor_printf(mon, " thread_id=%" PRId64 " (%s)\n",
++                       cpu->value->thread_id, cpu->value->model);
+     }
  
-diff --git a/system/cpus.c b/system/cpus.c
-index 98ae8b1e271..2c3759ea9be 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -762,9 +762,6 @@ int vm_prepare_start(bool step_pending)
-      * WHPX accelerator needs to know whether we are going to step
-      * any CPUs, before starting the first one.
-      */
--    if (cpus_accel->synchronize_pre_resume) {
--        cpus_accel->synchronize_pre_resume(step_pending);
--    }
-     accel_pre_resume(MACHINE(qdev_get_machine()), step_pending);
+     qapi_free_CpuInfoFastList(cpu_list);
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index d82043e1c68..ab4fd1ec08a 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -47,6 +47,7 @@ CpuInfoFastList *qmp_query_cpus_fast(Error **errp)
+         value->cpu_index = cpu->cpu_index;
+         value->qom_path = object_get_canonical_path(OBJECT(cpu));
+         value->thread_id = cpu->thread_id;
++        value->model = cpu_model_from_type(object_get_typename(OBJECT(cpu)));
  
-     /* We are sending this now, but the CPUs will be resumed shortly later */
+         if (mc->cpu_index_to_instance_props) {
+             CpuInstanceProperties *props;
 -- 
 2.49.0
 
