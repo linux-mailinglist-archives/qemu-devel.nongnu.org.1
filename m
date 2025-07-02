@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6664CAF61FE
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 20:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3083BAF61F4
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 20:55:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX2bX-0001VE-5E; Wed, 02 Jul 2025 14:54:47 -0400
+	id 1uX2bZ-0001cz-2J; Wed, 02 Jul 2025 14:54:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2bG-0001Dj-Ug
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:54:31 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2bV-0001Us-Pl
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:54:45 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2bF-0001gs-5b
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:54:30 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3a4f72cba73so138849f8f.1
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:54:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2bL-0001jU-8z
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:54:36 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3a5257748e1so3277920f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:54:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751482467; x=1752087267; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751482473; x=1752087273; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GAzT+CGbAi3kvmYQ13E5MHk/eJNqjsj98Rjqkr8WsQ8=;
- b=MU3/H1Ou2TCRoxdz6bC7/BnLIZBJMoNxDm7KSU+aPbjA+uqnZ67KEA5cPxvB/Vi+e2
- pxoANmtOovahphLClSEMXnhJlEUw+qE5k1pzq7ki0fUOc6xnRbzTxT1Qy/WpkhZ9GFji
- nKtf+A0K17OaK8FIZbejWCXprNYDv0v05qqCFy/6OgtL5/rbFCWRrSwTEJX0KRlaoDEu
- KrU+L7Ica1ZGJWjVEnWaOoe+MHpaK6E7WuVhjfps6R4L68PGabS9Hh6MRVUXssseUhSK
- boMtdFfsOvTZlGiJZw7g5TdC975DnYewnjd1F9UK++4bVkQ6XKKq3NbS7rrAxV0jRaP+
- ZTXw==
+ bh=ZLkTPhlZ6ATb7AAc3VGQov8gsRhAPF8MN9ZoezL4e2s=;
+ b=kNZPOKwe8U9iskwHOrTwN2LSOvV4PmBvTVrl2F6V/xzAXqc8Ywngun94J0wi7iDJ82
+ x78HjgcYvgeKH81j0SHHvHCX8eY8R0c/W6sputWSGo4guQDpgsIm7zVQmr/BPMBFdRdb
+ 6A4hYzTt0j5iMQ+HBnxvTt+Zqcw8dUaUav1mB8Z8/0m00k7XOzTfS4VKYJ7YLFFqDV5c
+ 2DNSGIZ8NNE6UCGcIe0lnSYq98jLNlnF2bAtMfifyWCgotAAhb6OFY/6QWOWobvtpm2/
+ 4yPla+3ui5dDfljaYJ+k4Pacz78A6EjqP5LnrwMCfB2PzKAh4d6Ck4KTxZEP1eYigugH
+ Rctg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751482467; x=1752087267;
+ d=1e100.net; s=20230601; t=1751482473; x=1752087273;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GAzT+CGbAi3kvmYQ13E5MHk/eJNqjsj98Rjqkr8WsQ8=;
- b=sopxn1oXlR5XwOkp7lkg0zwlr9+kKjBQE92agNHirDU28LxtwPACKQzd0sMwP9bu8u
- kFdovaXzSTIO6bO2zxCfIlEH399xSJVqDi8RtTENIpoVZKa/bBOILylyZaLXCzdUoM3w
- tlnFGdBtCF7BsI2QqjjYtB9M/GHwuLUFSFEEWauD9eGrIRIKWH5dk0PaiSETOrWmbbTB
- 4pfzZmxwn4MvzoWbST9VBpK7xLRgRCbKNgOtNmUj63tcPT47Tfl3mUsCYjQLGWvOy1Az
- Bk/Ojp4JITjB7HGC9l/nuASYOJm9sZPFdGHDx7TQIATnpznu/Ntni5t2t2f6/ZE+9BYy
- 5I/Q==
-X-Gm-Message-State: AOJu0YyrDVZA7TRp4DRNZ8SX7GPqh4r0r/VXo/kAt25S3gZq13UZ4h5v
- dD5L0QYCzN/Bl9WdnEr7KcHiiaSxY8B4FUvklzkUmEjuOUBSfN6fMiw8g+tLqeRr53bNHrACehT
- DzgWB
-X-Gm-Gg: ASbGncsRx1/Cwj/OVV/ifkPhoQG6773vpuXEymIxSw9q86UeB991RIjnelX08dd3Ldj
- L6suW/WOHv6tlDQBhEgFkm2JD5LJRIMczIfJQLay8FLAh1DtaDiw1HovXWPBqPBB0RZwWlmJNQL
- g66AIZ/BfAPGmLDjq2+fDUTM5vl6OAp9olc7AxQHxKcxk23XoWGj7YL5Nrfv8QHl5j6JF+X9C8K
- oEQihEiqd2jI5UQK+FZitCeNO+8V72Gbfi5ej8G86+6yQZB4rrocz4Rqv5G490Nz4bTmARqrQ9V
- J5T+9awDcMCBK4HSJuYGgzqE/3hz2JUDEI0Ac/pArCWTCG2uDgPmzApWZGVIOt97LiZFfva9WTO
- EViiyGu845nKjv1sMgXNIzTGnAFGmVQSth5xc
-X-Google-Smtp-Source: AGHT+IGSKjhsY9WI+hU2cySKNu1KrdU/ewxeUTc3VHcwvz5y1+FZQKQjtqw1T9mRm+ZdNPKinWfA5w==
-X-Received: by 2002:a05:6000:26d3:b0:3a4:f7ae:77c9 with SMTP id
- ffacd0b85a97d-3b34281c504mr29220f8f.5.1751482466958; 
- Wed, 02 Jul 2025 11:54:26 -0700 (PDT)
+ bh=ZLkTPhlZ6ATb7AAc3VGQov8gsRhAPF8MN9ZoezL4e2s=;
+ b=hR44eiDH35lgw96SmrKsxphNsnVV6x3T/NxPy4Yu9/3L5RLt7ZxvJSL2wvG5ysaCW9
+ H8mL2IRVRdgt8k+RliVuDrDZzw4bcUXufZ+03sZOmT0hRFHzB8X2CZ+iSfFBDIAMLwNm
+ jxl9B1aL4rrAWminhaLjH1Q83g9vIW1ZRvgdk6KmlB5jvTFDJ5f5afurHgeuSAD8839o
+ puJTnowLIQOoo3wdys/Dm9Sro6TE40Asuf8puqnWgiB0JK/Hzli7kDUFlOaVshgUmTox
+ wJeC2pTtYqtY0oGu6MMwRhry/X9kii/XvnyCIOxo275lkPP+TqrWHR7DcVJ9FxnZAomZ
+ vL3w==
+X-Gm-Message-State: AOJu0Yx4rJozMjfZsidQpXKIA2XzOPFnZzvVTjszaaBoeS3shdNvOA3L
+ VUmMHthAXz/zmvxd6rEZb3Mb0fsT0Xt3DavN8yyHAhfarGXYyZmfIOcbwI3PKNMfr92CvBkGQuA
+ q5XRK
+X-Gm-Gg: ASbGnctpY72ch46ouUvbKpuQGErARHhpBFPHeQXuDjkiCEyd9tqsggKACQK/qWfTnY5
+ 5/BpomuOpFa7MxSI8j/aVPgqF7ZIbsmgXbZMU3jVCa/DyvhpD0Rf3CJ1yBArQGt1R+CeEiA0pm6
+ jNX7b3+hkUFaF5iHqm5llG1f09aoc/53NdJDc/NHYDAwBWG7RMHa4DDS4TiUbX6N9PqZ+LE7dPH
+ 6RISw2ceRJ2pBMSaoM5I/s+0DlOEEvVaJOD6iRxyDkm3psGuSFZ3eoP9/c7AnB0JY7RyOwXVBA6
+ 17MIcfW36M+Uqku/C1/SWaplHnxC47hSZcChSLsh3Mb4uQpFVVhjfr5pnQrPQKKmQiFyM8eMYFx
+ Mb/kuadyTj7uvjh8dzy4AeN79N8/2UyB54vg4
+X-Google-Smtp-Source: AGHT+IGhOWVCA/GtwJSG1AKi+Hd84LJnSX/lQi41cAsunon2TKagKaTx0uBPjZixIm2CjgJYn0tp6w==
+X-Received: by 2002:adf:f1c7:0:b0:3a4:eef9:818a with SMTP id
+ ffacd0b85a97d-3b20095ce85mr2954669f8f.27.1751482473295; 
+ Wed, 02 Jul 2025 11:54:33 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e5f8absm16997747f8f.95.2025.07.02.11.54.25
+ ffacd0b85a97d-3a892e5f44dsm16537392f8f.87.2025.07.02.11.54.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Jul 2025 11:54:26 -0700 (PDT)
+ Wed, 02 Jul 2025 11:54:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -69,17 +69,17 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  kvm@vger.kernel.org
-Subject: [PATCH v4 07/65] accel/kvm: Remove kvm_init_cpu_signals() stub
-Date: Wed,  2 Jul 2025 20:52:29 +0200
-Message-ID: <20250702185332.43650-8-philmd@linaro.org>
+Subject: [PATCH v4 08/65] accel/kvm: Reduce kvm_create_vcpu() declaration scope
+Date: Wed,  2 Jul 2025 20:52:30 +0200
+Message-ID: <20250702185332.43650-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250702185332.43650-1-philmd@linaro.org>
 References: <20250702185332.43650-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,31 +102,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 57038a92bb0 ("cpus: extract out kvm-specific code
-to accel/kvm") the kvm_init_cpu_signals() stub is not necessary.
+kvm_create_vcpu() is only used within the same file unit.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/stubs/kvm-stub.c | 5 -----
- 1 file changed, 5 deletions(-)
+ include/system/kvm.h | 8 --------
+ accel/kvm/kvm-all.c  | 8 +++++++-
+ 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-index ecfd7636f5f..b9b4427c919 100644
---- a/accel/stubs/kvm-stub.c
-+++ b/accel/stubs/kvm-stub.c
-@@ -105,11 +105,6 @@ unsigned int kvm_get_free_memslots(void)
-     return 0;
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index 7cc60d26f24..e943df2c09d 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -316,14 +316,6 @@ int kvm_create_device(KVMState *s, uint64_t type, bool test);
+  */
+ bool kvm_device_supported(int vmfd, uint64_t type);
+ 
+-/**
+- * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
+- * @cpu: QOM CPUState object for which KVM vCPU has to be fetched/created.
+- *
+- * @returns: 0 when success, errno (<0) when failed.
+- */
+-int kvm_create_vcpu(CPUState *cpu);
+-
+ /**
+  * kvm_park_vcpu - Park QEMU KVM vCPU context
+  * @cpu: QOM CPUState object for which QEMU KVM vCPU context has to be parked.
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index d095d1b98f8..17235f26464 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -453,7 +453,13 @@ static void kvm_reset_parked_vcpus(KVMState *s)
+     }
  }
  
--void kvm_init_cpu_signals(CPUState *cpu)
--{
--    abort();
--}
--
- bool kvm_arm_supports_user_irq(void)
+-int kvm_create_vcpu(CPUState *cpu)
++/**
++ * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
++ * @cpu: QOM CPUState object for which KVM vCPU has to be fetched/created.
++ *
++ * @returns: 0 when success, errno (<0) when failed.
++ */
++static int kvm_create_vcpu(CPUState *cpu)
  {
-     return false;
+     unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
+     KVMState *s = kvm_state;
 -- 
 2.49.0
 
