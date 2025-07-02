@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD863AF5A6D
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 16:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B75AF5A1A
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 15:51:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWwpY-0004kQ-Et; Wed, 02 Jul 2025 08:44:53 -0400
+	id 1uWwo4-0001r5-Bk; Wed, 02 Jul 2025 08:43:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwjs-0004hp-7u
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:39:02 -0400
+ id 1uWwje-0004Td-2I
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:38:48 -0400
 Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwja-0002Ar-9M
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:38:59 -0400
+ id 1uWwjV-0002BA-W5
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:38:45 -0400
 Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-2eb6c422828so3965287fac.1
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:38:34 -0700 (PDT)
+ 586e51a60fabf-2ea35edc691so1681640fac.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:38:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751459914; x=1752064714; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751459915; x=1752064715; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YaZSG0e0yH3RxbDkM+zi9AN63MfHmwbxA5iySJBgmaA=;
- b=C5VD2dWTG6ESnQWaUe4kgnI7LNNSJzYdpyJrAy/lsSO+Go4ZPOONEyGhzm3kQDDGAn
- rK13donTpVQtrrNa9dl+25wz18DP7PRn6wIfe+yy+vCOMfLquCr1siZOmsbxto17gMDd
- FAp82kVhrYhCzO2SVDtLCve7+/v3T1XCIeuOfwnaT4GZzjW3rWtW1cKS+kbU/nEQNyq1
- TDwaY/KW5NYFoaZrXlmgrScJkRbjqJAexuQJIebeP6VdU46EIk0ZTX8+vB6wfd+7Ax1D
- TNoo5bHLKD11M49rDPYNIDYBeyvOjP4FtRuz34kAcXmwL17MxzZ9FJjWgYEiPFuowUpO
- nE8g==
+ bh=6v/8hNQy8fFPp5bDwpch38EpRvO2SIx0CPU+DT6r9Io=;
+ b=bXq0ZAa8oCZz3vbZtPDhbk8ektzu/8givoHpRpv/SFGMWK85CyhduOPF/4FLF7btwd
+ hMvfgma65+30tx0yuDu4WpvNpkc5m1eJBhv+hEj9QR1NRj4y6pwRURtBIN9HYL3dMwo4
+ B/3aZ+anJhWZP2l1DZ/1nEEXGEMNGzTHrRiXdXGY05c3/a8pac9z5Nk38no+MCI6kgUX
+ zuxtUffqPMHi0uLcqb1DqhCcIEWLD6+jz2Oe7QR44wadS00WyhutyJXO17O9SWZamt4M
+ 3UFuO8/KKAG85H0oOj6Ibr5syZXziyhlyfsfEH+5tF4UKOkEXYTeUit7cpAxru2lm7p9
+ 5Vow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751459914; x=1752064714;
+ d=1e100.net; s=20230601; t=1751459915; x=1752064715;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YaZSG0e0yH3RxbDkM+zi9AN63MfHmwbxA5iySJBgmaA=;
- b=NTdn+jmFJH2bRpc/Ctn3fQ1Debyja+s5hr6zZS0J/qnV3l1u+Igv3Rdd5LuGZSODHD
- gIuV6BLEhmyoyAZuKQz8CoNAfN/QOig8fh6VR+2kC9u2Df+nXchZpiEJvDtQ+/tOiB4d
- Y9mMYBiCFU4MS8RG7+nFscFvOlBLvIF9sZ8b4U52vtZKY8lGCwzNoYUyuHgHuCRKrIGL
- FeVDYnYk0Xy/3P635kyjTdnMKamX5CJpx9wQKEvVJifJ9Bv6XUYge29A7ftW7RlXMWyG
- k3UNAn5VUck163IVnErkc7wzp0Lp/Jkg5IyFMKJVcI2Q2n0RgOXhfM2x9WTHqiqcAKOy
- I34A==
-X-Gm-Message-State: AOJu0YzM5GYJn4GveKgeo3kpOPL5HzBYzcnhILbuAsLMdpjFljKdr4M+
- rQtcFeXW7yl2SHGn3svvek2pq1QsodQ8vs8sKgrCX+f6jWk6nh7rg8I5ri8I8Dxl7BtiXQivJ/2
- UXpLGqqo=
-X-Gm-Gg: ASbGncsJJYZYC3mNlc9gBges/dC5831Da16bqzkI8ipFhscARIaZ2iLGJQBSt/YFmyp
- t+/jA8FOonjzFv+bE+EDm+9sI10GqrstExZ41saiX46g6u+CYU1Qo5pc0Uq5mYhyE/H8DnC0ImX
- oMpZLbzsXpSyqNE8/Iaw/WsMnhsazYSnkSDlXQ3CLJ1BwkRXxhvmuxFqsC/bmC9FbfBostPzUq6
- Rg0hxFCZkUY00DtdvViFi2DoVBbUjHUxa5QmyfpjXVazOaq7J28tG5HMrIy0bUtpdb9766S8lfh
- fg/XZwtgFr8Y8J1VzC9hjTKzC2HKoWTxSbGos6S+XgoumTEL96Lg/o5RZgWVL6d4rB2sbQhS8Kg
- XLKWn
-X-Google-Smtp-Source: AGHT+IH/SiZCi5qXDlyx39nUFHroOEGoSKcxmK5VgwRqZ8nbZIU3F5NIc1bmvqvjz6rrtGuYfehb7Q==
-X-Received: by 2002:a05:6870:11c4:b0:2f7:64f7:8d40 with SMTP id
- 586e51a60fabf-2f764f78dedmr325588fac.9.1751459914025; 
- Wed, 02 Jul 2025 05:38:34 -0700 (PDT)
+ bh=6v/8hNQy8fFPp5bDwpch38EpRvO2SIx0CPU+DT6r9Io=;
+ b=N5ERv7kK1Sx9iqF06omk4N78BfTaDfQc9Vd6PIENXyPH+2XrXi0XLTg4T7Gc86RcUA
+ m1hKKyU73U5Z9eagJbQh5qc+bpFXTP5TLF7TkrA6R0hmxaIWxJ91kSprjgPoWS4G8WDO
+ ozXlLfL4OgEQMmHHIH2LCai2hXJ3Uhthmlb3zMeRHCoiKjv9n3DW2pjQpppjwMyTqEUl
+ ANw45j7y+lf2RY2feSiDygxafl6lTGcyyJUl0WLdlwyYdQ0tutW8Ec401mLdkwFORAau
+ a5A6Nok8/8Bvr5gIlv9HH4+baT+eWqi070Yy3PpAlmsFoeYBiiNfgXixd1CgWqq60FLv
+ xkoQ==
+X-Gm-Message-State: AOJu0YwJ0RbSzNQ+sc4TLErE/7weLzLBoDpkjLC0ZFNeVz+w1t/6/3zR
+ 25KSp2fVqs0JyzB4sPWfuk5KLQtyg2GmvSQ3zR8W45+BzMM5RnDpbL/t7f41WdgDdqLCxYGeVX1
+ 1RbNm2Vs=
+X-Gm-Gg: ASbGncsFsgAkjM1sKEDkJJpRfu7yPuLo0xpMaYpIQm2aJfuHrwfHOg7NiRCRrfzMk9V
+ DKZLqhycbi85OzoNskysFQ3IvBj3d+FrFV5VVzqh2Iyl2J+tIGKyzy3yr4cWJMc6rTBHr+crN63
+ rq31wzGmYfSbj19A6onefrqM1GxvhHtrtoNbb4Jy1tneNwTxNzVQPLSm27/jZyVIGz/FfT82lj9
+ jnfQrwNm6ymgxF/IOhjhINkO8tnmmYhsh/+GfgZl10GGwUvw4rYjPlcaZup31yWIGg53HX28zVL
+ 1hwna2fO5SbWZSkcM5xha8K4vVjI9URmdVb56zI6wPKedHZ2BAW9cgaNNsbZGWDx9Q/NUg==
+X-Google-Smtp-Source: AGHT+IGkl21D44Jth5E2OxdM4Kn0uoohFGfIglxI7ATXg08bjDeRoSHmFb4B1TNJ4wJ7rYMyD3hLFA==
+X-Received: by 2002:a05:6871:2881:b0:2ef:9aa7:becb with SMTP id
+ 586e51a60fabf-2f5a8c97853mr2030240fac.18.1751459915006; 
+ Wed, 02 Jul 2025 05:38:35 -0700 (PDT)
 Received: from stoup.. ([187.210.107.185]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2efd4ea5d9fsm3843451fac.10.2025.07.02.05.38.32
+ 586e51a60fabf-2efd4ea5d9fsm3843451fac.10.2025.07.02.05.38.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Jul 2025 05:38:33 -0700 (PDT)
+ Wed, 02 Jul 2025 05:38:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	peter.maydell@linaro.org
-Subject: [PATCH v3 63/97] target/arm: Split out do_whileg from
- helper_sve_whileg
-Date: Wed,  2 Jul 2025 06:33:36 -0600
-Message-ID: <20250702123410.761208-64-richard.henderson@linaro.org>
+Subject: [PATCH v3 64/97] target/arm: Move scale by esz into helper_sve_while*
+Date: Wed,  2 Jul 2025 06:33:37 -0600
+Message-ID: <20250702123410.761208-65-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250702123410.761208-1-richard.henderson@linaro.org>
 References: <20250702123410.761208-1-richard.henderson@linaro.org>
@@ -82,8 +80,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,69 +97,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Change the API to pass element count rather than bit count.
+This will be helpful later for predicate as counter.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/sve_helper.c | 41 +++++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 20 deletions(-)
+ target/arm/tcg/sve_helper.c    |  2 ++
+ target/arm/tcg/translate-sve.c | 13 +++++--------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 4497e9107b..ba5ab6b513 100644
+index ba5ab6b513..dbade6ece0 100644
 --- a/target/arm/tcg/sve_helper.c
 +++ b/target/arm/tcg/sve_helper.c
-@@ -4141,32 +4141,33 @@ uint32_t HELPER(sve_whilel)(void *vd, uint32_t count, uint32_t pred_desc)
-     return pred_count_test(oprbits, count, false);
- }
+@@ -4135,6 +4135,7 @@ uint32_t HELPER(sve_whilel)(void *vd, uint32_t count, uint32_t pred_desc)
+     uint32_t oprbits = oprsz * 8;
+     uint64_t esz_mask = pred_esz_masks[esz];
  
--uint32_t HELPER(sve_whileg)(void *vd, uint32_t count, uint32_t pred_desc)
-+static void do_whileg(uint64_t *d, uint64_t esz_mask,
-+                      uint32_t count, uint32_t oprbits)
- {
--    intptr_t oprsz = FIELD_EX32(pred_desc, PREDDESC, OPRSZ);
--    intptr_t esz = FIELD_EX32(pred_desc, PREDDESC, ESZ);
--    uint64_t esz_mask = pred_esz_masks[esz];
--    ARMPredicateReg *d = vd;
--    intptr_t i, invcount, oprbits = oprsz * 8;
--    uint64_t bits;
-+    uint32_t invcount = oprbits - count;
-+    uint32_t i = invcount / 64;
-+    uint64_t bits = esz_mask & MAKE_64BIT_MASK(invcount & 63, 64);
++    count <<= esz;
+     do_zero(vd, oprsz);
+     do_whilel(vd, esz_mask, count, oprbits);
  
-     tcg_debug_assert(count <= oprbits);
+@@ -4166,6 +4167,7 @@ uint32_t HELPER(sve_whileg)(void *vd, uint32_t count, uint32_t pred_desc)
+     uint32_t oprbits = oprsz * 8;
+     uint64_t esz_mask = pred_esz_masks[esz];
  
--    /* Begin with a zero predicate register.  */
--    do_zero(d, oprsz);
++    count <<= esz;
+     do_zero(vd, oprsz);
+     do_whileg(vd, esz_mask, count, oprbits);
+ 
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 210a029ab8..f74f2bb1b3 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -3198,9 +3198,6 @@ static bool trans_WHILE(DisasContext *s, arg_WHILE *a)
+     t2 = tcg_temp_new_i32();
+     tcg_gen_extrl_i64_i32(t2, t0);
+ 
+-    /* Scale elements to bits.  */
+-    tcg_gen_shli_i32(t2, t2, a->esz);
 -
--    /* Set all of the requested bits.  */
--    bits = esz_mask;
--    if (oprbits & 63) {
--        bits &= MAKE_64BIT_MASK(0, oprbits & 63);
--    }
--
--    invcount = oprbits - count;
--    for (i = (oprsz - 1) / 8; i > invcount / 64; --i) {
--        d->p[i] = bits;
-+    for (; i < oprbits / 64; ++i) {
-+        d[i] = bits;
-         bits = esz_mask;
+     desc = FIELD_DP32(desc, PREDDESC, OPRSZ, vsz / 8);
+     desc = FIELD_DP32(desc, PREDDESC, ESZ, a->esz);
+ 
+@@ -3234,7 +3231,7 @@ static bool trans_WHILE_ptr(DisasContext *s, arg_WHILE_ptr *a)
+     op0 = read_cpu_reg(s, a->rn, 1);
+     op1 = read_cpu_reg(s, a->rm, 1);
+ 
+-    tmax = tcg_constant_i64(vsz);
++    tmax = tcg_constant_i64(vsz >> a->esz);
+     diff = tcg_temp_new_i64();
+ 
+     if (a->rw) {
+@@ -3244,15 +3241,15 @@ static bool trans_WHILE_ptr(DisasContext *s, arg_WHILE_ptr *a)
+         tcg_gen_sub_i64(diff, op0, op1);
+         tcg_gen_sub_i64(t1, op1, op0);
+         tcg_gen_movcond_i64(TCG_COND_GEU, diff, op0, op1, diff, t1);
+-        /* Round down to a multiple of ESIZE.  */
+-        tcg_gen_andi_i64(diff, diff, -1 << a->esz);
++        /* Divide, rounding down, by ESIZE.  */
++        tcg_gen_shri_i64(diff, diff, a->esz);
+         /* If op1 == op0, diff == 0, and the condition is always true. */
+         tcg_gen_movcond_i64(TCG_COND_EQ, diff, op0, op1, tmax, diff);
+     } else {
+         /* WHILEWR */
+         tcg_gen_sub_i64(diff, op1, op0);
+-        /* Round down to a multiple of ESIZE.  */
+-        tcg_gen_andi_i64(diff, diff, -1 << a->esz);
++        /* Divide, rounding down, by ESIZE.  */
++        tcg_gen_shri_i64(diff, diff, a->esz);
+         /* If op0 >= op1, diff <= 0, the condition is always true. */
+         tcg_gen_movcond_i64(TCG_COND_GEU, diff, op0, op1, tmax, diff);
      }
--    d->p[i] = bits & MAKE_64BIT_MASK(invcount & 63, 64);
-+    if (oprbits & 63) {
-+        d[i] = MAKE_64BIT_MASK(0, oprbits & 63) & bits;
-+    }
-+}
-+
-+uint32_t HELPER(sve_whileg)(void *vd, uint32_t count, uint32_t pred_desc)
-+{
-+    uint32_t oprsz = FIELD_EX32(pred_desc, PREDDESC, OPRSZ);
-+    uint32_t esz = FIELD_EX32(pred_desc, PREDDESC, ESZ);
-+    uint32_t oprbits = oprsz * 8;
-+    uint64_t esz_mask = pred_esz_masks[esz];
-+
-+    do_zero(vd, oprsz);
-+    do_whileg(vd, esz_mask, count, oprbits);
- 
-     return pred_count_test(oprbits, count, true);
- }
 -- 
 2.43.0
 
