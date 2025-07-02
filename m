@@ -2,142 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8DAAF6444
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 23:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F28AF64B7
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 00:01:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX5Dt-0008UC-Oj; Wed, 02 Jul 2025 17:42:34 -0400
+	id 1uX5Tz-0003OO-2p; Wed, 02 Jul 2025 17:59:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uX5Dc-0008LJ-Bn
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 17:42:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uX5Tw-0003NC-Op
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 17:59:08 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uX5DV-0003Sa-VL
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 17:42:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751492526;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ZulZ51oz2QKBwq+2UCTcBXDVPybOj2oGFEduz4DKgTg=;
- b=X06bEAc0pUM6BQW04CsEINfgJGSZnbWRP7JcR7mS0D4a+HJv6YDJ71JT7jAG0XMj0nFMnN
- 3mHj5gcQzHDb3QhBXc0Zd9HcY6qW6gdCQfy3M6FUOYOj2shzSAG3KTohnkvWZ9Yh38oyZ9
- 0UXpV52nuGNN0V48ZIYtZfL4wtOyAtM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-UtGeS3bPNmGQHv9Gyy4bsA-1; Wed, 02 Jul 2025 17:42:05 -0400
-X-MC-Unique: UtGeS3bPNmGQHv9Gyy4bsA-1
-X-Mimecast-MFC-AGG-ID: UtGeS3bPNmGQHv9Gyy4bsA_1751492524
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a4f85f31d9so3066028f8f.1
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 14:42:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751492524; x=1752097324;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :references:cc:to:from:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZulZ51oz2QKBwq+2UCTcBXDVPybOj2oGFEduz4DKgTg=;
- b=lJw9O4m3KQKk+mYD5S6U8PYqoXbrx5dBa2lhOsfGa2K4Hr/kB7eCRJx+cYqZhIImAY
- dDOMu90SSKLESUcl/48oYWhmkgUZd2BLGkr2VVYz0TereFXWHf1ZSsenoiPJdM08mPpB
- wv1STEO6ClNS/DltSXIe9B5Um/pjWDFWZax6rOLlaHdhxbll9dk6Jv7ZR4eCehUSXCSo
- tatHla0DTtAJsvYnHQRMaYgkLKcgzT+SHWjWC1q2UUwqA4Xiyudnxpp398uchFjNxIf+
- IC4YF0N3uMVcOLgEE0P49VjZKTxtf9DESKG0wNdpBkG2oD3egSevlCb9HWZRj/8TssYx
- HcUQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVZG9OMzpNv/xomUWz245ya6CYambyxyzQkSvOoXtC46vrI6KDbXi+JuXyioS/FjP/ZGcXgz28x8Kjb@nongnu.org
-X-Gm-Message-State: AOJu0Yw3IslA8T5i7QSbCrzekp/4JMAcyBSTIgbGLHdnBHR7IOcK/jdA
- P9Sa2wYjQ63ucpZ2ngBG7HDkIelQQ4MMG1k9pU077enyenymwH1oHiP+8Em9+7J5SlisklVxisa
- zsH1Vf/7UOavgrkolD7Gu3U5mR39KsjJy9hldR/PIbOH18hLQcILaGF98
-X-Gm-Gg: ASbGnct4/R1b57W92Ft7n000CuXDgVI/OYTeVKd8ZF24jtke1ld4E6Yvkk75C77grKX
- xueyn5YOG1utdyQu1YboTWJ7d5PCwG4+RfjbVQOvdy40TQpjXCyc28YASggtx3KszckB9G2fPWP
- Zcf0ensTGCruyOY6a8G5nWhEzP3xfy2DTsSM6P4O/zdwefLkbLWRnVjpGyLVVJZiT32Zb0rtZYm
- 8ytjun85SAS/UFuCXO0QcrKaGObw6gcA2F/S3Vckf4jS813L2oQ8V2Cm0GP1yfdI+TYqN7TuZcf
- 6LpjOzVFL+pOZvN2HaDp48ZDs5KukptKeXPE3q/VIL8zxwSXaJBgO4DVGOBj
-X-Received: by 2002:a05:6000:651:b0:3a5:51a3:3a2 with SMTP id
- ffacd0b85a97d-3b32f383792mr522706f8f.45.1751492524193; 
- Wed, 02 Jul 2025 14:42:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFqmw/Z44uLcqEbH34cmHA1F8gyGykODgePjJRCIZMczU6nrOwzqze40KVnfT7dIzX7Oze04A==
-X-Received: by 2002:a05:6000:651:b0:3a5:51a3:3a2 with SMTP id
- ffacd0b85a97d-3b32f383792mr522699f8f.45.1751492523760; 
- Wed, 02 Jul 2025 14:42:03 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e5f842sm16652801f8f.86.2025.07.02.14.42.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Jul 2025 14:42:03 -0700 (PDT)
-Message-ID: <85a81af2-fe92-4f74-b1fe-4ba030e32129@redhat.com>
-Date: Wed, 2 Jul 2025 23:42:02 +0200
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uX5Tt-0003dd-SW
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 17:59:08 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562LS92Z015986;
+ Wed, 2 Jul 2025 21:59:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2025-04-25; bh=zq9jyIawb3g/kS6D
+ IqMSnAQhIEM0Cu7t2A5cyn7+dHw=; b=OF/9BJcO8Su5Wvp6YW4uR/wIidgvfO5j
+ mHD6L/1v2FAjbuDu5YQjNxIH5m6+la4p0kAL8h5KM+ElvhrtqFWFf8FY545NQ+wY
+ UdiJVf/69KQtUYokVbBp7rwjne7iK5g/BMnGwPe1VI8tppgOGV38cdfpbdmYi1TB
+ w5nbg3TgZ+418/6U6qs5H2CIWmj1zCy38xrdcxllCI0b88tTdS6wB8qC7qgaMmz7
+ P+MyV37GyZF9vECS26gBmFKuPLluiDi+drW/lYoBW8jPdnurz3qZOJRULM5ULTRt
+ lrjIyyQKC136TLNWvkDbTag0nLUIL9NI6IggFV3knA9I0tW/s1CtjA==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j8xx7vct-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 02 Jul 2025 21:59:00 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 562LYikf033672; Wed, 2 Jul 2025 21:59:00 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 47j6ubtcxq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 02 Jul 2025 21:59:00 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 562Lwxfs020012;
+ Wed, 2 Jul 2025 21:58:59 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
+ ESMTP id 47j6ubtcxb-1; Wed, 02 Jul 2025 21:58:59 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V6 00/21] Live update: vfio and iommufd
+Date: Wed,  2 Jul 2025 14:58:37 -0700
+Message-Id: <1751493538-202042-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] b4: Drop linktrailermask
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20250630172301.519848-1-clg@redhat.com>
- <23065936-513e-4240-afaf-3d25de747dcd@linaro.org>
- <257986c3-54b6-4ae7-8176-8c4c74e0b8db@redhat.com>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <257986c3-54b6-4ae7-8176-8c4c74e0b8db@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-02_04,2025-07-02_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ spamscore=0 adultscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2507020182
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDE4MiBTYWx0ZWRfX6heP2JfgMtcP
+ k8vzkHvfCXGOzcTE16gyT3Gs5BUGq1y9T1QHacV532WgcxTrAQqUs5GWax0c1KGa8JA+NzLzH9v
+ vAl2kbx+BtqWxXVSo+jhHocf7tKHKYiMiNGqvjSeEtF9j0xAdcSoPFedEqXuCXZ7Zt70cHqbzZP
+ /t4dD8FnTrJP5Flzv3gqpoEGH9jZzJnyHQIzMh2zQngF/IKORJrQ31X1vbPjl6VIoqgdAGmcRHw
+ +O9edRY9ua+b4b93hfttaewpN4b7yI8Q4Y3jpnRlrCHC3XRVd42wZ5BBwrnD9naFXfS0uJsWiv/
+ /LCF1n2VU+wrbbm7ebNcF2K9P4nqXlFe4FXHB/xYsE37YfWJM0AXP6HmvVxPNMOBPLVfpjzf21m
+ 9YdFSutyNv6/0OMfi7fN1C77AG+hc/TkkfFjnepI4glHhIYflhWUwVcVKdO6/eOf2xZxEjg4
+X-Proofpoint-ORIG-GUID: _QO2YA0lD8XqtRZUHQSDAcbPfi4vVdcp
+X-Proofpoint-GUID: _QO2YA0lD8XqtRZUHQSDAcbPfi4vVdcp
+X-Authority-Analysis: v=2.4 cv=QfRmvtbv c=1 sm=1 tr=0 ts=6865aba5 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=fXwqTCH3gT_5L80uFTsA:9
+ a=QEXdDO2ut3YA:10
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -155,28 +114,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/1/25 14:16, Cédric Le Goater wrote:
-> On 7/1/25 12:04, Philippe Mathieu-Daudé wrote:
->> On 30/6/25 19:23, Cédric Le Goater wrote:
->>>
->>> When grabbing a patch series, the link trailer is replaced with a
->>> Message-ID, which is not useful compared to an URL. Fix that by
->>> dropping the linktrailermask config.
->>>
->>> Cc: Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
->> Hmm :)
-> 
-> Copy&paste error from 838cf72b5d2c. Sorry ...
-> 
-> Who maintains .b4-config  ?
+NOTE: this V6 series depends on the patch
+  vfio-user: do not register vfio-user container with cpr
+which is in vfio-next.
 
-if no one objects, I will add it the vfio queue with the Cc: fix.
+Support vfio and iommufd devices with the cpr-transfer live migration mode.
+Devices that do not support live migration can still support cpr-transfer,
+allowing live update to a new version of QEMU on the same host, with no loss
+of guest connectivity.
 
-Thanks,
+No user-visible interfaces are added.
 
-C.
+For legacy containers:
 
-  
+Pass vfio device descriptors to new QEMU.  In new QEMU, during vfio_realize,
+skip the ioctls that configure the device, because it is already configured.
+
+Use VFIO_DMA_UNMAP_FLAG_VADDR to abandon the old VA's for DMA mapped
+regions, and use VFIO_DMA_MAP_FLAG_VADDR to register the new VA in new
+QEMU and update the locked memory accounting.  The physical pages remain
+pinned, because the descriptor of the device that locked them remains open,
+so DMA to those pages continues without interruption.  Mediated devices are
+not supported, however, because they require the VA to always be valid, and
+there is a brief window where no VA is registered.
+
+Save the MSI message area as part of vfio-pci vmstate, and pass the interrupt
+and notifier eventfd's to new QEMU.  New QEMU loads the MSI data, then the
+vfio-pci post_load handler finds the eventfds in CPR state, rebuilds vector
+data structures, and attaches the interrupts to the new KVM instance.  This
+logic also applies to iommufd containers.
+
+For iommufd containers:
+
+Use IOMMU_IOAS_MAP_FILE to register memory regions for DMA when they are
+backed by a file (including a memfd), so DMA mappings do not depend on VA,
+which can differ after live update.  This allows mediated devices to be
+supported.
+
+Pass the iommufd and vfio device descriptors from old to new QEMU.  In new
+QEMU, during vfio_realize, skip the ioctls that configure the device, because
+it is already configured.
+
+In new QEMU, call ioctl(IOMMU_IOAS_CHANGE_PROCESS) to update mm ownership and
+locked memory accounting.
+
+Patches 3 to 8 are specific to legacy containers.
+Patches 21 to 36 are specific to iommufd containers.
+The remainder apply to both.
+
+Changes from previous versions:
+  * V1 of this series contains minor changes from the "Live update: vfio" and
+    "Live update: iommufd" series, mainly bug fixes and refactored patches.
+
+Changes in V2:
+  * refactored various vfio code snippets into new cpr helpers
+  * refactored vfio struct members into cpr-specific structures
+  * refactored various small changes into their own patches
+  * split complex patches.  Notably:
+    - split "refactor for cpr" into 5 patches
+    - split "reconstruct device" into 4 patches
+  * refactored vfio_connect_container using helpers and made its
+    error recovery more robust.
+  * moved vfio pci msi/vector/intx cpr functions to cpr.c
+  * renamed "reused" to cpr_reused and cpr.reused
+  * squashed vfio_cpr_[un]register_container to their call sites
+  * simplified iommu_type setting after cpr
+  * added cpr_open_fd and cpr_is_incoming helpers
+  * removed changes from vfio_legacy_dma_map, and instead temporarily
+    override dma_map and dma_unmap ops.
+  * deleted error_report and returned Error to callers where possible.
+  * simplified the memory_get_xlat_addr interface
+  * fixed flags passed to iommufd_backend_alloc_hwpt
+  * defined MIG_PRI_UNINITIALIZED
+  * added maintainers
+
+Changes in V3:
+  * removed cleanup patches that were already pulled
+  * rebased to latest master
+
+Changes in V4:
+  * added SPDX-License-Identifier
+  * patch "vfio/container: preserve descriptors"
+    - rewrote search loop in vfio_container_connect
+    - do not return pfd from vfio_cpr_container_match
+    - add helper for VFIO_GROUP_GET_DEVICE_FD
+  * deleted patch "export vfio_legacy_dma_map"
+  * patch "vfio/container: restore DMA vaddr"
+    - deleted redundant error_report from vfio_legacy_cpr_dma_map
+    - save old dma_map function
+  * patch "vfio-pci: skip reset during cpr"
+    - use cpr_is_incoming instead of cpr_reused
+  * renamed err -> local_err in all new code
+  * patch "export MSI functions"
+    -  renamed with vfio_pci prefix, and defined wrappers for low level
+       routines instead of exporting them.
+  * patch "close kvm after cpr"
+    - fixed build error for !CONFIG_KVM
+  * added the cpr_resave_fd helper
+  * dropped patch "pass ramblock to vfio_container_dma_map", relying on
+    "pass MemoryRegion" from the vfio-user series instead.
+  * deleted "reused" variables, replaced with cpr_is_incoming()
+  * renamed cpr_needed_for_reuse -> cpr_incoming_needed
+  * rewrote patch "pci: skip reset during cpr"
+  * rebased to latest master
+
+  for iommufd:
+    * deleted redundant error_report from iommufd_backend_map_file_dma
+    * added interface doc for dma_map_file
+    * check return value of cpr_open_fd
+    * deleted "export iommufd_cdev_get_info_iova_range"
+    * deleted "reconstruct device"
+    * deleted "reconstruct hw_caps"
+    * deleted "define hwpt constructors"
+    * seperated cpr registration for iommufd be and vfio container
+    * correctly attach to multiple containers per iommufd using ioas_id
+    * simplified "reconstruct hwpt" by matching against hwpt_id.
+    * added patch "add vfio_device_free_name"
+
+Changes in V5:
+  * dropped: vfio/pci: vfio_pci_put_device on failure
+  * added: "vfio: doc changes for cpr"
+  * deleted unnecessary include of vfio-cpr.h
+  * fixed compilation for !CONFIG_VFIO and !CONFIG_IOMMUFD
+  * misc minor changes
+  * Added RB's, rebased to master
+
+Changes in V6:
+  * dropped already-pulled patches
+  * converted remaining g_free in "add vfio_device_free_name"
+  * fixed iommufd_backend_disconnect in "preserve descriptors"
+  * tweaked vfio_cpr_load_device in "preserve descriptors"
+  * added trace_vfio_cpr_find_device in "cpr state"
+  * rewrote vfio_notifier_init and vfio_msix_vector_use
+  * rewrote the notifier in "close kvm after cpr"
+  * Added RB's, rebased to master
+
+
+Steve Sistare (21):
+  vfio-pci: preserve MSI
+  vfio-pci: preserve INTx
+  migration: close kvm after cpr
+  migration: cpr_get_fd_param helper
+  backends/iommufd: iommufd_backend_map_file_dma
+  backends/iommufd: change process ioctl
+  physmem: qemu_ram_get_fd_offset
+  vfio/iommufd: use IOMMU_IOAS_MAP_FILE
+  vfio/iommufd: invariant device name
+  vfio/iommufd: add vfio_device_free_name
+  vfio/iommufd: device name blocker
+  vfio/iommufd: register container for cpr
+  migration: vfio cpr state hook
+  vfio/iommufd: cpr state
+  vfio/iommufd: preserve descriptors
+  vfio/iommufd: reconstruct device
+  vfio/iommufd: reconstruct hwpt
+  vfio/iommufd: change process
+  iommufd: preserve DMA mappings
+  vfio/container: delete old cpr register
+  vfio: doc changes for cpr
+
+ docs/devel/migration/CPR.rst          |   5 +-
+ qapi/migration.json                   |   6 +-
+ hw/vfio/pci.h                         |   2 +
+ include/exec/cpu-common.h             |   1 +
+ include/hw/vfio/vfio-container-base.h |  15 +++
+ include/hw/vfio/vfio-cpr.h            |  29 ++++-
+ include/hw/vfio/vfio-device.h         |   3 +
+ include/migration/cpr.h               |  14 +++
+ include/system/iommufd.h              |   7 ++
+ include/system/kvm.h                  |   1 +
+ accel/kvm/kvm-all.c                   |  32 +++++
+ backends/iommufd.c                    | 107 +++++++++++++++-
+ hw/vfio/ap.c                          |   4 +-
+ hw/vfio/ccw.c                         |   4 +-
+ hw/vfio/container-base.c              |   9 ++
+ hw/vfio/cpr-iommufd.c                 | 224 ++++++++++++++++++++++++++++++++++
+ hw/vfio/cpr-legacy.c                  |   2 +
+ hw/vfio/cpr.c                         | 144 ++++++++++++++++++++--
+ hw/vfio/device.c                      |  40 ++++--
+ hw/vfio/helpers.c                     |  11 ++
+ hw/vfio/iommufd-stubs.c               |  18 +++
+ hw/vfio/iommufd.c                     |  81 ++++++++++--
+ hw/vfio/pci.c                         | 109 ++++++++++++++++-
+ hw/vfio/platform.c                    |   2 +-
+ migration/cpr.c                       |  52 ++++++--
+ system/physmem.c                      |   5 +
+ backends/trace-events                 |   2 +
+ hw/vfio/meson.build                   |   2 +
+ hw/vfio/trace-events                  |   3 +
+ 29 files changed, 871 insertions(+), 63 deletions(-)
+ create mode 100644 hw/vfio/cpr-iommufd.c
+ create mode 100644 hw/vfio/iommufd-stubs.c
+
+-- 
+1.8.3.1
 
 
