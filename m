@@ -2,92 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9D9AF603E
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 568DDAF6073
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:54:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX1RK-0001AB-QV; Wed, 02 Jul 2025 13:40:11 -0400
+	id 1uX1dm-00078d-Nl; Wed, 02 Jul 2025 13:53:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uX1R7-00018c-RR
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:39:58 -0400
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uX1dc-0006yb-My
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:52:53 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uX1R3-0002mf-9a
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:39:55 -0400
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-408d14c7e92so3598822b6e.3
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 10:39:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751477990; x=1752082790; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bCO1pmG/oEoX7h1ClzEvRpSe1x+90mjgXsV/sza5k54=;
- b=m1hYM9+79++4ua7Nj0I9nudlI6idtiML2DR4oKZSoTWL6hiAHz6xfjW9LUwH997Rm5
- YN9sNInXH0eSm0lu7LO713O6Ilb03FVNHipq+ivXTj5qMQTH2hnub8s4gFwGKVRTQiuL
- pQFkogErVgfJwkzFsQJEdviASaAdHM3QiS2bULh3FQdPpv6qQWHxl1UdO+G4ZF+RSzSa
- oD8BjPT48Ol/Iogdq+JkU/Sfa25nHVgorg9Sf4uBcr9cU5OQ83I3udEW5mijHZS/Egb3
- msAZofc7VggZ+9T3N2usmu0eD5CerIr6zHeOShc4NywtP42o6fjl6HTLtBXAw1hauzo8
- v5xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751477990; x=1752082790;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bCO1pmG/oEoX7h1ClzEvRpSe1x+90mjgXsV/sza5k54=;
- b=wV7jmo1i7TNRWgq/SWN7mzmTdWLyO7rmwrFa054U/nRaxP18FLiYCxBWkMXBpj8beB
- dsouoqMqGvBqjfU1hyJK9Hp8lZuUn0Z+uqjCEjxuPQ8RfehVGUvpx4i7xf4rn7etjggP
- Oek8iv4upE9Ygt+FAGmKEaKd+WRCTCH9i22ot0VxylqHYBcZWyYNaijkLNA8YWnvhv60
- Kn80IGtw4zbtQgEqAaPKUxZt6Jq6EWLS4xXzXhmV7w/K26koRdxrilTIYRBnKb5cDyl0
- seuAa8s5WLpazoXC7Lyrs2PQazwctk0Qdqluboxep7A1KoirdvIV+PjKoYrrJNGtYDAG
- cO/A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU9+8Oy98o65WXt4QrrTe9aQASfrc1azB7+Mm1+7RpwDHRJlQs1W2UrxFSlTE7aUfDu5k5VgS3dyBAS@nongnu.org
-X-Gm-Message-State: AOJu0YyN8KBhHsBwuZK+BVTw5wh6lGUasWzYGet5a4Th4++ry/O6R7/s
- WrIPE/wwe6kUoxhymV22Npe1x+e+re+u9UByFnzitCIYr42Zc3tD+8Y5U/w1j9SE4AXjQiRaWwO
- xFd+mCJI=
-X-Gm-Gg: ASbGncuTMCk32gS3q01yu1sYF8AtKHl4xTTe08/zNNkjz3VfCqqnhDKz5UWLKIsi6GW
- yKibCoJuABvEbmsIg6Htyr6EyzZ+krfVqZjk5cbRx3CAgaDWIBwLDNPXqccjBQ5EvupW/mfyL/A
- 6EuMLP4t+fDqpuH9AZbnokvbOVNEUBgPGqrrMM+WJJPDbWkJbuMDsqrJkP5YQnfx7nD0xx8T0/j
- kPaTohkByqqYTjeLCY+684226MPDP/wD5bPkyhHLZ6uqq2MvlqKYdxske0ecRpiIL7iyyFssUYE
- d/oOwlUE/YGLNGXFSI9NWAcBvabW6nIPQH2DR9i7tTdwazRL84jvIW8PaofdQIw5QTbnV+CShza
- o
-X-Google-Smtp-Source: AGHT+IG/e/AqhqdwiXGEuHcVUvfdtzp/YC9hrUV6rymh/qlCXh+cLR0npKFrUa1UNquXUdnjIKGR7A==
-X-Received: by 2002:a05:6808:f10:b0:40a:a971:3918 with SMTP id
- 5614622812f47-40b8932ad13mr2679341b6e.38.1751477989690; 
- Wed, 02 Jul 2025 10:39:49 -0700 (PDT)
-Received: from [10.25.7.74] ([187.210.107.185])
- by smtp.gmail.com with ESMTPSA id
- 5614622812f47-40b32421047sm2625336b6e.41.2025.07.02.10.39.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Jul 2025 10:39:49 -0700 (PDT)
-Message-ID: <6fc27701-4355-404b-9277-a5d323d86c78@linaro.org>
-Date: Wed, 2 Jul 2025 11:39:47 -0600
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uX1da-0006Gh-TV
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:52:52 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 214D321163;
+ Wed,  2 Jul 2025 17:52:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1751478767; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/l8JUxlK6GNRm6ikqwkuEkSaKy3qwdGI3oG0ZTjfGGk=;
+ b=0RHqAyOLREzfYfIcKTWb5lwNtqqhKRge1jEeh0CR1mrPj3xq3Sd653T2R8sEQ59R6/jQgZ
+ be4NyqYFlsI9oEsayIrT4IiOXcP/0npGEiodiXQw9nrTABwyGZ66aKfrc5W+7DToPs2dxb
+ p8NaLj1wFl52Skv8YjU004PC1Ko4qko=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1751478767;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/l8JUxlK6GNRm6ikqwkuEkSaKy3qwdGI3oG0ZTjfGGk=;
+ b=ipJoDy3+qnEegTv4/7le13zhFQ+DTi+lN9+1L4TIaGhdVGhIKkYcsCjgA0Vky3Dnxohy3h
+ UZNaW6cq0kx0ZMBw==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0RHqAyOL;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ipJoDy3+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1751478767; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/l8JUxlK6GNRm6ikqwkuEkSaKy3qwdGI3oG0ZTjfGGk=;
+ b=0RHqAyOLREzfYfIcKTWb5lwNtqqhKRge1jEeh0CR1mrPj3xq3Sd653T2R8sEQ59R6/jQgZ
+ be4NyqYFlsI9oEsayIrT4IiOXcP/0npGEiodiXQw9nrTABwyGZ66aKfrc5W+7DToPs2dxb
+ p8NaLj1wFl52Skv8YjU004PC1Ko4qko=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1751478767;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/l8JUxlK6GNRm6ikqwkuEkSaKy3qwdGI3oG0ZTjfGGk=;
+ b=ipJoDy3+qnEegTv4/7le13zhFQ+DTi+lN9+1L4TIaGhdVGhIKkYcsCjgA0Vky3Dnxohy3h
+ UZNaW6cq0kx0ZMBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7D0D513A24;
+ Wed,  2 Jul 2025 17:52:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 1c7eDu5xZWi7BAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 02 Jul 2025 17:52:46 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>, Cedric Le Goater
+ <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>, Eric Auger
+ <eric.auger@redhat.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>, Steve Sistare
+ <steven.sistare@oracle.com>
+Subject: Re: [PATCH V5 38/38] vfio: doc changes for cpr
+In-Reply-To: <1749569991-25171-39-git-send-email-steven.sistare@oracle.com>
+References: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
+ <1749569991-25171-39-git-send-email-steven.sistare@oracle.com>
+Date: Wed, 02 Jul 2025 14:52:43 -0300
+Message-ID: <87v7oa4h04.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/mips: Restrict ITU to TCG
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20250702164953.18579-1-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250702164953.18579-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 214D321163
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-2.95 / 50.00]; BAYES_HAM(-2.94)[99.72%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MIME_TRACE(0.00)[0:+];
+ FREEMAIL_CC(0.00)[redhat.com,intel.com,gmail.com,oracle.com];
+ ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ MISSING_XM_UA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+ RCPT_COUNT_SEVEN(0.00)[11]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; TAGGED_RCPT(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid, suse.de:dkim, suse.de:email,
+ oracle.com:email, imap1.dmz-prg2.suse.org:rdns, imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -2.95
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,19 +131,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/2/25 10:49, Philippe Mathieu-Daudé wrote:
-> MIPS Inter-Thread Communication Unit is implemented using
-> TCG. Check for TCG both in Kconfig and CPS source.
-> 
-> Fixes: 2321d971b6f ("hw/mips: Add dependency MIPS_CPS -> MIPS_ITU")
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+Steve Sistare <steven.sistare@oracle.com> writes:
+
+> Update documentation to say that cpr-transfer supports vfio and iommufd.
+>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 > ---
->   hw/mips/cps.c   | 4 ++--
->   hw/mips/Kconfig | 2 +-
->   hw/misc/Kconfig | 1 +
->   3 files changed, 4 insertions(+), 3 deletions(-)
+>  docs/devel/migration/CPR.rst | 5 ++---
+>  qapi/migration.json          | 6 ++++--
+>  2 files changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/docs/devel/migration/CPR.rst b/docs/devel/migration/CPR.rst
+> index 7897873..0a0fd4f 100644
+> --- a/docs/devel/migration/CPR.rst
+> +++ b/docs/devel/migration/CPR.rst
+> @@ -152,8 +152,7 @@ cpr-transfer mode
+>  This mode allows the user to transfer a guest to a new QEMU instance
+>  on the same host with minimal guest pause time, by preserving guest
+>  RAM in place, albeit with new virtual addresses in new QEMU.  Devices
+> -and their pinned memory pages will also be preserved in a future QEMU
+> -release.
+> +and their pinned memory pages are also preserved for VFIO and IOMMUFD.
+>  
+>  The user starts new QEMU on the same host as old QEMU, with command-
+>  line arguments to create the same machine, plus the ``-incoming``
+> @@ -322,6 +321,6 @@ Futures
+>  
+>  cpr-transfer mode is based on a capability to transfer open file
+>  descriptors from old to new QEMU.  In the future, descriptors for
+> -vfio, iommufd, vhost, and char devices could be transferred,
+> +vhost, and char devices could be transferred,
+>  preserving those devices and their kernel state without interruption,
+>  even if they do not explicitly support live migration.
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 4963f6c..e8a7d3b 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -620,8 +620,10 @@
+>  #
+>  # @cpr-transfer: This mode allows the user to transfer a guest to a
+>  #     new QEMU instance on the same host with minimal guest pause
+> -#     time by preserving guest RAM in place.  Devices and their pinned
+> -#     pages will also be preserved in a future QEMU release.
+> +#     time by preserving guest RAM in place.
+> +#
+> +#     Devices and their pinned pages are also preserved for VFIO and
+> +#     IOMMUFD. (since 10.1)
+>  #
+>  #     The user starts new QEMU on the same host as old QEMU, with
+>  #     command-line arguments to create the same machine, plus the
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
