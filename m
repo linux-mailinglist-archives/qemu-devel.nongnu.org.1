@@ -2,79 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A10AF5A76
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 16:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CD9AF5A4D
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 15:58:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWx6b-0001VT-AD; Wed, 02 Jul 2025 09:02:29 -0400
+	id 1uWxDd-0006vc-LG; Wed, 02 Jul 2025 09:09:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uWx6M-0001GQ-21
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 09:02:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uWxDS-0006iO-4J
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 09:09:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uWx6E-0000nM-Jt
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 09:02:13 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uWxDH-0004Zw-3g
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 09:09:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751461323;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=NLUShs5M2XQXIAtBKPIU9h1HTe17oq5w8FuuIcCnOL0=;
- b=RnFHuWk9rrQe49G84plcbTOnOBKWXkGjRaVyO9Aojr7uWn+Jjpyzg4jB6qq6wLx3dp/qXr
- Vlx1LH8SgGjs/Z29i1dqJ8wnDrIb8w2SqVZlJ0IBMl2TnGyghh3XxS6PuX60vGtTQ/s0/x
- hWx2GWlle0Kk8UlEZjh/m8wGv3vg7QM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ s=mimecast20190719; t=1751461759;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=2gp5X6lkrfFzEcvHmnETIQJttNKZ9jM4AcVK347+p3E=;
+ b=VMzzSU0H3NKaLPiTImuwRdcD5FxyiumMePx3Ia9xkCFtCDtbtJAStkDCVm4q6XvCV9Zwgh
+ duRwHknL6wRashVmjux4CdBOC6cbXmRf+IGW7d7rSXRaxOjO1FU3wiRCSH+NSXLNmsq8TH
+ SCXQ8CQxrg/3byvHAcmWHbyYL71KAVM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-562--64A5iRmNVyG1riXMY36OQ-1; Wed,
- 02 Jul 2025 09:01:59 -0400
-X-MC-Unique: -64A5iRmNVyG1riXMY36OQ-1
-X-Mimecast-MFC-AGG-ID: -64A5iRmNVyG1riXMY36OQ_1751461315
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-389--USEHzEmNAWoHdeldr9R2A-1; Wed,
+ 02 Jul 2025 09:09:16 -0400
+X-MC-Unique: -USEHzEmNAWoHdeldr9R2A-1
+X-Mimecast-MFC-AGG-ID: -USEHzEmNAWoHdeldr9R2A_1751461755
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EF1B81800289; Wed,  2 Jul 2025 13:01:54 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EAFDF1956066; Wed,  2 Jul 2025 13:01:53 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 122AE21E6A27; Wed, 02 Jul 2025 15:01:51 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Arun Menon <armenon@redhat.com>
-Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  Cornelia Huck
- <cohuck@redhat.com>,  Halil Pasic <pasic@linux.ibm.com>,  Eric Farman
- <farman@linux.ibm.com>,  Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>,  Ilya Leoshkevich
- <iii@linux.ibm.com>,  Thomas Huth <thuth@redhat.com>,  Christian
- Borntraeger <borntraeger@linux.ibm.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Fam Zheng <fam@euphon.net>,  Nicholas Piggin
- <npiggin@gmail.com>,  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,  Alex Williamson
- <alex.williamson@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>,  Peter
- Xu <peterx@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Hailiang Zhang
- <zhanghailiang@xfusion.com>,  Steve Sistare <steven.sistare@oracle.com>,
- qemu-s390x@nongnu.org,  qemu-ppc@nongnu.org,  Stefan Berger
- <stefanb@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3 1/3] migration: Pass Error object errp into vm state
- loading functions
-In-Reply-To: <20250702-propagate_tpm_error-v3-1-986d94540528@redhat.com> (Arun
- Menon's message of "Wed, 02 Jul 2025 17:06:50 +0530")
-References: <20250702-propagate_tpm_error-v3-0-986d94540528@redhat.com>
- <20250702-propagate_tpm_error-v3-1-986d94540528@redhat.com>
-Date: Wed, 02 Jul 2025 15:01:51 +0200
-Message-ID: <87ikkawxts.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 163871808993; Wed,  2 Jul 2025 13:09:15 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.116])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 47A01180045B; Wed,  2 Jul 2025 13:09:11 +0000 (UTC)
+Date: Wed, 2 Jul 2025 14:09:07 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, thuth@redhat.com, jean-philippe@linaro.org,
+ alex.bennee@linaro.org, eric.auger@redhat.com, smostafa@google.com
+Subject: Re: [PATCH v2] tests/functional: test device passthrough on aarch64
+Message-ID: <aGUvc6XJjsluZtH_@redhat.com>
+References: <20250627200222.5172-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250627200222.5172-1-pierrick.bouvier@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -83,7 +67,7 @@ X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,166 +80,219 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Arun Menon <armenon@redhat.com> writes:
+On Fri, Jun 27, 2025 at 01:02:22PM -0700, Pierrick Bouvier wrote:
+> This test allows to document and exercise device passthrough, using a
+> nested virtual machine setup. Two disks are generated and passed to the
+> VM, and their content is compared to original images.
+> 
+> Guest and nested guests commands are executed through two scripts, and
+> init used in both system is configured to trigger a kernel panic in case
+> any command fails. This is more reliable and readable than executing all
+> commands through prompt injection and trying to guess what failed.
+> 
+> Initially, this test was supposed to test smmuv3 nested emulation
+> (combining both stages of translation), but I could not find any setup
+> (kernel + vmm) able to do the passthrough correctly, despite several
+> tries.
+> 
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>  tests/functional/meson.build                  |   2 +
+>  .../test_aarch64_device_passthrough.py        | 142 ++++++++++++++++++
+>  2 files changed, 144 insertions(+)
+>  create mode 100755 tests/functional/test_aarch64_device_passthrough.py
+> 
+> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+> index 3021928a9d4..6cc78abb123 100644
+> --- a/tests/functional/meson.build
+> +++ b/tests/functional/meson.build
+> @@ -13,6 +13,7 @@ endif
+>  test_timeouts = {
+>    'aarch64_aspeed_ast2700' : 600,
+>    'aarch64_aspeed_ast2700fc' : 600,
+> +  'aarch64_device_passthrough' : 720,
+>    'aarch64_imx8mp_evk' : 240,
+>    'aarch64_raspi4' : 480,
+>    'aarch64_reverse_debug' : 180,
+> @@ -84,6 +85,7 @@ tests_aarch64_system_quick = [
+>  tests_aarch64_system_thorough = [
+>    'aarch64_aspeed_ast2700',
+>    'aarch64_aspeed_ast2700fc',
+> +  'aarch64_device_passthrough',
+>    'aarch64_imx8mp_evk',
+>    'aarch64_raspi3',
+>    'aarch64_raspi4',
+> diff --git a/tests/functional/test_aarch64_device_passthrough.py b/tests/functional/test_aarch64_device_passthrough.py
+> new file mode 100755
+> index 00000000000..1f3f158a9ff
+> --- /dev/null
+> +++ b/tests/functional/test_aarch64_device_passthrough.py
+> @@ -0,0 +1,142 @@
+> +#!/usr/bin/env python3
+> +#
+> +# Boots a nested guest and compare content of a device (passthrough) to a
+> +# reference image. Both vfio group and iommufd passthrough methods are tested.
+> +#
+> +# Copyright (c) 2025 Linaro Ltd.
+> +#
+> +# Author: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> +#
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +import os
+> +
+> +from qemu_test import QemuSystemTest, Asset
+> +from qemu_test import exec_command, wait_for_console_pattern
+> +from qemu_test import exec_command_and_wait_for_pattern
+> +from random import randbytes
+> +
+> +guest_script = '''
+> +#!/usr/bin/env bash
+> +
+> +set -euo pipefail
+> +set -x
+> +
+> +# find disks from nvme serial
+> +dev_vfio=$(lsblk --nvme | grep vfio | cut -f 1 -d ' ')
+> +dev_iommufd=$(lsblk --nvme | grep iommufd | cut -f 1 -d ' ')
+> +pci_vfio=$(basename $(readlink -f /sys/block/$dev_vfio/../../../))
+> +pci_iommufd=$(basename $(readlink -f /sys/block/$dev_iommufd/../../../))
+> +
+> +# bind disks to vfio
+> +for p in "$pci_vfio" "$pci_iommufd"; do
+> +    if [ "$(cat /sys/bus/pci/devices/$p/driver_override)" == vfio-pci ]; then
+> +        continue
+> +    fi
+> +    echo $p > /sys/bus/pci/drivers/nvme/unbind
+> +    echo vfio-pci > /sys/bus/pci/devices/$p/driver_override
+> +    echo $p > /sys/bus/pci/drivers/vfio-pci/bind
+> +done
+> +
+> +# boot nested guest and execute /host/nested_guest.sh
+> +# one disk is passed through vfio group, the other, through iommufd
+> +qemu-system-aarch64 \
+> +-M virt \
+> +-display none \
+> +-serial stdio \
+> +-cpu host \
+> +-enable-kvm \
+> +-m 1G \
+> +-kernel /host/Image.gz \
+> +-drive format=raw,file=/host/guest.ext4,if=virtio \
+> +-append "root=/dev/vda init=/init -- bash /host/nested_guest.sh" \
+> +-virtfs local,path=/host,mount_tag=host,security_model=mapped,readonly=off \
+> +-device vfio-pci,host=$pci_vfio \
+> +-object iommufd,id=iommufd0 \
+> +-device vfio-pci,host=$pci_iommufd,iommufd=iommufd0
+> +'''
+> +
+> +nested_guest_script = '''
+> +#!/usr/bin/env bash
+> +
+> +set -euo pipefail
+> +set -x
+> +
+> +image_vfio=/host/disk_vfio
+> +image_iommufd=/host/disk_iommufd
+> +
+> +dev_vfio=$(lsblk --nvme | grep vfio | cut -f 1 -d ' ')
+> +dev_iommufd=$(lsblk --nvme | grep iommufd | cut -f 1 -d ' ')
+> +
+> +# compare if devices are identical to original images
+> +diff $image_vfio /dev/$dev_vfio
+> +diff $image_iommufd /dev/$dev_iommufd
+> +
+> +echo device_passthrough_test_ok
+> +'''
+> +
+> +class Aarch64DevicePassthrough(QemuSystemTest):
+> +
+> +    # https://github.com/pbo-linaro/qemu-linux-stack
+> +    #
+> +    # Linux kernel is compiled with defconfig +
+> +    # IOMMUFD + VFIO_DEVICE_CDEV + ARM_SMMU_V3_IOMMUFD
+> +    # https://docs.kernel.org/driver-api/vfio.html#vfio-device-cde
+> +    ASSET_DEVICE_PASSTHROUGH_STACK = Asset(
+> +        ('https://fileserver.linaro.org/s/fx5DXxBYme8dw2G/'
+> +         'download/device_passthrough.tar.xz'),
+> +         '812750b664d61c2986f2b149939ae28cafbd60d53e9c7e4b16e97143845e196d')
+> +
+> +    # This tests the device passthrough implementation, by booting a VM
+> +    # supporting it with two nvme disks attached, and launching a nested VM
+> +    # reading their content.
+> +    def test_aarch64_device_passthrough(self):
+> +        self.set_machine('virt')
+> +        self.require_accelerator('tcg')
+> +
+> +        self.vm.set_console()
+> +
+> +        stack_path_tar_gz = self.ASSET_DEVICE_PASSTHROUGH_STACK.fetch()
+> +        self.archive_extract(stack_path_tar_gz, format="tar")
+> +
+> +        stack = self.scratch_file('out')
+> +        kernel = os.path.join(stack, 'Image.gz')
+> +        rootfs_host = os.path.join(stack, 'host.ext4')
+> +        disk_vfio = os.path.join(stack, 'disk_vfio')
+> +        disk_iommufd = os.path.join(stack, 'disk_iommufd')
+> +        guest_cmd = os.path.join(stack, 'guest.sh')
+> +        nested_guest_cmd = os.path.join(stack, 'nested_guest.sh')
 
-> - This is an incremental step in converting vmstate loading
->   code to report errors.
-> - Minimal changes to the signature and body of the following
->   functions are done,
->   - vmstate_load()
->   - vmstate_load_state()
->   - vmstate_subsection_load()
->   - qemu_load_device_state()
->   - qemu_loadvm_state()
->   - qemu_loadvm_section_start_full()
->   - qemu_loadvm_section_part_end()
->   - qemu_loadvm_state_header()
->   - qemu_loadvm_state_main()
-> - error_report() has been replaced with error_setg();
->   and in places where error has been already set,
->   error_prepend() is used to not lose information.
->
-> Signed-off-by: Arun Menon <armenon@redhat.com>
+Don't incrementally create paths like this - use the 
+'scratch_file' method for all components
 
-[...]
+ ie
 
-> diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-> index 1ff7bd9ac425ba67cd5ca7ad97bcf570f9e19abe..056781b1c21e737583f081594d9f88b32adfd674 100644
-> --- a/include/migration/vmstate.h
-> +++ b/include/migration/vmstate.h
-> @@ -1196,7 +1196,7 @@ extern const VMStateInfo vmstate_info_qlist;
->      }
->  
->  int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-> -                       void *opaque, int version_id);
-> +                       void *opaque, int version_id, Error **errp);
->  int vmstate_save_state(QEMUFile *f, const VMStateDescription *vmsd,
->                         void *opaque, JSONWriter *vmdesc);
->  int vmstate_save_state_with_err(QEMUFile *f, const VMStateDescription *vmsd,
-> diff --git a/migration/colo.c b/migration/colo.c
-> index e0f713c837f5da25d67afbd02ceb6c54024ca3af..808c980b4af3199968771cdc6cca3c2451a2f4a6 100644
-> --- a/migration/colo.c
-> +++ b/migration/colo.c
-> @@ -659,6 +659,7 @@ void migrate_start_colo_process(MigrationState *s)
->  static void colo_incoming_process_checkpoint(MigrationIncomingState *mis,
->                        QEMUFile *fb, QIOChannelBuffer *bioc, Error **errp)
->  {
-> +    ERRP_GUARD();
->      uint64_t total_size;
->      uint64_t value;
->      Error *local_err = NULL;
-       int ret;
+   kernel = self.scratch_file('out', 'Image.gz')
+   rootfs_host =  self.scratch_file('out', 'host.ext4')
+   ...etc...
 
-       bql_lock();
-       vm_stop_force_state(RUN_STATE_COLO);
-       bql_unlock();
-       trace_colo_vm_state_change("run", "stop");
+> +        # we generate two random disks
+> +        with open(disk_vfio, "wb") as d: d.write(randbytes(512))
+> +        with open(disk_iommufd, "wb") as d: d.write(randbytes(1024))
+> +        with open(guest_cmd, 'w') as s: s.write(guest_script)
+> +        with open(nested_guest_cmd, 'w') as s: s.write(nested_guest_script)
+> +
+> +        self.vm.add_args('-cpu', 'max')
+> +        self.vm.add_args('-m', '2G')
+> +        self.vm.add_args('-M', 'virt,'
+> +                         'virtualization=on,'
+> +                         'gic-version=max,'
+> +                         'iommu=smmuv3')
+> +        self.vm.add_args('-kernel', kernel)
+> +        self.vm.add_args('-drive', f'format=raw,file={rootfs_host}')
+> +        self.vm.add_args('-drive',
+> +                         f'file={disk_vfio},if=none,id=vfio,format=raw')
+> +        self.vm.add_args('-device', 'nvme,serial=vfio,drive=vfio')
+> +        self.vm.add_args('-drive',
+> +                         f'file={disk_iommufd},if=none,id=iommufd,format=raw')
+> +        self.vm.add_args('-device', 'nvme,serial=iommufd,drive=iommufd')
+> +        self.vm.add_args('-virtfs',
+> +                         f'local,path={stack}/,mount_tag=host,'
+> +                         'security_model=mapped,readonly=off')
+> +        # boot and execute guest script
+> +        # init will trigger a kernel panic if script fails
+> +        self.vm.add_args('-append',
+> +                         'root=/dev/vda init=/init -- bash /host/guest.sh')
+> +
+> +        self.vm.launch()
+> +        wait_for_console_pattern(self, 'device_passthrough_test_ok',
+> +                                 failure_message='Kernel panic')
+> +
+> +if __name__ == '__main__':
+> +    QemuSystemTest.main()
+> -- 
+> 2.47.2
+> 
 
-       /* FIXME: This is unnecessary for periodic checkpoint mode */
-       colo_send_message(mis->to_src_file, COLO_MESSAGE_CHECKPOINT_REPLY,
-                    &local_err);
-       if (local_err) {
-           error_propagate(errp, local_err);
-           return;
-       }
-
-Avoid error_propagate() when you have ERRP_GUARD():
-
-       colo_send_message(mis->to_src_file, COLO_MESSAGE_CHECKPOINT_REPLY,
-                    errp);
-       if (*errp) {
-           return;
-       }
-
-See the big comment in qapi/error.h for additional guidance.
-
-       colo_receive_check_message(mis->from_src_file,
-                          COLO_MESSAGE_VMSTATE_SEND, &local_err);
-       if (local_err) {
-           error_propagate(errp, local_err);
-           return;
-       }
-
-Likewise.  More of the same below, not flagging it again.
-
-> @@ -686,11 +687,13 @@ static void colo_incoming_process_checkpoint(MigrationIncomingState *mis,
->  
->      bql_lock();
->      cpu_synchronize_all_states();
-> -    ret = qemu_loadvm_state_main(mis->from_src_file, mis);
-> +    ret = qemu_loadvm_state_main(mis->from_src_file, mis, &local_err);
->      bql_unlock();
->  
->      if (ret < 0) {
-> -        error_setg(errp, "Load VM's live state (ram) error");
-> +        if (local_err != NULL) {
-
-How can @local_err be null here?
-
-> +            error_prepend(errp, "Load VM's live state (ram) error");
-
-Since nothing has set @errp so far, it should still point to null.
-error_prepend() crashes when passed a pointer to null.
-
-> +        }
->          return;
-
-Returns without setting an error, and leaks @local_err.
-
-Can you pass @errp to qemu_loadvm_state_main() and call it a day?
-
->      }
->  
-> @@ -729,9 +732,11 @@ static void colo_incoming_process_checkpoint(MigrationIncomingState *mis,
->      bql_lock();
->      vmstate_loading = true;
->      colo_flush_ram_cache();
-> -    ret = qemu_load_device_state(fb);
-> +    ret = qemu_load_device_state(fb, &local_err);
->      if (ret < 0) {
-> -        error_setg(errp, "COLO: load device state failed");
-> +        if (*errp != NULL) {
-> +            error_prepend(errp, "COLO: load device state failed");
-> +        }
-
-Since nothing has set @errp so far, it should still point to null, so
-this will never prepend anything.
-
->          vmstate_loading = false;
->          bql_unlock();
->          return;
-
-Returns without setting an error, and leaks @local_err.
-
-Can you pass @errp to qemu_load_device_state()?
-
-> diff --git a/migration/cpr.c b/migration/cpr.c
-> index a50a57edca754b50e68fa9c294b3c89791e62ba8..0fb9fadac905c83689eed2b1193b282da679b6ef 100644
-> --- a/migration/cpr.c
-> +++ b/migration/cpr.c
-> @@ -235,7 +235,7 @@ int cpr_state_load(MigrationChannel *channel, Error **errp)
->          return -ENOTSUP;
->      }
->  
-> -    ret = vmstate_load_state(f, &vmstate_cpr_state, &cpr_state, 1);
-> +    ret = vmstate_load_state(f, &vmstate_cpr_state, &cpr_state, 1, errp);
-
-If vmstate_load_state() fails, it should set @errp.
-
->      if (ret) {
->          error_setg(errp, "vmstate_load_state error %d", ret);
-
-Setting it again will trip error_setv()'s assertion.
-
->          qemu_fclose(f);
-
-I doubt you tested your changes to the error paths.  This is dangerous.
-
-I did not look at the remainder of this patch.
-
-[...]
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
