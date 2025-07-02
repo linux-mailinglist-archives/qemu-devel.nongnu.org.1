@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E13DAF0A12
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 07:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62FDCAF0A01
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 06:41:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWpYf-0001l0-9M; Wed, 02 Jul 2025 00:58:57 -0400
+	id 1uWpGT-0005Hq-GQ; Wed, 02 Jul 2025 00:40:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uWpYc-0001jV-3G
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 00:58:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uWpGL-0005GR-2K; Wed, 02 Jul 2025 00:40:01 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uWpYa-0005ki-8Z
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 00:58:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751432323;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rYnCRm2zZzSTuBDpSYjMNE5q1tVKK+dSVe9B1soTpWg=;
- b=Msk7ZkVS8OS5TgadhBexkuX1UtWmeiuyZCd8TDJ/0IOlQ+2F5FiXtkFEwKwSUJJZVcznJO
- NjPXb/WPVMc3Gi3P1+jrBAemDv1+Z7VconQgcw37qhxaLhEFPksEAxbLGDOMxtjcdtpiU2
- 4I4LRqAcF7da1/C7tzlF+Jl2JkcYiRw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-7yz6NvHlP6m0joxK1df-ew-1; Wed,
- 02 Jul 2025 00:58:39 -0400
-X-MC-Unique: 7yz6NvHlP6m0joxK1df-ew-1
-X-Mimecast-MFC-AGG-ID: 7yz6NvHlP6m0joxK1df-ew_1751432318
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7D06218089B5; Wed,  2 Jul 2025 04:58:38 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 07A8C30001B1; Wed,  2 Jul 2025 04:58:37 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6D47521E6A27; Wed, 02 Jul 2025 06:58:35 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Alex
- =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>,  Julian Armistead
- <julian.armistead@linaro.org>,  Richard Henderson
- <richard.henderson@linaro.org>
-Subject: Re: [PATCH v3 24/68] accel/system: Add 'info accel' on human monitor
-In-Reply-To: <20250701144017.43487-25-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 1 Jul 2025 16:39:32
- +0200")
-References: <20250701144017.43487-1-philmd@linaro.org>
- <20250701144017.43487-25-philmd@linaro.org>
-Date: Wed, 02 Jul 2025 06:58:35 +0200
-Message-ID: <878ql7rxxg.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uWpGD-0000pu-Ls; Wed, 02 Jul 2025 00:40:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751431193; x=1782967193;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=mVbk9MTm+7mpEitDYW3vFzEIYpyFC9akWhxShjigfCs=;
+ b=l+iMlp2a9s/58KUeLJartsvkgsLJrYQDfpiMiWZ07RS6j5Jwa4A57uEC
+ tlK/7D0v9n1X/v8DGS9nv2/JM4F3JTuejS0Of8SVeV5h8dYMMmofwywwk
+ HA6ybz1AQcLS8nXC8pMpoOPNdGU+ImKih745x7zGeaHCfe7guBcDaqIRS
+ w04Z5+hI9Md8inaucdQ5az97YFgK7UoacbLOqwxEiTR45zJKRJZGSeKzq
+ g4Px4d/wUmCPWiXbHXzW7jnVN+sj409CveVKslBabFOnuqeQQXwSm5PVo
+ 1cwrQs1/l57cvQdHiJBg08d1DNQPdYaKLOb+AAwg6VSzUn0UmZFmmVL5s w==;
+X-CSE-ConnectionGUID: M++XNyGRRcuNFpGPoPlN6A==
+X-CSE-MsgGUID: QpubSjJCS1mEkgiFgCADYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="53855352"
+X-IronPort-AV: E=Sophos;i="6.16,280,1744095600"; d="scan'208";a="53855352"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2025 21:39:45 -0700
+X-CSE-ConnectionGUID: vjheMQSOQNWBXS/RLTR7hA==
+X-CSE-MsgGUID: +09q9AlLRo+Ke7ggPa8vWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,280,1744095600"; d="scan'208";a="159668321"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa005.jf.intel.com with ESMTP; 01 Jul 2025 21:39:43 -0700
+Date: Wed, 2 Jul 2025 13:01:07 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Igor Mammedov <imammedo@redhat.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+ Alexandre Chartre <alexandre.chartre@oracle.com>,
+ qemu-devel@nongnu.org, pbonzini@redhat.com, qemu-stable@nongnu.org,
+ boris.ostrovsky@oracle.com, maciej.szmigiero@oracle.com,
+ Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH] i386/cpu: ARCH_CAPABILITIES should not be advertised on
+ AMD
+Message-ID: <aGS9E6pT0I57gn+e@intel.com>
+References: <20250630133025.4189544-1-alexandre.chartre@oracle.com>
+ <aGO3vOfHUfjgvBQ9@intel.com>
+ <c6a79077-024f-4d2f-897c-118ac8bb9b58@intel.com>
+ <aGPWW/joFfohy05y@intel.com> <20250701150500.3a4001e9@fedora>
+ <aGQ-ke-pZhzLnr8t@char.us.oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aGQ-ke-pZhzLnr8t@char.us.oracle.com>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,15 +89,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Thanks Igor for looking here and thanks Konrad's explanation.
 
-> 'info accel' dispatches to the AccelOpsClass::get_stats()
-> and get_vcpu_stats() handlers.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Acked-by: Richard Henderson <richard.henderson@linaro.org>
+> > > > On 7/1/2025 6:26 PM, Zhao Liu wrote:  
+> > > > > > unless it was explicitly requested by the user.  
+> > > > > But this could still break Windows, just like issue #3001, which enables
+> > > > > arch-capabilities for EPYC-Genoa. This fact shows that even explicitly
+> > > > > turning on arch-capabilities in AMD Guest and utilizing KVM's emulated
+> > > > > value would even break something.
+> > > > > 
+> > > > > So even for named CPUs, arch-capabilities=on doesn't reflect the fact
+> > > > > that it is purely emulated, and is (maybe?) harmful.  
+> > > > 
+> > > > It is because Windows adds wrong code. So it breaks itself and it's just the
+> > > > regression of Windows.  
+> > > 
+> > > Could you please tell me what the Windows's wrong code is? And what's
+> > > wrong when someone is following the hardware spec?
+> > 
+> > the reason is that it's reserved on AMD hence software shouldn't even try
+> > to use it or make any decisions based on that.
+> > 
+> > 
+> > PS:
+> > on contrary, doing such ad-hoc 'cleanups' for the sake of misbehaving
+> > guest would actually complicate QEMU for no big reason.
+> 
+> The guest is not misbehaving. It is following the spec.
 
-Standard question for new HMP commands that don't wrap around QMP
-commands: why is the functionality not useful in QMP?
+(That's my thinking, and please feel free to correct me.)
+
+I had the same thought. Windows guys could also say they didn't access
+the reserved MSR unconditionally, and they followed the CPUID feature
+bit to access that MSR. When CPUID is set, it indicates that feature is
+implemented.
+
+At least I think it makes sense to rely on the CPUID to access the MSR.
+Just as an example, it's unlikely that after the software finds a CPUID
+of 1, it still need to download the latest spec version to confirm
+whether the feature is actually implemented or reserved.
+
+Based on the above point, this CPUID feature bit is set to 1 in KVM and
+KVM also adds emulation (as a fix) specifically for this MSR. This means
+that Guest is considered to have valid access to this feature MSR,
+except that if Guest doesn't get what it wants, then it is reasonable
+for Guest to assume that the current (v)CPU lacks hardware support and
+mark it as "unsupported processor".
+
+As Konrad's mentioned, there's the previous explanation about why KVM
+sets this feature bit (it started with a little accident):
+
+https://lore.kernel.org/kvm/CALMp9eRjDczhSirSismObZnzimxq4m+3s6Ka7OxwPj5Qj6X=BA@mail.gmail.com/#t
+
+So I think the question is where this fix should be applied (KVM or
+QEMU) or if it should be applied at all, rather than whether Windows has
+the bug.
+
+But I do agree, such "cleanups" would complicate QEMU, as I listed
+Eduardo as having done similar workaround six years ago:
+
+https://lore.kernel.org/qemu-devel/20190125220606.4864-1-ehabkost@redhat.com/
+
+Complexity and technical debt is an important consideration, and another
+consideration is the impact of this issue. Luckily, newer versions of
+Windows are actively compatible with KVM + QEMU:
+
+https://blogs.windows.com/windows-insider/2025/06/23/announcing-windows-11-insider-preview-build-26120-4452-beta-channel/
+
+But it's also hard to say if such a problem will happen again.
+Especially if the software works fine on real hardware but fails in
+"-host cpu" (which is supposed synchronized with host as much as
+possible).
+
+> > Also
+> > KVM does do have plenty of such code, and it's not actively preventing guests from using it.
+> > Given that KVM is not welcoming such change, I think QEMU shouldn't do that either.
+> 
+> Because KVM maintainer does not want to touch the guest ABI. He agrees
+> this is a bug.
+
+If we agree on this fix should be applied on Linux virtualization stack,
+then the question of whether the fix should land in KVM or QEMU is a bit
+like the chicken and egg dilemma.
+
+I personally think it might be better to roll it out in QEMU first — it
+feels like the safer bet:
+
+ * Currently, the -cpu host option enables this feature by default, and
+   it's hard to say if anyone is actually relying on this emulated
+   feature (though issue #3001 suggests it causes trouble for Windows).
+   So only when the ABI changes, it's uncertain if anything will break.
+
+ * Similarly, if only the ABI is changed, I'm a bit unsure if there's
+   any migration based on "-cpu host" and between different versions of
+   kernel. And, based on my analysis at the beginning reply, named CPUs
+   also have the effect if user actively sets "arch-capbilities=on". But
+   the key here point is the migration happens between different kernel
+   versions.
+
+ * Additionally, handling different versions of ABI can sometimes be
+   quite complex. After changing the ABI, there might be differences
+   between the new kernel and the old stable kernels (and according to
+   doc, the oldest supported kernel is v4.5 - docs/system/target-i386.rst).
+   It's similar to what Ewan previously complained about:
+
+   https://lore.kernel.org/qemu-devel/53119b66-3528-41d6-ac44-df166699500a@zhaoxin.com/
+
+So, if anyone is relying on the current emulated feature, changing the
+ABI will inevitably break existing things, and QEMU might have to bear
+the cost of maintaining compatibility with the old ABI. :-(
+
+Personally, I think the safer approach is to first handle potential old
+dependencies in QEMU through a compat option. Once the use case is
+eliminated in user space, it can clearly demonstrate that the ABI change
+won't disrupt user space.
+
+The workaround change I proposed to Alexandre isn't meant to be
+permanent. If we upgrade the supported kernel version to >6.17 (assuming
+the ABI can be changed in 6.17), then the workaround can be removed —
+though I admit that day might never come...
+
+Thanks for your patience.
+Zhao
 
 
