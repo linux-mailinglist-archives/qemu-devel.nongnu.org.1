@@ -2,89 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C086AF0C13
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 08:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDA2AF0C24
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 09:01:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWrOk-0006aL-0j; Wed, 02 Jul 2025 02:56:50 -0400
+	id 1uWrSg-0008Uk-Fp; Wed, 02 Jul 2025 03:00:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWrOa-0006XX-0k
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 02:56:40 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWrOS-00080N-Od
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 02:56:39 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3a525eee2e3so4070123f8f.2
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 23:56:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751439388; x=1752044188; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=T4Zx99QimOI7p4Z9U8ZK+dMGdmMSE7DeJaCAtdtwvqI=;
- b=P5UMeaxONr9XuKDT8NE+7Ek8xfWMUy5ko9n/lZx6To/gBCdH3WPp86ojflgoQtre15
- RUJVRLTWQEp7O5NS9iR9JGL70048AnPpce+wglUTzFMaR3uzeXdotQZ7+eOh7C0IYQfA
- NBzjfT+6WXbAysitBcikiog9Yl7Z9DNZn6kstAdkijqpuAm5umjqWekjhIKeVhJwI5sM
- nZNCs8wamnpUoAWOX0IOllYtXhVdwthDZ6iM34pzwEwPWxV6HHL2NEJihqIksV7zzXkH
- giU9K10LYrlqRQqw/dP/Nxp7TJUmQIeR6vYoBfWXpaF1nh/RLzr0hCEwv6vOQPHd39ds
- x3+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751439388; x=1752044188;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=T4Zx99QimOI7p4Z9U8ZK+dMGdmMSE7DeJaCAtdtwvqI=;
- b=YWoILfcVMt/gyXHT7Ku1XlkKHt9u2cEzMVCs9ZbU7VTazCBfr+LZC6iv1NST6e0tyZ
- RFRF2mwauWJ03fQnV60b6wK30sIF3y8mgz4c1deb0FrIJQibh/C0YYh61HOfWQZtta3l
- 3GHeH1ZyAhpIgckyT7bVnqGaeZGDvdmJqmc7CWQ8bqES0jS4E69qbOrvtaPXEbCJiKu4
- +M6m3hYqGV2eOBY6IKTMEC7E6giZEseTTgqB4Yw6zagbA9lDaGubUH5FUf16lEX99K0e
- xTcViD1ndKAVd3pOUXUkUCX9JqgSBfEgb9OFPTDJ1HTwj5HxjN9bh82ZL9YXXbj3Klsq
- SPJg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVp5CjUtL7QmngXWdamE+DXyB++WGAiFCL18vRks8tkYv0HP5mdwmYdvItFNVgrPslkDKFQgjQYCSXR@nongnu.org
-X-Gm-Message-State: AOJu0YyzHSZPJICjby06hFJK2EUT8BvNLu/mEpyfjv8hCQuGCyLSiMrF
- JmEvRgemNI/h35oykDXVZIiCK0hDfrUYU/rHCdb9h2KjsaM8LcVpliEe5u4cZUiKV+U=
-X-Gm-Gg: ASbGncu/CyxyXIOdX+CynZFNyfpENqZBcDE5z5pnomoMwrg+SHENXxZWZYHnGzLMdJk
- 6VOXNCYgdorj29Z3nanOzGADLvrLMD6wf0zJs0uLBwnrPsQUunaSD45pd4ayRW5LIqn0y9cD7Zo
- MqTuOxPQRlobwB52XSpO9j34NL9QolvkLNImnacFK+aqd2Z/OCMkYA9a+u2ZDaTS4tpDUuYMqtA
- QAjXJ8MaDFNzdz5T8IWX+/sqmzUDekVwZgNqYplpNzOFyhQKcdYdV92JhGErL11dp/piOurdTyX
- yEyhj89ZAVEtq+7DQRNCpvs8MsR8JhVypVadGkpDW/LQQB2UmkEw5eS4dEN3ORLcyf7yyHTPhMY
- mlr+EIl2eFPHmWv4NKH50k8r5qXDyU68kZwtiBtDy
-X-Google-Smtp-Source: AGHT+IH9mHv/pAjAEq2jTAyW3orjWeuq5PFCCn8HfbkS66hGKT2OrCmPaVT5k1viUX1/SIqNxONLmw==
-X-Received: by 2002:a05:6000:25e3:b0:3a6:d403:6e75 with SMTP id
- ffacd0b85a97d-3b1fdc209b5mr868713f8f.4.1751439387821; 
- Tue, 01 Jul 2025 23:56:27 -0700 (PDT)
-Received: from [192.168.69.166] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c7fa54dsm15002743f8f.23.2025.07.01.23.56.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Jul 2025 23:56:26 -0700 (PDT)
-Message-ID: <46cd8b91-72e3-4031-b7d0-857b53ee9c9a@linaro.org>
-Date: Wed, 2 Jul 2025 08:56:25 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=U4+o=ZP=kaod.org=clg@ozlabs.org>)
+ id 1uWrSV-0008Ti-2q; Wed, 02 Jul 2025 03:00:43 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=U4+o=ZP=kaod.org=clg@ozlabs.org>)
+ id 1uWrSJ-0000p7-SL; Wed, 02 Jul 2025 03:00:42 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4bX9ky6rfGz4x0C;
+ Wed,  2 Jul 2025 17:00:10 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4bX9kv3pl2z4wcr;
+ Wed,  2 Jul 2025 17:00:07 +1000 (AEST)
+Message-ID: <a0dfcbf7-cc09-4fb8-bc3b-3d4060fce5e9@kaod.org>
+Date: Wed, 2 Jul 2025 09:00:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/s390x: A fix for the trouble with tribles
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Michael Mueller <mimu@linux.ibm.com>
-References: <20250701194241.434183-1-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250701194241.434183-1-thuth@redhat.com>
+Subject: Re: [PATCH 2/4] hw/arm/aspeed: Add second SPI chip to Aspeed model
+To: Ed Tanous <etanous@nvidia.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
+ Troy Lee <leetroy@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Jamin Lin <jamin_lin@aspeedtech.com>, qemu-arm@nongnu.org
+References: <20250701203400.71677-1-etanous@nvidia.com>
+ <20250701203400.71677-3-etanous@nvidia.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20250701203400.71677-3-etanous@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=U4+o=ZP=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, FORGED_SPF_HELO=1,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.017, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,19 +109,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/7/25 21:42, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
+On 7/1/25 22:33, Ed Tanous wrote:
+> Aspeed2600 has two spi lanes;  Add a new struct that can mount the
+> second SPI.
 > 
-> While Tribbles are cute, it should be "triple store" here,
-> not "trible store".
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Ed Tanous <etanous@nvidia.com>
 > ---
->   target/s390x/cpu_features_def.h.inc | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   hw/arm/aspeed.c         | 2 ++
+>   include/hw/arm/aspeed.h | 2 ++
+>   2 files changed, 4 insertions(+)
+> 
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index d0b333646e..3ef7f6c5b2 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -465,6 +465,8 @@ static void aspeed_machine_init(MachineState *machine)
+>           aspeed_board_init_flashes(&bmc->soc->spi[0],
+>                                 bmc->spi_model ? bmc->spi_model : amc->spi_model,
+>                                 1, amc->num_cs);
+> +        aspeed_board_init_flashes(&bmc->soc->spi[1],
+> +                                  amc->spi2_model, 1, amc->num_cs2);
+>       }
+>   
+>       if (machine->kernel_filename && sc->num_cpus > 1) {
+> diff --git a/include/hw/arm/aspeed.h b/include/hw/arm/aspeed.h
+> index 973277bea6..6c36455656 100644
+> --- a/include/hw/arm/aspeed.h
+> +++ b/include/hw/arm/aspeed.h
+> @@ -35,7 +35,9 @@ struct AspeedMachineClass {
+>       uint32_t hw_strap2;
+>       const char *fmc_model;
+>       const char *spi_model;
+> +    const char *spi2_model;
+>       uint32_t num_cs;
+> +    uint32_t num_cs2;
+>       uint32_t macs_mask;
+>       void (*i2c_init)(AspeedMachineState *bmc);
+>       uint32_t uart_default;
 
-:)
+Another way specifying backends for all SPI devices is to use -blockdev :
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+   $ qemu-system-arm -M ast2600-evb \
+       -blockdev node-name=fmc0,driver=file,filename=/path/to/fmc0.img \
+       -device mx66u51235f,bus=ssi.0,cs=0x0,drive=fmc0 \
+       -blockdev node-name=fmc1,driver=file,filename=/path/to/fmc1.img \
+       -device mx66u51235f,bus=ssi.0,cs=0x1,drive=fmc1 \
+       -blockdev node-name=spi1,driver=file,filename=/path/to/spi1.img \
+       -device mx66u51235f,cs=0x0,bus=ssi.1,drive=spi1 \
+       -nographic -nodefaults
+
+See https://www.qemu.org/docs/master/system/arm/aspeed.html.
+
+Have you tried it ?
+
+
+Thanks,
+
+C.
+
 
 
