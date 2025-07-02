@@ -2,61 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA18AF0993
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 06:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C07CAF0A03
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 06:42:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWog2-0007Ca-VG; Wed, 02 Jul 2025 00:02:31 -0400
+	id 1uWpI2-0006Pj-FY; Wed, 02 Jul 2025 00:41:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yangjinqian1@huawei.com>)
- id 1uWofv-0007C0-PU; Wed, 02 Jul 2025 00:02:23 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191])
+ (Exim 4.90_1) (envelope-from <wei.liu@kernel.org>)
+ id 1uWpHy-0006Oy-6L
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 00:41:42 -0400
+Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yangjinqian1@huawei.com>)
- id 1uWofg-00007N-ON; Wed, 02 Jul 2025 00:02:23 -0400
-Received: from mail.maildlp.com (unknown [172.19.163.44])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bX5k90cbgz1R8Bn;
- Wed,  2 Jul 2025 11:59:13 +0800 (CST)
-Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
- by mail.maildlp.com (Postfix) with ESMTPS id 06DE4140278;
- Wed,  2 Jul 2025 12:01:44 +0800 (CST)
-Received: from [10.67.121.183] (10.67.121.183) by
- dggpemf500013.china.huawei.com (7.185.36.188) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 2 Jul 2025 12:01:42 +0800
-Message-ID: <ae3f4d26-7a1a-418c-b303-2ed1d9ced4ba@huawei.com>
-Date: Wed, 2 Jul 2025 12:01:41 +0800
+ (Exim 4.90_1) (envelope-from <wei.liu@kernel.org>)
+ id 1uWpHr-0001Ll-Re
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 00:41:41 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by tor.source.kernel.org (Postfix) with ESMTP id 565116000A;
+ Wed,  2 Jul 2025 04:41:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0309C4CEEF;
+ Wed,  2 Jul 2025 04:41:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1751431293;
+ bh=P5mSNb/GYxN5q9kpvE4ItjxJ8SksKynXc4n/EiLo61I=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=BT/YKWah3jYKtdgdQgWtEGRPv6Vsbful0xTKFb8zcdk2Oy8xixUWPZhvV7fJxHhDU
+ YnH3nqmnzYa1l7B4yaB1nBkW1wISLlaM/T7b1xXAbhFTMfZEfC7oMLZOKUoF6yeKwC
+ KBQtqa8yZ/PQ6UdU1Wy2nkt5hYP7UWltRzfkrERel/tVVi9OpIsf0vaQgOiAmSrYGu
+ u2IecDvsIxX33V/C3BUFavcKofCQFhVUYQ4ncz/3guEHVWuygqkDjbzXs3GTGGMem+
+ vVoVHiKpEEfyNoqXF16ZX8EqtOYolXXMXuI2Ef1Fxz5rv9kTP7tlKgOuU9UkvLfZu1
+ F759L6g6ogKpw==
+Date: Wed, 2 Jul 2025 04:41:31 +0000
+From: Wei Liu <wei.liu@kernel.org>
+To: Magnus Kulke <magnuskulke@linux.microsoft.com>
+Cc: qemu-devel@nongnu.org, Cameron Esfahani <dirty@apple.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Wei Liu <wei.liu@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Wei Liu <liuwe@microsoft.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Magnus Kulke <magnuskulke@microsoft.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Subject: Re: [PATCH v2 02/27] target/i386/emulate: Allow instruction decoding
+ from stream
+Message-ID: <aGS4e45DuKE26uS6@liuwe-devbox-ubuntu-v2.lamzopl0uupeniq2etz1fddiyg.xx.internal.cloudapp.net>
+References: <20250701172834.44849-1-magnuskulke@linux.microsoft.com>
+ <20250701172834.44849-3-magnuskulke@linux.microsoft.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/10] arm/kvm: write back modified ID regs to KVM
-To: Cornelia Huck <cohuck@redhat.com>, <eric.auger.pro@gmail.com>,
- <eric.auger@redhat.com>, <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>,
- <kvmarm@lists.linux.dev>, <peter.maydell@linaro.org>,
- <richard.henderson@linaro.org>, <alex.bennee@linaro.org>, <maz@kernel.org>,
- <oliver.upton@linux.dev>, <sebott@redhat.com>,
- <shameerali.kolothum.thodi@huawei.com>, <armbru@redhat.com>,
- <berrange@redhat.com>, <abologna@redhat.com>, <jdenemar@redhat.com>, Zhou
- Wang <wangzhou1@hisilicon.com>, liuyonglong <liuyonglong@huawei.com>
-CC: <agraf@csgraf.de>, <shahuang@redhat.com>, <mark.rutland@arm.com>,
- <philmd@linaro.org>, <pbonzini@redhat.com>
-References: <20250414163849.321857-1-cohuck@redhat.com>
- <20250414163849.321857-8-cohuck@redhat.com>
-In-Reply-To: <20250414163849.321857-8-cohuck@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.121.183]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf500013.china.huawei.com (7.185.36.188)
-Received-SPF: pass client-ip=45.249.212.191;
- envelope-from=yangjinqian1@huawei.com; helo=szxga05-in.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250701172834.44849-3-magnuskulke@linux.microsoft.com>
+Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
+ envelope-from=wei.liu@kernel.org; helo=tor.source.kernel.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,131 +79,142 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jinqian Yang <yangjinqian1@huawei.com>
-From:  Jinqian Yang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 2025/4/15 0:38, Cornelia Huck wrote:
-> From: Eric Auger <eric.auger@redhat.com>
->
-> We want to give a chance to override the value of host ID regs.
-> In a previous patch we made sure all their values could be fetched
-> through kvm_get_one_reg() calls before their modification. After
-> their potential modification we need to make sure we write back
-> the values through kvm_set_one_reg() calls.
->
-> Make sure the cpreg_list is modified with updated values and
-> transfer those values back to kvm.
->
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+On Tue, Jul 01, 2025 at 07:28:09PM +0200, Magnus Kulke wrote:
+> Introduce a new helper function to decode x86 instructions from a
+> raw instruction byte stream. MSHV delivers an instruction stream in a
+> buffer of the vm_exit message. It can be used to speed up MMIO
+> emulation, since instructions do not have to be fetched and translated.
+> 
+> Added "fetch_instruction()" op to x86_emul_ops() to improve
+> traceability.
+> 
+> Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 > ---
->   target/arm/kvm.c        | 44 ++++++++++++++++++++++++++++++++++++++++-
->   target/arm/trace-events |  1 +
->   2 files changed, 44 insertions(+), 1 deletion(-)
->
-> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index b07d5f16db50..9e4cca1705c8 100644
-> --- a/target/arm/kvm.c
-> +++ b/target/arm/kvm.c
-> @@ -1083,6 +1083,39 @@ void kvm_arm_cpu_post_load(ARMCPU *cpu)
->       }
->   }
->   
-> +static void kvm_arm_writable_idregs_to_cpreg_list(ARMCPU *cpu)
+>  target/i386/emulate/x86_decode.c | 31 +++++++++++++++++++++++++++----
+>  target/i386/emulate/x86_decode.h | 10 ++++++++++
+>  target/i386/emulate/x86_emu.c    |  3 ++-
+>  target/i386/emulate/x86_emu.h    |  1 +
+>  4 files changed, 40 insertions(+), 5 deletions(-)
+> 
+> diff --git a/target/i386/emulate/x86_decode.c b/target/i386/emulate/x86_decode.c
+> index 2eca39802e..133065b50a 100644
+> --- a/target/i386/emulate/x86_decode.c
+> +++ b/target/i386/emulate/x86_decode.c
+> @@ -60,6 +60,7 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
+>                                      int size)
+>  {
+>      uint64_t val = 0;
+> +    target_ulong va;
+
+This can be moved inside the else branch to limit the scope of the
+variable.
+
+>  
+>      switch (size) {
+>      case 1:
+> @@ -71,10 +72,17 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
+>          VM_PANIC_EX("%s invalid size %d\n", __func__, size);
+>          break;
+>      }
+> -    target_ulong va  = linear_rip(env_cpu(env), env->eip) + decode->len;
+> -    emul_ops->read_mem(env_cpu(env), &val, va, size);
+> +
+> +    /* copy the bytes from the instruction stream, if available */
+> +    if (decode->stream && decode->len + size <= decode->stream->len) {
+> +        memcpy(&val, decode->stream->bytes + decode->len, size);
+> +    } else {
+> +        va = linear_rip(env_cpu(env), env->eip) + decode->len;
+
+           target_ulong va = linear_rip(env_cpu(env), env->eip) + decode->len;
+
+> +        emul_ops->fetch_instruction(env_cpu(env), &val, va, size);
+> +    }
+>      decode->len += size;
+> -    
+> +
+> +
+
+Extraneous blank line here.
+
+>      return val;
+>  }
+>  
+> @@ -2076,9 +2084,10 @@ static void decode_opcodes(CPUX86State *env, struct x86_decode *decode)
+>      }
+>  }
+>  
+> -uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
+> +static uint32_t decode_opcode(CPUX86State *env, struct x86_decode *decode)
+>  {
+>      memset(decode, 0, sizeof(*decode));
+> +
+>      decode_prefix(env, decode);
+>      set_addressing_size(env, decode);
+>      set_operand_size(env, decode);
+> @@ -2088,6 +2097,20 @@ uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
+>      return decode->len;
+>  }
+>  
+> +uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
 > +{
-> +    if (!cpu->writable_map) {
-> +        return;
-> +    }
-> +    for (int i = 0; i < NR_ID_REGS; i++) {
-> +        uint64_t writable_mask = cpu->writable_map->regs[i];
-> +        uint64_t *cpreg;
-> +
-> +        if (writable_mask) {
-> +            uint64_t previous, new;
-> +            int idx = kvm_idx_to_idregs_idx(i);
-> +            ARM64SysReg *sysregdesc;
-> +            uint32_t sysreg;
-> +
-> +            if (idx == -1) {
-> +                /* sysreg writable, but we don't know it */
-> +                continue;
-> +            }
-> +            sysregdesc = &arm64_id_regs[idx];
-> +            sysreg = sysregdesc->sysreg;
-> +            cpreg = kvm_arm_get_cpreg_ptr(cpu, idregs_sysreg_to_kvm_reg(sysreg));
-> +            previous = *cpreg;
-> +            new = cpu->isar.idregs[idx];
-> +            if (previous != new) {
-> +                *cpreg = new;
-> +                trace_kvm_arm_writable_idregs_to_cpreg_list(sysregdesc->name,
-> +                                                            previous, new);
-> +            }
-> +        }
-> +    }
+> +    return decode_opcode(env, decode);
 > +}
 > +
->   void kvm_arm_reset_vcpu(ARMCPU *cpu)
->   {
->       int ret;
-> @@ -2050,7 +2083,16 @@ int kvm_arch_init_vcpu(CPUState *cs)
->       }
->       cpu->mp_affinity = mpidr & ARM64_AFFINITY_MASK;
->   
-> -    return kvm_arm_init_cpreg_list(cpu);
-> +    ret = kvm_arm_init_cpreg_list(cpu);
-> +    if (ret) {
-> +        return ret;
+> +uint32_t decode_instruction_stream(CPUX86State *env, struct x86_decode *decode,
+> +                                   struct x86_insn_stream *stream)
+> +{
+> +    if (stream != NULL) {
+> +        decode->stream = stream;
 > +    }
-> +    /* overwrite writable ID regs with their updated property values */
-> +    kvm_arm_writable_idregs_to_cpreg_list(cpu);
+
+This can be simplified as
+
+       decode->stream = stream;
+
+> +    return decode_opcode(env, decode);
+> +}
 > +
-> +    write_list_to_kvmstate(cpu, 3);
+>  void init_decoder(void)
+>  {
+>      int i;
+> diff --git a/target/i386/emulate/x86_decode.h b/target/i386/emulate/x86_decode.h
+> index 927645af1a..f5e9738914 100644
+> --- a/target/i386/emulate/x86_decode.h
+> +++ b/target/i386/emulate/x86_decode.h
+> @@ -272,6 +272,11 @@ typedef struct x86_decode_op {
+>      };
+>  } x86_decode_op;
+>  
+> +typedef struct x86_insn_stream {
+> +    const uint8_t *bytes;
+> +    size_t len;
+> +} x86_insn_stream;
 > +
-> +    return 0;
->   }
+>  typedef struct x86_decode {
+>      int len;
+>      uint8_t opcode[4];
+> @@ -298,11 +303,16 @@ typedef struct x86_decode {
+>      struct x86_modrm modrm;
+>      struct x86_decode_op op[4];
+>      bool is_fpu;
+> +
+> +	x86_insn_stream *stream;
 
-Hi,
+Tab here.
 
-When I was testing this series, I found a problem. On the host, 
-SYSREG_ID_AA64MMFR3_EL1_TCRX=0x1,
-I configured it to 0x0 in qemu, and qemu cannot start.
-The ID_AA64MMFR3_EL1 TCRX field controls whether the TCR2_EL1 and 
-TCR2_EL2 registers are used.
-In the kernel, when TCRX is 0, TCR2_EL1 is invisible to the guest, and 
-when it is 1, it is visible. When we
-configure this field segment to 0, the configuration is not yet written 
-to KVM, but the cpreg list is initialized,
-adding TCR2_EL1 to the cpreg list. Therefore, after writing the 
-QEMU-configured registers to KVM, the
-cpreg list needs to be updated again.
+>  } x86_decode;
+>  
+>  uint64_t sign(uint64_t val, int size);
+>  
+>  uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode);
+> +uint32_t decode_instruction_stream(CPUX86State *env,
+> +								   struct x86_decode *decode,
+> +		                           struct x86_insn_stream *stream);
 
-@@ -2227,7 +2229,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+Mixing spaces and tabs.
 
-      write_list_to_kvmstate(cpu, 3);
-
--    return 0;
-+    return kvm_arm_init_cpreg_list(cpu);
-  }
-
-The above modification can solve the problem, but it may not be the best 
-way.
-
-Thanks,
-Jinqian
-
-
->   
->   int kvm_arch_destroy_vcpu(CPUState *cs)
-> diff --git a/target/arm/trace-events b/target/arm/trace-events
-> index 17e52c0705f2..955149ee1ac4 100644
-> --- a/target/arm/trace-events
-> +++ b/target/arm/trace-events
-> @@ -14,3 +14,4 @@ arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
->   # kvm.c
->   kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is translated into 0x%"PRIx64
->   get_host_cpu_idregs(const char *name, uint64_t value) "scratch vcpu host value for %s is 0x%"PRIx64
-> +kvm_arm_writable_idregs_to_cpreg_list(const char *name, uint64_t previous, uint64_t new) "%s overwrite default 0x%"PRIx64" with 0x%"PRIx64
+Wei
 
