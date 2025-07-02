@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB04AF6201
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 20:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A5AAF6205
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 20:57:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX2cJ-0003Vr-KP; Wed, 02 Jul 2025 14:55:35 -0400
+	id 1uX2cQ-0004EO-NE; Wed, 02 Jul 2025 14:55:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2cC-0003Ak-EX
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:55:28 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2cK-0003rD-5w
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:55:36 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2c9-0002D3-5w
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:55:28 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-453643020bdso63101435e9.1
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:55:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2cF-0002G9-D0
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:55:35 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-451d7b50815so37031425e9.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:55:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751482522; x=1752087322; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751482529; x=1752087329; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MnLLL7YQoCQGdWR3EVL4zcbePVJyUuDX4baxuyLLriU=;
- b=BEQHCkJuF9aimu/Iba3BDw9vcces+zALk2nARbTp+EyBwoaAuGtiyMpneUvWL9VyyL
- wMWxB7VQMwXhxr2qE7GFy0cWR8G27x9VqIw1E/ZeyVmypsUjUFQWUNkPKcLi4urvlMec
- mlkrFmshxY7J0AjTEwsrspvO1iYC9zl3WAoAziQ9ItZL7ElHrJEFPyS2jJZCWDsQNpQb
- YtKFvd1G9yVOnxBC2Oxtl3AhOSYL0sbKjzZegzECU8N7TLI3KWtJiHeCo6fqjyJ03V7p
- v9yEOu+eKfrSpIw+AstkaYp+a4jMTkRr21kVMdRfo0o9sXw/H7Z0eJTZVQZF32BQ8CiZ
- KrZw==
+ bh=n7sqe5WieSfsWOfFniA97K4tiSwKm4bjRb1aMmtsHEE=;
+ b=tycHHS4jc0V5cuADpwDcANWaNlCUbQuA546a6hp52/r5b66uA5HyTcob0fmk+0vRS1
+ OcEAKgXD5ra5hBg6E4EwaEtfbKyopLARqXza+awxkkM8cqVbG+9LGmC1bhcq9Q5PYZrf
+ W4vtde1rgcWoDiSHxfdOTPdHa6DxGBHOwqqftf7BZYflbfpWQosfDxJGPk6e9N/6Ebjm
+ jTfZfQsBIelWQ0ij1nvUB8Lud6nVGXxOsSpsXhrfNUY4MDtDbpZhDhFe4HRZaJiySmeX
+ WEFw2SqiCcEiocG+uigv33dJTmBtwX591t2hQPr+olbLb/iS9FT3RAbRNYnxkmqWw9Od
+ KVeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751482522; x=1752087322;
+ d=1e100.net; s=20230601; t=1751482529; x=1752087329;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MnLLL7YQoCQGdWR3EVL4zcbePVJyUuDX4baxuyLLriU=;
- b=ZkwgKMzhidS6+vtTfxtHeoQS4zvat0knibcetxg9Qb5INfGUamDdbsrUiObVX4P3oS
- Be0ygypqM0BwgLn5UsRs6wvV5ePpQaXot/lfnKqsetFdpKmSdm8BmCbz5dbaKM/Wu9Qq
- Yi3mZc3AmjBvq56RR6ktYDxsUahMt5bX06WGixb0ofjcgvVnytUQiVIr7Xhd48xa5pIw
- bd7L0zsaD9hNff+FaIURL4zdGcqGqcmo8FEaVBjUCTYGjllqHKFFUxmEOuMvStJa+dFo
- uRokpZdnCBzReGMoBPM5vEG3REb1dgtl305vPb0wk0TF1IHqITXKS8EZg7MAiwwrhiju
- vGkw==
-X-Gm-Message-State: AOJu0YzHZDvRdTBZ1Qkr5yY7Sg1kEfa4Kb4cSsTGADEOi9+Xt3C3J8Tp
- f5NUuqOz8XAypr9PJatHFXGp/pmQiWYzmHjOdFw+CwUK1mBU30HSfwpAESKQ6r0MBNxQuWaJ9zN
- YUplG
-X-Gm-Gg: ASbGncsZiPLmfm3G3lHCk0x2pu1s8PlkALD2kJD8PfnsNEh3q21DeXmZWKCWBquI7Hb
- 2ccuM1oEGLtp71pH/7XR+woJcmaYMsQb+vRm0+bHWPefEZWo6WENSwHlPkCCDQboxLGo/3EH9HI
- rZ+MoNhLOgteLSc4+03dyPSreSjPa2BTagi110fsILdhE5dXcfrIM8kDy8Yqqscku7rurlyLQY3
- bhG2rQUrJW11prFCZ1m7e6AZppfq40kPD21YX56LvGo4VM+gqRSScSQUtBdSOxP3XVpu+z7YpIq
- P5Ls2K7bkPUqPAtlKNm/4+fiWROpUjeDoj2mBNBMI7W0lLHO7uKkJHht/hi7I4sqBBGX9cY/TJF
- HnaMyjmnQKA9/svrxYyI8/l/6BnPyNEWekGQX
-X-Google-Smtp-Source: AGHT+IEXN1ji8HMgF3oWOa7k02PQHX4IAD+Mx2AkWivNZait2oN82da7g9XDELsEchLGK60Cx8nB2A==
-X-Received: by 2002:a05:6000:2dc2:b0:3a4:f7e7:416b with SMTP id
- ffacd0b85a97d-3b1fdd16d21mr3559245f8f.16.1751482521753; 
- Wed, 02 Jul 2025 11:55:21 -0700 (PDT)
+ bh=n7sqe5WieSfsWOfFniA97K4tiSwKm4bjRb1aMmtsHEE=;
+ b=J6Y1MIIXugHpwoAlkrAd8W9fNmHpkZQCRbTrEHFTjZ2n0LE2iMj8pB9dB+sWuQyK2P
+ BgDOa1dBJA12nSOIzbNA/e96dfBRzD9aRRDTjwNTBKZZEZGQIcfqJU5HSapcPd0czTBA
+ YUZxxYBFgaRHFqXN1VrhKfLaj00q6BtaKZuj/CvDAVg40SUtiM80pLvIYoqw9DXVyD1R
+ fINpq+l8buo3zNK4TmidKVo1Ndt5G7czLDK/r1JNAKytltNJKhLMAZ4XwIdwD5YeD6ud
+ yEeAkZYqGqlXrJBaHnPr/n65h5JJ64Fa1Pt3H7ULSO0xtJVeZX/xUVTTO4i7zWYdKnzh
+ plMA==
+X-Gm-Message-State: AOJu0Yx7LAPL+qL3YlV8JICbtLQF1+i1LQa/Y2NdRMhr+ggsWt7d4BGi
+ gMAZi3orykBOLE5bGEGOrqE8VPeiqpCEZDv/pQ7sV21BCGzESGlnofvvVeochxVS2HBWoF+Tr6V
+ /4HZE
+X-Gm-Gg: ASbGncvjrCdVxj4JjX93tIGyoCDcg2IK01ef7+Mf8oUoT9x442nIgGgIl7YDT+gOJai
+ WT3kqxW4WNx+7P6jTSKKo0X3xvJOYHtVsxGsRJJruuwP6B/gFWWggNJyBNXB7M11fyQvWscol55
+ 9MY2kbqEkWM1JICiCJm1DuZBtFZ+QsPK8hih6ff2HzHzwtgh7iHvYb4jKSyqUPN848ygCacG+3Q
+ zasTdbx9sODkrkBMld9x7RwxjTZDQ0XQ3LZaNStdxdlnToUzXF8YIg5BOZIzdjV3W+nO2Ut3o/c
+ eyzGccjLvZLSEPoy0+LXRK+zySn+WJmo1BumOnSBaU/k1kvD/euYvV/nL+qmrVKqU5UtZhiTVeo
+ NNjydMaIO65fZDAfrnjpILWcAjfJXFDVo/byZvgG+1lRv4Jk=
+X-Google-Smtp-Source: AGHT+IGmda3LM0dHY2HjDFQ52mTlnAGZ2QunZrg7bMjnKdM1tDfN3QqU8UbNLwJzvfvNCeQ7OUZAZQ==
+X-Received: by 2002:a05:600c:1383:b0:43c:ea1a:720a with SMTP id
+ 5b1f17b1804b1-454a9c62561mr7565105e9.1.1751482528907; 
+ Wed, 02 Jul 2025 11:55:28 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a9bac48esm5412345e9.37.2025.07.02.11.55.19
+ ffacd0b85a97d-3a892e59884sm16363693f8f.80.2025.07.02.11.55.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Jul 2025 11:55:21 -0700 (PDT)
+ Wed, 02 Jul 2025 11:55:28 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -68,22 +68,21 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- xen-devel@lists.xenproject.org
-Subject: [PATCH v4 15/65] accel: Remove unused MachineState argument of
- AccelClass::setup_post()
-Date: Wed,  2 Jul 2025 20:52:37 +0200
-Message-ID: <20250702185332.43650-16-philmd@linaro.org>
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>,
+ kvm@vger.kernel.org
+Subject: [PATCH v4 16/65] accel: Pass AccelState argument to
+ gdbstub_supported_sstep_flags()
+Date: Wed,  2 Jul 2025 20:52:38 +0200
+Message-ID: <20250702185332.43650-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250702185332.43650-1-philmd@linaro.org>
 References: <20250702185332.43650-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,58 +105,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This method only accesses xen_domid/xen_domid_restrict, which are both
-related to the 'accelerator', not the machine. Besides, xen_domid aims
-to be in Xen AccelState and xen_domid_restrict a xen_domid_restrict
-QOM property.
+In order to have AccelClass methods instrospect their state,
+we need to pass AccelState by argument.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/accel.h | 2 +-
- accel/accel-system.c | 2 +-
- accel/xen/xen-all.c  | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ include/qemu/accel.h      | 2 +-
+ accel/accel-common.c      | 2 +-
+ accel/hvf/hvf-accel-ops.c | 2 +-
+ accel/kvm/kvm-all.c       | 2 +-
+ accel/tcg/tcg-all.c       | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/include/qemu/accel.h b/include/qemu/accel.h
-index f327a71282c..a6a95ff0bcd 100644
+index a6a95ff0bcd..1c097ac4dfb 100644
 --- a/include/qemu/accel.h
 +++ b/include/qemu/accel.h
-@@ -45,7 +45,7 @@ typedef struct AccelClass {
-     void (*cpu_common_unrealize)(CPUState *cpu);
- 
-     /* system related hooks */
--    void (*setup_post)(MachineState *ms, AccelState *accel);
-+    void (*setup_post)(AccelState *as);
-     bool (*has_memory)(AccelState *accel, AddressSpace *as,
+@@ -50,7 +50,7 @@ typedef struct AccelClass {
                         hwaddr start_addr, hwaddr size);
  
-diff --git a/accel/accel-system.c b/accel/accel-system.c
-index 913b7155d77..af713cc9024 100644
---- a/accel/accel-system.c
-+++ b/accel/accel-system.c
-@@ -58,7 +58,7 @@ void accel_setup_post(MachineState *ms)
-     AccelState *accel = ms->accelerator;
+     /* gdbstub related hooks */
+-    int (*gdbstub_supported_sstep_flags)(void);
++    int (*gdbstub_supported_sstep_flags)(AccelState *as);
+ 
+     bool *allowed;
+     /*
+diff --git a/accel/accel-common.c b/accel/accel-common.c
+index 55d21b63a48..1d04610f55e 100644
+--- a/accel/accel-common.c
++++ b/accel/accel-common.c
+@@ -128,7 +128,7 @@ int accel_supported_gdbstub_sstep_flags(void)
+     AccelState *accel = current_accel();
      AccelClass *acc = ACCEL_GET_CLASS(accel);
-     if (acc->setup_post) {
--        acc->setup_post(ms, accel);
-+        acc->setup_post(accel);
+     if (acc->gdbstub_supported_sstep_flags) {
+-        return acc->gdbstub_supported_sstep_flags();
++        return acc->gdbstub_supported_sstep_flags(accel);
      }
+     return 0;
+ }
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index c256cdceffb..640f41faa43 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -353,7 +353,7 @@ static int hvf_accel_init(AccelState *as, MachineState *ms)
+     return hvf_arch_init();
  }
  
-diff --git a/accel/xen/xen-all.c b/accel/xen/xen-all.c
-index 1117f52bef0..ba752bbe5de 100644
---- a/accel/xen/xen-all.c
-+++ b/accel/xen/xen-all.c
-@@ -63,7 +63,7 @@ static void xen_set_igd_gfx_passthru(Object *obj, bool value, Error **errp)
-     xen_igd_gfx_pt_set(value, errp);
- }
- 
--static void xen_setup_post(MachineState *ms, AccelState *accel)
-+static void xen_setup_post(AccelState *as)
+-static inline int hvf_gdbstub_sstep_flags(void)
++static inline int hvf_gdbstub_sstep_flags(AccelState *as)
  {
-     int rc;
+     return SSTEP_ENABLE | SSTEP_NOIRQ;
+ }
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 6f6f9ef69ba..45579f80fa5 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -3980,7 +3980,7 @@ static void kvm_accel_instance_init(Object *obj)
+  * Returns: SSTEP_* flags that KVM supports for guest debug. The
+  * support is probed during kvm_init()
+  */
+-static int kvm_gdbstub_sstep_flags(void)
++static int kvm_gdbstub_sstep_flags(AccelState *as)
+ {
+     return kvm_sstep_flags;
+ }
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index c674d5bcf78..5904582a68d 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -219,7 +219,7 @@ static void tcg_set_one_insn_per_tb(Object *obj, bool value, Error **errp)
+     qatomic_set(&one_insn_per_tb, value);
+ }
  
+-static int tcg_gdbstub_supported_sstep_flags(void)
++static int tcg_gdbstub_supported_sstep_flags(AccelState *as)
+ {
+     /*
+      * In replay mode all events will come from the log and can't be
 -- 
 2.49.0
 
