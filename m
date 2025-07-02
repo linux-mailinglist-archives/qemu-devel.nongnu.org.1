@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632CBAF1295
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 12:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEA3AF125E
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 12:50:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWv2d-0000AL-RK; Wed, 02 Jul 2025 06:50:15 -0400
+	id 1uWv2c-00007X-97; Wed, 02 Jul 2025 06:50:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uWv2X-0008WJ-PY
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 06:50:10 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1uWv2U-0008VH-QT
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 06:50:07 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uWv2P-0002oH-Bu
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 06:50:09 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3a4ef2c2ef3so3718700f8f.2
+ id 1uWv2O-0002o0-05
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 06:50:06 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4538a2fc7ffso44870125e9.0
  for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 03:49:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751453398; x=1752058198; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751453397; x=1752058197; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D4wxQdFgaAl/kwo8ASXJ9vsmD0ZBYPLir6xKV4La3T8=;
- b=r/NsE/FEoLkYY1p/+97sekE3NLKOWpWgfSLcmvAOXXxrV1H+HZtfcQRm7po5Efi3hG
- kIDnp0p0azIxaN601tmoToZHUvVrWEwd68qAs3T9p/VDm4JbqkbATFaOO3C40DVblKPk
- PoEDbICy9gpTImy8QzdJ4sRsGW1r0uFaJM/vqEA40UuebP0Bag4TWPjiOzNAsG81LNwv
- +5JKU0sOSbNi+6cscfUgptODIQiKo3LloI4TEkg/VOal+pfhvDmO1wyDwiGHnyTjTbZU
- HYXOluCu6iQ/mrES0VyRuZgNJ8AJ3yr60kwFVrxuNg8zrWF5neYLgKeBiJtDcWlBq6dL
- Qedg==
+ bh=DQDGpu2DK2e5jYtAk3+B2u316yUnK6jEtaDaYh1M9uM=;
+ b=uxOw+j9FukRiZox/oJAjeEbWyyvyy7IoG3kz8lwEnPE9Adagw+QY21HhdaiBMUVPf6
+ rSKj/vwL3UepZnLmyt1xU2ujHt3urGBDYx7aiOLS4W0xshV2+QdGlZPfMvbXQYHQ6d/A
+ /Fi+VJVtu5EPGGihZYKh50IlRO0JB4pz9YbcmT3qaSk5ubiApenpZG2SrLmT2HhAlk8v
+ ZJM8LyGv6FC5aqC3zzSZig8yi0uCROBUzTh52aGa4IMA1G9B0hPMMo/dumd57iEv7OIC
+ ZmIIE/rYuOMx+csixFdQ6QbIjd6GKEySxiAaZo9jYcPmMz0jGfYTst5/chP6XR7RXQVg
+ VQBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751453398; x=1752058198;
+ d=1e100.net; s=20230601; t=1751453397; x=1752058197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D4wxQdFgaAl/kwo8ASXJ9vsmD0ZBYPLir6xKV4La3T8=;
- b=izB6WoNS7SycMCM0CpKJ7ltT9Thh79f0q9yPIdHPdn0i0PhY0Jzl3O8q5pkZqdzwz9
- kZbWXtJn5bNq7b9lc4ySr/1epbxWYppot/YtBFLph8apCvE5fCxTXtxWi7q9Z3W+mhDx
- qU+nwB+OFedZsYsvjfuFircg4LQaGdZtKnyTu4JVujaUuuy7pvky6D36yLSDh5c7gUfQ
- 7mQXSSTKvURZKWd10X4Jniow/+lMI0d8mE7Jm2H0edRBZXuz54xpTYzuc5vag4YcpIHN
- +SR3PKGUqb/D1resTd3keA7qFEWTZt9d4/e4FIV9PpYn+aWxZ95CwoA5M4xF5imwPRuW
- DYjg==
-X-Gm-Message-State: AOJu0YwgqPVCfCplyU8ot1n1Va8jfsrodU+sy9wgP38lGUW3cMmqhHpn
- kue73P6700AaxfguSwlLtkzHplat4nNPodUFuUb/Sf11kehacmLDCEznm3OxskGMzCY=
-X-Gm-Gg: ASbGnctacQZ3WymhFS9GzErydWmsBMyh7PXd2OCtF+m1qG9ZP8Kapr9VVyR1NRmgb+3
- PQE0LkRTV1OSoLs3nxlbuHbI6tW4FNWHkHTOZxOi8XXksLQWT9e0IQ28BWMKeSKpfxDOKppzfmg
- uCi2QznqKS+vXo3MQXjvWJfEgtTC9csZmvr2vu3GF0gLSXljJpk4gzNQQzpqy1D7xOQHl6e6tog
- ceW77zDwcStJhm+sIMtpM07UYbwpyVEdZ/d1/H9nRVXqRlFDH1p/gMn744Zc2Dm2PVwU52sf9CL
- UnGjWszlit8wwpdpkKR9xWKlSHeQ4PI6hlL8Fbp0l330FJ1Iry2pOYRyMomxmnY=
-X-Google-Smtp-Source: AGHT+IHiJmd1PHb0EgKL3rPDnUOVIqSxfmiwnBfb52dpavbdPWpjQmsbhlKFJuuYXfVHE1AzL3IA5A==
-X-Received: by 2002:a05:6000:480b:b0:3a3:648d:aa84 with SMTP id
- ffacd0b85a97d-3b1fdc20ce5mr1758366f8f.5.1751453398332; 
- Wed, 02 Jul 2025 03:49:58 -0700 (PDT)
+ bh=DQDGpu2DK2e5jYtAk3+B2u316yUnK6jEtaDaYh1M9uM=;
+ b=FpXnptgTgo0cjaqRae6d4HVlL9haF8zSHCgJmqHX74k7c0nhkWCLtveybx+nspo8pg
+ xGQjQ368iwTlotilD1wa8ZntG8gTvOhHxRS5EtMPqeGDRSgwv2mCrnFHLR1cXaNRSO0L
+ LgUbRHoZLa+fZw6hAUbcrS+ucDaJsl3UHzzRHqZ8oUL6YpijIcPlr3bjZ6+NPxBK35ep
+ I4lcLTI+dstf4AepcmesigoUB9dGXiuVQ16kGw0st8XFSrv7sTV4UT5YB4pbnGUitrqi
+ vOOWyIchYqfKVDIiQMenytt2MN/K+UyAUjxpzNwUDbNN6uytyeFAPhSeiiK64FYWuqA8
+ nBGA==
+X-Gm-Message-State: AOJu0Yxn/sD8DcU5hU6MzcTlaMx1Is1BcFlcWNi0IK8LnzuZsdcsA++D
+ /T3klgvVifXt6hWyWSqr8kopoQbvhKnjy6suQd8u0Nmh+jmQpHX+Um/dSTvqZj4ja2U=
+X-Gm-Gg: ASbGnctzgDCq6W/nLku6FgEoegvOu7wY//6L0vvnSqxnvZCRuIp+OddqhofkcBC+FV/
+ RISo2KgIrjDhbUaTyWODylEp17ek2PkE2/x67OtOhXU1LirzsR2OWhJlJuSaNITCmZsI0UJZuDz
+ 7qu8dVvPK+KHSW6SdfYdu+GBCnKvBWqo+Ny4/04S5w0+9PlpXppnegY0L8uacaklNqVHCDpEvLC
+ //7Z2wWuYN+w77xUiGUrsaYBAK3fvXhqOqSA1Z5U7yNQ0vzbEovC9KlgiRr2tK/B6qbPBeA5GR1
+ l6XzbzuhDX9xq/aOowHhYtAXDQ48IUOh+RME1GRXVIxyQEWcZGovrk7Q7E4/mkg=
+X-Google-Smtp-Source: AGHT+IG35Lq9GVUwjVqutJmVlIZPd4qpsF9g4eWdlLENhMgRhfxJh0ha/WjnxOIkNpjyjbTJzsb4BQ==
+X-Received: by 2002:a05:600c:609a:b0:453:10c1:cb21 with SMTP id
+ 5b1f17b1804b1-454a3c25487mr24137365e9.8.1751453397516; 
+ Wed, 02 Jul 2025 03:49:57 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4538233c05csm225289715e9.5.2025.07.02.03.49.56
+ ffacd0b85a97d-3a88c7fb67dsm16071010f8f.35.2025.07.02.03.49.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 02 Jul 2025 03:49:56 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D930D5F8CC;
+ by draig.lan (Postfix) with ESMTP id F097C5F8D6;
  Wed, 02 Jul 2025 11:49:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org (open list:S390 general arch...)
-Subject: [PULL 01/15] gitlab: mark s390x-system to allow failures
-Date: Wed,  2 Jul 2025 11:49:41 +0100
-Message-ID: <20250702104955.3778269-2-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-arm@nongnu.org (open list:ARM PCI Hotplug)
+Subject: [PULL 02/15] tests/functional: Add PCI hotplug test for aarch64
+Date: Wed,  2 Jul 2025 11:49:42 +0100
+Message-ID: <20250702104955.3778269-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250702104955.3778269-1-alex.bennee@linaro.org>
 References: <20250702104955.3778269-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,29 +103,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The system tests (usually qos-test or migration-test) prove to be very
-susceptible on the s390x runners. Although we have boosted memory and
-virtual CPUs on the runners problems persist. For now mark test as
-allow_failure so the its clear on the CI UI when checking test
-results.
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
+Add a functional test, aarch64_hotplug_pci, to exercise PCI hotplug and
+hot-unplug on arm64.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Acked-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250528203137.1654964-1-gustavo.romero@linaro.org>
+[AJB: trimmed boilerplate for checkpatch, simplified invocations]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250627112512.1880708-2-alex.bennee@linaro.org>
+Message-ID: <20250627112512.1880708-3-alex.bennee@linaro.org>
 
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
-index ca374acb8c..e62ff1763f 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
-@@ -31,7 +31,9 @@ ubuntu-22.04-s390x-all-system:
-  timeout: 75m
-  rules:
-  - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
-+   allow_failure: true
-  - if: "$S390X_RUNNER_AVAILABLE"
-+   allow_failure: true
-  script:
-  - mkdir build
-  - cd build
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d1672fda8d..850588fb64 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2089,6 +2089,12 @@ S: Supported
+ F: include/hw/pci/pcie_doe.h
+ F: hw/pci/pcie_doe.c
+ 
++ARM PCI Hotplug
++M: Gustavo Romero <gustavo.romero@linaro.org>
++L: qemu-arm@nongnu.org
++S: Supported
++F: tests/functional/test_aarch64_hotplug_pci.py
++
+ ACPI/SMBIOS
+ M: Michael S. Tsirkin <mst@redhat.com>
+ M: Igor Mammedov <imammedo@redhat.com>
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index e9f19d54a2..53721c97ec 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -83,6 +83,7 @@ tests_aarch64_system_quick = [
+ tests_aarch64_system_thorough = [
+   'aarch64_aspeed_ast2700',
+   'aarch64_aspeed_ast2700fc',
++  'aarch64_hotplug_pci',
+   'aarch64_imx8mp_evk',
+   'aarch64_raspi3',
+   'aarch64_raspi4',
+diff --git a/tests/functional/test_aarch64_hotplug_pci.py b/tests/functional/test_aarch64_hotplug_pci.py
+new file mode 100755
+index 0000000000..c9bb7f1d97
+--- /dev/null
++++ b/tests/functional/test_aarch64_hotplug_pci.py
+@@ -0,0 +1,72 @@
++#!/usr/bin/env python3
++#
++# The test hotplugs a PCI device and checks it on a Linux guest.
++#
++# Copyright (c) 2025 Linaro Ltd.
++#
++# Author:
++#  Gustavo Romero <gustavo.romero@linaro.org>
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
++from qemu_test import BUILD_DIR
++
++class HotplugPCI(LinuxKernelTest):
++
++    ASSET_KERNEL = Asset(
++        ('https://ftp.debian.org/debian/dists/stable/main/installer-arm64/'
++         '20230607+deb12u11/images/netboot/debian-installer/arm64/linux'),
++         'd92a60392ce1e379ca198a1a820899f8f0d39a62d047c41ab79492f81541a9d9')
++
++    ASSET_INITRD = Asset(
++        ('https://ftp.debian.org/debian/dists/stable/main/installer-arm64/'
++         '20230607+deb12u11/images/netboot/debian-installer/arm64/initrd.gz'),
++         '9f817f76951f3237bca8216bee35267bfb826815687f4b2fcdd5e6c2a917790c')
++
++    def test_hotplug_pci(self):
++
++        self.set_machine('virt')
++
++        self.vm.add_args('-m', '512M',
++                         '-cpu', 'cortex-a57',
++                         '-append',
++                         'console=ttyAMA0,115200 init=/bin/sh',
++                         '-device',
++                         'pcie-root-port,bus=pcie.0,chassis=1,slot=1,id=pcie.1',
++                         '-bios',
++                         self.build_file('pc-bios', 'edk2-aarch64-code.fd'))
++
++        # BusyBox prompt
++        prompt = "~ #"
++        self.launch_kernel(self.ASSET_KERNEL.fetch(),
++                           self.ASSET_INITRD.fetch(),
++                           wait_for=prompt)
++
++        # Check for initial state: 2 network adapters, lo and enp0s1.
++        exec_command_and_wait_for_pattern(self,
++                                          'ls /sys/class/net | wc -l',
++                                          '2')
++
++        # Hotplug one network adapter to the root port, i.e. pcie.1 bus.
++        self.vm.cmd('device_add',
++                    driver='virtio-net-pci',
++                    bus='pcie.1',
++                    addr=0,
++                    id='na')
++        # Wait for the kernel to recognize the new device.
++        self.wait_for_console_pattern('virtio-pci')
++        self.wait_for_console_pattern('virtio_net')
++
++        # Check if there is a new network adapter.
++        exec_command_and_wait_for_pattern(self,
++                                          'ls /sys/class/net | wc -l',
++                                          '3')
++
++        self.vm.cmd('device_del', id='na')
++        exec_command_and_wait_for_pattern(self,
++                                          'ls /sys/class/net | wc -l',
++                                          '2')
++
++if __name__ == '__main__':
++    LinuxKernelTest.main()
 -- 
 2.47.2
 
