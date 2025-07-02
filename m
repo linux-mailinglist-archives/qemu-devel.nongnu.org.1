@@ -2,92 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79215AF084A
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 04:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C329AF0876
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 04:26:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWms4-0006BS-8C; Tue, 01 Jul 2025 22:06:48 -0400
+	id 1uWnAg-0002f0-2J; Tue, 01 Jul 2025 22:26:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWms1-0006Aq-Of
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:06:45 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWmrz-0002v6-PG
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:06:45 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-408fa4be483so2255622b6e.0
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 19:06:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751422002; x=1752026802; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4yiF5IrOyxAjbvHg14hQjpBgBMge4ArYTidkU/xmVuQ=;
- b=Abtf39011RQO515bmJhEW4pLNEj7RC6J1LX72ZgP9TW5LUeFL/DOnPCasHCwmS665d
- VAh1ikMbXa56qey+TWaDqHG118/p2hzVZ1I6GfuaeIHLVr5IcP+fi/MXYBDp4Mk491wX
- 6FxB+rps3tsUlnf4rUPjxHs2l4EoHnfPiQ4bAzOww4dDqjfYuSYn8mUwdkJFMurtBAOJ
- 63SytYNQeI1wowh0bG8+IgZ730CRnSYLubmaI8ZOe/PDnL36ZbavnYkIwr6Plng2MzHz
- Xva+OizU7Qlv61nrG4DL9Au3wH9HqlE3xzvvXR9THcZQJGMxy5PNgvEvFfkscZOYVrZF
- nhlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751422002; x=1752026802;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4yiF5IrOyxAjbvHg14hQjpBgBMge4ArYTidkU/xmVuQ=;
- b=olZQbWtwAhtpJm0V+DpoFYYic/bqHu6KRX8aUvcisWfWEIzAiQyYb3U0hiYqTbU5iZ
- gXN7UVS3EmyTlZ2HUNChwhVeYdA+xeptLGE02f9dKT7rV9ZMud3tO8X6a/gfR0NuAW4/
- g5zO+F4XOwZbE4fyoCZB/5rD4CW2Ykuuo397Ccri2Z2gypPOLTM2SVj82uA10kg/r8wX
- U8bYHORS7bo+z6B+ebtgU50fyvveMNR5Tqc3djB6bdQ8idDwTwRKmpsm/HWs0oT5QD4X
- LuOZG1Y+dXKG7+Ywadg+ajaSV3eHNxQboLgLz2LyDxeoNuQvsDP6NncLS25wZk68Gz3W
- iQWw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWGsnIEV8YcELzPfS02uMqf7keQX1m2OoKvhdz0TogtrR9KxruzqZJz9stsbRs0/M9MpLLlXv1Cf3vp@nongnu.org
-X-Gm-Message-State: AOJu0Yy/nMVtBBvxg6yubW30WTT8/uy1fPjIn/c4BzfAHgCPHREwkxkv
- EafBpkOHV5q8SNd/ehPUr12m5jzgBEaMq3wwCwChAkb2SkRUIpPQw8Z/cTPLWtbjINU=
-X-Gm-Gg: ASbGncvkX6so+532HkamwLle0c4OFUbItEmdZb4ZAfka3NWogggesVN6HrGCuIaYGdN
- Z6CisKuYHJAECvBm6WLVq7Ky1+bctUU6yG1Oep+M6ynNZhOh0AVF8kfhJXbC9o7vdIheT3ZpywJ
- iB/u3yJiFm/dqpz2ks3K4eD3j4GRTWBN8txKIB0upcsSW8AJErjQU6hiIbs3ZNHB9rUV79IkXl7
- U5pXD+99+oEFa1MNRNS4rvBgsUQLJkHLE6CLuiVMvhLHHUr7alpM687NLTc8YJqo9ddovBNkjdP
- Vwfk3qcgRQF5nm2pQkH3UycMA2pWymr3HGWr+AMqnAskdBoXgVvKjusOoau7bQpTQJGqy+XTC7q
- ZNQ==
-X-Google-Smtp-Source: AGHT+IGxyT0fBeicXhygu5eGtQ4t1xiPfHzAuxTaICk2L0+FogJe5PrpDCo/PS4jK/C5Flwrz9reyA==
-X-Received: by 2002:a05:6808:6909:b0:40b:1588:e005 with SMTP id
- 5614622812f47-40b8877df29mr667132b6e.10.1751422002239; 
- Tue, 01 Jul 2025 19:06:42 -0700 (PDT)
-Received: from [10.25.7.201] ([187.210.107.185])
- by smtp.gmail.com with ESMTPSA id
- 5614622812f47-40b324050d2sm2370875b6e.32.2025.07.01.19.06.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Jul 2025 19:06:41 -0700 (PDT)
-Message-ID: <0ac8967e-ce39-4820-8c60-474b702cc728@linaro.org>
-Date: Tue, 1 Jul 2025 20:06:39 -0600
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1uWnAc-0002en-HC
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:25:58 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1uWnAZ-0001d8-3t
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:25:58 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8CxTOKqmGRofvYgAQ--.31061S3;
+ Wed, 02 Jul 2025 10:25:46 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowJCxM+SnmGRoNCEGAA--.34948S3;
+ Wed, 02 Jul 2025 10:25:45 +0800 (CST)
+Subject: Re: [PATCH v3 4/9] target/loongarch: add msg interrupt CSR registers
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
+References: <20250627030138.2482055-1-gaosong@loongson.cn>
+ <20250627030138.2482055-5-gaosong@loongson.cn>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <790ff1fb-1dc7-9566-1fd5-697a4719a257@loongson.cn>
+Date: Wed, 2 Jul 2025 10:24:12 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/12] target/arm: Fix VLSTM/VLLDM helper load/store
- alignment checks
-To: William Kosasih <kosasihwilliam4@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20250701103159.62661-1-kosasihwilliam4@gmail.com>
- <20250701103159.62661-2-kosasihwilliam4@gmail.com>
+In-Reply-To: <20250627030138.2482055-5-gaosong@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250701103159.62661-2-kosasihwilliam4@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJCxM+SnmGRoNCEGAA--.34948S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxAr1UtF1DZFyUZFW5tr4fZwc_yoWrWFW3pr
+ nxAFyUKFW8tFZ3A3WfJ345XFsxWr1xKw4I9a12kryIkF45XrW8XrWkt39FvF1rJa4Fkr40
+ 9F18A34UGa17ZabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j0FALU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.077,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,54 +80,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/1/25 04:31, William Kosasih wrote:
-> This patch adds alignment checks in the load operations in the VLLDM
-> instruction, and in the store operations in the VLSTM instruction.
+
+
+On 2025/6/27 上午11:01, Song Gao wrote:
+> include CSR_MSGIS0-3, CSR_MSGIR and CSR_MSGIE.
 > 
-> Manual alignment checks in the both helpers are retained because they
-> enforce an 8-byte alignment requirement (instead of the 4-byte alignment for
-> ordinary long loads/stores). References to cpu_*_data_* are still replaced
-> with cpu_*_mmu(), so that the individual word accesses themselves also
-> perform the standard alignment checks, in keeping with the ARM pseudocode.
-
-So... this merely makes this function match the pseudocode, it doesn't actually fix a bug.
-This description should be fixed to reflect that.
-
-> diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
-> index 6614719832..251e12edf9 100644
-> --- a/target/arm/tcg/m_helper.c
-> +++ b/target/arm/tcg/m_helper.c
-> @@ -1048,6 +1048,9 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
->       bool s = env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_S_MASK;
->       bool lspact = env->v7m.fpccr[s] & R_V7M_FPCCR_LSPACT_MASK;
->       uintptr_t ra = GETPC();
-> +    ARMMMUIdx mmu_idx = arm_mmu_idx(env);
-> +    MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN,
-> +                                 arm_to_core_mmu_idx(mmu_idx));
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   target/loongarch/cpu-csr.h |  3 +++
+>   target/loongarch/cpu.c     |  7 +++++++
+>   target/loongarch/cpu.h     | 10 ++++++++++
+>   target/loongarch/machine.c | 25 +++++++++++++++++++++++--
+>   4 files changed, 43 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
+> index 0834e91f30..4792677086 100644
+> --- a/target/loongarch/cpu-csr.h
+> +++ b/target/loongarch/cpu-csr.h
+> @@ -186,6 +186,9 @@ FIELD(CSR_MERRCTL, ISMERR, 0, 1)
 >   
->       assert(env->v7m.secure);
+>   #define LOONGARCH_CSR_CTAG           0x98 /* TagLo + TagHi */
 >   
-> @@ -1073,7 +1076,7 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
->        * Note that we do not use v7m_stack_write() here, because the
->        * accesses should not set the FSR bits for stacking errors if they
->        * fail. (In pseudocode terms, they are AccType_NORMAL, not AccType_STACK
-> -     * or AccType_LAZYFP). Faults in cpu_stl_data_ra() will throw exceptions
-> +     * or AccType_LAZYFP). Faults in cpu_stl_mmu() will throw exceptions
->        * and longjmp out.
->        */
->       if (!(env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_LSPEN_MASK)) {
-> @@ -1089,12 +1092,12 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
->               if (i >= 16) {
->                   faddr += 8; /* skip the slot for the FPSCR */
->               }
-> -            cpu_stl_data_ra(env, faddr, slo, ra);
-> -            cpu_stl_data_ra(env, faddr + 4, shi, ra);
-> +            cpu_stl_mmu(env, faddr, slo, oi, ra);
-> +            cpu_stl_mmu(env, faddr + 4, shi, oi, ra);
+> +#define LOONGARCH_CSR_MSGIS(N)       (0xa0 + N)
+> +#define LOONGARCH_CSR_MSGIR               0xa4
+> +
+>   /* Direct map windows CSRs*/
+>   #define LOONGARCH_CSR_DMW(N)         (0x180 + N)
+>   FIELD(CSR_DMW, PLV0, 0, 1)
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index abad84c054..bde9f917fc 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -523,6 +523,13 @@ static void loongarch_la464_initfn(Object *obj)
+>       env->CSR_PRCFG3 = FIELD_DP64(env->CSR_PRCFG3, CSR_PRCFG3, STLB_WAYS, 7);
+>       env->CSR_PRCFG3 = FIELD_DP64(env->CSR_PRCFG3, CSR_PRCFG3, STLB_SETS, 8);
+>   
+> +    env->CSR_MSGIS[0] = 0;
+> +    env->CSR_MSGIS[1] = 0;
+> +    env->CSR_MSGIS[2] = 0;
+> +    env->CSR_MSGIS[3] = 0;
+> +    env->CSR_MSGIR = 0;
+> +    env->CSR_MSGIE = 0;
+> +
+The default value should zero for CSR register, I think it can be 
+removed here.
 
-This is an improvement because the mmu index is resolved once, instead of within every 
-call to cpu_stl_data_ra.
+>       loongarch_la464_init_csr(obj);
+>       loongarch_cpu_post_init(obj);
+>   }
+> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+> index 56fc4a1459..208d3e0cd3 100644
+> --- a/target/loongarch/cpu.h
+> +++ b/target/loongarch/cpu.h
+> @@ -233,6 +233,12 @@ FIELD(TLB_MISC, ASID, 1, 10)
+>   FIELD(TLB_MISC, VPPN, 13, 35)
+>   FIELD(TLB_MISC, PS, 48, 6)
+>   
+> +/*Msg interrupt registers */
+> +FIELD(CSR_MSGIS, IS, 0, 63)
+> +FIELD(CSR_MSGIR, INTNUM, 0, 8)
+> +FIELD(CSR_MSGIR, ACTIVE, 31, 1)
+> +FIELD(CSR_MSGIE, PT, 0, 8)
+> +
+>   #define LSX_LEN    (128)
+>   #define LASX_LEN   (256)
+>   
+> @@ -350,6 +356,10 @@ typedef struct CPUArchState {
+>       uint64_t CSR_DBG;
+>       uint64_t CSR_DERA;
+>       uint64_t CSR_DSAVE;
+> +    /* Msg interrupt registers */
+> +    uint64_t CSR_MSGIS[4];
+> +    uint64_t CSR_MSGIR;
+> +    uint64_t CSR_MSGIE;
+>       struct {
+>           uint64_t guest_addr;
+>       } stealtime;
+> diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+> index 4e70f5c879..1e276c08ac 100644
+> --- a/target/loongarch/machine.c
+> +++ b/target/loongarch/machine.c
+> @@ -45,6 +45,26 @@ static const VMStateDescription vmstate_fpu = {
+>       },
+>   };
+>   
+> +static bool msg_needed(void *opaque)
+> +{
+> +    LoongArchCPU *cpu = opaque;
+> +
+> +    return FIELD_EX64(cpu->env.cpucfg[1], CPUCFG1, MSG_INT);
+For AVEC capability, there is bit MSG_INT in register cpucfg1 and bit 
+IOCSRF_AVEC in IOCSR FEATURE_REG register. Which should be used by real 
+hardware?
 
+Regards
+Bibo Mao
+> +}
+> +
+> +static const VMStateDescription vmstate_msg = {
+> +    .name = "cpu/msg",
+> +    .version_id = 1,
+> +    .minimum_version_id = 1,
+> +    .needed = msg_needed,
+> +    .fields = (const VMStateField[]) {
+> +        VMSTATE_UINT64_ARRAY(env.CSR_MSGIS, LoongArchCPU, 4),
+> +        VMSTATE_UINT64(env.CSR_MSGIR, LoongArchCPU),
+> +        VMSTATE_UINT64(env.CSR_MSGIE, LoongArchCPU),
+> +        VMSTATE_END_OF_LIST()
+> +    },
+> +};
+> +
+>   static const VMStateDescription vmstate_lsxh_reg = {
+>       .name = "lsxh_reg",
+>       .version_id = 1,
+> @@ -168,8 +188,8 @@ static const VMStateDescription vmstate_tlb = {
+>   /* LoongArch CPU state */
+>   const VMStateDescription vmstate_loongarch_cpu = {
+>       .name = "cpu",
+> -    .version_id = 3,
+> -    .minimum_version_id = 3,
+> +    .version_id = 4,
+> +    .minimum_version_id = 4,
+>       .fields = (const VMStateField[]) {
+>           VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
+>           VMSTATE_UINTTL(env.pc, LoongArchCPU),
+> @@ -245,6 +265,7 @@ const VMStateDescription vmstate_loongarch_cpu = {
+>           &vmstate_tlb,
+>   #endif
+>           &vmstate_lbt,
+> +        &vmstate_msg,
+>           NULL
+>       }
+>   };
+> 
 
-r~
 
