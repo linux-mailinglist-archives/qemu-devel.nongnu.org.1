@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78FFAF159A
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 14:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBC0AF158D
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 14:25:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWwTu-0004px-I8; Wed, 02 Jul 2025 08:22:31 -0400
+	id 1uWwTs-0004pI-Dw; Wed, 02 Jul 2025 08:22:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwTr-0004pG-KR
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:22:27 -0400
+ id 1uWwTp-0004oD-FZ
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:22:25 -0400
 Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwTk-0007Bu-NS
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:22:27 -0400
+ id 1uWwTj-0007C9-8o
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:22:25 -0400
 Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-2e9071e3706so2767422fac.0
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:22:19 -0700 (PDT)
+ 586e51a60fabf-2efbbf5a754so2996028fac.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:22:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751458936; x=1752063736; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ySkdVJ0hHGep9Ajf3QmKn3ttpJmzhhtBTQDGQch3lt8=;
- b=B4TD5wxx7ZNIV4vSCaUXAqF4xljbPGqJOdRHt4K2/89uItc6wISjQIyUhkpPo2bvCg
- uDF3nAe4S4TtxW2fj4Ppk2xYEPAZHEgot2IZvCT1dlIDmdAZf7IGkK60z9VbG2Htsmit
- uqU/l4onA/cBUbFi0RMcOSflcN4a84LqE7Gwgx+kjmD3gCvLqEHbO6YHxdjdm8v9nnyH
- Jvhh+Oo1zyHzpn/ftbiuOCgukduv9+ChvYFLJq21lQ2SFXpWFHehayfUWBfUbxG8zjE7
- nUJaCFHj8Yg7tvLNx9dgoFuzYZk9n41iPY/MXM841Q/f8/+3b9IN5lcRYUmE7LFxAOiv
- IIyA==
+ d=linaro.org; s=google; t=1751458937; x=1752063737; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AwerfD7lvNQJ4EdbSgApiW5S0oCtGzIs48Se4MUlJ1U=;
+ b=KWPeJsbRT4SYqU+KelMFd5b42241vvQYmQEAVKucqKnoaZ83VO7ndN3zjOmeUMDUzg
+ PSAopbnfIIVsNzQJoVbGPGmiatC9XaitR6ZXvDeJ0UMcR8B1dXBx5ilzuIGJVPQwMjSB
+ Tq5BHzQGcvybgFxVKTD8L6nNW9aaAwLAYNkPvNmp5z3LgGmtiOV826aQfvIu6I/0JylC
+ iMu1tJr8beftpufg2kyAqDwsbxJ4U1hMOBivkitd5dhXqn0UuunvAyqTyEczrjeDFWlK
+ 3Ez/zCNAvQL5fjipS/wMjpOvASqfVVuIusf6iTuhaI3/eOntk7L/Aq9F7Oeqgd467VWO
+ u65A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751458936; x=1752063736;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ySkdVJ0hHGep9Ajf3QmKn3ttpJmzhhtBTQDGQch3lt8=;
- b=XWSRv6gvjEdCBBlwK6oF/FQ5ERD+tLoySrtqpMrKopqBr8288TXlyVWyI8dP86cSBo
- ML7whIZB+hpJheNErorMUymTWIbvb7Py38wvSzBPjCdGvi/pvgOwLZnc0r4D+AJOopRg
- fqA0gi3Vlsf9GxDcQs8R10rLe3BKwoTKnZcVdstw4lN2j954i/+d/Qka+gMHUE+FWYnD
- p+BQ8i9miXTjDpQOUpctWF2HJ0BtaG1vQr7bPtcpEcR4WNy3A8jkqX9hG/gvgYx03vK7
- 0vRdDJod3AGS2OV3kqGudK2ZLtPcQL8hOTCvep7X5s5qXAMU7g22nBAwjX6G0e49XMEX
- FXgA==
-X-Gm-Message-State: AOJu0Yz76ckCTYG/SfEVXKQIxd8kYRSZfLvjnnHTeOH0lLywZFPduzF6
- srLcx3ilZdlPGynXOVW8Nmk/NR0fRMNDFdDoN4af7Va0WhbE5BGnYc9RBAje2gmc+46h8YCOakP
- fIguUVwk=
-X-Gm-Gg: ASbGncsoeTDZJ3SN3uRqntt029lu3Ee/dJPNZv9lkExo+XO+ClydYMPRuwTwJiT+4dV
- d3wg4LlWxy5xEdmfutZJUap93RitEBhYn/MoyRqYTqgzNq3uxgW4Z1UqFUH0ujSAI7GDDiEYo1l
- PD52DIDPBQNm9KNxIgK6iQpv87HUBzfVu/wBgsZM27R2MMtPq+ITY00cyOmZxR8YDGOXA6LL+qL
- YFr77MXo387owDZaQXYf0ZHxX7MQYDpfTx9821ly8RSgNo8HdDha/df9fkvfW1m8SLM1RZ/m6m3
- p142tEmG6wF2Cp3sH5sjHf+1MrTlSCSqsJPKKYYRLa7LuT+RNDUWMQPsY2znLgLxWrUPew==
-X-Google-Smtp-Source: AGHT+IEZxFngmDku5hEu8CGTUHkN8aPT9PnYqd07ZjoVNr57Izz51FmTkUDaRiHiKvrFHcY4iG4hFQ==
-X-Received: by 2002:a05:6870:524:b0:2e9:93c6:6e4a with SMTP id
- 586e51a60fabf-2f5c79fd99emr1922933fac.38.1751458935766; 
- Wed, 02 Jul 2025 05:22:15 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1751458937; x=1752063737;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AwerfD7lvNQJ4EdbSgApiW5S0oCtGzIs48Se4MUlJ1U=;
+ b=cz4R3s+NZ5r+dW2L3xMabi8EE3ORAXp52xl95tk5Z8lEAe9ltphWWh4SQAUmB7vgBS
+ +9q3Rdjp+F1onN58tuAILhikpmKqTrSWdTQ4W97ZCsYQ7ziFMFmV/VJvZO2T/XcDXra+
+ RhrLfB8JVIhNk/JG1Uje1POgD8+zjFAKNU5lFXl7bPxmGrU0pNSxP8FIxOSAUbVdguAd
+ 2gTxXn6jid+O+HH/ClyKIiZC/OvMrFFMAEIEbDbWwk29Fu1YjQXSJiJ3rPdqZiYcdjce
+ fGfRAtWYUdlM05FB/hsoeZxdeBzCWXYNC9Tr0xyBNImS/SX3w3MuoVZr4ufZMQ5qndIv
+ pL7g==
+X-Gm-Message-State: AOJu0YyzpxdfrZhXybyFiWvf1eieuAddHYLKXC5rCqS6Zk3IUbCGv5K8
+ JjtHfPM3avmw5uhoLScKcLsKmo5KXna/PonQ7Dcn3s5XdmkDCDQexs8IRLxAaR0+9Vg71sN18Bd
+ vWxmNfC0=
+X-Gm-Gg: ASbGncte4rSnz+7KdnBpojfEzz4bXBX+tE4JTHznMiGZJxZ+IPZhml9sJ8wr0RUwa1b
+ T4phuyJYrZgCX5AK6SLZjpxt3J9E2Ma9Ao/B+YSYzg9FDJy99lxTOJpp1djxnFDxlMnYtx5cUBh
+ vdpUg8HZNwdBQG+qEmWy3LRm2IXAzXMkTwWLwObVFRun7cZuZ/wrgN85qTHbA7RczEo8DC3wpxF
+ /iAluMc9MTrpnqYa+yH4KLHNVMTdYyjFQF6nyFE9LVVtwFbrNe2dK+9/x1Rog5L6ASiiNlKRIE1
+ /TCcm1qwTFSQ5yakHvk9L+WXZwaz2lWF2TatRUnvlFeSOmFEumg9Wamj9UwVD3twAR2++A==
+X-Google-Smtp-Source: AGHT+IHBp4nid14igLYfJtGI2OjNOtO5XYtlxrrR6pPSyWNUBYcRj0jTmGNalyLQzF3KUPCtjS0Hfw==
+X-Received: by 2002:a05:6870:f68f:b0:2ea:fb40:231c with SMTP id
+ 586e51a60fabf-2f5c7cc0bd1mr1974079fac.27.1751458936914; 
+ Wed, 02 Jul 2025 05:22:16 -0700 (PDT)
 Received: from stoup.. ([187.210.107.185]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2efd50b1bd3sm3785013fac.28.2025.07.02.05.22.14
+ 586e51a60fabf-2efd50b1bd3sm3785013fac.28.2025.07.02.05.22.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Jul 2025 05:22:15 -0700 (PDT)
+ Wed, 02 Jul 2025 05:22:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
-	peter.maydell@linaro.org
-Subject: [PATCH v3 00/10] target/arm: SME1/SVE2 fixes
-Date: Wed,  2 Jul 2025 06:22:03 -0600
-Message-ID: <20250702122213.758588-1-richard.henderson@linaro.org>
+	peter.maydell@linaro.org,
+	qemu-stable@nongnu.org
+Subject: [PATCH v3 01/10] target/arm: Fix SME vs AdvSIMD exception priority
+Date: Wed,  2 Jul 2025 06:22:04 -0600
+Message-ID: <20250702122213.758588-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250702122213.758588-1-richard.henderson@linaro.org>
+References: <20250702122213.758588-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2001:4860:4864:20::34;
  envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x34.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,39 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- A couple of fixes for EC_SMETRAP, plus some insns that missed
-  being updated for non-streaming.
-  (Removed the switch (bool) that PMM commented on, and as it
-  turns out our clang CI Werrors on; now perhaps clearer using
-  if + goto, where the label name helps clarify things.)
-- Disable FEAT_F64MM if the command-line sve vector size cannot
-  support it (PMM)
-- Fix a gvec assert in PSEL
-- Fix NaN selection per FPDot pseudocode.
+We failed to raise an exception when
+sme_excp_el == 0 and fp_excp_el == 1.
 
-r~
+Cc: qemu-stable@nongnu.org
+Fixes: 3d74825f4d6 ("target/arm: Add SME enablement checks")
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/translate-a64.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Richard Henderson (10):
-  target/arm: Fix SME vs AdvSIMD exception priority
-  target/arm: Fix sve_access_check for SME
-  target/arm: Fix 128-bit element ZIP, UZP, TRN
-  target/arm: Replace @rda_rn_rm_e0 in sve.decode
-  target/arm: Fix FMMLA (64-bit element) for 128-bit VL
-  target/arm: Disable FEAT_F64MM if maximum SVE vector size too small
-  target/arm: Fix PSEL size operands to tcg_gen_gvec_ands
-  target/arm: Fix f16_dotadd vs nan selection
-  target/arm: Fix bfdotadd_ebf vs nan selection
-  target/arm: Remove CPUARMState.vfp.scratch
-
- target/arm/cpu.h               |  3 --
- target/arm/cpu64.c             |  6 +++
- target/arm/tcg/sme_helper.c    | 62 ++++++++++++++++++++--------
- target/arm/tcg/translate-a64.c | 29 +++++++++----
- target/arm/tcg/translate-sve.c | 67 +++++++++++++++++++++---------
- target/arm/tcg/vec_helper.c    | 75 ++++++++++++++++++++++++----------
- target/arm/tcg/sve.decode      | 48 +++++++++++-----------
- 7 files changed, 197 insertions(+), 93 deletions(-)
-
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index ac80f572a2..bb49a2ce90 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -1494,7 +1494,8 @@ bool sme_enabled_check(DisasContext *s)
+      * to be zero when fp_excp_el has priority.  This is because we need
+      * sme_excp_el by itself for cpregs access checks.
+      */
+-    if (!s->fp_excp_el || s->sme_excp_el < s->fp_excp_el) {
++    if (s->sme_excp_el
++        && (!s->fp_excp_el || s->sme_excp_el <= s->fp_excp_el)) {
+         bool ret = sme_access_check(s);
+         s->fp_access_checked = (ret ? 1 : -1);
+         return ret;
 -- 
 2.43.0
 
