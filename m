@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C907AF5F65
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6AAAF5F66
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:05:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX0r9-0003gV-Ef; Wed, 02 Jul 2025 13:02:47 -0400
+	id 1uX0r8-0003fo-90; Wed, 02 Jul 2025 13:02:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0qs-0003ek-9C
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0ql-0003Yn-9h
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0qq-0003eY-Lg
  for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0qp-0003Z8-6E
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751475741;
+ s=mimecast20190719; t=1751475745;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VTcoaEsLzXUXHcMJjyLrsF8zQKMNSpUMpK0Z1hQhJyk=;
- b=fOSI3g1I+0ONwqDpoUvBPBucazqxQnedkRxsTp4o8tkYCv0mqhWYBUT76LKClO8liDdZZC
- 0qHYBSA/WRiJIRnK0MbcGt0oIKOEFcyrt3HP/BZnvgD94peMhVBmmaZ+Es2UyHViVPu23p
- O27LX4nFjZOsrGz//eYyTUa6Wsazfo8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=OPUG6OfqUOdsX8dIyOu0E2Gk0RS6xP7qM4XS3g6v5no=;
+ b=gTR6msZjGWljT7at58I3/qkM9ncZ3APMPfe7CtvBWiGAuM8i1zpVTzP8IwVpmUpSLGNB7Y
+ tTRHnxP+7zW/AiXf4ksvvQT2htZdBKMGtPwrn/OwpVilYz47Ru/7zyf94prfuDrNT7zIrI
+ x3LIslllHTibp1wpOBrpSehONPmBCGc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-134-cI8peRmfMgGd9_MxUxVx3g-1; Wed,
- 02 Jul 2025 13:02:20 -0400
-X-MC-Unique: cI8peRmfMgGd9_MxUxVx3g-1
-X-Mimecast-MFC-AGG-ID: cI8peRmfMgGd9_MxUxVx3g_1751475739
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-wi4RM04XOziGUbQp4chq3A-1; Wed,
+ 02 Jul 2025 13:02:23 -0400
+X-MC-Unique: wi4RM04XOziGUbQp4chq3A-1
+X-Mimecast-MFC-AGG-ID: wi4RM04XOziGUbQp4chq3A_1751475742
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 22E99190D170; Wed,  2 Jul 2025 17:02:12 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A3E7218D624E; Wed,  2 Jul 2025 17:02:14 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.23])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B80A1195608F; Wed,  2 Jul 2025 17:02:10 +0000 (UTC)
+ id DD9A219373D8; Wed,  2 Jul 2025 17:02:12 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
 	Sean Wei <me@sean.taipei>
-Subject: [PULL 1/9] MAINTAINERS: update docs file extensions (.txt -> .rst)
-Date: Wed,  2 Jul 2025 19:01:56 +0200
-Message-ID: <20250702170206.212303-2-thuth@redhat.com>
+Subject: [PULL 2/9] MAINTAINERS: fix vendor capitalization (Vmware -> VMware)
+Date: Wed,  2 Jul 2025 19:01:57 +0200
+Message-ID: <20250702170206.212303-3-thuth@redhat.com>
 In-Reply-To: <20250702170206.212303-1-thuth@redhat.com>
 References: <20250702170206.212303-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 15
 X-Spam_score: 1.5
@@ -84,47 +83,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sean Wei <me@sean.taipei>
 
-The documentation tree has been converted to reStructuredText, but
-two entries in MAINTAINERS still point to the removed *.txt files.
-
-This prevents scripts/get_maintainer.pl from matching the documents.
-
-Update those entries to *.rst so the maintainer script works again.
-
-Related commits:
-  8472cc5dbe6 (Sep 2023): docs/specs/vmw_pvscsi-spec: Convert to rST
-  8e72ceee5cd (Jun 2022): Rename docs/specs/fw_cfg.txt to .rst
+"VMware" is the vendor's official spelling.
+Adjust the spelling in MAINTAINERS for consistency.
 
 Signed-off-by: Sean Wei <me@sean.taipei>
-Message-ID: <20250616.qemu.relocated.01@sean.taipei>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250616.qemu.relocated.03@sean.taipei>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 7128e0bc98e..749799b0f84 100644
+index 749799b0f84..585f08e709e 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2541,7 +2541,7 @@ F: hw/net/net_tx_pkt*
- Vmware
+@@ -2538,7 +2538,7 @@ F: net/eth.c
+ F: hw/net/net_rx_pkt*
+ F: hw/net/net_tx_pkt*
+ 
+-Vmware
++VMware
  M: Dmitry Fleytman <dmitry.fleytman@gmail.com>
  S: Maintained
--F: docs/specs/vmw_pvscsi-spec.txt
-+F: docs/specs/vmw_pvscsi-spec.rst
- F: hw/display/vmware_vga.c
- F: hw/net/vmxnet*
- F: hw/scsi/vmw_pvscsi*
-@@ -2746,7 +2746,7 @@ Firmware configuration (fw_cfg)
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Gerd Hoffmann <kraxel@redhat.com>
- S: Supported
--F: docs/specs/fw_cfg.txt
-+F: docs/specs/fw_cfg.rst
- F: hw/nvram/fw_cfg*.c
- F: stubs/fw_cfg.c
- F: include/hw/nvram/fw_cfg.h
+ F: docs/specs/vmw_pvscsi-spec.rst
 -- 
 2.50.0
 
