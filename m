@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45EC0AF5B88
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 16:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 184D4AF5B91
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 16:48:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWykD-0004DS-74; Wed, 02 Jul 2025 10:47:29 -0400
+	id 1uWylF-0005Bl-NW; Wed, 02 Jul 2025 10:48:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWyjx-00049A-Hj
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 10:47:14 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uWylC-0005AL-Ir
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 10:48:30 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWyjs-0007r3-IL
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 10:47:13 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-40af40aef06so4533178b6e.3
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 07:47:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uWyl7-0008D3-O3
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 10:48:30 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-b34c068faf8so7352915a12.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 07:48:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751467623; x=1752072423; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1751467704; x=1752072504; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=wE2NJhZzfHMjWPw6J95V0JJh24YtdRDgF779MCj/UlA=;
- b=G1z3/evPLZ5RsAS7dwnry6Fb3q1Lk/oqdXaAWeAGIqerMllEdSVSZaJgPUxAeJDRFi
- LdQKz3WtnypErMpX4K9TXWKceZRaGwoycEYCiNyOosh22KnbSO3iGtrlFPDfOvlfT5ha
- 0sqwzBqXfi6IfF7hMqKU5os9hZy8m12BTgzRbh4BbOuOQm9m0VV4Pl+9RIRfD8yXK2IO
- dlE8gwBCNB8tnJ/fk5gARt13g8IEdGh9UA34+VbARYyqJt5OuBikXgM7wNEHM73NStTb
- uZwBPuFd78qFqbSGweMsDAxcaefO1lJ5ql7YP3nOkGwE5naCXvb93hSxCLhyfeS6YRyP
- rqXw==
+ bh=lq67aiCzcuu5k/VgqIeecbselQ7vbtkCerT3mPDHeEA=;
+ b=TOk1tK3Gm0Xuh+gcdIVGm9MaNxRZfhgtGYq96LwwuSVZ0tAJExWpTkcKaYcSaqH+Tn
+ aEkhNNi+rEAqeMQXtz2TNbLQauJ2YgzA6FFlqKPSNIKZbYR2+BgMWbjHk18eHaGOW69e
+ fHt06B0PmAcTExMpThUciFOqZfUz7yz4EqjCY+QHhKEXztZmJPvZiOy12TPSTKRciH3+
+ S3u6dRVS+YrWWf/gzUMKH0uW37tbqHnryjMTFKZUqC/MowEBzpYtrzEKkM6hSqqFidP9
+ jgXTg52n4WIHP4iDckjgRmGlZFFWVoeGCa190zO9P+laqEvH6P21QwOtewlx5vXiiDu4
+ CxUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751467623; x=1752072423;
+ d=1e100.net; s=20230601; t=1751467704; x=1752072504;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wE2NJhZzfHMjWPw6J95V0JJh24YtdRDgF779MCj/UlA=;
- b=jfVmHOs6IvwvYAMsTeeZ0g+LnN1A99ptY9yeRcvKS0LbilSJSpU7aAusogq15T7UKl
- gEHA9vsV0M2G45LyDsoO/nBl3Uy3o9rLui2KgnDzTBRApd6R3F4cIpgQuVJqrj4oYzSK
- VTMz2wOk0wbD4JTs7Gu4nZP4DlbtoJMddGYkHZMs2DSB+emEqg551Uw3ATrY5BxybBHU
- +ZKf2SIB5KIMbjPHfaVFVGyiXMDLWt/fTA6NQ9Te2OtarSvu1ZOxCcRhrbQLvi6W9/h7
- S49hEZ8rrYv/PA38KYmEu21L5iRQqDWVomQdaXjH+1GXwOVbDzPVFVwfDVaI1At1IIjd
- 4+bw==
+ bh=lq67aiCzcuu5k/VgqIeecbselQ7vbtkCerT3mPDHeEA=;
+ b=jlHiFuzPRncjkUwRBp+du6MbOQVT412wSrwoZKg/A8Viw0ayUjUCJzuzrQauhJ6adG
+ SBD5dO2Nn3V3ObzaVc1Cp8ErTHK60bK6h/zLuXkH+biyRyUW+fdd4Jcls86g8zoi+UOL
+ PUvwyGDhaVsAOKB+0gAAc8ywMzU9yxdEEI6+BOY3XmU4r+lhoChz4ISYFLYZWdYETWT/
+ Bp34F15sLTR5brD4ob0HrNLmmrG35pizAB6ci1D+LrUJmTVQnfDovafZPTQiEA8bHt1C
+ JyIh3seY+mm/g33vYfj99LVo4pH0i2H6GR3iLOKbRE8fOXGjZChtcj4ZUBklHDYE+9HD
+ 5e2Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU6lsn2yCU4oX2mTj7ISrMQKfVoRhP3Of3k4FsmrGOVbfKo7tHuPVuuy9iB8w0ZnznduxWSRhQw4pdc@nongnu.org
-X-Gm-Message-State: AOJu0Yx5wTxYzH5tq0de8/TVERTg5SMhJM29NcuwrQ9TB+amftI7nZ7d
- XO74SxPSE7gnueYjOgNC1qIpvy9mA6bdRKdDE2btvuXJd9B73IzzrB5qEV3kEJvXFnY=
-X-Gm-Gg: ASbGnctDMaSHxD4For/LWxKhkhwxRNmmBcWuozZKhUV9lcuoGyy0YO/0RDLEAr2RWG8
- CoVtCAFxjmE0yc5cT38LK/Kn0U22FnpuUXAm7oLWtMvoDMN/wlcetHSf2nQWJK10IuDfz8oZRIu
- VpMLpfah7aghKUN1CvFRlHSLvsKn0PykkMdDrA9yTNdhWRK090DQ9XyOeqerztSUecpDGXP6a9V
- LScsvLHxH7+f55XIq/OUJCJVmIE06wW2Dt16w9xEtMbgkkwOYng2kdiVg4rBB+DiHjdF8s64XyC
- zgjlk7D/Dzk1mlyBCFjCETBJrGtY2V4y7Zrg/zGh6B97xZBvBpFdeaX/hUKLr++VbyNsFng5IF3
- x
-X-Google-Smtp-Source: AGHT+IEjB9wBw4qJ6iTIWRKxbICnlSFcKirktjKsfuSqfVPlwiPpny1NfxzdSfk+XlpOzFi3UyT3fg==
-X-Received: by 2002:a05:6808:1b85:b0:408:fbed:c3a5 with SMTP id
- 5614622812f47-40b8881836fmr2033959b6e.20.1751467623504; 
- Wed, 02 Jul 2025 07:47:03 -0700 (PDT)
-Received: from [10.25.7.74] ([187.210.107.185])
+ AJvYcCWmaOxTihEKK807QyJO5s3je/gEikZPu6MUnJRCoYx+yGhOfAq4zG5KAMN63vGS5vJBrh+p1gBiutA5@nongnu.org
+X-Gm-Message-State: AOJu0Yw3ta9JbasEdvDOgQrYfrb3Xsf+ZbWQ6d1oTxLuAV5mvZyk/vGb
+ naoxx7tIMP2dojGHqrLXXMfpPN0JR8irRXS076K5lJsg3ZOMGoQNfDEvAhxEQgUgwXw=
+X-Gm-Gg: ASbGncu2VsJzNnZmbPadgUUlBT3BZo6gtB+Jt0ikphzk1spYsqUmeYS7P7lK8Jcbi3O
+ jbz0n5dffqVVRFU/LUT3POV+4pCFu5IdClgXcR54bGl4PbVOVoabVn9ivyX1HI3+UDQgyjw/yP8
+ WgeN1KlMPwi7TMM/sXYen59mcxLNPuIZViB3Rt9aq5RQIjELcUl38iZ6GRgXW7PLVzz50K3z1t9
+ PQQjFzAyUfkudcIpGxC3/+Qctd7YDCQ5hI/lcsG99mHvhAgJz242oOhMd8StInrPon/PoeJgOx3
+ ApLmmd6X/ekQ6K8yM6W6J0DZS6yaVJ3ckptrCo66DfvBoSLD3fGEw9lZJsT62eZJZojW6J+VlBM
+ ooQ==
+X-Google-Smtp-Source: AGHT+IGBdFU+0coRaMm23rRDExu8NQmo2F6PFihVchRfmcYyUrYszG50uODXP8xwIOIfH3DBbmsyKQ==
+X-Received: by 2002:a05:6a21:7a47:b0:220:103c:436c with SMTP id
+ adf61e73a8af0-222d7e83875mr5682499637.24.1751467704053; 
+ Wed, 02 Jul 2025 07:48:24 -0700 (PDT)
+Received: from [192.168.68.110] ([189.110.107.157])
  by smtp.gmail.com with ESMTPSA id
- 5614622812f47-40b32420a6bsm2569065b6e.40.2025.07.02.07.47.02
+ 41be03b00d2f7-b34e300468esm13343868a12.7.2025.07.02.07.48.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Jul 2025 07:47:03 -0700 (PDT)
-Message-ID: <25204232-47f4-430f-9e33-f564e76a9a31@linaro.org>
-Date: Wed, 2 Jul 2025 08:47:01 -0600
+ Wed, 02 Jul 2025 07:48:23 -0700 (PDT)
+Message-ID: <fdffc8af-897c-4f2d-a046-2b6c2bc370c4@ventanamicro.com>
+Date: Wed, 2 Jul 2025 11:48:18 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/12] target/arm: Fix VSTR_SG helper store alignment
- checks
-To: William Kosasih <kosasihwilliam4@gmail.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-References: <20250702111954.128563-1-kosasihwilliam4@gmail.com>
- <20250702111954.128563-8-kosasihwilliam4@gmail.com>
+Subject: Re: [PATCH] target/riscv: rvv: Minimum VLEN needs to respect V/Zve
+ extensions
+To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20250627132156.440214-1-max.chou@sifive.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250702111954.128563-8-kosasihwilliam4@gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20250627132156.440214-1-max.chou@sifive.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,18 +105,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/2/25 05:19, William Kosasih wrote:
-> This patch adds alignment checks in the store operations in the VSTR_SG
-> instructions.
+
+
+On 6/27/25 10:21 AM, Max Chou wrote:
+> According to the RISC-V instruction set manual, the minimum VLEN needs
+> to respect the following extensions:
 > 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
-> Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
+>    Extension     Minimum VLEN
+> * V             128
+> * Zve64[d|f|x]   64
+> * Zve32[f|x]     32
+> 
+> Signed-off-by: Max Chou <max.chou@sifive.com>
 > ---
->   target/arm/tcg/mve_helper.c | 30 +++++++++++++++++-------------
->   1 file changed, 17 insertions(+), 13 deletions(-)
+>   target/riscv/tcg/tcg-cpu.c | 13 +++++++++++--
+>   1 file changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 163e7ce3642..187534009dd 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -416,12 +416,21 @@ static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
+>   static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
+>                                    Error **errp)
+>   {
+> +    uint32_t min_vlen;
+>       uint32_t vlen = cfg->vlenb << 3;
+>   
+> -    if (vlen > RV_VLEN_MAX || vlen < 128) {
+> +    if (riscv_has_ext(env, RVV)) {
+> +        min_vlen = 128;
+> +    } else if (cfg->ext_zve64x) {
+> +        min_vlen = 64;
+> +    } else if (cfg->ext_zve32x) {
+> +        min_vlen = 32;
+> +    }
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+At this moment this is how we're calling riscv_cpu_validate_v():
+
+     if (riscv_has_ext(env, RVV)) {
+         riscv_cpu_validate_v(env, &cpu->cfg, &local_err);
+         if (local_err != NULL) {
+             error_propagate(errp, local_err);
+             return;
+         }
+     }
 
 
-r~
+riscv_has_ext(env, RVV) is always true inside the function. The code above will
+always result in min_vlen = 128 because of the 'else if' chaining.
+
+IIUC the idea of the patch, what you want is something like:
+
+> +    uint32_t min_vlen = 128;
+>       uint32_t vlen = cfg->vlenb << 3;
+>   
+> -    if (vlen > RV_VLEN_MAX || vlen < 128) {
+> +    if (cfg->ext_zve64x) {
+> +        min_vlen = 64;
+> +    } else if (cfg->ext_zve32x) {
+> +        min_vlen = 32;
+> +    }
+
+I.e. init min_vlen to 128 (since RVV is always true) and then change it according to
+zve64x and zve32x.
+
+
+Thanks,
+
+Daniel
+
+
+
+> +
+> +    if (vlen > RV_VLEN_MAX || vlen < min_vlen) {
+>           error_setg(errp,
+>                      "Vector extension implementation only supports VLEN "
+> -                   "in the range [128, %d]", RV_VLEN_MAX);
+> +                   "in the range [%d, %d]", min_vlen, RV_VLEN_MAX);
+>           return;
+>       }
+>   
+
 
