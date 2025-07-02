@@ -2,43 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9D0AF4CE1
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 15:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771C8AF5970
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 15:38:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWx1B-0000ET-LP; Wed, 02 Jul 2025 08:56:56 -0400
+	id 1uWx2c-00025r-PG; Wed, 02 Jul 2025 08:58:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=U4+o=ZP=kaod.org=clg@ozlabs.org>)
- id 1uWwwT-0003Sl-3I
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:52:09 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uWx1q-0001c3-AJ
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:57:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=U4+o=ZP=kaod.org=clg@ozlabs.org>)
- id 1uWwwO-0005EC-4g
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:52:00 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4bXKXK3hZqz4x43;
- Wed,  2 Jul 2025 22:51:29 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4bXKXG3Z9Zz4wbr;
- Wed,  2 Jul 2025 22:51:26 +1000 (AEST)
-Message-ID: <ed4fb068-dcba-4ce0-83d7-3534d3e37509@kaod.org>
-Date: Wed, 2 Jul 2025 14:51:38 +0200
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uWx1i-00070v-G2
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:57:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751461042;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=rIR1RTd6EFiHqotyjX8gQMC4rS6Y/NI7LHfwHG0tHzk=;
+ b=Ypn77JSFNWVTNZh6EyPBvLHTJxh3P2DeKvIoiI7jsV+TLM4jy0uPFQeR6xdoSS53Wuxho9
+ xlbrBrbKcKVvYSkyeAdFay1FQ9LnxT6veBhWA5EArA6aCcqpI4L6B9gCfTE2SeYWOXJ2f0
+ VcXDcvYIvLHTfBfWQ7lJuOliIPD9+kc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-404-zh5GkdYiO6y0okUqa-vpGw-1; Wed, 02 Jul 2025 08:57:21 -0400
+X-MC-Unique: zh5GkdYiO6y0okUqa-vpGw-1
+X-Mimecast-MFC-AGG-ID: zh5GkdYiO6y0okUqa-vpGw_1751461040
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a52bfda108so3260297f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:57:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751461040; x=1752065840;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rIR1RTd6EFiHqotyjX8gQMC4rS6Y/NI7LHfwHG0tHzk=;
+ b=WvdZ/CZNUzeIxCaXbSKZemYYkfT6N3D1v2/qD6qXCpzLcB9HkxCYINkSlzhRMrK7ka
+ gGgKv2nMNJzJIdmEjLx6PoCXmJfWEPT8S/IQTICzMKlMDrxvByDhfJE5a2zEMSRwrA3Y
+ em6ZXInJMzS3x2PDdb1uWe7Aeb8sBfCADjfHQIr56B6eUrUePXEA3Ox0yOqJf4zKrUjv
+ MkVIuJIEMX/6VjSPOa6ES8EYaYuyJR13uV/kjUcqkS80nYOZ55pimv8tzeGAdxrrFuPI
+ kK4GpjHnsUnzOnGTuB5GMZPjBbhxcJ+dSwW0UX47m8p16rjqECHu6Dn9wfOndM+h0Soc
+ 7dxw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXT1bAbKlAPtDVtc2AfTGtQuzExGtxh2p13VbBBtE8/m7NbCWpPpVL6F9Cx8uU/+HYxVjSD94GhbXpX@nongnu.org
+X-Gm-Message-State: AOJu0Yzm/FOq/4lvxc96g1XgTSy/0omQrNUeEuglgfIhpVYyRrscL+mm
+ zQrKHI2tAgTZCtsgYGGlKwgKxl3pyM8mE6j52ct7ieq4SqHog+af+fExWMa0ucP+3/888KOLUY7
+ zIncgcVx/z39dd6K1Y/M7PlwCBNnsjL2yYM7O5EjjtOKmck1GvGClLY3v
+X-Gm-Gg: ASbGncte61DMluzUKIeA+h68K6PcKHebcFthMpNaOtVHMxmAjH7LhChtCYYNU9H3HwD
+ JYuRshlKRV6AAEhupE7qqytNDZqZ+YbSQoE1s0DdMfed/WvtjzEleLMAsQW0GrOoGovjRPWLZxN
+ +K6emDXJQAgMMtdJZMwvAP6rR3JEP94p9bVq2UU9ljz+35KsKANPALkoP2ugrXA4CE02Efjm+jC
+ hqXB7MKAgMPmlXLeb26/BsUx5eV43VRCRJNep1cUTP0KaZir4oyLlUgBOMGuw0A14P8puwmVWu5
+ ryYVZn4Uq8QNZraJK3l1a417VghLkoH4QRnXyIqq/+50uz7zJGa9t5YhhZ4A
+X-Received: by 2002:a05:6000:43cc:10b0:3a3:7ba5:9618 with SMTP id
+ ffacd0b85a97d-3b2000b0a44mr1528192f8f.29.1751461039693; 
+ Wed, 02 Jul 2025 05:57:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHdZz3fVgt9OpGZXRJPcbvn8V++BccsPcaZddHMsvqxAxxXeaENbH7SqU25xpeNR/Q+jTBjDA==
+X-Received: by 2002:a05:6000:43cc:10b0:3a3:7ba5:9618 with SMTP id
+ ffacd0b85a97d-3b2000b0a44mr1528169f8f.29.1751461039144; 
+ Wed, 02 Jul 2025 05:57:19 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a892e52b9esm16217426f8f.61.2025.07.02.05.57.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Jul 2025 05:57:18 -0700 (PDT)
+Message-ID: <b2a16387-5754-4f1e-ad7a-485069476aa1@redhat.com>
+Date: Wed, 2 Jul 2025 14:57:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tests/functional: test device passthrough on aarch64
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com, thuth@redhat.com, jean-philippe@linaro.org,
- alex.bennee@linaro.org, eric.auger@redhat.com, smostafa@google.com
-References: <20250627200222.5172-1-pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH v2] i386/tdx: Build TDX only for 64-bit target
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20250625073310.2796298-1-xiaoyao.li@intel.com>
 Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
  xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
  8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
  yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
@@ -48,49 +93,52 @@ Autocrypt: addr=clg@kaod.org; keydata=
  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
- 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
-In-Reply-To: <20250627200222.5172-1-pierrick.bouvier@linaro.org>
+ tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
+ IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
+ 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
+ S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
+ lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
+ EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
+ xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
+ hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
+ VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
+ k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
+ RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
+ 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
+ V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
+ pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
+ KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
+ bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
+ TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
+ CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
+ YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
+ LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
+ JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
+ jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
+ IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
+ 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
+ yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
+ hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
+ s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
+ LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
+ wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
+ XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
+ HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
+ izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250625073310.2796298-1-xiaoyao.li@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=U4+o=ZP=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,218 +154,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
-
-On 6/27/25 22:02, Pierrick Bouvier wrote:
-> This test allows to document and exercise device passthrough, using a
-> nested virtual machine setup. Two disks are generated and passed to the
-> VM, and their content is compared to original images.
+On 6/25/25 09:33, Xiaoyao Li wrote:
+> Build errors related to TDX were reported when QEMU built on 32-bit
+> host[1][2].
 > 
-> Guest and nested guests commands are executed through two scripts, and
-> init used in both system is configured to trigger a kernel panic in case
-> any command fails. This is more reliable and readable than executing all
-> commands through prompt injection and trying to guess what failed.
+> Since TDX cannot work on 32-bit host and it's also not worth supporting
+> TDX with 32-bit QEMU, limit TDX to 64-bit target only.
 > 
-> Initially, this test was supposed to test smmuv3 nested emulation
-> (combining both stages of translation), but I could not find any setup
-> (kernel + vmm) able to do the passthrough correctly, despite several
-> tries.
+> [1] https://lore.kernel.org/qemu-devel/20250602173101.1052983-1-clg@redhat.com/
+> [2] https://lore.kernel.org/qemu-devel/b8171c39-6a92-4078-a59a-a63d7452e1e9@kaod.org/
 > 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Suggested-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->   tests/functional/meson.build                  |   2 +
->   .../test_aarch64_device_passthrough.py        | 142 ++++++++++++++++++
->   2 files changed, 144 insertions(+)
->   create mode 100755 tests/functional/test_aarch64_device_passthrough.py
+>   hw/i386/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-> index 3021928a9d4..6cc78abb123 100644
-> --- a/tests/functional/meson.build
-> +++ b/tests/functional/meson.build
-> @@ -13,6 +13,7 @@ endif
->   test_timeouts = {
->     'aarch64_aspeed_ast2700' : 600,
->     'aarch64_aspeed_ast2700fc' : 600,
-> +  'aarch64_device_passthrough' : 720,
->     'aarch64_imx8mp_evk' : 240,
->     'aarch64_raspi4' : 480,
->     'aarch64_reverse_debug' : 180,
-> @@ -84,6 +85,7 @@ tests_aarch64_system_quick = [
->   tests_aarch64_system_thorough = [
->     'aarch64_aspeed_ast2700',
->     'aarch64_aspeed_ast2700fc',
-> +  'aarch64_device_passthrough',
->     'aarch64_imx8mp_evk',
->     'aarch64_raspi3',
->     'aarch64_raspi4',
-> diff --git a/tests/functional/test_aarch64_device_passthrough.py b/tests/functional/test_aarch64_device_passthrough.py
-> new file mode 100755
-> index 00000000000..1f3f158a9ff
-> --- /dev/null
-> +++ b/tests/functional/test_aarch64_device_passthrough.py
-> @@ -0,0 +1,142 @@
-> +#!/usr/bin/env python3
-> +#
-> +# Boots a nested guest and compare content of a device (passthrough) to a
-> +# reference image. Both vfio group and iommufd passthrough methods are tested.
-> +#
-> +# Copyright (c) 2025 Linaro Ltd.
-> +#
-> +# Author: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +import os
-> +
-> +from qemu_test import QemuSystemTest, Asset
-> +from qemu_test import exec_command, wait_for_console_pattern
-> +from qemu_test import exec_command_and_wait_for_pattern
-> +from random import randbytes
-> +
-> +guest_script = '''
-> +#!/usr/bin/env bash
-> +
-> +set -euo pipefail
-> +set -x
-> +
-> +# find disks from nvme serial
-> +dev_vfio=$(lsblk --nvme | grep vfio | cut -f 1 -d ' ')
-> +dev_iommufd=$(lsblk --nvme | grep iommufd | cut -f 1 -d ' ')
-> +pci_vfio=$(basename $(readlink -f /sys/block/$dev_vfio/../../../))
-> +pci_iommufd=$(basename $(readlink -f /sys/block/$dev_iommufd/../../../))
-> +
-> +# bind disks to vfio
-> +for p in "$pci_vfio" "$pci_iommufd"; do
-> +    if [ "$(cat /sys/bus/pci/devices/$p/driver_override)" == vfio-pci ]; then
-> +        continue
-> +    fi
-> +    echo $p > /sys/bus/pci/drivers/nvme/unbind
-> +    echo vfio-pci > /sys/bus/pci/devices/$p/driver_override
-> +    echo $p > /sys/bus/pci/drivers/vfio-pci/bind
-> +done
-> +
-> +# boot nested guest and execute /host/nested_guest.sh
-> +# one disk is passed through vfio group, the other, through iommufd
-> +qemu-system-aarch64 \
+> diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+> index eb65bda6e071..14d23e27b580 100644
+> --- a/hw/i386/Kconfig
+> +++ b/hw/i386/Kconfig
+> @@ -13,7 +13,7 @@ config SGX
+>   config TDX
+>       bool
+>       select X86_FW_OVMF
+> -    depends on KVM
+> +    depends on KVM && X86_64
+>   
+>   config PC
+>       bool
 
-Is this binary on the host.ext4 image ?
 
-If so, the test is testing a chosen QEMU version compiled in the
-L1 guest image but not the current QEMU version, which is the one
-running in the L0.
+I will take this change through the vfio queue if no one objects.
 
-Anyhow this is a very nice test and an excellent base to build on.
-As a next step, I’d suggest including tests with NICs using igb
-devices and igb virtual functions (VFs).
-
-It would also be great to run the L1 environment using the current
-version of QEMU. I haven't found a clean way to achieve that yet :/
 
 Thanks,
 
 C.
 
-
-
-
-> +-M virt \
-> +-display none \
-> +-serial stdio \
-> +-cpu host \
-> +-enable-kvm \
-> +-m 1G \
-> +-kernel /host/Image.gz \
-> +-drive format=raw,file=/host/guest.ext4,if=virtio \
-> +-append "root=/dev/vda init=/init -- bash /host/nested_guest.sh" \
-> +-virtfs local,path=/host,mount_tag=host,security_model=mapped,readonly=off \
-> +-device vfio-pci,host=$pci_vfio \
-> +-object iommufd,id=iommufd0 \
-> +-device vfio-pci,host=$pci_iommufd,iommufd=iommufd0
-> +'''
-> +
-> +nested_guest_script = '''
-> +#!/usr/bin/env bash
-> +
-> +set -euo pipefail
-> +set -x
-> +
-> +image_vfio=/host/disk_vfio
-> +image_iommufd=/host/disk_iommufd
-> +
-> +dev_vfio=$(lsblk --nvme | grep vfio | cut -f 1 -d ' ')
-> +dev_iommufd=$(lsblk --nvme | grep iommufd | cut -f 1 -d ' ')
-> +
-> +# compare if devices are identical to original images
-> +diff $image_vfio /dev/$dev_vfio
-> +diff $image_iommufd /dev/$dev_iommufd
-> +
-> +echo device_passthrough_test_ok
-> +'''
-> +
-> +class Aarch64DevicePassthrough(QemuSystemTest):
-> +
-> +    # https://github.com/pbo-linaro/qemu-linux-stack
-> +    #
-> +    # Linux kernel is compiled with defconfig +
-> +    # IOMMUFD + VFIO_DEVICE_CDEV + ARM_SMMU_V3_IOMMUFD
-> +    # https://docs.kernel.org/driver-api/vfio.html#vfio-device-cde
-> +    ASSET_DEVICE_PASSTHROUGH_STACK = Asset(
-> +        ('https://fileserver.linaro.org/s/fx5DXxBYme8dw2G/'
-> +         'download/device_passthrough.tar.xz'),
-> +         '812750b664d61c2986f2b149939ae28cafbd60d53e9c7e4b16e97143845e196d')
-> +
-> +    # This tests the device passthrough implementation, by booting a VM
-> +    # supporting it with two nvme disks attached, and launching a nested VM
-> +    # reading their content.
-> +    def test_aarch64_device_passthrough(self):
-> +        self.set_machine('virt')
-> +        self.require_accelerator('tcg')
-> +
-> +        self.vm.set_console()
-> +
-> +        stack_path_tar_gz = self.ASSET_DEVICE_PASSTHROUGH_STACK.fetch()
-> +        self.archive_extract(stack_path_tar_gz, format="tar")
-> +
-> +        stack = self.scratch_file('out')
-> +        kernel = os.path.join(stack, 'Image.gz')
-> +        rootfs_host = os.path.join(stack, 'host.ext4')
-> +        disk_vfio = os.path.join(stack, 'disk_vfio')
-> +        disk_iommufd = os.path.join(stack, 'disk_iommufd')
-> +        guest_cmd = os.path.join(stack, 'guest.sh')
-> +        nested_guest_cmd = os.path.join(stack, 'nested_guest.sh')
-> +        # we generate two random disks
-> +        with open(disk_vfio, "wb") as d: d.write(randbytes(512))
-> +        with open(disk_iommufd, "wb") as d: d.write(randbytes(1024))
-> +        with open(guest_cmd, 'w') as s: s.write(guest_script)
-> +        with open(nested_guest_cmd, 'w') as s: s.write(nested_guest_script)
-> +
-> +        self.vm.add_args('-cpu', 'max')
-> +        self.vm.add_args('-m', '2G')
-> +        self.vm.add_args('-M', 'virt,'
-> +                         'virtualization=on,'
-> +                         'gic-version=max,'
-> +                         'iommu=smmuv3')
-> +        self.vm.add_args('-kernel', kernel)
-> +        self.vm.add_args('-drive', f'format=raw,file={rootfs_host}')
-> +        self.vm.add_args('-drive',
-> +                         f'file={disk_vfio},if=none,id=vfio,format=raw')
-> +        self.vm.add_args('-device', 'nvme,serial=vfio,drive=vfio')
-> +        self.vm.add_args('-drive',
-> +                         f'file={disk_iommufd},if=none,id=iommufd,format=raw')
-> +        self.vm.add_args('-device', 'nvme,serial=iommufd,drive=iommufd')
-> +        self.vm.add_args('-virtfs',
-> +                         f'local,path={stack}/,mount_tag=host,'
-> +                         'security_model=mapped,readonly=off')
-> +        # boot and execute guest script
-> +        # init will trigger a kernel panic if script fails
-> +        self.vm.add_args('-append',
-> +                         'root=/dev/vda init=/init -- bash /host/guest.sh')
-> +
-> +        self.vm.launch()
-> +        wait_for_console_pattern(self, 'device_passthrough_test_ok',
-> +                                 failure_message='Kernel panic')
-> +
-> +if __name__ == '__main__':
-> +    QemuSystemTest.main()
 
 
