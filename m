@@ -2,91 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63F5AF0C71
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 09:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CDE2AF0C61
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 09:19:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWrmB-0008It-8C; Wed, 02 Jul 2025 03:21:03 -0400
+	id 1uWrjl-0006Hc-Fv; Wed, 02 Jul 2025 03:18:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWrlz-0008HB-Bf
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 03:20:53 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uWrll-00059p-SB
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 03:20:49 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-453634d8609so45813195e9.3
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 00:20:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751440833; x=1752045633; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=j2I1ifejFRnHNAXmWr768gorPCYwltuOTHlQzOWSgTI=;
- b=SRJU/OgIDhhpPN0xOpugARNRBeIs/dOfoiz1/wAPsWTcNOckQj9i3Vxqjt2SzoUnbh
- +zmaAxn3XarmDY9TrBaWQPs7PIgNNU8VChr1jANhWjWT48WZJKtG3h3Fpl+dGNjp9Ys8
- 4BIFQIF/T+e/gA8h4eT+b7s5HhTVmVTP1I7snJ/V4cg55HTSjxqBLzpVp3of35tb8N94
- DwAP2MjnEgk4IkegsWiSczwxcDPEEiJFTu9JrxGmuh+pW2kMQ6mCbl3fKirES0M7TcPW
- aheMwypGp9Hr0Ij9BhIzZ7P7WZJ8v0i48ByHwi/48+Hc2dFm9KLFJY/9mK4q/HjSsZUx
- 9hyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751440833; x=1752045633;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j2I1ifejFRnHNAXmWr768gorPCYwltuOTHlQzOWSgTI=;
- b=WGx1La6mSQPSwtYv6VpLC/Ty3xrlhFgS4Wbj76jJUF+yD64Bcp0X3ipVPwv0BvGgBt
- Ln0ypFmngcgiGACwWV6JwZgcrbX5//wKvI/jPsRQIxp8uqjtvmGK/JtsPzXR+Aobmnno
- YSWLaTeic/qSNj2MBqaE89RpObMV/wkwJ8wS90RICaTmbvWky2kH8D8LWXe+toWZriGp
- RHqI49iHyBP/O50GUxWFAlFLrp5yjurQuaMP8owRve54P8Av9VHfscA1E7pY+Vmqi5gu
- 3pitZb1hcgQyQoHscVRNMJAyNYLhX2/mFgdOq7agyZFudVi353Zlh4VK8u/2xmr83R9v
- 12JA==
-X-Gm-Message-State: AOJu0Yy8YPYctyJtD3NKNIA1DPIHRFkmbi6lkBqZSjNdRpelVUuq3oK8
- xeOuV6p34nHj8XhNkMreUj5AHUkwekYZKXvXPocpfwpFSBa3kflVR04hEvzI/oNVTs2yJg9P4RL
- RAydM
-X-Gm-Gg: ASbGncsJvVvzhTvPke5hDoan4wY2SjF8kRqH3r0mYlHwlyZY0owA1GKQbtjWQL6aZNt
- AUAU1c4xXIE4jTnXS/cdnJ+1Zn0CcSfmas98s1qwp0ifi3h7p9+Va5AOifLCYPPeDQB/dhKxf1p
- 9BVB1dRcbTxdwxeipYKT1m/3IwknWMtdYJsRrSqb8ZovNXsklTwqvP35SR1HAbeCHH24Fnym3uq
- BtqKdkmSZymniC548zcXf9oLMgbUcgxz6Y4LJeuDEDB8dZhKGjb8QcVhbFehBXDaARXpfy8Q0MA
- qtfR3naQo+eoq04QfrndlmPqqDYgjkRFTWooiAij3+1s6qbrZmgWKFbMgB/WLcnnZPFBMJEx+UA
- 1IBDtwTS9O5uysCUlOUFv+uWrLeHuWg==
-X-Google-Smtp-Source: AGHT+IGXioDeQeaiVsYjVzazWZvpCecWAoMIiVXPCprhSFEIKzD+WAlfVQaq4prjRvaRdKoLVMhhWg==
-X-Received: by 2002:a05:600c:1d09:b0:453:1058:f8c1 with SMTP id
- 5b1f17b1804b1-454a36dc7bemr20979875e9.3.1751440832976; 
- Wed, 02 Jul 2025 00:20:32 -0700 (PDT)
-Received: from [192.168.69.166] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4538a3a6716sm189692215e9.11.2025.07.02.00.20.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Jul 2025 00:20:31 -0700 (PDT)
-Message-ID: <f7319740-882c-49f5-90ae-79832d99996b@linaro.org>
-Date: Wed, 2 Jul 2025 09:20:30 +0200
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1uWrji-0006HO-5q
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 03:18:30 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1uWrjf-0004Zw-6d
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 03:18:29 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Bx7eI73WRoTg8hAQ--.36778S3;
+ Wed, 02 Jul 2025 15:18:19 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by front1 (Coremail) with SMTP id qMiowJBxpeQ43WRofmgGAA--.36788S3;
+ Wed, 02 Jul 2025 15:18:19 +0800 (CST)
+Subject: Re: [PATCH v3 7/9] hw/loongarch: Implement avec set irq
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
+References: <20250627030138.2482055-1-gaosong@loongson.cn>
+ <20250627030138.2482055-8-gaosong@loongson.cn>
+ <eac2cad7-d0a9-9d65-e98e-1e0f5d719a42@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <ca4adb80-dfd0-b1d2-50ab-9b6cace43081@loongson.cn>
+Date: Wed, 2 Jul 2025 15:21:06 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 21/68] accel/whpx: Convert
- ops::synchronize_pre_resume() -> pre_resume_vm()
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Julian Armistead <julian.armistead@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20250701144017.43487-1-philmd@linaro.org>
- <20250701144017.43487-22-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250701144017.43487-22-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <eac2cad7-d0a9-9d65-e98e-1e0f5d719a42@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Language: en-US
+X-CM-TRANSID: qMiowJBxpeQ43WRofmgGAA--.36788S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxXw18ZF47tr47WF43uF1fXwc_yoW5KFyxpF
+ 1kArZ8WryUJrn3XrnxG345ZFy3Jr10q3W7XF1IgFyIyF4DCr10grW8XrnFgF1UAw4rGr4U
+ Zr18Xw43ZF17JrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v2
+ 6r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+ 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUcDDGUUUU
+ U
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.077,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,35 +81,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/7/25 16:39, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/i386/whpx/whpx-accel-ops.h | 1 -
->   target/i386/whpx/whpx-accel-ops.c | 1 -
->   target/i386/whpx/whpx-all.c       | 3 ++-
->   3 files changed, 2 insertions(+), 3 deletions(-)
+在 2025/7/2 上午11:15, Bibo Mao 写道:
+>
+>
+> On 2025/6/27 上午11:01, Song Gao wrote:
+>> Implement avec set irq and update CSR_MSIS and CSR_MSGIR.
+>>
+>> Signed-off-by: Song Gao <gaosong@loongson.cn>
+>> ---
+>>   hw/intc/loongarch_avec.c | 44 ++++++++++++++++++++++++++++++++++++++--
+>>   1 file changed, 42 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
+>> index c686ac9483..5959d05d13 100644
+>> --- a/hw/intc/loongarch_avec.c
+>> +++ b/hw/intc/loongarch_avec.c
+>> @@ -16,6 +16,12 @@
+>>   #include "migration/vmstate.h"
+>>   #include "trace.h"
+>>   #include "hw/qdev-properties.h"
+>> +#include "target/loongarch/cpu.h"
+>> +
+>> +/* msg addr field */
+>> +FIELD(MSG_ADDR, IRQ_NUM, 4, 8)
+>> +FIELD(MSG_ADDR, CPU_NUM, 12, 8)
+>> +FIELD(MSG_ADDR, FIX, 28, 12)
+>>     static uint64_t loongarch_avec_mem_read(void *opaque,
+>>                                           hwaddr addr, unsigned size)
+>> @@ -23,12 +29,46 @@ static uint64_t loongarch_avec_mem_read(void 
+>> *opaque,
+>>       return 0;
+>>   }
+>>   +static void avec_set_irq(LoongArchAVECState *s, int cpu_num, int 
+>> irq_num, int level)
+>> +{
+>> +    MachineState *machine = MACHINE(qdev_get_machine());
+>> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
+>> +    const CPUArchIdList *id_list = NULL;
+>> +    CPUState *cpu;
+>> +    CPULoongArchState *env;
+>> +    int i;
+>> +
+>> +    assert(mc->possible_cpu_arch_ids(machine));
+>> +    id_list = mc->possible_cpu_arch_ids(machine);
+>> +    cpu = id_list->cpus[cpu_num].cpu;
+>> +    env = &LOONGARCH_CPU(cpu)->env;
+>> +
+>> +    if (level) {
+>> +        set_bit(irq_num, &env->CSR_MSGIS[irq_num / 64]);
+>> +        env->CSR_MSGIR = FIELD_DP64(env->CSR_MSGIR, CSR_MSGIR, 
+>> INTNUM, irq_num);
+>> +        env->CSR_MSGIR = FIELD_DP64(env->CSR_MSGIR, CSR_MSGIR, 
+>> ACTIVE, 0);
+>> +
+>> +        for (i = 0; i < ARRAY_SIZE(env->CSR_MSGIS); i++) {
+>> +            if (env->CSR_MSGIS[i]) {
+>> +                return;
+>> +            }
+>> +        }
+>> +        qemu_set_irq(s->cpu[cpu_num].parent_irq, 0);
+and thecheck CSR_MSGIS[4] is from v2 comment.
+> Here such code can inject interrupt to cpu side.
+>   if (level) {
+>       set_bit(irq_num, &env->CSR_MSGIS[irq_num / 64]);
+>       qemu_set_irq(s->cpu[cpu_num].parent_irq, 1);
+>   }
+>
+but, we also need set CSRIR,  Otherwise, it will cause the kernel to 
+faill into a deep loop on avec driver avecintc_irq_dispatch();
 
-> diff --git a/target/i386/whpx/whpx-accel-ops.c b/target/i386/whpx/whpx-accel-ops.c
-> index b8bebe403c9..011810b5e50 100644
-> --- a/target/i386/whpx/whpx-accel-ops.c
-> +++ b/target/i386/whpx/whpx-accel-ops.c
-> @@ -95,7 +95,6 @@ static void whpx_accel_ops_class_init(ObjectClass *oc, const void *data)
->       ops->synchronize_post_init = whpx_cpu_synchronize_post_init;
->       ops->synchronize_state = whpx_cpu_synchronize_state;
->       ops->synchronize_pre_loadvm = whpx_cpu_synchronize_pre_loadvm;
-> -    ops->synchronize_pre_resume = whpx_cpu_synchronize_pre_resume;
->   }
+Thanks.
+Song Gao.
+> Regards
+> Bibo Mao
+>> +    }
+>> +    qemu_set_irq(s->cpu[cpu_num].parent_irq, level);
+>> +}
+>> +
+>>   static void loongarch_avec_mem_write(void *opaque, hwaddr addr,
+>>                                        uint64_t val, unsigned size)
+>>   {
+>> -    return;
+>> -}
+>> +    int irq_num, cpu_num = 0;
+>> +    LoongArchAVECState *s = LOONGARCH_AVEC(opaque);
+>> +    uint64_t msg_addr = addr + VIRT_AVEC_BASE;
+>>   +    cpu_num = FIELD_EX64(msg_addr, MSG_ADDR, CPU_NUM);
+>> +    irq_num = FIELD_EX64(msg_addr, MSG_ADDR, IRQ_NUM);
+>> +    avec_set_irq(s, cpu_num, irq_num, 1);
+>> +}
+>>     static const MemoryRegionOps loongarch_avec_ops = {
+>>       .read = loongarch_avec_mem_read,
+>>
 
-> @@ -2703,6 +2703,7 @@ static void whpx_accel_class_init(ObjectClass *oc, const void *data)
->       AccelClass *ac = ACCEL_CLASS(oc);
->       ac->name = "WHPX";
->       ac->init_machine = whpx_accel_init;
-> +    ac->pre_resume_vm = whpx_pre_resume_vm;
->       ac->allowed = &whpx_allowed;
->   
->       object_class_property_add(oc, "kernel-irqchip", "on|off|split",
-
-If preferred I can squash 20-22. The point here is this method does not
-belong to AccelOpsClass (with vcpu argument) but AccelClass because only
-requiring the (unique) AccelState argument.
 
