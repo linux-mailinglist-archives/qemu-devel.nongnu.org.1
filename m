@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34976AF6497
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 00:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31507AF64CD
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 00:04:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX5UF-0003XI-Us; Wed, 02 Jul 2025 17:59:27 -0400
+	id 1uX5UH-0003Xx-3t; Wed, 02 Jul 2025 17:59:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uX5UD-0003Wj-Oo
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 17:59:25 -0400
+ id 1uX5UF-0003X7-3W
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 17:59:27 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uX5UB-0003jD-Qy
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 17:59:25 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562LQdff007914;
- Wed, 2 Jul 2025 21:59:11 GMT
+ id 1uX5UC-0003jX-Fy
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 17:59:26 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562LQf1Q014606;
+ Wed, 2 Jul 2025 21:59:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=WZOc13eWyibxucEb2szeMT0WOvqZfOBclzkvdwbNsj0=; b=
- X9xOyFCW+NGE06JfiqdmMvi301lGyFwei5hLc+UZH5WWr3a4Ig0aX4iCC7ep3eR4
- aAjCJxJJP1oX9NuYqDSHwOynSFMK8pc/cuuAAhKkUKF6fwS/7woBqpHKKTVRWSH4
- dvhtPbG9Xmy1N214h/8u72G+qojTbfE4bqRXi0VjUQFVzBpxgAsXYDjfinETKgSi
- fWjIMoDbsEfesDyiPYAMx72gNpGehdE8Glg+/VQlxfyX5OZZsM8TlYy3A94JhdjK
- UmTjd0jNqCSNXuT/MKRqFSq/v4CjwUf5E7IT6SobOx6/lVl18KkubVfMPQ+XAvwO
- O2on4wd6Qri/g/BomPxn8Q==
+ corp-2025-04-25; bh=OzALD2fsFEdS/IShgruUdRHOQtTLvq07jI1ADEkvc28=; b=
+ k9F+dhzPOf4UxyISbljt0AVRuDWVelZZ2qT2Ny9dd/qCPubUo9ZccUVVPDu7PaN+
+ OgqrpoLuyfc7N8viS7WBcNfDkLy6a9/Vq6L0v5oIvDwqTFcSu5Sn6M7jRqLBQzlc
+ fwKspTnp6Q855iQHd57dpG4Bm23H0h7w7E17KWrYQQbzvGdgMwf5Pw6aQBL16X/t
+ XCPF0QTNgBgAGteKJeRtpnDzo/fmLwIkeb4T7PS2WLY4O9+JjNtv/myAxeZyubH6
+ S72COAC+rdeM6wtIk03pv4unQchTca/KTVZNkPIKl2kOXzemIThlAkIpM4Q46JPq
+ HIjKZwZDxfuiDs0hVTQW/w==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j7af7vh5-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j8xx7vd1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 02 Jul 2025 21:59:10 +0000 (GMT)
+ Wed, 02 Jul 2025 21:59:11 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 562KRI8t033624; Wed, 2 Jul 2025 21:59:10 GMT
+ with ESMTP id 562LTgjp033925; Wed, 2 Jul 2025 21:59:11 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 47j6ubtd5d-1
+ 47j6ubtd5r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 02 Jul 2025 21:59:10 +0000
+ Wed, 02 Jul 2025 21:59:11 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 562LwxgM020012;
- Wed, 2 Jul 2025 21:59:09 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 562LwxgO020012;
+ Wed, 2 Jul 2025 21:59:10 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 47j6ubtcxb-15; Wed, 02 Jul 2025 21:59:09 +0000
+ ESMTP id 47j6ubtcxb-16; Wed, 02 Jul 2025 21:59:10 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V6 14/21] vfio/iommufd: cpr state
-Date: Wed,  2 Jul 2025 14:58:51 -0700
-Message-Id: <1751493538-202042-15-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V6 15/21] vfio/iommufd: preserve descriptors
+Date: Wed,  2 Jul 2025 14:58:52 -0700
+Message-Id: <1751493538-202042-16-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1751493538-202042-1-git-send-email-steven.sistare@oracle.com>
 References: <1751493538-202042-1-git-send-email-steven.sistare@oracle.com>
@@ -75,18 +75,18 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  mlxlogscore=999 phishscore=0 suspectscore=0 mlxscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
  definitions=main-2507020182
-X-Proofpoint-ORIG-GUID: LB58geWSs6hV3EVR5dHSvdlPrQrLNf6n
-X-Proofpoint-GUID: LB58geWSs6hV3EVR5dHSvdlPrQrLNf6n
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDE4MSBTYWx0ZWRfX6/LlfwShBvTo
- 6IXHTurtC+GRqd5jPH0PTPBZ6ZpyRksWlX5H3C25+ronazzpfua/O4RRfYGmR7ShV3rV0724PNp
- 165+gI4JCbhu6i8MXtsxPTGbXoVhrmDC23+qo20pIwBY8QkKVAdbpiy3K/IG/sfLG0IeNOruI3O
- m3tn0mei/+xrcIVw1/aaMQh+fNH5Ywp0zbrRsfxub+Y10G9ai0nCDsLQv/BoaViptAq+WIXsi1l
- wxetW/hw0SzLt2YjoJfXKrCAExeA8MH1+GYD+pTOVmqMFg8SFFfgL/6OIgkn9qSYjD1WqfxR7MF
- YpX/hKp08W7he5OOVxxXRdcuqkxHpgajeGjwUpDaugi8sjdN/JbFEThAVYGa6hvB3IW1SnSahyK
- 3TuZC3cDC/7YdBIYeWZmjk22hpVxIAB3y8NgzaW1yWts13A7Y5nCwMqpjCDJMkT1w20/GrZx
-X-Authority-Analysis: v=2.4 cv=b5Cy4sGx c=1 sm=1 tr=0 ts=6865abaf cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDE4MiBTYWx0ZWRfX0zVmfrLZ8nzu
+ Gtid50ST4UtXnZs/c0/wAON1jofUdVnomibLeTdIXrJQ3jtAF/iYWwt0o8Z6lSVly9+5T4ZTX+C
+ LK+ccDwKbqgZY+HYAj2mUHsZcpjVgMK2Bm798t1eVsBh4j5XeC8NGdQ/nKHiVGxFRYCVD1DgiAZ
+ aQNJjIsIsGYJdWLMovbfbpAYe8IK0MTiVDkwPGwuZSml5+S628friDqGQrT6KMkCZoR++85COQ7
+ YvA7GJsh9a1cwgB6T/RpYkBXlVzrELEZm2hjqI66CtaAwW5wFJCa7nqKdG94P4q+q+uX98o3PJ6
+ VBYViZCqrAv1xPz1nU9UOs64bf73CSpobNxbvMKAokUZ5VR/aTlRB+VS1VgpNhACjCqmCvY4t28
+ Ika4MjJo2Xzh4xliIji/CXbgudCqJ7vdRYCEs0WLrIY+/vQSAfvkD8X8jHFVqt8Z1mMXhsz1
+X-Proofpoint-ORIG-GUID: cJf3ORlPbjJ-GemAetf2fqjNUj02cUwK
+X-Proofpoint-GUID: cJf3ORlPbjJ-GemAetf2fqjNUj02cUwK
+X-Authority-Analysis: v=2.4 cv=QfRmvtbv c=1 sm=1 tr=0 ts=6865abaf cx=c_pps
  a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8 a=VOZiMoB78o4PvpBx7BoA:9
+ a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8 a=I2KNaNdY-GqYJbIdq80A:9
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -25
@@ -112,193 +112,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VFIO iommufd devices will need access to ioas_id, devid, and hwpt_id in
-new QEMU at realize time, so add them to CPR state.  Define CprVFIODevice
-as the object which holds the state and is serialized to the vmstate file.
-Define accessors to copy state between VFIODevice and CprVFIODevice.
+Save the iommu and vfio device fd in CPR state when it is created.
+After CPR, the fd number is found in CPR state and reused.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/vfio/vfio-cpr.h |  3 ++
- hw/vfio/cpr-iommufd.c      | 98 +++++++++++++++++++++++++++++++++++++++++++++-
- hw/vfio/iommufd.c          |  2 +
- hw/vfio/trace-events       |  3 ++
- 4 files changed, 105 insertions(+), 1 deletion(-)
+ backends/iommufd.c    | 35 +++++++++++++++++++++++++++++------
+ hw/vfio/cpr-iommufd.c | 10 ++++++++++
+ hw/vfio/device.c      |  9 +--------
+ 3 files changed, 40 insertions(+), 14 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-index c94d5e0..4c17cb3 100644
---- a/include/hw/vfio/vfio-cpr.h
-+++ b/include/hw/vfio/vfio-cpr.h
-@@ -33,6 +33,8 @@ typedef struct VFIOContainerCPR {
- typedef struct VFIODeviceCPR {
-     Error *mdev_blocker;
-     Error *id_blocker;
-+    uint32_t hwpt_id;
-+    uint32_t ioas_id;
- } VFIODeviceCPR;
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index c554ce5..e091792 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -16,12 +16,18 @@
+ #include "qemu/module.h"
+ #include "qom/object_interfaces.h"
+ #include "qemu/error-report.h"
++#include "migration/cpr.h"
+ #include "monitor/monitor.h"
+ #include "trace.h"
+ #include "hw/vfio/vfio-device.h"
+ #include <sys/ioctl.h>
+ #include <linux/iommufd.h>
  
- bool vfio_legacy_cpr_register_container(struct VFIOContainer *container,
-@@ -54,6 +56,7 @@ bool vfio_iommufd_cpr_register_iommufd(struct IOMMUFDBackend *be, Error **errp);
- void vfio_iommufd_cpr_unregister_iommufd(struct IOMMUFDBackend *be);
- void vfio_iommufd_cpr_register_device(struct VFIODevice *vbasedev);
- void vfio_iommufd_cpr_unregister_device(struct VFIODevice *vbasedev);
-+void vfio_cpr_load_device(struct VFIODevice *vbasedev);
- 
- int vfio_cpr_group_get_device_fd(int d, const char *name);
- 
-diff --git a/hw/vfio/cpr-iommufd.c b/hw/vfio/cpr-iommufd.c
-index f95773b..4166201 100644
---- a/hw/vfio/cpr-iommufd.c
-+++ b/hw/vfio/cpr-iommufd.c
-@@ -7,14 +7,98 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/vfio/vfio-cpr.h"
-+#include "hw/vfio/vfio-device.h"
- #include "migration/blocker.h"
- #include "migration/cpr.h"
- #include "migration/migration.h"
- #include "migration/vmstate.h"
- #include "system/iommufd.h"
- #include "vfio-iommufd.h"
-+#include "trace.h"
- 
--const VMStateDescription vmstate_cpr_vfio_devices;  /* TBD in a later patch */
-+typedef struct CprVFIODevice {
-+    char *name;
-+    unsigned int namelen;
-+    uint32_t ioas_id;
-+    int devid;
-+    uint32_t hwpt_id;
-+    QLIST_ENTRY(CprVFIODevice) next;
-+} CprVFIODevice;
-+
-+static const VMStateDescription vmstate_cpr_vfio_device = {
-+    .name = "cpr vfio device",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT32(namelen, CprVFIODevice),
-+        VMSTATE_VBUFFER_ALLOC_UINT32(name, CprVFIODevice, 0, NULL, namelen),
-+        VMSTATE_INT32(devid, CprVFIODevice),
-+        VMSTATE_UINT32(ioas_id, CprVFIODevice),
-+        VMSTATE_UINT32(hwpt_id, CprVFIODevice),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+const VMStateDescription vmstate_cpr_vfio_devices = {
-+    .name = CPR_STATE "/vfio devices",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]){
-+        VMSTATE_QLIST_V(vfio_devices, CprState, 1, vmstate_cpr_vfio_device,
-+                        CprVFIODevice, next),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void vfio_cpr_save_device(VFIODevice *vbasedev)
++static const char *iommufd_fd_name(IOMMUFDBackend *be)
 +{
-+    CprVFIODevice *elem = g_new0(CprVFIODevice, 1);
-+
-+    elem->name = g_strdup(vbasedev->name);
-+    elem->namelen = strlen(vbasedev->name) + 1;
-+    elem->ioas_id = vbasedev->cpr.ioas_id;
-+    elem->devid = vbasedev->devid;
-+    elem->hwpt_id = vbasedev->cpr.hwpt_id;
-+    QLIST_INSERT_HEAD(&cpr_state.vfio_devices, elem, next);
++    return object_get_canonical_path_component(OBJECT(be));
 +}
 +
-+static CprVFIODevice *find_device(const char *name)
+ static void iommufd_backend_init(Object *obj)
+ {
+     IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
+@@ -64,11 +70,27 @@ static bool iommufd_backend_can_be_deleted(UserCreatable *uc)
+     return !be->users;
+ }
+ 
++static void iommufd_backend_complete(UserCreatable *uc, Error **errp)
 +{
-+    CprVFIODeviceList *head = &cpr_state.vfio_devices;
-+    CprVFIODevice *elem;
++    IOMMUFDBackend *be = IOMMUFD_BACKEND(uc);
++    const char *name = iommufd_fd_name(be);
 +
-+    QLIST_FOREACH(elem, head, next) {
-+        if (!strcmp(elem->name, name)) {
-+            return elem;
++    if (!be->owned) {
++        /* fd came from the command line. Fetch updated value from cpr state. */
++        if (cpr_is_incoming()) {
++            be->fd = cpr_find_fd(name, 0);
++        } else {
++            cpr_save_fd(name, 0, be->fd);
 +        }
 +    }
-+    return NULL;
 +}
 +
-+static void vfio_cpr_delete_device(const char *name)
-+{
-+    CprVFIODevice *elem = find_device(name);
-+
-+    if (elem) {
-+        QLIST_REMOVE(elem, next);
-+        g_free(elem->name);
-+        g_free(elem);
-+    }
-+}
-+
-+static bool vfio_cpr_find_device(VFIODevice *vbasedev)
-+{
-+    CprVFIODevice *elem = find_device(vbasedev->name);
-+
-+    if (elem) {
-+        vbasedev->cpr.ioas_id = elem->ioas_id;
-+        vbasedev->devid = elem->devid;
-+        vbasedev->cpr.hwpt_id = elem->hwpt_id;
-+        trace_vfio_cpr_find_device(elem->ioas_id, elem->devid, elem->hwpt_id);
-+        return true;
-+    }
-+    return false;
-+}
- 
- static bool vfio_cpr_supported(IOMMUFDBackend *be, Error **errp)
+ static void iommufd_backend_class_init(ObjectClass *oc, const void *data)
  {
-@@ -81,8 +165,20 @@ void vfio_iommufd_cpr_unregister_container(VFIOIOMMUFDContainer *container)
+     UserCreatableClass *ucc = USER_CREATABLE_CLASS(oc);
  
+     ucc->can_be_deleted = iommufd_backend_can_be_deleted;
++    ucc->complete = iommufd_backend_complete;
+ 
+     object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
+ }
+@@ -102,7 +124,7 @@ bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
+     int fd;
+ 
+     if (be->owned && !be->users) {
+-        fd = qemu_open("/dev/iommu", O_RDWR, errp);
++        fd = cpr_open_fd("/dev/iommu", O_RDWR, iommufd_fd_name(be), 0, errp);
+         if (fd < 0) {
+             return false;
+         }
+@@ -127,14 +149,15 @@ void iommufd_backend_disconnect(IOMMUFDBackend *be)
+         goto out;
+     }
+     be->users--;
+-    if (!be->users && be->owned) {
+-        close(be->fd);
+-        be->fd = -1;
+-    }
+-out:
+     if (!be->users) {
+         vfio_iommufd_cpr_unregister_iommufd(be);
++        if (be->owned) {
++            cpr_delete_fd(iommufd_fd_name(be), 0);
++            close(be->fd);
++            be->fd = -1;
++        }
+     }
++out:
+     trace_iommufd_backend_disconnect(be->fd, be->users);
+ }
+ 
+diff --git a/hw/vfio/cpr-iommufd.c b/hw/vfio/cpr-iommufd.c
+index 4166201..a72b68d 100644
+--- a/hw/vfio/cpr-iommufd.c
++++ b/hw/vfio/cpr-iommufd.c
+@@ -166,12 +166,18 @@ void vfio_iommufd_cpr_unregister_container(VFIOIOMMUFDContainer *container)
  void vfio_iommufd_cpr_register_device(VFIODevice *vbasedev)
  {
-+    if (!cpr_is_incoming()) {
-+        vfio_cpr_save_device(vbasedev);
-+    }
+     if (!cpr_is_incoming()) {
++        /*
++         * Beware fd may have already been saved by vfio_device_set_fd,
++         * so call resave to avoid a duplicate entry.
++         */
++        cpr_resave_fd(vbasedev->name, 0, vbasedev->fd);
+         vfio_cpr_save_device(vbasedev);
+     }
  }
  
  void vfio_iommufd_cpr_unregister_device(VFIODevice *vbasedev)
  {
-+    vfio_cpr_delete_device(vbasedev->name);
-+}
-+
-+void vfio_cpr_load_device(VFIODevice *vbasedev)
-+{
-+    if (cpr_is_incoming()) {
-+        bool ret = vfio_cpr_find_device(vbasedev);
-+        g_assert(ret);
-+    }
++    cpr_delete_fd(vbasedev->name, 0);
+     vfio_cpr_delete_device(vbasedev->name);
  }
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index ff291be..f0d57ea 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -515,6 +515,8 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
-     const VFIOIOMMUClass *iommufd_vioc =
-         VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
  
-+    vfio_cpr_load_device(vbasedev);
+@@ -180,5 +186,9 @@ void vfio_cpr_load_device(VFIODevice *vbasedev)
+     if (cpr_is_incoming()) {
+         bool ret = vfio_cpr_find_device(vbasedev);
+         g_assert(ret);
 +
-     if (vbasedev->fd < 0) {
-         devfd = iommufd_cdev_getfd(vbasedev->sysfsdev, errp);
-         if (devfd < 0) {
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index e1728c4..8ec0ad0 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -197,6 +197,9 @@ iommufd_cdev_alloc_ioas(int iommufd, int ioas_id) " [iommufd=%d] new IOMMUFD con
- iommufd_cdev_device_info(char *name, int devfd, int num_irqs, int num_regions, int flags) " %s (%d) num_irqs=%d num_regions=%d flags=%d"
- iommufd_cdev_pci_hot_reset_dep_devices(int domain, int bus, int slot, int function, int dev_id) "\t%04x:%02x:%02x.%x devid %d"
++        if (vbasedev->fd < 0) {
++            vbasedev->fd = cpr_find_fd(vbasedev->name, 0);
++        }
+     }
+ }
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 0ae3f3c..96cf214 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -351,14 +351,7 @@ void vfio_device_free_name(VFIODevice *vbasedev)
  
-+# cpr-iommufd.c
-+vfio_cpr_find_device(uint32_t ioas_id, int devid, uint32_t hwpt_id) "ioas_id %u, devid %d, hwpt_id %u"
-+
- # device.c
- vfio_device_get_region_info_type(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
- vfio_device_reset_handler(void) ""
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
+ {
+-    ERRP_GUARD();
+-    int fd = monitor_fd_param(monitor_cur(), str, errp);
+-
+-    if (fd < 0) {
+-        error_prepend(errp, "Could not parse remote object fd %s:", str);
+-        return;
+-    }
+-    vbasedev->fd = fd;
++    vbasedev->fd = cpr_get_fd_param(vbasedev->dev->id, str, 0, errp);
+ }
+ 
+ static VFIODeviceIOOps vfio_device_io_ops_ioctl;
 -- 
 1.8.3.1
 
