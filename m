@@ -2,71 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC766AF5DF5
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 18:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13AC8AF5DF9
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 18:03:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWzua-0002Q2-T5; Wed, 02 Jul 2025 12:02:17 -0400
+	id 1uWzv1-0002gZ-5B; Wed, 02 Jul 2025 12:02:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <robh@kernel.org>)
- id 1uWzuW-0002Ml-P0; Wed, 02 Jul 2025 12:02:13 -0400
-Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uWzuw-0002fh-QR
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 12:02:38 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <robh@kernel.org>)
- id 1uWzuV-00077P-4u; Wed, 02 Jul 2025 12:02:12 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by tor.source.kernel.org (Postfix) with ESMTP id E439261120;
- Wed,  2 Jul 2025 16:02:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD14C4CEEF;
- Wed,  2 Jul 2025 16:02:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1751472120;
- bh=xhuFKpiwZrBgAaTXDyaz7iKnGuYXiQhyBnHX7CVw36M=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=fCPpCgfQrywQeGriuCowRWndpRw9g7TmluXbJ4bmPgswaAP/vb2crckkBPfUJt3ky
- 1KE8AK+DMzEC2GUJz8tSLTtEiU+UN1qFiqRnFsvNLehaHmXd/04S/jYcuXaq7+4gbA
- AKe/0eawOOgvoYCVYSN6QBzeQDONxLJYi5V9oHmjyIbfu77SWFHXLW1VoYduZG+FZt
- +fGw7wect3syHgtNM7j4ay/YqLiSDFCjk8XVHvfbo1r1m1vV7n5NXspjdNm36SyyvH
- 7oJoPXfm3CTtP9YkvlVkXCq4rZ/yGa/nE9RYlakiYRSiIVxqLLzFucP6q9mT3o7I5t
- lPs5DjO5JQklw==
-Received: by mail-ej1-f54.google.com with SMTP id
- a640c23a62f3a-ae3c5f666bfso130912566b.3; 
- Wed, 02 Jul 2025 09:02:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUvebD6S8oeno1gtUU7pKofbJNKEEDNfm7dhNsKIcXZgfCwzA3kYJeW12V9D9h1DF0vow2VAFhDpA==@nongnu.org,
- AJvYcCXM1GOXZ6nBZeVbAxYuNQNqP1ruf/8OG/Z9d4riZkH3DzFifFOzIGn+bDpPbb0QDauf07p0Wv/A7fB1tg==@nongnu.org
-X-Gm-Message-State: AOJu0YyfaAI1zLXjxgHWtQr7c244JDPagLa3Ox6ZiYzDnzl/bfsoWzVN
- 1o63Pxek7sm8nkWtR1kxCl8uP/eI7ZvvaX3cMO2hbSOb0W5C66CU0J45JWuG9wfZvGmIw+Hel7e
- J5zU57Q0UQmktns37qkEFBLmh3YRb4A==
-X-Google-Smtp-Source: AGHT+IEX1u1c1SUivBtrEA6yAJJ3GFKzDcFz0bIp0/papFfqkHMdtM8NHIHg/HXxi1+bggrh1zghtm1PH//THjsWfhk=
-X-Received: by 2002:a17:907:d23:b0:ae3:7113:d6f1 with SMTP id
- a640c23a62f3a-ae3c2bc0370mr387683266b.25.1751472119090; Wed, 02 Jul 2025
- 09:01:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uWzut-0007DA-MX
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 12:02:38 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bXPjC0BvXz6L5Z8;
+ Wed,  2 Jul 2025 23:59:27 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 9F24D1402F4;
+ Thu,  3 Jul 2025 00:02:20 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 2 Jul 2025 18:02:20 +0200
+To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>
+CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>
+Subject: [PATCH qemu 00/11] hw/cxl: DCD Fabric Management Command Set (for
+ 10.1)
+Date: Wed, 2 Jul 2025 17:02:06 +0100
+Message-ID: <20250702160219.989731-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <20250702113051.46483-1-thuth@redhat.com>
-In-Reply-To: <20250702113051.46483-1-thuth@redhat.com>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 2 Jul 2025 11:01:47 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJS_YaJ-TfKykCYxrrva0m_Z=SPw+w0bmVdT3p_pxg9=w@mail.gmail.com>
-X-Gm-Features: Ac12FXxQgNAAWnb-w0nYqhK7Lwgl0OGYORTICm9cDS0Q0NCC9Vjd0QM5WXN-4qM
-Message-ID: <CAL_JsqJS_YaJ-TfKykCYxrrva0m_Z=SPw+w0bmVdT3p_pxg9=w@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm/highbank: Mark the "highbank" and the "midway"
- machine as deprecated
-To: Thomas Huth <thuth@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, Guenter Roeck <linux@roeck-us.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
- envelope-from=robh@kernel.org; helo=tor.source.kernel.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,33 +65,124 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 2, 2025 at 6:31=E2=80=AFAM Thomas Huth <thuth@redhat.com> wrote=
-:
->
-> From: Thomas Huth <thuth@redhat.com>
->
-> We don't have any automatic regression tests for these machines and
-> when asking the usual suspects on the mailing list we came to the
-> conclusion that nobody tests these machines manually, too, so it seems
-> like this is currently just completely unused code. Mark them as depre-
-> cated to see whether anybody still speaks up during the deprecation
-> period, otherwise we can likely remove these two machines in a couple
-> of releases.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  Here's the preceeding discussion on the mailing list:
->  https://lore.kernel.org/qemu-devel/CAFEAcA_0Hu8+G50sy0FJ2rX-=3DcNymLddDd=
-rS2nN5ZY-doKiT8w@mail.gmail.com/
->
->  docs/about/deprecated.rst | 7 +++++++
->  hw/arm/highbank.c         | 2 ++
->  2 files changed, 9 insertions(+)
+Hi Michael,
 
-Acked-by: Rob Herring <robh@kernel.org>
+I consider these ready for upstream.  They are only lightly tweaked from
+Anisa's last posting to drop some long lines and change a few patch
+titles + drag them to be directly based on upstream rather than on top
+of some stuff on my gitlab tree (trivial fuzz + context stuff only in
+the rebase).  There is one long line checkpatch warns about but I couldn't
+come up with a remotely elegant alternative so it seemed resonable to ignore
+that.
 
-Rob
+The fix from Fan has been on list for a while and is a necessary
+precursor of the FMAPI part. You may already have that queued.
+
+Anisa's cover letter for v4 follows which gives a lot more detail on what we have
+here.
+
+This patchset adds support for 6 FM API DCD Management commands (0x5600-0x5605)
+according to the CXL r3.2 Spec.
+
+The code was tested with libcxlmi, which runs in the QEMU VM and sends 56xxh
+commands to the device (QEMU-emulated) through MCTP messages over USB.
+
+Test Configuration:
+ - Kernel:
+To perform end-to-end tests, both MCTP and DCD support are needed for the kernel.
+The kernel version used is Ira's latest DCD branch which is based on 6.15-rc2,
+which includes the upstreamed support for MCTP over USB:
+https://github.com/weiny2/linux-kernel/tree/dcd-v6-2025-04-13
+
+- QEMU:
+To enable MCTP over USB in QEMU, Jonathan's RFC patches are applied on ToT master branch
+(https://lore.kernel.org/linux-cxl/20250609163334.922346-1-Jonathan.Cameron@huawei.com/T/#m21b9e0dfc689cb1890bb4d961710c23379e04902)
+
+For the tests of commands 0x5600 (Get DCD Info), 0x5601 (Get Host DC Region
+Config), and 0x5603 (Get DC Region Extent Lists), DCD kernel code is not involved.
+The libcxlmi test program is used to send the command to the device and results
+are collected and verified.
+
+For command 0x5602 (Set DC Region Config): device creates an event record with type
+DC_EVENT_REGION_CONFIG_UPDATED and triggers an interrupt to the host
+if the configuration changes as a result of the command. Currently, the kernel
+version used to test this only supports Add/Release type events. Thus, this
+request essentially gets ignored but did not cause problems besides the host
+not knowing about the configuration change when tested.
+
+For the command 0x5604 (Initiate DC Add) and 0x5605 (Initiate DC Release), the
+tests involve libcxlmi test program (acting as the FM), kernel DCD
+code (host) and QEMU device. The test workflow follows that in CXL r3.2 section
+7.6.7.6.5 and 7.6.7.6.6. More specifically, the tests involve following
+steps:
+1. Start a VM with CXL topology:
+
+ '-device usb-ehci,id=ehci \
+     -object memory-backend-file,id=cxl-mem1,mem-path=/tmp/t3_cxl1.raw,size=4G \
+     -object memory-backend-file,id=cxl-lsa1,mem-path=/tmp/t3_lsa1.raw,size=1M \
+     -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true \
+     -device cxl-rp,port=0,bus=cxl.1,id=cxl_rp_port0,chassis=0,slot=2 \
+     -device cxl-upstream,port=2,sn=1234,bus=cxl_rp_port0,id=us0,addr=0.0,multifunction=on, \
+     -device cxl-switch-mailbox-cci,bus=cxl_rp_port0,addr=0.1,target=us0 \
+     -device cxl-downstream,port=0,bus=us0,id=swport0,chassis=0,slot=4 \
+     -device cxl-type3,bus=swport0,volatile-dc-memdev=cxl-mem1,id=cxl-dcd0,lsa=cxl-lsa1,num-dc-regions=2,sn=99 \
+     -device usb-cxl-mctp,bus=ehci.0,id=usb0,target=us0 \
+     -device usb-cxl-mctp,bus=ehci.0,id=usb1,target=cxl-dcd0\
+     -machine cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=1k'
+
+2. Load the CXL related drivers in the VM & configure MCTP endpoints:
+
+3. Create a DC region for the DCD device attached:
+
+cxl create-region -m mem0 -d decoder0.0 -s 1G -t dynamic_ram_a
+
+4. Add/release DC extents by sending 0x5604 and 0x5605 respectively through
+the following libcxlmi test program:
+
+https://github.com/computexpresslink/libcxlmi/blob/main/examples/fmapi-mctp.c
+
+5. Check and verify the extents by retrieving the extents list through
+command 0x5603 in the test program.
+
+6. Create a DAX Device from the extents added:
+
+daxctl create-device -r region0
+daxctl reconfigure-device dax0.1 -m system-ram
+
+The remaining 3 commands in this series (0x5606-0x5608) are related to tags
+and sharing, thus have not been implemented.
+
+Anisa Su (10):
+  hw/cxl: mailbox-utils: 0x5600 - FMAPI Get DCD Info
+  hw/mem: cxl_type3: Add dsmas_flags to CXLDCRegion struct
+  hw/cxl: mailbox-utils: 0x5601 - FMAPI Get Host Region Config
+  hw/cxl: Move definition for dynamic_capacity_uuid and enum for DC
+    event types to header
+  hw/mem: cxl_type3: Add DC Region bitmap lock
+  hw/cxl: mailbox-utils: 0x5602 - FMAPI Set DC Region Config
+  hw/cxl: mailbox-utils: 0x5603 - FMAPI Get DC Region Extent Lists
+  hw/cxl: Create helper function to create DC Event Records from extents
+  hw/cxl: mailbox-utils: 0x5604 - FMAPI Initiate DC Add
+  hw/cxl: mailbox-utils: 0x5605 - FMAPI Initiate DC Release
+
+Fan Ni (1):
+  hw/cxl: fix DC extent capacity tracking
+
+ include/hw/cxl/cxl.h         |   1 +
+ include/hw/cxl/cxl_device.h  |  31 +-
+ include/hw/cxl/cxl_events.h  |  15 +
+ include/hw/cxl/cxl_mailbox.h |   6 +
+ hw/cxl/cxl-events.c          |  38 +++
+ hw/cxl/cxl-mailbox-utils.c   | 551 ++++++++++++++++++++++++++++++++++-
+ hw/mem/cxl_type3.c           |  83 ++----
+ 7 files changed, 656 insertions(+), 69 deletions(-)
+
+-- 
+2.48.1
+
 
