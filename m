@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A60AF6210
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 20:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D89A5AF6269
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 21:08:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX2eG-0000Hv-6b; Wed, 02 Jul 2025 14:57:36 -0400
+	id 1uX2eI-0000R8-99; Wed, 02 Jul 2025 14:57:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dt-0007nI-JJ
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:57:16 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dx-000819-LD
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:57:18 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dp-0002ax-Cq
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:57:12 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-453647147c6so77149285e9.2
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:57:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dv-0002cb-Hl
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:57:17 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-453608ed113so49565785e9.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:57:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751482626; x=1752087426; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751482633; x=1752087433; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/IUtIm3JHDSf2CDlC9ODm0iBh8kfs+CSjmgEqHJOxOs=;
- b=p/RdAU9bDpTbfwZshgJSQqiU6Ba40/Jf41VwsrOkPf9EtbGamIPuc/rpGDrmx3m65n
- S/QfaqLgQyar+/YiSKAPsi/1xTlKcv2/Ge2CKNHfp9MWbC53siknI5Qc6nj09dnwPfi3
- 2L8B8rd3843pSnOzoMFno4I87hfhTF+Am0pkPyRgqtLCZJJYT+NZglNtH6btDA7YnTwM
- o1THu6KI6puZJpKzG2hq4dr6RZ+bGmbBOqgAW0pOSv7hRv3SeR0U7ydi0SagPDDbVTKW
- lW2YyU9g2YT+ETuUWauFZ94FcewMTr2CEvuXJ9rU9DYMKXjAaVfJsYe+idd3S3DpWglt
- hKAA==
+ bh=LHMs7nmOn+MVUxcnTbQfOV+3h+SOD8dybVNBbhpVafQ=;
+ b=egSYonxgi62P6pCkkZ5TPfkiVZyQgP/YeF3buw+M45/2QFTVor7QHy3naF179RUdyA
+ H4ZsAyqRbMPqri3Jg3UGxlxa0zyHKwUgSLUuxxzITFNnOSE8NtL3Vgkzat5yspnM7e7r
+ 4v6lxkGl3N1MLfYy4seEkfOGqJFlNC1Lg0RyoBrt+eZbrjBrWEwQ2jH5YYHswiu9eRIj
+ QyZgdEMo28No1UEqwDJOIZpiwfvMtRZZG88SUSbOBvdWgAj6V84nPVTwoaO4a+xgAS94
+ SjYf2b8mNDVBdJ749VPstHSuceLygIB5QOtyuHbdg3C6rHOeMbAC9EJ9C+n2oUFsTJAg
+ VOVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751482626; x=1752087426;
+ d=1e100.net; s=20230601; t=1751482633; x=1752087433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/IUtIm3JHDSf2CDlC9ODm0iBh8kfs+CSjmgEqHJOxOs=;
- b=MTEQHSmjaO3J5TFZSp1YiD8MEcOjJDlBiPCA9jzXm0CBhzPOqDkXiAxtNW8Keo2S9n
- /LZxupFIPXjpRlALakExLLDceNAEe6RpSO3dhoLPx8bXP6VY8CM7EK6akikaI7bZG32q
- BekJX5jDqxDG7oODZLSE9Xo1Oo8GikvIeDS6u6PGA91a882ZQfeysu06dUCJZYGlWTvJ
- DF0IRc8taGRmW/Mms0OPhgvbB4dDfQFKZHxveKVTuQ7hszu+clSvU6L1llO01rP6jucL
- RakxHWaTFpJZXWX/nYgLc3n7xafls5jJccw6IS91epmqiGq06FEdGW0O+eJLeM5Alv/2
- 0ang==
-X-Gm-Message-State: AOJu0YwDW16VuXY4z49zI5ylB+16yBY6liR/WR3hDZXoFzJRGBiPRXm3
- fXPwhd+TIIuIC1ko4cCtSl5SIJdlgtRK9UXYihx/699FlDuhUIcsYJRIq0ZQ9gN3p5wF7IO7fDl
- 4giQ2
-X-Gm-Gg: ASbGncsB0LB3xSZbf3sYGcChoSvs49tPHaDIEVwrdnE9MAYxrWl6KT2Uu/Jx38xpone
- eB7X3EShm5wvnplli7KUurZxG8ZFW0aXBch1kO0gjlbNWqt+yQ/Ja6CaYstYOZqj0OLV1IJdQB2
- 4CqpZ41TepDGKB6YuFEjNXD4Fl54315iUof7eAgwNAb1B1kZPeIBdJamrRc9cw0AvOIshdzmShx
- X4RhLF0OuVZuKWzzykFMg/ij1nvsmHyuQg1QllSIfeGMtYafeZvrBP4PyT883WsdbpJgzMXg3z9
- +/fMFBdUZVRsjGiSOQjAahKCRad9OEPaInew9PsXy5RmHfajIFReH+Bqf8bfgyUlgENSwuGJWzn
- F3uYRxYZ5VffNJAB+4rteaMh0dzF6Heys3jMv
-X-Google-Smtp-Source: AGHT+IF1pBx8Sq1c4tIPVUXwwJioxbo9zGN6BBQxB4kZYVTiwt8E04DGe2Gq1HOdTb+HoEHQsj89QQ==
-X-Received: by 2002:a05:6000:41e2:b0:3a5:243c:6042 with SMTP id
- ffacd0b85a97d-3b1fd74c600mr3265581f8f.2.1751482625677; 
- Wed, 02 Jul 2025 11:57:05 -0700 (PDT)
+ bh=LHMs7nmOn+MVUxcnTbQfOV+3h+SOD8dybVNBbhpVafQ=;
+ b=MYxqCuypUC/vee5B1uNgjNPGyUSizGl5w7bH1gv5w8GzZPSkl7LRylKw3HWFNKPcTL
+ oX5wdTaDdp/hWscdfXzawFYbooq+WGH0mx4Lc1vXOEYw8PVK5JVcMAGzF1q0nKlZ9ixh
+ ASiipPjn1QCqhW19iXOheSbJsqBFCrfm8GjuXK68hrBNxuJWKV5FgSfoQ+E7W9FDk9UB
+ rjSYT3/8FGBWucqcwCGJUBDWj0A2E4OOnl+ol+OUNux78a1wbj8Wlo4JpRTm2Iv7udhF
+ UV07h7c3Kmo2jHlGzltqsq7VbIccU33G1plr6eah6wfbJAVuUcWEUz65SNKM4Q1V4CsL
+ ziJw==
+X-Gm-Message-State: AOJu0YzWelflcW2Usg1RgUysFNLq18o+weZnblAh1Q8kHl4fi+GEI7yB
+ /HNsItOdXiNd4za0KifLwXD6Qrnp5cQGysWIJG8+r3R1CQRAqLy0b/fEsiTDPyjvgMYf70IVyhm
+ xOZCZ
+X-Gm-Gg: ASbGncuHh1GEI2q1Fp/nQ2g8IYrwq+ZrAZURTsNwo5EExqwVNr773F9bYXnWPr54KPS
+ yX3v2gs4ZJI9lEgbl7whQf0VlO0kKYLHdearDpMOJnO0AHxja9nA9xWph/tq0OnmGGO3tM4M7cD
+ GGF+3G6ZS5IHKV/SwId/xHxI9oySzgTsaz3XhKc5k2+3tfEX0wcxutELbKB9bB18qtyJHfk/izn
+ MW8BWXeV++Rsc4d6RVgfdu9it+VKcQDJ8kRCs0GViJzfFxi8vdxK+pVHQFWPWblaP1OZTBqXYvG
+ 7Kl/3cHlasAOOf7gMPW1XY0Nuv/VEhgFr72KudJAMFGZzjUxFaIfeMFsUPtJ3SFOqRgKi/G7PWG
+ y8qTDSoJ74CoLAB7KQJz8BsCGyzUQSxrE1fi9
+X-Google-Smtp-Source: AGHT+IH0EBZAF5mxNPdzZ6QDlkWdmeN/ur29UrzcihgymRQv0jlnVKFm0Li9xAqFrt88eOgE58Lvcg==
+X-Received: by 2002:a05:600c:8883:b0:454:ab1a:8c2a with SMTP id
+ 5b1f17b1804b1-454ab1a8eb6mr370505e9.24.1751482633313; 
+ Wed, 02 Jul 2025 11:57:13 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e52c99sm16507201f8f.49.2025.07.02.11.57.03
+ 5b1f17b1804b1-454a9bcececsm5486015e9.23.2025.07.02.11.57.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Jul 2025 11:57:05 -0700 (PDT)
+ Wed, 02 Jul 2025 11:57:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -70,17 +70,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH v4 29/65] accel/hvf: Restrict internal declarations
-Date: Wed,  2 Jul 2025 20:52:51 +0200
-Message-ID: <20250702185332.43650-30-philmd@linaro.org>
+Subject: [PATCH v4 30/65] accel/hvf: Move per-cpu method declarations to
+ hvf-accel-ops.c
+Date: Wed,  2 Jul 2025 20:52:52 +0200
+Message-ID: <20250702185332.43650-31-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250702185332.43650-1-philmd@linaro.org>
 References: <20250702185332.43650-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,126 +104,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Common code only needs to know whether HVF is enabled and
-the QOM type. Move the rest to "hvf_int.h", removing the
-need for COMPILING_PER_TARGET #ifdef'ry.
+hvf-all.c aims to contain the generic accel methods (TYPE_ACCEL),
+while hvf-accel-ops.c the per-vcpu methods (TYPE_ACCEL_OPS).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/system/hvf.h     | 41 ----------------------------------------
- include/system/hvf_int.h | 36 +++++++++++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+), 41 deletions(-)
+ accel/hvf/hvf-accel-ops.c | 29 +++++++++++++++++++++++++++++
+ accel/hvf/hvf-all.c       | 29 -----------------------------
+ 2 files changed, 29 insertions(+), 29 deletions(-)
 
-diff --git a/include/system/hvf.h b/include/system/hvf.h
-index 7b9384d816c..d3dcf088b3f 100644
---- a/include/system/hvf.h
-+++ b/include/system/hvf.h
-@@ -14,10 +14,6 @@
- #define HVF_H
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index ada2a3357eb..be044b9ceaa 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -50,6 +50,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
++#include "qemu/queue.h"
+ #include "system/address-spaces.h"
+ #include "gdbstub/enums.h"
+ #include "hw/boards.h"
+@@ -492,6 +493,34 @@ static void hvf_start_vcpu_thread(CPUState *cpu)
+                        cpu, QEMU_THREAD_JOINABLE);
+ }
  
- #include "qemu/accel.h"
--#include "qemu/queue.h"
--#include "exec/vaddr.h"
--#include "qom/object.h"
--#include "exec/vaddr.h"
++struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu, vaddr pc)
++{
++    struct hvf_sw_breakpoint *bp;
++
++    QTAILQ_FOREACH(bp, &hvf_state->hvf_sw_breakpoints, entry) {
++        if (bp->pc == pc) {
++            return bp;
++        }
++    }
++    return NULL;
++}
++
++int hvf_sw_breakpoints_active(CPUState *cpu)
++{
++    return !QTAILQ_EMPTY(&hvf_state->hvf_sw_breakpoints);
++}
++
++static void do_hvf_update_guest_debug(CPUState *cpu, run_on_cpu_data arg)
++{
++    hvf_arch_update_guest_debug(cpu);
++}
++
++int hvf_update_guest_debug(CPUState *cpu)
++{
++    run_on_cpu(cpu, do_hvf_update_guest_debug, RUN_ON_CPU_NULL);
++    return 0;
++}
++
+ static int hvf_insert_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+ {
+     struct hvf_sw_breakpoint *bp;
+diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+index 8c387fda24d..481d7dece57 100644
+--- a/accel/hvf/hvf-all.c
++++ b/accel/hvf/hvf-all.c
+@@ -12,7 +12,6 @@
+ #include "qemu/error-report.h"
+ #include "system/hvf.h"
+ #include "system/hvf_int.h"
+-#include "hw/core/cpu.h"
  
- #ifdef COMPILING_PER_TARGET
- # ifdef CONFIG_HVF
-@@ -40,41 +36,4 @@ typedef struct HVFState HVFState;
- DECLARE_INSTANCE_CHECKER(HVFState, HVF_STATE,
-                          TYPE_HVF_ACCEL)
+ const char *hvf_return_string(hv_return_t ret)
+ {
+@@ -41,31 +40,3 @@ void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
  
--#ifdef COMPILING_PER_TARGET
--struct hvf_sw_breakpoint {
--    vaddr pc;
--    vaddr saved_insn;
--    int use_count;
--    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
--};
+     abort();
+ }
 -
--struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
--                                                 vaddr pc);
--int hvf_sw_breakpoints_active(CPUState *cpu);
+-struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu, vaddr pc)
+-{
+-    struct hvf_sw_breakpoint *bp;
 -
--int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
--int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
--int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
--int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
--void hvf_arch_remove_all_hw_breakpoints(void);
+-    QTAILQ_FOREACH(bp, &hvf_state->hvf_sw_breakpoints, entry) {
+-        if (bp->pc == pc) {
+-            return bp;
+-        }
+-    }
+-    return NULL;
+-}
 -
--/*
-- * hvf_update_guest_debug:
-- * @cs: CPUState for the CPU to update
-- *
-- * Update guest to enable or disable debugging. Per-arch specifics will be
-- * handled by calling down to hvf_arch_update_guest_debug.
-- */
--int hvf_update_guest_debug(CPUState *cpu);
--void hvf_arch_update_guest_debug(CPUState *cpu);
+-int hvf_sw_breakpoints_active(CPUState *cpu)
+-{
+-    return !QTAILQ_EMPTY(&hvf_state->hvf_sw_breakpoints);
+-}
 -
--/*
-- * Return whether the guest supports debugging.
-- */
--bool hvf_arch_supports_guest_debug(AccelState *as);
+-static void do_hvf_update_guest_debug(CPUState *cpu, run_on_cpu_data arg)
+-{
+-    hvf_arch_update_guest_debug(cpu);
+-}
 -
--bool hvf_arch_cpu_realize(CPUState *cpu, Error **errp);
--
--#endif /* COMPILING_PER_TARGET */
--
- #endif
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index d774e58df91..ea6730f255d 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -12,6 +12,8 @@
- #define HVF_INT_H
- 
- #include "qemu/queue.h"
-+#include "exec/vaddr.h"
-+#include "qom/object.h"
- 
- #ifdef __aarch64__
- #include <Hypervisor/Hypervisor.h>
-@@ -77,4 +79,38 @@ int hvf_put_registers(CPUState *);
- int hvf_get_registers(CPUState *);
- void hvf_kick_vcpu_thread(CPUState *cpu);
- 
-+struct hvf_sw_breakpoint {
-+    vaddr pc;
-+    vaddr saved_insn;
-+    int use_count;
-+    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
-+};
-+
-+struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
-+                                                 vaddr pc);
-+int hvf_sw_breakpoints_active(CPUState *cpu);
-+
-+int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
-+int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
-+int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
-+int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
-+void hvf_arch_remove_all_hw_breakpoints(void);
-+
-+/*
-+ * hvf_update_guest_debug:
-+ * @cs: CPUState for the CPU to update
-+ *
-+ * Update guest to enable or disable debugging. Per-arch specifics will be
-+ * handled by calling down to hvf_arch_update_guest_debug.
-+ */
-+int hvf_update_guest_debug(CPUState *cpu);
-+void hvf_arch_update_guest_debug(CPUState *cpu);
-+
-+/*
-+ * Return whether the guest supports debugging.
-+ */
-+bool hvf_arch_supports_guest_debug(AccelState *as);
-+
-+bool hvf_arch_cpu_realize(CPUState *cpu, Error **errp);
-+
- #endif
+-int hvf_update_guest_debug(CPUState *cpu)
+-{
+-    run_on_cpu(cpu, do_hvf_update_guest_debug, RUN_ON_CPU_NULL);
+-    return 0;
+-}
 -- 
 2.49.0
 
