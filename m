@@ -2,94 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E69BAF08A8
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 04:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34915AF0926
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 05:19:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWnUi-0007Or-3I; Tue, 01 Jul 2025 22:46:44 -0400
+	id 1uWnyf-0005e3-3F; Tue, 01 Jul 2025 23:17:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWnUf-0007OH-6O
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:46:41 -0400
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWnUV-0006ot-2M
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:46:40 -0400
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-2ef891cd058so3094142fac.1
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 19:46:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751424389; x=1752029189; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=96n9EZ8b0C2EwsH/ZJ4qVSRKyT5trAiRa//5q7yHY3Q=;
- b=OzSTEhbLn8ISiD2w8mni+geKlYaVEDAeJwnJO+ioZEU1lGlio/6fnjDW8GpWibj8bN
- 0CDZGlhvzxoVE5ZjfC6PSwuuL95mJ9MJpdEmlXmwPohaIb2FhfJK4jySLKTeUR+1/N2m
- JQiBhWog8rDPZzNhuFklO+Z60I5TZS14m+V0pGnf44hCneRzmXFBjEiDulfnTBWL+Ppb
- AOYj6IuhxNaTzVsbaAGVO1NN0mTYwSkwZn+z70GsndnHYYh8Q9L4bRKyLZPrCYTyH06I
- MGD5CQNq+7ek5JNBrIIkLhkCJMQcGCV/U6vnzvA1I0RRH9mKghYkKo84nxAUXL/OchTg
- cANg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751424389; x=1752029189;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=96n9EZ8b0C2EwsH/ZJ4qVSRKyT5trAiRa//5q7yHY3Q=;
- b=k4Z9SJBWq98K5TAS7zpSFWG6LYCAT/wiJYFgePeA5Wk6uaBBkKxaToHi28mdKyW08S
- 38o2JWK6ZfJ5yXepCv4AroZWHIS0oCslv601tWViwbLeFufiRHiBByaHiQyrQxkMP0uf
- RXhhxt1WdlbCZ75RMVm5CiilZPwjdDf+qVJTyLVjZqQl3hGVBuf69bbZWhBKlKYprkPO
- NC0XaetK7hXb2PC+C15N1Lf0enrd1hDw8Y7vyhU1Zk4HZxt/u5GwRl/catYOAftguqYU
- LfkYR7qNqbh5xIiJloDjNzP3Y8IO0ZPQ6KVCEsDepjRQkN2kYV0x+54dgqkAT017czbZ
- N+zg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX3NBupEqnVPOTN6B8tQNeTTnpknY4W8UsiKZZd4E7T2bNIPO/jpdaV31ENnSyGuKYM+Y4STS5j4xfH@nongnu.org
-X-Gm-Message-State: AOJu0Ywdea82XiJW0ETDPGQREtUzcGiN0PMlum5zgv7xrp1eIurF3Ofr
- uaO89NOLZb+YBhybCZzQhEg8qhaaUKAW6M+pzYEs4q84Z5BfMSUUGJSxg+zfhllfLR4=
-X-Gm-Gg: ASbGncuyH/OFgj0EIePfbTc2ZqGRikeqv+uJdlZi4loF4m58VN7rJL7sz227KA3zpKi
- U8Mi2UUxvfFdJjakhJTjqmuEasyoib6a9cD+rsjVdBnW4SYB3+8ejwLeji2kblKU/I1C6x7VmM4
- xuaGsRk1Lqm+eOEvdVHm+p9fMdBFnhDQIaOiu4gmymCpbieH6Hf+lOePzjDddHM/BSry4XYhBv1
- dyMTLZD/qpG/T6eMXXcHXyhwSdQPIqm2f73jsSeL5qba7gJ6wU5UHp7IfALqLhWY9bl8Gt1WvrU
- XDNb+wDSo6xPuOSmYCQWwaUgl1fk4uY4SDr2spzre/KZq4bBRtkyObTtf7lcdkVVikWgK3JSndG
- aWw==
-X-Google-Smtp-Source: AGHT+IEoRDMDm3Ftn/aO6k5J3H50g5jYMGinid7/SIVbddVmJIgv1kAov+22pk2AUCSHofTkTA1dxA==
-X-Received: by 2002:a05:6871:282:b0:2bc:7811:5bb8 with SMTP id
- 586e51a60fabf-2f5a8c8e55emr909357fac.18.1751424388678; 
- Tue, 01 Jul 2025 19:46:28 -0700 (PDT)
-Received: from [10.25.7.201] ([187.210.107.185])
- by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-73afb122a27sm2352181a34.62.2025.07.01.19.46.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Jul 2025 19:46:28 -0700 (PDT)
-Message-ID: <1f354c18-4a7e-4e0d-8f7d-5a27269ab99b@linaro.org>
-Date: Tue, 1 Jul 2025 20:46:26 -0600
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1uWnyZ-0005db-Fv
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 23:17:35 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1uWnyS-0005BU-RY
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 23:17:34 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8CxG6zBpGRovvogAQ--.31104S3;
+ Wed, 02 Jul 2025 11:17:22 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowJBxZOS9pGRoqSwGAA--.35198S3;
+ Wed, 02 Jul 2025 11:17:20 +0800 (CST)
+Subject: Re: [PATCH v3 7/9] hw/loongarch: Implement avec set irq
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
+References: <20250627030138.2482055-1-gaosong@loongson.cn>
+ <20250627030138.2482055-8-gaosong@loongson.cn>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <eac2cad7-d0a9-9d65-e98e-1e0f5d719a42@loongson.cn>
+Date: Wed, 2 Jul 2025 11:15:46 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/68] accel/kvm: Directly pass KVMState argument to
- do_kvm_create_vm()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Julian Armistead <julian.armistead@linaro.org>
-References: <20250701144017.43487-1-philmd@linaro.org>
- <20250701144017.43487-15-philmd@linaro.org>
+In-Reply-To: <20250627030138.2482055-8-gaosong@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250701144017.43487-15-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x32.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowJBxZOS9pGRoqSwGAA--.35198S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxXrWUKw1kWr4DWF1UGw17Jwc_yoW5GFWUpa
+ n3AF90gr15Jr47Za9xG345ZrnxXr40gryxX3ZFkF92kFyDWr18WrWkJr9rtF48C345WrWj
+ vrn5Ga15W3W7JFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
+ wI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JV
+ WxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7pnQ
+ UUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.077,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,14 +80,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/1/25 08:39, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+
+On 2025/6/27 上午11:01, Song Gao wrote:
+> Implement avec set irq and update CSR_MSIS and CSR_MSGIR.
+> 
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->   accel/kvm/kvm-all.c | 7 ++-----
->   1 file changed, 2 insertions(+), 5 deletions(-)
+>   hw/intc/loongarch_avec.c | 44 ++++++++++++++++++++++++++++++++++++++--
+>   1 file changed, 42 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
+> index c686ac9483..5959d05d13 100644
+> --- a/hw/intc/loongarch_avec.c
+> +++ b/hw/intc/loongarch_avec.c
+> @@ -16,6 +16,12 @@
+>   #include "migration/vmstate.h"
+>   #include "trace.h"
+>   #include "hw/qdev-properties.h"
+> +#include "target/loongarch/cpu.h"
+> +
+> +/* msg addr field */
+> +FIELD(MSG_ADDR, IRQ_NUM, 4, 8)
+> +FIELD(MSG_ADDR, CPU_NUM, 12, 8)
+> +FIELD(MSG_ADDR, FIX, 28, 12)
+>   
+>   static uint64_t loongarch_avec_mem_read(void *opaque,
+>                                           hwaddr addr, unsigned size)
+> @@ -23,12 +29,46 @@ static uint64_t loongarch_avec_mem_read(void *opaque,
+>       return 0;
+>   }
+>   
+> +static void avec_set_irq(LoongArchAVECState *s, int cpu_num, int irq_num, int level)
+> +{
+> +    MachineState *machine = MACHINE(qdev_get_machine());
+> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
+> +    const CPUArchIdList *id_list = NULL;
+> +    CPUState *cpu;
+> +    CPULoongArchState *env;
+> +    int i;
+> +
+> +    assert(mc->possible_cpu_arch_ids(machine));
+> +    id_list = mc->possible_cpu_arch_ids(machine);
+> +    cpu = id_list->cpus[cpu_num].cpu;
+> +    env = &LOONGARCH_CPU(cpu)->env;
+> +
+> +    if (level) {
+> +        set_bit(irq_num, &env->CSR_MSGIS[irq_num / 64]);
+> +        env->CSR_MSGIR = FIELD_DP64(env->CSR_MSGIR, CSR_MSGIR, INTNUM, irq_num);
+> +        env->CSR_MSGIR = FIELD_DP64(env->CSR_MSGIR, CSR_MSGIR, ACTIVE, 0);
+> +
+> +        for (i = 0; i < ARRAY_SIZE(env->CSR_MSGIS); i++) {
+> +            if (env->CSR_MSGIS[i]) {
+> +                return;
+> +            }
+> +        }
+> +        qemu_set_irq(s->cpu[cpu_num].parent_irq, 0);
+Here such code can inject interrupt to cpu side.
+   if (level) {
+       set_bit(irq_num, &env->CSR_MSGIS[irq_num / 64]);
+       qemu_set_irq(s->cpu[cpu_num].parent_irq, 1);
+   }
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
+Regards
+Bibo Mao
+> +    }
+> +    qemu_set_irq(s->cpu[cpu_num].parent_irq, level);
+> +}
+> +
+>   static void loongarch_avec_mem_write(void *opaque, hwaddr addr,
+>                                        uint64_t val, unsigned size)
+>   {
+> -    return;
+> -}
+> +    int irq_num, cpu_num = 0;
+> +    LoongArchAVECState *s = LOONGARCH_AVEC(opaque);
+> +    uint64_t msg_addr = addr + VIRT_AVEC_BASE;
+>   
+> +    cpu_num = FIELD_EX64(msg_addr, MSG_ADDR, CPU_NUM);
+> +    irq_num = FIELD_EX64(msg_addr, MSG_ADDR, IRQ_NUM);
+> +    avec_set_irq(s, cpu_num, irq_num, 1);
+> +}
+>   
+>   static const MemoryRegionOps loongarch_avec_ops = {
+>       .read = loongarch_avec_mem_read,
+> 
 
 
