@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A5BAF0E6A
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 10:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B774AF0E94
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 10:57:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWt8o-0007gu-D8; Wed, 02 Jul 2025 04:48:30 -0400
+	id 1uWtGh-0001fI-4e; Wed, 02 Jul 2025 04:56:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1uWt8k-0007ga-2v
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 04:48:26 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1uWtGe-0001el-U4
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 04:56:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1uWt8h-00023F-Hj
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 04:48:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751446104; x=1782982104;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=zk6cPQfsKpuWrDifx8+BrG8ShNF9/KPb42pCeEVTuV8=;
- b=UA/NTdnoQm0aWDdg1ENYfOQ56m+MVkktB9E/tiozaMtdr19qqQ7tRt+T
- lLGoCBOToSc605v5TAgmaLbuK61ZgUa6WPx1k9oj5fyvfzYms45SJZZzx
- Td8e3j/+n9zjEV/nC25IIe+RDw0jFc5Lt8KofuzQPevEfteNGfccrfe2q
- Sw+GN7QUkW5H/bxecGQlcE8Pr/X+27P66Yz4HKnx5xHZce4NSxt3luW5h
- b5KAxBGC7ow1sLOgQhxrROLDndI1BQe42mWHKW1ONF7Sg8NcBlamHaOlQ
- qXxnjpJDAOaNk16bb2cyTbvMxg9TZRbJPs6S748P/csoI/d9mHLRoH9DZ g==;
-X-CSE-ConnectionGUID: 7gpJxvauTYaVQZFRN1PlTg==
-X-CSE-MsgGUID: ufrHP5nOSYi6cgqx7Gi5VA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="65187185"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="65187185"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 01:48:18 -0700
-X-CSE-ConnectionGUID: NUITdyxRRsOun/lNM0ItnA==
-X-CSE-MsgGUID: zLN0N6NlRXaZmp58HrIXpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="153476348"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.240.80])
- ([10.124.240.80])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 01:48:14 -0700
-Message-ID: <4fde6b82-0d13-48d8-898a-e105b9a79858@linux.intel.com>
-Date: Wed, 2 Jul 2025 16:48:11 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/16] i386/cpu: Refine comment of
- CPUID2CacheDescriptorInfo
-To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1uWtGZ-0003uu-Gv
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 04:56:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751446588;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=RQGL6Fh3ytcO2cXkmkLYkjWcg5c3LLdLoqv9zK/qqQ4=;
+ b=JKKwKNluNZ713v/DiW/dKE4Nkio/V/LqwM1ADaSXeAIBA/I7/5dZkuyktAEFoKD6xVyVLv
+ TdxzWJHfuEAzVNy4P5OXz1qvqOAXwu4uUwZJRnvBF9sEYbQvW8VC+7tAvSgP8JQT3H+v3w
+ NcMq9on0ZFq8T0kldOVMTegMZeBX8sE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-QtdRg5MZP420TZ-pHO3vVw-1; Wed,
+ 02 Jul 2025 04:56:25 -0400
+X-MC-Unique: QtdRg5MZP420TZ-pHO3vVw-1
+X-Mimecast-MFC-AGG-ID: QtdRg5MZP420TZ-pHO3vVw_1751446584
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7EED619560A1; Wed,  2 Jul 2025 08:56:23 +0000 (UTC)
+Received: from virt-mtcollins-01.lab.eng.rdu2.redhat.com
+ (virt-mtcollins-01.lab.eng.rdu2.redhat.com [10.8.1.196])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 2DE0E18002B5; Wed,  2 Jul 2025 08:56:18 +0000 (UTC)
+From: Shaoqin Huang <shahuang@redhat.com>
+To: qemu-arm@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Eric Auger <eauger@redhat.com>,
+ Shaoqin Huang <shahuang@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
- Pu Wen <puwen@hygon.cn>, Tao Su <tao1.su@intel.com>,
- Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <20250620092734.1576677-1-zhao1.liu@intel.com>
- <20250620092734.1576677-2-zhao1.liu@intel.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20250620092734.1576677-2-zhao1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v7 0/2] ramfb: Add property to control if load the romfile
+Date: Wed,  2 Jul 2025 04:56:14 -0400
+Message-Id: <20250702085616.2172722-1-shahuang@redhat.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=198.175.65.12;
- envelope-from=dapeng1.mi@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=shahuang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,84 +91,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Currently the ramfb device loads the vgabios-ramfb.bin unconditionally, but only
+the x86 need the vgabios-ramfb.bin, this can cause that when use the
+release package on arm64 it can't find the vgabios-ramfb.bin.
 
-On 6/20/2025 5:27 PM, Zhao Liu wrote:
-> Refer to SDM vol.3 table 1-21, add the notes about the missing
-> descriptor, and fix the typo and comment format.
->
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
->  target/i386/cpu.c | 31 ++++++++++++++++++++++---------
->  1 file changed, 22 insertions(+), 9 deletions(-)
->
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 40aefb38f6da..e398868a3f8d 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -66,6 +66,7 @@ struct CPUID2CacheDescriptorInfo {
->  
->  /*
->   * Known CPUID 2 cache descriptors.
-> + * TLB, prefetch and sectored cache related descriptors are not included.
->   * From Intel SDM Volume 2A, CPUID instruction
->   */
->  struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-> @@ -87,18 +88,29 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
->                 .associativity = 2,  .line_size = 64, },
->      [0x21] = { .level = 2, .type = UNIFIED_CACHE,     .size = 256 * KiB,
->                 .associativity = 8,  .line_size = 64, },
-> -    /* lines per sector is not supported cpuid2_cache_descriptor(),
-> -    * so descriptors 0x22, 0x23 are not included
-> -    */
-> +    /*
-> +     * lines per sector is not supported cpuid2_cache_descriptor(),
-> +     * so descriptors 0x22, 0x23 are not included
-> +     */
->      [0x24] = { .level = 2, .type = UNIFIED_CACHE,     .size =   1 * MiB,
->                 .associativity = 16, .line_size = 64, },
-> -    /* lines per sector is not supported cpuid2_cache_descriptor(),
-> -    * so descriptors 0x25, 0x20 are not included
-> -    */
-> +    /*
-> +     * lines per sector is not supported cpuid2_cache_descriptor(),
-> +     * so descriptors 0x25, 0x29 are not included
-> +     */
->      [0x2C] = { .level = 1, .type = DATA_CACHE,        .size =  32 * KiB,
->                 .associativity = 8,  .line_size = 64, },
->      [0x30] = { .level = 1, .type = INSTRUCTION_CACHE, .size =  32 * KiB,
->                 .associativity = 8,  .line_size = 64, },
-> +    /*
-> +     * Newer Intel CPUs (having the cores without L3, e.g., Intel MTL, ARL)
-> +     * use CPUID 0x4 leaf to describe cache topology, by encoding CPUID 0x2
-> +     * leaf with 0xFF. For older CPUs (without 0x4 leaf), it's also valid
-> +     * to just ignore l3's code if there's no l3.
+Because only seabios will use the vgabios-ramfb.bin, load the rom logic
+is x86-specific. For other !x86 platforms, the edk2 ships an EFI driver
+for ramfb, so they don't need to load the romfile.
 
-s/l3/L3/g
+So add a new property use-legacy-x86-rom in both ramfb and vfio_pci
+device, because the vfio display also use the ramfb_setup() to load
+the vgabios-ramfb.bin file.
 
-Others look good to me. 
+After have this property, the machine type can set the compatibility to
+not load the vgabios-ramfb.bin if the arch doesn't need it.
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Then I set the use_legacy_x86_rom property to false by default, and only set it
+to true on x86 since only x86 will need it.
+
+At the same time, set the "use-legacy-x86-rom" property to true on those
+historical versioned machine types in order to avoid the memory layout
+being changed.
+
+Changelog:
+---------
+v6 -> v7:
+  - Set the property into hw_compat_10_0 instead of hw_compat_9_2.
+v5 -> v6:
+  - Set the property to true on those historical versioned machine types.
+v4 -> v5:
+  - Fix some typo error.
+  - Set the property in piix machine type.
+v3 -> v4:
+  - Set the new property to false by default, only set it to true on x86.
+v2 -> v3:
+  - Fix the underscore error.
+  - Add a new patch to set the property in arm compatibility.
+v1 -> v2:
+  - Change the property name.
+
+v6: https://lore.kernel.org/all/20250701030549.2153331-1-shahuang@redhat.com/
+v5: https://lore.kernel.org/all/20250626034526.2136585-1-shahuang@redhat.com/
+v4: https://lore.kernel.org/all/20250617030521.2109305-1-shahuang@redhat.com/
+v3: https://lore.kernel.org/all/20250609073408.2083831-1-shahuang@redhat.com/
+v2: https://lore.kernel.org/all/20250606070234.2063451-1-shahuang@redhat.com/
+v1: https://lore.kernel.org/all/20250605030351.2056571-1-shahuang@redhat.com/
 
 
-> +     *
-> +     * This already covers all the cases in QEMU, so code 0x40 is not
-> +     * included.
-> +     */
->      [0x41] = { .level = 2, .type = UNIFIED_CACHE,     .size = 128 * KiB,
->                 .associativity = 4,  .line_size = 32, },
->      [0x42] = { .level = 2, .type = UNIFIED_CACHE,     .size = 256 * KiB,
-> @@ -136,9 +148,10 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
->                 .associativity = 4,  .line_size = 64, },
->      [0x78] = { .level = 2, .type = UNIFIED_CACHE,     .size =   1 * MiB,
->                 .associativity = 4,  .line_size = 64, },
-> -    /* lines per sector is not supported cpuid2_cache_descriptor(),
-> -    * so descriptors 0x79, 0x7A, 0x7B, 0x7C are not included.
-> -    */
-> +    /*
-> +     * lines per sector is not supported cpuid2_cache_descriptor(),
-> +     * so descriptors 0x79, 0x7A, 0x7B, 0x7C are not included.
-> +     */
->      [0x7D] = { .level = 2, .type = UNIFIED_CACHE,     .size =   2 * MiB,
->                 .associativity = 8,  .line_size = 64, },
->      [0x7F] = { .level = 2, .type = UNIFIED_CACHE,     .size = 512 * KiB,
+Shaoqin Huang (2):
+  ramfb: Add property to control if load the romfile
+  hw/i386: Add the ramfb romfile compatibility
+
+ hw/core/machine.c             |  2 ++
+ hw/display/ramfb-standalone.c |  4 +++-
+ hw/display/ramfb-stubs.c      |  2 +-
+ hw/display/ramfb.c            |  6 ++++--
+ hw/i386/pc_piix.c             | 10 ++++++++++
+ hw/i386/pc_q35.c              |  3 +++
+ hw/vfio/display.c             |  4 ++--
+ hw/vfio/pci.c                 |  1 +
+ hw/vfio/pci.h                 |  1 +
+ include/hw/display/ramfb.h    |  2 +-
+ 10 files changed, 28 insertions(+), 7 deletions(-)
+
+-- 
+2.40.1
+
 
