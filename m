@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3174AF6249
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 21:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29F9AF623C
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 21:01:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX2fz-0005zW-4N; Wed, 02 Jul 2025 14:59:26 -0400
+	id 1uX2gn-0006On-9a; Wed, 02 Jul 2025 15:00:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2fa-0005Gp-FU
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:58:59 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2fk-00064a-JT
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:59:10 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2fW-00030r-6R
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:58:56 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-451dbe494d6so51372515e9.1
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:58:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2fe-00032A-HK
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:59:08 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4535fbe0299so28787175e9.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:58:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751482731; x=1752087531; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751482736; x=1752087536; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1uXIn8FF+VzmPqfa1+8428fM/RDSExpMjk/8h5CzpzY=;
- b=vsYlBTQSerjkSp1MHk8tqITuXljA3pVp7j1N6VLz/c76QJBSR/agcaAFXvtaGmqQE0
- BRAs/gsZj4UQqHDzzg2YQLwNFTpnnJpbxSfTae2aG8hymXJ+P7r8oJHkAZkNMIIewWLw
- QoBL+XvldWFTKOn9Ig3uzFsp3yeQUIjQ1Yf0HU+eU3Adabti3G605ub8F4rqxf4VgQS/
- oAaryRlUloY2u8opCIH+QkCvh5S1AO6aWjSR9BXU2RcGF+6KFXAGs/BtNDwGAS5U5mK8
- j+HtPJi7ISB9luEs2KRnZapPnJfpiGL6HGzFnzS4JFDz8Noy66odEVQBnFbr1UX9pKJL
- iHew==
+ bh=MatxngaEO94wJIDihnh1PuQvEdZF8b672v9QuG9ABiI=;
+ b=BDukuU1g0YRXMjA/61Vgcf4Hoh/kz26+T3WASyeNi7B5Ta63Q5W8HWESq61WCx6y12
+ xrO4x2gDww+b7H4Ql+41CyeUCQsoaPbl8M1eISGE8jEI8t7dgO0AzRmXQfnnc2HtLcoH
+ DRkCjoUflFLC++canHBUgEumwwqa5nhGh1MU8mQHG1W9UYmfjYkJpPCV0WGFxYXHWjFQ
+ /Gd65aMse1wgf5/andPW92DLgAmJuG3+r6/xwpVWjISu7D5OICsmy9vO8yJ0BJbeBEAZ
+ vl04SJbNvIqsREUpXMvCTNb0JkolalPtSn5TBtbu0UIUiqzdKcY6hLZk/nVX+9wTDZS6
+ f8Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751482731; x=1752087531;
+ d=1e100.net; s=20230601; t=1751482736; x=1752087536;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1uXIn8FF+VzmPqfa1+8428fM/RDSExpMjk/8h5CzpzY=;
- b=GaGnc6RVUV2WdSsxgUdSntrvuQND+rZHyLcMDwTE8qOcjZsi2xiI52RCMQ+NFDqVmH
- XxJLzol2vftWFPSKKMzOI062EYq2l9ZhTLOuoksLYVo9lS3a/UlhWwmkHI86aieIwRgt
- 5YKerpcDcofnulaDMpajWa5WvPejWaQMR8xsqu9erteLgexUEDzJKLgNfSzgL2Po++th
- GUXnu+oM7y1lqULlqpl3KzlkPDlJztHSaogp5EVV/OBNwxfH9SeiBni0MzfspQJdUZMt
- L7BC3out2M1gsQIIu7VKllKoRuJracuxNtpebIakIauZs21y2HWtZbXiw5P/u29gVByX
- Dt7w==
-X-Gm-Message-State: AOJu0YwlPqcT/mvyVyymBoUiVfg6gtIUV3oKBIz9JPXroDWxSzLl5fOZ
- COVtWx2PvBoXvfR21oTv8D1FKHsWOLwZfi0+attlufE6hH/Wzs34yfdFOXThYKRkH2xYyxoc2sq
- 59yTP
-X-Gm-Gg: ASbGncutDakUPgJISRopui11ZU83odcOWtnz/G1jLVWPX5yZb+FpX4UV+TGXc9xrfvD
- +uW6eNPB71hh3Vb04UuQpOSKLm4J33Yu7EbgDF/8DbjCKwc8b/DX5wO6T1kh59Isuv1NULsU/Iq
- usKabT7KE+/w0k8DALlmn3/6kf8+PfIKaugJ1SfVrZ2TmWUXlzVwyVkWJlFiAYcwbfW159R+SYb
- sKjWQFiMUpYwRW06nK0ARgmpcTCwTgwr+xhX43tHzjQThwSPi7+GZy+hUDmZQGdlZl6wpRaXwX8
- lTIPkyiCHYt0uj7M6wnoWwu3DdtSGy5oCDSGazNN11hUxwW+QcL985wAJXl50Opr6MjXqlNQ+ma
- 91FTUjZpIQqP7xRh6WUFR4vj7wWQ1qZ40Isui
-X-Google-Smtp-Source: AGHT+IFcMaxcXN6l1JR93v82qQ/msbA7irNVRKuh7yXLBPpeLwsnRwam4h/82zJfO73D3dwnTRf+qw==
-X-Received: by 2002:a05:600c:3504:b0:43c:ee3f:2c3 with SMTP id
- 5b1f17b1804b1-454a36e7842mr36633135e9.7.1751482730663; 
- Wed, 02 Jul 2025 11:58:50 -0700 (PDT)
+ bh=MatxngaEO94wJIDihnh1PuQvEdZF8b672v9QuG9ABiI=;
+ b=VWrCqldMCPAn5X+WLROfw8M0aGxMepGdlcRto2/PU5Dz3D80FX+Ts+DbvBmZVHPa1j
+ yE9GLuM914A9OvYFFQRRbD+MQm+RYrBmHSsGZ6H9bSNgnX3K1sLGDRWbp8ttNKRtGJcf
+ tSPN9mhfWs1gq/3oogR3EIuMtZ2QL0i5GOZoR7m3FraAyOnLFbbHljlq/hVo/stvabXy
+ euWPC2KX2/ei8NylS+mCnkyDEHj5uLjNoCV6S6aNH/MHNVN4cxQ36NqyrF/454jxOLu7
+ 6k4IrKe6ePVwxUw6bcibCI+Z42DYgppgulBpQbuJcy8vefzpgABR9iJJPVFsxavil577
+ AM/A==
+X-Gm-Message-State: AOJu0YyHF4yIBbaWa3MhSkzRVTDWOSKh+IGgsyhOt/f55dSN3EQvd+DU
+ P/G/oE3Bj8WXxsaNQyNwYGlBX5WW4KEy+Gqi/L8gjs9VckVdSEPyZQ8V+1v/WvoErKaeFOO4KsH
+ 7XQig
+X-Gm-Gg: ASbGncutP1CZJ3mEjQeUXYP96AzqfJehZXJ1b5xjuXQUQX9Izv9XafjYCizC4gZWgdf
+ Su5aa09trMibj37FHqqvtQrJRC+VxyTlICMpOJPg4eErxbt7aDq//q00MVAyopRil/EFOuir46Y
+ 6OYEc/k3QLLdRs9Nbm6OEChXwN5ZHLEoqdSgmsHMmqF1TUpwiAeCj0PEpYdq+TetV4L7DvpyDdC
+ RJ+X1U5EJatWrtHoPcI9y/c8zdiaEaWo2sC2GjGFzZFFTceJljvktaYwrLKd4/6UxQ0ArjOzlnC
+ n3eVOUGNgAlix8+N7Qlwq7r6a7XR3+AqpPqUwVtT1Dxb6F9L8FIFAckS4QLmDuGY6GCc+ZtZcl8
+ rknx6BGo3jBHzU/MMutGhR+OVhS5nt3VN59Sp
+X-Google-Smtp-Source: AGHT+IE2opsjASThgBn9ycPzNSz+DYIPc4j/4/1A5mDuAdK7SodASRJzG/8N0aRFLv57JeLoLi4vKw==
+X-Received: by 2002:a05:600c:4751:b0:440:54ef:dfdc with SMTP id
+ 5b1f17b1804b1-454a9c7072fmr8183905e9.8.1751482736042; 
+ Wed, 02 Jul 2025 11:58:56 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a9bde8c8sm5752785e9.31.2025.07.02.11.58.48
+ 5b1f17b1804b1-454a98e942esm6338975e9.0.2025.07.02.11.58.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Jul 2025 11:58:50 -0700 (PDT)
+ Wed, 02 Jul 2025 11:58:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- xen-devel@lists.xenproject.org
-Subject: [PATCH v4 43/65] accel/dummy: Extract 'dummy-cpus.h' header from
- 'system/cpus.h'
-Date: Wed,  2 Jul 2025 20:53:05 +0200
-Message-ID: <20250702185332.43650-44-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 44/65] accel/dummy: Factor dummy_thread_precreate() out
+Date: Wed,  2 Jul 2025 20:53:06 +0200
+Message-ID: <20250702185332.43650-45-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250702185332.43650-1-philmd@linaro.org>
 References: <20250702185332.43650-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,92 +101,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'dummy' helpers are specific to accelerator implementations,
-no need to expose them via "system/cpus.h".
+Initialize the semaphore before creating the thread,
+factor out as dummy_thread_precreate().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/dummy-cpus.h    | 14 ++++++++++++++
- include/system/cpus.h |  5 -----
- accel/dummy-cpus.c    |  1 +
- accel/qtest/qtest.c   |  1 +
- accel/xen/xen-all.c   |  1 +
- 5 files changed, 17 insertions(+), 5 deletions(-)
- create mode 100644 accel/dummy-cpus.h
+ accel/dummy-cpus.h |  1 +
+ accel/dummy-cpus.c | 12 +++++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/accel/dummy-cpus.h b/accel/dummy-cpus.h
-new file mode 100644
-index 00000000000..d18dd0fdc51
---- /dev/null
+index d18dd0fdc51..c3af710ee8c 100644
+--- a/accel/dummy-cpus.h
 +++ b/accel/dummy-cpus.h
-@@ -0,0 +1,14 @@
-+/*
-+ * Dummy cpu thread code
-+ *
-+ * Copyright IBM, Corp. 2011
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef ACCEL_DUMMY_CPUS_H
-+#define ACCEL_DUMMY_CPUS_H
-+
-+void dummy_start_vcpu_thread(CPUState *cpu);
-+
-+#endif
-diff --git a/include/system/cpus.h b/include/system/cpus.h
-index 3226c765d01..69be6a77a75 100644
---- a/include/system/cpus.h
-+++ b/include/system/cpus.h
-@@ -7,11 +7,6 @@ void cpus_register_accel(const AccelOpsClass *i);
- /* return registers ops */
- const AccelOpsClass *cpus_get_accel(void);
+@@ -9,6 +9,7 @@
+ #ifndef ACCEL_DUMMY_CPUS_H
+ #define ACCEL_DUMMY_CPUS_H
  
--/* accel/dummy-cpus.c */
--
--/* Create a dummy vcpu for AccelOpsClass->create_vcpu_thread */
--void dummy_start_vcpu_thread(CPUState *);
--
- /* interface available for cpus accelerator threads */
++void dummy_thread_precreate(CPUState *cpu);
+ void dummy_start_vcpu_thread(CPUState *cpu);
  
- /* For temporary buffers for forming a name */
+ #endif
 diff --git a/accel/dummy-cpus.c b/accel/dummy-cpus.c
-index 867276144fa..03cfc0fa01e 100644
+index 03cfc0fa01e..2cbc3fecc93 100644
 --- a/accel/dummy-cpus.c
 +++ b/accel/dummy-cpus.c
-@@ -17,6 +17,7 @@
- #include "qemu/guest-random.h"
- #include "qemu/main-loop.h"
- #include "hw/core/cpu.h"
-+#include "accel/dummy-cpus.h"
+@@ -65,15 +65,21 @@ static void *dummy_cpu_thread_fn(void *arg)
+     return NULL;
+ }
  
- static void *dummy_cpu_thread_fn(void *arg)
++void dummy_thread_precreate(CPUState *cpu)
++{
++#ifdef _WIN32
++    qemu_sem_init(&cpu->sem, 0);
++#endif
++}
++
+ void dummy_start_vcpu_thread(CPUState *cpu)
  {
-diff --git a/accel/qtest/qtest.c b/accel/qtest/qtest.c
-index 8b109d4c03b..2606fe97b49 100644
---- a/accel/qtest/qtest.c
-+++ b/accel/qtest/qtest.c
-@@ -24,6 +24,7 @@
- #include "qemu/guest-random.h"
- #include "qemu/main-loop.h"
- #include "hw/core/cpu.h"
-+#include "accel/dummy-cpus.h"
+     char thread_name[VCPU_THREAD_NAME_SIZE];
  
- static int64_t qtest_clock_counter;
- 
-diff --git a/accel/xen/xen-all.c b/accel/xen/xen-all.c
-index ba752bbe5de..f412ea346bb 100644
---- a/accel/xen/xen-all.c
-+++ b/accel/xen/xen-all.c
-@@ -18,6 +18,7 @@
- #include "hw/xen/xen_igd.h"
- #include "chardev/char.h"
- #include "qemu/accel.h"
-+#include "accel/dummy-cpus.h"
- #include "system/accel-ops.h"
- #include "system/cpus.h"
- #include "system/xen.h"
++    dummy_thread_precreate(cpu);
++
+     snprintf(thread_name, VCPU_THREAD_NAME_SIZE, "CPU %d/DUMMY",
+              cpu->cpu_index);
+     qemu_thread_create(cpu->thread, thread_name, dummy_cpu_thread_fn, cpu,
+                        QEMU_THREAD_JOINABLE);
+-#ifdef _WIN32
+-    qemu_sem_init(&cpu->sem, 0);
+-#endif
+ }
 -- 
 2.49.0
 
