@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DE9AF5F5F
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29845AF5F61
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:03:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX0rU-0003kg-Bj; Wed, 02 Jul 2025 13:03:08 -0400
+	id 1uX0rV-0003kq-6O; Wed, 02 Jul 2025 13:03:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rJ-0003jW-6n
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:57 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rK-0003je-DR
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:03:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rG-0003cg-EC
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:56 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rH-0003cr-H9
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751475773;
+ s=mimecast20190719; t=1751475774;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xn6FNEac9ogsCNuJNqMUFEmVqLKCw623bM+SEFbcvrM=;
- b=Lrxg8BKZEyD03H5MuBt7aFryatqYR1EvDx7VohJQXlXC4tPhZSBF+rpLAzLn+migDLlyG5
- VOJNNl9709rxpBSSr5kPPViQN3n1z7ifVhOY+BXAX6zos2l7qGwlg2ADL8kpYUPfDZ/tcU
- KalBQ9retclp5rhWyD6+w9w5KHDPu9o=
+ bh=Boalhpdqes7+gdKsEPXpuB/3u1DRyc6WB40C0wOXr2A=;
+ b=HiKCXTX2BN+aV+pjoJKzjKqfNKgVDOm0cnqZzqsyVueGdYg9QE2ffNYquGuu9vIG37AEL2
+ IUmr7zR5IrvK/21e1gjsQFerS7ttrbc5e1dTfHj/kOwUPA41b+OytLWcARdOnYjCR2Zj+l
+ p/HLoL+oHFSgTOYH5rQR4f8POW+O9Cs=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-R5lqsmxYMdKYeu5FpSICMA-1; Wed,
- 02 Jul 2025 13:02:46 -0400
-X-MC-Unique: R5lqsmxYMdKYeu5FpSICMA-1
-X-Mimecast-MFC-AGG-ID: R5lqsmxYMdKYeu5FpSICMA_1751475766
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-1u5vFzOvPAWS5iYq0JKVSg-1; Wed,
+ 02 Jul 2025 13:02:48 -0400
+X-MC-Unique: 1u5vFzOvPAWS5iYq0JKVSg-1
+X-Mimecast-MFC-AGG-ID: 1u5vFzOvPAWS5iYq0JKVSg_1751475767
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1E5111801300; Wed,  2 Jul 2025 17:02:24 +0000 (UTC)
+ id 5317618683DB; Wed,  2 Jul 2025 17:02:26 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.23])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BC7E61956053; Wed,  2 Jul 2025 17:02:22 +0000 (UTC)
+ id 9CEF9195608F; Wed,  2 Jul 2025 17:02:24 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
-	Sean Wei <me@sean.taipei>
-Subject: [PULL 6/9] MAINTAINERS: fix paths for relocated files
-Date: Wed,  2 Jul 2025 19:02:01 +0200
-Message-ID: <20250702170206.212303-7-thuth@redhat.com>
+ Collin Walling <walling@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 7/9] target/s390x: set has_deprecated_props flag
+Date: Wed,  2 Jul 2025 19:02:02 +0200
+Message-ID: <20250702170206.212303-8-thuth@redhat.com>
 In-Reply-To: <20250702170206.212303-1-thuth@redhat.com>
 References: <20250702170206.212303-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -80,130 +82,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sean Wei <me@sean.taipei>
+From: Collin Walling <walling@linux.ibm.com>
 
-Several files were renamed in previous commits, causing their entries
-in MAINTAINERS to reference outdated paths.
-This prevents scripts/get_maintainer.pl from correctly matching
-these files to their maintainers.
+Now that the deprecated_props is an optional field, the expansion method
+must now set the "has_deprecated_props" flag in order for the data to be
+output from the response.
 
-Update the filenames to reflect their current locations so that
-maintainer lookup works properly.
-
-Related commits
----------------
-
-  c45460decbd (Oct 2023)
-    hw/input/stellaris_input: Rename to stellaris_gamepad
-    Rename  include/hw/input/{gamepad.h => stellaris_gamepad.h}
-
-  4faf359accb (Nov 2020)
-    docs: Move virtio-net-failover.rst into the system manual
-    Rename  docs/{ => system}/virtio-net-failover.rst
-
-  89857312f32 (Apr 2024)
-    hw/usb: move stubs out of stubs/
-    Rename  stubs/usb-dev-stub.c => hw/usb/bus-stub.c
-
-  f2604d8508a (Apr 2024)
-    hw/virtio: move stubs out of stubs/
-    Rename  stubs/virtio-md-pci.c => hw/virtio/virtio-md-stubs.c
-
-  2c888febdfa (Apr 2024)
-    memory-device: move stubs out of stubs/
-    Rename  stubs/memory_device.c => hw/mem/memory-device-stubs.c
-
-  d481cec7565 (Oct 2024)
-    migration: Move cpu-throttle.c from system to migration
-    Rename  {system => migration}/cpu-throttle.c
-
-  864a3fa4392 (Jan 2023)
-    monitor: Rename misc.c to hmp-target.c
-    Rename  monitor/{misc.c => hmp-target.c}
-
-Signed-off-by: Sean Wei <me@sean.taipei>
-Message-ID: <374597a7-94e4-45b2-9617-35183db3ea9d@sean.taipei>
+Fixes: 448553bb7c (qapi: Make CpuModelExpansionInfo::deprecated-props optional and generic)
+Signed-off-by: Collin Walling <walling@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250630024404.940882-1-walling@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ target/s390x/cpu_models_system.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8aa0fd33b7d..a36f97ed006 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1007,7 +1007,7 @@ L: qemu-arm@nongnu.org
- S: Odd Fixes
- F: hw/*/stellaris*
- F: hw/display/ssd03*
--F: include/hw/input/gamepad.h
-+F: include/hw/input/stellaris_gamepad.h
- F: include/hw/timer/stellaris-gptm.h
- F: docs/system/arm/stellaris.rst
- F: tests/functional/test_arm_stellaris.py
-@@ -2173,7 +2173,7 @@ F: hw/net/
- F: include/hw/net/
- F: tests/qtest/virtio-net-test.c
- F: tests/functional/test_info_usernet.py
--F: docs/virtio-net-failover.rst
-+F: docs/system/virtio-net-failover.rst
- T: git https://github.com/jasowang/qemu.git net
+diff --git a/target/s390x/cpu_models_system.c b/target/s390x/cpu_models_system.c
+index 9d84faa3c9e..5b846048675 100644
+--- a/target/s390x/cpu_models_system.c
++++ b/target/s390x/cpu_models_system.c
+@@ -252,6 +252,9 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
  
- Parallel NOR Flash devices
-@@ -2224,7 +2224,6 @@ F: tests/qtest/sdhci-test.c
- USB
- S: Orphan
- F: hw/usb/*
--F: stubs/usb-dev-stub.c
- F: tests/qtest/usb-*-test.c
- F: docs/system/devices/usb.rst
- F: include/hw/usb.h
-@@ -2477,9 +2476,8 @@ S: Supported
- F: hw/s390x/virtio-ccw-md.c
- F: hw/s390x/virtio-ccw-md.h
- F: hw/s390x/virtio-ccw-md-stubs.c
--F: hw/virtio/virtio-md-pci.c
-+F: hw/virtio/virtio-md-*.c
- F: include/hw/virtio/virtio-md-pci.h
--F: stubs/virtio-md-pci.c
+     s390_feat_bitmap_to_ascii(deprecated_feats,
+                               &expansion_info->deprecated_props, list_add_feat);
++
++    expansion_info->has_deprecated_props = !!expansion_info->deprecated_props;
++
+     return expansion_info;
+ }
  
- virtio-mem
- M: David Hildenbrand <david@redhat.com>
-@@ -3197,13 +3195,12 @@ M: David Hildenbrand <david@redhat.com>
- M: Igor Mammedov <imammedo@redhat.com>
- R: Xiao Guangrong <xiaoguangrong.eric@gmail.com>
- S: Supported
--F: hw/mem/memory-device.c
-+F: hw/mem/memory-device*.c
- F: hw/mem/nvdimm.c
- F: hw/mem/pc-dimm.c
- F: include/hw/mem/memory-device.h
- F: include/hw/mem/nvdimm.h
- F: include/hw/mem/pc-dimm.h
--F: stubs/memory_device.c
- F: docs/nvdimm.txt
- 
- SPICE
-@@ -3244,9 +3241,9 @@ F: util/qemu-timer*.c
- F: system/vl.c
- F: system/main.c
- F: system/cpus.c
--F: system/cpu-throttle.c
- F: system/cpu-timers.c
- F: system/runstate*
-+F: migration/cpu-throttle.c
- F: qapi/run-state.json
- 
- Read, Copy, Update (RCU)
-@@ -3265,7 +3262,7 @@ Human Monitor (HMP)
- M: Dr. David Alan Gilbert <dave@treblig.org>
- S: Maintained
- F: monitor/monitor-internal.h
--F: monitor/misc.c
-+F: monitor/hmp-target.c
- F: monitor/monitor.c
- F: monitor/hmp*
- F: hmp.h
 -- 
 2.50.0
 
