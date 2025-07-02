@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657AFAF1620
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 14:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B0DAF1666
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 15:03:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWwpM-0004J3-Ol; Wed, 02 Jul 2025 08:44:41 -0400
+	id 1uWwpL-0004JS-HF; Wed, 02 Jul 2025 08:44:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwk7-0004ro-LR
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:39:19 -0400
-Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
+ id 1uWwk9-0004v3-LS
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:39:21 -0400
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwjf-0002EU-PI
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:39:04 -0400
-Received: by mail-oa1-x2d.google.com with SMTP id
- 586e51a60fabf-2eacb421554so1272251fac.1
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:38:45 -0700 (PDT)
+ id 1uWwjl-0002FN-B6
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:39:17 -0400
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-2eff5d1c7efso2757254fac.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:38:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751459925; x=1752064725; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751459926; x=1752064726; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kk3peN6vzHNsgkylxC7H0fWVcbMhRkJpFXZS27OXck4=;
- b=c2hxr6waM96jxaoW4rOoo8wnPXylbK/UJXOJlWHOjJwGA26lrZNBj5RzQ9UrCQv3kA
- ICP/OeEFzLA6Z9Xj3bFb8Xkt84GmJ/FFpSg7tjbYw7pK6TIBZBdG+8cy5Ug3uSFYzluk
- 5+73RG5MYPqqzPVt9wrAy/ygRPtWcFV/xxBFKlzROhVUwiNcG966nasdepvRqLRCJj8Y
- yAoEuN5RfnmPXvAq0WFZkCo2NCC5u7jE/aqJ/HhFUZK/UQ7PO21XKrOEE45GuHjrkiPl
- +qK4T4Q1BxvK4t1ijhfEHkYIlN9XOazDNptqIFDWM9cYgj2Yfp+fFi+SNGTo10bjpdoH
- 7cSg==
+ bh=W0HakkWnU0sRhIJeclkaThbG+8ICEXrlPucPEFHPhkY=;
+ b=GyubkU8hNggPd7IUWcrESZ2TqjuxcPM8e097q4CuqKwE3uL96t7nZs8x/PoaQRovfh
+ XPjwg2OLwKlU7s403EHK2XFO1JDZQoHYYUCM1fVSKkWw0OgNlGBCou+4JAOFW8J3v4Ga
+ 1YN4Qno5FKiACDbGkNi1lATCkUL/jg3dDCS7Xw9qBfW+EfyUtSQ9p8Oyh7OFdYA8LVxC
+ Dva0rndjpVEphwXxc2NjYqlNmlrk1IDgfuthQrTBrYuspXv35h3tDNFjeK3pBDp7l8FO
+ JmHcmKheCNqjOiTZFAf4YlRZK8dqm1Acxoeh3vo0J21nw8HQzm1JYtIAMGcePg39jIM1
+ AFHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751459925; x=1752064725;
+ d=1e100.net; s=20230601; t=1751459926; x=1752064726;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kk3peN6vzHNsgkylxC7H0fWVcbMhRkJpFXZS27OXck4=;
- b=Q47k3PXND0gpbpO4HKYnuH2Kyva9nZJsW3ATDSRj6ggh75LZcOwmYYg1oy/4cnOdb4
- R0BtD6RkNPvhYXJslBQqIBJ2TZpNcWa1THP9VXEeQacgZt6wRuN66NcvG0SRGGcuinCB
- RGsH6rCby+pZDMJtEG1ZeWYbXOSo0uxpbjsX+0XQPFuvU5PKVolz6nQq18tpB9D9632n
- 7M7K/1PdRCRne9Xb3JyrEibD9CB56KtMLJR/NK/uV0WAsfNzYUBXBEwj97M20a/Xaqk4
- /pfg0MYEgNIs8Ewo/r8zQAHrqGkp22giovGFLoYk+hyz8ewosJQ4YLRwAFwSY6y8nzQ/
- LAqw==
-X-Gm-Message-State: AOJu0YzazXrPsYCLg4RY4bCWoiwCvnS2TcXI5rcyN6h8SY+br1jS1SYP
- 5M7Dcr4MF/+/0yRTkMxBKO922ub1ZJGxEO2/gyLGqa2tDzpXtQCPaA7WJleUDZjyL4Gv4m+phWe
- VyPo3VJg=
-X-Gm-Gg: ASbGncsOjYD4WkFfnanzNZThK9hUQhLubKHD7K3IgwjCsaqM26tBqME2jnzX+hNVixk
- ANri7vHXEcnS7Zr0iyoyjlVQBsxM3XDCqt0b1apALH9luSEHtCspGjT3cg32YCMXUPi4uSGZUEh
- aPTNCiAdOcgisD9vLsJfbJVond96zYM2UUzpKM34vsn1BjfqKSRlh4voUSt7HtKN4u+wij9FY4X
- H4fxwholM6JquzcN0lXIY9ttd/gQoQB2q5oHIxBvu+ni+rBxlvdHz1/Lt+PmV2t0WV+krfLW7c+
- 8dWd8dyYMXT0nTlRqE/yE8r1uGkhHYP7jkEvnkSGUpHRtw3QXCu4tZqtAgT8vvf9LLB0ag==
-X-Google-Smtp-Source: AGHT+IG1yHEv7L0RipzdahuC4Knn6/GwN7c+iySKenh8qTiThr1QRp1rGkvN1LoPsMEGut9zFOFy1g==
-X-Received: by 2002:a05:6870:f68f:b0:2ea:82c1:47c with SMTP id
- 586e51a60fabf-2f5a8d1f0eemr2038604fac.2.1751459924590; 
- Wed, 02 Jul 2025 05:38:44 -0700 (PDT)
+ bh=W0HakkWnU0sRhIJeclkaThbG+8ICEXrlPucPEFHPhkY=;
+ b=fNg0x1wAX29hSGLVOy4ynbn8inPM/RfEEVY4Pvip263wb7HdeiO9xwyC4o5Lep4NqH
+ 1ygv8btE2Xu27sd/Z9XdvN1MvtEC12w//oCqR/8RaOhtJvFlsfhJhxduYxlC7ALI4b2q
+ iDLDk67K8qHdhBsQ+nZHuO3KV5fgJSUYZ87wN46d9aOgjVjjc9Ph/AYwLibF/sjYRXdb
+ JOp+j2MA1eP4VnhlbMrczzsfsUfOOnMJZHCXzE9mck/C9y7r8PtvZaRlde9+mFBX6afi
+ 6ecY7DU69B2jbPyQEZkB88TTyU9tShMwPirijLaik64RAv0Ho6ve84T8datIrquKnHgj
+ X+ew==
+X-Gm-Message-State: AOJu0YyatFhJvHFBar2/SL3NK9+OdCoijr7Q5ZVmhQCmJA7IZQwJcHFa
+ tqWOYimz46pv0c7Idq6/yWwT1wqrGoRzgRWdItQ89Miu6m+h2JGS7twIN7ntVUpvvq/2O7vPLoU
+ LPQIu0qI=
+X-Gm-Gg: ASbGncuASuNoRPLTW3diUXiLdnkqDUdhIYq7PclqhLVBpUV6b4L3yF8lHD4yJBOOlNi
+ pQbqQEjL07Yb0nOXbviucn7mxhijwGZP6kFtoTjNLmGWBAHbbKb2E6NwhRx9RwO70qgzXo78bk5
+ 7KMiVjTrhWNZfMdrOmWr5p8x+D1k2r6e2eQ9H6ofSSg+m1RlR9S2hN5x/syFaBrgn1POI8LLwjE
+ 18ig7teXBekR4d3IR4X4IONGe2nyjlB0Mn6xI5NXcg0vnYjCIBrJlgCnTJ6IGkFz89FkHV17KMW
+ 9+mhla407sCiwFIdWfY7csPITQt1Deb2HuoN0hFve3wWDmw45Av+Sy7BT/t4Tn2SQKvnbElfvE1
+ fteGu
+X-Google-Smtp-Source: AGHT+IH/RqJV8VjzT645GEuCTkqGb2zOhO95Z17nazXowEb4ff209oWzgteRz4jcI5+PuX9c3FmapA==
+X-Received: by 2002:a05:6871:2016:b0:2d6:72a4:4c24 with SMTP id
+ 586e51a60fabf-2f5a8d2a08emr1986086fac.32.1751459926122; 
+ Wed, 02 Jul 2025 05:38:46 -0700 (PDT)
 Received: from stoup.. ([187.210.107.185]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2efd4ea5d9fsm3843451fac.10.2025.07.02.05.38.43
+ 586e51a60fabf-2efd4ea5d9fsm3843451fac.10.2025.07.02.05.38.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Jul 2025 05:38:44 -0700 (PDT)
+ Wed, 02 Jul 2025 05:38:45 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	peter.maydell@linaro.org
-Subject: [PATCH v3 72/97] target/arm: Implement SME2 SEL
-Date: Wed,  2 Jul 2025 06:33:45 -0600
-Message-ID: <20250702123410.761208-73-richard.henderson@linaro.org>
+Subject: [PATCH v3 73/97] target/arm: Implement ANDQV, ORQV, EORQV for SVE2p1
+Date: Wed,  2 Jul 2025 06:33:46 -0600
+Message-ID: <20250702123410.761208-74-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250702123410.761208-1-richard.henderson@linaro.org>
 References: <20250702123410.761208-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,407 +100,136 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-sme.h    |   5 +
- target/arm/tcg/sme_helper.c    | 315 +++++++++++++++++++++++++++++++++
- target/arm/tcg/translate-sme.c |  31 ++++
- target/arm/tcg/sme.decode      |   9 +
- 4 files changed, 360 insertions(+)
+ target/arm/tcg/helper-sve.h    | 15 ++++++++++++
+ target/arm/tcg/sve_helper.c    | 42 ++++++++++++++++++++++++++++++++++
+ target/arm/tcg/translate-sve.c |  3 +++
+ target/arm/tcg/sve.decode      |  5 ++++
+ 4 files changed, 65 insertions(+)
 
-diff --git a/target/arm/tcg/helper-sme.h b/target/arm/tcg/helper-sme.h
-index 78ba3d1f20..467073ea25 100644
---- a/target/arm/tcg/helper-sme.h
-+++ b/target/arm/tcg/helper-sme.h
-@@ -313,3 +313,8 @@ DEF_HELPER_FLAGS_5(sme2_fclamp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i3
- DEF_HELPER_FLAGS_5(sme2_fclamp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(sme2_fclamp_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_5(sme2_bfclamp, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, fpst, i32)
-+
-+DEF_HELPER_FLAGS_5(sme2_sel_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32, i32)
-+DEF_HELPER_FLAGS_5(sme2_sel_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32, i32)
-+DEF_HELPER_FLAGS_5(sme2_sel_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32, i32)
-+DEF_HELPER_FLAGS_5(sme2_sel_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32, i32)
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index bfcedef3d9..77eab68870 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -2107,3 +2107,318 @@ FCLAMP(sme2_fclamp_d, float64, H8)
- FCLAMP(sme2_bfclamp, bfloat16, H2)
+diff --git a/target/arm/tcg/helper-sve.h b/target/arm/tcg/helper-sve.h
+index ec82d0a4e7..9758613b2d 100644
+--- a/target/arm/tcg/helper-sve.h
++++ b/target/arm/tcg/helper-sve.h
+@@ -2955,3 +2955,18 @@ DEF_HELPER_FLAGS_4(sve2p1_uminqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(sve2p1_uminqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
  
- #undef FCLAMP
+ DEF_HELPER_FLAGS_3(pext, TCG_CALL_NO_RWG, void, ptr, i32, i32)
 +
-+void HELPER(sme2_sel_b)(void *vd, void *vn, void *vm,
-+                        uint32_t png, uint32_t desc)
-+{
-+    int vl = simd_oprsz(desc);
-+    int nreg = simd_data(desc);
-+    int elements = vl / sizeof(uint8_t);
-+    DecodeCounter p = decode_counter(png, vl, MO_8);
++DEF_HELPER_FLAGS_4(sve2p1_orqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve2p1_orqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve2p1_orqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve2p1_orqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 +
-+    if (p.stride == 1) {
-+        if (p.invert) {
-+            for (int r = 0; r < nreg; r++) {
-+                uint8_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint8_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint8_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
++DEF_HELPER_FLAGS_4(sve2p1_eorqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve2p1_eorqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve2p1_eorqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve2p1_eorqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 +
-+                if (split <= 0) {
-+                    memcpy(d, n, vl);  /* all true */
-+                } else if (elements <= split) {
-+                    memcpy(d, m, vl);  /* all false */
-+                } else {
-+                    for (int e = 0; e < split; e++) {
-+                        d[H1(e)] = m[H1(e)];
-+                    }
-+                    for (int e = split; e < elements; e++) {
-+                        d[H1(e)] = n[H1(e)];
-+                    }
-+                }
-+            }
-+        } else {
-+            for (int r = 0; r < nreg; r++) {
-+                uint8_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint8_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint8_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+
-+                if (split <= 0) {
-+                    memcpy(d, m, vl);  /* all false */
-+                } else if (elements <= split) {
-+                    memcpy(d, n, vl);  /* all true */
-+                } else {
-+                    for (int e = 0; e < split; e++) {
-+                        d[H1(e)] = n[H1(e)];
-+                    }
-+                    for (int e = split; e < elements; e++) {
-+                        d[H1(e)] = m[H1(e)];
-+                    }
-+                }
-+            }
-+        }
-+    } else {
-+        if (p.invert) {
-+            for (int r = 0; r < nreg; r++) {
-+                uint8_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint8_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint8_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+                int e = 0;
-+
-+                for (; e < MIN(split, elements); e++) {
-+                    d[H1(e)] = m[H1(e)];
-+                }
-+                for (; e < elements; e += p.stride) {
-+                    d[H1(e)] = n[H1(e)];
-+                    for (int i = 1; i < p.stride; i++) {
-+                        d[H1(e + i)] = m[H1(e + i)];
-+                    }
-+                }
-+            }
-+        } else {
-+            for (int r = 0; r < nreg; r++) {
-+                uint8_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint8_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint8_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+                int e = 0;
-+
-+                for (; e < MIN(split, elements); e += p.stride) {
-+                    d[H1(e)] = n[H1(e)];
-+                    for (int i = 1; i < p.stride; i++) {
-+                        d[H1(e + i)] = m[H1(e + i)];
-+                    }
-+                }
-+                for (; e < elements; e++) {
-+                    d[H1(e)] = m[H1(e)];
-+                }
-+            }
-+        }
-+    }
-+}
-+
-+void HELPER(sme2_sel_h)(void *vd, void *vn, void *vm,
-+                        uint32_t png, uint32_t desc)
-+{
-+    int vl = simd_oprsz(desc);
-+    int nreg = simd_data(desc);
-+    int elements = vl / sizeof(uint16_t);
-+    DecodeCounter p = decode_counter(png, vl, MO_16);
-+
-+    if (p.stride == 1) {
-+        if (p.invert) {
-+            for (int r = 0; r < nreg; r++) {
-+                uint16_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint16_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint16_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+
-+                if (split <= 0) {
-+                    memcpy(d, n, vl);  /* all true */
-+                } else if (elements <= split) {
-+                    memcpy(d, m, vl);  /* all false */
-+                } else {
-+                    for (int e = 0; e < split; e++) {
-+                        d[H2(e)] = m[H2(e)];
-+                    }
-+                    for (int e = split; e < elements; e++) {
-+                        d[H2(e)] = n[H2(e)];
-+                    }
-+                }
-+            }
-+        } else {
-+            for (int r = 0; r < nreg; r++) {
-+                uint16_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint16_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint16_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+
-+                if (split <= 0) {
-+                    memcpy(d, m, vl);  /* all false */
-+                } else if (elements <= split) {
-+                    memcpy(d, n, vl);  /* all true */
-+                } else {
-+                    for (int e = 0; e < split; e++) {
-+                        d[H2(e)] = n[H2(e)];
-+                    }
-+                    for (int e = split; e < elements; e++) {
-+                        d[H2(e)] = m[H2(e)];
-+                    }
-+                }
-+            }
-+        }
-+    } else {
-+        if (p.invert) {
-+            for (int r = 0; r < nreg; r++) {
-+                uint16_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint16_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint16_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+                int e = 0;
-+
-+                for (; e < MIN(split, elements); e++) {
-+                    d[H2(e)] = m[H2(e)];
-+                }
-+                for (; e < elements; e += p.stride) {
-+                    d[H2(e)] = n[H2(e)];
-+                    for (int i = 1; i < p.stride; i++) {
-+                        d[H2(e + i)] = m[H2(e + i)];
-+                    }
-+                }
-+            }
-+        } else {
-+            for (int r = 0; r < nreg; r++) {
-+                uint16_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint16_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint16_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+                int e = 0;
-+
-+                for (; e < MIN(split, elements); e += p.stride) {
-+                    d[H2(e)] = n[H2(e)];
-+                    for (int i = 1; i < p.stride; i++) {
-+                        d[H2(e + i)] = m[H2(e + i)];
-+                    }
-+                }
-+                for (; e < elements; e++) {
-+                    d[H2(e)] = m[H2(e)];
-+                }
-+            }
-+        }
-+    }
-+}
-+
-+void HELPER(sme2_sel_s)(void *vd, void *vn, void *vm,
-+                        uint32_t png, uint32_t desc)
-+{
-+    int vl = simd_oprsz(desc);
-+    int nreg = simd_data(desc);
-+    int elements = vl / sizeof(uint32_t);
-+    DecodeCounter p = decode_counter(png, vl, MO_32);
-+
-+    if (p.stride == 1) {
-+        if (p.invert) {
-+            for (int r = 0; r < nreg; r++) {
-+                uint32_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint32_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint32_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+
-+                if (split <= 0) {
-+                    memcpy(d, n, vl);  /* all true */
-+                } else if (elements <= split) {
-+                    memcpy(d, m, vl);  /* all false */
-+                } else {
-+                    for (int e = 0; e < split; e++) {
-+                        d[H4(e)] = m[H4(e)];
-+                    }
-+                    for (int e = split; e < elements; e++) {
-+                        d[H4(e)] = n[H4(e)];
-+                    }
-+                }
-+            }
-+        } else {
-+            for (int r = 0; r < nreg; r++) {
-+                uint32_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint32_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint32_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+
-+                if (split <= 0) {
-+                    memcpy(d, m, vl);  /* all false */
-+                } else if (elements <= split) {
-+                    memcpy(d, n, vl);  /* all true */
-+                } else {
-+                    for (int e = 0; e < split; e++) {
-+                        d[H4(e)] = n[H4(e)];
-+                    }
-+                    for (int e = split; e < elements; e++) {
-+                        d[H4(e)] = m[H4(e)];
-+                    }
-+                }
-+            }
-+        }
-+    } else {
-+        /* p.esz must be MO_64, so stride must be 2. */
-+        if (p.invert) {
-+            for (int r = 0; r < nreg; r++) {
-+                uint32_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint32_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint32_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+                int e = 0;
-+
-+                for (; e < MIN(split, elements); e++) {
-+                    d[H4(e)] = m[H4(e)];
-+                }
-+                for (; e < elements; e += 2) {
-+                    d[H4(e)] = n[H4(e)];
-+                    d[H4(e + 1)] = m[H4(e + 1)];
-+                }
-+            }
-+        } else {
-+            for (int r = 0; r < nreg; r++) {
-+                uint32_t *d = vd + r * sizeof(ARMVectorReg);
-+                uint32_t *n = vn + r * sizeof(ARMVectorReg);
-+                uint32_t *m = vm + r * sizeof(ARMVectorReg);
-+                int split = p.count - r * elements;
-+                int e = 0;
-+
-+                for (; e < MIN(split, elements); e += 2) {
-+                    d[H4(e)] = n[H4(e)];
-+                    d[H4(e + 1)] = m[H4(e + 1)];
-+                }
-+                for (; e < elements; e++) {
-+                    d[H4(e)] = m[H4(e)];
-+                }
-+            }
-+        }
-+    }
-+}
-+
-+void HELPER(sme2_sel_d)(void *vd, void *vn, void *vm,
-+                        uint32_t png, uint32_t desc)
-+{
-+    int vl = simd_oprsz(desc);
-+    int nreg = simd_data(desc);
-+    int elements = vl / sizeof(uint64_t);
-+    DecodeCounter p = decode_counter(png, vl, MO_64);
-+
-+    if (p.invert) {
-+        for (int r = 0; r < nreg; r++) {
-+            uint64_t *d = vd + r * sizeof(ARMVectorReg);
-+            uint64_t *n = vn + r * sizeof(ARMVectorReg);
-+            uint64_t *m = vm + r * sizeof(ARMVectorReg);
-+            int split = p.count - r * elements;
-+
-+            if (split <= 0) {
-+                memcpy(d, n, vl);  /* all true */
-+            } else if (elements <= split) {
-+                memcpy(d, m, vl);  /* all false */
-+            } else {
-+                memcpy(d, m, split * sizeof(uint64_t));
-+                memcpy(d + split, n + split,
-+                       (elements - split) * sizeof(uint64_t));
-+            }
-+        }
-+    } else {
-+        for (int r = 0; r < nreg; r++) {
-+            uint64_t *d = vd + r * sizeof(ARMVectorReg);
-+            uint64_t *n = vn + r * sizeof(ARMVectorReg);
-+            uint64_t *m = vm + r * sizeof(ARMVectorReg);
-+            int split = p.count - r * elements;
-+
-+            if (split <= 0) {
-+                memcpy(d, m, vl);  /* all false */
-+            } else if (elements <= split) {
-+                memcpy(d, n, vl);  /* all true */
-+            } else {
-+                memcpy(d, n, split * sizeof(uint64_t));
-+                memcpy(d + split, m + split,
-+                       (elements - split) * sizeof(uint64_t));
-+            }
-+        }
-+    }
-+}
-diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index b6316ac716..7407597177 100644
---- a/target/arm/tcg/translate-sme.c
-+++ b/target/arm/tcg/translate-sme.c
-@@ -1642,3 +1642,34 @@ static gen_helper_gvec_3 * const uclamp_fns[] = {
-     gen_helper_sme2_uclamp_d,
- };
- TRANS(UCLAMP, do_clamp, a, uclamp_fns)
-+
-+static bool trans_SEL(DisasContext *s, arg_SEL *a)
-+{
-+    typedef void sme_sel_fn(TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_i32, TCGv_i32);
-+    static sme_sel_fn * const fns[4] = {
-+        gen_helper_sme2_sel_b, gen_helper_sme2_sel_h,
-+        gen_helper_sme2_sel_s, gen_helper_sme2_sel_d
-+    };
-+
-+    if (!dc_isar_feature(aa64_sme2, s)) {
-+        return false;
-+    }
-+    if (sme_sm_enabled_check(s)) {
-+        int svl = streaming_vec_reg_size(s);
-+        uint32_t desc = simd_desc(svl, svl, a->n);
-+        TCGv_ptr t_d = tcg_temp_new_ptr();
-+        TCGv_ptr t_n = tcg_temp_new_ptr();
-+        TCGv_ptr t_m = tcg_temp_new_ptr();
-+        TCGv_i32 png = tcg_temp_new_i32();
-+
-+        tcg_gen_addi_ptr(t_d, tcg_env, vec_full_reg_offset(s, a->zd));
-+        tcg_gen_addi_ptr(t_n, tcg_env, vec_full_reg_offset(s, a->zn));
-+        tcg_gen_addi_ptr(t_m, tcg_env, vec_full_reg_offset(s, a->zm));
-+
-+        tcg_gen_ld16u_i32(png, tcg_env, pred_full_reg_offset(s, a->pg)
-+                          ^ (HOST_BIG_ENDIAN ? 6 : 0));
-+
-+        fns[a->esz](t_d, t_n, t_m, png, tcg_constant_i32(desc));
-+    }
-+    return true;
-+}
-diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
-index c4b85a36d0..0a2ceea8be 100644
---- a/target/arm/tcg/sme.decode
-+++ b/target/arm/tcg/sme.decode
-@@ -878,6 +878,15 @@ UCLAMP          11000001 esz:2 1 zm:5 110001 zn:5 .... 1    \
- UCLAMP          11000001 esz:2 1 zm:5 110011 zn:5 ...0 1    \
-                 &zzz_en zd=%zd_ax4 n=4
++DEF_HELPER_FLAGS_4(sve2p1_andqv_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve2p1_andqv_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve2p1_andqv_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(sve2p1_andqv_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
+index 59ba1caf02..bc5e039689 100644
+--- a/target/arm/tcg/sve_helper.c
++++ b/target/arm/tcg/sve_helper.c
+@@ -123,6 +123,11 @@ static inline uint64_t expand_pred_s(uint8_t byte)
+     return word[byte & 0x11];
+ }
  
-+### SME2 Multi-vector SVE Select
++static inline uint64_t expand_pred_d(uint8_t byte)
++{
++    return -(uint64_t)(byte & 1);
++}
 +
-+%sel_pg         10:3 !function=plus_8
-+
-+SEL             11000001 esz:2 1 ....0 100 ... ....0 ....0  \
-+                n=2 zd=%zd_ax2 zn=%zn_ax2 zm=%zm_ax2 pg=%sel_pg
-+SEL             11000001 esz:2 1 ...01 100 ... ...00 ...00  \
-+                n=4 zd=%zd_ax4 zn=%zn_ax4 zm=%zm_ax4 pg=%sel_pg
-+
- ### SME Multiple Zero
+ #define LOGICAL_PPPP(NAME, FUNC) \
+ void HELPER(NAME)(void *vd, void *vn, void *vm, void *vg, uint32_t desc)  \
+ {                                                                         \
+@@ -206,6 +211,7 @@ void HELPER(NAME)(void *vd, void *vn, void *vm, void *vg, uint32_t desc) \
+ #define DO_EOR(N, M)  (N ^ M)
+ #define DO_ORR(N, M)  (N | M)
+ #define DO_BIC(N, M)  (N & ~M)
++#define DO_ORC(N, M)  (N | ~M)
+ #define DO_ADD(N, M)  (N + M)
+ #define DO_SUB(N, M)  (N - M)
+ #define DO_MAX(N, M)  ((N) >= (M) ? (N) : (M))
+@@ -1900,10 +1906,46 @@ DO_ZZI(sve_umini_d, uint64_t, DO_MIN)
  
- &zero_za        rv off ngrp nvec
+ #undef DO_ZZI
+ 
++#define DO_LOGIC_QV(NAME, SUFF, INIT, VOP, POP)                         \
++void HELPER(NAME ## _ ## SUFF)(void *vd, void *vn, void *vg, uint32_t desc) \
++{                                                                       \
++    unsigned seg = simd_oprsz(desc) / 16;                               \
++    uint64_t r0 = INIT, r1 = INIT;                                      \
++    for (unsigned s = 0; s < seg; s++) {                                \
++        uint64_t p0 = expand_pred_##SUFF(*(uint8_t *)(vg + H1(s * 2))); \
++        uint64_t p1 = expand_pred_##SUFF(*(uint8_t *)(vg + H1(s * 2 + 1))); \
++        uint64_t v0 = *(uint64_t *)(vn + s * 16);                       \
++        uint64_t v1 = *(uint64_t *)(vn + s * 16 + 8);                   \
++        v0 = POP(v0, p0), v1 = POP(v1, p1);                             \
++        r0 = VOP(r0, v0), r1 = VOP(r1, v1);                             \
++    }                                                                   \
++    *(uint64_t *)(vd + 0) = r0;                                         \
++    *(uint64_t *)(vd + 8) = r1;                                         \
++    clear_tail(vd, 16, simd_maxsz(desc));                               \
++}
++
++DO_LOGIC_QV(sve2p1_orqv, b, 0, DO_ORR, DO_AND)
++DO_LOGIC_QV(sve2p1_orqv, h, 0, DO_ORR, DO_AND)
++DO_LOGIC_QV(sve2p1_orqv, s, 0, DO_ORR, DO_AND)
++DO_LOGIC_QV(sve2p1_orqv, d, 0, DO_ORR, DO_AND)
++
++DO_LOGIC_QV(sve2p1_eorqv, b, 0, DO_EOR, DO_AND)
++DO_LOGIC_QV(sve2p1_eorqv, h, 0, DO_EOR, DO_AND)
++DO_LOGIC_QV(sve2p1_eorqv, s, 0, DO_EOR, DO_AND)
++DO_LOGIC_QV(sve2p1_eorqv, d, 0, DO_EOR, DO_AND)
++
++DO_LOGIC_QV(sve2p1_andqv, b, -1, DO_AND, DO_ORC)
++DO_LOGIC_QV(sve2p1_andqv, h, -1, DO_AND, DO_ORC)
++DO_LOGIC_QV(sve2p1_andqv, s, -1, DO_AND, DO_ORC)
++DO_LOGIC_QV(sve2p1_andqv, d, -1, DO_AND, DO_ORC)
++
++#undef DO_LOGIC_QV
++
+ #undef DO_AND
+ #undef DO_ORR
+ #undef DO_EOR
+ #undef DO_BIC
++#undef DO_ORC
+ #undef DO_ADD
+ #undef DO_SUB
+ #undef DO_MAX
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 6ad4d1e289..2114b2ecca 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -778,6 +778,9 @@ DO_ZPZ(NOT_zpz, aa64_sve, sve_not_zpz)
+ DO_ZPZ(ABS, aa64_sve, sve_abs)
+ DO_ZPZ(NEG, aa64_sve, sve_neg)
+ DO_ZPZ(RBIT, aa64_sve, sve_rbit)
++DO_ZPZ(ORQV, aa64_sme2p1_or_sve2p1, sve2p1_orqv)
++DO_ZPZ(EORQV, aa64_sme2p1_or_sve2p1, sve2p1_eorqv)
++DO_ZPZ(ANDQV, aa64_sme2p1_or_sve2p1, sve2p1_andqv)
+ 
+ static gen_helper_gvec_3 * const fabs_fns[4] = {
+     NULL,                  gen_helper_sve_fabs_h,
+diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
+index b762257759..ff740f7b40 100644
+--- a/target/arm/tcg/sve.decode
++++ b/target/arm/tcg/sve.decode
+@@ -326,6 +326,11 @@ ORV             00000100 .. 011 000 001 ... ..... .....         @rd_pg_rn
+ EORV            00000100 .. 011 001 001 ... ..... .....         @rd_pg_rn
+ ANDV            00000100 .. 011 010 001 ... ..... .....         @rd_pg_rn
+ 
++# SVE2.1 bitwise logical reduction (quadwords)
++ORQV            00000100 .. 011 100 001 ... ..... .....         @rd_pg_rn
++EORQV           00000100 .. 011 101 001 ... ..... .....         @rd_pg_rn
++ANDQV           00000100 .. 011 110 001 ... ..... .....         @rd_pg_rn
++
+ # SVE constructive prefix (predicated)
+ MOVPRFX_z       00000100 .. 010 000 001 ... ..... .....         @rd_pg_rn
+ MOVPRFX_m       00000100 .. 010 001 001 ... ..... .....         @rd_pg_rn
 -- 
 2.43.0
 
