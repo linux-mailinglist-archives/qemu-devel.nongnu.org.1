@@ -2,109 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F175AF0875
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 04:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3155DAF0877
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 04:29:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWn9Y-0002C4-Fn; Tue, 01 Jul 2025 22:24:53 -0400
+	id 1uWnDr-0003l7-HO; Tue, 01 Jul 2025 22:29:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1uWn9W-0002Bs-Gq
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:24:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1uWn9P-0001H5-2T
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:24:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751423079;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+Tsp9dzizK+AtKctxeLQzqRqxNRLoIZa766o0sMJY24=;
- b=f5nILZIhm8By4yvZHVTbbrRdT382UgIegooXbldT2xwq2SypXhGVoYMTDVW2LFs/pnI5Su
- c5lmrlbA3s/lwTGI5n2E85wxgD1j5xUXJOjJkY3X+348JYogh+KUYXklGCiH1BGMXRUtN4
- M5ZevaoRxrQldt2XE1ShRBy15a8fViE=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-Qmguk4PnNyOaKWVjZPRQQA-1; Tue, 01 Jul 2025 22:24:38 -0400
-X-MC-Unique: Qmguk4PnNyOaKWVjZPRQQA-1
-X-Mimecast-MFC-AGG-ID: Qmguk4PnNyOaKWVjZPRQQA_1751423077
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-7489ac848f3so6399374b3a.1
- for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 19:24:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uWnDp-0003ka-IM
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:29:17 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uWnDn-00022c-LO
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:29:17 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-60ef07eb7f4so1841416eaf.3
+ for <qemu-devel@nongnu.org>; Tue, 01 Jul 2025 19:29:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751423352; x=1752028152; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Wg+NWeNOqI2N5n/GaHZ/LLPcIAbDq0HjwrLwgpXBjUw=;
+ b=mpxPpxqTRVIzhUblZyJOYRYmBnLyxE3NCsQ2UQB38nN9MRVoEnXC7VCAfemn00SNYJ
+ t2c7Q/EcYKxbDPhw8/zY65Ybqpn9BhGTdLk2lKh5PNv4sbvhuYcC9jYzO8epTPYeuPDN
+ /GD0yxR6BlUMBQjtLkqL04FNPbKPrRGDlORXV/7MMPwQgbfuIvvL486G4X2MGiMzs4NC
+ RXJuJ8qkQsqNB/NP2pAe/3j7uyQ36sHV8fGuMsdGStdg/qwvqUYXAze5JyEafK+Rt3Hs
+ ghVWG9gTn0Gkm3O2t9j1EiSOvxWZv89FtDAdzFkfxa3rpAtkrTlfOGjkI2/sodpMpSAn
+ rAwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751423077; x=1752027877;
+ d=1e100.net; s=20230601; t=1751423352; x=1752028152;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+Tsp9dzizK+AtKctxeLQzqRqxNRLoIZa766o0sMJY24=;
- b=lcOr+fqlg/m5gRC7hbCvoKghDNLM/iCcGvXGBkk+R+K65Grb+NJv/uJIy2CsHZ63il
- spHT0RvoH83Q6LY9MlkkFF8fJPIwvMKGSfrk2e2K5J/Nr1P9Z4Dfqit0acW2g3GAwz6M
- ZTnTrMqdwwgWfZQ1WCfCHedlRdBvSWISXAar2BBW1zi5Kz2GnBzIrGZyBQGWlVlaYbYE
- mNhhFX4e3tVo4Fx6nQG/vY7wc9UDoo49ND2XbSfLxwbaWSHt4BPZx9NACWlB4X53I26l
- NuvCHN30N3dONM8Gtu0dm3jtYBYScS8kiJ9isUCxgFdGzWV+0tMbkBkvPZRtfb80RPgf
- BD1g==
+ bh=Wg+NWeNOqI2N5n/GaHZ/LLPcIAbDq0HjwrLwgpXBjUw=;
+ b=GNhN01v0wwjlMBBCFULDwUfyewzad2TjZtFo+tthsPcuTPauxeVgZV10HbriyWw7Ic
+ Ey68QWDkvz+MsjPDlh4JSgg85yyfpC46k9DlF2if3my3wRqrRsf9ecWCZH5PNfPfNDJK
+ egWKNKHQbq2y9A3oyE7Caeh5Oya3zLH3ve0goai5hkWPs6gy0JlBsK118PrNdMf+FZv5
+ qoDfPYPk7pQj3vudZ7azymvIzhGOnRf8m6oEsMX1M567Wy5Ez0MFY9cYcmExzyDESDxZ
+ sbSmsZ+BV4W6r1GCN8XXCrMFJoUmvenh2nPZ5lwpBSkohBWzIAiUtNwG+alUsGSQ3y1i
+ 55Zg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX5FPar32Yz/tsR/wBxCw/Dl7LuN4T3fx9z46xxppMiEOJ65Uye+oF0uHwRM/dAbdHQQ8wM8mrPRps9@nongnu.org
-X-Gm-Message-State: AOJu0Yy/GIdRbePcCBGCea0LcHomFIkb46o0gUlRxJW9WaYG7/HPfFwa
- 2i7ukNocrNmuJQ+Vdf5BXaFDKPdaGVpO/I1B4tByGW4u9nTOfLBZIOkfMfAISFTAXLajQvnpRBN
- znKapIseV+e3HjodX3+OSc7larxU9c/XuJtdmpEfO2XjkjrAw3oG/QIX3
-X-Gm-Gg: ASbGncvYCQXF/SoeTyC22PqShiuskG2zrbeE2C8BLeBnJ6FAoSiiqXWrGXWuY0IrHR9
- hsPRJ+BVh42Zt74riJUBx6MEANUtMqrfW2HT0az8pVMHB31StPeQhrDJUbG5YOyeCtza+pFhrqE
- ZfQLMx9U4k1xMW2kpYtHm0L/2laSKAk3CadFu6hpgiuASNdbHrYyjS7buwOqm6ha3LlXFcrL/wi
- u5L8PDpo/ZenW//leB+UEypG28+Tljtbym+ZxKc03nN4i9m7WmONIpQDq/Gww+9B0WtBv0usR1b
- PQHyB84SlVFzIBk6uKTTfCujPbI=
-X-Received: by 2002:a05:6a00:1910:b0:748:4652:bff4 with SMTP id
- d2e1a72fcca58-74b5149c0f6mr1573727b3a.13.1751423077438; 
- Tue, 01 Jul 2025 19:24:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJRdSTMgF7TAQ4v2+z8A07Dixc8z9orv1KsD4yhCe8qGhY5ZqZ7Ymcfx2Egzupj2vvQePd0A==
-X-Received: by 2002:a05:6a00:1910:b0:748:4652:bff4 with SMTP id
- d2e1a72fcca58-74b5149c0f6mr1573683b3a.13.1751423077060; 
- Tue, 01 Jul 2025 19:24:37 -0700 (PDT)
-Received: from [10.72.116.105] ([209.132.188.88])
+ AJvYcCXwe2Z2VUaoJF+jTrRQE8K07xh5VAsDHgPdVzeNO1e8h0DXrIMmrlcnBZI+CmTaRXqvA2FjNgvNQA/g@nongnu.org
+X-Gm-Message-State: AOJu0YxZ+ED3nEphtyaBADnKWGdFpwHPQXJr76/32/eevlsdtGwZ+90T
+ mOSkQqhQyfWqwQPQV1D7zYE5wA8LjMrC4yObiLBs0dUQNCtMu85Bi41Q1nELrxcqGFA=
+X-Gm-Gg: ASbGncupLQyd1WrMJ6HqtFqReboHQ4XfmOAl5RlaBhfqh+f/LE2G7kby3qeqM0wAmRe
+ t7Hi7V+3lKu2ubT+7HwZlX8Np1eREzQJAARGbZUK9FuNEEfE6WaiR3V7yY8tCn2SYSFcicS7Jgw
+ FO00xj/rr6Rcx43VhFOzZyFtBjl/bdi23hEyeGNp56iyZ97jjnob/ZbAcoAPJn9VYgpKMN+Lb55
+ CHX+Yj0T7r1Mb70IQK5ktyfVJFpa9TZJsCH4IHE06XiJcHYBR4gd0zkn05VE3GnBx8d+YDjVikB
+ RmQgluVuZhJuxXmCecQWJZsMnSO+EDiwiJI/DS3ZonWL/zKGRuxm8TuTKNsQFL2qc7GXPT3KC5f
+ 2jA==
+X-Google-Smtp-Source: AGHT+IE/WnHajcVs8T5twY9iO4YAxUBhCwIeTH/r6lPBhkN4R025pWamf4DrJ/siaIl/9R/nwlDY2Q==
+X-Received: by 2002:a05:6820:1896:b0:611:b1c7:23f with SMTP id
+ 006d021491bc7-61200fb67e7mr783563eaf.0.1751423351880; 
+ Tue, 01 Jul 2025 19:29:11 -0700 (PDT)
+Received: from [10.25.7.201] ([187.210.107.185])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74af541c399sm13288493b3a.52.2025.07.01.19.24.28
+ 006d021491bc7-611b848ba33sm1648411eaf.10.2025.07.01.19.29.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Jul 2025 19:24:36 -0700 (PDT)
-Message-ID: <6347e3a2-23f5-43a3-8b74-503148f3bacf@redhat.com>
-Date: Wed, 2 Jul 2025 10:24:24 +0800
+ Tue, 01 Jul 2025 19:29:11 -0700 (PDT)
+Message-ID: <d0fe4c30-3dbd-4868-a277-c6777a83972d@linaro.org>
+Date: Tue, 1 Jul 2025 20:29:09 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] hw/i386: Add the ramfb romfile compatibility
-To: Eric Auger <eauger@redhat.com>, qemu-arm@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-References: <20250701030549.2153331-1-shahuang@redhat.com>
- <20250701030549.2153331-3-shahuang@redhat.com>
- <9bbaa0bb-cf32-48f2-aff6-6484285496f0@redhat.com>
+Subject: Re: [PATCH v2 04/12] target/arm: Fix VLDR helper load alignment checks
+To: William Kosasih <kosasihwilliam4@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+References: <20250701103159.62661-1-kosasihwilliam4@gmail.com>
+ <20250701103159.62661-5-kosasihwilliam4@gmail.com>
 Content-Language: en-US
-From: Shaoqin Huang <shahuang@redhat.com>
-In-Reply-To: <9bbaa0bb-cf32-48f2-aff6-6484285496f0@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250701103159.62661-5-kosasihwilliam4@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=shahuang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,149 +102,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Eric,
-
-Thanks for your review.
-
-On 7/1/25 1:17 PM, Eric Auger wrote:
-> Hi,
+On 7/1/25 04:31, William Kosasih wrote:
+> This patch adds alignment checks in the load operations in the VLDR
+> instruction.
 > 
-> On 7/1/25 5:05 AM, Shaoqin Huang wrote:
->> Set the "use-legacy-x86-rom" property to false by default, and only set
->> it to true on x86 since only x86 will need it.
->>
->> At the same time, set the "use-legacy-x86-rom" property to true on those
->> historical versioned machine types in order to avoid the memory layout
->> being changed.
->>
->> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
->> ---
->>   hw/core/machine.c             |  2 ++
->>   hw/display/ramfb-standalone.c |  2 +-
->>   hw/i386/pc_piix.c             | 10 ++++++++++
->>   hw/i386/pc_q35.c              |  3 +++
->>   hw/vfio/pci.c                 |  2 +-
->>   5 files changed, 17 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/core/machine.c b/hw/core/machine.c
->> index 63c6ef93d2..349aec1e0d 100644
->> --- a/hw/core/machine.c
->> +++ b/hw/core/machine.c
->> @@ -46,6 +46,8 @@ GlobalProperty hw_compat_9_2[] = {
->>       { "migration", "multifd-clean-tls-termination", "false" },
->>       { "migration", "send-switchover-start", "off"},
->>       { "vfio-pci", "x-migration-multifd-transfer", "off" },
->> +    { "ramfb", "use-legacy-x86-rom", "true"},
->> +    { "vfio-pci", "use-legacy-x86-rom", "true" },
-> why 9.2? The 10.0 machine type should also apply the previous "true"
-> default setting. To me the new default shall only affect the latest 10.1
-> machine type.
-
-It seems what I understand is wrong, I thought the 9.2 is the historical 
-machine type.
-
-10.0 machine type is the current machine type, it also should be 
-included into the historical machine type when we add the property.
-
-ok I will update it again with add those property into 10.0 machine type.
-
-Thanks
-
->>   };
->>   const size_t hw_compat_9_2_len = G_N_ELEMENTS(hw_compat_9_2);
->>   
->> diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
->> index af1175bf96..ddbf42f181 100644
->> --- a/hw/display/ramfb-standalone.c
->> +++ b/hw/display/ramfb-standalone.c
->> @@ -63,7 +63,7 @@ static const VMStateDescription ramfb_dev_vmstate = {
->>   
->>   static const Property ramfb_properties[] = {
->>       DEFINE_PROP_BOOL("x-migrate", RAMFBStandaloneState, migrate,  true),
->> -    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState, use_legacy_x86_rom, true),
->> +    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState, use_legacy_x86_rom, false),
->>   };
->>   
->>   static void ramfb_class_initfn(ObjectClass *klass, void *data)
->> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
->> index 6c91e2d292..4a8bbc0e28 100644
->> --- a/hw/i386/pc_piix.c
->> +++ b/hw/i386/pc_piix.c
->> @@ -49,6 +49,7 @@
->>   #include "hw/i2c/smbus_eeprom.h"
->>   #include "exec/memory.h"
->>   #include "hw/acpi/acpi.h"
->> +#include "hw/vfio/pci.h"
->>   #include "qapi/error.h"
->>   #include "qemu/error-report.h"
->>   #include "system/xen.h"
->> @@ -77,6 +78,13 @@ static const int ide_iobase2[MAX_IDE_BUS] = { 0x3f6, 0x376 };
->>   static const int ide_irq[MAX_IDE_BUS] = { 14, 15 };
->>   #endif
->>   
->> +static GlobalProperty pc_piix_compat_defaults[] = {
->> +    { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
->> +    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
->> +};
->> +static const size_t pc_piix_compat_defaults_len =
->> +    G_N_ELEMENTS(pc_piix_compat_defaults);
->> +
->>   /*
->>    * Return the global irq number corresponding to a given device irq
->>    * pin. We could also use the bus number to have a more precise mapping.
->> @@ -477,6 +485,8 @@ static void pc_i440fx_machine_options(MachineClass *m)
->>                                      pc_set_south_bridge);
->>       object_class_property_set_description(oc, "x-south-bridge",
->>                                        "Use a different south bridge than PIIX3");
->> +    compat_props_add(m->compat_props,
->> +                     pc_piix_compat_defaults, pc_piix_compat_defaults_len);
->>   }
->>   
->>   static void pc_i440fx_machine_10_0_options(MachineClass *m)
->> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
->> index fd96d0345c..f6d89578d0 100644
->> --- a/hw/i386/pc_q35.c
->> +++ b/hw/i386/pc_q35.c
->> @@ -45,6 +45,7 @@
->>   #include "hw/i386/pc.h"
->>   #include "hw/i386/amd_iommu.h"
->>   #include "hw/i386/intel_iommu.h"
->> +#include "hw/vfio/pci.h"
->>   #include "hw/virtio/virtio-iommu.h"
->>   #include "hw/display/ramfb.h"
->>   #include "hw/ide/pci.h"
->> @@ -67,6 +68,8 @@
->>   
->>   static GlobalProperty pc_q35_compat_defaults[] = {
->>       { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "39" },
->> +    { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
->> +    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
-> I hope we do not omit any other machine that would actually need ramfb
-> rom. At the moment we take care of q35 and  piix. Anyone aware of any
-> other user?
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
+> Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
+> ---
+>   target/arm/tcg/mve_helper.c | 41 ++++++++++++++++++++++++++++---------
+>   1 file changed, 31 insertions(+), 10 deletions(-)
 > 
-> Thanks
-> 
-> Eric
->>   };
->>   static const size_t pc_q35_compat_defaults_len =
->>       G_N_ELEMENTS(pc_q35_compat_defaults);
->> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
->> index ff0d93fae0..a529500b70 100644
->> --- a/hw/vfio/pci.c
->> +++ b/hw/vfio/pci.c
->> @@ -3564,7 +3564,7 @@ static const TypeInfo vfio_pci_dev_info = {
->>   
->>   static const Property vfio_pci_dev_nohotplug_properties[] = {
->>       DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
->> -    DEFINE_PROP_BOOL("use-legacy-x86-rom", VFIOPCIDevice, use_legacy_x86_rom, true),
->> +    DEFINE_PROP_BOOL("use-legacy-x86-rom", VFIOPCIDevice, use_legacy_x86_rom, false),
->>       DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate,
->>                               ON_OFF_AUTO_AUTO),
->>   };
-> 
+> diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
+> index 506d1c3475..922cd2371a 100644
+> --- a/target/arm/tcg/mve_helper.c
+> +++ b/target/arm/tcg/mve_helper.c
+> @@ -147,6 +147,22 @@ static void mve_advance_vpt(CPUARMState *env)
+>       env->v7m.vpr = vpr;
+>   }
+>   
+> +/* Mapping of LDTYPE/STTYPE to the number of bytes accessed */
+> +#define MSIZE_b 1
+> +#define MSIZE_w 2
+> +#define MSIZE_l 4
+> +
+> +/* Mapping of LDTYPE/STTYPE to MemOp flag */
+> +#define MFLAG_b MO_UB
+> +#define MFLAG_w MO_TEUW
+> +#define MFLAG_l MO_TEUL
+> +
+> +#define MSIZE(t)  MSIZE_##t
 
--- 
-Shaoqin
+AFAICS, this isn't used.
+
+> +#define MFLAG(t)  MFLAG_##t
+> +
+> +#define SIGN_EXT(v, T, B) { \
+> +    ((T)(v) << (sizeof(T) * 8 - (B))) >> (sizeof(T) * 8 - (B)) }
+
+Don't do this.  (1) Not all of these operations require sign extension, (2) it's clearer 
+to simply cast to an appropriate MTYPE.
+
+r~
+
+> +
+>   /* For loads, predicated lanes are zeroed instead of keeping their old values */
+>   #define DO_VLDR(OP, MSIZE, LDTYPE, ESIZE, TYPE)                         \
+>       void HELPER(mve_##OP)(CPUARMState *env, void *vd, uint32_t addr)    \
+> @@ -155,6 +171,8 @@ static void mve_advance_vpt(CPUARMState *env)
+>           uint16_t mask = mve_element_mask(env);                          \
+>           uint16_t eci_mask = mve_eci_mask(env);                          \
+>           unsigned b, e;                                                  \
+> +        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
+> +        MemOpIdx oi = make_memop_idx(MFLAG(LDTYPE) | MO_ALIGN, mmu_idx);\
+>           /*                                                              \
+>            * R_SXTM allows the dest reg to become UNKNOWN for abandoned   \
+>            * beats so we don't care if we update part of the dest and     \
+> @@ -163,7 +181,10 @@ static void mve_advance_vpt(CPUARMState *env)
+>           for (b = 0, e = 0; b < 16; b += ESIZE, e++) {                   \
+>               if (eci_mask & (1 << b)) {                                  \
+>                   d[H##ESIZE(e)] = (mask & (1 << b)) ?                    \
+> -                    cpu_##LDTYPE##_data_ra(env, addr, GETPC()) : 0;     \
+> +                    SIGN_EXT(cpu_ld##LDTYPE##_mmu(env, addr, oi, GETPC()),\
+> +                             TYPE,                                      \
+> +                             MSIZE * 8)                                 \
+> +                    : 0;                                                \
+>               }                                                           \
+>               addr += MSIZE;                                              \
+>           }                                                               \
+> @@ -185,20 +206,20 @@ static void mve_advance_vpt(CPUARMState *env)
+>           mve_advance_vpt(env);                                           \
+>       }
+>   
+> -DO_VLDR(vldrb, 1, ldub, 1, uint8_t)
+> -DO_VLDR(vldrh, 2, lduw, 2, uint16_t)
+> -DO_VLDR(vldrw, 4, ldl, 4, uint32_t)
+> +DO_VLDR(vldrb, 1, b, 1, uint8_t)
+> +DO_VLDR(vldrh, 2, w, 2, uint16_t)
+> +DO_VLDR(vldrw, 4, l, 4, uint32_t)
+>   
+>   DO_VSTR(vstrb, 1, stb, 1, uint8_t)
+>   DO_VSTR(vstrh, 2, stw, 2, uint16_t)
+>   DO_VSTR(vstrw, 4, stl, 4, uint32_t)
+>   
+> -DO_VLDR(vldrb_sh, 1, ldsb, 2, int16_t)
+> -DO_VLDR(vldrb_sw, 1, ldsb, 4, int32_t)
+> -DO_VLDR(vldrb_uh, 1, ldub, 2, uint16_t)
+> -DO_VLDR(vldrb_uw, 1, ldub, 4, uint32_t)
+> -DO_VLDR(vldrh_sw, 2, ldsw, 4, int32_t)
+> -DO_VLDR(vldrh_uw, 2, lduw, 4, uint32_t)
+> +DO_VLDR(vldrb_sh, 1, b, 2, int16_t)
+> +DO_VLDR(vldrb_sw, 1, b, 4, int32_t)
+> +DO_VLDR(vldrb_uh, 1, b, 2, uint16_t)
+> +DO_VLDR(vldrb_uw, 1, b, 4, uint32_t)
+> +DO_VLDR(vldrh_sw, 2, w, 4, int32_t)
+> +DO_VLDR(vldrh_uw, 2, w, 4, uint32_t)
+>   
+>   DO_VSTR(vstrb_h, 1, stb, 2, int16_t)
+>   DO_VSTR(vstrb_w, 1, stb, 4, int32_t)
 
 
