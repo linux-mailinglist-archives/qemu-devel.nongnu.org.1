@@ -2,69 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB19AF0B95
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 08:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A89C6AF0BE6
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 08:45:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWqqP-0006mu-8A; Wed, 02 Jul 2025 02:21:21 -0400
+	id 1uWrCE-0002kg-Pi; Wed, 02 Jul 2025 02:43:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uWqqM-0006m4-TS; Wed, 02 Jul 2025 02:21:18 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ (Exim 4.90_1) (envelope-from <SRS0=U4+o=ZP=kaod.org=clg@ozlabs.org>)
+ id 1uWrCB-0002kQ-Ez; Wed, 02 Jul 2025 02:43:51 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uWqqJ-0000MV-6h; Wed, 02 Jul 2025 02:21:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751437275; x=1782973275;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=KDE7bcX47aDBLE8+1wi3xHJx7irP5QBRBP1cPyNpGEo=;
- b=S1odRBYjEpI/BIUqYM4kOJNSETBc7U0+0u2Mo3ZkeyOqFiTic5Xp2rFz
- WIVVlqnwkaJl7ouYvOlTxcbcNwotYMGcyTilh5Y1/XFjxsYPuHadidGhk
- FUuc2rS4prqX8WrhkuK/0ZYQBXKtBMWHbZP5p86vyVppTsE+BDvUsOcwg
- FHMRIDc+umupqySwj5ZZDfCr1EFPMC4OTrWNTMbtCMGCCj6zoPjDXoIsC
- v53Gcc585TD6esu7EX2QXyyZJPisGBzU3bZ0yzubTquraXLo33hu5OSoJ
- IJLVFypWAaqa8efYPZM/eCPrOy893bnpfVUFywjx6d5DGr8cP1V+TMx17 A==;
-X-CSE-ConnectionGUID: v7EedJXyQ4Ok6SoCk7SCgg==
-X-CSE-MsgGUID: MkXSxus7RISQUaVqEVbjmA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="65069877"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="65069877"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2025 23:21:10 -0700
-X-CSE-ConnectionGUID: 2DOTjRfKRXCZODe51K6jvQ==
-X-CSE-MsgGUID: hIXI8E1kSa2EoaubLjUqNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="191160559"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 01 Jul 2025 23:21:09 -0700
-Date: Wed, 2 Jul 2025 14:42:33 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-stable@nongnu.org, qemu-trivial@nongnu.org
-Subject: Re: [PATCH] accel/kvm: Adjust the note about the minimum required
- kernel version
-Message-ID: <aGTU2enBBQj7lu3E@intel.com>
-References: <20250702060319.13091-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <SRS0=U4+o=ZP=kaod.org=clg@ozlabs.org>)
+ id 1uWrC4-00056Q-Lq; Wed, 02 Jul 2025 02:43:51 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4bX9MW6f4rz4x0C;
+ Wed,  2 Jul 2025 16:43:19 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4bX9MS2jH2z4wd0;
+ Wed,  2 Jul 2025 16:43:15 +1000 (AEST)
+Message-ID: <f4b1f8ae-691f-49b8-847c-19cac9445668@kaod.org>
+Date: Wed, 2 Jul 2025 08:43:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702060319.13091-1-thuth@redhat.com>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 00/18] Support AST2700 A1
+To: Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Cc: Troy Lee <troy_lee@aspeedtech.com>,
+ Yunlin Tang <yunlin.tang@aspeedtech.com>
+References: <20250121070424.2465942-1-jamin_lin@aspeedtech.com>
+ <096e8152-ec19-4b2b-aa56-dd566ce7bb6d@kaod.org>
+ <9534dc4d-fdf6-418d-b5f7-9bc7f03bf7ec@kaod.org>
+ <SI2PR06MB504195531936785FFA2CA4BDFC40A@SI2PR06MB5041.apcprd06.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <SI2PR06MB504195531936785FFA2CA4BDFC40A@SI2PR06MB5041.apcprd06.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=U4+o=ZP=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.017, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,46 +112,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 02, 2025 at 08:03:19AM +0200, Thomas Huth wrote:
-> Date: Wed,  2 Jul 2025 08:03:19 +0200
-> From: Thomas Huth <thuth@redhat.com>
-> Subject: [PATCH] accel/kvm: Adjust the note about the minimum required
->  kernel version
-> 
-> From: Thomas Huth <thuth@redhat.com>
-> 
-> Since commit 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and
-> KVM_CAP_IOEVENTFD_ANY_LENGTH") we require at least kernel 4.4 to
-> be able to use KVM. Adjust the upgrade_note accordingly.
-> While we're at it, remove the text about kvm-kmod and the
-> SourceForge URL since this is not actively maintained anymore.
-> 
-> Fixes: 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and KVM_CAP_IOEVENTFD_ANY_LENGTH")
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  accel/kvm/kvm-all.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+Hello,
 
-I just mentioned the kernel version in another patch thread. I found
-x86 doc said it requires v4.5 or newer ("OS requirements" section in
-docs/system/target-i386.rst).
+>> Should we switch the alias to point to 'ast2700a1-evb' in QEMU 10.1.0 ?
+>> and deprecate the A0 SoC and machine if it is no longer planned to support
+>> them.
+>>
+> 
+> Sorry for the late reply and delay in processing this task.
+> I’ve been postponing this because our customers do not have "AST2700 A1 EVB".
 
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index d095d1b98f8..e3302b087f4 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -2571,8 +2571,7 @@ static int kvm_init(MachineState *ms)
->  {
->      MachineClass *mc = MACHINE_GET_CLASS(ms);
->      static const char upgrade_note[] =
-> -        "Please upgrade to at least kernel 2.6.29 or recent kvm-kmod\n"
-> -        "(see http://sourceforge.net/projects/kvm).\n";
-> +        "Please upgrade to at least kernel 4.4.\n";
->      const struct {
->          const char *name;
->          int num;
-> -- 
-> 2.50.0
+oh. There is no urgency to remove A0.
+
+> Since ASPEED SDK has dropped support for AST2700 A0 as of version "v09.07", I believe it's now appropriate to remove AST2700 A0 support in QEMU.
+> https://github.com/AspeedTech-BMC/openbmc/releases/tag/v09.07
+> In addition, I plan to make ast2700-evb an alias of ast2700a1-evb.
 > 
-> 
+> Currently, I’m not very familiar with the proper procedure to deprecate an existing machine in QEMU, but the following is my initial plan for handling this task:
+> PATCH 1: Update the ast2700-evb alias to point to ast2700a1-evb and remove AST2700 A0 functional tests.
+
+That's something we can do whenever we like now.
+
+> PATCH 2: Remove the AST2700 A0 SoC and ast2700a0-evb machine implementation.
+> PATCH 3: (Question) Should I update the docs/about/deprecated.rst file as well?
+
+See https://www.qemu.org/docs/master/about/deprecated.html
+
+First, we update the deprecated file, then remove the soc in
+2 releases.
+
+Thanks,
+
+C.
+
+
 
