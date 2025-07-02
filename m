@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69935AF532D
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 15:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 813ABAF166D
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 15:03:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWwx9-0003Ll-KI; Wed, 02 Jul 2025 08:52:45 -0400
+	id 1uWwrz-00084X-Th; Wed, 02 Jul 2025 08:47:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwnD-00008Y-LK
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:42:29 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
+ id 1uWwnH-0000Ab-FO
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:42:32 -0400
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwn0-0003Cu-Tw
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:42:26 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-2ea080f900cso1191446fac.2
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:42:13 -0700 (PDT)
+ id 1uWwn2-0003DE-Ts
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:42:30 -0400
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-2ea35edc691so1682912fac.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:42:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751460131; x=1752064931; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751460133; x=1752064933; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cUPjujs2ctqi58ILd1hUc6Jdxb9x5Tq6Mi0XLmcQqpM=;
- b=ULvTg3cCkrwUCUJ2y9Ri3oZN4vgz9y1/X/HpTOqOlyWxhUviKviMsUjKRqBp7O5SzN
- cwkjaTKkn1EMMqjEwOmHqx1feeBUoXiXwNj5UvCAKf7uShk8zxa/QjOsnlLxZQMmmoRx
- T15zawWUW/l3OUI/S/wQ+N76YBWzBzvltzubpqHA+efEMoGHoMrpC+IIMShhI53PZROe
- EPCCItGKOH142HYeBYUfjcdZ3kRfByLYZOtSbvi9c042RG888ndYw+XzDcPvDAARDGtt
- aWyGT115LcL8EtvOS7roLWKsTJd1DpUocNUfYwuZzz0DTqj7SEqCucgCG6+uxlmIcuvC
- 6JKA==
+ bh=DexnswzUI2GONBzk8DwGtUzhXp9CZ8U1qNwAguLf1rQ=;
+ b=nr/g32sEb/e6Uiz0BzDeRTNg+H28YHJBEugzkwLnl+txvQHVXNSEZ3MdD04h4w5bcr
+ vfW9SBaY2DGsy00jbECg4mlPEXbAbBIOKbti84zrKe6h3rFT4MZw4kPIPbPzB2d0EOqG
+ RP338gh+211TCRrTEWHVsXTVGZ8NtYL31iKMmbdLp+iTLXRPRehmtc6EuK4C8MHzDzvW
+ QEjqziIAHnL3mSJuhcx9CxuseMd3g0M+bGpjD1d/Tc/3Ck1FCHBhiyOjW0KHT2LpgF48
+ FnfKVu+Wx+993SujztV7rfeY00i0fAMPZhHts2+ACMWmVMmZW+ZHem2h16cHMV+DtHy4
+ zMPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751460131; x=1752064931;
+ d=1e100.net; s=20230601; t=1751460133; x=1752064933;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cUPjujs2ctqi58ILd1hUc6Jdxb9x5Tq6Mi0XLmcQqpM=;
- b=wQ/JUxpSm1MYJVNOU4/mkMz0BTYfYqYNNfDZD75zFW67CkbaU8z7m6oL0hnTjUXrLz
- 4Ey1QFi9iJhltlWfPniVLJecPqW4KaSXx9+X55ux5KL0A40iJeONOAEt3rf7Qu61d9Yf
- uJxnWK0OuE1XmKdoWkWAOKJdkgUQNhhuEiR0nyMLifRQQhkAxbRzSyaZsy9uKcE8S1zv
- GL03j8kk1y08GbbYlSElADtAM4R5c0J9Plp9PbEP2gXURuSPW9JbcRvuHGx9pPuDXvvh
- GG9Q7o66/cutmDP0sRntSwPV2e3enI/3iFrWYoff92GrvhTRCmH7veOzJM3kNbL6Jk7q
- t+6g==
-X-Gm-Message-State: AOJu0YwPBytbUu76Uoegps1vIKBxLIM7AEhD6ZvaN+HpPUvOkeX4Xbyt
- euy5HOjN+AJHs51YRxzF3mU3zI81U0IEU5DgepydckJTTB+pTdWJHQpW+2kThpXvNXEVMYsVDWy
- B/rQzH1g=
-X-Gm-Gg: ASbGncuzyD40atMI4TJ1GZ0uVUN2u1gIoJ/RZG4w0Jk4FLXLuecSOTfqzN231x+hRFm
- 4PlbovlagIfdMJyzgT1oNIDY5/mUzbPDNb3wQEhXZwKKdKWMOWZeQbVWErnKZ6GEDvKgTTisT9f
- fAYGWkESj2MpnF0/BT+alxLUixYamf0+HlQZ0P1Rc5Wp8qcZw7POTlWI4N91D6RG0SAw1+b9QEV
- 3pxaiGFkH4vcQCWv+m41gzdb79q3Os6dKjWWiVSzzG+RO4cJqBJyUnYSWqt9iokfvRbzATcJX4t
- 33hkviWXFEP/TxSSSvav4Uh6H8t1d8bjZA7YwkNBtVa8YKvUIAhsu1B7ut8xBWW/jcrfIg==
-X-Google-Smtp-Source: AGHT+IFpvUjrCoj0lTO/jE68WK9mnJGlumSIBTlJIHflW3xZRCG06rUq9vbPyklzIpqEY8g+xsZhLw==
-X-Received: by 2002:a05:6870:9602:b0:2a3:c5fe:29b9 with SMTP id
- 586e51a60fabf-2f5c7d5790amr2176765fac.29.1751460131386; 
- Wed, 02 Jul 2025 05:42:11 -0700 (PDT)
+ bh=DexnswzUI2GONBzk8DwGtUzhXp9CZ8U1qNwAguLf1rQ=;
+ b=McQZUs0SpjQty4Mo6FmUGUmJrVYmPc4Ug/6Dw0gNCCbSJO2w1DqSaaxiiSE+EuQJLA
+ E9KUjNmp8/5Qj0oDF3MZ8FFQ5Yo24KQaN5EcCleFuGVLBRfiMw9Ux7EFWAuSsgDl5Kpz
+ 4GW76L/hs8Mee3vLUyQX1b5S+OYfJLFoKq6qVSdaqi+MWMp984BZcrR4DU+BCfTY3/Dc
+ Cavphc/SdkOmZA+Y2KgVDBAPeaFvTmh92Kfqi+49Cw+DOyfQQ4BU42XBgg7qnf2RUYnI
+ H5sr0/KFgLgFq2jnMN6FsSJNS0gHBhOnaDfs5jphaYsLgTkXlbO1fLehPwp2Gnu9Bfcu
+ 076g==
+X-Gm-Message-State: AOJu0YyMIxtjJLUvXvVkEjPimnibNz45FrWgqnoDTJGX0xW+eoghQR98
+ puIPkF9LvKV5J1a2LuJ/c8CdJFUfZYn2iI1Iq5zvmNb+obHxKfhVDPdinGe7RU73E8anjo0efzj
+ dQlxeKzg=
+X-Gm-Gg: ASbGnctEK7q7xltFBDm+bYqPF236irYgIVA5jILZ8ZPat3C0mYZ1+STQ7TNz+AGci9B
+ gCXgvxJ4pJu3N+lJyHfEpPoXgG5C4vG7JaF4Fd035/sxctEWs2e52TE54vl84VwTbVLnQXDseq2
+ c6ObKqN9suo9ieydvL9x6di0eXtOvbKWNW/EB41GZUm+Q48ctFik6sgcBoNasP6llefuM7JCKji
+ PWmRot64g6pUgxduq3+Gpwv6LLsnpuZ84PmbVgXIzu7UmdU4rGfCzHrefmXbqwbCX/Xy9bKrPwo
+ 1QtmKatZFehVTfhd/uMmITOmEFGIP8DO5LK646PBN1KWTvo1bKyGWBdinOfka3ais/V4GamqiCv
+ yrETn
+X-Google-Smtp-Source: AGHT+IG5hYMZolYrwEjLBBVZmiIxBgXLb9YitowLaowV/xx+hw83OogaNtUoQanJdchHNYllaQrEcw==
+X-Received: by 2002:a05:6870:e80a:b0:2db:a997:7a62 with SMTP id
+ 586e51a60fabf-2f5a8ae305fmr1722476fac.17.1751460132887; 
+ Wed, 02 Jul 2025 05:42:12 -0700 (PDT)
 Received: from stoup.. ([187.210.107.185]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2efd50f7d89sm3907004fac.34.2025.07.02.05.42.10
+ 586e51a60fabf-2efd50f7d89sm3907004fac.34.2025.07.02.05.42.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Jul 2025 05:42:10 -0700 (PDT)
+ Wed, 02 Jul 2025 05:42:12 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	peter.maydell@linaro.org
-Subject: [PATCH v3 91/97] target/arm: Rename BFMOPA to BFMOPA_w
-Date: Wed,  2 Jul 2025 06:34:04 -0600
-Message-ID: <20250702123410.761208-92-richard.henderson@linaro.org>
+Subject: [PATCH v3 92/97] target/arm: Support FPCR.AH in SME FMOPS, BFMOPS
+Date: Wed,  2 Jul 2025 06:34:05 -0600
+Message-ID: <20250702123410.761208-93-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250702123410.761208-1-richard.henderson@linaro.org>
 References: <20250702123410.761208-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::36;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x36.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,75 +98,368 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+For non-widening, we can use float_muladd_negate_product,
+For widening, which uses dot-product, we need to handle
+the negation explicitly.
 
-Our current BFMOPA opcode pattern is the widening version
-of the insn. Rename it to BFMOPA_w, to make way for
-the non-widening version added in SME2.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-sme.h    | 2 +-
- target/arm/tcg/sme_helper.c    | 4 ++--
- target/arm/tcg/translate-sme.c | 2 +-
- target/arm/tcg/sme.decode      | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ target/arm/tcg/helper-sme.h    |  19 +++++
+ target/arm/tcg/vec_internal.h  |   5 ++
+ target/arm/tcg/sme_helper.c    | 141 +++++++++++++++++++++++++++------
+ target/arm/tcg/translate-sme.c |  27 ++++---
+ 4 files changed, 160 insertions(+), 32 deletions(-)
 
 diff --git a/target/arm/tcg/helper-sme.h b/target/arm/tcg/helper-sme.h
-index 67d620e456..16083660e2 100644
+index 16083660e2..2b22c6aee5 100644
 --- a/target/arm/tcg/helper-sme.h
 +++ b/target/arm/tcg/helper-sme.h
-@@ -141,7 +141,7 @@ DEF_HELPER_FLAGS_7(sme_fmopa_s, TCG_CALL_NO_RWG,
+@@ -143,6 +143,25 @@ DEF_HELPER_FLAGS_7(sme_fmopa_d, TCG_CALL_NO_RWG,
                     void, ptr, ptr, ptr, ptr, ptr, fpst, i32)
- DEF_HELPER_FLAGS_7(sme_fmopa_d, TCG_CALL_NO_RWG,
-                    void, ptr, ptr, ptr, ptr, ptr, fpst, i32)
--DEF_HELPER_FLAGS_7(sme_bfmopa, TCG_CALL_NO_RWG,
-+DEF_HELPER_FLAGS_7(sme_bfmopa_w, TCG_CALL_NO_RWG,
+ DEF_HELPER_FLAGS_7(sme_bfmopa_w, TCG_CALL_NO_RWG,
                     void, ptr, ptr, ptr, ptr, ptr, env, i32)
++
++DEF_HELPER_FLAGS_7(sme_fmops_w_h, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_7(sme_fmops_s, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_7(sme_fmops_d, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_7(sme_bfmops_w, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, ptr, env, i32)
++
++DEF_HELPER_FLAGS_7(sme_ah_fmops_w_h, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_7(sme_ah_fmops_s, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_7(sme_ah_fmops_d, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_7(sme_ah_bfmops_w, TCG_CALL_NO_RWG,
++                   void, ptr, ptr, ptr, ptr, ptr, env, i32)
++
  DEF_HELPER_FLAGS_6(sme_smopa_s, TCG_CALL_NO_RWG,
                     void, ptr, ptr, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_6(sme_umopa_s, TCG_CALL_NO_RWG,
+diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
+index ad3bfabc34..609ec09062 100644
+--- a/target/arm/tcg/vec_internal.h
++++ b/target/arm/tcg/vec_internal.h
+@@ -300,6 +300,11 @@ bool is_ebf(CPUARMState *env, float_status *statusp, float_status *oddstatusp);
+ /*
+  * Negate as for FPCR.AH=1 -- do not negate NaNs.
+  */
++static inline float16 bfloat16_ah_chs(float16 a)
++{
++    return bfloat16_is_any_nan(a) ? a : bfloat16_chs(a);
++}
++
+ static inline float16 float16_ah_chs(float16 a)
+ {
+     return float16_is_any_nan(a) ? a : float16_chs(a);
 diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index 00ff4b4c15..b6d1adbbf2 100644
+index b6d1adbbf2..cf7ac3eda0 100644
 --- a/target/arm/tcg/sme_helper.c
 +++ b/target/arm/tcg/sme_helper.c
-@@ -1254,8 +1254,8 @@ void HELPER(sme2_fvdot_idx_h)(void *vd, void *vn, void *vm, void *va,
+@@ -995,19 +995,18 @@ void HELPER(sme_addva_d)(void *vzda, void *vzn, void *vpn,
      }
  }
  
--void HELPER(sme_bfmopa)(void *vza, void *vzn, void *vzm,
--                        void *vpn, void *vpm, CPUARMState *env, uint32_t desc)
-+void HELPER(sme_bfmopa_w)(void *vza, void *vzn, void *vzm,
-+                          void *vpn, void *vpm, CPUARMState *env, uint32_t desc)
+-void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
+-                         void *vpm, float_status *fpst, uint32_t desc)
++static void do_fmopa_s(void *vza, void *vzn, void *vzm, uint16_t *pn,
++                       uint16_t *pm, float_status *fpst, uint32_t desc,
++                       uint32_t negx, int negf)
  {
      intptr_t row, col, oprsz = simd_maxsz(desc);
-     uint32_t neg = simd_data(desc) * 0x80008000u;
+-    uint32_t neg = simd_data(desc) << 31;
+-    uint16_t *pn = vpn, *pm = vpm;
+ 
+     for (row = 0; row < oprsz; ) {
+         uint16_t pa = pn[H2(row >> 4)];
+         do {
+             if (pa & 1) {
+                 void *vza_row = vza + tile_vslice_offset(row);
+-                uint32_t n = *(uint32_t *)(vzn + H1_4(row)) ^ neg;
++                uint32_t n = *(uint32_t *)(vzn + H1_4(row)) ^ negx;
+ 
+                 for (col = 0; col < oprsz; ) {
+                     uint16_t pb = pm[H2(col >> 4)];
+@@ -1015,7 +1014,7 @@ void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
+                         if (pb & 1) {
+                             uint32_t *a = vza_row + H1_4(col);
+                             uint32_t *m = vzm + H1_4(col);
+-                            *a = float32_muladd(n, *m, *a, 0, fpst);
++                            *a = float32_muladd(n, *m, *a, negf, fpst);
+                         }
+                         col += 4;
+                         pb >>= 4;
+@@ -1028,29 +1027,65 @@ void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
+     }
+ }
+ 
+-void HELPER(sme_fmopa_d)(void *vza, void *vzn, void *vzm, void *vpn,
++void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
+                          void *vpm, float_status *fpst, uint32_t desc)
++{
++    do_fmopa_s(vza, vzn, vzm, vpn, vpm, fpst, desc, 0, 0);
++}
++
++void HELPER(sme_fmops_s)(void *vza, void *vzn, void *vzm, void *vpn,
++                         void *vpm, float_status *fpst, uint32_t desc)
++{
++    do_fmopa_s(vza, vzn, vzm, vpn, vpm, fpst, desc, 1u << 31, 0);
++}
++
++void HELPER(sme_ah_fmops_s)(void *vza, void *vzn, void *vzm, void *vpn,
++                            void *vpm, float_status *fpst, uint32_t desc)
++{
++    do_fmopa_s(vza, vzn, vzm, vpn, vpm, fpst, desc, 0,
++               float_muladd_negate_product);
++}
++
++static void do_fmopa_d(uint64_t *za, uint64_t *zn, uint64_t *zm, uint8_t *pn,
++                       uint8_t *pm, float_status *fpst, uint32_t desc,
++                       uint64_t negx, int negf)
+ {
+     intptr_t row, col, oprsz = simd_oprsz(desc) / 8;
+-    uint64_t neg = (uint64_t)simd_data(desc) << 63;
+-    uint64_t *za = vza, *zn = vzn, *zm = vzm;
+-    uint8_t *pn = vpn, *pm = vpm;
+ 
+     for (row = 0; row < oprsz; ++row) {
+         if (pn[H1(row)] & 1) {
+             uint64_t *za_row = &za[tile_vslice_index(row)];
+-            uint64_t n = zn[row] ^ neg;
++            uint64_t n = zn[row] ^ negx;
+ 
+             for (col = 0; col < oprsz; ++col) {
+                 if (pm[H1(col)] & 1) {
+                     uint64_t *a = &za_row[col];
+-                    *a = float64_muladd(n, zm[col], *a, 0, fpst);
++                    *a = float64_muladd(n, zm[col], *a, negf, fpst);
+                 }
+             }
+         }
+     }
+ }
+ 
++void HELPER(sme_fmopa_d)(void *vza, void *vzn, void *vzm, void *vpn,
++                         void *vpm, float_status *fpst, uint32_t desc)
++{
++    do_fmopa_d(vza, vzn, vzm, vpn, vpm, fpst, desc, 0, 0);
++}
++
++void HELPER(sme_fmops_d)(void *vza, void *vzn, void *vzm, void *vpn,
++                         void *vpm, float_status *fpst, uint32_t desc)
++{
++    do_fmopa_d(vza, vzn, vzm, vpn, vpm, fpst, desc, 1ull << 63, 0);
++}
++
++void HELPER(sme_ah_fmops_d)(void *vza, void *vzn, void *vzm, void *vpn,
++                            void *vpm, float_status *fpst, uint32_t desc)
++{
++    do_fmopa_d(vza, vzn, vzm, vpn, vpm, fpst, desc, 0,
++               float_muladd_negate_product);
++}
++
+ /*
+  * Alter PAIR as needed for controlling predicates being false,
+  * and for NEG on an enabled row element.
+@@ -1071,6 +1106,20 @@ static inline uint32_t f16mop_adj_pair(uint32_t pair, uint32_t pg, uint32_t neg)
+     return pair;
+ }
+ 
++static inline uint32_t f16mop_ah_neg_adj_pair(uint32_t pair, uint32_t pg)
++{
++    uint32_t l = pg & 1 ? float16_ah_chs(pair) : 0;
++    uint32_t h = pg & 4 ? float16_ah_chs(pair >> 16) : 0;
++    return l | (h << 16);
++}
++
++static inline uint32_t bf16mop_ah_neg_adj_pair(uint32_t pair, uint32_t pg)
++{
++    uint32_t l = pg & 1 ? bfloat16_ah_chs(pair) : 0;
++    uint32_t h = pg & 4 ? bfloat16_ah_chs(pair >> 16) : 0;
++    return l | (h << 16);
++}
++
+ static float32 f16_dotadd(float32 sum, uint32_t e1, uint32_t e2,
+                           float_status *s_f16, float_status *s_std,
+                           float_status *s_odd)
+@@ -1139,12 +1188,11 @@ static float32 f16_dotadd(float32 sum, uint32_t e1, uint32_t e2,
+     return float32_add(sum, t32, s_std);
+ }
+ 
+-void HELPER(sme_fmopa_w_h)(void *vza, void *vzn, void *vzm, void *vpn,
+-                           void *vpm, CPUARMState *env, uint32_t desc)
++static void do_fmopa_w_h(void *vza, void *vzn, void *vzm, uint16_t *pn,
++                         uint16_t *pm, CPUARMState *env, uint32_t desc,
++                         uint32_t negx, bool ah_neg)
+ {
+     intptr_t row, col, oprsz = simd_maxsz(desc);
+-    uint32_t neg = simd_data(desc) * 0x80008000u;
+-    uint16_t *pn = vpn, *pm = vpm;
+     float_status fpst_odd = env->vfp.fp_status[FPST_ZA];
+ 
+     set_float_rounding_mode(float_round_to_odd, &fpst_odd);
+@@ -1155,7 +1203,11 @@ void HELPER(sme_fmopa_w_h)(void *vza, void *vzn, void *vzm, void *vpn,
+             void *vza_row = vza + tile_vslice_offset(row);
+             uint32_t n = *(uint32_t *)(vzn + H1_4(row));
+ 
+-            n = f16mop_adj_pair(n, prow, neg);
++            if (ah_neg) {
++                n = f16mop_ah_neg_adj_pair(n, prow);
++            } else {
++                n = f16mop_adj_pair(n, prow, negx);
++            }
+ 
+             for (col = 0; col < oprsz; ) {
+                 uint16_t pcol = pm[H2(col >> 4)];
+@@ -1180,6 +1232,24 @@ void HELPER(sme_fmopa_w_h)(void *vza, void *vzn, void *vzm, void *vpn,
+     }
+ }
+ 
++void HELPER(sme_fmopa_w_h)(void *vza, void *vzn, void *vzm, void *vpn,
++                           void *vpm, CPUARMState *env, uint32_t desc)
++{
++    do_fmopa_w_h(vza, vzn, vzm, vpn, vpm, env, desc, 0, false);
++}
++
++void HELPER(sme_fmops_w_h)(void *vza, void *vzn, void *vzm, void *vpn,
++                           void *vpm, CPUARMState *env, uint32_t desc)
++{
++    do_fmopa_w_h(vza, vzn, vzm, vpn, vpm, env, desc, 0x80008000u, false);
++}
++
++void HELPER(sme_ah_fmops_w_h)(void *vza, void *vzn, void *vzm, void *vpn,
++                              void *vpm, CPUARMState *env, uint32_t desc)
++{
++    do_fmopa_w_h(vza, vzn, vzm, vpn, vpm, env, desc, 0, true);
++}
++
+ void HELPER(sme2_fdot_h)(void *vd, void *vn, void *vm, void *va,
+                          CPUARMState *env, uint32_t desc)
+ {
+@@ -1254,12 +1324,11 @@ void HELPER(sme2_fvdot_idx_h)(void *vd, void *vn, void *vm, void *va,
+     }
+ }
+ 
+-void HELPER(sme_bfmopa_w)(void *vza, void *vzn, void *vzm,
+-                          void *vpn, void *vpm, CPUARMState *env, uint32_t desc)
++static void do_bfmopa_w(void *vza, void *vzn, void *vzm,
++                        uint16_t *pn, uint16_t *pm, CPUARMState *env,
++                        uint32_t desc, uint32_t negx, bool ah_neg)
+ {
+     intptr_t row, col, oprsz = simd_maxsz(desc);
+-    uint32_t neg = simd_data(desc) * 0x80008000u;
+-    uint16_t *pn = vpn, *pm = vpm;
+     float_status fpst, fpst_odd;
+ 
+     if (is_ebf(env, &fpst, &fpst_odd)) {
+@@ -1269,7 +1338,11 @@ void HELPER(sme_bfmopa_w)(void *vza, void *vzn, void *vzm,
+                 void *vza_row = vza + tile_vslice_offset(row);
+                 uint32_t n = *(uint32_t *)(vzn + H1_4(row));
+ 
+-                n = f16mop_adj_pair(n, prow, neg);
++                if (ah_neg) {
++                    n = bf16mop_ah_neg_adj_pair(n, prow);
++                } else {
++                    n = f16mop_adj_pair(n, prow, negx);
++                }
+ 
+                 for (col = 0; col < oprsz; ) {
+                     uint16_t pcol = pm[H2(col >> 4)];
+@@ -1296,7 +1369,11 @@ void HELPER(sme_bfmopa_w)(void *vza, void *vzn, void *vzm,
+                 void *vza_row = vza + tile_vslice_offset(row);
+                 uint32_t n = *(uint32_t *)(vzn + H1_4(row));
+ 
+-                n = f16mop_adj_pair(n, prow, neg);
++                if (ah_neg) {
++                    n = bf16mop_ah_neg_adj_pair(n, prow);
++                } else {
++                    n = f16mop_adj_pair(n, prow, negx);
++                }
+ 
+                 for (col = 0; col < oprsz; ) {
+                     uint16_t pcol = pm[H2(col >> 4)];
+@@ -1319,6 +1396,24 @@ void HELPER(sme_bfmopa_w)(void *vza, void *vzn, void *vzm,
+     }
+ }
+ 
++void HELPER(sme_bfmopa_w)(void *vza, void *vzn, void *vzm, void *vpn,
++                          void *vpm, CPUARMState *env, uint32_t desc)
++{
++    do_bfmopa_w(vza, vzn, vzm, vpn, vpm, env, desc, 0, false);
++}
++
++void HELPER(sme_bfmops_w)(void *vza, void *vzn, void *vzm, void *vpn,
++                          void *vpm, CPUARMState *env, uint32_t desc)
++{
++    do_bfmopa_w(vza, vzn, vzm, vpn, vpm, env, desc, 0x80008000u, false);
++}
++
++void HELPER(sme_ah_bfmops_w)(void *vza, void *vzn, void *vzm, void *vpn,
++                             void *vpm, CPUARMState *env, uint32_t desc)
++{
++    do_bfmopa_w(vza, vzn, vzm, vpn, vpm, env, desc, 0, true);
++}
++
+ typedef uint32_t IMOPFn32(uint32_t, uint32_t, uint32_t, uint8_t, bool);
+ static inline void do_imopa_s(uint32_t *za, uint32_t *zn, uint32_t *zm,
+                               uint8_t *pn, uint8_t *pm,
 diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index 1167aa4964..38d0231b0a 100644
+index 38d0231b0a..782f408061 100644
 --- a/target/arm/tcg/translate-sme.c
 +++ b/target/arm/tcg/translate-sme.c
-@@ -572,7 +572,7 @@ TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a,
- TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a,
-            MO_64, FPST_ZA, gen_helper_sme_fmopa_d)
+@@ -526,7 +526,7 @@ static bool do_outprod_fpst(DisasContext *s, arg_op *a, MemOp esz,
+                             gen_helper_gvec_5_ptr *fn)
+ {
+     int svl = streaming_vec_reg_size(s);
+-    uint32_t desc = simd_desc(svl, svl, a->sub);
++    uint32_t desc = simd_desc(svl, svl, 0);
+     TCGv_ptr za, zn, zm, pn, pm, fpst;
  
--TRANS_FEAT(BFMOPA, aa64_sme, do_outprod_env, a, MO_32, gen_helper_sme_bfmopa)
-+TRANS_FEAT(BFMOPA_w, aa64_sme, do_outprod_env, a, MO_32, gen_helper_sme_bfmopa_w)
+     if (!sme_smza_enabled_check(s)) {
+@@ -548,7 +548,7 @@ static bool do_outprod_env(DisasContext *s, arg_op *a, MemOp esz,
+                            gen_helper_gvec_5_ptr *fn)
+ {
+     int svl = streaming_vec_reg_size(s);
+-    uint32_t desc = simd_desc(svl, svl, a->sub);
++    uint32_t desc = simd_desc(svl, svl, 0);
+     TCGv_ptr za, zn, zm, pn, pm;
+ 
+     if (!sme_smza_enabled_check(s)) {
+@@ -565,14 +565,23 @@ static bool do_outprod_env(DisasContext *s, arg_op *a, MemOp esz,
+     return true;
+ }
+ 
+-TRANS_FEAT(FMOPA_w_h, aa64_sme, do_outprod_env, a,
+-           MO_32, gen_helper_sme_fmopa_w_h)
+-TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a,
+-           MO_32, FPST_ZA, gen_helper_sme_fmopa_s)
+-TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a,
+-           MO_64, FPST_ZA, gen_helper_sme_fmopa_d)
++TRANS_FEAT(FMOPA_w_h, aa64_sme, do_outprod_env, a, MO_32,
++           !a->sub ? gen_helper_sme_fmopa_w_h
++           : !s->fpcr_ah ? gen_helper_sme_fmops_w_h
++           : gen_helper_sme_ah_fmops_w_h)
++TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a, MO_32, FPST_ZA,
++           !a->sub ? gen_helper_sme_fmopa_s
++           : !s->fpcr_ah ? gen_helper_sme_fmops_s
++           : gen_helper_sme_ah_fmops_s)
++TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a, MO_64, FPST_ZA,
++           !a->sub ? gen_helper_sme_fmopa_d
++           : !s->fpcr_ah ? gen_helper_sme_fmops_d
++           : gen_helper_sme_ah_fmops_d)
+ 
+-TRANS_FEAT(BFMOPA_w, aa64_sme, do_outprod_env, a, MO_32, gen_helper_sme_bfmopa_w)
++TRANS_FEAT(BFMOPA_w, aa64_sme, do_outprod_env, a, MO_32,
++           !a->sub ? gen_helper_sme_bfmopa_w
++           : !s->fpcr_ah ? gen_helper_sme_bfmops_w
++           : gen_helper_sme_ah_bfmops_w)
  
  TRANS_FEAT(SMOPA_s, aa64_sme, do_outprod, a, MO_32, gen_helper_sme_smopa_s)
  TRANS_FEAT(UMOPA_s, aa64_sme, do_outprod, a, MO_32, gen_helper_sme_umopa_s)
-diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
-index 77744eef4f..8ad86f707e 100644
---- a/target/arm/tcg/sme.decode
-+++ b/target/arm/tcg/sme.decode
-@@ -189,7 +189,7 @@ ADDVA_d         11000000 11 01000 1 ... ... ..... 00 ...        @adda_64
- FMOPA_s         10000000 100 ..... ... ... ..... . 00 ..        @op_32
- FMOPA_d         10000000 110 ..... ... ... ..... . 0 ...        @op_64
- 
--BFMOPA          10000001 100 ..... ... ... ..... . 00 ..        @op_32
-+BFMOPA_w        10000001 100 ..... ... ... ..... . 00 ..        @op_32
- FMOPA_w_h       10000001 101 ..... ... ... ..... . 00 ..        @op_32
- 
- SMOPA_s         1010000 0 10 0 ..... ... ... ..... . 00 ..      @op_32
 -- 
 2.43.0
 
