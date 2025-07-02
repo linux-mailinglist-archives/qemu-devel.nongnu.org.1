@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE42AF6248
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 21:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CD7EAF623F
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 21:01:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX2e1-0007ek-2F; Wed, 02 Jul 2025 14:57:21 -0400
+	id 1uX2e3-0007Sd-0Y; Wed, 02 Jul 2025 14:57:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dY-0006pt-MH
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:56:53 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2de-0006xJ-63
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:56:59 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dV-0002Xf-Vb
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:56:51 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4538a2fc7ffso2063595e9.0
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:56:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2db-0002Yi-FU
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:56:57 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-450ccda1a6eso38531705e9.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:56:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751482605; x=1752087405; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751482612; x=1752087412; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NlBOE8V4jVPken7WCnMtNpY/1Zbf/V//8TkK0yzKABw=;
- b=tK5xHDXDc90g/VG8gugCgQBvhDjVlkTtQx76bgqVAoAufMVdjjPHeqDcH2SjZZXhEZ
- sHAiEEersLmQUe/pvQt7LjsOkd1m1WH4kLuR0TuNO/4NOCy1mw2m/NAg2HxOcv/09j9j
- h9Z5Cnzkb53TiZyyKO3MikFQeo6H98yD4AR2+2odcFPISyK4bmLXb4fsE8nCvntZzGjA
- lnIjZOmVUiHA4CTFAPTswLzDx7qintNzMZf0UEY5B6uIZdHuY9kVsdpH4PHTW/qx3lh9
- b9ZhhPFbKr4vPYaWKRPr/rbU5ApRmVGVlF5PhlJy71kMKdyFZZiO5e7OVufX3EnbpQVX
- VAQg==
+ bh=9Nod2XnKcLFCGDw4Al66TFSscA1L5ljopnzhztAklYo=;
+ b=JQnfOcsE1xtTL7AX33fllG+eKj942+nHD2cjbJwQCmYSURDNAfzN817IFu0G/ZcQa8
+ CCroNL93fK7KXQbc3JRZIa4MuGJSS7QWZNzCQ47t4mtJbVD/8pe7wcCM59VNIBef2jPn
+ 4oyYi7L5ZfE0WPQRQEl5u1X+kt7yFQdDxl/vzy2h706STMC68uEzdCTuV66P7AcACq1K
+ p1cJW9/91P1/ZfIOCxqym7v+5jPv2SfTR7OFxAhinB7oie1IOgE+xS5wfBnV+IdoM9N4
+ kOSLTvgcvdr3183BQAeIoASazXKjDKlz2Y84NSabZ0xEWWYhWh+YlbDVbel/osT0Kfby
+ KkaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751482605; x=1752087405;
+ d=1e100.net; s=20230601; t=1751482612; x=1752087412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NlBOE8V4jVPken7WCnMtNpY/1Zbf/V//8TkK0yzKABw=;
- b=ISVDC50uiGHSoxtdRQdwzQD9ed5cUB+V0rLswyRvOlB4Y1jOhqOSo6WQeWGRueseVU
- plm3aFr0vT3MmRMnpn3fkErL5E9jsdfkw64c9hE7H0ps/Hn9j8I8vw+3GHdSufxuamCy
- GhoSZDBRYKmpWYXdbYeF6v+yTggO1ATT6WgBzJiKCX9ZEh3iVRB000sJqj2RobaL94MM
- olunTkRuufdzGH9usPcwYO8HhEf1duX0vhNPlu282cKHsQRIuq0bFNK2oxBSQxT0K2M0
- zh+QAXAlDtX0xfc2aOSYjo+oDLZUYqzn/IFCePpEvzDGOmC3tHl1/Yf42DhR8jwJCf8a
- B2iw==
-X-Gm-Message-State: AOJu0Yy5PwcvJb/dro66XwVb61wlTzJ36N+7mySl9gsnQoJnHtN7r2t3
- HYtNBKER6q0L7OLi7HzXCNHWLvJNoX/TyLCmrP2199VmtaLd3gxBkt0ru6YT6BG8E5xKndyz7H+
- Lkrke
-X-Gm-Gg: ASbGncthAhoE9QXuPFK1B6+BN+cP4tzF4T53Wk+shNmux/rokhOL3dADE7JG5FEjhR+
- 3+JGyOlgh9wD5waTsHZMdvqNYoOauN6Beu+f5PO91LS/pxzRRdFW+mCipQ04v5VR7GMCc4xHmWf
- O7evF07HVbu1paZJHEedyX7HBzUCmNgzjul7MPGFnhPwzFcl8nIKYOfp4GvwL+6ML/P88yaZR3b
- mdsYWEXhWCJ9iBkzaClJzxp9YrFINA/JdFgqojhOdzvdR7Ou4yQvKom5eFEDGMA26Bdr7F0uDk0
- zCaGUyupdmInGLV04KAqUSVm4XNMRBHuK6MNjuRrvN5mQwoPzuUJCpXViKnB6Gby8KKHIZt+oAV
- Z6pa4gTneZEGL6e7v2MvBt6tY19Z4RFh3pVis
-X-Google-Smtp-Source: AGHT+IGfarBqgsPD1JhSPtFJkEdGOfpnSdg486mnz3y+RHy7AE1p4zMdqb9XzvWN6deqJSxmCyEepg==
-X-Received: by 2002:a05:600c:c170:b0:442:f904:1305 with SMTP id
- 5b1f17b1804b1-454ab3200f4mr202115e9.6.1751482605465; 
- Wed, 02 Jul 2025 11:56:45 -0700 (PDT)
+ bh=9Nod2XnKcLFCGDw4Al66TFSscA1L5ljopnzhztAklYo=;
+ b=tAUQvepADqrT7ZRK1HL4nX7sn+sNC036WArt1+v07/6pAV2fy+jvmN8S5f5J0UqKDu
+ 8V/Va1hyX0wACyI/wboPQ0H1CKzDWOkiEpSNpSyirGrIZFuz05ih68EF2MilB7gbOs4D
+ ulubqjrHQpFdCHFXSoqL2GdDTEyQTuItVfvsVMiKsZ+0oZpxP3gPZAJpm/dRbYCrbsYP
+ rl3RhL36RIn3/ORvsqh9mllL2EU9ReBquvDbysAJy3QHF/xkOQN7hCGQqIgKIiyRRgyj
+ LvDuJ5Luon2gzPoF4uecmAQLo0u+sOYct5Nye6Tr+RrpxeaHw55GclrlNx0ik+Rcfi/q
+ AY8Q==
+X-Gm-Message-State: AOJu0YznkD07+8bAuORoCyGFSNFqJZ70bI3PBj1hXk4EedQ8cIpXbjhq
+ znPp/Y7X0//xcS6u/mq2Hwx0aG7eut+15Aj0d2jucMLUPIR3pXHGryEvhDYIf0Rl6mV18mW57vw
+ k6P+C
+X-Gm-Gg: ASbGncs9swF6r3/TyBymI1OWFlwZz3lxCavfkYN4EG6KrF0b9jYFIhpXlNs0ulsmZaV
+ GhqTBnLDIuRa9P0nB7qf8oXnbcVOaPwLpFkivkHyLOzH4aYKxG7acCg5+dEmf6Fes2nglugMK6b
+ BIpZJt7bUx0QYSGItbzihcVSReE7/5vbyjOT01tuONWZg6qe0p55MwdzJGOpfHHIdlMONVSqkhX
+ 1LUoYGs7IVgG1qRVT42kVpNyb71sHG0+2EMLJMRVHL60ZjACEQ7bTfGAq+wJDawkvdvR6T0lUnH
+ 0usXFG/2QaH4bT/ZB4isHQNWU+5SQMPasJBaboB8Evg1zApEZB6DGFExMRHUBkXj9olpO3Ccrcn
+ 4W2nCA/EX5tdyYE3vmWLhmen2PalYgJCLqL6NN5tfH+JAzRM=
+X-Google-Smtp-Source: AGHT+IFZ8fHigbRG8FdijhO/T1f62xW3/hEUWdHkiy02kTJS3wIyp67PHyXo2QHSx1jrj+guibRCDg==
+X-Received: by 2002:a05:600c:1c16:b0:43c:ea36:9840 with SMTP id
+ 5b1f17b1804b1-454a9c9e5fdmr7457655e9.22.1751482612197; 
+ Wed, 02 Jul 2025 11:56:52 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a9969a20sm5753315e9.1.2025.07.02.11.56.43
+ 5b1f17b1804b1-454a997e367sm5682865e9.15.2025.07.02.11.56.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Jul 2025 11:56:45 -0700 (PDT)
+ Wed, 02 Jul 2025 11:56:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 26/65] accel/tcg: Implement get_[vcpu]_stats()
-Date: Wed,  2 Jul 2025 20:52:48 +0200
-Message-ID: <20250702185332.43650-27-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>
+Subject: [PATCH v4 27/65] accel/hvf: Implement get_vcpu_stats()
+Date: Wed,  2 Jul 2025 20:52:49 +0200
+Message-ID: <20250702185332.43650-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250702185332.43650-1-philmd@linaro.org>
 References: <20250702185332.43650-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,31 +106,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tcg-all.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ accel/hvf/hvf-accel-ops.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index ae83ca0bd10..d49d2b3b0fa 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -239,11 +239,17 @@ static int tcg_gdbstub_supported_sstep_flags(AccelState *as)
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index e7f40888c26..c07ebf8a652 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -358,6 +358,12 @@ static inline int hvf_gdbstub_sstep_flags(AccelState *as)
+     return SSTEP_ENABLE | SSTEP_NOIRQ;
+ }
+ 
++static void do_hvf_get_vcpu_exec_time(CPUState *cpu, run_on_cpu_data arg)
++{
++    int r = hv_vcpu_get_exec_time(cpu->accel->fd, arg.host_ptr);
++    assert_hvf_ok(r);
++}
++
+ static void hvf_accel_class_init(ObjectClass *oc, const void *data)
+ {
+     AccelClass *ac = ACCEL_CLASS(oc);
+@@ -583,6 +589,16 @@ static void hvf_remove_all_breakpoints(CPUState *cpu)
      }
  }
  
-+static void tcg_get_stats(AccelState *as, GString *buf)
++static void hvf_get_vcpu_stats(CPUState *cpu, GString *buf)
 +{
-+    tcg_dump_flush_info(buf);
++    uint64_t time_us; /* units of mach_absolute_time() */
++
++    run_on_cpu(cpu, do_hvf_get_vcpu_exec_time, RUN_ON_CPU_HOST_PTR(&time_us));
++
++    g_string_append_printf(buf, "HVF cumulative execution time: %llu.%.3llus\n",
++                                time_us / 1000000, (time_us % 1000000) / 1000);
 +}
 +
- static void tcg_accel_class_init(ObjectClass *oc, const void *data)
+ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
  {
-     AccelClass *ac = ACCEL_CLASS(oc);
-     ac->name = "tcg";
-     ac->init_machine = tcg_init_machine;
-+    ac->get_stats = tcg_get_stats;
-     ac->allowed = &tcg_allowed;
-     ac->supports_guest_debug = tcg_supports_guest_debug;
-     ac->gdbstub_supported_sstep_flags = tcg_gdbstub_supported_sstep_flags;
+     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
+@@ -601,7 +617,10 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
+     ops->remove_breakpoint = hvf_remove_breakpoint;
+     ops->remove_all_breakpoints = hvf_remove_all_breakpoints;
+     ops->update_guest_debug = hvf_update_guest_debug;
++
++    ops->get_vcpu_stats = hvf_get_vcpu_stats;
+ };
++
+ static const TypeInfo hvf_accel_ops_type = {
+     .name = ACCEL_OPS_NAME("hvf"),
+ 
 -- 
 2.49.0
 
