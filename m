@@ -2,91 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AEC3AF123B
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 12:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F38ACAF1235
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 12:45:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWuwj-0006h9-GV; Wed, 02 Jul 2025 06:44:09 -0400
+	id 1uWuwk-0006ir-1m; Wed, 02 Jul 2025 06:44:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uWuwU-0006ev-Qa
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 06:43:55 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1uWuwX-0006g2-Jr
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 06:43:59 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uWuwK-0001J1-EA
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 06:43:54 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-6088d856c6eso12323871a12.0
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 03:43:43 -0700 (PDT)
+ id 1uWuwP-0001Jc-Ae
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 06:43:57 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-60c51860bf5so11214363a12.1
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 03:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751453022; x=1752057822; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751453024; x=1752057824; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9LuknGbyHpYfn5Myg53J+fZFSmGacyw10WuAzgbETa8=;
- b=QP7fEqBvXrGeZYODn0r+t1b0nkxIjB+sgs33h/uNjmn0KMZxMkVPTsbQ0c/lgP9VZr
- KOLvqKO2H6Z7PqCq9uZBL/6lZ0lm2jh5mbcX4m5TMeSIrDygsahmhrDG/BUWP6b7H3oX
- XAyva7VUIVYjbGm4sIsmtE4BWkuYHHI9r7//fkGkfHZdTyZLfPbWQHDxNyEiWBFb4g09
- ZJ6+VeA9hJySW3BhbCabsalfKE3Gs+4QGQ1P0zrstskYahyRRXgoxFiMKrVgmqDfJSSt
- DVt2k5NM/iIIIaTO2gIIYmpfTgBZrMy4df2jlg7JNGNMUeANi12UXywo3dx2cljTkBS2
- Mpaw==
+ bh=qecS0tIoe0ls7nw8T86Ife3RJh0yHDOjkyPB/fpRPNc=;
+ b=itPZdPCv72aKkdPH7jgkwwE9ZGDYQx5pS/051e0ch0Blmp9MMCXhArhi4tYsrqnpdk
+ tqR/Zpa2kSD0f5yW1GQ9apcKeZcAhYWEJFEXzF+s742APbvheu0TaiB90Bwh5vlVBSWj
+ 7Js5LO8b2O4P179rN7p1vsmDH1dgKw1CglG6pfoPmcOZCy+45cWSctknPMo5Drbbz+hr
+ s1K2bAzQGFYk3wsIMvgTivj7H0FhxwDhGYqgjqZtxhqq/OmjWsioMdBIVlItMuNUusR9
+ W+lJirjAwuZO5ff1+65JsCFjhhiQzxTFFjQ4NPBdKck2k7FtVZVLd6ds9oWd+FbPmtSQ
+ Rp5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751453022; x=1752057822;
+ d=1e100.net; s=20230601; t=1751453024; x=1752057824;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9LuknGbyHpYfn5Myg53J+fZFSmGacyw10WuAzgbETa8=;
- b=q/2wh1qcjU2GiicU21JmVOiDMuoiQlWQFV7FPEVvmXDafj+f2TnAb/JONgw0vo7FDh
- hJqz4ZGl4RaZ+n7fdLD749FbUPqhKStEdsNa8a37QNmPoKYUEBnpJAYAJcy1HSmacoUY
- i9MDbnNvoOTBwPu4E+3Qc6WQCBTe4ZlIcXhYy/575ZQVB5mSJj0+LXO+OblAn2KZZs9I
- mWlu8bVkLpxs0jAMf+uFG5w9QkOpk0r+aVJ3hLMqUT8o+Z4zY6uNAfmrgk6bISIQEnnR
- 9NrkEJ4j5JEMDlwss2/FDm7ZA+qDvXr0TJii6JQiUTMKICCXfXfo/sYNlPMS+WzBNlmP
- xyeQ==
-X-Gm-Message-State: AOJu0YxBK5MqvOu+GyE27h2YhiDYID/3s64q6zFNiTc7Dbhehv0LMysq
- tQibJ3oNCKPQl95abvOw+3dPX6eJk9NxIuimg9GCJnfdOh0qmq+vFBFhLeV75B8XQwY=
-X-Gm-Gg: ASbGncvc4/6l7HUW2xdURlQm8Kni1vF/cmijUkEeaaHPNLc7mx7PtnixiAj4Mw+LK80
- RzhfA1aK8smoY6W8IkzFojhuujwzx9NDGHgmL4vPpQjU+JWh84YrLDahaoiEdW388bVeoNXrizH
- 2HT76eD1iZRC+FfBzFIs69WdOSpw7vFUom0XqtkQowGeuqT3Xz9Ta+E8stgVqrKqI7l4N5sP2QS
- ciQqKNBfzOjd50pdfyoZAc5MXXMieJtQoHSO6P4Op+NuU3GVLWYVVYEAnhoeOTnl90AeRbvQ6Nj
- BGEuCzG0cesQ0EuGVlApFFYdb92V9XNS/ePsC6H/inh9jYadtLoa4glmpjWWqaSCw8HNm6nvwA=
- =
-X-Google-Smtp-Source: AGHT+IF0tOnMmKf/ocwsM5eet0OQrJ62ChLN6abOD8xCYaRNWgEBvFHfyii7SnXtpoTf2ZHtLACezA==
-X-Received: by 2002:a17:907:1ca3:b0:ae3:6d27:5246 with SMTP id
- a640c23a62f3a-ae3c2ce1f13mr218559766b.48.1751453022319; 
- Wed, 02 Jul 2025 03:43:42 -0700 (PDT)
+ bh=qecS0tIoe0ls7nw8T86Ife3RJh0yHDOjkyPB/fpRPNc=;
+ b=kLW4q+ZPwysfn/Z2XVnNbRdscihivUNdYniS6hIKFRnjzKSXa2yvalEParELL/7QKQ
+ EHzmtu6wEW6nhmhBkO+ET5Nx2qFgoBfwrvNHfzjlrJLu4hCIKwVQjU7F8S7OCt9+zhYd
+ vvXltmrAEaXZe1i0cScDPazE6cmC2UsVBMSJ1T9b+nrYC52QmvFRWZeN4XI8FaKmh9/q
+ wfaxK1kA+bmymW+p6yRxd2LIcOsAr1Nl52Waekq0jCODrbrRqT1XA703aE/7S3aCHn4n
+ 2EcP/Wfao1R2KddQ1AWab7p4kOdEYe5zvNUnxL7lXafUwqjW1mFi2BqM7hI4UmBm3NTU
+ Uewg==
+X-Gm-Message-State: AOJu0Yw+Ih2Sd1VnVG65zg+Yjl9NrNpAShdApiuPGk5pKgbLlmPj8hGy
+ CaJqRboAdcSDQriFhEqmdYUCrNDChl98afSVVUmKrLD/rmX/k7Gtj0Fva98pVBP/itU=
+X-Gm-Gg: ASbGncsMjvRpTb483YFCXpi3pW4ffZjWSceDQDrNAOJbLpnOIbyqeW770KI5Mi/wleb
+ UPsYdmtEtyysdjFqGYgGCNfWjpB+XPstk+OWL4Btay3hATrp26zVxg6F5mkRzfW8ldlI7gZaKE1
+ BrAe9kTndHVGDbibWTpLsmdlKDgI9ZQiZ51Au6LPvAe696RSbAcwZIB2klYkJuDuMCoR7URgc2z
+ wuJ/nuwGbxktQSZP3wFnN8cgiffYO+oim/SoG1frJh1BGrDcNqNc9Wt50NecS+a/IOk6k+f4ms0
+ AHjLad5F8CMMaWG/PWqv61GFI/su82l75ho1CIeU98/tNVnkynkXLu5us11y9VU=
+X-Google-Smtp-Source: AGHT+IGKFxBc0IKymfZi5lAnMERXh0IK39138Ys1k2mAGPuaM7raXlDl5uXk0t2RD2aR7HbSKEKSAA==
+X-Received: by 2002:a05:6402:2685:b0:60c:461e:7199 with SMTP id
+ 4fb4d7f45d1cf-60e52cd31d5mr1816202a12.9.1751453024506; 
+ Wed, 02 Jul 2025 03:43:44 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae35776d0ebsm1042583466b.155.2025.07.02.03.43.37
+ 4fb4d7f45d1cf-60c8321a08fsm8757433a12.78.2025.07.02.03.43.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Jul 2025 03:43:38 -0700 (PDT)
+ Wed, 02 Jul 2025 03:43:41 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 25FA05F8D8;
+ by draig.lan (Postfix) with ESMTP id 3EF6C5F8DB;
  Wed, 02 Jul 2025 11:43:37 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 04/15] semihosting/uaccess: Compile once
-Date: Wed,  2 Jul 2025 11:43:25 +0100
-Message-ID: <20250702104336.3775206-5-alex.bennee@linaro.org>
+Cc: Rowan Hart <rowanbhart@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Julian Ganz <neither@nut.email>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 05/15] gdbstub: Expose gdb_write_register function to consumers
+ of gdbstub
+Date: Wed,  2 Jul 2025 11:43:26 +0100
+Message-ID: <20250702104336.3775206-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250702104336.3775206-1-alex.bennee@linaro.org>
 References: <20250702104336.3775206-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, TVD_SPACE_RATIO=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,35 +104,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Rowan Hart <rowanbhart@gmail.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250526095213.14113-3-philmd@linaro.org>
+This patch exposes the gdb_write_register function from
+gdbstub/gdbstub.c via the exec/gdbstub.h header file to support use in
+plugins to write register contents.
+
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Julian Ganz <neither@nut.email>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
+Message-ID: <20250624175351.440780-2-rowanbhart@gmail.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250627112512.1880708-5-alex.bennee@linaro.org>
+Message-ID: <20250627112512.1880708-6-alex.bennee@linaro.org>
 
-diff --git a/semihosting/meson.build b/semihosting/meson.build
-index f3d38dda91..b1ab2506c6 100644
---- a/semihosting/meson.build
-+++ b/semihosting/meson.build
-@@ -3,15 +3,12 @@ specific_ss.add(when: 'CONFIG_SEMIHOSTING', if_true: files(
-   'syscalls.c',
- ))
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index 0675b0b646..a16c0051ce 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -124,6 +124,20 @@ const GDBFeature *gdb_find_static_feature(const char *xmlname);
+  */
+ int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
  
--specific_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_true: files(
--  'uaccess.c',
--))
--
- common_ss.add(when: 'CONFIG_SEMIHOSTING', if_false: files('stubs-all.c'))
- user_ss.add(when: 'CONFIG_SEMIHOSTING', if_true: files('user.c'))
- system_ss.add(when: 'CONFIG_SEMIHOSTING', if_true: files(
-   'config.c',
-   'console.c',
-+  'uaccess.c',
- ), if_false: files(
-   'stubs-system.c',
- ))
++/**
++ * gdb_write_register() - Write a register associated with a CPU.
++ * @cpu: The CPU associated with the register.
++ * @buf: The buffer that the register contents will be set to.
++ * @reg: The register's number returned by gdb_find_feature_register().
++ *
++ * The size of @buf must be at least the size of the register being
++ * written.
++ *
++ * Return: The number of written bytes, or 0 if an error occurred (for
++ * example, an unknown register was provided).
++ */
++int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg);
++
+ /**
+  * typedef GDBRegDesc - a register description from gdbstub
+  */
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index def0b7e877..dd5fb5667c 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -535,7 +535,7 @@ int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
+     return 0;
+ }
+ 
+-static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
++int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
+ {
+     GDBRegisterState *r;
+ 
 -- 
 2.47.2
 
