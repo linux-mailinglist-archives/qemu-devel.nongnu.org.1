@@ -2,110 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CCFAF0FF5
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 11:29:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F312AF0FFE
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 11:32:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWtlY-0002yy-BK; Wed, 02 Jul 2025 05:28:32 -0400
+	id 1uWtoO-0004ew-Jd; Wed, 02 Jul 2025 05:31:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1uWtlS-0002yT-4M
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 05:28:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <alexandre.chartre@oracle.com>)
+ id 1uWtoM-0004ei-A9; Wed, 02 Jul 2025 05:31:26 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1uWtlP-0002Qv-Cz
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 05:28:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751448493;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4rGpk6T8lyk4D+P0XfIiDMc290P78ET6QvK2l42ojvc=;
- b=Tbc+1V+G5DEhDRxayfZB3x96OFGI1eBR4CCXJ5uNQVIGOfdmWTrv0HFaR0mQSQR+836sp2
- 6aeIVezG2JnB5mu5aT4jyw52WbaIG7STJXSeOC4UrCQNEKmWgkjtdZRQHWhC7PQvLI3AWS
- OyamwMOjlxJLjKOwguE5jrx1oSHttpA=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-sQ5z6PTmN5-0Q9JjoDIayg-1; Wed, 02 Jul 2025 05:28:10 -0400
-X-MC-Unique: sQ5z6PTmN5-0Q9JjoDIayg-1
-X-Mimecast-MFC-AGG-ID: sQ5z6PTmN5-0Q9JjoDIayg_1751448489
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-b362d101243so1136487a12.0
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 02:28:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751448489; x=1752053289;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4rGpk6T8lyk4D+P0XfIiDMc290P78ET6QvK2l42ojvc=;
- b=sya5opQhA5zRpquT64MzzeJUGRCw8NZZXCJy4rlZtbaUEbE2XI31kxfwTkQ6Le0e0N
- kmwDPHA/MQH+9gdFNb6EJL/C5zON2mH9J7cwtq8tYk49m5N3KkCpunr6p3dlH/HZcMVb
- IRppoelB1nzJS6XkV4qs3Z3a4lUHafivfZ3NfTvdC5WIGT0yuC0fShYXrZ0EYwkf8nWw
- or/b+ckYZdRmZl72aQP2DgPYVU9VfSr7ml/88WwZPx1tNRMwjZfNn7xPZMVjM84a90w7
- 1wkQCm+GxmVuBmcgRQp316p5c4n90LuZLDeraTR1WYZ+2jzdlAHOnrqZhDgb9Jodj3lh
- PHAw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXS2Oi+IgybaBvH0kfrpDcwSkmE2RIcbQBpZfBi9L6j6KXA+B8J/4AxnwBfep/U7ZC3U6HDUU2tdnBG@nongnu.org
-X-Gm-Message-State: AOJu0YzSLbY8er2s7cUnTrMSPeXybfbXFjB3iG6UcApLYnmnmCATmo1H
- NT20A+EKAI15VyiEKdc6ynHV5LO/qGvVl9I8npSp5bLP4V2lOHruQ36byhrBxOkvWpeeh5X/ynW
- GOCg3MvfoF6qsY1CWw3PaQCCvzA+rN2guN0u40m6cTYva0K9qNRVYnpv/
-X-Gm-Gg: ASbGncv2Ti29Wpr31ZUj06xIf/EC87dYR2CNLt02wWdUh7gF02TB8E9qAhsOKpPwpmX
- afTB+r/RZfZ5+WGiTJIOlq6aujagYGZkGOBdF4YrhljFM2L6UDV1du6o1BH0m+rSjmfzj9VF83k
- CYU0MRyau2CFLZcJ3b/cA5mUrxYJSFkIyVTowvnQIIMg1BbIphFDhhVMT8Qy8Vg4ztmJdkNc0TC
- 1P/1jbf2+CaXF7lJcjGj/GFrGz3tEBXg4oSDCpRvV8U5N/uYw3GB6oPXWSsSdr63hxgmJmNoJ69
- GAza1+53xaBdAdHsCVPeJATl1g==
-X-Received: by 2002:a05:6300:6c1a:b0:222:2a34:6249 with SMTP id
- adf61e73a8af0-222d7e9a85dmr2738003637.27.1751448489217; 
- Wed, 02 Jul 2025 02:28:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlOe3n5x8yzpKLAT+0u2pUNspJc6oc1hAeHHM40SpdP+cJooK7B563o/5/C5FicNSuuPnG0w==
-X-Received: by 2002:a05:6300:6c1a:b0:222:2a34:6249 with SMTP id
- adf61e73a8af0-222d7e9a85dmr2737980637.27.1751448488806; 
- Wed, 02 Jul 2025 02:28:08 -0700 (PDT)
-Received: from [10.72.116.77] ([209.132.188.88])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b34e32000fbsm12261420a12.68.2025.07.02.02.28.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Jul 2025 02:28:08 -0700 (PDT)
-Message-ID: <36d469be-d9fd-48c9-8106-2db885e6fe39@redhat.com>
-Date: Wed, 2 Jul 2025 17:28:01 +0800
+ (Exim 4.90_1) (envelope-from <alexandre.chartre@oracle.com>)
+ id 1uWtoK-0003Up-8N; Wed, 02 Jul 2025 05:31:25 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5627MhO3000672;
+ Wed, 2 Jul 2025 09:31:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2025-04-25; bh=o9rOi9sQPonl3ohRBI3xA3LLxfdoy
+ hJ2Uj05bKOzct0=; b=JTQ76gP0CT+NwVXYvPZTpeuuDgxDDgBkW2OcM2FlRCSAf
+ mXMDuuqKvNXptpqhcipd7KF8cFU2lZsL1Zz4MQmDIRUThVzCZ9TLJbUNxYm1EUu7
+ hWeRldQSIrFjuy9OBiaNtkNdYjUltQpkdl4A6DBjcgzVuzvZLJy2j9nrf7Hve0OM
+ b0JyEaKI6F8guJSWFFshfxOx25fwil3MuuhqTO2YbK/l0cNoP5o2bDqzMpwjGGlc
+ W+ipN2WiHH7Fw23RpydIGSNPW7Af0xiJafnSPpkGyw4J1ZnGqQ3dkNznHchcaDR6
+ muyLAimX0L9rpYdquuy6sp2BVUxzGznUfzrnicciw==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j8ef6kab-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 02 Jul 2025 09:31:19 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 5628eHmB019559; Wed, 2 Jul 2025 09:31:18 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 47j6uaqr18-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 02 Jul 2025 09:31:18 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5629SHNF032499;
+ Wed, 2 Jul 2025 09:31:18 GMT
+Received: from laptop-dell-latitude7430.nl.oracle.com
+ (dhcp-10-154-170-239.vpn.oracle.com [10.154.170.239])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 47j6uaqqy3-1; Wed, 02 Jul 2025 09:31:17 +0000
+From: Alexandre Chartre <alexandre.chartre@oracle.com>
+To: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com
+Cc: qemu-stable@nongnu.org, seanjc@google.com, zhao1.liu@intel.com,
+ konrad.wilk@oracle.com, boris.ostrovsky@oracle.com,
+ maciej.szmigiero@oracle.com, alexandre.chartre@oracle.com
+Subject: [PATCH v2] i386/cpu: ARCH_CAPABILITIES should not be advertised on AMD
+Date: Wed,  2 Jul 2025 11:31:14 +0200
+Message-ID: <20250702093114.789651-1-alexandre.chartre@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] hw/i386: Add the ramfb romfile compatibility
-To: Eric Auger <eauger@redhat.com>, qemu-arm@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-References: <20250702085616.2172722-1-shahuang@redhat.com>
- <20250702085616.2172722-3-shahuang@redhat.com>
- <dec256c0-d0a5-49d7-b5ce-a025eaf27f8c@redhat.com>
-Content-Language: en-US
-From: Shaoqin Huang <shahuang@redhat.com>
-In-Reply-To: <dec256c0-d0a5-49d7-b5ce-a025eaf27f8c@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=shahuang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-02_01,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ phishscore=0
+ suspectscore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2507020076
+X-Proofpoint-GUID: QTP2sqdkql-ejwQ3BiPowxwzEsu0N6dL
+X-Proofpoint-ORIG-GUID: QTP2sqdkql-ejwQ3BiPowxwzEsu0N6dL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDA3NyBTYWx0ZWRfXzZhgJGVkzS+S
+ qLwKi+9B6cx/2kZgquTfodgZ10+ifnvYbLulAJC+/Ot8NYSBhYiriEnoQeVISTW+ZtDm2f6wCOD
+ Sji+3GRdBX1lGCbaHfRAexS3ty8GF9BlPqxnPDu30PO1fqeBW5f0gZ41+MgSLt4jDtcCf6I0ce1
+ NR9E45TuoXNSHreLx9CCL3Sw9RFGHPCBHdkBztWGP0A09bCdnNRQcIOl78WcFkI0z2Q0jRkOu2x
+ S64Bs9afLgZ4RAEwRdw2+kbGTc77qlHMJljqidItNOAnqyxMfztUxcgqt+F75fnPprDHFtuOWYR
+ eY1hhc0mOOqD3eWvYQejgTcGg6RSHTunuKtKgbdp3G3p919RajtTOJJTEBHLphiOrYj1qI70CcY
+ u/1JXHHUGayXXhET7mZAzeLCVKpeNJY+0hPf49pgxHobvwM4u1QLdRQxaD3WpVe8x417MN0Z
+X-Authority-Analysis: v=2.4 cv=ONgn3TaB c=1 sm=1 tr=0 ts=6864fc67 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=Wb1JkmetP80A:10 a=p0WdMEafAAAA:8 a=QyXUC8HyAAAA:8 a=yPCof4ZbAAAA:8
+ a=3gmFI6HadyW09CJ1zRIA:9
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alexandre.chartre@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,137 +107,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Eric,
+KVM emulates the ARCH_CAPABILITIES on x86 for both Intel and AMD
+cpus, although the IA32_ARCH_CAPABILITIES MSR is an Intel-specific
+MSR and it makes no sense to emulate it on AMD.
 
-On 7/2/25 5:08 PM, Eric Auger wrote:
-> 
-> 
-> On 7/2/25 10:56 AM, Shaoqin Huang wrote:
->> Set the "use-legacy-x86-rom" property to false by default, and only set
->> it to true on x86 since only x86 will need it.
->>
->> At the same time, set the "use-legacy-x86-rom" property to true on those
->> historical versioned machine types in order to avoid the memory layout
->> being changed.
->>
->> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
->> ---
->>   hw/core/machine.c             |  2 ++
->>   hw/display/ramfb-standalone.c |  2 +-
->>   hw/i386/pc_piix.c             | 10 ++++++++++
->>   hw/i386/pc_q35.c              |  3 +++
-> If I understood correctly, Gerd said we needed to set the prop to "true"
-> on microvm too? I don't see that change.
+As a consequence, VMs created on AMD with qemu -cpu host and using
+KVM will advertise the ARCH_CAPABILITIES feature and provide the
+IA32_ARCH_CAPABILITIES MSR. This can cause issues (like Windows BSOD)
+as the guest OS might not expect this MSR to exist on such cpus (the
+AMD documentation specifies that ARCH_CAPABILITIES feature and MSR
+are not defined on the AMD architecture).
 
-Yes, I try to do that. But I didn't see there are any machine type in 
-the microvm like q35. I'm confuse about it, How should I do that?
+A fix was proposed in KVM code, however KVM maintainers don't want to
+change this behavior that exists for 6+ years and suggest changes to be
+done in qemu instead.
 
-Thanks,
-Shaoqin
+So this commit changes the behavior in qemu so that ARCH_CAPABILITIES
+is not available anymore for AMD cpus on i440fx and q35 machines.
+The capability remains available (and enabled by default) on older
+versions of i440fx/q35 machines.
 
-> 
-> Eric
->>   hw/vfio/pci.c                 |  2 +-
->>   5 files changed, 17 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/core/machine.c b/hw/core/machine.c
->> index e869821b22..a7043e2a34 100644
->> --- a/hw/core/machine.c
->> +++ b/hw/core/machine.c
->> @@ -39,6 +39,8 @@
->>   
->>   GlobalProperty hw_compat_10_0[] = {
->>       { "scsi-hd", "dpofua", "off" },
->> +    { "ramfb", "use-legacy-x86-rom", "true"},
->> +    { "vfio-pci", "use-legacy-x86-rom", "true" },
->>   };
->>   const size_t hw_compat_10_0_len = G_N_ELEMENTS(hw_compat_10_0);
->>   
->> diff --git a/hw/display/ramfb-standalone.c b/hw/display/ramfb-standalone.c
->> index 725aef9896..b20a7c57b3 100644
->> --- a/hw/display/ramfb-standalone.c
->> +++ b/hw/display/ramfb-standalone.c
->> @@ -63,7 +63,7 @@ static const VMStateDescription ramfb_dev_vmstate = {
->>   
->>   static const Property ramfb_properties[] = {
->>       DEFINE_PROP_BOOL("x-migrate", RAMFBStandaloneState, migrate,  true),
->> -    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState, use_legacy_x86_rom, true),
->> +    DEFINE_PROP_BOOL("use-legacy-x86-rom", RAMFBStandaloneState, use_legacy_x86_rom, false),
->>   };
->>   
->>   static void ramfb_class_initfn(ObjectClass *klass, const void *data)
->> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
->> index ea7572e783..8ec8d8ae6d 100644
->> --- a/hw/i386/pc_piix.c
->> +++ b/hw/i386/pc_piix.c
->> @@ -49,6 +49,7 @@
->>   #include "hw/i2c/smbus_eeprom.h"
->>   #include "system/memory.h"
->>   #include "hw/acpi/acpi.h"
->> +#include "hw/vfio/pci.h"
->>   #include "qapi/error.h"
->>   #include "qemu/error-report.h"
->>   #include "system/xen.h"
->> @@ -77,6 +78,13 @@ static const int ide_iobase2[MAX_IDE_BUS] = { 0x3f6, 0x376 };
->>   static const int ide_irq[MAX_IDE_BUS] = { 14, 15 };
->>   #endif
->>   
->> +static GlobalProperty pc_piix_compat_defaults[] = {
->> +    { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
->> +    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
->> +};
->> +static const size_t pc_piix_compat_defaults_len =
->> +    G_N_ELEMENTS(pc_piix_compat_defaults);
->> +
->>   /*
->>    * Return the global irq number corresponding to a given device irq
->>    * pin. We could also use the bus number to have a more precise mapping.
->> @@ -482,6 +490,8 @@ static void pc_i440fx_machine_options(MachineClass *m)
->>                                      pc_set_south_bridge);
->>       object_class_property_set_description(oc, "x-south-bridge",
->>                                        "Use a different south bridge than PIIX3");
->> +    compat_props_add(m->compat_props,
->> +                     pc_piix_compat_defaults, pc_piix_compat_defaults_len);
->>   }
->>   
->>   static void pc_i440fx_machine_10_1_options(MachineClass *m)
->> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
->> index 33211b1876..0096eef6f4 100644
->> --- a/hw/i386/pc_q35.c
->> +++ b/hw/i386/pc_q35.c
->> @@ -45,6 +45,7 @@
->>   #include "hw/i386/pc.h"
->>   #include "hw/i386/amd_iommu.h"
->>   #include "hw/i386/intel_iommu.h"
->> +#include "hw/vfio/pci.h"
->>   #include "hw/virtio/virtio-iommu.h"
->>   #include "hw/display/ramfb.h"
->>   #include "hw/ide/pci.h"
->> @@ -67,6 +68,8 @@
->>   
->>   static GlobalProperty pc_q35_compat_defaults[] = {
->>       { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "39" },
->> +    { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
->> +    { TYPE_VFIO_PCI, "use-legacy-x86-rom", "true" },
->>   };
->>   static const size_t pc_q35_compat_defaults_len =
->>       G_N_ELEMENTS(pc_q35_compat_defaults);
->> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
->> index f4fa8a5610..604b337389 100644
->> --- a/hw/vfio/pci.c
->> +++ b/hw/vfio/pci.c
->> @@ -3710,7 +3710,7 @@ static const TypeInfo vfio_pci_dev_info = {
->>   
->>   static const Property vfio_pci_dev_nohotplug_properties[] = {
->>       DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
->> -    DEFINE_PROP_BOOL("use-legacy-x86-rom", VFIOPCIDevice, use_legacy_x86_rom, true),
->> +    DEFINE_PROP_BOOL("use-legacy-x86-rom", VFIOPCIDevice, use_legacy_x86_rom, false),
->>       DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate,
->>                               ON_OFF_AUTO_AUTO),
->>   };
-> 
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3001
+Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+---
+ hw/i386/pc.c          |  4 +++-
+ target/i386/cpu.c     | 18 ++++++++++++++++++
+ target/i386/cpu.h     |  7 +++++++
+ target/i386/kvm/kvm.c |  5 +++++
+ 4 files changed, 33 insertions(+), 1 deletion(-)
 
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index b211633575..c175e7d9e7 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -81,7 +81,9 @@
+     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
+     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
+ 
+-GlobalProperty pc_compat_10_0[] = {};
++GlobalProperty pc_compat_10_0[] = {
++    { TYPE_X86_CPU, "x-amd-disable-arch-capabs", "false" },
++};
+ const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
+ 
+ GlobalProperty pc_compat_9_2[] = {};
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 0d35e95430..6247e347ea 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -8324,6 +8324,22 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+         }
+     }
+ 
++    /*
++     * For years, KVM has inadvertently emulated the ARCH_CAPABILITIES
++     * MSR on AMD although this is an Intel-specific MSR; and KVM will
++     * continue doing so to not change its ABI for existing setups.
++     *
++     * So ensure that the ARCH_CAPABILITIES MSR is disabled on AMD cpus
++     * to prevent providing a cpu with an MSR which is not supposed to
++     * be there.
++     */
++    if (cpu->amd_disable_arch_capabs && IS_AMD_CPU(env)) {
++        mark_unavailable_features(cpu, FEAT_7_0_EDX,
++            env->user_features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_CAPABILITIES,
++            "This feature is not available for AMD Guest");
++        env->features[FEAT_7_0_EDX] &= ~CPUID_7_0_EDX_ARCH_CAPABILITIES;
++    }
++
+     if (x86_threads_per_pkg(&env->topo_info) > 1) {
+         env->features[FEAT_1_EDX] |= CPUID_HT;
+ 
+@@ -9393,6 +9409,8 @@ static const Property x86_cpu_properties[] = {
+     DEFINE_PROP_BOOL("x-intel-pt-auto-level", X86CPU, intel_pt_auto_level,
+                      true),
+     DEFINE_PROP_BOOL("x-l1-cache-per-thread", X86CPU, l1_cache_per_core, true),
++    DEFINE_PROP_BOOL("x-amd-disable-arch-capabs", X86CPU, amd_disable_arch_capabs,
++                     true),
+ };
+ 
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 51e10139df..a3fc80de3a 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2306,6 +2306,13 @@ struct ArchCPU {
+      */
+     uint32_t guest_phys_bits;
+ 
++    /*
++     * Compatibility bits for old machine types.
++     * If true disable CPUID_7_0_EDX_ARCH_CAPABILITIES and
++     * MSR_IA32_ARCH_CAPABILITIES for AMD Guest.
++     */
++    bool amd_disable_arch_capabs;
++
+     /* in order to simplify APIC support, we leave this pointer to the
+        user */
+     struct DeviceState *apic_state;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 234878c613..40a50ae193 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2368,6 +2368,11 @@ int kvm_arch_init_vcpu(CPUState *cs)
+ 
+     cpu->kvm_msr_buf = g_malloc0(MSR_BUF_SIZE);
+ 
++    if (cpu->amd_disable_arch_capabs &&
++        !(env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_CAPABILITIES)) {
++        has_msr_arch_capabs = false;
++    }
++
+     if (!(env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_RDTSCP)) {
+         has_msr_tsc_aux = false;
+     }
 -- 
-Shaoqin
+2.43.5
 
 
