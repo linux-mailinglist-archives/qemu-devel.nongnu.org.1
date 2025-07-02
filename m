@@ -2,59 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9D4AF5E16
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 18:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB5EAF5DF6
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 18:03:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX00T-0002Eg-4N; Wed, 02 Jul 2025 12:08:21 -0400
+	id 1uWzuz-0002fr-2G; Wed, 02 Jul 2025 12:02:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uX00I-00021f-Ic
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 12:08:13 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uWzuv-0002d3-DZ
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 12:02:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uX00C-0000KQ-79
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 12:08:10 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bXPtZ3dRpz6L5k7;
- Thu,  3 Jul 2025 00:07:34 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id CC46F1400D4;
- Thu,  3 Jul 2025 00:08:00 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
- frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 2 Jul 2025 18:08:00 +0200
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>
-CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>
-Subject: [PATCH qemu 11/11] hw/cxl: mailbox-utils: 0x5605 - FMAPI Initiate DC
- Release
-Date: Wed, 2 Jul 2025 17:02:17 +0100
-Message-ID: <20250702160219.989731-12-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250702160219.989731-1-Jonathan.Cameron@huawei.com>
-References: <20250702160219.989731-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uWzus-0007Em-KL
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 12:02:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751472150;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Gxc7yNRts7aJyHDA/9aNDpfX3+EgziLmXAmlrqOu5PA=;
+ b=E3i0iGCdta29dMwyQbAkM60/XasHoznnlMCGQ6PM0fReAC1SpJrzNu1vsWsh1k8S3snd7t
+ jC4CBr+fMKPLc6pxJXqB2xMAF7SFY+0Aol0II3iAUTBi5GbFjm7obZQv35txkv0lIN+lZI
+ DiiP/uRKWIE/2KkZC8aClnNO2mdjku4=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-140-IjzWgOLLMT-Lp-9pMwTNoQ-1; Wed, 02 Jul 2025 12:02:28 -0400
+X-MC-Unique: IjzWgOLLMT-Lp-9pMwTNoQ-1
+X-Mimecast-MFC-AGG-ID: IjzWgOLLMT-Lp-9pMwTNoQ_1751472148
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-700c2d3f3d6so47651526d6.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 09:02:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751472148; x=1752076948;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Gxc7yNRts7aJyHDA/9aNDpfX3+EgziLmXAmlrqOu5PA=;
+ b=wf/nIoPEuoeKmC3M0YohOWR9Pq/D37JiRdLZZ5jEq7u3br6DoAd2kt6RkGuY+9gOxE
+ FxEW3TJPvCCm/bXX60WquhwmBZxjzjbt3AeAEGE3xRmyzVnEoQ21V1NF5N0ODU0RzOCe
+ yaRB8pL8bNeoHqrjtYJSr7z13aPOndus1S9dbfQln0u4KdHfBJQeTjw7yLYetKay1ilL
+ I3ZTEvTI8yzIYmk9v8IO+XYCtBx2IT86Ch4Zp8aRv/0oejW1NIIqfPqlnHBvmowHjT2L
+ YztFpnHbseKvyqkcVZov6ZH0Sxr7EGdRQCNMP3ByWrIYkVRAgfYgvRVvu3jq6bMoXrP2
+ jQng==
+X-Gm-Message-State: AOJu0Yw7nYNKg2p0sytYWNTZuISQKRnnolRWQpNfxrzMNCzgH0PGc2Gq
+ 8QiUTbS+INNH3K4fS6YXjqcNkd/emUv9dy29XxiW7NAVPI0zL/9oteodwFvI84pU1ZmtMGM9/GG
+ m05Tai0j7ZajEF3pue6OYFTI3+85/KJS9A9b1Gl741UErBScEvDQwjznL
+X-Gm-Gg: ASbGncvKOQlQNFm9vGW7SKgrtV69IMzq8x2zR7PSOEfmGYVAf/uYdeztw+ryEOr/3SW
+ EQHCftnyNJWpgnScyQsQMTJfU2Ig4dun6yMx7XLYGHAeKpp0lHo2hXr9EpEhy8Um1wIQnLWWa5Y
+ vyo5WzAzje7fkDv6KuuUgtbcc6nL6mi9HuEeZ3+8/wH9cY+DksKQM35OM2+HjBWsU7qOymniiAQ
+ 2Y2ockV50PPvd08NAsVjtM6CZRk6xLtV8g7J8J4De1a+VtUWFGUi1Giif7gd9pshrXBIGvvCRK4
+ 0REkORGnbxKPPw==
+X-Received: by 2002:a05:6214:1c89:b0:6ff:1636:e797 with SMTP id
+ 6a1803df08f44-702b1b44e05mr50414256d6.35.1751472147622; 
+ Wed, 02 Jul 2025 09:02:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwcv+6d0Vb0lU+/ihOl5qKnGHleKNMsphn5glO/MIroIHR6fQm5XPydql/2fTc3Vs5Wrud1w==
+X-Received: by 2002:a05:6214:1c89:b0:6ff:1636:e797 with SMTP id
+ 6a1803df08f44-702b1b44e05mr50413706d6.35.1751472146999; 
+ Wed, 02 Jul 2025 09:02:26 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6fd772e3f38sm102224296d6.61.2025.07.02.09.02.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 02 Jul 2025 09:02:26 -0700 (PDT)
+Date: Wed, 2 Jul 2025 12:02:23 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH V5 20/38] migration: close kvm after cpr
+Message-ID: <aGVYD1GkOC-LuI1T@x1.local>
+References: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
+ <1749569991-25171-21-git-send-email-steven.sistare@oracle.com>
+ <9dfc0dae-f048-4d41-9b6e-02b6e7dbc215@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9dfc0dae-f048-4d41-9b6e-02b6e7dbc215@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,135 +107,286 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anisa Su <anisa.su@samsung.com>
+On Tue, Jul 01, 2025 at 11:25:23AM -0400, Steven Sistare wrote:
+> Hi Paolo, Peter, Fabiano,
+> 
+> This patch needs review.  CPR for vfio is broken without it.
+> Soft feature freeze July 15.
 
-FM DCD Management command 0x5605 implemented per CXL r3.2 Spec Section 7.6.7.6.6
+Sorry to not have tried looking at this more even if this is marked
+"migration".. obviously I still almost see it as a KVM change..
 
-Signed-off-by: Anisa Su <anisa.su@samsung.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- hw/cxl/cxl-mailbox-utils.c | 88 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
+Questions inline below:
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 5ea0d07808..43a0d503aa 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -123,6 +123,7 @@ enum {
-         #define SET_DC_REGION_CONFIG        0x2
-         #define GET_DC_REGION_EXTENT_LIST   0x3
-         #define INITIATE_DC_ADD             0x4
-+        #define INITIATE_DC_RELEASE         0x5
- };
- 
- /* CCI Message Format CXL r3.1 Figure 7-19 */
-@@ -3644,6 +3645,86 @@ static CXLRetCode cmd_fm_initiate_dc_add(const struct cxl_cmd *cmd,
-     }
- }
- 
-+#define CXL_EXTENT_REMOVAL_POLICY_MASK 0x0F
-+#define CXL_FORCED_REMOVAL_MASK (1 << 4)
-+/*
-+ * CXL r3.2 Section 7.6.7.6.6:
-+ * Initiate Dynamic Capacity Release (Opcode 5605h)
-+ */
-+static CXLRetCode cmd_fm_initiate_dc_release(const struct cxl_cmd *cmd,
-+                                             uint8_t *payload_in,
-+                                             size_t len_in,
-+                                             uint8_t *payload_out,
-+                                             size_t *len_out,
-+                                             CXLCCI *cci)
-+{
-+    struct {
-+        uint16_t host_id;
-+        uint8_t flags;
-+        uint8_t reg_num;
-+        uint64_t length;
-+        uint8_t tag[0x10];
-+        uint32_t ext_count;
-+        CXLDCExtentRaw extents[];
-+    } QEMU_PACKED *in = (void *)payload_in;
-+    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-+    int i, rc;
-+
-+    switch (in->flags & CXL_EXTENT_REMOVAL_POLICY_MASK) {
-+        case CXL_EXTENT_REMOVAL_POLICY_PRESCRIPTIVE: {
-+            CXLDCExtentList updated_list;
-+            uint32_t updated_list_size;
-+            g_autofree CXLUpdateDCExtentListInPl *list =
-+                g_malloc0(sizeof(*list) +
-+                    in->ext_count * sizeof(*list->updated_entries));
-+
-+            convert_raw_extents(in->extents, list, in->ext_count);
-+            rc = cxl_detect_malformed_extent_list(ct3d, list);
-+            if (rc) {
-+                return rc;
-+            }
-+
-+            /*
-+             * Fail with Invalid PA if an extent is pending and Forced Removal
-+             * flag not set.
-+             */
-+            if (!(in->flags & CXL_FORCED_REMOVAL_MASK)) {
-+                for (i = 0; i < in->ext_count; i++) {
-+                    CXLDCExtentRaw ext = in->extents[i];
-+                    /*
-+                     * Check requested extents don't overlap with pending
-+                     * extents.
-+                     */
-+                    if (cxl_extent_groups_overlaps_dpa_range(
-+                            &ct3d->dc.extents_pending,
-+                            ext.start_dpa,
-+                            ext.len)) {
-+                        return CXL_MBOX_INVALID_PA;
-+                    }
-+                }
-+            }
-+
-+            rc = cxl_dc_extent_release_dry_run(ct3d,
-+                                               list,
-+                                               &updated_list,
-+                                               &updated_list_size);
-+            if (rc) {
-+                return rc;
-+            }
-+            cxl_create_dc_event_records_for_extents(ct3d,
-+                                                    DC_EVENT_RELEASE_CAPACITY,
-+                                                    in->extents,
-+                                                    in->ext_count);
-+            return CXL_MBOX_SUCCESS;
-+        }
-+        default: {
-+            qemu_log_mask(LOG_UNIMP,
-+                "CXL extent removal policy not supported.\n");
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+    }
-+}
-+
- static const struct cxl_cmd cxl_cmd_set[256][256] = {
-     [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
-         cmd_infostat_bg_op_abort, 0, 0 },
-@@ -3778,6 +3859,13 @@ static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
-         CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
-         CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
-         CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
-+    [FMAPI_DCD_MGMT][INITIATE_DC_RELEASE] = { "INIT_DC_RELEASE",
-+        cmd_fm_initiate_dc_release, ~0,
-+        (CXL_MBOX_CONFIG_CHANGE_COLD_RESET |
-+         CXL_MBOX_CONFIG_CHANGE_CONV_RESET |
-+         CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
-+         CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
-+         CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
- };
- 
- /*
+> 
+> - Steve
+> 
+> On 6/10/2025 11:39 AM, Steve Sistare wrote:
+> > cpr-transfer breaks vfio network connectivity to and from the guest, and
+> > the host system log shows:
+> >    irq bypass consumer (token 00000000a03c32e5) registration fails: -16
+> > which is EBUSY.  This occurs because KVM descriptors are still open in
+> > the old QEMU process.  Close them.
+> > 
+> > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> > ---
+> >   include/hw/vfio/vfio-device.h |  2 ++
+> >   include/migration/cpr.h       |  2 ++
+> >   include/system/kvm.h          |  1 +
+> >   accel/kvm/kvm-all.c           | 32 ++++++++++++++++++++++++++++++++
+> >   accel/stubs/kvm-stub.c        |  5 +++++
+> >   hw/vfio/helpers.c             | 10 ++++++++++
+> >   hw/vfio/vfio-stubs.c          | 13 +++++++++++++
+> >   migration/cpr-transfer.c      | 18 ++++++++++++++++++
+> >   migration/cpr.c               |  8 ++++++++
+> >   migration/migration.c         |  1 +
+> >   hw/vfio/meson.build           |  2 ++
+> >   11 files changed, 94 insertions(+)
+> >   create mode 100644 hw/vfio/vfio-stubs.c
+> > 
+> > diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+> > index 4e4d0b6..6eb6f21 100644
+> > --- a/include/hw/vfio/vfio-device.h
+> > +++ b/include/hw/vfio/vfio-device.h
+> > @@ -231,4 +231,6 @@ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp);
+> >   void vfio_device_init(VFIODevice *vbasedev, int type, VFIODeviceOps *ops,
+> >                         DeviceState *dev, bool ram_discard);
+> >   int vfio_device_get_aw_bits(VFIODevice *vdev);
+> > +
+> > +void vfio_kvm_device_close(void);
+> >   #endif /* HW_VFIO_VFIO_COMMON_H */
+> > diff --git a/include/migration/cpr.h b/include/migration/cpr.h
+> > index 07858e9..d09b657 100644
+> > --- a/include/migration/cpr.h
+> > +++ b/include/migration/cpr.h
+> > @@ -32,7 +32,9 @@ void cpr_state_close(void);
+> >   struct QIOChannel *cpr_state_ioc(void);
+> >   bool cpr_incoming_needed(void *opaque);
+> > +void cpr_kvm_close(void);
+> > +void cpr_transfer_init(void);
+> >   QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
+> >   QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp);
+> > diff --git a/include/system/kvm.h b/include/system/kvm.h
+> > index 7cc60d2..4896a3c 100644
+> > --- a/include/system/kvm.h
+> > +++ b/include/system/kvm.h
+> > @@ -195,6 +195,7 @@ bool kvm_has_sync_mmu(void);
+> >   int kvm_has_vcpu_events(void);
+> >   int kvm_max_nested_state_length(void);
+> >   int kvm_has_gsi_routing(void);
+> > +void kvm_close(void);
+> >   /**
+> >    * kvm_arm_supports_user_irq
+> > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> > index a317783..3d3a557 100644
+> > --- a/accel/kvm/kvm-all.c
+> > +++ b/accel/kvm/kvm-all.c
+> > @@ -515,16 +515,23 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+> >           goto err;
+> >       }
+> > +    /* If I am the CPU that created coalesced_mmio_ring, then discard it */
+> > +    if (s->coalesced_mmio_ring == (void *)cpu->kvm_run + PAGE_SIZE) {
+> > +        s->coalesced_mmio_ring = NULL;
+> > +    }
+> > +
+> >       ret = munmap(cpu->kvm_run, mmap_size);
+> >       if (ret < 0) {
+> >           goto err;
+> >       }
+> > +    cpu->kvm_run = NULL;
+> >       if (cpu->kvm_dirty_gfns) {
+> >           ret = munmap(cpu->kvm_dirty_gfns, s->kvm_dirty_ring_bytes);
+> >           if (ret < 0) {
+> >               goto err;
+> >           }
+> > +        cpu->kvm_dirty_gfns = NULL;
+> >       }
+> >       kvm_park_vcpu(cpu);
+> > @@ -608,6 +615,31 @@ err:
+> >       return ret;
+> >   }
+> > +void kvm_close(void)
+> > +{
+> > +    CPUState *cpu;
+> > +
+> > +    if (!kvm_state || kvm_state->fd == -1) {
+> > +        return;
+> > +    }
+> > +
+> > +    CPU_FOREACH(cpu) {
+> > +        cpu_remove_sync(cpu);
+> > +        close(cpu->kvm_fd);
+> > +        cpu->kvm_fd = -1;
+> > +        close(cpu->kvm_vcpu_stats_fd);
+> > +        cpu->kvm_vcpu_stats_fd = -1;
+> > +    }
+> > +
+> > +    if (kvm_state && kvm_state->fd != -1) {
+> > +        close(kvm_state->vmfd);
+> > +        kvm_state->vmfd = -1;
+> > +        close(kvm_state->fd);
+> > +        kvm_state->fd = -1;
+> > +    }
+> > +    kvm_state = NULL;
+> > +}
+> > +
+> >   /*
+> >    * dirty pages logging control
+> >    */
+> > diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+> > index ecfd763..97dacb3 100644
+> > --- a/accel/stubs/kvm-stub.c
+> > +++ b/accel/stubs/kvm-stub.c
+> > @@ -134,3 +134,8 @@ int kvm_create_guest_memfd(uint64_t size, uint64_t flags, Error **errp)
+> >   {
+> >       return -ENOSYS;
+> >   }
+> > +
+> > +void kvm_close(void)
+> > +{
+> > +    return;
+> > +}
+> > diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+> > index d0dbab1..af1db2f 100644
+> > --- a/hw/vfio/helpers.c
+> > +++ b/hw/vfio/helpers.c
+> > @@ -117,6 +117,16 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
+> >   int vfio_kvm_device_fd = -1;
+> >   #endif
+> > +void vfio_kvm_device_close(void)
+> > +{
+> > +#ifdef CONFIG_KVM
+> > +    if (vfio_kvm_device_fd != -1) {
+> > +        close(vfio_kvm_device_fd);
+> > +        vfio_kvm_device_fd = -1;
+> > +    }
+> > +#endif
+> > +}
+> > +
+> >   int vfio_kvm_device_add_fd(int fd, Error **errp)
+> >   {
+> >   #ifdef CONFIG_KVM
+> > diff --git a/hw/vfio/vfio-stubs.c b/hw/vfio/vfio-stubs.c
+> > new file mode 100644
+> > index 0000000..a4c8b56
+> > --- /dev/null
+> > +++ b/hw/vfio/vfio-stubs.c
+> > @@ -0,0 +1,13 @@
+> > +/*
+> > + * Copyright (c) 2025 Oracle and/or its affiliates.
+> > + *
+> > + * SPDX-License-Identifier: GPL-2.0-or-later
+> > + */
+> > +
+> > +#include "qemu/osdep.h"
+> > +#include "hw/vfio/vfio-device.h"
+> > +
+> > +void vfio_kvm_device_close(void)
+> > +{
+> > +    return;
+> > +}
+
+Do we really need this stub, and the "include VFIO" headers in CPR as
+below?  I thought it would be doable the other way round, that VFIO or KVM
+can register migration notifiers for CPR mode only.  After all, the
+registration (migration_add_notifier_mode) is in misc.h so it should be
+available to QEMU all across.
+
+Besides that, a high level question: what this patch does is trying to
+close early the relevant kvm/vfio fds that are used to attach to irq
+consumer / providers.  At the meantime, AFAICT, CPR as a whole feature when
+used against VFIO available, works only if VFIO can do whatever it wants
+(DMA, irq injections) during the whole process of CPR live upgrade,
+assuming that all the states are persisted in the fds.  Then, if here we
+need to (a) unregister on src QEMU and (b) re-attach on dest QEMU, what
+happens if the irqs are generated exactly between (a) and (b)?  Could they
+get lost?
+
+> > diff --git a/migration/cpr-transfer.c b/migration/cpr-transfer.c
+> > index e1f1403..396558f 100644
+> > --- a/migration/cpr-transfer.c
+> > +++ b/migration/cpr-transfer.c
+> > @@ -17,6 +17,24 @@
+> >   #include "migration/vmstate.h"
+> >   #include "trace.h"
+> > +static int cpr_transfer_notifier(NotifierWithReturn *notifier,
+> > +                                 MigrationEvent *e,
+> > +                                 Error **errp)
+> > +{
+> > +    if (e->type == MIG_EVENT_PRECOPY_DONE) {
+> > +        cpr_kvm_close();
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> > +void cpr_transfer_init(void)
+> > +{
+> > +    static NotifierWithReturn notifier;
+> > +
+> > +    migration_add_notifier_mode(&notifier, cpr_transfer_notifier,
+> > +                                MIG_MODE_CPR_TRANSFER);
+> > +}
+> > +
+> >   QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp)
+> >   {
+> >       MigrationAddress *addr = channel->addr;
+> > diff --git a/migration/cpr.c b/migration/cpr.c
+> > index a50a57e..49fb0a5 100644
+> > --- a/migration/cpr.c
+> > +++ b/migration/cpr.c
+> > @@ -7,12 +7,14 @@
+> >   #include "qemu/osdep.h"
+> >   #include "qapi/error.h"
+> > +#include "hw/vfio/vfio-device.h"
+
+[1]
+
+> >   #include "migration/cpr.h"
+> >   #include "migration/misc.h"
+> >   #include "migration/options.h"
+> >   #include "migration/qemu-file.h"
+> >   #include "migration/savevm.h"
+> >   #include "migration/vmstate.h"
+> > +#include "system/kvm.h"
+> >   #include "system/runstate.h"
+> >   #include "trace.h"
+> > @@ -264,3 +266,9 @@ bool cpr_incoming_needed(void *opaque)
+> >       MigMode mode = migrate_mode();
+> >       return mode == MIG_MODE_CPR_TRANSFER;
+> >   }
+> > +
+> > +void cpr_kvm_close(void)
+> > +{
+> > +    kvm_close();
+> > +    vfio_kvm_device_close();
+> > +}
+> > diff --git a/migration/migration.c b/migration/migration.c
+> > index 4098870..8f23cff 100644
+> > --- a/migration/migration.c
+> > +++ b/migration/migration.c
+> > @@ -337,6 +337,7 @@ void migration_object_init(void)
+> >       ram_mig_init();
+> >       dirty_bitmap_mig_init();
+> > +    cpr_transfer_init();
+> >       /* Initialize cpu throttle timers */
+> >       cpu_throttle_init();
+> > diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+> > index 73d29f9..98134a7 100644
+> > --- a/hw/vfio/meson.build
+> > +++ b/hw/vfio/meson.build
+> > @@ -17,6 +17,8 @@ vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
+> >   specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
+> > +system_ss.add(when: 'CONFIG_VFIO', if_false: files('vfio-stubs.c'))
+> > +
+> >   system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
+> >   system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
+> >   system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+
 -- 
-2.48.1
+Peter Xu
 
 
