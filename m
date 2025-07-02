@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96031AF6256
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 21:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A67AF6262
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 21:07:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX2hT-000852-S7; Wed, 02 Jul 2025 15:00:55 -0400
+	id 1uX2hc-0008N3-MG; Wed, 02 Jul 2025 15:01:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2h5-00079b-Te
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 15:00:40 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2h8-0007AV-5C
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 15:00:41 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2h3-0003X3-S2
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 15:00:31 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3a6cd1a6fecso7748605f8f.3
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 12:00:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2h6-0003YT-9H
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 15:00:33 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3a6d77b43c9so4496537f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 12:00:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751482825; x=1752087625; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751482830; x=1752087630; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=llrZ7gc2yCtOz59p3Nw/rqzAevesIHtbma42LIMfbw8=;
- b=N/+1bslpIyhk6+LGwFuay43GGehPtdaW7uP7Rit322kmBGG6GFqx1cJHgrUzQY8si+
- m5qSPzv5i8Lh/niyMdUyKnBtpvWff7+Zgyzp24AJnlCWlydgWilrjkda9/MkehhHb/w8
- prfFkI6J7U33k4MsdRyk7cyB4awVwJ7suTvTO5CTLXXyEOry5j1wv5yExtB0afuVryzM
- Vll4naK6dtut65WBhhM9LuXyeZmOdDnIvwktJyeo774K/W3TdXHF7jZpb3conBat9aBm
- h/ooLCuxpcbNvQJDLXsl5crRqZRZBd3jLXicNphIzV/T+RkcNAvx7aYkHhSVHeX4n+A7
- tXcQ==
+ bh=iVv77+T3+ACMfJtq+FwRrQOYxT41VnoDNDgY/IfZvIE=;
+ b=JBT+1dAL6Hta2zQGK2fWUcDfhn1fQ3Lvq0YLEg7diu6wL5yu1voJXN0Hu5URv+g0Tk
+ J1nFyjEcSxBeySEk9wdr47vwYgUHEmXpRuKctlXmOZOrCe+m4Iu86Ach0KGSYHrhfNIc
+ IFHqitlF/Z7KgQn0Xo5UJWFsVqXrIOZuZ7lFkFHLd5AOtqHiR6D2kXZplhg0a4oT4yiI
+ +kd1zYTgomIhCO3tCcRa5xYiCDrJBz2Xq7rJbsFqD5svtQk6IasM7c0AhTJ3WQEIo6mU
+ EsY+kLzsfCbn89nhoBZh2neDzdcyZPE811GQiAcXN14nL9fU/6hkM3KZqGXrxcxniEz2
+ xvXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751482825; x=1752087625;
+ d=1e100.net; s=20230601; t=1751482830; x=1752087630;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=llrZ7gc2yCtOz59p3Nw/rqzAevesIHtbma42LIMfbw8=;
- b=wv0dS8XXqzvzItvsdtNQNFze3GwJEZTGd7e5Vq92MTYymiwHkZXOmOqHacorCEKO2d
- 9jDGYF1/xGbNMM/bJyK7fLOEJKtuZwqkMm5WCFjw7RoerL1VYywKrojD791Imgq/YYjk
- Rn5jUDEqU2NX0/H2ad0F2X4y7cT0nDMEE0EfLpqHhytFcUT2kHDM0IeOxqgiJJ3vxRcw
- hJWVwsu8NCBbiCmFcbYEpQd8EPQ49bi2DQHkKo1NWAGADWhsoy0WnN9eHb82NqfApk1Z
- GAcPJGliH0gFQch+cD+IGCsc8Fv2hXoJS01vkkOs5LUtmzvG/umSEntkv1X/j0MB8Z6R
- E3DA==
-X-Gm-Message-State: AOJu0YxLt59J680YCGGJJaG8TUyX9jroSrul2T1SyPKoFvJvmr51V1pc
- h9ffMbqXCu8El9us4mgYXCKzp7E/xOqc1PbhKHYUFy7B11/W0sDDxZkmjbzTNsXaeaQfVy0H+Xo
- pC3ja
-X-Gm-Gg: ASbGncs7e76+cnHyXnG9CyeeeSoZgLORm8fy2HC1FpjlvV5+ODmATSI3QUe0D18Wk6r
- bkraT9Zoh12fkISksoor4hg9zOdh+pbq7DPRHRwedeqdNnlArqLv6zc5kf5okhDLkjfj/QOUuEu
- TxX7bkT3AH4rx58J171/bYNAvnQ+vPHkd6xXCGhj25sOPX3lau1aY3ppppoqqARpNpjgka6O23u
- IXgFZt9b2CXV0fQQoOPIYVbNaBU1t5gt/pUTu/XQVmGhMLufCQDT//oRhujOUDMeBi3Q1MT43kO
- lAFD6RJKGAbqBXK0YldnNbwwu3QLm3E0oeAZjtDMUCIC73Jsd5I2N21/5qhXjmFjsMVkZifeV7E
- YKMiQ9S4DhU6Hhy0oQhWWGngnpBPsERAi2MzpOaooBq+OfZo=
-X-Google-Smtp-Source: AGHT+IGKL24UNmCkiRhem9VsoWP/8UpU1Vk+VMZRqpAeORpUrjtABi2SGSU0CZErzDH1g8QzoPWKJQ==
-X-Received: by 2002:a05:6000:2b01:b0:3a4:f513:7f03 with SMTP id
- ffacd0b85a97d-3b20077164amr3084128f8f.44.1751482825346; 
- Wed, 02 Jul 2025 12:00:25 -0700 (PDT)
+ bh=iVv77+T3+ACMfJtq+FwRrQOYxT41VnoDNDgY/IfZvIE=;
+ b=uXIFLqknbZVoe3ReTEGdgjK7fJ0eMPq06uo4kamF5E7G2opJJ7au9z45/vYw56lucs
+ ypuc7NdPH4CIH8ADQpu97wuAiSR0LAJjNeLdQ2ddNOe6BedkceKoUfGfynX9uDU4bBkh
+ HVIcApb315tOaw6DhmHhI+qi13WnxFkMqQOIK3KuleiwLMyFoFKIYaLTgSuuWVZKlpl9
+ CzyjXJGicjzE6fk61Y53z87Yamm+Wbxjo0ypcgPcutJ9llvVlhvf4pELlGM1sua3Amx/
+ +KwnircJEOiU5XZnUK5UZrzsnYaMWXAwQtGYw844F5X1GQV5i+OHsFnK8m3ZNDnhtmGp
+ BxQA==
+X-Gm-Message-State: AOJu0YyLV77Xyfd2FDmJeX08mbmJOLwaDj/nUkT5UuMGCGRSYuRIHgEx
+ w6e4syIfbeTddopTgzbCM1T8M3I/j3Frb3ms+w7QOHahqF0ZjFOUwknKN3AfAcTdC26YUZ+C9pr
+ 8Vq75
+X-Gm-Gg: ASbGncv2QD2V7u3GWjXdjXCkcAuSk7l64DHKg8FovuHsYfDs676uCSvWOaSUEgZFJAo
+ UNlu862lTwRIXNPDyh5aDBVN3urOkad7x2Zh6di4h5+jkQ74K8zskpYf0ApCvZ8+nr50KufpqsF
+ qcAIoGSN20jLXrJ7yofKo3e06zDEaehBBT715lVtZEjVqyh6DO36W1Kzycw9wacML3vdTRcMM2k
+ tFTWpfGJjv0wM/9thIvempxtAj81OHwl2bNC5edrUcHYwthsitNq8zlcNnjhmdCpGSifWGt4/CP
+ 4kYJoRaukt8KajRC5QCnANqW+RbF0C+yXtXE2XAyfpStDMJEcQE/fH/o4m7gtRJSWsBI8QT00+n
+ l0Ks+152QOK+zJ9jEgqPC/BNXypb0AW1Mv37l
+X-Google-Smtp-Source: AGHT+IGma+r82gDRg/4iKpw8G/6qQzJjoyC2DBUU4JDIyKs5+ddWQBn5Jf3e8VyjUhK4em0OWNP+cg==
+X-Received: by 2002:a05:6000:188e:b0:3a0:a0d1:1131 with SMTP id
+ ffacd0b85a97d-3b32b145797mr291997f8f.7.1751482830055; 
+ Wed, 02 Jul 2025 12:00:30 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a9978c83sm5762955e9.13.2025.07.02.12.00.24
+ ffacd0b85a97d-3a88c7fa8fasm16625000f8f.28.2025.07.02.12.00.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Jul 2025 12:00:24 -0700 (PDT)
+ Wed, 02 Jul 2025 12:00:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: [PATCH v4 60/65] system/memory: Restrict eventfd dispatch_write() to
- emulators
-Date: Wed,  2 Jul 2025 20:53:22 +0200
-Message-ID: <20250702185332.43650-61-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 61/65] accel/tcg: Factor tcg_vcpu_init() out for re-use
+Date: Wed,  2 Jul 2025 20:53:23 +0200
+Message-ID: <20250702185332.43650-62-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250702185332.43650-1-philmd@linaro.org>
 References: <20250702185332.43650-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,47 +101,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 8c56c1a592b ("memory: emulate ioeventfd") added a !KVM
-check because the only accelerator available back then were TCG,
-QTest and KVM. Then commit 126e7f78036 ("kvm: require
-KVM_CAP_IOEVENTFD and KVM_CAP_IOEVENTFD_ANY_LENGTH") suggested
-'!KVM' check should be '(TCG || QTest)'. Later more accelerator
-were added. Implement the suggestion as a safety measure, not
-dispatching to eventfd when hardware accelerator is used.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- system/memory.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ accel/tcg/tcg-accel-ops.h       | 2 ++
+ accel/tcg/tcg-accel-ops-mttcg.c | 4 +++-
+ accel/tcg/tcg-accel-ops-rr.c    | 4 +++-
+ accel/tcg/tcg-accel-ops.c       | 7 +++++++
+ 4 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/system/memory.c b/system/memory.c
-index e8d9b15b28f..b072a6bef83 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -25,7 +25,7 @@
- #include "qom/object.h"
- #include "trace.h"
- #include "system/ram_addr.h"
--#include "system/kvm.h"
-+#include "system/qtest.h"
- #include "system/runstate.h"
- #include "system/tcg.h"
- #include "qemu/accel.h"
-@@ -1530,12 +1530,7 @@ MemTxResult memory_region_dispatch_write(MemoryRegion *mr,
+diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
+index 3f8eccb7a7f..a95d97fca29 100644
+--- a/accel/tcg/tcg-accel-ops.h
++++ b/accel/tcg/tcg-accel-ops.h
+@@ -20,4 +20,6 @@ int tcg_cpu_exec(CPUState *cpu);
+ void tcg_handle_interrupt(CPUState *cpu, int old_mask, int new_mask);
+ void tcg_cpu_init_cflags(CPUState *cpu, bool parallel);
  
-     adjust_endianness(mr, &data, op);
++int tcg_vcpu_init(CPUState *cpu);
++
+ #endif /* TCG_ACCEL_OPS_H */
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
+index 96ce065eb59..4de506a80ca 100644
+--- a/accel/tcg/tcg-accel-ops-mttcg.c
++++ b/accel/tcg/tcg-accel-ops-mttcg.c
+@@ -79,8 +79,10 @@ void *mttcg_cpu_thread_routine(void *arg)
+     qemu_thread_get_self(cpu->thread);
  
--    /*
--     * FIXME: it's not clear why under KVM the write would be processed
--     * directly, instead of going through eventfd.  This probably should
--     * test "tcg_enabled() || qtest_enabled()", or should just go away.
--     */
--    if (!kvm_enabled() &&
-+    if ((tcg_enabled() || qtest_enabled()) &&
-         memory_region_dispatch_write_eventfds(mr, addr, data, size, attrs)) {
-         return MEMTX_OK;
-     }
+     cpu->thread_id = qemu_get_thread_id();
+-    cpu->neg.can_do_io = true;
+     current_cpu = cpu;
++
++    tcg_vcpu_init(cpu);
++
+     cpu_thread_signal_created(cpu);
+     qemu_guest_random_seed_thread_part2(cpu->random_seed);
+ 
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index fc33a13e4e8..9578bc639cb 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -192,7 +192,9 @@ static void *rr_cpu_thread_fn(void *arg)
+     qemu_thread_get_self(cpu->thread);
+ 
+     cpu->thread_id = qemu_get_thread_id();
+-    cpu->neg.can_do_io = true;
++
++    tcg_vcpu_init(cpu);
++
+     cpu_thread_signal_created(cpu);
+     qemu_guest_random_seed_thread_part2(cpu->random_seed);
+ 
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 780e9debbc4..6823f31d8ad 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -77,6 +77,13 @@ void tcg_vcpu_thread_precreate(CPUState *cpu)
+     tcg_cpu_init_cflags(cpu, current_machine->smp.max_cpus > 1);
+ }
+ 
++int tcg_vcpu_init(CPUState *cpu)
++{
++    cpu->neg.can_do_io = true;
++
++    return 0;
++}
++
+ void tcg_cpu_destroy(CPUState *cpu)
+ {
+     cpu_thread_signal_destroyed(cpu);
 -- 
 2.49.0
 
