@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F02DAF5D1F
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 17:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3953AF5D2B
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 17:33:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWzQU-00055U-Dh; Wed, 02 Jul 2025 11:31:12 -0400
+	id 1uWzS0-0006x3-Jq; Wed, 02 Jul 2025 11:32:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWzQL-00050P-9z
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 11:31:02 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ id 1uWzRo-0006v7-ML
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 11:32:32 -0400
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWzQH-0004Vv-41
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 11:31:00 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-7382ffcb373so3640531a34.0
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 08:30:56 -0700 (PDT)
+ id 1uWzRk-0005Ln-SM
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 11:32:31 -0400
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-73b0efea175so2442315a34.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 08:32:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751470255; x=1752075055; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751470344; x=1752075144; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=C2jgzcZvb8y2CGvrF13/X+MqF9N4fEyMoa/4Cbfnllc=;
- b=lBcqFyzhilVdwtmv6V6oN+w73Of8lF6FWWco1VyezyBPi5vRJtU1Adr/n7zq4lKv3f
- 9pvczIHOsyGueeAvt5ufea5rsQbJL+N0SWcZHtP8O0u4gmlKKB3GbYAfmzamsIJQthF1
- Sa+TmiZgpnraiR5VoIBZRghYtpWUmg50SLw7nPwkusEb2VsE9GeRjiet/143darjlOxh
- /s0GpAUi3VCE9uBjRATxpl4MAAYgj7jKl8Mv600Z0+n23vGR9d5xSLzdAJ/OhOSTTHEN
- d73JnPVArXn3F8n9sATKAAUfavHcBK1/qdWScxijCmp4KtguNaHJBHinvEwvHPupXlIC
- r23g==
+ bh=ZrCMtlLS8n6NH99jPbfdSslL5BC5CrHBtaVXV+mK7N8=;
+ b=RcC2M5Ui8mA+PiqPJ2YMxajPMwX83C1O30AEU0Qxu6t17n2H4cMSvTf87vFqxoNvgb
+ l5zjk/pRZDesv3yRSSZYrv8+PdqwgK6xyKN2n5Gds4sqE3QmCS15lnDzLV9jBwDNROuB
+ A7e6jQC81OKQP5Y5/mzztorzd++9kI/b9thKpdFjeAl98e7OyUHtmaxj1f29pP2gHsch
+ dXCPXtKVDtxbLWkD2UUMmqnruMmzEFCTt52hSyBtrDmNl7C0qHMAgWEp96/PzSXyuHo/
+ Mz1W6ZEyFW4YaOSnf9v19W3p9KrmeaFk7+RCPwN4mVhb1gwQjymSxI5X0IYzaIahsuHT
+ nnzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751470255; x=1752075055;
+ d=1e100.net; s=20230601; t=1751470344; x=1752075144;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=C2jgzcZvb8y2CGvrF13/X+MqF9N4fEyMoa/4Cbfnllc=;
- b=JB6PmERNmhzVgdyVeoxF0ekM89Rjztjyqy3FG3y6gf4dK8ubyiPLKi7qXTzLG0KGnt
- Nv7WI71BYEjHR25v5MEhU6nLfelQnP7+hbxhYZvH6jdTpYZwqVaW5I1IJzOYVmliPUdW
- ZWAmQm8QbF1S6qMPoXK555wP8U/txN5mujGt8BG495rsw1bP2ogsvyAsAJ/BJfH/lBqC
- M27L9NLqxk8Aq0NVmfP/XmI09viNT1q2J8Ugq+w2+9q0cs1bKaljTHUP46C9F57beQ4Y
- jzn5n13pFKNSnpmcJqP8w5IyYds4qlEb2lm1fmb//hdy5jhUaFgF8RCL+8+v7VCctBZN
- SUaQ==
+ bh=ZrCMtlLS8n6NH99jPbfdSslL5BC5CrHBtaVXV+mK7N8=;
+ b=QRozdxJxP0h6SFE4pdA7d8duKdFZksXKYW8VJG44A4H9aSVLWNC7QeyE9jDVFq64ix
+ TTLdiQJq9PvWlUJNbmMDmTvI0NMBvQCzniBKNgjA//ZHiuqKQEO4C7lJmEGqmTSs8Q7r
+ pVk+cJQwYAGtQVRvgxdywW6kYMFfuyavuymWIzRwG2XW9Cif8/h6A+jVgklRE/+Fx90N
+ izbsi7it3P5zzZrc4pMCA8BTe03BceazTstVgR5kw6yvSOHPwvpc6NL5JmETOZYKRqPT
+ dmn2b5RB0DCGvla+zGiTBrmPepxoPXKVDP7TtM05aBmRpqRN9LbgWAkNeLEwJ2dcNrAJ
+ XR4Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUNcNSuyTAm3nrGMNR9XTnEiNh7AP0xc8wyGOc+AyhcEgAMHSTu/7DmQmKoJ9uMaqHGh25nnCokaGhc@nongnu.org
-X-Gm-Message-State: AOJu0YxgPGvfi8jW/JFBux0nrFKl8rko4EQxnUFQkl9ISo8wdlpKOk+P
- lEvPanSgNXEOEHL/Jr9+amsX2iSHU+y01Rt+ym6JWTnHTCH52h1VBWZbYUFKcZXzM4g=
-X-Gm-Gg: ASbGncsUoR+/H3FqddHnWjqBOHX6q9ZoZpowkmjgiJnxfpgBgM6qg/D5qysL2fkSDir
- n8M8W7ok58zCSex62cWS8Zij57acOhwfhn6JyM261gLGWs+50ZAF4tIzl8uy7JeBctPMlObHmZ8
- sZC684/MHZ6ZI7kK4DizphMtxp1ZG1N4YRVxfnkjumzec2nwAGEHiPEeOaoRHXwBbNtwK7N4dCH
- Lt4GevkvBRvZxyHSSbN4gGvslMfL/wvZz8qY/6e3LneHUy/fg8buWhVjkcl9+gwgAvyRlrTUyhi
- ISp+kTuRA/0NJkU1Nlqwk0ByE7Ovicb/sbaNTkL0gr8Bow7tQsWFTWalc7fn5FKZLDQ+CwlHGYm
- LUFR/be6DHP4=
-X-Google-Smtp-Source: AGHT+IHM9OLypF+wieeEkVsZ3ptxHBAmKUYalFgaHY/YGBUZlu6o54UPQASz99o2JZE3Nr7xSVbS/A==
-X-Received: by 2002:a05:6870:ec87:b0:2bc:8c4a:aac2 with SMTP id
- 586e51a60fabf-2f5c7b465e4mr2682585fac.27.1751470255009; 
- Wed, 02 Jul 2025 08:30:55 -0700 (PDT)
+ AJvYcCXwsZcPwGKQuvfg4NAZWmNlFN1RFEauaa5A8dbuYAiPs1yB4tHeGJa9iOtub9vsyrcfeBPdpZS70iOk@nongnu.org
+X-Gm-Message-State: AOJu0Yzy0mHJno7e7S/ILcnyF/DdpFJbc2zPAPT3LuVP/tvnLpgl4JD8
+ yPftgls3t2hW9Dn3Ud8zEuq7CQuRNdUGllctCqGkYHqi4m5KxDdnc1OZrBIHXS8dAPnX7WMwyEQ
+ yY9PVPMk=
+X-Gm-Gg: ASbGnctzWs06DBeu2U4u41cuUC7fP1uM4qsrwgeEPcc9/Ah/rJmYo8SVV0cV3Gwh8jz
+ HWerreGSXH9jJQGWmHDM/fQxlWfRb/lS2HMfFMyy9pRc4MOsMGJvLfN1Y3wvpEs7PcoA57YrFru
+ V0opeT5SyPuHIdCsIw1ohkVqMWNp17JIDHkYuaG8iaHEri11MFKa+yH+7o94WQr+xXq1D0CrcZE
+ SJZdCZvJnTKrzUcDsqXwqKMBuWteMIZlVqx6e8MEEz+YF3oso3yUNFvw4b93Ro11POIp/U95YlW
+ BZDG18SCBvwOaknNpkwDwEGk5uOaujRLfn6yOf4pBVq/vEHrQpW7wPkF2Vht6ZBtV778ayPsyj1
+ u
+X-Google-Smtp-Source: AGHT+IGAg5b6gP/BwiMdpX75A5yZ8/+6Acix9jUGQl4pDgN4yVYzDcNC4ykxHwwnW7Sf6xbyzyy8lw==
+X-Received: by 2002:a05:6830:2113:b0:735:b4ef:acb3 with SMTP id
+ 46e09a7af769-73b4ca1ee25mr2578286a34.10.1751470344287; 
+ Wed, 02 Jul 2025 08:32:24 -0700 (PDT)
 Received: from [10.25.7.74] ([187.210.107.185])
  by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-73afb101607sm2521714a34.56.2025.07.02.08.30.54
+ 46e09a7af769-73afaff296esm2529078a34.12.2025.07.02.08.32.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Jul 2025 08:30:54 -0700 (PDT)
-Message-ID: <8353d9c8-8dd6-4dd1-ade6-4dd7f5a4c8c5@linaro.org>
-Date: Wed, 2 Jul 2025 09:30:52 -0600
+ Wed, 02 Jul 2025 08:32:23 -0700 (PDT)
+Message-ID: <67bc51ea-a772-4cb9-940c-6ec3a0baae2a@linaro.org>
+Date: Wed, 2 Jul 2025 09:32:20 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 67/68] accel: Have each accelerator implement the
- handle_interrupt() hook
+Subject: Re: [PATCH v3 66/68] accel/system: Pass old/new interrupt mask to
+ handle_interrupt() handler
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
  <alex.bennee@linaro.org>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Julian Armistead <julian.armistead@linaro.org>
 References: <20250701144017.43487-1-philmd@linaro.org>
- <20250701144017.43487-68-philmd@linaro.org>
+ <20250701144017.43487-67-philmd@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250701144017.43487-68-philmd@linaro.org>
+In-Reply-To: <20250701144017.43487-67-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,51 +108,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/1/25 08:40, Philippe Mathieu-Daudé wrote:
-> Better to make the interrupt handler an explicit implementation
-> rather than depending on some generic handler.
+> Update CPUState::interrupt_request once in cpu_interrupt().
+> Pass the old and new masks along.
 > 
-> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   accel/dummy-cpus.h                |  1 +
->   include/system/accel-ops.h        |  1 +
->   accel/dummy-cpus.c                |  7 +++++++
->   accel/hvf/hvf-accel-ops.c         |  8 ++++++++
->   accel/kvm/kvm-accel-ops.c         |  8 ++++++++
->   accel/qtest/qtest.c               |  1 +
->   accel/xen/xen-all.c               |  1 +
->   system/cpus.c                     | 15 ++-------------
->   target/i386/nvmm/nvmm-accel-ops.c |  8 ++++++++
->   target/i386/whpx/whpx-accel-ops.c |  8 ++++++++
->   10 files changed, 45 insertions(+), 13 deletions(-)
+>   accel/tcg/tcg-accel-ops-icount.h |  2 +-
+>   accel/tcg/tcg-accel-ops.h        |  2 +-
+>   include/system/accel-ops.h       |  2 +-
+>   accel/tcg/tcg-accel-ops-icount.c |  8 +++-----
+>   accel/tcg/tcg-accel-ops.c        |  4 +---
+>   system/cpus.c                    | 12 +++++++-----
+>   6 files changed, 14 insertions(+), 16 deletions(-)
 
-I had suggested exporting generic_handle_interrupt
-
-> @@ -358,6 +365,7 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
->       ops->kick_vcpu_thread = hvf_kick_vcpu_thread;
->       ops->exec_vcpu_thread = hvf_vcpu_exec;
->       ops->destroy_vcpu_thread = hvf_vcpu_destroy;
-> +    ops->handle_interrupt = hvf_handle_interrupt;
-
-... and then registering it in each accelerator,
-
-> diff --git a/system/cpus.c b/system/cpus.c
-> index 8c2647f5f19..e217e42ba03 100644
-> --- a/system/cpus.c
-> +++ b/system/cpus.c
-> @@ -246,13 +246,6 @@ int64_t cpus_get_elapsed_ticks(void)
->       return cpu_get_ticks();
->   }
->   
-> -static void generic_handle_interrupt(CPUState *cpu, int old_mask, int new_mask)
-> -{
-> -    if (!qemu_cpu_is_self(cpu)) {
-> -        qemu_cpu_kick(cpu);
-> -    }
-> -}
-
-... rather than removing the common implementation.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
+
 
