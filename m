@@ -2,101 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313FFAF0CA2
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 09:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6F6AF0CC7
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 09:40:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWrv9-0002Fv-NZ; Wed, 02 Jul 2025 03:30:20 -0400
+	id 1uWs3x-0005ZG-Re; Wed, 02 Jul 2025 03:39:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexghiti@rivosinc.com>)
- id 1uWrv0-0002DM-C4
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 03:30:10 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alexghiti@rivosinc.com>)
- id 1uWrup-0007o2-9i
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 03:30:06 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-74b27c1481bso2049942b3a.2
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 00:29:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1751441396; x=1752046196;
- darn=nongnu.org; 
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=o+1kya4exW9pPD1MNqhgnKAyBAUA3fmXeCE+T7pu/Zw=;
- b=3T//lL2m47/u281B0iqsssG9ZPDPFG4cbqQiUPDT5wzNVIY5luNxHmklmty1Nisas4
- nvAOcIQITSU+WvDUoL7n4SdwWXR5To62OpM1cegrTSn8EMsSPWU+L1oaEUBX489YAshy
- eAn2X8TA4B8dl0C6P9lKqHKJuxx3aO+xbgmgrhTxxb5k/pOQhc1uRF1RjrWYf3Pt/KZ7
- TJL0LvxkmYLCWTP5sQW1oNEqu7bfTX15blH2toOsAzugbbFzDfbEv4AMttzDaGW4yKlI
- 1Vy91nYpVG4fM41hlrwlROtvHDQC9rj7u6aoSd1mpkxs+0hPeAYwU58N8qQ/P8khd0On
- G/Ag==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWs3u-0005Yl-U7
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 03:39:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uWs3q-0000qN-8v
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 03:39:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751441955;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=MFFC24a42677G3+CnjlHRqWhcJLJq82C9B9KVkAooNM=;
+ b=FMTP1zEkg76CWoXIxoc9S6cGlnG7ZQ4xd6/azu55VmAvrw+uqeW3R5hdKo8piUTDSVIuyC
+ JfVthAWbmCahNwx6MZ+8fw3nFE3ZEEUGncv2WdRCEaMOi2Zr1fF0A12rJO7cLS8J1Ja/qD
+ tLuiJdo8SBWdzdBAkYig2dq4sm3vGMk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-CqStlTpzPKionr5LDXts4A-1; Wed, 02 Jul 2025 03:39:14 -0400
+X-MC-Unique: CqStlTpzPKionr5LDXts4A-1
+X-Mimecast-MFC-AGG-ID: CqStlTpzPKionr5LDXts4A_1751441953
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-450db029f2aso29124615e9.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 00:39:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751441396; x=1752046196;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1751441953; x=1752046753;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=o+1kya4exW9pPD1MNqhgnKAyBAUA3fmXeCE+T7pu/Zw=;
- b=EDYhGqLvQyi2wjKkZoyPSGK15RTN3vJbhoebPk5S/Nc/t5n3aqBbkkSS2i9djRvUbI
- eH6hDfGjmGfh/k6DNzjWeho9geOc2Dt1y3fgarPzZazj72yDig/4sf9UX+1M5dJJr3TI
- Y1/i4XzpCCiX8moSgrif3PMQCARqjNnjmeb7lRzOubHGpIMYiQGCEa4h0BfJnmWHuXhC
- X3grcJ5VR85/N9tGi3zgIqYekaA5XFX9wJ5McVc3Maz09NUfgIsKzyKF0ZsjkgdKheXi
- 8H0Vd27ULC6B7CQANuj3EkGx8c8H8VPu+dYLls02rmun9w8CrcFDFRyds38+b4RMCH7c
- w4Iw==
-X-Gm-Message-State: AOJu0YwEhmxXGIMeKJ/27ZCSGf1FFCRZwFc8RHiV7j457bTjBmQyI94N
- X57IiINxIlo5fINl6N9NmQsfwzhgX35/OoyJKTFW6ZsNbaAYNcGn+qxhqI+bVx/RNk8=
-X-Gm-Gg: ASbGncswaLLKAkRGTUbA9vqKkrNSJ7ATknzEHiNHTsrG7KB1rC8wox1gI1FajhzJ2ah
- fc1mJ76GF6+grcNihn8BWqZONfVB5iRU/IxLIieH4NDJqmE8tuim4m8iCijs02hCKvcptll2J3V
- kKe/y6Jb237cktr74suB2viKm1X7ARjuBztAnPkv7gU5lTaWw8s9FFRpFt7CP+kh2ZXkF7SUlwr
- 0FdyvrDyFXIGFmDmlP6ML8TffI5V9+f+WeW+Mnz/uLg5z/qlKRXlyWTJrDZX5B+4sOZ3GOIe8hj
- 3Al6oEo5cBGr01g97iCgHyftto/fnV5jRNDXrSs7HfvMC6QPOVOIhT0fSQTo5t5Cw8PrRY2eKyB
- DyNILPP96NrHXZfOHS+Tdt7u8AsrIDaVEfQ==
-X-Google-Smtp-Source: AGHT+IEU0tC+FaWGEWPxe6+oTneC0ovTI2YwHKtrKdY6mo+O1NQdyBTrlYmrJkHW3FS0LOTCnSrkUQ==
-X-Received: by 2002:a05:6a20:394a:b0:220:9838:32ca with SMTP id
- adf61e73a8af0-222d7de5178mr4050095637.14.1751441395911; 
- Wed, 02 Jul 2025 00:29:55 -0700 (PDT)
-Received: from alexghiti.eu.rivosinc.com (alexghiti.eu.rivosinc.com.
- [141.95.202.232]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b34e31beab2sm12389878a12.47.2025.07.02.00.29.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Jul 2025 00:29:55 -0700 (PDT)
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-Date: Wed, 02 Jul 2025 07:28:52 +0000
-Subject: [PATCH v2] target: riscv: Add Svrsw60t59b extension support
+ bh=MFFC24a42677G3+CnjlHRqWhcJLJq82C9B9KVkAooNM=;
+ b=ZU4GOo0xI+NYuGwW8kdsZpik5sDl3BK4XVCBXYUz1pLy2RB0pFBIomI5G+hAJyjgjB
+ b5Smp5Z64d1Gwb2XFI6NnT2y+eyiVDPu1VhWoiYSHpM1Ya68lp8lliIe4GBUwwn5opc4
+ RHCFcKTFgAtSKuNtPaAF4h9dtj5C02rG7qadhvvwkLcNwgZFGMR590d8QxPLZTvLgPv3
+ XfWkF+FmfnCBnOrxeGFiOVewrSOts0KLiP1IGe67jW4N9cxlGxSMrhNaPxq8QjzZwMUh
+ Ay4T7Dpd+jL/qQC0/6Uwo/F5PBdAjLHJyQoxjxsgUCRULU/TYYPjaMnAuzKj1/xFWRx1
+ dNUg==
+X-Gm-Message-State: AOJu0Yxc4t0077q2sxowwJvY+3EB79MnHPJEUt5G0q0ro8pavGGWZUey
+ PQoynxTKtS3B8LVrNnyCjDND+wbEUH0eU6qn+h/D4QC9XpJSj0p9h9bRJ54ddtNZ8h2MCMpslo8
+ skyaHjyS6uTyVwDo7on558RgHlvT46IbBty8GQnoIatG4dFZ/JwY9jamh
+X-Gm-Gg: ASbGncsgnpQXxqg/kDOKIGJ71bIPtpn4ARO+1BPzp+j2XiClExdeOnjwHGuOXQ41hFV
+ iqNGOE7XPCTvMZQQfnVF+fHclYBF6R/9iAR12MyOaWNt6twqwvCBGl0qiwfLWfViKK5Yk1i7thM
+ EMNNHRFr4VA1d9/tTLP4nHdOe4rpezSFQwiCTGfcNIPD4Bn7FylHHKlLVXYv6Qg2ct1KCA8tbtK
+ GMg1KHAwUzH66zg+P8tZAodh4Veh5Bkd5ou+LcMqC0T7l8wspRS6U4B7gtNQ+/kMG2SOtTUR7+x
+ W51W09UEMs3CshfLZCtzvlwv/iTFlgq8KDcuOkFOKnbraj3urEoreIRH3RxxzQ==
+X-Received: by 2002:a05:600c:8212:b0:43c:fe15:41dd with SMTP id
+ 5b1f17b1804b1-454a36ddc52mr19288795e9.6.1751441952680; 
+ Wed, 02 Jul 2025 00:39:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHC2bP1Kz4XeukoshoBgagEE4nuhX+ShqgPuG/7LrCtZT9jr/5GuwsYa/a2qr65eIrItc54dg==
+X-Received: by 2002:a05:600c:8212:b0:43c:fe15:41dd with SMTP id
+ 5b1f17b1804b1-454a36ddc52mr19288445e9.6.1751441952232; 
+ Wed, 02 Jul 2025 00:39:12 -0700 (PDT)
+Received: from [192.168.0.6] (ltea-047-064-114-041.pools.arcor-ip.net.
+ [47.64.114.41]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4538a406489sm192948635e9.27.2025.07.02.00.39.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Jul 2025 00:39:11 -0700 (PDT)
+Message-ID: <3b98464f-54f8-4977-9e87-a144277da264@redhat.com>
+Date: Wed, 2 Jul 2025 09:39:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] accel/kvm: Adjust the note about the minimum required
+ kernel version
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-stable@nongnu.org,
+ qemu-trivial@nongnu.org
+References: <20250702060319.13091-1-thuth@redhat.com>
+ <aGTU2enBBQj7lu3E@intel.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <aGTU2enBBQj7lu3E@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250702-dev-alex-svrsw60b59b_v2-v2-1-504ddf0f8530@rivosinc.com>
-X-B4-Tracking: v=1; b=H4sIALPfZGgC/x3MQQqDMBBG4avIrB0IA4nWq5QiSf3VgaIlA1EQ7
- 97Q5bd47yJDVhgNzUUZRU33rULaht5r3BawTtUkTrwL4nlC4fjByVayHcEl/0hjEY4hdXPvE4K
- Aav3NmPX8n5+v+/4BirsCjmkAAAA=
-X-Change-ID: 20250625-dev-alex-svrsw60b59b_v2-a6b7f85be62e
-To: qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org, 
- Deepak Gupta <debug@rivosinc.com>, Alexandre Ghiti <alexghiti@rivosinc.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6847;
- i=alexghiti@rivosinc.com; h=from:subject:message-id;
- bh=kB+PZ+OBnsQwjKb0LVHflg7ULO3HRw3rKAlcQWd9IBo=;
- b=owGbwMvMwCGWYr9pz6TW912Mp9WSGDJS7t/guLytd6PMdIMON7sL7Xlet7Zs5XzIfuvNndlzp
- msf9r6wuaOUhUGMg0FWTJFFwTyhq8X+bP3sP5few8xhZQIZwsDFKQATaeFg+MNbxyKSceLG3j2z
- lkc2br+bxPNrUzSn5+O8Tx0nUjJmpk1k+Mm4p6teZN3Lwsc923fKhKednrPhUdRypu1Lp9VKrMu
- cfo4HAA==
-X-Developer-Key: i=alexghiti@rivosinc.com; a=openpgp;
- fpr=DC049C97114ED82152FE79A783E4BA75438E93E3
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=alexghiti@rivosinc.com; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,152 +152,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Svrsw60t59b extension allows to free the PTE reserved bits 60 and 59
-for software to use.
+On 02/07/2025 08.42, Zhao Liu wrote:
+> On Wed, Jul 02, 2025 at 08:03:19AM +0200, Thomas Huth wrote:
+>> Date: Wed,  2 Jul 2025 08:03:19 +0200
+>> From: Thomas Huth <thuth@redhat.com>
+>> Subject: [PATCH] accel/kvm: Adjust the note about the minimum required
+>>   kernel version
+>>
+>> From: Thomas Huth <thuth@redhat.com>
+>>
+>> Since commit 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and
+>> KVM_CAP_IOEVENTFD_ANY_LENGTH") we require at least kernel 4.4 to
+>> be able to use KVM. Adjust the upgrade_note accordingly.
+>> While we're at it, remove the text about kvm-kmod and the
+>> SourceForge URL since this is not actively maintained anymore.
+>>
+>> Fixes: 126e7f78036 ("kvm: require KVM_CAP_IOEVENTFD and KVM_CAP_IOEVENTFD_ANY_LENGTH")
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   accel/kvm/kvm-all.c | 3 +--
+>>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> I just mentioned the kernel version in another patch thread. I found
+> x86 doc said it requires v4.5 or newer ("OS requirements" section in
+> docs/system/target-i386.rst).
 
-Reviewed-by: Deepak Gupta <debug@rivosinc.com>
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
----
-Changes in v2:
-  - Fix riscv32 max config (thanks Daniel!)
-  - Add RB from Deepak
-  - Remove tab usage
----
- hw/riscv/riscv-iommu-bits.h       | 1 +
- hw/riscv/riscv-iommu.c            | 3 ++-
- target/riscv/cpu.c                | 2 ++
- target/riscv/cpu_bits.h           | 3 ++-
- target/riscv/cpu_cfg_fields.h.inc | 1 +
- target/riscv/cpu_helper.c         | 3 ++-
- target/riscv/tcg/tcg-cpu.c        | 8 ++++++++
- 7 files changed, 18 insertions(+), 3 deletions(-)
+Looking at the original commit that introduced this message (commit 
+483c6ad426db), this seems to apply to x86 only ... I guess there's a chance 
+that KVM still works with kernel 4.4 on other architectures.
+But I don't mind too much - we can also say 4.5 here to have a unified 
+value. Paolo, any preferences?
 
-diff --git a/hw/riscv/riscv-iommu-bits.h b/hw/riscv/riscv-iommu-bits.h
-index 1017d73fc6e7368dae9bec7314e68cde707d4bad..47fe01bee58697544104cfe16618307ece236132 100644
---- a/hw/riscv/riscv-iommu-bits.h
-+++ b/hw/riscv/riscv-iommu-bits.h
-@@ -79,6 +79,7 @@ struct riscv_iommu_pq_record {
- #define RISCV_IOMMU_CAP_SV39            BIT_ULL(9)
- #define RISCV_IOMMU_CAP_SV48            BIT_ULL(10)
- #define RISCV_IOMMU_CAP_SV57            BIT_ULL(11)
-+#define RISCV_IOMMU_CAP_SVRSW60T59B     BIT_ULL(14)
- #define RISCV_IOMMU_CAP_SV32X4          BIT_ULL(16)
- #define RISCV_IOMMU_CAP_SV39X4          BIT_ULL(17)
- #define RISCV_IOMMU_CAP_SV48X4          BIT_ULL(18)
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index a877e5da84b66e3d1991bb70cc58e80d9d88d0d0..36eda95a1c6e149976c1bd60b9f6b4753682bc0a 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -2355,7 +2355,8 @@ static void riscv_iommu_realize(DeviceState *dev, Error **errp)
-     }
-     if (s->enable_g_stage) {
-         s->cap |= RISCV_IOMMU_CAP_SV32X4 | RISCV_IOMMU_CAP_SV39X4 |
--                  RISCV_IOMMU_CAP_SV48X4 | RISCV_IOMMU_CAP_SV57X4;
-+                  RISCV_IOMMU_CAP_SV48X4 | RISCV_IOMMU_CAP_SV57X4 |
-+                  RISCV_IOMMU_CAP_SVRSW60T59B;
-     }
- 
-     if (s->hpm_cntrs > 0) {
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 629ac37501e585bc772f3004139db363426e1596..13f1f56d9583141d913aec92344148f2e627b491 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -228,6 +228,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
-     ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
-     ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
-+    ISA_EXT_DATA_ENTRY(svrsw60t59b, PRIV_VERSION_1_13_0, ext_svrsw60t59b),
-     ISA_EXT_DATA_ENTRY(svukte, PRIV_VERSION_1_13_0, ext_svukte),
-     ISA_EXT_DATA_ENTRY(svvptc, PRIV_VERSION_1_13_0, ext_svvptc),
-     ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
-@@ -1282,6 +1283,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
-     MULTI_EXT_CFG_BOOL("svnapot", ext_svnapot, false),
-     MULTI_EXT_CFG_BOOL("svpbmt", ext_svpbmt, false),
-+    MULTI_EXT_CFG_BOOL("svrsw60t59b", ext_svrsw60t59b, false),
-     MULTI_EXT_CFG_BOOL("svvptc", ext_svvptc, true),
- 
-     MULTI_EXT_CFG_BOOL("zicntr", ext_zicntr, true),
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index a30317c6178111b827dddc15a18c66f2762c43bf..97384dcfa04f55e19c0da7774553fee80f6ebbb4 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -675,7 +675,8 @@ typedef enum {
- #define PTE_SOFT            0x300 /* Reserved for Software */
- #define PTE_PBMT            0x6000000000000000ULL /* Page-based memory types */
- #define PTE_N               0x8000000000000000ULL /* NAPOT translation */
--#define PTE_RESERVED        0x1FC0000000000000ULL /* Reserved bits */
-+#define PTE_RESERVED(svrsw60t59b)    \
-+    (svrsw60t59b ? 0x07C0000000000000ULL : 0x1FC0000000000000ULL) /* Reserved bits */
- #define PTE_ATTR            (PTE_N | PTE_PBMT) /* All attributes bits */
- 
- /* Page table PPN shift amount */
-diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
-index 59f134a41924e361e0a5f7ede44214823fd971ba..ab61c1ccf214bdeaea41fbf815909fad24d40124 100644
---- a/target/riscv/cpu_cfg_fields.h.inc
-+++ b/target/riscv/cpu_cfg_fields.h.inc
-@@ -57,6 +57,7 @@ BOOL_FIELD(ext_svadu)
- BOOL_FIELD(ext_svinval)
- BOOL_FIELD(ext_svnapot)
- BOOL_FIELD(ext_svpbmt)
-+BOOL_FIELD(ext_svrsw60t59b)
- BOOL_FIELD(ext_svvptc)
- BOOL_FIELD(ext_svukte)
- BOOL_FIELD(ext_zdinx)
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 2ed69d7c2d21e59868fea9e9e77d6d36561dfb5f..3479a62cc7f3cedc6c127dc2db8e01919e3a9f15 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1309,6 +1309,7 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-     bool svade = riscv_cpu_cfg(env)->ext_svade;
-     bool svadu = riscv_cpu_cfg(env)->ext_svadu;
-     bool adue = svadu ? env->menvcfg & MENVCFG_ADUE : !svade;
-+    bool svrsw60t59b = riscv_cpu_cfg(env)->ext_svrsw60t59b;
- 
-     if (first_stage && two_stage && env->virt_enabled) {
-         pbmte = pbmte && (env->henvcfg & HENVCFG_PBMTE);
-@@ -1376,7 +1377,7 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-         if (riscv_cpu_sxl(env) == MXL_RV32) {
-             ppn = pte >> PTE_PPN_SHIFT;
-         } else {
--            if (pte & PTE_RESERVED) {
-+            if (pte & PTE_RESERVED(svrsw60t59b)) {
-                 qemu_log_mask(LOG_GUEST_ERROR, "%s: reserved bits set in PTE: "
-                               "addr: 0x%" HWADDR_PRIx " pte: 0x" TARGET_FMT_lx "\n",
-                               __func__, pte_addr, pte);
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 55fd9e5584581b20406a7dc66037d6d88f4cf86d..96201e15c6d409414db68ba976ab944ba1c8f2fd 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -830,6 +830,12 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         cpu->cfg.ext_ssctr = false;
-     }
- 
-+    if (cpu->cfg.ext_svrsw60t59b &&
-+        (!cpu->cfg.mmu || mcc->def->misa_mxl_max == MXL_RV32)) {
-+        error_setg(errp, "svrsw60t59b is not supported on RV32 and MMU-less platforms");
-+        return;
-+    }
-+
-     /*
-      * Disable isa extensions based on priv spec after we
-      * validated and set everything we need.
-@@ -1606,6 +1612,8 @@ static void riscv_init_max_cpu_extensions(Object *obj)
- 
-     if (env->misa_mxl != MXL_RV32) {
-         isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcf), false);
-+    } else {
-+        isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_svrsw60t59b), false);
-     }
- 
-     /*
-
----
-base-commit: f9a3def17b2a57679902c33064cf7853263db0ef
-change-id: 20250625-dev-alex-svrsw60b59b_v2-a6b7f85be62e
-
-Best regards,
--- 
-Alexandre Ghiti <alexghiti@rivosinc.com>
+  Thomas
 
 
