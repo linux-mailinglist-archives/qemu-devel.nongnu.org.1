@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E75E1AF1667
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 15:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A5BAF5B49
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 16:40:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWwr0-0006zh-VV; Wed, 02 Jul 2025 08:46:23 -0400
+	id 1uWwxP-0004BP-LJ; Wed, 02 Jul 2025 08:52:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwn9-0008Ve-Ki
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:42:25 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1uWwnH-0000AZ-FH
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:42:32 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uWwn0-0003Ay-09
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:42:20 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-2ef493de975so2769454fac.1
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:42:10 -0700 (PDT)
+ id 1uWwn0-0003B7-Ux
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 08:42:30 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-2ef461b9daeso4580814fac.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 05:42:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751460128; x=1752064928; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751460129; x=1752064929; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8pLXBRSbNGqWDtojyhUrBAw/i3EEaYq1IvnvPRMtnQg=;
- b=tmUm9mNFg7mzE3KnPIzrRtWpUS/iLcktOKgmJ0EtTTC9ocNOSP9XdbjMRkuASB32tu
- siNes/j91cKtvcN9vbBJ2Oxm469w1TwsE6jg91OGS/qeKHJJ4xQAhRWazMxpq4QoguQw
- VmdUvWvyexPvklcrfw+vsBzFCql6lEQ+YfUaZKnchPR/c+9u6sA/tYwRX8fUIpuReXVU
- 3jea+0OxlD1EbxsSIW+wJYb7qcrMO0WHguJGJVuzxXzX5JRRCmD3sO8ieGo4209DfEvG
- PQ5WAGt6ehOHaiiUxmcso9Lkv3j9hEOkoBwI3esKdXP31jBXeHte00WZZIOUnVjFDw2K
- yEMQ==
+ bh=TIQHpPeuKZzV1rP5pPxwpxTkr9f6iYIg/XVvMM56LWg=;
+ b=T5PIKamE0ijB/dCK1gyNZug2GkJ31aVo8qg8oZBFLUkiOeBgLgbET9S6cOePj7ne5/
+ G1ODAqq4Ycq1XZVU1Eb4ZcrpLGhPINc/MiAN66870eLq1ZNUU3bucF2/Teh79PbyB50P
+ 4O6ivJ6+NaCR1w7dV8oySNocJtbmry5MmFpzE42R+eQoWydCBpve1fyF8Wwkmam0uBzZ
+ l54TaAZybcZgfIS+iS8beR9D94esaAR+u8eT1acBQnHDLjB77q/yWWAO5eHskDF/mov5
+ T/XyK31Yp0SjoWMJtiN1mqoTEMT4ZSYbyf2HZKBVbpw1XCDCDK+3sHgFnapJ7Nd84p84
+ 9E+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751460128; x=1752064928;
+ d=1e100.net; s=20230601; t=1751460129; x=1752064929;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8pLXBRSbNGqWDtojyhUrBAw/i3EEaYq1IvnvPRMtnQg=;
- b=foJw5B041KY2d69N13UZ/iFXKAAXovDpw14PiyoV0tHFul2GCb+GRuWOmifAfu+iXK
- QxD4f4+0q0p3nmlVPBeutzKHPBH/jFWcrEDMEGCaQnJNf9t2gSKp/4sF/aFcIKVc4+pA
- M0eFlhPxgGJyaoMSFBU1OTR1Phl9/eEzY4I7WM2gJX/xH87X3MjvS9CN3aL8NO60CZqO
- bhpuTpmKuYRUXdsKFj9gPYp8RBx0A/Sr9mYwIjtJ+0YqzpCLAuHp0qCQ+jZ/nT5bJS4T
- iAt+zxl2MONZk7EpWQaIY6eHpeYv5e3sFWd+DuRgwE19w0itEpIav/S35KCsN2IwLa4Z
- r7Jg==
-X-Gm-Message-State: AOJu0YxuNQ1Z+COfvkdpeyuffBe6UWuFd71PV9ZX5q+U1kHFa1bDglfn
- R1esA+BKdlE/5iS83wLQ/RhJOJ0dHtFsvgsECljPSTdFzVum6ZAXamjAvzgu3Yuz2gpJ+4rsLq9
- LebYkmGc=
-X-Gm-Gg: ASbGncvxZpPjb7koxkEPdjE3Aa2yAVAGyxpv4auhUR+YmvnKIEzLEWErPpNwfg8xe5F
- hfaR1w7Jk9LZRxOerduJ50B7NCanAAUaVdf/5F+q2K8rHuv8kDb1IPkVGSngxUeggbk9tJREVpf
- LviT3IOYP2vxDPwTtkV8ZVIjgz/AON20OBvKnBpFAgeQ9MJM5DyMIOHuqeafQcoVmjNVvvQWskN
- RCUqWZ+seJ1rNHggrYYEOwN9I5RCLag+43tz+9mxgEubjscxe8HD7uvjHKLnSGtHqmjIV4tOi/g
- M/4iT3f1/n89/FSq0CVE9VujNS2LiP33ozh4s0MM3uKNK52uTbsXo5TOPiDK9cN7JwEiCvRaupd
- pKAuL
-X-Google-Smtp-Source: AGHT+IEGUEXH0koX+8SYRRx0ZRLA2wBuaxK1k/UVsYH18fcvF+HQtNH3BUwnexO23b6pv+NxDrqXKw==
-X-Received: by 2002:a05:6870:6f09:b0:2c1:b4ce:e43c with SMTP id
- 586e51a60fabf-2f5c7c38319mr1599795fac.21.1751460127804; 
- Wed, 02 Jul 2025 05:42:07 -0700 (PDT)
+ bh=TIQHpPeuKZzV1rP5pPxwpxTkr9f6iYIg/XVvMM56LWg=;
+ b=DsLsm5xVTnEcVw2QWJJgt+YJDIEjbP/dFzasGLVgcPnE/kzQPlceNrGY+qNN/KFbz1
+ s4JptESqo1zS0qzmuzKhU7Vm/+FqHeoj4hYPVhP9J/uLMj5P9D9H/sxgECUQsjVKmCU0
+ weWd6SVYc0qwGb6WUx74Huf9BbKfRLHC6pYYngvgaHeFZnZ17d06HNBrNbXJhxYilgQx
+ jZGaT6KUpZfSv4WI2HB8IPvZyY5GWRs8zetafSTh2U5qHvLp1s3iQjHzFqopv07TH+Zg
+ jUEHmze+uy4fcOWqzxZVc8E9wGcGZHtC/u0wg7ZYCOTQ+YgW5pYBUe4MLuq6beqK9xe8
+ fiEw==
+X-Gm-Message-State: AOJu0YwzVm3UoyIDm0/zAz7asv15ipsk7z0qxYYFEm93xmoH5sQ+ggVl
+ YzBFcGLIhnhjhhMjREUF/JoFisrm+wF8XFzWKmaM5NxCGOakAJAMdKCdSIPlSK6msaMVZ3udBq9
+ OeyR8gZQ=
+X-Gm-Gg: ASbGncvAaLY782k37WOHYQf5qQZkacXL3fF9p0LTcJjau71tal5z+q66lxAq3jhLlQe
+ GcPCGUiwR8ZpaBUVzCHkWqBXpBefyz6dla4FsYZq1kWVWBheNg8uxzl7+u2lUpoYgfydwEVTM6f
+ 6bR1981Zq2b32CE4xx1V5iNLv5JPz+PVBHhud2mgQqWFeIYJvTFGOZY3wcuwJZWCwYX06gMC8lI
+ JLtuwdStSzSCa0pHIj2KeS9OheRCLgV8jybkXe6X27e2IMcfd8uTxyRLR1KgP6+s5aqmVpr+uR0
+ Soov9cKADYrzIrABdL0NBCNt4XxsYFEcefzXzvL6hZ8wsMm5bPVg9YhdacWuQzW5eK91LA==
+X-Google-Smtp-Source: AGHT+IHbb8NsJ7dYfUGsBMF1cMUZDsDGs/YrathbzCIOeScaUtEZfQX27cdwxenhs/e3cYXjogtITg==
+X-Received: by 2002:a05:6871:6183:b0:2d5:4b92:a2fc with SMTP id
+ 586e51a60fabf-2f5a8b9475amr1910720fac.3.1751460128952; 
+ Wed, 02 Jul 2025 05:42:08 -0700 (PDT)
 Received: from stoup.. ([187.210.107.185]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2efd50f7d89sm3907004fac.34.2025.07.02.05.42.06
+ 586e51a60fabf-2efd50f7d89sm3907004fac.34.2025.07.02.05.42.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Jul 2025 05:42:07 -0700 (PDT)
+ Wed, 02 Jul 2025 05:42:08 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	peter.maydell@linaro.org
-Subject: [PATCH v3 88/97] target/arm: Implement MOVAZ for SME2p1
-Date: Wed,  2 Jul 2025 06:34:01 -0600
-Message-ID: <20250702123410.761208-89-richard.henderson@linaro.org>
+Subject: [PATCH v3 89/97] target/arm: Implement LUTI2, LUTI4 for SME2/SME2p1
+Date: Wed,  2 Jul 2025 06:34:02 -0600
+Message-ID: <20250702123410.761208-90-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250702123410.761208-1-richard.henderson@linaro.org>
 References: <20250702123410.761208-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,254 +98,309 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/helper-sme.h    |  6 ++++
- target/arm/tcg/sme_helper.c    | 60 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/translate-sme.c | 46 +++++++++++++++++++-------
- target/arm/tcg/sme.decode      | 36 ++++++++++++++++++++
- 4 files changed, 137 insertions(+), 11 deletions(-)
+ target/arm/tcg/helper.h        | 24 ++++++++++
+ target/arm/tcg/vec_internal.h  | 16 +++++++
+ target/arm/tcg/sve_helper.c    | 15 ------
+ target/arm/tcg/translate-sme.c | 56 ++++++++++++++++++++++
+ target/arm/tcg/vec_helper.c    | 88 ++++++++++++++++++++++++++++++++++
+ target/arm/tcg/sme.decode      | 42 ++++++++++++++++
+ 6 files changed, 226 insertions(+), 15 deletions(-)
 
-diff --git a/target/arm/tcg/helper-sme.h b/target/arm/tcg/helper-sme.h
-index 467073ea25..c9961d6b7f 100644
---- a/target/arm/tcg/helper-sme.h
-+++ b/target/arm/tcg/helper-sme.h
-@@ -42,6 +42,12 @@ DEF_HELPER_FLAGS_3(sme2_mova_zc_s, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
- DEF_HELPER_FLAGS_3(sme2_mova_cz_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
- DEF_HELPER_FLAGS_3(sme2_mova_zc_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+diff --git a/target/arm/tcg/helper.h b/target/arm/tcg/helper.h
+index 392bf7b9b5..d9565c8069 100644
+--- a/target/arm/tcg/helper.h
++++ b/target/arm/tcg/helper.h
+@@ -1188,3 +1188,27 @@ DEF_HELPER_FLAGS_4(gvec_uminp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
  
-+DEF_HELPER_FLAGS_3(sme2p1_movaz_zc_b, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_3(sme2p1_movaz_zc_h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_3(sme2p1_movaz_zc_s, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_3(sme2p1_movaz_zc_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_3(sme2p1_movaz_zc_q, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_3(gvec_urecpe_s, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_3(gvec_ursqrte_s, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
 +
- DEF_HELPER_FLAGS_5(sme_ld1b_h, TCG_CALL_NO_WG, void, env, ptr, ptr, tl, i32)
- DEF_HELPER_FLAGS_5(sme_ld1b_v, TCG_CALL_NO_WG, void, env, ptr, ptr, tl, i32)
- DEF_HELPER_FLAGS_5(sme_ld1b_h_mte, TCG_CALL_NO_WG, void, env, ptr, ptr, tl, i32)
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index 19c4c2efa2..bcaa67b0fd 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -250,6 +250,66 @@ void HELPER(sme2_mova_zc_d)(void *vdst, void *vsrc, uint32_t desc)
-     }
- }
++DEF_HELPER_FLAGS_4(sme2_luti2_1b, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti2_1h, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti2_1s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++
++DEF_HELPER_FLAGS_4(sme2_luti2_2b, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti2_2h, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti2_2s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++
++DEF_HELPER_FLAGS_4(sme2_luti2_4b, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti2_4h, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti2_4s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++
++DEF_HELPER_FLAGS_4(sme2_luti4_1b, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti4_1h, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti4_1s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++
++DEF_HELPER_FLAGS_4(sme2_luti4_2b, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti4_2h, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti4_2s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++
++DEF_HELPER_FLAGS_4(sme2_luti4_4b, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti4_4h, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_4(sme2_luti4_4s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
+diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
+index 236927c640..ad3bfabc34 100644
+--- a/target/arm/tcg/vec_internal.h
++++ b/target/arm/tcg/vec_internal.h
+@@ -337,6 +337,22 @@ bfloat16 helper_sme2_ah_fmin_b16(bfloat16 a, bfloat16 b, float_status *fpst);
+ float32 sve_f16_to_f32(float16 f, float_status *fpst);
+ float16 sve_f32_to_f16(float32 f, float_status *fpst);
  
-+void HELPER(sme2p1_movaz_zc_b)(void *vdst, void *vsrc, uint32_t desc)
++/* Extract @len bits from an array of uint64_t at offset @pos bits. */
++static inline uint64_t extractn(uint64_t *p, unsigned pos, unsigned len)
 +{
-+    uint8_t *src = vsrc;
-+    uint8_t *dst = vdst;
-+    size_t i, n = simd_oprsz(desc);
++    uint64_t x;
 +
-+    for (i = 0; i < n; ++i) {
-+        dst[i] = src[tile_vslice_index(i)];
-+        src[tile_vslice_index(i)] = 0;
++    p += pos / 64;
++    pos = pos % 64;
++
++    x = p[0];
++    if (pos + len > 64) {
++        x = (x >> pos) | (p[1] << (-pos & 63));
++        pos = 0;
 +    }
-+}
-+
-+void HELPER(sme2p1_movaz_zc_h)(void *vdst, void *vsrc, uint32_t desc)
-+{
-+    uint16_t *src = vsrc;
-+    uint16_t *dst = vdst;
-+    size_t i, n = simd_oprsz(desc) / 2;
-+
-+    for (i = 0; i < n; ++i) {
-+        dst[i] = src[tile_vslice_index(i)];
-+        src[tile_vslice_index(i)] = 0;
-+    }
-+}
-+
-+void HELPER(sme2p1_movaz_zc_s)(void *vdst, void *vsrc, uint32_t desc)
-+{
-+    uint32_t *src = vsrc;
-+    uint32_t *dst = vdst;
-+    size_t i, n = simd_oprsz(desc) / 4;
-+
-+    for (i = 0; i < n; ++i) {
-+        dst[i] = src[tile_vslice_index(i)];
-+        src[tile_vslice_index(i)] = 0;
-+    }
-+}
-+
-+void HELPER(sme2p1_movaz_zc_d)(void *vdst, void *vsrc, uint32_t desc)
-+{
-+    uint64_t *src = vsrc;
-+    uint64_t *dst = vdst;
-+    size_t i, n = simd_oprsz(desc) / 8;
-+
-+    for (i = 0; i < n; ++i) {
-+        dst[i] = src[tile_vslice_index(i)];
-+        src[tile_vslice_index(i)] = 0;
-+    }
-+}
-+
-+void HELPER(sme2p1_movaz_zc_q)(void *vdst, void *vsrc, uint32_t desc)
-+{
-+    Int128 *src = vsrc;
-+    Int128 *dst = vdst;
-+    size_t i, n = simd_oprsz(desc) / 16;
-+
-+    for (i = 0; i < n; ++i) {
-+        dst[i] = src[tile_vslice_index(i)];
-+        memset(&src[tile_vslice_index(i)], 0, 16);
-+    }
++    return extract64(x, pos, len);
 +}
 +
  /*
-  * Clear elements in a tile slice comprising len bytes.
+  * Decode helper functions for predicate as counter.
   */
+diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
+index dfce9697e2..70baa7a6b0 100644
+--- a/target/arm/tcg/sve_helper.c
++++ b/target/arm/tcg/sve_helper.c
+@@ -3035,21 +3035,6 @@ void HELPER(sve_rev_d)(void *vd, void *vn, uint32_t desc)
+     }
+ }
+ 
+-static uint64_t extractn(uint64_t *p, unsigned pos, unsigned len)
+-{
+-    uint64_t x;
+-
+-    p += pos / 64;
+-    pos = pos % 64;
+-
+-    x = p[0];
+-    if (pos + len > 64) {
+-        x = (x >> pos) | (p[1] << (-pos & 63));
+-        pos = 0;
+-    }
+-    return extract64(x, pos, len);
+-}
+-
+ static void depositn(uint64_t *p, unsigned pos, unsigned len, uint64_t val)
+ {
+     p += pos / 64;
 diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index 7407597177..9592f6a996 100644
+index 9592f6a996..d38b8a5ca2 100644
 --- a/target/arm/tcg/translate-sme.c
 +++ b/target/arm/tcg/translate-sme.c
-@@ -247,7 +247,8 @@ static bool do_mova_tile(DisasContext *s, arg_mova_p *a, bool to_vec)
- TRANS_FEAT(MOVA_tz, aa64_sme, do_mova_tile, a, false)
- TRANS_FEAT(MOVA_zt, aa64_sme, do_mova_tile, a, true)
- 
--static bool do_mova_tile_n(DisasContext *s, arg_mova_t *a, int n, bool to_vec)
-+static bool do_mova_tile_n(DisasContext *s, arg_mova_t *a, int n,
-+                           bool to_vec, bool zero)
- {
-     static gen_helper_gvec_2 * const cz_fns[] = {
-         gen_helper_sme2_mova_cz_b, gen_helper_sme2_mova_cz_h,
-@@ -257,6 +258,11 @@ static bool do_mova_tile_n(DisasContext *s, arg_mova_t *a, int n, bool to_vec)
-         gen_helper_sme2_mova_zc_b, gen_helper_sme2_mova_zc_h,
-         gen_helper_sme2_mova_zc_s, gen_helper_sme2_mova_zc_d,
-     };
-+    static gen_helper_gvec_2 * const zc_z_fns[] = {
-+        gen_helper_sme2p1_movaz_zc_b, gen_helper_sme2p1_movaz_zc_h,
-+        gen_helper_sme2p1_movaz_zc_s, gen_helper_sme2p1_movaz_zc_d,
-+        gen_helper_sme2p1_movaz_zc_q,
-+    };
-     TCGv_ptr t_za;
-     int svl, bytes_per_op = n << a->esz;
- 
-@@ -270,6 +276,8 @@ static bool do_mova_tile_n(DisasContext *s, arg_mova_t *a, int n, bool to_vec)
-         return true;
+@@ -1697,3 +1697,59 @@ static bool trans_SEL(DisasContext *s, arg_SEL *a)
      }
- 
-+    assert(a->esz <= MO_64 + zero);
-+
-     if (!sme_smza_enabled_check(s)) {
-         return true;
-     }
-@@ -292,7 +300,9 @@ static bool do_mova_tile_n(DisasContext *s, arg_mova_t *a, int n, bool to_vec)
-             TCGv_ptr t_zr = vec_full_reg_ptr(s, a->zr * n + i);
-             t_za = get_tile_rowcol(s, a->esz, a->rs, a->za,
-                                    a->off * n + i, 1, n, a->v);
--            if (to_vec) {
-+            if (zero) {
-+                zc_z_fns[a->esz](t_zr, t_za, t_desc);
-+            } else if (to_vec) {
-                 zc_fns[a->esz](t_zr, t_za, t_desc);
-             } else {
-                 cz_fns[a->esz](t_za, t_zr, t_desc);
-@@ -305,6 +315,9 @@ static bool do_mova_tile_n(DisasContext *s, arg_mova_t *a, int n, bool to_vec)
-                                    a->off * n + i, 1, n, a->v);
-             if (to_vec) {
-                 tcg_gen_gvec_mov_var(MO_8, tcg_env, o_zr, t_za, 0, svl, svl);
-+                if (zero) {
-+                    tcg_gen_gvec_dup_imm_var(MO_8, t_za, 0, svl, svl, 0);
-+                }
-             } else {
-                 tcg_gen_gvec_mov_var(MO_8, t_za, 0, tcg_env, o_zr, svl, svl);
-             }
-@@ -313,12 +326,17 @@ static bool do_mova_tile_n(DisasContext *s, arg_mova_t *a, int n, bool to_vec)
      return true;
  }
- 
--TRANS_FEAT(MOVA_tz2, aa64_sme2, do_mova_tile_n, a, 2, false)
--TRANS_FEAT(MOVA_tz4, aa64_sme2, do_mova_tile_n, a, 4, false)
--TRANS_FEAT(MOVA_zt2, aa64_sme2, do_mova_tile_n, a, 2, true)
--TRANS_FEAT(MOVA_zt4, aa64_sme2, do_mova_tile_n, a, 4, true)
-+TRANS_FEAT(MOVA_tz2, aa64_sme2, do_mova_tile_n, a, 2, false, false)
-+TRANS_FEAT(MOVA_tz4, aa64_sme2, do_mova_tile_n, a, 4, false, false)
-+TRANS_FEAT(MOVA_zt2, aa64_sme2, do_mova_tile_n, a, 2, true, false)
-+TRANS_FEAT(MOVA_zt4, aa64_sme2, do_mova_tile_n, a, 4, true, false)
- 
--static bool do_mova_array_n(DisasContext *s, arg_mova_a *a, int n, bool to_vec)
-+TRANS_FEAT(MOVAZ_zt, aa64_sme2p1, do_mova_tile_n, a, 1, true, true)
-+TRANS_FEAT(MOVAZ_zt2, aa64_sme2p1, do_mova_tile_n, a, 2, true, true)
-+TRANS_FEAT(MOVAZ_zt4, aa64_sme2p1, do_mova_tile_n, a, 4, true, true)
 +
-+static bool do_mova_array_n(DisasContext *s, arg_mova_a *a, int n,
-+                            bool to_vec, bool zero)
- {
-     TCGv_ptr t_za;
-     int svl;
-@@ -336,6 +354,9 @@ static bool do_mova_array_n(DisasContext *s, arg_mova_a *a, int n, bool to_vec)
- 
-         if (to_vec) {
-             tcg_gen_gvec_mov_var(MO_8, tcg_env, o_zr, t_za, o_za, svl, svl);
-+            if (zero) {
-+                tcg_gen_gvec_dup_imm_var(MO_8, t_za, o_za, svl, svl, 0);
-+            }
-         } else {
-             tcg_gen_gvec_mov_var(MO_8, t_za, o_za, tcg_env, o_zr, svl, svl);
-         }
-@@ -343,10 +364,13 @@ static bool do_mova_array_n(DisasContext *s, arg_mova_a *a, int n, bool to_vec)
-     return true;
++static bool do_lut(DisasContext *s, arg_lut *a,
++                   gen_helper_gvec_2_ptr *fn, bool strided)
++{
++    if (sme_sm_enabled_check(s) && sme2_zt0_enabled_check(s)) {
++        int svl = streaming_vec_reg_size(s);
++        tcg_gen_gvec_2_ptr(vec_full_reg_offset(s, a->zd),
++                           vec_full_reg_offset(s, a->zn),
++                           tcg_env, svl, svl, strided | (a->idx << 1), fn);
++    }
++    return true;
++}
++
++TRANS_FEAT(LUTI2_c_1b, aa64_sme2, do_lut, a, gen_helper_sme2_luti2_1b, false)
++TRANS_FEAT(LUTI2_c_1h, aa64_sme2, do_lut, a, gen_helper_sme2_luti2_1h, false)
++TRANS_FEAT(LUTI2_c_1s, aa64_sme2, do_lut, a, gen_helper_sme2_luti2_1s, false)
++
++TRANS_FEAT(LUTI2_c_2b, aa64_sme2, do_lut, a, gen_helper_sme2_luti2_2b, false)
++TRANS_FEAT(LUTI2_c_2h, aa64_sme2, do_lut, a, gen_helper_sme2_luti2_2h, false)
++TRANS_FEAT(LUTI2_c_2s, aa64_sme2, do_lut, a, gen_helper_sme2_luti2_2s, false)
++
++TRANS_FEAT(LUTI2_c_4b, aa64_sme2, do_lut, a, gen_helper_sme2_luti2_4b, false)
++TRANS_FEAT(LUTI2_c_4h, aa64_sme2, do_lut, a, gen_helper_sme2_luti2_4h, false)
++TRANS_FEAT(LUTI2_c_4s, aa64_sme2, do_lut, a, gen_helper_sme2_luti2_4s, false)
++
++TRANS_FEAT(LUTI4_c_1b, aa64_sme2, do_lut, a, gen_helper_sme2_luti4_1b, false)
++TRANS_FEAT(LUTI4_c_1h, aa64_sme2, do_lut, a, gen_helper_sme2_luti4_1h, false)
++TRANS_FEAT(LUTI4_c_1s, aa64_sme2, do_lut, a, gen_helper_sme2_luti4_1s, false)
++
++TRANS_FEAT(LUTI4_c_2b, aa64_sme2, do_lut, a, gen_helper_sme2_luti4_2b, false)
++TRANS_FEAT(LUTI4_c_2h, aa64_sme2, do_lut, a, gen_helper_sme2_luti4_2h, false)
++TRANS_FEAT(LUTI4_c_2s, aa64_sme2, do_lut, a, gen_helper_sme2_luti4_2s, false)
++
++TRANS_FEAT(LUTI4_c_4h, aa64_sme2, do_lut, a, gen_helper_sme2_luti4_4h, false)
++TRANS_FEAT(LUTI4_c_4s, aa64_sme2, do_lut, a, gen_helper_sme2_luti4_4s, false)
++
++static bool do_lut_s4(DisasContext *s, arg_lut *a, gen_helper_gvec_2_ptr *fn)
++{
++    return !(a->zd & 0b01100) && do_lut(s, a, fn, true);
++}
++
++static bool do_lut_s8(DisasContext *s, arg_lut *a, gen_helper_gvec_2_ptr *fn)
++{
++    return !(a->zd & 0b01000) && do_lut(s, a, fn, true);
++}
++
++TRANS_FEAT(LUTI2_s_2b, aa64_sme2p1, do_lut_s8, a, gen_helper_sme2_luti2_2b)
++TRANS_FEAT(LUTI2_s_2h, aa64_sme2p1, do_lut_s8, a, gen_helper_sme2_luti2_2h)
++
++TRANS_FEAT(LUTI2_s_4b, aa64_sme2p1, do_lut_s4, a, gen_helper_sme2_luti2_4b)
++TRANS_FEAT(LUTI2_s_4h, aa64_sme2p1, do_lut_s4, a, gen_helper_sme2_luti2_4h)
++
++TRANS_FEAT(LUTI4_s_2b, aa64_sme2p1, do_lut_s8, a, gen_helper_sme2_luti4_2b)
++TRANS_FEAT(LUTI4_s_2h, aa64_sme2p1, do_lut_s8, a, gen_helper_sme2_luti4_2h)
++
++TRANS_FEAT(LUTI4_s_4h, aa64_sme2p1, do_lut_s4, a, gen_helper_sme2_luti4_4h)
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index e1ded43af7..91881d68fd 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -3443,3 +3443,91 @@ void HELPER(gvec_ursqrte_s)(void *vd, void *vn, uint32_t desc)
+     }
+     clear_tail(d, opr_sz, simd_maxsz(desc));
  }
- 
--TRANS_FEAT(MOVA_az2, aa64_sme2, do_mova_array_n, a, 2, false)
--TRANS_FEAT(MOVA_az4, aa64_sme2, do_mova_array_n, a, 4, false)
--TRANS_FEAT(MOVA_za2, aa64_sme2, do_mova_array_n, a, 2, true)
--TRANS_FEAT(MOVA_za4, aa64_sme2, do_mova_array_n, a, 4, true)
-+TRANS_FEAT(MOVA_az2, aa64_sme2, do_mova_array_n, a, 2, false, false)
-+TRANS_FEAT(MOVA_az4, aa64_sme2, do_mova_array_n, a, 4, false, false)
-+TRANS_FEAT(MOVA_za2, aa64_sme2, do_mova_array_n, a, 2, true, false)
-+TRANS_FEAT(MOVA_za4, aa64_sme2, do_mova_array_n, a, 4, true, false)
 +
-+TRANS_FEAT(MOVAZ_za2, aa64_sme2p1, do_mova_array_n, a, 2, true, true)
-+TRANS_FEAT(MOVAZ_za4, aa64_sme2p1, do_mova_array_n, a, 4, true, true)
- 
- static bool do_movt(DisasContext *s, arg_MOVT_rzt *a,
-                     void (*func)(TCGv_i64, TCGv_ptr, tcg_target_long))
++static inline void do_lut_b(void *zd, uint64_t *indexes, uint64_t *table,
++                            unsigned elements, unsigned segbase,
++                            unsigned dstride, unsigned isize,
++                            unsigned tsize, unsigned nreg)
++{
++    for (unsigned r = 0; r < nreg; ++r) {
++        uint8_t *dst = zd + dstride * r;
++        unsigned base = segbase + r * elements;
++
++        for (unsigned e = 0; e < elements; ++e) {
++            unsigned index = extractn(indexes, (base + e) * isize, isize);
++            dst[H1(e)] = extractn(table, index * tsize, 8);
++        }
++    }
++}
++
++static inline void do_lut_h(void *zd, uint64_t *indexes, uint64_t *table,
++                            unsigned elements, unsigned segbase,
++                            unsigned dstride, unsigned isize,
++                            unsigned tsize, unsigned nreg)
++{
++    for (unsigned r = 0; r < nreg; ++r) {
++        uint16_t *dst = zd + dstride * r;
++        unsigned base = segbase + r * elements;
++
++        for (unsigned e = 0; e < elements; ++e) {
++            unsigned index = extractn(indexes, (base + e) * isize, isize);
++            dst[H2(e)] = extractn(table, index * tsize, 16);
++        }
++    }
++}
++
++static inline void do_lut_s(void *zd, uint64_t *indexes, uint32_t *table,
++                            unsigned elements, unsigned segbase,
++                            unsigned dstride, unsigned isize,
++                            unsigned tsize, unsigned nreg)
++{
++    for (unsigned r = 0; r < nreg; ++r) {
++        uint32_t *dst = zd + dstride * r;
++        unsigned base = segbase + r * elements;
++
++        for (unsigned e = 0; e < elements; ++e) {
++            unsigned index = extractn(indexes, (base + e) * isize, isize);
++            dst[H4(e)] = table[H4(index)];
++        }
++    }
++}
++
++#define DO_SME2_LUT(ISIZE, NREG, SUFF, ESIZE) \
++void helper_sme2_luti##ISIZE##_##NREG##SUFF                             \
++    (void *zd, void *zn, CPUARMState *env, uint32_t desc)               \
++{                                                                       \
++    unsigned vl = simd_oprsz(desc);                                     \
++    unsigned strided = extract32(desc, SIMD_DATA_SHIFT, 1);             \
++    unsigned idx = extract32(desc, SIMD_DATA_SHIFT + 1, 4);             \
++    unsigned elements = vl / ESIZE;                                     \
++    unsigned dstride = (!strided ? 1 : NREG == 4 ? 4 : 8);              \
++    unsigned segments = (ESIZE * 8) / (ISIZE * NREG);                   \
++    unsigned segment = idx & (segments - 1);                            \
++    ARMVectorReg indexes;                                               \
++    memcpy(&indexes, zn, vl);                                           \
++    do_lut_##SUFF(zd, indexes.d, (void *)env->za_state.zt0, elements,   \
++                  segment * NREG * elements,                            \
++                  dstride * sizeof(ARMVectorReg), ISIZE, 32, NREG);     \
++}
++
++DO_SME2_LUT(2,1,b, 1)
++DO_SME2_LUT(2,1,h, 2)
++DO_SME2_LUT(2,1,s, 4)
++DO_SME2_LUT(2,2,b, 1)
++DO_SME2_LUT(2,2,h, 2)
++DO_SME2_LUT(2,2,s, 4)
++DO_SME2_LUT(2,4,b, 1)
++DO_SME2_LUT(2,4,h, 2)
++DO_SME2_LUT(2,4,s, 4)
++
++DO_SME2_LUT(4,1,b, 1)
++DO_SME2_LUT(4,1,h, 2)
++DO_SME2_LUT(4,1,s, 4)
++DO_SME2_LUT(4,2,b, 1)
++DO_SME2_LUT(4,2,h, 2)
++DO_SME2_LUT(4,2,s, 4)
++DO_SME2_LUT(4,4,b, 1)
++DO_SME2_LUT(4,4,h, 2)
++DO_SME2_LUT(4,4,s, 4)
++
++#undef DO_SME2_LUT
 diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
-index 0a2ceea8be..f7e4143b7d 100644
+index f7e4143b7d..5a5b8ff8a5 100644
 --- a/target/arm/tcg/sme.decode
 +++ b/target/arm/tcg/sme.decode
-@@ -100,6 +100,42 @@ MOVA_za2        11000000 00 00011 00 .. 010 00 off:3 zr:4 0  \
- MOVA_za4        11000000 00 00011 00 .. 011 00 off:3 zr:3 00 \
-                 &mova_a rv=%mova_rv
- 
-+### SME Move and Zero
+@@ -945,3 +945,45 @@ ZERO_za         11000000 000011 110 .. 0000000000 00.   \
+                 &zero_za ngrp=2 nvec=4 rv=%mova_rv off=%off1_x4
+ ZERO_za         11000000 000011 111 .. 0000000000 00.   \
+                 &zero_za ngrp=4 nvec=4 rv=%mova_rv off=%off1_x4
 +
-+MOVAZ_za2       11000000 00000110 0 .. 01010 off:3 zr:4 0    \
-+                &mova_a rv=%mova_rv
-+MOVAZ_za4       11000000 00000110 0 .. 01110 off:3 zr:3 00   \
-+                &mova_a rv=%mova_rv
++### SME Lookup Table Read
 +
-+MOVAZ_zt        11000000 00 00001 0 v:1 .. 0001 off:4 zr:5    \
-+                &mova_t rs=%mova_rs esz=0 za=0
-+MOVAZ_zt        11000000 01 00001 0 v:1 .. 0001 za:1 off:3 zr:5    \
-+                &mova_t rs=%mova_rs esz=1
-+MOVAZ_zt        11000000 10 00001 0 v:1 .. 0001 za:2 off:2 zr:5    \
-+                &mova_t rs=%mova_rs esz=2
-+MOVAZ_zt        11000000 11 00001 0 v:1 .. 0001 za:3 off:1 zr:5    \
-+                &mova_t rs=%mova_rs esz=3
-+MOVAZ_zt        11000000 11 00001 1 v:1 .. 0001 za:4 zr:5    \
-+                &mova_t rs=%mova_rs esz=4 off=0
++&lut            zd zn idx
 +
-+MOVAZ_zt2       11000000 00 00011 0 v:1 .. 00010 off:3 zr:4 0 \
-+                &mova_t rs=%mova_rs esz=0 za=0
-+MOVAZ_zt2       11000000 01 00011 0 v:1 .. 00010 za:1 off:2 zr:4 0 \
-+                &mova_t rs=%mova_rs esz=1
-+MOVAZ_zt2       11000000 10 00011 0 v:1 .. 00010 za:2 off:1 zr:4 0 \
-+                &mova_t rs=%mova_rs esz=2
-+MOVAZ_zt2       11000000 11 00011 0 v:1 .. 00010 za:3 zr:4 0 \
-+                &mova_t rs=%mova_rs esz=3 off=0
++# LUTI2, consecutive
++LUTI2_c_1b      1100 0000 1100 11 idx:4    00 00 zn:5 zd:5      &lut
++LUTI2_c_1h      1100 0000 1100 11 idx:4    01 00 zn:5 zd:5      &lut
++LUTI2_c_1s      1100 0000 1100 11 idx:4    10 00 zn:5 zd:5      &lut
 +
-+MOVAZ_zt4       11000000 00 00011 0 v:1 .. 001100 off:2 zr:3 00 \
-+                &mova_t rs=%mova_rs esz=0 za=0
-+MOVAZ_zt4       11000000 01 00011 0 v:1 .. 001100 za:1 off:1 zr:3 00 \
-+                &mova_t rs=%mova_rs esz=1
-+MOVAZ_zt4       11000000 10 00011 0 v:1 .. 001100 za:2 zr:3 00 \
-+                &mova_t rs=%mova_rs esz=2 off=0
-+MOVAZ_zt4       11000000 11 00011 0 v:1 .. 00110 za:3 zr:3 00 \
-+                &mova_t rs=%mova_rs esz=3 off=0
++LUTI2_c_2b      1100 0000 1000 11 idx:3  1 00 00 zn:5 .... 0    &lut zd=%zd_ax2
++LUTI2_c_2h      1100 0000 1000 11 idx:3  1 01 00 zn:5 .... 0    &lut zd=%zd_ax2
++LUTI2_c_2s      1100 0000 1000 11 idx:3  1 10 00 zn:5 .... 0    &lut zd=%zd_ax2
 +
- ### SME Move into/from ZT0
- 
- MOVT_rzt        1100 0000 0100 1100 0 off:3 00 11111 rt:5
++LUTI2_c_4b      1100 0000 1000 11 idx:2 10 00 00 zn:5 ... 00    &lut zd=%zd_ax4
++LUTI2_c_4h      1100 0000 1000 11 idx:2 10 01 00 zn:5 ... 00    &lut zd=%zd_ax4
++LUTI2_c_4s      1100 0000 1000 11 idx:2 10 10 00 zn:5 ... 00    &lut zd=%zd_ax4
++
++# LUTI2, strided (must check zd alignment)
++LUTI2_s_2b      1100 0000 1001 11 idx:3  1 00 00 zn:5 zd:5      &lut
++LUTI2_s_2h      1100 0000 1001 11 idx:3  1 01 00 zn:5 zd:5      &lut
++
++LUTI2_s_4b      1100 0000 1001 11 idx:2 10 00 00 zn:5 zd:5      &lut
++LUTI2_s_4h      1100 0000 1001 11 idx:2 10 01 00 zn:5 zd:5      &lut
++
++# LUTI4, consecutive
++LUTI4_c_1b      1100 0000 1100 101 idx:3    00 00 zn:5 zd:5     &lut
++LUTI4_c_1h      1100 0000 1100 101 idx:3    01 00 zn:5 zd:5     &lut
++LUTI4_c_1s      1100 0000 1100 101 idx:3    10 00 zn:5 zd:5     &lut
++
++LUTI4_c_2b      1100 0000 1000 101 idx:2  1 00 00 zn:5 .... 0   &lut zd=%zd_ax2
++LUTI4_c_2h      1100 0000 1000 101 idx:2  1 01 00 zn:5 .... 0   &lut zd=%zd_ax2
++LUTI4_c_2s      1100 0000 1000 101 idx:2  1 10 00 zn:5 .... 0   &lut zd=%zd_ax2
++
++LUTI4_c_4h      1100 0000 1000 101 idx:1 10 01 00 zn:5 ... 00   &lut zd=%zd_ax4
++LUTI4_c_4s      1100 0000 1000 101 idx:1 10 10 00 zn:5 ... 00   &lut zd=%zd_ax4
++
++# LUTI4, strided (must check zd alignment)
++LUTI4_s_2b      1100 0000 1001 101 idx:2  1 00 00 zn:5 zd:5     &lut
++LUTI4_s_2h      1100 0000 1001 101 idx:2  1 01 00 zn:5 zd:5     &lut
++
++LUTI4_s_4h      1100 0000 1001 101 idx:1 10 01 00 zn:5 zd:5     &lut
 -- 
 2.43.0
 
