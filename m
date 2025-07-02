@@ -2,51 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852BBAF0894
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 04:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8169AF08AA
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 04:48:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uWnNL-0005W6-Hp; Tue, 01 Jul 2025 22:39:07 -0400
+	id 1uWnVU-00009b-K4; Tue, 01 Jul 2025 22:47:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1uWnNJ-0005Vy-3K
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:39:05 -0400
+ id 1uWnVR-00008q-Ji
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:47:29 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1uWnNF-0003OG-HG
- for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:39:04 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1uWnVG-0006sg-P0
+ for qemu-devel@nongnu.org; Tue, 01 Jul 2025 22:47:29 -0400
 Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8AxmnG8m2RolvcgAQ--.6310S3;
- Wed, 02 Jul 2025 10:38:52 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxCeGsnWRoRfggAQ--.30561S3;
+ Wed, 02 Jul 2025 10:47:08 +0800 (CST)
 Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJDx_8Oxm2RoDiQGAA--.35027S3;
- Wed, 02 Jul 2025 10:38:48 +0800 (CST)
-Subject: Re: [PATCH v3 0/9] hw/loongarch: add the advanced extended interrupt
- controllers (AVECINTC) support
+ by front1 (Coremail) with SMTP id qMiowJCxdOSonWRo3SUGAA--.34892S3;
+ Wed, 02 Jul 2025 10:47:08 +0800 (CST)
+Subject: Re: [PATCH v3 6/9] hw/loongarch: Implement avec controller imput and
+ output pins
 To: Song Gao <gaosong@loongson.cn>
 Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
 References: <20250627030138.2482055-1-gaosong@loongson.cn>
+ <20250627030138.2482055-7-gaosong@loongson.cn>
 From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <68466330-a6b7-243a-dc6b-c100945732e8@loongson.cn>
-Date: Wed, 2 Jul 2025 10:37:08 +0800
+Message-ID: <751fa17c-a3f9-4117-67b3-e2c2df9d796c@loongson.cn>
+Date: Wed, 2 Jul 2025 10:45:33 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20250627030138.2482055-1-gaosong@loongson.cn>
+In-Reply-To: <20250627030138.2482055-7-gaosong@loongson.cn>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDx_8Oxm2RoDiQGAA--.35027S3
+X-CM-TRANSID: qMiowJCxdOSonWRo3SUGAA--.34892S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxGr4rCrWftr48XF1DJry3ZFc_yoWrGr47p3
- yfCF1ayF4UJr98Zrn7t3W5Xwn8Xrn3Gw42vF13Kry8ury2yr18Zr18J34kZFyUJ348Wr1j
- qFy0kw1UXa1UJrcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoWxAryfZF1xKw45Ww4xKF4rZwc_yoWrGF1Upr
+ WUuFn5Kr1UXFZ7Xws2gw15u3Z8Zrn3GFyIqa1a9rWSkF4DGw10gr48J3yavFyDA3ykZ3Wj
+ qFn5Za13Xa17J3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
  sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
  IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
  0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
  6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
  02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAF
@@ -54,17 +55,17 @@ X-Coremail-Antispam: 1Uk129KBj93XoWxGr4rCrWftr48XF1DJry3ZFc_yoWrGr47p3
  CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
  67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
  IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jOb18U
- UUUU=
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JV
+ WxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUcDDG
+ UUUUU
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
  helo=mail.loongson.cn
 X-Spam_score_int: -39
 X-Spam_score: -4.0
 X-Spam_bar: ----
 X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.077,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,106 +84,112 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 2025/6/27 上午11:01, Song Gao wrote:
-> ntroduce the advanced extended interrupt controllers (AVECINTC). This
-> feature will allow each core to have 256 independent interrupt vectors
-> and MSI interrupts can be independently routed to any vector on any CPU.
+> the AVEC controller supports 256*256 irqs input, all the irqs connect CPU INT_AVEC irq
 > 
-> The whole topology of irqchips in LoongArch machines looks like this if
-> AVECINTC is supported:
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   hw/intc/loongarch_avec.c | 21 +++++++++++++++++++++
+>   hw/loongarch/virt.c      | 11 +++++++++--
+>   target/loongarch/cpu.h   |  3 ++-
+>   3 files changed, 32 insertions(+), 3 deletions(-)
 > 
->    +-----+     +-----------------------+     +-------+
->    | IPI | --> |        CPUINTC        | <-- | Timer |
->    +-----+     +-----------------------+     +-------+
->                 ^          ^          ^
->                 |          |          |
->          +---------+ +----------+ +---------+     +-------+
->          | EIOINTC | | AVECINTC | | LIOINTC | <-- | UARTs |
->          +---------+ +----------+ +---------+     +-------+
->               ^            ^
->               |            |
->          +---------+  +---------+
->          | PCH-PIC |  | PCH-MSI |
->          +---------+  +---------+
-I think this topology has a little problem, PCH-MSI is connected to 
-EIOINTC always, AVECINTC is fully new MSI interrupt controller. AVECINTC 
-can coexist with PCH-MSI conroller.
-
-MSI interrupt of device can connect to PCH-MSI or AVECINTC, it depends 
-on how MSI vector is allocated on VM.
+> diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
+> index 253bab5461..c686ac9483 100644
+> --- a/hw/intc/loongarch_avec.c
+> +++ b/hw/intc/loongarch_avec.c
+> @@ -38,7 +38,12 @@ static const MemoryRegionOps loongarch_avec_ops = {
+>   
+>   static void loongarch_avec_realize(DeviceState *dev, Error **errp)
+>   {
+> +    LoongArchAVECState *s = LOONGARCH_AVEC(dev);
+>       LoongArchAVECClass *lac = LOONGARCH_AVEC_GET_CLASS(dev);
+> +    MachineState *machine = MACHINE(qdev_get_machine());
+> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
+> +    const CPUArchIdList  *id_list;
+> +    int i;
+>   
+>       Error *local_err = NULL;
+>       lac->parent_realize(dev, &local_err);
+> @@ -47,6 +52,22 @@ static void loongarch_avec_realize(DeviceState *dev, Error **errp)
+>           return;
+>       }
+>   
+> +    assert(mc->possible_cpu_arch_ids);
+> +    id_list = mc->possible_cpu_arch_ids(machine);
+> +    s->num_cpu = id_list->len;
+> +    s->cpu = g_new(AVECCore, s->num_cpu);
+> +    if (s->cpu == NULL) {
+> +        error_setg(errp, "Memory allocation for AVECCore fail");
+> +        return;
+> +    }
+> +
+> +    for (i = 0; i < s->num_cpu; i++) {
+> +        s->cpu[i].arch_id = id_list->cpus[i].arch_id;
+> +        s->cpu[i].cpu = CPU(id_list->cpus[i].cpu);
+> +        qdev_init_gpio_out(dev, &s->cpu[i].parent_irq, 1);
+> +    }
+> +    qdev_init_gpio_in(dev, NULL, NR_VECTORS * s->num_cpu);
+This line can be removed, it is not necessary to config so many gpio 
+lines with number NR_VECTORS * s->num_cpu.
 
 Regards
 Bibo Mao
->            ^     ^           ^
->            |     |           |
->    +---------+ +---------+ +---------+
->    | Devices | | PCH-LPC | | Devices |
->    +---------+ +---------+ +---------+
->                     ^
->                     |
->                +---------+
->                | Devices |
->                +---------+
-> 
-> We can see more about AVECINTC on linux driver code[1]
-> and loongarch msg interrupts on volI 6.2 Message-Interrupts
-> 
-> Tested the code using the virion-net NIC the start scripts is kernel.sh at[3] and then
-> run 'ifconfig eth0 192.168.122.12'
-> 
-> [1]: https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-loongarch-avec.c
-> [2]: https://github.com/loongson/LoongArch-Documentation/releases/download/2023.04.20/LoongArch-Vol1-v1.10-EN.pdf
-> [3]: https://github.com/gaosong715/qemu/releases/download/pull-loongarch-20250514/kernel.sh
-> 
-> 
-> v3:
->    1: Implement the read-clear feature for CSR_MSGIR register
->    2: Fix some code style;
->    3: Merge patch8 and patch9 into one patch8;
->    4: Fix patch7 get wrong cpu_num and irq_num;
->    5: Add vmstate_msg for messag-interrupt registers migrate;
->    6: Update test scripts use  '-bios', because kernel use avec need acpi
-> support. the bios is qemu/pc_bios/edk2-loongarch64-code.fd.bz2.
-> 
-> v2:
->    1: Use one irqline for avec parent_irq;
->    2; Correct avec memroy area;
->    3; Pch-msi not connecet to avec when avec is enabled and drop patch 7;
->    4: Add misc_feature and misc_status for misc features an misc
-> 
-> Thanks.
-> Song Gao
-> 
-> 
-> Song Gao (9):
->    hw/loongarch: move some machine define to virt.h
->    hw/loongarch: add virt feature avecintc support
->    loongarch: add a advance interrupt controller device
->    target/loongarch: add msg interrupt CSR registers
->    hw/loongarch: AVEC controller add a MemoryRegion
->    hw/loongarch: Implement avec controller imput and output pins
->    hw/loongarch: Implement avec set irq
->    target/loongarch: CPU enable msg interrupts.
->    target/loongarch:Implement csrrd CSR_MSGIR register
-> 
->   hw/intc/Kconfig                               |   3 +
->   hw/intc/loongarch_avec.c                      | 153 ++++++++++++++++++
->   hw/intc/meson.build                           |   1 +
->   hw/loongarch/Kconfig                          |   1 +
->   hw/loongarch/virt.c                           |  89 +++++++++-
->   include/hw/intc/loongarch_avec.h              |  36 +++++
->   include/hw/loongarch/virt.h                   |  36 +++++
->   include/hw/pci-host/ls7a.h                    |   2 +
->   target/loongarch/cpu-csr.h                    |   9 +-
->   target/loongarch/cpu.c                        |  17 ++
->   target/loongarch/cpu.h                        |  34 ++--
->   target/loongarch/csr.c                        |   5 +
->   target/loongarch/machine.c                    |  25 ++-
->   target/loongarch/tcg/csr_helper.c             |  21 +++
->   target/loongarch/tcg/helper.h                 |   1 +
->   .../tcg/insn_trans/trans_privileged.c.inc     |   1 +
->   16 files changed, 405 insertions(+), 29 deletions(-)
->   create mode 100644 hw/intc/loongarch_avec.c
->   create mode 100644 include/hw/intc/loongarch_avec.h
+> +
+>       return;
+>   }
+>   
+> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> index 6fb08740c2..1d4e62b1cf 100644
+> --- a/hw/loongarch/virt.c
+> +++ b/hw/loongarch/virt.c
+> @@ -381,7 +381,7 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
+>       }
+>   }
+>   
+> -static void virt_irq_init(LoongArchVirtMachineState *lvms)
+> +static void virt_irq_init(LoongArchVirtMachineState *lvms, MachineState *ms)
+>   {
+>       DeviceState *pch_pic, *pch_msi;
+>       DeviceState *ipi, *extioi, *avec;
+> @@ -471,6 +471,13 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
+>           sysbus_realize_and_unref(SYS_BUS_DEVICE(avec), &error_fatal);
+>           memory_region_add_subregion(get_system_memory(), VIRT_AVEC_BASE,
+>                           sysbus_mmio_get_region(SYS_BUS_DEVICE(avec), 0));
+> +        CPUState *cpu_state;
+> +        DeviceState *cpudev;
+> +        for (int cpu = 0; cpu < ms->smp.cpus; cpu++) {
+> +            cpu_state = qemu_get_cpu(cpu);
+> +            cpudev = DEVICE(cpu_state);
+> +            qdev_connect_gpio_out(avec, cpu, qdev_get_gpio_in(cpudev, INT_AVEC));
+> +        }
+>       }
+>   
+>       /* Create EXTIOI device */
+> @@ -839,7 +846,7 @@ static void virt_init(MachineState *machine)
+>       }
+>   
+>       /* Initialize the IO interrupt subsystem */
+> -    virt_irq_init(lvms);
+> +    virt_irq_init(lvms, machine);
+>       lvms->machine_done.notify = virt_done;
+>       qemu_add_machine_init_done_notifier(&lvms->machine_done);
+>        /* connect powerdown request */
+> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+> index 208d3e0cd3..556e9dabb9 100644
+> --- a/target/loongarch/cpu.h
+> +++ b/target/loongarch/cpu.h
+> @@ -217,9 +217,10 @@ FIELD(CSR_CRMD, WE, 9, 1)
+>   extern const char * const regnames[32];
+>   extern const char * const fregnames[32];
+>   
+> -#define N_IRQS      13
+> +#define N_IRQS      15
+>   #define IRQ_TIMER   11
+>   #define IRQ_IPI     12
+> +#define INT_AVEC    14
+>   
+>   #define LOONGARCH_STLB         2048 /* 2048 STLB */
+>   #define LOONGARCH_MTLB         64   /* 64 MTLB */
 > 
 
 
