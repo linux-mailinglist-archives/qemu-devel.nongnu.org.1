@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E388BAF5F67
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAEACAF5F68
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:05:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX0rI-0003jM-U8; Wed, 02 Jul 2025 13:02:57 -0400
+	id 1uX0rI-0003is-GI; Wed, 02 Jul 2025 13:02:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rG-0003ih-7I
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rE-0003iT-QV
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rE-0003cB-KB
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rB-0003by-IV
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751475771;
+ s=mimecast20190719; t=1751475768;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N7QVmJTIRhICgBBt46Y/XvdXksqzQtTJRnjAacVH/a8=;
- b=EAxQxG9rAT0V5gORPZiPexboCuvlpCgRCdrl1sIgcdDoWzydEATtbycrCSBi5+hCmgmEC5
- 1XNhohZUbNVS+jU/M2qyT16R8P3GA1RZu5fI0BMuPdE+yzdUxWMbQk0TIUI4yGzkXH3xHl
- GL2axTRJM4P2ZXvB5ScbFpVOYBsbxTs=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=1i0iaIXHDEGoi5z+DHygo0dveZQA5WqCv7VuDzFqpmE=;
+ b=g1l36bPkUfp1+ZFdMvrfrgdAWoZDVLntW8zkxRuKLIxlfrC36QwEyYZVhKxO8Nly3KsQL8
+ zeA3JWS5r7Zfx7fAzTVSKcK1MCBd9QaGOVIcYHaWIFSO5tp1d/GNz7A4x1T8Irv0DGieSv
+ KkjEdQunBHwA2RIuHamH6OFTJ/ynPN4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-u_VBoIAHO2WbsH0qWjQaYA-1; Wed,
- 02 Jul 2025 13:02:50 -0400
-X-MC-Unique: u_VBoIAHO2WbsH0qWjQaYA-1
-X-Mimecast-MFC-AGG-ID: u_VBoIAHO2WbsH0qWjQaYA_1751475769
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-utVkBv_MNdeSf2HLdKaGLQ-1; Wed,
+ 02 Jul 2025 13:02:47 -0400
+X-MC-Unique: utVkBv_MNdeSf2HLdKaGLQ-1
+X-Mimecast-MFC-AGG-ID: utVkBv_MNdeSf2HLdKaGLQ_1751475767
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F2C7C18683EF; Wed,  2 Jul 2025 17:02:28 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 32EC1180ACD5
+ for <qemu-devel@nongnu.org>; Wed,  2 Jul 2025 17:02:31 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.23])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D08AC195608F; Wed,  2 Jul 2025 17:02:26 +0000 (UTC)
+ id AA3E9195608F; Wed,  2 Jul 2025 17:02:29 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 8/9] target/s390x: A fix for the trouble with tribles
-Date: Wed,  2 Jul 2025 19:02:03 +0200
-Message-ID: <20250702170206.212303-9-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 9/9] tests/functional/test_aarch64_sbsaref_freebsd: Fix the URL
+ of the ISO image
+Date: Wed,  2 Jul 2025 19:02:04 +0200
+Message-ID: <20250702170206.212303-10-thuth@redhat.com>
 In-Reply-To: <20250702170206.212303-1-thuth@redhat.com>
 References: <20250702170206.212303-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -84,30 +83,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-While Tribbles are cute, it should be "triple store" here,
-not "trible store".
+The original image has been removed from the server, so the test
+currently fails if it has to fetch the asset, but we can still
+download the ISO from the archive server. While we're at it, prefer
+the XZ compressed image, it's much smaller and thus the download
+should be faster.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250701105809.366180-1-thuth@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250701194241.434183-1-thuth@redhat.com>
 ---
- target/s390x/cpu_features_def.h.inc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/functional/test_aarch64_sbsaref_freebsd.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
-index e23e603a792..c017bffcdc4 100644
---- a/target/s390x/cpu_features_def.h.inc
-+++ b/target/s390x/cpu_features_def.h.inc
-@@ -186,7 +186,7 @@ DEF_FEAT(PLO_CSO, "plo-cso", PLO, 25, "PLO Compare and swap (256 bit in paramete
- DEF_FEAT(PLO_DCSO, "plo-dcso", PLO, 26, "PLO Double compare and swap (256 bit in parameter list)")
- DEF_FEAT(PLO_CSSTO, "plo-cssto", PLO, 27, "PLO Compare and swap and store (256 bit in parameter list)")
- DEF_FEAT(PLO_CSDSTO, "plo-csdsto", PLO, 28, "PLO Compare and swap and double store (256 bit in parameter list)")
--DEF_FEAT(PLO_CSTSTO, "plo-cststo", PLO, 29, "PLO Compare and swap and trible store (256 bit in parameter list)")
-+DEF_FEAT(PLO_CSTSTO, "plo-cststo", PLO, 29, "PLO Compare and swap and triple store (256 bit in parameter list)")
- DEF_FEAT(PLO_TCS, "plo-tcs", PLO, 30, "Triple compare and swap (32 bit in parameter list)")
- DEF_FEAT(PLO_TCSG, "plo-tcsg", PLO, 31, "Triple compare and swap (64 bit in parameter list)")
- DEF_FEAT(PLO_TCSX, "plo-tcsx", PLO, 32, "Triple compare and swap (128 bit in parameter list)")
+diff --git a/tests/functional/test_aarch64_sbsaref_freebsd.py b/tests/functional/test_aarch64_sbsaref_freebsd.py
+index 3cddc082f3b..7ef016fba62 100755
+--- a/tests/functional/test_aarch64_sbsaref_freebsd.py
++++ b/tests/functional/test_aarch64_sbsaref_freebsd.py
+@@ -18,9 +18,9 @@
+ class Aarch64SbsarefFreeBSD(QemuSystemTest):
+ 
+     ASSET_FREEBSD_ISO = Asset(
+-        ('https://download.freebsd.org/releases/arm64/aarch64/ISO-IMAGES/'
+-         '14.1/FreeBSD-14.1-RELEASE-arm64-aarch64-bootonly.iso'),
+-        '44cdbae275ef1bb6dab1d5fbb59473d4f741e1c8ea8a80fd9e906b531d6ad461')
++        ('http://ftp-archive.freebsd.org/pub/FreeBSD-Archive/old-releases/arm64'
++         '/aarch64/ISO-IMAGES/14.1/FreeBSD-14.1-RELEASE-arm64-aarch64-bootonly.iso.xz'),
++        '7313a4495ffd71ab77b49b1e83f571521c32756e1d75bf48bd890e0ab0f75827')
+ 
+     # This tests the whole boot chain from EFI to Userspace
+     # We only boot a whole OS for the current top level CPU and GIC
+@@ -29,7 +29,7 @@ def boot_freebsd14(self, cpu=None):
+         self.set_machine('sbsa-ref')
+ 
+         fetch_firmware(self)
+-        img_path = self.ASSET_FREEBSD_ISO.fetch()
++        img_path = self.uncompress(self.ASSET_FREEBSD_ISO)
+ 
+         self.vm.set_console()
+         self.vm.add_args(
 -- 
 2.50.0
 
