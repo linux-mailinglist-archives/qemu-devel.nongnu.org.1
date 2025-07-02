@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945A4AF623E
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 21:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A60AF6210
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 20:57:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX2eC-0008Fi-B9; Wed, 02 Jul 2025 14:57:32 -0400
+	id 1uX2eG-0000Hv-6b; Wed, 02 Jul 2025 14:57:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dj-0007D4-Tb
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:57:04 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dt-0007nI-JJ
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:57:16 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dh-0002Zx-11
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:57:03 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4538bc1cffdso46029095e9.0
- for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:57:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uX2dp-0002ax-Cq
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 14:57:12 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-453647147c6so77149285e9.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Jul 2025 11:57:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751482619; x=1752087419; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751482626; x=1752087426; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=q1VDpsQ7dttUXGJ33IquKWtU8znHDu79LYhM3w4TmIA=;
- b=s8wdb5OdVw/PSXqsqn8Gq6Vf2r4NqN93S0wXZp/R+QUa+S9Oc9cVALAomLUy7MYDTy
- 8YWTyW/44vIh1jPm1ShEJ5nmb5BKMdvTHK2JeLg4WjpUa6yZfm7sGGGs4j3iWqRE2Lor
- XA/uZxnDSBx5ccxuV4RVUlouYpjUwbA1Qe6XuT6WnL6k8Ri1jZC+na5LzcJWlWUZ0dCa
- jd984yLxg3+FxHjJ4DlHFHQQ4aMdCwX5XvzZn2RUZycefoRkzFZswqHtRo5skxFTkzbr
- JFqk7luxmv2mzwMg1KjO1NlPCEyMTdqSN3jWnxB45Vo50x+HB7cuzfldV++tZAx2IECL
- emQA==
+ bh=/IUtIm3JHDSf2CDlC9ODm0iBh8kfs+CSjmgEqHJOxOs=;
+ b=p/RdAU9bDpTbfwZshgJSQqiU6Ba40/Jf41VwsrOkPf9EtbGamIPuc/rpGDrmx3m65n
+ S/QfaqLgQyar+/YiSKAPsi/1xTlKcv2/Ge2CKNHfp9MWbC53siknI5Qc6nj09dnwPfi3
+ 2L8B8rd3843pSnOzoMFno4I87hfhTF+Am0pkPyRgqtLCZJJYT+NZglNtH6btDA7YnTwM
+ o1THu6KI6puZJpKzG2hq4dr6RZ+bGmbBOqgAW0pOSv7hRv3SeR0U7ydi0SagPDDbVTKW
+ lW2YyU9g2YT+ETuUWauFZ94FcewMTr2CEvuXJ9rU9DYMKXjAaVfJsYe+idd3S3DpWglt
+ hKAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751482619; x=1752087419;
+ d=1e100.net; s=20230601; t=1751482626; x=1752087426;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=q1VDpsQ7dttUXGJ33IquKWtU8znHDu79LYhM3w4TmIA=;
- b=mRW3GfO0y9VJeT28SqBK2ATkJdpHYA5ISMomarwNU3Fahf9nnKVy/HDR2WlhmJ0j2r
- 2TTo+Z2AG8QbkY65/cn64AMmgzvOTC4tdeg4w3HSu5o7J0kuyQjl1saZfxB7gnyJk6Jr
- iaVbv99Iiu/7lpG7BQPAhguWPUhfKQf3xJl8Wt/tDwdsheoYAFz2RV8MxLi67uS/W4Ou
- YQ03YjwxVxyekbF80PzA3Pa+uzNp/FDrGDd7Pfq4sgZDFgLcBwSREVasd4zBzMFjHXVo
- fEUozMNVre3TkN1wl5bV0Z3meuruImawZTUJKHZzbqPLs5tMKSr0cKXB5q+/dXLPbLAG
- FdZQ==
-X-Gm-Message-State: AOJu0YxQTJJTIieGr1xYmJKGkqk/RV2gkFm3tBuflr+E6M2pqKDpULNu
- 7LXxNmIWJjAM3QAjvxahi4Z3hC/bphiiYD7U5UuFSwPtM1Lieh1PhHbyYcBGDr4N6UVmWKaozp7
- rtBNi
-X-Gm-Gg: ASbGncuWnkvaXEvme1YP30ycM5SaoLpN0fw2CfPfAhJ1vASWPeCvXXXOym8aB6q7F2O
- xlGz3wMVQc1qzxkibSGqMi+7/ychEl9azZPZwtIVM59ZdDjo0Q2gxrPWpOed0GHZUw6g7g7CBBA
- m+8ZbqajOlCu++MYCJpuj/jzEx0UdBYCuZl2wPiOTMLBv1PIKPGm41oGHenoWs5uZ4qQfSeb7iE
- k47pgzwTKOgwhgtxyprJoWFMElKVv/WC/QEeG7co8CP7x+kxuYsaKcGSoE41oQcix9UU3XEqeGy
- Lb/Pz/+E4lC07GBnOn/a4fRpd4+PNNJThh3LnYsMnLAcW9ijd0Yi53ovO7i6xo6zQdR0IRfCQJQ
- iqo9bzKymD4pVSBHzmWV+L+y3x7fSjOiCgON5
-X-Google-Smtp-Source: AGHT+IE+mzD/e5CA95xas3AKSDmsnM1hsSAdR+kUfWqMkuB0JRYhxgYlWSSNY0c5/Xjto0LTb5/xCg==
-X-Received: by 2002:a05:600c:3d95:b0:450:d04e:22d6 with SMTP id
- 5b1f17b1804b1-454a36d7b08mr40552365e9.7.1751482618808; 
- Wed, 02 Jul 2025 11:56:58 -0700 (PDT)
+ bh=/IUtIm3JHDSf2CDlC9ODm0iBh8kfs+CSjmgEqHJOxOs=;
+ b=MTEQHSmjaO3J5TFZSp1YiD8MEcOjJDlBiPCA9jzXm0CBhzPOqDkXiAxtNW8Keo2S9n
+ /LZxupFIPXjpRlALakExLLDceNAEe6RpSO3dhoLPx8bXP6VY8CM7EK6akikaI7bZG32q
+ BekJX5jDqxDG7oODZLSE9Xo1Oo8GikvIeDS6u6PGA91a882ZQfeysu06dUCJZYGlWTvJ
+ DF0IRc8taGRmW/Mms0OPhgvbB4dDfQFKZHxveKVTuQ7hszu+clSvU6L1llO01rP6jucL
+ RakxHWaTFpJZXWX/nYgLc3n7xafls5jJccw6IS91epmqiGq06FEdGW0O+eJLeM5Alv/2
+ 0ang==
+X-Gm-Message-State: AOJu0YwDW16VuXY4z49zI5ylB+16yBY6liR/WR3hDZXoFzJRGBiPRXm3
+ fXPwhd+TIIuIC1ko4cCtSl5SIJdlgtRK9UXYihx/699FlDuhUIcsYJRIq0ZQ9gN3p5wF7IO7fDl
+ 4giQ2
+X-Gm-Gg: ASbGncsB0LB3xSZbf3sYGcChoSvs49tPHaDIEVwrdnE9MAYxrWl6KT2Uu/Jx38xpone
+ eB7X3EShm5wvnplli7KUurZxG8ZFW0aXBch1kO0gjlbNWqt+yQ/Ja6CaYstYOZqj0OLV1IJdQB2
+ 4CqpZ41TepDGKB6YuFEjNXD4Fl54315iUof7eAgwNAb1B1kZPeIBdJamrRc9cw0AvOIshdzmShx
+ X4RhLF0OuVZuKWzzykFMg/ij1nvsmHyuQg1QllSIfeGMtYafeZvrBP4PyT883WsdbpJgzMXg3z9
+ +/fMFBdUZVRsjGiSOQjAahKCRad9OEPaInew9PsXy5RmHfajIFReH+Bqf8bfgyUlgENSwuGJWzn
+ F3uYRxYZ5VffNJAB+4rteaMh0dzF6Heys3jMv
+X-Google-Smtp-Source: AGHT+IF1pBx8Sq1c4tIPVUXwwJioxbo9zGN6BBQxB4kZYVTiwt8E04DGe2Gq1HOdTb+HoEHQsj89QQ==
+X-Received: by 2002:a05:6000:41e2:b0:3a5:243c:6042 with SMTP id
+ ffacd0b85a97d-3b1fd74c600mr3265581f8f.2.1751482625677; 
+ Wed, 02 Jul 2025 11:57:05 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c7fada5sm16976704f8f.32.2025.07.02.11.56.56
+ ffacd0b85a97d-3a892e52c99sm16507201f8f.49.2025.07.02.11.57.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 02 Jul 2025 11:56:58 -0700 (PDT)
+ Wed, 02 Jul 2025 11:57:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -68,21 +68,19 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Shatyuka <shatyuka@qq.com>, Cameron Esfahani <dirty@apple.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH v4 28/65] accel/hvf: Report missing
- com.apple.security.hypervisor entitlement
-Date: Wed,  2 Jul 2025 20:52:50 +0200
-Message-ID: <20250702185332.43650-29-philmd@linaro.org>
+Subject: [PATCH v4 29/65] accel/hvf: Restrict internal declarations
+Date: Wed,  2 Jul 2025 20:52:51 +0200
+Message-ID: <20250702185332.43650-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250702185332.43650-1-philmd@linaro.org>
 References: <20250702185332.43650-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,42 +103,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need the QEMU binary signed to be able to use HVF.
-Improve the following:
+Common code only needs to know whether HVF is enabled and
+the QOM type. Move the rest to "hvf_int.h", removing the
+need for COMPILING_PER_TARGET #ifdef'ry.
 
-  $ ./qemu-system-aarch64-unsigned -M virt -accel hvf
-  qemu-system-aarch64-unsigned: -accel hvf: Error: ret = HV_DENIED (0xfae94007, at ../../accel/hvf/hvf-accel-ops.c:339)
-  Abort trap: 6
-
-to:
-
-  $ ./qemu-system-aarch64-unsigned -M virt -accel hvf
-  qemu-system-aarch64-unsigned: -accel hvf: Could not access HVF. Is the executable signed with com.apple.security.hypervisor entitlement?
-
-Suggested-by: Shatyuka <shatyuka@qq.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2800
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/hvf/hvf-accel-ops.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/system/hvf.h     | 41 ----------------------------------------
+ include/system/hvf_int.h | 36 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+), 41 deletions(-)
 
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index c07ebf8a652..ada2a3357eb 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -337,6 +337,11 @@ static int hvf_accel_init(AccelState *as, MachineState *ms)
-     }
+diff --git a/include/system/hvf.h b/include/system/hvf.h
+index 7b9384d816c..d3dcf088b3f 100644
+--- a/include/system/hvf.h
++++ b/include/system/hvf.h
+@@ -14,10 +14,6 @@
+ #define HVF_H
  
-     ret = hvf_arch_vm_create(ms, (uint32_t)pa_range);
-+    if (ret == HV_DENIED) {
-+        error_report("Could not access HVF. Is the executable signed"
-+                     " with com.apple.security.hypervisor entitlement?");
-+        exit(1);
-+    }
-     assert_hvf_ok(ret);
+ #include "qemu/accel.h"
+-#include "qemu/queue.h"
+-#include "exec/vaddr.h"
+-#include "qom/object.h"
+-#include "exec/vaddr.h"
  
-     s->num_slots = ARRAY_SIZE(s->slots);
+ #ifdef COMPILING_PER_TARGET
+ # ifdef CONFIG_HVF
+@@ -40,41 +36,4 @@ typedef struct HVFState HVFState;
+ DECLARE_INSTANCE_CHECKER(HVFState, HVF_STATE,
+                          TYPE_HVF_ACCEL)
+ 
+-#ifdef COMPILING_PER_TARGET
+-struct hvf_sw_breakpoint {
+-    vaddr pc;
+-    vaddr saved_insn;
+-    int use_count;
+-    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
+-};
+-
+-struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
+-                                                 vaddr pc);
+-int hvf_sw_breakpoints_active(CPUState *cpu);
+-
+-int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
+-int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
+-int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
+-int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
+-void hvf_arch_remove_all_hw_breakpoints(void);
+-
+-/*
+- * hvf_update_guest_debug:
+- * @cs: CPUState for the CPU to update
+- *
+- * Update guest to enable or disable debugging. Per-arch specifics will be
+- * handled by calling down to hvf_arch_update_guest_debug.
+- */
+-int hvf_update_guest_debug(CPUState *cpu);
+-void hvf_arch_update_guest_debug(CPUState *cpu);
+-
+-/*
+- * Return whether the guest supports debugging.
+- */
+-bool hvf_arch_supports_guest_debug(AccelState *as);
+-
+-bool hvf_arch_cpu_realize(CPUState *cpu, Error **errp);
+-
+-#endif /* COMPILING_PER_TARGET */
+-
+ #endif
+diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
+index d774e58df91..ea6730f255d 100644
+--- a/include/system/hvf_int.h
++++ b/include/system/hvf_int.h
+@@ -12,6 +12,8 @@
+ #define HVF_INT_H
+ 
+ #include "qemu/queue.h"
++#include "exec/vaddr.h"
++#include "qom/object.h"
+ 
+ #ifdef __aarch64__
+ #include <Hypervisor/Hypervisor.h>
+@@ -77,4 +79,38 @@ int hvf_put_registers(CPUState *);
+ int hvf_get_registers(CPUState *);
+ void hvf_kick_vcpu_thread(CPUState *cpu);
+ 
++struct hvf_sw_breakpoint {
++    vaddr pc;
++    vaddr saved_insn;
++    int use_count;
++    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
++};
++
++struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
++                                                 vaddr pc);
++int hvf_sw_breakpoints_active(CPUState *cpu);
++
++int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
++int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
++int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
++int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
++void hvf_arch_remove_all_hw_breakpoints(void);
++
++/*
++ * hvf_update_guest_debug:
++ * @cs: CPUState for the CPU to update
++ *
++ * Update guest to enable or disable debugging. Per-arch specifics will be
++ * handled by calling down to hvf_arch_update_guest_debug.
++ */
++int hvf_update_guest_debug(CPUState *cpu);
++void hvf_arch_update_guest_debug(CPUState *cpu);
++
++/*
++ * Return whether the guest supports debugging.
++ */
++bool hvf_arch_supports_guest_debug(AccelState *as);
++
++bool hvf_arch_cpu_realize(CPUState *cpu, Error **errp);
++
+ #endif
 -- 
 2.49.0
 
