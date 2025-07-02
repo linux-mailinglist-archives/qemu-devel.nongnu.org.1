@@ -2,70 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAEACAF5F68
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 391A9AF6003
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Jul 2025 19:30:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX0rI-0003is-GI; Wed, 02 Jul 2025 13:02:56 -0400
+	id 1uX1G2-0005qB-4j; Wed, 02 Jul 2025 13:28:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rE-0003iT-QV
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1uX1Ft-0005pS-5P; Wed, 02 Jul 2025 13:28:21 -0400
+Received: from vps-ovh.mhejs.net ([145.239.82.108])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uX0rB-0003by-IV
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 13:02:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751475768;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1i0iaIXHDEGoi5z+DHygo0dveZQA5WqCv7VuDzFqpmE=;
- b=g1l36bPkUfp1+ZFdMvrfrgdAWoZDVLntW8zkxRuKLIxlfrC36QwEyYZVhKxO8Nly3KsQL8
- zeA3JWS5r7Zfx7fAzTVSKcK1MCBd9QaGOVIcYHaWIFSO5tp1d/GNz7A4x1T8Irv0DGieSv
- KkjEdQunBHwA2RIuHamH6OFTJ/ynPN4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-utVkBv_MNdeSf2HLdKaGLQ-1; Wed,
- 02 Jul 2025 13:02:47 -0400
-X-MC-Unique: utVkBv_MNdeSf2HLdKaGLQ-1
-X-Mimecast-MFC-AGG-ID: utVkBv_MNdeSf2HLdKaGLQ_1751475767
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 32EC1180ACD5
- for <qemu-devel@nongnu.org>; Wed,  2 Jul 2025 17:02:31 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.224.23])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AA3E9195608F; Wed,  2 Jul 2025 17:02:29 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 9/9] tests/functional/test_aarch64_sbsaref_freebsd: Fix the URL
- of the ISO image
-Date: Wed,  2 Jul 2025 19:02:04 +0200
-Message-ID: <20250702170206.212303-10-thuth@redhat.com>
-In-Reply-To: <20250702170206.212303-1-thuth@redhat.com>
-References: <20250702170206.212303-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1uX1Fq-0008M5-V1; Wed, 02 Jul 2025 13:28:20 -0400
+Received: from MUA
+ by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+ (Exim 4.98.2) (envelope-from <mhej@vps-ovh.mhejs.net>)
+ id 1uX1Fa-000000009Qh-2Lzv; Wed, 02 Jul 2025 19:28:02 +0200
+Message-ID: <8a541c48-15d9-4609-bad7-a1606eeff22e@maciej.szmigiero.name>
+Date: Wed, 2 Jul 2025 19:27:57 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] vfio/migration: Add
+ x-migration-load-config-after-iter VFIO property
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
+ <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Eric Auger <eric.auger@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Avihai Horon <avihaih@nvidia.com>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <cover.1750787338.git.maciej.szmigiero@oracle.com>
+ <22e94f25448f9ff42b84c84df3960c4ecc94cbdc.1750787338.git.maciej.szmigiero@oracle.com>
+ <9bfa5e01-37a9-4e2a-bff5-264909e0dab9@redhat.com>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <9bfa5e01-37a9-4e2a-bff5-264909e0dab9@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: pass client-ip=145.239.82.108;
+ envelope-from=mhej@vps-ovh.mhejs.net; helo=vps-ovh.mhejs.net
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,48 +105,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+On 2.07.2025 08:27, Cédric Le Goater wrote:
+> Adding more maintainers,
+> 
+> +Eric (ARM smmu),
+> +Peter (ARM, GIC, virt),
+> 
+> On 6/24/25 19:51, Maciej S. Szmigiero wrote:
+>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>
+>> This property allows configuring whether to start the config load only
+>> after all iterables were loaded.
+>> Such interlocking is required for ARM64 due to this platform VFIO
+>> dependency on interrupt controller being loaded first.
+> 
+> Could you please a bit more ?
 
-The original image has been removed from the server, so the test
-currently fails if it has to fetch the asset, but we can still
-download the ISO from the archive server. While we're at it, prefer
-the XZ compressed image, it's much smaller and thus the download
-should be faster.
+Any proposals what more you'd want to have written there?
 
-Message-ID: <20250701105809.366180-1-thuth@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/functional/test_aarch64_sbsaref_freebsd.py | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Do you want to have the description of the issue being fixed from commit
+d329f5032e17 copied into this fix commit message?
 
-diff --git a/tests/functional/test_aarch64_sbsaref_freebsd.py b/tests/functional/test_aarch64_sbsaref_freebsd.py
-index 3cddc082f3b..7ef016fba62 100755
---- a/tests/functional/test_aarch64_sbsaref_freebsd.py
-+++ b/tests/functional/test_aarch64_sbsaref_freebsd.py
-@@ -18,9 +18,9 @@
- class Aarch64SbsarefFreeBSD(QemuSystemTest):
- 
-     ASSET_FREEBSD_ISO = Asset(
--        ('https://download.freebsd.org/releases/arm64/aarch64/ISO-IMAGES/'
--         '14.1/FreeBSD-14.1-RELEASE-arm64-aarch64-bootonly.iso'),
--        '44cdbae275ef1bb6dab1d5fbb59473d4f741e1c8ea8a80fd9e906b531d6ad461')
-+        ('http://ftp-archive.freebsd.org/pub/FreeBSD-Archive/old-releases/arm64'
-+         '/aarch64/ISO-IMAGES/14.1/FreeBSD-14.1-RELEASE-arm64-aarch64-bootonly.iso.xz'),
-+        '7313a4495ffd71ab77b49b1e83f571521c32756e1d75bf48bd890e0ab0f75827')
- 
-     # This tests the whole boot chain from EFI to Userspace
-     # We only boot a whole OS for the current top level CPU and GIC
-@@ -29,7 +29,7 @@ def boot_freebsd14(self, cpu=None):
-         self.set_machine('sbsa-ref')
- 
-         fetch_firmware(self)
--        img_path = self.ASSET_FREEBSD_ISO.fetch()
-+        img_path = self.uncompress(self.ASSET_FREEBSD_ISO)
- 
-         self.vm.set_console()
-         self.vm.add_args(
--- 
-2.50.0
+>> The property defaults to AUTO, which means ON for ARM, OFF for other
+>> platforms.
+>>
+>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+> 
+> As we've mentioned a couple of times, this is essentially a workaround
+> to help ARM support a migration optimization (multifd) for guests using
+> passthrough PCI devices. At the moment, this mainly for MLX5 VFs
+> (upstream) and NVIDIA vGPUs (not upstream).
+> 
+> It looks like the issue is related to the ordering of the vmstate during
+> load time.
+> 
+> Is there a different way we could address this ? Other virt machines like
+> x86 and ppc also deal with complex interrupt controllers, and those cases
+> have been handled cleanly AFAICT. So what’s the fundamental issue here that
+> makes it necessary to add more complexity to an already complex feature
+> (multif VFIO migration) for what seems to be a corner case on a single
+> architecture ?
+> 
+> d329f5032e17 is the turning point.
+That commit says that restoring VFIO devices config space on an ARM target
+needs to have the VGIC interrupt controller there already fully loaded,
+otherwise that VFIO config space load operation may error out.
+
+But here it would be good to have some feedback from ARM people, thanks for
+CCing them.
+
+I'm open to reasonable alternative proposals - as long as they can be tested,
+preferably on other platforms.
+
+The reason I implemented this ARM device loading ordering requirement this way
+is that I can then test it on the VFIO setup I have and be reasonably certain
+that it will work on the target platform too.
+
+> Using 'strcmp(target_name(), "aarch64")' is quite unique in the QEMU code
+> base, and to be honest, I’m not too keen on adding it unless there’s really
+> no other option.
+The previous versions simply tested the TARGET_ARM macro but commit
+5731baee6c3c ("hw/vfio: Compile some common objects once") made the
+migration-multifd.c file target-independent so it cannot use target-specific
+macros now.
+
+Another option would be to move vfio_load_config_after_iter() to helpers.c
+since that file is target-dependent and can simply test TARGET_ARM
+macro (#if defined(TARGET_ARM)) instead of doing strcmp(target_name(), "aarch64")
+which I agree looks weird.
+
+> Thanks,
+> 
+> C.
+> 
+>
+
+Thanks,
+Maciej
 
 
