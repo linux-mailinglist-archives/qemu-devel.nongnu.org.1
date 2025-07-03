@@ -2,67 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8ACAF725E
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49840AF7367
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:12:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXIB1-0006IG-L1; Thu, 03 Jul 2025 07:32:27 -0400
+	id 1uXImI-0006oo-ER; Thu, 03 Jul 2025 08:10:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1uXIAv-0006Hr-3M
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:32:23 -0400
-Received: from mx.treblig.org ([2a00:1098:5b::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1uXIAs-0006wh-3v
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:32:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=ddlCtZR0+hZ41Fp5P3ea9W0RE4pvU3NEq8jcXcphVUw=; b=pTUh2OSre5DeO0IO
- RfPMIJtCimXFewCmnf7+CS/uWjtK/RyEbhF1X50/vSj+9uNrH368+zUllZSgnZnco4ojcKd2VdZmu
- XGgBuyUKrRnzWhhkqc8yV7f2qHVb9/WBtUUF3kMsoOzUvgUOdqeYW4F5wEOLigtVvizzdGgF1v2RU
- 7B/KJGJCAa0GbEcEZQTUYMNt4yyAAqGUc3B2X4KBKr16KuV3gLM3FqyBJoWdv1QecygEXIICfwIOO
- kLT5zZzMrsXV/vtDBIZkhRS4pb9cAmw+YWgrHpdQZqL7Qv+ou1b6t817ies7fLVx4y12TDbWzAxFO
- wgdCzokpSUEQKpUnFA==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
- (envelope-from <dg@treblig.org>) id 1uXIAj-00DqzF-24;
- Thu, 03 Jul 2025 11:32:09 +0000
-Date: Thu, 3 Jul 2025 11:32:09 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v5 23/69] accel/tcg: Remove 'info opcount' and
- @x-query-opcount
-Message-ID: <aGZqObkB6cBqo2tv@gallifrey>
-References: <20250703105540.67664-1-philmd@linaro.org>
- <20250703105540.67664-24-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXImC-0006oR-4k
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:10:52 -0400
+Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXIm5-0006ZG-Mq
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:10:50 -0400
+Received: by mail-yb1-xb34.google.com with SMTP id
+ 3f1490d57ef6-e84207a8aa3so3636728276.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 05:10:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751544643; x=1752149443; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=PCGbWJOS0jGRiok+1xhNSwncYMtLsdIPlPdk31B/dK4=;
+ b=kf1bpzypTtTWKcaL14psiveY5oeicO9rhgT2ayD96eeIwMrjUzqFSR7fSbz0D/fkut
+ df7EXi9+9n2rG8Qw/B5eRaSI6qKvn/Om34BWwVKVdJ527rkLtAZHu+Fa1dxpyWvZViUe
+ PSt2ffq0ByB/sw57CcEiVstfIyGK/Q145Iz/uKIscoTadoZ2uGQCxm+is5IiWkV8cEbf
+ tnPi5Yr8u4hlbDUgzJyuX0tCDZSg2IJNWz/yQFrHDFQWQg4/QgM4fmM3dFkior1fp3yU
+ SX49HIURubW8oex64rYAaPCSqqn+GAVaum8iISi8aXEulYkK7Mm81LK0J4ITPWajhb3S
+ 22ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751544643; x=1752149443;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PCGbWJOS0jGRiok+1xhNSwncYMtLsdIPlPdk31B/dK4=;
+ b=Xt+OBOpG5VukBHnbHbFB61G9lPNXOWsWHm8Ncwdi34FP8INEBdjMuX18EVTtxnHiX6
+ /RFHxGXwhT+2kx6FVAalFT8gYJ1HLCRDHWjOJ/oywqT0c4vrfrr+QCilEXSPDf0N8HuX
+ hRmZsrZj5b2oUQgv6Wi+faQrfq9UpP/RZ9hZ00JyozML4Q6bLUKQ1sL0MYbGkmdkTcKt
+ 1iSXYtrhYuGrln8OxI9stpfnA3A9IYGNC7CbsMB2RhctbGw0UtuItnC2Qbskb5/02Ao0
+ od+PZStexasirMmXsgOc8AW/d7e/wigGhbitpO1r3k1rMuAxal2VxaMFE5cRg6YkrfAS
+ L4hQ==
+X-Gm-Message-State: AOJu0YxpitGtdMeOjS8A2MvGDw2MCbwO33GLrCU5nk+FAt9a67Z1z970
+ WTMQgKmZj3l2mRXF5EKiW15IVeZ4dOhRECVjvyP0z/KPpErRpcv8O4oDBcMGQEMkG/Sy5aNJ0IX
+ CAytLt9t2wn8yF9RN20qEghGzSliI572JQ1AalXR2aQ==
+X-Gm-Gg: ASbGncspRGQVs6P8tZGXRLdL3MAlwOpDKie8i7TZRHb20RCGToheKnKbpmzCKhXZNsd
+ DlcgsLfvWaHJNALjb778NjqrxH1/iFRw5RmQgki1ocdiSK664fKTkLbz3nGdy1viVGl9Es175lV
+ SpXOy+PeO7kyyfhZs5ItoaT4AOIqYgPj9tAl9Sgb5qnxfLIC1KVM1tKOc=
+X-Google-Smtp-Source: AGHT+IE8Qk8EM1cqu5NoLqhDTOEk/vMOdQTGziA9OLU9KVAMsQESd2BgsfY8r7jvwodI3sZIGnmswN4RINckhMxC4io=
+X-Received: by 2002:a05:690c:3392:b0:712:d824:9202 with SMTP id
+ 00721157ae682-7164d2ca160mr86715517b3.9.1751544643277; Thu, 03 Jul 2025
+ 05:10:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250703105540.67664-24-philmd@linaro.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
-X-Uptime: 11:32:00 up 66 days, 19:45, 1 user, load average: 0.10, 0.03, 0.01
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
+References: <20250702123410.761208-1-richard.henderson@linaro.org>
+ <20250702123410.761208-65-richard.henderson@linaro.org>
+In-Reply-To: <20250702123410.761208-65-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 3 Jul 2025 13:10:31 +0100
+X-Gm-Features: Ac12FXxn29-7GS67rHLHpxg0Lc73VaGOkIxB0JMPVbnEMcBPYZpj6yL0MyjLOBo
+Message-ID: <CAFEAcA-qSoH3Fu8__TFh8ZJA5oDqpgyn7NfOBdUpTeLMM_ff3A@mail.gmail.com>
+Subject: Re: [PATCH v3 64/97] target/arm: Move scale by esz into
+ helper_sve_while*
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,134 +91,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Philippe Mathieu-Daudé (philmd@linaro.org) wrote:
-> Since commit 1b65b4f54c7 ("accel/tcg: remove CONFIG_PROFILER",
-> released with QEMU v8.1.0) we get pointless output:
-> 
->   (qemu) info opcount
->   [TCG profiler not compiled]
-> 
-> Remove that unstable and unuseful command.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Wed, 2 Jul 2025 at 13:38, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Change the API to pass element count rather than bit count.
+> This will be helpful later for predicate as counter.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-For HMP
-Acked-by: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-> ---
->  qapi/machine.json          | 18 ------------------
->  accel/tcg/monitor.c        | 21 ---------------------
->  tests/qtest/qmp-cmd-test.c |  1 -
->  hmp-commands-info.hx       | 14 --------------
->  4 files changed, 54 deletions(-)
-> 
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index d5bbb5e367e..acf6610efa5 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -1764,24 +1764,6 @@
->    'returns': 'HumanReadableText',
->    'features': [ 'unstable' ] }
->  
-> -##
-> -# @x-query-opcount:
-> -#
-> -# Query TCG opcode counters
-> -#
-> -# Features:
-> -#
-> -# @unstable: This command is meant for debugging.
-> -#
-> -# Returns: TCG opcode counters
-> -#
-> -# Since: 6.2
-> -##
-> -{ 'command': 'x-query-opcount',
-> -  'returns': 'HumanReadableText',
-> -  'if': 'CONFIG_TCG',
-> -  'features': [ 'unstable' ] }
-> -
->  ##
->  # @x-query-ramblock:
->  #
-> diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
-> index 1c182b6bfb5..7c686226b21 100644
-> --- a/accel/tcg/monitor.c
-> +++ b/accel/tcg/monitor.c
-> @@ -215,30 +215,9 @@ HumanReadableText *qmp_x_query_jit(Error **errp)
->      return human_readable_text_from_str(buf);
->  }
->  
-> -static void tcg_dump_op_count(GString *buf)
-> -{
-> -    g_string_append_printf(buf, "[TCG profiler not compiled]\n");
-> -}
-> -
-> -HumanReadableText *qmp_x_query_opcount(Error **errp)
-> -{
-> -    g_autoptr(GString) buf = g_string_new("");
-> -
-> -    if (!tcg_enabled()) {
-> -        error_setg(errp,
-> -                   "Opcode count information is only available with accel=tcg");
-> -        return NULL;
-> -    }
-> -
-> -    tcg_dump_op_count(buf);
-> -
-> -    return human_readable_text_from_str(buf);
-> -}
-> -
->  static void hmp_tcg_register(void)
->  {
->      monitor_register_hmp_info_hrt("jit", qmp_x_query_jit);
-> -    monitor_register_hmp_info_hrt("opcount", qmp_x_query_opcount);
->  }
->  
->  type_init(hmp_tcg_register);
-> diff --git a/tests/qtest/qmp-cmd-test.c b/tests/qtest/qmp-cmd-test.c
-> index 040d042810b..cf718761861 100644
-> --- a/tests/qtest/qmp-cmd-test.c
-> +++ b/tests/qtest/qmp-cmd-test.c
-> @@ -51,7 +51,6 @@ static int query_error_class(const char *cmd)
->          { "x-query-usb", ERROR_CLASS_GENERIC_ERROR },
->          /* Only valid with accel=tcg */
->          { "x-query-jit", ERROR_CLASS_GENERIC_ERROR },
-> -        { "x-query-opcount", ERROR_CLASS_GENERIC_ERROR },
->          { "xen-event-list", ERROR_CLASS_GENERIC_ERROR },
->          { NULL, -1 }
->      };
-> diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-> index 639a450ee51..d7979222752 100644
-> --- a/hmp-commands-info.hx
-> +++ b/hmp-commands-info.hx
-> @@ -256,20 +256,6 @@ SRST
->      Show dynamic compiler info.
->  ERST
->  
-> -#if defined(CONFIG_TCG)
-> -    {
-> -        .name       = "opcount",
-> -        .args_type  = "",
-> -        .params     = "",
-> -        .help       = "show dynamic compiler opcode counters",
-> -    },
-> -#endif
-> -
-> -SRST
-> -  ``info opcount``
-> -    Show dynamic compiler opcode counters
-> -ERST
-> -
->      {
->          .name       = "sync-profile",
->          .args_type  = "mean:-m,no_coalesce:-n,max:i?",
-> -- 
-> 2.49.0
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+thanks
+-- PMM
 
