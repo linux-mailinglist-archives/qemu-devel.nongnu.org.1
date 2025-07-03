@@ -2,79 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9A7AF7D93
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 18:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E21AF7DA4
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 18:20:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXMcZ-0003i3-Ba; Thu, 03 Jul 2025 12:17:11 -0400
+	id 1uXMfm-00054p-66; Thu, 03 Jul 2025 12:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXMcP-0003dp-Pa
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:17:04 -0400
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXMcO-0002d9-2p
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:17:01 -0400
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-712be7e034cso56509397b3.0
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 09:16:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751559419; x=1752164219; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=GfauHClvYF6yN7jumsZrA3rMQKmW10M75an4DjpP0yA=;
- b=zC+jMB4GOOsSGXHvzEZdhoF5Ww7j0iyaYZMyUpJLnq8ucT8Gf3mNnTAQD8LJc0Yr9+
- XqBwrujkBOmMiNcjTnSWqyZUVBERcgjTFTqUKU4FRd+rzTyoHkPfYyzkrU60fw5n7CmZ
- S8XLOE1Iis1VyT5kWQkwoSNpQNqVQADDWLMWjO821vD6xoW1wbVzklATv0W9v78wrkik
- jIhDTgAE9vd62b55nTHOaCNqlxzlk88Re/SII6Mx+wqFXfSLOsr+AZpYQqw4ro79ipVw
- 7uaE03wuodXTJdPdzuSPjgzilyB0c2Vw8FTOdmlhNLzepKXBDKTUaavqKGpDS5odVu6W
- WTyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751559419; x=1752164219;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GfauHClvYF6yN7jumsZrA3rMQKmW10M75an4DjpP0yA=;
- b=s5q/c6aLgX+ScbGeJZC6+LyGFiZucaPDAd9cqKqnd52Bidmb+i7oReDtVR3fUq+bFa
- UR4rPU4QHe0fFrMBLatc7dsPMK1uKoBnBRB+IXf+OULeiiI4m3VvN8wdX9NTDppGGkWX
- VVdFss2NiSzGqaHiZpvK1V0i6BLVYG2p6Eh7a/uTaJoS3zPFUlCWGQ7McVijovVC8/0A
- 945oKVJ6KfLZ9v+UsbiyReIH2LOH3IR4f1X159Tr5fopx2ZBFjuWP5I8QRAFNJl8dbpM
- +8/rbljslomI9A4Ldqq/Acc2QU1qQ8dFhrPfIHHq/RHS3p6FVVG6FlEVUj3FeUZdUFjz
- SQmg==
-X-Gm-Message-State: AOJu0YzSrFOx4qvq53MwhQtgEl72JF7v5u6LpfJeKdr81C5g2Flx/HGc
- 9aphVWzdNoRjMBZuuqMSdvQw3tQ9Rza36LSrxgGRlGwn1qPdGiKknkOmw1W/KJYNcg+jDSz2GrL
- 0K8kc6uzyMcImvwKVVeYSrUxIk2rYGGioftJPVuvNTA==
-X-Gm-Gg: ASbGncvEb461BXnmPFX8e/rwW3PZveigN3mI43ZblLC74FzZ8oDTt2GqBnyCVWCIBJJ
- 0XVhAZvBxk0dK8GFs7xsv2ASwDl0mWo+PFpT6mLycbmuHhWZ+v4frCn0wGBLO0zTJt0XC6LS2qp
- YcJ4UXjWuzF1OAtWvTpz5abKbiXEiBwQ3886GCTVpHmN+x
-X-Google-Smtp-Source: AGHT+IEBrbjHMhAKyjuyVtqhT/bBEuTdlsV7eDsp4M3Tb/XgCd5BRHhZ286ylcDQHpyW4pTZt5cdL+UANZGp5HlfVX4=
-X-Received: by 2002:a05:690c:650a:b0:712:d70b:45cc with SMTP id
- 00721157ae682-71658fda9c5mr58523727b3.8.1751559418669; Thu, 03 Jul 2025
- 09:16:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1uXMfd-00054O-0C
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:20:22 -0400
+Received: from smtp-out-60.livemail.co.uk ([213.171.216.60]
+ helo=dkim.livemail.co.uk)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1uXMfV-0005HC-Q2
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:20:20 -0400
+Received: from smtp.livemail.co.uk (unknown [10.44.132.83])
+ by dkim.livemail.co.uk (Postfix) with ESMTPS id 77A1B40140;
+ Thu,  3 Jul 2025 17:20:09 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=randomman.co.uk;
+ s=livemail2; t=1751559609;
+ bh=ecTIuxyp7oiXl3s93ruq/tFQSppGfPgY6uUdoS1LyCg=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=r6jJ6eOTVlPd1FnqaBsEfdClKTAlGX33sFP7Fc0bBh/SKUgCK27R6XWhVjSmSOMkf
+ HiF2+ypHKxS/O1Ue/3tVT0AhQNB3koSXvYqqS6xm72E9QFJ892tQ/Xe56kjAemKcO/
+ BvU+COeKiOPkliDBqreMYxMPKII4UPLR8XcPmMeg=
+Received: from localhost.localdomain (unknown [145.40.191.116])
+ (Authenticated sender: roy.hopkins@randomman.co.uk)
+ by smtp.livemail.co.uk (Postfix) with ESMTPSA id E915C40252;
+ Thu,  3 Jul 2025 17:20:04 +0100 (BST)
+From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+To: qemu-devel@nongnu.org
+Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
+ Gerd Hoffman <kraxel@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Joerg Roedel <joro@8bytes.org>
+Subject: [PATCH v9 13/16] backends/igvm: Process initialization sections in
+ IGVM file
+Date: Thu,  3 Jul 2025 17:18:59 +0100
+Message-ID: <9de24fb5df402024b40cbe02de0b13faa7cb4d84.1751554099.git.roy.hopkins@randomman.co.uk>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
+References: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
 MIME-Version: 1.0
-References: <20250618230549.3351152-1-jcksn@duck.com>
- <20250618230549.3351152-7-jcksn@duck.com>
-In-Reply-To: <20250618230549.3351152-7-jcksn@duck.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Jul 2025 17:16:47 +0100
-X-Gm-Features: Ac12FXwRMrOJWceXfFxoglh-Gxg6gIz6v-tvW-twh1-hJr_3kUfQOguk4MD7Dqk
-Message-ID: <CAFEAcA83M7_8ECFHjGC=qiC6UOsHHgE0jNVYJdkVbBgS-GHcYA@mail.gmail.com>
-Subject: Re: [PATCH v2 06/11] MAX78000: GCR Implementation
-To: Jackson Donaldson <jackson88044@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=213.171.216.60;
+ envelope-from=roy.hopkins@randomman.co.uk; helo=dkim.livemail.co.uk
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,16 +83,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 19 Jun 2025 at 00:06, Jackson Donaldson <jackson88044@gmail.com> wrote:
->
-> This commit implements the Global Control Register
-> for the MAX78000
->
-> Signed-off-by: Jackson Donaldson <jcksn@duck.com>
-> ---
+The initialization sections in IGVM files contain configuration that
+should be applied to the guest platform before it is started. This
+includes guest policy and other information that can affect the security
+level and the startup measurement of a guest.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+This commit introduces handling of the initialization sections during
+processing of the IGVM file.
 
-thanks
--- PMM
+Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Gerd Hoffman <kraxel@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+---
+ backends/igvm.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/backends/igvm.c b/backends/igvm.c
+index 2a31021d44..ebdb4594d1 100644
+--- a/backends/igvm.c
++++ b/backends/igvm.c
+@@ -786,6 +786,27 @@ int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
+         }
+     }
+ 
++    header_count =
++        igvm_header_count(ctx.file, IGVM_HEADER_SECTION_INITIALIZATION);
++    if (header_count < 0) {
++        error_setg(
++            errp,
++            "Invalid initialization header count in IGVM file. Error code: %X",
++            header_count);
++        goto cleanup_parameters;
++    }
++
++    for (ctx.current_header_index = 0;
++         ctx.current_header_index < (unsigned)header_count;
++         ctx.current_header_index++) {
++        IgvmVariableHeaderType type =
++            igvm_get_header_type(ctx.file, IGVM_HEADER_SECTION_INITIALIZATION,
++                                 ctx.current_header_index);
++        if (qigvm_handler(&ctx, type, errp) < 0) {
++            goto cleanup_parameters;
++        }
++    }
++
+     /*
+      * Contiguous pages of data with compatible flags are grouped together in
+      * order to reduce the number of memory regions we create. Make sure the
+-- 
+2.43.0
+
 
