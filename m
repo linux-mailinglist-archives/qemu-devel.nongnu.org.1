@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B451AF710F
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 12:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E28C2AF7118
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 12:57:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXHbq-0003Yd-S1; Thu, 03 Jul 2025 06:56:06 -0400
+	id 1uXHca-0003u3-1m; Thu, 03 Jul 2025 06:56:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHbn-0003U7-0a
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:56:03 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHbs-0003jN-0t
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:56:08 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHbk-0000hu-AY
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:56:02 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4538a2fc7ffso6133665e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:55:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHbq-0000jJ-6A
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:56:07 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-453643020bdso68396655e9.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751540158; x=1752144958; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751540163; x=1752144963; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uxv4WhKLwrx5svsx0yY+vpPljgpJNa1VqbPNSHemHI8=;
- b=P/mzv42460hiqJVm9npV4IBOaFfm3msQBWX+lhQJuToagU6bGdRkczOrxc3HUZnI2K
- rHVYZdzyKzpy6yMAyMKim5OTO5l8mDfjpDq/I6RI2gMcKyG5zT0CZcV0W/W3/R7BZU6Z
- IoiONvwBIAmGkP4/g3GRBXrPEXfD2pMErRt2Q6/pW+dR+mODQNc6CBET6YsYiDUd7mnZ
- MtZj0qBtvkMgchNGUjY5hKtXotVRgsq1xAjN46y2odv/Kpdy/su5r5yBflVLB4fgfRXP
- qGEdOWvt5Qic/xp47DP7FaA97Q33kdaQX4GrakutzD02JjnmWPD7/vpZ1RDu5+hmVapL
- 4INg==
+ bh=eMVCQTvVGe/Hz2DEmM07zNOYeNDGY8/7Dwwnom0rM8Q=;
+ b=ad9paKDBomAiWjpGtq6QoKimix6suRx1+sZhiqdGG1Dcj5d1eGyLQ9V+UpEEjhupH1
+ 9pTEqPgOjVmAW6kIDjiFt0S1FdO2NTVGB/RufNtsvp3DLUEbmHm9U7/3B/AR+bBn/qTH
+ T6Ra/JQU/xQTqz0j1tkmTa4Qiy7m9JQ79cVWlHrXHfIZrtQ+mhDrfu+UeioxbVEdtS5e
+ 7dEBE87mXwg3/aC9AAv2eiyRMnGAAoGT/aKOvNI6CAPVhAWFGzisruNK0evPTts8urkL
+ 5yqHFM/7QVU2ni2gvTNE4nKWTy99Sw+8zBIKEpHtHnR+OjNb9whM9APKMAA52hEif3wK
+ a2SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751540158; x=1752144958;
+ d=1e100.net; s=20230601; t=1751540163; x=1752144963;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uxv4WhKLwrx5svsx0yY+vpPljgpJNa1VqbPNSHemHI8=;
- b=ABhVk1tQR9DBxxPoT1w6BKK7HRyERVojsFPHEOWPkNKP41u7Jv8acBrrT4GbQkqu/t
- vSSOFmvtgmhtVyMXs6SLeO3eR0yKrb5tsTjixWLVY+ar0LKx+lowl9XZij+Mj427q0rH
- 3eLxjT/30CTvMJkR48Rsl6qtZ9Hpb6HMbIOlupGGImKhdXI6X/jKPYxAtE1oZVhMeB7b
- UXMDzqDreU77uEg+NyQ2WVRMewWiJ5eu0kUAHdZXRl7pcfCguW7oisbAT1RorcEt/PUk
- HkgX4EuhVpRfaXoOZA59zesLFqUg5vWdirga4A6Poufe1adhTOp2juORC0Tl5Vpk+eVC
- 0Lgg==
-X-Gm-Message-State: AOJu0YwRrc1cPwWDowGLaG261jzB0OScWiKBV5B94muoWTa2cKJgqOm1
- cu40gu4+8yJiBwp4wk9tcjkg/VEJYputmoSzZi3N5HqOXFQuPC2aku34XctlnCLctaFGsf1U9O0
- NvWIVh7o=
-X-Gm-Gg: ASbGnct3vXebuhk4N3jSIoV6AaY53hsDKnMuV61IFMY3/1GK+8ruN5ltU2EAhKTytLs
- tvULOAJ+RxjuGduWrWeBWU/C+gPb4l/n11T4hz/vzIaG4EUAdAeKCX4QNOr3Tg+MJtezOdH7oEQ
- EPhAwFEPF0gu7A7066jDl+UvR0eMl2rJ3ohQ/X6iu+a1+dyRiMEeWZwvPHsNNM3xB6Lz0O52TYe
- PUzBoo6iFnTjG3q7/6KkJ8S9C6yy4K5U1U0EU+iD8tOPg0eUuaJo6uRtqw5yxoII8iwSMfGByy6
- A74J1cSLUeq/vhAkEXblUZBe0QTiZCHxjbdTyADlc65V8nIr3TeLUSB6dxrDzPG7i4prtzLKNNR
- nssysHYr2EfE=
-X-Google-Smtp-Source: AGHT+IG1H8ch3ShI0aRQrECwXhkob5OWrVYrH2E7ESnTzOKHx1oaywxwnUfPeiJs+ptFSaoNI/+HhQ==
-X-Received: by 2002:a05:600c:3b89:b0:453:84a:e8d6 with SMTP id
- 5b1f17b1804b1-454ab2ecdafmr23612155e9.1.1751540158345; 
- Thu, 03 Jul 2025 03:55:58 -0700 (PDT)
+ bh=eMVCQTvVGe/Hz2DEmM07zNOYeNDGY8/7Dwwnom0rM8Q=;
+ b=keW0KpYK1PoeDGnGHv3M8BWqRZsSdUAKLpKw/bfgOotHfanFASokhaTv7hg9wC5JvL
+ dX+GHZ+soF3nktJwksNEax5fq99yFgSa20yUt/3s6VYCjc14Tr/NYbglaWVJhCIMy1b5
+ KAMZob3H321+lT/CVveZfMVbCSF6i3RcYaKxdiBRUxpZN8cfrGzVQt0e56xf4fUuPG2C
+ RDDazP35I6KRtJoPnyR6jq5jmJJm6rV+/XNhDGFCes7xF3iFihC5yfqnkKVq3h0xaoO7
+ unMJ9iCsPlqZr+gTvrqtBXHVM4T+rQkIpgZ/Yo6mHgjuuJKUzyTulkrWVxQ+rnbV5rkn
+ 3pdQ==
+X-Gm-Message-State: AOJu0YyT2TjyxtXYGn5X3uljRkrCztYeB6zOKGYSnryqwmvSgC8BMc37
+ v1FGBnGCa4whLBq41lOglsC7eh2rbHwEyUy1AYOPMZkE36LZRYXx5ZRN1Bou4CTNIyQC0FCdypq
+ KC2BjEQs=
+X-Gm-Gg: ASbGncsPC2j0ROYgz13LxBGhw+i9pxW13jyuad0D0HAtUxgbx9NvimBAZu+oQTK1gzy
+ b3JxcS7XSatscNvWHzUEdGRKdVEuV+CVksEQmvy0yu/MbGFqE0hxFlxrFCYUNKw3kWlkEq+xz+W
+ UjVioIlb7j8UPSl3aJOxH8fEe+JqCqe79LaSSAnckLJZiKuBcnR/Kt5aIduQC8gFPFWhWN6bOKj
+ z3lkhVgRx8IsEbt1TnPGW0HfRCHxI7tn9DZ7aOCLBi7tOsNig2Cw8657Phr6IZGS41+OaXITzcg
+ Y8uug3/RLp0kp38aQwpTGxeWZPY19jAWJOdndJ2/oJA2YXOH3hOGvF2U1Z1qWV3iRFnmoRFN6dD
+ av6MgsGK52vyDtU0F1Ftw3g==
+X-Google-Smtp-Source: AGHT+IHRXWokL5MOT0i7s0s1AgeUsTebRY+EJxnCZglAAZYqkG9epS9CkFuuRnILEdA3VJz5woDksg==
+X-Received: by 2002:a05:600c:3f05:b0:451:e394:8920 with SMTP id
+ 5b1f17b1804b1-454a372e226mr57162345e9.27.1751540163340; 
+ Thu, 03 Jul 2025 03:56:03 -0700 (PDT)
 Received: from localhost.localdomain ([83.247.137.20])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e5f842sm17994943f8f.86.2025.07.03.03.55.57
+ 5b1f17b1804b1-454a9969a8bsm23455185e9.2.2025.07.03.03.56.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 03:55:57 -0700 (PDT)
+ Thu, 03 Jul 2025 03:56:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: [PATCH v5 03/69] system/cpus: Defer memory layout changes until vCPUs
- are realized
-Date: Thu,  3 Jul 2025 12:54:29 +0200
-Message-ID: <20250703105540.67664-4-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 04/69] system/cpus: Assert interrupt handling is done with
+ BQL locked
+Date: Thu,  3 Jul 2025 12:54:30 +0200
+Message-ID: <20250703105540.67664-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703105540.67664-1-philmd@linaro.org>
 References: <20250703105540.67664-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,35 +102,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vCPUs are not really usable until fully realized. Do not attempt
-to commit memory changes in the middle of vCPU realization. Defer
-until realization is completed and vCPU fully operational.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- system/physmem.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ accel/tcg/tcg-accel-ops.c | 2 --
+ system/cpus.c             | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index ff0ca40222d..8b2be31fa7e 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -2792,6 +2792,14 @@ static void tcg_commit(MemoryListener *listener)
-     cpuas = container_of(listener, CPUAddressSpace, tcg_as_listener);
-     cpu = cpuas->cpu;
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index b24d6a75625..6116644d1c0 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -93,8 +93,6 @@ static void tcg_cpu_reset_hold(CPUState *cpu)
+ /* mask must never be zero, except for A20 change call */
+ void tcg_handle_interrupt(CPUState *cpu, int mask)
+ {
+-    g_assert(bql_locked());
+-
+     cpu->interrupt_request |= mask;
  
-+    if (!qdev_is_realized(DEVICE(cpu))) {
-+        /*
-+         * The listener is also called during realize, before
-+         * all of the tcg machinery for run-on is initialized.
-+         */
-+        return;
-+    }
-+
      /*
-      * Defer changes to as->memory_dispatch until the cpu is quiescent.
-      * Otherwise we race between (1) other cpu threads and (2) ongoing
+diff --git a/system/cpus.c b/system/cpus.c
+index d16b0dff989..a43e0e4e796 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -265,6 +265,8 @@ static void generic_handle_interrupt(CPUState *cpu, int mask)
+ 
+ void cpu_interrupt(CPUState *cpu, int mask)
+ {
++    g_assert(bql_locked());
++
+     if (cpus_accel->handle_interrupt) {
+         cpus_accel->handle_interrupt(cpu, mask);
+     } else {
 -- 
 2.49.0
 
