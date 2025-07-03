@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F097AF7ADE
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 17:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5374DAF7AE5
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 17:19:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXLhT-0006h7-Th; Thu, 03 Jul 2025 11:18:12 -0400
+	id 1uXLhX-0006iV-T1; Thu, 03 Jul 2025 11:18:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=EggC=ZQ=kaod.org=clg@ozlabs.org>)
- id 1uXLhC-0006gD-6E; Thu, 03 Jul 2025 11:17:55 -0400
+ id 1uXLhN-0006hN-80; Thu, 03 Jul 2025 11:18:06 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=EggC=ZQ=kaod.org=clg@ozlabs.org>)
- id 1uXLh9-0006NS-7l; Thu, 03 Jul 2025 11:17:53 -0400
+ id 1uXLhI-0006T0-FH; Thu, 03 Jul 2025 11:18:03 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4bY0k46Hqtz4x11;
- Fri,  4 Jul 2025 01:17:16 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4bY0kP5XmKz4x43;
+ Fri,  4 Jul 2025 01:17:33 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4bY0jz0Q3yz4wbR;
- Fri,  4 Jul 2025 01:17:10 +1000 (AEST)
-Message-ID: <ea805ebc-877d-48b0-861c-ac9b5c855acf@kaod.org>
-Date: Thu, 3 Jul 2025 17:17:31 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4bY0kL32myz4x07;
+ Fri,  4 Jul 2025 01:17:30 +1000 (AEST)
+Message-ID: <c67ebcba-ceef-4590-b104-b96ea7f47eb2@kaod.org>
+Date: Thu, 3 Jul 2025 17:17:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] tests/functional: Add gb200 tests
+Subject: Re: [PATCH v2 3/4] hw/arm/aspeed: Add GB200 BMC target
 To: Ed Tanous <etanous@nvidia.com>, qemu-devel@nongnu.org
 Cc: Troy Lee <leetroy@gmail.com>, Steven Lee <steven_lee@aspeedtech.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>,
@@ -37,7 +37,7 @@ Cc: Troy Lee <leetroy@gmail.com>, Steven Lee <steven_lee@aspeedtech.com>,
  Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
  qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
 References: <20250703144249.3348879-1-etanous@nvidia.com>
- <20250703144249.3348879-5-etanous@nvidia.com>
+ <20250703144249.3348879-4-etanous@nvidia.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -82,9 +82,9 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250703144249.3348879-5-etanous@nvidia.com>
+In-Reply-To: <20250703144249.3348879-4-etanous@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=EggC=ZQ=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -39
@@ -110,98 +110,202 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/3/25 16:42, Ed Tanous wrote:
-> To support the newly added gb200 machine, add appropriate tests.
+> GB200nvl72 is a system for for accelerated compute.  This is a model for
+> the BMC target within the system.
+> 
+> This is based on the device tree aspeed-bmc-nvidia-gb200nvl-bmc.dts
+> from:
+> 
+> [1] https://github.com/openbmc/linux/blob/dev-6.6/arch/arm/boot/dts/aspeed/aspeed-bmc-nvidia-gb200nvl-bmc.dts
 > 
 > Signed-off-by: Ed Tanous <etanous@nvidia.com>
 > ---
->   tests/functional/aspeed.py                    |  9 +++++--
->   tests/functional/meson.build                  |  2 ++
->   .../test_arm_aspeed_gb200nvl_bmc.py           | 26 +++++++++++++++++++
->   3 files changed, 35 insertions(+), 2 deletions(-)
->   create mode 100755 tests/functional/test_arm_aspeed_gb200nvl_bmc.py
-> 
-> diff --git a/tests/functional/aspeed.py b/tests/functional/aspeed.py
-> index 7a40d5dda7..b131703c52 100644
-> --- a/tests/functional/aspeed.py
-> +++ b/tests/functional/aspeed.py
-> @@ -8,8 +8,13 @@
->   class AspeedTest(LinuxKernelTest):
->   
->       def do_test_arm_aspeed_openbmc(self, machine, image, uboot='2019.04',
-> -                                   cpu_id='0x0', soc='AST2500 rev A1'):
-> -        hostname = machine.removesuffix('-bmc')
-> +                                   cpu_id='0x0', soc='AST2500 rev A1',
-> +                                   image_hostname=None):
-> +        # Allow for the image hostname to not end in "-bmc"
-> +        if image_hostname is not None:
-> +            hostname = image_hostname
-> +        else:
-> +            hostname = machine.removesuffix('-bmc')
+>   hw/arm/aspeed.c        | 79 ++++++++++++++++++++++++++++++++++++++++++
+>   hw/arm/aspeed_eeprom.c | 21 +++++++++++
+>   hw/arm/aspeed_eeprom.h |  3 ++
+>   3 files changed, 103 insertions(+)
 
 
-This change belongs to another patch and it doesn't seem that
-this series needs it. Does it ?
 
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
 
 
-
->           self.set_machine(machine)
->           self.vm.set_console()
-> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-> index 85158562a2..d2864543a5 100644
-> --- a/tests/functional/meson.build
-> +++ b/tests/functional/meson.build
-> @@ -32,6 +32,7 @@ test_timeouts = {
->     'arm_aspeed_ast2500' : 720,
->     'arm_aspeed_ast2600' : 1200,
->     'arm_aspeed_bletchley' : 480,
-> +  'arm_aspeed_gb200nvl_bmc' : 480,
->     'arm_aspeed_rainier' : 480,
->     'arm_bpim2u' : 500,
->     'arm_collie' : 180,
-> @@ -126,6 +127,7 @@ tests_arm_system_thorough = [
->     'arm_aspeed_ast2500',
->     'arm_aspeed_ast2600',
->     'arm_aspeed_bletchley',
-> +  'arm_aspeed_gb200nvl_bmc',
->     'arm_aspeed_rainier',
->     'arm_bpim2u',
->     'arm_canona1100',
-> diff --git a/tests/functional/test_arm_aspeed_gb200nvl_bmc.py b/tests/functional/test_arm_aspeed_gb200nvl_bmc.py
-> new file mode 100755
-> index 0000000000..8e8e3f05c1
-> --- /dev/null
-> +++ b/tests/functional/test_arm_aspeed_gb200nvl_bmc.py
-> @@ -0,0 +1,26 @@
-> +#!/usr/bin/env python3
-> +#
-> +# Functional test that boots the ASPEED machines
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index 3ef7f6c5b2..98144ced86 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -19,6 +19,7 @@
+>   #include "hw/i2c/i2c_mux_pca954x.h"
+>   #include "hw/i2c/smbus_eeprom.h"
+>   #include "hw/gpio/pca9552.h"
+> +#include "hw/gpio/pca9554.h"
+>   #include "hw/nvram/eeprom_at24c.h"
+>   #include "hw/sensor/tmp105.h"
+>   #include "hw/misc/led.h"
+> @@ -201,6 +202,10 @@ struct AspeedMachineState {
+>   #define BLETCHLEY_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
+>   #define BLETCHLEY_BMC_HW_STRAP2 AST2600_EVB_HW_STRAP2
+>   
+> +/* GB200NVL hardware value */
+> +#define GB200NVL_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
+> +#define GB200NVL_BMC_HW_STRAP2 AST2600_EVB_HW_STRAP2
 > +
-> +from qemu_test import Asset
-> +from aspeed import AspeedTest
+>   /* Qualcomm DC-SCM hardware value */
+>   #define QCOM_DC_SCM_V1_BMC_HW_STRAP1  0x00000000
+>   #define QCOM_DC_SCM_V1_BMC_HW_STRAP2  0x00000041
+> @@ -647,6 +652,12 @@ static void create_pca9552(AspeedSoCState *soc, int bus_id, int addr)
+>                               TYPE_PCA9552, addr);
+>   }
+>   
+> +static I2CSlave *create_pca9554(AspeedSoCState *soc, int bus_id, int addr)
+> +{
+> +    return i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, bus_id),
+> +                            TYPE_PCA9554, addr);
+> +}
 > +
+>   static void sonorapass_bmc_i2c_init(AspeedMachineState *bmc)
+>   {
+>       AspeedSoCState *soc = bmc->soc;
+> @@ -1052,6 +1063,45 @@ static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
+>       i2c_slave_create_simple(i2c[12], TYPE_PCA9552, 0x67);
+>   }
+>   
 > +
-> +class GB200Machine(AspeedTest):
+> +static void gb200nvl_bmc_i2c_init(AspeedMachineState *bmc)
+> +{
+> +    AspeedSoCState *soc = bmc->soc;
+> +    I2CBus *i2c[15] = {};
+> +    DeviceState *dev;
+> +    for (int i = 0; i < sizeof(i2c) / sizeof(i2c[0]); i++) {
+> +        if ((i == 11) || (i == 12) || (i == 13)) {
+> +            continue;
+> +        }
+> +        i2c[i] = aspeed_i2c_get_bus(&soc->i2c, i);
+> +    }
 > +
-> +    ASSET_GB200_FLASH = Asset(
-> +        'https://github.com/legoater/qemu-aspeed-boot/raw/refs/heads/master/images/gb200nvl-obmc/obmc-phosphor-image-gb200nvl-obmc-20250702182348.static.mtd.xz',
-> +        'b84819317cb3dc762895ad507705978ef000bfc77c50c33a63bdd37921db0dbc')
+> +    /* Bus 5 Expander */
+> +    create_pca9554(soc, 4, 0x21);
 > +
-> +    def test_arm_aspeed_gb200_openbmc(self):
-> +        image_path = self.uncompress(self.ASSET_GB200_FLASH)
+> +    /* Mux I2c Expanders */
+> +    i2c_slave_create_simple(i2c[5], "pca9546", 0x71);
+> +    i2c_slave_create_simple(i2c[5], "pca9546", 0x72);
+> +    i2c_slave_create_simple(i2c[5], "pca9546", 0x73);
+> +    i2c_slave_create_simple(i2c[5], "pca9546", 0x75);
+> +    i2c_slave_create_simple(i2c[5], "pca9546", 0x76);
+> +    i2c_slave_create_simple(i2c[5], "pca9546", 0x77);
 > +
-> +        self.do_test_arm_aspeed_openbmc('gb200nvl-bmc', image=image_path,
-> +                                        uboot='2019.04', cpu_id='0xf00',
-> +                                        soc='AST2600 rev A3',
-> +                                        image_hostname='gb200nvl-obmc')
+> +    /* Bus 10 */
+> +    dev = DEVICE(create_pca9554(soc, 9, 0x20));
 > +
-> +if __name__ == '__main__':
-> +    AspeedTest.main()
+> +    /* Set FPGA_READY */
+> +    object_property_set_str(OBJECT(dev), "pin1", "high", &error_fatal);
+> +
+> +    create_pca9554(soc, 9, 0x21);
+> +    at24c_eeprom_init(i2c[9], 0x50, 64 * KiB);
+> +    at24c_eeprom_init(i2c[9], 0x51, 64 * KiB);
+> +
+> +    /* Bus 11 */
+> +    at24c_eeprom_init_rom(i2c[10], 0x50, 256, gb200nvl_bmc_fruid,
+> +                          gb200nvl_bmc_fruid_len);
+> +}
+> +
+>   static void fby35_i2c_init(AspeedMachineState *bmc)
+>   {
+>       AspeedSoCState *soc = bmc->soc;
+> @@ -1587,6 +1637,31 @@ static void aspeed_machine_bletchley_class_init(ObjectClass *oc,
+>       aspeed_machine_class_init_cpus_defaults(mc);
+>   }
+>   
+> +#define GB200NVL_BMC_RAM_SIZE ASPEED_RAM_SIZE(1 * GiB)
+> +
+> +static void aspeed_machine_gb200nvl_class_init(ObjectClass *oc,
+> +                                               const void *data)
+> +{
+> +    MachineClass *mc = MACHINE_CLASS(oc);
+> +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+> +
+> +    mc->desc       = "Nvidia GB200NVL BMC (Cortex-A7)";
+> +    amc->soc_name  = "ast2600-a3";
+> +    amc->hw_strap1 = GB200NVL_BMC_HW_STRAP1;
+> +    amc->hw_strap2 = GB200NVL_BMC_HW_STRAP2;
+> +    amc->fmc_model = "mx66u51235f";
+> +    amc->spi_model = "mx66u51235f";
+> +    amc->num_cs    = 2;
+> +
+> +    amc->spi2_model = "mx66u51235f";
+> +    amc->num_cs2   = 1;
+> +    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
+> +    amc->i2c_init  = gb200nvl_bmc_i2c_init;
+> +    mc->default_ram_size = GB200NVL_BMC_RAM_SIZE;
+> +    aspeed_machine_class_init_cpus_defaults(mc);
+> +    aspeed_machine_ast2600_class_emmc_init(oc);
+> +}
+> +
+>   static void fby35_reset(MachineState *state, ResetType type)
+>   {
+>       AspeedMachineState *bmc = ASPEED_MACHINE(state);
+> @@ -1879,6 +1954,10 @@ static const TypeInfo aspeed_machine_types[] = {
+>           .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
+>           .parent        = TYPE_ASPEED_MACHINE,
+>           .class_init    = aspeed_machine_bletchley_class_init,
+> +    }, {
+> +        .name          = MACHINE_TYPE_NAME("gb200nvl-bmc"),
+> +        .parent        = TYPE_ASPEED_MACHINE,
+> +        .class_init    = aspeed_machine_gb200nvl_class_init,
+>       }, {
+>           .name          = MACHINE_TYPE_NAME("fby35-bmc"),
+>           .parent        = MACHINE_TYPE_NAME("ast2600-evb"),
+> diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
+> index daa3d329d1..8bbbdec834 100644
+> --- a/hw/arm/aspeed_eeprom.c
+> +++ b/hw/arm/aspeed_eeprom.c
+> @@ -162,6 +162,25 @@ const uint8_t rainier_bmc_fruid[] = {
+>       0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+>   };
+>   
+> +const uint8_t gb200nvl_bmc_fruid[] = {
+> +    0x01, 0x00, 0x00, 0x01, 0x0b, 0x00, 0x00, 0xf3, 0x01, 0x0a, 0x19, 0x1f,
+> +    0x0f, 0xe6, 0xc6, 0x4e, 0x56, 0x49, 0x44, 0x49, 0x41, 0xc5, 0x50, 0x33,
+> +    0x38, 0x30, 0x39, 0xcd, 0x31, 0x35, 0x38, 0x33, 0x33, 0x32, 0x34, 0x38,
+> +    0x30, 0x30, 0x31, 0x35, 0x30, 0xd2, 0x36, 0x39, 0x39, 0x2d, 0x31, 0x33,
+> +    0x38, 0x30, 0x39, 0x2d, 0x30, 0x34, 0x30, 0x34, 0x2d, 0x36, 0x30, 0x30,
+> +    0xc0, 0x01, 0x01, 0xd6, 0x4d, 0x41, 0x43, 0x3a, 0x20, 0x33, 0x43, 0x3a,
+> +    0x36, 0x44, 0x3a, 0x36, 0x36, 0x3a, 0x31, 0x34, 0x3a, 0x43, 0x38, 0x3a,
+> +    0x37, 0x41, 0xc1, 0x3b, 0x01, 0x09, 0x19, 0xc6, 0x4e, 0x56, 0x49, 0x44,
+> +    0x49, 0x41, 0xc9, 0x50, 0x33, 0x38, 0x30, 0x39, 0x2d, 0x42, 0x4d, 0x43,
+> +    0xd2, 0x36, 0x39, 0x39, 0x2d, 0x31, 0x33, 0x38, 0x30, 0x39, 0x2d, 0x30,
+> +    0x34, 0x30, 0x34, 0x2d, 0x36, 0x30, 0x30, 0xc4, 0x41, 0x45, 0x2e, 0x31,
+> +    0xcd, 0x31, 0x35, 0x38, 0x33, 0x33, 0x32, 0x34, 0x38, 0x30, 0x30, 0x31,
+> +    0x35, 0x30, 0xc0, 0xc4, 0x76, 0x30, 0x2e, 0x31, 0xc1, 0x00, 0x00, 0x00,
+> +    0x00, 0x00, 0x00, 0xb4, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
+> +
+> +};
+> +
+>   const size_t tiogapass_bmc_fruid_len = sizeof(tiogapass_bmc_fruid);
+>   const size_t fby35_nic_fruid_len = sizeof(fby35_nic_fruid);
+>   const size_t fby35_bb_fruid_len = sizeof(fby35_bb_fruid);
+> @@ -169,3 +188,5 @@ const size_t fby35_bmc_fruid_len = sizeof(fby35_bmc_fruid);
+>   const size_t yosemitev2_bmc_fruid_len = sizeof(yosemitev2_bmc_fruid);
+>   const size_t rainier_bb_fruid_len = sizeof(rainier_bb_fruid);
+>   const size_t rainier_bmc_fruid_len = sizeof(rainier_bmc_fruid);
+> +const size_t gb200nvl_bmc_fruid_len = sizeof(gb200nvl_bmc_fruid);
+> +
+> diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
+> index f08c16ef50..3ed9bc1d9a 100644
+> --- a/hw/arm/aspeed_eeprom.h
+> +++ b/hw/arm/aspeed_eeprom.h
+> @@ -26,4 +26,7 @@ extern const size_t rainier_bb_fruid_len;
+>   extern const uint8_t rainier_bmc_fruid[];
+>   extern const size_t rainier_bmc_fruid_len;
+>   
+> +extern const uint8_t gb200nvl_bmc_fruid[];
+> +extern const size_t gb200nvl_bmc_fruid_len;
+> +
+>   #endif
 
 
