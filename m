@@ -2,91 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C5BAF7DC3
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 18:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7C8AF7DF2
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 18:34:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXMky-0002ie-NQ; Thu, 03 Jul 2025 12:25:52 -0400
+	id 1uXMrr-000610-Tl; Thu, 03 Jul 2025 12:33:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXMkt-0002hj-Vd
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:25:48 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXMrK-0005rm-Pu
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:32:28 -0400
+Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXMkh-0007Iq-IF
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:25:47 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-407a6c6a6d4so62529b6e.1
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 09:25:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXMr9-0001L7-44
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:32:22 -0400
+Received: by mail-yb1-xb2a.google.com with SMTP id
+ 3f1490d57ef6-e7b4ba530feso5164966276.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 09:32:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751559931; x=1752164731; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=iuA9MTMi0aNFWovQAIYAzCslGaCVz5WTerEbR0coeMw=;
- b=G0uxV/Iryxe9k7FQyNnn3sgHap/fSEJYIAP4lIOzfzF/32OCYBOOsmFGP+kj+HV7O6
- XmyvBWSj1pFLoSMoMkNikfBGGnzPtBB1Xa/IHwYwJ+0jQt6eZ0wrIXoX5QLx5wPXt8oV
- /xpfZAqtIBW+zIafLmZj9gzqMc2M6raoP/+YeP3xq+EBU5I53UZ/4jeUZCAXDyaxF6hu
- anUD6eSAaEWzbxR2cAaPvSFz1EXbDiNNVHjCyNk+8z1EzazHQ/arOwXF7unXok0FBZcZ
- bRf77TqT8Qo3VwJX/lt3dSyKCFf6DE7Jf4+2dfeXXs8b/C8DStKFxtt1RzsfeVMu6heo
- 7LVw==
+ d=linaro.org; s=google; t=1751560329; x=1752165129; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=+k2gtyeQo7uAkZlHY3AA6iIKGiYvlMVTDh+AjcUxqlQ=;
+ b=ctEGokKe7XW5aFYGFU/NyhniCi3mIQooq4ORWaYmLsXdxbrhjIi9AHHHUDBez6h5mg
+ EpiyaK7NjmJ5ItS8Hi5Qs+wiCq+Kji2QD0jTjrMxfY4qOShLWZXiV0BioFOz/gWq6lEb
+ yrdv6Z2fNqpbk5GHhFPXmh8YdZAkmhqtusj/fGdmfF2CEMLqOrKXD297Od88OAXa4ffh
+ k0U2lfJUX5F9wIlb5CIHhgkuSfi98Ggu5zTC988K1pXzya/m1s2/Y+h6k0n6KnBvSv1f
+ XQizfPuCF0ICBtF52iuasJKxPwI1fj/qKgRY8tx2uI7wScq4Ce+C1behl9jVowvudhW1
+ QPTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751559931; x=1752164731;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iuA9MTMi0aNFWovQAIYAzCslGaCVz5WTerEbR0coeMw=;
- b=HPdBncZBM6QYedEiwK+9BS813RTeejp0LfBgOcp3+Uhjp8FGNe//C9Rt2BawmxRLMa
- iBNQLvyLKOvWtxusGM5UG4dtfvRKUrVf3oYq/8d4uoq840aie7K41XyBaOPfKIRnaksO
- nJWdxtIx1Fmv9b6jUeLAKiz5Q4c8pzne3+CrbUOtCJy7vyadB8z4IMMYumxzkZl4ozm5
- acxrW2GptAVUxtEUmGuPjpnkSQd8+cVhW0gXcaqfhp10gfxI31nCTG1HsI4G+eHzvKYh
- ptburSB3AWiVPMUr3IyPH2A68H9y1QWEGYVfhKdKGTWqwMFUWckj26MLAz9l1Wb8TlKr
- SJzA==
-X-Gm-Message-State: AOJu0Ywz2qONdJkr3Dt8lenOwy7NMCB0sPKFJmBfFtcEgcQTkuFvcHrE
- t5yex/Fhg5mSu7DE4x+sY9NdBWZrTLsXjLLinavW+xX2cYx3Yp22J6AZ0Qwua6MVI2o=
-X-Gm-Gg: ASbGncvIbqrIXwP2AmbGrSKI4eZqwNjA9uRP4mQXg/urytAWQiXQPXE3q2110zdIaON
- 0vRm7rtXzhUYYIYUBXrVX4eZkptm3zXulz/3hUBUyAzz7I8AjFP24XrrdM3IdCh49hYvJMIOlkP
- kbRo8Sgc7y/juqBSsWNNZVyA9ngoOJ64w3t8z2lvvfbVEQzQ8GJDqc6fEh6l8mwyhZGNtIIQqMv
- iBASyKePY+Wbv/vMBdaDaR8r1/ctQ+BJu11Y1XnTkNz/a1imRt9Vi8ZL0ckgzR49AdO25gmVyw3
- 4fee/pBmgINKMmyTme8OKyEcVtpIjtMbbn89T3kkX1p4iGfGNRgq9GDhCMQWI2/feYFOAxHmIZa
- nIrnoBSBiPVo=
-X-Google-Smtp-Source: AGHT+IHiWGk0ej2oEfekoak9qb/NDGMDMa7XjuE+5cqVSvh81hGgE5NwZtnE2JC8t6xItURmzFlMuQ==
-X-Received: by 2002:a05:6808:1691:b0:40a:532a:7102 with SMTP id
- 5614622812f47-40b88789c19mr5626321b6e.16.1751559931383; 
- Thu, 03 Jul 2025 09:25:31 -0700 (PDT)
-Received: from [10.25.6.71] ([187.210.107.185])
- by smtp.gmail.com with ESMTPSA id
- 5614622812f47-40b3243dd8csm3031351b6e.47.2025.07.03.09.25.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Jul 2025 09:25:31 -0700 (PDT)
-Message-ID: <2767ec10-d08d-4de0-95f1-3362e2acf15e@linaro.org>
-Date: Thu, 3 Jul 2025 10:25:28 -0600
+ d=1e100.net; s=20230601; t=1751560329; x=1752165129;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+k2gtyeQo7uAkZlHY3AA6iIKGiYvlMVTDh+AjcUxqlQ=;
+ b=XOvfRNR9HAMHSZi3CtiP1rpX1aCUJXz7Y1CN2v5SN/cT4ELZcBkBhMnVCOo1VA5PAy
+ 2E1SsKLkw/ZUjrwwijv577kzvcQuHQGLP8grQqpV+gXP8/qu6WakSzX/stX6nlwJMWvg
+ YPy91VQdh6Pq0qt7MpQPq1VLEF3Q8DsMS4VSjT/u9PQUrAJfy4k/I51wGZeHE3gc8PXU
+ ShrCdzrJz8fDDi/YGyaYwlVRHs2exsHTGgxfKEkV18yJQFHw+n/VHjp91ffiEomxuo7V
+ 2K7KZPgAE7g5OpRhjzgLIluqCqJuuw8CQpiU/fhIkV1Tpl7IBRt5htQe4C++F9EpR5da
+ rI9Q==
+X-Gm-Message-State: AOJu0YyDKtK4Zn+HbDRpiK8ttaitLKJ66ngcGk3Ig2YUGmidKtaAeGa5
+ fJZcmIeO5SZKrAJTUFT40dz69/GK7KIpWbGnAD1+u02DD9YPDWv3ASLo4rGjRIXEm4gcSN7eXo3
+ +z35OLjRbb3NNO0zj1dgVuOzCFJ+v5OCmJarODeGw8nBDhbLs6ucK
+X-Gm-Gg: ASbGncvN4LqtCpkV0WM3I+OmLQCPYO1emN+M41BW/kpQeALKmGdV79jA56C3XRcEuNK
+ R5WnuQNP9GV+PicLGN/L0EadkRFa9rZBhoZ94NrVgpkuwMUK2ZOuMe1zdz3hs1/yKQySsa7PrqR
+ iY+jv6/nJCLX+cYcqPDi8ZzYYLD9U760AVnkNN0BqR9ujt
+X-Google-Smtp-Source: AGHT+IGQDjSW9wiBWlveayY74kflWVZE8EAukYCTCEy3gY3REvI80fYsicKPiesCS7ml3Ux6DuE/kh8JDRFKwDqEF20=
+X-Received: by 2002:a05:690c:650a:b0:712:d70b:45cc with SMTP id
+ 00721157ae682-71658fda9c5mr59483517b3.8.1751560328583; Thu, 03 Jul 2025
+ 09:32:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 31/97] target/arm: Implemement SME2 SDOT, UDOT, USDOT, 
- SUDOT
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-References: <20250702123410.761208-1-richard.henderson@linaro.org>
- <20250702123410.761208-32-richard.henderson@linaro.org>
- <CAFEAcA8szLP4mEvkatHhbBJzU5A6w0XGcMRRJYr_HPSNgZmU7Q@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA8szLP4mEvkatHhbBJzU5A6w0XGcMRRJYr_HPSNgZmU7Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+References: <20250618230549.3351152-1-jcksn@duck.com>
+ <20250618230549.3351152-11-jcksn@duck.com>
+In-Reply-To: <20250618230549.3351152-11-jcksn@duck.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 3 Jul 2025 17:31:57 +0100
+X-Gm-Features: Ac12FXwmWdBGqmwt6pfAAJ5FdWTViSWiuvcdYKsbE6-17BpRK3FvjuKh8li2C2s
+Message-ID: <CAFEAcA-3m42gWJE-iKM_87n08nUxamQ21KmcdFEosONUReLAcg@mail.gmail.com>
+Subject: Re: [PATCH v2 10/11] MAX78000: AES implementation
+To: Jackson Donaldson <jackson88044@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,49 +90,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/3/25 03:45, Peter Maydell wrote:
-> On Wed, 2 Jul 2025 at 13:34, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> 
-> 
->> +/* Similar for 2-way dot product */
->> +#define DO_DOT(NAME, TYPED, TYPEN, TYPEM) \
->> +void HELPER(NAME)(void *vd, void *vn, void *vm, void *va, uint32_t desc)  \
->> +{                                                                         \
->> +    intptr_t i, opr_sz = simd_oprsz(desc);                                \
->> +    TYPED *d = vd, *a = va;                                               \
->> +    TYPEN *n = vn;                                                        \
->> +    TYPEM *m = vm;                                                        \
->> +    for (i = 0; i < opr_sz / sizeof(TYPED); ++i) {                        \
->> +        d[i] = (a[i] +                                                    \
->> +                (TYPED)n[i * 2 + 0] * m[i * 2 + 0] +                      \
->> +                (TYPED)n[i * 2 + 1] * m[i * 2 + 1]);                      \
-> 
-> Don't we need some H macros here for the big-endian host case?
-> (For that matter, the existing 4-way dot product helpers also
-> look like they won't work on big-endian...)
-
-The logic here is that all columns are treated identically.
-
-...a0... ...a1...
-.n0..n1. .n2..n3.
-.m0..m1. .m2..m3.
-
-vs
-
-...a1... ...a0...
-.n3..n2. .n1..n0.
-.m3..m2. .m1..m0.
-
-d0 = a0 + n0 * m0 + n1 * m1 -- it doesn't matter if n0 or n1 is at the lowest or highest 
-address, because it still gets multiplied by the corresponding element in m, and then the 
-two products are added to the sum that is addressed the same way.
-
-The existing 4-way dot product uses the same endian independent logic, fwiw.
+On Thu, 19 Jun 2025 at 00:06, Jackson Donaldson <jackson88044@gmail.com> wrote:
+>
+> This commit implements AES for the MAX78000
+>
+> Signed-off-by: Jackson Donaldson
+> ---
 
 
-r~
+> +static uint64_t max78000_aes_read(void *opaque, hwaddr addr,
+> +                                    unsigned int size)
+> +{
+> +    Max78000AesState *s = opaque;
+> +    switch (addr) {
+> +    case CTRL:
+> +        return s->ctrl;
+> +
+> +    case STATUS:
+> +        return s->status;
+> +
+> +    case INTFL:
+> +        return s->intfl;
+> +
+> +    case INTEN:
+> +        return s->inten;
+> +
+> +    case FIFO:
+> +        if (s->result_index >= 4) {
+> +            s->intfl &= ~DONE;
+> +            s->result_index -= 4;
+> +            max78000_aes_set_status(s);
+> +            return (s->result[s->result_index] << 24) +
+> +                (s->result[s->result_index + 1] << 16) +
+> +                (s->result[s->result_index + 2] << 8) +
+> +                s->result[s->result_index + 3];
+
+You can write this more simply as
+      return ldl_be_p(&s->result[s->result_index]);
+
+(that's a function which loads a big-endian 32-bit value from
+the given possibly-unaligned host address).
+
+> +        } else{
+> +            return 0;
+> +        }
+> +
+> +    default:
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"
+> +            HWADDR_PRIx "\n", __func__, addr);
+> +        break;
+> +
+> +    }
+> +    return 0;
+> +}
+
+> +static void max78000_aes_write(void *opaque, hwaddr addr,
+> +                    uint64_t val64, unsigned int size)
+> +{
+> +    Max78000AesState *s = opaque;
+> +    uint32_t val = val64;
+> +    int i;
+> +    switch (addr) {
+> +    case CTRL:
+> +        if (val & OUTPUT_FLUSH) {
+> +            s->result_index = 0;
+> +            val &= ~OUTPUT_FLUSH;
+> +        }
+> +        if (val & INPUT_FLUSH) {
+> +            s->data_index = 0;
+> +            val &= ~INPUT_FLUSH;
+> +        }
+> +        if (val & START) {
+> +            max78000_aes_do_crypto(s);
+> +        }
+> +
+> +        /* Hardware appears to stay enabled even if 0 written */
+> +        s->ctrl = val | (s->ctrl & AES_EN);
+> +        break;
+> +
+> +    case FIFO:
+> +        for (i = 0; i < 4; i++) {
+> +            s->data[(12 - s->data_index) + i] =
+> +                        (val >> ((3 - i) * 8)) & 0xff;
+> +        }
+
+Similarly here this is
+           stl_be_p(&s->data[12 - s->data_index], val);
+
+There should be some kind of check here that s->data_index is
+in range here before we write to s->data[] (either an assert,
+if the device code is supposed to maintain data_index in range
+at all times, or else some kind of error handling path if
+guest software can do funny things to put it out of range).
+
+> +        s->data_index += 4;
+> +        if (s->data_index >= 16) {
+> +            s->data_index = 0;
+> +            max78000_aes_do_crypto(s);
+> +        }
+> +        break;
+> +
+> +    case KEY_BASE ... KEY_END - 4:
+> +        for (i = 0; i < 4; i++) {
+> +            s->key[(KEY_END - KEY_BASE - 4) - (addr - KEY_BASE) + i] =
+> +                        (val >> ((3 - i) * 8)) & 0xff;
+
+   stl_be_p(&s->key[...something...], val);
+
+
+
+
+> +        }
+> +        break;
+> +
+> +    default:
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"
+> +            HWADDR_PRIx "\n", __func__, addr);
+> +        break;
+> +
+> +    }
+> +    max78000_aes_set_status(s);
+> +}
+
+thanks
+-- PMM
 
