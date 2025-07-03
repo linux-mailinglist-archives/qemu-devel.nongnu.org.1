@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D82AF745A
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66733AF7485
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:47:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXJDQ-0000Fp-Uc; Thu, 03 Jul 2025 08:39:01 -0400
+	id 1uXJIU-0000ze-Mj; Thu, 03 Jul 2025 08:44:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXJCq-0008IH-RN
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:38:26 -0400
-Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
+ id 1uXJH6-0006jk-Dy
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:42:51 -0400
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXJCn-0000Fj-LB
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:38:24 -0400
-Received: by mail-yw1-x1133.google.com with SMTP id
- 00721157ae682-714078015edso59990817b3.2
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 05:38:20 -0700 (PDT)
+ id 1uXJGt-0003Zb-4b
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:42:44 -0400
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-70e4043c5b7so54808377b3.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 05:42:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751546299; x=1752151099; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751546553; x=1752151353; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=z5jqVKQsFLT9WcE5/7ho5RaxJcwKPxiv59/Ip/X0fLg=;
- b=OEymGMNPiRN9oxQM4Spwtk/eSjGTWZCnY3yDGDVeL7a2hOzEqksVfuFrVzLp8ioFZX
- KcgPBiZ9/FBQHZwan9Smu1IacNoi3ZLs7AZldcluBEkSIhdpFJcdzh/VIQTZDFGSKKyb
- u/awlDOJZnu8wyiUTwGY/+8yiUhtIeNMo+csgWXZhDsjjRJzGuuMFe8UCEk5VTUaNvvh
- Yr5LRPaQfipPiV9de53VfGTdwuqMlHz+OqOC0yZjCiQbOkTl0sEj2xyC+t9xSXbGH9f3
- hcr+1dSgSIB1Mwfx3CZqW/zCz/4nhc/WyEqYm+J6FBoVrZprFK84d/VsiX9Lu9tfUKeI
- Z90A==
+ bh=ZnAvfqlFdC/Hotog3YjSC/GOMBzdYbRz/WSMurliVYI=;
+ b=ht2gHAHHaz/ELy2Y0oxAvQf6B6rdYL4Tt7sGFvwWyKJPju23uu9B5Iiv8Ol4lvHWJh
+ 0SAfC5OawLBhVqokbbWpOfTTKhppz2k1erE1vn0rkCQAPE7qmLHVj+gDusHQYybDpKND
+ h2SfamWGd50H6L+uQpcRn4cB0S6yWFiMsxkRnnAdiFEk8Hl/l1ZtvmTwvRCRIFP2eXyZ
+ 0l1dzq8WUa/+XXrYoFl8ZKiXHAYQvYDpgoWF7lHZLaMvkQJUVVLrmAW3ORl8Fi0XToiz
+ Go8kj+AAqdxoVmBkCpB6VnwTgjACDGcm/XwgH1QXYAZInxHnoBHM/NlIqcx4ZTOJ6jxU
+ PUIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751546299; x=1752151099;
+ d=1e100.net; s=20230601; t=1751546553; x=1752151353;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=z5jqVKQsFLT9WcE5/7ho5RaxJcwKPxiv59/Ip/X0fLg=;
- b=jSHUaJWtcRWYPkyDqHO9G1+csZbg34XxeUoUs5PeCUm0bMwYaOB5skOkPRZaXoCoqT
- 7VBYmrfNMyCw5DmU1RKSuczymdaPou6npZTOCCdKaeqVLvwEyiU29kMvGqZl5pCTyM+N
- WiQd3WFZLY7DC0erasAmkYSKDVZ9nesQQD3LZ3euUMgGtGxoE7/GOIBqDy+kChzBwdit
- GeMGHspq8xDS/llJAYJYin+Pqc75CbgTFD7Td1RwYyK4HMbxvoPak6V+bPdXTmmlkWp8
- B9FfXbphp2nhN5UlENbMFIynYjvgYlKVOldRfLK5EQiLhhz7CZJ7yuoh4SSg/ageqMlr
- n99w==
-X-Gm-Message-State: AOJu0Yx3xPYDd4FEEUYH/0RLBdQVJEbYK4hzCCva2aq5L1ASZmSNJPei
- rZE5aSRLxJ4d6EdOyJ19+lUXBozaUYuU1/QadYcHhtbU3BmXdz4M2zqH8Zs8yosHr6W/ikUQZSi
- jAWkyEpshIwbou4ItHXB/hd5S1V7Xn8hBwKZ4RGad6w==
-X-Gm-Gg: ASbGncuC4DcpDgfMDNvKw2jhMXiGBlG0vTzlG8Y8rxbNYgM/dBTmrjLt64pYlQDMdW/
- M2ZiNMzcv0yqoSH0sRiVaOCYoGqtouu58YNs6PzpM+ie/jbTksE7Q21m7TBqUQAD66B1l5g01W2
- GLHtFoy2up0DERlWoCm+KkmSlnyGuYuKf6UdFunHkKw6Rb
-X-Google-Smtp-Source: AGHT+IGPLIxVi6pKF6Qq2Bw1YfrW5gx5MmqF2tLT5XkHEkRf28bx1b688UBSmnj/qYumdu9gQ+BQkoKiIpI84U8i3J8=
-X-Received: by 2002:a05:690c:9b03:b0:712:e333:d3a6 with SMTP id
- 00721157ae682-7164d3f1544mr97438437b3.19.1751546298972; Thu, 03 Jul 2025
- 05:38:18 -0700 (PDT)
+ bh=ZnAvfqlFdC/Hotog3YjSC/GOMBzdYbRz/WSMurliVYI=;
+ b=hu53I9fqMqziMq7emqJXr3UxhLC3ly+8N8WRyMx4Fl3pbMznJmPJlLgpxJyDnkf6i6
+ 3TwirZW2jemEejCqS7wla2n07bkYjbxtwDtjmH9l5WumlY/d1bIoxgCuMdegj22zJqEt
+ HnU/5Lnq6pWrTiOmfoLBLSoeZuppFJseYJsBlTxjRm9C6kqyQKAv3e6j9g/XDzT+sl7B
+ tkbkvJ6diC8CEfzbPwFg6iFREKFxf1D6gHxFMzG/biaoTuXYUz2MCFXYT2DU3ClgJIQu
+ G9uCOMGBTEcCDJl6HkrWLJ4QP8c2Qj1/K+X2Kbd+KbxIeX5hke68RBo/FJRvitvW0T5l
+ WVpQ==
+X-Gm-Message-State: AOJu0YzHd5nUjoz4L+fgp2u0yutOUlu1ZfTT35h1NCVXMY6QrWbrTEzz
+ UbRcw4p5W5J5CFDUjmLHDIzyDaHvYoZrjbpn5rQI89ZRpcBOgYBFQhY+JprgU2VXkZhDMP7xr6x
+ +W2x2+38fxZbJAWSol+VsT4pPq1qt2ZbNB2FSyJeQIg==
+X-Gm-Gg: ASbGnctP2wHuw0aBlKIP37zic0cmD85CLGEx5h3V+YtMgRLY4cfxYGgQCbwx8fJsmAC
+ n89SckEKG/28TgK7NSOxyM6bkp/1jvigmV4xnKsQWMFelUiyRK43WrEo/NqKOyK1JxkJR1NMFso
+ KWu6XRh4VNNiHf53HjEpWYgjhjLLR+Dea+IfrkBfom+D2Vdjav+fl3rhA=
+X-Google-Smtp-Source: AGHT+IGwNu+Jg4o3xPbg1vRLOg0JAh+TwKDwKcChi7o3EA2wWXteyOGAkbnh5Fy803WAdfvg/JyHugEDTV4tQXaK9xI=
+X-Received: by 2002:a05:690c:6608:b0:70e:7663:8bb4 with SMTP id
+ 00721157ae682-7164d467d9bmr87649087b3.25.1751546553274; Thu, 03 Jul 2025
+ 05:42:33 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250702123410.761208-1-richard.henderson@linaro.org>
- <20250702123410.761208-89-richard.henderson@linaro.org>
-In-Reply-To: <20250702123410.761208-89-richard.henderson@linaro.org>
+ <20250702123410.761208-90-richard.henderson@linaro.org>
+In-Reply-To: <20250702123410.761208-90-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Jul 2025 13:38:06 +0100
-X-Gm-Features: Ac12FXzi_wYkZcS-ImlFBFiwz8A2Y5Xqyo8PlLv3nDTfxFdDf2N-18fcNVh16r4
-Message-ID: <CAFEAcA8jd4CTgJCByw4ZDf_f0OoVVtqSuF-+mvoJrEb5zGeewA@mail.gmail.com>
-Subject: Re: [PATCH v3 88/97] target/arm: Implement MOVAZ for SME2p1
+Date: Thu, 3 Jul 2025 13:42:20 +0100
+X-Gm-Features: Ac12FXyKa-H0v56oPo_H9mi3YqAWh39rBr-vIxDbeNTlrFsFUf0Mck0yQppJk2I
+Message-ID: <CAFEAcA_1+R93TR350TmieVZbYErQ+g34RyPWjd-8rRatJm-Sug@mail.gmail.com>
+Subject: Re: [PATCH v3 89/97] target/arm: Implement LUTI2,
+ LUTI4 for SME2/SME2p1
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1133.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,12 +96,36 @@ On Wed, 2 Jul 2025 at 13:42, Richard Henderson
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/arm/tcg/helper-sme.h    |  6 ++++
->  target/arm/tcg/sme_helper.c    | 60 ++++++++++++++++++++++++++++++++++
->  target/arm/tcg/translate-sme.c | 46 +++++++++++++++++++-------
->  target/arm/tcg/sme.decode      | 36 ++++++++++++++++++++
->  4 files changed, 137 insertions(+), 11 deletions(-)
+
+
+> diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
+> index 236927c640..ad3bfabc34 100644
+> --- a/target/arm/tcg/vec_internal.h
+> +++ b/target/arm/tcg/vec_internal.h
+> @@ -337,6 +337,22 @@ bfloat16 helper_sme2_ah_fmin_b16(bfloat16 a, bfloat16 b, float_status *fpst);
+>  float32 sve_f16_to_f32(float16 f, float_status *fpst);
+>  float16 sve_f32_to_f16(float32 f, float_status *fpst);
 >
+> +/* Extract @len bits from an array of uint64_t at offset @pos bits. */
+> +static inline uint64_t extractn(uint64_t *p, unsigned pos, unsigned len)
+> +{
+> +    uint64_t x;
+> +
+> +    p += pos / 64;
+> +    pos = pos % 64;
+> +
+> +    x = p[0];
+> +    if (pos + len > 64) {
+> +        x = (x >> pos) | (p[1] << (-pos & 63));
+> +        pos = 0;
+> +    }
+> +    return extract64(x, pos, len);
+> +}
+
+We added this in patch 79, I think, so we could put it in
+vec_internal.h from the start (with the comment).
+
+Otherwise
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
