@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44DDAF6DF8
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 10:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151B2AF6DF9
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 10:58:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXFkv-0003gT-9Y; Thu, 03 Jul 2025 04:57:21 -0400
+	id 1uXFlW-00057i-FD; Thu, 03 Jul 2025 04:57:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
- id 1uXFkn-0003TU-4T; Thu, 03 Jul 2025 04:57:13 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
- id 1uXFkk-0008HL-Dg; Thu, 03 Jul 2025 04:57:12 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-742c7a52e97so7473886b3a.3; 
- Thu, 03 Jul 2025 01:57:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751533027; x=1752137827; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TdpPRtQvmGX5FMXgJZ9zxoWkisAb+D1p74rPq+2zohI=;
- b=XekqtNL6GOgCFT5wR45UNgAccRX7OceNTYfxrW1p9ql5x0DJ/me2R++0GWZmXHN5wa
- IxvjOEE1Sbhhp3gxVHe1ARafjhjs03D/lWfrA7NX69/jEcKiO/RhgZNZv84GrVbjgngI
- YxArWbNcpK7gKElOPj9QR7MhT+KmGDmwNgXwAKMmtw7ZZCpz385xcerr7CYv//yt0Xj0
- AJmtWoDpb0hV0G8mZldURI8KXlzoPd3R3ZaX6AE0uWRiCD/rlUNeA/sl7gw9dhsx3A2O
- 7avRDTEbhpzBrtKtL1zn/h0qKJO+RO1hCBVxrnR5tz/yibP7yUU2IL42C2VupADQJi8D
- jJug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751533027; x=1752137827;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TdpPRtQvmGX5FMXgJZ9zxoWkisAb+D1p74rPq+2zohI=;
- b=R6+kmSu6xlFmY/hq2onzwXVK3DzJk8D5EZWAWKNGxPa/QKfLQM8ssz4gVzOFf24mWv
- sp+KPYA04zpumjihdY0eWIx1KicPtuUK2/ZoI90/5z3fVrymky/DzggLHFbVgm+naixh
- piYCkSmnm8hC1j5XtH/SZNUgzyIVdXY20NA1sOL1IPjmWQUIRSragjRbaN35oF+eBAjq
- XWNSWD0C7NCL6hV5nWNgr/rOuSIzeNizAWUmuaH8AMEdBZpw5smIxtGwIz7e451th9UA
- 2NdX4JrG497hq+9IEV143lIDLsG5+4bIm+GLI+SY6OPvqBWsjo+1vlViZlS44coecC6U
- X7vw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV8GLzZGm8I+tbMsPrm8FjRRQmdz/kCc6AsR8xPY+YQ1TsoljJsHl2JVsMm+2TlQNGTUs5ZglLnJw==@nongnu.org
-X-Gm-Message-State: AOJu0YxZZI/kq0SN+L7QpvQbXf1C2WjCkMTyrImkwsX7YMATddgo6mkX
- PQgy42nrK+yNZAEWnCnn9Me3Su53gecFZyXlAEq8V/Pi1OTR7EHz5kJ41YJ7qErPulk=
-X-Gm-Gg: ASbGnctdg2ecKqKV7Zatbx15l10f6XfrtsjHqvkiSF6V+mHyqE4obsRS1235sR9xoXk
- 1CYy2g1TpxEkFAtRC8ZkHdsyjIjxjhku9jHJ417AuWYLlKHuLDtIYDmZSoTLZg0xx5biHkcjhYA
- B355LHIpX/bZPxpQHBWQt6UtN5/iqpW49Ngjoh+o0Gu9YsQBfXwkWCtJfw1Mwu3hS76/ye5SuUV
- mPKHMmJvj/cjeFmILmHJuy6bgsy60sgN0OkFDktdO+5tzScRJ0mlJ+7edkCmQlJujRum15xpDf9
- 7V0wDt8lIsUEmSxsLcsauX/Qoc/vdnZeZIMuzsNsQ/Gg74O1i9HsVTZ1QyYIOxB991DoWokSxMr
- Epdxb28r1p/Yx5SRbZbU2EojB+MbZyeNI3EGg2nCRatE=
-X-Google-Smtp-Source: AGHT+IFbX7YcSUfog4QzLnbphQVSoqksthcJcJ548UG/PpRApEA+r8WSBFSqaCQ1O8QPkEnpFKQ58Q==
-X-Received: by 2002:a05:6a00:228f:b0:749:bc7:1577 with SMTP id
- d2e1a72fcca58-74c99830bb7mr2772559b3a.9.1751533027005; 
- Thu, 03 Jul 2025 01:57:07 -0700 (PDT)
-Received: from localhost (pa49-178-74-199.pa.nsw.optusnet.com.au.
- [49.178.74.199]) by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-74af557790dsm16476366b3a.100.2025.07.03.01.57.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Jul 2025 01:57:06 -0700 (PDT)
-From: William Kosasih <kosasihwilliam4@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- William Kosasih <kosasihwilliam4@gmail.com>
-Subject: [PATCH v4 11/11] target/arm: Fix VST2 helper store alignment checks
-Date: Thu,  3 Jul 2025 18:26:04 +0930
-Message-ID: <20250703085604.154449-12-kosasihwilliam4@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250703085604.154449-1-kosasihwilliam4@gmail.com>
-References: <20250703085604.154449-1-kosasihwilliam4@gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uXFlD-0004wq-M7
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 04:57:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uXFlB-0008NL-8Q
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 04:57:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751533054;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5K39wMKDaN5JpSUHPqHpKTkVRvsbM5vYy2SMcravSvU=;
+ b=KxE05S+edBg6tGYos9KJYSjc69Jjiy2GeZAOSYlN4Iug05oJVEK178qIocAJ3qaQNsJ663
+ XAr7sI9If7hHZw7I3SMSe4FRokXoTIgCjbhiWabeK6ler+Y6zBaGOI15KhgH5RY6FXRKim
+ p88O4xmUVITaMHMBDIddlDWNCxskcfc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-sBr2j0pSNN-crngg_dvg-Q-1; Thu,
+ 03 Jul 2025 04:57:30 -0400
+X-MC-Unique: sBr2j0pSNN-crngg_dvg-Q-1
+X-Mimecast-MFC-AGG-ID: sBr2j0pSNN-crngg_dvg-Q_1751533050
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B7CF819560AE; Thu,  3 Jul 2025 08:57:29 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 326E7180045B; Thu,  3 Jul 2025 08:57:29 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 74C5521E6A27; Thu, 03 Jul 2025 10:57:26 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: John Snow <jsnow@redhat.com>,  qemu-devel <qemu-devel@nongnu.org>,
+ Daniel =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Peter Maydell
+ <peter.maydell@linaro.org>,  Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: Re: Build platform guarantees, docs, tests, and snakes in the garden
+In-Reply-To: <CABgObfYEJ9Xu4b6zGp8E-vDsy7DqYHRrn10VBqjZaTgymmrWpQ@mail.gmail.com>
+ (Paolo Bonzini's message of "Wed, 2 Jul 2025 15:24:49 -0400")
+References: <CAFn=p-YuqzXvWF-cGLUc0LVVMe2Rinx9+LOjvpHRY-vRrPyJow@mail.gmail.com>
+ <23559c8d-149a-4ec6-adaa-fe0a8f8533f1@redhat.com>
+ <87qzz9myd0.fsf@pond.sub.org>
+ <CABgObfaqauR5SDe67ueAg9-VvJBxM5+LqrYTF3CYjjzzmY8d+w@mail.gmail.com>
+ <CABgObfYEJ9Xu4b6zGp8E-vDsy7DqYHRrn10VBqjZaTgymmrWpQ@mail.gmail.com>
+Date: Thu, 03 Jul 2025 10:57:26 +0200
+Message-ID: <87sejd4pop.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=kosasihwilliam4@gmail.com; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,75 +91,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds alignment checks in the store operations in the VST2
-instruction.
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
-Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/mve_helper.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+> Il mer 2 lug 2025, 15:24 Paolo Bonzini <pbonzini@redhat.com> ha scritto:
+>
+>>
+>>
+>> Il mar 24 giu 2025, 02:45 Markus Armbruster <armbru@redhat.com> ha
+>> scritto:
+>>
+>>> > ... I think I value this a bit higher than Markus, but not really
+>>> > because of offline builds.  Rather, keeping the "accepted" key lower =
+(i.e.
+>>> > supporting the packaged sphinx on a wide range of distros) makes it e=
+asier
+>>> > to bump the "installed" key when needed, as in this failure to run 5.=
+3.0
+>>> > under Python 3.13.
+>>>
+>>> Showing my ignorance again...  I don't understand how keeping "accepted"
+>>> lower helps.
+>>>
+>>
+>> Because it makes it easier to use distro Python. If distro Python is
+>> <accepted,
+>>
+>
+> Sorry: if distro *sphinx* is <accepted.
+>
+> Paolo
+>
+>> configure's will try to use the "installed" version. If that version in
+>> turn is too new for distro Python, you're screwed. So you want to be as
+>> conservative as needed for accepted, but not more.
 
-diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
-index 5273411389..42bb3b979b 100644
---- a/target/arm/tcg/mve_helper.c
-+++ b/target/arm/tcg/mve_helper.c
-@@ -669,6 +669,8 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
-         uint32_t addr, data;                                            \
-         uint8_t *qd;                                                    \
-+        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
-+        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
-         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
-             if ((mask & 1) == 0) {                                      \
-                 /* ECI says skip this beat */                           \
-@@ -680,7 +682,7 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-                 qd = (uint8_t *)aa32_vfp_qreg(env, qnidx + (e & 1));    \
-                 data = (data << 8) | qd[H1(off[beat] + (e >> 1))];      \
-             }                                                           \
--            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
-+            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
-         }                                                               \
-     }
- 
-@@ -694,6 +696,8 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-         uint32_t addr, data;                                            \
-         int e;                                                          \
-         uint16_t *qd;                                                   \
-+        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
-+        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
-         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
-             if ((mask & 1) == 0) {                                      \
-                 /* ECI says skip this beat */                           \
-@@ -705,7 +709,7 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-                 qd = (uint16_t *)aa32_vfp_qreg(env, qnidx + e);         \
-                 data = (data << 16) | qd[H2(off[beat])];                \
-             }                                                           \
--            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
-+            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
-         }                                                               \
-     }
- 
-@@ -718,6 +722,8 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
-         uint32_t addr, data;                                            \
-         uint32_t *qd;                                                   \
-+        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
-+        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
-         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
-             if ((mask & 1) == 0) {                                      \
-                 /* ECI says skip this beat */                           \
-@@ -726,7 +732,7 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-             addr = base + off[beat];                                    \
-             qd = (uint32_t *)aa32_vfp_qreg(env, qnidx + (beat & 1));    \
-             data = qd[H4(off[beat] >> 3)];                              \
--            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
-+            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
-         }                                                               \
-     }
- 
--- 
-2.48.1
+So, we get into trouble when accept the distro versions for some, but
+not all depenencies, and end up with a mix of "accepted" and "installed"
+versions that doesn't play together.
+
+Ways to avoid this scenario:
+
+* Ensure the "installed" version play with all the "accepted" versions
+  of everything else.  I.e. as we move "installed" up, "accepted" needs
+  to move up as well.
+
+* We keep "accepted" for everything low enough so that we don't fall
+  back to "installed" on any distro we care about.  Feels brittle.
+
+Any others?
+
+>> Regarding fool or pioneer: for sure we're extraordinarily kind towards
+>> distros. To some extent we have to do that because of 1) the possible
+>> competition of other VMMs that completely ignore distros (e.g. because t=
+hey
+>> just use cargo)=E2=80=94packaging is an area where C still has an edge a=
+nd we want
+>> to keep that edge 2) we're an infrastructure component that can't just t=
+ell
+>> users to grab a flatpak.
+>>
+>> The distro policy (mostly conceived by Dan) has served us well, with only
+>> small adjustments needed to have newish version of Meson/Rust(*), and
+>> non-prehistoric versions of Python. I don't see a need to change it, sin=
+ce
+>> at this point we have the tools needed to manage the complexity.
+
+One of the "tools" being John Snow, I'm afraid.  Making the full Sphinx
+version range work was impressive (and expensive!) work.  I take a
+rather dim view on this kind of expensive heroics.  If John gets run
+over by a bus, our hand may well be forced: I can't maintain the result
+of his heroism, that's for sure.
+
+>> Paolo
+>>
+>> (*) Most of the Rust issues would solve themselves by telling users of
+>> Ubuntu 22.04 and Debian bookworm to install the upstream tool chain with
+>> rustup instead of relying on distro rustc packages. Unlike Linux, which
+>> uses unstable features, QEMU sticks to what's been stabilized and that
+>> means newer releases sometimes.
+>>
+>> > This time there was a version that works on both the oldest and newest
+>>> Python that we support, but there may not always be one because sphinx =
+is
+>>> all too happy at dropping support for EOL'd versions of Python.
+>>>
+>>> Pretty strong hint we shouldn't try to support EOL'd versions of Python
+>>> either.
+>>>
+>>> > Paolo
+>>> >
+>>> >> Before I throw my weight behind any given option, I just want to know
+>>> >> what we consider our non-negotiable obligations to be.
+>>> >>
+>>> >> Thanks,
+>>> >> --js
 
 
