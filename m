@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A46FAF6B0B
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 09:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 191FCAF6B15
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 09:08:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXDyp-0008Ga-JB; Thu, 03 Jul 2025 03:03:35 -0400
+	id 1uXE35-0002XE-5p; Thu, 03 Jul 2025 03:08:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1uXDyk-0008E5-7I
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:03:30 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
+ id 1uXE2u-0002Tz-3p
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:07:48 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1uXDya-0002GN-FN
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:03:29 -0400
+ id 1uXE2p-0003XN-TX
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:07:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751526201; x=1783062201;
+ t=1751526464; x=1783062464;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=BzXwtEIeavtTZYYUVx+lfAQIPYpgvTwFbxREu6EtwrI=;
- b=LbyEffUYN3xI64jma5t6MA5JvWdrfFszGJnMBZ4sN4d20qhssvgisNCx
- 69/1eeMcTLF99AkMLC/RqXcCxXCbtbQ51AgnQWG4Ka3mWYdKemdC077Z/
- 1Sgo+qm9VaExwhkPKt5bFf0Wu9XhX1Im0IbZX66DjOxGxMGlCv9L8cknu
- qAA9hVE2CnXNQPN9zWZi2wM0q6LrVuxXH7HqkPQulKM9f8fySQmTiurQu
- 9jLeDWPvaEtvtLHg/ne8LoTXdLi+sjB3Hg6ixLAjZ6IkO0vgV+I/rSJdT
- ahh0BDBMqk0NfEcZ/vMgGcuy6YKdzUK4h3sCJKNhcVzKtCGLnCqXK1M+M g==;
-X-CSE-ConnectionGUID: uO8bO1x+T6SPoGGdx3i18Q==
-X-CSE-MsgGUID: qwTzV9i9RISbdjhprZYinQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="64535946"
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="64535946"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 00:03:17 -0700
-X-CSE-ConnectionGUID: ktBMxDa0SVq6uwU+UbRsHA==
-X-CSE-MsgGUID: lvFHRDRCQuecOiGfPhCX8Q==
+ bh=yhwYOjrKq9ebGmZR+FPGnDwzlieY5n9LStWiPQOmj6U=;
+ b=TPQJ7jdmf1yeHrB0pstmGfn/R10XYxmVhbBDBKa3D/h/eO4LPqG0LhTB
+ FqN6INwwtzv/gxepF3EngnRHo9lhXf9vfDmeDEOFhQzjUJsb8yiTIEEMa
+ HjqgwEs3mZlZXsZ+Fug/pdgzRE/Xa8TILmh3U2JzOW87nLCt/lHNu+jyA
+ YKhqJgPdtE4D7Tngir3bu08PW/ekQvteFMm1+oWpEiEd3cgmVRZzzrRwK
+ EXuQYb8KKlRoCNjgqlRFd4brbDITekxRWCrG88187VISPCFjQmN5STGFn
+ TZiMNklE9SjSPD+N522fUWS2tyduPZLxGd8BwJBnLrGvW7bLzU/g9k2Uu w==;
+X-CSE-ConnectionGUID: lM/Qzc2ySliZ/QcU02vPbQ==
+X-CSE-MsgGUID: cZ9svscqSSa32JkTjayMDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53560557"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="53560557"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 00:07:41 -0700
+X-CSE-ConnectionGUID: P2P8NYlaQfCrKV2v+DWr9g==
+X-CSE-MsgGUID: UwQDhg03RpGOCpROJUYAXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="153924989"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="154778852"
 Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.240.80])
  ([10.124.240.80])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 00:03:12 -0700
-Message-ID: <705f8d41-3577-453a-8464-5cb383708c25@linux.intel.com>
-Date: Thu, 3 Jul 2025 15:03:10 +0800
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 00:07:37 -0700
+Message-ID: <44cdc08c-21e9-422c-b55a-17e53d34ef90@linux.intel.com>
+Date: Thu, 3 Jul 2025 15:07:34 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/16] i386/cpu: Drop CPUID 0x2 specific cache info in
- X86CPUState
+Subject: Re: [PATCH 07/16] i386/cpu: Mark CPUID[0x80000005] as reserved for
+ Intel
 To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, "Michael S . Tsirkin"
  <mst@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
@@ -64,13 +64,13 @@ Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
  qemu-devel@nongnu.org, kvm@vger.kernel.org
 References: <20250620092734.1576677-1-zhao1.liu@intel.com>
- <20250620092734.1576677-7-zhao1.liu@intel.com>
+ <20250620092734.1576677-8-zhao1.liu@intel.com>
 Content-Language: en-US
 From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20250620092734.1576677-7-zhao1.liu@intel.com>
+In-Reply-To: <20250620092734.1576677-8-zhao1.liu@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=192.198.163.9;
+Received-SPF: none client-ip=198.175.65.20;
  envelope-from=dapeng1.mi@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -40
 X-Spam_score: -4.1
@@ -96,108 +96,121 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 6/20/2025 5:27 PM, Zhao Liu wrote:
-> With the pre-defined cache model legacy_intel_cpuid2_cache_info,
-> for X86CPUState there's no need to cache special cache information
-> for CPUID 0x2 leaf.
+> Per SDM, 0x80000005 leaf is reserved for Intel CPU, and its current
+> "assert" check blocks adding new cache model for non-AMD CPUs.
 >
-> Drop the cache_info_cpuid2 field of X86CPUState and use the
-> legacy_intel_cpuid2_cache_info directly.
+> And please note, although Zhaoxin mostly follows Intel behavior,
+> this leaf is an exception [1].
 >
+> So, add a compat property "x-vendor-cpuid-only-v2" (for PC machine v10.0
+> and older) to keep the original behavior. For the machine since v10.1,
+> check the vendor and encode this leaf as all-0 only for Intel CPU.
+>
+> This fix also resolves 2 FIXMEs of legacy_l1d_cache_amd and
+> legacy_l1i_cache_amd:
+>
+> /*FIXME: CPUID leaf 0x80000005 is inconsistent with leaves 2 & 4 */
+>
+> In addition, per AMD's APM, update the comment of CPUID[0x80000005].
+>
+> [1]: https://lore.kernel.org/qemu-devel/fa16f7a8-4917-4731-9d9f-7d4c10977168@zhaoxin.com/
 > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->  target/i386/cpu.c | 31 +++++++++++--------------------
->  target/i386/cpu.h |  3 ++-
->  2 files changed, 13 insertions(+), 21 deletions(-)
+> Changes since RFC:
+>  * Only set all-0 for Intel CPU.
+>  * Add x-vendor-cpuid-only-v2.
+> ---
+>  hw/i386/pc.c      |  1 +
+>  target/i386/cpu.c | 11 ++++++++---
+>  target/i386/cpu.h | 11 ++++++++++-
+>  3 files changed, 19 insertions(+), 4 deletions(-)
 >
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index ad2d6495ebde..9ec3f4db31f3 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -83,6 +83,7 @@
+>  
+>  GlobalProperty pc_compat_10_0[] = {
+>      { TYPE_X86_CPU, "x-consistent-cache", "false" },
+> +    { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
+>  };
+>  const size_t pc_compat_10_0_len = G_N_ELEMENTS(pc_compat_10_0);
+>  
 > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index a06aa1d629dc..8f174fb971b6 100644
+> index 8f174fb971b6..df40d1362566 100644
 > --- a/target/i386/cpu.c
 > +++ b/target/i386/cpu.c
-> @@ -244,19 +244,27 @@ static uint8_t cpuid2_cache_descriptor(CPUCacheInfo *cache, bool *unmacthed)
->      return CACHE_DESCRIPTOR_UNAVAILABLE;
->  }
->  
-> +static const CPUCaches legacy_intel_cpuid2_cache_info;
-> +
->  /* Encode cache info for CPUID[4] */
->  static void encode_cache_cpuid2(X86CPU *cpu,
->                                  uint32_t *eax, uint32_t *ebx,
->                                  uint32_t *ecx, uint32_t *edx)
->  {
->      CPUX86State *env = &cpu->env;
-> -    CPUCaches *caches = &env->cache_info_cpuid2;
-> +    const CPUCaches *caches;
->      int l1d, l1i, l2, l3;
->      bool unmatched = false;
->  
->      *eax = 1; /* Number of CPUID[EAX=2] calls required */
->      *ebx = *ecx = *edx = 0;
->  
-> +    if (env->enable_legacy_cpuid2_cache) {
-> +        caches = &legacy_intel_cpuid2_cache_info;
-> +    } else {
-> +        caches = &env->cache_info_cpuid4;
-> +    }
-> +
->      l1d = cpuid2_cache_descriptor(caches->l1d_cache, &unmatched);
->      l1i = cpuid2_cache_descriptor(caches->l1i_cache, &unmatched);
->      l2 = cpuid2_cache_descriptor(caches->l2_cache, &unmatched);
-> @@ -705,17 +713,6 @@ static CPUCacheInfo legacy_l2_cache = {
+> @@ -655,7 +655,6 @@ static CPUCacheInfo legacy_l1d_cache = {
 >      .share_level = CPU_TOPOLOGY_LEVEL_CORE,
 >  };
 >  
-> -/*FIXME: CPUID leaf 2 descriptor is inconsistent with CPUID leaf 4 */
-> -static CPUCacheInfo legacy_l2_cache_cpuid2 = {
-> -    .type = UNIFIED_CACHE,
-> -    .level = 2,
-> -    .size = 2 * MiB,
-> -    .line_size = 64,
-> -    .associativity = 8,
-> -    .share_level = CPU_TOPOLOGY_LEVEL_INVALID,
-> -};
-> -
-> -
->  /*FIXME: CPUID leaf 0x80000006 is inconsistent with leaves 2 & 4 */
->  static CPUCacheInfo legacy_l2_cache_amd = {
->      .type = UNIFIED_CACHE,
-> @@ -8951,18 +8948,12 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
->                         "CPU model '%s' doesn't support legacy-cache=off", name);
->              return;
->          }
-> -        env->cache_info_cpuid2 = env->cache_info_cpuid4 = env->cache_info_amd =
-> -            *cache_info;
-> +        env->cache_info_cpuid4 = env->cache_info_amd = *cache_info;
->      } else {
->          /* Build legacy cache information */
-> -        env->cache_info_cpuid2.l1d_cache = &legacy_l1d_cache;
-> -        env->cache_info_cpuid2.l1i_cache = &legacy_l1i_cache;
->          if (!cpu->consistent_cache) {
-> -            env->cache_info_cpuid2.l2_cache = &legacy_l2_cache_cpuid2;
-> -        } else {
-> -            env->cache_info_cpuid2.l2_cache = &legacy_l2_cache;
-> +            env->enable_legacy_cpuid2_cache = true;
->          }
-> -        env->cache_info_cpuid2.l3_cache = &legacy_l3_cache;
+> -/*FIXME: CPUID leaf 0x80000005 is inconsistent with leaves 2 & 4 */
+>  static CPUCacheInfo legacy_l1d_cache_amd = {
+>      .type = DATA_CACHE,
+>      .level = 1,
+> @@ -684,7 +683,6 @@ static CPUCacheInfo legacy_l1i_cache = {
+>      .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+>  };
 >  
->          env->cache_info_cpuid4.l1d_cache = &legacy_l1d_cache;
->          env->cache_info_cpuid4.l1i_cache = &legacy_l1i_cache;
+> -/*FIXME: CPUID leaf 0x80000005 is inconsistent with leaves 2 & 4 */
+>  static CPUCacheInfo legacy_l1i_cache_amd = {
+>      .type = INSTRUCTION_CACHE,
+>      .level = 1,
+> @@ -7889,11 +7887,17 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>          *edx = env->cpuid_model[(index - 0x80000002) * 4 + 3];
+>          break;
+>      case 0x80000005:
+> -        /* cache info (L1 cache) */
+> +        /* cache info (L1 cache/TLB Associativity Field) */
+>          if (cpu->cache_info_passthrough) {
+>              x86_cpu_get_cache_cpuid(index, 0, eax, ebx, ecx, edx);
+>              break;
+>          }
+> +
+> +        if (cpu->vendor_cpuid_only_v2 && IS_INTEL_CPU(env)) {
+> +            *eax = *ebx = *ecx = *edx = 0;
+> +            break;
+> +        }
+> +
+>          *eax = (L1_DTLB_2M_ASSOC << 24) | (L1_DTLB_2M_ENTRIES << 16) |
+>                 (L1_ITLB_2M_ASSOC <<  8) | (L1_ITLB_2M_ENTRIES);
+>          *ebx = (L1_DTLB_4K_ASSOC << 24) | (L1_DTLB_4K_ENTRIES << 16) |
+> @@ -9464,6 +9468,7 @@ static const Property x86_cpu_properties[] = {
+>      DEFINE_PROP_STRING("hv-vendor-id", X86CPU, hyperv_vendor),
+>      DEFINE_PROP_BOOL("cpuid-0xb", X86CPU, enable_cpuid_0xb, true),
+>      DEFINE_PROP_BOOL("x-vendor-cpuid-only", X86CPU, vendor_cpuid_only, true),
+> +    DEFINE_PROP_BOOL("x-vendor-cpuid-only-v2", X86CPU, vendor_cpuid_only_v2, true),
+>      DEFINE_PROP_BOOL("x-amd-topoext-features-only", X86CPU, amd_topoext_features_only, true),
+>      DEFINE_PROP_BOOL("lmce", X86CPU, enable_lmce, false),
+>      DEFINE_PROP_BOOL("l3-cache", X86CPU, enable_l3_cache, true),
 > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 3c7e59ffb12a..8d3ce8a2b678 100644
+> index 8d3ce8a2b678..02cda176798f 100644
 > --- a/target/i386/cpu.h
 > +++ b/target/i386/cpu.h
-> @@ -2076,7 +2076,8 @@ typedef struct CPUArchState {
->       * on each CPUID leaf will be different, because we keep compatibility
->       * with old QEMU versions.
->       */
-> -    CPUCaches cache_info_cpuid2, cache_info_cpuid4, cache_info_amd;
-> +    CPUCaches cache_info_cpuid4, cache_info_amd;
-> +    bool enable_legacy_cpuid2_cache;
+> @@ -2282,9 +2282,18 @@ struct ArchCPU {
+>      /* Enable auto level-increase for all CPUID leaves */
+>      bool full_cpuid_auto_level;
 >  
->      /* MTRRs */
->      uint64_t mtrr_fixed[11];
+> -    /* Only advertise CPUID leaves defined by the vendor */
+> +    /*
+> +     * Compatibility bits for old machine types (PC machine v6.0 and older).
+> +     * Only advertise CPUID leaves defined by the vendor.
+> +     */
+>      bool vendor_cpuid_only;
+>  
+> +    /*
+> +     * Compatibility bits for old machine types (PC machine v10.0 and older).
+> +     * Only advertise CPUID leaves defined by the vendor.
+> +     */
+> +    bool vendor_cpuid_only_v2;
+> +
+>      /* Only advertise TOPOEXT features that AMD defines */
+>      bool amd_topoext_features_only;
+>  
 
-LGTM.
+The Intel related part looks good to me. (Not quite familiar with AMD's
+Spec, so no reviewed-by tag)
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
 
