@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7F3AF7258
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33095AF72FC
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:52:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXHiw-0005oI-NO; Thu, 03 Jul 2025 07:03:26 -0400
+	id 1uXHib-0004AS-Rz; Thu, 03 Jul 2025 07:03:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHgW-00081l-5E
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:00:58 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHga-0008E2-Jz
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:01:01 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHgQ-0003xb-Lf
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:00:54 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3a582e09144so3869818f8f.1
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 04:00:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHgY-0003ys-6q
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:00:59 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-451d7b50815so42290935e9.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 04:00:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751540448; x=1752145248; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751540453; x=1752145253; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mJV4IXnKJHt8hWaUBPPZ6mJUKwfXPExjXmNVkOYEHB0=;
- b=oACxigDffrbuS+yd6ighggs9foOgIyDAPO2akOyyPsPMdI0TrmZ4kKkFCfjyk/x9ln
- XkKuTD33VHMxWYyExMWBUtQWuv8O3uCfH2/l2UFELik1sh/Y3npq9nFQi6zWvs+RY2hg
- Tt0UlWvNd0zjYtmeK1QO1zGhhBFeTUtEc24Uy7Sz8LfxDN1la3uWjWAhGtaza+7sids/
- elEXvInhlbD2HvvoWzU7qx1W0WJxeNJ3qrn4wJgezNp4PHmn/jTOldccEg1mbPkZ9K/9
- VKKeMzAvSUgJTt6Q4n7p9xRWQyLlgIK6XntnrkNWA3I76UmV5dX4g5/6FlgrzjGNLEtj
- yK0g==
+ bh=KYagbleC/hcq8JgGV1mXFBe9rSbch4M6pqZHxCjKKEU=;
+ b=vDCf3Gpo+kXhMfr/F32mFMZvbFdeUaQQiNUCdAVM3d5/weDyIlKHjUUJW87xzZHybI
+ xZDLPmHvSdawdqby9uziWox7BD4AcQ4jWPLNv3saLbUTVuogEapqi/w0DsavNm2lPdDq
+ p9a9L3gJrivVUq0WpGoNqteYmj4GKGGqE8Gjk2d43v+jjnrkg/dC1JEoJvdjBTlJ7ML7
+ S9etQpb7c8LXduNWERcrbjDXgyzXzwKu2dDJB3XHISkU3IOzCS/xLWQ6KyfvP0Cv8ZjU
+ X2kz9SB5PQwbneoL8f2sCp+YYBk7AHUyZqRLvBBWz5mEfsrmWeRmyxvsuf1N+dEnm7cc
+ jz1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751540448; x=1752145248;
+ d=1e100.net; s=20230601; t=1751540453; x=1752145253;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mJV4IXnKJHt8hWaUBPPZ6mJUKwfXPExjXmNVkOYEHB0=;
- b=q/lFQr6jpcS0bVRqUTEg6Iyi8f0/HFW8mRmH8EKZdXIykG6tLKoghI967exzMOTQ2I
- FCE7qOmQFdvkDlcKBlOyvXZK3/sg4EKmd3mBT3I0ujTKiaDRoMBk9ScFADbPLVoPD/mC
- kNqk1/vI/NBUboN4cIm8frdBTW4Lk0vVg1jAt9vLW80kri4plZPLM/9Zq23c2HuCVq62
- 56w5/mmcmza9XQECwSiZyYruSS0P/zKpLnpsHiLQOXG8tPqX9YNZo8bmvrGPu20ycO28
- BBwKXPbRtuCJi/9Sl/fv0vyvvwxDo0LUF/ADB04agifVPIM2BsO+W2ZJZSPwcepqUXZD
- JQPA==
-X-Gm-Message-State: AOJu0YzkYJi3vGqCpPkfAwejgRE5GxYlRa0p+22XvgsbTQtlBN254hrH
- XTxG4CAX+vx8hhGLRVR/tR+CLDZzhYGSq5a9cbfQilyFAwHWBfW/SblJWcu0N5HCkjEBHj2/wjJ
- U76EWKP8=
-X-Gm-Gg: ASbGncv6BZzjwcZpC8u6Z7PSeTAN7UEOCrb+o97URDLi2HfNQH01KkYBpG5fzQLIrkU
- SoIlUIL0m19/6Mra6BVQLl/e2bdYcwDPI1D9rSzXxCGs3/NbjNsfcdhcIHALc/NouMnkpXRhlal
- 8hpLKrm66EyLOoS/MGB/ZRfYWv2W5Ks/t1xGYOmtPI1W7mPL1uXDlXxSdk90ozAgz7dutPoQJHy
- hpZ9G+35K6XI/KwwHClcHNtGBbBGp+9HQTD+eelKW8uV+Bs8POst1r+FJRD1QSdHkMpJ+yp+Joq
- l7fh/hqdIUkP9mLWT1574vl7XfreS6aWiQCEDhIwE8KnO/bm10ULLrLc22Ix6D8XVCEkLmQOcKA
- bBHjKhz/xPgQ=
-X-Google-Smtp-Source: AGHT+IHqlssT48uJmEPZ4O3QCmimDjy4zBtYSgC8cT/L+FfgYjN8oU142izdLTVwVo9xkf1rmJVshw==
-X-Received: by 2002:a05:6000:4610:b0:3a4:e609:dc63 with SMTP id
- ffacd0b85a97d-3b1ff1473bdmr5354926f8f.20.1751540448033; 
- Thu, 03 Jul 2025 04:00:48 -0700 (PDT)
+ bh=KYagbleC/hcq8JgGV1mXFBe9rSbch4M6pqZHxCjKKEU=;
+ b=PxMFuXG61H5XykGdBxkSOjwGsBE7onm78wJxNMdPx/HAr/1GQGjt6X96LxkcJ0wV+n
+ LVqUBgpTHWqSudfKszU9CCeFuMM3lb+vXFCCRajOHiplXgE6ZeO6Lj8Fh4oVZtJbyX1h
+ 8duW8TX9xzLsltDirxmCWZ3n0wAB077b6ww7oXCbLXr3WKhsk3HnbPIdBqpcHgDio72w
+ Y5rJ4HVW8aaAb3NEXlJ/fXFEaZZwDw0SD2iHsWUQg6QwlMJyvatb54CGegi9Od5u4glZ
+ /Nu8Tpc5crS2JP347RUpxFPwuaYAzdaKka+RsD+W0Jr1DnSd//qXhCt/pYNy0sihobzy
+ Uh+A==
+X-Gm-Message-State: AOJu0YzDlgMtcyQNXjhCLbVza15jhVy+kLT/XN+BwdLd3mvX7ae45rWr
+ znbpLIyjwUxFDbygNhbH+JQ9xO90PwWSL2OB8DXZSIhXo73Y2SYrt2ZvM6ec4plEuWcZecn3iLp
+ SEcBU+V4=
+X-Gm-Gg: ASbGncsVc0ZjVFP8SIRBdTbJ7xVJ3OYbyUD8B7ASHpsbk9/l8iwIOhqtgBG6OKZrHKE
+ OLT+BsbgPGxSNFRCiJ1EA8F1urW0CHjl2l2/n/RsGb0PtoaKJ562lqEtf6kdbL+X86xktNOUKGM
+ FpGoXWFAZVLJUPZiMqZ51M3TjYG4sPDxhR+y/5DDkCNqKCaWxZZNOc2O4zvoToNVnYEjEZgqYLN
+ vMKm7zROSAU4xQIMzy5M1jQ8nKpT+maMzHm5Rox79j+9zDm+LrJFNNjKnu5mOBXwdv/vPem2DNu
+ XU68Kkp7fOjgBb8yMsbeSCcD5ISoKvJ5YsEiDkPfjfef3+UXmEQF6+Wg7LodySk11d5674mQe/0
+ tzEruD4gVkb2W09OKpYU42w==
+X-Google-Smtp-Source: AGHT+IEUZBSTMiRrfLofYu4N1i7N32LdP3UEB9PeAX2Sv3szBKCnYkogmOlR7j4MaUfvKnOWbwm7rw==
+X-Received: by 2002:a05:600c:4ecf:b0:450:d3b9:4b96 with SMTP id
+ 5b1f17b1804b1-454ac2da3bfmr24724685e9.13.1751540453164; 
+ Thu, 03 Jul 2025 04:00:53 -0700 (PDT)
 Received: from localhost.localdomain ([83.247.137.20])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c7e72b6sm18616881f8f.15.2025.07.03.04.00.46
+ ffacd0b85a97d-3a892e62144sm18639506f8f.92.2025.07.03.04.00.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 04:00:47 -0700 (PDT)
+ Thu, 03 Jul 2025 04:00:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Sunil Muthuswamy <sunilmut@microsoft.com>
-Subject: [PATCH v5 58/69] accel/whpx: Convert to
- AccelOpsClass::cpu_thread_routine
-Date: Thu,  3 Jul 2025 12:55:24 +0200
-Message-ID: <20250703105540.67664-59-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 59/69] accel: Factor accel_cpu_realize() out
+Date: Thu,  3 Jul 2025 12:55:25 +0200
+Message-ID: <20250703105540.67664-60-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703105540.67664-1-philmd@linaro.org>
 References: <20250703105540.67664-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,45 +101,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By converting to AccelOpsClass::cpu_thread_routine we can
-let the common accel_create_vcpu_thread() create the thread.
+Factor accel_cpu_realize() out of accel_cpu_common_realize()
+for re-use.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/whpx/whpx-accel-ops.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ accel/accel-internal.h | 2 ++
+ accel/accel-common.c   | 8 ++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/whpx/whpx-accel-ops.c b/target/i386/whpx/whpx-accel-ops.c
-index 011810b5e50..8cbc6f4e2d8 100644
---- a/target/i386/whpx/whpx-accel-ops.c
-+++ b/target/i386/whpx/whpx-accel-ops.c
-@@ -61,16 +61,6 @@ static void *whpx_cpu_thread_fn(void *arg)
-     return NULL;
+diff --git a/accel/accel-internal.h b/accel/accel-internal.h
+index d3a4422cbf7..b541377c349 100644
+--- a/accel/accel-internal.h
++++ b/accel/accel-internal.h
+@@ -14,4 +14,6 @@
+ 
+ void accel_init_ops_interfaces(AccelClass *ac);
+ 
++bool accel_cpu_realize(AccelState *accel, CPUState *cpu, Error **errp);
++
+ #endif /* ACCEL_SYSTEM_H */
+diff --git a/accel/accel-common.c b/accel/accel-common.c
+index 24038acf4aa..de010adb484 100644
+--- a/accel/accel-common.c
++++ b/accel/accel-common.c
+@@ -122,9 +122,8 @@ void accel_create_vcpu_thread(AccelState *accel, CPUState *cpu)
+     }
  }
  
--static void whpx_start_vcpu_thread(CPUState *cpu)
--{
--    char thread_name[VCPU_THREAD_NAME_SIZE];
--
--    snprintf(thread_name, VCPU_THREAD_NAME_SIZE, "CPU %d/WHPX",
--             cpu->cpu_index);
--    qemu_thread_create(cpu->thread, thread_name, whpx_cpu_thread_fn,
--                       cpu, QEMU_THREAD_JOINABLE);
--}
--
- static void whpx_kick_vcpu_thread(CPUState *cpu)
+-bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
++bool accel_cpu_realize(AccelState *accel, CPUState *cpu, Error **errp)
  {
-     if (!qemu_cpu_is_self(cpu)) {
-@@ -87,7 +77,7 @@ static void whpx_accel_ops_class_init(ObjectClass *oc, const void *data)
+-    AccelState *accel = current_accel();
+     AccelClass *acc = ACCEL_GET_CLASS(accel);
+ 
+     /* target specific realization */
+@@ -147,6 +146,11 @@ bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
+     return true;
+ }
+ 
++bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
++{
++    return accel_cpu_realize(current_accel(), cpu, errp);
++}
++
+ void accel_cpu_common_unrealize(CPUState *cpu)
  {
-     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
- 
--    ops->create_vcpu_thread = whpx_start_vcpu_thread;
-+    ops->cpu_thread_routine = whpx_cpu_thread_fn;
-     ops->kick_vcpu_thread = whpx_kick_vcpu_thread;
-     ops->cpu_thread_is_idle = whpx_vcpu_thread_is_idle;
- 
+     AccelState *accel = current_accel();
 -- 
 2.49.0
 
