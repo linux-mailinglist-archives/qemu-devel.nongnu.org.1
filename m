@@ -2,107 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E888EAF701A
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 12:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD26AF702A
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 12:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXHAF-00049o-KW; Thu, 03 Jul 2025 06:27:35 -0400
+	id 1uXHBI-0004sL-8o; Thu, 03 Jul 2025 06:28:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sbrivio@redhat.com>)
- id 1uXHAD-00049X-Ce
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:27:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sbrivio@redhat.com>)
- id 1uXHAA-0006Y5-2A
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:27:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751538446;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8FDoktE5kdVG8aAutup0Bp3nilcaZmhun/BLXKaX/R4=;
- b=hIQC6LrHSY43rMET8SrNbAKApfGfJQAjnivEjXGPP3k7Qo/lUz2TSt+858rGlFje9oH3+e
- CDFdO1YaXeJyuRCEaNubyBWzUW/LUpIzdhJ4PBo7rPv0PaES2xVC0Rc2q/54dcRvrkLCM/
- SY9AR4Akda0lV+BmWO4Wg51A+1+Bryc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-358-5Lhcx6qkMQah3JRaVHDBjQ-1; Thu, 03 Jul 2025 06:27:24 -0400
-X-MC-Unique: 5Lhcx6qkMQah3JRaVHDBjQ-1
-X-Mimecast-MFC-AGG-ID: 5Lhcx6qkMQah3JRaVHDBjQ_1751538443
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4538a2f4212so38077555e9.2
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:27:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXHBB-0004pG-OS
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:28:37 -0400
+Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXHB7-0006jK-CD
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:28:32 -0400
+Received: by mail-yw1-x112a.google.com with SMTP id
+ 00721157ae682-714066c7bbbso88816797b3.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751538508; x=1752143308; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=VLF4LAUrXSbe2p5iEiw/L4TFZFIHcrRHDsUgZdFn5Wk=;
+ b=bR1qXxytjAjBIjYro2EtATUWcijo+SiRnvxz+Zl4/akoNTOO2Ibi7+KLn1QkrLB9Tw
+ QbbWkRFaXkDQDkX0BVsJ/5oruxVXykLJk3lEkRsd5FskGas/fMPT5E+TE5vpqAmoUKa0
+ hrI3iTkfPfuiF37Cm7dyjwe1awFde7FxeCi3MXu/0jJsryqJrBMxXv32mt8X0Sh6m9+x
+ zePjkkbYmvkK+yGMAvF5bqiqnpUiyraVkn1xZRi2mSTc+r0hhYCHpvH8PAcDs0C5gYCO
+ q8rm4KFU4bA0+Y1sAD3F2Mdd63wK9o/fe/QiTeRGtm56Goj5ll3dLlSr/E9dP8IZ6vZy
+ 6QIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751538443; x=1752143243;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8FDoktE5kdVG8aAutup0Bp3nilcaZmhun/BLXKaX/R4=;
- b=DX4BcWDW5eYtqaidxgNhIkiME2OV7DSrLfg5NJa67sRG5185EqszwhBu51kb/1jo+c
- Xkk7+y19iW04WFZPE6f9r+YXL/WxO7cvU6L73Z7EEMLu5GwFrj8o+DXcRcfYt0Me8+HX
- SJz0OexSfZ8txZujuqokKLVlri91dr5+ArDZROFUdj5vzMt6OXdtIth1kFfQLt0hS2x7
- JCrfiUFUKmjXbnel+peHLz/een8749jHtGowt0MDWotdtmYQnAQngPvAAUMb7CRrDSZW
- aYw/GWmJJMQvyNib22tOrpCdekfKKDi+jgO9kqezT5v67yXzM+S+QIUSB7Eg741S7GLX
- q3WQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV3WyRWs3aVNj3fwu8DeFvhu9VR+Gn2y/V06z/OZwWRgpQB898/ojffBBDnnbXeYm3pf6WfzTofYl8C@nongnu.org
-X-Gm-Message-State: AOJu0YwMkVq8Fyih8koT1evyU5is0oIOgnRS+3pQEZXD1MDe9z3EXDYl
- ab8j70KsCcQYgArTk1RQZauU42rWeLs1AXo2mxszC+tUazsslt785IbpAm+S0BgA/lg5cvuZb6D
- qEFrBVfiK2qkwApqtlULZWITSubwiDwW5k+8OnOoHm+zR/2T2U5M9CVUL
-X-Gm-Gg: ASbGncs/IBw0O1LglQexEJDEo/RQRl/6lNHColtmz6pSLfXlG4bHRgpG8TkP9n7Ftt8
- A20bAxS6QXs5cv77yxaJkhW10UYMdZvR3wfVa3a+248fYXl4zYsNYxWjlfyClI/aQDdutTOX70M
- UEeumPpfN0xiMg4KFr+btWxPLUSg8StYAXzKstfQp14i50/pqq2Tg0N3K8o4tSNMCtF2le7RPBw
- WjADyi3RSA/sM1or9WcBOWxWWA/UDLOqlUHD2DGvi2dqmlGwZRnMY16o8VlAP0GdDIWmlgkFQj9
- xPiGH4bt6ri5I1tXOrb61XH27aIfaahtnA==
-X-Received: by 2002:a05:6000:21ca:b0:3a4:fc52:f5d4 with SMTP id
- ffacd0b85a97d-3b2005840cdmr3240333f8f.47.1751538442905; 
- Thu, 03 Jul 2025 03:27:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGBDMBXVNQZtkVi3gutIZf8PlnbtBqxMN5AmyrAFHJT/YZXvrWsohEihMTurAJGheflv5apDg==
-X-Received: by 2002:a05:6000:21ca:b0:3a4:fc52:f5d4 with SMTP id
- ffacd0b85a97d-3b2005840cdmr3240307f8f.47.1751538442322; 
- Thu, 03 Jul 2025 03:27:22 -0700 (PDT)
-Received: from maya.myfinge.rs (ifcgrfdd.trafficplex.cloud.
- [2a10:fc81:a806:d6a9::1]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a892e52ad2sm18039524f8f.48.2025.07.03.03.27.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Jul 2025 03:27:21 -0700 (PDT)
-Date: Thu, 3 Jul 2025 12:27:19 +0200
-From: Stefano Brivio <sbrivio@redhat.com>
-To: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau
- <marcandre.lureau@redhat.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>, "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?="
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>, Stefan Weil
- <sw@weilnetz.de>, Stefano Garzarella <sgarzare@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, "Dr. David Alan Gilbert" <dave@treblig.org>,
- Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 09/10] net: Add passt network backend
-Message-ID: <20250703122719.766a55e3@elisabeth>
-In-Reply-To: <48ce7ba4-882e-4e6b-801a-135d489ae7f0@redhat.com>
-References: <20250618155718.550968-1-lvivier@redhat.com>
- <20250618155718.550968-10-lvivier@redhat.com>
- <CACGkMEvcC7jv9LN5bP61E0OgSBENswotm+3fq8NAg3wBC9vUEQ@mail.gmail.com>
- <48ce7ba4-882e-4e6b-801a-135d489ae7f0@redhat.com>
-Organization: Red Hat
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.49; x86_64-pc-linux-gnu)
+ d=1e100.net; s=20230601; t=1751538508; x=1752143308;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VLF4LAUrXSbe2p5iEiw/L4TFZFIHcrRHDsUgZdFn5Wk=;
+ b=qHA3+DJOX08OtIMmqyBvd5wO3hOFSqw5RcuYfrMvhxLsszvfFKR1Hngr2YhV5sAuK6
+ hWqAWr4BnEejy2JFN3/Fq+BRFz+PDYFY6yZvlpa8g10BTxOCqfaCbsiqMB0X24aD1poT
+ q6+tjYJxyHd7d9QjCZ8r3z9IC+micWSJrcTsF7m7PfDLb6aRYvvgmQ5gjeOIpZ1qqNRA
+ 26fYYUb2XRBdtkTbHtENKpXs6xgKUex9ep2zUyjxiDU0Pj3eC+qEa1ccGk8mej8XvdRn
+ f2SHXUqJqj77eyKJ75JiLOz3Di9z/dJkW225qpqiRQFDX3X6YTV+H05biHr5E0zF6iTp
+ BrrA==
+X-Gm-Message-State: AOJu0YxCDh9LTwsGWfgZSwFGC1mf+FFH1ZyJlbXqQDW7OcXAi1fkqgcn
+ vHWb+dHztSB6Bfvx3ZAcbYOtmKM/gSVpXmmPOoKigWVqAcq0UyPelePF1fiPeoGnPfQMsCOz+n7
+ uFXQjvO/VqHQvHM0J5u+T43VZ9rz2SCA/7mRM5o2wm4hnMVbPDdkf
+X-Gm-Gg: ASbGnctqaKBFAa0fKtXb2Okws2E6xZgstoIj8QMZV8yFl/r1ozCD1bXOy57it9RqsAG
+ CVt7JojcYDDnv8v6ZUtuChzeiRMY9eBFr3uep4Pojg87eMGl0CANuVITTlWpJVSUjuqEZ3hG5MC
+ H9/W8Sp5Syvr3He5ahJy7SuBwvwS6+KkOXbn3nJ12f/gdx
+X-Google-Smtp-Source: AGHT+IEO7OwOnvnen0ajok33Uw2lUWVLnPrMdN9aiHFuhiOsh6GkJrJCQpSPEAwnjsj6McaGWUFx5KJqqmO9KrXQP2o=
+X-Received: by 2002:a05:690c:7349:b0:70f:83af:7db1 with SMTP id
+ 00721157ae682-716590ae5demr44497947b3.19.1751538507972; Thu, 03 Jul 2025
+ 03:28:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sbrivio@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250702123410.761208-1-richard.henderson@linaro.org>
+ <20250702123410.761208-55-richard.henderson@linaro.org>
+In-Reply-To: <20250702123410.761208-55-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 3 Jul 2025 11:28:16 +0100
+X-Gm-Features: Ac12FXz7DbV4xPcqfft5dPRf7ZGrWiuPfmfYzyGjx54lfh6_wyzm0qks_Bvkrxg
+Message-ID: <CAFEAcA9USb5fRreqGnEQHk8neLDCn8rAeMutjK5arvgkGu48zQ@mail.gmail.com>
+Subject: Re: [PATCH v3 54/97] target/arm: Implement SME2 SQRSHR, UQRSHR,
+ SQRSHRN
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,51 +91,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 1 Jul 2025 15:00:42 +0200
-Laurent Vivier <lvivier@redhat.com> wrote:
-
-> On 01/07/2025 03:46, Jason Wang wrote:
+On Wed, 2 Jul 2025 at 13:38, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> > I would like to know the plan to support migration and its
-> > compatibility for passt.  
-> 
-> As I said, the goal of this series is to be able to use '-nic passt' as we can use '-nic 
-> user'. '-nic user' supports migration but TCP connections are lost.
-> 
-> With this series '-nic passt' supports migration but TCP connections are lost.
-> 
-> But we can improve '-nic passt' because we can migrate TCP connections too, for that we 
-> need to launch passt-repair and to use vhost-user, if we really want to do this it can be 
-> added (with a 'migration=on' parameter?)... but it's also already managed by '-netdev 
-> vhost-user' and passt started manually or by libvirt.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/tcg/helper-sme.h    |  20 ++++++
+>  target/arm/tcg/sme_helper.c    | 120 +++++++++++++++++++++++++++++++++
+>  target/arm/tcg/translate-sme.c |  33 +++++++++
+>  target/arm/tcg/sme.decode      |  37 ++++++++++
+>  4 files changed, 210 insertions(+)
 
-For context, as I suppose it's not obvious: passt needs a helper on
-both source and target to migrate TCP connections, because it needs the
-TCP_REPAIR socket option (same as CRIU) to dump and load connection
-parameters, to connect() TCP sockets without a new handshake, and to
-close() them without a RST.
+Bounds check and H macro usage again; otherwise
 
-That helper is passt-repair(1), and its only purpose is to set and
-clear TCP_REPAIR on sockets passed via SCM_RIGHTS.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-By the way, at the moment, the only user of passt with a full
-integration of the TCP migration capabilities is KubeVirt:
-
-  https://github.com/kubevirt/enhancements/blob/main/veps/sig-network/passt-migration-proposal.md
-  https://github.com/kubevirt/kubevirt/pull/14875
-
-With libvirt, right now, one would need to run passt-repair manually.
-Ideally, at some point, libvirt should gain the ability of doing all
-that for the user, but I haven't even thought of a reasonable proposal
-for how exactly libvirt could do this, yet.
-
-Migration of everything else doesn't need any helper, but "everything
-else" is just observed addresses at the moment, that is, passt needs to
-know what link-local and global unicast addresses the guest used to
-properly NAT traffic in some cases, and these are bits of back-end
-state we also transfer.
-
--- 
-Stefano
-
+thanks
+-- PMM
 
