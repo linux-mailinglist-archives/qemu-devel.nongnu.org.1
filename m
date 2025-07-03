@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA05AF74B8
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96766AF74CA
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:56:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXJOH-00085A-Cf; Thu, 03 Jul 2025 08:50:13 -0400
+	id 1uXJNu-0007Vi-Bv; Thu, 03 Jul 2025 08:49:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uXJLm-0005lQ-MG; Thu, 03 Jul 2025 08:47:39 -0400
+ id 1uXJLk-0005fo-IA; Thu, 03 Jul 2025 08:47:36 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uXJLf-0006np-4T; Thu, 03 Jul 2025 08:47:37 -0400
+ id 1uXJLc-0006o2-Kn; Thu, 03 Jul 2025 08:47:35 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:4a1:0:640:2691:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 17C5660CD1;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id D835A60CAF;
  Thu,  3 Jul 2025 15:47:20 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:73d::1:28])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id HlbMgQ0FgSw0-B6MCEwG0; Thu, 03 Jul 2025 15:47:19 +0300
+ ESMTPSA id HlbMgQ0FgSw0-4uj2EH2p; Thu, 03 Jul 2025 15:47:20 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1751546839;
- bh=F84/vf+slKCAI1XpqnU8oxnofrZpTBeaYgujwpNDFAw=;
+ s=default; t=1751546840;
+ bh=K1guSZvgPSyqTL8nJpBNAWLbXMO659zzSoxEpeUp2kw=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=YvcDsdkL0SE1IibwRdN5G3Vd22hJYZi5aW/d32fkKqbuPI0yICK0yzZuFnj5AAk9b
- G34I1XhhPaeWmN9brSmsWWRnOBJ8JJf4QxiE+GRzl2W0e5hUTpEdVqpj+hAujecIvJ
- A401lN/zoJ7jmjyM0tTGJ8HYcAskdVn3fiMwaXwc=
+ b=oT0rtWYc1KEms+cwhH746I/KLz3WIwZ9MO27cx6K4WnY8/m2n8+VCbjCfnAgTtXas
+ J0xlK7WTViqAd7CKudxWXv5/9LsuqH104Svanj9SGG+RSxxjm4ntH+6lmhzN4BGWzy
+ kMy/6kK8a3F8ziiQtjsXx3OhUua0ZFC1I/1u3cfg=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,9 +41,9 @@ Cc: qemu-block@nongnu.org, fam@euphon.net, pbonzini@redhat.com,
  jasowang@redhat.com, hreitz@redhat.com, kwolf@redhat.com,
  sgarzare@redhat.com, raphael@enfabrica.net,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH 2/4] vhost-user: stop use backend_features
-Date: Thu,  3 Jul 2025 15:47:10 +0300
-Message-ID: <20250703124713.2530079-3-vsementsov@yandex-team.ru>
+Subject: [PATCH 3/4] vhost_net: stop use backend_features
+Date: Thu,  3 Jul 2025 15:47:11 +0300
+Message-ID: <20250703124713.2530079-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250703124713.2530079-1-vsementsov@yandex-team.ru>
 References: <20250703124713.2530079-1-vsementsov@yandex-team.ru>
@@ -57,7 +57,7 @@ X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,58 +73,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simply use features instead, we have same flag here.
+We are going to drop backend_features variable as an extra one.
+Call to qemu_has_vnet_hdr() is cheap.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/virtio/vhost-user.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ hw/net/vhost_net.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 1b2879a90cc..cf6f53801db 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1232,7 +1232,7 @@ static int vhost_user_set_vring_base(struct vhost_dev *dev,
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index 891f235a0a6..38cbc6caa14 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -139,7 +139,8 @@ int vhost_net_set_config(struct vhost_net *net, const uint8_t *data,
  
- static bool vhost_user_set_vring_enable_supported(struct vhost_dev *dev)
+ void vhost_net_ack_features(struct vhost_net *net, uint64_t features)
  {
--    return virtio_has_feature(dev->backend_features,
-+    return virtio_has_feature(dev->features,
-                               VHOST_USER_F_PROTOCOL_FEATURES);
+-    net->dev.acked_features = net->dev.backend_features;
++    net->dev.acked_features = qemu_has_vnet_hdr(net->nc)
++        ? 0 : (1ULL << VHOST_NET_F_VIRTIO_NET_HDR);
+     vhost_ack_features(&net->dev, vhost_net_get_feature_bits(net), features);
  }
  
-@@ -1449,14 +1449,15 @@ static int vhost_user_set_features(struct vhost_dev *dev,
-     int ret;
+@@ -338,12 +339,9 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
+         if (r < 0) {
+             goto fail;
+         }
+-        net->dev.backend_features = qemu_has_vnet_hdr(options->net_backend)
+-            ? 0 : (1ULL << VHOST_NET_F_VIRTIO_NET_HDR);
+         net->backend = r;
+         net->dev.protocol_features = 0;
+     } else {
+-        net->dev.backend_features = 0;
+         net->dev.protocol_features = 0;
+         net->backend = -1;
  
-     /*
--     * We need to include any extra backend only feature bits that
--     * might be needed by our device. Currently this includes the
--     * VHOST_USER_F_PROTOCOL_FEATURES bit for enabling protocol
--     * features.
-+     * Don't lose VHOST_USER_F_PROTOCOL_FEATURES, which is vhost-user
-+     * specific.
-      */
--    ret = vhost_user_set_u64(dev, VHOST_USER_SET_FEATURES,
--                              features | dev->backend_features,
--                              log_enabled);
-+    if (virtio_has_feature(dev->features, VHOST_USER_F_PROTOCOL_FEATURES)) {
-+        features |= 1ULL << VHOST_USER_F_PROTOCOL_FEATURES;
-+    }
-+
-+    ret = vhost_user_set_u64(dev, VHOST_USER_SET_FEATURES, features,
-+                             log_enabled);
- 
-     if (virtio_has_feature(dev->protocol_features,
-                            VHOST_USER_PROTOCOL_F_STATUS)) {
-@@ -2187,8 +2188,6 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
-             (dev->config_ops && dev->config_ops->vhost_dev_config_notifier);
-         uint64_t protocol_features;
- 
--        dev->backend_features |= 1ULL << VHOST_USER_F_PROTOCOL_FEATURES;
--
-         err = vhost_user_get_u64(dev, VHOST_USER_GET_PROTOCOL_FEATURES,
-                                  &protocol_features);
-         if (err < 0) {
+@@ -363,10 +361,10 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
+                                sizeof(struct virtio_net_hdr_mrg_rxbuf))) {
+             net->dev.features &= ~(1ULL << VIRTIO_NET_F_MRG_RXBUF);
+         }
+-        if (~net->dev.features & net->dev.backend_features) {
+-            fprintf(stderr, "vhost lacks feature mask 0x%" PRIx64
+-                   " for backend\n",
+-                   (uint64_t)(~net->dev.features & net->dev.backend_features));
++        if (!qemu_has_vnet_hdr(options->net_backend) &&
++            (~net->dev.features & (1ULL << VHOST_NET_F_VIRTIO_NET_HDR))) {
++            fprintf(stderr, "vhost lacks feature mask 0x%llx for backend\n",
++                    ~net->dev.features & (1ULL << VHOST_NET_F_VIRTIO_NET_HDR));
+             goto fail;
+         }
+     }
 -- 
 2.48.1
 
