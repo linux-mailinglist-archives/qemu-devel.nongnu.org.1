@@ -2,64 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F74AF7FEC
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 20:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC70DAF8171
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 21:36:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXObQ-0003oO-30; Thu, 03 Jul 2025 14:24:08 -0400
+	id 1uXPhx-0001Hl-55; Thu, 03 Jul 2025 15:34:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <charmitro@posteo.net>)
- id 1uXObK-0003nP-6w
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 14:24:03 -0400
-Received: from mout01.posteo.de ([185.67.36.65])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <charmitro@posteo.net>)
- id 1uXObG-0007nf-NS
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 14:24:01 -0400
-Received: from submission (posteo.de [185.67.36.169]) 
- by mout01.posteo.de (Postfix) with ESMTPS id 9912324002B
- for <qemu-devel@nongnu.org>; Thu,  3 Jul 2025 20:23:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net;
- s=1984.ea087b; t=1751567030;
- bh=aONxnhG2/4C5CRB6gZRLVbyh3cNluMhiy15RdumhPlM=;
- h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:
- Content-Transfer-Encoding:From;
- b=iizuKDkDGjGE6OCBfRVLREmzVrM/1vk+yyLSgcUj+NIThiC13dGTAMBakeheHugn+
- J4haCs+ajFxyWmUlb4v4ec8tQI21PUmptOsYQXqHzrK5wf5AWITjOd13a8LFcsD8aq
- ydMbG6h0BjOzDuPP0ErshwI1QqdgeveydMXJSB/87+mnFxy1dQQzwog+yM3yJrnBhy
- mNd8xmMQ0V0W+m3qBGk66d0xf2FPHrbPHsXw5oC94WDAEx4NzpvOy5ObQBan2c2H1k
- QulnSnmuR8qAEBXGFow4pbqbYHYQosubdYqQUlxcz1HdyQo4c+ur6YORKBFGVXzPoT
- xaaS/dablze4SOPqhSqTQ8Gjj5WeCRLfOdtV5VSmr1mGYdILh9UbvUyzu1ELu8NmKm
- onhko2pCJ4uxU5yeXpPTtmz8TsD+Cr/R4xdRgGRe1gb9Mt9aM3pYmdW9gAzYOqC7Em
- QceOJXW32ikBf3sym58yWTywK9Q0NvpSEN34cjWKJKUVXuxtU8l
-Received: from customer (localhost [127.0.0.1])
- by submission (posteo.de) with ESMTPSA id 4bY4sK372fz6v0M;
- Thu,  3 Jul 2025 20:23:49 +0200 (CEST)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- Charalampos Mitrodimas <charmitro@posteo.net>
-Subject: [PATCH 2/2] tests/tcg/riscv64: Add test for MEPC bit masking
-Date: Thu,  3 Jul 2025 18:21:44 +0000
-Message-ID: <20250703182157.281320-3-charmitro@posteo.net>
-In-Reply-To: <20250703182157.281320-1-charmitro@posteo.net>
-References: <20250703182157.281320-1-charmitro@posteo.net>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uXPht-0001Gg-Lb
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 15:34:54 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uXPhr-0001Qo-3N
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 15:34:52 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 1AEEA1F387;
+ Thu,  3 Jul 2025 19:34:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1751571288; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KmHtXLyhwa2B8XjU67oCZv6SMY1I8hD0C03viSSKMBU=;
+ b=rys5V1xYIQQzEM/EJ924xsD44Qkn1HwvO9kXbhFm3XQ4SUym3PQS6HLlKo6DeUnRAWuJS4
+ /hfNcMlRFeIuPCx/lbL+PPFzpp+iHdQhPpUPrkAUsxidPPZ5u5dHWToCzAMkW18stX/4HK
+ DQeDo0UwhlcvlnEVdmOTl/TZ8WM7DXY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1751571288;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KmHtXLyhwa2B8XjU67oCZv6SMY1I8hD0C03viSSKMBU=;
+ b=bJggfEQr3SowaIOV4NCtw1uxJYDlvbZro3JLk9fviN4GKh2ynpWfEqZX/DL+mFdMSYnkcI
+ sImqTgTfnZ2lpEBA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1751571288; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KmHtXLyhwa2B8XjU67oCZv6SMY1I8hD0C03viSSKMBU=;
+ b=rys5V1xYIQQzEM/EJ924xsD44Qkn1HwvO9kXbhFm3XQ4SUym3PQS6HLlKo6DeUnRAWuJS4
+ /hfNcMlRFeIuPCx/lbL+PPFzpp+iHdQhPpUPrkAUsxidPPZ5u5dHWToCzAMkW18stX/4HK
+ DQeDo0UwhlcvlnEVdmOTl/TZ8WM7DXY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1751571288;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KmHtXLyhwa2B8XjU67oCZv6SMY1I8hD0C03viSSKMBU=;
+ b=bJggfEQr3SowaIOV4NCtw1uxJYDlvbZro3JLk9fviN4GKh2ynpWfEqZX/DL+mFdMSYnkcI
+ sImqTgTfnZ2lpEBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 876E713721;
+ Thu,  3 Jul 2025 19:34:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id sId9EFfbZmjCQAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 03 Jul 2025 19:34:47 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, Peter
+ Xu <peterx@redhat.com>, Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 04/24] migration: Remove MigrateSetParameters
+In-Reply-To: <87jz4s1gt6.fsf@pond.sub.org>
+References: <20250630195913.28033-1-farosas@suse.de>
+ <20250630195913.28033-5-farosas@suse.de> <87jz4s1gt6.fsf@pond.sub.org>
+Date: Thu, 03 Jul 2025 16:34:44 -0300
+Message-ID: <87pleh3w6j.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.67.36.65; envelope-from=charmitro@posteo.net;
- helo=mout01.posteo.de
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; MISSING_XM_UA(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:email,
+ suse.de:mid]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,119 +116,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a regression test to verify that MEPC properly masks the lower
-bits when an address with mode bits is written to it, as required by
-the RISC-V Privileged Architecture specification.
+Markus Armbruster <armbru@redhat.com> writes:
 
-The test sets STVEC to an address with bit 0 set (vectored mode),
-triggers an illegal instruction exception, copies STVEC to MEPC in the
-trap handler, and verifies that MEPC masks bits [1:0] correctly for
-IALIGN=32.
+> Fabiano Rosas <farosas@suse.de> writes:
+>
+>> Now that the TLS options have been made the same between
+>> migrate-set-parameters and query-migrate-parameters, a single type can
+>> be used. Remove MigrateSetParameters.
+>>
+>> The TLS options documentation from MigrationParameters were replaced
+>> with the ones from MigrateSetParameters which was more complete.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>
+> [...]
+>
+>> diff --git a/qapi/migration.json b/qapi/migration.json
+>> index 97bb022c45..3788c39857 100644
+>> --- a/qapi/migration.json
+>> +++ b/qapi/migration.json
+>> @@ -914,206 +914,10 @@
+>>             'zero-page-detection',
+>>             'direct-io'] }
+>>  
+>> -##
+>> -# @MigrateSetParameters:
+>
+> [...]
+>
+>>  ##
+>>  # @migrate-set-parameters:
+>>  #
+>> -# Set various migration parameters.
+>> +# Set migration parameters.  All fields are optional.
+>
+> Use "arguments" instead of "fields".
+>
+>>  #
+>>  # Since: 2.4
+>>  #
+>> @@ -1124,13 +928,11 @@
+>>  #     <- { "return": {} }
+>>  ##
+>>  { 'command': 'migrate-set-parameters', 'boxed': true,
+>> -  'data': 'MigrateSetParameters' }
+>> +  'data': 'MigrationParameters' }
+>>  
+>>  ##
+>>  # @MigrationParameters:
+>>  #
+>> -# The optional members aren't actually optional.
+>> -#
+>>  # @announce-initial: Initial delay (in milliseconds) before sending
+>>  #     the first announce (Since 4.0)
+>>  #
+>> @@ -1148,12 +950,12 @@
+>>  #     percentage.  The default value is 50.  (Since 5.0)
+>>  #
+>>  # @cpu-throttle-initial: Initial percentage of time guest cpus are
+>> -#     throttled when migration auto-converge is activated.
+>> -#     (Since 2.7)
+>> +#     throttled when migration auto-converge is activated.  The
+>> +#     default value is 20.  (Since 2.7)
+>>  #
+>>  # @cpu-throttle-increment: throttle percentage increase each time
+>>  #     auto-converge detects that migration is not making progress.
+>> -#     (Since 2.7)
+>> +#     The default value is 10.  (Since 2.7)
+>>  #
+>>  # @cpu-throttle-tailslow: Make CPU throttling slower at tail stage.
+>>  #     At the tail stage of throttling, the Guest is very sensitive to
+>> @@ -1172,21 +974,25 @@
+>>  #     for establishing a TLS connection over the migration data
+>>  #     channel.  On the outgoing side of the migration, the credentials
+>>  #     must be for a 'client' endpoint, while for the incoming side the
+>> -#     credentials must be for a 'server' endpoint.  An empty string
+>> -#     means that QEMU will use plain text mode for migration, rather
+>> -#     than TLS.  (Since 2.7)
+>> -#
+>> -#     Note: 2.8 omits empty @tls-creds instead.
+>> +#     credentials must be for a 'server' endpoint.  Setting this to a
+>> +#     non-empty string enables TLS for all migrations.  An empty
+>> +#     string means that QEMU will use plain text mode for migration,
+>> +#     rather than TLS.  This is the default.  (Since 2.7)
+>>  #
+>>  # @tls-hostname: migration target's hostname for validating the
+>>  #     server's x509 certificate identity.  If empty, QEMU will use the
+>> -#     hostname from the migration URI, if any.  (Since 2.7)
+>> +#     hostname from the migration URI, if any.  A non-empty value is
+>> +#     required when using x509 based TLS credentials and the migration
+>> +#     URI does not include a hostname, such as fd: or exec: based
+>> +#     migration.  (Since 2.7)
+>>  #
+>> -#     Note: 2.8 omits empty @tls-hostname instead.
+>> +#     Note: empty value works only since 2.9.
+>>  #
+>>  # @tls-authz: ID of the 'authz' object subclass that provides access
+>>  #     control checking of the TLS x509 certificate distinguished name.
+>> -#     (Since 4.0)
+>> +#     This object is only resolved at time of use, so can be deleted
+>> +#     and recreated on the fly while the migration server is active.
+>> +#     If missing, it will default to denying access (Since 4.0)
+>>  #
+>>  # @max-bandwidth: maximum speed for migration, in bytes per second.
+>>  #     (Since 2.8)
+>> @@ -1205,8 +1011,8 @@
+>>  # @downtime-limit: set maximum tolerated downtime for migration.
+>>  #     maximum downtime in milliseconds (Since 2.8)
+>>  #
+>> -# @x-checkpoint-delay: the delay time between two COLO checkpoints.
+>> -#     (Since 2.8)
+>> +# @x-checkpoint-delay: the delay time between two COLO checkpoints in
+>> +#     periodic mode.  (Since 2.8)
+>>  #
+>>  # @multifd-channels: Number of channels used to migrate data in
+>>  #     parallel.  This is the same number that the number of sockets
+>
+> Please add
+>
+>    ##
+>    # @query-migrate-parameters:
+>    #
+>   -# Return information about the current migration parameters
+>   +# Return information about the current migration parameters.
+>   +# Optional members of the return value are always present.
+>    #
+>    # Returns: @MigrationParameters
+>    #
+>    # Since: 2.4
+>    #
+>
+> and double-check "always" is actually true.
 
-Without the fix, MEPC retains the mode bits (returns non-zero/FAIL).
-With the fix, MEPC clears bits [1:0] (returns 0/PASS).
+It's not, block-bitmap-mapping needs to be kept optional for
+compatibility.
 
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
----
- tests/tcg/riscv64/Makefile.softmmu-target |  4 ++
- tests/tcg/riscv64/test-mepc-masking.S     | 73 +++++++++++++++++++++++
- 2 files changed, 77 insertions(+)
- create mode 100644 tests/tcg/riscv64/test-mepc-masking.S
+What about:
 
-diff --git a/tests/tcg/riscv64/Makefile.softmmu-target b/tests/tcg/riscv64/Makefile.softmmu-target
-index 7c1d44d3f4..3ca595335d 100644
---- a/tests/tcg/riscv64/Makefile.softmmu-target
-+++ b/tests/tcg/riscv64/Makefile.softmmu-target
-@@ -20,5 +20,9 @@ EXTRA_RUNS += run-issue1060
- run-issue1060: issue1060
- 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
- 
-+EXTRA_RUNS += run-test-mepc-masking
-+run-test-mepc-masking: test-mepc-masking
-+	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
-+
- # We don't currently support the multiarch system tests
- undefine MULTIARCH_TESTS
-diff --git a/tests/tcg/riscv64/test-mepc-masking.S b/tests/tcg/riscv64/test-mepc-masking.S
-new file mode 100644
-index 0000000000..fccd2a7ac4
---- /dev/null
-+++ b/tests/tcg/riscv64/test-mepc-masking.S
-@@ -0,0 +1,73 @@
-+/*
-+ * Test for MEPC masking bug fix
-+ *
-+ * This test verifies that MEPC properly masks the lower bits according
-+ * to the RISC-V specification when vectored mode bits from STVEC are
-+ * written to MEPC.
-+ */
-+
-+	.option	norvc
-+
-+	.text
-+	.global _start
-+_start:
-+	/* Set up machine trap vector */
-+	lla	t0, machine_trap_handler
-+	csrw	mtvec, t0
-+
-+	/* Set STVEC with vectored mode (mode bits = 01) */
-+	li	t0, 0x80004001
-+	csrw	stvec, t0
-+
-+	/* Clear medeleg to handle exceptions in M-mode */
-+	csrw	medeleg, zero
-+
-+	/* Trigger illegal instruction exception */
-+	.word	0xffffffff
-+
-+test_completed:
-+	/* Exit with result in a0 */
-+	/* a0 = 0: success (bits [1:0] were masked) */
-+	/* a0 != 0: failure (some bits were not masked) */
-+	j	_exit
-+
-+machine_trap_handler:
-+	/* Check if illegal instruction (mcause = 2) */
-+	csrr	t0, mcause
-+	li	t1, 2
-+	bne	t0, t1, skip_test
-+
-+	/* Test: Copy STVEC (with mode bits) to MEPC */
-+	csrr	t0, stvec	/* t0 = 0x80004001 */
-+	csrw	mepc, t0	/* Write to MEPC */
-+	csrr	t1, mepc	/* Read back MEPC */
-+
-+	/* Check if bits [1:0] are masked (IALIGN=32 without RVC) */
-+	andi	a0, t1, 3	/* a0 = 0 if both bits masked correctly */
-+
-+	/* Set correct return address */
-+	lla	t0, test_completed
-+	csrw	mepc, t0
-+
-+skip_test:
-+	mret
-+
-+/* Exit with semihosting */
-+_exit:
-+	lla	a1, semiargs
-+	li	t0, 0x20026	/* ADP_Stopped_ApplicationExit */
-+	sd	t0, 0(a1)
-+	sd	a0, 8(a1)
-+	li	a0, 0x20	/* TARGET_SYS_EXIT_EXTENDED */
-+
-+	/* Semihosting call sequence */
-+	.balign	16
-+	slli	zero, zero, 0x1f
-+	ebreak
-+	srai	zero, zero, 0x7
-+	j	.
-+
-+	.data
-+	.balign	8
-+semiargs:
-+	.space	16
--- 
-2.47.2
+# Return information about the current migration parameters.  Optional
+# members of the return value are always present, except for
+# block-bitmap-mapping that's only present if it has been previously
+# set.
 
+>
+> With that, QAPI schema
+> Acked-by: Markus Armbruster <armbru@redhat.com>
 
