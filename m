@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C701BAF7182
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:05:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C64AF71D6
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:13:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXHiT-0003SB-Es; Thu, 03 Jul 2025 07:02:57 -0400
+	id 1uXHid-0004F4-1W; Thu, 03 Jul 2025 07:03:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHff-0006lk-Tt
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:00:04 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHfg-0006mE-Sw
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:00:05 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHfL-0003Vw-By
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:59:46 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3a54700a46eso4371438f8f.1
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:59:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHfP-0003WH-IT
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:59:48 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3a54690d369so5259653f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751540380; x=1752145180; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751540385; x=1752145185; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0UiewseZoW7++jqLIzKMJ/OYq1tgfsCyntten+qzSRY=;
- b=zzM7SngbgxQyfKTTAA8B/8wCriS9CF+aXn3rjX4u85meJirTjTyxaGsA2uWCFoflSO
- KEnImqc0agwaa0TWB+YE8ELCMOKxZFdQHcSmn8GpGQc2yGPJqS3TSydUfu/4ErtiCRB+
- K0TPFq1R0ET2GXGjdBo01sR7ztbY/zz3OSwzhfb+YFnPLWPlreyTPyMsdsEg0L4lRplI
- Wdk1amYHzSLTTWDrM/lGDkzjKTMlQbdJhr7xM2ydShZW1olQ5D9P/BOfibuMfYzfWNl8
- nan8HA7zTzVMdn73vaLkWsvLGbC7fpwI38zwhpwIOemn3P9Paeu1L7QoD4yHp9nUgv+P
- +Ktw==
+ bh=yvjGPIKQGEYeURH3HTUPhcPT6ROyPPS2REI2o53ZBAU=;
+ b=WPzVFm1m6yvORFtx0yuO+rw87zuhrHJXvdITstmzoC7u4e3UCKnarF8I6Lzwbsq2k5
+ DJUntm9ZnRosrJ0GK0v7MR6eu/JVxL4PPSeEGmCW+AiZ8fVdS9jKZtWHC7vJTGCKj7K3
+ /2CGcEc5kjuJ1uxgrNTJr3t27i7FFMVR5C0yunPgHkg6SZ2N1BSGH4o8mYfx5ESBX5A5
+ 5TM9JRZkUCYwXKHDbYmDCUTavI7+c3h9AGhqtKk5nwvOKav37Ut2SdIv/FnOQ+r7bUiJ
+ eQdzmyJFtMhNkiD/dxh0MV4ibDUv5tl3RubVqpVSGSNun4RiWcZrO8HVAatZBgpy9tKC
+ hIwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751540380; x=1752145180;
+ d=1e100.net; s=20230601; t=1751540385; x=1752145185;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0UiewseZoW7++jqLIzKMJ/OYq1tgfsCyntten+qzSRY=;
- b=C/vBEnWEIYHXTLFsiavcMW1GMcszrgSRiI6I53jSZUhXk94Tv/zbT/humM26bEZW0f
- YeD/ixvQrlzDjc7KTYTQSe/x9P7Asb+dEm06BC/Jar8mT77hdSrWr3qu2YJ8yvA1hzWO
- kCxLcMCoZfAHvxS4DQJd93EYR8KvHpc3MyeTaTAkCYD6AVi0MeAsFsO2ju+wE57crSdT
- vvF756zlngRLBzAo5+V18SX+cfROcrNphb7VJPSwiKTXxwT99WOslofV/BdV3EpuC5ZJ
- xp0HDdtf1ePG5OQKVtgqWxGY+7kbpWIctGFoJ3K1xykhb4DaGmYEA4D6ZF/Q3X48HDF/
- Udhw==
-X-Gm-Message-State: AOJu0YyogninMFZIJ7ygyVAfoYS5/9BcQro9ZAfxKwCZ6LNJcN/Mo6IN
- TsBejsE/6qiZlQ6wo7J0s43L2pdNKKmPyhMfgAmldaxZtAWGBRd9f8WG1oOrHEam8XQLSsicZGo
- l3TzYW1c=
-X-Gm-Gg: ASbGncvw+bheyPvZk41of5jubcZ+eOR8D4fNmlTUUkAGNB5B79CeC755FGKrghFci7Q
- IDrc0C/vtIuyGiKf4lsd0pWkqrGasngdXdWUa375ViIcpH4+DFBGRFjLVeHDzKJ+7BnYUYTL/jj
- fbxV84chEyomD0dd6SPzN4bGGt6jGQ1MkR6O+i63Y1APXgEbKC2foZFzJTWD95rkHs8Y07QpKz9
- 8bDX9lOE33DQFHgHWY8W1VckoL/iZB6/jKoo4CQcyoHfGALsjsXCZbZNqBTyH/WWSqpvAoE/Cuo
- UwgmNi2DI4iISckLt3yk8Iw0tlxr5iTkAtFPouIhLzCyJoTGnOj5lWCt+QW1MxB0e8FEQieev16
- rZXOKZedqDq8=
-X-Google-Smtp-Source: AGHT+IEglrs09yE017jiPqaImjRQF60pKbLzM7xZkDB3/SBr13de9FGL9F2tO1sQQvTsqyjGi5baPQ==
-X-Received: by 2002:a05:6000:21ca:b0:3a4:fc52:f5d4 with SMTP id
- ffacd0b85a97d-3b2005840cdmr3299331f8f.47.1751540380213; 
- Thu, 03 Jul 2025 03:59:40 -0700 (PDT)
+ bh=yvjGPIKQGEYeURH3HTUPhcPT6ROyPPS2REI2o53ZBAU=;
+ b=JWDmAIBnVyI3GlKg6ToXmyhIsTGDbR/NQxsBiOE06tM6l/Mv3hrEVneC5gEBINLNf3
+ HJ9+qfNh9LbOlZuAuZN4BkzdPF1M+IXC7/OKP7AeVf2mNe9GMVLMRDptKan0WpzRIgwB
+ TC+kQeTFkl8cOa6nlqVOz3d/0i0Y4OIh4Kk8UF0v93xQEVwE5+ga3NP6D/7exL2WBGMZ
+ klh9zMQ0W7ixVNqHUBfbAigKrAMFLaF15sL/mtPv3pR6Um+YPnE5JWmafG+Cn7uok7Fu
+ W4fvCfDy6NzWwfrE53Q/Bte/ahVv4A95T6FaBdLCcw+MXii8eniOtwo5RpRgNSe3v1eJ
+ iPrg==
+X-Gm-Message-State: AOJu0YxW+J5ifCSHT836vhvy6Sxh7gR9H6gz3fg74ZJL10blaY2tEfkJ
+ G+CmVFfLfgo6OxsPF+AT9KlC0xFGSj5w8VjWHag9tXmSb7EdkP6ZM8ipz/0H4DYxUX7HgUfo/ik
+ 6mE7mkoM=
+X-Gm-Gg: ASbGncu8G6AABgRoKXtVFNujP/5Wv8H6ItYrqjllAPedPBv3NWHnvHiIA6Z7T1CF8zc
+ 0xmHQ2vjtyyqvzi6FRkaBa4OY/+zUFOf+DjLVYlgd4csTdUpbUlr79NOYbf/R2vZuUUfjUODI71
+ 7Va+nxBhWIqH6uKfSz9DVEPw10vk/EWW9FPzju0U9YlhiwDrwYjtV/8PIcUNSh405UCND77lUQY
+ ZR2uu+N/PohGKqPJ6fr+lDBNDB1oL70nBgVLjle9Ev1g9IWx48GAmaHQZ+LCueHNLMk2yXg4Krg
+ rwJ0ayyl1iSkv265PjP0GORwVr2Q8H4Z41vQv3FTA9bZMmZubWvILGoR7Y0N//NubbZWQlKs8OJ
+ 6q1I9azcNAZxConFoPLLwVw==
+X-Google-Smtp-Source: AGHT+IFFe1vpP0h0GeInGGctD4CBQmH2oRt74qF+x5fBthfRdo/V9+4qQpVqJEAS4Y6Z8oDf+L/60g==
+X-Received: by 2002:a05:6000:4028:b0:3a5:287b:da02 with SMTP id
+ ffacd0b85a97d-3b200b4657bmr5027241f8f.40.1751540385416; 
+ Thu, 03 Jul 2025 03:59:45 -0700 (PDT)
 Received: from localhost.localdomain ([83.247.137.20])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a9bde35dsm23115255e9.30.2025.07.03.03.59.39
+ ffacd0b85a97d-3a88c7e72b6sm18614690f8f.15.2025.07.03.03.59.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 03:59:39 -0700 (PDT)
+ Thu, 03 Jul 2025 03:59:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Sunil Muthuswamy <sunilmut@microsoft.com>
-Subject: [PATCH v5 45/69] accel/whpx: Expose whpx_enabled() to common code
-Date: Thu,  3 Jul 2025 12:55:11 +0200
-Message-ID: <20250703105540.67664-46-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 46/69] accel/system: Introduce hwaccel_enabled() helper
+Date: Thu,  3 Jul 2025 12:55:12 +0200
+Message-ID: <20250703105540.67664-47-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703105540.67664-1-philmd@linaro.org>
 References: <20250703105540.67664-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,102 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently whpx_enabled() is restricted to target-specific code.
-By defining CONFIG_WHPX_IS_POSSIBLE we allow its use anywhere.
+hwaccel_enabled() return whether any hardware accelerator
+is available.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/system/whpx.h       | 27 ++++++++++++++-------------
- accel/stubs/whpx-stub.c     | 12 ++++++++++++
- target/i386/whpx/whpx-all.c |  5 -----
- accel/stubs/meson.build     |  1 +
- 4 files changed, 27 insertions(+), 18 deletions(-)
- create mode 100644 accel/stubs/whpx-stub.c
+ include/system/hw_accel.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/include/system/whpx.h b/include/system/whpx.h
-index 00ff409b682..00f6a3e5236 100644
---- a/include/system/whpx.h
-+++ b/include/system/whpx.h
-@@ -16,19 +16,20 @@
- #define QEMU_WHPX_H
+diff --git a/include/system/hw_accel.h b/include/system/hw_accel.h
+index fa9228d5d2d..49556b026e0 100644
+--- a/include/system/hw_accel.h
++++ b/include/system/hw_accel.h
+@@ -39,4 +39,17 @@ void cpu_synchronize_pre_loadvm(CPUState *cpu);
+ void cpu_synchronize_post_reset(CPUState *cpu);
+ void cpu_synchronize_post_init(CPUState *cpu);
  
- #ifdef COMPILING_PER_TARGET
--
--#ifdef CONFIG_WHPX
--
--int whpx_enabled(void);
--bool whpx_apic_in_platform(void);
--
--#else /* CONFIG_WHPX */
--
--#define whpx_enabled() (0)
--#define whpx_apic_in_platform() (0)
--
--#endif /* CONFIG_WHPX */
--
-+# ifdef CONFIG_WHPX
-+#  define CONFIG_WHPX_IS_POSSIBLE
-+# endif /* !CONFIG_WHPX */
-+#else
-+# define CONFIG_WHPX_IS_POSSIBLE
- #endif /* COMPILING_PER_TARGET */
- 
-+#ifdef CONFIG_WHPX_IS_POSSIBLE
-+extern bool whpx_allowed;
-+#define whpx_enabled() (whpx_allowed)
-+bool whpx_apic_in_platform(void);
-+#else /* !CONFIG_WHPX_IS_POSSIBLE */
-+#define whpx_enabled() 0
-+#define whpx_apic_in_platform() (0)
-+#endif /* !CONFIG_WHPX_IS_POSSIBLE */
-+
- #endif /* QEMU_WHPX_H */
-diff --git a/accel/stubs/whpx-stub.c b/accel/stubs/whpx-stub.c
-new file mode 100644
-index 00000000000..c564c89fd0b
---- /dev/null
-+++ b/accel/stubs/whpx-stub.c
-@@ -0,0 +1,12 @@
-+/*
-+ * WHPX stubs for QEMU
++/**
++ * hwaccel_enabled:
 + *
-+ *  Copyright (c) Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Returns: %true if a hardware accelerator is enabled, %false otherwise.
 + */
++static inline bool hwaccel_enabled(void)
++{
++    return hvf_enabled()
++        || kvm_enabled()
++        || nvmm_enabled()
++        || whpx_enabled();
++}
 +
-+#include "qemu/osdep.h"
-+#include "system/whpx.h"
-+
-+bool whpx_allowed;
-diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
-index 525d6a9567b..1732d108105 100644
---- a/target/i386/whpx/whpx-all.c
-+++ b/target/i386/whpx/whpx-all.c
-@@ -2688,11 +2688,6 @@ error:
-     return ret;
- }
- 
--int whpx_enabled(void)
--{
--    return whpx_allowed;
--}
--
- bool whpx_apic_in_platform(void) {
-     return whpx_global.apic_in_platform;
- }
-diff --git a/accel/stubs/meson.build b/accel/stubs/meson.build
-index 4c34287215f..9dfc4f9ddaf 100644
---- a/accel/stubs/meson.build
-+++ b/accel/stubs/meson.build
-@@ -4,5 +4,6 @@ system_stubs_ss.add(when: 'CONFIG_KVM', if_false: files('kvm-stub.c'))
- system_stubs_ss.add(when: 'CONFIG_TCG', if_false: files('tcg-stub.c'))
- system_stubs_ss.add(when: 'CONFIG_HVF', if_false: files('hvf-stub.c'))
- system_stubs_ss.add(when: 'CONFIG_NVMM', if_false: files('nvmm-stub.c'))
-+system_stubs_ss.add(when: 'CONFIG_WHPX', if_false: files('whpx-stub.c'))
- 
- specific_ss.add_all(when: ['CONFIG_SYSTEM_ONLY'], if_true: system_stubs_ss)
+ #endif /* QEMU_HW_ACCEL_H */
 -- 
 2.49.0
 
