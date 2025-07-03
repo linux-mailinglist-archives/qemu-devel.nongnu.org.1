@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD2AAF745B
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36851AF7456
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:39:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXJCh-0008Dm-CJ; Thu, 03 Jul 2025 08:38:15 -0400
+	id 1uXJCs-0008Fi-8r; Thu, 03 Jul 2025 08:38:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uXJCe-0008An-Lv
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:38:12 -0400
+ id 1uXJCj-0008Ei-9X
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:38:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uXJCc-0000Ch-RK
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:38:12 -0400
+ id 1uXJCg-0000EA-Jz
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:38:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751546289;
+ s=mimecast20190719; t=1751546293;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8tsfNnFgjFSMarOZ/Ey2DdHtTx77eO4HAyY+2EP63+M=;
- b=PzZ23hawIEKKq8Vfb4oHaVHUQWq+vq36tdxwcgIRBZjqMNTezp4MIkwv8yIHwA+zVkE5cU
- 6c7JpcQoyRBkCXI/BLs4+vEJie9hwKjgZFShqE/8j2FuF1wJOk5kl3ydHPK9Z1QOODo4s9
- FOKClukkcKXdCmffQwcs9g6vwiwvTiY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=BVBauhjAfa1MgdLoAK1AnZIiryc3UEaONwjgDAPygh4=;
+ b=IoKA2E524a/jJISffxV1dN5K2+i1jGdT0mSqgD4LgUVQ3NEQErvT9thZFAMNvZeT0bJF7y
+ WCC4u3KJNSS0PdvfzIP2UhTeyMvv7c4wv2zt4IxeyT6DopcbX7Ry2QFr32YbWlCRaYFSJ2
+ 8C+WUbU9BjANuUpGilkx0vi9U9xywLQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-147-eX7hsATXPPK2tGvWD0_1dA-1; Thu,
- 03 Jul 2025 08:38:04 -0400
-X-MC-Unique: eX7hsATXPPK2tGvWD0_1dA-1
-X-Mimecast-MFC-AGG-ID: eX7hsATXPPK2tGvWD0_1dA_1751546283
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-599-Xa3hcKhIM0yNroyOkmdtYA-1; Thu,
+ 03 Jul 2025 08:38:10 -0400
+X-MC-Unique: Xa3hcKhIM0yNroyOkmdtYA-1
+X-Mimecast-MFC-AGG-ID: Xa3hcKhIM0yNroyOkmdtYA_1751546288
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 585EB18DA380; Thu,  3 Jul 2025 12:38:03 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CC7B11956086; Thu,  3 Jul 2025 12:38:08 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.16])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 748411803AFF; Thu,  3 Jul 2025 12:37:58 +0000 (UTC)
+ id D8C4C18046C7; Thu,  3 Jul 2025 12:38:03 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -53,10 +53,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
 Cc: pbonzini@redhat.com,
 	philmd@linaro.org,
 	alex.bennee@linaro.org
-Subject: [PATCH v5 05/36] hw/pci-host/gpex-acpi: Split host bridge OSC and DSM
- generation
-Date: Thu,  3 Jul 2025 14:35:05 +0200
-Message-ID: <20250703123728.414386-6-eric.auger@redhat.com>
+Subject: [PATCH v5 06/36] hw/acpi/ged: Add a
+ acpi-pci-hotplug-with-bridge-support property
+Date: Thu,  3 Jul 2025 14:35:06 +0200
+Message-ID: <20250703123728.414386-7-eric.auger@redhat.com>
 In-Reply-To: <20250703123728.414386-1-eric.auger@redhat.com>
 References: <20250703123728.414386-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -88,110 +88,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-acpi_dsdt_add_pci_osc() name is confusing as it gives the impression
-it appends the _OSC method but in fact it also appends the _DSM method
-for the host bridge. Let's split the function into two separate ones
-and let them return the method Aml pointer instead. This matches the
-way it is done on x86 (build_q35_osc_method). In a subsequent patch
-we will replace the gpex method by the q35 implementation that will
-become shared between ARM and x86.
-
-acpi_dsdt_add_host_bridge_methods is a new top helper that generates
-both the _OSC and _DSM methods.
-
-We take the opportunity to move SUPP and CTRL in the _osc method
-that use them.
+A new boolean property is introduced. This will be used to turn
+ACPI PCI hotplug support. By default it is unset.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-
 ---
+ include/hw/acpi/generic_event_device.h | 2 ++
+ hw/acpi/generic_event_device.c         | 2 ++
+ 2 files changed, 4 insertions(+)
 
-v2 -> v3:
-- moved
-    aml_append(dev, aml_name_decl("SUPP", aml_int(0)));
-    aml_append(dev, aml_name_decl("CTRL", aml_int(0)));
-  into the _osc function. (Jonathan)
-  hence discarded Gustavo's and Igor's R-bs
----
- hw/pci-host/gpex-acpi.c | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
-
-diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-index f34b7cf25e..80fc2bf032 100644
---- a/hw/pci-host/gpex-acpi.c
-+++ b/hw/pci-host/gpex-acpi.c
-@@ -50,14 +50,12 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
-     }
- }
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index d2dac87b4a..f5ffa67a39 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -63,6 +63,7 @@
+ #include "hw/acpi/memory_hotplug.h"
+ #include "hw/acpi/ghes.h"
+ #include "hw/acpi/cpu.h"
++#include "hw/acpi/pcihp.h"
+ #include "qom/object.h"
  
--static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
-+static Aml *build_host_bridge_osc(bool enable_native_pcie_hotplug)
- {
--    Aml *method, *UUID, *ifctx, *ifctx1, *elsectx, *buf;
--
--    /* Declare an _OSC (OS Control Handoff) method */
--    aml_append(dev, aml_name_decl("SUPP", aml_int(0)));
--    aml_append(dev, aml_name_decl("CTRL", aml_int(0)));
-+    Aml *method, *UUID, *ifctx, *ifctx1, *elsectx;
-     method = aml_method("_OSC", 4, AML_NOTSERIALIZED);
-+    aml_append(method, aml_name_decl("SUPP", aml_int(0)));
-+    aml_append(method, aml_name_decl("CTRL", aml_int(0)));
-     aml_append(method,
-         aml_create_dword_field(aml_arg(3), aml_int(0), "CDW1"));
+ #define ACPI_POWER_BUTTON_DEVICE "PWRB"
+@@ -114,6 +115,7 @@ struct AcpiGedState {
+     MemoryRegion container_memhp;
+     CPUHotplugState cpuhp_state;
+     MemoryRegion container_cpuhp;
++    AcpiPciHpState pcihp_state;
+     GEDState ged_state;
+     uint32_t ged_event_bitmap;
+     qemu_irq irq;
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index 7a62f8d5bc..7831db412b 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -318,6 +318,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
  
-@@ -103,9 +101,13 @@ static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
-                                aml_name("CDW1")));
-     aml_append(elsectx, aml_return(aml_arg(3)));
-     aml_append(method, elsectx);
--    aml_append(dev, method);
-+    return method;
-+}
+ static const Property acpi_ged_properties[] = {
+     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
++    DEFINE_PROP_BOOL(ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, AcpiGedState,
++                     pcihp_state.use_acpi_hotplug_bridge, 0),
+ };
  
--    method = aml_method("_DSM", 4, AML_NOTSERIALIZED);
-+static Aml *build_host_bridge_dsm(void)
-+{
-+    Aml *method = aml_method("_DSM", 4, AML_NOTSERIALIZED);
-+    Aml *UUID, *ifctx, *ifctx1, *buf;
- 
-     /* PCI Firmware Specification 3.0
-      * 4.6.1. _DSM for PCI Express Slot Information
-@@ -124,7 +126,15 @@ static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
-     byte_list[0] = 0;
-     buf = aml_buffer(1, byte_list);
-     aml_append(method, aml_return(buf));
--    aml_append(dev, method);
-+    return method;
-+}
-+
-+static void acpi_dsdt_add_host_bridge_methods(Aml *dev,
-+                                              bool enable_native_pcie_hotplug)
-+{
-+    /* Declare an _OSC (OS Control Handoff) method */
-+    aml_append(dev, build_host_bridge_osc(enable_native_pcie_hotplug));
-+    aml_append(dev, build_host_bridge_dsm());
- }
- 
- void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-@@ -193,7 +203,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-             if (is_cxl) {
-                 build_cxl_osc_method(dev);
-             } else {
--                acpi_dsdt_add_pci_osc(dev, true);
-+                acpi_dsdt_add_host_bridge_methods(dev, true);
-             }
- 
-             aml_append(scope, dev);
-@@ -268,7 +278,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-     }
-     aml_append(dev, aml_name_decl("_CRS", rbuf));
- 
--    acpi_dsdt_add_pci_osc(dev, true);
-+    acpi_dsdt_add_host_bridge_methods(dev, true);
- 
-     Aml *dev_res0 = aml_device("%s", "RES0");
-     aml_append(dev_res0, aml_name_decl("_HID", aml_string("PNP0C02")));
+ static const VMStateDescription vmstate_memhp_state = {
 -- 
 2.49.0
 
