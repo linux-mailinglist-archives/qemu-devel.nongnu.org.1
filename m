@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5E2AF6B4B
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 09:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AA3AF6B08
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 09:04:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXEDg-00085e-UH; Thu, 03 Jul 2025 03:18:56 -0400
+	id 1uXDxT-0007f3-EL; Thu, 03 Jul 2025 03:02:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1uXEDa-000858-BY
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:18:50 -0400
-Received: from mgamail.intel.com ([198.175.65.19])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXDxQ-0007eY-3S
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:02:08 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1uXEDW-0007LZ-UW
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:18:49 -0400
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXDxN-00027j-VJ
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:02:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751527127; x=1783063127;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=y/Iecl85y+ckLurPf5zWK8lSIDvcS82wO6Az/OPu2bw=;
- b=hNC9TKtZUjmqi7JBtWAiiDTmA6o9T9YCkqYYN/O54PNUyUVK2dn6LbJo
- 4T+R2FWnRoTKKfNHK0mCmM5j0+saC1PFytcyFWA3ogmU+D9XtIndy5gQD
- zPZPEzY/VPGuCc2+4xXp4FkaUP51x71dtwDckAW7pU8xkaP7o29wReAd4
- wbOvyGmOGU44G+pXO3quRlux+c0y9Lzcjx+kzuFTtcYK2yQRa7s6L1ZIW
- wa50TC4hMZX0G8EW3PdWQvLNAzb2DlM5UKuHghdwyaANCPjg/IRj+0cwH
- NTw5vCh468Q573HQ/WFuwu0vVkC/mzIIaxOCuJTKzEg8oIfu18tGc9aIE A==;
-X-CSE-ConnectionGUID: 5b5znadrRh2zkpIQ4aPmsA==
-X-CSE-MsgGUID: 2VMpzUZ3Ti+7PEygAk4hAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53711115"
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="53711115"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 00:18:44 -0700
-X-CSE-ConnectionGUID: drtH/3P+TfyL2GOQOs2hOA==
-X-CSE-MsgGUID: UFlvVw7oScOo3wAK/iF1Cg==
+ t=1751526126; x=1783062126;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=izXQPFn4gHIErNXGZmehAqyjiHuG5GdICgyo1y0O5rU=;
+ b=AytfB5BEEV9eEiq5at+4WQr3HepUZpxd8u1JD58godA966vA2Mk11ood
+ i6/X77SV6gtfjucgNXG+FZcIdzgGYhj5sx5Uhi1EQqh6cLvGq83xPqBmI
+ Y+JTQyMuku+2twLKcTY8qh5vR0+D0EjCArrX6GldDrjSELYoSQauQq1Md
+ jRsDCJiBuC7qu2xjLao4cgXeX55W8zGFNvo5RawKape8fEL1KojKJjrVu
+ 8tooAbvLw7r/SYnNWIwLHzEbPF9XHmB5cb/oTleikxSMEUMJv88ZBv5u/
+ 7ZJECMJMVZw+vRqTmv+dw4DMzuJFApRxcC2RY93NVuRXiySCDdFentHCm A==;
+X-CSE-ConnectionGUID: cVhMYzzES4yZ23csWjaq2w==
+X-CSE-MsgGUID: ZfQV3gZzSH2DyjaKXKzbzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="64535840"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="64535840"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 00:02:02 -0700
+X-CSE-ConnectionGUID: 19/ZRvQ7TSCdPdj6a0h9eA==
+X-CSE-MsgGUID: 7GLtwbwSTESupKnFXGnasg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="159798915"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.240.80])
- ([10.124.240.80])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 00:18:39 -0700
-Message-ID: <8d2b621f-3a3d-4657-8013-2f181b05d17a@linux.intel.com>
-Date: Thu, 3 Jul 2025 15:18:37 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/16] i386/cpu: Add legacy_amd_cache_info cache model
-To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="158649359"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 03 Jul 2025 00:01:58 -0700
+Date: Thu, 3 Jul 2025 15:23:24 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
- Pu Wen <puwen@hygon.cn>, Tao Su <tao1.su@intel.com>,
- Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <20250620092734.1576677-1-zhao1.liu@intel.com>
- <20250620092734.1576677-11-zhao1.liu@intel.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20250620092734.1576677-11-zhao1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=198.175.65.19;
- envelope-from=dapeng1.mi@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v4 21/65] hw/core/machine: Display CPU model name in
+ 'info cpus' command
+Message-ID: <aGYv7HyDOB2mDsKW@intel.com>
+References: <20250702185332.43650-1-philmd@linaro.org>
+ <20250702185332.43650-22-philmd@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250702185332.43650-22-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,150 +91,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 6/20/2025 5:27 PM, Zhao Liu wrote:
-> Based on legacy_l1d_cachei_amd, legacy_l1i_cache_amd, legacy_l2_cache_amd
-> and legacy_l3_cache, build a complete legacy AMD cache model, which can
-> clarify the purpose of these trivial legacy cache models, simplify the
-> initialization of cache info in X86CPUState, and make it easier to
-> handle compatibility later.
->
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+On Wed, Jul 02, 2025 at 08:52:43PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Wed,  2 Jul 2025 20:52:43 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH v4 21/65] hw/core/machine: Display CPU model name in 'info
+>  cpus' command
+> X-Mailer: git-send-email 2.49.0
+> 
+> Display the CPU model in 'info cpus'. Example before:
+> 
+>  $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
+>  QEMU 10.0.0 monitor - type 'help' for more information
+>  (qemu) info cpus
+>  * CPU #0: thread_id=42924
+>    CPU #1: thread_id=42924
+>    CPU #2: thread_id=42924
+>    CPU #3: thread_id=42924
+>  (qemu) q
+> 
+> and after:
+> 
+>  $ qemu-system-aarch64 -M xlnx-versal-virt -S -monitor stdio
+>  QEMU 10.0.50 monitor - type 'help' for more information
+>  (qemu) info cpus
+>  * CPU #0: thread_id=42916 (cortex-a72)
+>    CPU #1: thread_id=42916 (cortex-a72)
+>    CPU #2: thread_id=42916 (cortex-r5f)
+>    CPU #3: thread_id=42916 (cortex-r5f)
+>  (qemu)
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/i386/cpu.c | 112 ++++++++++++++++++++++------------------------
->  1 file changed, 53 insertions(+), 59 deletions(-)
->
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index ec229830c532..bf8d7a19c88d 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -643,60 +643,58 @@ static void encode_topo_cpuid8000001e(X86CPU *cpu, X86CPUTopoInfo *topo_info,
->   * These are legacy cache values. If there is a need to change any
->   * of these values please use builtin_x86_defs
->   */
-> -static CPUCacheInfo legacy_l1d_cache_amd = {
-> -    .type = DATA_CACHE,
-> -    .level = 1,
-> -    .size = 64 * KiB,
-> -    .self_init = 1,
-> -    .line_size = 64,
-> -    .associativity = 2,
-> -    .sets = 512,
-> -    .partitions = 1,
-> -    .lines_per_tag = 1,
-> -    .no_invd_sharing = true,
-> -    .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> -};
-> -
-> -static CPUCacheInfo legacy_l1i_cache_amd = {
-> -    .type = INSTRUCTION_CACHE,
-> -    .level = 1,
-> -    .size = 64 * KiB,
-> -    .self_init = 1,
-> -    .line_size = 64,
-> -    .associativity = 2,
-> -    .sets = 512,
-> -    .partitions = 1,
-> -    .lines_per_tag = 1,
-> -    .no_invd_sharing = true,
-> -    .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> -};
-> -
-> -static CPUCacheInfo legacy_l2_cache_amd = {
-> -    .type = UNIFIED_CACHE,
-> -    .level = 2,
-> -    .size = 512 * KiB,
-> -    .line_size = 64,
-> -    .lines_per_tag = 1,
-> -    .associativity = 16,
-> -    .sets = 512,
-> -    .partitions = 1,
-> -    .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> -};
-> -
-> -/* Level 3 unified cache: */
-> -static CPUCacheInfo legacy_l3_cache = {
-> -    .type = UNIFIED_CACHE,
-> -    .level = 3,
-> -    .size = 16 * MiB,
-> -    .line_size = 64,
-> -    .associativity = 16,
-> -    .sets = 16384,
-> -    .partitions = 1,
-> -    .lines_per_tag = 1,
-> -    .self_init = true,
-> -    .inclusive = true,
-> -    .complex_indexing = true,
-> -    .share_level = CPU_TOPOLOGY_LEVEL_DIE,
-> +static const CPUCaches legacy_amd_cache_info = {
-> +    .l1d_cache = &(CPUCacheInfo) {
-> +        .type = DATA_CACHE,
-> +        .level = 1,
-> +        .size = 64 * KiB,
-> +        .self_init = 1,
-> +        .line_size = 64,
-> +        .associativity = 2,
-> +        .sets = 512,
-> +        .partitions = 1,
-> +        .lines_per_tag = 1,
-> +        .no_invd_sharing = true,
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l1i_cache = &(CPUCacheInfo) {
-> +        .type = INSTRUCTION_CACHE,
-> +        .level = 1,
-> +        .size = 64 * KiB,
-> +        .self_init = 1,
-> +        .line_size = 64,
-> +        .associativity = 2,
-> +        .sets = 512,
-> +        .partitions = 1,
-> +        .lines_per_tag = 1,
-> +        .no_invd_sharing = true,
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l2_cache = &(CPUCacheInfo) {
-> +        .type = UNIFIED_CACHE,
-> +        .level = 2,
-> +        .size = 512 * KiB,
-> +        .line_size = 64,
-> +        .lines_per_tag = 1,
-> +        .associativity = 16,
-> +        .sets = 512,
-> +        .partitions = 1,
-> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
-> +    },
-> +    .l3_cache = &(CPUCacheInfo) {
-> +        .type = UNIFIED_CACHE,
-> +        .level = 3,
-> +        .size = 16 * MiB,
-> +        .line_size = 64,
-> +        .associativity = 16,
-> +        .sets = 16384,
-> +        .partitions = 1,
-> +        .lines_per_tag = 1,
-> +        .self_init = true,
-> +        .inclusive = true,
-> +        .complex_indexing = true,
-> +        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
-> +    },
->  };
->  
->  /*
-> @@ -8982,11 +8980,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
->          }
->  
->          env->cache_info_cpuid4 = legacy_intel_cache_info;
-> -
-> -        env->cache_info_amd.l1d_cache = &legacy_l1d_cache_amd;
-> -        env->cache_info_amd.l1i_cache = &legacy_l1i_cache_amd;
-> -        env->cache_info_amd.l2_cache = &legacy_l2_cache_amd;
-> -        env->cache_info_amd.l3_cache = &legacy_l3_cache;
-> +        env->cache_info_amd = legacy_amd_cache_info;
->      }
->  
->  #ifndef CONFIG_USER_ONLY
+>  qapi/machine.json          | 3 +++
+>  hw/core/machine-hmp-cmds.c | 3 ++-
+>  hw/core/machine-qmp-cmds.c | 1 +
+>  3 files changed, 6 insertions(+), 1 deletion(-)
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+It's useful!
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+And tested on x86 platform,
+
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
 
 
