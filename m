@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96766AF74CA
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36FCAF74A9
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:51:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXJNu-0007Vi-Bv; Thu, 03 Jul 2025 08:49:55 -0400
+	id 1uXJMf-0006wc-It; Thu, 03 Jul 2025 08:48:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uXJLk-0005fo-IA; Thu, 03 Jul 2025 08:47:36 -0400
+ id 1uXJLk-0005eO-4z; Thu, 03 Jul 2025 08:47:36 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uXJLc-0006o2-Kn; Thu, 03 Jul 2025 08:47:35 -0400
+ id 1uXJLc-0006oa-KY; Thu, 03 Jul 2025 08:47:34 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:4a1:0:640:2691:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id D835A60CAF;
- Thu,  3 Jul 2025 15:47:20 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id CA9E560C88;
+ Thu,  3 Jul 2025 15:47:21 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:73d::1:28])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id HlbMgQ0FgSw0-4uj2EH2p; Thu, 03 Jul 2025 15:47:20 +0300
+ ESMTPSA id HlbMgQ0FgSw0-6ElfXpBj; Thu, 03 Jul 2025 15:47:21 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1751546840;
- bh=K1guSZvgPSyqTL8nJpBNAWLbXMO659zzSoxEpeUp2kw=;
+ s=default; t=1751546841;
+ bh=5bC95VXV5236FRUQzBWj4uboAIkxgDmBkiRLwpbUVcM=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=oT0rtWYc1KEms+cwhH746I/KLz3WIwZ9MO27cx6K4WnY8/m2n8+VCbjCfnAgTtXas
- J0xlK7WTViqAd7CKudxWXv5/9LsuqH104Svanj9SGG+RSxxjm4ntH+6lmhzN4BGWzy
- kMy/6kK8a3F8ziiQtjsXx3OhUua0ZFC1I/1u3cfg=
+ b=vSq4yMnJCH4Z+3npji4HTDunBMV+STb/geUoV7g3IKtARGEjN+ctq+/FJkRgJ1RPr
+ /Kw6QU5GBFCeS81t67EdvcL9AMISAlYyYYrARwPPsU4I11CVFe4/vOyjf220StdZRR
+ VINz2oow8YYu0ZwuR8R6dyHtbO+LSu7QbPpsswPA=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,9 +41,9 @@ Cc: qemu-block@nongnu.org, fam@euphon.net, pbonzini@redhat.com,
  jasowang@redhat.com, hreitz@redhat.com, kwolf@redhat.com,
  sgarzare@redhat.com, raphael@enfabrica.net,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH 3/4] vhost_net: stop use backend_features
-Date: Thu,  3 Jul 2025 15:47:11 +0300
-Message-ID: <20250703124713.2530079-4-vsementsov@yandex-team.ru>
+Subject: [PATCH 4/4] hw/vhost: finally drop vhost_dev.backend_features field
+Date: Thu,  3 Jul 2025 15:47:12 +0300
+Message-ID: <20250703124713.2530079-5-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250703124713.2530079-1-vsementsov@yandex-team.ru>
 References: <20250703124713.2530079-1-vsementsov@yandex-team.ru>
@@ -57,7 +57,7 @@ X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,56 +73,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are going to drop backend_features variable as an extra one.
-Call to qemu_has_vnet_hdr() is cheap.
+It's unused now.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/net/vhost_net.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ hw/block/vhost-user-blk.c | 1 -
+ hw/scsi/vhost-scsi.c      | 1 -
+ hw/scsi/vhost-user-scsi.c | 1 -
+ hw/virtio/vdpa-dev.c      | 1 -
+ hw/virtio/virtio-qmp.c    | 2 --
+ include/hw/virtio/vhost.h | 7 -------
+ 6 files changed, 13 deletions(-)
 
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index 891f235a0a6..38cbc6caa14 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -139,7 +139,8 @@ int vhost_net_set_config(struct vhost_net *net, const uint8_t *data,
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index 0eebbcd80d8..079a6492355 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -343,7 +343,6 @@ static int vhost_user_blk_connect(DeviceState *dev, Error **errp)
+     s->dev.nvqs = s->num_queues;
+     s->dev.vqs = s->vhost_vqs;
+     s->dev.vq_index = 0;
+-    s->dev.backend_features = 0;
  
- void vhost_net_ack_features(struct vhost_net *net, uint64_t features)
- {
--    net->dev.acked_features = net->dev.backend_features;
-+    net->dev.acked_features = qemu_has_vnet_hdr(net->nc)
-+        ? 0 : (1ULL << VHOST_NET_F_VIRTIO_NET_HDR);
-     vhost_ack_features(&net->dev, vhost_net_get_feature_bits(net), features);
- }
+     vhost_dev_set_config_notifier(&s->dev, &blk_ops);
  
-@@ -338,12 +339,9 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
-         if (r < 0) {
-             goto fail;
-         }
--        net->dev.backend_features = qemu_has_vnet_hdr(options->net_backend)
--            ? 0 : (1ULL << VHOST_NET_F_VIRTIO_NET_HDR);
-         net->backend = r;
-         net->dev.protocol_features = 0;
-     } else {
--        net->dev.backend_features = 0;
-         net->dev.protocol_features = 0;
-         net->backend = -1;
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index cdf405b0f86..d694a25fe2d 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -276,7 +276,6 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+     vqs = g_new0(struct vhost_virtqueue, vsc->dev.nvqs);
+     vsc->dev.vqs = vqs;
+     vsc->dev.vq_index = 0;
+-    vsc->dev.backend_features = 0;
  
-@@ -363,10 +361,10 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
-                                sizeof(struct virtio_net_hdr_mrg_rxbuf))) {
-             net->dev.features &= ~(1ULL << VIRTIO_NET_F_MRG_RXBUF);
-         }
--        if (~net->dev.features & net->dev.backend_features) {
--            fprintf(stderr, "vhost lacks feature mask 0x%" PRIx64
--                   " for backend\n",
--                   (uint64_t)(~net->dev.features & net->dev.backend_features));
-+        if (!qemu_has_vnet_hdr(options->net_backend) &&
-+            (~net->dev.features & (1ULL << VHOST_NET_F_VIRTIO_NET_HDR))) {
-+            fprintf(stderr, "vhost lacks feature mask 0x%llx for backend\n",
-+                    ~net->dev.features & (1ULL << VHOST_NET_F_VIRTIO_NET_HDR));
-             goto fail;
-         }
-     }
+     ret = vhost_dev_init(&vsc->dev, (void *)(uintptr_t)vhostfd,
+                          VHOST_BACKEND_TYPE_KERNEL, 0, errp);
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index 25f2d894e7c..0c80a271d8b 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -159,7 +159,6 @@ static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
+     vsc->dev.nvqs = VIRTIO_SCSI_VQ_NUM_FIXED + vs->conf.num_queues;
+     vsc->dev.vqs = s->vhost_vqs;
+     vsc->dev.vq_index = 0;
+-    vsc->dev.backend_features = 0;
+ 
+     ret = vhost_dev_init(&vsc->dev, &s->vhost_user, VHOST_BACKEND_TYPE_USER, 0,
+                          errp);
+diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+index d1da40afc80..3c0eed3e8e1 100644
+--- a/hw/virtio/vdpa-dev.c
++++ b/hw/virtio/vdpa-dev.c
+@@ -104,7 +104,6 @@ static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp)
+     v->dev.vqs = vqs;
+     v->dev.vq_index = 0;
+     v->dev.vq_index_end = v->dev.nvqs;
+-    v->dev.backend_features = 0;
+     v->started = false;
+ 
+     ret = vhost_vdpa_get_iova_range(v->vhostfd, &iova_range);
+diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+index 3b6377cf0d2..e514a4797e3 100644
+--- a/hw/virtio/virtio-qmp.c
++++ b/hw/virtio/virtio-qmp.c
+@@ -788,8 +788,6 @@ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
+             qmp_decode_features(vdev->device_id, hdev->features);
+         status->vhost_dev->acked_features =
+             qmp_decode_features(vdev->device_id, hdev->acked_features);
+-        status->vhost_dev->backend_features =
+-            qmp_decode_features(vdev->device_id, hdev->backend_features);
+         status->vhost_dev->protocol_features =
+             qmp_decode_protocols(hdev->protocol_features);
+         status->vhost_dev->max_queues = hdev->max_queues;
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 38800a7156b..d6afde8b5dd 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -99,16 +99,9 @@ struct vhost_dev {
+      *
+      * @features: available features provided by the backend
+      * @acked_features: final negotiated features with front-end driver
+-     *
+-     * @backend_features: this is used in a couple of places to either
+-     * store VHOST_USER_F_PROTOCOL_FEATURES to apply to
+-     * VHOST_USER_SET_FEATURES or VHOST_NET_F_VIRTIO_NET_HDR. Its
+-     * future use should be discouraged and the variable retired as
+-     * its easy to confuse with the VirtIO backend_features.
+      */
+     uint64_t features;
+     uint64_t acked_features;
+-    uint64_t backend_features;
+ 
+     /**
+      * @protocol_features: is the vhost-user only feature set by
 -- 
 2.48.1
 
