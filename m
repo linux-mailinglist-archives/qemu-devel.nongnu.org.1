@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4777AF7F53
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B01DAF7F3E
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:41:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXNoV-0005Vy-QE; Thu, 03 Jul 2025 13:33:35 -0400
+	id 1uXNob-0005Wf-O4; Thu, 03 Jul 2025 13:33:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNoO-0005Vh-2B
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:33:28 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNoT-0005W5-H6
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:33:33 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNoI-00086h-SK
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:33:27 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-454aaade1fbso1227235e9.3
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:33:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNoR-0008BJ-6Y
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:33:33 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3a588da60dfso39852f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:33:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751564001; x=1752168801; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751564006; x=1752168806; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZLkTPhlZ6ATb7AAc3VGQov8gsRhAPF8MN9ZoezL4e2s=;
- b=pEFXOpPsjGOxmEBVLb0YlV05H9JeQPnZ9KgooZK3Srk++5bqe9VNFvqA4fdMYzinac
- MrlTpokIAUpFQBJJFq3MHh2ZYkio6kpWmGmywaZ4KbJE6dIApz6vRardgFeT7odkFBYX
- aGJinYoZWwEYl6CeDtXMTFBNnMjvHp6zsIs4/Zwx/i5To8EeMTN1gb8ko9fjWFN+2K6R
- XfAS+T845Zz8jcR6ecNLR/OScJrHSjO1dcnriWYaWPGoJrds2sQ4swzLuiEpUF/AD2UT
- vRTRzvspe7KYh+RjC6wOwH/E3rYCDbixXlqYs/eM3l9RYWm+ecHl538l8z1p+OXF+XRX
- CBtQ==
+ bh=vZulNH5mkAwF/TzCScDw4HrR7IGxHx1ghZxE2rlPXYg=;
+ b=SQ+edPPtYFTzZdiFudWCR1aWyUwlNWy0IOZzQUiKgBh/jmcOVsQug4mOmSiSRjLWl6
+ ydkdseMgFt3WBn2cWmDIAkAtJrJvgvVLPkJIDYrDCqfaP+rV7k8i0H/7YI9K+h0R7cTE
+ YiVMCf+esHSmPgnlX/qfkKmadTrM5GvIa2fjv2H7DfryDsWnY4+qGlzGGFqFn+fRftsO
+ QbR5Nw6VqTeJICVFkuOFaPxgplgkakFPZMPEa09jihfruTUYDDsPdpWCUmgigZbd/bzY
+ SZLTfV4Q26ptQPd1dcApqOO0e9/g2Mru228cKL2cW9jPlQpXu0i3q40iDY+IQUEhDIY0
+ h8/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751564001; x=1752168801;
+ d=1e100.net; s=20230601; t=1751564006; x=1752168806;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZLkTPhlZ6ATb7AAc3VGQov8gsRhAPF8MN9ZoezL4e2s=;
- b=RVwvgAI6YG2zs4c/xmhbOoNWGMQmGmXxGslEovNURM1kAy/pwIPDOoOKl0Qa1mw4H2
- gKBKkv+aEtGZvPlZTUu4P8IjysA5Ajp3/SdXDhyntcDJG7ZCafH7FgTl/6GgjFxJ9+eq
- JCe5uUlcRdFSlliSpvysnRYK7ys01PFrwejXFJ2PrRlVg2i61FFGnrBfAy8FE9jXz3OQ
- kPicP8Rcn49XUHVhaI1jieuOw/r5pjn75sKBjJz5BF+KHV7DntGWJLSxvDJwzSFAwhjq
- 8rclz1w0NzbAIkgEK1/YEUBNc1Q32sRwoJv1RV6aF5GhA86u8Oi3bq8QLxgOnHdyLCiN
- 8KVg==
-X-Gm-Message-State: AOJu0Yy8HZuV7z8S8T6tt5oaBGI2j1tc3CcCSac7QayNAP8tst62EvGD
- LKp/HiSGGk2+kOLu2HRs5bEmRnYS2r/Z8zBLrQ9Rwuzrin1LR87LZDypEChFV8wlZwQBCbcnqll
- 2NhY3wQU=
-X-Gm-Gg: ASbGncsc5VdkJIzvXCUxxH6fqQM174olNMgOU/16SebIpAEPYAUYcf3VePML+KYaZ0S
- jnRvUfBOYI5wbF1LqZtDn9d3SmlxTqLjCEi8fkjRat4yWK9kYs2YDiUiatg4d+FiKjLNgE0lcxU
- 5MCkk5aHwLG7SW0TlEfDJJDUTC6BOXSrDtcDGs47eT4x8k0VqBT1b6scT7Z3LM0Cvbcp34hnQUi
- Y5vZSmIciROkRGxaofTlYKE1JAz5gZ1L/rR3Ve0fIBAl37SGncWWD1mz6fM8vgkWxFR5CDwP3eR
- t9gpZNcXIK4fD8PIRAUYauAP++mcu7A4muRTwrqfIe0e3irgi+hSY2EGuAGhBEXCbBt39B1rCtW
- B8MNIz8z/PIdkMt7ICBUcf6GoHW24rX3dCxAQ
-X-Google-Smtp-Source: AGHT+IF7y0Ub+Cf0w0FURKaEgGsSG7UcWWxJaioorDsaWNR4xJx/xmz1NjsWoloY7AE88tq2thGyYg==
-X-Received: by 2002:a05:600c:4f84:b0:450:d37c:9fc8 with SMTP id
- 5b1f17b1804b1-454a3e1a96amr87058205e9.13.1751564000930; 
- Thu, 03 Jul 2025 10:33:20 -0700 (PDT)
+ bh=vZulNH5mkAwF/TzCScDw4HrR7IGxHx1ghZxE2rlPXYg=;
+ b=gsW6S6FZf4zRJepLtTm4pZl4If/gFdIu8BrEd9mS+Y0VVq/wz3Az7F54NIH/ZvK0hv
+ 4OfXa4i191DkMZpyu97Zzdj2a+A2BC0+fIGT6TscyXPC+Lz0LcGNcP0ESo1I8e/YbCYM
+ cnEXHN9qrj1uxqhj7ECXixwEunoJ+Sfvv8WFGjE+rfd7T1VycCPCt44E6S31uU53Sz1O
+ FQCRIpfGHIlSBwSVh7TTfYtBVopV3wM51foBfOpl3dk6v+OLPBKjZP+5685/wQB4H1/u
+ DMZv3R37nh3Xj6wmQ2omLvlDjmKJFpHJAQvpWEUUQl8dMJUD7yT6Y0gYmmfMSWSEJ/GQ
+ pMcw==
+X-Gm-Message-State: AOJu0Yxg5ZLkkolsu9bTeuJodO1ou+PNQr25RfxWJ7ZQk5tg2i5lOCQo
+ k8XUBvL/h42p1rDTcy0XSHd+pQNLUcYRywTwJ+fULJGXaazt5P8pIhiwzTDR9N4jfBKQPbWj/9H
+ sVjP8UtU=
+X-Gm-Gg: ASbGncvKeVpm+U/0Y3p6RLwmJDGlnUTa5/8IhinFouKKurIyQEiPourO7q45uwhaZVO
+ E5CndVIxV7r4ABdSDXyo/eU4JiFMqLnuQ4Nl2CoBlWgVBxt29y+EYncmhRsyAN9TUxZxRKCec7i
+ HHRftcpTT5VbxxPapgCVRTobRuIZViggIa7FlzbkpyuhtvRj+5uqZSobW7Y9hSsT4Pq2rWPegs1
+ 82xZYziZEZfZXrxu/71RWJLIoSqjKUxeo506Oion1l2yqkNEKPjEpDmp0a+vX6yZiXip3mKCaZX
+ GnQ2OlAOQA86h6Nc+x/Drivn3XDas6LjPSJIRAvthRKjQ7cjc9lvA0R1HYxGFQKZOxv9ouFaMve
+ 6KQaI2TIg38IYg/czUzIbvzMHQcpk3YFoxCBEUWOEUHAs8Ug=
+X-Google-Smtp-Source: AGHT+IFJrXavrz4gcHEYbc6mLp3BMnIH4hlLyNy+5zffQ8hUE11DhK5AiKJrHVi2KGZKSRJD/i72dA==
+X-Received: by 2002:a05:6000:230c:b0:3a5:8abe:a267 with SMTP id
+ ffacd0b85a97d-3b32db890fdmr3631644f8f.29.1751564006205; 
+ Thu, 03 Jul 2025 10:33:26 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b4708d099esm332340f8f.21.2025.07.03.10.33.19
+ ffacd0b85a97d-3b47030ba77sm342996f8f.17.2025.07.03.10.33.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 10:33:20 -0700 (PDT)
+ Thu, 03 Jul 2025 10:33:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,18 +68,23 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- kvm@vger.kernel.org
-Subject: [PATCH v6 06/39] accel/kvm: Reduce kvm_create_vcpu() declaration scope
-Date: Thu,  3 Jul 2025 19:32:12 +0200
-Message-ID: <20250703173248.44995-7-philmd@linaro.org>
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH v6 07/39] accel/tcg: Remove 'info opcount' and @x-query-opcount
+Date: Thu,  3 Jul 2025 19:32:13 +0200
+Message-ID: <20250703173248.44995-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703173248.44995-1-philmd@linaro.org>
 References: <20250703173248.44995-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,53 +107,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-kvm_create_vcpu() is only used within the same file unit.
+Since commit 1b65b4f54c7 ("accel/tcg: remove CONFIG_PROFILER",
+released with QEMU v8.1.0) we get pointless output:
+
+  (qemu) info opcount
+  [TCG profiler not compiled]
+
+Remove that unstable and unuseful command.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Dr. David Alan Gilbert <dave@treblig.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/system/kvm.h | 8 --------
- accel/kvm/kvm-all.c  | 8 +++++++-
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ qapi/machine.json          | 18 ------------------
+ accel/tcg/monitor.c        | 21 ---------------------
+ tests/qtest/qmp-cmd-test.c |  1 -
+ hmp-commands-info.hx       | 14 --------------
+ 4 files changed, 54 deletions(-)
 
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index 7cc60d26f24..e943df2c09d 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -316,14 +316,6 @@ int kvm_create_device(KVMState *s, uint64_t type, bool test);
-  */
- bool kvm_device_supported(int vmfd, uint64_t type);
+diff --git a/qapi/machine.json b/qapi/machine.json
+index d5bbb5e367e..acf6610efa5 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1764,24 +1764,6 @@
+   'returns': 'HumanReadableText',
+   'features': [ 'unstable' ] }
  
--/**
-- * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
-- * @cpu: QOM CPUState object for which KVM vCPU has to be fetched/created.
-- *
-- * @returns: 0 when success, errno (<0) when failed.
-- */
--int kvm_create_vcpu(CPUState *cpu);
+-##
+-# @x-query-opcount:
+-#
+-# Query TCG opcode counters
+-#
+-# Features:
+-#
+-# @unstable: This command is meant for debugging.
+-#
+-# Returns: TCG opcode counters
+-#
+-# Since: 6.2
+-##
+-{ 'command': 'x-query-opcount',
+-  'returns': 'HumanReadableText',
+-  'if': 'CONFIG_TCG',
+-  'features': [ 'unstable' ] }
 -
- /**
-  * kvm_park_vcpu - Park QEMU KVM vCPU context
-  * @cpu: QOM CPUState object for which QEMU KVM vCPU context has to be parked.
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index d095d1b98f8..17235f26464 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -453,7 +453,13 @@ static void kvm_reset_parked_vcpus(KVMState *s)
-     }
+ ##
+ # @x-query-ramblock:
+ #
+diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
+index 1c182b6bfb5..7c686226b21 100644
+--- a/accel/tcg/monitor.c
++++ b/accel/tcg/monitor.c
+@@ -215,30 +215,9 @@ HumanReadableText *qmp_x_query_jit(Error **errp)
+     return human_readable_text_from_str(buf);
  }
  
--int kvm_create_vcpu(CPUState *cpu)
-+/**
-+ * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
-+ * @cpu: QOM CPUState object for which KVM vCPU has to be fetched/created.
-+ *
-+ * @returns: 0 when success, errno (<0) when failed.
-+ */
-+static int kvm_create_vcpu(CPUState *cpu)
+-static void tcg_dump_op_count(GString *buf)
+-{
+-    g_string_append_printf(buf, "[TCG profiler not compiled]\n");
+-}
+-
+-HumanReadableText *qmp_x_query_opcount(Error **errp)
+-{
+-    g_autoptr(GString) buf = g_string_new("");
+-
+-    if (!tcg_enabled()) {
+-        error_setg(errp,
+-                   "Opcode count information is only available with accel=tcg");
+-        return NULL;
+-    }
+-
+-    tcg_dump_op_count(buf);
+-
+-    return human_readable_text_from_str(buf);
+-}
+-
+ static void hmp_tcg_register(void)
  {
-     unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
-     KVMState *s = kvm_state;
+     monitor_register_hmp_info_hrt("jit", qmp_x_query_jit);
+-    monitor_register_hmp_info_hrt("opcount", qmp_x_query_opcount);
+ }
+ 
+ type_init(hmp_tcg_register);
+diff --git a/tests/qtest/qmp-cmd-test.c b/tests/qtest/qmp-cmd-test.c
+index 040d042810b..cf718761861 100644
+--- a/tests/qtest/qmp-cmd-test.c
++++ b/tests/qtest/qmp-cmd-test.c
+@@ -51,7 +51,6 @@ static int query_error_class(const char *cmd)
+         { "x-query-usb", ERROR_CLASS_GENERIC_ERROR },
+         /* Only valid with accel=tcg */
+         { "x-query-jit", ERROR_CLASS_GENERIC_ERROR },
+-        { "x-query-opcount", ERROR_CLASS_GENERIC_ERROR },
+         { "xen-event-list", ERROR_CLASS_GENERIC_ERROR },
+         { NULL, -1 }
+     };
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index 639a450ee51..d7979222752 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -256,20 +256,6 @@ SRST
+     Show dynamic compiler info.
+ ERST
+ 
+-#if defined(CONFIG_TCG)
+-    {
+-        .name       = "opcount",
+-        .args_type  = "",
+-        .params     = "",
+-        .help       = "show dynamic compiler opcode counters",
+-    },
+-#endif
+-
+-SRST
+-  ``info opcount``
+-    Show dynamic compiler opcode counters
+-ERST
+-
+     {
+         .name       = "sync-profile",
+         .args_type  = "mean:-m,no_coalesce:-n,max:i?",
 -- 
 2.49.0
 
