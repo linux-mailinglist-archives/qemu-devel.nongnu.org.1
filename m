@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCC4AF6ACF
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 08:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A31AF6B36
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 09:17:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXDop-0005ze-3D; Thu, 03 Jul 2025 02:53:15 -0400
+	id 1uXEAU-0006Cj-HX; Thu, 03 Jul 2025 03:15:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXDof-0005zI-RZ
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 02:53:06 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
+ (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
+ id 1uXEAQ-0006Bp-5r
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:15:35 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXDoe-0005ev-1T
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 02:53:05 -0400
+ (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
+ id 1uXEAN-0006J7-Ab
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:15:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751525584; x=1783061584;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Jnf1h1p21hN+dzV5ohwpjGa2cjqFe8yrNqCDkV6dgX8=;
- b=gWrjg87bnB3IyPvmnANmwshFCaEkFiLhfehdIeXfEWL8ZAJiNGzSgAqK
- 99lv4XVgp9LiwL+a2Uua/jW0qhpSDe6uzIeXWWh1X3e/1BqzIwaWqor5o
- cS3JS/VlM7qAGNN1Xumckb9KOv1gR7q8Bbnog6hueUPWg5ZFo537rHF0X
- go3OJXEfajxUHHCoEUDNUxeFUAdE5p7ZrRRakf2wOFBYRAOvBDk3h8Gcb
- iptl5DFDfeIe/mDi48v9vNHjuL13OH6/YcRz7uo5m2AIAjwsUUJc+maOU
- Sq5ATlvOgXkR5LGz+JCVQ7WIOwyIVnMUNz0ONMWQZK+OTZ2q4ItDkeubi w==;
-X-CSE-ConnectionGUID: UqjeNZ35Q9eiXcadVmd1cw==
-X-CSE-MsgGUID: iXp7I6LeR8OdD06a3Zkw5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="52957467"
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="52957467"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 23:53:00 -0700
-X-CSE-ConnectionGUID: 1phJ5Fj5SiCMo1lSEIhpaw==
-X-CSE-MsgGUID: ydQRnj77QMG60r+3x9N48Q==
+ t=1751526932; x=1783062932;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=sEhMyh7ACkcJdENP3Uqt+6GOmATUkVCYwXQABZ6A4kQ=;
+ b=cTbTzD4Jxfr5kmCzkj8ipkwAupfvcuvQEKUTIEMKV4ffanFxXHAviSWC
+ 6i6Gt93jEkHS2PJfytToJTsmQ+PV8qeRi0zMaR2o1puTxf2m1IYD57r9t
+ BcLJH/Knu47QkVNPQgKZ3llhTD6CsCDtyCnFPhz7tqznIf3kQBaqKPCXi
+ JbKU1o/qiTsWKFSiSJuuR70NWs+p5tv/4HK6IeZL9IgkxjOXBW37eewiP
+ 8ErVLrQFyWcQ6Iun7yX3lrDlu0aXRGYzA7Na2FJvGzKA8nm1OaDo5KFFs
+ yeb+9Uflm1D66Rn0MAp1/PiCgXPBpfjY1DkDo0UjV4WD5MjxyszgYmXll w==;
+X-CSE-ConnectionGUID: bp6tK/PBTaGJoB5Opn3JkA==
+X-CSE-MsgGUID: d9MwCHftTlOvdoegjPAAlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="64437342"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="64437342"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 00:15:29 -0700
+X-CSE-ConnectionGUID: d/2L23pDTSeJZL/b6YqqaA==
+X-CSE-MsgGUID: nJ3OZbkPRTSFV7vWdwVhuA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="158563616"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa005.fm.intel.com with ESMTP; 02 Jul 2025 23:52:58 -0700
-Date: Thu, 3 Jul 2025 15:14:24 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Julian Armistead <julian.armistead@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH v3 26/68] accel/tcg: Implement get_[vcpu]_stats()
-Message-ID: <aGYt0DyMsPapzGQh@intel.com>
-References: <20250701144017.43487-1-philmd@linaro.org>
- <20250701144017.43487-27-philmd@linaro.org>
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="185315215"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.240.80])
+ ([10.124.240.80])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 00:15:24 -0700
+Message-ID: <42641bcb-67b8-4c06-900c-378593e74d6b@linux.intel.com>
+Date: Thu, 3 Jul 2025 15:15:21 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250701144017.43487-27-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/16] i386/cpu: Add legacy_intel_cache_info cache model
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
+ Pu Wen <puwen@hygon.cn>, Tao Su <tao1.su@intel.com>,
+ Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <20250620092734.1576677-1-zhao1.liu@intel.com>
+ <20250620092734.1576677-10-zhao1.liu@intel.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20250620092734.1576677-10-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=192.198.163.11;
+ envelope-from=dapeng1.mi@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -40
+X-Spam_score: -4.1
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,59 +93,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
 
-On Tue, Jul 01, 2025 at 04:39:34PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Tue,  1 Jul 2025 16:39:34 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v3 26/68] accel/tcg: Implement get_[vcpu]_stats()
-> X-Mailer: git-send-email 2.49.0
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+On 6/20/2025 5:27 PM, Zhao Liu wrote:
+> Based on legacy_l1d_cache, legacy_l1i_cache, legacy_l2_cache and
+> legacy_l3_cache, build a complete legacy intel cache model, which can
+> clarify the purpose of these trivial legacy cache models, simplify the
+> initialization of cache info in X86CPUState, and make it easier to
+> handle compatibility later.
+>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->  accel/tcg/tcg-all.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-> index ae83ca0bd10..d49d2b3b0fa 100644
-> --- a/accel/tcg/tcg-all.c
-> +++ b/accel/tcg/tcg-all.c
-> @@ -239,11 +239,17 @@ static int tcg_gdbstub_supported_sstep_flags(AccelState *as)
->      }
->  }
+>  target/i386/cpu.c | 101 +++++++++++++++++++++++++---------------------
+>  1 file changed, 54 insertions(+), 47 deletions(-)
+>
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 0b292aa2e07b..ec229830c532 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -643,21 +643,6 @@ static void encode_topo_cpuid8000001e(X86CPU *cpu, X86CPUTopoInfo *topo_info,
+>   * These are legacy cache values. If there is a need to change any
+>   * of these values please use builtin_x86_defs
+>   */
+> -
+> -/* L1 data cache: */
+> -static CPUCacheInfo legacy_l1d_cache = {
+> -    .type = DATA_CACHE,
+> -    .level = 1,
+> -    .size = 32 * KiB,
+> -    .self_init = 1,
+> -    .line_size = 64,
+> -    .associativity = 8,
+> -    .sets = 64,
+> -    .partitions = 1,
+> -    .no_invd_sharing = true,
+> -    .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+> -};
+> -
+>  static CPUCacheInfo legacy_l1d_cache_amd = {
+>      .type = DATA_CACHE,
+>      .level = 1,
+> @@ -672,20 +657,6 @@ static CPUCacheInfo legacy_l1d_cache_amd = {
+>      .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+>  };
 >  
-> +static void tcg_get_stats(AccelState *as, GString *buf)
-> +{
-> +    tcg_dump_flush_info(buf);
-> +}
+> -/* L1 instruction cache: */
+> -static CPUCacheInfo legacy_l1i_cache = {
+> -    .type = INSTRUCTION_CACHE,
+> -    .level = 1,
+> -    .size = 32 * KiB,
+> -    .self_init = 1,
+> -    .line_size = 64,
+> -    .associativity = 8,
+> -    .sets = 64,
+> -    .partitions = 1,
+> -    .no_invd_sharing = true,
+> -    .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+> -};
+> -
+>  static CPUCacheInfo legacy_l1i_cache_amd = {
+>      .type = INSTRUCTION_CACHE,
+>      .level = 1,
+> @@ -700,20 +671,6 @@ static CPUCacheInfo legacy_l1i_cache_amd = {
+>      .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+>  };
+>  
+> -/* Level 2 unified cache: */
+> -static CPUCacheInfo legacy_l2_cache = {
+> -    .type = UNIFIED_CACHE,
+> -    .level = 2,
+> -    .size = 4 * MiB,
+> -    .self_init = 1,
+> -    .line_size = 64,
+> -    .associativity = 16,
+> -    .sets = 4096,
+> -    .partitions = 1,
+> -    .no_invd_sharing = true,
+> -    .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+> -};
+> -
+>  static CPUCacheInfo legacy_l2_cache_amd = {
+>      .type = UNIFIED_CACHE,
+>      .level = 2,
+> @@ -803,6 +760,59 @@ static const CPUCaches legacy_intel_cpuid2_cache_info = {
+>      },
+>  };
+>  
+> +static const CPUCaches legacy_intel_cache_info = {
+> +    .l1d_cache = &(CPUCacheInfo) {
+> +        .type = DATA_CACHE,
+> +        .level = 1,
+> +        .size = 32 * KiB,
+> +        .self_init = 1,
+> +        .line_size = 64,
+> +        .associativity = 8,
+> +        .sets = 64,
+> +        .partitions = 1,
+> +        .no_invd_sharing = true,
+> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+> +    },
+> +    .l1i_cache = &(CPUCacheInfo) {
+> +        .type = INSTRUCTION_CACHE,
+> +        .level = 1,
+> +        .size = 32 * KiB,
+> +        .self_init = 1,
+> +        .line_size = 64,
+> +        .associativity = 8,
+> +        .sets = 64,
+> +        .partitions = 1,
+> +        .no_invd_sharing = true,
+> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+> +    },
+> +    .l2_cache = &(CPUCacheInfo) {
+> +        .type = UNIFIED_CACHE,
+> +        .level = 2,
+> +        .size = 4 * MiB,
+> +        .self_init = 1,
+> +        .line_size = 64,
+> +        .associativity = 16,
+> +        .sets = 4096,
+> +        .partitions = 1,
+> +        .no_invd_sharing = true,
+> +        .share_level = CPU_TOPOLOGY_LEVEL_CORE,
+> +    },
+> +    .l3_cache = &(CPUCacheInfo) {
+> +        .type = UNIFIED_CACHE,
+> +        .level = 3,
+> +        .size = 16 * MiB,
+> +        .line_size = 64,
+> +        .associativity = 16,
+> +        .sets = 16384,
+> +        .partitions = 1,
+> +        .lines_per_tag = 1,
+> +        .self_init = true,
+> +        .inclusive = true,
+> +        .complex_indexing = true,
+> +        .share_level = CPU_TOPOLOGY_LEVEL_DIE,
+> +    },
+> +};
+> +
+>  /* TLB definitions: */
+>  
+>  #define L1_DTLB_2M_ASSOC       1
+> @@ -8971,10 +8981,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+>              env->enable_legacy_cpuid2_cache = true;
+>          }
+>  
+> -        env->cache_info_cpuid4.l1d_cache = &legacy_l1d_cache;
+> -        env->cache_info_cpuid4.l1i_cache = &legacy_l1i_cache;
+> -        env->cache_info_cpuid4.l2_cache = &legacy_l2_cache;
+> -        env->cache_info_cpuid4.l3_cache = &legacy_l3_cache;
+> +        env->cache_info_cpuid4 = legacy_intel_cache_info;
+>  
+>          env->cache_info_amd.l1d_cache = &legacy_l1d_cache_amd;
+>          env->cache_info_amd.l1i_cache = &legacy_l1i_cache_amd;
 
-With:
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-./configure
-make -j
 
-I met this error:
-
-/usr/bin/ld: libuser.a.p/accel_tcg_tcg-all.c.o: in function `tcg_get_stats':
-/qemu/build/../accel/tcg/tcg-all.c:244: undefined reference to `tcg_dump_flush_info'
-
-It seems tcg_dump_flush_info() needs a stub?
-
-Thanks,
-Zhao
-
->  static void tcg_accel_class_init(ObjectClass *oc, const void *data)
->  {
->      AccelClass *ac = ACCEL_CLASS(oc);
->      ac->name = "tcg";
->      ac->init_machine = tcg_init_machine;
-> +    ac->get_stats = tcg_get_stats;
->      ac->allowed = &tcg_allowed;
->      ac->supports_guest_debug = tcg_supports_guest_debug;
->      ac->gdbstub_supported_sstep_flags = tcg_gdbstub_supported_sstep_flags;
-> -- 
-> 2.49.0
-> 
-> 
 
