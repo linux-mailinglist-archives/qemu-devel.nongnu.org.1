@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E24AAF7F2C
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6804BAF7F0B
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:36:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXNpV-0006hI-3C; Thu, 03 Jul 2025 13:34:37 -0400
+	id 1uXNpT-0006Z1-FY; Thu, 03 Jul 2025 13:34:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNov-0005vd-Dt
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:34:01 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNp1-00067j-FV
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:34:14 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNot-0008Mk-6X
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:34:00 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4538bc1cffdso882555e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:33:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNoz-0008NR-8v
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:34:06 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3a536ecbf6fso28894f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:34:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751564037; x=1752168837; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751564042; x=1752168842; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0/XChvbBlrGhhVuJVL/Zk7Vb78wLAovjWCdTr9DfryE=;
- b=Ilj9qHRcfrirgUZHANYUUnT2efukP5TlI6YvdCGxoVz5KwAqF53vJfDkzRrEWRaZ7i
- y5y4WLt577QnjCSp3pOvudhSBsmq7iTSXE/TkHrgIu84xZ3ux2LlIo7LVG75fgzmS3pv
- rI23wW+kbYOKApur9Mn8TrIKxMUPT/tijZO9aIqO1DSbBni8x5R0/kyZBLD4WVcKXVLb
- 1xu67SgoQr5rdJEIEqVW19flpzLz9wNBliGaJbCcIbvL6qa9hSjSMbRTVT0mkUP/CDBw
- hE1yzd785WgtmQraIyZZJY+PVT8I0jyzjTY301gWuzhTnL498is6ZXGJfSDe63jHSclz
- ktMg==
+ bh=Bx6KMQw8/FlRNTZmEqVUbDa7PGnyLnMhWj7KkWZFnoM=;
+ b=Mdo40MewnXquP3Pux+z97q9fHZQT/h8IU8s0PqKWKJUPdGXXfdr4AzXS3x7xJuk3jS
+ DoztxXrjkO4ZbjS2x2Tv/3y1Ge8RhDmtC50+DbqZ9VG3tbhBjAJL2rUlwZ+xDGz+b6fA
+ YhDcgJvZNrVbst+Nf3iPdrhi7BhmWopxeM++MY46LAzXfi+Ihq6PtOV5pQuOx0pf6Xu7
+ BT5v8M0AivwmMugUOho9WdgjJHLBwrci1RXBBcnnkx83E50AFbWhNiJySNqmqxAL5HV1
+ V6H+puFOnIu+7XUxqH7RgrJapwo1VAlF0GUtToWjLTvhmA0Tavr6rKQbxUkF7t86ZX6r
+ P5Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751564037; x=1752168837;
+ d=1e100.net; s=20230601; t=1751564042; x=1752168842;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0/XChvbBlrGhhVuJVL/Zk7Vb78wLAovjWCdTr9DfryE=;
- b=tcz4ZcNsOF/lUQmyqXqY4Jpw8iEUFJjJyOGpvK+B21lvy3UpnwCjp0o0t78HBLmx/D
- zSUH9jDNGjRFWpY9J8E7zKzLpkHcd+aCKwwwUdQQUrG+yZavni4ldHw1/OxY7wlaPbmL
- SFcxc+8X+q29b5rm4oI7ja6rKKACWdFbAJ8Xf+rFJzvj3XG3TqepbAXS2Yy/dYZJqIly
- qo1Mf1I5wqaHdPp5SgY6C2KAaQ6JrTOJkDOpyugypoce0XbnRNcdh5YDvY4C9AaLgchv
- KkVu/5NMOYthgyBLk0gHpN8eK63AEU7J5KTx7WQVsdFtc2VtWHPL79XjoeeXvoZyV4fQ
- aldQ==
-X-Gm-Message-State: AOJu0YwNN7cUVKsMiaaF7faEasUJVeH/P3Me0HFHtj9x6PIi8SoZ6I7K
- 8N0IwIL4N6Vimvw0K1QLJi3IDTJWfbktXfheGqVQW/ng7hjQOVo32AHXtqhNCZIw+0W8UyHq0E8
- jPuEZu8w=
-X-Gm-Gg: ASbGncs39FUsuxeBdAg58nWJUMauTh32TOio1keY7tJc4QsjAqTWQZ1Rae8RyLpaBu/
- sThLdpOigfLfPT40DOVa2SINgWwCZWlkLVR1iU4WCsZSY1BYdgP1Ggn3lRUnWZzFfZvJQiZzO6R
- EoNgB486D4mYETBRvex0HS2O8X7ncUveTUphN2iTuwBXLmWtsUJVtGTzj7ICq5iN84+RZoS5sbk
- Cz98KDi9GCbB+WoqjWols5NHRypaStcntLYF8d/OAvjiDyMs5RXmSxmrgkqOSad0dxEeNne1nYo
- FmF/n36q5DPzeDmgxTVZTpc4q/FVaW6+gf7ddrfRTDRQ22pjp9mjv95KiOLGx2GQTk2fhvkTJvg
- ol7gdyt7cnTDStTHPRXqylOhIsWw5NVkiMbJE
-X-Google-Smtp-Source: AGHT+IEjIcbV0/p4Gzpq8ssp7QneNZeB0/RBRlqRwz4r9eWXtga2gIBfvXxZyNMLZl6Wi93ElXZ5wA==
-X-Received: by 2002:a05:600c:4e86:b0:453:c39:d0c6 with SMTP id
- 5b1f17b1804b1-454a3737eccmr66163065e9.32.1751564036915; 
- Thu, 03 Jul 2025 10:33:56 -0700 (PDT)
+ bh=Bx6KMQw8/FlRNTZmEqVUbDa7PGnyLnMhWj7KkWZFnoM=;
+ b=T7S6ruru/JxGmYDhShpME6SFSaIovkz1sUa003V1tgkFTuVl9bEpqhw8aenFCfyE8p
+ dwMiBEvl8+Xzw3u+xQpyxCsNFDBLjfX/B6biV0Q+ku8lI31aya9SFWpe1fWdTp8KdbN6
+ 0/fhETt45u3x84Eg7BkrgVOp4qUnYKB6S6s7EjyO6uEIwfbjlPsueReocH+erPzRoYdY
+ CUCsAoIHk1YHBBtZ0CeDch+ynKlORQ747IYCJ26phcSCC1ZdE9C0MAsVZBcXfAQkHQf1
+ ImKI6P26vppAsSPOur/aOUaS9zbwM5GR/6yN1nrkqm0EtGCxvr0F0zv79dlqlS8Gew0k
+ fvzw==
+X-Gm-Message-State: AOJu0Yw7BdDrFlZMwiaY23TmP4YkdM/1w2Fxs4mgZ0nfmcTR4BOkTjVP
+ w6E1NdSl2/Gl2ynIX82zvL9qGTqfoV2Z01hBAGUfdcNGLb8wo2Oal96K7Ti+c2U3TIT2sxbixvQ
+ oV4C2goI=
+X-Gm-Gg: ASbGncsuXzLh/OmD1tNMMrWTFWbHj+mEvdiYt02dX4sffdF70BuYbY+t2mCfYxh3AGp
+ KUoCrCWgAf3nA1A3W2/fuZqEh9J8hEKvyWv7p+hwDPTmzVV6Bf7gdPGlzRcJ+pR+gFw9AtRrg7N
+ Ch5LAU+RKT7Ur5bSvZiAcbjBy7D8B18go3NhFGTB9jWEGxdXMCbtV9CupfqNLAYkb82jAt3qelH
+ CEdclp6MufXM//rtWwm5GINQtJXWrG3yJtdAfUkfwNvERSbWb5trQxnMRa/QA0SdkgIdJG0W4aF
+ NMPnxo8PEF7FI88GcuY6UUlWq6eP/4eWWPVIhvfrESR8yWDnjEvemSmO3clWcu27MjPJb8GZKfe
+ iWbNBEfrOJWwNhQAnHb9LsGAmuxX6Lxv4kVPm
+X-Google-Smtp-Source: AGHT+IFnEJvbccQl9NuxDXr6r9kBXQmzF6fHXy9j1Yz5apR3negcqbwZ1xBPZw9TbiuxaRiahJGQmg==
+X-Received: by 2002:a05:6000:2dc2:b0:3a4:f7e7:416b with SMTP id
+ ffacd0b85a97d-3b1fdd16d21mr6756060f8f.16.1751564042531; 
+ Thu, 03 Jul 2025 10:34:02 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b47030c443sm344279f8f.11.2025.07.03.10.33.55
+ 5b1f17b1804b1-454a997b492sm32358785e9.13.2025.07.03.10.34.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 10:33:56 -0700 (PDT)
+ Thu, 03 Jul 2025 10:34:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,19 +68,19 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- kvm@vger.kernel.org
-Subject: [PATCH v6 13/39] accel: Move cpus_are_resettable() declaration to
- AccelClass
-Date: Thu,  3 Jul 2025 19:32:19 +0200
-Message-ID: <20250703173248.44995-14-philmd@linaro.org>
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>
+Subject: [PATCH v6 14/39] accel/hvf: Restrict internal declarations
+Date: Thu,  3 Jul 2025 19:32:20 +0200
+Message-ID: <20250703173248.44995-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703173248.44995-1-philmd@linaro.org>
 References: <20250703173248.44995-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,139 +103,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AccelOpsClass is for methods dealing with vCPUs.
-When only dealing with AccelState, AccelClass is sufficient.
-
-Move cpus_are_resettable() declaration to accel/accel-system.c.
-
-In order to have AccelClass methods instrospect their state,
-we need to pass AccelState by argument.
-
-Adapt KVM handler.
+Common code only needs to know whether HVF is enabled and
+the QOM type. Move the rest to "hvf_int.h", removing the
+need for COMPILING_PER_TARGET #ifdef'ry.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/accel.h       |  1 +
- include/system/accel-ops.h |  1 -
- accel/accel-system.c       | 10 ++++++++++
- accel/kvm/kvm-accel-ops.c  |  6 ------
- accel/kvm/kvm-all.c        |  6 ++++++
- system/cpus.c              |  8 --------
- 6 files changed, 17 insertions(+), 15 deletions(-)
+ include/system/hvf.h     | 38 --------------------------------------
+ include/system/hvf_int.h | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 38 deletions(-)
 
-diff --git a/include/qemu/accel.h b/include/qemu/accel.h
-index fb176e89bad..f987d16baaa 100644
---- a/include/qemu/accel.h
-+++ b/include/qemu/accel.h
-@@ -45,6 +45,7 @@ typedef struct AccelClass {
-     void (*setup_post)(MachineState *ms, AccelState *accel);
-     bool (*has_memory)(MachineState *ms, AddressSpace *as,
-                        hwaddr start_addr, hwaddr size);
-+    bool (*cpus_are_resettable)(AccelState *as);
+diff --git a/include/system/hvf.h b/include/system/hvf.h
+index a9fd13d9bba..d3dcf088b3f 100644
+--- a/include/system/hvf.h
++++ b/include/system/hvf.h
+@@ -14,10 +14,6 @@
+ #define HVF_H
  
-     /* gdbstub related hooks */
-     bool (*supports_guest_debug)(AccelState *as);
-diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
-index 700df92ac6d..f19245d0a0e 100644
---- a/include/system/accel-ops.h
-+++ b/include/system/accel-ops.h
-@@ -33,7 +33,6 @@ struct AccelOpsClass {
-     /* initialization function called when accel is chosen */
-     void (*ops_init)(AccelOpsClass *ops);
+ #include "qemu/accel.h"
+-#include "qemu/queue.h"
+-#include "exec/vaddr.h"
+-#include "qom/object.h"
+-#include "exec/vaddr.h"
  
--    bool (*cpus_are_resettable)(void);
-     void (*cpu_reset_hold)(CPUState *cpu);
+ #ifdef COMPILING_PER_TARGET
+ # ifdef CONFIG_HVF
+@@ -40,38 +36,4 @@ typedef struct HVFState HVFState;
+ DECLARE_INSTANCE_CHECKER(HVFState, HVF_STATE,
+                          TYPE_HVF_ACCEL)
  
-     void (*create_vcpu_thread)(CPUState *cpu); /* MANDATORY NON-NULL */
-diff --git a/accel/accel-system.c b/accel/accel-system.c
-index a0f562ae9ff..07b75dae797 100644
---- a/accel/accel-system.c
-+++ b/accel/accel-system.c
-@@ -62,6 +62,16 @@ void accel_setup_post(MachineState *ms)
-     }
- }
- 
-+bool cpus_are_resettable(void)
-+{
-+    AccelState *accel = current_accel();
-+    AccelClass *acc = ACCEL_GET_CLASS(accel);
-+    if (acc->cpus_are_resettable) {
-+        return acc->cpus_are_resettable(accel);
-+    }
-+    return true;
-+}
-+
- /* initialize the arch-independent accel operation interfaces */
- void accel_init_ops_interfaces(AccelClass *ac)
- {
-diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-index 96606090889..99f61044da5 100644
---- a/accel/kvm/kvm-accel-ops.c
-+++ b/accel/kvm/kvm-accel-ops.c
-@@ -78,11 +78,6 @@ static bool kvm_vcpu_thread_is_idle(CPUState *cpu)
-     return !kvm_halt_in_kernel();
- }
- 
--static bool kvm_cpus_are_resettable(void)
--{
--    return !kvm_enabled() || !kvm_state->guest_state_protected;
--}
+-#ifdef COMPILING_PER_TARGET
+-struct hvf_sw_breakpoint {
+-    vaddr pc;
+-    vaddr saved_insn;
+-    int use_count;
+-    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
+-};
 -
- #ifdef TARGET_KVM_HAVE_GUEST_DEBUG
- static int kvm_update_guest_debug_ops(CPUState *cpu)
- {
-@@ -96,7 +91,6 @@ static void kvm_accel_ops_class_init(ObjectClass *oc, const void *data)
- 
-     ops->create_vcpu_thread = kvm_start_vcpu_thread;
-     ops->cpu_thread_is_idle = kvm_vcpu_thread_is_idle;
--    ops->cpus_are_resettable = kvm_cpus_are_resettable;
-     ops->synchronize_post_reset = kvm_cpu_synchronize_post_reset;
-     ops->synchronize_post_init = kvm_cpu_synchronize_post_init;
-     ops->synchronize_state = kvm_cpu_synchronize_state;
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index c8611552d19..88fb6d36941 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3979,6 +3979,11 @@ static void kvm_accel_instance_init(Object *obj)
-     s->msr_energy.enable = false;
- }
- 
-+static bool kvm_cpus_are_resettable(AccelState *as)
-+{
-+    return !kvm_enabled() || !kvm_state->guest_state_protected;
-+}
-+
- /**
-  * kvm_gdbstub_sstep_flags():
-  *
-@@ -3997,6 +4002,7 @@ static void kvm_accel_class_init(ObjectClass *oc, const void *data)
-     ac->init_machine = kvm_init;
-     ac->has_memory = kvm_accel_has_memory;
-     ac->allowed = &kvm_allowed;
-+    ac->cpus_are_resettable = kvm_cpus_are_resettable;
-     ac->gdbstub_supported_sstep_flags = kvm_gdbstub_sstep_flags;
- #ifdef TARGET_KVM_HAVE_GUEST_DEBUG
-     ac->supports_guest_debug = kvm_supports_guest_debug;
-diff --git a/system/cpus.c b/system/cpus.c
-index a43e0e4e796..4fb764ac880 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -195,14 +195,6 @@ void cpu_synchronize_pre_loadvm(CPUState *cpu)
-     }
- }
- 
--bool cpus_are_resettable(void)
--{
--    if (cpus_accel->cpus_are_resettable) {
--        return cpus_accel->cpus_are_resettable();
--    }
--    return true;
--}
+-struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
+-                                                 vaddr pc);
+-int hvf_sw_breakpoints_active(CPUState *cpu);
 -
- void cpu_exec_reset_hold(CPUState *cpu)
- {
-     if (cpus_accel->cpu_reset_hold) {
+-int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
+-int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
+-int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
+-int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
+-void hvf_arch_remove_all_hw_breakpoints(void);
+-
+-/*
+- * hvf_update_guest_debug:
+- * @cs: CPUState for the CPU to update
+- *
+- * Update guest to enable or disable debugging. Per-arch specifics will be
+- * handled by calling down to hvf_arch_update_guest_debug.
+- */
+-int hvf_update_guest_debug(CPUState *cpu);
+-void hvf_arch_update_guest_debug(CPUState *cpu);
+-
+-/*
+- * Return whether the guest supports debugging.
+- */
+-bool hvf_arch_supports_guest_debug(AccelState *as);
+-#endif /* COMPILING_PER_TARGET */
+-
+ #endif
+diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
+index d774e58df91..dcf06f53d97 100644
+--- a/include/system/hvf_int.h
++++ b/include/system/hvf_int.h
+@@ -12,6 +12,8 @@
+ #define HVF_INT_H
+ 
+ #include "qemu/queue.h"
++#include "exec/vaddr.h"
++#include "qom/object.h"
+ 
+ #ifdef __aarch64__
+ #include <Hypervisor/Hypervisor.h>
+@@ -77,4 +79,36 @@ int hvf_put_registers(CPUState *);
+ int hvf_get_registers(CPUState *);
+ void hvf_kick_vcpu_thread(CPUState *cpu);
+ 
++struct hvf_sw_breakpoint {
++    vaddr pc;
++    vaddr saved_insn;
++    int use_count;
++    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
++};
++
++struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
++                                                 vaddr pc);
++int hvf_sw_breakpoints_active(CPUState *cpu);
++
++int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
++int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
++int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
++int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
++void hvf_arch_remove_all_hw_breakpoints(void);
++
++/*
++ * hvf_update_guest_debug:
++ * @cs: CPUState for the CPU to update
++ *
++ * Update guest to enable or disable debugging. Per-arch specifics will be
++ * handled by calling down to hvf_arch_update_guest_debug.
++ */
++int hvf_update_guest_debug(CPUState *cpu);
++void hvf_arch_update_guest_debug(CPUState *cpu);
++
++/*
++ * Return whether the guest supports debugging.
++ */
++bool hvf_arch_supports_guest_debug(AccelState *as);
++
+ #endif
 -- 
 2.49.0
 
