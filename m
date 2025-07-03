@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC6AAF7EF9
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE2BAF7F55
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:44:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXNpx-0007Sb-NL; Thu, 03 Jul 2025 13:35:08 -0400
+	id 1uXNq5-0007qM-Ha; Thu, 03 Jul 2025 13:35:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNpT-0006mA-Q2
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:34:35 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNpa-0007Lt-Q6
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:34:43 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNpR-0000ck-7d
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:34:35 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3a51481a598so26449f8f.3
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:34:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNpY-0000p7-Rd
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:34:42 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-450ce671a08so606335e9.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:34:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751564071; x=1752168871; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751564078; x=1752168878; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JWKEWRHQpEpbh6ailemJvHhnr8Dm9jf2WfUx6in3sZs=;
- b=m3QMR9mFFgDweC1nuI6a8DtrocSETTj8TiwgO7eSdXcmZzGPexPTtYNl/npKuxb6xC
- GYjyV5Xqi/Z+5h9LWb66ygRK0KgTmAVJ41oIWNQ50wYLXl7LbscZQNzHJdZW/gJMseuz
- 6+teu8O5z1C5LOHf6C+XyaznbCKQXf2Roy+0DozZcP/s0iPKd70/WRSHAb93haLRaqAp
- qr74fvQYrpOC9uDb1uHc7pnV+TGrKcRDiRT6H8QX5jKM0tkFT0xBaCthnYzOT9OUP/d0
- XPSOCWM9TmOAjPgPH0C4rDgniLKpTAleXn7HGB+gSJR7eOeZgSmVMAAs46AodPuJW1r/
- zxSw==
+ bh=eyTjZz7bBnxk9ld1sqElOmPl+Sebl+xEl5P+valYmlY=;
+ b=V+qBZRDNXROM56SdOJo5Dy24IKYJNnPYXRT1LxAZwWjeyd50jITmNWpgB0S202uPsJ
+ UqR330aKGeTwhIbc2WmarTwZzMs8A2UfyvnnKaXoHCU3On2lxmOGJDx2Wnb9kDkrApu+
+ ESwfo/xPnlKeJ2Ti+9iE6pRyCVr1XBJQCfgaHLblhOEan6zQ/36m8IQrcI2bcVkPULGg
+ uXbPDRh+LGr/o9i5L8QgLwhPzKHWWn9ElURPOmgJ4IWE6i9S1JmAX5LuDtOdP/1Tooo9
+ OD/Qo/Us14bvURPft7Wf/R6wb3cTuFTK0cQjst+GN3niVyVuht+l1k6LX2NlaBAguFTu
+ kGnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751564071; x=1752168871;
+ d=1e100.net; s=20230601; t=1751564078; x=1752168878;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JWKEWRHQpEpbh6ailemJvHhnr8Dm9jf2WfUx6in3sZs=;
- b=qPAnsjLHBVuCQJDATeuziUF9vAEUChrQvhQadnrikLL9b0sTlpULTLCWkx0QsuAr1h
- EZvvardzD2eRtwlGa/5GqjQ/mHQnewaSFWEbtKfr06FcbCbu1xqg5h0F+567KKh6Kfch
- k3ZuaAHDNS+/X40AGiqRw2gEnLno5hI5DvV8cVbzGC5m57l+3mfo4aq5H79xNMoxwIxF
- oR7I0jFaqiOo02E0pZrP3pHGWnzygEko3dMDMSemmuiY0J4QzMacwKEWg+2o6nbE/hAE
- R1ED2nxgm7JTHZKR1QKBSj8F3S75TdbgFWP3GPH4EHLrj31BNlBzPnHM4jRH/9qFkyak
- 7vMQ==
-X-Gm-Message-State: AOJu0YwZnKsOGA1fjg70h2SFWhXOgqIP43rTaHFU0p82m+U5mgjj9IWD
- Ub4F+8bVYoER2AgjgycVjSJVL6z7Pxgyb6Vk3EoWYiU0gv1r3D8LGO/a5EWtlaoYozUHbULVLqc
- RMwY7bgs=
-X-Gm-Gg: ASbGncv56zhVkUARFaReyPC+rrKwwXN8Y37VpWdK9O8v+kYQn+M+aLyP4FBvxfncgrK
- PaKd7fyLPnUkvmN0jdQSnvvTr9kcBkQF+teEQENiLmlplBejwFFTNtjqjnIrz0nOquj4pcSGRUm
- ySbkuZ3idJtGP6ykJEGoV7bfA/FikOLHfyeV3kc2w4fFVi+dADmz99X7G1tg67NYFuC+/8hKb6l
- RgUcJvtgHVvfnnJF+yC4rHaqOH2tNJh+tgTJ3tfrLmx+GIezF1Pyxav+VilESETy6i8BB+MtFip
- C/RRSIy1JiVUSZIwtv1Gvjk6uU/n/xql1UYC8iJKqLyB/Qn4zOP1yDwwt76ap8G5TdMlLC98XJT
- 3GbqBHmompfY7ZqtZqPx66Avapn4boOndskRt
-X-Google-Smtp-Source: AGHT+IFie8PMVY64uuF3iyQJVp0HOVjZO76RGho0BQfImVhrebRlQMoujd3ZynngWaeIZg05hFVCRg==
-X-Received: by 2002:a05:6000:1a8a:b0:3a4:f786:4fa1 with SMTP id
- ffacd0b85a97d-3b1fe5bf079mr6351189f8f.2.1751564070792; 
- Thu, 03 Jul 2025 10:34:30 -0700 (PDT)
+ bh=eyTjZz7bBnxk9ld1sqElOmPl+Sebl+xEl5P+valYmlY=;
+ b=U+2fnxaiarWsLZB18zrLHu5yjOAFGyBiC+bEO844jFwZui17z9p6skMcUVv+ctkdkB
+ sEE7Dl3fGAqVNdXSJO/QEBiWz1xokrDXkZMyL2gOe0sT/am7iL3cQgjYMx9WjYHxTgNU
+ V+dCVx9PjxYMvprWjLTPFEbPW+PQDkGP/EwTAevUh+NUtaQ02tooZmG9Im3EkTcAOszZ
+ k+C1IOfZ96AczPixUyW/yLL2Ejdet4qhaaTFmYsG38j0ewg+X3rbVtrrrKbIDKJxn767
+ keQ0edgAtpFu3Ib6NUsgXLClEAV/t8L1rvqLqCm/peVy2cxAaCL7faHI0ruFBJ6Sah0u
+ WpIA==
+X-Gm-Message-State: AOJu0Yw8giqv2SzwE3GvTsHO1gnMGsIuSA56ioqHKd5EXGDR0AsXWEdE
+ cFaIYCBe3vkvZuIX611SVXgtg9FT4EhWZAmCz2zaAaviEW2OIVhkfYh3Uh9LAjp8G7g0kCropHd
+ WxHBshJI=
+X-Gm-Gg: ASbGnctcO7R+wveVY0p2v9GcSTH+bWlpqMgm7TtOy/x/q4V1OB9uY6804+4GNMYicgS
+ XCt/BbxJ7vkIfI5JvkVtdH3AnNOOdZTzS12D9HAw4Ywdm8IztxthItA6skoNuWrecCaDuyvowoV
+ 6fFhEMRWFMRTeOEu/7zJkDIMFiaGd1rQ1xZh2CxFxlwew3RdMe/0rWcEslGVa3+0AT4MGd36nQD
+ spIFpHEu3WdnxfAgXoVw+nDs3JzVJhUf8GNZCWrAtrXz5PGVvB5fJEST0LpbQrIUgCoRsSXQ5P/
+ GZs0R3uLz2Si1dDyXgYPyZM1V71GLKAcPEq8KriOWHi1x+ebjZFccxfs5dU3dw0vfAbKbQLzG8c
+ reQQNTBY58cEb3ZCzFFLYpYHVxGZtKleOaisU
+X-Google-Smtp-Source: AGHT+IFAJHwkgEpIDo3r/dndYw9yiQ+ExEG0BWMSJ0UFCuvq5gnAH+1qx0/80wXcTMZ+W44NRh6H1A==
+X-Received: by 2002:a05:600c:4e90:b0:43d:fa59:cc8f with SMTP id
+ 5b1f17b1804b1-454a373b017mr79001095e9.33.1751564077925; 
+ Thu, 03 Jul 2025 10:34:37 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a9bcf35csm32146605e9.20.2025.07.03.10.34.29
+ ffacd0b85a97d-3b47285dc08sm311401f8f.98.2025.07.03.10.34.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 10:34:30 -0700 (PDT)
+ Thu, 03 Jul 2025 10:34:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,19 +68,19 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Reinoud Zandijk <reinoud@netbsd.org>
-Subject: [PATCH v6 19/39] accel/nvmm: Replace @dirty field by generic
+ Sunil Muthuswamy <sunilmut@microsoft.com>
+Subject: [PATCH v6 20/39] accel/whpx: Replace @dirty field by generic
  CPUState::vcpu_dirty field
-Date: Thu,  3 Jul 2025 19:32:25 +0200
-Message-ID: <20250703173248.44995-20-philmd@linaro.org>
+Date: Thu,  3 Jul 2025 19:32:26 +0200
+Message-ID: <20250703173248.44995-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703173248.44995-1-philmd@linaro.org>
 References: <20250703173248.44995-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,98 +109,105 @@ a generic one in CPUState.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/nvmm/nvmm-all.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ target/i386/whpx/whpx-all.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index f1c6120ccf1..aea61a6fd2a 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -30,7 +30,6 @@ struct AccelCPUState {
-     struct nvmm_vcpu vcpu;
-     uint8_t tpr;
-     bool stop;
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index cf6d3e4cdd4..5001afad3a7 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -237,7 +237,6 @@ struct AccelCPUState {
+     uint64_t tpr;
+     uint64_t apic_base;
+     bool interruption_pending;
 -    bool dirty;
  
-     /* Window-exiting for INTs/NMIs. */
-     bool int_window_exit;
-@@ -508,7 +507,7 @@ nvmm_io_callback(struct nvmm_io *io)
+     /* Must be the last field as it may have a tail */
+     WHV_RUN_VP_EXIT_CONTEXT exit_ctx;
+@@ -836,7 +835,7 @@ static HRESULT CALLBACK whpx_emu_setreg_callback(
+      * The emulator just successfully wrote the register state. We clear the
+      * dirty state so we avoid the double write on resume of the VP.
+      */
+-    cpu->accel->dirty = false;
++    cpu->vcpu_dirty = false;
+ 
+     return hr;
+ }
+@@ -1391,7 +1390,7 @@ static int whpx_last_vcpu_stopping(CPUState *cpu)
+ /* Returns the address of the next instruction that is about to be executed. */
+ static vaddr whpx_vcpu_get_pc(CPUState *cpu, bool exit_context_valid)
+ {
+-    if (cpu->accel->dirty) {
++    if (cpu->vcpu_dirty) {
+         /* The CPU registers have been modified by other parts of QEMU. */
+         return cpu_env(cpu)->eip;
+     } else if (exit_context_valid) {
+@@ -1704,9 +1703,9 @@ static int whpx_vcpu_run(CPUState *cpu)
      }
  
-     /* Needed, otherwise infinite loop. */
--    current_cpu->accel->dirty = false;
-+    current_cpu->vcpu_dirty = false;
- }
- 
- static void
-@@ -517,7 +516,7 @@ nvmm_mem_callback(struct nvmm_mem *mem)
-     cpu_physical_memory_rw(mem->gpa, mem->data, mem->size, mem->write);
- 
-     /* Needed, otherwise infinite loop. */
--    current_cpu->accel->dirty = false;
-+    current_cpu->vcpu_dirty = false;
- }
- 
- static struct nvmm_assist_callbacks nvmm_callbacks = {
-@@ -727,9 +726,9 @@ nvmm_vcpu_loop(CPUState *cpu)
-      * Inner VCPU loop.
-      */
      do {
 -        if (cpu->accel->dirty) {
 +        if (cpu->vcpu_dirty) {
-             nvmm_set_registers(cpu);
+             whpx_set_registers(cpu, WHPX_SET_RUNTIME_STATE);
 -            cpu->accel->dirty = false;
 +            cpu->vcpu_dirty = false;
          }
  
-         if (qcpu->stop) {
-@@ -827,32 +826,32 @@ static void
- do_nvmm_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
- {
-     nvmm_get_registers(cpu);
--    cpu->accel->dirty = true;
-+    cpu->vcpu_dirty = true;
- }
+         if (exclusive_step_mode == WHPX_STEP_NONE) {
+@@ -2054,9 +2053,9 @@ static int whpx_vcpu_run(CPUState *cpu)
  
- static void
- do_nvmm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg)
- {
-     nvmm_set_registers(cpu);
--    cpu->accel->dirty = false;
-+    cpu->vcpu_dirty = false;
- }
- 
- static void
- do_nvmm_cpu_synchronize_post_init(CPUState *cpu, run_on_cpu_data arg)
- {
-     nvmm_set_registers(cpu);
--    cpu->accel->dirty = false;
-+    cpu->vcpu_dirty = false;
- }
- 
- static void
- do_nvmm_cpu_synchronize_pre_loadvm(CPUState *cpu, run_on_cpu_data arg)
- {
--    cpu->accel->dirty = true;
-+    cpu->vcpu_dirty = true;
- }
- 
- void nvmm_cpu_synchronize_state(CPUState *cpu)
+ static void do_whpx_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
  {
 -    if (!cpu->accel->dirty) {
 +    if (!cpu->vcpu_dirty) {
-         run_on_cpu(cpu, do_nvmm_cpu_synchronize_state, RUN_ON_CPU_NULL);
+         whpx_get_registers(cpu);
+-        cpu->accel->dirty = true;
++        cpu->vcpu_dirty = true;
      }
  }
-@@ -982,7 +981,7 @@ nvmm_init_vcpu(CPUState *cpu)
-         }
+ 
+@@ -2064,20 +2063,20 @@ static void do_whpx_cpu_synchronize_post_reset(CPUState *cpu,
+                                                run_on_cpu_data arg)
+ {
+     whpx_set_registers(cpu, WHPX_SET_RESET_STATE);
+-    cpu->accel->dirty = false;
++    cpu->vcpu_dirty = false;
+ }
+ 
+ static void do_whpx_cpu_synchronize_post_init(CPUState *cpu,
+                                               run_on_cpu_data arg)
+ {
+     whpx_set_registers(cpu, WHPX_SET_FULL_STATE);
+-    cpu->accel->dirty = false;
++    cpu->vcpu_dirty = false;
+ }
+ 
+ static void do_whpx_cpu_synchronize_pre_loadvm(CPUState *cpu,
+                                                run_on_cpu_data arg)
+ {
+-    cpu->accel->dirty = true;
++    cpu->vcpu_dirty = true;
+ }
+ 
+ /*
+@@ -2086,7 +2085,7 @@ static void do_whpx_cpu_synchronize_pre_loadvm(CPUState *cpu,
+ 
+ void whpx_cpu_synchronize_state(CPUState *cpu)
+ {
+-    if (!cpu->accel->dirty) {
++    if (!cpu->vcpu_dirty) {
+         run_on_cpu(cpu, do_whpx_cpu_synchronize_state, RUN_ON_CPU_NULL);
+     }
+ }
+@@ -2226,7 +2225,7 @@ int whpx_init_vcpu(CPUState *cpu)
      }
  
--    qcpu->dirty = true;
-+    qcpu->vcpu_dirty = true;
-     cpu->accel = qcpu;
- 
-     return 0;
+     vcpu->interruptable = true;
+-    vcpu->dirty = true;
++    cpu->vcpu_dirty = true;
+     cpu->accel = vcpu;
+     max_vcpu_index = max(max_vcpu_index, cpu->cpu_index);
+     qemu_add_vm_change_state_handler(whpx_cpu_update_state, env);
 -- 
 2.49.0
 
