@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D79AF7119
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 12:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 488B1AF713C
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:00:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXHbl-0003He-Gp; Thu, 03 Jul 2025 06:56:01 -0400
+	id 1uXHbo-0003SC-89; Thu, 03 Jul 2025 06:56:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHbc-0003CU-L7
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:55:53 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHbh-0003Mq-Sk
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:55:58 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHba-0000fO-Fp
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:55:52 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-450cfb790f7so66275425e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:55:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHbf-0000gw-9t
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:55:57 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3a4e742dc97so553666f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:55:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751540148; x=1752144948; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751540153; x=1752144953; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zSMALvjOcbwDFxdBZhQQT9TGvgwhtr1LjNKTHw1swdk=;
- b=uES0ARvqtqb9JjWHMWq70yZHbqSs3OQPykTGTBVCHOMwcwU/D1/mcTfRzevYk5d7QF
- NTDRWHCo+Vyn7Fr8gh0pFbh0l2iXm4KKfaoh7wjjR9skHsxQIbHlCgJUMWuAzLBUJ6zi
- +st01dkslofiCGQBWwwzKszyN0Fkfi0mMmhWLZPis9pxNcjqxmOgQS1ybmacw+aqGS5f
- FOETTfAW7PM0QkaGRBqk2F0I884wvWz7Ah3UFbgVnpJqPFwLJyKPZ3OPoYvQiM8ovzDI
- mFm5a48ZJId9XGHBOfpmB2qRe1oKkI6apM9dAzgVuFQE6461eUi60MQqeSr15y4AAoLd
- MOLQ==
+ bh=ThHRepOjVOPYIURDCNeQdikGEVpKaGb//EjFvlftJxg=;
+ b=bLd4yH6XSRQbDDgdLl23Uu+0l50OhpcuESsehK6js/4lLiHXWHZgpyO0CvmksTWjEB
+ 0Bvs4ItjQ/iauWeGn1Dp8Whzwn4PeSJyXDcfcUrA8ODACzQxydXcjWls+5dG29LGBtz0
+ 6j9st2/GRkpqjJFylzhJD1C6tAJf3pVYPMqnHb1YHCrDhJnM5m2hRfgI3E5qA9IGm6Eh
+ a8rzQDOpeswy9qJaZrvkc4UyNThYK8BNx8u9pbBrLfF7WciM6dYUKcJgm3ZifRl3C/av
+ xFUH5WMv3oKgn2+FnePLQib7OeEwTKn62jGZHuw7ZlP3k0oFYln545NwI2nBafp/gIff
+ cU8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751540148; x=1752144948;
+ d=1e100.net; s=20230601; t=1751540153; x=1752144953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zSMALvjOcbwDFxdBZhQQT9TGvgwhtr1LjNKTHw1swdk=;
- b=nVjuoCS5JyB3j8sv+W2g5heaAA9rqFFk8v+hATsY77lBXaTpcWI2R3vI/Y9mBKMi+w
- DG94Rp6tLV0+GlZv1alyfeuU3MfV67tRGzC4xuY6/IYq3zNTZUQ5BOuokuWmqg2qFxI7
- 38rcN2zeLgX1IK6ICbwocxfusRnSUo0tUdcKnyIr5MVW4cyFRRACh/b9s8DW2X89ig5F
- QCttOzhYyGf73tAZD363ignmbOmX4qbiPs4u4m7y4r0h6ubOkHwwr0r1QRJbgGrTHaAJ
- 3R+siad+/xKb5WWXS/z4saA9ATfBeE4/uFAOdPbnWTjvrWTSw/ac338zPx/ruIE++w0L
- dOEQ==
-X-Gm-Message-State: AOJu0YzH6tKxOKoRl4HNjFO02KrUwbtpCwnyqIPyYTADU4hr5cRIjKpf
- YlfZ2GorDoDG4e+17KWDcN6AKN6dw/0ev3E/yqHrS4Q39W7TzevNF5iPUwKPBjHqUpWWAP5vBVP
- sX4CORmc=
-X-Gm-Gg: ASbGnctio7eUeadlSsZbmYX7lwvxzAcd1WJXzDj8ERYPDxMmd/aJIUph0AyypEWGM7m
- 2xcJFFTI9v2TDHQ5olD8XVSC5j34RdGZ19hovmHoT2yL2f7vOgmuLlHebvpx5xH3WyjZ/umAHz2
- VdkP5iHPgDY0rdOLuilCxZkZ+dyzb4EfYSjGVa+e47Sz6M2nGZn/isz4orNhM7h56HCRoLyYlbY
- 8MBGrH+hmcDsmiMdUUXdvB2IPesdGzQiC4apu5GHNL8X/yooq6IsDDyATlXu5GEvFfjvV/q+/I7
- HYYlwjKroTfTe7K28Mw1I8ipnCiei/vT63FD+TMzjtEnHAE+qxf0i7Ma3kTSzrjrOvuuReWMBGj
- HCNdSgq8/Udg=
-X-Google-Smtp-Source: AGHT+IHsgLTYJuE3+vBF70Bo7sHjatYYUMFJS63YQEPTiYpJlKzOhW/uNLJUerhl3hURkYIrdf6sNw==
-X-Received: by 2002:a05:600c:3b15:b0:453:608:a18b with SMTP id
- 5b1f17b1804b1-454a36e5a0fmr80144165e9.9.1751540147866; 
- Thu, 03 Jul 2025 03:55:47 -0700 (PDT)
+ bh=ThHRepOjVOPYIURDCNeQdikGEVpKaGb//EjFvlftJxg=;
+ b=wxI9S6NXDK0oziJ7GB+hQI/3notv3Sv4QTvGnQUtZ82oO/wve+Ih0E2pvLxJoSFfVF
+ KkmyzCkaREda4XKFJpUmYhAbIDltLCJgHrWYUWW2uy7mzgNrIqDW1uf++w/bTizBBoWv
+ rHuGtZiFekDyS/qTkaEITBai0FjINSUYWZf42XWXlEh8S1owcgP37Y48gP6JnJSx7EWW
+ fEYsTOTYlqv1edYedlWPFVkYwGbVNp3RzYi/CsWZKUzkMtpIyDFYyRzNhsPeX1/TXMMe
+ lCmJSig5DJtXXVnmwvzKPNNetGqnG5xtqlN2/02piSgE4JrtS1UTSNwWtKwSSADw7e5s
+ IiCQ==
+X-Gm-Message-State: AOJu0YwWg6lEwupNjORAAXXVcrK4t9+8WzCjjJf8dJj4Mj/zH3qP/dqI
+ rB5BGXjxSTTVaJYL0hNwDDyp8g1eV4ziSemauQPs9MhKH4o6FFcCIXPMznaQa5eI2UJwLjRe9OH
+ wW15UG40=
+X-Gm-Gg: ASbGncuYPu/PbFeSPWIYZpF6mmdESl2VG+7kovdEZ3FrDBfKgoZIzVQxygCO5zaZKcx
+ XP8vIotcrCP+pPl1cN9+wyyHwRt1jtr/bhgg1FjyEG5Wlc4l1+MzZwHMM7uelC//XrWayncrNLn
+ WFjmnL8wG/ImBoH/gdHdmJOiPAb4mqiEijZt9R7IoelYHxpZty+tipHVp4WvRj9beFogoqFPZfE
+ KZr1mYs+QTr7N+D8bCuCzxs92rZ3G3ywK/kqt1sF8X1Im+RsYhgfwBHabr5k3L7r1LXnzwvpwt/
+ /ckwvCHvltv/wYF8FsRcMx1I5xnCEgN74iLbaGHZqpKPeg7xhfY6BUeaiTaWeD8D1rvJe8FI3Yi
+ g8LEFdZsZX8s=
+X-Google-Smtp-Source: AGHT+IHIbewtIS4hSJa1mCuaiIjfjhd4Oy7tVjRfFIBcswnH773BBovjpNdcNQAcYJg3AxkQMprC2Q==
+X-Received: by 2002:a05:600c:3f10:b0:43c:ed33:a500 with SMTP id
+ 5b1f17b1804b1-454ab34622dmr22498465e9.10.1751540153083; 
+ Thu, 03 Jul 2025 03:55:53 -0700 (PDT)
 Received: from localhost.localdomain ([83.247.137.20])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a99878acsm23317615e9.17.2025.07.03.03.55.46
+ 5b1f17b1804b1-454a9989fcesm23254235e9.16.2025.07.03.03.55.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 03:55:47 -0700 (PDT)
+ Thu, 03 Jul 2025 03:55:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: [PATCH v5 01/69] system/memory: Restrict eventfd dispatch_write() to
- emulators
-Date: Thu,  3 Jul 2025 12:54:27 +0200
-Message-ID: <20250703105540.67664-2-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 02/69] system/runstate: Document
+ qemu_add_vm_change_state_handler()
+Date: Thu,  3 Jul 2025 12:54:28 +0200
+Message-ID: <20250703105540.67664-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703105540.67664-1-philmd@linaro.org>
 References: <20250703105540.67664-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,47 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 8c56c1a592b ("memory: emulate ioeventfd") added a !KVM
-check because the only accelerator available back then were TCG,
-QTest and KVM. Then commit 126e7f78036 ("kvm: require
-KVM_CAP_IOEVENTFD and KVM_CAP_IOEVENTFD_ANY_LENGTH") suggested
-'!KVM' check should be '(TCG || QTest)'. Later more accelerator
-were added. Implement the suggestion as a safety measure, not
-dispatching to eventfd when hardware accelerator is used.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- system/memory.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ include/system/runstate.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/system/memory.c b/system/memory.c
-index 76b44b8220f..4f713889a8e 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -25,7 +25,7 @@
- #include "qom/object.h"
- #include "trace.h"
- #include "system/ram_addr.h"
--#include "system/kvm.h"
-+#include "system/qtest.h"
- #include "system/runstate.h"
- #include "system/tcg.h"
- #include "qemu/accel.h"
-@@ -1530,12 +1530,7 @@ MemTxResult memory_region_dispatch_write(MemoryRegion *mr,
+diff --git a/include/system/runstate.h b/include/system/runstate.h
+index fdd5c4a5172..b6e8d6beab7 100644
+--- a/include/system/runstate.h
++++ b/include/system/runstate.h
+@@ -14,6 +14,16 @@ void runstate_replay_enable(void);
+ typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
+ typedef int VMChangeStateHandlerWithRet(void *opaque, bool running, RunState state);
  
-     adjust_endianness(mr, &data, op);
- 
--    /*
--     * FIXME: it's not clear why under KVM the write would be processed
--     * directly, instead of going through eventfd.  This probably should
--     * test "tcg_enabled() || qtest_enabled()", or should just go away.
--     */
--    if (!kvm_enabled() &&
-+    if ((tcg_enabled() || qtest_enabled()) &&
-         memory_region_dispatch_write_eventfds(mr, addr, data, size, attrs)) {
-         return MEMTX_OK;
-     }
++/**
++ * qemu_add_vm_change_state_handler:
++ * @cb: the callback to invoke
++ * @opaque: user data passed to the callback
++ *
++ * Register a callback function that is invoked when the vm starts or stops
++ * running.
++ *
++ * Returns: an entry to be freed using qemu_del_vm_change_state_handler()
++ */
+ VMChangeStateEntry *qemu_add_vm_change_state_handler(VMChangeStateHandler *cb,
+                                                      void *opaque);
+ VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
 -- 
 2.49.0
 
