@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0781DAF7DF1
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 18:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B54AF7DFE
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 18:36:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXMrw-00062B-If; Thu, 03 Jul 2025 12:33:06 -0400
+	id 1uXMuP-0008UL-Bh; Thu, 03 Jul 2025 12:35:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXMrd-0005zg-7F
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:32:46 -0400
-Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
+ id 1uXMuC-0008NX-0O
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:35:24 -0400
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXMrX-0001Th-R3
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:32:44 -0400
-Received: by mail-yb1-xb35.google.com with SMTP id
- 3f1490d57ef6-e81749142b3so6552610276.3
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 09:32:37 -0700 (PDT)
+ id 1uXMu6-00028D-9r
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 12:35:23 -0400
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-710f39f5cb9so81496397b3.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 09:35:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751560356; x=1752165156; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751560516; x=1752165316; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Pn5w1GsCyCVtzHTNJdoRMgZpRqJbtnjrQ18l0UfDKrk=;
- b=j+6n4oO2PX/nBiZFQt42GWAPEX7NGu7AVV8ffsh8ZdUM7pecd2D6dfUOTmhTgtWpf3
- YZk+12q4TAttm/VxVR1jTxOLrGbv/FAmkXDS5SFo0E0PFAZMZTpo+Vm6TI+EkHIWDl4x
- OTkJHU7uWbRX9NiahcF7qcjhY580wMrDwdK3py0zAKfF3ivVjBisIrBtXLBewZgSXtfn
- bDVlwNDxmzbauVW7wJVgE7hqDh2pbeV/u93AR6P8AokB6CRV9CvN8WVFQGrLLPBDGyvu
- G8WnWSJJD5D+WqBXJ1RovFX7Ay9EnBFd2ie4CJ9H437oGclQHQWTN9qWexNDk+G7wqES
- CY7Q==
+ bh=wVjbPFTVxyeqZk1Hq3isT9C60m5446h74JqHjmvPqO8=;
+ b=HJH/8WKS/FCMykA9KMDRvMgs87lKG8fbfAL0r2SjTponjVqtsacyK1ifxXI1EfCSxH
+ jEvlmYr54B9gUIp4K8jkSHAmgEw7V6YKsbXa9VegXX17tt+A3lkbErJWU0Qb0rPpQIA+
+ 0CsAM1+D0PoWd12gcoG55y47sXvS/f9jLB0F301vy26Oj+WWqUcEJ6iq5qvEfVjFWoIJ
+ JvVVMR20wJJLE08CKe9tEEGcfvhXI6qJe/q3/DqQwo5rHXELScTtJgUF6WJcUqbTFTE3
+ Ihy9Iogigk1OJW3qTeaGdaNhhX7wG4WBLz/efKcTWWGnyrEDNTxoc8jxtaFLZ/KDpJ+x
+ Wg1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751560356; x=1752165156;
+ d=1e100.net; s=20230601; t=1751560516; x=1752165316;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Pn5w1GsCyCVtzHTNJdoRMgZpRqJbtnjrQ18l0UfDKrk=;
- b=Q64Usj5dMNhGg5XkHRK0nrAr2Z79uS1Uo15esQD+HfZV8p3JgSJKTkZNnMOf4Xr0aF
- mT1LCrzI6zam9aGMKzpyplPIqQB0GzkBXXDsFfvQZeEygfkmveYJL7w1xFcJTeUVKHZ6
- Ql2LgQSNrpgJ+GWtTkB7n1n2AVSScLSVBMRxDIEqhzxsTwH+j42Q68NY/CBgeK2uYMss
- RFNzdSVFda/XpR/nPv3RyzuG+9KL5hM/B6qUPtsoj7VRr8ui9tDlJlkpD3GVACH1uhAr
- ZgDIaL6bOy1W7g+oqL9HiX+bNLNPPJVJE2zg4EhHZ8CVzCQxreVQa/K6CnanEpOaIZM9
- AeXw==
-X-Gm-Message-State: AOJu0YzaVfb+9TQ299oCzXOWWBOMTeLs24GPBpp+4sQyFEUYX+jwKE08
- dNo0t+hGz4tNu4thJ9+6GJfXs3z1oRrcid4TMPLLRmDy0WKQvBkJjPA26ErOw6ZRvr7xLFA/Roc
- BFkZ597kPJm1P0g/Q9Tc0QKRVcuYoCFDBji/Hm1FnHSn51dzFf4B+
-X-Gm-Gg: ASbGncttRZzygj0ZJrjydCRCSxAQCjOAgnwrtxnmdLAcdhpsLZVxktkz5OR4CIgDt6y
- XpBOkv5ZdoyTuw1RA7B9CKSynd5I6rmCJrv6Qx2zq4mp24eM5vw7GXRuBJN6ltlqkHvPJyeigAA
- wDl+LKgHHSNiz3fKTI87716L+fogAs1Ilr2jn91m1SY8IB
-X-Google-Smtp-Source: AGHT+IFJZ1599vFfxDnyXlEEmgVFCBdQpH4QWWDGW6IGzGqNlv/BMnhTQ6NGtTG13d0GYv6Y4xrq2gWowv1ZuClJ1KA=
-X-Received: by 2002:a05:690c:309:b0:6ef:5097:5daa with SMTP id
- 00721157ae682-7164d56acc2mr114095247b3.34.1751560356440; Thu, 03 Jul 2025
- 09:32:36 -0700 (PDT)
+ bh=wVjbPFTVxyeqZk1Hq3isT9C60m5446h74JqHjmvPqO8=;
+ b=xP+i4I3kx0NrHe9sqv5Uojsm9sgfcNPEF+u0nZWrfdYSgytilFOAm1RKXscUpPpBkZ
+ 48AA3kLztB89w9aLru0hQhzlx221QlaMS+a5Eov47czR+UCE5TR6eIfg5xN2XDJ+yA8O
+ AQGnsFRYNoscxJs0rJv2/Ic2k83Yi3bABcRTqdkF/5tiU2AebF+krYytT6upioO87ivZ
+ zVFjBYK/UveLDhEFGSsRcaHfz3DZLK3W2rKymmk2ecq4ErZiNwQ7je+yeuoajUPPTQsS
+ NT72fSxuxdoySsA3ZSywbVQWhmm5Pj7aLvjcjDff+3bCnV1nbaLF5bq4tVVLHUTJ6gBl
+ qJMg==
+X-Gm-Message-State: AOJu0YxKv5YfOx1TsfoTQb7bOucjuW0lZZcY9rS5YTunRyvcl8Efe06Y
+ TxUwW8PrrOpn6zsY1QSjpcA+EFjzRhFA9Gfac1dFB2U6oIcYWzMfZbLgU8SecXXT69G+ZPCsR3Z
+ azbUxmKVpdJbHLuB0dB9nh5lbDM9XPwBwklXINYQUxg==
+X-Gm-Gg: ASbGncupm3sxqnyY96Yf9lA31xzXzAkLJZzMU41mK00DYlbeIBbRCUKVJVfTBV3D4r6
+ ePWfg0WhWvpegJiatdpBaikmxU1ngEQ/VmANbIkrEYjsiBfh0ACSWnTHPcSVMrm9ZzPCqBZNqbs
+ dGUsoCxDW82h0zLxdEaWCjwC5bkiFlmvTHN9tk6fyvNLaeLyym8JGpwQg=
+X-Google-Smtp-Source: AGHT+IEA8TRwNJpvW8w1S//ksqeSISBQBRJXzPsBwkZicS3tOiKbQ1CyI3bey8BlGtsFVMlFSFjgAk9FX2Al1hI/3C4=
+X-Received: by 2002:a05:690c:692:b0:712:d70b:45e2 with SMTP id
+ 00721157ae682-7165a32017bmr56367737b3.6.1751560516033; Thu, 03 Jul 2025
+ 09:35:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250618230549.3351152-1-jcksn@duck.com>
- <20250618230549.3351152-12-jcksn@duck.com>
-In-Reply-To: <20250618230549.3351152-12-jcksn@duck.com>
+References: <7BC53C6E-6F35-4F96-8B59-E77083220372.1@smtp-inbound1.duck.com>
+In-Reply-To: <7BC53C6E-6F35-4F96-8B59-E77083220372.1@smtp-inbound1.duck.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Jul 2025 17:32:25 +0100
-X-Gm-Features: Ac12FXxa0GCFt8QMKllfrw0NVPhjtPLKkMF3uB42p4IlbukCsT9QitI1D8pcTMU
-Message-ID: <CAFEAcA-OQDE57TjZ9dVnW69GS_bqwULgENoYh0koJim9M5A3Yg@mail.gmail.com>
-Subject: Re: [PATCH v2 11/11] MAX78000: Add AES to SOC
-To: Jackson Donaldson <jackson88044@gmail.com>
+Date: Thu, 3 Jul 2025 17:35:04 +0100
+X-Gm-Features: Ac12FXxkGG0AFOyEWvUF077hXv9vnku7svEuH0NJK7AUYAsXJV1wjH_Q2rpZ3aQ
+Message-ID: <CAFEAcA8Marfaj-RbSthm+oNgsDn7Gp8nNir6A2t8Aq+hq6XKTw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/11] MAX78000FTHR Implementation
+To: jcksn@duck.com
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb35.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,43 +88,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 19 Jun 2025 at 00:06, Jackson Donaldson <jackson88044@gmail.com> wrote:
+On Thu, 19 Jun 2025 at 03:50, <jcksn@duck.com> wrote:
 >
-> This commit adds AES to max78000_soc
->
-> Signed-off-by: Jackson Donaldson <jcksn@duck.com>
-> ---
->  hw/arm/max78000_soc.c         | 12 +++++++++---
->  include/hw/arm/max78000_soc.h |  2 ++
->  2 files changed, 11 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/arm/max78000_soc.c b/hw/arm/max78000_soc.c
-> index 09667b578c..f6d599a62e 100644
-> --- a/hw/arm/max78000_soc.c
-> +++ b/hw/arm/max78000_soc.c
-> @@ -43,6 +43,8 @@ static void max78000_soc_initfn(Object *obj)
->
->      object_initialize_child(obj, "trng", &s->trng, TYPE_MAX78000_TRNG);
->
-> +    object_initialize_child(obj, "aes", &s->aes, TYPE_MAX78000_AES);
-> +
->      s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
->  }
->
-> @@ -133,6 +135,13 @@ static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
->      dev->id = g_strdup("trng");
->      object_property_set_link(OBJECT(gcrdev), "trng", OBJECT(dev), &err);
->
-> +    dev = DEVICE(&s->aes);
-> +    sysbus_realize(SYS_BUS_DEVICE(dev), errp);
-> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x40007400);
-> +    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(armv7m, 5));
-> +    dev->id = g_strdup("aes");
-> +    object_property_set_link(OBJECT(gcrdev), "aes", OBJECT(dev), &err);
-> +
+> v2 changes: Addresses comments by Peter.
 
-Same comment about not touching dev->id as for earlier patches.
+Thanks for sending out a v2, and sorry it's taken me a
+couple of weeks to get to it for review. I've left comments
+on the various patches, but this is looking pretty good.
 
-thanks
+I should mention that QEMU's softfreeze for 10.1 is on the
+15th June, and that's when patches have to be already in
+submaintainer trees, so if you're interested in trying to get
+it into 10.1 then you'd need to send out a v3 by early to
+mid next week. Otherwise this is likely to slip to 10.2.
+
 -- PMM
 
