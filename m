@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8356AF7AE7
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 17:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F2AAF7AEB
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 17:19:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXLhb-0006jQ-1c; Thu, 03 Jul 2025 11:18:19 -0400
+	id 1uXLiR-0007cm-Dx; Thu, 03 Jul 2025 11:19:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=EggC=ZQ=kaod.org=clg@ozlabs.org>)
- id 1uXLhU-0006hz-3h; Thu, 03 Jul 2025 11:18:12 -0400
+ id 1uXLiN-0007Xn-9y; Thu, 03 Jul 2025 11:19:07 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=EggC=ZQ=kaod.org=clg@ozlabs.org>)
- id 1uXLhP-0006VW-UL; Thu, 03 Jul 2025 11:18:10 -0400
+ id 1uXLiK-0007Fa-R9; Thu, 03 Jul 2025 11:19:07 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4bY0kY1xyPz4wyk;
- Fri,  4 Jul 2025 01:17:41 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4bY0lf0NK4z4xcr;
+ Fri,  4 Jul 2025 01:18:38 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4bY0kT73s7z4wbR;
- Fri,  4 Jul 2025 01:17:37 +1000 (AEST)
-Message-ID: <bc7da423-bf4e-4736-b2fa-0627309941ee@kaod.org>
-Date: Thu, 3 Jul 2025 17:18:01 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4bY0lZ5L5Dz4xcm;
+ Fri,  4 Jul 2025 01:18:34 +1000 (AEST)
+Message-ID: <417686d0-bddc-40de-bbd8-631bb9cc4945@kaod.org>
+Date: Thu, 3 Jul 2025 17:18:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] docs: add support for gb200-bmc
+Subject: Re: [PATCH v2 0/4] Add support for gb200-bmc machine
 To: Ed Tanous <etanous@nvidia.com>, qemu-devel@nongnu.org
 Cc: Troy Lee <leetroy@gmail.com>, Steven Lee <steven_lee@aspeedtech.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>,
@@ -37,7 +37,6 @@ Cc: Troy Lee <leetroy@gmail.com>, Steven Lee <steven_lee@aspeedtech.com>,
  Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
  qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
 References: <20250703144249.3348879-1-etanous@nvidia.com>
- <20250703144249.3348879-3-etanous@nvidia.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -82,9 +81,9 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250703144249.3348879-3-etanous@nvidia.com>
+In-Reply-To: <20250703144249.3348879-1-etanous@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=EggC=ZQ=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -39
@@ -110,41 +109,42 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/3/25 16:42, Ed Tanous wrote:
-> This patch updates the docs for support of gb200-bmc.
+> This patch series adds support for gb200-bmc, a baseboard management controller
+> module based on an Aspeed 2600 SOC.
 > 
-> Signed-off-by: Ed Tanous <etanous@nvidia.com>
+> v2:
+> - Rebase on master
+> - Drop duplicated patch for enabling PCA954X
+> - Updated commit message with source information
+> - Added functional tests and example openbmc image
 
 
+Please try to collect the Reviewed-by trailers of the previous
+series when you resend.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
 
 
-> ---
->   docs/system/arm/aspeed.rst | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-> index 43d27d83cb..bec0a1dfa8 100644
-> --- a/docs/system/arm/aspeed.rst
-> +++ b/docs/system/arm/aspeed.rst
-> @@ -1,5 +1,4 @@
-> -Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
-> -=================================================================================================================================================================================================================================================================================================================================================================================================================================
-> +Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``gb200nvl-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
->   
->   The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
->   Aspeed evaluation boards. They are based on different releases of the
-> @@ -35,6 +34,7 @@ AST2600 SoC based machines :
->   - ``fuji-bmc``             Facebook Fuji BMC
->   - ``bletchley-bmc``        Facebook Bletchley BMC
->   - ``fby35-bmc``            Facebook fby35 BMC
-> +- ``gb200nvl-bmc``         Nvidia GB200nvl BMC
->   - ``qcom-dc-scm-v1-bmc``   Qualcomm DC-SCM V1 BMC
->   - ``qcom-firework-bmc``    Qualcomm Firework BMC
->   
+> Ed Tanous (4):
+>    hw/arm/aspeed: Add second SPI chip to Aspeed model
+>    docs: add support for gb200-bmc
+>    hw/arm/aspeed: Add GB200 BMC target
+>    tests/functional: Add gb200 tests
+> 
+>   docs/system/arm/aspeed.rst                    |  4 +-
+>   hw/arm/aspeed.c                               | 81 +++++++++++++++++++
+>   hw/arm/aspeed_eeprom.c                        | 21 +++++
+>   hw/arm/aspeed_eeprom.h                        |  3 +
+>   include/hw/arm/aspeed.h                       |  2 +
+>   tests/functional/aspeed.py                    |  9 ++-
+>   tests/functional/meson.build                  |  2 +
+>   .../test_arm_aspeed_gb200nvl_bmc.py           | 26 ++++++
+>   8 files changed, 144 insertions(+), 4 deletions(-)
+>   create mode 100755 tests/functional/test_arm_aspeed_gb200nvl_bmc.py
+> 
 
 
