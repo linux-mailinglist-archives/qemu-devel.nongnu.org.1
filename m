@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AF1AF71E0
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2538CAF717B
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:04:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXHhh-0001Zg-J4; Thu, 03 Jul 2025 07:02:10 -0400
+	id 1uXHhb-0001Vg-LE; Thu, 03 Jul 2025 07:02:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHeG-0005dp-7F
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:58:36 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHeO-0005s9-Oi
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:58:47 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHeD-0002qd-Of
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:58:35 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-450cfb790f7so66300665e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:58:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHeL-0002v8-0d
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:58:43 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3a4ef2c2ef3so4773806f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:58:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751540312; x=1752145112; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751540318; x=1752145118; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9Nod2XnKcLFCGDw4Al66TFSscA1L5ljopnzhztAklYo=;
- b=eZuGPncspxb0rG8da7cX/NdiCLxMfV2RGBv+4PL8UhW2QiV5Nju1Nhc/3NgE72B/yi
- tT/fC0adiKOUMffZ/N9UgpDK+fgAAF4mT3ytEIL6yZfyldpAxX1Nt7WxarHqLLQ7lmnA
- 9bCv7z84n1oKRC9sAzh6821fSU9zLwNwOqqt/jHhLPs+Ox1KS8gPPRotrSv0idbugFmn
- gaTwb7MhXzEvcoWbuXkWyuuNybn/qjAo76EY7QHoKTW+FaFbfTLZQ2OVFKeCbGc1qCIb
- 6I8hjjSwHfdvlR6u01bLPJUYz4YsBKfj4TPRvC2owfLa9weH3uIhaB2At0UlT3dST6Xt
- P6Jg==
+ bh=zXEwQpLJNPRsbrPUQjvTni2WYpP8FdNuXX6y2BMbIXo=;
+ b=yJSC1MlSa0VdjO8mpGA+Im8vchGxnne8k0Rs0ZB/tcbXogHmvPiGA9AMRmkcgU2iUk
+ iDcVQSLwy+jz94J6U4p8TEL+hPXbvtQFuQffGW/0KHo/rrdhxZAErYNJfH6T4hRaZGt7
+ GmO8nRfeFeu5dj3hhkuXpZXRzFDyl6XtF05Z3aNcgU04UPeE+ym4gJmZRuQcM8Yps5gD
+ zaeeMxoum1UoJesRoijp71meGmDINVQk7uuGpBv4Of4C1gm3iGUQ2thFSrXIdFCA/Sla
+ C09NMINNgFb0AgCDOsx/XOeGehgTJP4igTkrlz0bHEUF58YC5FRv5uCVq686a+Q/Hi4J
+ TTMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751540312; x=1752145112;
+ d=1e100.net; s=20230601; t=1751540318; x=1752145118;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9Nod2XnKcLFCGDw4Al66TFSscA1L5ljopnzhztAklYo=;
- b=pwidV68anzWIKuY+g/mDHs6SnhBLFnpjMrt5GJQZJ7dYjmYVnAGiLlGEJka1plHbbC
- +iLTGv22IJPZ6kY3lkXkU7GSb8D1vXwF09Xaj7AbbDaE1oTUf91L8Fx9+Sxcl/pzO0JR
- 8mVY4KD9tVjmLWVbCmkoFnN60AOhvRuTYnqWnQPIzvXLYT1g3cGCM6aPyCb4rwIdKnTV
- 8As+zQbypssaOy7UMuCitTuAw9E7m8BpCrLFrwduy+uHdFq1WDBFmn7DzN3LheUhx1fI
- pK3Pfayzb8pZqhztNoLi3a1UeQf/jFEJ8fDX8Q1knVbYgyqXtNUH0+oQSoHB5PcxskXa
- JOnA==
-X-Gm-Message-State: AOJu0YxvMRuQNqMXe+QSS+YCQe5RkkwT6UoMCyTSpAnsQZTP5yQzC4eK
- r3HNQnjGMntCBBEU+qvguFYgL9V6ZcEmIOl6MZPsRkUlDtmc2nsXBuDpjYglbUFObEAVZcfx8te
- 2GIcj+EU=
-X-Gm-Gg: ASbGncvtV7jrJdUrR+7zexE6BZBdN66anoZwavQ3jirJE2VWInezX7xknbxCuzZs2OM
- X+RFc+TjWyoReKKhad2AC4QvnQzlKodm+ERwv1ps4oGvwG8uBwVbSI6ExkAgMz5fYdD8J6vNNDW
- DBMk1YfgY7M6hkD/x7QJbt0GTIxbPORPXTwYa9S3cx1v9wkeqbFOMrmORptvmJGkK7EVoLYsQvf
- xJbgA2r1H+vKD/hyZ/Uxr0DnKBufowBnrIuyQASOAPLAO5jPgJdOipEp3Akhr5zQAGyBCfOVNdz
- rtfmje+s3dURkiIMZJKql3xHcJNUNw/T61l8qOdmLFDqX/yLQin1biMkZ6DqeYRcmMW9pigY8mY
- o3WVrZrKekkk=
-X-Google-Smtp-Source: AGHT+IGcickO/WQ33gY9Gyq+jaddIwf7/whYrVsk66+TMl1n3JbF5YhpX2jiMT2tTmqO0asrgEwj+Q==
-X-Received: by 2002:a05:600c:5249:b0:453:8bc7:5c9b with SMTP id
- 5b1f17b1804b1-454a372636bmr65941105e9.24.1751540311639; 
- Thu, 03 Jul 2025 03:58:31 -0700 (PDT)
+ bh=zXEwQpLJNPRsbrPUQjvTni2WYpP8FdNuXX6y2BMbIXo=;
+ b=sEbx8MsoqPqofzYR/BJOe33VkFxRAXxgdhPFMcfMdvfg/yGfzpuhV2HsL0pykw8JvX
+ ruW5XKqCCxFiKMvXyXeqy3beuALTUv34HA8EQ/DOLcW+1ZsCRzYuOQ2A8afak1J6ffMi
+ 2H2NOEy7WrNrWAXK08Oze3lSGLkuJYGoQxkAc1lzMq6l/hLk05y+phyEbzMCDFHrEP/Q
+ pNjI+VrNLErgh3LNUvUI2b7dSubnspaJvuQemV0K85raFoyBKc+v1JwdlDAHwuFyt9ga
+ Q4xop2btsOaxlcGni7OZVDrrI2SJBdjvBmXE6jPGeladp/LLm8YOo02sncbhey/M7FIM
+ EOfQ==
+X-Gm-Message-State: AOJu0YxzCoDcPxfZQzwf75v06DlH9k5InUtjeuDI1OXefCchhBEJgWYx
+ pyLWoRRUYp6dnKJU5JJ0Iu4njMNxUjySUzFgldlEniqkaTu5W/ICIrbmPmZucWS5oiplekJVaaW
+ nn9+tlo8=
+X-Gm-Gg: ASbGncu2caKPvXdYMPTDthCKrCAraA8aHl9xj5A/BHJy/1Pz2tTVyr/I7e5bLfRMmro
+ OhfhWnHZLMzhSe78nUxdVu3Ra37ULdUuloeSQLq1vklq1RI9sHV27ONJCmghqvGpO/8M/9cPLia
+ xvy8laExa37pA0pO5whO8k971cpEybneh9M0QhVaXPpG2Hkc11pMSPRkqrckJ7RI9o4PvfMBoFG
+ JeVag6CZ1JRV06B7cvA4JYj8n7PGftQ+XHYu+INBIi0S6AHtsHN0pvNF6vRlcCBy8SDGDW9YR3A
+ AJn6xCzL7JR8eBqQzlS6gibwKFis7AXYo2LhdH/ChrVV5GehwTAePDpNiolWmPKWPul8NLuqiFO
+ 7mWo9MZuYZBA=
+X-Google-Smtp-Source: AGHT+IEDeve+hxPyKdiNduihX+UkbzFqIDkknGnvYLjOBdrA0tfyF6dpvjNV99JhtblwgCC6TQDZjw==
+X-Received: by 2002:a5d:5f92:0:b0:3a5:1471:d885 with SMTP id
+ ffacd0b85a97d-3b2019b7da6mr5691035f8f.56.1751540317731; 
+ Thu, 03 Jul 2025 03:58:37 -0700 (PDT)
 Received: from localhost.localdomain ([83.247.137.20])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a998aa1dsm23893825e9.21.2025.07.03.03.58.30
+ 5b1f17b1804b1-454a99c1186sm23334265e9.36.2025.07.03.03.58.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 03:58:31 -0700 (PDT)
+ Thu, 03 Jul 2025 03:58:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -68,19 +68,21 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Shatyuka <shatyuka@qq.com>, Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH v5 32/69] accel/hvf: Implement get_vcpu_stats()
-Date: Thu,  3 Jul 2025 12:54:58 +0200
-Message-ID: <20250703105540.67664-33-philmd@linaro.org>
+Subject: [PATCH v5 33/69] accel/hvf: Report missing
+ com.apple.security.hypervisor entitlement
+Date: Thu,  3 Jul 2025 12:54:59 +0200
+Message-ID: <20250703105540.67664-34-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703105540.67664-1-philmd@linaro.org>
 References: <20250703105540.67664-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,57 +105,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We need the QEMU binary signed to be able to use HVF.
+Improve the following:
+
+  $ ./qemu-system-aarch64-unsigned -M virt -accel hvf
+  qemu-system-aarch64-unsigned: -accel hvf: Error: ret = HV_DENIED (0xfae94007, at ../../accel/hvf/hvf-accel-ops.c:339)
+  Abort trap: 6
+
+to:
+
+  $ ./qemu-system-aarch64-unsigned -M virt -accel hvf
+  qemu-system-aarch64-unsigned: -accel hvf: Could not access HVF. Is the executable signed with com.apple.security.hypervisor entitlement?
+
+Suggested-by: Shatyuka <shatyuka@qq.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2800
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- accel/hvf/hvf-accel-ops.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ accel/hvf/hvf-accel-ops.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index e7f40888c26..c07ebf8a652 100644
+index c07ebf8a652..ada2a3357eb 100644
 --- a/accel/hvf/hvf-accel-ops.c
 +++ b/accel/hvf/hvf-accel-ops.c
-@@ -358,6 +358,12 @@ static inline int hvf_gdbstub_sstep_flags(AccelState *as)
-     return SSTEP_ENABLE | SSTEP_NOIRQ;
- }
- 
-+static void do_hvf_get_vcpu_exec_time(CPUState *cpu, run_on_cpu_data arg)
-+{
-+    int r = hv_vcpu_get_exec_time(cpu->accel->fd, arg.host_ptr);
-+    assert_hvf_ok(r);
-+}
-+
- static void hvf_accel_class_init(ObjectClass *oc, const void *data)
- {
-     AccelClass *ac = ACCEL_CLASS(oc);
-@@ -583,6 +589,16 @@ static void hvf_remove_all_breakpoints(CPUState *cpu)
+@@ -337,6 +337,11 @@ static int hvf_accel_init(AccelState *as, MachineState *ms)
      }
- }
  
-+static void hvf_get_vcpu_stats(CPUState *cpu, GString *buf)
-+{
-+    uint64_t time_us; /* units of mach_absolute_time() */
-+
-+    run_on_cpu(cpu, do_hvf_get_vcpu_exec_time, RUN_ON_CPU_HOST_PTR(&time_us));
-+
-+    g_string_append_printf(buf, "HVF cumulative execution time: %llu.%.3llus\n",
-+                                time_us / 1000000, (time_us % 1000000) / 1000);
-+}
-+
- static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
- {
-     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
-@@ -601,7 +617,10 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
-     ops->remove_breakpoint = hvf_remove_breakpoint;
-     ops->remove_all_breakpoints = hvf_remove_all_breakpoints;
-     ops->update_guest_debug = hvf_update_guest_debug;
-+
-+    ops->get_vcpu_stats = hvf_get_vcpu_stats;
- };
-+
- static const TypeInfo hvf_accel_ops_type = {
-     .name = ACCEL_OPS_NAME("hvf"),
+     ret = hvf_arch_vm_create(ms, (uint32_t)pa_range);
++    if (ret == HV_DENIED) {
++        error_report("Could not access HVF. Is the executable signed"
++                     " with com.apple.security.hypervisor entitlement?");
++        exit(1);
++    }
+     assert_hvf_ok(ret);
  
+     s->num_slots = ARRAY_SIZE(s->slots);
 -- 
 2.49.0
 
