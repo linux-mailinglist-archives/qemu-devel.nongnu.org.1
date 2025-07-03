@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A32AF6CFB
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 10:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5608EAF6CFE
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 10:32:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXFMX-0008Rh-8G; Thu, 03 Jul 2025 04:32:09 -0400
+	id 1uXFMZ-0000AD-Hg; Thu, 03 Jul 2025 04:32:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uXFM0-0008OS-Hn
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 04:31:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uXFLy-0006Z0-1M
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 04:31:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751531490;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cDFNFjUDbkVduXGlmsYCznbew7zFkai1qcWy1WXNVjE=;
- b=L6ioj2zsypugegO5wnxU+rJz2zuWnc4+wPI03ABofmHN881EYsPkS5RnhqFLyiDzqOFarP
- kvUnj4JvdSJsa+e6ljEMZwAoixRB0m49YGNaTA4JHvtIM5AVr6q6yFEUA2Lhg+9lprhTHs
- pIqWLnI8uPb+5qyZI214uAUfrGNmcDE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-542-g5ambDpYMv62B6PMg9ykJg-1; Thu,
- 03 Jul 2025 04:31:26 -0400
-X-MC-Unique: g5ambDpYMv62B6PMg9ykJg-1
-X-Mimecast-MFC-AGG-ID: g5ambDpYMv62B6PMg9ykJg_1751531484
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 51D3F19373D8; Thu,  3 Jul 2025 08:31:24 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2A9D119560A7; Thu,  3 Jul 2025 08:31:23 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9921B21E6A27; Thu, 03 Jul 2025 10:31:20 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>,  Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Yanan Wang
- <wangyanan55@huawei.com>,  Zhao Liu <zhao1.liu@intel.com>,  Eric Blake
- <eblake@redhat.com>,  Michael Roth <michael.roth@amd.com>,
- John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v4 22/65] qapi: Move definitions related to accelerators
- in their own file
-In-Reply-To: <20250702185332.43650-23-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 2 Jul 2025 20:52:44
- +0200")
-References: <20250702185332.43650-1-philmd@linaro.org>
- <20250702185332.43650-23-philmd@linaro.org>
-Date: Thu, 03 Jul 2025 10:31:20 +0200
-Message-ID: <87cyah65gn.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
+ id 1uXFM7-0008Rk-FA; Thu, 03 Jul 2025 04:31:43 -0400
+Received: from mail-yb1-xb2b.google.com ([2607:f8b0:4864:20::b2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
+ id 1uXFM5-0006az-MP; Thu, 03 Jul 2025 04:31:43 -0400
+Received: by mail-yb1-xb2b.google.com with SMTP id
+ 3f1490d57ef6-e819ebc3144so6841856276.0; 
+ Thu, 03 Jul 2025 01:31:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1751531499; x=1752136299; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ACN3/5ZwuMHWPnIM2LvNkb6ZNX2drFxWaI640q4NOCk=;
+ b=NlHEnfeDKaMMeRMARD7OfVUuwmxr74AI6pBvvv0uXS5grSxUlbXhytWtxMMD9Pwvxd
+ N4diRdtY/o8g3F0S94v7p3SHw2fEvawCG3AXKwrt8alqDCKb87gJ4pt594mldOTntBxy
+ Qo7S1QVgUfJmFXIp1LDgRdsfEs/RQFO3UzPrQhRGSd8rFMoxikoofO97ORNUhzxVxSkY
+ dOLL78iZNS0wydiCaEBb/J3nIyTVWLV1E7ItCip2EM2sLiGflyVr4OR7kKyKr2fAP1Rx
+ K49RXPgU4kdUYaHFyIKZvIHYSyWTYBJXEVB7zxaUYYlnW0tsDiICRpXzpOUZcvnXQXvv
+ 4I3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751531499; x=1752136299;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ACN3/5ZwuMHWPnIM2LvNkb6ZNX2drFxWaI640q4NOCk=;
+ b=ZHjBq+62CTLlUwpPj3Xwg2Dm697V58dGBErLfxcD/QR0H2Q+X4k+YGsjnxJg3YOkVm
+ UKnoSJaCWngMJ+I882tolfyFKf2Q3WpEGCR4kLOj+ARDj7yD6/1imIkRKNz4FOFukrcD
+ 7q2z9xEv431Yj3YKbF5uV05n5l26oAzzw3XNrwTUgRCCelB0EDxbta9/YOEYjtrqfXDu
+ 3ZhzBN9Q3zk+YBIHckc1auw9LM1UFBS3bM/ENNxiBs4d+JjpLNK4LrMtbGrapwVcbMew
+ 1LiI/AetIlIlxFiCX4GjgjGohkS+rqilUNbyBP+BFxbTFBqPKmEvjYvo1XvPAsPcPvkw
+ pk9g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUCIF54Ee4MPKMS48K9+CfWkiL81BF+gY0dkrhjbMb4dYhP4Q8wvC6eBnusfMUKePNwaWbxEPmnKg==@nongnu.org
+X-Gm-Message-State: AOJu0YyLeky5mK5zEBI9sDCvEXegqO4wtkeGPAd+3HjCiHq7U8y7kpan
+ x5y27hc3yWCvIspnABBLEoqAWQYo0J5Owr35VC947Z61p79mhdOornqpEyVF7ydhAvZZhrhnRVg
+ 5D8Q9BdKK4Xph8VomP6HTlLN9EzXFcO0=
+X-Gm-Gg: ASbGncscdhUj0j6NAMp3yTAwzw+MgH94Csg5rnvCRRTNIWLGKknuM2CaZXtEPEREkj2
+ 59NbaYfwA1sWUb1bv5O1YYh0iMUxEcAHWpxjK/CKsbtIX+ZB7XvfpTK/lVDp5j445YkriDzT3Tb
+ dTi+hWDfZTnK6EpjpjzYc1IMpmf/dI28/INNmzTJ+EgZg=
+X-Google-Smtp-Source: AGHT+IHAU7GG+0ZBhY1SJMSuyjy1D0pZhzrSXUi5Cfrvl0VDj+KwYzn4eOr88y87NKbpRWZhiRTPbfFNuJtrjqhefEI=
+X-Received: by 2002:a05:6902:160d:b0:e87:a485:b430 with SMTP id
+ 3f1490d57ef6-e898f9caefbmr2933418276.35.1751531499377; Thu, 03 Jul 2025
+ 01:31:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20250702111954.128563-1-kosasihwilliam4@gmail.com>
+ <20250702111954.128563-5-kosasihwilliam4@gmail.com>
+ <bfdc5e5d-40fa-49e6-88d4-b70dcbdfd71d@linaro.org>
+In-Reply-To: <bfdc5e5d-40fa-49e6-88d4-b70dcbdfd71d@linaro.org>
+From: William Kosasih <kosasihwilliam4@gmail.com>
+Date: Thu, 3 Jul 2025 18:01:27 +0930
+X-Gm-Features: Ac12FXwtUjcfdobSiDA5d862nUAbeSn_L2C7ukHrAzJ_lWuieKk0BFB10fig9jc
+Message-ID: <CAG66A_fib3v1HM=R4A6sv3OU77JmhY8VHpA_qJ6i1n42kiiNNA@mail.gmail.com>
+Subject: Re: [PATCH v3 04/12] target/arm: Fix VLDR helper load alignment checks
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000d558cc0639023430"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2b;
+ envelope-from=kosasihwilliam4@gmail.com; helo=mail-yb1-xb2b.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,279 +93,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+--000000000000d558cc0639023430
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Extract TCG and KVM definitions from machine.json to accelerator.json.
 >
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  MAINTAINERS                |  1 +
->  qapi/accelerator.json      | 75 ++++++++++++++++++++++++++++++++++++++
->  qapi/machine.json          | 65 ---------------------------------
->  qapi/qapi-schema.json      |  1 +
->  accel/tcg/monitor.c        |  2 +-
->  hw/core/machine-hmp-cmds.c |  1 +
->  hw/core/machine-qmp-cmds.c |  1 +
->  qapi/meson.build           |  1 +
->  8 files changed, 81 insertions(+), 66 deletions(-)
->  create mode 100644 qapi/accelerator.json
+> Much better, thanks.
+
+Cheers! :-)
+
+Use MO_SB, MO_TESW here.
+
+It won't matter for normal operation, but the sign of the operation is
+> exposed to plugins.
+
+
+Ah okay. I'll update accordingly and copy over your Reviewed-by line.
+Thanks!
+
+On Thu, Jul 3, 2025 at 12:14=E2=80=AFAM Richard Henderson <
+richard.henderson@linaro.org> wrote:
+
+> On 7/2/25 05:19, William Kosasih wrote:
+> > +DO_VLDR(vldrb_sh, MO_UB, 1, int8_t, ldb, 2, int16_t)
+> > +DO_VLDR(vldrb_sw, MO_UB, 1, int8_t, ldb, 4, int32_t)
+> ...
+> > +DO_VLDR(vldrh_sw, MO_TEUW, 2, int16_t, ldw, 4, int32_t)
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 7128e0bc98e..5d6b337cef6 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -507,6 +507,7 @@ F: accel/Makefile.objs
->  F: accel/stubs/Makefile.objs
->  F: cpu-common.c
->  F: cpu-target.c
-> +F: qapi/accelerator.json
->  F: system/cpus.c
->=20=20
->  Apple Silicon HVF CPUs
-> diff --git a/qapi/accelerator.json b/qapi/accelerator.json
-> new file mode 100644
-> index 00000000000..1d2a83f1b22
-> --- /dev/null
-> +++ b/qapi/accelerator.json
-> @@ -0,0 +1,75 @@
-> +# -*- Mode: Python -*-
-> +# vim: filetype=3Dpython
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +##
-> +# =3D Accelerators
-> +##
+> Use MO_SB, MO_TESW here.
+>
+> It won't matter for normal operation, but the sign of the operation is
+> exposed to plugins.
+>
+>
+> r~
+>
 
-Going to conflict with John Snow's "[PATCH v3 4/5] docs/sphinx: remove
-special parsing for freeform sections".  Don't worry about it.
+--000000000000d558cc0639023430
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +
-> +{ 'include': 'common.json' }
-> +
-> +##
-> +# @KvmInfo:
-> +#
-> +# Information about support for KVM acceleration
-> +#
-> +# @enabled: true if KVM acceleration is active
-> +#
-> +# @present: true if KVM acceleration is built into this executable
-> +#
-> +# Since: 0.14
-> +##
-> +{ 'struct': 'KvmInfo', 'data': {'enabled': 'bool', 'present': 'bool'} }
-> +
-> +##
-> +# @query-kvm:
-> +#
-> +# Return information about KVM acceleration
-> +#
-> +# Returns: @KvmInfo
-> +#
-> +# Since: 0.14
-> +#
-> +# .. qmp-example::
-> +#
-> +#     -> { "execute": "query-kvm" }
-> +#     <- { "return": { "enabled": true, "present": true } }
-> +##
-> +{ 'command': 'query-kvm', 'returns': 'KvmInfo' }
-> +
-> +##
-> +# @x-query-jit:
-> +#
-> +# Query TCG compiler statistics
-> +#
-> +# Features:
-> +#
-> +# @unstable: This command is meant for debugging.
-> +#
-> +# Returns: TCG compiler statistics
-> +#
-> +# Since: 6.2
-> +##
-> +{ 'command': 'x-query-jit',
-> +  'returns': 'HumanReadableText',
-> +  'if': 'CONFIG_TCG',
-> +  'features': [ 'unstable' ] }
-> +
-> +##
-> +# @x-query-opcount:
-> +#
-> +# Query TCG opcode counters
-> +#
-> +# Features:
-> +#
-> +# @unstable: This command is meant for debugging.
-> +#
-> +# Returns: TCG opcode counters
-> +#
-> +# Since: 6.2
-> +##
-> +{ 'command': 'x-query-opcount',
-> +  'returns': 'HumanReadableText',
-> +  'if': 'CONFIG_TCG',
-> +  'features': [ 'unstable' ] }
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index d5bbb5e367e..e4713c405e8 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -454,35 +454,6 @@
->  ##
->  { 'command': 'inject-nmi' }
->=20=20
-> -##
-> -# @KvmInfo:
-> -#
-> -# Information about support for KVM acceleration
-> -#
-> -# @enabled: true if KVM acceleration is active
-> -#
-> -# @present: true if KVM acceleration is built into this executable
-> -#
-> -# Since: 0.14
-> -##
-> -{ 'struct': 'KvmInfo', 'data': {'enabled': 'bool', 'present': 'bool'} }
-> -
-> -##
-> -# @query-kvm:
-> -#
-> -# Return information about KVM acceleration
-> -#
-> -# Returns: @KvmInfo
-> -#
-> -# Since: 0.14
-> -#
-> -# .. qmp-example::
-> -#
-> -#     -> { "execute": "query-kvm" }
-> -#     <- { "return": { "enabled": true, "present": true } }
-> -##
-> -{ 'command': 'query-kvm', 'returns': 'KvmInfo' }
-> -
->  ##
->  # @NumaOptionsType:
->  #
-> @@ -1729,24 +1700,6 @@
->    'returns': 'HumanReadableText',
->    'features': [ 'unstable' ] }
->=20=20
-> -##
-> -# @x-query-jit:
-> -#
-> -# Query TCG compiler statistics
-> -#
-> -# Features:
-> -#
-> -# @unstable: This command is meant for debugging.
-> -#
-> -# Returns: TCG compiler statistics
-> -#
-> -# Since: 6.2
-> -##
-> -{ 'command': 'x-query-jit',
-> -  'returns': 'HumanReadableText',
-> -  'if': 'CONFIG_TCG',
-> -  'features': [ 'unstable' ] }
-> -
->  ##
->  # @x-query-numa:
->  #
-> @@ -1764,24 +1717,6 @@
->    'returns': 'HumanReadableText',
->    'features': [ 'unstable' ] }
->=20=20
-> -##
-> -# @x-query-opcount:
-> -#
-> -# Query TCG opcode counters
-> -#
-> -# Features:
-> -#
-> -# @unstable: This command is meant for debugging.
-> -#
-> -# Returns: TCG opcode counters
-> -#
-> -# Since: 6.2
-> -##
-> -{ 'command': 'x-query-opcount',
-> -  'returns': 'HumanReadableText',
-> -  'if': 'CONFIG_TCG',
-> -  'features': [ 'unstable' ] }
-> -
->  ##
->  # @x-query-ramblock:
->  #
-> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-> index a8f66163cb7..0477696ff02 100644
-> --- a/qapi/qapi-schema.json
-> +++ b/qapi/qapi-schema.json
-> @@ -37,6 +37,7 @@
->  { 'include': 'run-state.json' }
->  { 'include': 'crypto.json' }
->  { 'include': 'job.json' }
-> +{ 'include': 'accelerator.json' }
->  { 'include': 'block.json' }
->  { 'include': 'block-export.json' }
->  { 'include': 'char.json' }
+<div dir=3D"ltr"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
+0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Much bet=
+ter, thanks.</blockquote><div>Cheers! :-)</div><div><br></div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">Use MO_SB, MO_TESW here.</blockquote><=
+blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
+eft:1px solid rgb(204,204,204);padding-left:1ex">It won&#39;t matter for no=
+rmal operation, but the sign of the operation is exposed to plugins.=C2=A0<=
+/blockquote><div><br></div><div>Ah okay. I&#39;ll update accordingly and co=
+py over your Reviewed-by line. Thanks!=C2=A0</div></div><br><div class=3D"g=
+mail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On =
+Thu, Jul 3, 2025 at 12:14=E2=80=AFAM Richard Henderson &lt;<a href=3D"mailt=
+o:richard.henderson@linaro.org">richard.henderson@linaro.org</a>&gt; wrote:=
+<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
+ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On 7/2/25 05:19=
+, William Kosasih wrote:<br>
+&gt; +DO_VLDR(vldrb_sh, MO_UB, 1, int8_t, ldb, 2, int16_t)<br>
+&gt; +DO_VLDR(vldrb_sw, MO_UB, 1, int8_t, ldb, 4, int32_t)<br>
+...<br>
+&gt; +DO_VLDR(vldrh_sw, MO_TEUW, 2, int16_t, ldw, 4, int32_t)<br>
+<br>
+Use MO_SB, MO_TESW here.<br>
+<br>
+It won&#39;t matter for normal operation, but the sign of the operation is =
+exposed to plugins.<br>
+<br>
+<br>
+r~<br>
+</blockquote></div>
 
-This puts the new section "Accelerators" between "Background jobs" and
-"Block devices".  Feels arbitrary.  Much of the existing order does.
-Would it fit better next to "Machines"?
-
-> diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
-> index 1c182b6bfb5..5bdd837006c 100644
-> --- a/accel/tcg/monitor.c
-> +++ b/accel/tcg/monitor.c
-> @@ -11,7 +11,7 @@
->  #include "qemu/qht.h"
->  #include "qapi/error.h"
->  #include "qapi/type-helpers.h"
-> -#include "qapi/qapi-commands-machine.h"
-> +#include "qapi/qapi-commands-accelerator.h"
->  #include "monitor/monitor.h"
->  #include "system/cpu-timers.h"
->  #include "exec/icount.h"
-> diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
-> index 65eeb5e9cc2..15ae5864d16 100644
-> --- a/hw/core/machine-hmp-cmds.c
-> +++ b/hw/core/machine-hmp-cmds.c
-> @@ -18,6 +18,7 @@
->  #include "monitor/monitor.h"
->  #include "qapi/error.h"
->  #include "qapi/qapi-builtin-visit.h"
-> +#include "qapi/qapi-commands-accelerator.h"
->  #include "qapi/qapi-commands-machine.h"
->  #include "qobject/qdict.h"
->  #include "qapi/string-output-visitor.h"
-> diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-> index ab4fd1ec08a..f37fd220c2d 100644
-> --- a/hw/core/machine-qmp-cmds.c
-> +++ b/hw/core/machine-qmp-cmds.c
-> @@ -14,6 +14,7 @@
->  #include "hw/mem/memory-device.h"
->  #include "qapi/error.h"
->  #include "qapi/qapi-builtin-visit.h"
-> +#include "qapi/qapi-commands-accelerator.h"
->  #include "qapi/qapi-commands-machine.h"
->  #include "qobject/qobject.h"
->  #include "qapi/qobject-input-visitor.h"
-
-Have you considered extracting the accelerator command code to
-accel/accel-qmp-cmds.c and accel/accel-hmp-cmds.c?
-
-> diff --git a/qapi/meson.build b/qapi/meson.build
-> index 3b035aea339..ca6b61a608d 100644
-> --- a/qapi/meson.build
-> +++ b/qapi/meson.build
-> @@ -57,6 +57,7 @@ qapi_all_modules =3D [
->  ]
->  if have_system
->    qapi_all_modules +=3D [
-> +    'accelerator',
->      'acpi',
->      'audio',
->      'cryptodev',
-
+--000000000000d558cc0639023430--
 
