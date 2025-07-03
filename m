@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E785AF6848
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 04:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B12AF6837
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 04:49:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uX9zc-0002a1-V4; Wed, 02 Jul 2025 22:48:09 -0400
+	id 1uX9zi-0002c0-K1; Wed, 02 Jul 2025 22:48:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uX9zY-0002Y4-K8
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 22:48:05 -0400
+ id 1uX9zg-0002bf-PA
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 22:48:12 -0400
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uX9zR-0007ux-R2
- for qemu-devel@nongnu.org; Wed, 02 Jul 2025 22:48:04 -0400
+ id 1uX9zW-0007uj-Bm
+ for qemu-devel@nongnu.org; Wed, 02 Jul 2025 22:48:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751510877; x=1783046877;
+ t=1751510881; x=1783046881;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GM3oITmKPvCB1mMVAy/DbcAc4/N7/dTkZo/RHHoELIw=;
- b=e/vFWTabTxIubWvW7DCVo+emW2ttrfkuX/shq0xcMn3u+NesjojqV0PS
- xcl2Xe4UlErqKv/C+1XVQ4btJ8TQpg2golunOaYjGYTZDO0xSfQCjhHkb
- lyz1hGdR9IBn6QUfrASdWsU5KshnjGwyDmubnW7dN2pRsPT52Pn8sonRv
- JJFOojqdrvQvGRk+a0iMufbsPrHjtKxs57xn49ZMoWNT5PKx580Y4tIMT
- n1Msz2neGpYugALYAJ2cz1YJmsGMXHYPP3t7PkSZvrwq/sHpPE7k9s4nv
- f/L/rU/BTnGtp59iwiTRRsMP2qk7UcP3+2zExxLdLSY1YIhl7fTBTGngN g==;
-X-CSE-ConnectionGUID: FT0RlAuySrqwTev9S3wsBQ==
-X-CSE-MsgGUID: jopSIopNT/aTRNfBxQ2uIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="57499453"
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="57499453"
+ bh=jGc1SEhOx3aErmclLmDyukz5nk+L1TqYMmTJmPp+//I=;
+ b=KxqFXme3y9mNUn37ySE+oJR9UlbOKwtXWGOf4vvWUGXGzBW2gYqi/gpo
+ R4bCpnxDSzxp6/XfMCYaScLD25BcTKsOnid/OeufSfScdkm+Lo5JdnOH5
+ sswNgxBPyy7ryRXyV916Dh5UT44WJ0X0zmBm2yFgREuqcLO1AKxWyj3uL
+ /c8m/N2VrK4gOrY9QDzLrf2GZfgDnlZYz3r+aR0wV5QT2dD3FR48xmjbg
+ OdyvrpjGpLZp+ZZsR29IJy1VcXn1l58RHlIgUHpeE1gZNZfHiB3o7wOiV
+ 48AphlwmBj/ZJp1L6+/5Rx3iqhPtlFFxxkZm2Rk6g81v+0MJc1FIt4QIB A==;
+X-CSE-ConnectionGUID: 9L6hRRtsTmGQkqtYsMtYng==
+X-CSE-MsgGUID: RxIMz+LgRSOse/coqXfmVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="57499455"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="57499455"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 19:47:55 -0700
-X-CSE-ConnectionGUID: PYpaIqCpTtSlbPj+gY7qzA==
-X-CSE-MsgGUID: mrJM3aVjRUyU1KyROBiHBA==
+ 02 Jul 2025 19:47:56 -0700
+X-CSE-ConnectionGUID: 2oX2/fo4TPyaeaY7InC+rA==
+X-CSE-MsgGUID: 6uCgOZjYSi2Vkp4IFjFmlg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="153880365"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="153880369"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmviesa007.fm.intel.com with ESMTP; 02 Jul 2025 19:47:55 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 02 Jul 2025 19:47:56 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
  xiaoyao.li@intel.com
-Subject: [PATCH 2/4] update Linux headers to KVM tree master
-Date: Thu,  3 Jul 2025 10:40:18 +0800
-Message-ID: <20250703024021.3559286-3-xiaoyao.li@intel.com>
+Subject: [PATCH 3/4] i386/tdx: Set value of <GetTdVmCallInfo> based on
+ capabilities of both KVM and QEMU
+Date: Thu,  3 Jul 2025 10:40:19 +0800
+Message-ID: <20250703024021.3559286-4-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250703024021.3559286-1-xiaoyao.li@intel.com>
 References: <20250703024021.3559286-1-xiaoyao.li@intel.com>
@@ -80,48 +81,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To fetch the update of TDX
+KVM reports the supported TDVMCALL sub leafs in TDX capabilities.
+
+one for kernel-supported
+    TDVMCALLs (userspace can set those blindly) and one for user-supported
+    TDVMCALLs (userspace can set those if it knows how to handle them)
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- linux-headers/asm-x86/kvm.h | 8 +++++++-
- linux-headers/linux/kvm.h   | 4 ++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ target/i386/kvm/tdx.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/linux-headers/asm-x86/kvm.h b/linux-headers/asm-x86/kvm.h
-index cd275ae76d25..f0c1a730d9c3 100644
---- a/linux-headers/asm-x86/kvm.h
-+++ b/linux-headers/asm-x86/kvm.h
-@@ -963,7 +963,13 @@ struct kvm_tdx_cmd {
- struct kvm_tdx_capabilities {
- 	__u64 supported_attrs;
- 	__u64 supported_xfam;
--	__u64 reserved[254];
-+
-+	__u64 kernel_tdvmcallinfo_1_r11;
-+	__u64 user_tdvmcallinfo_1_r11;
-+	__u64 kernel_tdvmcallinfo_1_r12;
-+	__u64 user_tdvmcallinfo_1_r12;
-+
-+	__u64 reserved[250];
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index 8c661c3ecfdb..10dfb80d22e2 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -1256,14 +1256,21 @@ out_free:
+     g_free(task);
+ }
  
- 	/* Configurable CPUID bits for userspace */
- 	struct kvm_cpuid2 cpuid;
-diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
-index 0690743944bd..32c5885a3c20 100644
---- a/linux-headers/linux/kvm.h
-+++ b/linux-headers/linux/kvm.h
-@@ -459,6 +459,10 @@ struct kvm_run {
- 					__u64 leaf;
- 					__u64 r11, r12, r13, r14;
- 				} get_tdvmcall_info;
-+				struct {
-+					__u64 ret;
-+					__u64 vector;
-+				} setup_event_notify;
- 			};
- 		} tdx;
- 		/* Fix the size of the union. */
++#define SUPPORTED_TDVMCALLINFO_1_R11    (0)
++#define SUPPORTED_TDVMCALLINFO_1_R12    (0)
++
+ void tdx_handle_get_tdvmcall_info(X86CPU *cpu, struct kvm_run *run)
+ {
+     if (run->tdx.get_tdvmcall_info.leaf != 1) {
+         return;
+     }
+ 
+-    run->tdx.get_tdvmcall_info.r11 = 0;
+-    run->tdx.get_tdvmcall_info.r12 = 0;
++    run->tdx.get_tdvmcall_info.r11 = (tdx_caps->user_tdvmcallinfo_1_r11 &
++                                      SUPPORTED_TDVMCALLINFO_1_R11) |
++                                      tdx_caps->kernel_tdvmcallinfo_1_r11;
++    run->tdx.get_tdvmcall_info.r12 = (tdx_caps->user_tdvmcallinfo_1_r12 &
++                                      SUPPORTED_TDVMCALLINFO_1_R12) |
++                                      tdx_caps->kernel_tdvmcallinfo_1_r12;
+     run->tdx.get_tdvmcall_info.r13 = 0;
+     run->tdx.get_tdvmcall_info.r14 = 0;
+ 
 -- 
 2.43.0
 
