@@ -2,107 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE21AF796A
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 17:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DC4AF7976
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 17:01:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXLQe-0006mi-59; Thu, 03 Jul 2025 11:00:49 -0400
+	id 1uXLR7-0007Ec-VF; Thu, 03 Jul 2025 11:01:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uXLQM-0006cw-C6
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 11:00:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1uXLR4-00077R-LO
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 11:01:14 -0400
+Received: from smtp-out-60.livemail.co.uk ([213.171.216.60]
+ helo=dkim.livemail.co.uk)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uXLQI-0000zl-LO
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 11:00:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751554822;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GjKalUHkcSEGgjVYtCtFZXHZ3EjBfG+ibM+BRZYo7H8=;
- b=bTD9tMX6XQXsf30/7dxPoYKeO5Uiqf4e/epf8D0y7G0VmVELsQ6BVOkm6HweaOnUjVhlxL
- hO0djPzdXCxduRG/yctBWcoA8kbsoSjgR86MWjPMUJ6wuCIRasED4kPCF9dOapVgnU6Hdm
- ApJpcO5MS+lKhv/YF789WXrMaX9z2Jo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-gOYWfp5VMO6aXaAAZUNL6g-1; Thu, 03 Jul 2025 11:00:21 -0400
-X-MC-Unique: gOYWfp5VMO6aXaAAZUNL6g-1
-X-Mimecast-MFC-AGG-ID: gOYWfp5VMO6aXaAAZUNL6g_1751554820
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a4e713e05bso2840068f8f.3
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 08:00:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751554820; x=1752159620;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GjKalUHkcSEGgjVYtCtFZXHZ3EjBfG+ibM+BRZYo7H8=;
- b=wE+JSV1+yTP/S7QUvz5wSkPUgGaPjLyKVFq+hjo5Zew/YI8WG3AK4xVFSDdHiUm0KD
- nDUUCmwoTrv4Dk2qyqYMYrqcnZKYTg4Ds+eLyMTkoxdz7Tgliq2BcGu0ZJ3CFrj66mai
- IDKTlX40fEz8gwqSGhb8KdzOueS/h1IDHni44xhZppSB/ei5A0f8XUDWYVp58BCreEMN
- xnF2E6+TMO0oWDit/Wo9TWE64p+2/2SCAaygd04GCNhiAlsmWvSRlDca/09IOxDHKsaT
- YPtSHCQNHcQhn7So4ZlNM+7fF09igRJVmpmcrDQK2Gjgko4KE4RaapvuQElZpH4EvwXn
- OdQw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVFSKlPn0ZWk1Z4Ys5TPb4iivgchTVyGT3WqclwjLmth/bOEF8H7GDcVDvfHkNn1Jl9+e/fd1FP3eTI@nongnu.org
-X-Gm-Message-State: AOJu0YwYzTZRzNuDjHHqfDiSKW12FMFxb9xgzVwxNp/RBPGH/emrJpAz
- jHGqWz8HzJpV5q4Q17rvil92118YhSyRJhY1tczeQIvAWsU6kh7uEBY9oP8f+KixZqO7Lkl9FzC
- /lcueCDgPtqJbOuAOzOuMgt2NT4aMm958caXyDPn1cy8OtdbUICTrYlZg
-X-Gm-Gg: ASbGnculjH9AuSf7d/TVcMD6Wuy7UlMnpb+YW+TC2djkfyCy9H9eM6HUwtO8SHZV66K
- sT3A+euh76iszAKcGB9K9Vy4Mg7KZCfMQEoZxAu1ZOC97GkSg6+bcstkxIUKqcEmjdOAYE4aVlY
- M16Y42a0988kiGd9dKumnL1Pq0tRddsMKZIpDtQMAFTUL60O0vyONis7Tjv4HXBVBrp70Z5Xfyn
- zxZbhlxQGMezKkQQFOeTsAGihf/p5NukWgTuuG9scv8WPtal0YB70cMaEhC+sh7JGvbXcBzN8Xl
- ubZs8PQocI9jOxUL2jJUelsuewWT4e8/22aCe1BkWWhqxWkVHG3arA+oK67ZgTN/H/I1uA==
-X-Received: by 2002:a5d:64e2:0:b0:3a4:fefb:c8d3 with SMTP id
- ffacd0b85a97d-3b20101681emr5752264f8f.40.1751554820036; 
- Thu, 03 Jul 2025 08:00:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFeILUvZjP70Q+Vz/zxgZpY8FITJoPudIVl7E0VYTx4tJEdoAosmJVBuyN4mu0HsK4vKmMcog==
-X-Received: by 2002:a5d:64e2:0:b0:3a4:fefb:c8d3 with SMTP id
- ffacd0b85a97d-3b20101681emr5752228f8f.40.1751554819597; 
- Thu, 03 Jul 2025 08:00:19 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a997af9esm28852685e9.14.2025.07.03.08.00.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Jul 2025 08:00:18 -0700 (PDT)
-Message-ID: <6b53bfc3-4ff9-4aca-af90-664cd2e959df@redhat.com>
-Date: Thu, 3 Jul 2025 17:00:16 +0200
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1uXLR0-00015t-Le
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 11:01:14 -0400
+Received: from smtp.livemail.co.uk (unknown [10.44.132.82])
+ by dkim.livemail.co.uk (Postfix) with ESMTPS id 0BB2EA034E;
+ Thu,  3 Jul 2025 16:01:07 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=randomman.co.uk;
+ s=livemail2; t=1751554868;
+ bh=wZ3yi+1UJzxh3642N7vmOfnAoxnOjMOt/9bT8q/kreg=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=EPBc7g43Oe19i5GpDqUjzPIRocmzHzFEhbiT1rSWNeh7vd0EM6CptTlO5dSLmPn5x
+ NIlALN1hGuio5uC3mX9Qxkib6RaP9lPvVxkxOO+wJvsAPm8zW7rscKUprJQCDF8cTh
+ oX3iGaa5L3kVkIXe6gfUDnWvYlxWrzHAHyNzJXrY=
+Received: from localhost.localdomain (unknown [145.40.191.116])
+ (Authenticated sender: roy.hopkins@randomman.co.uk)
+ by smtp.livemail.co.uk (Postfix) with ESMTPSA id 6DDAFC0291;
+ Thu,  3 Jul 2025 16:01:03 +0100 (BST)
+From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+To: qemu-devel@nongnu.org
+Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
+ Gerd Hoffman <kraxel@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Joerg Roedel <joro@8bytes.org>
+Subject: [PATCH v9 01/16] meson: Add optional dependency on IGVM library
+Date: Thu,  3 Jul 2025 16:00:36 +0100
+Message-ID: <45945a83a638c3f08e68c025f378e7b7f4f6d593.1751554099.git.roy.hopkins@randomman.co.uk>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
+References: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/12] hw/arm/virt-acpi-build: Don't create ITS id
- mappings by default
-Content-Language: en-US
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, jgg@nvidia.com, nicolinc@nvidia.com,
- ddutile@redhat.com, berrange@redhat.com, imammedo@redhat.com,
- nathanc@nvidia.com, mochs@nvidia.com, smostafa@google.com,
- gustavo.romero@linaro.org, mst@redhat.com, marcel.apfelbaum@gmail.com,
- linuxarm@huawei.com, wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
- jonathan.cameron@huawei.com, zhangfei.gao@linaro.org
-References: <20250703084643.85740-1-shameerali.kolothum.thodi@huawei.com>
- <20250703084643.85740-2-shameerali.kolothum.thodi@huawei.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250703084643.85740-2-shameerali.kolothum.thodi@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=213.171.216.60;
+ envelope-from=roy.hopkins@randomman.co.uk; helo=dkim.livemail.co.uk
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -117,43 +80,117 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Shameer,
+The IGVM library allows Independent Guest Virtual Machine files to be
+parsed and processed. IGVM files are used to configure guest memory
+layout, initial processor state and other configuration pertaining to
+secure virtual machines.
 
-On 7/3/25 10:46 AM, Shameer Kolothum wrote:
-> Commit d6afe18b7242 ("hw/arm/virt-acpi-build: Fix ACPI IORT and MADT tables
-> when its=off") moved ITS group node generation under the its=on condition.
-> However, it still creates rc_its_idmaps unconditionally, which results in
-> duplicate ID mappings in the IORT table.
->
-> Fixes:d6afe18b7242 ("hw/arm/virt-acpi-build: Fix ACPI IORT and MADT tables when its=off")
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+This adds the --enable-igvm configure option, enabled by default, which
+attempts to locate and link against the IGVM library via pkgconfig and
+sets CONFIG_IGVM if found.
 
-Eric
-> ---
->  hw/arm/virt-acpi-build.c | 6 ------
->  1 file changed, 6 deletions(-)
->
-> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-> index cd90c47976..724fad5ffa 100644
-> --- a/hw/arm/virt-acpi-build.c
-> +++ b/hw/arm/virt-acpi-build.c
-> @@ -329,12 +329,6 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
->          /* Sort the smmu idmap by input_base */
->          g_array_sort(rc_smmu_idmaps, iort_idmap_compare);
->  
-> -        /*
-> -         * Knowing the ID ranges from the RC to the SMMU, it's possible to
-> -         * determine the ID ranges from RC that are directed to the ITS.
-> -         */
-> -        create_rc_its_idmaps(rc_its_idmaps, rc_smmu_idmaps);
-> -
->          nb_nodes = 2; /* RC and SMMUv3 */
->          rc_mapping_count = rc_smmu_idmaps->len;
->  
+The library is added to the system_ss target in backends/meson.build
+where the IGVM parsing will be performed by the ConfidentialGuestSupport
+object.
+
+Signed-off-by: Roy Hopkins <roy.hopkins@randomman.co.uk>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Gerd Hoffman <kraxel@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+---
+ backends/meson.build          | 3 +++
+ meson.build                   | 8 ++++++++
+ meson_options.txt             | 2 ++
+ scripts/meson-buildoptions.sh | 3 +++
+ 4 files changed, 16 insertions(+)
+
+diff --git a/backends/meson.build b/backends/meson.build
+index 9b88d22685..ac0fac7845 100644
+--- a/backends/meson.build
++++ b/backends/meson.build
+@@ -34,6 +34,9 @@ if have_vhost_user_crypto
+ endif
+ system_ss.add(when: gio, if_true: files('dbus-vmstate.c'))
+ system_ss.add(when: 'CONFIG_SGX', if_true: files('hostmem-epc.c'))
++if igvm.found()
++  system_ss.add(igvm)
++endif
+ 
+ system_ss.add(when: 'CONFIG_SPDM_SOCKET', if_true: files('spdm-socket.c'))
+ 
+diff --git a/meson.build b/meson.build
+index b5f74aa37a..200352c244 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1424,6 +1424,12 @@ if host_os == 'linux' and (have_system or have_tools)
+                        method: 'pkg-config',
+                        required: get_option('libudev'))
+ endif
++igvm = not_found
++if not get_option('igvm').auto() or have_system
++  igvm = dependency('igvm', version: '>= 0.3.0',
++                    method: 'pkg-config',
++                    required: get_option('igvm'))
++endif
+ 
+ mpathlibs = [libudev]
+ mpathpersist = not_found
+@@ -2601,6 +2607,7 @@ config_host_data.set('CONFIG_CFI', get_option('cfi'))
+ config_host_data.set('CONFIG_SELINUX', selinux.found())
+ config_host_data.set('CONFIG_XEN_BACKEND', xen.found())
+ config_host_data.set('CONFIG_LIBDW', libdw.found())
++config_host_data.set('CONFIG_IGVM', igvm.found())
+ if xen.found()
+   # protect from xen.version() having less than three components
+   xen_version = xen.version().split('.') + ['0', '0']
+@@ -4965,6 +4972,7 @@ summary_info += {'seccomp support':   seccomp}
+ summary_info += {'GlusterFS support': glusterfs}
+ summary_info += {'hv-balloon support': hv_balloon}
+ summary_info += {'TPM support':       have_tpm}
++summary_info += {'IGVM support':      igvm}
+ summary_info += {'libssh support':    libssh}
+ summary_info += {'lzo support':       lzo}
+ summary_info += {'snappy support':    snappy}
+diff --git a/meson_options.txt b/meson_options.txt
+index a442be2995..1e429311a2 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -117,6 +117,8 @@ option('tpm', type : 'feature', value : 'auto',
+        description: 'TPM support')
+ option('valgrind', type : 'feature', value: 'auto',
+        description: 'valgrind debug support for coroutine stacks')
++option('igvm', type: 'feature', value: 'auto',
++       description: 'Independent Guest Virtual Machine (IGVM) file support')
+ 
+ # Do not enable it by default even for Mingw32, because it doesn't
+ # work on Wine.
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 73e0770f42..7851540445 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -130,6 +130,7 @@ meson_options_help() {
+   printf "%s\n" '  hv-balloon      hv-balloon driver (requires Glib 2.68+ GTree API)'
+   printf "%s\n" '  hvf             HVF acceleration support'
+   printf "%s\n" '  iconv           Font glyph conversion support'
++  printf "%s\n" '  igvm            IGVM file support'
+   printf "%s\n" '  jack            JACK sound support'
+   printf "%s\n" '  keyring         Linux keyring support'
+   printf "%s\n" '  kvm             KVM acceleration support'
+@@ -346,6 +347,8 @@ _meson_option_parse() {
+     --iasl=*) quote_sh "-Diasl=$2" ;;
+     --enable-iconv) printf "%s" -Diconv=enabled ;;
+     --disable-iconv) printf "%s" -Diconv=disabled ;;
++    --enable-igvm) printf "%s" -Digvm=enabled ;;
++    --disable-igvm) printf "%s" -Digvm=disabled ;;
+     --includedir=*) quote_sh "-Dincludedir=$2" ;;
+     --enable-install-blobs) printf "%s" -Dinstall_blobs=true ;;
+     --disable-install-blobs) printf "%s" -Dinstall_blobs=false ;;
+-- 
+2.43.0
 
 
