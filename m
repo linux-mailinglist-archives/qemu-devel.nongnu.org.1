@@ -2,80 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C27AF74CE
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0C9AF74CC
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:56:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXJOx-0001CY-F4; Thu, 03 Jul 2025 08:50:56 -0400
+	id 1uXJQN-00034X-U1; Thu, 03 Jul 2025 08:52:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXJOW-0000yi-Lx
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:50:34 -0400
-Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXJOP-0007fo-MG
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:50:28 -0400
-Received: by mail-yw1-x112f.google.com with SMTP id
- 00721157ae682-70f94fe1e40so10945377b3.1
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 05:50:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751547016; x=1752151816; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=w+T9JHMDfq0eVANfUnn11mY1JTc6iS4QNE+cWfX90Ps=;
- b=MPDh509ORIaKUeXnK/UIO5/QfuFdVYGiFpXDojXHb32NnQbH4884e7//aik6zi0UTk
- K5eZWxuQQz0Yjb+AFly6rJ2/Ii3hCjHYSoR3Ra1hgif6k3QANdltMvf95lFOzlMpfgx3
- 8TqLw2FKU2QYB6PsgikG93eVeHEytp2pfNmW5CrjUF6y5EOwTkRnvZPrh1/USSfIj23c
- FQF/bOkz62Jg/LGeA5MuO1QB6LxhOanxITVl5jIZpLCO8wYkkp0JxavQo18fyzDWodT8
- vzF1g85vhrEZrz1bvf07CtRfgw60NIWh3tCAXOOPGj8KhTwm+V7cEzGrzDGRS4pY3f5J
- rhBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751547016; x=1752151816;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=w+T9JHMDfq0eVANfUnn11mY1JTc6iS4QNE+cWfX90Ps=;
- b=S9tkLScFkxhXJutOetyIlu2k4prMC7WkmzoVBHZUvyduawsic+cK3Zhr8tUubdtY37
- 33ohj96EmHCNgoAbfly/kaA0NWvu0eBP4YmAVgn+qSUJEyXgLzhm3MvhmZ/vUFMguwsc
- HhSOjKxtdE734G2SRYhZULAglgBtoA07EWOd3Al6QYdgI+6Wkksf1V2dscQRD6qODCyD
- d9McFcDd6yVBPaINvxNTbw5taOtL3HkXl91gT1q0dWDkg4HayMgIWKtwaA02djYHV7wX
- gjTm1vo6Hgsx4dWATFY7jdgq09xPIAVrmIHqMB2LafrhQO8p/VWTBLve8MoGlOV0Ub2T
- yf8Q==
-X-Gm-Message-State: AOJu0Yx8z9+Bsj7eS7UphFymdS4qIiDR6aik6xp7GtHiuA+XlLJMDWxH
- eMKpvKoYVJlMdEvxbGwOZFoRYsu1ggsoeCpliWSpIianKrIa+KsFLSrHqw+QdCXEkKVBld5Frek
- o4gDSulETfXE0IAYtex1YYITdW7Pbesqi2IRrvOXyvg==
-X-Gm-Gg: ASbGnctu1vGPu06OrSp9103HHgYYfrUftMHHhOesNGehqF4YqFZw+w9yfJV4Y/WIEgS
- Ty+vANHgwP1BW3Ik7tNPC9FkLed0gm4vZ9gzIjYLQHN9dBz8ZpuRUp+cfHl6aNGkWJEkan8cOtv
- 0zEju7ygNrfV2fPm5xPvkUIIDFmN4DJMVJGCoG3AAv3aFldcPsshPQ7EU=
-X-Google-Smtp-Source: AGHT+IEwQJ4579ipImkoAJ8OP1rEiku092kfViaGI3hbMkWbBrqhVsUhyqEphbbQZKJzqJRsahd36E4jqYJueAcecsM=
-X-Received: by 2002:a05:690c:fc7:b0:712:c55c:4e5c with SMTP id
- 00721157ae682-7165d123328mr26407197b3.5.1751547016704; Thu, 03 Jul 2025
- 05:50:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uXJPr-0002uD-GX
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:51:54 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uXJPm-0007zc-DB
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:51:51 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bXxQd4xVcz6L5QC;
+ Thu,  3 Jul 2025 20:48:41 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id C00F614044F;
+ Thu,  3 Jul 2025 20:51:37 +0800 (CST)
+Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 3 Jul
+ 2025 14:51:37 +0200
+Date: Thu, 3 Jul 2025 13:51:36 +0100
+To: <shiju.jose@huawei.com>
+CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
+ <fan.ni@samsung.com>, <dave@stgolabs.net>, <linuxarm@huawei.com>
+Subject: Re: [PATCH v3 1/7] hw/cxl/events: Update for rev3.2 common event
+ record format
+Message-ID: <20250703135136.00002b0d@huawei.com>
+In-Reply-To: <20250703091657.1868-2-shiju.jose@huawei.com>
+References: <20250703091657.1868-1-shiju.jose@huawei.com>
+ <20250703091657.1868-2-shiju.jose@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20250702123410.761208-1-richard.henderson@linaro.org>
- <20250702123410.761208-97-richard.henderson@linaro.org>
-In-Reply-To: <20250702123410.761208-97-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Jul 2025 13:50:05 +0100
-X-Gm-Features: Ac12FXxaOsYAJdDxtulHWX8wP1YoH3ZRSy4BcR25okZTlUPoJ1ed1_inAx3vHxo
-Message-ID: <CAFEAcA-Z82KKRDSX=8+oO=YjwvPk0oHt2SLOvKRbH9exnE3bMg@mail.gmail.com>
-Subject: Re: [PATCH v3 96/97] linux-user/aarch64: Set hwcap bits for
- SME2p1/SVE2p1
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.19.247]
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,20 +68,34 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2 Jul 2025 at 13:42, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  linux-user/elfload.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
+On Thu, 3 Jul 2025 10:16:50 +0100
+<shiju.jose@huawei.com> wrote:
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> CXL spec 3.2 section 8.2.9.2.1 Table 8-55, Common Event Record
+> format has updated with optional Maintenance Operation Subclass,
+> LD ID and ID of the device head information.
+> 
+> Add updates for the above optional parameters in the related
+> CXL events reporting and in the QMP commands to inject CXL events.
+> 
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+Hi Shiju,
 
-thanks
--- PMM
+Anisa's fmapi-dcd series moved one instance of this from cxl_type3.c to cxl/cxl-events.c
+I'll tweak that whilst applying it to my gitlab tree.
+
+Doesn't make any fundamental difference for anyone wishing to review
+the series.
+
+Thanks,
+
+Jonathan
+
 
