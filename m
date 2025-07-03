@@ -2,104 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF00AF7669
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 16:00:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4336DAF7732
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 16:22:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXKSl-0000tY-Oq; Thu, 03 Jul 2025 09:58:55 -0400
+	id 1uXKnv-0001Gf-Dx; Thu, 03 Jul 2025 10:20:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uXKSj-0000sI-5K
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 09:58:53 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ id 1uXKnr-0001FC-KG
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 10:20:43 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uXKSg-0000j9-If
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 09:58:52 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-ae36dc91dc7so953465866b.2
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 06:58:49 -0700 (PDT)
+ id 1uXKno-0004Ow-4y
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 10:20:43 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4530921461aso54285305e9.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 07:20:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751551128; x=1752155928; darn=nongnu.org;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jF8aqDbU3LXGxNB2udC3gwDcAxLsQwt6wTonGUyu9pA=;
- b=FoVlHEqjHbU6TgJvk0Rmd8JilWw6UI51DO7SOkuVGIrMW/4eRzJDHdrKDbM+zUawhh
- WjKyesPCWOAdf/zeFhsTgSS0cgPqqaRfTklDICnaOe/0QJfZjAkDviKYvBCjUpZ2QPp5
- IPS7ipo9AXKndyAbaXQd3Pq9hMZvXI/MV4sBji+mXSlWY2JTIZNT/7+qYMO61q6/lnPX
- hFeXFoGT1tV9LzWEmLP6y/7XjhiH+NqSdGUBN0c2TY+mW24Sv66OKKq2pYwivONU+PIK
- j+YRtog73a3k6lpmA8UiNkddChC8AvOvVqfUf3nhe7s5FeYH2em54KG0hK4rJqwBe6An
- y8wA==
+ d=linaro.org; s=google; t=1751552436; x=1752157236; darn=nongnu.org;
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YKofTUEQUxvI9iY9E4Ena7buN9HRCjm4eu8sr8lBqpg=;
+ b=vMgFD1yW3bF0HiFX9rXsXdvZZHQyyw9+vjgo17TM4ICdBac45jvshb78MeRwzQKIWi
+ UA7FMuj0ixLGe6+KO0DJSWHMbkGcAzj+LS2UONHoTVWeb6PjN3G95RdVDmspQdaweX+p
+ HqeWXB5AusqwIx/Uihj7B+8rdQTY8TaaaB6EMZJwm5XO5+9wkOfClU3+4ccszoevliH4
+ N2zCVanM6bsrGpZhQbBQzvgjiHas8IJAyRHZGrYc8WkMDg8q+PvqYAYtolv4IO6C29bU
+ 8PPVHhIT5xC3skYX3RdR9+UELWpqQu9HvKu/MVWArlQy5ix/kSEoXGWW9ezKeL+sqzmh
+ PsRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751551128; x=1752155928;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jF8aqDbU3LXGxNB2udC3gwDcAxLsQwt6wTonGUyu9pA=;
- b=Iczz9+rQa3RKQDySNtJxYpOkb3MdNGbtlAZUY1P9veazQ1U5SlMoTuz2lOT2zEZH7I
- YvIIMwu8CXH/JmuLico5S35dnoksIhSUHponJ8ej9GU2aCRUAqd6OybtwJ7jBXl/6It1
- twHF6CHBcgE+4rN30WyEdY8stwhDN5YgRj9MyfsiUwTAaU8Ll/PYUMJzWG4COiHgXonU
- za5zZf5N6pyGMoS41HLQnXgUGz7/xu9+UguDd9IDBhloG6C71D9nrG2aPiXAZZPfy1rw
- RbFupJ5nEmBL/Pih/gjD0SFq2oJeJUoUmVBlEhj4ynbGjMVmNa4FF7H3dew1jQdoO/fD
- cgzA==
-X-Gm-Message-State: AOJu0YwWaLVyiRRZ6E24hdfCMPxQkap2kHkXNR6FFjI8UK2VrBx5CUTc
- p+sSnsDAnmPlRT9WD41mHHaTGmRvW87Ny4vq5QBjJUL4U1YvVn3WwU46FH9PNx2jT7vSG9/riFE
- Pp/KsrVE=
-X-Gm-Gg: ASbGnctu3POHJDXF7eSJANglPm1DnTpRzawbk5OuID/kmO9LCsrBUC3P7tY8UPM3P8H
- mtciRbATMUgHuXpkYzGXJ9Omv+XJxwppXUjhw8XDJXRFmVP8QD//OB49CIhVwkQXZfStOIRnhaj
- lb55arbdMjBYHjplPv7hLYkh7ahhpQd6yjgltVY3NRN9XeGGRwILqqoeaZ8fvgTMidkfk/BJX7/
- FGm5IhHGf/hykak9vVtjxGEddy4BGo3K11EoFYCOBkbU6D1iVBt8ZsHa5gShjgmOx7KxzQIdH+r
- kkmUjhRLV1JK0hnN2TOh6CwRJgh0VTWv2Ho4HwCAp8rU4oh5Z9pTltz2BrWAL56IiLQ6+xbKJ17
- OaZSZBbYhQ0uOfmNAHVxVm2unG5A2Gxw=
-X-Google-Smtp-Source: AGHT+IG3N/M9icLX7qjM1o7pOePX0VOawUQ0FpVJu5KZpLU7NYRtk5P60awXFNpV+ee3EQ6YVob1MQ==
-X-Received: by 2002:a17:907:7292:b0:ad2:43b6:dd75 with SMTP id
- a640c23a62f3a-ae3c2b3c08dmr734217066b.10.1751551128203; 
- Thu, 03 Jul 2025 06:58:48 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1751552436; x=1752157236;
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YKofTUEQUxvI9iY9E4Ena7buN9HRCjm4eu8sr8lBqpg=;
+ b=CgfhGExcmsNmP2+1gYzuzc8wEnmFxQ01oCF067CDxPNgvdku94I/L1+20fkQZ+zZYm
+ 6KnvwV9ow5+FQXChEkqG1uBRrkUCDI3xSl5SEYjbrjobgSqXjiK5lPQRX8FtvPk42tzt
+ ArX5n9LzKC4eDj+Sd0XQjbhIfM7sdvgAL+BIMsaLj+UevIK6E/xfVO90uMsmOFRunqQI
+ ji3F58zcXv1G60iLGKW/XEJ43IwvmT3VhWZ5q95kd9irgnq4oOWXBBewAH1NfM7+pTDt
+ p+VrmNtl+PI5ehemY2EyjIYIfoPP2B5Hf8ODbDq+H0i+KbmoXAovFsQOVZC3LoMfm91k
+ R3gw==
+X-Gm-Message-State: AOJu0YxJ53KUnVQMsuCK0pdhCmaROuKFnfKd/D2G539J8inLHC3AqEqZ
+ G10+3r1XXORL2XUg/9LMPdOz91iWSBoXhVFIV79oJdib7Jo6ROUBnrb/vEg/gJeYqHs=
+X-Gm-Gg: ASbGncshYYsYG5Yb7IpIOGINjqkZa5+HEqdMaLu2H5kZ6tuX+7M8bUOKIFpm88ZhJrd
+ 3aXHPF1ds/E0IP4WEJnGqmlUEc3BLQ+BLVoQoV9oZ1/K6uiGGO7/xihzo53ub6SuJCh1T9litQ4
+ JWU7geEHTlGdmjZ+9WNCxxETMIhpsSbdMTPC/hKYVyYbbkhmxpjUpAb8QJev5irNripxrGELhRH
+ N4sTeIupU5mm1YWE1oenRWiTMPe7yIy2SWgb3lEm7EFn6ONh+uLyDFpz4k+JiyjRAzqNHfo4/Ka
+ f0ZofzXVQAKBNe0+ATv70MgOSJIUuL2tsWkRl2WqkpizhUBy/zm9F8ZIv2dtvr1XShn8/aaaw0a
+ H1EoiDvXzUbpeSF6rT5X8Z8LRDNHX/U4=
+X-Google-Smtp-Source: AGHT+IGYT963byciZayRsFLXGd2IvlsFsPDOgxTJg45GllKRKmIMfusHgavjNT/HncglWhbPgSIK/Q==
+X-Received: by 2002:a05:600c:1388:b0:450:d00d:cc with SMTP id
+ 5b1f17b1804b1-454ab368e3bmr34604495e9.2.1751552436060; 
+ Thu, 03 Jul 2025 07:20:36 -0700 (PDT)
 Received: from [127.0.1.1] (ppp-2-86-212-125.home.otenet.gr. [2.86.212.125])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ae353ca1ca6sm1279678966b.176.2025.07.03.06.58.47
+ ffacd0b85a97d-3a892e52a5asm18976600f8f.54.2025.07.03.07.20.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Jul 2025 06:58:47 -0700 (PDT)
+ Thu, 03 Jul 2025 07:20:35 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 03 Jul 2025 16:58:13 +0300
-Subject: [PATCH 3/3] rust: add *_with_attrs methods to MemoryRegionOps
+Date: Thu, 03 Jul 2025 17:20:22 +0300
+Subject: [PATCH] rust/bindings: allow unnecessary_transmutes (1.88)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250703-rust-mem-api-v1-3-cd5314bdf580@linaro.org>
-References: <20250703-rust-mem-api-v1-0-cd5314bdf580@linaro.org>
-In-Reply-To: <20250703-rust-mem-api-v1-0-cd5314bdf580@linaro.org>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250703-rust_bindings_allow_unnecessary_transmutes-v1-1-692ca210d331@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAKWRZmgC/x3NQQrCMBBA0auUWRtIamrBq4iEtBnrQJ3KTKKW0
+ rs3uHyb/zdQFEKFa7OB4IeUFq5wpwbGZ+QJDaVqaG3b2d6ejRTNYSBOxJOGOM/LNxRmHFE1yhq
+ yRNZXyagmXZxPg+9cHz3U4FvwQb//7Hbf9wNQftURfAAAAA==
+X-Change-ID: 20250703-rust_bindings_allow_unnecessary_transmutes-d614db4517a4
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
  Zhao Liu <zhao1.liu@intel.com>, 
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3630;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1667;
  i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=1P+RBgerOZPwGjZrNaYJyYxeZQDGYekhtRtwSuEW7oM=;
+ bh=qBnzFK2jzBx9ni4zlQZpeE9EoRu2AVMJDhHXnUF08bA=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm9ab3lUWXlGTk9xWUZNakU2Ky9qYU02YmNTU3VUCldBczhvbGVZeWxiRHFnQ3pQ
- Y0NKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUdhTWt3QUt
- DUkIzS2Nkd2YzNEowSytlRC80MXFlbG10cE9NcjdNcmZ0alFCT3R6enFaeEt6L2FKdDBSOXNlVA
- pEeURWejRmSXUwUnI0K2JGcE5oc2RMWUxPWC9GVzRZMFpOVXZoTXFLc0J4RTNpRVFGWEJtNXRkR
- ERFVjlPeWE1CmtudWZKdEJRTVI0dDhDcEI2clFsOGw2UStHbmFnRTlNUzY4cUJtblhwbTA4L1ha
- SGhGVjErMCtVM1NpNU9rckkKMUx0ZDhmeVZ0d01LK3BxSlIrdDRoczRtVkpIUmZPaGdFSnl3MWp
- RZ0EwdWFqTVRMYWxBTU9xM2Q2QVo4MGtOMgp1SjI2VWYvSGpqNE8wVktnMllHL25Pb3YxTzFETW
- N5SUF0NkxsQm9waDBSSmxqK0toOHZ4d2xzZnh2cERJcXdLCjdxaHJmcERxQWJEek5rekhDcXFJR
- ThyYUtDM3pKRDZSbTEzY2RGTFdnOFhLaVZsWDl5WCtFc01pRy9Dbjh3bzEKMWhwSnRMZkhVSTA4
- STZ5amRRcjVkSjlmWTZmZCtGL2dKbDdSOG1DbU5xUmJqdFUwdUJnK0wzbnhEcVBYZEgvWgpaMjI
- 2ZTRIYWFHdEtDTXUxRVc1a1dENGlxWHU3TUh6YzJsUVBkdlNGTmR4Qjhnc2duRlE3bU8xSkhjNX
- Q5Y0drCi93dzJKaVJ1bDFuYkp4a1UwNGZYV0pxY0N0a25xbG1JeDNxWUFENXdDdGsxd3Jtby80S
- mhibG9DU2F1alhLN3QKM0ExaUdIblg4ekZadEthZVZKWXRURDhwd2FqdTNtYzR1MlZFSHhNQXNo
- UGR2VFFWejdlcnhOZEU0NWhXNTU3NApyV2FOS0JGTTZXTmJqdlFnL2Ixa1pDcXhZYWZvVTF2eFZ
- lbXZRMjdYTUZPcWplWWFHYzQ0VnVwOXFsTUZVYm5ICjhGaHA1UT09Cj1XNit0Ci0tLS0tRU5EIF
+ 25RQWNzbVlnQm9acEd5YXhRYm8wandnZjVEcEVGZjhMajkyYUU0ClJkYWI1eGExTmxKN08yWXgx
+ SmVKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUdhUnNnQUt
+ DUkIzS2Nkd2YzNEowRi9ZRC85MGtQV09zMkdiVUpmd1NqaWNQcHhRV3dnMHpxNjF3MkN1RmRvYg
+ o0NXNXeUdtdm9STDZSYmlGaE5lMVFGMmlMdGkwMWRLRG1PcSthUVpLeTV6MllBYjdkZy9lS24yS
+ U1hQUgwTkYrCm1zam5tRzc0cGhjMm9KOG5SRjlQakt1QlRzcGhQUnJ1WlVGdDNlNnBoWWpBT2FQ
+ SjVTcDVwbGRaVnNCaGdQZ24KRlgwUVN4bmVQWXloTTRGdjAvTStjKzRBR0YrL3BVMWdHdGdlVS9
+ 5c3UwNWZESHZXZUlZendYSi93YVlGUGhhRQpnazkwdEtMaUkxQkRpM21oZmduWnBEakVHWHN6bF
+ k3UlZZWUlxWGsyNzZ6UTdQaFBEYWJCR2dWVHVXMzFKNnlkCkhjaWNEUWhQS0ZocTFXYkhXYk9QT
+ WhtVzRFN2hSU0FsZWlQK2tsVTdkZWRzZTFHZ0JnNklUS0pvYzZud2gvUmUKR1c2K2g4bVROWjl5
+ dUIzMzU4VU5oVmtneXZBa3BtRHRkSmFKZThodWNQbUk3SDRoR1Y4dkN3TDJHTUpEUnpvVApoSnV
+ aaGFwcmNvQzlkREhYTmhqRzN1WldKK1JWalNPYkNJNG5ubmI2RUhWWjBYZWpCdzl3VEd0TURSdU
+ ZHMm55CnZxR1E4ME94M3h4UHJONFNTUHJ4R2NlbzJYb3M5Mm5zR1pvaHdqSnEvR3dhSTFpbFhUZ
+ k9KR0JpTnJCSkI2WGMKUWdPZVRxdEhNZTMxUkd6OHRLd2Z4d3VhK3JpUG9SaXVjd2FVZVNwazQ4
+ eGtqeko4Tmw3blZ5dWt1aE5ETHI1KwpIYlQ1TXVQTHVtVUt4c2ZWamE4QlkybmxIQ1NWRXpYbEc
+ 0TVptVlZQN2Q5dGdxQnhjc2lUWlNNcGphM091cEFBCjN6Mmhndz09Cj1SVWZPCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -122,116 +123,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MemoryRegionOps (and its builder type) only support read/write
-callbacks.
+This is a new lint introduced in Rust 1.88. It does not affect
+compilation when using a previous version or our MSRV, 1.77. But with
+1.88 compilation fails because we deny all warnings:
 
-Add the ability to define {read,write}_with_attrs callbacks for devices
-that need them.
+  error: unnecessary transmute
+     --> rust/qemu-api/libqemu_api.rlib.p/structured/bindings.inc.rs:729:18
+      |
+  729 |         unsafe { ::std::mem::transmute(self._bitfield_1.get(0usize, 24u8) as u32) }
+      |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: replace this with: `u32::cast_signed(self._bitfield_1.get(0usize, 24u8) as u32)`
+      |
+      = note: `-D unnecessary-transmutes` implied by `-D warnings`
+      = help: to override `-D warnings` add `#[allow(unnecessary_transmutes)]`
+
+Allow this lint, which even though it does not exist in previous
+versions, it works because we allow for `unknown_lints` in
+rust/Cargo.toml.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- rust/qemu-api/meson.build   |  1 +
- rust/qemu-api/src/memory.rs | 52 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 52 insertions(+), 1 deletion(-)
+ rust/qemu-api/src/bindings.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index a090297c458b1a282211b9e241c0e447dd594167..95c097ec8f8dd31a863339d58eaa8bfc4d4dea18 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -26,6 +26,7 @@ foreach enum : c_enums
- endforeach
- c_bitfields = [
-   'ClockEvent',
-+  'MemTxResult',
-   'VMStateFlags',
- ]
- foreach enum : c_bitfields
-diff --git a/rust/qemu-api/src/memory.rs b/rust/qemu-api/src/memory.rs
-index b1907aa01300a3fac8e1f3b69c5d50da631a556d..98d1e116147aba2c9034a61159492382b1ee0e5e 100644
---- a/rust/qemu-api/src/memory.rs
-+++ b/rust/qemu-api/src/memory.rs
-@@ -9,7 +9,7 @@
-     marker::PhantomData,
- };
- 
--pub use bindings::{hwaddr, MemTxAttrs};
-+pub use bindings::{hwaddr, MemTxAttrs, MemTxResult};
- 
- use crate::{
-     bindings::{self, device_endian, memory_region_init_io},
-@@ -59,6 +59,20 @@ unsafe impl<T: Sync> Sync for MemoryRegionOps<T> {}
-     F::call((unsafe { &*(opaque.cast::<T>()) }, addr, size))
- }
- 
-+unsafe extern "C" fn memory_region_ops_read_with_attrs_cb<
-+    T,
-+    F: for<'a> FnCall<(&'a T, hwaddr, *mut u64, Bits, MemTxAttrs), MemTxResult>,
-+>(
-+    opaque: *mut c_void,
-+    addr: hwaddr,
-+    data: *mut u64,
-+    size: c_uint,
-+    attrs: MemTxAttrs,
-+) -> MemTxResult {
-+    let size = Bits::try_from(size).expect("invalid size argument");
-+    F::call((unsafe { &*(opaque.cast::<T>()) }, addr, data, size, attrs))
-+}
-+
- unsafe extern "C" fn memory_region_ops_write_cb<
-     T,
-     F: for<'a> FnCall<(&'a T, hwaddr, u64, Bits)>,
-@@ -72,6 +86,20 @@ unsafe impl<T: Sync> Sync for MemoryRegionOps<T> {}
-     F::call((unsafe { &*(opaque.cast::<T>()) }, addr, data, size))
- }
- 
-+unsafe extern "C" fn memory_region_ops_write_with_attrs_cb<
-+    T,
-+    F: for<'a> FnCall<(&'a T, hwaddr, u64, Bits, MemTxAttrs), MemTxResult>,
-+>(
-+    opaque: *mut c_void,
-+    addr: hwaddr,
-+    data: u64,
-+    size: c_uint,
-+    attrs: MemTxAttrs,
-+) -> MemTxResult {
-+    let size = Bits::try_from(size).expect("invalid size argument");
-+    F::call((unsafe { &*(opaque.cast::<T>()) }, addr, data, size, attrs))
-+}
-+
- impl<T> MemoryRegionOpsBuilder<T> {
-     #[must_use]
-     pub const fn read<F: for<'a> FnCall<(&'a T, hwaddr, Bits), u64>>(mut self, _f: &F) -> Self {
-@@ -86,6 +114,28 @@ pub const fn write<F: for<'a> FnCall<(&'a T, hwaddr, u64, Bits)>>(mut self, _f:
-     }
- 
-     #[must_use]
-+    pub const fn read_with_attrs<
-+        F: for<'a> FnCall<(&'a T, hwaddr, *mut u64, Bits, MemTxAttrs), MemTxResult>,
-+    >(
-+        mut self,
-+        _f: &F,
-+    ) -> Self {
-+        self.0.read_with_attrs = Some(memory_region_ops_read_with_attrs_cb::<T, F>);
-+        self
-+    }
-+
-+    #[must_use]
-+    pub const fn write_with_attrs<
-+        F: for<'a> FnCall<(&'a T, hwaddr, u64, Bits, MemTxAttrs), MemTxResult>,
-+    >(
-+        mut self,
-+        _f: &F,
-+    ) -> Self {
-+        self.0.write_with_attrs = Some(memory_region_ops_write_with_attrs_cb::<T, F>);
-+        self
-+    }
-+
-+    #[must_use]
-     pub const fn big_endian(mut self) -> Self {
-         self.0.endianness = device_endian::DEVICE_BIG_ENDIAN;
-         self
+diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
+index 057de4b6467c50ecc5acb6b51e6fde87ef5fa67f..3cdad0f0ec640880bc74a942bbcb303be4cda775 100644
+--- a/rust/qemu-api/src/bindings.rs
++++ b/rust/qemu-api/src/bindings.rs
+@@ -6,6 +6,7 @@
+     non_camel_case_types,
+     non_snake_case,
+     non_upper_case_globals,
++    unnecessary_transmutes,
+     unsafe_op_in_unsafe_fn,
+     clippy::pedantic,
+     clippy::restriction,
 
--- 
-2.47.2
+---
+base-commit: c77283dd5d79149f4e7e9edd00f65416c648ee59
+change-id: 20250703-rust_bindings_allow_unnecessary_transmutes-d614db4517a4
+
+--
+γαῖα πυρί μιχθήτω
 
 
