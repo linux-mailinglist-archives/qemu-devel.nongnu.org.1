@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD54AF7F16
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F023AF7F17
 	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:38:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXNoc-0005XR-FZ; Thu, 03 Jul 2025 13:33:42 -0400
+	id 1uXNod-0005XU-8w; Thu, 03 Jul 2025 13:33:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNoU-0005WT-NO
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:33:35 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNob-0005XI-82
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:33:41 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNoT-0008EE-4S
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:33:34 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3a4fb9c2436so33385f8f.1
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:33:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNoY-0008JI-Ez
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:33:39 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-45310223677so853135e9.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:33:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751564011; x=1752168811; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751564016; x=1752168816; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CdRe1Eyp3xb/gGYQ1LjLDITtq8GdvFlAG//ViqGqDSk=;
- b=pxKSZnXbaUo3vwtV69vxKhWu5bbKARFobIh44VefwAk/mrTlhkwbZ9AyRwF033vOp5
- B/dp0/mSjniCYCgNbXAF6jAe858gr9Gwenb6UMIzIYoOd5UWFazqZQKtBy5a5DuzEOhW
- YwFBA2R0kRj65K4wEE/l49BVxJoce1/Y4twoDYObAsiz2yccnAl3UztKlT5daWRZAMnc
- EBa+kIiLd1i4akIq9T+sEFwij16lR/ve5Jcv7yCsCG5XNJqfeoi+QRJQzALRHX9bavFo
- kbj4tDsrnbWhQB0HnUBhSudA4S5kIvldWM2/5G4qmKrT5sLTlD+PNyzq94HhSwHVa0D6
- xlqA==
+ bh=KA0b8Mx/diMOpz5eVRAgzHisGcdWtT3pud+mD+Gv0yw=;
+ b=iY5J1U4cZwuYbmCqVT37sh/UWtaDghXCGDA1Wtc3y//feETEYbjrYE+OpRRAPoS2Xz
+ r8bPIYGA02DytedHL+wjdlbDbRBxpwcj8USkeKCNuDy7q83mgc1NJRaptXujlTuc4VQC
+ sXdxJlkf7xTe9NAr2E1DF/XnqNKMFmULqrI3K0QVCDdjwx4xmjW4wMSNVAqLVkruw/QM
+ 5DolwY7vyvdouUqWQo0F57sUVyRuLrFIe8feULVw/+F9HjFTqY/NQmSp50iMzjXCNZXr
+ kYO5Eisgjn06HXtfXYfssfRnInB/y5lNEVUBP+1qgFAfqNh0tiWCAPCp5cbzdl8RK6rb
+ qlmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751564011; x=1752168811;
+ d=1e100.net; s=20230601; t=1751564016; x=1752168816;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CdRe1Eyp3xb/gGYQ1LjLDITtq8GdvFlAG//ViqGqDSk=;
- b=cfQ9fiB1KXvDRKosF5om2mQFdrQka7sJBvQvxesV0Ok7tKZvSowdu23KHFo4tkUfXU
- w+QFXJ/dlwF2U8FWlVah1czLJyhHshod0cOI0s+Oe4vTE1uhlK1GkaN2i1KMnQ1diq32
- oPEQTMDC35h6T4zXSsL1Qrh7dUDjayxBNQRPaw/Oweic5eqf8BYYeShw4kC/JmUct8e3
- 1HZwvPZTFrxu/cMc6jDggSzS7JCFt6zjZ/2onO0Q0E0MtpAzfXf5KCCQXqrdVyYQqQuA
- pcIq0eppKOkId13NoVUvv30HzWHiImXst2pazs2fubIyrJqSocJ/g/z+qTKpkTibo0uN
- 90pA==
-X-Gm-Message-State: AOJu0YyLNOp0ft4IXm/7b3ciyaLUcuxctS/cE1ict7CP7swu5oLCtcHC
- lJ+4RLmQHnmHgW4QnDznLi8WkTpIJYQfZ+Q9GYpcj66JYwkCEM1QXLaU8esYtma9AETz4CVVzdQ
- jIrcSTgA=
-X-Gm-Gg: ASbGncu764jkKGzfe0XXxsSDRqlnJ91rAh+9O9/i38OwsjsVu7PkRrAclCb6wAC7Mxt
- uKWcXR4bOsiRQSSSWa+qHc+fFSsVVkKAXaJM0DGuMRmSzqwka9XocY53Zn7NyZPSdQ2wantpDxn
- oTsJH1RWRnFjPDj2A94pubIgebG5niSsnGxjrAYVf6+h/V9UoYBA18K3ScBnseBaAOthwOcg1tH
- b4RCqt1VrIiuLUPCZyjPtkW2lXlCBOFUUhCuqKB0C3UNaknD4k+VxqUrM78oAPXiUIyYvjnX2bd
- ILgi5DoAsNqoK4hmzfAZwHYA4BtJUfLiufCydwIcy+4Xlc5b0RqElJXETAeiRs1YyoiEqFw4B2D
- XqxCPhVrdxZew6VN6DWvoePAs1g3hxZYSekYuSig2E2TtST4=
-X-Google-Smtp-Source: AGHT+IFlBhhDe52JTc049hOOly8Sw7KDsmpNVnTPFbLoZLu/v3WEo9FRpfyRo8F61cd3YJZvEeggTA==
-X-Received: by 2002:a05:6000:4022:b0:3a5:2208:41d9 with SMTP id
- ffacd0b85a97d-3b32f28d80bmr3833770f8f.40.1751564011250; 
- Thu, 03 Jul 2025 10:33:31 -0700 (PDT)
+ bh=KA0b8Mx/diMOpz5eVRAgzHisGcdWtT3pud+mD+Gv0yw=;
+ b=iuv3ROsIBaPYMnchEZtWSs4OSKAk8m+/TC3VMoOXTpQSg0wu0fAnZfTA8BEKFBrT9V
+ Mmb76CixIzF8hlMZT1jfEN+aKpH+OdZ7ClZ6Gd/IVsCPHlRXOKLj2yX9JcXTs6tCudaJ
+ OFTfXlSWG96M3vH8atOze50NWdNG1oQ469iKvl9jhAnGv1CMH21/3DmAxqoFh3PeR9n3
+ /lE/SUOwkD6ZCJhEL1zr1m0B1V8EoWYgmJmXK1LjYRjD4dBWxhzHH0N7v8hcXajFOeYl
+ PzZRUOZxjUvwk2QrQt5yHNmSiUFxJMFJCyuj6xmK4YH9c5Da+8gQFwFL+klc/gVj06k8
+ shYg==
+X-Gm-Message-State: AOJu0YzHdxtZLMqInUSVms0lDneZS8VMjPj0RO58+AGu9ixYgyblhAz8
+ FlNz1DlYOOlOUsIJE0FudGBDxxiVcPzQ+Y/W6ewU+f2zMSd7cttL09W6dm1QDt5idiXESvj7iMM
+ XlVzMJKw=
+X-Gm-Gg: ASbGncsafPXiJjQ/7F8JCgmte5xjjUqKAiMOYq8heqGb53hSYB6GqY1B0jHDOlivLw1
+ lYibxNkqMRuTJmdW+ZcuF5n1KXeYDglSCTH2j8SLuMAwIfYFztjF7296oZrOarfiYnOMtYvjUJJ
+ hnQRvkodgWPbDYsSWvx6DsWfGDxl1IjqjD0mx42EnFKJjsAVJ8hMD6/ONcHzX35W/UuZCn37RAc
+ nNN/vE6WI7ZowX83RXLpq7MTLE0v0D2SU+cNijSLbHliKVmLhOECbIlIQT64NkodtoclUlzwu4S
+ JKPQXrekJAmjTIKfstzrkjKmsnAzDAFU7uRFoQe2V7I7ztKe03l5nOSqopeIbHJ6HMlEeW8uYCP
+ mnUDG1V5j+SOqPnw7sh1nqTN+hkXKiKmyVJyW
+X-Google-Smtp-Source: AGHT+IGrLN692bB7k8Ayl5O7V9o9uvyHI0QE3MSkBBI4qxyi7en3ThLvxe5qeQ6PPc6pGdIGwE3q0Q==
+X-Received: by 2002:a05:600c:4752:b0:441:d2d8:bd8b with SMTP id
+ 5b1f17b1804b1-454a36e2c39mr83163645e9.8.1751564016216; 
+ Thu, 03 Jul 2025 10:33:36 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b966c0sm320312f8f.52.2025.07.03.10.33.30
+ 5b1f17b1804b1-454b1698e24sm3369755e9.34.2025.07.03.10.33.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 10:33:30 -0700 (PDT)
+ Thu, 03 Jul 2025 10:33:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,17 +68,17 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 08/39] accel/tcg: Remove profiler leftover
-Date: Thu,  3 Jul 2025 19:32:14 +0200
-Message-ID: <20250703173248.44995-9-philmd@linaro.org>
+Subject: [PATCH v6 09/39] accel/tcg: Factor tcg_dump_flush_info() out
+Date: Thu,  3 Jul 2025 19:32:15 +0200
+Message-ID: <20250703173248.44995-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703173248.44995-1-philmd@linaro.org>
 References: <20250703173248.44995-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,36 +101,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCG profiler was removed in commit 1b65b4f54c7.
-
-Fixes: 1b65b4f54c7 ("accel/tcg: remove CONFIG_PROFILER")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/monitor.c | 6 ------
- 1 file changed, 6 deletions(-)
+ accel/tcg/monitor.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
 diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
-index 7c686226b21..344ec500473 100644
+index 344ec500473..6d9cc11d94c 100644
 --- a/accel/tcg/monitor.c
 +++ b/accel/tcg/monitor.c
-@@ -141,11 +141,6 @@ static void tlb_flush_counts(size_t *pfull, size_t *ppart, size_t *pelide)
+@@ -141,11 +141,26 @@ static void tlb_flush_counts(size_t *pfull, size_t *ppart, size_t *pelide)
      *pelide = elide;
  }
  
--static void tcg_dump_info(GString *buf)
--{
--    g_string_append_printf(buf, "[TCG profiler not compiled]\n");
--}
--
++static void tcg_dump_flush_info(GString *buf)
++{
++    size_t flush_full, flush_part, flush_elide;
++
++    g_string_append_printf(buf, "TB flush count      %u\n",
++                           qatomic_read(&tb_ctx.tb_flush_count));
++    g_string_append_printf(buf, "TB invalidate count %u\n",
++                           qatomic_read(&tb_ctx.tb_phys_invalidate_count));
++
++    tlb_flush_counts(&flush_full, &flush_part, &flush_elide);
++    g_string_append_printf(buf, "TLB full flushes    %zu\n", flush_full);
++    g_string_append_printf(buf, "TLB partial flushes %zu\n", flush_part);
++    g_string_append_printf(buf, "TLB elided flushes  %zu\n", flush_elide);
++}
++
  static void dump_exec_info(GString *buf)
  {
      struct tb_tree_stats tst = {};
-@@ -196,7 +191,6 @@ static void dump_exec_info(GString *buf)
-     g_string_append_printf(buf, "TLB full flushes    %zu\n", flush_full);
-     g_string_append_printf(buf, "TLB partial flushes %zu\n", flush_part);
-     g_string_append_printf(buf, "TLB elided flushes  %zu\n", flush_elide);
--    tcg_dump_info(buf);
+     struct qht_stats hst;
+-    size_t nb_tbs, flush_full, flush_part, flush_elide;
++    size_t nb_tbs;
+ 
+     tcg_tb_foreach(tb_tree_stats_iter, &tst);
+     nb_tbs = tst.nb_tbs;
+@@ -182,15 +197,7 @@ static void dump_exec_info(GString *buf)
+     qht_statistics_destroy(&hst);
+ 
+     g_string_append_printf(buf, "\nStatistics:\n");
+-    g_string_append_printf(buf, "TB flush count      %u\n",
+-                           qatomic_read(&tb_ctx.tb_flush_count));
+-    g_string_append_printf(buf, "TB invalidate count %u\n",
+-                           qatomic_read(&tb_ctx.tb_phys_invalidate_count));
+-
+-    tlb_flush_counts(&flush_full, &flush_part, &flush_elide);
+-    g_string_append_printf(buf, "TLB full flushes    %zu\n", flush_full);
+-    g_string_append_printf(buf, "TLB partial flushes %zu\n", flush_part);
+-    g_string_append_printf(buf, "TLB elided flushes  %zu\n", flush_elide);
++    tcg_dump_flush_info(buf);
  }
  
  HumanReadableText *qmp_x_query_jit(Error **errp)
