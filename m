@@ -2,90 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C64AF71D6
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C43D4AF744C
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:38:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXHid-0004F4-1W; Thu, 03 Jul 2025 07:03:07 -0400
+	id 1uXHij-0004mI-BV; Thu, 03 Jul 2025 07:03:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHfg-0006mE-Sw
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:00:05 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHfh-0006ml-KY
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:00:06 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHfP-0003WH-IT
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:59:48 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3a54690d369so5259653f8f.3
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:59:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHfU-0003XO-QL
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:59:54 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-450ce3a2dd5so43401915e9.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:59:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751540385; x=1752145185; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751540391; x=1752145191; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yvjGPIKQGEYeURH3HTUPhcPT6ROyPPS2REI2o53ZBAU=;
- b=WPzVFm1m6yvORFtx0yuO+rw87zuhrHJXvdITstmzoC7u4e3UCKnarF8I6Lzwbsq2k5
- DJUntm9ZnRosrJ0GK0v7MR6eu/JVxL4PPSeEGmCW+AiZ8fVdS9jKZtWHC7vJTGCKj7K3
- /2CGcEc5kjuJ1uxgrNTJr3t27i7FFMVR5C0yunPgHkg6SZ2N1BSGH4o8mYfx5ESBX5A5
- 5TM9JRZkUCYwXKHDbYmDCUTavI7+c3h9AGhqtKk5nwvOKav37Ut2SdIv/FnOQ+r7bUiJ
- eQdzmyJFtMhNkiD/dxh0MV4ibDUv5tl3RubVqpVSGSNun4RiWcZrO8HVAatZBgpy9tKC
- hIwQ==
+ bh=m+WutgSqJXFykFHZTQaYKZd8VkTwajJGbTU9Mch4jWg=;
+ b=MzYsJFueLFbgQ0EdUphQWw5SQdWOShBlR5MMxtviPGuqKtwnOpbdTcSHyUKXbnA1b5
+ +33+6fIl10pZq+9W86y3IyDSLFcuHTl5QnJDANyaVpp/r7xut0eK2JEht9XjuC2QHX0L
+ o6nWoFha99ROGGgt3bGNiVuj/rTZRAXvhczx7kzQmW02z+yPzBVeG1Ras0TrbXtDi60q
+ gJPzKvsEJs14wBA5MVOEXccJRamdKvVOWEBaak7vu1X2EJ9n88xPpE/FnIBmdt9W6JSa
+ QHHMx/HhvSoLrlCmyy8/uG3cxHbbTlwTJC1sa5APXeE3NwS1dn6Y6CNYgTyFwKS6e7Tp
+ uN8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751540385; x=1752145185;
+ d=1e100.net; s=20230601; t=1751540391; x=1752145191;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yvjGPIKQGEYeURH3HTUPhcPT6ROyPPS2REI2o53ZBAU=;
- b=JWDmAIBnVyI3GlKg6ToXmyhIsTGDbR/NQxsBiOE06tM6l/Mv3hrEVneC5gEBINLNf3
- HJ9+qfNh9LbOlZuAuZN4BkzdPF1M+IXC7/OKP7AeVf2mNe9GMVLMRDptKan0WpzRIgwB
- TC+kQeTFkl8cOa6nlqVOz3d/0i0Y4OIh4Kk8UF0v93xQEVwE5+ga3NP6D/7exL2WBGMZ
- klh9zMQ0W7ixVNqHUBfbAigKrAMFLaF15sL/mtPv3pR6Um+YPnE5JWmafG+Cn7uok7Fu
- W4fvCfDy6NzWwfrE53Q/Bte/ahVv4A95T6FaBdLCcw+MXii8eniOtwo5RpRgNSe3v1eJ
- iPrg==
-X-Gm-Message-State: AOJu0YxW+J5ifCSHT836vhvy6Sxh7gR9H6gz3fg74ZJL10blaY2tEfkJ
- G+CmVFfLfgo6OxsPF+AT9KlC0xFGSj5w8VjWHag9tXmSb7EdkP6ZM8ipz/0H4DYxUX7HgUfo/ik
- 6mE7mkoM=
-X-Gm-Gg: ASbGncu8G6AABgRoKXtVFNujP/5Wv8H6ItYrqjllAPedPBv3NWHnvHiIA6Z7T1CF8zc
- 0xmHQ2vjtyyqvzi6FRkaBa4OY/+zUFOf+DjLVYlgd4csTdUpbUlr79NOYbf/R2vZuUUfjUODI71
- 7Va+nxBhWIqH6uKfSz9DVEPw10vk/EWW9FPzju0U9YlhiwDrwYjtV/8PIcUNSh405UCND77lUQY
- ZR2uu+N/PohGKqPJ6fr+lDBNDB1oL70nBgVLjle9Ev1g9IWx48GAmaHQZ+LCueHNLMk2yXg4Krg
- rwJ0ayyl1iSkv265PjP0GORwVr2Q8H4Z41vQv3FTA9bZMmZubWvILGoR7Y0N//NubbZWQlKs8OJ
- 6q1I9azcNAZxConFoPLLwVw==
-X-Google-Smtp-Source: AGHT+IFFe1vpP0h0GeInGGctD4CBQmH2oRt74qF+x5fBthfRdo/V9+4qQpVqJEAS4Y6Z8oDf+L/60g==
-X-Received: by 2002:a05:6000:4028:b0:3a5:287b:da02 with SMTP id
- ffacd0b85a97d-3b200b4657bmr5027241f8f.40.1751540385416; 
- Thu, 03 Jul 2025 03:59:45 -0700 (PDT)
+ bh=m+WutgSqJXFykFHZTQaYKZd8VkTwajJGbTU9Mch4jWg=;
+ b=E9I3+V/gU20QsyqLqk3j/G9AHFFXoNxXAzT6NxEctB2ebmYgjqAcWnUsmFxuuMy+p/
+ d8IT38H9Uf6KMTatkZcTUZeDYcvsXJQXMPXq5jWPmWc5Fyd0MDNGd3pg7nxrwjCbmxE8
+ bXQrnb+r4bVG+cmWq0uH07zdODUuzzHY1AEtutpdrrXgASJEclrmNEnr0ErSAijOe0jD
+ uC3BdNIc0hhOOboIc0FPQ5/sDviMSI6UVIaQMwI8/6FfkueLBftKjOd6PULjycp+6iqG
+ s5/BYj3i7KWdfwnCvAc2fP+q58ztvCIY1tQzonUcQlFaI2tEyS+xCjfJB8W4d2JPnlNe
+ /wkQ==
+X-Gm-Message-State: AOJu0YzZuW8SQqGDpbS2Ekk0GjqMxqbYv5ILqLWU/ccJGRR/VdBsk1lF
+ 0g4EQL6UW38agRvYpfxENWqgmvsdDVJtSZ72GkOPDhYJBlShHynQR9Z+/DJ6Rnjxv/HvYCvlCSf
+ eBjv1BHE=
+X-Gm-Gg: ASbGncvkZ34C7JFH3nb5F1YQsntawRttkWrpXkpQSDv3mCevHIfwPPiAVC+2sJ2CH8g
+ +1XsKyqgOSs4lPXnZDhhYz/UeakOzMxS748f3x3ZqoS8vEggqlEG3Ov0xMq37iXNdsB/e1/Muei
+ stbgNTPAOUSkrkbOCN2Lhcg+zcncqK1mvmiNa505Mv6URWYkoFdOO3Hvd1zQxgbd2NV2RMChfaT
+ dy8uMpHxiASFNoYaC7G8GIn/bURyQ8mePCyR754+TmQWWoDxN9sD7OiAlhloW9p2bGXN7Gl4PyK
+ AMnza1sb/ZOEvkNVyL/zj6oldGNgFqUk238xDx0sSsUC4DxEnmhucgB0rnbnvUuLKwSZo5qS2CL
+ yrtzm+DePBmk=
+X-Google-Smtp-Source: AGHT+IFkJTWECY2pugXbhxGY6HjeCgJxFNGAomzZaEG1B6sFjMYNKg+pM1wp3bta32pi3CVqInJhiA==
+X-Received: by 2002:a05:600c:6792:b0:450:c20d:64c3 with SMTP id
+ 5b1f17b1804b1-454a370308cmr75309655e9.18.1751540390713; 
+ Thu, 03 Jul 2025 03:59:50 -0700 (PDT)
 Received: from localhost.localdomain ([83.247.137.20])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a88c7e72b6sm18614690f8f.15.2025.07.03.03.59.44
+ 5b1f17b1804b1-454a9989423sm23583475e9.19.2025.07.03.03.59.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 03:59:44 -0700 (PDT)
+ Thu, 03 Jul 2025 03:59:50 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 46/69] accel/system: Introduce hwaccel_enabled() helper
-Date: Thu,  3 Jul 2025 12:55:12 +0200
-Message-ID: <20250703105540.67664-47-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
+Subject: [PATCH v5 47/69] target/arm: Use generic hwaccel_enabled() to check
+ 'host' cpu type
+Date: Thu,  3 Jul 2025 12:55:13 +0200
+Message-ID: <20250703105540.67664-48-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703105540.67664-1-philmd@linaro.org>
 References: <20250703105540.67664-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,38 +103,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hwaccel_enabled() return whether any hardware accelerator
-is available.
+We should be able to use the 'host' CPU with any hardware accelerator.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/system/hw_accel.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ target/arm/arm-qmp-cmds.c | 5 +++--
+ target/arm/cpu.c          | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/system/hw_accel.h b/include/system/hw_accel.h
-index fa9228d5d2d..49556b026e0 100644
---- a/include/system/hw_accel.h
-+++ b/include/system/hw_accel.h
-@@ -39,4 +39,17 @@ void cpu_synchronize_pre_loadvm(CPUState *cpu);
- void cpu_synchronize_post_reset(CPUState *cpu);
- void cpu_synchronize_post_init(CPUState *cpu);
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index cefd2352638..ee5eb1bac9f 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -30,6 +30,7 @@
+ #include "qapi/qapi-commands-misc-arm.h"
+ #include "qobject/qdict.h"
+ #include "qom/qom-qobject.h"
++#include "system/hw_accel.h"
+ #include "cpu.h"
  
-+/**
-+ * hwaccel_enabled:
-+ *
-+ * Returns: %true if a hardware accelerator is enabled, %false otherwise.
-+ */
-+static inline bool hwaccel_enabled(void)
-+{
-+    return hvf_enabled()
-+        || kvm_enabled()
-+        || nvmm_enabled()
-+        || whpx_enabled();
-+}
-+
- #endif /* QEMU_HW_ACCEL_H */
+ static GICCapability *gic_cap_new(int version)
+@@ -116,8 +117,8 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+         return NULL;
+     }
+ 
+-    if (!kvm_enabled() && !strcmp(model->name, "host")) {
+-        error_setg(errp, "The CPU type '%s' requires KVM", model->name);
++    if (!hwaccel_enabled() && !strcmp(model->name, "host")) {
++        error_setg(errp, "The CPU type 'host' requires hardware accelerator");
+         return NULL;
+     }
+ 
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index ebac86f70d3..e37376dbd2d 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1978,8 +1978,9 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+      * this is the first point where we can report it.
+      */
+     if (cpu->host_cpu_probe_failed) {
+-        if (!kvm_enabled() && !hvf_enabled()) {
+-            error_setg(errp, "The 'host' CPU type can only be used with KVM or HVF");
++        if (!hwaccel_enabled()) {
++            error_setg(errp, "The 'host' CPU type can only be used with "
++                             "hardware accelator such KVM/HVF");
+         } else {
+             error_setg(errp, "Failed to retrieve host CPU features");
+         }
 -- 
 2.49.0
 
