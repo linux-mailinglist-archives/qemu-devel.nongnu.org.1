@@ -2,91 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE4EAF7F2B
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 670AAAF7FEB
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 20:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXNrT-0001gr-1B; Thu, 03 Jul 2025 13:36:39 -0400
+	id 1uXObO-0003nl-Nz; Thu, 03 Jul 2025 14:24:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNrH-0001WP-Ti
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:36:30 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNrG-0001uX-7J
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:36:27 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4530921461aso1053435e9.0
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:36:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751564184; x=1752168984; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gnRok8P1GZORflX5U1xcTlyERslFmJh/V5NQp10XCjE=;
- b=vip2fofLG2oL10kpuEaWJ8FbbQFC9AyQUthcULC3xC4WWisf/EajSiFoZmTo5BwKyI
- olQfWryjvhMyHn+7ZBHA0JXyFueLsjjyfz4iZnqEbWLvKxxgNkesbzSjnPj6EK717dgH
- EPRj5Av8E7zetU3scda5ivpp+iR15B5FkolGKVzoHd9BlQug2IX2FFPWta7CxvC+Iwty
- 33f6hb/txxUBGZr3Ue3/KkODTYavJrWzMcsdZ88ceBszi8e9sUahohKSruBDDcImrOxR
- GZ5v2uZcYiKClSl5vMM/MCPyKLGdXq20PZFELOf9qynE8QgUGC/LpkuhOX4yJJ1KGkhw
- PNtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751564184; x=1752168984;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gnRok8P1GZORflX5U1xcTlyERslFmJh/V5NQp10XCjE=;
- b=ijdh0sNE1GC0P/nQprd55zlo3vEBFJGyV/hoOHG6AEKGLANfo6W9Y0dTYUCSNdL/gH
- /QzuV6HifzttI4l4qCQMn2pi2tPO6Y9dc3pItitR3lwSuk4MTr2LalNK8USrIoCvtC9B
- PG/o0pfHrkxWkdfbTkLFhwdYtbCQOHEhkUqOWd1TIQGmeEOqgkZaysOdtpZUkza4W4yR
- FbGuQ2NjFCfG3tFMQO2tCGDzt5rrz/NVRtDIYY6hMGDZmZHxdO15dp3ngFONki3ZvAAU
- YqBZtwxJARnvLrVsasIvQyBmlGTpKvwkm0bx6ATH5nQ992OPDZtjrRU7l1dNL3iyJ85d
- Pesw==
-X-Gm-Message-State: AOJu0YxU47QWLcmo+F/MPOnfe1w4rjF0TfK44nfUPm6L8p+69aw+xEE4
- ZnDWxt5MMdhBKR4dYtktVroeT4XuVimSVhAokarML1XSGebKb2LyaK4wsPyw774i33MLnioCvtm
- 3gDwQx5U=
-X-Gm-Gg: ASbGncsCE586GDBsW3OWX4GPmjBKwrsGCjuSKpUYqbov3fkhH2zEagtCh10fYffQsBz
- nUBH8SxdBI+0TMdPX19NZbtrahppvUDTCyKYPwacAu1s4bQgjXZnxgrKHD5HvOqAF6xtMfGERa6
- TUMmPFcVvibsTYNpa+20lCb/mzCp9YKo7BLRauucH2M5263pPxVW5wtIO1wg7cppylWH5hlk+tH
- Z94LvgfzbMpjx4/rPTz1dkNdxInWKa6zAZTvXYNZH6xLtwC4rsWJ69pJbATiRZYy8YPi5tVFeap
- 3uRkJ4F2HbvGPINCVKD6+LnKCFQLL0vCWcjyGv2p4M2qplAR8i0n+wBwhojAX2KwQUtL1oXJ5Zi
- wuHQMk5xx2k+jJncJiJkMk+HSL4i+UEAUe11P
-X-Google-Smtp-Source: AGHT+IHqzIqBa/MN4R9Ht+M1b9yL2m4HQ3sMz0FjF3tQ+fZTXi/VewkUnXtw8KNc2E7SJL5j64qIRQ==
-X-Received: by 2002:a05:6000:2b10:b0:3b2:ef53:5818 with SMTP id
- ffacd0b85a97d-3b32c56dce7mr2910128f8f.5.1751564183961; 
- Thu, 03 Jul 2025 10:36:23 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a997b492sm32407175e9.13.2025.07.03.10.36.23
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 10:36:23 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 39/39] MAINTAINERS: Add me as reviewer of overall
- accelerators section
-Date: Thu,  3 Jul 2025 19:32:45 +0200
-Message-ID: <20250703173248.44995-40-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250703173248.44995-1-philmd@linaro.org>
-References: <20250703173248.44995-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <charmitro@posteo.net>)
+ id 1uXObH-0003mW-NY
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 14:24:00 -0400
+Received: from mout02.posteo.de ([185.67.36.66])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <charmitro@posteo.net>)
+ id 1uXObD-0007mC-30
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 14:23:59 -0400
+Received: from submission (posteo.de [185.67.36.169]) 
+ by mout02.posteo.de (Postfix) with ESMTPS id B6574240103
+ for <qemu-devel@nongnu.org>; Thu,  3 Jul 2025 20:23:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net;
+ s=1984.ea087b; t=1751567028;
+ bh=UUOaQIyt7794NUXeIiWvZBsaq8OcvNwQqqrdLwN4TRo=;
+ h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:
+ Content-Transfer-Encoding:From;
+ b=YyqRKa6n5QdH633djdT1lCHRfnt32VTntfLRQcGfVcYEy5T21FGbVbdlUDofJPnZC
+ OmS8TTnWQ9L81F3zfPU+edFAlTtA3PDgj1j3ScjT7LOSSuny8tjQlrXkfRniXigWX4
+ YyBwz9KjsNJfMM94eFudnPpPmEDGCRceQE+Sb0Ql3KF9ERJ2I5A2CkGtc4w2/FpJrS
+ 8VmzGwlQkV8HsQJ51CtsvGlS4nkvzjU3oKCcpxfkOjvDjrB+8pm5nFBoLNisyvmtMr
+ hKIK46uzAXESJCY5TZXcbHKGoUoVGbtHLLxwB38aQvRZlLZ3CJCvPcFwOTupRSA7xU
+ HAPE91R39bgSBIu1IyJIoJXXIqve46m4hxYozw84G1hzVQy+l02sxjwhy+ZLmcaPGx
+ H75cz/A1Fh0dhcUwZDbGrBkrgI+3jkVQfQY/tkRuoOFP3iQPjIC14zPtNt/gUB+bET
+ XNIbfw5lqUzk5U2Eu/9lz3j4gtoJYhuxP7XsVFIi9Sz1AXQesb8
+Received: from customer (localhost [127.0.0.1])
+ by submission (posteo.de) with ESMTPSA id 4bY4sH1DnXz6tvZ;
+ Thu,  3 Jul 2025 20:23:46 +0200 (CEST)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ Charalampos Mitrodimas <charmitro@posteo.net>
+Subject: [PATCH 0/2] target/riscv: Fix MEPC/SEPC bit masking
+Date: Thu,  3 Jul 2025 18:21:42 +0000
+Message-ID: <20250703182157.281320-1-charmitro@posteo.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=185.67.36.66; envelope-from=charmitro@posteo.net;
+ helo=mout02.posteo.de
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,26 +73,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'd like to be informed of overall changes of accelerators.
+This patch series fixes incorrect behavior in MEPC/SEPC CSRs where the
+lower bits were not properly masked according to the RISC-V specification.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+The issue was discovered when vectored mode bits from STVEC were
+written to MEPC and not properly cleared, causing incorrect behavior
+on MRET.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e3e08d4607f..a8bf3f9ccfa 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -495,6 +495,7 @@ Guest CPU Cores (other accelerators)
- Overall
- M: Richard Henderson <richard.henderson@linaro.org>
- R: Paolo Bonzini <pbonzini@redhat.com>
-+M: Philippe Mathieu-Daudé <philmd@linaro.org>
- S: Maintained
- F: include/exec/cpu*.h
- F: include/exec/target_long.h
+Charalampos Mitrodimas (2):
+  target/riscv: Fix MEPC/SEPC bit masking for IALIGN
+  tests/tcg/riscv64: Add test for MEPC bit masking
+
+ target/riscv/csr.c                        |  8 +--
+ target/riscv/internals.h                  | 11 ++++
+ target/riscv/op_helper.c                  |  4 +-
+ tests/tcg/riscv64/Makefile.softmmu-target |  4 ++
+ tests/tcg/riscv64/test-mepc-masking.S     | 73 +++++++++++++++++++++++
+ 5 files changed, 94 insertions(+), 6 deletions(-)
+ create mode 100644 tests/tcg/riscv64/test-mepc-masking.S
+
 -- 
-2.49.0
+2.47.2
 
 
