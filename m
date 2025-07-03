@@ -2,77 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A95DAF74D3
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F4CAF74CB
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 14:56:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXJSC-0006Od-AI; Thu, 03 Jul 2025 08:54:16 -0400
+	id 1uXJST-0007Zx-Oq; Thu, 03 Jul 2025 08:54:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uXJS6-0006Eu-UB
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:54:11 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uXJS1-0000Fu-8Z
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:54:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751547245; x=1783083245;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=NmGrJwlEm/qRmVp8Az6xKB1vcqWApT3CUAgNBkv/hf8=;
- b=IEFinq1XvJAZ5ddmwTTA2bKjGd9lGEMGVyiJGltTJgE5H58HZtb/vt/I
- YIlz6rU+aZ9rf+nkl/J3tzNQHMmR3RhDQH9M86CPhHbNkLaGtpRTRQWKR
- CijyjMGxJ1FRdW5LwdDQSNftUKJsP/9+rYZmecwyye7/OmzMpYR4ko0FT
- uuYGGOsrsCOw5MNP2IGFaLA/ZyC0D6QVt1OXc2Lsa+PxNm/IYQIlFTgvT
- pEPMJpZkQJVuRIIDItLtSxpNmWRS1blW8t2VIwTkNBUUpkSNX9JCa7EXy
- ei2H9virm6BSJAQXPT7tvnl3Eh0dAQ9v+1Aqok1lWw7Tb55MkJ6uOoqnu Q==;
-X-CSE-ConnectionGUID: tGvsQudHRnyTUuRTqwbBQg==
-X-CSE-MsgGUID: Llqr3zOJSwCy0vGWe/dv7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="54012763"
-X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; d="scan'208";a="54012763"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 05:54:00 -0700
-X-CSE-ConnectionGUID: r4sVb1DfRHCUxZZuVCBdtg==
-X-CSE-MsgGUID: H5bGqOhKRu2ou4mEu71KTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; d="scan'208";a="185377074"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 05:53:59 -0700
-Message-ID: <4985e648-6505-4321-8e3a-f987b9d03bde@intel.com>
-Date: Thu, 3 Jul 2025 20:53:56 +0800
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uXJSN-0007MH-H7
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:54:27 -0400
+Received: from mail-qk1-x734.google.com ([2607:f8b0:4864:20::734])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uXJSJ-0000UF-T9
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 08:54:26 -0400
+Received: by mail-qk1-x734.google.com with SMTP id
+ af79cd13be357-7d3cc0017fdso605744885a.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 05:54:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1751547262; x=1752152062; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=tkfBzDpddJr9lZn50dau+4PajXSOU4T2a0a2JU/cuOI=;
+ b=J8clbtbxOER8u6aAnMLkoLfEz1f5m4+/+xThNY9SD3RyoHMIYjHj2fuj1XJ8zde5Xl
+ Uqp8s7uNBc8+bluLKRSAWh0IBc4Gl/uJPD1oX+qFdA2SMluoHPyd13R0/IZJnjYzQ+zV
+ Lc6CDvvQ9Jdj/tfgDA7XHJwZ7nwkV7BjYTKsYR/5kADTsqc5CJELmYCUsRRC/bjsJ6ke
+ ZWpe6ZiGKxkzopTuDL+qYuxtADxwXaRTOfICoc9uNwuUIHg8KcqikthVfxKBv3HuWzpA
+ 7zinLd9HeXcKRNbBcRGLg6MAn708HmgdVZUvl7aSaGSHKU4QPNnW8r9ivSycXD0TgZI6
+ vxIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751547262; x=1752152062;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tkfBzDpddJr9lZn50dau+4PajXSOU4T2a0a2JU/cuOI=;
+ b=oxAAJId/ATjlGpPTEKQC/kdVUeGBRRzGOhG/b4pgaDZKTWSvnzKWDgVtShnHnBo5JM
+ Hh8zvplhphpArCzkPx3z5AmynfEtfBEaWkM3ZDrrmyFzmwj7G1S4DxY/Rly3mbkc6Ldc
+ qutrNhmj6LtEHzf0k51ruJmlvMwdI8PL+02kkvNwKyfNOom7TSpObXLF3f44N0xRMtCz
+ nDVRn9x/uPS8gQzK6ODeOB0ORBvnMsPogn0CvrAngLwn4wvPkDCAqUuiW0297+ECqTW7
+ EB9t9yEwAhlIgN4/yr+GYHX40uoFwr1IC1ruMMqNysAGzgxC8d+E5Fj6kKDz2GkQWTcn
+ kO9A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUentVwpU4EkfvgerWWHqL6cj1iRwXX+tZhJ2nSsr0CO8p1BYCdSx+j5PbkLfjFQXdykwThUoZp7qus@nongnu.org
+X-Gm-Message-State: AOJu0YxXKSbF4eThuTNnc6RyruQdW1lErrAdmMrDApekFsGDjbLyJoHB
+ qLSzIVyLUGR11PwcJdtn3aiRvROoCt/sr9TQASWmbX8IdWOcoRzFcvwUqR1QFDh7ojA=
+X-Gm-Gg: ASbGncsqAoUUdDWyb6qX8ipcX0IZKMdAkW/xz7YXOdAlxCjB66ybfrVd8ckaEp0VhtY
+ 7oLqyVo4F0j48bt7hPb/hpRe05yk2wmHpDIH9MMHF50KpYcD6psC53KSFVejGRQIMT1s3CcyRgt
+ wl4fGSYK19mP+dXlMW5noTAXUbQqd4T8mH7zq+DSnM+2h0XOJG18f6ssu/6+FPMJgjB3c2prGz4
+ iLoyDJ1MPZY7aiTULjbUJpx7ebPI3kuG0Nscx7ybSDI4e/9rJwbHsLzHyTcPJj68+u7CM2U9pSG
+ rNKp49kpDuYS9ezcLmLKs1g0jDIfcu+9As/Jc8MRX6a3zuFxzuNnktuLS4aTMVZ0f4ekpLKTSl9
+ ZTg==
+X-Google-Smtp-Source: AGHT+IEBgS/H5ia4+tdim/wpP8Iw2YZ5rqmDuahfJJaU627vIX6VdZnGcDy+wGvktqTqlPDplnqYKw==
+X-Received: by 2002:a05:620a:7003:b0:7ce:d04a:83c2 with SMTP id
+ af79cd13be357-7d5d14a0209mr523900185a.50.1751547261741; 
+ Thu, 03 Jul 2025 05:54:21 -0700 (PDT)
+Received: from [192.168.68.110] ([189.110.107.157])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7d443204ffasm1108236185a.70.2025.07.03.05.54.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 03 Jul 2025 05:54:20 -0700 (PDT)
+Message-ID: <73a34e0e-0451-4f5d-98b8-c0af00c0ff3a@ventanamicro.com>
+Date: Thu, 3 Jul 2025 09:54:17 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/cpu: Handle SMM mode in x86_cpu_dump_state for softmmu
-To: Kirill Martynov <stdcalllevi@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>
-References: <20250523154431.506993-1-stdcalllevi@yandex-team.ru>
- <3096f21e-d8dd-4434-afbd-ee2b56adb20f@intel.com>
- <6a18dfcc-1686-4e3e-8e0a-b96d7034f4ab@intel.com>
- <1d12e519-9f3c-41a0-90ff-8e4655000d21@intel.com>
- <09AD44D6-E381-46B0-9B86-B248EB9582D7@yandex-team.ru>
+Subject: Re: [PATCH v5 02/11] target/riscv: Add cpu_set_exception_base
+To: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
+ "cfu@mips.com" <cfu@mips.com>, "mst@redhat.com" <mst@redhat.com>,
+ "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>
+References: <20250703104925.112688-1-djordje.todorovic@htecgroup.com>
+ <20250703104925.112688-3-djordje.todorovic@htecgroup.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <09AD44D6-E381-46B0-9B86-B248EB9582D7@yandex-team.ru>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20250703104925.112688-3-djordje.todorovic@htecgroup.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::734;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-qk1-x734.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,140 +105,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/3/2025 5:25 PM, Kirill Martynov wrote:
-> Hi, Xiaoyao!
-> Hi, Zhao!
-> Thank you for your feedback.
-> You wrote:
->> QEMU allocates separate KVM address space for SMM in register_smram_listener(). But the address space doesn't associated with cpu's address space.
+
+
+On 7/3/25 7:49 AM, Djordje Todorovic wrote:
+> Add a new function, so we can change reset vector from platforms
+> during runtime.
 > 
-> The address space allocated in register_sm_ram_listener() is  stored in KVMState::KVMAs::as
+> Signed-off-by: Chao-ying Fu <cfu@mips.com>
+> Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
+> ---
+>   target/riscv/cpu.c | 13 +++++++++++++
+>   target/riscv/cpu.h |  4 ++++
+>   2 files changed, 17 insertions(+)
 > 
-> However, function cpu_asidx_from_attrs() returns index which is used to reference CPUState::cpu_ases
-> These are different array used to store address spaces. In softmmu setup there is a function called for cpu initialisation qemu_init_vcpu() which has hardcoded number of address spaces used to 1
-> 
-> if (!cpu->as) {
->      /* If the target cpu hasn't set up any address spaces itself,
->       * give it the default one.
->       */
->      cpu->num_ases = 1;
->      cpu_address_space_init(cpu, 0, "cpu-memory", cpu->memory);
-> }
-> 
-> Do I understand your concern correctly?
-> The number of address spaces from KVM is allocated correctly (2 address spaces) however in QEMU CPUState is allocated only 1, so the correct fix would be to associate/map KVM allocated address spaces with
-> QEMU CPUState address spaces ?
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 629ac37501..e584bdc5ac 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -73,6 +73,19 @@ bool riscv_cpu_option_set(const char *optname)
+>       return g_hash_table_contains(general_user_opts, optname);
+>   }
+>   
+> +#ifndef CONFIG_USER_ONLY
+> +void cpu_set_exception_base(int vp_index, target_ulong address)
+> +{
+> +    CPUState *cpu_state = qemu_get_cpu(vp_index);
+> +    if (cpu_state == NULL) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "cpu_set_exception_base: invalid vp_index: %u",
+> +                      vp_index);
+> +    }
+> +    RISCVCPU *vp = RISCV_CPU(cpu_state);
+> +    vp->env.resetvec = address;
+> +}
+> +#endif
+> +
 
-The address spaces are all allocated by QEMU. So it's not allocated from 
-KVM, but for KVM.
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-yes, QEMU supports separate address space for SMM mode with KVM. It's 
-just that QEMU doesn't connect it with the CPU address space.
+>   static void riscv_cpu_cfg_merge(RISCVCPUConfig *dest, const RISCVCPUConfig *src)
+>   {
+>   #define BOOL_FIELD(x) dest->x |= src->x;
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 229ade9ed9..fba0b0506b 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -656,6 +656,10 @@ G_NORETURN void riscv_raise_exception(CPURISCVState *env,
+>   target_ulong riscv_cpu_get_fflags(CPURISCVState *env);
+>   void riscv_cpu_set_fflags(CPURISCVState *env, target_ulong);
+>   
+> +#ifndef CONFIG_USER_ONLY
+> +void cpu_set_exception_base(int vp_index, target_ulong address);
+> +#endif
+> +
+>   FIELD(TB_FLAGS, MEM_IDX, 0, 3)
+>   FIELD(TB_FLAGS, FS, 3, 2)
+>   /* Vector flags */
 
-I cook a draft code below, which passes the "make check" test. Could 
-help test if it can resolve your issue? QEMU initializes 
-smram_address_space later at machine done notifier, so that the code has 
-to iterate the CPUs to add the address space of SMRAM to CPU address 
-space. I will try to see if possible to make it happen earlier so that 
-when kvm_cpu_realizefn() all the address spaces are here.
-
-
--------8<---------
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index a68485547d50..7d6f4a86d802 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -130,6 +130,8 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
-   */
-  void cpu_address_space_destroy(CPUState *cpu, int asidx);
-
-+void cpu_address_space_add(CPUState *cpu, AddressSpace *as);
-+
-  void cpu_physical_memory_rw(hwaddr addr, void *buf,
-                              hwaddr len, bool is_write);
-  static inline void cpu_physical_memory_read(hwaddr addr,
-diff --git a/system/physmem.c b/system/physmem.c
-index ff0ca40222d3..289c06c2af77 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -814,6 +814,31 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
-      }
-  }
-
-+void cpu_address_space_add(CPUState *cpu, AddressSpace *as)
-+{
-+    CPUAddressSpace *newas;
-+    int asidx = cpu->num_ases;
-+
-+    cpu->num_ases++;
-+
-+    if(asidx == 0) {
-+        /* address space 0 gets the convenience alias */
-+        cpu->as = as;
-+    }
-+
-+    if (!cpu->cpu_ases) {
-+        cpu->cpu_ases = g_new0(CPUAddressSpace, cpu->num_ases);
-+        cpu->cpu_ases_count = cpu->num_ases;
-+    } else {
-+        cpu->cpu_ases = g_renew(CPUAddressSpace, cpu->cpu_ases,
-+                                                cpu->num_ases);
-+    }
-+
-+    newas = &cpu->cpu_ases[asidx];
-+    newas->cpu = cpu;
-+    newas->as = as;
-+}
-+
-  void cpu_address_space_destroy(CPUState *cpu, int asidx)
-  {
-      CPUAddressSpace *cpuas;
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 16bde4de01e5..7b89326e34ca 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -12,6 +12,7 @@
-  #include "host-cpu.h"
-  #include "qapi/error.h"
-  #include "system/system.h"
-+#include "system/kvm_int.h"
-  #include "hw/boards.h"
-
-  #include "kvm_i386.h"
-@@ -90,6 +91,12 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-          kvm_set_guest_phys_bits(cs);
-      }
-
-+    for (int i = 0; i < kvm_state->nr_as; i++) {
-+        if (kvm_state->as[i].as) {
-+            cpu_address_space_add(cs, kvm_state->as[i].as);
-+        }
-+    }
-+
-      return true;
-  }
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 234878c613f6..3ba7b26e5a74 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2700,6 +2700,7 @@ static MemoryRegion smram_as_mem;
-
-  static void register_smram_listener(Notifier *n, void *unused)
-  {
-+    CPUState *cpu;
-      MemoryRegion *smram =
-          (MemoryRegion *) object_resolve_path("/machine/smram", NULL);
-
-@@ -2724,6 +2725,9 @@ static void register_smram_listener(Notifier *n, 
-void *unused)
-      address_space_init(&smram_address_space, &smram_as_root, "KVM-SMRAM");
-      kvm_memory_listener_register(kvm_state, &smram_listener,
-                                   &smram_address_space, 1, "kvm-smram");
-+    CPU_FOREACH(cpu) {
-+        cpu_address_space_add(cpu, &smram_address_space);
-+    }
-  }
-
-  static void *kvm_msr_energy_thread(void *data)
 
