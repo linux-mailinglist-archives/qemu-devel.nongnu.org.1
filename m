@@ -2,57 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CC3AF7108
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 12:55:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD062AF71C1
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 13:10:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXHbE-0002rf-Ra; Thu, 03 Jul 2025 06:55:29 -0400
+	id 1uXHiQ-00032i-Mh; Thu, 03 Jul 2025 07:02:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uXHb7-0002ma-1k
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:55:22 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uXHb4-0000ZN-HN
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:55:20 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c11:1a88:0:640:421c:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 0E3CA60C51;
- Thu,  3 Jul 2025 13:55:12 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:73d::1:28])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id BtZDqQ0FieA0-fXzqSqxA; Thu, 03 Jul 2025 13:55:11 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1751540111;
- bh=3Mrwbefvrcn1WEr6p5kBz3zCiVEFVKwBqtJ+4hKe6PU=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=FpHGA5VbnY1zhZOqIfo0CGk/VEw+PRDBBXq5kX/hpni+D3b2FytvRLTTavjns+oUj
- 8L1F4DHvLCBBXAmV9lDhZv0Mehfy85+W2quwB0xtlPT17HTO+5WMiFrjMEa3+Js4wf
- fY09r2t38vUfyaxVfbQNXoZvg2FZcr//dB7vYadI=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: jasowang@redhat.com
-Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, d-tatianin@yandex-team.ru
-Subject: [PATCH] net/tap: drop too small packets
-Date: Thu,  3 Jul 2025 13:55:08 +0300
-Message-ID: <20250703105508.2380494-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHfc-0006j7-SB
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 07:00:04 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXHfA-0003Tw-9T
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 06:59:35 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3a6f2c6715fso5602893f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 03:59:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751540370; x=1752145170; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SZcPe3nYMdLPvpkVihaPaKQWmWCYPUgBDgbI5JlWA4I=;
+ b=UJ7MXwxMuuwYAkKsOoHpFJCmEyG828R8qBa5G26iO8DoEbYc2x/qZPFhNYaP4w5zyT
+ mLtotNLAVJcioE64Uh69k8uskRYqkPBOPZzyqYLD+/L4HsQCYbehoCOVZOXDxpSvBu8h
+ XaTLwPWXuBBrjyh1pe+8NhqoVVRoevGSnTbGYQgoj3bj2hkRsiUZOomzr0Hxw2uq3GsW
+ tGGge1Rw24RyafttIa2zxRTgnIMZsUvEaZg3rAjNm/SsUdaCHyDQuh7+OIXVoA4q6Kyc
+ dDBU+2NXqalMzGc6bJGAqZDe6R8/8wtKDeZOGNuUQTv6fKafhD4em9luk+c6JEeO0nyA
+ moDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751540370; x=1752145170;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SZcPe3nYMdLPvpkVihaPaKQWmWCYPUgBDgbI5JlWA4I=;
+ b=J5NHBcLoKJ9t6Kgkc6DgGkTrZ5XUwI2I9rsgfz3T5sKlcnRIUZWv/KFBbJNdxKdDRh
+ jTjqALM1HxgLnvzvkAhjyALKI3oJZWifQE5FOc88sUh1zGo8eKseYjfnDtLtgpo4houo
+ 3Y+Syjtp3E68ZtdcsxhrI2kVnmRlF6ona1mzdWGDXHx3NkWH+WgucVTPHwASH3MfPusk
+ u6AGLD8SKr15EJDlo5AiJYUP3yjyiEMftxNSgEd9o37fH3wk9+X/v9UYQCFXgLeVAaQu
+ dwRIQLfMmUjfws1Twa1OM11RO+fUfk4He/87UWWUWKn5WckHLFNOBueSP476R4dF/QmZ
+ 6i9A==
+X-Gm-Message-State: AOJu0YwdFoBR3yUud9YbHI2yH+AdqQSMwY0n+oWPQcWsN8Ecxcu6B+ZS
+ 2WLq4uFatf+6GXrlI/alUvqa0393y/ukEbH8Un3VAri/gq5TRksCxUaNqk22Ac006W7DuRH3UmL
+ U/++8koE=
+X-Gm-Gg: ASbGncsR29Sqh2efLO+CXq7NSN+G4+faNL2YV5j0bjt7KFhJTx9mbDQ51viSL2hD6nM
+ J6n2Agq3DiyF0VEGYR3BSUII51xcsabFlZwzc+0YeJlh4brcM/Khc/8UFyVU3lK5NXXPkhGwbSB
+ crZQhzLFPDE/NTmvTEpyzQpCCtPcnoV7QZlTyAqiruRwBQMCRLbtgAXLvICZT6cnrHvGyO6fL/W
+ 2TGoDgzZGs4RUdgxmA2Gqdmzij+qM1wYzA+/IH0WMrvWloOqMYCxfT/AMF2y848Gzx5LyYpyx24
+ lPW5gWYUk1adLandw7D7oY3W39Jn9dukhK0DI2lZ+USPjDvg+s4ML4gJinZL99kMsFO/UDtsCzD
+ mZJW18GQI2LcH8euMUtVGQg==
+X-Google-Smtp-Source: AGHT+IFwze08KXrOCaSqmcyC/CFjfj8WXq9xrhVTjrBsf+XDLBCCaa31XIZMiSWUsLRl+UJN8QFeBw==
+X-Received: by 2002:a05:6000:4013:b0:3a4:cb4f:ac2a with SMTP id
+ ffacd0b85a97d-3b1feb84b5fmr5425886f8f.21.1751540369971; 
+ Thu, 03 Jul 2025 03:59:29 -0700 (PDT)
+Received: from localhost.localdomain ([83.247.137.20])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a892e5f8b6sm18670570f8f.91.2025.07.03.03.59.28
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 03 Jul 2025 03:59:29 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 43/69] accel/system: Document
+ cpu_synchronize_state_post_init/reset()
+Date: Thu,  3 Jul 2025 12:55:09 +0200
+Message-ID: <20250703105540.67664-44-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250703105540.67664-1-philmd@linaro.org>
+References: <20250703105540.67664-1-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,32 +102,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Theoretically tap_read_packet() may return size less than
-s->host_vnet_hdr_len, and next, we'll work with negative size
-(in case of !s->using_vnet_hdr). Let's avoid it.
-
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- net/tap.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/system/accel-ops.h | 8 ++++++++
+ include/system/hw_accel.h  | 8 ++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/net/tap.c b/net/tap.c
-index ae1c7e39832..20d0dc2eb35 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -172,6 +172,11 @@ static void tap_send(void *opaque)
-             break;
-         }
+diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
+index ac0283cffba..77bd3f586bd 100644
+--- a/include/system/accel-ops.h
++++ b/include/system/accel-ops.h
+@@ -43,6 +43,14 @@ struct AccelOpsClass {
+     void (*kick_vcpu_thread)(CPUState *cpu);
+     bool (*cpu_thread_is_idle)(CPUState *cpu);
  
-+        if (s->host_vnet_hdr_len && size < s->host_vnet_hdr_len) {
-+            /* Invalid packet */
-+            break;
-+        }
-+
-         if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
-             buf  += s->host_vnet_hdr_len;
-             size -= s->host_vnet_hdr_len;
++    /**
++     * synchronize_post_reset:
++     * synchronize_post_init:
++     * @cpu: The vCPU to synchronize.
++     *
++     * Request to synchronize QEMU vCPU registers to the hardware accelerator
++     * (QEMU is the reference).
++     */
+     void (*synchronize_post_reset)(CPUState *cpu);
+     void (*synchronize_post_init)(CPUState *cpu);
+     /**
+diff --git a/include/system/hw_accel.h b/include/system/hw_accel.h
+index 574c9738408..fa9228d5d2d 100644
+--- a/include/system/hw_accel.h
++++ b/include/system/hw_accel.h
+@@ -28,6 +28,14 @@
+ void cpu_synchronize_state(CPUState *cpu);
+ void cpu_synchronize_pre_loadvm(CPUState *cpu);
+ 
++/**
++ * cpu_synchronize_post_reset:
++ * cpu_synchronize_post_init:
++ * @cpu: The vCPU to synchronize.
++ *
++ * Request to synchronize QEMU vCPU registers to the hardware accelerator
++ * (QEMU is the reference).
++ */
+ void cpu_synchronize_post_reset(CPUState *cpu);
+ void cpu_synchronize_post_init(CPUState *cpu);
+ 
 -- 
-2.48.1
+2.49.0
 
 
