@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F058AF7F0F
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB783AF7F4C
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:43:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXNqd-0000Rl-HC; Thu, 03 Jul 2025 13:35:48 -0400
+	id 1uXNqp-0000pX-AU; Thu, 03 Jul 2025 13:35:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNq5-0008CT-C5
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:13 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNqJ-0000Lr-4U
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:31 -0400
 Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNq3-0001ab-B6
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:13 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNq8-0001fD-Qf
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:26 -0400
 Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4535fbe0299so495555e9.3
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:35:10 -0700 (PDT)
+ 5b1f17b1804b1-450ce671a08so609285e9.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:35:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751564109; x=1752168909; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751564114; x=1752168914; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q2RhrPiz7//vskyUlSGbSsu4uaU4qA0h0V9+uZJcvBs=;
- b=o3Q+fczeOcfLnF0LHPEi/RHqBdGk48BQOwPQ/kZe1pH7+Rgmjc48W9XCML/EM1EbGN
- n0rWfwadRtclzLQExxiLY6VBD4bX8GKfnXqB7Jcf4QCdSRPrI3Z/RDnsf/+ylsQsebCr
- yZgBZOXWfDOk+06v7TTn9gPtHt9LDmTwF7D8FXsGzTbCeiZ8+NYDxccmpzRbywSkJkEk
- rwdaJXASx2oXQ3aZgfnOz3W+BQDaYv8bTWIW4j9ZQ9RUv3eDZ4sx8kYZg7xYvNjdvEjD
- 8poaac4Pr9bFwSN7lwlCOBLesUcpugxaA1FowRI//lV0dHLMnLPKIkte4N5U1iGwalQd
- GjKQ==
+ bh=gKkY66WSncDjfDBkQ2PUmi6A59h3Sya1fBXJtO0Vmlo=;
+ b=tPdA24ulhZy6CJQaYWic7IFCZwkqghaerONcbKvJ0pPaMNScifPk5ak8TpS3QF0NTw
+ RT+A/0H4WyWRgUCV3iM4IlGIKtvHRdTkt5bxeUKD6hBZOPAEm/GFpoRn9cmYSBM5kdYu
+ 2YhMJ8gE76W0cu3FmwHyoAVjl742LyLYdIE5wEBG2Eq95WpJspmYuI9fJPkubXLR4VCs
+ n6gedwWzOk5afLtJ8wqNyRxjjB4APrIvbiJg1/3WVhdW+CqsqTMIp67SlaW0keP5ubdw
+ b+11n/ozrjB4EX06VusJbqAoFjcWxz4n3p2CA22Run0XZ123TdgGTj9yHHDLruTB/wXR
+ EbJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751564109; x=1752168909;
+ d=1e100.net; s=20230601; t=1751564114; x=1752168914;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q2RhrPiz7//vskyUlSGbSsu4uaU4qA0h0V9+uZJcvBs=;
- b=NNcdlKHasuEskR2nGtcM/iGx+7N5gVW85nAp5g2oiCU17eEHnq85FDd2wwsUjEkqGe
- 3f3HwpPrUtGbzgXzvYthoo+55BPx0aX9ENHGDf+PmTewjq0cZ4slh6dJ+clk0ioJ/+4E
- q3FqFMpij4LKeYBr+u0sBabcRFcoHKQvYV1z+rDY2gh79PuUhbxDN+cJzxmfxIwFWj9C
- 7KAvqwzTdO1By//wwQv3eGb7KzPXCQ+FgInNrvr++Gp/Rjcu35hYwqDo9DN2XNWcPaiP
- k9XUzNPBjoxgCIMWZnLAmzvLJKrqUUyL1xG9+S9ApXWMvzw6LxkoagFMHz+9SA1gch69
- 9MuA==
-X-Gm-Message-State: AOJu0YyeknWB1eLAeB+d5uMQ6/c3yjswNTrYhpGf4Wm8NzzPUVr2NpB/
- by6s2Dvm9pmd/ARCWeyov5V76ZABy7DEBIWeLD1sPMyjRjfEVBEG35k0jIrs4DogeApshQnZB9q
- TFLYuHts=
-X-Gm-Gg: ASbGnctDyD2a2G6fwumHH3fWCxmY3aySk5lOZBveyvJ/qVFIbPk0+8TesZ/DeQ8v9C2
- 4JdzUQojFoMK4b1XQotooLVt3xZHZSGM5vAkbazMYRNnd06C1wKKN5knMtDr6h1XqQoBylj3+pO
- WoAm1DTANxjQS1aJPZputdV7mmhGK9cO8QwuWsgQiIoWS1ClM9Ee3akjo42VfuSbJtvLpa5xsTC
- iXJiVB3u23UjMZQly7YxxYpaJ/4idfdjGVB6vKfpzelz3pYZ4c520vepwSCGCWcXhWswhmFaCqH
- bvcANszDV/DISYMIpQVP0IbTnl11a/nYVwmLH1RDn2poYwPkgBHFLVoPSV0VyMsZEjbdTVeKLwI
- fyOSAPj19NBAlT8Tlgo+qPVktwM5eImS6Z6D1
-X-Google-Smtp-Source: AGHT+IF/UA/DtD6lXjiLszACK+Pk1isaks747knolJ87gw1k/av0EcLUiE+/w969+nBtehLwL7opBQ==
-X-Received: by 2002:a05:600c:3593:b0:441:b3eb:570a with SMTP id
- 5b1f17b1804b1-454a9c620e9mr53209265e9.2.1751564109257; 
- Thu, 03 Jul 2025 10:35:09 -0700 (PDT)
+ bh=gKkY66WSncDjfDBkQ2PUmi6A59h3Sya1fBXJtO0Vmlo=;
+ b=qrw1rc38Ct/108nWRteF42HOVkFnGd2zKA243HSoXlJqRFnkum94SYfIl6cGla34rD
+ q4XiiJdaONfYgDN+8f0tLMC/mCscHdtbEVQZHS5DGjx8t91AEZCsz/vKgkzCYXwZTkXO
+ d7f7mKykIjE0fMFNM33fB034hRMNo1joX0cKWQtMMBUL//DrWvqqK+5AiFNhkay5Ki0O
+ VClYH07aTDTGPhNocM8+bGDDPHVnUx5oH8nsrRTzPz9bISV4R3xjmTY7aCCZ1oG0BZYi
+ YhgWeD0RvR0qZWiEgUjUq210FF6xSzCBdadILuG0F3/+6VGlMdHvlB+LrDiE3nVe52F5
+ Qc5w==
+X-Gm-Message-State: AOJu0YyE2SHEYKmwyKGIA+ocV889h+y3OQgrTiiTrAYA+XLuVNfgb7nW
+ eaKfndPFo68/Vd6vZj2YD1/i1GqEatWaVc3Wgz+AkvXAkeyLKCKPYLYaeTjroVaDNIgF7xm9z4t
+ 4JV3SmJQ=
+X-Gm-Gg: ASbGncuK7EsQgxV0t/q3cY6R0v84vxg/sjnPDcvBVQBA2VQmMGm9si5GvvXkUgBn53s
+ VkIWJlbCxv6HZyBtYxNkYyjP1mNSet0CuLSi+lDbnFgQ+7I3etxwFndzJC7vsvJxhXEMMJGqov2
+ QMJAw+TVMostj3NoogMrlbUsA9WYzLzWnJ495vIxkEajXpmODFPs53EDPz6DjWynJe36lcw37kZ
+ o4n/CaKSzv0t6jcZtXdxayd+H2si6J9y7LdWDIqOwI13e2dRIPuJreEyf5+H/rjehd0PAgXPSuo
+ E3UjQb9TMiXEQew40pmwvR66Bxzbu3pbbtTHEIdc7s96bftB2eLTnUy3hLLGLBIddQdTRXeOiI6
+ xfFAW8g+Z5jpIxwKOy5uKxaQ9HpXcayEbLpYC
+X-Google-Smtp-Source: AGHT+IE+oERmztqeh1GValBSAb7xMH8Gnkn6Ou+BXUEMTkBVWQVLxXxIW2RoSLeYtG+owzfK+o46Iw==
+X-Received: by 2002:a05:600c:c48f:b0:448:e8c0:c778 with SMTP id
+ 5b1f17b1804b1-454a370cd65mr74636835e9.22.1751564114470; 
+ Thu, 03 Jul 2025 10:35:14 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454b1687196sm3427985e9.21.2025.07.03.10.35.07
+ ffacd0b85a97d-3b4708d0941sm335801f8f.26.2025.07.03.10.35.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 10:35:08 -0700 (PDT)
+ Thu, 03 Jul 2025 10:35:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- xen-devel@lists.xenproject.org
-Subject: [PATCH v6 26/39] accel/dummy: Extract 'dummy-cpus.h' header from
- 'system/cpus.h'
-Date: Thu,  3 Jul 2025 19:32:32 +0200
-Message-ID: <20250703173248.44995-27-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 27/39] accel: Pass old/new interrupt mask to
+ handle_interrupt() handler
+Date: Thu,  3 Jul 2025 19:32:33 +0200
+Message-ID: <20250703173248.44995-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703173248.44995-1-philmd@linaro.org>
 References: <20250703173248.44995-1-philmd@linaro.org>
@@ -89,8 +84,7 @@ X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,105 +101,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'dummy' helpers are specific to accelerator implementations,
-no need to expose them via "system/cpus.h".
+Update CPUState::interrupt_request once in cpu_interrupt().
+Pass the old and new masks along.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- MAINTAINERS           |  1 +
- accel/dummy-cpus.h    | 14 ++++++++++++++
- include/system/cpus.h |  5 -----
- accel/dummy-cpus.c    |  1 +
- accel/qtest/qtest.c   |  1 +
- accel/xen/xen-all.c   |  1 +
- 6 files changed, 18 insertions(+), 5 deletions(-)
- create mode 100644 accel/dummy-cpus.h
+ accel/tcg/tcg-accel-ops-icount.h |  2 +-
+ accel/tcg/tcg-accel-ops.h        |  2 +-
+ include/system/accel-ops.h       |  2 +-
+ accel/tcg/tcg-accel-ops-icount.c |  8 +++-----
+ accel/tcg/tcg-accel-ops.c        |  4 +---
+ system/cpus.c                    | 12 +++++++-----
+ 6 files changed, 14 insertions(+), 16 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b1cbfe115bc..37d02b2313c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -503,6 +503,7 @@ F: include/system/accel-*.h
- F: include/system/cpus.h
- F: include/accel/accel-cpu*.h
- F: accel/accel-*.?
-+F: accel/dummy-cpus.?
- F: accel/Makefile.objs
- F: accel/stubs/Makefile.objs
- F: cpu-common.c
-diff --git a/accel/dummy-cpus.h b/accel/dummy-cpus.h
-new file mode 100644
-index 00000000000..d18dd0fdc51
---- /dev/null
-+++ b/accel/dummy-cpus.h
-@@ -0,0 +1,14 @@
-+/*
-+ * Dummy cpu thread code
-+ *
-+ * Copyright IBM, Corp. 2011
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef ACCEL_DUMMY_CPUS_H
-+#define ACCEL_DUMMY_CPUS_H
-+
-+void dummy_start_vcpu_thread(CPUState *cpu);
-+
-+#endif
-diff --git a/include/system/cpus.h b/include/system/cpus.h
-index 3226c765d01..69be6a77a75 100644
---- a/include/system/cpus.h
-+++ b/include/system/cpus.h
-@@ -7,11 +7,6 @@ void cpus_register_accel(const AccelOpsClass *i);
- /* return registers ops */
- const AccelOpsClass *cpus_get_accel(void);
+diff --git a/accel/tcg/tcg-accel-ops-icount.h b/accel/tcg/tcg-accel-ops-icount.h
+index 16a301b6dc0..1d9d66f0707 100644
+--- a/accel/tcg/tcg-accel-ops-icount.h
++++ b/accel/tcg/tcg-accel-ops-icount.h
+@@ -15,6 +15,6 @@ void icount_prepare_for_run(CPUState *cpu, int64_t cpu_budget);
+ int64_t icount_percpu_budget(int cpu_count);
+ void icount_process_data(CPUState *cpu);
  
--/* accel/dummy-cpus.c */
--
--/* Create a dummy vcpu for AccelOpsClass->create_vcpu_thread */
--void dummy_start_vcpu_thread(CPUState *);
--
- /* interface available for cpus accelerator threads */
+-void icount_handle_interrupt(CPUState *cpu, int mask);
++void icount_handle_interrupt(CPUState *cpu, int old_mask, int new_mask);
  
- /* For temporary buffers for forming a name */
-diff --git a/accel/dummy-cpus.c b/accel/dummy-cpus.c
-index 867276144fa..03cfc0fa01e 100644
---- a/accel/dummy-cpus.c
-+++ b/accel/dummy-cpus.c
-@@ -17,6 +17,7 @@
- #include "qemu/guest-random.h"
- #include "qemu/main-loop.h"
- #include "hw/core/cpu.h"
-+#include "accel/dummy-cpus.h"
+ #endif /* TCG_ACCEL_OPS_ICOUNT_H */
+diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
+index 6feeb3f3e9b..6e7c2aae5a8 100644
+--- a/accel/tcg/tcg-accel-ops.h
++++ b/accel/tcg/tcg-accel-ops.h
+@@ -16,7 +16,7 @@
  
- static void *dummy_cpu_thread_fn(void *arg)
+ void tcg_cpu_destroy(CPUState *cpu);
+ int tcg_cpu_exec(CPUState *cpu);
+-void tcg_handle_interrupt(CPUState *cpu, int mask);
++void tcg_handle_interrupt(CPUState *cpu, int old_mask, int new_mask);
+ void tcg_cpu_init_cflags(CPUState *cpu, bool parallel);
+ 
+ #endif /* TCG_ACCEL_OPS_H */
+diff --git a/include/system/accel-ops.h b/include/system/accel-ops.h
+index 2075691331c..d84eaa376c2 100644
+--- a/include/system/accel-ops.h
++++ b/include/system/accel-ops.h
+@@ -61,7 +61,7 @@ struct AccelOpsClass {
+     void (*synchronize_pre_loadvm)(CPUState *cpu);
+     void (*synchronize_pre_resume)(bool step_pending);
+ 
+-    void (*handle_interrupt)(CPUState *cpu, int mask);
++    void (*handle_interrupt)(CPUState *cpu, int old_mask, int new_mask);
+ 
+     /**
+      * @get_virtual_clock: fetch virtual clock
+diff --git a/accel/tcg/tcg-accel-ops-icount.c b/accel/tcg/tcg-accel-ops-icount.c
+index d0f7b410fab..500b5dd4942 100644
+--- a/accel/tcg/tcg-accel-ops-icount.c
++++ b/accel/tcg/tcg-accel-ops-icount.c
+@@ -147,14 +147,12 @@ void icount_process_data(CPUState *cpu)
+     replay_mutex_unlock();
+ }
+ 
+-void icount_handle_interrupt(CPUState *cpu, int mask)
++void icount_handle_interrupt(CPUState *cpu, int old_mask, int new_mask)
  {
-diff --git a/accel/qtest/qtest.c b/accel/qtest/qtest.c
-index 92bed9264ce..612cede160b 100644
---- a/accel/qtest/qtest.c
-+++ b/accel/qtest/qtest.c
-@@ -24,6 +24,7 @@
- #include "qemu/guest-random.h"
- #include "qemu/main-loop.h"
- #include "hw/core/cpu.h"
-+#include "accel/dummy-cpus.h"
+-    int old_mask = cpu->interrupt_request;
+-
+-    tcg_handle_interrupt(cpu, mask);
++    tcg_handle_interrupt(cpu, old_mask, new_mask);
+     if (qemu_cpu_is_self(cpu) &&
+         !cpu->neg.can_do_io
+-        && (mask & ~old_mask) != 0) {
++        && (new_mask & ~old_mask) != 0) {
+         cpu_abort(cpu, "Raised interrupt while not in I/O function");
+     }
+ }
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index f579685a611..eb16a6bf6db 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -91,10 +91,8 @@ static void tcg_cpu_reset_hold(CPUState *cpu)
+ }
  
- static int64_t qtest_clock_counter;
+ /* mask must never be zero, except for A20 change call */
+-void tcg_handle_interrupt(CPUState *cpu, int mask)
++void tcg_handle_interrupt(CPUState *cpu, int old_mask, int new_mask)
+ {
+-    cpu->interrupt_request |= mask;
+-
+     /*
+      * If called from iothread context, wake the target cpu in
+      * case its halted.
+diff --git a/system/cpus.c b/system/cpus.c
+index 4fb764ac880..13535a74e6f 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -246,10 +246,8 @@ int64_t cpus_get_elapsed_ticks(void)
+     return cpu_get_ticks();
+ }
  
-diff --git a/accel/xen/xen-all.c b/accel/xen/xen-all.c
-index de52a8f882a..c150dd43cab 100644
---- a/accel/xen/xen-all.c
-+++ b/accel/xen/xen-all.c
-@@ -18,6 +18,7 @@
- #include "hw/xen/xen_igd.h"
- #include "chardev/char.h"
- #include "qemu/accel.h"
-+#include "accel/dummy-cpus.h"
- #include "system/accel-ops.h"
- #include "system/cpus.h"
- #include "system/xen.h"
+-static void generic_handle_interrupt(CPUState *cpu, int mask)
++static void generic_handle_interrupt(CPUState *cpu, int old_mask, int new_mask)
+ {
+-    cpu->interrupt_request |= mask;
+-
+     if (!qemu_cpu_is_self(cpu)) {
+         qemu_cpu_kick(cpu);
+     }
+@@ -257,12 +255,16 @@ static void generic_handle_interrupt(CPUState *cpu, int mask)
+ 
+ void cpu_interrupt(CPUState *cpu, int mask)
+ {
++    int old_mask = cpu->interrupt_request;
++
+     g_assert(bql_locked());
+ 
++    cpu->interrupt_request |= mask;
++
+     if (cpus_accel->handle_interrupt) {
+-        cpus_accel->handle_interrupt(cpu, mask);
++        cpus_accel->handle_interrupt(cpu, old_mask, cpu->interrupt_request);
+     } else {
+-        generic_handle_interrupt(cpu, mask);
++        generic_handle_interrupt(cpu, old_mask, cpu->interrupt_request);
+     }
+ }
+ 
 -- 
 2.49.0
 
