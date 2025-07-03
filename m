@@ -2,82 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1FCAF6A98
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 08:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7626AF6B09
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 09:04:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXDdr-0004dj-65; Thu, 03 Jul 2025 02:41:55 -0400
+	id 1uXDyh-00083X-LQ; Thu, 03 Jul 2025 03:03:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1uXDdo-0004dY-Aj
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 02:41:52 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dapeng1.mi@linux.intel.com>)
- id 1uXDdl-00037h-RJ
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 02:41:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751524910; x=1783060910;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=zb0yY/Oe4msYOmornpmCDciRbYe2tXpbbXuG+M9KjDI=;
- b=gXAgkIXUkgCVXmVXk98YbmXuF7BkA4HH3I08V31w+8BeZKrzzR71sRad
- kK6PLC7jP21PkrXe4G4c+wL1umaEh6tikdM38Ldb2CUgzGnlTRA9onoj4
- 4vR+gaCzOs98/ruEWCnMA+2fvA05F0Ue0hhzQSmnnPr0LSoX0BnY0pguL
- cnUSodEVqaS+cWIQY7tUHVKnE3N1Et31GN3cTJJV4haSFAomLykeIhYvu
- HmtJ/NHULUMo4ki9K/R9rfi/9eFq5A6YXqNiJzv4MjDsNTOHFyRLGNvDu
- UeMcQTi1f++iNmObgoooNiedxGDsprvLrRc8U5V5n7V4L9FcavYNqLpBX w==;
-X-CSE-ConnectionGUID: 7dqHwLLGRA2QA4pHMUD0kg==
-X-CSE-MsgGUID: F6oGWrOPSLirGo+QVRHzLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="52956631"
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="52956631"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 23:41:47 -0700
-X-CSE-ConnectionGUID: Lq1snJB9TjipDnp5/o0Aag==
-X-CSE-MsgGUID: ebuZZdehSzaPJEFFtqXdig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="185220939"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.240.80])
- ([10.124.240.80])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 23:41:42 -0700
-Message-ID: <1318c33d-9733-4541-b9f8-691a5dc2586e@linux.intel.com>
-Date: Thu, 3 Jul 2025 14:41:40 +0800
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uXDyZ-0007yZ-BS
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:03:19 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uXDyT-0002F0-1a
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:03:18 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-451d7b50815so40080195e9.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 00:03:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751526187; x=1752130987; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6f/NrQXKxo1H8GNh0j5wdieBWLWa/5wRgOkRobnip5s=;
+ b=akjdC1ad2AraxvxkX15JiiJRYSSJHPBk+v7mZr3IIH7WogDz1I/jORtYc8qavhgfbR
+ zqGn4ErMVr1EEAyK7RhsDxAww9SCf1rtILxG8a16dZ9krQBwUqFNpTvWszn0WHM90H1I
+ MMpS3YsprNENoIwi9yC1WKMR8IklHg3Zu0atGKVtlK+2rFiVURrLlmTyeFhxo15W+1Ff
+ EtYBn6TN9UAiuntyHrvvs/zXqtB6e0WKWAk9mwmht73MQxknhSvyrQ6ltDJMYQaGKZ42
+ GcO9EajNWMIDihjoFEriV60hYFozwQTcchSu079I4D2X4hp+Pdx0admjrp+5AqsgnUvG
+ hACg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751526187; x=1752130987;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=6f/NrQXKxo1H8GNh0j5wdieBWLWa/5wRgOkRobnip5s=;
+ b=pqTSeE+y67kpbtR5PCG6gWmkXjyqEpuuVG+ZbCIP+lXT0ISrIL2Dl9OfhpfEk5B0kt
+ JsUDvKF1aEh6r3canwKnFi+oCgQx3KgJykpeDnnkn6aRjnGQoa1dxHMs1xIVt/ZQt5jY
+ 6FpkuZNOcYNehYtRBrHvlaYjHeuKOsvYGkgzYyLPLmXUEfRykzzXwTPdMOZA0JY9m0C8
+ ca7iKP1A2XFKfJg+Hh2BJMmaMTfpyRNwCrk55KfcjyQ7IxH8aVUgqw2YQzDZGBKDVcle
+ 6yqf0m/TEYzbjVEwY4F0xsxRXcGscTpI6uU078hm5DAoEbsOsBk8GE1R3Bs5LbWb8e24
+ /Q1w==
+X-Gm-Message-State: AOJu0Yw3um/ltxmmJcbd7pISDEBLvkXmV/QJsY9ypcQDTuGWQ0rRzXrj
+ 4JGx3IykTIdKGSYT19GUOsJIMG3OazGRALz+3h2AtGAFyDBxMOntnUjkp8MdDsqW7FQ=
+X-Gm-Gg: ASbGncviYhMOqRvTRRPz9fIbqVejDDAaJyO0N3+OFL/HRaY/zDfndybvIz3mto/HqQ3
+ qlV+J2GQgwVZsHuDo1oxLWZ8Kf22VP5/bJqS7flsA49LavMQtlEvT/SiJOLk1RBEZpkepJjCdK/
+ ea1o3bgUa1aaSSKtUGtiu6PFygUsXOKUd7H/v3Zn12YBw8qocUGETxBz8Mb+FK9asxvAyG4F65B
+ mIpmt2lWsAO7teGHbYuvWr0u/y3K0EyR9W4JkmIKkq2tVZ18VhniK5wWnAfYoA6bkevfiKqoQIS
+ HqTNe9b7w326zbkXNfd514SizjOldn36GJZPSlLVb2tOc+xPdjvkw4le2AwV7Bk=
+X-Google-Smtp-Source: AGHT+IHw1Pj6iDT6IfXr7wLQnJR/TcyrhdOjruspMvC2e/tWhC9pFzuQeSo8tG/9xbSPEK9zxFKhMQ==
+X-Received: by 2002:a05:600c:8715:b0:450:d07e:ee14 with SMTP id
+ 5b1f17b1804b1-454a9c9fbe2mr23900505e9.17.1751526186767; 
+ Thu, 03 Jul 2025 00:03:06 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a892e595d1sm18010721f8f.71.2025.07.03.00.03.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Jul 2025 00:03:05 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id E6CF45F8AE;
+ Thu, 03 Jul 2025 08:03:04 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH v4 01/65] system/runstate: Document
+ qemu_add_vm_change_state_handler()
+In-Reply-To: <20250702185332.43650-2-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 2 Jul 2025 20:52:23
+ +0200")
+References: <20250702185332.43650-1-philmd@linaro.org>
+ <20250702185332.43650-2-philmd@linaro.org>
+User-Agent: mu4e 1.12.11; emacs 30.1
+Date: Thu, 03 Jul 2025 08:03:04 +0100
+Message-ID: <87ldp5dadz.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/16] i386/cpu: Consolidate CPUID 0x4 leaf
-To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
- Pu Wen <puwen@hygon.cn>, Tao Su <tao1.su@intel.com>,
- Yi Lai <yi1.lai@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <20250620092734.1576677-1-zhao1.liu@intel.com>
- <20250620092734.1576677-6-zhao1.liu@intel.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20250620092734.1576677-6-zhao1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=192.198.163.19;
- envelope-from=dapeng1.mi@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,109 +105,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-On 6/20/2025 5:27 PM, Zhao Liu wrote:
-> Modern Intel CPUs use CPUID 0x4 leaf to describe cache information
-> and leave space in 0x2 for prefetch and TLBs (even TLB has its own leaf
-> CPUID 0x18).
->
-> And 0x2 leaf provides a descriptor 0xFF to instruct software to check
-> cache information in 0x4 leaf instead.
->
-> Therefore, follow this behavior to encode 0xFF when Intel CPU has 0x4
-> leaf with "x-consistent-cache=true" for compatibility.
->
-> In addition, for older CPUs without 0x4 leaf, still enumerate the cache
-> descriptor in 0x2 leaf, except the case that there's no descriptor
-> matching the cache model, then directly encode 0xFF in 0x2 leaf. This
-> makes sense, as in the 0x2 leaf era, all supported caches should have
-> the corresponding descriptor.
->
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
->  target/i386/cpu.c | 48 ++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 37 insertions(+), 11 deletions(-)
->
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 2f895bf13523..a06aa1d629dc 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -223,7 +223,7 @@ struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
->   * Return a CPUID 2 cache descriptor for a given cache.
->   * If no known descriptor is found, return CACHE_DESCRIPTOR_UNAVAILABLE
->   */
-> -static uint8_t cpuid2_cache_descriptor(CPUCacheInfo *cache)
-> +static uint8_t cpuid2_cache_descriptor(CPUCacheInfo *cache, bool *unmacthed)
->  {
->      int i;
->  
-> @@ -240,9 +240,44 @@ static uint8_t cpuid2_cache_descriptor(CPUCacheInfo *cache)
->              }
->      }
->  
-> +    *unmacthed |= true;
->      return CACHE_DESCRIPTOR_UNAVAILABLE;
->  }
->  
-> +/* Encode cache info for CPUID[4] */
-> +static void encode_cache_cpuid2(X86CPU *cpu,
-> +                                uint32_t *eax, uint32_t *ebx,
-> +                                uint32_t *ecx, uint32_t *edx)
-> +{
-> +    CPUX86State *env = &cpu->env;
-> +    CPUCaches *caches = &env->cache_info_cpuid2;
-> +    int l1d, l1i, l2, l3;
-> +    bool unmatched = false;
-> +
-> +    *eax = 1; /* Number of CPUID[EAX=2] calls required */
-> +    *ebx = *ecx = *edx = 0;
-> +
-> +    l1d = cpuid2_cache_descriptor(caches->l1d_cache, &unmatched);
-> +    l1i = cpuid2_cache_descriptor(caches->l1i_cache, &unmatched);
-> +    l2 = cpuid2_cache_descriptor(caches->l2_cache, &unmatched);
-> +    l3 = cpuid2_cache_descriptor(caches->l3_cache, &unmatched);
-> +
-> +    if (!cpu->consistent_cache ||
-> +        (env->cpuid_min_level < 0x4 && !unmatched)) {
-> +        /*
-> +         * Though SDM defines code 0x40 for cases with no L2 or L3. It's
-> +         * also valid to just ignore l3's code if there's no l2.
-> +         */
-> +        if (cpu->enable_l3_cache) {
-> +            *ecx = l3;
-> +        }
-> +        *edx = (l1d << 16) | (l1i <<  8) | l2;
-> +    } else {
-> +        *ecx = 0;
-> +        *edx = CACHE_DESCRIPTOR_UNAVAILABLE;
-> +    }
-> +}
-> +
->  /* CPUID Leaf 4 constants: */
->  
->  /* EAX: */
-> @@ -7451,16 +7486,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->              *eax = *ebx = *ecx = *edx = 0;
->              break;
->          }
-> -        *eax = 1; /* Number of CPUID[EAX=2] calls required */
-> -        *ebx = 0;
-> -        if (!cpu->enable_l3_cache) {
-> -            *ecx = 0;
-> -        } else {
-> -            *ecx = cpuid2_cache_descriptor(env->cache_info_cpuid2.l3_cache);
-> -        }
-> -        *edx = (cpuid2_cache_descriptor(env->cache_info_cpuid2.l1d_cache) << 16) |
-> -               (cpuid2_cache_descriptor(env->cache_info_cpuid2.l1i_cache) <<  8) |
-> -               (cpuid2_cache_descriptor(env->cache_info_cpuid2.l2_cache));
-> +        encode_cache_cpuid2(cpu, eax, ebx, ecx, edx);
->          break;
->      case 4:
->          /* cache info: needed for Core compatibility */
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-LGTM.
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
