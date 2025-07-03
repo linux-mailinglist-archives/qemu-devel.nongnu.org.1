@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483CDAF6F32
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 11:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3F7AF6F54
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 11:54:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXGax-0001B4-DJ; Thu, 03 Jul 2025 05:51:07 -0400
+	id 1uXGbD-0002G4-Ql; Thu, 03 Jul 2025 05:51:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXGat-000106-Gk
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:51:04 -0400
+ id 1uXGbA-00028w-IF
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:51:20 -0400
 Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXGar-0000qc-Pp
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:51:03 -0400
+ id 1uXGb8-0000tP-QV
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:51:20 -0400
 Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-710f39f5cb9so76574827b3.3
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 02:51:01 -0700 (PDT)
+ 00721157ae682-70e64b430daso59469857b3.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 02:51:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751536260; x=1752141060; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751536277; x=1752141077; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=lFnVNfGKTkWj2ynS3ngMS1udr6sDkR1V40OLyy9paas=;
- b=eEmvyafsM5i0z60UbdY9zwwquZjDFG5e1qu/4Uci5LLr4kwZV1ma3cmm08zawe1tDr
- 1Y8dWZlWiY8ZJMxUGUQBGHcQXEE1+Mv2clnl8ltDgh9KTVw+JTz/9Rm+ZZvmdwIEamUV
- 7tU+6+uQ4jO9TEMf8ipNU5HdnBQ8Qo2EPJ1YuwBa2ht4UKsc8BI/ftTyjPCNExFECFPm
- NKc0FHrOqcC2o/SDFpavYuoDIMNDi7oXXiBffq4B7amXnOKhrCF+PVcQvYbBWUXSeLPp
- vBpqI4f5H5W+x5PPyAIzQvqbJC3IJzrqUUocrVyDOF9LIRqz4Gr6CaghPO4jt6vTDOrH
- HvfA==
+ bh=/NoHf2a1Zo6RocIxZitcR//DWchIRQTyoNenFJdE110=;
+ b=JsK/05Ph3YbfVP/ByX8pExnn8dlYrm7+0uc4dumVxAbKa0dVrbatHt+0fCjpRP0rkJ
+ s/+l35nKDb8KfPxNrm2xkskt5IlwG7pzqtOvTbOAIz9x8pD1jCLRsLTl7kcyN6tLah7P
+ FcJJWCON6f4+W5ppmzr+XdQBFj8J9yoLpmOBv1GfALeRFKqg/VYyZqOaNuN/dqvRY//L
+ 1/EdTkP3CfmiG8Q03xyDmwdaPAFHDwqogfjc2zxnNi5l1uhzxR04e3sYw/JISDhhI5eI
+ /qmW+NRQCK9omME8sLWPRUxOc0SGhvNgrL2pqoj56+nQg7Vme4sFDTw0fTVENccvIbWd
+ Y/IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751536260; x=1752141060;
+ d=1e100.net; s=20230601; t=1751536277; x=1752141077;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=lFnVNfGKTkWj2ynS3ngMS1udr6sDkR1V40OLyy9paas=;
- b=s523u43gOaDdDWmPkZEbxtzpKdlG0EgijuUdgo1uajFx6ny/Wr+UOeRgPaWnRsvek1
- KPyD/kBJjBb0qOhsolReM4HuoG/hrzIusHjl2Pu/B5l/6B//SetQoQ5EOrlkhkmb0DS2
- jCBu/BWru1h9E9+is0W5dAbd8vJzxOeS3nX3yywKKjxT3KeHtB9bHGGZRLq6xf5G89dJ
- wTsnuHJQuAJOznIMnotGSKYtEy2+Zo8FwGpiZpT+w8byHpGdNyUJR5TR/DafGpMFqGFL
- It/TlODusjNkDY2Lfl7DUKdvYj88mntW9lF8uvESIEhjiLB1DcjdqzTFhQw8p6/PXjUB
- QG4Q==
-X-Gm-Message-State: AOJu0YwiV4Wp00vkCHkQ8mpfWlmzL7M6hdL0rxw0KVXx9dRjZN4x25D6
- GAgh6+gDqG9bfr1r/0m9jgGeiqcpgfO2D/kLdatkt1cTR0MkoqG70jRRKHFMGKSTTTI1zsPJ6a1
- vfY2pw3IkSnhhBasp+b0XVguf3XCExQUDrVcrqr3btSCQSp7UP1BW
-X-Gm-Gg: ASbGnctwxPx7d+Aquyq5+vbx9QP/T40Io1Dv7HWRaLmc75q7jTZrSlA2slYjv+8wka6
- EGeK684HBKoJbyoRC+AI7HiRu2+7sIEZD5vVHMXIUQizxhhBN/4XLL8JmaBqBvup8KrktIanO2J
- sVUPNzo8ZZOb24RJhITuvEjzn1dcNPdDH/WajEK45g3L0K
-X-Google-Smtp-Source: AGHT+IFBnCvgm6hPhBeeG7eFvtG1a9ow9JJcsgtkcZs1u9mFwCK9hntt0ldD1dETxlM0HMr/NSSUILdTzkAaatUl734=
-X-Received: by 2002:a05:690c:1d:b0:70e:779:7e6a with SMTP id
- 00721157ae682-7165a3b77c8mr31861337b3.22.1751536260707; Thu, 03 Jul 2025
- 02:51:00 -0700 (PDT)
+ bh=/NoHf2a1Zo6RocIxZitcR//DWchIRQTyoNenFJdE110=;
+ b=Xn+aqlvZTgt8ryl9JEZLD1Hj7nOqzQ7zTXymCLhhpTo7V4cq6fK1P2h/9FUNtcDUj0
+ LonO4k19BCQ5HaAd8CHxMCtiY6rklEyBm35e/F0fX/nMu7kmkczGHox7vZFo1ku6ZDcI
+ 4u+LPNiB2d36771/X3YBzinkifaoDAcicO3QmZvvu/qnMX5mSlCoh9z1p+9tDLwkqiHx
+ 4R6ct46wJHuTG8DTYFQDknvAK2nkewzigT5zQT0v2NtLbajM7Roa8xSsEPy0DxuizzM+
+ tR7iUIUuDBWKNwmHDxnuf+WRCmC2SaV7hkGj08z2Z2uDZ4hlj9itAZX30hhV0xkzB4PB
+ t2Pw==
+X-Gm-Message-State: AOJu0YzAjgpkR2MjOtpf+s1cKHtYt69G7Qksk8rNJLxQ3mRFJ7S1QdId
+ B1xPqDfwNjxG6OSNXtEefgik9ZTSreKDVE2Ez0/3I622zHjiPGA/SXTvj8/dhFOMngqWFoZNUFu
+ 2KdZfN6F2mYxKfHXDp7RReGFHSew06asxoeigN4LsNgHwWVBMExoD
+X-Gm-Gg: ASbGncu3FVOlXz1CzngHUrNxFqdm4UIVh8kCbCYsVCUMcK5HEi/MZ+Mqfm8J5cXKgMo
+ FnSMWz/TnFN+cD9jSWeSp9AI15wwTuYMYM8ik2Wz8rk4cGpuuC0GRh39uzVl9xzse+bJoSWghdD
+ CsjXMn7JFW1xiWcSCbl7nGTeg6IWSvlftCeI7osRsxhQZJ
+X-Google-Smtp-Source: AGHT+IGKKWUa8M9rE6jWLkeRt5OWt9bk63aHJuuRF6sMsDtGNRhijkMJm95EQacj1GWIi4T62F2e5B39x0BnK7fXTd4=
+X-Received: by 2002:a05:690c:64c7:b0:70e:7ae4:5a3e with SMTP id
+ 00721157ae682-7164d2cb17bmr96914047b3.11.1751536277594; Thu, 03 Jul 2025
+ 02:51:17 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250702123410.761208-1-richard.henderson@linaro.org>
- <20250702123410.761208-40-richard.henderson@linaro.org>
-In-Reply-To: <20250702123410.761208-40-richard.henderson@linaro.org>
+ <20250702123410.761208-41-richard.henderson@linaro.org>
+In-Reply-To: <20250702123410.761208-41-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Jul 2025 10:50:49 +0100
-X-Gm-Features: Ac12FXy65ZPSOvc357OFRSfghh_4UyHmbdhaHRalZlfgORKrEFHbqRU1aeRISQs
-Message-ID: <CAFEAcA9=bqnsiAVrtmmXS5Unw+_fC2vT7oSZ4R-iQcLet4MvOA@mail.gmail.com>
-Subject: Re: [PATCH v3 39/97] target/arm: Implement SME2 BFMLA, BFMLS
+Date: Thu, 3 Jul 2025 10:51:06 +0100
+X-Gm-Features: Ac12FXzjj2X34VeGZRD6FBw9FZdPBaPVVvALvmDb_4SJQUfxkaXQ9UDWjxPSU20
+Message-ID: <CAFEAcA-e6hSoEMh=2TUieqmBMnmX1-uAd2PRkHsGVW8jV-BT=g@mail.gmail.com>
+Subject: Re: [PATCH v3 40/97] target/arm: Implement SME2 FADD, FSUB, BFADD,
+ BFSUB
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
@@ -90,17 +91,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2 Jul 2025 at 13:35, Richard Henderson
+On Wed, 2 Jul 2025 at 13:38, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/arm/tcg/helper.h        |  9 +++++++++
->  target/arm/tcg/translate-sme.c | 14 ++++++++++++++
->  target/arm/tcg/vec_helper.c    | 26 ++++++++++++++++++++++++++
->  target/arm/tcg/sme.decode      | 18 ++++++++++++++++++
->  4 files changed, 67 insertions(+)
->
+>  target/arm/tcg/helper.h        |  2 ++
+>  target/arm/tcg/translate-sme.c | 44 ++++++++++++++++++++++++++++++++++
+>  target/arm/tcg/vec_helper.c    |  2 ++
+>  target/arm/tcg/sme.decode      | 25 +++++++++++++++++++
+>  4 files changed, 73 insertions(+)
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
