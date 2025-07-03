@@ -2,79 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6136AAF6E52
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 11:15:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5958FAF6E68
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 11:19:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXG1z-0004KZ-F8; Thu, 03 Jul 2025 05:14:59 -0400
+	id 1uXG4x-0005d2-5P; Thu, 03 Jul 2025 05:18:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXG1t-0004E0-4V
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:14:54 -0400
-Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXG1k-0002gO-0F
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:14:52 -0400
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-714066c7bbbso88079597b3.3
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 02:14:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751534082; x=1752138882; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pGSkVMNGir5NqYN9mf3Je1X84Aau+Zt/mS3etMOmdhM=;
- b=Qgjx55OeqKAdq1mFJ/tGYZlzj16lcjOXibp32ykZAGWGc8YpJzfz+hKcbQfnCsRtob
- 3v5QqUFSO0Hgh2FF/9sQMcoUnqtwd0Ng1vUJTCCj/NFaIajzSfUA08RrJH8EPfx6z+Qt
- Wm0qqhPQ7/bUUSiJ9Bj2cNJt/ZiM8dZvjGIcoBJzpCaKr/b5X23g+0xjRWr6OeRmtHv6
- uVLcNOtBseUkm5kfL/bdPg1Jdr6+joPM/y9hVN9VPym8Pw09wg3ip4Q/SAg9J8aLniCp
- CoI/wkyxK6oIIj0vXUcrOVNxM/kWpUnRR4Co8bYy+UWhjdzMKFadQxXKCTQUkLdFcPMp
- HkZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751534082; x=1752138882;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pGSkVMNGir5NqYN9mf3Je1X84Aau+Zt/mS3etMOmdhM=;
- b=YaEpVwfqbQvVLaxXy+lyRnv2u74d+XZSRmz8L0tysEu0CjUFoD9FXoW8J4u/ZUcJla
- LuNlnvPQrzsTQlaOhR9tFTjLu5mIIofK0VnCY7kSkePunrqbxOhvIa0vBQdAvjX51pde
- 41PbHrXxVX/6rN8+/pfJmQ2tSJ+9emmeB3qIEOTbN3UfAcwyDHJqa8DodZ/cXGWoR5q+
- OC6E2/2Uj2VD1cmSkhMhJQ2E+BhsPKY63bCowgcKZKaRzoxvdPbgu1Lj51ZxUhWbg4wL
- 7Akrs6fOm6TZEuv6JZ5gNJZCtubeFT53J6BW6NASZhgGeTN1jPEqtI7R3tLhriceeR2I
- iYlQ==
-X-Gm-Message-State: AOJu0Yzz5PyMUQME0+40iwUVErA0ocXDT+ZKqYrG+lGds8wdDdxKxZiN
- u/I2GrCHhezvQpjdkXDqVc/6V/YntA3mLlowGb0FOAbJQGRRGd4h2jdSTBQvP0AEGNeOT1mv+2j
- nKBK+dqZTZ36QVdOYI0Ujnn8XdYafqL9VltKkGtlqHw==
-X-Gm-Gg: ASbGncvxjG0QatWUKBMbDIiyUzC5WmKLbi1zRX//3W9fLo4jTQhaDcTVCoqTC1l5dcT
- zl6X0KDbnjMdeDE2Q2zYLFUOjTi0Ul7xj5F1s9J4C0j/C2QBgBics7kdnT1eN2XKHIo3oyhY5PZ
- xvwmqf+qHczfuEaTXVFaRzDchvTp+SCsgOwkkeJdIwA9ID
-X-Google-Smtp-Source: AGHT+IEA6E7LYkyVPfOEVdk46wvscw7PHTDe+DThCTi9y1suVfsLnl2suIA7GeAB6zEYBx+m6HSxfx21iHv5pabmmqY=
-X-Received: by 2002:a05:690c:9b06:b0:714:691:6d1d with SMTP id
- 00721157ae682-716590aecf7mr37960847b3.24.1751534081741; Thu, 03 Jul 2025
- 02:14:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1uXG4o-0005bZ-EP
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:17:55 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1uXG4J-0004JI-Sk
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:17:53 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bXrjR4zKrz6M4h1;
+ Thu,  3 Jul 2025 17:16:11 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+ by mail.maildlp.com (Postfix) with ESMTPS id 915661402F5;
+ Thu,  3 Jul 2025 17:17:08 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.195.244.176) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 3 Jul 2025 11:17:07 +0200
+To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
+ <jonathan.cameron@huawei.com>, <fan.ni@samsung.com>, <dave@stgolabs.net>
+CC: <linuxarm@huawei.com>, <shiju.jose@huawei.com>
+Subject: [PATCH v3 0/7] hw/cxl: Update CXL events to rev3.2 and add
+ maintenance support for memory repair features 
+Date: Thu, 3 Jul 2025 10:16:49 +0100
+Message-ID: <20250703091657.1868-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 MIME-Version: 1.0
-References: <20250702122213.758588-1-richard.henderson@linaro.org>
- <20250702122213.758588-5-richard.henderson@linaro.org>
-In-Reply-To: <20250702122213.758588-5-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Jul 2025 10:14:30 +0100
-X-Gm-Features: Ac12FXxydFfAJhHEDJzEFqG9DNUxbnmZQQLzqXDCJyLzg8-KyLgCHT196slmn68
-Message-ID: <CAFEAcA_72=K-DZmkTMCjsL9unRzTFu+DKGKNFpw7-bvNhvu-4Q@mail.gmail.com>
-Subject: Re: [PATCH v3 04/10] target/arm: Replace @rda_rn_rm_e0 in sve.decode
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.195.244.176]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500007.china.huawei.com (7.182.85.172)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56; envelope-from=shiju.jose@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,22 +65,78 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  <shiju.jose@huawei.com>
+From: shiju.jose--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2 Jul 2025 at 13:22, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Replace @rda_rn_rm_e0 with @rda_rn_rm_ex, and require
-> users to supply an explicit esz.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  target/arm/tcg/sve.decode | 48 +++++++++++++++++++--------------------
->  1 file changed, 24 insertions(+), 24 deletions(-)
+From: Shiju Jose <shiju.jose@huawei.com>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Add updates for the CXL spec rev3.2 changes, in the CXL events reporting
+and QMP command to inject CXL events.
 
-thanks
--- PMM
+Add maintenance support and emulation support for memory Post Package
+Repair(PPR) and memory sparing control features.
+
+Add support for reporting the memory sparing event record.
+
+Changes
+=======
+v2 -> v3:
+1. Changes for the feedback from Jonathan on v2.
+   https://lore.kernel.org/all/20250619151619.1695-1-shiju.jose@huawei.com/
+  1.1. https://lore.kernel.org/all/20250620150342.000055aa@huawei.com/
+    - Wrap this is sub 70 and should aim for about 75 for commit descriptions.
+    - hdr->ld_id = ld_id; to stw_le_p(&hdr->ld_id, ld_id); in cxl_assign_event_header()
+    - Make maint_class, maint_subclass, ld_id and head_id as optional parameters in QMP for
+      relevant events
+    - In QMP rename maint-class to maint-op-class, maint_subclass to maint-op-subclass
+      In functions, rename parameters, class to maint_op_class, subclass to maint_op_subclass etc.  
+  1.2. https://lore.kernel.org/all/20250620151314.0000535c@huawei.com/ 
+    - Make cme-ev-flags and cme-count for general media events as optional parameters in the QMP.
+    - Make cme-ev-flags and cvme-count for DRAM event as optional parameters in the QMP.
+  1.3. https://lore.kernel.org/all/20250620151655.00001cea@huawei.com/
+    - Add variable declarations at start of the local scope.
+  1.4. https://lore.kernel.org/all/20250620154052.00002a17@huawei.com/
+    - Adjust indent style  in few places.
+    - Add support for produce a Memory Sparing Event Record and enabled for
+      ppr maintenance request.
+    - Replaced hard coded values in few switch-cases with macro definition in few places.
+    - Replaced CXL_MBOX_UNSUPPORTED with CXL_MBOX_INVALID_INPUT.
+  1.5. https://lore.kernel.org/all/20250620154813.00002bbd@huawei.com/
+    - Add support for memory sparing resource availability.
+    - LOG_UNIMP logs for sparing maint op removed.
+    - Replaced CXL_MBOX_UNSUPPORTED with CXL_MBOX_INVALID_INPUT.
+               
+v1 -> v2:
+1. QMP CXL event injection code has updated for the following
+   change in CXL spec r3.2 Table 8-55. Common Event Record Format,
+   field: Event Record Flags. Length of this field has changed
+   from 2 bytes to 3 bytes. 
+2. Rebase to recent tag 'cxl-2025-06-10'.
+
+
+Davidlohr Bueso (1):
+  hw/cxl: Add Maintenance support
+
+Shiju Jose (6):
+  hw/cxl/events: Update for rev3.2 common event record format
+  hw/cxl/events: Updates for rev3.2 general media event record
+  hw/cxl/events: Updates for rev3.2 DRAM event record
+  hw/cxl/events: Updates for rev3.2 memory module event record
+  hw/cxl/cxl-mailbox-utils: Move declaration of scrub and ECS feature
+    attributes in cmd_features_set_feature()
+  hw/cxl: Add emulation for memory sparing control feature
+
+ hw/cxl/cxl-mailbox-utils.c  | 572 +++++++++++++++++++++++++++++++++++-
+ hw/mem/cxl_type3.c          | 269 ++++++++++++++++-
+ hw/mem/cxl_type3_stubs.c    |  41 ++-
+ include/hw/cxl/cxl_device.h | 142 ++++++++-
+ include/hw/cxl/cxl_events.h |  85 +++++-
+ qapi/cxl.json               | 106 ++++++-
+ 6 files changed, 1172 insertions(+), 43 deletions(-)
+
+-- 
+2.43.0
+
 
