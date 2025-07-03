@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA66AF7F12
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:37:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B56D4AF7F4B
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:43:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXNqi-0000ee-En; Thu, 03 Jul 2025 13:35:52 -0400
+	id 1uXNr0-00015O-Pe; Thu, 03 Jul 2025 13:36:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNqb-0000Vy-Dd
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:45 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNqh-0000ja-9v
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:51 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNqZ-0001oU-Eg
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:45 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-451d7b50815so691635e9.2
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:35:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNqf-0001pZ-Cc
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:50 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3a582e09144so40519f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:35:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751564141; x=1752168941; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751564147; x=1752168947; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fjJ+lcNXcYC5f1FwLpKLJEf76e+ZyGqrMwDm/D97r7I=;
- b=OCBJ+txAeCFQeZQ/qovkre9uALn42SpFJnL1t2WZ9sAnoU48rIA8poL6tDeNZQUB6W
- hcXwZRWzblUvUV3Z0BthabR42CqTZOyb1aIvBl8wYrAeJYWDafPWhAUwgpMdOELW0JmY
- ma/fA8+urrJdwC8I4g1DqPH336irXj2FWBFmg1KXRfdkF7x8bcVJrA3Nfk7/2FdBWc1q
- JLiHUcwSgrBS4HGLf/TWO6F28Wt5MNmYNr2+PVQd5tharMUDMKwBw8fwoR7h8mvHfPQm
- KWy/NC7F6qQE2IOYGXHDxzQaKzCgyVFF/rXuTuQiP9rDygOqfOLtjk0UtDrdxPsrBj3+
- PmBg==
+ bh=/MC92E7FLkNQLrXWkop42r4qYRx+5dbFagdyAugyF5E=;
+ b=uH12NyoandpNYYX4aMlCv583o0Qc/TIY4z5G691N5TLKJJKt7kUr2QAgGNoeTOORq1
+ 2e/qAkUed7r3kdUf52nUBufoOBssxe79BmeZ67Po/mKsv3bxx71pmGlvJAaPMIZQwK7k
+ ArZwf4FJrWauuwUeqXkqwfOEjWJFj9L/6fnPYk4FWnDvHa6dZeTv1fVUKWJOk5bs5vTI
+ DZj5+8jwbCTu3RsCud8oN1NDA0b4L8zHFjYWPJT0ZcfkYn+HNsVKGb9m/9brJphIO9qP
+ 0QRsb4qsjT27DH9ufizppbtaJkQ9qbKt8Ldk6bU9Th0MJ5AmkKip/7LsStrHQt0nkG3X
+ 9Lpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751564141; x=1752168941;
+ d=1e100.net; s=20230601; t=1751564147; x=1752168947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fjJ+lcNXcYC5f1FwLpKLJEf76e+ZyGqrMwDm/D97r7I=;
- b=aXgSerjlsmtckjFUTD6TlYB/hHYcu/9GpXT7Qa3BandK6eXNwdvhayXihE3c6IpzAV
- BV+8H46aG76YfdWAoyTVjj7606ojz2UdszDG43aY6WnBcSClHwbkkfG/OQXSuFCbsgEu
- GEhxHDegUMZAh5wVdr87YwzSyWoFFKPzprVSRI9b/09Phb8ONDdw7P7DRtAsw5z9YNXZ
- qH7UTd4L2v/sGCl4PMtEqPhOgwCk2+OJYUiajA+1ZjNYKZZHHvkRns3LfcmmOi9aQZnU
- VbLKJoVXS4wWsyD/kOiWofjKTvuzvrViR3PlKGacO/bYXBFfI+Hw6yOtVIYrKDIxBUwV
- uHSg==
-X-Gm-Message-State: AOJu0YyWjFECT4UhbhDFn0nOs70IFC9fBIijnsg1UfAIFqawim7BctQ+
- 0CGLhz02zugwBTs/yVlJSwd0Z3Mt8RHNUHn5Z+u8KVci/At9UIaRtBhmJ3YAomnMbEyYx0cfT1V
- 8XFH/7nM=
-X-Gm-Gg: ASbGncufXb+P1FvHKWvwmml3PJyhncFhzhpp5Ejc3q9vvlflxNE60V+XGJfZmJvPL3w
- SGhnxGl0qFSTbG6/dkjB5hFAPXQ2yX79SZdh4Tag793uoDtoa2WkFlJecmLvTirSmQsEmXBycFd
- qMRQkNoBZWheFoq1Fi5T59c9I5gWi85sK1GUn0uxX+cDBxSf9djY7rwB7MxqcTh6uVmXXIsTMaI
- yVJ/7wJE6hbpoXu575GZ3o24HMcHXok3FqlYp1k5xO1A4cM/YDreUETEvC8gWx+jBHfZ97DARLG
- jhOonQ5OBU4gckBKq7ADzovIkoNcn+cv9HmEz5rz3CIlA4zGPmzPOnGPAlqxAE3naitxhcJGuJA
- gkrZhV/6lo2joCxzO+5A0/+tBQGiOAgnag6bq
-X-Google-Smtp-Source: AGHT+IF3qpPPLYHCen/OvZ3c3kUwooh29DGaRG1oO4fn0b7UOW7ZJboMWSayZSJdRuauW6FDYFScEw==
-X-Received: by 2002:a05:600c:c493:b0:43c:f513:9591 with SMTP id
- 5b1f17b1804b1-454a9c7fac5mr52499855e9.14.1751564140699; 
- Thu, 03 Jul 2025 10:35:40 -0700 (PDT)
+ bh=/MC92E7FLkNQLrXWkop42r4qYRx+5dbFagdyAugyF5E=;
+ b=pznsow2RUiMCMgWCVAq1JR9lQ5SoTdD7CbVaTnHJd4qbE3Lr+AqM1woFsy1uOPIHtf
+ Ah6dc0Z17wnZMeLQSkrP2NFWfP6lIDViosFzk5f41EWpXPAGhN61ZJHspNIJva1Ffvd7
+ iGdhJkBMvvv/7tqIEEEClqyIhLjpW/Enx8ZJXEmQdqZq0QXBndA6HPJr4Sjm3zDsqB9i
+ 2NiHtwO8AwMyr3fIeQtcpi2JaBWafdYZvvfHRgvfWWTGFGq178RyTJdU+taX3P4biMru
+ 526b2WuhFyRbFTTWW2Wdp1VL43d/W/uH//+0ERDXOMbWXmrNQM5xMF8tP9ftJL5/eixS
+ UQ3g==
+X-Gm-Message-State: AOJu0YzGyF7HVvTJ+RTaDWXlWyQbLfUMFDe5tUWXIsleaSRErJPvwS5r
+ FEr1Uyfdu3e9rXJNNlwf6lBIy3090d6/EgsBjNC84wB4MfoV4QERP6DvSmeQPVYLnh7ZrhXC19G
+ wydiFGa8=
+X-Gm-Gg: ASbGncsnKEdNaoJVFv8vWwAy45MUcenMthwMjYXynqC1DRbQexl1NyZVsB1JcFY0hVV
+ obvXoShhdL6P4+hF93Gs3550+TcFjSSyHBe7aHW3lMQ00L7iuUR6fO8Vm/vb7kOcR1oLGixMk1i
+ ev8/OTf/Fldfb0a3xgJ5dvsR3ZS7uLojJ8fbvw/dNnZfH0QfTlsN6J2pER9Jpja/7Xjpywc4pKi
+ 68Yh9++KuwG84urNq07TaPenlwJF73z+iJBKbq+dUsRvn90bmfrI2LGnGrhzjgy02YfKWao6Yg+
+ pujACPhtCG17PF5IVgOIuC4/jHvl/K+PSqZvx05QaECSIzIzC43vrbyPld17SzYlkoP4HMofIXS
+ PiI3kfwD886WZ+wXJFRVjqLV6k55XrBbOUGbBP/bR9p9PZfY=
+X-Google-Smtp-Source: AGHT+IF++zcaURIEkhv3c911GkgiVo2i34p/sRCY262o8tkwpm8ymeUemtjV0/YYVdtuOeOmYnrO1Q==
+X-Received: by 2002:a05:6000:4807:b0:3a6:d579:ec21 with SMTP id
+ ffacd0b85a97d-3b1fe5beeeemr6738251f8f.12.1751564147347; 
+ Thu, 03 Jul 2025 10:35:47 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b47040161bsm337927f8f.4.2025.07.03.10.35.39
+ 5b1f17b1804b1-453a85b3016sm66811045e9.0.2025.07.03.10.35.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 10:35:39 -0700 (PDT)
+ Thu, 03 Jul 2025 10:35:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- kvm@vger.kernel.org
-Subject: [PATCH v6 31/39] accel/kvm: Prefer local AccelState over global
- MachineState::accel
-Date: Thu,  3 Jul 2025 19:32:37 +0200
-Message-ID: <20250703173248.44995-32-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 32/39] accel/tcg: Prefer local AccelState over global
+ current_accel()
+Date: Thu,  3 Jul 2025 19:32:38 +0200
+Message-ID: <20250703173248.44995-33-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703173248.44995-1-philmd@linaro.org>
 References: <20250703173248.44995-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,30 +105,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/kvm/kvm-all.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ accel/tcg/tcg-all.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 1b6b7006470..a6ea2c7f614 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2588,15 +2588,13 @@ static int kvm_init(AccelState *as, MachineState *ms)
-         { /* end of list */ }
-     }, *nc = num_cpus;
-     int soft_vcpus_limit, hard_vcpus_limit;
--    KVMState *s;
-+    KVMState *s = KVM_STATE(as);
-     const KVMCapabilityInfo *missing_cap;
-     int ret;
-     int type;
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index 7ae7d552d9e..969c50c87ea 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -82,7 +82,7 @@ bool one_insn_per_tb;
  
-     qemu_mutex_init(&kml_slots_lock);
+ static int tcg_init_machine(AccelState *as, MachineState *ms)
+ {
+-    TCGState *s = TCG_STATE(current_accel());
++    TCGState *s = TCG_STATE(as);
+     unsigned max_threads = 1;
  
--    s = KVM_STATE(ms->accelerator);
--
-     /*
-      * On systems where the kernel can support different base page
-      * sizes, host page size may be different from TARGET_PAGE_SIZE,
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.49.0
 
