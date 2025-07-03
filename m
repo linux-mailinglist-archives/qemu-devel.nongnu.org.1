@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C56AF6F4E
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 11:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B603AF6F41
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 11:52:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXGac-00088Y-TJ; Thu, 03 Jul 2025 05:50:47 -0400
+	id 1uXGai-0008K1-8x; Thu, 03 Jul 2025 05:50:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXGZs-0007Nv-Hp
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:50:04 -0400
-Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
+ id 1uXGaC-0007dH-Ai
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:50:23 -0400
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXGZr-0000V7-1y
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:50:00 -0400
-Received: by mail-yw1-x112f.google.com with SMTP id
- 00721157ae682-70b4e497d96so56108237b3.2
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 02:49:57 -0700 (PDT)
+ id 1uXGa8-0000ja-8k
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 05:50:19 -0400
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-714078015edso58318507b3.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 02:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751536196; x=1752140996; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751536215; x=1752141015; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=BJoVjilzB6RDEDJ9vIifAy8Oz9jiJnzPiIAOzFxI3Hc=;
- b=tlRIa2K2a6rLwxrXErN+xkNthl4me4tAkHKK+qhEJ88yuaIEcHBSaLnbF3S/CdxUq1
- Kk8ZiV0+LxeZfukEbTOT2Ikuykmod8zlW390xz6aF3ryxweG9PvhSqROW/GTY7pjZbLI
- bF6BAuqxFgN+DCNBic3XVBwCPqkxtQKA/zXhGZpoWpgI3pix3rSApiUHQS5cE+jUtUV7
- FZ+eI5iK9efixP0OVYDX6DmG4i55yaMEcf/J3cxUA6yYprBmzLHd4wgPX7An6GIhNNsX
- cF78ru9LH2gJ3UgZzPXYAuozXVAnpVjmP3SapIcblHY5GvSD3Bg1PWf7CLRJleyBIDBu
- RIuw==
+ bh=x52QpShekcOPzfngz7lq5sNO18hifZ/zWZiGRzzuBMI=;
+ b=ZjhA9rf62haTc5lhkzsBXyvaN9GDLZILiGhQS2sXxFBSGqbJ2n8d0tymxqq/GVWzDv
+ WKFBMWymgSu6u11bCOTjiPDQns6W1Q8K9W4+Dta1UYKzRd+GHh5gVT+MvW7y1SVe9fIh
+ SsJjWRN1F1nTRsbzvD8i5f4qEKih8WyH8m3gI0BDSF+jUd5iBU9IA51qsSBLXAocsl2Z
+ +Gkj760SikG+6C0MYDyTi53NZM9zc9RONa+phr3Ms8CyWmP1GQ6KkP+nZqyM7zqnyf3W
+ VmxgpOUjNiByPcaHQBNKAnYJOOVHVs1hEQzLbSB+82/onrGRN+9tlEdYkAsB+kTLOdQM
+ qZyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751536197; x=1752140997;
+ d=1e100.net; s=20230601; t=1751536215; x=1752141015;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=BJoVjilzB6RDEDJ9vIifAy8Oz9jiJnzPiIAOzFxI3Hc=;
- b=aTUhhTAxZAt6BTf1DBSJcvugWyJwdJtem5dF1QwuRsDe8mVZI5wPQfIXdq35mck5zx
- NgUTQ+Fh1KQ0uehMbvO5AC4fmTLs1BMJ5HhqmfLFmmnqEcmrWycXCtNsVkxOkXoY5jut
- arr/wL+x0+GIsq9WiGAb6wiK1MHRAsTjKLb0DwRe1pSkwa8JD1hmR0dUQlgpB7EPrIEO
- HQXkK8MfT2F9f0xzijp6ulIqY7KzONcTxOdPf5cwG6oohcx6q5eVcNEjr6TB8m28MFvh
- Sk1mJQkKOOVCsp6WsJ+JQ/1LF9E57vYvHN7sNPWrNIzxHAMqq+WOwqd+0sX4KtsKKB7M
- oSfw==
-X-Gm-Message-State: AOJu0YxVw74eh06PztTCPIHWhzz0QxViOZGd0Ah71NCg/d3H2LHzhwTt
- hLrhPTWXh/KK2f+zuTzXk++fWkJRQTW54/DlQo1x84lLBNKa672ZmNp89oCssAocEmc2WIwWRex
- E3JVGwGQ+9MkDm7a/WuR4D/HWSeattHih7YFQTmsdtg==
-X-Gm-Gg: ASbGncs0Q7WSUslhcneL8yMcLRT4bhmMjySSkIqpc9rNBFcY4OtD1upVFK/EMpgtYUW
- gh0mhzih8vVblzyOfCZIt2qnahgHwQHmDchwXP8tzL+gjOgu38PMfpG5FFMkg4T8WHPhjfbs+0F
- DRp3SeUGSKF7oQYKbInpz64tYuoKvtFu0c9oM9ZMzGEt67
-X-Google-Smtp-Source: AGHT+IHg4uYoh4QYsU50lPGbMZXdAiYp65FQ3yFFRhnQ6zjh0uhoYWmWksvgO1300uUq2S+9gbBX3PCThemEzObKWs0=
-X-Received: by 2002:a05:690c:39c:b0:70e:29d2:fb96 with SMTP id
- 00721157ae682-7164d4d235emr81444997b3.36.1751536196721; Thu, 03 Jul 2025
- 02:49:56 -0700 (PDT)
+ bh=x52QpShekcOPzfngz7lq5sNO18hifZ/zWZiGRzzuBMI=;
+ b=c9d8vg5wtXH4ajr91niedd+//5igNjdTQgCSTzfnwkbilRxyRb7HVCd8lzzclnzvUk
+ X97mRH/brujGbFpI8reCD4ceL8DE+aN/Cke9Q83ikD043DlFGLB3RGlxEdg9IWgEtUt+
+ VS/Y1o6thxbCCbPKZTJaTjJjkLSRYmvDs/PZdWkeDIqyl4R2rZleig8JxR0o+FefKG9p
+ 6SgY8r55eowIBHm8/g47LFYkeXnnpDKjOHXjION5JJTVjp5JbLVThuqDPMsjHaaDHrL2
+ zq2nje9rGVOt+BcXS6wNnSH38+soizzNGg8HYpMjixTwcY5GnpXcCK33unf8Q3YPTVbG
+ zJzA==
+X-Gm-Message-State: AOJu0YwX6iOIY8z0NLN3iZ/Pqs5cAB/Ox4nZ9rcNy9ekAWtboLtGbmrj
+ l/AqnUhiCZMe8ySvrMY1gvSsLHRY7vVqe1YOcCFpDeWHFwBa/nDA2f9wrAk14+OTDMSYoV+Va7x
+ Kxx81K1UA4NLPMSxVqKYlpnQNDBNIgo3Hx4xY4uOQHA==
+X-Gm-Gg: ASbGncur2UWc9WiiRBmBGjqkY6G1VFw//4vBN8SRyMA1B4cXmgnjvc/GWtGOqQY74YT
+ 8HEgGxj9/2ZE35xZmAFS6hB09bJCY4VMH3j7ls2mcPUhnZOG56D7ZZPWOckZvhHquwtpn/0BdFp
+ kyzk4WvFcdCIcQpeCmCDHc7uCIvlR/ju42gd+Rn095P/XR
+X-Google-Smtp-Source: AGHT+IE+ov5eeXy59VYBL0BB2OGeId12ErijMIre/CRbm+Yn4+FptaF8t9BluLXXWtrcnOdk7Yp87y1R8e+opPrwR8c=
+X-Received: by 2002:a05:690c:c93:b0:70d:f3bb:a731 with SMTP id
+ 00721157ae682-7164d2c327fmr80237017b3.9.1751536215025; Thu, 03 Jul 2025
+ 02:50:15 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250702123410.761208-1-richard.henderson@linaro.org>
- <20250702123410.761208-35-richard.henderson@linaro.org>
-In-Reply-To: <20250702123410.761208-35-richard.henderson@linaro.org>
+ <20250702123410.761208-37-richard.henderson@linaro.org>
+In-Reply-To: <20250702123410.761208-37-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Jul 2025 10:49:45 +0100
-X-Gm-Features: Ac12FXxG9xC4wpk-tr_kpRZXRDXu99AVOry-PtXFoShv8dYom1LOJlUdJtkNFKE
-Message-ID: <CAFEAcA91g2j53UaSO241GQnt=3qM1Rcufg_84Q5uYvgdxT1OJA@mail.gmail.com>
-Subject: Re: [PATCH v3 34/97] target/arm: Implement SDOT,
- UDOT (2-way) for SME2/SVE2p1
+Date: Thu, 3 Jul 2025 10:50:03 +0100
+X-Gm-Features: Ac12FXxYEk7ARAzMdYnSm7mjq9_rH2LzWbjrHSSuWSPUnaa98YTLsBdpRdkUYCY
+Message-ID: <CAFEAcA9MSxRA5fkZgdgzf9GFAiKSAJmQ3sQN1O0-p4hODOZodQ@mail.gmail.com>
+Subject: Re: [PATCH v3 36/97] target/arm: Implement SME2 SMLAL, SMLSL, UMLAL,
+ UMLSL
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,9 +96,11 @@ On Wed, 2 Jul 2025 at 13:34, Richard Henderson
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/arm/tcg/translate-sve.c | 10 ++++++++++
->  target/arm/tcg/sve.decode      |  8 +++++++-
->  2 files changed, 17 insertions(+), 1 deletion(-)
+>  target/arm/tcg/helper-sme.h    |  21 +++++
+>  target/arm/tcg/sme_helper.c    |  59 ++++++++++++
+>  target/arm/tcg/translate-sme.c |  84 +++++++++++++++++
+>  target/arm/tcg/sme.decode      | 168 +++++++++++++++++++++++++++++++++
+>  4 files changed, 332 insertions(+)
 >
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
