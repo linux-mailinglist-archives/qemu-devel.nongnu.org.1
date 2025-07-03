@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B9FAF6B0E
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 09:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF95AF6B17
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 09:08:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXE11-0001YJ-Kt; Thu, 03 Jul 2025 03:05:51 -0400
+	id 1uXE3K-0002hC-8J; Thu, 03 Jul 2025 03:08:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXE0t-0001Xf-1X
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:05:43 -0400
+ id 1uXE3B-0002dO-HS
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:08:06 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXE0p-0002ei-4K
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:05:40 -0400
+ id 1uXE39-0003gB-SZ
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 03:08:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751526340; x=1783062340;
+ t=1751526484; x=1783062484;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=8SXO5nI+xDcEDyec7i0C04BOq34/qzvnlTSefaa7jzY=;
- b=a0l0eVxTzMur1haTFZx9qnagmeih/kXa4oo0c8Akkw7G8uE5XDDdEsV4
- eHNXWTzaaWJC++DVVeTmJMHTQbZ5bLRho8nfv8sCJGP1t8EX+yyq47qv4
- 8BysMD8wotg/HB7ZUjPvxs9Ly4FYfdgXVFO6IOPeHpzAVG4EGjHwUSH43
- a62xvwI/+dX2Wpotd23PnoFw8pj9+ijdZijwRD2KOlKY1v6LIuPbQfJAu
- jWa/VozghThvOaz0pJ5RZZ0D58jMtuE5wnn4OquNrd/lyyO5HMyaewL1l
- WhJbmjx0fxlFGB1BmZzD7jEuO2EcB+L8q//0eotvvWysHp7Sqnop11tsu Q==;
-X-CSE-ConnectionGUID: mcCMx5AGS+G0eHsbK/Hl2g==
-X-CSE-MsgGUID: gmelXXjnSZ+oToZDrC67nw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="64084902"
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="64084902"
+ bh=FXvc684D0sDOD6c+tBWddt+cxkjspLqtcaynFtLq82Q=;
+ b=NceOEaxfOo57Srq4zuzide6gKuXgK28E9I/l++YSVJIoz6xX7TsmXGwT
+ jeNfHT2A7tpGOSehqoifpZHg4Pr/UUrZv2NScWlvUSeHya9TfEMb2+YK+
+ 8vbqZ6uidZU2G1mE2yeafp2tb8T7Z5glrevccLduzREd36UIl4N+RTOc2
+ b6akw/+TXE3gC2jpW7dH/RTzlt5JVj4b4C7Z9lGQks6J61ZBQSdCccmwg
+ MLV8vl/8ai7mWiFyK9NzuMnaT7H/4b6kheW3nTz7VZIfiNFe2fQbSEICm
+ 00ub8kMxgCrU9mdMcBamol7xzlgswtic6R+wMsr2RAEZvhJB/sXifPpYp g==;
+X-CSE-ConnectionGUID: NyK0iwo9Rl+KK1WHwV8H8Q==
+X-CSE-MsgGUID: 1S+UE9UOTy+5y4H0sEdhQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="64085178"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="64085178"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 00:05:37 -0700
-X-CSE-ConnectionGUID: ImuYMEbcTLGRIw4rUXiu0w==
-X-CSE-MsgGUID: YfKC/6KASYe8bppgfu1Csg==
+ 03 Jul 2025 00:08:03 -0700
+X-CSE-ConnectionGUID: 2Zw6MBXXSzWMXukTINKIeg==
+X-CSE-MsgGUID: PQTyxZamRuetOj5GqaoYXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="177955536"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="177956453"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 03 Jul 2025 00:05:33 -0700
-Date: Thu, 3 Jul 2025 15:26:58 +0800
+ by fmviesa002.fm.intel.com with ESMTP; 03 Jul 2025 00:08:00 -0700
+Date: Thu, 3 Jul 2025 15:29:25 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org,
@@ -54,18 +54,16 @@ Cc: qemu-devel@nongnu.org,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH v4 22/65] qapi: Move definitions related to accelerators
- in their own file
-Message-ID: <aGYwwuCClu2VOgrR@intel.com>
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: Re: [PATCH v4 32/65] cpus: Document CPUState::vcpu_dirty field
+Message-ID: <aGYxVegUOZu/IHGP@intel.com>
 References: <20250702185332.43650-1-philmd@linaro.org>
- <20250702185332.43650-23-philmd@linaro.org>
+ <20250702185332.43650-33-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250702185332.43650-23-philmd@linaro.org>
+In-Reply-To: <20250702185332.43650-33-philmd@linaro.org>
 Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -41
@@ -91,32 +89,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 02, 2025 at 08:52:44PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Wed,  2 Jul 2025 20:52:44 +0200
+On Wed, Jul 02, 2025 at 08:52:54PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Wed,  2 Jul 2025 20:52:54 +0200
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v4 22/65] qapi: Move definitions related to accelerators in
->  their own file
+> Subject: [PATCH v4 32/65] cpus: Document CPUState::vcpu_dirty field
 > X-Mailer: git-send-email 2.49.0
 > 
-> Extract TCG and KVM definitions from machine.json to accelerator.json.
-> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  MAINTAINERS                |  1 +
->  qapi/accelerator.json      | 75 ++++++++++++++++++++++++++++++++++++++
->  qapi/machine.json          | 65 ---------------------------------
->  qapi/qapi-schema.json      |  1 +
->  accel/tcg/monitor.c        |  2 +-
->  hw/core/machine-hmp-cmds.c |  1 +
->  hw/core/machine-qmp-cmds.c |  1 +
->  qapi/meson.build           |  1 +
->  8 files changed, 81 insertions(+), 66 deletions(-)
->  create mode 100644 qapi/accelerator.json
-
-Thank you for doing this; then I could refresh the PMU filter series
-based on this work.
-
-And,
+>  include/hw/core/cpu.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
