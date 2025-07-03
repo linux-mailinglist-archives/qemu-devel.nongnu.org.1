@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC5AAF7F41
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AFBFAF7F54
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 19:44:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXNqZ-0000Ls-91; Thu, 03 Jul 2025 13:35:43 -0400
+	id 1uXNqc-0000RY-Vr; Thu, 03 Jul 2025 13:35:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNpv-0007oy-Db
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:05 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNpz-0007pw-3b
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:08 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNpt-0001Bf-3F
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:02 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-451d41e1ad1so874895e9.1
- for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:35:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXNpx-0001Rv-7v
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 13:35:06 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3a582e09144so39786f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Jul 2025 10:35:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751564099; x=1752168899; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751564103; x=1752168903; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eOWWkYUng0bWFtZYS1mlC3Juddgqx712KerwYfB2I6g=;
- b=n6hiHk1sVWCWXE1C2BXKkkRGWN9AkhvqQKwzvKH3J5hdbr8GAcvKLU1H/KZ/pkuPIX
- 2+Rw3X8mvby3rp200jecQr/4VDNvs+bPx/uVYF46sZJIhk0l/lrlOSgDAXMsWFY+uQpT
- HWKR2Z2r5Z3S8+DnunfbrANoZMQ4V+ZlNCogJwKRlPyLaK9lgR4/rTAO7nQ8/xfG7C0z
- CJQ3AsPPoOgxSr5ooIx92kefadEYv4v01wBX7SAgCszulq/SaMh9jm79hcZykSn0p93x
- tyeF6Oh9TMUbZtaChsd6xG4Uq4LdpaL+KWL1te5+RU2p4OUOdv3Vs9N2SXjGco3BduA0
- UUpQ==
+ bh=+7NLj1HZVYxEPzWZInSZPj2XYJ8nPbkqoQqpybhaaZc=;
+ b=tZU6qVf+Y/ekWaMq+yV4As8r/UTsVo1QKZvT6ObJHfgDCtGaZz975q1zZxK31fwp2w
+ r2yHkoUycZ7PlaO0V4oPN/pr4ECpPDnA5ozUTpNpPz+o6sEjDm69hODorrJsAkUCvEWW
+ iAF+Z+nThgnXtb+B5/aJ/sPDIlvI3N7qKYhIQTAGP8otBeYwns1M3fLsGwYQAxVS9Qjn
+ qvg403aibJXny7sPf3tgn4hZ1ZoFm9oDVdoat2fzI1MEASpNGZmXaaxnkcblBhO9KP6T
+ MdI8TWrpF71NGJRnKt1KXMCPTUFBIio7tPotJL4/AFFT5NnWAV+zcrsgi7Dk5j4PlQ8H
+ UYbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751564099; x=1752168899;
+ d=1e100.net; s=20230601; t=1751564103; x=1752168903;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eOWWkYUng0bWFtZYS1mlC3Juddgqx712KerwYfB2I6g=;
- b=cHJD6XM809/aqJ/1w1EWb9YbhzN9XsLEszPHoFsLXFJwMfg1s5rmEFahSyYvp7RUik
- Z8DKTt924OcF3/zdCpGtmnq7N2JCUKsodW0pARy2Z2vOgPZmrcsQTG1zwuNUmC941nTw
- D1MzYQVWpgmGDYkta5vAzHuNg9z+Jnxq/lhDehJ6LGN2NJ/RHhgSWjDghTwI9FNhKqJd
- wHlQ1uhRpMavyHCl2kle0fr36uQCKxEIgAm6XPpt+r9U5VqI0ZTZQXv/zugSLXJWG8SJ
- LWDYN2E3lMhvzZVWjPf95jFt28QEN+/++pyjWLchXdNe54QWrpT6ELAGGhk54p712i9n
- Ieeg==
-X-Gm-Message-State: AOJu0YxGMpTm/SCRYZ+G8QzfRky8YsuTsCF3AYOppcqDjTcwXIlJXL4y
- 7hCLuzKymXfgCd17ONysO9ZGKXN02xTFm9B20Rp/herAnnW0SwnrUTTjMQC2NEwhrxqeC/NleJX
- zd14u3v0=
-X-Gm-Gg: ASbGncuAhVQa40w9CVxIpxNEcgypfjKs9FxSuX1OXHr2TVWLbbpeZI+B1rF+HO/NQ0e
- 86a0QZmQrcjkYSMAIYjOQWk8WkJ9Aq1Bqwv43v7KNJwFOSPhAR5xVPZQVs+c8r98qeTeOXW0x9j
- rr3X2fKbLG8Z1jJap4IIU+oB1vKwqeHwiBZ2GBD2F2JDLELMZrD2f0mz6pYpOp0NfZ0wTI32p4Y
- Rpx6fvesXLFm0pYvZkXVyezgH6QEGHef/8f35q0e/ta8psdpOGiyfwCHhXZ2/NTjqeVQf31KW++
- XARq8CKsXi/9wgPh8O5if1r9sdYfCN11n3guYpFHmNenHgjvmgvIegKqXdAsV2F0zTD1v4r47tS
- R0njL73/9Y2Wnkai/P62PfW6GwAt2Q+tyCraf
-X-Google-Smtp-Source: AGHT+IEdZXugt44EZMe2Wr+pf29DApGEG1QcxUknPVsPatrBQozI0pUwQi3bhxbIkzCZ0KnzxLmUEQ==
-X-Received: by 2002:a05:600c:4449:b0:43d:fa58:81d3 with SMTP id
- 5b1f17b1804b1-454ab3bc45bmr35301495e9.32.1751564098316; 
- Thu, 03 Jul 2025 10:34:58 -0700 (PDT)
+ bh=+7NLj1HZVYxEPzWZInSZPj2XYJ8nPbkqoQqpybhaaZc=;
+ b=i0G8agA2l2VgnRJ3MddtNU9FwlFlHV/+L0bI/jtPEOI3a6grJyh4WOJlnpdEzvrstI
+ J16SVOo6+fT8BFuPg0dyM9dqUc+ZzKDC28gPq+rrGQ5lHKpWjBGipOyCtt+leP2Eb0OX
+ rOYcqmXNoVsddzt5iV357kcTH105GTLFnGicrNq/b/GEfpKJRJRcqCmYOz2ueNyGgjJJ
+ mFz1OkL0VO8ZZ5ahivhJeiDPB/CmoLxVtJoL2ciF+HXavduDrBx2XJwziYQwQUo2BviO
+ 5u6YdP/DYmsv+mOvIYvJ3RBLulk8P/RitZFlb2jsz3374Uih5zL89dldmZwS0PjUtCov
+ YaGQ==
+X-Gm-Message-State: AOJu0YytL3nH26qseZbtBDNOgYWA7bGeG45j4dCHF8RzP+nUS4pg9R1U
+ nGzcJAkGU5ky0nAdYNMYzgoD8BrvTkhjGMfUjVsU94Uz1YaEUyX/5L7TPImHOOewVcInOQzQf0/
+ GnoHD9gs=
+X-Gm-Gg: ASbGncu3+WmBfm3tG2suFqy44+FA5PzMCK9JyBcHTrVG8QuzdrTZwWxWHCDUe2ily0M
+ rQWUoUNLmNJtpEO0WIWO6hag8S8/Hc1wRbURMwTXlLjCoywt7K9CodFS/30H3jYRCQaAZVKPOPP
+ n5EBSl8N/tz/j/Qz94/BVYk8q880/cxPoyTYBJLZJTYQiYu22I9CGrOkn2bq4Ve6pBKOO89g8Un
+ 0VxlfbwVW/IcWq3761/3FS5vHQOhBmnJ3toEacGlXNfBxr7j9VEyW0JKU3aSOm9oJVZRMsExyRZ
+ 6s2X0ktn/rK3U7gihjP7vzto8UQAHrBcplJZgTDUM5IfpiEXN+yH9MUovrrsXBtXhX93i1dnnjT
+ ZBFxWkjlflBennLyilNrBfm9iGhAUTv9yUT/HQ2a2jDXWAaw=
+X-Google-Smtp-Source: AGHT+IEyOBQOTlTAlVMkY2/tTLbCpBL5uIRAyviGBtyzz7xTPc6AnaeaAzCRsfUkdFYvOLHbNZtLqw==
+X-Received: by 2002:a05:6000:2c11:b0:3a6:d255:7eda with SMTP id
+ ffacd0b85a97d-3b20095cf70mr6400736f8f.28.1751564103178; 
+ Thu, 03 Jul 2025 10:35:03 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a9bcebf7sm33304695e9.21.2025.07.03.10.34.57
+ ffacd0b85a97d-3b47285c919sm310292f8f.92.2025.07.03.10.35.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Jul 2025 10:34:57 -0700 (PDT)
+ Thu, 03 Jul 2025 10:35:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,18 +68,18 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Reinoud Zandijk <reinoud@netbsd.org>
-Subject: [PATCH v6 24/39] accel/nvmm: Expose nvmm_enabled() to common code
-Date: Thu,  3 Jul 2025 19:32:30 +0200
-Message-ID: <20250703173248.44995-25-philmd@linaro.org>
+ Sunil Muthuswamy <sunilmut@microsoft.com>
+Subject: [PATCH v6 25/39] accel/whpx: Expose whpx_enabled() to common code
+Date: Thu,  3 Jul 2025 19:32:31 +0200
+Message-ID: <20250703173248.44995-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250703173248.44995-1-philmd@linaro.org>
 References: <20250703173248.44995-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,61 +102,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently nvmm_enabled() is restricted to target-specific code.
-By defining CONFIG_NVMM_IS_POSSIBLE we allow its use anywhere.
+Currently whpx_enabled() is restricted to target-specific code.
+By defining CONFIG_WHPX_IS_POSSIBLE we allow its use anywhere.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/system/nvmm.h       | 23 ++++++++++++-----------
- accel/stubs/nvmm-stub.c     | 12 ++++++++++++
- target/i386/nvmm/nvmm-all.c |  8 +-------
+ include/system/whpx.h       | 27 ++++++++++++++-------------
+ accel/stubs/whpx-stub.c     | 12 ++++++++++++
+ target/i386/whpx/whpx-all.c |  7 +------
  accel/stubs/meson.build     |  1 +
- 4 files changed, 26 insertions(+), 18 deletions(-)
- create mode 100644 accel/stubs/nvmm-stub.c
+ 4 files changed, 28 insertions(+), 19 deletions(-)
+ create mode 100644 accel/stubs/whpx-stub.c
 
-diff --git a/include/system/nvmm.h b/include/system/nvmm.h
-index 6971ddb3a5a..7390def9adb 100644
---- a/include/system/nvmm.h
-+++ b/include/system/nvmm.h
-@@ -13,17 +13,18 @@
- #define QEMU_NVMM_H
+diff --git a/include/system/whpx.h b/include/system/whpx.h
+index 00ff409b682..00f6a3e5236 100644
+--- a/include/system/whpx.h
++++ b/include/system/whpx.h
+@@ -16,19 +16,20 @@
+ #define QEMU_WHPX_H
  
  #ifdef COMPILING_PER_TARGET
 -
--#ifdef CONFIG_NVMM
+-#ifdef CONFIG_WHPX
 -
--int nvmm_enabled(void);
+-int whpx_enabled(void);
+-bool whpx_apic_in_platform(void);
 -
--#else /* CONFIG_NVMM */
+-#else /* CONFIG_WHPX */
 -
--#define nvmm_enabled() (0)
+-#define whpx_enabled() (0)
+-#define whpx_apic_in_platform() (0)
 -
--#endif /* CONFIG_NVMM */
+-#endif /* CONFIG_WHPX */
 -
-+# ifdef CONFIG_NVMM
-+#  define CONFIG_NVMM_IS_POSSIBLE
-+# endif /* !CONFIG_NVMM */
++# ifdef CONFIG_WHPX
++#  define CONFIG_WHPX_IS_POSSIBLE
++# endif /* !CONFIG_WHPX */
 +#else
-+# define CONFIG_NVMM_IS_POSSIBLE
++# define CONFIG_WHPX_IS_POSSIBLE
  #endif /* COMPILING_PER_TARGET */
  
-+#ifdef CONFIG_NVMM_IS_POSSIBLE
-+extern bool nvmm_allowed;
-+#define nvmm_enabled() (nvmm_allowed)
-+#else /* !CONFIG_NVMM_IS_POSSIBLE */
-+#define nvmm_enabled() 0
-+#endif /* !CONFIG_NVMM_IS_POSSIBLE */
++#ifdef CONFIG_WHPX_IS_POSSIBLE
++extern bool whpx_allowed;
++#define whpx_enabled() (whpx_allowed)
++bool whpx_apic_in_platform(void);
++#else /* !CONFIG_WHPX_IS_POSSIBLE */
++#define whpx_enabled() 0
++#define whpx_apic_in_platform() (0)
++#endif /* !CONFIG_WHPX_IS_POSSIBLE */
 +
- #endif /* QEMU_NVMM_H */
-diff --git a/accel/stubs/nvmm-stub.c b/accel/stubs/nvmm-stub.c
+ #endif /* QEMU_WHPX_H */
+diff --git a/accel/stubs/whpx-stub.c b/accel/stubs/whpx-stub.c
 new file mode 100644
-index 00000000000..cc58114ceb3
+index 00000000000..c564c89fd0b
 --- /dev/null
-+++ b/accel/stubs/nvmm-stub.c
++++ b/accel/stubs/whpx-stub.c
 @@ -0,0 +1,12 @@
 +/*
-+ * NVMM stubs for QEMU
++ * WHPX stubs for QEMU
 + *
 + *  Copyright (c) Linaro
 + *
@@ -164,44 +168,43 @@ index 00000000000..cc58114ceb3
 + */
 +
 +#include "qemu/osdep.h"
-+#include "system/hvf.h"
++#include "system/whpx.h"
 +
-+bool nvmm_allowed;
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index aea61a6fd2a..2df49d7eeb4 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -46,7 +46,7 @@ struct qemu_machine {
++bool whpx_allowed;
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index 5001afad3a7..94fd5fc7849 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -242,7 +242,7 @@ struct AccelCPUState {
+     WHV_RUN_VP_EXIT_CONTEXT exit_ctx;
+ };
  
- /* -------------------------------------------------------------------------- */
- 
--static bool nvmm_allowed;
-+bool nvmm_allowed;
- static struct qemu_machine qemu_mach;
- 
- static struct nvmm_machine *
-@@ -1192,12 +1192,6 @@ nvmm_accel_init(MachineState *ms)
-     return 0;
+-static bool whpx_allowed;
++bool whpx_allowed;
+ static bool whp_dispatch_initialized;
+ static HMODULE hWinHvPlatform, hWinHvEmulation;
+ static uint32_t max_vcpu_index;
+@@ -2688,11 +2688,6 @@ error:
+     return ret;
  }
  
--int
--nvmm_enabled(void)
+-int whpx_enabled(void)
 -{
--    return nvmm_allowed;
+-    return whpx_allowed;
 -}
 -
- static void
- nvmm_accel_class_init(ObjectClass *oc, const void *data)
- {
+ bool whpx_apic_in_platform(void) {
+     return whpx_global.apic_in_platform;
+ }
 diff --git a/accel/stubs/meson.build b/accel/stubs/meson.build
-index 8ca1a4529e2..4c34287215f 100644
+index 4c34287215f..9dfc4f9ddaf 100644
 --- a/accel/stubs/meson.build
 +++ b/accel/stubs/meson.build
-@@ -3,5 +3,6 @@ system_stubs_ss.add(when: 'CONFIG_XEN', if_false: files('xen-stub.c'))
- system_stubs_ss.add(when: 'CONFIG_KVM', if_false: files('kvm-stub.c'))
+@@ -4,5 +4,6 @@ system_stubs_ss.add(when: 'CONFIG_KVM', if_false: files('kvm-stub.c'))
  system_stubs_ss.add(when: 'CONFIG_TCG', if_false: files('tcg-stub.c'))
  system_stubs_ss.add(when: 'CONFIG_HVF', if_false: files('hvf-stub.c'))
-+system_stubs_ss.add(when: 'CONFIG_NVMM', if_false: files('nvmm-stub.c'))
+ system_stubs_ss.add(when: 'CONFIG_NVMM', if_false: files('nvmm-stub.c'))
++system_stubs_ss.add(when: 'CONFIG_WHPX', if_false: files('whpx-stub.c'))
  
  specific_ss.add_all(when: ['CONFIG_SYSTEM_ONLY'], if_true: system_stubs_ss)
 -- 
