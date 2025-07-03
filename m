@@ -2,64 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A7FAF7936
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 16:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 185FCAF7977
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 17:01:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXLOz-0005Qa-Vz; Thu, 03 Jul 2025 10:59:06 -0400
+	id 1uXLQc-0006dg-5b; Thu, 03 Jul 2025 11:00:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1uXLOi-0005KE-If
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 10:58:51 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1uXLQ5-0006Um-Ek
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 11:00:16 -0400
+Received: from smtp-out-60.livemail.co.uk ([213.171.216.60]
+ helo=dkim.livemail.co.uk)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1uXLOb-0000YO-I6
- for qemu-devel@nongnu.org; Thu, 03 Jul 2025 10:58:48 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c10:4a1:0:640:2691:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 6227560CBC;
- Thu,  3 Jul 2025 17:58:34 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:116::1:2d] (unknown
- [2a02:6bf:8080:116::1:2d])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id XwdlTT0FgKo0-E7RFtFBN; Thu, 03 Jul 2025 17:58:34 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1751554714;
- bh=V2G+lmuSr28EftuZFbE2HyKgEFlMnAVRTPHKCiuVGcc=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=XjsCgw+69GeTLYnVSe5bbIwgTWHYAqlilsJ72t0zmjWBJk0no8AZ7Pj5++PmaFURY
- CWq035bLXWav+XFx0+wLjkbRS3cZMefNFXYoqGxAMNKkyWp613oPs+/IoZdae5gtVh
- 0yTl3t+aZ3ppQZItTtGmRGkPNnFKRvWoOBkEMdJo=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <d7a66374-12d3-4b4b-975f-90202d83cbdf@yandex-team.ru>
-Date: Thu, 3 Jul 2025 17:58:33 +0300
+ (Exim 4.90_1) (envelope-from <roy.hopkins@randomman.co.uk>)
+ id 1uXLPz-0000lv-8o
+ for qemu-devel@nongnu.org; Thu, 03 Jul 2025 11:00:12 -0400
+Received: from smtp.livemail.co.uk (unknown [10.44.132.82])
+ by dkim.livemail.co.uk (Postfix) with ESMTPS id ED9E9A0362;
+ Thu,  3 Jul 2025 16:00:03 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=randomman.co.uk;
+ s=livemail2; t=1751554804;
+ bh=JsqSuAO9jCXZwkQrZNBV+9jfU2sj7VCwBQFQMXg3aUM=;
+ h=From:To:Cc:Subject:Date:From;
+ b=k5txAGoGyJpumSAgLdEbFzrq5tWEG1OWIbyJSSLX76Om2mfDhnjZ8NfrViLxY0e9k
+ QK+QSOiOdwFoi6nJ/Ra1vPYt+CxmwGAT4DfAml/8l+9XFfRoYgkGeqB/BFEBwv/yES
+ natRwQ3uujFyFkDezSE/m8YKneaevHOGzlkOtlOc=
+Received: from localhost.localdomain (unknown [145.40.191.116])
+ (Authenticated sender: roy.hopkins@randomman.co.uk)
+ by smtp.livemail.co.uk (Postfix) with ESMTPSA id 6D8A2C094C;
+ Thu,  3 Jul 2025 15:59:59 +0100 (BST)
+From: Roy Hopkins <roy.hopkins@randomman.co.uk>
+To: qemu-devel@nongnu.org
+Cc: Roy Hopkins <roy.hopkins@randomman.co.uk>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
+ Gerd Hoffman <kraxel@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Joerg Roedel <joro@8bytes.org>
+Subject: [PATCH v9 00/16] Introduce support for IGVM files
+Date: Thu,  3 Jul 2025 15:59:33 +0100
+Message-ID: <cover.1751554099.git.roy.hopkins@randomman.co.uk>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net/tap: drop too small packets
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- jasowang@redhat.com
-Cc: qemu-devel@nongnu.org
-References: <20250703105508.2380494-1-vsementsov@yandex-team.ru>
-Content-Language: en-US
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-In-Reply-To: <20250703105508.2380494-1-vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=213.171.216.60;
+ envelope-from=roy.hopkins@randomman.co.uk; helo=dkim.livemail.co.uk
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,34 +81,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/3/25 1:55 PM, Vladimir Sementsov-Ogievskiy wrote:
+Here is v9 of the set of patches to add support for IGVM files to QEMU. This is
+based on commit c77283dd5d79149f4e7e9edd00f65416c648ee59 of qemu.
 
-> Theoretically tap_read_packet() may return size less than
-> s->host_vnet_hdr_len, and next, we'll work with negative size
-> (in case of !s->using_vnet_hdr). Let's avoid it.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->   net/tap.c | 5 +++++
->   1 file changed, 5 insertions(+)
->
-> diff --git a/net/tap.c b/net/tap.c
-> index ae1c7e39832..20d0dc2eb35 100644
-> --- a/net/tap.c
-> +++ b/net/tap.c
-> @@ -172,6 +172,11 @@ static void tap_send(void *opaque)
->               break;
->           }
->   
-> +        if (s->host_vnet_hdr_len && size < s->host_vnet_hdr_len) {
-> +            /* Invalid packet */
-> +            break;
-> +        }
-> +
->           if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
->               buf  += s->host_vnet_hdr_len;
->               size -= s->host_vnet_hdr_len;
+Once again, this is mostly a rebase of the previous patch series. However,
+thanks to those reviewers who have provided feedback on v8 which has now been
+addressed in this new version.
 
-Reviewed-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+This v9 patch series is also available on github: [2]
+
+For testing IGVM support in QEMU you need to generate an IGVM file that is
+configured for the platform you want to launch. You can use the `buildigvm`
+test tool [3] to allow generation of IGVM files for all currently supported
+platforms. Patch 11/17 contains information on how to generate an IGVM file
+using this tool.
+
+Changes in v9:
+
+* Address review comments from v8
+* Add metadata to relevant commits.
+
+Patch summary:
+
+1-11: Add support and documentation for processing IGVM files for SEV, SEV-ES,
+SEV-SNP and native platforms. 
+
+12-15: Processing of policy and SEV-SNP ID_BLOCK from IGVM file. 
+
+16: Add pre-processing of IGVM file to support synchronization of 'SEV_FEATURES'
+from IGVM VMSA to KVM.
+
+[1] Link to v8:
+https://lists.gnu.org/archive/html/qemu-devel/2025-06/msg02324.html
+
+[2] v8 patches also available here:
+https://github.com/roy-hopkins/qemu/tree/igvm_master_v9
+
+[3] `buildigvm` tool v0.2.0
+https://github.com/roy-hopkins/buildigvm/releases/tag/v0.2.0
+
+Roy Hopkins (16):
+  meson: Add optional dependency on IGVM library
+  backends/confidential-guest-support: Add functions to support IGVM
+  backends/igvm: Add IGVM loader and configuration
+  hw/i386: Add igvm-cfg object and processing for IGVM files
+  i386/pc_sysfw: Ensure sysfw flash configuration does not conflict with
+    IGVM
+  sev: Update launch_update_data functions to use Error handling
+  target/i386: Allow setting of R_LDTR and R_TR with
+    cpu_x86_load_seg_cache()
+  i386/sev: Refactor setting of reset vector and initial CPU state
+  i386/sev: Implement ConfidentialGuestSupport functions for SEV
+  docs/system: Add documentation on support for IGVM
+  docs/interop/firmware.json: Add igvm to FirmwareDevice
+  backends/confidential-guest-support: Add set_guest_policy() function
+  backends/igvm: Process initialization sections in IGVM file
+  backends/igvm: Handle policy for SEV guests
+  i386/sev: Add implementation of CGS set_guest_policy()
+  sev: Provide sev_features flags from IGVM VMSA to KVM_SEV_INIT2
+
+ backends/confidential-guest-support.c       |  43 +
+ backends/igvm-cfg.c                         |  51 +
+ backends/igvm.c                             | 988 ++++++++++++++++++++
+ backends/igvm.h                             |  22 +
+ backends/meson.build                        |   5 +
+ docs/interop/firmware.json                  |  30 +-
+ docs/system/i386/amd-memory-encryption.rst  |   2 +
+ docs/system/igvm.rst                        | 173 ++++
+ docs/system/index.rst                       |   1 +
+ hw/i386/pc.c                                |  12 +
+ hw/i386/pc_piix.c                           |  10 +
+ hw/i386/pc_q35.c                            |  10 +
+ hw/i386/pc_sysfw.c                          |  31 +-
+ include/hw/i386/x86.h                       |   3 +
+ include/system/confidential-guest-support.h |  88 ++
+ include/system/igvm-cfg.h                   |  49 +
+ meson.build                                 |   8 +
+ meson_options.txt                           |   2 +
+ qapi/qom.json                               |  17 +
+ qemu-options.hx                             |  28 +
+ scripts/meson-buildoptions.sh               |   3 +
+ target/i386/cpu.h                           |   9 +-
+ target/i386/sev.c                           | 850 +++++++++++++++--
+ target/i386/sev.h                           | 124 +++
+ 24 files changed, 2475 insertions(+), 84 deletions(-)
+ create mode 100644 backends/igvm-cfg.c
+ create mode 100644 backends/igvm.c
+ create mode 100644 backends/igvm.h
+ create mode 100644 docs/system/igvm.rst
+ create mode 100644 include/system/igvm-cfg.h
+
+-- 
+2.43.0
 
 
