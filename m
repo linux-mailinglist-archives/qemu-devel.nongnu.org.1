@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D03AAF6DEC
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 10:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FBB2AF6DF2
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Jul 2025 10:58:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXFkN-0002dI-SS; Thu, 03 Jul 2025 04:56:51 -0400
+	id 1uXFkj-0002wM-1d; Thu, 03 Jul 2025 04:57:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
- id 1uXFkG-0002be-Ay; Thu, 03 Jul 2025 04:56:40 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1uXFkM-0002gy-Id; Thu, 03 Jul 2025 04:56:48 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
- id 1uXFkE-000824-GK; Thu, 03 Jul 2025 04:56:40 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7424ccbef4eso4819831b3a.2; 
- Thu, 03 Jul 2025 01:56:37 -0700 (PDT)
+ id 1uXFkK-00083n-F0; Thu, 03 Jul 2025 04:56:46 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-235ea292956so50617185ad.1; 
+ Thu, 03 Jul 2025 01:56:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751532996; x=1752137796; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751533001; x=1752137801; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aKRfOMZpAFbQW59XcJc9qTc3jh/YMdne3jcVAlhxqzs=;
- b=hhB2hXRBMcj083kErq/iYSX+lcEiF6uWUBN9eLE9Pdao/V2PrOHD65Bjro62c9CDPn
- voK1kWvh2EbLlP4rcn+Qx4Ma2MiiFMMiO04/N4nj0apAT++5SAI3GSV9ezwTBRRqUWlO
- vGejemD29VwWucBvW1CJ9MIhQy2ujN3fYIBYEKuOUeZVWiLGzba68OKb3wbcb4Yahvmr
- nGvfvjN4MPxOjsP0gF8z3Hpmupoxe56Hr6l6gju5hLldokK9K+/U80baHfyptIruumE7
- s66Lk3oFdlYEckw1+7Xa10kq9vujDxW4CVCeUg6Wcv7g8GwcxSrGFb0YUWTcheebzPdS
- BaVA==
+ bh=95N5DHUFYR/urUJHPiqmxEqBz3CfWOqz9EM3HMn4/jk=;
+ b=FiL4O+pDxf3OsHCww9NO9C4/e083TW0V0OiuoJpjVQ7i2FWVenkMO+dMjTbq8bj/tT
+ RMp2WY7ZEWcG1jC6JIwTTT1DxRaZBAjMuIMShWQPFz16e3kP3u1f8oMom1eRpyPfGrJY
+ FxKMKz3v5Gm4x8xt1L9y7VrO7cG/lY+PIF0GLAkKThJ17g+2quNXmSTaGj83yQtUQTno
+ JYZyQfvEWOP83UxV1Fl3V8xlrbHNmXauSLLFqHQWTlVsrD0EHE5DktwplpYSXLFAIK/f
+ 663FWvr6FGt0SJCbn7O0nzBx8+4nb8e6m0GxdeC/us/WcMy6fx6B50umXhBgeNV9rKxC
+ vsJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751532996; x=1752137796;
+ d=1e100.net; s=20230601; t=1751533001; x=1752137801;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aKRfOMZpAFbQW59XcJc9qTc3jh/YMdne3jcVAlhxqzs=;
- b=ZCeZ4p0mb6561MPesacKUk8a9EtAtXWcaNx5iEn6SLblm4+JNWlWBMgAhP40TkiMs4
- AxuZf2KRLFIqiaRHxJebCwJIy0gmV8ZPmzomMAkOinG1Sl4X2UhzETxwD54a4QfUjpYD
- JN/QG++XduhOz0DDJnCQiGcAbg/o97/hPql2rTgbYYU04Qy4TSrr/bnJD6YBMPvfRTRN
- LSmrQLVP3b/mmzX+04T2KXr4ER8UxST5ZRXCu+Mt9UID1z0QCI/HLcjiMZOqNcIzTZBw
- FuZxOp+n0NAXDj315jnmJmUZ/DCoG2baRFl8YHN2Wvkm/3RAJJ0gEg3m1TMdxYqjDvGA
- LaGw==
+ bh=95N5DHUFYR/urUJHPiqmxEqBz3CfWOqz9EM3HMn4/jk=;
+ b=ud+jMh55szu5yYZsFD4gf56bAMClI15l41Y1QyQhFvkgA2acB3MIt/UiImJuQcKVZy
+ qbshMIFEC/8+FHn6/5NrU0N/zNSaa28fZH5G+LPJIdVaoD2kqeT5OH2uN8bZ78A+ccvq
+ jhihSue5IsXi6CttaqJt7jqmXSLUEWeSDlejc3gCXlomXiSUWmGB4W/iOBOeUEFghV80
+ ba36mjOtW3phD9D2hgw8Ecg1cIMO0WLHl7l56+vMVtIrxUH0yZfP0cPlSNXf/rIShJwA
+ 89RXhfUHdivd6/3iEYbtjsk75lKW+7qxVW/Z/cPcAcyyd9GY33n9am4/cDCAMjA2MpWM
+ NVcg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWlpkji5OB2OojtxjOjHrRrlwVe2yMY+qpKOj9AmyFe5r7ubM05ivf4Spp0GjOFoaizqaGITUDTqA==@nongnu.org
-X-Gm-Message-State: AOJu0YxSwTDu73uhQhiW3R9TPrgHblYuJgpRXSkQ3dF84C7EFHjYsqNz
- crxO0CZAJAQj2fSrK7OMSozHXi9xEu5VNaGslMICDXTABhv9n3tTW/obHUTaBEWMWvU=
-X-Gm-Gg: ASbGncuZTfJeZbp7WSiH3tnI8THFmFCgPeahK/AMA7lS6T9apYmj4XMq/yI+loAXepJ
- TyFIYXtMpSDfGWs8wLKJdpGQXYE2QLLA97d1foxUkJr2EH3H4ENfSQZOoDpiQEi4M7h8cpoNnCa
- 0tYBxrppH9e/1S6OmfMcj/QZ1LkCxj14Ku6lLuU0UU3TIRXi6qQuxStTDMGeSNC+InAJsN5lT8A
- u7mwMnNuP0h0L1H/dDxK81vuR6BOuPyfF05/Hw1gz1uV2HHWUYCZOfjr9yZaX7iJC9fccxaBgPh
- JE3beCIABXsL24uKQ6InBAIefmHtWI20PuUvI+YV0Fp+cgh7I4aEoTrL8AjxtAnBqHkdVF9kyBk
- LvBGw6b2zr4JiBBodaV0yCl5Xt/uzBsYmtnzwW3QFrWI=
-X-Google-Smtp-Source: AGHT+IGzwAlqDoi6kEjLNV9yt8UNZjj86pVaRPcoqGg/HZwvAIlKSmyjfylRqhK9d0Dzq8ITLBwF/A==
-X-Received: by 2002:a05:6a21:6da0:b0:220:99ba:6b5d with SMTP id
- adf61e73a8af0-222d7f33162mr9017321637.39.1751532996074; 
- Thu, 03 Jul 2025 01:56:36 -0700 (PDT)
+ AJvYcCUU+bzpT0BJbDDIOTtsBdGtr3lR8eaEukh6w+EaYAEP+ZRHaiofeoNdxPvzaCLYQYfetiM2FCBCVw==@nongnu.org
+X-Gm-Message-State: AOJu0YyfY4/yw1Kk6/rOdovof/0Sz0Z6oVgGwKIA8L3Ob47od0RGpmpg
+ x10ITUxdAJzygc6twD4GYpn8JX7ymz3kRTv4r8wK9CBb0PX7e/ZZwGUcb76GEBeglWk=
+X-Gm-Gg: ASbGncse6ppCipieZq8NPaX8wTTgXzpQJJwv3TguMl1BIxyHem6pPX7su04Q6hXOxxk
+ NQKzL5p8ox12I9EDevryU/cx3mYbCsZrZ55yN/BqctYwdbm2TT5V+xlzG4zs81WOj3fYnwN4qbM
+ gS6sti8te0IcqVMJDAhmFdCxJNdpTYfkk1cotHilA9iiIiQ/oaJ9tBQ7NbPVq/Je+IL0/blHvFG
+ C4ZQhQQtyU9eNL4GQ+pMWSOBeKWJrapjnUfHner7djwz1rRTM6H/p/u8bZ6PtmXKoJ9WYaEvJcJ
+ ZjLTqC06G3tRvLLgGcHI4OhmkBOXLMNiC21DP1cDwS9yc28mewMW/7MhGb1PBbqNarEBpTwX2X9
+ 0Le5OyapNoWWt3XBXMR07ItUeXEkFTGUNPf3KkB2slWY=
+X-Google-Smtp-Source: AGHT+IEbFgIYugWhe19qxSjOlXu4R2lYhdw4Y6xunbEVMmcLWzvF0M1Lf9EFiEB4NFVk9agjKYBOKA==
+X-Received: by 2002:a17:902:c94f:b0:234:a139:11e7 with SMTP id
+ d9443c01a7336-23c6e56c268mr93591235ad.35.1751533001105; 
+ Thu, 03 Jul 2025 01:56:41 -0700 (PDT)
 Received: from localhost (pa49-178-74-199.pa.nsw.optusnet.com.au.
  [49.178.74.199]) by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-74af57ef4dbsm16631704b3a.160.2025.07.03.01.56.35
+ d9443c01a7336-23acb3b7bafsm149171255ad.167.2025.07.03.01.56.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Jul 2025 01:56:35 -0700 (PDT)
+ Thu, 03 Jul 2025 01:56:40 -0700 (PDT)
 From: William Kosasih <kosasihwilliam4@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  William Kosasih <kosasihwilliam4@gmail.com>
-Subject: [PATCH v4 05/11] target/arm: Fix VSTR helper store alignment checks
-Date: Thu,  3 Jul 2025 18:25:58 +0930
-Message-ID: <20250703085604.154449-6-kosasihwilliam4@gmail.com>
+Subject: [PATCH v4 06/11] target/arm: Fix VLDR_SG helper load alignment checks
+Date: Thu,  3 Jul 2025 18:25:59 +0930
+Message-ID: <20250703085604.154449-7-kosasihwilliam4@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250703085604.154449-1-kosasihwilliam4@gmail.com>
 References: <20250703085604.154449-1-kosasihwilliam4@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=kosasihwilliam4@gmail.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=kosasihwilliam4@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,66 +100,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds alignment checks in the store operations in the VSTR
-instruction.
+This patch adds alignment checks in the load operations in the VLDR_SG
+instructions.
 
 Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
 Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/mve_helper.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ target/arm/tcg/mve_helper.c | 42 ++++++++++++++++++++++---------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
 diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
-index 8834523c23..9587f2da7d 100644
+index 9587f2da7d..633f511a7e 100644
 --- a/target/arm/tcg/mve_helper.c
 +++ b/target/arm/tcg/mve_helper.c
-@@ -172,15 +172,17 @@ static void mve_advance_vpt(CPUARMState *env)
-         mve_advance_vpt(env);                                           \
-     }
- 
--#define DO_VSTR(OP, MSIZE, STTYPE, ESIZE, TYPE)                         \
-+#define DO_VSTR(OP, MFLAG, MSIZE, STTYPE, ESIZE, TYPE)                  \
-     void HELPER(mve_##OP)(CPUARMState *env, void *vd, uint32_t addr)    \
+@@ -218,7 +218,7 @@ DO_VSTR(vstrh_w, MO_TEUW, 2, stw, 4, int32_t)
+  * For loads, predicated lanes are zeroed instead of retaining
+  * their previous values.
+  */
+-#define DO_VLDR_SG(OP, LDTYPE, ESIZE, TYPE, OFFTYPE, ADDRFN, WB)        \
++#define DO_VLDR_SG(OP, MFLAG, MTYPE, LDTYPE, ESIZE, TYPE, OFFTYPE, ADDRFN, WB)\
+     void HELPER(mve_##OP)(CPUARMState *env, void *vd, void *vm,         \
+                           uint32_t base)                                \
      {                                                                   \
-         TYPE *d = vd;                                                   \
-         uint16_t mask = mve_element_mask(env);                          \
-         unsigned b, e;                                                  \
+@@ -228,13 +228,15 @@ DO_VSTR(vstrh_w, MO_TEUW, 2, stw, 4, int32_t)
+         uint16_t eci_mask = mve_eci_mask(env);                          \
+         unsigned e;                                                     \
+         uint32_t addr;                                                  \
 +        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
 +        MemOpIdx oi = make_memop_idx(MFLAG | MO_ALIGN, mmu_idx);        \
-         for (b = 0, e = 0; b < 16; b += ESIZE, e++) {                   \
-             if (mask & (1 << b)) {                                      \
--                cpu_##STTYPE##_data_ra(env, addr, d[H##ESIZE(e)], GETPC()); \
-+                cpu_##STTYPE##_mmu(env, addr, d[H##ESIZE(e)], oi, GETPC()); \
+         for (e = 0; e < 16 / ESIZE; e++, mask >>= ESIZE, eci_mask >>= ESIZE) { \
+             if (!(eci_mask & 1)) {                                      \
+                 continue;                                               \
              }                                                           \
-             addr += MSIZE;                                              \
-         }                                                               \
-@@ -191,9 +193,9 @@ DO_VLDR(vldrb, MO_UB, 1, uint8_t, ldb, 1, uint8_t)
- DO_VLDR(vldrh, MO_TEUW, 2, uint16_t, ldw, 2, uint16_t)
- DO_VLDR(vldrw, MO_TEUL, 4, uint32_t, ldl, 4, uint32_t)
+             addr = ADDRFN(base, m[H##ESIZE(e)]);                        \
+             d[H##ESIZE(e)] = (mask & 1) ?                               \
+-                cpu_##LDTYPE##_data_ra(env, addr, GETPC()) : 0;         \
++                (MTYPE)cpu_##LDTYPE##_mmu(env, addr, oi, GETPC()) : 0;  \
+             if (WB) {                                                   \
+                 m[H##ESIZE(e)] = addr;                                  \
+             }                                                           \
+@@ -286,13 +288,15 @@ DO_VSTR(vstrh_w, MO_TEUW, 2, stw, 4, int32_t)
+         uint16_t eci_mask = mve_eci_mask(env);                          \
+         unsigned e;                                                     \
+         uint32_t addr;                                                  \
++        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
++        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
+         for (e = 0; e < 16 / 4; e++, mask >>= 4, eci_mask >>= 4) {      \
+             if (!(eci_mask & 1)) {                                      \
+                 continue;                                               \
+             }                                                           \
+             addr = ADDRFN(base, m[H4(e & ~1)]);                         \
+             addr += 4 * (e & 1);                                        \
+-            d[H4(e)] = (mask & 1) ? cpu_ldl_data_ra(env, addr, GETPC()) : 0; \
++            d[H4(e)] = (mask & 1) ? cpu_ldl_mmu(env, addr, oi, GETPC()) : 0; \
+             if (WB && (e & 1)) {                                        \
+                 m[H4(e & ~1)] = addr - 4;                               \
+             }                                                           \
+@@ -331,22 +335,26 @@ DO_VSTR(vstrh_w, MO_TEUW, 2, stw, 4, int32_t)
+ #define ADDR_ADD_OSW(BASE, OFFSET) ((BASE) + ((OFFSET) << 2))
+ #define ADDR_ADD_OSD(BASE, OFFSET) ((BASE) + ((OFFSET) << 3))
  
--DO_VSTR(vstrb, 1, stb, 1, uint8_t)
--DO_VSTR(vstrh, 2, stw, 2, uint16_t)
--DO_VSTR(vstrw, 4, stl, 4, uint32_t)
-+DO_VSTR(vstrb, MO_UB, 1, stb, 1, uint8_t)
-+DO_VSTR(vstrh, MO_TEUW, 2, stw, 2, uint16_t)
-+DO_VSTR(vstrw, MO_TEUL, 4, stl, 4, uint32_t)
+-DO_VLDR_SG(vldrb_sg_sh, ldsb, 2, int16_t, uint16_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrb_sg_sw, ldsb, 4, int32_t, uint32_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrh_sg_sw, ldsw, 4, int32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_sh, MO_SB, int8_t, ldb, 2, int16_t, uint16_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_sw, MO_SB, int8_t, ldb, 4, int32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrh_sg_sw, MO_TESW, int16_t, ldw, 4, int32_t, uint32_t, ADDR_ADD, false)
  
- DO_VLDR(vldrb_sh, MO_SB, 1, int8_t, ldb, 2, int16_t)
- DO_VLDR(vldrb_sw, MO_SB, 1, int8_t, ldb, 4, int32_t)
-@@ -202,9 +204,9 @@ DO_VLDR(vldrb_uw, MO_UB, 1, uint8_t, ldb, 4, uint32_t)
- DO_VLDR(vldrh_sw, MO_TESW, 2, int16_t, ldw, 4, int32_t)
- DO_VLDR(vldrh_uw, MO_TEUW, 2, uint16_t, ldw, 4, uint32_t)
+-DO_VLDR_SG(vldrb_sg_ub, ldub, 1, uint8_t, uint8_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrb_sg_uh, ldub, 2, uint16_t, uint16_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrb_sg_uw, ldub, 4, uint32_t, uint32_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrh_sg_uh, lduw, 2, uint16_t, uint16_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrh_sg_uw, lduw, 4, uint32_t, uint32_t, ADDR_ADD, false)
+-DO_VLDR_SG(vldrw_sg_uw, ldl, 4, uint32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_ub, MO_UB, uint8_t, ldb, 1, uint8_t, uint8_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_uh, MO_UB, uint8_t, ldb, 2, uint16_t, uint16_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrb_sg_uw, MO_UB, uint8_t, ldb, 4, uint32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrh_sg_uh, MO_TEUW, uint16_t, ldw, 2, uint16_t, uint16_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrh_sg_uw, MO_TEUW, uint16_t, ldw, 4, uint32_t, uint32_t, ADDR_ADD, false)
++DO_VLDR_SG(vldrw_sg_uw, MO_TEUL, uint32_t, ldl, 4, uint32_t, uint32_t, ADDR_ADD, false)
+ DO_VLDR64_SG(vldrd_sg_ud, ADDR_ADD, false)
  
--DO_VSTR(vstrb_h, 1, stb, 2, int16_t)
--DO_VSTR(vstrb_w, 1, stb, 4, int32_t)
--DO_VSTR(vstrh_w, 2, stw, 4, int32_t)
-+DO_VSTR(vstrb_h, MO_UB, 1, stb, 2, int16_t)
-+DO_VSTR(vstrb_w, MO_UB, 1, stb, 4, int32_t)
-+DO_VSTR(vstrh_w, MO_TEUW, 2, stw, 4, int32_t)
+-DO_VLDR_SG(vldrh_sg_os_sw, ldsw, 4, int32_t, uint32_t, ADDR_ADD_OSH, false)
+-DO_VLDR_SG(vldrh_sg_os_uh, lduw, 2, uint16_t, uint16_t, ADDR_ADD_OSH, false)
+-DO_VLDR_SG(vldrh_sg_os_uw, lduw, 4, uint32_t, uint32_t, ADDR_ADD_OSH, false)
+-DO_VLDR_SG(vldrw_sg_os_uw, ldl, 4, uint32_t, uint32_t, ADDR_ADD_OSW, false)
++DO_VLDR_SG(vldrh_sg_os_sw, MO_TESW, int16_t, ldw, 4,
++           int32_t, uint32_t, ADDR_ADD_OSH, false)
++DO_VLDR_SG(vldrh_sg_os_uh, MO_TEUW, uint16_t, ldw, 2,
++           uint16_t, uint16_t, ADDR_ADD_OSH, false)
++DO_VLDR_SG(vldrh_sg_os_uw, MO_TEUW, uint16_t, ldw, 4,
++           uint32_t, uint32_t, ADDR_ADD_OSH, false)
++DO_VLDR_SG(vldrw_sg_os_uw, MO_TEUL, uint32_t, ldl, 4,
++           uint32_t, uint32_t, ADDR_ADD_OSW, false)
+ DO_VLDR64_SG(vldrd_sg_os_ud, ADDR_ADD_OSD, false)
  
- #undef DO_VLDR
- #undef DO_VSTR
+ DO_VSTR_SG(vstrb_sg_ub, stb, 1, uint8_t, ADDR_ADD, false)
+@@ -362,7 +370,7 @@ DO_VSTR_SG(vstrh_sg_os_uw, stw, 4, uint32_t, ADDR_ADD_OSH, false)
+ DO_VSTR_SG(vstrw_sg_os_uw, stl, 4, uint32_t, ADDR_ADD_OSW, false)
+ DO_VSTR64_SG(vstrd_sg_os_ud, ADDR_ADD_OSD, false)
+ 
+-DO_VLDR_SG(vldrw_sg_wb_uw, ldl, 4, uint32_t, uint32_t, ADDR_ADD, true)
++DO_VLDR_SG(vldrw_sg_wb_uw, MO_TEUL, uint32_t, ldl, 4, uint32_t, uint32_t, ADDR_ADD, true)
+ DO_VLDR64_SG(vldrd_sg_wb_ud, ADDR_ADD, true)
+ DO_VSTR_SG(vstrw_sg_wb_uw, stl, 4, uint32_t, ADDR_ADD, true)
+ DO_VSTR64_SG(vstrd_sg_wb_ud, ADDR_ADD, true)
 -- 
 2.48.1
 
