@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4154AF9862
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1F3AF990B
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:44:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjFS-0004Pm-Nx; Fri, 04 Jul 2025 12:26:51 -0400
+	id 1uXjFK-0003aa-Aq; Fri, 04 Jul 2025 12:26:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjF8-0002dt-Jp
+ id 1uXjF9-0002j0-LL
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:31 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjF6-0006r7-L5
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:30 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-453647147c6so9827465e9.2
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:26:27 -0700 (PDT)
+ id 1uXjF7-0006rH-5V
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:31 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3a50956e5d3so814095f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:26:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646387; x=1752251187; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751646388; x=1752251188; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=J4AjWlLcQzRJMk4zTnwVIKd1mI/AdtOF3eG8HhuX0Cc=;
- b=Ro+e38QykMzERNdY5/9EF5+MHFJn0wX1m6q8aYUVCnWvkb4qsjsn4ZVhyBV6MQV3UP
- ulp62I5FZpe5yZNphPgiW0qsAIsBc52d7vGk9dW9/cNXdheyy0NLgaNMZBpMHU4uPwCD
- OnK6CnJB+UASs7gSStL+v0Di9m7EXVGjrA+zO85tYg3O3uQkVjVm/pUle1r2r/bKsf+F
- rvFUso3OjA2xI0inNziJ7ztjW+bb1/f4Vz0AVFqnGTd6EYQWyZhHz14fFALrTfp6XVya
- jXBobxNg1Lh6iCwzXTUP2vPrWbBHm6Q+Ej+RodO0g5aJRpc4oO5gHZQb2JmwdB4uY8JW
- x/yA==
+ :reply-to; bh=PcYeEZexeoPGuiuqnCkDIO//jKT7XOFYWx8s1iiYCDY=;
+ b=j3YhfrbcMHTrEbxd5i1I66UUx+EEUptsxkNCCVtn2LABOaSrV/NWJm071cwYG9nBYN
+ immuCbrX4z3t0kd9TXNKx08JBVUAV+cnBuqyBvk35k0TQkGa6beLYMbMrP30YrEEDeBL
+ Vnhr24HRPtrAcZ1algLMnTkun4vfqQafXYf1lHZSKNotdy+hFR7Zv/WJWnDf+i/LbfO4
+ qFsRJMdZFnK/51wbEooN4QTiQPuX6rBfPUw3/b4Gbab6Fw9MsPFuKYuLrBDejNzX1xB0
+ Csgn9HyTCeiy7IxHRJWjrd0eUy2FOrmUyTUqjjFhOE54lC0aLWJLRp87GEW9J/bH0dN2
+ trqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646387; x=1752251187;
+ d=1e100.net; s=20230601; t=1751646388; x=1752251188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J4AjWlLcQzRJMk4zTnwVIKd1mI/AdtOF3eG8HhuX0Cc=;
- b=ZLjJ9NQHnjXNYSTVWZLwponvOPrk8igOjQwH5a07pF+JUsQ0kb5JZYTjkSZfP2cbE8
- Nzswt/VApCxdSWq2fx9Zh4i/fJbwj8j+hRjRCZfaf0IlLeEGfJWG79e8IbAKvXpwjydF
- UVsfpADlJv7rnYOpfSIF+uMIjlNCROBM7rUzOsGjgvfAzanIrn+tTBo77jiKy+bBXvuZ
- hr4M3TndO+wc+f695RdGT2/T5igOsEzYlfbyhId6SYyzV8g6/baq2+j9XhR20eLfnCan
- Mu1OjS7fgVpUihpteGVMDrUJDWpF54zWdx7hhkVbwIKPTVy5BoFcPXZmwd4hbte12LyH
- HuEg==
-X-Gm-Message-State: AOJu0Yz7AZ+y+2E0RcbXMfti1YCCv6DtPxq3F7XcvdALU2F3NaQcSZ/1
- +pkbceRS6YTfrDjpNiBr442BWgPuZTGx+UGllVkCkdCrQ5enDR2KFyibY/y10bkzvcYjSIir2HB
- K5fN0
-X-Gm-Gg: ASbGncvrKF2JTNv5YJpETziwzwts1yUiLceZgZJK59bsO7xHaa+4hHEyKS+uc7ctK8H
- /b4q4dhgcIkP9rORMXSEk3ysaSDLB+I8nMmAZ4/bMp/LdwhQ7lKkkW9AEqekokbSxCOQNZ28Ozg
- 1k8UeTa5qKg28DQynvh4e1LcCyxVwEZVIicNDgQ72gYuAASYuc700yhxlmTaD8MTvfBvftOStMn
- OTC34jwlGGOpE9MSfSRRPzWnJ93vxh3qJtg9WGz7pZ+81odGeKMgEuDxzuCbxBSbLEbi/dqiYNc
- f41AgAVi+PYckEuVwDIw5BqAMaurow5PLy+LfelJKDJXn4n6KN8wXSesBDj+u+DOWV3Q
-X-Google-Smtp-Source: AGHT+IFgAlYwRlN8wRoG4SQvEe+AU4Uo36serLNkhO0c6tzzoXazCutSgHt11e3RhJ2MV3+lKrs6CA==
-X-Received: by 2002:a5d:5f8e:0:b0:3a6:ec1b:5742 with SMTP id
- ffacd0b85a97d-3b4964f9403mr2847514f8f.22.1751646386829; 
- Fri, 04 Jul 2025 09:26:26 -0700 (PDT)
+ bh=PcYeEZexeoPGuiuqnCkDIO//jKT7XOFYWx8s1iiYCDY=;
+ b=FF8ro9WeSFO4LSkt8lHNAYZHfR6Cx9LgdaUdrdci9jvyzWkEiUlVrST3hYoRvukUDA
+ +kxlfLnMRnlA5XCJMswfRYrMc9xhjiCJznxgcZvU7BTlBLN0CQXbDORt6E1AjzLq+7fq
+ 27bba236PNyzdiZoduTOdsWMQkoSnI8HPbhbjUt+FZcbPZSMMsjpGUkBIIUqcwDlL/YM
+ XDkRjwQIRl932C0oUzlkG5/B/pzVPyALzIVRjQHTD4zhmUGgwFXxSYXeQaGMSzgsUvGl
+ FrCjSBjVqmgiYs4QnDn67CUyug+WFOYUIsCKQKYJLkK07C6BEUr4BP7hA3UHJZAiIuwi
+ UTsA==
+X-Gm-Message-State: AOJu0Yz/J/GOJ7L8oS33PV6qPtcwvHs32Hk3/Q/f2wt7R+YQJ8emvV/z
+ m9FHf8hfKySyWYxLr6fGt2sTwGle28AkWBhtf19cORM/zowaatemShDqtWXyzTTITchGTTizw+q
+ l/kxC
+X-Gm-Gg: ASbGncvy+XZYdB4izbFRhBVQUM1bmMzzUXhMBkwdpDpAwsCH4nV5hMsAnJSuHrpwU3E
+ XWSs4cW4RiG3fy1wwKTBnG+ikIvbPrX7qELt0Lva+ErvneNjwYrYvU0vZR1KTvjxYkZXnuyO3lD
+ BgYsgoUnL19Laa2XylFD6ngryUuj6B6f+pNU04vJf6U1q/QlAP7+Jnsy/MTxfUnPhSaxDDW9qho
+ mqMh53io9ykJ26L0L+WwD4o9ay/Qk+BKJBxTfWpnDdxo5NB33RY+W4Pn6hWSH5qYRBgiQKv+gjT
+ JNYOclntNro/LA+z0XPEMwWKsGgsdLL23onIYs35KkeLosZmLhurlN6qLZXT6GxKYH/hqIhTHEP
+ 3FOw=
+X-Google-Smtp-Source: AGHT+IESMbhQkkkHa6UAr2x2MLgyNezXui8j5IaWluMNCgD9g0lW99wlD1UM0CQX1cwvHTDQDmcVpw==
+X-Received: by 2002:a5d:452f:0:b0:3b3:a6b2:9cd3 with SMTP id
+ ffacd0b85a97d-3b496604df8mr2883010f8f.48.1751646387649; 
+ Fri, 04 Jul 2025 09:26:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.26.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:26:26 -0700 (PDT)
+ Fri, 04 Jul 2025 09:26:27 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 088/119] target/arm: Split trans_WHILE to lt and gt
-Date: Fri,  4 Jul 2025 17:24:28 +0100
-Message-ID: <20250704162501.249138-89-peter.maydell@linaro.org>
+Subject: [PULL 089/119] target/arm: Enable PSEL for SVE2p1
+Date: Fri,  4 Jul 2025 17:24:29 +0100
+Message-ID: <20250704162501.249138-90-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
 References: <20250704162501.249138-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,93 +99,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Use TRANS_FEAT to select the correct predicate.
-Pass the helper and a boolean to do_WHILE.
-
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250704142112.1018902-77-richard.henderson@linaro.org
+Message-id: 20250704142112.1018902-78-richard.henderson@linaro.org
+This instruction is present in both SME(1) and SVE2.1 extensions.
+
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/sve.decode      |  4 +++-
- target/arm/tcg/translate-sve.c | 23 +++++++++--------------
- 2 files changed, 12 insertions(+), 15 deletions(-)
+ target/arm/tcg/translate-sve.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
-index dcfc40ef44b..c90d975ebf7 100644
---- a/target/arm/tcg/sve.decode
-+++ b/target/arm/tcg/sve.decode
-@@ -789,7 +789,9 @@ SINCDECP_z      00100101 .. 1010 d:1 u:1 10000 00 .... .....    @incdec2_pred
- CTERM           00100101 1 sf:1 1 rm:5 001000 rn:5 ne:1 0000
- 
- # SVE integer compare scalar count and limit
--WHILE           00100101 esz:2 1 rm:5 000 sf:1 u:1 lt:1 rn:5 eq:1 rd:4
-+&while          esz rd rn rm sf u eq
-+WHILE_lt        00100101 esz:2 1 rm:5 000 sf:1 u:1 1 rn:5 eq:1 rd:4  &while
-+WHILE_gt        00100101 esz:2 1 rm:5 000 sf:1 u:1 0 rn:5 eq:1 rd:4  &while
- 
- # SVE2 pointer conflict compare
- WHILE_ptr       00100101 esz:2 1 rm:5 001 100 rn:5 rw:1 rd:4
 diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index f74f2bb1b38..62d3e2efd69 100644
+index 62d3e2efd69..cb60b533e9f 100644
 --- a/target/arm/tcg/translate-sve.c
 +++ b/target/arm/tcg/translate-sve.c
-@@ -3108,7 +3108,8 @@ static bool trans_CTERM(DisasContext *s, arg_CTERM *a)
-     return true;
- }
+@@ -7273,7 +7273,7 @@ static bool trans_PSEL(DisasContext *s, arg_psel *a)
+     TCGv_i64 tmp, didx, dbit;
+     TCGv_ptr ptr;
  
--static bool trans_WHILE(DisasContext *s, arg_WHILE *a)
-+typedef void gen_while_fn(TCGv_i32, TCGv_ptr, TCGv_i32, TCGv_i32);
-+static bool do_WHILE(DisasContext *s, arg_while *a, bool lt, gen_while_fn *fn)
- {
-     TCGv_i64 op0, op1, t0, t1, tmax;
-     TCGv_i32 t2;
-@@ -3118,14 +3119,8 @@ static bool trans_WHILE(DisasContext *s, arg_WHILE *a)
-     TCGCond cond;
-     uint64_t maxval;
-     /* Note that GE/HS has a->eq == 0 and GT/HI has a->eq == 1. */
--    bool eq = a->eq == a->lt;
-+    bool eq = a->eq == lt;
- 
--    /* The greater-than conditions are all SVE2. */
--    if (a->lt
--        ? !dc_isar_feature(aa64_sve, s)
--        : !dc_isar_feature(aa64_sve2, s)) {
--        return false;
--    }
-     if (!sve_access_check(s)) {
-         return true;
+-    if (!dc_isar_feature(aa64_sme, s)) {
++    if (!dc_isar_feature(aa64_sme_or_sve2p1, s)) {
+         return false;
      }
-@@ -3149,7 +3144,7 @@ static bool trans_WHILE(DisasContext *s, arg_WHILE *a)
-     t0 = tcg_temp_new_i64();
-     t1 = tcg_temp_new_i64();
- 
--    if (a->lt) {
-+    if (lt) {
-         tcg_gen_sub_i64(t0, op1, op0);
-         if (a->u) {
-             maxval = a->sf ? UINT64_MAX : UINT32_MAX;
-@@ -3204,15 +3199,15 @@ static bool trans_WHILE(DisasContext *s, arg_WHILE *a)
-     ptr = tcg_temp_new_ptr();
-     tcg_gen_addi_ptr(ptr, tcg_env, pred_full_reg_offset(s, a->rd));
- 
--    if (a->lt) {
--        gen_helper_sve_whilel(t2, ptr, t2, tcg_constant_i32(desc));
--    } else {
--        gen_helper_sve_whileg(t2, ptr, t2, tcg_constant_i32(desc));
--    }
-+    fn(t2, ptr, t2, tcg_constant_i32(desc));
-+
-     do_pred_flags(t2);
-     return true;
- }
- 
-+TRANS_FEAT(WHILE_lt, aa64_sve, do_WHILE, a, true, gen_helper_sve_whilel)
-+TRANS_FEAT(WHILE_gt, aa64_sve2, do_WHILE, a, false, gen_helper_sve_whileg)
-+
- static bool trans_WHILE_ptr(DisasContext *s, arg_WHILE_ptr *a)
- {
-     TCGv_i64 op0, op1, diff, t1, tmax;
+     if (!sve_access_check(s)) {
 -- 
 2.43.0
 
