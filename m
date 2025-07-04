@@ -2,79 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B05AF9A13
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 19:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E035AF9A25
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 19:52:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXkVz-0003gt-6l; Fri, 04 Jul 2025 13:47:59 -0400
+	id 1uXkaC-0006WL-3k; Fri, 04 Jul 2025 13:52:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXkVw-0003eX-RU
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 13:47:57 -0400
-Received: from mail-yb1-xb31.google.com ([2607:f8b0:4864:20::b31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXkVv-0000Hm-6g
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 13:47:56 -0400
-Received: by mail-yb1-xb31.google.com with SMTP id
- 3f1490d57ef6-e731a56e111so999343276.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 10:47:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751651274; x=1752256074; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kbPcFz0yVBYdMqdUt8IQXgiKBKOoByKR4H2dND3V97g=;
- b=NbswVKSHwGZXBy8tBuaTBXrbkjc4zO2Djn1EYYjf1+K6bRDFNVvfWk/D3++N7po3XF
- DLaMuIOPARY5nR/5OMAa1qErtcDEK2rAdev+zOqk8m5HWvIT/omY9H3Rk283iQBA0waY
- PpwmE3Q514iNehC8H+ANyT4BprsFMdQWFU5AEfF6LYBbGZLrV+R7awXtdJWa0LujbQt8
- bYJ/+CM6FXwRdVlsnpYzvMm72Xh+ZlWSldeJKt8UUTgnnp0SFfVk4h96+AxcHpeRuivr
- h2biH41wml/WFD9o2aF9UiAId0j5hINaFHJuLHKzdIq9m2RWLj8QBkM11xWjYmp3XvVo
- qC1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751651274; x=1752256074;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kbPcFz0yVBYdMqdUt8IQXgiKBKOoByKR4H2dND3V97g=;
- b=XdV58Y6cOw/ZMWQp94Zqtm0dAQ4fJAPApP3ua69iMGKsipRFGQOnFhCuAsaNb8lz0i
- 6JZ/uFkLV1egdBPdfCdiGkRwaOy9vOSG6f7TvUl7paCM4mEM7J1QcZcCgVHBxebtUGQ/
- C3rmXtMv9HgEVS4LgZ6Dgbax2Z6R9Nv7RYsWo0kSuAJpy0g0fQHncUTGZO4nRmqLE+pR
- rcEivXEKWUDXODLhWmXsMjfB7KXO6GX52H7f8wt0w+7fbbgRW6JOWpbWh4fgGexlQhwq
- roB9YJdYrVFbymtyLw42QYxdXpX2jL74WJ16/sYrKEcxprI/S5kMb39LpVof6YZ6bLtf
- Js9Q==
-X-Gm-Message-State: AOJu0YwOwq7MNO7kuX/4412tMgUEgVNd4skehZSJx25JFwFrFYjjquXf
- 9QenK3CQDi4dQ3/dFXiMylvWaEshds0XzIGOVV8f4qmU+emCMm7bdlDDHDheor9X+fKpwKSkzG6
- j0SFf6+nw3iY14C1XfkSO+LHQcOAWIlQe0+fD9Xvj+A==
-X-Gm-Gg: ASbGnct6rIqGY1eUbb5plpKZ/95y/IaVTilRdQJZDC/J930BUK5sMlSWdJ6Z2Col5e7
- 4D7/jg+t43mJoBDCkncLWmQRNJShIPAHGPUsDFQP7iySY60NwWv6rCI9YpQJvHmJeA1QFCPBrZ5
- dS2voyPVm0dbqUHu2JYaOZGZFgtWt/sqlspqX/jGP2qXYuKHMXSNkjnK8=
-X-Google-Smtp-Source: AGHT+IFVP6rzcym4dWsvJOmBhRNRzmGLToGfkhMlcx0pPvQOUggAjodcN1ScyLtFUblzQ+2mdnH51ugHW5hXSl0sB9o=
-X-Received: by 2002:a05:690c:3382:b0:712:c55c:4e48 with SMTP id
- 00721157ae682-7166b5d4c63mr37421207b3.8.1751651274062; Fri, 04 Jul 2025
- 10:47:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uXkZx-0006Sl-Th
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 13:52:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uXkZr-00019x-76
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 13:52:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751651512;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Vl91N2rwImObNz6JhOO5IwMgEhApIRAG8zIO0n8dl/c=;
+ b=eW+c5iseTHOgIy+AB7XvKlaIXePzohfWC9egk4X2wfcYopELvEnN8XVpH8KPwq4rFdmojc
+ 5ejb9aqNGkKzfAM6kBqtoxHHrQOGi6ViElvOJQtQ6CiON+e/QkVSGlcMGpC+4Xw+VoA4K8
+ F5Rz50hRKTqkRJU9UE/HubseweCuH7M=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-tEl0hGkRPl6jpQbgsLl5LQ-1; Fri,
+ 04 Jul 2025 13:51:50 -0400
+X-MC-Unique: tEl0hGkRPl6jpQbgsLl5LQ-1
+X-Mimecast-MFC-AGG-ID: tEl0hGkRPl6jpQbgsLl5LQ_1751651509
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7F87D1944AA5; Fri,  4 Jul 2025 17:51:49 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.102])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8830819560A7; Fri,  4 Jul 2025 17:51:47 +0000 (UTC)
+Date: Fri, 4 Jul 2025 13:49:38 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
+Subject: Re: [PULL 00/11] aspeed queue
+Message-ID: <20250704174938.GA95114@fedora>
+References: <20250704083723.1410455-1-clg@redhat.com>
 MIME-Version: 1.0
-References: <20250704165729.208381-1-jcksn@duck.com>
- <20250704165729.208381-11-jcksn@duck.com>
-In-Reply-To: <20250704165729.208381-11-jcksn@duck.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 4 Jul 2025 18:47:42 +0100
-X-Gm-Features: Ac12FXzFjca56YNU97fN8EJ-ekuC0QH5Dm0sTGjY9xSfF6KMyzla8AheT_CsLsM
-Message-ID: <CAFEAcA-DBKyxL4By6O9tN7epppGWo5Y5mJ3Ku8CqxrrWzGNEug@mail.gmail.com>
-Subject: Re: [PATCH v3 10/11] MAX78000: AES implementation
-To: Jackson Donaldson <jackson88044@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b31;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb31.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="w4QmHjESI+s7DDVw"
+Content-Disposition: inline
+In-Reply-To: <20250704083723.1410455-1-clg@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.218, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,17 +83,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 4 Jul 2025 at 17:57, Jackson Donaldson <jackson88044@gmail.com> wrote:
->
-> This commit implements AES for the MAX78000
->
-> Signed-off-by: Jackson Donaldson
-> ---
 
-Your signed-off-by line seems to have lost the email address part here.
+--w4QmHjESI+s7DDVw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Applied, thanks.
 
-thanks
--- PMM
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
+
+--w4QmHjESI+s7DDVw
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhoFDIACgkQnKSrs4Gr
+c8jWOQf/WyBAOWmNggDJwxgIWbaTQ2RI6J8IhYbf0474m8t4r/xcLX8WpvRHhLRi
+oJz2LK7RdF9Qd2jaZPt8yAcynGIC0HqK43cHFvPvIY3tEsWAJgrlqngk2TD5QbKj
+/0fzi7Sxh3pkTHF7Srau/3f0EGzjVEdozKMl3hDqefs/BztmuKzrP9tSavd0KUko
+5F4jsknA+rEGzIO49SunfbzeLH1zAfj1J0FPgXkbJqmKnOmcsHqF+GX4ggOLrD22
+LRTY5793lzjZPF+s+vv5C+kNppYp45qYQEH23/bK5SB2Umqqig0ucMhtwn+Khwyo
+VJkw2IG4E/vsikzdWqfoSrZeTF3bZg==
+=L3af
+-----END PGP SIGNATURE-----
+
+--w4QmHjESI+s7DDVw--
+
 
