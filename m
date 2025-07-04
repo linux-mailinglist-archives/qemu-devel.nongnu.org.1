@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0423AF8DF8
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0E8AF8DFC
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:16:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXcVT-0005PO-2p; Fri, 04 Jul 2025 05:14:55 -0400
+	id 1uXcWK-0006UO-NJ; Fri, 04 Jul 2025 05:15:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXcVQ-0005O3-Rx
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:14:52 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ id 1uXcWJ-0006T7-5e
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:15:47 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXcVP-0001LV-9Q
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:14:52 -0400
+ id 1uXcWH-0001oc-9s
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:15:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751620491; x=1783156491;
+ t=1751620545; x=1783156545;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=t+J/nB4cAVI0KSD4rgQE67vIMS4Ht4rh2NMB33eJrBc=;
- b=aX9BkWXaOXwx8SZCm2Z/YUSO8TCkBbxtnUkwVIv3/UB5Nt0NC9kBl5ww
- AmIY9Z1Fkmwj7hgDykc4J7Kxuo7vMHkiWtWsfFNB3dtk+t9CBsmXg6/2K
- OzvWSnrWbrxgP1nB6JJmjEjcM+Ll52yWdBh7vRkNaBjPCK8rdILclpc20
- OsYuw0kyRTMo2mT2FpvA9iUbfHQ751DugO4Hc/b9MOWR8IS6KOEfsgax/
- FYwXI+7NM3zaW4sKlsyOTUMpOVlt8qpTfOlbA0D5sUqhlnGkRDjRiVZEt
- bSTJiiwAPcEOTCF3nAEfdmMkmmWdr6XWW0gF8unKJtBCEWlr1zj8XudU6 A==;
-X-CSE-ConnectionGUID: 1kDHkAQ3TNK8EoKe2J9e1g==
-X-CSE-MsgGUID: d1QekgzTSrqYdqBpa+bfug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="56580811"
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="56580811"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 02:14:50 -0700
-X-CSE-ConnectionGUID: rpuPFBlmQWKILgCGBqFsNQ==
-X-CSE-MsgGUID: 8Zt5UZDmSImRd5LebIdW/g==
+ bh=aial7JJv8nX1bRITUsijee950EYSkwRQ1GY89vTuk3U=;
+ b=njHqUFK3oqP5ph1XR2/SI1e+/MayWeuwnoJAKLGSYwxeJL7M8USmJGOC
+ G1tL4KqzVsgDNJ97o1nT+nQs0lCx0GHyLaf1Fdm0nTK7qRd9yzZVnSqHq
+ ySWO46/csmAWoBTxLHwtc2N+q62J5j3WSd0cI+7r+v+P/5S5HjqVT/sSL
+ G9ib0XfFMh0rGLNEg/TztjkUV8hNyRVot8c6JUnsE13wdqSyIBma8SuUl
+ Obw/ci1S4IGhOmBxOS8Nb2v5j3EUhitzUjP4V+/F6x+s8oz7Nf8WHIG3m
+ 2bfCct7iLhlKk/N3xxDmvzTuUs70RbCCdtVNE5llwjG6GN8UlknetA7q8 w==;
+X-CSE-ConnectionGUID: NIhhETDVQKOgUr/obFNcnQ==
+X-CSE-MsgGUID: kvJboX40Rmi4nhFehLsKxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="41581992"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="41581992"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 02:15:42 -0700
+X-CSE-ConnectionGUID: ouFteSMUS0S4U9hkUsQBwQ==
+X-CSE-MsgGUID: 7xQMCcpqS+WteSWpSR07+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="159150950"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="154017677"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 04 Jul 2025 02:14:48 -0700
-Date: Fri, 4 Jul 2025 17:36:14 +0800
+ by orviesa006.jf.intel.com with ESMTP; 04 Jul 2025 02:15:41 -0700
+Date: Fri, 4 Jul 2025 17:37:06 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 07/39] accel/tcg: Remove 'info opcount' and
- @x-query-opcount
-Message-ID: <aGegjrAunaMNodUa@intel.com>
+Subject: Re: [PATCH v6 08/39] accel/tcg: Remove profiler leftover
+Message-ID: <aGegwk0QFBerPmAp@intel.com>
 References: <20250703173248.44995-1-philmd@linaro.org>
- <20250703173248.44995-8-philmd@linaro.org>
+ <20250703173248.44995-9-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250703173248.44995-8-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250703173248.44995-9-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -83,30 +82,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 03, 2025 at 07:32:13PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu,  3 Jul 2025 19:32:13 +0200
+On Thu, Jul 03, 2025 at 07:32:14PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  3 Jul 2025 19:32:14 +0200
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v6 07/39] accel/tcg: Remove 'info opcount' and
->  @x-query-opcount
+> Subject: [PATCH v6 08/39] accel/tcg: Remove profiler leftover
 > X-Mailer: git-send-email 2.49.0
 > 
-> Since commit 1b65b4f54c7 ("accel/tcg: remove CONFIG_PROFILER",
-> released with QEMU v8.1.0) we get pointless output:
+> TCG profiler was removed in commit 1b65b4f54c7.
 > 
->   (qemu) info opcount
->   [TCG profiler not compiled]
-> 
-> Remove that unstable and unuseful command.
-> 
+> Fixes: 1b65b4f54c7 ("accel/tcg: remove CONFIG_PROFILER")
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Acked-by: Dr. David Alan Gilbert <dave@treblig.org>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  qapi/machine.json          | 18 ------------------
->  accel/tcg/monitor.c        | 21 ---------------------
->  tests/qtest/qmp-cmd-test.c |  1 -
->  hmp-commands-info.hx       | 14 --------------
->  4 files changed, 54 deletions(-)
+>  accel/tcg/monitor.c | 6 ------
+>  1 file changed, 6 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
