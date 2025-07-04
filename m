@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E164CAF98AC
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 653C2AF9866
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:34:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjGM-0007eE-Iy; Fri, 04 Jul 2025 12:27:46 -0400
+	id 1uXjLm-0000Tc-Iq; Fri, 04 Jul 2025 12:33:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjFb-0005yC-Md
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:27:00 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjFZ-0006zi-Gb
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:58 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3a507e88b0aso848812f8f.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:26:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646415; x=1752251215; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SRH0loritoMIYj/jPR+rUTfl0mRjYm32LpALRWJqQHc=;
- b=AMljl6H7UrO415TICMd06pNZ7Z0nm9HM9XldB0URrwWsxMXBeBaP0fCMTnH/pa3kG7
- dIQ1pCmOCp5o3JlZCsCPJfi4f3S2/eYMteu8tjrXAuzyn2JueaB0zBAkHw4LbnsleuIc
- d/U4/65MzNjXrw3JZzu5csp3EaiN+ZM68J+L5eccT0kKegWie9F54tJ7TH0sFsWgSkY3
- 8/Oa0jHtRDK+CS845yW1UrJKBGnUwFCU4bH35Qzu8gVw1PVSZNAaUdv0A4u0knmr5e9p
- IZluJraACnSVjwsRPaOpL4e2K7kQ0cnC9NsL/SoNSTSw1/aLr6QjiAMZpySVM/HEIyDN
- s90g==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uXjLf-0000Eb-Ou
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:33:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uXjLd-0000uS-9h
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:33:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751646791;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qr5Bgh0PTiEstAeW1tk0iNy0LG2L2smYXdefK5Bb05M=;
+ b=QUv1ImWx2FwrCQ4kQzD3GeKicRKXs8bdZOumpCV8CLnG8Z6yhGXhsNCwP/Ed6VbmgZWgKr
+ fH0LcDo9Do60yFVVxVJLmZArCMUlO/XNRlKNHiIahmxfl0GySYzNgVR09x1eDK1EesfNId
+ JTS3wVcPO671T3cKYUNNNTZtDCNazpQ=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-329-8Qvox13wN-691jAWjq7_yA-1; Fri, 04 Jul 2025 12:33:10 -0400
+X-MC-Unique: 8Qvox13wN-691jAWjq7_yA-1
+X-Mimecast-MFC-AGG-ID: 8Qvox13wN-691jAWjq7_yA_1751646789
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-4a98d1ed40aso24716391cf.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:33:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646415; x=1752251215;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SRH0loritoMIYj/jPR+rUTfl0mRjYm32LpALRWJqQHc=;
- b=ToLfQDatwuSf1LtWT3SzshEMasY6QNPAYnCgJh6iitRUto9hkljPpgvYJRGzXKYopM
- ENnfhQrBbDsX9xLfsalAytTQmHZJdeiSaDMDcHsWW56KsQCHn1ZZn2h+0jq3GmJtmN5s
- rooopRb85jr0U6hTVQAZ8UIluVE26tvkVuTsip/wkuFoMOn+LRjbGVYDS8hqIATsf8ew
- JuPlUQ6H8i+s3O3M+yNmHejeN3woi0ld8/YW7SdQxOAjvxEUfPJec6aIZTMa0XT0AXQz
- ogaHA3stOHZdkozr0DrLrvIpkAok3vAPqew4eSeV+oXOVy2x5D/dh972ovGoFAu8ugpY
- EWLA==
-X-Gm-Message-State: AOJu0YwfLRDFhKBwQO442tpki3c087GV5qZIvAp++H6/LG/dc8mH+AR5
- /HFdIyB7/DoQyMEAWiKJSmNN/LZJ9UUJcztY22nt/1c3ZcrUHpsd+zLsNbJ2aoRKyYQjHTi0L1D
- 8/6gK
-X-Gm-Gg: ASbGncvDIE4w9u/BBavvxYmpeDzvs/0L2/yt3uedJ8rzwrr16p5rtr9uT9A3bjqeYi6
- RVEkHf50730zaZwIhSom+IxYu3/4zRVyxceB2OaGliLivwl0hHNFaGYeTfj+vJ32FJ+6IoLHwnQ
- kqzzYCgpJGNCE4W3H/IoSvvRLQ180s845tTDl7Ae9Njgb5MvGIxrtk/DXLjbu7Zav3eXV/TAPDK
- JHC467uEEFAryP0xIGZV8qKF7M91CtvF3pnDFKcUu5w/ruu4kWie+YP4h44e9humntEwOFseF7K
- uFMjvbBkPLA66f4cxOU7XsWnuih5v5BPXwg0fnQCRHtgd599EoH6OXdKzwRWbU/bDdY+
-X-Google-Smtp-Source: AGHT+IGPOPkZKv/HdueKrLSPYRV5gKqKMTxUFMheGYKcc1zyKtX93MSBI2yXWU47k4ASF+ayJCuV/Q==
-X-Received: by 2002:a05:6000:4207:b0:3a4:ef33:e60 with SMTP id
- ffacd0b85a97d-3b49661d63fmr2446143f8f.40.1751646414947; 
- Fri, 04 Jul 2025 09:26:54 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.26.54
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1751646789; x=1752251589;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qr5Bgh0PTiEstAeW1tk0iNy0LG2L2smYXdefK5Bb05M=;
+ b=PJRuDgBvde4M6GaAf8/76iu6jqPwNPs/nsY9jH7l/szPPSsPOpka4ydowW5R/G/UiM
+ aRidID8F7vgpIjc4XpU47i1UzVXH3rNdvmEnjO7Y519iOnymGCh25qWvOGmXPYGazxiK
+ X1qIImya/NDRqlLqXvzftjRl2NDzVWREeAGcKoX4Otx6+7KyP2kqH3ajRnTgcK3h+04c
+ LbK72slnhGC2bfPyIpA34q1INk6Z8t4u018X6Rgx8B4U4YxGoLMIsNsiUvEUMaOJQlsl
+ oXl8CrlT6t4BpamHguLa0IDasO7tOfh/FfSns6GW758hXPafL54S0KL/aDIf5ce/CkbN
+ KVpQ==
+X-Gm-Message-State: AOJu0YxvML/+G9LhLj9uD1zqXHvE8Px6ORgnbeFK+w+k5hFGtgZ5j42M
+ BNzE4EWB3BtELX1uEaia3QKe/B0FEmpUXYfkpqOh4XUFXqJK2G9m1Tfkd2bTbqdD+oB3vIVeZwx
+ nCTZeQ2PkKxPHWTzANjmsbtbM2GjWicClKBKJ2sHmakdC3O7U8PpVC40C
+X-Gm-Gg: ASbGncuw4zQpdug1pPjUtgV90SSLOx/sXfxtH2OkmywmQcRVSbBVBS0F7/J0nhXBMXj
+ 409qROIchtdxzz61yS6mq5YhU3A+ptdOcu9zk2gx7wMmHl1wlOj2v3gSciUWvUqa01Dex2ByxpT
+ QrTc5DcJbTpfzeqHBOaV77294jYRWRzviBiEWrQwroNGZIs5OFbcbTagBGqL9tGMkT+5L8lUKo+
+ e1x/7AVCZz2UCrru4hCdh4guvwx2+jSlq5nd17/kmZTcbUcR7iyIREqMcxemAnjiX1R8FR2kqSU
+ akq035pnz3PuKQ==
+X-Received: by 2002:ac8:5c8f:0:b0:4a8:5a:9e2f with SMTP id
+ d75a77b69052e-4a996408befmr41134351cf.8.1751646789555; 
+ Fri, 04 Jul 2025 09:33:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH29YhOMjXtmwjyURpnJ2zC4FrF+f30EU0unwrVVnOFPtg4A7QHZm283umZ1J3Q+KoiUNkScQ==
+X-Received: by 2002:ac8:5c8f:0:b0:4a8:5a:9e2f with SMTP id
+ d75a77b69052e-4a996408befmr41133921cf.8.1751646789089; 
+ Fri, 04 Jul 2025 09:33:09 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4a9949f98f0sm16682511cf.18.2025.07.04.09.33.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:26:54 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 119/119] linux-user/aarch64: Set hwcap bits for SME2p1/SVE2p1
-Date: Fri,  4 Jul 2025 17:24:59 +0100
-Message-ID: <20250704162501.249138-120-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
-References: <20250704162501.249138-1-peter.maydell@linaro.org>
+ Fri, 04 Jul 2025 09:33:08 -0700 (PDT)
+Date: Fri, 4 Jul 2025 12:33:05 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 16/24] migration: Add capabilities into
+ MigrationParameters
+Message-ID: <aGgCQdJ4S75a0vdx@x1.local>
+References: <20250630195913.28033-1-farosas@suse.de>
+ <20250630195913.28033-17-farosas@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250630195913.28033-17-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.218, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,36 +104,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On Mon, Jun 30, 2025 at 04:59:05PM -0300, Fabiano Rosas wrote:
+> Add capabilities to MigrationParameters. This structure will hold all
+> migration options. Capabilities will go away in the next patch.
+> 
+> Also add capabilities to MigrationParameter as the enum needs to be
+> kept in sync with MigrationParameters. This affects the parsing of
+> migration HMP commands so make the necessary additions there too.
+> 
+> From this point on, both QMP and HMP versions of
+> migrate-set-parameters and query-migrate-parameters gain the ability
+> to work with capabilities.
+> 
+> With MigrationParameters now having members for each capability, the
+> migration capabilities commands (query-migrate-capabilities,
+> migrate-set-capabilities) will soon be deprecated. Add a set of
+> helpers to convert between the old MigrationCapability representation
+> and the new representation as members of MigrationParameters.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250704142112.1018902-108-richard.henderson@linaro.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- linux-user/elfload.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Acked-by: Peter Xu <peterx@redhat.com>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 2add1665c75..ea214105ff8 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -915,6 +915,14 @@ uint64_t get_elf_hwcap2(void)
-     GET_FEATURE_ID(aa64_sme_fa64, ARM_HWCAP2_A64_SME_FA64);
-     GET_FEATURE_ID(aa64_hbc, ARM_HWCAP2_A64_HBC);
-     GET_FEATURE_ID(aa64_mops, ARM_HWCAP2_A64_MOPS);
-+    GET_FEATURE_ID(aa64_sve2p1, ARM_HWCAP2_A64_SVE2P1);
-+    GET_FEATURE_ID(aa64_sme2, (ARM_HWCAP2_A64_SME2 |
-+                               ARM_HWCAP2_A64_SME_I16I32 |
-+                               ARM_HWCAP2_A64_SME_BI32I32));
-+    GET_FEATURE_ID(aa64_sme2p1, ARM_HWCAP2_A64_SME2P1);
-+    GET_FEATURE_ID(aa64_sme_b16b16, ARM_HWCAP2_A64_SME_B16B16);
-+    GET_FEATURE_ID(aa64_sme_f16f16, ARM_HWCAP2_A64_SME_F16F16);
-+    GET_FEATURE_ID(aa64_sve_b16b16, ARM_HWCAP2_A64_SVE_B16B16);
- 
-     return hwcaps;
- }
 -- 
-2.43.0
+Peter Xu
 
 
