@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B562AF98B7
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69735AF9832
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:29:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjFH-0003EW-CN; Fri, 04 Jul 2025 12:26:39 -0400
+	id 1uXjFI-0003Ir-1g; Fri, 04 Jul 2025 12:26:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjEn-0001OC-0K
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:09 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1uXjEo-0001Qv-VX
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:11 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjEl-0006Vy-BK
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:08 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3a4fd1ba177so793052f8f.0
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:26:06 -0700 (PDT)
+ id 1uXjEm-0006WV-EQ
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:26:10 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-451d6ade159so9792055e9.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:26:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646365; x=1752251165; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751646366; x=1752251166; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jOfPUoD/EdZ7exrh2TXwHv4lwM7vPam1pOKiytCEmQ0=;
- b=bBV1nzexd1EA4LHoJNvVE0qwcauw4sPTbaQOnJTNMoSv10QraqIpreHt+1SOgt9pHv
- sW1IOrVIXSPMjhKUwHEYqnnwX6b/ZaBhxevV8Xx5vV74EzR9WgNIHvG6+pi09gtDLB4S
- WoRfDj7Al41jtr2lMMGp19tbM15pOF3Lw/25gCEBKJtFliu+t+WE2vqkf2BQRlzDhcHb
- OyanulOdtBqr7voYOOZngPgLA9Ov9Q1BOE6c6JQiyqQw1jebm26WGEfjjb9I8bi1BXRb
- ilAVTJNTviGelBLNYacaBwE4oRJJyZkZfqiiHvIFwuIVc6yUATF8kj3m3oFES6VQHUzh
- xxFw==
+ :reply-to; bh=e4vy0WANG/EUmmYhw+UyOKc+Ub3sneFb8rRPaIkIhDM=;
+ b=y79SvlmcM6vJ8RHHEKmDfv3TwmAihi8XWTmk9vJMq6zTJJ4h6R2X3v64QHSpT3mrME
+ DeyZ3cuygkWYhiAKV9AJBTpP9CWvI5B8zsI1CuWbTKVupu4a/1GFfipY2w2D75rnMSVw
+ COyV2vmcUaDFqwCgwfcLsG4x0m4Mcke2E1HfOj/cISB09xoHN8Ca9YSjXrpTVIJxP8fP
+ dTRyDS092YKmj+UIxd4NAzoeTHi4pgKIevusKU7RG1dW+Wro+4y55SQRMhSM+R/ixw7v
+ +roNoztXslNaB5FdWWMaVygHECnV0CbRve4yS7OcTgMebX5RjG4P+ClbVLniD/g9NQs6
+ /d3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646365; x=1752251165;
+ d=1e100.net; s=20230601; t=1751646366; x=1752251166;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jOfPUoD/EdZ7exrh2TXwHv4lwM7vPam1pOKiytCEmQ0=;
- b=BvLJ+/X7Ur0yaybtGtE2WJRzla3ensK1c6LxfpwD53VsBaQUzxWO2uC0M92e6MT9rn
- OrJtssUBZGvifoYFrxdR0yuviwCRnUm87xYJsw5EhWM8gBKQlY5BSO13vx9I8AGzPpvL
- SUiPYNy32cQzIEnKPIgUBU/7jTTCBZywn8d5x+QmBQGDxar3Zoy63rrsb/5XXuF03vN0
- fldrFiLhy5x4l6NectLIFvoQ8jQTEOFCPxSguMqLGAWQCMeLvlremTlqTcadFz+coBi6
- chsPjapOSecBjaQ7K1eopVnbUNlXYsLdBYWHcgBUd8PhvBnrBwjpnUVy2AHf5/CnswvA
- NqQw==
-X-Gm-Message-State: AOJu0Yydu03Nt3set4PgUV/E/XbrubmpPZHRzElQvz/Oq8MUIvDzRco8
- ilqjiiF546e2S4mf7/9WF68JNp5Hj5PCRfZi4cZUw2uzIuguixkyrzNCkfCD4cFaXNkRr3sOyKe
- FyLS+
-X-Gm-Gg: ASbGncul5pgyh14vh/mPx5AEfaiMQIGMonXbyX2vDKPN2FZ+OvHe33m3cVT7d+4Gp1Z
- hMdd/9Www0rgBaNpwRuaqoDkXfxtbYiNawWqgsaVPqsq+hv0SxOk0nqTLpNLSvt4pxiGRby82yM
- nN1ldMfx25PTGbCE8eHw3TDS8dcPQgxKKLK6Ty69uLRAVIhCbwR9vtfXYdRu1tShMLMGglynIVz
- npOdP+RXcGNEsQIHmRBp5QKXCBhdIj6duYFajbfR62RM/jTt0IaN3GpvN6BGqwu2MngcVQ4QUrI
- irxydxa5/6VHaAeOulqxAO0t60dhCSmOmG4tc7IP3GRCrYPFqaZzF9ai2gNEroKNA3OX56q+zs1
- bKEo=
-X-Google-Smtp-Source: AGHT+IFkStfrZWsKS/7Z8E1VszPld7nLztXRAamx/GszjkvC9AkU+ZZArR7c6LYX691FFf8SpS0xDA==
-X-Received: by 2002:a05:6000:21c3:b0:3a6:d93e:526d with SMTP id
- ffacd0b85a97d-3b49310cdafmr2125457f8f.10.1751646365356; 
- Fri, 04 Jul 2025 09:26:05 -0700 (PDT)
+ bh=e4vy0WANG/EUmmYhw+UyOKc+Ub3sneFb8rRPaIkIhDM=;
+ b=pBfAaU2hAHO8on6CBYk2dw49ljYCFTVQ5srkmzl/hQjUTgF0TVBC/Hyczks/zwICbM
+ +kNLoWPyeKZ6SHrAxeQCFQBc13WDPg++Wwi4rONL/zJz69DP45R+8akaDjlvHU1FUMj/
+ /pPe8W7ctXhRF04FUZ8B9CYY5/+f7jMuhhuSP7FI9KUOjcZIKQAXl4N43ps2cOptVwI+
+ pCMTLOpbYG5Cwt0YX+8B5/HUq5nulBZcZ0+D4lB5LcL9LRKSL/wCG2nA5nMULGbPXBHF
+ WY375FJRJpDLzUSLYAD4AU6kPAUW0r03UCHxKBdS1eH87ANAHYRm913Gyk07iLiYSLy9
+ Jczg==
+X-Gm-Message-State: AOJu0YzgRinYxScdxUY1FqRFXyDRHqlK1triTnUA4v+ncx2hGV3TsdEL
+ y8tu6xXQIzNHIvE3dx8irdG6ZPolU/gX2YliSt1psfHdgNNe1qcs9oqeNsajHZbmndE03oqGwou
+ 6j9yi
+X-Gm-Gg: ASbGncuJvFc98DvpUYndDdhsoajaCvOIsXIvwoXob5VyeqhGKXLKOVG3s6jg5In52Ww
+ OVnl4M9jyp9fscUK1sf3jwR1Ngju+iDmjDwypiABDepX5EML9Dmto4dvBnJH0T8yQd6jUDj/bmG
+ jmChfmn2c3lOhizZR0KABvksqMG3jejo2Ttd+10IyNLw1O7e+BEhQw6/bPgmUlOhJJykelgX9Uh
+ x/lxLyUdpGTDpjfOZIG5ue1fDWxQBpWYdnTIfFniqPtS945iB37IAvFDRvuejb/VWmEFgPYiLvu
+ KBY3pTxprYDBX53Wx1b7nVqdCG1+CRLyZQfiFp/sH+NYnhCDXGq/oPXr9sa/Fld8aGcX
+X-Google-Smtp-Source: AGHT+IGU8p0GT0Nom75Akn2pGrqOj2DTFfGARAoMqGTCgA36eEXcdR+KbiFqrtdq5s5s4F5TVyOd8w==
+X-Received: by 2002:a05:600c:3554:b0:448:e8c0:c778 with SMTP id
+ 5b1f17b1804b1-454b4ea5dc1mr26158555e9.22.1751646366518; 
+ Fri, 04 Jul 2025 09:26:06 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.26.04
+ ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.26.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:26:04 -0700 (PDT)
+ Fri, 04 Jul 2025 09:26:05 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 066/119] target/arm: Implement SME2 FCVTZS, FCVTZU
-Date: Fri,  4 Jul 2025 17:24:06 +0100
-Message-ID: <20250704162501.249138-67-peter.maydell@linaro.org>
+Subject: [PULL 067/119] target/arm: Implement SME2 SCVTF, UCVTF
+Date: Fri,  4 Jul 2025 17:24:07 +0100
+Message-ID: <20250704162501.249138-68-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
 References: <20250704162501.249138-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,50 +100,81 @@ From: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250704142112.1018902-55-richard.henderson@linaro.org
+Message-id: 20250704142112.1018902-56-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/sme.decode      | 9 +++++++++
- target/arm/tcg/translate-sme.c | 5 +++++
- 2 files changed, 14 insertions(+)
+ target/arm/tcg/helper-sme.h    |  2 ++
+ target/arm/tcg/sme.decode      |  5 +++++
+ target/arm/tcg/sme_helper.c    | 22 ++++++++++++++++++++++
+ target/arm/tcg/translate-sme.c |  5 +++++
+ 4 files changed, 34 insertions(+)
 
+diff --git a/target/arm/tcg/helper-sme.h b/target/arm/tcg/helper-sme.h
+index be4621f2d9d..6314ad7e012 100644
+--- a/target/arm/tcg/helper-sme.h
++++ b/target/arm/tcg/helper-sme.h
+@@ -219,3 +219,5 @@ DEF_HELPER_FLAGS_4(sme2_fcvt_n, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(sme2_fcvtn, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(sme2_fcvt_w, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
+ DEF_HELPER_FLAGS_4(sme2_fcvtl, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_4(sme2_scvtf, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
++DEF_HELPER_FLAGS_4(sme2_ucvtf, TCG_CALL_NO_RWG, void, ptr, ptr, fpst, i32)
 diff --git a/target/arm/tcg/sme.decode b/target/arm/tcg/sme.decode
-index 5100ebaebad..79df2dcd2b0 100644
+index 79df2dcd2b0..449d97bd28b 100644
 --- a/target/arm/tcg/sme.decode
 +++ b/target/arm/tcg/sme.decode
-@@ -728,6 +728,10 @@ SUB_aaz_d       11000001 111 000010 .. 111 ...00 11 ...     @az_4x4_o3
-                 &zz_n n=1 zn=%zn_ax2
- @zz_2x1         ........ ... ..... ...... zn:5  .....       \
-                 &zz_n n=1 zd=%zd_ax2
-+@zz_2x2         ........ ... ..... ...... .... . .....      \
-+                &zz_n n=2 zd=%zd_ax2 zn=%zn_ax2
-+@zz_4x4         ........ ... ..... ...... .... . .....      \
-+                &zz_n n=4 zd=%zd_ax4 zn=%zn_ax4
- 
- BFCVT           11000001 011 00000 111000 ....0 .....       @zz_1x2
- BFCVTN          11000001 011 00000 111000 ....1 .....       @zz_1x2
-@@ -737,3 +741,8 @@ FCVTN           11000001 001 00000 111000 ....1 .....       @zz_1x2
- 
- FCVT_w          11000001 101 00000 111000 ..... ....0       @zz_2x1
- FCVTL           11000001 101 00000 111000 ..... ....1       @zz_2x1
+@@ -746,3 +746,8 @@ FCVTZS          11000001 001 00001 111000 ....0 ....0       @zz_2x2
+ FCVTZS          11000001 001 10001 111000 ...00 ...00       @zz_4x4
+ FCVTZU          11000001 001 00001 111000 ....1 ....0       @zz_2x2
+ FCVTZU          11000001 001 10001 111000 ...01 ...00       @zz_4x4
 +
-+FCVTZS          11000001 001 00001 111000 ....0 ....0       @zz_2x2
-+FCVTZS          11000001 001 10001 111000 ...00 ...00       @zz_4x4
-+FCVTZU          11000001 001 00001 111000 ....1 ....0       @zz_2x2
-+FCVTZU          11000001 001 10001 111000 ...01 ...00       @zz_4x4
++SCVTF           11000001 001 00010 111000 ....0 ....0       @zz_2x2
++SCVTF           11000001 001 10010 111000 ...00 ...00       @zz_4x4
++UCVTF           11000001 001 00010 111000 ....1 ....0       @zz_2x2
++UCVTF           11000001 001 10010 111000 ...01 ...00       @zz_4x4
+diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
+index c696246d15d..d3841400ee5 100644
+--- a/target/arm/tcg/sme_helper.c
++++ b/target/arm/tcg/sme_helper.c
+@@ -1636,3 +1636,25 @@ void HELPER(sme2_fcvtl)(void *vd, void *vs, float_status *fpst, uint32_t desc)
+         d1[H4(i)] = v1;
+     }
+ }
++
++void HELPER(sme2_scvtf)(void *vd, void *vs, float_status *fpst, uint32_t desc)
++{
++    size_t i, n = simd_oprsz(desc) / 4;
++    int32_t *d = vd;
++    float32 *s = vs;
++
++    for (i = 0; i < n; ++i) {
++        d[i] = int32_to_float32(s[i], fpst);
++    }
++}
++
++void HELPER(sme2_ucvtf)(void *vd, void *vs, float_status *fpst, uint32_t desc)
++{
++    size_t i, n = simd_oprsz(desc) / 4;
++    uint32_t *d = vd;
++    float32 *s = vs;
++
++    for (i = 0; i < n; ++i) {
++        d[i] = uint32_to_float32(s[i], fpst);
++    }
++}
 diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index d6167eafe17..3bf2b6935f3 100644
+index 3bf2b6935f3..dce3b56de2f 100644
 --- a/target/arm/tcg/translate-sme.c
 +++ b/target/arm/tcg/translate-sme.c
-@@ -1365,3 +1365,8 @@ TRANS_FEAT(FCVT_w, aa64_sme_f16f16, do_zz_fpst, a, 0,
-            FPST_A64_F16, gen_helper_sme2_fcvt_w)
- TRANS_FEAT(FCVTL, aa64_sme_f16f16, do_zz_fpst, a, 0,
-            FPST_A64_F16, gen_helper_sme2_fcvtl)
+@@ -1370,3 +1370,8 @@ TRANS_FEAT(FCVTZS, aa64_sme2, do_zz_fpst, a, 0,
+            FPST_A64, gen_helper_gvec_vcvt_rz_fs)
+ TRANS_FEAT(FCVTZU, aa64_sme2, do_zz_fpst, a, 0,
+            FPST_A64, gen_helper_gvec_vcvt_rz_fu)
 +
-+TRANS_FEAT(FCVTZS, aa64_sme2, do_zz_fpst, a, 0,
-+           FPST_A64, gen_helper_gvec_vcvt_rz_fs)
-+TRANS_FEAT(FCVTZU, aa64_sme2, do_zz_fpst, a, 0,
-+           FPST_A64, gen_helper_gvec_vcvt_rz_fu)
++TRANS_FEAT(SCVTF, aa64_sme2, do_zz_fpst, a, 0,
++           FPST_A64, gen_helper_sme2_scvtf)
++TRANS_FEAT(UCVTF, aa64_sme2, do_zz_fpst, a, 0,
++           FPST_A64, gen_helper_sme2_ucvtf)
 -- 
 2.43.0
 
