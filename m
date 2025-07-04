@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623BDAF8C8E
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8163AF8C7A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:47:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXc4W-0000dK-M2; Fri, 04 Jul 2025 04:47:05 -0400
+	id 1uXc4T-0000b1-WB; Fri, 04 Jul 2025 04:47:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4E-0000N6-2T
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4F-0000QX-OS
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4A-0001IR-80
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:45 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4D-0001OF-QP
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751618801;
+ s=mimecast20190719; t=1751618805;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xcFyxh59ass/jQSk1T1Fej2k2dH2B8zPFvS7BgC8LN0=;
- b=c+if7feg+R6x3B4Gb2GkZgXQGW7YmB8U551Q5ixXKAiYy3Bn4lbs0Lj9GIQniTGUu2i7Ne
- CUqiSIkGg4qMhEhR3hx6lZaheJW+vbJy4ePPmEXYUiGYtNSzZvQsXWTCebgjqeE0/IS1Pd
- VcBhE19QgnxGTkBL8bui4oFkC90ldm4=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=2/QQHxzSBwOZry8dpMse9+bQu7EIO9GAsfRgmGz5QH8=;
+ b=QskD0r/MbpGNa3/CAmVOH8Q8u1GNA+8xHuLdzEcCirBhYsRTGaaj7K0R+yg6UXKlwHvPwL
+ OJEPNEURrtr+Tlr0VaX28GB8HpM2ls0OEVCekI66bo+CqTgTzt2baq2BkJ+gz1FZfpKkPh
+ jOLttlTdFGZPpvMKRK3i/meuT//w+9s=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-410-Rl3ryZ5AOPuQBcfLxzxC6w-1; Fri,
- 04 Jul 2025 04:46:38 -0400
-X-MC-Unique: Rl3ryZ5AOPuQBcfLxzxC6w-1
-X-Mimecast-MFC-AGG-ID: Rl3ryZ5AOPuQBcfLxzxC6w_1751618797
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-m3YTmIjENKOznhQTtCof_A-1; Fri,
+ 04 Jul 2025 04:46:40 -0400
+X-MC-Unique: m3YTmIjENKOznhQTtCof_A-1
+X-Mimecast-MFC-AGG-ID: m3YTmIjENKOznhQTtCof_A_1751618799
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3990019560AD; Fri,  4 Jul 2025 08:46:37 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8CC141944AA6; Fri,  4 Jul 2025 08:46:39 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.43])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E943F19560A7; Fri,  4 Jul 2025 08:46:34 +0000 (UTC)
+ id 98F5219560A7; Fri,  4 Jul 2025 08:46:37 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 23/27] vfio/iommufd: reconstruct hwpt
-Date: Fri,  4 Jul 2025 10:45:24 +0200
-Message-ID: <20250704084528.1412959-24-clg@redhat.com>
+Subject: [PULL 24/27] vfio/iommufd: change process
+Date: Fri,  4 Jul 2025 10:45:25 +0200
+Message-ID: <20250704084528.1412959-25-clg@redhat.com>
 In-Reply-To: <20250704084528.1412959-1-clg@redhat.com>
 References: <20250704084528.1412959-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -86,84 +86,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Skip allocation of, and attachment to, hwpt_id.  Recover it from CPR state.
+Finish CPR by change the owning process of the iommufd device in
+post load.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Link: https://lore.kernel.org/qemu-devel/1751493538-202042-18-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/qemu-devel/1751493538-202042-19-git-send-email-steven.sistare@oracle.com
+[ clg: Fixed missing "qemu/error-report.h" include ]
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/iommufd.c | 30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ hw/vfio/cpr-iommufd.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index a650517a1d92ed5671757d425fee8709f2cd3ade..48c590b6a9467c8139131bef8b92864893a8f2e6 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -332,7 +332,14 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+diff --git a/hw/vfio/cpr-iommufd.c b/hw/vfio/cpr-iommufd.c
+index a72b68daa8e4da19b9cbf3ab50631211965cdf37..148a06d552ff3d8e8420366c6b71437e81a1f877 100644
+--- a/hw/vfio/cpr-iommufd.c
++++ b/hw/vfio/cpr-iommufd.c
+@@ -5,6 +5,7 @@
+  */
  
-     /* Try to find a domain */
-     QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
--        ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id, errp);
-+        if (!cpr_is_incoming()) {
-+            ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id, errp);
-+        } else if (vbasedev->cpr.hwpt_id == hwpt->hwpt_id) {
-+            ret = 0;
-+        } else {
-+            continue;
-+        }
+ #include "qemu/osdep.h"
++#include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "hw/vfio/vfio-cpr.h"
+ #include "hw/vfio/vfio-device.h"
+@@ -112,10 +113,40 @@ static bool vfio_cpr_supported(IOMMUFDBackend *be, Error **errp)
+     return true;
+ }
+ 
++static int iommufd_cpr_pre_save(void *opaque)
++{
++    IOMMUFDBackend *be = opaque;
 +
-         if (ret) {
-             /* -EINVAL means the domain is incompatible with the device. */
-             if (ret == -EINVAL) {
-@@ -349,6 +356,7 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-             return false;
-         } else {
-             vbasedev->hwpt = hwpt;
-+            vbasedev->cpr.hwpt_id = hwpt->hwpt_id;
-             QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
-             vbasedev->iommu_dirty_tracking = iommufd_hwpt_dirty_tracking(hwpt);
-             return true;
-@@ -371,6 +379,11 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-         flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
-     }
- 
-+    if (cpr_is_incoming()) {
-+        hwpt_id = vbasedev->cpr.hwpt_id;
-+        goto skip_alloc;
++    /*
++     * The process has not changed yet, but proactively try the ioctl,
++     * and it will fail if any DMA mappings are not supported.
++     */
++    if (!iommufd_change_process_capable(be)) {
++        error_report("some memory regions do not support "
++                     "IOMMU_IOAS_CHANGE_PROCESS");
++        return -1;
 +    }
++    return 0;
++}
 +
-     if (!iommufd_backend_alloc_hwpt(iommufd, vbasedev->devid,
-                                     container->ioas_id, flags,
-                                     IOMMU_HWPT_DATA_NONE, 0, NULL,
-@@ -378,19 +391,20 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
-         return false;
-     }
- 
-+    ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt_id, errp);
-+    if (ret) {
-+        iommufd_backend_free_id(container->be, hwpt_id);
-+        return false;
-+    }
++static int iommufd_cpr_post_load(void *opaque, int version_id)
++{
++     IOMMUFDBackend *be = opaque;
++     Error *local_err = NULL;
 +
-+skip_alloc:
-     hwpt = g_malloc0(sizeof(*hwpt));
-     hwpt->hwpt_id = hwpt_id;
-     hwpt->hwpt_flags = flags;
-     QLIST_INIT(&hwpt->device_list);
- 
--    ret = iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt->hwpt_id, errp);
--    if (ret) {
--        iommufd_backend_free_id(container->be, hwpt->hwpt_id);
--        g_free(hwpt);
--        return false;
--    }
--
-     vbasedev->hwpt = hwpt;
-+    vbasedev->cpr.hwpt_id = hwpt->hwpt_id;
-     vbasedev->iommu_dirty_tracking = iommufd_hwpt_dirty_tracking(hwpt);
-     QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
-     QLIST_INSERT_HEAD(&container->hwpt_list, hwpt, next);
++     if (!iommufd_change_process(be, &local_err)) {
++        error_report_err(local_err);
++        return -1;
++     }
++     return 0;
++}
++
+ static const VMStateDescription iommufd_cpr_vmstate = {
+     .name = "iommufd",
+     .version_id = 0,
+     .minimum_version_id = 0,
++    .pre_save = iommufd_cpr_pre_save,
++    .post_load = iommufd_cpr_post_load,
+     .needed = cpr_incoming_needed,
+     .fields = (VMStateField[]) {
+         VMSTATE_END_OF_LIST()
 -- 
 2.50.0
 
