@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C60AF98DC
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE15AF98EC
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:41:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjE0-0008I3-Ca; Fri, 04 Jul 2025 12:25:20 -0400
+	id 1uXjE0-0008J0-WE; Fri, 04 Jul 2025 12:25:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjDy-0008G9-8P
+ id 1uXjDy-0008Gu-UP
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:18 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjDw-00066G-Dt
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:17 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3a6f2c6715fso1023986f8f.1
+ id 1uXjDx-00066e-9P
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:18 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-450ce3a2dd5so9571765e9.3
  for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:25:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646315; x=1752251115; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751646316; x=1752251116; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TpA2K+wcSCgal+tzmOLuAAQKvE/cMwuvlQchQyQQauw=;
- b=sH5Ph5LIBDDb+RfSBLvVESCfG86HlwMQ7/w/kNWyHwQK9nFdyFm1SE29o7m7TIOSza
- gYt2kLpLskw7pz+txXUY9YpHgj2+JYYeGQ5ih+DxWoKkm5A9NSoWO6DjSamoNrGQHcZY
- 4ix9C3gs8X81o/7CqwbTCzS4dPNVKPpJ88PWg5rNZBhtB1pCOZFQe4HH2t8X+FqF/gcb
- GMhaSPwhASGsbmPEU7/+ZmKPJggaR7AcQHlPmA1Y0EP7PJFi2Doer1rygI+InhBZ/RKr
- HC6H7aM2ogjQYHIYRiapPIcqFZw9NSfawSMKrXGIRrtsmKk9OG/1GrK/nCKKJ1BcxQJy
- c49A==
+ :reply-to; bh=CjmSifyultKO92TqHZgAe9D2aJBwtyFLFYx6SMlRFYs=;
+ b=nnx5cexLhSujvJnJScaBf+LXC0N5uS4OqiVd2IZE8V5JLtRnCM+NBvHUl4950Tw3Uo
+ p6b5BTGOUCHiuKNO42LT2IUiNWEUQQEFrtEev0ng+m7Jq582ly7B1rF0a1+Zf/VwFBwS
+ LjwmFSh2wb2JMHEBJPNwzlmPErgmcmzIGCJFlpFs+Oxj1y25Tko9D1v/egFVzNMUOnZ1
+ AF1QxMJhc11snY4bdRlftivNxufnTspJ+27R9cy+fT5P7PL2I2bnDKf6+dGO75e222zd
+ Rk2RijEHkb6pkA6AtSQyayKBVL61BCrVnkmJ/txVQj8RtehLBKUOp3x7lH60n9jMr8gy
+ kH0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646315; x=1752251115;
+ d=1e100.net; s=20230601; t=1751646316; x=1752251116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TpA2K+wcSCgal+tzmOLuAAQKvE/cMwuvlQchQyQQauw=;
- b=NHz5ytSF4EI5xhaB7mNwSEHLP13P7bMotpVbO3mFtoLfnBQdEpp1daVPcWPxebabR3
- 9SU6VzitMeKTS+A90+ljRjBywxmQ+iM7PQ+HCHnb8lREyhaRWelOZSaZzRNHZqZYH5YI
- 03lAXkouW+WeCvt66EBGTwLA+iUpehW0h0DDWuLfsJ5s1FSHL5CJJbni9JEwfkHjKLMC
- AM5GNtNN0hg4YuWMROi4Zzu3jDjZCfRMdAcUjR+d4S0x7ZVuqJWDmj0aNdsL7VMUmrzw
- UNf2fU3fjvgj4tnZUfuQS8u3y7oQW4qKCa85aMsKMNZMqgmrQXUZ2pfUmP952AIcbprv
- zGiQ==
-X-Gm-Message-State: AOJu0YwstlYlH9zLR7PY9vG3MOH7ALKcRQubL1SVwXXB0ud8I7D85N+8
- CJn1gc2kzyqw3iYmyIkUnrrE3KKRuaLc2uT/U7W/fm56LDZ8pkYpRD7ipMtUpGlfLPFtZB+hFJh
- pb1/x
-X-Gm-Gg: ASbGnctC0CEk6VO/A2sDElEMIlhHbMUTpwKmlqIH33g818I/600PVULzD8J8fky2Irk
- kJbMNC70YrQ3F4CC8754XUaMycgR1J743/4OKapcD3S8pfmBVmcSY3qlC3+u6OEn6QhvUI4XHxM
- LTouoGp40JpT2V70AMpdtHlaYy/WDFw+IWhfuP7CFxzWxwv3rQ4XCrY08YY8QMEiKSUjtH4ciSx
- LgIbGpnUNFJmWhZ0/3+b2MIagp9gtMysk5HkQf+oafbcGffa1oE77ap8C05g6Og7WJdt7AZhJdf
- Cxh8KWczc87rZom1JunTcaJzjX8b49XSHznJiSl3LHoo+69EJhdwr/HY2azHQG4n0UYJ
-X-Google-Smtp-Source: AGHT+IHNWBH34opzcx/yOxpS0zhtDSiFdwrVaZLdNJCnSHSAefKI9qGGl4Sv3NA8cwfUf0JylcPDvg==
-X-Received: by 2002:a05:6000:1788:b0:3a4:ef00:a78c with SMTP id
- ffacd0b85a97d-3b49703630fmr2701795f8f.55.1751646314692; 
- Fri, 04 Jul 2025 09:25:14 -0700 (PDT)
+ bh=CjmSifyultKO92TqHZgAe9D2aJBwtyFLFYx6SMlRFYs=;
+ b=qiRX6ZetLsYOw5Ltej9+iPQ5I25bNxMb5SdT/GrrpydWtVKKckQN6ecByDgW3F4qBj
+ 6lhEjNiQOuroAkOQZ1GGyPBiD4SKszdE0WMsBsnlkhSYXLGPk4sLxmjuSulZJgoBihXP
+ tcAvihVKSLx+FJN4dItUGxvtgW+C2NkeqYDo6Dp0j6cDeq+bD9TIuLriXNOWe7g84zmI
+ Zgy4ipcYpddDiQDVISy4bGN1H7bV+lG6RNsIeD0uT84nrtR9qYT7/WhKMneuDcu/INfU
+ EaDVbBc/1E8WD2ii3BjES0PTO463wWCmwASOXJh2nxRdqG/EAVI4taqfANpGTCPxQoYh
+ PyfQ==
+X-Gm-Message-State: AOJu0YwYeha4fcu0t4bA3Tx6zHRQUJhwiGHb63fzReJiqn6VDgBY0j7+
+ QJVR4xABk7PaERQf93fa1mt0rqLZ1JW3GQBlYRgRY/GcoHC7e6y1aPBw+JXaT/JW+ZOcXwyu1AS
+ B06R1
+X-Gm-Gg: ASbGncu2svE0eX9s3L5e6Ev2rAWka0AksMqv6Xzie7i6KsIBohV+WW7p4D97yjQMFaE
+ fCVCFGZ4DMGk/o0dGPs35AsAPW+DMXirEvRUHEJcKS3HpkMh3NKb9Qu+hPMWL3sGGtB0uwcD27o
+ 34gw74qzFPgXiSCeAAP1wjkyJq6aEZVyWzOnQrvBZ+0Ez/O+Hc+trRS30JonEU/1lvZZx0Dh+OZ
+ BWS0BBdUg4e/zPZWw0JLBZ0C5n3OaWO0pGX+JxmsgELP5/m/0BYXL06Ti3TGUfpx1YG5h1HoWO6
+ HTyiaf3mDF7FsJ0FCaG+DFgqutKup75Cmo7n5+PUGDWvkI28Im5mS3zX+J+6s+oRWmVA
+X-Google-Smtp-Source: AGHT+IHZZMdoHpjn3K6htzrnEVlnZpXGQVws6eCSO7YQPlVcWWBn2ak3UPc/xCAVo97OQOHNoE8s2w==
+X-Received: by 2002:a05:600c:648a:b0:43d:878c:7c40 with SMTP id
+ 5b1f17b1804b1-454b4e769e4mr31289875e9.10.1751646315554; 
+ Fri, 04 Jul 2025 09:25:15 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.25.13
+ ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.25.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 04 Jul 2025 09:25:14 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 012/119] target/arm: Fix VST2 helper store alignment checks
-Date: Fri,  4 Jul 2025 17:23:12 +0100
-Message-ID: <20250704162501.249138-13-peter.maydell@linaro.org>
+Subject: [PULL 013/119] target/arm: Fix SME vs AdvSIMD exception priority
+Date: Fri,  4 Jul 2025 17:23:13 +0100
+Message-ID: <20250704162501.249138-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
 References: <20250704162501.249138-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,78 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: William Kosasih <kosasihwilliam4@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-This patch adds alignment checks in the store operations in the VST2
-instruction.
+We failed to raise an exception when
+sme_excp_el == 0 and fp_excp_el == 1.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
-Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250703085604.154449-12-kosasihwilliam4@gmail.com
+Cc: qemu-stable@nongnu.org
+Fixes: 3d74825f4d6 ("target/arm: Add SME enablement checks")
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250704142112.1018902-2-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/mve_helper.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ target/arm/tcg/translate-a64.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
-index 5273411389d..42bb3b979b5 100644
---- a/target/arm/tcg/mve_helper.c
-+++ b/target/arm/tcg/mve_helper.c
-@@ -669,6 +669,8 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
-         uint32_t addr, data;                                            \
-         uint8_t *qd;                                                    \
-+        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
-+        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
-         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
-             if ((mask & 1) == 0) {                                      \
-                 /* ECI says skip this beat */                           \
-@@ -680,7 +682,7 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-                 qd = (uint8_t *)aa32_vfp_qreg(env, qnidx + (e & 1));    \
-                 data = (data << 8) | qd[H1(off[beat] + (e >> 1))];      \
-             }                                                           \
--            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
-+            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
-         }                                                               \
-     }
- 
-@@ -694,6 +696,8 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-         uint32_t addr, data;                                            \
-         int e;                                                          \
-         uint16_t *qd;                                                   \
-+        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
-+        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
-         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
-             if ((mask & 1) == 0) {                                      \
-                 /* ECI says skip this beat */                           \
-@@ -705,7 +709,7 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-                 qd = (uint16_t *)aa32_vfp_qreg(env, qnidx + e);         \
-                 data = (data << 16) | qd[H2(off[beat])];                \
-             }                                                           \
--            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
-+            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
-         }                                                               \
-     }
- 
-@@ -718,6 +722,8 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-         static const uint8_t off[4] = { O1, O2, O3, O4 };               \
-         uint32_t addr, data;                                            \
-         uint32_t *qd;                                                   \
-+        int mmu_idx = arm_to_core_mmu_idx(arm_mmu_idx(env));            \
-+        MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mmu_idx);      \
-         for (beat = 0; beat < 4; beat++, mask >>= 4) {                  \
-             if ((mask & 1) == 0) {                                      \
-                 /* ECI says skip this beat */                           \
-@@ -726,7 +732,7 @@ DO_VST4W(vst43w, 6, 7, 8, 9)
-             addr = base + off[beat];                                    \
-             qd = (uint32_t *)aa32_vfp_qreg(env, qnidx + (beat & 1));    \
-             data = qd[H4(off[beat] >> 3)];                              \
--            cpu_stl_le_data_ra(env, addr, data, GETPC());               \
-+            cpu_stl_mmu(env, addr, data, oi, GETPC());                  \
-         }                                                               \
-     }
- 
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 815225b1301..5c44a5dece9 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -1488,7 +1488,8 @@ bool sme_enabled_check(DisasContext *s)
+      * to be zero when fp_excp_el has priority.  This is because we need
+      * sme_excp_el by itself for cpregs access checks.
+      */
+-    if (!s->fp_excp_el || s->sme_excp_el < s->fp_excp_el) {
++    if (s->sme_excp_el
++        && (!s->fp_excp_el || s->sme_excp_el <= s->fp_excp_el)) {
+         bool ret = sme_access_check(s);
+         s->fp_access_checked = (ret ? 1 : -1);
+         return ret;
 -- 
 2.43.0
 
