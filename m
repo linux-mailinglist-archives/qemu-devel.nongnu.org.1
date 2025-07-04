@@ -2,96 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3CEAF8B82
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71453AF8BBD
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:32:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXbmE-0002kP-9t; Fri, 04 Jul 2025 04:28:10 -0400
+	id 1uXbqR-0004qk-15; Fri, 04 Jul 2025 04:32:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXbmB-0002jp-3Q
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:28:07 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXbqO-0004qW-E3
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:32:28 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXbm7-0006nS-RY
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:28:06 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-45348bff79fso7460155e9.2
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 01:28:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXbqI-0001FO-F8
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:32:25 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3a4f379662cso562188f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 01:32:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751617680; x=1752222480; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751617940; x=1752222740; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=U0A4usibI7eGbC53g5/4tZrjHX/EOioQsgduZ6qqcEw=;
- b=LTMZOUqjwyfHMFBAWR8Wj5XXa6mAMIi2oqjW4/8sCsO5DReKxvb4FZuFlp2H/deXy2
- Ipxhju7raHVEQgIlVUZvIbLvLNcdEoXxarhlyszQbZjl2pq6gL0iI3WwRRnKFFw88OyH
- dUwsnSrwU+7o/MeSSVsAidK8SWKszAzk9xklo1v0G0RBowaaHZP4wYj5iRD9Y3RElqXt
- /Y92VPG2UOsw5RK8P+uZ0OcvVZioZimgExf6Ys0AImAf4JdniGLlPMbITpDWoH3zc+fM
- oLjRZ/WGLFOwArKBN//qaJpUPAgrh+h5YtsvL55ff7Tq5DI7vRyOFwk3zFE0353G00lD
- oFOg==
+ bh=LNRFm4DpSiJ4w69Kjp9TondYYaGPSu18RIpRtHTS29o=;
+ b=oHlO/fGKb0qOyLoPk8qKjDKCBVQ/Y6PBT29X7tZonmVgiml+CmE+76bvF1olbek7AJ
+ 26YLiA9CGhECCyflaCz+qWR0N3ukcUlVF8z2/8b7EnqiPqxx1C8zTv9uBU11IsXiAHAS
+ 4WQ//HzDMcAspx7zA5CS9pnPuvt3T29SCmv4hecAS/zWbFWc47sw26mgO0MiH3MRM2z9
+ C1CxSizNmbWX7/025iYbzfRFe4Vb4WVYh3J9FbP/br3/FTRxq8NscuHmCLZO1koJKpdK
+ ONb9fUsRf44yIMC46IvHWiaZTVem88oQNmbt4VUgJo6sJ85P8zH+BElCQ67P4VgYflHg
+ OpHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751617680; x=1752222480;
+ d=1e100.net; s=20230601; t=1751617940; x=1752222740;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U0A4usibI7eGbC53g5/4tZrjHX/EOioQsgduZ6qqcEw=;
- b=RLprvZJ8nU4XO4UcZ9o90dx3gi7t2+KATiWFRuU9nZc2q9D5URRra3sJvpOCHRYYAo
- bvfGJbYIDBtxczGGcNMx8gJ8tHl8cqfoVJb2+/aP05zbH3fjcYnIyPZM7G90UDfTLDIf
- pnLqZpnvoCj6Q0/V/PU0+639x85QBoGcJjWACO1Nv5SgjdLXArvtSi4wEsQGMGiIDN9f
- elzEDjrBgwtkUjoYI2fQnEoeX+J6ceTAj/EfL6LD2jFtlNXi3EzH7BvEXjuV/I+eNSWc
- LLFserQu1mkNq2q2nrkf5qYmS4D4MXklbY3r7c0vshEQBheky2RwKMd3db2K4k5myfGU
- L2Hg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU4WWZbbnbrg3jBk74Z3BceN3LO7QVBgH3dzGBasx4P24zNGUSEPDVpU+i9opnaJOgS4ZSgEyYd5NSK@nongnu.org
-X-Gm-Message-State: AOJu0YzFKTV8tSu/sI/BdQ+ybyCYgcrF4Cm72XtoG2/vL4IbMYBFmoDC
- J9Il8/iZPN8vkI8CYQcuYgDYNflToHpgQ3cScRYSty6dtGoCHDG9aB5sLZYRZ4u3oCY=
-X-Gm-Gg: ASbGncukx7KUXgM7LwaVYQhY9uktnvZSn5aEE0/1xG2Ro8lQp0kPSPH7/nx84+rcs4Z
- /2q/TyBfGrGAPqowX0zJ4ZD9UOY1kMCFPgbBVchWW8bInc7XTnUmkfhGf+RkMzytRCnS4nLYUoZ
- /Py6TASLgzQj4+Zo2w7fqEZOH8bLX1A4cuHC0pyd9pfAW+LwlRVHKRoEXSNukbjU0uPaAZ+CmCe
- GC+P1brMShX1H5EYhQvhTe09IwGovkVxDVJDFQ3lwcCAjLv6lrUdI9sAiMsAMt9J5OlRID1XLcF
- 6F1HPq5OrFva9aH1JNvs+n9NcijS8TdzRW24IN7CBUb92UAo80jh06UbCbSOztO/bp3IFIaAeZk
- DNYxAGbI0havKCngXQI2D//0oRc+/MA==
-X-Google-Smtp-Source: AGHT+IEJWeuXd5bkocPT1GC2uTHAsrEBbH8Qs+f1xwK7OySX9hPisz7u73RvYfTp/652iJy3CmXBxQ==
-X-Received: by 2002:a05:600c:1c94:b0:43c:ec97:75db with SMTP id
- 5b1f17b1804b1-454b4e79819mr10558905e9.11.1751617680441; 
- Fri, 04 Jul 2025 01:28:00 -0700 (PDT)
+ bh=LNRFm4DpSiJ4w69Kjp9TondYYaGPSu18RIpRtHTS29o=;
+ b=YDXq9NLT2Eln7y64WdSVwL/Erlumi6U2svRbsElXBHLvox8hkJytfeN3nEq2ZiKb3t
+ deYBFIzWjmWE7wD8L0c5aCudPepasBAjmdrahviLwhwIZOEtLQVSyr/aE73oXZ685kgf
+ 8B0Ipp0Un07OLaNITqQ0h2kpJ83OgHwK2fE7zVLrCNN1yPRf0PMu8J4NBBux8yCeJcbk
+ PDoGfcJbnqtmbX4SaQ7JJ2NA53TIk//IPMrEikU22WWGxAomWMQxSbnrHYFktmjMtue9
+ tlRnsccFQTxQ6RzOoGDHnhxRZxpdfB/fSteKL2VF7FbpLjy189mB8dUmVeXDQ6sD9Td2
+ SHwg==
+X-Gm-Message-State: AOJu0Yw7zVQES5TAkLlmFxr3Pp7DIrxfoXatsq3jTfX6EgAX3UbuhNnt
+ VUm5kRlZyo6cZJ4FWMGJ77zzsm+fdw49ayVKp3D+2/I55vj3Iv6rpyyvLafncDKZ4YvykMJdjfb
+ LzYfHVYA=
+X-Gm-Gg: ASbGncuJdJzEr7OyPQdV8l1Kl60UEcP67179beptgMSjMWRxG4zMT+bXcuF7QxHY4Kr
+ evgoXe7jCoxj1hmCpWeD176HYkY6cEtSWZC4MmPDQ3mVjeAzqG/784FokOFIkdT1coNMGknQG0a
+ UGoPCugImgnWFNDs0mQJf5XH3YxipnP1daRc8mFy7olIBqDITREnuvVWAGieX9bQrhN0D+Pldlu
+ xvLTcXaFNY4w23v4UnlC2++cmL6S0rjXXf7nBI4pe6V8aJVvrpsEvwKFgMaLAxWgJXKrq+7fSEO
+ mbfbiujpr2spsOICTH7Ep7fBZvG/1HcNmpxzPodLw91CHjHLFfpG4G7LHuLcHi74oZg6P+y5nKf
+ vm/CY5PkohfcADtJFoEU3ugkFp2IO7A==
+X-Google-Smtp-Source: AGHT+IHVjRWZI7TIh0eKGPguez3Ohh+8H60DhsXyidR6HkftxDz2Jjoq2aSI+J9nfsupGGd13SAI8w==
+X-Received: by 2002:a05:6000:4009:b0:3b4:6577:eed5 with SMTP id
+ ffacd0b85a97d-3b496fef620mr1040578f8f.12.1751617939845; 
+ Fri, 04 Jul 2025 01:32:19 -0700 (PDT)
 Received: from [192.168.69.218] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454b1634147sm20034405e9.18.2025.07.04.01.27.58
+ ffacd0b85a97d-3b471b9736bsm1896801f8f.60.2025.07.04.01.32.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Jul 2025 01:27:59 -0700 (PDT)
-Message-ID: <0bc1e609-88ea-4994-9815-020ae6389475@linaro.org>
-Date: Fri, 4 Jul 2025 10:27:58 +0200
+ Fri, 04 Jul 2025 01:32:19 -0700 (PDT)
+Message-ID: <f97f016b-7e84-47f4-9ec6-654a5f9e6a63@linaro.org>
+Date: Fri, 4 Jul 2025 10:32:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 28/39] accel: Expose and register
- generic_handle_interrupt()
-To: Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 24/39] accel/nvmm: Expose nvmm_enabled() to common code
+To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, Mads Ynddal <mads@ynddal.dk>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Reinoud Zandijk <reinoud@netbsd.org>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org
+ Reinoud Zandijk <reinoud@netbsd.org>
 References: <20250703173248.44995-1-philmd@linaro.org>
- <20250703173248.44995-29-philmd@linaro.org>
- <e8d0edca-f79c-4d6c-b1a3-69ad506bf470@intel.com>
+ <20250703173248.44995-25-philmd@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <e8d0edca-f79c-4d6c-b1a3-69ad506bf470@intel.com>
+In-Reply-To: <20250703173248.44995-25-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,21 +103,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/7/25 08:38, Xiaoyao Li wrote:
-> On 7/4/2025 1:32 AM, Philippe Mathieu-Daudé wrote:
->> In order to dispatch over AccelOpsClass::handle_interrupt(),
->> we need it always defined, 
+On 3/7/25 19:32, Philippe Mathieu-Daudé wrote:
+> Currently nvmm_enabled() is restricted to target-specific code.
+> By defining CONFIG_NVMM_IS_POSSIBLE we allow its use anywhere.
 > 
-> It seems I can only understand it until I see the code to really require 
-> it to be mandatory.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/system/nvmm.h       | 23 ++++++++++++-----------
+>   accel/stubs/nvmm-stub.c     | 12 ++++++++++++
+>   target/i386/nvmm/nvmm-all.c |  8 +-------
+>   accel/stubs/meson.build     |  1 +
+>   4 files changed, 26 insertions(+), 18 deletions(-)
+>   create mode 100644 accel/stubs/nvmm-stub.c
 
-See 
-https://lore.kernel.org/qemu-devel/acd1d192-f016-48d3-90e1-39d70eac46f5@linaro.org/
 
-> 
-> But anyway, the change itself is correct.
-> 
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> diff --git a/accel/stubs/nvmm-stub.c b/accel/stubs/nvmm-stub.c
+> new file mode 100644
+> index 00000000000..cc58114ceb3
+> --- /dev/null
+> +++ b/accel/stubs/nvmm-stub.c
+> @@ -0,0 +1,12 @@
+> +/*
+> + * NVMM stubs for QEMU
+> + *
+> + *  Copyright (c) Linaro
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "system/hvf.h"
 
-Thanks!
+"system/nvmm.h" ;)
+
 
