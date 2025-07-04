@@ -2,92 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B13AF9302
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 14:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12FEFAF9347
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 14:59:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXfnH-0005cP-FO; Fri, 04 Jul 2025 08:45:31 -0400
+	id 1uXg00-00016v-85; Fri, 04 Jul 2025 08:58:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXfnD-0005br-Ie
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:45:28 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uXfzr-000162-U9
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:58:33 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXfnB-0000uk-FX
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:45:27 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-451d3f72391so8793755e9.3
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 05:45:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751633123; x=1752237923; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FnMGD+/LhWsHWpmeGmqGcY2jHrC8WXhb8Q1aplMffak=;
- b=ca3qqQJohAdq1is3GioMXhhqhSKywGE8w6XL/RCzQTn6/ZUosUTkkcpamY9cCrFSUZ
- aw8W9FYMRUsCMJYbpD6RM+BhyOEbxopU2r8nPrVAduJ9kwOYunTqjwu919u7naCtESdw
- 9CsU05IIPBJXRXXsb5ZRvUdHSd2KrNJgBJ1ZrwuFZ/odLjFmTUCMxB+7xFkyBcOtdTdc
- YtStbpAxE2GC84ZfvRUXnZC6QWPM/7xKnffhS+5tx7qL4NYmLg8Rwc7sMYmhG2V3hSjN
- 28+JV0sLCWludaF83D8IjPMqrbH94zpI6mZzfjw4NGL4VyMtUE5zqK4X0Se/WhWcPSfy
- Ma9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751633123; x=1752237923;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FnMGD+/LhWsHWpmeGmqGcY2jHrC8WXhb8Q1aplMffak=;
- b=qZ9TOhgRlSIBZKHPHE5D1JSsBckU5KhGAp5vyAhfMtj/sEHojQKXaFajHUSCgkzqfO
- acOT7zZJtouXxJFh9pVQeCE/kfLYB2EPH6Em1easdZ7UcS2CkYvzYrLmt3BX5ZrtrJRw
- Bb7WBRPquYYDOzbdADdWjn04+bRcVz8UyXALrX+Q/mNNEEpu16oyMH6mGWhuQTsFC1He
- xy8AywedWApsdP64svKn7W4OqTasEYvHGVLGOFCVUXlhFb48hX/CBxYbEsozNGiRpWph
- 7i7LXiMWRIGCxVx32TpqDRkPBuwdDe4EIsS9XUGXvs+ZrApOMnm6uVJiVZeYh4fySyc4
- cdIg==
-X-Gm-Message-State: AOJu0Yzr4EIjvoCxXihRXMuOQnGedciUBL5ICGbJ8gfzPgfTE824WoUl
- kiIOBG+e6RPbWFqKG8FL0l/jyrQW0te7vM0mFODYcG/W2K/FpMkCYTjKcNeS9F80baU=
-X-Gm-Gg: ASbGnct/7e0lI9zd+yN5wvB105IMaeuItrFw2RW771z+sChdtP9g4nIOrIoTA+8gG+p
- mlsBO+eY7xo9XazGnkvzG6UZoHRQvFFjRTXF7NqSkRXdgGkdRqm0gRgvBZmyWnZxnQM7eucgW45
- Z97CdslHhQl+OEFnfU/W9/i4GqSEU/oHpZNtnf6kpoBmYzQnMxpQ2svxaM0neszIGiWjMXlDOiY
- FODQrZKh/oMAJuZqa7Lxy6QryQ4iJgLB+/ls4uvMtQ1pvGQ4rWEZthLKm1C+ICaZYu2RggYQsk/
- Fldm8T24jwVVr/HNis9q+ZOnvFj0yuBGINu9LVH2xtJjRx4TunuKFB83hs9M7pA3wBAR1Eob+eg
- sIaN0qHSubNW51vy/zHmHAHMtH3sAXuanQB4=
-X-Google-Smtp-Source: AGHT+IGMMv7mBsKL67bFXEgjQnXKSpyLzqPHL1OpeaSlvBAY08/kdR4wErGSuHkDTnflmrPFyi0fRQ==
-X-Received: by 2002:a05:600c:4ed1:b0:43c:fa52:7d2d with SMTP id
- 5b1f17b1804b1-454b30d90e9mr22590915e9.20.1751633122819; 
- Fri, 04 Jul 2025 05:45:22 -0700 (PDT)
-Received: from [192.168.69.218] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-454a9bced0esm54634965e9.22.2025.07.04.05.45.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Jul 2025 05:45:22 -0700 (PDT)
-Message-ID: <07c26674-f705-487b-93f1-d98884c279f5@linaro.org>
-Date: Fri, 4 Jul 2025 14:45:21 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uXfzn-0006ij-M3
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:58:31 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 8BE87211A1;
+ Fri,  4 Jul 2025 12:58:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1751633905; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/phf1KLxfLWyO0PBh88IE5Km1ukcO/Gkib1l3mCP+FU=;
+ b=MEXhHun1fEGBfZf851yclfYzIRLowqvbyRkUJ2VR2IzEGzGxQViOoPj+NXTbzi9+s33MGF
+ NAs6O+bq3WQlGyhcOjBiRRVO9uQTmacLiBaOWcxzY7AzNwSqIR6wrzkB4ewZKOJL4gGY0I
+ H7l+B9zIsX+c+dJy0W6ePc4iWtyj4UE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1751633905;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/phf1KLxfLWyO0PBh88IE5Km1ukcO/Gkib1l3mCP+FU=;
+ b=SIVwkQ6Q2ZyNVvsM1z+Q5s33z19yGxwhKxxmW1fGMleQ3FE4MZJKJEDgE7jihlJRRbFJy9
+ isfbqLtElVuIjDBQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1751633905; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/phf1KLxfLWyO0PBh88IE5Km1ukcO/Gkib1l3mCP+FU=;
+ b=MEXhHun1fEGBfZf851yclfYzIRLowqvbyRkUJ2VR2IzEGzGxQViOoPj+NXTbzi9+s33MGF
+ NAs6O+bq3WQlGyhcOjBiRRVO9uQTmacLiBaOWcxzY7AzNwSqIR6wrzkB4ewZKOJL4gGY0I
+ H7l+B9zIsX+c+dJy0W6ePc4iWtyj4UE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1751633905;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/phf1KLxfLWyO0PBh88IE5Km1ukcO/Gkib1l3mCP+FU=;
+ b=SIVwkQ6Q2ZyNVvsM1z+Q5s33z19yGxwhKxxmW1fGMleQ3FE4MZJKJEDgE7jihlJRRbFJy9
+ isfbqLtElVuIjDBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0FB1C13A71;
+ Fri,  4 Jul 2025 12:58:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id mHq8MvDPZ2jhXAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 04 Jul 2025 12:58:24 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com
+Subject: Re: [PATCH v2 02/24] migration: Add a qdev property for StrOrNull
+In-Reply-To: <aGcE6Av_IBOGBNvD@x1.local>
+References: <20250630195913.28033-1-farosas@suse.de>
+ <20250630195913.28033-3-farosas@suse.de> <87a55o4dr8.fsf@pond.sub.org>
+ <aGcE6Av_IBOGBNvD@x1.local>
+Date: Fri, 04 Jul 2025 09:58:22 -0300
+Message-ID: <87ms9k3yfl.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 27/65] accel/hvf: Implement get_vcpu_stats()
-To: Mads Ynddal <mads@ynddal.dk>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>
-References: <20250702185332.43650-1-philmd@linaro.org>
- <20250702185332.43650-28-philmd@linaro.org>
- <AAAC3128-4BA8-4085-920A-9512786CA343@ynddal.dk>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <AAAC3128-4BA8-4085-920A-9512786CA343@ynddal.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; MISSING_XM_UA(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid, suse.de:email,
+ imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,106 +114,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/7/25 14:05, Mads Ynddal wrote:
-> 
->> On 2 Jul 2025, at 20.52, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->> accel/hvf/hvf-accel-ops.c | 19 +++++++++++++++++++
->> 1 file changed, 19 insertions(+)
->>
->> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
->> index e7f40888c26..c07ebf8a652 100644
->> --- a/accel/hvf/hvf-accel-ops.c
->> +++ b/accel/hvf/hvf-accel-ops.c
->> @@ -358,6 +358,12 @@ static inline int hvf_gdbstub_sstep_flags(AccelState *as)
->>      return SSTEP_ENABLE | SSTEP_NOIRQ;
->> }
->>
->> +static void do_hvf_get_vcpu_exec_time(CPUState *cpu, run_on_cpu_data arg)
->> +{
->> +    int r = hv_vcpu_get_exec_time(cpu->accel->fd, arg.host_ptr);
->> +    assert_hvf_ok(r);
->> +}
->> +
->> static void hvf_accel_class_init(ObjectClass *oc, const void *data)
->> {
->>      AccelClass *ac = ACCEL_CLASS(oc);
->> @@ -583,6 +589,16 @@ static void hvf_remove_all_breakpoints(CPUState *cpu)
->>      }
->> }
->>
->> +static void hvf_get_vcpu_stats(CPUState *cpu, GString *buf)
->> +{
->> +    uint64_t time_us; /* units of mach_absolute_time() */
->> +
->> +    run_on_cpu(cpu, do_hvf_get_vcpu_exec_time, RUN_ON_CPU_HOST_PTR(&time_us));
->> +
->> +    g_string_append_printf(buf, "HVF cumulative execution time: %llu.%.3llus\n",
->> +                                time_us / 1000000, (time_us % 1000000) / 1000);
->> +}
->> +
->> static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
->> {
->>      AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
->> @@ -601,7 +617,10 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
->>      ops->remove_breakpoint = hvf_remove_breakpoint;
->>      ops->remove_all_breakpoints = hvf_remove_all_breakpoints;
->>      ops->update_guest_debug = hvf_update_guest_debug;
->> +
->> +    ops->get_vcpu_stats = hvf_get_vcpu_stats;
->> };
->> +
->> static const TypeInfo hvf_accel_ops_type = {
->>      .name = ACCEL_OPS_NAME("hvf"),
->>
->> -- 
->> 2.49.0
->>
-> 
-> This doesn't return the right time for me (M3 Pro). If you tested on Intel, it might have a different time scale for mach units?
-> 
-> This is what I needed to change to make it work. Tested with 'yes > /dev/null' in the guest and 'info accel' in monitor.
-> 
-> 
-> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-> index cf623a1ea4..5b3bcd553d 100644
-> --- a/accel/hvf/hvf-accel-ops.c
-> +++ b/accel/hvf/hvf-accel-ops.c
-> @@ -59,6 +59,7 @@
->   #include "system/hvf.h"
->   #include "system/hvf_int.h"
->   #include "hw/core/cpu.h"
-> +#include <mach/mach_time.h>
-> 
->   HVFState *hvf_state;
-> 
-> @@ -340,12 +341,16 @@ static void hvf_remove_all_breakpoints(CPUState *cpu)
-> 
->   static void hvf_get_vcpu_stats(CPUState *cpu, GString *buf)
->   {
-> -    uint64_t time_us; /* units of mach_absolute_time() */
-> +    uint64_t time_mach; /* units of mach_absolute_time() */
-> 
-> -    run_on_cpu(cpu, do_hvf_get_vcpu_exec_time, RUN_ON_CPU_HOST_PTR(&time_us));
-> +    run_on_cpu(cpu, do_hvf_get_vcpu_exec_time, RUN_ON_CPU_HOST_PTR(&time_mach));
-> +
-> +    mach_timebase_info_data_t timebase;
-> +    mach_timebase_info(&timebase);
-> +    uint64_t time_ns = time_mach * timebase.numer / timebase.denom;
+Peter Xu <peterx@redhat.com> writes:
 
-Great, thank you! That works for me :)
+> On Tue, Jul 01, 2025 at 08:38:19AM +0200, Markus Armbruster wrote:
+>> Fabiano Rosas <farosas@suse.de> writes:
+>> 
+>> > The MigrationState is a QOM object with TYPE_DEVICE as a parent. This
+>> > was done about eight years ago so the migration code could make use of
+>> > qdev properties to define the defaults for the migration parameters
+>> > and to be able to expose migration knobs for debugging via the
+>> > '-global migration' command line option.
+>> >
+>> > Due to unrelated historical reasons, three of the migration parameters
+>> > (TLS options) received different types when used via the
+>> > query-migrate-parameters QMP command than with the
+>> > migrate-set-parameters command. This has created a lot of duplication
+>> > in the migration code and in the QAPI documentation because the whole
+>> > of MigrationParameters had to be duplicated as well.
+>> >
+>> > The migration code is now being fixed to remove the duplication and
+>> > for that to happen the offending fields need to be reconciled into a
+>> > single type. The StrOrNull type is going to be used.
+>> >
+>> > To keep the command line compatibility, the parameters need to
+>> > continue being exposed via qdev properties accessible from the command
+>> > line. Introduce a qdev property StrOrNull just for that.
+>> >
+>> > Note that this code is being kept in migration/options.c because this
+>> > version of StrOrNull doesn't need to handle QNULL because it was never
+>> > a valid option in the previous command line, which took a string.
+>> >
+>> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> > ---
+>> >  migration/options.c | 47 +++++++++++++++++++++++++++++++++++++++++++++
+>> >  1 file changed, 47 insertions(+)
+>> >
+>> > diff --git a/migration/options.c b/migration/options.c
+>> > index 162c72cda4..384ef9e421 100644
+>> > --- a/migration/options.c
+>> > +++ b/migration/options.c
+>> > @@ -83,6 +83,11 @@
+>> >  #define DEFINE_PROP_MIG_CAP(name, x)             \
+>> >      DEFINE_PROP_BOOL(name, MigrationState, capabilities[x], false)
+>> >  
+>> > +const PropertyInfo qdev_prop_StrOrNull;
+>> > +#define DEFINE_PROP_STR_OR_NULL(_name, _state, _field)                  \
+>> > +    DEFINE_PROP(_name, _state, _field, qdev_prop_StrOrNull, StrOrNull *, \
+>> > +                .set_default = true)
+>> > +
+>> >  #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD     1000    /* milliseconds */
+>> >  #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT            1       /* MB/s */
+>> >  
+>> > @@ -204,6 +209,48 @@ const Property migration_properties[] = {
+>> >  };
+>> >  const size_t migration_properties_count = ARRAY_SIZE(migration_properties);
+>> >  
+>> > +/*
+>> > + * qdev property for TLS options handling via '-global migration'
+>> > + * command line.
+>> > + */
+>> 
+>> Looks like this was a function comment.  It's not, it applies to the
+>> PropertyInfo and its method.  Move it to the PropertyInfo?
+>> 
+>> Maybe
+>> 
+>>    /*
+>>     * String property like qdev_prop_string, except it's backed by a
+>>     * StrOrNull * instead of a char *.  This is intended for
+>>     * TYPE_MIGRATION's TLS options.
+>>     */
+>> 
+>> > +static void set_StrOrNull(Object *obj, Visitor *v, const char *name,
+>> > +                          void *opaque, Error **errp)
+>> > +{
+>> > +    const Property *prop = opaque;
+>> > +    StrOrNull **ptr = object_field_prop_ptr(obj, prop);
+>> > +    StrOrNull *str_or_null = g_new0(StrOrNull, 1);
+>> > +
+>> > +    /*
+>> > +     * Only str to keep compatibility, QNULL was never used via
+>> > +     * command line.
+>> > +     */
+>> > +    str_or_null->type = QTYPE_QSTRING;
+>> > +    if (!visit_type_str(v, name, &str_or_null->u.s, errp)) {
+>> > +        return;
+>> > +    }
+>> > +
+>> > +    qapi_free_StrOrNull(*ptr);
+>> > +    *ptr = str_or_null;
+>> > +}
+>> > +
+>> > +static void release_StrOrNull(Object *obj, const char *name, void *opaque)
+>> > +{
+>> > +    const Property *prop = opaque;
+>> > +    qapi_free_StrOrNull(*(StrOrNull **)object_field_prop_ptr(obj, prop));
+>> > +}
+>> > +
+>> > +static void set_default_value_tls_opt(ObjectProperty *op, const Property *prop)
+>> > +{
+>> > +    object_property_set_default_str(op, "");
+>> > +}
+>> > +
+>> > +const PropertyInfo qdev_prop_StrOrNull = {
+>> > +    .type  = "StrOrNull",
+>> > +    .set = set_StrOrNull,
+>> > +    .release = release_StrOrNull,
+>> > +    .set_default_value = set_default_value_tls_opt,
+>> > +};
+>> 
+>> No getter, i.e. properties will be write-only.  This is unusual.  Is it
+>> safe?
+>
+> Fair question..
+>
+> I had a quick look, device_class_set_props_n() will try to register the
+> prop with legacy mode first then modern mode.  Legacy mode is decided by
+> [1] below:
+>
+> static void qdev_class_add_legacy_property(DeviceClass *dc, const Property *prop)
+> {
+>     g_autofree char *name = NULL;
+>
+>     /* Register pointer properties as legacy properties */
+>     if (!prop->info->print && prop->info->get) { <------------------ [1]
+>         return;
+>     }
+>
+>     name = g_strdup_printf("legacy-%s", prop->name);
+>     object_class_property_add(OBJECT_CLASS(dc), name, "str",
+>         prop->info->print ? qdev_get_legacy_property : prop->info->get,
+>         NULL, NULL, (Property *)prop);
+> }
+>
+> When with no get(), it seems it'll be wrongly treated as legacy property..
+> which further means whoever tries to get() on the property will invoke
+> qdev_get_legacy_property(), and likely crash on accessing info->print()..
+>
+> The other issue is legacy property doesn't look like to provide a setter
+> function.. as it's passing NULL to object_class_property_add(set=XXX).
+>
+> Likely we'll need to provide get() if without changing qdev code.
+>
 
-> 
->       g_string_append_printf(buf, "HVF cumulative execution time: %llu.%.3llus\n",
-> -                                time_us / 1000000, (time_us % 1000000) / 1000);
-> +                                time_ns / 1000000000, (time_ns % 1000000000) / 1000000);
->   }
-> 
->   static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
-> 
-> 
+Peter, thank you for the analysis and sorry all for not commenting on
+this earlier. I have reached the same conclusions and have implemented
+the .get method.
 
+>> 
+>> > +
+>> >  bool migrate_auto_converge(void)
+>> >  {
+>> >      MigrationState *s = migrate_get_current();
+>> 
 
