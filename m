@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02866AF8DFF
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:16:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DA2AF8E45
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:21:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXcWK-0006Te-3d; Fri, 04 Jul 2025 05:15:48 -0400
+	id 1uXcbJ-00011h-Mr; Fri, 04 Jul 2025 05:20:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcWH-0006Se-Tj
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:15:45 -0400
-Received: from p-east3-cluster6-host7-snip4-1.eps.apple.com ([57.103.85.192]
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcbH-00011O-4d
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:20:55 -0400
+Received: from p-east3-cluster5-host5-snip4-1.eps.apple.com ([57.103.86.172]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcWB-0001nJ-Tm
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:15:45 -0400
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcbF-0005OX-4o
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:20:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- bh=Kjv69prOm8o+3r+NqxkFDhjMCJxoTAlRl95Ze5nfxEA=;
+ bh=LerEEwkc8yxfphpYBPoanqa5SssV8KcQm2F3J/oqn3E=;
  h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
- b=xS2goS7WwTuKPCViMH0migXPvotSjFTOMJX4WC0myqeknuiudpPLpXVjjaPz8TfbG
- 4jZ5Q3HdXfudLhiiDVKU/ZoIkH0tRRGG1mZxxWlLjXQ3mJjHlU7f9sHbeWoQ28gQWu
- 9zOY1LH+5lDvA0il/64Nuf455dokswvcb1NBJlvg5W3TS3qnjl9BFIV3ytE/dXbDp/
- 7eARKqxG23myt22CRu9kgHKlkB5Fqwy2DsGg1h2RJ25f43ZIptPZPrPlQ3gJtDFxEh
- WLFttmK9kFM9Dax6r7+hR4xH0K1V1+GCt8Ec2GEmEBP2Km2FjfJj3nxnaljhM++V6b
- LbEIlaGpoJCcw==
+ b=CL7Ewk7tivSVs9QuYeBGL8Isd0sDZyLydcw5AJjAXgrsKfnz/9ASjWy0iOaG9DjaL
+ IEFUiNMmViw6ck9pRi/0ZeP4uCZ83cNDfZG7iMag2a+cj/tfBqdCnhSWZdrDlq9Ows
+ xb5xLJlKHK5BJjSS5+8YDS5xiNtgYbn3iwTcHPUhZIGj/Aq6XWmt98Ih3I62n8mVmY
+ JT+s0BJRKxj5OAQlmSFdYLatEqY3DI7YLy15/t4CHR9zb/VdJIzdr+rjCqTefIGynq
+ YcAoH0xae8gksymiXZfsvfkWzq9r6U8L94RxXsRXjWlDtzeJeZSQNyzH5Xjwr5KUMJ
+ xzhvEnuzonOkw==
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
- by outbound.qs.icloud.com (Postfix) with ESMTPS id 4B5291807C1F;
- Fri,  4 Jul 2025 09:15:35 +0000 (UTC)
+ by outbound.qs.icloud.com (Postfix) with ESMTPS id 7301C1800177;
+ Fri,  4 Jul 2025 09:20:49 +0000 (UTC)
 Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
- by outbound.qs.icloud.com (Postfix) with ESMTPSA id 6B5D81800367;
- Fri,  4 Jul 2025 09:15:34 +0000 (UTC)
+ by outbound.qs.icloud.com (Postfix) with ESMTPSA id 710571874768;
+ Fri,  4 Jul 2025 09:20:47 +0000 (UTC)
 Content-Type: text/plain;
 	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v4 51/65] accel/kvm: Convert to
- AccelOpsClass::cpu_thread_routine
+Subject: Re: [PATCH v4 28/65] accel/hvf: Report missing
+ com.apple.security.hypervisor entitlement
 From: Mads Ynddal <mads@ynddal.dk>
-In-Reply-To: <20250702185332.43650-52-philmd@linaro.org>
-Date: Fri, 4 Jul 2025 11:15:22 +0200
+In-Reply-To: <20250702185332.43650-29-philmd@linaro.org>
+Date: Fri, 4 Jul 2025 11:20:35 +0200
 Cc: qemu-devel@nongnu.org,
  =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, Shatyuka <shatyuka@qq.com>,
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <C6FE1389-E113-4794-9700-0D7F206C2704@ynddal.dk>
+Message-Id: <28D7CFAA-B19B-4F5B-9B2A-2DD4E3FE1770@ynddal.dk>
 References: <20250702185332.43650-1-philmd@linaro.org>
- <20250702185332.43650-52-philmd@linaro.org>
+ <20250702185332.43650-29-philmd@linaro.org>
 To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-Proofpoint-GUID: zgdamnS0sfl3rAgKV2PMHfZnYsVWOPsv
-X-Proofpoint-ORIG-GUID: zgdamnS0sfl3rAgKV2PMHfZnYsVWOPsv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA3MSBTYWx0ZWRfX8f4Kk4QdcsHq
- iuqkwrfRcCsFTockm9f4Gd1uhET6aMtPDjIxk2/Rdvz64WLQsoivDlHxmvy3VxKPaPfjmdFVqRK
- 2dzyM8aUToEiFy+ltDmB4zK3dP7GfLlFrU+EO0TB4UjjE2Oe4IwPsNITB07ycP8e0ClpUN439hn
- OAzjYINiE47597ZxO7WVrBZ2s7xMcBd8XlD3NRPGIQcJFTZ+T3D4XpnErCFFbAg83mi4AdBpDcn
- //8gGA8ko0rdqqU8+TWuviVbzwVRyIiCHZgxuWkumOZe7Wa/TOeKUexPY359KF0ivbQlhmdzo=
+X-Proofpoint-GUID: 0V-m4ugA8RLTEn5U9e9uhlk93mFZJlBw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA3MiBTYWx0ZWRfX78u44BlWz1hp
+ Fi2+nS+epsXw8622oIXZublM01s0OHHxAJL90RBglbIGFPIKMYVFgYHvtkA4dtj2m8SGgmVtzd9
+ vToI2j0efjL17+VhjmnOpRsMi+mM/ULiRQAKE7+uQL3RnLhR5HvU28lhZSelcXn7QwrJEygzWxL
+ XLV+8PsHod6YV2pi8qsqHbbn/QwYvoX3583o9wxsx+xFRYVj+AcfXjJycO9to+hPsmr6Eo1gU+I
+ HtadG2nM9kIBkQUAPt2MCrHby1XmAj6JtZy9t9Hyq7v69OguTYv9V3BjN+rG/PUcMGIlw6VgQ=
+X-Proofpoint-ORIG-GUID: 0V-m4ugA8RLTEn5U9e9uhlk93mFZJlBw
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-04_03,2025-07-02_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxscore=0 clxscore=1030 malwarescore=0 bulkscore=0 mlxlogscore=865
- adultscore=0 suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506060001 definitions=main-2507040071
-Received-SPF: pass client-ip=57.103.85.192; envelope-from=mads@ynddal.dk;
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ clxscore=1030 spamscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ mlxscore=0 adultscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506060001 definitions=main-2507040072
+Received-SPF: pass client-ip=57.103.86.172; envelope-from=mads@ynddal.dk;
  helo=outbound.qs.icloud.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -91,17 +93,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-> On 2 Jul 2025, at 20.53, Philippe Mathieu-Daud=C3=A9 =
+> On 2 Jul 2025, at 20.52, Philippe Mathieu-Daud=C3=A9 =
 <philmd@linaro.org> wrote:
 >=20
-> By converting to AccelOpsClass::cpu_thread_routine we can
-> let the common accel_create_vcpu_thread() create the thread.
+> We need the QEMU binary signed to be able to use HVF.
+> Improve the following:
 >=20
+>  $ ./qemu-system-aarch64-unsigned -M virt -accel hvf
+>  qemu-system-aarch64-unsigned: -accel hvf: Error: ret =3D HV_DENIED =
+(0xfae94007, at ../../accel/hvf/hvf-accel-ops.c:339)
+>  Abort trap: 6
+>=20
+> to:
+>=20
+>  $ ./qemu-system-aarch64-unsigned -M virt -accel hvf
+>  qemu-system-aarch64-unsigned: -accel hvf: Could not access HVF. Is =
+the executable signed with com.apple.security.hypervisor entitlement?
+>=20
+> Suggested-by: Shatyuka <shatyuka@qq.com>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2800
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Acked-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> accel/kvm/kvm-accel-ops.c | 12 +-----------
-> 1 file changed, 1 insertion(+), 11 deletions(-)
+> accel/hvf/hvf-accel-ops.c | 5 +++++
+> 1 file changed, 5 insertions(+)
 >=20
 
 Reviewed-by: Mads Ynddal <mads@ynddal.dk>
