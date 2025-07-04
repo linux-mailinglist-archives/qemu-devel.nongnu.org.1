@@ -2,66 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBB4AF9622
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE5FAF9608
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:52:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXhma-0002Nn-0S; Fri, 04 Jul 2025 10:52:56 -0400
+	id 1uXhgy-00062l-Of; Fri, 04 Jul 2025 10:47:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uXhmT-0001uz-JH
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:52:49 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uXhmP-0001bA-SY
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:52:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751640766; x=1783176766;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=iqqgpTR765GsIEpfL6BRbX6sxm9V5oLqMlf/eUAmWzA=;
- b=LTvks3ZZmOqVbtD+Wej/8nli7rXDuuavdewkWM2JkxWkHo1S+ywiW1+t
- GMH/gs4jorWds/hPK9mrgI4TVBXd+ye1hJI0fIO658EKqnT5kNSHLEQVP
- BdqPLIbzSRqLTQQspUP/7iAbXHvr9hNmhj2GygNCpEQ2zttbZBti1OfYB
- Ul1g6yvA5dm6e4+Eu1NiF/c1DP0oke0khGef02qC4NsP196OtSEU+dYpt
- c4Dz2YeTMjXeFWZxzi7lgSqe9xAZGlAOD5ThEKCxaT7RPr9ZcZ66AwlGu
- lsSMpm3X+rqe/e05EULjc/cRD2Tje+GgS/TpVtrcYi6k+d1Yu+rDIl/jF g==;
-X-CSE-ConnectionGUID: dYKSyPgsTR+/8n0DWVJC5A==
-X-CSE-MsgGUID: U8AGobf2R52RLeYDlGizfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11484"; a="64576071"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="64576071"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 07:52:43 -0700
-X-CSE-ConnectionGUID: yzU+YDRaQGOegLlQ0NeJsQ==
-X-CSE-MsgGUID: xTjXYT+5SWSPs5WymSOLVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="185676903"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa002.jf.intel.com with ESMTP; 04 Jul 2025 07:52:41 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>, tao1.su@intel.com,
- chenyi.qiang@intel.com, xiaoyao.li@intel.com
-Subject: [PATCH] i386/cpu: Remove FEAT_24_0_EBX for AVX10
-Date: Fri,  4 Jul 2025 22:45:04 +0800
-Message-ID: <20250704144504.4094810-1-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
+ id 1uXhgS-0005wa-B1; Fri, 04 Jul 2025 10:46:37 -0400
+Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <kosasihwilliam4@gmail.com>)
+ id 1uXhgQ-0000bM-JJ; Fri, 04 Jul 2025 10:46:36 -0400
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-e81f8679957so813606276.2; 
+ Fri, 04 Jul 2025 07:46:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1751640393; x=1752245193; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=8KN5kjPgG7Y3cd0Dfh0iSQPxyXBCyujt7qtT5C2AlO0=;
+ b=QfcXkFyPPI8Om7U762qYukAKIfqLxycPFufXm8gr7DiCZd/8KQEc3TC7VUoPEEc677
+ FYD+PZhkHFsDj6IdWG0YX4dtIR50gO4QDyssKm9OS50VBdO1IvmNerqZ+cZZVbNnlegq
+ 33LnnwpT2O7FEPiljtWoaaF+ih9Zrt1zQ8firnhJTj9XtBfAFyCzCYtd1VHdx5rZZMdU
+ D2B3Dmjetet4sf/ymfwV+K9n6HDgZzr7ggaZTeuqSSYXpPwJ6QwPO6S0xmnhxESwaUsV
+ tgO2lzVwlNkfSPb8Xwirmxf8oyk6d63j2xCbIigWG0KpBnk2gnYf+Y5uqKgRgaEcVYIE
+ 5SKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751640393; x=1752245193;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8KN5kjPgG7Y3cd0Dfh0iSQPxyXBCyujt7qtT5C2AlO0=;
+ b=XkduxisvghIQ4Q5biR6owy+rVHsLjKixcA8UgN7rOAHD7ule8cSrqZKLPzm2l09e6Y
+ 9QI4+pgcYEwcquH0HZOfD0j5Yi1jldOUb90bJVyytyaCAr7DxXaHpf85gYneIuj5KNRJ
+ M0zwf+MMqfllbap2rDrqNoc/qb7QTSKlre/YJVlKcKqUTR5/Zd+Hc/W4BooNoZ/R9q81
+ q9n8A1TX6iDFXurircEp4UrA6WyMu9nBwq0/KZ3XGbMQIRXMXIspZIaX6Nd4aBwGYSdI
+ T7ME+Q/Adbwf52BwH/+Mwb1vZtRwHwI+Kyg+nWiGbxf8jOXYufLtxOtKP/EGBPMdWiB9
+ 7CIg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUC+IYlDIrmxvgwUfCdCR5tu4SoMLUijvRH9f4LSmxekYCSdz24bmTfIqqo9Q0J7NKDs+xqUpcgvA==@nongnu.org
+X-Gm-Message-State: AOJu0YwntksQ6EBOT3JTRB8FBkNzzp1UxP1IOfHqyt2vQm30JcUnniVw
+ jnDmixaDCO8MrMymwmSzMWUirBKR4hrq4smwyZ5ECQb5AYa9uBc4wU56j+Lw+jY5qnbWp8GkXPh
+ C8ixYSHOWUTz5KoPxnVbDYJ7EB/y8UMdNYS2r
+X-Gm-Gg: ASbGncvbYmhp1vN11SF70MT2gCqJxlNB6BymcnLTHFMnMQkTCJfgfSUyr8fxXtGhXkR
+ bjVFKDu1186MCE5qZmUPGq+drnnV+ZJfQyndBe2m9iTs97p5zF2x+n6YbDp5KdyG/XYUmi+jpzW
+ Nbow1q9TvRo/p5PtZ7RPbCUSmofffEjFgxd3+wxMx03AI=
+X-Google-Smtp-Source: AGHT+IFMTXeG8sPX1yWeDJAsQX3jRRGC6f/ZBO66CgbgQr1PZKH1ekzSf6j5S7z+qygxyidZANDisjdpmdGY9U4wEsA=
+X-Received: by 2002:a05:6902:1790:b0:e84:940:e86c with SMTP id
+ 3f1490d57ef6-e89a0c25c6amr2572462276.22.1751640392781; Fri, 04 Jul 2025
+ 07:46:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.218, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+References: <20250703085604.154449-1-kosasihwilliam4@gmail.com>
+ <CAFEAcA97cvAmtRYEr3hD-BG=LNjoaZFAThYWNKa2zok1MOxgGA@mail.gmail.com>
+In-Reply-To: <CAFEAcA97cvAmtRYEr3hD-BG=LNjoaZFAThYWNKa2zok1MOxgGA@mail.gmail.com>
+From: William Kosasih <kosasihwilliam4@gmail.com>
+Date: Sat, 5 Jul 2025 00:16:19 +0930
+X-Gm-Features: Ac12FXwf3VuMMOCMZcrUeWeR9n6Ip0r6DCfKEviPXY4T003qmkWjvRSyn26oFmg
+Message-ID: <CAG66A_cgmq==OZfbPbr+qEjosObu5Rx+XHMCa57Dz1H-i9Vyqg@mail.gmail.com>
+Subject: Re: [PATCH v4 00/11] target/arm: Fix M-profile helper loads/stores
+ alignment checks
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: multipart/alternative; boundary="00000000000062da6606391b8f25"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
+ envelope-from=kosasihwilliam4@gmail.com; helo=mail-yb1-xb2c.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ HTML_FONT_LOW_CONTRAST=0.001, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,128 +93,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Intel AVX10 spec has been updated to make the bit 16-18 of
-CPUID.24_0.EBX as reserved at 1 because all the Intel processors with
-AVX10 support will support all the vector lengths.
+--00000000000062da6606391b8f25
+Content-Type: text/plain; charset="UTF-8"
 
-The bits will be reserved at 1 to ensure the compatibility of the
-existing software. For QEMU, it makes no sense to allow the
-configurability of the bits anymore. So just remove the leaf
-FEAT_24_0_EBX and related stuff and hardcore the bits to all 1 when
-AVX10 is exposed to guest.
+This really made my day :-) Thanks Peter!
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
- target/i386/cpu.c | 36 +-----------------------------------
- target/i386/cpu.h | 12 ------------
- 2 files changed, 1 insertion(+), 47 deletions(-)
+Best regards,
+William
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 0d35e95430fe..d0c4a3fa113c 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -912,7 +912,6 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
- #define TCG_SGX_12_0_EAX_FEATURES 0
- #define TCG_SGX_12_0_EBX_FEATURES 0
- #define TCG_SGX_12_1_EAX_FEATURES 0
--#define TCG_24_0_EBX_FEATURES 0
- 
- #if defined CONFIG_USER_ONLY
- #define CPUID_8000_0008_EBX_KERNEL_FEATURES (CPUID_8000_0008_EBX_IBPB | \
-@@ -1208,20 +1207,6 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-         },
-         .tcg_features = TCG_7_2_EDX_FEATURES,
-     },
--    [FEAT_24_0_EBX] = {
--        .type = CPUID_FEATURE_WORD,
--        .feat_names = {
--            [16] = "avx10-128",
--            [17] = "avx10-256",
--            [18] = "avx10-512",
--        },
--        .cpuid = {
--            .eax = 0x24,
--            .needs_ecx = true, .ecx = 0,
--            .reg = R_EBX,
--        },
--        .tcg_features = TCG_24_0_EBX_FEATURES,
--    },
-     [FEAT_8000_0007_EDX] = {
-         .type = CPUID_FEATURE_WORD,
-         .feat_names = {
-@@ -1839,22 +1824,6 @@ static FeatureDep feature_dependencies[] = {
-         .from = { FEAT_7_0_EBX,             CPUID_7_0_EBX_SGX },
-         .to = { FEAT_SGX_12_1_EAX,          ~0ull },
-     },
--    {
--        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_128 },
--        .to = { FEAT_24_0_EBX,              CPUID_24_0_EBX_AVX10_256 },
--    },
--    {
--        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_256 },
--        .to = { FEAT_24_0_EBX,              CPUID_24_0_EBX_AVX10_512 },
--    },
--    {
--        .from = { FEAT_24_0_EBX,            CPUID_24_0_EBX_AVX10_VL_MASK },
--        .to = { FEAT_7_1_EDX,               CPUID_7_1_EDX_AVX10 },
--    },
--    {
--        .from = { FEAT_7_1_EDX,             CPUID_7_1_EDX_AVX10 },
--        .to = { FEAT_24_0_EBX,              ~0ull },
--    },
- };
- 
- typedef struct X86RegisterInfo32 {
-@@ -4732,9 +4701,6 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-                     { "movdiri", "on" },
-                     { "movdir64b", "on" },
-                     { "avx10", "on" },
--                    { "avx10-128", "on" },
--                    { "avx10-256", "on" },
--                    { "avx10-512", "on" },
-                     { "avx10-version", "1" },
-                     { "stepping", "1" },
-                     { /* end of list */ }
-@@ -7720,7 +7686,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         *ecx = 0;
-         *edx = 0;
-         if ((env->features[FEAT_7_1_EDX] & CPUID_7_1_EDX_AVX10) && count == 0) {
--            *ebx = env->features[FEAT_24_0_EBX] | env->avx10_version;
-+            *ebx = (0x7U << 16) | env->avx10_version;
-         }
-         break;
-     }
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 51e10139dfdf..7856a882f014 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -671,7 +671,6 @@ typedef enum FeatureWord {
-     FEAT_7_1_ECX,       /* CPUID[EAX=7,ECX=1].ECX */
-     FEAT_7_1_EDX,       /* CPUID[EAX=7,ECX=1].EDX */
-     FEAT_7_2_EDX,       /* CPUID[EAX=7,ECX=2].EDX */
--    FEAT_24_0_EBX,      /* CPUID[EAX=0x24,ECX=0].EBX */
-     FEATURE_WORDS,
- } FeatureWord;
- 
-@@ -1037,17 +1036,6 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- /* Packets which contain IP payload have LIP values */
- #define CPUID_14_0_ECX_LIP              (1U << 31)
- 
--/* AVX10 128-bit vector support is present */
--#define CPUID_24_0_EBX_AVX10_128        (1U << 16)
--/* AVX10 256-bit vector support is present */
--#define CPUID_24_0_EBX_AVX10_256        (1U << 17)
--/* AVX10 512-bit vector support is present */
--#define CPUID_24_0_EBX_AVX10_512        (1U << 18)
--/* AVX10 vector length support mask */
--#define CPUID_24_0_EBX_AVX10_VL_MASK    (CPUID_24_0_EBX_AVX10_128 | \
--                                         CPUID_24_0_EBX_AVX10_256 | \
--                                         CPUID_24_0_EBX_AVX10_512)
--
- /* RAS Features */
- #define CPUID_8000_0007_EBX_OVERFLOW_RECOV    (1U << 0)
- #define CPUID_8000_0007_EBX_SUCCOR      (1U << 1)
--- 
-2.43.0
+On Fri, Jul 4, 2025 at 22:29 Peter Maydell <peter.maydell@linaro.org> wrote:
 
+> On Thu, 3 Jul 2025 at 09:56, William Kosasih <kosasihwilliam4@gmail.com>
+> wrote:
+> >
+> > Historically, M-profile helper functions in m_helper.c and mve_helper.c
+> > used the unaligned cpu_*_data_ra() routines to perform guest memory
+> > accesses. This meant we had no way to enforce alignment constraints
+> > when executing helper-based loads/stores. With the addition of the
+> > cpu_*_mmu() APIs, we can now combine the current MMU state with MO_ALIGN
+> > flags to build a MemOpIdx that enforces alignment at the helper level.
+> >
+> > This patch series:
+> > - Replaces all calls to cpu_ld*_data_ra(), cpu_st*_data_ra()
+> >   in the M-profile helpers (m_helper.c) and the MVE helpers
+> >   (mve_helper.c) with their cpu_*_mmu() equivalents.
+> > - Leaves SME and SVE helper code untouched, as those extensions
+> >   support unaligned accesses by design.
+> >
+> > With this change, all M-profile and MVE helper-based loads and stores
+> > will now correctly honor their alignment requirements.
+> >
+> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1154
+> > Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
+>
+> Applied to target-arm.next. Thanks for these patches!
+>
+> -- PMM
+>
+
+--00000000000062da6606391b8f25
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div><div><div dir=3D"auto" style=3D"font-size:16px;font-style:normal;font-=
+weight:400;letter-spacing:normal;text-indent:0px;text-transform:none;white-=
+space:normal;word-spacing:0px;text-decoration:none;background-color:rgba(0,=
+0,0,0);border-color:rgb(0,0,0);color:rgb(0,0,0)">This really made my day :-=
+) Thanks Peter!</div><div dir=3D"auto" style=3D"font-size:16px;font-style:n=
+ormal;font-weight:400;letter-spacing:normal;text-indent:0px;text-transform:=
+none;white-space:normal;word-spacing:0px;text-decoration:none;background-co=
+lor:rgba(0,0,0,0);border-color:rgb(0,0,0);color:rgb(0,0,0)"><br></div><div =
+dir=3D"auto" style=3D"font-size:16px;font-style:normal;font-weight:400;lett=
+er-spacing:normal;text-indent:0px;text-transform:none;white-space:normal;wo=
+rd-spacing:0px;text-decoration:none;background-color:rgba(0,0,0,0);border-c=
+olor:rgb(0,0,0);color:rgb(0,0,0)">Best regards,</div><div dir=3D"auto" styl=
+e=3D"font-size:16px;font-style:normal;font-weight:400;letter-spacing:normal=
+;text-indent:0px;text-transform:none;white-space:normal;word-spacing:0px;te=
+xt-decoration:none;background-color:rgba(0,0,0,0);border-color:rgb(0,0,0);c=
+olor:rgb(0,0,0)">William</div></div></div><div><br><div class=3D"gmail_quot=
+e gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Jul =
+4, 2025 at 22:29 Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.o=
+rg">peter.maydell@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-=
+left-style:solid;padding-left:1ex;border-left-color:rgb(204,204,204)">On Th=
+u, 3 Jul 2025 at 09:56, William Kosasih &lt;<a href=3D"mailto:kosasihwillia=
+m4@gmail.com" target=3D"_blank">kosasihwilliam4@gmail.com</a>&gt; wrote:<br=
+>
+&gt;<br>
+&gt; Historically, M-profile helper functions in m_helper.c and mve_helper.=
+c<br>
+&gt; used the unaligned cpu_*_data_ra() routines to perform guest memory<br=
+>
+&gt; accesses. This meant we had no way to enforce alignment constraints<br=
+>
+&gt; when executing helper-based loads/stores. With the addition of the<br>
+&gt; cpu_*_mmu() APIs, we can now combine the current MMU state with MO_ALI=
+GN<br>
+&gt; flags to build a MemOpIdx that enforces alignment at the helper level.=
+<br>
+&gt;<br>
+&gt; This patch series:<br>
+&gt; - Replaces all calls to cpu_ld*_data_ra(), cpu_st*_data_ra()<br>
+&gt;=C2=A0 =C2=A0in the M-profile helpers (m_helper.c) and the MVE helpers<=
+br>
+&gt;=C2=A0 =C2=A0(mve_helper.c) with their cpu_*_mmu() equivalents.<br>
+&gt; - Leaves SME and SVE helper code untouched, as those extensions<br>
+&gt;=C2=A0 =C2=A0support unaligned accesses by design.<br>
+&gt;<br>
+&gt; With this change, all M-profile and MVE helper-based loads and stores<=
+br>
+&gt; will now correctly honor their alignment requirements.<br>
+&gt;<br>
+&gt; Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/115=
+4" rel=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qem=
+u/-/issues/1154</a><br>
+&gt; Signed-off-by: William Kosasih &lt;<a href=3D"mailto:kosasihwilliam4@g=
+mail.com" target=3D"_blank">kosasihwilliam4@gmail.com</a>&gt;<br>
+<br>
+Applied to target-arm.next. Thanks for these patches!<br>
+<br>
+-- PMM<br>
+</blockquote></div></div>
+
+--00000000000062da6606391b8f25--
 
