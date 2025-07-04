@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E3BAF9965
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE0EAF99A2
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 19:26:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjjQ-0007GR-PW; Fri, 04 Jul 2025 12:57:48 -0400
+	id 1uXkAF-0002CH-RD; Fri, 04 Jul 2025 13:25:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1uXjjK-000758-8t
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:57:42 -0400
-Received: from mail-qv1-xf2a.google.com ([2607:f8b0:4864:20::f2a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXkAE-0002C9-9J
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 13:25:30 -0400
+Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jackson88044@gmail.com>)
- id 1uXjjI-0000Pz-NG
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:57:42 -0400
-Received: by mail-qv1-xf2a.google.com with SMTP id
- 6a1803df08f44-6fabb948e5aso14966866d6.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:57:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXkAC-0003rZ-Gj
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 13:25:29 -0400
+Received: by mail-yw1-x112a.google.com with SMTP id
+ 00721157ae682-71101668dedso8298447b3.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 10:25:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751648259; x=1752253059; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zjiUtqvP+4/zFmyjDONQhsfXC2sJWqJS+GXL0tZEYzQ=;
- b=LYsOL0GwNzt3n4T1iDHydq0WfpUojHKC8ATUAfsUCtwyBh12ws+4UHpk+p7HMPpxJT
- GVWgnhuFLTZOmmwzKn1H0fKduwOTcscEwpUBHCcF13h04SUxrwYI/IfFF+HhA1u8FzAc
- Tw4jBZiW78XyKs8o8mB6KlY+hKjpJ3flEC1e7/5BqstcaDDZmaWqwz5jzpk5kRLnZSMH
- A/PU8JlrqyesHA/8FwP2aOCaftkidgGfx5AACR/iix9kJ3T7tITeEviQBmRLA8eTvXd/
- ZcAsOFYhXpL1J6fNhbzb3nIeerkSKveZLk71Xk9Cv+AqvPBASFHdBk1IY9Fx3/Sa04PK
- WEmA==
+ d=linaro.org; s=google; t=1751649927; x=1752254727; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=WtZeJrmJk9u0FGNZ8moIbXR2K+bgnaH8uMSkA6Ti51Y=;
+ b=fZKge7l4FCO8RjxaIgzBphh2Yvhtm6dXDot08ZeWkSJh0ONDofzDXjCMn9DnnxD0yk
+ 7mPHvCrm9VdgBHqZphhzJnAyhjoWUMWlI32IAVdXeX1TPcuu9JF9oiIwyeIkp3CnllVl
+ RYlWCtsXo/xpsnzZwFGBNmd1kG9Fctd+b5+PxWVn7zvNDqDubLgZwh3wLCx7bAQyQYiK
+ lhY5x2pdRpJvvGe9N2TNR9k+68jlXj4kgH+wREvi0x7ZwUT/sCsnq3bGHvSPVM2qglu8
+ YS6htvVSefDaNo+YgkkrhjbMONNrWDaTRg9Kc+Yx3ofDzpTyyUPTPRHp4oAMB0ElCLFW
+ RmVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751648259; x=1752253059;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zjiUtqvP+4/zFmyjDONQhsfXC2sJWqJS+GXL0tZEYzQ=;
- b=hrhT7CYt8XfEw+6T10BqGcQoQrMbANA0aEtDaVOB7eWhZ5+H6IMVhkzivyGNqHPmuX
- 2aRJ+dHrxmjUQSOfm4aFItHW27s29jgnJ3OeoetAxhk4dplcPoCMavLbbex4/YKpw+ak
- UYp78ED70gimg6j1qyBf09oz1dH+ev2NTdE/YZn4ZQyDyQbWp8o+9AexiCwsKPke7Duu
- xOYh3dbV55Q4RanKBfyRUUbtLOgGRdE+xYJ8ZnWzbD23oe97Ftak8MQewepkQbDdCETm
- cEsjA16sK9ECLaD7ZlduNeOskhR8PQwyef8XPo9fvmVNUM0HoO8cYzk6zjyr4g+qcNfU
- n4Hg==
-X-Gm-Message-State: AOJu0YylkS0WbFVBHu+rm8vz8kavzVK6oEw5DNFlTWgRqQUAAIY3JD0c
- jL9+NDI9Ur4BsZgoX8JHPFYM0iHKVImSdHk56KgA7kWN91x/KI6tPv2/rR6hlA==
-X-Gm-Gg: ASbGncstbOc5BPHHbXsauNd4A+fx5k06Crc/Kt1B8b4rA/y0HgWTE3y3h+W1RyEZBKJ
- 8umU5li8dGFZb1gc8QXWE/f81plYN9+4ARm0Aq0SlSU5kixScge/aP66mrOAEhPP+DMMbsqYVTD
- al9iXM98nMoevBzcTmaLPJhOIK9KF4aznmAvkPmuKa8R9UV3ysnxOAbmddSXDyzNqoMAaEd7kQo
- Ef60freJ2LlHvRjrAmtIAp69rKqNSwTWci/jnl4iAOoO2LygqLdGTW6PIfx7V9OfoqoyU5uYHTn
- 3NMVB+5CyYcs0GW8QNFmFLXZu8G5vHafqAD4UvpqSDqUVh+Onu4/YwUmXLFWqZdo6ZEyjKE3bWq
- NJ1wW
-X-Google-Smtp-Source: AGHT+IHqlVFc2AzVv67f6tS3qfcoSALnW+nw2bCVIhKGyN3CIN+P7qssqNWig/N5QZH0lfQm2HNdjA==
-X-Received: by 2002:a05:6214:4e86:b0:702:c8e2:d218 with SMTP id
- 6a1803df08f44-702c8e2d25fmr32020486d6.26.1751648259529; 
- Fri, 04 Jul 2025 09:57:39 -0700 (PDT)
-Received: from user-jcksn.myfiosgateway.com
- ([2600:4040:2bcd:3800:e3f4:4cee:828f:52d])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-702c4ccc6easm15345826d6.26.2025.07.04.09.57.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:57:38 -0700 (PDT)
-From: Jackson Donaldson <jackson88044@gmail.com>
-X-Google-Original-From: Jackson Donaldson <jcksn@duck.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PATCH v3 11/11] MAX78000: Add AES to SOC
-Date: Fri,  4 Jul 2025 12:57:29 -0400
-Message-Id: <20250704165729.208381-12-jcksn@duck.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250704165729.208381-1-jcksn@duck.com>
-References: <20250704165729.208381-1-jcksn@duck.com>
+ d=1e100.net; s=20230601; t=1751649927; x=1752254727;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WtZeJrmJk9u0FGNZ8moIbXR2K+bgnaH8uMSkA6Ti51Y=;
+ b=nysKHVSiNBC+wfmZXyf/CoDJe6wiyOp48w2PaQKqAFV/XuFKH8q0i0yHvY3MG3q4s5
+ DL0g0Tsq263/weCP79zeaiDWsnnXXHwYLDlQK9TiPZ5umadBsbPKH3R8+KpVAh00d1hs
+ wMHh1SIKrPY/2KPNCjG6Ks/lGGpfC2dKUA2yd6zXSd1DPozQQvNIdmgum/BGcbT0jfTn
+ s8DA3JELnbfyNdtZ74rsoOjA4jbIiyRXBSd9LMX5qVReccV/9wsdPHH/U4ebvOgS/qDR
+ hQDmGEEoKLAk/8I1h+MZ+920gA034YnUGMZpCMmna59gSFHRnv81x9MkAthpNFsB+rq+
+ 4aaA==
+X-Gm-Message-State: AOJu0YwArPrlhf3E8TnOVXPxSVawwAKD2vC0OvcWlU2ntz23pn0ax9ma
+ Iprh4S+dABYS1GWMCXYDUUIj+D4XNL0m6Y3vPd7jgvSUWiO8fDmEbJBS+0vos2gqB1Uj4TF+x2D
+ seeujOW2i7PsTviPvDmKDd81XWOqgDz7xQ9C0u0FkDg==
+X-Gm-Gg: ASbGncvgJ/eZGJY/Z86WdN8m3oDNm5UvTYD902cGWywNvZJYcGA8V6xRARApRRiigYU
+ 18kA/9T1d+l3eJXrQl5YgFdfK6OLohzsGI/M7mRSda/W0Abj0gwbZ/+72BrPSrg7N1bLH5lJcHs
+ nppLox+LfC/+ELexQrCS1RCZsugdHwXLIjWidspu89FO+t
+X-Google-Smtp-Source: AGHT+IFcz1yXFBQgQFbExKYN3T4TpBBFdj6u3xmujwzNW0dD1fT9c00Z6vIKkNjimr5nAqyOjXUxfUXnM1ulmKYgR+M=
+X-Received: by 2002:a05:690c:7704:10b0:716:5986:e4c7 with SMTP id
+ 00721157ae682-71668c51b51mr34441617b3.11.1751649927139; Fri, 04 Jul 2025
+ 10:25:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2a;
- envelope-from=jackson88044@gmail.com; helo=mail-qv1-xf2a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20250704165729.208381-1-jcksn@duck.com>
+ <20250704165729.208381-4-jcksn@duck.com>
+In-Reply-To: <20250704165729.208381-4-jcksn@duck.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 4 Jul 2025 18:25:15 +0100
+X-Gm-Features: Ac12FXxBh-OSGB8s1937FP0K9HBVvyW_79Zrt6o7zSz3Yffi-jpfpVqprGfSnVw
+Message-ID: <CAFEAcA_FAeRqDqsLhv-1q4daBycoms3dGDtamoxCfQ=5huT_Tg@mail.gmail.com>
+Subject: Re: [PATCH v3 03/11] MAX78000: Add ICC to SOC
+To: Jackson Donaldson <jackson88044@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,81 +90,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds AES to max78000_soc
+On Fri, 4 Jul 2025 at 17:57, Jackson Donaldson <jackson88044@gmail.com> wrote:
+>
+> This commit adds the instruction cache controller
+> to max78000_soc
+>
+> Signed-off-by: Jackson Donaldson <jcksn@duck.com>
+> ---
+>  hw/arm/max78000_soc.c         | 20 ++++++++++++++++----
+>  include/hw/arm/max78000_soc.h |  6 ++++++
+>  2 files changed, 22 insertions(+), 4 deletions(-)
+>
 
-Signed-off-by: Jackson Donaldson <jcksn@duck.com>
----
- hw/arm/max78000_soc.c         | 14 +++++++++++---
- include/hw/arm/max78000_soc.h |  2 ++
- 2 files changed, 13 insertions(+), 3 deletions(-)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-diff --git a/hw/arm/max78000_soc.c b/hw/arm/max78000_soc.c
-index 074fb1da8b..39ae4e0396 100644
---- a/hw/arm/max78000_soc.c
-+++ b/hw/arm/max78000_soc.c
-@@ -45,6 +45,8 @@ static void max78000_soc_initfn(Object *obj)
- 
-     object_initialize_child(obj, "trng", &s->trng, TYPE_MAX78000_TRNG);
- 
-+    object_initialize_child(obj, "aes", &s->aes, TYPE_MAX78000_AES);
-+
-     s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
- }
- 
-@@ -54,6 +56,7 @@ static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
-     MemoryRegion *system_memory = get_system_memory();
-     DeviceState *dev, *gcrdev, *armv7m;
-     g_autofree char *trng_link = NULL;
-+    g_autofree char *aes_link = NULL;
-     SysBusDevice *busdev;
-     Error *err = NULL;
-     int i;
-@@ -137,6 +140,14 @@ static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
-     trng_link = g_strdup("trng");
-     object_property_set_link(OBJECT(gcrdev), trng_link, OBJECT(dev), &err);
- 
-+    dev = DEVICE(&s->aes);
-+    sysbus_realize(SYS_BUS_DEVICE(dev), errp);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x40007400);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(armv7m, 5));
-+
-+    aes_link = g_strdup("aes");
-+    object_property_set_link(OBJECT(gcrdev), aes_link, OBJECT(dev), &err);
-+
-     dev = DEVICE(&s->gcr);
-     sysbus_realize(SYS_BUS_DEVICE(dev), errp);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x40000000);
-@@ -154,9 +165,6 @@ static void max78000_soc_realize(DeviceState *dev_soc, Error **errp)
-     create_unimplemented_device("powerSequencer",       0x40006800, 0x400);
-     create_unimplemented_device("miscControl",          0x40006c00, 0x400);
- 
--    create_unimplemented_device("aes",                  0x40007400, 0x400);
--    create_unimplemented_device("aesKey",               0x40007800, 0x400);
--
-     create_unimplemented_device("gpio0",                0x40008000, 0x1000);
-     create_unimplemented_device("gpio1",                0x40009000, 0x1000);
- 
-diff --git a/include/hw/arm/max78000_soc.h b/include/hw/arm/max78000_soc.h
-index 528598cfcb..a203079ee9 100644
---- a/include/hw/arm/max78000_soc.h
-+++ b/include/hw/arm/max78000_soc.h
-@@ -11,6 +11,7 @@
- 
- #include "hw/or-irq.h"
- #include "hw/arm/armv7m.h"
-+#include "hw/misc/max78000_aes.h"
- #include "hw/misc/max78000_gcr.h"
- #include "hw/misc/max78000_icc.h"
- #include "hw/char/max78000_uart.h"
-@@ -41,6 +42,7 @@ struct MAX78000State {
-     Max78000IccState icc[MAX78000_NUM_ICC];
-     Max78000UartState uart[MAX78000_NUM_UART];
-     Max78000TrngState trng;
-+    Max78000AesState aes;
- 
-     Clock *sysclk;
- };
--- 
-2.34.1
-
+thanks
+-- PMM
 
