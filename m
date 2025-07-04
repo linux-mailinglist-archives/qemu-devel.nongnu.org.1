@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38997AF8EAE
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C46C6AF8DBD
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:11:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXcmP-0007b4-A2; Fri, 04 Jul 2025 05:32:26 -0400
+	id 1uXcRL-0002ER-LJ; Fri, 04 Jul 2025 05:10:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcmK-0007ag-QP
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:32:22 -0400
-Received: from p-east3-cluster6-host11-snip4-2.eps.apple.com ([57.103.85.233]
- helo=outbound.qs.icloud.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXcRI-0002EH-Tb
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:10:36 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcmG-0004HK-7W
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:32:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- bh=9rEB08GrSiVE+mWLaqMpZs2n04R7skd7dXhDs5UY6I8=;
- h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
- b=w2Lqw+F6bxlrqGCYvmq8zo0WeLS3eRG69CjSsLO6LLcVikMY0oAvWusWaICebwIIA
- d/owEDdwYKFOEY0SEcGYbNvfL810oF6M5MtGN42owYij3Ws2awsWi0+Nl0MddkfcNP
- LrZ0YFuPb7i+f+o9qEAB10Zxzx+wH+h4PtJLcN0WnKWi3y88UMpG87gjjnhjVKJWiK
- zlTuTYY6v9hFvHvezvq3r3EE9oNHWhC7SQWqNMx3ZkyMHKzdsmecxnxJCtzGmhvktj
- qOds/ZxNTC2OrcL4t5t3ygKW1Q0cdqGuL8o/JxXxiz/Vf2qsC/V1fB19CugUajqSfv
- Gec9AHcyOFazQ==
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
- by outbound.qs.icloud.com (Postfix) with ESMTPS id 09BCE180016E;
- Fri,  4 Jul 2025 09:32:09 +0000 (UTC)
-Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com
- [17.57.155.37])
- by outbound.qs.icloud.com (Postfix) with ESMTPSA id 1E2D21800162;
- Fri,  4 Jul 2025 09:32:07 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v4 59/65] accel: Always register
- AccelOpsClass::get_virtual_clock() handler
-From: Mads Ynddal <mads@ynddal.dk>
-In-Reply-To: <20250702185332.43650-60-philmd@linaro.org>
-Date: Fri, 4 Jul 2025 11:31:55 +0200
-Cc: qemu-devel@nongnu.org,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Reinoud Zandijk <reinoud@netbsd.org>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DAE33222-93C1-4B29-A224-7FA6A4F0344C@ynddal.dk>
-References: <20250702185332.43650-1-philmd@linaro.org>
- <20250702185332.43650-60-philmd@linaro.org>
-To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA3MyBTYWx0ZWRfX7ooy855ftlpJ
- 382CqUnUzm9dvWFlJ4w3bZfbYCF+MOcu5YUJKVmNOQpMuB4hfyDeyYm012SCcxKjAoJ2iYF5NSI
- uirMv84bFEsrokKwUyE7eZorMGGObQZQzT6Inhhr9LehDsMZ1d1NY+RZTif+jvTs5FmpsQI199M
- sVsCd61OOzoBpfVIKqo3XaY74UAmhzazAduwUmWFJZpb7RSDpO8ottAZc/q+sjsCWln8q7BT5rU
- oW4o1oxFfr5sSbP3gC5XOoUOe0VJ3zhCKD4GAn8XrRsTgOFSWSKtJrn77XxbyXc5UG5CdariU=
-X-Proofpoint-GUID: yZKEds9rpVCqOGHR4JbLjQYUEdwGwxVu
-X-Proofpoint-ORIG-GUID: yZKEds9rpVCqOGHR4JbLjQYUEdwGwxVu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-04_03,2025-07-02_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0
- phishscore=0 clxscore=1030 mlxlogscore=999 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.22.0-2506060001 definitions=main-2507040073
-Received-SPF: pass client-ip=57.103.85.233; envelope-from=mads@ynddal.dk;
- helo=outbound.qs.icloud.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXcRG-0000VO-Hz
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:10:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751620234; x=1783156234;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=/WcIW2V4RQ1qMDmRJzAhWm9P80zzP9IHLGjdO1qvN+g=;
+ b=H7pf/ZjE+3+WN9F2fB0vmtMaFXCFzqIi8tsi1K+4Spsjhik03bBNthhT
+ LkHobDwDTVYEs/KOJod8CWGMYv/ZkiH7kRvmjhgVYva+PQgefiuSQdyR/
+ LUPmdxvLYsHIUyTYIDBTDpiG4dK7YATnFkqWpD1R89SzOHetFbcV/rn57
+ TAF9plXRyl1BwJwActus4CjJVgCJw2i4dVxlTGISQmi+FR16u/AfyH1cg
+ IcktJB9xdHYhtX+JCVsMiQqw6gLez8QUQ9TLWLmGVjXsd557kWmzAG6HD
+ OdXz9H2mL5KoVZXf0gGqVIwO9cj0gFLrOBdDHQ22sEzGOrYurwoMBb4bg Q==;
+X-CSE-ConnectionGUID: VZfw/7bZQoqtTo7z4ihkLA==
+X-CSE-MsgGUID: 59bcW6kKQiagh5kelvdi0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="53176353"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="53176353"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 02:10:31 -0700
+X-CSE-ConnectionGUID: FnZJ2/33QvqQLMlycPiirQ==
+X-CSE-MsgGUID: g9Viid2ST1OXzqXZ2sQuYg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="158869467"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa005.fm.intel.com with ESMTP; 04 Jul 2025 02:10:30 -0700
+Date: Fri, 4 Jul 2025 17:31:56 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 03/39] system/runstate: Document
+ qemu_add_vm_change_state_handler()
+Message-ID: <aGefjGfkAY+QivL6@intel.com>
+References: <20250703173248.44995-1-philmd@linaro.org>
+ <20250703173248.44995-4-philmd@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250703173248.44995-4-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,26 +83,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-> On 2 Jul 2025, at 20.53, Philippe Mathieu-Daud=C3=A9 =
-<philmd@linaro.org> wrote:
->=20
-> In order to dispatch over AccelOpsClass::get_virtual_clock(),
-> we need it always defined, not calling a hidden handler under
-> the hood. Make AccelOpsClass::get_virtual_clock() mandatory.
-> Register the default cpus_kick_thread() for each accelerator.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+On Thu, Jul 03, 2025 at 07:32:09PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  3 Jul 2025 19:32:09 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH v6 03/39] system/runstate: Document
+>  qemu_add_vm_change_state_handler()
+> X-Mailer: git-send-email 2.49.0
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
-> include/system/accel-ops.h        | 2 ++
-> accel/hvf/hvf-accel-ops.c         | 1 +
-> accel/kvm/kvm-accel-ops.c         | 1 +
-> accel/tcg/tcg-accel-ops.c         | 2 ++
-> accel/xen/xen-all.c               | 1 +
-> system/cpus.c                     | 7 ++++---
-> target/i386/nvmm/nvmm-accel-ops.c | 1 +
-> target/i386/whpx/whpx-accel-ops.c | 1 +
-> 8 files changed, 13 insertions(+), 3 deletions(-)
+>  include/system/runstate.h | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 
-Reviewed-by: Mads Ynddal <mads@ynddal.dk>=
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
