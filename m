@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72ECEAF9172
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEE4AF9180
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:24:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeO9-0006QT-PL; Fri, 04 Jul 2025 07:15:30 -0400
+	id 1uXePZ-0001cJ-Mg; Fri, 04 Jul 2025 07:16:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXeMz-0004jr-23
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:14:18 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
+ id 1uXePD-0001DT-KT
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:16:36 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXeMw-0004LA-Rv
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:14:16 -0400
+ id 1uXePA-00054p-Qg
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:16:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751627655; x=1783163655;
+ t=1751627793; x=1783163793;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=oi6tnJaH7knQgay6ed4+QUz5CHiJ6Dz9uJ1yC0IPIg4=;
- b=hvhfqjUBpA8wD1cOylAxXyJ5TkwBBlVPrac9nZV/nQFc7ql7TmI3P0eW
- N8xN73IrlSxCRIxEcVCfG+qMExb/Q6w4TIsclh8h1RWEq2uIqWVDaoQMv
- KxajPLTv02GZ/yuaEFTCM837zSGx72yipCg2z+xA4JhWdZWV/rIhmLN3b
- WlPtR0ZINYoWPxI0F3ky6irhgouyloPYg2MWHto+bNGHjOHXRgLmj71nF
- Ox0pInpSJQlZH3PUCSh7bfnwaTAeHjUJ5LD09CP6aLg4JFljuBa9GC+zP
- G1oQM9wFcQiIH61bq10q6M3Ra96D5qwHwstjSf2iLshZRHkhPjOEe1rk+ A==;
-X-CSE-ConnectionGUID: xby1WFDqSFmfpO7A38iHZA==
-X-CSE-MsgGUID: vpDgUL6zTUO5RfrjuLz0gA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="57736797"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="57736797"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 04:14:12 -0700
-X-CSE-ConnectionGUID: +aXQ0ZxDQa+/PY0BBGN2oQ==
-X-CSE-MsgGUID: MRUMw5t1SOui8/p4iLoEnw==
+ bh=uVaSriLlcGDJkO8fVej7xFk288Hkks1H+Ov0QbI9er8=;
+ b=oFf4+v64LLwfXqudTlMmCAFZX5HZ13OBVnGH77yyerWEcQ3FPbPDe0xf
+ zVReAR5ZLFkw3do2gFPXPZMqEs4TLyuOoDlJ4Dyx3KPzGlswJ+5AJMde1
+ L09ZWeZvvLWyJPl8/ibj0tfRFTGKD+5QW85oiUqJoAj3IG6uM/LOa3KTZ
+ U1d7TS6LTZyFUz5hEgc3UYVrO5ud36kTHohW7VbjOzdi85hHY7Ilh1RU+
+ PDUO3Vv6T80yaOf7kDxKga9b/q+Xzrm4D4WVK/GNwMRLfqbO2w5Hm7fQz
+ NncBuAkCA/NjxqCluOHBwOE48RMTLLLaZAWOja21IJMrhyvlHldYuiqBW g==;
+X-CSE-ConnectionGUID: /L4ovuaLQx6j72EEBLOxlw==
+X-CSE-MsgGUID: qD9oToDHQbiH4KByphF40g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="65414802"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="65414802"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 04:16:31 -0700
+X-CSE-ConnectionGUID: NdaIzB5oQoGsSMsNWSzmCQ==
+X-CSE-MsgGUID: F1ioeDE+Sq2Qy6A+LPQotA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="178285977"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="159176852"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 04 Jul 2025 04:14:11 -0700
-Date: Fri, 4 Jul 2025 19:35:36 +0800
+ by orviesa004.jf.intel.com with ESMTP; 04 Jul 2025 04:16:29 -0700
+Date: Fri, 4 Jul 2025 19:37:55 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 33/39] accel: Directly pass AccelState argument to
- AccelClass::has_memory()
-Message-ID: <aGe8iCTKAtNXns+1@intel.com>
+Subject: Re: [PATCH v6 34/39] accel/kvm: Directly pass KVMState argument to
+ do_kvm_create_vm()
+Message-ID: <aGe9E5JwTjFxjEkg@intel.com>
 References: <20250703173248.44995-1-philmd@linaro.org>
- <20250703173248.44995-34-philmd@linaro.org>
+ <20250703173248.44995-35-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250703173248.44995-34-philmd@linaro.org>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250703173248.44995-35-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -83,20 +83,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 03, 2025 at 07:32:39PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu,  3 Jul 2025 19:32:39 +0200
+On Thu, Jul 03, 2025 at 07:32:40PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  3 Jul 2025 19:32:40 +0200
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v6 33/39] accel: Directly pass AccelState argument to
->  AccelClass::has_memory()
+> Subject: [PATCH v6 34/39] accel/kvm: Directly pass KVMState argument to
+>  do_kvm_create_vm()
 > X-Mailer: git-send-email 2.49.0
 > 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  include/qemu/accel.h | 2 +-
->  accel/kvm/kvm-all.c  | 4 ++--
->  system/memory.c      | 2 +-
->  3 files changed, 4 insertions(+), 4 deletions(-)
+>  accel/kvm/kvm-all.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
