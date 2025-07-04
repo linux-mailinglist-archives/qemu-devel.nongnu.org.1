@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FBCAF986F
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA561AF9813
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:26:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjEC-0008Rw-Qk; Fri, 04 Jul 2025 12:25:32 -0400
+	id 1uXjEF-0008UE-2t; Fri, 04 Jul 2025 12:25:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjEB-0008Rm-6y
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:31 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1uXjEC-0008Sq-VR
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:32 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjE9-0006Ah-Dl
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:30 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3a582e09144so632941f8f.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:25:29 -0700 (PDT)
+ id 1uXjEA-0006Au-Fq
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:32 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-453398e90e9so7306895e9.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:25:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646328; x=1752251128; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751646329; x=1752251129; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HNTx2jUTtiz41AJHeGve8gVUecgpPInN9pSYsT5KM9g=;
- b=fi3QLrK+5OzjTZeXkZJRATP4WBmmmtUqVR+pLEQ7D+Fr+DHL36BeUqa8YD6JWBqRfM
- Q4aQde8U8Va/C8vnGuRUfsd7RpJXsbhyNSkF/TRl7h8fw+kQ6G5hzjyYgYLPf9L1g95g
- x4O2Lf/GqXZPxMiXVA8Jl7tLKfyqvERBJ135WpkJM2ltiLibsZHxxKrzeEfYYtGevJdu
- jKvOiAne0hcXqL934ElutfaHD54LwjMpW+BSTU+AX8l1sg3L0MtMZGi4KsMx6K9+ck2d
- gHcq0ZBfS0qYRSc5iI4Wenod3aJQ572uZFCBba8TPOWPDAHBYjU9y2eqJzSkc4F85X9u
- OgLg==
+ :reply-to; bh=oKJajPVNDiBfbKBnnOuTzq+dn0t+mh0UzlVR45H+DLw=;
+ b=knqimNeG+h6yAIiapTRSSinF+TGmXw9LhGzHAAVCIK4v9on4bIqEj0ShbDfrAWKEwM
+ R7GHvfnCAsVohdE0TNKjClHgOrm1SrtwvaGoO7iGvFYfGpbZmwHplFGnwHDFO3VsgZj5
+ hUitvA6nRrC1TJBxiEcu3higRQauK3bkDm+geeyN6XwI66D3LhqgKCDTPrThKERzvNO/
+ lzCjdCy0MEDr+aj23y1KLRfboZ9BzHuGucBkvkvDJhQz2sqCWXItB9tqDvM5SNsJ7QOi
+ pDiLfjsYMSg/Bj7X6mbZlWVYoEJVzQG6KQQmVYqsHhAMpI8s6AnC1eSQtkQBaXB8985I
+ 026g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646328; x=1752251128;
+ d=1e100.net; s=20230601; t=1751646329; x=1752251129;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HNTx2jUTtiz41AJHeGve8gVUecgpPInN9pSYsT5KM9g=;
- b=ZIYvJj3hXANTMzw5vkn9FA4TmIyZianUpMWdXf7lx6XsX3gyHM9g2BtefW/4bZHDF9
- EX4WHPMIBfmxJPVe/7aCOmo5ddHNxfdF+eTeR08I6drbNEVmPu3dsurSnO8sUNaGbcdX
- 42H3M9q1+qcaMwcCT7Ch5FzjmCBEH7irdDlajEoMVOZ8boHlHMzEAc+iitD/us3/OrDy
- AnfUTklw2ozZz4H2uE++JxKB92Mfv9gdx1Han+6duF/tmnkGUKzbRIuHBvWxwhT76oEY
- xnDZOWJpmFWHjBs2qiENkeq4JaIC0ImaCw8sV5JiXLYCCxSCx9r8TLXRLkyO1O3vao8W
- YJJA==
-X-Gm-Message-State: AOJu0YxHKb3Tyv3P4Df0vOKIOTWh5HwZ0k4TIijHYM0gGOE3xQCIP/za
- N2xL9/hM1lSaRfkUCgnmlaqQ8uYXKxs6joDBS0PGCP0X6B6y61trA1ArCkVeADInw/Mq71H14Wi
- f03xU
-X-Gm-Gg: ASbGncttrjopITgzkIX66jqJQ7chvj31jOMgLult1DzvqiST/YAfJV0yssgj4vV/tTg
- P7+ncbdTZDP/2q6Ikf3UGlSBPZ3OB4HjM4vn/jn2+50SY+7U8/tm78qJ2Nz5W+ZgpHjpUMHIWwD
- 9O1fOHHodVK/sCQ0VP4M9mwULZ2nIGMLy55t4udmJvaEKqCPXhfEYTRkcuPcDSdBxd023T4fkZO
- 9tvMOYKZTTpwcISjqFSbc53+QIfhKGW3EhnyrZhz0Dx3eJ1gFPFskpTOvJHtSzyRS/d1lU0I6QZ
- 0iG20afbJx03lsIhD0pfAakvkRwk+Rfk/QkXhE+dMD2JE+/6G1RVNq1SsBOGCLjAAHUe
-X-Google-Smtp-Source: AGHT+IEPnC3Y02ydmyZoj0cBvEhdKJ1TPz+UidnRra3pIrDh5tqxZD2CYEAGkoSKtLj059JHkOAIhg==
-X-Received: by 2002:a05:600c:4f49:b0:450:d30e:ff96 with SMTP id
- 5b1f17b1804b1-454b8b37c22mr12947105e9.0.1751646327896; 
- Fri, 04 Jul 2025 09:25:27 -0700 (PDT)
+ bh=oKJajPVNDiBfbKBnnOuTzq+dn0t+mh0UzlVR45H+DLw=;
+ b=kleTGQGiPJFGZkVVnE4YLll51H8cYkXaSzppgjiBXB2mqUfk2gFc3lCX2TyLmcc2JC
+ hnG+XQB+UC0TInHmNrh7wHsUKeurUr2INRST/G8LEKus5ajE0EYxGhvihTzIp8tcUrhM
+ pyG5kC5gSBJYza5fsRIpJT6KW7YYxcgrLehAiqSd7YLkshSKf7jM22VMHrQYQdSSQs7S
+ o5Kov0jrMW2aucrkTLcZxeIJLmwKo+p2ar9UKuuM//JS4XE+Gt43OPoLtcPctxEUMT9Y
+ aBPrAHsOFlA3B1Iowl5Ww75/neH20z308vFBGdDMxvTqwkZw/zBwEdEpYN+e7srnzxD4
+ eesA==
+X-Gm-Message-State: AOJu0YyIG8f6034qH/gK921hiGEaqVfG82erd6PvLEAk5+605OzE0oXx
+ qoAuT/FgO/rODHXODhf6Q5WruW1ug1Znr/UC5dpmN8cW/X1cz+0qeYkp57THMyrdGqQmYt6fS4i
+ y1UH0
+X-Gm-Gg: ASbGncsPMfMgMSJi3VBBIG4x8vBOi1yDdpDX+BX+AADDrxASKJN9e2223FA8GScwGCG
+ hs9m1UkQMb8vjvmrrgX2KiTYbto0mxF4fiiZxIjksrMhHm4c88/iHlorEMODSFXBaztQTUKT6Kh
+ HyWfCIA2Kuu9T8uyFWo+iK1TnAZN4rBawIwSmU+O6AhkYpel+A0siDRDmysZqMTfTLV/6lFA9NX
+ m4HWUw7g+CbSIemTEP4KZdD6LfnPDkfm1e1KSOoyOcq4FE0pe8O4nQW24LHFayNdCt0lkJHWn0C
+ Dah6kRt81SeDiSt1lWoZqPlcSpsmyAPadUTsRUvXQLw7GwJxdggS2pEsRf6pYQxixOfH
+X-Google-Smtp-Source: AGHT+IH9pn28oN5TDzdIacOObSEE+Q+rNEPLkXjkJUkLUJjybSElrDeASVAL4CwRugL9f/rDXpwqSA==
+X-Received: by 2002:a05:600c:46c8:b0:43d:563:6fef with SMTP id
+ 5b1f17b1804b1-454b9f2f337mr917955e9.21.1751646328792; 
+ Fri, 04 Jul 2025 09:25:28 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.25.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:25:27 -0700 (PDT)
+ Fri, 04 Jul 2025 09:25:28 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 027/119] target/arm: Add ZT0
-Date: Fri,  4 Jul 2025 17:23:27 +0100
-Message-ID: <20250704162501.249138-28-peter.maydell@linaro.org>
+Subject: [PULL 028/119] target/arm: Add zt0_excp_el to DisasContext
+Date: Fri,  4 Jul 2025 17:23:28 +0100
+Message-ID: <20250704162501.249138-29-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
 References: <20250704162501.249138-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,70 +98,152 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-This is a 512-bit array introduced with SME2.
-Save it only when ZA is in use.
+Pipe the value through from SMCR_ELx through hflags and into
+the disassembly context.  Enable EZT0 in smcr_write.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250704142112.1018902-16-richard.henderson@linaro.org
+Message-id: 20250704142112.1018902-17-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.h     |  3 +++
- target/arm/machine.c | 20 ++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ target/arm/cpu.h               |  2 ++
+ target/arm/tcg/translate.h     |  1 +
+ target/arm/cpu.c               |  3 +++
+ target/arm/helper.c            |  6 +++++-
+ target/arm/tcg/hflags.c        | 34 +++++++++++++++++++++++++++++++++-
+ target/arm/tcg/translate-a64.c |  1 +
+ 6 files changed, 45 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index c6041a93578..cbc20434836 100644
+index cbc20434836..39a9234ff28 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -716,6 +716,9 @@ typedef struct CPUArchState {
-     uint64_t scxtnum_el[4];
+@@ -1513,6 +1513,7 @@ FIELD(SVCR, ZA, 1, 1)
  
-     struct {
-+        /* SME2 ZT0 -- 512 bit array, with data ordered like ARMVectorReg. */
-+        uint64_t zt0[512 / 64] QEMU_ALIGNED(16);
-+
-         /*
-          * SME ZA storage -- 256 x 256 byte array, with bytes in host
-          * word order, as we do with vfp.zregs[].  This corresponds to
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index 6e73368ef97..6986915bee8 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -321,6 +321,25 @@ static const VMStateDescription vmstate_za = {
-     }
- };
+ /* Fields for SMCR_ELx. */
+ FIELD(SMCR, LEN, 0, 4)
++FIELD(SMCR, EZT0, 30, 1)
+ FIELD(SMCR, FA64, 31, 1)
  
-+static bool zt0_needed(void *opaque)
+ /* Write a new value to v7m.exception, thus transitioning into or out
+@@ -3084,6 +3085,7 @@ FIELD(TBFLAG_A64, NV2_MEM_E20, 35, 1)
+ FIELD(TBFLAG_A64, NV2_MEM_BE, 36, 1)
+ FIELD(TBFLAG_A64, AH, 37, 1)   /* FPCR.AH */
+ FIELD(TBFLAG_A64, NEP, 38, 1)   /* FPCR.NEP */
++FIELD(TBFLAG_A64, ZT0EXC_EL, 39, 2)
+ 
+ /*
+  * Helpers for using the above. Note that only the A64 accessors use
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 0004a97219b..b03956a7937 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -70,6 +70,7 @@ typedef struct DisasContext {
+     int fp_excp_el; /* FP exception EL or 0 if enabled */
+     int sve_excp_el; /* SVE exception EL or 0 if enabled */
+     int sme_excp_el; /* SME exception EL or 0 if enabled */
++    int zt0_excp_el; /* ZT0 exception EL or 0 if enabled */
+     int vl;          /* current vector length in bytes */
+     int svl;         /* current streaming vector length in bytes */
+     bool vfp_enabled; /* FP enabled via FPSCR.EN */
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 62656277625..08c43f674a2 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -635,6 +635,9 @@ void arm_emulate_firmware_reset(CPUState *cpustate, int target_el)
+                 env->cp15.cptr_el[3] |= R_CPTR_EL3_ESM_MASK;
+                 env->cp15.scr_el3 |= SCR_ENTP2;
+                 env->vfp.smcr_el[3] = 0xf;
++                if (cpu_isar_feature(aa64_sme2, cpu)) {
++                    env->vfp.smcr_el[3] |= R_SMCR_EZT0_MASK;
++                }
+             }
+             if (cpu_isar_feature(aa64_hcx, cpu)) {
+                 env->cp15.scr_el3 |= SCR_HXEN;
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 3879bce8489..b3f0d6f17a8 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6682,10 +6682,14 @@ static void smcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
+ {
+     int cur_el = arm_current_el(env);
+     int old_len = sve_vqm1_for_el(env, cur_el);
++    uint64_t valid_mask = R_SMCR_LEN_MASK | R_SMCR_FA64_MASK;
+     int new_len;
+ 
+     QEMU_BUILD_BUG_ON(ARM_MAX_VQ > R_SMCR_LEN_MASK + 1);
+-    value &= R_SMCR_LEN_MASK | R_SMCR_FA64_MASK;
++    if (cpu_isar_feature(aa64_sme2, env_archcpu(env))) {
++        valid_mask |= R_SMCR_EZT0_MASK;
++    }
++    value &= valid_mask;
+     raw_write(env, ri, value);
+ 
+     /*
+diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+index 1ccec63bbd4..59ab5263753 100644
+--- a/target/arm/tcg/hflags.c
++++ b/target/arm/tcg/hflags.c
+@@ -214,6 +214,31 @@ static CPUARMTBFlags rebuild_hflags_a32(CPUARMState *env, int fp_el,
+     return rebuild_hflags_common_32(env, fp_el, mmu_idx, flags);
+ }
+ 
++/*
++ * Return the exception level to which exceptions should be taken for ZT0.
++ * C.f. the ARM pseudocode function CheckSMEZT0Enabled, after the ZA check.
++ */
++static int zt0_exception_el(CPUARMState *env, int el)
 +{
-+    ARMCPU *cpu = opaque;
-+
-+    return za_needed(cpu) && cpu_isar_feature(aa64_sme2, cpu);
++#ifndef CONFIG_USER_ONLY
++    if (el <= 1
++        && !el_is_in_host(env, el)
++        && !FIELD_EX64(env->vfp.smcr_el[1], SMCR, EZT0)) {
++        return 1;
++    }
++    if (el <= 2
++        && arm_is_el2_enabled(env)
++        && !FIELD_EX64(env->vfp.smcr_el[2], SMCR, EZT0)) {
++        return 2;
++    }
++    if (arm_feature(env, ARM_FEATURE_EL3)
++        && !FIELD_EX64(env->vfp.smcr_el[3], SMCR, EZT0)) {
++        return 3;
++    }
++#endif
++    return 0;
 +}
 +
-+static const VMStateDescription vmstate_zt0 = {
-+    .name = "cpu/zt0",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = zt0_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT64_ARRAY(env.za_state.zt0, ARMCPU,
-+                             ARRAY_SIZE(((CPUARMState *)0)->za_state.zt0)),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static bool serror_needed(void *opaque)
+ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+                                         ARMMMUIdx mmu_idx)
  {
-     ARMCPU *cpu = opaque;
-@@ -1096,6 +1115,7 @@ const VMStateDescription vmstate_arm_cpu = {
-         &vmstate_m_security,
-         &vmstate_sve,
-         &vmstate_za,
-+        &vmstate_zt0,
-         &vmstate_serror,
-         &vmstate_irq_line_state,
-         &vmstate_wfxt_timer,
+@@ -269,7 +294,14 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+             DP_TBFLAG_A64(flags, PSTATE_SM, 1);
+             DP_TBFLAG_A64(flags, SME_TRAP_NONSTREAMING, !sme_fa64(env, el));
+         }
+-        DP_TBFLAG_A64(flags, PSTATE_ZA, FIELD_EX64(env->svcr, SVCR, ZA));
++
++        if (FIELD_EX64(env->svcr, SVCR, ZA)) {
++            DP_TBFLAG_A64(flags, PSTATE_ZA, 1);
++            if (cpu_isar_feature(aa64_sme2, env_archcpu(env))) {
++                int zt0_el = zt0_exception_el(env, el);
++                DP_TBFLAG_A64(flags, ZT0EXC_EL, zt0_el);
++            }
++        }
+     }
+ 
+     sctlr = regime_sctlr(env, stage1);
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index b0caccca46e..ad293c08858 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -10139,6 +10139,7 @@ static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
+     dc->trap_eret = EX_TBFLAG_A64(tb_flags, TRAP_ERET);
+     dc->sve_excp_el = EX_TBFLAG_A64(tb_flags, SVEEXC_EL);
+     dc->sme_excp_el = EX_TBFLAG_A64(tb_flags, SMEEXC_EL);
++    dc->zt0_excp_el = EX_TBFLAG_A64(tb_flags, ZT0EXC_EL);
+     dc->vl = (EX_TBFLAG_A64(tb_flags, VL) + 1) * 16;
+     dc->svl = (EX_TBFLAG_A64(tb_flags, SVL) + 1) * 16;
+     dc->pauth_active = EX_TBFLAG_A64(tb_flags, PAUTH_ACTIVE);
 -- 
 2.43.0
 
