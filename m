@@ -2,77 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3781AF9116
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C538AF9152
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:18:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeKo-0001V6-BO; Fri, 04 Jul 2025 07:12:03 -0400
+	id 1uXeLr-0001zD-QP; Fri, 04 Jul 2025 07:13:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXeKh-0001Tj-Dx
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:11:55 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
+ id 1uXeLR-0001jI-Am
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:12:44 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXeKe-0001PX-1D
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:11:55 -0400
+ id 1uXeLN-0002C1-Nw
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:12:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751627512; x=1783163512;
+ t=1751627558; x=1783163558;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=o1Nrk5RUp6fY1bkTBtN3Hp9y0X6x3rmoyVhWTfb40es=;
- b=PdIH6utue9QzyoVdnS8Oxxu0x2bEA0uYpuJJSXp4PYtWRzz9mbbeOQ5V
- zV/M0j7BUC53tj+r22mqt9ITSHkzDFGWZVna2OFSKETZBgJgVoYoKpZua
- qTsBEtJWOX9hw/qNa5Vq2dDdFzadUktGi2dorGcFHmOLvxK6gMGnDZK+S
- RcOiWXKF+K6wOqeX4lszZKBP24ieB7Au/HIrmCYWhQUdiGKtCQSv0arFY
- EthL6QymsnPPKJktMQIJqGAKbktxpj94rOL0HHDOjFQV4kmc+pY/BTsiS
- YEP41N5grtuDS2dhTLAE6E/Jqq4mv9t+A8G+MAUhT0Q5NTI+Pu4UC56Zi w==;
-X-CSE-ConnectionGUID: 5t3m/BQxQCSLB/4+FH855Q==
-X-CSE-MsgGUID: uwWJ5dzZSPW7tGPwV/6FhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="54104361"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="54104361"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 04:11:48 -0700
-X-CSE-ConnectionGUID: 9GV3W5YtQfabXlm8uFAwUA==
-X-CSE-MsgGUID: Rb2p5PN2TDWcFZtsdBilyw==
+ bh=/hVPCh73fUpNDW3bOXImYu4Hg6P01VNCk8dVhBXuTBA=;
+ b=RBbWsSl3EqpbE6KnaVLZUch5jwiFmPJgeU1onTKXiLKLFS3DYNLeyxTg
+ 5zjgTYLfrFJ1TARVdFB7kIYnbxv0scV+jmg8h8ekW8qNTGD9l6ZDoIMWd
+ pf/cLS8kjaK3gJR2fRC7aXMnEPJXgUJ6p24mSvwa+oREggTmyuCDFm2RU
+ TfAM9MmPKuUrEh0pZfpD/RepF75wijx2aGhblS7v3pFppPa/0vrBBBsMD
+ Ywt8Mf6lO6FzUDsoB4Ua6ytGOe+xRmyBtKjj6bWs2EGHWnssUR8785bVL
+ colWDEavSnvGujZ9mm7CwmsFbIgMF1Pvg+mWW5ODuMDVfbfjg6JYM/sgm w==;
+X-CSE-ConnectionGUID: /i7qKRH6Szuf4gVOzsgMgA==
+X-CSE-MsgGUID: CjUij/b8SuOIB006MUkOSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="65016895"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="65016895"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 04:12:31 -0700
+X-CSE-ConnectionGUID: hrqwtJE8S9+A/37PTm2uKg==
+X-CSE-MsgGUID: SiwZ9sOxQFKZCTjycoC7MQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="154746779"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="154031149"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 04 Jul 2025 04:11:44 -0700
-Date: Fri, 4 Jul 2025 19:33:09 +0800
+ by orviesa010.jf.intel.com with ESMTP; 04 Jul 2025 04:12:30 -0700
+Date: Fri, 4 Jul 2025 19:33:56 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Mads Ynddal <mads@ynddal.dk>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Reinoud Zandijk <reinoud@netbsd.org>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 30/39] accel: Propagate AccelState to
- AccelClass::init_machine()
-Message-ID: <aGe79U/acV51nQM9@intel.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 31/39] accel/kvm: Prefer local AccelState over global
+ MachineState::accel
+Message-ID: <aGe8JNShQjQ07kgt@intel.com>
 References: <20250703173248.44995-1-philmd@linaro.org>
- <20250703173248.44995-31-philmd@linaro.org>
+ <20250703173248.44995-32-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250703173248.44995-31-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250703173248.44995-32-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -97,94 +83,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 03, 2025 at 07:32:36PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu,  3 Jul 2025 19:32:36 +0200
+On Thu, Jul 03, 2025 at 07:32:37PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  3 Jul 2025 19:32:37 +0200
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v6 30/39] accel: Propagate AccelState to
->  AccelClass::init_machine()
+> Subject: [PATCH v6 31/39] accel/kvm: Prefer local AccelState over global
+>  MachineState::accel
 > X-Mailer: git-send-email 2.49.0
-> 
-> In order to avoid init_machine() to call current_accel(),
-> pass AccelState along.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->  include/qemu/accel.h        | 2 +-
->  accel/accel-system.c        | 2 +-
->  accel/hvf/hvf-all.c         | 2 +-
->  accel/kvm/kvm-all.c         | 2 +-
->  accel/qtest/qtest.c         | 2 +-
->  accel/tcg/tcg-all.c         | 2 +-
->  accel/xen/xen-all.c         | 2 +-
->  bsd-user/main.c             | 2 +-
->  linux-user/main.c           | 2 +-
->  target/i386/nvmm/nvmm-all.c | 2 +-
->  target/i386/whpx/whpx-all.c | 2 +-
->  11 files changed, 11 insertions(+), 11 deletions(-)
-
-...
-
-> diff --git a/accel/accel-system.c b/accel/accel-system.c
-> index b5b368c6a9c..fb8abe38594 100644
-> --- a/accel/accel-system.c
-> +++ b/accel/accel-system.c
-> @@ -37,7 +37,7 @@ int accel_init_machine(AccelState *accel, MachineState *ms)
->      int ret;
->      ms->accelerator = accel;
->      *(acc->allowed) = true;
-> -    ret = acc->init_machine(ms);
-> +    ret = acc->init_machine(accel, ms);
-
-Now we've already set "ms->accelerator", so that we could get @accel
-by ms->accelerator.
-
-But considerring the user emulation, where the @ms is NULL, and for
-these cases, it needs to bring current_accel() back in patch 32.
-
-Anyway, this solution is also fine for me, so,
+>  accel/kvm/kvm-all.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
-
-...But there're still more comments/questions about user emulation:
-
-> --- a/bsd-user/main.c
-> +++ b/bsd-user/main.c
-> @@ -474,7 +474,7 @@ int main(int argc, char **argv)
->                                   opt_one_insn_per_tb, &error_abort);
->          object_property_set_int(OBJECT(accel), "tb-size",
->                                  opt_tb_size, &error_abort);
-> -        ac->init_machine(NULL);
-> +        ac->init_machine(accel, NULL);
-
-Not the issue about this patch though,
-
-it seems user emulation doesn't set acc->allowed. At least TCG enabled
-is necessary, I guess?
-
->      }
->  
->      /*
-> diff --git a/linux-user/main.c b/linux-user/main.c
-> index 5ac5b55dc65..a9142ee7268 100644
-> --- a/linux-user/main.c
-> +++ b/linux-user/main.c
-> @@ -820,7 +820,7 @@ int main(int argc, char **argv, char **envp)
->                                   opt_one_insn_per_tb, &error_abort);
->          object_property_set_int(OBJECT(accel), "tb-size",
->                                  opt_tb_size, &error_abort);
-> -        ac->init_machine(NULL);
-> +        ac->init_machine(accel, NULL);
-
-Ditto.
-
->      }
->  
->      /*
-
-Thanks,
-Zhao
 
 
