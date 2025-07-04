@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17478AF9177
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB46BAF917D
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:23:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeQZ-0004It-Jn; Fri, 04 Jul 2025 07:17:59 -0400
+	id 1uXeUA-0004U3-PL; Fri, 04 Jul 2025 07:21:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXeQ8-000406-9c
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:17:35 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
+ id 1uXeU0-0004G4-GB
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:21:33 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXeQ6-0005HQ-PY
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:17:32 -0400
+ id 1uXeTx-00080F-UD
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:21:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751627851; x=1783163851;
+ t=1751628090; x=1783164090;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=KCjltM41xz3GfHdkUZZ2fiuscRqEgHXJZnCRkBJ2cIY=;
- b=ll0LRC2LOUoXtlk3/pnhgarTOohH/+9tg5DCwiPNE/j0ssaJHnxJ4HFP
- HCm1IAf0Ic/wRQ/0WefdeZCJT7X+MyX5gdt4VIYKYs4NSdGgc2nsLKK8Y
- 6+corPMD2LW+U4ZHGcZOL4QZyVlDRt2Iy9pmYzNsphHXNzVBPMRjoXLVu
- 7GER+JHW4X4CeyWblbXWezZtQ1/ZAj4aS9H8oTqeVgVseLA0Rl3yHRyX/
- pxQDJLRdhJMTQhtu27Q7m9ilvBUTkH/pJX3GxOCkw0ooMQ363yuhjsStv
- fqhzpytSLnsX08j7pTTQu56qGk6KkOSSK5B8cGOVQAsnWQX2HGGMy5xnx Q==;
-X-CSE-ConnectionGUID: niShlUWgRRK90afZysrFUg==
-X-CSE-MsgGUID: 19WSiL3MT4enAlwDMLCYWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="65414903"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="65414903"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 04:17:29 -0700
-X-CSE-ConnectionGUID: W3RpXJjkSTWLpn4jyS21xg==
-X-CSE-MsgGUID: 9tb+FDaSSaaH2Vx1rgW6HQ==
+ bh=yqLsMXvXsECTq5ameAvnd7rKTpfYOMo5B5yoxtZ5sgI=;
+ b=NxZ6p1krs9YFgGyf59AkpJXLnTmt79bvUdIlkKWRPVQ0Azl7uih6BZg5
+ Zm2mDxUHZVW4qx8yblHwT6eH+p1utBzUrVEuQZTjxQC5U9gk58f4vrLQm
+ dsaIQ+FcVXosIw/yH/fnzoEOnUa5JpS9jlccjvikb0p1+PwxC99BZeY1g
+ I35iz4YCMYjslXzoRBmr1WKP1tj+G0/dknIt8OObiKDy/9nM/9TjXL2OQ
+ hYJdc60LMRo8M7ovciDEMOULm/n51TbdfeUe0ROfVYD0S9bkE32gVy5FW
+ 3lDCdmA1/kcGcUUxN1VSbCnxRybHg9XZd5u5//Tuv+oUGTSKTlLR8Hj9i w==;
+X-CSE-ConnectionGUID: 9UDFSZ2ySimFmyeci3mejQ==
+X-CSE-MsgGUID: 50roPLmVROqsFF5UhUpQLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="65017466"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="65017466"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 04:21:28 -0700
+X-CSE-ConnectionGUID: ereO5IYETiSC4+D4vUjaGg==
+X-CSE-MsgGUID: vv3Xhsm+Q2CkZwDzzVmUPg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="159177282"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="158653810"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 04 Jul 2025 04:17:28 -0700
-Date: Fri, 4 Jul 2025 19:38:54 +0800
+ by fmviesa003.fm.intel.com with ESMTP; 04 Jul 2025 04:21:27 -0700
+Date: Fri, 4 Jul 2025 19:42:52 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 35/39] accel: Remove unused MachineState argument of
- AccelClass::setup_post()
-Message-ID: <aGe9ThU+ivSYKkOX@intel.com>
+Subject: Re: [PATCH v6 36/39] accel: Pass AccelState argument to
+ gdbstub_supported_sstep_flags()
+Message-ID: <aGe+PNvT1W9hdlPY@intel.com>
 References: <20250703173248.44995-1-philmd@linaro.org>
- <20250703173248.44995-36-philmd@linaro.org>
+ <20250703173248.44995-37-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250703173248.44995-36-philmd@linaro.org>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250703173248.44995-37-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -83,25 +83,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 03, 2025 at 07:32:41PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu,  3 Jul 2025 19:32:41 +0200
+On Thu, Jul 03, 2025 at 07:32:42PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  3 Jul 2025 19:32:42 +0200
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v6 35/39] accel: Remove unused MachineState argument of
->  AccelClass::setup_post()
+> Subject: [PATCH v6 36/39] accel: Pass AccelState argument to
+>  gdbstub_supported_sstep_flags()
 > X-Mailer: git-send-email 2.49.0
 > 
-> This method only accesses xen_domid/xen_domid_restrict, which are both
-> related to the 'accelerator', not the machine. Besides, xen_domid aims
-> to be in Xen AccelState and xen_domid_restrict a xen_domid_restrict
-> QOM property.
+> In order to have AccelClass methods instrospect their state,
+> we need to pass AccelState by argument.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
 >  include/qemu/accel.h | 2 +-
->  accel/accel-system.c | 2 +-
->  accel/xen/xen-all.c  | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+>  accel/accel-common.c | 2 +-
+>  accel/hvf/hvf-all.c  | 2 +-
+>  accel/kvm/kvm-all.c  | 2 +-
+>  accel/tcg/tcg-all.c  | 2 +-
+>  5 files changed, 5 insertions(+), 5 deletions(-)
+
+Make sense. I think then MachineClass can also be similarly cleaned up.
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
