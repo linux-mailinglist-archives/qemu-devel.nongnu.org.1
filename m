@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E88AF9635
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 17:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1EFAF9693
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 17:16:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXhy8-00078R-CS; Fri, 04 Jul 2025 11:04:52 -0400
+	id 1uXi8C-0001zB-OB; Fri, 04 Jul 2025 11:15:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uXhy4-000773-H4
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 11:04:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uXhy2-0007TG-8d
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 11:04:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751641485;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8yjiydpozAeGiYzreYXhPRjXABy7L+dbIXX0O+spGMk=;
- b=bQu8dRh/8kw9sYMAnU/LBuZiY6MHOlKouhrymrQXefrsTaHNTlvmhh/qDRq9Kp4nOQ/Uou
- ryZUodX16eGgirqxlI8wNWfi3V/Ldx0dcNJxpLTSYKGfFuIa6IXtMNZHVHDjFw0Oo7dIDO
- R9ajcHxnSBpyVzmuQjAf0/6rflxGwc0=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-pS3uP2WrMAaIyLS-dD7_gw-1; Fri,
- 04 Jul 2025 11:04:43 -0400
-X-MC-Unique: pS3uP2WrMAaIyLS-dD7_gw-1
-X-Mimecast-MFC-AGG-ID: pS3uP2WrMAaIyLS-dD7_gw_1751641483
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CC65719560AE; Fri,  4 Jul 2025 15:04:42 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.10])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 79EBF194128F; Fri,  4 Jul 2025 15:04:42 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id CA3F921E6A27; Fri, 04 Jul 2025 17:04:39 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  Peter Xu
- <peterx@redhat.com>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v2 16/24] migration: Add capabilities into
- MigrationParameters
-In-Reply-To: <87cyag3tbb.fsf@suse.de> (Fabiano Rosas's message of "Fri, 04 Jul
- 2025 11:48:56 -0300")
-References: <20250630195913.28033-1-farosas@suse.de>
- <20250630195913.28033-17-farosas@suse.de>
- <87jz4sz5b6.fsf@pond.sub.org> <87h5zs3xng.fsf@suse.de>
- <8734bckq6n.fsf@pond.sub.org> <87cyag3tbb.fsf@suse.de>
-Date: Fri, 04 Jul 2025 17:04:39 +0200
-Message-ID: <8734bcj8u0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uXi85-0001yJ-4N
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 11:15:09 -0400
+Received: from mail-qv1-xf2c.google.com ([2607:f8b0:4864:20::f2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uXi82-0004bm-Ah
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 11:15:07 -0400
+Received: by mail-qv1-xf2c.google.com with SMTP id
+ 6a1803df08f44-6fb0eb0f0fbso12943536d6.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 08:15:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751642104; x=1752246904; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Oa2zhtn7SrMvQwPB1AlA+6y1mdRzYmiTTXZ1QyH4Dk0=;
+ b=w+TCcSOV1ULqUwR/OYomS9/P7nWqN/tUYUHnKznv6Qi8ZjjBURNz/HmXe5od2akcw6
+ j+SueM8YR8ZCkmMLqPjGm5lK+YtNuqwpvVWu2I/lb0OqS8jpzHHHvewrYCP0bJIKkaXv
+ jPFzVhyuUV3mZGq4SEC9pNDd65vyfreDuZYM2P0zb6uU6QvGi8HYQq3Pu7ZTnwjv5Ak1
+ QduEvyEwwWEK8nvw/zofEZp+5TizVojMK2V8gqnB3z2mBjAMkoj4f0AguAfjXntIrnbc
+ 8+4N4I5bmuiBvCSFcFN1mriOeG5uCD21N//8KgpSSSHKsNkVcQsLkJJyxMS1IUOR+oIK
+ c7CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751642104; x=1752246904;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Oa2zhtn7SrMvQwPB1AlA+6y1mdRzYmiTTXZ1QyH4Dk0=;
+ b=EcYYlE7y+PW+Wf2EjIZWQtZM3VCgmRCZ1iWTnlUrqQ/p6BydJ3noyOVUxqN2wZOmKm
+ YP4+ioAE1U06Y8g9uuueEok+ER1MpPHLihqbcQNAcLyvyYrRY0QgjvcYbfhnVgJ62iAY
+ MhD6OpGt5Xa4jDFGAJvb5zEBi3LIv3SJ1oWmgAQtW//h7MHA8XzeLHIzoNg2Z5LCHmnr
+ ZnW8jwMXyJSDIFXwryYn9szWsm8cLsKQOxYnJIvUtdLGhY1Vgw7hBU5gt9niFk45vnyL
+ uiPE2Ph6ejNR+N/Z6VTCYsBMe7UVr2movsl82Ny3DSXHz56nDd4zYZS6Oo+3bTrQSU+H
+ ZDyw==
+X-Gm-Message-State: AOJu0YxqTLPluooQ9tFD94OmPPMO/1nSdr8Rz58VaBcjYiWkz0MHP7GH
+ mV07HuujVy4+cjUoBNCmO9LyCPoYQ8fA2du+2PBpsBXrrDDMP5oKbdIIVZGHift3oQeLZtgbESC
+ lSjsh
+X-Gm-Gg: ASbGncvLcsdb/fD/D5V9DSs1OVXB6aubfyTPfrhyIC/RzquwglXJf0hHA92wFFKFh/g
+ N2ArzrFrklCy3zdo6V3QV6Y3nFsqL883HSjFgXUTfBDlhL0vwuV6wPFnTaORNlr53Nj9eYnKwjV
+ OHM4v0jtSaiAit/6cisi1Ho48hDqRSVwdcYr/sA31c+ig5NxC7uRxv1MMHLXYPgDe1SfQ3b2sMD
+ zlSlRXCm7t2dDcXfXYy8sHv8YaZ0SiSS/lzH+0yggl53nB3MUayaNLLJ42BmiuUkTCkNWFhXrpc
+ 6HiO7i93NKlxBxexTHQJVzrqhScV/FO6+TxkSvWe4kRSHoai8Em9wVxA+tr2h1vgnHE=
+X-Google-Smtp-Source: AGHT+IEbbVpxdtR4FV6sLGWAzkFGZo5K/VevjnVXsId49D3E1OpNEN5Xg8ZeQCesuYGmQBd4KdOrbQ==
+X-Received: by 2002:a05:6214:4b09:b0:6fd:27:5a43 with SMTP id
+ 6a1803df08f44-702c5696090mr50371326d6.4.1751642104274; 
+ Fri, 04 Jul 2025 08:15:04 -0700 (PDT)
+Received: from gromero0.. ([189.110.24.38]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-702c4d6039fsm13658666d6.111.2025.07.04.08.15.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 04 Jul 2025 08:15:03 -0700 (PDT)
+From: Gustavo Romero <gustavo.romero@linaro.org>
+To: qemu-arm@nongnu.org,
+	alex.bennee@linaro.org
+Cc: qemu-devel@nongnu.org,
+	gustavo.romero@linaro.org
+Subject: [WIP-for-10.1 v2 0/5] target/arm: Add FEAT_MEC to max cpu
+Date: Fri,  4 Jul 2025 15:14:26 +0000
+Message-Id: <20250704151431.1033520-1-gustavo.romero@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.218,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2c;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-qv1-xf2c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,77 +95,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+This series adds support for all FEAT_MEC registers to the arm64 max CPU.
 
->> Markus Armbruster <armbru@redhat.com> writes:
->
->> Fabiano Rosas <farosas@suse.de> writes:
->>
->>> Markus Armbruster <armbru@redhat.com> writes:
->>>
->>>> Fabiano Rosas <farosas@suse.de> writes:
->>>>
->>>>> Add capabilities to MigrationParameters. This structure will hold all
->>>>> migration options. Capabilities will go away in the next patch.
->>>>>
->>>>> Also add capabilities to MigrationParameter as the enum needs to be
->>>>> kept in sync with MigrationParameters. This affects the parsing of
->>>>> migration HMP commands so make the necessary additions there too.
->>>>>
->>>>> From this point on, both QMP and HMP versions of
->>>>> migrate-set-parameters and query-migrate-parameters gain the ability
->>>>> to work with capabilities.
->>>>>
->>>>> With MigrationParameters now having members for each capability, the
->>>>> migration capabilities commands (query-migrate-capabilities,
->>>>> migrate-set-capabilities) will soon be deprecated. Add a set of
->>>>> helpers to convert between the old MigrationCapability representation
->>>>> and the new representation as members of MigrationParameters.
->>>>>
->>>>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>>>
->>>> [...]
->>>>
->>>>> diff --git a/qapi/migration.json b/qapi/migration.json
->>>>> index 40e00fb86e..3d3f5624c5 100644
->>>>> --- a/qapi/migration.json
->>>>> +++ b/qapi/migration.json
->>>>> @@ -763,7 +763,14 @@
->>>>>             'vcpu-dirty-limit',
->>>>>             'mode',
->>>>>             'zero-page-detection',
->>>>> -           'direct-io'] }
->>>>> +           'direct-io', 'xbzrle', 'rdma-pin-all', 'auto-converge',
->>>>> +           'zero-blocks', 'events', 'postcopy-ram', 'x-colo',
->>>>> +           'release-ram', 'return-path', 'pause-before-switchover',
->>>>> +           'multifd', 'dirty-bitmaps', 'postcopy-blocktime',
->>>>> +           'late-block-activate', 'x-ignore-shared',
->>>>> +           'validate-uuid', 'background-snapshot',
->>>>> +           'zero-copy-send', 'postcopy-preempt',
->>>>> +           'switchover-ack', 'dirty-limit', 'mapped-ram' ] }
->>>>
->>>> This is MigrateParameter.  Different order than in MigrationParameters.
->>>> Intentional?
->>>>
->>>
->>> I think you mean the pre-existing difference in the order of the
->>> compression options multifd-*-level? I'll fix that.
->>
->> I noticed the new members are in a different order than in
->> MigrationParameters.  I didn't notice the existing members differ, too.
->>
->
-> Sorry, I don't see it, we must be looking at different things.
+It includes the FEAT_MEC registers but does not modify the translation regimes
+to support the MECIDs. It also does not yet implement the two cache management
+instructions introduced with FEAT_MEC. Despite these limitations, most software
+stacks that rely on FEAT_MEC should work properly with this minimal support at
+the moment.
 
-Misunderstanding?  Quite possibly on my part!
+I'm currently exploring possibilities to support FEAT_MEC encryption (or
+obfuscation, for testing purposes) in QEMU for the various translation regimes
+used on arm64.
 
-Let's keep the members of MigrationParameter in the same order as the
-members of MigrationParameters.  In case they already are: nevermind!
->
->>> If it's something else, it eludes my gaze.
->>
->> No.
->>
->> Thanks!
+Gustavo Romero (5):
+  target/arm: Add the MECEn SCR_EL3 bit
+  target/arm: Add FEAT_MEC registers
+  target/arm: Add FEAT_SCTLR2
+  target/arm: Add FEAT_TCR2
+  target/arm: Advertise FEAT_MEC in cpu max
+
+ docs/system/arm/emulation.rst |   3 +
+ target/arm/cpu-features.h     |  15 +++
+ target/arm/cpu.h              |  31 ++++++
+ target/arm/helper.c           | 189 ++++++++++++++++++++++++++++++++++
+ target/arm/internals.h        |  18 ++++
+ target/arm/tcg/cpu64.c        |   2 +
+ 6 files changed, 258 insertions(+)
+
+-- 
+2.34.1
 
 
