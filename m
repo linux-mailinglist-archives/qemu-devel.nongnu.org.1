@@ -2,70 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A7DAF9258
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 14:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E487AF92F8
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 14:42:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXfKx-0001UG-UW; Fri, 04 Jul 2025 08:16:16 -0400
+	id 1uXfiy-0003QL-Dj; Fri, 04 Jul 2025 08:41:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXfKr-0001LO-Qd; Fri, 04 Jul 2025 08:16:10 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXfKn-00023E-78; Fri, 04 Jul 2025 08:16:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751631365; x=1783167365;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=AmvNkrWV5AgLDrAVsZEayza3h/QwIDrqw0vEUeEm/go=;
- b=Oq0jXZWJsv65beBu/aDCNiD/EbLHsJOfgei3bUaUmrIu7jzgP0zkYjVF
- nIqgmK2IwNe6gZG2qYcmDhLvim/3e3PZh9BSbRPxIBPAppdP15G20elrJ
- Xp+y4/mTEt0rnSo1a09E9zBYn5oLT8bRoDDHZQGDZMW3cdxlDc+QTXKMp
- PmNbx7oSs3XfOhAQWM55ZrBadYcZgXTReA6edDQVBrVN+2i6VOBciI4x+
- 8LKMiQMvH0Ehu2TKVDfmJKZOfn7SnehFfLbtP+UCbihVMlBaeD+ftKORW
- wPJoc1qEDYatOB1lLvJ8M2h3T5tJcmAPs1zmG1ZFhV3W25Tk6Qj9t0P9m Q==;
-X-CSE-ConnectionGUID: Gi4xiH9LRbmZFn/LkUFpog==
-X-CSE-MsgGUID: zhI+RBCRRqajiGbnHV6RvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="64566829"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="64566829"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 05:16:02 -0700
-X-CSE-ConnectionGUID: u9NnPIhUR1mrd7ATmrSSDA==
-X-CSE-MsgGUID: 6k+/y6DhTs+Da2FCzqRFlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="160305232"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 04 Jul 2025 05:15:59 -0700
-Date: Fri, 4 Jul 2025 20:37:25 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 2/2] rust/qemu-api-macros: add unit tests
-Message-ID: <aGfLBaW0p528ggCP@intel.com>
-References: <20250704-rust_add_derive_macro_unit_tests-v1-0-ebd47fa7f78f@linaro.org>
- <20250704-rust_add_derive_macro_unit_tests-v1-2-ebd47fa7f78f@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXfis-0003PQ-5t
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:40:58 -0400
+Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uXfin-0005XK-AW
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 08:40:57 -0400
+Received: by mail-yb1-xb30.google.com with SMTP id
+ 3f1490d57ef6-e81a7d90835so720840276.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 05:40:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1751632852; x=1752237652; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Oi+QwgFyUTXPn1NiJvGnj1atO4ZVxhr1ZCjf+8aeKe8=;
+ b=eDmK1JJ+foxfmVOqoSmm91cxLnNV9MUkSNDR1/c4s4lwKeHm4tAd8bJXot7sPNFZ2Z
+ 3hGz4tWtZuJY9VpjIzL2OSczSWeO3D257KIPm5VhJWvlvfVIdpmdkTZ2Ll6hF1OMixfn
+ 98ct0rJjwjBnJ0jw0vcm48S7Uiw02noTWarTAXVppLzerXe2o/gfzzm4kGnIvT7tjqlR
+ O7KeCmBYK0mZ1/6rjmOir+WcSm+I7NjjMdcxG84pmQ0hi2Fm2y4p3uZxPMTrSYj1MdFq
+ 9pEjwQ4/zX69UXVAVNrkcNFuzlr1bXCNkgYePTYNRxQa/DAO5BD5ASKwRChW3vW5VyEy
+ /tVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751632852; x=1752237652;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Oi+QwgFyUTXPn1NiJvGnj1atO4ZVxhr1ZCjf+8aeKe8=;
+ b=V893bSykTrI+qjkhjOMepVAYg3qS6j8mR+XZ4lCkR1pYH4GFsBBe+Zn3aj67c3iAak
+ 1v1JBP0ESLkIUn5qqvIkee8azizklJooirw4fpH14HBT3h+3LZ+gLD7mcvOWTiaHlnaV
+ no5bwuAYffUHivFH3fPW8AN0S1bMftT868UrXQVJ4uM35ChkMe6JudrSbsVIUgd8NGpz
+ tDp5aMCY3gPs88ZdBnq4/uZTjULPbVdj0B4XZcgdvYxXq8jD43yYS6VJSxhlETfXS6Ed
+ zUnxSmmOuiHzhJJ5QopBSa+kdieKc1nFHC7Z40SbpqGBqMmCDn5NOaCf+J9DT15DksqB
+ MluA==
+X-Gm-Message-State: AOJu0Yyjskvu5mUmlFMTi2byVTMYFm6udNJvB2SPwn8y1KZ0gkqlw8ON
+ wSBA8BdNYIt+SYu+ZflfbUdXuDyNH59xeZcOnB2u5QUJsFFo4mjbKmm8+sHJpw63E7SY7xE1O3T
+ YQFS3xOOA1lLtMyBR8PZ+eIH4TQb6NgmR0A+QkuQA7w==
+X-Gm-Gg: ASbGncuMO1HX0OGBfCQv063/KG5jq6osYEpxEX3lQLdf/PDeb5wz/YMEv60rQ9tQTwo
+ z0dBoEvkXm9BUAVbpzq09nyTeKuwQmISxqqFqnAPtyTSELCOXuGXBNUkFrETxL+0liw5MWAqpM7
+ GQt7FQqi0Uwvv5RJ2udiTAwmxuaQyqYUFPEW7imvx/5JJI
+X-Google-Smtp-Source: AGHT+IHhmNrp+sKEwZN46UY2pwI2Xf6dOQEvJTuk75d33NUNqeuDCXDRa5PYDcGesFF/eTlhP4o3uAwrA9FSnCEtarQ=
+X-Received: by 2002:a05:690c:388:b0:70e:2d77:3cfe with SMTP id
+ 00721157ae682-7166b59391fmr21731377b3.2.1751632851568; Fri, 04 Jul 2025
+ 05:40:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250704-rust_add_derive_macro_unit_tests-v1-2-ebd47fa7f78f@linaro.org>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.218,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250702113051.46483-1-thuth@redhat.com>
+In-Reply-To: <20250702113051.46483-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 4 Jul 2025 13:40:39 +0100
+X-Gm-Features: Ac12FXwAQy-fGZxl-rZPBqEozJPVINFPiXiYb--VfE338vSNvFl3U_AX-A4dhzY
+Message-ID: <CAFEAcA8_D035si+3n-A=px4nF+2fVvPqRvq7A9HcwSxW6rpx4g@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm/highbank: Mark the "highbank" and the "midway"
+ machine as deprecated
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org, 
+ Guenter Roeck <linux@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb30.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,93 +91,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 04, 2025 at 01:26:58PM +0300, Manos Pitsidianakis wrote:
-> Date: Fri, 04 Jul 2025 13:26:58 +0300
-> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Subject: [PATCH 2/2] rust/qemu-api-macros: add unit tests
-> X-Mailer: b4 0.14.2
-> 
-> Add unit tests to check Derive macro output for expected error messages,
-> or for expected correct codegen output.
-> 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+On Wed, 2 Jul 2025 at 12:30, Thomas Huth <thuth@redhat.com> wrote:
+>
+> From: Thomas Huth <thuth@redhat.com>
+>
+> We don't have any automatic regression tests for these machines and
+> when asking the usual suspects on the mailing list we came to the
+> conclusion that nobody tests these machines manually, too, so it seems
+> like this is currently just completely unused code. Mark them as depre-
+> cated to see whether anybody still speaks up during the deprecation
+> period, otherwise we can likely remove these two machines in a couple
+> of releases.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  rust/qemu-api-macros/meson.build  |   3 +
->  rust/qemu-api-macros/src/lib.rs   |   3 +
->  rust/qemu-api-macros/src/tests.rs | 135 ++++++++++++++++++++++++++++++++++++++
->  rust/qemu-api-macros/src/utils.rs |   1 +
->  4 files changed, 142 insertions(+)
-> 
-> diff --git a/rust/qemu-api-macros/meson.build b/rust/qemu-api-macros/meson.build
-> index 8610ce1c8440c4b6e38a8462d4975bf76d72fb05..2152bcb99b30e4bdcc1c5b887b7903a37f6181c3 100644
-> --- a/rust/qemu-api-macros/meson.build
-> +++ b/rust/qemu-api-macros/meson.build
-> @@ -17,3 +17,6 @@ _qemu_api_macros_rs = rust.proc_macro(
->  qemu_api_macros = declare_dependency(
->    link_with: _qemu_api_macros_rs,
->  )
-> +
-> +rust.test('rust-qemu-api-macros-tests', _qemu_api_macros_rs,
-> +          suite: ['unit', 'rust'])
-> diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
-> index 4b30bea9eafc7924bf593113c3f42c5b1010c4b9..6c6e9b683f047f79cb377e6d30e23490f66bd711 100644
-> --- a/rust/qemu-api-macros/src/lib.rs
-> +++ b/rust/qemu-api-macros/src/lib.rs
-> @@ -15,6 +15,9 @@
->  mod bits;
->  use bits::BitsConstInternal;
->  
-> +#[cfg(test)]
-> +mod tests;
-> +
->  fn get_fields<'a>(
->      input: &'a DeriveInput,
->      msg: &str,
-> diff --git a/rust/qemu-api-macros/src/tests.rs b/rust/qemu-api-macros/src/tests.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..dfca7d4838f141783472a4e728312aebeb9b5a8b
-> --- /dev/null
-> +++ b/rust/qemu-api-macros/src/tests.rs
-> @@ -0,0 +1,135 @@
-> +// Copyright 2025, Linaro Limited
-> +// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +use super::*;
-> +use quote::quote;
-> +
-> +macro_rules! derive_compile_fail {
-> +    ($derive_fn:ident, $input:expr, $error_msg:expr) => {{
-> +        let input: proc_macro2::TokenStream = $input;
-> +        let error_msg: &str = $error_msg;
-> +        let derive_fn: fn(input: syn::DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> =
-> +            $derive_fn;
-> +
-> +        let input: syn::DeriveInput = syn::parse2(input).unwrap();
-> +        let result = derive_fn(input);
-> +        let MacroError::Message(err, _) = result.unwrap_err() else {
-> +            panic!()
-> +        };
-> +        assert_eq!(err, error_msg);
-> +    }};
-> +}
-> +
-> +macro_rules! derive_compile {
-> +    ($derive_fn:ident, $input:expr, $($expected:tt)*) => {{
-> +        let input: proc_macro2::TokenStream = $input;
-> +        let expected: proc_macro2::TokenStream = $($expected)*;
-> +        let derive_fn: fn(input: syn::DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> =
-> +            $derive_fn;
-> +
-> +        let input: syn::DeriveInput = syn::parse2(input).unwrap();
-> +        let result = derive_fn(input).unwrap();
-> +        assert_eq!(result.to_string(), expected.to_string());
-> +    }};
-> +}
-
-Good examples to test macros. LGTM,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+>  Here's the preceeding discussion on the mailing list:
+>  https://lore.kernel.org/qemu-devel/CAFEAcA_0Hu8+G50sy0FJ2rX-=cNymLddDdrS2nN5ZY-doKiT8w@mail.gmail.com/
+>
 
 
+
+Applied to target-arm.next, thanks.
+
+-- PMM
 
