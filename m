@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287D1AF9178
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72160AF9134
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:16:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeLt-00023O-5P; Fri, 04 Jul 2025 07:13:09 -0400
+	id 1uXeLz-0002EW-0H; Fri, 04 Jul 2025 07:13:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeLp-0001z6-9Y
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:05 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1uXeLr-00023c-NT
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:07 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeLk-0002wg-6r
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:04 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-235e1d710d8so11775705ad.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:12:59 -0700 (PDT)
+ id 1uXeLo-000312-4r
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:07 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-23633a6ac50so12207825ad.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751627579; x=1752232379; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751627581; x=1752232381; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KIB6W+/i6ZPM8armFh2cEM7Exu8V9Bmkl+w0LJdjQRw=;
- b=UIFeu5Ha1Ejm2lE4e2SxxrYMvGR8ZENJYDJnjxl2Qa5v8EBWfVpHRFmHMUB3abfMQS
- usUQ291YFm8wPt5YPcmqjGqM+ShXl7T4sYHQLbdEfCFZ1rrHOed7v6UFgixyR9ayg6Bx
- yX4s1Cj+xI36Rn/qeOwkhkhEEvV7Njz1w4kw9IxXqQ+y8PfQogE6MHk6EFW1U0Dotfz1
- 2mW5HLm0al/sPUTbxJWM0qTRV768+caVPLuHIOpB+TPJYgm7y8NR6Lyg1IydpA1wkjRY
- lhr9wUcLjxhXeLriy8QW8hsWLRzAhut4YMlPt1HOPH16SwAimqL1KTthdJfKgQsIFDRJ
- eZCg==
+ bh=NpC4Yp9xAW0N3T6Tteiy7UBN259S4dShS5JJ++ECn+Q=;
+ b=auRDZzubeYuRpiMVdAOxMpAGZf5yaas0VYnPmG7589MAy9m4AWOEWlgcBQ4B1dQ+Fa
+ LSkj7s9OQQQ73Q9rXdqMTJDZV7hoWZPXhh/tmuoonmFSC7kyiji6ax0TYmw9LZC4XMnk
+ WUEizgLCdZbUNBHpypiE2HxjGwgJeXGKT1krmnJcuf2soglod9XPIiqjCUh1ebYycWEb
+ yzRRLgHiPLi2fcuymRIYLSAIX/ZxpANoiY7V/HMAs+noxaNy3/B1QpC92umQl/+GDK86
+ m7/HCz+XAGt2CvdBFSksbfXbbNosHQBaqYcx0NUPoo3pfs9diW8BexO9KOmZOjpY8z42
+ /oNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751627579; x=1752232379;
+ d=1e100.net; s=20230601; t=1751627581; x=1752232381;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KIB6W+/i6ZPM8armFh2cEM7Exu8V9Bmkl+w0LJdjQRw=;
- b=jNP+X31zn5VryJ7blIsQZIuj78QxIv6Wvomx7FvrCGYcwpCLdfm0ckGoLyouMUfmma
- 3QcdfeAcdy5w/mWDp1EFLtBN7+RM78qfqlVjr0jZVHZXf1Dy5jP9otWUKhMLH8e3l36R
- q/UkLfBWtu5BTEJ2VvB8ev2QpyZs1kXdRkKQYAYmkrYhjQ8xoSjNfu3cAYdYBp2MFBPR
- VhT8jk5bsFmBPoQvQRbbAxXEqXsCTFwttUiDjYxXbGuvWlLPelDXxwYYCWZBqRndrfP0
- nuXsPFB8PUR+tSf9OJ4tPDY/wamz9NVq7+21JMueX6n184o6I6Fs4+mDPnRIrgdaqjIq
- 2/yg==
-X-Gm-Message-State: AOJu0YykJVswVSscbYXEFFyk5TJE2MfHPYTc9syn3V7DfYGa9g/2JxYK
- TuJTMypYEEXQpzme3MdynBNoo5glPSw9B3G4/WKxWSGwg2t09QbjX4zdUo9VPA==
-X-Gm-Gg: ASbGncuBmVi9+vzcltS8zio8uFy3rpBauaDWNhRS0y9APeQhC3M8lZUHz7208U4B4Oy
- NuvfkDK6maibLI70ZjT6KcomVzRFsDezvlAgeaCBZZ6T5F7GYIxb6/tbrEKaYSJ7mPsavjdR9+n
- bXzqLvdpvaMoViskdLvEoGVkeEsTJtHWu+FiinPpPAo8g9djuxvoBI00gUWr2/Yaogc6Ll+ltyw
- l6USMCGnQ8YsNgDprhmdRDX58hsskhHasDaIxDFDnGW021hx2vM9HohJ9PhO/gPTWa2dRNJRP9/
- TKkcsUqqS3jCjaxYnUCdJFXC7xtzCkuip+yydCYveT+Ur304TE1KEi1paK575LWLeFODRbtErWy
- W5r+CKOs5LC6bC2aVnzdkjEjAUbJp2v5Ti96qlDnCZ0VgKMgliBYQljcIw77/C8PV/Ok=
-X-Google-Smtp-Source: AGHT+IFQSWjP5dxtJBDqBfIF2GlpZHhPvHFJAu4De18job89aDFPZu89f8Stl9lDHRWiGiX6WiJHqg==
-X-Received: by 2002:a17:902:cccb:b0:234:a992:96d8 with SMTP id
- d9443c01a7336-23c86074854mr40665575ad.19.1751627578576; 
- Fri, 04 Jul 2025 04:12:58 -0700 (PDT)
+ bh=NpC4Yp9xAW0N3T6Tteiy7UBN259S4dShS5JJ++ECn+Q=;
+ b=oNrgjwsDvKebX0jUe1PQfFfOuwSIIrTylYUx0e3bOh0/+aJ5uNniJejQOfr4BVvXEG
+ /dkLjYIuKJRH6Cl/YQ7ylozlrGO4MgHpjBbal4urTbbtTD8tLnuZYAyLaUUwoL+n1vGl
+ y16BLsZu251ciJF9DwKaRhibwVdS0grsYKT1sUW0xRGGKigxwa7uVNQgTkSomvQxRocP
+ CIrAQh+1SXArc4XR1rFFd4gEzOw8TJRXxT0L+KO/oV0nvZSC5yqwFsQx0/9Vyi1IRjNe
+ 7FsTLh6S5Zpn+0oZevAG/ynXicPouEv0MxkWqWQlHMBBST1GSXCSAI5HBE67oU9YGPGE
+ dThw==
+X-Gm-Message-State: AOJu0Yy8YNA9clUlnTykGxy7u82CS+wDp127+KIE2Z577TEjnfw2VeFq
+ clIer4rDSK/6WLPVcatmqOa/zhkvsO1Q4VRRqIr8yxhx0imQ70GxvX1u69IpnA==
+X-Gm-Gg: ASbGncuelFOmrZWVRP8ElFLJgFgmyxwS1wu3bwhHlPN1YI46XXn6GUHlgtRvR4oo5BG
+ +RzYGNyZzpHKNdvFyZb37X+B5dYI45MgnZXZY9dxaPX8dX2DQw0rSsA/Zhc67PesouUqZyizt9+
+ AhRd+WpP73Litv8dUVJV4tYz18JkgyQNWu35c3L1uknAggQT23SoFdVSjko09i5I1/dPPtlJGj4
+ CF4NoZ/BSNXMedpedaQNLG0VRH/lRCqk4nfFrNR4HPh59qc7cTo+HWcPXmgwD/MTrs6bHScmQdY
+ UsF0AY691VrvnfbHNWqbUb/ay2JI3me2I7ov8hJuzFiExeO5kMUiEzZ0MicUDZY9hPLJ109pKCM
+ Q7f/7+t1Nm0GzNvr0jBy17QO6YuKbnIOFzplx+gMRlfCol/193eFVWn+cdDIwYHoOsy8=
+X-Google-Smtp-Source: AGHT+IFG9pmmPG7wqpdzTObXC3oJblhN7r4WFFSKwXdh8QKBIt5IinMXklbMz49Kdc6cHH4LR5LtVw==
+X-Received: by 2002:a17:902:ea06:b0:236:8df9:ab38 with SMTP id
+ d9443c01a7336-23c860d4f93mr40811565ad.34.1751627581292; 
+ Fri, 04 Jul 2025 04:13:01 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.12.55
+ d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.12.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 04:12:57 -0700 (PDT)
+ Fri, 04 Jul 2025 04:13:00 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Jay Chang <jay.chang@sifive.com>,
- Frank Chang <frank.chang@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 09/40] target/riscv: Extend PMP region up to 64
-Date: Fri,  4 Jul 2025 21:11:36 +1000
-Message-ID: <20250704111207.591994-10-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 10/40] target/riscv: remove capital 'Z' CPU properties
+Date: Fri,  4 Jul 2025 21:11:37 +1000
+Message-ID: <20250704111207.591994-11-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250704111207.591994-1-alistair.francis@wdc.com>
 References: <20250704111207.591994-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -105,243 +102,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jay Chang <jay.chang@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-According to the RISC-V Privileged Specification (version >1.12),
-RV32 supports 16 CSRs (pmpcfg0–pmpcfg15) to configure 64 PMP regions
-(pmpaddr0–pmpaddr63).
+These properties were deprecated in QEMU 8.2, commit 8043effd9b.
 
-Signed-off-by: Jay Chang <jay.chang@sifive.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20250522081236.4050-2-jay.chang@sifive.com>
+Message-ID: <20250530134608.1806922-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_bits.h |  60 +++++++++++++++++++
- target/riscv/csr.c      | 124 +++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 182 insertions(+), 2 deletions(-)
+ target/riscv/cpu.h         |  1 -
+ target/riscv/cpu.c         | 17 -----------------
+ target/riscv/tcg/tcg-cpu.c | 31 +------------------------------
+ 3 files changed, 1 insertion(+), 48 deletions(-)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index a30317c617..e6b3e28386 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -372,6 +372,18 @@
- #define CSR_PMPCFG1         0x3a1
- #define CSR_PMPCFG2         0x3a2
- #define CSR_PMPCFG3         0x3a3
-+#define CSR_PMPCFG4         0x3a4
-+#define CSR_PMPCFG5         0x3a5
-+#define CSR_PMPCFG6         0x3a6
-+#define CSR_PMPCFG7         0x3a7
-+#define CSR_PMPCFG8         0x3a8
-+#define CSR_PMPCFG9         0x3a9
-+#define CSR_PMPCFG10        0x3aa
-+#define CSR_PMPCFG11        0x3ab
-+#define CSR_PMPCFG12        0x3ac
-+#define CSR_PMPCFG13        0x3ad
-+#define CSR_PMPCFG14        0x3ae
-+#define CSR_PMPCFG15        0x3af
- #define CSR_PMPADDR0        0x3b0
- #define CSR_PMPADDR1        0x3b1
- #define CSR_PMPADDR2        0x3b2
-@@ -388,6 +400,54 @@
- #define CSR_PMPADDR13       0x3bd
- #define CSR_PMPADDR14       0x3be
- #define CSR_PMPADDR15       0x3bf
-+#define CSR_PMPADDR16       0x3c0
-+#define CSR_PMPADDR17       0x3c1
-+#define CSR_PMPADDR18       0x3c2
-+#define CSR_PMPADDR19       0x3c3
-+#define CSR_PMPADDR20       0x3c4
-+#define CSR_PMPADDR21       0x3c5
-+#define CSR_PMPADDR22       0x3c6
-+#define CSR_PMPADDR23       0x3c7
-+#define CSR_PMPADDR24       0x3c8
-+#define CSR_PMPADDR25       0x3c9
-+#define CSR_PMPADDR26       0x3ca
-+#define CSR_PMPADDR27       0x3cb
-+#define CSR_PMPADDR28       0x3cc
-+#define CSR_PMPADDR29       0x3cd
-+#define CSR_PMPADDR30       0x3ce
-+#define CSR_PMPADDR31       0x3cf
-+#define CSR_PMPADDR32       0x3d0
-+#define CSR_PMPADDR33       0x3d1
-+#define CSR_PMPADDR34       0x3d2
-+#define CSR_PMPADDR35       0x3d3
-+#define CSR_PMPADDR36       0x3d4
-+#define CSR_PMPADDR37       0x3d5
-+#define CSR_PMPADDR38       0x3d6
-+#define CSR_PMPADDR39       0x3d7
-+#define CSR_PMPADDR40       0x3d8
-+#define CSR_PMPADDR41       0x3d9
-+#define CSR_PMPADDR42       0x3da
-+#define CSR_PMPADDR43       0x3db
-+#define CSR_PMPADDR44       0x3dc
-+#define CSR_PMPADDR45       0x3dd
-+#define CSR_PMPADDR46       0x3de
-+#define CSR_PMPADDR47       0x3df
-+#define CSR_PMPADDR48       0x3e0
-+#define CSR_PMPADDR49       0x3e1
-+#define CSR_PMPADDR50       0x3e2
-+#define CSR_PMPADDR51       0x3e3
-+#define CSR_PMPADDR52       0x3e4
-+#define CSR_PMPADDR53       0x3e5
-+#define CSR_PMPADDR54       0x3e6
-+#define CSR_PMPADDR55       0x3e7
-+#define CSR_PMPADDR56       0x3e8
-+#define CSR_PMPADDR57       0x3e9
-+#define CSR_PMPADDR58       0x3ea
-+#define CSR_PMPADDR59       0x3eb
-+#define CSR_PMPADDR60       0x3ec
-+#define CSR_PMPADDR61       0x3ed
-+#define CSR_PMPADDR62       0x3ee
-+#define CSR_PMPADDR63       0x3ef
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 2a6793e022..17bf4e7579 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -951,7 +951,6 @@ extern const RISCVCPUMultiExtConfig riscv_cpu_extensions[];
+ extern const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[];
+ extern const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[];
+ extern const RISCVCPUMultiExtConfig riscv_cpu_named_features[];
+-extern const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[];
  
- /* RNMI */
- #define CSR_MNSCRATCH       0x740
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 1151ebb6ad..d6cd441133 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -6164,6 +6164,30 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-     [CSR_PMPCFG1]    = { "pmpcfg1",   pmp, read_pmpcfg,  write_pmpcfg  },
-     [CSR_PMPCFG2]    = { "pmpcfg2",   pmp, read_pmpcfg,  write_pmpcfg  },
-     [CSR_PMPCFG3]    = { "pmpcfg3",   pmp, read_pmpcfg,  write_pmpcfg  },
-+    [CSR_PMPCFG4]    = { "pmpcfg4",   pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG5]    = { "pmpcfg5",   pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG6]    = { "pmpcfg6",   pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG7]    = { "pmpcfg7",   pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG8]    = { "pmpcfg8",   pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG9]    = { "pmpcfg9",   pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG10]   = { "pmpcfg10",  pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG11]   = { "pmpcfg11",  pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG12]   = { "pmpcfg12",  pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG13]   = { "pmpcfg13",  pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG14]   = { "pmpcfg14",  pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPCFG15]   = { "pmpcfg15",  pmp, read_pmpcfg,  write_pmpcfg,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-     [CSR_PMPADDR0]   = { "pmpaddr0",  pmp, read_pmpaddr, write_pmpaddr },
-     [CSR_PMPADDR1]   = { "pmpaddr1",  pmp, read_pmpaddr, write_pmpaddr },
-     [CSR_PMPADDR2]   = { "pmpaddr2",  pmp, read_pmpaddr, write_pmpaddr },
-@@ -6178,8 +6202,104 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-     [CSR_PMPADDR11]  = { "pmpaddr11", pmp, read_pmpaddr, write_pmpaddr },
-     [CSR_PMPADDR12]  = { "pmpaddr12", pmp, read_pmpaddr, write_pmpaddr },
-     [CSR_PMPADDR13]  = { "pmpaddr13", pmp, read_pmpaddr, write_pmpaddr },
--    [CSR_PMPADDR14] =  { "pmpaddr14", pmp, read_pmpaddr, write_pmpaddr },
--    [CSR_PMPADDR15] =  { "pmpaddr15", pmp, read_pmpaddr, write_pmpaddr },
-+    [CSR_PMPADDR14]  = { "pmpaddr14", pmp, read_pmpaddr, write_pmpaddr },
-+    [CSR_PMPADDR15]  = { "pmpaddr15", pmp, read_pmpaddr, write_pmpaddr },
-+    [CSR_PMPADDR16]  = { "pmpaddr16", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR17]  = { "pmpaddr17", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR18]  = { "pmpaddr18", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR19]  = { "pmpaddr19", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR20]  = { "pmpaddr20", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR21]  = { "pmpaddr21", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR22]  = { "pmpaddr22", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR23]  = { "pmpaddr23", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR24]  = { "pmpaddr24", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR25]  = { "pmpaddr25", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR26]  = { "pmpaddr26", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR27]  = { "pmpaddr27", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR28]  = { "pmpaddr28", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR29]  = { "pmpaddr29", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR30]  = { "pmpaddr30", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR31]  = { "pmpaddr31", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR32]  = { "pmpaddr32", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR33]  = { "pmpaddr33", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR34]  = { "pmpaddr34", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR35]  = { "pmpaddr35", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR36]  = { "pmpaddr36", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR37]  = { "pmpaddr37", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR38]  = { "pmpaddr38", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR39]  = { "pmpaddr39", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR40]  = { "pmpaddr40", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR41]  = { "pmpaddr41", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR42]  = { "pmpaddr42", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR43]  = { "pmpaddr43", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR44]  = { "pmpaddr44", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR45]  = { "pmpaddr45", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR46]  = { "pmpaddr46", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR47]  = { "pmpaddr47", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR48]  = { "pmpaddr48", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR49]  = { "pmpaddr49", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR50]  = { "pmpaddr50", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR51]  = { "pmpaddr51", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR52]  = { "pmpaddr52", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR53]  = { "pmpaddr53", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR54]  = { "pmpaddr54", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR55]  = { "pmpaddr55", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR56]  = { "pmpaddr56", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR57]  = { "pmpaddr57", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR58]  = { "pmpaddr58", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR59]  = { "pmpaddr59", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR60]  = { "pmpaddr60", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR61]  = { "pmpaddr61", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR62]  = { "pmpaddr62", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
-+    [CSR_PMPADDR63]  = { "pmpaddr63", pmp, read_pmpaddr, write_pmpaddr,
-+                         .min_priv_ver = PRIV_VERSION_1_12_0           },
+ typedef struct isa_ext_data {
+     const char *name;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index fe21e0fb44..7c6e0844d0 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1387,23 +1387,6 @@ const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
+     { },
+ };
  
-     /* Debug CSRs */
-     [CSR_TSELECT]   =  { "tselect",  debug, read_tselect,  write_tselect  },
+-/* Deprecated entries marked for future removal */
+-const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[] = {
+-    MULTI_EXT_CFG_BOOL("Zifencei", ext_zifencei, true),
+-    MULTI_EXT_CFG_BOOL("Zicsr", ext_zicsr, true),
+-    MULTI_EXT_CFG_BOOL("Zihintntl", ext_zihintntl, true),
+-    MULTI_EXT_CFG_BOOL("Zihintpause", ext_zihintpause, true),
+-    MULTI_EXT_CFG_BOOL("Zawrs", ext_zawrs, true),
+-    MULTI_EXT_CFG_BOOL("Zfa", ext_zfa, true),
+-    MULTI_EXT_CFG_BOOL("Zfh", ext_zfh, false),
+-    MULTI_EXT_CFG_BOOL("Zfhmin", ext_zfhmin, false),
+-    MULTI_EXT_CFG_BOOL("Zve32f", ext_zve32f, false),
+-    MULTI_EXT_CFG_BOOL("Zve64f", ext_zve64f, false),
+-    MULTI_EXT_CFG_BOOL("Zve64d", ext_zve64d, false),
+-
+-    { },
+-};
+-
+ static void cpu_set_prop_err(RISCVCPU *cpu, const char *propname,
+                              Error **errp)
+ {
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index c5e260e360..81174de409 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1442,25 +1442,6 @@ static void riscv_cpu_add_profiles(Object *cpu_obj)
+     }
+ }
+ 
+-static bool cpu_ext_is_deprecated(const char *ext_name)
+-{
+-    return isupper(ext_name[0]);
+-}
+-
+-/*
+- * String will be allocated in the heap. Caller is responsible
+- * for freeing it.
+- */
+-static char *cpu_ext_to_lower(const char *ext_name)
+-{
+-    char *ret = g_malloc0(strlen(ext_name) + 1);
+-
+-    strcpy(ret, ext_name);
+-    ret[0] = tolower(ret[0]);
+-
+-    return ret;
+-}
+-
+ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+                                   void *opaque, Error **errp)
+ {
+@@ -1473,13 +1454,6 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+         return;
+     }
+ 
+-    if (cpu_ext_is_deprecated(multi_ext_cfg->name)) {
+-        g_autofree char *lower = cpu_ext_to_lower(multi_ext_cfg->name);
+-
+-        warn_report("CPU property '%s' is deprecated. Please use '%s' instead",
+-                    multi_ext_cfg->name, lower);
+-    }
+-
+     cpu_cfg_ext_add_user_opt(multi_ext_cfg->offset, value);
+ 
+     prev_val = isa_ext_is_enabled(cpu, multi_ext_cfg->offset);
+@@ -1515,14 +1489,13 @@ static void cpu_add_multi_ext_prop(Object *cpu_obj,
+                                    const RISCVCPUMultiExtConfig *multi_cfg)
+ {
+     bool generic_cpu = riscv_cpu_is_generic(cpu_obj);
+-    bool deprecated_ext = cpu_ext_is_deprecated(multi_cfg->name);
+ 
+     object_property_add(cpu_obj, multi_cfg->name, "bool",
+                         cpu_get_multi_ext_cfg,
+                         cpu_set_multi_ext_cfg,
+                         NULL, (void *)multi_cfg);
+ 
+-    if (!generic_cpu || deprecated_ext) {
++    if (!generic_cpu) {
+         return;
+     }
+ 
+@@ -1565,8 +1538,6 @@ static void riscv_cpu_add_user_properties(Object *obj)
+     riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_vendor_exts);
+     riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_experimental_exts);
+ 
+-    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_deprecated_exts);
+-
+     riscv_cpu_add_profiles(obj);
+ }
+ 
 -- 
 2.50.0
 
