@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A197AF8FD5
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADA7AF8FC9
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:16:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXdRl-00060Z-2v; Fri, 04 Jul 2025 06:15:09 -0400
+	id 1uXdRn-00062E-3R; Fri, 04 Jul 2025 06:15:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRh-0005zT-Oa
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:15:05 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRk-00060u-4z
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:15:08 -0400
 Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRe-0006Fj-D9
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:15:05 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRi-0006bS-9e
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:15:07 -0400
 Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3a54700a46eso407440f8f.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 03:15:01 -0700 (PDT)
+ ffacd0b85a97d-3a57c8e247cso556502f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 03:15:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751624100; x=1752228900; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751624104; x=1752228904; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4O4V3IVlY7U/ZO9G8RGp5YV8GTOAnuzXOdvv3mDiNZI=;
- b=UHUPQxO89zRlO1qU9GOijvaEMN1p3XGwLuBmE/S70EpU8Wgd8RZNMsnoXQZwSvG/bs
- 34ycb2rA5a4qHl3vd3qWKMuT6HuC4b7+piqFqfItAOzLQb/bYC7f4Ec24n7/z0+2vGVS
- ACFZK6RyKBEf4gsRn9hfReRPNJwC3/Ot6SLKvhCvDWX097Kxjaun+Vhoq6Usv0ljCSWa
- Ci6J/2rVDF4aDBXkWxTmsQwmo1N5UZRJDc8/+Jom4UY+pcq1GeHCJBDJURGyDFs3heey
- oDK0jfbJwPedwpLlnnsdcCO/GO0Po2Sv52WxV/xDj6CxZNMaHylTMmAt7ZRezw9oagnY
- 1aEA==
+ :reply-to; bh=/bqUcP0GVFbZdYz0pOg29PIjT2vqEhewVl+kCu78NhM=;
+ b=SR/BTxBKqo8OREH087+Q6Xo2damESwPeyvoMbHTNijfnsCbvJu2vmXEy2e8KtUNc21
+ 5J80RggrzF62lCZjS+3t0RaDTXlGfgYF0nIaIW97jjZA4A49dasixh7x6+xxvtfOCMQN
+ 80I1WSCMe1OjLtI5UCnDJb0wPaQKOaKdCGn/cmUcM838D4Q0b+FiYcdzN9DzgOKZRl9I
+ bbZIkfcqOalZHXAqINT8dLu+z2ft4tCTK5rMfzGmo37kEeCuDpS2+olL/LUfjOScYcCW
+ 2dnOqWoh9yXAERPrJK/5aCuyt70KXwdKshijPgTtLP4tO/syLlVgwyQ9fTceJ7R1nx4K
+ Bfsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751624100; x=1752228900;
+ d=1e100.net; s=20230601; t=1751624104; x=1752228904;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4O4V3IVlY7U/ZO9G8RGp5YV8GTOAnuzXOdvv3mDiNZI=;
- b=TGWKFczO3AGMnas4c5tTNvKY0/zh4VqsV1SnZOU0ycfdFsFTUSN7TJSXCQu9qaePaj
- 7RrmFxelcZVZ5io9sGZSlb22QwyHoL9R+w+nco/peYSvpoAeI9/N3a61ht6C71JF7HL6
- TRXpUYOs7kVZQN0sUfcbVgpaBtndEbcMXc4spdPD7bxXIEIUNdREXLPQSpflyzj6BsZV
- 6Sg78ItVOPpALODVFWKzLQUuw85IOhHCCnZ2hYpJWaz4UwD9i7L0VUvUIMxFL94Omzy3
- zk+0YhxJQ2EDEd/tBlLYsqRnC/O2j+yY4/u9pf3p1ruuRFAtA0l0xYf4VH45NNYBj3Ff
- 1duA==
-X-Gm-Message-State: AOJu0Yw8BxY2U4VIgLtvTg/XBSBSZZ1om9ECxFbEfd8IVbKJJVQeIg4L
- KmUlBLJO0Gr/V6+R5ClbusoXlTmM8dqqwQiVb7h8BhIuIlq8WjgOsPLhDYDm9bVwXsldWXnsPkJ
- 5ABmf84I=
-X-Gm-Gg: ASbGncsDIsnx1W5GzkkSHdzz3JOyjNipBH2z/hiQ9qiTN/hzLJPWTo3e30QR/SQQmLV
- xk4OwUE7x4DNwnw4wS8FQZ+Q+LXNXYy5uq/exh45bkIASTQppeRVNIcqa1IRrjJn3RJaW+lJ9Vr
- HH5TF62NnbBBGunnlcJCrKeU00UgLjZioJ/brq+yGAvPvhBoXVHwRCLhcBiQa/6OgLxj3ZGDGki
- yNVJ857q/c5LTk5+H3S3CD2NssiKOlngjRsfaXCsEtkOhjc1JvH6KZVFwuih1THZwmRHNnqYErW
- kyaTX3uv+4dghul6cS+8V2TRmCPGOn/SquCk6HsltDPcbHyAGjmmtk4YTLs2wdNkNuTeykESk+R
- wtC25wTcysyfTuHLH72dZiaBDqyVwsWKisJejtBnwXey8720=
-X-Google-Smtp-Source: AGHT+IHsHRBtRsJC9qzdmZvBDxQ1+PcCNmqPS8AP4VkTUH0d/m/bx+DCBrhyUNfNC7Mu1J1csYWq1Q==
-X-Received: by 2002:a05:6000:3111:b0:3a4:fc37:70e4 with SMTP id
- ffacd0b85a97d-3b4964fc7e9mr1721220f8f.58.1751624099571; 
- Fri, 04 Jul 2025 03:14:59 -0700 (PDT)
+ bh=/bqUcP0GVFbZdYz0pOg29PIjT2vqEhewVl+kCu78NhM=;
+ b=ct/2ha80ZmeZUJKjwgLoYZNPMosZEJgokCb/J3y2eo5WNV6pwpIN9ZA56obX8TZYQo
+ Q0xX+VgXVS7C+aUbUoELIGUxqcHuMY5ecPumCqzwAAMX2uGDTFuKqEE48HMIc/RNJsN5
+ W7X1j1Zxy8lSzv61fd/D+32VRPhLOqr1Zs+jqZSyUQw4Hn0zwoNHIp0NSMR1mQ0B4mwr
+ 7PTgF84xwG+XQE8WOIw2oWCcHKhN1P3GhMi+eKP7LoqYPxnK1W9frDFpnHor6VjufaeJ
+ RgcI6v97ubq31doraMu++fhmFq+DcHMabv//LI4jPR1c7Q6rUvJJj6aqOrA0U7tuF/er
+ 1GsQ==
+X-Gm-Message-State: AOJu0YxKOM5JB8x5sS6FZr1okhe3nPpXXHa+4Pd05AuZdnFCfp2g41nt
+ rQDzyE/zizvS4m+wQZbyH7ZVGrhyScZSZNHtCOXCKiJfzBvSc7exf6y11z5Bbk6DT5rO2RuOWF8
+ V/npIGO4=
+X-Gm-Gg: ASbGncup8i2nP5rokSjHBicsueY/axpLGY+ACwKLRinRJH4L8l/kPVYX/bve8nl9hEB
+ 6zLvqnxPeG2qbmGN0yVa8fR32xhVv8eTLV+4wUZjdiNmQ44zM5D7Obsw9hCS9KktQbU4JViGxzp
+ sU7HHE7JZW9l07YjE2JCDOi4VZAL9+dIXWgFgVZG7Elh49kjsJxD7fSAKIVXCp7d2wuShQjYLBz
+ mTmhsEMlKhKFIZsfH1ep/0KdY2Ht+9Cr2CbV/uQHN2R5JVCfMuMWNj4SsrVj7rLqd7v5Z1T3L25
+ sc5fguXdqKIF97B2gVQcqv24iF6WYJSY7vfdGPq0X0ula96kQFQWIDt8bfTG6ZzzZhrSuXhMfTI
+ ZPDC4XiyMzgYPBHubTA0p7kV8RkKgfpPhixKMMoMGRY8mOB4=
+X-Google-Smtp-Source: AGHT+IHiafN3IWpLkHqEVFEliylHLlMrRUUSCAHl9rg1a4gpxh3Bm/bffoNyceSVT/WrlBT4J2UIwA==
+X-Received: by 2002:a05:6000:2011:b0:3a4:e480:b5df with SMTP id
+ ffacd0b85a97d-3b497038f48mr1291588f8f.44.1751624104114; 
+ Fri, 04 Jul 2025 03:15:04 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b4708d094csm2079828f8f.28.2025.07.04.03.14.58
+ ffacd0b85a97d-3b471b968ebsm2077004f8f.47.2025.07.04.03.15.03
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Jul 2025 03:14:59 -0700 (PDT)
+ Fri, 04 Jul 2025 03:15:03 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/31] accel/tcg: Remove profiler leftover
-Date: Fri,  4 Jul 2025 12:14:06 +0200
-Message-ID: <20250704101433.8813-6-philmd@linaro.org>
+Subject: [PULL 06/31] accel/tcg: Factor tcg_dump_flush_info() out
+Date: Fri,  4 Jul 2025 12:14:07 +0200
+Message-ID: <20250704101433.8813-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250704101433.8813-1-philmd@linaro.org>
 References: <20250704101433.8813-1-philmd@linaro.org>
@@ -96,39 +96,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCG profiler was removed in commit 1b65b4f54c7.
-
-Fixes: 1b65b4f54c7 ("accel/tcg: remove CONFIG_PROFILER")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20250703173248.44995-9-philmd@linaro.org>
+Message-Id: <20250703173248.44995-10-philmd@linaro.org>
 ---
- accel/tcg/monitor.c | 6 ------
- 1 file changed, 6 deletions(-)
+ accel/tcg/monitor.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
 diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
-index 7c686226b21..344ec500473 100644
+index 344ec500473..6d9cc11d94c 100644
 --- a/accel/tcg/monitor.c
 +++ b/accel/tcg/monitor.c
-@@ -141,11 +141,6 @@ static void tlb_flush_counts(size_t *pfull, size_t *ppart, size_t *pelide)
+@@ -141,11 +141,26 @@ static void tlb_flush_counts(size_t *pfull, size_t *ppart, size_t *pelide)
      *pelide = elide;
  }
  
--static void tcg_dump_info(GString *buf)
--{
--    g_string_append_printf(buf, "[TCG profiler not compiled]\n");
--}
--
++static void tcg_dump_flush_info(GString *buf)
++{
++    size_t flush_full, flush_part, flush_elide;
++
++    g_string_append_printf(buf, "TB flush count      %u\n",
++                           qatomic_read(&tb_ctx.tb_flush_count));
++    g_string_append_printf(buf, "TB invalidate count %u\n",
++                           qatomic_read(&tb_ctx.tb_phys_invalidate_count));
++
++    tlb_flush_counts(&flush_full, &flush_part, &flush_elide);
++    g_string_append_printf(buf, "TLB full flushes    %zu\n", flush_full);
++    g_string_append_printf(buf, "TLB partial flushes %zu\n", flush_part);
++    g_string_append_printf(buf, "TLB elided flushes  %zu\n", flush_elide);
++}
++
  static void dump_exec_info(GString *buf)
  {
      struct tb_tree_stats tst = {};
-@@ -196,7 +191,6 @@ static void dump_exec_info(GString *buf)
-     g_string_append_printf(buf, "TLB full flushes    %zu\n", flush_full);
-     g_string_append_printf(buf, "TLB partial flushes %zu\n", flush_part);
-     g_string_append_printf(buf, "TLB elided flushes  %zu\n", flush_elide);
--    tcg_dump_info(buf);
+     struct qht_stats hst;
+-    size_t nb_tbs, flush_full, flush_part, flush_elide;
++    size_t nb_tbs;
+ 
+     tcg_tb_foreach(tb_tree_stats_iter, &tst);
+     nb_tbs = tst.nb_tbs;
+@@ -182,15 +197,7 @@ static void dump_exec_info(GString *buf)
+     qht_statistics_destroy(&hst);
+ 
+     g_string_append_printf(buf, "\nStatistics:\n");
+-    g_string_append_printf(buf, "TB flush count      %u\n",
+-                           qatomic_read(&tb_ctx.tb_flush_count));
+-    g_string_append_printf(buf, "TB invalidate count %u\n",
+-                           qatomic_read(&tb_ctx.tb_phys_invalidate_count));
+-
+-    tlb_flush_counts(&flush_full, &flush_part, &flush_elide);
+-    g_string_append_printf(buf, "TLB full flushes    %zu\n", flush_full);
+-    g_string_append_printf(buf, "TLB partial flushes %zu\n", flush_part);
+-    g_string_append_printf(buf, "TLB elided flushes  %zu\n", flush_elide);
++    tcg_dump_flush_info(buf);
  }
  
  HumanReadableText *qmp_x_query_jit(Error **errp)
