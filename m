@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0C8AAF8CB0
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 340D1AF8C7E
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:47:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXc3f-0007mP-4T; Fri, 04 Jul 2025 04:46:11 -0400
+	id 1uXc3f-0007ms-VO; Fri, 04 Jul 2025 04:46:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3X-0007hN-3o
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:03 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3a-0007jl-Mv
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3V-0000GG-83
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:02 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3Y-0000I5-VG
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751618759;
+ s=mimecast20190719; t=1751618764;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XTQINngnlTpKUr4ol5peoe6ICu1vlPCG0vUoKUmVS0g=;
- b=EFvBquZBRCs7Hyq3o4d0unoe4KTnjKxdB8B3gUWI8b/HFp0IcAHg+4d4FfJv0QbQZGcCRK
- VrJt7tJbgmcSnHcBSZSgeYw49hGcZh1jlx1ri/c0zxpqyJ3kognGf2vNPRB7sJ4n3G0rS+
- rYxvL7yq58RtVX3vptwQhvuduIREIlw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=QCmQhzgK8imggIgqcbYivoAqw0X5+C7YbCCtSUdop2w=;
+ b=Y4YERoVChFd7Te7jQax4U7/s2we2oYcI7lP9HtJD4hQAoC00Lcv0wGeRMP0Or0LLAxli6G
+ 2oSL7qT2FwKcOtPOHbA3AizHmofVF3afFx7sOhOYTXocaH6BCP4ZGz/nyEx0fcZ9loUxMi
+ Vjvn+E29J6QmJOe3pip5QvSG59lb7kc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-n6rQRszkPsy0OWhNLYBjGQ-1; Fri,
- 04 Jul 2025 04:45:58 -0400
-X-MC-Unique: n6rQRszkPsy0OWhNLYBjGQ-1
-X-Mimecast-MFC-AGG-ID: n6rQRszkPsy0OWhNLYBjGQ_1751618757
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-W9q-DJeUP3uIcqk2AnJuXQ-1; Fri,
+ 04 Jul 2025 04:46:01 -0400
+X-MC-Unique: W9q-DJeUP3uIcqk2AnJuXQ-1
+X-Mimecast-MFC-AGG-ID: W9q-DJeUP3uIcqk2AnJuXQ_1751618760
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5D5F31955ECF; Fri,  4 Jul 2025 08:45:57 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0C0C01809C82; Fri,  4 Jul 2025 08:46:00 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.43])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D807419560A7; Fri,  4 Jul 2025 08:45:54 +0000 (UTC)
+ id E2E5A19560A7; Fri,  4 Jul 2025 08:45:57 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Steve Sistare <steven.sistare@oracle.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 09/27] migration: close kvm after cpr
-Date: Fri,  4 Jul 2025 10:45:10 +0200
-Message-ID: <20250704084528.1412959-10-clg@redhat.com>
+Subject: [PULL 10/27] migration: cpr_get_fd_param helper
+Date: Fri,  4 Jul 2025 10:45:11 +0200
+Message-ID: <20250704084528.1412959-11-clg@redhat.com>
 In-Reply-To: <20250704084528.1412959-1-clg@redhat.com>
 References: <20250704084528.1412959-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -60,15 +59,14 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,185 +84,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-cpr-transfer breaks vfio network connectivity to and from the guest, and
-the host system log shows:
-  irq bypass consumer (token 00000000a03c32e5) registration fails: -16
-which is EBUSY.  This occurs because KVM descriptors are still open in
-the old QEMU process.  Close them.
+Add the helper function cpr_get_fd_param, to use when preserving
+a file descriptor that is opened externally and passed to QEMU.
+cpr_get_fd_param returns a descriptor number either from a QEMU
+command-line parameter, from a getfd command, or from CPR state.
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
+When a descriptor is passed to new QEMU via SCM_RIGHTS, its number
+changes.  Hence, during CPR, the command-line parameter is ignored
+in new QEMU, and over-ridden by the value found in CPR state.
+
+Similarly, if the descriptor was originally specified by a getfd
+command in old QEMU, the fd number is not known outside of QEMU,
+and it changes when sent to new QEMU via SCM_RIGHTS.  Hence the
+user cannot send getfd to new QEMU, but when the user sends a
+hotplug command that references the fd, cpr_get_fd_param finds
+its value in CPR state.
+
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/qemu-devel/1751493538-202042-4-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/qemu-devel/1751493538-202042-5-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-cpr.h    |  2 ++
- include/hw/vfio/vfio-device.h |  2 ++
- include/system/kvm.h          |  1 +
- accel/kvm/kvm-all.c           | 32 ++++++++++++++++++++++++++++++++
- hw/vfio/cpr-legacy.c          |  2 ++
- hw/vfio/cpr.c                 | 21 +++++++++++++++++++++
- hw/vfio/helpers.c             | 11 +++++++++++
- 7 files changed, 71 insertions(+)
+ include/migration/cpr.h |  2 ++
+ migration/cpr.c         | 37 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 39 insertions(+)
 
-diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-index f21578da3cb3611e04260f458e77aca6f48036fe..d37acc4a0a0ae1f6f38d8322fb9681227221fd09 100644
---- a/include/hw/vfio/vfio-cpr.h
-+++ b/include/hw/vfio/vfio-cpr.h
-@@ -63,4 +63,6 @@ void vfio_cpr_delete_vector_fd(struct VFIOPCIDevice *vdev, const char *name,
+diff --git a/include/migration/cpr.h b/include/migration/cpr.h
+index 07858e93fa2fbd9ca0c31af218216025c14369a6..eb27a933017a09c480029a50cd6b1457e69cec8a 100644
+--- a/include/migration/cpr.h
++++ b/include/migration/cpr.h
+@@ -32,6 +32,8 @@ void cpr_state_close(void);
+ struct QIOChannel *cpr_state_ioc(void);
  
- extern const VMStateDescription vfio_cpr_pci_vmstate;
+ bool cpr_incoming_needed(void *opaque);
++int cpr_get_fd_param(const char *name, const char *fdname, int index,
++                     Error **errp);
  
-+void vfio_cpr_add_kvm_notifier(void);
-+
- #endif /* HW_VFIO_VFIO_CPR_H */
-diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index c616652ee72265c637cb5136fdffb4444639e0b7..f503837ccc6936b730a7752ca092da5acba1806f 100644
---- a/include/hw/vfio/vfio-device.h
-+++ b/include/hw/vfio/vfio-device.h
-@@ -283,4 +283,6 @@ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp);
- void vfio_device_init(VFIODevice *vbasedev, int type, VFIODeviceOps *ops,
-                       DeviceState *dev, bool ram_discard);
- int vfio_device_get_aw_bits(VFIODevice *vdev);
-+
-+void vfio_kvm_device_close(void);
- #endif /* HW_VFIO_VFIO_COMMON_H */
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index 7cc60d26f24a48fc107d80683710939679e8e98b..4896a3c9c59e90bb0bea35407fa969884f6920ec 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -195,6 +195,7 @@ bool kvm_has_sync_mmu(void);
- int kvm_has_vcpu_events(void);
- int kvm_max_nested_state_length(void);
- int kvm_has_gsi_routing(void);
-+void kvm_close(void);
+ QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
+ QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp);
+diff --git a/migration/cpr.c b/migration/cpr.c
+index a50a57edca754b50e68fa9c294b3c89791e62ba8..535d587aee16d2411d20ee549f8e3cf5a4120a88 100644
+--- a/migration/cpr.c
++++ b/migration/cpr.c
+@@ -13,6 +13,7 @@
+ #include "migration/qemu-file.h"
+ #include "migration/savevm.h"
+ #include "migration/vmstate.h"
++#include "monitor/monitor.h"
+ #include "system/runstate.h"
+ #include "trace.h"
  
- /**
-  * kvm_arm_supports_user_irq
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index d095d1b98f8685f865cf7b49c6f02b80f6cb011b..81418546177c8eb99932900902cd3890f45c02bb 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -515,16 +515,23 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
-         goto err;
-     }
- 
-+    /* If I am the CPU that created coalesced_mmio_ring, then discard it */
-+    if (s->coalesced_mmio_ring == (void *)cpu->kvm_run + PAGE_SIZE) {
-+        s->coalesced_mmio_ring = NULL;
-+    }
-+
-     ret = munmap(cpu->kvm_run, mmap_size);
-     if (ret < 0) {
-         goto err;
-     }
-+    cpu->kvm_run = NULL;
- 
-     if (cpu->kvm_dirty_gfns) {
-         ret = munmap(cpu->kvm_dirty_gfns, s->kvm_dirty_ring_bytes);
-         if (ret < 0) {
-             goto err;
-         }
-+        cpu->kvm_dirty_gfns = NULL;
-     }
- 
-     kvm_park_vcpu(cpu);
-@@ -608,6 +615,31 @@ err:
-     return ret;
+@@ -264,3 +265,39 @@ bool cpr_incoming_needed(void *opaque)
+     MigMode mode = migrate_mode();
+     return mode == MIG_MODE_CPR_TRANSFER;
  }
- 
-+void kvm_close(void)
++
++/*
++ * cpr_get_fd_param: find a descriptor and return its value.
++ *
++ * @name: CPR name for the descriptor
++ * @fdname: An integer-valued string, or a name passed to a getfd command
++ * @index: CPR index of the descriptor
++ * @errp: returned error message
++ *
++ * If CPR is not being performed, then use @fdname to find the fd.
++ * If CPR is being performed, then ignore @fdname, and look for @name
++ * and @index in CPR state.
++ *
++ * On success returns the fd value, else returns -1.
++ */
++int cpr_get_fd_param(const char *name, const char *fdname, int index,
++                     Error **errp)
 +{
-+    CPUState *cpu;
++    ERRP_GUARD();
++    int fd;
 +
-+    if (!kvm_state || kvm_state->fd == -1) {
-+        return;
++    if (cpr_is_incoming()) {
++        fd = cpr_find_fd(name, index);
++        if (fd < 0) {
++            error_setg(errp, "cannot find saved value for fd %s", fdname);
++        }
++    } else {
++        fd = monitor_fd_param(monitor_cur(), fdname, errp);
++        if (fd >= 0) {
++            cpr_save_fd(name, index, fd);
++        } else {
++            error_prepend(errp, "Could not parse object fd %s:", fdname);
++        }
 +    }
-+
-+    CPU_FOREACH(cpu) {
-+        cpu_remove_sync(cpu);
-+        close(cpu->kvm_fd);
-+        cpu->kvm_fd = -1;
-+        close(cpu->kvm_vcpu_stats_fd);
-+        cpu->kvm_vcpu_stats_fd = -1;
-+    }
-+
-+    if (kvm_state && kvm_state->fd != -1) {
-+        close(kvm_state->vmfd);
-+        kvm_state->vmfd = -1;
-+        close(kvm_state->fd);
-+        kvm_state->fd = -1;
-+    }
-+    kvm_state = NULL;
++    return fd;
 +}
-+
- /*
-  * dirty pages logging control
-  */
-diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-index 1216717546ca13d6f33e802777aa69ab4d59ecba..553b203e9b60b3a08159e2224a887b4d76162428 100644
---- a/hw/vfio/cpr-legacy.c
-+++ b/hw/vfio/cpr-legacy.c
-@@ -179,6 +179,8 @@ bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
-                                          MIG_MODE_CPR_TRANSFER, -1) == 0;
-     }
- 
-+    vfio_cpr_add_kvm_notifier();
-+
-     vmstate_register(NULL, -1, &vfio_container_vmstate, container);
- 
-     migration_add_notifier_mode(&container->cpr.transfer_notifier,
-diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-index f5555cabe72a817c000a1359bc7fd318c6aff4c1..0e903cdd2f7071a363eecd4ec8784b6f9c8f7e1d 100644
---- a/hw/vfio/cpr.c
-+++ b/hw/vfio/cpr.c
-@@ -190,3 +190,24 @@ const VMStateDescription vfio_cpr_pci_vmstate = {
-         VMSTATE_END_OF_LIST()
-     }
- };
-+
-+static NotifierWithReturn kvm_close_notifier;
-+
-+static int vfio_cpr_kvm_close_notifier(NotifierWithReturn *notifier,
-+                                       MigrationEvent *e,
-+                                       Error **errp)
-+{
-+    if (e->type == MIG_EVENT_PRECOPY_DONE) {
-+        vfio_kvm_device_close();
-+    }
-+    return 0;
-+}
-+
-+void vfio_cpr_add_kvm_notifier(void)
-+{
-+    if (!kvm_close_notifier.notify) {
-+        migration_add_notifier_mode(&kvm_close_notifier,
-+                                    vfio_cpr_kvm_close_notifier,
-+                                    MIG_MODE_CPR_TRANSFER);
-+    }
-+}
-diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-index d0dbab1d17132743ea5f5ed0f25701436be11945..9a5f62154554e1df36545b8c315b9ae25534d0fb 100644
---- a/hw/vfio/helpers.c
-+++ b/hw/vfio/helpers.c
-@@ -117,6 +117,17 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
- int vfio_kvm_device_fd = -1;
- #endif
- 
-+void vfio_kvm_device_close(void)
-+{
-+#ifdef CONFIG_KVM
-+    kvm_close();
-+    if (vfio_kvm_device_fd != -1) {
-+        close(vfio_kvm_device_fd);
-+        vfio_kvm_device_fd = -1;
-+    }
-+#endif
-+}
-+
- int vfio_kvm_device_add_fd(int fd, Error **errp)
- {
- #ifdef CONFIG_KVM
 -- 
 2.50.0
 
