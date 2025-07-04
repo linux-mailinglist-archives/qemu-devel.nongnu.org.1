@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF7DAF980E
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7814BAF98B4
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 18:38:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXjDq-00086D-IG; Fri, 04 Jul 2025 12:25:10 -0400
+	id 1uXjDt-00087N-BS; Fri, 04 Jul 2025 12:25:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjDn-00085M-Nn
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:07 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1uXjDq-00086H-0l
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:10 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uXjDl-0005rI-Un
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:07 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4535fbe0299so6161755e9.3
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:25:05 -0700 (PDT)
+ id 1uXjDo-0005s2-3M
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 12:25:09 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3a536ecbf6fso620463f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 09:25:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751646304; x=1752251104; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751646305; x=1752251105; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0FNB0Y/hxjBPu/8t+fC050+nfMllIieEiCtJqxKj6X8=;
- b=ir0uYMR8IgrlCvEdseZPCUBrQh0cVY4uONEZbSDEXqiCshDpRAjo9WFnZN2CMyRvNB
- tmCpBZvCzSlnlO2AtZ/Jh9T3KtbqJFs225ifKfpeCT9xxExzzHQBVNI1xRfsf46EYxn4
- 90jc/yNkAi/w0PHvxLo9MovkhczGphN4vnKY7MYD12fUuf/uPoPcIglawyNtFfNz8+rX
- 2eI7OgrPacmQdkj/nfwkgSVKIRleU8scPNQGICTji6Qpp0NCKFJY1tAOHLFNptMKR5Ce
- Boed5K1I7IVz6kwYfOWxoC33ppwK3REK0EzANZ7MkgKYTuU2CzGbE+pHtDHa6vndYfFb
- XM6g==
+ :reply-to; bh=/2btOuqcn6Xe57qmXPDc5kx7Q5nom+ioP+Bpq02iGrQ=;
+ b=xDZ+HFa63I12Gb8MHs3yC9l16B2eGJCY+ZSZndKyqqtaEJ/ynyWnOPFSBdgq76R0FV
+ und5qW9Dz+VwODSalJosW0zvwLvFjnQ7ka/bhGvwYufDNxpJywmL/6kQoyVGVD4NHceb
+ 0o/wwo2A8USWL7TOJSFm18ZxC/85SOiuzMNhS9CxBskNGfmrktnuB/uA9oqbAIqvR9/j
+ ELNW5TW4IRAzZAqv4Rx5otd6/4N9TOTnyPL03AfNO1M4YW3W4BxJeULeYfNI+zH2Z2b3
+ KKYK7unkZcQo8xQ42hkfcI9WG67QRngzUdg9FtBZjn27AcefJBSoTMC6Gnj2Jq09gGRR
+ CRTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751646304; x=1752251104;
+ d=1e100.net; s=20230601; t=1751646305; x=1752251105;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0FNB0Y/hxjBPu/8t+fC050+nfMllIieEiCtJqxKj6X8=;
- b=Idyb0O+arXaRvHrD/5Ub8MV+GmmxvU/yGenJ88xy9p1BWiiaENHNIt0ZIT3NVxZEDX
- 4Zc0qm8pqccd2sjML5e9zO/44qoGBWpXjdTDPuztY/MrWgiYBe4WUr7QIG7Sl9T+lFEp
- 1aAyzu05SBnJN5MHtF1Z4sxTZAMTyyMEccyf7SwS5dFKhr2vCTt1OWhsC75HfYwnEZ83
- j/tXm13OtO2pG9kDrGQ0B1qfUnk0ysuv/i7EGFluiKIacvn7ELc3RtB0cnyY0yGaFoj5
- Znj/OPWohsmYYeSiPYjZZpCBTbnkQKLDcPk74d2S1oxkoRSaolt3Nv/xiXQLFVaBTZXs
- Uedg==
-X-Gm-Message-State: AOJu0YxQ6g2+8jfUK0HtF3JFLMThlCi+EcA3JqOOSLqQKJjZ8uCYAWWU
- H6vSOH2C8YB5dSL/88OPYsYqNPJxsBdMmAWcritEvs4HjDID8iPKdUMtLQ1m0Zb/66ZKulGrH1d
- T0CjX
-X-Gm-Gg: ASbGncsU+NokX/iT68pABk207kKs+NUEdBmloFEw5Vag26sYJIxp2/l639hGwvOFN2d
- HWdQNGK6Hd9UjmgB2k7OP88gk9i/1zE4gXndkFVv3znzwktf9PG4Vi4CX4zgsatMBGcaqeFGslP
- AtLUWOsINKCgU4OdDdPIbtxEi9skbmLv9FrcvZ3Un/RnCNyWabuQo1jvDBbW+mveACaOK5oYrBi
- RibKvwMVgafDM0Nq2K1h1fkzuqcekjizkssAXXKx8Ht8Soi6g3hwo9wtKipXs/55iua9q6dr0GN
- kaFLMHjUK41RO9gEg/sCABrPd2EZYIKMRA2/yD3lQmy8rEzXXzTSnnHMONDjAx4/Kb6e
-X-Google-Smtp-Source: AGHT+IHmgJ6dzJmJ7eytg1AsD50sYGIjW6Bw7mgvuH3rHCuoEnZYRfgkiL+yUggK9/kbbaSFB1a57A==
-X-Received: by 2002:a05:600c:8219:b0:441:b3eb:570a with SMTP id
- 5b1f17b1804b1-454b3107ef7mr29878825e9.2.1751646304181; 
- Fri, 04 Jul 2025 09:25:04 -0700 (PDT)
+ bh=/2btOuqcn6Xe57qmXPDc5kx7Q5nom+ioP+Bpq02iGrQ=;
+ b=ZZQAoZUBzp6eEgsLD1VEuq7p4WS1+cqg3fGE0m3N7P7qljUaKx8DH6j/0oJ4Ac7Ges
+ 5kgkv0dkke7qx/IYQODB+PTu7ntXSLCyDHq8R/08A46GuYRHzWD3qExkFJe2MfNa+cCA
+ K8rw4ouLvPQAtdcumLd8nxQLaK2UP3NUONloPPQ/w4wetVhhyrRJ0/mQEjVTmUvXS9r5
+ FwJPEk11Swsw2L9Qe89hrQbAtj9Z87DtxhhSld3vxlgeTDRFgwNH5ahqnwM5ObmZylU9
+ GYPCUhHeFRpZUxRgMvAcGVaiG0Tsm24BOCrHwm/7q8iyh/fpGNotXOUKNNj8686XH/O0
+ acfg==
+X-Gm-Message-State: AOJu0YzCCYleNsOcjOnHCvVJNKBCXKDgpcOQNQXRh0THdC1dGIC6cg5Y
+ B/4T7jnso/aq7jhyj+c+cQjTAfdeGrxAibVi9c0rf6vlDSix2y02kP4X+Y8HRdXSfxkkuFnfsvY
+ k1xx+
+X-Gm-Gg: ASbGnctjZaH2Om5/ciRF/4qBjBnHtrEGVlBYxIVZrYWP7ga22iI0s2553YixfmkzsZN
+ wsvGtlk7u+uEnfM/3bVb9R329nFehUPgL0qbOPdkG7RcB45V6xM64THkhnO185MswoyoyCrhsVo
+ Pooe4bK3C62E0RGQBYkmt/GtbiCUmCNn3v2zQ6G4p9GSXVustHuxHPmyLINMGfjgWg/l5fL0uQL
+ 3Ti/yzDS4q6F7RH08PYthJk/yt80tGRabukQUXBfM2+unAbFjSbtSmKLkue1dWLFkcynpRXy7iV
+ LoVhAL3OnSUpcMhaU3PnBvXbe32LcUrDgCMRwNDVa7yPSG91XnzCb8b2hrUtzoU66P+r
+X-Google-Smtp-Source: AGHT+IFAIq254uDjtYhKdAJwPXJZF29XCpMFCPqByjsJDWuZVaQlXWL+Piy1MExqph81cwrU1B/FQA==
+X-Received: by 2002:a5d:64cd:0:b0:3a5:39bb:3d61 with SMTP id
+ ffacd0b85a97d-3b4964f1dfcmr2811134f8f.27.1751646305277; 
+ Fri, 04 Jul 2025 09:25:05 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.25.03
+ ffacd0b85a97d-3b471b96534sm2816857f8f.48.2025.07.04.09.25.04
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 09:25:03 -0700 (PDT)
+ Fri, 04 Jul 2025 09:25:04 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 001/119] hw/arm/highbank: Mark the "highbank" and the "midway"
- machine as deprecated
-Date: Fri,  4 Jul 2025 17:23:01 +0100
-Message-ID: <20250704162501.249138-2-peter.maydell@linaro.org>
+Subject: [PULL 002/119] target/arm: Bring VLSTM/VLLDM helper store/load closer
+ to the ARM pseudocode
+Date: Fri,  4 Jul 2025 17:23:02 +0100
+Message-ID: <20250704162501.249138-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704162501.249138-1-peter.maydell@linaro.org>
 References: <20250704162501.249138-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,66 +97,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: William Kosasih <kosasihwilliam4@gmail.com>
 
-We don't have any automatic regression tests for these machines and
-when asking the usual suspects on the mailing list we came to the
-conclusion that nobody tests these machines manually, too, so it seems
-like this is currently just completely unused code. Mark them as depre-
-cated to see whether anybody still speaks up during the deprecation
-period, otherwise we can likely remove these two machines in a couple
-of releases.
+This patch brings the VLSTM and VLLDM helper functions closer to the ARM
+pseudocode by adding MO_ALIGN to the MemOpIdx of the associated store
+(`cpu_stl_mmu`) operations and load (`cpu_ldl_mmu`) operations.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Message-id: 20250702113051.46483-1-thuth@redhat.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: tweaked deprecation.rst text]
+Note that this is not a bug fix: an 8-byte alignment check already exists
+and remains in place, enforcing stricter alignment than the 4 bytes
+requirement in the individual loads and stores. This change merely makes the
+helper implementations closer to the ARM pseudocode.
+
+That said, as a side effect, the MMU index is now resolved once instead of
+on every `cpu_*_data_ra` call, reducing redundant lookups
+
+Signed-off-by: William Kosasih <kosasihwilliam4@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250703085604.154449-2-kosasihwilliam4@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/about/deprecated.rst | 7 +++++++
- hw/arm/highbank.c         | 2 ++
- 2 files changed, 9 insertions(+)
+ target/arm/tcg/m_helper.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 42037131de1..b24c278f707 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -344,6 +344,13 @@ they want to use and avoids confusion.  Existing users of the ``spike``
- machine must ensure that they're setting the ``spike`` machine in the
- command line (``-M spike``).
+diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
+index 6614719832e..251e12edf9c 100644
+--- a/target/arm/tcg/m_helper.c
++++ b/target/arm/tcg/m_helper.c
+@@ -1048,6 +1048,9 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
+     bool s = env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_S_MASK;
+     bool lspact = env->v7m.fpccr[s] & R_V7M_FPCCR_LSPACT_MASK;
+     uintptr_t ra = GETPC();
++    ARMMMUIdx mmu_idx = arm_mmu_idx(env);
++    MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN,
++                                 arm_to_core_mmu_idx(mmu_idx));
  
-+Arm ``highbank`` and ``midway`` machines (since 10.1)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+There are no known users left for these machines (if you still use it,
-+please write a mail to the qemu-devel mailing list). If you just want to
-+boot a Cortex-A15 or Cortex-A9 Linux, use the ``virt`` machine instead.
-+
+     assert(env->v7m.secure);
  
- System emulator binaries
- ------------------------
-diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
-index 3ae26ebebdc..165c0b741a5 100644
---- a/hw/arm/highbank.c
-+++ b/hw/arm/highbank.c
-@@ -357,6 +357,7 @@ static void highbank_class_init(ObjectClass *oc, const void *data)
-     mc->max_cpus = 4;
-     mc->ignore_memory_transaction_failures = true;
-     mc->default_ram_id = "highbank.dram";
-+    mc->deprecation_reason = "no known users left for this machine";
- }
+@@ -1073,7 +1076,7 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
+      * Note that we do not use v7m_stack_write() here, because the
+      * accesses should not set the FSR bits for stacking errors if they
+      * fail. (In pseudocode terms, they are AccType_NORMAL, not AccType_STACK
+-     * or AccType_LAZYFP). Faults in cpu_stl_data_ra() will throw exceptions
++     * or AccType_LAZYFP). Faults in cpu_stl_mmu() will throw exceptions
+      * and longjmp out.
+      */
+     if (!(env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_LSPEN_MASK)) {
+@@ -1089,12 +1092,12 @@ void HELPER(v7m_vlstm)(CPUARMState *env, uint32_t fptr)
+             if (i >= 16) {
+                 faddr += 8; /* skip the slot for the FPSCR */
+             }
+-            cpu_stl_data_ra(env, faddr, slo, ra);
+-            cpu_stl_data_ra(env, faddr + 4, shi, ra);
++            cpu_stl_mmu(env, faddr, slo, oi, ra);
++            cpu_stl_mmu(env, faddr + 4, shi, oi, ra);
+         }
+-        cpu_stl_data_ra(env, fptr + 0x40, vfp_get_fpscr(env), ra);
++        cpu_stl_mmu(env, fptr + 0x40, vfp_get_fpscr(env), oi, ra);
+         if (cpu_isar_feature(aa32_mve, cpu)) {
+-            cpu_stl_data_ra(env, fptr + 0x44, env->v7m.vpr, ra);
++            cpu_stl_mmu(env, fptr + 0x44, env->v7m.vpr, oi, ra);
+         }
  
- static const TypeInfo highbank_type = {
-@@ -381,6 +382,7 @@ static void midway_class_init(ObjectClass *oc, const void *data)
-     mc->max_cpus = 4;
-     mc->ignore_memory_transaction_failures = true;
-     mc->default_ram_id = "highbank.dram";
-+    mc->deprecation_reason = "no known users left for this machine";
- }
+         /*
+@@ -1121,6 +1124,9 @@ void HELPER(v7m_vlldm)(CPUARMState *env, uint32_t fptr)
+ {
+     ARMCPU *cpu = env_archcpu(env);
+     uintptr_t ra = GETPC();
++    ARMMMUIdx mmu_idx = arm_mmu_idx(env);
++    MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN,
++                                 arm_to_core_mmu_idx(mmu_idx));
  
- static const TypeInfo midway_type = {
+     /* fptr is the value of Rn, the frame pointer we load the FP regs from */
+     assert(env->v7m.secure);
+@@ -1155,16 +1161,16 @@ void HELPER(v7m_vlldm)(CPUARMState *env, uint32_t fptr)
+                 faddr += 8; /* skip the slot for the FPSCR and VPR */
+             }
+ 
+-            slo = cpu_ldl_data_ra(env, faddr, ra);
+-            shi = cpu_ldl_data_ra(env, faddr + 4, ra);
++            slo = cpu_ldl_mmu(env, faddr, oi, ra);
++            shi = cpu_ldl_mmu(env, faddr + 4, oi, ra);
+ 
+             dn = (uint64_t) shi << 32 | slo;
+             *aa32_vfp_dreg(env, i / 2) = dn;
+         }
+-        fpscr = cpu_ldl_data_ra(env, fptr + 0x40, ra);
++        fpscr = cpu_ldl_mmu(env, fptr + 0x40, oi, ra);
+         vfp_set_fpscr(env, fpscr);
+         if (cpu_isar_feature(aa32_mve, cpu)) {
+-            env->v7m.vpr = cpu_ldl_data_ra(env, fptr + 0x44, ra);
++            env->v7m.vpr = cpu_ldl_mmu(env, fptr + 0x44, oi, ra);
+         }
+     }
+ 
 -- 
 2.43.0
 
