@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC1EAF8FC4
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3435EAF8FC8
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:16:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXdRf-0005w8-R0; Fri, 04 Jul 2025 06:15:03 -0400
+	id 1uXdRg-0005yD-IA; Fri, 04 Jul 2025 06:15:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRK-0005un-VY
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:14:49 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRO-0005uv-M5
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:14:51 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRI-00067l-7e
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:14:42 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3a6e2d85705so321265f8f.0
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 03:14:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdRL-00068Y-C4
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:14:45 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-450ce671a08so4169465e9.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 03:14:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751624077; x=1752228877; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=Ex4O63sW1cGt77pstCPqttu2EkRGa6s1dyrnHgN3lsM=;
- b=N7Uuaq2u9Ab1hjIOP3jAwvNi08f7fkWFuARsVE46SzwR4dcOKnS24u2us1qGC+dAQm
- YTD8TgGIkI2aYRSmGcU3V67k84zG1hUt4Ux3xxICvzLUhI3BBpfc7tINL1aCJAXZ8++l
- UHhSutjlfoiLOX4yD3iP81M6FpY6d6ypXVXXA/xIo9TuRMH2yyO4QJJ00UBFj0aaRY0s
- dxontcE97iYUoo5dHPV+SJ26uh5cSlGOcwvcehBINmz8k3sJWyQNdH8iT8Q01XkVkDbc
- cB9sbopD7d8M6pHoB1v80S8eqUlDA4n2EqwLhbrD92On1d7SlMSqwNSQcPSrfZFuyqiT
- 6QOg==
+ d=linaro.org; s=google; t=1751624081; x=1752228881; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=5yU4jFODLQ5Yk9FO8VyUpgwPHGFKBwT9h/DN9+uzfxQ=;
+ b=SlCjpdPPkfJq61JejPhZ2Wj/AVyto4Rshs7bw0nA6JtWLpDbnVIh3vnHuUyxoqFbd9
+ /pREJ82KkPYd02K+fN3yeLDyWQr/nly7dyQqlxShbF+v1Z2BwqsAcdLrwnjjywELgQvV
+ Vu8prjPmuQ2s9pz9ma/DICwokTOKhDgOyn1ZJtJiV4nNQazyHk7cz/UiyIIg/WBriYmE
+ 5lLgeQG7fstVx0wQBeRFZgbaPp41gkuMRxTAyfWlkrwnsPbLUvtRH3v9r75x9TbDrrS7
+ KIIkULI4um6Yx/1rOdTYv3YVfaZa7T4V9Y+Yu6lEuOOUJ1g5KcmysMZZaRUw4/Qsy7Di
+ w6SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751624077; x=1752228877;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ex4O63sW1cGt77pstCPqttu2EkRGa6s1dyrnHgN3lsM=;
- b=MrlX3uLI7tjAxVsWo5MFONiEewUPB4MU7avOgED8k08NGhXY6qL06JZyFm6UPSsPH0
- RYrv5eVoacQ0M9vQ6/1Q1C02XSO4rAz6CUZwSRwpeclCEWuvn8Pzf2lR2rrzKzQSCbyU
- Eu37Nu69/XnEDMk7rfDGfjlxrwTcskHGfB8NQ1XDP8+0o3yRmAdy9W7WqkPtCWUMcQmA
- 2HEzCSz0ATocdy7iNXULUqY+C+g/nR/cYqWld2ClUdOfjUaTtiluDdxtlMLymFZX1ozk
- +/9eU7amcoFCbig0HvkdcJYercwTdrUWq9JLd+7uJVewb/5V1+Bk+VwT89Lm+tJd2YQo
- Nvpw==
-X-Gm-Message-State: AOJu0YxxyHd0G+8OEi77mkjqjeRMmLVirQFcrEuGr660O3mB18fhJ5/i
- Og04kFOZxuXPfyCwkqvlSnJc9zDkchKwxVqXIQuH7q803r6hCY3OYkTdcXENwyVCN1f+QRP6a56
- OpVmdRHk=
-X-Gm-Gg: ASbGnctCDjudv/mWpMSfYAKMMfySmzFt2A5PtI6Eh+GQd+XWvUblG9FxXEeNCYvo4Lv
- L2LfabrBFuA6+nzMKSzF2wjmja3gBnnUGpVMpfp6CJI05riXhPcKaU2vx7/nNYiN5a0a6Re74wH
- lHTVgZUqniWNeKoxmsll/URuP92WG2jOGnoLkOxRrpd4piV8b5leA36IrW9BIy7GAxzYKOVJZQZ
- BL3GV/ffo/cNfkpp0BHeF6cc4jgRjnZg4SwEbQ1UQGAmueAmq4cpbsvPUuvC7it2zoFWLFMzW84
- SqkQ5j1ImgCCTG6a6yqrDcEwt/COJmULegzRkJIpu5/1FARTu/4ftpgPPEQKfysr/nEFMO0yZZh
- Fe9m44a+qkzxF7ORZQEqwhctGlzq5e4XvWlAd
-X-Google-Smtp-Source: AGHT+IE2XSvOyI8lWaYgiKHSEXhl0ZIacd2EgycI9NFXvOdKQYtQkjNRYStufeXWx1bpiIJcmxzU6w==
-X-Received: by 2002:a5d:64ca:0:b0:3a4:e4ee:4ca9 with SMTP id
- ffacd0b85a97d-3b4964f5e08mr1775319f8f.23.1751624076664; 
- Fri, 04 Jul 2025 03:14:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1751624081; x=1752228881;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5yU4jFODLQ5Yk9FO8VyUpgwPHGFKBwT9h/DN9+uzfxQ=;
+ b=rlJULHRc6oIYwYWWaXhs9EyQtSASDNPjdou4ZmaBUeHqoOItPacXw6NTY3bsj13RAF
+ xrZKOJwwr4yNVH9DMKGhlFwL2SVDgigS9IyyXOPUWBCWRPJGyFkJR5m49GRhtM2gHUfh
+ mv4L+CoNKlH+53BbHYP16CMURQOOqq5F7Nudx0fdRdYPLJxwEwLHhn0AQFLI4RqxJOnW
+ barGXYGb2Wqu1ji12w7TYC14DFKjty7mI5lN7agqh+Yv0Sn+snNi2iwgVpsI8jYPObPF
+ UQ80Ju4fchmqJ3Xeq/DKzsfGj5Ev1pXbPU9KKILSD3VJPocOAw75vIbq6Dtmid9o4tsz
+ rTWg==
+X-Gm-Message-State: AOJu0Yxybco9z2H9fNDT4BnjHfnegXmxnqbpX/0qMHUxQ+0Ua5LdaCRL
+ J1dSJLVAwvJqw326QU5pQN5p5LgGdY1u+408lGsk7UVarPgO3VUOwpOyXV44I2+efFV8LPgtJD0
+ ezlcDiJ4=
+X-Gm-Gg: ASbGncv7RSJGoKO4Ok/6uJK8pMt/ARa8EXsoOJs/l+I7jq+2BVbqBvW250BSP7gWGgT
+ MotoNiUQ6nA+vC24QwswlioQUK9DKwioDEtNO1Yg3zkQ5XsGq0CqLbAiFdGa+ylW8Lbw47Znjta
+ TmlsuJYt99RN48VFWXHBPkThYLClEUilr9shTOaWrDytL43hQly/t8d55w6/3lkihtxUxJNCrjR
+ g+W3eD/4Kdzj8W5ZTSp+hUOv8b4A6ztuy4EpWNE3sCQTUbCpIychSNJLgo5Vn9m+brGpR3T4Ph+
+ OVatSjaXvahf1ZbPQK8WvgGNJIt6XmnYVrkgTxHT65y7SqgXl5yOjVfwMsSbh+eFSzpxLYSGdQM
+ +eOKsdf6z+FcALrdhwjO/9exiFR14rOWq3T3m
+X-Google-Smtp-Source: AGHT+IHsGoZ40OAnCXH3jYayS4gvuTz0xGTGwM8GhGEypnAAhuhYqUglyP8eggPVM4UrMH3RqdCyeA==
+X-Received: by 2002:a05:600c:540f:b0:445:1984:247d with SMTP id
+ 5b1f17b1804b1-454b4e67f8bmr13368495e9.7.1751624081235; 
+ Fri, 04 Jul 2025 03:14:41 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b97732sm2140903f8f.59.2025.07.04.03.14.34
+ ffacd0b85a97d-3b47030bc79sm2100514f8f.9.2025.07.04.03.14.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Jul 2025 03:14:34 -0700 (PDT)
+ Fri, 04 Jul 2025 03:14:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/31] Accelerators patches for 2025-07-04
-Date: Fri,  4 Jul 2025 12:14:01 +0200
-Message-ID: <20250704101433.8813-1-philmd@linaro.org>
+Subject: [PULL 01/31] system/cpus: Assert interrupt handling is done with BQL
+ locked
+Date: Fri,  4 Jul 2025 12:14:02 +0200
+Message-ID: <20250704101433.8813-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250704101433.8813-1-philmd@linaro.org>
+References: <20250704101433.8813-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,113 +97,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit c77283dd5d79149f4e7e9edd00f65416c648ee59:
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-Id: <20250703173248.44995-5-philmd@linaro.org>
+---
+ accel/tcg/tcg-accel-ops.c | 2 --
+ system/cpus.c             | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-  Merge tag 'pull-request-2025-07-02' of https://gitlab.com/thuth/qemu into staging (2025-07-03 06:01:41 -0400)
-
-are available in the Git repository at:
-
-  https://github.com/philmd/qemu.git tags/accel-20250704
-
-for you to fetch changes up to d7fffb0c8a498cd0a184832e4e2c24251dbff7c0:
-
-  hmp-cmds-target.c: add CPU_DUMP_VPU in hmp_info_registers() (2025-07-04 12:08:44 +0200)
-
-----------------------------------------------------------------
-Accelerators patches
-
-- Generic API consolidation, cleanups (dead code removal, documentation added)
-- Remove monitor TCG 'info opcount' and @x-query-opcount
-- Have HVF / NVMM / WHPX use generic CPUState::vcpu_dirty field
-- Expose nvmm_enabled() and whpx_enabled() to common code
-- Have hmp_info_registers() dump vector registers
-
-----------------------------------------------------------------
-
-Daniel Henrique Barboza (1):
-  hmp-cmds-target.c: add CPU_DUMP_VPU in hmp_info_registers()
-
-Philippe Mathieu-Daudé (30):
-  system/cpus: Assert interrupt handling is done with BQL locked
-  accel/kvm: Remove kvm_init_cpu_signals() stub
-  accel/kvm: Reduce kvm_create_vcpu() declaration scope
-  accel/tcg: Remove 'info opcount' and @x-query-opcount
-  accel/tcg: Remove profiler leftover
-  accel/tcg: Factor tcg_dump_flush_info() out
-  accel/tcg: Factor tcg_dump_stats() out for re-use
-  accel/hvf: Restrict internal declarations
-  accel/hvf: Move per-cpu method declarations to hvf-accel-ops.c
-  accel/hvf: Move generic method declarations to hvf-all.c
-  cpus: Document CPUState::vcpu_dirty field
-  accel/hvf: Replace @dirty field by generic CPUState::vcpu_dirty field
-  accel/nvmm: Replace @dirty field by generic CPUState::vcpu_dirty field
-  accel/whpx: Replace @dirty field by generic CPUState::vcpu_dirty field
-  accel/kvm: Remove kvm_cpu_synchronize_state() stub
-  accel/system: Document cpu_synchronize_state()
-  accel/system: Document cpu_synchronize_state_post_init/reset()
-  accel/nvmm: Expose nvmm_enabled() to common code
-  accel/whpx: Expose whpx_enabled() to common code
-  accel/dummy: Extract 'dummy-cpus.h' header from 'system/cpus.h'
-  accel: Expose and register generic_handle_interrupt()
-  accel: Keep reference to AccelOpsClass in AccelClass
-  accel: Propagate AccelState to AccelClass::init_machine()
-  accel/tcg: Prefer local AccelState over global current_accel()
-  accel/kvm: Prefer local AccelState over global MachineState::accel
-  accel/kvm: Directly pass KVMState argument to do_kvm_create_vm()
-  accel: Directly pass AccelState argument to AccelClass::has_memory()
-  accel: Remove unused MachineState argument of AccelClass::setup_post()
-  accel: Pass AccelState argument to gdbstub_supported_sstep_flags()
-  MAINTAINERS: Add me as reviewer of overall accelerators section
-
- MAINTAINERS                       |   4 +
- qapi/machine.json                 |  18 --
- accel/dummy-cpus.h                |  14 ++
- accel/tcg/internal-common.h       |   2 +
- include/hw/core/cpu.h             |   3 +-
- include/qemu/accel.h              |  11 +-
- include/system/accel-ops.h        |  22 ++-
- include/system/cpus.h             |   5 -
- include/system/hvf.h              |  38 ----
- include/system/hvf_int.h          |  35 +++-
- include/system/hw_accel.h         |  21 +-
- include/system/kvm.h              |   8 -
- include/system/nvmm.h             |  23 +--
- include/system/whpx.h             |  27 +--
- accel/accel-common.c              |   2 +-
- accel/accel-system.c              |   7 +-
- accel/dummy-cpus.c                |   1 +
- accel/hvf/hvf-accel-ops.c         | 314 ++++--------------------------
- accel/hvf/hvf-all.c               | 277 ++++++++++++++++++++++++--
- accel/kvm/kvm-accel-ops.c         |   1 +
- accel/kvm/kvm-all.c               |  27 +--
- accel/qtest/qtest.c               |   4 +-
- accel/stubs/kvm-stub.c            |   9 -
- accel/stubs/nvmm-stub.c           |  12 ++
- accel/stubs/whpx-stub.c           |  12 ++
- accel/tcg/monitor.c               |  57 ++----
- accel/tcg/tcg-accel-ops.c         |   6 +-
- accel/tcg/tcg-all.c               |   6 +-
- accel/xen/xen-all.c               |   6 +-
- bsd-user/main.c                   |   2 +-
- linux-user/main.c                 |   2 +-
- monitor/hmp-cmds-target.c         |   4 +-
- system/cpus.c                     |  12 +-
- system/memory.c                   |   2 +-
- target/arm/hvf/hvf.c              |   4 +-
- target/i386/hvf/hvf.c             |   4 +-
- target/i386/hvf/x86hvf.c          |   2 +-
- target/i386/nvmm/nvmm-accel-ops.c |   1 +
- target/i386/nvmm/nvmm-all.c       |  31 ++-
- target/i386/whpx/whpx-accel-ops.c |   1 +
- target/i386/whpx/whpx-all.c       |  32 ++-
- tests/qtest/qmp-cmd-test.c        |   1 -
- accel/stubs/meson.build           |   2 +
- hmp-commands-info.hx              |  14 --
- 44 files changed, 551 insertions(+), 535 deletions(-)
- create mode 100644 accel/dummy-cpus.h
- create mode 100644 accel/stubs/nvmm-stub.c
- create mode 100644 accel/stubs/whpx-stub.c
-
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index b24d6a75625..6116644d1c0 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -93,8 +93,6 @@ static void tcg_cpu_reset_hold(CPUState *cpu)
+ /* mask must never be zero, except for A20 change call */
+ void tcg_handle_interrupt(CPUState *cpu, int mask)
+ {
+-    g_assert(bql_locked());
+-
+     cpu->interrupt_request |= mask;
+ 
+     /*
+diff --git a/system/cpus.c b/system/cpus.c
+index d16b0dff989..a43e0e4e796 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -265,6 +265,8 @@ static void generic_handle_interrupt(CPUState *cpu, int mask)
+ 
+ void cpu_interrupt(CPUState *cpu, int mask)
+ {
++    g_assert(bql_locked());
++
+     if (cpus_accel->handle_interrupt) {
+         cpus_accel->handle_interrupt(cpu, mask);
+     } else {
 -- 
 2.49.0
 
