@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481D8AF8DE5
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02866AF8DFF
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:16:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXcTl-0003h2-Ij; Fri, 04 Jul 2025 05:13:09 -0400
+	id 1uXcWK-0006Te-3d; Fri, 04 Jul 2025 05:15:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcTj-0003fU-Gs
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:13:07 -0400
-Received: from p-east3-cluster3-host1-snip4-4.eps.apple.com ([57.103.86.7]
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcWH-0006Se-Tj
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:15:45 -0400
+Received: from p-east3-cluster6-host7-snip4-1.eps.apple.com ([57.103.85.192]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcTi-0000rQ-35
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:13:07 -0400
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uXcWB-0001nJ-Tm
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:15:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- bh=btZRqsU/Rxwg4MUJoirKZHRrRnLk4Ti/4xhj2QRhk1I=;
+ bh=Kjv69prOm8o+3r+NqxkFDhjMCJxoTAlRl95Ze5nfxEA=;
  h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
- b=WNSso8fIh1rMXyKeMp9jSaJg55r7me1NaHyvuIOjp+X/BNScliA5Fre4LDaeDFKJO
- 2UhYpIpmtFgacJOdO1dPQzXn6RI7P+ptO+n0e3KDxRt279NHFY7Zsv1ycDYvdEdw9/
- 31U8oT34bSG9vcyvKPdFwdO+hTiOhMXujftOtG2bgmP8+LDaR9IatNJ9zwGuwk9wih
- 0w/UuGBgAsh86CwYIhgv2iLjb89djxy29myomphIPycuALvOvTiASyVDtwHT9EwhC1
- 7ntU08CgXMInjtpLh7FGH6jBLtA+KY2x5z3dYfdrBA+xBOVvZ4/BoO5Hdok/v55qDF
- mYOCGNa1jp11g==
+ b=xS2goS7WwTuKPCViMH0migXPvotSjFTOMJX4WC0myqeknuiudpPLpXVjjaPz8TfbG
+ 4jZ5Q3HdXfudLhiiDVKU/ZoIkH0tRRGG1mZxxWlLjXQ3mJjHlU7f9sHbeWoQ28gQWu
+ 9zOY1LH+5lDvA0il/64Nuf455dokswvcb1NBJlvg5W3TS3qnjl9BFIV3ytE/dXbDp/
+ 7eARKqxG23myt22CRu9kgHKlkB5Fqwy2DsGg1h2RJ25f43ZIptPZPrPlQ3gJtDFxEh
+ WLFttmK9kFM9Dax6r7+hR4xH0K1V1+GCt8Ec2GEmEBP2Km2FjfJj3nxnaljhM++V6b
+ LbEIlaGpoJCcw==
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
- by outbound.qs.icloud.com (Postfix) with ESMTPS id A97E51800111;
- Fri,  4 Jul 2025 09:12:59 +0000 (UTC)
+ by outbound.qs.icloud.com (Postfix) with ESMTPS id 4B5291807C1F;
+ Fri,  4 Jul 2025 09:15:35 +0000 (UTC)
 Received: from smtpclient.apple (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
- by outbound.qs.icloud.com (Postfix) with ESMTPSA id 77D95180013D;
- Fri,  4 Jul 2025 09:12:58 +0000 (UTC)
+ by outbound.qs.icloud.com (Postfix) with ESMTPSA id 6B5D81800367;
+ Fri,  4 Jul 2025 09:15:34 +0000 (UTC)
 Content-Type: text/plain;
 	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v4 47/65] accel: Introduce
- AccelOpsClass::cpu_thread_routine handler
+Subject: Re: [PATCH v4 51/65] accel/kvm: Convert to
+ AccelOpsClass::cpu_thread_routine
 From: Mads Ynddal <mads@ynddal.dk>
-In-Reply-To: <20250702185332.43650-48-philmd@linaro.org>
-Date: Fri, 4 Jul 2025 11:12:48 +0200
+In-Reply-To: <20250702185332.43650-52-philmd@linaro.org>
+Date: Fri, 4 Jul 2025 11:15:22 +0200
 Cc: qemu-devel@nongnu.org,
  =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, kvm@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <8DC48DD3-A95B-4414-A456-8DE724E8C74B@ynddal.dk>
+Message-Id: <C6FE1389-E113-4794-9700-0D7F206C2704@ynddal.dk>
 References: <20250702185332.43650-1-philmd@linaro.org>
- <20250702185332.43650-48-philmd@linaro.org>
+ <20250702185332.43650-52-philmd@linaro.org>
 To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-Proofpoint-GUID: 3Hx5EtpPLWG_PY8_LcEBC9pk4kb5rRnC
-X-Proofpoint-ORIG-GUID: 3Hx5EtpPLWG_PY8_LcEBC9pk4kb5rRnC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA3MSBTYWx0ZWRfX+KFuI9nqlPXn
- xdylZahIJuDgFMQOwX7hUaWDVhnC+dhdouDG8OrcEBxGUdb24pLJ1cszNERWQ2R9VqUCeUtrRMe
- z6mhWY9n3qi9o6eVSHFluh05cCAXX4aDbV96qb9Wo+MTJVOns+EX92ZUbVmdPjo4X/gp97nRoR+
- kJNmHWJpJ6d8zBsL8KYp+gVsU/2Zhk6NVV5Vh8N8BBUDHhPS50+nJcSY8UpW0FwnFtdSSVzZnGR
- nOucOaMUbby9KrT1uzHS/u0IE28BY/RVXaDdYDM8szUrdCX5YJTopQMWG73GTba/hzo0ryol8=
+X-Proofpoint-GUID: zgdamnS0sfl3rAgKV2PMHfZnYsVWOPsv
+X-Proofpoint-ORIG-GUID: zgdamnS0sfl3rAgKV2PMHfZnYsVWOPsv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA3MSBTYWx0ZWRfX8f4Kk4QdcsHq
+ iuqkwrfRcCsFTockm9f4Gd1uhET6aMtPDjIxk2/Rdvz64WLQsoivDlHxmvy3VxKPaPfjmdFVqRK
+ 2dzyM8aUToEiFy+ltDmB4zK3dP7GfLlFrU+EO0TB4UjjE2Oe4IwPsNITB07ycP8e0ClpUN439hn
+ OAzjYINiE47597ZxO7WVrBZ2s7xMcBd8XlD3NRPGIQcJFTZ+T3D4XpnErCFFbAg83mi4AdBpDcn
+ //8gGA8ko0rdqqU8+TWuviVbzwVRyIiCHZgxuWkumOZe7Wa/TOeKUexPY359KF0ivbQlhmdzo=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-04_03,2025-07-02_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- malwarescore=0 bulkscore=0 mlxlogscore=937 spamscore=0 clxscore=1030
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxscore=0 clxscore=1030 malwarescore=0 bulkscore=0 mlxlogscore=865
  adultscore=0 suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.22.0-2506060001 definitions=main-2507040071
-Received-SPF: pass client-ip=57.103.86.7; envelope-from=mads@ynddal.dk;
+Received-SPF: pass client-ip=57.103.85.192; envelope-from=mads@ynddal.dk;
  helo=outbound.qs.icloud.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -94,17 +94,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 > On 2 Jul 2025, at 20.53, Philippe Mathieu-Daud=C3=A9 =
 <philmd@linaro.org> wrote:
 >=20
-> In order to have a generic function creating threads,
-> introduce the thread_precreate() and cpu_thread_routine()
-> handlers.
+> By converting to AccelOpsClass::cpu_thread_routine we can
+> let the common accel_create_vcpu_thread() create the thread.
 >=20
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> include/system/accel-ops.h |  5 ++++-
-> accel/accel-common.c       | 16 +++++++++++++++-
-> system/cpus.c              |  2 +-
-> 3 files changed, 20 insertions(+), 3 deletions(-)
+> accel/kvm/kvm-accel-ops.c | 12 +-----------
+> 1 file changed, 1 insertion(+), 11 deletions(-)
 >=20
 
 Reviewed-by: Mads Ynddal <mads@ynddal.dk>
