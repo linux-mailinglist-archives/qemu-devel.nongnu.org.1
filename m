@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC970AF957D
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CBE5AF960F
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:54:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXhOA-00008c-9I; Fri, 04 Jul 2025 10:27:42 -0400
+	id 1uXhOV-0001Q2-CN; Fri, 04 Jul 2025 10:28:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhLb-0003YE-7X
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:25:03 -0400
+ id 1uXhLd-0003fO-Mw
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:25:06 -0400
 Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhLY-0007cG-Lg
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:25:02 -0400
+ id 1uXhLZ-0007d2-V5
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:25:05 -0400
 Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-611a7c617a7so288427eaf.1
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 07:25:00 -0700 (PDT)
+ 006d021491bc7-610d86b3da9so260768eaf.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 07:25:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751639099; x=1752243899; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751639100; x=1752243900; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EW2bJzirUC9Q++64fS4FwLYtCnIkFQU62Sb4cmXxlXU=;
- b=TPcvVGfF2+gOZp9Tcqchr0RdUAhIsP5CffRQvXqFMCXOnDj3zktwTHLG3hF9mWd661
- 2tDE7B6TMvAIC5eQ1Ng3wGG5T/2wny5o4478A14p/iRJD/hOaM+mWYviT+cMjY8udspl
- JjjhEOzY3QIAFWN4e74SZ+x6aOiz6+wf6Ro1e9sFP2T7DpijUc/0PSkh7J5RaTdXkyWL
- ZRp5XR/QCk6NSlrbHu/l3rbHI59qHFz3kKcIRyyMCGf7v42fpzFzbKFGRzwd/sKT36zw
- 3mByltIUnHUS5jwuXnN+eMVcMWXgbNK46sC+i+gyvE0H5ChBU4Lq9cgf+gvBSMWqKSMl
- t9dQ==
+ bh=1S/ZQDP5c+NZHEEUkGxsFokHGbVaRKZEhtxQ6fYJ0KA=;
+ b=AiR0jwSBXUe2s4r3HOLYoL1aJb2VqCvvDMAQxLrfHcZ1q8HQSy0QQ/XVf2G/3eKUTw
+ 6AA+O110lf6BSlPyX4Qv4k6sKPBic6ZcxgSy6eiR6dYPt+3UTH/kJ1Y2Ir0wcmBFsWoM
+ tk3yNAb7Ll7tC0vHbMQol97EYLqKbJZph5nX6cO03n2Ex51jq8aYxHRWRqiG7fNgVkfr
+ gzJfKs5c0JDhGyK3zZgDEQlzcUkuDYlXM8/qk6SSvzZxZWwli4+59jTiWxOaPfC98yx7
+ VSOHvpB8FvZs7Q09W8OPG+j+GkV8TMUHo3WmCOL/92CGlT+VWaV5/jognfEMOgJ7yjoO
+ +AEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751639099; x=1752243899;
+ d=1e100.net; s=20230601; t=1751639100; x=1752243900;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EW2bJzirUC9Q++64fS4FwLYtCnIkFQU62Sb4cmXxlXU=;
- b=sVLybxyd1rzU+hmnNHQGadCDVJW21qV+G63bw4rsDykCgPG8SQMvz4XSA/Pj4ixfJ4
- 6utkFyuCJ3FvZtaW0FOd3YgoZdktXMK9xs2EDyNSvBE8oubKTjgTjv8jBxyJVIPfKG46
- IxFPwch6nAWpPpjrFNM5JrFh/0D0sQ02ASMrL88h+eRbs3MockLS5YM3MKEd5gCd6/EM
- vfcQbs1PiQ42LDlzDM7XMI4osswuPfqPGFXGeOZ9Ct7lQBcoJWGRP10/Yn6rQO8rJ/d/
- lSf3KjxQqaxBSMt1X6feU6Q7Isxu0PfUIAHLXesA0LZVlXwhC7XmU+UxZs+YTOGorY2p
- mbwg==
-X-Gm-Message-State: AOJu0YwrNThcAeoYxdcedmOqJRY+8mrCZyg4kCVrciZsXbU4qWc/FXW/
- K92js1imeP06WGhqD96vLP2ZDq1wR030ZlFaFO9JmkSJ4ObGZBfyraPHAMRYBS/ojNQFCB2BoRc
- MOKi9fRY=
-X-Gm-Gg: ASbGncsZbibyxuQwpvTSRLTIIBfAztZ5ZRyQbW9rNLjbkYG9g6RljPR/xv3dH5I6eMY
- +/jQLx5BUy1ptdFn6DRa8oQlLy8dkDOJxOYMQfbn/KcvM+cfPR/pZKe4rklCuEu5zEyJtr9Web0
- mVziMT8o/8puDwy7bqv4NS555htRL24B+6BL15ZbLtCJZJRrpG4pklBI6M19WyIdcS2b8bb4psP
- zWFlmlITAWmnK/PdItr7Ui6LloFLs+MGw99/hQq1qyh2iLigv/kOvQPy71FP8kJNs4wpwvEMcDZ
- HyJ6tG+i2KE88/m/q85CyXmzrccJotd55nyoIEQYN68ZgX9Pvc3H1AGScL1x3F/q1aOSi/ToP3M
- xHHRIqqztV3jrTQ7Zpoj73XUf6lSYEJw/xFeOz0xXHMM0VxeMv3O9MEiP62E=
-X-Google-Smtp-Source: AGHT+IHjFKSqVNtD9yogSNlSZ2MRXYGt4Y0yPpa3kykOxBrD2UbbJ5gFoPXMFSY7BSlpg/OProaZwA==
-X-Received: by 2002:a05:6820:174b:b0:613:7eb8:a4a6 with SMTP id
- 006d021491bc7-6138fd5e525mr2320024eaf.2.1751639099221; 
- Fri, 04 Jul 2025 07:24:59 -0700 (PDT)
+ bh=1S/ZQDP5c+NZHEEUkGxsFokHGbVaRKZEhtxQ6fYJ0KA=;
+ b=KrTU0PDamurI/pwcr1WNE4tUBt4iL8bmX2YPPW4C1psJkcaMeZyIMexGe5O8GJJOeI
+ VXZxYtZVbamGzxiZPPWbB/mOLBPmI5OCeeKByMObHMxVvU12lzIqRTjw7Ld1pqCha1PK
+ ESnopsT2UGOpTZ9Ek7l43U4mCP6cT1J+zbXJSLPxZ7FIPB7Di6mmSgkZN3t5q4auXOFE
+ hT+QtR1sXqvKW2lVrsVJulL+3l7t0bj05qpwZBPMbJtvLuJ1KNQN3ODhosTGwGbPKVn6
+ PqYiF8A0BUPK+LWZAGoUksW9TFPB5AmXm5z36VgYVxFUp5Vhk2cUn364xFjvdYeyLK3E
+ kvFQ==
+X-Gm-Message-State: AOJu0YyIew0PJlvVLYnsDHKvuhX8dqGmyeC9y2dLIzq0GJGexk/yVuvN
+ dxjzJhhzRvk3beq4aoiZMbTHFYSQPGZ1MQFfcgfw+zyIikvI0FkAQhZQSlbVI1uX46BX2u3XXBL
+ c1qi4ras=
+X-Gm-Gg: ASbGnctmbLfGyaIyc3EsjR//pFedNRgcBMmtA/xrabahzkcAOp0TdwQ12AiNn0TxlO9
+ oSqjYA5HXeacX/yEbYMkZEFbazevzUdsZcFNo86dKas+xwcidP66Xop4lBLDus/GsKuSUWZW6o0
+ q0qS/lLa5UT7CvQB1TQ6Do+Rd+pnwhCP/+GxqFszjVHDbqFUtkltOFmkd++c3ysqzN/r1yh1Pqo
+ RbKRjMHbse7CnUhFGa9kqYyyY7O+6TnPwI0KpwXSFLr+bx/Rye77TccF79dABlZkpcK95Ii6oQ8
+ kdOJFlDG10bN8XibpLxXDCW6FL4iep5BsZVxBmpwhUf74knNuUms51FXGfLvGtqHXKtjAEVrHM2
+ QXlxod+IKU9rLw3coqqVXQevD1fO6PXoBq7rdLzpcLPrgaGUB
+X-Google-Smtp-Source: AGHT+IENJbKkzKEqPlA2I4O5yp47X09bUOYitsgmACZRGrRzvjyHWLuBxkGFPbJlztMcmcMw9y4SRg==
+X-Received: by 2002:a05:6820:6acf:b0:605:f34d:7e00 with SMTP id
+ 006d021491bc7-613901117a3mr1982032eaf.7.1751639100312; 
+ Fri, 04 Jul 2025 07:25:00 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-6138e5ac5eesm310233eaf.29.2025.07.04.07.24.58
+ 006d021491bc7-6138e5ac5eesm310233eaf.29.2025.07.04.07.24.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 07:24:58 -0700 (PDT)
+ Fri, 04 Jul 2025 07:24:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	peter.maydell@linaro.org
-Subject: [PATCH v4 042/108] target/arm: Rename SVE SDOT and UDOT patterns
-Date: Fri,  4 Jul 2025 08:20:05 -0600
-Message-ID: <20250704142112.1018902-43-richard.henderson@linaro.org>
+Subject: [PATCH v4 043/108] target/arm: Tighten USDOT (vectors) decode
+Date: Fri,  4 Jul 2025 08:20:06 -0600
+Message-ID: <20250704142112.1018902-44-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704142112.1018902-1-richard.henderson@linaro.org>
 References: <20250704142112.1018902-1-richard.henderson@linaro.org>
@@ -83,7 +83,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,74 +99,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Emphasize the 4-way nature of these dot products.
+Rename to USDOT_zzzz_4s and force size=2 during decode.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-sve.c | 12 ++++++------
- target/arm/tcg/sve.decode      | 12 ++++++------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ target/arm/tcg/translate-sve.c | 4 ++--
+ target/arm/tcg/sve.decode      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 1564ee2558..56353b3bb4 100644
+index 56353b3bb4..c82a0f771d 100644
 --- a/target/arm/tcg/translate-sve.c
 +++ b/target/arm/tcg/translate-sve.c
-@@ -3412,18 +3412,18 @@ TRANS_FEAT(DOT_zzzz, aa64_sve, gen_gvec_ool_zzzz,
-  * SVE Multiply - Indexed
-  */
+@@ -7151,8 +7151,8 @@ static gen_helper_gvec_4 * const sqrdcmlah_fns[] = {
+ TRANS_FEAT(SQRDCMLAH_zzzz, aa64_sve2, gen_gvec_ool_zzzz,
+            sqrdcmlah_fns[a->esz], a->rd, a->rn, a->rm, a->ra, a->rot)
  
--TRANS_FEAT(SDOT_zzxw_s, aa64_sve, gen_gvec_ool_arg_zzxz,
-+TRANS_FEAT(SDOT_zzxw_4s, aa64_sve, gen_gvec_ool_arg_zzxz,
-            gen_helper_gvec_sdot_idx_4b, a)
--TRANS_FEAT(SDOT_zzxw_d, aa64_sve, gen_gvec_ool_arg_zzxz,
-+TRANS_FEAT(SDOT_zzxw_4d, aa64_sve, gen_gvec_ool_arg_zzxz,
-            gen_helper_gvec_sdot_idx_4h, a)
--TRANS_FEAT(UDOT_zzxw_s, aa64_sve, gen_gvec_ool_arg_zzxz,
-+TRANS_FEAT(UDOT_zzxw_4s, aa64_sve, gen_gvec_ool_arg_zzxz,
-            gen_helper_gvec_udot_idx_4b, a)
--TRANS_FEAT(UDOT_zzxw_d, aa64_sve, gen_gvec_ool_arg_zzxz,
-+TRANS_FEAT(UDOT_zzxw_4d, aa64_sve, gen_gvec_ool_arg_zzxz,
-            gen_helper_gvec_udot_idx_4h, a)
+-TRANS_FEAT(USDOT_zzzz, aa64_sve_i8mm, gen_gvec_ool_arg_zzzz,
+-           a->esz == 2 ? gen_helper_gvec_usdot_4b : NULL, a, 0)
++TRANS_FEAT(USDOT_zzzz_4s, aa64_sve_i8mm, gen_gvec_ool_arg_zzzz,
++           gen_helper_gvec_usdot_4b, a, 0)
  
--TRANS_FEAT(SUDOT_zzxw_s, aa64_sve_i8mm, gen_gvec_ool_arg_zzxz,
-+TRANS_FEAT(SUDOT_zzxw_4s, aa64_sve_i8mm, gen_gvec_ool_arg_zzxz,
-            gen_helper_gvec_sudot_idx_4b, a)
--TRANS_FEAT(USDOT_zzxw_s, aa64_sve_i8mm, gen_gvec_ool_arg_zzxz,
-+TRANS_FEAT(USDOT_zzxw_4s, aa64_sve_i8mm, gen_gvec_ool_arg_zzxz,
-            gen_helper_gvec_usdot_idx_4b, a)
- 
- #define DO_SVE2_RRX(NAME, FUNC) \
+ TRANS_FEAT_NONSTREAMING(AESMC, aa64_sve2_aes, gen_gvec_ool_zz,
+                         gen_helper_crypto_aesmc, a->rd, a->rd, 0)
 diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
-index 5970ed9ac4..51847ea56e 100644
+index 51847ea56e..401c025852 100644
 --- a/target/arm/tcg/sve.decode
 +++ b/target/arm/tcg/sve.decode
-@@ -851,10 +851,10 @@ CDOT_zzzz       01000100 esz:2 0 rm:5 0001 rot:2 rn:5 rd:5  ra=%reg_movprfx
- #### SVE Multiply - Indexed
+@@ -1599,7 +1599,7 @@ SQRDCMLAH_zzzz  01000100 esz:2 0 rm:5 0011 rot:2 rn:5 rd:5  ra=%reg_movprfx
  
- # SVE integer dot product (indexed)
--SDOT_zzxw_s     01000100 10 1 ..... 000000 ..... .....   @rrxr_2 esz=2
--SDOT_zzxw_d     01000100 11 1 ..... 000000 ..... .....   @rrxr_1 esz=3
--UDOT_zzxw_s     01000100 10 1 ..... 000001 ..... .....   @rrxr_2 esz=2
--UDOT_zzxw_d     01000100 11 1 ..... 000001 ..... .....   @rrxr_1 esz=3
-+SDOT_zzxw_4s    01000100 10 1 ..... 000000 ..... .....   @rrxr_2 esz=2
-+SDOT_zzxw_4d    01000100 11 1 ..... 000000 ..... .....   @rrxr_1 esz=3
-+UDOT_zzxw_4s    01000100 10 1 ..... 000001 ..... .....   @rrxr_2 esz=2
-+UDOT_zzxw_4d    01000100 11 1 ..... 000001 ..... .....   @rrxr_1 esz=3
+ ## SVE mixed sign dot product
  
- # SVE2 integer multiply-add (indexed)
- MLA_zzxz_h      01000100 0. 1 ..... 000010 ..... .....   @rrxr_3 esz=1
-@@ -873,8 +873,8 @@ SQRDMLSH_zzxz_s 01000100 10 1 ..... 000101 ..... .....   @rrxr_2 esz=2
- SQRDMLSH_zzxz_d 01000100 11 1 ..... 000101 ..... .....   @rrxr_1 esz=3
+-USDOT_zzzz      01000100 .. 0 ..... 011 110 ..... .....  @rda_rn_rm
++USDOT_zzzz_4s   01000100 10 0 ..... 011 110 ..... .....  @rda_rn_rm_ex esz=2
  
- # SVE mixed sign dot product (indexed)
--USDOT_zzxw_s    01000100 10 1 ..... 000110 ..... .....   @rrxr_2 esz=2
--SUDOT_zzxw_s    01000100 10 1 ..... 000111 ..... .....   @rrxr_2 esz=2
-+USDOT_zzxw_4s   01000100 10 1 ..... 000110 ..... .....   @rrxr_2 esz=2
-+SUDOT_zzxw_4s   01000100 10 1 ..... 000111 ..... .....   @rrxr_2 esz=2
- 
- # SVE2 saturating multiply-add (indexed)
- SQDMLALB_zzxw_s 01000100 10 1 ..... 0010.0 ..... .....   @rrxr_3a esz=2
+ ### SVE2 floating point matrix multiply accumulate
+ BFMMLA          01100100 01 1 ..... 111 001 ..... .....  @rda_rn_rm_ex esz=1
 -- 
 2.43.0
 
