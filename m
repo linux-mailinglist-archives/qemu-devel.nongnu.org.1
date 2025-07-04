@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0118AF9147
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B41BAF9151
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 13:18:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXeNO-0005n3-U4; Fri, 04 Jul 2025 07:14:43 -0400
+	id 1uXeN8-0004VN-0o; Fri, 04 Jul 2025 07:14:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeMY-0002zo-7a
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:50 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1uXeMa-00033O-A6
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:54 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uXeMV-00041o-Bs
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:49 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-234bfe37cccso9928725ad.0
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:13:46 -0700 (PDT)
+ id 1uXeMY-0004D4-0R
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 07:13:51 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-235f9e87f78so9676365ad.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 04:13:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1751627625; x=1752232425; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1751627628; x=1752232428; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=co3a1xRLGQ7HekYeYvHj3VeR9v5FYdh85Xw624+7+Pg=;
- b=iIdAvUm/N1HgAZf4RbyAnaykzZ0P7YVYxgNzdhoNiyYZAQEjRkwAT3jDND+jmJ7FVk
- OoVWgdOo2Ase+jIixPnJjrLN7PUGKxEzVE7VO8wdlJ+PmBcQX+q6MUBBQKEic3uqatf2
- ddJAdzKpFVTwAfbItbQSnIfaqgpkLuOi/Qu87NTdFoQQpH3qztSKLCcZRayFsujJhmrT
- jF65YJ5eK2kPAyiFOePRGmghE6HWQZQlvvWWFahGNmlw4J/xdI1cJKC1kY8bA7YbQ2e4
- LevzMvD//9bXNzmP70eGnxr0ataYcS8WzaHRzmhe6nZKVFjj3LmqDV9x17g9S8sMdgf3
- M0lw==
+ bh=PdSAk97v2JSe8k5QnqQFx0dJz3dX1gSeCclLDALqBQs=;
+ b=NLujgNwxXHJR+5bTxYTQ0WXM6q662oMU5vyhln4TQ6KECAnDTEj92Ifzy1z0zhrwqD
+ 2f55QzRbVTlyakYWWDkv3I6O6COeGw+5ZX8ro/jawuQlXIR3+inifvb6tDRy4hgsmLkm
+ UASv0OFcoCqf99O8ChYRxFeVTY69pbcI3tQfBn63ckh4BwBl1rdEJ+ohV1wu5feUkJee
+ /cwPCQSVu0LfAErqGK88Qn52o1WVagiLIvhB5ULh4QLKKYKiVIrTN2Kz18fVf4BVslVw
+ r1b4WCX6b33XE1oIUPsRpXCft9xTBAeW5s6wmPiFnBufkMAZMqG6QKjJAQCuo1NT7sWC
+ oMLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751627625; x=1752232425;
+ d=1e100.net; s=20230601; t=1751627628; x=1752232428;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=co3a1xRLGQ7HekYeYvHj3VeR9v5FYdh85Xw624+7+Pg=;
- b=u/zZLdXlouZCi3jg1pFgQTFLx0QpFgJiMZHKHU11rY+VSXK+Wv+igEk7ULTV5VfGio
- nfuUr2uPSQ9BwBQFs6hBQJWWZOP/xHmpEUCNpC5JkPGrHDAYySRb/9Jas7vtZ+DMV0Ar
- jNIWOgP00y2u/3tr9FgpuV470zKSZXGSrgNxbtruiuXGd2gYao6oznjYwuwBMiyrr5xK
- i8VmUCFNQQ0XAAP37SimsOVHuOLYxPHig5ElKdMlhIYqfbnKk/+rlF38vEVzpi+/+Abz
- hONW7a10rZ7MSFv7UvskR4/ulNyInZ7JfG0ww3WDa8pFUf4S6FoMU1LsHcV3ArXWFyZl
- dD7A==
-X-Gm-Message-State: AOJu0Yz4yRV52/Zx17slzOmsn1VAshhMitXbHrdGboHbDMXVTtvY7ti6
- SPwydDmAWDt7sj5Aai+7V41jmXeqt8V4x+Lpg248cG4QgPb5HY7Dr8E+CRSyYQ==
-X-Gm-Gg: ASbGncuMn85sBlA01tb+7TbFwSltj+XaY/7PsORoKR99RQwimAFuKzBjGGcYAisFULk
- zYZJ+ihH0AdqAyIyvQaIsjE+OANeALq2R5VJuKeSURGz0xAI81fjna7Mkoc4OuzzI7XE56Kbdjq
- 58RAaHdqJj6YOJLCW+1hYzOqIG0TWWTAtstnqTZEAs03IOdOIVQzXWy/4vaYgDWHQZfxzOj4MEX
- RWX/BVHmp08yQUrvEhgt9pfMaHuzyjaeZkz3yUhS3pM8coTW4Mn5E53zhXVUwtvbm2KIv+rqfLx
- TkCcqagiIMeq732DQX595L1Nn11I3I/ahszixYGBU5RO9HhMImn5TgsWuIw0z90x9GIXaIB15z5
- hWztSQdQYFz5zRw7y5Qc9JS5JjuW0V6cVMRJTnWkO+r0ebjk/r5Yn4rLwYrGpxTVOmdOrokQp+Y
- FrXA==
-X-Google-Smtp-Source: AGHT+IGtYM3X27SrgmcT+Cvmu6/3Q/XCKptPGqGjDSd3TTCOdIUg618BSWRQNe7uPlUMrRMM349jIw==
-X-Received: by 2002:a17:902:ccd0:b0:237:ec18:eab9 with SMTP id
- d9443c01a7336-23c8611e444mr32551995ad.32.1751627624881; 
- Fri, 04 Jul 2025 04:13:44 -0700 (PDT)
+ bh=PdSAk97v2JSe8k5QnqQFx0dJz3dX1gSeCclLDALqBQs=;
+ b=aLh8FvQtuQXHiDc8SAEXJOre4GiDpDjVWGKgNdQQbNuoT5wNT5rnf1FM3AFKce0zTb
+ BuIoJM2k+CthWRPiesKzlxtnWg4XLOMK0VRzAsIDSbyoZAQAD1igeRAltQoLohsDktdK
+ b0sp+YgSDIwYgJ2hp2J56YVlBvj1jWw6e+LnWZclySinMKBb5+P8Fsavi++fBNT+rAGZ
+ HhrAFU4/dFJ4MIrNfKzj9fkxhVHxuym5QKqkVZ8hgPrpYoJ4+jOzbX3cb0v2++YtkKEi
+ a4+mvHyI665xAFSydw93o6m9xKrkJKRZmEse8M66Igq/vaQBeLySqdUyZGnNVZkhfKpd
+ VSGg==
+X-Gm-Message-State: AOJu0Yx4iifNdKBAlj8jBCWVCWT8YdRizKNWmj+++PGsA/KE4hxtCq0N
+ 2h0KvhQ1+TDBKSiS2Nhto1wPYpuznxgzRzlH/kxMAXeTwwaLvr0qlDcGZHKt5Q==
+X-Gm-Gg: ASbGncvK/Rr7ZbzB4944AAe9nWVDdeuMRZ5BQLKSw7fQALu6B62lMyMSr6uj//CCS44
+ SLnVjNrV3bZkVjF3A33DUg2BYKy0JBG5j7ZrlVeTrSU+fhgrnbIa79UKGgi1lyaxnZkXmt2TWFp
+ BVWoYMjD7u2n8OthvWRON6ANY2J44/LQYukM4g91Jj4RX4j1gw8mOKrP64DwZkQAfo0vYL1wzT1
+ ssFTZ1TVCRbPrYp7d9xb5p9tR25i6twmkaMPIpnY8E6VFcLg6tLcf+BXJYrzxsVeMfFEIRQY3Q3
+ Cginf5Pxi7P238nnxdQC0cA25ivN8whAnLxXYqqvR1K4bIbEe53gv8VmNgC3jclAlIgDl/L3dfz
+ QCwbBtsbyS42nByLF4iitV0te5V3eO7hx58qaTUyeLsFfBBz3GaTqF7pGqGOe1/HL64E=
+X-Google-Smtp-Source: AGHT+IHQeGkZZnVT2amVEwLqnPlF9vkywSYadPhY2CNRS6gJbTwdQCKmi2Lno1hS2EBiOZ09a3vRfQ==
+X-Received: by 2002:a17:903:1446:b0:235:e942:cb9c with SMTP id
+ d9443c01a7336-23c85d9f014mr38510715ad.5.1751627627816; 
+ Fri, 04 Jul 2025 04:13:47 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.13.42
+ d9443c01a7336-23c8431a206sm18002655ad.28.2025.07.04.04.13.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 04:13:44 -0700 (PDT)
+ Fri, 04 Jul 2025 04:13:47 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Joel Stanley <joel@jms.id.au>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 25/40] hw/riscv/virt: Use setprop_sized_cells for aclint
-Date: Fri,  4 Jul 2025 21:11:52 +1000
-Message-ID: <20250704111207.591994-26-alistair.francis@wdc.com>
+Subject: [PULL 26/40] hw/riscv/virt: Use setprop_sized_cells for plic
+Date: Fri,  4 Jul 2025 21:11:53 +1000
+Message-ID: <20250704111207.591994-27-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250704111207.591994-1-alistair.francis@wdc.com>
 References: <20250704111207.591994-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -116,55 +115,27 @@ and lower 32 bits across cells.
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Joel Stanley <joel@jms.id.au>
-Message-ID: <20250604025450.85327-6-joel@jms.id.au>
+Message-ID: <20250604025450.85327-7-joel@jms.id.au>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ hw/riscv/virt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 205fa6e44f..4fd966a342 100644
+index 4fd966a342..67e60eec1f 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -387,8 +387,8 @@ static void create_fdt_socket_aclint(RISCVVirtState *s,
-         qemu_fdt_add_subnode(ms->fdt, name);
-         qemu_fdt_setprop_string(ms->fdt, name, "compatible",
-             "riscv,aclint-mswi");
--        qemu_fdt_setprop_cells(ms->fdt, name, "reg",
--            0x0, addr, 0x0, RISCV_ACLINT_SWI_SIZE);
-+        qemu_fdt_setprop_sized_cells(ms->fdt, name, "reg",
-+            2, addr, 2, RISCV_ACLINT_SWI_SIZE);
-         qemu_fdt_setprop(ms->fdt, name, "interrupts-extended",
-             aclint_mswi_cells, aclint_cells_size);
-         qemu_fdt_setprop(ms->fdt, name, "interrupt-controller", NULL, 0);
-@@ -410,11 +410,11 @@ static void create_fdt_socket_aclint(RISCVVirtState *s,
-     qemu_fdt_add_subnode(ms->fdt, name);
-     qemu_fdt_setprop_string(ms->fdt, name, "compatible",
-         "riscv,aclint-mtimer");
--    qemu_fdt_setprop_cells(ms->fdt, name, "reg",
--        0x0, addr + RISCV_ACLINT_DEFAULT_MTIME,
--        0x0, size - RISCV_ACLINT_DEFAULT_MTIME,
--        0x0, addr + RISCV_ACLINT_DEFAULT_MTIMECMP,
--        0x0, RISCV_ACLINT_DEFAULT_MTIME);
-+    qemu_fdt_setprop_sized_cells(ms->fdt, name, "reg",
-+        2, addr + RISCV_ACLINT_DEFAULT_MTIME,
-+        2, size - RISCV_ACLINT_DEFAULT_MTIME,
-+        2, addr + RISCV_ACLINT_DEFAULT_MTIMECMP,
-+        2, RISCV_ACLINT_DEFAULT_MTIME);
-     qemu_fdt_setprop(ms->fdt, name, "interrupts-extended",
-         aclint_mtimer_cells, aclint_cells_size);
-     riscv_socket_fdt_write_id(ms, name, socket);
-@@ -428,8 +428,8 @@ static void create_fdt_socket_aclint(RISCVVirtState *s,
-         qemu_fdt_add_subnode(ms->fdt, name);
-         qemu_fdt_setprop_string(ms->fdt, name, "compatible",
-             "riscv,aclint-sswi");
--        qemu_fdt_setprop_cells(ms->fdt, name, "reg",
--            0x0, addr, 0x0, s->memmap[VIRT_ACLINT_SSWI].size);
-+        qemu_fdt_setprop_sized_cells(ms->fdt, name, "reg",
-+            2, addr, 2, s->memmap[VIRT_ACLINT_SSWI].size);
-         qemu_fdt_setprop(ms->fdt, name, "interrupts-extended",
-             aclint_sswi_cells, aclint_cells_size);
-         qemu_fdt_setprop(ms->fdt, name, "interrupt-controller", NULL, 0);
+@@ -493,8 +493,8 @@ static void create_fdt_socket_plic(RISCVVirtState *s,
+                          s->soc[socket].num_harts * sizeof(uint32_t) * 4);
+     }
+ 
+-    qemu_fdt_setprop_cells(ms->fdt, plic_name, "reg",
+-        0x0, plic_addr, 0x0, s->memmap[VIRT_PLIC].size);
++    qemu_fdt_setprop_sized_cells(ms->fdt, plic_name, "reg",
++                                 2, plic_addr, 2, s->memmap[VIRT_PLIC].size);
+     qemu_fdt_setprop_cell(ms->fdt, plic_name, "riscv,ndev",
+                           VIRT_IRQCHIP_NUM_SOURCES - 1);
+     riscv_socket_fdt_write_id(ms, plic_name, socket);
 -- 
 2.50.0
 
