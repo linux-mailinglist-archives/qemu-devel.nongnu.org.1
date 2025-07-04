@@ -2,90 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A042AF8F71
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D66AF8F03
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:47:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXdJE-0003DV-IH; Fri, 04 Jul 2025 06:06:22 -0400
+	id 1uXczm-0002g2-TB; Fri, 04 Jul 2025 05:46:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdJ6-0003BS-Qx
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:06:14 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdIy-0003Dd-I8
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:06:10 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3a365a6804eso324066f8f.3
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 03:06:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751623563; x=1752228363; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6mE77olLD1i/c2F6gH3IajYNMeuJm97QYEnUCwe9orY=;
- b=IBWZ5dJzqqIM/vOmEXFCYkh9pc936auXB9UVWsUmgsHqiJCUQ/1zZNpdrSSzlrqo8Z
- kba6Nk3dIdijWZzWZmaOMHvzaYc/aIhbuMGpx8lj+QrKvuEZ8xWSgw028T20ARXpS3YV
- 8d5ZZI2WsJHVMUSQ0tZwi0hfBGwrMbFWO67YfIfBulpJJ4qqVLVVo0CjwFHraNYKQfa3
- 6lkceLzXod0nq/wM6nwssW59hqXfViRtbYJLhDQ3/OPUbZuVrj/XkCzsBsb7z8NYw9HG
- V6QXv/m5lsNH6GkeAVEqaUrW1lcg0L+6v6ZpzKPgR4HA0m3SJ/beV0F66l7QKh3t9rEL
- 7ljg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751623563; x=1752228363;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6mE77olLD1i/c2F6gH3IajYNMeuJm97QYEnUCwe9orY=;
- b=cFIc4fY6sfOPoCufx6M5ijbqfXAyrfA0YIcT/XWJLbiaT0xYeckzzdsSvMzEZFfZ7Y
- uVNeWB4ysVxilK30/AorUFaDQrMMsqhOHueG1qfdEgO0PYXuTUuusUZSZJP7oQycZbnQ
- Y/mW95YVEovGgiQt3aoOqxF3477Ed83ubNJcaHOZvrP/cXPPOo4C/ngn3ycSxjpDUi3Y
- tYxZpHe6Kv7l5mZdjbLskRcV55zotoo7+Bq0CCDeLtvhf2Fx3S3ZL0JMm/fyI5uIPLB0
- hltLqnWCMlK8bk3tmD2IZXCSEHQI3Tw+EHl3HRWY/fWkx4n8OcXOXaI4OnJrcdWr/wUM
- MetQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXLJy2eZWRLyYl7kTF0h5WvDWEuFYDtbb3AYl55U1MEX25Ra29sTwcfUSFn58FC2uzMGEXYkuMGfe2A@nongnu.org
-X-Gm-Message-State: AOJu0YzzJQw7Ehi61BFq4zIbL8BgKz8WQBLHKukPbJRhayToAcXAxgZR
- NtHsgqyNJkMqox9wFxgfWSU9+1nlJk/T4SZh3N01HIy2EHQdIGUtCqN/w7jy6HweTsA=
-X-Gm-Gg: ASbGncubA9UE9l0gOZ9I4+R5BJAtfjqWCXIVV+0OfBTMFWAqU6vSaTUSCibAnL3rKR3
- yNcUqDrxLAEpL6SQeMVUerhvtrjGBRaORsU18QHaj95RLU7vbdOLGZl8ZYOrQf4GN9lfD9sRFzc
- 48VEhWEGFCRGWAHK3b+1zhr9yFC/hi3r6fNQBjGLPKTF8pbjHJkN6Imr+SKHTkdUFqMwZxtMTys
- iE/ecQdnYP3+uDXQ2aWLd38AwoX6bDImpunliEWNqeBBFVxvjQOYgtJQkNeWNG2VQL89iccSdOe
- 3LbQ3b0YyPfUPgbMIBlMdjPYGbXPKNXyfv1kIFlCPVfVcekai8d02j96qv26W/QMNaqn1LsoTM/
- KFiwibTrRyv0xmkYNB6rqcxDPNsvudA==
-X-Google-Smtp-Source: AGHT+IFVPCRNr/nTQWbw9s7waCjzAb0IBSUKx9ynZRIpOxwWVoTaLtP3Ovovt1acIOdgc1qljJ1EjA==
-X-Received: by 2002:a05:6000:240c:b0:3b3:9cc4:6830 with SMTP id
- ffacd0b85a97d-3b4964f7c5fmr1770107f8f.48.1751623562783; 
- Fri, 04 Jul 2025 03:06:02 -0700 (PDT)
-Received: from [192.168.69.218] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b471b9736bsm2111808f8f.60.2025.07.04.03.06.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Jul 2025 03:06:02 -0700 (PDT)
-Message-ID: <0c01766d-577b-440f-9139-a095bd74da72@linaro.org>
-Date: Fri, 4 Jul 2025 12:06:01 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXczZ-0002fT-0m
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:46:02 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXczU-0005Bh-2T
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:45:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751622356; x=1783158356;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=5qSGiSXOKcAKV/h8so7GZZe+pHC4rBtVv0yxLpt2vEg=;
+ b=EdmKSAzEvmRFnMGwo/YadgTo2wPL5IDyj9G+c67P/HxRJTkubGl8F4Gw
+ LnUkIdT+UTdaWNlyMdgktDGc7SVQRKb/sbWZ4gHKkwCecm2phHaGcpTcX
+ togIvI0lri5zQwbLTunO9a8zL8+mnWBqE+jX6bFQMhuS/qAl3U9wzqNF9
+ G9Z0ZtAVaxS7yWIMKI8dcLuWS7AKSBPBikqACjPOGaEdZOY9+cg3f48R5
+ pwX2bdP2nbEwz2cp0KVvQV9q6iubDqekVhVrOkHtC6s4GXm/NrGZH1myi
+ SArdEop14oyhTfXnDrXBjMlqAh8VfxXjEqiw+rdzsgWu+GP1ySUGX8fqv Q==;
+X-CSE-ConnectionGUID: IqABEzXPT0mZM9wAfb21bQ==
+X-CSE-MsgGUID: MbjFkmwUTPuz504NdXl1Gw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="71393714"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="71393714"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 02:45:53 -0700
+X-CSE-ConnectionGUID: 5kSuDYzoRGKavZPd0khEAw==
+X-CSE-MsgGUID: EKR+H+lWQpmfY2mJXcCuFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="191776557"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa001.jf.intel.com with ESMTP; 04 Jul 2025 02:45:51 -0700
+Date: Fri, 4 Jul 2025 18:07:17 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 18/39] accel/hvf: Replace @dirty field by generic
+ CPUState::vcpu_dirty field
+Message-ID: <aGen1bJ0N65NT5oH@intel.com>
+References: <20250703173248.44995-1-philmd@linaro.org>
+ <20250703173248.44995-19-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hmp-cmds-target.c: add CPU_DUMP_VPU in
- hmp_info_registers()
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-References: <20250623145306.991562-1-dbarboza@ventanamicro.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250623145306.991562-1-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250703173248.44995-19-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,27 +83,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/6/25 16:53, Daniel Henrique Barboza wrote:
-> Commit b84694defb added the CPU_DUMP_VPU to allow vector registers to be
-> logged by log_cpu_exec() in TCG. This flag was then used in commit
-> b227f6a8a7 to print RISC-V vector registers using this flag. Note that
-> this change was done in riscv_cpu_dump_state(), the cpu_dump_state()
-> callback for RISC-V, the same callback used in hmp_info_registers().
+On Thu, Jul 03, 2025 at 07:32:24PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  3 Jul 2025 19:32:24 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH v6 18/39] accel/hvf: Replace @dirty field by generic
+>  CPUState::vcpu_dirty field
+> X-Mailer: git-send-email 2.49.0
 > 
-> Back then we forgot to change hmp_info_registers(), and 'info registers'
-> isn't showing RISC-V vector registers as a result. No other target is
-> impacted since only RISC-V is using CPU_DUMP_VPU.
+> No need for accel-specific @dirty field when we have
+> a generic one in CPUState.
 > 
-> There's no reason to not show VPU regs in info_registers(), so add
-> CPU_DUMP_VPU to hmp_info_registers(). This will print vector registers
-> for all RISC-V machines and, as said above, has no impact in other
-> archs.
-> 
-> Cc: Dr. David Alan Gilbert <dave@treblig.org>
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   monitor/hmp-cmds-target.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>  include/system/hvf_int.h  |  1 -
+>  accel/hvf/hvf-accel-ops.c | 10 +++++-----
+>  target/arm/hvf/hvf.c      |  4 ++--
+>  target/i386/hvf/hvf.c     |  4 ++--
+>  target/i386/hvf/x86hvf.c  |  2 +-
+>  5 files changed, 10 insertions(+), 11 deletions(-)
 
-Patch queued, thanks.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
