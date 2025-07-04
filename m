@@ -2,61 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14210AF8AEA
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5146AF8A6E
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:00:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXbXt-0006JV-O2; Fri, 04 Jul 2025 04:13:21 -0400
+	id 1uXbKZ-0002Ix-1J; Fri, 04 Jul 2025 03:59:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uXbXj-0006J5-AC
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:13:12 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXbKW-0002Im-Rk
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 03:59:32 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uXbXd-0007uu-5N
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:13:10 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bYRFB2ZNyz6L5cj;
- Fri,  4 Jul 2025 16:12:14 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id E21261404D8;
- Fri,  4 Jul 2025 16:12:45 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 4 Jul
- 2025 10:12:45 +0200
-Date: Fri, 4 Jul 2025 09:12:43 +0100
-To: Fan Ni <nifan.cxl@gmail.com>
-CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>,
- <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>
-Subject: Re: [PATCH qemu 10/11] hw/cxl: mailbox-utils: 0x5604 - FMAPI
- Initiate DC Add
-Message-ID: <20250704091243.00001c31@huawei.com>
-In-Reply-To: <aGaunVxcE8aOyg2V@smc-140338-bm01>
-References: <20250702160219.989731-1-Jonathan.Cameron@huawei.com>
- <20250702160219.989731-11-Jonathan.Cameron@huawei.com>
- <aGaunVxcE8aOyg2V@smc-140338-bm01>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXbKU-0000xl-59
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 03:59:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751615970; x=1783151970;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=h/yd3x62+ErzCjfz6VjlsW7DzyX0IY5tBB3jhhuP14Y=;
+ b=E54YvNyEUEm+gwLnDvQpFbfXXNQvkzWxYk8M/ahRH9dbn8x9GGUdbmmW
+ 04nHtGLtgltIrPbKmqDyGfoah18WjfzetGfnPhd3xZy4qcYxTfhnrQ6uu
+ LSJYVafMsMMoaSZ0KvugJ62cF5viYPeXRcSLKYHrjNLQ4jWbWi3AEqJJH
+ HehkKEXb3srBhv5am2d/al2VPjHC8/0z7nOlYQh48rV8ajbkJg2nWKhOJ
+ ktygubaga1jxbNWCDTeyLvFmyJDCEM1uPAaEklMQmHCXdwKg+4+X5tQ7b
+ aIWSW0s4hFj1BqD4fCWK92oZ3CgupmdQ1bgf+8AVUeyHjMzvFqY/cvbOg Q==;
+X-CSE-ConnectionGUID: L43nYgYpSyiWepk7FaqJvQ==
+X-CSE-MsgGUID: DxhfyHfIS3u+rtLs7E0QvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="53171239"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="53171239"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 00:59:19 -0700
+X-CSE-ConnectionGUID: YctiEbZmQMCJES7W1E/hZQ==
+X-CSE-MsgGUID: rbERHeHpRDuVGDS98tCSWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="154002583"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa006.jf.intel.com with ESMTP; 04 Jul 2025 00:59:17 -0700
+Date: Fri, 4 Jul 2025 16:20:43 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Kirill Martynov <stdcalllevi@yandex-team.ru>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] x86/cpu: Handle SMM mode in x86_cpu_dump_state for softmmu
+Message-ID: <aGeO2zCKep7StDA8@intel.com>
+References: <20250523154431.506993-1-stdcalllevi@yandex-team.ru>
+ <3096f21e-d8dd-4434-afbd-ee2b56adb20f@intel.com>
+ <6a18dfcc-1686-4e3e-8e0a-b96d7034f4ab@intel.com>
+ <1d12e519-9f3c-41a0-90ff-8e4655000d21@intel.com>
+ <09AD44D6-E381-46B0-9B86-B248EB9582D7@yandex-team.ru>
+ <4985e648-6505-4321-8e3a-f987b9d03bde@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4985e648-6505-4321-8e3a-f987b9d03bde@intel.com>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,219 +83,183 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 3 Jul 2025 16:23:57 +0000
-Fan Ni <nifan.cxl@gmail.com> wrote:
+> yes, QEMU supports separate address space for SMM mode with KVM. It's just
+> that QEMU doesn't connect it with the CPU address space.
 
-> On Wed, Jul 02, 2025 at 05:02:16PM +0100, Jonathan Cameron wrote:
-> > From: Anisa Su <anisa.su@samsung.com>
-> > 
-> > FM DCD Management command 0x5604 implemented per CXL r3.2 Spec Section 7.6.7.6.5
-> > 
-> > Signed-off-by: Anisa Su <anisa.su@samsung.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> 
-> Reviewed-by: Fan Ni <fan.ni@samsung.com>
-> 
-> Only a minor comment inline ...
-Thanks! 
+Yes, you're right.
 
-Michael, I'll let these sit for a little while but if it is helpful
-for you if I do a v2 with the colon added just let me know.
+(But initially, it might have been intentional, as KVM's SMM address
+space is global. It is consistent with the current KVM/memory interface.
+Creating a separate CPUAddressSpace for each CPU would involve a lot of
+redundant work.)
 
-Jonathan
+> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+> index a68485547d50..7d6f4a86d802 100644
+> --- a/include/exec/cpu-common.h
+> +++ b/include/exec/cpu-common.h
+> @@ -130,6 +130,8 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
+>   */
+>  void cpu_address_space_destroy(CPUState *cpu, int asidx);
+> 
+> +void cpu_address_space_add(CPUState *cpu, AddressSpace *as);
+> +
 
-> > ---
-> >  include/hw/cxl/cxl_device.h |   4 ++
-> >  hw/cxl/cxl-mailbox-utils.c  | 109 ++++++++++++++++++++++++++++++++++++
-> >  hw/mem/cxl_type3.c          |   8 +--
-> >  3 files changed, 117 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> > index ed91e5387e..fdee60b977 100644
-> > --- a/include/hw/cxl/cxl_device.h
-> > +++ b/include/hw/cxl/cxl_device.h
-> > @@ -728,4 +728,8 @@ void cxl_create_dc_event_records_for_extents(CXLType3Dev *ct3d,
-> >                                               CXLDCEventType type,
-> >                                               CXLDCExtentRaw extents[],
-> >                                               uint32_t ext_count);
-> > +bool cxl_extents_overlaps_dpa_range(CXLDCExtentList *list,
-> > +                                    uint64_t dpa, uint64_t len);
-> > +bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-> > +                                          uint64_t dpa, uint64_t len);
-> >  #endif
-> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> > index d0a1d63582..5ea0d07808 100644
-> > --- a/hw/cxl/cxl-mailbox-utils.c
-> > +++ b/hw/cxl/cxl-mailbox-utils.c
-> > @@ -122,6 +122,7 @@ enum {
-> >          #define GET_HOST_DC_REGION_CONFIG   0x1
-> >          #define SET_DC_REGION_CONFIG        0x2
-> >          #define GET_DC_REGION_EXTENT_LIST   0x3
-> > +        #define INITIATE_DC_ADD             0x4
-> >  };
-> >  
-> >  /* CCI Message Format CXL r3.1 Figure 7-19 */
-> > @@ -3542,6 +3543,107 @@ static CXLRetCode cmd_fm_get_dc_region_extent_list(const struct cxl_cmd *cmd,
-> >      return CXL_MBOX_SUCCESS;
-> >  }
-> >  
-> > +/*
-> > + * Helper function to convert CXLDCExtentRaw to CXLUpdateDCExtentListInPl
-> > + * in order to reuse cxl_detect_malformed_extent_list() function which accepts
-> > + * CXLUpdateDCExtentListInPl as a parameter.
-> > + */
-> > +static void convert_raw_extents(CXLDCExtentRaw raw_extents[],
-> > +                                CXLUpdateDCExtentListInPl *extent_list,
-> > +                                int count)
-> > +{
-> > +    int i;
-> > +
-> > +    extent_list->num_entries_updated = count;
-> > +
-> > +    for (i = 0; i < count; i++) {
-> > +        extent_list->updated_entries[i].start_dpa = raw_extents[i].start_dpa;
-> > +        extent_list->updated_entries[i].len = raw_extents[i].len;
-> > +    }
-> > +}
-> > +
-> > +/* CXL r3.2 Section 7.6.7.6.5 Initiate Dynamic Capacity Add (Opcode 5604h) */  
+Instead of introducing a "redundant" interfaces, it's better to lift the
+restrictions of cpu_address_space_init() on KVM and reuse it.  Moreover,
+not explicitly setting asidx can be risky.
+
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index a68485547d50..e3c70ccb1ea0 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -106,6 +106,8 @@ size_t qemu_ram_pagesize_largest(void);
+  * @asidx: integer index of this address space
+  * @prefix: prefix to be used as name of address space
+  * @mr: the root memory region of address space
++ * @as: the pre-created AddressSpace. If have, no need to
++ *      specify @mr.
+  *
+  * Add the specified address space to the CPU's cpu_ases list.
+  * The address space added with @asidx 0 is the one used for the
+@@ -117,10 +119,10 @@ size_t qemu_ram_pagesize_largest(void);
+  * cpu->num_ases to the total number of address spaces it needs
+  * to support.
+  *
+- * Note that with KVM only one address space is supported.
+  */
+ void cpu_address_space_init(CPUState *cpu, int asidx,
+-                            const char *prefix, MemoryRegion *mr);
++                            const char *prefix, MemoryRegion *mr,
++                            AddressSpace *as);
+ /**
+  * cpu_address_space_destroy:
+  * @cpu: CPU for which address space needs to be destroyed
+diff --git a/system/physmem.c b/system/physmem.c
+index ff0ca40222d3..15aedfb58055 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -776,16 +776,23 @@ hwaddr memory_region_section_get_iotlb(CPUState *cpu,
+ #endif /* CONFIG_TCG */
+
+ void cpu_address_space_init(CPUState *cpu, int asidx,
+-                            const char *prefix, MemoryRegion *mr)
++                            const char *prefix, MemoryRegion *mr,
++                            AddressSpace *as)
+ {
+     CPUAddressSpace *newas;
+-    AddressSpace *as = g_new0(AddressSpace, 1);
+-    char *as_name;
++    AddressSpace *cpu_as;
+
+-    assert(mr);
+-    as_name = g_strdup_printf("%s-%d", prefix, cpu->cpu_index);
+-    address_space_init(as, mr, as_name);
+-    g_free(as_name);
++    if (!as) {
++        cpu_as = g_new0(AddressSpace, 1);
++        char *as_name;
++
++        assert(mr);
++        as_name = g_strdup_printf("%s-%d", prefix, cpu->cpu_index);
++        address_space_init(cpu_as, mr, as_name);
++        g_free(as_name);
++    } else {
++        cpu_as = as;
++    }
+
+     /* Target code should have set num_ases before calling us */
+     assert(asidx < cpu->num_ases);
+
+     if (asidx == 0) {
+         /* address space 0 gets the convenience alias */
+-        cpu->as = as;
++        cpu->as = cpu_as;
+     }
+
+-    /* KVM cannot currently support multiple address spaces. */
+-    assert(asidx == 0 || !kvm_enabled());
+-
+     if (!cpu->cpu_ases) {
+         cpu->cpu_ases = g_new0(CPUAddressSpace, cpu->num_ases);
+         cpu->cpu_ases_count = cpu->num_ases;
+@@ -805,12 +809,12 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
+
+     newas = &cpu->cpu_ases[asidx];
+     newas->cpu = cpu;
+-    newas->as = as;
++    newas->as = cpu_as;
+     if (tcg_enabled()) {
+         newas->tcg_as_listener.log_global_after_sync = tcg_log_global_after_sync;
+         newas->tcg_as_listener.commit = tcg_commit;
+         newas->tcg_as_listener.name = "tcg";
+-        memory_listener_register(&newas->tcg_as_listener, as);
++        memory_listener_register(&newas->tcg_as_listener, cpu_as);
+     }
+ }
+
+---
+
+In this interface, whether to reuse the existing address space (@as
+argument) or create a new one for the CPU depends on the maintainer's
+final opinion anyway. If the choice is to reuse, as in the code above,
+need to adjust other calling cases. If so, I suggest Kirill handle this
+in a separate patch.
+
+>  #include "kvm_i386.h"
+> @@ -90,6 +91,12 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+>          kvm_set_guest_phys_bits(cs);
+>      }
 > 
-> /* CXL r3.2 Section 7.6.7.6.5: Initiate Dynamic Capacity Add (Opcode 5604h) */
+> +    for (int i = 0; i < kvm_state->nr_as; i++) {
+> +        if (kvm_state->as[i].as) {
+> +            cpu_address_space_add(cs, kvm_state->as[i].as);
+> +        }
+> +    }
+> +
+
+This will add smram twice, with the following cpu_address_space_add().
+
+Why are all KVM as unconditionally added to each CPU?
+
+Another issue is the SMM AS index would be "unknown"...
+
+>      return true;
+>  }
 > 
-> Fan
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 234878c613f6..3ba7b26e5a74 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -2700,6 +2700,7 @@ static MemoryRegion smram_as_mem;
 > 
-> > +static CXLRetCode cmd_fm_initiate_dc_add(const struct cxl_cmd *cmd,
-> > +                                         uint8_t *payload_in,
-> > +                                         size_t len_in,
-> > +                                         uint8_t *payload_out,
-> > +                                         size_t *len_out,
-> > +                                         CXLCCI *cci)
-> > +{
-> > +    struct {
-> > +        uint16_t host_id;
-> > +        uint8_t selection_policy;
-> > +        uint8_t reg_num;
-> > +        uint64_t length;
-> > +        uint8_t tag[0x10];
-> > +        uint32_t ext_count;
-> > +        CXLDCExtentRaw extents[];
-> > +    } QEMU_PACKED *in = (void *)payload_in;
-> > +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-> > +    int i, rc;
-> > +
-> > +    switch (in->selection_policy) {
-> > +        case CXL_EXTENT_SELECTION_POLICY_PRESCRIPTIVE: {
-> > +            /* Adding extents exceeds device's extent tracking ability. */
-> > +            if (in->ext_count + ct3d->dc.total_extent_count >
-> > +                CXL_NUM_EXTENTS_SUPPORTED) {
-> > +                return CXL_MBOX_RESOURCES_EXHAUSTED;
-> > +            }
-> > +
-> > +            g_autofree CXLUpdateDCExtentListInPl *list =
-> > +                g_malloc0(sizeof(*list) +
-> > +                    in->ext_count * sizeof(*list->updated_entries));
-> > +
-> > +            convert_raw_extents(in->extents, list, in->ext_count);
-> > +            rc = cxl_detect_malformed_extent_list(ct3d, list);
-> > +
-> > +            for (i = 0; i < in->ext_count; i++) {
-> > +                CXLDCExtentRaw *ext = &in->extents[i];
-> > +
-> > +                /* Check requested extents do not overlap with pending ones. */
-> > +                if (cxl_extent_groups_overlaps_dpa_range(&ct3d->dc.extents_pending,
-> > +                                                         ext->start_dpa,
-> > +                                                         ext->len)) {
-> > +                    return CXL_MBOX_INVALID_EXTENT_LIST;
-> > +                }
-> > +                /* Check requested extents do not overlap with existing ones. */
-> > +                if (cxl_extents_overlaps_dpa_range(&ct3d->dc.extents,
-> > +                                                   ext->start_dpa,
-> > +                                                   ext->len)) {
-> > +                    return CXL_MBOX_INVALID_EXTENT_LIST;
-> > +                }
-> > +            }
-> > +
-> > +            if (rc) {
-> > +                return rc;
-> > +            }
-> > +
-> > +            CXLDCExtentGroup *group = NULL;
-> > +            for (i = 0; i < in->ext_count; i++) {
-> > +                CXLDCExtentRaw *ext = &in->extents[i];
-> > +
-> > +                group = cxl_insert_extent_to_extent_group(group, ext->start_dpa,
-> > +                                                          ext->len, ext->tag,
-> > +                                                          ext->shared_seq);
-> > +            }
-> > +
-> > +            cxl_extent_group_list_insert_tail(&ct3d->dc.extents_pending, group);
-> > +            ct3d->dc.total_extent_count += in->ext_count;
-> > +            cxl_create_dc_event_records_for_extents(ct3d,
-> > +                                                    DC_EVENT_ADD_CAPACITY,
-> > +                                                    in->extents,
-> > +                                                    in->ext_count);
-> > +
-> > +            return CXL_MBOX_SUCCESS;
-> > +        }
-> > +        default: {
-> > +            qemu_log_mask(LOG_UNIMP,
-> > +                          "CXL extent selection policy not supported.\n");
-> > +            return CXL_MBOX_INVALID_INPUT;
-> > +        }
-> > +    }
-> > +}
-> > +
-> >  static const struct cxl_cmd cxl_cmd_set[256][256] = {
-> >      [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
-> >          cmd_infostat_bg_op_abort, 0, 0 },
-> > @@ -3669,6 +3771,13 @@ static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
-> >           CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
-> >      [FMAPI_DCD_MGMT][GET_DC_REGION_EXTENT_LIST] = { "GET_DC_REGION_EXTENT_LIST",
-> >          cmd_fm_get_dc_region_extent_list, 12, 0 },
-> > +    [FMAPI_DCD_MGMT][INITIATE_DC_ADD] = { "INIT_DC_ADD",
-> > +        cmd_fm_initiate_dc_add, ~0,
-> > +        (CXL_MBOX_CONFIG_CHANGE_COLD_RESET |
-> > +        CXL_MBOX_CONFIG_CHANGE_CONV_RESET |
-> > +        CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
-> > +        CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
-> > +        CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
-> >  };
-> >  
-> >  /*
-> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> > index 9c2b9d197b..7676d785c2 100644
-> > --- a/hw/mem/cxl_type3.c
-> > +++ b/hw/mem/cxl_type3.c
-> > @@ -1885,8 +1885,8 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-> >   * the list.
-> >   * Return value: return true if has overlaps; otherwise, return false
-> >   */
-> > -static bool cxl_extents_overlaps_dpa_range(CXLDCExtentList *list,
-> > -                                           uint64_t dpa, uint64_t len)
-> > +bool cxl_extents_overlaps_dpa_range(CXLDCExtentList *list,
-> > +                                    uint64_t dpa, uint64_t len)
-> >  {
-> >      CXLDCExtent *ent;
-> >      Range range1, range2;
-> > @@ -1931,8 +1931,8 @@ bool cxl_extents_contains_dpa_range(CXLDCExtentList *list,
-> >      return false;
-> >  }
-> >  
-> > -static bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-> > -                                                 uint64_t dpa, uint64_t len)
-> > +bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-> > +                                          uint64_t dpa, uint64_t len)
-> >  {
-> >      CXLDCExtentGroup *group;
-> >  
-> > -- 
-> > 2.48.1
-> >   
+>  static void register_smram_listener(Notifier *n, void *unused)
+>  {
+> +    CPUState *cpu;
+>      MemoryRegion *smram =
+>          (MemoryRegion *) object_resolve_path("/machine/smram", NULL);
 > 
+> @@ -2724,6 +2725,9 @@ static void register_smram_listener(Notifier *n, void
+> *unused)
+>      address_space_init(&smram_address_space, &smram_as_root, "KVM-SMRAM");
+>      kvm_memory_listener_register(kvm_state, &smram_listener,
+>                                   &smram_address_space, 1, "kvm-smram");
+> +    CPU_FOREACH(cpu) {
+> +        cpu_address_space_add(cpu, &smram_address_space);
+> +    }
+>  }
+
+With the cpu_address_space_init(), here could be:
+
+CPU_FOREACH(cpu) {
+	/* Ensure SMM Address Space has the index 1.  */
+	assert(cpu->num_ases == 1);
+	cpu->num_ases = 2;
+	cpu_address_space_init(cpu, 1, NULL, NULL, &smram_address_space);
+}
+
+
 
 
