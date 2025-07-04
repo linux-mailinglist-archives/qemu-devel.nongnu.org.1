@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2FDAF95F6
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 881DBAF95B8
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:39:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXhZ2-0002du-44; Fri, 04 Jul 2025 10:38:56 -0400
+	id 1uXhUL-00031A-U0; Fri, 04 Jul 2025 10:34:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhPH-0002Wc-CR
+ id 1uXhPH-0002Wf-D1
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:28:52 -0400
-Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
+Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhPF-0001TK-Kv
+ id 1uXhPF-0001Tt-LM
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:28:51 -0400
-Received: by mail-oa1-x2d.google.com with SMTP id
- 586e51a60fabf-2f75f1c7206so365367fac.0
+Received: by mail-oa1-x31.google.com with SMTP id
+ 586e51a60fabf-2eaf96c7579so798555fac.3
  for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 07:28:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751639327; x=1752244127; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751639328; x=1752244128; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mGt/IeQV1JU7unVXQVuY1VSCRAS3B0ec4CICad5URTc=;
- b=Ysfq78Nz6En0BU7ONnXKlqrz/E0QwkIKnkBqVHo02U+mxsEuBexfEDA+TLaZ3mJ4X6
- rJdCSthHAXTN+D+Y8OGgoAQnZTg314Sp6Y8EnOlPO+JNqAktEnsNmKDLuhHMejnpl0B6
- FqJsh8hkG5zG2NO1BElyQQRDUlwfZvdNI8sPo350nvzS/EA7PMS4t3ig88R/gbmk9KUS
- 24HVv3qejDL4x9cXlKbIxCtC3LWli1O/6LwyfNy1llba3oM55UrtKvnWnVLdxh9rjFnf
- 3A8+4/TtUYokQecI5wnbQcTDydq+bcLBzC0p9tTggst6YrK8j+y85HbL9EyQRIUNGbYQ
- wV7g==
+ bh=+O7jmLrwj7uYx9707P2+AK6L9PFAUcM9kTC7/PievL8=;
+ b=ecRas4AXToF2trg6iHA3OKedkKhUr2aQqt2MgebjTltM0mIIjDeQ478e/aXwpL4Jti
+ 6MCMoNozg9llNkIAPVeP5vhtTNW6+FQw3bzc1eQ84VEL7fSHWQX2YYptWxc39TqXu5KV
+ 4J558eSXKzes2jQKQMXSqQVUX9eg/ATOIzZwh9aYNhQYAYmiPRrzK4GExj0kA2N0g2Jg
+ P1e8gPnWuqHRe94pGoEMayu1mEeTvL9ZRHFYV1XaA+DFTA5Css65sZRdIUdWlVoT4gsS
+ hJu1PzDj2NpEVtCpni9chd+0OqcTmsEOTps7Lod6ImI1EaYZIECvWiKVmdM/3WbapuVJ
+ Qfew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751639327; x=1752244127;
+ d=1e100.net; s=20230601; t=1751639328; x=1752244128;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mGt/IeQV1JU7unVXQVuY1VSCRAS3B0ec4CICad5URTc=;
- b=mmK+skqjAinskx5zCtuPVIk6n0PlaTLj548/8+Pl57AX4sju7LRgZt0ohidLpxxGpW
- HEN3WJDUZQUXQMnrLV9B8GyUu0rQUV8ERpytkgcIE++fbC9pBXJPyrflC/9gscn9kw35
- dg6drJzZvdc1pp/AouBkfshFOItFBabzVawoxVy+uZRdpLJCt9pZzPQjUh3621mJb4G0
- wR6gqw4PSUrn+4InMyMoE2oM2hLaZVxL/XaefHMX1iVBr5IfLQRlrUwOkZ4vINT7TMje
- Bkt1bJ5w6AAHt9ObwU+tNgZqeHbTNuOwFu8y1SSeHnva24NJhLk3AvJManfHNXyJeWce
- 6XBA==
-X-Gm-Message-State: AOJu0Yx3I0uBCoNbTGndYEqXQWbv4TglSsSRj0/lpfoWjqoT0fqoGBKr
- TKFKKtsgd76P8uwAIaP+SwUkT2tNJJJPcSMN7wmv7SeIT26MfxzUNyh6ZsM9IWK1QjHmiF1VWrS
- wGMq60XY=
-X-Gm-Gg: ASbGncsJ9AvXheu++5f83sfSThVPTounlDes+hhLtSUAeHMFdmYsJkaQK4iI4nGawaS
- Fz6+1dgTxiU1V1jYHSPSxCkSIaYfxdtMGXjps6V9PAQ01xNLxIA59A6vgP/dz1TCi8WgRI7M+wB
- 1oTozDCP+3MepwDAyrC3dtpGXgIjUTcWM0v36qaEDVseOTuw52+V2eYkRVhep3WhpTYubHxfkQv
- O8AZynHCJ2Nak75St6e8ESTdhdztoxd7TqbwA8fANlGSBRYfzZeiunu0CLTuV3EByu/aC9+sY8M
- ziStsYTL8R7X7jWT4d89yPxQVDmstjQXiSxRlK6U1XLPLUUWAXd9xTOXVOg6QEH0ow0Q0Bt/Jed
- i7h41+eAt/0rOLnXedLNJJgD8ov7/d7WY7baQRxqGfZNWGxX9
-X-Google-Smtp-Source: AGHT+IH2Q2i9I0ZeJR8nmV1RDBKyMOckIh1mS792m7Ip1YiCqOOZs0aTSZUtBdJRsqQlmzuXNyy40Q==
-X-Received: by 2002:a05:6870:1692:b0:2d6:72a4:adfa with SMTP id
- 586e51a60fabf-2f796d8ff5emr1647342fac.30.1751639327251; 
+ bh=+O7jmLrwj7uYx9707P2+AK6L9PFAUcM9kTC7/PievL8=;
+ b=v8XoYwpwMS8SxGLbSuKXyIaqV13cd/0jt/p3AyBeeuV6c9MWMX8+eRFrKtcwc5fS38
+ e9Fs7MIgNh3kGMQywqJysBb26PRDS5RL3G2zHfBjtFtqXoNolpNq8tBF0L9013BhNuvs
+ vJNOoNHUDA0DHOFce7Lc1U67t9Ps4ifm00HOZIcD7NnC71S679g/deLVEpImHqDbrSvj
+ IhV7QIvOOoPH4TG2JLzBkyvmDiKoC2quKtW+ccBrSybIpnzJ/Uoz+SKwWlx5sVeT/UX0
+ AwmV0nsdeFAaqareUj+WdBeCdW9HhRfPNX7bjgZoy5licFAtH7hwgPOBe0gOMB4v3AbT
+ wu4Q==
+X-Gm-Message-State: AOJu0Yyz2RFeo36fotDdT5txvwKCV/m0+5vzC0lkC60v8yRMaTPlLL+J
+ 0/EDvwZOxj7ht+UQ5tDkHSRqFsgBOX7FH7im8WpO5tEttW9gBJGb1YG1N/qNA598zWlWKZT1YZs
+ PFm9d5W0=
+X-Gm-Gg: ASbGncuf9C1zyzmTqTgmVCIFWn69Vo2Hqhjw8pz1IsFXpXzJb8c/wsghxAx4qd3lcAt
+ df6giHd2JCvCcQdQS1pRSVHSxp17q7aWO/+lpgHNTBhDvWNC1tMVyaKL0LwvH1Hk+PfhR6ZHytv
+ 6Nak3aAvJ+RWN7atn/oJt3bTur480aI1UGccyzUNRnxI55d9OBi2MMXeJuQvlJQpi7kxvQhqSaw
+ DIlq3mTofNKl2FmSItL/6GWFxcBy77GBlZnDuzenmAC6aYH100C8RyJFoJSDeuYQ3PTLTK8o4G1
+ wPVn+wLgiursdjSOSO0IMN7WVsz9SOGB1BzUclaJTYu0coDOTV8gLyZiokfjLkBfugTC1anugsT
+ dGU1CADF/DmTMPpD1jCnADOhQxRkoVhg/KqLabfDublMz74IW
+X-Google-Smtp-Source: AGHT+IHCpyaMlJvjghflFTZakZQcFiCqJUv+AKBpnulB8coo09dMZMWFPtqgeuPbRGsH/9OmSfE8QQ==
+X-Received: by 2002:a05:6870:e80b:b0:2cf:bc73:7bbb with SMTP id
+ 586e51a60fabf-2f796cd0dd0mr1763771fac.25.1751639327945; 
  Fri, 04 Jul 2025 07:28:47 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2f78ff55633sm531448fac.20.2025.07.04.07.28.46
+ 586e51a60fabf-2f78ff55633sm531448fac.20.2025.07.04.07.28.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 04 Jul 2025 07:28:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	peter.maydell@linaro.org
-Subject: [PATCH v4 088/108] target/arm: Implement DUPQ for SME2p1/SVE2p1
-Date: Fri,  4 Jul 2025 08:20:51 -0600
-Message-ID: <20250704142112.1018902-89-richard.henderson@linaro.org>
+Subject: [PATCH v4 089/108] target/arm: Implement EXTQ for SME2p1/SVE2p1
+Date: Fri,  4 Jul 2025 08:20:52 -0600
+Message-ID: <20250704142112.1018902-90-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704142112.1018902-1-richard.henderson@linaro.org>
 References: <20250704142112.1018902-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::31;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,21 +102,21 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-sve.c | 21 +++++++++++++++++++++
- target/arm/tcg/sve.decode      |  6 ++++++
- 2 files changed, 27 insertions(+)
+ target/arm/tcg/translate-sve.c | 49 ++++++++++++++++++++++++++++++++++
+ target/arm/tcg/sve.decode      |  2 ++
+ 2 files changed, 51 insertions(+)
 
 diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 53db8851bf..e33b2eb2a4 100644
+index e33b2eb2a4..a918da31fe 100644
 --- a/target/arm/tcg/translate-sve.c
 +++ b/target/arm/tcg/translate-sve.c
-@@ -2249,6 +2249,27 @@ static bool trans_DUP_x(DisasContext *s, arg_DUP_x *a)
-     return true;
- }
+@@ -2202,6 +2202,55 @@ static bool do_EXT(DisasContext *s, int rd, int rn, int rm, int imm)
+ TRANS_FEAT(EXT, aa64_sve, do_EXT, a->rd, a->rn, a->rm, a->imm)
+ TRANS_FEAT(EXT_sve2, aa64_sve2, do_EXT, a->rd, a->rn, (a->rn + 1) % 32, a->imm)
  
-+static bool trans_DUPQ(DisasContext *s, arg_DUPQ *a)
++static bool trans_EXTQ(DisasContext *s, arg_EXTQ *a)
 +{
-+    unsigned vl, dofs, nofs;
++    unsigned vl, dofs, sofs0, sofs1, sofs2, imm;
 +
 +    if (!dc_isar_feature(aa64_sme2p1_or_sve2p1, s)) {
 +        return false;
@@ -125,32 +125,56 @@ index 53db8851bf..e33b2eb2a4 100644
 +        return true;
 +    }
 +
++    imm = a->imm;
++    if (imm == 0) {
++        /* So far we never optimize Zdn with MOVPRFX, so zd = zn is a nop. */
++        return true;
++    }
++
 +    vl = vec_full_reg_size(s);
 +    dofs = vec_full_reg_offset(s, a->rd);
-+    nofs = vec_reg_offset(s, a->rn, a->imm, a->esz);
++    sofs2 = vec_full_reg_offset(s, a->rn);
++
++    if (imm & 8) {
++        sofs0 = dofs + 8;
++        sofs1 = sofs2;
++        sofs2 += 8;
++    } else {
++        sofs0 = dofs;
++        sofs1 = dofs + 8;
++    }
++    imm = (imm & 7) << 3;
 +
 +    for (unsigned i = 0; i < vl; i += 16) {
-+        tcg_gen_gvec_dup_mem(a->esz, dofs + i, nofs + i, 16, 16);
++        TCGv_i64 s0 = tcg_temp_new_i64();
++        TCGv_i64 s1 = tcg_temp_new_i64();
++        TCGv_i64 s2 = tcg_temp_new_i64();
++
++        tcg_gen_ld_i64(s0, tcg_env, sofs0 + i);
++        tcg_gen_ld_i64(s1, tcg_env, sofs1 + i);
++        tcg_gen_ld_i64(s2, tcg_env, sofs2 + i);
++
++        tcg_gen_extract2_i64(s0, s0, s1, imm);
++        tcg_gen_extract2_i64(s1, s1, s2, imm);
++
++        tcg_gen_st_i64(s0, tcg_env, dofs + i);
++        tcg_gen_st_i64(s1, tcg_env, dofs + i + 8);
 +    }
 +    return true;
 +}
 +
- static void do_insr_i64(DisasContext *s, arg_rrr_esz *a, TCGv_i64 val)
- {
-     typedef void gen_insr(TCGv_ptr, TCGv_ptr, TCGv_i64, TCGv_i32);
+ /*
+  *** SVE Permute - Unpredicated Group
+  */
 diff --git a/target/arm/tcg/sve.decode b/target/arm/tcg/sve.decode
-index db16849731..2650e00f80 100644
+index 2650e00f80..af4fb966bf 100644
 --- a/target/arm/tcg/sve.decode
 +++ b/target/arm/tcg/sve.decode
-@@ -577,6 +577,12 @@ DUP_s           00000101 .. 1 00000 001110 ..... .....          @rd_rn
- DUP_x           00000101 .. 1 ..... 001000 rn:5 rd:5 \
-                 &rri imm=%imm7_22_16
+@@ -583,6 +583,8 @@ DUPQ            00000101 001 imm:3   10 001001 rn:5 rd:5        &rri_esz esz=1
+ DUPQ            00000101 001 imm:2  100 001001 rn:5 rd:5        &rri_esz esz=2
+ DUPQ            00000101 001 imm:1 1000 001001 rn:5 rd:5        &rri_esz esz=3
  
-+# SVE Permute Vector - one source quadwords
-+DUPQ            00000101 001 imm:4    1 001001 rn:5 rd:5        &rri_esz esz=0
-+DUPQ            00000101 001 imm:3   10 001001 rn:5 rd:5        &rri_esz esz=1
-+DUPQ            00000101 001 imm:2  100 001001 rn:5 rd:5        &rri_esz esz=2
-+DUPQ            00000101 001 imm:1 1000 001001 rn:5 rd:5        &rri_esz esz=3
++EXTQ            00000101 0110 imm:4 001001 rn:5 rd:5            &rri
 +
  # SVE insert SIMD&FP scalar register
  INSR_f          00000101 .. 1 10100 001110 ..... .....          @rdn_rm
