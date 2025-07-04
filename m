@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55580AF956A
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F05AF957E
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 16:30:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXhKc-0000IR-IO; Fri, 04 Jul 2025 10:24:02 -0400
+	id 1uXhLZ-0003Ov-RP; Fri, 04 Jul 2025 10:25:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhID-00053n-Cq
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:21:36 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+ id 1uXhIG-00056d-BH
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:21:39 -0400
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uXhIB-0005cP-KU
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:21:33 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-2e9071e3706so775983fac.0
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 07:21:31 -0700 (PDT)
+ id 1uXhIC-0005fj-Mc
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 10:21:34 -0400
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-2efdd5c22dfso744686fac.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 07:21:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751638890; x=1752243690; darn=nongnu.org;
+ d=linaro.org; s=google; t=1751638891; x=1752243691; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MESEd0mA1nIIoktuVnBsPsHvzltJ4JN+uRnJz4lGeYA=;
- b=u6l1jDgEJr+umjKiWJlYj2NkpOdLoP3Mjm+yJy/7Z+LaO3Y83+K6uMDh07qMhpv3kF
- SzAyVqADxAgx/ta37/HhJRYXUHHh5USWkrp6WxGPtAeqLYU3doMka+/fsphGYvBe6Ohb
- hMComGFMAfbOtaM6nWgPmH06NOzGxCOex+dxsprmqAvVnfiQoaq3wfxqxawVPvDYw5oa
- 7HTe3nn7S+dnZo7xNkT4ogbGsZyAeJsyo11h9dDYs6tJ2jpsMCgsgD/bV7L5m2iXI9Ez
- aw3FIuCQ1qVS9UKm7D09YAanPGXen1ShDpvsUGJ34dq+ayQ6ZMvw/icjADpIcGqRAj6m
- qipg==
+ bh=J0c51w8AYDL/49JMSyoGkHo6/JBfxrEamVE7ZAljwTg=;
+ b=fW7uRizWLaDJlnTNXz04RxOj39Divnr4cL35vHjustIaEiXmKY24mPK/iPGfT3Uqcy
+ WWbYQ2Hgsjwbhm/KUIPJDlq9SmAP0M8d73g//2y/DMY8vq9HSYOyq53tAnwZo7Z+m62z
+ a4afp5jZelR8MtAV93+KwnW+RFFyxvjhW1w6r0KGMT0k+QKVx6rzeNO5rEbqCPODSlaF
+ D5Ft8BLRq+/yrA1dR7nR+SxooJfI+fiWd9xl11Xtyj1ijCiilF8XDmyCOT5LZUn6sOkk
+ LUh3Sk5Cyvg7pvuO5qzEsN61RC0nH0RMrIjnk8G0lHjQAWY8kAH2Io2jDU5gl0F70MX3
+ clZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751638890; x=1752243690;
+ d=1e100.net; s=20230601; t=1751638891; x=1752243691;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MESEd0mA1nIIoktuVnBsPsHvzltJ4JN+uRnJz4lGeYA=;
- b=aPcNrwpRR9TUc9WnZVbXrdimTqIeW+y2g9+l2Zu91TIrZfRokpsuPbbLn4xfIuFfHe
- 98fJsJnoRAv+MlNp4lWxxcECkBk7dpKNPsKAyWTCyog0CdUD/9w1jS9oDwop0E9mAU1v
- j5A00blwbjr7B9oR+wmdRm8W2fArK50i4qW8GcRk2MXlNU8ixxWqp1nkp4S8j2j8v5Tt
- SbXp+KXB5ESoCBZ3K4vUxYSjef2r1YqiQz+5a31O0Q9wCJBndaM65H3QEQZM+0dxbsyA
- h8CUNBzlZtSVXOLCBVG+PdjE26ZWJV+VyyDAcC/qGRyhDjTnGTCnNiFsi6P6w48wON0P
- B/SA==
-X-Gm-Message-State: AOJu0YwgItVeLdKALJywd1NvD2whL1AoM+ygYxWAsHvNgw2TNzGhI6iy
- qsPBLuM25adf0T5yBP74LlAcF3Clc2ravE9BVoNt3fy3mL8LrW0jESI3ULm/scIv2IWLrbkbtdi
- Z5qmp9Pw=
-X-Gm-Gg: ASbGnctLpb75kUt9+ZtFr96tFaC4GYcLBHR6qVDVqtY/zENOUTRTbDOo9eGEqfn5bS2
- HzIQsyBS40biGc9aJ6GaDtU42rTrptO9ymFfXHQSH6LKw8k/5qUPwSqpk7kc5ejIPFiYOw2u8Jr
- 9n0A6I34PZHLcH6kvhoQljCnokA/hbT5afkETKlJxMxANXLOQzEn7rca5mXOLKA/s8brWgKwixc
- r6G3c88mMOLWMqj6+DxIeqGMkx1e033DLjMhRfmeUPBDgJimcXBWxyUXGvT8IVTLb6ODUGdy4t/
- aU55AR+2E7Yw2sYLA2OIR5bjhC83dal0DddPz2FGeb7NJbpXVNVQXYhYsmr9s/IegXmKgJLv4HL
- 47FJRNyW3mF5To5jJw70G1SqYE/pFGGDTVUGd9AAOs3cW2xR6/HNSYKSLYkQ=
-X-Google-Smtp-Source: AGHT+IEs8F8Cw2QSEbFO9xtIfXdRyHcRL+0oiF5LD6GAUq/YuuDxOoIQB0yTh/47iLTlJHmTWLxpDg==
-X-Received: by 2002:a05:6870:b614:b0:2b8:e4b9:47a3 with SMTP id
- 586e51a60fabf-2f796caade4mr1568371fac.22.1751638890419; 
- Fri, 04 Jul 2025 07:21:30 -0700 (PDT)
+ bh=J0c51w8AYDL/49JMSyoGkHo6/JBfxrEamVE7ZAljwTg=;
+ b=tJG6LxydEyiuBMWSISQ4iWf+yucbRV8SsvNJNsECYF6B4TEMeklTA5iOPXV2Wmiwy6
+ W7FdEgbegELKmS+2vVEvFFsmkpNuBlDR9NkSutFeKW2K46ML8H//N2elx0ybPfajATNA
+ ADXAICTpuCBcutk1Rv7xM4RZIFBllYz8czmy1qpUJCIDdgV9FuoHfOgrYNpcuDqpRBvg
+ LEokXVX1wvJSHk3emlIcipN66VOt39C0xY4VgdjXqlfFvJd2cL7sU0S3Ec8NoPMU4ou3
+ k9I8PoJXWH8Qj2FU87tVkZN7LtyAiEBN7bYi2NDjec6nr5d9s/1EEpVJfxn8wRwGvIs7
+ lfOA==
+X-Gm-Message-State: AOJu0YwU82p0VB62/QIYTAb0/Oc5Wr7rPuzx1wAHqK2gDkTZADLRe/Wu
+ Tyq9/rZQv9xXctzuXXafosNU5pm4HSJpWyRoG21C0BUAup6pYBRi+BnfCvbXjlTEK2r1rY0XM6P
+ MGJA4nJg=
+X-Gm-Gg: ASbGncszuCMJCerVcMgouJkrIaj2Kwe54D+H28M+wR9HwCgG4rCYx/pOAIGu4BKu2FW
+ vjAYf0F2LDgwZqJHuci5o4pmFmHfO20IQ0v5KTGF/i45edc14nIm5+5wYKat5nX7QB5SFanthzd
+ vAU19neeBUYbL0A9Fu5+6bitUKFW/LSBsePVun594FbiUrWpzGZS1yy6kW4zuUvmJmRmxkvszqz
+ dsfW1k8BdleQN7Vr1FxOnCKeV9SxA2GrbCVyTlbcH1bC1X1+TfL9OwOQbPxLNKOS5QO78qA0Q1u
+ qF2Gd9cOveHwi2uVjpKQ/cc4VG0lPrL8eAZb+/60ZSkwD5E1GTA1lFyAyBqYfgN5QeIfkn8M2Zr
+ 6VTe+akjdIJKRjbMIJPqQ9J8nIrPBFAtyeFSEdUB+rnW8JE9k
+X-Google-Smtp-Source: AGHT+IEoN8nvP7Q8uZI/Y+augkC21gEoiSX56lbXoApTmbbJ/2JtUmmpcWJbXKyIpD+pbTsWZrY6ZA==
+X-Received: by 2002:a05:6871:e026:b0:296:a67c:d239 with SMTP id
+ 586e51a60fabf-2f796c0a276mr1688684fac.12.1751638891473; 
+ Fri, 04 Jul 2025 07:21:31 -0700 (PDT)
 Received: from localhost.localdomain (fixed-187-189-51-143.totalplay.net.
  [187.189.51.143]) by smtp.gmail.com with ESMTPSA id
- 586e51a60fabf-2f78ff0471esm528016fac.3.2025.07.04.07.21.29
+ 586e51a60fabf-2f78ff0471esm528016fac.3.2025.07.04.07.21.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jul 2025 07:21:29 -0700 (PDT)
+ Fri, 04 Jul 2025 07:21:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	peter.maydell@linaro.org
-Subject: [PATCH v4 014/108] target/arm: Add isar feature tests for SME2p1,
- SVE2p1
-Date: Fri,  4 Jul 2025 08:19:37 -0600
-Message-ID: <20250704142112.1018902-15-richard.henderson@linaro.org>
+Subject: [PATCH v4 015/108] target/arm: Add ZT0
+Date: Fri,  4 Jul 2025 08:19:38 -0600
+Message-ID: <20250704142112.1018902-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704142112.1018902-1-richard.henderson@linaro.org>
 References: <20250704142112.1018902-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,120 +99,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is a 512-bit array introduced with SME2.
+Save it only when ZA is in use.
+
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu-features.h | 63 +++++++++++++++++++++++++++++++++++++++
- target/arm/cpu.h          |  1 +
- 2 files changed, 64 insertions(+)
+ target/arm/cpu.h     |  3 +++
+ target/arm/machine.c | 20 ++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index 5d8adfb73b..5876162428 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -604,6 +604,11 @@ static inline bool isar_feature_aa64_rpres(const ARMISARegisters *id)
-     return FIELD_EX64_IDREG(id, ID_AA64ISAR2, RPRES);
- }
- 
-+static inline bool isar_feature_aa64_lut(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64ISAR2, LUT);
-+}
-+
- static inline bool isar_feature_aa64_fp_simd(const ARMISARegisters *id)
- {
-     /* We always set the AdvSIMD and FP fields identically.  */
-@@ -932,6 +937,11 @@ static inline bool isar_feature_aa64_sve2(const ARMISARegisters *id)
-     return FIELD_EX64_IDREG(id, ID_AA64ZFR0, SVEVER) != 0;
- }
- 
-+static inline bool isar_feature_aa64_sve2p1(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64ZFR0, SVEVER) >=2;
-+}
-+
- static inline bool isar_feature_aa64_sve2_aes(const ARMISARegisters *id)
- {
-     return FIELD_EX64_IDREG(id, ID_AA64ZFR0, AES) != 0;
-@@ -977,6 +987,21 @@ static inline bool isar_feature_aa64_sve_f64mm(const ARMISARegisters *id)
-     return FIELD_EX64_IDREG(id, ID_AA64ZFR0, F64MM) != 0;
- }
- 
-+static inline bool isar_feature_aa64_sve_b16b16(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64ZFR0, B16B16);
-+}
-+
-+static inline bool isar_feature_aa64_sme_b16b16(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64SMFR0, B16B16);
-+}
-+
-+static inline bool isar_feature_aa64_sme_f16f16(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64SMFR0, F16F16);
-+}
-+
- static inline bool isar_feature_aa64_sme_f64f64(const ARMISARegisters *id)
- {
-     return FIELD_EX64_IDREG(id, ID_AA64SMFR0, F64F64);
-@@ -992,6 +1017,44 @@ static inline bool isar_feature_aa64_sme_fa64(const ARMISARegisters *id)
-     return FIELD_EX64_IDREG(id, ID_AA64SMFR0, FA64);
- }
- 
-+static inline bool isar_feature_aa64_sme2(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64SMFR0, SMEVER) != 0;
-+}
-+
-+static inline bool isar_feature_aa64_sme2p1(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64SMFR0, SMEVER) >= 2;
-+}
-+
-+/*
-+ * Combinations of feature tests, for ease of use with TRANS_FEAT.
-+ */
-+static inline bool isar_feature_aa64_sme_or_sve2p1(const ARMISARegisters *id)
-+{
-+    return isar_feature_aa64_sme(id) || isar_feature_aa64_sve2p1(id);
-+}
-+
-+static inline bool isar_feature_aa64_sme2_or_sve2p1(const ARMISARegisters *id)
-+{
-+    return isar_feature_aa64_sme2(id) || isar_feature_aa64_sve2p1(id);
-+}
-+
-+static inline bool isar_feature_aa64_sme2p1_or_sve2p1(const ARMISARegisters *id)
-+{
-+    return isar_feature_aa64_sme2p1(id) || isar_feature_aa64_sve2p1(id);
-+}
-+
-+static inline bool isar_feature_aa64_sme2_i16i64(const ARMISARegisters *id)
-+{
-+    return isar_feature_aa64_sme2(id) && isar_feature_aa64_sme_i16i64(id);
-+}
-+
-+static inline bool isar_feature_aa64_sme2_f64f64(const ARMISARegisters *id)
-+{
-+    return isar_feature_aa64_sme2(id) && isar_feature_aa64_sme_f64f64(id);
-+}
-+
- /*
-  * Feature tests for "does this exist in either 32-bit or 64-bit?"
-  */
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 7db97e8038..c6041a9357 100644
+index c6041a9357..cbc2043483 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -2211,6 +2211,7 @@ FIELD(ID_AA64ISAR2, SYSINSTR_128, 36, 4)
- FIELD(ID_AA64ISAR2, PRFMSLC, 40, 4)
- FIELD(ID_AA64ISAR2, RPRFM, 48, 4)
- FIELD(ID_AA64ISAR2, CSSC, 52, 4)
-+FIELD(ID_AA64ISAR2, LUT, 56, 4)
- FIELD(ID_AA64ISAR2, ATS1A, 60, 4)
+@@ -716,6 +716,9 @@ typedef struct CPUArchState {
+     uint64_t scxtnum_el[4];
  
- FIELD(ID_AA64PFR0, EL0, 0, 4)
+     struct {
++        /* SME2 ZT0 -- 512 bit array, with data ordered like ARMVectorReg. */
++        uint64_t zt0[512 / 64] QEMU_ALIGNED(16);
++
+         /*
+          * SME ZA storage -- 256 x 256 byte array, with bytes in host
+          * word order, as we do with vfp.zregs[].  This corresponds to
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index 6e73368ef9..6986915bee 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -321,6 +321,25 @@ static const VMStateDescription vmstate_za = {
+     }
+ };
+ 
++static bool zt0_needed(void *opaque)
++{
++    ARMCPU *cpu = opaque;
++
++    return za_needed(cpu) && cpu_isar_feature(aa64_sme2, cpu);
++}
++
++static const VMStateDescription vmstate_zt0 = {
++    .name = "cpu/zt0",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = zt0_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT64_ARRAY(env.za_state.zt0, ARMCPU,
++                             ARRAY_SIZE(((CPUARMState *)0)->za_state.zt0)),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static bool serror_needed(void *opaque)
+ {
+     ARMCPU *cpu = opaque;
+@@ -1096,6 +1115,7 @@ const VMStateDescription vmstate_arm_cpu = {
+         &vmstate_m_security,
+         &vmstate_sve,
+         &vmstate_za,
++        &vmstate_zt0,
+         &vmstate_serror,
+         &vmstate_irq_line_state,
+         &vmstate_wfxt_timer,
 -- 
 2.43.0
 
