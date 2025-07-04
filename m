@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180B3AF89AB
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 09:39:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C869AF8ACD
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:11:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXb0a-0005df-AH; Fri, 04 Jul 2025 03:38:56 -0400
+	id 1uXbUl-0005Hr-SK; Fri, 04 Jul 2025 04:10:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uXb0X-0005dF-V7
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 03:38:53 -0400
+ id 1uXbUh-0005EQ-CW
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:10:04 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uXb0W-0004Bp-66
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 03:38:53 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uXbUc-0006JP-VB
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:10:03 -0400
 Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxNHAIhWdo20EiAQ--.8401S3;
- Fri, 04 Jul 2025 15:38:48 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxquBQjGdo_UUiAQ--.33834S3;
+ Fri, 04 Jul 2025 16:09:53 +0800 (CST)
 Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJBxpeQFhWdoK_4IAA--.53533S3;
- Fri, 04 Jul 2025 15:38:47 +0800 (CST)
-Subject: Re: [PATCH 2/3] target/loongarch: Fix CSR STLBPS register write
- emulation
+ by front1 (Coremail) with SMTP id qMiowJAxQMJOjGdoewcJAA--.47885S3;
+ Fri, 04 Jul 2025 16:09:52 +0800 (CST)
+Subject: Re: [PATCH 3/3] target/loongarch: Remove unnecessary page size
+ validity checking
 To: Bibo Mao <maobibo@loongson.cn>
 Cc: qemu-devel@nongnu.org
 References: <20250618062607.1479699-1-maobibo@loongson.cn>
- <20250618062607.1479699-3-maobibo@loongson.cn>
+ <20250618062607.1479699-4-maobibo@loongson.cn>
 From: gaosong <gaosong@loongson.cn>
-Message-ID: <fe6136c8-210a-5281-f6d4-1520b4acb26c@loongson.cn>
-Date: Fri, 4 Jul 2025 15:41:35 +0800
+Message-ID: <854e0c64-2ef5-e0cc-707e-b07dc712a60f@loongson.cn>
+Date: Fri, 4 Jul 2025 16:12:39 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20250618062607.1479699-3-maobibo@loongson.cn>
+In-Reply-To: <20250618062607.1479699-4-maobibo@loongson.cn>
 Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-CM-TRANSID: qMiowJBxpeQFhWdoK_4IAA--.53533S3
+X-CM-TRANSID: qMiowJAxQMJOjGdoewcJAA--.47885S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoW7JrWruF15KFy8Xry8GFWkKrX_yoWkGFc_WF
- 4xJ3WDur4kXw42k3WjvryDt343Ka18KFn0kaykXr4ft34Yqan5Xr4vqan5CF4jgrW8JFn0
- ya97Jr43uF13ZosvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUbxxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- WxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUrNtxDUUU
- U
+X-Coremail-Antispam: 1Uk129KBj93XoWxZF15CF48CF4rXr4UGr15trc_yoW5GrWkpr
+ sIk3929a48KrZrC3Z3tas0kw13Zr1xGws2q3s3GryFvrnxX34xXrWFg347KryIy345Aw4x
+ ZFsIyry5uFWUZacCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUU
+ UUU==
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
  helo=mail.loongson.cn
 X-Spam_score_int: 0
@@ -83,34 +83,76 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 ÔÚ 2025/6/18 ÏÂÎç2:26, Bibo Mao Ð´µÀ:
-> Function helper_csrwr_stlbps() is emulation with CSR STLBPS register
-> write operation. However there is only parameter checking action, and
-> no register updating action. Here update value of CSR_STLBPS when
-> parameter passes to check.
+> Page size of TLB entry comes from CSR STLBPS and pwcl register. With
+> huge page, it is dir_base + dir_width from pwcl register. With normal
+> page, it is field of PTBASE from pwcl register.
+>
+> So it is ok to check validity in function helper_ldpte() and function
+> helper_csrwr_stlbps(). And it is unnecessary in tlb entry fill path.
 >
 > Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 > ---
->   target/loongarch/tcg/csr_helper.c | 4 ++++
->   1 file changed, 4 insertions(+)
+>   target/loongarch/tcg/tlb_helper.c | 24 ++++++++----------------
+>   1 file changed, 8 insertions(+), 16 deletions(-)
 Reviewed-by: Song Gao <gaosong@loongson.cn>
 
 Thanks.
 Song Gao
-> diff --git a/target/loongarch/tcg/csr_helper.c b/target/loongarch/tcg/csr_helper.c
-> index 46d331ce8a..28b1bb86bd 100644
-> --- a/target/loongarch/tcg/csr_helper.c
-> +++ b/target/loongarch/tcg/csr_helper.c
-> @@ -29,7 +29,11 @@ target_ulong helper_csrwr_stlbps(CPULoongArchState *env, target_ulong val)
->       if (!check_ps(env, tlb_ps)) {
->           qemu_log_mask(LOG_GUEST_ERROR,
->                         "Attempted set ps %d\n", tlb_ps);
-> +    } else {
-> +        /* Only update PS field, reserved bit keeps zero */
-> +        env->CSR_STLBPS = FIELD_DP64(old_v, CSR_STLBPS, PS, tlb_ps);
+> diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+> index dc48b0f4d2..21381ba59f 100644
+> --- a/target/loongarch/tcg/tlb_helper.c
+> +++ b/target/loongarch/tcg/tlb_helper.c
+> @@ -173,12 +173,6 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
+>           lo1 = env->CSR_TLBELO1;
 >       }
+>   
+> -    /*check csr_ps */
+> -    if (!check_ps(env, csr_ps)) {
+> -        qemu_log_mask(LOG_GUEST_ERROR, "csr_ps %d is illegal\n", csr_ps);
+> -        return;
+> -    }
+> -
+>       /* Only MTLB has the ps fields */
+>       if (index >= LOONGARCH_STLB) {
+>           tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, csr_ps);
+> @@ -340,23 +334,16 @@ void helper_tlbfill(CPULoongArchState *env)
+>   
+>       if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
+>           entryhi = env->CSR_TLBREHI;
+> +        /* Validity of pagesize is checked in helper_ldpte() */
+>           pagesize = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
+>       } else {
+>           entryhi = env->CSR_TLBEHI;
+> +        /* Validity of pagesize is checked in helper_tlbrd() */
+>           pagesize = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
+>       }
+>   
+> -    if (!check_ps(env, pagesize)) {
+> -        qemu_log_mask(LOG_GUEST_ERROR, "pagesize %d is illegal\n", pagesize);
+> -        return;
+> -    }
+> -
+> +    /* Validity of stlb_ps is checked in helper_csrwr_stlbps() */
+>       stlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
+> -    if (!check_ps(env, stlb_ps)) {
+> -        qemu_log_mask(LOG_GUEST_ERROR, "stlb_ps %d is illegal\n", stlb_ps);
+> -        return;
+> -    }
+> -
+>       if (pagesize == stlb_ps) {
+>           /* Only write into STLB bits [47:13] */
+>           address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
+> @@ -651,6 +638,11 @@ void helper_ldpte(CPULoongArchState *env, target_ulong base, target_ulong odd,
+>           if (odd) {
+>               tmp0 += MAKE_64BIT_MASK(ps, 1);
+>           }
 > +
->       return old_v;
->   }
+> +        if (!check_ps(env, ps)) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "Illegal huge pagesize %ld\n", ps);
+> +            return;
+> +        }
+>       } else {
+>           badv = env->CSR_TLBRBADV;
 >   
 
 
