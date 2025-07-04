@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07383AF8FD2
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04596AF8F3A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 11:55:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXdTi-0002Ic-Nh; Fri, 04 Jul 2025 06:17:10 -0400
+	id 1uXd7o-0006MR-4k; Fri, 04 Jul 2025 05:54:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdTb-000250-6t
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:17:03 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uXdTZ-00074Y-4s
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:17:02 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3b45edf2303so663756f8f.2
- for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 03:17:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1751624219; x=1752229019; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aW8jT2Wve8m9HiyaZWg6TzaiyGwHlA9RHVgvMmEmKaQ=;
- b=YRLJIf7N2kXU5OvLDFhRDTQAD/QKMO+yDbkaCJLMBym0Z4lqISw3lgUZ2JDzQzL/3E
- jTFJJtfw9aoMlMow/A6n7zYufpM7LscdngrST3GG92NzCcjRRuoDILH7y81/u8Rtaeug
- V+bS0BUKMuWCRplbn8FlZiAgOdUc32C43q9aH49R3bVvA+w0ZJI2WoBTXXNVt3wT6XDp
- u1+cXXMPMEuJACTZUwdlwSv6hJgTvQsh6WzUCTmtMC91nahuVhKTD1FZpCfAaFnO/Q/E
- PHNlTt4NqdmXaKQL0Hs+nlLdVhcXuubiJFwTOU5xhulE38kD+xuyRKrDvWryqLUff728
- qyNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751624219; x=1752229019;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aW8jT2Wve8m9HiyaZWg6TzaiyGwHlA9RHVgvMmEmKaQ=;
- b=C6Ds7p+n1zrF4s64S3iHk3+mxaH1K68y2Rj5MEovfu9W1YJR5kR+WCVHtB3V4yRFdj
- mL9hYVtgPthzGeHXYuJdKJ7gy1+gPcyvzYg9WO493YkEQJeTUri1otWK8kCg4BCiHsvo
- HIFTZ2fP8MpFxmlY11+DTR32amU4xbmfFI/5f876BS8sJaA/32TZsizEvSNTVGx48cyY
- iyAmYyNMSIPiIXo0Esm/eI0JyKsoO5xIdYNnoK9RyDbM2xn+XB3kWz/dkcGkfv/w5Bu+
- MGX5sUEPRL7tqxdj+8Mv7JVxln4RwPzIuHDX7+Pp3DSqTOS1JK2lTvwm1JK9X9R44Fgk
- KV+A==
-X-Gm-Message-State: AOJu0Ywu8TIlmHUOqQQE1P+NXOA9ZghBtEtkv48zx57/M0WP0TC7tbZ6
- 63xXG07UUAWkGHN5hYg8sX5Qsf3AoIWLdkoGZ/qLCxVc6wTdPShYSE3+uKuSFD+q7o5SWetqNvW
- vaUjG29U=
-X-Gm-Gg: ASbGncu9NqxKIDuLhqScwVDN8brrZtEtqaePG6RItFpwwXByl0tP5CbUf03bcUFoUFZ
- STrdGG0PQI4kdj7gKdGBxUm6pctJih/pM5Jxy8uFHBqCIbmTlIsyJt2cHJMARLOa+dLpKtpJygs
- OKSfbcZEd5Dq9OQt14ju8ZZ8rIrdiNS+HtJnTlq9/B/qGtQv/KieiyDPyZ/1WhhqyhDGpO21Auf
- rnsHge93+H7iN6gImK5UjVgSTOEZ8LucvCVn4lA0kbI/xyj1lcaCmeXj9ZHHUw2iOh2SOsjOzo+
- hx6cxu3aBSHyQmlBb0x3CPcUdyFPd6DzlKmGkgTprP0nvm7YYWd69x68idN3DDSXM1pW7tTgLzD
- NiqEG5h+NdsziK3DlQEixreXSxPmU9uP9KbFK
-X-Google-Smtp-Source: AGHT+IF3wWl/dXPWddWZhkJIPm+jB9bAgRPyGBzoOVuDFY+YwD8VcH4+2FgwzuJgcwhUzFlEm1B8sQ==
-X-Received: by 2002:a5d:64e4:0:b0:3b1:8db7:d1fc with SMTP id
- ffacd0b85a97d-3b4964f92b7mr1619616f8f.21.1751624218666; 
- Fri, 04 Jul 2025 03:16:58 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b4708d0a5csm2083276f8f.29.2025.07.04.03.16.57
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Jul 2025 03:16:58 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 31/31] hmp-cmds-target.c: add CPU_DUMP_VPU in
- hmp_info_registers()
-Date: Fri,  4 Jul 2025 12:14:32 +0200
-Message-ID: <20250704101433.8813-32-philmd@linaro.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250704101433.8813-1-philmd@linaro.org>
-References: <20250704101433.8813-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXd7c-0006Je-2t
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:54:20 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uXd7X-0008SA-Jy
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 05:54:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751622856; x=1783158856;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=7a9+P8cFf8usiWhMqJ5dnpH8Nu0pfOoPxzmDBwgBXOs=;
+ b=VknkgnYSxOiWGGgmOzHNLhHF2qCc0UO2ab4XqliHU9FtQgtBUk82c+eg
+ aNqRvYYh0ie8vVhITpSbNRXKQ/CVHcd3KrF2Sins6e1T0vo2otTay7BHw
+ qjVivBU03vMaXR2HMhsW0+e0/s4iROJBTL3+xr/aUKVdym90U/pfxf8KB
+ X0gatRelYrIJNluji/B8xWppS37hKdklLkQtNwxoiDWM9MMxw+JtO5qiK
+ e27tqUtmKB5FeY8BuM7bgFcp9rW8sF1NqQMJl8QG03yO+0IfkaHDa8qBS
+ ix4pkNyoflYjviZaVaTsKZdmkhzqILk0z6NDhu80DIMWpB4Kx9XcKHniu A==;
+X-CSE-ConnectionGUID: hyIADgIsRy2hBFYSXfVr6w==
+X-CSE-MsgGUID: UHqd8gdKQ72eaP1iUHeHoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="64202604"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="64202604"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 02:54:13 -0700
+X-CSE-ConnectionGUID: wKeRTb8yTE+pxF/QGHLdhw==
+X-CSE-MsgGUID: EgStgWSdQcSr2EEK3s2Caw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="159162186"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa004.jf.intel.com with ESMTP; 04 Jul 2025 02:54:12 -0700
+Date: Fri, 4 Jul 2025 18:15:37 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 21/39] accel/kvm: Remove kvm_cpu_synchronize_state()
+ stub
+Message-ID: <aGepyeVJvTVZ+hvy@intel.com>
+References: <20250703173248.44995-1-philmd@linaro.org>
+ <20250703173248.44995-22-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+In-Reply-To: <20250703173248.44995-22-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,56 +83,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+On Thu, Jul 03, 2025 at 07:32:27PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  3 Jul 2025 19:32:27 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH v6 21/39] accel/kvm: Remove kvm_cpu_synchronize_state() stub
+> X-Mailer: git-send-email 2.49.0
+> 
+> Since commit 57038a92bb0 ("cpus: extract out kvm-specific code
+> to accel/kvm") the kvm_cpu_synchronize_state() stub is not
+> necessary.
+> 
+> Fixes: e0715f6abce ("kvm: remove kvm specific functions from global includes")
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  accel/stubs/kvm-stub.c | 4 ----
+>  1 file changed, 4 deletions(-)
 
-Commit b84694defb added the CPU_DUMP_VPU to allow vector registers to be
-logged by log_cpu_exec() in TCG. This flag was then used in commit
-b227f6a8a7 to print RISC-V vector registers using this flag. Note that
-this change was done in riscv_cpu_dump_state(), the cpu_dump_state()
-callback for RISC-V, the same callback used in hmp_info_registers().
-
-Back then we forgot to change hmp_info_registers(), and 'info registers'
-isn't showing RISC-V vector registers as a result. No other target is
-impacted since only RISC-V is using CPU_DUMP_VPU.
-
-There's no reason to not show VPU regs in info_registers(), so add
-CPU_DUMP_VPU to hmp_info_registers(). This will print vector registers
-for all RISC-V machines and, as said above, has no impact in other
-archs.
-
-Cc: Dr. David Alan Gilbert <dave@treblig.org>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
-Message-ID: <20250623145306.991562-1-dbarboza@ventanamicro.com>
-Signed-off-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
----
- monitor/hmp-cmds-target.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
-index 8eaf70d9c9a..e9820611466 100644
---- a/monitor/hmp-cmds-target.c
-+++ b/monitor/hmp-cmds-target.c
-@@ -102,7 +102,7 @@ void hmp_info_registers(Monitor *mon, const QDict *qdict)
-     if (all_cpus) {
-         CPU_FOREACH(cs) {
-             monitor_printf(mon, "\nCPU#%d\n", cs->cpu_index);
--            cpu_dump_state(cs, NULL, CPU_DUMP_FPU);
-+            cpu_dump_state(cs, NULL, CPU_DUMP_FPU | CPU_DUMP_VPU);
-         }
-     } else {
-         cs = vcpu >= 0 ? qemu_get_cpu(vcpu) : mon_get_cpu(mon);
-@@ -117,7 +117,7 @@ void hmp_info_registers(Monitor *mon, const QDict *qdict)
-         }
- 
-         monitor_printf(mon, "\nCPU#%d\n", cs->cpu_index);
--        cpu_dump_state(cs, NULL, CPU_DUMP_FPU);
-+        cpu_dump_state(cs, NULL, CPU_DUMP_FPU | CPU_DUMP_VPU);
-     }
- }
- 
--- 
-2.49.0
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
