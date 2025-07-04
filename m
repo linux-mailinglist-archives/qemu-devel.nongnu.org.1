@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36535AF8CC1
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE92AF8C9D
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:50:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXc3x-00084S-ME; Fri, 04 Jul 2025 04:46:29 -0400
+	id 1uXc42-0008Ej-6H; Fri, 04 Jul 2025 04:46:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3p-0007yc-6d
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:22 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3y-00087L-Rx
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3n-0000cm-9w
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:20 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc3w-0000wN-Tc
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1751618778;
+ s=mimecast20190719; t=1751618788;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BM5vNjDCBW3H5iIwmayDEVixhk6Q2Pc3CcXMJe0BoB8=;
- b=CvtT1z1w12UeJaDJbhK/e9F0f6Xfhdtq1TLzJ4aKZcVldjduEbV3fLRc+ovPuvU4PIdUEy
- V+vDfAYnXRoOnFsc9rwdANxpFV9RAld5Q4CcSI4salykX34Du2b6s31L5+SvgUzjYKf0C4
- j2mf3SLAdmPNG/iTd2H2UGPyB8P8Y8g=
+ bh=FATOxFjlqOdGSfi9TLGXPwRXGcPggsJ2RP2fosVbyPQ=;
+ b=cJus7HoLYn9y4v+k87w1bIq+gQ9szLFTQFdievW9FAPolFBJsm/oIAoZNUlWKjfxzbzxzE
+ z3He6AL+vR+G57bjibx/9m6M9YYpAYwzWM8kY7feGkD9gzb9rJkJIFFhOEZFIn885VB1ev
+ lXteEfu1GovKi9oM6WRav0TqSRHlIc4=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-T2ZyadhHNt23sir9LKjU9g-1; Fri,
- 04 Jul 2025 04:46:15 -0400
-X-MC-Unique: T2ZyadhHNt23sir9LKjU9g-1
-X-Mimecast-MFC-AGG-ID: T2ZyadhHNt23sir9LKjU9g_1751618774
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-eoX-xCADNA-_dIGSZ3Ff5g-1; Fri,
+ 04 Jul 2025 04:46:20 -0400
+X-MC-Unique: eoX-xCADNA-_dIGSZ3Ff5g-1
+X-Mimecast-MFC-AGG-ID: eoX-xCADNA-_dIGSZ3Ff5g_1751618779
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 52F2E1809C83; Fri,  4 Jul 2025 08:46:14 +0000 (UTC)
+ id 26F5F1809C81; Fri,  4 Jul 2025 08:46:19 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.43])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4D2BE19560A7; Fri,  4 Jul 2025 08:46:12 +0000 (UTC)
+ id 59C8319560A7; Fri,  4 Jul 2025 08:46:15 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PULL 15/27] vfio/iommufd: invariant device name
-Date: Fri,  4 Jul 2025 10:45:16 +0200
-Message-ID: <20250704084528.1412959-16-clg@redhat.com>
+Subject: [PULL 16/27] vfio/iommufd: add vfio_device_free_name
+Date: Fri,  4 Jul 2025 10:45:17 +0200
+Message-ID: <20250704084528.1412959-17-clg@redhat.com>
 In-Reply-To: <20250704084528.1412959-1-clg@redhat.com>
 References: <20250704084528.1412959-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,52 +85,122 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-cpr-transfer will use the device name as a key to find the value
-of the device descriptor in new QEMU.  However, if the descriptor
-number is specified by a command-line fd parameter, then
-vfio_device_get_name creates a name that includes the fd number.
-This causes a chicken-and-egg problem: new QEMU must know the fd
-number to construct a name to find the fd number.
-
-To fix, create an invariant name based on the id command-line parameter,
-if id is defined.  The user will need to provide such an id to use CPR.
+Define vfio_device_free_name to free the name created by
+vfio_device_get_name.  A subsequent patch will do more there.
+No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Link: https://lore.kernel.org/qemu-devel/1751493538-202042-10-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/qemu-devel/1751493538-202042-11-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/device.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ include/hw/vfio/vfio-device.h | 1 +
+ hw/vfio/ap.c                  | 4 ++--
+ hw/vfio/ccw.c                 | 4 ++--
+ hw/vfio/device.c              | 5 +++++
+ hw/vfio/pci.c                 | 2 +-
+ hw/vfio/platform.c            | 2 +-
+ 6 files changed, 12 insertions(+), 6 deletions(-)
 
+diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+index f503837ccc6936b730a7752ca092da5acba1806f..1901a35aa90214c36369f8ac0b0cfef36acbbaa8 100644
+--- a/include/hw/vfio/vfio-device.h
++++ b/include/hw/vfio/vfio-device.h
+@@ -279,6 +279,7 @@ int vfio_device_get_irq_info(VFIODevice *vbasedev, int index,
+ 
+ /* Returns 0 on success, or a negative errno. */
+ bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
++void vfio_device_free_name(VFIODevice *vbasedev);
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp);
+ void vfio_device_init(VFIODevice *vbasedev, int type, VFIODeviceOps *ops,
+                       DeviceState *dev, bool ram_discard);
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index 1df4438149d2a06ef176e03e358336381bfa4caa..7719f245797ef45b6392270741c7dd0a36527fd2 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -265,7 +265,7 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+ 
+ error:
+     error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
+-    g_free(vbasedev->name);
++    vfio_device_free_name(vbasedev);
+ }
+ 
+ static void vfio_ap_unrealize(DeviceState *dev)
+@@ -275,7 +275,7 @@ static void vfio_ap_unrealize(DeviceState *dev)
+     vfio_ap_unregister_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX);
+     vfio_ap_unregister_irq_notifier(vapdev, VFIO_AP_CFG_CHG_IRQ_INDEX);
+     vfio_device_detach(&vapdev->vdev);
+-    g_free(vapdev->vdev.name);
++    vfio_device_free_name(&vapdev->vdev);
+ }
+ 
+ static const Property vfio_ap_properties[] = {
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index cea9d6e00562c241832184cafe862005fcdc992b..9560b8d851b6b25e647476c51efe845ebff10410 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -619,7 +619,7 @@ out_io_notifier_err:
+ out_region_err:
+     vfio_device_detach(vbasedev);
+ out_attach_dev_err:
+-    g_free(vbasedev->name);
++    vfio_device_free_name(vbasedev);
+ out_unrealize:
+     if (cdc->unrealize) {
+         cdc->unrealize(cdev);
+@@ -637,7 +637,7 @@ static void vfio_ccw_unrealize(DeviceState *dev)
+     vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_IO_IRQ_INDEX);
+     vfio_ccw_put_region(vcdev);
+     vfio_device_detach(&vcdev->vdev);
+-    g_free(vcdev->vdev.name);
++    vfio_device_free_name(&vcdev->vdev);
+ 
+     if (cdc->unrealize) {
+         cdc->unrealize(cdev);
 diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index d91c695b69b67ff8f09f590d3fcca8f30f259170..3cd365fb8b10a180c454d07efb4b7d4e6f403046 100644
+index 3cd365fb8b10a180c454d07efb4b7d4e6f403046..97eddd04f5756a0e9e4763c4fef84c9829272053 100644
 --- a/hw/vfio/device.c
 +++ b/hw/vfio/device.c
-@@ -316,12 +316,17 @@ bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
-             error_setg(errp, "Use FD passing only with iommufd backend");
-             return false;
-         }
--        /*
--         * Give a name with fd so any function printing out vbasedev->name
--         * will not break.
--         */
-         if (!vbasedev->name) {
--            vbasedev->name = g_strdup_printf("VFIO_FD%d", vbasedev->fd);
-+
-+            if (vbasedev->dev->id) {
-+                vbasedev->name = g_strdup(vbasedev->dev->id);
-+                return true;
-+            } else {
-+                /*
-+                 * Assign a name so any function printing it will not break.
-+                 */
-+                vbasedev->name = g_strdup_printf("VFIO_FD%d", vbasedev->fd);
-+            }
-         }
-     }
+@@ -333,6 +333,11 @@ bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+     return true;
+ }
  
++void vfio_device_free_name(VFIODevice *vbasedev)
++{
++    g_clear_pointer(&vbasedev->name, g_free);
++}
++
+ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
+ {
+     ERRP_GUARD();
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index dd0b2a0b947d4f9c788c6cd8b41e8ac916098724..1093b28df7c3f5f37e622e6d76a99ad8d2b7e01e 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2996,7 +2996,7 @@ void vfio_pci_put_device(VFIOPCIDevice *vdev)
+ 
+     vfio_device_detach(&vdev->vbasedev);
+ 
+-    g_free(vdev->vbasedev.name);
++    vfio_device_free_name(&vdev->vbasedev);
+     g_free(vdev->msix);
+ }
+ 
+diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+index 9a21f2e50a2945a6658b9be4fdec1bc1c98d0f20..5c1795a26fe79b98a9886e15f365fa7a921409a4 100644
+--- a/hw/vfio/platform.c
++++ b/hw/vfio/platform.c
+@@ -530,7 +530,7 @@ static bool vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
+ {
+     /* @fd takes precedence over @sysfsdev which takes precedence over @host */
+     if (vbasedev->fd < 0 && vbasedev->sysfsdev) {
+-        g_free(vbasedev->name);
++        vfio_device_free_name(vbasedev);
+         vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
+     } else if (vbasedev->fd < 0) {
+         if (!vbasedev->name || strchr(vbasedev->name, '/')) {
 -- 
 2.50.0
 
