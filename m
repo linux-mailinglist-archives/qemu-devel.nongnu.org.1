@@ -2,71 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D297FAF8F6E
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2008AF9059
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 12:30:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXdI2-0002Zj-Vm; Fri, 04 Jul 2025 06:05:07 -0400
+	id 1uXdfq-0003ih-L5; Fri, 04 Jul 2025 06:29:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXdHy-0002ZL-CO
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:05:02 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
+ (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1uXdfj-0003iL-PF
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:29:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uXdHu-0002r4-T4
- for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:05:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751623499; x=1783159499;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=VqW+7j3bGYH4APv86Bf1CmsVe7ytoRtcuouJ718vSyw=;
- b=fjepuq3CALBElr44/AnmNwLNiDwleWSE8rEe2SXGU+cc1ddmM8XPVo1n
- FG+TSS3BRvmwbJH8zy4blDeZeKlw58/Ytrh8dm0dQUujPhGI+anKJ+jbM
- q/wGvQEPPLAgw8X3s0CqYNU7HXKJ21qrvVPSEMzIj9dLWUQeLVc5zhbDx
- l6WcOebhaJ62XLfbveGlp4vKsF7bjdWMYGL1TrBAm30yauWKdaix3LYPT
- OiclVPp9imNjZAI6kt3Wkpv34tqk/ll63rqKewHy/JATMfBG8WHGO6SYI
- OxOhQM9f1VQYsH7k5Qpw21bUDdJ0p1qOw1FLdwqXdIhGCgDpy1vzrBJPJ w==;
-X-CSE-ConnectionGUID: UE5Lj05cSMeUT5WRbibtIw==
-X-CSE-MsgGUID: XC2FZwGMT6+Zgx4xtjukJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="65012684"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="65012684"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 03:04:56 -0700
-X-CSE-ConnectionGUID: 7UhI5mpzTGC6qwuwfeNB3g==
-X-CSE-MsgGUID: P/e7tWGRS0GAYdwCji6LGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="178276246"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 04 Jul 2025 03:04:55 -0700
-Date: Fri, 4 Jul 2025 18:26:20 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 24/39] accel/nvmm: Expose nvmm_enabled() to common code
-Message-ID: <aGesTBLuw4WsGG56@intel.com>
-References: <20250703173248.44995-1-philmd@linaro.org>
- <20250703173248.44995-25-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1uXdfg-0007GN-UQ
+ for qemu-devel@nongnu.org; Fri, 04 Jul 2025 06:29:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1751624970;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=uGysQ4zd9SWmPMYTJ5afHF857JJ1IW4lu8cBVoj4QD8=;
+ b=fBEV+KtcaXxlIfOhZ5Nb4CBsZVs03L0V2R3W50Q9oCooUAyKs+gpp2Sn71VSAZaoAUPFdn
+ QlYGX5t9s3mvRSFO8u1csqTTiHRKPK7Jp9/R6v6hpdeq4BNbmHFa+1DSU+oHBwEkYEWZ/w
+ 7Em8mbSfN9Lyo9zWu2BR5OGUb77t7Us=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-122-qiVUAhi0P56hyijVAkn8UQ-1; Fri, 04 Jul 2025 06:28:23 -0400
+X-MC-Unique: qiVUAhi0P56hyijVAkn8UQ-1
+X-Mimecast-MFC-AGG-ID: qiVUAhi0P56hyijVAkn8UQ_1751624902
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-60c4d1b0aa4so723456a12.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Jul 2025 03:28:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1751624902; x=1752229702;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uGysQ4zd9SWmPMYTJ5afHF857JJ1IW4lu8cBVoj4QD8=;
+ b=S91PlUGJCZe0x+Z7xZ5tGzKqi8pT05TxiaFxGttuAS3S2dhCMLUwCU3JT4yOKKWwLm
+ DGShbp+0s79s1ejkpg+25mbo9YHWZLIkUypzSrKce+xwNazlMeyJBIR5IyHWZarCi4Lv
+ Tf0ff4lJD0CVgZ+wi9tyQ9AqVWOGtwxFSZQfY0Gxjou7Lj66kWibF7l7jZZzPO2GyMls
+ wqFmWuNcKyBGWJlo+gIIQsQEScT+KtHFriPC8xywC1IR90emi/0B/6rqPQc8TVlFhMGJ
+ hf8MrckiQCyK4DbB6otA1CTxtvSaob6uG1O8tEo2IFAjTp7EuqlUfaW0xhq+v/QWNPnS
+ 2O7g==
+X-Gm-Message-State: AOJu0Yxk3mdROHcg0EfEC7jZEGFkinMTEckScQ9RE0BrwOFsQBEdhC6O
+ FOkgtRDgEkx62w0zWumVUqxEQ+LVFpXkX9lTV/9YXKIvRYP57wws775urbGUKzcWvp4VtqHVQkS
+ bKI0yzAxqyTFKlTFFqRyLT7rfHwPnYFVb9YYEUhnIEicCp9c8tIwagfJ8skdg1/q30oYL7K44/m
+ /KObod3M9WSnROZ95Qe65vPEY8j+6O7IRRp9aPqg0=
+X-Gm-Gg: ASbGncvEB4G8aKYpG8mfRoNf9JcOT4Ppy52y9APJHW9CU6e/r0XCmLhum+mbLByTlh6
+ UK7vrm5GhWK0RiQfmwplMP9p0AObM3npn4mmz8wYPBNN4+A06Q1sLnajLmEghpIbqXWdMfGAFdC
+ NjTqs45C35JDTUNJkw6b5uO6+i5sEmdQJ+N15VXYMW8VDmaBW96EN5+RbMAJXlB7LgnXNfpKWkZ
+ NZ0T0PEeyQwsO9l6Z+m1XjPYhQbEn66f5Z0VQy6+jfguoBxp8pTXJwNG2mG4H4lyzHAeUiPRhQm
+ x4rrvgNrOAZFPRhf4XvmNvpqST1xuEKbFA==
+X-Received: by 2002:a05:6402:5112:b0:60e:23d:43b1 with SMTP id
+ 4fb4d7f45d1cf-60fd3371b33mr1480282a12.16.1751624901914; 
+ Fri, 04 Jul 2025 03:28:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvCS19AqrOhj32yAym6Qbb2TYEZytFf3xaKlyo24vv6cQF8nsYUNPNdNyQmwMSqGqkCKvE+A==
+X-Received: by 2002:a05:6402:5112:b0:60e:23d:43b1 with SMTP id
+ 4fb4d7f45d1cf-60fd3371b33mr1480259a12.16.1751624901306; 
+ Fri, 04 Jul 2025 03:28:21 -0700 (PDT)
+Received: from top.fritz.box ([2a00:6020:4c20:5100:b554:58b6:5239:7d31])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-60fcb1fa9b8sm1118480a12.54.2025.07.04.03.28.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 04 Jul 2025 03:28:20 -0700 (PDT)
+From: Michael Vogt <mvogt@redhat.com>
+X-Google-Original-From: Michael Vogt <michael.vogt@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>, Michael Vogt <michael.vogt@gmail.com>
+Subject: [RFC] linux-user: return success in TARGET_NR_set_robust_list
+Date: Fri,  4 Jul 2025 12:26:38 +0200
+Message-ID: <20250704102637.32341-2-michael.vogt@gmail.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250703173248.44995-25-philmd@linaro.org>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mvogt@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,27 +102,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 03, 2025 at 07:32:30PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu,  3 Jul 2025 19:32:30 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v6 24/39] accel/nvmm: Expose nvmm_enabled() to common code
-> X-Mailer: git-send-email 2.49.0
-> 
-> Currently nvmm_enabled() is restricted to target-specific code.
-> By defining CONFIG_NVMM_IS_POSSIBLE we allow its use anywhere.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  include/system/nvmm.h       | 23 ++++++++++++-----------
->  accel/stubs/nvmm-stub.c     | 12 ++++++++++++
->  target/i386/nvmm/nvmm-all.c |  8 +-------
->  accel/stubs/meson.build     |  1 +
->  4 files changed, 26 insertions(+), 18 deletions(-)
->  create mode 100644 accel/stubs/nvmm-stub.c
+The linux set_robust_list() syscall cannot be supported by
+qemu-user as explained in e9a970a8316 and hence we return
+ENOSYS.
 
-With header file fixed,
+With that understanding this commit still changes the
+return to "0". This is of course wrong because we do not
+actually support  set_robust_list() *but* for qemu-user
+based processes the call result makes less practical
+difference:
+1. glibc does not actually check the return value and assumes
+   robust lists anyway (see below for details) on the common
+   architectures. As their is only one per-thread list of
+   robust locks this will cover everything that uses glibc
+   threading.
+2. set_robust_list is about dealing with crashes while
+   holding the lock [1]. Without robust futexes only a system
+   reboot can release a deadlocked futex. However for
+   qemu-user its "only" a restart of the qemu-user process.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Why is this relevant? Because it means we get inconsistent
+behavior from qemu-user when trying to run programs like
+podman via qemu-user that can request:
+```
+pthread_mutexattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
+pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST);
+```
+This will run fine in qemu-user for x86_64, aarch64 targets
+but it fails on riscv64 targets because of
+https://github.com/bminor/glibc/blob/glibc-2.41/nptl/pthread_mutex_init.c#L96
+
+With this commit we get the same behavior on riscv64 as
+on x86_64 and aarch64.
+
+This commit does not change TARGET_NR_get_robust_list
+which is not used by glibc but according to [2] it
+is used by steam which will still get TARGET_ENOSYS
+which seems fine (but equaly fine to change it).
+
+Note also that with the new set_robust_list2 described
+in https://lwn.net/Articles/1027135/ we could actually
+implement the real behavior.
+
+Glibc details:
+
+Nowdays glibc does not actually check the
+return code of the syscall anymore for the common
+architectures because of __ASSUME_SET_ROBUST_LIST, c.f.
+https://github.com/bminor/glibc/blob/glibc-2.41/sysdeps/nptl/dl-tls_init_tp.c#L93
+
+And __ASSUME_SET_ROBUST_LIST is set by default but can be
+unset in the per architecture kernel-features.h. But for
+e.g. X86_64,aarch64 it is left alone. It his however set
+on riscv64 conditionally:
+https://github.com/bminor/glibc/blob/glibc-2.41/sysdeps/unix/sysv/linux/riscv/kernel-features.h#L25
+which means it will end up in the riscv libc there
+(output from a debian/testing system with libc6:{riscv64,..}/2.41-9)
+```
+$ for libc in /usr/lib/*/libc.so.6; do echo "$libc:"; strings "$libc"| grep -n __nptl_set_robust_list_avail; done
+/usr/lib/aarch64-linux-gnu/libc.so.6:
+/usr/lib/arm-linux-gnueabihf/libc.so.6:
+/usr/lib/arm-linux-gnueabi/libc.so.6:
+/usr/lib/riscv64-linux-gnu/libc.so.6:
+1963:__nptl_set_robust_list_avail
+/usr/lib/x86_64-linux-gnu/libc.so.6:
+```
+
+Because on riscv64 __ASSUME_SET_ROBUST_LIST is not set this
+https://github.com/bminor/glibc/blob/glibc-2.41/nptl/pthread_mutex_init.c#L96
+triggers the error.
+
+[1] https://lwn.net/Articles/172134/
+[2] https://github.com/FEX-Emu/FEX/commit/310252b97d0fce5c63d07c7911d6d4ec6c2a4efe#diff-8a33d992b7143e73a0235215985c690b61d3b0ef8e5a31e9afb8531914fa3ea2R141
+
+Signed-off-by: Michael Vogt <michael.vogt@gmail.com>
+---
+ linux-user/syscall.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
+
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index fc37028597..415be7124b 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -12931,18 +12931,30 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+ 
+ #ifdef TARGET_NR_set_robust_list
+     case TARGET_NR_set_robust_list:
+-    case TARGET_NR_get_robust_list:
+         /* The ABI for supporting robust futexes has userspace pass
+          * the kernel a pointer to a linked list which is updated by
+          * userspace after the syscall; the list is walked by the kernel
+          * when the thread exits. Since the linked list in QEMU guest
+          * memory isn't a valid linked list for the host and we have
+          * no way to reliably intercept the thread-death event, we can't
+-         * support these. Silently return ENOSYS so that guest userspace
+-         * falls back to a non-robust futex implementation (which should
+-         * be OK except in the corner case of the guest crashing while
+-         * holding a mutex that is shared with another process via
+-         * shared memory).
++         * support these.
++         *
++         * We still return "0" here as for qemu-user based processes
++         * the call makes less practical difference:
++         * 1. glibc does not actually check the return value and assumes
++         *    robust lists anyway on the common architectures. As
++         *    their is only one per-thread list of robust locks this
++         *    will cover everything that uses glibc threading.
++         * 2. set_robust_list is about dealing with crashes while
++         *    holding the lock. Without robust futexes only a system
++         *    reboot can release a deadlocked futex. However for
++         *    qemu-user its "only" a restart of the qemu-user process.
++         */
++        return 0;
++    case TARGET_NR_get_robust_list:
++        /* For systems that double check via get_robust_list() we
++         * silently return ENOSYS so that guest userspace can fall
++         * back to a non-robust futex implementation.
+          */
+         return -TARGET_ENOSYS;
+ #endif
+-- 
+2.47.2
 
 
