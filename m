@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8163AF8C7A
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4598AF8C8A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Jul 2025 10:48:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uXc4T-0000b1-WB; Fri, 04 Jul 2025 04:47:02 -0400
+	id 1uXc4c-0000oL-Ns; Fri, 04 Jul 2025 04:47:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4F-0000QX-OS
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4F-0000QW-Hy
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4D-0001OF-QP
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uXc4D-0001OC-Pe
  for qemu-devel@nongnu.org; Fri, 04 Jul 2025 04:46:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1751618805;
@@ -22,36 +22,36 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2/QQHxzSBwOZry8dpMse9+bQu7EIO9GAsfRgmGz5QH8=;
- b=QskD0r/MbpGNa3/CAmVOH8Q8u1GNA+8xHuLdzEcCirBhYsRTGaaj7K0R+yg6UXKlwHvPwL
- OJEPNEURrtr+Tlr0VaX28GB8HpM2ls0OEVCekI66bo+CqTgTzt2baq2BkJ+gz1FZfpKkPh
- jOLttlTdFGZPpvMKRK3i/meuT//w+9s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=ua90FsLL79bWLK7qZojZP6bHT3h6nnQRWQmKZajp2ts=;
+ b=JIoyXkrG06+/W8QN1mKSl+XUpeSy7vrs7/FpNgU6lBQJDs1ozjqxmFNZ2TwdYoGRFzRbyE
+ C4DbHPrlsHobLV+FqJwaNwtu5P0v3DHbDFGIO1QlBje8mJmC0K3GBH8cFMTv+TfE3eL8qb
+ +vlNbEhFVLsGFg2u0AqLVi04RJst+/U=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-m3YTmIjENKOznhQTtCof_A-1; Fri,
- 04 Jul 2025 04:46:40 -0400
-X-MC-Unique: m3YTmIjENKOznhQTtCof_A-1
-X-Mimecast-MFC-AGG-ID: m3YTmIjENKOznhQTtCof_A_1751618799
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-150-Eant6zulMna0LShh_8_dKw-1; Fri,
+ 04 Jul 2025 04:46:43 -0400
+X-MC-Unique: Eant6zulMna0LShh_8_dKw-1
+X-Mimecast-MFC-AGG-ID: Eant6zulMna0LShh_8_dKw_1751618802
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8CC141944AA6; Fri,  4 Jul 2025 08:46:39 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 62EEB1800343; Fri,  4 Jul 2025 08:46:42 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.43])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 98F5219560A7; Fri,  4 Jul 2025 08:46:37 +0000 (UTC)
+ id 1608119560A7; Fri,  4 Jul 2025 08:46:39 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 24/27] vfio/iommufd: change process
-Date: Fri,  4 Jul 2025 10:45:25 +0200
-Message-ID: <20250704084528.1412959-25-clg@redhat.com>
+Subject: [PULL 25/27] iommufd: preserve DMA mappings
+Date: Fri,  4 Jul 2025 10:45:26 +0200
+Message-ID: <20250704084528.1412959-26-clg@redhat.com>
 In-Reply-To: <20250704084528.1412959-1-clg@redhat.com>
 References: <20250704084528.1412959-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -60,15 +60,14 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.237, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,71 +85,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Finish CPR by change the owning process of the iommufd device in
-post load.
+During cpr-transfer load in new QEMU, the vfio_memory_listener causes
+spurious calls to map and unmap DMA regions, as devices are created and
+the address space is built.  This memory was already already mapped by the
+device in old QEMU, so suppress the map and unmap callbacks during incoming
+CPR.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Link: https://lore.kernel.org/qemu-devel/1751493538-202042-19-git-send-email-steven.sistare@oracle.com
-[ clg: Fixed missing "qemu/error-report.h" include ]
+Link: https://lore.kernel.org/qemu-devel/1751493538-202042-20-git-send-email-steven.sistare@oracle.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/cpr-iommufd.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ backends/iommufd.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/hw/vfio/cpr-iommufd.c b/hw/vfio/cpr-iommufd.c
-index a72b68daa8e4da19b9cbf3ab50631211965cdf37..148a06d552ff3d8e8420366c6b71437e81a1f877 100644
---- a/hw/vfio/cpr-iommufd.c
-+++ b/hw/vfio/cpr-iommufd.c
-@@ -5,6 +5,7 @@
-  */
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index e0917923bffbb60dc5c58235880335c4d5eb7df7..2a33c7ab0bcdc9aabda55258741022debab0bdad 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -245,6 +245,10 @@ int iommufd_backend_map_file_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+         .length = size,
+     };
  
- #include "qemu/osdep.h"
-+#include "qemu/error-report.h"
- #include "qapi/error.h"
- #include "hw/vfio/vfio-cpr.h"
- #include "hw/vfio/vfio-device.h"
-@@ -112,10 +113,40 @@ static bool vfio_cpr_supported(IOMMUFDBackend *be, Error **errp)
-     return true;
- }
- 
-+static int iommufd_cpr_pre_save(void *opaque)
-+{
-+    IOMMUFDBackend *be = opaque;
-+
-+    /*
-+     * The process has not changed yet, but proactively try the ioctl,
-+     * and it will fail if any DMA mappings are not supported.
-+     */
-+    if (!iommufd_change_process_capable(be)) {
-+        error_report("some memory regions do not support "
-+                     "IOMMU_IOAS_CHANGE_PROCESS");
-+        return -1;
++    if (cpr_is_incoming()) {
++        return 0;
 +    }
-+    return 0;
-+}
 +
-+static int iommufd_cpr_post_load(void *opaque, int version_id)
-+{
-+     IOMMUFDBackend *be = opaque;
-+     Error *local_err = NULL;
+     if (!readonly) {
+         map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
+     }
+@@ -274,6 +278,10 @@ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+         .length = size,
+     };
+ 
++    if (cpr_is_incoming()) {
++        return 0;
++    }
 +
-+     if (!iommufd_change_process(be, &local_err)) {
-+        error_report_err(local_err);
-+        return -1;
-+     }
-+     return 0;
-+}
-+
- static const VMStateDescription iommufd_cpr_vmstate = {
-     .name = "iommufd",
-     .version_id = 0,
-     .minimum_version_id = 0,
-+    .pre_save = iommufd_cpr_pre_save,
-+    .post_load = iommufd_cpr_post_load,
-     .needed = cpr_incoming_needed,
-     .fields = (VMStateField[]) {
-         VMSTATE_END_OF_LIST()
+     ret = ioctl(fd, IOMMU_IOAS_UNMAP, &unmap);
+     /*
+      * IOMMUFD takes mapping as some kind of object, unmapping
 -- 
 2.50.0
 
